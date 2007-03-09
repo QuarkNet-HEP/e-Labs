@@ -1,0 +1,23 @@
+
+SETUP
+
+  Test the template elab: 
+  
+  Check out the i2u2 from the CVS
+  Deploy the template elab: ant deploy-template
+ 
+ Generic Knowledge:
+ 
+ Currently, we have chosen to have the VDS_HOME in /Users/tiberius/local/apache-tomcat-5.5.17/webapps/elab/template/output
+ This means that the deployment copies there the VDS configuration files (sites.xml and tc.data), and that the workflow is there as well (analysis-wf.kml)
+ There is a vds.home.template property in the /WEB-INF/elab.properties but is not used in the code (it's intended to replace the hardcoded path mentioned above)
+ 
+ User tasks:
+ 1. create your workflow (let's call it UserAnalysis), compile it and put the files in template/src/vdl: cp UserAnalysis.dtm template/src/vdl
+ 2. create and customize the UserAnalysisWorkflow to allow the VDL2 engine to load and run your workflow
+ 3. create an input page (userAnalysisInput.jsp), similar to analysisInput.jsp
+ 4. create JSP that will process the request from the input page, similar to analysisProcess.jsp
+ 5. create a java bean UserAnalysisBean to hold the input from your inputFile, and pass it to the analysis page.
+ 6. add your build/deploy targets in the build.xml
+ 
+ 7. Test and Enjoy: go to localhost:8080/elab/template/userAnalysisInput.jsp

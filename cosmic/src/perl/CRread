@@ -1,0 +1,10 @@
+#!/bin/sh
+# Paul Nepywoda's script (thrown together) to output
+#cosmic ray data (8-21-03)
+
+DEV=`ls -l /dev/cu.U* | sed 's/^.*\///'`
+
+(stty 19200;
+stty clocal;
+exec tee) < /dev/$DEV
+

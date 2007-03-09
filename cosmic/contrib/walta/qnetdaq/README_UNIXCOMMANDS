@@ -1,0 +1,61 @@
+Again, the convention I use here is that the leading > in each command
+example substitutes for the command prompt and you don't have to type it.
+if you see
+> ls -l
+when you type it at the command line you only press the keys for "ls -l"
+press return, and it looks like this
+[waltadaq@lisa daqcode]$ ls -l
+Beware, there is another use of > which redirects things to a file!
+
+
+here are the relevant commands you can use.  You probably know several of
+these, but I'll string some together in a useful way.
+ls      list contents of the directory
+ls -l   the -l (that is a lower case L) lists with date information also.
+cd      change directory, as in cd daqcode/log
+cd ..   move up one directory (from daqcode/log to daqcode)
+more    prints out a text file one page at a time
+less    (less is more) prints out a text file and you can use arrows to
+        scroll through it.  less is better for examining daq card files.
+cat     prints out a text file in one big long dump.
+grep    the text searching tool.
+|       the redirect pipe to another command.
+>       the redirect to a file.  (note, not the command prompt!)
+control-c is your friend.
+when using both less and more, the "q" will also quit.
+wc      does a line count, word count, and character count.
+
+pico    my favorite terminal-based editor program, identical to what is
+        used by pine.  Of course, emacs and vi are available too.
+
+So, you might want to try things like this:  cat a file and pipe itto grep.
+> cat onroof20030118_000.log | grep "channel 1"
+
+and it will print out every line with the string "channel 1" and you can
+see the singles rate change.
+
+Too many to look at?  
+> cat onroof20030118_000.log | grep "channel 1" | less
+and use the arrows to scroll through it.
+
+there will be many files, you can look at them all in sequence, or just
+a subset of them.  Use wildcards.
+
+> cat onroof*.log | grep "channel 1"
+
+Since they are just text files, and you know excel, you could make one of
+the histograms you wanted.  Here is the command that would do it.
+> cat onroof*.log | grep "channel 1" > mysafefilename.txt
+
+
+this types out all the files, choose only lines with "channel 1" in them, 
+and then dumps that output to a file you called mysafefilename.txt
+now mysafefilename is a text file with every word separated by a space 
+that you can import into excel.
+
+now copy that to your home computer with excel on it.
+You could use a command like scp (secure copy): 
+(don't forget the colon at the end!!!)
+> scp mysafefilename.txt paul@hostname.washington.edu:
+
+

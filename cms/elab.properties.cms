@@ -1,0 +1,8 @@
+#
+# These are properties specific to cosmic in addition to
+# the common elab properties
+#
+
+
+cms.vds.home = /var/tmp/quarknet-m/tomcat/webapps/elab/cms/output
+

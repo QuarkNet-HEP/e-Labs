@@ -1,0 +1,9 @@
+For these simple programs, it is easier to use the single
+header file in the include directory.  It wraps the code
+and methods into the single header file.
+
+If I ever need to build a more complicated program, these
+pieces here can be built into a .o or a library.
+
+At that point, however, I probably want to use an implementation
+of a heavy-duty histogram library from somewhere.

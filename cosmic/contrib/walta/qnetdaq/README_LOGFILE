@@ -1,0 +1,62 @@
+Here is the format of the information in the log files.
+
+Note, in this version, the log file is temporarily turned off, because the
+actual useful pieces of it are not re-implemented.
+
+===============================================================================
+every so often, I look at the singles rates.  
+Here is what I print out when that happens.
+Try using the command
+> cat log/*.log | grep "delta time"
+
+delta time 537 195 215116.400000 214801.411000 214219.430000 events so far 300
+
+This is, in order:
+the time difference between the current event and the first event in the file.
+the time difference between the current event that the last time I did a singles check.
+the utc time of the current event, 
+the utc time of the "mark" event, the last time I checked the singles
+and the utc time of the first event in the file.
+
+
+===============================================================================
+The singles rate information
+Try using the command
+> cat log/* | grep channel
+or 
+> cat log/* | grep "channel 2"
+
+channel 0 hits 269514 rate (file) 323.546 (mark) 319.838 time 3443.846
+channel 1 hits 847159 rate (file) 1016.998 (mark) 1004.710 time 3443.846
+channel 2 hits 334834 rate (file) 401.962 (mark) 399.586 time 3443.846
+channel 3 hits 540426 rate (file) 648.771 (mark) 644.895 time 3443.846
+channel 4 hits 508 rate (file) 0.610 (mark) 0.650 time 3443.846
+
+the hits number is the raw number of hits since the beginning of the file
+the rate (file) is since I started this file
+the rate (mark) is since the last time I checked singles
+the time is utc time of the current event in hhmmss. format.
+channels 0 through 3 are the singles rates for the four pieces of scintillator.
+channel 4 is the counter for the preset coincidence level, 
+          usually two or more scintillator.
+
+There are glitches to this that cause spurious output for these values,
+but they disappear, and affect only the read out, not the operation.
+
+A similar glitch causes this data to not appear at all on schedule..
+Again, it will appear later, and all will be fine.
+
+
+===============================================================================
+The hit patterns and other histogram informationhittag histogram 
+Try using the commands
+> cat log/* | grep "hittag"
+or 
+> cat log/* | grep "coincidences"
+
+
+hittag histogram 0 7 13 80 2 36 99 9 5 39 133 6 54 3 8 6 
+just a numerical histogram of the hittags, like the one Graham put in labview
+
+coincidences 55 981 50 14
+the number of 1-fold, 2-fold, 3-fold, and 4-fold coincidences.

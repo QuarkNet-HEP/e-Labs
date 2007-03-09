@@ -1,0 +1,12 @@
+Hi Rik.
+
+To update:
+
+First unzip all the apprpriate files.
+Check that they are named sensibly, and that there is no mac format.
+
+Then run livetime on each batch to get total and october.
+
+Then go to coincidence and run makelist.sh, then run.sh.
+
+Finally update the summary.html and upload it.

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT root    (root, type, dataset+, tree+)>
+<!ELEMENT type    (#PCDATA)>
+
+<!ELEMENT dataset (name, location, file+)>
+<!ELEMENT name    (#PCDATA)>
+<!ELEMENT location (#PCDATA)>
+
+<!ELEMENT file    (name, type)>
+<!ELEMENT name    (#PCDATA)>
+<!ELEMENT type    (#PCDATA)>
+
+<!ELEMENT tree    (branch, formula*, name, id)>
+<!ELEMENT name    (#PCDATA)>
+<!ELEMENT id      (#PCDATA)>
+
+<!ELEMENT branch  (name, leaf+, id)>
+<!ELEMENT name    (#PCDATA)>
+<!ELEMENT id      (#PCDATA)>
+
+<!ELEMENT leaf    (name, title, labely, labelx, id)>
+<!ELEMENT name    (#PCDATA)>
+<!ELEMENT title   (#PCDATA)>
+<!ELEMENT labely  (#PCDATA)>
+<!ELEMENT labelx  (#PCDATA)>
+<!ELEMENT id      (#PCDATA)>
+
+<!ELEMENT formula (name, title, labely, labelx, id)>
+<!ELEMENT name    (#PCDATA)>
+<!ELEMENT title   (#PCDATA)>
+<!ELEMENT labely  (#PCDATA)>
+<!ELEMENT labelx  (#PCDATA)>
+<!ELEMENT id      (#PCDATA)>

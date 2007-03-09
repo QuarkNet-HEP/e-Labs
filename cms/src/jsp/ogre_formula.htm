@@ -1,0 +1,631 @@
+<html xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<style type="text/css">
+<!--
+.tooltiptitle{COLOR: #000000; TEXT-DECORATION: none; CURSOR: Default; font-family: arial; font-weight: bold; font-size: 8pt}
+.tooltipcontent{COLOR: #000000; TEXT-DECORATION: none; CURSOR: Default; font-family: arial; font-size: 10pt}
+#ToolTip{position:absolute; width: 100px; top: 0px; left: 0px; z-index:4; visibility:hidden;}
+-->
+</style>
+<script language = "javascript">
+<!--
+
+var ie = document.all ? 1 : 0
+var ns = document.layers ? 1 : 0
+
+if(ns){doc = "document."; sty = ""}
+if(ie){doc = "document.all."; sty = ".style"}
+
+
+
+var initialize = 0
+var Ex, Ey, topColor, subColor, ContentInfo
+
+
+if(ie){
+Ex = "event.x"
+Ey = "event.y"
+
+topColor = "#FFFFFF"
+subColor = "#FFFFFF"
+}
+
+if(ns){
+Ex = "e.pageX"
+Ey = "e.pageY"
+window.captureEvents(Event.MOUSEMOVE)
+window.onmousemove=overhere
+
+topColor = "#FFFFFF"
+subColor = "#FFFFFF"
+}
+
+
+
+function MoveToolTip(layerName, FromTop, FromLeft, e){
+if(ie){eval(doc + layerName + sty + ".top = "  + (eval(FromTop) + document.body.scrollTop))}
+if(ns){eval(doc + layerName + sty + ".top = "  +  eval(FromTop))}
+eval(doc + layerName + sty + ".left = " + (eval(FromLeft) + 15))
+}
+
+
+
+
+
+
+function ReplaceContent(layerName){
+
+if(ie){document.all[layerName].innerHTML = ContentInfo}
+
+
+if(ns){
+
+with(document.layers[layerName].document) 
+{ 
+   open(); 
+   write(ContentInfo); 
+   close(); 
+}
+
+}
+
+
+}
+
+
+
+function Activate(){initialize=1}
+function deActivate(){initialize=0}
+
+
+function overhere(e){
+if(initialize){
+
+MoveToolTip("ToolTip", Ey, Ex, e)
+eval(doc + "ToolTip" + sty + ".visibility = 'visible'")
+}
+
+else{
+MoveToolTip("ToolTip", 0, 0)
+eval(doc + "ToolTip" + sty + ".visibility = 'hidden'")
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+function EnterContent(layerName, TTitle, TContent){
+
+ContentInfo = '<table border="0" width="150" cellspacing="0" cellpadding="0">'+
+'<tr><td width="100%" bgcolor="#000000">'+
+
+'<table border="0" width="100%" cellspacing="1" cellpadding="0">'+
+'<tr><td width="100%" bgcolor='+topColor+'>'+
+
+'<table border="0" width="90%" cellspacing="0" cellpadding="0" align="center">'+
+'<tr><td width="100%">'+
+
+'<font class="tooltiptitle">&nbsp;'+TTitle+'</font>'+
+
+'</td></tr>'+
+'</table>'+
+
+'</td></tr>'+
+
+'<tr><td width="100%" bgcolor='+subColor+'>'+
+
+'<table border="0" width="90%" cellpadding="0" cellspacing="1" align="center">'+
+
+'<tr><td width="100%">'+
+
+'<font class="tooltipcontent">'+TContent+'</font>'+
+
+'</td></tr>'+
+'</table>'+
+
+'</td></tr>'+
+'</table>'+
+
+'</td></tr>'+
+'</table>';
+
+
+ReplaceContent(layerName)
+
+}
+
+
+
+
+
+//-->
+</script>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<link rel=Edit-Time-Data href="ogre/ogreformula_files/editdata.mso">
+<title>Example 3: Formula</title>
+<style>
+<!--
+h1
+	{text-align:center;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h2
+	{font-size:18.0pt;
+	font-family:"Arial Unicode MS";}
+h4
+	{font-size:12.0pt;
+	font-family:"Arial Unicode MS";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+address
+	{font-size:12.0pt;
+	font-family:"Arial Unicode MS";}
+span.SpellE
+span.GramE
+.style1 {font-family: Arial}
+-->
+</style>
+</head>
+<body onmousemove="overhere()" bgcolor="#FFFFFF" link=blue vlink=purple lang=EN-US>
+<div class=Section1 style1>
+  <h2 align=center style='text-align:center'>Tutorial</h2>
+  <h2 align=center style='text-align:center'>Become an OGRE achiever</h2>
+  <h2 align=center style='text-align:center'><img width=163 height=184
+src="graphics/ogre_big.jpg" v:shapes="_x0000_i1025"></h2>
+  <h2 align=center style='text-align:center'>Example 3: Formula</h2>
+  <p align=center style='text-align:center'>
+    <script language="JavaScript"  type="Text/JavaScript">
+setNumberOfVariables();
+</script>
+    <span style='display:none;'>
+    <INPUT TYPE="hidden" NAME="number_of_variables" VALUE="7">
+    </span></p>
+  <div align=center>
+    <table border=1 cellpadding=0>
+      <tr>
+        <td valign=top><h4 align=center style='text-align:center'><span style='color:blue'"javascript:void(0)" onMouseover="EnterContent('ToolTip','Variables:','This section allows one to select the variables to be plotted for the chosen runs.  As shown below, one can choose from energy and/or direction information for each event.  The plots show the measured energy or angle for each event.'); Activate();" onMouseout="deActivate()">Select
+            Variable</span></h4></td>
+        <td valign=top><h4 align=center style='text-align:center'><span style='color:blue'"javascript:void(0)" onMouseover="EnterContent('ToolTip','Select Variable:','This feature allows one to select the set of events entered in a histogram by restricting the range of the variables.'); Activate();" onMouseout="deActivate()">Selection
+            Criteria</span></h4></td>
+        <td valign=top><h4 align=center style='text-align:center'><span style='color:blue'"javascript:void(0)" onMouseover="EnterContent('ToolTip','Variables:','This feature allows one to toggle between linear and logarithmic scales.'); Activate();" onMouseout="deActivate()">Plot
+            Style</span></h4></td>
+        <td valign=top><h4 align=center style='text-align:center'><span style='color:blue'"javascript:void(0)" onMouseover="EnterContent('ToolTip','Histogram Fill Color:','This function enables you to fill the histogram with color.'); Activate();" onMouseout="deActivate()">Histogram
+            Fill Color
+            <script language="JavaScript"  type="Text/JavaScript">
+createLeafTable();
+  </script>
+            </span></h4></td>
+      </tr>
+      <tr>
+        <td><p> <span style='color:black'"javascript:void(0)" onMouseover="EnterContent('ToolTip','Total Energy:','Histograms the total energy (Ecal + Hcal) deposited in the calorimeter for each event.'); Activate();" onMouseout="deActivate()">
+            <INPUT TYPE="checkbox" NAME="variable" VALUE="1">
+            &nbsp; Total
+            Energy&nbsp;(name = c3x3.e)</p></td>
+        <td><p>
+            <INPUT TYPE="text" SIZE="17" NAME="cut1">
+          </p></td>
+        <td><p>
+            <INPUT TYPE="checkbox" NAME="logx1" VALUE="1">
+            <span
+  class=SpellE>logx</span>
+            <INPUT TYPE="checkbox" NAME="logy1" VALUE="1">
+            logy </p></td>
+        <td><p>
+            <SELECT NAME="color1">
+              <OPTION VALUE="0">None
+              <OPTION VALUE="1">Black
+              <OPTION VALUE="2">Red
+              <OPTION VALUE="3">Green
+              <OPTION VALUE="4">Blue
+              <OPTION VALUE="5">Yellow
+              <OPTION VALUE="6">Purple
+            </SELECT>
+            <INPUT TYPE="checkbox" NAME="intensity1" VALUE="1">
+            Use
+            Dark Colors</p></td>
+      </tr>
+      <tr>
+        <td><p> <span style='color:black'"javascript:void(0)" onMouseover="EnterContent('ToolTip','Ecal Energy:','Histograms the energy deposited in the electromagnetic calorimeter.'); Activate();" onMouseout="deActivate()">
+            <INPUT TYPE="checkbox" NAME="variable" VALUE="2">
+            &nbsp;<span
+  class=SpellE>Ecal</span> Energy&nbsp;(name = c3x3.ee)</p></td>
+        <td><p>
+            <INPUT TYPE="text" SIZE="17" NAME="cut2">
+          </p></td>
+        <td><p>
+            <INPUT TYPE="checkbox" NAME="logx2" VALUE="1">
+            <span
+  class=SpellE>logx</span>
+            <INPUT TYPE="checkbox" NAME="logy2" VALUE="1">
+            logy </p></td>
+        <td><p>
+            <SELECT NAME="color2">
+              <OPTION VALUE="0">None
+              <OPTION VALUE="1">Black
+              <OPTION VALUE="2">Red
+              <OPTION VALUE="3">Green
+              <OPTION VALUE="4">Blue
+              <OPTION VALUE="5">Yellow
+              <OPTION VALUE="6">Purple
+            </SELECT>
+            <INPUT TYPE="checkbox" NAME="intensity2" VALUE="1">
+            Use
+            Dark Colors</p></td>
+      </tr>
+      <tr>
+        <td><p> <span style='color:black'"javascript:void(0)" onMouseover="EnterContent('ToolTip','Hcal Energy:','Histograms the energy deposited in the hadronic calorimeter.  Significant energy deposition in Hcal usually indicates the presence of hardon(s).'); Activate();" onMouseout="deActivate()">
+            <INPUT TYPE="checkbox" NAME="variable" VALUE="3">
+            &nbsp;<span
+  class=SpellE>Hcal</span> Energy&nbsp;(name = c3x3.eh)</p></td>
+        <td><p>
+            <INPUT TYPE="text" SIZE="17" NAME="cut3">
+          </p></td>
+        <td><p>
+            <INPUT TYPE="checkbox" NAME="logx3" VALUE="1">
+            <span
+  class=SpellE>logx</span>
+            <INPUT TYPE="checkbox" NAME="logy3" VALUE="1">
+            logy </p></td>
+        <td><p>
+            <SELECT NAME="color3">
+              <OPTION VALUE="0">None
+              <OPTION VALUE="1">Black
+              <OPTION VALUE="2">Red
+              <OPTION VALUE="3">Green
+              <OPTION VALUE="4">Blue
+              <OPTION VALUE="5">Yellow
+              <OPTION VALUE="6">Purple
+            </SELECT>
+            <INPUT TYPE="checkbox" NAME="intensity3" VALUE="1">
+            Use
+            Dark Colors</p></td>
+      </tr>
+      <tr>
+        <td><p> <span style='color:black'"javascript:void(0)" onMouseover="EnterContent('ToolTip','Eta:','Histograms the pseudorapidity of the tower of greatest energy in the hadronic calorimeter.'); Activate();" onMouseout="deActivate()">
+            <INPUT TYPE="checkbox" NAME="variable" VALUE="4">
+            &nbsp;<span
+  class=SpellE>Eta</span>&nbsp;(name = <span class=SpellE>peak_eta</span>)</p></td>
+        <td><p>
+            <INPUT TYPE="text" SIZE="17" NAME="cut4">
+          </p></td>
+        <td><p>
+            <INPUT TYPE="checkbox" NAME="logx4" VALUE="1">
+            <span
+  class=SpellE>logx</span>
+            <INPUT TYPE="checkbox" NAME="logy4" VALUE="1">
+            logy </p></td>
+        <td><p>
+            <SELECT NAME="color4">
+              <OPTION VALUE="0">None
+              <OPTION VALUE="1">Black
+              <OPTION VALUE="2">Red
+              <OPTION VALUE="3">Green
+              <OPTION VALUE="4">Blue
+              <OPTION VALUE="5">Yellow
+              <OPTION VALUE="6">Purple
+            </SELECT>
+            <INPUT TYPE="checkbox" NAME="intensity4" VALUE="1">
+            Use
+            Dark Colors</p></td>
+      </tr>
+      <tr>
+        <td><p> <span style='color:black'"javascript:void(0)" onMouseover="EnterContent('ToolTip','Phi:','Histograms the azimuthal angle of the tower of greatest energy in the hadronic calorimeter.'); Activate();" onMouseout="deActivate()">
+            <INPUT TYPE="checkbox" NAME="variable" VALUE="5">
+            &nbsp;Phi&nbsp;(name
+            = <span class=SpellE>peak_phi</span>)</p></td>
+        <td><p>
+            <INPUT TYPE="text" SIZE="17" NAME="cut5">
+          </p></td>
+        <td><p>
+            <INPUT TYPE="checkbox" NAME="logx5" VALUE="1">
+            <span
+  class=SpellE>logx</span>
+            <INPUT TYPE="checkbox" NAME="logy5" VALUE="1">
+            logy </p></td>
+        <td><p>
+            <SELECT NAME="color5">
+              <OPTION VALUE="0">None
+              <OPTION VALUE="1">Black
+              <OPTION VALUE="2">Red
+              <OPTION VALUE="3">Green
+              <OPTION VALUE="4">Blue
+              <OPTION VALUE="5">Yellow
+              <OPTION VALUE="6">Purple
+            </SELECT>
+            <INPUT TYPE="checkbox" NAME="intensity5" VALUE="1">
+            Use
+            Dark Colors</p></td>
+      </tr>
+      <tr>
+        <td><p> <span style='color:black'"javascript:void(0)" onMouseover="EnterContent('ToolTip','E vs. H:','Scatter plots Ecal versus Hcal.'); Activate();" onMouseout="deActivate()">
+            <INPUT TYPE="checkbox" NAME="variable" VALUE="6">
+            &nbsp;E
+            vs. H&nbsp;(name = c3x3.ee:c3x3.eh)</p></td>
+        <td><p>
+            <INPUT TYPE="text" SIZE="17" NAME="cut6">
+          </p></td>
+        <td><p>
+            <INPUT TYPE="checkbox" NAME="logx6" VALUE="1">
+            <span
+  class=SpellE>logx</span>
+            <INPUT TYPE="checkbox" NAME="logy6" VALUE="1">
+            logy </p></td>
+        <td><p>
+            <SELECT NAME="color6">
+              <OPTION VALUE="0">None
+              <OPTION VALUE="1">Black
+              <OPTION VALUE="2">Red
+              <OPTION VALUE="3">Green
+              <OPTION VALUE="4">Blue
+              <OPTION VALUE="5">Yellow
+              <OPTION VALUE="6">Purple
+            </SELECT>
+            <INPUT TYPE="checkbox" NAME="intensity6" VALUE="1">
+            Use
+            Dark Colors</p></td>
+      </tr>
+      <tr>
+        <td><p> <span style='color:black'"javascript:void(0)" onMouseover="EnterContent('ToolTip','Tower Energy:','Histogram of the energy deposited in the tower of greatest energy in the hadronic calorimeter.'); Activate();" onMouseout="deActivate()">
+            <INPUT TYPE="checkbox" NAME="variable" VALUE="7">
+            &nbsp;Tower
+            Energy&nbsp;(name = towers[<span class=SpellE>peak_id</span>].e)</p></td>
+        <td><p>
+            <INPUT TYPE="text" SIZE="17" NAME="cut7">
+          </p></td>
+        <td><p>
+            <INPUT TYPE="checkbox" NAME="logx7" VALUE="1">
+            <span
+  class=SpellE>logx</span>
+            <INPUT TYPE="checkbox" NAME="logy7" VALUE="1">
+            logy </p></td>
+        <td><p>
+            <SELECT NAME="color7">
+              <OPTION VALUE="0">None
+              <OPTION VALUE="1">Black
+              <OPTION VALUE="2">Red
+              <OPTION VALUE="3">Green
+              <OPTION VALUE="4">Blue
+              <OPTION VALUE="5">Yellow
+              <OPTION VALUE="6">Purple
+            </SELECT>
+            <INPUT TYPE="checkbox" NAME="intensity7" VALUE="1">
+            Use
+            Dark Colors</p></td>
+      </tr>
+      <tr>
+        <td><span style='color:black'"javascript:void(0)" onMouseover="EnterContent('ToolTip','Formula:','This feature allows one to plot algebraic expressions of the variables.'); Activate();" onMouseout="deActivate()">
+          <p>Formula&nbsp;&nbsp;
+            <INPUT TYPE="text" NAME="formula" VALUE="towers[peak_id]:c3x3.ee+c3x3.eh">
+          </p></td>
+        <td><p>
+            <INPUT TYPE="text" SIZE="17" NAME="cutf">
+          </p></td>
+        <td><p>
+            <INPUT TYPE="checkbox" NAME="logxf" VALUE="1">
+            <span
+  class=SpellE>logx</span>
+            <INPUT TYPE="checkbox" CHECKED NAME="logyf" VALUE="1">
+            logy
+            <INPUT TYPE="checkbox" NAME="logzf" VALUE="1">
+            <span class=SpellE>logz</span> </p></td>
+        <td><p>
+            <SELECT NAME="colorf">
+              <OPTION VALUE="0">None
+              <OPTION VALUE="1">Black
+              <OPTION VALUE="2">Red
+              <OPTION VALUE="3">Green
+              <OPTION VALUE="4">Blue
+              <OPTION VALUE="5">Yellow
+              <OPTION VALUE="6">Purple
+            </SELECT>
+            <INPUT TYPE="checkbox" NAME="intensityf" VALUE="1">
+            Use
+            Dark Colors</p></td>
+      </tr>
+      <tr>
+        <td><p> <span style='color:black'"javascript:void(0)" onMouseover="EnterContent('ToolTip','Apply Beam Cut:','Selects events for which there was beam.  The beam cut should not be imposed if calibration data is being studied. '); Activate();" onMouseout="deActivate()">
+            <INPUT TYPE="checkbox" CHECKED NAME="gcut" VALUE="beam==1">
+            Apply
+            Beam Cut</p></td>
+        <td><p align=center style='text-align:center'> <span style='color:black'"javascript:void(0)" onMouseover="EnterContent('ToolTip','Save Raw Data:','This feature creates a comma delineated text file of the data that can be imported into other programs, for example, Microsoft Excel.'); Activate();" onMouseout="deActivate()">
+            <INPUT TYPE="checkbox" NAME="savedata" VALUE="1">
+            Save
+            Raw Data</p></td>
+        <td><p>Start with event: <span style='color:black'"javascript:void(0)" onMouseover="EnterContent('ToolTip','Number of events to plot:','Event numbering starts with one (1) and increments by one (1).  This feature allows one to select a range of events to be plotted.'); Activate();" onMouseout="deActivate()">
+            <INPUT TYPE="text" SIZE="4" NAME="first" VALUE="1">
+          </p></td>
+        <td><p>Number of events to plot:
+            <INPUT TYPE="text" SIZE="4" NAME="nEntries">
+          </p></td>
+      </tr>
+    </table>
+  </div>
+  <h2 align=center style='text-align:center'>Data Options</h2>
+  <div align=center>
+    <table border=1 cellpadding=0>
+      <tr>
+        <td valign=top><h4 align=center style='text-align:center'><span style='color:blue'"javascript:void(0)" onMouseover="EnterContent('ToolTip','Select all runs of type:','This feature allows one to select runs of various beam types and/or calibration (LED) data.'); Activate();" onMouseout="deActivate()">Select
+            all runs of type</span></h4></td>
+        <td valign=top><h4 align=center style='text-align:center'><span style='color:blue'"javascript:void(0)" onMouseover="EnterContent('ToolTip','Data to Plot:','This section allows one to select which runs are to be plotted.'); Activate();" onMouseout="deActivate()">Data to
+            Plot</span></h4></td>
+        <td valign=top><h4 align=center style='text-align:center'><span style='color:blue'"javascript:void(0)" onMouseover="EnterContent('ToolTip','Run Info:','This section displays comments about the run conditions.'); Activate();" onMouseout="deActivate()">Run Info</span> &nbsp;&nbsp; <a href="http://pcephc356.cern.ch:8000/%7Edaq/searchForm.php"
+  target="_blank">(Search the CMS <span class=SpellE>HCal</span> TB Run <span
+  class=SpellE>DataBase</span>)</a></h4></td>
+      </tr>
+      <tr>
+        <td><p>
+            <INPUT TYPE="checkbox" NAME="muon_runs">
+            &nbsp;<span
+  class=SpellE>muons</span><br>
+            <INPUT TYPE="checkbox" NAME="pion_runs">
+            &nbsp;<span class=SpellE>pions</span><br>
+            <INPUT TYPE="checkbox" NAME="elec_runs">
+            &nbsp;electron<br>
+            <INPUT TYPE="checkbox" NAME="cal_runs">
+            &nbsp;Calibration<br>
+            <INPUT TYPE="checkbox" NAME="all_runs">
+            &nbsp;All
+            <script language="JavaScript"  type="Text/JavaScript">
+setRunList();
+  </script>
+          </p></td>
+        <td><p>
+            <SELECT MULTIPLE NAME="run_number" SIZE="5">
+              <OPTION VALUE="1"> Run 11000
+              <OPTION VALUE="2"> Run 11001
+              <OPTION VALUE="3"> Run 11002
+              <OPTION VALUE="4"> Run 11003
+              <OPTION VALUE="5"> Run 11004
+              <OPTION VALUE="6"> Run 11005
+              <OPTION VALUE="7"> Run 11006
+              <OPTION VALUE="8"> Run 11007
+              <OPTION VALUE="9"> Run 11008
+              <OPTION VALUE="10"> Run 11009
+              <OPTION VALUE="11"> Run 11500
+              <OPTION VALUE="12"> Run 11504
+              <OPTION VALUE="13"> Run 11505
+              <OPTION VALUE="14"> Run 11506
+              <OPTION VALUE="15"> Run 11507
+              <OPTION VALUE="16"> Run 11508
+              <OPTION VALUE="17"> Run 11509
+              <OPTION VALUE="18"> Run 11510
+              <OPTION VALUE="19"> Run 11511
+              <OPTION VALUE="20"> Run 11512
+              <OPTION VALUE="21"> Run 11513
+              <OPTION VALUE="22"> Run 11514
+              <OPTION VALUE="23"> Run 11515
+              <OPTION VALUE="24"> Run 11516
+              <OPTION VALUE="25"> Run 11517
+              <OPTION VALUE="26"> Run 11518
+              <OPTION VALUE="27"> Run 11519
+              <OPTION VALUE="28"> Run 11520
+              <OPTION VALUE="29"> Run 11521
+              <OPTION VALUE="30"> Run 11522
+              <OPTION VALUE="31"> Run 11523
+              <OPTION VALUE="32"> Run 11524
+              <OPTION VALUE="33"> Run 11525
+              <OPTION VALUE="34"> Run 11526
+              <OPTION VALUE="35"> Run 11527
+              <OPTION VALUE="36"> Run 11528
+              <OPTION VALUE="37"> Run 11529
+              <OPTION VALUE="38"> Run 11530
+              <OPTION VALUE="39"> Run 11531
+              <OPTION VALUE="40"> Run 11532
+              <OPTION VALUE="41"> Run 11533
+              <OPTION VALUE="42"> Run 11534
+              <OPTION VALUE="43"> Run 11535
+              <OPTION VALUE="44"> Run 11651
+              <OPTION VALUE="45"> Run 11652
+              <OPTION VALUE="46"> Run 11653
+              <OPTION VALUE="47"> Run 11675
+              <OPTION VALUE="48"> Run 11676
+              <OPTION VALUE="49"> Run 11677
+              <OPTION VALUE="50"> Run 11678
+              <OPTION VALUE="51"> Run 11679
+              <OPTION VALUE="52"> Run 11680
+              <OPTION VALUE="53"> Run 11681
+              <OPTION VALUE="54"> Run 11682
+              <OPTION VALUE="55"> Run 11683
+              <OPTION VALUE="56"> Run 11684
+              <OPTION VALUE="57"> Run 11685
+              <OPTION VALUE="58"> Run 11687
+              <OPTION VALUE="59"> Run 11688
+              <OPTION VALUE="60"> Run 12426
+              <OPTION VALUE="61"> Run 12427
+              <OPTION VALUE="62"> Run 12428
+              <OPTION VALUE="63"> Run 12429
+              <OPTION VALUE="64"> Run 12434
+              <OPTION VALUE="65"> Run 12435
+              <OPTION VALUE="66"> Run 12436
+              <OPTION VALUE="67"> Run 12437
+              <OPTION VALUE="68"> Run 12490
+              <OPTION VALUE="69"> Run 12492
+              <OPTION VALUE="70"> Run 12493
+              <OPTION SELECTED VALUE="71"> Run 12494
+            </SELECT>
+          </p></td>
+        <td><p>
+            <TEXTAREA ROWS="5" COLS="81" NAME="dummy">Run 12494  5000 events of 150 Gev Mu- at Eta=9.0,  Phi=6.0, on 06/17/04 at 08:03&#13;&#10;</TEXTAREA>
+          </p></td>
+      </tr>
+    </table>
+  </div>
+  <h2 align=center style='text-align:center'>Graphics Options</h2>
+  <div align=center>
+    <table border=1 cellpadding=0>
+      <tr>
+        <td valign=top><h4 align=center style='text-align:center'><span style='color:blue'"javascript:void(0)" onMouseover="EnterContent('ToolTip','Graphics Size:','This controls the size of the graph in pixel units.'); Activate();" onMouseout="deActivate()">Graphics
+            Size</span></h4></td>
+        <td valign=top><h4 align=center style='text-align:center'><span style='color:blue'"javascript:void(0)" onMouseover="EnterContent('ToolTip','Output Graphics Type:','This allows you to select the type of image you wish to view.'); Activate();" onMouseout="deActivate()">Output
+            Graphics Type</span></h4></td>
+        <td valign=top><h4 align=center style='text-align:center'><span style='color:blue'"javascript:void(0)" onMouseover="EnterContent('ToolTip','All Plots on One Histogram:','Using this feature superimposes each of the separate histograms onto one histogram plot.'); Activate();" onMouseout="deActivate()">All Plots
+            on One Histogram</span></h4></td>
+      </tr>
+      <tr>
+        <td><p>Width &nbsp;&nbsp;
+            <INPUT TYPE="text" SIZE="4" NAME="gWidth" VALUE="800">
+            Height &nbsp;
+            <INPUT TYPE="text" SIZE="4" NAME="gHeight" VALUE="600">
+          </p></td>
+        <td><p>
+            <INPUT TYPE="radio" CHECKED NAME="type" VALUE="1">
+            PNG
+            <INPUT TYPE="radio" NAME="type" VALUE="2">
+            JPG
+            <INPUT TYPE="radio" NAME="type" VALUE="4">
+            EPS </p></td>
+        <td><p align=center style='text-align:center'>
+            <INPUT TYPE="checkbox" NAME="allonone" VALUE="1">
+            &nbsp;Yes</p></td>
+      </tr>
+    </table>
+  </div>
+  <p align=center style='text-align:center'><br>
+    <INPUT TYPE="submit" VALUE="Plot" ACTION="/~ogre/cgi-bin/get_histo.pl.cgi"
+METHOD=post>
+    &nbsp;&nbsp;
+    <INPUT TYPE="reset" VALUE="Reset Values">
+    &nbsp;&nbsp; </p>
+  <div align=center style='text-align:center'>
+    <hr size=2 width="100%" align=center>
+  </div>
+  <ADDRESS>
+  <A href="mailto:karmgard.1@nd.edu">Bug the OGRE</A>
+  </ADDRESS>
+  <p>Last modified: Sat Nov 13 14:48:08 EST 2004</p>
+  <h1><u>Graph from above selection</u></h1>
+  <p><img
+src="graphics/graph_3.png" width=800 height=600 border=0 align="middle" v:shapes="_x0000_i1099"></p>
+  <p>You can see that there was a certain amount of tower energy
+    levels for which the total energy was low but after about 100 <span
+class=SpellE>Gev</span> of tower energy the total energy shot up.&nbsp; Actually this graph was just two of the
+    variables combined on a graph, like <span class=SpellE>Ecal</span> vs. <span
+class=SpellE>Hcal</span> or anything like that.&nbsp; You can make any graph like this with any of the first 7 variables and
+    try to figure out what the resulting graph means by looking at the parameters
+    you put in and evaluating what it means to graph the one against the
+    other.&nbsp; If you find any interesting
+    graphs by this method, please post it so that others can see this graph and
+    interpret the data themselves to try to help your own investigation.&nbsp; Good Luck.</p>
+  <p align=center style='text-align:center'><a
+href="../ogre-base.html">Back to OGRE</a></p>
+  <p align=center style='text-align:center'><span class=GramE>or</span></p>
+  <p align=center style='text-align:center'><a
+href="ogre_tutorial_index.htm">Back to Tutorials</a></p>
+</div>
+</body>
+<div id="ToolTip"></div>
+</html>

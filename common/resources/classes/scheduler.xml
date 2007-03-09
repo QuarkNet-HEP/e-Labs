@@ -1,0 +1,25 @@
+<project>
+	<import file="sys.xml"/>
+	<import file="task.xml"/>
+	<import file="vdl.k"/>
+	<import file="java.xml"/>
+  
+	<scheduler type="vds" >
+		<property name="siteSelectorClassName" value="RoundRobin"/>
+		<property name="hostSubmitThrottle" value="2"/>
+		<property name="submitThrottle" value="4"/>
+		<property name="jobsPerCpu" value="10"/>
+		
+		<task:handler type="execution" provider="gt2"/>
+	    <task:handler type="execution" provider="gt4"/>
+		<task:handler type="execution" provider="local"/>
+	    <task:handler type="file" provider="gsiftp"/>
+		<task:handler type="file" provider="local"/>
+		
+		<set name="vds.home">
+			<java:systemProperty name="vds.home"/>
+		</set>
+	    <vdl:siteCatalog file="{vds.home}/etc/sites.xml"/>
+		<!--<executeFile file="sites-karajan.xml"/>-->
+  </scheduler>
+</project>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+  <display-name>Welcome to Tomcat</display-name>
+  <description>
+     Welcome to Tomcat
+  </description>
+
+  <!-- hibernate filter mapping -->
+  <filter>
+      <filter-name>hibernatefilter</filter-name>
+      <filter-class>gov.fnal.elab.db.HibernateFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+      <filter-name>hibernatefilter</filter-name>
+      <url-pattern>*.jsp</url-pattern>
+      <!-- <servlet-name>action</servlet-name> -->
+  </filter-mapping>
+
+
+<!-- JSPC servlet mappings start -->
+
+    <servlet>
+        <servlet-name>org.apache.jsp.index_jsp</servlet-name>
+        <servlet-class>org.apache.jsp.index_jsp</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>org.apache.jsp.index_jsp</servlet-name>
+        <url-pattern>/index.jsp</url-pattern>
+    </servlet-mapping>
+
+<!-- JSPC servlet mappings end -->
+
+</web-app>

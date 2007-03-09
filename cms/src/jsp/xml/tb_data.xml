@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE root SYSTEM "ogre.dtd">
+
+<root type="HCAL Test Beam">
+
+  <dataset name="tb04" location="/home/tiberius/local/tbdata" global_selection="beam==1">
+	<file name="r011000.root" type="muon" />
+	<file name="r011001.root" type="muon" />
+	<file name="r011002.root" type="muon" />
+	<file name="r011003.root" type="muon" />
+	<file name="r011004.root" type="muon" />
+	<file name="r011005.root" type="muon" />
+	<file name="r011006.root" type="muon" />
+	<file name="r011007.root" type="muon" />
+	<file name="r011008.root" type="muon" />
+	<file name="r011009.root" type="muon" />
+	<file name="r011500.root" type="muon" />
+	<file name="r011504.root" type="Calibration" />
+	<file name="r011505.root" type="pion" />
+	<file name="r011506.root" type="pion" />
+	<file name="r011507.root" type="pion" />
+	<file name="r011508.root" type="pion" />
+	<file name="r011509.root" type="pion" />
+	<file name="r011510.root" type="pion" />
+	<file name="r011511.root" type="pion" />
+	<file name="r011512.root" type="pion" />
+	<file name="r011513.root" type="pion" />
+	<file name="r011514.root" type="pion" />
+	<file name="r011515.root" type="pion" />
+	<file name="r011516.root" type="pion" />
+	<file name="r011517.root" type="pion" />
+	<file name="r011518.root" type="pion" />
+	<file name="r011519.root" type="pion" />
+	<file name="r011520.root" type="pion" />
+	<file name="r011521.root" type="pion" />
+	<file name="r011522.root" type="pion" />
+	<file name="r011523.root" type="pion" />
+	<file name="r011524.root" type="pion" />
+	<file name="r011525.root" type="pion" />
+	<file name="r011526.root" type="electron" />
+	<file name="r011527.root" type="pion" />
+	<file name="r011528.root" type="pion" />
+	<file name="r011529.root" type="pion" />
+	<file name="r011530.root" type="electron" />
+	<file name="r011531.root" type="electron" />
+	<file name="r011532.root" type="electron" />
+	<file name="r011533.root" type="electron" />
+	<file name="r011534.root" type="electron" />
+	<file name="r011535.root" type="electron" />
+	<file name="r011651.root" type="muon" />
+	<file name="r011652.root" type="muon" />
+	<file name="r011653.root" type="muon" />
+	<file name="r011675.root" type="muon" />
+	<file name="r011676.root" type="muon" />
+	<file name="r011677.root" type="muon" />
+	<file name="r011678.root" type="muon" />
+	<file name="r011679.root" type="muon" />
+	<file name="r011680.root" type="muon" />
+	<file name="r011681.root" type="muon" />
+	<file name="r011682.root" type="muon" />
+	<file name="r011683.root" type="muon" />
+	<file name="r011684.root" type="muon" />
+	<file name="r011685.root" type="muon" />
+	<file name="r011687.root" type="muon" />
+	<file name="r011688.root" type="muon" />
+	<file name="r012426.root" type="muon" />
+	<file name="r012427.root" type="muon" />
+	<file name="r012428.root" type="muon" />
+	<file name="r012429.root" type="muon" />
+	<file name="r012434.root" type="muon" />
+	<file name="r012435.root" type="muon" />
+	<file name="r012436.root" type="muon" />
+	<file name="r012437.root" type="muon" />
+	<file name="r012490.root" type="muon" />
+	<file name="r012492.root" type="muon" />
+	<file name="r012493.root" type="muon" />
+	<file name="r012494.root" type="muon" />
+  </dataset>
+
+  <tree id="1" name="Event">
+    <branch id="1" name="cluster">
+      <leaf id="1" name="c1x1.e"   title="Total Energy (1x1)"   labely="Number of Events" labelx="E (GeV)"/>
+      <leaf id="2" name="c1x1.ee"  title="Ecal Energy (1x1)"    labely="Number of Events" labelx="E (GeV)"/>
+      <leaf id="3" name="c1x1.eh"  title="Hcal Energy (1x1)"    labely="Number of Events" labelx="E (GeV)"/>
+
+      <leaf id="4" name="c3x3.e"   title="Total Energy (3x3)"   labely="Number of Events" labelx="E (GeV)"/>
+      <leaf id="5" name="c3x3.ee"  title="Ecal Energy (3x3)"    labely="Number of Events" labelx="E (GeV)"/>
+      <leaf id="6" name="c3x3.eh"  title="Hcal Energy (3x3)"    labely="Number of Events" labelx="E (GeV)"/>
+
+      <leaf id="7" name="c5x5.e"   title="Total Energy (5x5)"   labely="Number of Events" labelx="E (GeV)"/>
+      <leaf id="8" name="c5x5.ee"  title="Ecal Energy (5x5)"    labely="Number of Events" labelx="E (GeV)"/>
+      <leaf id="9" name="c5x5.eh"  title="Hcal Energy (5x5)"    labely="Number of Events" labelx="E (GeV)"/>
+    </branch>
+
+    <formula id="1" name="c1x1.ee:c1x1.eh" title="E vs H (1x1)" labely="E_E (GeV)" labelx="E_H (GeV)"/>
+    <formula id="2" name="c3x3.ee:c3x3.eh" title="E vs H (3x3)" labely="E_E (GeV)" labelx="E_H (GeV)"/>
+    <formula id="3" name="c5x5.ee:c5x5.eh" title="E vs H (5x5)" labely="E_E (GeV)" labelx="E_H (GeV)"/>
+<!--
+    <formula id="2" name="towers[peak_id].e" title="Peak Tower Energy" labely="Number of Events" labelx="E (GeV)"/>
+    <formula id="3" name="xtals[cluster.peak_id].e/c3x3.ee" title="ECal Shower Profile" labely="Number of Events" labelx="Ratio" />
+-->
+  </tree>
+
+</root>

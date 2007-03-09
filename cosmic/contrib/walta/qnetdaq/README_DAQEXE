@@ -1,0 +1,100 @@
+Instructions on how to use daq.exe
+Second half of this file describes "how it works".
+
+The instructions here force you to check some common problems
+before you try running the program.
+
+Commands you type at the keyboard start with a >
+For example, if I say to do this
+> ls -a
+you would type "ls -a" at the command prompt without the quotes or the > .
+See the README_UNIXCOMMANDS for more details like so.
+> cat README_UNIXCOMMANDS
+
+Step 1:
+Make sure the program is not already running.  
+> ps -e | grep daq.exe
+Look for the program daq.exe.  If it is not there, then it is not running.
+
+
+
+Step 1a: (danger)
+Maybe you want to stop the old process and start a new one.  I haven't 
+programmed any proper interrupts, so you have to be mean.  When you
+do the command in step one, make a note of the process id number, which is
+the first number on the line (it is 9851 in the example below)
+
+[waltadaq@lisa daq]$ ps -e | grep daq.exe
+ 9851 ?        00:00:00 daq.exe
+
+Then, to kill it (be sure you really want to kill it!), type
+> kill -KILL 9851
+
+
+
+Step 2:
+Look to see what filename you should give.
+> ls log/
+or
+> ls log/ | tail
+Look for the last one listed.  It should be called something like
+onroof_20030627_0036.log or a similar pattern.
+you want to note the onroof_20030125 and the 36 pieces of the pattern.
+follow the old pattern, whatever it is, unless you specifically want to 
+change it.
+
+
+
+Step 3:
+Now you can restart the data acquisition program.
+  YOU MIGHT PREFER TO USE THE SCRIPT!
+Use one after the previous number, and use the same title
+The at command doesn't let you make corrections.
+If you have typed everything correctly, start it with a ctrl-d
+If you made a mistake, type ctrl-c to cancel and try again.
+
+To use the script:
+> at now
+at> ./standardrun.sh 20040630 0
+at> (type ctrl-d if you did it correctly)
+
+Or type it in longhand:
+> at now
+at> ./daq.exe --name=onroof_20030627 --num=37
+at> (type ctrl-d if you did it correctly)
+
+
+
+Step 3a: (Danger)
+Sometimes you are logged in at the terminal and you are testing.
+Instead of running it in the background, you can run it live.
+Try just typing ./daq.exe --name=test_20030125 --num=12
+
+
+
+Step 4:
+Make sure this is running.
+> ls log/*
+and see that the new file is there, called onroof20030125_0037.log 
+> ps -e | grep daq.exe
+and see that there is a daq.exe program running.
+
+
+Step 5:
+Put an entry in the captains.log 
+saying what you did an why.
+Cut and paste any e-mail correspondence might be informative.
+
+Done.
+
+
+
+
+How it works.
+
+The program first sends in about 15 commands to set up the card correctly.
+Then it reads stuff from the serial port.
+
+After every read, it decides whether it is time to get the scalar reading
+or start a new file.  This is based on what you told it, either some amount
+of time, or some number of events.

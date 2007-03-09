@@ -1,0 +1,31 @@
+#system properties
+
+host = www14.i2u2.org
+port = :8080
+sslport = :443
+
+#user.db = userdb
+user.db = //data1.i2u2.org/userdb2006_1022
+userdb.username = portal2006_1022
+userdb.password = elab
+
+# this and portal.users overlap -- some of the code takes this dir
+# and appears to append users/ to it, whilst other bits of the code
+# use the portal.users property -- grr. TODO fix that!
+portal = /home/benc/deployment/apache-tomcat-5.5.17/webapps/elab/cosmic/
+
+# should pick this up from elsewhere perhaps? kinda messy to have it
+# specified here? hmmm
+
+vds.home = /home/quarkcat/sw/vds-1.4.7/
+
+cosmic.datadir = /export/d1/quarknet/portal/cosmic/
+
+portal.users = /nfs/d1/quarknet/portal/users/
+
+portal.templates = /home/quarkcat/sw/quarknet/templates/
+
+portal.appdir = /home/benc/quarknet/src/perl/
+
+portal.datadir = /export/d1/quarknet/portal/cosmic/
+

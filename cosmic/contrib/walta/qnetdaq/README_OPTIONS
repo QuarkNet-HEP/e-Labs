@@ -1,0 +1,92 @@
+A list of the command-line options to give to daq.exe
+Most of the things listed below give the default values.
+At the end are some examples.
+
+Mandatory option. 
+
+--name=filename    probably want to use something descriptive but brief
+                   like onroof_20030627 or muon_20030627 
+                   
+Not mandatory, but useful
+
+--num=0            you can restart at any filenumber you want.
+                   daq.exe will then format the filenames:
+                   filename_0000.log    filename_0000.txt
+
+
+Other options that allow you fine control (none are required)
+
+--loglevel=0       Whether to put any pre-analysis into a log file.
+                   loglevel=1 turns on some singles rate calculations.
+                   loglevel=2 echos more status information.
+                   loglevel=3   reserved for future use.
+                   loglevel=4 echos all data strings.
+                   loglevel=5 turns on some ugly debug lines (none yet).
+
+--coincidence=2    How many scintillator are required for coincidence.
+                   daq.exe resets this at the beginning of the run.
+                   
+
+--events=5000      These two control when the the filenumber is incremented
+--seconds=20000    and a new file is started.  This happens at the 
+                   first coincidence following the earliest of these two.
+                   
+
+--singles_events=0      These control how frequently daq.exe queries the
+--singles_seconds=60    card to reveal the singles rate.
+                        These are mutually exclusive!  (Or both can be 0)
+                        Turning on singles_events turns off singles_seconds.
+
+--files=9999     With a high number, it will keep taking data forever.
+                    Or maybe you want only one file's worth.  Or two.
+
+--gatewidth=10    Set gate width between 1 and 2048 times 24ns.
+--tmcdelay=6      Set tmc delay to this many clock ticks.
+                  These two values are the hardware defaults.
+                  For air showers, I have been using 150 and 50.
+
+--baudrate=57600  Set baudrate to 19200 38400 57600 or 115000
+                  Danger ! setting the wrong baudrate can lock up your
+                  serial port.  See the README_BAUDRATE file for details.
+
+--setuponly       Combine with --files=1 to run the setup then exit.
+
+--nogps           Tell the DAQ program there is no GPS information in 
+                  the data.  Default assumes valid GPS data.
+
+--firmware        Inconsistently implemented.  Use with caution.
+                  Toggles between firmware after 27 or 23 or before.
+                  Default is firmware 32, from December 2004.
+
+--safeds          Firmware version 23 has a bug that causes problems
+                  if the DS command is given while the TMC is enables.
+                  safeds carefully disables the TMC.  Give this on
+                  the command line, or it will automatically be turned
+                  on if you give --firmware=23.  Default os off.
+
+Not implemented yet, but planned.
+
+--datefile          Separately increment the datestring in the filename.
+                    Useful if you set DAQ somewhere and walk away for weeks.
+
+--pcdate            Will also query the PC to save what it thinks the 
+                    date and time is.  Useful if you use the PC to read
+                    out two things (like the lecroy scope).
+                    
+--comment="A comment of some sort"
+                    Insert a comment into the log file for each run.
+
+Examples:  (Type the things following the >)
+
+> ./daq.exe --name=test_20030627 --num=12 --coincidence=3 --files=1
+
+Will set the card to a coincicence of 3 channels, and take a single data
+file and call it test_20030627_0012.txt and a log file 
+test_20030627_0012.log
+
+
+More complicated, but what I have been using recently (Summer 2003) for 
+walta is this:
+
+./daq.exe --gatewidth=150 --tmcdelay=50 --coincidence=2 --baudrate=38400 --seconds=5000 --name=uwphys_20030904 --loglevel=1 &
+

@@ -1,0 +1,14 @@
+// copying buttons for home
+
+cp ../images/button_images/home_button_alt.jpg     home_button_alt.jpg
+cp ../images/button_images/library_button_alt.jpg     library_button_alt.jpg
+cp ../images/button_images/data_button_alt.jpg     data_button_alt.jpg
+cp ../images/button_images/posters_button_alt.jpg     poster_button_alt.jpg
+cp ../images/button_images/site_index_button_alt.jpg     site_button_alt.jpg
+cp ../images/button_images/assessment_button_alt.jpg     assess_button_alt.jpg
+cp ../images/button_images/home_button.jpg     home_button_alt_alt.jpg
+cp ../images/button_images/library_button.jpg     library_button_alt_alt.jpg
+cp ../images/button_images/data_button.jpg     data_button_alt_alt.jpg
+cp ../images/button_images/posters_button.jpg     poster_button_alt_alt.jpg
+cp ../images/button_images/site_index_button.jpg     site_button_alt_alt.jpg
+cp ../images/button_images/assessment_button.jpg     assess_button_alt_alt.jpg

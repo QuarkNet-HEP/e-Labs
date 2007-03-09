@@ -1,0 +1,17 @@
+There should be a ~/.vdsrc file in the dir of the user running tomcat
+
+vds.db.vdc.schema       AnnotationSchema
+vds.db.ptc.schema       InvocationSchema
+vds.db.*.driver         Postgres
+#vds.db.*.driver.url     jdbc:postgresql:elab
+vds.db.*.driver.url    jdbc:postgresql://data1.i2u2.org/vds2006_1022
+vds.db.*.driver.user     portal2006_1022
+vds.db.*.driver.password elab
+#vds.rc=SimpleFile
+#vds.rc.file=/home/benc/deployment/rc.data
+vds.rc=LRC
+vds.rc.url=rlsn://data1.i2u2.org
+vds.sc=XML
+vds.sc.file=/var/tmp/quarknet-m/tomcat/webapps/elab/cms/output/etc/sc.xml
+vds.tc=File
+vds.tc.file=/var/tmp/quarknet-m/tomcat/webapps/elab/cms/output/var/tc.data
