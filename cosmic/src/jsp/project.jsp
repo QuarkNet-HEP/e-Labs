@@ -1,78 +1,120 @@
-<HTML>
-<HEAD>
-<TITLE>Cosmics Project Page</TITLE>
-<!-- include css style file -->
-<%@ include file="include/style.css" %>
-<!-- header/navigation -->
-<%
-//be sure to set this before including the navbar
-String headerType = "Project";
-%>
-<%@ include file="include/navbar_common.jsp" %>
-<%@ include file="include/javascript.jsp" %>
-</head>
+<%@ include file="include/elab.jsp" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Cosmic Project Page</title>
+		<%= elab.css("css/style2.css") %>
+		<%= elab.css("css/project.css") %>
+	</head>
+
+	<body id="project">
+		<!-- entire page container -->
+		<div id="container">
+			<div id="top"
+				<div id="header">
+					<%@ include file="include/header.jsp" %>
+				</div>
+				<div id="nav">
+					<%@ include file="include/nav_project.jsp" %>
+				</div>
+			</div>
+			
+			<div id="content">
+
+<div id="content-header">
+	High school students use cutting-edge tools to do scientific investigations.
+</div>
 
 
-<TABLE WIDTH=800>
-<TR><TD>
-<TABLE WIDTH=800 CELLPADDING=4>
-<TR><td>&nbsp;</td></tr><TR><TD  bgcolor=black>
-<FONT FACE=ARIAL COLOR=white SIZE=+1>
-<B>High school students use cutting-edge tools to do scientific investigations.</B>
-</TD></TR>
-</TABLE>
-<P>
-<TABLE WIDTH=800 CELLPADDING=4>
-<TR><TD><IMG SRC="graphics/crop.jpg" border=1 >
-</TD><TD VALIGN=TOP>
+<table border="0" id="main">
+	<tr>
+		<td>
+			<div id="left">
+				<img src="graphics/crop.jpg">
+			</div>
+		</td>
+		
+		<td>
+			<div id="center">
+				<p>
+					The Cosmic Ray e-Lab provides an opportunity for students to:
+					<ul>
+						<li>Do authentic research to access, process and publish data, report 
+						and share their results as online posters, and have online discussions 
+						with one another about their work. 
+						<li>Experience the environment of scientific collaborations. 
+						<li>Possibly to make real contributions to a burgeoning scientific field.
+					</ul>
+				</p>
 
+				<p>
+					The project explores the potential of using the Internet and a new type of 
+					distributed computing called the Grid  in high school physics classes.
+				</p>
+	
+				<p>
+					Schools with cosmic ray detectors upload data to a "virtual data grid" 
+					portal where ALL the data resides. This approach allows students to analyze 
+					a much larger body of data and to share analysis code. Also, it allows schools 
+					that do not have cosmic ray detectors to participate in research by analyzing 
+					shared data. 
+				</p>
 
-<FONT FACE=ARIAL>
-The Cosmic Ray e-Lab provides an opportunity for students to:
-<UL>
-<LI>Do authentic research to access, process and publish data, report and share their results as online posters, and have online discussions with one another about their work. 
-<LI>Experience the environment of scientific collaborations. 
-<LI>Possibly to make real contributions to a burgeoning scientific field.
-</UL>
-The project explores the potential of using the Internet and a new type of distributed computing called the Grid  in high school physics classes. 
-<P>
-Schools with cosmic ray detectors upload data to a "virtual data grid" portal where ALL the data resides. This approach allows students to analyze a much larger body of data and to share analysis code. Also, it allows schools that do not have cosmic ray detectors to participate in research by analyzing shared data. 
-<P>
-The website provides a place for students to:
-<UL>
-<LI>Organize their research.
-<LI>Access and analyze the cosmic ray data from schools around the country.
-<LI>Write a poster to summarize their research.
-<LI>Communicate with other school groups doing similar research. 
-</UL>
-<P>
-Currently, the project is designed for physics students whose teachers are participating in one of several cosmic ray projects in North America. <A HREF="http://csr.phys.ualberta.ca/nalta/">NALTA</A>
-<P>
-However, we plan to build professional development into the teacher pages so that other physics teachers can join the collaboration.
-<P>
- We also plan two levels of  data analysis: the science-based interface and a more advanced interface for students interested in learning about and working with the Grid environment. <B>STAY TUNED!</B> 
+				<p>
+					The website provides a place for students to:
+					<ul>
+						<li>Organize their research.
+						<li>Access and analyze the cosmic ray data from schools around the country.
+						<li>Write a poster to summarize their research.
+						<li>Communicate with other school groups doing similar research. 
+					</ul>
+				</p>
+	
+				<p>
+					Currently, the project is designed for physics students whose teachers are 
+					participating in one of several cosmic ray projects in North America. 
+					<a href="http://csr.phys.ualberta.ca/nalta/">NALTA</a>
+				</p>
 
+				<p>
+					However, we plan to build professional development into the teacher pages 
+					so that other physics teachers can join the collaboration.
+				</p>
+	
+				<p>
+					We also plan two levels of  data analysis: the science-based interface and 
+					a more advanced interface for students interested in learning about and 
+					working with the Grid environment. <strong>STAY TUNED!</strong> 
+				</p>
+			</div>
+		</td>
+		
+	</tr>
+</table>
 
-</TD>
-</TABLE>
+			</div>
+			<!-- end content -->
 
-<P>
-<TABLE WIDTH=700>
-<TR>
-<TD><ALIGN=RIGHT><FONT FACE=ARIAL SIZE=-1>
-This project is supported in part by the National Science Foundation and the Office of High Energy Physics in the Office of Science , U.S. Department of Energy. Opinions expressed are those of the authors and not necessarily those of the Foundation or Department.
-</TD><TD><IMG SRC="graphics/logo1sm.gif"></TD>
-<TD><IMG SRC="graphics/seal.gif"></TD>
-<TD><IMG SRC="graphics/logoos.jpg"></TD>
-</TR>
-</TABLE>
-
-<HR>
-</CENTER>
-
-
-
-
-</BODY>
-
-</HTML>
+			<div id="footer">
+				<div id="footertext">
+					<p>
+						This project is supported in part by the National Science Foundation and 
+						the Office of High Energy Physics in the Office of Science , U.S. 
+						Department of Energy. Opinions expressed are those of the authors and 
+						not necessarily those of the Foundation or Department.
+					</p>
+				</div>
+	
+				<div class="logogroup">
+					<img src="graphics/logo1sm.gif">
+					<img src="graphics/seal.gif">
+					<img src="graphics/logoos.jpg">
+				</div>
+			</div>
+		
+		</div>
+		<!-- end container -->
+	</body>
+</html>
