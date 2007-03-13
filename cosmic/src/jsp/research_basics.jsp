@@ -1,59 +1,85 @@
-<%@ page import="java.util.*" %>
-<HTML>
-<HEAD>
-<TITLE>Cosmics Resources: Study Guide</TITLE>
-<%@ include file="include/javascript.jsp" %>
+<%@ include file="include/elab.jsp" %>
+<%@ include file="modules/login/loginrequired.jsp" %>
+<%@ page import="gov.fnal.elab.util.ElabUtil" %>
 
-<!-- include css style file -->
-<%@ include file="include/style.css" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Cosmic Resources: Study Guide</title>
+		<%= elab.css("css/style2.css") %>
+		<%= elab.css("css/library.css") %>
+		<%= elab.css("css/two-column.css") %>
+	</head>
+		
+	<body id="milestones_map" class="library">
+		<!-- entire page container -->
+		<div id="container">
+			<div id="top"
+				<div id="header">
+					<%@ include file="include/header.jsp" %>
+				</div>
+				<div id="nav">
+					<%@ include file="include/nav.jsp" %>
+					<div id="subnav">
+						<%@ include file="include/nav_library.jsp" %>
+					</div>
+				</div>
+			</div>
+			
+			<div id="content">
+				
+<div id="content-header">
+	Review research skills you need for this project.
+</div>
 
-<!-- header/navigation -->
-<%
-//be sure to set this before including the navbar
-String headerType = "Library";
-%>
-<%@ include file="include/navbar_common.jsp" %>
+<table border="0" id="main">
+	<tr>
+		<td>
+			<div id="center">
+				<h2>Click on <img border="0" src="graphics/ref.gif"> for resources to help you meet each milestone below.</h2>
+					
+				<div class="tab">
+					<span class="tabtitle">Research Basics</span>
+					<div class="tabcontents">
+						<h2>Use these milestones if you need background on:</h2>
+						<ul>
+							<li>Simple Measurements. <%= elab.reference("simple measurement") %></li>
+							<li>Simple Calculations. <%= elab.reference("simple calculations") %></li>
+							<li>Simple Graphs. <%= elab.reference("simple graphs") %></li>
+							<li>Research Questions. <%= elab.reference("research question") %></li>
+							<li>Research Plans.. <%= elab.reference("research plan") %></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</td>
+		<td>
+			<div id="right">
+				<!-- nothing here either -->
+			</div>
+		</td>
+	</tr>
+</table>
 
-<P>
-<TABLE WIDTH=794 CELLPADDING=4>
-<TR><TD BGCOLOR=99cccc>
-<FONT FACE=ARIAL SIZE=+1><B>Review research skills you need for this project.</B></FONT>
-</TD></TR>
-</TABLE>
-<P>
-<TABLE WIDTH=794 CELLPADDING=4>
-<TR><TD>
-<FONT FACE=ARIAL SIZE=+1><b>Click on <IMG border="0" SRC="graphics/ref.gif"> for resources to help you meet each milestone below.</B></FONT>  
-</TD></TR>
-</TABLE>
-<P>
-<TABLE WIDTH=786>
-<TR><TD VALIGN=TOP><TABLE  CELLPADDING=0 CELLSPACING=0 BGCOLOR=CCFFFF VALIGN=TOP>
-<TR><TD WIDTH=388><IMG border="0" SRC="graphics/research_basics.gif">
 
-<FONT FACE=ARIAL size=-1>
-
-<P STYLE="margin-left: 10px">
-
-<I>Use these milestones if you need background on:</I>
-<P STYLE="margin-left: 20px">
-<IMG border="0" SRC="graphics/ref_dot.gif"> Simple Measurements. <A HREF="javascript:reference('simple measurement')"><IMG border="0" SRC="graphics/ref.gif" border="0"></A><br>
-<IMG border="0" SRC="graphics/ref_dot.gif"> Simple Calculations. <A HREF="javascript:reference('simple calculations')"><IMG border="0" SRC="graphics/ref.gif" border="0"></A><br>
-<IMG border="0" SRC="graphics/ref_dot.gif"> Simple Graphs. <A HREF="javascript:reference('simple graphs')"><IMG border="0" SRC="graphics/ref.gif" border="0"></A><br>
-<IMG border="0" SRC="graphics/ref_dot.gif"> Research Questions. <A HREF="javascript:reference('research question')"><IMG border="0" SRC="graphics/ref.gif" border="0"></A><br>
-<IMG border="0" SRC="graphics/ref_dot.gif"> Research Plans. <A HREF="javascript:reference('research plan')"><IMG border="0" SRC="graphics/ref.gif"></A><br>
-<P>&nbsp;
-</TD></TR>
-</TABLE>
-
-</TD>
-</TR>
-</TABLE>
-
-  <FONT FACE=ARIAL><a href="showReferences.jsp?t=glossary&f=peruse">Glossary</a> - <a href="showReferences.jsp?t=reference&f=peruse">All Resources for Study Guide</a><a href="showReferences.jsp?t=reference&f=peruse"> <IMG SRC="graphics/ref.gif" border="0"></A> - <A HREF="showLogbook.jsp">Student Logbook <IMG SRC="graphics/logbook_small.gif" border="0"></A>
-    </FONT>
-
-<hr>
-</CENTER>
-</BODY>
-</HTML>
+			</div>
+			<!-- end content -->	
+		
+			<div id="footer">
+				<a href="showReferences.jsp?t=glossary&f=peruse">Glossary</a>
+				 - 
+				<a href="showReferences.jsp?t=reference&f=peruse">All Resources for Study Guide</a>
+				<a href="showReferences.jsp?t=reference&f=peruse">
+					<img src="graphics/ref.gif">
+				</a>
+				 - 
+				<a href="showLogbook.jsp">Student Logbook</a>
+				<a href="showLogbook.jsp">
+					<img src="graphics/logbook_small.gif">
+				</a>
+			</div>
+		</div>
+		<!-- end container -->
+	</body>
+</html>

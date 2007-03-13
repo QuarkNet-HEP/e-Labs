@@ -17,7 +17,7 @@
 					<%@ include file="include/header.jsp" %>
 				</div>
 				<div id="nav">
-					<%@ include file="include/nav_project.jsp" %>
+					<%@ include file="include/nav-project.jsp" %>
 				</div>
 			</div>
 			

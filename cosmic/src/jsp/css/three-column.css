@@ -1,0 +1,13 @@
+#main #left {
+	margin-right: 20px;
+	background-color: black;
+	height: 100%;
+}
+
+#main #center {
+}
+
+#main #right {
+	padding-left: 10px;
+	text-align: center;
+}
