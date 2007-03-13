@@ -5,8 +5,6 @@ package gov.fnal.elab.util;
 
 import java.io.File;
 
-import javax.servlet.jsp.JspWriter;
-
 public class ElabUtil {
 
     public static String pathcat(String path1, String path2) {
@@ -29,19 +27,6 @@ public class ElabUtil {
         }
     }
 
-    public static void warn(JspWriter out, String message) {
-        try {
-            out.write("<span class=\"warning\">");
-            out.write(message);
-            out.write("</span>");
-        }
-        catch (Exception e) {
-            System.err.println("Failed to print warning message to page: "
-                    + message);
-            e.printStackTrace();
-        }
-    }
-    
     public static String fixQuotes(String param) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < param.length(); i++) {

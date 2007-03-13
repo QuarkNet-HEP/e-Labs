@@ -49,7 +49,7 @@ public class Survey {
             String countQuery = "SELECT count(*) FROM student,research_group_student,"
                     + "research_group_project,survey "
                     + "WHERE research_group_student.research_group_id="
-                    + user.getGroupID()
+                    + user.getGroup().getId()
                     /*
                      * [Mihael] ?!?! Twice? 
                      * + " AND

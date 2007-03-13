@@ -40,7 +40,7 @@ public class Elab {
         }
         Elab elab = (Elab) elabs.get(name);
         if (elab == null) {
-            elab = Elab.newElab(name, properties, global.getProperties());
+            elab = Elab.newELab(name, properties, global.getProperties());
             elab.init();
             elabs.put(name, elab);
         }
@@ -49,10 +49,10 @@ public class Elab {
 
     public static Elab newElab(String name, String properties)
             throws ElabInstantiationException {
-        return newElab(name, properties, null);
+        return newELab(name, properties, null);
     }
 
-    public static Elab newElab(String name, String properties,
+    public static Elab newELab(String name, String properties,
             Properties inherited) throws ElabInstantiationException {
         Elab elab = new Elab(name);
         ElabProperties props = elab.getProperties();
@@ -73,6 +73,7 @@ public class Elab {
     private String name;
     private ElabProperties properties;
     private String id;
+    private ElabFAQ faq;
 
     protected Elab(String name) {
         this.name = name;
@@ -146,6 +147,14 @@ public class Elab {
     public String page(String rel) {
         return "/elab/" + name + "/" + rel;
     }
+    
+    public String reference(String refname) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("<a href=\"javascript:reference('");
+        sb.append(refname);
+        sb.append("')\"><img src=\"graphics/ref.gif\"></a>");
+        return sb.toString();
+    }
 
     public String getGuestLoginLink(HttpServletRequest request) {
         String prevPage = request.getParameter("prevPage");
@@ -160,5 +169,12 @@ public class Elab {
         String project = "&project=" + getName();
         return getProperties().getLoginURL() + prevPage + login + user + pass
                 + project;
+    }
+    
+    public synchronized ElabFAQ getFAQ() {
+        if (faq == null) {
+            faq = new ElabFAQ(this);
+        }
+        return faq;
     }
 }

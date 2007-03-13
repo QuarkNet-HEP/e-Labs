@@ -12,11 +12,13 @@ import javax.servlet.http.HttpSession;
 public class ElabUser {
     public static final String ROLE_TEACHER = "teacher";
     public static final String ROLE_ADMIN = "admin";
+    public static final String ROLE_UPLOAD = "upload";
     
     public static final String USER_SESSION_VARIABLE = "elab.user";
     
-    private String groupID, teacherID, role, userArea, survey, userDirURL,
+    private String teacherId, role, userArea, survey, userDirURL,
             userDir, name;
+    private ElabGroup group;
     private boolean firstTime, guest;
     
     private ElabUserManagementProvider provider;
@@ -42,15 +44,7 @@ public class ElabUser {
     }
     
     public void resetFirstTime() throws SQLException {
-        provider.resetFirstTime(groupID);
-    }
-
-    public String getGroupID() {
-        return groupID;
-    }
-
-    public void setGroupID(String groupID) {
-        this.groupID = groupID;
+        provider.resetFirstTime(group.getId());
     }
 
     public String getRole() {
@@ -69,12 +63,12 @@ public class ElabUser {
         this.survey = survey;
     }
 
-    public String getTeacherID() {
-        return teacherID;
+    public String getTeacherId() {
+        return teacherId;
     }
 
-    public void setTeacherID(String teacherID) {
-        this.teacherID = teacherID;
+    public void setTeacherId(String teacherId) {
+        this.teacherId = teacherId;
     }
 
     public String getUserArea() {
@@ -101,12 +95,24 @@ public class ElabUser {
         this.userDir = userDir;
     }
 
+    public ElabGroup getGroup() {
+        return group;
+    }
+
+    public void setGroup(ElabGroup group) {
+        this.group = group;
+    }
+
     public boolean isTeacher() {
         return ROLE_TEACHER.equals(role);
     }
 
     public boolean isAdmin() {
         return ROLE_ADMIN.equals(role);
+    }
+    
+    public boolean isUpload() {
+        return ROLE_UPLOAD.equals(role);
     }
     
     public boolean isGuest() {
@@ -135,11 +141,11 @@ public class ElabUser {
         sb.append("name=");
         sb.append(name);
         sb.append(", ");
-        sb.append("groupID=");
-        sb.append(groupID);
+        sb.append("group=");
+        sb.append(group);
         sb.append(", ");
-        sb.append("teacherID=");
-        sb.append(teacherID);
+        sb.append("teacherId=");
+        sb.append(teacherId);
         sb.append(", ");
         sb.append("role=");
         sb.append(role);
