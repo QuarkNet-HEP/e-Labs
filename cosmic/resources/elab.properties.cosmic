@@ -1,0 +1,21 @@
+#these need to be cleaned up eventually
+host = localhost
+port = :8080
+sslport = :8080
+userdb.db = userdbdev8085_2004_1215
+userdb.username = vdsdev8085
+userdb.password = vdsdev8085
+portal = /usr/local/quarknet-test/portal
+#vds.home = /usr/local/quarknet-test/portal/vds
+vds.home = /home/mike/work/i2u2/workflows
+
+cosmic.datadir = /home/mike/work/i2u2/data/
+
+portal.users = /usr/local/quarknet-test/portal/users/
+portal.templates = /usr/local/quarknet-test/portal/templates/
+portal.appdir = /usr/local/quarknet-test/portal/application/
+
+#unused:
+portal.datadir = /usr/local/quarknet-test/portal/data/
+
+workflows.dir = /home/mike/work/i2u2/workflows
