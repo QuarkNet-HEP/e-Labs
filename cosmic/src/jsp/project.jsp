@@ -23,9 +23,7 @@
 			
 			<div id="content">
 
-<div id="content-header">
-	High school students use cutting-edge tools to do scientific investigations.
-</div>
+<h1>High school students use cutting-edge tools to do scientific investigations.</h1>
 
 
 <table border="0" id="main">
