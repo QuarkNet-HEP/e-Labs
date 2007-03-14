@@ -6,36 +6,38 @@
 	if (!ElabUser.isUserLoggedIn(session)) {
 %>
 	<!-- not logged in -->
-	<div id="login-form-header">
-		<h2>Log in</h2>
-	</div>
-	<div id="login-form-contents">
-		<%@ include file="loginform.jsp" %>
-	</div>
-	<div id="login-form-text">
-		<p>
-			To explore our website, <a href="<%= elab.getGuestLoginLink(request) %>">log in as guest</a>
-		</p>
-		
-		<h2>Need a student login?</h2>
-		<p>Ask your teacher.</p>
-		
-		<%
-			String subject = URLEncoder.encode("Please register me as an e-Labs teacher.");
-			String body = URLEncoder.encode("Please complete each of the fields below and send this email to be registered " 
-				+ "as an e-Labs teacher. You will receive a response from the e-Labs team by the end of the business "
-				+ "day.\n\n"
-				+ "First Name:\n\n"
-				+ "Last Name:\n\n"
-				+ "City:\n\n"
-				+ "State:\n\n"
-				+ "School:\n");
-			String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
-		%>
-		<h2>Need a teacher login?</h2>
-		<p>Contact 
-		<a href="<%= mailURL %>">e-labs@fnal.gov</a>
-		</p>
+	<div id="login-form">
+		<div id="login-form-header">
+			<h2>Log in</h2>
+		</div>
+		<div id="login-form-contents">
+			<%@ include file="loginform.jsp" %>
+		</div>
+		<div id="login-form-text">
+			<p>
+				To explore our website, <a href="<%= elab.getGuestLoginLink(request) %>">log in as guest</a>
+			</p>
+			
+			<h2>Need a student login?</h2>
+			<p>Ask your teacher.</p>
+			
+			<%
+				String subject = URLEncoder.encode("Please register me as an e-Labs teacher.");
+				String body = URLEncoder.encode("Please complete each of the fields below and send this email to be registered " 
+					+ "as an e-Labs teacher. You will receive a response from the e-Labs team by the end of the business "
+					+ "day.\n\n"
+					+ "First Name:\n\n"
+					+ "Last Name:\n\n"
+					+ "City:\n\n"
+					+ "State:\n\n"
+					+ "School:\n");
+				String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
+			%>
+			<h2>Need a teacher login?</h2>
+			<p>Contact 
+			<a href="<%= mailURL %>">e-labs@fnal.gov</a>
+			</p>
+		</div>
 	</div>
 <%
 	}
