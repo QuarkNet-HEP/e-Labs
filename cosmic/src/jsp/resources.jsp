@@ -15,7 +15,7 @@
 	<body id="resources" class="library">
 		<!-- entire page container -->
 		<div id="container">
-			<div id="top"
+			<div id="top">
 				<div id="header">
 					<%@ include file="include/header.jsp" %>
 				</div>
@@ -29,9 +29,7 @@
 			
 			<div id="content">
 				
-<div id="content-header">
-Looking for information? Check out the online resources or contact someone.
-</div>
+<h1>Looking for information? Check out the online resources or contact someone.</h1>
 
 <table border="0" id="main">
 	<tr>

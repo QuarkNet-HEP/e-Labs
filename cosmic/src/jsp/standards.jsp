@@ -1,203 +1,246 @@
-<HTML>
-<HEAD>
-<TITLE>Alignment to Standards</TITLE>
-<!-- include css style file -->
-<%@ include file="include/style.css" %>
-<body bgcolor=FFFFFF  vlink=ff6600>
-<center>
-<!-- header/navigation -->
-<%
-//be sure to set this before including the navbar
-String headerType = "Teacher";
-%>
-<%@ include file="include/navbar_common.jsp" %>
-<%@ include file="include/javascript.jsp" %>
-</HEAD>
-
-<TABLE WIDTH=800>
-<TR><TD>
-<TABLE WIDTH=800 CELLPADDING=4>
-<TR><td>&nbsp;</td></tr><TR><TD  bgcolor=black>
-<FONT FACE=ARIAL COLOR=white SIZE=+1>
-<B>Alignment with National Science Education Standards</B>
-</TD></TR>
-</TABLE>
-<P>
-<TABLE WIDTH=700>
-<TR><TD>
-
-<BLOCKQUOTE>
-This project demonstrates some elements of the following from the <A HREF="http://www.nap.edu/readingroom/books/nses/html">National
-
-Science Education Standards</A>:
-
-
-<UL>
-
-  <LI><A HREF="http://www.nap.edu/readingroom/books/nses/html/3.html">Teaching
-
-  Standards</A>:
-
-  <UL>
-
-        <LI><A HREF="http://www.nap.edu/readingroom/books/nses/html/3.html#tsa">A</A>: 
-          Plan an inquiry-based science program. 
-        <LI><A HREF="http://www.nap.edu/readingroom/books/nses/html/3.html#tsb">B</A>: 
-          Guide and facilitate learning. 
-        <LI><A HREF="http://www.nap.edu/readingroom/books/nses/html/3.html#tsf">F</A>: 
-          Participate in ongoing planning and development of science program. 
-      </UL>
-
-  <LI><A HREF="http://www.nap.edu/readingroom/books/nses/html/5.html">Assessment
-
-  Standards</A>:
-
-  <UL>
-
-    <LI><A HREF="http://www.nap.edu/readingroom/books/nses/html/5.html#asb">B</A>:
-
-    Achievement and opportunity to learn science
-
-    <LI><A HREF="http://www.nap.edu/readingroom/books/nses/html/5.html#asc">C</A>:
-
-    Quality of data matched to decisions and actions taken
-
-    <LI><A HREF="http://www.nap.edu/readingroom/books/nses/html/5.html#asd">D</A>:
-
-    Assessments fair
-
-  </UL>
-
-  <LI><A HREF="http://www.nap.edu/readingroom/books/nses/html/6e.html">Content
-
-  Standards</A>:
-
-  <UL>
-
-    <LI><A HREF="http://www.nap.edu/readingroom/books/nses/html/6e.html#csa912">A</A>:
-
-    Science as inquiry
-
-    <LI><A HREF="http://www.nap.edu/readingroom/books/nses/html/6e.html#csb912">B</A>:
-
-    Physical science
-
-    <LI><A HREF="http://www.nap.edu/readingroom/books/nses/html/6e.html#cse912">E</A>:
-
-    Science and technology
-        <LI><A HREF="http://www.nap.edu/readingroom/books/nses/html/6e.html#csg912">G</A>: 
-          Nature of science 
-      </UL>   
-  <LI><A HREF="http://www.nap.edu/readingroom/books/nses/html/7.html">Program
-
-  Standards</A>:
-
-  <UL>
-
-    <LI><A HREF="http://www.nap.edu/readingroom/books/nses/html/7.html#spa">A</A>:
-
-    Consistent with other standards
-
-    <LI><A HREF="http://www.nap.edu/readingroom/books/nses/html/7.html#spb">B</A>:
-
-    Developmentally appropriate, interesting, and relevant
-
-    <LI><A HREF="http://www.nap.edu/readingroom/books/nses/html/7.html#spc">C</A>:
-
-    Coordinated with mathematics program
-
-    <LI><A HREF="http://www.nap.edu/readingroom/books/nses/html/7.html#spd">D</A>:
-
-    Access to appropriate and sufficient resources
-
-    <LI><A HREF="http://www.nap.edu/readingroom/books/nses/html/7.html#spe">E</A>:
-
-    Equitable student access
-
-  </UL>
-
-</UL> 
-</TD></TR>
-</TABLE>
-
-
-
-
-
-
-
-
-
-
-<TABLE WIDTH=800>
-<TR><TD>
-<TABLE WIDTH=800 CELLPADDING=4>
-<TR><td>&nbsp;</td></tr><TR><TD  bgcolor=black>
-<FONT FACE=ARIAL COLOR=white SIZE=+1>
-<B>Alignment with National Educational Technology Standards from ISTE</B>
-</TD></TR>
-</TABLE>
-<P>
-<TABLE WIDTH=700>
-<TR><TD>
-
-<BLOCKQUOTE>
-This project demonstrates some elements of the following from the <A HREF="http://cnets.iste.org/">National
-
-Education Technology Standards</A>:
-
-
-
-    <OL>
-    <LI> <B>Basic Operations and Concepts</B>
-    	<UL>
-    		<LI>Students demonstrate a sound understanding of the nature and operation of technology systems. 
-    		<LI>Students are proficient in the use of technology.
-    	</UL>
-
-    <LI> <B>Social, Ethical, and Human Issues   </B>
-    	<UL>
-    		<LI>Students practice responsible use of technology systems, information, and software.
-    		<LI>Students develop positive attitudes toward technology uses that support lifelong learning, collaboration, personal pursuits, and productivity.
-    	</UL>
-    <LI> <B>Technology Productivity Tools   </B>
-        <UL>
-    		<LI>Students use technology tools to enhance learning, increase productivity, and promote creativity. 
-    		<LI>Students use productivity tools to collaborate in constructing technology-enhanced models, prepare publications, and produce other creative works.
-    	</UL>
-    <LI> <B>Technology Communications Tools   </B>
-        <UL>
-    		<LI>Students use telecommunications to collaborate, publish, and interact with peers, experts, and other audiences. 
-    		<LI>Students use a variety of media and formats to communicate information and ideas effectively to multiple audiences.
-    	</UL>
-    <LI> <B>Technology Research Tools   </B>
-        <UL>
-    		<LI>Students use technology to locate, evaluate, and collect information from a variety of sources. 
-    		<LI>Students use technology tools to process data and report results. 
-    		<LI>Students evaluate and select new information resources and technological innovations based on the appropriateness for specific tasks.
-    	</UL>
-    <LI> <B>Technology Problem-Solving and Decision-Making Tools   </B>
-        <UL>
-    		<LI>Students use technology resources for solving problems and making informed decisions. 
-    		<LI>Students employ technology in the development of strategies for solving problems in the real world. 
-    	</UL>
-    
-    
-    </OL>
-
-
-
-
- 
-</TD></TR>
-</TABLE>
-
-<HR>
-</CENTER>
-
-
-
-
-</BODY>
-
-</HTML>
+<%@ include file="include/elab.jsp" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Alignment to Standards</title>
+		<%= elab.css("css/style2.css") %>
+		<%= elab.css("css/teacher.css") %>
+	</head>
+
+	<body id="standards">
+		<!-- entire page container -->
+		<div id="container">
+			<div id="top">
+				<div id="header">
+					<%@ include file="include/header.jsp" %>
+				</div>
+				<div id="nav">
+					<%@ include file="include/nav_teacher.jsp" %>
+				</div>
+			</div>
+			
+			<div id="content">
+
+
+<h1>Alignment with National Science Education Standards</h1>
+
+<table border="0" id="main">
+	<tr>
+		<td>
+			<div id="left">
+			</div>
+		</td>
+		
+		<td>
+			<div id="center">
+			
+				<p>
+					This project demonstrates some elements of the following from 
+					the <a href="http://www.nap.edu/readingroom/books/nses/html">National
+					Science Education Standards</a>:
+				</p>
+				<ul>
+					<li>
+						<a href="http://www.nap.edu/readingroom/books/nses/html/3.html">Teaching
+						Standards</a>:
+
+						<ul>
+					        <li>
+					        	<a href="http://www.nap.edu/readingroom/books/nses/html/3.html#tsa">A</a>: 
+								Plan an inquiry-based science program.
+							</li>
+							<li>
+								<a href="http://www.nap.edu/readingroom/books/nses/html/3.html#tsb">B</a>: 
+								Guide and facilitate learning. 
+							</li>
+							<li>
+								<a href="http://www.nap.edu/readingroom/books/nses/html/3.html#tsf">F</a>: 
+								Participate in ongoing planning and development of science program.
+							</li>
+						</ul>
+					</li>
+
+					<li>
+						<a href="http://www.nap.edu/readingroom/books/nses/html/5.html">Assessment
+						Standards</a>:
+
+						<ul>
+							<li>
+								<a href="http://www.nap.edu/readingroom/books/nses/html/5.html#asb">B</a>:
+								Achievement and opportunity to learn science
+							</li>
+							<li>
+								<a href="http://www.nap.edu/readingroom/books/nses/html/5.html#asc">C</a>:
+								Quality of data matched to decisions and actions taken
+							</li>
+							<li>
+								<a href="http://www.nap.edu/readingroom/books/nses/html/5.html#asd">D</a>:
+								Assessments fair
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="http://www.nap.edu/readingroom/books/nses/html/6e.html">Content
+						Standards</a>:
+
+						<ul>
+							<li>
+								<a href="http://www.nap.edu/readingroom/books/nses/html/6e.html#csa912">A</a>:
+								Science as inquiry
+							</li>
+							<li>
+								<a href="http://www.nap.edu/readingroom/books/nses/html/6e.html#csb912">B</a>:
+								Physical science
+							</li>
+							<li>
+								<a href="http://www.nap.edu/readingroom/books/nses/html/6e.html#cse912">E</a>:
+								Science and technology
+							</li>
+							<li>
+								<a href="http://www.nap.edu/readingroom/books/nses/html/6e.html#csg912">G</a>: 
+								Nature of science
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="http://www.nap.edu/readingroom/books/nses/html/7.html">Program
+						Standards</a>:
+
+						<ul>
+							<li>
+								<a href="http://www.nap.edu/readingroom/books/nses/html/7.html#spa">A</a>:
+								Consistent with other standards
+							</li>
+							<li>
+								<a href="http://www.nap.edu/readingroom/books/nses/html/7.html#spb">B</a>:
+								Developmentally appropriate, interesting, and relevant
+							</li>
+							<li>
+								<a href="http://www.nap.edu/readingroom/books/nses/html/7.html#spc">C</a>:
+								Coordinated with mathematics program
+							</li>
+							<li>
+								<a href="http://www.nap.edu/readingroom/books/nses/html/7.html#spd">D</a>:
+								Access to appropriate and sufficient resources
+							</li>
+							<li>
+								<a href="http://www.nap.edu/readingroom/books/nses/html/7.html#spe">E</a>:
+								Equitable student access
+							</li>
+						</ul>
+					</li>
+				</ul>
+				
+				<h1>Alignment with National Educational Technology Standards from ISTE</h1>
+				<p>
+					This project demonstrates some elements of the following from the 
+					<a href="http://cnets.iste.org/">National Education Technology Standards</a>:
+				</p>
+
+				<ol>
+					<li>
+						<h2>Basic Operations and Concepts</h2>
+				    	<ul>
+				    		<li>
+				    			Students demonstrate a sound understanding of the nature and 
+					    		operation of technology systems.
+				    		</li>
+				    		<li>
+								Students are proficient in the use of technology.
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h2>Social, Ethical, and Human Issues</h2>
+						<ul>
+							<li>
+								Students practice responsible use of technology systems, 
+								information, and software.
+							</li>
+							<li>
+								Students develop positive attitudes toward technology uses 
+								that support lifelong learning, collaboration, personal 
+								pursuits, and productivity.
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h2>Technology Productivity Tools</h2>
+						<ul>
+							<li>
+								Students use technology tools to enhance learning, increase 
+								productivity, and promote creativity. 
+							</li>
+							<li>
+								Students use productivity tools to collaborate in constructing 
+								technology-enhanced models, prepare publications, and produce 
+								other creative works.
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h2>Technology Communications Tools</h2>
+						<ul>
+							<li>
+								Students use telecommunications to collaborate, publish, and 
+								interact with peers, experts, and other audiences. 
+							</li>
+							<li>
+								Students use a variety of media and formats to communicate 
+								information and ideas effectively to multiple audiences.
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h2>Technology Research Tools</h2>
+						<ul>
+							<li>
+								Students use technology to locate, evaluate, and collect 
+								information from a variety of sources. 
+							</li>
+							<li>
+								Students use technology tools to process data and report 
+								results.
+							</li>
+							<li>
+								Students evaluate and select new information resources 
+								and technological innovations based on the appropriateness 
+								for specific tasks.
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h2>Technology Problem-Solving and Decision-Making Tools</h2>
+						<ul>
+							<li>
+								Students use technology resources for solving problems 
+								and making informed decisions. 
+							</li>
+							<li>
+								Students employ technology in the development of 
+								strategies for solving problems in the real world.
+							</li>
+						</ul>
+					</li>
+				</ol>
+			</div>
+		</td>
+		<td>
+			<div id="right">
+			</div>
+		</td>
+	</tr>
+</table>
+
+			</div>
+			<!-- end content -->
+
+			<div id="footer">
+			</div>
+		
+		</div>
+		<!-- end container -->
+	</body>
+</html>

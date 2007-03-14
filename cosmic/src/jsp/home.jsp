@@ -30,9 +30,7 @@
 			
 			<div id="content">
 				
-<div id="content-header">
-	Join a national collaboration of high school students to study cosmic rays.
-</div>
+<h1>Join a national collaboration of high school students to study cosmic rays.</h1>
 
 <!-- there is no way to do this without tables unfortunately -->
 <table border="0" id="main">
@@ -44,8 +42,8 @@
 		</td>
 		<td>
 			<div id="center">
-				<h1>Why cosmic rays?</h1>
-				<h2>Spending all your time in a shower?</h2>
+				<h2>Why cosmic rays?</h2>
+				<h3>Spending all your time in a shower?</h3>
 
 				<p>When you're sleeping or sitting in class, cosmic rays shower the earth and everything on it.</p>
 
@@ -59,14 +57,14 @@
 				A number of reseach projects are looking at this question.</p>
 
 
-				<h1>Who are we?</h1>
+				<h2>Who are we?</h2>
 				<p>We're a collaboration of high school students and teachers collecting and analyzing 
 				cosmic ray data to answer some of these questions. We're working with
 				computer scientists to provide cutting edge tools that use <strong>grid techniques</strong>
 				to help you share data, graphs, and posters and collaborate with other students nationwide.</p>
 
 
-				<h1>Who can join?</h1>
+				<h2>Who can join?</h2>
 				<p><strong>You</strong>! Think about steps you'd take to investigate cosmic rays. 
 				How would you get started? What do you need to know? Can you collect and use data?</p>
 

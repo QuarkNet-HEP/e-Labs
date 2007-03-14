@@ -1,5 +1,7 @@
 <%@ include file="include/elab.jsp" %>
 <%@ include file="modules/login/loginrequired.jsp" %>
+<%@ page import="gov.fnal.elab.ElabFAQ" %>
+<%@ page import="java.util.*" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -14,7 +16,7 @@
 	<body id="faq" class="library">
 		<!-- entire page container -->
 		<div id="container">
-			<div id="top"
+			<div id="top">
 				<div id="header">
 					<%@ include file="include/header.jsp" %>
 				</div>
@@ -28,9 +30,7 @@
 			
 			<div id="content">
 				
-<div id="content-header">
-	Frequently Asked Questions
-</div>
+<h1>Frequently Asked Questions</h1>
 
 <table border="0" id="main">
 	<tr>
@@ -43,7 +43,8 @@
 			<div id="center">
 				<%
 					ElabFAQ faq = elab.getFAQ();
-					if (faq.isEmpty()) {
+					Collection entries = faq.entries();
+					if (entries.isEmpty()) {
 						%>
 							<span class="warning">There are no FAQs in the database!</span>
 						<%
@@ -52,10 +53,10 @@
 						%>
 							<p>
 						<%
-						Iterator i = faq.entries().iterator();
+						Iterator i = entries.iterator();
 						while (i.hasNext()) {
-							ElabFAQ.Entry e = (ElabFAQ.Entry) i.next();
-							out.write(e.toString());	
+							String e = (String) i.next();
+							out.write(e);	
 						}
 						%>
 							</p>

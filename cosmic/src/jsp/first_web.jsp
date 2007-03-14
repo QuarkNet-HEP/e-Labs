@@ -11,12 +11,13 @@
 		<title>Quarknet Grid Student Intro</title>
 		<%= elab.css("css/style2.css") %>
 		<%= elab.css("css/home.css") %>
+		<%= elab.css("css/three-column.css") %>
 	</head>
 	
 	<body id="first_web" class="home">
 		<!-- entire page container -->
 		<div id="container">
-			<div id="top"
+			<div id="top">
 				<div id="header">
 					<%@ include file="include/header.jsp" %>
 				</div>
@@ -27,9 +28,7 @@
 			
 			<div id="content">
 				
-<div id="content-header">
-	Join a national collaboration of high school students to study cosmic rays.
-</div>
+<h1>Join a national collaboration of high school students to study cosmic rays.</h1>
 
 <table border="0" id="main">
 	<tr>
@@ -40,7 +39,7 @@
 		</td>
 		<td>
 			<div id="center">
-				<h1>How to use the website. What you'll find on the next pages.</h1>
+				<h2>How to use the website. What you'll find on the next pages.</h2>
 				<dl>
 					<dt>Log in/Log out:</dt>
 					<dd>Check the upper right hand corner to see the current status.</dd>

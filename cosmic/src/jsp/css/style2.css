@@ -137,11 +137,12 @@
 	font-size: 12px;
 }
 
-#content-header {
+#content h1 {
+	width: 100%;
 	font-size: 17px;
 	font-weight: bold;
-	color: white;
-	background-color: black;
+	/*color: white;
+	background-color: black;*/
 	margin-top: 32px;
 	margin-bottom: 20px;
 	margin-left: 2px;

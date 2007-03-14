@@ -15,7 +15,7 @@
 	<body id="milestones_map" class="library">
 		<!-- entire page container -->
 		<div id="container">
-			<div id="top"
+			<div id="top">
 				<div id="header">
 					<%@ include file="include/header.jsp" %>
 				</div>
@@ -29,15 +29,13 @@
 			
 			<div id="content">
 				
-<div id="content-header">
-	Review research skills you need for this project.
-</div>
+<h1>Review research skills you need for this project.</h1>
 
 <table border="0" id="main">
 	<tr>
 		<td>
 			<div id="center">
-				<h2>Click on <img border="0" src="graphics/ref.gif"> for resources to help you meet each milestone below.</h2>
+				<h2>Click on <img border="0" src="graphics/ref.gif"/> for resources to help you meet each milestone below.</h2>
 					
 				<div class="tab">
 					<span class="tabtitle">Research Basics</span>
@@ -71,12 +69,12 @@
 				 - 
 				<a href="showReferences.jsp?t=reference&f=peruse">All Resources for Study Guide</a>
 				<a href="showReferences.jsp?t=reference&f=peruse">
-					<img src="graphics/ref.gif">
+					<img src="graphics/ref.gif"/>
 				</a>
 				 - 
 				<a href="showLogbook.jsp">Student Logbook</a>
 				<a href="showLogbook.jsp">
-					<img src="graphics/logbook_small.gif">
+					<img src="graphics/logbook_small.gif"/>
 				</a>
 			</div>
 		</div>

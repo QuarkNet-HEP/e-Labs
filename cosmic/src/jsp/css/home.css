@@ -1,9 +1,9 @@
-.home #content-header {
+#content h1 {
 	background-color: #ff6600;
 	color: #000000;
 }
 
-.home #center h1 {
+.home #center h2 {
 	font-weight: normal;
 	font-size: 140%;
 	width: 100%;
@@ -12,7 +12,7 @@
 	margin-left: 0px;
 }
 
-.home #center h2 {
+.home #center h3 {
 	font-weight: bold;
 	font-size: 120%;
 	margin-left: 10px;
@@ -41,6 +41,7 @@
 
 .home #content #right {
 	width: 220px;
+	text-align: center;
 }
 
 #first_web #content #right {

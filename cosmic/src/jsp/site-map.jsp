@@ -1,80 +1,84 @@
-<%@ page import="java.util.*" %>
-<HTML>
-<HEAD>
-<TITLE>e-Lab Teacher Site Map</TITLE>
-<!-- include css style file -->
-<%@ include file="include/style.css" %>
-<!-- header/navigation -->
-<%
-//Liz Quigg - updated June 2006 to include presurvey and postsurvey links
-//be sure to set this before including the navbar
-String headerType = "Teacher";
-String project = (String)session.getAttribute("appName");
-if (project==null) {project="cosmic";}
-%>
-<%@ include file="include/navbar_common.jsp" %>
-<%@ include file="include/javascript.jsp" %>
-</HEAD>
-<body bgcolor=FFFFFF  vlink=ff6600>
-<center>
-<TABLE WIDTH=800>
-<TR><TD>
-<TABLE WIDTH=800 CELLPADDING=4>
-<TR><td>&nbsp;</td></tr><TR><TD  bgcolor=black>
-<FONT FACE=ARIAL COLOR=white SIZE=+1>
-<B>Cosmic Site Map</B>
-</TD></TR>
-</TABLE>
-<P>
+<%@ include file="include/elab.jsp" %>
 
-<center>
-<TABLE WIDTH=550>
-<TR><TD VALIGN=TOP WIDTH=50%>
-<FONT FACE=ARIAL SIZE=-1>
-<B>Teacher Pages</B><P>
-<A HREF="teacher.jsp">Teacher Page</A><BR>
-<A HREF="notes.jsp">Classroom Notes</A><BR>
-<a href="strategy.jsp">Teaching Strategies</a><br>
-<a href="web_guide.jsp">Research Guidance</a><br>
-<a href="activities.jsp">Sample Classroom Activities</a><br>
-<A HREF="activities.jsp">Classroom Activities</A><BR>
-<A HREF="strategy.jsp">Teaching Strategies</A><BR>
-<A HREF="web_guide.jsp">Research Guidance</A><BR>
-<A HREF="standards.jsp">Alignment with Standards</A><BR>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>e-Lab Teacher Site Map</title>
+		<%= elab.css("css/style2.css") %>
+		<%= elab.css("css/teacher.css") %>
+		<%= elab.css("css/two-column.css") %>
+	</head>
 
-<%
-String userIndex=(String)session.getAttribute("login");
-//Login Check
-if (userIndex != null ) {
-%>
-<%@ include file="common.jsp" %>
-<A HREF="presurvey.jsp?type=pre&student_id=0">Pre</A>- and <A HREF="presurvey.jsp?type=post&student_id=0">Post</A> Tests.<BR>
-Student Results for <A HREF="surveyResults.jsp?type=pre">Pre</A>- and <A HREF="surveyResults.jsp?type=post">Post</A>- tests.<BR>
-<%
-                                //must be a admin to see all teachers
-                                if(((String)session.getAttribute("role")).equals("admin"))  {  %>
-                                
-                                
-                                               <A HREF="showTeachers.jsp">Show Student Test Results for all Teachers</A><BR>
+	<body id="site-map">
+		<!-- entire page container -->
+		<div id="container">
+			<div id="top">
+				<div id="header">
+					<%@ include file="include/header.jsp" %>
+				</div>
+				<div id="nav">
+					<%@ include file="include/nav_teacher.jsp" %>
+				</div>
+			</div>
+			
+			<div id="content">
 
-<% 
-                                 }
 
-}
-%>
-<A HREF="registration.jsp">General Registration</A><BR>
-<A HREF="registerStudents.jsp">Student Research Group Registration</A><BR>
-<A HREF="updateGroups.jsp">Update Student Research Groups</A><BR>
-<A HREF="site-map.jsp">Site Map</A><BR>
+<h1>Cosmic Site Map</h1>
 
-</font></TD><TD VALIGN=TOP WIDTH=50%>
-<FONT FACE=ARIAL SIZE=-1>
-<B>Student Pages</B><P>
-<A HREF="http://<%=System.getProperty("host")+System.getProperty("port")%>/elab/<%=project%>/home.jsp">Home</A><BR>
-<A HREF="site-index.jsp">Site Index</A><BR><BR>
-</font></TD></TR>
-</TABLE>
-</CENTER>
+<table border="0" id="main">
+	<tr>
+		<td>
+			<div id="left">
+				<h2>Teacher Pages</h2>
+				<ul class="simple">
+					<li><a href="teacher.jsp">Teacher Page</a></li>
+					<li><a href="notes.jsp">Classroom Notes</a></li>
+					<li><a href="strategy.jsp">Teaching Strategies</a></li>
+					<li><a href="web_guide.jsp">Research Guidance</a></li>
+					<li><a href="activities.jsp">Sample Classroom Activities</a></li>
+					<li><a href="activities.jsp">Classroom Activities</a></li>
+					<li><a href="strategy.jsp">Teaching Strategies</a></li>
+					<li><a href="web_guide.jsp">Research Guidance</a></li>
+					<li><a href="standards.jsp">Alignment with Standards</a></li>
+					<li><a href="presurvey.jsp?type=pre&student_id=0">Pre</a>
+					- and <a href="presurvey.jsp?type=post&student_id=0">Post</a> Tests.</li>
+					<li>Student Results for <a href="surveyResults.jsp?type=pre">Pre</a>
+					- and <a href="surveyResults.jsp?type=post">Post</a>- tests.</li>
+					<li><a href="showTeachers.jsp">Show Student Test Results for all Teachers</a></li>
+					<li><a href="registration.jsp">General Registration</a></li>
+					<li><a href="registerStudents.jsp">Student Research Group Registration</a></li>
+					<li><a href="updateGroups.jsp">Update Student Research Groups</a></li>
+					<li><a href="site-map.jsp">Site Map</a></li>
+				</ul>
+				
+			</div>
+		</td>
+		
+		<td>
+			<div id="center">
+			</div>
+		</td>
+		<td>
+			<div id="right">
+				<h2>Student Pages</h2>
+				<ul class="simple">
+					<li><a href="<%= elab.page("home.jsp") %>">Home</a></li>
+					<li><a href="site-index.jsp">Site Index</a></li>
+				</ul>
+			</div>
+		</td>
+	</tr>
+</table>
 
-</BODY>
-</HTML>
+			</div>
+			<!-- end content -->
+
+			<div id="footer">
+			</div>
+		
+		</div>
+		<!-- end container -->
+	</body>
+</html>

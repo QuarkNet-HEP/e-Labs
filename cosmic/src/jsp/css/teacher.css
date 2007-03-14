@@ -50,14 +50,19 @@
 	top: 24px;
 }
 
-#teacher #content h1 {
+#content h1 {
+	background-color: black;
+	color: white;
+}
+
+#content h2 {
 	font-size: 120%;
 }
 
-#teacher #content p {
+#content p {
 	margin-left: 20px;
 }
 
-#teacher #content ul {
+#content ul {
 	margin-left: 10px;
 }

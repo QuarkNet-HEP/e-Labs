@@ -13,7 +13,7 @@
 	<body id="milestones_map" class="library">
 		<!-- entire page container -->
 		<div id="container">
-			<div id="top"
+			<div id="top">
 				<div id="header">
 					<%@ include file="include/header.jsp" %>
 				</div>
@@ -27,9 +27,7 @@
 			
 			<div id="content">
 				
-<div id="content-header">
-	Getting started! Work as a team. Make sure each team member meets these milestones.
-</div>
+<h1>Getting started! Work as a team. Make sure each team member meets these milestones.</h1>
 
 <table border="0" id="main">
 	<tr>
@@ -49,7 +47,7 @@
 				<p>
 				
 					<img src="graphics/interaction_point.gif" alt="Interaction
-					Point"> These dots in your workflow indicate where  your 
+					Point"/> These dots in your workflow indicate where  your 
 					teacher monitors your progress by commenting on the entries
 					you make in your logbook related to each milestone.  Be sure
 					to read the comments!
@@ -89,7 +87,7 @@
 				 - 
 				<a href="showReferences.jsp?t=reference&f=peruse">All References for Study Guide</a>
 				<a href="showReferences.jsp?t=reference&f=peruse">
-					<img src="graphics/ref.gif">
+					<img src="graphics/ref.gif"/>
 				</a>
 			</div>
 		</div>
