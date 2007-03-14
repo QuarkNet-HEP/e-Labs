@@ -1,6 +1,5 @@
 <%@ include file="include/elab.jsp" %>
 <%@ include file="modules/login/loginrequired.jsp" %>
-<%@ page import="gov.fnal.elab.ElabFAQ" %>
 <%@ page import="java.util.*" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -32,7 +31,7 @@
 				
 <h1>Frequently Asked Questions</h1>
 
-<table border="0" id="main">
+<table id="main">
 	<tr>
 		<td>
 			<div id="left">
@@ -42,11 +41,10 @@
 		<td>
 			<div id="center">
 				<%
-					ElabFAQ faq = elab.getFAQ();
-					Collection entries = faq.entries();
+					Collection entries = elab.getFAQ().entries();
 					if (entries.isEmpty()) {
 						%>
-							<span class="warning">There are no FAQs in the database!</span>
+							<div class="warning">There are no FAQs in the database!</div>
 						<%
 					}
 					else {
@@ -78,14 +76,6 @@
 			<!-- end content -->	
 		
 			<div id="footer">
-				<a href="milestones.jsp">Milestones (text version)</a>
-				 - 
-				<a href="showReferences.jsp?t=glossary&f=peruse">Glossary</a>
-				 - 
-				<a href="showReferences.jsp?t=reference&f=peruse">All References for Study Guide</a>
-				<a href="showReferences.jsp?t=reference&f=peruse">
-					<img src="graphics/ref.gif">
-				</a>
 			</div>
 		</div>
 		<!-- end container -->

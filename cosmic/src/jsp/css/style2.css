@@ -150,6 +150,11 @@
 	padding: 4px;
 }
 
+table#main {
+	width: 100%;
+	padding: 0px;
+	margin: 0px;
+}
 
 #main td {
 	vertical-align: top;
@@ -265,4 +270,12 @@ ul.simple li:before {
 
 h2 + ul.simple {
 	margin-left: 8px;
+}
+
+.warning {
+	width: 100%;
+	text-align: center;
+	background-color: yellow;
+	color: black;
+	font-size: 160%;
 }

@@ -23,9 +23,7 @@
 			
 			<div id="content">
 
-<div id="content-header">
-	Teacher Home - Bookmark It!
-</div>
+<h1>Teacher Home - Bookmark It!</h1>
 
 <table border="0" id="main">
 	<tr>
@@ -36,7 +34,7 @@
 		
 		<td>
 			<div id="center">
-				<h1>Abstract:</h1>
+				<h2>Abstract:</h1>
 				<p>
 					Students experience the environment of scientific collaborations 
 					in this series of investigations into high-energy cosmic rays. 
@@ -63,7 +61,7 @@
 					- <a href = "home.jsp">returning student</a>.
 				</p>
 				
-				<h1>Introduction to Research:</h1>
+				<h2>Introduction to Research:</h2>
 				<p>
 					The QuarkNet/Grid Project explores the potential of using virtual 
 					data grid tools and techniques for secondary science education. 
@@ -106,7 +104,7 @@
 					the primary came from.
 				</p>
 				
-				<h1>Prior Knowledge and Skills</h1>
+				<h2>Prior Knowledge and Skills</h2>
 				<p>
 					Before doing this project, students should know how to: 
 				</p>
@@ -125,7 +123,7 @@
 					<a href="research_basics.jsp">Review of Basic Skills</a>
 				</p>
 					
-				<h1>Learner Outcomes:</h1>
+				<h2>Learner Outcomes:</h2>
 				<p>
 					Students will know and be able to: 
 				</p>
@@ -147,7 +145,7 @@
 					</li>
 				</ul>
 				
-				<h1>Research Question:</h1>
+				<h2>Research Question:</h2>
 				<p>
 					How much area can a cosmic ray shower cover? Where do cosmic 
 					rays come from? Students can pose a number of questions and 
@@ -174,7 +172,7 @@
 					stamps for time and geographic location information.
 				</p>
  
-				<h1>Assessment:</h1>
+				<h2>Assessment:</h2>
 
 				<ul>
 					<li>
