@@ -186,10 +186,15 @@
 
 /*========== Login control =============*/
 
-#login-form-header h2 {
+#login-form {
+	text-align: center;	
+}
+
+#login-form h2 {
 	font-weight: bold;
 	text-align: center;
 	text-indent: 0px;
+	font-size: 120%;
 }
 
 #login-form-text p {

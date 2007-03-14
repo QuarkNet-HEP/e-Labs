@@ -13,7 +13,7 @@
 	<body id="home" class="home">
 		<!-- entire page container -->
 		<div id="container">
-			<div id="top"
+			<div id="top">
 				<div id="header">
 					<%@ include file="include/header.jsp" %>
 				</div>
@@ -39,7 +39,7 @@
 	<tr>
 		<td>
 			<div id="left">
-				<img src="graphics/crop.jpg">
+				<img src="graphics/crop.jpg"/>
 			</div>
 		</td>
 		<td>
@@ -75,7 +75,7 @@
 		<td>
 			<div id="right">
 				<jsp:include page="modules/login/logincontrol.jsp">
-					<jsp:param name="prevPage" value="<%= "/elab/" + elab.getName() + "/loginredir.jsp" %>"/>
+					<jsp:param name="prevPage" value="<%= elab.page("loginredir.jsp") %>"/>
 				</jsp:include>
 			</div>
 		</td>

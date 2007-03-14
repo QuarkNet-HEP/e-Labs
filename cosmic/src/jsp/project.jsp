@@ -12,7 +12,7 @@
 	<body id="project">
 		<!-- entire page container -->
 		<div id="container">
-			<div id="top"
+			<div id="top">
 				<div id="header">
 					<%@ include file="include/header.jsp" %>
 				</div>
@@ -32,7 +32,7 @@
 	<tr>
 		<td>
 			<div id="left">
-				<img src="graphics/crop.jpg">
+				<img src="graphics/crop.jpg"/>
 			</div>
 		</td>
 		
@@ -40,14 +40,21 @@
 			<div id="center">
 				<p>
 					The Cosmic Ray e-Lab provides an opportunity for students to:
-					<ul>
-						<li>Do authentic research to access, process and publish data, report 
+				</p>
+				
+				<ul>
+					<li>
+						Do authentic research to access, process and publish data, report 
 						and share their results as online posters, and have online discussions 
 						with one another about their work. 
-						<li>Experience the environment of scientific collaborations. 
-						<li>Possibly to make real contributions to a burgeoning scientific field.
-					</ul>
-				</p>
+					</li>
+					<li>
+						Experience the environment of scientific collaborations.
+					</li>
+					<li>
+						Possibly to make real contributions to a burgeoning scientific field.
+					</li>
+				</ul>
 
 				<p>
 					The project explores the potential of using the Internet and a new type of 
@@ -64,13 +71,13 @@
 
 				<p>
 					The website provides a place for students to:
-					<ul>
-						<li>Organize their research.
-						<li>Access and analyze the cosmic ray data from schools around the country.
-						<li>Write a poster to summarize their research.
-						<li>Communicate with other school groups doing similar research. 
-					</ul>
 				</p>
+				<ul>
+					<li>Organize their research.</li>
+					<li>Access and analyze the cosmic ray data from schools around the country.</li>
+					<li>Write a poster to summarize their research.</li>
+					<li>Communicate with other school groups doing similar research.</li>
+				</ul>
 	
 				<p>
 					Currently, the project is designed for physics students whose teachers are 
@@ -108,9 +115,9 @@
 				</div>
 	
 				<div class="logogroup">
-					<img src="graphics/logo1sm.gif">
-					<img src="graphics/seal.gif">
-					<img src="graphics/logoos.jpg">
+					<img src="graphics/logo1sm.gif"/>
+					<img src="graphics/seal.gif"/>
+					<img src="graphics/logoos.jpg"/>
 				</div>
 			</div>
 		
