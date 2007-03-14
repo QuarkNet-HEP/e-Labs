@@ -54,7 +54,7 @@
 	<body id="login">
 		<!-- entire page container -->
 		<div id="container">
-			<div id="top"
+			<div id="top">
 				<div id="header">
 					<%@ include file="../../include/header.jsp" %>
 				</div>
@@ -65,9 +65,7 @@
 			
 			<div id="content">
 				
-<div id="content-header">
-	<%= message %>
-</div>
+<h1><%= message %></h1>
 
 <table border="0" id="main">
 	<tr>
