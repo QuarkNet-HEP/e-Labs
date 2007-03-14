@@ -3,9 +3,17 @@
  */
 package gov.fnal.elab.datacatalog;
 
-public class CatalogEntry {
 
-    public Object getTupleValue(String key) {
-        return null;
+public abstract class CatalogEntry {
+    private String lfn;
+
+    public abstract Object getTupleValue(String key);
+
+    public void setLFN(String lfn) {
+        this.lfn = lfn;
+    }
+    
+    public String getLFN() {
+        return this.lfn;
     }
 }

@@ -3,6 +3,8 @@
  */
 package gov.fnal.elab.datacatalog;
 
+import gov.fnal.elab.util.ElabException;
+
 public interface DataCatalogProvider {
-    ResultSet runQuery(Query query);
+    ResultSet runQuery(SimpleQuery query) throws ElabException;
 }

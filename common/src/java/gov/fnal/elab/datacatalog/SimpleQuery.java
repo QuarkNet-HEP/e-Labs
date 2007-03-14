@@ -3,17 +3,22 @@
  */
 package gov.fnal.elab.datacatalog;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Query {
+public class SimpleQuery {
     private List constraints;
     
-    public Query() {
+    public SimpleQuery() {
         constraints = new LinkedList();
     }
     
     public void addConstraint(Tuple c) {
         constraints.add(c);
+    }
+
+    public Collection getConstraints() {
+        return constraints;
     }
 }

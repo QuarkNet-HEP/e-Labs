@@ -6,9 +6,10 @@ package gov.fnal.elab;
 import gov.fnal.elab.datacatalog.CatalogEntry;
 import gov.fnal.elab.datacatalog.DataCatalogProvider;
 import gov.fnal.elab.datacatalog.DataCatalogProviderFactory;
-import gov.fnal.elab.datacatalog.Query;
+import gov.fnal.elab.datacatalog.SimpleQuery;
 import gov.fnal.elab.datacatalog.ResultSet;
 import gov.fnal.elab.datacatalog.Tuple;
+import gov.fnal.elab.util.ElabException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,11 +25,12 @@ public class ElabFAQ {
     /**
      * Returns a list of strings with all the FAQs. Each item seems to be a complete
      * FAQ entry, with both the question and the answer.
+     * @throws ElabException 
      */
-    public Collection entries() {
+    public Collection entries() throws ElabException {
         ArrayList list = new ArrayList();
         
-        Query q = new Query();
+        SimpleQuery q = new SimpleQuery();
         q.addConstraint(new Tuple("type", "FAQ"));
         q.addConstraint(new Tuple("project", elab.getName()));
         
