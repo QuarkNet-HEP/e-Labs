@@ -36,7 +36,16 @@
 		
 		// I finally found the solution to the double login problem, and it's this
         // one line.  :)  Please don't remove.
-        response.addCookie(new Cookie("JSESSIONID", session.getId()));
+        // [Mihael] Seems like it depends where this page is included from
+        // The servlet API docs state: "The cookie is visible to all the pages 
+        // in the directory you specify, and all the pages in that directory's 
+        // subdirectories."
+        // Consequently the path could be "/elab", which would make the session
+        // (and the login) persistent across elabs, or "/elab/"+elab.getName()
+        // which would restrict it to the current elab
+        Cookie cookie = new Cookie("JSESSIONID", session.getId());
+        cookie.setPath("/elab");
+        response.addCookie(cookie);
 		
 		response.sendRedirect(prevPage);
 	}
