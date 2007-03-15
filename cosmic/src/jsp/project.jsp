@@ -7,6 +7,7 @@
 		<title>Cosmic Project Page</title>
 		<%= elab.css("css/style2.css") %>
 		<%= elab.css("css/project.css") %>
+		<%= elab.css("css/three-column.css") %>
 	</head>
 
 	<body id="project">

@@ -8,6 +8,7 @@
 		<title><%=elab.getProperties().getFormalName()%> e-Lab Home</title>
 		<%= elab.css("css/style2.css") %>
 		<%= elab.css("css/home.css") %>
+		<%= elab.css("css/three-column.css") %>
 	</head>
 	
 	<body id="home" class="home">
