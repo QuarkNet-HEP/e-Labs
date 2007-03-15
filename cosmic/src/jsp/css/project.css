@@ -1,3 +1,8 @@
+h1 {
+	background-color: black;
+	color: white;
+}
+
 #nav li a {
 	width: 140px;
 	color: white;
