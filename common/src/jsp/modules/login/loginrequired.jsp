@@ -1,6 +1,6 @@
 <%@ page import="gov.fnal.elab.ElabUser" %>
 <%
-	ElabUser user = ElabUser.getUser(session);;
+	ElabUser user = ElabUser.getUser(session);
 	if (user == null) { %>
 		<jsp:include page="modules/login/login.jsp">
 			<jsp:param name="prevPage" value="<%= request.getRequestURL() %>"/>

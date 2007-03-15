@@ -23,6 +23,7 @@ public class ElabProperties extends Properties {
     public static final String PROP_USERDB_USERNAME = "userdb.username";
     public static final String PROP_USERDB_PASSWORD = "userdb.password";
     public static final String PROP_ELAB_LOGGED_IN_HOME_PAGE = "elab.logged.in.home.page";
+    public static final String PROP_ELAB_LOGGED_OUT_HOME_PAGE = "elab.logged.out.home.page";
     public static final String PROP_HOST = "host";
     public static final String PROP_PORT = "port";
 
@@ -137,6 +138,11 @@ public class ElabProperties extends Properties {
     public String getLoggedInHomePage() {
         return getProperty(ElabProperties.PROP_ELAB_LOGGED_IN_HOME_PAGE, "/elab/"
                 + elabName + "/loggedinhome.jsp");
+    }
+    
+    public String getLoggedOutHomePage() {
+        return getProperty(ElabProperties.PROP_ELAB_LOGGED_OUT_HOME_PAGE, "/elab/"
+                + elabName + "/loggedouthome.jsp");
     }
     
     public String getHost() {
