@@ -1,0 +1,11 @@
+#main #left {
+	width: 66%;
+	border-top: 2px solid black;
+	border-right: 2px solid black;
+}
+
+#main #right {
+	width: 200px;
+	border-top: 2px solid black;
+	border-left: 2px solid black;
+}

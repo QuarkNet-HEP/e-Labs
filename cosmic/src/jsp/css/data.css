@@ -1,9 +1,9 @@
 h1 {
-	background-color: #55a9b4;
+	background-color: #4382bb;
 	color: #000000;
 }
 
-.library #center h1 {
+.data #center h1 {
 	font-weight: normal;
 	font-size: 140%;
 	width: 100%;
@@ -12,35 +12,31 @@ h1 {
 	margin-left: 0px;
 }
 
-.library #center h2 {
+.data #center h2 {
 	font-weight: bold;
 	font-size: 120%;
 	margin-left: 0px;
 }
 
-.library #center p {
+.data #center p {
 	font-weight: normal;
 	margin-left: 10px;
 }
 
-.library #center ul {
+.data #center ul {
 	padding-left: 10px;
 	padding-top: 6px;
 }
 
-.library #center ul ul ul li {
+.data #center ul ul ul li {
 	font-weight: normal;
 }
 
-.library #center li {
+.data #center li {
 	list-style-type: none;
 	font-weight: bold;
 	padding-top: 6px;
 	padding-bottom: 6px;
-}
-
-#first_web #content #right {
-	width: 140px;
 }
 
 a.button {
@@ -56,20 +52,20 @@ a.button {
 	font-weight: bold;
 }
 
-.library dt {
+.data dt {
 	font-weight: bold;
 }
 
-.library dd {
+.data dd {
 	padding-bottom: 6px;
 }
 
 #nav #subnav li a {
-	background-color: #55a9b4;
-	border-top: #a7d2d8 1px solid;
-	border-left: #a7d2d8 1px solid;
-	border-bottom: #3c777f 1px solid;
-	border-right: #3c777f 1px solid;
+	background-color: #4382bb;
+	border-top: #72a1cc 1px solid;
+	border-left: #72a1cc 1px solid;
+	border-bottom: #305c85 1px solid;
+	border-right: #305c85 1px solid;
 }
 
 #subnav ul {
@@ -93,20 +89,20 @@ a.button {
 	height: 96px;
 }
 
-.library #nav ul li a {
+.data #nav ul li a {
 	background-color: black;
 	color: white;
 	border: solid 1px black;
 }
 
 
-#nav a#nav2 {
+#nav a#nav3 {
 	color: black;
-	background-color: #55a9b4;
-	border-top: #a7d2d8 1px solid;
-	border-left: #a7d2d8 1px solid;
-	border-bottom: #3c777f 1px solid;
-	border-right: #3c777f 1px solid;
+	background-color: #4382bb;
+	border-top: #72a1cc 1px solid;
+	border-left: #72a1cc 1px solid;
+	border-bottom: #305c85 1px solid;
+	border-right: #305c85 1px solid;
 }
 
 #nav #subnav a {
@@ -174,13 +170,13 @@ a.button {
 /************* Tab **************/
 
 
-.library .tab {
+.data .tab {
 	padding-top: 10px;
 	width: 100%;
 }
 
-.library .tab .tabtitle {
-	background-color: #55a9b4;
+.data .tab .tabtitle {
+	background-color: #4382bb;
 	border-left: 1px solid #358974;
 	border-right: 1px solid #358974;
 	border-top: 1px solid #358974;
@@ -190,8 +186,8 @@ a.button {
 	margin: 0px;
 }
 
-.library .tab .tabcontents {
-	background-color: #ccffff;
+.data .tab .tabcontents {
+	background-color: #99ccff;
 	margin: 0px;
 	border-top: 2px solid black;
 	padding-bottom: 16px;
@@ -199,21 +195,21 @@ a.button {
 	padding-right: 8px;
 }
 
-.library #content .tabcontents h2 {
+.data #content .tabcontents h2 {
 	font-weight: bold;
 	font-style: italic;
 	padding-left: 10px;
 	font-size: 100%;
 }
 
-.library #content .tabcontents li {
+.data #content .tabcontents li {
 	font-weight: normal;
 	padding-left: 8px;
 	padding-top: 0px;
 	padding-bottom: 0px;
 }
 
-.library #content .tabcontents li:before {
+.data #content .tabcontents li:before {
 	display: marker;
 	content: url("../graphics/ref_dot.gif");
 	marker-offset: auto;

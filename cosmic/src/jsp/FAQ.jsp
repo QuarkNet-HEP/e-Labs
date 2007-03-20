@@ -7,9 +7,9 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Frequently Asked Questions</title>
-		<%= elab.css("css/style2.css") %>
-		<%= elab.css("css/library.css") %>
-		<%= elab.css("css/one-column.css") %>
+		<%= elab.css(request, "css/style2.css") %>
+		<%= elab.css(request, "css/library.css") %>
+		<%= elab.css(request, "css/one-column.css") %>
 	</head>
 	
 	<body id="faq" class="library">
@@ -18,11 +18,11 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="include/header.jsp" %>
-				</div>
-				<div id="nav">
-					<%@ include file="include/nav.jsp" %>
-					<div id="subnav">
-						<%@ include file="include/nav_library.jsp" %>
+					<div id="nav">
+						<%@ include file="include/nav.jsp" %>
+						<div id="subnav">
+							<%@ include file="include/nav_library.jsp" %>
+						</div>
 					</div>
 				</div>
 			</div>

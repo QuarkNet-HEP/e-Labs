@@ -6,9 +6,9 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Quarknet Grid Student Intro</title>
-		<%= elab.css("css/style2.css") %>
-		<%= elab.css("css/home.css") %>
-		<%= elab.css("css/three-column.css") %>
+		<%= elab.css(request, "css/style2.css") %>
+		<%= elab.css(request, "css/home.css") %>
+		<%= elab.css(request, "css/three-column.css") %>
 	</head>
 	
 	<body id="first" class="home">
@@ -17,9 +17,9 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="include/header.jsp" %>
-				</div>
-				<div id="nav">
-					<!-- no nav here -->
+					<div id="nav">
+						<!-- no nav here -->
+					</div>
 				</div>
 			</div>
 			

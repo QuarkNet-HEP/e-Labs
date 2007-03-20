@@ -1,11 +1,11 @@
-<%@ include file="include/elab.jsp" %>
-<%@ include file="modules/login/loginrequired.jsp" %>
+<%@ include file="../../include/elab.jsp" %>
+<%@ include file="../../modules/login/loginrequired.jsp" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Cosmic Data Interface</title>
+		<title>Quarknet Grid Student Intro</title>
 		<%= elab.css(request, "css/style2.css") %>
 		<%= elab.css(request, "css/data.css") %>
 		<%= elab.css(request, "css/two-column.css") %>
@@ -16,11 +16,11 @@
 		<div id="container">
 			<div id="top">
 				<div id="header">
-					<%@ include file="include/header.jsp" %>
+					<%@ include file="../../include/header.jsp" %>
 					<div id="nav">
-						<%@ include file="include/nav.jsp" %>
+						<%@ include file="../../include/nav.jsp" %>
 						<div id="subnav">
-							<%@ include file="include/nav_data.jsp" %>
+							<%@ include file="../../include/nav_data.jsp" %>
 						</div>
 					</div>
 				</div>
