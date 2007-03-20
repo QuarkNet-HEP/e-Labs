@@ -11,6 +11,7 @@ import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.util.ElabUtil;
 import gov.fnal.elab.util.URLEncoder;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 public class Elab {
@@ -139,9 +141,30 @@ public class Elab {
         return user;
     }
 
-    public String css(String css) {
-        return "<link rel=\"stylesheet\" type=\"text/css\" href=\"/elab/"
-                + getName() + "/" + css + "\"/>";
+    public String css(HttpServletRequest request, String css) {
+        ServletContext context = request.getSession().getServletContext();
+        String path = getName() + "/" + css;
+        String ua = request.getHeader("User-Agent"); 
+        if (ua != null) {
+            if (ua.indexOf("MSIE 6") != -1) {
+                ua = "ie6";
+            }
+        }
+        System.out.println(ua);
+        String uapath = path;
+        if (path.endsWith(".css")) {
+            int i = path.length() - 4;
+            uapath = path.substring(0, i) + "_" + ua + path.substring(i);
+        }
+        System.out.println(context.getRealPath(uapath));
+        File f = new File(context.getRealPath(uapath));
+        if (f.exists()) {
+            return "<link rel=\"stylesheet\" type=\"text/css\" href=\"/elab/" + path + "\"/>\n" + 
+            "<link rel=\"stylesheet\" type=\"text/css\" href=\"/elab/" + uapath + "\"/>";
+        }
+        else {
+            return "<link rel=\"stylesheet\" type=\"text/css\" href=\"/elab/" + path + "\"/>";
+        }
     }
 
     public String page(String rel) {

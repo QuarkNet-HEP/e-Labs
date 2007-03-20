@@ -95,7 +95,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
             }
         }
         catch (Exception e) {
-            throw new ElabException("getting LFNs and metadata", e);
+            throw new ElabException(e.getMessage() + " getting LFNs and metadata", e);
         }
         finally {
             try {
