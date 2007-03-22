@@ -140,6 +140,11 @@ public class Elab {
         }
         return user;
     }
+	
+	public String css(String css) {
+        String path = getName() + "/" + css;
+        return "<link rel=\"stylesheet\" type=\"text/css\" href=\"/elab/" + path + "\"/>";
+    }
 
     public String css(HttpServletRequest request, String css) {
         ServletContext context = request.getSession().getServletContext();
