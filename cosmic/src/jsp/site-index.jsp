@@ -1,54 +1,44 @@
-<%@ page import="java.util.*" %>
-<HTML>
-<HEAD>
-<TITLE>Cosmics Site Index</TITLE>
-<!-- include css style file -->
-<%@ include file="include/style.css" %>
-<style>
-<!--
-.indent1 {margin-left: 0px;font-size: 10 pt;font-weight: bold}
-.indent2 {margin-left: 0px;font-size: 10 pt}
-.indent3 {margin-left: 10px;font-size: 10 pt}
-.indent4 {margin-left: 20px;font-size: 10 pt}
--->
-</style>
+<%@ include file="include/elab.jsp" %>
+<%@ include file="modules/login/loginrequired.jsp" %>
+<%@ page import="gov.fnal.elab.util.ElabUtil" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>e-Lab Site Index</title>
+		<%= elab.css(request, "css/style2.css") %>
+		<%= elab.css(request, "css/site-index.css") %>
+		<%= elab.css(request, "css/six-column.css") %>
+	</head>
+		
+	<body id="site-index" class="site-index">
+		<!-- entire page container -->
+		<div id="container">
+			<div id="top">
+				<div id="header">
+					<%@ include file="include/header.jsp" %>
+					<div id="nav">
+						<%@ include file="include/nav.jsp" %>
+						<div id="subnav">
+							<%@ include file="include/nav_site-index.jsp" %>
+						</div>
+					</div>
+				</div>
+			</div>
 
-<!-- header/navigation -->
-<%
-//be sure to set this before including the navbar
-String headerType = "Site Index";
-%>
-<%@ include file="include/navbar_common.jsp" %>
-<center>
-<TABLE WIDTH=723>
-<TR><TD>
-<TABLE WIDTH=723 CELLPADDING=4>
-<TR><TD WIDTH=723 BGCOLOR=FF3300 VALIGN=TOP align="left">
-<FONT SIZE=+1 FACE=ARIAL COLOR=000000><B>Lost? You can go to any of the pages on this site from this list.</B></FONT>
-</TD></TR>
-</TABLE>
-<center>
-<FONT face=arial>
-<TABLE WIDTH=723 CELLPADDING=4>
-<TR><TD>
-<SPAN class="indent1"><A HREF="home.jsp" >Home</A></SPAN><BR>
-</TD><TD>
-<SPAN class="indent1"><A HREF="library.jsp" >Library</A></SPAN><BR>
-</TD><TD>
-<SPAN class="indent1"><A HREF="upload.jsp" >Upload</A></SPAN><BR>
-</TD><TD>
-<SPAN class="indent1"><A HREF="search.jsp" >Data</A></SPAN><BR>
-</TD><TD>
-<SPAN class="indent1"><A HREF="poster.jsp" >Posters</A></SPAN><BR>
-</TD><TD>
-<SPAN class="indent1"><A HREF="rubric.html" >Assessment</A></SPAN><BR>
-</TD></TR>
+<div id="content">
+<h1>Lost? You can go to any of the pages on this site from this list.</h1>
 
-<TR><TD VALIGN=TOP>
-<SPAN class="indent2"><A HREF="first.jsp" >The Big Picture</A></SPAN><BR>
-<SPAN class="indent2"><A HREF="first_web.jsp" >The Website</A></SPAN><BR>
 
-</TD><TD VALIGN=TOP>
+<table border="0" id="main">
+<tr><td id="col1">
+<SPAN class="indent1"><A HREF="home.jsp" >Home</A></SPAN><BR><BR>
+<SPAN class="indent2"><A HREF="first.jsp" >The Big Picture</A></SPAN>
+<SPAN class="indent2"><A HREF="first_web.jsp" >The Website</A></SPAN>
+</td>
+
+<TD VALIGN=TOP id="col2">
+<SPAN class="indent1"><A HREF="library.jsp" >Library</A></SPAN><BR><BR>
 <SPAN class="indent2"><A HREF="milestones_map.jsp" >Study Guide</A> and <A HREF="milestones.jsp"><B>text version</B></A></SPAN><BR>
 <SPAN class="indent3"><a href="showReferences.jsp?t=reference&f=peruse">View Resources for Study Guide</a><BR>
 <SPAN class="indent3"><a href="showReferences.jsp?t=glossary&f=peruse">View Glossary</a></BR>
@@ -65,19 +55,7 @@ String headerType = "Site Index";
 <SPAN class="indent4"><A HREF="tryit_performance.jsp" >Step-by-Step Instructions: Flux</A></SPAN><BR>
 <SPAN class="indent4"><A HREF="eshtutorial.jsp" >Shower Study Tutorial</A></SPAN><BR>
 <SPAN class="indent4"><A HREF="tryit_shower.jsp" >Step-by-Step Instructions: Shower</A></SPAN><BR>
-
-<%
-   if (session.getAttribute("role").equals("upload")) {
-   %>
-   
-   
 <SPAN class="indent4"><A HREF="geoInstructions.jsp" >Updating Geometry Tutorial</A></SPAN><BR>   
-   
-   
-    <%
-    }
-    %>
-
 
 
 <SPAN class="indent3">Animations</SPAN><BR>
@@ -88,10 +66,17 @@ String headerType = "Site Index";
 <SPAN class="indent4"><A HREF="flash/SC2003.html" >Loop</A></SPAN><BR>
 <SPAN class="indent4"><A HREF="flash/griphyn-animate_sc2003.html" >CMS vs. QuarkNet</A></SPAN><BR>
 <SPAN class="indent4"><A HREF="flash/DAQII.html" >DAQII</A></SPAN><BR>
-<TD VALIGN=TOP>
+</td>
+<TD VALIGN=TOP id="col3">
+   
+<SPAN class="indent1"><A HREF="upload.jsp" >Upload</A></SPAN><BR><BR>
+   
 <SPAN class="indent2"><A HREF="upload.jsp" >Upload Data</A></SPAN><BR>
 <SPAN class="indent2"><A HREF="geo.jsp" >Upload Geometry</A></SPAN><BR>
-<TD VALIGN=TOP>
+</td>
+<TD VALIGN=TOP id="col4">
+<SPAN class="indent1"><A HREF="search.jsp" >Data</A></SPAN><BR><BR>
+
 <SPAN class="indent2"><B>Analysis</B></SPAN><BR>
 <SPAN class="indent3"><A HREF="search.jsp?t=split&f=analyze&s=performance" >Performance Study</A></SPAN><BR>
 <SPAN class="indent3"><A HREF="search.jsp?t=split&f=analyze&s=lifetime" >Lifetime Study</A></SPAN><BR>
@@ -106,11 +91,15 @@ String headerType = "Site Index";
 <SPAN class="indent3"><A HREF="search.jsp?t=plot&f=delete" >Plots</A></SPAN><BR>
 <SPAN class="indent3"><A HREF="search.jsp?t=poster&f=delete" >Posters</A></SPAN><BR>
 <SPAN class="indent2"><A HREF="search.jsp?t=plot&f=view">View My Plots</A></SPAN>
-</TD><TD VALIGN=TOP>
+</td>
+<TD VALIGN=TOP id="col5">
+<SPAN class="indent1"><A HREF="poster.jsp" >Posters</A></SPAN><BR><BR>
+
 <SPAN class="indent2"><A HREF="makePoster.jsp" >New Poster</A></SPAN><BR>
 <SPAN class="indent2"><A HREF="editPosters.jsp" >Edit Posters</A></SPAN><BR>
 <SPAN class="indent2"><A HREF="search.jsp?t=poster&f=view" >View Posters</A></SPAN><BR>
-<SPAN class="indent2"><A HREF="search.jsp?t=poster&f=delete" >Delete Posters</A></SPAN><BR>
+<SPAN class="indent2"><A HREF="search.jsp?t=poster&f=delete" >Delete Posters</A></SPAN>
+
 <%        // No better way...we parse...userArea...sad...
         String groupName2 = null;
         String userArea2 = (String) session.getAttribute("userArea");
@@ -132,16 +121,30 @@ String headerType = "Site Index";
         <%
         }
         %>
-<TD VALIGN=TOP>
-</TD>
-<TD VALIGN=TOP>
-</TD></TR>
-</TABLE>
 
-</font></TD></TR>
-</TABLE>
-<hr>
-</CENTER>
-</CENTER>
+
+
+
+
+</td>
+<td valign="top" id="col6">
+<SPAN class="indent1"><A HREF="rubric.html">Assessment</A></SPAN><BR><BR>
+</td>
+</td></tr>
+</table>
+
+
+
+
+
+
+
+
+			</div>
+<!-- end content -->	
+
+			<div id="footer"> </div>
+		</div>
+		<!-- end container -->
 </BODY>
 </HTML>

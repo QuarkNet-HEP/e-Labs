@@ -78,16 +78,6 @@
 					<li>Communicate with other school groups doing similar research.</li>
 				</ul>
 	
-				<p>
-					Currently, the project is designed for physics students whose teachers are 
-					participating in one of several cosmic ray projects in North America. 
-					<a href="http://csr.phys.ualberta.ca/nalta/">NALTA</a>
-				</p>
-
-				<p>
-					However, we plan to build professional development into the teacher pages 
-					so that other physics teachers can join the collaboration.
-				</p>
 	
 				<p>
 					We also plan two levels of  data analysis: the science-based interface and 
