@@ -82,6 +82,7 @@
 	margin: 0px;
 	padding-right: 0px;
 	padding-bottom: 2px;
+	white-space: nowrap;
 }
 
 #nav li {
@@ -91,6 +92,8 @@
 	padding-right: 2px;
 	padding-top: 0px;
 	padding-bottom: 0px;
+	display: inline;
+
 }
 
 #nav a {
@@ -133,7 +136,9 @@ table#main {
 	width: 100%;
 	padding: 0px;
 	margin: 0px;
+/*
 	border: 1px solid red;
+*/
 }
 
 #main td {

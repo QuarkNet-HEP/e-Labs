@@ -1,12 +1,19 @@
-<%@ page import="java.util.*" %>
-<HTML>
-<HEAD>
-<TITLE>Cosmics Site Overview</TITLE>
-<!-- include css style file -->
-<%@ include file="include/style.css" %>
-<!-- header/navigation -->
+<%@ include file="include/elab.jsp" %>
+<%@ include file="modules/login/loginrequired.jsp" %>
+<%@ page import="gov.fnal.elab.util.ElabUtil" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>e-Lab Site Overview</title>
+		<%= elab.css(request, "css/style2.css") %>
+		<%= elab.css(request, "css/site-index.css") %>
+		<%= elab.css(request, "css/two-column.css") %>
+	</head>
+	<body class="siteindex">
+		<!-- entire page container -->
+		<div id="container">
 <%
-
 // display set to "static" allows showing a site overview without a real menu
 String display = request.getParameter("display");
 if(display != null && display.equals("static")){
@@ -16,156 +23,149 @@ if(display != null && display.equals("static")){
 }
     else
     {
-     String headerType = "Site Index";
 %>
-<%@ include file="include/navbar_common.jsp" %>
+			<div id="top">
+				<div id="header">
+					<%@ include file="include/header.jsp" %>
+					<div id="nav">
+						<%@ include file="include/nav.jsp" %>
+						<div id="subnav">
+							<%@ include file="include/nav_site-index.jsp" %>
+						</div>
+					</div>
+				</div>
+			</div>
+
 <%
 }
 %>
-
-
-<TABLE WIDTH=723>
-<TR><TD>
-<TABLE WIDTH=723 CELLPADDING=4>
-<TR><TD WIDTH=723 BGCOLOR=FF3300 VALIGN=TOP align="left">
-<FONT SIZE=+1 FACE=ARIAL COLOR=000000><B>Find out what you can do under each tab.</B></FONT>
-</TD></TR>
-</TABLE>
-<TABLE WIDTH=800>
-<TR><TD VALIGN=TOP>
-
-<TABLE  CELLPADDING=0 CELLSPACING=0 BGCOLOR=FFB27F VALIGN=TOP>
-<TR><TD WIDTH=388>
-<A HREF="home.jsp"><IMG SRC="graphics/home.gif" border="0"></A>
-
-<FONT FACE=ARIAL size=-1>
-<P STYLE="margin-left: 10px">
-<B>Homepage</B>
-<P>
-<LI STYLE="margin-left: 10px">Research topic.
-<P>
-
-
-</TD></TR>
-</TABLE>
-<P>
-<TABLE CELLPADDING=0 CELLSPACING=0 BGCOLOR=C782BC VALIGN=TOP>
-<TR><TD WIDTH=388>
-<a href="upload.jsp" border=0><IMG SRC="graphics/upload.gif" border="0"></A>
-
-
-<FONT FACE=ARIAL SIZE=-1>
-<P STYLE="margin-left: 10px">
-<B>Upload</B></P>
-<P>
-<LI STYLE="margin-left: 10px">Data
-<P>
-<LI STYLE="margin-left: 10px">Geometry
-<P>
-</FONT>
-</TD></TR>
-</TABLE>
-
-<P>
-<TABLE CELLPADDING=0 CELLSPACING=0 BGCOLOR=7FB299 VALIGN=TOP>
-
-<TR><TD WIDTH=388>
-<a href="poster.jsp" border=0><IMG SRC="graphics/posters.gif"  border="0"></A>
-<FONT FACE=ARIAL SIZE=-1>
-<P STYLE="margin-left: 10px">
-<B>Share Your Reseach</B></P>
-<P>
-<LI STYLE="margin-left: 10px">Create a Poster - Post results including graphs, notes, calculations.
-<P>
-<LI STYLE="margin-left: 10px">Edit a Poster
-<P>
-<LI STYLE="margin-left: 10px">View Posters - Review the work of others.
-<P>
-<LI STYLE="margin-left: 10px"> Search for Studies - Participate in a scientific dialog.
-<P>
-
-</FONT>
-</TD></TR>
-</TABLE>
-<P>
+<div id="content">
+<h1>Find out what you can do under each tab.</h1>
 
 
 
-</TD><TD WIDTH=8>
-&nbsp;
-</TD><TD VALIGN=TOP>
+<table border="0">
+	<tr>
+		<td valign="top">
+			<div id="left">
+					
+				<div class="tab">
+					<span class="tabtitleHome"><a HREF="home.jsp">Home</a></span>
+					<div class="tabcontentsHome">
+			 	<h2>Homepage</h2>
+					<ul>
+					<li>Research topic.</li>
+					</ul>
+					</div>
+				</div>
+					
 
-<TABLE  CELLPADDING=0 CELLSPACING=0 BGCOLOR=99cccc VALIGN=TOP>
-
-
-<TR><TD WIDTH=388>
-<a href="resources.jsp" border=0><IMG SRC="graphics/resources.gif" border="0"></A>
-<FONT FACE=ARIAL size=-1>
-<P STYLE="margin-left: 10px">
-<B>Look for Links</B></P>
-<P>
-<LI STYLE="margin-left: 10px">Online resources -  If you find a really good resource not listed, let us know.
-<P>
-<LI STYLE="margin-left: 10px">Physicists -  Contacts at QuarkNet</LI>
-<P>
-<LI STYLE="margin-left: 10px">Student Research Groups - Other studies in the field</LI>
-<P>
-<LI STYLE="margin-left: 10px">Tutorials - Practice new skills</LI>
-<P> 
-<LI STYLE="margin-left: 10px">Animations - How the comsic ray project works</LI>
-<P>  
-</TD></TR>
-</TABLE>
-<P>
-<TABLE CELLPADDING=0 CELLSPACING=0 BGCOLOR=99CCff VALIGN=TOP>
-<TR><TD WIDTH=388>
-<a href="search.jsp" border=0><IMG SRC="graphics/data.gif"  border="0"></A>
+				<div class="tab">
+					<span class="tabtitleUpload"><A HREF="upload.jsp">Upload</a></span>
+					<div class="tabcontentsUpload">
 
 
-<FONT FACE=ARIAL SIZE=-1>
-<P STYLE="margin-left: 10px">
-<B>Analyze and Manage Data</B></P>
-<P>
-<LI STYLE="margin-left: 10px">Analysis - Physics studies.
-<P>
-<LI STYLE="margin-left: 10px"> Management - View and delete files.</LI>
-<P>
-</FONT>
-</TD></TR>
-</TABLE>
+					<h2>Upload</h2>
+					<P>
+					<ul>
+					<li>Data</li>
+					<li>Geometry</li>
+					</ul>
+					<P>
+					
+					</div>
+				</div>
 
-<P>
-<TABLE CELLPADDING=0 CELLSPACING=0 BGCOLOR=FFE57F VALIGN=TOP>
+				<div class="tab">
+					<span class="tabtitlePoster"><A HREF="poster.jsp">Posters</a></span>
+					<div class="tabcontentsPoster">
 
-<TR><TD WIDTH=388>
-<a href="rubric.html" border=0><IMG SRC="graphics/assess.gif"  border="0"></A>
-<FONT FACE=ARIAL SIZE=-1>
-<P STYLE="margin-left: 10px">
-<B>Assess your work</B></P>
-<P>
-<LI STYLE="margin-left: 10px">Rubric
 
-<P>
+					<h2>Share Your Research</h2>
+					<P>
+					<ul>
+					<li>Create a Poster - Post results including graphs, notes, calculations.</li>
+					<li>Edit a Poster</li>
+					<li>View Posters - Review the work of others.</li>
+					<li>Search for Studies - Participate in a scientific dialog.</li>
+					</ul>
+					<P>
+					
+					</div>
+				</div>
+         </div>
+         </td>
+         <td valign="top">
+         
+			<div id="right">
 
-</FONT>
-</TD></TR>
-</TABLE>
-</TD></TR>
-</TABLE>
-</TD></TR>
+				<div class="tab">
+					<span class="tabtitleLibrary"><A HREF="library.jsp">Library</a></span>
+					<div class="tabcontentsLibrary" style="background-color: #ccffff;">
+
+
+
+					<h2>Use Online Library</h2>
+					<P>
+					<ul>
+					<li>Review Research Basics</li>
+					<li>Use Study Guide with Milestones and References</li>
+					<li>Online Resources: Physicists, Research Groups, Tutorials, Animations</LI>
+					<li>The Big Picture</LI>
+					<li>FAQs</LI>
+					<li>Site Help</LI>
+					</ul>
+					<P>
+					</div>
+				</div>
+					
+				<div class="tab">
+					<span class="tabtitleData"><A HREF="search.jsp">Data</a></span>
+					<div class="tabcontentsData" style="background-color: #99CCff;">
+
+
+					<h2>Analyze and Manage Data</h2>
+					<P>
+					<ul>
+					<li>Analysis - Physics studies.</li>
+					<li> Management - View and delete files.</LI>
+					</ul>
+					<P>
+					</div>
+				</div>
+					
+				<div class="tab">
+					<span class="tabtitleAssess"><A HREF="rubric.jsp">Assessment</a></span>
+					<div class="tabcontentsAssess">
+
+
+					<h2>Assess your work</h2>
+					<P>
+					<ul>
+					<li>Rubric</li>
+					</ul>
+					<P>
+					</div>
+				</div>
+         </div>
+         </td></tr>
+ 
+
 <% if(display != null && display.equals("static")){
 %>
-  <tr><td align="center"><A HREF="javascript:window.close();"><FONT SIZE=-1>Close Window and Go Back to Getting Started Page</FONT></A></td></tr></FONT></td></tr>
+  <tr><td colspan="2" align="center"><A HREF="javascript:window.close();">Close Window and Go Back to Getting Started Page</A></td></tr>
 <% 
 }
 %>
 
+     </table>
 
-</TABLE>
-
-</font></TD></TR>
-</TABLE>
-<hr>
-</CENTER>
+			</div>
+			<!-- end content -->	
+		
+			<div id="footer">
+			</div>
+		</div>
+		<!-- end container -->
 </BODY>
 </HTML>

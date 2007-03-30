@@ -11,7 +11,7 @@
 		<%= elab.css(request, "css/six-column.css") %>
 	</head>
 		
-	<body id="site-index" class="site-index">
+	<body id="site-index" class="siteindex">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
