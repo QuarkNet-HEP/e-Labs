@@ -1,7 +1,9 @@
+<%@ include file="elab.jsp" %>
+
 <%
-String elabName="cosmic";
-String elabFormalName="Cosmic Ray e-Lab";
-String elabGuestUser="guest";
-String elabRefMaker="fermigroup";
+String elabName = elab.getName();
+String elabFormalName = elab.getProperties().getFormalName();
+String elabGuestUser = elab.getProperties().getGuestUserName();
+String elabRefMaker = "fermigroup";
 
 %>
