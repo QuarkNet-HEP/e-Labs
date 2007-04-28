@@ -56,6 +56,13 @@
 					reports, and in general participate in the part of scientific 
 					research that is often left out of classroom experiments. 
 				</p>
+				
+				<p>
+					Students start this e-lab with an <A href="splash.html">animation</A> that raises
+					questions researchers ask about cosmic rays. <B>Bookmark it</B> as it is different
+					than either Student Home below and you will want to direct your students there. 
+				</p>
+
 				<p>
 					View Student Home as a: <a href="../home/first.jsp">new student</a>
 					- <a href = "../home/home.jsp">returning student</a>.
