@@ -39,7 +39,7 @@ h1 {
 	padding-bottom: 6px;
 }
 
-#first_web #content #right {
+#first-web #content #right {
 	width: 140px;
 }
 
@@ -215,7 +215,7 @@ a.button {
 
 .library #content .tabcontents li:before {
 	display: marker;
-	content: url("../graphics/ref_dot.gif");
+	content: url("../graphics/ref-dot.gif");
 	marker-offset: auto;
 	padding-right: 3px;
 }
