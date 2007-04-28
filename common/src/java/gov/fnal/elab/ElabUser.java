@@ -17,14 +17,17 @@ public class ElabUser {
     public static final String USER_SESSION_VARIABLE = "elab.user";
     
     private String teacherId, role, userArea, survey, userDirURL,
-            userDir, name;
+            userDir, name, webapp;
     private ElabGroup group;
     private boolean firstTime, guest;
+    private Elab elab;
     
     private ElabUserManagementProvider provider;
     
-    public ElabUser(ElabUserManagementProvider provider) {
+    public ElabUser(Elab elab, ElabUserManagementProvider provider) {
         this.provider = provider;
+        this.elab = elab;
+        this.webapp = elab.getProperties().getProperty("elab.webapp", "elab");
     }
     
     public String getName() {
@@ -77,6 +80,8 @@ public class ElabUser {
 
     public void setUserArea(String userArea) {
         this.userArea = userArea;
+        this.userDirURL = elab.getProperties().getProperty("portal.users") + '/' + userArea;
+        this.userDir = elab.getServletContext().getRealPath(userDirURL);
     }
 
     public String getUserDirURL() {
@@ -93,6 +98,18 @@ public class ElabUser {
 
     public void setUserDir(String userDir) {
         this.userDir = userDir;
+    }
+    
+    public String getDirURL(String type) {
+        return '/' + webapp + '/' + getWebappDirURL(type);
+    }
+    
+    private String getWebappDirURL(String type) {
+        return userDirURL + '/' + type;
+    }
+    
+    public String getDir(String type) {
+        return elab.getServletContext().getRealPath(getWebappDirURL(type));
     }
 
     public ElabGroup getGroup() {
@@ -134,7 +151,7 @@ public class ElabUser {
     public static boolean isUserLoggedIn(HttpSession session) {
         return getUser(session) != null;
     }
-
+   
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("ElabUser[");

@@ -3,8 +3,9 @@
  */
 package gov.fnal.elab.usermanagement.impl;
 
+import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
-import gov.fnal.elab.ElabProperties;
+import gov.fnal.elab.ElabTeacher;
 import gov.fnal.elab.ElabUser;
 import gov.fnal.elab.usermanagement.AuthenticationException;
 import gov.fnal.elab.usermanagement.ElabUserManagementProvider;
@@ -15,16 +16,19 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class DatabaseUserManagementProvider implements
         ElabUserManagementProvider {
 
     public static final String SWITCHING_ELABS = "switchingelabs";
 
-    private ElabProperties properties;
+    private Elab elab;
 
-    public DatabaseUserManagementProvider(ElabProperties properties) {
-        this.properties = properties;
+    public DatabaseUserManagementProvider(Elab elab) {
+        this.elab = elab;
     }
 
     public ElabUser authenticate(String username, String password,
@@ -32,7 +36,8 @@ public class DatabaseUserManagementProvider implements
         Statement s = null;
         Connection conn = null;
         try {
-            conn = DatabaseConnectionManager.getConnection(properties);
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
             s = conn.createStatement();
             ResultSet rs;
             password = switchingElabs(s, username, password);
@@ -107,11 +112,11 @@ public class DatabaseUserManagementProvider implements
             throw new AuthenticationException("Invalid username or password");
         }
 
-        ElabUser user = new ElabUser(this);
+        ElabUser user = new ElabUser(elab, this);
         user.setName(username);
         ElabGroup group = new ElabGroup();
         group.setId(rs.getString("id"));
-        //The group name seems to be the same as the user name
+        // The group name seems to be the same as the user name
         group.setName(user.getName());
         user.setGroup(group);
         user.setTeacherId(rs.getString("teacher_id"));
@@ -121,18 +126,16 @@ public class DatabaseUserManagementProvider implements
             user.setSurvey("f");
         }
         user.setUserArea(rs.getString("userarea"));
-        user.setUserDir(ElabUtil.pathcat(
-                properties.getProperty("portal.users"), user.getUserArea()));
-        user.setUserDirURL(ElabUtil.urlcat("users", user.getUserArea()));
+        setMiscGroupData(group, user.getUserArea());
         return user;
     }
 
-    public void resetFirstTime(String groupId)
-            throws SQLException {
+    public void resetFirstTime(String groupId) throws SQLException {
         Statement s = null;
         Connection conn = null;
         try {
-            conn = DatabaseConnectionManager.getConnection(properties);
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
             s = conn.createStatement();
             s.executeUpdate("UPDATE research_group "
                     + "SET first_time='f' WHERE id = \'" + groupId + "\';");
@@ -140,6 +143,105 @@ public class DatabaseUserManagementProvider implements
         finally {
             DatabaseConnectionManager.close(conn, s);
         }
+    }
 
+    protected void setMiscGroupData(ElabGroup group, String userArea) {
+        if (userArea != null) {
+            String[] sp = userArea.split("/");
+            group.setYear(sp[0]);
+            group.setState(sp[1].replace('_', ' ')); // useful for metadata
+            // searches if the
+            // state, city, school,
+            // and teacher have
+            // spaces instead of
+            // underscores
+            group.setCity(sp[2].replace('_', ' '));
+            group.setSchool(sp[3].replace('_', ' '));
+            group.setTeacher(sp[4].replace('_', ' '));
+            // groupName = sp[5];
+        }
+    }
+
+    public Collection getTeachers() throws SQLException {
+        Statement s = null;
+        Connection conn = null;
+        ResultSet rs;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            s = conn.createStatement();
+            rs = s
+                    .executeQuery("SELECT id as projectid from project where name='"
+                            + elab.getName() + "';");
+            int projectId = 1; // default to Cosmic
+            if (rs.next()) {
+                projectId = rs.getInt("projectid");
+            }
+            rs = s
+                    .executeQuery("SELECT distinct teacher.name as tname, teacher.email as temail, "
+                            + "research_group.name as rgname, research_group.userarea as rguserarea "
+                            + "FROM teacher, research_group "
+                            + "WHERE research_group.teacher_id = teacher.id "
+                            + "AND research_group.id in "
+                            + "(Select distinct research_group_id from research_group_project where "
+                            + " research_group_project.project_id ='"
+                            + projectId + "') ORDER BY tname ASC;");
+            List teachers = new ArrayList();
+            // the first one is a dummy, but it makes the code below less
+            // cluttered
+            ElabTeacher t = new ElabTeacher(elab, this);
+            ElabGroup g = null;
+            while (rs.next()) {
+                String name = rs.getString("tname");
+                if (name.equals(t.getName())) {
+                    ElabGroup n = new ElabGroup();
+                    n.setCity(g.getCity());
+                    n.setSchool(g.getSchool());
+                    n.setState(g.getState());
+                    g = n;
+                }
+                else {
+                    t = new ElabTeacher(elab, this);
+                    t.setName(name);
+                    t.setEmail(rs.getString("temail"));
+                    g = new ElabGroup();
+                    if (rs.getString("rguserarea") != null
+                            && !rs.getString("rguserarea").equals("")) {
+                        String[] brokenSchema = rs.getString("rguserarea")
+                                .split("/");
+                        if (brokenSchema != null) {
+                            g.setSchool(brokenSchema[3].replaceAll("_", " "));
+                            g.setCity(brokenSchema[2].replaceAll("_", " "));
+                            g.setState(brokenSchema[1].replaceAll("_", " "));
+                        }
+                    }
+                    teachers.add(t);
+                }
+                g.setName(rs.getString("rgname"));
+                t.addGroup(g);
+            }
+            return teachers;
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, s);
+        }
+    }
+
+    /**
+     * A backdoor for running direct queries on the database
+     */
+    public ResultSet runQuery(String query) throws SQLException {
+        Statement s = null;
+        Connection conn = null;
+        ResultSet rs;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            s = conn.createStatement();
+            return s.executeQuery(query);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, s);
+        }
     }
 }

@@ -1,7 +1,7 @@
 /*
  * Created on Mar 13, 2007
  */
-package gov.fnal.elab.datacatalog;
+package gov.fnal.elab.datacatalog.query;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -71,5 +71,13 @@ public class ResultSet implements Collection {
 
     public Object[] toArray(Object[] a) {
         throw new UnsupportedOperationException();
+    }
+    
+    public String[] getLfnArray() {
+        String[] lfna = new String[entries.size()];
+        for (int i = 0; i < lfna.length; i++) {
+            lfna[i] = ((CatalogEntry) entries.get(i)).getLFN();
+        }
+        return lfna;
     }
 }

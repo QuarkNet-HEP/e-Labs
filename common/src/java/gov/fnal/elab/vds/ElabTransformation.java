@@ -421,7 +421,13 @@ public class ElabTransformation{
             Object k = i.next();
             Object v = h.get(k);
             if(v instanceof String){
-                addToDV((String)k, (String)v);
+                /*
+                 * I believe this is a better place to escape newlines.
+                 * After all, it's not a problem with the webapp, but with
+                 * the implementation
+                 */
+                addToDV((String)k, ((String)v).replaceAll("\r\n?",
+                                "\\\\n"));
             }
             else if(v instanceof java.util.List){
                 addToDV((String)k, (java.util.List)v);
@@ -705,6 +711,9 @@ public class ElabTransformation{
             //state.getDAX( label==null ? "cosmic" : label ).toXML(sw, "");
             state.getDAX("run").toXML(daxXML, "");
             daxXML.close();
+            FileWriter fw = new FileWriter("/home/mike/dax.xml");
+            fw.write(daxXML.toString());
+            fw.close();
             //TODO StringBufferInputStream is deprecated as of JDK 1.1, but this would have to change in the VDS as well...
             StringBufferInputStream is = new StringBufferInputStream(daxXML.toString());
             Derive derive = new Derive();
@@ -713,7 +722,7 @@ public class ElabTransformation{
             genResult = derive.genShellScripts(is, outputDir, build, register);
 
         } catch(Exception e){
-            throw new ElabException("While generating shell scripts: " + e);
+            throw new ElabException("Exception while generating shell scripts", e);
         }
 
         if (!genResult) {
@@ -770,14 +779,17 @@ public class ElabTransformation{
             }
 
             if (c != 0) {			
-                String myError = "";
+                StringBuffer sb = new StringBuffer();
 
                 BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
                 String stdErrorString;
                 while ((stdErrorString = stdError.readLine()) != null) {
-                    myError += stdErrorString + "\n";
+                    sb.append(stdErrorString);
+                    sb.append('\n');
                 }
-                throw new ElabShellException(myError);
+                sb.append("Exit code: ");
+                sb.append(String.valueOf(c));
+                throw new ElabShellException(sb.toString());
             }
         } catch(IOException e){
             //out.println(e);

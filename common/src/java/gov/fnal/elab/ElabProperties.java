@@ -3,17 +3,8 @@
  */
 package gov.fnal.elab;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Properties;
 
-public class ElabProperties extends Properties {
+public class ElabProperties extends AbstractProperties {
     public static final String PROP_ELAB_NAME = "elab.name";
     public static final String PROP_ELAB_FORMAL_NAME = "elab.formal.name";
     public static final String PROP_ELAB_LOGIN_URL = "elab.login.url";
@@ -26,97 +17,15 @@ public class ElabProperties extends Properties {
     public static final String PROP_ELAB_LOGGED_OUT_HOME_PAGE = "elab.logged.out.home.page";
     public static final String PROP_HOST = "host";
     public static final String PROP_PORT = "port";
-
+    public static final String PROP_RUN_DIR = "run.dir";
+    public static final String PROP_USER_DIR = "user.dir";
+    public static final String PROP_DATA_DIR = "data.dir";
+    
     private String elabName;
 
     public ElabProperties(String elabName) {
+        super(elabName + " elab");
         this.elabName = elabName;
-    }
-
-    protected void load(Properties inherited) {
-        putAll(inherited);
-    }
-
-    public void load(String propertiesFile) throws IOException {
-        URL url = Elab.class.getClassLoader().getResource(propertiesFile);
-        InputStream is = null;
-        if (url != null) {
-            is = url.openStream();
-        }
-        if (url == null || is == null) {
-            throw new FileNotFoundException("Elab properties file ("
-                    + propertiesFile + ") not found");
-        }
-        load(url.openStream());
-    }
-
-    protected void resolve() {
-        Collection stack = new LinkedList();
-        Iterator i = new HashSet(keySet()).iterator();
-        while (i.hasNext()) {
-            String name = (String) i.next();
-            stack.clear();
-            replaceRefs(name, stack);
-        }
-    }
-
-    protected void replaceRefs(String pname, Collection stack) {
-        if (stack.contains(pname)) {
-            throw new CircularPropertyReferenceException(stack, elabName);
-        }
-        try {
-            String value = getProperty(pname);
-            stack.add(pname);
-            if (value.indexOf("${") == -1) {
-                return;
-            }
-            else {
-                StringBuffer sb = new StringBuffer();
-                int index = 0, last = 0;
-                while (index >= 0) {
-                    index = value.indexOf("${", index);
-                    if (index >= 0) {
-                        if (last != index) {
-                            sb.append(value.substring(last, index));
-                            last = index;
-                        }
-                        int end = value.indexOf("}", index);
-                        if (end == -1) {
-                            sb.append(value.substring(index));
-                            break;
-                        }
-                        else {
-                            String name = value.substring(index + 2, end);
-                            replaceRefs(name, stack);
-                            String pval = getProperty(name);
-                            index = end + 1;
-                            if (pval == null) {
-                                continue;
-                            }
-                            else {
-                                sb.append(pval);
-                                last = index;
-                            }
-                        }
-                    }
-                }
-                sb.append(value.substring(last));
-                put(pname, sb.toString());
-            }
-        }
-        finally {
-            stack.remove(pname);
-        }
-    }
-
-    protected String getRequired(String prop) {
-        String value = getProperty(prop);
-        if (value == null) {
-            throw new MissingPropertyException(prop, elabName);
-        }
-        else {
-            return value;
-        }
     }
 
     public String getFormalName() {
@@ -137,12 +46,12 @@ public class ElabProperties extends Properties {
 
     public String getLoggedInHomePage() {
         return getProperty(ElabProperties.PROP_ELAB_LOGGED_IN_HOME_PAGE, "/elab/"
-                + elabName + "/loggedinhome.jsp");
+                + elabName + "/jsp/loggedinhome.jsp");
     }
     
     public String getLoggedOutHomePage() {
         return getProperty(ElabProperties.PROP_ELAB_LOGGED_OUT_HOME_PAGE, "/elab/"
-                + elabName + "/loggedouthome.jsp");
+                + elabName + "/jsp/loggedouthome.jsp");
     }
     
     public String getHost() {
@@ -151,5 +60,9 @@ public class ElabProperties extends Properties {
     
     public String getPort() {
         return getRequired(ElabProperties.PROP_PORT);
+    }
+    
+    public String getDataDir() {
+        return getRequired(ElabProperties.PROP_DATA_DIR);
     }
 }

@@ -3,12 +3,11 @@
  */
 package gov.fnal.elab;
 
-import gov.fnal.elab.datacatalog.CatalogEntry;
 import gov.fnal.elab.datacatalog.DataCatalogProvider;
-import gov.fnal.elab.datacatalog.DataCatalogProviderFactory;
-import gov.fnal.elab.datacatalog.SimpleQuery;
-import gov.fnal.elab.datacatalog.ResultSet;
-import gov.fnal.elab.datacatalog.Tuple;
+import gov.fnal.elab.datacatalog.query.And;
+import gov.fnal.elab.datacatalog.query.CatalogEntry;
+import gov.fnal.elab.datacatalog.query.Equals;
+import gov.fnal.elab.datacatalog.query.ResultSet;
 import gov.fnal.elab.util.ElabException;
 
 import java.util.ArrayList;
@@ -30,11 +29,11 @@ public class ElabFAQ {
     public Collection entries() throws ElabException {
         ArrayList list = new ArrayList();
         
-        SimpleQuery q = new SimpleQuery();
-        q.addConstraint(new Tuple("type", "FAQ"));
-        q.addConstraint(new Tuple("project", elab.getName()));
+        And q = new And();
+        q.add(new Equals("type", "FAQ"));
+        q.add(new Equals("project", elab.getName()));
         
-        DataCatalogProvider p = DataCatalogProviderFactory.getDefault(elab.getProperties());
+        DataCatalogProvider p = ElabFactory.getDataCatalogProvider(elab);
         ResultSet rs = p.runQuery(q);
         
         Iterator i = rs.iterator();

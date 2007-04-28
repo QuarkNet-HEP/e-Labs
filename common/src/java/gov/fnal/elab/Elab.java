@@ -3,9 +3,10 @@
  */
 package gov.fnal.elab;
 
+import gov.fnal.elab.analysis.AnalysisExecutor;
+import gov.fnal.elab.datacatalog.DataCatalogProvider;
 import gov.fnal.elab.usermanagement.AuthenticationException;
 import gov.fnal.elab.usermanagement.ElabUserManagementProvider;
-import gov.fnal.elab.usermanagement.ElabUserManagementProviderFactory;
 import gov.fnal.elab.util.DatabaseConnectionManager;
 import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.util.ElabUtil;
@@ -21,42 +22,44 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.PageContext;
 
 public class Elab {
     private static Map elabs;
     private static Elab global;
 
-    public static Elab getElab(String name) throws ElabInstantiationException {
-        return getElab(name, "elab.properties." + name);
+    public static Elab getElab(PageContext context, String name) throws ElabInstantiationException {
+        return getElab(context, name, "elab.properties." + name);
     }
 
-    public static synchronized Elab getElab(String name, String properties)
+    public static synchronized Elab getElab(PageContext context, String name, String properties)
             throws ElabInstantiationException {
         if (global == null) {
-            global = Elab.newElab("global", "elab.properties");
+            global = Elab.newElab(context, "global", "elab.properties");
         }
         if (elabs == null) {
             elabs = new HashMap();
         }
         Elab elab = (Elab) elabs.get(name);
         if (elab == null) {
-            elab = Elab.newELab(name, properties, global.getProperties());
+            elab = Elab.newELab(context, name, properties, global.getProperties());
             elab.init();
             elabs.put(name, elab);
         }
         return elab;
     }
 
-    public static Elab newElab(String name, String properties)
+    public static Elab newElab(PageContext context, String name, String properties)
             throws ElabInstantiationException {
-        return newELab(name, properties, null);
+        return newELab(context, name, properties, null);
     }
 
-    public static Elab newELab(String name, String properties,
+    public static Elab newELab(PageContext context, String name, String properties,
             Properties inherited) throws ElabInstantiationException {
-        Elab elab = new Elab(name);
+        Elab elab = new Elab(context, name);
         ElabProperties props = elab.getProperties();
         if (inherited != null) {
             props.load(inherited);
@@ -76,10 +79,22 @@ public class Elab {
     private ElabProperties properties;
     private String id;
     private ElabFAQ faq;
+    private ServletContext context;
+    private ServletConfig config;
 
-    protected Elab(String name) {
+    protected Elab(PageContext pc, String name) {
         this.name = name;
         this.properties = new ElabProperties(name);
+        this.context = pc.getServletContext();
+        this.config = pc.getServletConfig();
+    }
+    
+    public ServletContext getServletContext() {
+        return context;
+    }
+    
+    public ServletConfig getServletConfig() {
+        return config;
     }
 
     public void init() throws ElabInstantiationException {
@@ -132,16 +147,19 @@ public class Elab {
 
     public ElabUser authenticate(String username, String password,
             String project) throws AuthenticationException {
-        ElabUserManagementProvider p = ElabUserManagementProviderFactory
-                .getDefault(properties);
+        ElabUserManagementProvider p = ElabFactory.getUserManagementProvider(this);
         ElabUser user = p.authenticate(username, password, id);
         if (username != null && username.equals(properties.getGuestUserName())) {
             user.setGuest(true);
         }
         return user;
     }
-	
-	public String css(String css) {
+    
+    public ElabUserManagementProvider getUserManagementProvider() {
+        return ElabFactory.getUserManagementProvider(this);
+    }
+    
+    public String css(String css) {
         String path = getName() + "/" + css;
         return "<link rel=\"stylesheet\" type=\"text/css\" href=\"/elab/" + path + "\"/>";
     }
@@ -149,19 +167,14 @@ public class Elab {
     public String css(HttpServletRequest request, String css) {
         ServletContext context = request.getSession().getServletContext();
         String path = getName() + "/" + css;
-        String ua = request.getHeader("User-Agent"); 
-        if (ua != null) {
-            if (ua.indexOf("MSIE 6") != -1) {
-                ua = "ie6";
-            }
-        }
+        String ua = request.getHeader("User-Agent");
+        ua = getCanonicalUA(ua);
         System.out.println(ua);
         String uapath = path;
         if (path.endsWith(".css")) {
             int i = path.length() - 4;
             uapath = path.substring(0, i) + "_" + ua + path.substring(i);
         }
-        System.out.println(context.getRealPath(uapath));
         File f = new File(context.getRealPath(uapath));
         if (f.exists()) {
             return "<link rel=\"stylesheet\" type=\"text/css\" href=\"/elab/" + path + "\"/>\n" + 
@@ -171,9 +184,71 @@ public class Elab {
             return "<link rel=\"stylesheet\" type=\"text/css\" href=\"/elab/" + path + "\"/>";
         }
     }
+    
+    public String script(HttpServletRequest request, String script) {
+        ServletContext context = request.getSession().getServletContext();
+        String path = getName() + "/" + script;
+        String ua = request.getHeader("User-Agent"); 
+        ua = getCanonicalUA(ua);
+        System.out.println(ua);
+        String uapath = path;
+        if (path.endsWith(".js")) {
+            int i = path.length() - 3;
+            uapath = path.substring(0, i) + "_" + ua + path.substring(i);
+        }
+        File f = new File(context.getRealPath(uapath));
+        if (f.exists()) { 
+            return "<script type=\"text/javascript\" src=\"/elab/" + uapath + "\"/>";
+        }
+        else {
+            return "<script type=\"text/javascript\" src=\"/elab/" + path + "\"/>";
+        }
+    }
+    
+    protected String getCanonicalUA(String ua) {
+        if (ua != null) {
+            if (ua.indexOf("MSIE 6") != -1) {
+                return "ie6";
+            }
+            if (ua.indexOf("Opera/9") != -1) {
+                return "opera9";
+            }
+            if (ua.indexOf("Safari") != -1) {
+                return "safari";
+            }
+        }
+        return ua;
+    }
+
 
     public String page(String rel) {
         return "/elab/" + name + "/" + rel;
+    }
+    
+    /**
+     * Given a path relative to the elab, construct a path that points
+     * to the same file but is relative to the page of the current request. 
+     */
+    public String rpage(HttpServletRequest request, String rel) {
+        String reqpath = request.getServletPath();
+        int reqdepth = charCount(reqpath, '/');
+        //add as many ../ as needed
+        StringBuffer sb = new StringBuffer();
+        for(int i = 0; i < reqdepth - 2; i++) {
+            sb.append("../");
+        }
+        sb.append(rel);
+        return sb.toString();
+    }
+    
+    private int charCount(String str, char c) {
+        int count = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == c) {
+                count++;
+            }
+        }
+        return count;
     }
     
     public String reference(String refname) {
@@ -204,5 +279,13 @@ public class Elab {
             faq = new ElabFAQ(this);
         }
         return faq;
+    }
+    
+    public DataCatalogProvider getDataCatalogProvider() {
+        return ElabFactory.getDataCatalogProvider(this);
+    }
+    
+    public AnalysisExecutor getAnalysisExecutor() {
+        return ElabFactory.getAnalysisProvider(this);
     }
 }

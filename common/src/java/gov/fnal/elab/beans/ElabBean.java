@@ -30,7 +30,7 @@ public class ElabBean{
         }
         link = dec.getLink();
         switch (link) {
-            case LFN.NONE:
+            case LFN.NONE: 
                 dv.addPass(new Pass(key, new Scalar(new Text(value))));
                 break;
             case LFN.INPUT:

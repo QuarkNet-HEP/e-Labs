@@ -9,17 +9,41 @@
  */
 package gov.fnal.elab.datacatalog.impl.vds;
 
+import gov.fnal.elab.analysis.ElabAnalysis;
+import gov.fnal.elab.analysis.VDSAnalysis;
+import gov.fnal.elab.analysis.VDSAnalysisExecutor;
 import gov.fnal.elab.datacatalog.DataCatalogProvider;
-import gov.fnal.elab.datacatalog.ResultSet;
-import gov.fnal.elab.datacatalog.SimpleQuery;
 import gov.fnal.elab.datacatalog.Tuple;
+import gov.fnal.elab.datacatalog.query.CatalogEntry;
+import gov.fnal.elab.datacatalog.query.MultiQueryElement;
+import gov.fnal.elab.datacatalog.query.QueryElement;
+import gov.fnal.elab.datacatalog.query.QueryLeaf;
+import gov.fnal.elab.datacatalog.query.ResultSet;
 import gov.fnal.elab.util.ElabException;
+import gov.fnal.elab.util.ElabUtil;
+import gov.fnal.elab.vds.ElabTransformation;
 
+import java.io.StringReader;
+import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.griphyn.vdl.annotation.Predicate;
+import org.griphyn.vdl.annotation.QueryParser;
 import org.griphyn.vdl.annotation.QueryTree;
+import org.griphyn.vdl.annotation.TupleBoolean;
+import org.griphyn.vdl.annotation.TupleDate;
+import org.griphyn.vdl.annotation.TupleFloat;
+import org.griphyn.vdl.annotation.TupleInteger;
+import org.griphyn.vdl.annotation.TupleString;
+import org.griphyn.vdl.classes.Derivation;
+import org.griphyn.vdl.classes.Leaf;
+import org.griphyn.vdl.classes.Pass;
+import org.griphyn.vdl.classes.Scalar;
+import org.griphyn.vdl.classes.Text;
+import org.griphyn.vdl.classes.Value;
 import org.griphyn.vdl.dbschema.Annotation;
 import org.griphyn.vdl.dbschema.AnnotationSchema;
 import org.griphyn.vdl.dbschema.DatabaseSchema;
@@ -28,11 +52,9 @@ import org.griphyn.vdl.util.ChimeraProperties;
 
 public class VDSDataCatalogProvider implements DataCatalogProvider {
 
-    public ResultSet runQuery(SimpleQuery query) throws ElabException {
-        int kind = Annotation.CLASS_FILENAME; // searching on lfn's
-        DatabaseSchema dbschema = null;
-
+    protected DatabaseSchema openSchema() throws ElabException {
         // Connect to the database.
+        DatabaseSchema dbschema;
         try {
             String schemaName = ChimeraProperties.instance().getVDCSchemaName();
 
@@ -43,95 +65,390 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
                 throw new ElabException(
                         "The database does not support metadata!");
             }
-            else {
-                Annotation annotation = null;
-                AnnotationSchema annotationschema = null;
-                try {
-                    annotation = (Annotation) dbschema;
-                    QueryTree tree = buildQueryTree(query);
-                    List lfns = annotation.searchAnnotation(kind, null, tree);
-                    if (lfns == null || lfns.isEmpty()) {
-                        return ResultSet.EMPTY_RESULT_SET;
-                    }
-                    else {
-                        ResultSet rs = new ResultSet();
-                        annotationschema = (AnnotationSchema) dbschema;
-                        for (Iterator i = lfns.iterator(); i.hasNext();) {
-                            String lfn = (String) i.next();
-                            List metaTuples = annotationschema.loadAnnotation(lfn,
-                                    null, kind);
-
-                            VDSCatalogEntry e = new VDSCatalogEntry();
-                            e.setLFN(lfn);
-                            e.setTuples(metaTuples);
-                            rs.addEntry(e);
-                        }
-                        return rs;
-                    }
-                }
-                catch (Exception e) {
-                    throw new ElabException("Error searching metadata", e);
-                }
-                finally {
-                    try {
-                        if (annotation != null) {
-                            ((DatabaseSchema) annotation).close();
-                        }
-                    }
-                    catch (Exception ex) {
-                        throw new ElabException("closing annotation schema", ex);
-                    }
-
-                    try {
-                        if (annotationschema != null) {
-                            annotationschema.close();
-                        }
-                    }
-                    catch (Exception exc) {
-                        throw new ElabException("closing annotation schema",
-                                exc);
-                    }
-                }
-            }
         }
         catch (Exception e) {
-            throw new ElabException(e.getMessage() + " getting LFNs and metadata", e);
+            throw new ElabException(e.getMessage()
+                    + " getting LFNs and metadata", e);
         }
-        finally {
-            try {
-                if (dbschema != null) {
-                    dbschema.close();
-                }
-            }
-            catch (Exception ex) {
-                throw new ElabException("closing dbschema", ex);
-            }
+        return dbschema;
+    }
+
+    protected void closeSchema(DatabaseSchema dbschema) throws ElabException {
+        try {
+            dbschema.close();
+        }
+        catch (Exception ex) {
+            throw new ElabException("closing dbschema", ex);
         }
     }
-    
-    protected QueryTree buildQueryTree(SimpleQuery query) {
+
+    public ResultSet runQuery(QueryElement query) throws ElabException {
+        System.out.println(query);
+        return runQuery(printQT(buildQueryTree(query)));
+    }
+
+    private QueryTree printQT(QueryTree tree) {
+        StringBuffer sb = new StringBuffer();
+        print(tree, sb);
+        System.out.println(sb.toString());
+        return tree;
+    }
+
+    private void print(QueryTree tree, StringBuffer sb) {
+        Predicate p = tree.getData();
+        sb.append(Predicate.PREDICATE_STRING[p.getPredicate()]);
+        if (p.getKey() != null) {
+            sb.append('*');
+        }
+        sb.append('(');
+        if (p.getKey() != null) {
+            sb.append(p.getKey());
+            sb.append(", ");
+            sb.append(p.getValue());
+        }
+        else {
+            print(tree.getLchild(), sb);
+            sb.append(", ");
+            print(tree.getRchild(), sb);
+        }
+        sb.append(')');
+    }
+
+    public ResultSet runQuery(String query) throws ElabException {
+        try {
+            return runQuery(new QueryParser(new StringReader(query)).parse());
+        }
+        catch (Exception e) {
+            throw new ElabException("Failed to parse query (" + query + ")", e);
+        }
+    }
+
+    public ResultSet runQuery(QueryTree tree) throws ElabException {
+        int kind = Annotation.CLASS_FILENAME; // searching on lfn's
+
+        DatabaseSchema dbschema = openSchema();
+        Annotation annotation = (Annotation) dbschema;
+
+        // Connect to the database.
+        try {
+            AnnotationSchema annotationschema = null;
+            List lfns = annotation.searchAnnotation(kind, null, tree);
+            if (lfns == null || lfns.isEmpty()) {
+                return ResultSet.EMPTY_RESULT_SET;
+            }
+            else {
+                ResultSet rs = new ResultSet();
+                annotationschema = (AnnotationSchema) annotation;
+                for (Iterator i = lfns.iterator(); i.hasNext();) {
+                    String lfn = (String) i.next();
+                    List metaTuples = annotationschema.loadAnnotation(lfn,
+                            null, kind);
+
+                    VDSCatalogEntry e = new VDSCatalogEntry();
+                    e.setLFN(lfn);
+                    e.setTuples(metaTuples);
+                    rs.addEntry(e);
+                }
+                return rs;
+            }
+
+        }
+        catch (Exception e) {
+            throw new ElabException(
+                    e.toString() + " getting LFNs and metadata", e);
+        }
+        finally {
+            closeSchema(dbschema);
+        }
+    }
+
+    public CatalogEntry getEntry(String lfn) throws ElabException {
+        ResultSet rs = getEntries(new String[] { lfn });
+        if (rs.isEmpty()) {
+            return null;
+        }
+        else {
+            return (CatalogEntry) rs.iterator().next();
+        }
+    }
+
+    public ResultSet getEntries(String[] lfns) throws ElabException {
+        if (lfns == null) {
+            return new ResultSet();
+        }
+
+        int kind = Annotation.CLASS_FILENAME; // searching on lfn's
+
+        DatabaseSchema dbschema = openSchema();
+        Annotation annotation = (Annotation) dbschema;
+        try {
+            AnnotationSchema annotationschema = null;
+
+            ResultSet rs = new ResultSet();
+            annotationschema = (AnnotationSchema) annotation;
+            for (int i = 0; i < lfns.length; i++) {
+                List metaTuples = annotationschema.loadAnnotation(lfns[i],
+                        null, kind);
+                VDSCatalogEntry e = new VDSCatalogEntry();
+                e.setLFN(lfns[i]);
+                e.setTuples(metaTuples);
+                rs.addEntry(e);
+            }
+            return rs;
+        }
+        catch (Exception e) {
+            throw new ElabException(
+                    e.toString() + " getting LFNs and metadata", e);
+        }
+        finally {
+            closeSchema(dbschema);
+        }
+    }
+
+    protected QueryTree buildQueryTree(Iterator i, int type) {
+        QueryElement qe = (QueryElement) i.next();
+        if (i.hasNext()) {
+            QueryTree qt = new QueryTree(new Predicate(getPredicateType(type)));
+            qt.setLchild(buildQueryTree(qe));
+            qt.setRchild(buildQueryTree(i, type));
+            return qt;
+        }
+        else {
+            return buildQueryTree(qe);
+        }
+    }
+
+    protected QueryTree buildQueryTree(QueryElement query) {
         if (query == null) {
             return null;
         }
-        /* 
+        /*
          * So the QueryTree in VDS makes sense. Not sure whether that should be
-         * reinvented.
+         * reinvented. On the other hand, constraining all queries to a tree,
+         * even when AND can be seen as a multivalued operator makes it kinda
+         * weird.
          */
-        QueryTree last = null;
-        Iterator i = query.getConstraints().iterator();
-        while (i.hasNext()) {
-            Tuple t = (Tuple) i.next();
-            QueryTree node = new QueryTree(new Predicate(Predicate.EQ, t.getKey(), t.getValue()));
-            if (last == null) {
-                last = node;
+        QueryTree qt;
+        if (!query.isLeaf()) {
+            MultiQueryElement meq = (MultiQueryElement) query;
+            Collection c = meq.getAll();
+            if (c.size() < 1) {
+                throw new IllegalArgumentException(
+                        "Non-leaf operator with zero elements");
+            }
+            Iterator i = c.iterator();
+            QueryElement qe = (QueryElement) i.next();
+            int type = qe.getType();
+            if (i.hasNext()) {
+                qt = new QueryTree(new Predicate(getPredicateType(query
+                        .getType())));
+                qt.setLchild(buildQueryTree(qe));
+                qt.setRchild(buildQueryTree(i, meq.getType()));
             }
             else {
-                QueryTree crt = new QueryTree(new Predicate(Predicate.AND));
-                crt.setLchild(last);
-                crt.setRchild(node);
-                last = crt;
+                qt = buildQueryTree(qe);
             }
         }
-        return last;
+        else {
+            QueryLeaf t = (QueryLeaf) query;
+            qt = new QueryTree(new Predicate(getPredicateType(query.getType()),
+                    t.getKey(), getType(t.getValue()), String.valueOf(t
+                            .getValue())));
+        }
+        return qt;
+    }
+
+    protected int getType(Object value) {
+        if (value instanceof String) {
+            return Predicate.TYPE_STRING;
+        }
+        else if (value instanceof Date) {
+            return Predicate.TYPE_DATE;
+        }
+        else if (value instanceof Double || value instanceof Float) {
+            return Predicate.TYPE_FLOAT;
+        }
+        else if (value instanceof Integer || value instanceof Long) {
+            return Predicate.TYPE_INT;
+        }
+        else if (value instanceof Boolean) {
+            return Predicate.TYPE_BOOL;
+        }
+        else {
+            return Predicate.TYPE_STRING;
+        }
+    }
+
+    protected int getPredicateType(int qetype) {
+        switch (qetype) {
+            case QueryElement.AND:
+                return Predicate.AND;
+            case QueryElement.OR:
+                return Predicate.OR;
+            case QueryElement.EQ:
+                return Predicate.EQ;
+            case QueryElement.LT:
+                return Predicate.LT;
+            case QueryElement.GT:
+                return Predicate.GT;
+            case QueryElement.LE:
+                return Predicate.LE;
+            case QueryElement.GE:
+                return Predicate.GE;
+            case QueryElement.BETWEEN:
+                return Predicate.BETWEEN;
+            default:
+                throw new IllegalArgumentException(
+                        "Unknown QueryElement type: " + qetype);
+        }
+    }
+
+    public int getUniqueCategoryCount(String key) throws ElabException {
+        DatabaseSchema dbschema = openSchema();
+        // Connect to the database.
+        try {
+            AnnotationSchema annotationschema = null;
+
+            annotationschema = (AnnotationSchema) dbschema;
+            java.sql.ResultSet rs;
+            if (key == null) {
+                /*
+                 * Not quite sure about this particular query. Doesn't seem too
+                 * generic.
+                 */
+                rs = annotationschema
+                        .backdoor("SELECT COUNT(*) FROM anno_text WHERE value = 'split'");
+            }
+            else {
+                String query = "select count(distinct value) from anno_text where id in (select id from anno_lfn where mkey='"
+                        + ElabUtil.fixQuotes(key) + "')";
+                System.out.println(query);
+                rs = annotationschema.backdoor(query);
+            }
+            if (rs.next()) {
+                String r = rs.getString(1);
+                try {
+                    return Integer.parseInt(r);
+                }
+                catch (NumberFormatException e) {
+                    throw new ElabException(
+                            "Invalid category count returned by the VDC: " + r);
+                }
+            }
+            else {
+                return -1;
+            }
+        }
+        catch (Exception e) {
+            throw new ElabException("DB threw exception", e);
+        }
+        finally {
+            closeSchema(dbschema);
+        }
+    }
+
+    public void insert(CatalogEntry entry) throws ElabException {
+        int kind = Annotation.CLASS_FILENAME; // searching on lfn's
+
+        DatabaseSchema dbschema = openSchema();
+        AnnotationSchema annotationschema = (AnnotationSchema) dbschema;
+
+        // Connect to the database.
+        try {
+            Iterator i = entry.tupleIterator();
+            while (i.hasNext()) {
+                Tuple t = (Tuple) i.next();
+                String key = t.getKey();
+                Object val = t.getValue();
+                org.griphyn.vdl.annotation.Tuple vt;
+                if (val instanceof String) {
+                    vt = new TupleString(key, (String) val);
+                }
+                else if (val instanceof Integer || val instanceof Long) {
+                    vt = new TupleInteger(key, ((Number) val).longValue());
+                }
+                else if (val instanceof Float || val instanceof Double) {
+                    vt = new TupleFloat(key, ((Number) val).doubleValue());
+                }
+                else if (val instanceof Boolean) {
+                    vt = new TupleBoolean(key, Boolean.TRUE.equals(val));
+                }
+                else if (val instanceof Date) {
+                    vt = new TupleDate(key, (Date) val);
+                }
+                else if (val != null) {
+                    throw new ElabException(
+                            "Unknown annotation value type for key '" + key
+                                    + "': " + val.getClass());
+                }
+                else {
+                    throw new IllegalArgumentException("Value for key '" + key
+                            + "' is null");
+                }
+                annotationschema.saveAnnotation(entry.getLFN(), null,
+                        Annotation.CLASS_FILENAME, vt, true);
+                // annotationschema.saveAnnotationFilename(entry.getLFN(), vt,
+                // true);
+            }
+        }
+        catch (ElabException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            throw new ElabException(e.toString() + " setting metadata", e);
+        }
+        finally {
+            closeSchema(dbschema);
+        }
+    }
+
+    public void insertAnalysis(String name, ElabAnalysis analysis)
+            throws ElabException {
+        ElabTransformation et = VDSAnalysisExecutor.createTransformation(name,
+                analysis);
+        et.storeDV();
+        et.close();
+    }
+
+    public ElabAnalysis getAnalysis(String lfn) throws ElabException {
+        try {
+            ElabTransformation et = new ElabTransformation();
+            et.loadDV(lfn);
+            Derivation dv = et.getDV();
+            
+            List l = dv.getPassList();
+            Iterator i = l.iterator();
+            while (i.hasNext()) {
+                Pass p = (Pass) i.next();
+                Value v = p.getValue();
+                if (v.getContainerType() == Value.SCALAR) {
+                    Scalar d = new Scalar();
+                    Scalar s = (Scalar) v;
+                    ListIterator li = s.listIterateLeaf();
+                    while (li.hasNext()) {
+                        Leaf leaf = (Leaf) li.next();
+                        if (leaf instanceof Text) {
+                            String content = ((Text) leaf).getContent();
+                            if (content != null) {
+                                d.addLeaf(new Text(content.replaceAll("\\\\n", "\n")));
+                            }
+                            else {
+                                d.addLeaf(new Text());
+                            }
+                        }
+                        else {
+                            d.addLeaf(leaf);
+                        }
+                    }
+                    dv.setPass(new Pass(p.getBind(), d));
+                }
+            }
+            VDSAnalysis analysis = new VDSAnalysis();
+            analysis.setType(dv.getUsesspace() + "::" + dv.getUses(), et.getDV());
+            return analysis;
+        }
+        catch (Exception e) {
+            throw new ElabException("Failed to retrieve stored analysis", e);
+        }
     }
 }

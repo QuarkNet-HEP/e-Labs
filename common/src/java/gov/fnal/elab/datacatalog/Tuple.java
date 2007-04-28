@@ -1,13 +1,13 @@
 /*
- * Created on Mar 13, 2007
+ * Created on Mar 23, 2007
  */
 package gov.fnal.elab.datacatalog;
 
 public class Tuple {
-    private String key;
-    private String value;
+    private final String key;
+    private final Object value;
     
-    public Tuple(String key, String value) {
+    public Tuple(String key, Object value) {
         this.key = key;
         this.value = value;
     }
@@ -16,15 +16,7 @@ public class Tuple {
         return key;
     }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getValue() {
+    public Object getValue() {
         return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
     }
 }
