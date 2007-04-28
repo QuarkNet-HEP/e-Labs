@@ -6,20 +6,8 @@
 <html>
 <head>
 <title>Running studies</title>
-<%@ include file="include/javascript.jsp" %>
 
-<!-- include css style file -->
-<%@ include file="include/style.css" %>
-
-<!-- header/navigation -->
-<%
-String headerType = "Data";
-%>
-<%@ include file="common.jsp" %>
-<%@ include file="include/navbar_common.jsp" %>
-
-<%@ include file="workflowutil.jsp" %>
-<%@ include file="dhtmlutil.jsp" %>
+<%@ include file="analysis-tools.jsp" %>
 
 <%!
 	public static void writeStatus(Workflow wf, JspWriter out) throws IOException {
@@ -86,12 +74,13 @@ String headerType = "Data";
 							<%
 								if (status == Workflow.STATUS_COMPLETED) {
 									%>
-										<a href="workflowStatus.jsp?workflowID=<%= workflow.getID() %>">See results</a>
+										<a href="staus.jsp?workflowID=<%= workflow.getID() %>">See results</a>
 									<%
 								}
 								else {
+								    
 									%>
-										<a id="results<%=workflowID%>" style="<%=STYLE_H%>" href="workflowStatus.jsp?workflowID=<%= workflow.getID() %>">See results</a>
+										<a id="results<%=workflowID%>" style="visibility: hidden; display: none" href="workflowStatus.jsp?workflowID=<%= workflow.getID() %>">See results</a>
 									<%
 								}
 							%>
@@ -108,7 +97,7 @@ String headerType = "Data";
 			}
 		%>
 	</table>
-	<%@ include file="asyncupdate.jsp" %>
+	<%@ include file="async-update.jsp" %>
 	<script language="JavaScript">
 		registerUpdate("workflowStatusAsync.jsp?workflowID=all", update);
 							
@@ -156,7 +145,7 @@ String headerType = "Data";
 								rescell = "<a href=\"workflowStatus.jsp?workflowID=" + id + "\">See results</a>";
 							}
 							else {
-								rescell = "<a id=\"results" + id + "\" style=\"<%=STYLE_H%>\" href=\"workflowStatus.jsp?workflowID=" + id + "\">Details</a>";
+								rescell = "<a id=\"results" + id + "\" style=\"visibility: hidden; display: none\" href=\"workflowStatus.jsp?workflowID=" + id + "\">Details</a>";
 							}
 							row.insertCell(3).innerHTML = rescell;
 						
