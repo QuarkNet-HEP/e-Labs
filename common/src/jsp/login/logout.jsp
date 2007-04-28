@@ -1,4 +1,4 @@
-<%@ include file="../../include/elab.jsp" %>
+<%@ include file="../include/elab.jsp" %>
 <%@ page import="gov.fnal.elab.ElabUser" %>
 <%	
 	if (ElabUser.isUserLoggedIn(session)) {

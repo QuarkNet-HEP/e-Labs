@@ -5,7 +5,7 @@
 	}
 %>
 <form method="post" action="<%= elab.getProperties().getLoginURL() %>">
-	<table border="0">
+	<table>
 		<tr>
 			<td class="form-label">
 				<label for="user">Username:</label>

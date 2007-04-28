@@ -1,4 +1,4 @@
-<%@ include file="../../include/elab.jsp" %>
+<%@ include file="../include/elab.jsp" %>
 <%@ page import="gov.fnal.elab.ElabUser" %>
 <%@ page import="gov.fnal.elab.usermanagement.AuthenticationException" %>
 <%
@@ -58,9 +58,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Login to <%=elab.getProperties().getFormalName()%></title>
-		<%= elab.css("/css/style2.css") %>
-		<%= elab.css("/css/login.css") %>
+		<title>Login to ${elab.properties.formalName}</title>
+		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/login.css"/>
 	</head>
 	
 	<body id="login">
@@ -68,10 +68,10 @@
 		<div id="container">
 			<div id="top">
 				<div id="header">
-					<%@ include file="../../include/header.jsp" %>
-				</div>
-				<div id="nav">
-					<!-- no nav here -->
+					<%@ include file="../include/header.jsp" %>
+					<div id="nav">
+						<!-- no nav here -->
+					</div>
 				</div>
 			</div>
 			
@@ -91,7 +91,7 @@
 						<span class="warning"><%= exception.getMessage() %></span>
 				<%	} %>
 				<div id="login-form-contents">
-					<%@ include file="loginform.jsp" %>
+					<%@ include file="login-form.jsp" %>
 				</div>
 				<div id="login-form-text">
 					<p>

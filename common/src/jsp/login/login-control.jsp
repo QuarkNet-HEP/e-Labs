@@ -1,4 +1,4 @@
-<%@ include file="../../include/elab.jsp" %>
+<%@ include file="../include/elab.jsp" %>
 <%@ page import="gov.fnal.elab.util.URLEncoder" %>
 <%@ page import="gov.fnal.elab.ElabUser" %>
 
@@ -6,12 +6,12 @@
 	if (!ElabUser.isUserLoggedIn(session)) {
 %>
 	<!-- not logged in -->
-	<div id="login-form">
+	<div id="loginForm">
 		<div id="login-form-header">
 			<h2>Log in</h2>
 		</div>
 		<div id="login-form-contents">
-			<%@ include file="loginform.jsp" %>
+			<%@ include file="login-form.jsp" %>
 		</div>
 		<div id="login-form-text">
 			<p>
@@ -48,7 +48,7 @@
 		<h2>Logout</h2>
 	</div>
 	<div id="login-form-contents">
-		<form method="post" action="<%= elab.page("modules/login/logout.jsp") %>">
+		<form method="post" action="../login/logout.jsp">
 			<table>
 				<tr>
 					<td class="form-label">
