@@ -36,8 +36,7 @@
 <table border="0" id="main">
 	<tr>
 		<td>
-			<div id="left">
-					
+			<div id="left">					
 				<div class="tab">
 					<span class="tab-title">Library</span>
 					<div class="tab-contents">
@@ -73,16 +72,14 @@
 		</td>
 	</tr>
 </table>
-</div>
+			</div>
 			<!-- end content -->	
 		
 			<div id="footer">
 			</div>
 		</div>
 		<!-- end container -->
-
-
-</BODY>
-</HTML>
+	</body>
+</html>
 
 

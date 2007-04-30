@@ -110,6 +110,7 @@ a.button {
 }
 
 #nav #subnav a {
+	width: 100px;
 	color: black;
 }
 

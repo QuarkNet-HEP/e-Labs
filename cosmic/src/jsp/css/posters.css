@@ -1,9 +1,9 @@
 h1 {
-	background-color: #55a9b4;
+	background-color: #408c66;
 	color: #000000;
 }
 
-.library #center h1 {
+.posters #center h1 {
 	font-weight: normal;
 	font-size: 140%;
 	width: 100%;
@@ -12,27 +12,27 @@ h1 {
 	margin-left: 0px;
 }
 
-.library #center h2 {
+.posters #center h2 {
 	font-weight: bold;
 	font-size: 120%;
 	margin-left: 0px;
 }
 
-.library #center p {
+.posters #center p {
 	font-weight: normal;
 	margin-left: 10px;
 }
 
-.library #center ul {
+.posters #center ul {
 	padding-left: 10px;
 	padding-top: 6px;
 }
 
-.library #center ul ul ul li {
+.posters #center ul ul ul li {
 	font-weight: normal;
 }
 
-.library #center li {
+.posters #center li {
 	list-style-type: none;
 	font-weight: bold;
 	padding-top: 6px;
@@ -56,26 +56,25 @@ a.button {
 	font-weight: bold;
 }
 
-.library dt {
+.posters dt {
 	font-weight: bold;
 }
 
-.library dd {
+.posters dd {
 	padding-bottom: 6px;
 }
 
 #nav #subnav li a {
-	background-color: #55a9b4;
-	border-top: #a7d2d8 1px solid;
-	border-left: #a7d2d8 1px solid;
-	border-bottom: #3c777f 1px solid;
-	border-right: #3c777f 1px solid;
+	background-color: #408c66;
+	border-top: #82b49b 1px solid;
+	border-left: #82b49b 1px solid;
+	border-bottom: #1b3b2b 1px solid;
+	border-right: #1b3b2b 1px solid;
 }
 
 #subnav ul {
 	float: right;
 	text-align: right;
-	/*border: 1px dashed white;*/
 	position: relative;
 	right: 0px;
 	margin: 0px;
@@ -93,23 +92,24 @@ a.button {
 	height: 96px;
 }
 
-.library #nav ul li a {
+.posters #nav ul li a {
 	background-color: black;
 	color: white;
 	border: solid 1px black;
 }
 
 
-#nav a#nav2 {
+#nav a#nav4 {
 	color: black;
-	background-color: #55a9b4;
-	border-top: #a7d2d8 1px solid;
-	border-left: #a7d2d8 1px solid;
-	border-bottom: #3c777f 1px solid;
-	border-right: #3c777f 1px solid;
+	background-color: #408c66;
+	border-top: #82b49b 1px solid;
+	border-left: #82b49b 1px solid;
+	border-bottom: #1b3b2b 1px solid;
+	border-right: #1b3b2b 1px solid;
 }
 
 #nav #subnav a {
+	width: 104px;
 	color: black;
 }
 
@@ -123,8 +123,14 @@ a.button {
 }
 
 #nav a#nav2:hover {
-	color: white;
+	color: black;
+	background-color: #55a9b4;
+	border-top: #a7d2d8 1px solid;
+	border-left: #a7d2d8 1px solid;
+	border-bottom: #3c777f 1px solid;
+	border-right: #3c777f 1px solid;
 }
+
 
 #nav a#nav3:hover {
 	color: black;
@@ -136,12 +142,7 @@ a.button {
 }
 
 #nav a#nav4:hover {
-	color: black;
-	background-color: #408c66;
-	border-top: #70a98c 1px solid;
-	border-left: #70a98c 1px solid;
-	border-bottom: #2d6348 1px solid;
-	border-right: #2d6348 1px solid;
+	color: white;
 }
 
 #nav a#nav5:hover {
@@ -164,23 +165,23 @@ a.button {
 
 #nav #subnav a:hover {
 	color: white;
-	background-color: #55a9b4;
-	border-top: #a7d2d8 1px solid;
-	border-left: #a7d2d8 1px solid;
-	border-bottom: #3c777f 1px solid;
-	border-right: #3c777f 1px solid;
+	background-color: #408c66;
+	border-top: #82b49b 1px solid;
+	border-left: #82b49b 1px solid;
+	border-bottom: #1b3b2b 1px solid;
+	border-right: #1b3b2b 1px solid;
 }
 
 /************* Tab **************/
 
 
-.library .tab {
+.posters .tab {
 	padding-top: 10px;
 	width: 100%;
 }
 
-.library .tab .tab-title {
-	background-color: #55a9b4;
+.posters .tab .tab-title {
+	background-color: #408c66;
 	border-left: 1px solid #358974;
 	border-right: 1px solid #358974;
 	border-top: 1px solid #358974;
@@ -190,8 +191,8 @@ a.button {
 	margin: 0px;
 }
 
-.library .tab .tab-contents {
-	background-color: #ccffff;
+.posters .tab .tab-contents {
+	background-color: #66cc99;
 	margin: 0px;
 	border-top: 2px solid black;
 	padding-bottom: 16px;
@@ -199,21 +200,21 @@ a.button {
 	padding-right: 8px;
 }
 
-.library #content .tab-contents h2 {
+.posters #content .tab-contents h2 {
 	font-weight: bold;
 	font-style: italic;
 	padding-left: 10px;
 	font-size: 100%;
 }
 
-.library #content .tab-contents li {
+.posters #content .tab-contents li {
 	font-weight: normal;
 	padding-left: 8px;
 	padding-top: 0px;
 	padding-bottom: 0px;
 }
 
-.library #content .tab-contents li:before {
+.posters #content .tab-contents li:before {
 	display: marker;
 	content: url("../graphics/ref-dot.gif");
 	marker-offset: auto;

@@ -145,6 +145,11 @@ table#main {
 	vertical-align: top;
 }
 
+.tab-title {
+	display: block;
+	width: 104px;
+}
+
 
 /*=========== Footer ===========*/
 
