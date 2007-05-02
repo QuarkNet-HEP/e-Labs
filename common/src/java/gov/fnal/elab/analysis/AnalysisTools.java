@@ -9,9 +9,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-
+/**
+ * A class with some convenience methods related to analyses
+ */
 public class AnalysisTools {
     
+    /**
+     * Encode parameters to an analysis as URL parameters
+     */
     public static String encodeParameters(ElabAnalysis analysis) {
         try {
             boolean first = true;
@@ -43,7 +48,7 @@ public class AnalysisTools {
         }
     }
     
-    public static boolean encodeOne(StringBuffer sb, String name, Object value,
+    protected static boolean encodeOne(StringBuffer sb, String name, Object value,
             boolean first) throws UnsupportedEncodingException {
         if (value != null) {
             if (!first) {

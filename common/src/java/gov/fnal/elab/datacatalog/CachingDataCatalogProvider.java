@@ -11,6 +11,10 @@ import gov.fnal.elab.util.ElabException;
 
 import java.util.Arrays;
 
+/**
+ * An implementation of a <code>DataCatalogProvider</code> which wraps another
+ * provider and caches the last lookup.
+ */
 public class CachingDataCatalogProvider implements DataCatalogProvider {
     private DataCatalogProvider delegate;
 

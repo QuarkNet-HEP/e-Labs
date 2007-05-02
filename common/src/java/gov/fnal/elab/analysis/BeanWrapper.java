@@ -3,7 +3,6 @@
  */
 package gov.fnal.elab.analysis;
 
-
 import java.lang.reflect.Method;
 import java.util.AbstractCollection;
 import java.util.AbstractMap;
@@ -14,6 +13,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * An adaptor implementing <code>ElabAnalysis</code> on top of an <code>ElabBean</code>. This
+ * is not needed any more, but kept just in case.
+ */
 public class BeanWrapper implements ElabAnalysis {
     private Object bean;
     private Class beanClass;
@@ -44,12 +47,12 @@ public class BeanWrapper implements ElabAnalysis {
     public Object getParameter(String name) {
         return invoke(getterName(name), null);
     }
-    
+
     public void setParameterDefault(String name, Object value) {
         setParameter(name, value);
         defaults.put(name, value);
     }
-    
+
     public boolean isDefaultValue(String name, Object value) {
         if (equals(value, defaults.get(name))) {
             return true;
@@ -61,7 +64,7 @@ public class BeanWrapper implements ElabAnalysis {
             return false;
         }
     }
-    
+
     private boolean equals(Object o1, Object o2) {
         if (o1 == null) {
             return o2 == null;
@@ -226,7 +229,6 @@ public class BeanWrapper implements ElabAnalysis {
     public String getEncodedParameters() {
         return AnalysisTools.encodeParameters(this);
     }
-
 
     private class BeanMap extends AbstractMap {
 

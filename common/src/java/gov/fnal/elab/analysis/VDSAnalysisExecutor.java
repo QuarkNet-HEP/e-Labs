@@ -23,10 +23,14 @@ import org.griphyn.common.catalog.replica.ElabRC;
  * String[] {"bash", "-c", "/usr/bin/perl -pi -e 's/^.*\"\".*$//g' " +
  * provenanceDir + "/dv.dot"};
  */
+
+/**
+ * Runs analyses with VDS. Yay!
+ */
 public class VDSAnalysisExecutor implements AnalysisExecutor {
+    
     public AnalysisRun start(ElabAnalysis analysis, Elab elab, ElabUser user) {
         Run run = new Run(analysis, elab, user);
-        run.start();
         return run;
     }
 
@@ -72,9 +76,7 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
         public void start() {
             try {
                 et = createTransformation(null, getAnalysis());
-                File scratch = new File(getElab().getName(), "scratch");
-                String runDir = new File(getUser().getUserDir(), scratch
-                        .getPath()).getAbsolutePath();
+                String runDir = getUser().getDir("scratch");
                 et.generateOutputDir(runDir);
                 List nulllist = et.getNullKeys();
                 if (!nulllist.isEmpty()) {
@@ -122,14 +124,7 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
         }
 
         public String getOutputDirURL() {
-            String root = getElab().getServletContext().getRealPath("/");
-            String dir = et.getOutputDir();
-            if (dir.startsWith(root)) {
-                return "../../" + dir.substring(root.length());
-            }
-            else {
-                return null;
-            }
+            return getUser().getDirURL("scratch" + File.separator + et.getOutputDirName());
         }
     }
 }

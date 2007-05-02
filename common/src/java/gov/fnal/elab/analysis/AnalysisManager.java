@@ -10,16 +10,26 @@ import java.util.TreeMap;
 
 import javax.servlet.http.HttpSession;
 
+/**
+ * This class is used to manage a set of analyses in a session
+ */
 public class AnalysisManager {
     public static final String SESSION_ANALYSES = "elab:analyses";
-    
+
+    /**
+     * Registers an analysis run in the specified session
+     */
     public static void registerAnalysisRun(HttpSession session, AnalysisRun run) {
         Map a = getAnalysisRuns(session);
         synchronized (a) {
             a.put(run.getId(), run);
         }
     }
-    
+
+    /**
+     * Returns a {id -> run} map of analysis runs registered with the specified
+     * session.
+     */
     protected static Map getAnalysisRuns(HttpSession session) {
         Map a;
         synchronized (session) {
@@ -32,6 +42,10 @@ public class AnalysisManager {
         return a;
     }
 
+    /**
+     * Returns a collection of IDs of analyses registered in the specified
+     * session
+     */
     public static Collection getAnalysisRunIDs(HttpSession session) {
         Map a = getAnalysisRuns(session);
         synchronized (a) {
@@ -39,6 +53,9 @@ public class AnalysisManager {
         }
     }
 
+    /**
+     * Retrieves an analysis run registered in a session based on its ID
+     */
     public static AnalysisRun getAnalysisRun(HttpSession session, String id) {
         Map a = getAnalysisRuns(session);
         synchronized (a) {
@@ -46,6 +63,9 @@ public class AnalysisManager {
         }
     }
 
+    /**
+     * Removes an analysis run from a session
+     */
     public static void removeAnalysisRun(HttpSession session, String id) {
         Map a = getAnalysisRuns(session);
         synchronized (a) {

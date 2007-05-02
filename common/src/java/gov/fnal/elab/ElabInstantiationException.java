@@ -3,6 +3,11 @@
  */
 package gov.fnal.elab;
 
+/**
+ * This exception is thrown when an <code>Elab</code> object cannot be
+ * instantiated.
+ * 
+ */
 public class ElabInstantiationException extends Exception {
 
     public ElabInstantiationException() {
@@ -14,10 +19,10 @@ public class ElabInstantiationException extends Exception {
     }
 
     public ElabInstantiationException(String message) {
-        super(message);   
+        super(message);
     }
 
     public ElabInstantiationException(Throwable cause) {
-        super(cause);    
+        super(cause);
     }
 }

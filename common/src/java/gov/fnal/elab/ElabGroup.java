@@ -3,6 +3,11 @@
  */
 package gov.fnal.elab;
 
+/**
+ * Encapsulates information about a research group. Setting different values for
+ * various properties available through this class will not cause them to be
+ * comitted to whatever backend was used to build objects of this class.
+ */
 public class ElabGroup {
     private String id;
     private String name, year, city, state, school, teacher;
@@ -26,7 +31,7 @@ public class ElabGroup {
     }
 
     public boolean isProfDev() {
-        return namelc.startsWith("pd_"); 
+        return namelc.startsWith("pd_");
     }
 
     public String getCity() {
@@ -67,5 +72,5 @@ public class ElabGroup {
 
     public void setTeacher(String teacher) {
         this.teacher = teacher;
-    }    
+    }
 }

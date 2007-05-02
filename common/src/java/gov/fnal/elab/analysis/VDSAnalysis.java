@@ -32,6 +32,11 @@ import org.griphyn.vdl.dbschema.VDC;
 import org.griphyn.vdl.directive.Connect;
 import org.griphyn.vdl.util.ChimeraProperties;
 
+/**
+ * This is an implementation of an <code>ElabAnalysis</code> on top of the
+ * generic <code>ElabBean</code> (which is only used for a few convenience
+ * methods).
+ */
 public class VDSAnalysis extends ElabBean implements ElabAnalysis {
     private String type;
     private DatabaseSchema dbschema;

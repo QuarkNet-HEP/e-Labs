@@ -20,6 +20,11 @@ import gov.fnal.elab.datacatalog.impl.vds.VDSDataCatalogProvider;
 import gov.fnal.elab.usermanagement.ElabUserManagementProvider;
 import gov.fnal.elab.usermanagement.impl.DatabaseUserManagementProvider;
 
+/**
+ * Manages the instantiation of various elab functionality providers. User code
+ * should use the <code>Elab.getXYZProvider</code> methods instead of calling
+ * methods in this class directly.
+ */
 public class ElabFactory {
     private static ElabUserManagementProvider userManagementProvider;
 
@@ -42,7 +47,7 @@ public class ElabFactory {
         }
         return dataCatalogProvider;
     }
-    
+
     private static AnalysisExecutor analysisExecutor;
 
     public static synchronized AnalysisExecutor getAnalysisProvider(Elab elab) {

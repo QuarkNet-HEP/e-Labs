@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Encapsulates information about a teacher.
+ */
 public class ElabTeacher extends ElabUser {
     private String email;
     private List groups;
@@ -18,6 +21,9 @@ public class ElabTeacher extends ElabUser {
         groups = new ArrayList();
     }
 
+    /**
+     * Get this theacher's email
+     */
     public String getEmail() {
         return email;
     }
@@ -26,10 +32,14 @@ public class ElabTeacher extends ElabUser {
         this.email = email;
     }
 
+    /**
+     * Retrieve a collection of <code>ElabGroup</code> objects containing
+     * information about the groups associated with this teacher.
+     */
     public Collection getGroups() {
         return groups;
     }
-    
+
     public void addGroup(ElabGroup group) {
         if (groups.isEmpty()) {
             super.setGroup(group);
