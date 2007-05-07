@@ -29,6 +29,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
+/**
+ * A few convenience functions for dealing with data
+ */
 public class DataTools {
     public static String buildQueryURLParams(Elab elab, String key, String value) {
         return "?submit=true&key=" + key + "&value=" + value;
@@ -67,6 +70,15 @@ public class DataTools {
         MONTH_FORMAT = new SimpleDateFormat("MMMM yyyy");
     }
 
+    /**
+     * Organizes the search results in a hierarchical fashion and returns a
+     * {@link StructuredResultSet}
+     * 
+     * @param rs
+     *            A {@link ResultSet} presumably obtained by running a query.
+     * @return A {@link StructuredResultSet} with the organized data.
+     * 
+     */
     public static StructuredResultSet organizeSearchResults(ResultSet rs) {
         StructuredResultSet srs = new StructuredResultSet();
         srs.setDataFileCount(rs.size());
@@ -130,6 +142,19 @@ public class DataTools {
         TZ_DATE_TIME_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
+    /**
+     * Builds a figure caption from a set of data files. This is Cosmic specific
+     * and should be moved there. The caption is composed of the list of data
+     * files, the set of detectors that captured the data and the set of
+     * channels in the data.
+     * 
+     * @param elab
+     *            The current {@link Elab}
+     * @param files
+     *            A list of logical file names for the data
+     * 
+     * @return A figure caption
+     */
     public static String getFigureCaption(Elab elab, String[] files)
             throws ElabException {
         if (files == null || files.length == 0) {
@@ -178,6 +203,18 @@ public class DataTools {
         CHANNELS.put("chan4", "4");
     }
 
+    /**
+     * Retrieves a set of valid channels used by the specified data. This method
+     * is Cosmic specific and should be moved.
+     * 
+     * @param elab
+     *            The current {@link Elab}
+     * @param files
+     *            A set of logical file names
+     * 
+     * @return A {@link Collection} containing used channels, each of each is
+     *         guaranteed to appear at most once.
+     */
     public static Collection getValidChannels(Elab elab, String[] files)
             throws ElabException {
         ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
@@ -200,14 +237,45 @@ public class DataTools {
         }
         return channels;
     }
-    
+
     private static final String[] STRING_ARRAY = new String[0];
-    
+
+    /**
+     * Returns a {@link Collection} of values that correspond to a specific
+     * metadata key for a {@link Collection} of logical file names. Values are
+     * guaranteed to not appear twice in the {@link Collection}.
+     * 
+     * @param elab
+     *            The current {@link Elab}
+     * @param files
+     *            A {@link Collection} of logical file names
+     * @param key
+     *            A metadata key
+     * 
+     * @return A {@link Collection} of values
+     * 
+     */
     public static Collection getUniqueValues(Elab elab, Collection files,
             String key) throws ElabException {
-        return getUniqueValues(elab, (String[]) files.toArray(STRING_ARRAY), key);
+        return getUniqueValues(elab, (String[]) files.toArray(STRING_ARRAY),
+                key);
     }
 
+    /**
+     * Returns a {@link Collection} of values that correspond to a specific
+     * metadata key for an array of logical file names. Values are guaranteed to
+     * not appear twice in the {@link Collection}.
+     * 
+     * @param elab
+     *            The current {@link Elab}
+     * @param files
+     *            A {@link Collection} of logical file names
+     * @param key
+     *            A metadata key
+     * 
+     * @return A {@link Collection} of values
+     * 
+     */
     public static Collection getUniqueValues(Elab elab, String[] files,
             String key) throws ElabException {
         ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
@@ -235,6 +303,9 @@ public class DataTools {
                     || type.equals("i") || type.equals("long")) {
                 return Long.valueOf(value);
             }
+            else if (type.equals("float") || type.equals("double")) {
+                return Double.valueOf(value);
+            }
             else if (type.equals("date")) {
                 return Timestamp.valueOf(value);
             }
@@ -248,6 +319,25 @@ public class DataTools {
         }
     }
 
+    /**
+     * Builds a {@link CatalogEntry} from a logical file name and a
+     * {@link Collection} of metadata descriptors. Each metadata descriptor is a
+     * string of three space separated items:
+     * <ol>
+     * <li>The key (name)</li>
+     * <li>A type. Possible values are
+     * <code>"string", "integer", "int", "i", "long", "float", "double", "date"</code></li>
+     * <li>The value</li>
+     * </ol>
+     * 
+     * This method will attempt to interpret and convert the value to the
+     * specified type before constructing the {@link CatalogEntry}
+     * 
+     * @param lfn The logical file name
+     * @param metadata A {@link Collection} of metadata descriptors
+     * 
+     * @return A {@link CatalogEntry}
+     */
     public static CatalogEntry buildCatalogEntry(final String lfn,
             final Collection metadata) {
         final Map tuples = new HashMap();

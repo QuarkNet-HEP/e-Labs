@@ -11,6 +11,11 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+/**
+ * This class allows a hierarchical representation of a {@link ResultSet} based
+ * on the following hierarchy:<br>
+ * {@link School} -&gt; {@link Month} -&gt; {@link Day} -&gt; {@link File}
+ */
 public class StructuredResultSet {
     private SortedMap schoolsSorted;
     private Map schools;
@@ -28,22 +33,22 @@ public class StructuredResultSet {
     public void addSchool(School school) {
         schools.put(school.getName(), school);
     }
-    
+
     public Collection getSchools() {
         return schools.values();
     }
-    
+
     public int getSchoolCount() {
         return schools.size();
     }
-    
+
     public synchronized Collection getSchoolsSorted() {
         if (schoolsSorted == null) {
             schoolsSorted = new TreeMap(schools);
         }
         return schoolsSorted.values();
     }
-    
+
     public int getDataFileCount() {
         return dataFileCount;
     }
@@ -51,7 +56,7 @@ public class StructuredResultSet {
     public void setDataFileCount(int dataFileCount) {
         this.dataFileCount = dataFileCount;
     }
-    
+
     public String getKey() {
         return key;
     }
@@ -75,7 +80,7 @@ public class StructuredResultSet {
     public void setValue(String value) {
         this.value = value;
     }
-    
+
     public boolean isEmpty() {
         return schools.isEmpty();
     }
@@ -113,27 +118,27 @@ public class StructuredResultSet {
         public void incDataFiles() {
             dataFiles++;
         }
-        
+
         public Month getMonth(String month) {
             return (Month) months.get(month);
         }
-        
+
         public void addDay(Month month) {
             months.put(month.getMonth(), month);
         }
-        
+
         public Collection getMonths() {
             return months.values();
         }
-        
+
         public int getMonthCount() {
             return months.size();
         }
-        
+
         public int getDataFileCount() {
             return dataFiles;
         }
-        
+
         public synchronized Collection getMonthsSorted() {
             if (monthsSorted == null) {
                 monthsSorted = new TreeMap(months);
@@ -148,15 +153,15 @@ public class StructuredResultSet {
         public String getState() {
             return state;
         }
-        
+
         public int getBlessedCount() {
             return blessed;
         }
-        
+
         public int getStackedCount() {
             return stacked;
         }
-        
+
         public long getEventCount() {
             return events;
         }
@@ -173,16 +178,16 @@ public class StructuredResultSet {
 
         public String getMonth() {
             return month;
-        }        
-        
+        }
+
         public void addFile(File f) {
             files.add(f);
         }
-        
+
         public int getFileCount() {
             return files.size();
         }
-        
+
         public Collection getFiles() {
             return files;
         }
@@ -193,7 +198,7 @@ public class StructuredResultSet {
         private Boolean stacked;
         private final String lfn;
         private java.util.Date date;
-        
+
         public File(String lfn) {
             this.lfn = lfn;
         }

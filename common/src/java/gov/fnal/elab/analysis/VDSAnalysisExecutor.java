@@ -31,6 +31,7 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
     
     public AnalysisRun start(ElabAnalysis analysis, Elab elab, ElabUser user) {
         Run run = new Run(analysis, elab, user);
+        run.start();
         return run;
     }
 

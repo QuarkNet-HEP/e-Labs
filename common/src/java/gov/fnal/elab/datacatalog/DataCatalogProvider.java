@@ -30,7 +30,7 @@ public interface DataCatalogProvider {
 
     /**
      * Runs a query. Queries are build in a nice structured fashion with classes
-     * in the <code>gov.fnal.elab.datacatalog.query</code> package.
+     * in the {@link gov.fnal.elab.datacatalog.query} package.
      */
     ResultSet runQuery(QueryElement q) throws ElabException;
 

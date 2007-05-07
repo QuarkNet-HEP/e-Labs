@@ -8,19 +8,39 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * This class implements the default {@link Collection} returned by data catalog
+ * query functions. Each element in the {@link Collection} is a
+ * {@link CatalogEntry}.
+ */
 public class ResultSet implements Collection {
     public static final ResultSet EMPTY_RESULT_SET = new ResultSet();
 
     private List entries;
 
+    /**
+     * Constructs an empty <code>ResultSet</code>
+     */
     public ResultSet() {
         entries = new ArrayList();
     }
 
+    /**
+     * Returns an {@link Iterator} for this <code>ResultSet</code>.
+     */
     public Iterator iterator() {
         return entries.iterator();
     }
 
+    /**
+     * Adds an entry to this <code>ResultSet</code>
+     * 
+     * @param e
+     *            A {@link CatalogEntry} to be added to this
+     *            <code>ResultSet</code>
+     * @return <code>true</code> to unnecessarily conform to the
+     *         {@link Collection.add} method contract.
+     */
     public boolean addEntry(CatalogEntry e) {
         return entries.add(e);
     }
@@ -72,7 +92,11 @@ public class ResultSet implements Collection {
     public Object[] toArray(Object[] a) {
         throw new UnsupportedOperationException();
     }
-    
+
+    /**
+     * Returns an array of logical file names extracted from all the entries in
+     * this <code>ResultSet</code>.
+     */
     public String[] getLfnArray() {
         String[] lfna = new String[entries.size()];
         for (int i = 0; i < lfna.length; i++) {
