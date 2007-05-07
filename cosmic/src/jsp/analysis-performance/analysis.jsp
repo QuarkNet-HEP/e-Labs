@@ -8,12 +8,11 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="gov.fnal.elab.cosmic.util.*" %>
 	
-<elab:analysis name="analysis" type="Quarknet.Cosmic::PerformanceStudy">
+<elab:analysis name="performance" type="Quarknet.Cosmic::PerformanceStudy">
 	<%
 		//these need to always be set-up
 		//also, this piece of code is ugly
 		String[] rawData = request.getParameterValues("rawData");
-		AnalysisPreProcessor app = null;
 		if(rawData != null) {
 			List thresholdData = AnalysisParameterTools.getThresholdFiles(rawData);
 			String ids = AnalysisParameterTools.getDetectorIds(rawData);
@@ -22,7 +21,7 @@
 			String singleChannels = ElabUtil.join(channels, null, null, " ");
 			String singleChannelOuts = ElabUtil.join(channels, "singleOut", null, " ");
 			String freqOuts = ElabUtil.join(channels, "freqOut", null, " ");
-			ElabAnalysis a = (ElabAnalysis) request.getAttribute("analysis");
+			ElabAnalysis a = (ElabAnalysis) request.getAttribute("performance");
 			
 			//<trdefault> is equivalent to analysis.setParameterDefault()
 			//It indicates that these parameters are not user controlled and
@@ -43,7 +42,7 @@
 	<elab:trdefault name="plot_plot_type" value="7"/>
 	<elab:trdefault name="plot_xlabel" value="Time over Threshold (nanosec)"/>
 	<elab:trdefault name="plot_ylabel" value="Number of muons"/>
-	<elab:trdefault name="freq_binType" value="0"/>
+	<elab:trdefault name="freq_binType" value="1"/>
 	<elab:trdefault name="freq_col" value="5"/>
 	
 	<elab:ifAnalysisIsOk>

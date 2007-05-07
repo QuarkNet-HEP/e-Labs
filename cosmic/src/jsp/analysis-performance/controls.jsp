@@ -19,10 +19,10 @@
 						<table>
 							<tr>
 								<td class="form-label">
-									<elab:trlabel for="freq_binValue" name="Bin Width">Number of Bins:</elab:trlabel>
+									<elab:trlabel for="freq_binValue" name="Bin Width">Bin width (ns):</elab:trlabel>
 								</td>
 								<td class="form-control">
-									<elab:trinput type="text" name="freq_binValue" size="8" default="60"
+									<elab:trinput type="text" name="freq_binValue" size="8" default="10"
 										onError="Use either a positive number or an expression (e.g. 60*60)"/>
 								</td>
 							</tr>
