@@ -6,9 +6,9 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>e-Lab Site Overview</title>
-		<%= elab.css(request, "css/style2.css") %>
-		<%= elab.css(request, "css/site-index.css") %>
-		<%= elab.css(request, "css/two-column.css") %>
+		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/site-index.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 	</head>
 	<body class="siteindex">
 		<!-- entire page container -->
