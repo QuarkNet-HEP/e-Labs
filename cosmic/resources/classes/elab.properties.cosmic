@@ -7,11 +7,10 @@ userdb.username = vdsdev8085
 userdb.password = vdsdev8085
 portal = /usr/local/quarknet-test/portal
 #vds.home = /usr/local/quarknet-test/portal/vds
-vds.home = /home/mike/work/i2u2/workflows
 
-cosmic.datadir = /home/mike/work/i2u2/data/
 
-portal.users = /usr/local/quarknet-test/portal/users/
+data.dir = /home/mike/work/i2u2/data/
+
 portal.templates = /usr/local/quarknet-test/portal/templates/
 portal.appdir = /usr/local/quarknet-test/portal/application/
 
