@@ -6,6 +6,8 @@
     version="2.0">
 	<tlib-version>1.1</tlib-version>
 	<jsp-version>2.0</jsp-version>
+	<display-name>Elab Tag Library</display-name>
+	<short-name>e</short-name>
 		
 	
 	<!--<tag>
@@ -366,10 +368,10 @@ Defines a control for an analysis parameter. Performs the following functions:
 	input control. Otherwise no value is used</li>
 	<li>If the type of the input control is <code>hidden</code> and the value is a 
 	{@link java.util.Collection}, multiple <code>input</code> tags are generated; one for
-	each value in the collection.
+	each value in the collection.</li>
 	<li>If the <code>onError</code> attribute is specified, and the analysis parameter is
 	invalid, the contents of the <code>onError</code> attribute will be rendered in the
-	HTML document after the end of the <code>input</code> tag.
+	HTML document after the end of the <code>input</code> tag.</li>
 </ul>
 
 While this tag is designed to work with an analysis, it can also be used as a standalone tag,
