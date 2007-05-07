@@ -1,4 +1,4 @@
 <ul>
-	<li><a href="../teacher" class="nav-black">Teacher Home</a></li>
-	<li><a href="../home" class="nav-black">Student Home</a></li>
+	<li><a href="../teacher" id="nav1">Teacher Home</a></li>
+	<li><a href="../home" id="nav2">Student Home</a></li>
 </ul>
