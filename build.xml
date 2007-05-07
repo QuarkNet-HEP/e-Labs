@@ -106,6 +106,26 @@ undeploy:
 			</filterset>
 		</copy>
 	</target>
+	
+	<target name="javadoc-common">
+		<mkdir dir="${javadoc.dir}/common"/>
+		<javadoc destdir="${javadoc.dir}/common">
+			<fileset dir="common/src/java"/>
+		</javadoc>
+		<mkdir dir="${tlddoc.dir}/common"/>
+		<java fork="true" classname="com.sun.tlddoc.TLDDoc"
+			failonerror="true">
+			<arg line="-d ${tlddoc.dir}/common"/>
+			<arg value="common/resources/elab.tld"/>
+			<arg value="common/resources/elab.tld"/>
+			<classpath>
+				<pathelement location="tools/tlddoc.jar"/>
+				<pathelement location="common/lib/xml-apis.jar"/>
+				<pathelement location="common/lib/xercesImpl.jar"/>
+				<pathelement location="common/lib/xalan.jar"/>
+			</classpath>
+		</java>
+	</target>
 		
 	<target name="do-deploy-common" depends="build-common">
 		<mkdir dir="${container.home}/${webapps}/elab"/>
@@ -253,6 +273,13 @@ undeploy:
 				<filter token="portal.home" value="${portal.home}"/>
 			</filterset>
 		</copy>
+	</target>
+	
+	<target name="javadoc-cosmic" depends="javadoc-common">
+		<mkdir dir="${javadoc.dir}/cosmic"/>
+		<javadoc destdir="${javadoc.dir}/cosmic">
+			<fileset dir="cosmic/src/java"/>
+		</javadoc>
 	</target>
 	
 	<target name="deploy-cosmic">
