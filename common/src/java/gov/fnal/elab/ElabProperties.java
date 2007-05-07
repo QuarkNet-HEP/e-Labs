@@ -6,7 +6,7 @@ package gov.fnal.elab;
 /**
  * This class contains properties associated with an elab. Typically the
  * properties are loaded automatically when an elab is instantiated through one
- * of the <code>Elab.getElab()</code> methods.
+ * of the {@link Elab.getElab} methods.
  */
 public class ElabProperties extends AbstractProperties {
     public static final String PROP_ELAB_NAME = "elab.name";

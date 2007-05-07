@@ -5,7 +5,7 @@ package gov.fnal.elab.analysis;
 
 /**
  * Encapsulates information about the execution of an analysis. An
- * <code>AnalysisExecutor</code> would typically return an specific
+ * {@link AnalysisExecutor} would typically return a specific
  * implementation of this interface which would be linked to the executor that
  * created it.
  */
