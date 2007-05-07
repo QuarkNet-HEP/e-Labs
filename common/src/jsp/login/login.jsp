@@ -4,10 +4,6 @@
 <%
 	String username = request.getParameter("user");
 	String password = request.getParameter("pass");
-	String project  = request.getParameter("project");
-	if (project == null) {
-		project = elab.getName();
-	}
 	String message  = request.getParameter("message");
 	if (message == null) {
 		message = "Please log in to proceed";
@@ -19,7 +15,7 @@
 	ElabUser user = null;
 	if (username != null && password != null) {
 		try {
-			user = elab.authenticate(username, password, project);
+			user = elab.authenticate(username, password);
 		}
 		catch (AuthenticationException e) {
 			exception = e;
@@ -29,8 +25,7 @@
 		//login successful
 		ElabUser.setUser(session, user);
 		String prevPage = request.getParameter("prevPage");
-		if(prevPage == null){
-			/* This could be replaced by a property */
+		if(prevPage == null) {
     		prevPage = elab.getProperties().getLoggedInHomePage();
 		}
 		
