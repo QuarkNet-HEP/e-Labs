@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+    version="2.0">
+	<tlib-version>1.1</tlib-version>
+	<jsp-version>2.0</jsp-version>
+		
+	
+	<!--<tag>
+		<name>select</name>
+		<tag-class>gov.fnal.elab.tags.Select</tag-class>
+		<body-content>JSP</body-content>
+		<dynamic-attributes>true</dynamic-attributes>
+		<attribute>
+			<name>valueList</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>labelList</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>default</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>-->
+	<tag-file>
+		<name>select</name>
+		<path>/WEB-INF/tags/select.tag</path>
+	</tag-file>
+	
+	<tag>
+		<description>
+Can be used to describe a section of an HTML document that can be shown or hidden
+by the user. The visible and hidden parts of the document can be specified using
+{@link hidden} and {@link visible}.
+		</description>
+		<name>vswitch</name>
+		<tag-class>gov.fnal.elab.tags.VSwitch</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>
+If present, it can give the HTML div element encapsulating this switch a certain 
+class.
+			</description>
+			<name>cls</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+If present and set to true, it will revert the default state of the switch (i.e. the
+hidden part will be visible and the visible part will be hidden).
+			</description>
+			<name>revert</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<description>
+This tag encloses the hidden part of a {@link vswitch}. 
+		</description>
+		<name>hidden</name>
+		<tag-class>gov.fnal.elab.tags.Hidden</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>
+An optional image to be used for the clickable control. Defaults to "../images/TRight.gif".
+			</description>
+			<name>image</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<description>
+This tag encloses the visible part of a {@link vswitch}. 
+		</description>
+		<name>visible</name>
+		<tag-class>gov.fnal.elab.tags.Visible</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>
+An optional image to be used for the clickable control. Defaults to "../images/TDown.gif".
+			</description>
+			<name>image</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<name>css</name>
+		<tag-class>gov.fnal.elab.tags.CSS</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>file</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<name>script</name>
+		<tag-class>gov.fnal.elab.tags.Script</tag-class>
+		<body-content>none</body-content>
+		<attribute>
+			<name>file</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<!--<tag>
+		<name>popup</name>
+		<tag-class>gov.fnal.elab.tags.Popup</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>href</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>width</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>height</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>target</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>-->
+	<tag-file>
+		<name>popup</name>
+		<path>/WEB-INF/tags/popup.tag</path>
+	</tag-file>
+	
+	
+	<!--<tag>
+		<name>quicksearch</name>
+		<tag-class>gov.fnal.elab.tags.QuickSearch</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>key</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>label</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>-->
+	<tag-file>
+		<name>quicksearch</name>
+		<path>/WEB-INF/tags/quicksearch.tag</path>
+	</tag-file>
+	
+	<tag>
+		<description>
+Sets up an analysis control page. It instantiates the necessary object that can be
+used to set up analysis parameters and verify their correctness (to a certain extent).
+		</description>
+		<name>analysis</name>
+		<tag-class>gov.fnal.elab.tags.Analysis</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>
+The name of the JSP EL variable to set with the analysis object. The analysis tag will
+set an attribute with this name on the current request object. The analysis can be accessed
+later in the page using one of the following methods:
+<dl>
+	<dt>In Java code:</dt>
+	<dd><code>request.getAttribute(&lt;name&gt;)</code></dd>
+	<dt>Through the JSP Expression Language:</dt>
+	<dd><code>${&lt;name&gt;}</code></dd>
+</dl>
+			</description>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+An actual class implementing the {@link gov.fnal.elab.analysis.ElabAnalysis} interface.
+If this attribute is not specified, a generic implementation of the above interface will
+be used. Currently the following implementations are supported:
+<dl>
+	<dt>vds-dynamic</dt>
+	<dd>Uses a generic implementation of the {@link gov.fnal.elab.analysis.ElabAnalysis} 
+		interface, which should work with any type of analysis. This is the default.</dd>
+	<dt>vds-bean</dt>
+	<dd>A {@link gov.fnal.elab.analysis.ElabAnalysis} implementation that wraps an 
+		analysis bean (used in previous versions of the elab code). The actual bean
+		class must be specified using the <code>param</code> attribute.</dd>
+</dl>
+			</description>
+			<name>impl</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+Allows passing an extra argument to the analysis implementation. The value and necessity
+of specifying this attribute depends on the analysis implementation used (see above).
+			</description>
+			<name>param</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+			<description>
+The type of analysis to be used. In the VDS world this could be something like 
+<code>Quarknet.Cosmic::FluxStudy</code>. The analysis implementation or the 
+analysis executor implementation would make sense of the value of this attribute.
+			</description>
+		<attribute>
+			<name>type</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<description>
+A conditional block that gets executed if the parameters of an analysis are 
+deemed correct by the implementation. Typically the contents of this block
+would be the inclusion of a page that starts or executes the analysis. This
+tag can only be used as a descendant of the {@link analysis} tag.
+		</description>
+		<name>ifAnalysisIsOk</name>
+		<tag-class>gov.fnal.elab.tags.IfAnalysisIsOk</tag-class>
+		<body-content>JSP</body-content>
+	</tag>
+	<tag>
+		<description>
+A conditional block that gets executed if the parameters to an analysis are 
+either missing or incorrect. Typically the contents of this block would display
+a page with input controls for parameters to the analysis. This
+tag can only be used as a descendant of the {@link analysis} tag.
+		</description>
+		<name>ifAnalysisIsNotOk</name>
+		<tag-class>gov.fnal.elab.tags.IfAnalysisIsNotOk</tag-class>
+		<body-content>JSP</body-content>
+	</tag>
+	
+	<tag>
+		<description>
+Specifies a hard default parameter for an analysis. Such parameters cannot be passed
+through CGI arguments and will generally not be encoded as part of analysis parameter
+URLs by the implementation of various things.
+		</description>
+		<name>trdefault</name>
+		<tag-class>gov.fnal.elab.tags.TRDefault</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>
+The name of the analysis argument.
+			</description>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+The value of the analysis argument.
+			</description>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<description>
+Allows overriding the analysis type for purposes of the correct functioning of 
+{@link trlabel}. All {@link trlabel} tags that are descendents of this tag will
+use the overriden analysis type rather than the one specified using {@link analysis}.
+		</description>
+		<name>tr</name>
+		<tag-class>gov.fnal.elab.tags.TR</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>
+The type of the analysis
+			</description>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<description>
+Generates an analysis submit button with a pre-determined name. This is used such that
+other analysis tags can clearly determine whether the current request was performed
+as a result of the submit button being pressed. 
+		</description>
+		<name>trsubmit</name>
+		<tag-class>gov.fnal.elab.tags.TRSubmit</tag-class>
+		<body-content>JSP</body-content>
+	</tag>
+
+	<tag>
+		<description>
+Defines a label for a control representing an analysis parameter. The label will also 
+contain a link that can be used to see a description of the parameter. For that purpose, 
+it will generate a link to <code>javascript:describe()</code> with the current analysis
+type and the parameter name as arguments.
+		</description>
+		<name>trlabel</name>
+		<tag-class>gov.fnal.elab.tags.TRLabel</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>
+The name of the control this label is attached to. The name should match the name of an
+analysis parameter.
+			</description>
+			<name>for</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+The actual label contents (i.e. the text that will appear in the rendered HTML page).
+			</description>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
+	<tag>
+		<description>
+Defines a control for an analysis parameter. Performs the following functions:
+<ul>
+	<li>Generates the <code>input</code> HTML tag.</li>
+	<li>If the analysis has a non-default value of the parameter, it is used as the value</li>
+	<li>If the analysis is missing the value of the parameter, and the request contains a 
+	CGI parameter with that name, it is used as the value</li>
+	<li>If the analysis is missing the value of the parameter, and so is the request, 
+	and the <code>default</code> attribute is specified, it is used as the value for this
+	input control. Otherwise no value is used</li>
+	<li>If the type of the input control is <code>hidden</code> and the value is a 
+	{@link java.util.Collection}, multiple <code>input</code> tags are generated; one for
+	each value in the collection.
+	<li>If the <code>onError</code> attribute is specified, and the analysis parameter is
+	invalid, the contents of the <code>onError</code> attribute will be rendered in the
+	HTML document after the end of the <code>input</code> tag.
+</ul>
+
+While this tag is designed to work with an analysis, it can also be used as a standalone tag,
+in which case the analysis parameter is not considered as a potential value and the 
+<code>onError</code> attribute is ignored.
+		</description>
+		<name>trinput</name>
+		<tag-class>gov.fnal.elab.tags.TRInput</tag-class>
+		<body-content>JSP</body-content>
+		<dynamic-attributes>true</dynamic-attributes>
+		<attribute>
+			<description>
+The name of the control.
+			</description>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+The value of the control.
+			</description>
+			<name>value</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+An error message to append after the <code>input</code> tag if the analysis parameter
+is invalid.
+			</description>
+			<name>onError</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+A default value for this input control to be used if both the corresponding analysis 
+parameter and CGI parameter are missing.
+			</description>
+			<name>default</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<description>
+A simplified way of specifying radio button sets also with some of the semantics for 
+{@link trinput} (the handling of default values). It produces, in the HTML document,
+a <code>select</code> HTML element together with the necessary <code>option</code>
+elements.
+		</description>
+		<name>trselect</name>
+		<tag-class>gov.fnal.elab.tags.TRSelect</tag-class>
+		<body-content>JSP</body-content>
+		<dynamic-attributes>true</dynamic-attributes>
+		<attribute>
+			<description>
+A comma separated list of values.
+			</description>
+			<name>valueList</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+A comma separated list of labels.
+			</description>
+			<name>labelList</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+The name of this control.
+			</description>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+The default value of this control. The value of this attribute should be one of the
+values specified with the <code>valueList</code> attribute.
+			</description>
+			<name>default</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<description>
+A text area control that can be linked with an analysis. It follows, in principle, the
+semantics of {@link trinput}.
+		</description>
+		<name>trtextarea</name>
+		<tag-class>gov.fnal.elab.tags.TRTextArea</tag-class>
+		<body-content>JSP</body-content>
+		<dynamic-attributes>true</dynamic-attributes>
+		<attribute>
+			<description>
+The name of the control.
+			</description>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+The default value of this control.
+			</description>
+			<name>default</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<name>paramAlias</name>
+		<tag-class>gov.fnal.elab.tags.ParamAlias</tag-class>
+		<body-content>none</body-content>
+		<attribute>
+			<name>from</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>to</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag-file>
+		<name>commonMetadataToSave</name>
+		<path>/WEB-INF/tags/commonMetadataToSave.tag</path>
+	</tag-file>
+</taglib>
