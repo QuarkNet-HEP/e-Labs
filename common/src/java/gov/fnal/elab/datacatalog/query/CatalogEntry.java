@@ -3,10 +3,15 @@
  */
 package gov.fnal.elab.datacatalog.query;
 
+import gov.fnal.elab.datacatalog.DataCatalogProvider;
 import gov.fnal.elab.datacatalog.Tuple;
 
+import java.util.AbstractMap;
+import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This class implements a single entry returned by a data catalog query
@@ -48,6 +53,49 @@ public abstract class CatalogEntry {
     }
 
     public abstract Collection getTuples();
+
+    public Map getTupleMap() {
+        return new AbstractMap() {
+            public Set entrySet() {
+                return new AbstractSet() {
+                    public Iterator iterator() {
+                        final Iterator i = tupleIterator();
+                        return new Iterator() {
+                            public boolean hasNext() {
+                                return i.hasNext();
+                            }
+
+                            public Object next() {
+                                final Tuple t = (Tuple) i.next();
+                                return new Map.Entry() {
+                                    public Object getKey() {
+                                        return t.getKey();
+                                    }
+
+                                    public Object getValue() {
+                                        return t.getValue();
+                                    }
+
+                                    public Object setValue(Object value) {
+                                        throw new UnsupportedOperationException("setValue");
+                                    }
+                                };
+                            }
+
+                            public void remove() {
+                                throw new UnsupportedOperationException(
+                                        "remove");
+                            }
+                        };
+                    }
+
+                    public int size() {
+                        return getTuples().size();
+                    }
+                };
+            }
+        };
+    }
 
     public void setLFN(String lfn) {
         this.lfn = lfn;
