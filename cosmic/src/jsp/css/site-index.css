@@ -23,23 +23,17 @@ h1 {
 	margin-left: 10px;
 }
 
-.siteindex  ul {
+.siteindex  #content ul {
 	padding-left: 10px;
-	padding-top: 6px;
 }
 
 .siteindex  ul ul ul li {
 	font-weight: normal;
 }
 
-.siteindex  li {
+.siteindex  #content li {
 	list-style-type: none;
-	font-weight: bold;
-	padding-top: 6px;
-	padding-bottom: 6px;
 }
-
-
 
 .siteindex #center  h1 {
 	font-weight: normal;
@@ -102,18 +96,19 @@ a.button {
 
 #nav #subnav li a {
 	background-color: #FF3000;
-	border-top: #a7d2d8 1px solid;
-	border-left: #a7d2d8 1px solid;
-	border-bottom: #3c777f 1px solid;
-	border-right: #3c777f 1px solid;
+	border-top: #ff6640 1px solid;
+	border-left: #ff6640 1px solid;
+	border-bottom: #b52400 1px solid;
+	border-right: #b52400 1px solid;
 }
 
 #subnav ul {
 	float: right;
 	text-align: right;
-	/*border: 1px dashed white;*/
 	position: relative;
-	margin-right: 0px;
+	right: 0px;
+	margin: 0px;
+	padding-right: 0px;
 }
 
 #top {
@@ -137,10 +132,10 @@ a.button {
 #nav a#nav5 {
 	color: black;
 	background-color: #FF3000;
-	border-top: #a7d2d8 1px solid;
-	border-left: #a7d2d8 1px solid;
-	border-bottom: #3c777f 1px solid;
-	border-right: #3c777f 1px solid;
+	border-top: #ff6640 1px solid;
+	border-left: #ff6640 1px solid;
+	border-bottom: #b52400 1px solid;
+	border-right: #b52400 1px solid;
 }
 
 #nav #subnav a {
@@ -204,10 +199,10 @@ a.button {
 #nav #subnav a:hover {
 	color: white;
 	background-color: #FF3000;
-	border-top: #a7d2d8 1px solid;
-	border-left: #a7d2d8 1px solid;
-	border-bottom: #3c777f 1px solid;
-	border-right: #3c777f 1px solid;
+	border-top: #ff6640 1px solid;
+	border-left: #ff6640 1px solid;
+	border-bottom: #b52400 1px solid;
+	border-right: #b52400 1px solid;
 }
 
 /************* Very small text for list **************/
@@ -225,14 +220,6 @@ ul.simpleTine li:before {
 	display: none;
 	content: none;
 }
-
-
-.indent1 {margin-left: 0px; font-size: 11px; font-weight: bold;}
-.indent2 {margin-left: 0px; font-size: 10px}
-.indent3 {margin-left: 10px; font-size: 10px}
-.indent4 {margin-left: 20px; font-size: 10px}
-
-
 
 
 /************* Tab **************/
@@ -472,3 +459,6 @@ ul.simpleTine li:before {
 }
 
 
+.siteindex th {
+	text-align: left;
+}

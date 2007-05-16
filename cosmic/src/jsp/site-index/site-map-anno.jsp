@@ -1,5 +1,5 @@
-<%@ include file="include/elab.jsp" %>
-<%@ include file="modules/login/loginrequired.jsp" %>
+<%@ include file="../include/elab.jsp" %>
+<%@ include file="../login/login-required.jsp" %>
 <%@ page import="gov.fnal.elab.util.ElabUtil" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -26,11 +26,11 @@ if(display != null && display.equals("static")){
 %>
 			<div id="top">
 				<div id="header">
-					<%@ include file="include/header.jsp" %>
+					<%@ include file="../include/header.jsp" %>
 					<div id="nav">
-						<%@ include file="include/nav.jsp" %>
+						<%@ include file="../include/nav.jsp" %>
 						<div id="subnav">
-							<%@ include file="include/nav_site-index.jsp" %>
+							<%@ include file="../include/nav-site-index.jsp" %>
 						</div>
 					</div>
 				</div>
@@ -48,14 +48,13 @@ if(display != null && display.equals("static")){
 	<tr>
 		<td valign="top">
 			<div id="left">
-					
 				<div class="tab">
 					<span class="tabtitleHome"><a HREF="home.jsp">Home</a></span>
 					<div class="tabcontentsHome">
-			 	<h2>Homepage</h2>
-					<ul>
-					<li>Research topic.</li>
-					</ul>
+					 	<h2>Homepage</h2>
+						<ul>
+							<li>Research topic.</li>
+						</ul>
 					</div>
 				</div>
 					
@@ -63,88 +62,63 @@ if(display != null && display.equals("static")){
 				<div class="tab">
 					<span class="tabtitleUpload"><A HREF="upload.jsp">Upload</a></span>
 					<div class="tabcontentsUpload">
-
-
-					<h2>Upload</h2>
-					<P>
-					<ul>
-					<li>Data</li>
-					<li>Geometry</li>
-					</ul>
-					<P>
-					
+						<h2>Upload</h2>
+						<ul>
+							<li>Data</li>
+							<li>Geometry</li>
+						</ul>
 					</div>
 				</div>
 
 				<div class="tab">
 					<span class="tabtitlePoster"><A HREF="poster.jsp">Posters</a></span>
 					<div class="tabcontentsPoster">
-
-
-					<h2>Share Your Research</h2>
-					<P>
-					<ul>
-					<li>Create a Poster - Post results including graphs, notes, calculations.</li>
-					<li>Edit a Poster</li>
-					<li>View Posters - Review the work of others.</li>
-					<li>Search for Studies - Participate in a scientific dialog.</li>
-					</ul>
-					<P>
-					
+						<h2>Share Your Research</h2>
+						<ul>
+							<li>Create a Poster - Post results including graphs, notes, calculations.</li>
+							<li>Edit a Poster</li>
+							<li>View Posters - Review the work of others.</li>
+							<li>Search for Studies - Participate in a scientific dialog.</li>
+						</ul>
 					</div>
 				</div>
          </div>
          </td>
          <td valign="top">
-         
 			<div id="right">
-
 				<div class="tab">
 					<span class="tabtitleLibrary"><A HREF="library.jsp">Library</a></span>
 					<div class="tabcontentsLibrary" style="background-color: #ccffff;">
-
-
-
-					<h2>Use Online Library</h2>
-					<P>
-					<ul>
-					<li>Review Research Basics</li>
-					<li>Use Study Guide with Milestones and References</li>
-					<li>Online Resources: Physicists, Research Groups, Tutorials, Animations</LI>
-					<li>The Big Picture</LI>
-					<li>FAQs</LI>
-					<li>Site Help</LI>
-					</ul>
-					<P>
+						<h2>Use Online Library</h2>
+						<ul>
+							<li>Review Research Basics</li>
+							<li>Use Study Guide with Milestones and References</li>
+							<li>Online Resources: Physicists, Research Groups, Tutorials, Animations</LI>
+							<li>The Big Picture</LI>
+							<li>FAQs</LI>
+							<li>Site Help</LI>
+						</ul>
 					</div>
 				</div>
 					
 				<div class="tab">
 					<span class="tabtitleData"><A HREF="search.jsp">Data</a></span>
 					<div class="tabcontentsData" style="background-color: #99CCff;">
-
-
-					<h2>Analyze and Manage Data</h2>
-					<P>
-					<ul>
-					<li>Analysis - Physics studies.</li>
-					<li> Management - View and delete files.</LI>
-					</ul>
-					<P>
+						<h2>Analyze and Manage Data</h2>
+						<ul>
+							<li>Analysis - Physics studies.</li>
+							<li> Management - View and delete files.</LI>
+						</ul>
 					</div>
 				</div>
 					
 				<div class="tab">
 					<span class="tabtitleAssess"><A HREF="rubric.jsp">Assessment</a></span>
 					<div class="tabcontentsAssess">
-
-
-					<h2>Assess your work</h2>
-					<P>
-					<ul>
-					<li>Rubric</li>
-					</ul>
-					<P>
+						<h2>Assess your work</h2>
+						<ul>
+							<li>Rubric</li>
+						</ul>
 					</div>
 				</div>
          </div>
