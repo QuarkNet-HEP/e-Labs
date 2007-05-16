@@ -11,12 +11,12 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Choose data for performance study</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/posters.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/one-column-wide.css"/>
 		<script type="text/javascript" src="../include/elab.js"/>
 	</head>
 	
-	<body id="search-plots" class="data">
+	<body id="search-posters" class="posters">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
@@ -25,7 +25,7 @@
 					<div id="nav">
 						<%@ include file="../include/nav.jsp" %>
 						<div id="subnav">
-							<%@ include file="../include/nav-data.jsp" %>
+							<%@ include file="../include/nav-posters.jsp" %>
 						</div>
 					</div>
 				</div>

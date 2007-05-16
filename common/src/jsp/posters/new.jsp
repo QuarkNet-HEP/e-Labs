@@ -52,6 +52,8 @@
 
 	boolean posterTitleEntered = false; //true if the title field is filled in by the user.
 	boolean posterNameEntered = false; //true if the field is filled in by the user.
+	
+	
 	String dfile = ""; //data file (e.g., poster.data)
    
 	String selectDefault = "Select graphic for figure.";
@@ -82,6 +84,7 @@
 	String plotDirURL = user.getDirURL("plots");
 	String templateDir = user.getDir("templates");
 
+if (reqType != null && (reqType.equals("Make Poster")||reqType.equals("View Poster"))) {
     Enumeration fields = request.getParameterNames();
     while (fields.hasMoreElements()) {
         String name = (String) fields.nextElement();
@@ -136,9 +139,9 @@
         throw e;
     }
     catch (Exception e) { 
-        throw new ElabJspException(e.getMessage(), e);
+        throw new JspException(e.getMessage(), e);
     }
-    
+}
 
 // For all requests, render the page from the current template.html and poster.data file
 // template.html determines fields to show on form, and the fiel types
@@ -247,11 +250,11 @@ pageContext.setAttribute("images", images);
 
 	<!-- Emit input form for replacement tags found in poster template -->
 
-	<form method=post>
+	<form method="get">
            <table width="650">
                 <tr>
                 	<td valign="top" align="right">Poster Filename:<br>(e.g.,poster_lifetime)</td>
-                	<td valign="top"><input type="text" name="posterName" value="<%= posterName %>"></td>
+                	<td valign="top"><e:trinput type="text" name="posterName"/></td>
                 </tr>
       
 <%

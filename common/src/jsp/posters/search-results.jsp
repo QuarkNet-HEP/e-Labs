@@ -4,32 +4,39 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.util.*" %>
 
-<%
-	ResultSet rs = (ResultSet) request.getAttribute("searchResults");
-	if (rs != null) {
-	    out.write("<table id=\"plots\">\n");
-	    out.write("<tr>");
-	    out.write("<th></th>");
-	    out.write("</tr>");
-	    Iterator i = rs.iterator();
-	    while (i.hasNext()) {
-	        out.write("<tr>\n");
-	        for (int c = 0; c < 4 && i.hasNext(); c++) {
-	            CatalogEntry e = (CatalogEntry) i.next();
-	            %>
-	            	<td class="plot-thumbnail">
-	            		<a href="view.jsp?filename=<%= e.getLFN() %>">
-		            		<img src="<%= user.getDirURL("plots") + "/" + e.getTupleValue("thumbnail") %>"/><br/>
-		            	</a>
-	            		<%= e.getTupleValue("name") %><br/>
-	            		Group: <%= e.getTupleValue("group") %><br/>
-	            		Created: <%= e.getTupleValue("creationdate") %><br/>
-	            		<a href="">View/Add Comments</a><br/>
-	            	</td>
-	            <%
-	        }
-			out.write("</tr>\n");
-	    }
-	    out.write("</table>\n");
-	}
-%>
+
+<c:if test="${!empty searchResults}">
+	<table id="search-results">
+		<tr>
+			<th>Title</th>
+			<th>Date</th>
+			<th>Group</th>
+			<th>Teacher</th>
+			<th>School</th>
+			<th>City</th>
+			<th>State</th>
+			<th>Year</th>
+			<th></th>
+			<th></th>
+			<th></th>	
+		</tr>
+		<c:forEach items="${searchResults}" var="poster">
+			<c:set var="tuples" value="${poster.tupleMap}"/>
+			<tr>
+				<td>
+					<a href="../posters/display.jsp?name=${tuples.name}">${tuples.title}</a>
+				</td>
+				<td><e:format type="date" format="MMMMMMMMM dd, yyyy" value="${tuples.date}"/></td>
+				<td>${tuples.group}</td>
+				<td>${tuples.teacher}</td>
+				<td>${tuples.school}</td>
+				<td>${tuples.city}</td>
+				<td>${tuples.state}</td>
+				<td>${tuples.year}</td>
+				<td><a href="">View/Add Comments</a></td>
+				<td><a href="../posters/display-as-paper.jsp?type=paper&name=${tuples.name}">View as Paper</a></td>
+				<td><a href="../data/view-metadata.jsp?filename=${poster.LFN}">View Metadata</a></td>
+			</tr>
+		</c:forEach>
+	</table>
+</c:if>

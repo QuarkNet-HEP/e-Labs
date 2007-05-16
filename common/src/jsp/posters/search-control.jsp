@@ -5,14 +5,14 @@
 <%@ page import="java.util.*" %>
 
 <div class="search-quick-links">
-	Show plots by:&nbsp; 
+	Show posters by:&nbsp; 
 	<e:quicksearch key="group" value="${user.group.name}"/>
 	<e:quicksearch key="teacher" value="${user.group.teacher}"/>
 	<e:quicksearch key="school" value="${user.group.school}"/>
 	<e:quicksearch key="all" value="" label="All"/>
 </div>
 
-<p>or search plots by</p>
+<p>or search posters by</p>
 <form name="search" method="get">
 	<p>
 		<e:select name="key" valueList="title, group, teacher, school, city, state, year"
@@ -56,7 +56,8 @@
 			    and.add(new Equals(key, value));
 			}
 		    
-	        and.add(new Between("creationdate", new Date(date1), new Date(date2 + " 23:59:59")));
+			//hmm. posters use "date" instead of "creationdate"
+	        and.add(new Between("date", new Date(date1), new Date(date2 + " 23:59:59")));
 
 			searchResults = elab.getDataCatalogProvider().runQuery(and);
 		}
