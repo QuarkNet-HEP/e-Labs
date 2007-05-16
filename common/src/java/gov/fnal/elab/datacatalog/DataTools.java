@@ -294,6 +294,12 @@ public class DataTools {
         return s;
     }
 
+    public static final DateFormat DF0 = new SimpleDateFormat("MM/dd/yyyy");
+
+    public static final DateFormat[] DFORMATS = new DateFormat[] {
+            DateFormat.getDateTimeInstance(), DF0,
+            DateFormat.getDateInstance(), DateFormat.getTimeInstance() };
+
     protected static Object coerce(String type, String value) {
         try {
             if (type.equals("string")) {
@@ -307,7 +313,20 @@ public class DataTools {
                 return Double.valueOf(value);
             }
             else if (type.equals("date")) {
-                return Timestamp.valueOf(value);
+                try {
+                    return Timestamp.valueOf(value);
+                }
+                catch (Exception e) {
+                }
+                for (int i = 0; i < DFORMATS.length; i++) {
+                    try {
+                        return new Timestamp(DFORMATS[i].parse(value).getTime());
+                    }
+                    catch (Exception e) {
+                    }
+                }
+                throw new IllegalArgumentException("Could not parse date: "
+                        + value);
             }
             else {
                 throw new IllegalArgumentException("cannot convert to type '"
@@ -333,8 +352,10 @@ public class DataTools {
      * This method will attempt to interpret and convert the value to the
      * specified type before constructing the {@link CatalogEntry}
      * 
-     * @param lfn The logical file name
-     * @param metadata A {@link Collection} of metadata descriptors
+     * @param lfn
+     *            The logical file name
+     * @param metadata
+     *            A {@link Collection} of metadata descriptors
      * 
      * @return A {@link CatalogEntry}
      */
