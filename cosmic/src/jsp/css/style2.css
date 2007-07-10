@@ -94,7 +94,6 @@
 	padding-top: 0px;
 	padding-bottom: 0px;
 	display: inline;
-
 }
 
 #nav a {
@@ -102,7 +101,7 @@
 	float: left;
 	text-align: center;
 	text-decoration: none;
-	font-size: 16px;
+	font-size: 14px;
 	font-weight: bold;
 	margin-left: 4px;
 	margin-right: 0px;

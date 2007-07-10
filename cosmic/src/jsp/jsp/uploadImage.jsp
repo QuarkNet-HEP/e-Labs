@@ -36,7 +36,7 @@ if(fu.isMultipartContent(request)){
         }
         else{   //it's the uploaded file
             uploadedImage = fi;
-            origName = fi.getName();
+            origName = fi.getType();
             if(fi.getSize() <= 0){
                 ret = "Your image is 0 bytes in size. You must upload an image which contains some data!";
                 valid = false;

@@ -74,7 +74,6 @@ return;
 </tr>
 
 <%
-
 String fn = "";             //filename without slashes
 String ret = "";
 String regFile = "";
@@ -93,7 +92,7 @@ if (FileUpload.isMultipartContent(request)) {
 
     while (it.hasNext()) { 
         FileItem fi = (FileItem)it.next();
-        regFile = fi.getName();
+        regFile = fi.getType();
         if (regFile == null || regFile.equals("")) {
             continue;
         }
@@ -156,16 +155,16 @@ if (FileUpload.isMultipartContent(request)) {
                         }
                         if (teacherUA == null)
                             throw new Exception("Teacher does not have a user area.  Cannot continue.");
-    					// This is only meaningful for the "cosmic" project
- 					   ArrayList teacherDetectorIDs = new ArrayList();
+    			// This is only meaningful for the "cosmic" project
+ 			   ArrayList teacherDetectorIDs = new ArrayList();
                        if (project.equals("cosmic") )  {
                         
-							rs = s.executeQuery(
-								"select detectorid from research_group_detectorid " + 
-								"where research_group_id = (select id from research_group " + 
-								"where name = '" + login + "')"); 
-							while (rs.next())
-							   teacherDetectorIDs.add(rs.getString("detectorid"));
+			rs = s.executeQuery(
+				"select detectorid from research_group_detectorid " + 
+				"where research_group_id = (select id from research_group " + 
+				"where name = '" + login + "')"); 
+			while (rs.next())
+			   teacherDetectorIDs.add(rs.getString("detectorid"));
                         }
 
                         RandPass rp = new RandPass();
@@ -205,7 +204,7 @@ if (FileUpload.isMultipartContent(request)) {
                                     resName += nameAddOn;
                                 String resGroupUA = teacherUA.substring(0, teacherUA.lastIndexOf("/") + 1) + resName;
                                 
-								// Generated a default academic year. LQ - 7-24-06
+				// Generated a default academic year. LQ - 7-24-06
                                 Calendar calendar = new GregorianCalendar();
                                 int year = calendar.get(Calendar.YEAR);
                                 if (calendar.get(Calendar.MONTH) < 7) {
@@ -246,13 +245,13 @@ if (FileUpload.isMultipartContent(request)) {
                                 // Connect the detector id from the teacher with the group if it exists.
                                if (project.equals("cosmic"))
                                {
-								   for (Iterator iter = teacherDetectorIDs.iterator(); iter.hasNext();) {
-										String statement = 
-											"insert into research_group_detectorid(research_group_id, detectorid) " +
-											"values((select id from research_group where name = '" + resName + "'), " + 
-											(String)iter.next() + ")";
-										s.executeUpdate(statement);
-									}
+				   for (Iterator iter = teacherDetectorIDs.iterator(); iter.hasNext();) {
+				String statement = 
+					"insert into research_group_detectorid(research_group_id, detectorid) " +
+					"values((select id from research_group where name = '" + resName + "'), " + 
+					(String)iter.next() + ")";
+				s.executeUpdate(statement);
+			}
                                 }
                                 successTable += "<tr><td>" + resName + "</td><td>" + pass + "</td></tr>";
                             }

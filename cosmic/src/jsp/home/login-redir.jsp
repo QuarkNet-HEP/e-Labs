@@ -10,7 +10,7 @@
 	else if (user.isTeacher()) {
 		response.sendRedirect(response.encodeRedirectURL("../teacher"));
     }
-	else if (user.isFirstTime() || user.getSurvey().equals("t")) {
+	else if (user.isFirstTime() || user.getSurvey()) {
 		int countQuestions = Survey.questionCount(elab);
         //check if all the students have taken the test. 
         int countStudents = Survey.studentCount(elab, user);

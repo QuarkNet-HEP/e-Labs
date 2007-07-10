@@ -79,7 +79,7 @@ if (FileUpload.isMultipartContent(request)) {
             }
         }
         else {
-            lfn = fi.getName();
+            lfn = fi.getType();
             if (lfn.equals("")) {
                 valid = false;
                 break;

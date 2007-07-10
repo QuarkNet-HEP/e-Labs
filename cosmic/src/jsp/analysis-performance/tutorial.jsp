@@ -1,39 +1,29 @@
- <html>
+<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
+
+<html>
 	<head>
 		<title>
 			Tutorial Counter Performance Study
 		</title>
-		<%@ include file="include/javascript.jsp" %>
-		<script language="JavaScript">
-			<!--
-			function openHist() {
-			window.open("graphics/car_hist.gif");
-			}
-			-->
-		</script>
-
-        <!-- include css style file -->
-        <%@ include file="include/style.css" %>
-        <!-- header/navigation -->
-<%
-        //be sure to set this before including the navbar
-        String headerType = "Library";
-%>
-        <%@ include file="include/navbar_common.jsp" %>
-		</center>
 	</head>
 		
 	<body>
-		<p>
-		<p>
 		<center>
 			You can:&nbsp
-			<b>1)</b> Find some help on this page &nbsp
-		 	<b>2)</b> <a href="javascript:openPopup('displayPoster.jsp?type=poster&amp;posterName=adlerperformance.data','PossibleParticleDecays', 700, 510); ">View</a> a poster created using this study&nbsp
-			<b>3)</b> <a href="javascript:openPopup('tryit_performance.html','TryIt',510,600); ">Try it</a>: Step-by-Step Instructions
-			</center>			
+			<ol>
+				<li> Find some help on this page</li>
+		 		<li>
+		 			<e:popup href="../posters/display.jsp?type=poster&amp;name=adlerperformance.data" 
+						target="PossibleParticleDecays" width="700" height="510">View</e:popup>
+						a poster created using this study&nbsp
+				</li>
+				<li>
+					<e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: 
+					Step-by-Step Instructions
+				</li>
+			</ol>
+		</center>
 	
-		<p>
 
 		<center>        
 	
@@ -72,7 +62,7 @@
 		
 				<tr>
 					<td colspan = 2 align =right>
-						Want to <a href="dpstutorial2.jsp">know more?</a>
+						Want to <a href="tutorial2.jsp">know more?</a>
 					</td>
 				</tr>
 		

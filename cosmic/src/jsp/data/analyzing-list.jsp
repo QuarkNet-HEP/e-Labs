@@ -3,6 +3,7 @@
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="java.text.*" %>
 
 <%
 	String[] f = (String[]) request.getParameterValues("f");
@@ -43,7 +44,9 @@
 			
 			//number of files. Initially display the top 10
 			int num_files = 0;
-			
+			SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy H:m:s z");
+			sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+			SimpleDateFormat sef = new SimpleDateFormat("MM/dd/yyyy H:mm");
 			//Since we're using Java classes and don't know what class instance to call,
 			// some kind of common variable needs to be setup for this page to reference.
 			// Since we're listing raw data files, use the variable "rawData".
@@ -59,20 +62,15 @@
 			    }
 			
 			    //create a string of the date for the file and find start and end date
-			    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMM d, yyyy H:m:s z");
-			    sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-			    String filedate = sdf.format((Date) e.getTupleValue("startdate"));
-			    if(startdate == null){
-			        startdate = (Date) e.getTupleValue("startdate");
+			    Date fileStartDate = (Date) e.getTupleValue("startdate");
+			    Date fileEndDate = (Date) e.getTupleValue("enddate");
+			    String filedate = sdf.format(fileStartDate);
+			    
+			    if(startdate == null || startdate.after(fileStartDate)){
+			        startdate = fileStartDate;
 			    }
-			    if(enddate == null){
-			        enddate = (Date) e.getTupleValue("enddate");
-			    }
-			    if(((Date) e.getTupleValue("enddate")).after(enddate)){
-			        enddate = (Date) e.getTupleValue("enddate");
-			    }
-			    if(((Date) e.getTupleValue("startdate")).before(startdate)){
-			        startdate = (Date) e.getTupleValue("startdate");
+			    if(enddate == null || enddate.before(fileEndDate)){
+			        enddate = fileEndDate;
 			    }
 			
 			    //create a string of filenames to send to rawanalyzeMultiple for comparison
@@ -141,6 +139,8 @@
 				    </tr>
 				<%
 			}
+			request.setAttribute("startDate", sef.format(startdate));
+			request.setAttribute("endDate", sef.format(enddate));
 			//trim off extra ", " in Strings
 			rawDataString = rawDataString.substring(0, rawDataString.length()-2);
 			detectorIDString = detectorIDString.substring(0, detectorIDString.length() - 2);

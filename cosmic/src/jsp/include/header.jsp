@@ -1,16 +1,16 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
-<%@ page import="gov.fnal.elab.ElabUser" %>
+<%@ page import="gov.fnal.elab.*" %>
 
 <div id="header-image">
 	<img src="<%= "/elab/cosmic/graphics/blast.jpg" %>" alt="Cosmic Ray Blast">
 </div>
 <div id="header-title">Cosmic Ray e-Lab</div>
 <%
-	if (ElabUser.isUserLoggedIn(session)) {
+	if (ElabGroup.isUserLoggedIn(session)) {
 		%>
 			<div id="header-current-user">
 				Logged in as group: 
-					<a href="../login/user-info.jsp"><%= ElabUser.getUser(session).getName() %></a>				
+					<a href="../login/user-info.jsp"><%= ElabGroup.getUser(session).getName() %></a>				
 			</div>
 			<div id="header-logout">
 				<a href="../login/logout.jsp">Logout</a>

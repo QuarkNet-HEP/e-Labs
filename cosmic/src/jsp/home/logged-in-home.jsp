@@ -1,2 +1,2 @@
-<%@ include file="loginRedir.jsp" %>
+<%@ include file="login-redir.jsp" %>
 

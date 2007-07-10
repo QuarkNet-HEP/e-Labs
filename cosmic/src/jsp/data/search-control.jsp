@@ -114,7 +114,7 @@
 		    String datetype = request.getParameter("datetype");
 		    if ("startdate".equals(datetype) || "creationdate".equals(datetype)) {
 		        and.add(new Between(datetype, new Date(date1), new Date(date2 + " 23:59:59")));
-		    }					    
+		    }
 
 			searchResults = elab.getDataCatalogProvider().runQuery(and);
 			searchResultsStructured = DataTools.organizeSearchResults(searchResults);
