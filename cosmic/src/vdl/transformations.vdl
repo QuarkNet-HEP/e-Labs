@@ -99,7 +99,8 @@ TR Quarknet.Cosmic::LifetimeStudy(
 	none plot_size,
 	output plot_outfile_param,
 	output plot_outfile_image,
-	output plot_outfile_thumbnail,
+	output plot_outfile_image_thumbnail,
+	none plot_thumbnail_height, 
 	none plot_plot_type,
 	none plot_title,
 	none plot_xlabel,
@@ -112,6 +113,7 @@ TR Quarknet.Cosmic::LifetimeStudy(
 	inout wireDelayData[],
 	inout thresholdAll[] )
 {
+  inout svg=@{inout:"plot.svg"};
   call Quarknet.Cosmic::ThresholdTimes(
 	detector=${none:detector},
     rawData=${input:rawData},
@@ -166,12 +168,24 @@ TR Quarknet.Cosmic::LifetimeStudy(
 	plot_lowY=${plot_lowY},
 	plot_lowZ=${plot_lowZ},
 	plot_outfile_param=${output:plot_outfile_param},
-	plot_outfile_image=${output:plot_outfile_image},
+	plot_outfile_image=${output:svg},
 	plot_plot_type=${plot_plot_type},
 	plot_title=${plot_title},
 	plot_xlabel=${plot_xlabel},
 	plot_ylabel=${plot_ylabel},
 	plot_zlabel=${plot_zlabel} );
+  
+  call Quarknet.Cosmic::SVG2PNG(
+  	svg=${input:svg},
+	png=${output:plot_outfile_image},
+	height=${plot_size}
+  );
+  
+  call Quarknet.Cosmic::SVG2PNG(
+  	svg=${input:svg},
+	png=${output:plot_outfile_image_thumbnail},
+	height=${plot_thumbnail_height}
+  );
 }
 
 TR Quarknet.Cosmic::PerformanceStudy(
@@ -351,8 +365,11 @@ TR Quarknet.Cosmic::ShowerStudy(
 	none plot_lowX,
 	none plot_lowY,
 	none plot_lowZ,
+	none plot_size,
 	output plot_outfile_param,
 	output plot_outfile_image,
+	none plot_thumbnail_height, 
+	output plot_outfile_image_thumbnail,
 	none plot_plot_type,
 	none plot_title,
 	none plot_xlabel,
@@ -366,6 +383,7 @@ TR Quarknet.Cosmic::ShowerStudy(
 	inout wireDelayData[],
 	none zeroZeroZeroID )
 {
+  inout svg=@{inout:"plot.svg"};
   call Quarknet.Cosmic::ThresholdTimes(
 	detector=${none:detector},
 	rawData=${input:rawData},
@@ -406,12 +424,22 @@ TR Quarknet.Cosmic::ShowerStudy(
 	plot_lowY=${plot_lowY},
 	plot_lowZ=${plot_lowZ},
 	plot_outfile_param=${output:plot_outfile_param},
-	plot_outfile_image=${output:plot_outfile_image},
+	plot_outfile_image=${output:svg},
 	plot_plot_type=${plot_plot_type},
 	plot_title=${plot_title},
 	plot_xlabel=${plot_xlabel},
 	plot_ylabel=${plot_ylabel},
 	plot_zlabel=${plot_zlabel} );
+  call Quarknet.Cosmic::SVG2PNG(
+  	svg=${input:svg},
+	png=${output:plot_outfile_image},
+	height=${plot_size}
+  );
+  call Quarknet.Cosmic::SVG2PNG(
+  	svg=${input:svg},
+	png=${output:plot_outfile_image_thumbnail},
+	height=${plot_thumbnail_height}
+  );
 }
 
 TR Quarknet.Cosmic::EventSearch(
@@ -509,6 +537,7 @@ TR Quarknet.Cosmic::FluxStudy(
 	none flux_binWidth,
 	none flux_geoDir,
 	none plot_caption,
+	none plot_size,
 	inout extraFun_out,
     none plot_highX,
 	none plot_highY,
@@ -519,6 +548,8 @@ TR Quarknet.Cosmic::FluxStudy(
 	output plot_outfile_param,
 	none plot_plot_type,
 	output plot_outfile_image,
+	output plot_outfile_image_thumbnail,
+	none plot_thumbnail_height, 
 	none plot_title,
 	none plot_xlabel,
 	none plot_ylabel,
@@ -532,6 +563,7 @@ TR Quarknet.Cosmic::FluxStudy(
 	inout wireDelayData[],
 	inout thresholdAll[] )
 {
+  inout svg=@{inout:"plot.svg"};
   call Quarknet.Cosmic::ThresholdTimes(
 	detector=${none:detector},
 	rawData=${input:rawData},
@@ -568,12 +600,23 @@ TR Quarknet.Cosmic::FluxStudy(
 	plot_lowY=${plot_lowY},
 	plot_lowZ=${plot_lowZ},
 	plot_outfile_param=${output:plot_outfile_param},
-	plot_outfile_image=${output:plot_outfile_image},
+	plot_outfile_image=${output:svg},
 	plot_plot_type=${plot_plot_type},
 	plot_title=${plot_title},
 	plot_xlabel=${plot_xlabel},
 	plot_ylabel=${plot_ylabel},
 	plot_zlabel=${plot_zlabel} );
+  call Quarknet.Cosmic::SVG2PNG(
+  	svg=${input:svg},
+	png=${output:plot_outfile_image},
+	height=${plot_size}
+  );
+  
+  call Quarknet.Cosmic::SVG2PNG(
+  	svg=${input:svg},
+	png=${output:plot_outfile_image_thumbnail},
+	height=${plot_thumbnail_height}
+  );
 }
 TR Quarknet.Cosmic::RawAnalyzeStudy(
         none gatewidth,
