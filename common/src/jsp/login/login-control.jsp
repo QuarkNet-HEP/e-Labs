@@ -1,9 +1,9 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ page import="gov.fnal.elab.util.URLEncoder" %>
-<%@ page import="gov.fnal.elab.ElabUser" %>
+<%@ page import="gov.fnal.elab.ElabGroup" %>
 
-<% 
-	if (!ElabUser.isUserLoggedIn(session)) {
+<%
+if (!ElabGroup.isUserLoggedIn(session)) {
 %>
 	<!-- not logged in -->
 	<div id="loginForm">
@@ -22,17 +22,17 @@
 			<p>Ask your teacher.</p>
 			
 			<%
-				String subject = URLEncoder.encode("Please register me as an e-Labs teacher.");
-				String body = URLEncoder.encode("Please complete each of the fields below and send this email to be registered " 
-					+ "as an e-Labs teacher. You will receive a response from the e-Labs team by the end of the business "
-					+ "day.\n\n"
-					+ "First Name:\n\n"
-					+ "Last Name:\n\n"
-					+ "City:\n\n"
-					+ "State:\n\n"
-					+ "School:\n");
-				String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
-			%>
+								String subject = URLEncoder.encode("Please register me as an e-Labs teacher.");
+								String body = URLEncoder.encode("Please complete each of the fields below and send this email to be registered " 
+									+ "as an e-Labs teacher. You will receive a response from the e-Labs team by the end of the business "
+									+ "day.\n\n"
+									+ "First Name:\n\n"
+									+ "Last Name:\n\n"
+									+ "City:\n\n"
+									+ "State:\n\n"
+									+ "School:\n");
+								String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
+						%>
 			<h2>Need a teacher login?</h2>
 			<p>Contact 
 			<a href="<%= mailURL %>">e-labs@fnal.gov</a>
@@ -53,7 +53,7 @@
 				<tr>
 					<td class="form-label">
 						If you are not 
-						<span class="username"><%= ElabUser.getUser(session).getName() %></span>,
+						<span class="username"><%=ElabGroup.getUser(session).getName()%></span>,
 					</td>
 				</tr>
 				<tr>

@@ -41,7 +41,7 @@
 
 <h1>Make or edit your poster</h1>
 
-<% 
+<%
 	String title = "Make/Edit Poster";
 	Date now = new Date();
 	DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -121,7 +121,7 @@ if (reqType != null && (reqType.equals("Make Poster")||reqType.equals("View Post
 		meta.add("city string " + user.getGroup().getCity());
 		meta.add("school string " + user.getGroup().getSchool());
 		meta.add("teacher string " + user.getGroup().getTeacher());
-		meta.add("project string " + elab.getName());
+		meta.add("project string " + elab.getType());
 		meta.add("group string " + user.getGroup().getName());
 		meta.add("type string " + "poster");
 		meta.add("title string "+ request.getParameter("WORDS:TITLE"));
@@ -208,7 +208,7 @@ Or or = new Or();
 or.add(new Equals("type", "plot"));
 or.add(new Equals("type", "uploadedimage"));
 q.add(or);
-q.add(new Equals("project", elab.getName()));
+q.add(new Equals("project", elab.getType()));
 q.add(new Equals("group", user.getGroup().getName()));
 
 ResultSet rs = elab.getDataCatalogProvider().runQuery(q);
@@ -226,7 +226,6 @@ if (rs != null) {
 }
 
 pageContext.setAttribute("images", images);
-
 %>
 	<!-- Show instructions -->
 	<ul>

@@ -16,3 +16,18 @@
             aLs(ID).display = "none";
         }
     }
+
+    function selectAll(start, finish) {
+         var direction;
+         for (var i = start; i < finish; i++){
+             fldObj = document.getElementById("cb" + i);
+             if (fldObj.type == 'checkbox')  { 
+                 if (fldObj.name == 'selectall') {
+                     direction = fldObj.checked;
+                 }
+                 else {
+                     fldObj.checked = direction; 
+                 }
+             }
+         }
+    }

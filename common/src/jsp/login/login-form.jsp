@@ -4,7 +4,7 @@
 		prevPage = elab.getProperties().getLoggedInHomePage();
 	}
 %>
-<form method="post" action="<%= elab.getProperties().getLoginURL() %>">
+<form method="post" action="<%= elab.secure("login/login.jsp") %>">
 	<table>
 		<tr>
 			<td class="form-label">
@@ -30,6 +30,6 @@
 			</td>
 		</tr>
 	</table>
-	<input type="hidden" name="project" value="<%= elab.getName() %>">
+	<input type="hidden" name="project" value="${elab.name}">
 	<input type="hidden" name="prevPage" value="<%= prevPage %>">
 </form>

@@ -1,4 +1,5 @@
 <%@ page isErrorPage="true" %>
+<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ page import="gov.fnal.elab.*" %>
 
@@ -9,6 +10,7 @@
 		<title>Cosmic Data Interface</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column-wide.css"/>
+		<script type="text/javascript" src="../include/elab.js"/>
 	</head>
 	
 	<body id="search_default" class="data">
@@ -22,20 +24,27 @@
 			
 			<div id="content">
 				
+<%
+	System.out.println("Exception caught while rendering page: ");
+	if (exception != null) {
+	    exception.printStackTrace();
+	}
+%>
 <h1>An error has occurred during your request</h1>
 
 <table border="0" id="main">
 	<tr>
+		<% request.setAttribute("exception", exception); %>		
 		<% if (exception instanceof ElabJspException) { %>
-			<span class="error"><%= exception.getMessage() %></span>
+			<span class="error">${exception.message}</span>
 		<% } else { %>
 			<td id="center">
 				<h2>Request URL:</h2>
-				<pre><%= request.getRequestURL() %></pre>
+				<pre>${request.requestURL}</pre>
 				<h2>Query String:</h2>
-				<pre><%= request.getQueryString() %></pre>
+				<pre>${request.queryString}</pre>
 				<h2>User:</h2>
-				<% ElabUser user = ElabUser.getUser(session); %>
+				<% ElabGroup user = ElabGroup.getUser(session); %>
 				<pre><%= user %></pre>
 				<% if (exception != null) { %>
 					<h2>Exception</h2>

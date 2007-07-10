@@ -2,21 +2,20 @@
 <%@ page import="gov.fnal.elab.ElabGroup" %>
 <%
 	ElabGroup user = ElabGroup.getUser(session);
-	//hmm
 	request.setAttribute("request", request);
-	if (user == null) {
-		%>
+	if (user == null || !user.isTeacher()) {
+%>
 			<c:choose>
 				<c:when test="${request.queryString != null}">
 					<jsp:include page="../login/login.jsp">
 						<jsp:param name="prevPage" value="${request.requestURL}?${request.queryString}"/>
-						<jsp:param name="message" value="Access to this page is restricted to logged in users"/>
+						<jsp:param name="message" value="You must log in as a teacher in order to access this page"/>
 					</jsp:include>
 				</c:when>
 				<c:otherwise>
 					<jsp:include page="../login/login.jsp">
 						<jsp:param name="prevPage" value="${request.requestURL}"/>
-						<jsp:param name="message" value="Access to this page is restricted to logged in users"/>
+						<jsp:param name="message" value="You must log in as a teacher in order to access this page"/>
 					</jsp:include>
 				</c:otherwise>
 			</c:choose>
@@ -24,4 +23,5 @@
 		return;
 	}
 	request.setAttribute("user", user);
+	
 %>

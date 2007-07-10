@@ -1,5 +1,6 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/elab.jsp" %>
-<%@ page import="gov.fnal.elab.ElabUser" %>
+<%@ page import="gov.fnal.elab.ElabGroup" %>
 <%@ page import="gov.fnal.elab.usermanagement.AuthenticationException" %>
 <%
 	String username = request.getParameter("user");
@@ -12,18 +13,19 @@
 	AuthenticationException exception = null;
 	boolean success = false;
 	
-	ElabUser user = null;
+	ElabGroup user = null;
 	if (username != null && password != null) {
 		try {
 			user = elab.authenticate(username, password);
 		}
 		catch (AuthenticationException e) {
-			exception = e;
+		    request.setAttribute("exception", e);
+			e.printStackTrace();
 		}
 	}
 	if (user != null) {
 		//login successful
-		ElabUser.setUser(session, user);
+		ElabGroup.setUser(session, user);
 		String prevPage = request.getParameter("prevPage");
 		if(prevPage == null) {
     		prevPage = elab.getProperties().getLoggedInHomePage();
@@ -47,7 +49,8 @@
 		
 		response.sendRedirect(prevPage);
 	}
-	else { %>
+	else {
+%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -82,9 +85,9 @@
 		</td>
 		<td>
 			<div id="center">
-				<% 	if (exception != null) { %>
-						<span class="warning"><%= exception.getMessage() %></span>
-				<%	} %>
+				<c:if test="${exception != null}">
+					<span class="warning">${exception.message}</span>
+				</c:if>
 				<div id="login-form-contents">
 					<%@ include file="login-form.jsp" %>
 				</div>

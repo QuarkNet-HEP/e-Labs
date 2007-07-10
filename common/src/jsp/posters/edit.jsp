@@ -39,7 +39,7 @@
 <%
 	And q = new And();
 	q.add(new Equals("type", "poster"));
-	q.add(new Equals("project", elab.getName()));
+	q.add(new Equals("project", elab.getType()));
 	q.add(new Equals("group", user.getGroup().getName()));
 
 	ResultSet rs = elab.getDataCatalogProvider().runQuery(q);
