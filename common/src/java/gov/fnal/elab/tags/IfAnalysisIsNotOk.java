@@ -11,7 +11,6 @@ package gov.fnal.elab.tags;
 
 public class IfAnalysisIsNotOk extends IfAnalysisIsOk {
     protected boolean getCondition() {
-        return !Boolean.TRUE.equals(pageContext.getRequest().getAttribute(
-                ATTR_ANALYSIS_IS_OK));
+        return !isAnalysisOk(pageContext);
     }
 }

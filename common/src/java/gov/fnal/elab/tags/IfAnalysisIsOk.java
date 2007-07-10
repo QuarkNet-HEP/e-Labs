@@ -12,6 +12,7 @@ package gov.fnal.elab.tags;
 import gov.fnal.elab.analysis.ElabAnalysis;
 
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
 
 public class IfAnalysisIsOk extends TagSupport {
@@ -20,8 +21,12 @@ public class IfAnalysisIsOk extends TagSupport {
     public int doEndTag() throws JspException {
         return EVAL_PAGE;
     }
-
-    protected boolean getCondition() {
+    
+    protected static boolean isAnalysisOk(PageContext pageContext) {
+        if (Boolean.TRUE.equals(pageContext.getRequest().getAttribute(
+                ATTR_ANALYSIS_IS_OK))) {
+            return true;
+        }
         ElabAnalysis analysis = (ElabAnalysis) pageContext.getRequest()
                 .getAttribute(Analysis.ATTR_ANALYSIS);
         if (analysis == null) {
@@ -35,6 +40,10 @@ public class IfAnalysisIsOk extends TagSupport {
             }
         }
         return false;
+    }
+
+    protected boolean getCondition() {
+        return isAnalysisOk(pageContext);
     }
 
     public int doStartTag() throws JspException {

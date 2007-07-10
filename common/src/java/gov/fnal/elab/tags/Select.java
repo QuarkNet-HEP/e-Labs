@@ -52,7 +52,7 @@ public class Select extends TagSupport implements DynamicAttributes {
             out.write("<select");
             DynamicAttributesSupport.writeAttribute(out, "name", getName());
             DynamicAttributesSupport.writeAttributes(out, attrs);
-            ElabUtil.optionSet(pageContext.getOut(), name, getValueList(),
+            ElabUtil.optionSet(pageContext.getOut(), getValueList(),
                     getLabelList(), selected);
         }
         catch (Exception e) {

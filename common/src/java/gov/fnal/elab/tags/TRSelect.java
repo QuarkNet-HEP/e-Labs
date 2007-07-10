@@ -17,7 +17,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 
 public class TRSelect extends TRControl {
-    private String valueList, labelList;
+    private Object valueList, labelList;
 
     public int doEndTag() throws JspException {
         try {
@@ -45,19 +45,19 @@ public class TRSelect extends TRControl {
         return EVAL_BODY_INCLUDE;
     }
 
-    public String getLabelList() {
+    public Object getLabelList() {
         return labelList;
     }
 
-    public void setLabelList(String labelList) {
+    public void setLabelList(Object labelList) {
         this.labelList = labelList;
     }
 
-    public String getValueList() {
+    public Object getValueList() {
         return valueList;
     }
 
-    public void setValueList(String valueList) {
+    public void setValueList(Object valueList) {
         this.valueList = valueList;
     }
 }

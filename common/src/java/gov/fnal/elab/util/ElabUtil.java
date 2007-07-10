@@ -18,12 +18,14 @@ import java.io.OutputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspWriter;
@@ -72,17 +74,23 @@ public class ElabUtil {
         splits = new HashMap();
     }
 
-    private static synchronized List split(String list) {
-        List l = (List) splits.get(list);
-        if (l == null) {
-            l = new ArrayList();
-            StringTokenizer st = new StringTokenizer(list, ",");
-            while (st.hasMoreTokens()) {
-                l.add(st.nextToken().trim());
-            }
-            splits.put(list, l);
+    private static synchronized Collection split(Object list) {
+        if (list instanceof Collection) {
+            return (Collection) list;
         }
-        return l;
+        else {
+            List l = (List) splits.get(list);
+            if (l == null) {
+                l = new ArrayList();
+                StringTokenizer st = new StringTokenizer(String.valueOf(list),
+                        ",");
+                while (st.hasMoreTokens()) {
+                    l.add(st.nextToken().trim());
+                }
+                splits.put(list, l);
+            }
+            return l;
+        }
     }
 
     public static void optionSet(JspWriter out, String name, String values,
@@ -94,17 +102,18 @@ public class ElabUtil {
         out.write("</select>\n");
     }
 
-    public static void optionSet(JspWriter out, String values, String labels,
+    public static void optionSet(JspWriter out, Object values, Object labels,
             String selected) throws IOException {
-        List valuesList = split(values);
-        List labelsList = split(labels);
+        Collection valuesList = split(values);
+        Collection labelsList = split(labels);
         if (valuesList.size() != labelsList.size()) {
             throw new IllegalArgumentException(
                     "Values/labels count mismatch. Got " + valuesList.size()
                             + " values and " + labelsList.size() + " labels.");
         }
-        for (int i = 0; i < valuesList.size(); i++) {
-            String value = (String) valuesList.get(i);
+        Iterator i = valuesList.iterator(), j = labelsList.iterator();
+        while (i.hasNext()) {
+            String value = (String) i.next();
             out.write("<option value=\"");
             out.write(String.valueOf(value));
             out.write("\"");
@@ -112,7 +121,7 @@ public class ElabUtil {
                 out.write(" selected");
             }
             out.write(">");
-            out.write(String.valueOf(labelsList.get(i)));
+            out.write(String.valueOf(j.next()));
             out.write("</option>\n");
         }
     }
@@ -277,11 +286,11 @@ public class ElabUtil {
         sb.append('=');
         sb.append(value);
     }
-    
+
     public static String join(Object[] c, String separator) {
         return join(Arrays.asList(c), separator);
     }
-    
+
     public static String join(Collection c, String separator) {
         return join(c, null, null, separator);
     }
@@ -345,7 +354,7 @@ public class ElabUtil {
 
     public static void runCommand(Elab elab, String cmd)
             throws ElabJspException {
-        String[] fullcmd = new String[] {"/bin/bash", "-c", cmd};
+        String[] fullcmd = new String[] { "/bin/bash", "-c", cmd };
         try {
             Process p = Runtime.getRuntime().exec(fullcmd);
             p.getOutputStream().close();
@@ -407,4 +416,48 @@ public class ElabUtil {
                             + e.getMessage(), e);
         }
     }
+
+    public static NanoDate julianToGregorian(int jday, double fractional) {
+        int Z = (int) (jday + 0.5 + fractional);
+        int W = (int) ((Z - 1867216.25) / 36524.25);
+        int X = (int) (W / 4);
+        int A = Z + 1 + W - X;
+        int B = A + 1524;
+        int C = (int) ((B - 122.1) / 365.25);
+        int D = (int) (365.25 * C);
+        int E = (int) ((B - D) / 30.6001);
+        int F = (int) (30.6001 * E);
+        int day = B - D - F;
+        int month = E - 1 <= 12 ? E - 1 : E - 13; // Month = E-1 or E-13 (must
+                                                    // get number
+        // less than or equal to 12)
+        int year = month <= 2 ? C - 4715 : C - 4716; // Year = C-4715 (if
+                                                        // Month is
+        // January or February) or
+        // C-4716 (otherwise)
+        
+        NanoDate nd = new NanoDate();
+        Calendar gc = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        if (fractional != 0) {
+            int hour = (int) (fractional * 24);
+            int min = (int) ((fractional * 24 - hour) * 60);
+            int sec = (int) (((fractional * 24 - hour) * 60 - min) * 60);
+            int msec = (int) ((((fractional * 24 - hour) * 60 - min) * 60 - sec) * 1000);
+            int micsec = (int) (((((fractional * 24 - hour) * 60 - min) * 60 - sec) * 1000 - msec) * 1000);
+            int nsec = (int) ((((((fractional * 24 - hour) * 60 - min) * 60 - sec) * 1000 - msec) * 1000 - micsec) * 1000);
+
+            gc.set(year, month - 1, day, (hour + 12) % 24 , min, sec);
+            gc.set(Calendar.MILLISECOND, msec);
+                        
+            nd.setMicroSeconds(micsec);
+            nd.setNanoSeconds(nsec);
+        }
+        else {
+            gc.set(year, month - 1, day, 0, 0, 0);
+        }
+        
+        nd.setTime(gc.getTime().getTime());
+        return nd;
+    }
+
 }

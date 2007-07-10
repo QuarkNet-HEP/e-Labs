@@ -4,7 +4,7 @@
 package gov.fnal.elab.analysis;
 
 import gov.fnal.elab.Elab;
-import gov.fnal.elab.ElabUser;
+import gov.fnal.elab.ElabGroup;
 import gov.fnal.elab.vds.ElabTransformation;
 
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import java.util.Map;
 public abstract class AbstractAnalysisRun implements AnalysisRun {
         private ElabAnalysis analysis;
         private Elab elab;
-        private ElabUser user;
+        private ElabGroup user;
         private ElabTransformation et;
         private Throwable exception;
         private int status;
@@ -21,7 +21,7 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
         private static int sid = 0;
         private Map attributes;
 
-        public AbstractAnalysisRun(ElabAnalysis analysis, Elab elab, ElabUser user) {
+        public AbstractAnalysisRun(ElabAnalysis analysis, Elab elab, ElabGroup user) {
             this.analysis = analysis;
             this.elab = elab;
             this.user = user;
@@ -94,7 +94,7 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
             return elab;
         }
 
-        public ElabUser getUser() {
+        public ElabGroup getUser() {
             return user;
         }
 }

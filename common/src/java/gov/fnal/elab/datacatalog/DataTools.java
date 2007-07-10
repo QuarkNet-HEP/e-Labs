@@ -22,6 +22,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.AbstractCollection;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -51,6 +52,7 @@ public class DataTools {
         KEYS.put("chan4", new Integer(7));
         KEYS.put("city", new Integer(8));
         KEYS.put("state", new Integer(9));
+        KEYS.put("enddate", new Integer(10));
     }
 
     public static final int SCHOOL = 0;
@@ -63,6 +65,7 @@ public class DataTools {
     public static final int CHAN4 = 7;
     public static final int CITY = 8;
     public static final int STATE = 9;
+    public static final int ENDDATE = 10;
 
     public static final DateFormat MONTH_FORMAT;
 
@@ -80,6 +83,8 @@ public class DataTools {
      * 
      */
     public static StructuredResultSet organizeSearchResults(ResultSet rs) {
+        Date startDate = null, endDate = null;
+        
         StructuredResultSet srs = new StructuredResultSet();
         srs.setDataFileCount(rs.size());
         Iterator i = rs.iterator();
@@ -110,10 +115,20 @@ public class DataTools {
                 date = new Month(startdate);
                 school.addDay(date);
             }
-
+            
             File file = new File(e.getLFN());
-            file.setDate((Timestamp) data[STARTDATE]);
-
+            file.setStartDate((Timestamp) data[STARTDATE]);
+            file.setEndDate((Timestamp) data[ENDDATE]);
+            
+            if (startDate == null || startDate.after(file.getStartDate())) {
+                startDate = file.getStartDate();
+            }
+            
+            if (endDate == null || endDate.before(file.getEndDate())) {
+                endDate = file.getEndDate();
+            }
+            
+            
             if (Boolean.TRUE.equals(data[BLESSED])) {
                 file.setBlessed(true);
                 school.incBlessed();
@@ -132,6 +147,8 @@ public class DataTools {
             school.incDataFiles();
             date.addFile(file);
         }
+        srs.setStartDate(startDate);
+        srs.setEndDate(endDate);
         return srs;
     }
 

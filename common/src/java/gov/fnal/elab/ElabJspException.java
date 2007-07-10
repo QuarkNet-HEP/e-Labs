@@ -25,6 +25,6 @@ public class ElabJspException extends Exception {
     }
 
     public ElabJspException(Throwable cause) {
-        super(cause);
+        super(cause.getMessage(), cause);
     }
 }

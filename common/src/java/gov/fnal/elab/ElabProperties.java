@@ -9,6 +9,7 @@ package gov.fnal.elab;
  * of the {@link Elab.getElab} methods.
  */
 public class ElabProperties extends AbstractProperties {
+    public static final String PROP_WEBAPP = "elab.webapp";
     public static final String PROP_ELAB_NAME = "elab.name";
     public static final String PROP_ELAB_FORMAL_NAME = "elab.formal.name";
     public static final String PROP_ELAB_LOGIN_URL = "elab.login.url";
@@ -22,7 +23,7 @@ public class ElabProperties extends AbstractProperties {
     public static final String PROP_HOST = "host";
     public static final String PROP_PORT = "port";
     public static final String PROP_RUN_DIR = "run.dir";
-    public static final String PROP_USER_DIR = "user.dir";
+    public static final String PROP_USER_DIR = "users.dir";
     public static final String PROP_DATA_DIR = "data.dir";
 
     private String elabName;
@@ -37,6 +38,10 @@ public class ElabProperties extends AbstractProperties {
      */
     public String getFormalName() {
         return getProperty(ElabProperties.PROP_ELAB_FORMAL_NAME, elabName);
+    }
+    
+    public String getWebapp() {
+        return getRequired(ElabProperties.PROP_WEBAPP);
     }
 
     /**
@@ -97,5 +102,9 @@ public class ElabProperties extends AbstractProperties {
      */
     public String getDataDir() {
         return getRequired(ElabProperties.PROP_DATA_DIR);
+    }
+
+    public String getUsersDir() {
+        return getRequired(ElabProperties.PROP_USER_DIR);
     }
 }

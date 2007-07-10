@@ -92,12 +92,10 @@ public abstract class TRControl extends TagSupport implements DynamicAttributes 
             v = pageContext.getRequest().getParameter(getName());
         }
         if (v == null) {
-            if (_default instanceof String) {
-                v = evaluate("default", (String) _default);
-            }
-            else {
-                v = _default;
-            }
+            v = _default;
+        }
+        if (v == null && analysis != null) {
+            v = analysis.getParameter(getParamName());
         }
         return v;
     }

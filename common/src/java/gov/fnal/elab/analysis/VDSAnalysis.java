@@ -220,6 +220,7 @@ public class VDSAnalysis extends ElabBean implements ElabAnalysis {
         while (i.hasNext()) {
             String name = (String) i.next();
             if (!isParameterValid(name)) {
+            	System.out.println(type + ": invalid parameter " + name);
                 return false;
             }
         }

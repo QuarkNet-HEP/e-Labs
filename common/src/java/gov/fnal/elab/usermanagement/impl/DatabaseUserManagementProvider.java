@@ -5,33 +5,44 @@ package gov.fnal.elab.usermanagement.impl;
 
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
-import gov.fnal.elab.ElabTeacher;
-import gov.fnal.elab.ElabUser;
+import gov.fnal.elab.ElabStudent;
 import gov.fnal.elab.usermanagement.AuthenticationException;
 import gov.fnal.elab.usermanagement.ElabUserManagementProvider;
 import gov.fnal.elab.util.DatabaseConnectionManager;
+import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.util.ElabUtil;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.Ostermiller.util.RandPass;
 
 public class DatabaseUserManagementProvider implements
         ElabUserManagementProvider {
 
     public static final String SWITCHING_ELABS = "switchingelabs";
 
-    private Elab elab;
+    protected Elab elab;
 
     public DatabaseUserManagementProvider(Elab elab) {
         this.elab = elab;
     }
 
-    public ElabUser authenticate(String username, String password,
+    public ElabGroup authenticate(String username, String password,
             String projectId) throws AuthenticationException {
         Statement s = null;
         Connection conn = null;
@@ -41,7 +52,7 @@ public class DatabaseUserManagementProvider implements
             s = conn.createStatement();
             ResultSet rs;
             password = switchingElabs(s, username, password);
-            ElabUser user = createUser(s, username, password, projectId);
+            ElabGroup user = createUser(s, username, password, projectId);
             checkResearchGroup(s, user, projectId);
             updateUsage(s, user);
             return user;
@@ -74,8 +85,8 @@ public class DatabaseUserManagementProvider implements
         }
     }
 
-    private void checkResearchGroup(Statement s, ElabUser user, String projectID)
-            throws SQLException, AuthenticationException {
+    private void checkResearchGroup(Statement s, ElabGroup user,
+            String projectID) throws SQLException, AuthenticationException {
         ResultSet rs;
         rs = s.executeQuery("SELECT research_group_project.project_id "
                 + "FROM research_group_project "
@@ -90,7 +101,7 @@ public class DatabaseUserManagementProvider implements
         }
     }
 
-    private void updateUsage(Statement s, ElabUser user) throws SQLException {
+    private void updateUsage(Statement s, ElabGroup user) throws SQLException {
         int rows = s.executeUpdate("INSERT INTO usage (research_group_id) "
                 + "VALUES(" + user.getGroup().getId() + ");");
         if (rows != 1) {
@@ -101,7 +112,7 @@ public class DatabaseUserManagementProvider implements
         }
     }
 
-    private ElabUser createUser(Statement s, String username, String password,
+    private ElabGroup createUser(Statement s, String username, String password,
             String projectId) throws SQLException, AuthenticationException {
         ResultSet rs;
         rs = s.executeQuery("SELECT id, teacher_id, role, userarea, "
@@ -112,25 +123,58 @@ public class DatabaseUserManagementProvider implements
             throw new AuthenticationException("Invalid username or password");
         }
 
-        ElabUser user = new ElabUser(elab, this);
+        ElabGroup user = new ElabGroup(elab, this);
         user.setName(username);
-        ElabGroup group = new ElabGroup();
-        group.setId(rs.getString("id"));
-        // The group name seems to be the same as the user name
-        group.setName(user.getName());
-        user.setGroup(group);
+        user.setId(rs.getString("id"));
         user.setTeacherId(rs.getString("teacher_id"));
         user.setRole(rs.getString("role"));
-        user.setSurvey(rs.getString("survey"));
-        if (user.getSurvey() == null) {
-            user.setSurvey("f");
-        }
+        user.setSurvey(rs.getBoolean("survey"));
         user.setUserArea(rs.getString("userarea"));
-        setMiscGroupData(group, user.getUserArea());
+        setMiscGroupData(user, user.getUserArea());
+        if (user.isTeacher()) {
+            addTeacherInfo(s, user);
+        }
+        addStudents(s, user);
         return user;
     }
 
-    public void resetFirstTime(String groupId) throws SQLException {
+    private void addStudents(Statement s, ElabGroup group) throws SQLException {
+        System.out.println("Adding students...");
+        ResultSet rs;
+        rs = s
+                .executeQuery("SELECT id, name FROM student "
+                        + "WHERE id IN "
+                        + "(SELECT student_id FROM research_group_student WHERE research_group_id = '"
+                        + group.getId() + "');");
+        while (rs.next()) {
+            group.addStudent(new ElabStudent(rs.getString("id"), rs
+                    .getString("name")));
+        }
+    }
+
+    private ElabGroup createGroup(Statement s, String groupName,
+            String projectId) throws SQLException {
+        ResultSet rs;
+        rs = s.executeQuery("SELECT id, teacher_id, role, userarea, "
+                + "survey, first_time FROM research_group WHERE name='"
+                + ElabUtil.fixQuotes(groupName) + "';");
+
+        if (!rs.next()) {
+            throw new SQLException(
+                    "Attempted to create a group that doesn't exist");
+        }
+        ElabGroup user = new ElabGroup(elab, this);
+        user.setName(groupName);
+        user.setId(rs.getString("id"));
+        user.setTeacherId(rs.getString("teacher_id"));
+        user.setRole(rs.getString("role"));
+        user.setSurvey(rs.getBoolean("survey"));
+        user.setUserArea(rs.getString("userarea"));
+        setMiscGroupData(user, user.getUserArea());
+        return user;
+    }
+
+    public void resetFirstTime(String groupId) throws ElabException {
         Statement s = null;
         Connection conn = null;
         try {
@@ -139,6 +183,9 @@ public class DatabaseUserManagementProvider implements
             s = conn.createStatement();
             s.executeUpdate("UPDATE research_group "
                     + "SET first_time='f' WHERE id = \'" + groupId + "\';");
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
         }
         finally {
             DatabaseConnectionManager.close(conn, s);
@@ -162,7 +209,7 @@ public class DatabaseUserManagementProvider implements
         }
     }
 
-    public Collection getTeachers() throws SQLException {
+    public Collection getTeachers() throws ElabException {
         Statement s = null;
         Connection conn = null;
         ResultSet rs;
@@ -170,13 +217,7 @@ public class DatabaseUserManagementProvider implements
             conn = DatabaseConnectionManager
                     .getConnection(elab.getProperties());
             s = conn.createStatement();
-            rs = s
-                    .executeQuery("SELECT id as projectid from project where name='"
-                            + elab.getName() + "';");
-            int projectId = 1; // default to Cosmic
-            if (rs.next()) {
-                projectId = rs.getInt("projectid");
-            }
+            String projectId = elab.getId();
             rs = s
                     .executeQuery("SELECT distinct teacher.name as tname, teacher.email as temail, "
                             + "research_group.name as rgname, research_group.userarea as rguserarea "
@@ -189,22 +230,22 @@ public class DatabaseUserManagementProvider implements
             List teachers = new ArrayList();
             // the first one is a dummy, but it makes the code below less
             // cluttered
-            ElabTeacher t = new ElabTeacher(elab, this);
+            ElabGroup t = new ElabGroup(elab, this);
             ElabGroup g = null;
             while (rs.next()) {
                 String name = rs.getString("tname");
                 if (name.equals(t.getName())) {
-                    ElabGroup n = new ElabGroup();
+                    ElabGroup n = new ElabGroup(elab, this);
                     n.setCity(g.getCity());
                     n.setSchool(g.getSchool());
                     n.setState(g.getState());
                     g = n;
                 }
                 else {
-                    t = new ElabTeacher(elab, this);
+                    t = new ElabGroup(elab, this);
                     t.setName(name);
                     t.setEmail(rs.getString("temail"));
-                    g = new ElabGroup();
+                    g = new ElabGroup(elab, this);
                     if (rs.getString("rguserarea") != null
                             && !rs.getString("rguserarea").equals("")) {
                         String[] brokenSchema = rs.getString("rguserarea")
@@ -222,13 +263,438 @@ public class DatabaseUserManagementProvider implements
             }
             return teachers;
         }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, s);
+        }
+    }
+
+    protected void addTeacherInfo(Statement s, ElabGroup user)
+            throws SQLException {
+        ResultSet rs;
+        String projectId = elab.getId();
+        String teacherId = user.getId();
+
+        rs = s.executeQuery("SELECT name, email FROM teacher WHERE id = '"
+                + teacherId + "'");
+        if (!rs.next()) {
+            // TODO Apparently not having teacher data in the DB is a valid
+            // situation?!?
+            // throw new SQLException("Invalid teacher id: " + teacherId);
+        }
+        else {
+            user.setEmail(rs.getString("email"));
+        }
+
+        rs = s
+                .executeQuery("SELECT name FROM research_group WHERE teacher_id = '"
+                        + teacherId + "'");
+
+        // Can't do another query while iterating over a result set
+        List names = new LinkedList();
+        while (rs.next()) {
+            names.add(rs.getString("name"));
+        }
+        Iterator i = names.iterator();
+        while (i.hasNext()) {
+            ElabGroup g = createGroup(s, (String) i.next(), elab.getId());
+            System.out.println(g);
+            user.addGroup(g);
+            addStudents(s, g);
+        }
+    }
+
+    protected ElabGroup getTeacher(ElabGroup user, Statement s)
+            throws SQLException {
+        ResultSet rs;
+        String projectId = elab.getId();
+        String teacherId = user.getTeacherId();
+
+        rs = s.executeQuery("select name, email from teacher where id = '"
+                + teacherId + "'");
+        if (!rs.next()) {
+            throw new SQLException("Invalid teacher id: " + teacherId);
+        }
+        ElabGroup t = new ElabGroup(elab, this);
+        t.setName(rs.getString("name"));
+        t.setEmail(rs.getString("email"));
+
+        rs = s
+                .executeQuery("select name, userarea from research_group where teacher_id = '"
+                        + teacherId + "'");
+
+        while (rs.next()) {
+            ElabGroup g = new ElabGroup(elab, this);
+            if (rs.getString("userarea") != null
+                    && !rs.getString("userarea").equals("")) {
+                String[] brokenSchema = rs.getString("userarea").split("/");
+                if (brokenSchema != null) {
+                    g.setSchool(brokenSchema[3].replaceAll("_", " "));
+                    g.setCity(brokenSchema[2].replaceAll("_", " "));
+                    g.setState(brokenSchema[1].replaceAll("_", " "));
+                }
+            }
+
+            g.setName(rs.getString("name"));
+            t.addGroup(g);
+        }
+        return t;
+    }
+
+    public ElabGroup getTeacher(ElabGroup user) throws ElabException {
+        Statement s = null;
+        Connection conn = null;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            s = conn.createStatement();
+            return getTeacher(user, s);
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, s);
+        }
+    }
+
+    protected String addUser(Statement s, ElabGroup et, ElabGroup user,
+            boolean createGroup) throws SQLException, ElabException {
+        ResultSet rs;
+        ElabGroup group = user.getGroup();
+        // More work to do if we haven't seen this one yet.
+        String pass = null;
+        if (createGroup) {
+            RandPass rp = new RandPass();
+            pass = rp.getPass();
+            rs = s.executeQuery("select * from research_group where name = '"
+                    + user.getGroup().getName() + "'");
+            while (rs.next()) {
+                throw new ElabException("The specified group already exists: "
+                        + group.getName());
+            }
+            File tua = new File(et.getUserArea());
+            user.setUserArea(new File(tua.getParentFile(), group.getName())
+                    .getPath());
+            // Generated a default academic year. LQ - 7-24-06
+            Calendar calendar = new GregorianCalendar();
+            int year = calendar.get(Calendar.YEAR);
+            if (calendar.get(Calendar.MONTH) < 7) {
+                year = year - 1;
+            }
+            String ay = "AY" + year;
+            s
+                    .executeUpdate("insert into research_group(name, password, teacher_id, "
+                            + "role, userarea, ay, survey) "
+                            + "values('"
+                            + ElabUtil.fixQuotes(group.getName())
+                            + "', '"
+                            + ElabUtil.fixQuotes(pass)
+                            + "', '"
+                            + et.getTeacherId()
+                            + "', '"
+                            + (user.isUpload() ? "upload" : "user")
+                            + "', '"
+                            + user.getUserArea()
+                            + "','"
+                            + ay
+                            + "', '"
+                            + user.getSurvey() + "')");
+            s
+                    .executeUpdate("insert into research_group_project(research_group_id, project_id) "
+                            + "values((select id from research_group where name = '"
+                            + user.getName() + "'), " + elab.getId() + ")");
+
+            String usersDir = elab.getAbsolutePath(elab.getProperties()
+                    .getUsersDir());
+
+            File f;
+            f = new File(user.getDir("posters"));
+            f.mkdirs();
+            f = new File(user.getDir("plots"));
+            f.mkdirs();
+            f = new File(user.getDir("scratch"));
+            f.mkdirs();
+        }
+        else {
+            boolean found = false;
+            Iterator i = et.getGroups().iterator();
+            while (i.hasNext()) {
+                ElabGroup g = (ElabGroup) i.next();
+                if (g.getName().equals(user.getGroup().getName())) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                throw new ElabException("The requested group (\""
+                        + user.getGroup().getName() + "\") does not exist");
+            }
+        }
+
+        // Just insert the student into the DB.
+        int studentNameAddOn = 0;
+        rs = s.executeQuery("select * from student where name = '"
+                + user.getName() + "'");
+        while (rs.next()) {
+            studentNameAddOn++;
+            rs = s.executeQuery("select * from student where name = '"
+                    + user.getName() + studentNameAddOn + "'");
+        }
+        if (studentNameAddOn > 0) {
+            user.setName(user.getName() + studentNameAddOn);
+        }
+
+        s.executeUpdate("insert into student(name) values('" + user.getName()
+                + "')");
+        s
+                .executeUpdate("insert into research_group_student(research_group_id, student_id) "
+                        + "values((select id from research_group where name = '"
+                        + group.getName()
+                        + "'), "
+                        + "(select id from student where name = '"
+                        + user.getName() + "'))");
+        if (user.getSurvey()) {
+            s
+                    .executeUpdate("insert into survey(student_id, project_id) values("
+                            + "(select id from student where name = '"
+                            + user.getName() + "'), " + elab.getId() + " )");
+        }
+        return pass;
+    }
+
+    public List addUsers(ElabGroup teacher, List users, List createGroups)
+            throws ElabException {
+        List passwords = new ArrayList();
+        Statement s = null;
+        Connection conn = null;
+        if (users.size() != createGroups.size()) {
+            throw new IllegalArgumentException(
+                    "User list and createGroups list have different sizes");
+        }
+
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            s = conn.createStatement();
+            conn.setAutoCommit(false);
+            ElabGroup et = getTeacher(teacher, s);
+            et.setUserArea(teacher.getUserArea());
+            et.setTeacherId(teacher.getTeacherId());
+            try {
+                Iterator i = users.iterator(), j = createGroups.iterator();
+                while (i.hasNext()) {
+                    passwords.add(addUser(s, et, (ElabGroup) i.next(),
+                            ((Boolean) j.next()).booleanValue()));
+                }
+                conn.commit();
+            }
+            catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
+            return passwords;
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, s);
+        }
+    }
+
+    public void deleteStudent(ElabGroup group, String id) throws ElabException {
+        Statement s = null;
+        Connection conn = null;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            s = conn.createStatement();
+            s
+                    .executeUpdate("DELETE FROM research_group_student WHERE research_group_id = '"
+                            + group.getId()
+                            + "' AND student_id = '"
+                            + ElabUtil.fixQuotes(id) + "'");
+            group.removeStudent(group.getStudent(id));
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, s);
+        }
+    }
+
+    public void updateGroup(ElabGroup group, String password)
+            throws ElabException {
+        Statement s = null;
+        Connection conn = null;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            s = conn.createStatement();
+            String passQ = "";
+            if (password != null && !password.equals("")) {
+                passQ = ", password = '" + ElabUtil.fixQuotes(password) + "'";
+            }
+            s.executeUpdate("UPDATE research_group SET ay = '"
+                    + group.getYear() + "', role = '" + group.getRole()
+                    + "', survey = "
+                    + String.valueOf(group.getSurvey()).toUpperCase() + passQ
+                    + " WHERE id = '" + group.getId() + "';");
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, s);
+        }
+    }
+
+    public Collection getProjectNames() throws ElabException {
+        List names = new ArrayList();
+        Statement s = null;
+        Connection conn = null;
+
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            s = conn.createStatement();
+            ResultSet rs = s.executeQuery("SELECT name FROM project;");
+            while (rs.next()) {
+                names.add(rs.getString("name"));
+            }
+            return names;
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, s);
+        }
+    }
+
+    public Collection getProjectNames(ElabGroup group) throws ElabException {
+        Statement s = null;
+        Connection conn = null;
+
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            s = conn.createStatement();
+            return getProjectNames(s, group);
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, s);
+        }
+    }
+
+    private Collection getProjectNames(Statement s, ElabGroup group)
+            throws SQLException {
+        List names = new ArrayList();
+        ResultSet rs = s
+                .executeQuery("SELECT name FROM project WHERE id IN "
+                        + "(SELECT project_id FROM research_group_project WHERE research_group_id = '"
+                        + group.getId() + "');");
+        while (rs.next()) {
+            names.add(rs.getString("name"));
+        }
+        return names;
+    }
+
+    public void updateProjects(ElabGroup group, String[] projectNames)
+            throws ElabException {
+        Statement s = null;
+        Connection conn = null;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            s = conn.createStatement();
+            conn.setAutoCommit(false);
+            conn.setSavepoint();
+            try {
+                Map ids = new HashMap();
+                ResultSet rs = s.executeQuery("SELECT id, name FROM project");
+                while (rs.next()) {
+                    ids.put(rs.getString("name"), rs.getString("id"));
+                }
+                Collection current = getProjectNames(s, group);
+                List updated = new ArrayList();
+                for (int i = 0; i < projectNames.length; i++) {
+                    updated.add(projectNames[i]);
+                }
+                Set toRemove = new HashSet(current);
+                toRemove.removeAll(updated);
+                Set toAdd = new HashSet(updated);
+                toAdd.removeAll(current);
+                Iterator i;
+                i = toRemove.iterator();
+                while (i.hasNext()) {
+                    String id = (String) ids.get(i.next());
+                    s
+                            .executeUpdate("DELETE FROM research_group_project WHERE research_group_id = '"
+                                    + group.getId()
+                                    + "' AND project_id = '"
+                                    + id + "';");
+                }
+                i = toAdd.iterator();
+                while (i.hasNext()) {
+                    String id = (String) ids.get(i.next());
+                    s
+                            .executeUpdate("INSERT INTO research_group_project (research_group_id, project_id) "
+                                    + "VALUES ('"
+                                    + group.getId()
+                                    + "', '"
+                                    + id
+                                    + "');");
+                }
+                conn.commit();
+            }
+            catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, s);
+        }
+    }
+
+    public boolean isStudentInGroup(ElabGroup group, String id)
+            throws ElabException {
+        Statement s = null;
+        Connection conn = null;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            s = conn.createStatement();
+            ResultSet rs = s
+                    .executeQuery("SELECT * FROM research_group_student WHERE research_group_id = '"
+                            + group.getId()
+                            + "' AND student_id = '"
+                            + id
+                            + "';");
+            return rs.next();
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
         finally {
             DatabaseConnectionManager.close(conn, s);
         }
     }
 
     /**
-     * A backdoor for running direct queries on the database
+     * A backdoor for running direct queries on the database. Obviously, it
+     * should not be used.
      */
     public ResultSet runQuery(String query) throws SQLException {
         Statement s = null;
@@ -243,5 +709,17 @@ public class DatabaseUserManagementProvider implements
         finally {
             DatabaseConnectionManager.close(conn, s);
         }
+    }
+
+    public ResultSet executeQuery(String query) throws SQLException {
+        return runQuery(query);
+    }
+
+    public Connection getConnection() throws SQLException {
+        return DatabaseConnectionManager.getConnection(elab.getProperties());
+    }
+
+    public void closeConnection(Connection c, Statement s) {
+        DatabaseConnectionManager.close(c, s);
     }
 }

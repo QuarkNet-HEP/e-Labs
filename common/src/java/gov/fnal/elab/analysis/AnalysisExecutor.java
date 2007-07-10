@@ -4,7 +4,7 @@
 package gov.fnal.elab.analysis;
 
 import gov.fnal.elab.Elab;
-import gov.fnal.elab.ElabUser;
+import gov.fnal.elab.ElabGroup;
 
 /**
  * This interface describes the functionality required by elabs from a analysis
@@ -23,5 +23,5 @@ public interface AnalysisExecutor {
      *            The user requesting the analysis to be run
      * @return The run object associated with the execution of the analysis.
      */
-    AnalysisRun start(ElabAnalysis analysis, Elab elab, ElabUser user);
+    AnalysisRun start(ElabAnalysis analysis, Elab elab, ElabGroup user);
 }

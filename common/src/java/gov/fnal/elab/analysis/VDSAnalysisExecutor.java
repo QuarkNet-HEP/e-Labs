@@ -4,7 +4,7 @@
 package gov.fnal.elab.analysis;
 
 import gov.fnal.elab.Elab;
-import gov.fnal.elab.ElabUser;
+import gov.fnal.elab.ElabGroup;
 import gov.fnal.elab.beans.MappableBean;
 import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.vds.ElabTransformation;
@@ -29,7 +29,7 @@ import org.griphyn.common.catalog.replica.ElabRC;
  */
 public class VDSAnalysisExecutor implements AnalysisExecutor {
     
-    public AnalysisRun start(ElabAnalysis analysis, Elab elab, ElabUser user) {
+    public AnalysisRun start(ElabAnalysis analysis, Elab elab, ElabGroup user) {
         Run run = new Run(analysis, elab, user);
         run.start();
         return run;
@@ -57,7 +57,7 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
         private transient Thread thread;
         private String runDirURL;
 
-        public Run(ElabAnalysis analysis, Elab elab, ElabUser user) {
+        public Run(ElabAnalysis analysis, Elab elab, ElabGroup user) {
             super(analysis, elab, user);
         }
 

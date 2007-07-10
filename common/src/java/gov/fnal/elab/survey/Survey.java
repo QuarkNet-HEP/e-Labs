@@ -4,7 +4,7 @@
 package gov.fnal.elab.survey;
 
 import gov.fnal.elab.Elab;
-import gov.fnal.elab.ElabUser;
+import gov.fnal.elab.ElabGroup;
 import gov.fnal.elab.util.DatabaseConnectionManager;
 
 import java.sql.Connection;
@@ -37,7 +37,7 @@ public class Survey {
         }
     }
 
-    public static int studentCount(Elab elab, ElabUser user)
+    public static int studentCount(Elab elab, ElabGroup user)
             throws SQLException {
         Statement s = null;
         Connection conn = null;

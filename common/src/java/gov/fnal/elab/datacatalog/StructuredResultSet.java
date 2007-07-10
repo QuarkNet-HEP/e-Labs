@@ -21,6 +21,7 @@ public class StructuredResultSet {
     private Map schools;
     private int dataFileCount;
     private String key, value, time;
+    private java.util.Date startDate, endDate;
 
     public StructuredResultSet() {
         schools = new HashMap();
@@ -84,6 +85,23 @@ public class StructuredResultSet {
     public boolean isEmpty() {
         return schools.isEmpty();
     }
+    
+    public java.util.Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(java.util.Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public java.util.Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(java.util.Date startDate) {
+        this.startDate = startDate;
+    }
+
 
     public static class School {
         private String name, city, state;
@@ -197,7 +215,7 @@ public class StructuredResultSet {
         private boolean blessed;
         private Boolean stacked;
         private final String lfn;
-        private java.util.Date date;
+        private java.util.Date startDate, endDate;
 
         public File(String lfn) {
             this.lfn = lfn;
@@ -224,12 +242,27 @@ public class StructuredResultSet {
         }
 
         public java.util.Date getDate() {
-            return date;
+            return startDate;
         }
 
         public void setDate(java.util.Date date) {
-            this.date = date;
+            this.startDate = date;
+        }
+
+        public java.util.Date getEndDate() {
+            return endDate;
+        }
+
+        public void setEndDate(java.util.Date endDate) {
+            this.endDate = endDate;
+        }
+
+        public java.util.Date getStartDate() {
+            return startDate;
+        }
+
+        public void setStartDate(java.util.Date startDate) {
+            this.startDate = startDate;
         }
     }
-
 }

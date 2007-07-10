@@ -5,6 +5,7 @@ package gov.fnal.elab;
 
 import gov.fnal.elab.analysis.AnalysisExecutor;
 import gov.fnal.elab.datacatalog.DataCatalogProvider;
+import gov.fnal.elab.test.ElabTestProvider;
 import gov.fnal.elab.usermanagement.AuthenticationException;
 import gov.fnal.elab.usermanagement.ElabUserManagementProvider;
 import gov.fnal.elab.util.DatabaseConnectionManager;
@@ -176,6 +177,14 @@ public class Elab {
         return config;
     }
 
+    /**
+     * Returns an absolute path that represents the given path relative to the
+     * web application.
+     */
+    public String getAbsolutePath(String webappPath) {
+        return context.getRealPath(webappPath);
+    }
+
     protected void init() throws ElabInstantiationException {
         properties.resolve();
         try {
@@ -250,11 +259,11 @@ public class Elab {
      * @throws AuthenticationException
      *             if the authentication fails
      */
-    public ElabUser authenticate(String username, String password)
+    public ElabGroup authenticate(String username, String password)
             throws AuthenticationException {
         ElabUserManagementProvider p = ElabFactory
                 .getUserManagementProvider(this);
-        ElabUser user = p.authenticate(username, password, id);
+        ElabGroup user = p.authenticate(username, password, id);
         if (username != null && username.equals(properties.getGuestUserName())) {
             user.setGuest(true);
         }
@@ -313,8 +322,9 @@ public class Elab {
         String user = "&user=" + getProperties().getGuestUserName();
         String pass = "&pass=" + getProperties().getGuestUserPassword();
         String project = "&project=" + getName();
-        return getProperties().getLoginURL() + prevPage + login + user + pass
-                + project;
+        return '/' + properties.getWebapp() + '/' + getName() + '/'
+                + properties.getRequired("elab.login.page") + prevPage + login
+                + user + pass + project;
     }
 
     /**
@@ -341,5 +351,22 @@ public class Elab {
      */
     public AnalysisExecutor getAnalysisExecutor() {
         return ElabFactory.getAnalysisProvider(this);
+    }
+    
+    public ElabTestProvider getTestProvider() {
+        return ElabFactory.getTestProvider(this);
+    }
+
+    /**
+     * Convenience method. Same as
+     * <code>Elab.getProperties().getProperty(name)</code>
+     */
+    public String getProperty(String name) {
+        return properties.getProperty(name);
+    }
+
+    public String secure(String page) {
+        return properties.getRequired("elab.secure.url") + '/'
+                + properties.getWebapp() + '/' + getName() + '/' + page;
     }
 }

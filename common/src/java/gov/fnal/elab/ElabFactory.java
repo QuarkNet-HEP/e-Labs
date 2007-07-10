@@ -17,8 +17,10 @@ import gov.fnal.elab.analysis.VDSAnalysisExecutor;
 import gov.fnal.elab.datacatalog.CachingDataCatalogProvider;
 import gov.fnal.elab.datacatalog.DataCatalogProvider;
 import gov.fnal.elab.datacatalog.impl.vds.VDSDataCatalogProvider;
+import gov.fnal.elab.test.ElabTestProvider;
+import gov.fnal.elab.test.impl.database.DatabaseTestProvider;
 import gov.fnal.elab.usermanagement.ElabUserManagementProvider;
-import gov.fnal.elab.usermanagement.impl.DatabaseUserManagementProvider;
+import gov.fnal.elab.usermanagement.impl.CosmicDatabaseUserManagementProvider;
 
 /**
  * Manages the instantiation of various elab functionality providers. User code
@@ -31,7 +33,11 @@ public class ElabFactory {
     public static synchronized ElabUserManagementProvider getUserManagementProvider(
             Elab elab) {
         if (userManagementProvider == null) {
-            userManagementProvider = new DatabaseUserManagementProvider(elab);
+            // userManagementProvider = new
+            // DatabaseUserManagementProvider(elab);
+            // the cosmic one inherits all functionality from the other one
+            userManagementProvider = new CosmicDatabaseUserManagementProvider(
+                    elab);
         }
         return userManagementProvider;
     }
@@ -46,6 +52,15 @@ public class ElabFactory {
                     new VDSDataCatalogProvider());
         }
         return dataCatalogProvider;
+    }
+
+    private static ElabTestProvider testProvider;
+
+    public static synchronized ElabTestProvider getTestProvider(Elab elab) {
+        if (testProvider == null) {
+            testProvider = new DatabaseTestProvider(elab);
+        }
+        return testProvider;
     }
 
     private static AnalysisExecutor analysisExecutor;
