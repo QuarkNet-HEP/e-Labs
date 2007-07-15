@@ -47,6 +47,10 @@ public class VDSAnalysis extends ElabBean implements ElabAnalysis {
     public VDSAnalysis() {
         defaults = new HashMap();
     }
+    
+    public void initialize(String param) {
+        
+    }
 
     public String getType() {
         return type;

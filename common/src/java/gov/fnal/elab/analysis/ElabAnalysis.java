@@ -110,4 +110,6 @@ public interface ElabAnalysis {
      * Returns this analysis' parameter in URL form.
      */
     String getEncodedParameters();
+    
+    void initialize(String param) throws InitializationException;
 }

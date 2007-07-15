@@ -28,7 +28,7 @@ import org.griphyn.common.catalog.replica.ElabRC;
  * Runs analyses with VDS. Yay!
  */
 public class VDSAnalysisExecutor implements AnalysisExecutor {
-    
+       
     public AnalysisRun start(ElabAnalysis analysis, Elab elab, ElabGroup user) {
         Run run = new Run(analysis, elab, user);
         run.start();

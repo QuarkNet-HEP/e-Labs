@@ -40,8 +40,14 @@ public class ElabFAQ {
         And q = new And();
         q.add(new Equals("type", "FAQ"));
         q.add(new Equals("project", elab.getName()));
-
-        DataCatalogProvider p = ElabFactory.getDataCatalogProvider(elab);
+        
+        DataCatalogProvider p;
+        try {
+            p = ElabFactory.getDataCatalogProvider(elab);
+        }
+        catch (ElabInstantiationException e) {
+            throw new ElabException(e);
+        }
         ResultSet rs = p.runQuery(q);
 
         Iterator i = rs.iterator();

@@ -10,17 +10,11 @@
 package gov.fnal.elab;
 
 import gov.fnal.elab.analysis.AnalysisExecutor;
-import gov.fnal.elab.analysis.BeanWrapper;
 import gov.fnal.elab.analysis.ElabAnalysis;
-import gov.fnal.elab.analysis.VDSAnalysis;
-import gov.fnal.elab.analysis.VDSAnalysisExecutor;
 import gov.fnal.elab.datacatalog.CachingDataCatalogProvider;
 import gov.fnal.elab.datacatalog.DataCatalogProvider;
-import gov.fnal.elab.datacatalog.impl.vds.VDSDataCatalogProvider;
 import gov.fnal.elab.test.ElabTestProvider;
-import gov.fnal.elab.test.impl.database.DatabaseTestProvider;
 import gov.fnal.elab.usermanagement.ElabUserManagementProvider;
-import gov.fnal.elab.usermanagement.impl.CosmicDatabaseUserManagementProvider;
 
 /**
  * Manages the instantiation of various elab functionality providers. User code
@@ -30,14 +24,34 @@ import gov.fnal.elab.usermanagement.impl.CosmicDatabaseUserManagementProvider;
 public class ElabFactory {
     private static ElabUserManagementProvider userManagementProvider;
 
+    private static Object newInstance(Elab elab, String provider)
+            throws ElabInstantiationException {
+        String clsname = elab.getProperties().getProperty(
+                "provider." + provider.toLowerCase());
+        return newInstance(elab, provider, clsname);
+    }
+
+    private static Object newInstance(Elab elab, String provider, String clsname) {
+        try {
+            Class cls = ElabFactory.class.getClassLoader().loadClass(clsname);
+            Object p = cls.newInstance();
+            if (p instanceof ElabProvider) {
+                ((ElabProvider) p).setElab(elab);
+            }
+            return p;
+        }
+        catch (Exception e) {
+            throw new ElabInstantiationException(
+                    "Failed to instantiate provider for " + provider
+                            + " (class: " + clsname + ")", e);
+        }
+    }
+
     public static synchronized ElabUserManagementProvider getUserManagementProvider(
             Elab elab) {
         if (userManagementProvider == null) {
-            // userManagementProvider = new
-            // DatabaseUserManagementProvider(elab);
-            // the cosmic one inherits all functionality from the other one
-            userManagementProvider = new CosmicDatabaseUserManagementProvider(
-                    elab);
+            userManagementProvider = (ElabUserManagementProvider) newInstance(
+                    elab, "usermanagement");
         }
         return userManagementProvider;
     }
@@ -49,7 +63,7 @@ public class ElabFactory {
         if (dataCatalogProvider == null) {
             setVDSHome(elab);
             dataCatalogProvider = new CachingDataCatalogProvider(
-                    new VDSDataCatalogProvider());
+                    (DataCatalogProvider) newInstance(elab, "datacatalog"));
         }
         return dataCatalogProvider;
     }
@@ -58,7 +72,7 @@ public class ElabFactory {
 
     public static synchronized ElabTestProvider getTestProvider(Elab elab) {
         if (testProvider == null) {
-            testProvider = new DatabaseTestProvider(elab);
+            testProvider = (ElabTestProvider) newInstance(elab, "test");
         }
         return testProvider;
     }
@@ -68,36 +82,25 @@ public class ElabFactory {
     public static synchronized AnalysisExecutor getAnalysisProvider(Elab elab) {
         if (analysisExecutor == null) {
             setVDSHome(elab);
-            analysisExecutor = new VDSAnalysisExecutor();
+            analysisExecutor = (AnalysisExecutor) newInstance(elab,
+                    "analysisexecutor");
         }
         return analysisExecutor;
     }
 
     public static ElabAnalysis newElabAnalysis(Elab elab, String impl,
-            String param) throws ElabInstantiationException {
+            String param) {
         if (impl == null) {
-            impl = elab.getProperties().getProperty("elab.analysis.type",
+            impl = elab.getProperties().getProperty("provider.analysis",
                     "vds-dynamic");
         }
-        try {
-            setVDSHome(elab);
-            if ("vds-dynamic".equals(impl)) {
-                return new VDSAnalysis();
-            }
-            else if ("vds-bean".equals(impl)) {
-                BeanWrapper bw = new BeanWrapper();
-                bw.setBeanClass(param);
-                return bw;
-            }
-            else {
-                throw new ElabInstantiationException("Invalid analysis type: "
-                        + impl);
-            }
+        if ("vds-dynamic".equals(impl)) {
+            impl = "gov.fnal.elab.analysis.VDSAnalysis";
         }
-        catch (Exception e) {
-            throw new ElabInstantiationException("Cannot instantiate analysis "
-                    + impl + " with param " + param, e);
+        else if ("vds-bean".equals(impl)) {
+            impl = "gov.fnal.elab.analysis.BeanWrapper";
         }
+        return (ElabAnalysis) newInstance(elab, "analysis", impl);
     }
 
     private static void setVDSHome(Elab elab) {

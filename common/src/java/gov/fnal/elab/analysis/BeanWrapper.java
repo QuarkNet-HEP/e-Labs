@@ -28,6 +28,15 @@ public class BeanWrapper implements ElabAnalysis {
         defaults = new HashMap();
     }
 
+    public void initialize(String param) throws InitializationException {
+        try {
+            setBeanClass(param);
+        }
+        catch (Exception e) {
+            throw new InitializationException(e);
+        }
+    }
+    
     public void setBeanClass(String cls) throws InstantiationException,
             IllegalAccessException, ClassNotFoundException {
         this.bean = BeanWrapper.class.getClassLoader().loadClass(cls)

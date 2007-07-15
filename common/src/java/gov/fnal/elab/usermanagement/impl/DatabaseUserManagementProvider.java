@@ -5,6 +5,7 @@ package gov.fnal.elab.usermanagement.impl;
 
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
+import gov.fnal.elab.ElabProvider;
 import gov.fnal.elab.ElabStudent;
 import gov.fnal.elab.usermanagement.AuthenticationException;
 import gov.fnal.elab.usermanagement.ElabUserManagementProvider;
@@ -32,13 +33,16 @@ import java.util.Set;
 import com.Ostermiller.util.RandPass;
 
 public class DatabaseUserManagementProvider implements
-        ElabUserManagementProvider {
+        ElabUserManagementProvider, ElabProvider {
 
     public static final String SWITCHING_ELABS = "switchingelabs";
 
     protected Elab elab;
 
-    public DatabaseUserManagementProvider(Elab elab) {
+    public DatabaseUserManagementProvider() {
+    }
+    
+    public void setElab(Elab elab) {
         this.elab = elab;
     }
 

@@ -5,6 +5,7 @@ package gov.fnal.elab.test.impl.database;
 
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
+import gov.fnal.elab.ElabProvider;
 import gov.fnal.elab.ElabStudent;
 import gov.fnal.elab.test.ElabTest;
 import gov.fnal.elab.test.ElabTestProvider;
@@ -21,11 +22,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class DatabaseTestProvider implements ElabTestProvider {
+public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
 
     private Elab elab;
 
-    public DatabaseTestProvider(Elab elab) {
+    public DatabaseTestProvider() {
+    }
+    
+    public void setElab(Elab elab) {
         this.elab = elab;
     }
 

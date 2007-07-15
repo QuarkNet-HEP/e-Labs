@@ -8,7 +8,7 @@ package gov.fnal.elab;
  * instantiated.
  * 
  */
-public class ElabInstantiationException extends Exception {
+public class ElabInstantiationException extends RuntimeException {
 
     public ElabInstantiationException() {
         super();

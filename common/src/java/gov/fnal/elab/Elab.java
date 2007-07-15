@@ -273,6 +273,8 @@ public class Elab {
     /**
      * Returns an instance of an <code>ElabUserManagementProvider</code> that
      * implements user management functionality for this elab.
+     * 
+     * @throws ElabInstantiationException
      */
     public ElabUserManagementProvider getUserManagementProvider() {
         return ElabFactory.getUserManagementProvider(this);
@@ -340,6 +342,8 @@ public class Elab {
     /**
      * Returns an instance of the <code>DataCatalogProvider</code> that
      * implements data catalog functionality for this elab.
+     * 
+     * @throws ElabInstantiationException
      */
     public DataCatalogProvider getDataCatalogProvider() {
         return ElabFactory.getDataCatalogProvider(this);
@@ -348,11 +352,13 @@ public class Elab {
     /**
      * Returns an instance of the <code>AnalysisExecutor</code> that
      * implements analysis execution functionality for this elab.
+     * 
+     * @throws ElabInstantiationException
      */
     public AnalysisExecutor getAnalysisExecutor() {
         return ElabFactory.getAnalysisProvider(this);
     }
-    
+
     public ElabTestProvider getTestProvider() {
         return ElabFactory.getTestProvider(this);
     }
