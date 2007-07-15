@@ -34,7 +34,7 @@ public class Visible extends TagSupport {
     public int doStartTag() throws JspException {
         try {
             JspWriter out = pageContext.getOut();
-            String id = VSwitch.ATTR_ID
+            String id = "vsId"
                     + pageContext.getAttribute(VSwitch.ATTR_ID);
             String cls = (String) pageContext.getAttribute(VSwitch.ATTR_CLS);
             Boolean revert = (Boolean) pageContext

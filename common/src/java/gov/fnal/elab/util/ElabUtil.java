@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Writer;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -352,18 +353,49 @@ public class ElabUtil {
         }
     }
 
-    public static void runCommand(Elab elab, String cmd)
+    public static void runCommand(Elab elab, String cmd) throws ElabJspException {
+        runCommand(cmd);
+    }
+
+    public static void runCommand(String cmd) throws ElabJspException {
+        runCommand(cmd, null);
+    }
+
+    public static void runCommand(String cmd, Writer heartbeat)
             throws ElabJspException {
         String[] fullcmd = new String[] { "/bin/bash", "-c", cmd };
         try {
             Process p = Runtime.getRuntime().exec(fullcmd);
             p.getOutputStream().close();
+            InputStream is = p.getInputStream();
+            int ec;
             try {
-                int ec = p.waitFor();
-                if (ec != 0) {
-                    throw new ElabJspException("Failed to run '" + fullcmd
-                            + "'. (exit code " + ec + "): "
-                            + readStream(p.getErrorStream()));
+                while (true) {
+                    int block = 1024;
+                    while (is.available() > 0 && block > 0) {
+                        // keep reading the stdout to avoid the process
+                        // filling up the buffer
+                        is.read();
+                        block--;
+                    }
+
+                    try {
+                        ec = p.exitValue();
+                        if (ec != 0) {
+                            throw new ElabJspException("Failed to run '"
+                                    + cmd + "'. (exit code " + ec + "): "
+                                    + readStream(p.getErrorStream()));
+                        }
+                        break;
+                    }
+                    catch (IllegalThreadStateException e) {
+                        // still running
+                        if (heartbeat != null) {
+                            heartbeat.write("<!-- process running -->\n");
+                            heartbeat.flush();
+                        }
+                        Thread.sleep(250);
+                    }
                 }
             }
             catch (InterruptedException e) {
@@ -429,13 +461,13 @@ public class ElabUtil {
         int F = (int) (30.6001 * E);
         int day = B - D - F;
         int month = E - 1 <= 12 ? E - 1 : E - 13; // Month = E-1 or E-13 (must
-                                                    // get number
+        // get number
         // less than or equal to 12)
         int year = month <= 2 ? C - 4715 : C - 4716; // Year = C-4715 (if
-                                                        // Month is
+        // Month is
         // January or February) or
         // C-4716 (otherwise)
-        
+
         NanoDate nd = new NanoDate();
         Calendar gc = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         if (fractional != 0) {
@@ -446,16 +478,16 @@ public class ElabUtil {
             int micsec = (int) (((((fractional * 24 - hour) * 60 - min) * 60 - sec) * 1000 - msec) * 1000);
             int nsec = (int) ((((((fractional * 24 - hour) * 60 - min) * 60 - sec) * 1000 - msec) * 1000 - micsec) * 1000);
 
-            gc.set(year, month - 1, day, (hour + 12) % 24 , min, sec);
+            gc.set(year, month - 1, day, (hour + 12) % 24, min, sec);
             gc.set(Calendar.MILLISECOND, msec);
-                        
+
             nd.setMicroSeconds(micsec);
             nd.setNanoSeconds(nsec);
         }
         else {
             gc.set(year, month - 1, day, 0, 0, 0);
         }
-        
+
         nd.setTime(gc.getTime().getTime());
         return nd;
     }
