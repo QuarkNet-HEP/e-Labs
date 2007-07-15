@@ -3,7 +3,6 @@
  */
 package gov.fnal.elab.usermanagement.impl;
 
-import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
 import gov.fnal.elab.usermanagement.AuthenticationException;
 import gov.fnal.elab.usermanagement.CosmicElabUserManagementProvider;
@@ -25,8 +24,7 @@ public class CosmicDatabaseUserManagementProvider extends
         DatabaseUserManagementProvider implements
         CosmicElabUserManagementProvider {
 
-    public CosmicDatabaseUserManagementProvider(Elab elab) {
-        super(elab);
+    public CosmicDatabaseUserManagementProvider() {
     }
     
     
