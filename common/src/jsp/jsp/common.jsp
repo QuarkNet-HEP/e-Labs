@@ -14,17 +14,14 @@
 <%@ page import="org.apache.batik.transcoder.TranscoderInput" %>
 <%@ page import="org.apache.batik.transcoder.TranscoderOutput" %>
 <%@ page import="gov.fnal.elab.util.ElabException" %>
+<%@ include file="../login/login-required.jsp" %>
 <!-- include file with name of the current eLab -->
-<%@ include file="../include/elab_name.jsp" %>
+<%@ include file="include/elab_name.jsp" %>
 
 
 <%@ include file="rolloutLoad.jsp" %>
 
-<%@ include file="../include/login_url_base.jsp" %>
-
-<%
-String guestName = (String) System.getProperty("portal.guest");
-%>
+<%@ include file="include/login_url_base.jsp" %>
 
 <%
 // rough timing information for this page execution.  Is there an API for this?
@@ -34,71 +31,17 @@ ServletContext context = getServletContext();
 String home = context.getRealPath("").replace('\\', '/');
 String tempdir = context.getAttribute("javax.servlet.context.tempdir").toString();
 
-//read properties file
-String pfFile = home + "/WEB-INF/elab.properties";
-File pf = new File(pfFile);
-if (pf.canRead()) {
-    Properties prop = new Properties();
-    try{
-        prop.load(new FileInputStream(pf));
-            for ( Enumeration e = prop.propertyNames(); e.hasMoreElements(); ) {
-                    String key = (String) e.nextElement();
-                    String value = prop.getProperty(key);
-                    System.setProperty(key, value);
-                    //out.println("key: " + key + " value: " + value);
-                }
-        
-        //System.setProperties(prop);
-    } catch (Exception e){
-        throw new ElabException("While setting the elab System properties",e);
-    }
-}
-else{
-    throw new ElabException("Couldn't read the elab System properties file: " + pfFile);
-}
-
-String user=(String)session.getAttribute("login");
-//Login Check: if not logged in, redirect to display error message with "close" option
-
-String loginTarget = request.getServletPath();
-
-if (user == null && (!loginTarget.endsWith("/login.jsp")) ) {
-    String queryString = request.getQueryString();
-    if(queryString != null){
-        loginTarget += "?" + queryString;
-        loginTarget = URLEncoder.encode(loginTarget, "UTF-8");
-    }
-    response.sendRedirect(
-            loginURLBase + "/elab/"+ elabName 
-            +"/login.jsp?prevPage="+loginTarget);
-    return;
-}
-
-if (!elabName.equals(session.getAttribute("appName")) 
-    && (!loginTarget.endsWith("/login.jsp"))) {
-    String queryString = request.getQueryString();
-    if(queryString != null){
-        loginTarget += "?" + queryString;
-        loginTarget = URLEncoder.encode(loginTarget, "UTF-8");
-}
-    
-response.sendRedirect(
-    loginURLBase + "/elab/"+ elabName 
-    +"/login.jsp?user="+user+"&pass=switchingelabs&prevPage="+loginTarget);
-    return;
-}
-
 //Useful directory variables
-String dataDir = (String) System.getProperty("cosmic.datadir");
-String templateDir = (String) System.getProperty("portal.templates");
-String userArea = (String) session.getAttribute("userArea");
-String userDir = (String) session.getAttribute("userDir");
-String runDir = session.getAttribute("userDir") + "/" + session.getAttribute("appName") + "/scratch/";
-String runDirURL = session.getAttribute("userDirURL") + "/" + session.getAttribute("appName") + "/scratch/";
-String plotDir = (String) session.getAttribute("userDir") + "/" + session.getAttribute("appName") + "/plots/";
-String plotDirURL = (String) session.getAttribute("userDirURL") + "/" + session.getAttribute("appName") + "/plots/";
-String posterDir = (String) session.getAttribute("userDir") + "/" + session.getAttribute("appName") + "/posters/";
-String posterDirURL = (String) session.getAttribute("userDirURL") + "/" + session.getAttribute("appName") + "/posters/";
+String dataDir = elab.getProperty("data.dir");
+String templateDir = elab.getProperty("templates.dir");
+String userArea = user.getUserArea();
+String userDir = elab.getProperties().getUsersDir();
+String runDir = user.getDir("scratch");
+String runDirURL = user.getDirURL("scratch");
+String plotDir = user.getDir("plots");
+String plotDirURL = user.getDirURL("plots");
+String posterDir = user.getDir("posters");
+String posterDirURL = user.getDirURL("posters");
 
 //Other useful variables
 String groupName = null;    //same as session.getAttribute("login")
@@ -116,7 +59,9 @@ if(userArea != null){
     groupTeacher = sp[4].replaceAll("_", " ");
     groupName = sp[5];
 }
-String eLab = (String) session.getAttribute("appName");
+String eLab = elab.getName();
+
+session.setAttribute("role", user.getRole());
 
 %>
 
@@ -1627,6 +1572,40 @@ public int[] jd_to_gregorian(int jd, double partial){
     }
 
     return array;
+}
+
+/**
+ * Convert a Gregorian day to a julian day
+ * Thanks to: http://www.friesian.com/numbers.htm
+ *
+ * @param   year        integer year of gregorian date
+ * @param   month       integer month of gregorian date (1-12)
+ * @param   day         integer day of gregorian date (1-x)
+ * @param   hour        integer hour of gregorian date (0-23)
+ * @param   minute      integer minute of gregorian date (0-59)
+ * @param   second      integer second of gregorian date (0-59)
+ * @return              a string holding julian day
+ */
+public String gregorian_to_jd(int year, int month, int day, int hour, int minute, int second){
+    double step1 = (year + 4712)/4.0;
+    int step1Int = (int)step1;
+    double remainder = (step1 - step1Int)*4;
+    int monthNum = 0;
+    if (month == 3) { monthNum = 0; }
+    if (month == 4) { monthNum = 31; }
+    if (month == 5) { monthNum = 61; }
+    if (month == 6) { monthNum = 92; }
+    if (month == 7) { monthNum = 122; }
+    if (month == 8) { monthNum = 153; }
+    if (month == 9) { monthNum = 184; }
+    if (month == 10) { monthNum = 214; }
+    if (month == 11) { monthNum = 245; }
+    if (month == 12) { monthNum = 275; }
+    if (month == 1) { monthNum = 306; }
+    if (month == 2) { monthNum = 337; }
+    double PJD = (hour*3600 + minute*60 + second)/86400.0;
+    double jd = step1Int*1461 + remainder*365 + monthNum + day + 59 - 13 - .5 + PJD;
+    return String.valueOf(jd);
 }
 %>
 

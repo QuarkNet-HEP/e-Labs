@@ -35,33 +35,33 @@
 		<e:trinput type="text" size="10" maxlength="15" name="date2" default="12/30/2050"/>
 	</p>
 	<%
-			//variables used in metadata searches:
-			String key = request.getParameter("key");
-			if (key == null) key="name";
-			String value = request.getParameter("value");
-			if (value == null) value="";
-			String date1 = request.getParameter("date1");
-			if (date1 == null) date1="1/1/2004";
-			String date2 = request.getParameter("date2");
-			if (date2 == null) date2="12/30/2050";
+		//variables used in metadata searches:
+		String key = request.getParameter("key");
+		if (key == null) key="name";
+		String value = request.getParameter("value");
+		if (value == null) value="";
+		String date1 = request.getParameter("date1");
+		if (date1 == null) date1="1/1/2004";
+		String date2 = request.getParameter("date2");
+		if (date2 == null) date2="12/30/2050";
 
-			boolean submit = request.getParameter("submit") != null;
+		boolean submit = request.getParameter("submit") != null;
 			
-			ResultSet searchResults = null;
-			if (submit) {
-			    And and = new And();
-			    and.add(new Equals("project", elab.getType()));
-			    and.add(new Equals("type", "poster"));
-		if (!"all".equals(key)) {
-		    and.add(new Equals(key, value));
-		}
+		ResultSet searchResults = null;
+		if (submit) {
+		    And and = new And();
+		    and.add(new Equals("project", elab.getName()));
+		    and.add(new Equals("type", "poster"));
+			if (!"all".equals(key)) {
+			    and.add(new Equals(key, value));
+			}
 			    
 		//hmm. posters use "date" instead of "creationdate"
-		        and.add(new Between("date", new Date(date1), new Date(date2 + " 23:59:59")));
+	        and.add(new Between("date", new Date(date1), new Date(date2 + " 23:59:59")));
 
-		searchResults = elab.getDataCatalogProvider().runQuery(and);
-			}
-			request.setAttribute("searchResults", searchResults);
+			searchResults = elab.getDataCatalogProvider().runQuery(and);
+		}
+		request.setAttribute("searchResults", searchResults);
 	%>
 		
 </form>

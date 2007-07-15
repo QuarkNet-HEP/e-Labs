@@ -62,16 +62,16 @@
 					ElabUtil.copyFile(outputDir, srcFile, plotDir, dstFile);
 					ElabUtil.copyFile(outputDir, srcThumb, plotDir, dstThumb);
 					                
-					        //copy the provenance image to the user's plot directory
-					        String provenanceDir = outputDir;
+			        //copy the provenance image to the user's plot directory
+			        String provenanceDir = outputDir;
 					
-					        // Transform the provenance information stored by doAnalysis_TR_call.jsp.
-					        // Start by making the SVG image using dot.
+			        // Transform the provenance information stored by doAnalysis_TR_call.jsp.
+			        // Start by making the SVG image using dot.
 					        
-					        String dotCmd = elab.getProperties().getProperty("dot.location", "/usr/bin/dot") + 
-					            " -Tsvg -o " + provenanceDir + "/dv.svg " + provenanceDir + "/dv.dot";
-					        ElabUtil.runCommand(elab, dotCmd);
-					        ElabUtil.SVG2PNG(provenanceDir + File.separator + "dv.svg", plotDir + File.separator + provenanceFile);
+			        String dotCmd = elab.getProperties().getProperty("dot.location", "/usr/bin/dot") + 
+				            " -Tsvg -o " + provenanceDir + "/dv.svg " + provenanceDir + "/dv.dot";
+			        ElabUtil.runCommand(elab, dotCmd);
+			        ElabUtil.SVG2PNG(provenanceDir + File.separator + "dv.svg", plotDir + File.separator + provenanceFile);
 					            
 					//use previously computed timestamp to create a Derivation name
 					String newDVName = groupName + "-" + sdf.format(gc.getTime());
@@ -90,7 +90,7 @@
 					meta.add("city string " + group.getCity());
 					meta.add("group string " + group.getName());
 					meta.add("name string " + userFilename);
-					meta.add("project string " + elab.getType());
+					meta.add("project string " + elab.getName());
 					meta.add("school string " + group.getSchool());
 					meta.add("state string " + group.getState());
 					meta.add("teacher string " + group.getTeacher());
