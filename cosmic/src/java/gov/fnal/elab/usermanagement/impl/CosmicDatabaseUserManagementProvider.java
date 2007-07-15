@@ -5,6 +5,7 @@ package gov.fnal.elab.usermanagement.impl;
 
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
+import gov.fnal.elab.usermanagement.AuthenticationException;
 import gov.fnal.elab.usermanagement.CosmicElabUserManagementProvider;
 import gov.fnal.elab.util.DatabaseConnectionManager;
 import gov.fnal.elab.util.ElabException;
@@ -27,6 +28,21 @@ public class CosmicDatabaseUserManagementProvider extends
     public CosmicDatabaseUserManagementProvider(Elab elab) {
         super(elab);
     }
+    
+    
+
+    public ElabGroup authenticate(String username, String password, String projectId) throws AuthenticationException {
+        ElabGroup group = super.authenticate(username, password, projectId);
+        try {
+            group.setAttribute("cosmic:detectorIds", getDetectorIds(group));
+        }
+        catch (ElabException e) {
+            throw new AuthenticationException(e);
+        }
+        return group;
+    }
+
+
 
     protected String addUser(Statement s, ElabGroup et, ElabGroup user,
             boolean createGroup) throws SQLException, ElabException {
