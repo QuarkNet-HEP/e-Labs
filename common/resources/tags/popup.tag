@@ -4,7 +4,6 @@
 <%@ attribute name="width" required="true" description="The width of the popup window, in pixels." %>
 <%@ attribute name="height" required="true" description="The height of the pupup window, in pixels." %>
 
-
 <a href="#" title="Popup: ${href}" onclick="javascript:window.open('${href}', '${target}', 'width=${width}, height=${height}');">
 	<jsp:doBody/>
 </a>

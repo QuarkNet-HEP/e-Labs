@@ -15,10 +15,12 @@
 	        selected = (String) attrs.get("default");
 	    }
 	}
+	
 	out.write("<select");
 	DynamicAttributesSupport.writeAttribute(out, "name", name);
 	DynamicAttributesSupport.writeAttributes(out, attrs);
-	ElabUtil.optionSet(out, name, valueList, labelList, selected);
+	out.write(">");
+	ElabUtil.optionSet(out, valueList, labelList, selected);
 %>
 <jsp:doBody/>
 </select>
