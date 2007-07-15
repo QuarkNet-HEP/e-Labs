@@ -1,5 +1,6 @@
 <%@ include file="../include/elab.jsp" %>
-<%@ include file="..//login/login-required.jsp" %>
+<%@ include file="../login/login-required.jsp" %>
+<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ page import="gov.fnal.elab.util.ElabUtil" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -38,15 +39,15 @@
 				<h2>Click on <img border="0" src="../graphics/ref.gif"/> for resources to help you meet each milestone below.</h2>
 					
 				<div class="tab">
-					<span class="tabtitle">Research Basics</span>
-					<div class="tabcontents">
+					<span class="tab-title">Research Basics</span>
+					<div class="tab-contents">
 						<h2>Use these milestones if you need background on:</h2>
 						<ul>
-							<li>Simple Measurements. <%= elab.reference("simple measurement") %></li>
-							<li>Simple Calculations. <%= elab.reference("simple calculations") %></li>
-							<li>Simple Graphs. <%= elab.reference("simple graphs") %></li>
-							<li>Research Questions. <%= elab.reference("research question") %></li>
-							<li>Research Plans.. <%= elab.reference("research plan") %></li>
+							<li>Simple Measurements. <e:reference name="simple measurement"/></li>
+							<li>Simple Calculations. <e:reference name="simple calculations"/></li>
+							<li>Simple Graphs. <e:reference name="simple graphs"/></li>
+							<li>Research Questions. <e:reference name="research question"/></li>
+							<li>Research Plans.. <e:reference name="research plan"/></li>
 						</ul>
 					</div>
 				</div>
@@ -65,15 +66,15 @@
 			<!-- end content -->	
 		
 			<div id="footer">
-				<a href="../jsp/show-references.jsp?t=glossary&f=peruse">Glossary</a>
+				<a href="../jsp/showReferences.jsp?type=glossary">Glossary</a>
 				 - 
-				<a href="../jsp/show-references.jsp?t=reference&f=peruse">All Resources for Study Guide</a>
-				<a href="../jsp/show-references.jsp?t=reference&f=peruse">
+				<a href="../jsp/showReferences.jsp?t=reference&f=peruse">All Resources for Study Guide</a>
+				<a href="../jsp/showReferences.jsp?t=reference&f=peruse">
 					<img src="../graphics/ref.gif"/>
 				</a>
 				 - 
-				<a href="../jsp/show-logbook.jsp">Student Logbook</a>
-				<a href="../jsp/show-logbook.jsp">
+				<a href="../jsp/showLogbook.jsp">Student Logbook</a>
+				<a href="../jsp/showLogbook.jsp">
 					<img src="../graphics/logbook-small.gif"/>
 				</a>
 			</div>

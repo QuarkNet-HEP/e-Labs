@@ -1,5 +1,7 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="gov.fnal.elab.*" %>
+
 
 <div id="header-image">
 	<img src="<%= "/elab/cosmic/graphics/blast.jpg" %>" alt="Cosmic Ray Blast">
@@ -20,4 +22,5 @@
 			</div>
 		<%
 	}
+	request.setAttribute("headerIncluded", Boolean.TRUE);
 %>

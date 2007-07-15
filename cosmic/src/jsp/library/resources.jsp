@@ -39,8 +39,8 @@
 			<div id="left">
 					
 				<div class="tab" id="tab-tutorials">
-					<span class="tabtitle">Tutorials</span>
-					<div class="tabcontents">
+					<span class="tab-title">Tutorials</span>
+					<div class="tab-contents">
 						<ul class="simple">
 							<li>
 								<e:popup href="../analysis-performance/tryit.html" 
@@ -77,8 +77,8 @@
 				</div>
 				
 				<div class="tab" id="tab-online">
-					<span class="tabtitle">Online</span>
-					<div class="tabcontents">
+					<span class="tab-title">Online</span>
+					<div class="tab-contents">
 						<h2>Student-Friendly Sites</h2>
 						<ul class="simple">
 							<li>
@@ -136,8 +136,8 @@
 		<td>
 			<div id="right">
 				<div class="tab" id="tab-contacts">
-					<span class="tabtitle">Contacts</span>	
-					<div class="tabcontents">
+					<span class="tab-title">Contacts</span>	
+					<div class="tab-contents">
 						<h2>Physicists</h2>
 						<ul class="simple">
 							<li>
@@ -158,8 +158,8 @@
 				</div>
 				
 				<div class="tab" id="tab-animations">
-					<span class="tabtitle">Animations</span>
-					<div class="tabcontents">
+					<span class="tab-title">Animations</span>
+					<div class="tab-contents">
 						<ul class="simple">
 							<li>
 								<a href="../flash/daq_only_standalone.html">Classroom Cosmic Ray Detector</a>

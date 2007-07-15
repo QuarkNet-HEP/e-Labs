@@ -34,9 +34,7 @@
 <%@ include file="include/jdbc_userdb.jsp" %>
 
 <%
-geometries = new Geometries(
-    (String)session.getAttribute("groupID"), 
-    System.getProperty("portal.datadir"), 
+geometries = new Geometries(user.getId(), elab.getProperty("data.dir"), 
     conn); // can fix this to use user bean later
 String action = request.getParameter("action");
 String detectorID = request.getParameter("detectorID");
@@ -99,7 +97,7 @@ if (action != null && (action.equals("edit") || action.equals("delete"))) {
 %>
                             <span class="detector">Detector <%=geo.getDetectorID()%></span>&nbsp;
                             <a href="geo.jsp?action=new&detectorID=<%=geo.getDetectorID()%>" title="New entry for detector <%=geo.getDetectorID()%>">
-                                <img align="top" border="0" src="graphics/geo_new.gif">
+                                <img align="top" border="0" src="../graphics/geo_new.gif">
                             </a>
                             <c:choose>
                                 <c:when test="${param.action == 'edit' || param.action == 'delete'}">
@@ -134,7 +132,7 @@ if (action != null && (action.equals("edit") || action.equals("delete"))) {
                                 <tr valign="bottom">
                                     <td valign="middle">
                                         <%if (geoEntry.equals(geb)) {%>
-                                            <img src="graphics/white_arrow.gif">
+                                            <img src="../graphics/white_arrow.gif">
                                         <%} else {%>
                                             &nbsp;
                                         <%}%>
@@ -151,10 +149,10 @@ if (action != null && (action.equals("edit") || action.equals("delete"))) {
                                         <%=geb.getPrettyAMPM()%>
                                     </td>
                                     <td>
-                                        <a href="geo.jsp?action=edit&detectorID=<%=geo.getDetectorID()%>&jd=<%=geb.getJulianDay()%>" title="Edit entry"><img border="0" src="graphics/geo_pencil.gif"></a>
+                                        <a href="geo.jsp?action=edit&detectorID=<%=geo.getDetectorID()%>&jd=<%=geb.getJulianDay()%>" title="Edit entry"><img border="0" src="../graphics/geo_pencil.gif"></a>
                                     </td>
                                     <td>
-                                        <a href="geo.jsp?action=delete&detectorID=<%=geo.getDetectorID()%>&jd=<%=geb.getJulianDay()%>" title="Delete entry"><img border="0" src="graphics/delete_x.gif"></a>
+                                        <a href="geo.jsp?action=delete&detectorID=<%=geo.getDetectorID()%>&jd=<%=geb.getJulianDay()%>" title="Delete entry"><img border="0" src="../graphics/delete_x.gif"></a>
                                     </td> 
                                 </tr>
 <%
@@ -222,7 +220,7 @@ if (action != null && (action.equals("edit") || action.equals("delete"))) {
                                     <td valign="bottom">Up-Dn <span style="font-size:90%">(m)</span></td>
                                 </tr>
                                 <tr>
-                                    <td style="padding-right:5px"><img src="graphics/geo_det1.gif"></td>
+                                    <td style="padding-right:5px"><img src="../graphics/geo_det1.gif"></td>
                                     <td><input type="text" name="chan1CableLength" size="4" value="<%=geoEntry.getChan1CableLength()%>"></td>
                                     <td><input type="text" name="chan1Area" size="6" value="<%=geoEntry.getChan1Area()%>"></td>
                                     <td><input type="text" name="chan1X" size="5" value="<%=geoEntry.getChan1X()%>"></td>
@@ -230,7 +228,7 @@ if (action != null && (action.equals("edit") || action.equals("delete"))) {
                                     <td><input type="text" name="chan1Z" size="5" value="<%=geoEntry.getChan1Z()%>"></td>
                                 </tr>
                                 <tr>
-                                    <td><img src="graphics/geo_det2.gif"></td>
+                                    <td><img src="../graphics/geo_det2.gif"></td>
                                     <td><input type="text" name="chan2CableLength" size="4" value="<%=geoEntry.getChan2CableLength()%>"></td>
                                     <td><input type="text" name="chan2Area" size="6" value="<%=geoEntry.getChan2Area()%>"></td>
                                     <td><input type="text" name="chan2X" size="5" value="<%=geoEntry.getChan2X()%>"></td>
@@ -238,7 +236,7 @@ if (action != null && (action.equals("edit") || action.equals("delete"))) {
                                     <td><input type="text" name="chan2Z" size="5" value="<%=geoEntry.getChan2Z()%>"></td>
                                 </tr>
                                 <tr> 
-                                    <td><img src="graphics/geo_det3.gif"></td>
+                                    <td><img src="../graphics/geo_det3.gif"></td>
                                     <td><input type="text" name="chan3CableLength" size="4" value="<%=geoEntry.getChan3CableLength()%>"></td>
                                     <td><input type="text" name="chan3Area" size="6" value="<%=geoEntry.getChan3Area()%>"></td>
                                     <td><input type="text" name="chan3X" size="5" value="<%=geoEntry.getChan3X()%>"></td>
@@ -246,7 +244,7 @@ if (action != null && (action.equals("edit") || action.equals("delete"))) {
                                     <td><input type="text" name="chan3Z" size="5" value="<%=geoEntry.getChan3Z()%>"></td>
                                 </tr>
                                 <tr>
-                                    <td><img src="graphics/geo_det4.gif"></td>
+                                    <td><img src="../graphics/geo_det4.gif"></td>
                                     <td><input type="text" name="chan4CableLength" size="4" value="<%=geoEntry.getChan4CableLength()%>"></td>
                                     <td><input type="text" name="chan4Area" size="6" value="<%=geoEntry.getChan4Area()%>"></td>
                                     <td><input type="text" name="chan4X" size="5" value="<%=geoEntry.getChan4X()%>"></td>
@@ -261,7 +259,7 @@ if (action != null && (action.equals("edit") || action.equals("delete"))) {
                                     <table border="0">
                                         <tr>
                                             <td valign="middle" width="31">
-                                                <img src="graphics/med_stacked.gif">
+                                                <img src="../graphics/med_stacked.gif">
                                                 <input type="radio" name="stackedState" value="1"
                                                     <%if (geoEntry.getStackedState().equals("1")) {%>checked<%}%>>
                                             </td>
@@ -269,7 +267,7 @@ if (action != null && (action.equals("edit") || action.equals("delete"))) {
                                                 <span style="padding-left:20px; padding-right:20px">Orientation</span>
                                             </td>
                                             <td valign="bottom" width="68">
-                                                <img src="graphics/med_unstacked.gif">
+                                                <img src="../graphics/med_unstacked.gif">
                                                 <input type="radio" name="stackedState" value="0"
                                                     <%if (geoEntry.getStackedState().equals("0")) {%>checked<%}%>>
                                             </td>

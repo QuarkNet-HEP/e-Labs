@@ -1,13 +1,13 @@
-.data #footer {
+.upload #footer {
 	border: none;
 }
 
 h1 {
-	background-color: #4382bb;
+	background-color: #ad499d;
 	color: #000000;
 }
 
-.data #center h1 {
+.upload #center h1 {
 	font-weight: normal;
 	font-size: 140%;
 	width: 100%;
@@ -16,27 +16,27 @@ h1 {
 	margin-left: 0px;
 }
 
-.data #center h2 {
+.upload #center h2 {
 	font-weight: bold;
 	font-size: 120%;
 	margin-left: 0px;
 }
 
-.data #center p {
+.upload #center p {
 	font-weight: normal;
 	margin-left: 10px;
 }
 
-.data #center ul {
+.upload #center ul {
 	padding-left: 10px;
 	padding-top: 6px;
 }
 
-.data #center ul ul ul li {
+.upload #center ul ul ul li {
 	font-weight: normal;
 }
 
-.data #center li {
+.upload #center li {
 	list-style-type: none;
 	font-weight: bold;
 	padding-top: 6px;
@@ -56,20 +56,20 @@ a.button {
 	font-weight: bold;
 }
 
-.data dt {
+.upload dt {
 	font-weight: bold;
 }
 
-.data dd {
+.upload dd {
 	padding-bottom: 6px;
 }
 
 #nav #subnav li a {
-	background-color: #4382bb;
-	border-top: #72a1cc 1px solid;
-	border-left: #72a1cc 1px solid;
-	border-bottom: #305c85 1px solid;
-	border-right: #305c85 1px solid;
+	background-color: #ad499d;
+	border-top: #c276b6 1px solid;
+	border-left: #c276b6 1px solid;
+	border-bottom: #7b346f 1px solid;
+	border-right: #7b346f 1px solid;
 }
 
 #subnav ul {
@@ -77,7 +77,7 @@ a.button {
 	text-align: right;
 	/*border: 1px dashed white;*/
 	position: relative;
-	right: 0px;
+	right: 45%;
 	margin: 0px;
 	padding-right: 0px;
 }
@@ -100,19 +100,24 @@ a.button {
 }
 
 
-#nav a#nav3 {
-	color: black;
-	background-color: #4382bb;
-	border-top: #72a1cc 1px solid;
-	border-left: #72a1cc 1px solid;
-	border-bottom: #305c85 1px solid;
-	border-right: #305c85 1px solid;
-}
-
 #nav #subnav a {
 	width: 100px;
 	color: black;
 }
+
+#nav a#nav-upload {
+	color:black;
+	background-color: #ad499d;
+	border-top: #c276b6 1px solid;
+	border-left: #c276b6 1px solid;
+	border-bottom: #7b346f 1px solid;
+	border-right: #7b346f 1px solid;
+}
+
+#nav a#nav-upload:hover {
+	color:white;
+}
+
 
 #nav a#nav1:hover {
 	color: black;
@@ -133,7 +138,12 @@ a.button {
 }
 
 #nav a#nav3:hover {
-	color: white;
+	color: black;
+	background-color: #4382bb;
+	border-top: #72a1cc 1px solid;
+	border-left: #72a1cc 1px solid;
+	border-bottom: #305c85 1px solid;
+	border-right: #305c85 1px solid;
 }
 
 #nav a#nav4:hover {
@@ -163,33 +173,19 @@ a.button {
 	border-right: #b59100 1px solid;
 }
 
-#nav a#nav-upload:hover {
-	color:black;
-	background-color: #ad499d;
-	border-top: #c276b6 1px solid;
-	border-left: #c276b6 1px solid;
-	border-bottom: #7b346f 1px solid;
-	border-right: #7b346f 1px solid;
-}
-
 #nav #subnav a:hover {
 	color: white;
-	background-color: #4382bb;
-	border-top: #72a1cc 1px solid;
-	border-left: #72a1cc 1px solid;
-	border-bottom: #305c85 1px solid;
-	border-right: #305c85 1px solid;
 }
 
 /************* Tab **************/
 
 
-.data .tab {
+.upload .tab {
 	padding-top: 10px;
 	width: 100%;
 }
 
-.data .tab .tab-title {
+.upload .tab .tab-title {
 	background-color: #4382bb;
 	border-left: 1px solid #358974;
 	border-right: 1px solid #358974;
@@ -200,7 +196,7 @@ a.button {
 	margin: 0px;
 }
 
-.data .tab .tab-contents {
+.upload .tab .tab-contents {
 	background-color: #99ccff;
 	margin: 0px;
 	border-top: 2px solid black;
@@ -209,111 +205,25 @@ a.button {
 	padding-right: 8px;
 }
 
-.data #content .tab-contents h2 {
+.upload #content .tab-contents h2 {
 	font-weight: bold;
 	font-style: italic;
 	padding-left: 10px;
 	font-size: 100%;
 }
 
-.data #content .tab-contents li {
+.upload #content .tab-contents li {
 	font-weight: normal;
 	padding-left: 8px;
 	padding-top: 0px;
 	padding-bottom: 0px;
 }
 
-.data #content .tab-contents li:before {
+.upload #content .tab-contents li:before {
 	display: marker;
 	content: url("../graphics/ref_dot.gif");
 	marker-offset: auto;
 	padding-right: 3px;
-}
-
-p.search-result-bar {
-    padding-top:2px;
-    padding-bottom:2px;
-    padding-left:2px;
-    padding-right:2px;
-    border-top:1.5px solid #4382BB;
-    border-right:1.5px solid #4382BB;
-    width:97%;
-    background:#99C4EF;
-    text-align:right;
-}
-
-.search-results {
-	text-align: left;
-}
-
-.search-results .school-info p {
-	margin: 0px;
-	margin-left: 12px;
-	padding-left: 8px;
-}
-
-/*
- * This isn't quite obvious: it refers to the school info 
- * header in the hidden part of the switch (the class of which
- * (school-h) is defined by the results displayer).
- */
-.search-results .school-h .school-info {
-	padding-bottom: 16px;
-	border-bottom: thin solid black;
-	margin-bottom: 8px;
-}
-
-.search-results .school-name {
-	font-weight: bold;
-	margin-left: 4px;
-}
-
-.search-results .date-header {
-	margin-left: 32px;
-}
-
-.search-results .date-info {
-	margin-left: 4px;
-}
-
-.search-results .data-files {
-	margin-top: 16px;
-	padding-bottom: 8px;
-	padding-left: 20px;
-}
-
-.search-results .data-file {
-	padding-right: 16px;
-}
-
-.search-results a.file-link{
-	padding-right: 6px;
-}
-
-.study-right {
-	margin-left: 10px;
-}
-
-.study-right h2 {
-	font-size: 110%;
-}
-
-.study-right dl {
-	margin-left: 10px;
-	display: compact;
-}
-
-.study-right dt {
-	display: compact;
-	float: left;
-	clear: left;
-	text-align: right;
-	width: 30px;
-}
-
-.study-right dd {
-	margin-left: 10px;
-	float: left;
 }
 
 .form-controls {
@@ -323,46 +233,54 @@ p.search-result-bar {
 	padding: 8px;
 }
 
-#analysis-controls {
+.upload #center {
+	text-align: center;
+}
+
+.upload td#center {
+	text-align: center;
+}
+
+#upload-form {
+	margin-left: auto;
+	margin-right: auto;
+	width: 450px;
+	text-align: center;
+	border: 1px solid black;
+}
+
+#button-line {
 	text-align: left;
-	border-style: groove;
-	background-color: #f6f6ff;
-	border-color: #ffffff;
-	border-width: 2px;
-	width: 500px;
-	margin-left: auto;
-	margin-right: auto;
-	padding: 16px;
+	border-top: 1px solid black;
+	width: 450px;
+	padding-top: 16px;
+	padding-bottom: 12px;
 }
 
-#analysis-controls table {
-	text-align: center;
-	width: 100%;
+#button-line input {
+	margin-left: 12px;
 }
 
-.data #center {
-	text-align: center;
+#progressBar {
 }
 
-.data td#center {
-	text-align: center;
+#progressBarBox { 
+	width: 350px; 
+	height: 20px; 
+	border: 1px solid black; 
+	background: #eee;
+	margin-left: 10px;
 }
 
-#analyzing-list table {
-	margin-left: auto;
-	margin-right: auto;
+#progressBarBoxContent { 
+	width: 0px; 
+	height: 20px; 
+	border-right: 1px solid #444; 
+	background: #9ACB34; 
+	float: left;
 }
 
-.hex-data-address {
-	color: #999999;
-	text-align: right;
-	font-family: Courier, monospaced;
-}
-.hex-data-data {
-	font-family: Courier, monospaced;
-}
-
-.hex-data-data-highlight {
-	color: #00CC00;
-	font-family: Courier, monospaced;
+#progressBarText { 
+	position: absolute;
+	padding-left: 12px;
 }

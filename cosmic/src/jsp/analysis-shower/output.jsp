@@ -230,9 +230,15 @@
 <p align="center">
 	<form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit="window.open('',this.target,'width=500,height=200');" align="center">
 		<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
-		<input type="hidden" name="metadata" value="transformation string Quarknet.Cosmic::LifetimeStudy"/>
-		<input type="hidden" name="metadata" value="study string lifetime"/>
+		<input type="hidden" name="metadata" value="transformation string Quarknet.Cosmic::ShowerStudy"/>
+		<input type="hidden" name="metadata" value="study string shower"/>
 		<input type="hidden" name="metadata" value="type string plot"/>
+		
+		<input type="hidden" name="metadata" value="detectorcoincidence int ${results.analysis.parameters['detectorCoincidence']} %>"/>
+		<input type="hidden" name="metadata" value="eventcoincidence int ${results.analysis.parameters['eventCoincidence']}"/>
+		<input type="hidden" name="metadata" value="eventnum int ${results.analysis.parameters['eventNum']}"/>
+		<input type="hidden" name="metadata" value="gate int ${results.analysis.parameters['gate']}"/>
+		<input type="hidden" name="metadata" value="radius int -1"/>
 
 		<input type="hidden" name="metadata" value="title string ${results.analysis.parameters['plot_title']}"/>
 		<input type="hidden" name="metadata" value="caption string ${results.analysis.parameters['plot_caption']}"/>

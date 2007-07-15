@@ -15,7 +15,7 @@
 	<area shape="rect" alt="" coords="0,81,58,125" href="show-students.jsp?type=pre">
 	<area shape="rect" alt="" coords="714,78,772,122" href="show-students.jsp?type=post">
 	<area shape="poly" alt=""
-		coords="66,106, 98,102, 108,75, 134,75, 138,102, 156,105, 160,117, 140,122, 68,122, 66,108, 66,106" href="first.jsp">
+		coords="66,106, 98,102, 108,75, 134,75, 138,102, 156,105, 160,117, 140,122, 68,122, 66,108, 66,106" href="../home/first.jsp">
 	<area shape="poly" alt="" coords="144,146, 274,149, 265,102, 174,99, 144,146" href="research-basics.jsp">
 	<area shape="rect" alt="" coords="204,167,286,194" href="javascript:reference('research plan')">
 	<area shape="rect" alt="" coords="200,238,283,277" href="javascript:reference('research question')">

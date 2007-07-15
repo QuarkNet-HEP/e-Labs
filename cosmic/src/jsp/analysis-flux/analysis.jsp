@@ -92,6 +92,12 @@
 						<jsp:param name="f" value="${param.rawData}"/>
 					</jsp:include>
 					
+					<p id="other-analyses">
+						Analyze the same files in 
+						<a href="../analysis-lifetime/analysis.jsp?rawData=${param.rawData}">lifetime</a>
+						<a href="../analysis-shower/analysis.jsp?rawData=${param.rawData}">shower</a>
+					</p>
+					
 				    <c:if test="${!(empty analysis.invalidParameters) && param.submit != null}">
 				    	<h2>Invalid keys:</h2>
 				        <ul class="errors">

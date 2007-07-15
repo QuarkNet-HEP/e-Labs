@@ -44,8 +44,8 @@
 	<tr>
 		<td>
 			<ul>
-				<li><a href="../home/first.jsp" >The Big Picture</a></li>
-				<li><a href="../home/first-web.jsp" >The Website</a></li>
+				<li><a href="../home/first.jsp">The Big Picture</a></li>
+				<li><a href="../home/first-web.jsp">The Website</a></li>
 			</ul>
 		</td>
 		<td>
@@ -71,27 +71,27 @@
 						<li>
 							Tutorials
 							<ul>
-								<li><a href="dpstutorial.jsp">Performance Study Background</a></li>
-								<li><a href="tryit_performance.jsp">Step-by-Step Instructions: Performance</a></li>
-								<li><a href="ltimetutorial.jsp">Lifetime Study Background</a></li>
-								<li><a href="tryit_performance.jsp">Step-by-Step Instructions: Lifetime</a></li>
-								<li><a href="fluxtutorial.jsp">Flux Study Background</a></li>
-								<li><a href="tryit_performance.jsp">Step-by-Step Instructions: Flux</a></li>
-								<li><a href="eshtutorial.jsp">Shower Study Tutorial</a></li>
-								<li><a href="tryit_shower.jsp">Step-by-Step Instructions: Shower</a></li>
+								<li><a href="../analysis-performance/tutorial.jsp">Performance Study Background</a></li>
+								<li><a href="../analysis-performance/tryit.jsp">Step-by-Step Instructions: Performance</a></li>
+								<li><a href="../analysis-lifetime/tutorial.jsp">Lifetime Study Background</a></li>
+								<li><a href="../analysis-lifetime/tryit.jsp">Step-by-Step Instructions: Lifetime</a></li>
+								<li><a href="../analysis-flux/tutorial.jsp">Flux Study Background</a></li>
+								<li><a href="../analysis-flux/tryit.jsp">Step-by-Step Instructions: Flux</a></li>
+								<li><a href="../analysis-shower/tutorial.jsp">Shower Study Tutorial</a></li>
+								<li><a href="../analysis-shower/tryit.jsp">Step-by-Step Instructions: Shower</a></li>
 								<li><a href="geoInstructions.jsp">Updating Geometry Tutorial</a></li>
 							</ul>
 						</li>
 						<li>
 							Animations
 							<ul>
-								<li><a href="flash/daq_only_standalone.html" >Classroom Cosmic Ray Detector</a></li>
-								<li><a href="flash/daq_portal_rays.html" >Sending Data to Grid Portal</a></li>
-								<li><a href="flash/analysis.html" >Analysis</a></li>
-								<li><a href="flash/collaboration.html" >Collaboration</a></li>
-								<li><a href="flash/SC2003.html" >Loop</a></li>
-								<li><a href="flash/griphyn-animate_sc2003.html" >CMS vs. QuarkNet</a></li>
-								<li><a href="flash/DAQII.html" >DAQII</a></li>
+								<li><a href="../flash/daq_only_standalone.html" >Classroom Cosmic Ray Detector</a></li>
+								<li><a href="../flash/daq_portal_rays.html" >Sending Data to Grid Portal</a></li>
+								<li><a href="../flash/analysis.html" >Analysis</a></li>
+								<li><a href="../flash/collaboration.html" >Collaboration</a></li>
+								<li><a href="../flash/SC2003.html" >Loop</a></li>
+								<li><a href="../flash/griphyn-animate_sc2003.html" >CMS vs. QuarkNet</a></li>
+								<li><a href="../flash/DAQII.html" >DAQII</a></li>
 							</ul>
 						</li>
 					</ul>
@@ -126,9 +126,9 @@
 				<li>
 					<strong>Delete</strong>
 					<ul>
-						<li><a href="search.jsp?t=split&amp;f=delete">Data Files</a></li>
-						<li><a href="search.jsp?t=plot&amp;f=delete">Plots</a></li>
-						<li><a href="search.jsp?t=poster&amp;f=delete">Posters</a></li>
+						<li><a href="../data/">Data Files</a></li>
+						<li><a href="../plots/search.jsp">Plots</a></li>
+						<li><a href="../posters/search.jsp">Posters</a></li>
 					</ul>
 				</li>
 				<li>
@@ -139,9 +139,9 @@
 		<td>
 			<ul>
 				<li><a href="makePoster.jsp">New Poster</a></li>
-				<li><a href="editPosters.jsp">Edit Posters</a></li>
-				<li><a href="search.jsp?t=poster&amp;f=view">View Posters</a></li>
-				<li><a href="search.jsp?t=poster&amp;f=delete">Delete Posters</a></li>
+				<li><a href="../posters/edit.jsp">Edit Posters</a></li>
+				<li><a href="../posters/search.jsp">View Posters</a></li>
+				<li><a href="../posters/search.jsp">Delete Posters</a></li>
 				<li><a href="../plots/my-plots.jsp">View My Plots</a></li>
 			</ul>
 		</td>

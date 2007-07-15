@@ -1,5 +1,5 @@
 <%@ include file="../include/elab.jsp" %>
-<%@ page import="gov.fnal.elab.ElabUser" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -18,13 +18,9 @@
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
 					<div id="nav">
-						<%
-							if (ElabUser.isUserLoggedIn(session)) {
-						%>
-								<%@ include file="../include/nav.jsp" %>
-						<%
-							}
-						%>
+						<c:if test="${user != null}">
+							<%@ include file="../include/nav.jsp" %>
+						</c:if>
 					</div>
 				</div>
 			</div>

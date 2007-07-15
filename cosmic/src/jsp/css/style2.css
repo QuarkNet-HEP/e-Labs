@@ -110,6 +110,8 @@
 	padding-left: 3px;
 	padding-right: 3px;
 	width: 92px;
+	color: white;
+	border: 1px solid black;
 }
 
 
@@ -269,6 +271,16 @@ h2 + ul.simple {
 	background-color: yellow;
 	color: black;
 	font-size: 160%;
+}
+
+.error {
+	width: 100%;
+	text-align: center;
+	background-color: #ff5040;
+	color: black;
+	font-size: 160%;
+	padding-left: 32px;
+	padding-right: 32px;
 }
 
 label {

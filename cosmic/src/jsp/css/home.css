@@ -124,3 +124,12 @@ a.button {
 	border-bottom: #b59100 1px solid;
 	border-right: #b59100 1px solid;
 }
+
+#nav a#nav-upload {
+	background-color: #ad499d;
+	border-top: #c276b6 1px solid;
+	border-left: #c276b6 1px solid;
+	border-bottom: #7b346f 1px solid;
+	border-right: #7b346f 1px solid;
+}
+

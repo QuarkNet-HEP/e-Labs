@@ -35,8 +35,8 @@
 		<td>
 			<div id="left">
 				<div class="tab">
-					<span class="tabtitle">Analysis</span>
-					<div class="tabcontents">
+					<span class="tab-title">Analysis</span>
+					<div class="tab-contents">
 						<p>
 							<a href="?t=split&amp;f=analyze&amp;s=performance">Performance Study</a>
 							- Look at data from a detector. Can you trust the data?
@@ -65,8 +65,8 @@
 		<td>
 			<div id="right">
 				<div class="tab">
-					<span class="tabtitle">Analysis</span>
-					<div class="tabcontents">
+					<span class="tab-title">Analysis</span>
+					<div class="tab-contents">
 						<h2>VIEW</h2>
 						<p>
 							<a href="?t=split&amp;f=view">Data Files</a>

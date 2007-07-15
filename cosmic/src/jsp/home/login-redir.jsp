@@ -25,4 +25,9 @@
 			}
         }
 	}
+	else {
+	    response.sendRedirect("../home/first.jsp");
+	}
 %>
+
+??

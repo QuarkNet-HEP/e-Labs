@@ -8,6 +8,7 @@
 		<title>Cosmic Resources: Study Guide</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
+		<script type="text/javascript" src="../include/elab.js"/>
 	</head>
 	
 	<body id="milestones-map" class="library">

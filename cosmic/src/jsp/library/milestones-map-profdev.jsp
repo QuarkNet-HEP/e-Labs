@@ -1,4 +1,4 @@
-<img src="graphics/workflow-map5-pd.gif" width="796" height="319" border="0" alt="" usemap="#workflow-map5-pd-Map">
+<img src="../graphics/workflow-map5-pd.gif" width="796" height="319" border="0" alt="" usemap="#workflow-map5-pd-Map">
 <map name="workflow-map5-pd-Map">
 	<area shape="rect" alt="" coords="81,155,152,198" href="javascript:reference('simple measurement')">
 	<area shape="rect" alt="" coords="82,241,140,290" href="javascript:reference('simple calculations')">
