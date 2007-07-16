@@ -10,10 +10,12 @@ import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.vds.ElabTransformation;
 
 import java.io.File;
+import java.io.RandomAccessFile;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.griphyn.common.catalog.replica.ElabRC;
 
@@ -28,15 +30,15 @@ import org.griphyn.common.catalog.replica.ElabRC;
  * Runs analyses with VDS. Yay!
  */
 public class VDSAnalysisExecutor implements AnalysisExecutor {
-       
+
     public AnalysisRun start(ElabAnalysis analysis, Elab elab, ElabGroup user) {
         Run run = new Run(analysis, elab, user);
         run.start();
         return run;
     }
 
-    public static ElabTransformation createTransformation(String name, ElabAnalysis analysis)
-            throws ElabException {
+    public static ElabTransformation createTransformation(String name,
+            ElabAnalysis analysis) throws ElabException {
         ElabTransformation et = new ElabTransformation(analysis.getType());
         if (name != null) {
             et.setDVName(name);
@@ -56,6 +58,7 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
         private transient ElabTransformation et;
         private transient Thread thread;
         private String runDirURL;
+        private volatile transient double progress;
 
         public Run(ElabAnalysis analysis, Elab elab, ElabGroup user) {
             super(analysis, elab, user);
@@ -71,7 +74,11 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
         }
 
         public double getProgress() {
-            return 0;
+            return progress;
+        }
+
+        public void setProgress(double progress) {
+            this.progress = progress;
         }
 
         public void start() {
@@ -101,15 +108,19 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
         }
 
         public void run() {
+            RunMonitor r = new RunMonitor(this);
+            r.start();
             try {
                 Elab elab = getElab();
                 ElabRC.setDataDir(elab.getProperties().getDataDir());
                 et.run();
                 et.dump();
                 et.close();
+                r.complete();
                 setStatus(STATUS_COMPLETED);
             }
             catch (Throwable t) {
+                r.complete();
                 setException(t);
                 setStatus(STATUS_FAILED);
                 t.printStackTrace();
@@ -125,7 +136,87 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
         }
 
         public String getOutputDirURL() {
-            return getUser().getDirURL("scratch" + File.separator + et.getOutputDirName());
+            return getUser().getDirURL(
+                    "scratch" + File.separator + et.getOutputDirName());
+        }
+    }
+
+    private static Map MONITORMAP = new HashMap();
+
+    private static int getTotal(String type) {
+        synchronized (MONITORMAP) {
+            Integer t = (Integer) MONITORMAP.get(type);
+            if (t == null) {
+                return -1;
+            }
+            else {
+                return t.intValue();
+            }
+        }
+    }
+
+    private synchronized static void setTotal(String type, int total) {
+        synchronized (MONITORMAP) {
+            MONITORMAP.put(type, new Integer(total));
+        }
+    }
+
+    private class RunMonitor extends Thread {
+        private Run run;
+        private boolean completed;
+
+        public RunMonitor(Run run) {
+            this.run = run;
+        }
+        
+        public void complete() {
+            completed = true;
+        }
+
+        public void run() {
+            try {
+                System.out.println("Starting run monitor");
+                int ticks = 20;
+                File f = new File(run.getOutputDir(), "run.log");
+                while (!f.exists()) {
+                    Thread.sleep(250);
+                    ticks--;
+                    if (ticks == 0) {
+                        System.out.println("RunMonitor: did not see run.log file");
+                        return;
+                    }
+                }
+                System.out.println("Run log found");
+                int total = getTotal(run.getAnalysis().getType());
+                int counted = 0;
+                RandomAccessFile raf = new RandomAccessFile(f, "r");
+                long pos = raf.getFilePointer();
+                int c = raf.read();
+                while (!completed) {
+                    if (c == -1) {
+                        while (pos >= raf.length()) {
+                            Thread.sleep(250);
+                        }
+                        raf.seek(pos);
+                    }
+                    else if (c == '\n') {
+                        counted++;
+                        if (total > 0) {
+                            run.setProgress(((double) counted) / total);
+                        }
+                        System.out.println("VDSP: " + counted);
+                    }
+                    pos = raf.getFilePointer();
+                    c = raf.read();
+                }
+                System.out.println("Run monitor finished");
+                if (total <= 0) {
+                    setTotal(run.getAnalysis().getType(), counted);
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
