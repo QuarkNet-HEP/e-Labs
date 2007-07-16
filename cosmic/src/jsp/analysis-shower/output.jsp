@@ -234,7 +234,7 @@
 		<input type="hidden" name="metadata" value="study string shower"/>
 		<input type="hidden" name="metadata" value="type string plot"/>
 		
-		<input type="hidden" name="metadata" value="detectorcoincidence int ${results.analysis.parameters['detectorCoincidence']} %>"/>
+		<input type="hidden" name="metadata" value="detectorcoincidence int ${results.analysis.parameters['detectorCoincidence']}"/>
 		<input type="hidden" name="metadata" value="eventcoincidence int ${results.analysis.parameters['eventCoincidence']}"/>
 		<input type="hidden" name="metadata" value="eventnum int ${results.analysis.parameters['eventNum']}"/>
 		<input type="hidden" name="metadata" value="gate int ${results.analysis.parameters['gate']}"/>
