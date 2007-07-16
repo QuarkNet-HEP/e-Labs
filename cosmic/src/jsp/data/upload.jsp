@@ -24,10 +24,10 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/upload.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
-		<script type="text/javascript" src="../include/upload.js"/>
-        <script type="text/javascript" src="../../dwr/interface/UploadMonitor.js"/>
-        <script type="text/javascript" src="../../dwr/engine.js"/>
-        <script type="text/javascript" src="../../dwr/util.js"/>
+		<script type="text/javascript" src="../include/upload.js"></script>
+        <script type="text/javascript" src="../../dwr/interface/UploadMonitor.js"></script>
+        <script type="text/javascript" src="../../dwr/engine.js"></script>
+        <script type="text/javascript" src="../../dwr/util.js"></script>
 	</head>
 	
 	<body id="search_default" class="data">
