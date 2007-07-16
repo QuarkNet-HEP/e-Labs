@@ -301,7 +301,7 @@ undeploy:
 		<copy todir="${container.home}/${webapps}/elab/WEB-INF/classes">
 			<fileset dir="cosmic/build" includes="**/*.*"/>
 		</copy>
-		<copy todir="${container.home}/${webapps}/elab/${elab.name}">
+		<copy todir="${container.home}/${webapps}/elab/${elab.name}" overwrite="true">
 			<fileset dir="cosmic/src/jsp" includes="**/*.*"/>
 		</copy>
 	</target>
