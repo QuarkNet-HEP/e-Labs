@@ -24,7 +24,7 @@
 						<h2>Query String:</h2>
 						<pre><%= request.getQueryString() %></pre>
 						<h2>User:</h2>
-						<% ElabUser user = ElabUser.getUser(session); %>
+						<% ElabGroup user = ElabGroup.getUser(session); %>
 						<pre><%= user %></pre>
 						<% if (exception != null) { %>
 							<h2>Exception</h2>
