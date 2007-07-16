@@ -1,6 +1,11 @@
 #container {
 	width: 100%;
 	font-family: Arial, sans-serif;
+	text-align: center;
+}
+
+#content {
+	text-align: left;
 }
 
 /*=========== Header ===========*/
@@ -11,6 +16,7 @@
 	background-color: black;
 	color: white;
 	height: 68px;
+	text-align: center;
 }
 
 #header {
@@ -85,6 +91,10 @@
 	white-space: nowrap;
 }
 
+#subnav {
+	text-align: right;
+}
+
 #nav li {
 	display: inline;
 	text-align: center;
@@ -93,7 +103,6 @@
 	padding-right: 0px;
 	padding-top: 0px;
 	padding-bottom: 0px;
-	display: inline;
 }
 
 #nav a {

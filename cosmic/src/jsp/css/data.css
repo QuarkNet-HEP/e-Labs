@@ -72,10 +72,11 @@ a.button {
 	border-right: #305c85 1px solid;
 }
 
-#subnav ul {
+#nav #subnav ul {
+	width: 700px;
 	float: right;
 	text-align: right;
-	/*border: 1px dashed white;*/
+	/*border: 1px dashed yellow;*/
 	position: relative;
 	right: 0px;
 	margin: 0px;

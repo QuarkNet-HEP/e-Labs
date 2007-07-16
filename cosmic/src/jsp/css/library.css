@@ -72,22 +72,24 @@ a.button {
 	border-right: #3c777f 1px solid;
 }
 
-#subnav ul {
-	float: right;
-	text-align: right;
-	/*border: 1px dashed white;*/
-	position: relative;
-	right: 0px;
-	margin: 0px;
-	padding-right: 0px;
-}
-
 #top {
 	width: 100%;
 	background-color: black;
 	color: white;
 	height: 96px;
 }
+
+#nav #subnav ul {
+	width: 700px;
+	float: right;
+	text-align: right;
+	/*border: 1px dashed yellow;*/
+	position: relative;
+	right: 0px;
+	margin: 0px;
+	padding-right: 0px;
+}
+
 
 #header-image img {
 	height: 96px;
