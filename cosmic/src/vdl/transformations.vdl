@@ -641,6 +641,8 @@ TR Quarknet.Cosmic::RawAnalyze(
 TR Quarknet.Cosmic::SVG2PNG(none height, input svg, output png) {
 	argument = "-h";
 	argument = height;
+	argument = "-w";
+	argument = height;
 	argument = svg;
 	argument = png;
 }
