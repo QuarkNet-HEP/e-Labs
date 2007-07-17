@@ -306,10 +306,12 @@ undeploy:
 		</copy>
 		<symlink link="${container.home}/${webapps}/elab/${elab.name}/jsp/graphics"
 			resource="${container.home}/${webapps}/elab/${elab.name}/graphics"
-			failonerror="false"/>
+			failonerror="false"
+			overwrite="true"/>
 		<symlink link="${container.home}/${webapps}/elab/${elab.name}/references/graphics"
 			resource="${container.home}/${webapps}/elab/${elab.name}/graphics"
-			failonerror="false"/>
+			failonerror="false"
+			overwrite="true"/>
 	</target>
 
 	<!-- ================================= 
