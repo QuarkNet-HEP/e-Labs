@@ -39,4 +39,17 @@ function reference(name, W, H) {
 	var winPref = "width=300,height=" + H + ",scrollbars=no,toolbar=no,menubar=no,status=no,resizable=yes,title=yes";
 	window.open(url, "Reference", winPref);
 }
-    
+
+
+function showRefLink(url, W, H) {
+	var height=500;
+	var width=500;
+	if (!H) {
+		H = 500;
+	}
+	if (!W) {
+		W = 500;
+	}
+	winPref = "width=" + W + ",height=" + H + ",scrollbars=yes,toolbar=no,menubar=no,status=yes,resizable=yes";
+	window.open(url, "Linked_Reference", winPref);
+}
