@@ -281,7 +281,7 @@ else {
         } // lfnsmeta, i
             myout.close();
         %><font color = 'green' size='18'>Written Successfully to <%=filename%>!</font><br><%
-                %><h2><a href = "<%=filename%>"> Open/Download</a></h2>
+                %><h2><a href = "<%= "../" + filename%>"> Open/Download</a></h2>
 <br><%
         }
     } 
