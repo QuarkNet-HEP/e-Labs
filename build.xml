@@ -305,9 +305,11 @@ undeploy:
 			<fileset dir="cosmic/src/jsp" includes="**/*.*"/>
 		</copy>
 		<symlink link="${container.home}/${webapps}/elab/${elab.name}/jsp/graphics"
-			resource="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			resource="${container.home}/${webapps}/elab/${elab.name}/graphics"
+			failonerror="false"/>
 		<symlink link="${container.home}/${webapps}/elab/${elab.name}/references/graphics"
-			resource="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			resource="${container.home}/${webapps}/elab/${elab.name}/graphics"
+			failonerror="false"/>
 	</target>
 
 	<!-- ================================= 
