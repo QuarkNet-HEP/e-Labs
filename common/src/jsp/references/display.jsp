@@ -49,7 +49,8 @@ function resizeWinTo(oW, idOfDiv ) {
         x.focus();
 }
 </script>
-<link rel="stylesheet"  href="../include/styletut.css" type="text/css">
+	<link rel="stylesheet"  href="../include/styletut.css" type="text/css">
+	<script type="text/javascript" src="../include/elab.js"></script>
 </head>
 <body onLoad="resizeWinTo(300,'txt');" background="graphics/Quadrille.gif">
 
