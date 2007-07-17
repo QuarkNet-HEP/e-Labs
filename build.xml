@@ -304,6 +304,10 @@ undeploy:
 		<copy todir="${container.home}/${webapps}/elab/${elab.name}" overwrite="true">
 			<fileset dir="cosmic/src/jsp" includes="**/*.*"/>
 		</copy>
+		<symlink link="${container.home}/${webapps}/elab/${elab.name}/jsp/graphics"
+			resource="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+		<symlink link="${container.home}/${webapps}/elab/${elab.name}/references/graphics"
+			resource="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
 	</target>
 
 	<!-- ================================= 
