@@ -1,5 +1,7 @@
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
+<%@ include file="../login/admin-login-required.jsp" %>
+
 <html>
 <head>
 <%@ include file="common.jsp" %>
@@ -22,17 +24,6 @@ String headerType = "Library";
 <div align="center">
 <%
 
-//LQ - see if admin will work here instead or else someone with admin role. July 28, 2006
-//Permission to access this page restricted to development team
-if (!(session.getAttribute("UserName").equals(elabRefMaker)))
-{
-    warn(out, "You do not have permission to access this page!");
-}
-else
-{
-%>
-
-<%
 //perform the metadata search
 ArrayList lfnsmeta = null;
 String q="";
@@ -223,73 +214,73 @@ if (type == "NA") {
     <input type='submit' value="Upload"><br>
     </form>
     <%
-    } 
-    else {
-        try {
-            // BufferedWriter myout = new BufferedWriter(new FileWriter("ref.dat"));
-            if (!(type.equals("reference")||type.equals("FAQ")||type.equals("glossary")||type.equals("news")))
-                throw new IOException("Unable to determine type.  Please select glossary, FAQ, news, or reference.");       
-            String filename = type+".t"; // request.getParameter("filename"); // Disabled feature
-            // instead of writing this file in cosmic for all e-Labs, we should use the eLab variable to set the proper directory; LQ 7/27/2006
-           // String fpath = application.getRealPath("/")+"cosmic/"+filename;
-            String fpath = application.getRealPath("/")+ eLab +"/"+filename;
-            FileWriter myout = new FileWriter(fpath,false);
+} 
+else {
+    try {
+        // BufferedWriter myout = new BufferedWriter(new FileWriter("ref.dat"));
+        if (!(type.equals("reference")||type.equals("FAQ")||type.equals("glossary")||type.equals("news")))
+            throw new IOException("Unable to determine type.  Please select glossary, FAQ, news, or reference.");       
+        String filename = type+".t"; // request.getParameter("filename"); // Disabled feature
+        // instead of writing this file in cosmic for all e-Labs, we should use the eLab variable to set the proper directory; LQ 7/27/2006
+       // String fpath = application.getRealPath("/")+"cosmic/"+filename;
+        String fpath = application.getRealPath("/")+ eLab +"/"+filename;
+        FileWriter myout = new FileWriter(fpath,false);
 
 
-            q="type=\'" + type + "\'  and  project=\'" + eLab + "\'";
-           // q="type=\'" + type + "\'";
-            lfnsmeta = getLFNsAndMeta(out, q);
-            
-            if (lfnsmeta == null)
+        q="type=\'" + type + "\'  and  project=\'" + eLab + "\'";
+       // q="type=\'" + type + "\'";
+        lfnsmeta = getLFNsAndMeta(out, q);
+        
+        if (lfnsmeta == null)
+        {
+            warn(out, "There are no items to save to file!");
+        }
+        else
+        {
+        for(Iterator i=lfnsmeta.iterator(); i.hasNext(); ){
+            ArrayList pair = (ArrayList)i.next();
+            String lfn = (String)pair.get(0);
+            ArrayList metaTuples = (ArrayList)pair.get(1);
+            String refHeight = "250";
+            String info = " ";
+
+            //create the HashMap of metadata Tuple values
+            for(Iterator j=metaTuples.iterator(); j.hasNext(); ){
+                Tuple t = (Tuple)j.next();
+                if ((t.getKey()).equals("description")) info= (String) t.getValue();
+                //if ((t.getKey()).equals("height")) refHeight= (String) t.getValue();
+ 
+            } // metaTuples, j
+            if (format!=null && format.equals("SQL"))
             {
-                warn(out, "There are no items to save to file!");
-            }
-            else
-            {
-            for(Iterator i=lfnsmeta.iterator(); i.hasNext(); ){
-                ArrayList pair = (ArrayList)i.next();
-                String lfn = (String)pair.get(0);
-                ArrayList metaTuples = (ArrayList)pair.get(1);
-                String refHeight = "250";
-                String info = " ";
-
-                //create the HashMap of metadata Tuple values
-                for(Iterator j=metaTuples.iterator(); j.hasNext(); ){
-                    Tuple t = (Tuple)j.next();
-                    if ((t.getKey()).equals("description")) info= (String) t.getValue();
-                    //if ((t.getKey()).equals("height")) refHeight= (String) t.getValue();
-     
-                } // metaTuples, j
-                if (format!=null && format.equals("SQL"))
+                if (type.equals("glossary"))
                 {
-                    if (type.equals("glossary"))
-                    {
-                        myout.write("alter table set default id=MAX(id)+1;\n");
-                        info = info.replaceAll("'","\\\\'");
-                        lfn = lfn.replaceAll("Glossary_","");
-                        info = info.replaceAll("<br>","<br/>");
-                        myout.write("insert into comment (body, discriminator, is_read, title) values ('" + info + "','Glossary', 't', '" + lfn + "');\n");
-                        myout.write("alter table drop default;\n");
-                    }
-                    if (type.equals("reference"))
-                    {
-                        info = info.replaceAll("'","\\\\'");
-                        info = info.replaceAll("<br>","<br/>");
-                        lfn = lfn.replaceAll("Reference_","");
-                        myout.write("update comment set body='"+info+"' where discriminator='Milestone' and  name='"+lfn+"';\n");
-                    }
-                 }
-                else{   
-                    myout.write(lfn);
-                    myout.write("\n");
-                    //myout.write(refHeight);
-                    myout.write(info);
-                    myout.write("\n-END-\n");
-                    }
+                    myout.write("alter table set default id=MAX(id)+1;\n");
+                    info = info.replaceAll("'","\\\\'");
+                    lfn = lfn.replaceAll("Glossary_","");
+                    info = info.replaceAll("<br>","<br/>");
+                    myout.write("insert into comment (body, discriminator, is_read, title) values ('" + info + "','Glossary', 't', '" + lfn + "');\n");
+                    myout.write("alter table drop default;\n");
+                }
+                if (type.equals("reference"))
+                {
+                    info = info.replaceAll("'","\\\\'");
+                    info = info.replaceAll("<br>","<br/>");
+                    lfn = lfn.replaceAll("Reference_","");
+                    myout.write("update comment set body='"+info+"' where discriminator='Milestone' and  name='"+lfn+"';\n");
+                }
+             }
+            else{   
+                myout.write(lfn);
+                myout.write("\n");
+                //myout.write(refHeight);
+                myout.write(info);
+                myout.write("\n-END-\n");
+                }
 
-            } // lfnsmeta, i
-                myout.close();
-    %><font color = 'green' size='18'>Written Successfully to <%=filename%>!</font><br><%
+        } // lfnsmeta, i
+            myout.close();
+        %><font color = 'green' size='18'>Written Successfully to <%=filename%>!</font><br><%
                 %><h2><a href = "<%=filename%>"> Open/Download</a></h2>
 <br><%
         }
@@ -297,7 +288,6 @@ if (type == "NA") {
     catch (IOException e) {
    %> <font color='red'> ERROR! <%=e%></font> <%
        }
-}
 }
             %> 
 </div>

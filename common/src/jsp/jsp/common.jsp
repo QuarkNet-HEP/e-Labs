@@ -14,18 +14,19 @@
 <%@ page import="org.apache.batik.transcoder.TranscoderInput" %>
 <%@ page import="org.apache.batik.transcoder.TranscoderOutput" %>
 <%@ page import="gov.fnal.elab.util.ElabException" %>
-<%@ include file="../login/login-required.jsp" %>
 <!-- include file with name of the current eLab -->
 <%@ include file="include/elab_name.jsp" %>
-
-
-<%@ include file="rolloutLoad.jsp" %>
 
 <%@ include file="include/login_url_base.jsp" %>
 
 <%
+if (request.getAttribute("user") == null) {
+	throw new ElabJspException("One of the *-login-required.jsp pages must be included by this point.");   
+}
 // rough timing information for this page execution.  Is there an API for this?
 long pageStartTime = System.currentTimeMillis();
+
+ElabGroup cmnuser = (ElabGroup) request.getAttribute("user");
 
 ServletContext context = getServletContext();
 String home = context.getRealPath("").replace('\\', '/');
@@ -34,14 +35,14 @@ String tempdir = context.getAttribute("javax.servlet.context.tempdir").toString(
 //Useful directory variables
 String dataDir = elab.getProperty("data.dir");
 String templateDir = elab.getProperty("templates.dir");
-String userArea = user.getUserArea();
+String userArea = cmnuser.getUserArea();
 String userDir = elab.getProperties().getUsersDir();
-String runDir = user.getDir("scratch");
-String runDirURL = user.getDirURL("scratch");
-String plotDir = user.getDir("plots");
-String plotDirURL = user.getDirURL("plots");
-String posterDir = user.getDir("posters");
-String posterDirURL = user.getDirURL("posters");
+String runDir = cmnuser.getDir("scratch");
+String runDirURL = cmnuser.getDirURL("scratch");
+String plotDir = cmnuser.getDir("plots");
+String plotDirURL = cmnuser.getDirURL("plots");
+String posterDir = cmnuser.getDir("posters");
+String posterDirURL = cmnuser.getDirURL("posters");
 
 //Other useful variables
 String groupName = null;    //same as session.getAttribute("login")
@@ -61,7 +62,8 @@ if(userArea != null){
 }
 String eLab = elab.getName();
 
-session.setAttribute("role", user.getRole());
+session.setAttribute("role", cmnuser.getRole());
+session.setAttribute("UserName", cmnuser.getName());
 
 %>
 
