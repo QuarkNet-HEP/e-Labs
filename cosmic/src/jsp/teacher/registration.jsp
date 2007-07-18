@@ -1,5 +1,6 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ page import="gov.fnal.elab.*" %>
+<%@ include file="../login/teacher-login-required.jsp" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -36,11 +37,7 @@
 </td></tr>
 
 <P>
-
-<% 
 	
-ElabUser crtuser = (ElabUser) request.getAttribute("user");
-if (crtuser != null && crtuser.isTeacher()) { //Short circuit operator.  Do not change order.%>
 <tr><td>
 	<table cellpadding="4" cellspacing="4" border="0">
 	<tr><td  valign="top" width="350"><FONT FACE=ARIAL><A HREF="massRegistration.jsp">Register student research groups with a spreadsheet.</A></font></td><td valign="top"><FONT FACE=ARIAL SIZE=-1>
@@ -62,22 +59,8 @@ if (crtuser != null && crtuser.isTeacher()) { //Short circuit operator.  Do not 
 
 </td></tr>
 
-<% } 
-else
-{
-%>
-<tr height="12"><td>&nbsp;</td></tr>
-<tr><td>
-<font face="ariel" size="-1">To register research groups, teachers or students, you need to have a teacher login. If you have a teacher login, log in with it.  If you need help, contact <A HREF="mailto:e-labs@fnal.gov">e-labs@fnal.gov</A></font>.
-</td></tr>
 
-<% } 
-%>
-
-
-
-
-</CENTER>
+</center>
 
 			</div>
 			<!-- end content -->
