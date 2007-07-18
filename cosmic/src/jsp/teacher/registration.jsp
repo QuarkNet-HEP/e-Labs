@@ -74,8 +74,8 @@
 			<a href="update-group-detectorid.jsp">Update detector IDs for your group.</a>
 		</td>
 		<td valign="top">
-			When you upload data to the Cosmic Ray Elab, it is automatically matched to your detector.
-			This page allows you to assign detector IDs to your group.
+			When you analyze data in the Cosmic Ray Elab, most of the analyses need to know information 
+			about your detector. This page allows you to assign detector IDs to your group.
 		</td>
 	</tr>
 </table>
