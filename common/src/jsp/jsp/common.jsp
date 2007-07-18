@@ -20,6 +20,7 @@
 <%@ include file="include/login_url_base.jsp" %>
 
 <%
+System.setProperty("vds.home", elab.getProperty("vds.home"));
 if (request.getAttribute("user") == null) {
 	throw new ElabJspException("One of the *-login-required.jsp pages must be included by this point.");   
 }
