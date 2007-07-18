@@ -126,7 +126,7 @@
 		Iterator i = users.iterator(), j = passwords.iterator();
 		while (i.hasNext()) {
 			String password = (String) j.next();
-			ElabUser u = (ElabUser) i.next();
+			ElabGroup u = (ElabGroup) i.next();
 		    if (password != null) {
 		        List l = new LinkedList();
 		        l.add(u.getGroup().getName());
