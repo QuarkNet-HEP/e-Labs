@@ -263,7 +263,7 @@ public class Elab {
             throws AuthenticationException {
         ElabUserManagementProvider p = ElabFactory
                 .getUserManagementProvider(this);
-        ElabGroup user = p.authenticate(username, password, id);
+        ElabGroup user = p.authenticate(username, password);
         if (username != null && username.equals(properties.getGuestUserName())) {
             user.setGuest(true);
         }
