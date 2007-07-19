@@ -55,7 +55,7 @@ public class Elab {
             throws ElabInstantiationException {
         return getElab(context, name, "elab.properties." + name);
     }
-
+    
     /**
      * Retrieves the Elab object associated with the given name or instantiates
      * a new one if it does not already exist. The elab will be initialized with
@@ -371,6 +371,15 @@ public class Elab {
         return properties.getProperty(name);
     }
 
+    /**
+     * Returns a secure URL for the given page. This depends on the values
+     * in <code>elab.properties</code>. The page is specified relative to the
+     * elab. Consequently it should not include the elab name or the web application
+     * name.
+     * 
+     * @param page The page to provide a secure URL for
+     * @return A secure URL to access the specified page
+     */
     public String secure(String page) {
         return properties.getRequired("elab.secure.url") + '/'
                 + properties.getWebapp() + '/' + getName() + '/' + page;
