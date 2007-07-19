@@ -31,6 +31,9 @@ public class ElabGroup {
     private Map groups, students, attributes;
 
     private ElabUserManagementProvider provider;
+    
+    public ElabGroup() {
+    }
 
     public ElabGroup(Elab elab, ElabUserManagementProvider provider) {
         this.provider = provider;
@@ -69,7 +72,7 @@ public class ElabGroup {
      * the backing provider.
      */
     public void resetFirstTime() throws ElabException {
-        provider.resetFirstTime(id);
+        provider.resetFirstTime(this);
     }
 
     /**
