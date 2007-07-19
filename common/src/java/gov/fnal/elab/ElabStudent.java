@@ -5,6 +5,7 @@ package gov.fnal.elab;
 
 public class ElabStudent {
     private String id, name;
+    private ElabGroup group;
 
     public ElabStudent() {
     }
@@ -56,5 +57,19 @@ public class ElabStudent {
             hc += name.hashCode();
         }
         return hc;
+    }
+
+    /**
+     * Retrieve the group that this student belongs to
+     */
+    public ElabGroup getGroup() {
+        return group;
+    }
+
+    /**
+     * Set the group that this student belongs to
+     */
+    public void setGroup(ElabGroup group) {
+        this.group = group;
     }
 }
