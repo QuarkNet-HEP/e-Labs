@@ -47,7 +47,7 @@
 
 				<p>
 				
-					<img src="../graphics/interactionPoint.gif" alt="Interaction
+					<img src="../graphics/interaction_point.gif" alt="Interaction
 					Point"/> These dots in your workflow indicate where  your 
 					teacher monitors your progress by commenting on the entries
 					you make in your logbook related to each milestone.  Be sure
