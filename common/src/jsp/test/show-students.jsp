@@ -37,7 +37,7 @@
 	    type = "pre";
 	}
 	request.setAttribute("type", type);
-	Map students = elab.getTestProvider().getStudentTestStatus(user, type);
+	Map students = elab.getTestProvider().getStudentTestStatus(type, user);
 	request.setAttribute("students", students);
 %>
 

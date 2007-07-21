@@ -57,7 +57,7 @@
 				<ul>
 					<c:forEach items="${question.answers}" var="answer">
 						<li>
-							<input type="radio" name="response${question.index}" value="${answer.index}">${answer.text}</input>
+							<input type="radio" name="response${question.index}" value="${answer.index}"/>${answer.text}
 						</li>
 					</c:forEach>
 				</ul>

@@ -31,7 +31,7 @@
 
 <%
 	String type = request.getParameter("type");
-	Map results = elab.getTestProvider().getResultsForTeacher(type, user);
+	Map results = elab.getTestProvider().getStudentResultsForTeacher(type, user);
 	request.setAttribute("results", results);
 %>
 
@@ -82,7 +82,7 @@
 </table>
 
 <c:if test="${param.color != 'no'}">
-	<a href="results?type=${param.type}&color=no" target="_">Printable version</a> (opens in new window)
+	<a href="results.jsp?type=${param.type}&color=no" target="_">Printable version</a> (opens in new window)
 </c:if>
 
 

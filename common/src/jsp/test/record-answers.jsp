@@ -63,7 +63,7 @@
 	elab.getTestProvider().recordTestAnswers(type, studentId, responses);
 
 	int total = elab.getTestProvider().getTotalStudents(user);
-	int totalTaken = elab.getTestProvider().getTotalTaken(user, type);
+	int totalTaken = elab.getTestProvider().getTotalTaken(type, user);
     request.setAttribute("total", String.valueOf(total));
 	request.setAttribute("totalTaken", String.valueOf(totalTaken));
 %>
