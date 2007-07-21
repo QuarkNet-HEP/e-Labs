@@ -11,6 +11,7 @@ package gov.fnal.elab;
 
 import gov.fnal.elab.analysis.AnalysisExecutor;
 import gov.fnal.elab.analysis.ElabAnalysis;
+import gov.fnal.elab.analysis.InitializationException;
 import gov.fnal.elab.datacatalog.CachingDataCatalogProvider;
 import gov.fnal.elab.datacatalog.DataCatalogProvider;
 import gov.fnal.elab.test.ElabTestProvider;
@@ -47,6 +48,15 @@ public class ElabFactory {
         }
     }
 
+    /**
+     * Returns an instance of a user management provider for the specified elab.
+     * A user management provider is used to implement I2U2 functionality
+     * related to user management (such as log-ins, permissions, teachers, etc.)
+     * 
+     * @param elab
+     *            An elab for which a user management provider is desired
+     * @return A user management provider for the specified elab
+     */
     public static synchronized ElabUserManagementProvider getUserManagementProvider(
             Elab elab) {
         if (userManagementProvider == null) {
@@ -58,6 +68,10 @@ public class ElabFactory {
 
     private static DataCatalogProvider dataCatalogProvider;
 
+    /**
+     * Returns an instance of a data catalog provider for the given elab. A data
+     * catalog provider implements the functionality
+     */
     public static synchronized DataCatalogProvider getDataCatalogProvider(
             Elab elab) {
         if (dataCatalogProvider == null) {
@@ -70,6 +84,10 @@ public class ElabFactory {
 
     private static ElabTestProvider testProvider;
 
+    /**
+     * Returns an instance of an elab test provider for the specified elab. A
+     * test provider implements functionality related to tests (surveys).
+     */
     public static synchronized ElabTestProvider getTestProvider(Elab elab) {
         if (testProvider == null) {
             testProvider = (ElabTestProvider) newInstance(elab, "test");
@@ -79,6 +97,10 @@ public class ElabFactory {
 
     private static AnalysisExecutor analysisExecutor;
 
+    /**
+     * Returns an analysis provider/executor for the given elab. The analysis
+     * provider is used to run analyses.
+     */
     public static synchronized AnalysisExecutor getAnalysisProvider(Elab elab) {
         if (analysisExecutor == null) {
             setVDSHome(elab);
@@ -88,8 +110,28 @@ public class ElabFactory {
         return analysisExecutor;
     }
 
+    /**
+     * Returns a new analysis instance for the specified elab
+     * 
+     * @param elab
+     *            An elab
+     * @param impl
+     *            The type of the analysis. The exact meaning of this parameter
+     *            is left to the implementation of the analysis. In the VDS case
+     *            it would be the transformation name
+     * @param param
+     *            An intialization parameter to pass to the analysis. The
+     *            meaning of this parameter is also left to the implementation
+     *            of the analysis. In the VDS case it is not used.
+     * 
+     * @return A new analysis object
+     * @throws InitializationException
+     *             if the initialization of the analysis with the given
+     *             parameter fails
+     * 
+     */
     public static ElabAnalysis newElabAnalysis(Elab elab, String impl,
-            String param) {
+            String param) throws InitializationException {
         if (impl == null) {
             impl = elab.getProperties().getProperty("provider.analysis",
                     "vds-dynamic");
@@ -100,7 +142,13 @@ public class ElabFactory {
         else if ("vds-bean".equals(impl)) {
             impl = "gov.fnal.elab.analysis.BeanWrapper";
         }
-        return (ElabAnalysis) newInstance(elab, "analysis", impl);
+
+        ElabAnalysis analysis = (ElabAnalysis) newInstance(elab, "analysis",
+                impl);
+        if (param != null) {
+            analysis.initialize(param);
+        }
+        return analysis;
     }
 
     private static void setVDSHome(Elab elab) {
