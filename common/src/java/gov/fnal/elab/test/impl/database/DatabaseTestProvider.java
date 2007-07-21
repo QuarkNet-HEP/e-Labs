@@ -28,12 +28,12 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
 
     public DatabaseTestProvider() {
     }
-    
+
     public void setElab(Elab elab) {
         this.elab = elab;
     }
 
-    public ElabTest getTest(String name) throws ElabException {
+    public ElabTest getTest(String type) throws ElabException {
         Statement s = null;
         Connection conn = null;
         try {
@@ -46,8 +46,8 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
                             + "FROM question WHERE question.project_id='"
                             + elab.getId()
                             + "' AND question.test_name='"
-                            + name + "' ORDER BY question.question_no;");
-            ElabTest test = new ElabTest(name);
+                            + type + "' ORDER BY question.question_no;");
+            ElabTest test = new ElabTest(type);
             while (rs.next()) {
                 ElabTestQuestion question = new ElabTestQuestion();
                 question.setText(rs.getString("question"));
@@ -75,8 +75,9 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
             DatabaseConnectionManager.close(conn, s);
         }
     }
-    
-    public ElabTestQuestion getTestQuestion(String testType, String questionId) throws ElabException {
+
+    public ElabTestQuestion getTestQuestion(String type, String questionId)
+            throws ElabException {
         Statement s = null;
         Connection conn = null;
         try {
@@ -89,7 +90,7 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
                             + "FROM question WHERE question.project_id='"
                             + elab.getId()
                             + "' AND question.test_name='"
-                            + testType + "' AND id = '" + questionId + "';");
+                            + type + "' AND id = '" + questionId + "';");
             if (rs.next()) {
                 ElabTestQuestion question = new ElabTestQuestion();
                 question.setText(rs.getString("question"));
@@ -197,7 +198,7 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
         }
     }
 
-    public int getTotalTaken(ElabGroup group, String type) throws ElabException {
+    public int getTotalTaken(String type, ElabGroup group) throws ElabException {
         Statement s = null;
         Connection conn = null;
         try {
@@ -263,7 +264,7 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
         }
     }
 
-    public Map getStudentTestStatus(ElabGroup group, String type)
+    public Map getStudentTestStatus(String type, ElabGroup group)
             throws ElabException {
         Statement s = null;
         Connection conn = null;
@@ -280,6 +281,47 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
                         + elab.getId() + " AND student_id = " + student.getId()
                         + ";");
                 status.put(student, Boolean.valueOf(rs.getBoolean(1)));
+            }
+            return status;
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, s);
+        }
+    }
+
+    public Map getStudentResultsForTeacher(String type, ElabGroup group)
+            throws ElabException {
+        Statement s = null;
+        Connection conn = null;
+        ElabTest test = this.getTest(type);
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            s = conn.createStatement();
+            Map status = new HashMap();
+            Iterator i = group.getGroups().iterator();
+            while (i.hasNext()) {
+                ElabGroup g = (ElabGroup) i.next();
+                Iterator j = g.getStudents().iterator();
+                while (j.hasNext()) {
+                    ElabStudent student = (ElabStudent) j.next();
+
+                    Iterator k = test.getQuestions().iterator();
+                    while (k.hasNext()) {
+                        ElabTestQuestion question = (ElabTestQuestion) k.next();
+                        ResultSet rs = s
+                                .executeQuery("SELECT answer FROM answer WHERE student_id = '"
+                                        + student.getId()
+                                        + "' AND question_id = '"
+                                        + question.getId() + "';");
+                        ElabTestQuestion q2 = new ElabTestQuestion(question);
+                        status.put(student, q2);
+                        q2.setCorrectAnswer(q2.getAnswer(rs.getInt("answer")));
+                    }
+                }
             }
             return status;
         }

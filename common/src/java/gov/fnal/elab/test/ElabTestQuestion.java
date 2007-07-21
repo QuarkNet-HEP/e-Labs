@@ -4,6 +4,7 @@
 package gov.fnal.elab.test;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ElabTestQuestion {
@@ -14,6 +15,14 @@ public class ElabTestQuestion {
     
     public ElabTestQuestion() {
         answers = new ArrayList();
+    }
+    
+    public ElabTestQuestion(ElabTestQuestion org) {
+        this.text = org.text;
+        this.id = org.id;
+        this.answers = org.answers;
+        this.index = org.index;
+        this.correctAnswer = org.correctAnswer;
     }
 
     public String getText() {
@@ -74,5 +83,16 @@ public class ElabTestQuestion {
         else {
             return correctAnswer.equals(givenAnswer);
         }
+    }
+    
+    public ElabTestQuestionAnswer getAnswer(int index) {
+        Iterator i = answers.iterator();
+        while (i.hasNext()) {
+            ElabTestQuestionAnswer answer = (ElabTestQuestionAnswer) i.next();
+            if (answer.getIndex() == index) {
+                return answer;
+            }
+        }
+        throw new IndexOutOfBoundsException("No such answer: " + index);
     }
 }
