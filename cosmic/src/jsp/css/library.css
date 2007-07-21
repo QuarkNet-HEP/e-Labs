@@ -227,7 +227,7 @@ a.button {
 
 .library #content .tab-contents li:before {
 	display: marker;
-	content: url("../graphics/ref-dot.gif");
+	content: url("../graphics/ref_dot.gif");
 	marker-offset: auto;
 	padding-right: 3px;
 }
