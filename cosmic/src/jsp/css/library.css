@@ -231,3 +231,8 @@ a.button {
 	marker-offset: auto;
 	padding-right: 3px;
 }
+
+.float {
+	float: left;
+	padding-right: 8px;
+}

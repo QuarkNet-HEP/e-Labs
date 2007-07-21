@@ -48,7 +48,7 @@
 				<p>
 				
 					<img src="../graphics/interaction_point.gif" alt="Interaction
-					Point"/> These dots in your workflow indicate where  your 
+					Point" class="float"/> These dots in your workflow indicate where  your 
 					teacher monitors your progress by commenting on the entries
 					you make in your logbook related to each milestone.  Be sure
 					to read the comments!
