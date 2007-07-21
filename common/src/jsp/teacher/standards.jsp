@@ -18,7 +18,7 @@
 					<div id="nav">
 						<%@ include file="../include/nav-teacher.jsp" %>
 					</div>
-				</div>				
+				</div>
 			</div>
 			
 			<div id="content">

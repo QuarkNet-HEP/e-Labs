@@ -38,7 +38,7 @@
 	experiments for students who follow step-by-step procedures to study count 
 	rate vs. E W N S direction, angle with the horizontal,altitude (high and low) 
 	and in a tunnel or mine. 
-	<a href="http://www.krl.caltech.edu/~theresa/portables/">Word File</a>
+	<a href="http://www.lbl.gov/abc/cosmic/more/CHICOSOperatingManual_1_5.pdf">PDF File</a>
 </p>
 <p>
 	Contact <a href="mailto:couzz@pacbell.net">Bob Coutts</a>, retired from 

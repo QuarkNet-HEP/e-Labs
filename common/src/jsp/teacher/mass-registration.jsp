@@ -50,100 +50,100 @@
 
 	while (fi.hasNext()) { 
 		FileItem file = (FileItem) fi.next();
-		String regFile = file.getType();
+		String regFile = file.getName();
 		if (regFile == null || regFile.equals("")) {
 			continue;
 		}
 		File f = File.createTempFile("upload", ".csv");
-		        if (file.getSize() > 0) {
-		            // write the file
-        	        file.write(f);
-            	    // Strip the file of Mac or MS-DOS line breaks.
-                	String[] cmd = new String[]{"bash", "-c", "/usr/bin/perl -pi -e 's/\\r\\n?/\\n/g' " + 
-                        f.getAbsolutePath()};
+		if (file.getSize() > 0) {
+			// write the file
+			file.write(f);
+			// Strip the file of Mac or MS-DOS line breaks.
+			String[] cmd = new String[]{"bash", "-c", "/usr/bin/perl -pi -e 's/\\r\\n?/\\n/g' " + 
+				f.getAbsolutePath()};
 
-    	            Process p = Runtime.getRuntime().exec(cmd);
-        	        if (p.waitFor() != 0) {
-            	        throw new ElabJspException("Cannot clean line breaks from the file \"" + f.getAbsolutePath() 
-                	            + "\" on the filesystem. Please contact the administrator about this error.");
-	                }
+			Process p = Runtime.getRuntime().exec(cmd);
+			if (p.waitFor() != 0) {
+				throw new ElabJspException("Cannot clean line breaks from the file \"" + f.getAbsolutePath() 
+					+ "\" on the filesystem. Please contact the administrator about this error.");
+			}
 
-	                // Parse the registration file.
+			// Parse the registration file.
 			LabeledCSVParser lcsvp = null;
 			try { 
-		String appType = request.getParameter("application_type");
-		if (appType != null && appType.equals("other")) {
-			lcsvp = new LabeledCSVParser(new CSVParser(new FileReader(f)));
-		}
-		else {
-			lcsvp = new LabeledCSVParser(new ExcelCSVParser(new FileReader(f)));
-		}
+				String appType = request.getParameter("application_type");
+				if (appType != null && appType.equals("other")) {
+					lcsvp = new LabeledCSVParser(new CSVParser(new FileReader(f)));
+				}
+				else {
+					lcsvp = new LabeledCSVParser(new ExcelCSVParser(new FileReader(f)));
+				}
 			}
 			catch (IOException e) {
-	                    throw new ElabJspException("Error reading file \"" + f.getAbsolutePath() 
-	                            + "\". Please contact the administrator about this error.");
-	                } 
+				throw new ElabJspException("Error reading file \"" + f.getAbsolutePath() 
+					+ "\". Please contact the administrator about this error.");
+			} 
 		
-			List users = new ArrayList();
+			List students = new ArrayList();
 	        List newGroups = new ArrayList();
 	        
 			while (lcsvp.getLine() != null) {
-			String last = lcsvp.getValueByLabel("Last Name");
-			String first = lcsvp.getValueByLabel("First Name");
-			String resName = lcsvp.getValueByLabel("Research Group Name");
-			String upload = lcsvp.getValueByLabel("Upload");
-			String survey = lcsvp.getValueByLabel("In Survey");
+				String last = lcsvp.getValueByLabel("Last Name");
+				String first = lcsvp.getValueByLabel("First Name");
+				String resName = lcsvp.getValueByLabel("Research Group Name");
+				String upload = lcsvp.getValueByLabel("Upload");
+				String survey = lcsvp.getValueByLabel("In Survey");
 			
-			if (last == null || first == null || resName == null ||
-				last.equals("") || first.equals("") || resName.equals("")) {
-			    throw new ElabJspException("An error has occurred while parsing row " 
+				if (last == null || first == null || resName == null ||
+					last.equals("") || first.equals("") || resName.equals("")) {
+				    throw new ElabJspException("An error has occurred while parsing row " 
 			            + lcsvp.getLastLineNumber() + ". "
 			            + "Please make sure your file conforms to the format shown in the example.");
-			}
+				}
 		
+				ElabStudent newStudent = new ElabStudent();
+				first = first.replaceAll(" ", "").toLowerCase();
+				last = last.replaceAll(" ", "").toLowerCase();
+				String studentName = first.substring(0, 1) + last.substring(0, (last.length() < 7 ? last.length() : 7));
 		
-			ElabUser newUser = new ElabUser(elab, elab.getUserManagementProvider());
-			first = first.replaceAll(" ", "").toLowerCase();
-			last = last.replaceAll(" ", "").toLowerCase();
-			String studentName = first.substring(0, 1) + last.substring(0, (last.length() < 7 ? last.length() : 7));
-		
-			newUser.setName(studentName);
+				newStudent.setName(studentName);
 
-			ElabGroup group = new ElabGroup();
-			newUser.setGroup(group);
-			group.setName(resName);
-			if (Boolean.valueOf(upload).booleanValue()) {
-			    newUser.setRole(ElabUser.ROLE_UPLOAD);
+				ElabGroup group = new ElabGroup();
+				newStudent.setGroup(group);
+				group.setName(resName);
+				if (Boolean.valueOf(upload).booleanValue()) {
+				    group.setRole(ElabUser.ROLE_UPLOAD);
+				}
+				group.setSurvey(Boolean.valueOf(survey).booleanValue());
+				students.add(newStudent);
+				//as far as I understand from the old code, with the mass registration, the 
+				//groups are always created
+				newGroups.add(Boolean.TRUE);
 			}
-			newUser.setSurvey(Boolean.valueOf(survey).booleanValue());
-			users.add(newUser);
-			//as far as I understand from the old code, with the mass registration, the 
-			//groups are always created
-			newGroups.add(Boolean.TRUE);
-		}
-		List passwords = elab.getUserManagementProvider().addUsers(user, users, newGroups);
-		List results = new ArrayList();
-		Iterator i = users.iterator(), j = passwords.iterator();
-		while (i.hasNext()) {
-			String password = (String) j.next();
-			ElabGroup u = (ElabGroup) i.next();
-		    if (password != null) {
-		        List l = new LinkedList();
-		        l.add(u.getGroup().getName());
-		        l.add(password);
-		        results.add(l);
-		    }
-		}
+			List passwords = elab.getUserManagementProvider().addStudents(user, students, newGroups);
+			List results = new ArrayList();
+			Iterator i = students.iterator(), j = passwords.iterator();
+			while (i.hasNext()) {
+				String password = (String) j.next();
+				ElabStudent u = (ElabStudent) i.next();
+		    	if (password != null) {
+		        	List l = new LinkedList();
+			        l.add(u.getGroup().getName());
+			        l.add(password);
+			        results.add(l);
+		    	}
+			}
 			request.setAttribute("valid", Boolean.TRUE);
 			request.setAttribute("results", results);
 			break;
 		}// if fsize>0
-	    	}//while
-	    }
-	    catch (Exception e) {
-   		    request.setAttribute("valid", Boolean.FALSE);
-	        request.setAttribute("error", e.getMessage());
-   		}
+	}//while
+}
+catch (Exception e) {
+	request.setAttribute("valid", Boolean.FALSE);
+	request.setAttribute("error", e.getMessage());
+}
+
 %>
 			<c:choose>
 				<c:when test="${valid}">

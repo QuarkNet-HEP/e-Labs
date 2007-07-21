@@ -43,7 +43,7 @@
 	String submit = request.getParameter("submit");
 	if (submit != null) {
 	    try {
-	        List users = new ArrayList();
+	        List students = new ArrayList();
 	        List newGroups = new ArrayList();
 	        
 			for (int formNum = 0; formNum < 10; formNum++) {
@@ -61,7 +61,7 @@
 					continue;
 				}
 				
-				ElabUser newUser = new ElabUser(elab, elab.getUserManagementProvider());
+				ElabStudent newUser = new ElabStudent();
 				first = first.replaceAll(" ", "").toLowerCase();
 				last = last.replaceAll(" ", "").toLowerCase();
 				String studentName = first.substring(0, 1) + last.substring(0, (last.length() < 7 ? last.length() : 7));
@@ -78,18 +78,18 @@
 				newUser.setGroup(group);
 				group.setName(resName);
 				if (Boolean.valueOf(upload).booleanValue()) {
-				    newUser.setRole(ElabUser.ROLE_UPLOAD);
+				    group.setRole(ElabUser.ROLE_UPLOAD);
 				}
-				newUser.setSurvey(Boolean.valueOf(survey).booleanValue());
-				users.add(newUser);
+				group.setSurvey(Boolean.valueOf(survey).booleanValue());
+				students.add(newUser);
 				newGroups.add(Boolean.valueOf(isNewGroup));
 			}
-			List passwords = elab.getUserManagementProvider().addUsers(user, users, newGroups);
+			List passwords = elab.getUserManagementProvider().addStudents(user, students, newGroups);
 			List results = new ArrayList();
-			Iterator i = users.iterator(), j = passwords.iterator();
+			Iterator i = students.iterator(), j = passwords.iterator();
 			while (i.hasNext()) {
 				String password = (String) j.next();
-				ElabGroup u = (ElabGroup) i.next();
+				ElabStudent u = (ElabStudent) i.next();
 			    if (password != null) {
 			        List l = new LinkedList();
 			        l.add(u.getGroup().getName());
