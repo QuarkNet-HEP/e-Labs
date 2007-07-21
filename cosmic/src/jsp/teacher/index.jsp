@@ -58,14 +58,14 @@
 				</p>
 				
 				<p>
-					Students start this e-lab with an <A href="splash.html">animation</A> that raises
+					Students start this e-lab with an <A href="../home/splash.html">animation</A> that raises
 					questions researchers ask about cosmic rays. <B>Bookmark it</B> as it is different
 					than either Student Home below and you will want to direct your students there. 
 				</p>
 
 				<p>
 					View Student Home as a: <a href="../home/first.jsp">new student</a>
-					- <a href = "../home/home.jsp">returning student</a>.
+					- <a href = "../home/">returning student</a>.
 				</p>
 				
 				<h2>Introduction to Research:</h2>
@@ -183,14 +183,14 @@
 
 				<ul>
 					<li>
-						<a href="rubric.html">Rubric</a> aligned to learner outcomes
+						<a href="../assessment">Rubric</a> aligned to learner outcomes
 					</li>
 					<li>
-						<a href="../surveys/presurvey.jsp?type=pre&student_id=0">Pre</a>
-						- and <a href="../surveys/presurvey.jsp?type=post&student_id=0">post</a>
+						<a href="../test/test.jsp?type=pre&student_id=0">Pre</a>
+						- and <a href="../test/test.jsp?type=post&student_id=0">post</a>
 						- tests of content knowledge and student results for 
-						<a href="../surveys/survey-results.jsp?type=pre">pre</a>
-						- and <a href="../surveys/survey-esults.jsp?type=post">post</a>- tests.
+						<a href="../test/results.jsp?type=pre">pre</a>
+						- and <a href="../test/results.jsp?type=post">post</a>- tests.
 					</li>
 					<li>
 						e-Logbooks: Track and comment on student work. Review 

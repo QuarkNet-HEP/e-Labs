@@ -29,9 +29,9 @@ String headerType = "Teacher";
 <TABLE WIDTH=576>
 <TR><TD COLSPAN=2 align="center">
 
-  <IMG SRC="graphics/detector.jpg" BORDER=1><BR>
+  <IMG SRC="../graphics/detector.jpg" BORDER=1><BR>
   200 Series - Pre 2005 Model<BR><BR>
-  <IMG SRC="graphics/detector5000.jpg" BORDER=1><BR>
+  <IMG SRC="../graphics/detector5000.jpg" BORDER=1><BR>
   5000 Series - 2006 Model 
   <P>
   <B>Typical QuarkNet Detector Setup</B>

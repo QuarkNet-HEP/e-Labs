@@ -4,6 +4,7 @@
 package gov.fnal.elab.usermanagement.impl;
 
 import gov.fnal.elab.ElabGroup;
+import gov.fnal.elab.ElabStudent;
 import gov.fnal.elab.usermanagement.AuthenticationException;
 import gov.fnal.elab.usermanagement.CosmicElabUserManagementProvider;
 import gov.fnal.elab.util.DatabaseConnectionManager;
@@ -26,11 +27,10 @@ public class CosmicDatabaseUserManagementProvider extends
 
     public CosmicDatabaseUserManagementProvider() {
     }
-    
-    
 
-    public ElabGroup authenticate(String username, String password, String projectId) throws AuthenticationException {
-        ElabGroup group = super.authenticate(username, password, projectId);
+    public ElabGroup authenticate(String username, String password)
+            throws AuthenticationException {
+        ElabGroup group = super.authenticate(username, password);
         try {
             group.setAttribute("cosmic:detectorIds", getDetectorIds(group));
         }
@@ -40,18 +40,23 @@ public class CosmicDatabaseUserManagementProvider extends
         return group;
     }
 
-
-
-    protected String addUser(Statement s, ElabGroup et, ElabGroup user,
+    protected String addStudent(Statement s, ElabGroup et, ElabStudent student,
             boolean createGroup) throws SQLException, ElabException {
-        String pwd = super.addUser(s, et, user, createGroup);
+        String pwd = super.addStudent(s, et, student, createGroup);
+        ResultSet rs = s
+                .executeQuery("SELECT id FROM research_group WHERE name = '"
+                        + student.getGroup().getName() + "'");
+        if (!rs.next()) {
+            throw new ElabException("Error retrieving the student's group from the database.");
+        }
+        String groupId = rs.getString("id");
         if ("cosmic".equals(elab.getName())) {
             // Connect the detector id from the teacher with the group
             // if it exists.
             s
                     .executeUpdate("INSERT INTO research_group_detectorid (research_group_id, detectorid) "
                             + "(SELECT '"
-                            + user.getId()
+                            + groupId
                             + "', detectorid FROM research_group_detectorid WHERE research_group_id = '"
                             + et.getId() + "');");
         }

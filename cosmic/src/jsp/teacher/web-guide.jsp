@@ -121,7 +121,7 @@
 		</li>
 	</ul>
 </p>
-<h2><a href="resources.jsp"><strong>Resources</strong></a></h2>
+<h2><a href="../library/resources.jsp"><strong>Resources</strong></a></h2>
 <p>
 	On the Library submenu is a link to references that include:
 	<ul>
@@ -132,7 +132,7 @@
 		and how the collaboration relies on grid techniques.</li>
 	</ul>
 </p>
-<h2><a href="poster.jsp"><strong>Posters</strong></a></h2>
+<h2><a href="../posters/"><strong>Posters</strong></a></h2>
 <p>
 	Students may publish their work as a poster or a paper. We provide a webform for 
 	them to enter text, select figures from the website, and coming soon uploaded 
@@ -142,7 +142,7 @@
 	Associated with posters are areas for comments. This allows students to comment 
 	on the work of other students and ask questions.  
 </p>
-<h2><a href="site-index.jsp"><strong>Site Index</strong></a></h2>
+<h2><a href="../site-index/"><strong>Site Index</strong></a></h2>
 <p>
 	The student site index has a list in outline format of <strong>all the pages on this 
 	site available to students</strong>.

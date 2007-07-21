@@ -25,7 +25,9 @@
 				<div id="header">
 					<%@ include file="../../include/header.jsp" %>
 					<div id="nav">
-						<%@ include file="../../include/nav.jsp" %>
+						<c:if test="${headerType != 'teacher'}">
+							<%@ include file="../../include/nav.jsp" %>
+						</c:if>
 						<div id="subnav">
 							<jsp:include page="../include/nav-${headerType}.jsp"/>
 						</div>

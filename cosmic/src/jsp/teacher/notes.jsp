@@ -44,7 +44,7 @@
 					- <a href="activities.jsp">Sample Classroom Activities</a>
 				</p>
 				<p> 
-					<a href="detector.jsp">The QuarkNet Detector</a>
+					<a href="../jsp/detector.jsp">The QuarkNet Detector</a>
 				</p>
 				
 				<h2>Experiments Students Can Perform</h2>
