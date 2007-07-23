@@ -77,9 +77,9 @@
 		String value = request.getParameter("value");
 		if (value == null) value="";
 		String date1 = request.getParameter("date1");
-		if (date1 == null) date1="1/1/2004";
+		if (date1 == null || date1.equals("")) date1="1/1/2004";
 		String date2 = request.getParameter("date2");
-		if (date2 == null) date2="12/30/2050";
+		if (date2 == null || date2.equals("")) date2="12/30/2050";
 		String sortDirection = request.getParameter("sortDirection");
 		if (sortDirection == null) sortDirection = "sortAsc";
 		String order = request.getParameter("sortField");
