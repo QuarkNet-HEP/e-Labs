@@ -9,7 +9,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Choose data for performance study</title>
+		<title>Search posters</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/posters.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column-wide.css"/>
@@ -33,7 +33,7 @@
 			
 			<div id="content">
 				
-<h1>Search for and view plots.</h1>
+<h1>Search for and view posters.</h1>
 
 <table border="0" id="main">
 	<tr>
