@@ -120,7 +120,7 @@
 								</td>
 								<td class="form-control">
 									<e:trinput type="text" name="plot_title" size="40" maxlength="100"
-										default="Performance Study"/>
+										default="Lifetime Study"/>
 								</td>
 							</tr>
 							<tr>
