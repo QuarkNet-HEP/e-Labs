@@ -14,6 +14,8 @@
 <%@ page import="org.apache.batik.transcoder.TranscoderInput" %>
 <%@ page import="org.apache.batik.transcoder.TranscoderOutput" %>
 <%@ page import="gov.fnal.elab.util.ElabException" %>
+<%@ page import="gov.fnal.elab.*" %>
+
 <!-- include file with name of the current eLab -->
 <%@ include file="include/elab_name.jsp" %>
 
