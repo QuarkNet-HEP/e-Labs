@@ -6,11 +6,11 @@
 
 <div class="search-quick-links">
 	Show plots by:&nbsp; 
-	<e:quicksearch key="group" value="${user.group.name}"/>
-	<e:quicksearch key="teacher" value="${user.group.teacher}"/>
-	<e:quicksearch key="school" value="${user.group.school}"/>
-	<e:quicksearch key="city" value="${user.group.city}"/>
-	<e:quicksearch key="state" value="${user.group.state}"/>
+	<e:quicksearch key="group" value="${user.name}"/>
+	<e:quicksearch key="teacher" value="<%= user.getTeacher() %>"/>
+	<e:quicksearch key="school" value="${user.school}"/>
+	<e:quicksearch key="city" value="${user.city}"/>
+	<e:quicksearch key="state" value="${user.state}"/>
 	<e:quicksearch key="all" value="" label="All"/>
 </div>
 
