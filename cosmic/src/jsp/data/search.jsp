@@ -38,21 +38,21 @@
 					<span class="tab-title">Analysis</span>
 					<div class="tab-contents">
 						<p>
-							<a href="?t=split&amp;f=analyze&amp;s=performance">Performance Study</a>
+							<a href="../analysis-performance">Performance Study</a>
 							- Look at data from a detector. Can you trust the data?
 						</p>
 						<p>
-							<a href="?t=split&amp;f=analyze&amp;s=lifetime">Lifetime Study</a>
+							<a href="../analysis-lifetime">Lifetime Study</a>
 							- Do you live in Newton's or Einstein's world?
 						</p>
 						<p>
-							<a href="?t=split&amp;f=analyze&amp;s=flux">Flux Study</a>
+							<a href="../analysis-flux">Flux Study</a>
 							- The rain of particles has many interesting properties including its 
 							<a href="javascript:glossary('flux')">flux</a>.
 							Are there more in Colorado than there are in South Carolina?
 						</p>
 						<p>
-							<a href="?t=split&amp;f=analyze&amp;s=shower">Shower Study</a>
+							<a href="../analysis-shower">Shower Study</a>
 							- You can detect an air shower using the four panels at your school. 
 							Your colleagues at other schools will want to know when you detect one, 
 							so they can check for coincident showers at their school. Contribute 
@@ -69,28 +69,28 @@
 					<div class="tab-contents">
 						<h2>VIEW</h2>
 						<p>
-							<a href="?t=split&amp;f=view">Data Files</a>
+							<a href="../analysis-show-data">Data Files</a>
 							- See what data has been uploaded into the system.
 						</p>
 						<p> 
-							<a href="?t=plot&amp;f=view">Plots</a>
+							<a href="../plots">Plots</a>
 							- Look at what you and other groups have found!
 						</p>
 						<p>
-							<a href="?t=poster&amp;f=view">Posters</a>
+							<a href="../posters">Posters</a>
 							- View and create posters of your plots.
 						</p>
 						<h2>DELETE</h2>
 						<p>
-							<a href="?t=split&amp;f=delete">Data Files</a>
+							<a href="../analysis-show-data">Data Files</a>
 							- Delete data your group has uploaded.
 						</p>
 						<p>
-							<a href="?t=plot&amp;f=delete">Plots</a>
+							<a href="../plots">Plots</a>
 							- Delete plots your group owns.
 						</p>
 						<p>
-							<a href="?t=poster&amp;f=delete">Posters</a>
+							<a href="../posters">Posters</a>
 							- Delete posters your group has made.
 						</p>					
 					</div>
