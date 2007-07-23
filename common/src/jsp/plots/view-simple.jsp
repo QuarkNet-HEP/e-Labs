@@ -16,36 +16,13 @@
 		<title>View Plot</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	
-	<body id="view-plot" class="data">
+	<body id="view-plot-simple" class="data">
 	<!-- entire page container -->
-		<div id="container">
-			<div id="top">
-				<div id="header">
-					<%@ include file="../include/header.jsp" %>
-					<div id="nav">
-						<%@ include file="../include/nav.jsp" %>
-						<div id="subnav">
-							<%@ include file="../include/nav-data.jsp" %>
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<div id="content">
-			
-<table border="0" id="main">
-	<tr>
-		<td id="center">
+		<div id="container">		
 			<%@ include file="view-common.jsp" %>
-		</td>
-	</tr>
-</table>
-
-			</div>
 		</div>
 	</body>
 </html>
