@@ -50,7 +50,6 @@
 	String doubleQuote = "&#34;";
 
 
-	boolean posterTitleEntered = false; //true if the title field is filled in by the user.
 	boolean posterNameEntered = false; //true if the field is filled in by the user.
 	
 	
@@ -84,12 +83,12 @@
 	String plotDirURL = user.getDirURL("plots");
 	String templateDir = user.getDir("templates");
 
-if (reqType != null && (reqType.equals("Make Poster")||reqType.equals("View Poster"))) {
+if ("Make Poster".equals(reqType) || "View Poster".equals(reqType)) {
     Enumeration fields = request.getParameterNames();
     while (fields.hasMoreElements()) {
         String name = (String) fields.nextElement();
         String val = request.getParameter(name);
-        val=val.replaceAll("\"", doubleQuote); //Avoid double quotes
+        val = val.replaceAll("\"", doubleQuote); //Avoid double quotes
         RE re = new RE("(PARA|WORDS|FIG):([A-Z0-9]+)");
         if (val.length() > 0 && re.match(name) && !val.equals(selectDefault)) {
             pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
@@ -165,7 +164,7 @@ catch (Exception e) {
 }
 
 // Read and store tags from poster data file if it exists - this can't work if you have no posterName in entry
-if (posterNameEntered && posterTitleEntered) { // if not entered, then we will use pdata that we built from input parameters.
+if (posterNameEntered) { // if not entered, then we will use pdata that we built from input parameters.
     File physicalF = new File(posterDir, dfile);
     pdata = "";
     if(physicalF.exists()) {
@@ -189,8 +188,8 @@ if (posterNameEntered && posterTitleEntered) { // if not entered, then we will u
 
     RE re = new RE("%(FIG|PARA|WORDS):([A-Z0-9]+)%\\n(.*?\\n)%END%");
     re.setMatchFlags(RE.MATCH_SINGLELINE);
-    int p=0;
-    while (re.match(pdata,p)) {
+    int p = 0;
+    while (re.match(pdata, p)) {
         String tagtype = re.getParen(1);
         String tagname = re.getParen(2);
         String tagval = re.getParen(3).trim();
@@ -266,7 +265,7 @@ pageContext.setAttribute("images", images);
                     String lowerPart = (name.substring(1, name.length())).toLowerCase();
                     String fixedName = name.substring(0, 1) + lowerPart;
                     String val = (String) tags.get(type + ":" + name);
-                    if ( (val == null) || (val.length() == 0)) {
+                    if ((val == null) || (val.length() == 0)) {
                         if (name.equals("DATE")) {
                             val = dateString;
                         }
@@ -333,7 +332,7 @@ pageContext.setAttribute("images", images);
 //this functionality is not working as of 8-19-04. Must go through search.jsp to view it...
 
 if ("Make Poster".equals(reqType)) {
-    if (posterNameEntered && posterTitleEntered) {
+    if (posterNameEntered) {
         // If "Make Poster" request, merge tag values into html template, by iterating over hash
         // of tag values and inserting them into the template string;
         // then write template into (user's) poster_mgb.html file XXXX
@@ -354,9 +353,10 @@ if ("Make Poster".equals(reqType)) {
             pw.close();
             // Add metadata to LFN for data file
 
-            String posterURL = "../posters/view.jsp?name=" + dfile;
-
-			%> <e:popup href="<%= posterURL %>" target="poster" width="700" height="900"/> <%
+            String posterURL = "../posters/display.jsp?name=" + dfile;
+			%> 
+				<e:popup href="<%= posterURL %>" target="poster" width="700" height="900" now="true"/>
+			<%
         }
         catch (Exception e) { 
             out.println(e.getMessage()); 
