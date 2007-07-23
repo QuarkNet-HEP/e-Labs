@@ -367,3 +367,7 @@ p.search-result-bar {
 	color: #00CC00;
 	font-family: Courier, monospaced;
 }
+
+#view-plot-simple #content {
+	text-align: center;
+}
