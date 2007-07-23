@@ -1,58 +1,41 @@
-<html>
-	<head>
-		<title>
-			Tutorial Shower Study
-		</title>
-		<%@ include file="include/javascript.jsp" %>
+<%@ taglib prefix="elab" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ page errorPage="../include/errorpage.jsp" %>
+<%@ include file="../include/elab.jsp" %>
+<%@ include file="../login/login-required.jsp" %>
 
-        <!-- include css style file -->
-        <%@ include file="include/style.css" %>
-        <!-- header/navigation -->
-        <%
-        //be sure to set this before including the navbar
-        String headerType = "Library";
-        %>
-        <%@ include file="include/navbar_common.jsp" %>
-    </head>
-    
-    <body>
-		<p>
-		<p>
-			<!--
-<center>
-				You can:&nbsp
-						 <b>1) </b> Find some help on this page &nbsp
-						<b>2)</b> <a href="javascript:openPopup('displayPoster.jsp?type=poster&amp;posterName=adler_flux.data','Possible Particle Decays', 700, 510); ">View</a> a poster created using this study&nbsp
-						<b>3)</b> <a href="javascript:openPopup('tryit_flux.html','TryIt',510,600); ">Try it</a>: Step-by-Step Instructions
-			</center>		
--->	
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Shower study tutorial</title>
+		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/one-column-wide.css"/>
+		<script type="text/javascript" src="../include/elab.js"></script>
+	</head>
+	
+	<body id="shower-tutorial-3" class="data, tutorial">
+		<!-- entire page container -->
+		<div id="container">
+			
+			
+			<div id="content">
+
 		<center>	
-			<p>
-				<table width = 650 cellpadding =8>
-				<tr>
-					<td colspan = 2>
-						<center>
-							<font color="#0a5ca6" size=+3>
-								<b>
-	 								Shower Study
-	 							</b>
-	 						</font>
-	 					</center>
-	 				</td>
-	 			</tr>
+<h1>Shower Study</h1>
 				
-				
-				<tr width = 341>
+				<table width="650" cellpadding="8">
+				<tr width="341">
 		 			<td valign="top">
             <table cellspacing="0" cellpadding="2" border="0">
                 <tr>
-                    <td align="center" width = 180>
+                    <td align="center" width="180">
                         Event Date
                     </td>
-                    <td align="center" width = 61>
+                    <td align="center" width="61">
                         Event Coincidence
                     </td>
-                    <td align="center" width = 80>
+                    <td align="center" width="80">
                         Detector Coincidence
                     </td>
                 </tr>
@@ -64,7 +47,7 @@
                     <td align="center">
                         12
                     </td>
-                    <td align="center" >
+                    <td align="center">
                         3 (119 150 141)
                     </td>
                 </tr>
@@ -110,12 +93,18 @@
                 </table>
                </td>
                
-               <td valign = top  width = 301>
-               	We entered parameters for the event and got back the table on the left. These "candidates" satisfy our requirements for an event. What do you think we entered for the event coincidence level? What about<a HREF="javascript:glossary('dectector',350)"> detector</a> coincidence?<p>
+               <td valign="top" width="301">
+               	We entered parameters for the event and got back the table on the left. 
+               	These "candidates" satisfy our requirements for an event. What do you 
+               	think we entered for the event coincidence level? What about 
+               	<a href="javascript:glossary('dectector',350)"> detector</a> coincidence?<p>
 
-				The analysis software can only find <a HREF="javascript:glossary('pulse',350)">pulses</a> that match your parameter settings. You have to decide which of the candidates is an event-if any!<p>
+				The analysis software can only find 
+				<a href="javascript:glossary('pulse',350)">pulses</a> that match your parameter 
+				settings. You have to decide which of the candidates is an event-if any!<p>
 
-What will you do to make this decision? What does an event look like? How will you know when you are right?
+				What will you do to make this decision? What does an event look like? 
+				How will you know when you are right?
                	</td>
                </tr>
           		
@@ -125,14 +114,21 @@ What will you do to make this decision? What does an event look like? How will y
 						&nbsp
 					</td>
 					
-					<td colspan = 2 align=right>
-						Go back to the <a href="search.jsp?t=split&amp;f=analyze&amp;s=shower">analysis</a>
+					<td colspan = "2" align="right">
+						Go back to the <a href="index.jsp">analysis</a>
 					</td>
 					
 				</tr>
                </table>
-			
-		</center>
+               
+			</div>
+			<!-- end content -->	
+		
+			<div id="footer">
+			</div>
+		</div>
+		<!-- end container -->
 	</body>
 </html>
+
 

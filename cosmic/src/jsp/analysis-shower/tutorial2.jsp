@@ -1,54 +1,38 @@
-<html>
-	<head>
-		<title>
-			Tutorial Shower Study
-		</title>
-		<%@ include file="include/javascript.jsp" %>
+<%@ taglib prefix="elab" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ page errorPage="../include/errorpage.jsp" %>
+<%@ include file="../include/elab.jsp" %>
+<%@ include file="../login/login-required.jsp" %>
 
-        <!-- include css style file -->
-        <%@ include file="include/style.css" %>
-        <!-- header/navigation -->
-        <%
-        //be sure to set this before including the navbar
-        String headerType = "Library";
-        %>
-        <%@ include file="include/navbar_common.jsp" %>
-    </head>
-    
-    <body>
-		<p>
-		<p>
-			<!--
-<center>
-				You can:&nbsp
-						 <b>1) </b> Find some help on this page &nbsp
-						<b>2)</b> <a href="javascript:openPopup('displayPoster.jsp?type=poster&amp;posterName=adler_flux.data','Possible Particle Decays', 700, 510);">View</a> a poster created using this study&nbsp
-						<b>3)</b> <a href="javascript:openPopup('tryit_flux.html','TryIt',510,600);">Try it</a>: Step-by-Step Instructions
-			</center>		
--->	
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Shower study tutorial</title>
+		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/one-column-wide.css"/>
+		<script type="text/javascript" src="../include/elab.js"></script>
+	</head>
+	
+	<body id="shower-tutorial-2" class="data, tutorial">
+		<!-- entire page container -->
+		<div id="container">
+		
+			
+			<div id="content">
 		<center>	
-			<p>
-				<table width = 650 cellpadding =8>
-				<tr>
-					<td colspan = 2>
-						<center>
-							<font color="#0a5ca6" size=+3>
-								<b>
-	 								Shower Study
-	 							</b>
-	 						</font>
-	 					</center>
-	 				</td>
-	 			</tr>
+<h1>Shower Study</h1>
 				
-				
+				<table width="650" cellpadding="8">
 				<tr>
-		 			<td width = 321 valign = top>
-		 				<img src="graphics/shower.png" height= 350 width = 350 alt="">
+		 			<td width="321" valign="top">
+		 				<img src="../graphics/shower.png" height="350" width="350" alt="">
 					</td>
 					
-					<td width = 321 valign = top>
-						The plot shows only three of the 12 <a HREF="javascript:glossary('pulse',350)">pulses</a>. How did we know that there were 12? Take a look at the data table (you'll see a data table for each shower candidate that meets your input parameters): <p>
+					<td width="321" valign="top">
+						The plot shows only three of the 12 <a href="javascript:glossary('pulse',350)">pulses</a>.
+						 How did we know that there were 12? Take a look at the data table 
+						 (you'll see a data table for each shower candidate that meets your input parameters): <p>
 
 
 							<table cellspacing="0" cellpadding="2" border="0">
@@ -287,9 +271,10 @@
                 </tr>
                 </table>
                 			<p>
-                			You can see that the event fired PMTs in three <a HREF="javascript:glossary('detector',350)">detectors</a>: 141, 119 and 150. <p>
+                			You can see that the event fired PMTs in three 
+                			<a href="javascript:glossary('detector',350)">detectors</a>: 141, 119 and 150. <p>
 
-Look at the amount of time between the <a HREF="javascript:glossary('pulse',350)">pulses</a> in detector 119. How much time elapsed between the first and last pulses in that detector?
+Look at the amount of time between the <a href="javascript:glossary('pulse',350)">pulses</a> in detector 119. How much time elapsed between the first and last pulses in that detector?
 
                 
                 
@@ -297,21 +282,21 @@ Look at the amount of time between the <a HREF="javascript:glossary('pulse',350)
 				</tr>
 				
 				<tr>
-					<td valign=top colspan =2 >
+					<td valign="top" colspan ="2" >
 					The plot can tell us that detector 141 fired first then 119 and 150 fired last. The table can give us much more information. Does this event candidate look like a shower to you?
 
-<p align = right>
-							Want to <a href="eshtutorial3.jsp">know more?</a>
+<p align = "right">
+							Want to <a href="tutorial3.jsp">know more?</a>
 					</td>
 				</tr>
 				
 				<tr>
 					
-					<td valign=top>
+					<td valign="top">
 
 					</td>
 					
-					<td  valign = top >
+					<td  valign = "top" >
 						
 					</td>
 				
@@ -320,7 +305,14 @@ Look at the amount of time between the <a HREF="javascript:glossary('pulse',350)
 				
 			</table>
 			
-		</center>
+
+			</div>
+			<!-- end content -->	
+		
+			<div id="footer">
+			</div>
+		</div>
+		<!-- end container -->
 	</body>
 </html>
 
