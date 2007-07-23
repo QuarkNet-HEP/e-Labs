@@ -14,12 +14,14 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 
 public class Popup extends TagSupport {
-    private String href, width, height, target;
+    private String href, width, height, target, now;
 
     public int doEndTag() throws JspException {
         try {
             JspWriter out = pageContext.getOut();
-            out.write("</a>");
+            if (!Boolean.valueOf(now).booleanValue()) {
+                out.write("</a>");
+            }
         }
         catch (Exception e) {
             throw new JspException("Exception in popup", e);
@@ -30,21 +32,35 @@ public class Popup extends TagSupport {
     public int doStartTag() throws JspException {
         try {
             JspWriter out = pageContext.getOut();
-            out.write("<a href=\"\" onclick=\"javascript:window.open('");
-            out.write(href);
-            out.write("', '");
-            out.write(target);
-            out.write("', 'width=");
-            out.write(width);
-            out.write(",height=");
-            out.write(height);
-            out.write("');\">");
+            out.write(now);
+            if (Boolean.valueOf(now).booleanValue()) {
+                out.write("<script language=\"JavaScript\">window.open('");
+                out.write(href);
+                out.write("', '");
+                out.write(target);
+                out.write("', 'width=");
+                out.write(width);
+                out.write(",height=");
+                out.write(height);
+                out.write("');</script>");
+            }
+            else {
+                out.write("<a href=\"\" onclick=\"javascript:window.open('");
+                out.write(href);
+                out.write("', '");
+                out.write(target);
+                out.write("', 'width=");
+                out.write(width);
+                out.write(",height=");
+                out.write(height);
+                out.write("');\">");
+            }
         }
         catch (Exception e) {
             throw new JspException("Exception in popup", e);
         }
         return EVAL_BODY_INCLUDE;
-    } 
+    }
 
     public String getHeight() {
         return height;
@@ -78,5 +94,11 @@ public class Popup extends TagSupport {
         this.target = target;
     }
 
-    
+    public String getNow() {
+        return now;
+    }
+
+    public void setNow(String now) {
+        this.now = now;
+    }
 }
