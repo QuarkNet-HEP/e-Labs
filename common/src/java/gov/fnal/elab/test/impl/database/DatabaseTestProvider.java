@@ -25,8 +25,10 @@ import java.util.Map;
 public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
 
     private Elab elab;
+    private Map tests;
 
     public DatabaseTestProvider() {
+        tests = new HashMap();
     }
 
     public void setElab(Elab elab) {
@@ -34,6 +36,11 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
     }
 
     public ElabTest getTest(String type) throws ElabException {
+        synchronized(tests) {
+            if (tests.containsKey(type)) {
+                return (ElabTest) tests.get(type);
+            }
+        }
         Statement s = null;
         Connection conn = null;
         try {
@@ -65,6 +72,9 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
                     }
                 }
                 test.addQuestion(question);
+            }
+            synchronized(tests) {
+                tests.put(type, test);
             }
             return test;
         }
