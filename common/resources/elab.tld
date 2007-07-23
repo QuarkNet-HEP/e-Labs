@@ -150,6 +150,18 @@ An optional image to be used for the clickable control. Defaults to "../images/T
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<attribute>
+			<name>now</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+If set to 'false' it will generate a link that, 
+when clicked, will open a popup window. Otherwise, 
+JavaScript code will be generated which will cause
+the popup to open when the page is rendered in the
+browser.
+			</description>
+		</attribute>
 	</tag>
 	<!--<tag-file>
 		<name>popup</name>
