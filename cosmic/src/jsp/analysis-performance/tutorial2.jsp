@@ -21,9 +21,13 @@
 			<table width="650">
 				<tr>
 					<td valign="top">
-						Imagine standing at an intersection and counting the number and type of vehicles that drive past in 20 minutes. <p>
+						Imagine standing at an intersection and counting the number and type of 
+						vehicles that drive past in 20 minutes. <p>
 
-						If you put these on a histogram, the x-axis would say "Chevrolet, Ford, Toyota, Saab, Volkswagen." The y-axis would have the numbers 0-14 and you could draw a bar to the proper height for each make of car (<a href="javascript:openHist()"><b>illustration</b></a>).<p>
+						If you put these on a histogram, the x-axis would say "Chevrolet, Ford, 
+						Toyota, Saab, Volkswagen." The y-axis would have the numbers 0-14 and 
+						you could draw a bar to the proper height for each make of car 
+						(<a href="javascript:openHist()"><b>illustration</b></a>).<p>
 					</td>
 					
 					<td valign="top">
@@ -105,11 +109,24 @@
 						</td>
 				
 						<td valign="top">
-							Our histogram labels read "Time over Threshold (ns)" and "Frequency." Time over threshold, also called <a href="javascript:glossary('pulse_width',350)">pulse width</a>, indicates the length of time that the <a href="javascript:glossary('photomultiplier_tube',150)">photomultiplier tube</a> responded to the passage of the particle. The frequency indicates how often that particular length occurred in the data set.<p>
+							Our histogram labels read "Time over Threshold (ns)" and "Frequency." 
+							Time over threshold, also called 
+							<a href="javascript:glossary('pulse_width',350)">pulse width</a>, 
+							indicates the length of time that the 
+							<a href="javascript:glossary('photomultiplier_tube',150)">photomultiplier tube</a> 
+							responded to the passage of the particle. The frequency indicates how often 
+							that particular length occurred in the data set.<p>
 	
-							The question to consider is: "Do these measurements look right?" Go back to the automobile example. If you saw 18 Saabs and 1 Chevrolet would you believe it? Perhaps, if one collected the data in Sweden!<p>
+							The question to consider is: "Do these measurements look right?" Go back to 
+							the automobile example. If you saw 18 Saabs and 1 Chevrolet would you 
+							believe it? Perhaps, if one collected the data in Sweden!<p>
 
-							Your answer depends on what the<a href="javascript:glossary('detector',350)"> detector</a> usually sees. Is today's performance close to yesterday's? Does each of the four counters on one detector indicate the same measurement? Did everyone at the street corner see all of the cars or did one person see only Chevys? <p>
+							Your answer depends on what the 
+							<a href="javascript:glossary('detector',350)"> detector</a> 
+							usually sees. Is today's performance close to yesterday's? 
+							Does each of the four counters on one detector indicate the 
+							same measurement? Did everyone at the street corner see all of the 
+							cars or did one person see only Chevys? <p>
 						</td>
 					</tr>
 		
