@@ -41,7 +41,7 @@
 							target="Possible Particle Decays" width="700" height="510">View</e:popup> 
 							a poster created using this study
 						</li>
-						<li><a href="javascript:openPopup('tryit_flux.html','TryIt',510,600); ">Try it</a>: 
+						<li><a href="javascript:openPopup('tryit.html','TryIt',510,600); ">Try it</a>: 
 						Step-by-Step Instructions</li>
 			</center>			
 	
