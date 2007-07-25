@@ -327,22 +327,7 @@ public static boolean setMeta(JspWriter out, String filename, java.util.List met
   *                     <code>false</code> if the entry already exists in the Catalog.
   */
 public static boolean addRC(String lfn, String pfn) throws ElabException{
-    String pool = "local";
-    try {
-        ReplicaCatalog rc = ReplicaFactory.loadInstance();
-        int c = rc.insert(lfn, pfn, pool);
-        rc.close();
-
-        if (c == 1) {
-            return true;
-        }
-        else {
-            return false;
-        } 
-    }
-    catch (Exception e) {
-        throw new ElabException("in addrc", e);
-    } 
+    return true;
 }
 %>
 
@@ -360,25 +345,7 @@ public static boolean addRC(String lfn, String pfn) throws ElabException{
   */
 public static boolean addRC(JspWriter out, String lfn, String pfn)
     throws ElabException {
-    String pool = "local";
-    boolean entryAdded = false;
-    try {
-        ReplicaCatalog rc = ReplicaFactory.loadInstance();
-        int c = rc.insert(lfn, pfn, pool);
-        rc.close();
-
-        if (c == 1) {
-            entryAdded = true;
-        }
-        else {
-            out.println("<CENTER><FONT color= red>Error: RC entry for " + lfn + " already exists.</FONT><BR><BR></CENTER>");
-        } 
-    }
-    catch (Exception e) {
-        throw new ElabException("adding RC entry", e);
-    } 
-
-    return entryAdded;
+    return true;
 }
 %>
 <%!
