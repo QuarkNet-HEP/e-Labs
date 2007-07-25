@@ -11,13 +11,16 @@ public class AnalysisParameterTools {
         StringBuffer db = new StringBuffer();
         for (int i = 0; i < rawData.length; i++) {
             String s = rawData[i];
-            String detectorID = s.substring(0, s.indexOf("."));
-            db.append(detectorID);
+            db.append(getDetectorId(s));
             if (i < rawData.length - 1) {
                 db.append(' ');
             }
         }
         return db.toString();
+    }
+    
+    public static String getDetectorId(String rawData) {
+        return rawData.substring(0, rawData.indexOf("."));
     }
 
     public static List getThresholdFiles(String[] rawData) {
