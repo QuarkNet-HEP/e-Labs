@@ -23,16 +23,16 @@ h1 {
 	margin-left: 10px;
 }
 
-.library #center ul {
+.library .tab-contents ul {
 	padding-left: 10px;
 	padding-top: 6px;
 }
 
-.library #center ul ul ul li {
+.library .tab-contents  ul ul ul li {
 	font-weight: normal;
 }
 
-.library #center li {
+.library .tab-contents li {
 	list-style-type: none;
 	font-weight: bold;
 	padding-top: 6px;
