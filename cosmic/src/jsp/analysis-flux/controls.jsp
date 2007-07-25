@@ -9,27 +9,25 @@
 		<p>Click <strong>Analyze</strong> to use the default parameters. 
 		Control the analysis by expanding the options below.</p>
 		<p>
-			<elab:tr name="Quarknet.Cosmic::PerformanceStudyNoThresh">
-				<elab:vswitch revert="true">
-					<elab:visible>
-						<strong>Analysis Controls</strong> 
-					</elab:visible>
-					<elab:hidden>
-						<strong>Analysis Controls</strong>
-						<table>
-							<tr>
-								<td class="form-label">
-									<elab:trlabel for="singlechannel_channel" name="Channel Number">Channel Number:</elab:trlabel>
-								</td>
-								<td class="form-control">
-									<elab:trselect name="singlechannel_channel" labelList="1, 2, 3, 4" 
-										valueList="1, 2, 3, 4" default="1"/>
-								</td>
-							</tr>
-						</table>
-					</elab:hidden>
-				</elab:vswitch>
-			</elab:tr>
+			<elab:vswitch revert="true">
+				<elab:visible>
+					<strong>Analysis Controls</strong> 
+				</elab:visible>
+				<elab:hidden>
+					<strong>Analysis Controls</strong>
+					<table>
+						<tr>
+							<td class="form-label">
+								<elab:trlabel for="singlechannel_channel" name="Channel Number">Channel Number:</elab:trlabel>
+							</td>
+							<td class="form-control">
+								<elab:trselect name="singlechannel_channel" labelList="1, 2, 3, 4" 
+									valueList="1, 2, 3, 4" default="1"/>
+							</td>
+						</tr>
+					</table>
+				</elab:hidden>
+			</elab:vswitch>
 		</p>
 		<p>
 			<elab:tr name="Quarknet.Cosmic::Plot">

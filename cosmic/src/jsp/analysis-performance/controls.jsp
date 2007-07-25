@@ -9,27 +9,25 @@
 		<p>Click <strong>Analyze</strong> to use the default parameters. 
 		Control the analysis by expanding the options below.</p>
 		<p>
-			<e:tr name="Quarknet.Cosmic::PerformanceStudyNoThresh">
-				<e:vswitch revert="true">
-					<e:visible>
-						<strong>Analysis Controls</strong> 
-					</e:visible>
-					<e:hidden>
-						<strong>Analysis Controls</strong>
-						<table>
-							<tr>
-								<td class="form-label">
-									<e:trlabel for="freq_binValue" name="Bin Width">Bin width (ns):</e:trlabel>
-								</td>
-								<td class="form-control">
-									<e:trinput type="text" name="freq_binValue" size="8" default="10"
-										onError="Use either a positive number or an expression (e.g. 60*60)"/>
-								</td>
-							</tr>
-						</table>
-					</e:hidden>
-				</e:vswitch>
-			</e:tr>
+			<e:vswitch revert="true">
+				<e:visible>
+					<strong>Analysis Controls</strong> 
+				</e:visible>
+				<e:hidden>
+					<strong>Analysis Controls</strong>
+					<table>
+						<tr>
+							<td class="form-label">
+								<e:trlabel for="freq_binValue" name="Bin Width">Bin width (ns):</e:trlabel>
+							</td>
+							<td class="form-control">
+								<e:trinput type="text" name="freq_binValue" size="8" default="10"
+									onError="Use either a positive number or an expression (e.g. 60*60)"/>
+							</td>
+						</tr>
+					</table>
+				</e:hidden>
+			</e:vswitch>
 		</p>
 		<p>
 			<e:tr name="Quarknet.Cosmic::Plot">

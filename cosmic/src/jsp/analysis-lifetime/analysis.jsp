@@ -46,7 +46,7 @@
 	<e:trdefault name="sort_sortKey2" value="3"/>
 	
 	<e:ifAnalysisIsOk>
-		<jsp:include page="../analysis/start.jsp?continuation=../analysis-lifetime/output.jsp"/>
+		<jsp:include page="../analysis/start.jsp?continuation=../analysis-lifetime/output.jsp&onError=../analysis-performance/analysis.jsp"/>
 	</e:ifAnalysisIsOk>
 	<e:ifAnalysisIsNotOk>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
