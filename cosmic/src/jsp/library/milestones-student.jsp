@@ -2,7 +2,7 @@
 
 <table width="794" cellpadding="4">
 	<tr>
-		<td><font face="ARIAL" size="+1"><b>Click on <img border="0" src="../../graphics/ref.gif"> for
+		<td><font face="ARIAL" size="+1"><b>Click on <img border="0" src="../graphics/ref.gif"> for
 		references to help you meet each milestone.</b></font></td>
 	</tr>
 </table>
