@@ -3,6 +3,8 @@
  */
 package gov.fnal.elab.analysis;
 
+import java.util.Map;
+
 /**
  * Encapsulates information about the execution of an analysis. An
  * {@link AnalysisExecutor} would typically return a specific
@@ -117,6 +119,11 @@ public interface AnalysisRun {
      * Retrieves the value of a custom attribute that was set on this object
      */
     Object getAttribute(String name);
+    
+    /**
+     * Make JSP happy
+     */
+    Map getAttributes();
 
     /**
      * Returns the analysis that this run is executing.

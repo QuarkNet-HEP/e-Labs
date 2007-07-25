@@ -7,6 +7,7 @@ import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
 import gov.fnal.elab.vds.ElabTransformation;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,6 +85,10 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
                 attributes = new HashMap();
             }
             attributes.put(name, value);
+        }
+        
+        public Map getAttributes() {
+            return Collections.unmodifiableMap(attributes);
         }
 
         public ElabAnalysis getAnalysis() {
