@@ -199,7 +199,7 @@ public class StructuredResultSetDisplayer {
         out.write("\">");
         out.write(DAY_FORMAT.format(file.getDate()));
         out.write("</a>");
-        out.write("<a href=\"../data/addComment.jsp?filename=");
+        out.write("<a href=\"../jsp/add-comments.jsp?fileName=");
         out.write(file.getLFN());
         out.write("\"><img src=\"../graphics/balloon_talk_gray.gif\"/></a>");
         if (file.getStacked() != null) {
