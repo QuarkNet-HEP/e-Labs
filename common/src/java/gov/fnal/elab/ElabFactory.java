@@ -143,6 +143,7 @@ public class ElabFactory {
             impl = "gov.fnal.elab.analysis.BeanWrapper";
         }
 
+        setVDSHome(elab);
         ElabAnalysis analysis = (ElabAnalysis) newInstance(elab, "analysis",
                 impl);
         if (param != null) {

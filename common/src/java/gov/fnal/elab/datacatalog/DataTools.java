@@ -84,7 +84,7 @@ public class DataTools {
      */
     public static StructuredResultSet organizeSearchResults(ResultSet rs) {
         Date startDate = null, endDate = null;
-        
+
         StructuredResultSet srs = new StructuredResultSet();
         srs.setDataFileCount(rs.size());
         Iterator i = rs.iterator();
@@ -115,20 +115,19 @@ public class DataTools {
                 date = new Month(startdate);
                 school.addDay(date);
             }
-            
+
             File file = new File(e.getLFN());
             file.setStartDate((Timestamp) data[STARTDATE]);
             file.setEndDate((Timestamp) data[ENDDATE]);
-            
+
             if (startDate == null || startDate.after(file.getStartDate())) {
                 startDate = file.getStartDate();
             }
-            
+
             if (endDate == null || endDate.before(file.getEndDate())) {
                 endDate = file.getEndDate();
             }
-            
-            
+
             if (Boolean.TRUE.equals(data[BLESSED])) {
                 file.setBlessed(true);
                 school.incBlessed();
@@ -317,7 +316,7 @@ public class DataTools {
             DateFormat.getDateTimeInstance(), DF0,
             DateFormat.getDateInstance(), DateFormat.getTimeInstance() };
 
-    protected static Object coerce(String type, String value) {
+    protected static Object coerce(String type, String value, String name) {
         try {
             if (type.equals("string")) {
                 return value;
@@ -351,7 +350,11 @@ public class DataTools {
             }
         }
         catch (Exception e) {
-            throw new IllegalArgumentException(value + ": " + e.getMessage());
+            if (e.getClass().equals(IllegalArgumentException.class)) {
+                throw (IllegalArgumentException) e;
+            }
+            throw new IllegalArgumentException("Could not convert " + name + " = " + value
+                    + " to " + type + ": " + e.getMessage());
         }
     }
 
@@ -392,7 +395,7 @@ public class DataTools {
             String type = m.substring(n + 1, t);
             String value = m.substring(t + 1);
 
-            tuples.put(name, coerce(type, value));
+            tuples.put(name, coerce(type, value, name));
         }
 
         return new CatalogEntry() {

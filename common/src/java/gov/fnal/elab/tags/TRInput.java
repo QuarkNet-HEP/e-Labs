@@ -12,6 +12,7 @@ package gov.fnal.elab.tags;
 import gov.fnal.elab.analysis.ElabAnalysis;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -34,13 +35,16 @@ public class TRInput extends TRControl {
                         writeOne(out, i.next());
                         out.write('\n');
                     }
+                    commitToAnalysis(new ArrayList((Collection) value));
                 }
                 else if (value != null) {
                     writeOne(out, value);
+                    commitToAnalysis(value);
                 }
             }
             else {
                 writeOne(out, value);
+                commitToAnalysis(value);
             }
         }
         catch (IOException e) {
@@ -72,6 +76,13 @@ public class TRInput extends TRControl {
         }
         else {
             return analysis.isParameterValid(getParamName());
+        }
+    }
+    
+    protected void commitToAnalysis(Object value) {
+        ElabAnalysis analysis = getAnalysis();
+        if (analysis != null) {
+            analysis.setParameter(getName(), value);
         }
     }
 }

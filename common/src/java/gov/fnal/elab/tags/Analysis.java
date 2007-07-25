@@ -46,7 +46,6 @@ public class Analysis extends TagSupport {
             if (name != null) {
                 pageContext.getRequest().setAttribute(name, analysis);
             }
-            
         }
         catch (JspException e) {
             throw e;
