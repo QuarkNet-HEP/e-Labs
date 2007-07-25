@@ -7,6 +7,7 @@
 <%@ page import="org.griphyn.vdl.annotation.*" %>
 <%@ page import="org.griphyn.common.util.Separator" %>
 <%@ page import="org.apache.regexp.*" %>
+<%@ include file="../login/login-required.jsp" %>
 <%@ include file="common.jsp" %>
 <html>
 <head>
@@ -63,9 +64,7 @@ dateString="";
            {
                          	            // Lookup entry to rc.data for this file
         	 boolean c_rc = false;
-	         ReplicaCatalog rc = ReplicaFactory.loadInstance();
-	         String pfn = rc.lookup(lfn, "local");
-	         rc.close();
+	         String pfn = user.getDir("data") + File.separator + lfn;
 
               if ( pfn==null || pfn.length()<1) 
              {

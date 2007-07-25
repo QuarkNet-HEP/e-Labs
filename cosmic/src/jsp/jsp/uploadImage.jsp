@@ -1,6 +1,7 @@
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="org.apache.commons.fileupload.*" %>
+<%@ include file="../login/login-required.jsp" %>
 <%@ include file="common.jsp" %>
 
 <%
@@ -13,15 +14,15 @@ boolean valid = true;       //false if there's any errors
 String comments = "";       //optional comments on file
 DiskFileUpload fu = new DiskFileUpload();
 
-if(fu.isMultipartContent(request)){
-    fu.setSizeMax(10*1024*1024);    //10MB max
+if (fu.isMultipartContent(request)) {
+    fu.setSizeMax(10 * 1024 * 1024);    //10MB max
 
     FileItem uploadedImage = null;  //to be set in the loop
 
     java.util.List fileItems = fu.parseRequest(request);
-    for(Iterator i=fileItems.iterator(); i.hasNext(); ){
-        FileItem fi = (FileItem)i.next();
-        if(fi.isFormField()){
+    for (Iterator i = fileItems.iterator(); i.hasNext();) {
+        FileItem fi = (FileItem) i.next();
+        if (fi.isFormField()) {
             String fieldName = fi.getFieldName();
             if(fieldName.equals("name")){
                 name = fi.getString();
@@ -36,7 +37,7 @@ if(fu.isMultipartContent(request)){
         }
         else{   //it's the uploaded file
             uploadedImage = fi;
-            origName = fi.getType();
+            origName = fi.getName();
             if(fi.getSize() <= 0){
                 ret = "Your image is 0 bytes in size. You must upload an image which contains some data!";
                 valid = false;
@@ -72,7 +73,7 @@ if(fu.isMultipartContent(request)){
             //t = getMetaKey(filename, "name");
             //isFile = (t == null) ? false : true;
         }
-        if(added == false){
+        if (added == false) {
             ret = "Too many users using the system at the moment. Please try your request again in a few seconds.";
             valid = false;
         }
@@ -81,8 +82,10 @@ if(fu.isMultipartContent(request)){
         added = addRC(thumbFilename, plotDir + thumbFilename);
 
         //write the file
-        if(valid){
-            File f = new File(plotDir + filename);
+        if (valid) {
+            File pdir = new File(plotDir);
+            pdir.mkdirs();
+            File f = new File(pdir, filename);
             uploadedImage.write(f);
 
             /*
@@ -193,7 +196,7 @@ if(fu.isMultipartContent(request)){
     else{
 %>
         You've successfully uploaded your image <i>
-        <a href="view.jsp?filename=<%=filename%>&type=plot&get=data"><%=name%></a></i>
+        <a href="../plots/view.jsp?filename=<%=filename%>&get=data"><%=name%></a></i>
 <%
     }
 }

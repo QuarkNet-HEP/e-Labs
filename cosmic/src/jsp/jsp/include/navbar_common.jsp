@@ -16,6 +16,10 @@
 				margin-left: auto;
 				margin-right: auto;
 			}
+			body > p > table, body > form > table {
+				margin-left: auto;
+				margin-right: auto;
+			}
 		</style>
 	</head>	
 	<body class="${headerType}">
