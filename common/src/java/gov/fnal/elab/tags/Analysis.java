@@ -42,6 +42,7 @@ public class Analysis extends TagSupport {
             analysis.setType(type);
             setAnalysisParams(analysis);
             pageContext.getRequest().setAttribute(ATTR_ANALYSIS, analysis);
+            pageContext.getRequest().setAttribute(TR.ATTR_TR, type);
             if (name != null) {
                 pageContext.getRequest().setAttribute(name, analysis);
             }

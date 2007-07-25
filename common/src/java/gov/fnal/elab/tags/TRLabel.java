@@ -33,7 +33,7 @@ public class TRLabel extends TagSupport {
         String tr = (String) pageContext.getRequest().getAttribute(TR.ATTR_TR);
         if (tr == null) {
             throw new JspException(
-                    "elab:trlabel must be a descendant of elab:tr");
+                    "elab:trlabel must be a descendant of e:tr or e:analysis");
         }
         JspWriter out = pageContext.getOut();
         try {
