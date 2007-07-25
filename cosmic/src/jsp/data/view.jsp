@@ -10,7 +10,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>View Plot</title>
+		<title>View Data</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
@@ -69,6 +69,7 @@
 				//seek to a specific time in the raw file
 				String hour = request.getParameter("h");
 				String dataLine = request.getParameter("line");
+				
 				if (hour != null) {
 					String minute = request.getParameter("m");
 					String second = request.getParameter("s");
@@ -108,7 +109,7 @@
 						}
 					}//while
 				}//if (hour != null)
-				else if (dataLine != null && Integer.parseInt(dataLine) > 0) {
+				else if (dataLine != null && !dataLine.equals("") && Integer.parseInt(dataLine) > 0) {
 					int line = Integer.parseInt(dataLine);
 					while ((str = br.readLine()) != null) {
 						count++;
