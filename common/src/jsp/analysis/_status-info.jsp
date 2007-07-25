@@ -39,6 +39,9 @@
 								%> 
 									<h1>The study failed to run properly</h1>
 									<h2><%= message %></h2>
+									<p>
+										Try running the <a href="<%= run.getAttribute("onError") + "?" + run.getAnalysis().getEncodedParameters() %>">analysis</a> with different parameters.
+									</p>
 								<%
 							}
 						%>

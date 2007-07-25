@@ -15,13 +15,21 @@
 	else {
 	    AnalysisRun run = elab.getAnalysisExecutor().start(analysis, elab, user);
 	    String cont = request.getParameter("continuation");
+	    if (cont == null) {
+	        throw new ElabJspException("No continuation specified");
+	    }
 	    if (cont.indexOf('?') != -1) {
 	        cont += "&id=" + run.getId();
 	    }
 	    else {
 	        cont += "?id=" + run.getId();
 	    }
+	    String err = request.getParameter("onError");
+	    if (err == null) {
+	        err = cont;
+	    }
 	    run.setAttribute("continuation", cont);
+	    run.setAttribute("onError", err);
 	    AnalysisManager.registerAnalysisRun(session, run);
 	    %> 
 	    	<jsp:include page="status.jsp">
