@@ -132,7 +132,7 @@
 				        <td align=center><%=chan3%></td>
 				        <td align=center><%=chan4%></td>
 				        <td bgcolor="#EFEFFF" align=center><a title="<%=title%>" href="../data/view.jsp?filename=<%=lfn%>&type=data&get=meta">View</a>&nbsp</td>
-				        <td bgcolor="#EFFEDE" align=center><a href="../jsp/rawanalyze-output.jsp?filename=<%=lfn%>">Statistics</a></td>
+				        <td bgcolor="#EFFEDE" align=center><a href="../analysis-raw-single/analysis.jsp?submit=true&filename=<%=lfn%>">Statistics</a></td>
 				        <c:if test="${rawData.size > 1}">
 				            <td align=center><input name="remfile" type="checkbox" value="<%=lfn%>"></td>
 				        </c:if>
@@ -181,7 +181,7 @@
 		        <font color="grey"><%=chan4total%></font>
 		    </td>
 		    <td colspan="2" align="center">
-	    	    <a href="../jsp/rawanalyze-multiple.jsp?<%=queryFilenames%>">Compare files</a>
+	    	    <a href="../analysis-raw-multiple/analysis.jsp?<%=queryFilenames%>">Compare files</a>
 		    </td>
 		    <c:if test="${rs.size > 1}">
 			    <!--  allow removal of files if analyzing more than one -->
