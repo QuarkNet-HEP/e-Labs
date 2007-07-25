@@ -40,6 +40,12 @@ function reference(name, W, H) {
 	window.open(url, "Reference", winPref);
 }
 
+function describe(tr, arg, label) {
+	var url="../jsp/dispDescription.jsp?tr=" + tr + "&arg=" + arg + "&label=" + label;
+    var winPref = "width=250,height=250,scrollbars=no,toolbar=no,menubar=no,status=no,resizable=yes,title=yes";
+	window.open(url, "Description", winPref);
+}
+
 
 function showRefLink(url, W, H) {
 	var height=500;
