@@ -1,6 +1,5 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
-<%@ page import="gov.fnal.elab.survey.Survey" %>
 
 <%
 	
