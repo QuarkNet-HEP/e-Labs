@@ -23,4 +23,5 @@
 		<%
 	}
 	request.setAttribute("headerIncluded", Boolean.TRUE);
+	out.flush();
 %>
