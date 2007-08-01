@@ -34,7 +34,7 @@
 		
 		<td>
 			<div id="center">
-				<h2>Abstract:</h1>
+				<h2>Abstract:</h2>
 				<p>
 					Students experience the environment of scientific collaborations 
 					in this series of investigations into high-energy cosmic rays. 
@@ -189,8 +189,8 @@
 						<a href="../test/test.jsp?type=pre&student_id=0">Pre</a>
 						- and <a href="../test/test.jsp?type=post&student_id=0">post</a>
 						- tests of content knowledge and student results for 
-						<a href="../test/results.jsp?type=pre">pre</a>
-						- and <a href="../test/results.jsp?type=post">post</a>- tests.
+						<a href="../test/results.jsp?type=pretest">pre</a>
+						- and <a href="../test/results.jsp?type=posttest">post</a>- tests.
 					</li>
 					<li>
 						e-Logbooks: Track and comment on student work. Review 
