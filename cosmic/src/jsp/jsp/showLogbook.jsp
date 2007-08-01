@@ -1,7 +1,7 @@
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
-<%@ include file="common.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
+<%@ include file="common.jsp" %>
 
 <link rel="stylesheet"  href="include/styletut.css" type="text/css">
 <html>
