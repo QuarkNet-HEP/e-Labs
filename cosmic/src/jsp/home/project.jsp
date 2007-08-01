@@ -38,51 +38,27 @@
 		<td>
 			<div id="center">
 				<p>
-					The Cosmic Ray e-Lab provides an opportunity for students to:
+					The Cosmic Ray e-Lab provides an online environment in which students experience 
+					the excitement of scientific collaboration in this series of investigations into 
+					high-energy cosmic rays. Schools with cosmic ray detectors upload data to a 
+					"virtual data grid" portal where ALL the data resides. This approach allows 
+					students to analyze a much larger body of data and to share analysis code. Also, 
+					it allows schools that do not have cosmic ray detectors to participate in research 
+					by analyzing shared data.
 				</p>
 				
-				<ul>
-					<li>
-						Do authentic research to access, process and publish data, report 
-						and share their results as online posters, and have online discussions 
-						with one another about their work. 
-					</li>
-					<li>
-						Experience the environment of scientific collaborations.
-					</li>
-					<li>
-						Possibly to make real contributions to a burgeoning scientific field.
-					</li>
-				</ul>
 
 				<p>
-					The project explores the potential of using the Internet and a new type of 
-					distributed computing called the Grid  in high school physics classes.
+					Students learn what cosmic rays are, where they come from and how they hit the Earth. 
+					While scientists understand cosmic rays with low to moderate energies, some cosmic 
+					rays have so much energy that scientists are not sure where they come from. A number 
+					of research projects are looking at this question. Students will have a chance to 
+					gain their own understanding of cosmic rays and may be fortunate enough to capture 
+					a rare highly-energetic cosmic ray shower on their classroom detector and analyze 
+					their results with this e-Lab.
 				</p>
 	
-				<p>
-					Schools with cosmic ray detectors upload data to a "virtual data grid" 
-					portal where ALL the data resides. This approach allows students to analyze 
-					a much larger body of data and to share analysis code. Also, it allows schools 
-					that do not have cosmic ray detectors to participate in research by analyzing 
-					shared data. 
-				</p>
-
-				<p>
-					The website provides a place for students to:
-				</p>
-				<ul>
-					<li>Organize their research.</li>
-					<li>Access and analyze the cosmic ray data from schools around the country.</li>
-					<li>Write a poster to summarize their research.</li>
-					<li>Communicate with other school groups doing similar research.</li>
-				</ul>
-		
-				<p>
-					We also plan two levels of  data analysis: the science-based interface and 
-					a more advanced interface for students interested in learning about and 
-					working with the Grid environment. <strong>STAY TUNED!</strong> 
-				</p>
+				<a href="/elab"><strong>Information common for all e-Labs</strong></a>
 			</div>
 		</td>
 		
