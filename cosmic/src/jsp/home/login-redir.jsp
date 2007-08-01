@@ -4,7 +4,7 @@
 <%
 	
 	if (user.isGuest()) {
-		response.sendRedirect("../home/splash.html");
+		response.sendRedirect("../home/first.jsp");
 	}
 	else if (user.isTeacher()) {
 		response.sendRedirect(response.encodeRedirectURL("../teacher"));
