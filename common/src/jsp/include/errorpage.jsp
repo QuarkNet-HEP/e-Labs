@@ -70,14 +70,13 @@
 	</tr>
 </table>
 
-<c:if test="${!headerIncluded}">
-				</div>
-				<!-- end content -->	
-			
-				<div id="footer">
-				</div>
+
 			</div>
-			<!-- end container -->
-		</body>
-	</html>
-</c:if>
+			<!-- end content -->	
+		
+			<div id="footer">
+			</div>
+		</div>
+		<!-- end container -->
+	</body>
+</html>
