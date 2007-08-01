@@ -32,6 +32,7 @@
 
 
 <%
+	out.flush();
 
 	String type =  request.getParameter("type"); //pre for pretest and post for posttest.
 	request.setAttribute("type", type);

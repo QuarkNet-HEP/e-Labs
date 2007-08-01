@@ -74,7 +74,7 @@
 					isNewGroup = false;
 				}
 
-				ElabGroup group = new ElabGroup();
+				ElabGroup group = new ElabGroup(elab);
 				newUser.setGroup(group);
 				group.setName(resName);
 				if (Boolean.valueOf(upload).booleanValue()) {
@@ -101,6 +101,7 @@
 			request.setAttribute("results", results);
 	    }
 	    catch (Exception e) {
+	   		e.printStackTrace();
 	        request.setAttribute("valid", Boolean.FALSE);
 	        request.setAttribute("error", e.getMessage());
 	    }
