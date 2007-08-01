@@ -143,7 +143,7 @@
  
 							</ul>
 							
-                          <%@ include file="../include/learner_outcomes.jsp" %>
+                          <%@ include file="learner-outcomes.jsp" %>
 					</ul>
 				
 				<h2>Research Question:</h2>
