@@ -134,23 +134,17 @@
 				<p>
 					Students will know and be able to: 
 				</p>
-				<ul>
-					<li>Content:
-						<ul>
-							<li>Identify components of primary, secondary and later generation cosmic rays.</li>
-							<li>List properties of cosmic rays revealed in the observations.</li>
-							<li>Describe the roles of the cosmic ray detector and the Internet.</li>
-						</ul>
-					</li>
-						
-					<li>Process:
-						<ul>
-							<li>Gather/use scientific data to identify properties of cosmic rays.</li>
-							<li>Demonstrate skills using Internet, web and virtual data techniques.</li>
-							<li>Work collaboratively with students in other research groups.</li>
-						</ul>
-					</li>
-				</ul>
+					<ul>
+						<li>Content and Investigation:
+							<ul>
+								<li>Identify components of primary, secondary and later generation cosmic rays. 
+								<li>Provide a complete list of properties of cosmic rays revealed in the observations.
+								<li>Design an investigation that asks a researchable question, can be answered from the cosmic ray data and provides an explanation about what you will learn about cosmic rays. 
+ 
+							</ul>
+							
+                          <%@ include file="../include/learner_outcomes.jsp" %>
+					</ul>
 				
 				<h2>Research Question:</h2>
 				<p>
