@@ -50,10 +50,10 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
             ResultSet rs = s
                     .executeQuery("SELECT question, question_no, id, response1, response2, response3, "
                             + "response4, response5, answer "
-                            + "FROM question WHERE question.project_id='"
+                            + "FROM question WHERE project_id='"
                             + elab.getId()
-                            + "' AND question.test_name='"
-                            + type + "' ORDER BY question.question_no;");
+                            + "' AND test_name='"
+                            + type + "test' ORDER BY question_no;");
             ElabTest test = new ElabTest(type);
             while (rs.next()) {
                 ElabTestQuestion question = new ElabTestQuestion();
@@ -100,7 +100,7 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
                             + "FROM question WHERE question.project_id='"
                             + elab.getId()
                             + "' AND question.test_name='"
-                            + type + "' AND id = '" + questionId + "';");
+                            + type + "test' AND id = '" + questionId + "';");
             if (rs.next()) {
                 ElabTestQuestion question = new ElabTestQuestion();
                 question.setText(rs.getString("question"));
