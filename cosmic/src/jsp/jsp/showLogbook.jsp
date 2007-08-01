@@ -2,7 +2,6 @@
 <%@ page import="java.util.*" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ include file="common.jsp" %>
-
 <link rel="stylesheet"  href="include/styletut.css" type="text/css">
 <html>
     <head>
@@ -63,7 +62,7 @@ if (groupName.startsWith("pd_")||groupName.startsWith("PD_")) {typeConstraint=" 
 <tr><td align="center"><IMG SRC="graphics/log_entry_yes.gif" border="0"><font  FACE="Comic Sans MS"> if entry exists</font></td></tr>
 <%
      HashMap keywordTracker = new HashMap();
-      query="select distinct keyword_id from log,research_group where research_group.name=\'"+groupName+"\' and research_group.id=log.research_group_id and project_id="+project_id+";";
+      query="select distinct keyword_id from log,research_group where research_group.name=\'"+groupName+"\' and research_group.id=log.research_group_id and project_id in (0,"+project_id+");";
       rs = s.executeQuery(query);
       while (rs.next()){
        keyword_id=rs.getString("keyword_id");
@@ -72,7 +71,7 @@ if (groupName.startsWith("pd_")||groupName.startsWith("PD_")) {typeConstraint=" 
 
 
 //provide access to all possible items to make logs on. 
-     query="select id,keyword,description,section,section_id from keyword where keyword.project_id="+project_id + typeConstraint + " order by section,section_id;";
+     query="select id,keyword,description,section,section_id from keyword where keyword.project_id in (0,"+project_id+") " + typeConstraint + " order by section,section_id;";
      String current_section="";
      rs = s.executeQuery(query);
      while (rs.next()){
@@ -140,7 +139,7 @@ if (groupName.startsWith("pd_")||groupName.startsWith("PD_")) {typeConstraint=" 
    if (!keyword.equals(""))
     {
      // first make sure a keyword was passed in the call
-     query="select id,keyword,description from keyword where keyword.project_id="+project_id + "and keyword=\'"+keyword+"\';";
+     query="select id,keyword,description from keyword where keyword.project_id in (0,"+project_id+") and keyword=\'"+keyword+"\';";
      rs = s.executeQuery(query);
      if (rs.next()){
        keyword_id=rs.getString("id");
@@ -154,7 +153,7 @@ if (groupName.startsWith("pd_")||groupName.startsWith("PD_")) {typeConstraint=" 
     %>
   <table width="600"><tr><td align="right"><IMG SRC="graphics/logbook_large.gif" align="middle" border="0"></td><td><H2><font FACE="Comic Sans MS">Logbook Entries for Group "<%=groupName%>"</font></H2></td></tr></table>
      <%
-     queryWhere="  where log.project_id=" + project_id + " and keyword.project_id=log.project_id and log.keyword_id=keyword.id and research_group_id="+research_group_id+" and role=\'user\'";
+     queryWhere="  where log.project_id=" + project_id + " and keyword.project_id in (0,"+project_id+") and log.keyword_id=keyword.id and research_group_id="+research_group_id+" and role=\'user\'";
 
 
      }
@@ -165,7 +164,7 @@ if (groupName.startsWith("pd_")||groupName.startsWith("PD_")) {typeConstraint=" 
   </table>
   
       <%
-     queryWhere="  where log.project_id=" + project_id + " and keyword.project_id=log.project_id and research_group_id="+research_group_id+" and log.keyword_id=keyword.id and keyword_id="+keyword_id+" and role=\'user\'";
+     queryWhere="  where log.project_id=" + project_id + " and keyword.project_id  in (0,"+project_id+") and research_group_id="+research_group_id+" and log.keyword_id=keyword.id and keyword_id="+keyword_id+" and role=\'user\'";
 
       }
       %>
@@ -186,6 +185,7 @@ if (groupName.startsWith("pd_")||groupName.startsWith("PD_")) {typeConstraint=" 
      querySort=" order by keyword.section,keyword.section_id,log_id DESC;";
      queryItems="select log.id as log_id, to_char(log.date_entered,'MM/DD/YYYY HH12:MI') as date_entered,log_text,keyword.description as description, keyword.id as data_keyword_id, keyword.keyword as keyword_name,keyword.section as section, keyword.section_id as section_id from log,keyword";
      query=queryItems+queryWhere+querySort;
+     //out.write(query);
      
      int itemCount=0;
      String current_keyword_id="";
@@ -223,7 +223,7 @@ if (groupName.startsWith("pd_")||groupName.startsWith("PD_")) {typeConstraint=" 
                   current_section=section;
                   }
           %>
-          <table cellpadding="5">
+          <table cellpadding="5" width="600">
           <% if (!sectionText.equals(""))
           {
           %>
