@@ -2,10 +2,11 @@
 <%@ page import="java.util.*" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ include file="common.jsp" %>
-<link rel="stylesheet"  href="include/styletut.css" type="text/css">
+
 <html>
     <head>
         <title>Enter Logbook</title>
+        <link rel="stylesheet"  href="include/styletut.css" type="text/css">
     </head>
     <body onLoad='self.focus();'>
             <center>
