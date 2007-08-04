@@ -22,8 +22,8 @@ public class ElabGroup {
 
     public static final String USER_SESSION_VARIABLE = "elab.user";
 
-    private String teacherId, role, userArea, userDirURL, userDir,
-            name, webapp, id, email;
+    private String teacherId, role, userArea, userDirURL, userDir, name,
+            webapp, id, email;
     private boolean firstTime, guest, survey;
     private Elab elab;
     private String year, city, state, school, teacher;
@@ -31,8 +31,13 @@ public class ElabGroup {
     private Map groups, students, attributes;
 
     private ElabUserManagementProvider provider;
-    
+
     public ElabGroup() {
+        new Exception("Don't use this constructor. Use ElabGroup(Elab)").printStackTrace();
+    }
+    
+    public ElabGroup(Elab elab) {
+        this(elab, elab.getUserManagementProvider());
     }
 
     public ElabGroup(Elab elab, ElabUserManagementProvider provider) {
@@ -117,9 +122,11 @@ public class ElabGroup {
 
     public void setUserArea(String userArea) {
         this.userArea = userArea;
-        this.userDirURL = elab.getProperties().getUsersDir()
-                + '/' + userArea;
-        this.userDir = elab.getServletContext().getRealPath(userDirURL);
+        if (elab != null) {
+            this.userDirURL = elab.getProperties().getUsersDir() + '/'
+                    + userArea;
+            this.userDir = elab.getServletContext().getRealPath(userDirURL);
+        }
     }
 
     /**
@@ -247,7 +254,7 @@ public class ElabGroup {
     public static boolean isUserLoggedIn(HttpSession session) {
         return getUser(session) != null;
     }
-    
+
     public String getId() {
         return id;
     }
@@ -299,7 +306,7 @@ public class ElabGroup {
     public void setTeacher(String teacher) {
         this.teacher = teacher;
     }
-    
+
     /**
      * Get this theacher's email
      */
@@ -310,7 +317,7 @@ public class ElabGroup {
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     /**
      * Retrieve a collection of <code>ElabGroup</code> objects containing
      * information about the groups associated with this teacher.
@@ -318,7 +325,7 @@ public class ElabGroup {
     public Collection getGroups() {
         return groups.values();
     }
-    
+
     public Collection getGroupNames() {
         return groups.keySet();
     }
@@ -326,36 +333,52 @@ public class ElabGroup {
     public void addGroup(ElabGroup group) {
         groups.put(group.getName(), group);
     }
-    
+
     public ElabGroup getGroup(String name) {
         return (ElabGroup) groups.get(name);
     }
-    
+
     public void addStudent(ElabStudent student) {
         students.put(student.getId(), student);
     }
-    
+
     public void removeStudent(ElabStudent student) {
         if (student == null) {
             return;
         }
         students.remove(student.getId());
     }
-    
+
     public ElabStudent getStudent(String id) {
         return (ElabStudent) students.get(id);
     }
-    
+
     public Collection getStudents() {
         return students.values();
     }
-    
+
     public void setAttribute(String name, Object value) {
         attributes.put(name, value);
     }
-    
+
     public Object getAttribute(String name) {
         return attributes.get(name);
+    }
+
+    public Elab getElab() {
+        return elab;
+    }
+
+    public void setElab(Elab elab) {
+        this.elab = elab;
+    }
+
+    public ElabUserManagementProvider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(ElabUserManagementProvider provider) {
+        this.provider = provider;
     }
 
     public String toString() {
