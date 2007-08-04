@@ -9,6 +9,7 @@ import gov.fnal.elab.usermanagement.AuthenticationException;
 import gov.fnal.elab.usermanagement.CosmicElabUserManagementProvider;
 import gov.fnal.elab.util.DatabaseConnectionManager;
 import gov.fnal.elab.util.ElabException;
+import gov.fnal.elab.util.ElabUtil;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -41,11 +42,11 @@ public class CosmicDatabaseUserManagementProvider extends
     }
 
     protected String addStudent(Statement s, ElabGroup et, ElabStudent student,
-            boolean createGroup) throws SQLException, ElabException {
-        String pwd = super.addStudent(s, et, student, createGroup);
+            boolean createGroup, Set groups) throws SQLException, ElabException {
+        String pwd = super.addStudent(s, et, student, createGroup, groups);
         ResultSet rs = s
                 .executeQuery("SELECT id FROM research_group WHERE name = '"
-                        + student.getGroup().getName() + "'");
+                        + ElabUtil.fixQuotes(student.getGroup().getName()) + "'");
         if (!rs.next()) {
             throw new ElabException("Error retrieving the student's group from the database.");
         }
