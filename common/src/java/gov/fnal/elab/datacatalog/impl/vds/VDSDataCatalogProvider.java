@@ -10,8 +10,8 @@
 package gov.fnal.elab.datacatalog.impl.vds;
 
 import gov.fnal.elab.analysis.ElabAnalysis;
-import gov.fnal.elab.analysis.VDSAnalysis;
-import gov.fnal.elab.analysis.VDSAnalysisExecutor;
+import gov.fnal.elab.analysis.impl.vds.VDSAnalysis;
+import gov.fnal.elab.analysis.impl.vds.VDSAnalysisExecutor;
 import gov.fnal.elab.datacatalog.DataCatalogProvider;
 import gov.fnal.elab.datacatalog.Tuple;
 import gov.fnal.elab.datacatalog.query.CatalogEntry;
