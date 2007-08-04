@@ -9,7 +9,6 @@
 	</head>
 		
 	<body>
-		<center>
 			You can:&nbsp
 			<ol>
 				<li> Find some help on this page</li>

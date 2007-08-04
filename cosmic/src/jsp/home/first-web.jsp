@@ -51,7 +51,7 @@
 							<img src="../graphics/nav.jpg">
 						</p>
 						<p>
-							<a target="map" href="../jsp/site-map-anno.jsp?display=static">Navigation Overview</a>
+							<a target="map" href="../site-index/site-map-anno.jsp?display=static">Navigation Overview</a>
 						</p>
 					</dd>
 					

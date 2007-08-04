@@ -5,5 +5,5 @@
 	<p><a href="tutorial.jsp">Tutorial on performance study</a></p>
 	<p><a href="instructions.jsp">Step-by-step instructions</a></p>
 	<p>States include provinces and countries. Enter the 
-	<e:popup href="../../show-states.jsp" target="states" width="400" height="700">abbreviation</e:popup></p>
+	<e:popup href="../jsp/showStates.jsp" target="states" width="400" height="700">abbreviation</e:popup></p>
 </div>

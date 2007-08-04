@@ -241,6 +241,6 @@ a.button {
 }
 
 #search-results td {
-	valign: middle;
+	vertical-align: middle;
 	text-align: center;
 }

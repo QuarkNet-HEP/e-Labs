@@ -49,13 +49,13 @@
 						    //single or multiple selection
 						StructuredResultSetDisplayer srsd = new StructuredResultSetDisplayer(){
 					    	private int count = 0;
-							public void displayMonthInfo(JspWriter out, Month month) throws IOException {
-							    super.displayMonthInfo(out, month);
+							public void displayMonthContents(JspWriter out, Month month) throws IOException {
 							    if (month.getFileCount() > 1) {
 							        out.write("<input type=\"checkbox\" id=\"cb" + count + "\" name=\"selectall\" onClick=\"selectAll(" + count + ", " + count + month.getFileCount() + 1 + ")\"/>");
 							        out.write("select all " + month.getFileCount() + " files");
 							        count++;
 							    }
+							    super.displayMonthContents(out, month);
 							}
 					    
 					    	public void displayFileContents(JspWriter out, File file)
