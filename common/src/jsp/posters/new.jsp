@@ -1,5 +1,6 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page buffer="none" %>
 <%@ page errorPage="../include/errorpage.jsp" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
@@ -126,7 +127,7 @@ if ("Make Poster".equals(reqType) || "View Poster".equals(reqType)) {
 		meta.add("title string "+ request.getParameter("WORDS:TITLE"));
 		meta.add("author string "+ author);
 		meta.add("date date " + dateString);
-		meta.add("name string " + dfile);
+		meta.add("name string " + posterName);
 		meta.add("plotURL string " + plotDirURL);
 		
 		DataCatalogProvider dcp = elab.getDataCatalogProvider();
@@ -274,7 +275,7 @@ pageContext.setAttribute("images", images);
                         }
                     }
                     pageContext.setAttribute("type", type);
-                    pageContext.setAttribute("value", val);
+                    pageContext.setAttribute("tvalue", val);
                     pageContext.setAttribute("name", name);
                     pageContext.setAttribute("plotsurl", user.getDirURL("plots"));
                     int previewIndex = 0;
@@ -284,7 +285,7 @@ pageContext.setAttribute("images", images);
                     		<c:choose>
                     			<c:when test="${type == 'PARA'}">
                     				<td>
-                    					<textarea name="${type}:${name}" rows="6" cols="80">${value}</textarea>
+                    					<textarea name="${type}:${name}" rows="6" cols="80">${tvalue}</textarea>
                     				</td>
                     			</c:when>
                     			<c:when test="${type == 'WORDS'}">
@@ -295,15 +296,15 @@ pageContext.setAttribute("images", images);
                     			</c:when>
                     			<c:when test="${type == 'FIG'}">
                     				<td>
-                    					<select size="1" name="${type}:${name}">
+                    					<select name="${type}:${name}">
                     						<option><%= selectDefault %></option>
                     						<c:forEach items="${images}" var="image">
                     							<c:choose>
-                    								<c:when test="${value == image.key}">
-                    									<option selected="true">${image.key}</option>
+                    								<c:when test="${tvalue == image.value}">
+                    									<option selected="true" value="${image.value}" >${image.key}</option>
 													</c:when>
 													<c:otherwise>
-														<option>${image.key}</option>
+														<option value="${image.value}">${image.key}</option>
 													</c:otherwise>
 												</c:choose>
                     						</c:forEach>
@@ -322,7 +323,6 @@ pageContext.setAttribute("images", images);
     	        <font size="-1">To see poster, don't block popups!</font>
 			</td>
 		</tr>
-            
 	</form>
 </table>
 </span></center>
@@ -353,7 +353,7 @@ if ("Make Poster".equals(reqType)) {
             pw.close();
             // Add metadata to LFN for data file
 
-            String posterURL = "../posters/display.jsp?name=" + dfile;
+            String posterURL = "../posters/display.jsp?name=" + posterName;
 			%> 
 				<e:popup href="<%= posterURL %>" target="poster" width="700" height="900" now="true"/>
 			<%

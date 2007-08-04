@@ -24,7 +24,7 @@
 			<c:set var="tuples" value="${poster.tupleMap}"/>
 			<tr>
 				<td>
-					<a href="../posters/display.jsp?name=${tuples.name}">${tuples.title}</a>
+					<e:popup href="../posters/display.jsp?name=${tuples.name}" target="poster" width="700" height="900">${tuples.title}</e:popup>
 				</td>
 				<td><e:format type="date" format="MMMMMMMMM dd, yyyy" value="${tuples.date}"/></td>
 				<td>${tuples.group}</td>

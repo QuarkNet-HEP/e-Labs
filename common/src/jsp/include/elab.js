@@ -40,6 +40,18 @@ function reference(name, W, H) {
 	window.open(url, "Reference", winPref);
 }
 
+function glossary(name, H) {
+	if (!H) {
+		H = 250;
+	}
+	while (name.indexOf(" ") > 0) {
+		name = name.replace(" ", "_");
+	}
+	var url = "../references/display.jsp?name=" + name + "&type=glossary";
+    var winPref = "width=300,height=" + H + ",scrollbars=no,toolbar=no,menubar=no,status=no,resizable=yes,title=yes";
+	window.open(url, "Glossary", winPref);
+}
+
 function describe(tr, arg, label) {
 	var url="../jsp/dispDescription.jsp?tr=" + tr + "&arg=" + arg + "&label=" + label;
     var winPref = "width=250,height=250,scrollbars=no,toolbar=no,menubar=no,status=no,resizable=yes,title=yes";

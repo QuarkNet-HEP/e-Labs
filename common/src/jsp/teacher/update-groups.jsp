@@ -35,7 +35,6 @@
 <h1>Update your groups</h1>
 <%
 	String groupName = request.getParameter("group");
-	String project = request.getParameter("project");
 	String ay = request.getParameter("ay");
 	String role = request.getParameter("role");
 	String survey = request.getParameter("survey");
@@ -46,7 +45,7 @@
 	String[] studentsToDelete = request.getParameterValues("deleteStudents");
 	
 	if ("Update Group Information".equals(submit)) {
-		if (groupName != null && project != null && ay != null && role != null 
+		if (groupName != null && ay != null && role != null 
 		        && survey != null) {
 		    if (passwd1 != null && !passwd1.equals(passwd2)) {
 				%>
@@ -79,6 +78,7 @@
 		if (groupName != null && !groupName.equals("Choose Group")) {
 			request.setAttribute("group", user.getGroup(groupName));
 		}
+		request.setAttribute("projects", elab.getUserManagementProvider().getProjectNames());
 	}
 
 %>

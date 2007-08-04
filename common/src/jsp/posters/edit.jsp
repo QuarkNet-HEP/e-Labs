@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page buffer="none" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 
@@ -59,7 +60,7 @@
 			<c:forEach items="${posters}" var="poster">
 				<tr>
 					<td>
-						<a href="../posters/new.jsp?posterName=${poster.tupleMap.name}">${poster.tupleMap.name}</a>
+						<a href="../posters/new.jsp?posterName=${poster.tupleMap.name}">${poster.tupleMap.title}</a>
 					</td>
 					<td>
 						${poster.tupleMap.name}

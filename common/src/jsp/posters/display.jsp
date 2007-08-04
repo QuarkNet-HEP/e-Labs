@@ -22,6 +22,7 @@
 	    throw new ElabJspException("The poster (" + dfile + ") was not found in the database.");
 	}
 	CatalogEntry entry = (CatalogEntry) rs.iterator().next();
+	dfile += ".data";
 	request.setAttribute("title", entry.getTupleValue("title"));
 %>
 

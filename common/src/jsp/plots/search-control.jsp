@@ -25,7 +25,7 @@
 	</p>
 	<p>
 		States include provinces and foreign countries. Enter the 
-		<e:popup href="../jsp/show-states.jsp" target="states" width="400" height="700">abbreviation</e:popup>
+		<e:popup href="../jsp/showStates.jsp" target="states" width="400" height="700">abbreviation</e:popup>
 	</p>
 	<p>
 		(Optional) limit search by creation date:

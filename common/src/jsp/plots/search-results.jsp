@@ -13,15 +13,16 @@
 	        out.write("<tr>\n");
 	        for (int c = 0; c < 4 && i.hasNext(); c++) {
 	            CatalogEntry e = (CatalogEntry) i.next();
+	            request.setAttribute("e", e);
 	            %>
 	            	<td class="plot-thumbnail">
-	            		<a href="view.jsp?filename=<%= e.getLFN() %>">
+	            		<a href="view.jsp?filename=${e.LFN}">
 		            		<img src="<%= user.getDirURL("plots") + "/" + e.getTupleValue("thumbnail") %>"/><br/>
 		            	</a>
-	            		<%= e.getTupleValue("name") %><br/>
-	            		Group: <%= e.getTupleValue("group") %><br/>
-	            		Created: <%= e.getTupleValue("creationdate") %><br/>
-	            		<a href="">View/Add Comments</a><br/>
+		            	${e.tupleMap.name}<br/>
+	            		Group: ${e.tupleMap.group}<br/>
+	            		Created: ${e.tupleMap.creationdate}<br/>
+	            		<a href="../jsp/add-comments.jsp?fileName=${e.LFN}&t=plot">View/Add Comments</a><br/>
 	            	</td>
 	            <%
 	        }

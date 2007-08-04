@@ -24,6 +24,7 @@
 		if (ts != null && ts.compareTo(DATE_WHEN_DVS_WERE_FIXED) > 0) {
 		    dvName = (String) entry.getTupleValue("dvname");
 		}
+				
 	}
 	request.setAttribute("study", study);
 	request.setAttribute("provenance", provenance);
