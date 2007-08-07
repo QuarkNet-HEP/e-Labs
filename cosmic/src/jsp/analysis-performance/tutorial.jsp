@@ -9,6 +9,7 @@
 	</head>
 		
 	<body>
+			<div id="instructionSteps">
 			You can:&nbsp
 			<ol>
 				<li> Find some help on this page</li>
@@ -22,7 +23,7 @@
 					Step-by-Step Instructions
 				</li>
 			</ol>
-		</center>
+			</div>
 	
 
 		<center>        

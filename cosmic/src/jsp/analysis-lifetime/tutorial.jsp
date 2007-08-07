@@ -8,7 +8,7 @@
 		
 	<body>
 			<p>
-			<center>
+			<div id="instructionSteps">
 				You can:
 				<ol>
 					<li>Find some help on this page</li>
@@ -21,7 +21,8 @@
 						<e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: 
 						Step-by-Step Instructions
 					</li>
-			</center>			
+					</ol>
+			</div>			
 	
 	<p>
 			<center>

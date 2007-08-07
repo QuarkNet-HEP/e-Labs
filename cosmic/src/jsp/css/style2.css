@@ -296,3 +296,12 @@ h2 + ul.simple {
 label {
 	margin-left: 4px;
 }
+
+#instructionSteps
+{
+width: 300px;
+text-align: left;
+margin-left: auto;
+margin-right: auto;
+
+}

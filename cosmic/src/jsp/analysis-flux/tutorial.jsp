@@ -33,7 +33,7 @@
 
 			<p>
 			<p>
-			<center>
+			<div id="instructionSteps">
 				You can:
 				<ol>
 						 <li> Find some help on this page</li>
@@ -43,7 +43,8 @@
 						</li>
 						<li><a href="javascript:openPopup('tryit.html','TryIt',510,600); ">Try it</a>: 
 						Step-by-Step Instructions</li>
-			</center>			
+							</ol>
+			</div>			
 	
 			<p>
 			<center>        
