@@ -125,7 +125,7 @@ a.button {
 }
 
 #nav a#nav2:hover {
-	color: white;
+	color: black;
 	background-color: #55a9b4;
 	border-top: #a7d2d8 1px solid;
 	border-left: #a7d2d8 1px solid;
@@ -370,4 +370,24 @@ p.search-result-bar {
 
 #view-plot-simple #content {
 	text-align: center;
+}
+
+.analysis-output #content {
+	text-align: center;
+}
+
+#analysis-table {
+	border: thin solid black;
+}
+
+#analysis-table th {
+	padding-left: 4px;
+	padding-right: 4px;
+	background-color: #c0c0c0;
+}
+
+#analysis-table td {
+	padding-left: 4px;
+	padding-right: 4px;
+	background-color: #e0e0e0;
 }

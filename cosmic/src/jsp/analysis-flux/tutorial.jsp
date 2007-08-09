@@ -14,7 +14,7 @@
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	
-	<body id="performance" class="data">
+	<body id="flux-tutorial" class="data, tutorial">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
@@ -41,7 +41,7 @@
 							target="Possible Particle Decays" width="700" height="510">View</e:popup> 
 							a poster created using this study
 						</li>
-						<li><a href="javascript:openPopup('tryit.html','TryIt',510,600); ">Try it</a>: 
+						<li><e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: 
 						Step-by-Step Instructions</li>
 							</ol>
 			</div>			

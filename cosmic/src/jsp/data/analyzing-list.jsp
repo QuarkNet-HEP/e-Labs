@@ -8,9 +8,10 @@
 <%
 	String[] f = (String[]) request.getParameterValues("f");
 	ResultSet rs = elab.getDataCatalogProvider().getEntries(f);
+	out.write(String.valueOf(f.length));
 %>
 <div id="analyzing-ist">
-<table colspace=4 border="0">
+<table colspace="4" border="0">
 	<tbody>
 		<tr>
 			<td align="center">You're analyzing...</td>
@@ -50,7 +51,7 @@
 			//Since we're using Java classes and don't know what class instance to call,
 			// some kind of common variable needs to be setup for this page to reference.
 			// Since we're listing raw data files, use the variable "rawData".
-			for (Iterator i=rs.iterator(); i.hasNext(); ){
+			for (Iterator i = rs.iterator(); i.hasNext(); ) {
 			    CatalogEntry e = (CatalogEntry) i.next();
 			    String lfn = e.getLFN();
 			

@@ -242,5 +242,9 @@ a.button {
 
 #search-results td {
 	vertical-align: middle;
-	text-align: center;
+	text-align: left;
+}
+
+#new-poster #content {
+	text-align: left;
 }

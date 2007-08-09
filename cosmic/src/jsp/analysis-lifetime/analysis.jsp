@@ -14,7 +14,7 @@
 		//also, this piece of code is ugly
 		String[] rawData = request.getParameterValues("rawData");
 		if(rawData != null) {
-			List thresholdData = AnalysisParameterTools.getThresholdFiles(rawData);
+			List thresholdData = AnalysisParameterTools.getThresholdFiles(elab, rawData);
 			String ids = AnalysisParameterTools.getDetectorIds(rawData);
 			List wd = new ArrayList();
 			for (int i = 0; i < rawData.length; i++) {
@@ -87,9 +87,7 @@
 						<a href="tutorial.jsp">Understand the graph</a>
 					</p>
 					
-					<jsp:include page="../data/analyzing-list.jsp">
-						<jsp:param name="f" value="${param.rawData}"/>
-					</jsp:include>
+					<jsp:include page="../data/analyzing-list.jsp"/>
 					
 					<p id="other-analyses">
 						Analyze the same files in 

@@ -118,7 +118,7 @@
 				<li>
 					<strong>View</strong>
 					<ul>
-						<li><a href="../analysis-show-data">Data Files</a></li>
+						<li><a href="../data/search.jsp">Data Files</a></li>
 						<li><a href="../plots/search.jsp">Plots</a></li>
 						<li><a href="../posters/search.jsp">Posters</a></li>
 					</ul>
@@ -126,9 +126,9 @@
 				<li>
 					<strong>Delete</strong>
 					<ul>
-						<li><a href="../data/">Data Files</a></li>
-						<li><a href="../plots/search.jsp">Plots</a></li>
-						<li><a href="../posters/search.jsp">Posters</a></li>
+						<li><a href="../data/delete.jsp">Data Files</a></li>
+						<li><a href="../plots/delete.jsp">Plots</a></li>
+						<li><a href="../posters/delete.jsp">Posters</a></li>
 					</ul>
 				</li>
 				<li>
@@ -141,7 +141,7 @@
 				<li><a href="makePoster.jsp">New Poster</a></li>
 				<li><a href="../posters/edit.jsp">Edit Posters</a></li>
 				<li><a href="../posters/search.jsp">View Posters</a></li>
-				<li><a href="../posters/search.jsp">Delete Posters</a></li>
+				<li><a href="../posters/delete.jsp">Delete Posters</a></li>
 				<li><a href="../plots/my-plots.jsp">View My Plots</a></li>
 			</ul>
 		</td>

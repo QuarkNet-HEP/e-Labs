@@ -81,7 +81,7 @@ Re: the upload progress stuff
 	String dataDir = elab.getProperties().getDataDir();
 	int channels[] = new int[4];
 
-	ArrayList entries = new ArrayList();  //for both the split name and the channel validity information
+	List splits = new ArrayList();  //for both the split name and the channel validity information
 
 	if (FileUpload.isMultipartContent(request)) {
 	    //BEGIN upload_progress_stuff
@@ -180,7 +180,6 @@ Re: the upload progress stuff
                     	        try {
                     	            entry = DataTools.buildCatalogEntry(currLFN, meta);
                     	            elab.getDataCatalogProvider().insert(entry);
-                    	            entries.add(entry);
                             	} 
                     	        catch (ElabException e) {
                             	    throw new ElabJspException("Error setting metadata: " + e.getMessage(), e);
@@ -193,10 +192,12 @@ Re: the upload progress stuff
             	            currLFN = temp[1].substring(temp[1].lastIndexOf('/') + 1);
                 	        if(temp[0].equals("[RAW]")) {
                     	        //don't write the raw datafile to rc.data - already written above
+                    	        rawName = currLFN;
 	                        }
-    	                    else if(temp[0].equals("[SPLIT]")){
+    	                    else if(temp[0].equals("[SPLIT]")) {
         	                    // Add split physical file name to array list used by ThresholdTimes.
             	                // we actually don't use that any more
+            	                splits.add(currLFN);
                             }
 
 	                        //metadata for both RAW and SPLIT files
@@ -226,7 +227,6 @@ Re: the upload progress stuff
     	                try {
     	                    entry = DataTools.buildCatalogEntry(currLFN, meta);
 							elab.getDataCatalogProvider().insert(entry);
-                    	    entries.add(entry);
 						}
 						catch (ElabException e) {
 							throw new ElabJspException("Error setting metadata: " + e.getMessage(), e);
@@ -237,9 +237,11 @@ Re: the upload progress stuff
     	            throw new ElabJspException("Error reading metadata file: " + f.getAbsolutePath() + ".meta");
 	            }
 
-				Iterator l = entries.iterator();
+				Iterator l = splits.iterator();
+				List entries = new ArrayList();
 				while (l.hasNext()) {
-				    CatalogEntry s = (CatalogEntry) l.next();
+				    CatalogEntry s = elab.getDataCatalogProvider().getEntry((String) l.next());
+				    entries.add(s);
 				    for (int k = 0; k < 4; k++) {
 				        channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).intValue();
 				    }
@@ -277,16 +279,16 @@ Re: the upload progress stuff
                 	<hr/>
                 	<h2>File Summary:</h2>
                 
-                	Your data was split into ${lfnssz} days spanning from:<br/>
+                	Your data was split into ${lfnssz} ${lfnssz == 1 ? 'day' : 'days'} spanning from:<br/>
                 	${entry.tupleMap.startdate} to ${entry.tupleMap.enddate}
                 	
                 	<table id="channels-table">
                 		<tr>
-                			<td></td>
-                			<td>Chan 1</td>
-                			<td>Chan 2</td>
-                			<td>Chan 3</td>
-                			<td>Chan 4</td>
+                			<th></th>
+                			<th>Chan 1</th>
+                			<th>Chan 2</th>
+                			<th>Chan 3</th>
+                			<th>Chan 4</th>
                 		</tr>
                 		<tr>
                 			<td>Total Events</td>

@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
-<%@ page errorPage="../include/errorpage.jsp" %>
+<%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
@@ -14,7 +14,7 @@
 		//also, this piece of code is ugly
 		String[] rawData = request.getParameterValues("rawData");
 		if(rawData != null) {
-			List thresholdData = AnalysisParameterTools.getThresholdFiles(rawData);
+			List thresholdData = AnalysisParameterTools.getThresholdFiles(elab, rawData);
 			List wd = new ArrayList();
 			for (int i = 0; i < rawData.length; i++) {
 			    wd.add(rawData[i] + ".wd");
@@ -23,7 +23,6 @@
 			
 			Collection channels = DataTools.getValidChannels(elab, rawData);
 			ElabAnalysis a = (ElabAnalysis) request.getAttribute("analysis");
-
 			//<trdefault> is equivalent to analysis.setParameterDefault()
 			//It indicates that these parameters are NOT USER CONTROLLED and
 			//should not be encoded in the param URLs for a subsequent run.
@@ -88,9 +87,7 @@
 						<a href="tutorial.jsp">Understand the graph</a>
 					</p>
 					
-					<jsp:include page="../data/analyzing-list.jsp">
-						<jsp:param name="f" value="${param.rawData}"/>
-					</jsp:include>
+					<jsp:include page="../data/analyzing-list.jsp"/>
 					
 					<p id="other-analyses">
 						Analyze the same files in 

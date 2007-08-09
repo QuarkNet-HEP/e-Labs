@@ -1,4 +1,4 @@
-<%@ taglib prefix="elab" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ page errorPage="../include/errorpage.jsp" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
@@ -17,7 +17,17 @@
 	<body id="shower-tutorial-2" class="data, tutorial">
 		<!-- entire page container -->
 		<div id="container">
-		
+			<div id="top">
+				<div id="header">
+					<%@ include file="../include/header.jsp" %>
+					<div id="nav">
+						<%@ include file="../include/nav.jsp" %>
+						<div id="subnav">
+							<%@ include file="../include/nav-data.jsp" %>
+						</div>
+					</div>
+				</div>
+			</div>
 			
 			<div id="content">
 		<center>	

@@ -1,6 +1,7 @@
 <%@ page import="gov.fnal.elab.cosmic.beans.Geometries" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
+<%@ include file="../login/upload-login-required.jsp" %>
 <%@ include file="common.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="geoEntry" scope="session" class="gov.fnal.elab.cosmic.beans.GeoEntryBean" />

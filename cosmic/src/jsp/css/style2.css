@@ -186,7 +186,7 @@ table#main {
 }
 
 .logogroup {
-	valign: center;
+	vertical-align: center;
 	height: 100%;
 	padding-right: 30px;
 }
@@ -297,11 +297,21 @@ label {
 	margin-left: 4px;
 }
 
-#instructionSteps
-{
-width: 300px;
-text-align: left;
-margin-left: auto;
-margin-right: auto;
+#deletion-results {
+	width: 790px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 8px;
+}
 
+#deletion-results td {
+	padding: 2px;
+}
+
+#deletion-results td.success {
+	background-color: #e0e0e0;
+}
+
+#deletion-results td.failure {
+	background-color: #ff8050;
 }

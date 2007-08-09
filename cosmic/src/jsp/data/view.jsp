@@ -1,9 +1,10 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page errorPage="../include/errorpage.jsp" %>
+<%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ page import="gov.fnal.elab.*" %>
+<%@ page import="gov.fnal.elab.cosmic.*" %>
 <%@ page import="java.io.*" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -39,12 +40,12 @@
 		<td id="center">
 <%
 	String filename = request.getParameter("filename");
-	if(filename == null){
+	if (filename == null) {
 	    throw new ElabJspException("Please choose a file to view");
 	}
 	String highlight = request.getParameter("highlight");
 
-	String pfn = elab.getProperties().getDataDir() + File.separator + filename;
+	String pfn = RawDataFileResolver.getDefault().resolve(elab, filename);
 	
 	%> 
 		<h2>${param.filename}</h2><br/>
