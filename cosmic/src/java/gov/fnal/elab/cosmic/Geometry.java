@@ -41,9 +41,9 @@ public class Geometry {
      */
     public Geometry(String dataDirectory, String detectorID) throws ElabException {
         orderedGeoEntries = new TreeMap();
-        geoFile = dataDirectory + detectorID + "/" + detectorID + ".geo";
+        geoFile = dataDirectory  + File.separator + detectorID + File.separator + detectorID + ".geo";
         localGeoFile = detectorID + ".geo";
-        geoDir = dataDirectory + detectorID;
+        geoDir = dataDirectory + File.separator + detectorID;
         this.detectorID = detectorID;
 
         try {
