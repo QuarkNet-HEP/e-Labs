@@ -3,10 +3,13 @@
 	if(filename == null){
 	    throw new ElabJspException("Please choose a file to view");
 	}
-
-	String pfn = user.getDir("plots") + File.separator + filename;
-	String url = user.getDirURL("plots") + '/' + filename;
+	
 	CatalogEntry entry = elab.getDataCatalogProvider().getEntry(filename);
+	ElabGroup plotUser = elab.getUserManagementProvider().getGroup((String) entry.getTupleValue("group"));
+
+	String pfn = plotUser.getDir("plots") + File.separator + filename;
+	String url = plotUser.getDirURL("plots") + '/' + filename;
+	
 	String title="", study = null, provenance = null, dvName = null;
 	if (entry != null) {
 	    study = (String) entry.getTupleValue("study");
@@ -16,7 +19,7 @@
 		if (ts != null && ts.compareTo(DATE_WHEN_PROVENANCE_WAS_FIXED) > 0) {
 		    provenance = (String) entry.getTupleValue("provenance");
 		    if (provenance != null) {
-		        provenance = user.getDirURL("plots") + '/' + provenance;
+		        provenance = plotUser.getDirURL("plots") + '/' + provenance;
 		    }
 		}
 		//Mar 24, 2005 11:00

@@ -41,8 +41,10 @@
 	if (type == null) {
 	    type = "poster";
 	}
-	String plotURL= user.getDirURL("plots");
-	File pfn = new File(user.getDir("posters"), dfile);
+	
+	ElabGroup posterUser = elab.getUserManagementProvider().getGroup((String) entry.getTupleValue("group"));
+	String plotURL= posterUser.getDirURL("plots");
+	File pfn = new File(posterUser.getDir("posters"), dfile);
 
 	HashMap tags = new HashMap();
 
@@ -133,17 +135,17 @@
 	template = template.replaceAll("%WORDS:SUBTITLE%","Not entered"); 
 	if ("paper".equals(type)) {
 		// replace src=" with src="+ path to plots (in user area).
-		template = template.replaceAll("src=\"","src=\""+plotURL); //really only matters for paper
+		template = template.replaceAll("src=\"","src=\"" + plotURL); //really only matters for paper
 		template = template.replaceAll("%WORDS:CAPTION1%",""); 
 		template = template.replaceAll("%WORDS:CAPTION2%",""); 
 		template = template.replaceAll("%WORDS:CAPTION3%",""); 
 		template = template.replaceAll("%WORDS:CAPTION4%",""); 
 		template = template.replaceAll("%WORDS:CAPTION5%",""); 
-		template = template.replaceAll(plotURL+"%FIG:FIGURE1%",""); 
-		template = template.replaceAll(plotURL+"%FIG:FIGURE2%",""); 
-		template = template.replaceAll(plotURL+"%FIG:FIGURE3%",""); 
-		template = template.replaceAll(plotURL+"%FIG:FIGURE4%",""); 
-		template = template.replaceAll(plotURL+"%FIG:FIGURE5%",""); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE1%",""); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE2%",""); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE3%",""); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE4%",""); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE5%",""); 
 	}
 
 	out.println(template);

@@ -1,8 +1,6 @@
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
 
-<%@ include file="../analysis/analysis-tools.jsp" %>
-
 <%
 	response.setHeader("Cache-Control", "no-cache");
 	String pid = request.getParameter("id");
@@ -32,8 +30,8 @@
 			
 			if (run != null) {
 			
-				String status = runStatusString(run);
-				String progress = runProgress(run);
+				String status = AnalysisTools.getStatusString(run);
+				String progress = String.valueOf(AnalysisTools.getProgress(run));
 			
 				statusb.append("&status" + id + "=" + status + "&progress" + id + "=" + progress);
 				statusb.append("&name" + id + "=" + run.getAnalysis().getType());
@@ -53,8 +51,8 @@
 			r = "&error=Invalid analysis: " + pid + "&";
 		}
 		else {
-			String status = runStatusString(run);
-			String progress = runProgress(run);
+			String status = AnalysisTools.getStatusString(run);
+			String progress = String.valueOf(AnalysisTools.getProgress(run));
 			
 			r = "&status=" + status + "&progress=" + progress + "&";
 		}

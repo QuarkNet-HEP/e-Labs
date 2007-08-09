@@ -19,7 +19,7 @@
 		<title>Make-Edit Posters</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/posters.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/one-column-wide.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	
@@ -253,7 +253,7 @@ pageContext.setAttribute("images", images);
            <table width="650">
                 <tr>
                 	<td valign="top" align="right">Poster Filename:<br>(e.g.,poster_lifetime)</td>
-                	<td valign="top"><e:trinput type="text" name="posterName"/></td>
+                	<td valign="top" align="left"><e:trinput type="text" name="posterName"/></td>
                 </tr>
       
 <%
@@ -284,18 +284,18 @@ pageContext.setAttribute("images", images);
                     		<td align="right" valign="top"><%= fixedName %></td>
                     		<c:choose>
                     			<c:when test="${type == 'PARA'}">
-                    				<td>
+                    				<td align="left">
                     					<textarea name="${type}:${name}" rows="6" cols="80">${tvalue}</textarea>
                     				</td>
                     			</c:when>
                     			<c:when test="${type == 'WORDS'}">
-                    				<td>
+                    				<td align="left">
                     					<input size="50" maxlength="1000" name="${type}:${name}"
                     						value="<%= val.replaceAll("\"", doubleQuote) %>"/>
                     				</td>
                     			</c:when>
                     			<c:when test="${type == 'FIG'}">
-                    				<td>
+                    				<td align="left">
                     					<select name="${type}:${name}">
                     						<option><%= selectDefault %></option>
                     						<c:forEach items="${images}" var="image">

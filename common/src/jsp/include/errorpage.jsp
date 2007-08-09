@@ -3,6 +3,7 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ page import="gov.fnal.elab.*" %>
+<%@ page import="gov.fnal.elab.util.*" %>
 
 <c:if test="${!headerIncluded}">
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -15,7 +16,7 @@
 			<script type="text/javascript" src="../include/elab.js"></script>
 		</head>
 		
-		<body id="search_default" class="data">
+		<body id="error-page" class="data">
 			<!-- entire page container -->
 			<div id="container">
 				<div id="top">
@@ -33,43 +34,44 @@
 	    exception.printStackTrace();
 	}
 %>
-<h1>An error has occurred during your request</h1>
-
-<table border="0" id="main">
-	<tr>
-		<% request.setAttribute("exception", exception); %>		
-		<% if (exception instanceof ElabJspException) { %>
-			<span class="error">${exception.message}</span>
-		<% } else { %>
-			<td id="center">
-				<h2>Request URL:</h2>
-				<pre>${request.requestURL}</pre>
-				<h2>Query String:</h2>
-				<pre>${request.queryString}</pre>
-				<h2>User:</h2>
-				<% ElabGroup user = ElabGroup.getUser(session); %>
-				<pre><%= user %></pre>
-				<% if (exception != null) { %>
-					<h2>Exception</h2>
-					<pre><%= exception.toString() %></pre>
-					<h2>Stack trace:</h2>
-					<pre><% exception.printStackTrace(new java.io.PrintWriter(out)); %></pre>
-					<% 
-						if(exception instanceof JspException) {
-						    Throwable root = ((JspException) exception).getRootCause();
-						    if (root != null) {
-							    %> <h2>Root cause:</h2>
-							       <pre> <%
-								root.printStackTrace(new java.io.PrintWriter(out));
-							    %> </pre> <%
-						    }
-						}
-				} %>
-			</td>
-		<% } %>
-	</tr>
-</table>
-
+<div id="error-page-body" style="width: 790px; text-align: left;">
+	<h1>An error has occurred during your request</h1>
+	
+	<table border="0" id="error-page-table" width="790px">
+		<tr>
+			<% request.setAttribute("exception", exception); %>		
+			<% if (exception instanceof ElabJspException) { %>
+				<span class="error">${exception.message}</span>
+			<% } else { %>
+				<td id="error-page-details" width="790px" style="text-align: left;">
+					<h2>Request URL:</h2>
+					<pre>${request.requestURL}</pre>
+					<h2>Query String:</h2>
+					<pre>${request.queryString}</pre>
+					<h2>User:</h2>
+					<% ElabGroup user = ElabGroup.getUser(session); %>
+					<pre><%= user %></pre>
+					<% if (exception != null) { %>
+						<h2>Exception</h2>
+						<pre><%= ElabUtil.stripHTML(exception.toString()) %></pre>
+						<h2>Stack trace:</h2>
+						<pre><% exception.printStackTrace(new java.io.PrintWriter(out)); %></pre>
+						<% 
+							if(exception instanceof JspException) {
+							    Throwable root = ((JspException) exception).getRootCause();
+							    if (root != null) {
+								    %> <h2>Root cause:</h2>
+								       <pre> <%
+									root.printStackTrace(new java.io.PrintWriter(out));
+								    %> </pre> <%
+							    }
+							}
+					} %>
+				</td>
+			<% } %>
+		</tr>
+	</table>
+</div>
 
 			</div>
 			<!-- end content -->	
