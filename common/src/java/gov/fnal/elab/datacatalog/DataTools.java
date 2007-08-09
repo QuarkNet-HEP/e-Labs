@@ -344,6 +344,9 @@ public class DataTools {
                 throw new IllegalArgumentException("Could not parse date: "
                         + value);
             }
+            else if (type.equals("boolean")) {
+                return Boolean.valueOf(value);
+            }
             else {
                 throw new IllegalArgumentException("cannot convert to type '"
                         + type + "'");

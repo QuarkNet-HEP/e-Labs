@@ -20,6 +20,7 @@ public class CachingDataCatalogProvider implements DataCatalogProvider {
 
     private String[] lastFiles;
     private ResultSet lastResultSet;
+    private boolean updating;
 
     public CachingDataCatalogProvider(DataCatalogProvider delegate) {
         this.delegate = delegate;
@@ -27,7 +28,7 @@ public class CachingDataCatalogProvider implements DataCatalogProvider {
 
     private ResultSet getCachedEntries(String[] files) throws ElabException {
         synchronized (this) {
-            if (Arrays.equals(files, lastFiles)) {
+            if (!updating && Arrays.equals(files, lastFiles)) {
                 return lastResultSet;
             }
         }
@@ -64,9 +65,41 @@ public class CachingDataCatalogProvider implements DataCatalogProvider {
     public ResultSet runQuery(QueryElement q) throws ElabException {
         return delegate.runQuery(q);
     }
+    
+    private void startUpdate() {
+        synchronized(this) {
+            updating = true;
+        }
+    }
+    
+    private void endUpdate() {
+        synchronized(this) {
+            lastFiles = null;
+            lastResultSet = null;
+            updating = false;
+        }
+    }
 
     public void insert(CatalogEntry entry) throws ElabException {
+        //there's a question of whether queries on a lfn should be allowed
+        //while its metadata is being updated, but that's probably something
+        //that the lower levels should enforce
+        //we only disable caching during updates
+        startUpdate();
         delegate.insert(entry);
+        endUpdate();
+    }
+    
+    public void delete(CatalogEntry entry) throws ElabException {
+        startUpdate();
+        delegate.delete(entry);
+        endUpdate();
+    }
+    
+    public void delete(String lfn) throws ElabException {
+        startUpdate();
+        delegate.delete(lfn);
+        endUpdate();
     }
 
     public void insertAnalysis(String name, ElabAnalysis analysis)

@@ -204,6 +204,34 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
             closeSchema(dbschema);
         }
     }
+    
+    public void delete(String lfn) throws ElabException {
+        delete(getEntry(lfn));
+    }
+
+    public void delete(CatalogEntry entry) throws ElabException {
+        int kind = Annotation.CLASS_FILENAME; // searching on lfn's
+
+        DatabaseSchema dbschema = openSchema();
+        Annotation annotation = (Annotation) dbschema;
+        try {
+            AnnotationSchema annotationschema = null;
+
+            annotationschema = (AnnotationSchema) annotation;
+            Iterator i = entry.getTupleMap().keySet().iterator();
+            while (i.hasNext()) {
+                annotationschema.deleteAnnotation(entry.getLFN(), null, kind,
+                        (String) i.next());
+            }
+        }
+        catch (Exception e) {
+            throw new ElabException(
+                    e.toString() + " getting LFNs and metadata", e);
+        }
+        finally {
+            closeSchema(dbschema);
+        }
+    }
 
     protected QueryTree buildQueryTree(Iterator i, int type) {
         QueryElement qe = (QueryElement) i.next();
@@ -415,7 +443,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
             ElabTransformation et = new ElabTransformation();
             et.loadDV(lfn);
             Derivation dv = et.getDV();
-            
+
             List l = dv.getPassList();
             Iterator i = l.iterator();
             while (i.hasNext()) {
@@ -430,7 +458,8 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
                         if (leaf instanceof Text) {
                             String content = ((Text) leaf).getContent();
                             if (content != null) {
-                                d.addLeaf(new Text(content.replaceAll("\\\\n", "\n")));
+                                d.addLeaf(new Text(content.replaceAll("\\\\n",
+                                        "\n")));
                             }
                             else {
                                 d.addLeaf(new Text());
@@ -444,7 +473,8 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
                 }
             }
             VDSAnalysis analysis = new VDSAnalysis();
-            analysis.setType(dv.getUsesspace() + "::" + dv.getUses(), et.getDV());
+            analysis.setType(dv.getUsesspace() + "::" + dv.getUses(), et
+                    .getDV());
             return analysis;
         }
         catch (Exception e) {

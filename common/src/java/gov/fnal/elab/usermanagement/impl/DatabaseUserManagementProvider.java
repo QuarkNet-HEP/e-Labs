@@ -127,6 +127,22 @@ public class DatabaseUserManagementProvider implements
             throw new AuthenticationException("Invalid username or password");
         }
 
+        return createUser(s, username, rs);
+    }
+    
+    private ElabGroup createUser(Statement s, String username, String projectId) throws SQLException, ElabException {
+        ResultSet rs;
+        rs = s.executeQuery("SELECT id, teacher_id, role, userarea, "
+                + "survey, first_time FROM research_group WHERE name='"
+                + ElabUtil.fixQuotes(username) + "';");
+        if (!rs.next()) {
+            throw new ElabException("Invalid username");
+        }
+
+        return createUser(s, username, rs);
+    }
+    
+    private ElabGroup createUser(Statement s, String username, ResultSet rs) throws SQLException {
         ElabGroup user = new ElabGroup(elab, this);
         user.setName(username);
         user.setId(rs.getString("id"));
@@ -140,6 +156,24 @@ public class DatabaseUserManagementProvider implements
         }
         addStudents(s, user);
         return user;
+    }
+    
+    public ElabGroup getGroup(String username) throws ElabException {
+        Statement s = null;
+        Connection conn = null;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            s = conn.createStatement();
+            return createUser(s, username, elab.getId());
+        }
+        catch (SQLException e) {
+            throw new ElabException("Database error: "
+                    + e.getMessage(), e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, s);
+        }
     }
 
     private void addStudents(Statement s, ElabGroup group) throws SQLException {

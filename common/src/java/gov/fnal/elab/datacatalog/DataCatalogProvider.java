@@ -46,6 +46,10 @@ public interface DataCatalogProvider {
      * file name, or <code>null</code> if no such LFN exists in the catalog.
      */
     CatalogEntry getEntry(String lfn) throws ElabException;
+    
+    void delete(String lfn) throws ElabException;
+    
+    void delete(CatalogEntry entry) throws ElabException;
 
     /**
      * Inserts an entry in the catalog

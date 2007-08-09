@@ -30,7 +30,7 @@ public class AnalysisManager {
      * Returns a {id -> run} map of analysis runs registered with the specified
      * session.
      */
-    protected static Map getAnalysisRuns(HttpSession session) {
+    public static Map getAnalysisRuns(HttpSession session) {
         Map a;
         synchronized (session) {
             a = (Map) session.getAttribute(SESSION_ANALYSES);

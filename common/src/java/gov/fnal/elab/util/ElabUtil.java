@@ -492,4 +492,25 @@ public class ElabUtil {
         return nd;
     }
 
+    public static String stripHTML(String text) {
+        StringBuffer sb = new StringBuffer();
+        boolean tag = false;
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (tag) {
+                if (c == '>') {
+                    tag = false;
+                }
+            }
+            else {
+                if (c == '<') {
+                    tag = true;
+                }
+                else {
+                    sb.append(c);
+                }
+            }
+        }
+        return sb.toString();
+    }
 }

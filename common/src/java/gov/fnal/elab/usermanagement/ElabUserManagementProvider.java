@@ -85,4 +85,6 @@ public interface ElabUserManagementProvider extends ElabProvider {
      * Returns <code>true</code> if a specific student belongs to the given group
      */
     boolean isStudentInGroup(ElabGroup group, String studentId) throws ElabException;
+    
+    ElabGroup getGroup(String name) throws ElabException;
 }

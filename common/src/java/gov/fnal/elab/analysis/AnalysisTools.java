@@ -13,7 +13,7 @@ import java.util.Map;
  * A class with some convenience methods related to analyses
  */
 public class AnalysisTools {
-    
+
     /**
      * Encode parameters to an analysis as URL parameters
      */
@@ -47,9 +47,9 @@ public class AnalysisTools {
                     "Oh my. UTF-8 is not supported on this platform.");
         }
     }
-    
-    protected static boolean encodeOne(StringBuffer sb, String name, Object value,
-            boolean first) throws UnsupportedEncodingException {
+
+    protected static boolean encodeOne(StringBuffer sb, String name,
+            Object value, boolean first) throws UnsupportedEncodingException {
         if (value != null) {
             if (!first) {
                 sb.append('&');
@@ -61,6 +61,38 @@ public class AnalysisTools {
         }
         else {
             return first;
+        }
+    }
+
+    public static String getStatusString(AnalysisRun run) {
+        switch (run.getStatus()) {
+            case AnalysisRun.STATUS_CANCELED:
+                return "Canceled";
+            case AnalysisRun.STATUS_RUNNING:
+                return "Running";
+            case AnalysisRun.STATUS_FAILED:
+                return "Failed";
+            case AnalysisRun.STATUS_COMPLETED:
+                return "Completed";
+            default:
+                return "Unknown";
+        }
+    }
+
+    public static double getProgress(AnalysisRun run) {
+        switch (run.getStatus()) {
+            case AnalysisRun.STATUS_COMPLETED:
+                return 1.0;
+            case AnalysisRun.STATUS_FAILED:
+                return 0.0;
+            case AnalysisRun.STATUS_RUNNING:
+                return run.getProgress();
+            case AnalysisRun.STATUS_CANCELED:
+                return 0.0;
+            case AnalysisRun.STATUS_NONE:
+                return 0.0;
+            default:
+                return 0.0;
         }
     }
 }
