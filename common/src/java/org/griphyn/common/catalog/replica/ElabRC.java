@@ -3,6 +3,8 @@
  */
 package org.griphyn.common.catalog.replica;
 
+import gov.fnal.elab.cosmic.RawDataFileResolver;
+
 import java.io.File;
 import java.util.AbstractSet;
 import java.util.Collection;
@@ -82,7 +84,7 @@ public class ElabRC implements ReplicaCatalog {
     }
     
     private String lfnToPfn(String lfn) {
-        File f = new File(getDataDir(), lfn);
+        File f = new File(RawDataFileResolver.getDefault().resolve(getDataDir(), lfn));
         if (f.exists()) {
             return f.getAbsolutePath();
         }
