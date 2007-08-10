@@ -3,7 +3,7 @@
  */
 package org.griphyn.common.catalog.replica;
 
-import gov.fnal.elab.cosmic.RawDataFileResolver;
+import gov.fnal.elab.RawDataFileResolver;
 
 import java.io.File;
 import java.util.AbstractSet;
