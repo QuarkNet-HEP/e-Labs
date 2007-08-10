@@ -6,7 +6,7 @@
 <%@ page import="java.text.*" %>
 
 <%
-	String[] f = (String[]) request.getParameterValues("f");
+	String[] f = (String[]) request.getParameterValues("rawData");
 	ResultSet rs = elab.getDataCatalogProvider().getEntries(f);
 	out.write(String.valueOf(f.length));
 %>
