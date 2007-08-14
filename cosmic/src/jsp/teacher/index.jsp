@@ -135,15 +135,17 @@
 					Students will know and be able to: 
 				</p>
 					<ul>
-						<li>Content and Investigation:
+						<li>
+							Content and Investigation:
 							<ul>
 								<li>Identify components of primary, secondary and later generation cosmic rays. 
 								<li>Provide a complete list of properties of cosmic rays revealed in the observations.
 								<li>Design an investigation that asks a researchable question, can be answered from the cosmic ray data and provides an explanation about what you will learn about cosmic rays. 
  
 							</ul>
+						</li>
 							
-                          <%@ include file="learner-outcomes.jsp" %>
+							<%@ include file="learner-outcomes.jsp" %>
 					</ul>
 				
 				<h2>Research Question:</h2>
