@@ -15,7 +15,7 @@ window.open(url,"graph","width=620,height=750,scrollbars=yes,toolbar=no,menubar=
    iFigure=fileName.indexOf("%FIG:FIGURE");
    if (iFigure==-1 )
    {
-   startHREF="<LI><A HREF=\"javascript:showFigure('view.jsp?type=plot&get=data&menu=no&filename="+fileName+"')";
+   startHREF="<LI><A HREF=\"javascript:showFigure('../view-simple.jsp?type=plot&get=data&filename="+fileName+"')";
    endHREF="</A>";
    quoteAngle="\">";
        code=startHREF+quoteAngle+linkText+ endHREF+": "+caption;
