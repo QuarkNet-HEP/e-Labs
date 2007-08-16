@@ -440,7 +440,7 @@ public class DatabaseUserManagementProvider implements
             s
                     .executeUpdate("insert into research_group_project(research_group_id, project_id) "
                             + "values((select id from research_group where name = '"
-                            + ElabUtil.fixQuotes(student.getName())
+                            + ElabUtil.fixQuotes(group.getName())
                             + "'), "
                             + elab.getId() + ")");
 
@@ -454,6 +454,7 @@ public class DatabaseUserManagementProvider implements
             f.mkdirs();
             f = new File(group.getDir("scratch"));
             f.mkdirs();
+            et.addGroup(group);
         }
         else {
             boolean found = false;
