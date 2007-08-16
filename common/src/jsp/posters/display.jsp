@@ -43,7 +43,7 @@
 	}
 	
 	ElabGroup posterUser = elab.getUserManagementProvider().getGroup((String) entry.getTupleValue("group"));
-	String plotURL= posterUser.getDirURL("plots");
+	String plotURL = posterUser.getDirURL("plots") + '/';
 	File pfn = new File(posterUser.getDir("posters"), dfile);
 
 	HashMap tags = new HashMap();
