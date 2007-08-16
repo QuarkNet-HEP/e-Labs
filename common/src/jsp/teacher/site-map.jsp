@@ -42,10 +42,10 @@
 					<li><a href="strategy.jsp">Teaching Strategies</a></li>
 					<li><a href="web-guide.jsp">Research Guidance</a></li>
 					<li><a href="standards.jsp">Alignment with Standards</a></li>
-					<li><a href="../test/test.jsp?type=pre&studentid=0">Pre</a>
-					- and <a href="../test/test.jsp?type=post&studentid=0">Post</a> Tests.</li>
-					<li>Student Results for <a href="../test/results.jsp?type=pre">Pre</a>
-					- and <a href="../test/results.jsp?type=post">Post</a>- tests.</li>
+					<li><a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
+					- and <a href="../test/test.jsp?type=postsurvey&studentid=0">Post</a> Tests.</li>
+					<li>Student Results for <a href="../test/results.jsp?type=presurvey">Pre</a>
+					- and <a href="../test/results.jsp?type=postsurvey">Post</a>- tests.</li>
 					<li><a href="showTeachers.jsp">Show Student Test Results for all Teachers</a></li>
 					<li><a href="registration.jsp">General Registration</a></li>
 					<li><a href="register-students.jsp">Student Research Group Registration</a></li>

@@ -6,12 +6,12 @@
 
 <div class="search-quick-links">
 	Show plots by:&nbsp; 
-	<e:quicksearch key="group" value="${user.name}"/>
-	<e:quicksearch key="teacher" value="<%= user.getTeacher() %>"/>
-	<e:quicksearch key="school" value="${user.school}"/>
-	<e:quicksearch key="city" value="${user.city}"/>
-	<e:quicksearch key="state" value="${user.state}"/>
-	<e:quicksearch key="all" value="" label="All"/>
+	<e:quicksearch key="group" value="${user.name}" suffix="&uploaded=${param.uploaded}"/>
+	<e:quicksearch key="teacher" value="<%= user.getTeacher() %>" suffix="&uploaded=${param.uploaded}"/>
+	<e:quicksearch key="school" value="${user.school}" suffix="&uploaded=${param.uploaded}"/>
+	<e:quicksearch key="city" value="${user.city}" suffix="&uploaded=${param.uploaded}"/>
+	<e:quicksearch key="state" value="${user.state}" suffix="&uploaded=${param.uploaded}"/>
+	<e:quicksearch key="all" value="" label="All" suffix="&uploaded=${param.uploaded}"/>
 </div>
 
 <p>or search plots by</p>
@@ -22,6 +22,7 @@
 					default="${param.key}"/>
 		<input name="value" size="40" maxlength="40" value="${param.value}"/>
 		<input type="submit" name="submit" value="Search Data"/>
+		<input type="hidden" name="uploaded" value="${param.uploaded}"/>
 	</p>
 	<p>
 		States include provinces and foreign countries. Enter the 
@@ -53,7 +54,15 @@
 		if (submit) {
 		    And and = new And();
 		    and.add(new Equals("project", elab.getName()));
-		    and.add(new Equals("type", "plot"));
+		    if ("true".equals(request.getParameter("uploaded"))) {
+		        Or or = new Or();
+		        or.add(new Equals("type", "plot"));
+		        or.add(new Equals("type", "uploadedimage"));
+		        and.add(or);
+		    }
+		    else {
+			    and.add(new Equals("type", "plot"));
+		    }
 			if (!"all".equals(key)) {
 			    and.add(new Equals(key, value));
 			}

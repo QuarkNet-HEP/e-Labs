@@ -1,4 +1,5 @@
 <%@ page import="java.util.*" %>
+<%@ include file="../login/login-required.jsp" %>
 <%@ include file="common.jsp" %>
 <html>
     <head>

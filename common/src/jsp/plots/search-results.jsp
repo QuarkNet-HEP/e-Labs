@@ -6,7 +6,7 @@
 
 <%
 	ResultSet rs = (ResultSet) request.getAttribute("searchResults");
-	if (rs != null) {
+	if (rs != null && !rs.isEmpty()) {
 	    out.write("<table id=\"plots\">\n");
 	    Iterator i = rs.iterator();
 	    while (i.hasNext()) {
@@ -17,7 +17,7 @@
 	            %>
 	            	<td class="plot-thumbnail">
 	            		<a href="view.jsp?filename=${e.LFN}">
-		            		<img src="<%= user.getDirURL("plots") + "/" + e.getTupleValue("thumbnail") %>"/><br/>
+		            		<img src="<%= user.getDirURL("plots") + "/" + e.getTupleValue("thumbnail") %>" width="150" height="150"/><br/>
 		            	</a>
 		            	${e.tupleMap.name}<br/>
 	            		Group: ${e.tupleMap.group}<br/>
@@ -29,5 +29,8 @@
 			out.write("</tr>\n");
 	    }
 	    out.write("</table>\n");
+	}
+	else {
+	    out.write("<h3>No results found</h3>");
 	}
 %>

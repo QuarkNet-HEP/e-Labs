@@ -10,7 +10,11 @@
 <!-- include css style file -->
 <%@ include file="include/style.css" %>
 <!-- header/navigation -->
+
+<%@ include file="../include/text-colorizer.jsp" %>
+
 <%
+
 String menu = request.getParameter("menu");
 String type = request.getParameter("type");
 if (menu==null) menu="yes";
