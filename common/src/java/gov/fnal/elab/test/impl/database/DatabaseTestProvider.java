@@ -13,6 +13,7 @@ import gov.fnal.elab.test.ElabTestQuestion;
 import gov.fnal.elab.test.ElabTestQuestionAnswer;
 import gov.fnal.elab.util.DatabaseConnectionManager;
 import gov.fnal.elab.util.ElabException;
+import gov.fnal.elab.util.ElabUtil;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -53,7 +54,7 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
                             + "FROM question WHERE project_id='"
                             + elab.getId()
                             + "' AND test_name='"
-                            + type + "test' ORDER BY question_no;");
+                            + ElabUtil.fixQuotes(type) + "' ORDER BY question_no;");
             ElabTest test = new ElabTest(type);
             while (rs.next()) {
                 ElabTestQuestion question = new ElabTestQuestion();
@@ -100,7 +101,7 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
                             + "FROM question WHERE question.project_id='"
                             + elab.getId()
                             + "' AND question.test_name='"
-                            + type + "test' AND id = '" + questionId + "';");
+                            + type + "' AND id = '" + questionId + "';");
             if (rs.next()) {
                 ElabTestQuestion question = new ElabTestQuestion();
                 question.setText(rs.getString("question"));
@@ -155,7 +156,7 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
                                     + answer + "');");
                 }
                 s.executeUpdate("INSERT INTO survey (project_id, student_id, "
-                        + type + "survey) VALUES (" + elab.getId() + ", "
+                        + type + ") VALUES (" + elab.getId() + ", "
                         + studentId + ", 't');");
                 conn.commit();
             }
@@ -224,7 +225,7 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
                     + "AND survey.project_id="
                     + elab.getId()
                     + " AND survey."
-                    + type + "survey='t'";
+                    + type + "='t'";
 
             ResultSet rs = s
                     .executeQuery("SELECT count(student_id) FROM survey WHERE project_id="
@@ -260,7 +261,7 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
                             + elab.getId() + " AND student_id = " + studentId
                             + ";");
             if (rs.next()) {
-                return rs.getBoolean(type + "survey");
+                return rs.getBoolean(type);
             }
             else {
                 return false;
@@ -287,7 +288,7 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
             while (i.hasNext()) {
                 ElabStudent student = (ElabStudent) i.next();
                 ResultSet rs = s.executeQuery("SELECT " + type
-                        + "survey FROM survey WHERE project_id = "
+                        + " FROM survey WHERE project_id = "
                         + elab.getId() + " AND student_id = " + student.getId()
                         + ";");
                 status.put(student, Boolean.valueOf(rs.getBoolean(1)));
@@ -327,9 +328,11 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
                                         + student.getId()
                                         + "' AND question_id = '"
                                         + question.getId() + "';");
-                        ElabTestQuestion q2 = new ElabTestQuestion(question);
-                        status.put(student, q2);
-                        q2.setCorrectAnswer(q2.getAnswer(rs.getInt("answer")));
+                        if (rs.next()) {
+                            ElabTestQuestion q2 = new ElabTestQuestion(question);
+                            status.put(student, q2);
+                            q2.setCorrectAnswer(q2.getAnswer(rs.getInt("answer")));
+                        }
                     }
                 }
             }
