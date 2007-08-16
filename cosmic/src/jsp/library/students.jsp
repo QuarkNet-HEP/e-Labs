@@ -34,8 +34,8 @@
 
 	<c:choose>
 		<c:when test="${user.guest}">
-			<font size="3" color="red">To ensure the privacy of our users, guests may not access this page. " +
-            " Please <a href="../login/login.jsp">log in</a> as a non-guest to access this page.</font>
+			<font size="3" color="red">To ensure the privacy of our users, guests may not access this page. 
+            Please <a href="../login/login.jsp">log in</a> as a non-guest to access this page.</font>
 		</c:when>
 		<c:otherwise>
 			<table cellpadding="10" cellspacing="10" border="1" align="center">

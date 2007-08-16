@@ -16,14 +16,8 @@
 <%
 // display set to "static" allows showing a site overview without a real menu
 String display = request.getParameter("display");
-if(display != null && display.equals("static")){
-%>
-<table width="100%" bgcolor="black" border="0"><tr><td><img src="graphics/sample_navbar.gif"></td></tr></table>
-<%
-}
-    else
-    {
-%>
+if(display == null || !display.equals("static")) {
+	%>
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
@@ -36,7 +30,7 @@ if(display != null && display.equals("static")){
 				</div>
 			</div>
 
-<%
+	<%
 }
 %>
 <div id="content">

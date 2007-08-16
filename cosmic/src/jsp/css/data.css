@@ -391,3 +391,7 @@ p.search-result-bar {
 	padding-right: 4px;
 	background-color: #e0e0e0;
 }
+
+.tutorial #content {
+	padding-top: 24px;
+}

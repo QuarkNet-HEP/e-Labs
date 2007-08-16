@@ -8,7 +8,7 @@
 	<area shape="poly" alt="" coords="144,148, 274,151, 264,104, 174,101, 144,148" href="research-basics.jsp">
 	<area shape="poly" alt="" coords="67,108, 97,104, 108,78, 134,77, 138,104, 155,107, 159,119, 140,124, 68,124, 66,110, 67,108" href="first.jsp">
 	<area shape="rect" ALT="" coords="714,78,772,122" href="../test/show-students.jsp?type=post">
-	<area shape="rect" alt="" coords="0,82,57,126" href="../test/show-students.jsp?type=pre">
+	<area shape="rect" alt="" coords="0,82,57,126" href="../test/show-students.jsp?type=presurvey">
 	<area shape="rect" alt="" coords="288,179,363,207" href="javascript:reference('cosmic rays')">
 	<area shape="rect" alt="" coords="284,229,355,272" href="javascript:reference('cosmic ray study')">
 	<area shape="rect" alt="" coords="403,236,465,270" href="javascript:reference('detector')">

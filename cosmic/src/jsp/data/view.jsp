@@ -46,8 +46,7 @@
 	String highlight = request.getParameter("highlight");
 
 	String pfn = RawDataFileResolver.getDefault().resolve(elab, filename);
-	
-	%> 
+%> 
 		<h2>${param.filename}</h2><br/>
 		<a href="../data/view-metadata.jsp?filename=${param.filename}">Show details (metadata)</a><br/>
 		<form method="get">

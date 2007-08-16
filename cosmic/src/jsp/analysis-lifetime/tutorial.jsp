@@ -1,5 +1,5 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
-<%@ page errorPage="../include/errorpage.jsp" %>
+<%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -30,22 +30,15 @@
 			
 			<div id="content">
 			
-			<p>
-			<div id="instructionSteps">
-				You can:
-				<ol>
-					<li>Find some help on this page</li>
-					<li>
-						<e:popup href="../posters/display.jsp?type=poster&amp;name=poster_decays.data" 
-							target="PossibleParticleDecays" width="700" height="510">View</e:popup> a poster 
-							created using this study
-					</li>
-					<li>
-						<e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: 
-						Step-by-Step Instructions
-					</li>
-					</ol>
-			</div>			
+			You can:
+				<strong>1)</strong> Find some help on this page
+				<strong>2)</strong> 
+					<e:popup href="../posters/display.jsp?type=poster&amp;name=poster_decays.data" 
+						target="PossibleParticleDecays" width="700" height="510">View</e:popup> a poster 
+					created using this study
+				<strong>3)</strong> 
+					<e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: 
+					Step-by-Step Instructions
 	
 	<p>
 			<center>

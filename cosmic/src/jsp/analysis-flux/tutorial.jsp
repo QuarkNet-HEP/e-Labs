@@ -1,5 +1,5 @@
 <%@ taglib prefix="elab" uri="http://www.i2u2.org/jsp/elabtl" %>
-<%@ page errorPage="../include/errorpage.jsp" %>
+<%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
@@ -31,20 +31,16 @@
 			
 			<div id="content">
 
-			<p>
-			<p>
-			<div id="instructionSteps">
-				You can:
-				<ol>
-						 <li> Find some help on this page</li>
-						<li><e:popup href="../posters/display.jsp?type=poster&name=adler_flux.data"
-							target="Possible Particle Decays" width="700" height="510">View</e:popup> 
-							a poster created using this study
-						</li>
-						<li><e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: 
-						Step-by-Step Instructions</li>
-							</ol>
-			</div>			
+			You can:
+				<strong>1)</strong> Find some help on this page
+				<strong>2)</strong>
+					<e:popup href="../posters/display.jsp?type=poster&name=adler_flux.data"
+						target="Possible Particle Decays" width="700" height="510">View</e:popup> 
+					a poster created using this study
+
+				<strong>3)</strong>
+					<e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: 
+					Step-by-Step Instructions
 	
 			<p>
 			<center>        

@@ -30,21 +30,15 @@
 			
 			<div id="content">
 			
-		You can:&nbsp
-
-			<ol>
-				<li> Find some help on this page</li>
-		 		<li>
-		 			<e:popup href="../posters/display.jsp?type=poster&amp;name=adlerperformance.data" 
-						target="PossibleParticleDecays" width="700" height="510">View</e:popup>
-						a poster created using this study&nbsp
-				</li>
-				<li>
-					<e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: 
-					Step-by-Step Instructions
-				</li>
-			</ol>
-			</div>
+		You can:
+			<strong>1)</strong> Find some help on this page
+			<strong>2)</strong>
+				<e:popup href="../posters/display.jsp?type=poster&amp;name=adlerperformance.data" 
+				target="PossibleParticleDecays" width="700" height="510">View</e:popup>
+				a poster created using this study&nbsp
+			<strong>3)</strong>
+				<e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: 
+				Step-by-Step Instructions
 	
 
 		<center>        

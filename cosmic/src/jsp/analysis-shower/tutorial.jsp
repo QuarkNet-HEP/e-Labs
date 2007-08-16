@@ -1,5 +1,5 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
-<%@ page errorPage="../include/errorpage.jsp" %>
+<%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

@@ -182,11 +182,11 @@
 						<a href="../assessment">Rubric</a> aligned to learner outcomes
 					</li>
 					<li>
-						<a href="../test/test.jsp?type=pre&student_id=0">Pre</a>
-						- and <a href="../test/test.jsp?type=post&student_id=0">post</a>
+						<a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
+						- and <a href="../test/test.jsp?type=postsurvey&studentid=0">post</a>
 						- tests of content knowledge and student results for 
-						<a href="../test/results.jsp?type=pre">pre</a>
-						- and <a href="../test/results.jsp?type=post">post</a>- tests.
+						<a href="../test/results.jsp?type=presurvey">pre</a>
+						- and <a href="../test/results.jsp?type=postsurvey">post</a>- tests.
 					</li>
 					<li>
 						e-Logbooks: Track and comment on student work. Review 

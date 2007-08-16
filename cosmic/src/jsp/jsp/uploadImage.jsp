@@ -98,6 +98,7 @@ if (fu.isMultipartContent(request)) {
             thumbImage.setFileName(plotDir + thumbFilename);
             thumbImage.writeImage(info);
             } catch(Exception e){
+                e.printStackTrace();
                 out.write("except: " + e + " " + e.getMessage());
             }
             */
@@ -110,7 +111,7 @@ if (fu.isMultipartContent(request)) {
                     plotDir+filename + " " + plotDir+thumbFilename + "'"};
             Process p = Runtime.getRuntime().exec(cmd);
             int ret_val = p.waitFor();
-            if(ret_val != 0){
+            if(ret_val != 0) {
                 out.write("wasn't able to create the thumbnail with: " + cmd[0] + cmd[1] + cmd[2]);
             }
             */
@@ -127,7 +128,12 @@ if (fu.isMultipartContent(request)) {
             meta.add("state string " + groupState);
             meta.add("year string " + groupYear);
             meta.add("project string " + eLab);
-            meta.add("thumbnail string " + filename);   //TODO: the way to really do this is to save a thumbnail
+            meta.add("filename string " + filename);
+            
+            //the reason for this is because the thumbnail does not get created
+            //meta.add("thumbnail string " + thumbFilename);
+            meta.add("thumbnail string " + filename);
+            
             comments = comments.replaceAll("\r\n?", "\\\\n");   //replace new lines from text box with "\n"
             meta.add("comments string " + comments);
             Date now = new Date();

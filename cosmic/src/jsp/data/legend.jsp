@@ -7,7 +7,7 @@
 			<dd>Stacked data</dd>
 		<dt><img src="../graphics/star.gif"></dt>
 			<dd>Blessed data</dd>
-		<dt><img src="../graphics/balloon-talk-gray.gif"></dt>
+		<dt><img src="../graphics/balloon_talk_gray.gif"></dt>
 			<dd>Add/View comments</dd>
 	</dl>
 </div>
