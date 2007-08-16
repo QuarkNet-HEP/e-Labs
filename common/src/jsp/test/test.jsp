@@ -1,9 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.test.*" %>
-<%@ page errorPage="../include/errorpage.jsp" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -38,7 +38,7 @@
 	request.setAttribute("test", test);
 %>
 			
-<h1>Answer the following questions and click <b>Record Answers</b> to take test ${test.type}.</h1>
+<h1>Answer the following questions and click <b>Record Answers</b> to take ${test.type}.</h1>
 
 <p>
 	<strong>Don't guess!!</strong> "Do not know" is a perfectly good answer. 
@@ -46,9 +46,6 @@
 </p>
 
 <form name="test-form" method="post" action="record-answers.jsp">
-	<input type="hidden" name="type" value="${test.type}"/>
-	<input type="hidden" name="studentid" value="${param.studentid}"/>
-	
 	<ol>
 		<c:forEach items="${test.questions}" var="question">
 			<li>
@@ -64,11 +61,15 @@
 			</li>
 		</c:forEach>
 	</ol>
-	<p align="center"> 
-	<input type="hidden" name="count" value="${test.questionCount}"/>
-    <input type="submit" name="Submit" value="Record Answers"/>
-    <input type="reset" name="Reset" value="Reset Answers"/>
-  </p>
+	<c:if test="${param.studentid != null && param.studentid != '0'}">
+		<p align="center"> 
+			<input type="hidden" name="type" value="${test.type}"/>
+			<input type="hidden" name="studentid" value="${param.studentid}"/>
+			<input type="hidden" name="count" value="${test.questionCount}"/>
+    		<input type="submit" name="Submit" value="Record Answers"/>
+	    	<input type="reset" name="Reset" value="Reset Answers"/>
+		</p>
+	</c:if>
 </form>
 			
 			</div>
