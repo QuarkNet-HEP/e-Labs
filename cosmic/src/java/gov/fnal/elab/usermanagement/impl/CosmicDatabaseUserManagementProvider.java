@@ -42,8 +42,8 @@ public class CosmicDatabaseUserManagementProvider extends
     }
 
     protected String addStudent(Statement s, ElabGroup et, ElabStudent student,
-            boolean createGroup, Set groups) throws SQLException, ElabException {
-        String pwd = super.addStudent(s, et, student, createGroup, groups);
+            ElabGroup group) throws SQLException, ElabException {
+        String pwd = super.addStudent(s, et, student, group);
         ResultSet rs = s
                 .executeQuery("SELECT id FROM research_group WHERE name = '"
                         + ElabUtil.fixQuotes(student.getGroup().getName()) + "'");
