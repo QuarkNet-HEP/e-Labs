@@ -45,7 +45,7 @@ public class Popup extends TagSupport {
                 out.write("');</script>");
             }
             else {
-                out.write("<a href=\"\" onclick=\"javascript:window.open('");
+                out.write("<a href=\"#\" onclick=\"javascript:window.open('");
                 out.write(href);
                 out.write("', '");
                 out.write(target);
