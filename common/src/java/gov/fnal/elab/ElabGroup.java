@@ -215,10 +215,11 @@ public class ElabGroup {
 
     /**
      * Returns <code>true</code> if this user has upload permission and
-     * <code>false</code> otherwise.
+     * <code>false</code> otherwise. A user has upload permissions if they have
+     * either the upload role, the teacher role, or the admin role.
      */
     public boolean isUpload() {
-        return ROLE_UPLOAD.equals(role);
+        return ROLE_UPLOAD.equals(role) || ROLE_TEACHER.equals(role) || ROLE_ADMIN.equals(role);
     }
 
     /**
