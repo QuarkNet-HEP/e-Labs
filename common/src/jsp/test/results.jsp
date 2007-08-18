@@ -51,10 +51,10 @@
 						<c:forEach items="${result.value}" var="question">
 							<c:choose>
 								<c:when test="${question.correctAnswerGiven}">
-									<a href="show-question.jsp?type=${param.type}&id=${question.id}&answer=${question.answerGiven.id}">Q${question.id}+</a>&nbsp;
+									<a href="show-question.jsp?type=${param.type}&id=${question.id}&answer=${question.givenAnswer.index}">Q${question.id}+</a>
 								</c:when>
 								<c:otherwise>
-									<a href="show-question.jsp?type=${param.type}&id=${question.id}&answer=${question.answerGiven.id}">Q${question.id}-</a>&nbsp;
+									<a href="show-question.jsp?type=${param.type}&id=${question.id}&answer=${question.givenAnswer.index}">Q${question.id}-</a>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
@@ -63,16 +63,17 @@
 						<c:forEach items="${result.value}" var="question">
 							<c:choose>
 								<c:when test="${question.correctAnswerGiven}">
-									<span style="background-color: green;">
-										<a href="show-question.jsp?type=${param.type}&id=${question.id}&answer=${question.answerGiven.id}">Q${question.id}</a>
+									<span style="background-color: #60ff40;">
+										<a href="show-question.jsp?type=${param.type}&id=${question.id}&answer=${question.givenAnswer.index}">Q${question.id}</a>
 									</span>
 								</c:when>
 								<c:otherwise>
-									<span style="background-color: red;">
-										<a href="show-question.jsp?type=${param.type}&id=${question.id}&answer=${question.answerGiven.id}">Q${question.id}</a>
+									<span style="background-color: #ffa060;">
+										<a href="show-question.jsp?type=${param.type}&id=${question.id}&answer=${question.givenAnswer.index}">Q${question.id}</a>
 									</span>
 								</c:otherwise>
 							</c:choose>
+							&nbsp;
 						</c:forEach>
 					</c:otherwise>
 				</c:choose>

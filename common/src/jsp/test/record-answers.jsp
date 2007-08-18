@@ -1,10 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.test.*" %>
-<%@ page errorPage="../include/errorpage.jsp" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -32,9 +32,10 @@
 
 
 <%
-	out.flush();
-
 	String type =  request.getParameter("type"); //pre for pretest and post for posttest.
+	if (type == null) {
+	    throw new ElabJspException("Mising test type");
+	}
 	request.setAttribute("type", type);
 	String submit =  request.getParameter("submit");
 	String studentId =  request.getParameter("studentid");
@@ -76,7 +77,7 @@
 <c:choose>
 	<c:when test="${totalTaken == total}">
 		<p>
-			Your group can now <a href="first.jsp">start its Cosmic Investigation.</a>
+			Your group can now <a href="../home/first.jsp">start its Cosmic Investigation.</a>
 		</p>
 	</c:when>
 	<c:otherwise>

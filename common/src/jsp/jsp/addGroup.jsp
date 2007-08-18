@@ -329,7 +329,7 @@ String submit =  request.getParameter("submit");
                                             //else add the new teacher
                                             int i=0;
                                             i = s.executeUpdate("INSERT INTO teacher (name, email, school_id) SELECT '" + teacherNew + "', '" + teacherEmail + "',  '" + school_id +"');");
-                                            if(i != 1){
+                                            if(i != 1){	
                                                 warn(out, "Weren't able to add a teacher to the database! " + i + " rows updated. Please alert the database admin.");
                                                 return;
                                             }
@@ -723,20 +723,20 @@ String submit =  request.getParameter("submit");
                                 if(done){
                                     if(survey.equals("yes")){
 %>
-                                        If you wish to add students to your group (who must complete the survey), return to the <a href="logout.jsp>">Registration Page</a> and login with your new group name.<br>
+                                        If you wish to add students to your group (who must complete the survey), return to the <a href="../login/logout.jsp>">Registration Page</a> and login with your new group name.<br>
 <%
                                     }
                                     else if (role.equals("teacher")) {
 %>
                                         You may add <a
-                                        href="login.jsp?user=<%=group%>&pass=<%=passwd1%>&project=<%=project%>">teachers or
+                                        href="../login/login.jsp?user=<%=group%>&pass=<%=passwd1%>&project=<%=project%>">teachers or
                                         research groups</a> as the teacher
                                         <%=group%>.
 <%
                                     }
                                     else{
 %>
-                                        <font color="red">Please <a href="logout.jsp">logout</a> and log back in (with your new name) before doing your analysis!
+                                        <font color="red">Please <a href="../login/logout.jsp">logout</a> and log back in (with your new name) before doing your analysis!
 <%
                                     }
                                 }

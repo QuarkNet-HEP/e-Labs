@@ -32,7 +32,7 @@
 
 <%
 	String optionList = "<option value=\"discard\">Choose group</option>";
-	for (Iterator ite = elab.getUserManagementProvider().getTeacher(user).getGroups().iterator(); ite.hasNext();) {
+	for (Iterator ite = user.getGroups().iterator(); ite.hasNext();) {
 		ElabGroup group = (ElabGroup) ite.next();
 		String name = group.getName();
 		if (!name.equals(user.getName())) {
@@ -77,10 +77,10 @@
 				ElabGroup group = new ElabGroup(elab);
 				newUser.setGroup(group);
 				group.setName(resName);
-				if (Boolean.valueOf(upload).booleanValue()) {
+				if ("yes".equalsIgnoreCase(upload) || "true".equalsIgnoreCase(upload)) {
 				    group.setRole(ElabUser.ROLE_UPLOAD);
 				}
-				group.setSurvey(Boolean.valueOf(survey).booleanValue());
+				group.setSurvey("yes".equalsIgnoreCase(survey) || "true".equalsIgnoreCase(survey));
 				students.add(newUser);
 				newGroups.add(Boolean.valueOf(isNewGroup));
 			}

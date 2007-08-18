@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/teacher-login-required.jsp" %>
+<%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
@@ -8,7 +9,6 @@
 <%@ page import="org.apache.commons.fileupload.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.io.*" %>
-<%@ page errorPage="../include/errorpage.jsp" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -110,10 +110,10 @@
 				ElabGroup group = new ElabGroup(elab);
 				newStudent.setGroup(group);
 				group.setName(resName);
-				if (Boolean.valueOf(upload).booleanValue()) {
+				if ("yes".equalsIgnoreCase(upload) || "true".equalsIgnoreCase(upload)) {
 				    group.setRole(ElabUser.ROLE_UPLOAD);
 				}
-				group.setSurvey(Boolean.valueOf(survey).booleanValue());
+				group.setSurvey("yes".equalsIgnoreCase(survey) || "true".equalsIgnoreCase(survey));
 				students.add(newStudent);
 				//as far as I understand from the old code, with the mass registration, the 
 				//groups are always created

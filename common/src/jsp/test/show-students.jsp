@@ -1,9 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.*" %>
-<%@ page errorPage="../include/errorpage.jsp" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -34,7 +34,7 @@
 
 	String type =  request.getParameter("type"); //pre for pretest and post for posttest.
 	if (type == null || type.equals("")) {
-	    type = "pre";
+	    type = "presurvey";
 	}
 	request.setAttribute("type", type);
 	Map students = elab.getTestProvider().getStudentTestStatus(type, user);
