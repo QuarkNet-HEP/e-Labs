@@ -10,13 +10,13 @@
 		response.sendRedirect(response.encodeRedirectURL("../teacher"));
     }
 	else if (user.isFirstTime() || user.getSurvey()) {
-		int countQuestions = elab.getTestProvider().getTest("pre").getQuestionCount();
+		int countQuestions = elab.getTestProvider().getTest("presurvey").getQuestionCount();
         //check if all the students have taken the test. 
-        int taken = elab.getTestProvider().getTotalTaken("pre", user);
+        int taken = elab.getTestProvider().getTotalTaken("presurvey", user);
         int students = user.getStudents().size();
                    
 		if ((students > taken) && (countQuestions > 0)) {
-			response.sendRedirect(response.encodeRedirectURL("../jsp/show-students.jsp"));
+			response.sendRedirect(response.encodeRedirectURL("../test/show-students.jsp"));
 		}
 		else {
 			if (user.isFirstTime()) {

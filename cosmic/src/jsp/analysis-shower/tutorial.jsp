@@ -30,7 +30,6 @@
 			
 			<div id="content">
 
-<h1>Shower Study</h1>
 <center>
 	You can:&nbsp
 	 <b>1) </b> Find some help on this page &nbsp
@@ -40,6 +39,7 @@
 	<b>2)</b> <e:popup href="tryit.html" target="TryIt" width="600" height="600">Try it</e:popup>: 
 	Step-by-Step Instructions
 </center>		
+<h1>Shower Study</h1>
 <center>	
 	
 	<table width="650" cellpadding="8">
