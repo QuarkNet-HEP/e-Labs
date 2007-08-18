@@ -85,6 +85,10 @@ public class ElabTestQuestion {
         }
     }
     
+    public boolean getCorrectAnswerGiven() {
+        return isCorrectAnswerGiven();
+    }
+    
     public ElabTestQuestionAnswer getAnswer(int index) {
         Iterator i = answers.iterator();
         while (i.hasNext()) {

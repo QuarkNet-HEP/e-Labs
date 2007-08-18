@@ -19,8 +19,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
@@ -155,9 +157,9 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
                                     + "', '"
                                     + answer + "');");
                 }
-                s.executeUpdate("INSERT INTO survey (project_id, student_id, "
-                        + type + ") VALUES (" + elab.getId() + ", "
-                        + studentId + ", 't');");
+                s.executeUpdate("UPDATE survey SET "
+                        + type + "='t' WHERE project_id=" + elab.getId() + " AND student_id="
+                        + studentId + ";");
                 conn.commit();
             }
             catch (SQLException e) {
@@ -291,7 +293,9 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
                         + " FROM survey WHERE project_id = "
                         + elab.getId() + " AND student_id = " + student.getId()
                         + ";");
-                status.put(student, Boolean.valueOf(rs.getBoolean(1)));
+                if (rs.next()) {
+                    status.put(student, Boolean.valueOf(rs.getBoolean(1)));
+                }
             }
             return status;
         }
@@ -319,21 +323,22 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
                 Iterator j = g.getStudents().iterator();
                 while (j.hasNext()) {
                     ElabStudent student = (ElabStudent) j.next();
-
+                    List questions = new ArrayList();
                     Iterator k = test.getQuestions().iterator();
                     while (k.hasNext()) {
                         ElabTestQuestion question = (ElabTestQuestion) k.next();
                         ResultSet rs = s
                                 .executeQuery("SELECT answer FROM answer WHERE student_id = '"
                                         + student.getId()
-                                        + "' AND question_id = '"
-                                        + question.getId() + "';");
+                                        + "' AND question_id = "
+                                        + question.getId() + ";");
                         if (rs.next()) {
                             ElabTestQuestion q2 = new ElabTestQuestion(question);
-                            status.put(student, q2);
-                            q2.setCorrectAnswer(q2.getAnswer(rs.getInt("answer")));
+                            questions.add(q2);
+                            q2.setGivenAnswer(q2.getAnswer(rs.getInt("answer")));
                         }
                     }
+                    status.put(student, questions);
                 }
             }
             return status;
