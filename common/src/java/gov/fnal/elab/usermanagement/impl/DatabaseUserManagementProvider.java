@@ -129,8 +129,9 @@ public class DatabaseUserManagementProvider implements
 
         return createUser(s, username, rs);
     }
-    
-    private ElabGroup createUser(Statement s, String username, String projectId) throws SQLException, ElabException {
+
+    private ElabGroup createUser(Statement s, String username, String projectId)
+            throws SQLException, ElabException {
         ResultSet rs;
         rs = s.executeQuery("SELECT id, teacher_id, role, userarea, "
                 + "survey, first_time FROM research_group WHERE name='"
@@ -141,8 +142,9 @@ public class DatabaseUserManagementProvider implements
 
         return createUser(s, username, rs);
     }
-    
-    private ElabGroup createUser(Statement s, String username, ResultSet rs) throws SQLException {
+
+    private ElabGroup createUser(Statement s, String username, ResultSet rs)
+            throws SQLException {
         ElabGroup user = new ElabGroup(elab, this);
         user.setName(username);
         user.setId(rs.getString("id"));
@@ -157,7 +159,7 @@ public class DatabaseUserManagementProvider implements
         addStudents(s, user);
         return user;
     }
-    
+
     public ElabGroup getGroup(String username) throws ElabException {
         Statement s = null;
         Connection conn = null;
@@ -168,8 +170,7 @@ public class DatabaseUserManagementProvider implements
             return createUser(s, username, elab.getId());
         }
         catch (SQLException e) {
-            throw new ElabException("Database error: "
-                    + e.getMessage(), e);
+            throw new ElabException("Database error: " + e.getMessage(), e);
         }
         finally {
             DatabaseConnectionManager.close(conn, s);
@@ -313,7 +314,7 @@ public class DatabaseUserManagementProvider implements
             throws SQLException {
         ResultSet rs;
         String projectId = elab.getId();
-        String teacherId = user.getId();
+        String teacherId = user.getTeacherId();
         user.getGroups().clear();
 
         rs = s.executeQuery("SELECT name, email FROM teacher WHERE id = '"
@@ -400,14 +401,12 @@ public class DatabaseUserManagementProvider implements
     }
 
     protected String addStudent(Statement s, ElabGroup et, ElabStudent student,
-            boolean createGroup, Set groups) throws SQLException,
-            ElabException {
+            ElabGroup groupToCreate) throws SQLException, ElabException {
         ResultSet rs;
         ElabGroup group = student.getGroup();
         // More work to do if we haven't seen this one yet.
         String pass = null;
-        if (createGroup && (groups == null || !groups.contains(student.getGroup().getName()))) {
-            groups.add(student.getGroup().getName());
+        if (groupToCreate != null) {
             RandPass rp = new RandPass();
             pass = rp.getPass();
             student.getGroup().setName(
@@ -535,21 +534,40 @@ public class DatabaseUserManagementProvider implements
             throw new IllegalArgumentException(
                     "User list and createGroups list have different sizes");
         }
-
+        Map groups = new HashMap();
+        Iterator i = students.iterator(), j = createGroups.iterator();
+        while (i.hasNext()) {
+            ElabStudent student = (ElabStudent) i.next();
+            ElabGroup group = student.getGroup();
+            Boolean createGroup = (Boolean) j.next();
+            if (createGroup.booleanValue()) {
+                ElabGroup existing = (ElabGroup) groups.get(group.getName());
+                if (existing == null) {
+                    groups.put(group.getName(), group);
+                }
+                else {
+                    if (group.isUpload()) {
+                        existing.setRole(ElabGroup.ROLE_UPLOAD);
+                    }
+                    if (group.getSurvey()) {
+                        existing.setSurvey(true);
+                    }
+                }
+            }
+        }
         try {
             conn = DatabaseConnectionManager
                     .getConnection(elab.getProperties());
             s = conn.createStatement();
             conn.setAutoCommit(false);
             try {
-                Set groups = new HashSet();
-                Iterator i = students.iterator(), j = createGroups.iterator();
+                i = students.iterator();
                 while (i.hasNext()) {
-                    passwords.add(addStudent(s, teacher,
-                            (ElabStudent) i.next(), ((Boolean) j.next())
-                                    .booleanValue(), groups));
+                    ElabStudent student = (ElabStudent) i.next();
+                    ElabGroup group = (ElabGroup) groups.remove(student.getGroup()
+                            .getName());
+                    passwords.add(addStudent(s, teacher, student, group));
                 }
-                System.out.println(groups);
                 conn.commit();
                 // update the current logged in teacher with the new set of
                 // groups
