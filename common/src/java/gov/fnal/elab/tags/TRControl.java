@@ -19,7 +19,7 @@ import org.apache.taglibs.standard.lang.support.ExpressionEvaluatorManager;
 public abstract class TRControl extends TagSupport implements DynamicAttributes {
     private Map attrs;
     private String name, onError;
-    private String value;
+    private Object value;
     private Object _default;
 
     public TRControl() {
@@ -75,7 +75,7 @@ public abstract class TRControl extends TagSupport implements DynamicAttributes 
         return alias;
     }
 
-    public void setValue(String value) {
+    public void setValue(Object value) {
         this.value = value;
     }
 
@@ -100,13 +100,13 @@ public abstract class TRControl extends TagSupport implements DynamicAttributes 
         return v;
     }
     
-    protected Object evaluate(String name, String value) throws JspException {
-        if (value != null) {
-            return ExpressionEvaluatorManager.evaluate(name, value,
+    protected Object evaluate(String name, Object value) throws JspException {
+        if (value instanceof String) {
+            return ExpressionEvaluatorManager.evaluate(name, (String) value,
                     Object.class, this, pageContext);
         }
         else {
-            return null;
+            return value;
         }
     }
 
