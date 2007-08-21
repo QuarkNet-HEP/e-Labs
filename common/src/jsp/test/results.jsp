@@ -35,7 +35,7 @@
 	request.setAttribute("results", results);
 %>
 
-<h1>Results for ${param.type}test for students of ${user.name}</h1>
+<h1>Results for ${param.type} for students of ${user.name}</h1>
 
 <table id="test-results-table">
 	<tr>
