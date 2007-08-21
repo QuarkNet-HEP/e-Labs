@@ -126,7 +126,7 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
                             + "FROM question WHERE question.project_id='"
                             + elab.getId()
                             + "' AND "
-                            + thingsShouldBeConsistentlyNamed(type, "question")
+                            + thingsShouldBeConsistentlyNamed(type, "question.")
                             + " AND id = '" + questionId + "';");
             if (rs.next()) {
                 ElabTestQuestion question = new ElabTestQuestion();
