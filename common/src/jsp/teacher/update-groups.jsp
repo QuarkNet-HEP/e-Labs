@@ -105,7 +105,7 @@
 				<td>
 					<e:trselect name="ay" valueList="AY2004, AY2005, AY2006, AY2007, AY2008"
 						labelList="2004-2005, 2005-2006, 2006-2007, 2007-2008, 2008-2009"
-						default="${group.year}"/>
+						value="${group.year}"/>
 				</td>
 			</tr>
 			<tr>
@@ -114,7 +114,7 @@
 				</td>
 				<td>
 					<e:trselect name="role" valueList="user, upload, teacher"
-						labelList="user, upload, teacher" default="${group.role}"/>
+						labelList="user, upload, teacher" value="${group.role}"/>
 				</td>
 			</tr>
 			<tr>
