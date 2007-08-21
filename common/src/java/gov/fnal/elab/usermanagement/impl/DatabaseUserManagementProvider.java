@@ -119,8 +119,7 @@ public class DatabaseUserManagementProvider implements
     private ElabGroup createUser(Statement s, String username, String password,
             String projectId) throws SQLException, AuthenticationException {
         ResultSet rs;
-        rs = s.executeQuery("SELECT id, teacher_id, role, userarea, "
-                + "survey, first_time FROM research_group WHERE name='"
+        rs = s.executeQuery("SELECT * FROM research_group WHERE name='"
                 + ElabUtil.fixQuotes(username) + "' AND password='"
                 + ElabUtil.fixQuotes(password) + "';");
         if (!rs.next()) {
@@ -133,8 +132,7 @@ public class DatabaseUserManagementProvider implements
     private ElabGroup createUser(Statement s, String username, String projectId)
             throws SQLException, ElabException {
         ResultSet rs;
-        rs = s.executeQuery("SELECT id, teacher_id, role, userarea, "
-                + "survey, first_time FROM research_group WHERE name='"
+        rs = s.executeQuery("SELECT * FROM research_group WHERE name='"
                 + ElabUtil.fixQuotes(username) + "';");
         if (!rs.next()) {
             throw new ElabException("Invalid username");
@@ -152,7 +150,7 @@ public class DatabaseUserManagementProvider implements
         user.setRole(rs.getString("role"));
         user.setSurvey(rs.getBoolean("survey"));
         user.setUserArea(rs.getString("userarea"));
-        setMiscGroupData(user, user.getUserArea());
+        setMiscGroupData(user, rs.getString("ay"), user.getUserArea());
         if (user.isTeacher()) {
             addTeacherInfo(s, user);
         }
@@ -194,8 +192,7 @@ public class DatabaseUserManagementProvider implements
     private ElabGroup createGroup(Statement s, String groupName,
             String projectId) throws SQLException {
         ResultSet rs;
-        rs = s.executeQuery("SELECT id, teacher_id, role, userarea, "
-                + "survey, first_time FROM research_group WHERE name='"
+        rs = s.executeQuery("SELECT * FROM research_group WHERE name='"
                 + ElabUtil.fixQuotes(groupName) + "';");
 
         if (!rs.next()) {
@@ -209,7 +206,8 @@ public class DatabaseUserManagementProvider implements
         user.setRole(rs.getString("role"));
         user.setSurvey(rs.getBoolean("survey"));
         user.setUserArea(rs.getString("userarea"));
-        setMiscGroupData(user, user.getUserArea());
+        user.setFirstTime(rs.getBoolean("first_time"));
+        setMiscGroupData(user, rs.getString("ay"), user.getUserArea());
         return user;
     }
 
@@ -223,6 +221,7 @@ public class DatabaseUserManagementProvider implements
             s.executeUpdate("UPDATE research_group "
                     + "SET first_time='f' WHERE id = \'" + group.getId()
                     + "\';");
+            group.setFirstTime(false);
         }
         catch (Exception e) {
             throw new ElabException(e);
@@ -232,10 +231,15 @@ public class DatabaseUserManagementProvider implements
         }
     }
 
-    protected void setMiscGroupData(ElabGroup group, String userArea) {
+    protected void setMiscGroupData(ElabGroup group, String ay, String userArea) {
         if (userArea != null) {
             String[] sp = userArea.split("/");
-            group.setYear(sp[0]);
+            if (ay == null || ay.equals("")) {
+                group.setYear(sp[0]);
+            }
+            else {
+                group.setYear(ay);
+            }
             group.setState(sp[1].replace('_', ' ')); // useful for metadata
             // searches if the
             // state, city, school,
