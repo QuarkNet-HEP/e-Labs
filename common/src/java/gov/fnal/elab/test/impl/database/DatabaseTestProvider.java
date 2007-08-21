@@ -44,6 +44,22 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
                 return (ElabTest) tests.get(type);
             }
         }
+        
+        //the backwards compatibility bit
+        //eventually, the questions in the database should contain the proper test
+        //name
+        String bctype = null;
+        if (type.equals("presurvey")) {
+            bctype = "pretest";
+        }
+        if (type.equals("postsurvey")) {
+            bctype = "posttest";
+        }
+        String typeConstraint = "test_name='" + ElabUtil.fixQuotes(type) + "'";
+        if (type != null) {
+            typeConstraint = "(" + typeConstraint + " OR test_name='" + bctype + "')"; 
+        }
+        
         Statement s = null;
         Connection conn = null;
         try {
@@ -55,8 +71,7 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
                             + "response4, response5, answer "
                             + "FROM question WHERE project_id='"
                             + elab.getId()
-                            + "' AND test_name='"
-                            + ElabUtil.fixQuotes(type) + "' ORDER BY question_no;");
+                            + "' AND " + typeConstraint + " ORDER BY question_no;");
             ElabTest test = new ElabTest(type);
             while (rs.next()) {
                 ElabTestQuestion question = new ElabTestQuestion();
@@ -234,7 +249,7 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
                             + elab.getId()
                             + " AND student_id IN ("
                             + subquery
-                            + ");");
+                            + ") AND " + ElabUtil.fixQuotes(type) + ";");
             if (rs.next()) {
                 return Integer.parseInt(rs.getString(1));
             }
