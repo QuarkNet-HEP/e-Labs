@@ -723,7 +723,7 @@ String submit =  request.getParameter("submit");
                                 if(done){
                                     if(survey.equals("yes")){
 %>
-                                        If you wish to add students to your group (who must complete the survey), return to the <a href="../login/logout.jsp>">Registration Page</a> and login with your new group name.<br>
+                                        If you wish to add students to your group (who must complete the survey), return to the <a href="../login/logout.jsp">Registration Page</a> and login with your new group name.<br>
 <%
                                     }
                                     else if (role.equals("teacher")) {
