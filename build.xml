@@ -91,6 +91,10 @@ undeploy:
 		- - - - - - - - - - - - - - - - - -->
 	<target name="build-common">
 		<mkdir dir="common/build"/>
+		<delete quiet="true">
+			<fileset dir="common/build"
+				includes="**/*.class"/>
+		</delete>
 		<javac srcdir="common/src/java" destdir="common/build" debug="true">
 			<classpath refid="cp-common"/>
 		</javac>
@@ -130,8 +134,6 @@ undeploy:
 	<target name="clean-classes">
 		<delete quiet="true">
 			<fileset dir="${container.home}/${webapps}/elab/WEB-INF/classes"
-				includes="**/*.class"/>
-			<fileset dir="common/build"
 				includes="**/*.class"/>
 		</delete>
 	</target>
