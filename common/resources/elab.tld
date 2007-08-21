@@ -474,6 +474,15 @@ values specified with the <code>valueList</code> attribute.
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<attribute>
+			<description>
+The selected value for this control. The value of this attribute should be one of the
+values specified with the <code>valueList</code> attribute.
+			</description>
+			<name>value</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 	</tag>
 	
 	<tag>
