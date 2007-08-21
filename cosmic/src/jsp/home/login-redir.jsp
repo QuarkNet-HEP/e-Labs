@@ -14,6 +14,8 @@
         //check if all the students have taken the test. 
         int taken = elab.getTestProvider().getTotalTaken("presurvey", user);
         int students = user.getStudents().size();
+        System.out.println("Group: " + user.getName() + ", students: " + students 
+                + ", taken: " + taken + ", qcount: " + countQuestions);
                    
 		if ((students > taken) && (countQuestions > 0)) {
 			response.sendRedirect(response.encodeRedirectURL("../test/show-students.jsp"));
