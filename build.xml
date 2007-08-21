@@ -131,6 +131,8 @@ undeploy:
 		<delete quiet="true">
 			<fileset dir="${container.home}/${webapps}/elab/WEB-INF/classes"
 				includes="**/*.class"/>
+			<fileset dir="common/build"
+				includes="**/*.class"/>
 		</delete>
 	</target>
 		
@@ -262,7 +264,14 @@ undeploy:
 	<!-- ================================= 
 		target: build-cosmic              
 		================================= -->
-	<target name="build-cosmic" depends="build-common" description="--> builds COSMIC">
+	<target name="clean-cosmic-classes">
+		<delete quiet="true">
+			<fileset dir="cosmic/build"
+				includes="**/*.class"/>
+		</delete>
+	</target>
+		
+	<target name="build-cosmic" depends="clean-cosmic-classes, build-common" description="--> builds COSMIC">
 		<mkdir dir="cosmic/build"/>
         <javac srcdir="cosmic/src/java" destdir="cosmic/build" debug="true">
 			<include name="**/*.java"/>
