@@ -343,6 +343,9 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
             Iterator i = group.getGroups().iterator();
             while (i.hasNext()) {
                 ElabGroup g = (ElabGroup) i.next();
+                if (!g.getSurvey()) {
+                	continue;
+                }
                 Iterator j = g.getStudents().iterator();
                 while (j.hasNext()) {
                     ElabStudent student = (ElabStudent) j.next();
