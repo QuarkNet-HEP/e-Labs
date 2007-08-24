@@ -6,7 +6,7 @@
 	if (user.isGuest()) {
 		response.sendRedirect("../home/first.jsp");
 	}
-	else if (user.isTeacher()) {
+	else if (user.isTeacher() || user.isAdmin()) {
 		response.sendRedirect(response.encodeRedirectURL("../teacher"));
     }
 	else if (user.isFirstTime() || user.getSurvey()) {
