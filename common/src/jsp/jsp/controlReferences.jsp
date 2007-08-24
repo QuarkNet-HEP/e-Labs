@@ -53,7 +53,6 @@ if(fu.isMultipartContent(request)){
                 if (fi.getString().equals("checked"))
                 {
                     Set_Database = true;
-            
                 }
              } */ //Disabled Functionality, Set Database is now always true
             if(fieldName.equals("htype")){
@@ -190,7 +189,7 @@ Item(s).<br>
 if (type == "NA") {
      %>
      <HR> Content Developers: Do not select "SQL"! It's here for the developers of the new User Database. <HR>
-    <form name ="file_form" method =" get">
+    <form name ="file_form" method ="get">
     <label><input type = 'radio' name = 'type' value='reference' onChange="document.upform.htype.value = this.value" checked='true'> References</label>
     <label><input type = 'radio' name = 'type' value='FAQ' onChange="document.upform.htype.value = this.value"> FAQ</label>
     <label><input type = 'radio' name = 'type' value='news' onChange="document.upform.htype.value = this.value"> News</label>
@@ -210,7 +209,10 @@ if (type == "NA") {
     <% //<label>Please enter a filename (e.g. data.dat)
     //<input type='text' name='filename_upload' value='data.t'></label><br><br>
     //<label>Load into the Database <input type='checkbox' name='database_chk' value="checked"></label><br><br> %>
-    <input type='hidden' name='htype' value='reference'>
+    <label><input type = 'radio' name = 'htype' value='reference' checked='true'> References</label>
+    <label><input type = 'radio' name = 'htype' value='FAQ'> FAQ</label>
+    <label><input type = 'radio' name = 'htype' value='news'> News</label>
+    <label><input type = 'radio' name = 'htype' value='glossary'> Glossary</label><br><hr>
     <input type='submit' value="Upload"><br>
     </form>
     <%
