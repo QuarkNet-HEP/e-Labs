@@ -135,7 +135,7 @@
 								 "<img id=\"imgstatus" + id + "\" src=\"../graphics/" + status + ".png\"/></td>" +
 								 "<td id=\"textstatus" + id + "\">" + cstatus + "</td>";
 							
-							if (status == "running") {
+							if (status == "Running") {
 								hstatus +="<td><table id=\"progressbar" + id + "\" style=\"border: solid black thin;\"" +
 								"width=\"100px\" cellpadding=\"0\" cellspacing=\"1\">" +
 									"<tr>" + 
@@ -147,7 +147,7 @@
 								
 							row.insertCell(2).innerHTML = hstatus;
 							var rescel;
-							if (status == "completed") {
+							if (status == "Completed") {
 								rescell = "<a href=\"status.jsp?id=" + id + "\">See results</a>";
 							}
 							else {
@@ -167,7 +167,7 @@
 							if (tdprogress != null) {
 								tdprogress.width = (progress*99+1) + "%";
 							}
-							if (status == "completed") {
+							if (status == "Completed") {
 								var results = document.getElementById("results" + id);
 								if (results != null) {
 									results.style.visibility="visible";

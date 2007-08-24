@@ -29,7 +29,7 @@
 			
 			<div id="content">
 				<%
-				
+				out.write(String.valueOf(status));
 				if (status == AnalysisRun.STATUS_FAILED || showStatus != null) {
 				    Throwable e = run.getException();
 				    String message = e == null ? "Unknown error. See output for details." : e.toString();
@@ -94,11 +94,11 @@
 								}
 								else if (data["status"] != null) {
 									var td = document.getElementById("progressbar");
-									if (data["status"] == "running") {
+									if (data["status"] == "Running") {
 										td.width = (data["progress"]*99+1) + "%";
 									}
 									else {
-										if (data["status"] == "completed") {
+										if (data["status"] == "Completed") {
 											td.width = "100%";
 										}
 										stopUpdates();
