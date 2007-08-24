@@ -319,6 +319,10 @@ public class DatabaseUserManagementProvider implements
         ResultSet rs;
         String projectId = elab.getId();
         String teacherId = user.getTeacherId();
+        if (teacherId == null) {
+            System.out.println(user.getName() + " does not have a teacher id.");
+            return;
+        }
         user.getGroups().clear();
 
         rs = s.executeQuery("SELECT name, email FROM teacher WHERE id = '"
