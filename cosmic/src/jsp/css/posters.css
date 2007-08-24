@@ -240,6 +240,10 @@ a.button {
 	margin-right: auto;
 }
 
+#search-posters #center {
+	text-align: center;
+}
+
 #search-results td {
 	vertical-align: middle;
 	text-align: left;
