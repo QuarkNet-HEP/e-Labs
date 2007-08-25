@@ -54,6 +54,12 @@
 				String upload = request.getParameter("is_upload" + formNum);
 				String survey = request.getParameter("is_survey" + formNum);
 				
+				boolean isNewGroup = true;
+				if (resName == null || resName.equals("Group Name")) {
+					resName = resNameChoose;
+					isNewGroup = false;
+				}
+				
 				if (last == null || first == null || resName == null ||
 					last.equals("") || first.equals("") || resName.equals("") ||
 					last.equals("Last Name") || first.equals("First Name") || resName.equals("Group Name") || 
@@ -67,12 +73,6 @@
 				String studentName = first.substring(0, 1) + last.substring(0, (last.length() < 7 ? last.length() : 7));
 				
 				newUser.setName(studentName);
-				
-				boolean isNewGroup = true;
-				if (resName == null || resName.equals("Group Name")) {
-					resName = resNameChoose;
-					isNewGroup = false;
-				}
 
 				ElabGroup group = new ElabGroup(elab);
 				newUser.setGroup(group);
