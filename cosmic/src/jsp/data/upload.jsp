@@ -152,7 +152,8 @@ Re: the upload progress stuff
 		        // This command is here to clean the Mac/DOS style line breaks
 		        // Probably could be done better, but this works for now.
 		        String cmdNLClean = "/usr/bin/perl -pi -e 's/\\r\\n?/\\n/g' " + f.getAbsolutePath();
-		        String cmdSplit = appDir + File.separator +  "Split.pl " + "\"" + f.getAbsolutePath() + "\"" + " " + dataDir + id + " " + id;
+		        String cmdSplit = appDir + File.separator +  "Split.pl " + "\"" + f.getAbsolutePath() + "\"" + " " 
+		        	+ dataDir + File.separator + id + " " + id;
         		String cmdCompress = "gzip " + f.getAbsolutePath() + " &";
 		        ElabUtil.runCommand(cmdNLClean);
 		        ElabUtil.runCommand(cmdSplit, out);
