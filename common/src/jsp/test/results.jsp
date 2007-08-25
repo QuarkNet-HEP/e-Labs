@@ -40,10 +40,19 @@
 
 <p>
 	Students' answers are listed under each question. Click on the answer to see the 
-	question and answers. Correct answers are displayed in green, incorrect answers 
-	are displayed in red. The black and white version shows an asterix instead of 
-	the answer number so that correct answers can be seen when printed on a black 
-	and white printer.
+	question and answers.
+	<c:choose>
+		<c:when test="${param.color == 'no'}">
+			Correct answers are marked with a plus sign (+); incorrect
+			answers are marked with a minus sign (-).
+		</c:when>
+		<c:otherwise>
+	 		Correct answers are displayed in green; incorrect answers 
+			are displayed in red.
+		</c:otherwise>
+	</c:choose>
+	 The black and white version uses + and - signs so that correct 
+	 answers can be seen when printed on a black and white printer.
 </p>
 
 <table id="test-results-table" class="shaded">
