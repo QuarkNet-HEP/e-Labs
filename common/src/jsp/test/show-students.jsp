@@ -9,13 +9,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Record Answers</title>
+		<title>Show Students</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 	</head>
 
-	<body id="record-answers">
+	<body id="show-students">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
