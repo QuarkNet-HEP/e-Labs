@@ -21,9 +21,6 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
-					<div id="nav">
-						<%@ include file="../include/nav-teacher.jsp" %>
-					</div>
 				</div>
 			</div>
 			
