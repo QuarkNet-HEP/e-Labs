@@ -54,7 +54,7 @@
 					<td>
 						${i.key.name} - 
 						<c:choose>
-							<c:when test="${i.value}">
+							<c:when test="${!i.value}">
 								<a href="../test/test.jsp?studentid=${i.key.id}&type=${type}">Go take ${type} test</a>
 							</c:when>
 							<c:otherwise>
