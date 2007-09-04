@@ -1,0 +1,37 @@
+
+#localhost 	echo 		/home/mike/bin/msleep	INSTALLED	INTEL32::LINUX	null
+#localhost 	echompi		/bin/echo	INSTALLED	INTEL32::LINUX	GLOBUS::jobtype="mpi",count="4"
+
+#This is the transformation catalog.
+#
+#It comes pre-configured with a number of simple transformations with
+#paths that are likely to work on a linux box. However, on some systems,
+#the paths to these executables will be different (for example, sometimes
+#some of these programs are found in /usr/bin rather than in /bin)
+#
+#NOTE WELL: fields in this file must be separated by tabs, not spaces; and
+#there must be no trailing whitespace at the end of each line.
+#
+# sitename  transformation  path   INSTALLED  platform  profiles
+localhost 	echo 		/usr/bin/echo	INSTALLED	INTEL32::LINUX	null
+localhost 	cat 		/usr/bin/cat	INSTALLED	INTEL32::LINUX	null
+localhost 	ls 		/bin/ls		INSTALLED	INTEL32::LINUX	null
+localhost 	wc 		/bin/wc		INSTALLED	INTEL32::LINUX	null
+localhost 	grep 		/bin/grep	INSTALLED	INTEL32::LINUX	null
+localhost 	sort 		/bin/sort	INSTALLED	INTEL32::LINUX	null
+localhost 	paste 		/bin/paste	INSTALLED	INTEL32::LINUX	null
+
+localhost	ThresholdTimes	/home/mike/work/i2u2/apps/ThresholdTimes.pl	INSTALLED       INTEL32::LINUX null
+localhost	WireDelay		/home/mike/work/i2u2/apps/WireDelay.pl		INSTALLED       INTEL32::LINUX null
+localhost	Combine			/home/mike/work/i2u2/apps/Combine.pl		INSTALLED       INTEL32::LINUX null
+localhost	SingleChannel	/home/mike/work/i2u2/apps/SingleChannel.pl	INSTALLED       INTEL32::LINUX null
+localhost	Sort			/home/mike/work/i2u2/apps/Sort.pl			INSTALLED       INTEL32::LINUX null
+localhost	Flux			/home/mike/work/i2u2/apps/Flux.pl			INSTALLED       INTEL32::LINUX null
+localhost	Plot			/home/mike/work/i2u2/apps/Plot.pl			INSTALLED       INTEL32::LINUX null
+localhost	Lifetime		/home/mike/work/i2u2/apps/Lifetime.pl		INSTALLED       INTEL32::LINUX null
+localhost	Frequency		/home/mike/work/i2u2/apps/Frequency.pl		INSTALLED       INTEL32::LINUX null
+localhost	ExtraFunctions	/home/mike/work/i2u2/apps/ExtraFunctions.pl	INSTALLED       INTEL32::LINUX null
+localhost	EventSearch		/home/mike/work/i2u2/apps/EventSearch.pl	INSTALLED       INTEL32::LINUX null
+localhost	EventChoice		/home/mike/work/i2u2/apps/EventChoice.pl	INSTALLED       INTEL32::LINUX null
+localhost	SVG2PNG			/usr/bin/rsvg								INSTALLED       INTEL32::LINUX null
+

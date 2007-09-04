@@ -1,54 +1,59 @@
 import("sys.k")
 
-export(siteCatalog
-	element([file]
-
-		import("task.k")
+namespace("vdl"
+	export(siteCatalog
+		element([file]
+	
+			import("task.k")
+							
+			element(pool, [handle, optional(gridlaunch), sysinfo, optional(lrc), ..., channel(properties)]
+				host(name = handle
+					each(...)
+					to(properties
+						each(properties)
+						maybe(property("gridlaunch", gridlaunch))
+					)
+				)
+			)
+				
+			element(lrc, [url]
+				//not handled yet
+			)
+				
+			element(gridftp, [url, storage, major, minor, patch]
+				if(
+					url == "local://localhost" 
+						service(type="file", provider="local")
+					service(type="file", provider="gsiftp", url=url)
+				)
+			)
+				
+			element(jobmanager, [universe, url, major, minor, patch]
+				provider := if(
+					url == "local://localhost" "local"
+					url == "pbs://localhost" "pbs"
+					major == "4" "GT4"
+					major == "2" "GT2"
+					throw("Unknown job manager version: major = {major}, minor = {minor}, patch = {patch}, url = {url}")
+				)
+				service(type="execution", provider=provider, url=url)
+			)
 			
-		element(config, [version, ...]
+			element(execution, [provider, url]
+				service(type="execution", provider=provider, url=url)
+			)
+			
+			element(profile, [namespace, key, value]
+				property("{namespace}:{key}", value)
+			)
+				
+			element(workdirectory, [dir]
+				property(name="workdir", value = dir)
+			)
+			
 			resources(
-				each(...)
+				executeFile(file)
 			)
-		)
-			
-		element(pool, [handle, optional(gridlaunch), sysinfo, optional(lrc), ..., channel(properties)]
-			print("Adding host {handle}")
-			host(name = handle
-				each(...)
-				to(properties, each(properties))
-			)
-		)
-			
-		element(lrc, [url]
-			//not handled yet
-		)
-			
-		element(gridftp, [url, storage, major, minor, patch]
-			print("Adding file service {url}")
-			if(
-				url == "local://localhost" 
-					service(type="file", provider="local")
-				service(type="file", provider="gsiftp", url=url)
-			)
-		)
-			
-		element(jobmanager, [universe, url, major, minor, patch]
-			provider := if(
-				major == "4" "GT4"
-				major == "2" "GT2"
-				url == "local://localhost" "local"
-				generateError("Unknown job manager version: major = {major}, minor = {minor}, patch = {patch}; Ignoring")
-			)
-			print("Adding {provider} execution service {url}")
-			service(type="execution", provider=provider, url=url)
-		)
-			
-		element(workdirectory, [dir]
-			property(name="workdir", value = dir)
-		)
-			
-		resources(
-			executeFile(file)
 		)
 	)
 )
