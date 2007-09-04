@@ -269,7 +269,7 @@ public class ElabUtil {
                 if (j != 0) {
                     sb.append('&');
                 }
-                addParam(sb, name, values[j]);
+                addParam(sb, key, values[j]);
             }
             if (i.hasNext()) {
                 sb.append('&');
@@ -353,7 +353,8 @@ public class ElabUtil {
         }
     }
 
-    public static void runCommand(Elab elab, String cmd) throws ElabJspException {
+    public static void runCommand(Elab elab, String cmd)
+            throws ElabJspException {
         runCommand(cmd);
     }
 
@@ -382,8 +383,8 @@ public class ElabUtil {
                     try {
                         ec = p.exitValue();
                         if (ec != 0) {
-                            throw new ElabJspException("Failed to run '"
-                                    + cmd + "'. (exit code " + ec + "): "
+                            throw new ElabJspException("Failed to run '" + cmd
+                                    + "'. (exit code " + ec + "): "
                                     + readStream(p.getErrorStream()));
                         }
                         break;
@@ -469,7 +470,7 @@ public class ElabUtil {
         // C-4716 (otherwise)
 
         NanoDate nd = new NanoDate();
-        Calendar gc = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        Calendar gc = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         if (fractional != 0) {
             int hour = (int) (fractional * 24);
             int min = (int) ((fractional * 24 - hour) * 60);
@@ -490,6 +491,21 @@ public class ElabUtil {
 
         nd.setTime(gc.getTime().getTime());
         return nd;
+    }
+    
+    private static final int[] MONTH_NUM = new int[] {306, 337, 0, 31, 61, 92, 122, 153, 184, 214, 245, 275};
+
+    public static double gregorianToJulian(int year, int month, int day, int hour,
+            int minute, int second) {
+        double step1 = (year + 4712) / 4.0;
+        int step1Int = (int) step1;
+        double remainder = (step1 - step1Int) * 4;
+        int monthNum = MONTH_NUM[month + 1];
+        
+        double PJD = (hour * 3600 + minute * 60 + second) / 86400.0;
+        double jd = step1Int * 1461 + remainder * 365 + monthNum + day + 59
+                - 13 - .5 + PJD;
+        return jd;
     }
 
     public static String stripHTML(String text) {
