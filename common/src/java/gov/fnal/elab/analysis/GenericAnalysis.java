@@ -34,7 +34,7 @@ public class GenericAnalysis extends AbstractAnalysis {
     }
 
     public boolean hasParameter(String name) {
-        return arguments.containsKey(name);
+        return true;
     }
 
     public void initialize(String param) throws InitializationException {
