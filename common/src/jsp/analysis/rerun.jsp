@@ -5,7 +5,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
-<%@ page errorPage="../include/errorpage.jsp" %>
+<%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 
 <%
 	/*
@@ -13,7 +13,7 @@
 	 * I suppose the idea is to be able to go through the parameters
 	 * again. This would be straightforward if the parameters page could
 	 * be build automatically from the TR. Unfortunately the TR is not
-	 * reach enough to be able to produce the analysis pages currently 
+	 * rich enough to be able to produce the analysis pages currently 
 	 * in cosmic, so it's going to stay custom at this time.
 	 * You can change this to reflect the way analyses are set up in
 	 * your particular case.
@@ -21,12 +21,21 @@
 	 
 	 String study = request.getParameter("study");
 	 if (study == null) {
-	     throw new ElabJspException("Missing study");
+	   	throw new ElabJspException("Missing study");
 	 }
-	 String dvName = request.getParameter("dvName");
-	 if (dvName == null) {
-	     throw new ElabJspException("Missing DV name");
+	 request.setAttribute("study", study); 
+	 ElabAnalysis analysis = (ElabAnalysis) session.getAttribute("analysisToRerun");
+	 if (analysis == null) {
+	 	String dvName = request.getParameter("dvName");
+	 	if (dvName == null) {
+	    	throw new ElabJspException("Missing DV name");
+	 	}
+	 	analysis = elab.getDataCatalogProvider().getAnalysis(dvName);
 	 }
-	 ElabAnalysis analysis = elab.getDataCatalogProvider().getAnalysis(dvName);
-	 response.sendRedirect("../analysis-" + study + "/analysis.jsp?" + analysis.getEncodedParameters());
+	 else {
+	 	
+	 }
+	 request.setAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS, analysis);
 %>
+
+<jsp:include page="../analysis-${study}/analysis.jsp?${request.queryString}"/>

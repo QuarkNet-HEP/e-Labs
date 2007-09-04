@@ -122,30 +122,34 @@
 			i += 2;
 			i = sb.indexOf("$", i);
 		}
+		if ("paper".equals(type) && key.startsWith("WORDS:CAPTION")) { 
+			template = template.replaceAll("%" + key + "%", "Figure " + 
+				key.substring(key.length() - 1) + ". " + sb.toString()); 
+		}
 		template = template.replaceAll("%" + key + "%", sb.toString());
 	}
 
 	// replace all the empty information with "not provided"
-	template = template.replaceAll("%PARA:ABSTRACT%","Not entered"); 
-	template = template.replaceAll("%PARA:PROCEDURE%","Not entered"); 
-	template = template.replaceAll("%PARA:RESULTS%","Not entered"); 
-	template = template.replaceAll("%PARA:CONCLUSION%","Not entered");
-	template = template.replaceAll("%PARA:AUTHORS%","Not entered");
-	template = template.replaceAll("%WORDS:TITLE%","Not entered"); 
-	template = template.replaceAll("%WORDS:SUBTITLE%","Not entered"); 
+	template = template.replaceAll("%PARA:ABSTRACT%", "Not entered"); 
+	template = template.replaceAll("%PARA:PROCEDURE%", "Not entered"); 
+	template = template.replaceAll("%PARA:RESULTS%", "Not entered"); 
+	template = template.replaceAll("%PARA:CONCLUSION%", "Not entered");
+	template = template.replaceAll("%PARA:AUTHORS%", "Not entered");
+	template = template.replaceAll("%WORDS:TITLE%", "Not entered"); 
+	template = template.replaceAll("%WORDS:SUBTITLE%", "Not entered"); 
 	if ("paper".equals(type)) {
 		// replace src=" with src="+ path to plots (in user area).
 		template = template.replaceAll("src=\"","src=\"" + plotURL); //really only matters for paper
-		template = template.replaceAll("%WORDS:CAPTION1%",""); 
-		template = template.replaceAll("%WORDS:CAPTION2%",""); 
-		template = template.replaceAll("%WORDS:CAPTION3%",""); 
-		template = template.replaceAll("%WORDS:CAPTION4%",""); 
-		template = template.replaceAll("%WORDS:CAPTION5%",""); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE1%",""); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE2%",""); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE3%",""); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE4%",""); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE5%",""); 
+		template = template.replaceAll("%WORDS:CAPTION1%", ""); 
+		template = template.replaceAll("%WORDS:CAPTION2%", ""); 
+		template = template.replaceAll("%WORDS:CAPTION3%", ""); 
+		template = template.replaceAll("%WORDS:CAPTION4%", ""); 
+		template = template.replaceAll("%WORDS:CAPTION5%", ""); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE1%", ""); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE2%", ""); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE3%", ""); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE4%", ""); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE5%", ""); 
 	}
 
 	out.println(template);

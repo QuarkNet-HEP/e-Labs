@@ -1,5 +1,6 @@
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
+<%@ page errorPage="../include/errorpage.jsp" buffer="none" %> 
 
 <%
 	String id = request.getParameter("id");

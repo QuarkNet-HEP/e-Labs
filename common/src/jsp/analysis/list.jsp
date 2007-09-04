@@ -1,3 +1,4 @@
+<%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.io.*" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>

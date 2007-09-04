@@ -6,7 +6,7 @@
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
-<%@ page errorPage="../include/smallerrorpage.jsp" %>
+<%@ page errorPage="../include/smallerrorpage.jsp" buffer="none" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>

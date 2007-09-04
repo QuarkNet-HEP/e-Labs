@@ -23,13 +23,13 @@
 
 <%
 System.setProperty("vds.home", elab.getProperty("vds.home"));
+ElabGroup cmnuser = (ElabGroup) request.getAttribute("user");
 if (request.getAttribute("user") == null) {
-	throw new ElabJspException("One of the *-login-required.jsp pages must be included by this point.");   
+	cmnuser = ElabGroup.getUser(session);
+	request.setAttribute("user", cmnuser);
 }
 // rough timing information for this page execution.  Is there an API for this?
 long pageStartTime = System.currentTimeMillis();
-
-ElabGroup cmnuser = (ElabGroup) request.getAttribute("user");
 
 ServletContext context = getServletContext();
 String home = context.getRealPath("").replace('\\', '/');
@@ -38,14 +38,15 @@ String tempdir = context.getAttribute("javax.servlet.context.tempdir").toString(
 //Useful directory variables
 String dataDir = elab.getProperty("data.dir");
 String templateDir = elab.getProperty("templates.dir");
-String userArea = cmnuser.getUserArea();
+String userArea = null;
 String userDir = elab.getProperties().getUsersDir();
-String runDir = cmnuser.getDir("scratch");
-String runDirURL = cmnuser.getDirURL("scratch");
-String plotDir = cmnuser.getDir("plots");
-String plotDirURL = cmnuser.getDirURL("plots");
-String posterDir = cmnuser.getDir("posters");
-String posterDirURL = cmnuser.getDirURL("posters");
+String runDir = null;
+String runDirURL = null;
+String plotDir = null;
+String plotDirURL = null;
+String posterDir = null;
+String posterDirURL = null;
+
 
 //Other useful variables
 String groupName = null;    //same as session.getAttribute("login")
@@ -54,19 +55,30 @@ String groupSchool = null;
 String groupCity = null;
 String groupState = null;
 String groupYear = null;
-if(userArea != null){
-    String[] sp = userArea.split("/");
-    groupYear = sp[0];
-    groupState = sp[1].replaceAll("_", " ");    //useful for metadata searches if the state, city, school, and teacher have spaces instead of underscores
-    groupCity = sp[2].replaceAll("_", " ");
-    groupSchool = sp[3].replaceAll("_", " ");
-    groupTeacher = sp[4].replaceAll("_", " ");
-    groupName = sp[5];
-}
 String eLab = elab.getName();
 
-session.setAttribute("role", cmnuser.getRole());
-session.setAttribute("UserName", cmnuser.getName());
+if (cmnuser != null) {
+	userArea = cmnuser.getUserArea();
+	runDir = cmnuser.getDir("scratch");
+	runDirURL = cmnuser.getDirURL("scratch");
+	plotDir = cmnuser.getDir("plots");
+	plotDirURL = cmnuser.getDirURL("plots");
+	posterDir = cmnuser.getDir("posters");
+	posterDirURL = cmnuser.getDirURL("posters");
+	if(userArea != null){
+    	String[] sp = userArea.split("/");
+    	groupYear = sp[0];
+	    groupState = sp[1].replaceAll("_", " ");    //useful for metadata searches if the state, city, school, and teacher have spaces instead of underscores
+    	groupCity = sp[2].replaceAll("_", " ");
+	    groupSchool = sp[3].replaceAll("_", " ");
+    	groupTeacher = sp[4].replaceAll("_", " ");
+	    groupName = sp[5];
+	}
+	session.setAttribute("role", cmnuser.getRole());
+	session.setAttribute("UserName", cmnuser.getName());
+	session.setAttribute("groupID", cmnuser.getId());
+}
+
 
 %>
 
@@ -2001,7 +2013,7 @@ public static String lfn_from_date(int id, java.util.Date date) throws ElabExcep
     String lfn = null;
 
     java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+    sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 
     String q = "type='split' AND project='cosmic' AND detectorid='" + id
         + "' AND startdate < '" + sdf.format(date) + "' AND enddate > '"

@@ -1,3 +1,5 @@
+<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.io.*" %>
@@ -12,6 +14,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
+
 	<body id="statusinfo" class="data">
 		<!-- entire page container -->
 		<div id="container">
@@ -29,7 +32,6 @@
 			
 			<div id="content">
 				<%
-				out.write(String.valueOf(status));
 				if (status == AnalysisRun.STATUS_FAILED || showStatus != null) {
 				    Throwable e = run.getException();
 				    String message = e == null ? "Unknown error. See output for details." : e.toString();
@@ -47,12 +49,12 @@
 						%>
 						
 						<br>
-						<elab:vswitch>
-							<elab:visible>
-								<strong>Workflow output</strong>
-							</elab:visible>
-							<elab:hidden>
-								<strong>Workflow output</strong>
+						<e:vswitch>
+							<e:visible>
+								<strong>Analysis output</strong>
+							</e:visible>
+							<e:hidden>
+								<strong>Analysis output</strong><br/>
 								<code style="font-size: small;">
 <%
 							HTMLEscapingWriter wr = new HTMLEscapingWriter(out);
@@ -65,8 +67,8 @@
 							wr.write(run.getDebuggingInfo());
 %>
 								</code>
-							</elab:hidden>
-						</elab:vswitch>
+							</e:hidden>
+						</e:vswitch>
 					<%
 				}
 				else if (status == AnalysisRun.STATUS_RUNNING) {
@@ -135,12 +137,12 @@
 				
 					<hr>
 					
-					<elab:vswitch>
-						<elab:visible>
-							<strong>Execution output</strong>
-						</elab:visible>
-						<elab:hidden>
-							<strong>Execution output</strong>
+					<e:vswitch>
+						<e:visible>
+							<strong>Analysis output</strong>
+						</e:visible>
+						<e:hidden>
+							<strong>Analysis output</strong><br/>
 							<code style="font-size: small;">
 <%
 	String output = run.getSTDERR();
@@ -160,8 +162,8 @@
 	}
 %>
 							</code>
-						</elab:hidden>
-					</elab:vswitch>
+						</e:hidden>
+					</e:vswitch>
 				<%
 				}
 				else if (status == AnalysisRun.STATUS_CANCELED) {
