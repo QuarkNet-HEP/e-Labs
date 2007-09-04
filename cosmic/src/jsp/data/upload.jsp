@@ -13,6 +13,10 @@
 <%@ page import="org.apache.commons.fileupload.servlet.*" %>
 <%@ page import="be.telio.mediastore.ui.upload.MonitoredDiskFileItemFactory" %>
 <%@ page import="be.telio.mediastore.ui.upload.UploadListener" %>
+<%@ page import="gov.fnal.elab.cosmic.beans.Geometries" %>
+<%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
+<%@ page import="gov.fnal.elab.cosmic.Geometry" %>
+
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
