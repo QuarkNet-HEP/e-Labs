@@ -56,7 +56,8 @@ TR Quarknet.Cosmic::Lifetime(
 	none gatewidth,
 	input lifetimeIn,
 	output lifetimeOut,
-	none geoDir)
+	none geoDir,
+	input geoFiles[] )
 {
   argument = " "${lifetimeIn};
   argument = " "${lifetimeOut};
@@ -89,6 +90,7 @@ TR Quarknet.Cosmic::LifetimeStudy(
 	none lifetime_energyCheck,
 	none lifetime_gatewidth,
 	none geoDir,
+	input geoFiles[],
 	none plot_caption,
 	none plot_highX,
 	none plot_highY,
@@ -119,7 +121,8 @@ TR Quarknet.Cosmic::LifetimeStudy(
     rawData=${input:rawData},
 	thresholdAll=${output:thresholdAll} );
   call Quarknet.Cosmic::WireDelay(
-	geoLocation=${geoDir},
+	geoDir=${geoDir},
+	geoFiles=${input:geoFiles},
 	threshData=${input:thresholdAll},
 	wireDelayData=${output:wireDelayData} );
   call Quarknet.Cosmic::Combine(
@@ -136,7 +139,8 @@ TR Quarknet.Cosmic::LifetimeStudy(
 	gatewidth=${lifetime_gatewidth},
 	lifetimeIn=${input:sortOut},
 	lifetimeOut=${output:lifetimeOut},
-	geoDir=${geoDir} );
+	geoDir=${geoDir},
+	geoFiles=${input:geoFiles} );
   call Quarknet.Cosmic::Frequency(
 	binType=${freq_binType},
 	binValue=${freq_binValue},
@@ -338,11 +342,12 @@ TR Quarknet.Cosmic::ThresholdTimes(
 TR Quarknet.Cosmic::WireDelay(
     input threshData[],
     output wireDelayData[],
-    none geoLocation )
+    none geoDir,
+    input geoFiles[] )
 {
     argument = "'" ${threshData} "'";
     argument = " '" ${wireDelayData} "'";
-    argument = " " ${geoLocation};
+    argument = " " ${geoDir};
 
 }
 
@@ -358,6 +363,7 @@ TR Quarknet.Cosmic::ShowerStudy(
     none extraFun_out,
 	none gate,
 	none geoDir,
+	input geoFiles[],
 	none plot_caption,
 	none plot_highX,
 	none plot_highY,
@@ -389,7 +395,8 @@ TR Quarknet.Cosmic::ShowerStudy(
 	rawData=${input:rawData},
 	thresholdAll=${output:thresholdAll} );
   call Quarknet.Cosmic::WireDelay(
-	geoLocation=${geoDir},
+	geoDir=${geoDir},
+	geoFiles=${input:geoFiles},
 	threshData=${input:thresholdAll},
 	wireDelayData=${output:wireDelayData} );
   call Quarknet.Cosmic::Combine(
@@ -412,6 +419,7 @@ TR Quarknet.Cosmic::ShowerStudy(
 	eventChoiceOut=${output:eventFile},
 	eventNum=${eventNum},
 	geoDir=${geoDir},
+	geoFiles=${input:geoFiles},
 	zeroZeroZeroID=${zeroZeroZeroID} );
   call Quarknet.Cosmic::Plot(
 	plot_caption=${plot_caption},
@@ -463,13 +471,14 @@ TR Quarknet.Cosmic::EventChoice(
 	output eventChoiceOut,
 	none eventNum,
 	none geoDir,
+	input geoFiles[],
 	none zeroZeroZeroID )
 {
   argument = ${eventChoiceIn};
   argument = " "${eventChoiceOut};
   argument = " "${eventNum};
   argument = " "${zeroZeroZeroID};
-  argument = " '" ${geoDir} "'";
+  argument = " " ${geoDir};
 }
 
 TR Quarknet.Cosmic::EventPlot(
@@ -478,6 +487,7 @@ TR Quarknet.Cosmic::EventPlot(
 	none eventNum,
 	inout extraFun_out,
 	none geoDir,
+	input geoFiles[],
 	none plot_caption,
 	none plot_highX,
 	none plot_highY,
@@ -498,7 +508,8 @@ TR Quarknet.Cosmic::EventPlot(
 	eventChoiceIn=(input)eventCandidates,
 	eventChoiceOut=(output)eventFile,
 	eventNum=eventNum,
-	geoDir=geoDir,
+	geoDir=${geoDir},
+	geoFiles=${input:geoFiles},
 	zeroZeroZeroID=zeroZeroZeroID );
   call Quarknet.Cosmic::Plot(
 	plot_caption=plot_caption,
@@ -523,19 +534,21 @@ TR Quarknet.Cosmic::Flux(
 	none binWidth,
 	input fluxIn,
 	output fluxOut,
-	none geoDir )
+	none geoDir,
+	input geoFiles[] )
 {
   argument = ${fluxIn};
   argument = " "${fluxOut};
   argument = " "${binWidth};
-  argument = " "${geoDir};
+  argument = " " ${geoDir};
 }
 TR Quarknet.Cosmic::FluxStudy(
 	inout combineOut,
 	none detector,
 	inout fluxOut,
 	none flux_binWidth,
-	none flux_geoDir,
+	none geoDir,
+	input geoFiles[],
 	none plot_caption,
 	none plot_size,
 	inout extraFun_out,
@@ -569,7 +582,8 @@ TR Quarknet.Cosmic::FluxStudy(
 	rawData=${input:rawData},
 	thresholdAll=${output:thresholdAll} );
   call Quarknet.Cosmic::WireDelay(
-	geoLocation=${flux_geoDir},
+	geoDir=${geoDir},
+	geoFiles=${input:geoFiles},
 	threshData=${input:thresholdAll},
 	wireDelayData=${output:wireDelayData} );
   call Quarknet.Cosmic::Combine(
@@ -588,7 +602,8 @@ TR Quarknet.Cosmic::FluxStudy(
 	binWidth=${flux_binWidth},
 	fluxIn=${input:sortOut},
 	fluxOut=${output:fluxOut},
-	geoDir=${flux_geoDir} );
+	geoDir=${geoDir}
+	geoFiles=${input:geoFiles} );
   call Quarknet.Cosmic::Plot(
 	plot_caption=${plot_caption},
 	plot_extraFunctions=${extraFun_out},
