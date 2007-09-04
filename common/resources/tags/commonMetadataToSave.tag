@@ -20,7 +20,7 @@ A set of logical file names for which to produce the metadata" %>
 	String creationDate = timestamp.toString();
 	String sources = ElabUtil.join(rawData, " ");
 	String detectorIDs = ElabUtil.join(
-	        DataTools.getUniqueValues(_elab, rawData, "dectorid"), " ");
+	        DataTools.getUniqueValues(_elab, rawData, "detectorid"), " ");
 	Collection dates = DataTools.getUniqueValues(_elab, rawData, "startdate");
 	String rawDate;
 	if (dates.size() > 0) {
@@ -32,5 +32,5 @@ A set of logical file names for which to produce the metadata" %>
 %>
 <input type="hidden" name="metadata" value="creationdate date <%= creationDate %>"/>
 <input type="hidden" name="metadata" value="source string <%= sources %>"/>
-<input type="hidden" name="metadata" value="detector string <%= detectorIDs %>"/>
+<input type="hidden" name="metadata" value="detectorid string <%= detectorIDs %>"/>
 <input type="hidden" name="metadata" value="rawdate date <%= rawDate %>"/>

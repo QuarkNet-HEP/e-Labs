@@ -4,10 +4,12 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
     version="2.0">
+    
 	<tlib-version>1.1</tlib-version>
 	<jsp-version>2.0</jsp-version>
-	<display-name>Elab Tag Library</display-name>
 	<short-name>e</short-name>
+	<uri>http://www.i2u2.org/jsp/elabtl</uri>
+	<display-name>Elab Tag Library</display-name>
 		
 	
 	<!--<tag>
@@ -115,7 +117,7 @@ An optional image to be used for the clickable control. Defaults to "../images/T
 		</attribute>
 	</tag>
 	
-	<tag>
+	<!-- <tag>
 		<name>script</name>
 		<tag-class>gov.fnal.elab.tags.Script</tag-class>
 		<body-content>none</body-content>
@@ -124,7 +126,7 @@ An optional image to be used for the clickable control. Defaults to "../images/T
 			<required>true</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
-	</tag>
+	</tag>-->
 	
 	<tag>
 		<name>popup</name>
@@ -151,9 +153,6 @@ An optional image to be used for the clickable control. Defaults to "../images/T
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<name>now</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
 			<description>
 If set to 'false' it will generate a link that, 
 when clicked, will open a popup window. Otherwise, 
@@ -161,6 +160,9 @@ JavaScript code will be generated which will cause
 the popup to open when the page is rendered in the
 browser.
 			</description>
+			<name>now</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
 	<!--<tag-file>
@@ -203,7 +205,7 @@ used to set up analysis parameters and verify their correctness (to a certain ex
 		<tag-class>gov.fnal.elab.tags.Analysis</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
-			<description>
+			<description><![CDATA[
 The name of the JSP EL variable to set with the analysis object. The analysis tag will
 set an attribute with this name on the current request object. The analysis can be accessed
 later in the page using one of the following methods:
@@ -213,13 +215,13 @@ later in the page using one of the following methods:
 	<dt>Through the JSP Expression Language:</dt>
 	<dd><code>${&lt;name&gt;}</code></dd>
 </dl>
-			</description>
+			]]></description>
 			<name>name</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>
+			<description><![CDATA[
 An actual class implementing the {@link gov.fnal.elab.analysis.ElabAnalysis} interface.
 If this attribute is not specified, a generic implementation of the above interface will
 be used. Currently the following implementations are supported:
@@ -232,7 +234,7 @@ be used. Currently the following implementations are supported:
 		analysis bean (used in previous versions of the elab code). The actual bean
 		class must be specified using the <code>param</code> attribute.</dd>
 </dl>
-			</description>
+			]]></description>
 			<name>impl</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -246,12 +248,12 @@ of specifying this attribute depends on the analysis implementation used (see ab
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
-			<description>
+		<attribute>
+			<description><![CDATA[
 The type of analysis to be used. In the VDS world this could be something like 
 <code>Quarknet.Cosmic::FluxStudy</code>. The analysis implementation or the 
 analysis executor implementation would make sense of the value of this attribute.
-			</description>
-		<attribute>
+			]]></description>
 			<name>type</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -339,12 +341,12 @@ as a result of the submit button being pressed.
 	</tag>
 
 	<tag>
-		<description>
+		<description><![CDATA[
 Defines a label for a control representing an analysis parameter. The label will also 
 contain a link that can be used to see a description of the parameter. For that purpose, 
 it will generate a link to <code>javascript:describe()</code> with the current analysis
 type and the parameter name as arguments.
-		</description>
+		]]></description>
 		<name>trlabel</name>
 		<tag-class>gov.fnal.elab.tags.TRLabel</tag-class>
 		<body-content>JSP</body-content>
@@ -368,7 +370,7 @@ The actual label contents (i.e. the text that will appear in the rendered HTML p
 	</tag>
 
 	<tag>
-		<description>
+		<description><![CDATA[
 Defines a control for an analysis parameter. Performs the following functions:
 <ul>
 	<li>Generates the <code>input</code> HTML tag.</li>
@@ -389,11 +391,10 @@ Defines a control for an analysis parameter. Performs the following functions:
 While this tag is designed to work with an analysis, it can also be used as a standalone tag,
 in which case the analysis parameter is not considered as a potential value and the 
 <code>onError</code> attribute is ignored.
-		</description>
+		]]></description>
 		<name>trinput</name>
 		<tag-class>gov.fnal.elab.tags.TRInput</tag-class>
 		<body-content>JSP</body-content>
-		<dynamic-attributes>true</dynamic-attributes>
 		<attribute>
 			<description>
 The name of the control.
@@ -428,19 +429,19 @@ parameter and CGI parameter are missing.
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<dynamic-attributes>true</dynamic-attributes>
 	</tag>
 	
 	<tag>
-		<description>
+		<description><![CDATA[
 A simplified way of specifying radio button sets also with some of the semantics for 
 {@link trinput} (the handling of default values). It produces, in the HTML document,
 a <code>select</code> HTML element together with the necessary <code>option</code>
 elements.
-		</description>
+		]]></description>
 		<name>trselect</name>
 		<tag-class>gov.fnal.elab.tags.TRSelect</tag-class>
 		<body-content>JSP</body-content>
-		<dynamic-attributes>true</dynamic-attributes>
 		<attribute>
 			<description>
 A comma separated list of values.
@@ -466,23 +467,24 @@ The name of this control.
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>
+			<description><![CDATA[
 The default value of this control. The value of this attribute should be one of the
 values specified with the <code>valueList</code> attribute.
-			</description>
+			]]></description>
 			<name>default</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>
+			<description><![CDATA[
 The selected value for this control. The value of this attribute should be one of the
 values specified with the <code>valueList</code> attribute.
-			</description>
+			]]></description>
 			<name>value</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<dynamic-attributes>true</dynamic-attributes>
 	</tag>
 	
 	<tag>
@@ -493,7 +495,6 @@ semantics of {@link trinput}.
 		<name>trtextarea</name>
 		<tag-class>gov.fnal.elab.tags.TRTextArea</tag-class>
 		<body-content>JSP</body-content>
-		<dynamic-attributes>true</dynamic-attributes>
 		<attribute>
 			<description>
 The name of the control.
@@ -510,12 +511,13 @@ The default value of this control.
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<dynamic-attributes>true</dynamic-attributes>
 	</tag>
 	
 	<tag>
 		<name>paramAlias</name>
 		<tag-class>gov.fnal.elab.tags.ParamAlias</tag-class>
-		<body-content>none</body-content>
+		<body-content>empty</body-content>
 		<attribute>
 			<name>from</name>
 			<required>true</required>
@@ -548,4 +550,88 @@ The default value of this control.
 		<path>/WEB-INF/tags/reference.tag</path>
 	</tag-file>
 	
+	<tag-file>
+		<name>link</name>
+		<path>/WEB-INF/tags/link.tag</path>
+	</tag-file>
+	
+	<tag>
+		<description>
+Generates a link that can be used to rerun an analysis. The link will not fully 
+encapsulate the analysis, therefore the mechanism used to rerun an analysis
+depends on communicating analysis details through session attributes.
+
+Only one analysis instance can be used on a given page. In other words,
+this mechanism cannot be used to rerun two analyses from a single page,
+but different parameters to that analysis can be overriden by using
+multiple instances of this tag.
+
+Nested parameters can be specified using the {@link param} tag. 
+		</description>
+		<name>rerun</name>
+		<tag-class>gov.fnal.elab.tags.Rerun</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>
+An analysis object to be rerun.
+			</description>
+			<name>analysis</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+A label for the link
+			</description>
+			<name>label</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+The analysis type to rerun (e.g. "flux").
+There's a little hackishness in here, in that the type is used to locate the analysis
+by assuming it lives in a directory named "analysis-&lt;type&gt;".
+			</description>
+			<name>type</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<description>
+Can be used to specify a parameter for various (yeah, right! only for {@link rerun})
+tags accepting parameters.
+		</description>
+		<name>param</name>
+		<tag-class>gov.fnal.elab.tags.Param</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>
+The name of the parameter
+			</description>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+The value of the parameter
+			</description>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag-file>
+		<name>paged</name>
+		<path>/WEB-INF/tags/paged.tag</path>
+	</tag-file>
+	
+	<tag-file>
+		<name>pagelinks</name>
+		<path>/WEB-INF/tags/pagelinks.tag</path>
+	</tag-file>
 </taglib>
