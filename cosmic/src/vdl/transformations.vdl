@@ -505,8 +505,8 @@ TR Quarknet.Cosmic::EventPlot(
 	none zeroZeroZeroID )
 {
   call Quarknet.Cosmic::EventChoice(
-	eventChoiceIn=(input)eventCandidates,
-	eventChoiceOut=(output)eventFile,
+	eventChoiceIn=${input:eventCandidates},
+	eventChoiceOut=${output:eventFile},
 	eventNum=eventNum,
 	geoDir=${geoDir},
 	geoFiles=${input:geoFiles},
@@ -517,12 +517,12 @@ TR Quarknet.Cosmic::EventPlot(
 	plot_highX=plot_highX,
 	plot_highY=plot_highY,
 	plot_highZ=plot_highZ,
-	plot_infile=(input)eventFile,
+	plot_infile=${input:eventFile},
 	plot_lowX=plot_lowX,
 	plot_lowY=plot_lowY,
 	plot_lowZ=plot_lowZ,
-	plot_outfile_image=(output)plot_outfile_image,
-	plot_outfile_param=(output)plot_outfile_param,
+	plot_outfile_image=${output:plot_outfile_image},
+	plot_outfile_param=${output:plot_outfile_param},
 	plot_plot_type=plot_plot_type,
 	plot_title=plot_title,
 	plot_xlabel=plot_xlabel,
