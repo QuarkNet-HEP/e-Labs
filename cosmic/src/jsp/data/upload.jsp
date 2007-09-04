@@ -79,7 +79,7 @@ Re: the upload progress stuff
 	String lfn="";              //lfn on the USERS home computer
 	String fn = "";             //filename without slashes
 	String ds = "";
-	String id = "";             //detector id
+	String detectorId = "";             //detector id
 	String comments = "";       //optional comments on raw data file
 	String dataDir = elab.getProperties().getDataDir();
 	int channels[] = new int[4];
@@ -106,8 +106,8 @@ Re: the upload progress stuff
 			if (fi.isFormField()) {
             	String name = fi.getFieldName();
             	if (name.equals("detector")) {
-                	id = fi.getString();
-                	if(id.equals("")) {
+                	detectorId = fi.getString();
+                	if(detectorId.equals("")) {
                     	throw new ElabJspException("You must enter a detector number for this data.");
 					}
 				}
@@ -137,7 +137,7 @@ Re: the upload progress stuff
                 DateFormat df = new SimpleDateFormat("yyyy.MMdd");
                 String fnow = df.format(now);
 				//even newer algorithm: use File.createTempFile!
-				File f = File.createTempFile(id + "." + fnow + ".", ".raw", 
+				File f = File.createTempFile(detectorId + "." + fnow + ".", ".raw", 
 				        new File(dataDir));
                	String rawName = f.getName();
 
@@ -157,7 +157,7 @@ Re: the upload progress stuff
 		        // Probably could be done better, but this works for now.
 		        String cmdNLClean = "/usr/bin/perl -pi -e 's/\\r\\n?/\\n/g' " + f.getAbsolutePath();
 		        String cmdSplit = appDir + File.separator +  "Split.pl " + "\"" + f.getAbsolutePath() + "\"" + " " 
-		        	+ dataDir + File.separator + id + " " + id;
+		        	+ dataDir + File.separator + detectorId + " " + detectorId;
         		String cmdCompress = "gzip " + f.getAbsolutePath() + " &";
 		        ElabUtil.runCommand(cmdNLClean);
 		        ElabUtil.runCommand(cmdSplit, out);
@@ -224,17 +224,17 @@ Re: the upload progress stuff
             	                cpldFrequency += tmp[2] + " ";
         	                }
         	                else if (tmp[0].equals("julianstartdate")) {
-        	                	Geometry geometry = new Geometry(elab.getProperties().getDataDir(), id);
+        	                	Geometry geometry = new Geometry(elab.getProperties().getDataDir(), detectorId);
 								if (geometry == null || geometry.isEmpty()) {
 									throw new ElabJspException("Error: no geometry information for detector " + detectorId);
 								}
 								SortedMap geos = geometry.getGeoEntriesBefore(tmp[2]);
 								if (geos.isEmpty()) {
 									throw new ElabJspException("Error: no geometry information for detector " + 
-										id + " for when this data was taken.");
+										detectorId + " for when this data was taken.");
 								}
 								GeoEntryBean g = (GeoEntryBean) geos.get(geos.lastKey());
-								meta.add("stacked boolean " + (g.getStackedState() ? "true" : "false"));
+								meta.add("stacked boolean " + ("0".equals(g.getStackedState()) ? "false" : "true"));
         	                }
 	                    }
     	            }   //done reading file
@@ -267,9 +267,9 @@ Re: the upload progress stuff
 				request.setAttribute("splitEntries", entries);
 				CatalogEntry e = elab.getDataCatalogProvider().getEntry(rawName);
 				request.setAttribute("entry", e);
-				request.setAttribute("id", id);
+				request.setAttribute("id", detectorId);
 				request.setAttribute("lfnssz", new Integer(entries.size()));
-				File geoFile = new File(new File(dataDir, id), id + ".geo");
+				File geoFile = new File(new File(dataDir, detectorId), detectorId + ".geo");
 				if (geoFile.exists() && geoFile.isFile() && geoFile.canRead()) {
 				    request.setAttribute("geoFileExists", Boolean.TRUE);
 				}
