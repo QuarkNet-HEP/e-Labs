@@ -198,6 +198,10 @@ sub geo_info {
 		$line[6]=<GEO>;		#chan2
 		$line[7]=<GEO>;		#chan3
 		$line[8]=<GEO>;		#chan4
+        # If the next line is a JD, there is no entry for gps cable length, and we'll make it 0
+		if ($line[9] =~ /^[0-9]{7}(\.[0-9]*)*$/) { $gpsCabLen = 0; }
+        else { $gpsCabLen = <GEO>; }
+        
 		chomp(@line);
 
 		@chan1 = split /\s+/, $line[5];
@@ -218,6 +222,7 @@ sub geo_info {
             $chan4[4]=0;
         }       
         #info is changed to hold the cable length 12-21-04 Evgeni
+        #info changed to hold gps cable length 6/12/07 ndettman
 		%info = (	'jd' => $line[0],
 					'lat' => $line[1],
 					'long' => $line[2],
@@ -227,7 +232,8 @@ sub geo_info {
 					'chan1' => { 'x' => $chan1[0], 'y' => $chan1[1], 'z' => $chan1[2], 'area' => $chan1[3], 'cabLen' => $chan1[4] },
 					'chan2' => { 'x' => $chan2[0], 'y' => $chan2[1], 'z' => $chan2[2], 'area' => $chan2[3], 'cabLen' => $chan2[4] },
 					'chan3' => { 'x' => $chan3[0], 'y' => $chan3[1], 'z' => $chan3[2], 'area' => $chan3[3], 'cabLen' => $chan3[4] },
-					'chan4' => { 'x' => $chan4[0], 'y' => $chan4[1], 'z' => $chan4[2], 'area' => $chan4[3], 'cabLen' => $chan4[4] } );
+					'chan4' => { 'x' => $chan4[0], 'y' => $chan4[1], 'z' => $chan4[2], 'area' => $chan4[3], 'cabLen' => $chan4[4] },
+                    'gpsCabLen' => $gpsCabLen);
 		$i++;
 	}
 	close GEO;
@@ -257,6 +263,9 @@ sub all_geo_info {
 		$line[6]=<GEO>;		#chan2
 		$line[7]=<GEO>;		#chan3
 		$line[8]=<GEO>;		#chan4
+        # If the next line is a JD, there is no entry for gps cable length, and we'll make it 0
+		if ($line[9] =~ /^[0-9]{7}(\.[0-9]*)*$/) { $gpsCabLen = 0; }
+        else { $gpsCabLen = <GEO>; }
 
 		chomp(@line);
 
@@ -278,7 +287,8 @@ sub all_geo_info {
                         'chan1' => { 'x' => $chan1[0], 'y' => $chan1[1], 'z' => $chan1[2], 'area' => $chan1[3], 'cabLen' => $chan1[4] },
 					    'chan2' => { 'x' => $chan2[0], 'y' => $chan2[1], 'z' => $chan2[2], 'area' => $chan2[3], 'cabLen' => $chan2[4] },
 					    'chan3' => { 'x' => $chan3[0], 'y' => $chan3[1], 'z' => $chan3[2], 'area' => $chan3[3], 'cabLen' => $chan3[4] },
-					    'chan4' => { 'x' => $chan4[0], 'y' => $chan4[1], 'z' => $chan4[2], 'area' => $chan4[3], 'cabLen' => $chan4[4] } };
+					    'chan4' => { 'x' => $chan4[0], 'y' => $chan4[1], 'z' => $chan4[2], 'area' => $chan4[3], 'cabLen' => $chan4[4] },
+                        'gpsCabLen' => $gpsCabLen};
 
 		$i++;
 	}

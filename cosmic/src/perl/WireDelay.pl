@@ -2,6 +2,7 @@
 #WireDelay.pl
 #input [thresholdTimes files] [output files] [geometryDirectory]
 #Data offset by cable length amount
+#ndettman, FNAL 6/14/07 changed to use gps cable length as well as signal cable length.
 
 if($#ARGV !=2){
     die "usage: WireDelay.pl [\"input-file1 input-file2 ...\"] [\"output-file1 output-file2 ... \"] [\"geometry file directory\"] You have ".($#ARGV+1)." arguments and they are \"@ARGV\"\n";
@@ -71,8 +72,11 @@ sub wireDelay{
     my $detectorIdLookingAt=$_[1];
     my $channelNum=$_[2];
     if(defined($jdRange[0]) && $jdRange[0]<$currentJd && $jdRange[1]>$currentJd){
-        #we cam just return delayFromCable because, we reload the hash each time the detector id changes
-        return $detectorGeoHash[$positionInHash]{"chan".$channelNum}{'cabLen'}/86400;
+        #we can just return delayFromCable because, we reload the hash each time the detector id changes
+        #return $detectorGeoHash[$positionInHash]{"chan".$channelNum}{'cabLen'}/86400;
+        #return $detectorGeoHash[$positionInHash]{"chan".$channelNum}{'cabLen'}/86400e11;
+        $delay = $detectorGeoHash[$positionInHash]{'gpsCabLen'} - $detectorGeoHash[$positionInHash]{"chan".$channelNum}{'cabLen'};
+        return $delay/86400e11;
     } elsif($#detectorGeoHash==-1){
         die "there is no data in the geometry file\n";
     } else { #find proper cable-delay for specific julian-day time period
@@ -98,6 +102,9 @@ sub wireDelay{
                   @jdRange=($detectorGeoHash[$positionInHash]{'jd'},$detectorGeoHash[$positionInHash+1]{'jd'});
               }
           }
-          return $detectorGeoHash[$positionInHash]{"chan".$channelNum}{'cabLen'}/86400;
+          #return $detectorGeoHash[$positionInHash]{"chan".$channelNum}{'cabLen'}/86400;
+          #return $detectorGeoHash[$positionInHash]{"chan".$channelNum}{'cabLen'}/86400e11;
+          $delay = $detectorGeoHash[$positionInHash]{'gpsCabLen'} - $detectorGeoHash[$positionInHash]{"chan".$channelNum}{'cabLen'};
+          return $delay/86400e11;
       }
   }

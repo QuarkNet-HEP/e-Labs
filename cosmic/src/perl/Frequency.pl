@@ -23,7 +23,10 @@ if($#ARGV < 4){
 @outfile = split(/\s+/, $ARGV[1]);
 $col=$ARGV[2]-1;
 $binType=$ARGV[3];		#set to 1 if using binwidth, 0 if using numberOfBins
-$binValue=eval $ARGV[4];
+#[Mihael] disabled in the interest of safety
+#$binValue=eval $ARGV[4];
+$binValue=$ARGV[4];
+
 #@colarray = split /\./, $ARGV[3];
 die "Error: column number ($ARGV[2]) must be a positive integer > 1.\n" if($col !~ /^\d+$/);
 

@@ -11,6 +11,7 @@
 # by Paul Nepywoda, FNAL 5/25/04
 # Changed by TJ on 5 Dec. 2004 want $current_flux to be in units of *seconds* always. User input can smooth the plot by putting more values in the bin but the flux *must* have time units in seconds. Just divided the $my_flux by the user input of time in line #141.
 # Wait! Paul already did this on line 140 so I'll just uncomment 140, put line 141 back the way that it was and comment out that lline.
+# Changed by ndettman, FNAL 6/7/2007 to put flux in units of counts/min/sec^2, the way it should be plotted
 
 BEGIN {
 	$dirname=`dirname $0`;
@@ -38,7 +39,10 @@ $infile=$ARGV[0];
 open (IN, "$infile") || die "Cannot open $infile for input";
 $outfile=$ARGV[1];
 
-$binwidth=(eval $ARGV[2])/86400;	#convert seconds to partial days
+#[Mihael] disabled in the interest of safety
+#$binwidth=(eval $ARGV[2])/86400;	#convert seconds to partial days
+$binwidth=$ARGV[2]/86400;
+
 $fluxFound=0;
 $geo_dir=$ARGV[3];
 
@@ -152,7 +156,11 @@ sub freq_analyze {
 
         $keyIterator=0;
         while($keyIterator<= $#keysWanted){
-            my $current_flux = ($freq{($keysWanted[$keyIterator])}/(eval $ARGV[2])/$areaArray[$keyIterator]);
+			#[Mihael] disabled in the interest of safety
+            #my $current_flux = ($freq{($keysWanted[$keyIterator])}/(eval $ARGV[2])/$areaArray[$keyIterator]);
+            # Flux should be in units of counts/min/m^2, not counts/sec/m^2, hence the extra factor of 60
+			my $current_flux = ($freq{($keysWanted[$keyIterator])}/($ARGV[2]/60)/$areaArray[$keyIterator]);
+			
             my $binmiddle = $keysWanted[$keyIterator]-($binwidth/2);     #gnuplot plots values at the middle of bins
             ($day, $month, $year, $hour, $min, $sec) = &jd_to_gregorian($firstJd+ int($binmiddle), $binmiddle-int($binmiddle));
             printf OUT "%02d/%02d/%02d %02d:%02d:%02d %f\n", $month, $day, $year, $hour, $min, $sec, $current_flux;

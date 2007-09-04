@@ -8,6 +8,8 @@
 # Jordan 3 Nov-2004, changed point shape for 3D plots, location of caption prints for lifetimw with fit and placement of x and y labels for 3D
 # Jordan 6 December 2004, changed line plot (type=1) so that it plots both lines and points. I remarked line #70 and added lline #71 in this file.
 # ndettman 6/27/05 changing the arguments style to use Getopt, so that this script can handle the dynamic number of datafiles that may need to be plotted.  This is dynamic because we are now plotting multiple channels for the performance study on the same graph.
+# Jordan removed error bars from flux plots (type = 1) and set Ymin = 0 for same
+# ndettman, FNAL 6/11/07: corrected the Ymin = 0 argument so it works
 
 use Getopt::Long;
 
@@ -32,6 +34,7 @@ $caption = $h{'caption'};
 $lowX = $h{'lowx'};
 $highX = $h{'highx'};
 $lowY = $h{'lowy'};
+$lowY = "0" if (!$lowY =~ m/.*/ && $plot_type == 1); # want to force a y min of 0 for flux plots
 $highY = $h{'highy'};
 if($plot_type == 2 or $plot_type == 6){
     $zlabel = $h{'zlabel'};
@@ -42,9 +45,11 @@ $lineWidthSize=1.5;
 open (OUT, ">$outfile_param") || die "Unable to open plot parameter file: $outfile_param for output.\n";
 
 #if we're passing a range to gnuplot that has spaces, it needs to be quoted
-for $i (\$lowX, \$highX, \$lowY, \$highY, \$lowZ, \$highZ){
+for my $i (\$lowX, \$highX, \$lowY, \$highY, \$lowZ, \$highZ){
+    print $i, "\n";
     if($$i =~ / /){
-        $$i = "\"".$$i."\"" if($$i != "");
+    	print $$i, "\n";
+    	$$i = "\"".$$i."\"" if($$i ne "");
     }
 }
 
@@ -69,6 +74,7 @@ for $i (\$lowX, \$highX, \$lowY, \$highY, \$lowZ, \$highZ){
 #see http://t16web.lanl.gov/Kawano/gnuplot/intro/style-e.html for information on plot types
 if($plot_type == 0){	#Histogram
     push @options, "set label \"$caption\" font \"Helvetica,14\" at graph .95,.95 right";
+	#push @options, "plot '$infile[0]' using 1:2:(sqrt(\$2)) with yerrorbars lw $lineWidthSize, '$infile[0]' using 1:2 with histeps lw $lineWidthSize";
 	push @options, "plot '$infile[0]' using 1:2:(sqrt(\$2)) with yerrorbars lw $lineWidthSize, '$infile[0]' using 1:2 with histeps lw $lineWidthSize";
 }
 elsif($plot_type == 1){	#Line
@@ -79,10 +85,10 @@ elsif($plot_type == 1){	#Line
     &ticLevels();
     push @options, $setTics;
 
-	#push @options, "plot '$infile' using 1:3 with lines lw $lineWidthSize";
-    #push @options, "plot '$infile' using 1:3 with linespoints lw $lineWidthSize pt 2";
-    push @options, "plot '$infile[0]' using 1:3 with points lw $lineWidthSize pt 1, '$infile[0]' using 1:3:(sqrt(\$3)) with yerrorbars";
-	#push @options, "plot '$infile' using 1:3 with impulse lw $lineWidthSize pt 2";
+	#push @options, "plot '$infile[0]' using 1:3 with points lw $lineWidthSize pt 1, '$infile[0]' using 1:3:(sqrt(\$3)) with yerrorbars";
+	#remove the error bars until we can calculate them correctly
+	push @options, "plot '$infile[0]' using 1:3 with points lw $lineWidthSize pt 1";
+
 }
 elsif($plot_type == 2){	#3D
     push @options, "set grid";
@@ -247,7 +253,7 @@ sub ticLevels(){ # this is used for the flux study to find out where the tic mar
         $interval = 30*60;
         $secondLow = 0;
         $minuteLow = 0;
-        $xlabel = "Time GMT (hours:minutes)"; # hard code it here and hope people can find it if they want to change it
+        $xlabel = "Time UTC (hours:minutes)"; # hard code it here and hope people can find it if they want to change it
     }
     elsif($totalSeconds < 1*60*60*$numTics){ # tic intervals set to  60  minutes/1 hour
         $interval = 60*60;
