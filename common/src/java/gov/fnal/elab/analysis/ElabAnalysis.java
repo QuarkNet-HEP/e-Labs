@@ -45,6 +45,11 @@ public interface ElabAnalysis {
      * Returns the value of a parameter
      */
     Object getParameter(String name);
+    
+    /**
+     * Retrieves the values of a vector parameter
+     */
+    Collection getParameterValues(String name);
 
     /**
      * Returns <code>true</code> if the value currently set on a parameter on
