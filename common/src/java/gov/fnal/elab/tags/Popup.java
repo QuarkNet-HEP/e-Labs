@@ -32,7 +32,6 @@ public class Popup extends TagSupport {
     public int doStartTag() throws JspException {
         try {
             JspWriter out = pageContext.getOut();
-            out.write(now);
             if (Boolean.valueOf(now).booleanValue()) {
                 out.write("<script language=\"JavaScript\">window.open('");
                 out.write(href);

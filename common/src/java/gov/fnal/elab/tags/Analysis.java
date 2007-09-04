@@ -36,11 +36,27 @@ public class Analysis extends TagSupport {
         try {
             Elab elab = (Elab) pageContext.getRequest().getAttribute("elab");
             if (elab == null) {
-                throw new JspException("No elab available. Did you include elab.jsp?");
+                throw new JspException(
+                        "No elab available. Did you include elab.jsp?");
             }
-            ElabAnalysis analysis = ElabFactory.newElabAnalysis(elab, impl, param);
-            analysis.setType(type);
+            ElabAnalysis analysis = (ElabAnalysis) pageContext.getRequest()
+                    .getAttribute(ATTR_ANALYSIS);
+            if (analysis != null) {
+                if (!type.equals(analysis.getType())) {
+                    throw new JspException(
+                            "Stored analysis type doesn't match the requested "
+                                    + "analysis type. Perhaps rerun.jsp redirected to the "
+                                    + "wrong analysis page?");
+                }
+                pageContext.getSession().removeAttribute(ATTR_ANALYSIS);
+            }
+            else {
+                analysis = ElabFactory.newElabAnalysis(elab, impl, param);
+                analysis.setType(type);
+            }
+
             setAnalysisParams(analysis);
+
             pageContext.getRequest().setAttribute(ATTR_ANALYSIS, analysis);
             pageContext.getRequest().setAttribute(TR.ATTR_TR, type);
             if (name != null) {
@@ -70,12 +86,15 @@ public class Analysis extends TagSupport {
             if (analysisParamName == null) {
                 analysisParamName = name;
             }
-            if (!analysis.hasParameter(analysisParamName)) {
+            if (!analysis.hasParameter(analysisParamName)
+                    || analysisParamName.equals(TRSubmit.CONTROL_NAME)) {
                 continue;
             }
             Class type = analysis.getParameterType(analysisParamName);
             if (type == null) {
-                throw new IllegalArgumentException("The analysis did not report a type for " + analysisParamName);
+                throw new IllegalArgumentException(
+                        "The analysis did not report a type for "
+                                + analysisParamName);
             }
             if (type.equals(String.class)) {
                 analysis.setParameter(analysisParamName, request
@@ -87,16 +106,17 @@ public class Analysis extends TagSupport {
             }
             else if (type.equals(Object.class)) {
                 /*
-                 * As a last resort, try to figure out the type from the request.
-                 * This is likely to break in the general case. 
+                 * As a last resort, try to figure out the type from the
+                 * request. This is likely to break in the general case.
                  */
                 String[] values = request.getParameterValues(name);
                 if (values != null && values.length > 1) {
-                    analysis.setParameter(analysisParamName, Arrays.asList(values));
+                    analysis.setParameter(analysisParamName, Arrays
+                            .asList(values));
                 }
                 else {
                     analysis.setParameter(analysisParamName, request
-                        .getParameter(name));
+                            .getParameter(name));
                 }
             }
             else {
@@ -106,8 +126,6 @@ public class Analysis extends TagSupport {
             }
         }
     }
-
-    
 
     public String getImpl() {
         return impl;
