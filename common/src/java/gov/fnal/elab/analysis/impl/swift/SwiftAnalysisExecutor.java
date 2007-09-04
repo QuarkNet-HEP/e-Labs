@@ -16,17 +16,22 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.globus.cog.karajan.SpecificationException;
 import org.globus.cog.karajan.stack.LinkedStack;
 import org.globus.cog.karajan.stack.VariableStack;
 import org.globus.cog.karajan.workflow.ElementTree;
 import org.globus.cog.karajan.workflow.ExecutionContext;
+import org.globus.cog.karajan.workflow.nodes.FlowElement;
 import org.griphyn.vdl.karajan.Loader;
+import org.griphyn.vdl.karajan.VDL2ExecutionContext;
+import org.griphyn.vdl.karajan.functions.ConfigProperty;
 
 /**
  * Runs analyses with Swift. Doble Yay!
@@ -72,12 +77,17 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
         public synchronized void start() {
             try {
                 List argv = getArgv();
+                String projectName = getAnalysis().getType();
+                String project = projectName + ".swift";
 
-                ElementTree tree = getTree(getElab(), getAnalysis().getType()
-                        + ".swift");
-                ec = new ExecutionContext(tree);
+                String runID = Loader.getUUID();
+
+                ElementTree tree = getTree(getElab(), project);
+                tree.setName(projectName + "-" + runID);
+                tree.getRoot().setProperty(FlowElement.FILENAME, project);
+                ec = new VDL2ExecutionContext(tree, projectName);
                 ec.setArguments(argv);
-                out = new OutputChannel();
+                out = new OutputChannel(runID);
                 out.setPattern("Running job");
                 ec.setStderr(out);
                 ec.setStdout(out);
@@ -103,6 +113,14 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                     // disabled for now
                     // stack.setGlobal("vdl:sitecatalogfile", poolFile);
                 }
+                String home = getElab().getAbsolutePath("/WEB-INF/classes");
+                System.setProperty("swift.home", home);
+                stack.setGlobal(ConfigProperty.INSTANCE_CONFIG_FILE, getElab()
+                        .getAbsolutePath("/WEB-INF/classes/swift.properties"));
+                stack.setGlobal("swift.home", home);
+                stack.setGlobal("vds.home", home);
+                stack.setGlobal("vdl:operation", "run");
+                stack.setGlobal("VDL:RUNID", runID);
 
                 ec.start(stack);
                 setStatus(STATUS_RUNNING);
@@ -120,7 +138,6 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
             while (i.hasNext()) {
                 Map.Entry e = (Map.Entry) i.next();
                 addArg(argv, (String) e.getKey(), e.getValue());
-                argv.add("--" + e.getKey() + '=' + e.getValue());
             }
             return argv;
         }
@@ -137,8 +154,8 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 String s = (String) value;
                 argv.add("-" + name + "=" + s.replaceAll("\r\n?", "\\n"));
             }
-            else if (value instanceof List) {
-                addArg(argv, name, (List) value);
+            else if (value instanceof Collection) {
+                addArg(argv, name, (Collection) value);
             }
             else {
                 throw new IllegalArgumentException(
@@ -148,7 +165,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
             }
         }
 
-        protected void addArg(List argv, String name, List values) {
+        protected void addArg(List argv, String name, Collection values) {
             StringBuffer sb = new StringBuffer();
             Iterator i = values.iterator();
             while (i.hasNext()) {
@@ -165,7 +182,16 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
         }
 
         public String getDebuggingInfo() {
-            return null;
+            return "";
+        }
+
+        public String getSTDERR() {
+            if (out != null) {
+                return out.toString();
+            }
+            else {
+                return "";
+            }
         }
 
         public double getProgress() {

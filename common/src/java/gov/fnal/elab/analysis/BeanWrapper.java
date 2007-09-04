@@ -17,7 +17,7 @@ import java.util.Set;
  * An adaptor implementing <code>ElabAnalysis</code> on top of an <code>ElabBean</code>. This
  * is not needed any more, but kept just in case.
  */
-public class BeanWrapper implements ElabAnalysis {
+public class BeanWrapper extends AbstractAnalysis {
     private Object bean;
     private Class beanClass;
     private String type;

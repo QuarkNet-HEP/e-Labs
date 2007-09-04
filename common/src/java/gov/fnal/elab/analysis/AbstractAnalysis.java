@@ -5,6 +5,7 @@ package gov.fnal.elab.analysis;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,6 +22,20 @@ public abstract class AbstractAnalysis implements ElabAnalysis {
 
     public String getEncodedParameters() {
         return AnalysisTools.encodeParameters(this);
+    }
+    
+    public Collection getParameterValues(String name) {
+        return getParameterValues(this, name);
+    }
+    
+    public static Collection getParameterValues(ElabAnalysis analysis, String name) {
+        Object v = analysis.getParameter(name);
+        if (v instanceof Collection) {
+            return (Collection) v;
+        }
+        else {
+            return Collections.singletonList(v);
+        }
     }
     
     public Collection getInvalidParameters() {

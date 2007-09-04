@@ -9,15 +9,19 @@
  */
 package gov.fnal.elab.analysis.impl.swift;
 
+import java.util.StringTokenizer;
+
 import org.globus.cog.karajan.arguments.AbstractWriteOnlyVariableArguments;
 
 public class OutputChannel extends AbstractWriteOnlyVariableArguments {
 	private StringBuffer sb;
 	private int patternCounter;
 	private String pattern;
+	private String prefix;
 
-	public OutputChannel() {
+	public OutputChannel(String prefix) {
 		sb = new StringBuffer();
+		this.prefix = prefix;
 	}
 
 	public void setPattern(String pattern) {
@@ -35,6 +39,10 @@ public class OutputChannel extends AbstractWriteOnlyVariableArguments {
 				}
 				patternCounter++;
 			}
+		}
+		StringTokenizer st = new StringTokenizer(str, "\n\r");
+		while (st.hasMoreTokens()) {
+		    System.out.println(prefix + ": " + st.nextToken());
 		}
 		sb.append(str);
 	}

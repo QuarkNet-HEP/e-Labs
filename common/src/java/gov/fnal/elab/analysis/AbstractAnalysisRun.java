@@ -53,6 +53,7 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
         }
 
         public int getStatus() {
+            updateStatus();
             return status;
         }
         

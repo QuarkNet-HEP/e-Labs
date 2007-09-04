@@ -3,6 +3,7 @@
  */
 package gov.fnal.elab.analysis.impl.vds;
 
+import gov.fnal.elab.analysis.AbstractAnalysis;
 import gov.fnal.elab.analysis.AnalysisTools;
 import gov.fnal.elab.analysis.ElabAnalysis;
 import gov.fnal.elab.beans.ElabBean;
@@ -172,6 +173,10 @@ public class VDSAnalysis extends ElabBean implements ElabAnalysis {
                 throw new RuntimeException(e);
             }
         }
+    }
+    
+    public Collection getParameterValues(String name) {
+        return AbstractAnalysis.getParameterValues(this, name);
     }
 
     public void setParameterDefault(String name, Object value) {
