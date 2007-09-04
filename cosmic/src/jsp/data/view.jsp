@@ -3,6 +3,8 @@
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
+<%@ page import="gov.fnal.elab.datacatalog.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.cosmic.*" %>
 <%@ page import="java.io.*" %>
@@ -43,12 +45,22 @@
 	if (filename == null) {
 	    throw new ElabJspException("Please choose a file to view");
 	}
+	CatalogEntry entry = elab.getDataCatalogProvider().getEntry(filename);
+	if (entry == null) {
+	    throw new ElabJspException("No metadata about " + filename + " found.");
+	}
+	request.setAttribute("e", entry);
+	
 	String highlight = request.getParameter("highlight");
 
 	String pfn = RawDataFileResolver.getDefault().resolve(elab, filename);
 %> 
 		<h2>${param.filename}</h2><br/>
-		<a href="../data/view-metadata.jsp?filename=${param.filename}">Show details (metadata)</a><br/>
+		<a href="../data/view-metadata.jsp?filename=${param.filename}">Show details (metadata)</a>
+		<c:if test="${e.tupleMap.detectorid != null}">
+			<a href="../geometry/view.jsp?filename=${param.filename}">Show Geometry</a>
+		</c:if>
+		<br/>
 		<form method="get">
 			Go to time<br/>
 			Hours: <e:trinput type="text" name="h" size="2" maxlength="2"/>

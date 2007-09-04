@@ -3,7 +3,7 @@
 <%@ page import="java.util.*" %>
 
 <div id="analysis-controls">
-	<form method="get">
+	<form method="post" action="../analysis-lifetime/analysis.jsp">
 		<e:trinput type="hidden" name="rawData"/>
 	
 		<p>Click <strong>Analyze</strong> to use the default parameters. 
@@ -27,6 +27,8 @@
 										valueList="1, 2, 3, 4" labelList="1, 2, 3, 4" default="1"/>
 								</td>
 							</tr>
+							<e:trinput type="hidden" name="lifetime_energyCheck" value="0"/>
+							<!-- 
 							<tr>
 								<td class="form-label">
 									<e:trlabel for="lifetime_energyCheck" name="Check Energy of Second Pulse">Check energy of 2<sup>nd</sup> pulse</e:trlabel>
@@ -36,6 +38,7 @@
 										default="1"/>
 								</td>
 							</tr>
+							-->
 							<tr>
 								<td class="form-label">
 									<e:trlabel for="lifetime_gatewidth" name="Gate Width (seconds)">Gate width (seconds):</e:trlabel>

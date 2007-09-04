@@ -1,14 +1,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/elab.jsp" %>
+<%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
 
 <%
-	String[] f = (String[]) request.getParameterValues("rawData");
+	Collection f = ((ElabAnalysis) request.getAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS)).getParameterValues("rawData"); 
 	ResultSet rs = elab.getDataCatalogProvider().getEntries(f);
-	out.write(String.valueOf(f.length));
+	if (f.size() != rs.size()) {
+		out.write(f.size() + " ? " + rs.size());
+	}
 %>
 <div id="analyzing-ist">
 <table colspace="4" border="0">
@@ -24,6 +27,9 @@
 				<td align="center">Remove from analysis</td>
 			</c:if>
 		</tr>
+		<c:forEach items="${missing}" var="m">
+			<td 
+		</c:forEach>
 		<%
 			//variables provided for the page including this file
 			HashSet detectorIDs = new HashSet();
@@ -46,7 +52,7 @@
 			//number of files. Initially display the top 10
 			int num_files = 0;
 			SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy H:m:s z");
-			sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 			SimpleDateFormat sef = new SimpleDateFormat("MM/dd/yyyy H:mm");
 			//Since we're using Java classes and don't know what class instance to call,
 			// some kind of common variable needs to be setup for this page to reference.

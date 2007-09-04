@@ -1,5 +1,6 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page errorPage="../include/errorpage.jsp" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
@@ -18,7 +19,7 @@
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	
-	<body id="search-plots" class="data">
+	<body id="view-metadata" class="data">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
@@ -50,15 +51,43 @@
 				request.setAttribute("e", entry);
 			%>
 			
+			<c:if test="${e.tupleMap.type == 'plot'}">
+				<a href="../plots/view.jsp?filename=${param.filename}">Show Plot</a>
+			</c:if>
+			<c:if test="${e.tupleMap.type == 'split'}">
+				<a href="../data/view.jsp?filename=${param.filename}">Show Data</a>
+			</c:if>
+			<c:if test="${e.tupleMap.detectorid != null && e.tupleMap.julianstartdate != null}">
+				<a href="../geometry/view.jsp?filename=${param.filename}">Show Geometry</a>
+			</c:if>
 			<h2>Metadata for ${param.filename}</h2>
 			<table border="0">
 				<c:forEach items="${e.tupleIterator}" var="tuple">
 					<tr>
 						<td align="right">${tuple.key}:&nbsp;</td>
-						<td align="left">${tuple.value}</td>
+						<td align="left">
+							<c:choose>
+								<c:when test="${tuple.key == 'provenance'}">
+									<e:popup href="../plots/view-provenance.jsp?filename=${param.filename}" target="Provenance" width="800" height="850">${tuple.value}</e:popup>
+								</c:when>
+								<c:when test="${tuple.key == 'detectorid' && e.tupleMap.julianstartdate != null}">
+									<c:forEach items="${fn:split(tuple.value, ' ')}" var="f">
+										<a href="../geometry/view.jsp?id=${f}&julianstartdate=${e.tupleMap.julianstartdate}">${f}</a>
+									</c:forEach>
+								</c:when>
+								<c:when test="${tuple.key == 'source'}">
+									<c:forEach items="${fn:split(tuple.value, ' ')}" var="f">
+										<a href="../data/view.jsp?filename=${f}">${f}</a>
+									</c:forEach>
+								</c:when>
+								<c:otherwise>
+									${tuple.value}
+								</c:otherwise>
+							</c:choose>
+						</td>
 					</tr>
 				</c:forEach>
-			</dl>
+			</table>
 		</td>
 	</tr>
 </table>

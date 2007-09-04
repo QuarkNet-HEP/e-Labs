@@ -1,54 +1,81 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="elab" uri="http://www.i2u2.org/jsp/elabtl" %>
-<%@ page errorPage="../include/errorpage.jsp" %>
+<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="gov.fnal.elab.cosmic.util.*" %>
-	
-<elab:analysis name="analysis" type="Quarknet.Cosmic::PerformanceStudy">
+
+<e:analysis name="analysis" type="Quarknet.Cosmic::PerformanceStudy">
 	<%
-		//these need to always be set-up
-		//also, this piece of code is ugly
-		String[] rawData = request.getParameterValues("rawData");
+		ElabAnalysis analysis = (ElabAnalysis) request.getAttribute("analysis");
+		Collection rawData = analysis.getParameterValues("rawData");
 		if(rawData != null) {
 			List thresholdData = AnalysisParameterTools.getThresholdFiles(elab, rawData);
 			String ids = AnalysisParameterTools.getDetectorIds(rawData);
 			
-			Collection channels = DataTools.getValidChannels(elab, rawData);
-			String singleChannels = ElabUtil.join(channels, null, null, " ");
-			String singleChannelOuts = ElabUtil.join(channels, "singleOut", null, " ");
-			String freqOuts = ElabUtil.join(channels, "freqOut", null, " ");
-			ElabAnalysis a = (ElabAnalysis) request.getAttribute("analysis");
+			Collection channels = AnalysisParameterTools.getValidChannels(elab, rawData);
+			//make a new copy because we're going to mess with this one
+			request.setAttribute("validChannels", new HashSet(channels));
+			//only set up channels after a submit was pressed
+			if (request.getParameter("submit") != null) {
+				for (int i = 1; i <= 4; i++) {
+					String channel = String.valueOf(i);
+					if (request.getParameter(channel) == null) {
+						channels.remove(channel);
+					}
+				}
+			}
+			else {
+				//otherwise set from analysis
+				//now, this should be done nicer, with parameter processors instead of one-to-one
+				//mapping between parameters and analysis parameters
+				String achannels = (String) analysis.getParameter("singlechannel_channel");
+				if (achannels != null && !"".equals(achannels)) {
+					for (int i = 1; i <= 4; i++) {
+						String channel = String.valueOf(i);
+						if (achannels.indexOf(channel) == -1) {
+							channels.remove(channel);
+						}
+					}
+				}
+			}
+			//we must ensure the same iteration order, so singleChannels, singleChannelOuts, and
+			//freqOuts have the channels in the same order
+			List c = new LinkedList(channels);
+			
+			String singleChannels = ElabUtil.join(c, null, null, " ");
+			String singleChannelOuts = ElabUtil.join(c, "singleOut", null, " ");
+			String freqOuts = ElabUtil.join(c, "freqOut", null, " ");
 			
 			//<trdefault> is equivalent to analysis.setParameterDefault()
 			//It indicates that these parameters are not user controlled and
 			//should not be encoded in the param URLs for a subsequent run.
 			%>
-	        <elab:trdefault name="thresholdAll" value="<%= thresholdData %>"/>
-			<elab:trdefault name="detector" value="<%= ids %>"/>	  
-			<elab:trdefault name="singlechannel_channel" value="<%= singleChannels %>"/>
-			<elab:trdefault name="singlechannelOut" value="<%= singleChannelOuts %>"/>
-			<elab:trdefault name="freqOut" value="<%= freqOuts %>"/>
+	        <e:trdefault name="thresholdAll" value="<%= thresholdData %>"/>
+			<e:trdefault name="detector" value="<%= ids %>"/>	  
+			<e:trdefault name="singlechannel_channel" value="<%= singleChannels %>"/>
+			<e:trdefault name="singlechannelOut" value="<%= singleChannelOuts %>"/>
+			<e:trdefault name="freqOut" value="<%= freqOuts %>"/>
 			<%
 		}
 	%>
-	<elab:trdefault name="plot_outfile_param" value="plot_param"/>
-	<elab:trdefault name="plot_outfile_image" value="plot.png"/>
-	<elab:trdefault name="plot_outfile_image_thumbnail" value="plot_thm.png"/>
-	<elab:trdefault name="plot_thumbnail_height" value="150"/>
-	<elab:trdefault name="plot_plot_type" value="7"/>
-	<elab:trdefault name="plot_xlabel" value="Time over Threshold (nanosec)"/>
-	<elab:trdefault name="plot_ylabel" value="Number of muons"/>
-	<elab:trdefault name="freq_binType" value="1"/>
-	<elab:trdefault name="freq_col" value="5"/>
+	<e:trdefault name="plot_outfile_param" value="plot_param"/>
+	<e:trdefault name="plot_outfile_image" value="plot.png"/>
+	<e:trdefault name="plot_outfile_image_thumbnail" value="plot_thm.png"/>
+	<e:trdefault name="plot_thumbnail_height" value="150"/>
+	<e:trdefault name="plot_plot_type" value="7"/>
+	<e:trdefault name="plot_xlabel" value="Time over Threshold (nanosec)"/>
+	<e:trdefault name="plot_ylabel" value="Number of PMT pulses"/>
+	<e:trdefault name="freq_binType" value="1"/>
+	<e:trdefault name="freq_col" value="5"/>
 	
-	<elab:ifAnalysisIsOk>
+	<e:ifAnalysisIsOk>
 		<jsp:include page="../analysis/start.jsp?continuation=../analysis-performance/output.jsp&onError=../analysis-performance/analysis.jsp"/>
-	</elab:ifAnalysisIsOk>
-	<elab:ifAnalysisIsNotOk>
+	</e:ifAnalysisIsOk>
+	<e:ifAnalysisIsNotOk>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -78,7 +105,7 @@
 			<div id="content">
 
 <c:choose>
-	<c:when test="${param.rawData != null}">
+	<c:when test="${analysis.parameters.rawData != null}">
 		<h1>Do you trust the detector? Analyze its performance before you use the data for other studies.</h1>
 		<table border="0" id="main">
 			<tr>
@@ -127,5 +154,5 @@
 	</body>
 </html>
 
-	</elab:ifAnalysisIsNotOk>
-</elab:analysis>
+	</e:ifAnalysisIsNotOk>
+</e:analysis>

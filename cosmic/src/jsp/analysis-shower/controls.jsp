@@ -18,7 +18,7 @@
 %>
 
 <div id="analysis-controls">
-	<form method="get">
+	<form method="post" action="../analysis-shower/analysis.jsp">
 		<e:trinput type="hidden" name="rawData"/>
 		<e:trinput type="hidden" name="eventNum" default="1"/>
 	

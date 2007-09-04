@@ -37,7 +37,7 @@
 	<img src="${results.outputDirURL}/plot.png"/>
 </p>
 <p>
-	<a href="analysis.jsp?${results.analysis.encodedParameters}">Change</a> your parameters.
+	<e:rerun type="lifetime" analysis="${results.analysis}" label="Change"/> your parameters
 </p>
 <p><b>OR</b></p>
 <p>To save this plot permanently, enter the new name you want.</p>
@@ -49,7 +49,6 @@
 		<input type="hidden" name="metadata" value="study string lifetime"/>
 		<input type="hidden" name="metadata" value="type string plot"/>
 		<input type="hidden" name="metadata" value="bins int ${results.analysis.parameters['freq_binValue']}"/>
-		<input type="hidden" name="metadata" value="channel string ${results.analysis.parameters['singlechannel_channel']}"/>
 
 		<input type="hidden" name="metadata" value="title string ${results.analysis.parameters['plot_title']}"/>
 		<input type="hidden" name="metadata" value="caption string ${results.analysis.parameters['plot_caption']}"/>

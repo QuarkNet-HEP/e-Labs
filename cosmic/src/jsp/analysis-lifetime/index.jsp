@@ -44,32 +44,9 @@
 					<jsp:param name="type" value="split"/>
 				</jsp:include>
 				<form action="analysis.jsp" method="get" id="results-form">
-					<%
-						//this should be put in some convenience class(es) as there are two main possibilities: 
-						    //single or multiple selection
-						StructuredResultSetDisplayer srsd = new StructuredResultSetDisplayer(){
-					    	private int count = 0;
-							public void displayMonthContents(JspWriter out, Month month) throws IOException {
-							    if (month.getFileCount() > 1) {
-							        out.write("<input type=\"checkbox\" id=\"cb" + count + "\" name=\"selectall\" onClick=\"selectAll(" + count + ", " + count + month.getFileCount() + 1 + ")\"/>");
-							        out.write("select all " + month.getFileCount() + " files");
-							        count++;
-							    }
-							    super.displayMonthContents(out, month);
-							}
-					    
-					    	public void displayFileContents(JspWriter out, File file)
-					            throws IOException {
-					    	    %>
-					    	    	<input type="checkbox" name="rawData" 
-					    	    		id="<%= "cb" + count %>" value="<%= file.getLFN() %>"/>
-					    	    <%
-					    	    count++;
-					    	    super.displayFileContents(out, file);
-					    	}
-						};
-						request.setAttribute("searchResultsDisplayer", srsd);
-					%>
+					<jsp:useBean scope="request" 
+						class="gov.fnal.elab.datacatalog.MultiSelectStructuredResultSetDisplayer" 
+						id="searchResultsDisplayer"/>
 					<div class="search-results">
 						<jsp:include page="../data/search-results.jsp"/>
 					</div>

@@ -3,7 +3,8 @@
 <%@ page import="java.util.*" %>
 
 <div id="analysis-controls">
-	<form method="get">
+	<%-- Must specify the action so that get parameters are not mixed with the post ones --%>
+	<form method="post" action="../analysis-performance/analysis.jsp">
 		<e:trinput type="hidden" name="rawData"/>
 	
 		<p>Click <strong>Analyze</strong> to use the default parameters. 
@@ -18,10 +19,36 @@
 					<table>
 						<tr>
 							<td class="form-label">
+								<label>Channels:</label>
+							</td>
+							<td class="form-control">
+								<table>
+									<tr>
+								<%
+									Set valid = (Set) request.getAttribute("validChannels");
+									ElabAnalysis a = (ElabAnalysis) request.getAttribute("analysis");
+									for (int i = 1; i <= 4; i++) {
+										String channel = String.valueOf(i);
+										if (valid.contains(channel)) {
+											out.write("<td>");
+											out.write(channel + "<input type=\"checkbox\" name=\"" + channel + "\" ");
+											if (((String) a.getParameter("singlechannel_channel")).indexOf(channel) != -1) {
+												out.write("checked=\"true\"");
+											}
+											out.write("/></td>");
+										}
+									}  
+								%>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td class="form-label">
 								<e:trlabel for="freq_binValue" name="Bin Width">Bin width (ns):</e:trlabel>
 							</td>
 							<td class="form-control">
-								<e:trinput type="text" name="freq_binValue" size="8" default="10"
+								<e:trinput type="text" name="freq_binValue" size="8" default="2"
 									onError="Use either a positive number or an expression (e.g. 60*60)"/>
 							</td>
 						</tr>

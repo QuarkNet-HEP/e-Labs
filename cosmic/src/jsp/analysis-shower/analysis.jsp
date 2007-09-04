@@ -10,23 +10,20 @@
 	
 <e:analysis name="analysis" type="Quarknet.Cosmic::ShowerStudy">
 	<%
-		//these need to always be set-up
-		//also, this piece of code is ugly
-		String[] rawData = request.getParameterValues("rawData");
+		ElabAnalysis analysis = (ElabAnalysis) request.getAttribute("analysis");
+		Collection rawData = analysis.getParameterValues("rawData");
 		if(rawData != null) {
 			List thresholdData = AnalysisParameterTools.getThresholdFiles(elab, rawData);
 			String ids = AnalysisParameterTools.getDetectorIds(rawData);
-			List wd = new ArrayList();
-			for (int i = 0; i < rawData.length; i++) {
-			    wd.add(rawData[i] + ".wd");
-			}
-			
-			ElabAnalysis a = (ElabAnalysis) request.getAttribute("analysis");
+			List wd = AnalysisParameterTools.getWireDelayFiles(elab, rawData);
+			List geo = AnalysisParameterTools.getGeometryFiles(elab, rawData);
 
 			%>
 	        <e:trdefault name="thresholdAll" value="<%= thresholdData %>"/>
 	        <e:trdefault name="wireDelayData" value="<%= wd %>"/>
 			<e:trdefault name="detector" value="<%= ids %>"/>
+			<e:trdefault name="geoDir" value="${elab.properties['data.dir']}"/>
+			<e:trdefault name="geoFiles" value="<%= geo %>"/>
 			<%
 		}
 	%>
@@ -39,12 +36,11 @@
 	<e:trdefault name="plot_xlabel" value="East/West (meters)"/>
 	<e:trdefault name="plot_ylabel" value="North/South (meters)"/>
 	<e:trdefault name="plot_zlabel" value="Time (nanosec)"/>
-	<e:trdefault name="geoDir" value="${elab.properties['data.dir']}"/>
 	<e:trdefault name="sort_sortKey1" value="2"/>
 	<e:trdefault name="sort_sortKey2" value="3"/>
 	
 	<e:ifAnalysisIsOk>
-		<jsp:include page="../analysis/start.jsp?continuation=../analysis-shower/output.jsp&onError=../analysis-performance/analysis.jsp"/>
+		<jsp:include page="../analysis/start.jsp?continuation=../analysis-shower/output.jsp&onError=../analysis-shower/analysis.jsp"/>
 	</e:ifAnalysisIsOk>
 	<e:ifAnalysisIsNotOk>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
@@ -76,7 +72,7 @@
 			<div id="content">
 
 <c:choose>
-	<c:when test="${param.rawData != null}">
+	<c:when test="${analysis.parameters.rawData != null}">
 		<h1>Look for showers in your data</h1>
 		<table border="0" id="main">
 			<tr>
@@ -88,9 +84,9 @@
 					<jsp:include page="../data/analyzing-list.jsp"/>
 					
 					<p id="other-analyses">
-						Analyze the same files in 
-						<a href="../analysis-lifetime/analysis.jsp?rawData=${param.rawData}">lifetime</a>
-						<a href="../analysis-flux/analysis.jsp?rawData=${param.rawData}">flux</a>
+						Analyze the same files in
+						<e:link href="../analysis-lifetime/analysis.jsp" rawData="${analysis.parameters.rawData}">lifetime</e:link>
+						<e:link href="../analysis-flux/analysis.jsp" rawData="${analysis.parameters.rawData}">flux</e:link> 
 					</p>
 					
 				    <c:if test="${!(empty analysis.invalidParameters) && param.submit != null}">

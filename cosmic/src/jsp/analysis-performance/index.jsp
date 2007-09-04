@@ -44,22 +44,12 @@
 					<jsp:param name="type" value="split"/>
 				</jsp:include>
 				<form action="analysis.jsp" method="get" id="results-form">
-					<%
-						StructuredResultSetDisplayer srsd = new StructuredResultSetDisplayer(){
-					    	public void displayFileContents(JspWriter out, File file)
-					            throws IOException {
-					    	    %>
-					    	    	<input type="radio" name="rawData" value="<%= file.getLFN() %>"/>
-					    	    <%
-					    	    super.displayFileContents(out, file);
-					    	}
-						};
-						request.setAttribute("searchResultsDisplayer", srsd);
-					%>
+					<jsp:useBean scope="request" 
+						class="gov.fnal.elab.datacatalog.SingleSelectStructuredResultSetDisplayer" 
+						id="searchResultsDisplayer"/>
 					<div class="search-results">
 						<jsp:include page="../data/search-results.jsp"/>
 					</div>
-					<!-- this kind of nesting is an interesting problem -->
 					<div id="right">
 						<%@ include file="help.jsp" %>
 						<div id="analyze" class="study-right">

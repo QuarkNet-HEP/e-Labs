@@ -93,7 +93,7 @@ The CPLD clock frequency fluctuates slightly over time, de-pending on temperatur
 
 <B>Word 10:</B> A 32-bit CPLD count of the most recent 1PPS (1 pulse per second) time mark from the <a href="javascript:glossary('GPS')">GPS</a> receiver. This hex word ranges from 00000000...FFFFFFFF and has a resolution of 24 ns just like word 1
 <P>
-<B>Word 11:</B> <a href='javascript:glossary("GMT")'>GMT</a> time of most recent GPS re-ceiver data update. Although one update is sent each second, it is asynchronous with the 1PPS pulse. The format used is shown below:
+<B>Word 11:</B> <a href='javascript:glossary("UTC")'>UTC</a> time of most recent GPS re-ceiver data update. Although one update is sent each second, it is asynchronous with the 1PPS pulse. The format used is shown below:
 <P STYLE="margin-left: 10px">
 	HHMMSS.mmm<BR>
 where: HH = hour [00...23]<BR>
@@ -103,7 +103,7 @@ mmm = millisecond [000...999]
 <P>
 
 
-<B>Word 12:</B> GMT date of most recent GPS re-ceiver data update. The format used is shown below:
+<B>Word 12:</B> UTC date of most recent GPS re-ceiver data update. The format used is shown below:
 <P STYLE="margin-left: 10px">
 	ddmmyy<BR>
 where: dd = day of month [01...31]<BR>

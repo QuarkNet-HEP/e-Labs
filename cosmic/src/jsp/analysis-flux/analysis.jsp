@@ -7,22 +7,21 @@
 <%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="gov.fnal.elab.cosmic.util.*" %>
+<%@ page import="java.util.*" %>
 	
 <e:analysis name="analysis" type="Quarknet.Cosmic::FluxStudy">
 	<%
 		//these need to always be set-up
 		//also, this piece of code is ugly
-		String[] rawData = request.getParameterValues("rawData");
+		ElabAnalysis analysis = (ElabAnalysis) request.getAttribute("analysis");
+		Collection rawData = analysis.getParameterValues("rawData");
 		if(rawData != null) {
 			List thresholdData = AnalysisParameterTools.getThresholdFiles(elab, rawData);
-			List wd = new ArrayList();
-			for (int i = 0; i < rawData.length; i++) {
-			    wd.add(rawData[i] + ".wd");
-			}
+			List wd = AnalysisParameterTools.getWireDelayFiles(elab, rawData);
+			List geo = AnalysisParameterTools.getGeometryFiles(elab, rawData);
 			String ids = AnalysisParameterTools.getDetectorIds(rawData);
 			
-			Collection channels = DataTools.getValidChannels(elab, rawData);
-			ElabAnalysis a = (ElabAnalysis) request.getAttribute("analysis");
+			Collection channels = AnalysisParameterTools.getValidChannels(elab, rawData);
 			//<trdefault> is equivalent to analysis.setParameterDefault()
 			//It indicates that these parameters are NOT USER CONTROLLED and
 			//should not be encoded in the param URLs for a subsequent run.
@@ -31,6 +30,8 @@
 	        <e:trdefault name="wireDelayData" value="<%= wd %>"/>
 			<e:trdefault name="detector" value="<%= ids %>"/>	  
 			<e:trdefault name="singlechannelOut" value="singlechannelOut"/>
+			<e:trdefault name="geoDir" value="${elab.properties['data.dir']}"/>
+			<e:trdefault name="geoFiles" value="<%= geo %>"/>
 			<%
 		}
 	%>
@@ -39,14 +40,13 @@
 	<e:trdefault name="plot_outfile_image_thumbnail" value="plot_thm.png"/>
 	<e:trdefault name="plot_thumbnail_height" value="150"/>
 	<e:trdefault name="plot_plot_type" value="1"/>
-	<e:trdefault name="plot_xlabel" value="Time GMT (hours)"/>
+	<e:trdefault name="plot_xlabel" value="Time UTC (hours)"/>
 	<e:trdefault name="plot_ylabel" value="Flux (events/m^2/60-seconds)"/>
-	<e:trdefault name="flux_geoDir" value="${elab.properties['data.dir']}"/>
 	<e:trdefault name="sort_sortKey1" value="2"/>
 	<e:trdefault name="sort_sortKey2" value="3"/>
 	
 	<e:ifAnalysisIsOk>
-		<jsp:include page="../analysis/start.jsp?continuation=../analysis-flux/output.jsp&onError=../analysis-performance/analysis.jsp"/>
+		<jsp:include page="../analysis/start.jsp?continuation=../analysis-flux/output.jsp&onError=../analysis-flux/analysis.jsp"/>
 	</e:ifAnalysisIsOk>
 	<e:ifAnalysisIsNotOk>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
@@ -78,7 +78,7 @@
 			<div id="content">
 
 <c:choose>
-	<c:when test="${param.rawData != null}">
+	<c:when test="${analysis.parameters.rawData != null}">
 		<h1>Calculate the flux for your data file. Rember, flux = particles / time / area</h1>
 		<table border="0" id="main">
 			<tr>
@@ -90,9 +90,9 @@
 					<jsp:include page="../data/analyzing-list.jsp"/>
 					
 					<p id="other-analyses">
-						Analyze the same files in 
-						<a href="../analysis-lifetime/analysis.jsp?rawData=${param.rawData}">lifetime</a>
-						<a href="../analysis-shower/analysis.jsp?rawData=${param.rawData}">shower</a>
+						Analyze the same files in
+						<e:link href="../analysis-lifetime/analysis.jsp" rawData="${analysis.parameters.rawData}">lifetime</e:link>
+						<e:link href="../analysis-shower/analysis.jsp" rawData="${analysis.parameters.rawData}">shower</e:link>
 					</p>
 					
 				    <c:if test="${!(empty analysis.invalidParameters) && param.submit != null}">

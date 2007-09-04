@@ -219,6 +219,19 @@ Re: the upload progress stuff
         	                if (tmp[0].equals("cpldfrequency")) {
             	                cpldFrequency += tmp[2] + " ";
         	                }
+        	                else if (tmp[0].equals("julianstartdate")) {
+        	                	Geometry geometry = new Geometry(elab.getProperties().getDataDir(), id);
+								if (geometry == null || geometry.isEmpty()) {
+									throw new ElabJspException("Error: no geometry information for detector " + detectorId);
+								}
+								SortedMap geos = geometry.getGeoEntriesBefore(tmp[2]);
+								if (geos.isEmpty()) {
+									throw new ElabJspException("Error: no geometry information for detector " + 
+										id + " for when this data was taken.");
+								}
+								GeoEntryBean g = (GeoEntryBean) geos.get(geos.lastKey());
+								meta.add("stacked boolean " + (g.getStackedState() ? "true" : "false"));
+        	                }
 	                    }
     	            }   //done reading file
 

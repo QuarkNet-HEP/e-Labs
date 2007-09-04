@@ -68,22 +68,30 @@
 	int lineNo = 1;
 	final int csc = sortCol;
 	final String[] colNames = new String[] {"date", "eventCoincidence", "numDetectors"};
+	final int[] defDir = new int[] {1, -1, -1};
+	final int dir;
+	if (request.getParameter("dir") == null) {
+		dir = defDir[csc];
+	}
+	else {
+		dir = "a".equals(request.getParameter("dir")) ? 1 : -1;
+	}
 	Set rows = new TreeSet(new Comparator() {
 		public int compare(Object o1, Object o2) {
 		    Map m1 = (Map) o1;
 		    Map m2 = (Map) o2;
 		    int c = ((Comparable) m1.get(colNames[csc])).compareTo(m2.get(colNames[csc]));
 		    if (c == 0) {
-		        return ((Integer) m1.get("eventNum")).compareTo(m2.get("eventNum"));
+		        return dir*((Integer) m1.get("eventNum")).compareTo(m2.get("eventNum"));
 		    }
 		    else {
-		        return c;
+		        return dir*c;
 		    }
 		}
 	});
 	Set allIds = new HashSet();
 	DateFormat df = new SimpleDateFormat("MMM d, yyyy HH:mm:ss z");
-	df.setTimeZone(TimeZone.getTimeZone("GMT"));
+	df.setTimeZone(TimeZone.getTimeZone("UTC"));
 	
 	while(line != null) {
 	    //ignore comments in the file
@@ -152,35 +160,39 @@
 			<table id="shower-events">
 				<tr>
 					<th width="98%">
-						<a href="output.jsp?id=${param.id}&sort=0">Event Date</a>
+						<a href="output.jsp?id=${param.id}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }">Event Date</a>
 					</th>
 					<th width="1%">
-						<a href="output.jsp?id=${param.id}&sort=1">Event Coincidence</a>
+						<a href="output.jsp?id=${param.id}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }">Event Coincidence</a>
 					</th>
 					<th width="1%">
-						<a href="output.jsp?id=${param.id}&sort=2">Detector Coincidence</a>
+						<a href="output.jsp?id=${param.id}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }">Detector Coincidence</a>
 					</th>
 				</tr>
 				<c:forEach items="${rows}" var="row" varStatus="li">
-					<tr bgcolor="${li.count == eventNum ? '#aaaafc' : (li.count % 2 == 0 ? '#e7eefc' : '#ffffff')}">
-						<td>
-							<%
-								analysis.setParameter("eventNum", ((Map) pageContext.getAttribute("row")).get("eventNum"));
-							%>
-							<a href="analysis.jsp?${analysis.encodedParameters}&submit=true">${row.dateF}</td>
-							<%
-								analysis.setParameter("eventNum", eventNum);
-							%>
-						</td>
-						<td>
-							${row.eventCoincidence}
-						</td>
-						<td>
-							${row.numDetectors}
-								(<c:forEach items="${row.ids}" var="detectorId"><e:popup href="../data/detector-info.jsp?id=${detectorId}" target="new" width="460" height="160">${detectorId}</e:popup></c:forEach>)
-						</td>
-					</tr>
+					<e:paged crt="${li.count}" pageSize="30" totalSize="${rows}">
+						<tr bgcolor="${row.eventNum == eventNum ? '#aaaafc' : (li.count % 2 == 0 ? '#e7eefc' : '#ffffff')}">
+							<td>
+								<e:rerun type="shower" analysis="${results.analysis}" label="${row.dateF}">
+									<e:param name="eventNum" value="${row.eventNum}"/>
+									<e:param name="submit" value="true"/>
+								</e:rerun>
+							</td>
+							<td>
+								${row.eventCoincidence}
+							</td>
+							<td>
+								${row.numDetectors}
+									(<c:forEach items="${row.ids}" var="detectorId"><e:popup href="../data/detector-info.jsp?id=${detectorId}" target="new" width="460" height="160">${detectorId}</e:popup></c:forEach>)
+							</td>
+						</tr>
+					</e:paged>
 				</c:forEach>
+				<tr>
+					<td colspan="3" align="right">
+						<e:pagelinks pageSize="30" totalSize="${rows}" name="event" names="events"/>
+					</td>
+				</tr>
 			</table>
 		</td>
 		<td align="center" valign="top">
@@ -222,7 +234,7 @@
 </table>
 
 <p align="center">
-	<a href="analysis.jsp?${results.analysis.encodedParameters}">Change</a> your parameters.
+	<e:rerun type="shower" analysis="${results.analysis}" label="Change"/> your parameters
 </p>
 <p align="center"><b>OR</b></p>
 <p align="center">To save this plot permanently, enter the new name you want.</p>

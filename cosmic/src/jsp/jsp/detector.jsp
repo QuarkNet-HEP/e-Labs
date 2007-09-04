@@ -50,8 +50,20 @@ String headerType = "Teacher";
 9. Daisy-chained power cables
 </TD></TD>
 <TR><TD COLSPAN=2>
-For this setup, the DAQ board takes the signals from the counters and provides signal processing and logic basic to most nuclear and particle physics experiments. The DAQ board can anlyze signals from up to four PMTs. (We show two in the photo.) The board produces a record of output data whenever the PMT signal meets a pre-defined trigger criterion (for example, when two or more PMTs have signals above some predetermined threshold voltage, within a certain time window). The output data record, which can be sent via a standard RS-232 serial interface to any PC, contains temporal information about the PMT signals. This information includes: how many channels had above-threshold signals, their
-relative arrival times (precise to 0.75 ns), and the starting and stopping times for each detected pulse. In addition, an external GPS receiver module provides the absolute <a href="glossary('GMT')">GMT</a> time of each trigger, accurate to about 50 ns. This allows counter arrays using separate DAQ boards such as different schools in a wide-area array or two sets of counters at the same site to correlate their timing data. Keyboard commands allow you to define trigger criteria and retrieve additional data, such as counting rates, auxiliary GPS data, and environmental sensor data (temperature and pressure). 
+For this setup, the DAQ board takes the signals from the counters and provides signal processing 
+and logic basic to most nuclear and particle physics experiments. The DAQ board can anlyze signals 
+from up to four PMTs. (We show two in the photo.) The board produces a record of output data 
+whenever the PMT signal meets a pre-defined trigger criterion (for example, when two or more 
+PMTs have signals above some predetermined threshold voltage, within a certain time window). 
+The output data record, which can be sent via a standard RS-232 serial interface to any PC, 
+contains temporal information about the PMT signals. This information includes: how many channels 
+had above-threshold signals, their relative arrival times (precise to 0.75 ns), and the starting 
+and stopping times for each detected pulse. In addition, an external GPS receiver module provides 
+the absolute <a href="glossary('UTC')">UTC</a> time of each trigger, accurate to about 50 ns. 
+This allows counter arrays using separate DAQ boards such as different schools in a wide-area 
+array or two sets of counters at the same site to correlate their timing data. Keyboard commands 
+allow you to define trigger criteria and retrieve additional data, such as counting rates, 
+auxiliary GPS data, and environmental sensor data (temperature and pressure). 
 <P>
  <B>Want more information? Users Manual <A HREF="http://quarknet.fnal.gov/toolkits/ati/det-user.pdf">pdf</A> - <A HREF="data.jsp">Explanation of the Data</A>
 </TD></TR>

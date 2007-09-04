@@ -83,7 +83,7 @@ for(int i=0; i<lfn.length; i++){
             if(metaMap.size() > 0){
                 school = (String)metaMap.get("school");
                 java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("M/d/yy hh:mm a");
-                sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+                sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
                 startdate = sdf.format((Date)metaMap.get("startdate"));
                 enddate = sdf.format((Date)metaMap.get("enddate"));
             }

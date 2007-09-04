@@ -87,10 +87,10 @@
 											
 						The plot to the left shows <a HREF="javascript:glossary('flux',350)">flux</a> 
 						measurements for <a HREF="javascript:glossary('detector',350)">detector # 180 </a> 
-						on 8 August 2003. The measurements start around <a HREF="javascript:glossary('GMT',100)">17:19</a>
-						 and end 36 minutes later at <a HREF="javascript:glossary('GMT',100)">17:45.</a><p>
-						One interesting feature occurs between <a HREF="javascript:glossary('GMT',100)">17:31</a> and 
-						<a HREF="javascript:glossary('GMT',100)">17:33</a>-the 
+						on 8 August 2003. The measurements start around <a HREF="javascript:glossary('UTC',100)">17:19</a>
+						 and end 36 minutes later at <a HREF="javascript:glossary('UTC',100)">17:45.</a><p>
+						One interesting feature occurs between <a HREF="javascript:glossary('UTC',100)">17:31</a> and 
+						<a HREF="javascript:glossary('UTC',100)">17:33</a>-the 
 						<a HREF="javascript:glossary('flux',100)">flux</a> drops from 20,000 units to very 
 						small values in a short time. What might cause this? Is the effect real or is it some 
 						artifact of the way this file was plotted? Is there a way that you can tell?

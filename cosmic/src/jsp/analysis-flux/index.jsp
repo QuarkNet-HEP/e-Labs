@@ -1,5 +1,5 @@
 <%@ taglib prefix="elab" uri="http://www.i2u2.org/jsp/elabtl" %>
-<%@ page errorPage="../include/errorpage.jsp" %>
+<%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
@@ -44,31 +44,9 @@
 					<jsp:param name="type" value="split"/>
 				</jsp:include>
 				<form action="analysis.jsp" method="get" id="results-form">
-					<%
-						StructuredResultSetDisplayer srsd = new StructuredResultSetDisplayer(){
-					    	private int count = 0;
-							public void displayMonthContents(JspWriter out, Month month) throws IOException {
-							    if (month.getFileCount() > 1) {
-							        out.write("<input type=\"checkbox\" id=\"cb" + count + "\" name=\"selectall\" onClick=\"selectAll(" + count + ", " + count + month.getFileCount() + 1 + ")\"/>");
-							        out.write("select all " + month.getFileCount() + " files");
-							        count++;
-							    }
-							    super.displayMonthContents(out, month);
-							}
-					    
-					    	public void displayFileContents(JspWriter out, File file)
-					            throws IOException {
-					    	    %>
-					    	    	<input type="checkbox" name="rawData" 
-					    	    		id="<%= "cb" + count %>" value="<%= file.getLFN() %>"/>
-					    	    <%
-					    	    count++;
-					    	    super.displayFileContents(out, file);
-					    	}
-						};
-						request.setAttribute("searchResultsDisplayer", srsd);
-						
-					%>
+					<jsp:useBean scope="request" 
+						class="gov.fnal.elab.datacatalog.MultiSelectStructuredResultSetDisplayer" 
+						id="searchResultsDisplayer"/>
 					<div class="search-results">
 						<jsp:include page="../data/search-results.jsp"/>
 					</div>

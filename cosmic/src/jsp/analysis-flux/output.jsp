@@ -37,7 +37,7 @@
 	<img src="${results.outputDirURL}/plot.png"/>
 </p>
 <p>
-	<a href="analysis.jsp?${results.analysis.encodedParameters}">Change</a> your parameters.
+	<e:rerun type="flux" analysis="${results.analysis}" label="Change"/> your parameters
 </p>
 <p><b>OR</b></p>
 <p>To save this plot permanently, enter the new name you want.</p>
