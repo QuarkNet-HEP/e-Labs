@@ -1,10 +1,18 @@
 package gov.fnal.elab.cosmic.beans;
 
-import java.util.*;
-import java.io.*;
-import java.sql.*;
+import gov.fnal.elab.Elab;
+import gov.fnal.elab.ElabGroup;
 import gov.fnal.elab.cosmic.Geometry;
+import gov.fnal.elab.util.DatabaseConnectionManager;
 import gov.fnal.elab.util.ElabException;
+
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.TreeMap;
 
 public class Geometries implements Serializable {
 
@@ -14,7 +22,7 @@ public class Geometries implements Serializable {
     public Geometries() {
         this.reset();
     }
-
+    
     public Geometries(String groupID, String dataDirectory, Connection c) throws ElabException {
         this.reset();
         try {
@@ -31,7 +39,31 @@ public class Geometries implements Serializable {
             if (c != null)
                 c.close();
         } catch (Exception e) {
-            throw new ElabException("Problem occured when assembling geometries from database: " + e);
+            throw new ElabException("Problem occured when assembling geometries from database: ", e);
+        }
+    }
+
+    public Geometries(Elab elab, ElabGroup group) throws ElabException {
+        this.reset();
+        Statement s = null;
+        Connection conn = null;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            s = conn.createStatement();
+            ResultSet rs = s.executeQuery(
+                    "SELECT detectorid FROM research_group_detectorid WHERE research_group_id='" + 
+                    group.getId() + "' ORDER BY detectorid");   
+
+            while(rs.next()) {
+                addGeometry(new Geometry(elab.getProperties().getDataDir(), rs.getString(1)));
+            }
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, s);
         }
     }
 
@@ -50,6 +82,10 @@ public class Geometries implements Serializable {
         if (geometries != null) {
             geometries.put(g.getDetectorID(), g);
         }
+    }
+    
+    public Geometry getGeometry(String detectorID) {
+        return (Geometry) geometries.get(detectorID);
     }
 
     public void addGeoEntry(String detectorID, GeoEntryBean geb) {

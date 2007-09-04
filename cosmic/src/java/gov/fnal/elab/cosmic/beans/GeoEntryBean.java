@@ -1,13 +1,15 @@
 package gov.fnal.elab.cosmic.beans;
 
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.regex.*;
+import java.lang.Math;
 
 import gov.fnal.elab.util.*;
 import gov.fnal.elab.cosmic.Geometry;
 
-//made with: ./bean_skeleton.pl --scalar "stackedState latitude longitude altitude chan1X chan1Y chan1Z chan1Area chan1CableLength chan2X chan2Y chan2Z chan2Area chan2CableLength chan3X chan3Y chan3Z chan3Area chan3CableLength chan4X chan4Y chan4Z chan4Area chan4CableLength" --list "" GeoEntryBean
+//made with: ./bean_skeleton.pl --scalar "stackedState latitude longitude altitude chan1X chan1Y chan1Z chan1Area chan1CableLength chan2X chan2Y chan2Z chan2Area chan2CableLength chan3X chan3Y chan3Z chan3Area chan3CableLength chan4X chan4Y chan4Z chan4Area chan4CableLength gpsCableLength" --list "" GeoEntryBean
 
 public class GeoEntryBean implements Serializable {
 
@@ -38,6 +40,7 @@ public class GeoEntryBean implements Serializable {
     private String chan4Z = null;
     private String chan4Area = null;
     private String chan4CableLength = null;
+    private String gpsCableLength = null;
 
     /**
      * Constructor. It resets the bean to its initial state.
@@ -68,6 +71,10 @@ public class GeoEntryBean implements Serializable {
 
     public String getJulianDay(){
         return julianDay;
+    }
+    
+    public Double getJulianDayAsDouble() {
+        return Double.valueOf(julianDay);
     }
 
     public Double getInvertedJulianDay() {
@@ -209,6 +216,26 @@ public class GeoEntryBean implements Serializable {
     public String getAltitude(){
         return altitude;
     }
+    
+    public boolean getChan1IsActive() {
+        return !getChan1X().equals("0") || !getChan1Y().equals("0") || 
+            !getChan1Z().equals("0") || !getChan1Area().equals("625.0") || !getChan1CableLength().equals("0.0");
+    }
+    
+    public boolean getChan2IsActive() {
+        return !getChan2X().equals("0") || !getChan2Y().equals("0") || 
+            !getChan2Z().equals("0") || !getChan2Area().equals("625.0") || !getChan2CableLength().equals("0.0");
+    }
+    
+    public boolean getChan3IsActive() {
+        return !getChan3X().equals("0") || !getChan3Y().equals("0") || 
+            !getChan3Z().equals("0") || !getChan3Area().equals("625.0") || !getChan3CableLength().equals("0.0");
+    }
+    
+    public boolean getChan4IsActive() {
+        return !getChan4X().equals("0") || !getChan4Y().equals("0") || 
+            !getChan4Z().equals("0") || !getChan4Area().equals("625.0") || !getChan4CableLength().equals("0.0");
+    }
 
     public void setChan1X(String s){
         chan1X = s;
@@ -245,6 +272,12 @@ public class GeoEntryBean implements Serializable {
 
     public String getChan1Area(){
         return chan1Area;
+    }
+    
+    public String getFormattedChan1Length() {
+	float chan1L = (Float.valueOf(chan1CableLength).floatValue());
+    	int chan1Length = Math.round(chan1L*500);
+	return Integer.toString(chan1Length);
     }
 
     public void setChan1CableLength(String s){
@@ -292,6 +325,12 @@ public class GeoEntryBean implements Serializable {
         return chan2Area;
     }
 
+    public String getFormattedChan2Length() {
+        float chan2L = (Float.valueOf(chan2CableLength).floatValue());
+        int chan2Length = Math.round(chan2L*500);
+        return Integer.toString(chan2Length);
+    }
+
     public void setChan2CableLength(String s){
         chan2CableLength = s;
     }
@@ -335,6 +374,12 @@ public class GeoEntryBean implements Serializable {
 
     public String getChan3Area(){
         return chan3Area;
+    }
+
+    public String getFormattedChan3Length() {
+        float chan3L = (Float.valueOf(chan3CableLength).floatValue());
+        int chan3Length = Math.round(chan3L*500);
+        return Integer.toString(chan3Length);
     }
 
     public void setChan3CableLength(String s){
@@ -382,12 +427,32 @@ public class GeoEntryBean implements Serializable {
         return chan4Area;
     }
 
+    public String getFormattedChan4Length() {
+        float chan4L = (Float.valueOf(chan4CableLength).floatValue());
+        int chan4Length = Math.round(chan4L*500);
+        return Integer.toString(chan4Length);
+    }
+    
     public void setChan4CableLength(String s){
         chan4CableLength = s;
     }
 
     public String getChan4CableLength(){
         return chan4CableLength;
+    }
+
+    public String getFormattedGpsCableLength() {
+        float gpsCabLen = (Float.valueOf(gpsCableLength).floatValue());
+        int gpsCL = Math.round(gpsCabLen*500);
+        return Integer.toString(gpsCL);
+    }
+
+    public void setGpsCableLength(String s){
+        gpsCableLength = s;
+    }
+
+    public String getGpsCableLength(){
+        return gpsCableLength;
     }
 
     //testing if the input is valid (scalar)
@@ -401,7 +466,7 @@ public class GeoEntryBean implements Serializable {
     
     public boolean isDateValid(){
         boolean isValid = false;
-        if(date.matches(".*")){
+        if(date.matches(".*")){ // error checking for the date is done in geo.jsp
             isValid = true;
         }
         return isValid;
@@ -433,7 +498,7 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isAltitudeValid(){
         boolean isValid = false;
-        if(altitude.matches(".*")){
+        if(altitude.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -441,7 +506,8 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan1XValid(){
         boolean isValid = false;
-        if(chan1X.matches(".*")){
+        if(chan1X.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
+                || chan1X.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -449,7 +515,8 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan1YValid(){
         boolean isValid = false;
-        if(chan1Y.matches(".*")){
+        if(chan1Y.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
+                || chan1Y.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -457,7 +524,8 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan1ZValid(){
         boolean isValid = false;
-        if(chan1Z.matches(".*")){
+        if(chan1Z.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
+                || chan1Z.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -465,7 +533,7 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan1AreaValid(){
         boolean isValid = false;
-        if(chan1Area.matches(".*")){
+        if(chan1Area.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -473,7 +541,7 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan1CableLengthValid(){
         boolean isValid = false;
-        if(chan1CableLength.matches(".*")){
+        if(chan1CableLength.matches("\\d{1,100}\\.\\d{0,2}|\\d{0,100}\\.\\d{1,2}|\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -481,7 +549,8 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan2XValid(){
         boolean isValid = false;
-        if(chan2X.matches(".*")){
+        if(chan2X.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
+                || chan2X.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -489,7 +558,8 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan2YValid(){
         boolean isValid = false;
-        if(chan2Y.matches(".*")){
+        if(chan2Y.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
+                || chan2Y.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -497,7 +567,8 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan2ZValid(){
         boolean isValid = false;
-        if(chan2Z.matches(".*")){
+        if(chan2Z.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
+                || chan2Z.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -505,7 +576,7 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan2AreaValid(){
         boolean isValid = false;
-        if(chan2Area.matches(".*")){
+        if(chan2Area.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -513,7 +584,7 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan2CableLengthValid(){
         boolean isValid = false;
-        if(chan2CableLength.matches(".*")){
+        if(chan2CableLength.matches("\\d{1,100}\\.\\d{0,2}|\\d{0,100}\\.\\d{1,2}|\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -521,7 +592,8 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan3XValid(){
         boolean isValid = false;
-        if(chan3X.matches(".*")){
+        if(chan3X.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
+                || chan3X.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -529,7 +601,8 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan3YValid(){
         boolean isValid = false;
-        if(chan3Y.matches(".*")){
+        if(chan3Y.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
+                || chan3Y.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -537,7 +610,8 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan3ZValid(){
         boolean isValid = false;
-        if(chan3Z.matches(".*")){
+        if(chan3Z.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
+                || chan3Z.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -545,7 +619,7 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan3AreaValid(){
         boolean isValid = false;
-        if(chan3Area.matches(".*")){
+        if(chan3Area.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -553,7 +627,7 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan3CableLengthValid(){
         boolean isValid = false;
-        if(chan3CableLength.matches(".*")){
+        if(chan3CableLength.matches("\\d{1,100}\\.\\d{0,2}|\\d{0,100}\\.\\d{1,2}|\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -561,7 +635,8 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan4XValid(){
         boolean isValid = false;
-        if(chan4X.matches(".*")){
+        if(chan4X.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
+                || chan4X.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -569,7 +644,8 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan4YValid(){
         boolean isValid = false;
-        if(chan4Y.matches(".*")){
+        if(chan4Y.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
+                || chan4Y.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -577,7 +653,8 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan4ZValid(){
         boolean isValid = false;
-        if(chan4Z.matches(".*")){
+        if(chan4Z.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
+                || chan4Z.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -585,7 +662,7 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan4AreaValid(){
         boolean isValid = false;
-        if(chan4Area.matches(".*")){
+        if(chan4Area.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")){
             isValid = true;
         }
         return isValid;
@@ -593,13 +670,21 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isChan4CableLengthValid(){
         boolean isValid = false;
-        if(chan4CableLength.matches(".*")){
+        if(chan4CableLength.matches("\\d{1,100}\\.\\d{0,2}|\\d{0,100}\\.\\d{1,2}|\\d{1,100}")){
             isValid = true;
         }
         return isValid;
     }
 
-    //returns true is every key value is valid
+    public boolean isGpsCableLengthValid(){
+        boolean isValid = false;
+        if(gpsCableLength.matches("\\d{1,100}\\.\\d{0,2}|\\d{0,100}\\.\\d{1,2}|\\d{1,100}")){
+            isValid = true;
+        }
+        return isValid;
+    }
+
+    //returns true if every key value is valid
     public boolean isValid(){
         java.util.List badkeys = this.getInvalidKeys();
         return badkeys.size() > 0 ? false : true;
@@ -686,6 +771,9 @@ public class GeoEntryBean implements Serializable {
         if(!isChan4CableLengthValid()){
             badkeys.add("chan4CableLength");
         }
+        if(!isGpsCableLengthValid()){
+            badkeys.add("gpsCableLength");
+        }
         return badkeys;
     }
 
@@ -704,9 +792,9 @@ public class GeoEntryBean implements Serializable {
 
     //reset all variables to defaults
     public void reset(){
-        julianDay = null;
-        GregorianCalendar gc = new GregorianCalendar();
-        date = gc.getTime().toString();
+        //julianDay = null;
+        //GregorianCalendar gc = new GregorianCalendar();
+        //date = gc.getTime().toString();
         detectorID = "";
         stackedState = "0";
         latitude = "0:0.0 N";
@@ -732,6 +820,7 @@ public class GeoEntryBean implements Serializable {
         chan4Z = "0";
         chan4Area = "625.0";
         chan4CableLength = "0";
+        gpsCableLength = "0";
     }
 
     public String writeForFile() {
@@ -741,10 +830,11 @@ public class GeoEntryBean implements Serializable {
             breakUpLongitude() + "\n" +
             altitude + "\n" + 
             stackedState + "\n" +
-            chan1X + " " + chan1Y + " " + chan1Z + " " + getFormattedChan1Area() + " " + chan1CableLength + "\n" +
-            chan2X + " " + chan2Y + " " + chan2Z + " " + getFormattedChan2Area() + " " + chan2CableLength + "\n" +
-            chan3X + " " + chan3Y + " " + chan3Z + " " + getFormattedChan3Area() + " " + chan3CableLength + "\n" +
-            chan4X + " " + chan4Y + " " + chan4Z + " " + getFormattedChan4Area() + " " + chan4CableLength;  
+            chan1X + " " + chan1Y + " " + chan1Z + " " + getFormattedChan1Area() + " " + getFormattedChan1Length() + "\n" +
+            chan2X + " " + chan2Y + " " + chan2Z + " " + getFormattedChan2Area() + " " + getFormattedChan2Length() + "\n" +
+            chan3X + " " + chan3Y + " " + chan3Z + " " + getFormattedChan3Area() + " " + getFormattedChan3Length() + "\n" +
+            chan4X + " " + chan4Y + " " + chan4Z + " " + getFormattedChan4Area() + " " + getFormattedChan4Length() + "\n" +
+            getFormattedGpsCableLength();  
     }
 
     public String getFormDate() {
