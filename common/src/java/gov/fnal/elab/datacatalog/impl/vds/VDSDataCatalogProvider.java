@@ -24,6 +24,7 @@ import gov.fnal.elab.util.ElabUtil;
 import gov.fnal.elab.vds.ElabTransformation;
 
 import java.io.StringReader;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -171,8 +172,12 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
             return (CatalogEntry) rs.iterator().next();
         }
     }
-
+    
     public ResultSet getEntries(String[] lfns) throws ElabException {
+        return getEntries(Arrays.asList(lfns));
+    }
+
+    public ResultSet getEntries(Collection lfns) throws ElabException {
         if (lfns == null) {
             return new ResultSet();
         }
@@ -186,11 +191,13 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
 
             ResultSet rs = new ResultSet();
             annotationschema = (AnnotationSchema) annotation;
-            for (int i = 0; i < lfns.length; i++) {
-                List metaTuples = annotationschema.loadAnnotation(lfns[i],
+            Iterator i = lfns.iterator();
+            while (i.hasNext()) {
+                String lfn = (String) i.next();
+                List metaTuples = annotationschema.loadAnnotation(lfn,
                         null, kind);
                 VDSCatalogEntry e = new VDSCatalogEntry();
-                e.setLFN(lfns[i]);
+                e.setLFN(lfn);
                 e.setTuples(metaTuples);
                 rs.addEntry(e);
             }

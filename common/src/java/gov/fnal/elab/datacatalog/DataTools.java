@@ -21,6 +21,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.AbstractCollection;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,7 +32,9 @@ import java.util.Set;
 import java.util.TimeZone;
 
 /**
- * A few convenience functions for dealing with data
+ * A few convenience functions for dealing with QuarkNet data
+ * 
+ *TODO cosmic things to cosmic
  */
 public class DataTools {
     public static String buildQueryURLParams(Elab elab, String key, String value) {
@@ -109,10 +112,11 @@ public class DataTools {
                 srs.addSchool(school);
             }
 
-            String startdate = MONTH_FORMAT.format((Timestamp) data[STARTDATE]);
+            Timestamp ts = (Timestamp) data[STARTDATE];
+            String startdate = MONTH_FORMAT.format(ts);
             Month date = school.getMonth(startdate);
             if (date == null) {
-                date = new Month(startdate);
+                date = new Month(startdate, ts);
                 school.addDay(date);
             }
 
@@ -155,7 +159,7 @@ public class DataTools {
 
     static {
         TZ_DATE_TIME_FORMAT = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss zzz");
-        TZ_DATE_TIME_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
+        TZ_DATE_TIME_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
     /**
@@ -209,51 +213,7 @@ public class DataTools {
         data.append(detectors);
         return data.toString();
     }
-
-    public static final Map CHANNELS;
-    static {
-        CHANNELS = new HashMap();
-        CHANNELS.put("chan1", "1");
-        CHANNELS.put("chan2", "2");
-        CHANNELS.put("chan3", "3");
-        CHANNELS.put("chan4", "4");
-    }
-
-    /**
-     * Retrieves a set of valid channels used by the specified data. This method
-     * is Cosmic specific and should be moved.
-     * 
-     * @param elab
-     *            The current {@link Elab}
-     * @param files
-     *            A set of logical file names
-     * 
-     * @return A {@link Collection} containing used channels, each of each is
-     *         guaranteed to appear at most once.
-     */
-    public static Collection getValidChannels(Elab elab, String[] files)
-            throws ElabException {
-        ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
-        Set channels = new HashSet();
-        Iterator i = rs.iterator();
-        while (i.hasNext()) {
-            CatalogEntry e = (CatalogEntry) i.next();
-            if (e == null) {
-                continue;
-            }
-            Iterator j = CHANNELS.entrySet().iterator();
-            while (j.hasNext()) {
-                Map.Entry f = (Map.Entry) j.next();
-                String cname = (String) f.getKey();
-                Long l = (Long) e.getTupleValue(cname);
-                if (l != null && l.longValue() > 0) {
-                    channels.add(f.getValue());
-                }
-            }
-        }
-        return channels;
-    }
-
+    
     private static final String[] STRING_ARRAY = new String[0];
 
     /**
@@ -271,9 +231,9 @@ public class DataTools {
      * @return A {@link Collection} of values
      * 
      */
-    public static Collection getUniqueValues(Elab elab, Collection files,
+    public static Collection getUniqueValues(Elab elab, String[] files,
             String key) throws ElabException {
-        return getUniqueValues(elab, (String[]) files.toArray(STRING_ARRAY),
+        return getUniqueValues(elab, Arrays.asList(files),
                 key);
     }
 
@@ -292,7 +252,7 @@ public class DataTools {
      * @return A {@link Collection} of values
      * 
      */
-    public static Collection getUniqueValues(Elab elab, String[] files,
+    public static Collection getUniqueValues(Elab elab, Collection files,
             String key) throws ElabException {
         ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
         Set s = new HashSet();

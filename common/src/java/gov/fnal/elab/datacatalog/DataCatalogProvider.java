@@ -9,6 +9,8 @@ import gov.fnal.elab.datacatalog.query.QueryElement;
 import gov.fnal.elab.datacatalog.query.ResultSet;
 import gov.fnal.elab.util.ElabException;
 
+import java.util.Collection;
+
 // TODO Get rid of ElabException
 /**
  * Describes the interaction with a data catalog
@@ -40,6 +42,13 @@ public interface DataCatalogProvider {
      * specified array (if some entries are not found).
      */
     ResultSet getEntries(String[] lfns) throws ElabException;
+    
+    /**
+     * Returns the entries in the catalog matching the given logical file names.
+     * The number of returned entries may be smaller then the size of the
+     * specified collection (if some entries are not found).
+     */
+    ResultSet getEntries(Collection lfns) throws ElabException;
 
     /**
      * Returns a single entry from the catalog matching the specified logical

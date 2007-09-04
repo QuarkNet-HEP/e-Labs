@@ -3,13 +3,19 @@
  */
 package gov.fnal.elab.datacatalog;
 
+import gov.fnal.elab.datacatalog.query.ResultSet;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import org.apache.axis.types.Day;
 
 /**
  * This class allows a hierarchical representation of a {@link ResultSet} based
@@ -156,10 +162,15 @@ public class StructuredResultSet {
         public int getDataFileCount() {
             return dataFiles;
         }
-
+        
         public synchronized Collection getMonthsSorted() {
             if (monthsSorted == null) {
-                monthsSorted = new TreeMap(months);
+                monthsSorted = new TreeMap();
+                Iterator i = months.values().iterator();
+                while (i.hasNext()) {
+                    Month m = (Month) i.next();
+                    monthsSorted.put(m.getDate(), m);
+                }
             }
             return monthsSorted.values();
         }
@@ -188,9 +199,11 @@ public class StructuredResultSet {
     public static class Month {
         private List files;
         private String month;
+        private Date date;
 
-        public Month(String month) {
+        public Month(String month, Date date) {
             this.month = month;
+            this.date = date;
             files = new ArrayList();
         }
 
@@ -208,6 +221,10 @@ public class StructuredResultSet {
 
         public Collection getFiles() {
             return files;
+        }
+        
+        public Date getDate() {
+            return date;
         }
     }
 

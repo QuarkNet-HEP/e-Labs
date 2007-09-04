@@ -10,6 +10,8 @@ import gov.fnal.elab.datacatalog.query.ResultSet;
 import gov.fnal.elab.util.ElabException;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * An implementation of a <code>DataCatalogProvider</code> which wraps another
@@ -18,7 +20,7 @@ import java.util.Arrays;
 public class CachingDataCatalogProvider implements DataCatalogProvider {
     private DataCatalogProvider delegate;
 
-    private String[] lastFiles;
+    private Collection lastFiles;
     private ResultSet lastResultSet;
     private boolean updating;
 
@@ -26,9 +28,9 @@ public class CachingDataCatalogProvider implements DataCatalogProvider {
         this.delegate = delegate;
     }
 
-    private ResultSet getCachedEntries(String[] files) throws ElabException {
+    private ResultSet getCachedEntries(Collection files) throws ElabException {
         synchronized (this) {
-            if (!updating && Arrays.equals(files, lastFiles)) {
+            if (!updating && equals(files, lastFiles)) {
                 return lastResultSet;
             }
         }
@@ -39,9 +41,23 @@ public class CachingDataCatalogProvider implements DataCatalogProvider {
         }
         return rs;
     }
+    
+    private boolean equals(Collection c1, Collection c2) {
+        //here equals(null, null) == false
+        if (c1 == null || c2 == null) {
+            return false;
+        }
+        else {
+            return new HashSet(c1).containsAll(c2) && c1.size() == c2.size();
+        }
+    }
+    
+    public ResultSet getEntries(Collection lfns) throws ElabException {
+        return getCachedEntries(lfns);
+    }
 
     public ResultSet getEntries(String[] lfns) throws ElabException {
-        return getCachedEntries(lfns);
+        return getCachedEntries(Arrays.asList(lfns));
     }
 
     public CatalogEntry getEntry(String lfn) throws ElabException {
