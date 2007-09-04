@@ -68,7 +68,7 @@
 				List l = (List) ((Map.Entry) pageContext.getAttribute("result")).getValue();
 				
 				if (l.isEmpty()) {
-				    request.setAttribute("correct", "N/A");
+				    request.setAttribute("correct", "Test not taken");
 				}
 				else {
 				    int correct = 0;
