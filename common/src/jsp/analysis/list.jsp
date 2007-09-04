@@ -42,10 +42,8 @@
 	<table id="analysis-table">
 		<tr>
 			<th>ID</th>
-			<th>Type</th>
+			<th>Analysis</th>
 			<th>Status</th>
-			<th>Results</th>
-			<th>Continuation</th>
 		</tr>
 		<c:choose>
 			<c:when test="${empty runs}">
@@ -61,7 +59,9 @@
 					%>
 					<tr>
 						<td>${run.id}</td>
-						<td>${run.analysis.type}</td>
+						<td>
+							<a href="status.jsp?id=${run.id}">${run.analysis.type}</a>
+						</td>
 						<td>
 							<table border="0">
 								<tr>
@@ -82,22 +82,6 @@
 									</c:if>
 								</tr>
 							</table>
-						</td>
-						<td>
-							<c:choose>
-								<c:when test="${status == 'Completed'}">
-									<a href="status.jsp?id=${run.id}">See results</a>
-								</c:when>
-								<c:otherwise>
-									<a id="results${run.id}" style="visibility: hidden; display: none" 
-										href="status.jsp?id=${run.id}">See results</a>
-								</c:otherwise>
-							</c:choose>
-						</td>
-						<td>
-							<c:if test="${status == 'Completed'}">
-								${run.attributes.continuation}
-							</c:if>
 						</td>
 					</tr>
 				</c:forEach>
