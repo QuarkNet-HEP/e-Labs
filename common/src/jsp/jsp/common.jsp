@@ -37,6 +37,7 @@ String tempdir = context.getAttribute("javax.servlet.context.tempdir").toString(
 
 //Useful directory variables
 String dataDir = elab.getProperty("data.dir");
+System.setProperty("portal.datadir", dataDir);
 String templateDir = elab.getProperty("templates.dir");
 String userArea = null;
 String userDir = elab.getProperties().getUsersDir();
