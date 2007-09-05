@@ -64,8 +64,8 @@
 			<div id="right">
 				<h2>Student Pages</h2>
 				<ul class="simple">
-					<li><a href="../home/home.jsp">Home</a></li>
-					<li><a href="site-index.jsp">Site Index</a></li>
+					<li><a href="../home/">Home</a></li>
+					<li><a href="../site-index/">Site Index</a></li>
 				</ul>
 			</div>
 		</td>
