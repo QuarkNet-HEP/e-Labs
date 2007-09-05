@@ -43,7 +43,7 @@ if(display == null || !display.equals("static")) {
 		<td valign="top">
 			<div id="left">
 				<div class="tab">
-					<span class="tabtitleHome"><a HREF="home.jsp">Home</a></span>
+					<span class="tabtitleHome"><a HREF="../home/">Home</a></span>
 					<div class="tabcontentsHome">
 					 	<h2>Homepage</h2>
 						<ul>
@@ -54,7 +54,7 @@ if(display == null || !display.equals("static")) {
 					
 
 				<div class="tab">
-					<span class="tabtitleUpload"><A HREF="upload.jsp">Upload</a></span>
+					<span class="tabtitleUpload"><A HREF="../data/upload.jsp">Upload</a></span>
 					<div class="tabcontentsUpload">
 						<h2>Upload</h2>
 						<ul>
@@ -65,7 +65,7 @@ if(display == null || !display.equals("static")) {
 				</div>
 
 				<div class="tab">
-					<span class="tabtitlePoster"><A HREF="poster.jsp">Posters</a></span>
+					<span class="tabtitlePoster"><A HREF="../posters/">Posters</a></span>
 					<div class="tabcontentsPoster">
 						<h2>Share Your Research</h2>
 						<ul>
@@ -81,7 +81,7 @@ if(display == null || !display.equals("static")) {
          <td valign="top">
 			<div id="right">
 				<div class="tab">
-					<span class="tabtitleLibrary"><A HREF="library.jsp">Library</a></span>
+					<span class="tabtitleLibrary"><A HREF="../library/">Library</a></span>
 					<div class="tabcontentsLibrary" style="background-color: #ccffff;">
 						<h2>Use Online Library</h2>
 						<ul>
@@ -96,7 +96,7 @@ if(display == null || !display.equals("static")) {
 				</div>
 					
 				<div class="tab">
-					<span class="tabtitleData"><A HREF="search.jsp">Data</a></span>
+					<span class="tabtitleData"><A HREF="../data/">Data</a></span>
 					<div class="tabcontentsData" style="background-color: #99CCff;">
 						<h2>Analyze and Manage Data</h2>
 						<ul>
@@ -107,7 +107,7 @@ if(display == null || !display.equals("static")) {
 				</div>
 					
 				<div class="tab">
-					<span class="tabtitleAssess"><A HREF="rubric.jsp">Assessment</a></span>
+					<span class="tabtitleAssess"><A HREF="../assessment/">Assessment</a></span>
 					<div class="tabcontentsAssess">
 						<h2>Assess your work</h2>
 						<ul>
