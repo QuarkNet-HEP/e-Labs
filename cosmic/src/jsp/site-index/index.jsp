@@ -51,11 +51,11 @@
 		<td>
 			<ul>
 				<li>
-					<a href="milestones_map.jsp">Study Guide</a> and 
-					<a href="milestones.jsp"><strong>text version</strong></a>
+					<a href="../library/milestones_map.jsp">Study Guide</a> and 
+					<a href="../library/milestones.jsp"><strong>text version</strong></a>
 					<ul>
-						<li><a href="showReferences.jsp?t=reference&amp;f=peruse">View Resources for Study Guide</a></li>
-						<li><a href="showReferences.jsp?t=glossary&amp;f=peruse">View Glossary</a></li>
+						<li><a href="../jsp/showReferences.jsp?t=reference&amp;f=peruse">View Resources for Study Guide</a></li>
+						<li><a href="../jsp/showReferences.jsp?t=glossary&amp;f=peruse">View Glossary</a></li>
 					</ul>
 				</li>
 				<li><a href="resources.jsp" >Resources</a></li>
@@ -65,21 +65,21 @@
 						<li>
 							Contacts
 							<ul>
-								<li><a href="students.jsp">Students</a></li>
+								<li><a href="../library/students.jsp">Students</a></li>
 							</ul>
 						</li>
 						<li>
 							Tutorials
 							<ul>
 								<li><a href="../analysis-performance/tutorial.jsp">Performance Study Background</a></li>
-								<li><a href="../analysis-performance/tryit.jsp">Step-by-Step Instructions: Performance</a></li>
+								<li><a href="../analysis-performance/tryit.html">Step-by-Step Instructions: Performance</a></li>
 								<li><a href="../analysis-lifetime/tutorial.jsp">Lifetime Study Background</a></li>
-								<li><a href="../analysis-lifetime/tryit.jsp">Step-by-Step Instructions: Lifetime</a></li>
+								<li><a href="../analysis-lifetime/tryit.html">Step-by-Step Instructions: Lifetime</a></li>
 								<li><a href="../analysis-flux/tutorial.jsp">Flux Study Background</a></li>
-								<li><a href="../analysis-flux/tryit.jsp">Step-by-Step Instructions: Flux</a></li>
+								<li><a href="../analysis-flux/tryit.html">Step-by-Step Instructions: Flux</a></li>
 								<li><a href="../analysis-shower/tutorial.jsp">Shower Study Tutorial</a></li>
-								<li><a href="../analysis-shower/tryit.jsp">Step-by-Step Instructions: Shower</a></li>
-								<li><a href="geoInstructions.jsp">Updating Geometry Tutorial</a></li>
+								<li><a href="../analysis-shower/tryit.html">Step-by-Step Instructions: Shower</a></li>
+								<li><a href="../library/geoInstructions.jsp">Updating Geometry Tutorial</a></li>
 							</ul>
 						</li>
 						<li>
@@ -100,8 +100,8 @@
 		</td>
 		<td>
 			<ul>
-				<li><a href="upload.jsp">Upload Data</a></li>
-				<li><a href="geo.jsp">Upload Geometry</a></li>
+				<li><a href="../data/upload.jsp">Upload Data</a></li>
+				<li><a href="../jsp/geo.jsp">Upload Geometry</a></li>
 			</ul>
 		</td>
 		<td>
@@ -131,18 +131,15 @@
 						<li><a href="../posters/delete.jsp">Posters</a></li>
 					</ul>
 				</li>
-				<li>
-					<a href="../plots/my-plots.jsp">View My Plots</a>
-				</li>
 			</ul>
 		</td>
 		<td>
 			<ul>
-				<li><a href="makePoster.jsp">New Poster</a></li>
+				<li><a href="..posters/new.jsp">New Poster</a></li>
 				<li><a href="../posters/edit.jsp">Edit Posters</a></li>
 				<li><a href="../posters/search.jsp">View Posters</a></li>
 				<li><a href="../posters/delete.jsp">Delete Posters</a></li>
-				<li><a href="../plots/my-plots.jsp">View My Plots</a></li>
+				<li><a href="../plots/my-plots.jsp">View My Plots</a>
 			</ul>
 		</td>
 		<td>
