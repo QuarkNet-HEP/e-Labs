@@ -176,10 +176,17 @@
 				</p>
  
 				<h2>Assessment:</h2>
+				<p>
+					Asssessment is aligned to learner outcomes.  We provide the
+					following tools to meet specific outcomes for your students.
+					You may wish to modify some to meet your needs.
+				</p>
 
 				<ul>
 					<li>
-						<a href="../assessment">Rubric</a> aligned to learner outcomes
+						<B>Rubrics:</B> <A HREF="rubric-ci.html">Overall Content & Investigation</A>,
+						<A HREF="rubric-r.html">Research Skills</A>, <A HREF="rubric-t.html">Technology Skills</A>,
+						<A HREF="rubric-wla.html">Writing and Language Arts</A> and <A HREF="rubric-p.html">Poster</A>
 					</li>
 					<li>
 						<a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
@@ -192,9 +199,6 @@
 						e-Logbooks: Track and comment on student work. Review 
 						group logbook or all student entries for a particular 
 						milestone, e.g., class cosmic ray descriptions.
-					</li>
-					<li>
-						Poster rubric
 					</li>
 				</ul>
 			</div>
