@@ -12,91 +12,42 @@
 		<div id="container">	
 			<div id="content">
 
-<h1>Assessing Your Work</h1>
-
-<p>
-	For ongoing assessment follow the guidance your teacher gave you at the beginning of the project.
-</p>
-<p>
-	For final assessment the following rubric assesses what you learned about cosmic rays and how well 
-    you conducted your study.
-</p>
-<p>
-	Student Researcher: _____________________
-</p>
-<p>
-	Partners: _____________________ _____________________ _____________________
-</p>
-						
-<table border ="1" cellspacing="2" cellpadding="4">
-	<tr>
-		<th witdh="30%"><strong>Exceeds Expectations</strong> (3 points)</th>
-		<th witdh="30%"><strong>Meets Expectations</strong> (2 points)</th>
-		<th witdh="30%"><strong>Does Not Meet Expectations</strong> (1 or 0 points)</th>
-		<th witdh="10%"><strong>Score</strong></th>
-	</tr>
-	<tr>
-		<td>Identify components of primary, secondary and later generation cosmic rays.</td>
-		<td>Identify components of primary and secondary generation cosmic rays.</td>
-		<td>Identify components of primary cosmic rays.</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>List properties of comsic rays revealed in the observations that are complete and accurate.</td>
-		<td>List properties of cosmic rays revealed in the observations.</td>
-		<td>List properties of cosmic rays revealed in the observations that are neither incomplete nor 
-        accurate.</td>
-        <td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>Describe the roles of the cosmic ray detector and the Internet fully and completely.</td>
-		<td>Describe the roles of the cosmic ray detector and the Internet fully and completely.</td>
-		<td>Fail to describe the roles of the cosmic ray detector and the Internet fully and completely.</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>Gather/use scientific data to identify properties of cosmic rays completely and accurately.</td>
-		<td>Gather/use scientific data to identify properties of cosmic rays.</td>
-		<td>Fail to gather/use scientific data to identify properties of cosmic rays.</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>Demonstrate all skills using the Internet, web and virtual data techniques necessary for the project.</td>
-		<td>Demonstrate most skills using the Internet, web and virtual data techniques.</td>
-		<td>Fail to demonstrate skills using the Internet, web and virtual data techniques.</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>Work collaboratively with other research groups by posting constructive criticism, posing and answering 
-		questions.</td>
-		<td>Work collaboratively with other research groups by posting constructive criticism, or posing and 
-		answering questions.</td>
-		<td>Miss the opportunity to work collaboratively with other research groups by posting constructive 
-		criticism, or posing and answering questions.</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td></td>
-		<td></td>
-		<td>
+			<h1>Objectives: Assessing Your Work</h1>
+				  <div id="objectives">
+			
 			<p>
-				<strong>TOTAL SCORE</strong>
+			The following objectives outline what you will learn and be able to do during this study of cosmic rays.
+			For assessment follow the guidance your teacher gave you at the beginning of the project.
 			</p>
-		</td>
-		<td>&nbsp;</td>
-	</tr>
-</table>
-
-<p>
-	OVERALL POINT TOTAL: _____________ 
-</p>
-<p>
-	COMMENTS:
-</p>
-
-			</div>
-			<!-- end content -->	
-		
+				   <ul>
+					<li>Content:
+						<ul>
+							<li>Identify components of primary, secondary and later generation cosmic rays.</li>
+							<li>Provide a complete list of properties of cosmic rays revealed in the observations.</li>
+							<li>Explain the roles of the detector, the Internet, the Web and the Grid as scientific tools for this project.</li>
+						</ul>
+										
+					<li>Process:
+						 <ul>
+							<li>Explain the data collection process including what corrections need to be made in order to obtain reliable data.</li>
+							<li>Evaluate the data to decide which are reliable/usable and which are not and explain how you arrived at the decision to include some data and exclude others.</li>
+							<li>Collect, organize and analyze data to obtain meaningful findings.</li>
+							<li>Use the data to provide evidence to support your claims.</li>
+							<li>Describe the contribution team members make in a several-person project.</li>
+						</ul>
+					<li>Technology/Grid:
+						<ul>
+							<li>Demonstrate technical skill in accessing data from the Grid and Grid computing techniques. </li>
+						</ul>
+					<li>Literacy:
+						<ul>
+							<li>Demonstrate an ability to articulate meaning in writing (such as in science notebooks, reports) and negotiate meaning with others (such as peer review, discussion). </li>
+						</ul>
+				</ul>
+			
+				</div>  <!-- end objectives -->	
+				</div>  <!-- end content -->	
+					
 			<div id="footer">
 			</div>
 		</div>
