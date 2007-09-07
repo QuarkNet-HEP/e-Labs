@@ -25,6 +25,9 @@
     	<!-- creates variables ResultSet rs and Statement s to use: -->
 		<%@ include file="include/jdbc_userdb.jsp" %>
 		
+		<!-- include css style file -->
+        <%@ include file="../css/upload.css" %>
+
 		
 		
 </head>
@@ -84,7 +87,8 @@
 		</table>
     </center>
     <center><h3>Error List</h3><h4>Seeing errors and unsure of what they mean?  Here's a list of the errors you might see to help you figure it out.</h4></center></center>
-    <span style="color: #EE0000">Please check that your Date/Time values are all selected.</span><br>
+   <div id="error-list">
+   <span style="color: #EE0000">Please check that your Date/Time values are all selected.</span><br>
         <ul>
             <li><b>Meaning: </b>You did not enter a value for all 5 fields of Date and Time (Month, Day, Year, Hour, Minute).  All 5 fields of the Date and Time need to be selected to provide the date for which your geometry changed.  If you linked to the geometry page from the "Upload Successful!" page, make sure the date you enter is BEFORE the start of that data run.
             <li><b>Fix: </b>Choose a valid value in each pulldown box (valid meaning not "Month", "Day", "Year", "Hour", "Minute").
@@ -99,8 +103,8 @@
             <li><b>Meaning: </b>You entered a Date and Time that exactly matches the Date and Time of another geometry entry.  If you want to edit that geometry entry, you must click on the "edit" pencil next to that entry.
             <li><b>Fix: </b>Choose values for each pulldown box that do not create a Date and Time identical to that of another geometry entry.
         </ul>
-    <span style="color: #EE0000">Please check that your channel 1 Cable Length value is correct.</span><br>
-    <span style="color: #EE0000">Please check that your channel 2 Cable Length value is correct.</span><br>
+    <span class="error-message">Please check that your channel 1 Cable Length value is correct.</span><br>
+    <span style="color: #EE0000; margin-left: 5px;">Please check that your channel 2 Cable Length value is correct.</span><br>
     <span style="color: #EE0000">Please check that your channel 3 Cable Length value is correct.</span><br>
     <span style="color: #EE0000">Please check that your channel 4 Cable Length value is correct.</span><br>
         <ul>
@@ -162,5 +166,6 @@
             <li><b>Meaning: </b>You entered an invalid value for the cable length connecting the GPS unit to the DAQ board.  This field will only accept positive numbers (integers, decimal numbers).
             <li><b>Fix: </b>Enter a positive number.
         </ul>
+    </div><!-- error-list-->
 </body>
 </html>
