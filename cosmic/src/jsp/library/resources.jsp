@@ -93,6 +93,14 @@
 								<a href="http://www.auger.org/">Pierre Auger Observatory</a>
 								- Background and Q&A about cosmic rays
 							</li>
+							<li>
+								<a href="http://gridcafe.web.cern.ch/gridcafe/">The Grid Cafe</a>
+								- An introduction to the grid.
+							</li>
+							<li>
+								<a href="http://www.tryscience.org/grid/home.html" target="activity">Grids for Kids at TryScience</a>
+								- from New York Museum of Science. Use grid computing to model Mt. Vesuvius' volcanic activity to discover whether residents need warning.
+							</li>
 						</ul>
 						
 						<h2>Online Labs</h2>
@@ -117,10 +125,6 @@
 								<a href="http://scipp.ucsc.edu/milagro/Animations/AnimationIntro.html">Milagro Animations</a>
 								- QuickTime movies of simulated HEP events. Most movies run under 5 megabytes and 
 								are about 15 seconds long.
-							</li>
-							<li>
-								<a href="http://gridcafe.web.cern.ch/gridcafe/">The Grid Cafe</a>
-								- An introduction to the grid.
 							</li>
 							<li>
 								<a href="http://www.wired.com/wired/archive/12.04/grid.html?tw=wn_tophead_6">The God Particle
@@ -192,6 +196,24 @@
 						</ul>
 					</div>
 				</div>
+				<div class="tab" id="tab-animations">
+					<span class="tab-title">IT Careers</span>
+					<div class="tab-contents">
+						<ul class="simple">
+							<li>
+								<a href="http://www2.edc.org/ewit/materials/ITCCBRO.pdf">Career Cluster Pamphlet</a>
+								 - (pdf) from Vocational information Center's <A href="http://www.khake.com/page17.html">Computer Science Career Guide</a>.
+							</li>
+							<li>
+								<a href="http://www.microsoft.com/learning/training/careers/prepare.mspx">Prepare for an Information Technology (IT) Career</a>
+								- from Microsoft Learning.
+							</li>
+								</ul>
+					</div>
+				</div>				
+				
+				
+				
 			</div>
 		</td>
 	</tr>
