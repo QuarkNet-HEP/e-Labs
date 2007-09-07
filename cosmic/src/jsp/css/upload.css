@@ -302,3 +302,23 @@ a.button {
 	padding-right: 4px;
 	background-color: #e0e0e0;
 }
+
+#error-list {
+	text-align: left;
+	margin-left: 40px;
+	width: 600px;
+	color: #666666;
+}
+#error-list ul {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+#error-list li {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+.error-message {
+	margin-left: 10px;
+	margin-right: 10px;
+    color: #EE0000;
+}
