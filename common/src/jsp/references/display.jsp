@@ -8,18 +8,19 @@
 
 
 <%
-	String titleLabel="";
-	String lfnName="";
+	String titleLabel = "";
+	String lfnName = "";
 	String label = request.getParameter("name");  //label you want to show
 	String type = request.getParameter("type");  //label you want to show
-	if (label!=null) {
-		titleLabel=label.replaceAll("_"," "); 
+	if (label != null) {
+		titleLabel = label.replaceAll("_"," "); 
 		if (type.equals("glossary")) {
-			lfnName="Glossary_"+label;
+			lfnName = "Glossary_" + label;
 		}
 		if (type.equals("reference")) {
-            lfnName="Reference_"+label;
+            lfnName = "Reference_" + label;
 		}
+		lfnName = lfnName.replaceAll(" ", "_");
 	}
 %>
      
@@ -63,7 +64,7 @@ function resizeWinTo(oW, idOfDiv ) {
       String ret = "";
 
 
-      if ((primary!=null) && !(primary.equals("")) ){
+      if ((primary != null) && !(primary.equals(""))) {
 		 CatalogEntry e = elab.getDataCatalogProvider().getEntry(primary);
 		 request.setAttribute("description", e.getTupleValue("description"));
       }
