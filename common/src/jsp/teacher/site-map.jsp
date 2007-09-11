@@ -1,4 +1,5 @@
 <%@ include file="../include/elab.jsp" %>
+<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -42,14 +43,18 @@
 					<li><a href="strategy.jsp">Teaching Strategies</a></li>
 					<li><a href="web-guide.jsp">Research Guidance</a></li>
 					<li><a href="standards.jsp">Alignment with Standards</a></li>
-					<li><a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
-					- and <a href="../test/test.jsp?type=postsurvey&studentid=0">Post</a> Tests.</li>
-					<li>Student Results for <a href="../test/results.jsp?type=presurvey">Pre</a>
-					- and <a href="../test/results.jsp?type=postsurvey">Post</a>- tests.</li>
-					<li><a href="showTeachers.jsp">Show Student Test Results for all Teachers</a></li>
+					<e:restricted role="teacher">
+						<li><a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
+						- and <a href="../test/test.jsp?type=postsurvey&studentid=0">Post</a> Tests.</li>
+						<li>Student Results for <a href="../test/results.jsp?type=presurvey">Pre</a>
+						- and <a href="../test/results.jsp?type=postsurvey">Post</a>- tests.</li>
+					</e:restricted>
+					<e:restricted role="admin">
+						<li><a href="../test/show-teachers.jsp">Show Student Test Results for all Teachers</a></li>
+					</e:restricted>
 					<li><a href="registration.jsp">General Registration</a></li>
 					<li><a href="register-students.jsp">Student Research Group Registration</a></li>
-					<li><a href="updateGroups.jsp">Update Student Research Groups</a></li>
+					<li><a href="update-groups.jsp">Update Student Research Groups</a></li>
 					<li><a href="site-map.jsp">Site Map</a></li>
 				</ul>
 				

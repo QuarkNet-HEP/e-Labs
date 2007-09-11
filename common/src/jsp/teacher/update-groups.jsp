@@ -16,7 +16,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
-		<script type="text/javascript" src="../include/elab.js"/>
+		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	
 	<body id="update-groups" class="teacher">

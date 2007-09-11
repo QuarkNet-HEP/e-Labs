@@ -13,7 +13,7 @@
 		<title>Register Students</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
-		<script type="text/javascript" src="../include/elab.js"/>
+		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	
 	<body id="register-students" class="teacher">
