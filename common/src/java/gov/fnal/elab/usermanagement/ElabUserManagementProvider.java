@@ -61,6 +61,8 @@ public interface ElabUserManagementProvider extends ElabProvider {
      */
     ElabGroup getTeacher(ElabGroup user) throws ElabException;
     
+    ElabGroup getTeacher(String id) throws ElabException;
+    
     /**
      * Removes a student from a group
      */
@@ -87,4 +89,6 @@ public interface ElabUserManagementProvider extends ElabProvider {
     boolean isStudentInGroup(ElabGroup group, String studentId) throws ElabException;
     
     ElabGroup getGroup(String name) throws ElabException;
+    
+    ElabGroup getGroupById(String id) throws ElabException;
 }

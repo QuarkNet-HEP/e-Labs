@@ -140,6 +140,18 @@ public class DatabaseUserManagementProvider implements
 
         return createUser(s, username, rs);
     }
+    
+    private ElabGroup createUserById(Statement s, String id, String projectId)
+            throws SQLException, ElabException {
+        ResultSet rs;
+        rs = s.executeQuery("SELECT name FROM research_group WHERE id='"
+                + ElabUtil.fixQuotes(id) + "';");
+        if (!rs.next()) {
+            throw new ElabException("Invalid username");
+        }
+
+        return createUser(s, rs.getString("name"), projectId);
+    }
 
     private ElabGroup createUser(Statement s, String username, ResultSet rs)
             throws SQLException {
@@ -174,9 +186,25 @@ public class DatabaseUserManagementProvider implements
             DatabaseConnectionManager.close(conn, s);
         }
     }
+    
+    public ElabGroup getGroupById(String id) throws ElabException {
+        Statement s = null;
+        Connection conn = null;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            s = conn.createStatement();
+            return createUserById(s, id, elab.getId());
+        }
+        catch (SQLException e) {
+            throw new ElabException("Database error: " + e.getMessage(), e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, s);
+        }
+    }
 
     private void addStudents(Statement s, ElabGroup group) throws SQLException {
-        System.out.println("Adding students...");
         ResultSet rs;
         rs = s
                 .executeQuery("SELECT id, name FROM student "
@@ -264,6 +292,7 @@ public class DatabaseUserManagementProvider implements
             String projectId = elab.getId();
             rs = s
                     .executeQuery("SELECT distinct teacher.name as tname, teacher.email as temail, "
+                            + "teacher.id as teacherid, research_group.id as id,"
                             + "research_group.name as rgname, research_group.userarea as rguserarea "
                             + "FROM teacher, research_group "
                             + "WHERE research_group.teacher_id = teacher.id "
@@ -288,6 +317,8 @@ public class DatabaseUserManagementProvider implements
                     t = new ElabGroup(elab, this);
                     t.setName(name);
                     t.setEmail(rs.getString("temail"));
+                    t.setId(rs.getString("id"));
+                    t.setTeacherId(rs.getString("teacherid"));
                     g = new ElabGroup(elab, this);
                     if (rs.getString("rguserarea") != null
                             && !rs.getString("rguserarea").equals("")) {
@@ -354,11 +385,10 @@ public class DatabaseUserManagementProvider implements
         }
     }
 
-    protected ElabGroup getTeacher(ElabGroup user, Statement s)
+    protected ElabGroup getTeacher(String teacherId, Statement s)
             throws SQLException {
         ResultSet rs;
         String projectId = elab.getId();
-        String teacherId = user.getTeacherId();
 
         rs = s.executeQuery("select name, email from teacher where id = '"
                 + teacherId + "'");
@@ -368,6 +398,7 @@ public class DatabaseUserManagementProvider implements
         ElabGroup t = new ElabGroup(elab, this);
         t.setName(rs.getString("name"));
         t.setEmail(rs.getString("email"));
+        t.setId(teacherId);
 
         rs = s
                 .executeQuery("select name, userarea from research_group where teacher_id = '"
@@ -398,7 +429,24 @@ public class DatabaseUserManagementProvider implements
             conn = DatabaseConnectionManager
                     .getConnection(elab.getProperties());
             s = conn.createStatement();
-            return getTeacher(user, s);
+            return getTeacher(user.getTeacherId(), s);
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, s);
+        }
+    }
+    
+    public ElabGroup getTeacher(String id) throws ElabException {
+        Statement s = null;
+        Connection conn = null;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            s = conn.createStatement();
+            return getTeacher(id, s);
         }
         catch (Exception e) {
             throw new ElabException(e);
