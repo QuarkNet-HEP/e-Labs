@@ -68,9 +68,9 @@ type AxisParams {
 	}
 }
 
-File rawData[] <array_mapper;files=@arg("rawData")>;
-File thresholdAll[] <array_mapper;files=@arg("thresholdAll")>;
-File wireDelayData[] <array_mapper;files=@arg("wireDelayData")>;
+File rawData[] <fixed_array_mapper;files=@arg("rawData")>;
+File thresholdAll[] <fixed_array_mapper;files=@arg("thresholdAll")>;
+File wireDelayData[] <fixed_array_mapper;files=@arg("wireDelayData")>;
 string detector = @arg("detector");
 File combineOut <fixed_mapper;file=@arg("combineOut")>;
 File fluxOut <fixed_mapper;file=@arg("fluxOut")>;
@@ -78,8 +78,8 @@ File singlechannelOut <fixed_mapper;file=@arg("singlechannelOut")>;
 File sortOut <fixed_mapper;file=@arg("sortOut")>;
 
 int binWidth = @arg("flux_binWidth");
-File geoDir <fixed_mapper;file=@arg("flux_geoDir")>;
-File geoFiles[] <array_mapper;files=@arg("flux_geoFiles")>;
+File geoDir <fixed_mapper;file=@arg("geoDir")>;
+File geoFiles[] <fixed_array_mapper;files=@arg("geoFiles")>;
 
 string plot_caption = @arg("plot_caption");
 

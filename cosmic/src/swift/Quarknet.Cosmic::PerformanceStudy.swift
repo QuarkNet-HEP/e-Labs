@@ -53,8 +53,8 @@ type AxisParams {
 	}
 }
 
-File rawData[] <array_mapper;files=@arg("rawData")>;
-File thresholdAll[] <array_mapper;files=@arg("thresholdAll")>;
+File rawData[] <fixed_array_mapper;files=@arg("rawData")>;
+File thresholdAll[] <fixed_array_mapper;files=@arg("thresholdAll")>;
 File combineOut <fixed_mapper;file=@arg("combineOut")>;
 
 string detector = @arg("detector");
@@ -63,8 +63,8 @@ string freq_binType = @arg("freq_binType");
 string freq_binValue = @arg("freq_binValue");
 string freq_col = @arg("freq_col");
 
-File singlechannelOut[] <array_mapper;files=@arg("singlechannelOut")>;
-File freqOut[] <array_mapper;files=@arg("freqOut")>;
+File singlechannelOut[] <fixed_array_mapper;files=@arg("singlechannelOut")>;
+File freqOut[] <fixed_array_mapper;files=@arg("freqOut")>;
 
 string plot_caption = @arg("plot_caption");
 //File extraFun_out <fixed_mapper;file=@arg("extraFun_out")>;

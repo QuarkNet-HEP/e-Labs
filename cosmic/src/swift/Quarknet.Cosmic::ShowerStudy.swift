@@ -80,15 +80,15 @@ string zeroZeroZeroID = @arg("zeroZeroZeroID");
 File eventCandidates <fixed_mapper;file=@arg("eventCandidates")>;
 File eventFile <fixed_mapper;file=@arg("eventFile")>;
 
-File rawData[] <array_mapper;files=@arg("rawData")>;
-File thresholdAll[] <array_mapper;files=@arg("thresholdAll")>;
-File wireDelayData[] <array_mapper;files=@arg("wireDelayData")>;
+File rawData[] <fixed_array_mapper;files=@arg("rawData")>;
+File thresholdAll[] <fixed_array_mapper;files=@arg("thresholdAll")>;
+File wireDelayData[] <fixed_array_mapper;files=@arg("wireDelayData")>;
 string detector = @arg("detector");
 File combineOut <fixed_mapper;file=@arg("combineOut")>;
 File sortOut <fixed_mapper;file=@arg("sortOut")>;
 
 File geoDir <fixed_mapper;file=@arg("geoDir")>;
-File geoFiles[] <array_mapper;files=@arg("geoFiles")>;
+File geoFiles[] <fixed_array_mapper;files=@arg("geoFiles")>;
 
 string plot_caption = @arg("plot_caption");
 File extraFun_out <fixed_mapper;file=@arg("extraFun_out")>;

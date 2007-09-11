@@ -92,9 +92,9 @@ type AxisParams {
 	}
 }
 
-File	rawData[] <array_mapper;files=@arg("rawData")>;
-File	thresholdAll[] <array_mapper;files=@arg("thresholdAll")>;
-File	wireDelayData[] <array_mapper;files=@arg("wireDelayData")>;
+File	rawData[] <fixed_array_mapper;files=@arg("rawData")>;
+File	thresholdAll[] <fixed_array_mapper;files=@arg("thresholdAll")>;
+File	wireDelayData[] <fixed_array_mapper;files=@arg("wireDelayData")>;
 
 string 	detector = @arg("detector");
 
@@ -125,7 +125,7 @@ File	combineOut <fixed_mapper;file=@arg("combineOut")>;
 File	sortOut <fixed_mapper;file=@arg("sortOut")>;
 
 File	geoDir <fixed_mapper;file=@arg("geoDir")>;
-File	geoFiles[] <array_mapper;files=@arg("geoFiles")>;
+File	geoFiles[] <fixed_array_mapper;files=@arg("geoFiles")>;
 
 string	plot_caption = @arg("plot_caption");
 
