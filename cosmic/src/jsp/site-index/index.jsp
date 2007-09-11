@@ -58,7 +58,7 @@
 						<li><a href="../jsp/showReferences.jsp?t=glossary&amp;f=peruse">View Glossary</a></li>
 					</ul>
 				</li>
-				<li><a href="resources.jsp" >Resources</a></li>
+				<li><a href="../library/resources.jsp">Resources</a></li>
 				<li>
 					Online Links
 					<ul>
@@ -78,8 +78,8 @@
 								<li><a href="../analysis-flux/tutorial.jsp">Flux Study Background</a></li>
 								<li><a href="../analysis-flux/tryit.html">Step-by-Step Instructions: Flux</a></li>
 								<li><a href="../analysis-shower/tutorial.jsp">Shower Study Tutorial</a></li>
-								<li><a href="../analysis-shower/tryit.html">Step-by-Step Instructions: Shower</a></li>
-								<li><a href="../library/geoInstructions.jsp">Updating Geometry Tutorial</a></li>
+								<li><a href="../analysis-shower/tryit.jsp">Step-by-Step Instructions: Shower</a></li>
+								<li><a href="../jsp/geoInstructions.jsp">Updating Geometry Tutorial</a></li>
 							</ul>
 						</li>
 						<li>
@@ -135,7 +135,7 @@
 		</td>
 		<td>
 			<ul>
-				<li><a href="..posters/new.jsp">New Poster</a></li>
+				<li><a href="../posters/new.jsp">New Poster</a></li>
 				<li><a href="../posters/edit.jsp">Edit Posters</a></li>
 				<li><a href="../posters/search.jsp">View Posters</a></li>
 				<li><a href="../posters/delete.jsp">Delete Posters</a></li>
@@ -149,7 +149,7 @@
 
 
 			</div>
-<!-- end content -->	
+			<!-- end content -->	
 
 			<div id="footer"> </div>
 		</div>
