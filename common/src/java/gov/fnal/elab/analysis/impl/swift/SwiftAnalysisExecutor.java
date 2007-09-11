@@ -5,6 +5,7 @@ package gov.fnal.elab.analysis.impl.swift;
 
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
+import gov.fnal.elab.RawDataFileResolver;
 import gov.fnal.elab.analysis.AbstractAnalysisRun;
 import gov.fnal.elab.analysis.AnalysisExecutor;
 import gov.fnal.elab.analysis.AnalysisRun;
@@ -12,22 +13,25 @@ import gov.fnal.elab.analysis.ElabAnalysis;
 import gov.fnal.elab.analysis.ProgressTracker;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
 import org.globus.cog.karajan.SpecificationException;
 import org.globus.cog.karajan.stack.LinkedStack;
 import org.globus.cog.karajan.stack.VariableStack;
 import org.globus.cog.karajan.workflow.ElementTree;
-import org.globus.cog.karajan.workflow.ExecutionContext;
 import org.globus.cog.karajan.workflow.nodes.FlowElement;
 import org.griphyn.vdl.karajan.Loader;
 import org.griphyn.vdl.karajan.VDL2ExecutionContext;
@@ -64,10 +68,13 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
 
     private static ProgressTracker pTracker = new ProgressTracker();
 
+    private static final DateFormat DF = new SimpleDateFormat(
+            "yyyy.MM.dd.HH.mm.ss.SSS.");
+
     public class Run extends AbstractAnalysisRun implements Serializable {
-        private String runDirURL;
+        private String runDir, runDirUrl;
         private volatile transient double progress;
-        private ExecutionContext ec;
+        private VDL2ExecutionContext ec;
         private OutputChannel out;
 
         protected Run(ElabAnalysis analysis, Elab elab, ElabGroup user) {
@@ -80,7 +87,17 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 String projectName = getAnalysis().getType();
                 String project = projectName + ".swift";
 
+                String egd = System.getProperty("java.security.egd");
+                if ("Linux".equals(System.getProperty("os.name"))) {
+                    System
+                            .setProperty("java.security.egd",
+                                    "file:/dev/urandom");
+                }
                 String runID = Loader.getUUID();
+                if (egd != null) {
+                    // oddly enough, there is no way to remove a system property
+                    System.setProperty("java.security.egd", egd);
+                }
 
                 ElementTree tree = getTree(getElab(), project);
                 tree.setName(projectName + "-" + runID);
@@ -91,6 +108,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 out.setPattern("Running job");
                 ec.setStderr(out);
                 ec.setStdout(out);
+                ec.setRunID(runID);
                 out.append("Arguments: \n");
                 Iterator i = argv.iterator();
                 while (i.hasNext()) {
@@ -120,7 +138,9 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 stack.setGlobal("swift.home", home);
                 stack.setGlobal("vds.home", home);
                 stack.setGlobal("vdl:operation", "run");
-                stack.setGlobal("VDL:RUNID", runID);
+
+                createRunDir();
+                ec.setCwd(runDir);
 
                 ec.start(stack);
                 setStatus(STATUS_RUNNING);
@@ -130,6 +150,18 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 setException(e);
                 setStatus(STATUS_FAILED);
             }
+        }
+
+        private void createRunDir() throws IOException {
+            runDir = getUser().getDir("scratch");
+            runDirUrl = getUser().getDirURL("scratch");
+            File rdf = new File(runDir);
+            File tmp = File.createTempFile(DF.format(new Date()), "", new File(
+                    runDir));
+            tmp.delete();
+            tmp.mkdirs();
+            runDir = runDir + File.separator + tmp.getName();
+            runDirUrl = runDirUrl + '/' + tmp.getName();
         }
 
         private List getArgv() {
@@ -152,7 +184,8 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
             }
             else if (value instanceof String) {
                 String s = (String) value;
-                argv.add("-" + name + "=" + s.replaceAll("\r\n?", "\\n"));
+                s = resolve(s);
+                argv.add("-" + name + "=" + s.replaceAll("\r\n?", "\\\\n"));
             }
             else if (value instanceof Collection) {
                 addArg(argv, name, (Collection) value);
@@ -169,12 +202,26 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
             StringBuffer sb = new StringBuffer();
             Iterator i = values.iterator();
             while (i.hasNext()) {
-                sb.append(String.valueOf(i.next()));
+                sb.append(resolve(String.valueOf(i.next())));
                 if (i.hasNext()) {
                     sb.append(',');
                 }
             }
             argv.add("-" + name + "=" + sb.toString());
+        }
+
+        protected String resolve(String maybeAFile) {
+            if (maybeAFile == null || maybeAFile.equals("")) {
+                return maybeAFile;
+            }
+            File f = new File(RawDataFileResolver.getDefault().resolve(
+                    getElab(), maybeAFile));
+            if (f.exists() && f.isFile()) {
+                return f.getAbsolutePath();
+            }
+            else {
+                return maybeAFile;// or maybe not
+            }
         }
 
         public void cancel() {
@@ -203,11 +250,11 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
         }
 
         public String getOutputDir() {
-            return null;
+            return runDir;
         }
 
         public String getOutputDirURL() {
-            return null;
+            return runDirUrl;
         }
 
         public void updateStatus() {
@@ -216,7 +263,12 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
             }
             else if (ec.done()) {
                 if (ec.isFailed()) {
-                    setException(ec.getFailure());
+                	if (ec.getFailure() == null) {
+                	    setException(new Exception(getStdErrStuff()));
+                	}
+                	else {
+                	    setException(ec.getFailure());
+                	}
                     setStatus(STATUS_FAILED);
                 }
                 else {
@@ -224,6 +276,17 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                             + (ec.getEndTime() - ec.getStartTime()) + "ms");
                     pTracker.setTotal(getAnalysis().getType(), out
                             .getPatternCounter());
+                    File[] f = new File(runDir).listFiles(new FileFilter() {
+                        public boolean accept(File pathname) {
+                            return pathname.getName().endsWith(".dot");
+                        }
+                    });
+                    if (f.length != 1) {
+                    	System.out.println(f.length + " .dot files found. Only one was expected.");
+                    }
+                    else {
+                    	f[0].renameTo(new File(runDir, "dv.dot"));
+                    }
                     setStatus(STATUS_COMPLETED);
                 }
             }
@@ -233,6 +296,28 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                     setProgress(((double) out.getPatternCounter()) / total);
                 }
             }
+        }
+        
+        protected String getStdErrStuff() {
+        	StringBuffer sb = new StringBuffer();
+        	String s = out.toString();
+        	StringTokenizer st = new StringTokenizer(s, "\n");
+        	boolean on = false;
+        	while (st.hasMoreTokens()) {
+        		String line = st.nextToken().trim();
+        		if (line.startsWith("STDOUT:")) {
+        			on = false;
+        		}
+        		else if (line.startsWith("STDERR: ")) {
+        		    on = true;
+        		    line = line.substring("STDERR: ".length());
+        		}
+        		if (on) {
+        			sb.append(line);
+        			sb.append('\n');
+        		}
+        	}
+        	return sb.toString();
         }
     }
 
