@@ -12,6 +12,7 @@ import gov.fnal.elab.util.ElabException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Timer;
 
 /**
  * An implementation of a <code>DataCatalogProvider</code> which wraps another
@@ -23,14 +24,19 @@ public class CachingDataCatalogProvider implements DataCatalogProvider {
     private Collection lastFiles;
     private ResultSet lastResultSet;
     private boolean updating;
+    
+    private long lastdate;
+    public static final long INTERVAL = 1000*60;
 
     public CachingDataCatalogProvider(DataCatalogProvider delegate) {
         this.delegate = delegate;
     }
 
     private ResultSet getCachedEntries(Collection files) throws ElabException {
+    	long now;
         synchronized (this) {
-            if (!updating && equals(files, lastFiles)) {
+        	now = System.currentTimeMillis();
+            if (!updating && equals(files, lastFiles) && (now - lastdate < INTERVAL)) {
                 return lastResultSet;
             }
         }
@@ -38,6 +44,7 @@ public class CachingDataCatalogProvider implements DataCatalogProvider {
         synchronized (this) {
             lastFiles = files;
             lastResultSet = rs;
+            lastdate = now;
         }
         return rs;
     }
