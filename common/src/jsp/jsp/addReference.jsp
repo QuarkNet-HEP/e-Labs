@@ -2,7 +2,7 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="org.apache.regexp.*" %>
-<%@ include file="../login/login-required.jsp" %>
+<%@ include file="../login/admin-login-required.jsp" %>
 <%@ include file="common.jsp" %>
  <html>
 <head>
