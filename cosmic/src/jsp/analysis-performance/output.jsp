@@ -16,7 +16,7 @@
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	
-	<body id="performance-study-output" class="data">
+	<body id="performance-study-output" class="data, analysis-output">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
@@ -33,16 +33,16 @@
 			
 			<div id="content">
 
-<p align="center">
+<p>
 	<img src="${results.outputDirURL}/plot.png"/>
 </p>
-<p align="center">
+<p>
 	<e:rerun type="performance" analysis="${results.analysis}" label="Change"/> your parameters	
 </p>
-<p align="center"><b>OR</b></p>
-<p align="center">To save this plot permanently, enter the new name you want.</p>
-<p align="center">Then click <b>Save Plot</b>.</p>
-<p align="center">
+<p><b>OR</b></p>
+<p>To save this plot permanently, enter the new name you want.</p>
+<p>Then click <b>Save Plot</b>.</p>
+<p>
 	<form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit="window.open('',this.target,'width=500,height=200');" align="center">
 		<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
 		<input type="hidden" name="metadata" value="transformation string Quarknet.Cosmic::PerformanceStudy"/>
