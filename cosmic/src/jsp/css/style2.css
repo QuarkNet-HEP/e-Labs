@@ -187,7 +187,7 @@ table#main {
 }
 
 .logogroup {
-	vertical-align: center;
+	vertical-align: middle;
 	height: 100%;
 	padding-right: 30px;
 }
@@ -240,6 +240,32 @@ a > img {
 	text-decoration: none;
 }
 
+/*=========== News box ============*/
+
+#news-box {
+	width: 180px;
+	border: 2px solid #303030;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #e0e0e0;
+	padding: 4px;
+}
+
+#news-box-header {
+	background-color: #c0c0c0;
+	padding: 4px;
+	font-weight: bold;
+}
+
+#news-box-contents {
+	padding: 4px;
+	font-weight: bold;
+}
+
+#news-box-footer {
+	padding: 4px;
+}
+
 /*=========== Various things ============*/
 .username {
 	font-weight: bold;
@@ -269,7 +295,7 @@ ul.simple li {
 
 ul.simple li:before {
 	display: none;
-	content: none;
+	/*content: none;*/
 }
 
 h2 + ul.simple {
