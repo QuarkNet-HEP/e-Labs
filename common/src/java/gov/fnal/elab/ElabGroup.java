@@ -202,7 +202,7 @@ public class ElabGroup {
      * <code>false</code> otherwise.
      */
     public boolean isTeacher() {
-        return ROLE_TEACHER.equals(role);
+        return ROLE_TEACHER.equals(role) || isAdmin();
     }
 
     /**
@@ -254,6 +254,27 @@ public class ElabGroup {
      */
     public static boolean isUserLoggedIn(HttpSession session) {
         return getUser(session) != null;
+    }
+    
+    /**
+     * Provides ordering on roles
+     */
+    public boolean isA(String role) {
+        if ("user".equals(role)) {
+            return true;
+        }
+        else if ("upload".equals(role)) {
+            return isUpload();
+        }
+        else if ("teacher".equals(role)) {
+            return isTeacher();
+        }
+        else if ("admin".equals(role)) {
+            return isAdmin();
+        }
+        else {
+            return false;
+        }
     }
 
     public String getId() {
