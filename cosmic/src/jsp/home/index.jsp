@@ -69,6 +69,7 @@
 		</td>
 		<td>
 			<div id="right">
+				<%@ include file="../include/newsbox.jsp" %>
 				<jsp:include page="../login/login-control.jsp">
 					<jsp:param name="prevPage" value="../home/login-redir.jsp"/>
 				</jsp:include>
