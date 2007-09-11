@@ -205,6 +205,7 @@
 		</td>
 		<td>
 			<div id="right">
+				<%@ include file="../include/newsbox.jsp" %>
 				<jsp:include page="../login/login-control.jsp"/>
 			</div>
 		</td>
