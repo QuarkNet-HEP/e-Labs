@@ -24,8 +24,8 @@
 		}" valueList="city, group, school, state, teacher, stacked, blessed, detectorid"
 		        labelList="City, Group, School, State, Teacher, Stacked, Blessed, Detector ID"
 		        default="${param.key}"/>
-	<input name="value" size="40" maxlength="40" value="${param.value}"/>
-	<input type="submit" name="submit" value="Search Data"/>
+	<input name="value" size="40" maxlength="40" value="${param.value}" />
+	<input type="submit" name="submit" value="Search Data" />
 	
 	<e:vswitch>
 		<e:visible image="../graphics/Tright.gif">
@@ -42,9 +42,9 @@
 						</select>
 					</td>
 					<td>
-						<input name="date1" size="10" maxlength="15" value="${param.date1}">
+						<input name="date1" size="10" maxlength="15" value="${param.date1}" />
 						to
-						<input name="date2" size="10" maxlength="15" value="${param.date2}">
+						<input name="date2" size="10" maxlength="15" value="${param.date2}" />
 					</td>
 				</tr>
 				<tr>
@@ -62,10 +62,11 @@
 					    Search:
 					</td>
 					<td>
-				    	<input type="radio" name="searchIn" value="all" checked>All data
-					    <input type="radio" name="searchIn" value="within">Within results
+				    	<input type="radio" name="searchIn" value="all" checked="true" />All data
+					    <input type="radio" name="searchIn" value="within"/ >Within results
 					</td>
 				</tr>
+			
 			</table>
 		</e:hidden>
 	</e:vswitch>
@@ -143,3 +144,4 @@
 		request.setAttribute("searchResultsStructured", searchResultsStructured);
 	%>
 </form>
+

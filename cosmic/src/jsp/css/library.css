@@ -65,6 +65,7 @@ a.button {
 }
 
 #nav #subnav li a {
+	width: 100px;
 	background-color: #55a9b4;
 	border-top: #a7d2d8 1px solid;
 	border-left: #a7d2d8 1px solid;

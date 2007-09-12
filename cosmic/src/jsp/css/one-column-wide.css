@@ -14,25 +14,3 @@ pre {
 	width: inherit;
 	font-size: 6pt;
 }
-
-
-#main #right {
-	top: 186px;
-	position: fixed;
-	left: 73%;
-	width: 25%;
-	text-align: left;
-	border-top: 2px solid black;
-	border-left: 2px solid black;
-	padding-top: 12px;
-}
-
-#main #left {
-	width: 68%;
-	text-align: center;
-	border-top: 2px solid black;
-	border-right: 2px solid black;
-	padding-top: 12px;
-	padding-left: 24px;
-	padding-right: 12px;
-}

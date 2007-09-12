@@ -4,7 +4,7 @@
 
 
 <div id="header-image">
-	<img src="<%= "/elab/cosmic/graphics/blast.jpg" %>" alt="Cosmic Ray Blast">
+	<img src="<%= "/elab/cosmic/graphics/blast.jpg" %>" alt="Cosmic Ray Blast" />
 </div>
 <div id="header-title">Cosmic Ray e-Lab</div>
 <%

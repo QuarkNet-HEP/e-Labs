@@ -7,6 +7,10 @@ h1 {
 	color: #000000;
 }
 
+.data #center {
+	text-align: center;
+}
+
 .data #center h1 {
 	font-weight: normal;
 	font-size: 140%;
@@ -232,6 +236,7 @@ a.button {
 }
 
 p.search-result-bar {
+	margin-top: 0px;
     padding-top:2px;
     padding-bottom:2px;
     padding-left:2px;
@@ -287,6 +292,10 @@ p.search-result-bar {
 	padding-right: 16px;
 }
 
+.search-results .data-file img {
+	border: none;
+}
+
 .search-results a.file-link{
 	padding-right: 6px;
 }
@@ -299,12 +308,12 @@ p.search-result-bar {
 	font-size: 110%;
 }
 
-.study-right dl {
+#legend {
 	margin-left: 10px;
 	display: compact;
 }
 
-.study-right dt {
+#legend .dt {
 	display: compact;
 	float: left;
 	clear: left;
@@ -312,7 +321,7 @@ p.search-result-bar {
 	width: 30px;
 }
 
-.study-right dd {
+#legend .dd {
 	margin-left: 10px;
 	float: left;
 }
@@ -339,14 +348,6 @@ p.search-result-bar {
 #analysis-controls table {
 	text-align: center;
 	width: 100%;
-}
-
-.data #center {
-	text-align: center;
-}
-
-.data td#center {
-	text-align: center;
 }
 
 #analyzing-list table {

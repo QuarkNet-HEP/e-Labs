@@ -6,7 +6,7 @@
 <%@ page import="gov.fnal.elab.datacatalog.StructuredResultSet.*" %>
 <%@ page import="java.io.IOException" %>
 
-<?xml version="1.0" encoding="UTF-8"?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -15,6 +15,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column-wide.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/ltbr.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	
@@ -39,17 +40,21 @@
 
 <table border="0" id="main">
 	<tr>
-		<td id="center">
-			<div id="left">
-				<jsp:include page="../data/search-control.jsp">
-					<jsp:param name="type" value="split"/>
-				</jsp:include>
+		<td>
+			<div id="ltbr">
+				<div id="top-left">
+					<jsp:include page="../data/search-control.jsp">
+						<jsp:param name="type" value="split"/>
+					</jsp:include>
+				</div>
 				<form action="analysis.jsp" method="get" id="results-form">
-					<jsp:useBean scope="request" 
-						class="gov.fnal.elab.datacatalog.MultiSelectStructuredResultSetDisplayer" 
-						id="searchResultsDisplayer"/>
-					<div class="search-results">
-						<jsp:include page="../data/search-results.jsp"/>
+					<div id="bottom-left">
+						<jsp:useBean scope="request" 
+							class="gov.fnal.elab.datacatalog.MultiSelectStructuredResultSetDisplayer" 
+							id="searchResultsDisplayer"/>
+						<div class="search-results">
+							<jsp:include page="../data/search-results.jsp"/>
+						</div>
 					</div>
 					<!-- this kind of nesting is an interesting problem -->
 					<div id="right">

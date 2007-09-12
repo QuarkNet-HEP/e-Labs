@@ -240,6 +240,16 @@ a > img {
 	text-decoration: none;
 }
 
+/*===========  Search  ============*/
+
+.search-control {
+	text-align: center;
+}
+
+.image-search-results {
+	text-align: center;
+}
+
 /*=========== News box ============*/
 
 #news-box {
@@ -341,4 +351,8 @@ label {
 
 #deletion-results td.failure {
 	background-color: #ff8050;
+}
+
+a img {
+	border: none;
 }
