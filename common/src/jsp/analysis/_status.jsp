@@ -1,6 +1,6 @@
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
-<%@ page errorPage="../include/errorpage.jsp" buffer="none" %> 
+<%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 
 <%
 	String id = request.getParameter("id");
@@ -11,7 +11,7 @@
 	}
 
 	if (id == null) {
-		%> <jsp:forward page="../analysis/list.jsp"/> <%
+		%><jsp:forward page="../analysis/list.jsp"/><%
 	}
 	else {
 		AnalysisRun run = AnalysisManager.getAnalysisRun(session, id);
@@ -35,7 +35,7 @@
 				}
 			}
 			else {
-					%> <%@ include file="_status-info.jsp" %> <%
+					%><%@ include file="_status-info.jsp" %><%
 			}
 		}
 	}

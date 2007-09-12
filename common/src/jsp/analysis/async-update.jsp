@@ -1,4 +1,4 @@
-<script language="JavaScript">
+<script language="JavaScript" type="text/javascript">
 	var INITIAL = 2000;
 	var DELAY = 1000;
 	

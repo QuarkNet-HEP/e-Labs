@@ -58,7 +58,7 @@ if (!ElabGroup.isUserLoggedIn(session)) {
 				</tr>
 				<tr>
 					<td class="form-label">
-						<input type="submit" name="logout" value="Logout">
+						<input type="submit" name="logout" value="Logout" />
 					</td>
 				</tr>
 			</table>

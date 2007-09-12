@@ -11,7 +11,7 @@
 				<label for="user">Username:</label>
 			</td>
 			<td class="form-control">
-				<input type="text" name="user" size="16" tabindex="1">
+				<input type="text" id="user" name="user" size="16" tabindex="1" />
 			</td>
 		</tr>
 		<tr>
@@ -19,17 +19,17 @@
 				<label for="pass">Password:</label>
 			</td>
 			<td class="form-control">
-				<input type="password" name="pass" size="16" tabindex="2">
+				<input type="password" id="pass" name="pass" size="16" tabindex="2" />
 			</td>
 		</tr>
 		<tr>
 			<td class="form-label">
 			</td>
 			<td class="form-control">
-				<input class="login-button" type="submit" name="login" value="Login" tabindex="3">
+				<input class="login-button" type="submit" name="login" value="Login" tabindex="3" />
 			</td>
 		</tr>
 	</table>
-	<input type="hidden" name="project" value="${elab.name}">
-	<input type="hidden" name="prevPage" value="<%= prevPage %>">
+	<input type="hidden" name="project" value="${elab.name}" />
+	<input type="hidden" name="prevPage" value="<%= prevPage %>" />
 </form>

@@ -5,7 +5,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../login/login-required.jsp" %>
 
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -89,7 +88,7 @@
 		</c:choose>
 	</table>
 	<%@ include file="async-update.jsp" %>
-	<script language="JavaScript">
+	<script language="JavaScript" type="text/javascript">
 		registerUpdate("status-async.jsp?id=all", update);
 							
 		function update(data) {

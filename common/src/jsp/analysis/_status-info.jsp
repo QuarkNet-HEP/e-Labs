@@ -4,7 +4,6 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.io.*" %>
 
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -49,22 +48,22 @@
 							}
 						%>
 						
-						<br>
+						<br />
 						<e:vswitch>
 							<e:visible>
 								<strong>Analysis output</strong>
 							</e:visible>
 							<e:hidden>
-								<strong>Analysis output</strong><br/>
+								<strong>Analysis output</strong><br />
 								<code style="font-size: small;">
 <%
 							HTMLEscapingWriter wr = new HTMLEscapingWriter(out);
 							wr.write(run.getSTDERR());
-							out.write("<hr><code>");
+							out.write("<hr />");
 							if (e != null) {
 								e.printStackTrace(new PrintWriter(wr));
 							}
-							out.write("<hr>");
+							out.write("<hr />");
 							wr.write(run.getDebuggingInfo());
 %>
 								</code>
@@ -76,7 +75,7 @@
 					%>
 					<center>
 						<h1>The <%= run.getAnalysis().getType() %> study is running...</h1>
-						<img src="../graphics/busy2.gif"/><br><br><br>
+						<img src="../graphics/busy2.gif" alt="Image suggesting something is happening" /><br /><br /><br />
 						Progress: 
 						<table style="border: solid black thin;" width="20%">
 							<tr>
@@ -87,7 +86,7 @@
 						
 						
 						<%@ include file="../analysis/async-update.jsp" %>
-						<script language="JavaScript">
+						<script language="JavaScript" type="text/javascript">
 							registerUpdate("../analysis/status-async.jsp?id=" + <%= run.getId() %>, update);
 							
 							function update(data) {
@@ -111,39 +110,27 @@
 							}
 						</script>
 			
-					<br><br>
-					<table border="0">
-						<tr>
-							<form action="../analysis/action.jsp">
-								<input type="hidden" name="id" value="<%= run.getId() %>"/>
-								<td>
-									<input type="submit" name="cancel" value="Cancel study"/>
-								</td>
-								<td>
-									<input type="submit" name="background" value="Queue study"/>
-								</td>
-							</form>
-			
-			
-							<form action="../analysis/status.jsp">
-								<input type="hidden" name="id" value="<%= run.getId() %>"/>
-								<td>
-									<input id="refresh-button" type="submit" name="refresh" value="Refresh status"/>
-								</td>
-							</form>
-						</tr>
-					</table>
+					<br /><br />
+					<form action="../analysis/action.jsp">
+						<input type="hidden" name="id" value="<%= run.getId() %>" />
+						<input type="submit" name="cancel" value="Cancel study" />
+						<input type="submit" name="background" value="Queue study" />
+					</form>
+					<form action="../analysis/status.jsp">
+						<input type="hidden" name="id" value="<%= run.getId() %>" />
+						<input id="refresh-button" type="submit" name="refresh" value="Refresh status" />
+					</form>
 				
 					</center>
 				
-					<hr>
+					<hr />
 					
 					<e:vswitch>
 						<e:visible>
 							<strong>Analysis output</strong>
 						</e:visible>
 						<e:hidden>
-							<strong>Analysis output</strong><br/>
+							<strong>Analysis output</strong><br />
 							<code style="font-size: small;">
 <%
 	String output = run.getSTDERR();
@@ -151,7 +138,7 @@
 	StringTokenizer st = new StringTokenizer(output, "\n");
 	int lines = st.countTokens();
 	if (lines > 20) {
-		out.println("...<br>");
+		out.println("...<br />");
 	}
 	int skip = lines - 20;
 	for(int i = 0; i < skip; i++) {
@@ -159,7 +146,7 @@
 	}
 	while(st.hasMoreTokens()) {
 		out.print(st.nextToken());
-		out.println("<br>");
+		out.println("<br />");
 	}
 %>
 							</code>
