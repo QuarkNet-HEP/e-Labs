@@ -21,7 +21,7 @@ public class HTMLEscapingWriter extends Writer {
         esc['>'] = "&gt;";
         esc['&'] = "&amp;";
         esc['\''] = "&quot;";
-        esc['\n'] = "<br/>";
+        esc['\n'] = "<br />";
     }
     private Writer wr;
     

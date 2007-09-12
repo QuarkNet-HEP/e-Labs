@@ -168,7 +168,7 @@ public class ElabUtil {
             image = "../graphics/Tright.gif";
         }
         out.write(image);
-        out.write("\" alt=\"\" border=\"0\"/></a>");
+        out.write("\" alt=\" \" border=\"0\" /></a>");
     }
 
     public static void vsWriteVisibleEnd(JspWriter out) throws IOException {
@@ -205,7 +205,7 @@ public class ElabUtil {
             image = "../graphics/Tdown.gif";
         }
         out.write(image);
-        out.write("\" alt=\"\" border=\"0\"/></a>");
+        out.write("\" alt=\" \" border=\"0\" /></a>");
     }
 
     public static void vsWriteHiddenEnd(JspWriter out) throws IOException {
