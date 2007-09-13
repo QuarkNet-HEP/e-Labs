@@ -5,5 +5,6 @@
 <jsp:include page="../plots/search.jsp">
 	<jsp:param name="key" value="group"/>
 	<jsp:param name="value" value="${user.name}"/>
+	<jsp:param name="uploaded" value="true"/>
 	<jsp:param name="submit" value="Search Data"/>
 </jsp:include>
