@@ -30,10 +30,22 @@
 </c:if>
 
 <%
+	System.out.println("\n(----------------------------------------\n");
 	System.out.println("Exception caught while rendering page: ");
 	if (exception != null) {
-	    exception.printStackTrace();
+		exception.printStackTrace();
+		if (exception instanceof JspException) {
+			Throwable root = ((JspException) exception).getRootCause();
+			if (root != null) {
+				System.out.println("Root cause: ");
+				root.printStackTrace();
+			}
+		}
 	}
+	System.out.println("Request URL: " + request.getRequestURL());
+	System.out.println("QueryString: " + request.getQueryString());
+	System.out.println("Group: " + ElabGroup.getUser(session));
+	System.out.println("\n)----------------------------------------\n");
 %>
 <div id="error-page-body" style="width: 790px; text-align: left;">
 	<h1>An error has occurred during your request</h1>
