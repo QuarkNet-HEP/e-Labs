@@ -16,6 +16,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column-wide.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/ltbr.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	
@@ -40,40 +41,21 @@
 
 <table border="0" id="main">
 	<tr>
-		<td id="center">
-			<div id="left">
-				<%@ include file="../include/delete.jsp" %>
-				<jsp:include page="../data/search-control.jsp"/>
+		<td>
+			<div id="ltbr">
+				<div id="top-left">
+					<%@ include file="../include/delete.jsp" %>
+					<jsp:include page="../data/search-control.jsp"/>
+				</div>
 				<form action="delete.jsp" method="get" id="results-form">
-					<%
-						StructuredResultSetDisplayer srsd = new StructuredResultSetDisplayer(){
-					    	private int count = 0;
-							public void displayMonthContents(JspWriter out, Month month) throws IOException {
-							    if (month.getFileCount() > 1) {
-							        out.write("<input type=\"checkbox\" id=\"cb" + count + "\" name=\"selectall\" onClick=\"selectAll(" + count + ", " + count + month.getFileCount() + 1 + ")\"/>");
-							        out.write("select all " + month.getFileCount() + " files");
-							        count++;
-							    }
-							    super.displayMonthContents(out, month);
-							}
-					    
-					    	public void displayFileContents(JspWriter out, File file)
-					            throws IOException {
-					    	    %>
-					    	    	<input type="checkbox" name="file" 
-					    	    		id="<%= "cb" + count %>" value="<%= file.getLFN() %>"/>
-					    	    <%
-					    	    count++;
-					    	    super.displayFileContents(out, file);
-					    	}
-						};
-						request.setAttribute("searchResultsDisplayer", srsd);
-						
-					%>
-					<div class="search-results">
-						<jsp:include page="../data/search-results.jsp"/>
+					<div id="bottom-left">
+						<jsp:useBean scope="request" 
+								class="gov.fnal.elab.datacatalog.MultiSelectStructuredResultSetDisplayer" 
+								id="searchResultsDisplayer"/>					
+						<div class="search-results">
+							<jsp:include page="../data/search-results.jsp"/>
+						</div>
 					</div>
-					<!-- this kind of nesting is an interesting problem -->
 					<div id="right">
 						<%@ include file="delete-help.jsp" %>
 						<div id="analyze" class="study-right">
