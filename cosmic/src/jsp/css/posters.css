@@ -3,6 +3,10 @@ h1 {
 	color: #000000;
 }
 
+.posters #content {
+	text-align: left;
+}
+
 .posters #center h1 {
 	font-weight: normal;
 	font-size: 140%;
@@ -242,15 +246,11 @@ a.button {
 	margin-right: auto;
 }
 
-#search-posters #center {
+#search-posters #center, #delete-posters #center {
 	text-align: center;
 }
 
 #search-results td {
 	vertical-align: middle;
-	text-align: left;
-}
-
-#new-poster #content {
 	text-align: left;
 }

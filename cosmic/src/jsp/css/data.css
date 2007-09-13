@@ -2,6 +2,10 @@
 	border: none;
 }
 
+.data #content {
+	text-align: left;
+}
+
 h1 {
 	background-color: #4382bb;
 	color: #000000;
