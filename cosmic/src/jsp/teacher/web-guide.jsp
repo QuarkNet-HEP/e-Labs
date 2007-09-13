@@ -67,8 +67,8 @@
 	Most of the pages also have a sub menu to provide both an overview of what is 
 	available and  easy access. <img src="../graphics/subnav.jpg"/>
 </p>
-<h2><a href="../home/milestones-map.jsp"><strong>Study Guide</strong></a> and alternate 
-	<a href="../home/milestones.jsp"><strong>text version</strong></a></h2>
+<h2><a href="../library/milestones-map.jsp"><strong>Study Guide</strong></a> and alternate 
+	<a href="../library/milestones.jsp"><strong>text version</strong></a></h2>
 <p>
 	The study guide is divided into four sections excluding the pre-test and post-test:
 	<ul>
