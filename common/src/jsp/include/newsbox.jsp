@@ -14,8 +14,12 @@
 	SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy 'at' hh:mm:ss aaa");
 	sdf.setTimeZone(TimeZone.getTimeZone("America/Chicago"));
 	request.setAttribute("now", new Date());
-	request.setAttribute("start", sdf.parse((String) e.getTupleValue("time")));
-	request.setAttribute("end", sdf.parse((String) e.getTupleValue("expire")));
+	if (e.getTupleValue("time") != null) {
+		request.setAttribute("start", sdf.parse((String) e.getTupleValue("time")));
+	}
+	if (e.getTupleValue("expire") != null) {
+		request.setAttribute("end", sdf.parse((String) e.getTupleValue("expire")));
+	}
 %>
 
 <c:if test="${(now > start) && (now < end)}">
