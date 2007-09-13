@@ -33,8 +33,11 @@ public abstract class AbstractAnalysis implements ElabAnalysis {
         if (v instanceof Collection) {
             return (Collection) v;
         }
-        else {
+        else if (v != null) {
             return Collections.singletonList(v);
+        }
+        else {
+            return null;
         }
     }
     
