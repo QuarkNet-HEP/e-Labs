@@ -52,7 +52,7 @@
 		<td>
 			<ul>
 				<li>
-					<a href="../library/milestones_map.jsp">Study Guide</a> and 
+					<a href="../library/milestones-map.jsp">Study Guide</a> and 
 					<a href="../library/milestones.jsp"><strong>text version</strong></a>
 					<ul>
 						<li><a href="../jsp/showReferences.jsp?t=reference&amp;f=peruse">View Resources for Study Guide</a></li>
@@ -79,7 +79,7 @@
 								<li><a href="../analysis-flux/tutorial.jsp">Flux Study Background</a></li>
 								<li><a href="../analysis-flux/tryit.html">Step-by-Step Instructions: Flux</a></li>
 								<li><a href="../analysis-shower/tutorial.jsp">Shower Study Tutorial</a></li>
-								<li><a href="../analysis-shower/tryit.jsp">Step-by-Step Instructions: Shower</a></li>
+								<li><a href="../analysis-shower/tryit.html">Step-by-Step Instructions: Shower</a></li>
 								<li><a href="../jsp/geoInstructions.jsp">Updating Geometry Tutorial</a></li>
 							</ul>
 						</li>
