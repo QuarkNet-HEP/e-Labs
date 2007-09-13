@@ -76,7 +76,7 @@
 				 - 
 				<a href="../jsp/showLogbook.jsp">Student Logbook</a>
 				<a href="../jsp/showLogbook.jsp">
-					<img src="../graphics/logbook-small.gif"/>
+					<img src="../graphics/logbook_small.gif"/>
 				</a>
 			</div>
 		</div>
