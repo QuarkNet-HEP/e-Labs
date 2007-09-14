@@ -185,9 +185,9 @@
 
 				<ul>
 					<li>
-						<B>Rubrics:</B> <A HREF="rubric-ci.html">Overall Content & Investigation</A>,
-						<A HREF="rubric-r.html">Research Skills</A>, <A HREF="rubric-t.html">Technology Skills</A>,
-						<A HREF="rubric-wla.html">Writing and Language Arts</A> and <A HREF="rubric-p.html">Poster</A>
+						<B>Rubrics:</B> <A HREF="../assessment/rubric-ci.html">Overall Content & Investigation</A>,
+						<A HREF="../assessment/rubric-r.html">Research Skills</A>, <A HREF="../assessment/rubric-t.html">Technology Skills</A>,
+						<A HREF="../assessment/rubric-wla.html">Writing and Language Arts</A> and <A HREF="../assessment/rubric-p.html">Poster</A>
 					</li>
 					<li>
 						<a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
