@@ -50,7 +50,11 @@ public class AnalysisParameterTools {
         List l = new ArrayList(rawData.size());
         Iterator i = rawData.iterator();
         while (i.hasNext()) {
-            String s = new File((String) i.next()).getName();
+            String n = (String) i.next();
+            if (n == null) {
+                throw new IllegalArgumentException("One of the raw data files is null");
+            }
+            String s = new File(n).getName();
             String detectorID = s.substring(0, s.indexOf("."));
             l.add(elab.getProperties().getDataDir() + File.separator
                     + detectorID + File.separator + s + ".thresh");
