@@ -15,7 +15,7 @@
 		//also, this piece of code is ugly
 		ElabAnalysis analysis = (ElabAnalysis) request.getAttribute("analysis");
 		Collection rawData = analysis.getParameterValues("rawData");
-		if(rawData != null) {
+		if (rawData != null) {
 			List thresholdData = AnalysisParameterTools.getThresholdFiles(elab, rawData);
 			List wd = AnalysisParameterTools.getWireDelayFiles(elab, rawData);
 			List geo = AnalysisParameterTools.getGeometryFiles(elab, rawData);
