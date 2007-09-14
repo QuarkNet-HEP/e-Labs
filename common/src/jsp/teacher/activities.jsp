@@ -30,7 +30,7 @@
 
 <p>
 	<a href="notes.jsp">Notes</a> - <a href="strategy.jsp">Teaching Strategies</a> - 
-	<a href="web_guide.jsp">Research Guidance</a> - <a href="activities.jsp">Sample Classroom Activities</a>
+	<a href="web-guide.jsp">Research Guidance</a> - <a href="activities.jsp">Sample Classroom Activities</a>
 </p>
 
 <h2>CHICOS Portable Cosmic Ray Detector Operation Manual Experiments 1-5</h2>
