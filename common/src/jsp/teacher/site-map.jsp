@@ -37,7 +37,6 @@
 				<ul class="simple">
 					<li><a href="index.jsp">Teacher Page</a></li>
 					<li><a href="notes.jsp">Classroom Notes</a></li>
-					<li><a href="strategy.jsp">Teaching Strategies</a></li>
 					<li><a href="web-guide.jsp">Research Guidance</a></li>
 					<li><a href="activities.jsp">Sample Classroom Activities</a></li>
 					<li><a href="strategy.jsp">Teaching Strategies</a></li>
