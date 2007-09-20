@@ -223,7 +223,6 @@ public class DataTools {
             data.append("Detector: ");
         }
         data.append(ElabUtil.join(detectors, ", "));
-        data.append('\n');
         return data.toString();
     }
     
