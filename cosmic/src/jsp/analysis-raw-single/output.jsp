@@ -62,8 +62,7 @@
 		meta.add("state string " + user.getState());
 		meta.add("teacher string " + user.getTeacher());
 		meta.add("year string " + user.getYear());
-		
-		elab.getDataCatalogProvider().insert(DataTools.buildCatalogEntry(outf, meta));
+		elab.getDataCatalogProvider().insert(DataTools.buildCatalogEntry(new File(outf).getName(), meta));
 	}
 	else {
 	    outf = request.getParameter("filename");
