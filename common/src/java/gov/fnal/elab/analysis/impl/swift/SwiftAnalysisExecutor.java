@@ -156,6 +156,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
             runDir = getUser().getDir("scratch");
             runDirUrl = getUser().getDirURL("scratch");
             File rdf = new File(runDir);
+            rdf.mkdirs();
             File tmp = File.createTempFile(DF.format(new Date()), "", new File(
                     runDir));
             tmp.delete();
