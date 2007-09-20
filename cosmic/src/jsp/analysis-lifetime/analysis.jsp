@@ -11,7 +11,6 @@
 <e:analysis name="analysis" type="Quarknet.Cosmic::LifetimeStudy">
 	<%
 		//these need to always be set-up
-		//also, this piece of code is ugly
 		ElabAnalysis analysis = (ElabAnalysis) request.getAttribute("analysis");
 		Collection rawData = analysis.getParameterValues("rawData");
 		if(rawData != null) {
