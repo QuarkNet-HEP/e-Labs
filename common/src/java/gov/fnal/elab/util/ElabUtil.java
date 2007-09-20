@@ -75,7 +75,7 @@ public class ElabUtil {
         splits = new HashMap();
     }
 
-    private static synchronized Collection split(Object list) {
+    public static synchronized Collection split(Object list) {
         if (list instanceof Collection) {
             return (Collection) list;
         }
@@ -488,8 +488,7 @@ public class ElabUtil {
         else {
             gc.set(year, month - 1, day, 0, 0, 0);
         }
-
-        nd.setTime(gc.getTime().getTime());
+        nd.setTime(gc.getTimeInMillis());
         return nd;
     }
     
