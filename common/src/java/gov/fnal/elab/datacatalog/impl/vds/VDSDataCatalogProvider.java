@@ -26,6 +26,7 @@ import gov.fnal.elab.vds.ElabTransformation;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -164,12 +165,18 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
     }
 
     public CatalogEntry getEntry(String lfn) throws ElabException {
-        ResultSet rs = getEntries(new String[] { lfn });
+        ResultSet rs = getEntries(Collections.singletonList(lfn));
         if (rs.isEmpty()) {
             return null;
         }
         else {
-            return (CatalogEntry) rs.iterator().next();
+            CatalogEntry e = (CatalogEntry) rs.iterator().next();
+            if (e.getTupleMap().isEmpty()) {
+                return null;
+            }
+            else {
+                return e;
+            }
         }
     }
     
