@@ -292,6 +292,20 @@ p.search-result-bar {
 	padding-left: 20px;
 }
 
+.search-results .data-files table td {
+	padding: 4px;
+	width: 140px;
+	text-align: left;
+}
+
+.search-results .data-files tr.odd {
+	background-color: #ffffff;
+}
+
+.search-results .data-files tr.even {
+	background-color: #d4e0ff;
+}
+
 .search-results .data-file {
 	padding-right: 16px;
 }
@@ -302,6 +316,10 @@ p.search-result-bar {
 
 .search-results a.file-link{
 	padding-right: 6px;
+}
+
+.search-results .clearall {
+	padding: 6px;
 }
 
 .study-right {
@@ -399,4 +417,23 @@ p.search-result-bar {
 
 .tutorial #content {
 	padding-top: 24px;
+}
+
+/*********** Progress ************/
+
+.status-progress {
+	border: solid black thin;
+}
+
+.status-progress-indicator {
+	background-color: #5d89d9;
+}
+
+#analysis-table .list-progress {
+	border: solid black thin;
+	width: 100px;
+}
+
+#analysis-table .list-progress-indicator {
+	background-color: #5d89d9;
 }
