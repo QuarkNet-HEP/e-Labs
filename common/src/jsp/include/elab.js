@@ -93,7 +93,7 @@ function updateLabels(source, name) {
 	if (p) {
 		var label = p[0];
 		var dest = p[1];
-		destInput = document.forms[0][dest];
+		var destInput = document.getElementById(dest);
 		var text = destInput.value;
 		var index = text.indexOf(label);
 		if (index != -1) {

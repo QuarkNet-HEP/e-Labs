@@ -19,6 +19,7 @@ import javax.servlet.jsp.JspWriter;
 
 public class TRTextArea extends TRControl {
     private List labelsToUpdate;
+    private String id;
 
     public int doEndTag() throws JspException {
         JspWriter out = pageContext.getOut();
@@ -34,7 +35,7 @@ public class TRTextArea extends TRControl {
                 Iterator i = labelsToUpdate.iterator();
                 while (i.hasNext()) {
                     String[] s = (String[]) i.next();
-                    out.write("registerLabelForUpdate(\"" + s[0] + "\", \"" + s[1] + "\", \"" + getName() + "\");\n");
+                    out.write("registerLabelForUpdate(\"" + s[0] + "\", \"" + s[1] + "\", \"" + id + "\");\n");
                 }
                 out.write("</script>\n");
             }
@@ -51,8 +52,16 @@ public class TRTextArea extends TRControl {
         try {
             out.write("<textarea");
             writeAttribute(out, "name", getName());
+            id = (String) getAttribute("id");
+            if (id == null) {
+                id = "tr" + getName();
+            }
+            else {
+                getAttributes().remove("id");
+            }
+            writeAttribute(out, "id", id);
             writeAttributes(out);
-            out.write("/>");
+            out.write(">");
         }
         catch (IOException e) {
             throw new JspException(e);
