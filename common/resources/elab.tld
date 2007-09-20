@@ -639,4 +639,31 @@ The value of the parameter
 		<name>restricted</name>
 		<path>/WEB-INF/tags/restricted.tag</path>
 	</tag-file>
+	
+	<tag>
+		<name>default</name>
+		<tag-class>gov.fnal.elab.tags.DefaultValue</tag-class>
+		<body-content>JSP</body-content>
+	</tag>
+	
+	<tag>
+		<description>
+This tag will generate the label and value of a parameter. This assumes that
+a matching &lt;trlabel&gt; exists for that parameter. This tag must be used
+inside a &lt;trtextarea&gt; in which context it will also generate the
+JavaScript code to update the value inside the text area if the control
+for the parameter is changed.
+		</description>
+		<name>analysisParamLabel</name>
+		<tag-class>gov.fnal.elab.tags.AnalysisParamLabel</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>
+The name of the parameter (must match the name of an analysis parameter)
+			</description>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
 </taglib>

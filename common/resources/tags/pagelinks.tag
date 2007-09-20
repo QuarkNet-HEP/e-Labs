@@ -1,4 +1,5 @@
 <%@ tag description="Allows easy, but slightly inefficient display of paged things" %>
+<%@ attribute name="start" required="true" type="java.lang.String" description="The current start index" %>
 <%@ attribute name="totalSize" type="java.lang.Object" required="true" description="A size or a collection whose size represents the total number of items" %>
 <%@ attribute name="pageSize" required="true" description="The number of items on each page" %>
 <%@ attribute name="name" required="true" description="The label to use when referring to only one item" %>
@@ -8,7 +9,6 @@
 <%@ tag import="java.util.*" %>
 
 <%
-	String start = request.getParameter("start");
 	if (null == start || "".equals(start)) {
 		start = "0";
 	}
