@@ -211,7 +211,7 @@ public class DataTools {
             }
             else if (dataCount != Integer.MAX_VALUE) {
                 data.deleteCharAt(data.length() - 1);
-                data.append("...");
+                data.append("\n...");
                 dataCount = Integer.MAX_VALUE;
             }
         }
