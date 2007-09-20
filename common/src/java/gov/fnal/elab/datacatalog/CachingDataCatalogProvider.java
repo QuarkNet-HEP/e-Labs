@@ -11,8 +11,8 @@ import gov.fnal.elab.util.ElabException;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
-import java.util.Timer;
 
 /**
  * An implementation of a <code>DataCatalogProvider</code> which wraps another
@@ -68,12 +68,18 @@ public class CachingDataCatalogProvider implements DataCatalogProvider {
     }
 
     public CatalogEntry getEntry(String lfn) throws ElabException {
-        ResultSet rs = getEntries(new String[] { lfn });
+        ResultSet rs = getEntries(Collections.singletonList(lfn));
         if (rs.isEmpty()) {
             return null;
         }
         else {
-            return (CatalogEntry) rs.iterator().next();
+            CatalogEntry e = (CatalogEntry) rs.iterator().next();
+            if (e.getTupleMap().isEmpty()) {
+                return null;
+            }
+            else {
+                return e;
+            }
         }
     }
 
