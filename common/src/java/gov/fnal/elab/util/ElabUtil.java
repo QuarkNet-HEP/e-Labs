@@ -449,6 +449,8 @@ public class ElabUtil {
                             + e.getMessage(), e);
         }
     }
+    
+    private static final TimeZone UTC = TimeZone.getTimeZone("UTC");
 
     public static NanoDate julianToGregorian(int jday, double fractional) {
         int Z = (int) (jday + 0.5 + fractional);
@@ -470,7 +472,7 @@ public class ElabUtil {
         // C-4716 (otherwise)
 
         NanoDate nd = new NanoDate();
-        Calendar gc = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        Calendar gc = Calendar.getInstance(UTC);
         if (fractional != 0) {
             int hour = (int) (fractional * 24);
             int min = (int) ((fractional * 24 - hour) * 60);
