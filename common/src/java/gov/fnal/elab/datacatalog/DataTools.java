@@ -16,6 +16,7 @@ import gov.fnal.elab.datacatalog.StructuredResultSet.School;
 import gov.fnal.elab.datacatalog.query.CatalogEntry;
 import gov.fnal.elab.datacatalog.query.ResultSet;
 import gov.fnal.elab.util.ElabException;
+import gov.fnal.elab.util.ElabUtil;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -181,36 +182,48 @@ public class DataTools {
             return "";
         }
         StringBuffer data = new StringBuffer();
-        StringBuffer detectors = new StringBuffer();
+        Set detectors = new HashSet();
+        
 
         ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
         data.append("Data: ");
-        if (rs.size() > 1) {
-            detectors.append("Detectors: ");
-        }
-        else {
-            detectors.append("Detector: ");
-        }
+        int dataCount = 0;
+        
         Iterator i = rs.iterator();
         while (i.hasNext()) {
             CatalogEntry e = (CatalogEntry) i.next();
             if (e == null) {
                 continue;
             }
-            data.append(e.getTupleValue("school"));
-            data.append(' ');
-            Object date = e.getTupleValue("startdate");
-            if (date != null) {
-                data.append(TZ_DATE_TIME_FORMAT.format(date));
+            detectors.add(e.getTupleValue("detectorid"));
+            if (dataCount < 3) {
+                data.append(e.getTupleValue("school"));
+                data.append(' ');
+                Object date = e.getTupleValue("startdate");
+            
+                if (date != null) {
+                    data.append(TZ_DATE_TIME_FORMAT.format(date));
+                    dataCount++;
+                }
+                if (i.hasNext()) {
+                    data.append(", ");
+                }
             }
-            detectors.append(e.getTupleValue("detectorid"));
-            if (i.hasNext()) {
-                data.append(", ");
-                detectors.append(", ");
+            else if (dataCount != Integer.MAX_VALUE) {
+                data.deleteCharAt(data.length() - 1);
+                data.append("...");
+                dataCount = Integer.MAX_VALUE;
             }
         }
         data.append('\n');
-        data.append(detectors);
+        if (detectors.size() > 1) {
+            data.append("Detectors: ");
+        }
+        else {
+            data.append("Detector: ");
+        }
+        data.append(ElabUtil.join(detectors, ", "));
+        data.append('\n');
         return data.toString();
     }
     
