@@ -196,7 +196,7 @@ public class DataTools {
                 continue;
             }
             detectors.add(e.getTupleValue("detectorid"));
-            if (dataCount < 3) {
+            if (dataCount < 8) {
                 data.append(e.getTupleValue("school"));
                 data.append(' ');
                 Object date = e.getTupleValue("startdate");
