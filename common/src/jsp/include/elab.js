@@ -65,3 +65,45 @@ function showRefLink(url, W, H) {
 	winPref = "width=" + W + ",height=" + H + ",scrollbars=yes,toolbar=no,menubar=no,status=yes,resizable=yes";
 	window.open(url, "Linked_Reference", winPref);
 }
+
+//http://www.experts-exchange.com/Web/Web_Languages/JavaScript/Q_21265898.html
+function toggle(t_show, t_hide, s_show, s_hide){
+	if (document.getElementById(t_show).innerHTML == s_show) {
+		document.getElementById(t_show).innerHTML = s_hide;
+		document.getElementById(t_hide).style.display = "";
+	}
+	else if (document.getElementById(t_show).innerHTML == s_hide) {
+		document.getElementById(t_show).innerHTML = s_show;
+		document.getElementById(t_hide).style.display = "none";
+	}
+	else {
+		document.getElementById(t_hide).style.display = "none";
+	}
+}
+
+function registerLabelForUpdate(name, label, dest) {
+	if (!this.labelsToUpdate) {
+		this.labelsToUpdate = [];
+	}
+	this.labelsToUpdate[name] = [label, dest];
+}
+
+function updateLabels(source, name) {
+	var p = this.labelsToUpdate[name];
+	if (p) {
+		var label = p[0];
+		var dest = p[1];
+		destInput = document.forms[0][dest];
+		var text = destInput.value;
+		var index = text.indexOf(label);
+		if (index != -1) {
+			index += label.length;
+			var nl = text.indexOf('\n', index);
+			if (nl == -1) {
+				nl = text.length;
+			}
+			text = text.substring(0, index) + source.value + text.substring(nl);
+			destInput.value = text; 
+		}
+	}
+}
