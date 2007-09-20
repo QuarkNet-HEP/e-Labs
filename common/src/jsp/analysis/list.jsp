@@ -54,10 +54,10 @@
 					<%
 						AnalysisRun run = (AnalysisRun) pageContext.getAttribute("run");
 						request.setAttribute("status", AnalysisTools.getStatusString(run));
-						request.setAttribute("progress", String.valueOf(AnalysisTools.getProgress(run) * 99 + 1));
+						request.setAttribute("progress", String.valueOf(run.getProgress() * 99 + 1));
 					%>
 					<tr>
-						<td>${run.id}</td>
+						<td>${run.id} - ${progress}</td>
 						<td>
 							<a href="status.jsp?id=${run.id}">${run.analysis.type}</a>
 						</td>
@@ -70,10 +70,9 @@
 									<td id="textstatus${run.id}">${status}</td>
 									<c:if test="${status == 'Running'}">
 										<td>
-											<table id="progressbar${run.id}" style="border: solid black thin;" 
-												width="100px" cellpadding="0" cellspacing="1">
+											<table class="list-progress" id="progressbar${run.id}" cellpadding="0" cellspacing="1">
 												<tr>
-													<td id="progress${run.id}" width="${progress}%" bgcolor="#5d89d9">&nbsp;</td>
+													<td class="list-progress-indicator" id="progress${run.id}" width="${progress}%">&nbsp;</td>
 													<td>&nbsp;</td>
 												</tr>
 											</table>
@@ -120,10 +119,10 @@
 								 "<td id=\"textstatus" + id + "\">" + cstatus + "</td>";
 							
 							if (status == "Running") {
-								hstatus +="<td><table id=\"progressbar" + id + "\" style=\"border: solid black thin;\"" +
+								hstatus +="<td><table class=\"list-progress\" id=\"progressbar" + id + "\" " +
 								"width=\"100px\" cellpadding=\"0\" cellspacing=\"1\">" +
 									"<tr>" + 
-									"<td id=\"progress" + id + "\" width=\"" + (progress*99 + 1) + "%\" bgcolor=\"#5d89d9\">&nbsp;</td>" + 
+									"<td class=\"list-progress-indicator\" id=\"progress" + id + "\" width=\"" + (progress*99 + 1) + "%\">&nbsp;</td>" + 
 									"<td>&nbsp;</td>" + 
 									"</tr></table></td>";
 							}

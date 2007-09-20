@@ -77,9 +77,9 @@
 						<h1>The <%= run.getAnalysis().getType() %> study is running...</h1>
 						<img src="../graphics/busy2.gif" alt="Image suggesting something is happening" /><br /><br /><br />
 						Progress: 
-						<table style="border: solid black thin;" width="20%">
+						<table class="status-progress" width="20%">
 							<tr>
-								<td id="progressbar" width="<%= run.getProgress()*99 + 1 %>%" bgcolor="#5d89d9">&nbsp;</td>
+								<td class="status-progress-indicator" width="<%= run.getProgress()*99 + 1 %>%">&nbsp;</td>
 								<td>&nbsp;</td>
 							</tr>
 						</table>
