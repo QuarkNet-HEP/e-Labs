@@ -131,12 +131,10 @@
 									<label for="plot_caption">Figure caption:</label>
 								</td>
 								<td class="form-control">
-									<e:trtextarea name="plot_caption" rows="5" cols="30">
-										<e:default>
+									<e:trtextarea name="plot_caption" rows="5" cols="30"><e:default>
 <%= DataTools.getFigureCaption(elab, request.getParameterValues("rawData")) %>
 <e:analysisParamLabel name="lifetime_coincidence"/>
-										</e:default>
-									</e:trtextarea>									
+									</e:default></e:trtextarea>									
 
 								</td>
 							</tr>
