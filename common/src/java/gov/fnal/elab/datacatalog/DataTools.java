@@ -206,7 +206,7 @@ public class DataTools {
                     dataCount++;
                 }
                 if (i.hasNext()) {
-                    data.append(", ");
+                    data.append("\n");
                 }
             }
             else if (dataCount != Integer.MAX_VALUE) {
