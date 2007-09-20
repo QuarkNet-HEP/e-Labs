@@ -29,7 +29,6 @@
 				background: #CCCCCC;
 				color: #000;
        			text-align:left;
-				font: 76% Verdana,Arial,sans-serif;
 				margin-left: auto;
 				margin-right: auto;
             }
