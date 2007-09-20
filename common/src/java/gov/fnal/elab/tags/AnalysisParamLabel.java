@@ -40,7 +40,6 @@ public class AnalysisParamLabel extends TagSupport {
                     else {
                         out.write(value.toString());
                     }
-                    out.write("\n");
                     TRTextArea ta = (TRTextArea) findAncestorWithClass(this, TRTextArea.class);
                     ta.registerLabelForUpdate(name, label);
                 }
