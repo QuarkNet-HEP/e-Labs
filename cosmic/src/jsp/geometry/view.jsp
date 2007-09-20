@@ -28,7 +28,7 @@
 				width: 500px;
 				background: #CCCCCC;
 				color: #000;
-       			text-align:left;
+       			text-align: left;
 				margin-left: auto;
 				margin-right: auto;
             }

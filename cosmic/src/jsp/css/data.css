@@ -421,11 +421,11 @@ p.search-result-bar {
 
 /*********** Progress ************/
 
-.status-progress {
+#status-progress {
 	border: solid black thin;
 }
 
-.status-progress-indicator {
+#status-progress-indicator {
 	background-color: #5d89d9;
 }
 
