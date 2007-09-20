@@ -412,10 +412,10 @@ The value of the control.
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>
+			<description><![CDATA[
 An error message to append after the <code>input</code> tag if the analysis parameter
 is invalid.
-			</description>
+			]]></description>
 			<name>onError</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
