@@ -15,6 +15,15 @@ public class MultiSelectStructuredResultSetDisplayer extends
 
     private int count = 0;
 
+    public int display(JspWriter out) throws IOException {
+        out.write("<div class=\"clearall\">");
+        out.write("<a href=\"#\" onClick=\"selectAll(0, "
+                + this.getResults().getDataFileCount()
+                + ", false)\">Clear selected data</a>");
+        out.write("</div>");
+        return super.display(out);
+    }
+
     public void displayMonthContents(JspWriter out, Month month)
             throws IOException {
         if (month.getFileCount() > 1) {
