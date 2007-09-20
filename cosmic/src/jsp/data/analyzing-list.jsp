@@ -7,14 +7,29 @@
 <%@ page import="java.text.*" %>
 
 <%
-	Collection f = ((ElabAnalysis) request.getAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS)).getParameterValues("rawData"); 
-	ResultSet rs = elab.getDataCatalogProvider().getEntries(f);
-	if (f.size() != rs.size()) {
-		out.write(f.size() + " ? " + rs.size());
+	ElabAnalysis analysis = (ElabAnalysis) request.getAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS);
+	Collection f = analysis.getParameterValues("rawData");
+	if (request.getParameter("remove") != null) {
+		String[] r = request.getParameterValues("remfile");
+		Set s = new HashSet();
+		for (int i = 0; i < r.length; i++) {
+			s.add(r[i]);
+		}
+		Iterator j = f.iterator();
+		while (j.hasNext()) {
+			String rf = (String) j.next();
+			if (s.contains(rf)) {
+				j.remove();
+			}
+		}
+		analysis.setParameter("rawData", f);
 	}
+	ResultSet rs = elab.getDataCatalogProvider().getEntries(f);
+	request.setAttribute("count", new Integer(f.size()));
 %>
 <div id="analyzing-ist">
-<table colspace="4" border="0">
+<form method="post" id="remove-form">
+<table colspace="4" border="0" width="100%">
 	<tbody>
 		<tr>
 			<td align="center">You're analyzing...</td>
@@ -22,13 +37,15 @@
 			<td align="center">Chan2 events</td>
 			<td align="center">Chan3 events</td>
 			<td align="center">Chan4 events</td>
-			<td colspan="2" align="center">Raw Data</td>
-			<c:if test="${rawdata.length > 1}">
+			<td colspan="3" align="center">Raw Data</td>
+			<c:if test="${count > 1}">
 				<td align="center">Remove from analysis</td>
 			</c:if>
 		</tr>
 		<c:forEach items="${missing}" var="m">
-			<td 
+			<tr>
+				<td>${m} not found</td>
+			</tr> 
 		</c:forEach>
 		<%
 			//variables provided for the page including this file
@@ -72,6 +89,7 @@
 			    Date fileStartDate = (Date) e.getTupleValue("startdate");
 			    Date fileEndDate = (Date) e.getTupleValue("enddate");
 			    String filedate = sdf.format(fileStartDate);
+			    filedate = filedate.replaceAll(" ", "&nbsp;");
 			    
 			    if(startdate == null || startdate.after(fileStartDate)){
 			        startdate = fileStartDate;
@@ -102,6 +120,7 @@
 			    //set variables from metadata
 			    String city = (String) e.getTupleValue("city");
 			    String school = (String) e.getTupleValue("school");
+			    school = school.replaceAll(" ", "&nbsp;");
 			    String group = (String) e.getTupleValue("group");
 			    String detector = (String) e.getTupleValue("detectorid");
 			    String title = city + ", " + group + ", Detector: " + detector;
@@ -114,13 +133,13 @@
 			    chan3total += chan3;
 			    chan4total += chan4;
 			
-			    if(num_files == 10){
+			    if (num_files == 10) {
 			        out.println("</tbody><tbody id=\"tog2\" style=\"display:none\">");
 			    }
 			
 			    //row classes
 			    String r_class = "";
-			    if(num_files%2 == 0){
+			    if (num_files%2 == 0) {
 			        r_class = "even";
 			    }
 			    else{
@@ -132,15 +151,16 @@
 				%>
 				    <tr class="<%=r_class%>">
 				        <td align="center">
-				            <%=school%> <%=filedate%>
+				            <%= school %>&nbsp;<%= filedate %>
 				        </td>
 				        <td align=center><%=chan1%></td>
 				        <td align=center><%=chan2%></td>
 				        <td align=center><%=chan3%></td>
 				        <td align=center><%=chan4%></td>
-				        <td bgcolor="#EFEFFF" align=center><a title="<%=title%>" href="../data/view.jsp?filename=<%=lfn%>&type=data&get=meta">View</a>&nbsp</td>
-				        <td bgcolor="#EFFEDE" align=center><a href="../analysis-raw-single/analysis.jsp?submit=true&filename=<%=lfn%>">Statistics</a></td>
-				        <c:if test="${rawData.size > 1}">
+				        <td bgcolor="#EFEFFF" align="center"><a title="<%=title%>" href="../data/view.jsp?filename=<%=lfn%>&type=data&get=meta">View</a>&nbsp</td>
+				        <td bgcolor="#EFFEDE" align="center"><a href="../analysis-raw-single/analysis.jsp?submit=true&filename=<%=lfn%>">Statistics</a></td>
+				        <td bgcolor="#EFFEDE" align="center"><a href="../geometry/view.jsp?filename=<%=lfn%>">Geometry</a></td>
+				        <c:if test="${count > 1}">
 				            <td align=center><input name="remfile" type="checkbox" value="<%=lfn%>"></td>
 				        </c:if>
 				    </tr>
@@ -161,11 +181,11 @@
 			//only show "show more files" link if there's more files to show...
 			if(num_files > 10){
 				%>
-	</tbody>
-	<tbody>
+		</tbody>
+		<tbody>
 		<tr>
 		    <td colspan="1" align="center">
-			    <a href="#" id="tog1" onclick="toggle('tog1', 'tog2', '...show more files', 'show less files...')">...show more files</a></td>
+			    <a href="#" id="tog1" onclick="toggle('tog1', 'tog2', '...show more files', 'show fewer files...')">...show more files</a></td>
 		    <td colspan="8"></td>
 		</tr>
 				<%
@@ -190,13 +210,14 @@
 		    <td colspan="2" align="center">
 	    	    <a href="../analysis-raw-multiple/analysis.jsp?<%=queryFilenames%>">Compare files</a>
 		    </td>
-		    <c:if test="${rs.size > 1}">
+		    <c:if test="${count > 1}">
 			    <!--  allow removal of files if analyzing more than one -->
 	        	<td colspan="7" align="center">
-	            	<input name="submit" type="submit" value="remove">
+	            	<input name="remove" type="submit" value="Remove" />
 		        </td>
 			</c:if>
 		</tr>
 	<tbody>
 </table>
+</form>
 </div>
