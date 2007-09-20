@@ -129,29 +129,6 @@
 		line = br.readLine();
     }
 	request.setAttribute("rows", rows);
-	
-	//now process the events file
-	File eFile = new File(results.getOutputDir(), (String) analysis.getParameter("eventFile"));
-	br = new BufferedReader(new FileReader(eFile));
-
-	List events = new ArrayList();
-	lineNo = 1;
-	line = br.readLine();
-	while(line != null) {
-	    if(!line.matches("^.*#.*")){
-			String arr[] = line.split("\\s");
-			String chanId[] = arr[3].split("\\.");
-			Map eventData = new HashMap();
-			eventData.put("x", arr[0]);
-			eventData.put("y", arr[1]);
-			eventData.put("z", arr[2]);
-			eventData.put("id", chanId[0]);
-			eventData.put("chan", chanId[1]);
-			events.add(eventData);
-	    }
-	    line = br.readLine();
-    }
-	request.setAttribute("events", events);
 %>
 
 <h1>Shower study candidates (<%= rows.size() %>)</h1>
@@ -170,28 +147,36 @@
 						<a href="output.jsp?id=${param.id}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }">Detector Coincidence</a>
 					</th>
 				</tr>
-				<c:forEach items="${rows}" var="row" varStatus="li">
-					<e:paged crt="${li.count}" pageSize="30" totalSize="${rows}">
-						<tr bgcolor="${row.eventNum == eventNum ? '#aaaafc' : (li.count % 2 == 0 ? '#e7eefc' : '#ffffff')}">
-							<td>
-								<e:rerun type="shower" analysis="${results.analysis}" label="${row.dateF}">
-									<e:param name="eventNum" value="${row.eventNum}"/>
-									<e:param name="submit" value="true"/>
-								</e:rerun>
-							</td>
-							<td>
-								${row.eventCoincidence}
-							</td>
-							<td>
-								${row.numDetectors}
-									(<c:forEach items="${row.ids}" var="detectorId"><e:popup href="../data/detector-info.jsp?id=${detectorId}" target="new" width="460" height="160">${detectorId}</e:popup></c:forEach>)
-							</td>
-						</tr>
-					</e:paged>
+				<c:choose>
+					<c:when test="${param.start != null}">
+						<c:set var="start" value="${param.start}"/>
+						<c:set var="end" value="${param.start + 30}"/>
+					</c:when>
+					<c:otherwise>
+						<c:set var="start" value="0"/>
+						<c:set var="end" value="30"/>
+					</c:otherwise>
+				</c:choose>
+				<c:forEach items="${rows}" begin="${start}" end="${end}" var="row" varStatus="li">
+					<tr bgcolor="${row.eventNum == eventNum ? '#aaaafc' : (li.count % 2 == 0 ? '#e7eefc' : '#ffffff')}">
+						<td>
+							<e:rerun type="shower" analysis="${results.analysis}" label="${row.dateF}">
+								<e:param name="eventNum" value="${row.eventNum}"/>
+								<e:param name="submit" value="true"/>
+							</e:rerun>
+						</td>
+						<td>
+							${row.eventCoincidence}
+						</td>
+						<td>
+							${row.numDetectors}
+								(<c:forEach items="${row.ids}" var="detectorId"><e:popup href="../data/detector-info.jsp?id=${detectorId}" target="new" width="460" height="160">${detectorId}</e:popup></c:forEach>)
+						</td>
+					</tr>
 				</c:forEach>
 				<tr>
 					<td colspan="3" align="right">
-						<e:pagelinks pageSize="30" totalSize="${rows}" name="event" names="events"/>
+						<e:pagelinks pageSize="30" start="${start}" totalSize="${rows}" name="event" names="events"/>
 					</td>
 				</tr>
 			</table>
@@ -200,36 +185,16 @@
 			<p>
 				Click on image for a larger view
 			</p>
-			<e:popup href="${results.outputDirURL}/plot.png" target="showerPopup" width="650" height="750">
+			<e:popup href="../analysis-shower/show-plot.jsp?id=${results.id}" target="showerPopup" width="650" height="750">
 				<img src="${results.outputDirURL}/plot_thm.png"/>
 			</e:popup>
 			<p>
 				View raw data or geometry for ${crtEventRow.dateF} for detector ID 
 				<c:forEach items="${crtEventRow.ids}" var="detectorId">
-					<a href="../data/find-data.jsp?detectorId=${detectorId}&h=${crtEventRow.date.hours}&m=${crtEventRow.date.minutes}&s=${crtEventRow.date.seconds}">${detectorId}</a>
+					<a href="../analysis-shower/find-data.jsp?detectorId=${detectorId}&time=${crtEventRow.date.time}">${detectorId}</a>
 				</c:forEach>
 			</p>
-			<p>
-				Plot datapoints:
-			</p>
-			<table>
-				<tr>
-					<th>East/West (meters)</th>
-					<th>North/South (meters)</th>
-					<th>Time (nanosec)</th>
-					<th>Detector</th>
-					<th>Channel</th>
-				</tr>
-				<c:forEach items="${events}" var="event" varStatus="li">
-					<tr bgcolor="${li.count % 2 == 0 ? '#ffffff' : '#ccffbb' }">
-						<td>${event.x}</td>
-						<td>${event.y}</td>
-						<td>${event.z}</td>
-						<td><e:popup href="../data/detector-info.jsp?id=${event.id}" target="new" width="100" height="80">${event.id}</e:popup></td>
-						<td>${event.chan}</td>
-					</tr>
-				</c:forEach>
-			</table>
+			<%@ include file="events-table.jspf" %>
 		</td>
 	</tr>
 </table>
@@ -238,33 +203,7 @@
 	<e:rerun type="shower" analysis="${results.analysis}" label="Change"/> your parameters
 </p>
 <p><b>OR</b></p>
-<p>To save this plot permanently, enter the new name you want.</p>
-<p>Then click <b>Save Plot</b>.</p>
-<p>
-	<form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit="window.open('',this.target,'width=500,height=200');" align="center">
-		<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
-		<input type="hidden" name="metadata" value="transformation string Quarknet.Cosmic::ShowerStudy"/>
-		<input type="hidden" name="metadata" value="study string shower"/>
-		<input type="hidden" name="metadata" value="type string plot"/>
-		
-		<input type="hidden" name="metadata" value="detectorcoincidence int ${results.analysis.parameters['detectorCoincidence']}"/>
-		<input type="hidden" name="metadata" value="eventcoincidence int ${results.analysis.parameters['eventCoincidence']}"/>
-		<input type="hidden" name="metadata" value="eventnum int ${results.analysis.parameters['eventNum']}"/>
-		<input type="hidden" name="metadata" value="gate int ${results.analysis.parameters['gate']}"/>
-		<input type="hidden" name="metadata" value="radius int -1"/>
-
-		<input type="hidden" name="metadata" value="title string ${results.analysis.parameters['plot_title']}"/>
-		<input type="hidden" name="metadata" value="caption string ${results.analysis.parameters['plot_caption']}"/>
-
-		<input type="hidden" name="srcFile" value="plot.png"/>
-		<input type="hidden" name="srcThumb" value="plot_thm.png"/>
-		<input type="hidden" name="srcFileType" value="png"/>
-		<input type="hidden" name="id" value="${results.id}"/>
-		<input type="text" name="name"  size="20" maxlength="30"/>.png
-		<input type="submit" name="submit" value="Save Plot"/>
-	</form>
-</p>
-
+<%@ include file="save-form.jspf" %>
 
 
 			</div>

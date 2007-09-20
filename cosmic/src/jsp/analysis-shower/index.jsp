@@ -1,4 +1,4 @@
-<%@ taglib prefix="elab" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
