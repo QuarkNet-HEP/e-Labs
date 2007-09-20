@@ -21,9 +21,10 @@ public class StructuredResultSetDisplayer {
     public static final int PAGE_SIZE = 10;
     public static final int PREV_LINK = 1;
     public static final int NEXT_LINK = 2;
+    public static final int DEFAULT_COLUMNS = 4;
 
     private StructuredResultSet results;
-    private int id, start;
+    private int id, start, columns = DEFAULT_COLUMNS, crtCol, crtRow;
 
     public StructuredResultSetDisplayer() {
         this(null);
@@ -31,6 +32,14 @@ public class StructuredResultSetDisplayer {
 
     public StructuredResultSetDisplayer(StructuredResultSet srs) {
         this.results = srs;
+    }
+
+    public int getColumns() {
+        return columns;
+    }
+
+    public void setColumns(int columns) {
+        this.columns = columns;
     }
 
     public void setResults(StructuredResultSet results) {
@@ -169,10 +178,16 @@ public class StructuredResultSetDisplayer {
     public void displayMonthContents(JspWriter out, Month month)
             throws IOException {
         Iterator i = month.getFiles().iterator();
+        crtCol = 0;
+        crtRow = 0;
         out.write("<div class=\"data-files\">");
+        out.write("<table>");
+        out.write("<tr>");
         while (i.hasNext()) {
             displayFile(out, (File) i.next());
         }
+        out.write("</tr>");
+        out.write("</table>");
         out.write("</div>");
     }
 
@@ -189,7 +204,19 @@ public class StructuredResultSetDisplayer {
     }
 
     public void displayFileHeader(JspWriter out, File file) throws IOException {
-        out.write("<span class=\"data-file\">");
+        if (crtCol == columns) {
+            out.write("</tr>");
+            if (crtRow % 2 == 1) {
+                out.write("<tr class=\"odd\">");
+            }
+            else {
+                out.write("<tr class=\"even\">");
+            }
+            crtCol = 0;
+            crtRow++;
+        }
+        crtCol++;
+        out.write("<td class=\"data-file\">");
     }
 
     public void displayFileContents(JspWriter out, File file)
@@ -221,6 +248,6 @@ public class StructuredResultSetDisplayer {
     }
 
     public void displayFileFooter(JspWriter out, File file) throws IOException {
-        out.write("</span>\n");
+        out.write("</td>\n");
     }
 }
