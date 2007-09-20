@@ -12,12 +12,13 @@ package gov.fnal.elab.tags;
 import gov.fnal.elab.util.ElabUtil;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 
 public class TRSelect extends TRControl {
-    private Object valueList, labelList;
+    private Collection valueList, labelList;
 
     public int doEndTag() throws JspException {
         try {
@@ -32,12 +33,19 @@ public class TRSelect extends TRControl {
     public int doStartTag() throws JspException {
         try {
             String selected = String.valueOf(getValue());
+            if (selected == null || selected.equals("")) {
+                if (valueList != null && valueList.size() > 0) {
+                    selected = String.valueOf(valueList.iterator().next());
+                }
+            }
             JspWriter out = pageContext.getOut();
             out.write("<select");
+            writeDynamicLabelUpdater(out);
             writeAttribute(out, "name", getName());
             writeAttributes(out);
             out.write(">\n");
             ElabUtil.optionSet(out, getValueList(), getLabelList(), selected);
+            commitToAnalysis(selected);
         }
         catch (Exception e) {
             throw new JspException("Exception in select", e);
@@ -50,7 +58,7 @@ public class TRSelect extends TRControl {
     }
 
     public void setLabelList(Object labelList) {
-        this.labelList = labelList;
+        this.labelList = ElabUtil.split(labelList);
     }
 
     public Object getValueList() {
@@ -58,6 +66,6 @@ public class TRSelect extends TRControl {
     }
 
     public void setValueList(Object valueList) {
-        this.valueList = valueList;
+        this.valueList = ElabUtil.split(valueList);
     }
 }

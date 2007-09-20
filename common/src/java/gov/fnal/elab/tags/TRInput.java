@@ -9,7 +9,6 @@
  */
 package gov.fnal.elab.tags;
 
-import gov.fnal.elab.analysis.ElabAnalysis;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,6 +58,9 @@ public class TRInput extends TRControl {
         if (value != null) {
             writeAttribute(out, "value", value);
         }
+        if (!"hidden".equals(getAttribute("type"))) {
+            writeDynamicLabelUpdater(out);
+        }
         writeAttributes(out);
         out.write("/>");
         if (pageContext.getRequest().getParameter(TRSubmit.CONTROL_NAME) != null
@@ -66,23 +68,6 @@ public class TRInput extends TRControl {
             out.write("<span class=\"param-error\">");
             out.write(getOnError());
             out.write("</span>");
-        }
-    }
-
-    protected boolean isAnalysisParameterValid() {
-        ElabAnalysis analysis = getAnalysis();
-        if (analysis == null) {
-            return true;
-        }
-        else {
-            return analysis.isParameterValid(getParamName());
-        }
-    }
-    
-    protected void commitToAnalysis(Object value) {
-        ElabAnalysis analysis = getAnalysis();
-        if (analysis != null) {
-            analysis.setParameter(getName(), value);
         }
     }
 }

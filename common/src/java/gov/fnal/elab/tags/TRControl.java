@@ -132,7 +132,31 @@ public abstract class TRControl extends TagSupport implements DynamicAttributes 
         attrs.put(localName, value);
     }
     
+    protected void writeDynamicLabelUpdater(JspWriter out) throws IOException {
+        if (!getAttributes().containsKey("onChange")) {
+            //this bit to dynamically update labels in text controls
+            DynamicAttributesSupport.writeAttribute(out, "onChange", "javascript:updateLabels(this, '" + getName() + "')");
+        }
+    }
+    
     public void setDynamicAttributes(Map attrs) {
         this.attrs = attrs; 
+    }
+
+    protected boolean isAnalysisParameterValid() {
+        ElabAnalysis analysis = getAnalysis();
+        if (analysis == null) {
+            return true;
+        }
+        else {
+            return analysis.isParameterValid(getParamName());
+        }
+    }
+
+    protected void commitToAnalysis(Object value) {
+        ElabAnalysis analysis = getAnalysis();
+        if (analysis != null) {
+            analysis.setParameter(getName(), value);
+        }
     }
 }

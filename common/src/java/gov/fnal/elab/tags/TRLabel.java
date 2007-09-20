@@ -10,31 +10,26 @@
 package gov.fnal.elab.tags;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.TagSupport;
+import javax.servlet.jsp.tagext.BodyTagSupport;
 
-public class TRLabel extends TagSupport {
+public class TRLabel extends BodyTagSupport {
+    public static String LABEL_MAP = "elab:labelMap";
+    
     private String _for, name;
 
     public int doEndTag() throws JspException {
-        JspWriter out = pageContext.getOut();
-        try {
-            out.write("</label>");
-        }
-        catch (IOException e) {
-            throw new JspException(e);
-        }
-        return EVAL_PAGE;
-    }
-
-    public int doStartTag() throws JspException {
-        String tr = (String) pageContext.getRequest().getAttribute(TR.ATTR_TR);
+        String tr = (String) pageContext.getRequest().getAttribute(TR.ATTR_TR); 
         if (tr == null) {
             throw new JspException(
                     "elab:trlabel must be a descendant of e:tr or e:analysis");
         }
+        String label = bodyContent.getString();
+        updateLabelMap(_for, label);
         JspWriter out = pageContext.getOut();
         try {
             out.write("<a href=\"javascript:describe('");
@@ -47,11 +42,26 @@ public class TRLabel extends TagSupport {
             out.write("<label for=\"");
             out.write(_for);
             out.write("\">");
-            return EVAL_BODY_INCLUDE;
+            out.write(label);
+            out.write("</label>");
         }
         catch (IOException e) {
             throw new JspException(e);
         }
+        return EVAL_PAGE;
+    }
+    
+    public int doStartTag() throws JspException {
+        return EVAL_BODY_BUFFERED;
+    }
+    
+    protected void updateLabelMap(String name, String label) {
+        Map map = (Map) pageContext.getRequest().getAttribute(LABEL_MAP);
+        if (map == null) {
+            map = new HashMap();
+            pageContext.getRequest().setAttribute(LABEL_MAP, map);
+        }
+        map.put(name, label);
     }
 
     public String getFor() {
