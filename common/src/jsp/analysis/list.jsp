@@ -57,7 +57,7 @@
 						request.setAttribute("progress", String.valueOf(run.getProgress() * 99 + 1));
 					%>
 					<tr>
-						<td>${run.id} - ${progress}</td>
+						<td>${run.id}</td>
 						<td>
 							<a href="status.jsp?id=${run.id}">${run.analysis.type}</a>
 						</td>
