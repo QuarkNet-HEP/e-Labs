@@ -95,7 +95,7 @@
 									window.location = "../analysis/status.jsp?id=" + <%= run.getId() %>;
 								}
 								else if (data["status"] != null) {
-									var td = document.getElementById("progressbar");
+									var td = document.getElementById("status-progress-indicator");
 									if (data["status"] == "Running") {
 										td.width = (data["progress"]*99+1) + "%";
 									}
