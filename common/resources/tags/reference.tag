@@ -5,5 +5,5 @@
 
 
 <a href="#" title="Reference: ${ref}" onclick="javascript:window.open('../references/display.jsp?type=reference&name=${name}', 'reference', 'width=${width != null ? width : 300}, height=${height != null ? height : 250}, scrollbars=false, toolbar=false, menubar=fale, status=false, resizable=true, title=true');">
-	${name}
+	<img src="../graphics/ref.gif" />
 </a>
