@@ -43,7 +43,7 @@
 <h1>Shower Study</h1>
 <center>	
 	
-	<table width="650" cellpadding="8">
+	<table width="670" cellpadding="8">
 		<tr>
  			<td width="321" valign="top">
  				This is the analysis path for the 
