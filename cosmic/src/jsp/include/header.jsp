@@ -18,7 +18,14 @@
 				<a href="../login/logout.jsp">Logout</a>
 			</div>
 			<div id="header-logbook">
-				<e:popup href="../jsp/showLogbook.jsp" target="log" width="800" height="600">My Logbook</e:popup>
+				<c:choose>
+					<c:when test="${user.teacher}">
+						<e:popup href="../jsp/showLogbookT.jsp" target="log" width="800" height="600">My Logbook</e:popup>
+					</c:when>
+					<c:otherwise>
+						<e:popup href="../jsp/showLogbook.jsp" target="log" width="800" height="600">My Logbook</e:popup>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		<%
 	}
