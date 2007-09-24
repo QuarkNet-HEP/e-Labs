@@ -1,5 +1,7 @@
 <%@ page import="java.util.*" %>
+<%@ include file="../login/teacher-login-required.jsp" %>
 <%@ include file="common.jsp" %>
+
 <link rel="stylesheet"  href="include/styletutT.css" type="text/css">
 <html>
     <head>

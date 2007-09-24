@@ -32,9 +32,6 @@
 	 	}
 	 	analysis = elab.getDataCatalogProvider().getAnalysis(dvName);
 	 }
-	 else {
-	 	
-	 }
 	 request.setAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS, analysis);
 %>
 

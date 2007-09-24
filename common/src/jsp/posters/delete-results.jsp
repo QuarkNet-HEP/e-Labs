@@ -25,7 +25,7 @@
 				<c:set var="tuples" value="${poster.tupleMap}"/>
 				<tr>
 					<td>
-						<input type="checkbox" name="file" value="${tuples.name}"/>
+						<input type="checkbox" name="file" value="${poster.LFN}"/>
 						<e:popup href="../posters/display.jsp?name=${tuples.name}" target="poster" width="700" height="900">${tuples.title}</e:popup>
 					</td>
 					<td><e:format type="date" format="MMMMMMMMM dd, yyyy" value="${tuples.date}"/></td>
