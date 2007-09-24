@@ -243,7 +243,7 @@ pageContext.setAttribute("images", images);
 			fill them all in.
 		</li>
 		<li>
-			Click <b>Make Poster</b> to save the data for the poster.
+			Click <b>Make Poster</b> to save the data for the poster. <b>Don't block pop-ups or you won't see your poster.</b>
 		</li>
 	</ul>
 
