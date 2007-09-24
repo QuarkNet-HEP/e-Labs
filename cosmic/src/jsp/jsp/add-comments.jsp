@@ -149,7 +149,7 @@ dateString="";
               <tr><td align="right"><input type="hidden" name="fileName" value="<%=fileName%>">
               <input type="hidden" name="t" value="<%=fileType%>">
               <input type="hidden" name="title" value="<%=fileTitle%>">Title:</td><td><%=fileTitle%></td></tr>
-             <tr><td align="right" valign="top">Current Comments:</td><td width="300"><%=comments%></td></tr>
+             <tr><td align="right" valign="top">Current Comments:</td><td width="500"><%=comments%></td></tr>
             <tr><td valign="top" align="right">Your Group:</td><td><%=groupName%><input type="hidden" name="commenter" value="<%=groupName%>" size="40"> </td></tr>
 
             <tr><td valign="top" align="right">Add Your Comments:</td><td><textarea name="commentsNew" cols="80" rows="10"> </textarea></td></tr>
