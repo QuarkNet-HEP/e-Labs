@@ -106,6 +106,10 @@ public class DataTools {
             }
 
             String schoolName = (String) data[SCHOOL];
+            if (schoolName == null) {
+                System.out.println("WARNING: School name is null for " + e.getLFN());
+                schoolName = "<unknown>";
+            }
             School school = srs.getSchool(schoolName);
             if (school == null) {
                 school = new School(schoolName, (String) data[CITY],
