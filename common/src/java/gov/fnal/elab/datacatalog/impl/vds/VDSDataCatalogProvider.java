@@ -187,8 +187,13 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
     private synchronized void deleteCachedEntry(CatalogEntry e) {
         entryCache.remove(e.getLFN());
     }
+    
+    private synchronized void deleteCachedEntry(String lfn) {
+        entryCache.remove(lfn);
+    }
 
     public CatalogEntry getEntry(String lfn) throws ElabException {
+        deleteCachedEntry(lfn);
         ResultSet rs = getEntries(Collections.singletonList(lfn));
         if (rs.isEmpty()) {
             return null;
