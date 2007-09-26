@@ -44,7 +44,7 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
     
     public static ElabTransformation createTransformation(String name,
             ElabAnalysis analysis) throws ElabException {
-        return createTransformation(name, analysis);
+        return createTransformation(name, analysis, null);
     }
     
     public static ElabTransformation createTransformation(String name,
