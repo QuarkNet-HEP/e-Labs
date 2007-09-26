@@ -36,12 +36,12 @@
 		<%
 		if ((links & StructuredResultSetDisplayer.PREV_LINK) != 0) {
 		    %>
-		    	<a href="<%= ElabUtil.modQueryString(request, "start", start + 10) %>">&lt;&lt;previous results</a>
+		    	<a href="<%= ElabUtil.modQueryString(request, "start", start - 10) %>">&lt;&lt;previous results</a>
 		    <%
 		}
 		if ((links & StructuredResultSetDisplayer.NEXT_LINK) != 0) {
 		    %>
-		    	<a href="<%= ElabUtil.modQueryString(request, "start", start - 10) %>">next results&gt;&gt;</a>
+		    	<a href="<%= ElabUtil.modQueryString(request, "start", start + 10) %>">next results&gt;&gt;</a>
 		    <%
 		}
 		%>
