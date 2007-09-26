@@ -75,7 +75,7 @@
 						<pre><% exception.printStackTrace(new java.io.PrintWriter(out)); %></pre>
 						<% 
 							if(exception instanceof JspException) {
-							    Throwable root = ((JspException) exception).getRootCause();
+							    root = ((JspException) exception).getRootCause();
 							    if (root != null) {
 								    %> <h2>Root cause:</h2>
 								       <pre> <%
