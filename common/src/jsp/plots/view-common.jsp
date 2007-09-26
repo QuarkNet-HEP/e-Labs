@@ -7,6 +7,9 @@
 	}
 	
 	CatalogEntry entry = elab.getDataCatalogProvider().getEntry(filename);
+	if (entry == null) {
+		throw new ElabJspException("No entry found in the data catalog for " + filename + ".");
+	}
 	ElabGroup plotUser = elab.getUserManagementProvider().getGroup((String) entry.getTupleValue("group"));
 
 	String pfn = plotUser.getDir("plots") + File.separator + filename;

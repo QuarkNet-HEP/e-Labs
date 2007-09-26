@@ -22,7 +22,7 @@
 	
 	<body id="view-plot-simple" class="data">
 	<!-- entire page container -->
-		<div id="container">		
+		<div id="container">
 			<%@ include file="view-common.jsp" %>
 		</div>
 	</body>
