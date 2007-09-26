@@ -132,6 +132,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         Annotation annotation = (Annotation) dbschema;
 
         // Connect to the database.
+        long start = System.currentTimeMillis();
         try {
             AnnotationSchema annotationschema = null;
             List lfns = annotation.searchAnnotation(kind, null, tree);
@@ -161,6 +162,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         }
         finally {
             closeSchema(dbschema);
+            System.out.println("Raw query time: " + (System.currentTimeMillis() - start) + " ms");
         }
     }
 
