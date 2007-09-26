@@ -47,7 +47,7 @@
 	try {
 		posterUser = elab.getUserManagementProvider().getGroup(posterUserName);
 	}
-	catch (ElabException e) {
+	catch (Exception e) {
 		throw new ElabJspException("An error was encountered while accessing user " + posterUserName + ". " + e.getMessage()); 
 	}
 	String plotURL = posterUser.getDirURL("plots") + '/';
