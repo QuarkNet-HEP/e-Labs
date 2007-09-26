@@ -55,13 +55,13 @@
 			%>
 			
 			<c:if test="${e.tupleMap.type == 'plot'}">
-				<a href="../plots/view.jsp?filename=${param.filename}">Show Plot</a>
+				<a href="../plots/view.jsp?filename=${param.filename}&menu=${param.menu}">Show Plot</a>
 			</c:if>
 			<c:if test="${e.tupleMap.type == 'split'}">
-				<a href="../data/view.jsp?filename=${param.filename}">Show Data</a>
+				<a href="../data/view.jsp?filename=${param.filename}&menu=${param.menu}">Show Data</a>
 			</c:if>
 			<c:if test="${e.tupleMap.detectorid != null && e.tupleMap.julianstartdate != null}">
-				<a href="../geometry/view.jsp?filename=${param.filename}">Show Geometry</a>
+				<a href="../geometry/view.jsp?filename=${param.filename}&menu=${param.menu}">Show Geometry</a>
 			</c:if>
 			<h2>Metadata for ${param.filename}</h2>
 			<table border="0">
