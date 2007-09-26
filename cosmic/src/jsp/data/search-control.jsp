@@ -103,8 +103,6 @@
 		    }
 		    
 		    And and = new And();
-		    and.add(new Equals("project", elab.getName()));
-		    and.add(new Equals("type", "split"));
 			if ("within".equals(request.getParameter("searchIn"))) {
 				and.add((QueryElement) session.getAttribute("previousSearch"));
 			}
@@ -116,6 +114,9 @@
 		    if ("startdate".equals(datetype) || "creationdate".equals(datetype)) {
 		        and.add(new Between(datetype, new Date(date1), new Date(date2 + " 23:59:59")));
 		    }
+		    
+		    and.add(new Equals("type", "split"));
+		    and.add(new Equals("project", elab.getName()));
 
 			searchResults = elab.getDataCatalogProvider().runQuery(and);
 			searchResultsStructured = DataTools.organizeSearchResults(searchResults);
