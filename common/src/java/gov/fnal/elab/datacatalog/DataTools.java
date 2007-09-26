@@ -124,6 +124,14 @@ public class DataTools {
             File file = new File(e.getLFN());
             file.setStartDate((Timestamp) data[STARTDATE]);
             file.setEndDate((Timestamp) data[ENDDATE]);
+            if (file.getStartDate() == null) {
+            	System.out.println("WARNING: File " + e.getLFN() + " is missing the start date. Skipping.");
+            	continue;
+            }
+            if (file.getEndDate() == null) {
+                System.out.println("WARNING: File " + e.getLFN() + " is missing the end date. Defaulting to start date.");
+                file.setEndDate(file.getStartDate());
+            }
 
             if (startDate == null || startDate.after(file.getStartDate())) {
                 startDate = file.getStartDate();
