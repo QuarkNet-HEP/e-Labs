@@ -1,5 +1,6 @@
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="gov.fnal.elab.util.HTMLEscapingWriter" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ include file="common.jsp" %>
 
@@ -203,6 +204,13 @@ if (groupName.startsWith("pd_")||groupName.startsWith("PD_")) {typeConstraint=" 
           String keyword_display=keyword_name.replaceAll("_"," ");
           String section=rs.getString("section");
           String section_id=rs.getString("section_id");
+          if (log_text != null) {
+              int divend = log_text.indexOf(">");
+              if (divend != -1) {
+                  log_text = log_text.substring(divend + 1);
+                  log_text = log_text.substring(0, log_text.length() - 4);
+              }
+          }
           itemCount++;
           if (!(current_keyword_id.equals(data_keyword_id))) {
               current_keyword_id=data_keyword_id;
@@ -267,7 +275,14 @@ if (groupName.startsWith("pd_")||groupName.startsWith("PD_")) {typeConstraint=" 
               }
 
           %>
-         <tr><td valign="top" width="150" align="right"><font  FACE="Comic Sans MS"><%=dateText%><%=comment_info%><FONT></td><td width="450" valign="top"><font  FACE="Comic Sans MS"><%=log_text%></FONT></td></tr>
+         <tr>
+         	<td valign="top" width="150" align="right">
+         		<font  FACE="Comic Sans MS"><%=dateText%><%=comment_info%><FONT>
+         	</td>
+         	<td width="450" valign="top">
+         		<font  FACE="Comic Sans MS"><%new HTMLEscapingWriter(out).write(log_text);%></FONT>
+         	</td>
+         </tr>
           <%
           }
           if (itemCount==0) {
