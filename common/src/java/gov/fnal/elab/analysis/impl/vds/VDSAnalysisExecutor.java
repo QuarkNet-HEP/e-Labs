@@ -97,7 +97,7 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
 
         public void start() {
             try {
-                et = createTransformation(null, getAnalysis());
+                et = createTransformation(null, getAnalysis(), getUser());
                 List nulllist = et.getNullKeys();
                 if (!nulllist.isEmpty()) {
                     StringBuffer sb = new StringBuffer();
