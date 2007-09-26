@@ -42,7 +42,14 @@
 	    type = "poster";
 	}
 	
-	ElabGroup posterUser = elab.getUserManagementProvider().getGroup((String) entry.getTupleValue("group"));
+	String posterUserName = (String) entry.getTupleValue("group");
+	ElabGroup posterUser;
+	try {
+		posterUser = elab.getUserManagementProvider().getGroup(posterUserName);
+	}
+	catch (ElabException e) {
+		throw new ElabJspException("An error was encountered while accessing user " + posterUserName + ". " + e.getMessage()); 
+	}
 	String plotURL = posterUser.getDirURL("plots") + '/';
 	File pfn = new File(posterUser.getDir("posters"), dfile);
 
