@@ -41,12 +41,19 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
         run.start();
         return run;
     }
-
+    
+    public static ElabTransformation createTransformation(String name,
+            ElabAnalysis analysis) throws ElabException {
+        return createTransformation(name, analysis);
+    }
+    
     public static ElabTransformation createTransformation(String name,
             ElabAnalysis analysis, ElabGroup user) throws ElabException {
         ElabTransformation et = new ElabTransformation(analysis.getType());
-        String runDir = user.getDir("scratch");
-        et.generateOutputDir(runDir);
+        if (user != null) {
+            String runDir = user.getDir("scratch");
+            et.generateOutputDir(runDir);
+        }
         if (name != null) {
             et.setDVName(name);
         }
@@ -90,7 +97,7 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
 
         public void start() {
             try {
-                et = createTransformation(null, getAnalysis(), getUser());
+                et = createTransformation(null, getAnalysis());
                 List nulllist = et.getNullKeys();
                 if (!nulllist.isEmpty()) {
                     StringBuffer sb = new StringBuffer();
