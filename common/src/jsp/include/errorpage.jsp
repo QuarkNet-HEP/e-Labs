@@ -32,10 +32,11 @@
 <%
 	System.out.println("\n(----------------------------------------\n");
 	System.out.println("Exception caught while rendering page: ");
+	Throwable root = null;
 	if (exception != null) {
 		exception.printStackTrace();
 		if (exception instanceof JspException) {
-			Throwable root = ((JspException) exception).getRootCause();
+			root = ((JspException) exception).getRootCause();
 			if (root != null) {
 				System.out.println("Root cause: ");
 				root.printStackTrace();
@@ -46,13 +47,16 @@
 	System.out.println("QueryString: " + request.getQueryString());
 	System.out.println("Group: " + ElabGroup.getUser(session));
 	System.out.println("\n)----------------------------------------\n");
+	if (root instanceof ElabJspException) {
+		exception = root;
+	}
+	request.setAttribute("exception", exception);
 %>
 <div id="error-page-body" style="width: 790px; text-align: left;">
 	<h1>An error has occurred during your request</h1>
 	
 	<table border="0" id="error-page-table" width="790px">
-		<tr>
-			<% request.setAttribute("exception", exception); %>		
+		<tr>		
 			<% if (exception instanceof ElabJspException) { %>
 				<span class="error">${exception.message}</span>
 			<% } else { %>
