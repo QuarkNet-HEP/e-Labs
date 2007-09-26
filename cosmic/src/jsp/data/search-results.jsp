@@ -14,7 +14,7 @@
 		try {
 			start = Integer.parseInt(request.getParameter("start"));
 		}
-		catch (Exception e) {
+		catch (NumberFormatException e) {
 		}
 	    %>
 			<p class="search-result-bar">
@@ -29,8 +29,8 @@
 		    srsd = new StructuredResultSetDisplayer();
 		}
 		srsd.setResults(srs);
-		int links = srsd.display(out);
 		srsd.setStart(start);
+		int links = srsd.display(out);
 		%> 
 			<div class="search-nav">
 		<%
