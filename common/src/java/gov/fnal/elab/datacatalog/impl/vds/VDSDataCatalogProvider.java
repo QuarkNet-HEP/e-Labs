@@ -24,6 +24,7 @@ import gov.fnal.elab.util.ElabUtil;
 import gov.fnal.elab.vds.ElabTransformation;
 
 import java.io.StringReader;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,6 +32,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.WeakHashMap;
 
 import org.griphyn.vdl.annotation.Predicate;
 import org.griphyn.vdl.annotation.QueryParser;
@@ -53,6 +55,11 @@ import org.griphyn.vdl.directive.Connect;
 import org.griphyn.vdl.util.ChimeraProperties;
 
 public class VDSDataCatalogProvider implements DataCatalogProvider {
+    private WeakHashMap entryCache;
+
+    public VDSDataCatalogProvider() {
+        entryCache = new WeakHashMap();
+    }
 
     protected DatabaseSchema openSchema() throws ElabException {
         // Connect to the database.
@@ -126,8 +133,6 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
     }
 
     public ResultSet runQuery(QueryTree tree) throws ElabException {
-        int kind = Annotation.CLASS_FILENAME; // searching on lfn's
-
         DatabaseSchema dbschema = openSchema();
         Annotation annotation = (Annotation) dbschema;
 
@@ -135,7 +140,8 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         long start = System.currentTimeMillis();
         try {
             AnnotationSchema annotationschema = null;
-            List lfns = annotation.searchAnnotation(kind, null, tree);
+            List lfns = annotation.searchAnnotation(Annotation.CLASS_FILENAME,
+                    null, tree);
             if (lfns == null || lfns.isEmpty()) {
                 return ResultSet.EMPTY_RESULT_SET;
             }
@@ -144,14 +150,10 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
                 annotationschema = (AnnotationSchema) annotation;
                 for (Iterator i = lfns.iterator(); i.hasNext();) {
                     String lfn = (String) i.next();
-                    List metaTuples = annotationschema.loadAnnotation(lfn,
-                            null, kind);
-
-                    VDSCatalogEntry e = new VDSCatalogEntry();
-                    e.setLFN(lfn);
-                    e.setTuples(metaTuples);
+                    VDSCatalogEntry e = getCachedEntry(annotationschema, lfn);
                     rs.addEntry(e);
                 }
+                System.out.println("Entry cache size: " + entryCache.size());
                 return rs;
             }
 
@@ -162,8 +164,28 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         }
         finally {
             closeSchema(dbschema);
-            System.out.println("Raw query time: " + (System.currentTimeMillis() - start) + " ms");
+            System.out.println("Raw query time: "
+                    + (System.currentTimeMillis() - start) + " ms");
         }
+    }
+
+    private synchronized VDSCatalogEntry getCachedEntry(
+            AnnotationSchema annotationschema, String lfn)
+            throws IllegalArgumentException, SQLException {
+        VDSCatalogEntry e = (VDSCatalogEntry) entryCache.get(lfn);
+        if (e == null) {
+            List metaTuples = annotationschema.loadAnnotation(lfn, null,
+                    Annotation.CLASS_FILENAME);
+            e = new VDSCatalogEntry();
+            e.setLFN(lfn);
+            e.setTuples(metaTuples);
+            entryCache.put(lfn, e);
+        }
+        return e;
+    }
+    
+    private synchronized void deleteCachedEntry(CatalogEntry e) {
+        entryCache.remove(e.getLFN());
     }
 
     public CatalogEntry getEntry(String lfn) throws ElabException {
@@ -181,7 +203,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
             }
         }
     }
-    
+
     public ResultSet getEntries(String[] lfns) throws ElabException {
         return getEntries(Arrays.asList(lfns));
     }
@@ -203,11 +225,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
             Iterator i = lfns.iterator();
             while (i.hasNext()) {
                 String lfn = (String) i.next();
-                List metaTuples = annotationschema.loadAnnotation(lfn,
-                        null, kind);
-                VDSCatalogEntry e = new VDSCatalogEntry();
-                e.setLFN(lfn);
-                e.setTuples(metaTuples);
+                VDSCatalogEntry e = getCachedEntry(annotationschema, lfn);
                 rs.addEntry(e);
             }
             return rs;
@@ -220,7 +238,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
             closeSchema(dbschema);
         }
     }
-    
+
     public void delete(String lfn) throws ElabException {
         delete(getEntry(lfn));
     }
@@ -239,6 +257,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
                 annotationschema.deleteAnnotation(entry.getLFN(), null, kind,
                         (String) i.next());
             }
+            deleteCachedEntry(entry);
         }
         catch (Exception e) {
             throw new ElabException(
@@ -393,7 +412,8 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
 
     public void insert(CatalogEntry entry) throws ElabException {
         int kind = Annotation.CLASS_FILENAME; // searching on lfn's
-
+        
+        deleteCachedEntry(entry);
         DatabaseSchema dbschema = openSchema();
         AnnotationSchema annotationschema = (AnnotationSchema) dbschema;
 
