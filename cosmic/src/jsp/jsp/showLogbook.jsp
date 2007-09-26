@@ -208,7 +208,9 @@ if (groupName.startsWith("pd_")||groupName.startsWith("PD_")) {typeConstraint=" 
               int divend = log_text.indexOf(">");
               if (divend != -1) {
                   log_text = log_text.substring(divend + 1);
-                  log_text = log_text.substring(0, log_text.length() - 4);
+                  log_text = log_text.substring(0, log_text.length() - 6);
+                  log_text.replaceAll("\n", "<br />");
+                  log_text.replaceAll("</*\\s*[sS][cC][rR][iI][pP][tT]\\s*>", "");
               }
           }
           itemCount++;
@@ -280,7 +282,7 @@ if (groupName.startsWith("pd_")||groupName.startsWith("PD_")) {typeConstraint=" 
          		<font  FACE="Comic Sans MS"><%=dateText%><%=comment_info%><FONT>
          	</td>
          	<td width="450" valign="top">
-         		<font  FACE="Comic Sans MS"><%new HTMLEscapingWriter(out).write(log_text);%></FONT>
+         		<font  FACE="Comic Sans MS"><%= log_text %></FONT>
          	</td>
          </tr>
           <%
