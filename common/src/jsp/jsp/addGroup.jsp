@@ -384,8 +384,7 @@ String submit =  request.getParameter("submit");
                                     if(project == null){
                                         rs = s.executeQuery("SELECT name FROM project");
                                         out.write("<select name=\"project\">");
-                                        project = (String)session.getAttribute("appName");
-                                       out.write("<option value=\"" + project + "\">" + project + "</option>\n");
+                                       out.write("<option value=\"" + elabName + "\">" + elabName + "</option>\n");
                                         while(rs.next()){
                                             out.write("<option value=\"" + rs.getString(1) + "\">" + rs.getString(1) + "</option>\n");
                                         }
