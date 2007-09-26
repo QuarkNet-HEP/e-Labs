@@ -216,11 +216,11 @@ if (groupName.startsWith("pd_")||groupName.startsWith("PD_")) {typeConstraint=" 
                   int lastSpace = 0;
                   for (int i = 0; i < log_text.length(); i++) {
                   	  char c = log_text.charAt(i);
-                  	  if (Character.isWhitespace(c)) {
+                  	  if (Character.isWhitespace(c) || c == '/' || c == '<' || c == '>' || c == '.') {
                   	  	  lastSpace = i;
                   	  }
                   	  sb.append(c);
-                  	  if (i - lastSpace > 80) {
+                  	  if (i - lastSpace > 40) {
                   	  	  sb.append(' ');
                   	  	  lastSpace = i;
                   	  }
