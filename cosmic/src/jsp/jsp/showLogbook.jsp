@@ -211,6 +211,21 @@ if (groupName.startsWith("pd_")||groupName.startsWith("PD_")) {typeConstraint=" 
                   log_text = log_text.substring(0, log_text.length() - 6);
                   log_text.replaceAll("\n", "<br />");
                   log_text.replaceAll("</*\\s*[sS][cC][rR][iI][pP][tT]\\s*>", "");
+                  //we do what slashdot does. very long strings without spaces are lame.
+                  StringBuffer sb = new StringBuffer();
+                  int lastSpace = 0;
+                  for (int i = 0; i < log_text.length(); i++) {
+                  	  char c = log_text.charAt(i);
+                  	  if (Character.isWhitespace(c)) {
+                  	  	  lastSpace = i;
+                  	  }
+                  	  sb.append(c);
+                  	  if (i - lastSpace > 80) {
+                  	  	  sb.append(' ');
+                  	  	  lastSpace = i;
+                  	  }
+                  }
+                  log_text = sb.toString();
               }
           }
           itemCount++;
