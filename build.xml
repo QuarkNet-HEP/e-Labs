@@ -324,22 +324,22 @@ undeploy:
 		</copy>
 		<exec executable="ln" logError="true">
 			<arg value="-s"/>
-			<arg value="${container.home}/${webapps}/elab/${elab.name}/jsp/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/jsp"/>
 			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
 		</exec>
 		<exec executable="ln" logError="true">
 			<arg value="-s"/>
-			<arg value="${container.home}/${webapps}/elab/${elab.name}/jsp/users"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/jsp"/>
 			<arg value="${container.home}/${webapps}/elab/${elab.name}/users"/>
 		</exec>
 		<exec executable="ln" logError="true">
 			<arg value="-s"/>
-			<arg value="${container.home}/${webapps}/elab/${elab.name}/references/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/references"/>
 			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
 		</exec>
 		<exec executable="ln" logError="true">
 			<arg value="-s"/>
-			<arg value="${container.home}/${webapps}/elab/${elab.name}/test/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/test"/>
 			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
 		</exec>
 	</target>
