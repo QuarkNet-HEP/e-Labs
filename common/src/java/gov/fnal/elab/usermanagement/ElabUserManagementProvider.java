@@ -90,5 +90,5 @@ public interface ElabUserManagementProvider extends ElabProvider {
     
     ElabGroup getGroup(String name) throws ElabException;
     
-    ElabGroup getGroupById(String id) throws ElabException;
+    ElabGroup getGroupById(String id) throws ElabException; 
 }

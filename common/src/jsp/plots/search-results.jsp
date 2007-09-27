@@ -11,13 +11,22 @@
 	    Iterator i = rs.iterator();
 	    while (i.hasNext()) {
 	        out.write("<tr>\n");
+	        Map groups = new HashMap();
 	        for (int c = 0; c < 4 && i.hasNext(); c++) {
 	            CatalogEntry e = (CatalogEntry) i.next();
+	            String groupName = (String) e.getTupleValue("group");
+	            ElabGroup group = (ElabGroup) groups.get(groupName);
+	            if (group == null) {
+	            	group = elab.getUserManagementProvider().getGroup(groupName);
+	            	groups.put(groupName, group);
+	            }  
 	            request.setAttribute("e", e);
+	            String plotURL = group.getDirURL("plots");
+	            request.setAttribute("plotURL", plotURL);
 	            %>
 	            	<td class="plot-thumbnail">
 	            		<a href="view.jsp?filename=${e.LFN}">
-		            		<img src="<%= user.getDirURL("plots") + "/" + e.getTupleValue("thumbnail") %>" width="150" height="150"/><br/>
+		            		<img src="${plotURL}/${e.tupleMap.thumbnail}" width="150" height="150"/><br/>
 		            	</a>
 		            	${e.tupleMap.name}<br/>
 	            		Group: ${e.tupleMap.group}<br/>
