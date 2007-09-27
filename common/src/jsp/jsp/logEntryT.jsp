@@ -187,7 +187,7 @@ if (research_group_id==null) {
             <tr><td colspan='2'><input type="hidden" name="ref_rg_id" value="<%=ref_rg_id%>"></td></tr>
             <tr><td colspan='2'><input type="hidden" name="role" value="<%=role%>"></td></tr>
             <tr><td colspan='2'><textarea name="log_text" cols="80" rows="10"><%=log_text%></textarea></td></tr>
-            <tr><td align='left'><INPUT type='button' name="plot" onClick="window.open('search.jsp?t=plot&f=choose','win2', 'scrollbars=1,resizeable=true');if(childWindow.opener==null)childWindow.opener=self;" value="Insert a plot"></td>
+            <tr><td align='left'><INPUT type='button' name="plot" onClick="window.open('../plots/pick.jsp','win2', 'scrollbars=1,resizeable=true');if(childWindow.opener==null)childWindow.opener=self;" value="Insert a plot"></td>
             <td align="right"><INPUT type="submit" name="button" value="<%=buttonText%>"></td></tr>
             </table>
             <input type="hidden" name="img_src" value="<%=img_src%>">
