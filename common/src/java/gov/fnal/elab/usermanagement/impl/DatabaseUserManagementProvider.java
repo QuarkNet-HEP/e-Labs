@@ -135,7 +135,7 @@ public class DatabaseUserManagementProvider implements
         rs = s.executeQuery("SELECT * FROM research_group WHERE name='"
                 + ElabUtil.fixQuotes(username) + "';");
         if (!rs.next()) {
-            throw new ElabException("Invalid username");
+            throw new ElabException("Invalid username (" + username + ")");
         }
 
         return createUser(s, username, rs);
@@ -147,7 +147,7 @@ public class DatabaseUserManagementProvider implements
         rs = s.executeQuery("SELECT name FROM research_group WHERE id='"
                 + ElabUtil.fixQuotes(id) + "';");
         if (!rs.next()) {
-            throw new ElabException("Invalid username");
+            throw new ElabException("Invalid user id (" + id + ")");
         }
 
         return createUser(s, rs.getString("name"), projectId);
