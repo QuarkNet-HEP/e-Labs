@@ -326,6 +326,10 @@ undeploy:
 			resource="${container.home}/${webapps}/elab/${elab.name}/graphics"
 			failonerror="false"
 			overwrite="true"/>
+		<symlink link="${container.home}/${webapps}/elab/${elab.name}/jsp/users"
+			resource="${container.home}/${webapps}/elab/${elab.name}/users"
+			failonerror="false"
+			overwrite="true"/>
 		<symlink link="${container.home}/${webapps}/elab/${elab.name}/references/graphics"
 			resource="${container.home}/${webapps}/elab/${elab.name}/graphics"
 			failonerror="false"
