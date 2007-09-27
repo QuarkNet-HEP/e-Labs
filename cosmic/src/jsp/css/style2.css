@@ -199,6 +199,10 @@ table#main {
 	text-align: center;	
 }
 
+#login h1 {
+	width: 100%;
+}
+
 #login-form h2 {
 	font-weight: bold;
 	text-align: center;
@@ -207,7 +211,7 @@ table#main {
 }
 
 #login-form-text p {
-	margin-top: -10px;
+	margin-top: 0px;
 }
 
 #login-form-contents table, tr, td {
