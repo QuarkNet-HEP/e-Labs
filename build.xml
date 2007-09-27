@@ -322,22 +322,26 @@ undeploy:
 		<copy todir="${container.home}/${webapps}/elab/${elab.name}" overwrite="true">
 			<fileset dir="cosmic/src/jsp" includes="**/*.*"/>
 		</copy>
-		<symlink link="${container.home}/${webapps}/elab/${elab.name}/jsp/graphics"
-			resource="${container.home}/${webapps}/elab/${elab.name}/graphics"
-			failonerror="false"
-			overwrite="true"/>
-		<symlink link="${container.home}/${webapps}/elab/${elab.name}/jsp/users"
-			resource="${container.home}/${webapps}/elab/${elab.name}/users"
-			failonerror="false"
-			overwrite="true"/>
-		<symlink link="${container.home}/${webapps}/elab/${elab.name}/references/graphics"
-			resource="${container.home}/${webapps}/elab/${elab.name}/graphics"
-			failonerror="false"
-			overwrite="true"/>
-		<symlink link="${container.home}/${webapps}/elab/${elab.name}/test/graphics"
-			resource="${container.home}/${webapps}/elab/${elab.name}/graphics"
-			failonerror="false"
-			overwrite="true"/>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/jsp/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/jsp/users"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/users"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/references/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/test/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+		</exec>
 	</target>
 
 	<!-- ================================= 
