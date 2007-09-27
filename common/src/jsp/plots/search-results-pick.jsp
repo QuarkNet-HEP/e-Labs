@@ -39,7 +39,7 @@ function Send(url, link)
 	            		group = elab.getUserManagementProvider().getGroup(groupName);
 	            		groups.put(groupName, group);
 	            	}
-	            	catch (ElabException e) {
+	            	catch (ElabException ex) {
 	            	}
 	            }  
 	            request.setAttribute("e", e);
