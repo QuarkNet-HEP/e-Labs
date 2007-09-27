@@ -17,12 +17,18 @@
 	            String groupName = (String) e.getTupleValue("group");
 	            ElabGroup group = (ElabGroup) groups.get(groupName);
 	            if (group == null) {
-	            	group = elab.getUserManagementProvider().getGroup(groupName);
-	            	groups.put(groupName, group);
+	            	try {
+	            		group = elab.getUserManagementProvider().getGroup(groupName);
+	            		groups.put(groupName, group);
+	            	}
+	            	catch (ElabException e) {
+	            	}
 	            }  
 	            request.setAttribute("e", e);
-	            String plotURL = group.getDirURL("plots");
-	            request.setAttribute("plotURL", plotURL);
+	            if (group != null) {
+	            	String plotURL = group.getDirURL("plots");
+	            	request.setAttribute("plotURL", plotURL);
+	            }
 	            %>
 	            	<td class="plot-thumbnail">
 	            		<a href="view.jsp?filename=${e.LFN}">
