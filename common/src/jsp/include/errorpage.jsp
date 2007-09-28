@@ -45,6 +45,7 @@
 	}
 	System.out.println("Request URL: " + request.getRequestURL());
 	System.out.println("QueryString: " + request.getQueryString());
+	System.out.println("Referer: " + request.getHeader("Referer"));
 	System.out.println("Group: " + ElabGroup.getUser(session));
 	System.out.println("\n)----------------------------------------\n");
 	if (root instanceof ElabJspException) {
