@@ -37,7 +37,7 @@
 			<td>${event.x}</td>
 			<td>${event.y}</td>
 			<td>${event.z}</td>
-			<td><e:popup href="../data/detector-info.jsp?id=${event.id}" target="new" width="100" height="80">${event.id}</e:popup></td>
+			<td><e:popup href="../data/detector-info.jsp?id=${event.id}" target="new" width="460" height="160">${event.id}</e:popup></td>
 			<td>${event.chan}</td>
 		</tr>
 	</c:forEach>
