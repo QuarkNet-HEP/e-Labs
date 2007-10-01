@@ -1,7 +1,3 @@
-
-#localhost 	echo 		/home/mike/bin/msleep	INSTALLED	INTEL32::LINUX	null
-#localhost 	echompi		/bin/echo	INSTALLED	INTEL32::LINUX	GLOBUS::jobtype="mpi",count="4"
-
 #This is the transformation catalog.
 #
 #It comes pre-configured with a number of simple transformations with
@@ -34,4 +30,18 @@ localhost	ExtraFunctions	/home/mike/work/i2u2/apps/ExtraFunctions.pl	INSTALLED  
 localhost	EventSearch		/home/mike/work/i2u2/apps/EventSearch.pl	INSTALLED       INTEL32::LINUX null
 localhost	EventChoice		/home/mike/work/i2u2/apps/EventChoice.pl	INSTALLED       INTEL32::LINUX null
 localhost	SVG2PNG			/usr/bin/rsvg								INSTALLED       INTEL32::LINUX null
+
+teraport	ThresholdTimes	/home/mike/work/i2u2/apps/ThresholdTimes.pl	INSTALLED       INTEL32::LINUX null
+teraport	WireDelay		/home/mike/work/i2u2/apps/WireDelay.pl		INSTALLED       INTEL32::LINUX null
+teraport	Combine			/home/mike/work/i2u2/apps/Combine.pl		INSTALLED       INTEL32::LINUX null
+teraport	SingleChannel	/home/mike/work/i2u2/apps/SingleChannel.pl	INSTALLED       INTEL32::LINUX null
+teraport	Sort			/home/mike/work/i2u2/apps/Sort.pl			INSTALLED       INTEL32::LINUX null
+teraport	Flux			/home/mike/work/i2u2/apps/Flux.pl			INSTALLED       INTEL32::LINUX null
+teraport	Plot			/home/mike/work/i2u2/apps/Plot.pl			INSTALLED       INTEL32::LINUX null
+teraport	Lifetime		/home/mike/work/i2u2/apps/Lifetime.pl		INSTALLED       INTEL32::LINUX null
+teraport	Frequency		/home/mike/work/i2u2/apps/Frequency.pl		INSTALLED       INTEL32::LINUX null
+teraport	ExtraFunctions	/home/mike/work/i2u2/apps/ExtraFunctions.pl	INSTALLED       INTEL32::LINUX null
+teraport	EventSearch		/home/mike/work/i2u2/apps/EventSearch.pl	INSTALLED       INTEL32::LINUX null
+teraport	EventChoice		/home/mike/work/i2u2/apps/EventChoice.pl	INSTALLED       INTEL32::LINUX null
+teraport	SVG2PNG			/usr/bin/rsvg								INSTALLED       INTEL32::LINUX null
 
