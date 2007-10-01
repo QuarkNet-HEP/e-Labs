@@ -27,12 +27,19 @@
 	 ElabAnalysis analysis = (ElabAnalysis) session.getAttribute("analysisToRerun");
 	 if (analysis == null) {
 	 	String dvName = request.getParameter("dvName");
-	 	if (dvName == null) {
-	    	throw new ElabJspException("Missing DV name");
+	 	if (dvName != null) {
+	 		analysis = elab.getDataCatalogProvider().getAnalysis(dvName);
 	 	}
-	 	analysis = elab.getDataCatalogProvider().getAnalysis(dvName);
 	 }
 	 request.setAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS, analysis);
+	 request.setAttribute("analysis", analysis);
 %>
 
-<jsp:include page="../analysis-${study}/analysis.jsp?${request.queryString}"/>
+<c:choose>
+	<c:when test="${analysis != null}">
+		<jsp:include page="../analysis-${study}/analysis.jsp?${request.queryString}"/>
+	</c:when>
+	<c:otherwise>
+		<% response.sendRedirect("../analysis-" + study); %>
+	</c:otherwise>
+</c:choose>
