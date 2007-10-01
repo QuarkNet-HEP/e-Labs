@@ -42,6 +42,11 @@ if (fu.isMultipartContent(request)) {
                 ret = "Your image is 0 bytes in size. You must upload an image which contains some data!";
                 valid = false;
             }
+            if (!origName.endsWith(".jpg") && !origName.endsWith(".jpeg") 
+            	&& !origName.endsWith(".png") && !origName.endsWith(".gif")) {
+            	ret = "Invalid image type. Valid extensions are: .jpg, .jpeg, .png, .gif";
+            	valid = false;
+            }
             if(fi.getSize() > 5*1024*1024){
                 ret = "Images must be 5MB or less in size.";
                 valid = false;
