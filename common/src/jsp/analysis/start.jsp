@@ -3,9 +3,13 @@
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
+<%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="java.text.*" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
+<%@ page import="gov.fnal.elab.analysis.impl.vds.*" %>
+<%@ page import="gov.fnal.elab.analysis.impl.swift.*" %>
 
 <%
 	ElabAnalysis analysis = (ElabAnalysis) request.getAttribute("elab:analysis");
@@ -13,7 +17,30 @@
 	    throw new ElabJspException("No analysis to start");
 	}
 	else {
-	    AnalysisRun run = elab.getAnalysisExecutor().start(analysis, elab, user);
+		String runWith = request.getParameter("provider");
+		AnalysisExecutor ex;
+		if ("vds".equals(runWith)) {
+			ex = new VDSAnalysisExecutor();
+		}
+		else if ("swift".equals(runWith)) {
+			ex = new SwiftAnalysisExecutor();
+		}
+		else {
+			ex = elab.getAnalysisExecutor();
+		}
+		
+		DateFormat df = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.SSS.");
+		String outputBase = user.getDir("scratch");
+		new File(outputBase).mkdirs();
+       	File tmp = File.createTempFile(df.format(new Date()), "", new File(outputBase));
+        tmp.delete();
+        tmp.mkdirs();
+        String runDir = outputBase + File.separator + tmp.getName();
+		
+	    AnalysisRun run = ex.start(analysis, elab, runDir);
+	    String runDirURL = user.getDirURL("scratch") + '/' + tmp.getName();
+	    run.setOutputDirURL(runDirURL);
+	    
 	    String cont = request.getParameter("continuation");
 	    if (cont == null) {
 	        throw new ElabJspException("No continuation specified");
