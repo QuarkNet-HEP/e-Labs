@@ -109,6 +109,11 @@ public interface AnalysisRun {
      * exist here.
      */
     String getOutputDirURL();
+    
+    /**
+     * Allows setting of the output dir URL
+     */
+    void setOutputDirURL(String outputDirURL);
 
     /**
      * Sets a custom attribute on this object
