@@ -112,10 +112,10 @@
 			
 			    //variables provided for calling page
 			    detectorIDs.add(e.getTupleValue("detectorid"));
-			    validChans[0] = ((Long) e.getTupleValue("chan1")).intValue() > 0 || validChans[0] ? true : false;
-			    validChans[1] = ((Long) e.getTupleValue("chan2")).intValue() > 0 || validChans[1] ? true : false;
-			    validChans[2] = ((Long) e.getTupleValue("chan3")).intValue() > 0 || validChans[2] ? true : false;
-			    validChans[3] = ((Long) e.getTupleValue("chan4")).intValue() > 0 || validChans[3] ? true : false;
+			    validChans[0] = ((Long) e.getTupleValue("chan1")).intValue() > 0 || validChans[0];
+			    validChans[1] = ((Long) e.getTupleValue("chan2")).intValue() > 0 || validChans[1];
+			    validChans[2] = ((Long) e.getTupleValue("chan3")).intValue() > 0 || validChans[2];
+			    validChans[3] = ((Long) e.getTupleValue("chan4")).intValue() > 0 || validChans[3];
 			
 			    //set variables from metadata
 			    String city = (String) e.getTupleValue("city");
