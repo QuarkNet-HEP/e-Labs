@@ -118,6 +118,7 @@
 				</e:vswitch>
 			</e:tr>
 		</p>
+		<%@ include file="../analysis/controls.jsp" %>
 		<p>
 			<!-- this MUST be used if all the e:tr* stuff is to work                      -->
 			<!-- it ensures that the name of the submit button is the right thing ("submit") -->
