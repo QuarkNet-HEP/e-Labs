@@ -4,7 +4,6 @@
 package gov.fnal.elab.analysis;
 
 import gov.fnal.elab.Elab;
-import gov.fnal.elab.ElabGroup;
 import gov.fnal.elab.vds.ElabTransformation;
 
 import java.io.File;
@@ -14,19 +13,18 @@ import java.util.Map;
 
 public abstract class AbstractAnalysisRun implements AnalysisRun {
     private ElabAnalysis analysis;
-    private Elab elab;
-    private ElabGroup user;
     private ElabTransformation et;
+    private Elab elab;
     private Throwable exception;
     private int status;
-    private String id;
+    private String id, outputDir, outputDirURL;
     private static int sid = 0;
     private Map attributes;
 
-    public AbstractAnalysisRun(ElabAnalysis analysis, Elab elab, ElabGroup user) {
+    public AbstractAnalysisRun(ElabAnalysis analysis, Elab elab, String outputDir) {
         this.analysis = analysis;
         this.elab = elab;
-        this.user = user;
+        this.outputDir = outputDir;
         this.status = STATUS_NONE;
         synchronized (AnalysisRun.class) {
             this.id = String.valueOf(sid++);
@@ -98,11 +96,23 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
     }
 
     public Elab getElab() {
-        return elab;
+    	return elab;
+    }
+    
+    public String getOutputDir() {
+        return outputDir;
+    }
+    
+    public String getOutputDirURL() {
+        return outputDirURL;
     }
 
-    public ElabGroup getUser() {
-        return user;
+    public void setOutputDir(String outputDir) {
+        this.outputDir = outputDir;
+    }
+
+    public void setOutputDirURL(String outputDirURL) {
+        this.outputDirURL = outputDirURL;
     }
 
     protected void delete(File f) {
