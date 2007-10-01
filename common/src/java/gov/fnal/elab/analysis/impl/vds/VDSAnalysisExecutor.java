@@ -4,7 +4,6 @@
 package gov.fnal.elab.analysis.impl.vds;
 
 import gov.fnal.elab.Elab;
-import gov.fnal.elab.ElabGroup;
 import gov.fnal.elab.analysis.AbstractAnalysisRun;
 import gov.fnal.elab.analysis.AnalysisExecutor;
 import gov.fnal.elab.analysis.AnalysisRun;
@@ -36,8 +35,8 @@ import org.griphyn.common.catalog.replica.ElabRC;
  */
 public class VDSAnalysisExecutor implements AnalysisExecutor {
 
-    public AnalysisRun start(ElabAnalysis analysis, Elab elab, ElabGroup user) {
-        Run run = new Run(analysis, elab, user);
+    public AnalysisRun start(ElabAnalysis analysis, Elab elab, String outputDir) {
+        Run run = new Run(analysis, elab, outputDir);
         run.start();
         return run;
     }
@@ -48,11 +47,10 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
     }
     
     public static ElabTransformation createTransformation(String name,
-            ElabAnalysis analysis, ElabGroup user) throws ElabException {
+            ElabAnalysis analysis, String runDir) throws ElabException {
         ElabTransformation et = new ElabTransformation(analysis.getType());
-        if (user != null) {
-            String runDir = user.getDir("scratch");
-            et.generateOutputDir(runDir);
+        if (runDir != null) {
+            et.setOutputDir(runDir);
         }
         if (name != null) {
             et.setDVName(name);
@@ -74,8 +72,8 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
         private String runDirURL;
         private volatile transient double progress;
 
-        public Run(ElabAnalysis analysis, Elab elab, ElabGroup user) {
-            super(analysis, elab, user);
+        public Run(ElabAnalysis analysis, Elab elab, String runDir) {
+            super(analysis, elab, runDir);
         }
 
         public void cancel() {
@@ -97,7 +95,7 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
 
         public void start() {
             try {
-                et = createTransformation(null, getAnalysis(), getUser());
+                et = createTransformation(null, getAnalysis(), getOutputDir());
                 List nulllist = et.getNullKeys();
                 if (!nulllist.isEmpty()) {
                     StringBuffer sb = new StringBuffer();
@@ -137,19 +135,6 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
                 setStatus(STATUS_FAILED);
                 t.printStackTrace();
             }
-        }
-
-        public String getOutputDir() {
-            if (et == null) {
-                throw new IllegalStateException(
-                        "getOutputDir() can only be called after start()");
-            }
-            return et.getOutputDir();
-        }
-
-        public String getOutputDirURL() {
-            return getUser().getDirURL(
-                    "scratch" + File.separator + et.getOutputDirName());
         }
     }
 

@@ -4,7 +4,6 @@
 package gov.fnal.elab.analysis.impl.swift;
 
 import gov.fnal.elab.Elab;
-import gov.fnal.elab.ElabGroup;
 import gov.fnal.elab.RawDataFileResolver;
 import gov.fnal.elab.analysis.AbstractAnalysisRun;
 import gov.fnal.elab.analysis.AnalysisExecutor;
@@ -17,11 +16,8 @@ import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -60,16 +56,13 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
         return tree.getElementTree();
     }
 
-    public AnalysisRun start(ElabAnalysis analysis, Elab elab, ElabGroup user) {
-        Run run = new Run(analysis, elab, user);
+    public AnalysisRun start(ElabAnalysis analysis, Elab elab, String outputDir) {
+        Run run = new Run(analysis, elab, outputDir);
         run.start();
         return run;
     }
 
     private static ProgressTracker pTracker = new ProgressTracker();
-
-    private static final DateFormat DF = new SimpleDateFormat(
-            "yyyy.MM.dd.HH.mm.ss.SSS.");
 
     public class Run extends AbstractAnalysisRun implements Serializable {
         private String runDir, runDirUrl;
@@ -77,8 +70,8 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
         private VDL2ExecutionContext ec;
         private OutputChannel out;
 
-        protected Run(ElabAnalysis analysis, Elab elab, ElabGroup user) {
-            super(analysis, elab, user);
+        protected Run(ElabAnalysis analysis, Elab elab, String outputDir) {
+            super(analysis, elab, outputDir);
         }
 
         public synchronized void start() {
@@ -128,8 +121,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                     else if ("grid".equals(runMode)) {
                         poolFile = "sites-grid.xml";
                     }
-                    // disabled for now
-                    // stack.setGlobal("vdl:sitecatalogfile", poolFile);
+                    stack.setGlobal("vdl:sitecatalogfile", poolFile);
                 }
                 String home = getElab().getAbsolutePath("/WEB-INF/classes");
                 System.setProperty("swift.home", home);
@@ -153,16 +145,9 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
         }
 
         private void createRunDir() throws IOException {
-            runDir = getUser().getDir("scratch");
-            runDirUrl = getUser().getDirURL("scratch");
+            runDir = getOutputDir();
             File rdf = new File(runDir);
             rdf.mkdirs();
-            File tmp = File.createTempFile(DF.format(new Date()), "", new File(
-                    runDir));
-            tmp.delete();
-            tmp.mkdirs();
-            runDir = runDir + File.separator + tmp.getName();
-            runDirUrl = runDirUrl + '/' + tmp.getName();
         }
 
         private List getArgv() {
@@ -248,14 +233,6 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
 
         public void setProgress(double progress) {
             this.progress = progress;
-        }
-
-        public String getOutputDir() {
-            return runDir;
-        }
-
-        public String getOutputDirURL() {
-            return runDirUrl;
         }
 
         public void updateStatus() {
