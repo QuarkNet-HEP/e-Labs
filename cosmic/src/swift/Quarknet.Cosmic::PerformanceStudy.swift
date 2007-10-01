@@ -18,7 +18,7 @@ type AxisParams {
 	}
 }
 
-(File out[]) SingleChannel(File inf, int channel) {
+(File out[]) SingleChannel(File inf, string channel) {
 	app {
 		SingleChannel @filename(inf) @filename(out) channel;
 	}
@@ -35,7 +35,7 @@ type AxisParams {
 	
 	app {
 		Plot 
-			"-file" @filenames(infile)
+			"-file" @filename(infile)
 			"-param" @filename(outfile_param)
 			"-svg" @filename(image)
 			"-type" ptype
@@ -53,9 +53,16 @@ type AxisParams {
 	}
 }
 
+(File png) SVG2PNG(File svg, string height) {
+	app {
+		SVG2PNG "-h" height "-w" height @filename(svg) @filename(png);
+	}
+}
+
+
 File rawData[] <fixed_array_mapper;files=@arg("rawData")>;
 File thresholdAll[] <fixed_array_mapper;files=@arg("thresholdAll")>;
-File combineOut <fixed_mapper;file=@arg("combineOut")>;
+File combineOut;
 
 string detector = @arg("detector");
 
@@ -67,7 +74,7 @@ File singlechannelOut[] <fixed_array_mapper;files=@arg("singlechannelOut")>;
 File freqOut[] <fixed_array_mapper;files=@arg("freqOut")>;
 
 string plot_caption = @arg("plot_caption");
-//File extraFun_out <fixed_mapper;file=@arg("extraFun_out")>;
+//File extraFun_out <single_file_mapper;file=@arg("extraFun_out")>;
 
 AxisParams x, y, z;
 
@@ -79,21 +86,16 @@ y.high = @arg("plot_highY");
 y.low  = @arg("plot_lowY");
 y.label = @arg("plot_ylabel");
 
-z.high = @arg("plot_highZ");
-z.low  = @arg("plot_lowZ");
-z.label = @arg("plot_zlabel");
+z.high = "";
+z.low  = "";
+z.label = "";
 
 
-File plot_outfile_param <fixed_mapper;file=@arg("plot_outfile_param")>;
+File plot_outfile_param <single_file_mapper;file=@arg("plot_outfile_param")>;
 
 string plot_plot_type = @arg("plot_plot_type");
-
-File plot_outfile_image <fixed_mapper;file=@arg("plot_outfile_image")>;
-
 string plot_title = @arg("plot_title");
-
-
-int singlechannel_channel = @arg("singlechannel_channel");
+string singlechannel_channel = @arg("singlechannel_channel");
 
 
 //the actual workflow
@@ -102,5 +104,14 @@ combineOut = Combine(thresholdAll);
 singleChannelOut = SingleChannel(combineOut, singlechannel_channel);
 freqOut = Frequency(singleChannelOut, freq_binType, freq_binValue, freq_col);
 
-(plot_outfile_image, plot_outfile_param) = Plot(plot_plot_type, plot_caption, x, y, z, plot_title,
+File svg;
+(svg, plot_outfile_param) = Plot(plot_plot_type, plot_caption, x, y, z, plot_title,
 	freqOut);
+
+File png <single_file_mapper;file=@arg("plot_outfile_image")>;
+
+string plot_size = @arg("plot_size");
+png = SVG2PNG(svg, plot_size);
+File thumb <single_file_mapper;file=@arg("plot_outfile_image_thumbnail")>;
+string plot_thumbnail_height = @arg("plot_thumbnail_height");
+thumb = SVG2PNG(svg, plot_thumbnail_height);

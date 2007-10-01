@@ -13,9 +13,9 @@ type AxisParams {
 	}
 }
 
-(File wireDelayData[]) WireDelay(File thresholdData[], File geoDir, File geoFiles[]) {
+(File wireDelayData[]) WireDelay(File thresholdData[], string geoDir, File geoFiles[]) {
 	app {
-		WireDelay @filename(thresholdData) @filename(wireDelayData) @filename(geoDir);
+		WireDelay @filename(thresholdData) @filename(wireDelayData) geoDir;
 	}
 }
 
@@ -26,7 +26,7 @@ type AxisParams {
 }
 
 //"in" doesn't quite work as an identifier
-(File out) SingleChannel(File inf, int channel) {
+(File out) SingleChannel(File inf, string channel) {
 	app {
 		SingleChannel @filename(inf) @filename(out) channel;
 	}
@@ -38,9 +38,15 @@ type AxisParams {
 	}
 }
 
-(File out) Flux(File inf, int binWidth, File geoDir, File geoFiles[]) {
+(File out) Flux(File inf, string binWidth, string geoDir, File geoFiles[]) {
 	app {
-		Flux @filename(inf) @filename(out) binWidth @filename(geoDir);
+		Flux @filename(inf) @filename(out) binWidth geoDir;
+	}
+}
+
+(File png) SVG2PNG(File svg, string height) {
+	app {
+		SVG2PNG "-h" height "-w" height @filename(svg) @filename(png);
 	}
 }
 
@@ -72,19 +78,19 @@ File rawData[] <fixed_array_mapper;files=@arg("rawData")>;
 File thresholdAll[] <fixed_array_mapper;files=@arg("thresholdAll")>;
 File wireDelayData[] <fixed_array_mapper;files=@arg("wireDelayData")>;
 string detector = @arg("detector");
-File combineOut <fixed_mapper;file=@arg("combineOut")>;
-File fluxOut <fixed_mapper;file=@arg("fluxOut")>;
-File singlechannelOut <fixed_mapper;file=@arg("singlechannelOut")>;
-File sortOut <fixed_mapper;file=@arg("sortOut")>;
+File combineOut;
+File fluxOut;
+File singlechannelOut <single_file_mapper;file=@arg("singlechannelOut")>;
+File sortOut;
 
-int binWidth = @arg("flux_binWidth");
-File geoDir <fixed_mapper;file=@arg("geoDir")>;
+string binWidth = @arg("flux_binWidth");
+string geoDir = @arg("geoDir");
 File geoFiles[] <fixed_array_mapper;files=@arg("geoFiles")>;
 
 string plot_caption = @arg("plot_caption");
 
 //not used
-//File extraFun_out <fixed_mapper;file=@arg("extraFun_out")>;
+//File extraFun_out <single_file_mapper;file=@arg("extraFun_out")>;
 
 AxisParams x, y, z;
 
@@ -96,21 +102,20 @@ y.high = @arg("plot_highY");
 y.low  = @arg("plot_lowY");
 y.label = @arg("plot_ylabel");
 
-z.high = @arg("plot_highZ");
-z.low  = @arg("plot_lowZ");
-z.label = @arg("plot_zlabel");
+z.high = "";
+z.low  = "";
+z.label = "";
 
 
-File plot_outfile_param <fixed_mapper;file=@arg("plot_outfile_param")>;
+File plot_outfile_param <single_file_mapper;file=@arg("plot_outfile_param")>;
 
 string plot_plot_type = @arg("plot_plot_type");
 
-File plot_outfile_image <fixed_mapper;file=@arg("plot_outfile_image")>;
 
 string plot_title = @arg("plot_title");
 
 
-int singlechannel_channel = @arg("singlechannel_channel");
+string singlechannel_channel = @arg("singlechannel_channel");
 
 string sort_sortKey1 = @arg("sort_sortKey1");
 string sort_sortKey2 = @arg("sort_sortKey2");
@@ -125,5 +130,15 @@ singleChannelOut = SingleChannel(combineOut, singlechannel_channel);
 //sortOut = Sort(singleChannelOut[0], sort_sortKey1, sort_sortKey2);
 sortOut = Sort(singleChannelOut, sort_sortKey1, sort_sortKey2);
 fluxOut = Flux(sortOut, binWidth, geoDir, geoFiles);
-(plot_outfile_image, plot_outfile_param) = Plot(plot_plot_type, plot_caption, x, y, z, plot_title,
+File svg;
+(svg, plot_outfile_param) = Plot(plot_plot_type, plot_caption, x, y, z, plot_title,
 	fluxOut);
+
+File png <single_file_mapper;file=@arg("plot_outfile_image")>;
+
+string plot_size = @arg("plot_size");
+png = SVG2PNG(svg, plot_size);
+File thumb <single_file_mapper;file=@arg("plot_outfile_image_thumbnail")>;
+string plot_thumbnail_height = @arg("plot_thumbnail_height");
+thumb = SVG2PNG(svg, plot_thumbnail_height);
+

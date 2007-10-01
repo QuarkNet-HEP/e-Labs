@@ -13,9 +13,9 @@ type AxisParams {
 	}
 }
 
-(File wireDelayData[]) WireDelay(File thresholdData[], File geoDir, File geoFiles[]) {
+(File wireDelayData[]) WireDelay(File thresholdData[], string geoDir, File geoFiles[]) {
 	app {
-		WireDelay @filename(thresholdData) @filename(wireDelayData) @filename(geoDir);
+		WireDelay @filename(thresholdData) @filename(wireDelayData) geoDir;
 	}
 }
 
@@ -32,11 +32,11 @@ type AxisParams {
 }
 
 (File out) Lifetime(File inf, string coincidence, string energyCheck, 
-	string gateWidth, File geoDir, File geoFiles[]) {
+	string gateWidth, string geoDir, File geoFiles[]) {
 	
 	app {
 		Lifetime @filename(inf) @filename(out) gateWidth energyCheck 
-			coincidence @filename(geoDir);
+			coincidence geoDir;
 	}
 }
 
@@ -92,6 +92,13 @@ type AxisParams {
 	}
 }
 
+(File png) SVG2PNG(File svg, string height) {
+	app {
+		SVG2PNG "-h" height "-w" height @filename(svg) @filename(png);
+	}
+}
+
+
 File	rawData[] <fixed_array_mapper;files=@arg("rawData")>;
 File	thresholdAll[] <fixed_array_mapper;files=@arg("thresholdAll")>;
 File	wireDelayData[] <fixed_array_mapper;files=@arg("wireDelayData")>;
@@ -108,23 +115,23 @@ string	extraFun_maxX = @arg("extraFun_maxX");
 string	extraFun_minX = @arg("extraFun_minX");
 string	extraFun_type = @arg("extraFun_type");
 string	extraFun_turnedOn = @arg("extraFun_turnedOn");
-File	extraFun_out <fixed_mapper;file=@arg("extraFun_out")>;
-File	extraFun_rawFile <fixed_mapper;file=@arg("extraFun_rawFile")>;
+File	extraFun_out <single_file_mapper;file=@arg("extraFun_out")>;
+File	extraFun_rawFile <single_file_mapper;file=@arg("extraFun_rawFile")>;
 
 string	freq_binType = @arg("freq_binType");
 string	freq_binValue = @arg("freq_binValue");
 string	freq_col = @arg("freq_col");
-File	frequencyOut <fixed_mapper;file=@arg("frequencyOut")>;
+File	frequencyOut <single_file_mapper;file=@arg("frequencyOut")>;
 
-File	lifetimeOut <fixed_mapper;file=@arg("lifetimeOut")>;
+File	lifetimeOut <single_file_mapper;file=@arg("lifetimeOut")>;
 string	lifetime_coincidence = @arg("lifetime_coincidence");
 string	lifetime_energyCheck = @arg("lifetime_energyCheck");
 string	lifetime_gatewidth = @arg("lifetime_gatewidth");
 
-File	combineOut <fixed_mapper;file=@arg("combineOut")>;
-File	sortOut <fixed_mapper;file=@arg("sortOut")>;
+File	combineOut <single_file_mapper;file=@arg("combineOut")>;
+File	sortOut <single_file_mapper;file=@arg("sortOut")>;
 
-File	geoDir <fixed_mapper;file=@arg("geoDir")>;
+string	geoDir = @arg("geoDir");
 File	geoFiles[] <fixed_array_mapper;files=@arg("geoFiles")>;
 
 string	plot_caption = @arg("plot_caption");
@@ -145,14 +152,10 @@ z.low  = @arg("plot_lowZ");
 z.label = @arg("plot_zlabel");
 
 
-File	plot_outfile_param <fixed_mapper;file=@arg("plot_outfile_param")>;
+File	plot_outfile_param <single_file_mapper;file=@arg("plot_outfile_param")>;
 
 string	plot_plot_type = @arg("plot_plot_type");
-
-File	plot_outfile_image <fixed_mapper;file=@arg("plot_outfile_image")>;
-
 string	plot_title = @arg("plot_title");
-
 string	sort_sortKey1 = @arg("sort_sortKey1");
 string	sort_sortKey2 = @arg("sort_sortKey2");
 
@@ -174,5 +177,14 @@ frequencyOut = Frequency(lifetimeOut, freq_binType, freq_binValue, freq_col);
 	extraFun_minX, extraFun_maxX,
 	extraFun_turnedOn);
 	
-(plot_outfile_image, plot_outfile_param) = Plot(plot_plot_type, plot_caption, x, y, z, plot_title,
+File svg;
+(svg, plot_outfile_param) = Plot(plot_plot_type, plot_caption, x, y, z, plot_title,
 	frequencyOut, extraFun_out);
+
+File png <single_file_mapper;file=@arg("plot_outfile_image")>;
+
+string plot_size = @arg("plot_size");
+png = SVG2PNG(svg, plot_size);
+File thumb <single_file_mapper;file=@arg("plot_outfile_image_thumbnail")>;
+string plot_thumbnail_height = @arg("plot_thumbnail_height");
+thumb = SVG2PNG(svg, plot_thumbnail_height);
