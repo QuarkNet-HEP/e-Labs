@@ -59,35 +59,62 @@ namespace("vdl"
 				isEmpty(...) ""
 				
 				concat(
-					for(i, butLast(...), if(isList(i) flatten(i) i), " ") last(...)
+					for(i, butLast(...), if(isList(i) flatten(i) i), "|") last(...)
 				)
 			)
 		)
 		
-		element(checkExitCode, [rhost, tmpdir, jobdir, tr]
-			if(
-				file:exists("{tmpdir}/exitcode", host=rhost) then(
-					task:transfer(srchost=rhost, srcdir=tmpdir, srcfile="exitcode",
-						destfile="{jobdir}-exitcode")
-						
-					exitcode := str:strip(file:read("{jobdir}-exitcode"))
-					file:remove("{jobdir}-exitcode")
-													
-					throw("Job {tr} failed with an exit code of {exitcode}")
+		element(checkJobStatus, [rhost, wfdir, jobid, tr]
+			log(LOG:DEBUG, "START jobid={jobid}")
+			try(
+				sequential(
+					/*
+					 * This is a bit of optimization, but I'm not completely
+					 * sure of its correctness. The goal is to both detect
+					 * the presence of the success file and remove it, all
+					 * in one operation. It relies on file:remove() throwing 
+					 * an exception if the file is not there. 
+					 */
+					file:remove("{wfdir}/status/{jobid}-success", host=rhost)
+					log(LOG:INFO, "SUCCESS jobid={jobid} - Success file found")
+				)
+				if(
+					file:exists("{wfdir}/status/{jobid}-error", host=rhost) then(
+						log(LOG:INFO, "FAILURE jobid={jobid} - Failure file found")
+						task:transfer(srchost=rhost, srcdir="{wfdir}/status", srcfile="{jobid}-error")
+						error := parallel(
+							file:remove("{wfdir}/status/{jobid}-error", host=rhost)
+							sequential(
+								str:strip(file:read("{jobid}-error"))
+								file:remove("{jobid}-error")
+							)
+						)
+						throw(error)
+					)
+					else (	
+						log(LOG:INFO, "NO_STATUS_FILE jobid={jobid} - Both status files are missing")
+						throw("No status file was found. Check the shared filesystem on {rhost}")  
+					)
 				)
 			)
 		)
 		
 		element(initSharedDir, [rhost]
 			once(list(rhost, "shared")
+				log(LOG:INFO, "START host={rhost} - Initializing shared directory")
+
 				wfdir := "{VDL:SCRIPTNAME}-{VDL:RUNID}"
 				sharedDir := dircat(wfdir, "shared")
 				dir:make(sharedDir, host=rhost)
 				transfer(srcdir="{vds.home}/libexec/", srcfile="wrapper.sh", destdir=sharedDir, desthost=rhost)
 				transfer(srcdir="{vds.home}/libexec/", srcfile="seq.sh", destdir=sharedDir, desthost=rhost)
+				dir:make(dircat(wfdir, "kickstart"), host=rhost)
+				dir:make(dircat(wfdir, "status"), host=rhost)
+				dir:make(dircat(wfdir, "info"), host=rhost)
 				wfdir, sharedDir
 				//we send the cleanup data to vdl:main()
 				to(cleanup, list(wfdir, rhost))
+				log(LOG:INFO, "END host={rhost} - Done initializing shared directory")
 			)
 		)
 		
@@ -130,32 +157,34 @@ namespace("vdl"
 			)
 		)
 		
-		element(createDirSet, [destdir, host, dirs]
+		element(createDirSet, [jobid, destdir, host, dirs]
 			/*
 			 * Ideally this would be done by creating a tree of the directories
 			 * to be created and (eventually) exploiting the concurrency in that.
 			 */
-	
+			log(LOG:INFO, "START jobid={jobid} host={host} - Initializing directory structure")
 			for(u, dirs
 				cacheOn(list(u, destdir, host)
 					createdirs(u, destdir, host)
 				)
 			)
+			log(LOG:INFO, "END jobid={jobid} - Done initializing directory structure")
 		)
-				
+		
 		element(cleanup, [dir, host]
-			log(LOG:INFO, "Cleaning up ", dir, " on ", host)
-			task:execute("/bin/rm", arguments="-rf {dir}", host=host)
+			log(LOG:INFO, "START dir={dir} host={host}")
+			task:execute("/bin/rm", arguments="-rf {dir}", host=host, batch=true)
+			log(LOG:INFO, "END dir={dir} host={host}")
 		)
 		
 		element(cleanups, [cleanup]
-			log(LOG:INFO, "Cleanups: ", cleanup)
+			log(LOG:INFO, "START cleanups={cleanup}")
 			parallelFor(i, cleanup
 				[dir, host] := each(i)
 				try(
 					cleanup(dir, host)
 					catch(".*",
-						log(LOG:DEBUG, "Exception caught while cleaning up", exception)
+						log(LOG:DEBUG, "EXCEPTION - Exception caught while cleaning up", exception)
 						to(warnings, exception("Cleanup on {host} failed", exception))
 					)
 				)
@@ -170,27 +199,32 @@ namespace("vdl"
 			)
 		)
 				
-		element(doStagein, [files, dir, host]
+		element(doStagein, [jobid, files, dir, host]
+			log(LOG:INFO, "START jobid={jobid} - Staging in files")
 			uParallelFor(file, files
+				echo(file)
 				[provider, srchost, srcdir, destdir, filename] := 
 					(provider(file), hostname(file), dirname(file), dircat(dir, reldirname(file)), basename(file))
-				
-				vdl:cacheAddAndLockFile(filename, destdir, host, file:size(file)
+				vdl:cacheAddAndLockFile(filename, destdir, host, file:size("{srcdir}/{filename}", host=srchost, provider=provider)
 					//This is kinda hackish, but these files should be cleaned before
 					//the other ones are uploaded, and doing it nicer is a complex
 					//business. So vdl:cacheAddAndLockFile defines "filesToRemove"
 					cleanupFiles(cacheFilesToRemove, host)
-					log(LOG:INFO, "Staging in {file} ({srcdir} - {filename} to {destdir} on {host}")
+					log(LOG:DEBUG, "FILE_STAGE_IN_START file={file} srchost={srchost} srcdir={srcdir} srcname={filename} ",
+						"desthost={host} destdir={destdir} provider={provider}")
 					restartOnError(".*", 2
 					    task:transfer(srcprovider=provider, srchost=srchost, srcfile=filename, 
 					    	srcdir=srcdir, desthost=host, destdir=destdir)
 					)
-					log(LOG:INFO, "Staged in {file} to {destdir} on {host}")
+					log(LOG:DEBUG, "FILE_STAGE_IN_END file={file} srchost={srchost} srcdir={srcdir} srcname={filename} ",
+						"desthost={host} destdir={destdir} provider={provider}")
 				)
 			)
+			log(LOG:INFO, "END jobid={jobid} - Staging in finished")
 		)
 		
-		element(doStageout, [stageouts, dir, host]
+		element(doStageout, [jobid, stageouts, dir, host]
+			log(LOG:INFO, "START jobid={jobid} - Staging out files")
 			uparallelFor(pv, stageouts
 				[path, var] := each(pv)
 				file := vdl:absfilename(vdl:getfield(var, path = path))
@@ -202,7 +236,8 @@ namespace("vdl"
 				fullLocal := dircat(ldir, bname)
 				fullRemote := dircat(rdir, bname)
 									
-				log(LOG:INFO, "Staging out ", dircat(rdir, bname), " to {provider}://{dhost}/{fullLocal} from {host}")
+				log(LOG:DEBUG, "FILE_STAGE_OUT_START srcname={bname} srcdir={rdir} srchost={host}",
+						"destdir={ldir} desthost={dhost} provider={provider}")
 				//make sure we do have the directory on the client side
 				dir:make(ldir)
 				restartOnError(".*", 2
@@ -210,7 +245,8 @@ namespace("vdl"
 				        srcdir=rdir, destdir=ldir, desthost=dhost, destprovider=provider)
 				)
 		        vdl:logvar(var, path, host, dir, bname)
-		        log(LOG:INFO, "Staged out {fullRemote} to {fullLocal} from {host}")
+		        log(LOG:DEBUG, "FILE_STAGE_OUT_END srcname={bname} srcdir={rdir} srchost={host}",
+						"destdir={ldir} desthost={dhost} provider={provider}")
 
 				//there is really no way to tell big files created by apps will be, so
 				//the decent thing to do is clean things up as much as possible
@@ -220,6 +256,7 @@ namespace("vdl"
 					cleanupFiles(cacheFilesToRemove, host)
 				)
 			)
+			log(LOG:INFO, "END jobid={jobid} - Staging out finished")
 		)
 		
 		element(graphStuff, [tr, stagein, stageout, err, optional(args)]
@@ -296,14 +333,15 @@ namespace("vdl"
 			stagein := list(unique(each(stagein)))
 			stageout := list(unique(each(stageout)))
 			allocateHost(rhost, constraints=vdl:jobConstraints(tr)
-			
+				
 				[wfdir, sharedDir] := try(
 					initSharedDir(rhost)
 					throw(exception("Could not initialize shared directory on {rhost}", exception))
 				)
 				
 				jobid := concat(tr, "-", uid())
-				log(LOG:DEBUG, "Job {jobid} running in thread {#thread} run {vdl:runid}")
+				
+				log(LOG:DEBUG, "THREAD_ASSOCIATION jobid={jobid} thread={#thread} host={rhost}")
 				tmpdir := dircat(wfdir, jobid)
 				
 				stdout := try(stdout, "stdout.txt")
@@ -313,42 +351,40 @@ namespace("vdl"
 				
 				try(
 					sequential(
-						log(LOG:INFO, "Creating temporary directory {tmpdir} on {rhost}")
-					
-						/* May need to consult RLS to find the physical file names for stagein and stageout. */
-						
 						fileDirs := fileDirs(stagein, stageout)
 						
-						createDirSet(sharedDir, rhost, fileDirs)
-						
-						doStagein(stagein, sharedDir, rhost)
+						createDirSet(jobid, sharedDir, rhost, fileDirs)
+						doStagein(jobid, stagein, sharedDir, rhost)
 
-						log(LOG:INFO, "Running job {jobid} {tr}", maybe(" with arguments ", arguments), " in {tmpdir} on {rhost}")
+						log(LOG:DEBUG, "JOB_START jobid={jobid} tr={tr}", maybe(" arguments=", arguments), " tmpdir={tmpdir} host={rhost}")
 				
 						task:execute("/bin/sh",
-							list("shared/wrapper.sh", jobid, 
-								stdout, stderr, try(stdin, ""),
-								flatten(each(fileDirs)),
-								flatten(infiles(stagein)), 
-								flatten(outfiles(stageout)),
-								kickstart,
-								vdl:executable(tr, rhost),
-								maybe(each(arguments)))
+							list("shared/wrapper.sh", jobid,
+								"-e", vdl:executable(tr, rhost), 
+								"-out", stdout, 
+								"-err", stderr, 
+								"-i", maybe(stdin),
+								"-d", flatten(each(fileDirs)),
+								"-if", flatten(infiles(stagein)), 
+								"-of", flatten(outfiles(stageout)),
+								"-k", kickstart,
+								"-a", maybe(each(arguments)))
 							directory=wfdir
-							redirect = false
-							host = rhost
+							redirect=false
+							host=rhost
 							vdl:tcprofile(tr, rhost) //this gets various app params from the tc, such as environment, walltime, etc
 						)
 							
-						checkExitCode(rhost, tmpdir, jobid, tr)
+						checkJobStatus(rhost, wfdir, jobid, tr)
 		
-						log(LOG:INFO, "Completed job {jobid} {tr}", maybe(" with arguments ", arguments), " on {rhost}")
+						log(LOG:DEBUG, "JOB_END jobid={jobid}")
 
 									
 						/* need to stage the files to upper scratch area in case they are not transfered to another site
 						   before all the files get cleaned out */
 					
-						doStageout(stageout, sharedDir, rhost)
+						
+						doStageout(jobid, stageout, sharedDir, rhost)
 						if(
 							kickstart != "" & vdl:configProperty("kickstart.always.transfer") == "true"
 							discard(transferKickstartRec(rhost, wfdir, jobid))
@@ -356,7 +392,7 @@ namespace("vdl"
 						vdl:cacheUnlockFiles(stagein, sharedDir, rhost, cleanupFiles(cacheFilesToRemove, rhost))
 					)
 					catch(".*"
-						log(LOG:DEBUG, "Application exception: ", exception)
+						log(LOG:DEBUG, "APPLICATION_EXCEPTION jobid={jobid} - Application exception: ", exception)
 						vdl:cacheUnlockFiles(stagein, sharedDir, rhost, force=false
 							cleanupFiles(cacheFilesToRemove, rhost)
 						)
@@ -380,7 +416,7 @@ namespace("vdl"
 							exception(
 								concat(
 									"Exception in {tr}:", nl(),
-									"Arguments: {arguments}", nl(),
+									maybe("Arguments: {arguments}", nl()),
 									"Host: {rhost}", nl(),
 									"Directory: {tmpdir}",
 									"{outs}", nl(),
