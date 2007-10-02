@@ -16,8 +16,8 @@
 				<tr>
 					<td width="40%">&nbsp;</td>
 					<td align="left">
-						<input type="radio" name="provider" value="vds" checked="true" /> VDS<br>
-						<input type="radio" name="provider" value="swift" /> Swift<br>
+						<input type="radio" name="provider" value="vds" checked="true" /> VDS<br />
+						<input type="radio" name="provider" value="swift" /> Swift<br />
 					</td>
 				</tr>
 			</table>
@@ -30,9 +30,9 @@
 				<tr>
 					<td width="40%">&nbsp;</td>
 					<td align="left">
-						<input type="radio" name="workflowRunMode" value="local" /> Local<br>
-						<input checked="true" type="radio" name="workflowRunMode" value="mixed" /> Local and Grid<br>
-						<input type="radio" name="workflowRunMode" value="grid" /> Grid<br>
+						<input type="radio" name="runMode" value="local" /> Local<br />
+						<input checked="true" type="radio" name="runMode" value="mixed" /> Local and Grid<br />
+						<input type="radio" name="runMode" value="grid" /> Grid<br />
 					</td>
 				</tr>
 			</table>

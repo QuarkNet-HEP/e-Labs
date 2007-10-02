@@ -37,7 +37,7 @@
         tmp.mkdirs();
         String runDir = outputBase + File.separator + tmp.getName();
 		
-	    AnalysisRun run = ex.start(analysis, elab, runDir);
+	    AnalysisRun run = ex.createRun(analysis, elab, runDir);
 	    String runDirURL = user.getDirURL("scratch") + '/' + tmp.getName();
 	    run.setOutputDirURL(runDirURL);
 	    
@@ -57,7 +57,14 @@
 	    }
 	    run.setAttribute("continuation", cont);
 	    run.setAttribute("onError", err);
+	    
+	    String workflowRunMode = request.getParameter("runMode");
+		if (workflowRunMode != null) {
+			run.setAttribute("runMode", workflowRunMode);
+		}
+	    
 	    AnalysisManager.registerAnalysisRun(session, run);
+	    run.start();
 	    %> 
 	    	<jsp:include page="status.jsp">
 	    		<jsp:param name="id" value="<%= run.getId() %>"/>
