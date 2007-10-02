@@ -92,7 +92,8 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                     // oddly enough, there is no way to remove a system property
                     System.setProperty("java.security.egd", egd);
                 }
-
+                String home = getElab().getAbsolutePath("/WEB-INF/classes");
+                System.setProperty("swift.home", home);
                 ElementTree tree = getTree(getElab(), project);
                 tree.setName(projectName + "-" + runID);
                 tree.getRoot().setProperty(FlowElement.FILENAME, project);
@@ -131,8 +132,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                             + File.separator
                             + poolFile);
                 }
-                String home = getElab().getAbsolutePath("/WEB-INF/classes");
-                System.setProperty("swift.home", home);
+                
                 stack.setGlobal(ConfigProperty.INSTANCE_CONFIG, conf);
                 stack.setGlobal("swift.home", home);
                 stack.setGlobal("vds.home", home);
