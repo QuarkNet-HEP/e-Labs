@@ -38,6 +38,11 @@ public interface AnalysisRun {
     public static final int STATUS_CANCELED = 4;
 
     /**
+     * Starts this run.
+     */
+    void start();
+    
+    /**
      * Cancels this run.
      */
     void cancel();

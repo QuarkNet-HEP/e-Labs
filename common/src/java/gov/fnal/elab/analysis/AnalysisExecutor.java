@@ -11,8 +11,7 @@ import gov.fnal.elab.Elab;
  */
 public interface AnalysisExecutor {
     /**
-     * Starts an analysis and returns the run object associated with its
-     * execution.
+     * Creates an analysis run object, which can later be started
      * 
      * @param analysis
      *            The analysis to start *
@@ -24,5 +23,5 @@ public interface AnalysisExecutor {
      *            
      * @return The run object associated with the execution of the analysis.
      */
-    AnalysisRun start(ElabAnalysis analysis, Elab elab, String runDir);
+    AnalysisRun createRun(ElabAnalysis analysis, Elab elab, String runDir);
 }

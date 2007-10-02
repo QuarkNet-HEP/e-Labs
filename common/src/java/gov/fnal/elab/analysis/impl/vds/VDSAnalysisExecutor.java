@@ -35,9 +35,8 @@ import org.griphyn.common.catalog.replica.ElabRC;
  */
 public class VDSAnalysisExecutor implements AnalysisExecutor {
 
-    public AnalysisRun start(ElabAnalysis analysis, Elab elab, String outputDir) {
+    public AnalysisRun createRun(ElabAnalysis analysis, Elab elab, String outputDir) {
         Run run = new Run(analysis, elab, outputDir);
-        run.start();
         return run;
     }
     

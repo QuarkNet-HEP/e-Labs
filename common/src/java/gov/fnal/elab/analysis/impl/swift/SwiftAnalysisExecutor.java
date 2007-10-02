@@ -32,6 +32,7 @@ import org.globus.cog.karajan.workflow.nodes.FlowElement;
 import org.griphyn.vdl.karajan.Loader;
 import org.griphyn.vdl.karajan.VDL2ExecutionContext;
 import org.griphyn.vdl.karajan.functions.ConfigProperty;
+import org.griphyn.vdl.util.VDL2Config;
 
 /**
  * Runs analyses with Swift. Doble Yay!
@@ -56,9 +57,9 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
         return tree.getElementTree();
     }
 
-    public AnalysisRun start(ElabAnalysis analysis, Elab elab, String outputDir) {
+    public AnalysisRun createRun(ElabAnalysis analysis, Elab elab,
+            String outputDir) {
         Run run = new Run(analysis, elab, outputDir);
-        run.start();
         return run;
     }
 
@@ -109,6 +110,8 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 }
                 VariableStack stack = new LinkedStack(ec);
 
+                VDL2Config conf = VDL2Config.getConfig(getElab()
+                        .getAbsolutePath("/WEB-INF/classes/swift.properties"));
                 String runMode = (String) getAttribute("runMode");
                 if (runMode != null) {
                     String poolFile = "sites.xml";
@@ -121,12 +124,16 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                     else if ("grid".equals(runMode)) {
                         poolFile = "sites-grid.xml";
                     }
-                    stack.setGlobal("vdl:sitecatalogfile", poolFile);
+                    conf.setProperty("sites.file", getElab().getAbsolutePath(
+                            "/WEB-INF/classes")
+                            + File.separator
+                            + "etc"
+                            + File.separator
+                            + poolFile);
                 }
                 String home = getElab().getAbsolutePath("/WEB-INF/classes");
                 System.setProperty("swift.home", home);
-                stack.setGlobal(ConfigProperty.INSTANCE_CONFIG_FILE, getElab()
-                        .getAbsolutePath("/WEB-INF/classes/swift.properties"));
+                stack.setGlobal(ConfigProperty.INSTANCE_CONFIG, conf);
                 stack.setGlobal("swift.home", home);
                 stack.setGlobal("vds.home", home);
                 stack.setGlobal("vdl:operation", "run");
@@ -241,12 +248,12 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
             }
             else if (ec.done()) {
                 if (ec.isFailed()) {
-                	if (ec.getFailure() == null) {
-                	    setException(new Exception(getStdErrStuff()));
-                	}
-                	else {
-                	    setException(ec.getFailure());
-                	}
+                    if (ec.getFailure() == null) {
+                        setException(new Exception(getStdErrStuff()));
+                    }
+                    else {
+                        setException(ec.getFailure());
+                    }
                     setStatus(STATUS_FAILED);
                 }
                 else {
@@ -260,10 +267,11 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                         }
                     });
                     if (f.length != 1) {
-                    	System.out.println(f.length + " .dot files found. Only one was expected.");
+                        System.out.println(f.length
+                                + " .dot files found. Only one was expected.");
                     }
                     else {
-                    	f[0].renameTo(new File(runDir, "dv.dot"));
+                        f[0].renameTo(new File(runDir, "dv.dot"));
                     }
                     setStatus(STATUS_COMPLETED);
                 }
@@ -275,27 +283,27 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 }
             }
         }
-        
+
         protected String getStdErrStuff() {
-        	StringBuffer sb = new StringBuffer();
-        	String s = out.toString();
-        	StringTokenizer st = new StringTokenizer(s, "\n");
-        	boolean on = false;
-        	while (st.hasMoreTokens()) {
-        		String line = st.nextToken().trim();
-        		if (line.startsWith("STDOUT:")) {
-        			on = false;
-        		}
-        		else if (line.startsWith("STDERR: ")) {
-        		    on = true;
-        		    line = line.substring("STDERR: ".length());
-        		}
-        		if (on) {
-        			sb.append(line);
-        			sb.append('\n');
-        		}
-        	}
-        	return sb.toString();
+            StringBuffer sb = new StringBuffer();
+            String s = out.toString();
+            StringTokenizer st = new StringTokenizer(s, "\n");
+            boolean on = false;
+            while (st.hasMoreTokens()) {
+                String line = st.nextToken().trim();
+                if (line.startsWith("STDOUT:")) {
+                    on = false;
+                }
+                else if (line.startsWith("STDERR: ")) {
+                    on = true;
+                    line = line.substring("STDERR: ".length());
+                }
+                if (on) {
+                    sb.append(line);
+                    sb.append('\n');
+                }
+            }
+            return sb.toString();
         }
     }
 
