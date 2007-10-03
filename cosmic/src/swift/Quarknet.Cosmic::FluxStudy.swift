@@ -13,9 +13,9 @@ type AxisParams {
 	}
 }
 
-(File wireDelayData[]) WireDelay(File thresholdData[], string geoDir, File geoFiles[]) {
+(File wireDelayData[]) WireDelay(File thresholdData[], File geoDir, File geoFiles[]) {
 	app {
-		WireDelay @filename(thresholdData) @filename(wireDelayData) geoDir;
+		WireDelay @filename(thresholdData) @filename(wireDelayData) @filename(geoDir);
 	}
 }
 
@@ -38,9 +38,9 @@ type AxisParams {
 	}
 }
 
-(File out) Flux(File inf, string binWidth, string geoDir, File geoFiles[]) {
+(File out) Flux(File inf, string binWidth, File geoDir, File geoFiles[]) {
 	app {
-		Flux @filename(inf) @filename(out) binWidth geoDir;
+		Flux @filename(inf) @filename(out) binWidth @filename(geoDir);
 	}
 }
 
@@ -84,7 +84,7 @@ File singlechannelOut <single_file_mapper;file=@arg("singlechannelOut")>;
 File sortOut;
 
 string binWidth = @arg("flux_binWidth");
-string geoDir = @arg("geoDir");
+File geoDir <single_file_mapper;file=@arg("geoDir")>;
 File geoFiles[] <fixed_array_mapper;files=@arg("geoFiles")>;
 
 string plot_caption = @arg("plot_caption");

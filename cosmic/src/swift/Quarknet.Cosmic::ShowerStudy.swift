@@ -12,9 +12,9 @@ type AxisParams {
 	}
 }
 
-(File wireDelayData[]) WireDelay(File thresholdData[], string geoDir, File geoFiles[]) {
+(File wireDelayData[]) WireDelay(File thresholdData[], File geoDir, File geoFiles[]) {
 	app {
-		WireDelay @filename(thresholdData) @filename(wireDelayData) geoDir;
+		WireDelay @filename(thresholdData) @filename(wireDelayData) @filename(geoDir);
 	}
 }
 
@@ -39,9 +39,9 @@ type AxisParams {
 	}
 }
 
-(File out) EventChoice(File inf, string eventNum, string zeroZeroZeroID, string geoDir, File geoFiles[]) {
+(File out) EventChoice(File inf, string eventNum, string zeroZeroZeroID, File geoDir, File geoFiles[]) {
 	app {
-		EventChoice @filename(inf) @filename(out) eventNum zeroZeroZeroID geoDir;
+		EventChoice @filename(inf) @filename(out) eventNum zeroZeroZeroID @filename(geoDir);
 	}
 }
 
@@ -94,7 +94,7 @@ string detector = @arg("detector");
 File combineOut <single_file_mapper;file=@arg("combineOut")>;
 File sortOut <single_file_mapper;file=@arg("sortOut")>;
 
-string geoDir = @arg("geoDir");
+File geoDir <single_file_mapper;file=@arg("geoDir")>;
 File geoFiles[] <fixed_array_mapper;files=@arg("geoFiles")>;
 
 string plot_caption = @arg("plot_caption");
