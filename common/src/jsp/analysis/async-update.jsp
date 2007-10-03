@@ -1,6 +1,6 @@
 <script language="JavaScript" type="text/javascript">
-	var INITIAL = 2000;
-	var DELAY = 1000;
+	var INITIAL = 1000;
+	var DELAY = 2000;
 	
 	function AsyncRequest(url, callback) {
 		self.browser = navigator.appName;
