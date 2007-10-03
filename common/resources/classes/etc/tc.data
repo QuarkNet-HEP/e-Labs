@@ -31,6 +31,8 @@ localhost	EventSearch		/home/mike/work/i2u2/apps/EventSearch.pl	INSTALLED       
 localhost	EventChoice		/home/mike/work/i2u2/apps/EventChoice.pl	INSTALLED       INTEL32::LINUX null
 localhost	SVG2PNG			/usr/bin/rsvg								INSTALLED       INTEL32::LINUX null
 
+aux			SVG2PNG			/usr/bin/rsvg								INSTALLED       INTEL32::LINUX null
+
 teraport	ThresholdTimes	/home/mike/work/i2u2/apps/ThresholdTimes.pl	INSTALLED       INTEL32::LINUX null
 teraport	WireDelay		/home/mike/work/i2u2/apps/WireDelay.pl		INSTALLED       INTEL32::LINUX null
 teraport	Combine			/home/mike/work/i2u2/apps/Combine.pl		INSTALLED       INTEL32::LINUX null
@@ -43,5 +45,4 @@ teraport	Frequency		/home/mike/work/i2u2/apps/Frequency.pl		INSTALLED       INTE
 teraport	ExtraFunctions	/home/mike/work/i2u2/apps/ExtraFunctions.pl	INSTALLED       INTEL32::LINUX null
 teraport	EventSearch		/home/mike/work/i2u2/apps/EventSearch.pl	INSTALLED       INTEL32::LINUX null
 teraport	EventChoice		/home/mike/work/i2u2/apps/EventChoice.pl	INSTALLED       INTEL32::LINUX null
-teraport	SVG2PNG			/usr/bin/rsvg								INSTALLED       INTEL32::LINUX null
 
