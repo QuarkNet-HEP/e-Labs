@@ -10,5 +10,6 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.5">
     <jobmanager universe="vanilla" url="tp-grid1.ci.uchicago.edu/jobmanager-pbs" major="2" minor="2" patch="4" />
     <workdirectory>/home/hategan/scratch/i2u2</workdirectory>
     <profile namespace="GLOBUS" key="queue">fast</profile>
+    <profile namespace="ENV" key="path">/bin:/usr/bin:/usr/local/bin:/home/hategan/i2u2/bin</profile>
   </pool>
 </config>
