@@ -68,7 +68,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
     public class Run extends AbstractAnalysisRun implements Serializable {
         private String runDir, runDirUrl;
         private volatile transient double progress;
-        private VDL2ExecutionContext ec;
+        private transient VDL2ExecutionContext ec;
         private OutputChannel out;
 
         protected Run(ElabAnalysis analysis, Elab elab, String outputDir) {
