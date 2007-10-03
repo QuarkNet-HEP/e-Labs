@@ -48,7 +48,7 @@ type AxisParams {
 			"-highx" x.high
 			"-lowy" y.low
 			"-highy" y.high
-			"-lowz " z.low
+			"-lowz" z.low
 			"-highz" z.high;
 	}
 }
