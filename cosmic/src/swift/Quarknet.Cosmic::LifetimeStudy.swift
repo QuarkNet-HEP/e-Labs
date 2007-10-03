@@ -13,7 +13,7 @@ type AxisParams {
 	}
 }
 
-(File wireDelayData[]) WireDelay(File thresholdData[], File geoDir, File geoFiles[]) {
+(File wireDelayData[]) WireDelay(File thresholdData[], string geoDir, File geoFiles[]) {
 	app {
 		WireDelay @filename(thresholdData) @filename(wireDelayData) @filename(geoDir);
 	}
@@ -32,7 +32,7 @@ type AxisParams {
 }
 
 (File out) Lifetime(File inf, string coincidence, string energyCheck, 
-	string gateWidth, File geoDir, File geoFiles[]) {
+	string gateWidth, string geoDir, File geoFiles[]) {
 	
 	app {
 		Lifetime @filename(inf) @filename(out) gateWidth energyCheck 
@@ -131,7 +131,7 @@ string	lifetime_gatewidth = @arg("lifetime_gatewidth");
 File	combineOut <single_file_mapper;file=@arg("combineOut")>;
 File	sortOut <single_file_mapper;file=@arg("sortOut")>;
 
-File    geoDir <single_file_mapper;file=@arg("geoDir")>;
+string  geoDir = @arg("geoDir");
 File	geoFiles[] <fixed_array_mapper;files=@arg("geoFiles")>;
 
 string	plot_caption = @arg("plot_caption");

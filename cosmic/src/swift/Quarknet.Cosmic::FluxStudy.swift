@@ -13,7 +13,10 @@ type AxisParams {
 	}
 }
 
-(File wireDelayData[]) WireDelay(File thresholdData[], File geoDir, File geoFiles[]) {
+//undocumented magic in @filename - it will make an absolute path relative
+//in other words it answers the question: if the parameter was a file,
+//what would have its path been on the remote site?
+(File wireDelayData[]) WireDelay(File thresholdData[], string geoDir, File geoFiles[]) {
 	app {
 		WireDelay @filename(thresholdData) @filename(wireDelayData) @filename(geoDir);
 	}
@@ -38,7 +41,7 @@ type AxisParams {
 	}
 }
 
-(File out) Flux(File inf, string binWidth, File geoDir, File geoFiles[]) {
+(File out) Flux(File inf, string binWidth, string geoDir, File geoFiles[]) {
 	app {
 		Flux @filename(inf) @filename(out) binWidth @filename(geoDir);
 	}
@@ -84,7 +87,7 @@ File singlechannelOut <single_file_mapper;file=@arg("singlechannelOut")>;
 File sortOut;
 
 string binWidth = @arg("flux_binWidth");
-File geoDir <single_file_mapper;file=@arg("geoDir")>;
+string geoDir = @arg("geoDir");
 File geoFiles[] <fixed_array_mapper;files=@arg("geoFiles")>;
 
 string plot_caption = @arg("plot_caption");
