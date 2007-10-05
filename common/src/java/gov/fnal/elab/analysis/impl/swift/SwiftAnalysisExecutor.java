@@ -69,7 +69,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
         private String runDir, runDirUrl;
         private volatile transient double progress;
         private transient VDL2ExecutionContext ec;
-        private OutputChannel out;
+        private transient OutputChannel out;
 
         protected Run(ElabAnalysis analysis, Elab elab, String outputDir) {
             super(analysis, elab, outputDir);
@@ -247,7 +247,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 return;
             }
             else if (ec.done()) {
-                if (ec.isFailed()) {
+                if (ec.isFailed() && getStatus() != STATUS_FAILED) {
                     if (ec.getFailure() == null) {
                         setException(new Exception(getStdErrStuff()));
                     }
@@ -256,7 +256,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                     }
                     setStatus(STATUS_FAILED);
                 }
-                else {
+                else if (getStatus() != STATUS_COMPLETED){
                     System.out.println("Execution time: "
                             + (ec.getEndTime() - ec.getStartTime()) + "ms");
                     pTracker.setTotal(getAnalysis().getType(), out
