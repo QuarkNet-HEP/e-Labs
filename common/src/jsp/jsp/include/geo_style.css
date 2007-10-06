@@ -1,11 +1,20 @@
 <style type="text/css">
-div#geo_container {
+#view-geometry #geo_container {
     width:750px;
     padding-top: 10px; 
     margin: 0 auto;
     background-color: #FFF; 
-    font: 76% Verdana,Arial,sans-serif;
-    text-align:left
+    font-family: Verdana, Arial, sans-serif;
+    text-align:left;
+}
+
+div#edit_geo_entry1 {
+	width: 500px;
+	background: #CCCCCC;
+	color: #000;
+	text-align: left;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 div#edit_geo_entry {
@@ -14,7 +23,6 @@ div#edit_geo_entry {
     background: #CCCCCC;
     color: #000;
     text-align:left;
-    font: 76% Verdana,Arial,sans-serif;
 }
 
 div#existing_geo_entries {
@@ -22,50 +30,55 @@ div#existing_geo_entries {
     background: #CC99CC;
     color: #000;
     text-align: left;
-    font: 76% Verdana,Arial,sans-serif;
     min-height: 100px;
 }
 
 #edit_title {
-    font-size: 150%;
+    font-size: 110%;
     padding-bottom: 15px;
     color: #000;
 }
 
 #geo_commited {
-    font: 85% Verdana,Arial,sans-serif;
     text-align: center;
     padding-top: 8px;
 }
 
 .edit_subheading {
-    font-size: 130%;
+    font-size: 100%;
     color: #333;
     padding-bottom: 15px;
 }
 
 .detector {
-    font-size: 130%;
+    font-size: 100%;
     color: #333333;
 }
 
 #geo_orientation td {
-    font: 76% Verdana,Arial,sans-serif;
     color: #333;
     text-align:center;
     padding-bottom:15px;
 }
+
 #geo_gps td {
-    font: 76% Verdana,Arial,sans-serif;
     color: #333;
     text-align:left;
     padding-bottom:15px;
+    font-size: 80%;
 }
 
 #geo_channels td {
-    font: 67% Verdana,Arial,sans-serif;
+    color: #000000;
+    text-align:right;
+    font-size: 80%;
+}
+
+#geo_channels th {
     color: #666666;
     text-align:right;
+    font-size: 80%;
+    font-weight: normal;
 }
 
 #geo_channels table {
@@ -96,12 +109,18 @@ div.geo_indented_big table {
 
 div.geo_indented_small td {
     color:#000;
-    font: 76% Verdana,Arial,sans-serif;
 }
 
 div.geo_indented_big td {
     color:#000;
-    font: 76% Verdana,Arial,sans-serif;
+}
+
+.value {
+  font-weight: bold;
+}
+
+.unit {
+  font-size: 80%;
 }
 
 </style>
