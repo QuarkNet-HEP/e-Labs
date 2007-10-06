@@ -202,13 +202,14 @@ namespace("vdl"
 		element(doStagein, [jobid, files, dir, host]
 			log(LOG:INFO, "START jobid={jobid} - Staging in files")
 			uParallelFor(file, files
-				echo(file)
-				[provider, srchost, srcdir, destdir, filename] := 
-					(provider(file), hostname(file), dirname(file), dircat(dir, reldirname(file)), basename(file))
-				vdl:cacheAddAndLockFile(filename, destdir, host, file:size("{srcdir}/{filename}", host=srchost, provider=provider)
-					//This is kinda hackish, but these files should be cleaned before
-					//the other ones are uploaded, and doing it nicer is a complex
-					//business. So vdl:cacheAddAndLockFile defines "filesToRemove"
+				provider := provider(file)
+				srchost := hostname(file)
+				srcdir := dirname(file)
+				destdir := dircat(dir, reldirname(file))
+				filename := basename(file)
+				size := file:size("{srcdir}/{filename}", host=srchost, provider=provider)
+
+				vdl:cacheAddAndLockFile(filename, destdir, host, size
 					cleanupFiles(cacheFilesToRemove, host)
 					log(LOG:DEBUG, "FILE_STAGE_IN_START file={file} srchost={srchost} srcdir={srcdir} srcname={filename} ",
 						"desthost={host} destdir={destdir} provider={provider}")
@@ -225,34 +226,36 @@ namespace("vdl"
 		
 		element(doStageout, [jobid, stageouts, dir, host]
 			log(LOG:INFO, "START jobid={jobid} - Staging out files")
-			uparallelFor(pv, stageouts
-				[path, var] := each(pv)
-				file := vdl:absfilename(vdl:getfield(var, path = path))
-				provider := vdl:provider(file)
-				dhost := vdl:hostname(file)
-				rdir := dircat(dir, reldirname(file))
-				bname := basename(file)
-				ldir := dirname(file)
-				fullLocal := dircat(ldir, bname)
-				fullRemote := dircat(rdir, bname)
-									
-				log(LOG:DEBUG, "FILE_STAGE_OUT_START srcname={bname} srcdir={rdir} srchost={host}",
-						"destdir={ldir} desthost={dhost} provider={provider}")
-				//make sure we do have the directory on the client side
-				dir:make(ldir)
-				restartOnError(".*", 2
-				    task:transfer(srchost=host, srcfile=bname,
-				        srcdir=rdir, destdir=ldir, desthost=dhost, destprovider=provider)
+			done := list(
+				uparallelFor(pv, stageouts
+					[path, var] := each(pv)
+					file := vdl:absfilename(vdl:getfield(var, path = path))
+					provider := vdl:provider(file)
+					dhost := vdl:hostname(file)
+					rdir := dircat(dir, reldirname(file))
+					bname := basename(file)
+					ldir := dirname(file)
+					fullLocal := dircat(ldir, bname)
+					fullRemote := dircat(rdir, bname)
+										
+					log(LOG:DEBUG, "FILE_STAGE_OUT_START srcname={bname} srcdir={rdir} srchost={host} ",
+							"destdir={ldir} desthost={dhost} provider={provider}")
+					//make sure we do have the directory on the client side
+					dir:make(ldir)
+					restartOnError(".*", 2
+					    task:transfer(srchost=host, srcfile=bname,
+					        srcdir=rdir, destdir=ldir, desthost=dhost, destprovider=provider)
+					)
+			        vdl:logvar(var, path, host, dir, bname)
+			        log(LOG:DEBUG, "FILE_STAGE_OUT_END srcname={bname} srcdir={rdir} srchost={host} ",
+							"destdir={ldir} desthost={dhost} provider={provider}")
+	
+					list(bname, rdir, host, file:size(fullLocal))
 				)
-		        vdl:logvar(var, path, host, dir, bname)
-		        log(LOG:DEBUG, "FILE_STAGE_OUT_END srcname={bname} srcdir={rdir} srchost={host}",
-						"destdir={ldir} desthost={dhost} provider={provider}")
-
-				//there is really no way to tell big files created by apps will be, so
-				//the decent thing to do is clean things up as much as possible
-				//note however that if a hard quota is enforced remotely, this
-				//will not prevent the quota from being exhausted
-				vdl:cacheAddFile(bname, rdir, host, file:size(fullLocal)
+			)
+			uParallelFor(f, done
+				[bname, rdir, host, size] := each(f)
+				vdl:cacheAddFile(bname, rdir, host, size
 					cleanupFiles(cacheFilesToRemove, host)
 				)
 			)

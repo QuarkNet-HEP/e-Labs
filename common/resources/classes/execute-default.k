@@ -10,13 +10,14 @@ element([tr, optional(arguments, stdin, stdout, stderr, deperror, mdeperror), ch
 	done := isDone(stageout)
 	derr := try(deperror, false)
 	merr := try(mdeperror, false)
-				
+
 	if(
 		derr == false then(
 			if(
 				not(done) try(
 					sequential(
-						echo("{tr} started")
+						print("{tr} started")
+						log(LOG:INFO, "START thread={#thread} tr={tr}") 
 						restartOnError(".*", 2,
 							execute2(
 								tr, maybe(arguments=arguments), 
@@ -26,16 +27,19 @@ element([tr, optional(arguments, stdin, stdout, stderr, deperror, mdeperror), ch
 						)
 						mark(stageout, err=false, mapping=false)
 						graphStuff(tr, stagein, stageout, err=false, maybe(args=arguments))
-						echo("{tr} completed")
+						print("{tr} completed")
+						log(LOG:INFO, "END_SUCCESS thread={#thread} tr={tr}")
 					)
 					catch(".*"
-						echo("{tr} failed")
+						print("{tr} failed")
+						log(LOG:INFO, "END_FAILURE thread={#thread} tr={tr}")
 						if(
 							vdl:configProperty("lazy.errors") == "false" then(
 								throw(exception)
 							)
 							else (
 								to(errors, exception)
+								log(LOG:INFO, exception)
 								mark(stageout, err=true, mapping=false)
 								graphStuff(tr, stagein, stageout, err=true, maybe(args=arguments))
 							)
@@ -47,11 +51,15 @@ element([tr, optional(arguments, stdin, stdout, stderr, deperror, mdeperror), ch
 		else (
 			if(
 				merr == true then(
-					to(errors, exception(concat("VDL2: Application ", str:quote(tr), 
-						" not executed due to errors in mapping dependencies")))
+					exception := exception(concat("VDL2: Application ", str:quote(tr), 
+						" not executed due to errors in mapping dependencies"))
+					to(errors, exception)
+					log(LOG:INFO, exception)
 				)
 				derr == true then(
-					to(errors, exception("VDL2: Application {tr} not executed due to errors in dependencies"))
+					exception := exception("VDL2: Application {tr} not executed due to errors in dependencies")
+					to(errors, exception)
+					log(LOG:INFO, exception)
 				)
 			)
 			mark(stageout, err=true, mapping=merr)
