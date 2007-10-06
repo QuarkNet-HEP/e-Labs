@@ -138,7 +138,7 @@ if (research_group_id==null) {
        log_id=rs.getString("id");}
        if (log_id.equals("")) {%> Problem with ID for log entered.<BR><% return;}
   %>
-     <h2><font  FACE="arial MS" >Your log was successfully entered. You can edit it and update it.<BR>Click <FONT color="#1A8BC8">Show Logbook</font> to access all entries in your logbook.</FONT></FONT></h2>
+     <h2><font FACE="arial MS" >Your log was successfully entered. You can edit it and update it.<BR>Click <font color="#1A8BC8">Show Logbook</font> to access all entries in your logbook.</font></h2>
  <%
             
       }
@@ -159,14 +159,14 @@ if (research_group_id==null) {
                   return;
                } //!k=1 test 
   %>
-     <h2><font  FACE="arial MS">Your log was successfully updated. You can edit it some more and update it.<BR>Click <FONT color="red">Show Logbook</font> to access all entries in your logbook.</FONT></h2>
+     <h2><font FACE="arial MS">Your log was successfully updated. You can edit it some more and update it.<BR>Click <font color="red">Show Logbook</font> to access all entries in your logbook.</font></h2>
  <%
             
 
       }
       buttonText="Update Our Logbook Entry";
       log_enter=log_enter.replaceAll("''","'");
-      %><table border=1><tr><td align='left'><%=log_enter%></td></tr></table>
+      %><table border=1><tr><td align="left"><%=log_enter%></td></tr></table>
 <%
     
    }
@@ -176,17 +176,16 @@ if (research_group_id==null) {
               <form method=get name="log">
               <table  width=400>
               <tr><th><font  FACE="arial MS">Your New Log Book Entry</FONT></th></th>
-             <% if (log_id != "") {
-             %>
-            <tr><td colspan='2'><input type="hidden" name="log_id" value="<%=log_id%>"></td></tr>
-            <% 
-            }
-            %>
-            <tr><td colspan='2'><input type="hidden" name="project_id" value="<%=project_id%>"></td></tr>
-            <tr><td colspan='2'><input type="hidden" name="research_group_id" value="<%=research_group_id%>"></td></tr>
-            <tr><td colspan='2'><input type="hidden" name="ref_rg_id" value="<%=ref_rg_id%>"></td></tr>
-            <tr><td colspan='2'><input type="hidden" name="role" value="<%=role%>"></td></tr>
-            <tr><td colspan='2'><textarea name="log_text" cols="80" rows="10"><%=log_text%></textarea></td></tr>
+              <tr><td colspan="2">
+             <% if (log_id != "") { %>
+            	<input type="hidden" name="log_id" value="<%=log_id%>">
+             <% } %>
+             	<input type="hidden" name="project_id" value="<%=project_id%>">
+             	<input type="hidden" name="research_group_id" value="<%=research_group_id%>">
+             	<input type="hidden" name="ref_rg_id" value="<%=ref_rg_id%>">
+             	<input type="hidden" name="role" value="<%=role%>">
+             	<textarea name="log_text" cols="80" rows="10"><%=log_text%></textarea>
+              </td></tr>
             <tr><td align='left'><INPUT type='button' name="plot" onClick="window.open('../plots/pick.jsp','win2', 'scrollbars=1,resizeable=true');if(childWindow.opener==null)childWindow.opener=self;" value="Insert a plot"></td>
             <td align="right"><INPUT type="submit" name="button" value="<%=buttonText%>"></td></tr>
             </table>
@@ -195,7 +194,13 @@ if (research_group_id==null) {
             </form>
             
    <BR>
-<table><tr><td valign="center" align="center"><A HREF="showLogbookT.jsp"><font  FACE="arial MS" size=+1><IMG SRC="graphics/logbook_view.gif" border=0" align="middle"> Show Logbook</font></A></td></tr></table>
+<table>
+	<tr>
+		<td valign="center" align="center">
+<a href="showLogbookT.jsp"><font FACE="arial MS" size="+1"><img src="graphics/logbook_view.gif" border="0" align="middle"> Show Logbook</font></a>
+		</td>
+	</tr>
+</table>
 <P>
 <%
    if (!currentEntries.equals("")) {
