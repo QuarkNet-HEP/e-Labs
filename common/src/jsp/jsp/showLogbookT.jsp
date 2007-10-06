@@ -191,6 +191,29 @@ String research_group_name = groupName; // group name of the teacher whose logbo
           String log_text=rs.getString("log_text");
           String log_id=rs.getString("log_id");
           ref_rg_id=rs.getString("ref_rg_id");
+          if (log_text != null) {
+              int divend = log_text.indexOf(">");
+              if (divend != -1) {
+                  log_text = log_text.substring(divend + 1);
+                  log_text = log_text.substring(0, log_text.length() - 6);
+                  log_text.replaceAll("\n", "<br />");
+                  log_text.replaceAll("</*\\s*[sS][cC][rR][iI][pP][tT]\\s*>", "");
+                  StringBuffer sb = new StringBuffer();
+                  int lastSpace = 0;
+                  for (int i = 0; i < log_text.length(); i++) {
+                  	  char c = log_text.charAt(i);
+                  	  if (Character.isWhitespace(c) || c == '/' || c == '<' || c == '>' || c == '.') {
+                  	  	  lastSpace = i;
+                  	  }
+                  	  sb.append(c);
+                  	  if (i - lastSpace > 40) {
+                  	  	  sb.append(' ');
+                  	  	  lastSpace = i;
+                  	  }
+                  }
+                  log_text = sb.toString();
+              }
+          }
           itemCount++;
           if (!(current_ref_rg_id.equals(ref_rg_id))) {
               current_ref_rg_id=ref_rg_id;
