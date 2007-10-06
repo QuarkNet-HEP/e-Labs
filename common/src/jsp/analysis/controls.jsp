@@ -17,7 +17,7 @@
 					<td width="40%">&nbsp;</td>
 					<td align="left">
 						<input type="radio" name="provider" value="vds" checked="true" /> 
-						<a href="http://vds.uchicago.edu" target="vds">VDS</a></e:popup><br />
+						<a href="http://vds.uchicago.edu" target="vds">VDS</a><br />
 						<input type="radio" name="provider" value="swift" /> 
 						<a href="http://www.ci.uchicago.edu/swift" target="swift">Swift</a><br />
 					</td>
