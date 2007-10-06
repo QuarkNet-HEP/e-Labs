@@ -58,8 +58,7 @@ String headerType = "Library";
 <%
 
 //pre-defined searches
-//String searchString = "type=\'" + searchType + "\' AND project=\'" + eLab + "\'";
-String searchString = "type=\'" + searchType + "\'";
+String searchString = "type=\'" + searchType + "\' AND project=\'" + elabName + "\'";
 
 //include the instructions/search options and table listing based on the searchType
 %>
@@ -172,7 +171,6 @@ Item(s).<br>
 
 String q=request.getParameter("q");
 if(q==null){    //default when no search specified
-//    q = "type='reference'";
       q="type=\'"+searchType+"\'";
 }
 

@@ -27,8 +27,7 @@ String headerType = "Library";
 <%
 
 //pre-defined searches
-//String searchString = "type=\'" + searchType + "\' AND project=\'" + eLab + "\'";
-String searchString = "type=\'" + searchType + "\'";
+String searchString = "type=\'" + searchType + "\' AND project=\'" + elabName + "\'";
 
 //include the instructions/search options and table listing based on the searchType
 %>
