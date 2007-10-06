@@ -101,7 +101,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 ec = new VDL2ExecutionContext(tree, projectName);
                 ec.setArguments(argv);
                 out = new OutputChannel(runID);
-                out.setPattern("Running job");
+                out.setPattern("completed");
                 ec.setStderr(out);
                 ec.setStdout(out);
                 ec.setRunID(runID);
@@ -260,8 +260,10 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 else {
                     System.out.println("Execution time: "
                             + (ec.getEndTime() - ec.getStartTime()) + "ms");
-                    pTracker.setTotal(getAnalysis().getType(), out
-                            .getPatternCounter());
+                    if (out.getPatternCounter() != 0) {
+                        pTracker.setTotal(getAnalysis().getType(), out
+                                .getPatternCounter());
+                    }
                     File[] f = new File(runDir).listFiles(new FileFilter() {
                         public boolean accept(File pathname) {
                             return pathname.getName().endsWith(".dot");
