@@ -13,7 +13,7 @@
 		</script>
 	</c:when>
 	<c:otherwise>
-		<a href="#" title="Popup: ${href}" onclick="javascript:window.open('${href}', '${target}', 'width=${width}, height=${height}');">
+		<a href="#" title="Popup: ${href}" onclick="javascript:window.open('${href}', '${target}', 'width=${width}, height=${height}, resizable=1, scrollbars=1');return false;">
 			<jsp:doBody/>
 		</a>
 	</c:otherwise>
