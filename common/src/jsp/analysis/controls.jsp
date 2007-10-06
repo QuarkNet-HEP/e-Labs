@@ -16,23 +16,25 @@
 				<tr>
 					<td width="40%">&nbsp;</td>
 					<td align="left">
-						<input type="radio" name="provider" value="vds" checked="true" /> VDS<br />
-						<input type="radio" name="provider" value="swift" /> Swift<br />
+						<input type="radio" name="provider" value="vds" checked="true" /> 
+						<a href="http://vds.uchicago.edu" target="vds">VDS</a></e:popup><br />
+						<input type="radio" name="provider" value="swift" /> 
+						<a href="http://www.ci.uchicago.edu/swift" target="swift">Swift</a><br />
 					</td>
 				</tr>
 			</table>
 			<table width="100%" align="center">
 				<tr>
 					<td align="center" width="40%" valign="top">
-						Run mode (if you chose "Swift" above):
+						Swift run mode:
 					</td>
 				</tr>
 				<tr>
 					<td width="40%">&nbsp;</td>
 					<td align="left">
 						<input type="radio" name="runMode" value="local" /> Local<br />
-						<input checked="true" type="radio" name="runMode" value="mixed" /> Local and Grid<br />
 						<input type="radio" name="runMode" value="grid" /> Grid<br />
+						<input checked="true" type="radio" name="runMode" value="mixed" /> Automatic<br />
 					</td>
 				</tr>
 			</table>
