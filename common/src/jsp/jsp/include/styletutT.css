@@ -9,7 +9,6 @@
 .table:link {text-decoration: underline}
 .table:visited {text-decoration: underline; color:blue}
 .table:hover {text-decoration: underline}
-.table: {text-decoration: underline}
 .table: {padding: 4em; border-collapse: collapse; width: 480px}
 
 .orderby {background-color: lightyellow}
@@ -18,18 +17,18 @@ body { font:12px arial, helvetica, sans-serif;
      background-color: #FFFFFF;
      background-image: url("../graphics/quadrille_red.gif");
      background-repeat: repeat;
-     }
-    :link { color: rgb(255, 0, 0); TEXT-DECORATION: underline }
-    :visited { color: rgb(255, 0, 0); TEXT-DECORATION: underline }
-    :active { color: rgb(205, 0, 0) }
-    :hover { color: rgb(0, 0, 0); TEXT-DECORATION: underline }
+}
+
+:link { color: rgb(255, 0, 0); TEXT-DECORATION: underline }
+:visited { color: rgb(255, 0, 0); TEXT-DECORATION: underline }
+:active { color: rgb(205, 0, 0) }
+:hover { color: rgb(0, 0, 0); TEXT-DECORATION: underline }
     
 td {
         font-size:12px;  
-        }
+}
 
 p {
 	font:12px arial, helvetica, sans-serif;  
-
-	}
+}
 
