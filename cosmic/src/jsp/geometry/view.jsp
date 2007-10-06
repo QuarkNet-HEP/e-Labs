@@ -23,16 +23,6 @@
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
 		<%@ include file="../jsp/include/geo_style.css" %>
-		<style type="text/css">
-			div#edit_geo_entry1 {
-				width: 500px;
-				background: #CCCCCC;
-				color: #000;
-       			text-align: left;
-				margin-left: auto;
-				margin-right: auto;
-            }
-        </style>
 	</head>
 	
 	<body id="view-geometry" class="data">
@@ -126,52 +116,44 @@
 							<table border="0" cellspacing="5" cellpadding="2">
 								<tr>
                     				<td>&nbsp;</td>
-									<td><span style="font-size:120%; color: #000000">Active<br/>Channels:</span></td>
+									<td>Active<br/>Channels:</td>
 									<td>
-										<c:if test="${g.chan1IsActive}">
-											<span style="font-size:135%; color: #000000">1</span>
-										</c:if>
+										<c:if test="${g.chan1IsActive}">1</c:if>
 										&nbsp;
 									</td>
 									<td>
-										<c:if test="${g.chan2IsActive}">
-											<span style="font-size:135%; color: #000000">2</span>
-										</c:if>
+										<c:if test="${g.chan2IsActive}">2</c:if>
 										&nbsp;
 									</td>
 									<td>
-										<c:if test="${g.chan3IsActive}">
-											<span style="font-size:135%; color: #000000">3</span>
-										</c:if>
+										<c:if test="${g.chan3IsActive}">3</c:if>
 										&nbsp;
 									</td>
 									<td>
-										<c:if test="${g.chan4IsActive}">
-											<span style="font-size:135%; color: #000000">4</span>
-										</c:if>
+										<c:if test="${g.chan4IsActive}">4</c:if>
 										&nbsp;
 									</td>
 								</tr>
 								<tr>
-									<td valign="middle">&nbsp;</td>
-									<td valign="middle">Cable<br/>Length<span style="font-size:90%"> (m)</span></td>
-									<td valign="bottom">Area <span style="font-size:90%">(cm<sup>2</sup>)</span></td>
-									<td valign="bottom">E-W <span style="font-size:90%">(m)</span></td>
-									<td valign="bottom">N-S <span style="font-size:90%">(m)</span></td>
-									<td valign="bottom">Up-Dn <span style="font-size:90%">(m)</span></td>
+									<th valign="middle">&nbsp;</th>
+									<th valign="middle">Cable<br/>Length <span class="unit">(m)</span></th>
+									<th valign="bottom">Area <span class="unit">(cm<sup>2</sup>)</span></th>
+									<th valign="bottom">E-W <span class="unit">(m)</span></th>
+									<th valign="bottom">N-S <span class="unit">(m)</span></th>
+									<th valign="bottom">Up-Dn <span class="unit">(m)</span></th>
 								</tr>
 								<tr>
 									<c:choose>
 										<c:when test="${g.chan1IsActive}">
-											<td style="padding-right:5px"><img src="../graphics/geo_det1.gif"/></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan1CableLength}</span></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan1Area}</span></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan1X}</span></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan1Y}</span></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan1Z}</span></td>
+											<td><img src="../graphics/geo_det1.gif"/></td>
+											<td>${g.chan1CableLength}</td>
+											<td>${g.chan1Area}</td>
+											<td>${g.chan1X}</td>
+											<td>${g.chan1Y}</td>
+											<td>${g.chan1Z}</td>
 										</c:when>
 										<c:otherwise>
-											<td style="padding-right:5px"><img src="../graphics/geo_det1.gif"/></td>
+											<td><img src="../graphics/geo_det1.gif"/></td>
 											<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 										</c:otherwise>
 									</c:choose>
@@ -179,15 +161,15 @@
 								<tr>
 									<c:choose>
 										<c:when test="${g.chan2IsActive}">
-											<td style="padding-right:5px"><img src="../graphics/geo_det2.gif"/></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan2CableLength}</span></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan2Area}</span></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan2X}</span></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan2Y}</span></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan2Z}</span></td>
+											<td><img src="../graphics/geo_det2.gif"/></td>
+											<td>${g.chan2CableLength}</td>
+											<td>${g.chan2Area}</td>
+											<td>${g.chan2X}</td>
+											<td>${g.chan2Y}</td>
+											<td>${g.chan2Z}</td>
 										</c:when>
 										<c:otherwise>
-											<td style="padding-right:5px"><img src="../graphics/geo_det2.gif"/></td>
+											<td><img src="../graphics/geo_det2.gif"/></td>
 											<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 										</c:otherwise>
 									</c:choose>
@@ -195,15 +177,15 @@
 								<tr>
 									<c:choose>
 										<c:when test="${g.chan3IsActive}">
-											<td style="padding-right:5px"><img src="../graphics/geo_det3.gif"/></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan3CableLength}</span></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan3Area}</span></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan3X}</span></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan3Y}</span></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan3Z}</span></td>
+											<td><img src="../graphics/geo_det3.gif"/></td>
+											<td>${g.chan3CableLength}</td>
+											<td>${g.chan3Area}</td>
+											<td>${g.chan3X}</td>
+											<td>${g.chan3Y}</td>
+											<td>${g.chan3Z}</td>
 										</c:when>
 										<c:otherwise>
-											<td style="padding-right:5px"><img src="../graphics/geo_det3.gif"/></td>
+											<td><img src="../graphics/geo_det3.gif"/></td>
 											<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 										</c:otherwise>
 									</c:choose>
@@ -211,15 +193,15 @@
 								<tr>
 									<c:choose>
 										<c:when test="${g.chan4IsActive}">
-											<td style="padding-right:5px"><img src="../graphics/geo_det4.gif"/></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan4CableLength}</span></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan4Area}</span></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan4X}</span></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan4Y}</span></td>
-											<td><span style="font-size:110%; color: #000000">${g.chan4Z}</span></td>
+											<td><img src="../graphics/geo_det4.gif"/></td>
+											<td>${g.chan4CableLength}</td>
+											<td>${g.chan4Area}</td>
+											<td>${g.chan4X}</td>
+											<td>${g.chan4Y}</td>
+											<td>${g.chan4Z}</td>
 										</c:when>
 										<c:otherwise>
-											<td style="padding-right:5px"><img src="../graphics/geo_det4.gif"/></td>
+											<td><img src="../graphics/geo_det4.gif"/></td>
 											<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 										</c:otherwise>
 									</c:choose>
@@ -237,7 +219,7 @@
 											&nbsp;
 										</td>
 										<td valign="middle">
-											<span style="padding-left:20px; padding-right:20px">Orientation</span>
+											Orientation
 										</td>
 										<td valign="bottom" width="68">
 											<c:if test="${g.stackedState == '0'}">
@@ -254,18 +236,18 @@
 							<table border="0" cellspacing="3">
 								<tr valign="top">
 									<td>
-										Latitude: <span style="color: #000000">${g.formLatitude}</span>
+										Latitude: <span class="value">${g.formLatitude}</span>
                    					</td>
                    					<td>
-										Longitude: <span style="color: #000000">${g.formLongitude}</span>
+										Longitude: <span class="value">${g.formLongitude}</span>
 									</td>
                    				</tr>
 								<tr valign="top">
 									<td>
-										Altitude (m): <span style="color: #000000">${g.altitude}</span>
+										Altitude (m): <span class="value">${g.altitude}</span>
 									</td>
 									<td>
-										GPS Cable Length (m): <span style="color: #000000">${g.gpsCableLength}</span>
+										GPS Cable Length (m): <span class="value">${g.gpsCableLength}</span>
 									</td>
 								</tr>
 							</table>
