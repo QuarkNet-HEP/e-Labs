@@ -38,6 +38,7 @@ if(q==null){    //default when no search specified
 //    q = "type='reference'";
       q="type=\'"+searchType+"\'";
 }
+q=q+ " and ( project=\'"+elabName+"\' or project=\'all\')";
 
 //perform the metadata search
 ArrayList lfnsmeta = null;
