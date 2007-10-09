@@ -11,10 +11,9 @@
 	<html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
 			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-			<title>Cosmic Data Interface</title>
+			<title>An error has occurred</title>
 			<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 			<link rel="stylesheet" type="text/css" href="../css/one-column-wide.css"/>
-			<script type="text/javascript" src="../include/elab.js"></script>
 		</head>
 		
 		<body id="error-page" class="data">
