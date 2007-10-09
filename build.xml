@@ -137,8 +137,15 @@ undeploy:
 				includes="**/*.class"/>
 		</delete>
 	</target>
+	
+	<target name="clean-jars">
+		<delete quiet="true">
+			<fileset dir="${container.home}/${webapps}/elab/WEB-INF/lib"
+				includes="**/*.jar"/>
+		</delete>
+	</target>
 		
-	<target name="do-deploy-common" depends="clean-classes, build-common">
+	<target name="do-deploy-common" depends="clean-classes, clean-jars, build-common">
 		<mkdir dir="${container.home}/${webapps}/elab"/>
 		<mkdir dir="${container.home}/${webapps}/elab/WEB-INF"/>
 		<mkdir dir="${container.home}/${webapps}/elab/WEB-INF/classes"/>
@@ -345,19 +352,12 @@ undeploy:
 	</target>
 
 	<!-- ================================= 
-		target: build-cosmic-vdl2
+		target: build-embedded
 		================================= -->
-	<target name="build-cosmic-vdl2" depends="build-common, build-cosmic" description="--> builds COSMIC">
-		<mkdir dir="cosmic-vdl2/build"/>
-        <javac srcdir="cosmic-vdl2/src/java" destdir="cosmic-vdl2/build" debug="true">
-			<include name="**/*.java"/>
-			<classpath refid="cp-common"/>
-			<classpath refid="cp-cosmic"/>
-			<classpath refid="cp-cosmic-vdl2"/>
-		</javac>
 		
+	<target name="build-embedded" depends="build-common">		
 		<copy todir="common/build">
-			<fileset dir="cosmic-vdl2" includes="elab.properties.cosmic-vdl2"/>
+			<fileset dir="embedded" includes="elab.properties.embedded"/>
 			<filterset>
 				<filter token="container.home" value="${container.home}"/>
 				<filter token="webapps" value="${webapps}"/>
@@ -367,28 +367,32 @@ undeploy:
 			</filterset>
 		</copy>
 	</target>
-	
-	<target name="deploy-cosmic-vdl2">
-		<antcall target="do-deploy-cosmic-vdl2">
-			<param name="elab.name" value="cosmic"/>
+		
+	<target name="deploy-embedded">
+		<antcall target="do-deploy-embedded">
+			<param name="elab.name" value="embedded"/>
 		</antcall>
 	</target>
 	
-	<target name="do-deploy-cosmic-vdl2" depends="build-cosmic-vdl2, do-deploy-cosmic">
+	<target name="do-deploy-embedded" depends="build-embedded, do-deploy-common">
+		<mkdir dir="${container.home}/${webapps}/elab/${elab.name}"/>
+	
+		<mkdir dir="embedded/resources"/>
 		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
-			<fileset dir="cosmic-vdl2" includes="lib/**/*.jar"/>
-		</copy>
-		<mkdir dir="cosmic-vdl2/resources"/>
-		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
-			<fileset dir="cosmic-vdl2/resources" includes="**/*.*"/>
-		</copy>
-		<copy todir="${container.home}/${webapps}/elab/WEB-INF/classes" overwrite="true">
-			<fileset dir="cosmic-vdl2/build" includes="**/*.*"/>
+			<fileset dir="embedded/resources" includes="**/*.*"/>
 		</copy>
 		<copy todir="${container.home}/${webapps}/elab/${elab.name}" overwrite="true">
-			<fileset dir="cosmic-vdl2/src/jsp" includes="**/*.*"/>
+			<fileset dir="embedded/src/jsp" includes="**/*.*"/>
 		</copy>
+		<delete dir="${container.home}/${webapps}/elab/embedded/jsp"/>
+		<delete dir="${container.home}/${webapps}/elab/embedded/posters"/>
+		<delete dir="${container.home}/${webapps}/elab/embedded/plots"/>
+		<delete dir="${container.home}/${webapps}/elab/embedded/references"/>
+		<delete dir="${container.home}/${webapps}/elab/embedded/teacher"/>
+		<delete dir="${container.home}/${webapps}/elab/embedded/test"/>
 	</target>
+
+
 
 	
 	<!-- ================================= 
