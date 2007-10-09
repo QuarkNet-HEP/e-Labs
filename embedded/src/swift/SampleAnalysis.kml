@@ -1,0 +1,61 @@
+<project>
+  <import file="sys.xml"/>
+  <import file="scheduler.xml"/>
+  <import file="rlog.xml"/>
+  <import file="vdl.k"/>
+  <types>
+    <xs:schema targetNamespace="http://ci.uchicago.edu/swift/2007/07/swiftscript" xmlns="http://ci.uchicago.edu/swift/2007/07/swiftscript" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:simpleType name="file">
+        <xs:restriction base="xs:string"/>
+      </xs:simpleType>
+    </xs:schema>
+  </types>
+  <element name="echo" arguments="f,msg">
+    <vdl:typecheck argname="f" var="{f}" type="file"/>
+    <vdl:typecheck argname="msg" var="{msg}" type="string"/>
+    <vdl:execute>
+      <vdl:tr>echo</vdl:tr>
+      <vdl:stagein var="{msg}"/>
+      <vdl:stageout var="{f}"/>
+      <vdl:arguments>
+        <variable>msg</variable>
+      </vdl:arguments>
+      <vdl:stdout>
+        <swiftscript:filename>
+            <variable>f</variable>
+        </swiftscript:filename>
+      </vdl:stdout>
+    </vdl:execute>
+    <vdl:closedataset var="{f}"/>
+  </element>
+
+  <set name="text">
+    <swiftscript:arg>
+        <vdl:new type="string" value="text" />
+    </swiftscript:arg>
+  </set>
+  <set name="out">
+    <vdl:new type="file" dbgname="out">
+      <vdl:mapping descriptor="single_file_mapper">
+        <vdl:parameter name="file"><swiftscript:arg>
+            <vdl:new type="string" value="output" />
+        </swiftscript:arg></vdl:parameter>
+        <vdl:parameter name="input">false</vdl:parameter>
+      </vdl:mapping>
+    </vdl:new>
+  </set>
+  <restartLog>
+  	<vdl:pre/>
+  	<vdl:mains>
+		<vdl:mainp>
+		    <echo>
+		      <parallel>
+		        <variable>out</variable>
+		        <variable>text</variable>
+		      </parallel>
+		    </echo>
+		</vdl:mainp>
+	</vdl:mains>
+	<vdl:post/>
+  </restartLog>  
+</project>
