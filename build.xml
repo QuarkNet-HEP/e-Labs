@@ -398,7 +398,7 @@ undeploy:
 	<!-- ================================= 
 		target: clean              
 		================================= -->
-	<target name="clean" depends="description="--> description">
+	<target name="clean" description="--> description">
         <delete dir="build"/>
 	</target>
 	
