@@ -1,1 +1,1 @@
-<!-- sample empty header -->
+<!-- empty header -->
