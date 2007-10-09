@@ -3,6 +3,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="java.io.*" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
+<%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
 
