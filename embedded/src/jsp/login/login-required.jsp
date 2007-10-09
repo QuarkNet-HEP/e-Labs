@@ -10,7 +10,7 @@
 	ElabGroup user = (ElabGroup) session.getAttribute("user");
 	if (user == null) {
 		user = new ElabGroup(elab, null);
-		user.setUserArea("userdata");
+		user.setUserArea("default");
 		session.setAttribute("user", user);
 	}
 %>
