@@ -33,7 +33,7 @@ import javax.servlet.jsp.PageContext;
  */
 public class Elab {
     private static Map elabs;
-    private static Elab global;
+    private static Elab global; 
 
     /**
      * Retrieves the Elab object associated with the given name or instantiates
@@ -212,6 +212,11 @@ public class Elab {
                 throw new ElabException("The project (" + name
                         + ") was not found in the database");
             }
+        }
+        catch (Exception e) {
+        	System.out.println("Failed to update elab id for " + name + ". Using elab name as ID.");
+        	e.printStackTrace();
+        	this.id = name;
         }
         finally {
             DatabaseConnectionManager.close(conn, s);
