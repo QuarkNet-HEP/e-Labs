@@ -145,7 +145,7 @@ undeploy:
 		</delete>
 	</target>
 		
-	<target name="do-deploy-common" depends="clean-classes, clean-jars, build-common">
+	<target name="do-deploy-common" depends="build-common">
 		<mkdir dir="${container.home}/${webapps}/elab"/>
 		<mkdir dir="${container.home}/${webapps}/elab/WEB-INF"/>
 		<mkdir dir="${container.home}/${webapps}/elab/WEB-INF/classes"/>
@@ -280,7 +280,7 @@ undeploy:
 		</delete>
 	</target>
 		
-	<target name="build-cosmic" depends="clean-cosmic-classes, build-common" description="--> builds COSMIC">
+	<target name="build-cosmic" depends="build-common" description="--> builds COSMIC">
 		<mkdir dir="cosmic/build"/>
         <javac srcdir="cosmic/src/java" destdir="cosmic/build" debug="true">
 			<include name="**/*.java"/>
@@ -398,8 +398,8 @@ undeploy:
 	<!-- ================================= 
 		target: clean              
 		================================= -->
-	<target name="clean" description="--> description">
-        
+	<target name="clean" depends="description="--> description">
+        <delete dir="build"/>
 	</target>
 	
 	<target name="undeploy">
