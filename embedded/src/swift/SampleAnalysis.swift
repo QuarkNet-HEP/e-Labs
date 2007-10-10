@@ -2,7 +2,7 @@ type file;
 
 (file f) echo(string msg) {
 	app {
-		echo msg stdout=@f;
+		echo "**" msg "**" stdout=@f;
 	}
 }
 
