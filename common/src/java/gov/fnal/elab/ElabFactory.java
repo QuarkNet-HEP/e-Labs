@@ -17,13 +17,29 @@ import gov.fnal.elab.datacatalog.DataCatalogProvider;
 import gov.fnal.elab.test.ElabTestProvider;
 import gov.fnal.elab.usermanagement.ElabUserManagementProvider;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Manages the instantiation of various elab functionality providers. User code
  * should use the <code>Elab.getXYZProvider</code> methods instead of calling
  * methods in this class directly.
  */
 public class ElabFactory {
-    private static ElabUserManagementProvider userManagementProvider;
+    
+    private static Map providers = new HashMap();
+    
+    private static Object get(Elab elab, String provider) {
+        synchronized(providers) {
+            return providers.get(elab.getName() + ":" + provider);
+        }
+    }
+    
+    private static void set(Elab elab, String provider, Object value) {
+        synchronized(providers) {
+            providers.put(elab.getName() + ":" + provider, value);
+        }
+    }
 
     private static Object newInstance(Elab elab, String provider)
             throws ElabInstantiationException {
@@ -48,6 +64,7 @@ public class ElabFactory {
         }
     }
 
+    private static final String USERMANAGEMENT = "usermanagement";
     /**
      * Returns an instance of a user management provider for the specified elab.
      * A user management provider is used to implement I2U2 functionality
@@ -59,14 +76,15 @@ public class ElabFactory {
      */
     public static synchronized ElabUserManagementProvider getUserManagementProvider(
             Elab elab) {
-        if (userManagementProvider == null) {
-            userManagementProvider = (ElabUserManagementProvider) newInstance(
-                    elab, "usermanagement");
+        Object p = get(elab, USERMANAGEMENT);
+        if (p == null) {
+            p = newInstance(elab, USERMANAGEMENT);
+            set(elab, USERMANAGEMENT, p);
         }
-        return userManagementProvider;
+        return (ElabUserManagementProvider) p;
     }
-
-    private static DataCatalogProvider dataCatalogProvider;
+    
+    private static final String DATACATALOG = "datacatalog";
 
     /**
      * Returns an instance of a data catalog provider for the given elab. A data
@@ -74,40 +92,44 @@ public class ElabFactory {
      */
     public static synchronized DataCatalogProvider getDataCatalogProvider(
             Elab elab) {
-        if (dataCatalogProvider == null) {
+        Object p = get(elab, DATACATALOG);
+        if (p == null) {
             setVDSHome(elab);
-            dataCatalogProvider = new CachingDataCatalogProvider(
-                    (DataCatalogProvider) newInstance(elab, "datacatalog"));
+            p = new CachingDataCatalogProvider((DataCatalogProvider) newInstance(elab, DATACATALOG));
+            set(elab, DATACATALOG, p);
         }
-        return dataCatalogProvider;
+        return (DataCatalogProvider) p;
     }
 
-    private static ElabTestProvider testProvider;
+    private static final String TEST = "test";
 
     /**
      * Returns an instance of an elab test provider for the specified elab. A
      * test provider implements functionality related to tests (surveys).
      */
     public static synchronized ElabTestProvider getTestProvider(Elab elab) {
-        if (testProvider == null) {
-            testProvider = (ElabTestProvider) newInstance(elab, "test");
+        Object p = get(elab, TEST);
+        if (p == null) {
+            p = newInstance(elab, TEST);
+            set(elab, TEST, p);
         }
-        return testProvider;
+        return (ElabTestProvider) p;
     }
 
-    private static AnalysisExecutor analysisExecutor;
+    private static final String ANALYSISEXECUTOR = "analysisexecutor";
 
     /**
      * Returns an analysis provider/executor for the given elab. The analysis
      * provider is used to run analyses.
      */
     public static synchronized AnalysisExecutor getAnalysisProvider(Elab elab) {
-        if (analysisExecutor == null) {
+        Object p = get(elab, ANALYSISEXECUTOR);
+        if (p == null) {
             setVDSHome(elab);
-            analysisExecutor = (AnalysisExecutor) newInstance(elab,
-                    "analysisexecutor");
+            p = newInstance(elab, ANALYSISEXECUTOR);
+            set(elab, ANALYSISEXECUTOR, p);
         }
-        return analysisExecutor;
+        return (AnalysisExecutor) p;
     }
 
     /**
