@@ -320,10 +320,14 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         else {
             QueryLeaf t = (QueryLeaf) query;
             qt = new QueryTree(new Predicate(getPredicateType(query.getType()),
-                    t.getKey(), getType(t.getValue()), String.valueOf(t
-                            .getValue())));
+                    t.getKey(), getType(t.getValue()), quote(String.valueOf(t
+                            .getValue()))));
         }
         return qt;
+    }
+    
+    public static String quote(String param) {
+        return ElabUtil.fixQuotes(param);
     }
 
     protected int getType(Object value) {
