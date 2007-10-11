@@ -529,6 +529,9 @@ public class ElabTransformation{
             close();
             throw new ElabException("The definition " + fqdn + " was not found in the database.");
         }
+        if (defs.size() > 1) {
+            System.err.println("Warning. Multiple definitions found for " + fqdn + ". Using the first one.");
+        }
         this.dv = (Derivation) defs.iterator().next();
         close();
     }
