@@ -143,6 +143,7 @@ public class Elab {
     private ElabFAQ faq;
     private ServletContext context;
     private ServletConfig config;
+    private Map attributes;
 
     /**
      * Instantiates a new Elab object using the specified
@@ -159,6 +160,7 @@ public class Elab {
         this.properties = new ElabProperties(name);
         this.context = pc.getServletContext();
         this.config = pc.getServletConfig();
+        this.attributes = new HashMap();
     }
 
     /**
@@ -388,5 +390,17 @@ public class Elab {
     public String secure(String page) {
         return properties.getRequired("elab.secure.url") + '/'
                 + properties.getWebapp() + '/' + getName() + '/' + page;
+    }
+    
+    public Map getAttributes() {
+        return attributes;
+    }
+    
+    public void setAttribute(String name, Object value) {
+        attributes.put(name, value);
+    }
+    
+    public Object getAttribute(String name) {
+        return attributes.get(name);
     }
 }
