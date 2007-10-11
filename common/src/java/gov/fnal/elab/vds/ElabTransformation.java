@@ -518,17 +518,18 @@ public class ElabTransformation{
         }
         VDC vdc = (VDC)dbschema;
         Definition def;
+        List defs;
         try{
-            def = vdc.loadDefinition(id[0], id[1], id[2], Definition.DERIVATION);
+            defs = vdc.searchDefinition(id[0], id[1], id[2], Definition.DERIVATION);
         } catch(Exception e){
             close();
             throw new ElabException("SQL exception when connecting to the database: " + e.getMessage());
         }
-        if(def == null){
+        if(defs == null || defs.size() == 0){
             close();
             throw new ElabException("The definition " + fqdn + " was not found in the database.");
         }
-        this.dv = (Derivation)def;
+        this.dv = (Derivation) defs.iterator().next();
         close();
     }
 
