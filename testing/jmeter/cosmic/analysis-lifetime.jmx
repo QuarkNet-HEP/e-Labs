@@ -279,7 +279,7 @@
             <hashTree/>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="2096857181">Failed</stringProp>
+                <stringProp name="2096857181">(Failed)|(error)</stringProp>
               </collectionProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
               <intProp name="Assertion.test_type">6</intProp>
