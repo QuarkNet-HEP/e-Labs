@@ -11,33 +11,7 @@
 	<uri>http://www.i2u2.org/jsp/elabtl</uri>
 	<display-name>Elab Tag Library</display-name>
 		
-	
-	<!--<tag>
-		<name>select</name>
-		<tag-class>gov.fnal.elab.tags.Select</tag-class>
-		<body-content>JSP</body-content>
-		<dynamic-attributes>true</dynamic-attributes>
-		<attribute>
-			<name>valueList</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>labelList</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>name</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>default</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-	</tag>-->
+
 	<tag-file>
 		<name>select</name>
 		<path>/WEB-INF/tags/select.tag</path>
@@ -116,18 +90,7 @@ An optional image to be used for the clickable control. Defaults to "../images/T
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
-	
-	<!-- <tag>
-		<name>script</name>
-		<tag-class>gov.fnal.elab.tags.Script</tag-class>
-		<body-content>none</body-content>
-		<attribute>
-			<name>file</name>
-			<required>true</required>
-			<rtexprvalue>false</rtexprvalue>
-		</attribute>
-	</tag>-->
-	
+		
 	<tag>
 		<name>popup</name>
 		<tag-class>gov.fnal.elab.tags.Popup</tag-class>
@@ -164,33 +127,16 @@ browser.
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
-	</tag>
-	<!--<tag-file>
-		<name>popup</name>
-		<path>/WEB-INF/tags/popup.tag</path>
-	</tag-file>-->
-	
-	
-	<!--<tag>
-		<name>quicksearch</name>
-		<tag-class>gov.fnal.elab.tags.QuickSearch</tag-class>
-		<body-content>JSP</body-content>
 		<attribute>
-			<name>key</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>value</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>label</name>
+			<description>
+If "true" instruct the browser to show a toolbar in the new browser window
+			</description>
+			<name>toolbar</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
-	</tag>-->
+	</tag>
+	
 	<tag-file>
 		<name>quicksearch</name>
 		<path>/WEB-INF/tags/quicksearch.tag</path>
