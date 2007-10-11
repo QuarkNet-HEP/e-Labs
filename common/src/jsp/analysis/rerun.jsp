@@ -23,13 +23,20 @@
 	 if (study == null) {
 	   	throw new ElabJspException("Missing study");
 	 }
-	 request.setAttribute("study", study); 
-	 ElabAnalysis analysis = (ElabAnalysis) session.getAttribute("analysisToRerun");
-	 if (analysis == null) {
-	 	String dvName = request.getParameter("dvName");
-	 	if (dvName != null) {
-	 		analysis = elab.getDataCatalogProvider().getAnalysis(dvName);
+	 request.setAttribute("study", study);
+	 ElabAnalysis analysis;
+	 String dvName = request.getParameter("dvName");
+	 if (dvName != null) {
+	 	analysis = elab.getDataCatalogProvider().getAnalysis(dvName);
+	 	if (analysis == null) {
+	 		throw new ElabJspException("The specified analysis (" + dvName + ") was not found in the database");
 	 	}
+	 }
+	 else { 
+	 	analysis = (ElabAnalysis) session.getAttribute("analysisToRerun");
+	 	if (analysis == null) {
+	 		throw new ElabJspException("Both the dvName parameter and the analysisToRerun session attribute are missing");
+	 	}	 	
 	 }
 	 request.setAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS, analysis);
 	 request.setAttribute("analysis", analysis);
