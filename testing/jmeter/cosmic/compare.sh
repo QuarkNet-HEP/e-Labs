@@ -1,14 +1,18 @@
 #!/bin/sh
 
 sleep 2
+if [ "$REFPATH" == "" ]; then
+	REFPATH="."
+fi
 TYPE=$1
 REF="reference-$TYPE.png"
 URL=$2
-LOG=compare-$TYPE.log
-wget -o $LOG -r -O output-$TYPE.png $URL 
+LOG="$REFPATH/compare-$TYPE.log"
+wget -o $LOG -r -O $REFPATH/output-$TYPE.png $URL 
 echo "URL: $URL" >>$LOG
+echo "REFPATH: $REFPATH" >>$LOG
 
-DIFF=`compare -metric MAE reference-$TYPE.png output-$TYPE.png null: 2>&1`
+DIFF=`compare -metric MAE $REFPATH/reference-$TYPE.png $REFPATH/output-$TYPE.png null: 2>&1`
 
 echo "DIFF: $DIFF">>$LOG
 
