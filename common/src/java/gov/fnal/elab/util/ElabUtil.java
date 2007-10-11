@@ -159,11 +159,11 @@ public class ElabUtil {
         else {
             out.write("-v\" style=\"visibility:visible; display:\">\n");
         }
-        out.write("<a href=\"javascript:void(0);\" onclick=\"HideShow('");
+        out.write("<a href=\"#\" onclick=\"HideShow('");
         out.write(id);
         out.write("-v');HideShow('");
         out.write(id);
-        out.write("-h')\"><img src=\"");
+        out.write("-h');return false;\"><img src=\"");
         if (image == null) {
             image = "../graphics/Tright.gif";
         }
@@ -196,11 +196,11 @@ public class ElabUtil {
         else {
             out.write("-h\" style=\"visibility:hidden; display: none\">\n");
         }
-        out.write("<a href=\"javascript:void(0);\" onclick=\"HideShow('");
+        out.write("<a href=\"#\" onclick=\"HideShow('");
         out.write(id);
         out.write("-v');HideShow('");
         out.write(id);
-        out.write("-h')\"><img src=\"");
+        out.write("-h');return false;\"><img src=\"");
         if (image == null) {
             image = "../graphics/Tdown.gif";
         }
