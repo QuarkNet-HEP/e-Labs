@@ -14,7 +14,7 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 
 public class Popup extends TagSupport {
-    private String href, width, height, target, now;
+    private String href, width, height, target, now, toolbar;
 
     public int doEndTag() throws JspException {
         try {
@@ -52,7 +52,12 @@ public class Popup extends TagSupport {
                 out.write(width);
                 out.write(",height=");
                 out.write(height);
-                out.write("');\">");
+                out.write(", ");
+                out.write("resizable=1, scrollbars=1");
+                if ("true".equals(toolbar)) {
+                    out.write(", toolbar=1");
+                }
+                out.write("');return false;\">");
             }
         }
         catch (Exception e) {
@@ -100,4 +105,14 @@ public class Popup extends TagSupport {
     public void setNow(String now) {
         this.now = now;
     }
+
+    public String getToolbar() {
+        return toolbar;
+    }
+
+    public void setToolbar(String toolbar) {
+        this.toolbar = toolbar;
+    }
+    
+    
 }
