@@ -19,7 +19,7 @@ public class MultiSelectStructuredResultSetDisplayer extends
         out.write("<div class=\"clearall\">");
         out.write("<a href=\"#\" onClick=\"selectAll(0, "
                 + this.getResults().getDataFileCount()
-                + ", false)\">Clear selected data</a>");
+                + ", false);return false;\">Clear selected data</a>");
         out.write("</div>");
         return super.display(out);
     }
@@ -29,10 +29,10 @@ public class MultiSelectStructuredResultSetDisplayer extends
         if (month.getFileCount() > 1) {
             out.write("Select: ");
             out.write("<a href=\"#\" onClick=\"selectAll(" + count + ", "
-                    + (count + month.getFileCount()) + ", true)\">All</a>");
+                    + (count + month.getFileCount()) + ", true);return false;\">All</a>");
             out.write("&nbsp;");
             out.write("<a href=\"#\" onClick=\"selectAll(" + count + ", "
-                    + (count + month.getFileCount()) + ", false)\">None</a>");
+                    + (count + month.getFileCount()) + ", false);return false;\">None</a>");
         }
         super.displayMonthContents(out, month);
     }
