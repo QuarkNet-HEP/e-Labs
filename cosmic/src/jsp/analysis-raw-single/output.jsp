@@ -43,7 +43,7 @@
 	String id = request.getParameter("id");
 	String outf;
 	if (id != null) {
-	    AnalysisRun results = AnalysisManager.getAnalysisRun(session, id);
+	    AnalysisRun results = AnalysisManager.getAnalysisRun(elab, user, id);
 	    outf = (String) results.getAnalysis().getParameter("outFile");
 		List meta = new ArrayList();
 	
