@@ -51,6 +51,8 @@
 			//variables provided for the page including this file
 			HashSet detectorIDs = new HashSet();
 			boolean[] validChans = new boolean[4];
+			int chanTotal[] = new int[4];
+			int allChanTotal = 0;
 			Date startdate = null;
 			Date enddate = null;
 			
@@ -58,10 +60,6 @@
 			String rawDataString = "Data: ";
 			String detectorIDString = "Detector(s): ";
 			String queryFilenames = "";
-			int chan1total = 0;
-			int chan2total = 0;
-			int chan3total = 0;
-			int chan4total = 0;
 			
 			//for using with other analysis pages
 			String filenames_str = "";
@@ -112,10 +110,21 @@
 			
 			    //variables provided for calling page
 			    detectorIDs.add(e.getTupleValue("detectorid"));
-			    validChans[0] = ((Long) e.getTupleValue("chan1")).intValue() > 0 || validChans[0];
-			    validChans[1] = ((Long) e.getTupleValue("chan2")).intValue() > 0 || validChans[1];
-			    validChans[2] = ((Long) e.getTupleValue("chan3")).intValue() > 0 || validChans[2];
-			    validChans[3] = ((Long) e.getTupleValue("chan4")).intValue() > 0 || validChans[3];
+			    
+			    //channel events
+			    int chan[] = new int[4];
+			    for (int j = 0; j < 4; j++) {
+			    	Long l = (Long) e.getTupleValue("chan" + (j + 1));
+			    	if (l == null) {
+			    		chan[j] = 0;
+			    	}
+			    	else {
+			    		chan[j] = l.intValue();
+			    	}
+			    	validChans[j] = chan[j] > 0 || validChans[j];
+			    	chanTotal[j] += chan[j];
+			    	allChanTotal += chan[j];
+			    }
 			
 			    //set variables from metadata
 			    String city = (String) e.getTupleValue("city");
@@ -124,14 +133,6 @@
 			    String group = (String) e.getTupleValue("group");
 			    String detector = (String) e.getTupleValue("detectorid");
 			    String title = city + ", " + group + ", Detector: " + detector;
-			    int chan1 = ((Long) e.getTupleValue("chan1")).intValue();
-			    int chan2 = ((Long) e.getTupleValue("chan2")).intValue();
-			    int chan3 = ((Long) e.getTupleValue("chan3")).intValue();
-			    int chan4 = ((Long) e.getTupleValue("chan4")).intValue();
-			    chan1total += chan1;
-			    chan2total += chan2;
-			    chan3total += chan3;
-			    chan4total += chan4;
 			
 			    if (num_files == 10) {
 			        out.println("</tbody><tbody id=\"tog2\" style=\"display:none\">");
@@ -153,10 +154,10 @@
 				        <td align="center">
 				            <%= school %>&nbsp;<%= filedate %>
 				        </td>
-				        <td align=center><%=chan1%></td>
-				        <td align=center><%=chan2%></td>
-				        <td align=center><%=chan3%></td>
-				        <td align=center><%=chan4%></td>
+				        <td align=center><%=chan[0]%></td>
+				        <td align=center><%=chan[1]%></td>
+				        <td align=center><%=chan[2]%></td>
+				        <td align=center><%=chan[3]%></td>
 				        <td bgcolor="#EFEFFF" align="center"><a title="<%=title%>" href="../data/view.jsp?filename=<%=lfn%>&type=data&get=meta">View</a>&nbsp</td>
 				        <td bgcolor="#EFFEDE" align="center"><a href="../analysis-raw-single/analysis.jsp?submit=true&filename=<%=lfn%>">Statistics</a></td>
 				        <td bgcolor="#EFFEDE" align="center"><a href="../geometry/view.jsp?filename=<%=lfn%>">Geometry</a></td>
@@ -176,7 +177,6 @@
 				queryFilenames = queryFilenames.substring(0, queryFilenames.length() - 1);
 			}
 			//get total events in all chans
-			int allchantotal = chan1total + chan2total + chan3total + chan4total;;
 			
 			//only show "show more files" link if there's more files to show...
 			if(num_files > 10){
@@ -193,19 +193,19 @@
 				%>
 		<tr>
 		    <td align="center">
-		        <font color="grey">Total (<%=num_files%> files <%=allchantotal%> events)</font>
+		        <font color="grey">Total (<%=num_files%> files <%=allChanTotal%> events)</font>
 		    </td>
 		    <td align="center">
-		        <font color="grey"><%=chan1total%></font>
+		        <font color="grey"><%=chanTotal[0]%></font>
 		    </td>
 		    <td align="center">
-		        <font color="grey"><%=chan2total%></font>
+		        <font color="grey"><%=chanTotal[1]%></font>
 		    </td>
 		    <td align="center">
-		        <font color="grey"><%=chan3total%></font>
+		        <font color="grey"><%=chanTotal[2]%></font>
 		    </td>
 		    <td align="center">
-		        <font color="grey"><%=chan4total%></font>
+		        <font color="grey"><%=chanTotal[3]%></font>
 		    </td>
 		    <td colspan="2" align="center">
 	    	    <a href="../analysis-raw-multiple/analysis.jsp?<%=queryFilenames%>">Compare files</a>
