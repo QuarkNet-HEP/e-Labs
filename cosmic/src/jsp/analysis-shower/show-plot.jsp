@@ -31,6 +31,11 @@
 
 <img src="${results.outputDirURL}/plot.png" />
 
+<p>
+	Show <e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysis-dir" 
+		width="800" height="600" toolbar="true">analysis directory</e:popup>
+</p>
+
 <%@ include file="events-table.jspf" %>
 
 <%@ include file="save-form.jspf" %>

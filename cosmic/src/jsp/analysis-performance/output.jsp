@@ -38,6 +38,10 @@
 	<img src="${results.outputDirURL}/plot.png"/>
 </p>
 <p>
+	Show <e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysis-dir" 
+		width="800" height="600" toolbar="true">analysis directory</e:popup>
+</p>
+<p>
 	<e:rerun type="performance" analysis="${results.analysis}" label="Change"/> your parameters	
 </p>
 <p><b>OR</b></p>
