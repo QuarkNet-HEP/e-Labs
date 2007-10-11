@@ -21,7 +21,7 @@
 					if (id == null) {
 					    throw new ElabJspException("Missing run id parameter");
 					}
-					AnalysisRun run = AnalysisManager.getAnalysisRun(session, id);
+					AnalysisRun run = AnalysisManager.getAnalysisRun(elab, user, id);
 					if (run == null) {
 					    throw new ElabJspException("Invalid analysis id: " + id);
 					}

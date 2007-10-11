@@ -14,7 +14,7 @@
 		%><jsp:forward page="../analysis/list.jsp"/><%
 	}
 	else {
-		AnalysisRun run = AnalysisManager.getAnalysisRun(session, id);
+		AnalysisRun run = AnalysisManager.getAnalysisRun(elab, user, id);
 		
 		if (run == null) {
 			System.err.println("Invalid analysis id " + id);

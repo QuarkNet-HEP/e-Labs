@@ -36,7 +36,7 @@
 <h1>Analysis list</h1>
 
 <%
-	request.setAttribute("runs", AnalysisManager.getAnalysisRuns(session));
+	request.setAttribute("runs", AnalysisManager.getAnalysisRuns(elab, user));
 %>
 
 	<table id="analysis-table">

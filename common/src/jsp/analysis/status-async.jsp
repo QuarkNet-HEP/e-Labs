@@ -1,3 +1,5 @@
+<%@ include file="../include/elab.jsp" %>
+<%@ include file="../login/login-required.jsp" %>
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
 
@@ -16,7 +18,7 @@
 		
 		StringBuffer statusb = new StringBuffer();
 		
-		Collection ids = AnalysisManager.getAnalysisRunIDs(session);
+		Collection ids = AnalysisManager.getAnalysisRunIDs(elab, user);
 		Iterator i = ids.iterator();
 		while(i.hasNext()) {
 			String id = (String) i.next();
@@ -26,7 +28,7 @@
 				listb.append(",");
 			}
 			
-			AnalysisRun run = AnalysisManager.getAnalysisRun(session, id);
+			AnalysisRun run = AnalysisManager.getAnalysisRun(elab, user, id);
 			
 			if (run != null) {
 			
@@ -45,7 +47,7 @@
 		r = listb.toString();
 	}
 	else {
-		AnalysisRun run = AnalysisManager.getAnalysisRun(session, pid);
+		AnalysisRun run = AnalysisManager.getAnalysisRun(elab, user, pid);
 		
 		if (run == null) {
 			r = "&error=Invalid analysis: " + pid + "&";

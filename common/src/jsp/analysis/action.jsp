@@ -46,7 +46,7 @@
 		%> <jsp:forward page="list.jsp"/> <%
 	}
 	else {
-		AnalysisRun run = AnalysisManager.getAnalysisRun(session, id);
+		AnalysisRun run = AnalysisManager.getAnalysisRun(elab, user, id);
 		
 		if (run == null) {
 			%> 
@@ -56,6 +56,7 @@
 		else {
 			if (request.getParameter("cancel") != null) {
 				run.cancel();
+				AnalysisManager.removeAnalysisRun(elab, user, id);
 				%> <h1>The analysis was canceled</h1> <%
 			}
 			else if (request.getParameter("background") != null) {

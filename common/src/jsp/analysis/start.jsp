@@ -63,7 +63,7 @@
 			run.setAttribute("runMode", workflowRunMode);
 		}
 	    
-	    AnalysisManager.registerAnalysisRun(session, run);
+	    AnalysisManager.registerAnalysisRun(elab, user, run);
 	    run.start();
 	    %> 
 	    	<jsp:include page="status.jsp">

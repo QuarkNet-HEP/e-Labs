@@ -10,7 +10,7 @@
    		throw new ElabJspException("Missing id parameter");
 	}
 	else {
-		results = AnalysisManager.getAnalysisRun(session, id);
+		results = AnalysisManager.getAnalysisRun(elab, user, id);
 		if (results == null) {
 		    throw new ElabJspException("Invalid analysis id: " + id);
 		}
