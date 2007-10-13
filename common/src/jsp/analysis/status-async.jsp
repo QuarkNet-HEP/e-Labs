@@ -1,6 +1,7 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ page import="java.util.*" %>
+<%@ page import="java.text.*" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
 
 <%
@@ -37,9 +38,11 @@
 			
 				statusb.append("&status" + id + "=" + status + "&progress" + id + "=" + progress);
 				statusb.append("&name" + id + "=" + run.getAnalysis().getType());
-				statusb.append("&startTime" + id + "=" + run.getStartTime());
+				DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss zzz");
+				df.setTimeZone(TimeZone.getTimeZone("UTC"));
+				statusb.append("&startTime" + id + "=" + df.format(run.getStartTime()));
 				if (run.getEndTime() != null) {
-					statusb.append("&endTime" + id + "=" + run.getEndTime());
+					statusb.append("&endTime" + id + "=" + df.format(run.getEndTime()));
 				}
 			}
 			else {

@@ -3,6 +3,7 @@
 <%@ page import="java.io.*" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
@@ -54,6 +55,7 @@
 				<tr id="nostudies"><td colspan="6"><h3>There are no studies in the list</h3></td></tr>
 			</c:when>
 			<c:otherwise>
+				<fmt:setTimeZone value="UTC"/>
 				<c:forEach items="${runs}" var="entry">
 					<c:set var="run" value="${entry.value}"/>
 					<%
@@ -70,10 +72,24 @@
 							<a href="status.jsp?id=${run.id}">${run.analysis.type}</a>
 						</td>
 						<td>
-							${run.startTime == null ? 'N/A' : run.startTime}
+							<c:choose>
+								<c:when test="${run.startTime == null}">
+									N/A
+								</c:when>
+								<c:otherwise>
+									<fmt:formatDate pattern="MM/dd/yyyy HH:mm:ss zzz" value="${run.startTime}"/>
+								</c:otherwise>
+							</c:choose>
 						</td>
 						<td>
-							${run.endTime == null ? 'N/A' : run.endTime}
+							<c:choose>
+								<c:when test="${run.endTime == null}">
+									N/A
+								</c:when>
+								<c:otherwise>
+									<fmt:formatDate pattern="MM/dd/yyyy HH:mm:ss zzz" value="${run.endTime}"/>
+								</c:otherwise>
+							</c:choose>
 						</td>
 						<td>
 							<table border="0">
