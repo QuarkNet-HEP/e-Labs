@@ -433,7 +433,7 @@ p.search-result-bar {
 
 #analysis-table .list-progress {
 	border: solid black thin;
-	width: 100px;
+	width: 64px;
 }
 
 #analysis-table .list-progress-indicator {
