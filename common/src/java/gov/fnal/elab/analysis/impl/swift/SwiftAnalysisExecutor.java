@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -77,6 +78,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
         }
 
         public synchronized void start() {
+            setStartTime(new Date());
             try {
                 List argv = getArgv();
                 String projectName = getAnalysis().getType();
@@ -244,6 +246,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
         }
 
         public void updateStatus() {
+            VDL2ExecutionContext ec = this.ec;
             if (ec == null) {
                 return;
             }
@@ -279,6 +282,8 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                     setStatus(STATUS_COMPLETED);
                 }
                 updated = true;
+                this.ec = null;
+                setEndTime(new Date());
             }
             else {
                 int total = pTracker.getTotal(getAnalysis().getType());

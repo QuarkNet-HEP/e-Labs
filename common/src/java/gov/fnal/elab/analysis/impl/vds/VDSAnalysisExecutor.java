@@ -17,6 +17,7 @@ import gov.fnal.elab.vds.ElabTransformation;
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -118,6 +119,7 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
 
         public void run() {
             RunMonitor r = new RunMonitor(this);
+            setStartTime(new Date());
             r.start();
             try {
                 Elab elab = getElab();
@@ -133,6 +135,10 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
                 setException(t);
                 setStatus(STATUS_FAILED);
                 t.printStackTrace();
+            }
+            finally {
+                et = null;
+                setEndTime(new Date());
             }
         }
     }
