@@ -37,6 +37,8 @@
 			
 				statusb.append("&status" + id + "=" + status + "&progress" + id + "=" + progress);
 				statusb.append("&name" + id + "=" + run.getAnalysis().getType());
+				statusb.append("&startTime" + id + "=" + run.getStartTime());
+				statusb.append("&endTime" + id + "=" + run.getEndTime());
 			}
 			else {
 				statusb.append("&status" + id + "=unknown&progress" + id + "=0.0");
