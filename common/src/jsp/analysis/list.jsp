@@ -116,6 +116,14 @@
 					var status = data["status" + id];
 					var progress = data["progress"+ id];
 					var name = data["name" + id];
+					var startTime = data["startTime" + id];
+					var endTime = data["endTime" + id];
+					if (!startTime) {
+						startTime = "N/A";
+					}
+					if (!endTime) {
+						endTime = "N/A";
+					}
 					
 					if (status != null && progress != null && name != null) {
 						var cstatus = status.charAt(0).toUpperCase() + status.substr(1);
@@ -129,7 +137,11 @@
 							var table = document.getElementById("analysis-table");
 							var row = table.insertRow(table.rows.length);
 							row.insertCell(0).innerHTML = "<td>" + id + "</td>";
-							row.insertCell(1).innerHTML = name;
+							row.insertCell(1).innerHTML = "<td><input type=\"checkbox\" name=\"id\" value=\"" + id + "\"/></td>";
+							row.insertCell(2).innerHTML = "<a href=\"status.jsp?id=" + id + "\">" + name + "</a>";
+							row.insertCell(3).innerHTML = "<td>" + startTime + "</td>";
+							row.insertCell(4).innerHTML = "<td>" + endTime + "</td>";
+							
 							var hstatus =  "<table border=\"0\"><tr><td>" +
 								 "<img id=\"imgstatus" + id + "\" src=\"../graphics/" + status + ".png\"/></td>" +
 								 "<td id=\"textstatus" + id + "\">" + cstatus + "</td>";
@@ -144,7 +156,7 @@
 							}
 							hstatus += "</tr></table>";
 								
-							row.insertCell(2).innerHTML = hstatus;
+							row.insertCell(5).innerHTML = hstatus;
 							var rescel;
 							if (status == "Completed") {
 								rescell = "<a href=\"status.jsp?id=" + id + "\">See results</a>";
@@ -152,9 +164,6 @@
 							else {
 								rescell = "<a id=\"results" + id + "\" style=\"visibility: hidden; display: none\" href=\"status.jsp?id=" + id + "\">Details</a>";
 							}
-							row.insertCell(3).innerHTML = rescell;
-						
-							row.insertCell(4).innerHTML = "&nbsp;";
 						}
 						else {
 							imgstatus.src = "../graphics/" + status + ".png";
