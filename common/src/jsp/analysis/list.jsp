@@ -38,16 +38,20 @@
 <%
 	request.setAttribute("runs", AnalysisManager.getAnalysisRuns(elab, user));
 %>
-
+<form action="../analysis/remove.jsp">
 	<table id="analysis-table">
 		<tr>
+			<th>
+			</th>
 			<th>ID</th>
 			<th>Analysis</th>
+			<th>Start Time</th>
+			<th>End Time</th>
 			<th>Status</th>
 		</tr>
 		<c:choose>
 			<c:when test="${empty runs}">
-				<tr id="nostudies"><td colspan="5"><h2>There are no studies in this session</h2></td></tr>
+				<tr id="nostudies"><td colspan="6"><h3>There are no studies in the list</h3></td></tr>
 			</c:when>
 			<c:otherwise>
 				<c:forEach items="${runs}" var="entry">
@@ -58,9 +62,18 @@
 						request.setAttribute("progress", String.valueOf(run.getProgress() * 99 + 1));
 					%>
 					<tr>
+						<td>
+							<input type="checkbox" name="id" value="${run.id}"/>
+						</td>
 						<td>${run.id}</td>
 						<td>
 							<a href="status.jsp?id=${run.id}">${run.analysis.type}</a>
+						</td>
+						<td>
+							${run.startTime == null ? 'N/A' : run.startTime}
+						</td>
+						<td>
+							${run.endTime == null ? 'N/A' : run.endTime}
 						</td>
 						<td>
 							<table border="0">
@@ -87,6 +100,8 @@
 			</c:otherwise>
 		</c:choose>
 	</table>
+	<input type="submit" name="remove" value="Remove Selected" />
+</form>
 	<%@ include file="async-update.jsp" %>
 	<script language="JavaScript" type="text/javascript">
 		registerUpdate("status-async.jsp?id=all", update);
