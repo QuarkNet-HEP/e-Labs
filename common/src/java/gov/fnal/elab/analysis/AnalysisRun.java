@@ -3,6 +3,7 @@
  */
 package gov.fnal.elab.analysis;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -139,4 +140,8 @@ public interface AnalysisRun {
      * Returns the analysis that this run is executing.
      */
     ElabAnalysis getAnalysis();
+    
+    Date getStartTime();
+    
+    Date getEndTime();
 }

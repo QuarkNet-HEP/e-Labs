@@ -4,22 +4,22 @@
 package gov.fnal.elab.analysis;
 
 import gov.fnal.elab.Elab;
-import gov.fnal.elab.vds.ElabTransformation;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AbstractAnalysisRun implements AnalysisRun {
     private ElabAnalysis analysis;
-    private ElabTransformation et;
     private Elab elab;
     private Throwable exception;
     private int status;
     private String id, outputDir, outputDirURL;
     private static int sid = 0;
     private Map attributes;
+    private Date startTime, endTime;
 
     public AbstractAnalysisRun(ElabAnalysis analysis, Elab elab, String outputDir) {
         this.analysis = analysis;
@@ -143,4 +143,22 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
         }
         super.finalize();
     }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    protected void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    protected void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+    
+    
 }
