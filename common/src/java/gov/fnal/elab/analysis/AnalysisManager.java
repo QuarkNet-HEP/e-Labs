@@ -8,6 +8,7 @@ import gov.fnal.elab.ElabGroup;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -55,7 +56,7 @@ public class AnalysisManager {
             Map users = getAnalysisRuns(elab);
             a = (Map) users.get(user.getName());
             if (a == null) {
-                a = new TreeMap();
+                a = new TreeMap(new IDComparator());
                 users.put(user.getName(), a);
             }
         }
@@ -183,6 +184,16 @@ public class AnalysisManager {
                 }
             }
             return l;
+        }
+    }
+    
+    private static class IDComparator implements Comparator {
+        public int compare(Object o1, Object o2) {
+            String id1 = (String) o1;
+            String id2 = (String) o2;
+            int i1 = Integer.parseInt(id1);
+            int i2 = Integer.parseInt(id2);
+            return i1 - i2;
         }
     }
 }
