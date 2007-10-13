@@ -19,6 +19,9 @@
 		
 		StringBuffer statusb = new StringBuffer();
 		
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss zzz");
+		df.setTimeZone(TimeZone.getTimeZone("UTC"));
+		
 		Collection ids = AnalysisManager.getAnalysisRunIDs(elab, user);
 		Iterator i = ids.iterator();
 		while(i.hasNext()) {
@@ -38,8 +41,6 @@
 			
 				statusb.append("&status" + id + "=" + status + "&progress" + id + "=" + progress);
 				statusb.append("&name" + id + "=" + run.getAnalysis().getType());
-				DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss zzz");
-				df.setTimeZone(TimeZone.getTimeZone("UTC"));
 				statusb.append("&startTime" + id + "=" + df.format(run.getStartTime()));
 				if (run.getEndTime() != null) {
 					statusb.append("&endTime" + id + "=" + df.format(run.getEndTime()));
