@@ -401,6 +401,8 @@ p.search-result-bar {
 
 #analysis-table {
 	border: thin solid black;
+	width: 100%;
+	margin-bottom: 16px;
 }
 
 #analysis-table th {
