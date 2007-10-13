@@ -126,7 +126,7 @@
 								nostudies.style.visibility="hidden";
 								nostudies.style.display="none";
 							}
-							var table = document.getElementById("wftable");
+							var table = document.getElementById("analysis-table");
 							var row = table.insertRow(table.rows.length);
 							row.insertCell(0).innerHTML = "<td>" + id + "</td>";
 							row.insertCell(1).innerHTML = name;
