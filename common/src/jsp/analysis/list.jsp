@@ -164,7 +164,7 @@
 							
 							if (status == "Running") {
 								hstatus +="<td><table class=\"list-progress\" id=\"progressbar" + id + "\" " +
-								"width=\"100px\" cellpadding=\"0\" cellspacing=\"1\">" +
+								"cellpadding=\"0\" cellspacing=\"1\">" +
 									"<tr>" + 
 									"<td class=\"list-progress-indicator\" id=\"progress" + id + "\" width=\"" + (progress*99 + 1) + "%\">&nbsp;</td>" + 
 									"<td>&nbsp;</td>" + 
@@ -173,13 +173,6 @@
 							hstatus += "</tr></table>";
 								
 							row.insertCell(5).innerHTML = hstatus;
-							var rescel;
-							if (status == "Completed") {
-								rescell = "<a href=\"status.jsp?id=" + id + "\">See results</a>";
-							}
-							else {
-								rescell = "<a id=\"results" + id + "\" style=\"visibility: hidden; display: none\" href=\"status.jsp?id=" + id + "\">Details</a>";
-							}
 						}
 						else {
 							imgstatus.src = "../graphics/" + status + ".png";
