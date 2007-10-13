@@ -77,7 +77,7 @@
 									N/A
 								</c:when>
 								<c:otherwise>
-									<fmt:formatDate pattern="MM/dd/yyyy HH:mm:ss zzz" value="${run.startTime}"/>
+									<fmt:formatDate pattern="MM/dd/yy HH:mm:ss zzz" value="${run.startTime}"/>
 								</c:otherwise>
 							</c:choose>
 						</td>
@@ -87,7 +87,7 @@
 									N/A
 								</c:when>
 								<c:otherwise>
-									<fmt:formatDate pattern="MM/dd/yyyy HH:mm:ss zzz" value="${run.endTime}"/>
+									<fmt:formatDate pattern="MM/dd/yy HH:mm:ss zzz" value="${run.endTime}"/>
 								</c:otherwise>
 							</c:choose>
 						</td>

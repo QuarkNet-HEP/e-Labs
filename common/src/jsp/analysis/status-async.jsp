@@ -19,7 +19,7 @@
 		
 		StringBuffer statusb = new StringBuffer();
 		
-		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss zzz");
+		DateFormat df = new SimpleDateFormat("MM/dd/yy HH:mm:ss zzz");
 		df.setTimeZone(TimeZone.getTimeZone("UTC"));
 		
 		Collection ids = AnalysisManager.getAnalysisRunIDs(elab, user);
