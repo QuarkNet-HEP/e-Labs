@@ -152,11 +152,12 @@
 							}
 							var table = document.getElementById("analysis-table");
 							var row = table.insertRow(table.rows.length);
-							row.insertCell(0).innerHTML = "<td><input type=\"checkbox\" name=\"id\" value=\"" + id + "\"/></td>";
-							row.insertCell(1).innerHTML = "<td>" + id + "</td>";
+							row.insertCell(0).innerHTML = "<input type=\"checkbox\" name=\"id\" value=\"" + id + "\"/>";
+							row.insertCell(1).innerHTML = id;
 							row.insertCell(2).innerHTML = "<a href=\"status.jsp?id=" + id + "\">" + name + "</a>";
-							row.insertCell(3).innerHTML = "<td>" + startTime + "</td>";
-							row.insertCell(4).innerHTML = "<td id=\"endTime" + id + "\">" + endTime + "</td>";
+							row.insertCell(3).innerHTML = startTime;
+							row.insertCell(4).innerHTML = endTime;
+							row.cells.item(4).id = "endTime" + id;
 							
 							var hstatus =  "<table border=\"0\"><tr><td>" +
 								 "<img id=\"imgstatus" + id + "\" src=\"../graphics/" + status + ".png\"/></td>" +
