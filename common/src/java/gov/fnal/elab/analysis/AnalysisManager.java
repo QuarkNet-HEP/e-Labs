@@ -22,15 +22,15 @@ import org.apache.log4j.Logger;
  */
 public class AnalysisManager {
     public static final Logger logger = Logger.getLogger(AnalysisManager.class);
-    
+
     /**
      * The interval, in milliseconds at which the reaper wakes and reaps
      * analyses
      */
     public static final int REAPER_WAKE_INTERVAL = 60 * 60 * 1000;
+    public static final int MAX_ANALYSES = 80;
 
     public static final String ANALYSES = "elab:analyses";
-    public static final String RUN_ATTR_START_TIME = "startTime";
 
     private static Map reapers = new HashMap();
 
@@ -42,7 +42,6 @@ public class AnalysisManager {
         Map a = getAnalysisRuns(elab, user);
         synchronized (a) {
             a.put(run.getId(), run);
-            run.setAttribute(RUN_ATTR_START_TIME, new Date());
         }
     }
 
@@ -114,7 +113,7 @@ public class AnalysisManager {
             a.remove(id);
         }
     }
-    
+
     private static class AnalysisReaper extends Thread {
         private final Elab elab;
         private long lifetime;
@@ -132,7 +131,7 @@ public class AnalysisManager {
                 logger.warn("Invalid max.analysis.lifetime: " + hr
                         + ". Using default: " + lifetime + " hr");
             }
-            lifetime *= 3600*1000;
+            lifetime *= 3600 * 1000;
         }
 
         public void run() {
@@ -149,7 +148,7 @@ public class AnalysisManager {
                         Map.Entry e = (Map.Entry) i.next();
                         Map analyses = (Map) e.getValue();
                         Collection r = reap(analyses);
-                        synchronized(analyses) {
+                        synchronized (analyses) {
                             analyses.keySet().removeAll(r);
                         }
                     }
@@ -163,21 +162,24 @@ public class AnalysisManager {
             List l = new ArrayList();
             if (analyses != null) {
                 Date now = new Date();
+                int index = 1;
                 Iterator i = analyses.entrySet().iterator();
                 while (i.hasNext()) {
                     Map.Entry e = (Map.Entry) i.next();
                     String id = (String) e.getKey();
                     AnalysisRun run = (AnalysisRun) e.getValue();
-                    Date started = (Date) run.getAttribute(RUN_ATTR_START_TIME);
+                    Date started = run.getStartTime();
                     if (started == null) {
                         logger.warn("Missing start time for run " + id);
                     }
                     else {
-                        if (started.getTime() + lifetime < now.getTime()) {
-                            logger.info("Reapping run " + id);
+                        if (started.getTime() + lifetime < now.getTime()
+                                || index + MAX_ANALYSES < analyses.size()) {
+                            logger.info("Reaping run " + id);
                             l.add(id);
                         }
                     }
+                    index++;
                 }
             }
             return l;
