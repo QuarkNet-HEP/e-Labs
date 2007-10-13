@@ -140,7 +140,7 @@
 							row.insertCell(1).innerHTML = "<td><input type=\"checkbox\" name=\"id\" value=\"" + id + "\"/></td>";
 							row.insertCell(2).innerHTML = "<a href=\"status.jsp?id=" + id + "\">" + name + "</a>";
 							row.insertCell(3).innerHTML = "<td>" + startTime + "</td>";
-							row.insertCell(4).innerHTML = "<td>" + endTime + "</td>";
+							row.insertCell(4).innerHTML = "<td id=\"endTime" + id + "\">" + endTime + "</td>";
 							
 							var hstatus =  "<table border=\"0\"><tr><td>" +
 								 "<img id=\"imgstatus" + id + "\" src=\"../graphics/" + status + ".png\"/></td>" +
@@ -176,10 +176,9 @@
 								tdprogress.width = (progress*99+1) + "%";
 							}
 							if (status == "Completed") {
-								var results = document.getElementById("results" + id);
-								if (results != null) {
-									results.style.visibility="visible";
-									results.style.display="";
+								var et = document.getElementById("endTime" + id);
+								if (et != null) {
+									et.innerHTML = endTime;
 								}
 								var progressbar = document.getElementById("progressbar" + id);
 								if (progressbar != null) {
