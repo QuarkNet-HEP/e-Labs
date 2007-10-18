@@ -281,6 +281,16 @@ a > img {
 }
 
 /*=========== Various things ============*/
+
+.bordered {
+	margin-top: 24px;
+	border: thin solid blue;
+}
+
+.bordered:hover {
+	border: thin solid red;
+}
+
 .username {
 	font-weight: bold;
 }
