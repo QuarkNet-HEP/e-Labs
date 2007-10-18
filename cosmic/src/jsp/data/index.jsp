@@ -66,7 +66,7 @@
 		<td>
 			<div id="right">
 				<div class="tab">
-					<span class="tab-title">Analysis</span>
+					<span class="tab-title">Management</span>
 					<div class="tab-contents">
 						<h2>VIEW</h2>
 						<p>
