@@ -10,15 +10,17 @@
 
 <%
 	CatalogEntry e = elab.getDataCatalogProvider().getEntry("News_" + elab.getName() + "_status");
-	request.setAttribute("e", e.getTupleMap());
-	SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy 'at' hh:mm:ss aaa");
-	sdf.setTimeZone(TimeZone.getTimeZone("America/Chicago"));
-	request.setAttribute("now", new Date());
-	if (e.getTupleValue("time") != null) {
-		request.setAttribute("start", sdf.parse((String) e.getTupleValue("time")));
-	}
-	if (e.getTupleValue("expire") != null) {
-		request.setAttribute("end", sdf.parse((String) e.getTupleValue("expire")));
+	if (e != null) {
+		request.setAttribute("e", e.getTupleMap());
+		SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy 'at' hh:mm:ss aaa");
+		sdf.setTimeZone(TimeZone.getTimeZone("America/Chicago"));
+		request.setAttribute("now", new Date());
+		if (e.getTupleValue("time") != null) {
+			request.setAttribute("start", sdf.parse((String) e.getTupleValue("time")));
+		}
+		if (e.getTupleValue("expire") != null) {
+			request.setAttribute("end", sdf.parse((String) e.getTupleValue("expire")));
+		}
 	}
 %>
 
