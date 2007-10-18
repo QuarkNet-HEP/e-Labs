@@ -21,8 +21,8 @@
 		    if (this.form.input1.value == 'yes') {
 		        this.form.input1.value = '';
 		    }
-		}" valueList="city, group, school, state, teacher, stacked, blessed, detectorid"
-		        labelList="City, Group, School, State, Teacher, Stacked, Blessed, Detector ID"
+		}" valueList="city, group, school, state, teacher, detectorid"
+		        labelList="City, Group, School, State, Teacher, Detector ID"
 		        default="${param.key}"/>
 	<input name="value" size="40" maxlength="40" value="${param.value}" />
 	<input type="submit" name="submit" value="Search Data" />
@@ -66,7 +66,16 @@
 					    <input type="radio" name="searchIn" value="within"/ >Within results
 					</td>
 				</tr>
-			
+				<tr>
+					<td>
+						Stacked:
+						<e:select name="stacked" valueList="all, yes, no" labelList="All, Yes, No"/>
+					</td>
+					<td>
+						Blessed:
+						<e:select name="blessed" valueList="all, yes, no" labelList="All, Yes, No"/>
+					</td>
+				</tr>
 			</table>
 		</e:hidden>
 	</e:vswitch>
@@ -87,20 +96,14 @@
 		if ((order == null) || (order.equals(""))){
 		    order = "startdate";
 		}
+		String stacked = request.getParameter("stacked");
+		String blessed = request.getParameter("blessed");
 		boolean submit = request.getParameter("submit") != null;
 		
 		ResultSet searchResults = null;
 		StructuredResultSet searchResultsStructured = null;
 		if (submit) {
 		    long start = System.currentTimeMillis();
-		    if (key.equals("stacked") || key.equals("blessed")) {
-				if (value.equalsIgnoreCase("no") || value.equalsIgnoreCase("false")) {
-				    value = "f";
-				}
-				else {
-				    value = "t";
-				}
-		    }
 		    
 		    And and = new And();
 			if ("within".equals(request.getParameter("searchIn"))) {
@@ -114,6 +117,21 @@
 		    if ("startdate".equals(datetype) || "creationdate".equals(datetype)) {
 		        and.add(new Between(datetype, new Date(date1), new Date(date2 + " 23:59:59")));
 		    }
+		    
+		    if ("yes".equals(blessed)) {
+		    	and.add(new Equals("blessed", "t"));
+		    }
+		    if ("no".equals(blessed)) {
+		    	and.add(new Equals("blessed", "f"));
+		    }
+		    
+		    if ("yes".equals(stacked)) {
+		    	and.add(new Equals("stacked", "t"));
+		    }
+		    if ("no".equals(stacked)) {
+		    	and.add(new Equals("stacked", "f"));
+		    }
+		    
 		    
 		    and.add(new Equals("type", "split"));
 		    and.add(new Equals("project", elab.getName()));
