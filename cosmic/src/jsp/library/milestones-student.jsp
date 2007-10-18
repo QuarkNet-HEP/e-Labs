@@ -45,7 +45,7 @@
 				<div class="tab">
 					<span class="tab-title">C. Get Started</span>
 					<div class="tab-contents">
-						<h2>C. Tell Others</h2>
+						<h2>Prepares the team to enter into scientific discourse with other researchers.</h2>
 						<ul>
 							<li>
 								Assemble evidence for your results. 
