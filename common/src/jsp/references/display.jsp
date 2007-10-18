@@ -66,7 +66,9 @@ function resizeWinTo(oW, idOfDiv ) {
 
       if ((primary != null) && !(primary.equals(""))) {
 		 CatalogEntry e = elab.getDataCatalogProvider().getEntry(primary);
-		 request.setAttribute("description", e.getTupleValue("description"));
+		 if (e != null) {
+		 	request.setAttribute("description", e.getTupleValue("description"));
+		 }
       }
 %>
 		<div ID="txt" style="left:0px;top:0px;text-align:center;"><TABLE align="center" WIDTH="240">
