@@ -1,0 +1,379 @@
+h1 {
+	background-color: #FF3000;
+	color: #000000;
+}
+
+#top {
+	width: 100%;
+	background-color: white;
+	color: black;
+	height: 240px;
+}
+
+.siteindex  h1 {
+	font-weight: normal;
+	font-size: 140%;
+	width: 100%;
+	padding-bottom: 6px;
+	border-bottom: solid 2px orange;
+	margin-left: 0px;
+}
+
+.siteindex h2 {
+	font-weight: bold;
+	font-size: 120%;
+	margin-left: 0px;
+}
+
+.siteindex  p {
+	font-weight: normal;
+	margin-left: 10px;
+}
+
+.siteindex  #content ul {
+	padding-left: 10px;
+}
+
+.siteindex  ul ul ul li {
+	font-weight: normal;
+}
+
+.siteindex  #content li {
+	list-style-type: none;
+}
+
+.siteindex #center  h1 {
+	font-weight: normal;
+	font-size: 140%;
+	width: 100%;
+	padding-bottom: 6px;
+	border-bottom: solid 2px orange;
+	margin-left: 0px;
+}
+
+.siteindex #center h2 {
+	font-weight: bold;
+	font-size: 120%;
+	margin-left: 0px;
+}
+
+.siteindex #center  p {
+	font-weight: normal;
+	margin-left: 10px;
+}
+
+.siteindex #center  ul {
+	padding-left: 10px;
+	padding-top: 6px;
+}
+
+.siteindex #center  ul ul ul li {
+	font-weight: normal;
+}
+
+.siteindex #center  li {
+	list-style-type: none;
+	font-weight: bold;
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+.siteindex dt {
+	font-weight: bold;
+}
+
+.siteindex dd {
+	padding-bottom: 6px;
+}
+
+#nav a#nav5 {
+	color: black;
+	background-image: url("../graphics/site-index-button-bg.jpg");
+}
+
+#nav #subnav table {
+	width: 262px;
+	margin-right: 0px;
+	margin-left: auto;
+}
+
+#nav #subnav {
+	text-align: right;
+}
+
+#nav #subnav a {
+	color: black;
+	background-image: url("../graphics/site-index-button-bg.jpg");	
+}
+
+#nav a#nav1:hover {
+	color: black;
+	background-image: url("../graphics/home-button-bg.jpg");
+}
+
+#nav a#nav2:hover {
+	color: black;
+	background-image: url("../graphics/library-button-bg.jpg");
+}
+
+#nav a#nav3:hover {
+	color: black;
+	background-image: url("../graphics/data-button-bg.jpg");
+}
+
+#nav a#nav4:hover {
+	color: black;
+	background-image: url("../graphics/posters-button-bg.jpg");
+}
+
+#nav a#nav5:hover {
+	color: white;
+}
+
+#nav a#nav6:hover {
+	color: black;
+	background-image: url("../graphics/assessment-button-bg.jpg");
+}
+
+#nav #subnav a:hover {
+	color: white;
+}
+
+/************* Very small text for list **************/
+
+ul.simpleTiny {
+	list-style-type: none;
+	padding-left: 0px;
+}
+
+ul.simpleTiny li {
+	margin-bottom: 12px;
+}
+
+ul.simpleTine li:before {
+	display: none;
+	content: none;
+}
+
+
+/************* Tab **************/
+
+
+.siteindex .tab {
+	padding-top: 10px;
+	width: 100%;
+}
+
+
+.siteindex #content .tab li {
+	list-style-type: disc;
+	list-style-position: inside;
+	font-weight: normal;
+	padding-left: 8px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.siteindex .tabHome:before {
+	background-color: #ff6600;
+}
+
+.siteindex .tab .tabtitleHome {
+	background-color: #ff6600;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	font-weight: bold;
+	padding-left: 3px;
+	padding-right: 3px;
+	margin: 0px;
+	font-size: 120%;
+	display: block;
+	width: 104px;
+}
+
+.siteindex .tab .tabtitleHome a {
+	text-decoration: none;
+	color: #000;
+}
+
+.siteindex .tabPoster:before {
+	background-color: #8cd966;
+}
+
+.siteindex .tab .tabtitlePoster {
+	background-color: #8cd966;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	font-weight: bold;
+	padding-left: 3px;
+	padding-right: 3px;
+	margin: 0px;
+	font-size: 120%;
+	display: block;
+	width: 104px;
+}
+
+
+.siteindex .tab .tabtitlePoster a {
+	text-decoration: none;
+	color: #000;
+}
+
+.siteindex .tabLibrary:before {
+	background-color: #40ffb3;
+}
+
+.siteindex .tab .tabtitleLibrary {
+	background-color: #40ffb3;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	font-weight: bold;
+	padding-left: 3px;
+	padding-right: 3px;
+	margin: 0px;
+	font-size: 120%;
+	display: block;
+	width: 104px;
+}
+
+
+.siteindex .tab .tabtitleLibrary a {
+	text-decoration: none;
+	color: #000;
+}
+
+.siteindex .tabData:before {
+	background-color: #a8bbf8;
+}
+
+.siteindex .tab .tabtitleData {
+	background-color: #a8bbf8;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	font-weight: bold;
+	padding-left: 3px;
+	padding-right: 3px;
+	margin: 0px;
+	font-size: 120%;
+	display: block;
+	width: 104px;
+}
+
+
+.siteindex .tab .tabtitleData a {
+	text-decoration: none;
+	color: #000;
+}
+
+.siteindex .tabAssess:before {
+	background-color: #ffcc00;
+}
+
+.siteindex .tab .tabtitleAssess {
+	background-color: #ffcc00;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	font-weight: bold;
+	padding-left: 3px;
+	padding-right: 3px;
+	margin: 0px;
+	font-size: 120%;
+	display: block;
+	width: 104px;
+}
+
+
+.siteindex .tab .tabtitleAssess a {
+	text-decoration: none;
+	color: #000;
+}
+
+
+.siteindex .tab .tabcontentsHome {
+	background-color: #FFB27F ;
+	margin: 0px;
+	border-top: 2px solid black;
+	padding-bottom: 16px;
+	padding-left: 8px;
+	padding-right: 8px;
+	font-size: 100%;
+}
+
+.siteindex #content .tabcontentsHome h2 {
+	font-weight: bold;
+	font-style: italic;
+	padding-left: 10px;
+	font-size: 100%;
+}
+
+.siteindex .tab .tabcontentsPoster {
+	background-color: #ccff66;
+	margin: 0px;
+	border-top: 2px solid black;
+	padding-bottom: 16px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.siteindex #content .tabcontentsPoster h2 {
+	font-weight: bold;
+	font-style: italic;
+	padding-left: 10px;
+	font-size: 100%;
+}
+
+
+.siteindex .tab .tabcontentsLibrary {
+	background-color: #99ffcc;
+	margin: 0px;
+	border-top: 2px solid black;
+	padding-bottom: 16px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.siteindex #content .tabcontentsLibrary h2 {
+	font-weight: bold;
+	font-style: italic;
+	padding-left: 10px;
+	font-size: 100%;
+}
+
+
+.siteindex .tab .tabcontentsData {
+	background-color: #8ba4f5;
+	margin: 0px;
+	border-top: 2px solid black;
+	padding-bottom: 16px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.siteindex #content .tabcontentsData h2 {
+	font-weight: bold;
+	font-style: italic;
+	padding-left: 10px;
+	font-size: 100%;
+}
+
+
+.siteindex .tab .tabcontentsAssess {
+	background-color: #ffe57f;
+	margin: 0px;
+	border-top: 2px solid black;
+	padding-bottom: 16px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.siteindex #content .tabcontentsAssess h2 {
+	font-weight: bold;
+	font-style: italic;
+	padding-left: 10px;
+	font-size: 100%;
+}
+
+
+.siteindex th {
+	text-align: left;
+}
