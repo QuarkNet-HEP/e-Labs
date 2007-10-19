@@ -171,6 +171,9 @@ table#main {
 
 .tab:before {
 	content: url("../graphics/tab-top.gif");
+	height: 3px;
+	display: block;
+	width: 112px;
 }
 
 .tab .tab-title {
