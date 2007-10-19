@@ -27,15 +27,15 @@ body { font:14px arial, helvetica, sans-serif;
 <h2>Results</h2>
 <p>%PARA:RESULTS%</p>
 <h2>Figures</h2>
-<center><p><img name="IMGFIG1" src="%FIG:FIGURE1%" alt="Figure1"></p>
+<center><p><img name="IMGFIG1" src="%FIG:FIGURE1%" alt=""></p>
 <p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION1%</font></strong></p>
-<p><img name="IMGFIG2" src="%FIG:FIGURE2%" alt="Figure2"></p>
+<p><img name="IMGFIG2" src="%FIG:FIGURE2%" alt=""></p>
 <p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION2%</font></strong></p>
-<p><img name="IMGFIG3" src="%FIG:FIGURE3%" alt="Figure3"></p>
+<p><img name="IMGFIG3" src="%FIG:FIGURE3%" alt=""></p>
 <p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION3%</font></strong></p>
-<p><img name="IMGFIG4" src="%FIG:FIGURE4%" alt="Figure4"></p>
+<p><img name="IMGFIG4" src="%FIG:FIGURE4%" alt=""></p>
 <p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION4%</font></strong></p>
-<p><img name="IMGFIG5" src="%FIG:FIGURE5%" alt="Figure5"></p>
+<p><img name="IMGFIG5" src="%FIG:FIGURE5%" alt=""></p>
 <p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION5%</font></strong></p>
 </center>
 <h2>Discussion and Conclusions</h2>
