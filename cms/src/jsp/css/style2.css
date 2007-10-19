@@ -112,7 +112,7 @@
 #nav a {
 	background-image: url("../graphics/nav-button-bg.jpg");
 	font-family: Arial, Gill, Helvetica, Arial, sans-serif;
-	text-shadow: #808080 1px 2px 1px;
+	text-shadow: #808080 1px 2px 2px;
 	background-repeat: no-repeat;
 	padding-top: 12px;
 	display: block;
