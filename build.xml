@@ -204,22 +204,43 @@ undeploy:
 		</antcall>
 	</target>
 	
+	
 	<target name="do-deploy-cms" depends="build-cms, do-deploy-common">
 		<mkdir dir="${container.home}/${webapps}/elab/${elab.name}"/>
-		
+	
 		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
-			<fileset dir="cms" includes="lib/**/*.jar"/>
+			<fileset dir="${elab.name}" includes="lib/**/*.jar"/>
 		</copy>
-		<mkdir dir="cms/resources"/>
+		<mkdir dir="${elab.name}/resources"/>
 		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
-			<fileset dir="cms/resources" includes="**/*.*"/>
+			<fileset dir="${elab.name}/resources" includes="**/*.*"/>
 		</copy>
 		<copy todir="${container.home}/${webapps}/elab/WEB-INF/classes">
-			<fileset dir="cms/build" includes="**/*.*"/>
+			<fileset dir="${elab.name}/build" includes="**/*.*"/>
 		</copy>
-		<copy todir="${container.home}/${webapps}/elab/${elab.name}">
-			<fileset dir="cms/src/jsp" includes="**/*.*"/>
+		<copy todir="${container.home}/${webapps}/elab/${elab.name}" overwrite="true">
+			<fileset dir="${elab.name}/src/jsp" includes="**/*.*"/>
 		</copy>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/jsp"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/users"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/jsp"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/references"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/test"/>
+		</exec>
 	</target>
 
 
