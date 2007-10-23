@@ -106,8 +106,8 @@ public class CosmicDatabaseUserManagementProvider extends
             Collection current = getDetectorIds(s, group);
             Set toAdd = new HashSet(detectorIds);
             toAdd.removeAll(current);
-            Set toRemove = new HashSet(detectorIds);
-            toRemove.removeAll(current);
+            Set toRemove = new HashSet(current);
+            toRemove.removeAll(detectorIds);
             boolean ac = conn.getAutoCommit();
             try {
                 conn.setAutoCommit(false);
