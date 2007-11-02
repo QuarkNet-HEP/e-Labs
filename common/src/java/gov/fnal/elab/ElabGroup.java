@@ -77,7 +77,9 @@ public class ElabGroup {
      * the backing provider.
      */
     public void resetFirstTime() throws ElabException {
-        provider.resetFirstTime(this);
+        if (provider != null) {
+            provider.resetFirstTime(this);
+        }
     }
 
     /**
