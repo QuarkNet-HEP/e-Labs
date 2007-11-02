@@ -48,10 +48,7 @@
 }
 
 #header-title {
-	float: left;
-	font-family: Arial, sans-serif;
-	font-size: 200%;
-	padding-top: 4px;
+	display: none;
 }
 
 #header-current-user {
@@ -225,11 +222,11 @@ table#main {
 	width: 100%;
 }
 
-#login-form h2 {
+#content #login-form-text h2 {
 	font-weight: bold;
+	font-size: 100%;
 	text-align: center;
 	text-indent: 0px;
-	font-size: 120%;
 }
 
 #login-form-text p {
