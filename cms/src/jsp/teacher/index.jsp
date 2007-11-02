@@ -1,13 +1,12 @@
 <%@ include file="../include/elab.jsp" %>
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>CMS Elab Teacher Information</title>
-		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/style2.css" />
+		<link rel="stylesheet" type="text/css" href="../css/teacher.css" />
 	</head>
 
 	<body id="teacher" class="teacher">
@@ -49,7 +48,7 @@
 					students to share this data and associated analysis code with
 					students and other researchers.
 				</p>
-				<p> 
+				<p>
 					Students use a data base and analysis tool on the 
 					website. The Online Graphical ROOT Environment(OGRE) is the analysis 
 					tool used to analyze the data they have chosen for their study. Many 
@@ -193,7 +192,7 @@
 
 				<ul>
 					<li>
-						<A HREF="../assessment/rubric.html">Rubric</A> aligned to learner outcomes.
+						<a href="../assessment/rubric.html">Rubric</a> aligned to learner outcomes.
 					</li>
 					<li>
 						<a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
