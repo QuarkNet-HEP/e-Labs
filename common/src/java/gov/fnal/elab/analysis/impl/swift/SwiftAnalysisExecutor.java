@@ -98,7 +98,6 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 String home = getElab().getAbsolutePath("/WEB-INF/classes");
                 System.setProperty("swift.home", home);
                 ElementTree tree = getTree(getElab(), project);
-                tree.setName(projectName + "-" + runID);
                 tree.getRoot().setProperty(FlowElement.FILENAME, project);
                 ec = new VDL2ExecutionContext(tree, projectName);
                 ec.setArguments(argv);
