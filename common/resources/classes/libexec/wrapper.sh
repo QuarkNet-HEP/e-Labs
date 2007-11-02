@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 infosection() {
 	echo >>"$INFO"
@@ -24,6 +24,10 @@ info() {
 	cat /proc/meminfo 2>&1 >>"$INFO"
 }
 
+logstate() {
+	echo "Progress " `date +"%Y-%m-%e %H:%M:%S%z"` " $@" >>"$INFO"
+}
+
 log() {
 	echo "$@" >>"$INFO"
 }
@@ -31,7 +35,7 @@ log() {
 fail() {
 	EC=$1
 	shift
-	echo $@ >"$WFDIR/status/${ID}-error"
+	echo $@ >"$WFDIR/status/$JOBDIR/${ID}-error"
 	log $@
 	info
 	#exit $EC
@@ -75,13 +79,21 @@ WFDIR=$PWD
 INFO="wrapper.log"
 ID=$1
 checkEmpty "$ID" "Missing job ID"
-INFO=$WFDIR/info/${ID}-info
-rm -f "$INFO"
-infosection "Wrapper"
-DIR=$ID
 
-log "Options: $@"
 shift
+
+getarg "-jobdir" "$@"
+JOBDIR=$VALUE
+shift $SHIFTCOUNT
+
+checkEmpty "$JOBDIR" "Missing job directory prefix"
+mkdir -p $WFDIR/info/$JOBDIR
+INFO=$WFDIR/info/$JOBDIR/${ID}-info
+rm -f "$INFO"
+logstate "LOG_START"
+infosection "Wrapper"
+
+mkdir -p $WFDIR/status/$JOBDIR
 
 getarg "-e" "$@"
 EXEC=$VALUE
@@ -121,6 +133,8 @@ else
 	fail 254 "Missing arguments (-a option)"
 fi
 
+DIR=jobs/$JOBDIR/$ID
+
 PATH=$PATH:/bin:/usr/bin
 
 log "DIR=$DIR"
@@ -136,22 +150,26 @@ log "ARGS=$@"
 
 IFS="|"
 
+logstate "CREATE_JOBDIR"
 mkdir -p $DIR
 checkError 254 "Failed to create job directory $DIR"
 log "Created job directory: $DIR"
 
+logstate "CREATE_INPUTDIR"
 for D in $DIRS ; do
 	mkdir -p "$DIR/$D" 2>&1 >>"$INFO"
 	checkError 254 "Failed to create input directory $D"
 	log "Created output directory: $DIR/$D"
 done
 
+logstate "LINK_INPUTS"
 for L in $INF ; do
 	ln -s "$PWD/shared/$L" "$DIR/$L" 2>&1 >>"$INFO"
 	checkError 254 "Failed to link input file $L"
 	log "Linked input: $PWD/shared/$L to $DIR/$L"
 done
 
+logstate "EXECUTE"
 cd $DIR
 #ls >>$WRAPPERLOG
 if [ ! -f "$EXEC" ]; then
@@ -175,7 +193,7 @@ else
 		log "Kickstart executable ($KICKSTART) is not executable"
 		fail 254 "The Kickstart executable ($KICKSTART) does not have the executable bit set"
 	else
-		mkdir -p ../kickstart
+		mkdir -p $WFDIR/kickstart/$JOBDIR
 		log "Using Kickstart ($KICKSTART)"
 		if [ "$STDIN" == "" ]; then
 			"$KICKSTART" -H -o "$STDOUT" -e "$STDERR" "$EXEC" "$@" 1>kickstart.xml 2>"$STDERR"
@@ -183,15 +201,17 @@ else
 			"$KICKSTART" -H -o "$STDOUT" -i "$STDIN" -e "$STDERR" "$EXEC" "$@" 1>kickstart.xml 2>"$STDERR"
 		fi
 		export APPEXIT=$?
-		mv -f kickstart.xml "../kickstart/$ID-kickstart.xml" 2>&1 >>"$INFO"
+		mv -f kickstart.xml "$WFDIR/kickstart/$JOBDIR/$ID-kickstart.xml" 2>&1 >>"$INFO"
 		checkError 254 "Failed to copy Kickstart record to shared directory"
 		if [ "$APPEXIT" != "0" ]; then
 			fail $APPEXIT "Exit code $APPEXIT"
 		fi
 	fi
 fi
-cd ..
 
+cd $WFDIR
+
+logstate "EXECUTE_DONE"
 log "Job ran successfully"
 
 MISSING=
@@ -208,12 +228,17 @@ if [ "$MISSING" != "" ]; then
 	fail 254 "The following output files were not created by the application: $MISSING"
 fi
 
+logstate "COPYING_OUTPUTS"
 for O in $OUTF ; do
 	cp "$DIR/$O" "shared/$O" 2>&1 >>"$INFO"
 	checkError 254 "Failed to copy output file $O to shared directory"
 done
 
+logstate "RM_JOBDIR"
 rm -rf "$DIR" 2>&1 >>"$INFO"
 checkError 254 "Failed to remove job directory $DIR" 
 
-touch status/${ID}-success
+logstate "TOUCH_SUCCESS"
+touch status/${JOBDIR}/${ID}-success
+logstate "END"
+
