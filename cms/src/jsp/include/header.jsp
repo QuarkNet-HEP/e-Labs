@@ -9,6 +9,7 @@
 <div id="header-image-teacher">
 	<img src="../graphics/blast.jpg" alt="Teacher Header Image" />
 </div>
+<div id="header-title">CMS Test Beam e-Lab</div>
 <%
 	if (ElabGroup.isUserLoggedIn(session)) {
 		%>
