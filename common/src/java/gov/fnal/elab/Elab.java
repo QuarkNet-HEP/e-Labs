@@ -33,7 +33,9 @@ import javax.servlet.jsp.PageContext;
  */
 public class Elab {
     private static Map elabs;
-    private static Elab global; 
+    private static Elab global;
+    
+    private static int sid = 0;
 
     /**
      * Retrieves the Elab object associated with the given name or instantiates
@@ -209,6 +211,8 @@ public class Elab {
                     + "project.name='" + ElabUtil.fixQuotes(name) + "';");
             if (rs.next()) {
                 this.id = rs.getString(1);
+                int id = Integer.parseInt(this.id);
+                sid = Math.max(sid, id + 1);
             }
             else {
                 throw new ElabException("The project (" + name
@@ -218,7 +222,7 @@ public class Elab {
         catch (Exception e) {
         	System.out.println("Failed to update elab id for " + name + ". Using elab name as ID.");
         	e.printStackTrace();
-        	this.id = name;
+        	this.id = String.valueOf(sid++);
         }
         finally {
             DatabaseConnectionManager.close(conn, s);
