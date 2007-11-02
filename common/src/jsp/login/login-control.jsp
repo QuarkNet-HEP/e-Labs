@@ -6,7 +6,7 @@
 if (!ElabGroup.isUserLoggedIn(session)) {
 %>
 	<!-- not logged in -->
-	<div id="loginForm">
+	<div id="login-form">
 		<div id="login-form-header">
 			<h2>Log in</h2>
 		</div>
