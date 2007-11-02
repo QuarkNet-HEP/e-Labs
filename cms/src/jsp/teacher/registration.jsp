@@ -69,15 +69,6 @@
 			If you want to register them for new e-Labs as more become available, you need to use this page.
 		</td>
 	</tr>
-	<tr>
-		<td  valign="top">
-			<a href="update-group-detectorid.jsp">Update detector IDs for your group.</a>
-		</td>
-		<td valign="top">
-			When you analyze data in the Cosmic Ray Elab, most of the analyses need to know information 
-			about your detector. This page allows you to assign detector IDs to your group.
-		</td>
-	</tr>
 </table>
 
 			</div>
