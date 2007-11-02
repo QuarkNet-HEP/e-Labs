@@ -2,43 +2,91 @@
 	width: 100%;
 	background-color: black;
 	color: white;
-	height: 72px;
+	height: 80px;
 }
 
 #header-image {
 	display: none;
+	width: 0px;
+	height: 0px;
 }
 
 #header-image-teacher {
+	position: absolute;
 	display: block;
-	float: left;
-	margin-top: 4px;
+	left: 0px;
+	top: 8px;
+}
+
+#header-title {
+	display: block;
+	position: absolute;
+	font-family: Arial, sans-serif;
+	font-size: 200%;
+	padding-top: 4px;
+	left: 80px;
 }
 
 #nav {
-	top: 80px;
-	left: 0px;
-}
-
-#nav table {
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	top: 40px;
+	left: 80px;
 	width: 800px;
-	background-image: url("../graphics/spacer_button.jpg");
 }
 
-#nav td a {
-	width: 130px;
-	color: white;
-	background-image: url("../graphics/teacher-button-bg.jpg");
-	text-shadow: #000000 1px 2px 2px;
+#nav ul {
+	width: 100%;
+	float: right;
+	text-align: right;
+	/*border: 1px dashed white;*/
+	position: relative;
+	right: 0px;
+	margin: 0px;
+	padding-right: 0px;
+	padding-bottom: 4px;
 }
+
+#nav li {
+	display: inline;
+	text-align: center;
+	list-style: none;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+#nav a {
+	width: 130px;
+	height: auto;
+	color: white;
+	border: 1px solid black;
+	background-color: black;
+	background-image: none;
+	display: block;
+	float: left;
+	text-align: center;
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: bold;
+	margin-left: 4px;
+	margin-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
 
 #nav a:hover {
-	color: white;
-	background-image: url("../graphics/teacher-button-bg-hover.jpg");
-}
-
-#content {
-	margin-top: 48px;
+	color: black;
+	border-top: 1px solid #808080;
+	border-left: 1px solid #808080;
+	border-bottom: 1px solid #404040;
+	border-right: 1px solid #404040;
+	background-color: white;
 }
 
 #content h1 {
