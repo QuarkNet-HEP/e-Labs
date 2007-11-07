@@ -1,123 +1,345 @@
 <html>
-<head>
-	<title>Step-by-Step Instructions: Lifetime Study</title>
-</head>
-<body>
-<!-- include css style file -->
-<link rel="stylesheet"  href="include/styletut.css" type="text/css">
-<center><h2>Step-by-Step Instructions: Lifetime Study</h2>
-<h4><a href="#data_button">Data Button</a> -
-<a href="#flux_button">Lifetime Button</a> -
-<a href="#search_data">Searching Data Files</a> -
-<a href="#select_data">Selecting Data</a> -
-<a href="#analyzing">Analyzing</a><BR>
-<a href="#plot">The Plot</a> -
-<a href="#plot_controls">View Plot Controls</a> -
-<a href="#plot_controls2">Change Controls</a> -
-<a href="#better_plot">Better Plot</a><BR>
-<a href="#fit_controls">Set Fit Controls</a> -
-<a href="#better_plot2">Plot with Fit</a> -
-<a href="#saving_plot">Save Plot</a> -
-<a href="#finishing">Done</a>
-</h4></center>
+	<head>
+		<title>Step-by-Step Instructions: Lifetime Study</title>
+		<link rel="stylesheet" href="include/styletut.css" type="text/css" />
+	</head>
+	<body>
+		<!-- include css style file -->
+		<center>
+			<h2>Step-by-Step Instructions: Lifetime Study</h2>
+			<h4>
+				<a href="#data_button">Data Button</a> -
+				<a href="#flux_button">Lifetime Button</a> -
+				<a href="#search_data">Searching Data Files</a> -
+				<a href="#select_data">Selecting Data</a> -
+				<a href="#analyzing">Analyzing</a><BR>
+				<a href="#plot">The Plot</a> -
+				<a href="#plot_controls">View Plot Controls</a> -
+				<a href="#plot_controls2">Change Controls</a> -
+				<a href="#better_plot">Better Plot</a><BR>
+				<a href="#fit_controls">Set Fit Controls</a> -
+				<a href="#better_plot2">Plot with Fit</a> -
+				<a href="#saving_plot">Save Plot</a> -
+				<a href="#finishing">Done</a>
+			</h4>
+		</center>
 
-
-<center><table width="480" cellpadding="4" cellspacing="4">
-<tr><td colspan="2">Keep two windows open, one with these instructions and the other with the actual web pages. Go back and forth between them.  Use the scroll bar to move the instructions.
- Look for the orange highlights for guidance.<BR>
-  <P>Our goal here is to recreate the first plot used as Figure 1 in the poster titled "Possible Particle Decays". You can access it from posters.  The data for this plot is from Walta (but listed under Fermilab) and dated 8/19/2003</A></td></tr>
-
-</td></tr>
-<tr><td colspan="2" height="16"><A Name="data_button"> </A></td></tr>
-<tr align="left" valign="top"><td width="50" >Step 1:</td><td>Click on the Data button in the main menu.</td></tr>
-<tr align="left" valign="top"><td colspan="2"><IMG src="../graphics/tryPerf/data_menu_75.gif"></td></tr>
-
-<tr><td colspan="2" height="16"><A Name="lifetime_button"> </A></td></tr>
-<tr><td >Step 2:</td><td>Click on the Lifetime button in the submenu.</td></tr>
-<tr><td colspan="2"><IMG src="../graphics/lifetime_menu_75.gif"></td></tr>
-
-
-<tr><td colspan="2" height="16"><A Name="search_data"> </A></td></tr>
-<tr><td valign="top">Step 3.1:</td><td>Look at the search page. Notice that you can go to a tutorial on the lifetime study or these step-by-step instructions. The legend shows icons for information about each data file. Stacked data comes from scintillators that are stacked; Unstacked data is for scintillators setup as an array. You can click on the Comments icon to see or add comments on a data file.</td></tr>
-<tr><td colspan="2"><IMG src="../graphics/tryPerf/lifetime_search_data1.gif"></td></tr>
-
-
-<tr><td colspan="2" height="16"> </A></td></tr>
-<tr><td valign="top">Step 3.2:</td><td>Search first for a data file from Fermilab with date starting with 8/19/2003. <BR>a) Select <b>School</b> in the pulldown list<br>b) Enter <b>Fermilab</b> in the search field<BR>
-b) Click on the little arrow next to "Advanced Search".</td></tr>
-<tr><td colspan="2"><IMG src="../graphics/tryPerf/perf_search_data1_5.gif"></td></tr>
-
-<tr><td colspan="2" height="16"></A></td></tr>
-<tr><td valign="top">Step 3.3:</td><td>a) Select <b>Start Date</b> in the pulldown list for dates and enter "8/19/2003" in the first date field.
-<br>b) Click <b>Search Data</b></td></tr>
-<tr><td colspan="2"><IMG src="../graphics/tryPerf/lifetime_search_data2.gif"></td></tr>
-
-<tr><td colspan="2" height="16"></A></td></tr>
-<tr><td valign="top">Step 3.4:</td><td>a) Click on the little arrow next to "Fermilab" to see the data files associated with Fermilab.
-</td></tr>
-<tr><td colspan="2"><IMG src="../graphics/tryPerf/lifetime_search_data3.gif"></td></tr>
-
-<tr><td colspan="2" height="16"></A></td></tr>
-<tr><td valign="top">Step 3.5:</td><td>a) Click on the little arrow next to "August 2003" to see the data files for that month.
-</td></tr>
-<tr><td colspan="2"><IMG src="../graphics/tryPerf/lifetime_search_data4.gif"></td></tr>
-
-<tr><td colspan="2" height="16"></A></td></tr>
-<tr><td valign="top">Step 3.6:</td><td>  Hover over "Thu 19" to see additional information about the data on that date. Notice that channels 1,2, and 4 have good data.</td></tr>
-<tr><td colspan="2"><IMG src="../graphics/tryPerf/lifetime_search_data5.gif"></td></tr>
-
-
-<tr><td colspan="2" height="16"><A Name="select_data"> </A></td></tr>
-<tr><td valign="top">Step 4:</td><td>a) Select the data file labeled <b>Tues 19</b> by clicking on its checkbox<br> b) Click <b>Run lifetime study</b> on the right.
-<tr><td colspan="2"><IMG src="../graphics/tryPerf/lifetime_choose_data.gif"></td></tr>
-
-<tr><td colspan="2" height="16"><A Name="analyzing"> </A></td></tr>
-<tr><td valign="top">Step 5:</td><td>Look at the number of events in each channel. The default analysis parameters are set to a coincidence level of 1, checking the energy of the second pulse and a gate width of 1e<sup>-5</sup> seconds.<BR> Click on the questions mark button <IMG SRC="graphics/question.gif" border="0"> to learn more about each of these.
-<br>Click <b>Analyze</b> to use the default parameters.</td></tr>
-<tr><td colspan="2"><IMG src="../graphics/tryPerf/choose_parameters_lifetime_60.gif"></td></tr>
-
-<tr><td colspan="2" height="16"><A Name="plot"> </A></td></tr>
-<tr><td valign="top">Step 6:</td><td>Here's the graph of the lifetime (Number of decays vs. the length in microseconds.)  The longer it takes to decay, the fewer the number of decays.
-<br>Click <b>Change</b> to change the parameters for the analysis.</td></tr>
-<tr><td colspan="2"><IMG src="../graphics/tryPerf/lifetime_plot.gif"></td></tr>
-
-<tr><td colspan="2" height="16"><A Name="plot_controls"> </A></td></tr>
-<tr><td valign="top">Step 7:</td><td>The plot in the poster has the following analysis parameters:<BR>Coincidence level=2, Check energy of 2nd pulse = No, Gate width: 1 e-4 seconds, and Number of Bins: 60.  <BR>a) Choose 2 in the pulldown list for coincidence level.<BR>b) Select <b>No</b> for Check energy of 2nd pulse<BR>c) Change the Gate width to <b>1 e<sup>-4</sup></b>.<BR>d) To recreate the plot, you will need to use the plot controls.<br>Click on the small arrow to view the Plot Controls.</td></tr>
-<tr><td colspan="2"><IMG src="../graphics/tryPerf/plot_controls_lifetime.gif"></td></tr>
-
-<tr><td colspan="2" height="16"><A Name="plot_controls2"> </A></td></tr>
-<tr><td valign="top">Step 8:</td><td>a) Enter <b>60</b> for the number of bins <BR>b) Enter <b>20</b> for X-max<BR>c) Click <b>Analyze</b>.</td></tr>
-<tr><td colspan="2"><IMG src="../graphics/tryPerf/choose_parameters2_lifetime.gif"></td></tr>
-
-<tr><td colspan="2" height="16"><A Name="better_plot"> </A></td></tr>
-<tr><td valign="top">Step 9:</td><td>Notice this plot is getting closer to what we want. We now want to add the fit controls.<br>Click <b>Change<b> parameters and go back to the page where you set parameters for the analysis.
-</td></tr>
-<tr><td colspan="2"><IMG src="../graphics/tryPerf/better_plot_lifetime.gif"></td></tr>
-
-<tr><td colspan="2" height="16"><A Name="fit_controls"> </A></td></tr>
-<tr><td valign="top">Step 10:</td><td>The plot in the poster has the following fit parameters:<BR>X-min of fit: 0.2, X-max of fit: 20 and all initial guesses set to blank and fit parameters to Yes. <BR>a) Click the little arrow to view the Fit Controls.<BR>b) Select <b>Yes</b> for <b>Fitting Turned On</b><BR>c) Set <b>X-min of fit</b> to .2.<BR>d) Set <b>X-max of fit</b> to 20.<br>e) Set <b>Fit Y-intercept</b>, <B>Fit Lifetime</b> and <b>Fit Background</b> to <b>Yes</b><BR>f) Clear all the fitting fields. (Alpha, Lifetime, Background).<BR>g) Click <b>Analyze</b></td></tr>
-<tr><td colspan="2"><IMG src="../graphics/tryPerf/choose_parameters4_lifetime.gif"></td></tr>
-
-
-<tr><td colspan="2" height="16"><A Name="better_plot2"> </A></td></tr>
-<tr><td valign="top">Step 11:</td><td>Now we have a fit to our curve. This is the plot we want to save.
-</td></tr>
-<tr><td colspan="2"><IMG src="../graphics/tryPerf/plot_better2_lifetime.gif"></td></tr>
-
-<tr><td colspan="2" height="16"><A Name="saving_plot"> </A></td></tr>
-<tr><td valign="top">Step 12:</td><td>Enter a name for the plot similar, but not the same as the one shown and click <b>Save Plot.</B> If you do this tutorial more than once, choose another name for the plot.<BR> 
-You will have access to this plot for your poster.
-</td></tr>
-<tr><td colspan="2"><IMG src="../graphics/tryPerf/save_plot_lifetime.gif"></td></tr>
-
-<tr><td colspan="2" height="16"><A Name="finishing"> </A></td></tr>
-<tr><td valign="top">Step 13:</td><td>Note you have successfully saved your plot and click <b>Close</b>.<BR>
-You can do more plots for other channels or go back to choosing a new data set by clicking <b>Lifetime</b>. Anytime you can click <b>View Plots</b> to see the plots you have made.
-</td></tr>
-<tr><td colspan="2"><IMG src="../graphics/tryPerf/save_plot_done_lifetime.gif"></td></tr>
-
-
-</table>
-</center>
-</body>
+		<center>
+			<table width="480" cellpadding="4" cellspacing="4">
+				<tr>
+					<td colspan="2">
+							Keep two windows open, one with these instructions and the other with 
+							the actual web pages. Go back and forth between them.  Use the scroll 
+							bar to move the instructions.
+ 							Look for the orange highlights for guidance.<br>
+  							<p>Our goal here is to recreate the first plot used as Figure 1 in the
+  							 poster titled "Possible Particle Decays". You can access it from 
+  							 posters.  The data for this plot is from Walta (but listed under 
+  							 Fermilab) and dated 8/19/2003</p>
+  						</td>
+  					</tr>
+				<tr>
+					<td colspan="2" height="16"><a name="data_button"></a></td>
+				</tr>
+				<tr align="left" valign="top">
+					<td width="50" >Step 1:</td>
+					<td>Click on the Data button in the main menu.</td>
+				</tr>
+				<tr align="left" valign="top">
+					<td colspan="2">
+						<img src="../graphics/tryPerf/data_menu_75.gif">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" height="16"><a name="lifetime_button"> </A></td>
+				</tr>
+				<tr>
+					<td>Step 2:</td>
+					<td>Click on the Lifetime button in the submenu.</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<img src="../graphics/lifetime_menu_75.gif">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" height="16">
+						<a name="search_data"> </a><
+					/td>
+				</tr>
+				<tr>
+					<td valign="top">Step 3.1:</td>
+					<td>
+						Look at the search page. Notice that you can go to a tutorial 
+						on the lifetime study or these step-by-step instructions. The 
+						legend shows icons for information about each data file. 
+						Stacked data comes from scintillators that are stacked; 
+						Unstacked data is for scintillators setup as an array. You can 
+						click on the Comments icon to see or add comments on a data 
+						file.
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<img src="../graphics/tryPerf/lifetime_search_data1.gif">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" height="16"></td>
+				</tr>
+				<tr>
+					<td valign="top">Step 3.2:</td>
+					<td>
+						Search first for a data file from Fermilab with date starting with 
+						8/19/2003. 
+						<BR>a) Select <b>School</b> in the pulldown list
+						<br>b) Enter <b>Fermilab</b> in the search field
+						<BR>c) Click on the little arrow next to "Advanced Search".
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2"><img src="../graphics/tryPerf/perf_search_data1_5.gif"></td>
+				</tr>
+				<tr>
+					<td colspan="2" height="16"></td>
+				</tr>
+				<tr>
+					<td valign="top">Step 3.3:</td>
+					<td>
+						a) Select <b>Start Date</b> in the pulldown list for dates and 
+						enter "8/19/2003" in the first date field.
+						<br>b) Click <b>Search Data</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<img src="../graphics/tryPerf/lifetime_search_data2.gif">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" height="16"></td>
+				</tr>
+				<tr>
+					<td valign="top">Step 3.4:</td>
+					<td>
+						a) Click on the little arrow next to "Fermilab" to see the data 
+						files associated with Fermilab.
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<img src="../graphics/tryPerf/lifetime_search_data3.gif">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" height="16"></td>
+				</tr>
+				<tr>
+					<td valign="top">Step 3.5:</td>
+					<td>
+						a) Click on the little arrow next to "August 2003" to see the 
+						data files for that month.
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<img src="../graphics/tryPerf/lifetime_search_data4.gif">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" height="16"></td>
+				</tr>
+				<tr>
+					<td valign="top">Step 3.6:</td>
+					<td>
+						Hover over "Thu 19" to see additional information about the 
+						data on that date. Notice that channels 1,2, and 4 have good 
+						data.
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<img src="../graphics/tryPerf/lifetime_search_data5.gif">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" height="16"><a name="select_data"> </a></td>
+				</tr>
+				<tr>
+					<td valign="top">Step 4:</td>
+					<td>
+						a) Select the data file labeled <b>Tues 19</b> by clicking 
+						on its checkbox
+						<br> b) Click <b>Run lifetime study</b> on the right.
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<img src="../graphics/tryPerf/lifetime_choose_data.gif">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" height="16"><a name="analyzing"> </a></td>
+				</tr>
+				<tr>
+					<td valign="top">Step 5:</td>
+					<td>
+						Look at the number of events in each channel. The default 
+						analysis parameters are set to a coincidence level of 1, 
+						checking the energy of the second pulse and a gate width 
+						of 1e<sup>-5</sup> seconds.<BR> Click on the questions mark 
+						button <img src="graphics/question.gif" border="0"> to learn 
+						more about each of these.
+						<br>Click <b>Analyze</b> to use the default parameters.
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<img src="../graphics/tryPerf/choose_parameters_lifetime_60.gif">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" height="16"><a name="plot"> </a></td>
+				</tr>
+				<tr>
+					<td valign="top">Step 6:</td>
+					<td>
+						Here's the graph of the lifetime (Number of decays vs. the 
+						length in microseconds.)  The longer it takes to decay, the 
+						fewer the number of decays.
+						<br>Click <b>Change</b> to change the parameters for the 
+						analysis.
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2"><img src="../graphics/tryPerf/lifetime_plot.gif"></td>
+				</tr>
+				<tr>
+					<td colspan="2" height="16"><a name="plot_controls"> </a></td>
+				</tr>
+				<tr>
+					<td valign="top">Step 7:</td>
+					<td>
+						The plot in the poster has the following analysis parameters:
+						<br>Coincidence level=2, Check energy of 2nd pulse = No, Gate 
+						width: 1 e-4 seconds, and Number of Bins: 60.  
+						<br>a) Choose 2 in the pulldown list for coincidence level.
+						<br>b) Select <b>No</b> for Check energy of 2nd pulse<br>c) Change 
+						the Gate width to <b>1 e<sup>-4</sup></b>.<BR>d) To recreate the 
+						plot, you will need to use the plot controls.<br>Click on the small 
+						arrow to view the Plot Controls.
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2"><img src="../graphics/tryPerf/plot_controls_lifetime.gif"></td>
+				</tr>
+				<tr>
+					<td colspan="2" height="16"><a name="plot_controls2"> </a></td>
+				</tr>
+				<tr>
+					<td valign="top">Step 8:</td>
+					<td>
+						a) Enter <b>60</b> for the number of bins 
+						<br>b) Enter <b>20</b> for X-max
+						<br>c) Click <b>Analyze</b>.
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<img src="../graphics/tryPerf/choose_parameters2_lifetime.gif">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" height="16"><a name="better_plot"> </a></td>
+				</tr>
+				<tr>
+					<td valign="top">Step 9:</td>
+					<td>
+						Notice this plot is getting closer to what we want. We now 
+						want to add the fit controls.<br>Click <b>Change</b> parameters
+						and go back to the page where you set parameters for the 
+						analysis.
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<img src="../graphics/tryPerf/better_plot_lifetime.gif">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" height="16"><a name="fit_controls"> </a></td>
+				</tr>
+				<tr>
+					<td valign="top">Step 10:</td>
+					<td>
+						The plot in the poster has the following fit parameters:
+						<br>X-min of fit: 0.2, X-max of fit: 20 and all initial guesses
+						 set to blank and fit parameters to Yes. 
+						<br>a) Click the little arrow to view the Fit Controls.
+						<br>b) Select <b>Yes</b> for <b>Fitting Turned On</b>
+						<br>c) Set <b>X-min of fit</b> to .2.
+						<br>d) Set <b>X-max of fit</b> to 20.
+						<br>e) Set <b>Fit Y-intercept</b>, <B>Fit Lifetime</b> and 
+						<b>Fit Background</b> to <b>Yes</b>
+						<br>f) Clear all the fitting fields. (Alpha, Lifetime, Background).
+						<br>g) Click <b>Analyze</b>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<img src="../graphics/tryPerf/choose_parameters4_lifetime.gif">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" height="16"><a name="better_plot2"> </a></td>
+				</tr>
+				<tr>
+					<td valign="top">Step 11:</td>
+					<td>
+						Now we have a fit to our curve. This is the plot we want to save.
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<img src="../graphics/tryPerf/plot_better2_lifetime.gif">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" height="16"><a name="saving_plot"> </a></td>
+				</tr>
+				<tr>
+					<td valign="top">Step 12:</td>
+					<td>
+						Enter a name for the plot similar, but not the same as the one 
+						shown and click <b>Save Plot.</B> If you do this tutorial more 
+						than once, choose another name for the plot.
+						<br>You will have access to this plot for your poster.
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<img src="../graphics/tryPerf/save_plot_lifetime.gif">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" height="16"><a name="finishing"> </a></td>
+				</tr>
+				<tr>
+					<td valign="top">Step 13:</td>
+					<td>
+						Note you have successfully saved your plot and click 
+						<b>Close</b>.
+						<br>You can do more plots for other channels or go back to choosing
+						 a new data set by clicking <b>Lifetime</b>. Anytime you can click 
+						 <b>View Plots</b> to see the plots you have made.
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<img src="../graphics/tryPerf/save_plot_done_lifetime.gif">
+					</td>
+				</tr>
+			</table>
+		</center>
+	</body>
 </html>
