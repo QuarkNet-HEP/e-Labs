@@ -168,6 +168,9 @@
 				<%
 			}
 			request.setAttribute("startDate", sef.format(startdate));
+			if (enddate == null) {
+				enddate = startdate;
+			}
 			request.setAttribute("endDate", sef.format(enddate));
 			//trim off extra ", " in Strings
 			rawDataString = rawDataString.substring(0, rawDataString.length()-2);
