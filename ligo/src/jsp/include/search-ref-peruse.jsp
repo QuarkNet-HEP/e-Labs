@@ -1,5 +1,5 @@
-<P><center>
-    
+<P><div align="center">
+
 <%
 //form action: where does "submit" take you?
 String itemName="";
@@ -17,16 +17,14 @@ if(searchFunction == null){
 %>
 <TABLE WIDTH=800 CELLPADDING=4>
 
-<TR><TD   BGCOLOR="#99cccc">
-<FONT SIZE=+1 FACE=ARIAL color=black><B>View <%=referenceText%>.</B>
-</TD></TR>
+<TR><TD class="library_header">View <%=referenceText%>.</TD></TR>
 </TABLE>
 
 
 
 </table>
 <BR>
-<a href="?t=reference&f=peruse">View Resources for Study Guide</a> -
+<a href="?t=reference&f=peruse">View References for Study Guide</a> -
     <a href="?t=glossary&f=peruse">View Glossary</a>
 </center>
 
@@ -106,3 +104,5 @@ MetaFormat mf = new MetaFormat();
     </table>
 </form>
 </font>
+
+</div>
