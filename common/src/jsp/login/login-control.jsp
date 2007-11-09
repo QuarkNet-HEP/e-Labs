@@ -44,25 +44,27 @@ if (!ElabGroup.isUserLoggedIn(session)) {
 	else {
 %>
 	<!-- yes logged in -->
-	<div id="login-form-header">
-		<h2>Logout</h2>
-	</div>
-	<div id="login-form-contents">
-		<form method="post" action="../login/logout.jsp">
-			<table>
-				<tr>
-					<td class="form-label">
-						If you are not 
-						<span class="username"><%=ElabGroup.getUser(session).getName()%></span>,
-					</td>
-				</tr>
-				<tr>
-					<td class="form-label">
-						<input type="submit" name="logout" value="Logout" />
-					</td>
-				</tr>
-			</table>
-		</form>
+	<div id="login-form">
+		<div id="login-form-header">
+			<h2>Logout</h2>
+		</div>
+		<div id="login-form-contents">
+			<form method="post" action="../login/logout.jsp">
+				<table>
+					<tr>
+						<td class="form-label">
+							If you are not 
+							<span class="username"><%=ElabGroup.getUser(session).getName()%></span>,
+						</td>
+					</tr>
+					<tr>
+						<td class="form-label">
+							<input type="submit" name="logout" value="Logout" />
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
 	</div>
 <%
 	}
