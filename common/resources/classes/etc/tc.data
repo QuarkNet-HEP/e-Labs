@@ -17,6 +17,8 @@ localhost 	grep 		/bin/grep	INSTALLED	INTEL32::LINUX	null
 localhost 	sort 		/bin/sort	INSTALLED	INTEL32::LINUX	null
 localhost 	paste 		/bin/paste	INSTALLED	INTEL32::LINUX	null
 
+# Cosmic
+
 localhost	ThresholdTimes	/home/mike/work/i2u2/apps/ThresholdTimes.pl	INSTALLED       INTEL32::LINUX null
 localhost	WireDelay		/home/mike/work/i2u2/apps/WireDelay.pl		INSTALLED       INTEL32::LINUX null
 localhost	Combine			/home/mike/work/i2u2/apps/Combine.pl		INSTALLED       INTEL32::LINUX null
@@ -46,3 +48,6 @@ teraport	ExtraFunctions	/home/mike/work/i2u2/apps/ExtraFunctions.pl	INSTALLED   
 teraport	EventSearch		/home/mike/work/i2u2/apps/EventSearch.pl	INSTALLED       INTEL32::LINUX null
 teraport	EventChoice		/home/mike/work/i2u2/apps/EventChoice.pl	INSTALLED       INTEL32::LINUX null
 
+# LIGO
+
+teraport 	plot1Chan		/home/myers/i2u2/tla_dev/root/plot1Chan.sh	INSTALLED		INTEL32::LINUX null
