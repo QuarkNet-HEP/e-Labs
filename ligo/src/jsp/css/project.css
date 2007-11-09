@@ -1,0 +1,24 @@
+h1 {
+	background-color: black;
+	color: white;
+}
+
+#nav li a {
+	width: 160px;
+	color: white;
+	border: 2px solid black;
+	background-color: black;
+}
+
+#nav li a:hover {
+	color: red;
+	text-decoration: underline;
+}
+
+.centered img {
+	padding: 8px;
+}
+
+#footer {
+	margin-top: 24px;
+}

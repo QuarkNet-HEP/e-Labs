@@ -1,0 +1,43 @@
+#top {
+	width: 100%;
+	background-color: black;
+	color: white;
+	height: 96px;
+}
+
+#header-image img {
+	height: 96px;
+}
+
+#nav li a {
+	width: 130px;
+	color: white;
+	border: 1px solid black;
+	background-color: black;
+}
+
+#nav a:hover {
+	color: black;
+	border-top: 1px solid #808080;
+	border-left: 1px solid #808080;
+	border-bottom: 1px solid #404040;
+	border-right: 1px solid #404040;
+	background-color: white;
+}
+
+#content h1 {
+	background-color: black;
+	color: white;
+}
+
+#content h2 {
+	font-size: 120%;
+}
+
+#content p {
+	margin-left: 20px;
+}
+
+#content ul {
+	margin-left: 10px;
+}

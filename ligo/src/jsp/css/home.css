@@ -1,0 +1,84 @@
+.home #center h2 {
+	width: 40%;
+	padding-bottom: 6px;
+	border-bottom: solid 2px #666666;
+	margin-left: 0px;
+	font-family: verdana, arial, sans-serif;
+	font-weight: bold;
+	font-size: 120%;
+	color: #333399;
+}
+
+.home #center h3 {
+	font-weight: bold;
+	font-size: 120%;
+	margin-left: 10px;
+}
+
+.home #center p {
+	font-weight: normal;
+	margin-left: 10px;
+}
+
+.home #center ul {
+	padding-left: 10px;
+	padding-top: 6px;
+}
+
+.home #center ul ul ul li {
+	font-weight: normal;
+}
+
+.home #center li:before {
+	color: #b0b0b0;
+}
+
+.home #center li {
+	list-style: url("../graphics/gray-disc.gif") disc;
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+a.button {
+	background-color: #ff2040;
+	border: ridge 4px #8080af;
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	color: black;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+.home dt {
+	font-weight: bold;
+}
+
+.home dd {
+	padding-bottom: 6px;
+}
+
+#nav {
+	width: 100%;
+	height: 20px;
+}
+
+.float-right {
+	text-align: center;
+	float: right;
+	margin-top: 16px;
+	padding-top: 16px;
+	margin-right: 16px;
+	margin-left: 8px;
+}
+
+#first-web #center em {
+	color: #333399;
+	font-weight: bold;
+	font-style: normal;
+}
+
+#first-web #center p {
+	padding-bottom: 4px;
+}
