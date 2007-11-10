@@ -7,7 +7,7 @@
 
 
 <c:choose>
-	<c:when test="${param.continuation != null}">
+	<c:when test="${param.continuation != null && param.continuation != ''}">
 		<%
 			String cont = request.getParameter("continuation");
 			if (cont.indexOf("?") == -1) {
