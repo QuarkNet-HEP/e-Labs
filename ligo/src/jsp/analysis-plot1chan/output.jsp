@@ -34,6 +34,10 @@
 			Output is in <a href="${results.outputDirURL}/${results.analysis.parameters.output}">${results.outputDir}/${results.analysis.parameters.output}</a>			
 		</p>
 		<p>
+			But since this particular Tomcat instance is not configured to allow directory listings, here's the output image:
+			<img src="${results.outputDirURL}/0_1.jpg" alt="" />
+		</p>
+		<p>
 			Continuation is <a href="${param.continuation}">${param.continuation}</a>
 		</p>
 		<p>
