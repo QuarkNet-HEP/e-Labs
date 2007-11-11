@@ -493,12 +493,22 @@ undeploy:
 			<arg value="${container.home}/${webapps}/elab/${elab.name}/test"/>
 		</exec>
 	</target>
+	
+	<!-- ================================= 
+		target: deploy-elab
+		================================= -->
+	
+	<target name="deploy-i2u2">
+		<copy toDir="${container.home}/${webapps}/ROOT">
+			<fileset dir="i2u2" includes="*.*"/> 
+		</copy>		
+	</target>
 
 	<!-- ================================= 
 		target: deploy-all
 		================================= -->
 
-	<target name="deploy-all" depends="deploy-cosmic, deploy-cms, deploy-ligo, deploy-embedded">
+	<target name="deploy-all" depends="deploy-cosmic, deploy-cms, deploy-ligo, deploy-embedded, deploy-i2u2">
 	</target>
 	
 	<!-- ================================= 
