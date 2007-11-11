@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Cosmic Project Page</title>
+		<title>CMS Project Page</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/project.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/three-column.css"/>
@@ -32,7 +32,7 @@
 	<tr>
 		<td>
 			<div id="left">
-				<img src="../graphics/crop.jpg"/>
+				<img src="../graphics/collision.gif"/>
 			</div>
 		</td>
 		

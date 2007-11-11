@@ -35,7 +35,7 @@
 	<tr>
 		<td>
 			<div id="left">
-				<img src="../graphics/collision.gif" alt="Collision" />
+				<img src="../graphics/final_animation_small.gif" alt="Collision" />
 			</div>
 		</td>
 		<td>
