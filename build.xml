@@ -501,7 +501,10 @@ undeploy:
 	<target name="deploy-i2u2">
 		<copy toDir="${container.home}/${webapps}/ROOT">
 			<fileset dir="i2u2" includes="*.*"/> 
-		</copy>		
+		</copy>
+		<copy toDir="${container.home}/${webapps}">
+			<fileset dir="i2u2" excludes="*.*"/> 
+		</copy>
 	</target>
 
 	<!-- ================================= 
