@@ -3,7 +3,7 @@
 <%
 	if (session.getAttribute("session:valid") == null) {
 		Cookie cookie = new Cookie("JSESSIONID", session.getId());
-    	cookie.setPath("/elab");
+    	cookie.setPath("/" + elab.getProperties().getProperty("elab.webapp") + "/embedded");
 	    response.addCookie(cookie);
 	    session.setAttribute("session:valid", Boolean.TRUE);
 	}
