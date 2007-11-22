@@ -7,6 +7,7 @@ import gov.fnal.elab.Elab;
 import gov.fnal.elab.datacatalog.query.CatalogEntry;
 import gov.fnal.elab.datacatalog.query.ResultSet;
 import gov.fnal.elab.util.ElabException;
+import gov.fnal.elab.util.ElabUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -127,6 +128,27 @@ public class AnalysisParameterTools {
             }
         }
         return channels;
+    }
+    
+    public static final Double DEFAULT_CPLD_FREQUENCY = new Double(41666667);
+    
+    public static String getCpldFrequencies(Elab elab, Collection files)
+            throws ElabException {
+        ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
+        List freqs = new ArrayList();
+        Iterator i = rs.iterator();
+        while (i.hasNext()) {
+            CatalogEntry e = (CatalogEntry) i.next();
+            if (e == null) {
+                continue;
+            }
+            Double freq = (Double) e.getTupleValue("cpldfrequency");
+            if (freq == null) {
+                freq = DEFAULT_CPLD_FREQUENCY;
+            }
+            freqs.add(freq);
+        }
+        return ElabUtil.join(freqs, " ");
     }
 
 }

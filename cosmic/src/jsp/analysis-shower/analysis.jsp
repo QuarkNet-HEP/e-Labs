@@ -17,6 +17,7 @@
 			String ids = AnalysisParameterTools.getDetectorIds(rawData);
 			List wd = AnalysisParameterTools.getWireDelayFiles(elab, rawData);
 			List geo = AnalysisParameterTools.getGeometryFiles(elab, rawData);
+			String cpldfreqs = AnalysisParameterTools.getCpldFrequencies(elab, rawData);
 
 			%>
 	        <e:trdefault name="thresholdAll" value="<%= thresholdData %>"/>
@@ -24,6 +25,7 @@
 			<e:trdefault name="detector" value="<%= ids %>"/>
 			<e:trdefault name="geoDir" value="${elab.properties['data.dir']}"/>
 			<e:trdefault name="geoFiles" value="<%= geo %>"/>
+			<e:trdefault name="cpldfreqs" value="<%= cpldfreqs %>"/>
 			<%
 		}
 	%>

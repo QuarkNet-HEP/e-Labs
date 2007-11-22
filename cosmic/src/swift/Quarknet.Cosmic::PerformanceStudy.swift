@@ -6,9 +6,9 @@ type AxisParams {
 	string label;
 }
 
-(File thresholdData[]) ThresholdTimes(File rawData[], string detector) {
+(File thresholdData[]) ThresholdTimes(File rawData[], string detector, string cpldfreqs) {
 	app {
-		ThresholdTimes @filename(rawData) @filename(thresholdData) detector;
+		ThresholdTimes @filename(rawData) @filename(thresholdData) detector cpldfreqs;
 	}
 }
 
@@ -65,6 +65,7 @@ File thresholdAll[] <fixed_array_mapper;files=@arg("thresholdAll")>;
 File combineOut;
 
 string detector = @arg("detector");
+string cpldfreqs = @arg("cpldfreqs");
 
 string freq_binType = @arg("freq_binType");
 string freq_binValue = @arg("freq_binValue");
@@ -99,7 +100,7 @@ string singlechannel_channel = @arg("singlechannel_channel");
 
 
 //the actual workflow
-thresholdAll = ThresholdTimes(rawData, detector);
+thresholdAll = ThresholdTimes(rawData, detector, cpldfreqs);
 combineOut = Combine(thresholdAll);
 singleChannelOut = SingleChannel(combineOut, singlechannel_channel);
 freqOut = Frequency(singleChannelOut, freq_binType, freq_binValue, freq_col);

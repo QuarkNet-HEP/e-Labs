@@ -7,9 +7,9 @@ type AxisParams {
 }
 
 //I like File[] better
-(File thresholdData[]) ThresholdTimes(File rawData[], string detector) {
+(File thresholdData[]) ThresholdTimes(File rawData[], string detector, string cpldfreqs) {
 	app {
-		ThresholdTimes @filename(rawData) @filename(thresholdData) detector;
+		ThresholdTimes @filename(rawData) @filename(thresholdData) detector cpldfreqs;
 	}
 }
 
@@ -81,6 +81,7 @@ File rawData[] <fixed_array_mapper;files=@arg("rawData")>;
 File thresholdAll[] <fixed_array_mapper;files=@arg("thresholdAll")>;
 File wireDelayData[] <fixed_array_mapper;files=@arg("wireDelayData")>;
 string detector = @arg("detector");
+string cpldfreqs = @arg("cpldfreqs");
 File combineOut;
 File fluxOut;
 File singlechannelOut <single_file_mapper;file=@arg("singlechannelOut")>;
@@ -125,7 +126,7 @@ string sort_sortKey2 = @arg("sort_sortKey2");
 
 
 //the actual workflow
-thresholdAll = ThresholdTimes(rawData, detector);
+thresholdAll = ThresholdTimes(rawData, detector, cpldfreqs);
 wireDelayData = WireDelay(thresholdAll, geoDir, geoFiles);
 combineOut = Combine(wireDelayData);
 singleChannelOut = SingleChannel(combineOut, singlechannel_channel);

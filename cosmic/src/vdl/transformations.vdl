@@ -69,6 +69,7 @@ TR Quarknet.Cosmic::Lifetime(
 TR Quarknet.Cosmic::LifetimeStudy(
 	inout combineOut,
 	none detector,
+	none cpldfreqs,
 	none extraFun_alpha_guess,
 	none extraFun_alpha_variate,
 	none extraFun_constant_guess,
@@ -118,6 +119,7 @@ TR Quarknet.Cosmic::LifetimeStudy(
   inout svg=@{inout:"plot.svg"};
   call Quarknet.Cosmic::ThresholdTimes(
 	detector=${none:detector},
+	cpldfreqs=${cpldfreqs},
     rawData=${input:rawData},
 	thresholdAll=${output:thresholdAll} );
   call Quarknet.Cosmic::WireDelay(
@@ -194,6 +196,7 @@ TR Quarknet.Cosmic::LifetimeStudy(
 
 TR Quarknet.Cosmic::PerformanceStudy(
 	none detector, 
+	none cpldfreqs,
 	none freq_binType, 
 	none freq_binValue, 
 	none freq_col, 
@@ -226,6 +229,7 @@ TR Quarknet.Cosmic::PerformanceStudy(
   
   call Quarknet.Cosmic::ThresholdTimes(
 	detector=${none:detector},
+	cpldfreqs=${cpldfreqs},
 	rawData=${input:rawData},
 	thresholdAll=${output:thresholdAll} );
   call Quarknet.Cosmic::Combine(
@@ -332,11 +336,13 @@ TR Quarknet.Cosmic::Sort(
 TR Quarknet.Cosmic::ThresholdTimes(
     input rawData[],
     output thresholdAll[],
-    none detector[] )
+    none detector[],
+    none cpldfreqs )
 {	
     argument = "'" ${rawData} "'";
     argument = " '" ${thresholdAll} "'";
     argument = " '" ${detector} "'";
+    argument = " '" ${cpldfreqs} "'";
 }
 
 TR Quarknet.Cosmic::WireDelay(
@@ -356,6 +362,7 @@ TR Quarknet.Cosmic::ShowerStudy(
 	inout combineOut,
 	none detectorCoincidence,
 	none detector,
+	none cpldfreqs,
 	inout eventCandidates,
 	none eventCoincidence,
 	inout eventFile,
@@ -392,6 +399,7 @@ TR Quarknet.Cosmic::ShowerStudy(
   inout svg=@{inout:"plot.svg"};
   call Quarknet.Cosmic::ThresholdTimes(
 	detector=${none:detector},
+	cpldfreqs=${cpldfreqs},
 	rawData=${input:rawData},
 	thresholdAll=${output:thresholdAll} );
   call Quarknet.Cosmic::WireDelay(
@@ -545,6 +553,7 @@ TR Quarknet.Cosmic::Flux(
 TR Quarknet.Cosmic::FluxStudy(
 	inout combineOut,
 	none detector,
+	none cpldfreqs,
 	inout fluxOut,
 	none flux_binWidth,
 	none geoDir,
@@ -579,6 +588,7 @@ TR Quarknet.Cosmic::FluxStudy(
   inout svg=@{inout:"plot.svg"};
   call Quarknet.Cosmic::ThresholdTimes(
 	detector=${none:detector},
+	cpldfreqs=${cpldfreqs},
 	rawData=${input:rawData},
 	thresholdAll=${output:thresholdAll} );
   call Quarknet.Cosmic::WireDelay(

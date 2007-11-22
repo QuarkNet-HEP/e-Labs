@@ -19,6 +19,7 @@
 			List wd = AnalysisParameterTools.getWireDelayFiles(elab, rawData);
 			List geo = AnalysisParameterTools.getGeometryFiles(elab, rawData);
 			String ids = AnalysisParameterTools.getDetectorIds(rawData);
+			String cpldfreqs = AnalysisParameterTools.getCpldFrequencies(elab, rawData);
 			
 			Collection channels = AnalysisParameterTools.getValidChannels(elab, rawData);
 			//<trdefault> is equivalent to analysis.setParameterDefault()
@@ -31,6 +32,7 @@
 			<e:trdefault name="singlechannelOut" value="singlechannelOut"/>
 			<e:trdefault name="geoDir" value="${elab.properties['data.dir']}"/>
 			<e:trdefault name="geoFiles" value="<%= geo %>"/>
+			<e:trdefault name="cpldfreqs" value="<%= cpldfreqs %>"/>
 			<%
 		}
 	%>

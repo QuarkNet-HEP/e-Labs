@@ -15,6 +15,7 @@
 		if(rawData != null) {
 			List thresholdData = AnalysisParameterTools.getThresholdFiles(elab, rawData);
 			String ids = AnalysisParameterTools.getDetectorIds(rawData);
+			String cpldfreqs = AnalysisParameterTools.getCpldFrequencies(elab, rawData);
 			
 			Collection channels = AnalysisParameterTools.getValidChannels(elab, rawData);
 			//make a new copy because we're going to mess with this one
@@ -59,6 +60,7 @@
 			<e:trdefault name="singlechannel_channel" value="<%= singleChannels %>"/>
 			<e:trdefault name="singlechannelOut" value="<%= singleChannelOuts %>"/>
 			<e:trdefault name="freqOut" value="<%= freqOuts %>"/>
+			<e:trdefault name="cpldfreqs" value="<%= cpldfreqs %>"/>
 			<%
 		}
 	%>

@@ -7,9 +7,9 @@ type AxisParams {
 }
 
 
-(File thresholdData[]) ThresholdTimes(File rawData[], string detector) {
+(File thresholdData[]) ThresholdTimes(File rawData[], string detector, string cpldfreqs) {
 	app {
-		ThresholdTimes @filename(rawData) @filename(thresholdData) detector;
+		ThresholdTimes @filename(rawData) @filename(thresholdData) detector cpldfreqs;
 	}
 }
 
@@ -104,6 +104,7 @@ File	thresholdAll[] <fixed_array_mapper;files=@arg("thresholdAll")>;
 File	wireDelayData[] <fixed_array_mapper;files=@arg("wireDelayData")>;
 
 string 	detector = @arg("detector");
+string  cpldfreqs = @arg("cpldfreqs");
 
 string	extraFun_alpha_guess = @arg("extraFun_alpha_guess");
 string	extraFun_alpha_variate = @arg("extraFun_alpha_variate");
@@ -160,7 +161,7 @@ string	sort_sortKey1 = @arg("sort_sortKey1");
 string	sort_sortKey2 = @arg("sort_sortKey2");
 
 
-thresholdAll = ThresholdTimes(rawData, detector);
+thresholdAll = ThresholdTimes(rawData, detector, cpldfreqs);
 wireDelayData = WireDelay(thresholdAll, geoDir, geoFiles);
 combineOut = Combine(wireDelayData);
 sortOut = Sort(combineOut, sort_sortKey1, sort_sortKey2);
