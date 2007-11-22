@@ -42,11 +42,15 @@
         // Consequently the path could be "/elab", which would make the session
         // (and the login) persistent across elabs, or "/elab/"+elab.getName()
         // which would restrict it to the current elab
+        //
+        // At this point the user object contains information initialized from
+        // the elab, so in order for certain things to work properly (user directories)
+        // that object needs to be re-created for each elab.
         
         Cookie cookie = new Cookie("JSESSIONID", session.getId());
-        cookie.setPath("/elab");
+        cookie.setPath("/elab/" + elab.getName());
         response.addCookie(cookie);
-		
+        
 		response.sendRedirect(prevPage);
 	}
 	else {
