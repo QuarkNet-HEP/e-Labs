@@ -127,6 +127,9 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                     else if ("grid".equals(runMode)) {
                         poolFile = "sites-grid.xml";
                     }
+                    else if ("i2u2".equals(runMode)) {
+                        poolFile = "sites-i2u2-cluster.xml";
+                    }
                     conf.setProperty("sites.file", getElab().getAbsolutePath(
                             "/WEB-INF/classes")
                             + File.separator
