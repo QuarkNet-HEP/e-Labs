@@ -34,6 +34,7 @@
 					<td align="left">
 						<input type="radio" name="runMode" value="local" /> Local<br />
 						<input type="radio" name="runMode" value="grid" /> Grid<br />
+						<input type="radio" name="runMode" value="i2u2" /> I2U2 Cluster<br />
 						<input checked="true" type="radio" name="runMode" value="mixed" /> Automatic<br />
 					</td>
 				</tr>
