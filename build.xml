@@ -47,6 +47,10 @@ undeploy:
 	Undeploys the e-Labs from the container (removes all files in
 	the elab webapp)
 	
+distclean:
+	Removes all .jar, .class, and jsp/html files from the webapp
+	directory
+	
 		</echo>
 	</target>
 	
@@ -148,6 +152,13 @@ undeploy:
 		<delete quiet="true">
 			<fileset dir="${container.home}/${webapps}/elab/WEB-INF/lib"
 				includes="**/*.jar"/>
+		</delete>
+	</target>
+	
+	<target name="clean-web">
+		<delete quiet="true">
+			<fileset dir="${container.home}/${webapps}/elab"
+				includes="**/*.jsp, **/*.jspf, **/*.html, **/*.htm"/>
 		</delete>
 	</target>
 		
@@ -523,5 +534,8 @@ undeploy:
 	
 	<target name="undeploy">
 		<delete dir="${container.home}/${webapps}/elab"/>
+	</target>
+	
+	<target name="distclean" depends="clean-jars, clean-classes, clean-web">
 	</target>
 </project>
