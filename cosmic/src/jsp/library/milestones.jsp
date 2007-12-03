@@ -31,7 +31,7 @@
 			
 			<div id="content">
 				<c:choose>
-					<c:when test="user.profDev">
+					<c:when test="${user.profDev}">
 						<%@ include file="milestones-profdev.jsp" %>
 					</c:when>
 					<c:otherwise>
