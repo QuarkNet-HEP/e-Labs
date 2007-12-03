@@ -22,7 +22,7 @@ if (!ElabGroup.isUserLoggedIn(session)) {
 			<p>Ask your teacher.</p>
 			
 			<%
-								String subject = URLEncoder.encode("Please register me as an e-Labs teacher.");
+								String subject = URLEncoder.encode(elab.getName() + " elab account request");
 								String body = URLEncoder.encode("Please complete each of the fields below and send this email to be registered " 
 									+ "as an e-Labs teacher. You will receive a response from the e-Labs team by the end of the business "
 									+ "day.\n\n"
