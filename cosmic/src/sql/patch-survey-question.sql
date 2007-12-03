@@ -23,7 +23,7 @@ INSERT INTO question (project_id, test_name, question_no, question, answer, resp
 'Cosmic ray flux decreases:','3',
 'when sun is below the horizon.',
 'during precipitation events.',
-'when barometric pressure is high.',
+'when barometric pressure increases.',
 'all of the above',
 'do not know');
 
@@ -50,7 +50,7 @@ INSERT INTO question (project_id, test_name, question_no, question, answer, resp
  'do not know','');
  
 INSERT INTO question (project_id, test_name, question_no, question, answer, response1,response2,response3,response4,response5) VALUES (1,'pretest',5,
-'The energies of cosmic rays compare to:','1',
+'The energies of cosmic rays can compare to:','1',
  'a dropped brick.',
  'a truck collision.',
  'a speeding train locomotive.',
@@ -85,7 +85,7 @@ INSERT INTO question (project_id, test_name, question_no, question, answer, resp
 ' A local television station displays the weather data for two nearby schools. Alan Shepard H. S. reports a pressure of 29.97 inches of Mercury and Proviso West H. S. reports 30.01 inches. Which is the best way to verify that the difference is real and not some calibration error?','1',
  'Bring the two pressure sensors to the same location and see if their measurements agree.',
  'Compare the altitude of the two schools.',
- 'Check the pressure at other nearby loations.',
+ 'Check the pressure at other nearby locations.',
  'Check with the pressure sensor manufacturer.',
  'do not know');
 
@@ -138,7 +138,7 @@ INSERT INTO question (project_id, test_name, question_no, question, answer, resp
 'do not know','');
 
 INSERT INTO question (project_id, test_name, question_no, question, answer, response1,response2,response3,response4,response5) VALUES (1,'pretest',16,
-'Which of the three histograms would you use to draw a curve representing this data?','2',
+'Which of the three histograms would you use to draw a curve representing these data?','2',
 'Figure B1',
 'Figure B2',
 'Figure B3',
