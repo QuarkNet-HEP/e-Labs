@@ -48,7 +48,7 @@
 <p>To save this plot permanently, enter the new name you want.</p>
 <p>Then click <b>Save Plot</b>.</p>
 <p>
-	<form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit="window.open('',this.target,'width=500,height=200');" align="center">
+	<form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit="window.open('',this.target,'width=500,height=200,resizable=1');" align="center">
 		<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
 		<input type="hidden" name="metadata" value="transformation string Quarknet.Cosmic::LifetimeStudy"/>
 		<input type="hidden" name="metadata" value="study string lifetime"/>
