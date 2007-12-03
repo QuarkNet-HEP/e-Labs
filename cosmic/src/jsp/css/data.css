@@ -256,10 +256,18 @@ p.search-result-bar {
 	text-align: left;
 }
 
+.school-h, .school-v {
+	padding-top: 16px;
+}
+
 .search-results .school-info p {
 	margin: 0px;
-	margin-left: 12px;
-	padding-left: 8px;
+}
+
+.search-results .school-info {
+	margin-left: 20px;
+	border-left: thin solid gray;
+	padding-left: 4px;
 }
 
 /*
@@ -268,9 +276,7 @@ p.search-result-bar {
  * (school-h) is defined by the results displayer).
  */
 .search-results .school-h .school-info {
-	padding-bottom: 16px;
-	border-bottom: thin solid black;
-	margin-bottom: 8px;
+	padding-bottom: 4px;
 }
 
 .search-results .school-name {
@@ -279,16 +285,18 @@ p.search-result-bar {
 }
 
 .search-results .date-header {
-	margin-left: 32px;
+	margin-left: 20px;
+	padding-left: 12px;
+	border-left: thin solid gray;
 }
 
 .search-results .date-info {
-	margin-left: 4px;
+	margin-left: 0px;
 }
 
 .search-results .data-files {
-	margin-top: 16px;
-	padding-bottom: 8px;
+	margin-top: 8px;
+	padding-bottom: 16px;
 	padding-left: 20px;
 }
 
