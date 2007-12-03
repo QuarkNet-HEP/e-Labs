@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
@@ -29,20 +30,14 @@
 			</div>
 			
 			<div id="content">
-				
-<%
-	if (user.isProfDev()) {
-		%>
-			<%@ include file="milestones-profdev.jsp" %>    
-		<%
-	}
-	else {
-		%>
-			<%@ include file="milestones-student.jsp" %>
-		<%
-	}
-%>
-
+				<c:choose>
+					<c:when test="user.profDev">
+						<%@ include file="milestones-profdev.jsp" %>
+					</c:when>
+					<c:otherwise>
+						<%@ include file="milestones-student.jsp" %>
+					</c:otherwise>
+				</c:choose>
 			</div>
 			<!-- end content -->	
 		
