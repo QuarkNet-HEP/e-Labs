@@ -16,14 +16,14 @@
 				<tr>
 					<td width="40%">&nbsp;</td>
 					<td align="left">
-						<input type="radio" name="provider" value="vds" checked="true" /> 
+						<input id="vds-radio" type="radio" name="provider" value="vds" checked="true" onChange="update()" /> 
 						<a href="http://vds.uchicago.edu" target="vds">VDS</a><br />
-						<input type="radio" name="provider" value="swift" /> 
+						<input type="radio" name="provider" value="swift" onChange="update()" /> 
 						<a href="http://www.ci.uchicago.edu/swift" target="swift">Swift</a><br />
 					</td>
 				</tr>
 			</table>
-			<table width="100%" align="center">
+			<table id="swift-run-mode" width="100%" align="center">
 				<tr>
 					<td align="center" width="40%" valign="top">
 						Swift run mode:
@@ -32,13 +32,34 @@
 				<tr>
 					<td width="40%">&nbsp;</td>
 					<td align="left">
-						<input type="radio" name="runMode" value="local" /> Local<br />
-						<input type="radio" name="runMode" value="grid" /> Grid<br />
-						<input type="radio" name="runMode" value="i2u2" /> I2U2 Cluster<br />
-						<input checked="true" type="radio" name="runMode" value="mixed" /> Automatic<br />
+						<optgroup>
+							<input id="r0" type="radio" name="runMode" value="local" /> Local<br />
+							<input id="r1" type="radio" name="runMode" value="grid" /> Grid<br />
+							<input id="r2" type="radio" name="runMode" value="i2u2" /> I2U2 Cluster<br />
+							<input id="r3" checked="true" type="radio" name="runMode" value="mixed" /> Automatic<br />
+						</optgroup>
 					</td>
 				</tr>
 			</table>
+			<script language="javascript">
+				function update() {
+					var disabled = false;
+					var color = "black";
+					if (document.getElementById("vds-radio").checked) {
+						disabled = true;
+						var color = "gray";
+					}
+					for (i = 0; i < 16; i++) {
+						var el = document.getElementById("r" + i);
+						if (el) {
+							el.disabled = disabled;
+						}
+					}
+					document.getElementById("swift-run-mode").style.color = color;
+				}
+				
+				update();
+			</script>
 		</e:hidden>
 	</e:vswitch>
 </p>
