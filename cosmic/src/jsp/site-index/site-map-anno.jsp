@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ page import="gov.fnal.elab.util.ElabUtil" %>
@@ -15,26 +16,22 @@
 	<body class="siteindex">
 		<!-- entire page container -->
 		<div id="container">
-<%
-// display set to "static" allows showing a site overview without a real menu
-String display = request.getParameter("display");
-if(display == null || !display.equals("static")) {
-	%>
-			<div id="top">
-				<div id="header">
-					<%@ include file="../include/header.jsp" %>
-					<div id="nav">
-						<%@ include file="../include/nav.jsp" %>
-						<div id="subnav">
-							<%@ include file="../include/nav-site-index.jsp" %>
+
+			<c:if test="${param.display != 'static'}">
+			<!-- display set to "static" allows showing a site overview without a real menu -->
+				<div id="top">
+					<div id="header">
+						<%@ include file="../include/header.jsp" %>
+						<div id="nav">
+							<%@ include file="../include/nav.jsp" %>
+							<div id="subnav">
+								<%@ include file="../include/nav-site-index.jsp" %>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</c:if>
 
-	<%
-}
-%>
 <div id="content">
 <h1>Find out what you can do under each tab.</h1>
 
@@ -121,12 +118,13 @@ if(display == null || !display.equals("static")) {
          </td></tr>
  
 
-<% if(display != null && display.equals("static")){
-%>
-  <tr><td colspan="2" align="center"><A HREF="javascript:window.close();">Close Window and Go Back to Getting Started Page</A></td></tr>
-<% 
-}
-%>
+		<c:if test="${param.display == 'static'}">
+  			<tr>
+  				<td colspan="2" align="center">
+  					<A HREF="javascript:window.close();">Close Window and Go Back to Getting Started Page</A>
+  				</td>
+  			</tr>
+		</c:if>
 
      </table>
 
