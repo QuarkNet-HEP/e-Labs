@@ -32,135 +32,64 @@
 			
 			<div id="content">
 				
-<h1>Looking for information? Check out the online resources or contact someone.</h1>
-
 <table border="0" id="main">
 	<tr>
 		<td>
 			<div id="left">
-					
-				<div class="tab" id="tab-online">
-					<span class="tab-title">Online</span>
-					<div class="tab-contents">
-						<h2>Student-Friendly Sites</h2>
-						<ul class="simple">
-							<li>
-								<a href="http://cmsinfo.cern.ch/outreach/CMSmedia/CMSmovies.html">2 minute video Introduction to Cern</a>
-								- A two minute video to introduce CERN- a downloadable Real/Video file. 7 MB.
-							</li>
-							<li>
-								<a href="http://cmsinfo.cern.ch/Welcome.html/">CMS Outreach Activities</a>
-								- Decent site, includes CMS trivia, information, and picture.
-							</li>
-							<li>
-								<a href="http://www.phys.ufl.edu/hee/cms/">CMS Experiment</a>
-								- Concise explanation of CMS, links, and picture.
-							</li>
-							<li>
-								<a href="http://www.iisc.ernet.in/pramana/april2000/dae11.htm">LHC Program/CMS Experiment</a>
-								- PDF file &ndash; extremely detailed, would recommend site for someone who already has a good
-								idea of the CMS experiment.
-							</li>
-							<li>
-								<a href="http://en.wikipedia.org/wiki/Compact_Muon_Solenoid">CMS Wikipedia Encyclopedia Definition</a>
-								- Definition of CMS, relevant links.
-							</li>
-							<li>
-								<a href="http://www.phy.hr/~dpaar/fizicari/">Famous Physicists</a>
-								- List of many famous physicists with a picture and small biography.
-							</li>
-							<li>
-								<a href="http://physics.about.com/cs/glossary/a/glossary.htm">Physics Glossary</a>
-								- Physics glossary with terms and definitions.
-							</li>
-							<li>
-								<a href="http://www.exploratorium.edu/origins/cern/tools/lhc.html">The Large Hadron Collider </a>
-								- Detailed explanation of the LHC, with pictures, and links. Easy to understand explanation.
-							</li>
-						</ul>
-
-						<h2>Professional Sites</h2>
-						<ul class="simple">
-							<li>
-								<a href="http://www.gaengineering.com/INGLESE%20ok/INDUSTRIAL%20PROGRAMMES/CMS/CMS.htm">G&amp;A Engineering CMS</a>
-								- Description of the CMS detector, including a mission overview and CMS layout.
-							</li>
-							<li>
-								<a href="http://www-td.fnal.gov/projects/muon.html">Fermilab's CMS Website</a>
-								- Description of CMS with good links.
-							</li>
-						</ul>
-					</div>
-				</div>
+				<%@ include file="../include/left-alt.jsp" %>
 			</div>
 		</td>
-		<td>
-			<div id="right">
-				<div class="tab" id="tab-tutorials">
-					<span class="tab-title">Tutorials</span>
-					<div class="tab-contents">
-						<ul class="simple">
-							<li>
-								<a href="http://www-root.fnal.gov/root/">ROOT Tutorial</a>
-								- Learn how to use ROOT (the underpinnings of OGRE)  to analyze any aspect of the data directly.
-							</li>
-							<li>
-           						<a href="res_shower_depth.jsp">Shower Depth Study </a> - Description of a Shower Depth Study
-							</li>
-							<li>
-								<a href="res_lateral_size.jsp">Lateral Size Study </a>- Description of a Lateral Size Study
-							</li>
-							<li>
-								<a href="res_beam_purity.jsp">Beam Purity Study </a>- Description of a Beam Purity Study
-							</li>
-				            <li>
-								<a href="res_detector_resolution.jsp">Detector Resolution Study </a>- Description of a Detector Resolution Study
-							</li>
-						</ul>
-					</div>
-				</div>
+		<td width="100%">
+			<div id="center">
+				<h2>The Big Picture: LIGO and the Search for Gravitational Waves</h2>
 				
-				<div class="tab" id="tab-contacts">
-					<span class="tab-title">Contacts</span>	
-					<div class="tab-contents">
-						<h2>Physicists</h2>
-						<ul class="simple">
-							<li>
-								<a href="mailto:karmgard.1@nd.edu">Dan Karmgard</a> - University of Notre Dame
-							</li>
-							<li>
-								<a href="mailto:pmooney@nd.edu">Patrick Mooney</a> - University of Notre Dame
-							</li>
-							<li>
-								<a href="mailto:rruchti@nsf.gov">Randy Ruchti</a> - NSF and University of Notre Dame
-							</li>
-						</ul>
-						<h2><a href="../library/students.jsp">Student Research Groups</a></h2>
-					</div>
-				</div>
-				
-				<div class="tab" id="tab-slideshows">
-					<span class="tab-title">Slideshows</span>
-					<div class="tab-contents">
-						<ul class="simple">
-							<li>
-								<a href="http://www.phys.ufl.edu/~acosta/cms/mcdonald_reu_talk.pdf">Study 
-                  				of the Optimum Momentum Resolution of CMS Experiment</a>
-                  				- Presentation on CMS experiment. Written by Timothy McDonald
-							</li>
-							<li>
-								<a href="http://www.wlap.org/wl-repository/umich/phys/um-cern-reu/2004/20040805-umwlap002-08-wagner/real/sld001.htm">Muon Identification in CMS</a>
-								- Slideshow on the CMS experiment, written by Andrew Wagner.
-							</li>
-							<li>
-								<a href="http://outreach.phys.uh.edu/index_files/PPT/Notre%20Dame/CMS_Coll.ppt">The 
-                  				Compact Muon Solenoid at the Large  Collider</a> - Presentation on the Compact Muon 
-                  				Solenoid, written by Dan Green.
-							</li>
-						</ul>
-					</div>
-				</div>
-
+				<p>
+					<img class="float-right" src="../graphics/colliding_blackholes.jpg" 
+						width="204" height="120" alt="[black_holes]" />
+					<em>LIGO.</em> the Laser Interferometer Gravitational Wave Observatory, 
+					searches for gravitational waves from exotic events in the universe 
+					such as  black hole collisions, supernovae and the spinning of neutron 
+					star pulsars. Direct detections of gravitational waves have never 
+					occurred. LIGO and several sister projects around the world are 
+					striving to make the first historic detections that will open the 
+					exctiting new field of gravitational wave astronomny.
+				</p>
+				<p>
+					<img class="float-right" src="../graphics/3Dinspiral.gif" 
+						width="185" height="150" alt="[inspiral]" />
+					<em>Gravitational waves</em> are ripples in the fabric of space (or 
+					space-time). LIGO searches for the passage of these ripples using 
+					huge interferometers in Washington State and Louisiana. These 
+					interferometers are incredibly sensitive, capable of measuring 
+					movements that are smaller that a thousandth of the size of an 
+					atomic nucleus.  Only by operating at such radical sensitivities 
+					will the detectors register the faint whispers of gravitational 
+					waves.
+				</p>
+				<p>
+					<em>The Earth</em> constantly vibrates at levels far above the 
+					effects of gravitational waves.  LIGO relies on several subsystems to 
+					filter these sources of "noise" out of the detectors' data streams. 
+					Scientists can't devise filters unless the noise is well understood. 
+					For this reason, LIGO constantly monitors the environments of the 
+					Observatories with a large set of sensors -- seismometers, weather 
+					stations, magnetometers, tilt meters and others.  In the LIGO E-Lab 
+					you will analyze data from seismometers at the Hanford Observatory. 
+					You will join LIGO scientists in their efforts to understand how the 
+					ground vibrates and how these vibrations influence LIGO's 
+					gravitational wave detectors.
+				</p>
+				<blockquote>
+					Colliding Black Holes courtesy of Werner Benger, Zuse Institute 
+					Berlin, Max-Planck Institutue fuer Gravitational Physics (Albert 
+					Einstein Institute) and   the Center for Computation &amp; 
+					Technology at Louisiana State   Universityr. 3D inspiral courtesy 
+					of Patrick Brady
+				</blockquote>
+				<center>
+					<img src="../graphics/lho_aerial_photo.jpg" 
+						width="574" height="418" alt="[lho]" />
+				</center>
 			</div>
 		</td>
 	</tr>
@@ -171,6 +100,7 @@
 			<!-- end content -->	
 		
 			<div id="footer">
+				<%@ include file="../include/nav-footer.jsp" %>
 			</div>
 		</div>
 		<!-- end container -->

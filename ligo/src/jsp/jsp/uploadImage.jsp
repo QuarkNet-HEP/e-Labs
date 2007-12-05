@@ -170,7 +170,7 @@ String headerType = "Posters";
 %>
 <%@ include file="include/navbar_common.jsp" %>
 
-<body>
+<body id="uploadImage">
 <center>
 <P>
 <!-- instruction table -->

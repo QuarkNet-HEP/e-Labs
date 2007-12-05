@@ -30,33 +30,24 @@
 			</div>
 			
 			<div id="content">
-				
-<h1>Review research skills you need for this project.</h1>
 
 <table border="0" id="main">
 	<tr>
 		<td>
-			<div id="center">
-				<h2>Click on <img border="0" src="../graphics/ref.gif"/> for resources to help you meet each milestone below.</h2>
-					
-				<div class="tab">
-					<span class="tab-title">Research Basics</span>
-					<div class="tab-contents">
-						<h2>Use these milestones if you need background on:</h2>
-						<ul>
-							<li>Simple Measurements. <e:reference name="simple measurement"/></li>
-							<li>Simple Calculations. <e:reference name="simple calculations"/></li>
-							<li>Simple Graphs. <e:reference name="simple graphs"/></li>
-							<li>Research Questions. <e:reference name="research question"/></li>
-							<li>Research Plans.. <e:reference name="research plan"/></li>
-						</ul>
-					</div>
-				</div>
+			<div id="left">
+				<%@ include file="../include/left-alt.jsp" %>
 			</div>
 		</td>
-		<td>
-			<div id="right">
-				<!-- nothing here either -->
+		<td width="100%">
+			<div id="center">
+				<h2>Use these milestones if you need background on:</h2>
+				<ul>
+					<li>Simple Measurements. <e:reference name="simple measurement"/></li>
+					<li>Simple Calculations. <e:reference name="simple calculations"/></li>
+					<li>Simple Graphs. <e:reference name="simple graphs"/></li>
+					<li>Research Questions. <e:reference name="research question"/></li>
+					<li>Research Plans.. <e:reference name="research plan"/></li>
+				</ul>
 			</div>
 		</td>
 	</tr>
@@ -67,17 +58,7 @@
 			<!-- end content -->	
 		
 			<div id="footer">
-				<a href="../jsp/showReferences.jsp?type=glossary">Glossary</a>
-				 - 
-				<a href="../jsp/showReferences.jsp?t=reference&f=peruse">All Resources for Study Guide</a>
-				<a href="../jsp/showReferences.jsp?t=reference&f=peruse">
-					<img src="../graphics/ref.gif"/>
-				</a>
-				 - 
-				<a href="../jsp/showLogbook.jsp">Student Logbook</a>
-				<a href="../jsp/showLogbook.jsp">
-					<img src="../graphics/logbook_small.gif"/>
-				</a>
+				<%@ include file="../include/nav-footer.jsp" %>
 			</div>
 		</div>
 		<!-- end container -->

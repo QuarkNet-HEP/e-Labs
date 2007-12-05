@@ -30,43 +30,21 @@
 			
 			<div id="content">
 				
-<h1>Frequently Asked Questions</h1>
-
 <table id="main">
 	<tr>
 		<td>
 			<div id="left">
-				<!-- nothing here -->
+				<%@ include file="../include/left-alt.jsp" %>
 			</div>
 		</td>
-		<td>
+		<td width="100%">
 			<div id="center">
-				<%
-					Collection entries = elab.getFAQ().entries();
-					if (entries.isEmpty()) {
-						%>
-							<div class="warning">There are no FAQs in the database!</div>
-						<%
-					}
-					else {
-						%>
-							<p>
-						<%
-						Iterator i = entries.iterator();
-						while (i.hasNext()) {
-							String e = (String) i.next();
-							out.write(e);	
-						}
-						%>
-							</p>
-						<%
-					}
-				%>
-			</div>
-		</td>
-		<td>
-			<div id="right">
-				<!-- nothing here either -->
+				<h2>Frequently Asked E-Lab Questions (FAQ's)</h2>
+				<p>
+					Use the <a href="http://tekoa.ligo-wa.caltech.edu/tla">LIGO E-Lab Discussion Site</a> 
+					to find online discussions of many of your E-Lab questions.  Add your own information 
+					to the Discussion Site to share your knowledge with other students!
+				</p>
 			</div>
 		</td>
 	</tr>
@@ -77,6 +55,7 @@
 			<!-- end content -->	
 		
 			<div id="footer">
+				<%@ include file="../include/nav-footer.jsp" %>
 			</div>
 		</div>
 		<!-- end container -->

@@ -193,7 +193,7 @@
 
 				<ul>
 					<li>
-						<A HREF="../assessment/rubric.html">Rubric</A> aligned to learner outcomes.
+						<a href="../assessment/rubric.html">Rubric</a> aligned to learner outcomes.
 					</li>
 					<li>
 						<a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>

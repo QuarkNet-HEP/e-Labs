@@ -30,73 +30,54 @@
 
 			<div id="content">
 			
-			
-			
-<h1>Use the library as you work.</h1>
 
 <table border="0" id="main">
 	<tr>
 		<td>
-			<div id="left">					
-				<div class="tab">
-					<span class="tab-title">Library</span>
-					<div class="tab-contents">
-						<ul class="simple">
-							<li>
-								<a HREF="research-basics.jsp">The Basics</a> - 
-								Review research skills you need for this project. 
-							</li>
-							<li>
-								<a HREF="milestones-map.jsp">Study Guide</a> - 
-								Measure your progress as you work. 
-							</li>
-							<li>
-								<a HREF="resources.jsp">Resources</a> - 
-								Explore Tutorials, Online Resources, Animations and Contacts. 
-								The tutorials should help you use this website. The contacts 
-								will allow you to contact other student research groups. 
-								The animations demonstrate your hardware and what happens 
-								when you are uploading data and using grid techniques. The 
-								Online Resources will broaden your understanding of particle
-								physics	and research.
-							</li>
-							<li>
-								<a HREF="../home/first.jsp">Big Picture</a> - 
-								Read an overview of this project and view a sample poster. 
-							</li>
-							<li>
-								<a href="http://cmsinfo.cern.ch/Welcome.html">CMS Overview</a> - 
-								Educational Outreach  of the Compact Muon Solenoid Collaboration.
-							</li>
-							<li>
-								<a href="http://www.uscms.org/scpac/Detector/HCAL/tb2004/rcr/">CMS Test Beam Overview</a> - 
-								Explanation and description of Compact Muon Solenoid Collaboration&rsquo;s 
-								Test Beam effort.
-							</li>
-							<li>
-								<a HREF="FAQ.jsp">FAQs</a> - Read the FAQs for answers to 
-								your questions. 
-							</li>
-							<li>
-								<a HREF="../home/first-web.jsp">Site Help</a> - Learn how 
-								to use the website.
-							</li>
-						</ul>
-					</div>
-				</div>
+			<div id="left">
+				<%@ include file="../include/left-alt.jsp" %>
 			</div>
 		</td>
-		<td>
-			<div id="right">
-				<img src="../graphics/five_pic_collage.jpg">
+		<td width="100%">
+			<div id="center">
+				<h2>Use the E-Lab library of resources as you work</h2>
+				<ul>
+					<li>
+						<a href="research-basics.jsp">The Basics</a> - Review research skills that 
+						you will need for this project.
+					</li>
+					<li>
+						<a href="milestone-map.jsp">Study Guide</a> - Measure your progress
+						as you work.
+					</li>
+					<li>
+						<a href="resources.jsp">Resources</a> - Explore online resources 
+						that will help you conduct your E-Lab investigation. A 
+						<a href="tutorial.jsp">tutorial</a> will help you learn to use 
+						<a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone</a>, 
+						LIGO's E-Lab data analysis software
+					</li>
+					<li>
+						<a href="big-picture.jsp">Big Picture</a> - Read an overview of 
+						this project.
+					</li>					
+					<li>
+						<a href="FAQ.jsp">FAQs</a> - Read the FAQs for answers to your questions.
+					</li>
+					<li>
+						<a href="../site-index">Site Help</a> - Learn how to use the website.
+					</li>
+				</ul>
 			</div>
 		</td>
 	</tr>
 </table>
+
 			</div>
 			<!-- end content -->	
 		
 			<div id="footer">
+				<%@ include file="../include/nav-footer.jsp" %>	
 			</div>
 		</div>
 		<!-- end container -->

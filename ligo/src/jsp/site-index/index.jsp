@@ -7,13 +7,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>e-Lab Site Index</title>
+		<title>Site Help</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/site-index.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 	</head>
 		
-	<body id="site-index" class="siteindex">
+	<body id="site-index" class="site-index">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
@@ -30,102 +30,71 @@
 
 			<div id="content">
 
-<h1>Lost? You can go to any of the pages on this site from this list.</h1>
-
-
 <table border="0" id="main">
 	<tr>
-		<th><a href="../home">Home</a></th>
-		<th><a href="../library">Library</a></th>
-		<th><a href="../data">Data</a></th>
-		<th><a href="../posters">Posters</a></th>
-		<th><a href="../assessment">Assessment</a></th>
-	</tr>
-	<tr>
 		<td>
-			<ul>
-				<li><a href="../home/first.jsp">The Big Picture</a></li>
-				<li><a href="../home/first-web.jsp">The Website</a></li>
-			</ul>
+			<div id="left">
+				<%@ include file="../include/left-alt.jsp" %>
+			</div>
 		</td>
-		<td>
-			<ul>
-				<li>
-					<a href="../library/milestones-map.jsp">Study Guide</a>
-					<ul>
-						<li><a href="../jsp/showReferences.jsp?t=reference&amp;f=peruse">View Resources for Study Guide</a></li>
-						<li><a href="../jsp/showReferences.jsp?t=glossary&amp;f=peruse">View Glossary</a></li>
-					</ul>
-				</li>
-				<li><a href="../library/resources.jsp">Resources</a></li>
-				<li>
-					Online Links
-					<ul>
-						<li>
-							Tutorials
-							<ul>
-								<li><a href="ogre_tutorial_index.htm">Ogre Tutorial</a></li>
-								<li><a href="http://www-root.fnal.gov/root/">Root Tutoria</a></li>
-							</ul>
-						</li>
-						<li>
-							Notes
-						</li>
-						<li>
-							Contacts
-						</li>
-						<li>
-							Slide Shows
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a href="first.jsp">Big Picture</a>
-				</li>
-				<li>
-					<a href="site-map-anno.jsp">CMS Overview</a>
-				</li>
-				<li>
-					<a href="http://cmsinfo.cern.ch/Welcome.html">CMS Test Beam</a>
-				</li>
-				<li>
-					<a href="first_web.jsp">Site Help</a>
-				</li>
-				<li>
-					<a href="FAQ.jsp">FAQ</a>
-				</li>
-			</ul>
-		</td>
-		<td>
-			<ul>
-				<li>
-					<a href="search.jsp">Test Beam Analysis</a>
-					<ul>
-         				<li><a href="ogre-base.jsp?analysis=shower_depth">Shower Depth</a></li>
-						<li><a href="ogre-base.jsp?analysis=shower_depth?analysis=lateral_size">Lateral Size</a></li>         
-						<li><a href="ogre-base.jsp?analysis=beam_purity">Beam Purity</a></li>
-						<li><a href="ogre-base.jsp?analysis=resolution">Resolution</a></li>
-					</ul>
-				</li>
-				<li>
-					<a href="search.jsp">Management</a>
-					<ul>
-            			<li>View Files and Posters</li>
-						<li>Delete Files and Posters</li>
-					</ul>
-				</li>
-			</ul>
-		</td>
-		<td>
-			<ul>
-				<li><a href="../posters/new.jsp">New Poster</a></li>
-				<li><a href="../posters/edit.jsp">Edit Posters</a></li>
-				<li><a href="../posters/search.jsp">View Posters</a></li>
-				<li><a href="../posters/delete.jsp">Delete Posters</a></li>
-				<li><a href="../plots/my-plots.jsp">View My Plots</a>
-			</ul>
-		</td>
-		<td>
+		<td width="100%">
+			<div id="center">
+				<h2>Getting Started on the LIGO I2U2 E-Lab</h2>
+				<p>
+					<em>The E-Lab process</em> follows three basic steps. The E-Lab road map 
+					that you'll see when you click 
+					<a href="../library/milestones-map.jsp">Study Guide</a> (on the 
+					<a href="../library">Library</a> submenu) shows you the steps.
+				</p>
+				<p>
+					<em>Step 1: Get Started</em> Review and refresh some of your basic science 
+					skills. Practice using <a href="http://tekoa.ligo-wa.caltech.edu/tla" 
+					target="blank">Bluestone</a> to make graphs of real seismometer data.
+				</p>
+				<p>
+					<em>Step 2: Figure It Out</em> Make your research question. Use Bluestone 
+					to plot LIGO seismometer data. You will test and improve your ideas (your 
+					hypothesis) by making more plots and by looking at other sources of data. 
+					You will share your ideas with classmates and with your teacher. 
+					Eventually your research will lead you to an answer to your research 
+					question.  It's the scientific method at work!
+				</p>
+				<p>
+					<em>Step 3: Tell Others</em> Build an online poster and use it to discuss 
+					your research and your conclusions with your classmates and others.
+				</p>
+				<p>
+					<em>Use</em><font class=content_text> the link menus to help you! The top 
+					link menu provides guidance for accomplishing the E-Lab. The sidebar 
+					links give you additional science resources, a Bluestone tutorial, a 
+					Bluestone link and Discussion Site links.
+				</p>
+				<p>
+					<em>Watch</em><font class=content_text> for little icons on the E-Lab 
+					screens. Clicking on <img src="../graphics/ref.gif" /> will give you a 
+					reference popup that will help with a milestone.  The logbook icon, 
+					<img src="../graphics/logbook_pencil.gif" align="middle" />, will open 
+					your electronic log book. The looking glass, 
+					<img src="../graphics/logbook_view_comments_small.gif" align="middle" />, 
+					lets you access teacher comments about your log entries.
+				</p>
+				<p>
+					<em>The heart</em><font class=content_text> of the LIGO E-Lab is software
+					 named <a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone</a>. 
+					 Bluestone lets you to select the LIGO data channels that you wish to 
+					 view and lets you control the features of the plots that you make.
+					 Bluestone mimics software that LIGO scientists and engineers use at the 
+					 Observatory sites.  Your teacher will tell you how to log in.
+				</p> 
+				<p>
+					<em>Another</em> key feature of the LIGO E-Lab is a 
+					<a href="http://i2u2.spy-hill.net/">discussion room</a> Web site. Here you
+					will find a <a href="http://i2u2.spy-hill.net/glossary/index.php/I2U2_Glossary">glossary</a>, 
+					discussion rooms in which you can share research ideas with others and a 
+					WIKI that contains research information. Your teacher will tell you how to 
+					log in.
+				</p>
+			</div>
 		</td>
 	</tr>
 </table>
@@ -134,7 +103,9 @@
 			</div>
 			<!-- end content -->	
 
-			<div id="footer"> </div>
+			<div id="footer">
+				<%@ include file="../include/nav-footer.jsp" %>
+			</div>
 		</div>
 		<!-- end container -->
 </body>
