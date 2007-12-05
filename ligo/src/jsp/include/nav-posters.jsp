@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <ul>
+	<li><a href="../posters/">Posters</a></li>
 	<li><a href="../posters/new.jsp">New Poster</a></li>
 	<li><a href="../posters/edit.jsp">Edit Posters</a></li>
 	<li><a href="../posters/view.jsp">View Posters</a></li>

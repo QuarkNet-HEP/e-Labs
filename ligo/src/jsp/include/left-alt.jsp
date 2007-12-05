@@ -3,10 +3,10 @@
 	<ul id="left-links">
 		<li><a href="../library/big-picture.jsp">About LIGO</a></li>
 		<%-- not sure why the distinction from library is necessary --%>
-		<li><a href="../info/ligo-map.jsp">LIGO Maps</a></li>
-		<li><a href="../info/ligo-sensors.jsp">LIGO Sensors</a></li>
+		<li><a href="../maps">LIGO Maps</a></li>
+		<li><a href="../sensors">LIGO Sensors</a></li>
 		<li><a href="../info/related-data.jsp">Related Data</a></li>
-		<li><a href="../info/tutorial.jsp">Bluestone</a></li>
+		<li><a href="../data/tutorial.jsp">Bluestone</a></li>
 		<li><a href="http://tekoa.ligo-wa.caltech.edu/" target="blank" class=sidebar>Discussion Site</a></li>
 		<li><a href="http://tekoa.ligo-wa.caltech.edu/glossary/index.php/I2U2_Glossary_and_Library"  target="blank" class=sidebar>Glossary</a></li>
 	</ul>
