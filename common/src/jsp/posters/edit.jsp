@@ -17,7 +17,7 @@
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	
-	<body id="edit-posters" class="data">
+	<body id="edit-posters" class="posters">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
