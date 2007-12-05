@@ -3,11 +3,11 @@ h1 {
 	color: #000000;
 }
 
-.site-index #center {
+.info #center {
 	margin-top: 80px;
 }
 
-.site-index #center h1 {
+.info #center h1 {
 	font-weight: normal;
 	font-size: 140%;
 	width: 100%;
@@ -16,7 +16,7 @@ h1 {
 	margin-left: 0px;
 }
 
-.site-index #center h2 {
+.info #center h2 {
 	width: 80%;
 	padding-bottom: 6px;
 	border-bottom: solid 2px #666666;
@@ -27,36 +27,15 @@ h1 {
 	color: #333399;
 }
 
-.site-index #center em {
+.info #center em {
 	color: #333399;
 	font-weight: bold;
 	font-style: normal;
 }
 
-.site-index #center p {
+.info #center p {
 	font-weight: normal;
 	margin-left: 10px;
-}
-
-a.button {
-	background-color: #ff6600;
-	border-top: #ffa76c 1px solid;
-	border-left: #ffa76c 1px solid;
-	border-bottom: #b54800 1px solid;
-	border-right: #b54800 1px solid;
-	padding-left: 6px;
-	padding-right: 6px;
-	color: black;
-	text-decoration: none;
-	font-weight: bold;
-}
-
-.site-index dt {
-	font-weight: bold;
-}
-
-.site-index dd {
-	padding-bottom: 6px;
 }
 
 #nav {
@@ -65,15 +44,22 @@ a.button {
 }
 
 #nav #subnav li a {
-	color: #ff0000;
+	color: #990066;
 	border-left: 3px solid;
 }
 
 /*
 	Italicisize corresponding subnav item
 */
-#site-index		 	#subnav a[href="../site-index"],
-#site-map-anno	 	#subnav a[href="../site-index/site-map-anno.jsp"] {
+#state-map		 	#subnav a[href="../maps/state.jsp"],
+#country-map	 	#subnav a[href="../maps/country.jsp"],
+#lho-site		 	#subnav a[href="../maps/lho-site.jsp"],
+#lho-diagram	 	#subnav a[href="../maps/lho-diagram.jsp"],
+#seismometers	 	#subnav a[href="../sensors/seismometers.jsp"],
+#tiltmeters		 	#subnav a[href="../sensors/tiltmeters.jsp"],
+#magnetometers	 	#subnav a[href="../sensors/magnetometers.jsp"],
+#anemometers	 	#subnav a[href="../sensors/anemometers.jsp"],
+#related-data		#subnav a[href="../info/related-data.jsp"] {
 	font-style: italic;
 }
  
@@ -81,10 +67,3 @@ a.button {
 #nav #subnav ul li:first-child a {
 	border-left: none;
 }
-
-
-.float {
-	float: left;
-	padding-right: 8px;
-}
-

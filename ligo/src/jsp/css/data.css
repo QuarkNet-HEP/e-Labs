@@ -1,15 +1,10 @@
-.data #footer {
-	border: none;
-}
-
-.data #content {
-	text-align: left;
-	margin-top: 80px;
-}
-
 h1 {
-	background-color: #4382bb;
+	background-color: #55a9b4;
 	color: #000000;
+}
+
+.data #center {
+	margin-top: 80px;
 }
 
 .data #center h1 {
@@ -22,43 +17,25 @@ h1 {
 }
 
 .data #center h2 {
+	width: 80%;
+	padding-bottom: 6px;
+	border-bottom: solid 2px #666666;
+	margin-left: 0px;
+	font-family: verdana, arial, sans-serif;
 	font-weight: bold;
 	font-size: 120%;
-	margin-left: 0px;
+	color: #333399;
+}
+
+.data #center em {
+	color: #333399;
+	font-weight: bold;
+	font-style: normal;
 }
 
 .data #center p {
 	font-weight: normal;
 	margin-left: 10px;
-}
-
-.data #center ul {
-	padding-left: 10px;
-	padding-top: 6px;
-}
-
-.data #center ul ul ul li {
-	font-weight: normal;
-}
-
-.data #center li {
-	list-style-type: none;
-	font-weight: bold;
-	padding-top: 6px;
-	padding-bottom: 6px;
-}
-
-a.button {
-	background-color: #ff6600;
-	border-top: #ffa76c 1px solid;
-	border-left: #ffa76c 1px solid;
-	border-bottom: #b54800 1px solid;
-	border-right: #b54800 1px solid;
-	padding-left: 6px;
-	padding-right: 6px;
-	color: black;
-	text-decoration: none;
-	font-weight: bold;
 }
 
 .data dt {
@@ -75,264 +52,62 @@ a.button {
 }
 
 #nav #subnav li a {
-	color: #33ffcc;
+	color: #000066;
 	border-left: 3px solid;
 }
 
-
-/************* Tab **************/
-
-
-.data .tab {
-	padding-top: 10px;
-	width: 100%;
+/*
+	Italicisize corresponding subnav item
+*/
+#data			 	#subnav a[href="../data"],
+.tutorial		 	#subnav a[href="../data/tutorial1.jsp"] {
+	font-style: italic;
 }
 
-.data .tab .tab-title {
-	background-color: #4382bb;
-	border-left: 1px solid #358974;
-	border-right: 1px solid #358974;
-	border-top: 1px solid #358974;
-	font-weight: bold;
-	padding-left: 3px;
-	padding-right: 3px;
-	margin: 0px;
+#nav #subnav ul li:first-child a {
+	border-left: none;
 }
 
-.data .tab .tab-contents {
-	background-color: #99ccff;
-	margin: 0px;
-	border-top: 2px solid black;
-	padding-bottom: 16px;
-	padding-left: 8px;
+
+.float {
+	float: left;
 	padding-right: 8px;
 }
 
-.data #content .tab-contents h2 {
-	font-weight: bold;
-	font-style: italic;
-	padding-left: 10px;
-	font-size: 100%;
-}
-
-.data #content .tab-contents li {
-	font-weight: normal;
-	padding-left: 8px;
+ul#nav-tutorial li {
+	display: inline;
+	text-align: center;
+	list-style: none;
+	padding-left: 0px;
+	padding-right: 0px;
 	padding-top: 0px;
 	padding-bottom: 0px;
 }
 
-.data #content .tab-contents li:before {
-	display: marker;
-	content: url("../graphics/ref_dot.gif");
-	marker-offset: auto;
-	padding-right: 3px;
-}
-
-p.search-result-bar {
-	margin-top: 0px;
-    padding-top:2px;
-    padding-bottom:2px;
-    padding-left:2px;
-    padding-right:2px;
-    border-top:1.5px solid #4382BB;
-    border-right:1.5px solid #4382BB;
-    width:97%;
-    background:#99C4EF;
-    text-align:right;
-}
-
-.search-results {
-	text-align: left;
-}
-
-.search-results .school-info p {
-	margin: 0px;
-	margin-left: 12px;
-	padding-left: 8px;
-}
-
-/*
- * This isn't quite obvious: it refers to the school info 
- * header in the hidden part of the switch (the class of which
- * (school-h) is defined by the results displayer).
- */
-.search-results .school-h .school-info {
-	padding-bottom: 16px;
-	border-bottom: thin solid black;
-	margin-bottom: 8px;
-}
-
-.search-results .school-name {
-	font-weight: bold;
-	margin-left: 4px;
-}
-
-.search-results .date-header {
-	margin-left: 32px;
-}
-
-.search-results .date-info {
-	margin-left: 4px;
-}
-
-.search-results .data-files {
-	margin-top: 16px;
-	padding-bottom: 8px;
-	padding-left: 20px;
-}
-
-.search-results .data-files table td {
-	padding: 4px;
-	width: 140px;
-	text-align: left;
-}
-
-.search-results .data-files tr.odd {
-	background-color: #ffffff;
-}
-
-.search-results .data-files tr.even {
-	background-color: #d4e0ff;
-}
-
-.search-results .data-file {
+ul#nav-tutorial a {
+	width: auto;
+	padding-left: 16px;
 	padding-right: 16px;
+	border-left: 3px solid #c0c0c0;
+	font-weight: bold;
+	color: #000080;
 }
 
-.search-results .data-file img {
-	border: none;
+ul#nav-tutorial li:first-child a {
+	border-left: none;
 }
 
-.search-results a.file-link{
-	padding-right: 6px;
+#tutorial1 #nav-tutorial a[href="../data/tutorial1.jsp"],
+#tutorial2 #nav-tutorial a[href="../data/tutorial2.jsp"],
+#tutorial3 #nav-tutorial a[href="../data/tutorial3.jsp"],
+#tutorial4 #nav-tutorial a[href="../data/tutorial4.jsp"],
+#tutorial5 #nav-tutorial a[href="../data/tutorial5.jsp"],
+#tutorial6 #nav-tutorial a[href="../data/tutorial6.jsp"],
+#tutorial7 #nav-tutorial a[href="../data/tutorial7.jsp"],
+#tutorial8 #nav-tutorial a[href="../data/tutorial8.jsp"],
+#tutorial9 #nav-tutorial a[href="../data/tutorial9.jsp"],
+#tutorial10 #nav-tutorial a[href="../data/tutorial10.jsp"],
+#tutorial11 #nav-tutorial a[href="../data/tutorial11.jsp"],
+#tutorial12 #nav-tutorial a[href="../data/tutorial12.jsp"] {
+	font-style: italic;
 }
-
-.search-results .clearall {
-	padding: 6px;
-}
-
-.study-right {
-	margin-left: 10px;
-}
-
-.study-right h2 {
-	font-size: 110%;
-}
-
-#legend {
-	margin-left: 10px;
-	display: compact;
-}
-
-#legend .dt {
-	display: compact;
-	float: left;
-	clear: left;
-	text-align: right;
-	width: 30px;
-}
-
-#legend .dd {
-	margin-left: 10px;
-	float: left;
-}
-
-.form-controls {
-	margin-left: auto;
-	margin-right: auto;
-	border: 1px dotted black;
-	padding: 8px;
-}
-
-#analysis-controls {
-	text-align: left;
-	border-style: groove;
-	background-color: #f6f6ff;
-	border-color: #ffffff;
-	border-width: 2px;
-	width: 500px;
-	margin-left: auto;
-	margin-right: auto;
-	padding: 16px;
-}
-
-#analysis-controls table {
-	text-align: center;
-	width: 100%;
-}
-
-#analyzing-list table {
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.hex-data-address {
-	color: #999999;
-	text-align: right;
-	font-family: Courier, monospaced;
-}
-.hex-data-data {
-	font-family: Courier, monospaced;
-}
-
-.hex-data-data-highlight {
-	color: #00CC00;
-	font-family: Courier, monospaced;
-}
-
-#view-plot-simple #content {
-	text-align: center;
-}
-
-.analysis-output #content {
-	text-align: center;
-}
-
-#analysis-table {
-	border: thin solid black;
-	width: 800px;
-	margin-bottom: 16px;
-}
-
-#analysis-table th {
-	padding-left: 4px;
-	padding-right: 4px;
-	background-color: #c0c0c0;
-}
-
-#analysis-table td {
-	padding-left: 4px;
-	padding-right: 4px;
-	background-color: #e0e0e0;
-}
-
-.tutorial #content {
-	padding-top: 24px;
-}
-
-/*********** Progress ************/
-
-#status-progress {
-	border: solid black thin;
-}
-
-#status-progress-indicator {
-	background-color: #5d89d9;
-}
-
-#analysis-table .list-progress {
-	border: solid black thin;
-	width: 64px;
-}
-
-#analysis-table .list-progress-indicator {
-	background-color: #5d89d9;
-}
-
-/*********** Directory listing ************/
-#analysis-files table {
-	width: 400px;
-	margin-left: 32px;
-}
-

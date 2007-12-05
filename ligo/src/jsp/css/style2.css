@@ -254,10 +254,12 @@ a#nav6 {
 
 #content a {
 	text-decoration: none;
+	color: #990066;
 }
 
 #content a:hover {
 	text-decoration: underline;
+	color: #ff0033
 }
 
 #content h1 {
@@ -269,6 +271,30 @@ a#nav6 {
 	margin-left: 2px;
 	margin-right: 2px;
 	padding: 4px;
+}
+
+#content #center ul {
+	margin-left: 0px;
+	padding-left: 0px;
+	padding-top: 8px;
+}
+
+#content #center li {
+	padding-bottom: 12px;
+	list-style-image: url("../graphics/gray-disc.gif");
+}
+
+#content #center ul ul {
+	margin-left: 16px;
+}
+
+#content #center ul ul li {
+	list-style-image: url("../graphics/circ.gif");
+}
+
+#content blockquote {
+	font-size: 90%;
+	color: gray;
 }
 
 table#main {
@@ -499,4 +525,14 @@ a img {
 .link-list a {
 	padding-left: 32px;
 	padding-right: 32px;
+}
+
+.float-right {
+	text-align: center;
+	float: right;
+	margin-top: 16px;
+	padding-top: 16px;
+	margin-right: 16px;
+	margin-left: 8px;
+	clear: right;
 }

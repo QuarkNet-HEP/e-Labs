@@ -64,15 +64,6 @@ a.button {
 	height: 20px;
 }
 
-.float-right {
-	text-align: center;
-	float: right;
-	margin-top: 16px;
-	padding-top: 16px;
-	margin-right: 16px;
-	margin-left: 8px;
-}
-
 #first-web #center em {
 	color: #333399;
 	font-weight: bold;
