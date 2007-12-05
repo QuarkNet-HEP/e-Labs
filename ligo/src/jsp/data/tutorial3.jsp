@@ -12,7 +12,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 	</head>
 	
-	<body id="data" class="data">
+	<body id="tutorial3" class="data tutorial">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
@@ -39,51 +39,19 @@
 		</td>
 		<td width="100%">
 			<div id="center">
-				<h2>Access LIGO data using Bluestone</h2>
-				
-				<p>
-					Bluestone software allows you to select and plot data from 
-					LIGO data channels. Check out the Bluestone Tutorial to 
-					improve your skills at using this tool. Then fire up 
-					<a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone</a>
-					as you start investigating your research question.
-				</p>
-				
-				<h2>Access your plots, uploaded images and posters</h2>
-				
-				<table>
-					<tr>
-						<th>View</th>
-						<th>Delete</th>
-					</tr>
-					<tr>
-						<td>
-							<p> 
-								<a href="../plots">Plots</a>
-								- Look at what you and other groups have found!
-							</p>
-							<p>
-								<a href="../posters">Posters</a>
-								- View and create posters of your plots.
-							</p>
-						</td>
-						<td>
-							<p>
-								<a href="../plots/delete.jsp">Plots</a>
-								- Delete plots your group owns.
-							</p>
-							<p>
-								<a href="../posters/delete.jsp">Posters</a>
-								- Delete posters your group has made.
-							</p>
-						</td>
-					</tr>
-				</table>
-				
 				<h2>
-					<a href="http://gridcafe.web.cern.ch/gridcafe/">Grids</a> - 
-					These investigations are brought to you by grid computing.
+					Software Tutorial: Learn How to Use 
+					<a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone</a>
 				</h2>
+				
+				<%@ include file="../data/nav-tutorial.jsp" %>
+				
+				<p align="center">
+					<em>Slide 3</em>
+				</p>
+				<p align="center">
+					<img src="../graphics/screen_3.gif" alt="bluestone screenshot 3" />
+				</p>
 			</div>
 		</td>
 	</tr>
