@@ -34,7 +34,7 @@
 			
 			<div id="content">
 				
-<h1>Search for and view plots.</h1>
+<h1>Delete plots.</h1>
 
 <%@ include file="../include/delete.jsp" %>
 
