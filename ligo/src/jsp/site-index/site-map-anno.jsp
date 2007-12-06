@@ -57,9 +57,9 @@
 						<li><a href="http://tekoa.ligo-wa.caltech.edu">Discussion Site</a></li>
 						<li><a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone Software</a></li>
 						<li><a href="../tutorial.jsp">Bluestone Tutorial</a></li>
-						<li><a href="ligo_map.jsp">LIGO Maps</a></li>
-						<li><a href="ligo_sensors.jsp">LIGO Sensors</a></li>
-						<li><a href="related_data.jsp">Related Data</a></li>
+						<li><a href="../maps">LIGO Maps</a></li>
+						<li><a href="../sensors">LIGO Sensors</a></li>
+						<li><a href="../info/related-data.jsp">Related Data</a></li>
 					</ul>
 				</li>
 			</ul>
