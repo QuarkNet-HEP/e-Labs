@@ -8,9 +8,9 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Registration</title>
-		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 	</head>
 
 	<body id="registration">
@@ -67,15 +67,6 @@
 		<td valign="top">
 			When you register a group, they are registered for the current e-Lab. 
 			If you want to register them for new e-Labs as more become available, you need to use this page.
-		</td>
-	</tr>
-	<tr>
-		<td  valign="top">
-			<a href="update-group-detectorid.jsp">Update detector IDs for your group.</a>
-		</td>
-		<td valign="top">
-			When you analyze data in the Cosmic Ray Elab, most of the analyses need to know information 
-			about your detector. This page allows you to assign detector IDs to your group.
 		</td>
 	</tr>
 </table>

@@ -6,9 +6,9 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Sample Activities</title>
-		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 	</head>
 
 	<body id="activities">
@@ -35,12 +35,8 @@
 
 <h2>Add an Activity</h2>
 <p>
-	Contact <a href="mailto:lrose1@nd.edu">Lynda Rose</a> to provide a resource 
-	for your colleagues.
-</p>
-<p>
-	Let Lynda know if you are willing to include your e-mail so 
-	other teachers may contact you for help.
+	John Kerr of Pasco High School (WA) has developed a <a href="ligo_elab1.pdf">generic model (PDF)</a> 
+	for getting started on the LIGO E-Lab.
 </p>
 
 			</div>

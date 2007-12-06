@@ -6,9 +6,9 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>QuarkNet/Grid Teacher Information</title>
-		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 	</head>
 
 	<body id="web-guide">
@@ -36,8 +36,7 @@
 </p>
 <h2>Getting Started</h2>
 <p>
-	The first time students enter the website, an animation flashes sample research 
-	questions. Students must go through several pages in order:
+	The first time students enter the website, they must go through several pages in order:
 	<ol>
 		<li>
 			<strong>Pre-test</strong> if their teacher requested it when registering 
@@ -60,8 +59,7 @@
 </p>
 <h2>Navigation Bar</h2>
 <p>
-	The main navigation bar appears first on the Study Guide (#3 above) and on all 
-	pages after that. <img src="../graphics/nav.jpg"/> 
+	<img src="../graphics/nav.jpg"/> 
 </p>
 <p>
 	Most of the pages also have a sub menu to provide both an overview of what is 
@@ -129,8 +127,6 @@
 		<li><strong>Tutorials:</strong> Step-by step instructions and tutorials for each of the studies.</li>
 		<li><strong>Contacts:</strong> Experts and student research groups.</li>
 		<li><strong>Online:</strong> Other URLs of interest.</li>
-		<li><strong>Animations:</strong> Aids to help students understand detector, 
-		and how the collaboration relies on grid techniques.</li>
 	</ul>
 </p>
 <h2><a href="../posters/"><strong>Posters</strong></a></h2>
