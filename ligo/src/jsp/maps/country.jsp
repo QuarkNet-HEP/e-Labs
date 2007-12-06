@@ -34,20 +34,16 @@
 				
 <table border="0" id="main">
 	<tr>
-		<td>
-			<div id="left">
-				<%@ include file="../include/left-alt.jsp" %>
-			</div>
+		<td id="left">
+			<%@ include file="../include/left-alt.jsp" %>
 		</td>
-		<td width="100%">
-			<div id="center">
-				<h2>Country Map</h2>
-				
-				<p align="center">
-					<img src="../graphics/lhomap_2.jpg" alt="LIGO Country Map" 
-						width="555" height="421" />
-				</p>
-			</div>
+		<td id="center">
+			<h2>Country Map</h2>
+			
+			<p align="center">
+				<img src="../graphics/lhomap_2.jpg" alt="LIGO Country Map" 
+					width="555" height="421" />
+			</p>
 		</td>
 	</tr>
 </table>

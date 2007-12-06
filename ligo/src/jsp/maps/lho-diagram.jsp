@@ -34,20 +34,16 @@
 				
 <table border="0" id="main">
 	<tr>
-		<td>
-			<div id="left">
-				<%@ include file="../include/left-alt.jsp" %>
-			</div>
+		<td id="left">
+			<%@ include file="../include/left-alt.jsp" %>
 		</td>
-		<td width="100%">
-			<div id="center">
-				<h2>LIGO Hanford Observatory (LHO) Site Diagram</h2>
-				
-				<p align="center">
-					<img src="../graphics/site_schematic_2.jpg" alt="LHO Diagram" 
-						width="380" height="379" />
-				</p>
-			</div>
+		<td id="center">
+			<h2>LIGO Hanford Observatory (LHO) Site Diagram</h2>
+			
+			<p align="center">
+				<img src="../graphics/site_schematic_2.jpg" alt="LHO Diagram" 
+					width="380" height="379" />
+			</p>
 		</td>
 	</tr>
 </table>
