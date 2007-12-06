@@ -31,35 +31,31 @@
 
 <table border="0" id="main">
 	<tr>
-		<td>
-			<div id="left">
-				<%@ include file="../include/left-alt.jsp" %>
-			</div>
+		<td id="left">
+			<%@ include file="../include/left-alt.jsp" %>
 		</td>
-		<td width="100%">
-			<div id="center">
-				<h2>Poster Tools</h2>
-				<p>
-					Congratulations! You developed a research question and planned 
-					and conducted an investigation.
-				</p>
-				<p>
-					How will your explanations of your results hold up in discussions 
-					with your classmates? Will your work stand the test of time and 
-					peer review?
-				</p>
-				<p>
-					Submit a poster summarizing your work. Use the menue of links 
-					above to create, edit and view your poster.
-				</p>
-				<p>
-					Your work is not over yet! Study the results from other 
-					investigations. Look critically and logically at relationships 
-					between the data and the explanations. Doubt results, challenge 
-					ideas, replicate investigations, propose and analyze alternative 
-					explanations. These are all part of doing science.
-				<p>
-			</div>
+		<td id="center">
+			<h2>Poster Tools</h2>
+			<p>
+				Congratulations! You developed a research question and planned 
+				and conducted an investigation.
+			</p>
+			<p>
+				How will your explanations of your results hold up in discussions 
+				with your classmates? Will your work stand the test of time and 
+				peer review?
+			</p>
+			<p>
+				Submit a poster summarizing your work. Use the menue of links 
+				above to create, edit and view your poster.
+			</p>
+			<p>
+				Your work is not over yet! Study the results from other 
+				investigations. Look critically and logically at relationships 
+				between the data and the explanations. Doubt results, challenge 
+				ideas, replicate investigations, propose and analyze alternative 
+				explanations. These are all part of doing science.
+			<p>
 		</td>
 	</tr>
 </table>

@@ -43,14 +43,11 @@
 
 <table border="0" id="main">
 	<tr>
-		<td>
-			<div id="left">
-				<%@ include file="../include/left-alt.jsp" %>
-			</div>
+		<td id="left">
+			<%@ include file="../include/left-alt.jsp" %>
 		</td>
-		<td width="100%">
-			<div id="center">
-				<h2>Make or edit your poster</h2>
+		<td id="center">
+			<h2>Make or edit your poster</h2>
 
 
 <%
@@ -377,7 +374,6 @@ if ("Make Poster".equals(reqType)) {
 
 %>
 				<hr />
-			</div>
 		</td>
 	</tr>
 </table>

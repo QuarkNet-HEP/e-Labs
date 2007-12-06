@@ -37,17 +37,15 @@
 
 <table border="0" id="main">
 	<tr>
-		<td>
-			<div id="left">
-				<%@ include file="../include/left-alt.jsp" %>
-			</div>
+		<td id="left">
+			<%@ include file="../include/left-alt.jsp" %>
 		</td>
-		<td width="100%">
-			<div id="center">
-				<h2>Search for and view posters.</h2>
+		<td id="center">
+			<h2>Search for and view posters.</h2>
+			<p>
 				<%@ include file="search-control.jsp" %>
 				<%@ include file="search-results.jsp" %>
-			</div>
+			</p>
 		</td>
 	</tr>
 </table>
