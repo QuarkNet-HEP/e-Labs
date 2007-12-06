@@ -33,22 +33,18 @@
 
 <table border="0" id="main">
 	<tr>
-		<td>
-			<div id="left">
-				<%@ include file="../include/left-alt.jsp" %>
-			</div>
+		<td id="left">
+			<%@ include file="../include/left-alt.jsp" %>
 		</td>
-		<td width="100%">
-			<div id="center">
-				<h2>Use these milestones if you need background on:</h2>
-				<ul>
-					<li>Simple Measurements. <e:reference name="simple measurement"/></li>
-					<li>Simple Calculations. <e:reference name="simple calculations"/></li>
-					<li>Simple Graphs. <e:reference name="simple graphs"/></li>
-					<li>Research Questions. <e:reference name="research question"/></li>
-					<li>Research Plans.. <e:reference name="research plan"/></li>
-				</ul>
-			</div>
+		<td id="center">
+			<h2>Use these milestones if you need background on:</h2>
+			<ul>
+				<li>Simple Measurements. <e:reference name="simple measurement"/></li>
+				<li>Simple Calculations. <e:reference name="simple calculations"/></li>
+				<li>Simple Graphs. <e:reference name="simple graphs"/></li>
+				<li>Research Questions. <e:reference name="research question"/></li>
+				<li>Research Plans.. <e:reference name="research plan"/></li>
+			</ul>
 		</td>
 	</tr>
 </table>

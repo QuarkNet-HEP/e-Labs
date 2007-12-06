@@ -33,42 +33,38 @@
 
 <table border="0" id="main">
 	<tr>
-		<td>
-			<div id="left">
-				<%@ include file="../include/left-alt.jsp" %>
-			</div>
+		<td id="left">
+			<%@ include file="../include/left-alt.jsp" %>
 		</td>
-		<td width="100%">
-			<div id="center">
-				<h2>Use the E-Lab library of resources as you work</h2>
-				<ul>
-					<li>
-						<a href="research-basics.jsp">The Basics</a> - Review research skills that 
-						you will need for this project.
-					</li>
-					<li>
-						<a href="milestone-map.jsp">Study Guide</a> - Measure your progress
-						as you work.
-					</li>
-					<li>
-						<a href="resources.jsp">Resources</a> - Explore online resources 
-						that will help you conduct your E-Lab investigation. A 
-						<a href="tutorial.jsp">tutorial</a> will help you learn to use 
-						<a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone</a>, 
-						LIGO's E-Lab data analysis software
-					</li>
-					<li>
-						<a href="big-picture.jsp">Big Picture</a> - Read an overview of 
-						this project.
-					</li>					
-					<li>
-						<a href="FAQ.jsp">FAQs</a> - Read the FAQs for answers to your questions.
-					</li>
-					<li>
-						<a href="../site-index">Site Help</a> - Learn how to use the website.
-					</li>
-				</ul>
-			</div>
+		<td id="center">
+			<h2>Use the E-Lab library of resources as you work</h2>
+			<ul>
+				<li>
+					<a href="research-basics.jsp">The Basics</a> - Review research skills that 
+					you will need for this project.
+				</li>
+				<li>
+					<a href="milestone-map.jsp">Study Guide</a> - Measure your progress
+					as you work.
+				</li>
+				<li>
+					<a href="resources.jsp">Resources</a> - Explore online resources 
+					that will help you conduct your E-Lab investigation. A 
+					<a href="tutorial.jsp">tutorial</a> will help you learn to use 
+					<a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone</a>, 
+					LIGO's E-Lab data analysis software
+				</li>
+				<li>
+					<a href="big-picture.jsp">Big Picture</a> - Read an overview of 
+					this project.
+				</li>					
+				<li>
+					<a href="FAQ.jsp">FAQs</a> - Read the FAQs for answers to your questions.
+				</li>
+				<li>
+					<a href="../site-index">Site Help</a> - Learn how to use the website.
+				</li>
+			</ul>
 		</td>
 	</tr>
 </table>

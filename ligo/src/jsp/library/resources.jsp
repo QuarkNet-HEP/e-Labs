@@ -34,26 +34,22 @@
 				
 <table border="0" id="main">
 	<tr>
-		<td>
-			<div id="left">
-				<%@ include file="../include/left-alt.jsp" %>
-			</div>
+		<td id="left">
+			<%@ include file="../include/left-alt.jsp" %>
 		</td>
-		<td width="100%">
-			<div id="center">
-				<h2>LIGO E-Lab Resources</h2>
-				<ul>
-					<li><a href="tutorial.jsp">Bluestone Tutorial</a></li>
-					<li><a href="http://tekoa.ligo-wa.caltech.edu">LIGO E-Lab Discussion Site</a></li>
-					<li><a href="http://www.ligo-wa,caltech.edu">LIGO Hanford Observatory</a></li>
-					<li><a href="http://ilog.ligo-wa,caltech.edu/ilog">LHO Electronic Log</a></li>
-					<li><a href="http://earthquake.usgs.gov">USGS Earthquake Records</a></li>
-					<li><a href="http://www.ees.washington.edu">Pacific Northwest Seismic Network</a></li>
-					<li><a href="http://www.gcse.com/waves/seismometers.htm">How Does a Seismometer Work?</a></li>
-					<li><a href="http://www.darylscience.com/Demos/PSWAVES.html">Types of Earthquake Waves</a></li>
-					<li><a href="ligo_elab1.pdf">E-Lab Seismic Study (PDF)</a></li>
-				</ul>
-			</div>
+		<td id="center">
+			<h2>LIGO E-Lab Resources</h2>
+			<ul>
+				<li><a href="tutorial.jsp">Bluestone Tutorial</a></li>
+				<li><a href="http://tekoa.ligo-wa.caltech.edu">LIGO E-Lab Discussion Site</a></li>
+				<li><a href="http://www.ligo-wa,caltech.edu">LIGO Hanford Observatory</a></li>
+				<li><a href="http://ilog.ligo-wa,caltech.edu/ilog">LHO Electronic Log</a></li>
+				<li><a href="http://earthquake.usgs.gov">USGS Earthquake Records</a></li>
+				<li><a href="http://www.ees.washington.edu">Pacific Northwest Seismic Network</a></li>
+				<li><a href="http://www.gcse.com/waves/seismometers.htm">How Does a Seismometer Work?</a></li>
+				<li><a href="http://www.darylscience.com/Demos/PSWAVES.html">Types of Earthquake Waves</a></li>
+				<li><a href="ligo_elab1.pdf">E-Lab Seismic Study (PDF)</a></li>
+			</ul>
 		</td>
 	</tr>
 </table>

@@ -32,20 +32,16 @@
 				
 <table id="main">
 	<tr>
-		<td>
-			<div id="left">
-				<%@ include file="../include/left-alt.jsp" %>
-			</div>
+		<td id="left">
+			<%@ include file="../include/left-alt.jsp" %>
 		</td>
-		<td width="100%">
-			<div id="center">
-				<h2>Frequently Asked E-Lab Questions (FAQ's)</h2>
-				<p>
-					Use the <a href="http://tekoa.ligo-wa.caltech.edu/tla">LIGO E-Lab Discussion Site</a> 
-					to find online discussions of many of your E-Lab questions.  Add your own information 
-					to the Discussion Site to share your knowledge with other students!
-				</p>
-			</div>
+		<td id="center">
+			<h2>Frequently Asked E-Lab Questions (FAQ's)</h2>
+			<p>
+				Use the <a href="http://tekoa.ligo-wa.caltech.edu/tla">LIGO E-Lab Discussion Site</a> 
+				to find online discussions of many of your E-Lab questions.  Add your own information 
+				to the Discussion Site to share your knowledge with other students!
+			</p>
 		</td>
 	</tr>
 </table>
