@@ -32,34 +32,30 @@
 
 <table border="0" id="main">
 	<tr>
-		<td>
-			<div id="left">
-				<%@ include file="../include/left-alt.jsp" %>
-			</div>
+		<td id="left">
+			<%@ include file="../include/left-alt.jsp" %>
 		</td>
-		<td width="100%">
-			<div id="center">
-				<h2>
-					Software Tutorial: Learn How to Use 
-					<a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone</a>
-				</h2>
-				
-				<%@ include file="../data/nav-tutorial.jsp" %>
-				
-				<p>
-					<em>1: Open</em> Bluestone by clicking on the Bluestone link 
-					above. See your teacher if you need login access. If your 
-					browser will let you, open Bluestone in a new tab so you can 
-					operate it as you go through this tutorial. Advance through 
-					this tutorial by clicking the numbered links above.
-				</p>
-				<p align="center">
-					<em>Slide 1</em>
-				</p>
-				<p align="center">
-					<img src="../graphics/screen_1.gif" alt="bluestone screenshot 1" />
-				</p>
-			</div>
+		<td id="center">
+			<h2>
+				Software Tutorial: Learn How to Use 
+				<a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone</a>
+			</h2>
+			
+			<%@ include file="../data/nav-tutorial.jsp" %>
+			
+			<p>
+				<em>1: Open</em> Bluestone by clicking on the Bluestone link 
+				above. See your teacher if you need login access. If your 
+				browser will let you, open Bluestone in a new tab so you can 
+				operate it as you go through this tutorial. Advance through 
+				this tutorial by clicking the numbered links above.
+			</p>
+			<p align="center">
+				<em>Slide 1</em>
+			</p>
+			<p align="center">
+				<img src="../graphics/screen_1.gif" alt="bluestone screenshot 1" />
+			</p>
 		</td>
 	</tr>
 </table>

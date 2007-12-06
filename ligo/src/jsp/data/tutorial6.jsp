@@ -32,27 +32,23 @@
 
 <table border="0" id="main">
 	<tr>
-		<td>
-			<div id="left">
-				<%@ include file="../include/left-alt.jsp" %>
-			</div>
+		<td id="left">
+			<%@ include file="../include/left-alt.jsp" %>
 		</td>
-		<td width="100%">
-			<div id="center">
-				<h2>
-					Software Tutorial: Learn How to Use 
-					<a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone</a>
-				</h2>
-				
-				<%@ include file="../data/nav-tutorial.jsp" %>
-				
-				<p align="center">
-					<em>Slide 6</em>
-				</p>
-				<p align="center">
-					<img src="../graphics/screen_6.gif" alt="bluestone screenshot 6" />
-				</p>
-			</div>
+		<td id="center">
+			<h2>
+				Software Tutorial: Learn How to Use 
+				<a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone</a>
+			</h2>
+			
+			<%@ include file="../data/nav-tutorial.jsp" %>
+			
+			<p align="center">
+				<em>Slide 6</em>
+			</p>
+			<p align="center">
+				<img src="../graphics/screen_6.gif" alt="bluestone screenshot 6" />
+			</p>
 		</td>
 	</tr>
 </table>

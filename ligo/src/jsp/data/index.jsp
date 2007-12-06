@@ -32,25 +32,23 @@
 
 <table border="0" id="main">
 	<tr>
-		<td>
-			<div id="left">
-				<%@ include file="../include/left-alt.jsp" %>
-			</div>
+		<td id="left">
+			<%@ include file="../include/left-alt.jsp" %>
 		</td>
-		<td width="100%">
-			<div id="center">
-				<h2>Access LIGO data using Bluestone</h2>
-				
-				<p>
-					Bluestone software allows you to select and plot data from 
-					LIGO data channels. Check out the Bluestone Tutorial to 
-					improve your skills at using this tool. Then fire up 
-					<a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone</a>
-					as you start investigating your research question.
-				</p>
-				
-				<h2>Access your plots, uploaded images and posters</h2>
-				
+		<td id="center">
+			<h2>Access LIGO data using Bluestone</h2>
+			
+			<p>
+				Bluestone software allows you to select and plot data from 
+				LIGO data channels. Check out the Bluestone Tutorial to 
+				improve your skills at using this tool. Then fire up 
+				<a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone</a>
+				as you start investigating your research question.
+			</p>
+			
+			<h2>Access your plots, uploaded images and posters</h2>
+			
+			<p>
 				<table>
 					<tr>
 						<th>View</th>
@@ -79,12 +77,12 @@
 						</td>
 					</tr>
 				</table>
-				
-				<h2>
-					<a href="http://gridcafe.web.cern.ch/gridcafe/">Grids</a> - 
-					These investigations are brought to you by grid computing.
-				</h2>
-			</div>
+			</p>
+			
+			<h2>
+				<a href="http://gridcafe.web.cern.ch/gridcafe/">Grids</a> - 
+				These investigations are brought to you by grid computing.
+			</h2>
 		</td>
 	</tr>
 </table>
