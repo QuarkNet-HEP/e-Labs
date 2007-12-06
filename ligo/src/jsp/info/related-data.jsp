@@ -36,20 +36,18 @@
 				
 <table border="0" id="main">
 	<tr>
-		<td>
-			<div id="left">
-				<%@ include file="../include/left-alt.jsp" %>
-			</div>
+		<td id="left">
+			<%@ include file="../include/left-alt.jsp" %>
 		</td>
-		<td width="100%">
-			<div id="center">
-				<h2>Additional Web data sources may assist your investigation</h2>
-				
+		<td id="center">
+			<h2>Additional Web data sources may assist your investigation</h2>
+			
+			<p>			
 				<ul>
 					<li><a href="http://earthquake.usgs.gov/">USGS Earthquake Records</a></li>
 					<li><a href="http://www.ess.washington.edu/SEIS/PNSN/">Pacific Northwest Seismic Network</a></li>
 				</ul>
-			</div>
+			</p>
 		</td>
 	</tr>
 </table>
