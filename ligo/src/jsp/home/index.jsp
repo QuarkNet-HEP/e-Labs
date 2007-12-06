@@ -36,75 +36,72 @@
 <!-- there is no way to do this without tables unfortunately -->
 <table border="0" id="main">
 	<tr>
-		<td>
-			<div id="left">
-				<%@ include file="../include/left.jsp" %>
-			</div>
+		<td id="left">
+			<%@ include file="../include/left.jsp" %>
 		</td>
-		<td>
+		<td id="center">
 			<div class="float-right bordered">
 				<%@ include file="../include/newsbox.jsp" %>
 				<jsp:include page="../login/login-control.jsp">
 					<jsp:param name="prevPage" value="../home/login-redir.jsp"/>
 				</jsp:include>
 			</div>
-			<div id="center">
-				<h2>Welcome to the LIGO I2U2 E-Lab!</h2>
 
-				<p>
-					At this Web site you are invited to work with scientific data from  
-					<a href="http://www.ligo.caltech.edu">LIGO</a>, the 
-					Laser Interferometer Gravitational-wave Observatory.  Using your 
-					computer and the Internet, you can graph data from LIGO's 
-					seismometers and weather stations.  You can perform a short study 
-					or build a long-term research project.  The tools at this site will 
-					guide you through the process.  Use our data to research your 
-					questions about how and why the ground shakes.  We've got plenty of 
-					data waiting for you, so feel free to log in and get started!
-				</p>
+			<h2>Welcome to the LIGO I2U2 E-Lab!</h2>
 
-				<h2>What is LIGO?</h2>
-				<p>
-					LIGO's huge laser interferometers in 
-					<a href="http://www.ligo-wa.caltech.edu">Washington State</a> and in 
-					<a href="http://www.ligo-la.caltech.edu">Louisiana</a> (sidebar photos) 
-					listen for the faint ripples of space-time called gravitational waves. 
-					LIGO seeks to detect gravitational waves from the collisions of black 
-					holes or neutron stars and from star explosions known as supernovae. 
-					The data that you can view at this Web site come from instruments that 
-					monitor the environment at LIGO.  Seismic events can affect the behavior 
-					of LIGO's gravitational wave detectors.  You can participate in the task 
-					of analyzing these environmental disturbances. 
-				</p>
+			<p>
+				At this Web site you are invited to work with scientific data from  
+				<a href="http://www.ligo.caltech.edu">LIGO</a>, the 
+				Laser Interferometer Gravitational-wave Observatory.  Using your 
+				computer and the Internet, you can graph data from LIGO's 
+				seismometers and weather stations.  You can perform a short study 
+				or build a long-term research project.  The tools at this site will 
+				guide you through the process.  Use our data to research your 
+				questions about how and why the ground shakes.  We've got plenty of 
+				data waiting for you, so feel free to log in and get started!
+			</p>
+
+			<h2>What is LIGO?</h2>
+			<p>
+				LIGO's huge laser interferometers in 
+				<a href="http://www.ligo-wa.caltech.edu">Washington State</a> and in 
+				<a href="http://www.ligo-la.caltech.edu">Louisiana</a> (sidebar photos) 
+				listen for the faint ripples of space-time called gravitational waves. 
+				LIGO seeks to detect gravitational waves from the collisions of black 
+				holes or neutron stars and from star explosions known as supernovae. 
+				The data that you can view at this Web site come from instruments that 
+				monitor the environment at LIGO.  Seismic events can affect the behavior 
+				of LIGO's gravitational wave detectors.  You can participate in the task 
+				of analyzing these environmental disturbances. 
+			</p>
 
 
-				<h2>What is I2U2?</h2>
-				<p>
-					I2U2, or <i>Interactions in Understanding the Universe</i>, is a joint 
-					effort by several major research projects to make professional science 
-					data available to students and teachers.  Funded by the 
-					<a href="http://www.nsf.gov">National Science Foundation</a> (NSF), 
-					I2U2 relies on a national network of computers known as the Grid to 
-					make data and analysis tools available over the Internet through virtual 
-					laboratories known as E-Labs. Check the main 
-					<a href="http://www.i2u2.org:8080/index.html">I2U2</a> Web site to find 
-					the cosmic ray, high energy physics and nuclear physics 
-					<a href="http://www.i2u2.org:8080/elab/list.html">E-Labs</a> that also 
-					are available to you.  I2U2 provides data and software that allows students 
-					and teachers to perform authentic science research in a professional-style 
-					collaborative environment, brought to you by the power of the Grid.
-				</p>
-				
-				<h2>How do I Start the LIGO E-Lab?</h2>
-				<p>
-					You will need to log in to begin the E-Lab. Your teacher can provide you 
-					with a user name and password or you may log in as a guest. You will then be 
-					able to use the links across the top menu bar to build your E-Lab research 
-					project.  The sidebar links will take you to the LIGO data analysis software 
-					and to a number of resources that will help you interpret the data that you 
-					select.
-				</p>
-			</div>
+			<h2>What is I2U2?</h2>
+			<p>
+				I2U2, or <i>Interactions in Understanding the Universe</i>, is a joint 
+				effort by several major research projects to make professional science 
+				data available to students and teachers.  Funded by the 
+				<a href="http://www.nsf.gov">National Science Foundation</a> (NSF), 
+				I2U2 relies on a national network of computers known as the Grid to 
+				make data and analysis tools available over the Internet through virtual 
+				laboratories known as E-Labs. Check the main 
+				<a href="http://www.i2u2.org:8080/index.html">I2U2</a> Web site to find 
+				the cosmic ray, high energy physics and nuclear physics 
+				<a href="http://www.i2u2.org:8080/elab/list.html">E-Labs</a> that also 
+				are available to you.  I2U2 provides data and software that allows students 
+				and teachers to perform authentic science research in a professional-style 
+				collaborative environment, brought to you by the power of the Grid.
+			</p>
+			
+			<h2>How do I Start the LIGO E-Lab?</h2>
+			<p>
+				You will need to log in to begin the E-Lab. Your teacher can provide you 
+				with a user name and password or you may log in as a guest. You will then be 
+				able to use the links across the top menu bar to build your E-Lab research 
+				project.  The sidebar links will take you to the LIGO data analysis software 
+				and to a number of resources that will help you interpret the data that you 
+				select.
+			</p>
 		</td>
 	</tr>
 </table>

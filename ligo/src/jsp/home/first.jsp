@@ -29,36 +29,33 @@
 <table border="0" id="main">
 	<tr>
 		<td id="left">
-			<div id="left">
-				<%@ include file="../include/left.jsp" %>
-			</div>
+			<%@ include file="../include/left.jsp" %>
 		</td>
-		<td width="100%">
+		<td id="center">
 			<div class="float-right bordered">
 				<a class="button" href="first-web.jsp">Start Your E-Lab Here!</a>
 				<%@ include file="../posters/poster-sample-small.jsp" %>
 			</div>
-			<div id="center">
-				<h2>Join the LIGO I2U2 E-Lab Collaboration!</h2>
-				<p>Here's your chance to do a research study.</p>
-				<ul>
-					<li>Ask a question and make a research plan</li>
-					<li>Plot data from LIGO and attack your research question</li>
-					<li>Find out what other students have done.</li>
-					<li>Talk it over.</li>
-					<li>Then ask other questions and refine your study!</li>
-				</ul>
-				<h2>Do a Scientific Study!</h2>
-				<p>You will:</p>
-				<ul>
-					<li>Ask questions about seismic waves</li>
-					<li>Develop a study plan to answer these questions.</li>
-					<li>Execute your plan.</li>
-					<li>Gather data by using our Internet software</li>
-					<li>Draw conclusions from your data</li>
-					<li>Share and defend your results</li>
-				</ul>
-			</div>
+
+			<h2>Join the LIGO I2U2 E-Lab Collaboration!</h2>
+			<p>Here's your chance to do a research study.</p>
+			<ul>
+				<li>Ask a question and make a research plan</li>
+				<li>Plot data from LIGO and attack your research question</li>
+				<li>Find out what other students have done.</li>
+				<li>Talk it over.</li>
+				<li>Then ask other questions and refine your study!</li>
+			</ul>
+			<h2>Do a Scientific Study!</h2>
+			<p>You will:</p>
+			<ul>
+				<li>Ask questions about seismic waves</li>
+				<li>Develop a study plan to answer these questions.</li>
+				<li>Execute your plan.</li>
+				<li>Gather data by using our Internet software</li>
+				<li>Draw conclusions from your data</li>
+				<li>Share and defend your results</li>
+			</ul>
 		</td>
 	</tr>
 </table>

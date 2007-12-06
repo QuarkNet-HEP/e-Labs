@@ -27,63 +27,59 @@
 			
 <table border="0" id="main">
 	<tr>
-		<td>
-			<div id="left">
-				<%@ include file="../include/left.jsp" %>
-			</div>
+		<td id="left">
+			<%@ include file="../include/left.jsp" %>
 		</td>
 		
-		<td>
-			<div id="center">
-				<p>
-					The Cosmic Ray e-Lab provides an online environment in which students experience 
-					the excitement of scientific collaboration in this series of investigations into 
-					high-energy cosmic rays. Schools with cosmic ray detectors upload data to a 
-					"virtual data grid" portal where ALL the data resides. This approach allows 
-					students to analyze a much larger body of data and to share analysis code. Also, 
-					it allows schools that do not have cosmic ray detectors to participate in research 
-					by analyzing shared data.
-				</p>
-				
-
-				<p>
-					Students learn what cosmic rays are, where they come from and how they hit the Earth. 
-					While scientists understand cosmic rays with low to moderate energies, some cosmic 
-					rays have so much energy that scientists are not sure where they come from. A number 
-					of research projects are looking at this question. Students will have a chance to 
-					gain their own understanding of cosmic rays and may be fortunate enough to capture 
-					a rare highly-energetic cosmic ray shower on their classroom detector and analyze 
-					their results with this e-Lab.
-				</p>
-	
-				<p>
-					<a href="/elab"><strong>Information common for all e-Labs</strong></a>
-				</p>
-				
-				<p class="centered">
-					<img src="../graphics/lho_aerial_photo.jpg" width="400px" 
-						alt="Aerial Picture of LIGO Hanford Observatory" />
-				</p>
-				
-				<table id="footer">
-					<tr>
-						<td id="footertext">
-							<p>
-								This project is supported in part by the National Science Foundation and 
-								the Office of High Energy Physics in the Office of Science , U.S. 
-								Department of Energy. Opinions expressed are those of the authors and 
-								not necessarily those of the Foundation or Department.
-							</p>
-						</td>
+		<td id="center">
+			<p>
+				The Cosmic Ray e-Lab provides an online environment in which students experience 
+				the excitement of scientific collaboration in this series of investigations into 
+				high-energy cosmic rays. Schools with cosmic ray detectors upload data to a 
+				"virtual data grid" portal where ALL the data resides. This approach allows 
+				students to analyze a much larger body of data and to share analysis code. Also, 
+				it allows schools that do not have cosmic ray detectors to participate in research 
+				by analyzing shared data.
+			</p>
 			
-						<td class="logogroup">
-							<img src="../graphics/logo1sm.gif" />
-							<img src="../graphics/seal.gif" />
-							<img src="../graphics/logoos.jpg" />
-						</td>
-					</tr>
-				</table>
-			</div>
+
+			<p>
+				Students learn what cosmic rays are, where they come from and how they hit the Earth. 
+				While scientists understand cosmic rays with low to moderate energies, some cosmic 
+				rays have so much energy that scientists are not sure where they come from. A number 
+				of research projects are looking at this question. Students will have a chance to 
+				gain their own understanding of cosmic rays and may be fortunate enough to capture 
+				a rare highly-energetic cosmic ray shower on their classroom detector and analyze 
+				their results with this e-Lab.
+			</p>
+
+			<p>
+				<a href="/elab"><strong>Information common for all e-Labs</strong></a>
+			</p>
+			
+			<p class="centered">
+				<img src="../graphics/lho_aerial_photo.jpg" width="400px" 
+					alt="Aerial Picture of LIGO Hanford Observatory" />
+			</p>
+			
+			<table id="footer">
+				<tr>
+					<td id="footertext">
+						<p>
+							This project is supported in part by the National Science Foundation and 
+							the Office of High Energy Physics in the Office of Science , U.S. 
+							Department of Energy. Opinions expressed are those of the authors and 
+							not necessarily those of the Foundation or Department.
+						</p>
+					</td>
+		
+					<td class="logogroup">
+						<img src="../graphics/logo1sm.gif" />
+						<img src="../graphics/seal.gif" />
+						<img src="../graphics/logoos.jpg" />
+					</td>
+				</tr>
+			</table>
 		</td>
 		
 	</tr>
