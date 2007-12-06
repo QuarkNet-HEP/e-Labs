@@ -34,28 +34,24 @@
 				
 <table border="0" id="main">
 	<tr>
-		<td>
-			<div id="left">
-				<%@ include file="../include/left-alt.jsp" %>
-			</div>
+		<td id="left">
+			<%@ include file="../include/left-alt.jsp" %>
 		</td>
-		<td width="100%">
-			<div id="center">
-				<h2>LIGO Environmental Sensors: Seismometers</h2>
-				
-				<p align="center">
-					<img src="../graphics/seis.jpg" width="302" height="305" />
-				</p>
-				<p>
-					Seismometers measure seismic waves that travel through the 
-					earth. A magnetic mass is suspended between two coils. As 
-					seismic waves pass through the seismometer, the coils move, 
-					but the mass remains at rest because of its inertia. The 
-					movement of the coils relative to the magnetic mass induces 
-					an electric current that can be detected and plotted on a 
-					graphical interface.
-				</p>
-			</div>
+		<td id="center">
+			<h2>LIGO Environmental Sensors: Seismometers</h2>
+			
+			<p align="center">
+				<img src="../graphics/seis.jpg" width="302" height="305" />
+			</p>
+			<p>
+				Seismometers measure seismic waves that travel through the 
+				earth. A magnetic mass is suspended between two coils. As 
+				seismic waves pass through the seismometer, the coils move, 
+				but the mass remains at rest because of its inertia. The 
+				movement of the coils relative to the magnetic mass induces 
+				an electric current that can be detected and plotted on a 
+				graphical interface.
+			</p>
 		</td>
 	</tr>
 </table>

@@ -34,24 +34,20 @@
 				
 <table border="0" id="main">
 	<tr>
-		<td>
-			<div id="left">
-				<%@ include file="../include/left-alt.jsp" %>
-			</div>
+		<td id="left">
+			<%@ include file="../include/left-alt.jsp" %>
 		</td>
-		<td width="100%">
-			<div id="center">
-				<h2>LIGO Environmental Sensors: Tiltmeters</h2>
-				
-				<p align="center">
-					<img src="../graphics/tilt.jpg" width="432" height="386" />
-				</p>
-				<p>
-					Tiltmeters measure small changes in the tilt of the ground 
-					or of a structure. Tiltmeters are analogous to a highly 
-					sensitive carpenter's level with an electronic output.
-				</p>
-			</div>
+		<td id="center">
+			<h2>LIGO Environmental Sensors: Tiltmeters</h2>
+			
+			<p align="center">
+				<img src="../graphics/tilt.jpg" width="432" height="386" />
+			</p>
+			<p>
+				Tiltmeters measure small changes in the tilt of the ground 
+				or of a structure. Tiltmeters are analogous to a highly 
+				sensitive carpenter's level with an electronic output.
+			</p>
 		</td>
 	</tr>
 </table>

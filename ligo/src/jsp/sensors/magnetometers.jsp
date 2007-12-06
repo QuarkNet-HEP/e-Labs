@@ -34,24 +34,20 @@
 				
 <table border="0" id="main">
 	<tr>
-		<td>
-			<div id="left">
-				<%@ include file="../include/left-alt.jsp" %>
-			</div>
+		<td id="left">
+			<%@ include file="../include/left-alt.jsp" %>
 		</td>
-		<td width="100%">
-			<div id="center">
-				<h2>LIGO Environmental Sensors: Magnetometers</h2>
-				
-				<p align="center">
-					<img src="../graphics/magnetometer.jpg" width="284" height="510" />
-				</p>
-				<p>
-					Magnetometers measure changes in the Earth's magnetic field. 
-					Magnetometers can be used to monitor the effects of solar storms 
-					near the Earth. They can also be used to predict auroras.
-				</p>
-			</div>
+		<td id="center">
+			<h2>LIGO Environmental Sensors: Magnetometers</h2>
+			
+			<p align="center">
+				<img src="../graphics/magnetometer.jpg" width="284" height="510" />
+			</p>
+			<p>
+				Magnetometers measure changes in the Earth's magnetic field. 
+				Magnetometers can be used to monitor the effects of solar storms 
+				near the Earth. They can also be used to predict auroras.
+			</p>
 		</td>
 	</tr>
 </table>

@@ -36,23 +36,19 @@
 				
 <table border="0" id="main">
 	<tr>
-		<td>
-			<div id="left">
-				<%@ include file="../include/left-alt.jsp" %>
-			</div>
+		<td id="left">
+			<%@ include file="../include/left-alt.jsp" %>
 		</td>
-		<td width="100%">
-			<div id="center">
-				<h2>LIGO Environmental Sensors: Anemometers</h2>
-				
-				<p align="center">
-					<img src="../graphics/anemometer.jpg" width="455" height="415" />
-				</p>
-				<p>
-					Anemometers measure the velocity and direction of the wind at 
-					all five LIGO data stations.
-				</p>
-			</div>
+		<td id="center">
+			<h2>LIGO Environmental Sensors: Anemometers</h2>
+			
+			<p align="center">
+				<img src="../graphics/anemometer.jpg" width="455" height="415" />
+			</p>
+			<p>
+				Anemometers measure the velocity and direction of the wind at 
+				all five LIGO data stations.
+			</p>
 		</td>
 	</tr>
 </table>
