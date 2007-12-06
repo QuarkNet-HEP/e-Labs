@@ -3,10 +3,6 @@ h1 {
 	color: #000000;
 }
 
-.assessment #center {
-	margin-top: 80px;
-}
-
 .assessment #center h1 {
 	font-weight: normal;
 	font-size: 140%;
@@ -17,7 +13,7 @@ h1 {
 }
 
 .assessment #center h2 {
-	width: 80%;
+	display: inline;	
 	padding-bottom: 6px;
 	border-bottom: solid 2px #666666;
 	margin-left: 0px;
@@ -48,6 +44,8 @@ h1 {
 
 #nav {
 	width: 100%;
+	left: 0px;
+	top: 74px;
 	height: 20px;
 }
 

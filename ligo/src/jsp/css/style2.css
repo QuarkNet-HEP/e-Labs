@@ -37,7 +37,8 @@ body {
 	margin-right: auto;
 	color: #b0b0b0;
 	font-weight: bold;
-	font-family: Arial, sans-serif;
+	font-family: Tahoma, Arial, sans-serif;
+	font-size: 14px;
 }
 
 #header a {
@@ -61,7 +62,7 @@ body {
 
 #header-title {
 	font-family: Verdana, Arial, sans-serif;
-	font-size: 140%;
+	font-size: 20px;
 	font-weight: bold;
 	padding-top: 16px;
 	margin-left: 140px;
@@ -97,11 +98,11 @@ body {
 }
 
 #nav {
-	/*border: 1px solid red;*/
 	position: absolute;
 	bottom: 0px;
 	text-align: center;
 	border-top: solid #b0b0b0 2px;
+	width: 500px;
 }
 
 #nav-footer {
@@ -110,6 +111,7 @@ body {
 	border: double 3px #a0a0a0;
 	width: 760px;
 	float: right;
+	margin-top: 24px;
 }
 
 #nav ul, #nav-footer ul {
@@ -225,15 +227,18 @@ a#nav6 {
 #left {
 	margin: 0px;
 	padding: 0px;
+	width: 144px;
 }
 
 #side-panel {
+	font-family: Verdana, Arial, sans-serif;
 	padding: 0px;
 	padding-top: 2px;
 	padding-left: 6px;
 	background-color: black;
 	border: 2px solid gray;
 	width: 134px;
+	font-size: 14px;
 }
 
 #side-panel img {
@@ -246,10 +251,15 @@ a#nav6 {
 	width: 100%;
 	margin: 0px;
 	padding: 0px;
-	font-size: 100%;
+	font-size: 15px;
 	text-align: left;
 	font-family: monaco, sans-serif;
 	color: #333333;
+}
+
+#content #center {
+	padding-top: 80px;
+	padding-left: 8px;
 }
 
 #content a {
@@ -275,13 +285,13 @@ a#nav6 {
 
 #content #center ul {
 	margin-left: 0px;
-	padding-left: 0px;
-	padding-top: 8px;
+	padding-left: 32px;
+	list-style-type: disc;
+	list-style-image: url("../graphics/gray-disc.gif");
 }
 
 #content #center li {
 	padding-bottom: 12px;
-	list-style-image: url("../graphics/gray-disc.gif");
 }
 
 #content #center ul ul {
@@ -290,6 +300,10 @@ a#nav6 {
 
 #content #center ul ul li {
 	list-style-image: url("../graphics/circ.gif");
+}
+
+#center p {
+	padding-top: 4px;
 }
 
 #content blockquote {
@@ -301,7 +315,6 @@ table#main {
 	width: 100%;
 	padding: 0px;
 	margin: 0px;
-	/*border: 1px solid red;*/
 }
 
 #main td {
@@ -349,6 +362,7 @@ table#main {
 	text-align: center;
 	text-indent: 0px;
 	font-size: 100%;
+	border: none;
 }
 
 #login-form-text p {
@@ -365,7 +379,7 @@ table#main {
 	width: 100%;
 }
 
-td.form-label {
+#center td.form-label {
 	padding-right: 4px;
 	text-align: right;
 	width: 40%;
@@ -423,6 +437,7 @@ a > img {
 	text-align: right;
 	padding-right: 10px;
 	padding-left: 0px;
+	margin-left: 0px;
 }
 
 #left-links li {
@@ -440,6 +455,8 @@ a > img {
 .bordered {
 	border: double 4px #8080af;
 	width: 280px;
+	padding-top: 16px;
+	padding-bottom: 16px;
 }
 
 .username {
@@ -534,5 +551,15 @@ a img {
 	padding-top: 16px;
 	margin-right: 16px;
 	margin-left: 8px;
+	padding-bottom: 16px;
 	clear: right;
+}
+
+tr, td {
+	padding: 0px;
+}
+
+#center td {
+	width: auto;
+	text-align: left;
 }
