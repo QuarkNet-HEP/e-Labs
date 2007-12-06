@@ -38,35 +38,31 @@
 <table border="0" id="main">
 	<tr>
 		<c:if test="${param.display != 'static'}">
-			<td>
-				<div id="left">
-					<%@ include file="../include/left-alt.jsp" %>
-				</div>
+			<td id="left">
+				<%@ include file="../include/left-alt.jsp" %>
 			</td>
 		</c:if>
-		<td width="100%">
-			<div id="center">
-				<h2>LIGO E-Lab Site Map</h2>
-				
-				<ul>
-					<li>
-						Student pages
-						<ul>
-							<li><a href="../home">Home</a></li>
-							<li><a href="../library">Library</a></li>							
-							<li><a href="../data">Data</a></li>
-							<li><a href="../posters">Posters</a></li>
-							<li><a href="../assessment">Assessment</a></li>
-							<li><a href="http://tekoa.ligo-wa.caltech.edu">Discussion Site</a></li>
-							<li><a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone Software</a></li>
-							<li><a href="../tutorial.jsp">Bluestone Tutorial</a></li>
-							<li><a href="ligo_map.jsp">LIGO Maps</a></li>
-							<li><a href="ligo_sensors.jsp">LIGO Sensors</a></li>
-							<li><a href="related_data.jsp">Related Data</a></li>
-						</ul>
-					</li>
-				</ul>
-			</div>
+		<td id="center">
+			<h2>LIGO E-Lab Site Map</h2>
+			
+			<ul>
+				<li>
+					Student pages
+					<ul>
+						<li><a href="../home">Home</a></li>
+						<li><a href="../library">Library</a></li>							
+						<li><a href="../data">Data</a></li>
+						<li><a href="../posters">Posters</a></li>
+						<li><a href="../assessment">Assessment</a></li>
+						<li><a href="http://tekoa.ligo-wa.caltech.edu">Discussion Site</a></li>
+						<li><a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone Software</a></li>
+						<li><a href="../tutorial.jsp">Bluestone Tutorial</a></li>
+						<li><a href="ligo_map.jsp">LIGO Maps</a></li>
+						<li><a href="ligo_sensors.jsp">LIGO Sensors</a></li>
+						<li><a href="related_data.jsp">Related Data</a></li>
+					</ul>
+				</li>
+			</ul>
 		</td>
 	</tr>
 </table>
