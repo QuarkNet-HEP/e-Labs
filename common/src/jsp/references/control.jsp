@@ -21,7 +21,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
-	<body id="control-references" class="data">
+	<body id="control-references" class="library">
 		<div id="container">
 			<div id="top">
 				<div id="header">
