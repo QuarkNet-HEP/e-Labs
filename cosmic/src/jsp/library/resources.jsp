@@ -102,6 +102,10 @@
 								<a href="http://www.tryscience.org/grid/home.html" target="activity">Grids for Kids at TryScience</a>
 								- from New York Museum of Science. Use grid computing to model Mt. Vesuvius' volcanic activity to discover whether residents need warning.
 							</li>
+							<li>
+								<a href="http://farweb.minos-soudan.org/events/LiveEvent.html" target="activity">MINOS</a>
+								- Physicists detect cosmic rays in their neutrino detectors.
+							</li>
 						</ul>
 						
 						<h2>Online Labs</h2>
