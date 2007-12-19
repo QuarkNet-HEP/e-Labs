@@ -11,6 +11,7 @@
 	Collection f = analysis.getParameterValues("rawData");
 	if (request.getParameter("remove") != null) {
 		String[] r = request.getParameterValues("remfile");
+		request.setAttribute("remfiles", r);
 		Set s = new HashSet();
 		for (int i = 0; i < r.length; i++) {
 			s.add(r[i]);
@@ -29,6 +30,9 @@
 %>
 <div id="analyzing-ist">
 <form method="post" id="remove-form">
+<c:forEach items="${remfiles}" var="r">
+	<input type="hidden" name="remfile" value="${r}" />
+</c:forEach>
 <table colspace="4" border="0" width="100%">
 	<tbody>
 		<tr>
