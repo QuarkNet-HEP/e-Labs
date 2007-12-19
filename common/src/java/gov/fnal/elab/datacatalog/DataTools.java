@@ -188,9 +188,9 @@ public class DataTools {
      * 
      * @return A figure caption
      */
-    public static String getFigureCaption(Elab elab, String[] files)
+    public static String getFigureCaption(Elab elab, Collection files)
             throws ElabException {
-        if (files == null || files.length == 0) {
+        if (files == null || files.size() == 0) {
             return "";
         }
         StringBuffer data = new StringBuffer();
@@ -236,6 +236,10 @@ public class DataTools {
         }
         data.append(ElabUtil.join(detectors, ", "));
         return data.toString();
+    }
+    
+    public static String getFigureCaption(Elab elab, String[] files) throws ElabException {
+        return getFigureCaption(elab, Arrays.asList(files));
     }
     
     private static final String[] STRING_ARRAY = new String[0];
