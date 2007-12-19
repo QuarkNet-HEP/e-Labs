@@ -108,7 +108,7 @@
 								</td>
 								<td class="form-control">
 									<e:trtextarea name="plot_caption" rows="5" cols="30"><e:default>
-<%= DataTools.getFigureCaption(elab, request.getParameterValues("rawData")) %>
+<%= DataTools.getFigureCaption(elab, analysis.getParameterValues("rawData")) %>
 <e:analysisParamLabel name="singlechannel_channel"/>											
 									</e:default></e:trtextarea>
 								</td>
