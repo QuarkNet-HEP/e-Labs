@@ -5,15 +5,15 @@ package gov.fnal.elab.datacatalog;
 
 import gov.fnal.elab.datacatalog.query.ResultSet;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.apache.axis.types.Day;
 
@@ -197,14 +197,14 @@ public class StructuredResultSet {
     }
 
     public static class Month {
-        private List files;
+        private SortedSet files;
         private String month;
         private Date date;
 
         public Month(String month, Date date) {
             this.month = month;
             this.date = date;
-            files = new ArrayList();
+            files = new TreeSet();
         }
 
         public String getMonth() {
@@ -228,7 +228,7 @@ public class StructuredResultSet {
         }
     }
 
-    public static class File {
+    public static class File implements Comparable {
         private boolean blessed;
         private Boolean stacked;
         private final String lfn;
@@ -280,6 +280,17 @@ public class StructuredResultSet {
 
         public void setStartDate(java.util.Date startDate) {
             this.startDate = startDate;
+        }
+
+        public int compareTo(Object o) {
+            File other = (File) o;
+            int d = startDate.compareTo(other.startDate);
+            if (d != 0) {
+                return d;
+            }
+            else {
+                return lfn.compareTo(other.lfn);
+            }
         }
     }
 }
