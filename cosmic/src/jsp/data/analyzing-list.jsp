@@ -66,8 +66,8 @@
 			
 			//number of files. Initially display the top 10
 			int num_files = 0;
-			SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy H:m:s z");
-			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+			SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy H:m:s");
+			//sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 			SimpleDateFormat sef = new SimpleDateFormat("MM/dd/yyyy H:mm");
 			//Since we're using Java classes and don't know what class instance to call,
 			// some kind of common variable needs to be setup for this page to reference.
@@ -152,7 +152,7 @@
 				%>
 				    <tr class="<%=r_class%>">
 				        <td align="center">
-				            <%= school %>&nbsp;<%= filedate %>
+				            <%= school %>&nbsp;<%= filedate %>&nbsp;UTC
 				        </td>
 				        <td align=center><%=chan[0]%></td>
 				        <td align=center><%=chan[1]%></td>
