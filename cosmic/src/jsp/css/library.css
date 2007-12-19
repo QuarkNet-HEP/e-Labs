@@ -237,3 +237,20 @@ a.button {
 	float: left;
 	padding-right: 8px;
 }
+
+#show-all-references {
+	background-image: url("../graphics/Quadrille.gif");
+}
+
+#show-all-references #references-table {
+	border: thin outset gray;
+}
+
+#show-all-references #references-table td {
+	border: thin inset gray;
+	padding: 4px;
+}
+
+#show-all-references #references-table .reference-text {
+	background-color: white;
+}
