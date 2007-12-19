@@ -83,7 +83,14 @@
 		    Map m2 = (Map) o2;
 		    int c = ((Comparable) m1.get(colNames[csc])).compareTo(m2.get(colNames[csc]));
 		    if (c == 0) {
-		        return ((Integer) m1.get("eventNum")).compareTo(m2.get("eventNum"));
+		    	if (csc == 0) {
+		        	//primary: date, secondary: coincidence
+		        	return ((Integer) m1.get("eventCoincidence")).compareTo(m2.get("eventCoincidence"));
+		        }
+		    	else {
+		    		//primary column: coincidence, secondary: date 
+		        	return ((Date) m1.get("date")).compareTo(m2.get("date"));
+		        }
 		    }
 		    else {
 		        return dir*c;
