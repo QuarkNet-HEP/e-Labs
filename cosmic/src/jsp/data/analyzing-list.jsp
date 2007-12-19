@@ -162,7 +162,7 @@
 				        <td align=center><%=chan[1]%></td>
 				        <td align=center><%=chan[2]%></td>
 				        <td align=center><%=chan[3]%></td>
-				        <td bgcolor="#EFEFFF" align="center"><a title="<%=title%>" href="../data/view.jsp?filename=<%=lfn%>&type=data&get=meta">View</a>&nbsp</td>
+				        <td bgcolor="#EFEFFF" align="center"><a title="<%=title%>" href="../data/view.jsp?filename=<%=lfn%>">View</a>&nbsp</td>
 				        <td bgcolor="#EFFEDE" align="center"><a href="../analysis-raw-single/analysis.jsp?submit=true&filename=<%=lfn%>">Statistics</a></td>
 				        <td bgcolor="#EFFEDE" align="center"><a href="../geometry/view.jsp?filename=<%=lfn%>">Geometry</a></td>
 				        <c:if test="${count > 1}">
