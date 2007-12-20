@@ -171,8 +171,7 @@ public class DataTools {
     public static final DateFormat TZ_DATE_TIME_FORMAT;
 
     static {
-        TZ_DATE_TIME_FORMAT = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss zzz");
-        TZ_DATE_TIME_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
+        TZ_DATE_TIME_FORMAT = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
     }
 
     /**
@@ -215,6 +214,7 @@ public class DataTools {
             
                 if (date != null) {
                     data.append(TZ_DATE_TIME_FORMAT.format(date));
+                    data.append(" UTC");
                     dataCount++;
                 }
                 if (i.hasNext()) {
