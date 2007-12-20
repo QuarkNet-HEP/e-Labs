@@ -81,12 +81,7 @@
 		    Map m1 = (Map) o1;
 		    Map m2 = (Map) o2;
 		    int c = ((Comparable) m1.get(colNames[csc])).compareTo(m2.get(colNames[csc]));
-		    if (c == 0) {
-		    	return dir*((Integer) m1.get("eventNum")).compareTo(m2.get("eventNum"));
-		    }
-		    else {
-		        return dir*c;
-		    }
+		    return dir*c;
 		}
 	});
 	Set allIds = new HashSet();
