@@ -82,7 +82,7 @@
 		    Map m2 = (Map) o2;
 		    int c = ((Comparable) m1.get(colNames[csc])).compareTo(m2.get(colNames[csc]));
 		    if (c == 0) {
-		    	return ((Integer) m1.get("eventNum")).compareTo(m2.get("eventNum"));
+		    	return ((Integer) m1.get("line")).compareTo(m2.get("line"));
 		    }
 		    else {
 		        return dir * c;
@@ -106,6 +106,7 @@
 				row.put("eventCoincidence", Integer.valueOf(arr[1]));
 				row.put("numDetectors", Integer.valueOf(arr[2]));
 				row.put("eventNum", Integer.valueOf(arr[0]));
+				row.put("line", Integer.valueOf(lineNo));
 				if (eventNum == null) {
 					eventNum = arr[0];
 				}
