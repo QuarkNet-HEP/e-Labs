@@ -62,10 +62,9 @@
 	}
 	request.setAttribute("sort", new Integer(sortCol));
 	String eventNum = (String) analysis.getParameter("eventNum");
-	request.setAttribute("eventNum", eventNum);
-	File ecFile = new File(results.getOutputDir(), (String) analysis.getParameter("eventCandidates"));
-	BufferedReader br = new BufferedReader(new FileReader(ecFile));
-	String line = br.readLine();
+	if ("1".equals(eventNum)) {
+		eventNum = null;
+	}
 	int lineNo = 1;
 	final int csc = sortCol;
 	final String[] colNames = new String[] {"date", "eventCoincidence", "numDetectors"};
@@ -83,14 +82,7 @@
 		    Map m2 = (Map) o2;
 		    int c = ((Comparable) m1.get(colNames[csc])).compareTo(m2.get(colNames[csc]));
 		    if (c == 0) {
-		    	if (csc == 0) {
-		        	//primary: date, secondary: coincidence
-		        	return ((Integer) m1.get("eventCoincidence")).compareTo(m2.get("eventCoincidence"));
-		        }
-		    	else {
-		    		//primary column: coincidence, secondary: date 
-		        	return ((Date) m1.get("date")).compareTo(m2.get("date"));
-		        }
+		    	return dir*((Integer) m1.get("eventNum")).compareTo(m2.get("eventNum"));
 		    }
 		    else {
 		        return dir*c;
@@ -101,6 +93,9 @@
 	DateFormat df = new SimpleDateFormat("MMM d, yyyy HH:mm:ss z");
 	df.setTimeZone(TimeZone.getTimeZone("UTC"));
 	
+	File ecFile = new File(results.getOutputDir(), (String) analysis.getParameter("eventCandidates"));
+	BufferedReader br = new BufferedReader(new FileReader(ecFile));
+	String line = br.readLine();
 	while(line != null) {
 	    //ignore comments in the file
 	    if(!line.matches("^.*#.*")) {
@@ -111,6 +106,9 @@
 				row.put("eventCoincidence", Integer.valueOf(arr[1]));
 				row.put("numDetectors", Integer.valueOf(arr[2]));
 				row.put("eventNum", Integer.valueOf(arr[0]));
+				if (eventNum == null) {
+					eventNum = arr[0];
+				}
 				
 				Set ids = new HashSet();
 				for(int i = 3; i < arr.length; i += 3){
@@ -136,9 +134,11 @@
 		line = br.readLine();
     }
 	request.setAttribute("rows", rows);
+	request.setAttribute("eventNum", eventNum);
 %>
 
 <h1>Shower study candidates (<%= rows.size() %>)</h1>
+
 <table id="shower-results">
 	<tr>
 		<td valign="top" width="70%">
