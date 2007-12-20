@@ -66,7 +66,7 @@
 	String tfile = "template_" + type + ".htmt"; //paper version of the template
 	String template;
 	try {
-		FileReader fr = new FileReader(new File(user.getDir("templates"), tfile));
+		FileReader fr = new FileReader(new File(posterUser.getDir("templates"), tfile));
 		int count = 0;
 		char buf[] = new char[100000];
 		count=fr.read(buf, 0, 100000);
