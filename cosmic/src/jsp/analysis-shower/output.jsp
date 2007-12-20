@@ -106,7 +106,7 @@
 				row.put("eventCoincidence", Integer.valueOf(arr[1]));
 				row.put("numDetectors", Integer.valueOf(arr[2]));
 				row.put("eventNum", Integer.valueOf(arr[0]));
-				row.put("line", Integer.valueOf(lineNo));
+				row.put("line", new Integer(lineNo));
 				if (eventNum == null) {
 					eventNum = arr[0];
 				}
