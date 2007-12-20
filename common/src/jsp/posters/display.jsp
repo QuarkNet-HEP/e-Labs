@@ -1,6 +1,5 @@
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
-<%@ include file="../login/login-required.jsp" %>
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="org.apache.regexp.*" %>
