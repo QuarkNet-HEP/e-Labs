@@ -56,9 +56,9 @@
 				<div class="link-list">
 					<a href="milestones.jsp">Milestones (text version)</a>
 				 	|
-					<a href="../jsp/showReferences.jsp?t=glossary&f=peruse">Glossary</a>
+					<a href="../references/showAll.jsp?t=glossary">Glossary</a>
 				 	| 
-					<a href="../jsp/showReferences.jsp?t=reference&f=peruse">All References for Study Guide <img src="../graphics/ref.gif"/></a>
+					<a href="../references/showAll.jsp?t=reference">All References for Study Guide <img src="../graphics/ref.gif"/></a>
 				</div>
 			</center>
 			
