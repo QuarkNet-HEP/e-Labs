@@ -55,8 +55,8 @@
 					<a href="../library/milestones-map.jsp">Study Guide</a> and 
 					<a href="../library/milestones.jsp"><strong>text version</strong></a>
 					<ul>
-						<li><a href="../jsp/showReferences.jsp?t=reference&amp;f=peruse">View Resources for Study Guide</a></li>
-						<li><a href="../jsp/showReferences.jsp?t=glossary&amp;f=peruse">View Glossary</a></li>
+						<li><a href="../references/showAll.jsp?t=reference">View References for Study Guide</a></li>
+						<li><a href="../references/showAll.jsp?t=glossary">View Glossary</a></li>
 					</ul>
 				</li>
 				<li><a href="../library/resources.jsp">Resources</a></li>
