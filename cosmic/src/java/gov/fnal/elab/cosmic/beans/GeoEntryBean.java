@@ -503,185 +503,99 @@ public class GeoEntryBean implements Serializable {
         }
         return isValid;
     }
+  
+    private boolean isValidFloat(String number) {
+        try {
+            Double.parseDouble(number);
+            return true;
+        }
+        catch (NumberFormatException e) {
+            return false;
+        }
+    }
 
     public boolean isChan1XValid(){
-        boolean isValid = false;
-        if(chan1X.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
-                || chan1X.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan1X);
     }
 
     public boolean isChan1YValid(){
-        boolean isValid = false;
-        if(chan1Y.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
-                || chan1Y.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan1Y);
     }
 
     public boolean isChan1ZValid(){
-        boolean isValid = false;
-        if(chan1Z.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
-                || chan1Z.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan1Z);
     }
 
     public boolean isChan1AreaValid(){
-        boolean isValid = false;
-        if(chan1Area.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan1Area);
     }
 
     public boolean isChan1CableLengthValid(){
-        boolean isValid = false;
-        if(chan1CableLength.matches("\\d{1,100}\\.\\d{0,2}|\\d{0,100}\\.\\d{1,2}|\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan1CableLength);
     }
 
     public boolean isChan2XValid(){
-        boolean isValid = false;
-        if(chan2X.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
-                || chan2X.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan2X);
     }
 
     public boolean isChan2YValid(){
-        boolean isValid = false;
-        if(chan2Y.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
-                || chan2Y.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan2Y);
     }
 
     public boolean isChan2ZValid(){
-        boolean isValid = false;
-        if(chan2Z.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
-                || chan2Z.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan2Z);
     }
 
     public boolean isChan2AreaValid(){
-        boolean isValid = false;
-        if(chan2Area.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan2Area);
     }
 
     public boolean isChan2CableLengthValid(){
-        boolean isValid = false;
-        if(chan2CableLength.matches("\\d{1,100}\\.\\d{0,2}|\\d{0,100}\\.\\d{1,2}|\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan2CableLength);
     }
 
     public boolean isChan3XValid(){
-        boolean isValid = false;
-        if(chan3X.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
-                || chan3X.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan3X);
     }
 
     public boolean isChan3YValid(){
-        boolean isValid = false;
-        if(chan3Y.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
-                || chan3Y.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan3Y);
     }
 
     public boolean isChan3ZValid(){
-        boolean isValid = false;
-        if(chan3Z.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
-                || chan3Z.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan3Z);
     }
 
     public boolean isChan3AreaValid(){
-        boolean isValid = false;
-        if(chan3Area.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan3Area);
     }
 
     public boolean isChan3CableLengthValid(){
-        boolean isValid = false;
-        if(chan3CableLength.matches("\\d{1,100}\\.\\d{0,2}|\\d{0,100}\\.\\d{1,2}|\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan3CableLength);
     }
 
     public boolean isChan4XValid(){
-        boolean isValid = false;
-        if(chan4X.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
-                || chan4X.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan4X);
     }
 
     public boolean isChan4YValid(){
-        boolean isValid = false;
-        if(chan4Y.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
-                || chan4Y.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan4Y);
     }
 
     public boolean isChan4ZValid(){
-        boolean isValid = false;
-        if(chan4Z.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")
-                || chan4Z.matches("-\\d{1,100}\\.\\d{0,100}|-\\d{0,100}\\.\\d{1,100}|-\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan4Z);
     }
 
     public boolean isChan4AreaValid(){
-        boolean isValid = false;
-        if(chan4Area.matches("\\d{1,100}\\.\\d{0,100}|\\d{0,100}\\.\\d{1,100}|\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan4Area);
     }
 
     public boolean isChan4CableLengthValid(){
-        boolean isValid = false;
-        if(chan4CableLength.matches("\\d{1,100}\\.\\d{0,2}|\\d{0,100}\\.\\d{1,2}|\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(chan4CableLength);
     }
 
     public boolean isGpsCableLengthValid(){
-        boolean isValid = false;
-        if(gpsCableLength.matches("\\d{1,100}\\.\\d{0,2}|\\d{0,100}\\.\\d{1,2}|\\d{1,100}")){
-            isValid = true;
-        }
-        return isValid;
+        return isValidFloat(gpsCableLength);
     }
 
     //returns true if every key value is valid
