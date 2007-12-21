@@ -63,7 +63,7 @@
 		    String did = AnalysisParameterTools.getDetectorId(lfn[i]);
 			File analyze = new File(new File(elab.getProperties().getDataDir(), did), lfn[i] + ".analyze");
 			CatalogEntry entry = elab.getDataCatalogProvider().getEntry(analyze.getName());
-		    if (entry == null) {
+		    if (entry == null || !analyze.exists()) {
 		        %>
 					<tr>
 						<td colspan="9"><%= lfn[i] %> has not been 
