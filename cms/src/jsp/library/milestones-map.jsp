@@ -85,10 +85,10 @@
 			<div id="footer">
 				<a href="milestones.jsp">Milestones (text version)</a>
 				 - 
-				<a href="../jsp/showReferences.jsp?t=glossary&f=peruse">Glossary</a>
+				<a href="references/showAll.jsp?t=glossary">Glossary</a>
 				 - 
-				<a href="../jsp/showReferences.jsp?t=reference&f=peruse">All References for Study Guide</a>
-				<a href="../jsp/showReferences.jsp?t=reference&f=peruse">
+				<a href="../references/showAll.jsp?t=reference">All References for Study Guide</a>
+				<a href="../references/showAll.jsp?t=reference">
 					<img src="../graphics/ref.gif"/>
 				</a>
 			</div>
