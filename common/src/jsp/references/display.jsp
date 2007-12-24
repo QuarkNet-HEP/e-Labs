@@ -17,7 +17,7 @@
 	if ("glossary".equals(type)) {
 		file = "Glossary_" + name;
 	}
-	if ("reference".equals(type)) {
+	else if ("reference".equals(type)) {
 		file = "Reference_" + name;
 	}
 	else {
