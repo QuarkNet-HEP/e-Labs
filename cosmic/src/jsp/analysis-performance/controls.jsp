@@ -106,7 +106,6 @@
 									<label for="plot_size">Plot Size:</label>
 								</td>
 								<td class="form-control">
-									<%-- This is not linked to the TR. It's a parameter for the output page --%>
 									<e:trselect valueList="300, 600, 800" labelList="Small, Medium, Large"
 										name="plot_size" default="600"/>
 								</td>
