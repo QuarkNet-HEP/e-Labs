@@ -183,11 +183,11 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         }
         return e;
     }
-    
+
     private synchronized void deleteCachedEntry(CatalogEntry e) {
         entryCache.remove(e.getLFN());
     }
-    
+
     private synchronized void deleteCachedEntry(String lfn) {
         entryCache.remove(lfn);
     }
@@ -325,7 +325,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         }
         return qt;
     }
-    
+
     public static String quote(String param) {
         return ElabUtil.fixQuotes(param);
     }
@@ -383,20 +383,12 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
 
             annotationschema = (AnnotationSchema) dbschema;
             java.sql.ResultSet rs;
-            if (key == null) {
-                /*
-                 * Not quite sure about this particular query. Doesn't seem too
-                 * generic.
-                 */
-                rs = annotationschema
-                        .backdoor("SELECT COUNT(*) FROM anno_text WHERE value = 'split'");
-            }
-            else {
-                String query = "select count(distinct value) from anno_text where id in (select id from anno_lfn where mkey='"
-                        + ElabUtil.fixQuotes(key) + "')";
-                System.out.println(query);
-                rs = annotationschema.backdoor(query);
-            }
+
+            String query = "select count(distinct value) from anno_text where id in (select id from anno_lfn where mkey='"
+                    + ElabUtil.fixQuotes(key) + "')";
+            System.out.println(query);
+            rs = annotationschema.backdoor(query);
+
             if (rs.next()) {
                 String r = rs.getString(1);
                 try {
@@ -421,7 +413,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
 
     public void insert(CatalogEntry entry) throws ElabException {
         int kind = Annotation.CLASS_FILENAME; // searching on lfn's
-        
+
         deleteCachedEntry(entry);
         DatabaseSchema dbschema = openSchema();
         AnnotationSchema annotationschema = (AnnotationSchema) dbschema;
