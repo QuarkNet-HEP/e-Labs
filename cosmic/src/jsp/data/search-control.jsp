@@ -150,7 +150,7 @@
 			<p>
 				<%
 					DataCatalogProvider dcp = elab.getDataCatalogProvider();
-					int fileCount = dcp.getUniqueCategoryCount(null);
+					int fileCount = dcp.getUniqueCategoryCount("split");
 					int schoolCount = dcp.getUniqueCategoryCount("school");
 					int stateCount = dcp.getUniqueCategoryCount("state");
 				%>
