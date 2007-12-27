@@ -126,7 +126,7 @@
 								</td>
 								<td class="form-control">
 									<e:trtextarea name="plot_caption" rows="5" cols="30"
-										default="<%= DataTools.getFigureCaption(elab, request.getParameterValues("rawData")) %>"/>
+										default="<%= DataTools.getFigureCaption(elab, analysis.getParameterValues("rawData")) %>"/>
 								</td>
 							</tr>
 						</table>
