@@ -158,8 +158,7 @@
 		m.start();
 		status = m.getStatus();
 	}
-	if ("status".equals(op)) {
-		System.out.println("monitor status is " + status + ", progress=" + m.getProgress()); 
+	if ("status".equals(op)) { 
 		out.write("status=" + status + "&progress=" + m.getProgress());
 		return;
 	}
