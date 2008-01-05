@@ -1,0 +1,27 @@
+<%@ page import="java.util.*" %>
+
+<%!
+	public double[] coords(String value, double len) {
+		if (value == null) {
+			value = "0";
+		}
+		int val = 0;
+		try {
+			val = Integer.parseInt(value);
+		}
+		catch (NumberFormatException e) {
+		}
+		if (val > 100) {
+			val = 100;
+		}
+		double angle = -((double) val) / 49.5 * Math.PI/7 + Math.PI/2 + Math.PI/7;
+		double r1 = 110;
+		double r2 = r1 + len;
+		double[] c = new double[4];
+		c[0] = r1 * Math.cos(angle) + 100;
+		c[1] = 175 - r1 * Math.sin(angle);
+		c[2] = r2 * Math.cos(angle) + 100;
+		c[3] = 175 - r2 * Math.sin(angle);
+		return c;
+	}
+%>
