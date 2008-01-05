@@ -9,7 +9,7 @@
 <%@ page import="gov.fnal.elab.cosmic.util.*" %>
 <%@ page import="java.util.*" %>
 	
-<e:analysis name="analysis" type="Quarknet.Cosmic::FluxStudy">
+<e:analysis name="analysis" type="I2U2.Cosmic::FluxStudy">
 	<%
 		//these need to always be set-up
 		ElabAnalysis analysis = (ElabAnalysis) request.getAttribute("analysis");

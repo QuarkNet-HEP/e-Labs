@@ -28,7 +28,7 @@
 	</c:when>
 	<c:otherwise>
 		<e:paramAlias from="filename" to="inFile"/>
-		<e:analysis name="analysis" type="Quarknet.Cosmic::RawAnalyzeStudy">
+		<e:analysis name="analysis" type="I2U2.Cosmic::RawAnalyzeStudy">
 			<e:trinput type="hidden" name="gatewidth" default="240"/>
 			<e:trinput type="hidden" name="inFile"/>
 			<e:trdefault name="outFile" value="${outFile}"/>

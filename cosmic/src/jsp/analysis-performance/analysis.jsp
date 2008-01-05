@@ -8,7 +8,7 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="gov.fnal.elab.cosmic.util.*" %>
 
-<e:analysis name="analysis" type="Quarknet.Cosmic::PerformanceStudy">
+<e:analysis name="analysis" type="I2U2.Cosmic::PerformanceStudy">
 	<%
 		ElabAnalysis analysis = (ElabAnalysis) request.getAttribute("analysis");
 		Collection rawData = analysis.getParameterValues("rawData");
