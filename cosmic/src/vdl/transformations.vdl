@@ -1,11 +1,11 @@
-TR Quarknet.Cosmic::Combine(
+TR I2U2.Cosmic::Combine(
 	input combineIn[],
 	output combineOut )
 {
   argument = ${combineIn};
   argument = " "${combineOut};
 }
-TR Quarknet.Cosmic::ExtraFunctions(
+TR I2U2.Cosmic::ExtraFunctions(
 	none alphaG,
 	none alphaVar,
 	none constantG,
@@ -36,7 +36,7 @@ TR Quarknet.Cosmic::ExtraFunctions(
 #  argument = "-constantYN "${constantVar};
 #  argument = "-fit "${turnedOn};
 }
-TR Quarknet.Cosmic::Frequency(
+TR I2U2.Cosmic::Frequency(
 	none binType,
 	none binValue,
 	none col,
@@ -50,7 +50,7 @@ TR Quarknet.Cosmic::Frequency(
   argument = " "${binValue};
 }
 
-TR Quarknet.Cosmic::Lifetime(
+TR I2U2.Cosmic::Lifetime(
 	none coincidence,
 	none energyCheck,
 	none gatewidth,
@@ -66,7 +66,7 @@ TR Quarknet.Cosmic::Lifetime(
   argument = " "${coincidence};
   argument = " "${geoDir};
 }
-TR Quarknet.Cosmic::LifetimeStudy(
+TR I2U2.Cosmic::LifetimeStudy(
 	inout combineOut,
 	none detector,
 	none cpldfreqs,
@@ -117,25 +117,25 @@ TR Quarknet.Cosmic::LifetimeStudy(
 	inout thresholdAll[] )
 {
   inout svg=@{inout:"plot.svg"};
-  call Quarknet.Cosmic::ThresholdTimes(
+  call I2U2.Cosmic::ThresholdTimes(
 	detector=${none:detector},
 	cpldfreqs=${cpldfreqs},
     rawData=${input:rawData},
 	thresholdAll=${output:thresholdAll} );
-  call Quarknet.Cosmic::WireDelay(
+  call I2U2.Cosmic::WireDelay(
 	geoDir=${geoDir},
 	geoFiles=${input:geoFiles},
 	threshData=${input:thresholdAll},
 	wireDelayData=${output:wireDelayData} );
-  call Quarknet.Cosmic::Combine(
+  call I2U2.Cosmic::Combine(
 	combineIn=${input:wireDelayData},
 	combineOut=${output:combineOut} );
-  call Quarknet.Cosmic::Sort(
+  call I2U2.Cosmic::Sort(
 	key1=${sort_sortKey1},
 	key2=${sort_sortKey2},
 	sortIn=${input:combineOut},
 	sortOut=${output:sortOut} );
-  call Quarknet.Cosmic::Lifetime(
+  call I2U2.Cosmic::Lifetime(
 	coincidence=${lifetime_coincidence},
 	energyCheck=${lifetime_energyCheck},
 	gatewidth=${lifetime_gatewidth},
@@ -143,13 +143,13 @@ TR Quarknet.Cosmic::LifetimeStudy(
 	lifetimeOut=${output:lifetimeOut},
 	geoDir=${geoDir},
 	geoFiles=${input:geoFiles} );
-  call Quarknet.Cosmic::Frequency(
+  call I2U2.Cosmic::Frequency(
 	binType=${freq_binType},
 	binValue=${freq_binValue},
 	col=${freq_col},
 	freqIn=${input:lifetimeOut},
 	freqOut=${output:frequencyOut} );
-  call Quarknet.Cosmic::ExtraFunctions(
+  call I2U2.Cosmic::ExtraFunctions(
 	alphaG=${extraFun_alpha_guess},
 	alphaVar=${extraFun_alpha_variate},
 	constantG=${extraFun_constant_guess},
@@ -163,7 +163,7 @@ TR Quarknet.Cosmic::LifetimeStudy(
 	xLowerbounds=${extraFun_minX},
 	xUpperbounds=${extraFun_maxX}
     turnedOn=${extraFun_turnedOn} );
-  call Quarknet.Cosmic::Plot(
+  call I2U2.Cosmic::Plot(
 	plot_caption=${plot_caption},
 	plot_extraFunctions=${input:extraFun_out},
 	plot_highX=${plot_highX},
@@ -181,20 +181,20 @@ TR Quarknet.Cosmic::LifetimeStudy(
 	plot_ylabel=${plot_ylabel},
 	plot_zlabel=${plot_zlabel} );
   
-  call Quarknet.Cosmic::SVG2PNG(
+  call I2U2.Cosmic::SVG2PNG(
   	svg=${input:svg},
 	png=${output:plot_outfile_image},
 	height=${plot_size}
   );
   
-  call Quarknet.Cosmic::SVG2PNG(
+  call I2U2.Cosmic::SVG2PNG(
   	svg=${input:svg},
 	png=${output:plot_outfile_image_thumbnail},
 	height=${plot_thumbnail_height}
   );
 }
 
-TR Quarknet.Cosmic::PerformanceStudy(
+TR I2U2.Cosmic::PerformanceStudy(
 	none detector, 
 	none cpldfreqs,
 	none freq_binType, 
@@ -227,25 +227,25 @@ TR Quarknet.Cosmic::PerformanceStudy(
   inout svg=@{inout:"plot.svg"};
   inout combineOut=@{inout:"combineOut"};
   
-  call Quarknet.Cosmic::ThresholdTimes(
+  call I2U2.Cosmic::ThresholdTimes(
 	detector=${none:detector},
 	cpldfreqs=${cpldfreqs},
 	rawData=${input:rawData},
 	thresholdAll=${output:thresholdAll} );
-  call Quarknet.Cosmic::Combine(
+  call I2U2.Cosmic::Combine(
 	combineIn=${input:thresholdAll},
 	combineOut=${output:combineOut} );
-  call Quarknet.Cosmic::SingleChannel(
+  call I2U2.Cosmic::SingleChannel(
 	channel=${none:singlechannel_channel},
 	singleChannelIn=${input:combineOut},
 	singleChannelOut=${output:singlechannelOut} );
-  call Quarknet.Cosmic::Frequency(
+  call I2U2.Cosmic::Frequency(
 	binType=${freq_binType},
 	binValue=${freq_binValue},
 	col=${freq_col},
 	freqIn=${input:singlechannelOut},
 	freqOut=${output:freqOut} );
-  call Quarknet.Cosmic::Plot(
+  call I2U2.Cosmic::Plot(
 	plot_caption=${plot_caption},
 	plot_extraFunctions=${extraFun_out},
 	plot_highX=${plot_highX},
@@ -262,20 +262,20 @@ TR Quarknet.Cosmic::PerformanceStudy(
 	plot_xlabel=${plot_xlabel},
 	plot_ylabel=${plot_ylabel},
 	plot_zlabel=${plot_zlabel});
-  call Quarknet.Cosmic::SVG2PNG(
+  call I2U2.Cosmic::SVG2PNG(
   	svg=${input:svg},
 	png=${output:plot_outfile_image},
 	height=${plot_size}
   );
   
-  call Quarknet.Cosmic::SVG2PNG(
+  call I2U2.Cosmic::SVG2PNG(
   	svg=${input:svg},
 	png=${output:plot_outfile_image_thumbnail},
 	height=${plot_thumbnail_height}
   );
 }
 
-TR Quarknet.Cosmic::Plot(
+TR I2U2.Cosmic::Plot(
 	none plot_caption,
 	input plot_extraFunctions,
 	none plot_highX,
@@ -311,7 +311,7 @@ TR Quarknet.Cosmic::Plot(
   argument = "-highz ""'"${plot_highZ}"'";
 }
 
-TR Quarknet.Cosmic::SingleChannel(
+TR I2U2.Cosmic::SingleChannel(
     none channel[],
     input singleChannelIn,
     output singleChannelOut[] )
@@ -321,7 +321,7 @@ TR Quarknet.Cosmic::SingleChannel(
     argument = " '" ${channel} "'";
 }
 
-TR Quarknet.Cosmic::Sort(
+TR I2U2.Cosmic::Sort(
     none key1,
     none key2,
     input sortIn,
@@ -333,7 +333,7 @@ TR Quarknet.Cosmic::Sort(
     argument = " "${key2};
 }
 
-TR Quarknet.Cosmic::ThresholdTimes(
+TR I2U2.Cosmic::ThresholdTimes(
     input rawData[],
     output thresholdAll[],
     none detector[],
@@ -345,7 +345,7 @@ TR Quarknet.Cosmic::ThresholdTimes(
     argument = " '" ${cpldfreqs} "'";
 }
 
-TR Quarknet.Cosmic::WireDelay(
+TR I2U2.Cosmic::WireDelay(
     input threshData[],
     output wireDelayData[],
     none geoDir,
@@ -357,7 +357,7 @@ TR Quarknet.Cosmic::WireDelay(
 
 }
 
-TR Quarknet.Cosmic::ShowerStudy(
+TR I2U2.Cosmic::ShowerStudy(
     none channelCoincidence,
 	inout combineOut,
 	none detectorCoincidence,
@@ -397,39 +397,39 @@ TR Quarknet.Cosmic::ShowerStudy(
 	none zeroZeroZeroID )
 {
   inout svg=@{inout:"plot.svg"};
-  call Quarknet.Cosmic::ThresholdTimes(
+  call I2U2.Cosmic::ThresholdTimes(
 	detector=${none:detector},
 	cpldfreqs=${cpldfreqs},
 	rawData=${input:rawData},
 	thresholdAll=${output:thresholdAll} );
-  call Quarknet.Cosmic::WireDelay(
+  call I2U2.Cosmic::WireDelay(
 	geoDir=${geoDir},
 	geoFiles=${input:geoFiles},
 	threshData=${input:thresholdAll},
 	wireDelayData=${output:wireDelayData} );
-  call Quarknet.Cosmic::Combine(
+  call I2U2.Cosmic::Combine(
 	combineIn=${input:wireDelayData},
 	combineOut=${output:combineOut} );
-  call Quarknet.Cosmic::Sort(
+  call I2U2.Cosmic::Sort(
 	key1=${sort_sortKey1},
 	key2=${sort_sortKey2},
 	sortIn=${input:combineOut},
 	sortOut=${output:sortOut} );
-  call Quarknet.Cosmic::EventSearch(
+  call I2U2.Cosmic::EventSearch(
     channelCoincidence=${channelCoincidence},
 	detectorCoincidence=${detectorCoincidence},
 	eventCoincidence=${eventCoincidence},
 	eventSearchIn=${input:sortOut},
 	eventSearchOut=${output:eventCandidates},
 	gate=${gate} );
-  call Quarknet.Cosmic::EventChoice(
+  call I2U2.Cosmic::EventChoice(
 	eventChoiceIn=${input:eventCandidates},
 	eventChoiceOut=${output:eventFile},
 	eventNum=${eventNum},
 	geoDir=${geoDir},
 	geoFiles=${input:geoFiles},
 	zeroZeroZeroID=${zeroZeroZeroID} );
-  call Quarknet.Cosmic::Plot(
+  call I2U2.Cosmic::Plot(
 	plot_caption=${plot_caption},
 	plot_extraFunctions=${extraFun_out},
 	plot_highX=${plot_highX},
@@ -446,19 +446,19 @@ TR Quarknet.Cosmic::ShowerStudy(
 	plot_xlabel=${plot_xlabel},
 	plot_ylabel=${plot_ylabel},
 	plot_zlabel=${plot_zlabel} );
-  call Quarknet.Cosmic::SVG2PNG(
+  call I2U2.Cosmic::SVG2PNG(
   	svg=${input:svg},
 	png=${output:plot_outfile_image},
 	height=${plot_size}
   );
-  call Quarknet.Cosmic::SVG2PNG(
+  call I2U2.Cosmic::SVG2PNG(
   	svg=${input:svg},
 	png=${output:plot_outfile_image_thumbnail},
 	height=${plot_thumbnail_height}
   );
 }
 
-TR Quarknet.Cosmic::EventSearch(
+TR I2U2.Cosmic::EventSearch(
 	none detectorCoincidence,
     none channelCoincidence,
 	none eventCoincidence,
@@ -474,7 +474,7 @@ TR Quarknet.Cosmic::EventSearch(
   argument = " "${eventCoincidence};
 }
 
-TR Quarknet.Cosmic::EventChoice(
+TR I2U2.Cosmic::EventChoice(
 	input eventChoiceIn,
 	output eventChoiceOut,
 	none eventNum,
@@ -489,7 +489,7 @@ TR Quarknet.Cosmic::EventChoice(
   argument = " " ${geoDir};
 }
 
-TR Quarknet.Cosmic::EventPlot(
+TR I2U2.Cosmic::EventPlot(
 	input eventCandidates,
 	inout eventFile,
 	none eventNum,
@@ -512,14 +512,14 @@ TR Quarknet.Cosmic::EventPlot(
 	none plot_zlabel,
 	none zeroZeroZeroID )
 {
-  call Quarknet.Cosmic::EventChoice(
+  call I2U2.Cosmic::EventChoice(
 	eventChoiceIn=${input:eventCandidates},
 	eventChoiceOut=${output:eventFile},
 	eventNum=eventNum,
 	geoDir=${geoDir},
 	geoFiles=${input:geoFiles},
 	zeroZeroZeroID=zeroZeroZeroID );
-  call Quarknet.Cosmic::Plot(
+  call I2U2.Cosmic::Plot(
 	plot_caption=plot_caption,
 	plot_extraFunctions=extraFun_out,
 	plot_highX=plot_highX,
@@ -538,7 +538,7 @@ TR Quarknet.Cosmic::EventPlot(
 	plot_zlabel=plot_zlabel );
 }
 
-TR Quarknet.Cosmic::Flux(
+TR I2U2.Cosmic::Flux(
 	none binWidth,
 	input fluxIn,
 	output fluxOut,
@@ -550,7 +550,7 @@ TR Quarknet.Cosmic::Flux(
   argument = " "${binWidth};
   argument = " " ${geoDir};
 }
-TR Quarknet.Cosmic::FluxStudy(
+TR I2U2.Cosmic::FluxStudy(
 	inout combineOut,
 	none detector,
 	none cpldfreqs,
@@ -586,35 +586,35 @@ TR Quarknet.Cosmic::FluxStudy(
 	inout thresholdAll[] )
 {
   inout svg=@{inout:"plot.svg"};
-  call Quarknet.Cosmic::ThresholdTimes(
+  call I2U2.Cosmic::ThresholdTimes(
 	detector=${none:detector},
 	cpldfreqs=${cpldfreqs},
 	rawData=${input:rawData},
 	thresholdAll=${output:thresholdAll} );
-  call Quarknet.Cosmic::WireDelay(
+  call I2U2.Cosmic::WireDelay(
 	geoDir=${geoDir},
 	geoFiles=${input:geoFiles},
 	threshData=${input:thresholdAll},
 	wireDelayData=${output:wireDelayData} );
-  call Quarknet.Cosmic::Combine(
+  call I2U2.Cosmic::Combine(
 	combineIn=${input:wireDelayData},
 	combineOut=${output:combineOut} );
-  call Quarknet.Cosmic::SingleChannel(
+  call I2U2.Cosmic::SingleChannel(
 	channel=${none:singlechannel_channel},
 	singleChannelIn=${input:combineOut},
 	singleChannelOut=${output:singlechannelOut} );
-  call Quarknet.Cosmic::Sort(
+  call I2U2.Cosmic::Sort(
 	key1=${sort_sortKey1},
 	key2=${sort_sortKey2},
 	sortIn=${input:singlechannelOut},
 	sortOut=${output:sortOut} );
-  call Quarknet.Cosmic::Flux(
+  call I2U2.Cosmic::Flux(
 	binWidth=${flux_binWidth},
 	fluxIn=${input:sortOut},
 	fluxOut=${output:fluxOut},
 	geoDir=${geoDir}
 	geoFiles=${input:geoFiles} );
-  call Quarknet.Cosmic::Plot(
+  call I2U2.Cosmic::Plot(
 	plot_caption=${plot_caption},
 	plot_extraFunctions=${extraFun_out},
 	plot_highX=${plot_highX},
@@ -631,29 +631,29 @@ TR Quarknet.Cosmic::FluxStudy(
 	plot_xlabel=${plot_xlabel},
 	plot_ylabel=${plot_ylabel},
 	plot_zlabel=${plot_zlabel} );
-  call Quarknet.Cosmic::SVG2PNG(
+  call I2U2.Cosmic::SVG2PNG(
   	svg=${input:svg},
 	png=${output:plot_outfile_image},
 	height=${plot_size}
   );
   
-  call Quarknet.Cosmic::SVG2PNG(
+  call I2U2.Cosmic::SVG2PNG(
   	svg=${input:svg},
 	png=${output:plot_outfile_image_thumbnail},
 	height=${plot_thumbnail_height}
   );
 }
-TR Quarknet.Cosmic::RawAnalyzeStudy(
+TR I2U2.Cosmic::RawAnalyzeStudy(
         none gatewidth,
         input inFile,
         output outFile )
 {
-  call Quarknet.Cosmic::RawAnalyze(
+  call I2U2.Cosmic::RawAnalyze(
         gatewidth=gatewidth,
         inFile=inFile,
         outFile=outFile );
 }
-TR Quarknet.Cosmic::RawAnalyze(
+TR I2U2.Cosmic::RawAnalyze(
         none gatewidth,
         input inFile,
         output outFile )
@@ -663,7 +663,7 @@ TR Quarknet.Cosmic::RawAnalyze(
   argument = gatewidth;
 }
 
-TR Quarknet.Cosmic::SVG2PNG(none height, input svg, output png) {
+TR I2U2.Cosmic::SVG2PNG(none height, input svg, output png) {
 	argument = "-h";
 	argument = height;
 	argument = "-w";
@@ -672,7 +672,7 @@ TR Quarknet.Cosmic::SVG2PNG(none height, input svg, output png) {
 	argument = png;
 }
 
-TR Quarknet.Cosmic::Thumbnail(input in, output out, none height) {
+TR I2U2.Cosmic::Thumbnail(input in, output out, none height) {
 	argument = "-size";
 	argument = "x"${height};
 	argument = in;
