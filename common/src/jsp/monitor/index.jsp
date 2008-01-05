@@ -214,6 +214,11 @@
 					br.readLine();
 					line = br.readLine();
 					String[] values = line.split("\\s+");
+					if (values.length == 1) {
+						//when the device path is too long, df splits this on two lines
+						line = "dummy " + br.readLine();
+						values = line.split("\\s+");
+					}
 					String value = values[4];
 					value = value.substring(0, value.length() - 1);
 					mm.put("value", value);
