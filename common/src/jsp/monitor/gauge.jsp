@@ -5,7 +5,7 @@
 
 <%@ include file="gauge-indicator.jspf" %>
 <%
-	request.setAttribute("c", coords(request.getParameter("value"), 50));
+	request.setAttribute("c", coords(request.getParameter("value"), 50, false));
 %>
 
 <svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg-root" width="160" height="70">

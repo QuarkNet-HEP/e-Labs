@@ -428,7 +428,7 @@ body {
 				<table cellspacing="1" cellpadding="1">
 					<tr valign="bottom">
 						<td align="center">
-							<div class="label">${site.value.loadvalue[0]}, ${site.value.loadvalue[0]}, ${site.value.loadvalue[0]}</div>
+							<div class="label">${site.value.loadvalue[0]}, ${site.value.loadvalue[1]}, ${site.value.loadvalue[2]}</div>
 						</td>
 					</tr>
 					<tr>
