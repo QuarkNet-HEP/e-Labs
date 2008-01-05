@@ -17,6 +17,14 @@
 		self.handleResponse = function() {
 			if(self.ro.readyState == 4){
 				var response = self.ro.responseText;
+				var i;
+				for(i = 0; i < response.length; i++) {
+					var c = response.charAt(i);
+					if (c != '\n' && c != '\t' && c != '\r' && c != ' ' && c != '\f') {
+						break;
+					}
+				}
+				response = response.substring(i);
 				var update = new Array();
 				if(response.indexOf('&' != -1)) {
 					values = response.split('&');
