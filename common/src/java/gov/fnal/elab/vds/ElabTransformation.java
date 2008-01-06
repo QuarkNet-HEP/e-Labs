@@ -715,9 +715,6 @@ public class ElabTransformation{
             //state.getDAX( label==null ? "cosmic" : label ).toXML(sw, "");
             state.getDAX("run").toXML(daxXML, "");
             daxXML.close();
-            FileWriter fw = new FileWriter("/home/mike/dax.xml");
-            fw.write(daxXML.toString());
-            fw.close();
             //TODO StringBufferInputStream is deprecated as of JDK 1.1, but this would have to change in the VDS as well...
             StringBufferInputStream is = new StringBufferInputStream(daxXML.toString());
             Derive derive = new Derive();
