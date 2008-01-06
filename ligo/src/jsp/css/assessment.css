@@ -1,0 +1,73 @@
+h1 {
+	background-color: #55a9b4;
+	color: #000000;
+}
+
+.assessment #center h1 {
+	font-weight: normal;
+	font-size: 140%;
+	width: 100%;
+	padding-bottom: 6px;
+	border-bottom: solid 2px orange;
+	margin-left: 0px;
+}
+
+.assessment #center h2 {
+	display: inline;	
+	padding-bottom: 6px;
+	border-bottom: solid 2px #666666;
+	margin-left: 0px;
+	font-family: verdana, arial, sans-serif;
+	font-weight: bold;
+	font-size: 120%;
+	color: #333399;
+}
+
+.assessment #center em {
+	color: #333399;
+	font-weight: bold;
+	font-style: normal;
+}
+
+.assessment #center p {
+	font-weight: normal;
+	margin-left: 10px;
+}
+
+.assessment dt {
+	font-weight: bold;
+}
+
+.assessment dd {
+	padding-bottom: 6px;
+}
+
+#nav {
+	width: 100%;
+	left: 0px;
+	top: 74px;
+	height: 20px;
+}
+
+#nav #subnav li a {
+	color: #ffff00;
+	border-left: 3px solid;
+}
+
+/*
+	Italicisize corresponding subnav item
+*/
+#assessment		 	#subnav a[href="../assessment"] {
+	font-style: italic;
+}
+
+#nav #subnav ul li:first-child a {
+	border-left: none;
+}
+
+
+.float {
+	float: left;
+	padding-right: 8px;
+}
+

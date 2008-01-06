@@ -1,0 +1,35 @@
+h1 {
+	background-color: black;
+	color: white;
+}
+
+#nav {
+	width: 100%;
+	left: 0px;
+	top: 70px;
+	height: 20px;
+	text-align: center;
+}
+
+#nav ul {
+	width: 360px;
+}
+
+#nav li a {
+	width: 160px;
+	color: white;
+	border: 2px solid black;
+}
+
+#nav li a:hover {
+	color: red;
+	text-decoration: underline;
+}
+
+.centered img {
+	padding: 8px;
+}
+
+#footer {
+	margin-top: 24px;
+}

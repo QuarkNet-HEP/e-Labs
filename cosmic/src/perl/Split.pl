@@ -322,7 +322,7 @@ while(<IN>){
                         $cpld_real_count++;
                     }
                 }
-                $cpld_real_freq = $cpld_real_freq_tot/$cpld_real_count;
+                $cpld_real_freq = $cpld_real_freq_tot/$cpld_real_count if $cpld_real_count !=0;
                     
                 print META "cpldfrequency float $cpld_real_freq\n";
 				close SPLIT;
@@ -330,7 +330,8 @@ while(<IN>){
 
 				#write the channel counts for the most recent split file
 				#Why is this here?
-				print "$split_chan[1] $split_chan[2] $split_chan[3] $split_chan[4]\n";
+				#TJ took it out on 27 April
+				#print "$split_chan[1] $split_chan[2] $split_chan[3] $split_chan[4]\n";
 
 				#clear out count for channel events
 				$split_chan[$_] = 0 for (1..4);
@@ -445,7 +446,7 @@ else{
 	`/usr/bin/perl -i -p -e 's/^nondatalines.*/nondatalines int $non_datalines/' "$raw_filename.meta"`;
 	warn "Bad/ignored lines: $non_datalines\n" if($non_datalines > 0);
 	if($sum_lats == 0 or $sum_longs == 0 or $sum_alts == 0){
-		warn "No gps information found in this file. (the \"DG\" command on the board)\n";
+		warn "There was no gps information with sufficient satellites for a position fix in this file. (the \"DG\" command on the board)\n";
 	}
 	else{
 		my $avg_lat = $sum_lats/$lat_count;

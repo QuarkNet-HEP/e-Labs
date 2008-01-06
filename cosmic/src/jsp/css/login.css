@@ -1,0 +1,39 @@
+#login #content {
+	width: 600px;
+}
+
+#login #footer {
+	width: 600px;
+}
+
+#login .warning {
+	color: red;
+	font-weight: bold;
+	font-size: 120%;
+}
+
+h1 {
+	background-color: #99cccc;
+	color: black;
+	text-align: center;
+}
+
+#login #left, #right {
+	display: none;
+}
+
+#login #main {
+	width: 100%;
+}
+
+#login #center, #login-form-contents, table {
+	text-align: center;
+	width: 100%;
+}
+
+label {
+	display: block;
+	text-align: right;
+	width: 100%;
+}
+

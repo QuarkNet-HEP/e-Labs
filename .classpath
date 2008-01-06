@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry output="cms/dist/WEB-INF/classes" kind="src" path="cms/src/java"/>
-	<classpathentry output="common/build" kind="src" path="common/src/java"/>
-	<classpathentry output="cosmic/dist/WEB-INF/classes" kind="src" path="cosmic/src/java"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>

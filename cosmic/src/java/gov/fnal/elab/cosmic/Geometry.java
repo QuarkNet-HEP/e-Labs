@@ -41,9 +41,9 @@ public class Geometry {
      */
     public Geometry(String dataDirectory, String detectorID) throws ElabException {
         orderedGeoEntries = new TreeMap();
-        geoFile = dataDirectory + detectorID + "/" + detectorID + ".geo";
+        geoFile = dataDirectory  + File.separator + detectorID + File.separator + detectorID + ".geo";
         localGeoFile = detectorID + ".geo";
-        geoDir = dataDirectory + detectorID;
+        geoDir = dataDirectory + File.separator+ detectorID;
         this.detectorID = detectorID;
 
         try {
@@ -69,6 +69,10 @@ public class Geometry {
      * @see GeoEntry
      */
     public Iterator getGeoEntries() { return orderedGeoEntries.values().iterator(); }
+    
+    public SortedMap getGeoEntriesBefore(String julianDay) {
+    	return orderedGeoEntries.headMap(julianDay);
+    }
 
     /**
      * Provides an Iterator for the geometry entries in descending temporal
@@ -168,7 +172,7 @@ public class Geometry {
                 if(m1.matches()){
                     geb.setJulianDay(s);
 
-                    //then read in the next 8 lines for the geo data
+                    //then read in the next 9 lines for the geo data
 
                     s = in.readLine();      //latitude
                     split = s.split("\\.");
@@ -189,13 +193,22 @@ public class Geometry {
                     geb.setChan1X(split[0]);
                     geb.setChan1Y(split[1]);
                     geb.setChan1Z(split[2]);
-                    geb.setChan1Area(Double.toString((Double.valueOf(split[3]).doubleValue())*100*100));
+					//The area in the geo file is has units of m^2, but the user expects to see units of cm^2
+					//It is easier for the user to measure their counter in cm and enter those values
+					//The next line converts the units for proper display in the form
+					geb.setChan1Area(Double.toString((Double.valueOf(split[3]).doubleValue())*100*100));
                     // Sometimes the geo-file will not have an entry 
                     // for cable length. If it doesn't, then
                     // we have to use zero, and if it does we have to use that.
                     if(split.length == 5) {
-                        geb.setChan1CableLength(split[4]);
-                    }
+                		//The cable length in the geo file has units of time. The user expects to see units of length.
+                    	//We do this because it is easier for the user to measure the lenght of the cable in meters and enter those values.
+                   	 	//So the next line converts the value read from the file for proper display in the form.
+                    	//The conversion from m to 10e-11 s is conveniently = 500. (Propagation speed = 2/3 c)
+                    	//before the change the line was:
+                    	//geb.setChan1CableLength(split[4]);
+		   		    	geb.setChan1CableLength(Double.toString((Double.valueOf(split[4]).doubleValue())/500)); 
+                	} 
 
                     s = in.readLine();      //chan2
                     split = s.split("\\s");
@@ -204,8 +217,9 @@ public class Geometry {
                     geb.setChan2Z(split[2]);
                     geb.setChan2Area(Double.toString((Double.valueOf(split[3]).doubleValue())*100*100));
                     if(split.length == 5) {
-                        geb.setChan2CableLength(split[4]);
-                    }
+                    	//geb.setChan2CableLength(split[4]);
+		   				geb.setChan2CableLength(Double.toString((Double.valueOf(split[4]).doubleValue())/500)); 
+               		} 
 
                     s = in.readLine();      //chan3
                     split = s.split("\\s");
@@ -214,8 +228,9 @@ public class Geometry {
                     geb.setChan3Z(split[2]);
                     geb.setChan3Area(Double.toString((Double.valueOf(split[3]).doubleValue())*100*100));
                     if(split.length == 5) {
-                        geb.setChan3CableLength(split[4]);
-                    }
+                    	//geb.setChan3CableLength(split[4]);
+		    			geb.setChan3CableLength(Double.toString((Double.valueOf(split[4]).doubleValue())/500));
+                	}
 
                     s = in.readLine();      //chan4
                     split = s.split("\\s");
@@ -224,7 +239,14 @@ public class Geometry {
                     geb.setChan4Z(split[2]);
                     geb.setChan4Area(Double.toString((Double.valueOf(split[3]).doubleValue())*100*100));
                     if(split.length == 5) {
-                        geb.setChan4CableLength(split[4]);
+                    	//geb.setChan4CableLength(split[4]);
+		   				geb.setChan4CableLength(Double.toString((Double.valueOf(split[4]).doubleValue())/500)); 
+                	}
+
+                    //gps cable length
+                        s = in.readLine();
+                    if(s != null && !s.matches("^[0-9]{7}(\\.[0-9]*)*$")) { // if next line is a julian day, user hasn't set the cable length and we assume it's zero
+                        geb.setGpsCableLength(Double.toString((Double.valueOf(s).doubleValue())/500));
                     }
 
                     orderedGeoEntries.put(geb.getJulianDay(), geb);

@@ -1,0 +1,13 @@
+#header-image img {
+	height: 77px;
+}
+
+#header-title {
+	font-size: 180%;
+	margin-left: 0px;
+	margin-top: 8px;
+}
+
+#second-header-title {
+	display: none;
+}

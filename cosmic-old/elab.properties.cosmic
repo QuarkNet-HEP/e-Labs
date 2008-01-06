@@ -1,6 +1,0 @@
-#
-# These are properties specific to cosmic in addition to
-# the common elab properties
-#
-
-cosmic.datadir = @portal.home@/data/cosmic/

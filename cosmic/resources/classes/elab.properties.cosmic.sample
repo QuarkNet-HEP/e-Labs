@@ -1,0 +1,2 @@
+#override the default user management provider
+provider.usermanagement = gov.fnal.elab.usermanagement.impl.CosmicDatabaseUserManagementProvider

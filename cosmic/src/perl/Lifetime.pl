@@ -129,7 +129,8 @@ sub FindSpecificDecay
 		$timeDifference= ($JulianDayDiff + $possibleEndDecayData[2])-$curTime;
 		if($curChan==$possibleEndDecayData[0]) 
 		{
-			if( 0 < $timeDifference && $timeDifference  < $offset )
+		 #TJ change the next line. We were getting to many prompt events that look like muons just passing through. This value in pjd is close to a few hundred ns--a nice cut for a reasonable lower limit.
+			if( 3.4e-12 < $timeDifference && $timeDifference  < $offset )
 			{
 				# if a second signal happens within the set offset, and on the same channel, then it is a potentual decay
 				if(!$checkEnergy || $possibleEndDecayData[4]<$curTimeOverThreshold)

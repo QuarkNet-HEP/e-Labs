@@ -1,0 +1,44 @@
+<%	
+	File eFile = new File(results.getOutputDir(), (String) analysis.getParameter("eventFile"));
+	BufferedReader br0 = new BufferedReader(new FileReader(eFile));
+
+	List events = new ArrayList();
+	String line0 = br0.readLine();
+	while(line0 != null) {
+	    if(!line0.matches("^.*#.*")){
+			String arr[] = line0.split("\\s");
+			String chanId[] = arr[3].split("\\.");
+			Map eventData = new HashMap();
+			eventData.put("x", arr[0]);
+			eventData.put("y", arr[1]);
+			eventData.put("z", arr[2]);
+			eventData.put("id", chanId[0]);
+			eventData.put("chan", chanId[1]);
+			events.add(eventData);
+	    }
+	    line0 = br0.readLine();
+    }
+	request.setAttribute("events", events);
+%>
+
+<p>
+	Plot datapoints:
+</p>
+<table>
+	<tr>
+		<th>East/West (meters)</th>
+		<th>North/South (meters)</th>
+		<th>Time (nanosec)</th>
+		<th>Detector</th>
+		<th>Channel</th>
+	</tr>
+	<c:forEach items="${events}" var="event" varStatus="li">
+		<tr bgcolor="${li.count % 2 == 0 ? '#ffffff' : '#ccffbb' }">
+			<td>${event.x}</td>
+			<td>${event.y}</td>
+			<td>${event.z}</td>
+			<td><e:popup href="../data/detector-info.jsp?id=${event.id}" target="new" width="460" height="160">${event.id}</e:popup></td>
+			<td>${event.chan}</td>
+		</tr>
+	</c:forEach>
+</table>

@@ -1,0 +1,37 @@
+#assessment h1 {
+	background-color: #ffcc00;
+	color: #000000;
+	width: 650px;
+}
+
+#assessment #content {
+	margin-left: 10px;
+	width: 650px;
+}
+
+#assessment table, td {
+	border: 1px solid gray;
+}
+
+#assessment table {
+	width: 550px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#assessment td {
+	padding: 6px;
+}
+
+#assessment th {
+	font-weight: normal;
+}
+
+#assessment #footer {
+	border: none;
+}
+
+#assessment #objectives {
+  font-size: 16px;
+  text-align: left;
+  }

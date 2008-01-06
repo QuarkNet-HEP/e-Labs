@@ -1,0 +1,143 @@
+<HTML>
+<HEAD>
+<TITLE>Poster</TITLE>
+<link rel="stylesheet" type="text/css" href="../css/poster.css" />
+
+<script language="JavaScript">
+self.name="Poster_main";
+function showFigure(url)
+{
+window.open(url,"graph","width=820,height=750,scrollbars=yes,toolbar=no,menubar=no,status=yes,resizable=yes");
+}
+
+   function writeCode(linkText,fileName,caption)
+   {
+   iFigure=fileName.indexOf("%FIG:FIGURE");
+   if (iFigure==-1 )
+   {
+   startHREF="<LI><A HREF=\"javascript:showFigure('../plots/view.jsp?menu=no&type=plot&get=data&filename="+fileName+"')";
+   endHREF="</A>";
+   quoteAngle="\">";
+       code=startHREF+quoteAngle+linkText+ endHREF+": "+caption;
+   document.write(code);
+   }
+   }
+      
+</script>
+
+
+</HEAD>
+
+<BODY class="poster_body">
+<CENTER>
+<TABLE width=650 class="poster_main_table">
+<TR>
+      <TD COLSPAN=5> 
+        <table width="100%"><tr><td align="left" class="poster_title" valign="top">%WORDS:TITLE%</td></tr>
+           <tr><td align="left" class="poster_subtitle">%WORDS:SUBTITLE%</td></tr></table>
+		</td></tr>
+
+<TR><TD COLSPAN=5>
+<P>&nbsp;   
+</TD></TR>
+
+<TR><TD WIDTH=10>
+</TD>
+<TD VALIGN=TOP class="poster_detail_frame" WIDTH=310 >
+<a name="authors"> </a>
+<TABLE class="poster_detail_head" width="302">
+<TR><TD><BR>
+<P><B>%WORDS:DATE%<BR> 
+%PARA:AUTHORS%</b><P>
+</TD></TR>
+
+<a name="abstract"> </a>
+<TR><TD align="left" class="poster_detail_body">
+<P class="poster_detail_subhead">Abstract</p>
+<P>
+%PARA:ABSTRACT%
+</P>&nbsp;
+<TD></TR>
+</TABLE>
+
+
+</td>
+<TD WIDTH=10>
+</TD>
+<td width="310" valign="top" class="poster_detail_frame">
+<a name="materials"></a>
+<TABLE class="poster_detail_head" width="302">
+<TR><TD class="poster_detail_body"><BR>
+<P class="poster_detail_subhead">Procedures</p>
+<P>
+%PARA:PROCEDURE%
+</P>&nbsp;
+<TD></TR>
+</TABLE>
+
+
+
+
+
+</td><TD WIDTH=10>
+</TD></TR>
+
+
+<tr><td colspan="5">&nbsp;
+</td></tr>
+
+<TR><TD WIDTH=10>
+</TD><td width="310" valign="top" class="poster_detail_frame">
+<a name="results"> </a>
+<TABLE class="poster_detail_head" width="302">
+<TR><TD class="poster_detail_body"><BR>
+<P class="poster_detail_subhead">Results</p>
+<P>
+%PARA:RESULTS%
+</P>
+<table><tr><td class="poster_figure_name">
+<UL>
+
+<SCRIPT LANGUAGE="JAVASCRIPT">writeCode("Figure 1","%FIG:FIGURE1%","%WORDS:CAPTION1%")</script>
+<SCRIPT LANGUAGE="JAVASCRIPT">writeCode("Figure 2","%FIG:FIGURE2%","%WORDS:CAPTION2%")</script>
+<SCRIPT LANGUAGE="JAVASCRIPT">writeCode("Figure 3","%FIG:FIGURE3%","%WORDS:CAPTION3%")</script>
+<SCRIPT LANGUAGE="JAVASCRIPT">writeCode("Figure 4","%FIG:FIGURE4%","%WORDS:CAPTION4%")</script>
+<SCRIPT LANGUAGE="JAVASCRIPT">writeCode("Figure 5","%FIG:FIGURE5%","%WORDS:CAPTION5%")</script>
+</UL>
+</td></tr></table>
+
+<P>&nbsp;
+<TD></TR>
+</TABLE>
+
+
+
+</td><TD WIDTH=10>
+</TD>
+<td width="310" valign="top" class="poster_detail_frame">
+<a name="discussion"> </A>
+<TABLE width="302" class="poster_detail_head">
+<TR><TD class="poster_detail_body"><BR>
+<P class="poster_detail_subhead">Discussions & Conclusions</P>
+<P>
+%PARA:CONCLUSION%
+</P>
+<BR>
+<P>&nbsp;   
+<TD></TR>
+</TABLE>
+
+</td>
+<TD WIDTH=10>
+</TD></tr>
+
+<TR><TD colspan="5">
+<P>&nbsp;
+</TD></TR>
+</table>
+
+</CENTER>
+
+</BODY>
+</HTML>
+
