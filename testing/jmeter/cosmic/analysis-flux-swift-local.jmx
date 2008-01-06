@@ -319,14 +319,14 @@
           </RegexExtractor>
           <hashTree/>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Wait 4 seconds" enabled="true">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Wait 8 seconds" enabled="true">
           <boolProp name="TransactionController.parent">false</boolProp>
         </TransactionController>
         <hashTree>
-          <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Wait 4 seconds" enabled="true">
+          <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Wait 8 seconds" enabled="true">
             <intProp name="ActionProcessor.target">0</intProp>
             <intProp name="ActionProcessor.action">1</intProp>
-            <intProp name="ActionProcessor.duration">4000</intProp>
+            <intProp name="ActionProcessor.duration">8000</intProp>
           </TestAction>
           <hashTree/>
         </hashTree>
@@ -335,7 +335,7 @@
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
           <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.port">9080</stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
@@ -354,7 +354,7 @@
           <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="Compare" enabled="true">
             <stringProp name="BeanShellAssertion.query">String host = ctx.getCurrentSampler().getPropertyAsString(&quot;HTTPSampler.domain&quot;);
 String port = ctx.getCurrentSampler().getPropertyAsString(&quot;HTTPSampler.port&quot;);
-Process p = Runtime.getRuntime().exec(&quot;/bin/sh ./compare.sh flux http://&quot; + host + &quot;:&quot; + port + vars.get(&quot;imageURL&quot;));
+Process p = Runtime.getRuntime().exec(&quot;/bin/sh /home/mike/work/i2u2/cisvn/i2u2/trunk/testing/jmeter/cosmic/compare.sh flux http://&quot; + host + &quot;:&quot; + port + vars.get(&quot;imageURL&quot;));
 int exitcode = p.waitFor();
 if (exitcode != 0) {
   BufferedReader br = new BufferedReader(new InputStreamReader(p.getErrorStream()));

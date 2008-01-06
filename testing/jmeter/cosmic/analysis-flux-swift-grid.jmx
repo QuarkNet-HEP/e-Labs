@@ -323,7 +323,7 @@
           <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="Compare" enabled="true">
             <stringProp name="BeanShellAssertion.query">String host = ctx.getCurrentSampler().getPropertyAsString(&quot;HTTPSampler.domain&quot;);
 String port = ctx.getCurrentSampler().getPropertyAsString(&quot;HTTPSampler.port&quot;);
-Process p = Runtime.getRuntime().exec(&quot;/bin/sh ./compare.sh flux http://&quot; + host + &quot;:&quot; + port + vars.get(&quot;imageURL&quot;));
+Process p = Runtime.getRuntime().exec(&quot;/bin/sh /home/mike/work/i2u2/cisvn/i2u2/trunk/testing/jmeter/cosmic/compare.sh flux http://&quot; + host + &quot;:&quot; + port + vars.get(&quot;imageURL&quot;));
 int exitcode = p.waitFor();
 if (exitcode != 0) {
   BufferedReader br = new BufferedReader(new InputStreamReader(p.getErrorStream()));

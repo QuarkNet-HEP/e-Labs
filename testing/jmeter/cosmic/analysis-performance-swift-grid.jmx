@@ -335,7 +335,7 @@
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
           <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.port">9080</stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
@@ -354,7 +354,7 @@
           <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="Compare" enabled="true">
             <stringProp name="BeanShellAssertion.query">String host = ctx.getCurrentSampler().getPropertyAsString(&quot;HTTPSampler.domain&quot;);
 String port = ctx.getCurrentSampler().getPropertyAsString(&quot;HTTPSampler.port&quot;);
-Process p = Runtime.getRuntime().exec(&quot;/bin/sh ./compare.sh performance http://&quot; + host + &quot;:&quot; + port + vars.get(&quot;imageURL&quot;));
+Process p = Runtime.getRuntime().exec(&quot;/bin/sh /home/mike/work/i2u2/cisvn/i2u2/trunk/testing/jmeter/cosmic/compare.sh performance http://&quot; + host + &quot;:&quot; + port + vars.get(&quot;imageURL&quot;));
 int exitcode = p.waitFor();
 if (exitcode != 0) {
   BufferedReader br = new BufferedReader(new InputStreamReader(p.getErrorStream()));
