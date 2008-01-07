@@ -131,7 +131,6 @@ distclean:
 			failonerror="true">
 			<arg line="-d ${tlddoc.dir}/common"/>
 			<arg value="common/resources/elab.tld"/>
-			<arg value="common/resources/elab.tld"/>
 			<classpath>
 				<pathelement location="tools/tlddoc.jar"/>
 				<pathelement location="common/lib/xml-apis.jar"/>
