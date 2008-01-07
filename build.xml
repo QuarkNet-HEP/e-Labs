@@ -127,10 +127,17 @@ distclean:
 			<fileset dir="common/src/java"/>
 		</javadoc>
 		<mkdir dir="${tlddoc.dir}/common"/>
+		<mkdir dir=".tldbuild/WEB-INF/tags"/>
+		<copy todir=".tldbuild/WEB-INF">
+			<fileset dir="common/resources" includes="elab.tld"/>
+		</copy>
+		<copy todir=".tldbuild/WEB-INF/tags">
+			<fileset dir="common/resources/tags" includes="*.*"/>
+		</copy>
 		<java fork="true" classname="com.sun.tlddoc.TLDDoc"
 			failonerror="true">
 			<arg line="-d ${tlddoc.dir}/common"/>
-			<arg value="common/resources/elab.tld"/>
+			<arg value=".tldbuild/WEB-INF/elab.tld"/>
 			<classpath>
 				<pathelement location="tools/tlddoc.jar"/>
 				<pathelement location="common/lib/xml-apis.jar"/>
