@@ -1,9 +1,17 @@
-#HOST=`hostname`
-HOST=www12.i2u2.org
-PORT=9080
-#JMETER_HOME=/home/mike/work/i2u2/jakarta-jmeter-2.3
-#JMETER_HOME=/home/quarkcat/sw/jmeter
-JMETER_HOME=/home/hategan/quarknet-t/jmeter
+
+checkenv() {
+	if [ "$2" == "" ]; then
+		echo "$1 is not set"
+		exit 1
+	fi
+}
+
+checkenv JMETER_HOME $JMETER_HOME
+checkenv JMETER_TEST_HOST $JMETER_TEST_HOST
+HOST=$JMETER_TEST_HOST
+checkenv JMETER_TEST_PORT $JMETER_TEST_PORT
+PORT=$JMETER_TEST_PORT
+checkenv JMETER_OUTPUT_DIR $JMETER_OUTPUT_DIR
 
 for jar in $JMETER_HOME/lib/*.jar; do
 	CLASSPATH=$jar:$CLASSPATH
@@ -41,6 +49,6 @@ for jmx in *.jmx; do
 done
 REFPATH=`pwd`
 export REFPATH
-ant all
-#ant htmlreports
+ant -Djmeterhome=$JMETER_HOME -Doutputdir=$JMETER_OUTPUT_DIR all
+ant htmlreports
 

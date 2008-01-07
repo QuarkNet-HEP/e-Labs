@@ -1,10 +1,6 @@
 <project name="Cosmic JMeter Tests" default="all">
-	<!--<property name="outputdir" value="/home/quarkcat/sw/tomcat/webapps/tests"/>-->
-	<property name="outputdir" value="/home/hategan/quarknet-t/tomcat/webapps/tests"/>
-	<property name="jmeterhome" value="/home/quarkcat/sw/jmeter"/>
-    <!--<property name="outputdir" value="."/>
-	<property name="jmeterhome" value="/home/mike/work/i2u2/jakarta-jmeter-2.3"/>-->
-
+	<echo message="JMeter home: ${jmeterhome}"/>
+	<echo message="Output dir: ${outputdir}"/>
     <taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
 	
     <target name="runtests">
