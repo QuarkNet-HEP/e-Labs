@@ -383,9 +383,15 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
 
             annotationschema = (AnnotationSchema) dbschema;
             java.sql.ResultSet rs;
-
-            String query = "select count(distinct value) from anno_text where id in (select id from anno_lfn where mkey='"
+            
+            String query;
+            if (key == null || key.equals("split")) {
+                query = "SELECT COUNT(*) FROM anno_text WHERE value = 'split'";
+            }
+            else {
+                query = "select count(distinct value) from anno_text where id in (select id from anno_lfn where mkey='"
                     + ElabUtil.fixQuotes(key) + "')";
+            }
             System.out.println(query);
             rs = annotationschema.backdoor(query);
 

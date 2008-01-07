@@ -154,7 +154,7 @@
 					int schoolCount = dcp.getUniqueCategoryCount("school");
 					int stateCount = dcp.getUniqueCategoryCount("state");
 				%>
-		 		Searching <%= fileCount %> data files from <%= schoolCount %> in 
+		 		Searching <%= fileCount %> data files from <%= schoolCount %> schools in 
 				<%= stateCount %> states.
 			</p>
 			<%
