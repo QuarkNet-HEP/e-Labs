@@ -50,5 +50,5 @@ done
 REFPATH=`pwd`
 export REFPATH
 ant -Djmeterhome=$JMETER_HOME -Doutputdir=$JMETER_OUTPUT_DIR all
-ant htmlreports
+ant -Djmeterhome=$JMETER_HOME -Doutputdir=$JMETER_OUTPUT_DIR htmlreports
 
