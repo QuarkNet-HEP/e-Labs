@@ -37,7 +37,38 @@
 			</div>
 			
 			<div id="content">
-
+			
+			
+<%!
+	public static class EventsComparator implements Comparator {
+		private String[] colNames;
+		private int csc;
+		private int dir;
+		
+		public EventsComparator(String[] colNames, int csc, int dir) {
+			this.colNames = colNames;
+			this.csc = csc;
+			this.dir = dir;
+		}
+	
+		public int compare(Object o1, Object o2) {
+		    Map m1 = (Map) o1;
+		    Map m2 = (Map) o2;
+		    int c = ((Comparable) m1.get(colNames[csc])).compareTo(m2.get(colNames[csc]));
+		    if (c == 0) {
+		    	if (csc == 0) {
+		    		return dir * ((Comparable) m1.get("eventCoincidence")).compareTo(m2.get("eventCoincidence"));
+		    	}
+		    	else {
+		    		return ((Comparable) m1.get("line")).compareTo(m2.get("line"));
+		    	}
+		    }
+		    else {
+		        return dir * c;
+		    }
+		}
+	}
+%>
 <%
 	ElabAnalysis analysis = results.getAnalysis();
 	request.setAttribute("analysis", analysis);
@@ -76,24 +107,7 @@
 	else {
 		dir = "a".equals(request.getParameter("dir")) ? 1 : -1;
 	}
-	Set rows = new TreeSet(new Comparator() {
-		public int compare(Object o1, Object o2) {
-		    Map m1 = (Map) o1;
-		    Map m2 = (Map) o2;
-		    int c = ((Comparable) m1.get(colNames[csc])).compareTo(m2.get(colNames[csc]));
-		    if (c == 0) {
-		    	if (csc == 0) {
-		    		return dir * ((Integer) m1.get("eventCoincidence")).compareTo(m2.get("eventCoincidence"));
-		    	}
-		    	else {
-		    		return ((Integer) m1.get("line")).compareTo(m2.get("line"));
-		    	}
-		    }
-		    else {
-		        return dir * c;
-		    }
-		}
-	});
+	Set rows = new TreeSet(new EventsComparator(colNames, csc, dir));
 	Set allIds = new HashSet();
 	DateFormat df = new SimpleDateFormat("MMM d, yyyy HH:mm:ss z");
 	df.setTimeZone(TimeZone.getTimeZone("UTC"));
