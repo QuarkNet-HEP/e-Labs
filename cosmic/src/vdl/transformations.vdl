@@ -24,17 +24,15 @@ TR I2U2.Cosmic::ExtraFunctions(
   argument = " "${extraOut};
   argument = " "${rawFunctionFile};
   argument = " "${type};
-
-# I haven't been using values for these... maybe should?
-#  argument = "-lowx "${xLowerbounds};
-#  argument = "-highx "${xUpperbounds};
-#  argument = "-alphaValue ""'"${alphaG}"'";
-#  argument = "-alphaYN "${alphaVar};
-#  argument = "-lifetimeValue ""'"${lifetimeG}"'";
-#  argument = "-lifetimeYN "${lifetimeVar};
-#  argument = "-constantValue ""'"${constantG}"'";
-#  argument = "-constantYN "${constantVar};
-#  argument = "-fit "${turnedOn};
+  argument = " "${xLowerbounds};
+  argument = " "${xUpperbounds};
+  argument = " ""'"${alphaG}"'";
+  argument = " "${alphaVar};
+  argument = " ""'"${lifetimeG}"'";
+  argument = " "${lifetimeVar};
+  argument = " ""'"${constantG}"'";
+  argument = " "${constantVar};
+  argument = " "${turnedOn};
 }
 TR I2U2.Cosmic::Frequency(
 	none binType,
