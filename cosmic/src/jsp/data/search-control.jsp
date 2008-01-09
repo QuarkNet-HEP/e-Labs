@@ -42,9 +42,9 @@
 						</select>
 					</td>
 					<td>
-						<input name="date1" size="10" maxlength="15" value="${param.date1}" />
+						<e:trinput name="date1" size="10" maxlength="15" default="01/01/2004"/>
 						to
-						<input name="date2" size="10" maxlength="15" value="${param.date2}" />
+						<e:trinput name="date2" size="10" maxlength="15" default="12/30/2050"/>
 					</td>
 				</tr>
 				<tr>
@@ -87,7 +87,7 @@
 		String value = request.getParameter("value");
 		if (value == null) value="";
 		String date1 = request.getParameter("date1");
-		if (date1 == null || date1.equals("")) date1="1/1/2004";
+		if (date1 == null || date1.equals("")) date1="01/01/2004";
 		String date2 = request.getParameter("date2");
 		if (date2 == null || date2.equals("")) date2="12/30/2050";
 		String sortDirection = request.getParameter("sortDirection");
@@ -109,7 +109,7 @@
 			if ("within".equals(request.getParameter("searchIn"))) {
 				and.add((QueryElement) session.getAttribute("previousSearch"));
 			}
-			if (!"all".equals(key)) {
+			if (!"all".equals(key) && !(value == null) && !"".equals(value)) {
 			    and.add(new Equals(key, value));
 			}
 		    
