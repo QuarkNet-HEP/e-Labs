@@ -42,7 +42,7 @@ public class Analysis extends TagSupport {
             ElabAnalysis analysis = (ElabAnalysis) pageContext.getRequest()
                     .getAttribute(ATTR_ANALYSIS);
             if (analysis != null) {
-                if (!type.equals(analysis.getType())) {
+                if (!compareType(type, analysis.getType())) {
                     throw new JspException(
                             "Stored analysis type doesn't match the requested "
                                     + "analysis type. Perhaps rerun.jsp redirected to the "
@@ -70,6 +70,11 @@ public class Analysis extends TagSupport {
             throw new JspException(e);
         }
         return EVAL_BODY_INCLUDE;
+    }
+    
+    protected boolean compareType(String t1, String t2) {
+    	//should we or should we not allow such incompatibilities
+    	return true;
     }
 
     protected void setAnalysisParams(ElabAnalysis analysis) {
