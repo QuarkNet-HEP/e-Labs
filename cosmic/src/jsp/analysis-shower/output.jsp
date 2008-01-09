@@ -8,6 +8,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
+<%@ page import="gov.fnal.elab.cosmic.*" %>
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -37,7 +38,8 @@
 			</div>
 			
 			<div id="content">
-
+			
+			
 <%
 	ElabAnalysis analysis = results.getAnalysis();
 	request.setAttribute("analysis", analysis);
@@ -66,81 +68,23 @@
 		eventNum = null;
 	}
 	int lineNo = 1;
-	final int csc = sortCol;
-	final String[] colNames = new String[] {"date", "eventCoincidence", "numDetectors"};
-	final int[] defDir = new int[] {1, -1, -1};
-	final int dir;
+	int csc = sortCol;
+	
+	int dir;
 	if (request.getParameter("dir") == null) {
-		dir = defDir[csc];
+		dir = EventCandidates.defDir[csc];
 	}
 	else {
 		dir = "a".equals(request.getParameter("dir")) ? 1 : -1;
 	}
-	Set rows = new TreeSet(new Comparator() {
-		public int compare(Object o1, Object o2) {
-		    Map m1 = (Map) o1;
-		    Map m2 = (Map) o2;
-		    int c = ((Comparable) m1.get(colNames[csc])).compareTo(m2.get(colNames[csc]));
-		    if (c == 0) {
-		    	if (csc == 0) {
-		    		return dir * ((Integer) m1.get("eventCoincidence")).compareTo(m2.get("eventCoincidence"));
-		    	}
-		    	else {
-		    		return ((Integer) m1.get("line")).compareTo(m2.get("line"));
-		    	}
-		    }
-		    else {
-		        return dir * c;
-		    }
-		}
-	});
-	Set allIds = new HashSet();
-	DateFormat df = new SimpleDateFormat("MMM d, yyyy HH:mm:ss z");
-	df.setTimeZone(TimeZone.getTimeZone("UTC"));
+	
 	
 	File ecFile = new File(results.getOutputDir(), (String) analysis.getParameter("eventCandidates"));
-	BufferedReader br = new BufferedReader(new FileReader(ecFile));
-	String line = br.readLine();
-	while(line != null) {
-	    //ignore comments in the file
-	    if(!line.matches("^.*#.*")) {
-	    	lineNo++;
-    		if(lineNo >= eventStart) {
-		    	Map row = new HashMap();
-		    	String[] arr = line.split("\\s");
-				row.put("eventCoincidence", Integer.valueOf(arr[1]));
-				row.put("numDetectors", Integer.valueOf(arr[2]));
-				row.put("eventNum", Integer.valueOf(arr[0]));
-				row.put("line", new Integer(lineNo));
-				if (eventNum == null) {
-					eventNum = arr[0];
-				}
-				
-				Set ids = new HashSet();
-				for(int i = 3; i < arr.length; i += 3){
-		        	String[] idchan = arr[i].split("\\.");
-		        	ids.add(idchan[0]);
-		        	allIds.add(idchan[0]);
-				}
-				row.put("ids", ids);
-				
-				String jd = arr[4];
-				String partial = arr[5];
-				
-				//get the date and time of the shower
-				NanoDate nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), Double.parseDouble(partial));
-				row.put("date", nd);
-				row.put("dateF", df.format(nd));
-				rows.add(row);
-				if (eventNum.equals(arr[0])) {
-				    request.setAttribute("crtEventRow", row);
-				}
-    		}
-	    }
-		line = br.readLine();
-    }
+	EventCandidates ec = EventCandidates.read(ecFile, csc, dir, eventStart, eventNum);
+	Collection rows = ec.getRows(); 
 	request.setAttribute("rows", rows);
 	request.setAttribute("eventNum", eventNum);
+	request.setAttribute("crtEventRow", ec.getCurrentRow());
 %>
 
 <h1>Shower study candidates (<%= rows.size() %>)</h1>

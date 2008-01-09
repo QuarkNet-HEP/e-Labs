@@ -54,17 +54,8 @@ type AxisParams {
 	app {
 		ExtraFunctions @filename(inf) @filename(out) @filename(rawFunctionFile)
 			etype 
-			/*
-			"-lowx" xLowerBound "-highx" xUpperBound
-			"-alphaValue" @quote(alphaG)
-			"-alphaYN" alphaVar
-			"-lifetimeValue" @quote(lifetimeG)
-			"-lifetimeYN" lifetimeVar
-			"-constantValue" @quote(constantG)
-			"-constantYN" constantVar
-			"-fit" turnedOn
-			*/
-			;
+			xLowerBound xUpperBound alphaG alphaVar lifetimeG
+			lifetimeVar constantG constantVar turnedOn;
 	}
 }
 
