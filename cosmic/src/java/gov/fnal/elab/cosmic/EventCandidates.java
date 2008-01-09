@@ -66,6 +66,7 @@ public class EventCandidates {
                     ids.clear();
                     for (int i = 3; i < arr.length; i += 3) {
                         String[] idchan = arr[i].split("\\.");
+                        idchan[0] = idchan[0].intern();
                         ids.add(idchan[0]);
                         allIds.add(idchan[0]);
                     }
