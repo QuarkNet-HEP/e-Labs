@@ -209,8 +209,10 @@ if (groupName.startsWith("pd_")||groupName.startsWith("PD_")) {typeConstraint=" 
               if (divend != -1) {
                   log_text = log_text.substring(divend + 1);
                   log_text = log_text.substring(0, log_text.length() - 6);
-                  log_text.replaceAll("\n", "<br />");
-                  log_text.replaceAll("</*\\s*[sS][cC][rR][iI][pP][tT]\\s*>", "");
+                  log_text = log_text.replaceAll("\n", "<br />");
+                  //this should be changed to only allow <a> and <img> tags 
+                  log_text = log_text.replaceAll("</*\\s*[sS][cC][rR][iI][pP][tT]\\s*>", "");
+                  log_text = log_text.replaceAll("</*\\s*[pP][rR][eE]\\s*>", "");
                   //we do what slashdot does. very long strings without spaces are lame.
                   StringBuffer sb = new StringBuffer();
                   int lastSpace = 0;
