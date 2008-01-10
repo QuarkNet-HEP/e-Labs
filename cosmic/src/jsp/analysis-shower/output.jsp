@@ -83,7 +83,7 @@
 	EventCandidates ec = EventCandidates.read(ecFile, csc, dir, eventStart, eventNum);
 	Collection rows = ec.getRows(); 
 	request.setAttribute("rows", rows);
-	request.setAttribute("eventNum", eventNum);
+	request.setAttribute("eventNum", ec.getEventNum());
 	request.setAttribute("crtEventRow", ec.getCurrentRow());
 %>
 
