@@ -460,6 +460,18 @@ p.search-result-bar {
 }
 
 /************** Plot listing **************/
-td#plot-thumbnail {
+.plot-thumbnail {
 	vertical-align: bottom;
+	text-align: center;
+	padding-bottom: 12px;
+}
+
+.plot-thumbnail-image {
+	width: 150px;
+	height: 150px;
+	vertical-align: middle;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
 }

@@ -32,7 +32,7 @@
 	            %>
 	            	<td class="plot-thumbnail">
 	            		<a href="view.jsp?filename=${e.LFN}">
-		            		<img src="${plotURL}/${e.tupleMap.thumbnail}" width="150" height="150" alt="Thumbnail not found" /><br/>
+		            		<img class="plot-thumbnail-image" src="${plotURL}/${e.tupleMap.thumbnail}" width="150" height="150" alt="Thumbnail not found" /><br/>
 		            	</a>
 		            	${e.tupleMap.name}<br/>
 	            		Group: ${e.tupleMap.group}<br/>
