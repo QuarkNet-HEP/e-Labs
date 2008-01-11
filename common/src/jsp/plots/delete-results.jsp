@@ -33,7 +33,7 @@
 	            %>
 	            	<td class="plot-thumbnail">
 	            		<a href="view.jsp?filename=${e.LFN}">
-		            		<img src="${plotURL}/${e.tupleMap.thumbnail}" width="150" height="150" alt="Image not found" /><br/>
+		            		<img src="${plotURL}/${e.tupleMap.thumbnail}" width="150" height="150" alt="Thumbnail not found" /><br/>
 		            	</a>
 		            	<input type="checkbox" name="file" value="${e.LFN}" />${e.tupleMap.name}<br/>
 	            		Group: ${e.tupleMap.group}<br/>
