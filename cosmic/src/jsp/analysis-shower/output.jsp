@@ -51,6 +51,7 @@
 	else {
 		eventStart = Integer.parseInt(es);
 	}
+	
 	String sc = request.getParameter("sort");
 	int sortCol = 1;
 	if (sc != null) {
@@ -79,7 +80,7 @@
 	}
 	
 	
-	File ecFile = new File(results.getOutputDir(), (String) analysis.getParameter("eventCandidates"));
+	File ecFile = new File((String) analysis.getParameter("eventCandidates"));
 	EventCandidates ec = EventCandidates.read(ecFile, csc, dir, eventStart, eventNum);
 	Collection rows = ec.getRows(); 
 	request.setAttribute("rows", rows);
@@ -117,10 +118,7 @@
 				<c:forEach items="${rows}" begin="${start}" end="${end}" var="row" varStatus="li">
 					<tr bgcolor="${row.eventNum == eventNum ? '#aaaafc' : (li.count % 2 == 0 ? '#e7eefc' : '#ffffff')}">
 						<td>
-							<e:rerun type="shower" analysis="${results.analysis}" label="${row.dateF}">
-								<e:param name="eventNum" value="${row.eventNum}"/>
-								<e:param name="submit" value="true"/>
-							</e:rerun>
+							<a href="../analysis-shower/event-choice.jsp?id=${param.showerId}&eventNum=${row.eventNum}&submit=true">${row.dateF}</a>
 						</td>
 						<td>
 							${row.eventCoincidence}
