@@ -43,6 +43,11 @@
 <%
 	ElabAnalysis analysis = results.getAnalysis();
 	request.setAttribute("analysis", analysis);
+	
+	String showerId = request.getParameter("showerId");
+	AnalysisRun showerResults = AnalysisManager.getAnalysisRun(elab, user, showerId);
+	request.setAttribute("showerResults", showerResults);
+	
 	String es = (String) request.getParameter("eventStart");
 	int eventStart;
 	if (es == null || es.equals("")) {
@@ -158,7 +163,7 @@
 		width="800" height="600" toolbar="true">analysis directory</e:popup>
 </p>
 <p>
-	<e:rerun type="shower" analysis="${results.analysis}" label="Change"/> your parameters
+	<e:rerun type="shower" analysis="${showerResults.analysis}" label="Change"/> your parameters
 </p>
 <p><b>OR</b></p>
 <%@ include file="save-form.jspf" %>
