@@ -458,3 +458,8 @@ p.search-result-bar {
 	font-size: 11px;
 	font-family: Arial, Verdana, sans-serif;
 }
+
+/************** Plot listing **************/
+td#plot-thumbnail {
+	vertical-align: bottom;
+}
