@@ -19,7 +19,7 @@
 	            	<td class="plot-thumbnail">
 	            		<input type="checkbox" name="file" value="${e.LFN}"/>
 	            		<a href="view.jsp?filename=${e.LFN}">
-		            		<img src="<%= user.getDirURL("plots") + "/" + e.getTupleValue("thumbnail") %>"/><br/>
+		            		<img src="<%= user.getDirURL("plots") + "/" + e.getTupleValue("thumbnail") %>" width="150" height="150" /><br/>
 		            	</a>
 		            	${e.tupleMap.name}<br/>
 	            		Group: ${e.tupleMap.group}<br/>
