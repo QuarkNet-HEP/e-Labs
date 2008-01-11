@@ -54,7 +54,7 @@
 					<td>
 						by
 						<e:select name="sortField" valueList="city, state, stacked, blessed, group, year, detectorid, creationdate, chan1, chan2, chan3, chan4"
-							labelList="City, State, Geometry, Blessed, Group, Academic Year, Detector ID, Upload Date, Cahnnel 1 events, Channel 2 events, Channel 3 events, Channel 4 events"/>
+							labelList="City, State, Geometry, Blessed, Group, Academic Year, Detector ID, Upload Date, Channel 1 events, Channel 2 events, Channel 3 events, Channel 4 events"/>
 					</td>
 				</tr>
 				<tr>
@@ -119,23 +119,23 @@
 		    }
 		    
 		    if ("yes".equals(blessed)) {
-		    	and.add(new Equals("blessed", "t"));
+		    	and.add(new Equals("blessed", Boolean.TRUE));
 		    }
 		    if ("no".equals(blessed)) {
-		    	and.add(new Equals("blessed", "f"));
+		    	and.add(new Equals("blessed", Boolean.FALSE));
 		    }
 		    
 		    if ("yes".equals(stacked)) {
-		    	and.add(new Equals("stacked", "t"));
+		    	and.add(new Equals("stacked", Boolean.TRUE));
 		    }
 		    if ("no".equals(stacked)) {
-		    	and.add(new Equals("stacked", "f"));
+		    	and.add(new Equals("stacked", Boolean.FALSE));
 		    }
 		    
 		    
 		    and.add(new Equals("type", "split"));
 		    and.add(new Equals("project", elab.getName()));
-
+		    
 			searchResults = elab.getDataCatalogProvider().runQuery(and);
 			searchResultsStructured = DataTools.organizeSearchResults(searchResults);
 			searchResultsStructured.setKey(key);
