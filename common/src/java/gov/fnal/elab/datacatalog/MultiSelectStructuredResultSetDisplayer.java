@@ -39,7 +39,7 @@ public class MultiSelectStructuredResultSetDisplayer extends
 
     public void displayFileContents(JspWriter out, File file)
             throws IOException {
-        out.write("<input type=\"checkbox\" name=\"rawData\" id=\"cb" + count
+        out.write("<input type=\"checkbox\" name=\"" + getControlName() + "\" id=\"cb" + count
                 + "\" value=\"" + file.getLFN() + "\"/>");
         count++;
         super.displayFileContents(out, file);
