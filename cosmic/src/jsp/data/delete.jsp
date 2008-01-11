@@ -45,26 +45,32 @@
 			<div id="ltbr">
 				<div id="top-left">
 					<%@ include file="../include/delete.jsp" %>
-					<jsp:include page="../data/search-control.jsp"/>
+					<c:if test="${!inhibitPage}">
+						<jsp:include page="../data/search-control.jsp"/>
+					</c:if>
 				</div>
-				<form action="delete.jsp" method="get" id="results-form">
-					<div id="bottom-left">
-						<jsp:useBean scope="request" 
-								class="gov.fnal.elab.datacatalog.MultiSelectStructuredResultSetDisplayer" 
-								id="searchResultsDisplayer"/>					
-						<div class="search-results">
-							<jsp:include page="../data/search-results.jsp"/>
+				<c:if test="${!inhibitPage}">
+					<form action="delete.jsp" method="get" id="results-form">
+						<div id="bottom-left">
+							<jsp:useBean scope="request" 
+									class="gov.fnal.elab.datacatalog.MultiSelectStructuredResultSetDisplayer" 
+									id="searchResultsDisplayer"/>
+							<jsp:setProperty name="searchResultsDisplayer" property="controlName" value="file"/>
+								
+							<div class="search-results">
+								<jsp:include page="../data/search-results.jsp"/>
+							</div>
 						</div>
-					</div>
-					<div id="right">
-						<%@ include file="delete-help.jsp" %>
-						<div id="analyze" class="study-right">
-							<h2>Analyze</h2>
-							<input type="submit" value="Delete selected data"/>
+						<div id="right">
+							<%@ include file="delete-help.jsp" %>
+							<div id="analyze" class="study-right">
+								<h2>Analyze</h2>
+								<input type="submit" value="Delete selected data"/>
+							</div>
+							<%@ include file="../data/legend.jsp" %>
 						</div>
-						<%@ include file="../data/legend.jsp" %>
-					</div>
-				</form>
+					</form>
+				</c:if>
 			</div>
 		</td>
 	</tr>
