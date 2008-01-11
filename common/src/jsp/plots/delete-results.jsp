@@ -17,11 +17,10 @@
 	            request.setAttribute("e", e);
 	            %>
 	            	<td class="plot-thumbnail">
-	            		<input type="checkbox" name="file" value="${e.LFN}"/>
 	            		<a href="view.jsp?filename=${e.LFN}">
 		            		<img src="<%= user.getDirURL("plots") + "/" + e.getTupleValue("thumbnail") %>" width="150" height="150" /><br/>
 		            	</a>
-		            	${e.tupleMap.name}<br/>
+		            	<input type="checkbox" name="file" value="${e.LFN}" />${e.tupleMap.name}<br/>
 	            		Group: ${e.tupleMap.group}<br/>
 	            		Created: ${e.tupleMap.creationdate}<br/>
 	            		<a href="../jsp/add-comments.jsp?fileName=${e.LFN}&t=plot">View/Add Comments</a><br/>
