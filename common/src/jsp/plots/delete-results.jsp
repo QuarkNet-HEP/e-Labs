@@ -9,16 +9,31 @@
 	if (rs != null) {
 	    out.write("<form method=\"get\" action=\"../plots/delete.jsp\">\n");
 	    out.write("<table id=\"plots\">\n");
+	    Map groups = new HashMap();
 	    Iterator i = rs.iterator();
 	    while (i.hasNext()) {
 	        out.write("<tr>\n");
 	        for (int c = 0; c < 4 && i.hasNext(); c++) {
 	            CatalogEntry e = (CatalogEntry) i.next();
+	            String groupName = (String) e.getTupleValue("group");
+	            ElabGroup group = (ElabGroup) groups.get(groupName);
+	            if (group == null) {
+	            	try {
+	            		group = elab.getUserManagementProvider().getGroup(groupName);
+	            		groups.put(groupName, group);
+	            	}
+	            	catch (ElabException ex) {
+	            	}
+	            }  
 	            request.setAttribute("e", e);
+	            if (group != null) {
+	            	String plotURL = group.getDirURL("plots");
+	            	request.setAttribute("plotURL", plotURL);
+	            }
 	            %>
 	            	<td class="plot-thumbnail">
 	            		<a href="view.jsp?filename=${e.LFN}">
-		            		<img src="<%= user.getDirURL("plots") + "/" + e.getTupleValue("thumbnail") %>" width="150" height="150" /><br/>
+		            		<img src="${plotURL}/${e.tupleMap.thumbnail}" width="150" height="150" alt="Image not found" /><br/>
 		            	</a>
 		            	<input type="checkbox" name="file" value="${e.LFN}" />${e.tupleMap.name}<br/>
 	            		Group: ${e.tupleMap.group}<br/>

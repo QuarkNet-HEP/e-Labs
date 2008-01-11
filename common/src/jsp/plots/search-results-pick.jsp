@@ -26,10 +26,10 @@ function Send(url, link)
 	ResultSet rs = (ResultSet) request.getAttribute("searchResults");
 	if (rs != null && !rs.isEmpty()) {
 	    out.write("<table id=\"plots\">\n");
+	    Map groups = new HashMap();
 	    Iterator i = rs.iterator();
 	    while (i.hasNext()) {
 	        out.write("<tr>\n");
-	        Map groups = new HashMap();
 	        for (int c = 0; c < 4 && i.hasNext(); c++) {
 	            CatalogEntry e = (CatalogEntry) i.next();
 	            String groupName = (String) e.getTupleValue("group");
