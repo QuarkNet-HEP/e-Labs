@@ -142,6 +142,7 @@
 			<xsl:variable name="tn" select="@tn"/>
 			<xsl:variable name="label" select="@lb"/>
 			<xsl:variable name="failed" select="current()[attribute::s='false']"/>
+			<xsl:variable name="failuremsg" select="current()/assertionResult/failureMessage/text()"/>
 			<xsl:variable name="errormsg" select="@rm"/>
 			<xsl:variable name="totalTime" select="@t"/>
 			<xsl:variable name="url" select="url/text()"/>
@@ -175,7 +176,9 @@
 					</xsl:choose>
 				</td>
 				<td>
-					<xsl:value-of select="$errormsg"/>
+					<xsl:value-of select="$failuremsg"/>
+					<!--<br />
+					<xsl:value-of select="$errormsg"/>-->
 				</td>
 				<td>
 					<a>

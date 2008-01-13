@@ -35,6 +35,7 @@
           </elementProp>
           <stringProp name="HTTPSampler.port">9080</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <boolProp name="HTTPSampler.image_parser">true</boolProp>
         </ConfigTestElement>
         <hashTree/>
         <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
