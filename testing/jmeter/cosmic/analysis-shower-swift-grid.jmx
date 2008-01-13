@@ -11,7 +11,7 @@
       <stringProp name="TestPlan.comments"></stringProp>
     </TestPlan>
     <hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="cosmic.data.shower" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Cosmic Shower Test - Swift - Grid" enabled="true">
         <longProp name="ThreadGroup.start_time">1168623658000</longProp>
         <stringProp name="ThreadGroup.delay"></stringProp>
         <stringProp name="ThreadGroup.duration"></stringProp>

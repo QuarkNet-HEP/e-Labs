@@ -11,7 +11,7 @@
       <stringProp name="TestPlan.comments"></stringProp>
     </TestPlan>
     <hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Cosmic Lifetime Test - Swift - Local" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Cosmic Flux Test - Swift - Cluster" enabled="true">
         <longProp name="ThreadGroup.start_time">1168623658000</longProp>
         <stringProp name="ThreadGroup.delay"></stringProp>
         <stringProp name="ThreadGroup.duration"></stringProp>
@@ -127,7 +127,7 @@
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSampler>
         <hashTree/>
-        <HTTPSampler guiclass="HttpTestSampleGui" testclass="HTTPSampler" testname="Choose Lifetime" enabled="true">
+        <HTTPSampler guiclass="HttpTestSampleGui" testclass="HTTPSampler" testname="Choose Flux" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -136,7 +136,7 @@
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/elab/cosmic/analysis-lifetime/</stringProp>
+          <stringProp name="HTTPSampler.path">/elab/cosmic/analysis-flux/</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -157,7 +157,7 @@
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/elab/cosmic/analysis-lifetime/?submit=true&amp;key=city&amp;value=Batavia</stringProp>
+          <stringProp name="HTTPSampler.path">/elab/cosmic/analysis-flux/?submit=true&amp;key=city&amp;value=Batavia</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -169,7 +169,7 @@
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSampler>
         <hashTree/>
-        <HTTPSampler guiclass="HttpTestSampleGui" testclass="HTTPSampler" testname="Setup Lifetime" enabled="true">
+        <HTTPSampler guiclass="HttpTestSampleGui" testclass="HTTPSampler" testname="Setup Flux" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
@@ -186,7 +186,7 @@
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/elab/cosmic/analysis-lifetime/analysis.jsp</stringProp>
+          <stringProp name="HTTPSampler.path">/elab/cosmic/analysis-flux/analysis.jsp</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -198,7 +198,7 @@
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSampler>
         <hashTree/>
-        <HTTPSampler guiclass="HttpTestSampleGui" testclass="HTTPSampler" testname="Run Lifetime" enabled="true">
+        <HTTPSampler guiclass="HttpTestSampleGui" testclass="HTTPSampler" testname="Run Flux" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -207,7 +207,7 @@
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/elab/cosmic/analysis-lifetime/analysis.jsp?rawData=5034.2006.0802.0&amp;lifetime_coincidence=1&amp;lifetime_energyCheck=1&amp;lifetime_gatewidth=1e-5&amp;freq_binValue=40&amp;plot_lowX=&amp;plot_highX=&amp;plot_lowY=&amp;plot_highY=&amp;plot_size=600&amp;plot_title=Lifetime+Study&amp;plot_caption=Data%3A+Aug+2%2C+2006+5%3A44%3A58+GMT%0D%0ADetector%28s%29%3A+5072%0D%0ACoincidence%3A+1%0D%0A&amp;extraFun_turnedOn=0&amp;extraFun_minX=.1&amp;extraFun_maxX=10&amp;extraFun_alpha_variate=yes&amp;extraFun_alpha_guess=&amp;extraFun_lifetime_variate=yes&amp;extraFun_lifetime_guess=&amp;extraFun_constant_variate=yes&amp;extraFun_constant_guess=&amp;submit=Analyze&amp;provider=swift&amp;runMode=local</stringProp>
+          <stringProp name="HTTPSampler.path">/elab/cosmic/analysis-flux/analysis.jsp?rawData=5034.2006.0802.0&amp;singlechannel_channel=1&amp;flux_binWidth=600&amp;plot_lowX=08%2F02%2F2006+0%3A44&amp;plot_highX=08%2F02%2F2006+22%3A53&amp;plot_lowY=&amp;plot_highY=&amp;plot_size=600&amp;plot_title=Flux+Study&amp;plot_caption=Data%3A+Aug+2%2C+2006+5%3A44%3A58+GMT%0D%0ADetector%28s%29%3A+5072%0D%0AChannel%3A+1&amp;submit=Analyze&amp;provider=swift&amp;runMode=i2u2</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -239,53 +239,55 @@
           </collectionProp>
         </Arguments>
         <hashTree/>
-        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While Controller" enabled="true">
-          <stringProp name="WhileController.condition">${__javaScript(&quot;${status}&quot; == &quot;Running&quot;)}</stringProp>
-        </WhileController>
+        <RunTime guiclass="RunTimeGui" testclass="RunTime" testname="Runtime Controller" enabled="true">
+          <stringProp name="TestPlan.comments">Don&apos;t allow this to run for more than ten minutes</stringProp>
+          <stringProp name="RunTime.seconds">600</stringProp>
+        </RunTime>
         <hashTree>
-          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Wait 2 seconds" enabled="true">
-            <stringProp name="ConstantTimer.delay">2000</stringProp>
-          </ConstantTimer>
-          <hashTree/>
-          <HTTPSampler guiclass="HttpTestSampleGui" testclass="HTTPSampler" testname="Check status" enabled="true">
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-              <collectionProp name="Arguments.arguments"/>
-            </elementProp>
-            <stringProp name="HTTPSampler.domain"></stringProp>
-            <stringProp name="HTTPSampler.port">9080</stringProp>
-            <stringProp name="HTTPSampler.protocol"></stringProp>
-            <stringProp name="HTTPSampler.method">GET</stringProp>
-            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/elab/cosmic/analysis/status-async.jsp?id=${runId}</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-            <stringProp name="HTTPSampler.mimetype"></stringProp>
-            <stringProp name="HTTPSampler.FILE_NAME"></stringProp>
-            <stringProp name="HTTPSampler.FILE_FIELD"></stringProp>
-            <stringProp name="HTTPSampler.monitor">false</stringProp>
-            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          </HTTPSampler>
+          <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While Controller" enabled="true">
+            <stringProp name="WhileController.condition">${__javaScript(&quot;${status}&quot; == &quot;Running&quot;)}</stringProp>
+          </WhileController>
           <hashTree>
-            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
-              <stringProp name="RegexExtractor.default">Running</stringProp>
-              <stringProp name="RegexExtractor.regex">status=(\s*)</stringProp>
-              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-              <stringProp name="RegexExtractor.match_number">0</stringProp>
-              <stringProp name="RegexExtractor.template">$1$</stringProp>
-              <stringProp name="RegexExtractor.refname">status</stringProp>
-            </RegexExtractor>
-            <hashTree/>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-              <collectionProp name="Asserion.test_strings">
-                <stringProp name="-1438419055">(Failed)|(error)</stringProp>
-              </collectionProp>
-              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-              <intProp name="Assertion.test_type">6</intProp>
-              <stringProp name="Assertion.assume_success">false</stringProp>
-            </ResponseAssertion>
-            <hashTree/>
+            <HTTPSampler guiclass="HttpTestSampleGui" testclass="HTTPSampler" testname="Check status" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port">9080</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.method">GET</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/elab/cosmic/analysis/status-async.jsp?id=${runId}</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.mimetype"></stringProp>
+              <stringProp name="HTTPSampler.FILE_NAME"></stringProp>
+              <stringProp name="HTTPSampler.FILE_FIELD"></stringProp>
+              <stringProp name="HTTPSampler.monitor">false</stringProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            </HTTPSampler>
+            <hashTree>
+              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                <stringProp name="RegexExtractor.default">Running</stringProp>
+                <stringProp name="RegexExtractor.regex">status=(\s*)</stringProp>
+                <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                <stringProp name="RegexExtractor.match_number">0</stringProp>
+                <stringProp name="RegexExtractor.template">$1$</stringProp>
+                <stringProp name="RegexExtractor.refname">status</stringProp>
+              </RegexExtractor>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1438419055">(Failed)|(error)</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <intProp name="Assertion.test_type">6</intProp>
+                <stringProp name="Assertion.assume_success">false</stringProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
           </hashTree>
         </hashTree>
         <HTTPSampler guiclass="HttpTestSampleGui" testclass="HTTPSampler" testname="Check Output" enabled="true">
@@ -297,7 +299,7 @@
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/elab/cosmic/analysis-lifetime/output.jsp?id=${runId}</stringProp>
+          <stringProp name="HTTPSampler.path">/elab/cosmic/analysis-flux/output.jsp?id=${runId}</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -318,49 +320,23 @@
             <stringProp name="RegexExtractor.match_number">0</stringProp>
           </RegexExtractor>
           <hashTree/>
-        </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Wait 8 seconds" enabled="true">
-          <boolProp name="TransactionController.parent">false</boolProp>
-        </TransactionController>
-        <hashTree>
-          <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Wait 8 seconds" enabled="true">
-            <intProp name="ActionProcessor.target">0</intProp>
-            <intProp name="ActionProcessor.action">1</intProp>
-            <intProp name="ActionProcessor.duration">8000</intProp>
-          </TestAction>
-          <hashTree/>
-        </hashTree>
-        <HTTPSampler guiclass="HttpTestSampleGui" testclass="HTTPSampler" testname="Check Plot" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments"/>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port">9080</stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.method">GET</stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">${imageURL}</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <stringProp name="HTTPSampler.mimetype"></stringProp>
-          <stringProp name="HTTPSampler.FILE_NAME"></stringProp>
-          <stringProp name="HTTPSampler.FILE_FIELD"></stringProp>
-          <stringProp name="HTTPSampler.monitor">false</stringProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-        </HTTPSampler>
-        <hashTree>
           <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="Compare" enabled="true">
             <stringProp name="BeanShellAssertion.query">String host = ctx.getCurrentSampler().getPropertyAsString(&quot;HTTPSampler.domain&quot;);
 String port = ctx.getCurrentSampler().getPropertyAsString(&quot;HTTPSampler.port&quot;);
-Process p = Runtime.getRuntime().exec(&quot;/bin/sh /home/mike/work/i2u2/cisvn/i2u2/trunk/testing/jmeter/cosmic/compare.sh lifetime http://&quot; + host + &quot;:&quot; + port + vars.get(&quot;imageURL&quot;));
+Process p = Runtime.getRuntime().exec(&quot;/bin/sh /home/mike/work/i2u2/cisvn/i2u2/trunk/testing/jmeter/cosmic/compare.sh flux http://&quot; + host + &quot;:&quot; + port + vars.get(&quot;imageURL&quot;));
 int exitcode = p.waitFor();
 if (exitcode != 0) {
   BufferedReader br = new BufferedReader(new InputStreamReader(p.getErrorStream()));
   StringBuffer sb = new StringBuffer();
   sb.append(&quot;compare.sh failed (exit code &quot; + exitcode + &quot;)\n&quot;);
   String line = br.readLine();
+  while (line != null) {
+    sb.append(line);
+    sb.append(&quot;\n&quot;);
+    line = br.readLine();
+  }
+  br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+  line = br.readLine();
   while (line != null) {
     sb.append(line);
     sb.append(&quot;\n&quot;);
