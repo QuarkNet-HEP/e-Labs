@@ -8,7 +8,8 @@ TYPE=$1
 REF="reference-$TYPE.png"
 URL=$2
 LOG="$REFPATH/compare-$TYPE.log"
-wget -o $LOG -r -O $REFPATH/output-$TYPE.png $URL 
+wget -o $LOG -r -O $REFPATH/output-$TYPE.png $URL
+echo "wget exit code: $?" >>$LOG
 echo "URL: $URL" >>$LOG
 echo "REFPATH: $REFPATH" >>$LOG
 
