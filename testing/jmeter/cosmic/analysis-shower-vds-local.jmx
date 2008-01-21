@@ -245,7 +245,7 @@
         </WhileController>
         <hashTree>
           <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Wait 2 seconds" enabled="true">
-            <stringProp name="ConstantTimer.delay">2000</stringProp>
+            <stringProp name="ConstantTimer.delay">5000</stringProp>
           </ConstantTimer>
           <hashTree/>
           <HTTPSampler guiclass="HttpTestSampleGui" testclass="HTTPSampler" testname="Check status" enabled="true">
@@ -335,7 +335,7 @@
         </WhileController>
         <hashTree>
           <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Wait 2 seconds" enabled="true">
-            <stringProp name="ConstantTimer.delay">2000</stringProp>
+            <stringProp name="ConstantTimer.delay">5000</stringProp>
           </ConstantTimer>
           <hashTree/>
           <HTTPSampler guiclass="HttpTestSampleGui" testclass="HTTPSampler" testname="Check status" enabled="true">
