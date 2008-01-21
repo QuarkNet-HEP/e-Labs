@@ -208,7 +208,7 @@
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/elab/cosmic/analysis-performance/analysis.jsp?rawData=5034.2006.0802.0&amp;1=on&amp;2=on&amp;3=on&amp;4=on&amp;freq_binValue=60&amp;plot_lowX=&amp;plot_highX=&amp;plot_lowY=&amp;plot_highY=&amp;plot_size=600&amp;plot_title=Performance+Study&amp;plot_caption=Data%3A+Aug+2%2C+2006+5%3A0%3A17+GMT%0D%0ADetector%28s%29%3A+5034&amp;submit=Analyze&amp;provider=swift&amp;runMode=grid</stringProp>
+          <stringProp name="HTTPSampler.path">/elab/cosmic/analysis-performance/analysis.jsp?rawData=5034.2006.0802.0&amp;1=on&amp;2=on&amp;3=on&amp;4=on&amp;freq_binValue=60&amp;plot_lowX=&amp;plot_highX=&amp;plot_lowY=&amp;plot_highY=&amp;plot_size=600&amp;plot_title=Performance+Study&amp;plot_caption=Data%3A+Aug+2%2C+2006+5%3A0%3A17+GMT%0D%0ADetector%28s%29%3A+5034&amp;submit=Analyze&amp;provider=swift&amp;runMode=i2u2</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
