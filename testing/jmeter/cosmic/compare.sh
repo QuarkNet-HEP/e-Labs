@@ -34,6 +34,7 @@ echo "URL: $URL" >>$LOG
 echo "REFPATH: $REFPATH" >>$LOG
 
 DIFF=`compare -metric MAE $REFPATH/reference-$TYPE.png $REFPATH/output-$TYPE.png null: 2>&1`
+
 ND=`echo $DIFF | grep "dB"`
 
 if [ "$?" == "0" ]; then
@@ -43,7 +44,7 @@ fi
 
 echo "DIFF: $DIFF">>$LOG
 
-if [ "$DIFF" -lt "20" ]; then
+if perl -e "$DIFF < 20 || die 1;"; then
 	echo "good enough"
 else
 	echo "mean absolute error: $DIFF"
