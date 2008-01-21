@@ -2,8 +2,6 @@
 import("sys.k")
 import("task.k")
 
-global(TIMEOUT, 10000)
-
 element(wrap, [name, element, ...]
 	race(
 		try(
@@ -18,7 +16,7 @@ element(wrap, [name, element, ...]
 			)
 		)
 		sequential(
-			wait(delay=10000)
+			wait(delay=30000)
 			print("@{name}=timeout")
 		)
 	)
