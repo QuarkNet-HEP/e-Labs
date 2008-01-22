@@ -1,4 +1,7 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet 
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:datetime="http://exslt.org/dates-and-times"	
+	version="1.0">
 <xsl:output method="html" indent="yes" encoding="US-ASCII" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" />
 
 <xsl:template match="testResults">
@@ -61,6 +64,7 @@
 			<td align="right"></td>
 		</tr>
 	</table>
+	<p>Page generated on <xsl:value-of select="datetime:dateTime()"/></p>
 	<hr size="1" />
 </xsl:template>
 
@@ -142,6 +146,7 @@
 			<xsl:variable name="tn" select="@tn"/>
 			<xsl:variable name="label" select="@lb"/>
 			<xsl:variable name="failed" select="current()[attribute::s='false']"/>
+			<xsl:variable name="failuremsg" select="current()/assertionResult/failureMessage/text()"/>
 			<xsl:variable name="errormsg" select="@rm"/>
 			<xsl:variable name="totalTime" select="@t"/>
 			<xsl:variable name="url" select="url/text()"/>
@@ -175,7 +180,9 @@
 					</xsl:choose>
 				</td>
 				<td>
-					<xsl:value-of select="$errormsg"/>
+					<xsl:value-of select="$failuremsg"/>
+					<!--<br />
+					<xsl:value-of select="$errormsg"/>-->
 				</td>
 				<td>
 					<a>
