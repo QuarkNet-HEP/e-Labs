@@ -25,6 +25,7 @@ public class StructuredResultSetDisplayer {
 
     private StructuredResultSet results;
     private int id, start, columns = DEFAULT_COLUMNS, crtCol, crtRow;
+    private String controlName;
 
     public StructuredResultSetDisplayer() {
         this(null);
@@ -32,6 +33,7 @@ public class StructuredResultSetDisplayer {
 
     public StructuredResultSetDisplayer(StructuredResultSet srs) {
         this.results = srs;
+        this.controlName = "rawData";
     }
 
     public int getColumns() {
@@ -56,6 +58,14 @@ public class StructuredResultSetDisplayer {
 
     public void setStart(int start) {
         this.start = start;
+    }
+    
+    public String getControlName() {
+        return controlName;
+    }
+
+    public void setControlName(String controlName) {
+        this.controlName = controlName;
     }
 
     public int display(JspWriter out) throws IOException {

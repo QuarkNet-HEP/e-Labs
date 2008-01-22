@@ -26,10 +26,10 @@ function Send(url, link)
 	ResultSet rs = (ResultSet) request.getAttribute("searchResults");
 	if (rs != null && !rs.isEmpty()) {
 	    out.write("<table id=\"plots\">\n");
+	    Map groups = new HashMap();
 	    Iterator i = rs.iterator();
 	    while (i.hasNext()) {
 	        out.write("<tr>\n");
-	        Map groups = new HashMap();
 	        for (int c = 0; c < 4 && i.hasNext(); c++) {
 	            CatalogEntry e = (CatalogEntry) i.next();
 	            String groupName = (String) e.getTupleValue("group");
@@ -50,7 +50,7 @@ function Send(url, link)
 	            %>
 	            	<td class="plot-thumbnail">
 	            		<a href="#" onClick="return Send('${plotURL}/${e.LFN}', '../plots/view.jsp?filename=${e.LFN}');">
-		            		<img src="${plotURL}/${e.tupleMap.thumbnail}" width="150" height="150"/><br/>
+		            		<img class="plot-thumbnail-image" src="${plotURL}/${e.tupleMap.thumbnail}" width="150" height="150" alt="Thumbnail not found"/><br/>
 		            	</a>
 		            	${e.tupleMap.name}<br/>
 	            		Group: ${e.tupleMap.group}<br/>
