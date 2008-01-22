@@ -154,8 +154,8 @@
 									<e:trlabel for="extraFun_turnedOn" name="Fitting Turned On">Fitting Turned On:</e:trlabel>
 								</td>
 								<td class="form-control">
-									<e:trselect name="extraFun_turnedOn" valueList="yes, no" labelList="Yes, No"
-										default="no"/>
+									<e:trselect name="extraFun_turnedOn" valueList="1, 0" labelList="Yes, No"
+										default="0"/>
 								</td>
 							</tr>
 							<tr>

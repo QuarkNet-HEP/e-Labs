@@ -45,7 +45,7 @@
 			}
 			//we must ensure the same iteration order, so singleChannels, singleChannelOuts, and
 			//freqOuts have the channels in the same order
-			List c = new LinkedList(channels);
+			Collection c = new TreeSet(channels);
 			
 			String singleChannels = ElabUtil.join(c, null, null, " ");
 			String singleChannelOuts = ElabUtil.join(c, "singleOut", null, " ");

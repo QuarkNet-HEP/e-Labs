@@ -454,3 +454,24 @@ p.search-result-bar {
 	margin-left: 32px;
 }
 
+#ltbr {
+	font-size: 11px;
+	font-family: Arial, Verdana, sans-serif;
+}
+
+/************** Plot listing **************/
+.plot-thumbnail {
+	vertical-align: bottom;
+	text-align: center;
+	padding-bottom: 12px;
+}
+
+.plot-thumbnail-image {
+	width: 150px;
+	height: 150px;
+	vertical-align: middle;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}

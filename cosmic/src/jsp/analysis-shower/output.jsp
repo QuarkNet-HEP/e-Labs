@@ -43,6 +43,11 @@
 <%
 	ElabAnalysis analysis = results.getAnalysis();
 	request.setAttribute("analysis", analysis);
+	
+	String showerId = request.getParameter("showerId");
+	AnalysisRun showerResults = AnalysisManager.getAnalysisRun(elab, user, showerId);
+	request.setAttribute("showerResults", showerResults);
+	
 	String es = (String) request.getParameter("eventStart");
 	int eventStart;
 	if (es == null || es.equals("")) {
@@ -51,6 +56,7 @@
 	else {
 		eventStart = Integer.parseInt(es);
 	}
+	
 	String sc = request.getParameter("sort");
 	int sortCol = 1;
 	if (sc != null) {
@@ -79,11 +85,11 @@
 	}
 	
 	
-	File ecFile = new File(results.getOutputDir(), (String) analysis.getParameter("eventCandidates"));
+	File ecFile = new File((String) analysis.getParameter("eventCandidates"));
 	EventCandidates ec = EventCandidates.read(ecFile, csc, dir, eventStart, eventNum);
 	Collection rows = ec.getRows(); 
 	request.setAttribute("rows", rows);
-	request.setAttribute("eventNum", eventNum);
+	request.setAttribute("eventNum", ec.getEventNum());
 	request.setAttribute("crtEventRow", ec.getCurrentRow());
 %>
 
@@ -117,10 +123,7 @@
 				<c:forEach items="${rows}" begin="${start}" end="${end}" var="row" varStatus="li">
 					<tr bgcolor="${row.eventNum == eventNum ? '#aaaafc' : (li.count % 2 == 0 ? '#e7eefc' : '#ffffff')}">
 						<td>
-							<e:rerun type="shower" analysis="${results.analysis}" label="${row.dateF}">
-								<e:param name="eventNum" value="${row.eventNum}"/>
-								<e:param name="submit" value="true"/>
-							</e:rerun>
+							<a href="../analysis-shower/event-choice.jsp?id=${param.showerId}&eventNum=${row.eventNum}&submit=true">${row.dateF}</a>
 						</td>
 						<td>
 							${row.eventCoincidence}
@@ -160,7 +163,7 @@
 		width="800" height="600" toolbar="true">analysis directory</e:popup>
 </p>
 <p>
-	<e:rerun type="shower" analysis="${results.analysis}" label="Change"/> your parameters
+	<e:rerun type="shower" analysis="${showerResults.analysis}" label="Change"/> your parameters
 </p>
 <p><b>OR</b></p>
 <%@ include file="save-form.jspf" %>

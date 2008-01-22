@@ -28,6 +28,7 @@ public class EventCandidates {
     private Collection rows;
     private Row crt;
     private Set allIds;
+    private String eventNum;
 
     public static final DateFormat DF;
     static {
@@ -42,8 +43,9 @@ public class EventCandidates {
 
     private static final String[] STRING_ARRAY = new String[0];
 
-    public void read(File in, int eventStart, String eventNum)
+    public void read(File in, int eventStart, String en)
             throws IOException {
+        this.eventNum = en;
         int lineNo = 1;
         BufferedReader br = new BufferedReader(new FileReader(in));
         String line = br.readLine();
@@ -59,8 +61,8 @@ public class EventCandidates {
                     row.setNumDetectors(Integer.parseInt(arr[2]));
                     row.setEventNum(Integer.parseInt(arr[0]));
                     row.setLine(lineNo);
-                    if (eventNum == null) {
-                        eventNum = arr[0];
+                    if (this.eventNum == null) {
+                        this.eventNum = arr[0];
                     }
 
                     ids.clear();
@@ -80,7 +82,7 @@ public class EventCandidates {
                             .parseInt(jd), Double.parseDouble(partial));
                     row.setDate(nd);
                     rows.add(row);
-                    if (eventNum.equals(arr[0])) {
+                    if (this.eventNum.equals(arr[0])) {
                         crt = row;
                     }
                 }
@@ -99,6 +101,10 @@ public class EventCandidates {
     
     public Row getCurrentRow() {
         return crt;
+    }
+    
+    public String getEventNum() {
+        return this.eventNum;
     }
 
     public static EventCandidates read(File in, int csc, int dir,
