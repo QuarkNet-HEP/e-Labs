@@ -1,0 +1,13 @@
+body {
+	background-image: url("Quadrille.gif");
+	font-family: Arial, sans-serif;
+	margin-left: 24px;
+	margin-right: 24px;
+	margin-top: 12px;
+	margin-bottom: 12px;
+}
+
+p {
+	padding: 0px;
+	margin: 0px;
+}
