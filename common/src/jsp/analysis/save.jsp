@@ -36,7 +36,6 @@
 						//analyses (like cosmic shower)
 						run2 = AnalysisManager.getAnalysisRun(elab, user, rundirid);
 					}
-					String runDir = run2.getOutputDir();
 					String groupName = user.getGroup().getName();
 					String plotDir = user.getDir("plots");
 					//Original file to copy. Avoid the ability to point to arbitrary files
@@ -47,7 +46,7 @@
 					String userFilename = request.getParameter("name");
 					//file extension
 					String srcFileType = request.getParameter("srcFileType");
-					String outputDir = run.getOutputDir();
+					String outputDir = run2.getOutputDir();
 					
 					if ( userFilename == null || userFilename.equals("") ) {
 					    throw new ElabJspException("You forgot to specify the name of your file. Please close this window and enter it.");
@@ -74,7 +73,7 @@
 					ElabUtil.copyFile(outputDir, srcThumb, plotDir, dstThumb);
 					                
 			        //copy the provenance image to the user's plot directory
-			        String provenanceDir = outputDir;
+			        String provenanceDir = run.getOutputDir();
 					
 			        // Transform the provenance information stored by doAnalysis_TR_call.jsp.
 			        // Start by making the SVG image using dot.
