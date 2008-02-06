@@ -297,8 +297,6 @@ public class DataTools {
         return s;
     }
     
-    public static final Date NADATE = new Date(0);
-
     public static final DateFormat DF0 = new SimpleDateFormat("MM/dd/yyyy");
 
     public static final DateFormat[] DFORMATS = new DateFormat[] {
@@ -318,9 +316,6 @@ public class DataTools {
                 return Double.valueOf(value);
             }
             else if (type.equals("date")) {
-                if ("N/A".equals(value)) {
-                    return NADATE; 
-                }
                 try {
                     return Timestamp.valueOf(value);
                 }
