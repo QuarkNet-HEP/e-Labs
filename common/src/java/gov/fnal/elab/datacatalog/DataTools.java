@@ -30,7 +30,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.TimeZone;
 
 /**
  * A few convenience functions for dealing with QuarkNet data
@@ -297,6 +296,8 @@ public class DataTools {
         }
         return s;
     }
+    
+    public static final Date NADATE = new Date(0);
 
     public static final DateFormat DF0 = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -317,6 +318,9 @@ public class DataTools {
                 return Double.valueOf(value);
             }
             else if (type.equals("date")) {
+                if ("N/A".equals(value)) {
+                    return NADATE; 
+                }
                 try {
                     return Timestamp.valueOf(value);
                 }
