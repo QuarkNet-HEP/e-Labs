@@ -25,7 +25,18 @@
 					if (run == null) {
 					    throw new ElabJspException("Invalid analysis id: " + id);
 					}
-					String runDir = run.getOutputDir();
+					String rundirid = request.getParameter("rundirid");
+					AnalysisRun run2;
+					if (rundirid == null) {
+						run2 = run;
+					}
+					else {
+						//allow distinction between what analysis is saved and 
+						//what run produced the plot to accomodate multi-run
+						//analyses (like cosmic shower)
+						run2 = AnalysisManager.getAnalysisRun(elab, user, rundirid);
+					}
+					String runDir = run2.getOutputDir();
 					String groupName = user.getGroup().getName();
 					String plotDir = user.getDir("plots");
 					//Original file to copy. Avoid the ability to point to arbitrary files
