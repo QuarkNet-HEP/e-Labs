@@ -208,7 +208,7 @@
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/elab/cosmic/analysis-shower/analysis.jsp?rawData=5072.2006.0626.0&amp;zeroZeroZeroID=5072&amp;gate=100&amp;detectorCoincidence=1&amp;channelCoincidence=2&amp;eventCoincidence=2&amp;plot_lowX=&amp;plot_highX=&amp;plot_lowY=&amp;plot_highY=&amp;plot_lowZ=&amp;plot_highZ=&amp;plot_size=600&amp;plot_title=Shower+Study&amp;plot_caption=Data%3A+Jun+26%2C+2006+20%3A19%3A39+GMT%0D%0ADetector%28s%29%3A+5072%0D%0AEvent+Coincidence%3A+2%0D%0ADetector+Coincidence%3A+1%0D%0AEvent+Gate%3A+100%0D%0ACenter+of+graph+view%3A+5072&amp;eventNum=1&amp;submit=Analyze&amp;provider=swift&amp;runMode=local</stringProp>
+          <stringProp name="HTTPSampler.path">/elab/cosmic/analysis-shower/analysis.jsp?rawData=5072.2006.0626.0&amp;zeroZeroZeroID=5072&amp;gate=100&amp;detectorCoincidence=1&amp;channelCoincidence=2&amp;eventCoincidence=2&amp;plot_lowX=&amp;plot_highX=&amp;plot_lowY=&amp;plot_highY=&amp;plot_lowZ=&amp;plot_highZ=&amp;plot_size=600&amp;plot_title=Shower+Study&amp;plot_caption=Data%3A+Jun+26%2C+2006+20%3A19%3A39+GMT%0D%0ADetector%28s%29%3A+5072%0D%0AEvent+Coincidence%3A+2%0D%0ADetector+Coincidence%3A+1%0D%0AEvent+Gate%3A+100%0D%0ACenter+of+graph+view%3A+5072&amp;eventNum=0&amp;submit=Analyze&amp;provider=swift&amp;runMode=local</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
