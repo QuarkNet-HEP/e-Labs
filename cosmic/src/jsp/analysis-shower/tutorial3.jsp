@@ -108,7 +108,7 @@
                	We entered parameters for the event and got back the table on the left. 
                	These "candidates" satisfy our requirements for an event. What do you 
                	think we entered for the event coincidence level? What about 
-               	<a href="javascript:glossary('dectector',350)"> detector</a> coincidence?<p>
+               	<a href="javascript:glossary('detector',350)"> detector</a> coincidence?<p>
 
 				The analysis software can only find 
 				<a href="javascript:glossary('pulse',350)">pulses</a> that match your parameter 
