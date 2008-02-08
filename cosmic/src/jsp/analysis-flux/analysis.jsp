@@ -80,7 +80,7 @@
 
 <c:choose>
 	<c:when test="${analysis.parameters.rawData != null}">
-		<h1>Calculate the flux for your data file. Rember, flux = particles / time / area</h1>
+		<h1>Calculate the flux for your data file. Remember, flux = particles / time / area</h1>
 		<table border="0" id="main">
 			<tr>
 				<td id="center">

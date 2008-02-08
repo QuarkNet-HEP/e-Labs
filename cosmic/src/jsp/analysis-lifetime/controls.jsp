@@ -9,7 +9,7 @@
 		<p>Click <strong>Analyze</strong> to use the default parameters. 
 		Control the analysis by expanding the options below.</p>
 		<p>
-			<e:tr name="Quarknet.Cosmic::LifeTimeStudy">
+			<e:tr name="Quarknet.Cosmic::LifetimeStudy">
 				<e:vswitch revert="true">
 					<e:visible>
 						<strong>Analysis Controls</strong> 
