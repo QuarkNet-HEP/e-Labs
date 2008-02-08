@@ -22,6 +22,10 @@
 		
 		if (eventNum == null) {
 			eventNum = (String) shower.getParameter("eventNum");
+			if ("0".equals(eventNum)) {
+				//0 means "most interesting" event
+				eventNum = null;
+			}
 		}
 		
 		File ecFile = new File(results.getOutputDir(), (String) shower.getParameter("eventCandidates"));

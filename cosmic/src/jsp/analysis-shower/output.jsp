@@ -70,7 +70,7 @@
 	}
 	request.setAttribute("sort", new Integer(sortCol));
 	String eventNum = (String) analysis.getParameter("eventNum");
-	if ("1".equals(eventNum)) {
+	if ("0".equals(eventNum)) {
 		eventNum = null;
 	}
 	int lineNo = 1;
