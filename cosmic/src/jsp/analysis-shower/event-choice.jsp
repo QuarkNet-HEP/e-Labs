@@ -22,8 +22,11 @@
 		
 		if (eventNum == null) {
 			eventNum = (String) shower.getParameter("eventNum");
-			if ("0".equals(eventNum)) {
-				//0 means "most interesting" event
+			if ("1".equals(eventNum)) {
+				//1 means "most interesting" event
+				//of course, this is ambiguous. Maybe we really want the first event.
+				//Unfortunately there is ambiguity in the saved plots, so 
+				//we'll keep broken but known behavior
 				eventNum = null;
 			}
 		}
