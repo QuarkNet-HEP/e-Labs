@@ -60,7 +60,10 @@ public class Analysis extends TagSupport {
                 Iterator i = old.getParameters().entrySet().iterator();
                 while (i.hasNext()) {
                     Map.Entry e = (Map.Entry) i.next();
-                    analysis.setParameter((String) e.getKey(), e.getValue());
+                    String name = (String) e.getKey();
+                    if (analysis.hasParameter(name)) {
+                        analysis.setParameter(name, e.getValue());
+                    }
                 }
             }
 
