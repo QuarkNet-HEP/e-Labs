@@ -16,6 +16,7 @@ import gov.fnal.elab.analysis.ElabAnalysis;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -39,20 +40,28 @@ public class Analysis extends TagSupport {
                 throw new JspException(
                         "No elab available. Did you include elab.jsp?");
             }
-            ElabAnalysis analysis = (ElabAnalysis) pageContext.getRequest()
+            ElabAnalysis old = (ElabAnalysis) pageContext.getRequest()
                     .getAttribute(ATTR_ANALYSIS);
-            if (analysis != null) {
-                if (!compareType(type, analysis.getType())) {
+            ElabAnalysis analysis = ElabFactory.newElabAnalysis(elab, impl, param);
+            analysis.setType(type);
+            if (old != null) {
+                if (!compareType(type, old.getType())) {
                     throw new JspException(
                             "Stored analysis type doesn't match the requested "
                                     + "analysis type. Perhaps rerun.jsp redirected to the "
                                     + "wrong analysis page?");
                 }
                 pageContext.getSession().removeAttribute(ATTR_ANALYSIS);
-            }
-            else {
-                analysis = ElabFactory.newElabAnalysis(elab, impl, param);
-                analysis.setType(type);
+                
+                /*
+                 * The old analysis cannot be used if the current analysis type
+                 * has added parameters to the signature. So a copy must be made. 
+                 */
+                Iterator i = old.getParameters().entrySet().iterator();
+                while (i.hasNext()) {
+                    Map.Entry e = (Map.Entry) i.next();
+                    analysis.setParameter((String) e.getKey(), e.getValue());
+                }
             }
 
             setAnalysisParams(analysis);
