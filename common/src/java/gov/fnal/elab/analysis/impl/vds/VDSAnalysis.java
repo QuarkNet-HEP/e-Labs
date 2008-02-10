@@ -219,7 +219,12 @@ public class VDSAnalysis extends ElabBean implements ElabAnalysis {
                 super.addToDV(name, (List) value);
             }
             else {
-                super.addToDV(name, String.valueOf(value));
+                if (value == null) {
+                    super.addToDV(name, "");
+                }
+                else {
+                    super.addToDV(name, value.toString());
+                }
             }
         }
         catch (ElabException e) {
