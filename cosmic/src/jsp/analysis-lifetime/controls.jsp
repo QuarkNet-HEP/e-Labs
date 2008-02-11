@@ -141,7 +141,7 @@
 					</e:hidden>
 				</e:vswitch>
 			</e:tr>
-			<e:tr name="Quarknet.Cosmic::LifeTimeStudy">
+			<e:tr name="Quarknet.Cosmic::LifetimeStudy">
 				<e:vswitch revert="${param.submit == 'Change'}">
 					<e:visible>
 						<strong>Fit Controls</strong>
