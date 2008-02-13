@@ -19,6 +19,7 @@
 		ElabAnalysis shower = results.getAnalysis();
 		
 		String eventNum = request.getParameter("eventNum");
+		
 		File ecFile = new File(results.getOutputDir(), (String) shower.getParameter("eventCandidates"));
 		String ecPath = ecFile.getAbsolutePath();
 		
@@ -36,7 +37,11 @@
 				break;
 			}
 		}
-
+		//this is not right. Well, the whole two runs in one concept isn't. Anyway,
+		//it does not deal properly with concurrency. If two users focus
+		//on different events of the same shower run, and they both save
+		//plots, one will be incorrect
+		shower.setParameter("eventNum", eventNum);
 		request.setAttribute("shower", shower);
 	%>
 		

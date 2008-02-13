@@ -104,10 +104,10 @@
 						<a href="output.jsp?id=${param.id}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }">Event Date</a>
 					</th>
 					<th width="1%">
-						<a href="output.jsp?id=${param.id}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }">Event Coincidence</a>
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }">Event Coincidence</a>
 					</th>
 					<th width="1%">
-						<a href="output.jsp?id=${param.id}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }">Detector Coincidence</a>
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }">Detector Coincidence</a>
 					</th>
 				</tr>
 				<c:choose>
