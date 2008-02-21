@@ -17,6 +17,7 @@
 # nepywoda changed 8-7-04: fixed splitting problems when we split more than 1 file for a day. Solution: index the output files
 # jordant  changed 8-15-06: fixed dropped first lines from raw data file if there was an incomplete pulse on the first line. Solution: increment $total_events in the FOR $ch_num 1..4 loop's first IF (line 113 right now) This allows the if $total_events > 0 conditional to fire-that's where the print SPLIT lives.
 # jordant  changed 12-18-06: fixed line dropping when CPLD rollovers go asynchronous. We were throwing away too many lines by just looking at the time calculation.
+# hategan  changed 02-20-08: fixed CPLD frequency calculations
 
 if($#ARGV < 2){
 	die "usage: Split.pl [filename to parse] [output DIRECTORY] [board ID]\n";
@@ -82,6 +83,15 @@ $CPLDflag = 0; 						#flag to trap cpld errors
 $cpld_latch_hold = 0;				#when asynch cpld hold the last good values
 $cpld_trig_hold = 0;
 $data_line = 0;						#increments on each acceptably formatted data line
+
+$fg1 = 41666667;					#CPLD frequency guess for old boards
+$fg2 = $fg1/2;						#CPLD frequency guess for new boards
+
+$N = 0xffffffff + 1;				#the modulus for CPLD clock wrap-arounds
+									#apparenly perl cries "overflow" if 0x100000000 is used
+									#It's suspicious. Maybe bigint should be used.
+									
+
 
 #convert MAC OS line breaks to UNIX
 #Mac OS only has \r for new lines, so Unix reads it as all one big line. We first need to replace
@@ -197,6 +207,7 @@ while(<IN>){
         $sec = substr($row[10], 4, 2);
         $msec = substr($row[10], 7, 3);
         $offset = $row[15];
+        # hmm. there's an assumption there about the cpld frequency
         $CPLDdifference = (hex($row[0])-hex($row[9]))/41666667;
         $sec_offset = sprintf("%.0f", $sec + $msec/1000 + $offset/1000);
         $sec = $sec_offset + $CPLDdifference;
@@ -305,14 +316,9 @@ while(<IN>){
 				print META "chan3 int $split_chan[3]\n";
 				print META "chan4 int $split_chan[4]\n";
 				print META "enddate date $lastdate $lasttime\n";
+				
+				calculate_cpld_frequency();
 
-                # finds overall average frequency to find standard deviation
-                $cpld_freq = $cpld_freq_tot/$cpld_count if $cpld_count !=0;
-                foreach $i (@cpld_frequency){ # calculates the sum for the standard deviation
-                    $cpld_value = ($i - $cpld_freq)**2;
-                    $cpld_value_tot += $cpld_value;
-                }
-                $cpld_sigma = sqrt($cpld_value_tot/$cpld_count) if $cpld_count !=0;
                 $cpld_low = $cpld_freq - $cpld_sigma;
                 $cpld_high = $cpld_freq + $cpld_sigma;
                 # only calculates the "real" average frequency using data within one standard deviation of averaged_sigma;
@@ -326,7 +332,9 @@ while(<IN>){
                     
                 print META "cpldfrequency float $cpld_real_freq\n";
 				close SPLIT;
-                @cpld_frequency = (); # reset the array for the new split file.
+                @cpld_frequency1 = (); # reset the array for the new split file.
+                @cpld_frequency2 = (); # reset the array for the new split file.
+                
 
 				#write the channel counts for the most recent split file
 				#Why is this here?
@@ -381,22 +389,27 @@ while(<IN>){
         if ($cpld_hex == $cpld_line[9] || $cpld_seconds == $cpld_day_seconds){ # both columns must advance to calculate the change
             next;
         }
+        
+        
         if (defined($cpld_hex)){
             $cpld_ticks_new = hex($cpld_line[9]);
             $cpld_ticks_old = hex($cpld_hex);
-                
-            if ($cpld_ticks_old > $cpld_ticks_new){ # accounts for when the tick counter resets to zero
-                $cpld_maxticks = hex("FFFFFFFF");
-                $cpld_ticks_new = $cpld_ticks_new + $cpld_maxticks;
-            }
-                
-            $cpld_ticks_diff = $cpld_ticks_new - $cpld_ticks_old;
-            $cpld_time_diff = $cpld_day_seconds - $cpld_seconds;
-            $cpld_freq = $cpld_ticks_diff/$cpld_time_diff;
-                
-            push @cpld_frequency, $cpld_freq;
-                
-            $cpld_freq_tot += $cpld_freq;
+            
+            $dc = ($cpld_ticks_new - $cpld_ticks_old) % $N;
+   		    $dt = ($cpld_day_seconds - $cpld_seconds);
+   		    
+   		    #calculate CPLD frequency with first guess
+        	$cpld_freq = $fg1 + ($dc - ($fg1*$dt) % $N)/$dt;
+        	
+        	$cpld_freq_tot1 += $cpld_freq;
+        	push @cpld_frequency1, $cpld_freq;
+        
+        	#calculate CPLD frequency with second guess
+            $cpld_freq = $fg2 + ($dc - ($fg2*$dt) % $N)/$dt;
+        	
+        	$cpld_freq_tot2 += $cpld_freq;
+        	push @cpld_frequency2, $cpld_freq;
+            
             $cpld_count++;
         }
         # redefines variables for checking to see if the next line has the same data as this line
@@ -421,13 +434,8 @@ else{
 	print META "chan4 int $split_chan[4]\n";
 	print META "enddate date $date $time\n";
 
-    # finds overall average frequency to find standard deviation
-    $cpld_freq = $cpld_freq_tot/$cpld_count if $cpld_count !=0;
-    foreach $i (@cpld_frequency){ # calculates the sum for the standard deviation
-        $cpld_value = ($i - $cpld_freq)**2;
-        $cpld_value_tot += $cpld_value;
-    }
-    $cpld_sigma = sqrt($cpld_value_tot/$cpld_count) if $cpld_count !=0;
+	calculate_cpld_frequency();
+    
     $cpld_low = $cpld_freq - $cpld_sigma;
     $cpld_high = $cpld_freq + $cpld_sigma;
     # only calculates the "real" average frequency using data within one standard deviation of averaged_sigma;
@@ -523,4 +531,42 @@ sub gps_check{
         return 1;
     }
     return 0;
+}
+
+sub stddev {
+	 my $avg = shift;
+	 my $n = shift;
+	 
+	 my $s = 0;
+	 foreach $x (@_) {
+	 	$s += ($avg - $x)**2;
+	 }
+	 return sqrt($s/$n);
+}
+
+sub calculate_cpld_frequency {
+	# calculate averages for both guesses
+	$cpld_freq1 = $cpld_freq_tot1/$cpld_count;
+	$cpld_freq2 = $cpld_freq_tot2/$cpld_count;
+	# calculate standard deviations for both CPLD frequency guesses
+			
+	$cpld_sigma1 = stddev($cpld_freq1, $cpld_count, @cpld_frequency1);
+	$cpld_sigma2 = stddev($cpld_freq2, $cpld_count, @cpld_frequency2);
+				
+	# select the one with the lowest stddev
+	# now, the guesses are only used when the
+	# CPLD clock counter wraps around in weird ways
+	# If that doesn't happen at all, both calculations
+	# will yield the same result, so it doesn't matter
+	# which one is chosen
+	if ($cpld_sigma1 > $cpld_sigma2) {
+		$cpld_sigma = $cpld_sigma2;
+		$cpld_freq = $cpld_freq2;
+		@cpld_frequency = @cpld_frequency2;
+	}
+	else {
+		$cpld_sigma = $cpld_sigma1;
+		$cpld_freq = $cpld_freq1;
+		@cpld_frequency = @cpld_frequency1;
+	}
 }
