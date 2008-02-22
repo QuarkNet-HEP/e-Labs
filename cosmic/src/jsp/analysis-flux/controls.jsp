@@ -21,8 +21,8 @@
 								<e:trlabel for="singlechannel_channel" name="Channel Number">Channel Number:</e:trlabel>
 							</td>
 							<td class="form-control">
-								<e:trselect name="singlechannel_channel" labelList="1, 2, 3, 4" 
-									valueList="1, 2, 3, 4" default="1"/>
+								<e:trselect name="singlechannel_channel" labelList="${channels}" 
+									valueList="${channels}" default="${channels[0]}"/>
 							</td>
 						</tr>
 					</table>
