@@ -37,7 +37,7 @@ else {
 
 print "CPLD frequency from VDC: $vdcfreq\n";
 
-$out=`CPLDCalc.pl "$dir/$bid/$lfn"`;
+$out=`./CPLDCalc.pl "$dir/$bid/$lfn"`;
 
 if ($out =~ m/average frequency is: ([\d\.]+)/) {
 	$freq = $1;
