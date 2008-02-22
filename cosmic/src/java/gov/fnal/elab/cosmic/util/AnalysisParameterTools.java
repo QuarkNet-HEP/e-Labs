@@ -19,6 +19,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class AnalysisParameterTools {
     
@@ -104,13 +106,13 @@ public class AnalysisParameterTools {
      * @param files
      *            A set of logical file names
      * 
-     * @return A {@link Collection} containing used channels, each of each is
-     *         guaranteed to appear at most once.
+     * @return A {@link List} containing used channels, each of each is
+     *         guaranteed to appear at most once. The channels are sorted.
      */
-    public static Collection getValidChannels(Elab elab, Collection files)
+    public static List getValidChannels(Elab elab, Collection files)
             throws ElabException {
         ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
-        Set channels = new HashSet();
+        SortedSet channels = new TreeSet();
         Iterator i = rs.iterator();
         while (i.hasNext()) {
             CatalogEntry e = (CatalogEntry) i.next();
@@ -127,7 +129,7 @@ public class AnalysisParameterTools {
                 }
             }
         }
-        return channels;
+        return new ArrayList(channels);
     }
     
     public static final Double DEFAULT_CPLD_FREQUENCY = new Double(41666667);
