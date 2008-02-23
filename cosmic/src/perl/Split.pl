@@ -90,6 +90,7 @@ $fg2 = $fg1/2;						#CPLD frequency guess for new boards
 $N = 0xffffffff + 1;				#the modulus for CPLD clock wrap-arounds
 									#apparenly perl cries "overflow" if 0x100000000 is used
 									#It's suspicious. Maybe bigint should be used.
+$Nover2 = int($N/2);				#precalculated N/2
 									
 
 
@@ -399,13 +400,13 @@ while(<IN>){
    		    $dt = ($cpld_day_seconds - $cpld_seconds);
    		    
    		    #calculate CPLD frequency with first guess
-        	$cpld_freq = $fg1 + ($dc - ($fg1*$dt) % $N)/$dt;
+        	$cpld_freq = $fg1 + (($dc - $fg1*$dt + $Nover2) % $N - $Nover2)/$dt;
         	
         	$cpld_freq_tot1 += $cpld_freq;
         	push @cpld_frequency1, $cpld_freq;
         
         	#calculate CPLD frequency with second guess
-            $cpld_freq = $fg2 + ($dc - ($fg2*$dt) % $N)/$dt;
+            $cpld_freq = $fg2 + ($dc - ($fg2*$dt + $Nover2) % $N - $Nover2)/$dt;
         	
         	$cpld_freq_tot2 += $cpld_freq;
         	push @cpld_frequency2, $cpld_freq;
