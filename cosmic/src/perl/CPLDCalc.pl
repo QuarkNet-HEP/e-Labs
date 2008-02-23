@@ -15,6 +15,7 @@ $fg1 = 41666667;
 $fg2 = $fg1/2;						
 
 $N = 0xffffffff + 1;
+$Nover2 = int($N/2);
 
 
 open (IN, "$infile");
@@ -52,7 +53,7 @@ while (<IN>) {
    		$dt = ($day_seconds - $seconds);
    		    
    		#calculate CPLD frequency with first guess
-        $cpld_freq = $fg1 + ($dc - ($fg1*$dt) % $N)/$dt;
+        $cpld_freq = $fg1 + (($dc - $fg1*$dt + $Nover2) % $N - $Nover2)/$dt;
         
         #$k = int($cpld_freq*$dt/$N);
         
@@ -62,7 +63,7 @@ while (<IN>) {
         push @cpld_frequency1, $cpld_freq;
         
         #calculate CPLD frequency with second guess
-        $cpld_freq = $fg2 + ($dc - ($fg2*$dt) % $N)/$dt;
+        $cpld_freq = $fg2 + (($dc - $fg2*$dt + $Nover2) % $N - $Nover2)/$dt;
         	
         $cpld_freq_tot2 += $cpld_freq;
         push @cpld_frequency2, $cpld_freq;
