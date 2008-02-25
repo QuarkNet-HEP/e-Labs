@@ -85,7 +85,7 @@ $cpld_trig_hold = 0;
 $data_line = 0;						#increments on each acceptably formatted data line
 
 $fg1 = 41666667;					#CPLD frequency guess for old boards
-$fg2 = $fg1/2;						#CPLD frequency guess for new boards
+$fg2 = 25000000;					#CPLD frequency guess for new boards
 
 $N = 0xffffffff + 1;				#the modulus for CPLD clock wrap-arounds
 									#apparenly perl cries "overflow" if 0x100000000 is used

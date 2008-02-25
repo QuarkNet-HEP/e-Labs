@@ -12,7 +12,7 @@ $infile = $ARGV[0] || die "Cannot open $infile";
 #$outfile = $ARGV[1] || die "Cannot open $outfile";
 
 $fg1 = 41666667;					
-$fg2 = $fg1/2;						
+$fg2 = 25000000;						
 
 $N = 0xffffffff + 1;
 $Nover2 = int($N/2);
