@@ -36,13 +36,15 @@ while (<IN>) {
     $min = substr($split_line[10], 2, 2);
     $sec = substr($split_line[10], 4, 6);
     $sec_offset = int($sec + ($split_line[15]/1000));
+    
     #$sec_offset = $sec + ($split_line[15]/1000);
 
     $day_seconds = $hour*3600 + $min*60 + $sec_offset;
+    
     if ($day_seconds == 86400){
         $day_seconds = 0;
     }
-    if ($hex == $split_line[9] || $seconds == $day_seconds){ # both columns must advance to calculate the change
+    if (($hex eq $split_line[9]) || ($seconds == $day_seconds)){ # both columns must advance to calculate the change
         next;
     }
     if (defined($hex)){
@@ -105,6 +107,9 @@ sub stddev {
 }
 
 sub calculate_cpld_frequency {
+	if ($cpld_count == 0) {
+		die "Not enough data to calculate CPLD frequency";
+	}
 	# calculate averages for both guesses
 	$cpld_freq1 = $cpld_freq_tot1/$cpld_count;
 	$cpld_freq2 = $cpld_freq_tot2/$cpld_count;

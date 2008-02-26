@@ -387,7 +387,7 @@ while(<IN>){
         if ($cpld_day_seconds == 86400){
             $cpld_day_seconds = 0;
         }
-        if ($cpld_hex == $cpld_line[9] || $cpld_seconds == $cpld_day_seconds){ # both columns must advance to calculate the change
+        if (($cpld_hex eq $cpld_line[9]) || ($cpld_seconds == $cpld_day_seconds)){ # both columns must advance to calculate the change
             next;
         }
         
@@ -546,6 +546,21 @@ sub stddev {
 }
 
 sub calculate_cpld_frequency {
+	if ($cpld_count == 0) {
+		#one very tricky case this is
+		#we have no way of finding out the frequency from the data
+		#so either the frequency has been calculated on a previous
+		#day, or this is the first day in which case
+		#we may look at subsequent days, or just print a warning because 
+		#this is a borderline case
+		if (defined $cpld_freq) {
+			return;
+		}
+		else {
+			print "Warning: Not enough data to calculate CPLD frequency\n";
+			return;
+		}
+	}
 	# calculate averages for both guesses
 	$cpld_freq1 = $cpld_freq_tot1/$cpld_count;
 	$cpld_freq2 = $cpld_freq_tot2/$cpld_count;
