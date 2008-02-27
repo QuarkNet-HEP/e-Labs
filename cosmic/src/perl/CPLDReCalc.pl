@@ -53,13 +53,13 @@ else {
 #print "CPLD frequency from VDC: $vdcfreq\n";
 
 #print "$dir/$bid/$lfn", "\n";
-$out=`./CPLDCalc.pl "$dir/$bid/$lfn"`;
+$out=`./CPLDCalc.pl $dir/$bid/$lfn " $bid"`;
 
 if ($out =~ m/average frequency is: ([\d\.]+)/) {
 	$freq = $1;
 }
 else {
-	die "Invalid output from CPLDCalc.pl: $out\n";
+	die "Invalid output from CPLDCalc.pl on LFN: $lfn:\n $out \n";
 }
 
 if ($out =~ m/standard deviation: ([\d\.]+)/) {
@@ -70,11 +70,13 @@ else {
 }
 
 if ($stddev > 1000000) {
-	print "Suspiciously large standard deviation detected: $stddev\n";
+	print "Suspiciously large standard deviation detected: $stddev on LFN: $lfn\n";
 }
 
 #print "Calculated frequency:    $freq\n";
 #print OUT $freq, "\n"; #write the new frequency to the log
+print OUT $lfn, "\t", $vdcfreq, "\t", $freq, "\n";
+#print $lfn, "\t", $vdcfreq, "\t", $freq, "\n";
 
 if ($update eq "-update") {	#update the VDC
 	#there's a bug in the way the VDS tools process their command line
@@ -98,7 +100,7 @@ if ($update eq "-update") {	#update the VDC
 	#print "\n";
 	unlink($tmp);
 	#Write the LFN, old freq and new freq to the log file--this only happens if the VDC has been updated
-	print OUT $lfn, "\t", $vdcfreq, "\t", $freq, "\n";
+	
  
 }
 
