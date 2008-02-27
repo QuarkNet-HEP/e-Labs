@@ -8,22 +8,36 @@
 #
 #
 
-if($#ARGV < 1) {
-	die "usage: CPLDReCalc.pl [LFN] [data DIRECTORY] [-update]\n";
+#if($#ARGV < 1) {
+#	die "usage: CPLDReCalc.pl [LFN] [data DIRECTORY] [-update]\n";
+#}
+
+if($#ARGV < 2) {
+	die "usage: CPLDReCalc.pl [File with list of LFNs] [data DIRECTORY] [File to log results] [-update]\n";
 }
 
-$lfn = shift;
+#$lfn = shift;
+$infile = shift;
 $dir = shift;
+$outfile = shift;
 $update = shift;
 
-if ($lfn =~ m/(\d+)\./) {
+open (IN, $infile);
+open (OUT, ">$outfile");
+
+while (<IN>) {
+
+	$lfn = $_;
+	chomp $lfn;
+	if ($_ =~ m/(\d+)\./) {
 	$bid = $1;
+	#print $bid, "\n";
 }
 else {
 	die "Failed to get board id from file name";
 }
 
-print "Board id: $bid\n";
+#print "Board id: $bid\n";
 
 $vdcfreq = `showmeta -f $lfn dummy|grep cpldfrequency`;
 
@@ -32,11 +46,13 @@ if ($vdcfreq =~ m/\w+\s+\w+\s+([\w\.\-]+)/) {
 }
 else {
 	$vdcfreq = "none";
-	print "Warning: no cpldfrequency found in the VDC for $lfn\n";
+	# print "Warning: no cpldfrequency found in the VDC for $lfn\n";
 }
 
-print "CPLD frequency from VDC: $vdcfreq\n";
 
+#print "CPLD frequency from VDC: $vdcfreq\n";
+
+#print "$dir/$bid/$lfn", "\n";
 $out=`./CPLDCalc.pl "$dir/$bid/$lfn"`;
 
 if ($out =~ m/average frequency is: ([\d\.]+)/) {
@@ -57,15 +73,16 @@ if ($stddev > 1000000) {
 	print "Suspiciously large standard deviation detected: $stddev\n";
 }
 
-print "Calculated frequency:    $freq\n";
+#print "Calculated frequency:    $freq\n";
+#print OUT $freq, "\n"; #write the new frequency to the log
 
-if ($update eq "-update") {
+if ($update eq "-update") {	#update the VDC
 	#there's a bug in the way the VDS tools process their command line
 	#arguments. Hence the two "cpldfrequency"es
 	if ($vdcfreq ne "none") {
-		print "Deleting old cpldfrequency... ";
+		#print "Deleting old cpldfrequency... ";
 		system("deletemeta",  "-f", $lfn, "cpldfrequency", "cpldfrequency");
-		print "\n";
+		#print "\n";
 	}
 	
 	$tmp = `mktemp`;
@@ -76,8 +93,15 @@ if ($update eq "-update") {
 	print META "cpldfrequency float $freq\n";
 	close(META);
 	
-	print "Inserting new cpldfrequency... ";
+	#print "Inserting new cpldfrequency... ";
 	system("insertmeta", "-f", $lfn, $tmp);
-	print "\n";
+	#print "\n";
 	unlink($tmp);
+	#Write the LFN, old freq and new freq to the log file--this only happens if the VDC has been updated
+	print OUT $lfn, "\t", $vdcfreq, "\t", $freq, "\n";
+ 
+}
+
+next; #get the next LFN from infile
+
 }
