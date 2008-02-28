@@ -104,8 +104,12 @@ while(<IN>){
     #	$newline_fixing = 0;
     #   redo;
     #}
-
-	$re="^([0-9A-F]{8}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{8}) (\\d{6}\\.\\d{3}) (\\d{6}) ([AV]) (\\d\\d) ([0-9A-F]) ([-+]\\d{4})\$";
+	
+	#Had to change the regExp in Dec 07. The newest version of the hardware had some firmware versions that did not add the +/- to word 1 when it was 0000. This was fixed in firmware version 1.06, but some cards made it into the wild with earlier firmware.
+	#$re="^([0-9A-F]{8}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{8}) (\\d{6}\\.\\d{3}) (\\d{6}) ([AV]) (\\d\\d) ([0-9A-F]) ([-+]\\d{4})\$";
+	
+	#OK the new regExp on the next line works. I did not add the + to the offset (word 16) but left it bare. The question is what does ThresholdTimes do with this? Do I need to add the + to make ThresholdTimes happy?
+	$re="^([0-9A-F]{8}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{8}) (\\d{6}\\.\\d{3}) (\\d{6}) ([AV]) (\\d\\d) ([0-9A-F]) ([-+ ]\\d{4})\$";
 
 	#*performance* using an RE is 30% faster than splitting by whitespace
 	if(/$re/o){
@@ -324,7 +328,7 @@ while(<IN>){
                 $cpld_high = $cpld_freq + $cpld_sigma;
                 # only calculates the "real" average frequency using data within one standard deviation of averaged_sigma;
                 foreach $i (@cpld_frequency){ 
-                    if ($i > $cpld_low && $i < $cpld_high){
+                    if ($i >= $cpld_low && $i <= $cpld_high){
                         $cpld_real_freq_tot += $i;
                         $cpld_real_count++;
                     }
@@ -557,7 +561,11 @@ sub calculate_cpld_frequency {
 			return;
 		}
 		else {
-			print "Warning: Not enough data to calculate CPLD frequency\n";
+			$cpld_freq = $fg1 if $ID < 6000; 	#These data are from an older board--assuming the ID is correct!
+			$cpld_freq = $fg2 if $ID > 5999;	#. . .  newer board
+			push @frequency, $freq;
+			$sigma = 1.0; 
+			print "Warning: Not enough data to calculate CPLD frequency. Your DAQ serial number is $ID so we are using $cpld_freq\n";
 			return;
 		}
 	}
