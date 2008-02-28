@@ -48,7 +48,7 @@ while (<IN>) {
     if ($day_seconds == 86400){
         $day_seconds = 0;
     }
-    if (($hex eq $split_line[9]) || ($seconds == $day_seconds) || ($invalid != 0 || $time == $split_line[10])){ 
+    if (($hex eq $split_line[9]) || ($seconds == $day_seconds) || ($invalid != 0) || ($time == $split_line[10])){ 
     	# both columns must advance to calculate the change
     	# also, the MCU (presumably) must not be servicing the 1PPS interrupt
     	# the last one is more of a heuristic, but it seems that things are messed
