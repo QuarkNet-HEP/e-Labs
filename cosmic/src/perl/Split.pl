@@ -396,7 +396,7 @@ while(<IN>){
         if ($cpld_day_seconds == 86400){
             $cpld_day_seconds = 0;
         }
-        if (($cpld_hex eq $row[9]) || ($cpld_seconds == $cpld_day_seconds) || ($interrupt != 0)){ 
+        if (($cpld_hex eq $row[9]) || ($cpld_seconds == $cpld_day_seconds) || ($interrupt != 0) || ($time == $split_line[10])){ 
         	# both columns must advance to calculate the change
             next;
         }
@@ -570,7 +570,7 @@ sub calculate_cpld_frequency {
 			$cpld_freq = $fg1 if $ID < 6000; 	#These data are from an older board--assuming the ID is correct!
 			$cpld_freq = $fg2 if $ID > 5999;	#. . .  newer board
 			push @cpld_frequency, $freq;
-			$cpld_sigma = 1.0; 
+			$cpld_sigma = 0.0; 
 			print "Warning: Not enough data to calculate CPLD frequency. Your DAQ serial number is $ID so we are using $cpld_freq\n";
 			return;
 		}
