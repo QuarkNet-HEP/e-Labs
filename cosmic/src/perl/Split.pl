@@ -328,7 +328,7 @@ while(<IN>){
                 $cpld_high = $cpld_freq + $cpld_sigma;
                 # only calculates the "real" average frequency using data within one standard deviation of averaged_sigma;
                 foreach $i (@cpld_frequency){ 
-                    if ($i > $cpld_low && $i < $cpld_high){
+                    if ($i >= $cpld_low && $i <= $cpld_high){
                         $cpld_real_freq_tot += $i;
                         $cpld_real_count++;
                     }

@@ -5,7 +5,7 @@
 # Takes a split data file and finds the actual CPLD freq that the DAQ board is set to.
 
 if ($#ARGV < 1){
-    print "usage: CPLDCalc.pl [input-file] [board ID]";
+    print "usage: CPLDCalc.pl [input-file] [board ID]\n";
 }
 
 $infile = $ARGV[0] || die "Cannot open $infile";
@@ -84,7 +84,7 @@ calculate_cpld_frequency();
 $low = $freq - $sigma;
 $high = $freq + $sigma;
 foreach $i (@frequency){ # only calculates the "real" average frequency using data within one standard deviation of average
-    if ($i > $low && $i < $high){
+    if ($i >= $low && $i <= $high){
         $real_freq_tot += $i;
         $real_count++;
     }
