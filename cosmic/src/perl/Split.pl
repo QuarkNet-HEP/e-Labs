@@ -416,7 +416,7 @@ while(<IN>){
         	push @cpld_frequency1, $cpld_freq;
         
         	#calculate CPLD frequency with second guess
-            $cpld_freq = $fg2 + ($dc - ($fg2*$dt + $Nover2) % $N - $Nover2)/$dt;
+            $cpld_freq = $fg2 + (($dc - $fg2*$dt + $Nover2) % $N - $Nover2)/$dt;
         	
         	$cpld_freq_tot2 += $cpld_freq;
         	push @cpld_frequency2, $cpld_freq;
@@ -589,16 +589,7 @@ sub calculate_cpld_frequency {
 	# If that doesn't happen at all, both calculations
 	# will yield the same result, so it doesn't matter
 	# which one is chosen
-	#
-	# When there are few events, and in certain circumstances,
-	# the calculated frequency with a bad guess may be negative, 
-	# yet the standard deviations be equal.
-	# In that case, we assume at least one of them is positive (which
-	# in turn comes from the assumption that at least one guess is
-	# correct within certain bounds).
-	# If that assumption is incorrect, then we've got bigger problems.
-	# (aka. a third CPLD frequency or corrupt data).
-	if ($cpld_sigma1 > $cpld_sigma2 || $cpld_freq1 < 0) {
+	if ($cpld_sigma1 > $cpld_sigma2) {
 		$cpld_sigma = $cpld_sigma2;
 		$cpld_freq = $cpld_freq2;
 		@cpld_frequency = @cpld_frequency2;
@@ -607,8 +598,5 @@ sub calculate_cpld_frequency {
 		$cpld_sigma = $cpld_sigma1;
 		$cpld_freq = $cpld_freq1;
 		@cpld_frequency = @cpld_frequency1;
-	}
-	if ($cpld_freq < 0) {
-		print "Warning: calculated CPLD frequency is negative\n";
 	}
 }
