@@ -131,7 +131,8 @@ while(<IN>){
 	#The first error is a GPS flag of 4. It _always_ makes our calculation of $curr_gm_time incorrect. 
 
 	#GPS flag = 4 in the raw data indicates that the GPS time in that line is suspect. Indeed, our calculation confirms this so we should ignore the lines with a GPS flag = 4. Now we do.
-	next if $row[14] == 4; 
+	#Actually it should check if bit 2 is 1. Otherwise it may accept invalid lines.
+	next if ($row[14] & 0x04 != 0); 
 
 	#There are two asynchronous cpld rollover errors that can appear in the data, we can trap those and be more clever about dropping data lines.
 
@@ -381,23 +382,28 @@ while(<IN>){
 		print SPLIT $_;
         
         # Thanks to Nick Dettman for this code calculating actual CPLD frequency.
-        @cpld_line = split(/\s+/, $_);
+        #No need for that. We already have the split row.
+        #@cpld_line = split(/\s+/, $_);
+        
+        # if servicing 1PPS interrupt, the GPS time may be funny
+	    $interrupt = (hex($row[14]) & 0x01);
         # calculates the number of seconds from the time and CPLD offset
-        $cpld_hour = substr($cpld_line[10], 0, 2);
-        $cpld_min = substr($cpld_line[10], 2, 2);
-        $cpld_sec = substr($cpld_line[10], 4, 6);
-        $cpld_sec_offset = sprintf("%.0f", $cpld_sec + ($cpld_line[15]/1000));
+        $cpld_hour = substr($row[10], 0, 2);
+        $cpld_min = substr($row[10], 2, 2);
+        $cpld_sec = substr($row[10], 4, 6);
+        $cpld_sec_offset = sprintf("%.0f", $cpld_sec + ($row[15]/1000));
         $cpld_day_seconds = $cpld_hour*3600 + $cpld_min*60 + $cpld_sec_offset;
         if ($cpld_day_seconds == 86400){
             $cpld_day_seconds = 0;
         }
-        if (($cpld_hex eq $cpld_line[9]) || ($cpld_seconds == $cpld_day_seconds)){ # both columns must advance to calculate the change
+        if (($cpld_hex eq $row[9]) || ($cpld_seconds == $cpld_day_seconds) || ($interrupt != 0)){ 
+        	# both columns must advance to calculate the change
             next;
         }
         
         
         if (defined($cpld_hex)){
-            $cpld_ticks_new = hex($cpld_line[9]);
+            $cpld_ticks_new = hex($row[9]);
             $cpld_ticks_old = hex($cpld_hex);
             
             $dc = ($cpld_ticks_new - $cpld_ticks_old) % $N;
@@ -418,8 +424,8 @@ while(<IN>){
             $cpld_count++;
         }
         # redefines variables for checking to see if the next line has the same data as this line
-        $cpld_time = $cpld_line[10];
-        $cpld_hex = $cpld_line[9];
+        $cpld_time = $row[10];
+        $cpld_hex = $row[9];
         $cpld_seconds = $cpld_day_seconds;
 	}	#end if total_events > 0
 
@@ -445,7 +451,7 @@ else{
     $cpld_high = $cpld_freq + $cpld_sigma;
     # only calculates the "real" average frequency using data within one standard deviation of averaged_sigma;
     foreach $i (@cpld_frequency){ 
-        if ($i > $cpld_low && $i < $cpld_high){
+        if ($i >= $cpld_low && $i <= $cpld_high){
             $cpld_real_freq_tot += $i;
             $cpld_real_count++;
         }
@@ -563,8 +569,8 @@ sub calculate_cpld_frequency {
 		else {
 			$cpld_freq = $fg1 if $ID < 6000; 	#These data are from an older board--assuming the ID is correct!
 			$cpld_freq = $fg2 if $ID > 5999;	#. . .  newer board
-			push @frequency, $freq;
-			$sigma = 1.0; 
+			push @cpld_frequency, $freq;
+			$cpld_sigma = 1.0; 
 			print "Warning: Not enough data to calculate CPLD frequency. Your DAQ serial number is $ID so we are using $cpld_freq\n";
 			return;
 		}
@@ -583,7 +589,16 @@ sub calculate_cpld_frequency {
 	# If that doesn't happen at all, both calculations
 	# will yield the same result, so it doesn't matter
 	# which one is chosen
-	if ($cpld_sigma1 > $cpld_sigma2) {
+	#
+	# When there are few events, and in certain circumstances,
+	# the calculated frequency with a bad guess may be negative, 
+	# yet the standard deviations be equal.
+	# In that case, we assume at least one of them is positive (which
+	# in turn comes from the assumption that at least one guess is
+	# correct within certain bounds).
+	# If that assumption is incorrect, then we've got bigger problems.
+	# (aka. a third CPLD frequency or corrupt data).
+	if ($cpld_sigma1 > $cpld_sigma2 || $cpld_freq1 < 0) {
 		$cpld_sigma = $cpld_sigma2;
 		$cpld_freq = $cpld_freq2;
 		@cpld_frequency = @cpld_frequency2;
@@ -592,5 +607,8 @@ sub calculate_cpld_frequency {
 		$cpld_sigma = $cpld_sigma1;
 		$cpld_freq = $cpld_freq1;
 		@cpld_frequency = @cpld_frequency1;
+	}
+	if ($cpld_freq < 0) {
+		print "Warning: calculated CPLD frequency is negative\n";
 	}
 }
