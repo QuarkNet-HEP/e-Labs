@@ -16,7 +16,7 @@
 <form name="search" method="get">
 	<p>
 		<e:select name="key" valueList="title, group, teacher, school, city, state, year"
-					labelList="Title, Group, Teacher, School, State, City, Year"
+					labelList="Title, Group, Teacher, School, City, State, Year"
 					default="${param.key}"/>
 		<input name="value" size="40" maxlength="40" value="${param.value}"/>
 		<input type="submit" name="submit" value="Search Data"/>
