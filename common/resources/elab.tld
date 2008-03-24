@@ -612,4 +612,9 @@ The name of the parameter (must match the name of an analysis parameter)
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
+	
+	<tag-file>
+		<name>sort</name>
+		<path>/WEB-INF/tags/sort.tag</path>
+	</tag-file>
 </taglib>
