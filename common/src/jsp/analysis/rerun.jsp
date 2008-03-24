@@ -35,8 +35,18 @@
 	 else { 
 	 	analysis = (ElabAnalysis) session.getAttribute("analysisToRerun");
 	 	if (analysis == null) {
-	 		throw new ElabJspException("Both the dvName parameter and the analysisToRerun session attribute are missing");
-	 	}	 	
+	 		String id = request.getParameter("id");
+			if (id == null) {
+	    		throw new ElabJspException("Missing all of dvName parameter, analysisToRerun session attribute, and id parameter");
+			}
+			else {
+				AnalysisRun run = AnalysisManager.getAnalysisRun(elab, user, id); 
+				if (run == null) {
+		    		throw new ElabJspException("Invalid analysis id: " + id);
+				}
+				analysis = run.getAnalysis();
+			}
+	 	}
 	 }
 	 request.setAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS, analysis);
 	 request.setAttribute("analysis", analysis);
