@@ -159,8 +159,9 @@
 	</tr>
 </table>
 <p>
-	Show <e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysis-dir" 
-		width="800" height="600" toolbar="true">analysis directory</e:popup>
+	Show <e:popup href="../analysis/show-dir.jsp?id=${showerResults.id}" target="analysis-dir" 
+		width="800" height="600" toolbar="true">shower analysis directory</e:popup> or <e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysis-dir" 
+		width="800" height="600" toolbar="true">event plot analysis directory</e:popup> 
 </p>
 <p>
 	<e:rerun type="shower" id="${showerResults.id}" label="Change"/> your parameters
