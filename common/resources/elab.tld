@@ -431,7 +431,7 @@ values specified with the <code>valueList</code> attribute.
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<dynamic-attributes>true</dynamic-attributes>
-	</tag>	
+	</tag>
 	
 	<tag>
 		<description>
@@ -519,10 +519,18 @@ Nested parameters can be specified using the {@link param} tag.
 		<body-content>JSP</body-content>
 		<attribute>
 			<description>
+The id of an analysis run. This is the preferred method of re-running analyses. 
+			</description>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
 An analysis object to be rerun.
 			</description>
 			<name>analysis</name>
-			<required>true</required>
+			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
