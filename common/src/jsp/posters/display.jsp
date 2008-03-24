@@ -8,17 +8,18 @@
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 
 <%
-	String dfile = request.getParameter("name");
-	if (dfile == null || dfile.equals("")) {
+	String name = request.getParameter("name");
+	if (name == null || name.equals("")) {
 	    throw new ElabJspException("Missing poster name.");
 	}
+	String dfile = name + ".data";
 	And q = new And();
-	q.add(new Equals("name", dfile));
+	q.add(new Equals("name", name));
 	q.add(new Equals("type", "poster"));
 	q.add(new Equals("project", elab.getName()));
 	ResultSet rs = elab.getDataCatalogProvider().runQuery(q);
 	if (rs.isEmpty()) {
-	    throw new ElabJspException("The poster (" + dfile + ") was not found in the database.");
+	    throw new ElabJspException("The poster (" + name + ") was not found in the database.");
 	}
 	CatalogEntry entry = (CatalogEntry) rs.iterator().next();
 	request.setAttribute("title", entry.getTupleValue("title"));
@@ -81,7 +82,7 @@
 
 	String pdata;
 	if (!pfn.exists()) {
-	    throw new ElabJspException("Poster data file does not exist");
+	    throw new ElabJspException("Poster data file (" + dfile + ") does not exist");
 	}
 	// Read the poster data file
 
