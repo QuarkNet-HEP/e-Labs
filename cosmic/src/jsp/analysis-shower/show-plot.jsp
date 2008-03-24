@@ -27,6 +27,10 @@
 <%
 	ElabAnalysis analysis = results.getAnalysis();
 	request.setAttribute("analysis", analysis);
+	
+	String showerId = request.getParameter("showerId");
+	AnalysisRun showerResults = AnalysisManager.getAnalysisRun(elab, user, showerId);
+	request.setAttribute("showerResults", showerResults);
 %>
 
 <img src="${results.outputDirURL}/plot.png" />
