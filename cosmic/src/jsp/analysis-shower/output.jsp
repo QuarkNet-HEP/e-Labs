@@ -101,7 +101,7 @@
 			<table id="shower-events">
 				<tr>
 					<th width="98%">
-						<a href="output.jsp?id=${param.id}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }">Event Date</a>
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }">Event Date</a>
 					</th>
 					<th width="1%">
 						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }">Event Coincidence</a>
@@ -163,7 +163,7 @@
 		width="800" height="600" toolbar="true">analysis directory</e:popup>
 </p>
 <p>
-	<e:rerun type="shower" analysis="${showerResults.analysis}" label="Change"/> your parameters
+	<e:rerun type="shower" id="${showerResults.id}" label="Change"/> your parameters
 </p>
 <p><b>OR</b></p>
 <%@ include file="save-form.jspf" %>
