@@ -5,6 +5,8 @@ package gov.fnal.elab.datacatalog.query;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -103,5 +105,58 @@ public class ResultSet implements Collection {
             lfna[i] = ((CatalogEntry) entries.get(i)).getLFN();
         }
         return lfna;
+    }
+    
+    public void sort(String key, boolean descending) {
+        Collections.sort(entries, new EntryComparator(key, descending));
+    }
+    
+    private static class EntryComparator implements Comparator {
+        private String key;
+        private boolean descending;
+        
+        public EntryComparator(String key, boolean descending) {
+            this.key = key;
+            this.descending = descending;
+        }
+
+        public int compare(Object o1, Object o2) {
+            CatalogEntry e1 = (CatalogEntry) o1;
+            CatalogEntry e2 = (CatalogEntry) o2;
+            Object v1 = e1.getTupleValue(key);
+            Object v2 = e2.getTupleValue(key);
+            int c;
+            //null < !null
+            if (v1 == null) {
+                if (v2 == null) {
+                    c = 0;
+                }
+                else {
+                    c = 1;
+                }
+            }
+            else {
+                if (v2 == null) {
+                    c = -1;
+                }
+                else {
+                    if (!v1.getClass().equals(v2.getClass())) {
+                        throw new RuntimeException("Tuple type error");
+                    }
+                    else {
+                        if (v1 instanceof Comparable) {
+                            c = ((Comparable) v1).compareTo(v2);
+                        }
+                        else {
+                            c = System.identityHashCode(v2) - System.identityHashCode(v1);
+                        }
+                    }
+                }
+            }
+            if (descending) {
+                c = -c;
+            }
+            return c;
+        }
     }
 }

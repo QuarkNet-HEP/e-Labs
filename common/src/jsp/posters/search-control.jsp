@@ -35,6 +35,8 @@
 		<e:trinput type="text" size="10" maxlength="15" name="date2" default="12/30/2050"/>
 	</p>
 	<%
+		String order = request.getParameter("order");
+		boolean descending = "true".equals(request.getParameter("desc"));
 		//variables used in metadata searches:
 		String key = request.getParameter("key");
 		if (key == null) key="name";
@@ -61,6 +63,9 @@
 
 			searchResults = elab.getDataCatalogProvider().runQuery(and);
 		}
+		if (order != null && searchResults != null) {
+			searchResults.sort(order, descending);
+		}		
 		request.setAttribute("searchResults", searchResults);
 	%>
 		

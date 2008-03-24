@@ -8,17 +8,17 @@
 <c:if test="${!empty searchResults}">
 	<table id="search-results">
 		<tr>
-			<th>Title</th>
-			<th>Date</th>
-			<th>Group</th>
-			<th>Teacher</th>
-			<th>School</th>
-			<th>City</th>
-			<th>State</th>
-			<th>Year</th>
+			<th><e:sort key="title">Title</e:sort></th>
+			<th><e:sort key="date">Date</e:sort></th>
+			<th><e:sort key="group">Group</e:sort></th>
+			<th><e:sort key="teacher">Teacher</e:sort></th>
+			<th><e:sort key="school">School</e:sort></th>
+			<th><e:sort key="city">City</e:sort></th>
+			<th><e:sort key="state">State</e:sort></th>
+			<th><e:sort key="year">Year</e:sort></th>
 			<th></th>
 			<th></th>
-			<th></th>	
+			<th></th>
 		</tr>
 		<c:forEach items="${searchResults}" var="poster">
 			<c:set var="tuples" value="${poster.tupleMap}"/>
