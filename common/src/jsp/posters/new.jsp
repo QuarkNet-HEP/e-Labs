@@ -128,7 +128,7 @@ if ("Make Poster".equals(reqType) || "View Poster".equals(reqType)) {
 		meta.add("title string "+ request.getParameter("WORDS:TITLE"));
 		meta.add("author string "+ author);
 		meta.add("date date " + dateString);
-		meta.add("name string " + posterName);
+		meta.add("name string " + dfile);
 		meta.add("plotURL string " + plotDirURL);
 		
 		DataCatalogProvider dcp = elab.getDataCatalogProvider();
@@ -354,7 +354,7 @@ if ("Make Poster".equals(reqType)) {
             pw.close();
             // Add metadata to LFN for data file
 
-            String posterURL = "../posters/display.jsp?name=" + posterName;
+            String posterURL = "../posters/display.jsp?name=" + dfile;
 			%> 
 				<e:popup href="<%= posterURL %>" target="poster" width="700" height="900" now="true"/>
 			<%
