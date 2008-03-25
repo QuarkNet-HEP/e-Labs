@@ -54,7 +54,6 @@
 								<td class="form-control">
 									<e:trinput type="text" name="plot_lowX" size="19" maxlength="19"
 										default="${startDate}" onError="Enter a positive number"/>
-										${startDate}
 								</td>
 							</tr>
 							<tr>
@@ -64,7 +63,6 @@
 								<td class="form-control">
 									<e:trinput type="text" name="plot_highX" size="19" maxlength="19"
 										default="${endDate}" onError="Enter a positive number"/>
-										${endDate}
 								</td>
 							</tr>
 							<tr>
