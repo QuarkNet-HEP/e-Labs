@@ -28,6 +28,7 @@
 		newAnalysis.setType(analysis.getType());
 		newAnalysis.setParameter("rawData", f);
 		request.setAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS, newAnalysis);
+		request.setAttribute("analysis", newAnalysis);
 	}
 	ResultSet rs = elab.getDataCatalogProvider().getEntries(f);
 	request.setAttribute("count", new Integer(f.size()));
