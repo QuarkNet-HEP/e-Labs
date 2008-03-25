@@ -54,6 +54,7 @@
 								<td class="form-control">
 									<e:trinput type="text" name="plot_lowX" size="19" maxlength="19"
 										default="${startDate}" onError="Enter a positive number"/>
+										${startDate}
 								</td>
 							</tr>
 							<tr>
@@ -63,6 +64,7 @@
 								<td class="form-control">
 									<e:trinput type="text" name="plot_highX" size="19" maxlength="19"
 										default="${endDate}" onError="Enter a positive number"/>
+										${endDate}
 								</td>
 							</tr>
 							<tr>
@@ -107,7 +109,7 @@
 								</td>
 								<td class="form-control">
 									<e:trtextarea name="plot_caption" rows="5" cols="30"><e:default>
-<%= DataTools.getFigureCaption(elab, analysis.getParameterValues("rawData")) %>
+<%= DataTools.getFigureCaption(elab, ((ElabAnalysis) request.getAttribute("analysis")).getParameterValues("rawData")) %>
 <e:analysisParamLabel name="singlechannel_channel"/>											
 									</e:default></e:trtextarea>
 								</td>

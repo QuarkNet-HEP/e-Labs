@@ -131,7 +131,7 @@
 								</td>
 								<td class="form-control">
 									<e:trtextarea name="plot_caption" rows="5" cols="30"><e:default>
-<%= DataTools.getFigureCaption(elab, analysis.getParameterValues("rawData")) %>
+<%= DataTools.getFigureCaption(elab, ((ElabAnalysis) request.getAttribute("analysis")).getParameterValues("rawData")) %>
 <e:analysisParamLabel name="lifetime_coincidence"/>
 									</e:default></e:trtextarea>									
 
