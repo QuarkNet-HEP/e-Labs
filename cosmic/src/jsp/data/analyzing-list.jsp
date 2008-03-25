@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/elab.jsp" %>
+<%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
@@ -23,7 +24,10 @@
 				j.remove();
 			}
 		}
-		analysis.setParameter("rawData", f);
+		ElabAnalysis newAnalysis = ElabFactory.newElabAnalysis(elab, null, null);
+		newAnalysis.setType(analysis.getType());
+		newAnalysis.setParameter("rawData", f);
+		request.setAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS, newAnalysis);
 	}
 	ResultSet rs = elab.getDataCatalogProvider().getEntries(f);
 	request.setAttribute("count", new Integer(f.size()));
