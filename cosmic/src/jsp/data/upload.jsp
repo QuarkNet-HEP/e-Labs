@@ -88,7 +88,7 @@ Re: the upload progress stuff
 
 	if (FileUpload.isMultipartContent(request)) {
 	    //BEGIN upload_progress_stuff
-	    UploadListener listener = new UploadListener(request, 0);
+	    UploadListener listener = new UploadListener(request, 100);
 
 	    // Create a factory for disk-based file items
 	    FileItemFactory factory = new MonitoredDiskFileItemFactory(listener);
@@ -225,16 +225,13 @@ Re: the upload progress stuff
         	                }
         	                else if (tmp[0].equals("julianstartdate")) {
         	                	Geometry geometry = new Geometry(elab.getProperties().getDataDir(), detectorId);
-								if (geometry == null || geometry.isEmpty()) {
-									throw new ElabJspException("Error: no geometry information for detector " + detectorId);
-								}
-								SortedMap geos = geometry.getGeoEntriesBefore(tmp[2]);
-								if (geos.isEmpty()) {
-									throw new ElabJspException("Error: no geometry information for detector " + 
-										detectorId + " for when this data was taken.");
-								}
-								GeoEntryBean g = (GeoEntryBean) geos.get(geos.lastKey());
-								meta.add("stacked boolean " + ("0".equals(g.getStackedState()) ? "false" : "true"));
+								if (geometry != null && !geometry.isEmpty()) {	
+									SortedMap geos = geometry.getGeoEntriesBefore(tmp[2]);
+									if (!geos.isEmpty()) {
+										GeoEntryBean g = (GeoEntryBean) geos.get(geos.lastKey());
+										meta.add("stacked boolean " + ("0".equals(g.getStackedState()) ? "false" : "true"));	
+									}
+        	                	}
         	                }
 	                    }
     	            }   //done reading file
@@ -277,7 +274,7 @@ Re: the upload progress stuff
 				    request.setAttribute("geoFileExists", Boolean.FALSE);
 				}
 				%>
-                	<h2>Upload Successfull!</h2>
+                	<h2>Upload Successful!</h2>
                 	
                 	<c:choose>
                 		<c:when test="${geoFileExists}">
