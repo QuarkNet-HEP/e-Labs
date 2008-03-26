@@ -44,7 +44,7 @@
 					you will need for this project.
 				</li>
 				<li>
-					<a href="milestone-map.jsp">Study Guide</a> - Measure your progress
+					<a href="milestones-map.jsp">Study Guide</a> - Measure your progress
 					as you work.
 				</li>
 				<li>
