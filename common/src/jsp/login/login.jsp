@@ -51,6 +51,10 @@
         cookie.setPath("/elab/" + elab.getName());
         response.addCookie(cookie);
         
+        Cookie cookie2 = new Cookie("JSESSIONID", session.getId());
+        cookie2.setPath("/elab/dwr");
+        response.addCookie(cookie2);
+        
 		response.sendRedirect(prevPage);
 	}
 	else {
