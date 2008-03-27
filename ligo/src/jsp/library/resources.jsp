@@ -42,12 +42,12 @@
 			<ul>
 				<li><a href="../data/tutorial.jsp">Bluestone Tutorial</a></li>
 				<li><a href="http://tekoa.ligo-wa.caltech.edu">LIGO E-Lab Discussion Site</a></li>
-				<li><a href="http://www.ligo-wa,caltech.edu">LIGO Hanford Observatory</a></li>
-				<li><a href="http://ilog.ligo-wa,caltech.edu/ilog">LHO Electronic Log</a></li>
+				<li><a href="http://www.ligo-wa.caltech.edu">LIGO Hanford Observatory</a></li>
+				<li><a href="http://ilog.ligo-wa.caltech.edu/ilog">LHO Electronic Log</a></li>
 				<li><a href="http://earthquake.usgs.gov">USGS Earthquake Records</a></li>
-				<li><a href="http://www.ees.washington.edu">Pacific Northwest Seismic Network</a></li>
+				<li><a href="http://www.ess.washington.edu/SEIS/PNSN/">Pacific Northwest Seismic Network</a></li>
 				<li><a href="http://www.gcse.com/waves/seismometers.htm">How Does a Seismometer Work?</a></li>
-				<li><a href="http://www.darylscience.com/Demos/PSWAVES.html">Types of Earthquake Waves</a></li>
+				<li><a href="http://www.darylscience.com/Demos/PSWaves.html">Types of Earthquake Waves</a></li>
 				<li><a href="ligo_elab1.pdf">E-Lab Seismic Study (PDF)</a></li>
 			</ul>
 		</td>
