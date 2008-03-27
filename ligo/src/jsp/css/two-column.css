@@ -4,11 +4,24 @@
 	height: 100%;
 	padding: 0px;
 }
-
 #content #center {
 	padding-right: 20px;
 }
 
+
 #content #right {
 	
 }
+
+/*
+
+#content #left {
+	margin-right: 20px;
+	width: 385px;
+	padding-right: 15px;
+}
+
+#content #right {
+	width: 385px;
+}
+*/
