@@ -40,7 +40,7 @@
 		<td id="center">
 			<h2>LIGO E-Lab Resources</h2>
 			<ul>
-				<li><a href="tutorial.jsp">Bluestone Tutorial</a></li>
+				<li><a href="../data/tutorial.jsp">Bluestone Tutorial</a></li>
 				<li><a href="http://tekoa.ligo-wa.caltech.edu">LIGO E-Lab Discussion Site</a></li>
 				<li><a href="http://www.ligo-wa,caltech.edu">LIGO Hanford Observatory</a></li>
 				<li><a href="http://ilog.ligo-wa,caltech.edu/ilog">LHO Electronic Log</a></li>
