@@ -33,6 +33,23 @@ h1 {
 	font-weight: normal;
 	margin-left: 10px;
 }
+.library .tab-contents ul {
+	padding-left: 10px;
+	padding-top: 6px;
+}
+
+.library .tab-contents  ul ul ul li {
+	font-weight: normal;
+}
+
+.library .tab-contents li {
+	list-style-type: none;
+	font-weight: bold;
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+
 
 #first-web #content #right {
 	width: 140px;
@@ -86,6 +103,56 @@ a.button {
 
 #nav #subnav ul li:first-child a {
 	border-left: none;
+}
+
+/************* Tab **************/
+
+.tab:before {
+	background-color: #40ffb3;
+}
+
+.library .tab {
+	padding-top: 10px;
+	width: 100%;
+}
+
+.library .tab .tab-title {
+	background-color: #40ffb3;
+	border-left: 1px solid #358974;
+	border-right: 1px solid #358974;
+	/*border-top: 1px solid #358974;*/
+	font-weight: bold;
+	margin: 0px;
+}
+
+.library .tab .tab-contents {
+	background-color: #99ffcc;
+	margin: 0px;
+	border-top: 2px solid black;
+	padding-bottom: 16px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.library #content .tab-contents h2 {
+	font-weight: bold;
+	font-style: italic;
+	padding-left: 10px;
+	font-size: 100%;
+}
+
+.library #content .tab-contents li {
+	font-weight: normal;
+	padding-left: 8px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.library #content .tab-contents li:before {
+	display: marker;
+	content: url("../graphics/ref_dot.gif");
+	marker-offset: auto;
+	padding-right: 3px;
 }
 
 .float {
