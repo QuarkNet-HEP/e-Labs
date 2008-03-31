@@ -30,7 +30,7 @@ If you choose Automatic, the Swift scheduler will decide the best place to run t
 <p />
 This diagram shows the choices you will see on your computer screen and the configuration of the computers you can access.<br />
 <p />
-   <img src="graphics/i2u2_execution.jpg" alt="Execution Choices" width='620' height='576'  border="1" />
+   <img src="../graphics/i2u2-execution.jpg" alt="Execution Choices" width='620' height='576'  border="1" />
 <p />
 <p />
 <p />
@@ -93,13 +93,13 @@ This table summarizes the features of the different choices you can make. The te
 You can watch the progress and queue an analysis so you can go work on something else.  You will see the following on your screen once you have started the analysis:
 <p />
 <br />
-   <img src="graphics/in_progress.jpg" alt="in-progress.jpg" width='593' height='313' border="1" />
+   <img src="../graphics/in-progress.jpg" alt="in-progress.jpg" width='593' height='313' border="1" />
 <p />
 Later you can click on the Analysis submenu on the Data Menu and see a list showing how your submitted analyses are doing and click on the results when they are done:
 <strong>The submitted analyses only stay on this queue for a set period of time, so it is important to get your results and save them as plots if you want to keep them.</strong>
 <p />
 <br />
-   <img src="graphics/analysis_list.jpg" alt="analysis_list.jpg" width='700' height='231'  border="1" />
+   <img src="../graphics/analysis-list.jpg" alt="analysis_list.jpg" width='700' height='231'  border="1" />
 <p />Good luck with your study!<p />
 </div>
 </body>
