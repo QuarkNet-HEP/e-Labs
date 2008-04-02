@@ -38,7 +38,7 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Country Map</h2>
+			<h2>County Map</h2>
 			
 			<p align="center">
 				<img src="../graphics/lhomap_2.jpg" alt="LIGO Country Map" 
