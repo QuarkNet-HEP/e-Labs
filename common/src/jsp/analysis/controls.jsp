@@ -3,10 +3,10 @@
 <p>
 	<e:vswitch>
 		<e:visible>
-			<strong>Execution Controls</strong>
+			<strong>Execution Controls</strong> <a href="javascript:showRefLink('../library/ref-exec-choices.jsp',820,700)"><img src="../graphics/question.gif"></a>
 		</e:visible>
 		<e:hidden>
-			<strong>Execution Controls</strong>
+			<strong>Execution Controls</strong> <a href="javascript:showRefLink('../library/ref-exec-choices.jsp',820,700)"><img src="../graphics/question.gif"></a>
 			<table width="100%" align="center">
 				<tr>
 					<td align="center" width="40%" valign="top">
