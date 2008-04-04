@@ -71,7 +71,7 @@
 							</tr>
 							<tr>
 								<td class="form-label">
-									<e:trlabel for="eventCoincidence" name="Coincidence Level">Event Coincidence Level:</e:trlabel>
+									<e:trlabel for="eventCoincidence" name="Coincidence Level">Event Coincidence:</e:trlabel>
 								</td>
 								<td class="form-control">
 									<e:trinput type="text" name="eventCoincidence" size="8" default="2"
