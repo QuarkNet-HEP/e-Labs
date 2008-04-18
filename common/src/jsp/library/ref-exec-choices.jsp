@@ -71,7 +71,7 @@ This table summarizes the features of the different choices you can make. The te
     <td width="50" valign="top">&nbsp;</td>
     <td width="69" valign="top">i2u2 cluster</td>
     <td width="69" valign="top">Half as fast as local</td>
-    <td width="68" valign="top">Still in testing</td>
+    <td width="68" valign="top">Still in testing. Occasionally fails.</td>
     <td width="118" valign="top">Larger analyses can be run without affecting local analyses</td>
     <td width="95" valign="top">Slower; still being tested     </td>
     <td width="173" valign="top">Intermediate size jobs with medium data sets</td>
