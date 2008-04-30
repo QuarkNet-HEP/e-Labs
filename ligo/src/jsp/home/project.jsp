@@ -32,26 +32,37 @@
 		</td>
 		
 		<td id="center">
-			<p>
-				The Cosmic Ray e-Lab provides an online environment in which students experience 
-				the excitement of scientific collaboration in this series of investigations into 
-				high-energy cosmic rays. Schools with cosmic ray detectors upload data to a 
-				"virtual data grid" portal where ALL the data resides. This approach allows 
-				students to analyze a much larger body of data and to share analysis code. Also, 
-				it allows schools that do not have cosmic ray detectors to participate in research 
-				by analyzing shared data.
-			</p>
-			
+		            <p>The LIGO e-lab provides
+an opportunity for students to bring the scientific method to life.
+Students will analyze authentic data, develop hypotheses about the
+data, test their hypotheses and share their results by making and
+discussing posters. The I2U2 program allows students to practice the
+same methods and habits that professional scientists use every day.</p>
+            <p>All that's needed for I2U2 is a
+computer, an internet connection and access to the I2U2 Web pages
+through a password-protected account. Teachers and students will not
+need to download software. LIGO's I2U2 data analysis tool runs on a
+server. Ultimately all of the I2U2 applications will run on the Grid --
+a national network of large computer clusters that are linked together
+to form a single enormous computing environment.</p>
+            <p>LIGO environmental sensors such as
+seismometers run constantly, delivering data to an acquisition system
+that distributes and archives the data within LIGO's networks. A subset
+of this environmental data will eventually migrate to the Grid where
+students with proper access will analyze it using a Grid-based data
+analysis tool.</p>
+            <p>The LIGO e-lab is designed for high
+school students who might be studying earth science, physical science
+or physics. The LIGO data analysis tool runs at beginner, intermediate
+and advanced levels. As students grow in their ability to conduct
+investigations, the user level allows them to advance to more
+sophisticated research questions.
+            </p>
+            <p>High school teachers of physics,
+physical science and earth science are warmly invited to join the
+LIGO I2U2 collaboration.</p>
+          
 
-			<p>
-				Students learn what cosmic rays are, where they come from and how they hit the Earth. 
-				While scientists understand cosmic rays with low to moderate energies, some cosmic 
-				rays have so much energy that scientists are not sure where they come from. A number 
-				of research projects are looking at this question. Students will have a chance to 
-				gain their own understanding of cosmic rays and may be fortunate enough to capture 
-				a rare highly-energetic cosmic ray shower on their classroom detector and analyze 
-				their results with this e-Lab.
-			</p>
 
 			<p>
 				<a href="/elab"><strong>Information common for all e-Labs</strong></a>
