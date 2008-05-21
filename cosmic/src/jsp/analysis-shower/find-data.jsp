@@ -23,7 +23,8 @@
 	//wrong timezone in the database. The database, at least 
 	//when you deploy the portal in Chicago (and burbs), is
 	//GMT - 5
-	Date time = new Date(Long.parseLong(ptime) + 1000*5*3600);
+	TimeZone localTZ = TimeZone.getDefault();
+	Date time = new Date(Long.parseLong(ptime) - localTZ.getOffset(Long.parseLong(ptime)));
 	And and = new And();
 	and.add(new Equals("project", elab.getName()));
 	and.add(new Equals("type", "split"));
