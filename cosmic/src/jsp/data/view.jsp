@@ -62,7 +62,7 @@
 			<a href="../geometry/view.jsp?filename=${param.filename}">Show Geometry</a>
 		</c:if>
 		<br/>
-		<form method="get">
+		<form method="get" action="../data/view.jsp">
 			Go to time<br/>
 			Hours: <e:trinput type="text" name="h" size="2" maxlength="2"/>
 			Minutes: <e:trinput type="text" name="m" size="2" maxlength="2"/>
