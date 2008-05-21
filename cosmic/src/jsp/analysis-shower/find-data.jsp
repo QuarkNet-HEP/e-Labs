@@ -40,8 +40,16 @@
 	else {
 		request.setAttribute("filename", ((CatalogEntry) sr.iterator().next()).getLFN());
 	}
+	Calendar c = Calendar.getInstance();
+	c.setTime(time);
+	request.setAttribute("h", String.valueOf(c.get(Calendar.HOUR_OF_DAY)));
+	request.setAttribute("m", String.valueOf(c.get(Calendar.MINUTE)));
+	request.setAttribute("s", String.valueOf(c.get(Calendar.SECOND)));
 %>
 
 <jsp:include page="../data/view.jsp">
 	<jsp:param name="filename" value="${filename}"/>
+	<jsp:param name="h" value="${h}"/>
+	<jsp:param name="m" value="${m}"/>
+	<jsp:param name="s" value="${s}"/>
 </jsp:include>
