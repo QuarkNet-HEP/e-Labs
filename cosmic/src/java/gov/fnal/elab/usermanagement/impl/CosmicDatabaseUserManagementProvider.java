@@ -130,7 +130,6 @@ public class CosmicDatabaseUserManagementProvider extends
                                     + i.next() + "');");
                 }
                 conn.commit();
-                group.setAttribute("cosmic:detectorIds", detectorIds);
             }
             finally {
                 conn.rollback();
