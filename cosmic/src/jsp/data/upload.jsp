@@ -67,8 +67,17 @@ Re: the upload progress stuff
 */
 --%>
 
-<%    
-	Collection ids = (Collection) user.getAttribute("cosmic:detectorIds");
+<%
+	ElabUserManagementProvider p = elab.getUserManagementProvider();
+	CosmicElabUserManagementProvider cp = null;
+	if (p instanceof CosmicElabUserManagementProvider) {
+		cp = (CosmicElabUserManagementProvider) p;
+	}
+	else {
+		throw new ElabJspException("The user management provider does not support management of DAQ IDs. " + 
+			"Either this e-Lab does not use DAQs or it was improperly configured.");
+	}    
+	Collection ids = cp.getDetectorIds(user);
     if(ids == null || ids.size() == 0) {
         throw new ElabJspException("Your group does not have any detector IDs associated with it. "
                 + "This is done when your group is first created.");
