@@ -99,7 +99,7 @@ Re: the upload progress stuff
 
 	if (FileUpload.isMultipartContent(request)) {
 	    //BEGIN upload_progress_stuff
-	    UploadListener listener = new UploadListener(request, 100);
+	    UploadListener listener = new UploadListener(request, 0);
 
 	    // Create a factory for disk-based file items
 	    FileItemFactory factory = new MonitoredDiskFileItemFactory(listener);
