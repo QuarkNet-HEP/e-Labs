@@ -126,7 +126,13 @@ Re: the upload progress stuff
                 	comments = fi.getString();
 				}
         	}
-			else {
+        }
+        
+		it = fileItems.iterator();
+
+		while (it.hasNext()) { 
+        	FileItem fi = (FileItem) it.next();
+			if (!fi.isFormField()) {
 				lfn = fi.getName();
 				if (lfn.equals("")) {
                 	throw new ElabJspException("Missing file.");
