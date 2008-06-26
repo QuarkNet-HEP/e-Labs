@@ -37,7 +37,7 @@
 	<e:trdefault name="plot_plot_type" value="2"/>
 	<e:trdefault name="plot_xlabel" value="East/West (meters)"/>
 	<e:trdefault name="plot_ylabel" value="North/South (meters)"/>
-	<e:trdefault name="plot_zlabel" value="Time (nanosec)"/>
+	<e:trdefault name="plot_zlabel" value="Time\n(ns)"/>
 	<e:trdefault name="sort_sortKey1" value="2"/>
 	<e:trdefault name="sort_sortKey2" value="3"/>
 	
