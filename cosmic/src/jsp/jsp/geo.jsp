@@ -30,6 +30,7 @@
             }
         </script>
         <%@ include file="include/javascript.jsp" %>
+        <script type="text/javascript" src="../include/elab.js"></script>
         
 <!-- creates variables ResultSet rs and Statement s to use: -->
 <%@ include file="include/jdbc_userdb.jsp" %>
