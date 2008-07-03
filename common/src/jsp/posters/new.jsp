@@ -250,7 +250,7 @@ pageContext.setAttribute("images", images);
 
 	<!-- Emit input form for replacement tags found in poster template -->
 
-	<form method="get">
+	<form method="post">
            <table width="650">
                 <tr>
                 	<td valign="top" align="right">Poster Filename:<br>(e.g.,poster_lifetime)</td>
