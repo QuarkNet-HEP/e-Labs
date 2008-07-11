@@ -136,24 +136,21 @@
 				<p>
 					Students will know and be able to: 
 					<ul>
-						<li>Content:
+						<li>Content and Investigation:
 							<ul>
 								<li>Identify particles observed in the data.</li>
 								<li>Describe the role sub-detector in data analysis.</li>
 								<li>Use data to measure the shape of showers produced by 
 								particles.</li>
 								<li>Use data to measure the detector's resolution.</li>
+								<li>
+									Design an investigation that asks a researchable question, 
+									can be answered from CMS Test Beam data and provides an 
+									explanation of what you learn about the CMS detector.								
+								</li>
 							</ul>
 						</li>
-						<li>Process:
-							<ul>
-								<li>Gather/use scientific data to identify particles.</li>
-								<li>Demonstrate skills using the internet, web and virtual 
-								data techniques.</li>
-								<li>Work collaboratively with students in other research 
-								groups.</li>
-							</ul>
-						</li>
+							<%@ include file="learner-outcomes.jsp" %>
 					</ul>
 				</p>
 
@@ -192,7 +189,9 @@
 
 				<ul>
 					<li>
-						<a href="../assessment/rubric.html">Rubric</a> aligned to learner outcomes.
+						<B>Rubrics:</B> <A HREF="../assessment/rubric-ci.html">Overall Content & Investigation</A>,
+						<A HREF="../assessment/rubric-r.html">Research Skills</A>, <A HREF="../assessment/rubric-t.html">Technology Skills</A>,
+						<A HREF="../assessment/rubric-wla.html">Writing and Language Arts</A> and <A HREF="../assessment/rubric-p.html">Poster</A>
 					</li>
 					<li>
 						<a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
@@ -205,9 +204,6 @@
 						e-Logbooks: Track and comment on student work. Review 
 						group logbook or all student entries for a particular 
 						milestone, e.g., class cosmic ray descriptions.
-					</li>
-					<li>
-						Poster rubric
 					</li>
 				</ul>
 			</div>
