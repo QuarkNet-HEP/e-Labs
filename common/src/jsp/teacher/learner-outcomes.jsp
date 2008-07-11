@@ -30,18 +30,14 @@
 			Demonstrate technical skill in accessing data from the Grid and Grid computing 
 			techniques.
 		</li>
-		<li>
-			Describe Grid-related careers and education paths to those careers.
-		</li>
 	</ul>
 </li>
 
 <li>Literacy:
 	<ul>
 		<li>
-			Demonstrate an ability to articulate meaning in writing (such as in science 
-			notebooks, reports) and negotiate meaning with others (such as peer 
-			review, discussion).
+			Demonstrate an ability to express meaning in writing (such as in science notebooks,
+      reports) and come to agreement about meaning with others (such as peer review, discussion).
 		</li>
 	</ul>
 </li>
