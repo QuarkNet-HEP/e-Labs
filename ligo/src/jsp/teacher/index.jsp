@@ -83,7 +83,7 @@
 				<p>
 					Here are the E-Lab outcomes that students must demonstrate:</p> 
 					<ul>
-						<li>Content:
+						<li>Content and Investigation:
 							<ul>
 								<li>
 									Define and describe<i>frequency</i>in the context of 
@@ -93,52 +93,17 @@
 									Explain how LIGO's measurement of seismic waves contributes 
 									to the project's effort to detect gravitational waves.
 								</li>
+								<li>
+									Design an investigation that asks a researchable question, 
+									can be answered from seismic data and provides an 
+									explanation of what you learn about seismic data.								
+								</li>
+
 							</ul>
-						</li>					
-						<li>Process: 
-							<ul>
-								<li>
-									Explain the data collection process including what corrections 
-									need to be made in order to obtain reliable data.
-								</li>
-								<li>
-									Evaluate the data to decide which are reliable/usable and which 
-									are not and explain how you arrived at the decision to include 
-									some data and exclude others.
-								</li>
-								<li>
-									Collect, organize and analyze data to obtain meaningful findings.
-								</li> 
-								<li>
-									Use the data to provide evidence to support your claims.
-								</li> 
-								<li>
-									Describe the contribution team members make in a several-person 
-									project.
-								</li>
-							</ul>
-						</li> 
-						<li>Technology/Grid: 
-							<ul>
-								<li>
-									Demonstrate technical skill in accessing data from the Grid and 
-									Grid computing techniques.
-								</li> 
-								<li>
-									Describe Grid-related careers and education paths to those careers.
-								</li>
-							</ul>
-						</li> 
-						<li>Literacy:
-							<ul>
-								<li>
-									Demonstrate an ability to articulate meaning in writing (such as in 
-									science notebooks, reports) and negotiate meaning with others (such 
-									as peer review, discussion).
-								</li>
-							</ul>
-						</li>
-					</ul>
+							</li>
+							
+							<%@ include file="learner-outcomes.jsp" %>
+			   	</ul>
 				</p>
 
 				<h2>Research Question:</h2>
@@ -165,11 +130,11 @@
 					
 					<ul>
 						<li>
-							Rubrics: <a href="rubric-ci.html">Overall Content & Investigation</a>, 
-							<a href="rubric-r.html">Research Skills</a>, 
-							<a href="rubric-t.html">Technology Skills</a>,
-							<a href="rubric-wla.html">Writing and Language Arts</a> and 
-							<a href="rubric-p.html">Poster</a>
+							Rubrics: <a href="../assessment/rubric-ci.html">Overall Content & Investigation</a>, 
+							<a href="../assessment/rubric-r.html">Research Skills</a>, 
+							<a href="../assessment/rubric-t.html">Technology Skills</a>,
+							<a href="../assessment/rubric-wla.html">Writing and Language Arts</a> and 
+							<a href="../assessment/rubric-p.html">Poster</a>
 						</li>
 						<li>
 							<a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
