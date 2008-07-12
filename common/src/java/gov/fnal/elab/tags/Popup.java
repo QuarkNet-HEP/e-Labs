@@ -41,6 +41,8 @@ public class Popup extends TagSupport {
                 out.write(width);
                 out.write(",height=");
                 out.write(height);
+                out.write(", ");
+                out.write("resizable=1, scrollbars=1");
                 out.write("');</script>");
             }
             else {
