@@ -46,7 +46,6 @@
 					more about how the LHC gets ready to make actual runs.
 				</p>
 				
-
 	
 				<a href="/elab"><strong>Information common for all e-Labs</strong></a>
 			</div>
