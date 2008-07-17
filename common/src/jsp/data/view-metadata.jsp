@@ -20,7 +20,7 @@
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	
-	<body id="view-metadata" class="data">
+	<body id="view-metadata"  class="data">
 		<!-- entire page container -->
 		<div id="container">
 			<c:if test="${param.menu != 'no'}">
