@@ -41,8 +41,8 @@
 					<span class="tab-title">Analysis</span>
 					<div class="tab-contents">
 						<p>
-							<a href="tutorial.jsp">Shower Study Tutorial</a> -
-							Read background information about the shower study.
+							<a href="tutorial.jsp">Shower Depth Study Tutorial</a> -
+							Read background information about the shower depth study.
 						</p>
 						<p>
 							<a href="http://leptoquark.hep.nd.edu:8080/OGRE/ogre.jsp">Access OGRE</a> -
