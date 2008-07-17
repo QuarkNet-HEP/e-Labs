@@ -12,12 +12,11 @@
 	<area shape="rect" alt="" coords="287,102,377,139" href="javascript:reference('test_beam_particles',600)">
 	<area shape="rect" alt="" coords="239,157,319,194" href="javascript:reference('test_beam_setup',600)">
 	<area shape="rect" alt="" coords="191,124,257,158" href="javascript:reference('research_plan',600)">
-	<area shape="rect" alt="" coords="182,221,226,259" href="javascript:reference('scatter_plots',600)">
 	<area shape="rect" alt="" coords="69,178,141,219" href="javascript:reference('simple_calculations',600)">
 	<area shape="rect" alt="" coords="687,0,745,79" href="showStudents.jsp?type=post">
 	<area shape="rect" alt="" coords="0,0,50,78" href="showStudents.jsp?type=pre">
 	<area shape="rect" alt="" coords="63,0,121,73" href="first.jsp">
 	<area shape="rect" alt="" coords="67,120,164,164" href="javascript:reference('simple_measurement',600)">
-	<area shape="rect" alt="" coords="127,220,168,259" href="javascript:reference('simple_graphs',600)">
+	<area shape="rect" alt="" coords="127,220,226,259" href="javascript:reference('simple_graphs',600)">
 </map>
  
