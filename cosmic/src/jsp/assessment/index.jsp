@@ -20,20 +20,18 @@
 			The following objectives outline what you will learn and be able to do during this study of cosmic rays.
 			For assessment follow the guidance your teacher gave you at the beginning of the project.
 			</p>
-					<ul>
-						<li>
-							Content and Investigation:
-							<ul>
-								<li>Identify components of primary, secondary and later generation cosmic rays. 
-								<li>Provide a complete list of properties of cosmic rays revealed in the observations.
-								<li>Design an investigation that asks a researchable question, can be answered from the cosmic ray data and provides an explanation about what you will learn about cosmic rays. 
- 
-							</ul>
-						</li>
-							
+				   <ul>
+					<li>Content and Investigation:
+						<ul>
+								<li>Identify cosmic ray sources and describe how the resulting muons are created in the atmosphere.</li> 
+								<li>Explain what the cosmic ray detector measures.</li> 
+								<li>Manipulate the data in a way that helps them understand characteristics of the muon.</li> 
+								<li>Design an investigation that asks a testable hypothesis which can be answered from the cosmic ray data and provides a description of cosmic ray phenomena.</li> 
+								</ul>
+				</li>
 							<%@ include file="../teacher/learner-outcomes.jsp" %>
-					</ul>
-			
+			</ul>
+
 				</div>  <!-- end objectives -->	
 				</div>  <!-- end content -->	
 					
