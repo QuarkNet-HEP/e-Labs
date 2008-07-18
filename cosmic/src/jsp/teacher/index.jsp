@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Cosmic Project Page</title>
+		<title>Cosmic Teacher Page</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 	</head>
@@ -139,9 +139,10 @@
 						<li>
 							Content and Investigation:
 							<ul>
-								<li>Identify components of primary, secondary and later generation cosmic rays. 
-								<li>Provide a complete list of properties of cosmic rays revealed in the observations.
-								<li>Design an investigation that asks a researchable question, can be answered from the cosmic ray data and provides an explanation about what you will learn about cosmic rays. 
+								<li>Identify cosmic ray sources and describe how the resulting muons are created in the atmosphere.</li> 
+								<li>Explain what the cosmic ray detector measures.</li> 
+								<li>Manipulate the data in a way that helps them understand characteristics of the muon.</li> 
+								<li>Design an investigation that asks a testable hypothesis which can be answered from the cosmic ray data and provides a description of cosmic ray phenomena.</li> 
  
 							</ul>
 						</li>
