@@ -65,7 +65,7 @@
 			<p>
 				LIGO's huge laser interferometers in 
 				<a href="http://www.ligo-wa.caltech.edu">Washington State</a> and in 
-				<a href="http://www.ligo-la.caltech.edu">Louisiana</a> (sidebar photos) 
+				<a href="http://www.ligo-la.caltech.edu">Louisiana</a>
 				listen for the faint ripples of space-time called gravitational waves. 
 				LIGO seeks to detect gravitational waves from the collisions of black 
 				holes or neutron stars and from star explosions known as supernovae. 
@@ -85,9 +85,9 @@
 				I2U2 relies on a national network of computers known as the Grid to 
 				make data and analysis tools available over the Internet through virtual 
 				laboratories known as E-Labs. Check the main 
-				<a href="http://www.i2u2.org:8080/index.html">I2U2</a> Web site to find 
+				<a href="http://www.i2u2.org/index.html">I2U2</a> Web site to find 
 				the cosmic ray, high energy physics and nuclear physics 
-				<a href="http://www.i2u2.org:8080/elab/list.html">E-Labs</a> that also 
+				<a href="http://www.i2u2.org/elab/list.html">E-Labs</a> that also 
 				are available to you.  I2U2 provides data and software that allows students 
 				and teachers to perform authentic science research in a professional-style 
 				collaborative environment, brought to you by the power of the Grid.
