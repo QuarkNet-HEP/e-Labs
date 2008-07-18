@@ -40,10 +40,14 @@
 			
 			<p>
 				Bluestone software allows you to select and plot data from 
-				LIGO data channels. Check out the Bluestone Tutorial to 
-				improve your skills at using this tool. Then fire up 
+				LIGO data channels. 
+				<ul>
+				<li>Check out the <a href="tutorial.jsp">Bluestone Tutorial</a> to 
+				improve your skills at using this tool.</li>
+				<li>Then fire up 
 				<a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone</a>
-				as you start investigating your research question.
+				as you start investigating your research question.</li>
+				</ul>
 			</p>
 			
 			<h2>Access your plots, uploaded images and posters</h2>
