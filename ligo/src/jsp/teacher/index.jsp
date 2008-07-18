@@ -12,7 +12,7 @@
 	</head>
 
 	<body id="teacher" class="teacher">
-		<!-- entire page container -->
+		<!-- entire page container  -->
 		<div id="container">
 			<div id="top">
 				<div id="header">
@@ -50,7 +50,7 @@
 				<p>
 					LIGO's huge laser interferometers in 
 					<a href="http://www.ligo-wa.caltech.edu">Washington State</a> and in 
-					<a href="http://www.ligo-la.caltech.edu">Louisiana</a> (sidebar photos) 
+					<a href="http://www.ligo-la.caltech.edu">Louisiana</a>
 					listen for the faint ripples of space-time called gravitational waves.
 					LIGO seeks to detect gravitational waves from the collisions of black 
 					holes or neutron stars and from star explosions known as supernovae. 
@@ -76,7 +76,7 @@
 							<li>Make a research plan</li>
 						</ul>
 					We provide a refresher for students who need to brush up on these skills.
-					Here is what the students see:  <a href="basics.jsp">Review of Basic Skills</a>
+					Here is what the students see:  <a href="../library/research-basics.jsp">Review of Basic Skills</a>
 				</p>
 				
 				<h2>Learner Outcomes:</h2>
@@ -86,17 +86,19 @@
 						<li>Content and Investigation:
 							<ul>
 								<li>
-									Define and describe<i>frequency</i>in the context of 
-									wave behavior
+									Define and describe frequency in the context of wave 
+									behavior.
 								</li>
 								<li>
-									Explain how LIGO's measurement of seismic waves contributes 
-									to the project's effort to detect gravitational waves.
+									Describe causes effecting the environmental changes being measured by LIGO's environmental sensing data in your study.
 								</li>
 								<li>
-									Design an investigation that asks a researchable question, 
-									can be answered from seismic data and provides an 
-									explanation of what you learn about seismic data.								
+									Explain how LIGO's measurements of seismic waves 
+									contributes to the project's effort to detect 
+									gravitational waves.
+								</li>
+								<li>
+									Design an investigation that asks a testable hypothesis, can be answered from seismic data and provides an explanation of what you learn about seismic data.								
 								</li>
 
 							</ul>
@@ -139,9 +141,10 @@
 						<li>
 							<a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
 							- and <a href="../test/test.jsp?type=postsurvey&studentid=0">post</a>
-							- tests of content knowledge and student results for 
+							- tests of content knowledge.</li>
+						<li>Student results for 
 							<a href="../test/results.jsp?type=presurvey">pre</a>
-							- and <a href="../test/results.jsp?type=postsurvey">post</a>- tests.
+							- and <a href="../test/results.jsp?type=postsurvey">post</a>-tests.
 						</li>
 						<li>
 							e-Logbooks: Track and comment on student work. Review 
