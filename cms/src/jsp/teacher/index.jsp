@@ -129,25 +129,19 @@
 
 					We provide refresher references for students who need to brush up on 
 					these skills. Here is what the students see: 
-					<a href="research_basics.jsp">Review of Basic Skills</a>
+					<a href="../research_basics.jsp">Review of Basic Skills</a>
 				</p>
 				
 				<h2>Learner Outcomes:</h2>
 				<p>
-					Students will know and be able to: 
+					Students will know and be able to:  
 					<ul>
 						<li>Content and Investigation:
 							<ul>
-								<li>Identify particles observed in the data.</li>
-								<li>Describe the role sub-detector in data analysis.</li>
-								<li>Use data to measure the shape of showers produced by 
-								particles.</li>
-								<li>Use data to measure the detector's resolution.</li>
-								<li>
-									Design an investigation that asks a researchable question, 
-									can be answered from CMS Test Beam data and provides an 
-									explanation of what you learn about the CMS detector.								
-								</li>
+								<li>Describe how determination of particle signatures from the test beam contributes to the calibration of, and particle identification in, the CMS detector.</li>
+								<li>Describe the role of each sub-detector in data analysis.</li>
+								<li>Use data to measure and describe detector characteristics.</li>
+								<li>Design an investigation with a testable hypothesis that can be answered from CMS Test Beam data. Describe what you will learn about the CMS detector from carrying out the investigation.</li>
 							</ul>
 						</li>
 							<%@ include file="learner-outcomes.jsp" %>
@@ -196,7 +190,8 @@
 					<li>
 						<a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
 						- and <a href="../test/test.jsp?type=postsurvey&studentid=0">post</a>
-						- tests of content knowledge and student results for 
+						- tests of content knowledge.</li>
+						<li>Student results for 
 						<a href="../test/results.jsp?type=presurvey">pre</a>
 						- and <a href="../test/results.jsp?type=postsurvey">post</a>- tests.
 					</li>
