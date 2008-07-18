@@ -35,7 +35,7 @@
 
 <h2>Add an Activity</h2>
 <p>
-	John Kerr of Pasco High School (WA) has developed a <a href="ligo_elab1.pdf">generic model (PDF)</a> 
+	John Kerr of Pasco High School (WA) has developed a <a href="../library/ligo_elab1.pdf">generic model (PDF)</a> 
 	for getting started on the LIGO E-Lab.
 </p>
 
