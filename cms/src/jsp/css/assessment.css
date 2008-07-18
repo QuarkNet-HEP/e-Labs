@@ -21,10 +21,12 @@
 
 #assessment td {
 	padding: 6px;
+	vertical-align: top;
 }
 
 #assessment th {
 	font-weight: normal;
+	vertical-align: top;
 }
 
 #assessment #footer {
