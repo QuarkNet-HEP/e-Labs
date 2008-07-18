@@ -1,5 +1,4 @@
 <%@ include file="../include/elab.jsp" %>
-<%@ include file="../login/login-required.jsp" %>
 <%@ page import="java.util.*" %>
 
 
@@ -36,12 +35,53 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Frequently Asked E-Lab Questions (FAQ's)</h2>
-			<p>
-				Use the <a href="http://tekoa.ligo-wa.caltech.edu/tla">LIGO E-Lab Discussion Site</a> 
-				to find online discussions of many of your E-Lab questions.  Add your own information 
-				to the Discussion Site to share your knowledge with other students!
-			</p>
+
+
+ <h2>E-Lab Questions and Answers</h2> 
+
+  <P>
+
+Several resources are available to get answers to questions, or to ask for
+help from other LIGO e-Lab participants:
+
+<UL>
+<LI> Use <a href='http://www13.i2u2.org/glossary'>the Glossary</a> to 
+     look up technical terms or to read articles about LIGO components and
+     systems.
+
+<LI> News and current status may be available from the (prototype!) 
+     <a href='http://www13.i2u2.org/'main portal page, or posted to 
+     <a href='http://www13.i2u2.org/forum_forum.php?id=38'>The
+     Bulletin Board</a>.
+
+<LI> You can report a problem or make a request to the I2U2 Help Desk
+     using the <a href='http://www13.i2u2.org/HelpDeskRequest.php'>Help
+     Desk Request Form</a>.
+
+</UL>
+
+<P>
+
+
+<h2>Still under development...</h2>
+<P>
+<UL>
+<LI> Visit the <a href='http://www13.i2u2.org/forum_forum.php?id=47'>
+     Gladstone Room</a> for discussions with other participants about the
+     LIGO e-Lab.
+
+<LI> Post a question directly to the <a href='http://www13.i2u2.org/forum_forum.php?id=58'>
+     LIGO Help Desk</a>
+
+<LI> Visit the other  
+     <a href='http://www13.i2u2.org/forum_index.php'>discussion forums</a> 
+     to find out what is happening with other e-Labs, or have a look at the
+     other <a href='http://www13.i2u2.org/forum_help_desk.php'>Help Desks</a>
+
+</UL>
+
+
+
 		</td>
 	</tr>
 </table>
