@@ -25,7 +25,6 @@
 				<li>
 					Content and Investigation Objectives:
 					<ul>
-							<ul>
 								<li>Describe how determination of particle signatures from the test beam contributes to the calibration of, and particle identification in, the CMS detector.</li>
 								<li>Describe the role of each sub-detector in data analysis.</li>
 								<li>Use data to measure and describe detector characteristics.</li>
