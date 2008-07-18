@@ -21,7 +21,7 @@
 			For assessment follow the guidance your teacher gave you at the beginning of the project.
 			</p>
 				   <ul>
-					<li>Content:
+					<li>Content and Investigation:
 						<ul>
 								<li>Identify cosmic ray sources and describe how the resulting muons are created in the atmosphere.</li> 
 								<li>Explain what the cosmic ray detector measures.</li> 
