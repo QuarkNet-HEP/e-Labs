@@ -47,7 +47,7 @@
 		<title>Cosmic Data Interface</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	
@@ -68,23 +68,32 @@
 			
 			<div id="content">
 
-<h1>View References for Study Guide</h1>
+<table border="0" id="main">
+	<tr>
+		<td id="left" valign="top">
+			<%@ include file="../include/left-alt.jsp" %>
+		</td>
+		<td id="center">
+<h2>View References for Study Guide</h2>
 
 <p align="center">
 	<a href="../references/showAll.jsp?t=reference">View References for Study Guide</a>
 	-
-	<a href="../references/showAll.jsp?t=glossary">View Glossary</a>
+	<a href="http://www13.i2u2.org/glossary/index.php/I2U2_Glossary_and_Library">View Glossary</a>
 </p>
 
 <table id="references-table" cellpadding="4" cellspacing="4">
 	<c:forEach items="${files}" var="file">
 		<tr>
-			<td valign="top" width="20%">${file.key}</td>
+			<td valign="top" width="30%">${file.key}</td>
 			<td class="reference-text"><jsp:include page="../references/${file.value}"/></td>
 		</tr>
 	</c:forEach>
 </table>
 
+		</td>
+	</tr>
+</table>
 
 			</div>
 			<!-- end content -->	
