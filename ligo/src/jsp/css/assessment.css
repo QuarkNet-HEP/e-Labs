@@ -17,7 +17,7 @@ h1 {
 	padding-bottom: 6px;
 	border-bottom: solid 2px #666666;
 	margin-left: 0px;
-	font-family: verdana, arial, sans-serif;
+	font-family: arial, sans-serif;
 	font-weight: bold;
 	font-size: 120%;
 	color: #333399;
@@ -32,7 +32,16 @@ h1 {
 .assessment #center p {
 	font-weight: normal;
 	margin-left: 10px;
+	font-size: 100%;
 }
+
+.assessment #center table,tr,td  {
+	font-weight: normal;
+	margin-left: 10px;
+	vertical-align: top;
+	font-size: 100%;
+}
+
 
 .assessment dt {
 	font-weight: bold;
@@ -97,12 +106,12 @@ margin-left: 20px;
 }
 
 .assessmentRubric p {
-	font-size: 90%;
+	font-size: 90%; 
 }
 
 #assessmentRubric table, td {
 	border: 1px solid gray;
-	font-size: 85%;
+		font-size: 85%; 
 }
 
 #assessmentRubric table {
