@@ -36,7 +36,7 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Getting started! Make sure you meet each of these milestones on the diagram below.</h2>
+			<h2>Getting started! Make sure you meet the milestones on the diagram.</h2>
 			<p>
 				Follow the workflow map below to guide your work. Click on the hotspots 
 				to get references for accomplishing your milestones. These dots in your 
@@ -56,7 +56,7 @@
 				<div class="link-list">
 					<a href="milestones.jsp">Milestones (text version)</a>
 				 	|
-					<a href="../references/showAll.jsp?t=glossary">Glossary</a>
+					<a href="http://www13.i2u2.org/glossary/index.php/I2U2_Glossary_and_Library">Glossary</a>
 				 	| 
 					<a href="../references/showAll.jsp?t=reference">All References for Study Guide <img src="../graphics/ref.gif"/></a>
 				</div>
