@@ -6,10 +6,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>CMS Resources: Study Guide</title>
+		<title>Ligo Resources: Study Guide</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	
@@ -30,28 +29,52 @@
 			
 			<div id="content">
 				
-<%
-	if (user.isProfDev()) {
-		%>
-			<%@ include file="milestones-profdev.jsp" %>
-		<%
-	}
-	else {
-		%>
-			<%@ include file="milestones-student.jsp" %>
-		<%
-	}
-%>
+
+<table border="0" id="main">
+	<tr>
+		<td id="left">
+			<%@ include file="../include/left-alt.jsp" %>
+		</td>
+		<td id="center">
+			<h2>Getting started! Make sure you meet each of these milestones below.</h2>
+			<p>
+				 Now you're ready to begin.  Follow the workflow list below to guide your work. Go through the E-Lab tasks one at a time; 
+				The Basics (optional), Get Started, Figure It Out and Tell Others.
+			</p>
+			<p><b>Click on <img border="0" src="../graphics/ref.gif"> for
+	  	references to help you meet each milestone.</b></p>
+<!--
+			<center>
+-->
+				<c:choose>
+					<c:when test="${user.group.profDev}">
+						<%@ include file="milestones-profdev.jsp" %>
+					</c:when>
+					<c:otherwise>
+						<%@ include file="milestones-student.jsp" %>
+					</c:otherwise>
+				</c:choose>
+				<div class="link-list">
+					<a href="milestones-map.jsp">Milestones (map version)</a>
+				 	|
+					<a href="http://www13.i2u2.org/glossary/index.php/I2U2_Glossary_and_Library">Glossary</a>
+				 	| 
+					<a href="../references/showAll.jsp?t=reference">All References for Study Guide <img src="../graphics/ref.gif"/></a>
+				</div>
+<!--
+			</center>
+-->
+			
+		</td>
+	</tr>
+</table>
+
 
 			</div>
 			<!-- end content -->	
 		
 			<div id="footer">
-				<a href="../references/showAll.jsp?t=glossary">Glossary</a> - 
-				<a href="../references/showAll.jsp?t=reference">All References for Study Guide</a>
-				<a href="../references/showAll.jsp?t=reference">
-					<img src="../graphics/ref.gif">
-				</a>
+				<%@ include file="../include/nav-footer.jsp" %>	
 			</div>
 		</div>
 		<!-- end container -->
