@@ -32,14 +32,41 @@ h1 {
 .assessment #center p {
 	font-weight: normal;
 	margin-left: 10px;
+	font-size: 110%;
+}
+
+.assessment #center ul {
+	font-weight: normal;
+	margin-left: 10px;
+	margin-left: 0px;
+	padding-left: 32px;
+	list-style-type: disc;
+	list-style-image: url("../graphics/gray-disc.gif");
+	font-size: 110%;
+}
+
+#content #center li {
+	padding-bottom: 12px;
 	font-size: 100%;
 }
+
+#content #center ul ul {
+	margin-left: 16px;
+	font-size: 100%;
+}
+
+#content #center ul ul li {
+	list-style-image: url("../graphics/circ.gif");
+	font-size: 95%;
+}
+
+
 
 .assessment #center table,tr,td  {
 	font-weight: normal;
 	margin-left: 10px;
 	vertical-align: top;
-	font-size: 100%;
+	font-size: 110%;
 }
 
 
@@ -106,12 +133,12 @@ margin-left: 20px;
 }
 
 .assessmentRubric p {
-	font-size: 90%;
+	font-size: 90%; 
 }
 
 #assessmentRubric table, td {
 	border: 1px solid gray;
-	font-size: 85%;
+		font-size: 85%; 
 }
 
 #assessmentRubric table {
