@@ -46,7 +46,9 @@
 				<li><a href="http://earthquake.usgs.gov">USGS Earthquake Records</a></li>
 				<li><a href="http://www.ess.washington.edu/SEIS/PNSN/">Pacific Northwest Seismic Network</a></li>
 				<li><a href="http://www.gcse.com/waves/seismometers.htm">How Does a Seismometer Work?</a></li>
-				<li><a href="http://www.exploratorium.edu/faultline/basics/waves.html">Types of Earthquake Waves</a></li>
+				<li><a href="http://www.exploratorium.edu/faultline/basics/waves.html"
+				       target='_blank'>Types of Earthquake Waves</a>
+				       <img src='http://www13.i2u2.org/glossary/skins/monobook/external.png'>
 				<li><a href="ligo_elab1.pdf">E-Lab Seismic Study (PDF)</a></li>
 			</ul>
 		</td>
