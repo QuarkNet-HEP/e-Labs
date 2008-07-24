@@ -17,7 +17,7 @@ h1 {
 	padding-bottom: 6px;
 	border-bottom: solid 2px #666666;
 	margin-left: 0px;
-	font-family: verdana, arial, sans-serif;
+	font-family: arial, sans-serif;
 	font-weight: bold;
 	font-size: 120%;
 	color: #333399;
@@ -33,6 +33,14 @@ h1 {
 	font-weight: normal;
 	margin-left: 10px;
 }
+
+.posters #center tr,td {
+	font-weight: normal;
+	margin-left: 10px;
+  font-size: 95%;
+  padding: 5px;
+}
+
 
 a.button {
 	background-color: #ff6600;
