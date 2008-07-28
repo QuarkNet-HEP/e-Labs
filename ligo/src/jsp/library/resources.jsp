@@ -71,6 +71,15 @@
 	      target='_blank'>Types of Earthquake Waves</a>
 	      <img src='http://www13.i2u2.org/glossary/skins/monobook/external.png'>
 </ul>
+
+<font size='-1'>
+Note that links with the 
+<img src='http://www13.i2u2.org/glossary/skins/monobook/external.png'>
+symbol take you to another web site, and will open up in another browser 
+window.
+</font>
+
+
 <!-- end content body --> 
 
 
