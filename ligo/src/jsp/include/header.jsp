@@ -7,7 +7,7 @@
 </div>
 
 <div id="header-title">
-	Welcome to the LIGO I2U2 E-Lab
+	Welcome to the LIGO I2U2 e-Lab
 </div>
 
 <div id="second-header-title">
