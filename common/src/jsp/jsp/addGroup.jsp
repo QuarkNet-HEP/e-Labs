@@ -182,7 +182,7 @@ String submit =  request.getParameter("submit");
                                                 return;
                                             }
                                             //see if the city is already in the database
-                                            rs = s.executeQuery("SELECT city.name, state.name FROM city, state WHERE Upper(city.name)=Upper('" + cityNew + "') AND city.state_id='" + state_id + "';");
+                                            rs = s.executeQuery("SELECT city.name, state.name FROM city, state WHERE Upper(city.name)=Upper('" + cityNew + "') AND city.state_id='" + state_id + "' and city.state_id=state.id;");
                                             if(rs.next() != false){
                                                 warn(out, cityNew + " is already in the pull-down list");
                                                 return;
@@ -253,7 +253,11 @@ String submit =  request.getParameter("submit");
                                                 return;
                                             }
                                             //see if the school is already in the database
-                                            rs = s.executeQuery("SELECT school.name, city.name FROM school, city WHERE Upper(school.name)=Upper('" + schoolNew + "') AND school.city_id='" + city_id + "';");
+                                            String schoolQuery2 = "SELECT school.name, city.name FROM school,city,state WHERE Upper(school.name)=Upper('" + schoolNew + "') AND school.city_id='" + city_id;
+                                            schoolQuery2=schoolQuery2+"' AND school.city_id=city.id and city.state_id=state.id;";
+                                            
+                                            
+                                            rs = s.executeQuery(schoolQuery2);
                                             if(rs.next() != false){
                                                 warn(out, schoolNew + " is already in the pull-down list");
                                                 return;
@@ -319,7 +323,8 @@ String submit =  request.getParameter("submit");
                                             teacherNew = teacherNew.replaceAll("'", "\\\\'");
                                             //see if the teacher is already in the database
                                             String teacherQuery = "SELECT teacher.name, school.name, city.name, state.name FROM teacher, school, city, state WHERE Upper(teacher.name)=Upper('" + teacherNew + "')";
-                                            teacherQuery = teacherQuery + " AND school.name='" + school + "' AND city.name='" + city + "' AND state.abbreviation='" + state + "';";
+                                            teacherQuery = teacherQuery + " AND school.name='" + school + "' AND city.name='" + city + "' AND state.abbreviation='" + state;
+                                            teacherQuery=teacherQuery + "' and teacher.school_id=school.id and school.city_id=city.id and city.state_id=state.id;";
                                             
                                             rs = s.executeQuery(teacherQuery);
                                             if(rs.next() != false){
@@ -366,16 +371,26 @@ String submit =  request.getParameter("submit");
                                     }
                                     else{
                                         if(group.equals("")){
-                                            warn(out, "Please enter a group name");
+                                            warn(out, "Please go back and enter a group name");
                                             return;
                                         }
                                        //Complain if the user enters non alpha-numeric characters for a group name
                                         Pattern p1 = Pattern.compile("^[a-zA-Z0-9_]+$");
                                         Matcher m1 = p1.matcher(group);
                                         if(!m1.matches()){
-                                            warn(out, "Please enter a group name with ONLY alpha-numeric characters.\n<br>Your group: '" + group + "'");
+                                            warn(out, "Please go back and enter a group name with ONLY alpha-numeric characters.\n<br>Your group: '" + group + "'");
                                             return;
                                         }
+                                   //check if this exact entry is alreay in the research_group table
+                                    String SQLresearchID = "SELECT id from research_group WHERE " +
+                                                        "name='" + group + "';"; //AND " +
+                                                        //"userarea='" + newUserArea + "' AND " +
+                                                        //"ay='" + ay + "';";
+                                    rs = s.executeQuery(SQLresearchID);
+                                    if(rs.next() != false){
+                                        warn(out, "Your username/groupname is already taken. Please go back and choose a different name.");
+                                        return;
+                                    }
                                         out.write(group);
                                         out.write("<input type=\"hidden\" name=\"group\" value=\"" + group +"\">\n");
                                     }
@@ -454,7 +469,7 @@ String submit =  request.getParameter("submit");
 <%
                                    if(role != null){
                                         if(role.equals("")){
-                                            warn(out, "Please enter a role");
+                                            warn(out, "Please go back and enter a role");
                                             return;
                                         }
 %>
@@ -484,7 +499,7 @@ String submit =  request.getParameter("submit");
                                     out.write("<tr><td>DAQ Board ID(s)</td><td>");
                                     if(detectorString != null && !detectorString.equals("")){
                                         if(!detectorString.matches("^[0-9]{1,4}(,\\s*[0-9]{1,4})*$")){
-                                            warn(out, "Please enter a detector (or detectors) as a comma delimited list");
+                                            warn(out, "Please go back and enter a detector (or detectors) as a comma delimited list");
                                             return;
                                         }
 
@@ -545,12 +560,12 @@ String submit =  request.getParameter("submit");
                                     else{
                                         out.write("<tr><td>");
                                         if(passwd1 != null && passwd2 != null && !passwd1.equals(passwd2)){
-                                            warn(out, "Your passwords do not match!");
+                                            warn(out, "Go back - Your passwords do not match!");
                                             return;
                                         }
                                         
                                         if(passwd1 != null && passwd1.equals("")){
-                                            warn(out, "Please enter a password");
+                                            warn(out, "Please go back and enter a password");
  %>
                                         <tr><td>Password</td><td><input type="password" name="passwd1" size="10" maxlength="10"></td></tr>
                                         <tr><td>Verify Password</td><td><input type="password" name="passwd2" size="10" maxlength="10"></td></tr>
@@ -559,7 +574,7 @@ String submit =  request.getParameter("submit");
                                         }
 
                                         if(passwd2 != null && passwd2.equals("")){
-                                            warn(out, "Please enter a password verification");
+                                            warn(out, "Please go back and enter a password verification");
  %>
                                         <tr><td>Password</td><td><input type="password" name="passwd1" size="10" maxlength="10"></td></tr>
                                         <tr><td>Verify Password</td><td><input type="password" name="passwd2" size="10" maxlength="10"></td></tr>
@@ -568,7 +583,7 @@ String submit =  request.getParameter("submit");
                                         }
 
                                         if(passwd1.matches(".*[\"'\\(\\)*].*")){
-                                            warn(out, "Please do not enter a password with any characters: *\"()'");
+                                            warn(out, "Please go back and do not enter a password with any characters: *\"()'");
                                             return;
                                         }
 
@@ -577,7 +592,7 @@ String submit =  request.getParameter("submit");
                                         out.write("<tr><td>Verification</td><td>" + passwd2.replaceAll(".", "\\*") + "</td></tr>");
                                     }
                                 }
-  
+                                   
                                    if(group != null && project != null && ay != null && role != null && survey != null && passwd1 != null && passwd2 !=null){
                                     //create any new directories that are needed 
                                     // Why are these directories set up before the test to see if the name and password is taken? LQ 7/25/06
@@ -642,18 +657,8 @@ String submit =  request.getParameter("submit");
                                             }
                                         }
                                     }
-
-                                    //check if this exact entry is alreay in the research_group table
-                                    String SQLresearchID = "SELECT id from research_group WHERE " +
-                                                        "name='" + group + "';"; //AND " +
-                                                        //"userarea='" + newUserArea + "' AND " +
-                                                        //"ay='" + ay + "';";
-                                    rs = s.executeQuery(SQLresearchID);
-                                    if(rs.next() != false){
-                                        warn(out, "Your username/groupname is already taken. Please choose a different name.");
-                                        return;
-                                    }
-
+                                    // moved code to check that research_group does not already exist from here to earlier part  LQ
+  
 
  
                                     //add the new registration information to research_group
@@ -730,7 +735,7 @@ String submit =  request.getParameter("submit");
 %>
                                         You may add <a
                                         href="../login/login.jsp?user=<%=group%>&pass=<%=passwd1%>&project=<%=project%>">teachers or
-                                        research groups</a> as the teacher
+                                        research groups</a> as a teacher with logon group 
                                         <%=group%>.
 <%
                                     }
