@@ -11,11 +11,13 @@ package gov.fnal.elab.tags;
 
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabFactory;
+import gov.fnal.elab.analysis.AnalysisParameterTransformer;
 import gov.fnal.elab.analysis.ElabAnalysis;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +28,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 public class Analysis extends TagSupport {
     public static final String ATTR_ANALYSIS = "elab:analysis";
 
-    private String name, impl, type, param;
+    private String name, impl, type, param, parameterTransformer;
 
     public int doEndTag() throws JspException {
         return EVAL_PAGE;
@@ -39,20 +41,33 @@ public class Analysis extends TagSupport {
                 throw new JspException(
                         "No elab available. Did you include elab.jsp?");
             }
-            ElabAnalysis analysis = (ElabAnalysis) pageContext.getRequest()
+            ElabAnalysis old = (ElabAnalysis) pageContext.getRequest()
                     .getAttribute(ATTR_ANALYSIS);
-            if (analysis != null) {
-                if (!compareType(type, analysis.getType())) {
+            ElabAnalysis analysis = ElabFactory.newElabAnalysis(elab, impl,
+                    param);
+            analysis.setType(type);
+            if (old != null) {
+                if (!compareType(type, old.getType())) {
                     throw new JspException(
                             "Stored analysis type doesn't match the requested "
                                     + "analysis type. Perhaps rerun.jsp redirected to the "
                                     + "wrong analysis page?");
                 }
                 pageContext.getSession().removeAttribute(ATTR_ANALYSIS);
-            }
-            else {
-                analysis = ElabFactory.newElabAnalysis(elab, impl, param);
-                analysis.setType(type);
+
+                /*
+                 * The old analysis cannot be used if the current analysis type
+                 * has added parameters to the signature. So a copy must be
+                 * made.
+                 */
+                Iterator i = old.getParameters().entrySet().iterator();
+                while (i.hasNext()) {
+                    Map.Entry e = (Map.Entry) i.next();
+                    String name = (String) e.getKey();
+                    if (analysis.hasParameter(name)) {
+                        analysis.setParameter(name, e.getValue());
+                    }
+                }
             }
 
             setAnalysisParams(analysis);
@@ -71,10 +86,10 @@ public class Analysis extends TagSupport {
         }
         return EVAL_BODY_INCLUDE;
     }
-    
+
     protected boolean compareType(String t1, String t2) {
-    	//should we or should we not allow such incompatibilities
-    	return true;
+        // should we or should we not allow such incompatibilities
+        return true;
     }
 
     protected void setAnalysisParams(ElabAnalysis analysis) {
@@ -130,6 +145,7 @@ public class Analysis extends TagSupport {
                                 + "'. Unsupported type: " + type);
             }
         }
+        analysis.setParameterTransformer(getParameterTransformerInstance());
     }
 
     public String getImpl() {
@@ -162,5 +178,30 @@ public class Analysis extends TagSupport {
 
     public void setParam(String param) {
         this.param = param;
+    }
+
+    public String getParameterTransformer() {
+        return parameterTransformer;
+    }
+
+    public void setParameterTransformer(String parameterTransformer) {
+        this.parameterTransformer = parameterTransformer;
+    }
+
+    protected AnalysisParameterTransformer getParameterTransformerInstance() {
+        if (parameterTransformer == null) {
+            return null;
+        }
+        else {
+            try {
+                return (AnalysisParameterTransformer) Class.forName(
+                        parameterTransformer).newInstance();
+            }
+            catch (Exception e) {
+                throw new IllegalArgumentException(
+                        "Invalid parameter transformer: "
+                                + parameterTransformer + ": " + e.getMessage());
+            }
+        }
     }
 }

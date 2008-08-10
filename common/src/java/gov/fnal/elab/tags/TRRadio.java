@@ -13,51 +13,29 @@ import gov.fnal.elab.util.ElabUtil;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 
-public class TRSelect extends TRControl {
+public class TRRadio extends TRControl {
     private Collection valueList, labelList;
 
     public int doEndTag() throws JspException {
-        try {
-            pageContext.getOut().write("</select>\n");
-        }
-        catch (IOException e) {
-            throw new JspException(e);
-        }
         return EVAL_PAGE;
     }
 
     public int doStartTag() throws JspException {
         try {
             Object value = getValue();
-            boolean multi = getAttribute("multiple") != null;
-           
+            String selected = String.valueOf(nextValue());
+            if (selected == null || selected.equals("")) {
+                if (valueList != null && valueList.size() > 0) {
+                    selected = String.valueOf(valueList.iterator().next());
+                }
+            }
             JspWriter out = pageContext.getOut();
-            out.write("<select");
-            writeDynamicLabelUpdater(out);
-            writeAttribute(out, "name", getName());
-            writeAttributes(out);
-            out.write(">\n");
-            if (multi) {
-                if (value instanceof Collection) {
-                    ElabUtil.optionSet(out, getValueList(), getLabelList(), (Collection) value);
-                }
-                else {
-                    ElabUtil.optionSet(out, getValueList(), getLabelList(), String.valueOf(value));
-                }
-            }
-            else {
-                String selected = String.valueOf(nextValue());
-                if (selected == null || selected.equals("")) {
-                    if (valueList != null && valueList.size() > 0) {
-                        selected = String.valueOf(valueList.iterator().next());
-                    }
-                }
-                ElabUtil.optionSet(out, getValueList(), getLabelList(), selected);
-            }
+            radioSet(out, list(valueList), list(labelList), selected);
             if (value instanceof Collection) {
                 commitToAnalysis(list((Collection) value));
             }
@@ -69,6 +47,19 @@ public class TRSelect extends TRControl {
             throw new JspException("Exception in select", e);
         }
         return EVAL_BODY_INCLUDE;
+    }
+    
+    public void radioSet(JspWriter out, List values, List labels, String selected) throws IOException {
+        for (int i = 0; i < values.size(); i++) {
+            String value = (String) values.get(i);
+            out.write("<input type=\"radio\" name=\"" + getName() + "\" value=\"" + value + "\"");
+            if (value.equals(selected)) {
+                out.write(" checked=\"checked\"");
+            }
+            out.write(" />");
+            out.write((String) labels.get(i));
+            out.write("\n");
+        }
     }
 
     public Object getLabelList() {
