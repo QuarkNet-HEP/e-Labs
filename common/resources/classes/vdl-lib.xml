@@ -7,16 +7,17 @@
 	<export name="strcat"><elementDef classname="org.griphyn.vdl.karajan.lib.swiftscript.Misc"/></export>
 	<export name="strcut"><elementDef classname="org.griphyn.vdl.karajan.lib.swiftscript.Misc"/></export>
 	<export name="regexp"><elementDef classname="org.griphyn.vdl.karajan.lib.swiftscript.Misc"/></export>
+	<export name="toint"><elementDef classname="org.griphyn.vdl.karajan.lib.swiftscript.Misc"/></export>
 	<export name="trace"><elementDef classname="org.griphyn.vdl.karajan.lib.swiftscript.Misc"/></export>
 	<export name="fileName"><elementDef classname="org.griphyn.vdl.karajan.lib.swiftscript.FileName"/></export>
 	<export name="fileNames"><elementDef classname="org.griphyn.vdl.karajan.lib.swiftscript.FileNames"/></export>
 	<export name="arg">
 		<import file="sys.xml"/>
 		<if>
-			<or>
+			<sys:or>
 				<equals value1="${vdl:operation}" value2="typecheck"/>
 				<equals value1="${vdl:operation}" value2="graph"/>
-			</or>
+			</sys:or>
 			<element arguments="name"><string></string></element>
 			<elementDef classname="org.griphyn.vdl.karajan.lib.swiftscript.FnArg"/>
 		</if>
@@ -24,7 +25,12 @@
   </namespace>
 
   <namespace prefix="vdl">
+	<export name="vdl:getdatasetprovenanceid"><elementDef classname="org.griphyn.vdl.karajan.lib.GetDatasetProvenanceID"/></export>
 	<export name="infinitecountingwhile"><elementDef classname="org.griphyn.vdl.karajan.lib.InfiniteCountingWhile"/></export>
+	<export name="startprogressticker"><elementDef classname="org.griphyn.vdl.karajan.lib.RuntimeStats"/></export>
+	<export name="stopprogressticker"><elementDef classname="org.griphyn.vdl.karajan.lib.RuntimeStats"/></export>
+	<export name="initprogressstate"><elementDef classname="org.griphyn.vdl.karajan.lib.RuntimeStats"/></export>
+	<export name="setprogress"><elementDef classname="org.griphyn.vdl.karajan.lib.RuntimeStats"/></export>
 	<export name="new"><elementDef classname="org.griphyn.vdl.karajan.lib.New"/></export>
 	<export name="createarray"><elementDef classname="org.griphyn.vdl.karajan.lib.CreateArray"/></export>
 	<!-- used from VDL2 for arguments to apps and returns relative paths -->
@@ -39,11 +45,14 @@
 	<export name="getFieldSubscript"><elementDef classname="org.griphyn.vdl.karajan.lib.GetFieldSubscript"/></export>
 	<export name="setFieldValue"><elementDef classname="org.griphyn.vdl.karajan.lib.SetFieldValue"/></export>
 	<export name="getFieldValue"><elementDef classname="org.griphyn.vdl.karajan.lib.GetFieldValue"/></export>
-	<export name="isDatasetBound"><elementDef classname="org.griphyn.vdl.karajan.lib.IsDatasetBound"/></export>
+	<export name="waitFieldValue"><elementDef classname="org.griphyn.vdl.karajan.lib.WaitFieldValue"/></export>
+	<export name="isFileBound"><elementDef classname="org.griphyn.vdl.karajan.lib.IsFileBound"/></export>
+	<export name="isRestartable"><elementDef classname="org.griphyn.vdl.karajan.lib.IsRestartable"/></export>
 	<export name="fileSet"><elementDef classname="org.griphyn.vdl.karajan.lib.FileSet"/></export>
 	<export name="fringePaths"><elementDef classname="org.griphyn.vdl.karajan.lib.FringePaths"/></export>
 	<export name="assign"><elementDef classname="org.griphyn.vdl.karajan.lib.Assign"/></export>
 	<export name="closeDataset"><elementDef classname="org.griphyn.vdl.karajan.lib.CloseDataset"/></export>
+	<export name="partialCloseDataset"><elementDef classname="org.griphyn.vdl.karajan.lib.PartialCloseDataset"/></export>
 	<export name="range"><elementDef classname="org.griphyn.vdl.karajan.lib.Range"/></export>
 
 	<export name="isLogged"><elementDef classname="org.griphyn.vdl.karajan.lib.IsLogged"/></export>
@@ -78,5 +87,7 @@
 	<export name="hostname"><elementDef classname="org.griphyn.vdl.karajan.lib.PathUtils"/></export>
 	<export name="dircat"><elementDef classname="org.griphyn.vdl.karajan.lib.PathUtils"/></export>
 	<export name="pathnames"><elementDef classname="org.griphyn.vdl.karajan.lib.PathUtils"/></export>
+	
+	<export name="execute"><elementDef classname="org.griphyn.vdl.karajan.lib.Execute"/></export>
   </namespace>
 </karajan>

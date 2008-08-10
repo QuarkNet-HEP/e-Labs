@@ -1,35 +1,37 @@
-#!/bin/bash
+# this script must be invoked inside of bash, not plain sh
 
 infosection() {
-	echo >>"$INFO"
-	echo "_____________________________________________________________________________" >>"$INFO"
-	echo >>"$INFO"
-	echo "        $1" >>"$INFO" 
-	echo "_____________________________________________________________________________" >>"$INFO"
-	echo >>"$INFO"
+	echo >& "$INFO"
+	echo "_____________________________________________________________________________" >& "$INFO"
+	echo >& "$INFO"
+	echo "        $1" >& "$INFO" 
+	echo "_____________________________________________________________________________" >& "$INFO"
+	echo >& "$INFO"
 }
 
 info() {
 	infosection "uname -a"
-	uname -a 2>&1 >>"$INFO"
+	uname -a 2>&1 >& "$INFO"
 	infosection "id"
-	id 2>&1 >>"$INFO"
+	id 2>&1 >& "$INFO"
 	infosection "env"
-	env 2>&1 >>"$INFO"
+	env 2>&1 >& "$INFO"
 	infosection "df"
-	df 2>&1 >>"$INFO"
+	df 2>&1 >& "$INFO"
 	infosection "/proc/cpuinfo"
-	cat /proc/cpuinfo 2>&1 >>"$INFO"
+	cat /proc/cpuinfo 2>&1 >& "$INFO"
 	infosection "/proc/meminfo"
-	cat /proc/meminfo 2>&1 >>"$INFO"
+	cat /proc/meminfo 2>&1 >& "$INFO"
+	infosection "command line"
+	echo $COMMANDLINE 2>&1 >& "$INFO"
 }
 
 logstate() {
-	echo "Progress " `date +"%Y-%m-%e %H:%M:%S%z"` " $@" >>"$INFO"
+	echo "Progress " `date +"%Y-%m-%d %H:%M:%S.%N%z"` " $@" >& "$INFO"
 }
 
 log() {
-	echo "$@" >>"$INFO"
+	echo "$@" >& "$INFO"
 }
 
 fail() {
@@ -75,8 +77,18 @@ getarg() {
 	VALUE="${VALUE:1}"
 }
 
+openinfo() {
+	exec 3<> $1
+	INFO=3
+}
+
+closeinfo() {
+	exec 3>&-
+}
+
+COMMANDLINE=$@
 WFDIR=$PWD
-INFO="wrapper.log"
+openinfo "wrapper.log"
 ID=$1
 checkEmpty "$ID" "Missing job ID"
 
@@ -88,8 +100,10 @@ shift $SHIFTCOUNT
 
 checkEmpty "$JOBDIR" "Missing job directory prefix"
 mkdir -p $WFDIR/info/$JOBDIR
-INFO=$WFDIR/info/$JOBDIR/${ID}-info
-rm -f "$INFO"
+closeinfo
+rm -f "$WFDIR/info/$JOBDIR/${ID}-info"
+openinfo "$WFDIR/info/$JOBDIR/${ID}-info"
+
 logstate "LOG_START"
 infosection "Wrapper"
 
@@ -133,9 +147,21 @@ else
 	fail 254 "Missing arguments (-a option)"
 fi
 
-DIR=jobs/$JOBDIR/$ID
+if [ "X$SWIFT_JOBDIR_PATH" != "X" ]; then
+  log "Job directory mode is: local copy"
+  DIR=${SWIFT_JOBDIR_PATH}/$JOBDIR/$ID
+  COPYNOTLINK=1
+else
+  log "Job directory mode is: link on shared filesystem"
+  DIR=jobs/$JOBDIR/$ID
+  COPYNOTLINK=0
+fi
 
 PATH=$PATH:/bin:/usr/bin
+
+if [ "$PATHPREFIX" != "" ]; then
+export PATH=$PATHPREFIX:$PATH
+fi
 
 log "DIR=$DIR"
 log "EXEC=$EXEC"
@@ -147,6 +173,7 @@ log "INF=$INF"
 log "OUTF=$OUTF"
 log "KICKSTART=$KICKSTART"
 log "ARGS=$@"
+log "ARGC=$#"
 
 IFS="|"
 
@@ -164,13 +191,21 @@ done
 
 logstate "LINK_INPUTS"
 for L in $INF ; do
-	ln -s "$PWD/shared/$L" "$DIR/$L" 2>&1 >>"$INFO"
-	checkError 254 "Failed to link input file $L"
-	log "Linked input: $PWD/shared/$L to $DIR/$L"
+	if [ $COPYNOTLINK = 1 ]; then
+		cp "$PWD/shared/$L" "$DIR/$L" 2>&1 >& $INFO
+		checkError 254 "Failed to copy input file $L"
+		log "Copied input: $PWD/shared/$L to $DIR/$L"
+	else
+		ln -s "$PWD/shared/$L" "$DIR/$L" 2>&1 >& $INFO
+		checkError 254 "Failed to link input file $L"
+		log "Linked input: $PWD/shared/$L to $DIR/$L"
+	fi
 done
 
 logstate "EXECUTE"
 cd $DIR
+
+
 #ls >>$WRAPPERLOG
 if [ ! -f "$EXEC" ]; then
 	fail 254 "The executable $EXEC does not exist"
@@ -201,7 +236,7 @@ else
 			"$KICKSTART" -H -o "$STDOUT" -i "$STDIN" -e "$STDERR" "$EXEC" "$@" 1>kickstart.xml 2>"$STDERR"
 		fi
 		export APPEXIT=$?
-		mv -f kickstart.xml "$WFDIR/kickstart/$JOBDIR/$ID-kickstart.xml" 2>&1 >>"$INFO"
+		mv -f kickstart.xml "$WFDIR/kickstart/$JOBDIR/$ID-kickstart.xml" 2>&1 >& "$INFO"
 		checkError 254 "Failed to copy Kickstart record to shared directory"
 		if [ "$APPEXIT" != "0" ]; then
 			fail $APPEXIT "Exit code $APPEXIT"
@@ -230,15 +265,16 @@ fi
 
 logstate "COPYING_OUTPUTS"
 for O in $OUTF ; do
-	cp "$DIR/$O" "shared/$O" 2>&1 >>"$INFO"
+	cp "$DIR/$O" "shared/$O" 2>&1 >& "$INFO"
 	checkError 254 "Failed to copy output file $O to shared directory"
 done
 
 logstate "RM_JOBDIR"
-rm -rf "$DIR" 2>&1 >>"$INFO"
+rm -rf "$DIR" 2>&1 >& "$INFO"
 checkError 254 "Failed to remove job directory $DIR" 
 
 logstate "TOUCH_SUCCESS"
 touch status/${JOBDIR}/${ID}-success
 logstate "END"
 
+closeinfo

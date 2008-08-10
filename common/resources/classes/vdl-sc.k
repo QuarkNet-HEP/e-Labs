@@ -16,10 +16,6 @@ namespace("vdl"
 				)
 			)
 				
-			element(lrc, [url]
-				//not handled yet
-			)
-				
 			element(gridftp, [url, optional(storage), optional(major), optional(minor), optional(patch)]
 				if(
 					url == "local://localhost" 
@@ -39,8 +35,8 @@ namespace("vdl"
 				service(type="execution", provider=provider, url=url)
 			)
 			
-			element(execution, [provider, url]
-				service(type="execution", provider=provider, url=url)
+			element(execution, [provider, url, optional(jobManager)]
+				service(type="execution", provider=provider, maybe(url=url), maybe(jobManager=jobManager))
 			)
 			
 			element(filesystem, [provider, url, optional(storage)]

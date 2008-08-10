@@ -1,38 +1,45 @@
-element([tr, optional(arguments, stdin, stdout, stderr, deperror, mdeperror), channel(stagein), channel(stageout)]
-	/* may need to substitute with site selection 
-	   meaning filter out sites first by looking at transformation catalog,
-	   if the application is not present at a site, then it should not be
-	   a candidate. Then we choose a site by some criteria.
-						   
-	   [m] This is done in the scheduler.
-    */
-    
-	done := isDone(stageout)
+element([tr, optional(arguments, stdin, stdout, stderr, deperror, mdeperror), channel(stagein), channel(stageout), channel(restartout)]
+
+	vdl:initprogressstate()
+	vdl:setprogress("Initializing")
+
+	done := isDone(restartout)
 	derr := try(deperror, false)
 	merr := try(mdeperror, false)
 
 	if(
 		derr == false then(
 			if(
-				not(done) try(
+				sys:not(done) try(
 					sequential(
-						print("{tr} started")
+						echo("{tr} started")
 						log(LOG:INFO, "START thread={#thread} tr={tr}") 
-						restartOnError(".*", 2,
-							execute2(
-								tr, maybe(arguments=arguments), 
-								maybe(stdin=stdin), maybe(stdout=stdout), maybe(stderr=stderr), 
-								stagein, stageout
+						vdl:setprogress("Selecting site")
+						restartOnError(".*", vdl:configProperty("execution.retries"),
+							replicationChannel := channel()
+							discard(append(replicationChannel, true)) //trigger the first job
+							replicationGroup := uid()
+							parallelFor(i, replicationChannel
+								try(
+									execute2(
+										tr, maybe(arguments=arguments), 
+										maybe(stdin=stdin), maybe(stdout=stdout), maybe(stderr=stderr), 
+										stagein, stageout, restartout, replicationGroup, replicationChannel
+									)
+									catch("^Abort$")
+								)
 							)
 						)
-						mark(stageout, err=false, mapping=false)
+						mark(restartout, err=false, mapping=false)
 						graphStuff(tr, stagein, stageout, err=false, maybe(args=arguments))
-						print("{tr} completed")
+						echo("{tr} completed")
 						log(LOG:INFO, "END_SUCCESS thread={#thread} tr={tr}")
+						vdl:setprogress("Finished successfully")
 					)
 					catch(".*"
-						print("{tr} failed")
+						echo("{tr} failed")
 						log(LOG:INFO, "END_FAILURE thread={#thread} tr={tr}")
+						vdl:setprogress("Failed")
 						if(
 							vdl:configProperty("lazy.errors") == "false" then(
 								throw(exception)
@@ -40,7 +47,7 @@ element([tr, optional(arguments, stdin, stdout, stderr, deperror, mdeperror), ch
 							else (
 								to(errors, exception)
 								log(LOG:INFO, exception)
-								mark(stageout, err=true, mapping=false)
+								mark(restartout, err=true, mapping=false)
 								graphStuff(tr, stagein, stageout, err=true, maybe(args=arguments))
 							)
 						)
@@ -62,7 +69,7 @@ element([tr, optional(arguments, stdin, stdout, stderr, deperror, mdeperror), ch
 					log(LOG:INFO, exception)
 				)
 			)
-			mark(stageout, err=true, mapping=merr)
+			mark(restartout, err=true, mapping=merr)
 			graphStuff(tr, stagein, stageout, err=true, maybe(args=arguments))
 		)
 	)
