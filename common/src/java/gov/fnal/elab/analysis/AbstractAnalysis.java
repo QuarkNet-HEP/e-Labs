@@ -11,6 +11,8 @@ import java.util.List;
 
 public abstract class AbstractAnalysis implements ElabAnalysis {
     private String type;
+    private AnalysisParameterTransformer parameterTransformer;
+    
     
     public String getType() {
         return type;
@@ -63,5 +65,13 @@ public abstract class AbstractAnalysis implements ElabAnalysis {
         }
         return true;
     }
-    
+
+    public AnalysisParameterTransformer getParameterTransformer() {
+        return parameterTransformer;
+    }
+
+    public void setParameterTransformer(
+            AnalysisParameterTransformer parameterTransformer) {
+        this.parameterTransformer = parameterTransformer;
+    }
 }

@@ -7,8 +7,10 @@ import gov.fnal.elab.Elab;
 import gov.fnal.elab.RawDataFileResolver;
 import gov.fnal.elab.analysis.AbstractAnalysisRun;
 import gov.fnal.elab.analysis.AnalysisExecutor;
+import gov.fnal.elab.analysis.AnalysisParameterTransformer;
 import gov.fnal.elab.analysis.AnalysisRun;
 import gov.fnal.elab.analysis.ElabAnalysis;
+import gov.fnal.elab.analysis.NullAnalysisParameterTransformer;
 import gov.fnal.elab.analysis.ProgressTracker;
 
 import java.io.File;
@@ -163,8 +165,12 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
         }
 
         private List getArgv() {
+            AnalysisParameterTransformer tr = getAnalysis().getParameterTransformer();
+            if (tr == null) {
+                tr = new NullAnalysisParameterTransformer();
+            }
             List argv = new ArrayList();
-            Iterator i = getAnalysis().getParameters().entrySet().iterator();
+            Iterator i = tr.transform(getAnalysis().getParameters()).entrySet().iterator();
             while (i.hasNext()) {
                 Map.Entry e = (Map.Entry) i.next();
                 addArg(argv, (String) e.getKey(), e.getValue());

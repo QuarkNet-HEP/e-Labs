@@ -192,6 +192,7 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
                     pos = raf.getFilePointer();
                     c = raf.read();
                 }
+                raf.close();
                 System.out.println("Run monitor finished");
                 if (total <= 0) {
                     pTracker.setTotal(run.getAnalysis().getType(), counted);

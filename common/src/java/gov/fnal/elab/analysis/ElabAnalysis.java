@@ -117,4 +117,8 @@ public interface ElabAnalysis {
     String getEncodedParameters();
     
     void initialize(String param) throws InitializationException;
+    
+    AnalysisParameterTransformer getParameterTransformer();
+
+    void setParameterTransformer(AnalysisParameterTransformer parameterTransformerInstance);
 }

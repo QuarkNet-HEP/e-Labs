@@ -4,6 +4,7 @@
 package gov.fnal.elab.analysis.impl.vds;
 
 import gov.fnal.elab.analysis.AbstractAnalysis;
+import gov.fnal.elab.analysis.AnalysisParameterTransformer;
 import gov.fnal.elab.analysis.AnalysisTools;
 import gov.fnal.elab.analysis.ElabAnalysis;
 import gov.fnal.elab.beans.ElabBean;
@@ -47,6 +48,7 @@ public class VDSAnalysis extends ElabBean implements ElabAnalysis {
     private VDC vdc;
     private Map arguments, defaults;
     private int connected;
+    private AnalysisParameterTransformer parameterTransformer;
 
     public VDSAnalysis() {
         defaults = new HashMap();
@@ -219,7 +221,12 @@ public class VDSAnalysis extends ElabBean implements ElabAnalysis {
                 super.addToDV(name, (List) value);
             }
             else {
-                super.addToDV(name, String.valueOf(value));
+                if (value == null) {
+                    super.addToDV(name, "");
+                }
+                else {
+                    super.addToDV(name, value.toString());
+                }
             }
         }
         catch (ElabException e) {
@@ -322,4 +329,15 @@ public class VDSAnalysis extends ElabBean implements ElabAnalysis {
     public Map getTRArguments() {
         return arguments;
     }
+
+    public AnalysisParameterTransformer getParameterTransformer() {
+        return parameterTransformer;
+    }
+
+    public void setParameterTransformer(
+            AnalysisParameterTransformer parameterTransformer) {
+        this.parameterTransformer = parameterTransformer;
+    }
+    
+    
 }
