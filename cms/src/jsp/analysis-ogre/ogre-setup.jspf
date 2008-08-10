@@ -1,0 +1,17 @@
+<%@ page import="gov.fnal.elab.Elab" %>
+
+<%
+	{
+    	//but I really do want true local variables
+    	Elab elab0x314 = (Elab) request.getAttribute("elab");
+		if (elab0x314 == null) {
+		    throw new JspException("You must include ../include/elab.jsp before including ogre-setup.jspf");
+		   
+		}
+		String usedb = (String) session.getAttribute("usedb");
+		if (usedb == null) {
+			usedb = elab0x314.getProperties().getProperty("usedb");
+			session.setAttribute("usedb", usedb);
+		}
+	}
+%>
