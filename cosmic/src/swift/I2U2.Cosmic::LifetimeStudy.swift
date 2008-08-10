@@ -94,7 +94,7 @@ File	rawData[] <fixed_array_mapper;files=@arg("rawData")>;
 //File thresholdAll[] <fixed_array_mapper;files=@arg("thresholdAll")>;
 //This is done to avoid corruption of threshold files when created
 //concurrently by multiple runs
-File 	thresholdAll[] <structured_regexp_mapper;source=rawData,match=".*/(.*)",transform="\1.thresh">;
+File 	thresholdAll[] <structured_regexp_mapper;source=rawData,match=".*/(.*)",transform="\\1.thresh">;
 File	wireDelayData[] <fixed_array_mapper;files=@arg("wireDelayData")>;
 
 string 	detector = @arg("detector");
