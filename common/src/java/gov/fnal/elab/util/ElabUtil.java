@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -102,9 +103,14 @@ public class ElabUtil {
         optionSet(out, values, labels, selected);
         out.write("</select>\n");
     }
-
+    
     public static void optionSet(JspWriter out, Object values, Object labels,
             String selected) throws IOException {
+        optionSet(out, values, labels, Collections.singletonList(selected));
+    }
+
+    public static void optionSet(JspWriter out, Object values, Object labels,
+            Collection selected) throws IOException {
         Collection valuesList = split(values);
         Collection labelsList = split(labels);
         if (valuesList.size() != labelsList.size()) {
@@ -118,7 +124,7 @@ public class ElabUtil {
             out.write("<option value=\"");
             out.write(String.valueOf(value));
             out.write("\"");
-            if (selected != null && selected.equals(value)) {
+            if (selected != null && selected.contains(value)) {
                 out.write(" selected");
             }
             out.write(">");
@@ -434,7 +440,8 @@ public class ElabUtil {
             // Thanks to the Batik website's tutorial for this code
             // (http://xml.apache.org/batik/rasterizerTutorial.html).
             PNGTranscoder t = new PNGTranscoder();
-            t.addTranscodingHint(PNGTranscoder.KEY_HEIGHT, new Float(800));
+            t.addTranscodingHint(PNGTranscoder.KEY_MAX_HEIGHT, new Float(800));
+            t.addTranscodingHint(PNGTranscoder.KEY_MAX_WIDTH, new Float(1200));
             TranscoderInput input = new TranscoderInput((new File(svg)).toURL()
                     .toString());
             OutputStream ostream = new FileOutputStream(png);
