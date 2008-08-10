@@ -34,7 +34,7 @@ import javax.servlet.jsp.PageContext;
 public class Elab {
     private static Map elabs;
     private static Elab global;
-    
+
     private static int sid = 0;
 
     /**
@@ -57,7 +57,7 @@ public class Elab {
             throws ElabInstantiationException {
         return getElab(context, name, "elab.properties." + name);
     }
-    
+
     /**
      * Retrieves the Elab object associated with the given name or instantiates
      * a new one if it does not already exist. The elab will be initialized with
@@ -220,9 +220,10 @@ public class Elab {
             }
         }
         catch (Exception e) {
-        	System.out.println("Failed to update elab id for " + name + ". Using elab name as ID.");
-        	e.printStackTrace();
-        	this.id = String.valueOf(sid++);
+            System.out.println("Failed to update elab id for " + name
+                    + ". Using elab name as ID.");
+            e.printStackTrace();
+            this.id = String.valueOf(sid++);
         }
         finally {
             DatabaseConnectionManager.close(conn, s);
@@ -383,28 +384,42 @@ public class Elab {
     }
 
     /**
-     * Returns a secure URL for the given page. This depends on the values
-     * in <code>elab.properties</code>. The page is specified relative to the
-     * elab. Consequently it should not include the elab name or the web application
-     * name.
+     * Returns a secure URL for the given page. This depends on the values in
+     * <code>elab.properties</code>. The page is specified relative to the
+     * elab. Consequently it should not include the elab name or the web
+     * application name.
      * 
-     * @param page The page to provide a secure URL for
+     * @param page
+     *            The page to provide a secure URL for
      * @return A secure URL to access the specified page
      */
     public String secure(String page) {
         return properties.getRequired("elab.secure.url") + '/'
                 + properties.getWebapp() + '/' + getName() + '/' + page;
     }
-    
+
     public Map getAttributes() {
         return attributes;
     }
-    
+
     public void setAttribute(String name, Object value) {
         attributes.put(name, value);
     }
-    
+
     public Object getAttribute(String name) {
         return attributes.get(name);
+    }
+
+    private Map realPaths;
+
+    /**
+     * Returns a lazy map that can be used to figure out the absolute paths of
+     * files relative to an elab.
+     */
+    public synchronized Map getRealPaths() {
+        if (realPaths == null) {
+            realPaths = new RealPathMap(this, context);
+        }
+        return realPaths;
     }
 }
