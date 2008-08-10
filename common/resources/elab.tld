@@ -204,6 +204,15 @@ analysis executor implementation would make sense of the value of this attribute
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<attribute>
+			<description><![CDATA[
+An optional class to transform parameters immediately before passing them to the
+analysis execution mechanism.
+			]]></description>
+			<name>parameterTransformer</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 	</tag>
 	
 	<tag>
@@ -433,6 +442,62 @@ values specified with the <code>valueList</code> attribute.
 		<dynamic-attributes>true</dynamic-attributes>
 	</tag>
 	
+		<tag>
+		<description><![CDATA[
+A simplified way of specifying radio button sets also with some of the semantics for 
+{@link trinput} (the handling of default values). It produces, in the HTML document,
+a <code>select</code> HTML element together with the necessary <code>option</code>
+elements.
+		]]></description>
+		<name>trradio</name>
+		<tag-class>gov.fnal.elab.tags.TRRadio</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>
+A comma separated list of values.
+			</description>
+			<name>valueList</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+A comma separated list of labels.
+			</description>
+			<name>labelList</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+The name of this control.
+			</description>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[
+The default value of this control. The value of this attribute should be one of the
+values specified with the <code>valueList</code> attribute.
+			]]></description>
+			<name>default</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description><![CDATA[
+The selected value for this control. The value of this attribute should be one of the
+values specified with the <code>valueList</code> attribute.
+			]]></description>
+			<name>value</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<dynamic-attributes>false</dynamic-attributes>
+	</tag>
+	
+	
 	<tag>
 		<description>
 A text area control that can be linked with an analysis. It follows, in principle, the
@@ -479,6 +544,11 @@ The default value of this control.
 	<tag-file>
 		<name>commonMetadataToSave</name>
 		<path>/WEB-INF/tags/commonMetadataToSave.tag</path>
+	</tag-file>
+	
+	<tag-file>
+		<name>creationDateMetadata</name>
+		<path>/WEB-INF/tags/creationDateMetadata.tag</path>
 	</tag-file>
 	
 	<tag-file>
@@ -552,6 +622,7 @@ by assuming it lives in a directory named "analysis-&lt;type&gt;".
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
+
 	
 	<tag>
 		<description>
