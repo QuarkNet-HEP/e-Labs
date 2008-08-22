@@ -20,6 +20,8 @@
 			<div id="header-logbook">
 				<c:choose>
 					<c:when test="${user.teacher}">
+						<e:popup href="http://www13.i2u2.org/HelpDeskRequest.php" 
+							target="helpdesk" width="800" height="600">Helpdesk</e:popup>
 						<e:popup href="../jsp/showLogbookT.jsp" target="log" width="800" height="600">My Logbook</e:popup>
 					</c:when>
 					<c:otherwise>
