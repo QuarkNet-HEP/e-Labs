@@ -1,8 +1,8 @@
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.util.HTMLEscapingWriter" %>
-<%@ include file="../login/login-required.jsp" %>
 <%@ include file="common.jsp" %>
+<%@ include file="../login/login-required.jsp" %>
 
 <html>
     <head>
