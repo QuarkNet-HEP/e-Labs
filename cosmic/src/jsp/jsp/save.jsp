@@ -131,7 +131,8 @@ else{
                 // Now convert the SVG image to PNG using the Batik toolkit.
                 // Thanks to the Batik website's tutorial for this code (http://xml.apache.org/batik/rasterizerTutorial.html).
                 PNGTranscoder t = new PNGTranscoder();
-                t.addTranscodingHint(PNGTranscoder.KEY_HEIGHT, new Float(800));
+                t.addTranscodingHint(PNGTranscoder.KEY_MAX_HEIGHT, new Float(800));
+                t.addTranscodingHint(PNGTranscoder.KEY_MAX_WIDTH, new Float(1200));
                 TranscoderInput input = new TranscoderInput(
                         (new File(provenanceDir + "/dv.svg")).toURL().toString());
                 OutputStream ostream = new FileOutputStream(plotDir + provenanceFile);
