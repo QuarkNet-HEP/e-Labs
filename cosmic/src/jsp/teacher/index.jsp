@@ -163,9 +163,10 @@
 					able to contribute data to these efforts.
 
 					Many experiments have measured cosmic array showers, including 
-					CASA (Chicago Area Scintillator Array), project G.R.A.N.D. 
-					(Gamma Ray Astrophysics at Notre Dame) and the Pierre Auger 
-					Project (an array being set up in Argentina). 
+					<a href="http://en.wikipedia.org/wiki/Chicago_Air_Shower_Array">CASA</a> 
+					(Chicago Area Scintillator Array), project <a href="http://www.nd.edu/~grand/index.html">G.R.A.N.D.</a>  
+					(Gamma Ray Astrophysics at Notre Dame) and the <a href="http://www.auger.org/">Pierre Auger 
+					Project</a> (an array being set up in Argentina). 
 				</p>
 				<p>
 					Students will be able to look into the size of cosmic ray 
