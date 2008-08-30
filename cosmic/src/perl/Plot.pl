@@ -42,6 +42,10 @@ if($plot_type == 2 or $plot_type == 6){
     $highZ = $h{'highz'};
 }
 $lineWidthSize=1.5;
+
+my $gnuplotVersion = getGnuplotVersion();
+print "Gnuplot version: $gnuplotVersion\n";
+
 open (OUT, ">$outfile_param") || die "Unable to open plot parameter file: $outfile_param for output.\n";
 
 #if we're passing a range to gnuplot that has spaces, it needs to be quoted
@@ -391,11 +395,27 @@ sub ticLevels(){ # this is used for the flux study to find out where the tic mar
     chop($setTics);
     chop($setTics);
     $setTics .= ")";
-    splice(@options, 9, 1, "set xlabel \"$xlabel\" ,-1"); # make room for the second row on the tic labels
+    if ($gnuplotVersion eq "4.0") {
+    	splice(@options, 9, 1, "set xlabel \"$xlabel\" ,-1"); # make room for the second row on the tic labels
+    }
+    else {
+    	splice(@options, 9, 1, "set xlabel \"$xlabel\" offset 0,-1"); # make room for the second row on the tic labels
+    }
 }
 
 foreach $opt (@options){
 	print OUT "$opt\n";
+}
+
+sub getGnuplotVersion() {
+	my $versionString = `gnuplot --version`;
+	my @varray = split(/\s+/, $versionString);
+	if (not defined @varray[1]) {
+		die "Could not get gnuplot version. Tried to parse '$versionString'\n";
+	}
+	else {
+		return $varray[1];
+	}
 }
 
 `gnuplot $outfile_param`;
