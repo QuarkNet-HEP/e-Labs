@@ -80,7 +80,7 @@
 			<tr>
 				<td id="center">
 					<p>
-						<a href="tutorial.jsp">Understand the graph</a>
+						<a href="../analysis-shower/tutorial.jsp">Understand the graph</a>
 					</p>
 					
 					<jsp:include page="../data/analyzing-list.jsp"/>
