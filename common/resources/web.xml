@@ -46,4 +46,21 @@
         <servlet-name>dwr-invoker</servlet-name>
         <url-pattern>/dwr/*</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>downloader</servlet-name>
+        <servlet-class>gov.fnal.elab.Downloader</servlet-class>
+    </servlet>
+    <servlet-mapping>
+    	<servlet-name>downloader</servlet-name>
+    	<url-pattern>/cosmic/data/download</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>downloader</servlet-name>
+    	<url-pattern>/cms/data/download</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>downloader</servlet-name>
+    	<url-pattern>/ligo/data/download</url-pattern>
+    </servlet-mapping>
 </web-app>
