@@ -57,10 +57,12 @@
 	String pfn = RawDataFileResolver.getDefault().resolve(elab, filename);
 %> 
 		<h2>${param.filename}</h2><br/>
-		<a href="../data/view-metadata.jsp?filename=${param.filename}">Show details (metadata)</a>
+		<a href="../data/view-metadata.jsp?filename=${param.filename}">Show metadata</a> |
 		<c:if test="${e.tupleMap.detectorid != null}">
-			<a href="../geometry/view.jsp?filename=${param.filename}">Show Geometry</a>
+			<a href="../geometry/view.jsp?filename=${param.filename}">Show Geometry</a> |
 		</c:if>
+		<a href="../data/download.jsp?filename=${param.filename}">Download</a>
+		<br/>
 		<br/>
 		<form method="get" action="../data/view.jsp">
 			Go to time<br/>
