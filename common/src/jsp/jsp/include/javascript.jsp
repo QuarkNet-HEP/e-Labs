@@ -6,7 +6,7 @@
         var prevSchool = 'XX';
         for (var i=0;i < inputs.length;i++){
             var inputNode = inputs[i];
-            if (inputNode.type == 'checkbox')  { 
+            if (inputNode.type == 'checkbox')  {
                 if (inputNode.name == 'f') {
                     if(inputNode.checked) {
                         var files_group = inputNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
@@ -173,7 +173,7 @@ function glossary(name,H){
         var passName=name;
        if (!H) {height=250;}else{height=H;}
        while (passName.indexOf(" ")>0) {  passName=passName.replace(" ","_");}
-        var url="dispReference.jsp?name="+passName+"&type=glossary";
+        var url="../references/display.jsp?name="+passName+"&type=glossary";
         var winPref = "width=300,height="+height+",scrollbars=no,toolbar=no,menubar=no,status=no,resizable=yes,title=yes";
       window.open(url, "Glossary", winPref);
     }
@@ -181,7 +181,7 @@ function reference(name,H,W){
         var passName=name;
        if (!H) {height=250;}else{height=H;}
        while (passName.indexOf(" ")>0) {  passName=passName.replace(" ","_");}
-        var url="dispReference.jsp?name="+passName+"&type=reference";
+        var url="../references/display.jsp?name="+passName+"&type=reference";
         var winPref = "width=300,height="+height+",scrollbars=no,toolbar=no,menubar=no,status=no,resizable=yes,title=yes";
       window.open(url, "Reference", winPref);
     }
