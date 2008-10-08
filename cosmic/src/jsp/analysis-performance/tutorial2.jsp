@@ -46,72 +46,19 @@
 
 						If you put these on a histogram, the x-axis would say "Chevrolet, Ford, 
 						Toyota, Saab, Volkswagen." The y-axis would have the numbers 0-14 and 
-						you could draw a bar to the proper height for each make of car 
-						(<a href="javascript:openHist()"><b>illustration</b></a>).<p>
+						you could draw a bar to the proper height for each make of car
+						(<e:popup href="../graphics/car_hist.gif" width="740" height="510" target="_">Illustration</e:popup>).<p>
 					</td>
 					
 					<td valign="top">
 							<center>
 								<table border="1" cellpadding="2">
-									<tr>
-										<td>
-											Make
-										</td>
-							
-										<td>
-											Count
-										</td>
-									</tr>
-							
-									<tr>
-										<td>
-											Chevrolet
-										</td>
-							
-										<td>
-											12
-										</td>
-									</tr>
- 
- 									<tr>
-										<td>
-											Ford
-										</td>
-								
-										<td>
-											8
-										</td>
-									</tr>
-
-									<tr>
-										<td>
-											Saab
-										</td>
-										
-										<td>
-											1
-										</td>
-									</tr>
-		
-									<tr>
-										<td>
-											Toyota
-										</td>
-								
-										<td>
-											13
-										</td>
-									</tr>
-	
-									<tr>
-										<td>
-											Volkswagen
-										</td>
-									
-										<td>
-											5
-										</td>
-									</tr>
+									<tr><td>Make</td>		<td>Count</td></tr>
+									<tr><td>Chevrolet</td>	<td>12</td></tr>
+ 									<tr><td>Ford</td>		<td>8</td></tr>
+									<tr><td>Saab</td>		<td>1</td></tr>
+									<tr><td>Toyota</td>		<td>13</td></tr>
+									<tr><td>Volkswagen</td>	<td>5</td></tr>
 								</table>
 							</center>
 						</td>
