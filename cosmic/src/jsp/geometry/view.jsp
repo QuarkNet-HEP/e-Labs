@@ -97,7 +97,7 @@
 			%>
 			
 			<c:if test="${param.filename != null}">
-				<a href="../data/view.jsp?filename=${param.filename}">Show Data</a>
+				<a href="../data/view.jsp?filename=${param.filename}">Show Data</a> |
 				<a href="../data/view-metadata.jsp?filename=${param.filename}">Show Metadata</a>
 			</c:if>
 			
