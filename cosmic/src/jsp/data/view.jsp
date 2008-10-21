@@ -61,7 +61,7 @@
 		<c:if test="${e.tupleMap.detectorid != null}">
 			<a href="../geometry/view.jsp?filename=${param.filename}">Show Geometry</a> |
 		</c:if>
-		<a href="../data/download.jsp?filename=${param.filename}">Download</a>
+		<a href="../data/download?filename=${param.filename}&elab=${elab.name}&type=split">Download</a>
 		<br/>
 		<br/>
 		<form method="get" action="../data/view.jsp">
