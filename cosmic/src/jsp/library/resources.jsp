@@ -87,6 +87,10 @@
 								- Excellent cosmic ray overview available to print (pdf file)
 							</li>
 							<li>
+								<a href="http://quarknet.fnal.gov/resources/QN_CloudChamberV1_4.pdf">Build a Cosmic Ray Cloud Chamber</a>
+								- Instructions on how to build a cloud chamber (pdf file)
+							</li>
+							<li>
 								<a href="http://www2.slac.stanford.edu/vvc/cosmic_rays.html">Cosmic Rays</a>
 								- SLAC's cosmic ray site
 							</li>
