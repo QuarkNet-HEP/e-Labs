@@ -32,7 +32,9 @@ String headerType = "Teacher";
   <IMG SRC="../graphics/detector.jpg" BORDER=1><BR>
   200 Series - Pre 2005 Model<BR><BR>
   <IMG SRC="../graphics/detector5000.jpg" BORDER=1><BR>
-  5000 Series - 2006 Model 
+  5000 Series - 2006 Model<BR><BR> 
+  <IMG SRC="../graphics/detector6000.jpg" BORDER=1><BR>
+  6000 Series - 2007 Model 
   <P>
   <B>Typical QuarkNet Detector Setup</B>
   </TD></TR>
