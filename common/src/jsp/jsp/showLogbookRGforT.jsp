@@ -244,6 +244,31 @@ String typeConstraint=" AND keyword.type in ('SW','S')";
           String dateText=rs.getString("date_entered");
           keyword_description=rs.getString("description");
           String log_text=rs.getString("log_text");
+          if (log_text != null) {
+              int divend = log_text.indexOf(">");
+              if (divend != -1) {
+                  log_text = log_text.substring(divend + 1);
+                  log_text = log_text.substring(0, log_text.length() - 6);
+                  log_text.replaceAll("\n", "<br />");
+                  //this should be changed to only allow <a> and <img> tags 
+                  log_text = log_text.replaceAll("</*\\s*[sS][cC][rR][iI][pP][tT]\\s*>", "");
+                  log_text = log_text.replaceAll("</*\\s*[pP][rR][eE]\\s*>", "");
+                  StringBuffer sb = new StringBuffer();
+                  int lastSpace = 0;
+                  for (int i = 0; i < log_text.length(); i++) {
+                  	  char c = log_text.charAt(i);
+                  	  if (Character.isWhitespace(c) || c == '/' || c == '<' || c == '>' || c == '.') {
+                  	  	  lastSpace = i;
+                  	  }
+                  	  sb.append(c);
+                  	  if (i - lastSpace > 40) {
+                  	  	  sb.append(' ');
+                  	  	  lastSpace = i;
+                  	  }
+                  }
+                  log_text = sb.toString();
+              }
+          }
           String log_id=rs.getString("log_id");
           String new_log=rs.getString("new");
           showFullLog=false;
