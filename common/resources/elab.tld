@@ -625,4 +625,9 @@ The name of the parameter (must match the name of an analysis parameter)
 		<name>sort</name>
 		<path>/WEB-INF/tags/sort.tag</path>
 	</tag-file>
+	
+	<tag-file>
+		<name>whitespaceAdjust</name>
+		<path>/WEB-INF/tags/whitespaceAdjust.tag</path>
+	</tag-file>
 </taglib>
