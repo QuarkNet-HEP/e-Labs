@@ -208,7 +208,7 @@ int itemCount=0;
      rs = s.executeQuery(query);
      String cur_log_text="";
      if (rs.next()){
-          cur_log_text=rs.getString("log_date")+ " - "+ rs.getString("cur_log_text");
+          cur_log_text=rs.getString("log_date")+ " - "+ ElabUtil.whitespaceAdjust(rs.getString("cur_log_text"));
           }
    
    
