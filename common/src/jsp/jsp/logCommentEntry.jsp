@@ -117,7 +117,7 @@ int itemCount=0;
              String comment_existing="";
           while (innerRs.next()){
              comment_date=innerRs.getString("comment_date");
-             comment_existing=innerRs.getString("comment");
+             comment_existing=ElabUtil.whitespaceAdjust(innerRs.getString("comment"));
              commentCount++;
           if (commentCount>1) {
             log_text_show=" ";
