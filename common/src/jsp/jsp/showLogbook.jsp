@@ -3,6 +3,7 @@
 <%@ page import="gov.fnal.elab.util.HTMLEscapingWriter" %>
 <%@ include file="common.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
+<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 
 <html>
     <head>
@@ -204,32 +205,6 @@ if (groupName.startsWith("pd_")||groupName.startsWith("PD_")) {typeConstraint=" 
           String keyword_display=keyword_name.replaceAll("_"," ");
           String section=rs.getString("section");
           String section_id=rs.getString("section_id");
-          if (log_text != null) {
-              int divend = log_text.indexOf(">");
-              if (divend != -1) {
-                  log_text = log_text.substring(divend + 1);
-                  log_text = log_text.substring(0, log_text.length() - 6);
-                  log_text = log_text.replaceAll("\n", "<br />");
-                  //this should be changed to only allow <a> and <img> tags 
-                  log_text = log_text.replaceAll("</*\\s*[sS][cC][rR][iI][pP][tT]\\s*>", "");
-                  log_text = log_text.replaceAll("</*\\s*[pP][rR][eE]\\s*>", "");
-                  //we do what slashdot does. very long strings without spaces are lame.
-                  StringBuffer sb = new StringBuffer();
-                  int lastSpace = 0;
-                  for (int i = 0; i < log_text.length(); i++) {
-                  	  char c = log_text.charAt(i);
-                  	  if (Character.isWhitespace(c) || c == '/' || c == '<' || c == '>' || c == '.') {
-                  	  	  lastSpace = i;
-                  	  }
-                  	  sb.append(c);
-                  	  if (i - lastSpace > 40) {
-                  	  	  sb.append(' ');
-                  	  	  lastSpace = i;
-                  	  }
-                  }
-                  log_text = sb.toString();
-              }
-          }
           itemCount++;
           if (!(current_keyword_id.equals(data_keyword_id))) {
               current_keyword_id=data_keyword_id;
@@ -299,7 +274,7 @@ if (groupName.startsWith("pd_")||groupName.startsWith("PD_")) {typeConstraint=" 
          		<font  FACE="Comic Sans MS"><%=dateText%><%=comment_info%><FONT>
          	</td>
          	<td width="450" valign="top">
-         		<font  FACE="Comic Sans MS"><%= log_text %></FONT>
+         		<font  FACE="Comic Sans MS"><e:whitespaceAdjust text="<%= log_text %>"/></FONT>
          	</td>
          </tr>
           <%

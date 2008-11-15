@@ -1,4 +1,5 @@
 <%@ page import="java.util.*" %>
+<%@ page import="gov.fnal.elab.util.*" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ include file="common.jsp" %>
 <html>
@@ -104,7 +105,7 @@ int itemCount=0;
      while (rs.next()){
           String cur_log_id=rs.getString("cur_id");
           String log_date=rs.getString("date_entered");
-          String cur_log_text=rs.getString("cur_text");
+          String cur_log_text=ElabUtil.whitespaceAdjust(rs.getString("cur_text"));
           String log_date_show=log_date;
           String log_text_show=cur_log_text;
           itemCount++;

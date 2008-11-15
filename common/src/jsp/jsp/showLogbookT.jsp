@@ -1,6 +1,7 @@
 <%@ page import="java.util.*" %>
 <%@ include file="../login/teacher-login-required.jsp" %>
 <%@ include file="common.jsp" %>
+<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 
 <link rel="stylesheet"  href="include/styletutT.css" type="text/css">
 <html>
@@ -191,31 +192,6 @@ String research_group_name = groupName; // group name of the teacher whose logbo
           String log_text=rs.getString("log_text");
           String log_id=rs.getString("log_id");
           ref_rg_id=rs.getString("ref_rg_id");
-          if (log_text != null) {
-              int divend = log_text.indexOf(">");
-              if (divend != -1) {
-                  log_text = log_text.substring(divend + 1);
-                  log_text = log_text.substring(0, log_text.length() - 6);
-                  log_text.replaceAll("\n", "<br />");
-                  //this should be changed to only allow <a> and <img> tags 
-                  log_text = log_text.replaceAll("</*\\s*[sS][cC][rR][iI][pP][tT]\\s*>", "");
-                  log_text = log_text.replaceAll("</*\\s*[pP][rR][eE]\\s*>", "");
-                  StringBuffer sb = new StringBuffer();
-                  int lastSpace = 0;
-                  for (int i = 0; i < log_text.length(); i++) {
-                  	  char c = log_text.charAt(i);
-                  	  if (Character.isWhitespace(c) || c == '/' || c == '<' || c == '>' || c == '.') {
-                  	  	  lastSpace = i;
-                  	  }
-                  	  sb.append(c);
-                  	  if (i - lastSpace > 40) {
-                  	  	  sb.append(' ');
-                  	  	  lastSpace = i;
-                  	  }
-                  }
-                  log_text = sb.toString();
-              }
-          }
           itemCount++;
           if (!(current_ref_rg_id.equals(ref_rg_id))) {
               current_ref_rg_id=ref_rg_id;
@@ -247,7 +223,7 @@ String research_group_name = groupName; // group name of the teacher whose logbo
           }
           
           %>
-         <tr><td valign="top" width="175" align="right"><%=dateText%></td><td width="400" valign="top"><%=log_text%></td></tr>
+         <tr><td valign="top" width="175" align="right"><%=dateText%></td><td width="400" valign="top"><e:whitespaceAdjust text="<%= log_text %>"/></td></tr>
           <%
           }
           if (itemCount==0) {
