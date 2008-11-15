@@ -103,7 +103,7 @@ public class ElabUtil {
         optionSet(out, values, labels, selected);
         out.write("</select>\n");
     }
-    
+
     public static void optionSet(JspWriter out, Object values, Object labels,
             String selected) throws IOException {
         optionSet(out, values, labels, Collections.singletonList(selected));
@@ -456,7 +456,7 @@ public class ElabUtil {
                             + e.getMessage(), e);
         }
     }
-    
+
     private static final TimeZone UTC = TimeZone.getTimeZone("UTC");
 
     public static NanoDate julianToGregorian(int jday, double fractional) {
@@ -500,16 +500,17 @@ public class ElabUtil {
         nd.setTime(gc.getTimeInMillis());
         return nd;
     }
-    
-    private static final int[] MONTH_NUM = new int[] {306, 337, 0, 31, 61, 92, 122, 153, 184, 214, 245, 275};
 
-    public static double gregorianToJulian(int year, int month, int day, int hour,
-            int minute, int second) {
+    private static final int[] MONTH_NUM = new int[] { 306, 337, 0, 31, 61, 92,
+            122, 153, 184, 214, 245, 275 };
+
+    public static double gregorianToJulian(int year, int month, int day,
+            int hour, int minute, int second) {
         double step1 = (year + 4712) / 4.0;
         int step1Int = (int) step1;
         double remainder = (step1 - step1Int) * 4;
         int monthNum = MONTH_NUM[month + 1];
-        
+
         double PJD = (hour * 3600 + minute * 60 + second) / 86400.0;
         double jd = step1Int * 1461 + remainder * 365 + monthNum + day + 59
                 - 13 - .5 + PJD;
@@ -535,6 +536,30 @@ public class ElabUtil {
                 }
             }
         }
+        return sb.toString();
+    }
+
+    public static String whitespaceAdjust(String text) {
+        text = text.replaceAll("\n", "<br />");
+        // this should be changed to only allow <a> and <img> tags
+        text = text.replaceAll("(?i)</?\\s*script[^>]*>", "");
+        text = text.replaceAll("(?i)</?\\s*pre[^>]*>", "");
+        text = text.replaceAll("(?i)</?\\s*div[^>]*>", "");
+        StringBuffer sb = new StringBuffer();
+        int lastSpace = 0;
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (Character.isWhitespace(c) || c == '/' || c == '<' || c == '>'
+                    || c == '.') {
+                lastSpace = i;
+            }
+            sb.append(c);
+            if (i - lastSpace > 40) {
+                sb.append(' ');
+                lastSpace = i;
+            }
+        }
+
         return sb.toString();
     }
 }
