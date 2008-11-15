@@ -1,5 +1,6 @@
 <%@ page import="java.util.*" %>
 <%@ include file="common.jsp" %>
+<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <link rel="stylesheet"  href="include/styletut.css" type="text/css">
 <html>
     <head>
@@ -244,31 +245,7 @@ String typeConstraint=" AND keyword.type in ('SW','S')";
           String dateText=rs.getString("date_entered");
           keyword_description=rs.getString("description");
           String log_text=rs.getString("log_text");
-          if (log_text != null) {
-              int divend = log_text.indexOf(">");
-              if (divend != -1) {
-                  log_text = log_text.substring(divend + 1);
-                  log_text = log_text.substring(0, log_text.length() - 6);
-                  log_text.replaceAll("\n", "<br />");
-                  //this should be changed to only allow <a> and <img> tags 
-                  log_text = log_text.replaceAll("</*\\s*[sS][cC][rR][iI][pP][tT]\\s*>", "");
-                  log_text = log_text.replaceAll("</*\\s*[pP][rR][eE]\\s*>", "");
-                  StringBuffer sb = new StringBuffer();
-                  int lastSpace = 0;
-                  for (int i = 0; i < log_text.length(); i++) {
-                  	  char c = log_text.charAt(i);
-                  	  if (Character.isWhitespace(c) || c == '/' || c == '<' || c == '>' || c == '.') {
-                  	  	  lastSpace = i;
-                  	  }
-                  	  sb.append(c);
-                  	  if (i - lastSpace > 40) {
-                  	  	  sb.append(' ');
-                  	  	  lastSpace = i;
-                  	  }
-                  }
-                  log_text = sb.toString();
-              }
-          }
+          
           String log_id=rs.getString("log_id");
           String new_log=rs.getString("new");
           showFullLog=false;
@@ -282,6 +259,7 @@ String typeConstraint=" AND keyword.type in ('SW','S')";
           elipsis=" . . .";
           }
           String log_text_truncated;
+          
           if (showFullLog)
               log_text_truncated = log_text;
           else
@@ -373,7 +351,8 @@ String typeConstraint=" AND keyword.type in ('SW','S')";
           
            %>
           
-         <tr><td valign="top" width="175" align="right"><A HREF="logCommentEntry.jsp?log_id=<%=log_id%>&keyword=<%=keyword_name%>&research_group_name=<%=research_group_name%>&path=RG"><IMG SRC="graphics/logbook_pencil.gif" border="0" align="top"</A> <%=dateText%><%=comment_info%></td><td width="400" valign="top"><%=log_text_truncated%><%=elipsis%><%=linkText%></td></tr>
+         <tr><td valign="top" width="175" align="right"><A HREF="logCommentEntry.jsp?log_id=<%=log_id%>&keyword=<%=keyword_name%>&research_group_name=<%=research_group_name%>&path=RG"><IMG SRC="graphics/logbook_pencil.gif" border="0" align="top"</A> <%=dateText%><%=comment_info%></td><td width="400" valign="top">
+         	<e:whitespaceAdjust text="<%=log_text_truncated%>"/><%=elipsis%><%=linkText%></td></tr>
           <%
           
              
