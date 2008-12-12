@@ -66,7 +66,6 @@ underneath LIGO's ultra-sensitive interferometers.</p>
 					<td class="logogroup">
 						<img src="../graphics/logo1sm.gif" />
 						<img src="../graphics/seal.gif" />
-						<img src="../graphics/logoos.jpg" />
 					</td>
 				</tr>
 			</table>
