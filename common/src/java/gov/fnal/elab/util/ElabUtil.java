@@ -65,6 +65,8 @@ public class ElabUtil {
             if (c == '\'') {
                 sb.append(c);
             }
+            if (c == '\\')
+            	sb.append(c); 
             sb.append(c);
         }
         return sb.toString();
