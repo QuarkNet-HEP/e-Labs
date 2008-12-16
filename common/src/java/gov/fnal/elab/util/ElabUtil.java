@@ -36,8 +36,6 @@ import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 
-import org.apache.commons.lang;
-
 public class ElabUtil {
 
     public static String pathcat(String path1, String path2) {
@@ -61,7 +59,17 @@ public class ElabUtil {
     }
 
     public static String fixQuotes(String param) {
-    	return StringEscapeUtils.escapeJava(StringEscapeUtils.escapeSql(param));
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < param.length(); i++) {
+            char c = param.charAt(i);
+            if (c == '\'') {
+                sb.append(c);
+            }
+            if (c == '\\')
+            	sb.append(c); 
+            sb.append(c);
+        }
+        return sb.toString();
     }
 
     private static final Map splits;
