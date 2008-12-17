@@ -1,6 +1,7 @@
 <project name="i2u2">
 	
 	<property file="build.properties"/>
+	<property name="compile.deprecation" value="true" />
 	
 	<target name="help">
 		<echo>
