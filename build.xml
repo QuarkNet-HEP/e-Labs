@@ -1,7 +1,6 @@
 <project name="i2u2">
 	
 	<property file="build.properties"/>
-	<property name="compile.deprecation" value="true" />
 	
 	<target name="help">
 		<echo>
@@ -108,6 +107,7 @@ distclean:
 		</delete>
 		<javac srcdir="common/src/java" destdir="common/build" debug="true">
 			<classpath refid="cp-common"/>
+			<compilerarg value="-deprecation"/>
 		</javac>
 		<!-- the properties file -->
 		<copy todir="common/build">
@@ -202,6 +202,7 @@ distclean:
 			<include name="**/*.java"/>
 			<classpath refid="cp-common"/>
 			<classpath refid="cp-cms"/>
+			<compilerarg value="-deprecation"/>
 		</javac>
 		<!-- The copying to common has to do with timestamps          -->
 		<!-- From looking at Ant, this seems like the way to achieve: -->
@@ -278,6 +279,7 @@ distclean:
 			<classpath refid="cp-common"/>
 			<classpath refid="cp-cms"/>
 			<classpath refid="cp-cms-vdl2"/>
+			<compilerarg value="-deprecation"/>
 		</javac>
 		
 		<copy todir="common/build">
@@ -331,6 +333,7 @@ distclean:
 			<include name="**/*.java"/>
 			<classpath refid="cp-common"/>
 			<classpath refid="cp-cosmic"/>
+			<compilerarg value="-deprecation"/>
 		</javac>
 		
 		<copy todir="common/build">
@@ -447,6 +450,7 @@ distclean:
 			<include name="**/*.java"/>
 			<classpath refid="cp-common"/>
 			<classpath refid="cp-ligo"/>
+			<compilerarg value="-deprecation"/>
 		</javac>
 		<!-- The copying to common has to do with timestamps          -->
 		<!-- From looking at Ant, this seems like the way to achieve: -->
