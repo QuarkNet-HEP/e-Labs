@@ -61,7 +61,7 @@ public class ElabUtil {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < param.length(); i++) {
             char c = param.charAt(i);
-            if (c == '\'') {
+            if ((c == '\'') || (c == '\\'))  {
                 sb.append(c);
             }
             sb.append(c);
