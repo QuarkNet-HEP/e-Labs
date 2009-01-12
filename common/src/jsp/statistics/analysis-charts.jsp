@@ -63,8 +63,6 @@
 		</td>
 		<td style="text-align: right;">
 			<jsp:include page="preset-intervals.jsp"/>
-				<jsp:param name="extra" value="&type=${type}"/>
-			</jsp:include>
 		</td>
 	</tr>
 </table>
