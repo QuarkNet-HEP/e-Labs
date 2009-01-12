@@ -35,6 +35,8 @@ public interface DataCatalogProvider {
      * in the {@link gov.fnal.elab.datacatalog.query} package.
      */
     ResultSet runQuery(QueryElement q) throws ElabException;
+    
+    ResultSet runQueryNoMetadata(QueryElement q) throws ElabException;
 
     /**
      * Returns the entries in the catalog matching the given logical file names.

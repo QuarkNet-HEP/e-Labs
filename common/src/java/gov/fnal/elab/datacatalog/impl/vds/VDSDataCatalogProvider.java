@@ -92,8 +92,11 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
     }
 
     public ResultSet runQuery(QueryElement query) throws ElabException {
-        System.out.println(query);
         return runQuery(printQT(buildQueryTree(query)));
+    }
+    
+    public ResultSet runQueryNoMetadata(QueryElement query) throws ElabException {
+        return runQueryNoMetadata(buildQueryTree(query));
     }
 
     private QueryTree printQT(QueryTree tree) {
@@ -151,6 +154,44 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
                 for (Iterator i = lfns.iterator(); i.hasNext();) {
                     String lfn = (String) i.next();
                     VDSCatalogEntry e = getCachedEntry(annotationschema, lfn);
+                    rs.addEntry(e);
+                }
+                System.out.println("Entry cache size: " + entryCache.size());
+                return rs;
+            }
+
+        }
+        catch (Exception e) {
+            throw new ElabException(
+                    e.toString() + " getting LFNs and metadata", e);
+        }
+        finally {
+            closeSchema(dbschema);
+            System.out.println("Raw query time: "
+                    + (System.currentTimeMillis() - start) + " ms");
+        }
+    }
+    
+    public ResultSet runQueryNoMetadata(QueryTree tree) throws ElabException {
+        DatabaseSchema dbschema = openSchema();
+        Annotation annotation = (Annotation) dbschema;
+
+        // Connect to the database.
+        long start = System.currentTimeMillis();
+        try {
+            AnnotationSchema annotationschema = null;
+            List lfns = annotation.searchAnnotation(Annotation.CLASS_FILENAME,
+                    null, tree);
+            if (lfns == null || lfns.isEmpty()) {
+                return ResultSet.EMPTY_RESULT_SET;
+            }
+            else {
+                ResultSet rs = new ResultSet();
+                annotationschema = (AnnotationSchema) annotation;
+                for (Iterator i = lfns.iterator(); i.hasNext();) {
+                    String lfn = (String) i.next();
+                    VDSCatalogEntry e = new VDSCatalogEntry();
+                    e.setLFN(lfn);
                     rs.addEntry(e);
                 }
                 System.out.println("Entry cache size: " + entryCache.size());
