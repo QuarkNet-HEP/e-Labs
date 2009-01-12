@@ -1,0 +1,87 @@
+#top {
+	width: 100%;
+	background-color: black;
+	color: white;
+	height: 96px;
+}
+
+#header-image img {
+	height: 96px;
+}
+
+#nav li a {
+	width: 90px;
+	color: white;
+	border: 1px solid black;
+	background-color: gray;
+}
+
+#nav #subnav li a {
+	width: 170px;
+	color: white;
+	border: 1px solid black;
+	background-color: gray;
+}
+
+#nav a:hover, #nav #subnav a:hover {
+	color: black;
+	border-top: 1px solid #808080;
+	border-left: 1px solid #808080;
+	border-bottom: 1px solid #404040;
+	border-right: 1px solid #404040;
+	background-color: white;
+}
+
+#content h1 {
+	background-color: gray;
+	color: white;
+}
+
+#content h2 {
+	font-size: 120%;
+}
+
+#content p {
+	margin-left: 20px;
+	font-size: 7pt;
+}
+
+#content ul {
+	margin-left: 10px;
+}
+
+.lefty {
+	margin-left: 10px;
+}
+
+.lefty td, .lefty th {
+	padding-right: 4px;
+	padding-left: 4px;
+}
+
+.small {
+	font-size: 7pt;
+}
+
+.lefty th {
+	background-color: #e0e0e0;
+}
+
+.ilink, .silink {
+	text-decoration: none;
+	font-size: 7pt;
+	padding-left: 2px;
+	padding-right: 2px;
+	border: thin solid blue;
+}
+
+.ilink:visited {
+	color: blue;
+}
+
+.silink {
+	background-color: blue;
+	color: white;
+	font-weight: bold;
+}
+
