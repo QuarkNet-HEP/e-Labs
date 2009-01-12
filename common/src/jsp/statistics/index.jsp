@@ -48,12 +48,12 @@
 <table border="0" cellspacing="10" class="lefty">
 	<tr>
 		<th width="160px">Teacher accounts</th>
-		<jsp:setProperty name="stats" property="type" value="teacher"/>
+		<jsp:setProperty name="stats" property="role" value="teacher"/>
 		<td>${stats.groupCount}</td>
 	</tr>
 	<tr>
 		<th>User accounts (RGs)</th>
-		<jsp:setProperty name="stats" property="type" value="user"/>
+		<jsp:setProperty name="stats" property="role" value="user"/>
 		<td>${stats.groupCount}</td>
 	</tr>
 	<tr>
