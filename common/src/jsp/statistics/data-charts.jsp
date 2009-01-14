@@ -47,8 +47,8 @@
 <jsp:setProperty name="stats" property="elab" value="${elab}"/>
 <jsp:setProperty name="stats" property="start" value="${start}"/>
 <jsp:setProperty name="stats" property="end" value="${end}"/>
-<jsp:setProperty name="stats" property="type" value="${type}"/> 
-<c:set var="yearly" value="${stats.yearlyLoginCounts}"/>
+<jsp:setProperty name="stats" property="type" value="${type}"/>
+<c:set var="yearly" value="${stats.yearlyDataCounts}"/>
 
 
 <h1>Data of type ${type} for ${elab.name} elab from ${start} to ${end}</h1>
