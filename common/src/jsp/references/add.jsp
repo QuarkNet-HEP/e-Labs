@@ -96,7 +96,7 @@
 	boolean metaSuccess = false;
 
 		%>
-			<form action="../jsp/searchReferences.jsp" name="action_form" method="get">
+			<form action="../jsp/searchReference.jsp" name="action_form" method="get">
 				<e:trselect name="f" 
 					valueList="view, delete, upload, download, add" 
 					labelList="View, Delete, Upload, Download, Add"/>
