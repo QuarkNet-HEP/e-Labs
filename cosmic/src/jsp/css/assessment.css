@@ -37,3 +37,11 @@
   font-size: 16px;
   text-align: left;
   }
+  
+#nav a#nav6 {
+	background-color: #ffcc00;
+	border-top: #ffd940 1px solid;
+	border-left: #ffd940 1px solid;
+	border-bottom: #b59100 1px solid;
+	border-right: #b59100 1px solid;
+}
