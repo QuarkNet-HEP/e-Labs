@@ -27,8 +27,7 @@
 <li>Technology/Grid:
 	<ul>
 		<li>
-			Demonstrate technical skill in accessing data from the Grid and Grid computing 
-			techniques.
+			Explain why they used specific computing resources in their analysis.
 		</li>
 	</ul>
 </li>
