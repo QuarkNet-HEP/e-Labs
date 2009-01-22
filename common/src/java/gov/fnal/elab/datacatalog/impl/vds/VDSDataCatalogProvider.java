@@ -410,6 +410,8 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
                 return Predicate.GE;
             case QueryElement.BETWEEN:
                 return Predicate.BETWEEN;
+            case QueryElement.LIKE:
+                return Predicate.LIKE;
             default:
                 throw new IllegalArgumentException(
                         "Unknown QueryElement type: " + qetype);

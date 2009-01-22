@@ -110,7 +110,7 @@
 				and.add((QueryElement) session.getAttribute("previousSearch"));
 			}
 			if (!"all".equals(key) && !(value == null) && !"".equals(value)) {
-			    and.add(new Equals(key, value));
+			    and.add(new Like(key, value));
 			}
 		    
 		    String datetype = request.getParameter("datetype");
