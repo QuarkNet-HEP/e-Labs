@@ -368,7 +368,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         return qt;
     }
     
-    private static final DateFormat DF = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss zzz");
+    private static final DateFormat DF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
     
     private String format(QueryLeaf t) {
         Object v = t.getValue();
