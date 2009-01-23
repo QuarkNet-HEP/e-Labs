@@ -55,7 +55,7 @@
 		    and.add(new Equals("project", elab.getName()));
 		    and.add(new Equals("type", "poster"));
 			if (!"all".equals(key)) {
-				value.replace('*', '%'); // Allow asterisk
+				value = value.replace('*', '%'); // Allow asterisk
 			    and.add(new Like(key, value));
 			}
 			    

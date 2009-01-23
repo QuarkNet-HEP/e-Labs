@@ -64,7 +64,7 @@
 			    and.add(new Equals("type", "plot"));
 		    }
 			if (!"all".equals(key)) {
-				value.replace('*', '%'); // Allow asterisk
+				value = value.replace('*', '%'); // Allow asterisk
 			    and.add(new Like(key, value));
 			}
 			    
