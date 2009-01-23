@@ -110,6 +110,7 @@
 				and.add((QueryElement) session.getAttribute("previousSearch"));
 			}
 			if (!"all".equals(key) && !(value == null) && !"".equals(value)) {
+				value.replace('*', '%'); // Allow asterisk
 			    and.add(new Like(key, value));
 			}
 		    
