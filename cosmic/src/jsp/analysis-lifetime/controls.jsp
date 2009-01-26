@@ -48,6 +48,15 @@
 										onError="Must be an integer or number of the form (1e-5)"/>
 								</td>
 							</tr>
+							<tr>
+								<td class="form-label">
+									<e:trlabel for="freq_binValue" name="Number of Bins">Number of Bins:</e:trlabel>
+								</td>
+								<td class="form-control">
+									<e:trinput type="text" name="freq_binValue" size="8" default="40"
+										onError="Must be an integer"/>
+								</td>
+							</tr>
 						</table>
 					</e:hidden>
 				</e:vswitch>
@@ -62,15 +71,6 @@
 					<e:hidden>
 						<strong>Plot Controls</strong>
 						<table>
-							<tr>
-								<td class="form-label">
-									<e:trlabel for="freq_binValue" name="Number of Bins">Number of Bins:</e:trlabel>
-								</td>
-								<td class="form-control">
-									<e:trinput type="text" name="freq_binValue" size="8" default="40"
-										onError="Must be an integer"/>
-								</td>
-							</tr>
 							<tr>
 								<td class="form-label">
 									<e:trlabel for="plot_lowX" name="X-min">X-min:</e:trlabel>

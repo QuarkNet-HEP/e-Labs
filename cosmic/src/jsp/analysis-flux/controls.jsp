@@ -25,6 +25,15 @@
 									valueList="${channels}" default="${channels[0]}"/>
 							</td>
 						</tr>
+						<tr>
+							<td class="form-label">
+								<e:trlabel for="flux_binWidth" name="Bin Width (seconds)">Bin Width (seconds):</e:trlabel>
+							</td>
+							<td class="form-control">
+								<e:trinput type="text" name="flux_binWidth" size="8" default="600"
+									onChange="{plot_ylabel.value='Flux (events/m^2/' + flux_binWidth.value + ') seconds';}"/>
+							</td>
+						</tr>
 					</table>
 				</e:hidden>
 			</e:vswitch>
@@ -38,15 +47,6 @@
 					<e:hidden>
 						<strong>Plot Controls</strong>
 						<table>
-							<tr>
-								<td class="form-label">
-									<e:trlabel for="flux_binWidth" name="Bin Width (seconds)">Bin Width (seconds):</e:trlabel>
-								</td>
-								<td class="form-control">
-									<e:trinput type="text" name="flux_binWidth" size="8" default="600"
-										onChange="{plot_ylabel.value='Flux (events/m^2/' + flux_binWidth.value + ') seconds';}"/>
-								</td>
-							</tr>
 							<tr>
 								<td class="form-label">
 									<e:trlabel for="plot_lowX" name="X-min">X-min:</e:trlabel>
