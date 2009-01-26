@@ -56,6 +56,7 @@ public class DataTools {
         KEYS.put("city", new Integer(8));
         KEYS.put("state", new Integer(9));
         KEYS.put("enddate", new Integer(10));
+        KEYS.put("detectorid", new Integer(11));
     }
 
     public static final int SCHOOL = 0;
@@ -69,6 +70,7 @@ public class DataTools {
     public static final int CITY = 8;
     public static final int STATE = 9;
     public static final int ENDDATE = 10;
+    public static final int DETECTORID = 11; 
 
     public static final DateFormat MONTH_FORMAT;
 
@@ -127,6 +129,8 @@ public class DataTools {
             File file = new File(e.getLFN());
             file.setStartDate((Timestamp) data[STARTDATE]);
             file.setEndDate((Timestamp) data[ENDDATE]);
+            file.setDetector(Integer.parseInt((String) data[DETECTORID]));
+            
             if (file.getStartDate() == null) {
             	System.out.println("WARNING: File " + e.getLFN() + " is missing the start date. Skipping.");
             	continue;

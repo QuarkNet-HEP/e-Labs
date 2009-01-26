@@ -233,6 +233,7 @@ public class StructuredResultSet {
         private Boolean stacked;
         private final String lfn;
         private java.util.Date startDate, endDate;
+        private int detector;
 
         public File(String lfn) {
             this.lfn = lfn;
@@ -292,5 +293,13 @@ public class StructuredResultSet {
                 return lfn.compareTo(other.lfn);
             }
         }
+
+		public void setDetector(int detector) {
+			this.detector = detector;
+		}
+
+		public int getDetector() {
+			return detector;
+		}
     }
 }
