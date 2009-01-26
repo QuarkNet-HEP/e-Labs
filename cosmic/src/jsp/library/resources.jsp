@@ -83,7 +83,7 @@
 						<h2>Student-Friendly Sites</h2>
 						<ul class="simple">
 							<li>
-								<a href="http://hires.phys.columbia.edu/papers/CosmicExtremes.pdf">Cosmic Extremes</a>
+								<a href="../content/CosmicExtremes.pdf">Cosmic Extremes</a>
 								- Excellent cosmic ray overview available to print (pdf file)
 							</li>
 							<li>
