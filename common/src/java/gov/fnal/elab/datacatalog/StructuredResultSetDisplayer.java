@@ -13,6 +13,9 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.servlet.jsp.JspWriter;
@@ -187,24 +190,43 @@ public class StructuredResultSetDisplayer {
 
     public void displayMonthContents(JspWriter out, Month month)
             throws IOException {
-        Iterator i = month.getFiles().iterator();
-        crtCol = 0;
-        crtRow = 0;
-        out.write("<div class=\"data-files\">");
-        out.write("<table>");
-        out.write("<tr>");
-        while (i.hasNext()) {
-            displayFile(out, (File) i.next());
-        }
-        out.write("</tr>");
-        out.write("</table>");
-        out.write("</div>");
+        HashMap h = this.collateFilesByDetector(month.getFiles());
+        Iterator ik = h.keySet().iterator();
+        
+    	while (ik.hasNext()) {
+    		// Get the current Integer collectorID
+    		Integer currentID = (Integer) ik.next();
+    		
+    		// Get the collection of files associated with the collectorID
+    		Iterator i = ((Collection) h.get(currentID)).iterator();
+    		
+    		// Print
+    		crtCol = 0;
+            crtRow = 0;
+            out.write("<div class=\"data-files\">");
+    		displayDetectorHeader(out, currentID.intValue()); 
+            out.write("<table>");
+            out.write("<tr>");
+            while (i.hasNext()) {
+                displayFile(out, (File) i.next());
+            }
+            out.write("</tr>");
+            out.write("</table>");
+            out.write("</div>");
+    	}
+        
     }
 
     public void displayMonthFooter(JspWriter out, Month month)
             throws IOException {
         ElabUtil.vsWriteHiddenEnd(out);
         out.write("</div>");
+    }
+    
+    public void displayDetectorHeader(JspWriter out, int detector) throws IOException {
+    	out.write("<i>");
+    	out.write("Detector " + Integer.toString(detector));
+    	out.write("</i>");
     }
 
     public void displayFile(JspWriter out, File file) throws IOException {
@@ -260,4 +282,25 @@ public class StructuredResultSetDisplayer {
     public void displayFileFooter(JspWriter out, File file) throws IOException {
         out.write("</td>\n");
     }
+    
+    public HashMap collateFilesByDetector(Collection files) {
+    	Iterator i = files.iterator();
+    	HashMap h = new HashMap();
+    	
+    	while (i.hasNext()) {
+    		File f = (File) i.next();
+    		Integer currentID = new Integer(f.getDetector());
+    		if (h.containsKey(currentID)) {
+    			((Collection) h.get(currentID)).add(f);
+    		}
+    		else {
+    			Collection c = new ArrayList();
+    			c.add(f);
+    			h.put(currentID, c);
+    		}
+    	}
+    	
+    	return h;
+    }
+    
 }
