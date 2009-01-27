@@ -15,8 +15,8 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.TreeMap;
 
 import javax.servlet.jsp.JspWriter;
 
@@ -190,7 +190,7 @@ public class StructuredResultSetDisplayer {
 
     public void displayMonthContents(JspWriter out, Month month)
             throws IOException {
-        HashMap h = this.collateFilesByDetector(month.getFiles());
+        TreeMap h = this.collateFilesByDetector(month.getFiles());
         Iterator ik = h.keySet().iterator();
         
     	while (ik.hasNext()) {
@@ -283,9 +283,9 @@ public class StructuredResultSetDisplayer {
         out.write("</td>\n");
     }
     
-    public HashMap collateFilesByDetector(Collection files) {
+    public TreeMap collateFilesByDetector(Collection files) {
     	Iterator i = files.iterator();
-    	HashMap h = new HashMap();
+    	TreeMap h = new TreeMap();
     	
     	while (i.hasNext()) {
     		File f = (File) i.next();
