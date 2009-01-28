@@ -386,5 +386,9 @@ public class DatabaseConnectionManager {
             e.printStackTrace();
         }
     }
+    
+    public static void close(Connection conn) {
+        close(conn, null);
+    }
 
 }
