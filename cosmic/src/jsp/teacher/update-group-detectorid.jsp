@@ -57,11 +57,28 @@
 		if (group == null) {
 		    throw new ElabJspException("You are not the teacher for the specified group.");
 		}
-		cp.setDetectorIds(group, Arrays.asList(ids.split("[,\\s]+")));
-		out.write("<div class=\"results\">Successfully updated DAQ ID(s) for group \"" + groupName + "\".</div>");
-		request.setAttribute("group", group);
+		
+		try {
+			cp.setDetectorIds(group, Arrays.asList(ids.split("[,\\s]+")));
+			out.write("<div class=\"results\">Successfully updated DAQ ID(s) for group \"" + groupName + "\".</div>");
+		}
+		catch (ElabException e) {
+			// Bob feels that the normal error page is rather too unfriendly for this sort of issue
+			// so I'm injecting things in.
+			out.write("<h2>Oops!</h2><p>Did you type the detector IDs correctly?</p><ul>" +
+					"<li>If your DAQ's serial number starts with 10870, please enter only the last four digits starting with the 5.</li>" +
+					"<li>If your DAQ's serial number starts with 6, please enter only the first four digits starting with the 6.</li>" +
+					"<li>Otherwise, type in the 1-3 digit serial number.</li></ul>" + 
+					"<p>We've found problems with these detector IDs. Please check and re-enter them: " + e.getMessage() + 
+					"</p><h2>Try Again?</h2>");
+		}
+		finally {
+			request.setAttribute("group", group);
+		}
+		
+		
 	}
-	else if ("Show Group Info".equals(submit)) {
+	if ("Show Group Info".equals(submit) ) {
 		// Gather data for the user to modify.
 		groupName = request.getParameter("chooseGroup");
 		if (groupName != null && !groupName.equals("Choose Group")) {
@@ -76,13 +93,23 @@
 %>
 <form name="update-group-projects-form" method="post" action="">
 	<p id="choose-group">
-		<e:trselect name="chooseGroup" valueList="${user.groupNames}" labelList="${user.groupNames}"/>
+		<c:choose>
+			<c:when test="${not empty group}">
+				<e:trselect name="chooseGroup" valueList="${user.groupNames}" labelList="${user.groupNames}" default="${group.name}" />
+			</c:when>	
+			<c:otherwise>
+				<e:trselect name="chooseGroup" valueList="${user.groupNames}" labelList="${user.groupNames}" default="${group.name}" />
+			</c:otherwise>
+		</c:choose>
+		
 		<input type="submit" name="submit" value="Show Group Info"/>
 	</p>
+</form>
 	<c:if test="${not empty group}">
+		<form name="update-group-projects-form" method="post" action="">
 		<table id="group-projects-form" class="form">
 			<tr>
-				<td>
+				<td align="right">
 					<label for="group">Group Name:</label>
 				</td>
 				<td>
@@ -91,18 +118,22 @@
 				</td>
 			</tr>
 			<tr>
-				<td>
-					<label for="detectorids">Detector ID(s) for ${group.name} (comma or space separated):</label>
+				<td align="right">
+					<label for="detectorids">Detector ID(s) for ${group.name}:<br>(comma or space separated)</label>
 				</td>
 				<td>
 					<input type="text" name="detectorids" value="${detectorids}"/>
 				</td>
 			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>
+					<input type="submit" name="submit" value="Update Group Detector IDs"/>
+				</td>
+			</tr>
 		</table>
+		</form>
 	</c:if>
-	<input type="submit" name="submit" value="Update Group Detector IDs"/>
-</form>
-
 			</div>
 			<!-- end content -->	
 		
