@@ -89,47 +89,57 @@ public class Statistics {
     public String getGroupCount() throws SQLException {
         Connection con = DatabaseConnectionManager.getConnection(elab
                 .getProperties());
-        // get number of research groups with the given role as long as they are
-        // in the
-        // specified interval and they are associated with this project
-        PreparedStatement ps = con
-                .prepareStatement("select count(*) from research_group "
-                        + "where role=? "
-                        + "     and id in (select research_group_id from research_group_project"
-                        + "         where project_id = ?) ");
-        ps.setString(1, role);
-        ps.setString(2, elab.getId());
-
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return rs.getString(1);
+        try {
+            // get number of research groups with the given role as long as they are
+            // in the
+            // specified interval and they are associated with this project
+            PreparedStatement ps = con
+                    .prepareStatement("select count(*) from research_group "
+                            + "where role=? "
+                            + "     and id in (select research_group_id from research_group_project"
+                            + "         where project_id = ?) ");
+            ps.setString(1, role);
+            ps.setString(2, elab.getId());
+    
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString(1);
+            }
+            else {
+                return "-";
+            }
         }
-        else {
-            return "-";
+        finally {
+            DatabaseConnectionManager.close(con);
         }
     }
 
     public String getLogIns() throws SQLException {
         Connection con = DatabaseConnectionManager.getConnection(elab
                 .getProperties());
-        // get number of research groups with the given role as long as they are
-        // in the
-        // specified interval and they are associated with this project
-        PreparedStatement ps = con
-                .prepareStatement("select count(id) from usage "
-                        + "where date_entered between now() - ?::interval and now() "
-                        + "and research_group_id in (select research_group_id from research_group_project"
-                        + "         where project_id = ?)");
-        span = 999999;
-        ps.setString(1, span + " days");
-        ps.setString(2, "1");
-
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return rs.getString(1);
+        try {
+            // get number of research groups with the given role as long as they are
+            // in the
+            // specified interval and they are associated with this project
+            PreparedStatement ps = con
+                    .prepareStatement("select count(id) from usage "
+                            + "where date_entered between now() - ?::interval and now() "
+                            + "and research_group_id in (select research_group_id from research_group_project"
+                            + "         where project_id = ?)");
+            span = 999999;
+            ps.setString(1, span + " days");
+            ps.setString(2, "1");
+    
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString(1);
+            }
+            else {
+                return "-";
+            }
         }
-        else {
-            return "-";
+        finally {
+            DatabaseConnectionManager.close(con);
         }
     }
 
@@ -151,34 +161,24 @@ public class Statistics {
             // in the
             // specified interval and they are associated with this project
             PreparedStatement ps = con
-                    .prepareStatement("select to_char(date_trunc('"
-                            + granularity
-                            + "', date_entered), '"
-                            + format
-                            + "'), count(date_entered) from usage "
+                    .prepareStatement("select to_char(date_trunc('" + granularity + "', date_entered), '" + format + "'), count(date_entered) from usage "
                             + "where date_entered between ?::timestamp and ?::timestamp "
                             + "and research_group_id in "
                             + "   (select research_group_id from research_group_project "
                             + "         where project_id = ?) "
-                            + "group by date_trunc('" + granularity
-                            + "', date_entered) " + "order by date_trunc('"
-                            + granularity + "', date_entered)");
+                            + "group by date_trunc('" + granularity + "', date_entered) " 
+                            + "order by date_trunc('" + granularity + "', date_entered)");
             ps.setString(1, start);
             ps.setString(2, end);
             ps.setString(3, elab.getId());
             PreparedStatement gs = con
-                    .prepareStatement("select to_char(date_trunc('"
-                            + granularity
-                            + "', date_entered), '"
-                            + format
-                            + "'), count(date_entered) from usage "
+                    .prepareStatement("select to_char(date_trunc('" + granularity + "', date_entered), '" + format + "'), count(date_entered) from usage "
                             + "where date_entered between ?::timestamp and ?::timestamp "
                             + "and research_group_id in "
                             + "   (select research_group_id from research_group_project "
                             + "         where project_id = ? and research_group_id = (select id from research_group where name = 'guest')) "
-                            + "group by date_trunc('" + granularity
-                            + "', date_entered) " + "order by date_trunc('"
-                            + granularity + "', date_entered)");
+                            + "group by date_trunc('" + granularity + "', date_entered) " 
+                            + "order by date_trunc('" + granularity + "', date_entered)");
             gs.setString(1, start);
             gs.setString(2, end);
             gs.setString(3, elab.getId());
@@ -214,74 +214,89 @@ public class Statistics {
     public List getMostActiveLoginUsers() throws SQLException {
         Connection con = DatabaseConnectionManager.getConnection(elab
                 .getProperties());
-        PreparedStatement ps = con
-                .prepareStatement("select "
-                        + " (select name from research_group where id = research_group_id), "
-                        + "     count(research_group_id) from usage "
-                        + "         where date_entered between ?::timestamp and ?::timestamp "
-                        + "         and research_group_id in "
-                        + "             (select research_group_id from research_group_project "
-                        + "                 where project_id = ?) "
-                        + "     group by research_group_id "
-                        + "     order by count(research_group_id) desc"
-                        + "     limit 32");
-        ps.setString(1, start);
-        ps.setString(2, end);
-        ps.setString(3, elab.getId());
-
-        ResultSet rs = ps.executeQuery();
-
-        int maxCount = 1;
-        List l = new ArrayList();
-        while (rs.next()) {
-            BarChartEntry bce = new BarChartEntry(rs.getString(1), rs.getInt(2));
-            l.add(bce);
-            if (bce.count > maxCount) {
-                maxCount = bce.count;
+        try {
+            PreparedStatement ps = con
+                    .prepareStatement("select "
+                            + " (select name from research_group where id = research_group_id), "
+                            + "     count(research_group_id) from usage "
+                            + "         where date_entered between ?::timestamp and ?::timestamp "
+                            + "         and research_group_id in "
+                            + "             (select research_group_id from research_group_project "
+                            + "                 where project_id = ?) "
+                            + "     group by research_group_id "
+                            + "     order by count(research_group_id) desc"
+                            + "     limit 32");
+            ps.setString(1, start);
+            ps.setString(2, end);
+            ps.setString(3, elab.getId());
+    
+            ResultSet rs = ps.executeQuery();
+    
+            int maxCount = 1;
+            List l = new ArrayList();
+            while (rs.next()) {
+                BarChartEntry bce = new BarChartEntry(rs.getString(1), rs.getInt(2));
+                l.add(bce);
+                if (bce.count > maxCount) {
+                    maxCount = bce.count;
+                }
             }
+            for (int i = 0; i < l.size(); i++) {
+                BarChartEntry bce = (BarChartEntry) l.get(i);
+                bce.setRelativeSize((double) bce.count / maxCount);
+            }
+            return l;
         }
-        for (int i = 0; i < l.size(); i++) {
-            BarChartEntry bce = (BarChartEntry) l.get(i);
-            bce.setRelativeSize((double) bce.count / maxCount);
+        finally {
+            DatabaseConnectionManager.close(con);
         }
-        return l;
     }
 
     public String getSchoolCount() throws SQLException {
         Connection con = DatabaseConnectionManager.getConnection(elab
                 .getProperties());
-        // get number of schools as long as there is at least one teacher
-        // for this project at that school
-        PreparedStatement ps = con
-                .prepareStatement("select count(*) from school "
-                        + "where id in (select school_id from teacher "
-                        + "     where id in (select teacher_id from research_group "
-                        + "         where id in (select research_group_id from research_group_project "
-                        + "             where project_id = ?)))");
-        ps.setString(1, elab.getId());
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return rs.getString(1);
+        try {
+            // get number of schools as long as there is at least one teacher
+            // for this project at that school
+            PreparedStatement ps = con
+                    .prepareStatement("select count(*) from school "
+                            + "where id in (select school_id from teacher "
+                            + "     where id in (select teacher_id from research_group "
+                            + "         where id in (select research_group_id from research_group_project "
+                            + "             where project_id = ?)))");
+            ps.setString(1, elab.getId());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString(1);
+            }
+            else {
+                return "-";
+            }
         }
-        else {
-            return "-";
+        finally {
+            DatabaseConnectionManager.close(con);
         }
     }
 
     public String getTestsTaken() throws SQLException {
         Connection con = DatabaseConnectionManager.getConnection(elab
                 .getProperties());
-        PreparedStatement ps = con
-                .prepareStatement("select count(*) from survey "
-                        + "where project_id = ? " + "and " + type
-                        + "survey = true");
-        ps.setString(1, elab.getId());
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return rs.getString(1);
+        try {
+            PreparedStatement ps = con
+                    .prepareStatement("select count(*) from survey "
+                            + "where project_id = ? " + "and " + type
+                            + "survey = true");
+            ps.setString(1, elab.getId());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString(1);
+            }
+            else {
+                return "-";
+            }
         }
-        else {
-            return "-";
+        finally {
+            DatabaseConnectionManager.close(con);
         }
     }
 
