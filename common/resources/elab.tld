@@ -701,4 +701,30 @@ The name of the parameter (must match the name of an analysis parameter)
 		<name>whitespaceAdjust</name>
 		<path>/WEB-INF/tags/whitespaceAdjust.tag</path>
 	</tag-file>
+	
+	<tag>
+		<description>
+Calculate run-time prediction for an analysis and return the result.
+Must be inside a analysis tag.
+		</description>
+		<name>analysisRunTimeEstimator</name>
+		<tag-class>gov.fnal.elab.tags.AnalysisRunTimeEstimator</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>
+The engine used to run the analysis (VDS or swift)
+			</description>
+			<name>engine</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+The mode used to run the analysis (local, grid, cluster, auto)
+			</description>
+			<name>mode</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+	</tag>
 </taglib>
