@@ -121,4 +121,12 @@ public interface ElabAnalysis {
     AnalysisParameterTransformer getParameterTransformer();
 
     void setParameterTransformer(AnalysisParameterTransformer parameterTransformerInstance);
+    
+    void setAttribute(String name, Object value);
+    
+    Object getAttribute(String name);
+    
+    void setAttributes(Map attributes);
+    
+    Map getAttributes();
 }
