@@ -68,6 +68,7 @@ public class Analysis extends TagSupport {
                         analysis.setParameter(name, e.getValue());
                     }
                 }
+                analysis.setAttributes(old.getAttributes());
             }
 
             setAnalysisParams(analysis);
