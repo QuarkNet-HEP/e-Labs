@@ -46,8 +46,9 @@
 			</th>
 			<th>ID</th>
 			<th>Analysis</th>
-			<th>Start Time</th>
-			<th>End Time</th>
+			<th>Start Time (UTC)</th>
+			<th>End Time (UTC)</th>
+			<th>Time (Actual/Est.) (s)</th>
 			<th>Status</th>
 		</tr>
 		<c:choose>
@@ -77,7 +78,7 @@
 									N/A
 								</c:when>
 								<c:otherwise>
-									<fmt:formatDate pattern="MM/dd/yy HH:mm:ss zzz" value="${run.startTime}"/>
+									<fmt:formatDate pattern="MM/dd/yy HH:mm:ss" value="${run.startTime}"/>
 								</c:otherwise>
 							</c:choose>
 						</td>
@@ -87,9 +88,12 @@
 									N/A
 								</c:when>
 								<c:otherwise>
-									<fmt:formatDate pattern="MM/dd/yy HH:mm:ss zzz" value="${run.endTime}"/>
+									<fmt:formatDate pattern="MM/dd/yy HH:mm:ss" value="${run.endTime}"/>
 								</c:otherwise>
 							</c:choose>
+						</td>
+						<td align="center">
+							${(run.endTime.time - run.startTime.time)/1000}/${run.analysis.attributes.estimatedTime}
 						</td>
 						<td>
 							<table border="0">

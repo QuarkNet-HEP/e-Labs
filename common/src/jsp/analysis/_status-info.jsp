@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Analysis status</title>
+		<title>Analysis Status</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
@@ -97,7 +97,9 @@
 								else if (data["status"] != null) {
 									var td = document.getElementById("status-progress-indicator");
 									if (data["status"] == "Running") {
-										td.width = (data["progress"]*99+1) + "%";
+										var percent = (data["progress"]*99+1) + "%";
+										td.width = percent;
+										document.title = percent + " - Analysis Status";
 									}
 									else {
 										if (data["status"] == "Completed") {

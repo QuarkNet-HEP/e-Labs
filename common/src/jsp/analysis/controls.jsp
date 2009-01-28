@@ -17,7 +17,8 @@
 					<td width="40%">&nbsp;</td>
 					<td align="left">
 						<input id="vds-radio" type="radio" name="provider" value="vds" checked="true" onChange="update()" /> 
-						<a href="http://vds.uchicago.edu" target="vds">VDS</a><br />
+						<a href="http://vds.uchicago.edu" target="vds">VDS</a>
+							(estimated time: <e:analysisRunTimeEstimator engine="vds" mode="local"/>)<br />
 						<input type="radio" name="provider" value="swift" onChange="update()" /> 
 						<a href="http://www.ci.uchicago.edu/swift" target="swift">Swift</a><br />
 					</td>
@@ -33,10 +34,14 @@
 					<td width="40%">&nbsp;</td>
 					<td align="left">
 						<optgroup>
-							<input id="r0" type="radio" name="runMode" value="local" /> Local<br />
-							<input id="r1" type="radio" name="runMode" value="grid" /> Grid<br />
-							<input id="r2" type="radio" name="runMode" value="i2u2" /> I2U2 Cluster<br />
-							<input id="r3" checked="true" type="radio" name="runMode" value="mixed" /> Automatic<br />
+							<input id="r0" type="radio" name="runMode" value="local" /> Local 
+								(estimated time: <e:analysisRunTimeEstimator engine="swift" mode="local"/>)<br />
+							<input id="r1" type="radio" name="runMode" value="grid" /> Grid
+								(estimated time: <e:analysisRunTimeEstimator engine="swift" mode="grid"/>)<br />
+							<input id="r2" type="radio" name="runMode" value="i2u2" /> I2U2 Cluster
+								(estimated time: <e:analysisRunTimeEstimator engine="swift" mode="i2u2"/>)<br />
+							<input id="r3" checked="true" type="radio" name="runMode" value="mixed" /> Automatic
+								(estimated time: <e:analysisRunTimeEstimator engine="swift" mode="mixed"/>)<br />
 						</optgroup>
 					</td>
 				</tr>
