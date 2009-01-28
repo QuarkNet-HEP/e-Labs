@@ -46,7 +46,7 @@ public class VDSAnalysis extends ElabBean implements ElabAnalysis {
     private String type;
     private DatabaseSchema dbschema;
     private VDC vdc;
-    private Map arguments, defaults;
+    private Map arguments, defaults, attributes;
     private int connected;
     private AnalysisParameterTransformer parameterTransformer;
 
@@ -340,4 +340,27 @@ public class VDSAnalysis extends ElabBean implements ElabAnalysis {
     }
     
     
+    public void setAttributes(Map attributes) {
+        this.attributes = attributes;
+    }
+    
+    public void setAttribute(String name, Object value) {
+        if (attributes == null) {
+            attributes = new HashMap();
+        }
+        attributes.put(name, value);
+    }
+    
+    public Object getAttribute(String name) {
+        if (attributes == null) {
+            return null;
+        }
+        else {
+            return attributes.get(name);
+        }
+    }
+    
+    public Map getAttributes() {
+        return attributes;
+    }
 }

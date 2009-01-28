@@ -12,6 +12,8 @@ import gov.fnal.elab.analysis.AnalysisRun;
 import gov.fnal.elab.analysis.ElabAnalysis;
 import gov.fnal.elab.analysis.NullAnalysisParameterTransformer;
 import gov.fnal.elab.analysis.ProgressTracker;
+import gov.fnal.elab.tags.AnalysisRunTimeEstimator;
+import gov.fnal.elab.tags.AnalysisRunTimeEstimator.Estimator;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -69,7 +71,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
     private static ProgressTracker pTracker = new ProgressTracker();
 
     public class Run extends AbstractAnalysisRun implements Serializable {
-        private String runDir, runDirUrl;
+        private String runDir, runDirUrl, runID, runMode;
         private volatile transient double progress;
         private transient VDL2ExecutionContext ec;
         private transient OutputChannel out;
@@ -92,7 +94,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                             .setProperty("java.security.egd",
                                     "file:/dev/urandom");
                 }
-                String runID = Loader.getUUID();
+                runID = Loader.getUUID();
                 if (egd != null) {
                     // oddly enough, there is no way to remove a system property
                     System.setProperty("java.security.egd", egd);
@@ -117,7 +119,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
 
                 VDL2Config conf = VDL2Config.getConfig(getElab()
                         .getAbsolutePath("/WEB-INF/classes/swift.properties"));
-                String runMode = (String) getAttribute("runMode");
+                runMode = (String) getAttribute("runMode");
                 if (runMode != null) {
                     String poolFile = "sites.xml";
                     if ("local".equals(runMode)) {
@@ -140,6 +142,9 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                             + poolFile);
                 }
                 
+                Estimator p = AnalysisRunTimeEstimator.getEstimator("swift", runMode, getAnalysis().getType());
+                getAnalysis().setAttribute("estimatedTime", new Integer(p.estimate(getElab(), getAnalysis())));
+
                 stack.setGlobal(ConfigProperty.INSTANCE_CONFIG, conf);
                 stack.setGlobal("swift.home", home);
                 stack.setGlobal("vds.home", home);
@@ -165,12 +170,14 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
         }
 
         private List getArgv() {
-            AnalysisParameterTransformer tr = getAnalysis().getParameterTransformer();
+            AnalysisParameterTransformer tr = getAnalysis()
+                    .getParameterTransformer();
             if (tr == null) {
                 tr = new NullAnalysisParameterTransformer();
             }
             List argv = new ArrayList();
-            Iterator i = tr.transform(getAnalysis().getParameters()).entrySet().iterator();
+            Iterator i = tr.transform(getAnalysis().getParameters()).entrySet()
+                    .iterator();
             while (i.hasNext()) {
                 Map.Entry e = (Map.Entry) i.next();
                 addArg(argv, (String) e.getKey(), e.getValue());
@@ -260,6 +267,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
             }
             else if (ec.done() && !updated) {
                 if (ec.isFailed()) {
+                    log("SWIFT_FAILURE");
                     if (ec.getFailure() == null) {
                         setException(new Exception(getStdErrStuff()));
                     }
@@ -269,8 +277,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                     setStatus(STATUS_FAILED);
                 }
                 else {
-                    System.out.println("Execution time: "
-                            + (ec.getEndTime() - ec.getStartTime()) + "ms");
+                    log("SWIFT_SUCCESS");
                     if (out.getPatternCounter() != 0) {
                         pTracker.setTotal(getAnalysis().getType(), out
                                 .getPatternCounter());
@@ -299,6 +306,15 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                     setProgress(((double) out.getPatternCounter()) / total);
                 }
             }
+        }
+        
+        private void log(String stuff) {
+            System.out.println(stuff + ", runid=" + runID
+                            + ", time=" + (getEndTime().getTime() - getStartTime().getTime())
+                            + ", startTime=" + getStartTime().getTime()
+                            + ", estimated="
+                            + getAnalysis().getAttribute("estimatedTime")
+                            + ", type=" + getAnalysis().getType() + ", runMode=" + runMode);
         }
 
         protected String getStdErrStuff() {
