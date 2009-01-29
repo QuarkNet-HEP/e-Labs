@@ -83,7 +83,7 @@
 						<h2>Student-Friendly Sites</h2>
 						<ul class="simple">
 							<li>
-								<a href="../content/CosmicExtremes.pdff">Cosmic Extremes</a>
+								<a href="../content/CosmicExtremes.pdf">Cosmic Extremes</a>
 								- Excellent cosmic ray overview created by a group at Columbia University (pdf file)
 							</li>
 							<li>
