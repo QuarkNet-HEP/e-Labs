@@ -13,7 +13,10 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.TreeMap;
 
 import javax.servlet.jsp.JspWriter;
 
@@ -187,18 +190,26 @@ public class StructuredResultSetDisplayer {
 
     public void displayMonthContents(JspWriter out, Month month)
             throws IOException {
-        Iterator i = month.getFiles().iterator();
-        crtCol = 0;
-        crtRow = 0;
-        out.write("<div class=\"data-files\">");
-        out.write("<table>");
-        out.write("<tr>");
-        while (i.hasNext()) {
-            displayFile(out, (File) i.next());
-        }
-        out.write("</tr>");
-        out.write("</table>");
-        out.write("</div>");
+    	TreeMap t = this.collateFilesByDetector(month.getFiles());
+    	
+    	for (Iterator detector = t.keySet().iterator(); detector.hasNext(); ) {
+    		Integer currentID = (Integer) detector.next();
+    		
+    		crtCol = 0;
+            crtRow = 0;
+            out.write("<div class=\"data-files\">");
+            this.displayDetectorHeader(out, currentID.intValue());
+            out.write("<table>");
+            out.write("<tr>");
+            
+    		for (Iterator file = ((Collection) t.get(currentID)).iterator(); file.hasNext(); ) {
+    			displayFile(out, (File) file.next());
+    		}
+    		out.write("</tr>");
+            out.write("</table>");
+            out.write("</div>");
+    	}
+    	
     }
 
     public void displayMonthFooter(JspWriter out, Month month)
@@ -259,5 +270,28 @@ public class StructuredResultSetDisplayer {
 
     public void displayFileFooter(JspWriter out, File file) throws IOException {
         out.write("</td>\n");
+    }
+    
+    public void displayDetectorHeader(JspWriter out, int detector) throws IOException {
+    	out.write("Detector " + Integer.toString(detector));
+    }
+    
+    public TreeMap collateFilesByDetector(Collection files) {
+    	TreeMap t = new TreeMap(); 
+    	
+    	for (Iterator i = files.iterator(); i.hasNext(); ) {
+    		File f = (File) i.next();
+    		Integer currentID = new Integer(f.getDetector());
+    		if (t.containsKey(currentID)) {
+    			((Collection) t.get(currentID)).add(f);
+    		}
+    		else {
+    			Collection c = new ArrayList();
+    			c.add(f);
+    			t.put(currentID, c);
+    		}
+    	}
+    	
+    	return t;
     }
 }
