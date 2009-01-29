@@ -56,7 +56,7 @@ public class DataTools {
         KEYS.put("city", new Integer(8));
         KEYS.put("state", new Integer(9));
         KEYS.put("enddate", new Integer(10));
-        KEYS.put("detectorID", new Integer(11));
+        KEYS.put("detectorid", new Integer(11));
     }
 
     public static final int SCHOOL = 0;

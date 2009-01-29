@@ -99,6 +99,7 @@
 				<e:trselect name="chooseGroup" valueList="${user.groupNames}" labelList="${user.groupNames}" default="${group.name}" />
 			</c:otherwise>
         </c:choose>
+        <input type="submit" name="submit" value="Show Group Info"/>
 	</p>
 </form>
 	<c:if test="${not empty group}">
