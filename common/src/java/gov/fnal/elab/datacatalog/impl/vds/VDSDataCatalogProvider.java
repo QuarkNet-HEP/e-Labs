@@ -25,6 +25,8 @@ import gov.fnal.elab.vds.ElabTransformation;
 
 import java.io.StringReader;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -361,10 +363,21 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         else {
             QueryLeaf t = (QueryLeaf) query;
             qt = new QueryTree(new Predicate(getPredicateType(query.getType()),
-                    t.getKey(), getType(t.getValue()), quote(String.valueOf(t
-                            .getValue()))));
+            		t.getKey(), getType(t.getValue()), quote(format(t))));
         }
         return qt;
+    }
+    
+    private static final DateFormat DF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
+    
+    private String format(QueryLeaf t) {
+	    Object v = t.getValue();
+	    if (v instanceof Date) {
+	        return DF.format(v);
+	    }
+	    else {
+	        return String.valueOf(v);
+	    }
     }
 
     public static String quote(String param) {
@@ -410,6 +423,8 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
                 return Predicate.GE;
             case QueryElement.BETWEEN:
                 return Predicate.BETWEEN;
+            case QueryElement.LIKE:
+            	return Predicate.LIKE;
             default:
                 throw new IllegalArgumentException(
                         "Unknown QueryElement type: " + qetype);

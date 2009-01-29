@@ -55,7 +55,8 @@
 		    and.add(new Equals("project", elab.getName()));
 		    and.add(new Equals("type", "poster"));
 			if (!"all".equals(key)) {
-			    and.add(new Equals(key, value));
+				value = value.replace('*', '%'); // Allow asterisk
+			    and.add(new Like(key, value));
 			}
 			    
 		//hmm. posters use "date" instead of "creationdate"
