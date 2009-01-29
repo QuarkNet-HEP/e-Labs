@@ -266,6 +266,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 return;
             }
             else if (ec.done() && !updated) {
+                setEndTime(new Date());
                 if (ec.isFailed()) {
                     log("SWIFT_FAILURE");
                     if (ec.getFailure() == null) {
@@ -298,7 +299,6 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 }
                 updated = true;
                 this.ec = null;
-                setEndTime(new Date());
             }
             else {
                 int total = pTracker.getTotal(getAnalysis().getType());
