@@ -57,9 +57,9 @@ public class CosmicDatabaseUserManagementProvider extends
             s
                     .executeUpdate("INSERT INTO research_group_detectorid (research_group_id, detectorid) "
                             + "(SELECT '"
-                            + groupId
+                            + ElabUtil.fixQuotes(groupId)
                             + "', detectorid FROM research_group_detectorid WHERE research_group_id = '"
-                            + et.getId() + "');");
+                            + ElabUtil.fixQuotes(et.getId()) + "');");
         }
         return pwd;
     }
@@ -85,7 +85,7 @@ public class CosmicDatabaseUserManagementProvider extends
             throws SQLException {
         ResultSet rs = s
                 .executeQuery("SELECT detectorid FROM research_group_detectorid WHERE research_group_id = '"
-                        + group.getId() + "';");
+                        + ElabUtil.fixQuotes(group.getId()) + "';");
         List ids = new ArrayList();
         while (rs.next()) {
             ids.add(rs.getString("detectorid"));
@@ -99,6 +99,36 @@ public class CosmicDatabaseUserManagementProvider extends
         System.out.println(detectorIds);
         Statement s = null;
         Connection conn = null;
+        
+        // validate data 
+        // DAQ board serial numbers are in the following form: 
+        //  OLD: 1-3 digits 
+        // 5000: 108705XXX  (X: Detector sequence number) 
+        // 6000:  6XXXLLLL  (L: Lot number) 
+        // User is only permitted to insert detector IDs <= 4 digits 
+        // i.e. 8, 56, 201, 6XXX, 5XXX, etc.  
+        String message = ""; 
+        for (Iterator it = detectorIds.iterator(); it.hasNext(); ) { 
+        	String thisID = ((String) it.next()).trim(); 
+	         
+	        // Easy check since DAQ IDs are <= 4 chars  
+	        if (thisID.length() > 4) { 
+                message += thisID + " ";  
+                continue; 
+	        } 
+	         
+	        // Is this four-character string even a number?  
+	        try { 
+                Integer.parseInt(thisID); 
+	        } 
+	        catch (NumberFormatException nfe) { 
+                message += thisID + " "; 
+	        } 
+        } 
+        if (message.length() != 0) { 
+            throw new ElabException(message); 
+        } 
+        
         try {
             conn = DatabaseConnectionManager
                     .getConnection(elab.getProperties());
@@ -116,18 +146,18 @@ public class CosmicDatabaseUserManagementProvider extends
                 while (i.hasNext()) {
                     s
                             .executeUpdate("DELETE FROM research_group_detectorid WHERE research_group_id = '"
-                                    + group.getId()
+                                    + ElabUtil.fixQuotes(group.getId())
                                     + "' AND detectorid = '"
-                                    + i.next() + "';");
+                                    + ElabUtil.fixQuotes(i.next().toString()) + "';");
                 }
                 i = toAdd.iterator();
                 while (i.hasNext()) {
                     s
                             .executeUpdate("INSERT INTO research_group_detectorid (research_group_id, detectorid) "
                                     + "VALUES ('"
-                                    + group.getId()
+                                    + ElabUtil.fixQuotes(group.getId())
                                     + "', '"
-                                    + i.next() + "');");
+                                    + ElabUtil.fixQuotes(i.next().toString()) + "');");
                 }
                 conn.commit();
             }
