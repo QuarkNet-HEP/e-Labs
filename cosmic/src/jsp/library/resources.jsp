@@ -83,8 +83,8 @@
 						<h2>Student-Friendly Sites</h2>
 						<ul class="simple">
 							<li>
-								<a href="http://hires.phys.columbia.edu/papers/CosmicExtremes.pdf">Cosmic Extremes</a>
-								- Excellent cosmic ray overview available to print (pdf file)
+								<a href="../content/CosmicExtremes.pdff">Cosmic Extremes</a>
+								- Excellent cosmic ray overview created by a group at Columbia University (pdf file)
 							</li>
 							<li>
 								<a href="http://quarknet.fnal.gov/resources/QN_CloudChamberV1_4.pdf">Build a Cosmic Ray Cloud Chamber</a>
