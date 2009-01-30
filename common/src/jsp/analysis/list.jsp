@@ -48,12 +48,12 @@
 			<th>Analysis</th>
 			<th>Start Time (UTC)</th>
 			<th>End Time (UTC)</th>
-			<th>Time (Actual/Est.) (s)</th>
+			<th>Time (Actual/Est.)</th>
 			<th>Status</th>
 		</tr>
 		<c:choose>
 			<c:when test="${empty runs}">
-				<tr id="nostudies"><td colspan="6"><h3>There are no studies in the list</h3></td></tr>
+				<tr id="nostudies"><td colspan="7"><h3>There are no studies in the list</h3></td></tr>
 			</c:when>
 			<c:otherwise>
 				<fmt:setTimeZone value="UTC"/>
@@ -78,7 +78,7 @@
 									N/A
 								</c:when>
 								<c:otherwise>
-									<fmt:formatDate pattern="MM/dd/yy HH:mm:ss" value="${run.startTime}"/>
+									<fmt:formatDate pattern="MM/dd/yy'&nbsp;'HH:mm:ss" value="${run.startTime}"/>
 								</c:otherwise>
 							</c:choose>
 						</td>
@@ -88,14 +88,14 @@
 									N/A
 								</c:when>
 								<c:otherwise>
-									<fmt:formatDate pattern="MM/dd/yy HH:mm:ss" value="${run.endTime}"/>
+									<fmt:formatDate pattern="MM/dd/yy'&nbsp;'HH:mm:ss" value="${run.endTime}"/>
 								</c:otherwise>
 							</c:choose>
 						</td>
 						<td align="center">
-							${(run.endTime.time - run.startTime.time)/1000}/${run.analysis.attributes.estimatedTime}
+							${run.formattedRunTime}&nbsp;/&nbsp;${run.formattedEstimatedRunTime}
 						</td>
-						<td>
+						<td width="148px">
 							<table border="0">
 								<tr>
 									<td>
@@ -138,6 +138,8 @@
 					var name = data["name" + id];
 					var startTime = data["startTime" + id];
 					var endTime = data["endTime" + id];
+					var elapsed = data["elapsedTime" + id];
+					var estimated = data["estimatedTime" + id];
 					if (!startTime) {
 						startTime = "N/A";
 					}
@@ -162,6 +164,8 @@
 							row.insertCell(3).innerHTML = startTime;
 							row.insertCell(4).innerHTML = endTime;
 							row.cells.item(4).id = "endTime" + id;
+							row.insertCell(5).innerHTML = "<span id=\"elapsed" + id + "\">" + elapsed + "</span>&nbsp;/&nbsp;" + estimated;
+							row.cells[5].align="center";
 							
 							var hstatus =  "<table border=\"0\"><tr><td>" +
 								 "<img id=\"imgstatus" + id + "\" src=\"../graphics/" + status + ".png\"/></td>" +
@@ -177,7 +181,8 @@
 							}
 							hstatus += "</tr></table>";
 								
-							row.insertCell(5).innerHTML = hstatus;
+							row.insertCell(6).innerHTML = hstatus;
+							row.cells[6].align="right";
 						}
 						else {
 							imgstatus.src = "../graphics/" + status + ".png";
@@ -189,6 +194,10 @@
 							if (tdprogress != null) {
 								tdprogress.width = (progress*99+1) + "%";
 							}
+							var spelapsed = document.getElementById("elapsed" + id);
+							if (spelapsed != null) {
+								spelapsed.innerHTML = elapsed;
+							}
 							if (status == "Completed") {
 								var et = document.getElementById("endTime" + id);
 								if (et != null) {
@@ -196,7 +205,8 @@
 								}
 								var progressbar = document.getElementById("progressbar" + id);
 								if (progressbar != null) {
-									progressbar.style.visibility = "hidden";
+									progressbar.parentNode.style.visibility = "hidden";
+									progressbar.parentNode.style.display = "none";
 								}
 							}
 						}
