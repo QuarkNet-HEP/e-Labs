@@ -7,18 +7,30 @@ type AxisParams {
 }
 
 //I like File[] better
-(File thresholdData[]) ThresholdTimes(File rawData[], string detector, string cpldfreqs) {
+(File thresholdData) ThresholdTimes(File rawData, string detector, string cpldfreq) {
 	app {
-		ThresholdTimes @filename(rawData) @filename(thresholdData) detector cpldfreqs;
+		ThresholdTimes @filename(rawData) @filename(thresholdData) detector cpldfreq;
+	}
+}
+
+(File thresholdData[]) ThresholdTimesMultiple(File rawData[], string detectors[], string cpldfreqs[]) {
+	foreach data, i in rawData {
+		thresholdData[i] = ThresholdTimes(rawData[i], detectors[i], cpldfreqs[i]);
 	}
 }
 
 //undocumented magic in @filename - it will make an absolute path relative
 //in other words it answers the question: if the parameter was a file,
 //what would have its path been on the remote site?
-(File wireDelayData[]) WireDelay(File thresholdData[], string geoDir, File geoFiles[]) {
+(File wireDelayData) WireDelay(File thresholdData, string geoDir, File geoFile) {
 	app {
 		WireDelay @filename(thresholdData) @filename(wireDelayData) @filename(geoDir);
+	}
+}
+
+(File wireDelayData[]) WireDelayMultiple(File thresholdData[], string geoDir, File geoFiles[]) {
+	foreach td, i in thresholdData {
+		wireDelayData[i] = WireDelay(thresholdData[i], geoDir, geoFiles[i]);
 	}
 }
 
@@ -81,10 +93,12 @@ File rawData[] <fixed_array_mapper;files=@arg("rawData")>;
 //File thresholdAll[] <fixed_array_mapper;files=@arg("thresholdAll")>;
 //This is done to avoid corruption of threshold files when created
 //concurrently by multiple runs
+//"This" means mapping threshold files to local (to the run directory)
+//instead of mapping to the ones in the data directory
 File thresholdAll[] <structured_regexp_mapper;source=rawData,match=".*/(.*)",transform="\\1.thresh">;
 File wireDelayData[] <fixed_array_mapper;files=@arg("wireDelayData")>;
-string detector = @arg("detector");
-string cpldfreqs = @arg("cpldfreqs");
+string detectors[] = @strsplit(@arg("detector"), "\\s");
+string cpldfreqs[] = @strsplit(@arg("cpldfreqs"), "\\s");
 File combineOut;
 File fluxOut;
 File singleChannelOut <single_file_mapper;file=@arg("singlechannelOut")>;
@@ -129,8 +143,8 @@ string sort_sortKey2 = @arg("sort_sortKey2");
 
 
 //the actual workflow
-thresholdAll = ThresholdTimes(rawData, detector, cpldfreqs);
-wireDelayData = WireDelay(thresholdAll, geoDir, geoFiles);
+thresholdAll = ThresholdTimesMultiple(rawData, detectors, cpldfreqs);
+wireDelayData = WireDelayMultiple(thresholdAll, geoDir, geoFiles);
 combineOut = Combine(wireDelayData);
 singleChannelOut = SingleChannel(combineOut, singlechannel_channel);
 //TODO the following must work:
