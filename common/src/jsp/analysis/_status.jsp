@@ -23,6 +23,7 @@
 			<%
 		}
 		else {
+			request.setAttribute("run", run);
 			int status = run.getStatus();
 			if (status == AnalysisRun.STATUS_COMPLETED && showStatus == null) {
 				String cont = (String) run.getAttribute("continuation");
