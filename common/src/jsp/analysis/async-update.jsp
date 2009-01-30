@@ -15,7 +15,7 @@
 		}
 		
 		self.handleResponse = function() {
-			if(self.ro.readyState == 4){
+			if (self.ro.readyState == 4) {
 				var response = self.ro.responseText;
 				var i;
 				for(i = 0; i < response.length; i++) {
