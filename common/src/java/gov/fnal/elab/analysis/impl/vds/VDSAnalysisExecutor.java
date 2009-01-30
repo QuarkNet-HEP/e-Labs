@@ -11,8 +11,8 @@ import gov.fnal.elab.analysis.BeanWrapper;
 import gov.fnal.elab.analysis.ElabAnalysis;
 import gov.fnal.elab.analysis.ProgressTracker;
 import gov.fnal.elab.beans.MappableBean;
+import gov.fnal.elab.estimation.Estimator;
 import gov.fnal.elab.tags.AnalysisRunTimeEstimator;
-import gov.fnal.elab.tags.AnalysisRunTimeEstimator.Estimator;
 import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.vds.ElabTransformation;
 
@@ -111,7 +111,7 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
                     throw new IllegalArgumentException(sb.toString());
                 }
                 
-                Estimator p = AnalysisRunTimeEstimator.getEstimator("vds", "local", getAnalysis().getType());
+                Estimator p = AnalysisRunTimeEstimator.getEstimator(getElab(), "vds", "local", getAnalysis().getType());
                 getAnalysis().setAttribute("estimatedTime", new Integer(p.estimate(getElab(), getAnalysis())));
                 
                 thread = new Thread(this);

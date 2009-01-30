@@ -12,8 +12,8 @@ import gov.fnal.elab.analysis.AnalysisRun;
 import gov.fnal.elab.analysis.ElabAnalysis;
 import gov.fnal.elab.analysis.NullAnalysisParameterTransformer;
 import gov.fnal.elab.analysis.ProgressTracker;
+import gov.fnal.elab.estimation.Estimator;
 import gov.fnal.elab.tags.AnalysisRunTimeEstimator;
-import gov.fnal.elab.tags.AnalysisRunTimeEstimator.Estimator;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -145,7 +145,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                         "/WEB-INF/classes")
                         + File.separator + "etc" + File.separator + poolFile);
 
-                Estimator p = AnalysisRunTimeEstimator.getEstimator("swift",
+                Estimator p = AnalysisRunTimeEstimator.getEstimator(getElab(), "swift",
                         runMode, getAnalysis().getType());
                 setAttribute("estimatedTime", new Integer(p.estimate(getElab(),
                         getAnalysis())));
