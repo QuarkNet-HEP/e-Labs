@@ -37,12 +37,16 @@ log() {
 fail() {
 	EC=$1
 	shift
-	echo $@ >"$WFDIR/status/$JOBDIR/${ID}-error"
+	if [ "$STATUSMODE" = "files" ]; then
+		echo $@ >"$WFDIR/status/$JOBDIR/${ID}-error"
+	fi
 	log $@
 	info
-	#exit $EC
-	#let vdl-int.k handle the issues
-	exit 0
+	if [ "$STATUSMODE" = "files" ]; then
+		exit 0
+	else
+		exit $EC
+	fi
 }
 
 checkError() {
@@ -87,7 +91,15 @@ closeinfo() {
 }
 
 COMMANDLINE=$@
-WFDIR=$PWD
+
+# get the parent directory of the directory containing wrapper.sh, to use
+# as the run directory
+# this assumes that wrapper.sh is being executed from the top level of
+# the shared directory, and that shared directory is in the top level
+# of the workflow run directory
+WFDIR=$(dirname $(dirname $0))
+
+cd $WFDIR
 openinfo "wrapper.log"
 ID=$1
 checkEmpty "$ID" "Missing job ID"
@@ -107,7 +119,6 @@ openinfo "$WFDIR/info/$JOBDIR/${ID}-info"
 logstate "LOG_START"
 infosection "Wrapper"
 
-mkdir -p $WFDIR/status/$JOBDIR
 
 getarg "-e" "$@"
 EXEC=$VALUE
@@ -141,10 +152,18 @@ getarg "-k" "$@"
 KICKSTART=$VALUE
 shift $SHIFTCOUNT
 
+getarg "-status" "$@"
+STATUSMODE=$VALUE
+shift $SHIFTCOUNT
+
 if [ "$1" == "-a" ]; then
 	shift
 else
 	fail 254 "Missing arguments (-a option)"
+fi
+
+if [ "$STATUSMODE" = "files" ]; then
+	mkdir -p $WFDIR/status/$JOBDIR
 fi
 
 if [ "X$SWIFT_JOBDIR_PATH" != "X" ]; then
@@ -161,6 +180,14 @@ PATH=$PATH:/bin:/usr/bin
 
 if [ "$PATHPREFIX" != "" ]; then
 export PATH=$PATHPREFIX:$PATH
+fi
+
+if [ "X${EXEC:0:1}" != "X/" ] ; then
+export ORIGEXEC=$EXEC
+export EXEC=$(which $EXEC)
+if [ "X$EXEC" = "X" ] ; then
+fail 254 "Cannot find executable $ORIGEXEC on site system path"
+fi
 fi
 
 log "DIR=$DIR"
@@ -273,8 +300,15 @@ logstate "RM_JOBDIR"
 rm -rf "$DIR" 2>&1 >& "$INFO"
 checkError 254 "Failed to remove job directory $DIR" 
 
-logstate "TOUCH_SUCCESS"
-touch status/${JOBDIR}/${ID}-success
+if [ "$STATUSMODE" = "files" ]; then
+	logstate "TOUCH_SUCCESS"
+	touch status/${JOBDIR}/${ID}-success
+fi
+
 logstate "END"
 
 closeinfo
+
+# ensure we exit with a 0 after a successful exection
+exit 0
+

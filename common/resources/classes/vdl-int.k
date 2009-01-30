@@ -107,7 +107,12 @@ namespace("vdl"
 				transfer(srcdir="{vds.home}/libexec/", srcfile="wrapper.sh", destdir=sharedDir, desthost=rhost)
 				transfer(srcdir="{vds.home}/libexec/", srcfile="seq.sh", destdir=sharedDir, desthost=rhost)
 				dir:make(dircat(wfdir, "kickstart"), host=rhost)
-				dir:make(dircat(wfdir, "status"), host=rhost)
+
+				statusMode := configProperty("status.mode",host=rhost)
+				if(statusMode == "files"
+					dir:make(dircat(wfdir, "status"), host=rhost)
+				)
+
 				dir:make(dircat(wfdir, "info"), host=rhost)
 				wfdir, sharedDir
 				//we send the cleanup data to vdl:main()
@@ -241,7 +246,7 @@ namespace("vdl"
 					log(LOG:DEBUG, "FILE_STAGE_OUT_START srcname={bname} srcdir={rdir} srchost={host} ",
 							"destdir={ldir} desthost={dhost} provider={provider}")
 					//make sure we do have the directory on the client side
-					dir:make(ldir)
+					dir:make(ldir, host=dhost, provider=provider)
 					restartOnError(".*", 2
 					    task:transfer(srchost=host, srcfile=bname,
 					        srcdir=rdir, destdir=ldir, desthost=dhost, destprovider=provider)
@@ -335,7 +340,7 @@ namespace("vdl"
 				task:transfer(srchost=rhost, srcdir=srcdir, srcfile=recfile, destdir="{VDL:SCRIPTNAME}-{VDL:RUNID}.d/")
 				(
 					maybe(file:remove(recfile))
-					log(LOG:WARN, "Failed to transfer kickstart records from {srcdir}/{rhost}", exception)
+					log(LOG:WARN, "Failed to transfer kickstart records from {srcdir} on {rhost}", exception)
 				)
 			)
 			recfile
@@ -351,8 +356,8 @@ namespace("vdl"
 				task:transfer(srchost=rhost, srcdir=srcdir, srcfile=recfile, destdir="{VDL:SCRIPTNAME}-{VDL:RUNID}.d/")
 				(
 					maybe(file:remove(recfile))
-					log(LOG:WARN, "Failed to transfer wrapper log from {srcdir}/{rhost}")
-					log(LOG:DEBUG, "Exception for wrapper log failure from {srcdir}/{rhost}: ", exception)
+					log(LOG:WARN, "Failed to transfer wrapper log from {srcdir} on {rhost}")
+					log(LOG:DEBUG, "Exception for wrapper log failure from {srcdir} on {rhost}: ", exception)
 				)
 			)
 			recfile
@@ -362,7 +367,7 @@ namespace("vdl"
 			replicationGroup, replicationChannel]
 			stagein := list(unique(each(stagein)))
 			stageout := list(unique(each(stageout)))
-			allocateHost(rhost, constraints=vdl:jobConstraints(tr)
+			allocateHost(rhost, constraints=vdl:jobConstraints(tr, stagein=stagein)
 				
 				[wfdir, sharedDir] := try(
 					initSharedDir(rhost)
@@ -374,6 +379,9 @@ namespace("vdl"
 				jobid := concat(tr, "-", uid)
 				
 				log(LOG:DEBUG, "THREAD_ASSOCIATION jobid={jobid} thread={#thread} host={rhost} replicationGroup={replicationGroup}")
+
+				statusMode := configProperty("status.mode",host=rhost)
+
 				vdl:setprogress("Stage in")
 				tmpdir := dircat(concat(wfdir, "/jobs/", jobdir), jobid)
 				
@@ -393,7 +401,7 @@ namespace("vdl"
 				
 						vdl:setprogress("Submitting")
 						vdl:execute("/bin/bash",
-							list("shared/wrapper.sh", jobid,
+							list("{sharedDir}/wrapper.sh", jobid,
 								"-jobdir", jobdir,
 								"-e", vdl:executable(tr, rhost), 
 								"-out", stdout, 
@@ -403,6 +411,7 @@ namespace("vdl"
 								"-if", flatten(infiles(stagein)), 
 								"-of", flatten(outfiles(stageout)),
 								"-k", kickstart,
+								"-status", statusMode
 								"-a", maybe(each(arguments)))
 							directory=wfdir
 							redirect=false
@@ -410,9 +419,12 @@ namespace("vdl"
 							vdl:tcprofile(tr, rhost) //this gets various app params from the tc, such as environment, walltime, etc
 							replicationGroup=replicationGroup
 							replicationChannel=replicationChannel
+							jobid=jobid
 						)
-							
-						checkJobStatus(rhost, wfdir, jobid, tr, jobdir)
+						
+						if(statusMode == "files"
+							checkJobStatus(rhost, wfdir, jobid, tr, jobdir)
+						)
 		
 						log(LOG:DEBUG, "STAGING_OUT jobid={jobid}")
 
@@ -451,7 +463,8 @@ namespace("vdl"
 						
 						outs := transferStandardFiles(rhost, tmpdir, jobid, stdout, stderr)
 						
-						discard(transferWrapperLog(rhost, wfdir, jobid, jobdir))
+						discard(maybe(transferWrapperLog(rhost, wfdir, jobid, jobdir)))
+							
 						kickstartRec := if(
 							kickstart == "" ""
 							else(
