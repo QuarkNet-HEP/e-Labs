@@ -5,8 +5,6 @@ package gov.fnal.elab.cosmic.estimation;
 
 import gov.fnal.elab.estimation.ConstantEstimator;
 import gov.fnal.elab.estimation.EstimatorSet;
-import gov.fnal.elab.estimation.FluxEstimator;
-import gov.fnal.elab.estimation.LinearEventEstimator;
 
 public class CosmicAnalysisRunTimeEstimatorSet extends EstimatorSet {
     public CosmicAnalysisRunTimeEstimatorSet() {
