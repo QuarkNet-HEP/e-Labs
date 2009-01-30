@@ -159,6 +159,9 @@
 	</tr>
 </table>
 <p>
+	Analysis run time: ${showerResults.formattedRunTime}; estimated: ${showerResults.formattedEstimatedRunTime}
+</p>
+<p>
 	Show <e:popup href="../analysis/show-dir.jsp?id=${showerResults.id}" target="analysis-dir" 
 		width="800" height="600" toolbar="true">shower analysis directory</e:popup> or <e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysis-dir" 
 		width="800" height="600" toolbar="true">event plot analysis directory</e:popup> 
