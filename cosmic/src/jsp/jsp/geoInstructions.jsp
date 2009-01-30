@@ -1,3 +1,4 @@
+<%@ taglib prefix="elab" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ page import="java.io.*" %>
 <%@ page import="org.griphyn.vdl.util.*" %>
 <%@ page import="org.griphyn.vdl.classes.*" %>
@@ -34,14 +35,18 @@
 		<table cellpadding = 10 width = 100%>
 			<tr>
 				<td colspan = 2 valign = top>
-					<center><h3>You should  upload geometry each time you move the detector.</h3><h4>Many calculations rely on knowing the detector's location.</h4></center>
+					<center>
+						<h3>You should  upload geometry each time you move the detector.</h3>
+						<h4>Many calculations rely on knowing the detector's location.</h4>
+					</center>
 				</td>
 			</tr>
 			
 			<tr>
-	
 				<td valign = top>
-					Here is a typical detector layout. The GPS unit is the 0,0,0 point of a coordinate system. In this example, the GPS unit is on the roof and the <A HREF="javascript:glossary('counter',350)">counters</a> are inside the classroom.
+					Here is a typical detector layout. The GPS unit is the 0,0,0 point of a 
+					coordinate system. In this example, the GPS unit is on the roof and the 
+					<a href="javascript:glossary('counter',350)">counters</a> are inside the classroom.
 				</td>
 				
 				<td valign = top>
