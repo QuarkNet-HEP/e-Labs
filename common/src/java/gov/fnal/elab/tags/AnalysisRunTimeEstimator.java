@@ -35,6 +35,9 @@ public class AnalysisRunTimeEstimator extends TagSupport {
 
     public static Estimator getEstimator(String engine, String method,
             String type) {
+        if (engine == null || method == null) {
+            return NULL;
+        }
         Estimator p = (Estimator) estimators.get(engine.toLowerCase() + "-"
                 + method.toLowerCase() + "-" + type);
         if (p == null) {
@@ -72,6 +75,15 @@ public class AnalysisRunTimeEstimator extends TagSupport {
                 new FluxEstimator(24251.6, -2.21535, 0.198371));
         addEstimator("swift", "grid", "I2U2.Cosmic::FluxStudy",
                 new FluxEstimator(117392, -2.25828, 0.20651));
+        
+        addEstimator("swift", "local", "I2U2.Cosmic::EventPlot",
+                new ConstantEstimator(1));
+        addEstimator("swift", "i2u2", "I2U2.Cosmic::EventPlot",
+                new ConstantEstimator(1));
+        addEstimator("swift", "grid", "I2U2.Cosmic::EventPlot",
+                new ConstantEstimator(1));
+        addEstimator("swift", "mixed", "I2U2.Cosmic::EventPlot",
+                new ConstantEstimator(1));
     }
 
     private String engine, mode;
@@ -92,17 +104,14 @@ public class AnalysisRunTimeEstimator extends TagSupport {
                 String estimated;
                 if (p == null) {
                     estimated = "N/A";
-                    analysis.setAttribute("estimatedTime", NONE);
                 }
                 else {
                     int pt = p.estimate(elab, analysis);
                     if (pt == -1) {
                         estimated = "N/A";
-                        analysis.setAttribute("estimatedTime", NONE);
                     }
                     else {
                         estimated =  pt + " s";
-                        analysis.setAttribute("estimatedTime", new Integer(pt));
                     }
                 }
                 
@@ -188,11 +197,22 @@ public class AnalysisRunTimeEstimator extends TagSupport {
     }
     
     public static class NullEstimator implements Estimator {
-
         public int estimate(Elab elab, ElabAnalysis analysis)
                 throws ElabException {
             return -1;
         }
+    }
+    
+    public static class ConstantEstimator implements Estimator {
+        private int a;
         
+        public ConstantEstimator(int a) {
+            this.a = a;
+        }
+        
+        public int estimate(Elab elab, ElabAnalysis analysis)
+                throws ElabException {
+            return a;
+        }
     }
 }

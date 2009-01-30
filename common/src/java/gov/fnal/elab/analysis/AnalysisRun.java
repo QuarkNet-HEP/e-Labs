@@ -144,4 +144,8 @@ public interface AnalysisRun {
     Date getStartTime();
     
     Date getEndTime();
+    
+    String getFormattedRunTime();
+    
+    String getFormattedEstimatedRunTime();
 }

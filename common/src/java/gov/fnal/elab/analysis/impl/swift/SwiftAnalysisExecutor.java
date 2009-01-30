@@ -106,7 +106,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 ec = new VDL2ExecutionContext(tree, projectName);
                 ec.setArguments(argv);
                 out = new OutputChannel(runID);
-                out.setPattern("completed");
+                out.setPattern("PROGRESS_MARKER");
                 ec.setStderr(out);
                 ec.setStdout(out);
                 ec.setRunID(runID);
@@ -120,30 +120,35 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 VDL2Config conf = VDL2Config.getConfig(getElab()
                         .getAbsolutePath("/WEB-INF/classes/swift.properties"));
                 runMode = (String) getAttribute("runMode");
-                if (runMode != null) {
-                    String poolFile = "sites.xml";
-                    if ("local".equals(runMode)) {
-                        poolFile = "sites-local.xml";
-                    }
-                    else if ("mixed".equals(runMode)) {
-                        poolFile = "sites-mixed.xml";
-                    }
-                    else if ("grid".equals(runMode)) {
-                        poolFile = "sites-grid.xml";
-                    }
-                    else if ("i2u2".equals(runMode)) {
-                        poolFile = "sites-i2u2-cluster.xml";
-                    }
-                    conf.setProperty("sites.file", getElab().getAbsolutePath(
-                            "/WEB-INF/classes")
-                            + File.separator
-                            + "etc"
-                            + File.separator
-                            + poolFile);
-                }
                 
-                Estimator p = AnalysisRunTimeEstimator.getEstimator("swift", runMode, getAnalysis().getType());
-                getAnalysis().setAttribute("estimatedTime", new Integer(p.estimate(getElab(), getAnalysis())));
+                if (runMode == null) {
+                    runMode = "local";
+                }
+
+                String poolFile = "sites.xml";
+                if ("local".equals(runMode)) {
+                    poolFile = "sites-local.xml";
+                }
+                else if ("mixed".equals(runMode)) {
+                    poolFile = "sites-mixed.xml";
+                }
+                else if ("grid".equals(runMode)) {
+                    poolFile = "sites-grid.xml";
+                }
+                else if ("i2u2".equals(runMode)) {
+                    poolFile = "sites-i2u2-cluster.xml";
+                }
+                else if ("coaster".equals(runMode)) {
+                    poolFile = "sites-grid-coaster.xml";
+                }
+                conf.setProperty("sites.file", getElab().getAbsolutePath(
+                        "/WEB-INF/classes")
+                        + File.separator + "etc" + File.separator + poolFile);
+
+                Estimator p = AnalysisRunTimeEstimator.getEstimator("swift",
+                        runMode, getAnalysis().getType());
+                setAttribute("estimatedTime", new Integer(p.estimate(getElab(),
+                        getAnalysis())));
 
                 stack.setGlobal(ConfigProperty.INSTANCE_CONFIG, conf);
                 stack.setGlobal("swift.home", home);
@@ -307,14 +312,14 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 }
             }
         }
-        
+
         private void log(String stuff) {
-            System.out.println(stuff + ", runid=" + runID
-                            + ", time=" + (getEndTime().getTime() - getStartTime().getTime())
-                            + ", startTime=" + getStartTime().getTime()
-                            + ", estimated="
-                            + getAnalysis().getAttribute("estimatedTime")
-                            + ", type=" + getAnalysis().getType() + ", runMode=" + runMode);
+            System.out.println(stuff + ", runid=" + runID + ", time="
+                    + (getEndTime().getTime() - getStartTime().getTime())
+                    + ", startTime=" + getStartTime().getTime()
+                    + ", estimated=" + getAttribute("estimatedTime")
+                    + ", type=" + getAnalysis().getType() + ", runMode="
+                    + runMode);
         }
 
         protected String getStdErrStuff() {
