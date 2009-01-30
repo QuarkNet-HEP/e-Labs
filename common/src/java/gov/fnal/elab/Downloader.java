@@ -63,6 +63,7 @@ public class Downloader extends HttpServlet {
             }
             resp.setContentType("x-object/data");
             resp.addHeader("Content-Disposition", "attachment;filename=" + filename);
+            resp.addHeader("Content-Length", String.valueOf(new File(pfn).length()));
             FileInputStream fis = new FileInputStream(pfn);
             byte[] buf = new byte[16384];
             OutputStream os = resp.getOutputStream();
