@@ -74,7 +74,7 @@
 				else if (status == AnalysisRun.STATUS_RUNNING) {
 					%>
 					<center>
-						<h1>The ${run.analysis.type} study is running...</h1>
+						<h1>The ${run.analysis.name} study is running...</h1>
 						<img src="../graphics/busy2.gif" alt="Image suggesting something is happening" /><br /><br /><br />
 						Progress: 
 						<table id="status-progress" width="20%">

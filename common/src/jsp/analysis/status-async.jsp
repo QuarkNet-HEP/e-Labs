@@ -53,7 +53,8 @@
 			
 				add(statusb, "status", id, status);
 				add(statusb, "progress", id, progress);
-				add(statusb, "name", id, run.getAnalysis().getType());
+				add(statusb, "name", id, run.getAnalysis().getName());
+				add(statusb, "mode", id, (String) run.getAttribute("runMode"));
 				add(statusb, "startTime", id, df.format(run.getStartTime()));
 				add(statusb, "elapsedTime", id, run.getFormattedRunTime());
 				add(statusb, "estimatedTime", id, run.getFormattedEstimatedRunTime()); 

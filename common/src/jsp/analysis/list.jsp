@@ -46,6 +46,7 @@
 			</th>
 			<th>ID</th>
 			<th>Analysis</th>
+			<th>Run Mode</th>
 			<th>Start Time (UTC)</th>
 			<th>End Time (UTC)</th>
 			<th>Time (Actual/Est.)</th>
@@ -53,7 +54,7 @@
 		</tr>
 		<c:choose>
 			<c:when test="${empty runs}">
-				<tr id="nostudies"><td colspan="7"><h3>There are no studies in the list</h3></td></tr>
+				<tr id="nostudies"><td colspan="8"><h3>There are no studies in the list</h3></td></tr>
 			</c:when>
 			<c:otherwise>
 				<fmt:setTimeZone value="UTC"/>
@@ -70,7 +71,10 @@
 						</td>
 						<td>${run.id}</td>
 						<td>
-							<a href="status.jsp?id=${run.id}">${run.analysis.type}</a>
+							<a href="status.jsp?id=${run.id}">${run.analysis.name}</a>
+						</td>
+						<td>
+							${run.attributes.runMode}
 						</td>
 						<td>
 							<c:choose>
@@ -136,6 +140,7 @@
 					var status = data["status" + id];
 					var progress = data["progress"+ id];
 					var name = data["name" + id];
+					var mode = data["mode" + id];
 					var startTime = data["startTime" + id];
 					var endTime = data["endTime" + id];
 					var elapsed = data["elapsedTime" + id];
@@ -161,11 +166,12 @@
 							row.insertCell(0).innerHTML = "<input type=\"checkbox\" name=\"id\" value=\"" + id + "\"/>";
 							row.insertCell(1).innerHTML = id;
 							row.insertCell(2).innerHTML = "<a href=\"status.jsp?id=" + id + "\">" + name + "</a>";
-							row.insertCell(3).innerHTML = startTime;
-							row.insertCell(4).innerHTML = endTime;
-							row.cells.item(4).id = "endTime" + id;
-							row.insertCell(5).innerHTML = "<span id=\"elapsed" + id + "\">" + elapsed + "</span>&nbsp;/&nbsp;" + estimated;
-							row.cells[5].align="center";
+							row.insertCell(3).innerHTML = mode;
+							row.insertCell(4).innerHTML = startTime;
+							row.insertCell(5).innerHTML = endTime;
+							row.cells.item(5).id = "endTime" + id;
+							row.insertCell(6).innerHTML = "<span id=\"elapsed" + id + "\">" + elapsed + "</span>&nbsp;/&nbsp;" + estimated;
+							row.cells[6].align="center";
 							
 							var hstatus =  "<table border=\"0\"><tr><td>" +
 								 "<img id=\"imgstatus" + id + "\" src=\"../graphics/" + status + ".png\"/></td>" +
@@ -181,8 +187,8 @@
 							}
 							hstatus += "</tr></table>";
 								
-							row.insertCell(6).innerHTML = hstatus;
-							row.cells[6].align="right";
+							row.insertCell(7).innerHTML = hstatus;
+							row.cells[7].align="right";
 						}
 						else {
 							imgstatus.src = "../graphics/" + status + ".png";
