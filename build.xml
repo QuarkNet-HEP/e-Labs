@@ -51,6 +51,10 @@ distclean:
 	Removes all .jar, .class, and jsp/html files from the webapp
 	directory
 	
+deploy-all-clean:
+	Makes a clean deployment of all e-Labs (distclean followed by 
+	deploy-all)
+	
 		</echo>
 	</target>
 	
@@ -550,4 +554,6 @@ distclean:
 	<target name="distclean" depends="clean-jars, clean-classes, clean-web">
 	</target>
 	
+	<target name="deploy-all-clean" depends="distclean, deploy-all">
+	</target>
 </project>
