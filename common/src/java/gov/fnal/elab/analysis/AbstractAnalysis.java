@@ -24,6 +24,11 @@ public abstract class AbstractAnalysis implements ElabAnalysis {
     public void setType(String type) {
         this.type = type;
     }
+    
+    public String getName() {
+        String[] ts = type.split("::");
+        return ts[ts.length - 1];
+    }
 
     public String getEncodedParameters() {
         return AnalysisTools.encodeParameters(this);

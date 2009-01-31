@@ -30,6 +30,12 @@ public interface ElabAnalysis {
      * can make sense of this type.
      */
     void setType(String type);
+    
+    /**
+     * Returns a user-friendly name for the analysis. Typically
+     * this would be done by stripping the namespace off the type.
+     */
+    String getName();
 
     /**
      * Sets the value of a parameter for this analysis

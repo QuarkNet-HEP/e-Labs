@@ -65,6 +65,11 @@ public class VDSAnalysis extends ElabBean implements ElabAnalysis {
     public void setType(String type) {
         setType(type, null);
     }
+    
+    public String getName() {
+        String[] ts = type.split("::");
+        return ts[ts.length - 1];
+    }
 
     public void setType(String type, Derivation pdv) {
         this.type = type;
