@@ -120,10 +120,10 @@ public class DataTools {
 
             Timestamp ts = (Timestamp) data[STARTDATE];
             String startdate = MONTH_FORMAT.format(ts);
-            Month date = school.getMonth(startdate);
-            if (date == null) {
-                date = new Month(startdate, ts);
-                school.addDay(date);
+            Month month = school.getMonth(startdate);
+            if (month == null) {
+            	month = new Month(startdate, ts);
+                school.addDay(month);
             }
 
             File file = new File(e.getLFN());
@@ -164,7 +164,7 @@ public class DataTools {
             }
             school.incEvents(events);
             school.incDataFiles();
-            date.addFile(file);
+            month.addFile(file);
         }
         srs.setStartDate(startDate);
         srs.setEndDate(endDate);

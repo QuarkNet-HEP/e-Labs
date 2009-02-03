@@ -5,6 +5,7 @@ package gov.fnal.elab.datacatalog;
 
 import gov.fnal.elab.datacatalog.query.ResultSet;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -197,35 +198,85 @@ public class StructuredResultSet {
     }
 
     public static class Month {
-        private SortedSet files;
+        private SortedMap detectors;
         private String month;
         private Date date;
 
         public Month(String month, Date date) {
             this.month = month;
             this.date = date;
-            files = new TreeSet();
+            detectors = new TreeMap();
         }
 
         public String getMonth() {
             return month;
         }
+        
+        private void addDetector(Integer detectorID) {
+        	if (!detectors.containsKey(detectorID)) {
+        		Detector d = new Detector(detectorID.intValue());
+        		detectors.put(detectorID, d);
+        	}
+        }
 
         public void addFile(File f) {
-            files.add(f);
+        	Integer d = new Integer(f.getDetector());
+        	if (!detectors.containsKey(d)) {
+        		this.addDetector(d);
+        	}
+            ((Detector) detectors.get(d)).addFile(f);
+        }
+        
+        public SortedMap getDetectors() {
+        	return detectors;
         }
 
         public int getFileCount() {
-            return files.size();
-        }
-
-        public Collection getFiles() {
-            return files;
+            int count = 0;
+        	for (Iterator i = detectors.values().iterator(); i.hasNext(); ) {
+            	count += ((Detector) i.next()).getFileCount();
+            }
+        	return count; 
         }
         
         public Date getDate() {
             return date;
         }
+    }
+    
+    public static class Detector implements Comparable {
+    	private Integer detectorID; 
+    	private SortedSet files; 
+    	
+    	public Detector(int detector) {
+    		this.detectorID = new Integer(detector);
+    		files = new TreeSet(); 
+    	}
+
+		public int compareTo(Object o) {
+			return this.detectorID.compareTo(((Detector) o).getDetectorID()); 
+		}
+
+		public void setDetectorID(Integer detectorID) {
+			this.detectorID = detectorID;
+		}
+
+		public Integer getDetectorID() {
+			return detectorID;
+		}
+		
+		public void addFile(File f) {
+			files.add(f);
+		}
+		
+		public Collection getFiles() {
+			return files; 
+		}
+		
+		public int getFileCount() {
+			return files.size();
+		}
+		
     }
 
     public static class File implements Comparable {

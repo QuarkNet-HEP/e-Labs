@@ -3,6 +3,7 @@
  */
 package gov.fnal.elab.datacatalog;
 
+import gov.fnal.elab.datacatalog.StructuredResultSet.Detector;
 import gov.fnal.elab.datacatalog.StructuredResultSet.File;
 import gov.fnal.elab.datacatalog.StructuredResultSet.Month;
 
@@ -43,5 +44,18 @@ public class MultiSelectStructuredResultSetDisplayer extends
                 + "\" value=\"" + file.getLFN() + "\"/>");
         count++;
         super.displayFileContents(out, file);
+    }
+    
+    public void displayDetectorContents(JspWriter out, Detector detector) throws IOException {
+    	if (detector.getFileCount() > 1) {
+    		out.write("Select: ");
+            out.write("<a href=\"#\" onClick=\"selectAll(" + count + ", "
+                    + (count + detector.getFileCount()) + ", true);return false;\">All</a>");
+            out.write("&nbsp;");
+            out.write("<a href=\"#\" onClick=\"selectAll(" + count + ", "
+                    + (count + detector.getFileCount()) + ", false);return false;\">None</a>");
+    	}
+    
+    	super.displayDetectorContents(out, detector);
     }
 }
