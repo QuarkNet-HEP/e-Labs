@@ -5,33 +5,21 @@
 <body onLoad="focus()">
 <div style="margin-left: 10px;">
 
-<h2>How to choose how and where your analysis is executed </h2>
+<h2>How to choose where your analysis is executed </h2>
 
-<p>When running an analysis, you get to choose how and where the analysis is run.</p>
+<p>When running an analysis, you get to choose where the analysis is run.</p>
 
-<h3>How: </h3>
-<p />
-There are two systems to express, execute and track results of analysis workflows.
-<p />
-VDS &#8211; the GriPhyN Virtual Data System that uses the Virtual Data Language to describe workflows.
-<p />
-SWIFT- the successor to VDS that uses Swiftscript to describe workflows.
-<p />
-<h3>Where: </h3>
-<p />
-VDS currently runs the analysis on the local machine.  It provides the fastest results if there is only one analysis running.
-<p />
- SWIFT can run in three places: <ul>
+<p> The analysis can run in three places:</p> <ul>
 <li> Local machine,
 </li> <li> I2U2 cluster,
 </li> <li> Grid (initially the Teraport cluster at the Computation Institute, University of Chicago)
 </li></ul> 
 <p />
-If you choose Automatic, the Swift scheduler will decide the best place to run the analysis.
+If you choose Automatic, the scheduler will decide the best place to run the analysis.
 <p />
 This diagram shows the choices you will see on your computer screen and the configuration of the computers you can access.<br />
 <p />
-   <img src="../graphics/i2u2-execution.jpg" alt="Execution Choices" width='620' height='576'  border="1" />
+   <img src="../graphics/i2u2-execution.jpg" alt="Execution Choices" width='578' height='578'  border="1" />
 <p />
 <p />
 <p />
@@ -40,7 +28,6 @@ This table summarizes the features of the different choices you can make. The te
 <p />
 <table border="1" cellspacing="1" cellpadding="3" style="font-size: 12px">
   <tr bgcolor="white">
-    <th width="50" valign="top" align="center">How</th>
     <th width="69" valign="top" align="center">Where</th>
     <th width="69" valign="top" align="center">Speed</th>
     <th width="68" valign="top" align="center">Reliability</th>
@@ -48,17 +35,7 @@ This table summarizes the features of the different choices you can make. The te
     <th width="95" valign="top" align="center">Cons</th>
     <th width="173" valign="top" align="center">Best For</th>
   </tr>
-  <tr bgcolor="#d5d7eb">
-    <td width="50" valign="top">VDS</td>
-    <td width="69" valign="top">Local</td>
-    <td width="69" valign="top">Fast</td>
-    <td width="68" valign="top">High</td>
-    <td width="118" valign="top" bgcolor="#d5d7eb">Immediate results for short jobs</td>
-    <td width="95" valign="top" bgcolor="#d5d7eb">Ties up the CPU and slows down other local analyses</td>
-    <td width="173" valign="top" bgcolor="#d5d7eb">Fast jobs involving small datasets</td>
-  </tr>
   <tr  bgcolor="#FFFF66">
-    <td width="50" valign="top">Swift</td>
     <td width="69" valign="top">Local</td>
     <td width="69" valign="top">Fast</td>
     <td width="68" valign="top">High</td>
@@ -67,7 +44,6 @@ This table summarizes the features of the different choices you can make. The te
     <td width="173" valign="top">Fast jobs involving small datasets</td>
   </tr>
   <tr  bgcolor="#FFFF66">
-    <td width="50" valign="top">&nbsp;</td>
     <td width="69" valign="top">i2u2 cluster</td>
     <td width="69" valign="top">Half as fast as local</td>
     <td width="68" valign="top">Still in testing</td>
@@ -76,7 +52,6 @@ This table summarizes the features of the different choices you can make. The te
     <td width="173" valign="top">Intermediate size jobs with medium data sets</td>
   </tr>
   <tr   bgcolor="#FFFF66">
-    <td width="50" valign="top">&nbsp;</td>
     <td width="69" valign="top">Grid<br />
     (Cutting-Edge Tool Still in Development)</td>
     <td width="69" valign="top">Slow</td>
