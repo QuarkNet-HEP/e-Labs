@@ -137,7 +137,9 @@ while($infile=shift(@infile)){
         $count4++;
 	}
 	close IN;
-
+	
+	#undef last_gps_day to help with bug 229
+	$last_gps_day = undef;
 	#'info_output' - some statistics of this file
     #print "Number of \"Orphan fixes\" for $ofile:\n";
     #print "chan1: $REorphan[1] chan2: $REorphan[2] chan3: $REorphan[3] chan4: $REorphan[4]\n";
