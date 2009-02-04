@@ -115,6 +115,7 @@
 			}
 		    
 		    String datetype = request.getParameter("datetype");
+		    if (datetype == null || datetype == "") datetype = "startdate"; 
 		    if ("startdate".equals(datetype) || "creationdate".equals(datetype)) {
 		        and.add(new Between(datetype, new Date(date1), new Date(date2 + " 23:59:59")));
 		    }
