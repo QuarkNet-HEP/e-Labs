@@ -91,6 +91,8 @@
 	    request.setAttribute("detectorids", ElabUtil.join(cids, ", "));
 	}
 %>
+<p>Every <a HREF="javascript:glossary('DAQ',130)">DAQ</a> board has a detector id (DAQ number) based on the serial number on the board. Students select it when they upload
+data. To find it, type "SN" when connected with your detector.</p>
 <form name="update-group-projects-form" method="post" action="">
 	<p id="choose-group">
 		<c:choose>
