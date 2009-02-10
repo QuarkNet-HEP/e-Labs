@@ -80,7 +80,7 @@ string freq_binType = @arg("freq_binType");
 string freq_binValue = @arg("freq_binValue");
 string freq_col = @arg("freq_col");
 
-File singlechannelOut[] <fixed_array_mapper;files=@arg("singlechannelOut")>;
+File singleChannelOut[] <fixed_array_mapper;files=@arg("singlechannelOut")>;
 File freqOut[] <fixed_array_mapper;files=@arg("freqOut")>;
 
 string plot_caption = @arg("plot_caption");
