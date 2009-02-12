@@ -127,7 +127,7 @@
 				
 				// Start date undefined, therefore less or equal to the end date
 				if (StringUtils.isBlank(date1))
-					and.add(new  LessOrEqual(datetype, new Date(date2)));
+					and.add(new  LessOrEqual(datetype, new Date(date2 + " 23:59:59")));
 				// End date undefined, therefore greater than or equal to the start date
 				else if (StringUtils.isBlank(date2))
 					and.add(new GreaterOrEqual(datetype, new Date(date1)));
