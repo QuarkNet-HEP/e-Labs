@@ -397,6 +397,22 @@ public class Elab {
         return properties.getRequired("elab.secure.url") + '/'
                 + properties.getWebapp() + '/' + getName() + '/' + page;
     }
+    
+    public String nonSecure(String page) {
+    	return getURL() + '/' + properties.getWebapp() + '/' + getName() + '/' + page;
+    }
+    
+    private String getURL() {
+    	String url = properties.getProperty("elab.url");
+    	if (url == null || url.equals("")) {
+    		url = "http://" + properties.getRequired("elab.host");
+    		String port = properties.getProperty("elab.port");
+    		if (port != null) {
+    			url = url + ":" + port;
+    		}
+    	}
+    	return url;
+    }
 
     public Map getAttributes() {
         return attributes;
