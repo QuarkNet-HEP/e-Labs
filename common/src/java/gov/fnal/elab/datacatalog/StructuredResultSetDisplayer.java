@@ -94,9 +94,11 @@ public class StructuredResultSetDisplayer {
     }
 
     public void displaySchool(JspWriter out, School school) throws IOException {
-        displaySchoolHeader(out, school);
-        displaySchoolContents(out, school);
-        displaySchoolFooter(out, school);
+    	if (school.getDataFileCount() > 0) {
+    		displaySchoolHeader(out, school);
+    		displaySchoolContents(out, school);
+    		displaySchoolFooter(out, school);
+    	}
     }
 
     public static final NumberFormat EVENTS_FORMAT;
@@ -157,9 +159,11 @@ public class StructuredResultSetDisplayer {
     }
 
     public void displayMonth(JspWriter out, Month month) throws IOException {
-        displayMonthHeader(out, month);
-        displayMonthContents(out, month);
-        displayMonthFooter(out, month);
+    	if (month.getFileCount() > 0) {
+	        displayMonthHeader(out, month);
+	        displayMonthContents(out, month);
+	        displayMonthFooter(out, month);
+    	}
     }
 
     public void displayMonthHeader(JspWriter out, Month month)
@@ -204,9 +208,11 @@ public class StructuredResultSetDisplayer {
     }
     
     public void displayDetector(JspWriter out, Detector detector) throws IOException {
-    	displayDetectorHeader(out, detector);
-		displayDetectorContents(out, detector);
-		displayDetectorFooter(out);
+    	if (detector.getFileCount() > 0) {
+	    	displayDetectorHeader(out, detector);
+			displayDetectorContents(out, detector);
+			displayDetectorFooter(out);
+    	}
     }
     
     public void displayDetectorHeader(JspWriter out, Detector detector) throws IOException {
