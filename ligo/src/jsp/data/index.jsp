@@ -45,7 +45,7 @@
 				<li>Check out the <a href="tutorial.jsp">Bluestone Tutorial</a> to 
 				improve your skills at using this tool.</li>
 				<li>Then fire up 
-				<a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone</a>
+				<a href="/ligo/tla/">Bluestone</a>
 				as you start investigating your research question.</li>
 				</ul>
 			</p>

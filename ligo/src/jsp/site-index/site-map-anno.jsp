@@ -52,8 +52,7 @@
 						<li><a href="../home">Home</a></li>
 						<li><a href="../library">Library</a></li>							
 						<li><a href="../data">Data</a></li>
-						<li><a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone, the
-LIGO Analysis Tool</a></li>
+						<li><a href="/ligo/tla/">Bluestone, the LIGO Analysis Tool</a></li>
 						<li><a href="../data/tutorial.jsp">Bluestone Tutorial</a></li>
 						<li><a href="../maps">LIGO Maps</a></li>
 						<li><a href="../sensors">LIGO Sensors</a></li>

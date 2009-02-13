@@ -51,7 +51,7 @@
 					<a href="resources.jsp">Resources</a> - Explore online resources 
 					that will help you conduct your E-Lab investigation. A 
 					<a href="../data/tutorial.jsp">tutorial</a> will help you learn to use 
-					<a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone</a>, 
+					<a href="/ligo/tla/">Bluestone</a>, 
 					LIGO's E-Lab data analysis software
 				</li>
 				<li>

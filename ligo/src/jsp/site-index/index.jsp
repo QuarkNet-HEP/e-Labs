@@ -48,8 +48,8 @@
 </p>
 <p>
   <em>Step 1: Get Started</em> Review and refresh some of your basic science 
-  skills. Practice using <a href="http://tekoa.ligo-wa.caltech.edu/tla" 
-  target="blank">Bluestone</a> to make graphs of real seismometer data.
+  skills. Practice using <a href="/ligo/tla/" target="_blank">Bluestone</a> 
+  to make graphs of real seismometer data.
 </p>
 <p>
   <em>Step 2: Figure It Out</em> Make your research question. Use Bluestone 
@@ -80,18 +80,18 @@
 </p>
 <p>
   <em>The heart</em><font class=content_text> of the LIGO E-Lab is software
-   named <a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone</a>. 
+   named <a href="/ligo/tla/">Bluestone</a>. 
    Bluestone lets you to select the LIGO data channels that you wish to 
    view and lets you control the features of the plots that you make.
    Bluestone mimics software that LIGO scientists and engineers use at the 
-   Observatory sites.  Your teacher will tell you how to log in.
+   Observatory sites.  Your teacher will show you how to use Bluestone.
 </p> 
 <p>
   <em>Another</em> key feature of the LIGO E-Lab is a comprehensive
-  portal site.   Here you will also find a
-  <a href="http://www13.i2u2.org/glossary/index.php/I2U2_Glossary">glossary</a>, 
+   portal site.   Here you will also find a
+   <a href="/glossary/">glossary</a>, 
    along with 
-  <a href="http://www13.i2u2.org/forum_index.php">discussion rooms</a>
+  <a href="/forum_index.php">discussion rooms</a>
   in which you can share research ideas with others.
   Your teacher will tell you how to log in.
 </p>
