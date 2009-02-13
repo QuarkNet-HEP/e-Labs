@@ -188,7 +188,7 @@
 				<ul>
 					<li>
 						<B>Rubrics:</B> <A HREF="../assessment/rubric-ci.html">Overall Content & Investigation</A>,
-						<A HREF="../assessment/rubric-r.html">Research Skills</A>, <A HREF="../assessment/rubric-t.html">Technology Skills</A>,
+						<A HREF="../assessment/rubric-r.html">Research Skills</A>, <A HREF="../assessment/rubric-t.html">Computing Skills</A>,
 						<A HREF="../assessment/rubric-wla.html">Writing and Language Arts</A> and <A HREF="../assessment/rubric-p.html">Poster</A>
 					</li>
 					<li>
