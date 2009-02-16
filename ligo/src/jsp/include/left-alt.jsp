@@ -6,7 +6,7 @@
 		<li><a href="../maps">LIGO Maps</a></li>
 		<li><a href="../sensors">LIGO Sensors</a></li>
 		<li><a href="../info/related-data.jsp">Related Data</a></li>
-		<li><a href="/library"  target="blank">Library</a></li>
+		<li><a href="../library">e-Lab Library</a></li>
 	  <li><a href="/ligo/tla">Bluestone</a></li>
      <li><a href="../data/tutorial.jsp">Tutorial</a></li>
 	</ul>
