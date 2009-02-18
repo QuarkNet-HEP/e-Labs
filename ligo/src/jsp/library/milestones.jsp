@@ -39,7 +39,7 @@
 			<h2>Getting started! Make sure you meet each of these milestones below.</h2>
 			<p>
 				 Now you're ready to begin.  Follow the workflow list below to guide your work. Go through the E-Lab tasks one at a time; 
-				The Basics (optional), Get Started, Figure It Out and Tell Others.
+				<a href="research-basics.jsp">The Basics</a> (optional), Get Started, Figure It Out and Tell Others.
 			</p>
 			<p><b>Click on <img border="0" src="../graphics/ref.gif"> for
 	  	references to help you meet each milestone.</b></p>
