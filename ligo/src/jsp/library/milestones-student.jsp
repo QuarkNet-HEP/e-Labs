@@ -7,6 +7,12 @@
 							</a>
 						</li>
 						<li>
+							Describe the basic properties of seismic waves.
+							<a href="javascript:reference('wave properties',420)">
+								<img src="../graphics/ref.gif">
+							</a>
+						</li>
+						<li>
 							Explain the need for LIGO to study seismic data.
 							<a href="javascript:reference('seismic data importance',420)">
 								<img src="../graphics/ref.gif">
