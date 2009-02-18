@@ -38,11 +38,10 @@
 		<td id="center">
 			<h2>Getting started! Make sure you meet the milestones on the diagram.</h2>
 			<p>
-				Follow the workflow map below to guide your work. Click on the hotspots 
-				to get references for accomplishing your milestones. These dots in your 
-				workflow indicate where your teacher monitors your progress by 
-				commenting on the entries you make in your logbook related to each 
-				milestone. Be sure to read the comments!
+				Follow the workflow map below to guide your work. Click on the hotspots to get references
+				for accomplishing your milestones. The colored dots in the workflow indicate where your
+				eacher monitors your progress. Your teacher will comment on the entries that you make
+				in your logbook for each milestone. Be sure to read the teacher comments!
 			</p>
 			<center>
 				<c:choose>
@@ -67,18 +66,20 @@
 				name for the map is a <em>workflow diagram</em>. Drag your mouse over 
 				the diagram.  You'll see that the circles are links. The links on the 
 				ends point to the pre-test and post-test that you will take to measure 
-				your E-Lab learning.  Other links represent <em>milestones</em> -- 
+				your e-Lab learning.  Other links represent <em>milestones</em> -- 
 				tasks that you must master in order to move on. Click on a milestone 
 				and you'll see a pop-up box.  The box will contain a statement of the 
 				milestone, some <em>references</em> that you can use to learn how to 
 				master the milestone, and a "log it!" link that takes you to your 
 				electronic log book.  When you've mastered a milestone, write the 
 				evidence in your log book.  Your teacher will read your entry.
+				
+
 			</p>
 			<p>
-				Now you're ready to begin.  Go through the E-Lab tasks one at a time; 
-				The Basics (optional), Get Started, Figure It Out and Tell Others.
-			</p>
+                 Now you are ready to begin. Go through the e-Lab tasks one at a time;
+				The <a href="research-basics.jsp">Basics</a> (optional), Get Started,
+				Figure It Out and Tell Others.			</p>
 		</td>
 	</tr>
 </table>
