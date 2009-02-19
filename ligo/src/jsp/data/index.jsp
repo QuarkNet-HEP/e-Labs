@@ -42,7 +42,7 @@
 				Bluestone software allows you to select and plot data from 
 				LIGO data channels. 
 				<ul>
-				<li>Check out the <a href="/library/index.php/Bluestone_Tutorial">Bluestone Tutorial</a> to 
+				<li>Check out the <a href="../data/tutorial.jsp">Bluestone Tutorial</a> to 
 				improve your skills at using this tool.</li>
 				<li>Then fire up 
 				<a href="/ligo/tla/">Bluestone</a>
