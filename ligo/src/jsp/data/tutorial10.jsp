@@ -36,11 +36,6 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>
-				Software Tutorial: Learn How to Use 
-				<a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone</a>
-			</h2>
-			
 			<%@ include file="../data/nav-tutorial.jsp" %>
 			
 			<p align="center">
