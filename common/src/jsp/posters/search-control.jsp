@@ -6,9 +6,9 @@
 
 <div class="search-quick-links">
 	Show posters by:&nbsp; 
-	<e:quicksearch key="group" value="${user.name}"/>
-	<e:quicksearch key="teacher" value="<%= user.getTeacher() %>"/>
-	<e:quicksearch key="school" value="${user.school}"/>
+	<e:quicksearch key="group" value="${user.name}"/>,
+	<e:quicksearch key="teacher" value="<%= user.getTeacher() %>"/>,
+	<e:quicksearch key="school" value="${user.school}"/>,
 	<e:quicksearch key="all" value="" label="All"/>
 </div>
 
