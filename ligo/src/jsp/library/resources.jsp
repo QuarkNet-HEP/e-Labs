@@ -38,17 +38,48 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>LIGO E-Lab Resources</h2>
-			<ul>
-				<li><a href="../data/tutorial.jsp">Bluestone Tutorial</a></li>
-				<li><a href="http://www.ligo-wa.caltech.edu">LIGO Hanford Observatory</a></li>
-				<li><a href="http://ilog.ligo-wa.caltech.edu/ilog">LHO Electronic Log</a></li>
-				<li><a href="http://earthquake.usgs.gov">USGS Earthquake Records</a></li>
-				<li><a href="http://www.ess.washington.edu/SEIS/PNSN/">Pacific Northwest Seismic Network</a></li>
-				<li><a href="http://www.gcse.com/waves/seismometers.htm">How Does a Seismometer Work?</a></li>
-				<li><a href="http://www.exploratorium.edu/faultline/basics/waves.html">Types of Earthquake Waves</a></li>
-				<li><a href="ligo_elab1.pdf">E-Lab Seismic Study (PDF)</a></li>
-			</ul>
+
+<!-- begin content body --> 
+
+<div class='body'>
+<%@ include file="../library/resources.htm" %>
+</div>
+
+<!--
+<ul>
+       <li><a href="../data/tutorial.jsp">Bluestone Tutorial</a></li>
+
+       <li><a href="ligo_elab1.pdf">E-Lab Seismic Study (PDF)</a></li>
+
+       <li><a href="http://www.ligo-wa.caltech.edu"
+	      target='_blank'>LIGO Hanford Observatory</a>
+	      <img src='http://www13.i2u2.org/glossary/skins/monobook/external.png'>
+
+       <li><a href="http://ilog.ligo-wa.caltech.edu/ilog"
+	      target='_blank'>LHO Electronic Log</a>
+	      <img src='http://www13.i2u2.org/glossary/skins/monobook/external.png'>
+
+       <li><a href="http://earthquake.usgs.gov"
+	      target='_blank'>USGS Earthquake Records</a>
+	      <img src='http://www13.i2u2.org/glossary/skins/monobook/external.png'>
+
+       <li><a href="http://www.ess.washington.edu/SEIS/PNSN/"
+	      target='_blank'>Pacific Northwest Seismic Network</a>
+	      <img src='http://www13.i2u2.org/glossary/skins/monobook/external.png'>
+
+       <li><a href="http://www.gcse.com/waves/seismometers.htm"
+	      target='_blank'>How Does a Seismometer Work?</a>
+	      <img src='http://www13.i2u2.org/glossary/skins/monobook/external.png'>
+
+       <li><a href="http://www.exploratorium.edu/faultline/basics/waves.html"
+	      target='_blank'>Types of Earthquake Waves</a>
+	      <img src='http://www13.i2u2.org/glossary/skins/monobook/external.png'>
+</ul>
+-->
+
+<!-- end content body --> 
+
+
 		</td>
 	</tr>
 </table>
