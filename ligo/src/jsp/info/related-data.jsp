@@ -40,14 +40,11 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Additional Web data sources may assist your investigation</h2>
-			
-			<p>			
-				<ul>
-					<li><a href="http://earthquake.usgs.gov/">USGS Earthquake Records</a></li>
-					<li><a href="http://www.ess.washington.edu/SEIS/PNSN/">Pacific Northwest Seismic Network</a></li>
-				</ul>
-			</p>
+
+		<div class='body'>
+		<%@ include file="related-data.htm" %>
+        </div>
+
 		</td>
 	</tr>
 </table>
