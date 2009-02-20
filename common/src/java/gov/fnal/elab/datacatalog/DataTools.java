@@ -18,6 +18,8 @@ import gov.fnal.elab.datacatalog.query.ResultSet;
 import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.util.ElabUtil;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -107,29 +109,53 @@ public class DataTools {
             }
 
             String schoolName = (String) data[SCHOOL];
-            if (schoolName == null) {
-                System.out.println("WARNING: School name is null for " + e.getLFN());
-                schoolName = "unknown";
+            if (StringUtils.isBlank(schoolName)) {
+                System.out.println("WARNING: School name is missing for file " + e.getLFN());
+                schoolName = "Unknown School";
             }
+            String cityName = (String) data[CITY];
+            if (StringUtils.isBlank(cityName)) {
+                System.out.println("WARNING: City name is missing for file " + e.getLFN());
+                cityName = "Unknown City";
+            }
+            String stateName = (String) data[STATE];
+            if (StringUtils.isBlank(stateName)) {
+                System.out.println("WARNING: State name is missing for file " + e.getLFN());
+                stateName = "Unknown State";
+            }
+            
             School school = srs.getSchool(schoolName);
             if (school == null) {
-                school = new School(schoolName, (String) data[CITY],
-                        (String) data[STATE]);
+                school = new School(schoolName, cityName, stateName);
                 srs.addSchool(school);
             }
-
+            
+            // Correct city and state names if there some metadata pieces have bad data.
+            if (school.getCity().equals("Unknown City") && !cityName.equals("Unknown City"))
+            	school.setCity(cityName);
+            if (school.getState().equals("Unknown State") && !stateName.equals("Uknown State"))
+            	school.setState(stateName);
+            
             Timestamp ts = (Timestamp) data[STARTDATE];
             String startdate = MONTH_FORMAT.format(ts);
-            Month date = school.getMonth(startdate);
-            if (date == null) {
-                date = new Month(startdate, ts);
-                school.addDay(date);
+            Month month = school.getMonth(startdate);
+            if (month == null) {
+            	month = new Month(startdate, ts);
+                school.addDay(month);
             }
 
             File file = new File(e.getLFN());
             file.setStartDate((Timestamp) data[STARTDATE]);
             file.setEndDate((Timestamp) data[ENDDATE]);
-            file.setDetector(Integer.parseInt((String) data[DETECTORID]));
+            
+            try {
+                file.setDetector(Integer.parseInt((String) data[DETECTORID]));
+            }
+            catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " has a malformed detector ID. Skipping.");
+            	continue;
+            }
+            	
             if (file.getStartDate() == null) {
             	System.out.println("WARNING: File " + e.getLFN() + " is missing the start date. Skipping.");
             	continue;
@@ -163,7 +189,7 @@ public class DataTools {
             }
             school.incEvents(events);
             school.incDataFiles();
-            date.addFile(file);
+            month.addFile(file);
         }
         srs.setStartDate(startDate);
         srs.setEndDate(endDate);

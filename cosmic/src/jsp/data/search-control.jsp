@@ -2,9 +2,18 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ page import="gov.fnal.elab.util.ElabUtil" %>
+<%@ page import="gov.fnal.elab.util.ElabException" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.apache.commons.lang.time.DateUtils" %>
 <%@ page import="java.util.*" %>
+<%@ page import="java.text.*" %>
+
+<% 
+SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
+DATEFORMAT.setLenient(false);
+%>
 
 <div class="search-quick-links">
 	<e:quicksearch key="school" value="${user.group.school}"/>
@@ -35,6 +44,12 @@
 			Advanced Search
 			<table class="form-controls">
 				<tr>
+					<td colspan="2">
+					Please enter dates in MM/dd/yyyy format (e.g. <%= DATEFORMAT.format(new Date()) %>).<br />
+					You may leave one or both date fields blank.
+					</td>
+				</tr>
+				<tr>
 					<td align="right">
 						<select name="datetype">
 						    <option value="startdate" selected>Start Date</option>
@@ -42,11 +57,12 @@
 						</select>
 					</td>
 					<td>
-						<e:trinput name="date1" size="10" maxlength="15" default="01/01/2004"/>
+						<e:trinput name="date1" size="10" maxlength="15" />
 						to
-						<e:trinput name="date2" size="10" maxlength="15" default="12/30/2050"/>
+						<e:trinput name="date2" size="10" maxlength="15" />
 					</td>
 				</tr>
+				<!-- Sort field and search-within-data don't work. 
 				<tr>
 					<td align="right">
 						<e:select name="sortDirection" valueList="sortAsc, sortDesc" labelList="Sort Ascending, Sort Descending"/>
@@ -66,6 +82,7 @@
 					    <input type="radio" name="searchIn" value="within"/ >Within results
 					</td>
 				</tr>
+				-->
 				<tr>
 					<td>
 						Stacked:
@@ -83,22 +100,21 @@
 	<%
 		//variables used in metadata searches:
 		String key = request.getParameter("key");
-		if (key == null) key="name";
 		String value = request.getParameter("value");
-		if (value == null) value="";
 		String date1 = request.getParameter("date1");
-		if (date1 == null || date1.equals("")) date1="01/01/2004";
 		String date2 = request.getParameter("date2");
-		if (date2 == null || date2.equals("")) date2="12/30/2050";
-		String sortDirection = request.getParameter("sortDirection");
-		if (sortDirection == null) sortDirection = "sortAsc";
-		String order = request.getParameter("sortField");
-		if ((order == null) || (order.equals(""))){
-		    order = "startdate";
-		}
 		String stacked = request.getParameter("stacked");
 		String blessed = request.getParameter("blessed");
-		boolean submit = request.getParameter("submit") != null;
+		boolean submit = StringUtils.isNotBlank(request.getParameter("submit"));
+		
+		if (StringUtils.isBlank(key)) key="all";
+		
+		/* Data sortation is never even used? 
+		   String sortDirection = request.getParameter("sortDirection");
+		   String order = request.getParameter("sortField");
+		   if (StringUtils.isBlank(order)) order = "startdate"; 
+		   if (StringUtils.isBlank(sortDirection)) sortDirection = "sortAsc";
+		*/
 		
 		ResultSet searchResults = null;
 		StructuredResultSet searchResultsStructured = null;
@@ -106,20 +122,61 @@
 		    long start = System.currentTimeMillis();
 		    
 		    And and = new And();
-			if ("within".equals(request.getParameter("searchIn"))) {
-				and.add((QueryElement) session.getAttribute("previousSearch"));
-			}
-			if (!"all".equals(key) && !(value == null) && !"".equals(value)) {
-				value = value.replace('*', '%'); // Allow asterisk
-			    and.add(new Like(key, value));
-			}
 		    
+		    /* This parameter is never set 
+			   if ("within".equals(request.getParameter("searchIn"))) {
+				   and.add((QueryElement) session.getAttribute("previousSearch"));
+			}
+		    */
+			
+			// Allow use of asterisk wildcards, remove leading/trailing whitespace 
+			if (StringUtils.isNotBlank(value) && !key.equals("all")) {
+				value = value.replace('*', '%').trim();
+				and.add(new Like(key, value)); 
+			}
+					
+			
+			// Date bounds are only needed if specified   
 		    String datetype = request.getParameter("datetype");
-		    if (datetype == null || datetype == "") datetype = "startdate"; 
-		    if ("startdate".equals(datetype) || "creationdate".equals(datetype)) {
-		        and.add(new Between(datetype, new Date(date1), new Date(date2 + " 23:59:59")));
-		    }
-		    
+			if (StringUtils.isNotBlank(date1) || StringUtils.isNotBlank(date2)) {
+				// In case someone makes their own search string and forgets the date type 
+				if (StringUtils.isBlank(datetype)) datetype = "startdate"; 
+				
+				try {
+					Date startDate = null, endDate = null; 
+					
+					if (StringUtils.isNotBlank(date1)) {
+						startDate = DATEFORMAT.parse(date1); 
+					}
+					if (StringUtils.isNotBlank(date2)) {
+						endDate = DATEFORMAT.parse(date2);
+						endDate.setHours(23); 
+						endDate.setMinutes(59);
+						endDate.setSeconds(59);
+					}
+				
+					// Start date undefined, therefore less or equal to the end date just before midnight
+					if (StringUtils.isBlank(date1)) {
+						and.add(new LessOrEqual(datetype, endDate));
+					}
+					
+					// End date undefined, therefore greater than or equal to the start date
+					else if (StringUtils.isBlank(date2)) {
+						and.add(new GreaterOrEqual(datetype, startDate));
+					}
+					// Date range 
+					else {
+						and.add(new Between(datetype, startDate, endDate));
+					}
+				}
+				catch (Exception ex) {
+					%> 
+					<h3>At least one of the dates you typed in was not understood. Please re-check the dates you typed in.</h3>
+					<%
+					return; 
+				}
+			}
+					    
 		    if ("yes".equals(blessed)) {
 		    	and.add(new Equals("blessed", Boolean.TRUE));
 		    }
@@ -134,7 +191,6 @@
 		    	and.add(new Equals("stacked", Boolean.FALSE));
 		    }
 		    
-		    
 		    and.add(new Equals("type", "split"));
 		    and.add(new Equals("project", elab.getName()));
 		    
@@ -148,14 +204,12 @@
 		}
 		else {
 		    session.setAttribute("previousSearch", null);
+		    DataCatalogProvider dcp = elab.getDataCatalogProvider();
+			int fileCount = dcp.getUniqueCategoryCount("split");
+			int schoolCount = dcp.getUniqueCategoryCount("school");
+			int stateCount = dcp.getUniqueCategoryCount("state");
 			%>
 			<p>
-				<%
-					DataCatalogProvider dcp = elab.getDataCatalogProvider();
-					int fileCount = dcp.getUniqueCategoryCount("split");
-					int schoolCount = dcp.getUniqueCategoryCount("school");
-					int stateCount = dcp.getUniqueCategoryCount("state");
-				%>
 		 		Searching <%= fileCount %> data files from <%= schoolCount %> schools in 
 				<%= stateCount %> states.
 			</p>
