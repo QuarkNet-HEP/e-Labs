@@ -31,9 +31,12 @@ public class TimeIntervalFormatter {
         }
         sb.append(String.valueOf(value));
     }
-
+    
     public static String format(long milliSecondInterval) {
-        int seconds = (int) (milliSecondInterval / 1000);
+    	return formatSeconds((int) (milliSecondInterval / 1000));
+    }
+
+    public static String formatSeconds(int seconds) {
         if (seconds < 0) {
             return "-";
         }

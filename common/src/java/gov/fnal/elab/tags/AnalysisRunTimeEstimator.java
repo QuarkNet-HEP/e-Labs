@@ -11,6 +11,7 @@ package gov.fnal.elab.tags;
 
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.analysis.ElabAnalysis;
+import gov.fnal.elab.analysis.TimeIntervalFormatter;
 import gov.fnal.elab.estimation.Estimator;
 import gov.fnal.elab.estimation.EstimatorSet;
 
@@ -79,7 +80,7 @@ public class AnalysisRunTimeEstimator extends TagSupport {
                         estimated = "N/A";
                     }
                     else {
-                        estimated = pt + " s";
+                        estimated = TimeIntervalFormatter.formatSeconds(pt);
                     }
                 }
 
