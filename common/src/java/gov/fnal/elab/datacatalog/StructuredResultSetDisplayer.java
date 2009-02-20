@@ -4,6 +4,7 @@
 package gov.fnal.elab.datacatalog;
 
 import gov.fnal.elab.datacatalog.StructuredResultSet.File;
+import gov.fnal.elab.datacatalog.StructuredResultSet.Detector;
 import gov.fnal.elab.datacatalog.StructuredResultSet.Month;
 import gov.fnal.elab.datacatalog.StructuredResultSet.School;
 import gov.fnal.elab.util.ElabUtil;
@@ -93,9 +94,11 @@ public class StructuredResultSetDisplayer {
     }
 
     public void displaySchool(JspWriter out, School school) throws IOException {
-        displaySchoolHeader(out, school);
-        displaySchoolContents(out, school);
-        displaySchoolFooter(out, school);
+    	if (school.getDataFileCount() > 0) {
+    		displaySchoolHeader(out, school);
+    		displaySchoolContents(out, school);
+    		displaySchoolFooter(out, school);
+    	}
     }
 
     public static final NumberFormat EVENTS_FORMAT;
@@ -156,9 +159,11 @@ public class StructuredResultSetDisplayer {
     }
 
     public void displayMonth(JspWriter out, Month month) throws IOException {
-        displayMonthHeader(out, month);
-        displayMonthContents(out, month);
-        displayMonthFooter(out, month);
+    	if (month.getFileCount() > 0) {
+	        displayMonthHeader(out, month);
+	        displayMonthContents(out, month);
+	        displayMonthFooter(out, month);
+    	}
     }
 
     public void displayMonthHeader(JspWriter out, Month month)
@@ -190,31 +195,55 @@ public class StructuredResultSetDisplayer {
 
     public void displayMonthContents(JspWriter out, Month month)
             throws IOException {
-    	TreeMap t = this.collateFilesByDetector(month.getFiles());
-    	
-    	for (Iterator detector = t.keySet().iterator(); detector.hasNext(); ) {
-    		Integer currentID = (Integer) detector.next();
-    		
-    		crtCol = 0;
-            crtRow = 0;
-            out.write("<div class=\"data-files\">");
-            this.displayDetectorHeader(out, currentID.intValue());
-            out.write("<table>");
-            out.write("<tr>");
-            
-    		for (Iterator file = ((Collection) t.get(currentID)).iterator(); file.hasNext(); ) {
-    			displayFile(out, (File) file.next());
-    		}
-    		out.write("</tr>");
-            out.write("</table>");
-            out.write("</div>");
+    	for (Iterator i = month.getDetectors().keySet().iterator(); i.hasNext(); ) {
+    		Detector d = (Detector) month.getDetectors().get((Integer) i.next());
+    		displayDetector(out, d);
     	}
-    	
     }
 
     public void displayMonthFooter(JspWriter out, Month month)
             throws IOException {
         ElabUtil.vsWriteHiddenEnd(out);
+        out.write("</div>");
+    }
+    
+    public void displayDetector(JspWriter out, Detector detector) throws IOException {
+    	if (detector.getFileCount() > 0) {
+	    	displayDetectorHeader(out, detector);
+			displayDetectorContents(out, detector);
+			displayDetectorFooter(out);
+    	}
+    }
+    
+    public void displayDetectorHeader(JspWriter out, Detector detector) throws IOException {
+    	crtCol = 0;
+    	crtRow = 0; 
+    	out.write("<div class=\"data-files\">");
+    	displayDetectorInfo(out, detector); 
+    	out.write("<table>");
+    	out.write("<tr>");
+    }
+    
+    public void displayDetectorInfo(JspWriter out, Detector detector) throws IOException {
+    	out.write("<span class=\"date-info\">");
+    	out.write("Detector " + detector.getDetectorID().toString());
+    	out.write(", ");
+    	out.write(Integer.toString(detector.getFileCount()));
+    	out.write(" file");
+    	out.write(detector.getFileCount() > 1? "s" : "");
+    	out.write("</span>\n");
+    }
+    
+    public void displayDetectorContents(JspWriter out, Detector detector) throws IOException {
+    	for (Iterator i = detector.getFiles().iterator(); i.hasNext(); ) {
+    		File f = (File) i.next();
+    		displayFile(out, f);
+    	}
+    }
+    
+    public void displayDetectorFooter(JspWriter out) throws IOException {
+    	out.write("</tr>");
+        out.write("</table>");
         out.write("</div>");
     }
 
@@ -272,26 +301,24 @@ public class StructuredResultSetDisplayer {
         out.write("</td>\n");
     }
     
-    public void displayDetectorHeader(JspWriter out, int detector) throws IOException {
-    	out.write("Detector " + Integer.toString(detector));
-    }
-    
     public TreeMap collateFilesByDetector(Collection files) {
-    	TreeMap t = new TreeMap(); 
+    	Iterator i = files.iterator();
+    	TreeMap h = new TreeMap();
     	
-    	for (Iterator i = files.iterator(); i.hasNext(); ) {
+    	while (i.hasNext()) {
     		File f = (File) i.next();
     		Integer currentID = new Integer(f.getDetector());
-    		if (t.containsKey(currentID)) {
-    			((Collection) t.get(currentID)).add(f);
+    		if (h.containsKey(currentID)) {
+    			((Collection) h.get(currentID)).add(f);
     		}
     		else {
     			Collection c = new ArrayList();
     			c.add(f);
-    			t.put(currentID, c);
+    			h.put(currentID, c);
     		}
     	}
     	
-    	return t;
+    	return h;
     }
+    
 }
