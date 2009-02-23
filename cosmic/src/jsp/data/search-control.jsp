@@ -46,7 +46,7 @@ DATEFORMAT.setLenient(false);
 				<tr>
 					<td colspan="2">
 					Please enter dates in MM/dd/yyyy format (e.g. <%= DATEFORMAT.format(new Date()) %>).<br />
-					You may leave a date field blank.
+					You may leave one or both date fields blank.
 					</td>
 				</tr>
 				<tr>
