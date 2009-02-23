@@ -40,10 +40,12 @@
 	request.setAttribute("type", type);
 	String submit =  request.getParameter("submit");
 	int studentId = Integer.parseInt(request.getParameter("studentid"));
+	/*
 	if (!elab.getUserManagementProvider().isStudentInGroup(user, studentId)) {
 	    //throw new ElabJspException("This student does not belong to this group.");
 	}
-	if (elab.getSurveyProvider().hasStudentTakenTest(id, type, studentId)) {
+	*/
+	if (elab.getSurveyProvider().hasStudentTakenTest(testId, studentId, type)) {
 	    throw new ElabJspException("This student has already taken this test");
 	}
 		
@@ -69,12 +71,14 @@
 	}
 	
 	// Submit completion
-	elab.getSurveyProvider().RecordCompletion(studentId, testId, type, answers); 
+	elab.getSurveyProvider().RecordCompletion(testId, studentId, type, answers); 
 	
-	int total = elab.getTestProvider().getTotalStudents(user);
-	int totalTaken = elab.getTestProvider().getTotalTaken(type, user);
-    request.setAttribute("total", String.valueOf(total));
-	request.setAttribute("totalTaken", String.valueOf(totalTaken));
+	/*
+	int totalInGroup = elab.getTestProvider().getTotalStudents(user);
+	int totalTakenInGroup = elab.getSurveyProvider().getTotalTaken(testId, type, user);
+    request.setAttribute("total", String.valueOf(totalInGroup));
+	request.setAttribute("totalTaken", String.valueOf(totalTakenInGroup));
+	*/
 	
 	/*
     //enter answers into answer database.  Set presurvey to t in survey database. Finally check whether to set survey to true in research_group database

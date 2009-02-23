@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Map;
 
 import gov.fnal.elab.Elab;
+import gov.fnal.elab.ElabGroup;
 import gov.fnal.elab.ElabProvider;
 import gov.fnal.elab.survey.ElabSurvey;
 import gov.fnal.elab.survey.ElabSurveyProvider;
 import gov.fnal.elab.survey.ElabSurveyQuestion;
 import gov.fnal.elab.survey.ElabSurveyQuestionAnswer;
-import gov.fnal.elab.test.ElabTestQuestionAnswer;
 import gov.fnal.elab.util.DatabaseConnectionManager;
 import gov.fnal.elab.util.ElabException;
 
@@ -35,10 +35,10 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
         this.elab = elab;
     }
 
-	public ElabSurvey getSurvey(int id) throws ElabException {
+	public ElabSurvey getSurvey(int surveyId) throws ElabException {
 		synchronized (tests) {
-            if (tests.containsKey(new Integer(id))) {
-                return (ElabSurvey) tests.get(new Integer(id));
+            if (tests.containsKey(new Integer(surveyId))) {
+                return (ElabSurvey) tests.get(new Integer(surveyId));
             }
         }		
 		
@@ -54,7 +54,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 					"WHERE q.test_id = ? " +
 					"ORDER BY q.question_no, r.response_no;");
 					
-			ps.setInt(1, id);
+			ps.setInt(1, surveyId);
 			ResultSet rs = ps.executeQuery();
 			
 			ElabSurveyQuestion currentQuestion = null; 
@@ -104,10 +104,9 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 		
 	}
 	
-	public void RecordCompletion(int studentId, int testId, String type, List answers) throws ElabException {
+	public void RecordCompletion(int surveyId, int studentId, String type, List answers) throws ElabException {
 		
-		//TODO: FIX THIS
-		Timestamp ts = (Timestamp) new Date();
+		Timestamp ts = new Timestamp(System.currentTimeMillis());
 		
 		Savepoint svpt = null; 
 		Connection con = null;
@@ -117,18 +116,18 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 			con = DatabaseConnectionManager.getConnection(elab.getProperties());
 			
 			// Set rollback point in case the transaction fails. 
-			svpt = con.setSavepoint();
 			con.setAutoCommit(false);
+			svpt = con.setSavepoint();
 			
 			// TODO: Insert a new completion for the student
 			// Need student ID, test ID, time, type
 			PreparedStatement insertCompletion = con.prepareStatement(
 					"INSERT INTO \"newSurvey\".completions " +
-					"(testId, time, student_id, type) " +
+					"(test_id, time, student_id, type) " +
 					"VALUES (?, ?, ?, ?);");
-			insertCompletion.setInt(1, testId);
-			insertCompletion.setInt(3, studentId);
+			insertCompletion.setInt(1, surveyId);
 			insertCompletion.setTimestamp(2, ts); 
+			insertCompletion.setInt(3, studentId);
 			insertCompletion.setString(4, type);
 			insertCompletion.executeUpdate(); 
 			
@@ -136,17 +135,22 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 			int completionId = -1;
 			PreparedStatement queryCompletionId = con.prepareStatement("SELECT lastval(); ");
 			rs = queryCompletionId.executeQuery(); 
-			completionId = rs.getInt(1);
+			if (rs.next()) {
+				completionId = rs.getInt(1);
+			}
+			else {
+				throw new SQLException("No data back from the prepared statement");
+			}
 			
 			// TODO: Insert all the answers
-			// Need question ID, completion ID; 
+			// Need response ID, completion ID; 
 			for (Iterator i = answers.iterator(); i.hasNext(); ) {
-				ElabTestQuestionAnswer answer = (ElabTestQuestionAnswer) i.next();
+				Integer answer = (Integer) i.next();
 				PreparedStatement insertAnswer = con.prepareStatement(
 						"INSERT INTO \"newSurvey\".answers " +
 						"(response_id, completion_id) " +
 						"VALUES (?, ?); ");
-				insertAnswer.setInt(1, answer.getId());
+				insertAnswer.setInt(1, answer.intValue());
 				insertAnswer.setInt(2, completionId);
 				insertAnswer.executeUpdate();
 			}
@@ -175,7 +179,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 		}
 	}
 	
-	public boolean hasStudentTakenTest(int testID, String type, int studentID) throws ElabException {
+	public boolean hasStudentTakenTest(int surveyId, int studentId, String type) throws ElabException {
 		// TODO: Probably should have an enumerated type! 
 		
 		boolean taken = false; 
@@ -185,10 +189,10 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 			con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
 			
 			PreparedStatement ps = con.prepareStatement(
-					"SELECT * FROM \"newSurvey\".completions " +
+					"SELECT id FROM \"newSurvey\".completions " +
 					"WHERE student_id = ? AND test_id = ? AND type = ?;");
-			ps.setInt(1, studentID);
-			ps.setInt(2, testID); 
+			ps.setInt(1, studentId);
+			ps.setInt(2, surveyId); 
 			ps.setString(3, type.toLowerCase());
 			
 			ResultSet rs = ps.executeQuery(); 
@@ -205,6 +209,47 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 		}
 		
 		return taken; 
+	}
+
+	public int getTotalTaken(int surveyId, String type, ElabGroup group) throws ElabException {
+		Connection con = null; 
+		int total = -1; 
+		try {
+			con = DatabaseConnectionManager.getConnection(elab.getProperties());
+			PreparedStatement ps = con.prepareStatement(
+					"SELECT COUNT(studentId) " +
+					"FROM \"newSurvey\".completions " + 
+					"WHERE test_id = ? AND type = ? AND student_id IN ( " +
+						"SELECT student.id FROM student, research_group_student, research_group_project, survey " +
+						"WHERE research_group_student.research_group_id = ? " +
+		                "AND research_group_project.research_group_id = ? " +
+		                "AND research_group_student.student_id = student.id AND survey.student_id = student.id " + 
+		                "AND survey.project_id = ? " +
+	                " );"); 
+			ps.setInt(1, surveyId);
+			ps.setString(2, type);
+			ps.setInt(3, Integer.parseInt(group.getId()));
+			ps.setInt(4, Integer.parseInt(group.getId()));
+			ps.setInt(5, Integer.parseInt(elab.getId()));
+						
+			ResultSet rs = ps.executeQuery(); 
+			if (rs.next()) {
+				total = rs.getInt(1);
+			}
+			else {
+				total = 0; 
+			}
+			 
+		}
+		catch (Exception e) {
+			throw new ElabException(e);
+		}
+		finally {
+			DatabaseConnectionManager.close(con, null);
+		}
+		
+		return total; 
+		
 	}
 
 }
