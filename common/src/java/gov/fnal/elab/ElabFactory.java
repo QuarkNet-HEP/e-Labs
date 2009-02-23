@@ -15,6 +15,7 @@ import gov.fnal.elab.analysis.InitializationException;
 import gov.fnal.elab.datacatalog.CachingDataCatalogProvider;
 import gov.fnal.elab.datacatalog.DataCatalogProvider;
 import gov.fnal.elab.test.ElabTestProvider;
+import gov.fnal.elab.survey.ElabSurveyProvider; 
 import gov.fnal.elab.usermanagement.ElabUserManagementProvider;
 
 import java.util.HashMap;
@@ -106,6 +107,7 @@ public class ElabFactory {
     /**
      * Returns an instance of an elab test provider for the specified elab. A
      * test provider implements functionality related to tests (surveys).
+     * This is for older survey implementations and is deprecated. 
      */
     public static synchronized ElabTestProvider getTestProvider(Elab elab) {
         Object p = get(elab, TEST);
@@ -114,6 +116,21 @@ public class ElabFactory {
             set(elab, TEST, p);
         }
         return (ElabTestProvider) p;
+    }
+    
+    private static final String SURVEY = "survey";
+    
+    /**
+     * Return an instance of an elab survey provider for the specified elab. A
+     * survey provider implements functionality related to surveys. 
+     */
+    public static synchronized ElabSurveyProvider getSurveyProvider(Elab elab) {
+    	Object p = get(elab, SURVEY);
+    	if (p == null) { 
+    		p = newInstance(elab, SURVEY);
+    		set(elab, SURVEY, p);
+    	}
+    	return (ElabSurveyProvider) p; 
     }
 
     private static final String ANALYSISEXECUTOR = "analysisexecutor";

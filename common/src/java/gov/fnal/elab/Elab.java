@@ -5,6 +5,7 @@ package gov.fnal.elab;
 
 import gov.fnal.elab.analysis.AnalysisExecutor;
 import gov.fnal.elab.datacatalog.DataCatalogProvider;
+import gov.fnal.elab.survey.ElabSurveyProvider;
 import gov.fnal.elab.test.ElabTestProvider;
 import gov.fnal.elab.usermanagement.AuthenticationException;
 import gov.fnal.elab.usermanagement.ElabUserManagementProvider;
@@ -381,6 +382,10 @@ public class Elab {
      */
     public String getProperty(String name) {
         return properties.getProperty(name);
+    }
+    
+    public ElabSurveyProvider getSurveyProvider() { 
+    	return ElabFactory.getSurveyProvider(this);
     }
 
     /**
