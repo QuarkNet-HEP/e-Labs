@@ -1,6 +1,7 @@
 package gov.fnal.elab.survey;
 
 import java.util.List;
+import java.util.Map;
 
 import gov.fnal.elab.ElabGroup;
 import gov.fnal.elab.util.ElabException;
@@ -13,6 +14,10 @@ public interface ElabSurveyProvider {
 	
 	public boolean hasStudentTakenTest(int surveyId, int studentId, String type) throws ElabException; 
 	
-	public int getTotalTaken(int surveyId, String type, ElabGroup group) throws ElabException; 
+	public int getTotalTaken(String type, ElabGroup group) throws ElabException; 
+	
+	public Map getStudentSurveyStatus(String type, ElabGroup group) throws ElabException;
+	
+	public Map getStudentResultsForTeacher(String type, ElabGroup group) throws ElabException;
 
 }

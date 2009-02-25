@@ -51,7 +51,7 @@
 	request.setAttribute("survey", survey);
 %>
 			
-<h1>Answer the following questions and click <b>Record Answers</b> to take ${test.type}.</h1>
+<h1>Answer the following questions and click <b>Record Answers</b> to take the ${survey.name}.</h1>
 
 <p>
 	<strong>Don't guess!!</strong> "Do not know" is a perfectly good answer. 

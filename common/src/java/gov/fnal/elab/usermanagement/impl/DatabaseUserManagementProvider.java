@@ -162,6 +162,7 @@ public class DatabaseUserManagementProvider implements
         user.setRole(rs.getString("role"));
         user.setSurvey(rs.getBoolean("survey"));
         user.setUserArea(rs.getString("userarea"));
+        user.setNewSurveyId((Integer) rs.getObject("new_survey_id"));
         setMiscGroupData(user, rs.getString("ay"), user.getUserArea());
         if (user.isTeacher()) {
             addTeacherInfo(s, user);
@@ -235,6 +236,7 @@ public class DatabaseUserManagementProvider implements
         user.setSurvey(rs.getBoolean("survey"));
         user.setUserArea(rs.getString("userarea"));
         user.setFirstTime(rs.getBoolean("first_time"));
+        user.setNewSurveyId((Integer) rs.getObject("new_survey_id")); 
         setMiscGroupData(user, rs.getString("ay"), user.getUserArea());
         return user;
     }

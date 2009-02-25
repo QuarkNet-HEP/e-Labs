@@ -1,24 +1,26 @@
 package gov.fnal.elab.survey;
 
-import java.util.ArrayList; 
-import java.util.List;
+import java.util.Collection;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class ElabSurvey {
 	private int id; 
 	private String name; 
-	private List questions;  // one day we can have generics! 
+	private SortedMap questions;  // one day we can have generics! 
 	
-	public ElabSurvey(String name) {
+	public ElabSurvey(String name, int id) {
+		this.id = id; 
 		this.name = name; 
-		questions = new ArrayList(); 
+		questions = new TreeMap(); 
 	}
 	
 	public String getName() { 
 		return name; 
 	}
 	
-	public List getQuestions() {
-		return questions;
+	public Collection getQuestions() {
+		return questions.values();
 	}
 	
 	public int getQuestionCount() { 
@@ -26,6 +28,14 @@ public class ElabSurvey {
 	}
 	
 	public void addQuestion(ElabSurveyQuestion q) {
-		questions.add(q);
+		questions.put(new Integer(q.getId()), q);
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getId() {
+		return id;
 	}
 }

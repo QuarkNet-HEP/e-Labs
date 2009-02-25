@@ -29,6 +29,7 @@ public class ElabGroup {
     private String year, city, state, school, teacher;
     private String namelc;
     private Map groups, students, attributes;
+    private Integer newSurveyId;
 
     private ElabUserManagementProvider provider;
 
@@ -424,6 +425,9 @@ public class ElabGroup {
         sb.append("survey=");
         sb.append(survey);
         sb.append(", ");
+        sb.append("newsurvey=");
+        sb.append(newSurveyId);
+        sb.append(", ");
         sb.append("userDirURL=");
         sb.append(userDirURL);
         sb.append(", ");
@@ -435,4 +439,12 @@ public class ElabGroup {
         sb.append("]");
         return sb.toString();
     }
+
+	public void setNewSurveyId(Integer newSurveyId) {
+		this.newSurveyId = newSurveyId;
+	}
+
+	public Integer getNewSurveyId() {
+		return newSurveyId;
+	}
 }

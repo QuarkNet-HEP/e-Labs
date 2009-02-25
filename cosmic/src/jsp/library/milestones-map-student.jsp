@@ -12,6 +12,17 @@
 	<area shape="rect" alt="" coords="386,243,451,287" href="javascript:reference('detector')">
 	<area shape="rect" alt="" coords="288,245,355,285" href="javascript:reference('cosmic ray study')">
 	<area shape="rect" alt="" coords="288,178,364,206" href="javascript:reference('cosmic rays')">
+	<% 
+		String pre, post; 
+		if (user.getNewSurveyId() != null) {
+			pre  = "../survey/show-students.jsp?type=pre" ;
+			post = "../survey/show-students.jsp?type=post";
+		}
+		else {
+			pre  = "../test/show-students.jsp?type=presurvey" ;
+			post = "../test/show-students.jsp?type=postsurvey";
+		}
+	%>
 	<area shape="rect" alt="" coords="0,81,58,125" href="../test/show-students.jsp?type=presurvey">
 	<area shape="rect" alt="" coords="714,78,772,122" href="../test/show-students.jsp?type=postsurvey">
 	<area shape="poly" alt=""

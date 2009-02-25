@@ -4,7 +4,7 @@
 <%@ include file="../login/admin-login-required.jsp" %>
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.*" %>
-<%@ page import="gov.fnal.elab.test.*" %>
+<%@ page import="gov.fnal.elab.survey.*" %>
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -39,12 +39,13 @@
 		throw new ElabJspException("Missing group id for teacher");
 	}
 	ElabGroup teacher = elab.getUserManagementProvider().getGroupById(id);
-	Map results = elab.getTestProvider().getStudentResultsForTeacher(type, teacher);
+	Map results = elab.getSurveyProvider().getStudentResultsForTeacher(type, teacher);
+	String testName = elab.getSurveyProvider().getSurvey(teacher.getNewSurveyId().intValue()).getName();
 	request.setAttribute("results", results);
-	request.setAttribute("teacher", teacher);
+	request.setAttribute("testName", testName);
 %>
 
-<h1>Results for ${param.type} for students of ${teacher.name}</h1>
+<h1>Results for ${param.type}test for students of ${teacher.teacher} for the ${testName}</h1>
 
 <p>
 	Students' answers are listed under each question. Click on the answer to see the 
@@ -63,7 +64,7 @@
 	 answers can be seen when printed on a black and white printer.
 </p>
 
-<%@ include file="../test/results-table.jsp" %>
+<%@ include file="../survey/results-table.jsp" %>
 
 <c:if test="${param.color != 'no'}">
 	<a href="results-for-teacher.jsp?id=${param.id}&type=${param.type}&color=no" target="_">Printable version</a> (opens in new window)
