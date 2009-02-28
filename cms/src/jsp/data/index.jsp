@@ -29,7 +29,7 @@
 			
 			<div id="content">
 				
-<h1>What can you learn? Choose data and conduct a study</h1>
+<h1>What can you learn? Choose a study.</h1>
 
 <table border="0" id="main">
 	<tr>
@@ -70,12 +70,12 @@
 					<div class="tab-contents">
 						<h2>VIEW</h2>
 						<p>
-							<a href="../data/search.jsp">Data Files</a>
+							<a href="../data/view.jsp">Data Files</a>
 							- See what data has been uploaded into the system.
 						</p>
 						<p> 
-							<a href="../plots">Plots</a>
-							- Look at what you and other groups have found!
+							<a href="../plots/?submit=true&key=all&uploaded=true">Plots</a>
+							- Look at what you and other groups have uploaded! Coming soon - plots saved from OGRE...
 						</p>
 						<p>
 							<a href="../posters">Posters</a>
