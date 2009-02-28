@@ -128,10 +128,10 @@
 					
 					<ul>
 						<li>
-							Rubrics: <a href="../assessment/rubric-ci.html">Overall Content & Investigation</a>, 
-							<a href="../assessment/rubric-r.html">Research Skills</a>, 
-							<a href="../assessment/rubric-t.html">Computing Skills</a>,
-							<a href="../assessment/rubric-wla.html">Writing and Language Arts</a> and 
+							Rubrics: <a href="../assessment/rubric-ci.html">Content & Investigation</a>, 
+							<a href="../assessment/rubric-r.html">Process</a>, 
+							<a href="../assessment/rubric-t.html">Computing</a>,
+							<a href="../assessment/rubric-wla.html">Literacy</a> and 
 							<a href="../assessment/rubric-p.html">Poster</a>
 						</li>
 						<li>

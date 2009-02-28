@@ -37,25 +37,24 @@
 		<td id="center">
 			<h2>Poster Tools</h2>
 			<p>
-				Congratulations! You developed a research question and planned 
+				Congratulations!
+				You've developed a research question and planned 
 				and conducted an investigation.
 			</p>
 			<p>
-				How will your explanations of your results hold up in discussions 
-				with your classmates? Will your work stand the test of time and 
-				peer review?
+				Now you will create an on-line poster summarizing your
+				work, using the poster tools provided here.
+				Use the menu of links presented here
+				(or above each poster tool page)
+				to create, edit, and view your poster.
+				Your classmates will view your finished poster,
+				and will provide you with feedback on your investigation.
 			</p>
-			<p>
-				Submit a poster summarizing your work. Use the menue of links 
-				above to create, edit and view your poster.
-			</p>
-			<p>
-				Your work is not over yet! Study the results from other 
-				investigations. Look critically and logically at relationships 
-				between the data and the explanations. Doubt results, challenge 
-				ideas, replicate investigations, propose and analyze alternative 
-				explanations. These are all part of doing science.
-			<p>
+
+		    <blockquote>
+			<%@ include file="../include/nav-posters.jsp" %>
+		    </blockquote>
+
 		</td>
 	</tr>
 </table>

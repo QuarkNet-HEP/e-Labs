@@ -26,9 +26,45 @@
 					</div>
 				</div>
 			</div>
-			
 			<div id="content">
 				
+<table border="0" id="main">
+  <tr>
+  <td id="left">
+	  <%@ include file="../include/left-alt.jsp" %>
+  </td>
+  <td id="center">
+	  <h2>Getting started!
+		  Make sure you accomplish the milestones on the diagram.
+	  </h2>
+	  <p>
+		  Follow the workflow map below to guide your work.
+		  Click on the hotspots to get references for accomplishing your
+		  milestones.
+		  The colored dots in the workflow indicate where your
+		  teacher monitors your progress. 
+		  Your teacher will comment on the entries that you make in your
+		  logbook for each milestone.
+		  Be sure to read the teacher comments! 
+	  </p>
+	  <center>
+		  <c:choose>
+			  <c:when test="${user.group.profDev}">
+				  <%@ include file="milestones-map-profdev.jsp" %>
+			  </c:when>
+			  <c:otherwise>
+				  <%@ include file="milestones-map-student.jsp" %>
+			  </c:otherwise>
+		  </c:choose>
+		  <div class="link-list">
+			  <a href="milestones.jsp">Milestones (text version)</a>
+			  |
+			  <a href="/glossary/index.php/LIGO_Glossary"
+				 target="_blank">LIGO Glossary</a>
+			  | 
+			  <a href="../references/showAll.jsp?t=reference">All References for Study Guide <img src="../graphics/ref.gif"/></a>
+		  </div>
+	  </center>
 
 <table border="0" id="main">
 	<tr>

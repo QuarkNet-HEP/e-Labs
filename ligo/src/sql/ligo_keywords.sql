@@ -1,4 +1,5 @@
 INSERT INTO keyword (keyword,description,milestone,project_id,section,section_id,type) VALUES ('ligo_science_goals', 'Science Goals of LIGO','Describe the science goals of LIGO.',3,'B',10,'SW');
+INSERT INTO keyword (keyword,description,milestone,project_id,section,section_id,type) VALUES ('wave_properties','Seismic Wave Properties.','Describe the basic properties of seismic waves.',3,'B',15,'SW');
 INSERT INTO keyword (keyword,description,milestone,project_id,section,section_id,type) VALUES ('seismic_data_importance','Why Seismic Data is Important.','Explain the need for LIGO to study seismic data.',3,'B',20,'SW');
 INSERT INTO keyword (keyword,description,milestone,project_id,section,section_id,type) VALUES ('seismometer_locations','Locations of Ligo Seismometers','Identify locations of LIGO seismometers.',3,'B',30,'SW');
 INSERT INTO keyword (keyword,description,milestone,project_id,section,section_id,type) VALUES ('practice_making_plots', 'Practice Plots of Seismic Data','Practice making plots of LIGO seismic data.',3,'B',40 ,'SW');
