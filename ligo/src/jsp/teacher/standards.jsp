@@ -40,95 +40,95 @@
 			
 				<p>
 					This project demonstrates some elements of the following from 
-					the <a href="http://www.nap.edu/readingroom/books/nses/html">National
-					Science Education Standards</a>:
+					the <a href="http://books.nap.edu/openbook.php?record_id=4962">National
+					Science Education Standards</a>: (Scroll down on pages if you do not see the standard.)
 				</p>
 				<ul>
 					<li>
-						<a href="http://www.nap.edu/readingroom/books/nses/html/3.html">Teaching
+						<a href="http://books.nap.edu/openbook.php?record_id=4962&page=27">Teaching
 						Standards</a>:
 
 						<ul>
 					        <li>
-					        	<a href="http://www.nap.edu/readingroom/books/nses/html/3.html#tsa">A</a>: 
+					        	<a href="http://books.nap.edu/openbook.php?record_id=4962&page=30">A</a>: 
 								Plan an inquiry-based science program.
 							</li>
 							<li>
-								<a href="http://www.nap.edu/readingroom/books/nses/html/3.html#tsb">B</a>: 
+								<a href="http://books.nap.edu/openbook.php?record_id=4962&page=32">B</a>: 
 								Guide and facilitate learning. 
 							</li>
 							<li>
-								<a href="http://www.nap.edu/readingroom/books/nses/html/3.html#tsf">F</a>: 
+								<a href="http://books.nap.edu/openbook.php?record_id=4962&page=51">F</a>: 
 								Participate in ongoing planning and development of science program.
 							</li>
 						</ul>
 					</li>
 
 					<li>
-						<a href="http://www.nap.edu/readingroom/books/nses/html/5.html">Assessment
+						<a href="http://books.nap.edu/openbook.php?record_id=4962&page=75">Assessment
 						Standards</a>:
 
 						<ul>
 							<li>
-								<a href="http://www.nap.edu/readingroom/books/nses/html/5.html#asb">B</a>:
+								<a href="http://books.nap.edu/openbook.php?record_id=4962&page=79">B</a>:
 								Achievement and opportunity to learn science
 							</li>
 							<li>
-								<a href="http://www.nap.edu/readingroom/books/nses/html/5.html#asc">C</a>:
+								<a href="http://books.nap.edu/openbook.php?record_id=4962&page=83">C</a>:
 								Quality of data matched to decisions and actions taken
 							</li>
 							<li>
-								<a href="http://www.nap.edu/readingroom/books/nses/html/5.html#asd">D</a>:
+								<a href="http://books.nap.edu/openbook.php?record_id=4962&page=85">D</a>:
 								Assessments fair
 							</li>
 						</ul>
 					</li>
 					<li>
-						<a href="http://www.nap.edu/readingroom/books/nses/html/6e.html">Content
+						<a href="http://www.nap.edu/openbook.php?record_id=4962&page=103">Content
 						Standards</a>:
 
 						<ul>
 							<li>
-								<a href="http://www.nap.edu/readingroom/books/nses/html/6e.html#csa912">A</a>:
+								<a href="http://www.nap.edu/openbook.php?record_id=4962&page=173">A</a>:
 								Science as inquiry
 							</li>
 							<li>
-								<a href="http://www.nap.edu/readingroom/books/nses/html/6e.html#csb912">B</a>:
+								<a href="http://www.nap.edu/openbook.php?record_id=4962&page=176">B</a>:
 								Physical science
 							</li>
 							<li>
-								<a href="http://www.nap.edu/readingroom/books/nses/html/6e.html#cse912">E</a>:
+								<a href="http://www.nap.edu/openbook.php?record_id=4962&page=190">E</a>:
 								Science and technology
 							</li>
 							<li>
-								<a href="http://www.nap.edu/readingroom/books/nses/html/6e.html#csg912">G</a>: 
+								<a href="http://www.nap.edu/openbook.php?record_id=4962&page=200">G</a>: 
 								Nature of science
 							</li>
 						</ul>
 					</li>
 					<li>
-						<a href="http://www.nap.edu/readingroom/books/nses/html/7.html">Program
+						<a href="http://www.nap.edu/openbook.php?record_id=4962&page=209">Program
 						Standards</a>:
 
 						<ul>
 							<li>
-								<a href="http://www.nap.edu/readingroom/books/nses/html/7.html#spa">A</a>:
+								<a href="http://www.nap.edu/openbook.php?record_id=4962&page=210">A</a>:
 								Consistent with other standards
 							</li>
 							<li>
-								<a href="http://www.nap.edu/readingroom/books/nses/html/7.html#spb">B</a>:
+								<a href="http://www.nap.edu/openbook.php?record_id=4962&page=212">B</a>:
 								Developmentally appropriate, interesting, and relevant
 							</li>
 							<li>
-								<a href="http://www.nap.edu/readingroom/books/nses/html/7.html#spc">C</a>:
+								<a href="http://books.nap.edu/openbook.php?record_id=4962&page=214">C</a>:
 								Coordinated with mathematics program
 							</li>
 							<li>
-								<a href="http://www.nap.edu/readingroom/books/nses/html/7.html#spd">D</a>:
+								<a href="http://www.nap.edu/openbook.php?record_id=4962&page=218">D</a>:
 								Access to appropriate and sufficient resources
 							</li>
 							<li>
-								<a href="http://www.nap.edu/readingroom/books/nses/html/7.html#spe">E</a>:
+								<a href="http://books.nap.edu/openbook.php?record_id=4962&page=221">E</a>:
 								Equitable student access
 							</li>
 						</ul>
