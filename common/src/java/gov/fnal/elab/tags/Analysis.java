@@ -89,11 +89,6 @@ public class Analysis extends TagSupport {
     }
     
     protected boolean compareType(String t1, String t2) {
-    	//should we or should we not allow such incompatibilities
-    	return true;
-    }
-
-    protected boolean compareType(String t1, String t2) {
         // should we or should we not allow such incompatibilities
         return true;
     }
