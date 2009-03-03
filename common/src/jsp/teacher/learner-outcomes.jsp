@@ -29,7 +29,7 @@
 		<li>
 			Explain why they used specific computing resources in their analysis.
 		</li>
-		</ul>
+	</ul>
 </li>
 
 <li>Literacy:

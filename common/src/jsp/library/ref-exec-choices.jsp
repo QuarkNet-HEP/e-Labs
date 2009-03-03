@@ -78,4 +78,3 @@ This table summarizes the features of the different choices you can make. The te
 </div>
 
 </body>
-</html>
