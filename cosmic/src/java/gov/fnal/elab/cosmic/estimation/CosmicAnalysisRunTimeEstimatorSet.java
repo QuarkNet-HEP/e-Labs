@@ -30,17 +30,31 @@ public class CosmicAnalysisRunTimeEstimatorSet extends EstimatorSet {
                 new LinearEventEstimator(0.4, 1000));
 
         addEstimator("swift", "local", "I2U2.Cosmic::FluxStudy",
-                new FluxEstimator(24251.6, -2.21535, 0.198371));
+                new FluxEstimator(4000, -2.21535, 0.198371));
+        addEstimator("swift", "i2u2", "I2U2.Cosmic::FluxStudy",
+                new FluxEstimator(11000, -2.6, 0.24651));
         addEstimator("swift", "grid", "I2U2.Cosmic::FluxStudy",
                 new FluxEstimator(117392, -2.25828, 0.20651));
+        addEstimator("swift", "mixed", "I2U2.Cosmic::FluxStudy",
+                new FluxEstimator(33442.4, -2.83716, 0.28372));
+        
+        addEstimator("swift", "local", "I2U2.Cosmic::ShowerStudy",
+                new LinearEventEstimator(0.181027, 14304));
+        addEstimator("swift", "i2u2", "I2U2.Cosmic::ShowerStudy",
+                new LinearEventEstimator(0.364106, 33960));
+        addEstimator("swift", "grid", "I2U2.Cosmic::ShowerStudy",
+                new LinearEventEstimator(0.24, 150000));
+        addEstimator("swift", "mixed", "I2U2.Cosmic::ShowerStudy",
+                new LinearEventEstimator(0.3, 20000));
+
 
         addEstimator("swift", "local", "I2U2.Cosmic::EventPlot",
-                new ConstantEstimator(1));
+                new ConstantEstimator(4));
         addEstimator("swift", "i2u2", "I2U2.Cosmic::EventPlot",
-                new ConstantEstimator(1));
+                new ConstantEstimator(4));
         addEstimator("swift", "grid", "I2U2.Cosmic::EventPlot",
-                new ConstantEstimator(1));
+                new ConstantEstimator(4));
         addEstimator("swift", "mixed", "I2U2.Cosmic::EventPlot",
-                new ConstantEstimator(1));
+                new ConstantEstimator(4));
     }
 }
