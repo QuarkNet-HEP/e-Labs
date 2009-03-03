@@ -10,8 +10,11 @@
 package gov.fnal.elab;
 
 import gov.fnal.elab.analysis.AnalysisExecutor;
+import gov.fnal.elab.analysis.BeanWrapper;
 import gov.fnal.elab.analysis.ElabAnalysis;
+import gov.fnal.elab.analysis.GenericAnalysis;
 import gov.fnal.elab.analysis.InitializationException;
+import gov.fnal.elab.analysis.impl.vds.VDSAnalysis;
 import gov.fnal.elab.datacatalog.CachingDataCatalogProvider;
 import gov.fnal.elab.datacatalog.DataCatalogProvider;
 import gov.fnal.elab.test.ElabTestProvider;
@@ -176,10 +179,13 @@ public class ElabFactory {
                     "vds-dynamic");
         }
         if ("vds-dynamic".equals(impl)) {
-            impl = "gov.fnal.elab.analysis.VDSAnalysis";
+            impl = VDSAnalysis.class.getName();
         }
         else if ("vds-bean".equals(impl)) {
-            impl = "gov.fnal.elab.analysis.BeanWrapper";
+            impl = BeanWrapper.class.getName();
+        }
+        else if ("generic".equals(impl)) {
+        	impl = GenericAnalysis.class.getName();
         }
 
         setVDSHome(elab);
