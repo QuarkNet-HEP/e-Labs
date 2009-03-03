@@ -36,7 +36,7 @@
 #assessment #objectives {
   font-size: 16px;
   text-align: left;
-  }
+}
   
 #nav a#nav6 {
 	background-color: #ffcc00;
@@ -44,4 +44,46 @@
 	border-left: #ffd940 1px solid;
 	border-bottom: #b59100 1px solid;
 	border-right: #b59100 1px solid;
+}
+  
+#assessmentRubric {
+	margin-left: 20px;
+}
+
+#assessmentRubric h1 {
+	background-color: #ffcc00;
+	color: #000000;
+	width: 650px;
+  font-size: 110%;
+}
+
+#assessmentRubric #content {
+	margin-left: 10px;
+	width: 700px;
+  font-size: 14px;
+}
+
+.assessmentRubric p {
+	font-size: 100%; 
+}
+
+#assessmentRubric table, td {
+	border: 1px solid gray;
+		font-size: 90%; 
+}
+
+#assessmentRubric table {
+	width: 650px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#assessmentRubric td {
+	padding: 6px;
+	vertical-align: top;
+}
+
+#assessmentRubric th {
+	font-weight: normal;
+	vertical-align: top;
 }
