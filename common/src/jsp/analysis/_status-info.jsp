@@ -74,7 +74,7 @@
 				else if (status == AnalysisRun.STATUS_RUNNING) {
 					%>
 					<center>
-						<h1>The ${run.analysis.name} study is running...</h1>
+						<h1>Running analysis ${run.analysis.name}...</h1>
 						<img src="../graphics/busy2.gif" alt="Image suggesting something is happening" /><br /><br /><br />
 						Progress: 
 						<table id="status-progress" width="20%">
@@ -154,19 +154,20 @@
 							<code style="font-size: small;">
 <%
 	String output = run.getSTDERR();
-	
-	StringTokenizer st = new StringTokenizer(output, "\n");
-	int lines = st.countTokens();
-	if (lines > 20) {
-		out.println("...<br />");
-	}
-	int skip = lines - 20;
-	for(int i = 0; i < skip; i++) {
-		st.nextToken();
-	}
-	while(st.hasMoreTokens()) {
-		out.print(st.nextToken());
-		out.println("<br />");
+	if (output != null) {
+		StringTokenizer st = new StringTokenizer(output, "\n");
+		int lines = st.countTokens();
+		if (lines > 20) {
+			out.println("...<br />");
+		}
+		int skip = lines - 20;
+		for(int i = 0; i < skip; i++) {
+			st.nextToken();
+		}
+		while(st.hasMoreTokens()) {
+			out.print(st.nextToken());
+			out.println("<br />");
+		}
 	}
 %>
 							</code>
