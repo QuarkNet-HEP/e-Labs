@@ -20,41 +20,6 @@
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
 
 
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Upload Raw Data</title>
-		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/upload.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
-		<script type="text/javascript" src="../include/upload.js"></script>
-        <script type="text/javascript" src="../../dwr/interface/UploadMonitor.js"></script>
-        <script type="text/javascript" src="../../dwr/engine.js"></script>
-        <script type="text/javascript" src="../../dwr/util.js"></script>
-	</head>
-	
-	<body id="search_default" class="data">
-		<!-- entire page container -->
-		<div id="container">
-			<div id="top">
-				<div id="header">
-					<%@ include file="../include/header.jsp" %>
-					<div id="nav">
-						<%@ include file="../include/nav.jsp" %>
-						<div id="subnav">
-							<%@ include file="../include/nav-upload.jsp" %>
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<div id="content">
-
-<h1>Upload Raw Data Collected by Cosmic Ray Detector.</h1>
-
-
 <%--
 Re: the upload progress stuff
 
@@ -93,6 +58,7 @@ Re: the upload progress stuff
 	String detectorId = "";             //detector id
 	String comments = "";       //optional comments on raw data file
 	String dataDir = elab.getProperties().getDataDir();
+	request.setAttribute("datadir", dataDir);
 	int channels[] = new int[4];
 
 	List splits = new ArrayList();  //for both the split name and the channel validity information
@@ -161,8 +127,23 @@ Re: the upload progress stuff
                	// write the file
                	fi.write(f);
        	        out.println("<!-- " + rawName + " added to Catalog -->");
+       	        request.setAttribute("in", f.getAbsolutePath());
+       	        request.setAttribute("detectorid", detectorId);
+       	        request.setAttribute("comments", comments);
 
-		        boolean c = true;
+				%>
+					<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUpload" impl="generic">
+						<e:trdefault name="in" value="${in}"/>
+						<e:trdefault name="datadir" value="${datadir}"/>
+						<e:trdefault name="detectorid" value="${detectorid}"/>
+						<e:trdefault name="comments" value="${comments}"/>
+						
+						<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp">
+							<jsp:param name="provider" value="shell"/>
+						</jsp:include>
+					</e:analysis>
+				<%
+		        /*boolean c = true;
     		    String splitPFNs = "";
 	    	    String threshPFNs = "";
 	    	    String threshLFNs = "";
@@ -344,12 +325,47 @@ Re: the upload progress stuff
 					</c:choose>
 				<%
            		// Run ThresholdTimes on each split file.
-				// Not any more
+				// Not any more*/
 			} //'twas a file
 		} //while through the file
 	} //end "if form has a file to upload"
 	else {
 		%>
+		
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Upload Raw Data</title>
+		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/upload.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
+		<script type="text/javascript" src="../include/upload.js"></script>
+        <script type="text/javascript" src="../../dwr/interface/UploadMonitor.js"></script>
+        <script type="text/javascript" src="../../dwr/engine.js"></script>
+        <script type="text/javascript" src="../../dwr/util.js"></script>
+	</head>
+	
+	<body id="search_default" class="data">
+		<!-- entire page container -->
+		<div id="container">
+			<div id="top">
+				<div id="header">
+					<%@ include file="../include/header.jsp" %>
+					<div id="nav">
+						<%@ include file="../include/nav.jsp" %>
+						<div id="subnav">
+							<%@ include file="../include/nav-upload.jsp" %>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div id="content">
+
+<h1>Upload Raw Data Collected by Cosmic Ray Detector.</h1>
+
+
 
 <ul>
 	<li>Select the <strong>detector</strong> associated with the data you are uploading.
