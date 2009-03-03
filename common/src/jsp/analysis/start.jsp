@@ -10,6 +10,7 @@
 <%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ page import="gov.fnal.elab.analysis.impl.vds.*" %>
 <%@ page import="gov.fnal.elab.analysis.impl.swift.*" %>
+<%@ page import="gov.fnal.elab.analysis.impl.shell.*" %>
 
 <%
 	ElabAnalysis analysis = (ElabAnalysis) request.getAttribute("elab:analysis");
@@ -25,6 +26,9 @@
 		}
 		else if ("swift".equals(runWith)) {
 			ex = new SwiftAnalysisExecutor();
+		}
+		else if ("shell".equals(runWith)) {
+			ex = new ShellAnalysisExecutor();
 		}
 		else {
 			ex = elab.getAnalysisExecutor();
