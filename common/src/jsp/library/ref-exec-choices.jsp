@@ -19,7 +19,7 @@ If you choose Automatic, the scheduler will decide the best place to run the ana
 <p />
 This diagram shows the choices you will see on your computer screen and the configuration of the computers you can access.<br />
 <p />
-   <img src="../graphics/i2u2-execution.jpg" alt="Execution Choices" width='578' height='578'  border="1" />
+   <img src="../graphics/i2u2-execution.jpg" alt="Execution Choices" width='596' height='596'  border="1" />
 <p />
 <p />
 <p />
