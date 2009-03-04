@@ -30,9 +30,15 @@ type AxisParams {
 	}
 }
 
-(File out[]) Frequency (File inf[], string binType, string binValue, string col) {
+(File out) Frequency (File inf, string binType, string binValue, string col) {
 	app {
 		Frequency @filename(inf) @filename(out) col binType binValue;
+	}
+}
+
+(File out[]) FrequencyMultiple (File inf[], string binType, string binValue, string col) {
+	foreach data, i in inf {
+		out[i] = Frequency(inf[i], binType, binValue, col);
 	}
 }
 
@@ -112,7 +118,7 @@ string singlechannel_channel = @arg("singlechannel_channel");
 thresholdAll = ThresholdTimesMultiple(rawData, detectors, cpldfreqs);
 combineOut = Combine(thresholdAll);
 singleChannelOut = SingleChannel(combineOut, singlechannel_channel);
-freqOut = Frequency(singleChannelOut, freq_binType, freq_binValue, freq_col);
+freqOut = FrequencyMultiple(singleChannelOut, freq_binType, freq_binValue, freq_col);
 
 File svg;
 (svg, plot_outfile_param) = Plot(plot_plot_type, plot_caption, x, y, z, plot_title,
