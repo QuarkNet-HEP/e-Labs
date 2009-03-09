@@ -15,6 +15,10 @@ SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false);
 %>
 
+<link type="text/css" href="../../js/jquery/css/themename/jquery-ui-1.7.custom.css" rel="Stylesheet" />	
+<script type="text/javascript" src="../../js/jquery/js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="../../js/jquery/js/jquery-ui-1.7.custom.min.js"></script>
+
 <div class="search-quick-links">
 	<e:quicksearch key="school" value="${user.group.school}"/>
 	<e:quicksearch key="city" value="${user.group.city}"/>

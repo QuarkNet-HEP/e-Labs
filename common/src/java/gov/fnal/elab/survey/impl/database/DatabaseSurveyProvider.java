@@ -80,7 +80,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 					if (currentQuestion != null) {
 						survey.addQuestion(currentQuestion);
 					}
-					currentQuestion = new ElabSurveyQuestion(thisQuestionId, thisQuestionText);
+					currentQuestion = new ElabSurveyQuestion(thisQuestionId, thisQuestionNo, thisQuestionText);
 				}
 				
 				// Create an answer

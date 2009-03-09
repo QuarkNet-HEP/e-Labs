@@ -29,6 +29,11 @@ public class ElabGroup {
     private String year, city, state, school, teacher;
     private String namelc;
     private Map groups, students, attributes;
+    
+    private boolean study; 
+    
+    // New survey framework stuff
+    private boolean newSurvey; // Are 
     private Integer newSurveyId;
 
     private ElabUserManagementProvider provider;
@@ -446,5 +451,21 @@ public class ElabGroup {
 
 	public Integer getNewSurveyId() {
 		return newSurveyId;
+	}
+
+	public void setNewSurvey(boolean newSurvey) {
+		this.newSurvey = newSurvey;
+	}
+
+	public boolean isNewSurvey() {
+		return newSurvey;
+	}
+
+	public void setStudy(boolean study) {
+		this.study = study;
+	}
+
+	public boolean isStudy() {
+		return study;
 	}
 }

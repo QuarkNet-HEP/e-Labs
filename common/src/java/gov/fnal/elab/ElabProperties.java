@@ -25,6 +25,8 @@ public class ElabProperties extends AbstractProperties {
     public static final String PROP_RUN_DIR = "run.dir";
     public static final String PROP_USER_DIR = "users.dir";
     public static final String PROP_DATA_DIR = "data.dir";
+    
+    public static final String PROP_NEW_COSMIC_SURVEY = "cosmic.newsurvey";
 
     private String elabName;
 
@@ -106,5 +108,9 @@ public class ElabProperties extends AbstractProperties {
 
     public String getUsersDir() {
         return getRequired(ElabProperties.PROP_USER_DIR);
+    }
+    
+    public String getNewSurveyId() {
+    	return getRequired(ElabProperties.PROP_NEW_COSMIC_SURVEY);
     }
 }

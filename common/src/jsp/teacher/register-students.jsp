@@ -32,6 +32,13 @@
 			<div id="content">
 
 <%
+	boolean inSurvey = "yes".equalsIgnoreCase(request.getParameter("eval"));
+
+	if (inSurvey) {
+		// Quick check to make sure this works properly 
+		%> <i>You have agreed to enter our study</i> <% 
+	}
+
 	String optionList = "<option value=\"discard\">Choose group</option>";
 	for (Iterator ite = user.getGroups().iterator(); ite.hasNext();) {
 		ElabGroup group = (ElabGroup) ite.next();
@@ -81,7 +88,14 @@
 				if ("yes".equalsIgnoreCase(upload) || "true".equalsIgnoreCase(upload)) {
 				    group.setRole(ElabUser.ROLE_UPLOAD);
 				}
-				group.setSurvey("yes".equalsIgnoreCase(survey) || "true".equalsIgnoreCase(survey));
+				
+				if (inSurvey == true) {
+					group.setNewSurvey(true);
+					group.setNewSurveyId();
+				}
+				else {
+					group.setSurvey("yes".equalsIgnoreCase(survey) || "true".equalsIgnoreCase(survey));
+				}
 				students.add(newUser);
 				newGroups.add(Boolean.valueOf(isNewGroup));
 			}

@@ -1,21 +1,27 @@
 package gov.fnal.elab.survey;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.SortedMap;
-import gov.fnal.elab.util.ElabException;
+import java.util.TreeMap; 
 
-
-public class ElabSurveyQuestion implements Cloneable {
-	private int id; 
+public class ElabSurveyQuestion implements Cloneable, Comparable {
+	private int id, number; 
 	private SortedMap answers; 
 	private String text; 
 	private ElabSurveyQuestionAnswer correctAnswer = null, givenAnswer = null; 
 	
-	public ElabSurveyQuestion(int id, String text) {
+	/**
+	 * Constructor for an ElabSurveyQuestion
+	 * 
+	 * @param Question ID
+	 * @param Question Number
+	 * @param Question Text
+	 */
+	public ElabSurveyQuestion(int id, int number, String text) {
 		this.id = id; 
+		this.number = number; 
 		this.text = text; 
-		this.answers = new java.util.TreeMap(); 
+		this.answers = new TreeMap(); 
 	}
 	
 	public void addAnswer(ElabSurveyQuestionAnswer a) {
@@ -58,6 +64,11 @@ public class ElabSurveyQuestion implements Cloneable {
 		return givenAnswer;
 	}
 	
+	/**
+	 * Returns a boolean if the correct answer is given
+	 * 
+	 * @return the correct answer is given
+	 */
 	public boolean getCorrectAnswerGiven() {
 		if ((givenAnswer != null) && (correctAnswer!= null) && (correctAnswer == givenAnswer)) {
 			return true;
@@ -68,18 +79,31 @@ public class ElabSurveyQuestion implements Cloneable {
 	public Object clone() {
 		ElabSurveyQuestion question = null;
 		try {
+			// A shallow copy is fine
 			question = (ElabSurveyQuestion) super.clone();
-			//for (Iterator i = answers.values().iterator(); i.hasNext(); ) {
-			//	question.addAnswer((ElabSurveyQuestionAnswer) i.next());
-			//}
-			//question.setCorrectAnswer(this.correctAnswer);
-			//question.setGivenAnswer(this.givenAnswer);
-			
 		}
 		catch (CloneNotSupportedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		return question; 
+	}
+	
+	/**
+	 * Returns the question number for ordering
+	 * 
+	 * @return the question number 
+	 */
+	public int getNumber() {
+		return number;
+	}
+
+	/**
+	 * Sort by question number 
+	 */
+	public int compareTo(Object o) {
+		Integer thisInt = new Integer(number);
+		Integer thatInt = new Integer(((ElabSurveyQuestion) o).getNumber());
+		return thisInt.compareTo(thatInt);
 	}
 }

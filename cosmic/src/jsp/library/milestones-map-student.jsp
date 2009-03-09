@@ -1,3 +1,17 @@
+<% 
+	String pre, post; 
+	if (user.getNewSurveyId() != null) {
+		pre  = "../survey/show-students.jsp?type=pre" ;
+		post = "../survey/show-students.jsp?type=post";
+	}
+	else {
+		pre  = "../test/show-students.jsp?type=presurvey" ;
+		post = "../test/show-students.jsp?type=postsurvey";
+	}
+	request.setAttribute("pre", pre);
+	request.setAttribute("post", post);
+%>
+
 <img src="../graphics/workflow_map5.gif" width=796 height=319 border=0 alt="" usemap="#workflow-map5-Map">
 <map name="workflow-map5-Map">
 	<area shape="rect" alt="" coords="718,153,792,193" href="javascript:reference('discuss results')">
@@ -12,19 +26,8 @@
 	<area shape="rect" alt="" coords="386,243,451,287" href="javascript:reference('detector')">
 	<area shape="rect" alt="" coords="288,245,355,285" href="javascript:reference('cosmic ray study')">
 	<area shape="rect" alt="" coords="288,178,364,206" href="javascript:reference('cosmic rays')">
-	<% 
-		String pre, post; 
-		if (user.getNewSurveyId() != null) {
-			pre  = "../survey/show-students.jsp?type=pre" ;
-			post = "../survey/show-students.jsp?type=post";
-		}
-		else {
-			pre  = "../test/show-students.jsp?type=presurvey" ;
-			post = "../test/show-students.jsp?type=postsurvey";
-		}
-	%>
-	<area shape="rect" alt="" coords="0,81,58,125" href="../test/show-students.jsp?type=presurvey">
-	<area shape="rect" alt="" coords="714,78,772,122" href="../test/show-students.jsp?type=postsurvey">
+	<area shape="rect" alt="" coords="0,81,58,125" href="${pre}">
+	<area shape="rect" alt="" coords="714,78,772,122" href="${post}">
 	<area shape="poly" alt=""
 		coords="66,106, 98,102, 108,75, 134,75, 138,102, 156,105, 160,117, 140,122, 68,122, 66,108, 66,106" href="../home/first.jsp">
 	<area shape="poly" alt="" coords="144,146, 274,149, 265,102, 174,99, 144,146" href="research-basics.jsp">
