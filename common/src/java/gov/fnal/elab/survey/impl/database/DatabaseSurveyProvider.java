@@ -36,6 +36,60 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
         this.elab = elab;
     }
 
+	public ElabSurveyQuestion getSurveyQuestion(int questionId, int responseId) throws ElabException {
+		Connection con = null; 
+		ElabSurveyQuestion esq = null; 
+		try { 
+			con = DatabaseConnectionManager.getConnection(elab.getProperties());
+			PreparedStatement queryQuestion = con.prepareStatement(
+					"SELECT q.id AS \"question_id\", q.question_no, q.question_text, q.answer_id, r.number, r.id, r.response_text " +
+					"FROM \"newSurvey\".questions AS q " +
+					"LEFT OUTER JOIN \"newSurvey\".responses AS r ON r.question_id = q.id " +
+					"WHERE q.id = ? " +
+					"ORDER BY r.response_no ASC;");
+			queryQuestion.setInt(1, questionId);
+			
+			ResultSet rs = queryQuestion.executeQuery();
+			while (rs.next()) {
+				int thisQuestionId = rs.getInt("question_id");
+				int thisQuestionNo = rs.getInt("question_no");
+				String thisQuestionText = rs.getString("question_text");
+				int thisQuestionCorrectAnswerId = rs.getInt("answer_id");
+				int thisAnswerId = rs.getInt("id");
+				String thisAnswerText = rs.getString("response_text");
+				
+				if (esq == null) {
+					esq = new ElabSurveyQuestion(thisQuestionId, thisQuestionNo, thisQuestionText);
+				}
+				
+				// Create an answer
+				ElabSurveyQuestionAnswer currentAnswer = new ElabSurveyQuestionAnswer(thisAnswerId, thisAnswerText);
+				
+				// Add the answer into the current question
+				esq.addAnswer(currentAnswer);
+				
+				// If this is the correct answer, set it. 
+				if (thisAnswerId == thisQuestionCorrectAnswerId) {
+					esq.setCorrectAnswer(currentAnswer);
+				}
+				
+				// If this is the given answer, set it. 
+				if (thisAnswerId == responseId) {
+					esq.setGivenAnswer(responseId);
+				}
+			}
+		}
+		catch (Exception e) {
+			throw new ElabException(e);
+		}
+		finally {
+			DatabaseConnectionManager.close(con);
+		}
+		
+		return esq;
+	}
+			
+	
 	public ElabSurvey getSurvey(int surveyId) throws ElabException {
 		synchronized (tests) {
             if (tests.containsKey(new Integer(surveyId))) {
@@ -220,6 +274,37 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 		
 		return taken; 
 	}
+	
+	public int getTotalStudents(ElabGroup group) throws ElabException {
+		Connection con = null; 
+		int total = -1; 
+		try { 
+			con = DatabaseConnectionManager.getConnection(elab.getProperties());
+			PreparedStatement ps = con.prepareStatement(
+					"SELECT COUNT(rg.id) " +
+					"FROM research_group AS rg " +
+					"LEFT OUTER JOIN research_group_student AS rgs ON rg.id = rgs.research_group_id " +
+					"LEFT OUTER JOIN research_group_project AS rgp ON rg.id = rgp.research_group_id " +
+					"WHERE rg.id = ? AND rgp.project_id = ?;");
+			ps.setInt(1, Integer.parseInt(group.getId()));
+			ps.setInt(2, Integer.parseInt(elab.getId()));
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				total = rs.getInt(1);
+			}
+			else {
+				total = 0; 
+			}
+		}
+		catch (Exception e) {
+			throw new ElabException(e);
+		}
+		finally {
+			DatabaseConnectionManager.close(con);
+		}
+		return total;
+	}
 
 	public int getTotalTaken(String type, ElabGroup group) throws ElabException {
 		Connection con = null;
@@ -334,8 +419,9 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 							// set given answer
 							int givenAnswerId = rs.getInt("ans_ptr");
 							question.setGivenAnswer(givenAnswerId);
+							questions.add(question);
 						}
-						questions.add(question);
+						
 					}
 					results.put(es, questions);
 				}

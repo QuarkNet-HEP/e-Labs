@@ -32,11 +32,15 @@
 			<div id="content">
 
 <%
+	int newSurveyId = -1; 
 	boolean inSurvey = "yes".equalsIgnoreCase(request.getParameter("eval"));
 
 	if (inSurvey) {
+		newSurveyId = Integer.parseInt(elab.getProperty("cosmic.newsurvey")); 
 		// Quick check to make sure this works properly 
-		%> <i>You have agreed to enter our study</i> <% 
+		%> <i>You have agreed to enter our study</i><% 
+		
+		// Set teacher's database flag so we know he or she is in the survey.
 	}
 
 	String optionList = "<option value=\"discard\">Choose group</option>";
@@ -91,7 +95,7 @@
 				
 				if (inSurvey == true) {
 					group.setNewSurvey(true);
-					group.setNewSurveyId();
+					group.setNewSurveyId(newSurveyId);
 				}
 				else {
 					group.setSurvey("yes".equalsIgnoreCase(survey) || "true".equalsIgnoreCase(survey));

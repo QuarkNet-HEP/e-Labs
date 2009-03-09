@@ -43,9 +43,10 @@
 	String testName = elab.getSurveyProvider().getSurvey(teacher.getNewSurveyId().intValue()).getName();
 	request.setAttribute("results", results);
 	request.setAttribute("testName", testName);
+	request.setAttribute("teacher", teacher);
 %>
 
-<h1>Results for ${param.type}test for students of ${teacher.teacher} for the ${testName}</h1>
+<h1>Student ${param.type}test results for the ${testName}</h1>
 
 <p>
 	Students' answers are listed under each question. Click on the answer to see the 

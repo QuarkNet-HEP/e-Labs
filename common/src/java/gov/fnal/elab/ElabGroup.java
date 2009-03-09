@@ -452,6 +452,10 @@ public class ElabGroup {
 	public Integer getNewSurveyId() {
 		return newSurveyId;
 	}
+	
+	public void setNewSurveyId(int id) {
+		this.newSurveyId = new Integer(id);
+	}
 
 	public void setNewSurvey(boolean newSurvey) {
 		this.newSurvey = newSurvey;

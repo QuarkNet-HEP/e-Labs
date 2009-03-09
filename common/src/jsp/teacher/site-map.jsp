@@ -1,6 +1,9 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="gov.fnal.elab.*" %>
+<%@ page import="gov.fnal.elab.usermanagement.*" %>
+<%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -29,6 +32,13 @@
 
 <h1>Cosmic Site Map</h1>
 
+<%
+	// Check if the teacher is in the survey
+	ElabGroup user = (ElabGroup) request.getAttribute("user");
+	boolean newSurvey = user.isNewSurvey();
+
+%>
+
 <table border="0" id="main">
 	<tr>
 		<td>
@@ -42,10 +52,8 @@
 					<li><a href="strategy.jsp">Teaching Strategies</a></li>
 					<li><a href="standards.jsp">Alignment with Standards</a></li>
 					<e:restricted role="teacher">
-						<li><a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
-						- and <a href="../test/test.jsp?type=postsurvey&studentid=0">Post</a> Tests.</li>
-						<li>Student Results for <a href="../test/results.jsp?type=presurvey">Pre</a>
-						- and <a href="../test/results.jsp?type=postsurvey">Post</a>- tests.</li>
+						<li><a href="../test/test.jsp?type=presurvey&studentid=0">Pre-test</a> and <a href="../test/test.jsp?type=postsurvey&studentid=0">Post-test</a>.</li>
+						<li>Student Results for the <a href="../test/results.jsp?type=presurvey">pre-test</a> and the <a href="../test/results.jsp?type=postsurvey">post-test</a>.</li>
 					</e:restricted>
 					<e:restricted role="admin">
 						<li><a href="../test/show-teachers.jsp">Show Student Test Results for all Teachers</a></li>
@@ -67,6 +75,11 @@
 		</td>
 		<td>
 			<div id="right">
+				<c:choose>
+					<c:when test="${newSurvey == true }">
+						<h2>New Survey Tools</h2>
+					</c:when>
+				</c:choose>
 				<h2>Student Pages</h2>
 				<ul class="simple">
 					<li><a href="../home/">Home</a></li>

@@ -63,13 +63,13 @@
 		<c:forEach items="${survey.questions}" var="question">
 			<li>
 				<strong>${question.text}</strong>
-				<ul>
+				<ol type="a">
 					<c:forEach items="${question.answers}" var="answer">
 						<li>
 							<input type="radio" name="response${question.id}" value="${answer.id}"/>${answer.text}
 						</li>
 					</c:forEach>
-				</ul>
+				</ol>
 			 </li>
 		</c:forEach>
 	</ol>
