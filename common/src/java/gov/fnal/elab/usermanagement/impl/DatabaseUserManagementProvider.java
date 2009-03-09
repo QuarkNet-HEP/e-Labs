@@ -15,6 +15,7 @@ import gov.fnal.elab.util.ElabUtil;
 
 import java.io.File;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -257,6 +258,7 @@ public class DatabaseUserManagementProvider implements
         user.setSurvey(rs.getBoolean("survey"));
         user.setUserArea(rs.getString("userarea"));
         user.setFirstTime(rs.getBoolean("first_time"));
+        user.setStudy(rs.getBoolean("in_study"));
         user.setNewSurvey(rs.getBoolean("new_survey"));
         user.setNewSurveyId((Integer) rs.getObject("test_id")); 
         setMiscGroupData(user, rs.getString("ay"), user.getUserArea());
@@ -264,26 +266,25 @@ public class DatabaseUserManagementProvider implements
     }
 
     public void resetFirstTime(ElabGroup group) throws ElabException {
-        Statement s = null;
         Connection conn = null;
         try {
             conn = DatabaseConnectionManager
                     .getConnection(elab.getProperties());
-            s = conn.createStatement();
-            s.executeUpdate("UPDATE research_group "
-                    + "SET first_time='f' WHERE id = \'" + group.getId()
-                    + "\';");
+            PreparedStatement ps = conn.prepareStatement(
+            		"UPDATE research_group SET first_time='f' WHERE id = ? ;");
+            ps.setInt(1, Integer.parseInt(group.getId()));
+            ps.executeUpdate(); 
             group.setFirstTime(false);
         }
         catch (Exception e) {
             throw new ElabException(e);
         }
         finally {
-            DatabaseConnectionManager.close(conn, s);
+            DatabaseConnectionManager.close(conn);
         }
     }
     
-    public void setInStudy(ElabGroup group) throws ElabException {
+    public void setTeacherInStudy(ElabGroup group) throws ElabException {
     	Connection con = null;
     	try {
     		con = DatabaseConnectionManager.getConnection(elab.getProperties());
@@ -503,6 +504,8 @@ public class DatabaseUserManagementProvider implements
         ElabGroup group = student.getGroup();
         // More work to do if we haven't seen this one yet.
         String pass = null;
+        
+        // Create a research group if needed
         if (groupToCreate != null) {
             RandPass rp = new RandPass();
             pass = rp.getPass();
@@ -520,7 +523,7 @@ public class DatabaseUserManagementProvider implements
             String ay = "AY" + year;
             s
                     .executeUpdate("insert into research_group(name, password, teacher_id, "
-                            + "role, userarea, ay, survey) "
+                            + "role, userarea, ay, survey, new_survey, in_study) "
                             + "values('"
                             + ElabUtil.fixQuotes(group.getName())
                             + "', '"
@@ -532,13 +535,27 @@ public class DatabaseUserManagementProvider implements
                             + "', '"
                             + ElabUtil.fixQuotes(group.getUserArea())
                             + "','"
-                            + ay + "', '" + group.getSurvey() + "')");
+                            + ay + "', '" + group.getSurvey() 
+                            + "','"
+                            + (group.isNewSurvey() ? "t" : "f")
+                            + "','"
+                            + (group.isStudy()? "t" : "f")
+                            + "')");
             s
                     .executeUpdate("insert into research_group_project(research_group_id, project_id) "
                             + "values((select id from research_group where name = '"
                             + ElabUtil.fixQuotes(group.getName())
                             + "'), "
                             + elab.getId() + ")");
+            
+            
+            if (groupToCreate.isStudy() == true) {
+            	s.executeUpdate("INSERT INTO research_group_test (research_group_id, test_id) "
+            			+ "values((select id from research_group where name = '"
+                        + ElabUtil.fixQuotes(group.getName())
+                        + "'), "
+                        + groupToCreate.getNewSurveyId().toString() + ");");
+            }
 
             String usersDir = elab.getAbsolutePath(elab.getProperties()
                     .getUsersDir());

@@ -33,14 +33,20 @@
 
 <%
 	int newSurveyId = -1; 
-	boolean inSurvey = "yes".equalsIgnoreCase(request.getParameter("eval"));
+	boolean inStudy = "yes".equalsIgnoreCase(request.getParameter("eval"));
 
-	if (inSurvey) {
-		newSurveyId = Integer.parseInt(elab.getProperty("cosmic.newsurvey")); 
+	if (inStudy) {
+		if (elab.getId() == 1) {
+			newSurveyId = Integer.parseInt(elab.getProperty("cosmic.newsurvey"));
+		}
+		
 		// Quick check to make sure this works properly 
 		%> <i>You have agreed to enter our study</i><% 
 		
 		// Set teacher's database flag so we know he or she is in the survey.
+		if (user.isStudy() == false) {
+			elab.getUserManagementProvider().setTeacherInStudy(user); 
+		}
 	}
 
 	String optionList = "<option value=\"discard\">Choose group</option>";
@@ -93,12 +99,23 @@
 				    group.setRole(ElabUser.ROLE_UPLOAD);
 				}
 				
-				if (inSurvey == true) {
-					group.setNewSurvey(true);
-					group.setNewSurveyId(newSurveyId);
+				if (elab.getId() == 1) { // cosmic
+					if (inStudy == true) {
+						group.setStudy(true);
+						group.setNewSurvey(true);
+						group.setNewSurveyId(newSurveyId);
+					}
+					else {
+						group.setSurvey("yes".equalsIgnoreCase(survey) || "true".equalsIgnoreCase(survey));	
+					}
 				}
-				else {
-					group.setSurvey("yes".equalsIgnoreCase(survey) || "true".equalsIgnoreCase(survey));
+				else if (elab.getId() == 2) {
+					// TODO: LIGO 
+					// Anyone taking this test will be in the 'New Survey' system
+				}
+				else if (elab.getId() == 3) {
+					// TODO: CMS
+					// Anyone taking this test will be in the 'New Survey' system
 				}
 				students.add(newUser);
 				newGroups.add(Boolean.valueOf(isNewGroup));

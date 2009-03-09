@@ -30,10 +30,11 @@ public class ElabGroup {
     private String namelc;
     private Map groups, students, attributes;
     
-    private boolean study; 
+    // Used only if a group is in a study
+    private boolean study = false;
     
-    // New survey framework stuff
-    private boolean newSurvey; // Are 
+    // New survey framework stuff. Default handler for LIGO, CMS. Optional for COSMIC. 
+    private boolean newSurvey = false;
     private Integer newSurveyId;
 
     private ElabUserManagementProvider provider;
