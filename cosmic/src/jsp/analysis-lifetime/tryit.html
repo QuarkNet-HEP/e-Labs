@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<title>Step-by-Step Instructions: Lifetime Study</title>
-		<link rel="stylesheet" href="include/styletut.css" type="text/css" />
+ 	<link rel="stylesheet"  href="../css/styletut.css" type="text/css">
 	</head>
 	<body>
 		<!-- include css style file -->
@@ -28,6 +28,8 @@
 			<table width="480" cellpadding="4" cellspacing="4">
 				<tr>
 					<td colspan="2">
+							Lifetime studies can be pretty tricky and getting the right input parameters
+							is sometimes hard.
 							Keep two windows open, one with these instructions and the other with 
 							the actual web pages. Go back and forth between them.  Use the scroll 
 							bar to move the instructions.
@@ -47,7 +49,7 @@
 				</tr>
 				<tr align="left" valign="top">
 					<td colspan="2">
-						<img src="../graphics/tryPerf/data_menu_75.gif">
+						<img border="2" src="../graphics/tryPerf/data_menu_75.gif">
 					</td>
 				</tr>
 				<tr>
@@ -55,11 +57,11 @@
 				</tr>
 				<tr>
 					<td>Step 2:</td>
-					<td>Click on the Lifetime button in the submenu.</td>
+					<td>Click on the <b>Lifetime</b> button in the submenu.</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<img src="../graphics/lifetime_menu_75.gif">
+						<img border="2" src="../graphics/tryPerf/lifetime_menu_75.gif">
 					</td>
 				</tr>
 				<tr>
@@ -80,7 +82,7 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<img src="../graphics/tryPerf/lifetime_search_data1.gif">
+						<img border="2" src="../graphics/tryPerf/lifetime_search_data1.gif">
 					</td>
 				</tr>
 				<tr>
@@ -91,13 +93,13 @@
 					<td>
 						Search first for a data file from Fermilab with date starting with 
 						8/19/2003. 
-						<BR>a) Select <b>School</b> in the pulldown list
-						<br>b) Enter <b>Fermilab</b> in the search field
-						<BR>c) Click on the little arrow next to "Advanced Search".
+						<BR>a) Select <b>Detector Id</b> in the pulldown list
+						<br>b) Enter <b>180</b> in the search field
+						<BR>c) Click on the little arrow next to <b>Advanced Search</b>.
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2"><img src="../graphics/tryPerf/perf_search_data1_5.gif"></td>
+					<td colspan="2"><img border="2" src="../graphics/tryPerf/lifetime_search_data1_5.gif"></td>
 				</tr>
 				<tr>
 					<td colspan="2" height="16"></td>
@@ -106,13 +108,13 @@
 					<td valign="top">Step 3.3:</td>
 					<td>
 						a) Select <b>Start Date</b> in the pulldown list for dates and 
-						enter "8/19/2003" in the first date field.
+						enter <b>8/19/2003</b> in the first <b>date field</b>.
 						<br>b) Click <b>Search Data</b>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<img src="../graphics/tryPerf/lifetime_search_data2.gif">
+						<img border="2" src="../graphics/tryPerf/lifetime_search_data2.gif">
 					</td>
 				</tr>
 				<tr>
@@ -127,7 +129,7 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<img src="../graphics/tryPerf/lifetime_search_data3.gif">
+						<img border="2" src="../graphics/tryPerf/lifetime_search_data3.gif">
 					</td>
 				</tr>
 				<tr>
@@ -142,24 +144,11 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<img src="../graphics/tryPerf/lifetime_search_data4.gif">
+						<img border="2" src="../graphics/tryPerf/lifetime_search_data4.gif">
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2" height="16"></td>
-				</tr>
-				<tr>
-					<td valign="top">Step 3.6:</td>
-					<td>
-						Hover over "Thu 19" to see additional information about the 
-						data on that date. Notice that channels 1,2, and 4 have good 
-						data.
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<img src="../graphics/tryPerf/lifetime_search_data5.gif">
-					</td>
 				</tr>
 				<tr>
 					<td colspan="2" height="16"><a name="select_data"> </a></td>
@@ -174,7 +163,7 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<img src="../graphics/tryPerf/lifetime_choose_data.gif">
+						<img border="2" src="../graphics/tryPerf/lifetime_choose_data.gif">
 					</td>
 				</tr>
 				<tr>
@@ -183,23 +172,70 @@
 				<tr>
 					<td valign="top">Step 5:</td>
 					<td>
-						Look at the number of events in each channel. The default 
-						analysis parameters are set to a coincidence level of 1, 
-						checking the energy of the second pulse and a gate width 
-						of 1e<sup>-5</sup> seconds.<BR> Click on the questions mark 
-						button <img src="graphics/question.gif" border="0"> to learn 
-						more about each of these.
-						<br>Click <b>Analyze</b> to use the default parameters.
+						Look at the number of events in each channel. Use the default
+						analysis parameters: Coincidence level of <b>1</b>, Gate width 
+						of 1e<sup>-5</sup> seconds and Number of bins of 40.<BR> Click on the questions mark 
+						button <img border="2" src="../graphics/question.gif" border="0"> to learn 
+						more about each of these.  The execution mode is set to "Local".  For this example, we
+						will always execute the analysis on the local machine. You can experiment with how
+						changing the execution mode to the I2U2 cluster and grid affects how long it takes
+						to do your analysis.  There are some estimates of how much time each might take.
+						<br>Click <b>Analyze</b> to use these parameters.
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<img src="../graphics/tryPerf/choose_parameters_lifetime_60.gif">
+						<img border="2" src="../graphics/tryPerf/choose_parameters_lifetime_60.gif">
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2" height="16"><a name="plot"> </a></td>
 				</tr>
+				<tr>
+					<td colspan="2" height="16"><A Name="in-progress"> </A>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top" width="50">Step 5.1:</td>
+					<td>If your analysis takes very little time to run, you may get your plot right away. More often, you get a progress bar displaying how the analysis is doing.  You can click on <b>Queue study</b> to allow the analysis to go on in the background.  </td></tr>
+				<tr>
+					<td colspan="2"><IMG src="../graphics/tryPerf/lifetime-study-inprogress.gif" border="1"></td>
+				</tr>
+
+				<tr>
+					<td colspan="2" height="16"><A Name="analysis-links"> </A></td>
+				</tr>
+				<tr>
+					<td valign="top" width="50">Step 5.2:</td>
+					<td>You can now click on <b>Analyses</b> on the navigation bar or <b>analysis list</a> in the text to see the progress of you job.
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2"><IMG src="../graphics/tryPerf/analysis-list-links.gif" border="1">
+					</td>
+				</tr>
+
+
+				<tr>
+					<td colspan="2" height="16"><A Name="analysis-list"> </A>
+					</td>
+				</tr>
+				<tr><td valign="top" width="50">Step 5.3:</td>
+					<td>When your job is done, you will see an entry on the Analysis List like this. You can click on the link and see the plot.
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2"><IMG src="../graphics/tryPerf/lifetime-analysis-list.gif" border="1">
+					</td>
+				</tr>
+
+			
+				
+				
+
+
+
+
 				<tr>
 					<td valign="top">Step 6:</td>
 					<td>
@@ -211,7 +247,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2"><img src="../graphics/tryPerf/lifetime_plot.gif"></td>
+					<td colspan="2"><img border="2" src="../graphics/tryPerf/lifetime_plot.gif"></td>
 				</tr>
 				<tr>
 					<td colspan="2" height="16"><a name="plot_controls"> </a></td>
@@ -220,17 +256,19 @@
 					<td valign="top">Step 7:</td>
 					<td>
 						The plot in the poster has the following analysis parameters:
-						<br>Coincidence level=2, Check energy of 2nd pulse = No, Gate 
-						width: 1 e-4 seconds, and Number of Bins: 60.  
-						<br>a) Choose 2 in the pulldown list for coincidence level.
-						<br>b) Select <b>No</b> for Check energy of 2nd pulse<br>c) Change 
-						the Gate width to <b>1 e<sup>-4</sup></b>.<BR>d) To recreate the 
+						<br>Coincidence level=2, Gate 
+						width: 1 e-4 seconds, and Number of Bins: 60. 
+						<br>a) Choose <b>2</b> in the pulldown list for <b>Coincidence level</b>.<br>
+						b) Change 
+						the<b> Gate width</b> to <b>1 e<sup>-4</sup></b>.<BR>
+						c) Change the <b>number of bins</b> to <b>60</b><br>
+						d) To recreate the 
 						plot, you will need to use the plot controls.<br>Click on the small 
-						arrow to view the Plot Controls.
+						arrow to view the "Plot Controls".
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2"><img src="../graphics/tryPerf/plot_controls_lifetime.gif"></td>
+					<td colspan="2"><img border="2" src="../graphics/tryPerf/plot_controls_lifetime.gif"></td>
 				</tr>
 				<tr>
 					<td colspan="2" height="16"><a name="plot_controls2"> </a></td>
@@ -238,14 +276,14 @@
 				<tr>
 					<td valign="top">Step 8:</td>
 					<td>
-						a) Enter <b>60</b> for the number of bins 
-						<br>b) Enter <b>20</b> for X-max
+						a)  Enter <b>30</b> for <b>X-max</b><br>
+						b)  Enter <b>400</b> for <b>Y-max</b>
 						<br>c) Click <b>Analyze</b>.
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<img src="../graphics/tryPerf/choose_parameters2_lifetime.gif">
+						<img border="2" src="../graphics/tryPerf/choose_parameters2_lifetime.gif">
 					</td>
 				</tr>
 				<tr>
@@ -262,7 +300,7 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<img src="../graphics/tryPerf/better_plot_lifetime.gif">
+						<img border="2" src="../graphics/tryPerf/better_plot_lifetime.gif">
 					</td>
 				</tr>
 				<tr>
@@ -271,22 +309,24 @@
 				<tr>
 					<td valign="top">Step 10:</td>
 					<td>
-						The plot in the poster has the following fit parameters:
-						<br>X-min of fit: 0.2, X-max of fit: 20 and all initial guesses
-						 set to blank and fit parameters to Yes. 
+						The plot in the poster needs the following fit parameters:
+				
 						<br>a) Click the little arrow to view the Fit Controls.
-						<br>b) Select <b>Yes</b> for <b>Fitting Turned On</b>
-						<br>c) Set <b>X-min of fit</b> to .2.
-						<br>d) Set <b>X-max of fit</b> to 20.
-						<br>e) Set <b>Fit Y-intercept</b>, <B>Fit Lifetime</b> and 
-						<b>Fit Background</b> to <b>Yes</b>
-						<br>f) Clear all the fitting fields. (Alpha, Lifetime, Background).
-						<br>g) Click <b>Analyze</b>
+						<br>b) Set <b>Fitting Turned On</b> to <b>Yes</b>
+						<br>c) Set <b>X-min of fit</b> to <b>.1</b>
+						<br>d) Set <b>X-max of fit</b> to <b>100</b>
+						<br>e) Set <b>Fit Y-intercept</b> to <b>No</b>
+						<br>f) Set <b>Alpha</b> to <b>494</b>
+						<br>g) Set <B>Fit Lifetime</b> to <b>Yes</b> 
+						<br>h) Set <B>Lifetime</b> to <b>2.0</b> 
+						<br>i) Set <b>Fit Background</b> to <b>Yes</b>
+						<br>j) Set <b>Background</b> to<b> 1</b>
+						<br>Click <b>Analyze</b>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<img src="../graphics/tryPerf/choose_parameters4_lifetime.gif">
+						<img border="2" src="../graphics/tryPerf/choose_parameters4_lifetime.gif">
 					</td>
 				</tr>
 				<tr>
@@ -300,7 +340,7 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<img src="../graphics/tryPerf/plot_better2_lifetime.gif">
+						<img border="2" src="../graphics/tryPerf/plot_better2_lifetime.gif">
 					</td>
 				</tr>
 				<tr>
@@ -317,7 +357,7 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<img src="../graphics/tryPerf/save_plot_lifetime.gif">
+						<img border="2" src="../graphics/tryPerf/save_plot_lifetime.gif">
 					</td>
 				</tr>
 				<tr>
@@ -335,7 +375,7 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<img src="../graphics/tryPerf/save_plot_done_lifetime.gif">
+						<img border="2" src="../graphics/tryPerf/save_plot_done_lifetime.gif">
 					</td>
 				</tr>
 			</table>
