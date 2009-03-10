@@ -53,6 +53,7 @@
 <p>
 	<form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit="window.open('',this.target,'width=500,height=200,resizable=1');" align="center">
 		<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
+		<e:creationDateMetadata/>
 		<input type="hidden" name="metadata" value="transformation string Quarknet.Cosmic::FluxStudy"/>
 		<input type="hidden" name="metadata" value="study string flux"/>
 		<input type="hidden" name="metadata" value="type string plot"/>
