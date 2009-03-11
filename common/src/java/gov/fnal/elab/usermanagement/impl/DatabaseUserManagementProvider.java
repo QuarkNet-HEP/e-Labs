@@ -289,8 +289,27 @@ public class DatabaseUserManagementProvider implements
     	try {
     		con = DatabaseConnectionManager.getConnection(elab.getProperties());
     		java.sql.PreparedStatement ps = con.prepareStatement(
-    				"UPDATE research_group SET in_study = 't' AND newSurvey = ' t' WHERE id = ?;");
+    				"UPDATE research_group SET in_study = 't', new_survey = 't' WHERE id = ?;");
     		ps.setInt(1, Integer.parseInt(group.getId()));
+    		ps.execute();
+    	}
+    	catch (Exception e) {
+    		throw new ElabException(e);
+    	}
+    	finally {
+    		DatabaseConnectionManager.close(con);
+    	}
+    }
+    
+    public void setTeacherInStudy(ElabGroup group, int testId) throws ElabException {
+    	Connection con = null;
+    	setTeacherInStudy(group);
+    	try {
+    		con = DatabaseConnectionManager.getConnection(elab.getProperties());
+    		java.sql.PreparedStatement ps = con.prepareStatement(
+    				"INSERT INTO research_group_test VALUES (?, ?);");
+    		ps.setInt(1, Integer.parseInt(group.getId()));
+    		ps.setInt(2, testId);
     		ps.execute();
     	}
     	catch (Exception e) {
@@ -562,6 +581,16 @@ public class DatabaseUserManagementProvider implements
                             + "','"
                             + (group.isStudy()? "t" : "f")
                             + "')");
+            
+            /*
+            PreparedStatement insertProject = con.prepareStatement(
+            		"INSERT INTO research_group_project " +
+            		"(research_group_id, project_id) " +
+            		"VALUES((SELECT id FROM research_group WHERE name = ?), ?);)");
+            insertProject.setString(1, group.getName());
+            insertProject.setInt(2, Integer.parseInt(elab.getId()));
+            */
+            
             s
                     .executeUpdate("insert into research_group_project(research_group_id, project_id) "
                             + "values((select id from research_group where name = '"

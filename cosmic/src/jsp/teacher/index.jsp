@@ -6,7 +6,7 @@
 	// Check if the teacher is in the study
 	ElabGroup user = (ElabGroup) request.getAttribute("user");
 	if (user != null) {
-		boolean newSurvey = user.isNewSurvey();
+		boolean newSurvey = user.isStudy();
 		request.setAttribute("newSurvey", new Boolean(newSurvey));
 	}
 
@@ -210,14 +210,16 @@
 							<a href="../test/results.jsp?type=presurvey">pre</a>
 							- and <a href="../test/results.jsp?type=postsurvey">post</a>- tests.
 						</li>
-						<li>
-							<i>For the study you have joined:</i>
-							<a href="../survey/survey.jsp?type=pre&studentid=0">Pre</a>
-							- and <a href="../survey/survey.jsp?type=post&studentid=0">post</a>
-							- tests of content knowledge and student results for 
-							<a href="../survey/results.jsp?type=pre">pre</a>
-							- and <a href="../survey/results.jsp?type=post">post</a>- tests.
-						</li>
+						<c:if test="${newSurvey == true }">
+							<li>
+								<i>For the study you have joined:</i>
+								<a href="../survey/survey.jsp?type=pre&studentid=0">Pre</a>
+								- and <a href="../survey/survey.jsp?type=post&studentid=0">post</a>
+								- tests of content knowledge and student results for 
+								<a href="../survey/results.jsp?type=pre">pre</a>
+								- and <a href="../survey/results.jsp?type=post">post</a>- tests.
+							</li>
+						</c:if>
 					</e:restricted>
 					<li>
 						e-Logbooks: Track and comment on student work. Review 

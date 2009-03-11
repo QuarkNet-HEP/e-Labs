@@ -47,6 +47,7 @@
 		// Set teacher's database flag so we know he or she is in the survey.
 		if (user.isStudy() == false) {
 			elab.getUserManagementProvider().setTeacherInStudy(user); 
+			user.setStudy(true);
 		}
 	}
 

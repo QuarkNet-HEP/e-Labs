@@ -35,8 +35,10 @@
 <%
 	// Check if the teacher is in the study
 	ElabGroup user = (ElabGroup) request.getAttribute("user");
-	boolean newSurvey = user.isNewSurvey();
-	request.setAttribute("newSurvey", new Boolean(newSurvey));
+	if (user != null) {
+		boolean newSurvey = (user.isStudy() || user.isNewSurvey());
+		request.setAttribute("newSurvey", new Boolean(newSurvey));
+	}
 
 %>
 
