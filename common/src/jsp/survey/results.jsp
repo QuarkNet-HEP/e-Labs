@@ -43,7 +43,7 @@
 	String testName = elab.getSurveyProvider().getSurvey(user.getNewSurveyId().intValue()).getName();
 	request.setAttribute("results", results);
 	request.setAttribute("testName", testName);
-	request.setAttribute("missing", missing);
+	request.setAttribute("missing", new Boolean(missing));
 %>
 
 

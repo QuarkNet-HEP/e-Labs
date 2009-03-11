@@ -54,6 +54,7 @@ public class ElabFactory {
 
     private static Object newInstance(Elab elab, String provider, String clsname) {
         try {
+        	clsname = clsname.trim();
             Class cls = ElabFactory.class.getClassLoader().loadClass(clsname);
             Object p = cls.newInstance();
             if (p instanceof ElabProvider) {
