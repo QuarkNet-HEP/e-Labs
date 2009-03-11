@@ -11,7 +11,7 @@
 		response.sendRedirect(response.encodeRedirectURL("../teacher"));
 		return; 
     }
-	else if (user.getNewSurveyId() != null) { // New survey overrides the old one
+	else if (user.isNewSurvey()) { // New survey overrides the old one
 		int surveyId = user.getNewSurveyId().intValue();
 		// TODO: Check if all students have taken the test. 
 		int countQuestions = elab.getSurveyProvider().getSurvey(surveyId).getQuestionCount(); 

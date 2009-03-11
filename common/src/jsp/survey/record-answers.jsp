@@ -120,7 +120,7 @@
 	</c:when>
 	<c:otherwise>
 		<p>
-			<a href="../test/show-students.jsp?type=${type}">Show Students in Your Group.</a>
+			<a href="../survey/show-students.jsp?type=${type}">Show Students in Your Group.</a>
 		</p>
 	</c:otherwise>
 </c:choose>

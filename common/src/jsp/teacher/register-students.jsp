@@ -8,7 +8,8 @@
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+<%@page import="org.apache.commons.lang.StringUtils"%><html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Register Students</title>
@@ -33,10 +34,10 @@
 
 <%
 	int newSurveyId = -1; 
-	boolean inStudy = "yes".equalsIgnoreCase(request.getParameter("eval"));
+	boolean teacherInStudy = "yes".equalsIgnoreCase(request.getParameter("eval"));
 
-	if (inStudy) {
-		if (elab.getId() == 1) {
+	if (teacherInStudy) {
+		if (elab.getId().equals("1")) {
 			newSurveyId = Integer.parseInt(elab.getProperty("cosmic.newsurvey"));
 		}
 		
@@ -73,6 +74,10 @@
 				String survey = request.getParameter("is_survey" + formNum);
 				
 				boolean isNewGroup = true;
+				
+				boolean groupInSurvey = (StringUtils.containsIgnoreCase(survey, "yes") || 
+						StringUtils.containsIgnoreCase(survey, "true"));
+				
 				if (resName == null || resName.equals("Group Name")) {
 					resName = resNameChoose;
 					isNewGroup = false;
@@ -99,21 +104,22 @@
 				    group.setRole(ElabUser.ROLE_UPLOAD);
 				}
 				
-				if (elab.getId() == 1) { // cosmic
-					if (inStudy == true) {
-						group.setStudy(true);
-						group.setNewSurvey(true);
+				if (elab.getId().equals("1")) { // cosmic
+					if (teacherInStudy == true) { // New survey handler 
+						group.setSurvey(false); // old, deprecated handler
+						group.setStudy(groupInSurvey);
+						group.setNewSurvey(groupInSurvey);
 						group.setNewSurveyId(newSurveyId);
 					}
 					else {
-						group.setSurvey("yes".equalsIgnoreCase(survey) || "true".equalsIgnoreCase(survey));	
+						group.setSurvey(groupInSurvey);	
 					}
 				}
-				else if (elab.getId() == 2) {
+				else if (elab.getId().equals("2")) {
 					// TODO: LIGO 
 					// Anyone taking this test will be in the 'New Survey' system
 				}
-				else if (elab.getId() == 3) {
+				else if (elab.getId().equals("3")) {
 					// TODO: CMS
 					// Anyone taking this test will be in the 'New Survey' system
 				}
@@ -194,7 +200,7 @@
 				</li>
 			</ul>
 			<form name="register" method="post" 
-				action="<%= elab.secure("teacher/register-students.jsp") %>"> 
+				action="<%= elab.secure("teacher/register-students.jsp" + (teacherInStudy? "?eval=yes" : "")) %>"> 
 
 			    <table cellpadding="0" cellspacing="0" border="0" align="center" width="800">
 					<%

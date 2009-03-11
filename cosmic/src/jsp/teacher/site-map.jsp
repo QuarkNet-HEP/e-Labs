@@ -1,6 +1,9 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="gov.fnal.elab.*" %>
+<%@ page import="gov.fnal.elab.usermanagement.*" %>
+<%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -29,6 +32,14 @@
 
 <h1>Cosmic Site Map</h1>
 
+<%
+	// Check if the teacher is in the survey
+	ElabGroup user = (ElabGroup) request.getAttribute("user");
+	boolean newSurvey = user.isNewSurvey();
+	request.setAttribute("newSurvey", new Boolean(newSurvey));
+
+%>
+
 <table border="0" id="main">
 	<tr>
 		<td>
@@ -42,10 +53,8 @@
 					<li><a href="strategy.jsp">Teaching Strategies</a></li>
 					<li><a href="standards.jsp">Alignment with Standards</a></li>
 					<e:restricted role="teacher">
-						<li><a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
-						- and <a href="../test/test.jsp?type=postsurvey&studentid=0">Post</a> Tests.</li>
-						<li>Student Results for <a href="../test/results.jsp?type=presurvey">Pre</a>
-						- and <a href="../test/results.jsp?type=postsurvey">Post</a>- tests.</li>
+						<li><a href="../test/test.jsp?type=presurvey&studentid=0">Pre-test</a> and <a href="../test/test.jsp?type=postsurvey&studentid=0">Post-test</a>.</li>
+						<li>Student Results for the <a href="../test/results.jsp?type=presurvey">pre-test</a> and the <a href="../test/results.jsp?type=postsurvey">post-test</a>.</li>
 					</e:restricted>
 					<e:restricted role="admin">
 						<li><a href="../test/show-teachers.jsp">Show Student Test Results for all Teachers</a></li>
@@ -55,7 +64,6 @@
                     <li><a href="mass-registration.jsp">Mass Registration (Spreadsheet)</a></li>
                     <li><a href="update-groups.jsp">Update Student Research Groups</a></li>
                     <li><a href="update-group-projects.jsp">Update e-Lab Assignments for Groups</a></li>
-                    <li><a href="update-group-detectorid.jsp">Update detector IDs for Groups</a></li>
 					<li><a href="site-map.jsp">Site Map</a></li>
 				</ul>
 				
@@ -73,6 +81,17 @@
 					<li><a href="../home/">Home</a></li>
 					<li><a href="../site-index/">Site Index</a></li>
 				</ul>
+				<c:choose>
+					<c:when test="${newSurvey == true }">
+						<e:restricted role="teacher">
+						<h2>Study-Specific Tools</h2>
+						<ul class="simple">
+							<li><a href="../survey/survey.jsp?type=pre&studentid=0">Pre-test</a> and <a href="../survey/survey.jsp?type=post&studentid=0">Post-test</a>.</li>
+							<li>Student Results for the <a href="../survey/results.jsp?type=pre">pre-test</a> and the <a href="../survey/results.jsp?type=post">post-test</a>.</li>
+						</ul>
+						</e:restricted>
+					</c:when>
+				</c:choose>
 			</div>
 		</td>
 	</tr>

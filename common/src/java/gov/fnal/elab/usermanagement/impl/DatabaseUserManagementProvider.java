@@ -179,7 +179,7 @@ public class DatabaseUserManagementProvider implements
         user.setSurvey(rs.getBoolean("survey"));
         user.setUserArea(rs.getString("userarea"));
         user.setStudy(rs.getBoolean("in_study"));
-        user.setSurvey(rs.getBoolean("new_survey"));
+        user.setNewSurvey(rs.getBoolean("new_survey"));
         user.setNewSurveyId((Integer) rs.getObject("test_id"));
         setMiscGroupData(user, rs.getString("ay"), user.getUserArea());
         if (user.isTeacher()) {
@@ -289,7 +289,7 @@ public class DatabaseUserManagementProvider implements
     	try {
     		con = DatabaseConnectionManager.getConnection(elab.getProperties());
     		java.sql.PreparedStatement ps = con.prepareStatement(
-    				"UPDATE research_group SET in_study = 't' WHERE id = ?;");
+    				"UPDATE research_group SET in_study = 't' AND newSurvey = ' t' WHERE id = ?;");
     		ps.setInt(1, Integer.parseInt(group.getId()));
     		ps.execute();
     	}
@@ -504,6 +504,7 @@ public class DatabaseUserManagementProvider implements
         ElabGroup group = student.getGroup();
         // More work to do if we haven't seen this one yet.
         String pass = null;
+        Connection con = s.getConnection();
         
         // Create a research group if needed
         if (groupToCreate != null) {
@@ -521,6 +522,26 @@ public class DatabaseUserManagementProvider implements
                 year = year - 1;
             }
             String ay = "AY" + year;
+            
+            /* Eventual replacement of raw SQL with proper prepared statements 
+             * 
+            PreparedStatement insertGroup = con.prepareStatement(
+            		"INSERT INTO research_group " +
+            		"(name, password, teacher_id, role, userarea, ay, survey, new_survey, in_study) " +
+            		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);");
+            insertGroup.setString(1, group.getName());
+            insertGroup.setString(2, pass);
+            insertGroup.setInt(3, Integer.parseInt(et.getTeacherId()));
+            insertGroup.setString(4, group.isUpload() ? "upload" : "user");
+            insertGroup.setString(5, group.getUserArea());
+            insertGroup.setString(6, ay);
+            insertGroup.setBoolean(7, group.getSurvey());
+            insertGroup.setBoolean(8, group.isNewSurvey());
+            insertGroup.setBoolean(9, group.isStudy());
+            
+            insertGroup.executeUpdate();
+            */
+            
             s
                     .executeUpdate("insert into research_group(name, password, teacher_id, "
                             + "role, userarea, ay, survey, new_survey, in_study) "
@@ -551,7 +572,7 @@ public class DatabaseUserManagementProvider implements
             
             if (groupToCreate.isStudy() == true) {
             	s.executeUpdate("INSERT INTO research_group_test (research_group_id, test_id) "
-            			+ "values((select id from research_group where name = '"
+            			+ "values((select id from research_group where name ilike '"
                         + ElabUtil.fixQuotes(group.getName())
                         + "'), "
                         + groupToCreate.getNewSurveyId().toString() + ");");
