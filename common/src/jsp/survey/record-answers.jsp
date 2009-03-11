@@ -106,6 +106,8 @@
 	
 	int totalTaken = elab.getSurveyProvider().getTotalTaken(type, user); 
 	int total = elab.getSurveyProvider().getTotalStudents(user); 
+	request.setAttribute("total", String.valueOf(total));
+	request.setAttribute("totalTaken", String.valueOf(totalTaken));
 %>
 
 <h1>Thanks for taking this test.</h1>

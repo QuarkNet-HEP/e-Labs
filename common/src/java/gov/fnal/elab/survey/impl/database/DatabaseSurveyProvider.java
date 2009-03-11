@@ -42,7 +42,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 		try { 
 			con = DatabaseConnectionManager.getConnection(elab.getProperties());
 			PreparedStatement queryQuestion = con.prepareStatement(
-					"SELECT q.id AS \"question_id\", q.question_no, q.question_text, q.answer_id, r.number, r.id, r.response_text " +
+					"SELECT q.id AS \"question_id\", q.question_no, q.question_text, q.answer_id, r.response_no, r.id, r.response_text " +
 					"FROM \"newSurvey\".questions AS q " +
 					"LEFT OUTER JOIN \"newSurvey\".responses AS r ON r.question_id = q.id " +
 					"WHERE q.id = ? " +

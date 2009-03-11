@@ -1,5 +1,16 @@
 <%@ include file="../include/elab.jsp" %>
+<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<%
+	// Check if the teacher is in the study
+	ElabGroup user = (ElabGroup) request.getAttribute("user");
+	if (user != null) {
+		boolean newSurvey = user.isNewSurvey();
+		request.setAttribute("newSurvey", new Boolean(newSurvey));
+	}
+
+%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -191,13 +202,23 @@
 						<A HREF="../assessment/rubric-r.html">Process</A>, <A HREF="../assessment/rubric-t.html">Computing</A>,
 						<A HREF="../assessment/rubric-wla.html">Literacy</A> and <A HREF="../assessment/rubric-p.html">Poster</A>
 					</li>
-					<li>
-						<a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
-						- and <a href="../test/test.jsp?type=postsurvey&studentid=0">post</a>
-						- tests of content knowledge and student results for 
-						<a href="../test/results.jsp?type=presurvey">pre</a>
-						- and <a href="../test/results.jsp?type=postsurvey">post</a>- tests.
-					</li>
+					<e:restricted role="teacher">
+						<li>
+							<a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
+							- and <a href="../test/test.jsp?type=postsurvey&studentid=0">post</a>
+							- tests of content knowledge and student results for 
+							<a href="../test/results.jsp?type=presurvey">pre</a>
+							- and <a href="../test/results.jsp?type=postsurvey">post</a>- tests.
+						</li>
+						<li>
+							<i>For the study you have joined:</i>
+							<a href="../survey/survey.jsp?type=pre&studentid=0">Pre</a>
+							- and <a href="../survey/survey.jsp?type=post&studentid=0">post</a>
+							- tests of content knowledge and student results for 
+							<a href="../survey/results.jsp?type=pre">pre</a>
+							- and <a href="../survey/results.jsp?type=post">post</a>- tests.
+						</li>
+					</e:restricted>
 					<li>
 						e-Logbooks: Track and comment on student work. Review 
 						group logbook or all student entries for a particular 

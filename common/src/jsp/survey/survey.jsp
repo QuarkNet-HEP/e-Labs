@@ -37,11 +37,17 @@
 <%
 	int id;
 	String type; 
+	
 	try {
 		id = Integer.parseInt(request.getParameter("id"));
 	}
 	catch (Exception ex) {
-		throw new ElabJspException("Missing test id"); 
+		try {
+			id = user.getNewSurveyId().intValue();
+		}
+		catch(Exception exn) {
+			throw new ElabJspException("Missing test id"); 
+		}
 	}
 	type = request.getParameter("type");
 	if (type == null || !(type.equalsIgnoreCase("pre") || type.equalsIgnoreCase("post"))) {
