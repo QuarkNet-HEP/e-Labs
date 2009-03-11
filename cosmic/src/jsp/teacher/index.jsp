@@ -48,7 +48,7 @@
 			<div id="center">
 				<h2>Abstract:</h2>
 				<p>
-					Students experience the environment of scientific collaborations 
+					Working in a research group, students experience the environment of scientific collaborations 
 					in this series of investigations into high-energy cosmic rays. 
 					From start to finish this is a student-led, teacher-guided project. 
 					Schools with cosmic ray detectors can upload data to the web. 
