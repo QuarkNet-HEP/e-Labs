@@ -411,6 +411,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 								"LEFT OUTER JOIN \"newSurvey\".responses AS r ON (a.response_id = r.id) " +
 								"LEFT OUTER JOIN \"newSurvey\".questions AS q ON (r.question_id = q.id) " +
 								"LEFT OUTER JOIN \"newSurvey\".completions AS c ON (c.id = a.completion_id) " +
+								"LEFT OUTER JOIN \"newSurvey\".map_questions_tests AS m on (q.id = m.question_id) " +
 								"WHERE c.student_id = ? AND c.type = ? AND q.id = ? "
 								);
 						ps.setInt(1, Integer.parseInt(es.getId()));
@@ -426,6 +427,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 						}
 						
 					}
+					java.util.Collections.sort(questions);
 					results.put(es, questions);
 				}
 			}
