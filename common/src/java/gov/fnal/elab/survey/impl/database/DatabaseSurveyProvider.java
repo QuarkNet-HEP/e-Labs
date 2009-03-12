@@ -403,7 +403,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 				for (Iterator s = eg.getStudents().iterator(); s.hasNext(); ) {
 					ElabStudent es = (ElabStudent) s.next();
 					List questions = new ArrayList(); 
-					for (Iterator q = survey.getQuestions().iterator(); q.hasNext(); ) {
+					for (Iterator q = survey.getQuestionsById().iterator(); q.hasNext(); ) {
 						ElabSurveyQuestion question = (ElabSurveyQuestion) ((ElabSurveyQuestion) q.next()).clone();
 						PreparedStatement ps = con.prepareStatement(
 								"SELECT a.response_id AS \"ans_ptr\" " +

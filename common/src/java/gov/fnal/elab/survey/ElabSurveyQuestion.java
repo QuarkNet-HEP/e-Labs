@@ -1,6 +1,8 @@
 package gov.fnal.elab.survey;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap; 
 
@@ -37,7 +39,17 @@ public class ElabSurveyQuestion implements Cloneable, Comparable {
 	}
 	
 	public Collection getAnswers() {
+		return getAnswersByNo();
+	}
+	
+	public Collection getAnswersById() {
 		return answers.values(); 
+	}
+	
+	public Collection getAnswersByNo() {
+		List al = new ArrayList(answers.values());
+		java.util.Collections.sort(al);
+		return al;
 	}
 	
 	public void setCorrectAnswer(int id) {

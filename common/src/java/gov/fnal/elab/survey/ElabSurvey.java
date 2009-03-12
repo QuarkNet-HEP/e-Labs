@@ -1,6 +1,8 @@
 package gov.fnal.elab.survey;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -20,7 +22,17 @@ public class ElabSurvey {
 	}
 	
 	public Collection getQuestions() {
+		return getQuestionsByNo();
+	}
+	
+	public Collection getQuestionsById() {
 		return questions.values();
+	}
+	
+	public Collection getQuestionsByNo() {
+		List al = new ArrayList(questions.values());
+		java.util.Collections.sort(al);
+		return al;
 	}
 	
 	public int getQuestionCount() { 
