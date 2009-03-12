@@ -8,7 +8,9 @@ import gov.fnal.elab.util.ElabException;
 
 public interface ElabSurveyProvider {
 	
-	public ElabSurvey getSurvey(int testId) throws ElabException;
+	public ElabSurvey getSurvey(int surveyId) throws ElabException;
+	
+	public ElabSurveyQuestion getSurveyQuestion(int surveyId, int questionId, int responseId) throws ElabException;
 
 	public void RecordCompletion(int surveyId, int studentId, String type, List answers) throws ElabException;
 	
@@ -22,5 +24,4 @@ public interface ElabSurveyProvider {
 	
 	public int getTotalStudents(ElabGroup group) throws ElabException;
 	
-	public ElabSurveyQuestion getSurveyQuestion(int questionId, int responseId) throws ElabException;
 }

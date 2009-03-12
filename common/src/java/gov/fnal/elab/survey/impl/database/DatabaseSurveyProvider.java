@@ -36,18 +36,20 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
         this.elab = elab;
     }
 
-	public ElabSurveyQuestion getSurveyQuestion(int questionId, int responseId) throws ElabException {
+	public ElabSurveyQuestion getSurveyQuestion(int surveyId, int questionId, int responseId) throws ElabException {
 		Connection con = null; 
 		ElabSurveyQuestion esq = null; 
 		try { 
 			con = DatabaseConnectionManager.getConnection(elab.getProperties());
 			PreparedStatement queryQuestion = con.prepareStatement(
-					"SELECT q.id AS \"question_id\", q.question_no, q.question_text, q.answer_id, r.response_no, r.id, r.response_text " +
+					"SELECT q.id AS \"question_id\", m.question_no, q.question_text, q.answer_id, r.response_no, r.id, r.response_text " +
 					"FROM \"newSurvey\".questions AS q " +
 					"LEFT OUTER JOIN \"newSurvey\".responses AS r ON r.question_id = q.id " +
-					"WHERE q.id = ? " +
+					"LEFT OUTER JOIN \"newSurvey\".map_questions_tests AS m ON (q.id = m.question_id) " +
+					"WHERE q.id = ? AND m.test_id = ?" +
 					"ORDER BY r.response_no ASC;");
 			queryQuestion.setInt(1, questionId);
+			queryQuestion.setInt(2, surveyId);
 			
 			ResultSet rs = queryQuestion.executeQuery();
 			while (rs.next()) {
@@ -110,11 +112,12 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 			}
 			
 			PreparedStatement ps = con.prepareStatement(
-					"SELECT q.id AS \"question_id\", q.question_no, q.question_text, q.answer_id, r.id, r.response_text " +
+					"SELECT q.id AS \"question_id\", m.question_no, q.question_text, q.answer_id, r.id, r.response_text " +
 					"FROM \"newSurvey\".questions AS q " + 
 					"LEFT OUTER JOIN \"newSurvey\".responses AS r ON (q.id = r.question_id) " +
-					"WHERE q.test_id = ? " +
-					"ORDER BY q.question_no, r.response_no;");
+					"LEFT OUTER JOIN \"newSurvey\".map_questions_tests AS m ON (q.id = m.question_id) " +
+					"WHERE m.test_id = ? " +
+					"ORDER BY m.question_no, r.response_no;");
 					
 			ps.setInt(1, surveyId);
 			ResultSet rs = ps.executeQuery();

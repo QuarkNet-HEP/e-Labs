@@ -8,7 +8,8 @@
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+<%@page import="org.apache.commons.lang.StringUtils"%><html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Show Question</title>
@@ -34,8 +35,21 @@
 <%
 	int questionId = Integer.parseInt(request.getParameter("id"));
 	int responseId = Integer.parseInt(request.getParameter("answer"));
+	int surveyId; 
 	
-	ElabSurveyQuestion question = elab.getSurveyProvider().getSurveyQuestion(questionId, responseId);
+	try { 
+		if (StringUtils.isNotBlank(request.getParameter("surveyId"))) {
+			surveyId = Integer.parseInt(request.getParameter("surveyId"));
+		}
+		else {
+			surveyId = user.getNewSurveyId().intValue(); 
+		}
+	}
+	catch (Exception e) {
+		throw new ElabJspException(e);
+	}
+	
+	ElabSurveyQuestion question = elab.getSurveyProvider().getSurveyQuestion(surveyId, questionId, responseId);
 	request.setAttribute("question", question);
 %>
 
