@@ -42,12 +42,6 @@ check "detectorid" $DETECTOR
 
 ls -al $IN
 
-/usr/bin/perl -pi -e 's/\\r\\n?/\\n/g' $IN
-if [ "$?" != "0" ]; then 
-	error "New line cleanup failed" 
-fi
-
-mark
 echo "appdir: $APPDIR"
 $APPDIR/Split.pl "$IN" $DATADIR/$DETECTOR $DETECTOR
 if [ "$?" != "0" ]; then 
