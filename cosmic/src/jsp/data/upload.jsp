@@ -13,8 +13,8 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="org.apache.commons.fileupload.*" %>
 <%@ page import="org.apache.commons.fileupload.servlet.*" %>
-<%@ page import="be.telio.mediastore.ui.upload.MonitoredDiskFileItemFactory" %>
-<%@ page import="be.telio.mediastore.ui.upload.UploadListener" %>
+<%@ page import="be.telio.mediastore.ui.upload.*" %>
+<%@ page import="gov.fnal.elab.upload.*" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.Geometries" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
@@ -68,7 +68,7 @@ Re: the upload progress stuff
 	    UploadListener listener = new UploadListener(request, 0);
 
 	    // Create a factory for disk-based file items
-	    FileItemFactory factory = new MonitoredDiskFileItemFactory(listener);
+	    FileItemFactory factory = new NewLineConvertingMonitoredDiskFileItemFactory(listener);
 
     	// Create a new file upload handler
 	    ServletFileUpload upload = new ServletFileUpload(factory);
