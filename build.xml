@@ -66,6 +66,7 @@ deploy-all-clean:
 			<include name="**/*.jar"/>
 		</fileset>
 		<pathelement location="common/build"/>
+		<pathelement location="common/resources/classes"/>
 	</path>
 	
 	<path id="cp-cms">
@@ -98,7 +99,6 @@ deploy-all-clean:
 			<include name="lib/**/*.jar"/>
 		</fileset>
 	</path>
-	
 	
 	<!-- - - - - - - - - - - - - - - - - - 
 		target: common                      
