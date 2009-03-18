@@ -37,8 +37,15 @@
 	boolean teacherInStudy = "yes".equalsIgnoreCase(request.getParameter("eval"));
 
 	if (teacherInStudy) {
-		if (elab.getId().equals("1")) {
-			newSurveyId = Integer.parseInt(elab.getProperty("cosmic.newsurvey"));
+		if (user.getNewSurveyId() == null) { 
+			if (elab.getId().equals("1")) {
+				newSurveyId = Integer.parseInt(elab.getProperty("cosmic.newsurvey"));
+				user.setNewSurveyId(newSurveyId);
+			}
+			// set handlers for everything else. 
+		}
+		else {
+			newSurveyId = user.getNewSurveyId().intValue();
 		}
 		
 		// Quick check to make sure this works properly 
@@ -48,6 +55,7 @@
 		if (user.isStudy() == false) {
 			elab.getUserManagementProvider().setTeacherInStudy(user); 
 			user.setStudy(true);
+			// set this in the database. 
 		}
 	}
 
