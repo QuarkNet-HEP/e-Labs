@@ -303,13 +303,19 @@ public class DatabaseUserManagementProvider implements
     
     public void setTeacherInStudy(ElabGroup group, int testId) throws ElabException {
     	Connection con = null;
-    	setTeacherInStudy(group);
     	try {
+    		setTeacherInStudy(group);
     		con = DatabaseConnectionManager.getConnection(elab.getProperties());
     		java.sql.PreparedStatement ps = con.prepareStatement(
-    				"INSERT INTO research_group_test VALUES (?, ?);");
+    				"INSERT INTO research_group_test (research_group_id, test_id) " + 
+    				"SELECT ?, ? WHERE NOT EXISTS " +
+    					"(SELECT research_group_id, test_id FROM research_group_test " + 
+    					"WHERE research_group_id = ? AND test_id = ?)" + 
+					";");
     		ps.setInt(1, Integer.parseInt(group.getId()));
     		ps.setInt(2, testId);
+    		ps.setInt(3, Integer.parseInt(group.getId()));
+    		ps.setInt(4, testId);
     		ps.execute();
     	}
     	catch (Exception e) {
