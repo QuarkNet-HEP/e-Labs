@@ -51,7 +51,12 @@ public class TRInput extends TRControl {
             else {
                 if ("checkbox".equals(type)) {
                     Object iv = getIntrinsicValue();
-                    if ((iv == null && value != null) || (iv != null && iv.equals(value))) {
+                    if (value instanceof Boolean) {
+                    	if (((Boolean) value).booleanValue()) {
+                    		setDynamicAttribute(null, "checked", "checked");
+                    	}
+                    }
+                    else if ((iv == null && value != null) || (iv != null && iv.equals(value))) {
                         setDynamicAttribute(null, "checked", "checked");
                     }
                     writeOne(out, iv);
@@ -71,6 +76,9 @@ public class TRInput extends TRControl {
     protected void writeOne(JspWriter out, Object value) throws IOException,
             JspException {
         out.write("<input");
+        if (!isAnalysisParameterValid()) {
+        	out.write(" class=\"invalid\"");
+        }
         writeAttribute(out, "name", getName());
         if (value != null) {
             writeAttribute(out, "value", value);
