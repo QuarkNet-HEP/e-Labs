@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * An adaptor implementing <code>ElabAnalysis</code> on top of an <code>ElabBean</code>. This
- * is not needed any more, but kept just in case.
+ * An adaptor implementing <code>ElabAnalysis</code> on top of an
+ * <code>ElabBean</code>. This is not needed any more, but kept just in case.
  */
 public class BeanWrapper extends AbstractAnalysis {
     private Object bean;
@@ -28,6 +28,12 @@ public class BeanWrapper extends AbstractAnalysis {
         defaults = new HashMap();
     }
 
+    public BeanWrapper(Object bean) {
+        this();
+        this.bean = bean;
+        setBeanClass(bean.getClass());
+    }
+
     public void initialize(String param) throws InitializationException {
         try {
             setBeanClass(param);
@@ -36,12 +42,17 @@ public class BeanWrapper extends AbstractAnalysis {
             throw new InitializationException(e);
         }
     }
-    
+
     public void setBeanClass(String cls) throws InstantiationException,
             IllegalAccessException, ClassNotFoundException {
         this.bean = BeanWrapper.class.getClassLoader().loadClass(cls)
                 .newInstance();
         this.beanClass = bean.getClass();
+        discoverProperties();
+    }
+
+    public void setBeanClass(Class cls) {
+        this.beanClass = cls;
         discoverProperties();
     }
 
@@ -88,8 +99,18 @@ public class BeanWrapper extends AbstractAnalysis {
     }
 
     public boolean isParameterValid(String name) {
-        return ((Boolean) invoke(isValidName(name), Boolean.class))
-                .booleanValue();
+        try {
+            return ((Boolean) invoke(isValidName(name), Boolean.class))
+                    .booleanValue();
+        }
+        catch (RuntimeException e) {
+            if (e.getCause() instanceof NoSuchMethodException) {
+                return true;
+            }
+            else {
+                throw e;
+            }
+        }
     }
 
     public boolean isValid() {
@@ -117,7 +138,8 @@ public class BeanWrapper extends AbstractAnalysis {
             m.invoke(bean, new Object[] { value });
         }
         catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Exception setting " + name
+                    + " for class " + bean.getClass(), e);
         }
     }
 
