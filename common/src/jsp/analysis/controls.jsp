@@ -21,8 +21,6 @@
 								(estimated time: <e:analysisRunTimeEstimator engine="swift" mode="grid"/>)<br />
 							<input type="radio" name="runMode" value="mixed" /> Automatic
 								(estimated time: <e:analysisRunTimeEstimator engine="swift" mode="mixed"/>)<br />
-							<input type="radio" name="runMode" value="coasters" /> Coasters (experimental)
-								(estimated time: <e:analysisRunTimeEstimator engine="swift" mode="coasters"/>)<br />
 						</optgroup>
 					</td>
 				</tr>
