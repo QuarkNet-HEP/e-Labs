@@ -145,9 +145,6 @@ deploy-all-clean:
 			<arg value=".tldbuild/WEB-INF/elab.tld"/>
 			<classpath>
 				<pathelement location="tools/tlddoc.jar"/>
-				<pathelement location="common/lib/xml-apis.jar"/>
-				<pathelement location="common/lib/xercesImpl.jar"/>
-				<pathelement location="common/lib/xalan.jar"/>
 			</classpath>
 		</java>
 	</target>
