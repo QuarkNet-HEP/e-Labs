@@ -3,6 +3,7 @@ package gov.fnal.elab.cosmic.beans;
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
 import gov.fnal.elab.cosmic.Geometry;
+import gov.fnal.elab.datacatalog.DataCatalogProvider;
 import gov.fnal.elab.util.DatabaseConnectionManager;
 import gov.fnal.elab.util.ElabException;
 
@@ -10,6 +11,7 @@ import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
@@ -108,6 +110,10 @@ public class Geometries implements Serializable {
     public Iterator iterator() {
         return geometries.values().iterator();
     }
+    
+    public Collection getValues() {
+    	return geometries.values();
+    }
 
     public void commit() throws ElabException {
         Iterator i = changedGeometries.iterator();
@@ -116,10 +122,10 @@ public class Geometries implements Serializable {
         }
     }
 
-    public void updateMetadata() throws ElabException {
+    public void updateMetadata(DataCatalogProvider dcp, GeoEntryBean geoEntry) throws ElabException {
         Iterator i = changedGeometries.iterator();
         while (i.hasNext()) {
-            ((Geometry)i.next()).updateMetadata();
+            ((Geometry)i.next()).updateMetadata(dcp, geoEntry);
         }
     }
 
