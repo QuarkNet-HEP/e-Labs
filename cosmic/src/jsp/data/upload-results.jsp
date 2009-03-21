@@ -184,13 +184,13 @@
     		<c:when test="${geoFileExists}">
     			If you have <strong>changed</strong> the configuration of your detector 
     			since your last upload, please check to make sure that your <br/>
-    			<a href="geo.jsp?fromupload=1&id=${id}&jd=${entry.tupleMap.julianstartdate}&latitude=${entry.tupleMap.avglatitude}&longitude=${entry.tupleMap.avglongitude}&altitude=${entry.tupleMap.avgaltitude}">
+    			<a href="geo.jsp?detectorID=${id}&jd=${entry.tupleMap.julianstartdate}&latitude=${entry.tupleMap.avglatitude}&longitude=${entry.tupleMap.avglongitude}&altitude=${entry.tupleMap.avgaltitude}">
 					Geometry Information</a> was updated correctly.<br/><br/>
     		</c:when>
     		<c:otherwise>
     			This looks like the first file you've uploaded for detector ${id} <br/>
     			Please check to make sure that your 
-    			<a href="geo.jsp?fromupload=1&id=${id}&jd=${entry.tupleMap.julianstartdate}&latitude=${entry.tupleMap.avglatitude}&longitude=${entry.tupleMap.avglongitude}&altitude=${entry.tupleMap.avgaltitude}">
+    			<a href="geo.jsp?detectorID=${id}&jd=${entry.tupleMap.julianstartdate}&latitude=${entry.tupleMap.avglatitude}&longitude=${entry.tupleMap.avglongitude}&altitude=${entry.tupleMap.avgaltitude}">
 					Geometry Information</a> was updated correctly.<br/><br/>
     		</c:otherwise>
     	</c:choose>

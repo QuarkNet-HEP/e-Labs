@@ -102,7 +102,7 @@
 		<td>
 			<ul>
 				<li><a href="../data/upload.jsp">Upload Data</a></li>
-				<li><a href="../jsp/geo.jsp">Upload Geometry</a></li>
+				<li><a href="../geometry/">Upload Geometry</a></li>
 			</ul>
 		</td>
 		<td>
