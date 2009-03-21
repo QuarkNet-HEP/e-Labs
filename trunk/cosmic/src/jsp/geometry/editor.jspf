@@ -1,0 +1,141 @@
+<jsp:useBean id="errs" scope="request" class="gov.fnal.elab.cosmic.beans.GeometryErrors" />
+<e:useBean bean="${geoEntry}">
+	<c:choose>
+		<c:when test="${param.commit == null || !geoEntry.valid}">
+		
+	<form method="post">
+		<e:trinput type="hidden" name="detectorID"/>
+	
+		<c:if test="${!nodate && !ro}">
+			Date: <e:trselect name="month"
+					valueList="1..12"
+					labelList="January, February, March, April, May, June, July, August, September, October, November, December"/>
+			/ <e:trselect name="day" valueList="01..31" labelList="01..31"/>
+			/ <e:trselect name="year" valueList="1999..2020" labelList="1999..2020"/>
+			@ <e:trselect name="hour" valueList="00..23" labelList="00..23"/>
+			: <e:trselect name="minute" valueList="00..59" labelList="00..59"/>
+			<a href="javascript:glossary('UTC')">UTC</a>
+	 	</c:if>
+		
+		<div class="subtitle">Detector Configuration</div>
+		<c:if test="${!ro}">
+			Confused? Seeing errors? Please consult the <a href="tutorial.jsp">tutorial</a>.
+		</c:if>
+		
+		<div id="channels">
+			<table border="0" cellspacing="5" cellpadding="2">
+                <tr>
+                    <td>&nbsp;</td>
+                    <th>Active<br />Channels:</th>
+                    <c:forEach var="i" items="1,2,3,4">
+                    	<td class="channel-id">${i}
+                    	<e:trinput type="checkbox" name="chan${i}IsActive" disabled="${ro}"  
+                        	onclick="HideShow('ch${i}-v');HideShow('ch${i}-h')"/></td>
+                    </c:forEach>
+                </tr>
+                <tr id="secondary-heading">
+                    <td>&nbsp;</td>
+                    <td>Cable<br />Length<span class="unit"> (m)</span></td>
+                    <td>Area <span class="unit">(cm<sup>2</sup>)</span></td>
+                    <td>E-W <span class="unit">(m)</span></td>
+                    <td>N-S <span class="unit">(m)</span></td>
+                    <td>Up-Dn <span class="unit">(m)</span></td>
+                </tr>
+                <c:set var="v" value="visibility: visible; display:"/>
+                <c:set var="h" value="visibility: hidden; display: none"/>
+                <c:forEach var="i" items="1,2,3,4">
+                	<c:set var="isChannelActive" value="chan${i}IsActive"/>
+        			<tr id="ch${i}-v" style="${geoEntry[isChannelActive] ? v : h}">
+	                    <td style="padding-right:5px"><img src="../graphics/geo_det${i}.gif"></td>
+	                    <td><e:trinput disabled="${ro}" type="text" name="chan${i}CableLength" size="4"/></td>
+	                    <td><e:trinput disabled="${ro}" type="text" name="chan${i}Area" size="6"/></td>
+	                    <td><e:trinput disabled="${ro}" type="text" name="chan${i}X" size="5"/></td>
+	                    <td><e:trinput disabled="${ro}" type="text" name="chan${i}Y" size="5"/></td>
+	                    <td><e:trinput disabled="${ro}" type="text" name="chan${i}Z" size="5"/></td>
+	                </tr>
+	        		<tr id="ch${i}-h" style="${geoEntry[isChannelActive] ? h : v}">
+	                    <td style="padding-right:5px"><img src="../graphics/geo_det${i}.gif"></td>
+	                    <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+	                </tr>
+				</c:forEach>
+			</table>
+		</div>
+		<div id="orientation">
+            <table border="0">
+                <tr>
+                    <td>
+                        <img src="../graphics/med_stacked.gif"><br />
+                        <e:trradio name="stackedState" valueList="1" labelList="Stacked" disabled="${ro}" />
+                    </td>
+                    <td id="orientation-label">
+                        Orientation
+                    </td>
+                    <td>
+                        <img src="../graphics/med_unstacked.gif"><br />
+                        <e:trradio name="stackedState" valueList="0" labelList="Unstacked" disabled="${ro}" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="subtitle">GPS Location</div>
+
+		<div id="gps">
+            <table border="0" cellspacing="3">
+                <tr valign="top">
+                    <td>
+                        Latitude: <e:trinput type="text" name="latitude" size="11" disabled="${ro}" />
+                        <br>
+                        <c:if test="${!ro}">
+                        	<span style="font-size: 90%">e.g., 47:39.2347 N</font>
+                        </c:if>
+                    </td>
+                    <td>
+                        Longitude: <e:trinput type="text" name="longitude" size="11" disabled="${ro}" />
+                        <br>
+                        <c:if test="${!ro}">
+                        	<span style="font-size: 90%">e.g., 122:18.68 W</span>
+                        </c:if>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <td>
+                        Altitude (m): <e:trinput type="text" name="altitude" size="3" disabled="${ro}" />
+                    </td>
+                    <td>
+                        GPS Cable Length (m): <e:trinput type="text" name="gpsCableLength" size="4" disabled="${ro}" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <c:if test="${!geoEntry.valid && !ro}">
+        	<c:choose>
+        		<c:when test="${!empty geoEntry.errors}">
+        			<ul id="error-list">
+        				<c:forEach var="err" items="${geoEntry.errors}">
+        					<li>
+        						<a class="invalid" style="font-size: 120%" href="../geometry/tutorial.jsp#${err}">
+    	    						${errs.errors[err]}
+	        					</a>
+	        				</li>
+        				</c:forEach>
+        			</ul>
+        		</c:when>
+        		<c:otherwise>
+        			<p class="invalid" style="font-size: 120%">Some fields are invalid and are hightlighted in red</p>
+        		</c:otherwise>
+        	</c:choose>
+        	<br /><br />
+        </c:if>
+        <c:if test="${!ro}">
+        	<center>
+            	<input type="submit" name="commit" value="Commit Geometry">
+			</center>
+		</c:if>
+	</form>
+		
+		</c:when>
+		<c:otherwise>
+			<%@ include file="commit.jspf" %>
+		</c:otherwise>
+	</c:choose>
+</e:useBean>

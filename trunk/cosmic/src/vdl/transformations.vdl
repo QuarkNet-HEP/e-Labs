@@ -1,0 +1,658 @@
+TR I2U2.Cosmic::Combine(
+	input combineIn[],
+	output combineOut )
+{
+  argument = ${combineIn};
+  argument = " "${combineOut};
+}
+TR I2U2.Cosmic::ExtraFunctions(
+	none alphaG,
+	none alphaVar,
+	none constantG,
+	none constantVar,
+	input extraIn,
+	output extraOut,
+	none lifetimeG,
+	none lifetimeVar,
+	output rawFunctionFile,
+	none type,
+	none xLowerbounds,
+	none xUpperbounds
+    none turnedOn )
+{
+  argument = " "${extraIn};
+  argument = " "${extraOut};
+  argument = " "${rawFunctionFile};
+  argument = " "${type};
+  argument = " "${xLowerbounds};
+  argument = " "${xUpperbounds};
+  argument = " ""'"${alphaG}"'";
+  argument = " "${alphaVar};
+  argument = " ""'"${lifetimeG}"'";
+  argument = " "${lifetimeVar};
+  argument = " ""'"${constantG}"'";
+  argument = " "${constantVar};
+  argument = " "${turnedOn};
+}
+TR I2U2.Cosmic::Frequency(
+	none binType,
+	none binValue,
+	none col,
+	input freqIn[],
+	output freqOut[] )
+{
+  argument = "'" ${freqIn} "'";
+  argument = " '" ${freqOut} "'";
+  argument = " "${col};
+  argument = " "${binType};
+  argument = " "${binValue};
+}
+
+TR I2U2.Cosmic::Lifetime(
+	none coincidence,
+	none energyCheck,
+	none gatewidth,
+	input lifetimeIn,
+	output lifetimeOut,
+	none geoDir,
+	input geoFiles[] )
+{
+  argument = " "${lifetimeIn};
+  argument = " "${lifetimeOut};
+  argument = " "${gatewidth};
+  argument = " "${energyCheck};
+  argument = " "${coincidence};
+  argument = " "${geoDir};
+}
+TR I2U2.Cosmic::LifetimeStudy(
+	inout combineOut,
+	none detector,
+	none cpldfreqs,
+	none extraFun_alpha_guess,
+	none extraFun_alpha_variate,
+	none extraFun_constant_guess,
+	none extraFun_constant_variate,
+	none extraFun_lifetime_guess,
+	none extraFun_lifetime_variate,
+	none extraFun_maxX,
+	none extraFun_minX,
+	none extraFun_turnedOn,
+	inout extraFun_out,
+	output extraFun_rawFile,
+	none extraFun_type,
+	none freq_binType,
+	none freq_binValue,
+	none freq_col,
+	inout frequencyOut,
+	inout lifetimeOut,
+	none lifetime_coincidence,
+	none lifetime_energyCheck,
+	none lifetime_gatewidth,
+	none geoDir,
+	input geoFiles[],
+	none plot_caption,
+	none plot_highX,
+	none plot_highY,
+	none plot_highZ,
+	none plot_lowX,
+	none plot_lowY,
+	none plot_lowZ,
+	none plot_size,
+	output plot_outfile_param,
+	output plot_outfile_image,
+	output plot_outfile_image_thumbnail,
+	none plot_thumbnail_height, 
+	none plot_plot_type,
+	none plot_title,
+	none plot_xlabel,
+	none plot_ylabel,
+	none plot_zlabel,
+	input rawData[],
+	none sort_sortKey1,
+	none sort_sortKey2,
+	inout sortOut,
+	inout wireDelayData[],
+	inout thresholdAll[] )
+{
+  inout svg=@{inout:"plot.svg"};
+  call I2U2.Cosmic::ThresholdTimes(
+	detector=${none:detector},
+	cpldfreqs=${cpldfreqs},
+    rawData=${input:rawData},
+	thresholdAll=${output:thresholdAll} );
+  call I2U2.Cosmic::WireDelay(
+	geoDir=${geoDir},
+	geoFiles=${input:geoFiles},
+	threshData=${input:thresholdAll},
+	wireDelayData=${output:wireDelayData} );
+  call I2U2.Cosmic::Combine(
+	combineIn=${input:wireDelayData},
+	combineOut=${output:combineOut} );
+  call I2U2.Cosmic::Sort(
+	key1=${sort_sortKey1},
+	key2=${sort_sortKey2},
+	sortIn=${input:combineOut},
+	sortOut=${output:sortOut} );
+  call I2U2.Cosmic::Lifetime(
+	coincidence=${lifetime_coincidence},
+	energyCheck=${lifetime_energyCheck},
+	gatewidth=${lifetime_gatewidth},
+	lifetimeIn=${input:sortOut},
+	lifetimeOut=${output:lifetimeOut},
+	geoDir=${geoDir},
+	geoFiles=${input:geoFiles} );
+  call I2U2.Cosmic::Frequency(
+	binType=${freq_binType},
+	binValue=${freq_binValue},
+	col=${freq_col},
+	freqIn=${input:lifetimeOut},
+	freqOut=${output:frequencyOut} );
+  call I2U2.Cosmic::ExtraFunctions(
+	alphaG=${extraFun_alpha_guess},
+	alphaVar=${extraFun_alpha_variate},
+	constantG=${extraFun_constant_guess},
+	constantVar=${extraFun_constant_variate},
+	extraIn=${input:frequencyOut},
+	extraOut=${output:extraFun_out},
+	lifetimeG=${extraFun_lifetime_guess},
+	lifetimeVar=${extraFun_lifetime_variate},
+	rawFunctionFile=${output:extraFun_rawFile},
+	type=${extraFun_type},
+	xLowerbounds=${extraFun_minX},
+	xUpperbounds=${extraFun_maxX}
+    turnedOn=${extraFun_turnedOn} );
+  call I2U2.Cosmic::Plot(
+	plot_caption=${plot_caption},
+	plot_extraFunctions=${input:extraFun_out},
+	plot_highX=${plot_highX},
+	plot_highY=${plot_highY},
+	plot_highZ=${plot_highZ},
+	plot_infile=${input:frequencyOut},
+	plot_lowX=${plot_lowX},
+	plot_lowY=${plot_lowY},
+	plot_lowZ=${plot_lowZ},
+	plot_outfile_param=${output:plot_outfile_param},
+	plot_outfile_image=${output:svg},
+	plot_plot_type=${plot_plot_type},
+	plot_title=${plot_title},
+	plot_xlabel=${plot_xlabel},
+	plot_ylabel=${plot_ylabel},
+	plot_zlabel=${plot_zlabel} );
+  
+  call I2U2.Cosmic::SVG2PNG(
+  	svg=${input:svg},
+	png=${output:plot_outfile_image},
+	height=${plot_size}
+  );
+  
+  call I2U2.Cosmic::SVG2PNG(
+  	svg=${input:svg},
+	png=${output:plot_outfile_image_thumbnail},
+	height=${plot_thumbnail_height}
+  );
+}
+
+TR I2U2.Cosmic::PerformanceStudy(
+	none detector, 
+	none cpldfreqs,
+	none freq_binType, 
+	none freq_binValue, 
+	none freq_col, 
+	none plot_caption, 
+	inout extraFun_out,
+	none plot_highX, 
+	none plot_highY, 
+	none plot_highZ,
+	none plot_lowX,	
+	none plot_lowY,	
+	none plot_lowZ,
+	none plot_size,
+	output plot_outfile_param, 
+	output plot_outfile_image,
+	none plot_thumbnail_height, 
+	output plot_outfile_image_thumbnail,
+	none plot_plot_type, 
+	none plot_title,
+	none plot_xlabel, 
+	none plot_ylabel,	
+	none plot_zlabel,
+	input rawData[],
+	inout singlechannelOut,
+	inout freqOut,
+	none singlechannel_channel,
+	inout thresholdAll[] )
+{
+  inout svg=@{inout:"plot.svg"};
+  inout combineOut=@{inout:"combineOut"};
+  
+  call I2U2.Cosmic::ThresholdTimes(
+	detector=${none:detector},
+	cpldfreqs=${cpldfreqs},
+	rawData=${input:rawData},
+	thresholdAll=${output:thresholdAll} );
+  call I2U2.Cosmic::Combine(
+	combineIn=${input:thresholdAll},
+	combineOut=${output:combineOut} );
+  call I2U2.Cosmic::SingleChannel(
+	channel=${none:singlechannel_channel},
+	singleChannelIn=${input:combineOut},
+	singleChannelOut=${output:singlechannelOut} );
+  call I2U2.Cosmic::Frequency(
+	binType=${freq_binType},
+	binValue=${freq_binValue},
+	col=${freq_col},
+	freqIn=${input:singlechannelOut},
+	freqOut=${output:freqOut} );
+  call I2U2.Cosmic::Plot(
+	plot_caption=${plot_caption},
+	plot_extraFunctions=${extraFun_out},
+	plot_highX=${plot_highX},
+	plot_highY=${plot_highY},
+	plot_highZ=${plot_highZ},
+	plot_infile=${input:freqOut},
+	plot_lowX=${plot_lowX},
+	plot_lowY=${plot_lowY},
+	plot_lowZ=${plot_lowZ},
+	plot_outfile_param=${output:plot_outfile_param},
+	plot_outfile_image=${output:svg},
+	plot_plot_type=${plot_plot_type},
+	plot_title=${plot_title},
+	plot_xlabel=${plot_xlabel},
+	plot_ylabel=${plot_ylabel},
+	plot_zlabel=${plot_zlabel});
+  call I2U2.Cosmic::SVG2PNG(
+  	svg=${input:svg},
+	png=${output:plot_outfile_image},
+	height=${plot_size}
+  );
+  
+  call I2U2.Cosmic::SVG2PNG(
+  	svg=${input:svg},
+	png=${output:plot_outfile_image_thumbnail},
+	height=${plot_thumbnail_height}
+  );
+}
+
+TR I2U2.Cosmic::Plot(
+	none plot_caption,
+	input plot_extraFunctions,
+	none plot_highX,
+	none plot_highY,
+	none plot_highZ,
+	input plot_infile[],
+	none plot_lowX,
+	none plot_lowY,
+	none plot_lowZ,
+	output plot_outfile_param,
+	output plot_outfile_image,
+	none plot_plot_type,
+	none plot_title,
+	none plot_xlabel,
+	none plot_ylabel,
+	none plot_zlabel )
+{
+  argument = "-file '"${plot_infile}"'";
+  argument = " -extra '"${plot_extraFunctions}"'";
+  argument = "-param "${plot_outfile_param};
+  argument = "-svg "${plot_outfile_image};
+  argument = "-type "${plot_plot_type};
+  argument = "-title ""'"${plot_title}"'";
+  argument = "-ylabel ""'"${plot_ylabel}"'";
+  argument = "-xlabel ""'"${plot_xlabel}"'";
+  argument = "-caption ""'"${plot_caption}"'";
+  argument = "-lowx ""'"${plot_lowX}"'";
+  argument = "-highx ""'"${plot_highX}"'";
+  argument = "-lowy ""'"${plot_lowY}"'";
+  argument = "-highy ""'"${plot_highY}"'";
+  argument = "-zlabel ""'"${plot_zlabel}"'";
+  argument = "-lowz ""'"${plot_lowZ}"'";
+  argument = "-highz ""'"${plot_highZ}"'";
+}
+
+TR I2U2.Cosmic::SingleChannel(
+    none channel[],
+    input singleChannelIn,
+    output singleChannelOut[] )
+{
+    argument = ${singleChannelIn};
+    argument = " '" ${singleChannelOut} "'";
+    argument = " '" ${channel} "'";
+}
+
+TR I2U2.Cosmic::Sort(
+    none key1,
+    none key2,
+    input sortIn,
+    output sortOut )
+{
+    argument = ${sortIn};
+    argument = " "${sortOut};
+    argument = " "${key1};
+    argument = " "${key2};
+}
+
+TR I2U2.Cosmic::ThresholdTimes(
+    input rawData[],
+    output thresholdAll[],
+    none detector[],
+    none cpldfreqs )
+{	
+    argument = "'" ${rawData} "'";
+    argument = " '" ${thresholdAll} "'";
+    argument = " '" ${detector} "'";
+    argument = " '" ${cpldfreqs} "'";
+}
+
+TR I2U2.Cosmic::WireDelay(
+    input threshData[],
+    output wireDelayData[],
+    none geoDir,
+    input geoFiles[] )
+{
+    argument = "'" ${threshData} "'";
+    argument = " '" ${wireDelayData} "'";
+    argument = " " ${geoDir};
+
+}
+
+TR I2U2.Cosmic::ShowerStudy(
+    none channelCoincidence,
+	inout combineOut,
+	none detectorCoincidence,
+	none detector,
+	none cpldfreqs,
+	output eventCandidates,
+	none eventCoincidence,
+	inout eventFile,
+	none eventNum,
+    none extraFun_out,
+	none gate,
+	none geoDir,
+	input geoFiles[],
+	none plot_caption,
+	none plot_highX,
+	none plot_highY,
+	none plot_highZ,
+	none plot_lowX,
+	none plot_lowY,
+	none plot_lowZ,
+	none plot_size,
+	inout plot_outfile_param,
+	inout plot_outfile_image,
+	none plot_thumbnail_height, 
+	inout plot_outfile_image_thumbnail,
+	none plot_plot_type,
+	none plot_title,
+	none plot_xlabel,
+	none plot_ylabel,
+	none plot_zlabel,
+	input rawData[],
+	none sort_sortKey1,
+	none sort_sortKey2,
+	inout sortOut,
+	inout thresholdAll[],
+	inout wireDelayData[],
+	none zeroZeroZeroID )
+{
+  call I2U2.Cosmic::ThresholdTimes(
+	detector=${none:detector},
+	cpldfreqs=${cpldfreqs},
+	rawData=${input:rawData},
+	thresholdAll=${output:thresholdAll} );
+  call I2U2.Cosmic::WireDelay(
+	geoDir=${geoDir},
+	geoFiles=${input:geoFiles},
+	threshData=${input:thresholdAll},
+	wireDelayData=${output:wireDelayData} );
+  call I2U2.Cosmic::Combine(
+	combineIn=${input:wireDelayData},
+	combineOut=${output:combineOut} );
+  call I2U2.Cosmic::Sort(
+	key1=${sort_sortKey1},
+	key2=${sort_sortKey2},
+	sortIn=${input:combineOut},
+	sortOut=${output:sortOut} );
+  call I2U2.Cosmic::EventSearch(
+    channelCoincidence=${channelCoincidence},
+	detectorCoincidence=${detectorCoincidence},
+	eventCoincidence=${eventCoincidence},
+	eventSearchIn=${input:sortOut},
+	eventSearchOut=${output:eventCandidates},
+	gate=${gate} );
+}
+
+TR I2U2.Cosmic::EventSearch(
+	none detectorCoincidence,
+    none channelCoincidence,
+	none eventCoincidence,
+	input eventSearchIn,
+	output eventSearchOut,
+	none gate )
+{
+  argument = ${eventSearchIn};
+  argument = " "${eventSearchOut};
+  argument = " "${gate};
+  argument = " "${detectorCoincidence};
+  argument = " "${channelCoincidence};
+  argument = " "${eventCoincidence};
+}
+
+TR I2U2.Cosmic::EventChoice(
+	input eventChoiceIn,
+	output eventChoiceOut,
+	none eventNum,
+	none geoDir,
+	input geoFiles[],
+	none zeroZeroZeroID )
+{
+  argument = ${eventChoiceIn};
+  argument = " "${eventChoiceOut};
+  argument = " "${eventNum};
+  argument = " "${zeroZeroZeroID};
+  argument = " " ${geoDir};
+}
+
+TR I2U2.Cosmic::EventPlot(
+	input eventCandidates,
+	inout eventFile,
+	none eventNum,
+	inout extraFun_out,
+	none geoDir,
+	input geoFiles[],
+	none plot_caption,
+	none plot_highX,
+	none plot_highY,
+	none plot_highZ,
+	none plot_lowX,
+	none plot_lowY,
+	none plot_lowZ,
+	none plot_size,
+	output plot_outfile_image,
+	output plot_outfile_param,
+	none plot_thumbnail_height, 
+	output plot_outfile_image_thumbnail,
+	none plot_plot_type,
+	none plot_title,
+	none plot_xlabel,
+	none plot_ylabel,
+	none plot_zlabel,
+	none zeroZeroZeroID )
+{
+  inout svg=@{inout:"plot.svg"};
+  call I2U2.Cosmic::EventChoice(
+	eventChoiceIn=${input:eventCandidates},
+	eventChoiceOut=${output:eventFile},
+	eventNum=${eventNum},
+	geoDir=${geoDir},
+	geoFiles=${input:geoFiles},
+	zeroZeroZeroID=${zeroZeroZeroID} );
+  call I2U2.Cosmic::Plot(
+	plot_caption=${plot_caption},
+	plot_extraFunctions=${extraFun_out},
+	plot_highX=${plot_highX},
+	plot_highY=${plot_highY},
+	plot_highZ=${plot_highZ},
+	plot_infile=${input:eventFile},
+	plot_lowX=${plot_lowX},
+	plot_lowY=${plot_lowY},
+	plot_lowZ=${plot_lowZ},
+	plot_outfile_param=${output:plot_outfile_param},
+	plot_outfile_image=${output:svg},
+	plot_plot_type=${plot_plot_type},
+	plot_title=${plot_title},
+	plot_xlabel=${plot_xlabel},
+	plot_ylabel=${plot_ylabel},
+	plot_zlabel=${plot_zlabel} );
+  call I2U2.Cosmic::SVG2PNG(
+  	svg=${input:svg},
+	png=${output:plot_outfile_image},
+	height=${plot_size}
+  );
+  call I2U2.Cosmic::SVG2PNG(
+  	svg=${input:svg},
+	png=${output:plot_outfile_image_thumbnail},
+	height=${plot_thumbnail_height}
+  );
+
+}
+
+TR I2U2.Cosmic::Flux(
+	none binWidth,
+	input fluxIn,
+	output fluxOut,
+	none geoDir,
+	input geoFiles[] )
+{
+  argument = ${fluxIn};
+  argument = " "${fluxOut};
+  argument = " "${binWidth};
+  argument = " " ${geoDir};
+}
+TR I2U2.Cosmic::FluxStudy(
+	inout combineOut,
+	none detector,
+	none cpldfreqs,
+	inout fluxOut,
+	none flux_binWidth,
+	none geoDir,
+	input geoFiles[],
+	none plot_caption,
+	none plot_size,
+	inout extraFun_out,
+    none plot_highX,
+	none plot_highY,
+	none plot_highZ,
+	none plot_lowX,
+	none plot_lowY,
+	none plot_lowZ,
+	output plot_outfile_param,
+	none plot_plot_type,
+	output plot_outfile_image,
+	output plot_outfile_image_thumbnail,
+	none plot_thumbnail_height, 
+	none plot_title,
+	none plot_xlabel,
+	none plot_ylabel,
+	none plot_zlabel,
+	input rawData[],
+	inout singlechannelOut,
+	none singlechannel_channel,
+	inout sortOut,
+	none sort_sortKey1,
+	none sort_sortKey2,
+	inout wireDelayData[],
+	inout thresholdAll[] )
+{
+  inout svg=@{inout:"plot.svg"};
+  call I2U2.Cosmic::ThresholdTimes(
+	detector=${none:detector},
+	cpldfreqs=${cpldfreqs},
+	rawData=${input:rawData},
+	thresholdAll=${output:thresholdAll} );
+  call I2U2.Cosmic::WireDelay(
+	geoDir=${geoDir},
+	geoFiles=${input:geoFiles},
+	threshData=${input:thresholdAll},
+	wireDelayData=${output:wireDelayData} );
+  call I2U2.Cosmic::Combine(
+	combineIn=${input:wireDelayData},
+	combineOut=${output:combineOut} );
+  call I2U2.Cosmic::SingleChannel(
+	channel=${none:singlechannel_channel},
+	singleChannelIn=${input:combineOut},
+	singleChannelOut=${output:singlechannelOut} );
+  call I2U2.Cosmic::Sort(
+	key1=${sort_sortKey1},
+	key2=${sort_sortKey2},
+	sortIn=${input:singlechannelOut},
+	sortOut=${output:sortOut} );
+  call I2U2.Cosmic::Flux(
+	binWidth=${flux_binWidth},
+	fluxIn=${input:sortOut},
+	fluxOut=${output:fluxOut},
+	geoDir=${geoDir}
+	geoFiles=${input:geoFiles} );
+  call I2U2.Cosmic::Plot(
+	plot_caption=${plot_caption},
+	plot_extraFunctions=${extraFun_out},
+	plot_highX=${plot_highX},
+	plot_highY=${plot_highY},
+	plot_highZ=${plot_highZ},
+	plot_infile=${input:fluxOut},
+	plot_lowX=${plot_lowX},
+	plot_lowY=${plot_lowY},
+	plot_lowZ=${plot_lowZ},
+	plot_outfile_param=${output:plot_outfile_param},
+	plot_outfile_image=${output:svg},
+	plot_plot_type=${plot_plot_type},
+	plot_title=${plot_title},
+	plot_xlabel=${plot_xlabel},
+	plot_ylabel=${plot_ylabel},
+	plot_zlabel=${plot_zlabel} );
+  call I2U2.Cosmic::SVG2PNG(
+  	svg=${input:svg},
+	png=${output:plot_outfile_image},
+	height=${plot_size}
+  );
+  
+  call I2U2.Cosmic::SVG2PNG(
+  	svg=${input:svg},
+	png=${output:plot_outfile_image_thumbnail},
+	height=${plot_thumbnail_height}
+  );
+}
+TR I2U2.Cosmic::RawAnalyzeStudy(
+        none gatewidth,
+        input inFile,
+        output outFile )
+{
+  call I2U2.Cosmic::RawAnalyze(
+        gatewidth=gatewidth,
+        inFile=inFile,
+        outFile=outFile );
+}
+TR I2U2.Cosmic::RawAnalyze(
+        none gatewidth,
+        input inFile,
+        output outFile )
+{
+  argument = inFile;
+  argument = outFile;
+  argument = gatewidth;
+}
+
+TR I2U2.Cosmic::SVG2PNG(none height, input svg, output png) {
+	argument = "-h";
+	argument = height;
+	argument = "-w";
+	argument = height;
+	argument = svg;
+	argument = png;
+}
+
+TR I2U2.Cosmic::Thumbnail(input in, output out, none height) {
+	argument = "-size";
+	argument = "x"${height};
+	argument = in;
+	argument = out;
+}

@@ -1,0 +1,178 @@
+h1 {
+	background-color: #66cc33;
+	color: #000000;
+}
+
+#top {
+	width: 100%;
+	background-color: white;
+	color: black;
+	height: 240px;
+}
+
+.posters #content {
+	text-align: left;
+}
+
+.posters #center h1 {
+	font-weight: normal;
+	font-size: 140%;
+	width: 100%;
+	padding-bottom: 6px;
+	border-bottom: solid 2px orange;
+	margin-left: 0px;
+}
+
+.posters #center h2 {
+	font-weight: bold;
+	font-size: 120%;
+	margin-left: 0px;
+}
+
+.posters #center p {
+	font-weight: normal;
+	margin-left: 10px;
+}
+
+.posters #center ul {
+	padding-left: 10px;
+	padding-top: 6px;
+}
+
+.posters #center ul ul ul li {
+	font-weight: normal;
+}
+
+.posters #center li {
+	list-style-type: none;
+	font-weight: bold;
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+#first-web #content #right {
+	width: 140px;
+}
+
+.posters dt {
+	font-weight: bold;
+}
+
+.posters dd {
+	padding-bottom: 6px;
+}
+
+#nav a#nav4 {
+	color: black;
+	background-image: url("../graphics/posters-button-bg.jpg");
+}
+
+#nav #subnav a {
+	color: black;
+	background-image: url("../graphics/posters-button-wide-bg.jpg");	
+	width: 109px;
+}
+
+#nav a#nav1:hover {
+	color: black;
+	background-image: url("../graphics/home-button-bg.jpg");
+}
+
+#nav a#nav2:hover {
+	color: black;
+	background-image: url("../graphics/library-button-bg.jpg");
+}
+
+#nav a#nav3:hover {
+	color: black;
+	background-image: url("../graphics/data-button-bg.jpg");
+}
+
+#nav a#nav4:hover {
+	color: white;
+}
+
+#nav a#nav5:hover {
+	color: black;
+	background-image: url("../graphics/site-index-button-bg.jpg");
+}
+
+#nav a#nav6:hover {
+	color: black;
+	background-image: url("../graphics/assessment-button-bg.jpg");
+}
+
+#nav #subnav a:hover {
+	color: white;
+}
+
+/************* Tab **************/
+
+.tab:before {
+	background-color: #8cd966;
+}
+
+.posters .tab {
+	padding-top: 10px;
+	width: 100%;
+}
+
+.posters .tab .tab-title {
+	background-color: #8cd966;
+	border-left: 1px solid #358974;
+	border-right: 1px solid #358974;
+	font-weight: bold;
+	padding-left: 3px;
+	padding-right: 3px;
+	margin: 0px;
+}
+
+.posters .tab .tab-contents {
+	background-color: #ccff66;
+	margin: 0px;
+	border-top: 2px solid black;
+	padding-bottom: 16px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.posters #content .tab-contents h2 {
+	font-weight: bold;
+	font-style: italic;
+	padding-left: 10px;
+	font-size: 100%;
+}
+
+.posters #content .tab-contents li {
+	font-weight: normal;
+	padding-left: 8px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.posters #content .tab-contents li:before {
+	display: marker;
+	content: url("../graphics/ref-dot.gif");
+	marker-offset: auto;
+	padding-right: 3px;
+}
+
+.posters .center {
+}
+
+/************* Misc **************/
+#search-results {
+	width: 98%;
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 80%;
+}
+
+#search-posters #center, #delete-posters #center {
+	text-align: center;
+}
+
+#search-results td {
+	vertical-align: middle;
+	text-align: left;
+}

@@ -1,0 +1,1 @@
+alter table keyword add milestone varchar(180);

@@ -1,0 +1,4 @@
+#override the default user management provider
+provider.usermanagement = gov.fnal.elab.usermanagement.impl.CosmicDatabaseUserManagementProvider
+swift.workflow.dir = /home/mike/work/i2u2/cisvn/i2u2/trunk/cosmic/src/swift
+analysis.runtime.estimator.set=gov.fnal.elab.cosmic.estimation.CosmicAnalysisRunTimeEstimatorSet

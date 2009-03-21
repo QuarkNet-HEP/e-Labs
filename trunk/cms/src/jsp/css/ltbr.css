@@ -1,0 +1,51 @@
+/*
+ * This thing is used to describe the layout of a typical data search page
+ * which is made of two columns. The one on the left contains the data
+ * search controls and the data search results. The one on the right
+ * contains a submit button and some help. 
+ *
+ */
+
+.data #ltbr {
+	text-align: left;
+	position: relative;
+}
+
+#main #right {
+	position: absolute;
+	top: 0px;
+	right: 2%;
+	width: 28%;
+	text-align: left;
+	border-top: 2px solid black;
+	border-left: 2px solid black;
+	padding-top: 12px;
+}
+
+#main #top-left {
+	top: 0px;
+	left: 2%;
+	width: 68%;
+	text-align: center;
+	border-top: 2px solid black;
+	border-right: 2px solid black;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	margin-bottom: 0px;
+}
+
+#main #bottom-left {
+	top: 0px;
+	left: 24px;
+	width: 68%;
+	text-align: left;
+	border-right: 2px solid black;
+	margin-top: 0px;
+	padding-top: 0px;
+	padding-bottom: 12px;
+}
+
+form#results-form {
+	padding-top: 0px;
+	margin-top: 0px;
+}

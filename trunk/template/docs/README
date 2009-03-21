@@ -1,0 +1,11 @@
+ How I built this template elab
+ ============
+ 
+ 1 I downloaded the vdl0-rc3, and copied its contents as follows:
+  /lib went to /template/resources/WEB-INF/lib . This is also used to build the .class files needed by the template
+  /var/tc.data and /etc/sites.xml went to /template/resources/output{/var|/etc}
+  /etc/* went to /template/resources/WEB-INF/classes
+  
+ 2 I copied the remaining dependency libs from common to /template/resources/extralibs to use them in the build process, as I am no longer using /common/lib
+  This was necessary because /common/lib had libraries that were necessary to an older version of the VDL, and replacing them with the new VDL would break older applications
+  

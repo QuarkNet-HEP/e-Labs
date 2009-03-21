@@ -1,0 +1,81 @@
+<script language="JavaScript">
+
+	function decCompute(form) {
+		form.hex.value = dec2hex(form.decimal.value);
+		form.binary.value = dec2bin(form.decimal.value);
+	}
+	
+	function hexCompute(form) {
+		form.decimal.value = hex2dec(form.hex.value);
+		form.binary.value = dec2bin(form.decimal.value);
+	}
+
+	function binCompute(form) {
+		form.decimal.value = bin2dec(form.binary.value);
+		form.hex.value = dec2hex(form.decimal.value);
+	}
+	
+	function dec2hex(value) {
+		return pad(changeBase(value, 10, 16), 4);
+	}
+	
+	function dec2bin(value) {
+		return pad(changeBase(value, 10, 2), 16);
+	}
+	
+	function hex2dec(value) {
+		return changeBase(value, 16, 10);
+	}
+	
+	function bin2dec(value) {
+		return changeBase(value, 2, 10);
+	}
+	
+	function changeBase(value, from, to) {
+		return parseInt(value, from).toString(to);
+	}
+	
+	function pad(value, len) {
+		while (value.length < len) {
+			value = "0" + value;
+		}
+		return value;
+	}
+	
+</script>
+
+A number system with a base of 16. The integers are:
+<p>
+	<center>
+		<font color="FF0000"><nobr> 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F </nobr></font>
+	</center>
+</p>
+<p>
+	Use the form to convert from one to other bases with decimal numbers less than 256: 
+	<form onSubmit="return false;">
+		<center> 
+			<table border="2">
+				<tr>
+					<td>Decimal:</td>
+					<td>
+						<input type="text" name="decimal" value="0" 
+							size="17" maxlength="5" onchange="decCompute(this.form)">
+					</td>
+				</tr>
+				<tr>
+					<td>Hex:</td>
+					<td>
+						<input type="text" name="hex" value="0000" 
+							size="17" maxlength="4" onchange="hexCompute(this.form)">
+					</td>
+				</tr>
+				<tr>
+					<td>Binary:</td>
+					<td>
+						<input type="text" name="binary" value="00000000" 
+							size="17" maxlength="16" onchange="binCompute(this.form)">
+					</td>
+				</td>					
+			</table>
+		</center>
+	</form> 

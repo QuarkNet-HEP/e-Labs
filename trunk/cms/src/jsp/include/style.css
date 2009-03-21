@@ -1,0 +1,123 @@
+<style type="text/css">
+@import "include/common-style.css";
+
+.addComment_bar_color_default { color:#4382BB; }
+.addComment_bar_color_poster { color:#66CC33; }
+
+.poster_body:link { color: #000000; }
+.poster_body:visited { color: #000000; }
+.poster_body { background-color: #FFFFFF; }
+
+
+.poster_main_table { background-color: #006633; }
+
+.poster_title { background-color: #006633; 
+                color: #FFFFFF;
+                font-family: arial; font-size: 150%; }
+
+.poster_subtitle { background-color: #006633; 
+                   color: #FFFFFF;
+                   font-family: arial; font-size: 120%; }
+
+.poster_detail_frame { background-color: #66CC99;
+                       text-align: center; }
+
+.poster_detail_head { background-color: #FFFFFF;
+                      margin-left: 10px;
+                      text-align: center;
+                      font-family: arial, helvetica, sans-serif; }
+
+.poster_detail_body { background-color: #FFFFFF;
+                      margin-left: 10px;
+                      font-family: arial, helvetica, sans-serif; }
+
+.poster_detail_subhead { font-weight:bold; }
+
+.poster_figure_name { font-family: Arial, Helvetica, sans-serif; 
+                      text-align: center; }
+
+.poster_header { background-color: #66CC33;
+                      font-family: arial, helvetica, sans-serif; 
+                      font-weight: bold;
+                      font-size: 110%;
+                      text-align: left;
+
+}
+.poster_tab_content { 
+                  background-color: #FFF;
+                  padding: 0px;
+                  border-collapse: collapse;
+                  vertical-align: top;
+                  width: 388px;
+                  height: 280px;
+}
+
+.poster_tab  {   background-color: #66CC33;
+                      font-family: arial, helvetica, sans-serif; 
+                      font-weight: bold;
+                      font-size: 100%;
+                      text-align: left;
+                      border:  solid #000 1px;
+                      margin: 5px;
+                      width: 120px;
+                      height: 20px;
+                      vertical-align: top;
+                      padding-left: 10px;
+                      padding-top: 5px;
+}
+.poster_white_space  { background-color: #FFF;
+                       border-collapse:  collapse;
+                       width: 272px;
+                       vertical-align: top;
+}
+.poster_content  { 
+                       background-color: #CCFF66;
+                      font-family: arial, helvetica, sans-serif; 
+                       border-top: solid #000 1px;
+                       border-left: 0px;
+                       border-right: 0px;
+                       border-bottom: 0px;
+                       color: #000;
+                       text-align: left;
+                       font-size: 13px;
+                       width: 392px;
+                       padding: 10px;
+                       vertical-align: top;
+                       height: 250px;
+}
+.data_header { background-color: #8BA4F5;
+                      font-family: arial, helvetica, sans-serif; 
+                      font-weight: bold;
+                      font-size: 110%;
+                      text-align: left;
+
+}
+.library_header { background-color: #00FF99;
+                      font-family: arial, helvetica, sans-serif; 
+                      font-weight: bold;
+                      font-size: 110%;
+                      text-align: left;
+
+}
+
+
+.home_header { background-color: #FF6600;
+                      font-family: arial, helvetica, sans-serif; 
+                      font-weight: bold;
+                      font-size: 110%;
+                      text-align: left;
+
+}
+
+.site_index_header { background-color: #ff3300;
+                      font-family: arial, helvetica, sans-serif; 
+                      font-weight: bold;
+                      font-size: 110%;
+                      text-align: left;
+
+}
+
+
+
+
+</style>

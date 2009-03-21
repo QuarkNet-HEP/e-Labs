@@ -1,0 +1,40 @@
+Hello.  This is a command-line based DAQ program for Linux.
+It works pretty well, is scriptable, and can be run remotely
+without using a VNC viewer -- all you need is an ssh terminal.
+It is suitable for long term data acquisition.
+It tracks a small number of data parameters for you, but you
+will want to run a more serious program on the final output
+file.
+
+The options you are likely to want are given on the command line.
+The best way to run this is to figure out what settings you
+need and make a script to set them all.  See the two examples
+standardrun.sh and muontelescope.sh.  
+
+If you want a nice GUI interface, we have also produced a 
+LabView based DAQ program.  Some other people out there have
+a Java based program as well.
+
+
+The DAQ code.  What is here.
+
+Note, the things here are not idiot proof,
+and are probably not idiot resistant.  Use with caution.
+
+The executable is daq.exe
+And there is a captains.log to record changes, comments, configurations,
+ and run start/stop things.
+
+A shell script called isitrunning.exe 
+There is a Makefile for building the executable
+The directory data/ contains the raw data
+The directory log/ contains log files of some verbosity
+The README_DAQEXE files contain instructions on how to restart daq.exe
+A sample script "standardrun.sh" that you can modify and run simply.
+Other readme files contain useful information about formatting and some
+ unix commands that are useful.
+
+The easiest way to monitor what is going on, for now, is to 
+grep lines out of the data files.
+
+I hope someone (me?) will try to reimplement the proper runsummary.

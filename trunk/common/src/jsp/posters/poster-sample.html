@@ -1,0 +1,422 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<HTML>
+
+<HEAD>
+
+<TITLE>Poster</TITLE>
+
+
+
+<script language="JavaScript">
+
+self.name="Poster_main";
+
+function showFigure(url)
+
+{
+
+window.open(url,"graph","width=620,height=750,scrollbars=yes,toolbar=no,menubar=no,status=yes,resizable=yes");
+
+}
+
+   function writeCodeOld(linkText,fileName,caption)
+
+   {
+
+   iFigure=fileName.indexOf("%FIG:FIGURE");
+
+   if (iFigure==-1 )
+
+   {
+
+   startHREF="<LI><A HREF=\"../plots/view.jsp?get=data&filename=";
+
+   endHREF="</A>";
+
+   quoteAngle="\" Target=\"graph\">";
+
+      code=startHREF+fileName+quoteAngle+linkText+ endHREF+": "+caption;
+
+   document.write(code);
+
+   }
+
+   }
+
+
+
+   function writeCode(linkText,fileName,caption)
+
+   {
+
+   iFigure=fileName.indexOf("%FIG:FIGURE");
+
+   if (iFigure==-1 )
+
+   {
+
+   startHREF="<LI><A HREF=\"javascript:showFigure('../plots/view-simple.jsp?get=data&filename="+fileName+"')";
+
+   endHREF="</A>";
+
+   quoteAngle="\">";
+
+      code=startHREF+quoteAngle+linkText+ endHREF+": "+caption;
+
+   document.write(code);
+
+   }
+
+   }
+
+      
+
+</script>
+
+
+
+
+
+</HEAD>
+
+
+
+<BODY BGCOLOR=FFFFFF LINK="#OOOOOO" VLINK=000000>
+
+<CENTER>
+
+<TABLE width=650  BGCOLOR="#006633">
+
+<TR>
+
+      <TD BGCOLOR="#006633"  COLSPAN=5> 
+
+        <table width="100%"><tr><td align="left"  valign="top"><FONT COLOR=FFFFFF FACE=ARIAL SIZE="+2">Possible Particle Decays</FONT></td></tr>
+
+           <tr><td align="left"> <FONT COLOR=FFFFFF FACE=ARIAL SIZE="+1" >What are these things in our detector?</FONT></td></tr></table>
+
+		</td></tr>
+
+
+
+<TR><TD COLSPAN=5>
+
+<P>&nbsp;   
+
+</TD></TR>
+
+
+
+<TR><TD WIDTH=10>
+
+</TD>
+
+<TD VALIGN=TOP BGCOLOR="#66CC99" WIDTH=310 align="center">
+
+<a name="authors"> </a>
+
+<TABLE BGCOLOR=WHITE width="302">
+
+<TR><TD align="center"><BR>
+
+<font size="-1" face="Arial, Helvetica, sans-serif">
+
+<P STYLE="margin-left: 10px"><B>10/21/2004<BR> 
+
+Thomas Jordan<BR>
+
+Liz Quigg<BR>
+
+Eric Gilbert<BR>
+
+Bob Peterson<BR></b><P>
+
+</font>
+
+</TD></TR>
+
+
+
+<a name="abstract"> </a>
+
+<TR><TD align="left">
+
+<font size="-1" face="Arial, Helvetica, sans-serif">
+
+<P STYLE="margin-left: 10px"><B>Abstract</B>
+
+<P STYLE="margin-left: 10px">
+
+We grabbed the data from the WALTA telescope stand (19 August 2003) and probed it carefully for possible decays and their lifetime. We present the analysis and results of the study.
+
+<P>&nbsp;</font>
+
+<TD></TR>
+
+</TABLE>
+
+
+
+
+
+</td>
+
+<TD WIDTH=10>
+
+</TD>
+
+<td width="310" align="center" valign="top"  BGCOLOR="#66CC99">
+
+<a name="materials"></a>
+
+<TABLE BGCOLOR=WHITE width="302">
+
+<TR><TD><BR>
+
+<font size="-1" face="Arial, Helvetica, sans-serif">
+
+<P STYLE="margin-left: 10px"><B>Materials & Methods</B>
+
+<P STYLE="margin-left: 10px">
+
+The detector was arranged in a muon telescope.This consisted of 3, 60x60 cm counters in channels 1,2,4 top to bottom, with the daq card set for:<BR>coincidences in channels 1,2<BR>veto in 4<BR>10 microsec gate width.<BR>(see the comments on the data file for this detail.)<P>We expected the trigger to collect charged particles that traversed the first two counters. Some of these decay, and one of the products is another charged particle. </P>
+
+
+
+We looked for the amount of time betwen the arrival of the first particle and the arrival of the second. 
+
+
+
+Our important analysis parameters were:<BR>
+
+Coincidence level: 2<BR>
+
+Check energy of 2nd pulse: No<BR>
+
+Gate width: 1 e-4 seconds<BR>
+
+Number of Bins: 60<BR>
+
+X-min of fit: 0.2<BR>
+
+X-max of fit: 20<BR>
+
+Fit all three parameters with no initial guesses.
+
+<P>&nbsp;</font>
+
+<TD></TR>
+
+</TABLE>
+
+
+
+
+
+
+
+
+
+
+
+</td><TD WIDTH=10>
+
+</TD></TR>
+
+
+
+
+
+<tr><td colspan="5">&nbsp;
+
+</td></tr>
+
+
+
+<TR><TD WIDTH=10>
+
+</TD><td width="310" align="center" valign="top"  BGCOLOR="#66CC99">
+
+<a name="results"> </a>
+
+<TABLE BGCOLOR=WHITE width="302">
+
+<TR><TD><BR> 
+
+<font size="-1" face="Arial, Helvetica, sans-serif">
+
+<P STYLE="margin-left: 10px"><B>Results</B>
+
+<P STYLE="margin-left: 10px">
+
+We observed nearly 1000 candidate decays. The particle in our detector has a lifetime of 2.38076 +/- 0.1587  microseconds. We suspect that it is a muon, but want to collect more data before an announcement.</FONT>
+
+<P>
+
+<CENTER>
+
+<table><tr><td>
+
+<font size="-1" face="Arial, Helvetica, sans-serif">
+
+<UL>
+
+
+
+<SCRIPT LANGUAGE="JAVASCRIPT">writeCode("Figure 1","newlifetime.png","The time between successive pulses in any one channel of the detector")</script>
+
+<SCRIPT LANGUAGE="JAVASCRIPT">writeCode("Figure 2","waltalifetimeplot_provenance.png","The DAG for our analysis.")</script>
+
+<SCRIPT LANGUAGE="JAVASCRIPT">writeCode("Figure 3","%FIG:FIGURE3%","%WORDS:CAPTION3%")</script>
+
+<SCRIPT LANGUAGE="JAVASCRIPT">writeCode("Figure 4","%FIG:FIGURE4%","%WORDS:CAPTION4%")</script>
+
+<SCRIPT LANGUAGE="JAVASCRIPT">writeCode("Figure 5","%FIG:FIGURE5%","%WORDS:CAPTION5%")</script>
+
+</UL>
+
+</FONT>
+
+</td></tr></table>
+
+
+
+</CENTER>
+
+<P>&nbsp;
+
+<TD></TR>
+
+</TABLE>
+
+
+
+
+
+
+
+</td><TD WIDTH=10>
+
+</TD>
+
+<td width="310"  BGCOLOR="#66CC99" valign="top" align="center">
+
+<a name="discussion"> </A>
+
+<TABLE BGCOLOR=WHITE width="302">
+
+<TR><TD><BR>
+
+<font size="-1" face="Arial, Helvetica, sans-serif">
+
+<P STYLE="margin-left: 10px"><B>Discussions & Conclusions</B>            
+
+<P STYLE="margin-left: 10px">
+
+The lifetime of the particle in the detector strongly indicates that it is a muon. Some of the muons do not have enough energy to travel through the counter. Those that do not, stop and then at decay into electrons (or positrons) and a pair of neutrinos. The entering muon creates a PMT pulse, and the charged decay product (electron or positron) creates the second pulse. Bins of time between pulses indicate a predominance of times that fit an exponential with decay constant of  2.38076 +/- 0.1587 microseconds. This closely matches the muon's lifetime.
+
+
+
+We will continue looking for data to confirm or refute our finding in this preliminary study.</FONT>
+
+<P>
+
+<BR>
+
+<P>&nbsp;   
+
+</font>
+
+<TD></TR>
+
+</TABLE>
+
+
+
+</td>
+
+<TD WIDTH=10>
+
+</TD></tr>
+
+
+
+<TR><TD colspan="5">
+
+<P>&nbsp;
+
+</TD></TR>
+
+</table>
+
+
+
+</CENTER>
+
+
+
+</BODY>
+
+</HTML>
+
+
+
+
+
+
+</BODY>
+</HTML>

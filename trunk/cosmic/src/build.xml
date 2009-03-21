@@ -1,0 +1,296 @@
+<?xml version="1.0"?>
+<project name="quarknet" default="deploy" basedir=".">
+    <description>
+        Build and deploy QuarkNet.
+
+        Needs to call into the java/build.xml file to build the java stuff
+
+    </description>
+    <property name="src" value="."/>
+
+    <property name="src.dir" value="."/>
+
+    <property environment="env"/>
+
+    <!-- tomcat root directory.
+
+BENC: note that the (benc's) plan is to 
+         allow the code to be deployed in any location, not just under
+         the tomcat/webapps directory (which is the case at the moment) 
+         so care should be taken that $tomcat is only used for tomcat 
+         and not deploy-directory tasks. 
+
+BENC: we should check that CATALINA_HOME is actually set otherwise we
+deploy into a directory that is actually called ${env.CATALINA_HOME}
+
+    -->
+    <property name="tomcat" value="${env.CATALINA_HOME}"/>
+
+    <!-- libs from the common server library directory -->
+    <property name="common_lib" value="${tomcat}/common/lib"/>
+
+    <!-- libs specific to the quarknet web app -->
+<!-- BENC: need to ensure this directory exists.
+     BENC: this is also specific to the tomcat dir, rather than the 
+           possibly separate deploy dir -->
+    <property name="quarknet_lib" value="${tomcat}/webapps/elab/WEB-INF/lib"/>
+    <property name="quarknet_lib_from_src" value="jsp/WEB-INF/lib"/>
+    
+    <!-- for javadoc -->
+    <property name="quarknet_javadoc" value="${tomcat}/webapps/elab/cosmic/javadoc"/>
+    
+    <!-- places to put the compiled files and jars. -->
+    <property name="build" value="build"/>
+    <property name="dist" value="dist"/>
+
+	<!-- here we have generated files (e.g hibernate mappings) -->
+	<property name="gen.files.dir" value="build"/>
+
+	<!-- location of the hibernate mapping files -->
+	<property name="hbm.dir" value="${gen.files.dir}"/>
+
+	<!-- where resources (e.g. log4j, properties, i18n ) files are located -->
+    <property name="res.dir" value="${tomcat}/webapps/elab/WEB-INF/classes"/>
+
+    <path id="big_classpath">
+		<!-- include the hibernate.properties -->	 
+<!-- BENC this needs unhardcoding, but as its absence hasn't been causing me a 
+          problem developing on piva, I won't fix it just yet -->
+        <pathelement location="/usr/local/quarknet-test/tomcat/webapps/elab/WEB-INF/classes"/>
+		<pathelement location="${res.dir}/"/>
+
+        <fileset dir="${common_lib}">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${quarknet_lib}">
+            <include name="*.jar"/>
+            <exclude name="*elab*"/>
+        </fileset>
+        <pathelement path="${build}"/>
+		<!-- include the hbm files -->	
+		<pathelement location="${gen.files.dir}"/>
+    </path>
+
+    <target name="deploy" depends="deployJsp, deployJava, deployTPJars, deployProperties">
+<!-- things to do:
+      * build java - DONE
+      * copy over jars
+      * copy over javascript
+      * create and populate database with sample data
+-->
+    </target>
+
+
+    <target name="buildJava">
+      <ant dir="java" target="dist" />
+    </target>
+
+    <target name="deployJava" depends="buildJava">
+      <copy file="java/dist/elab.jar" todir="${tomcat}/webapps/elab/WEB-INF/lib/" />
+    </target>
+
+    <target name="deployJsp" depends="deployCommonJsp">
+      <copy todir="${tomcat}/webapps/elab/cosmic">
+        <fileset dir="jsp/" /> 
+      </copy>
+    </target>
+
+    <target name="deployCommonJsp">
+      <copy todir="${tomcat}/webapps/elab/cosmic">
+        <fileset dir="../../common/src/jsp/" /> 
+      </copy>
+    </target>
+
+
+    <target name="deployTPJars">
+      <copy todir="${tomcat}/webapps/elab/WEB-INF/lib">
+        <fileset dir="${quarknet_lib_from_src}" /> 
+      </copy>
+    </target>
+
+    <target name="deployProperties">
+      <copy file="../config/elab.properties-www14" todir="${tomcat}/webapps/elab/WEB-INF/" />
+    </target>
+  
+    <target name="deployVDL">
+        <exec executable="vdlc" failonerror="true">
+            <arg line="--empty"/>
+            <arg line="vdl/transformations.vdl"/>
+        </exec>
+    </target>
+ 
+    <target name="clean">
+      <ant dir="java" target="clean" />
+    </target>
+ 
+    <target name="init">
+        <tstamp/>
+        <mkdir dir="${build}"/>
+		<mkdir dir="${gen.files.dir}"/>
+		<mkdir dir="${hbm.dir}"/>
+    </target>
+
+
+    <target name="original-clean-from-java-subdir">
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+		<delete includeEmptyDirs="true">
+			<fileset dir="${gen.files.dir}"
+				includes="**/*"
+			/>		
+  		</delete>
+  		<antcall target="init"/>
+    </target>
+
+    <target name="build" depends="init" description="Build QuarkNet source tree."> 
+        <mkdir dir="${quarknet_lib}"/>
+        <javac srcdir="${src}" destdir="${build}" debug="true">
+            <classpath refid="big_classpath"/>
+        </javac>
+    </target>
+
+    <target name="build-clean" depends="clean,init" description="Build QuarkNet source tree.">
+        <javac srcdir="${src}" destdir="${build}" debug="true">
+            <classpath refid="big_classpath"/>
+        </javac>
+    </target>
+
+    <target name="test-lifetime" depends="build" description="Test the lifetime scripts.">
+        <property name="echo.classpath" refid="big_classpath"/>
+        <echo message="${echo.classpath}"/>
+        <java classname="RunLifetimeBean" fork="true" dir="${build}" classpathref="big_classpath"/>
+    </target>
+
+    <target name="test-flux" depends="build" description="Test the flux scripts.">
+        <property name="echo.classpath" refid="big_classpath"/>
+        <echo message="${echo.classpath}"/>
+        <java classname="RunFluxBean" fork="true" dir="${build}" classpathref="big_classpath"/>
+    </target>
+
+    <target name="test-shower" depends="build" description="Test the shower scripts.">
+        <property name="echo.classpath" refid="big_classpath"/>
+        <echo message="${echo.classpath}"/>
+        <java classname="RunShowerBean" fork="true" dir="${build}" classpathref="big_classpath"/>
+    </target>
+
+    <target name="test-performance" depends="build" description="Test the performance scripts.">
+        <property name="echo.classpath" refid="big_classpath"/>
+        <echo message="${echo.classpath}"/>
+        <java classname="RunPerformanceBean" fork="true" dir="${build}" classpathref="big_classpath"/>
+    </target>
+
+    <target name="test-userdb" depends="build,generate-hbm,schemaexport" description="Test the new user db.">
+        <java classname="gov.fnal.elab.db.DemoUserDB" fork="true" dir="${build}" classpathref="big_classpath"/>
+    </target>
+
+    <target name="test-xml" depends="build" description="Test xml.">
+        <java classname="gov.fnal.elab.db.XMLTest" fork="true" dir="${build}" classpathref="big_classpath"/>
+    </target>
+
+    <target name="test-userdb-query" depends="build" description="Test querys with the new user db.">
+        <java classname="gov.fnal.elab.db.DemoQuery" fork="true" dir="${build}" classpathref="big_classpath"/>
+    </target>
+
+    <target name="dist3" depends="build,generate-hbm" description="Build and jar the files.">
+        <mkdir dir="${dist}"/>
+        <jar jarfile="${dist}/elab-${DSTAMP}.jar" basedir="${build}"/>
+    </target>
+
+    <!-- without generate-hbm -->
+    <target name="dist" depends="build" description="Build and jar the files.">
+        <mkdir dir="${dist}"/>
+        <jar jarfile="${dist}/elab-${DSTAMP}.jar" basedir="${build}"/>
+    </target>
+
+<!-- BENC this could do with de-pathing too... -->
+    <target name="tags">
+        <exec executable="/home/egilbert/ctags-5.5.4/ctags">
+            <arg line="--recurse=yes"/>
+            <arg line="--links=yes"/>
+            <arg line="--totals=yes"/>
+            <arg line="-f /home/egilbert/.tags"/>
+        </exec>
+    </target>
+
+    <target name="javadoc">
+        <javadoc packagenames="gov.fnal.elab.*"
+            classpathref="big_classpath"
+            sourcepath="."
+            defaultexcludes="yes"
+            destdir="${quarknet_javadoc}"
+            author="true"
+            version="true"
+            use="true"
+            windowtitle="Elab API">
+            <doctitle><![CDATA[<h1>Elab Documentation</h1>]]></doctitle>
+            <bottom><![CDATA[<i>i2u2.org</i>]]></bottom>
+            <tag name="todo" scope="all" description="To do:"/>
+            <group title="Database" packages="gov.fnal.elab.db.*"/>
+            <group title="Utility" packages="gov.fnal.elab.util.*"/>
+            <link href="http://java.sun.com/j2se/1.4.2/docs/api/"/>
+            <link href="http://www.griphyn.org/workspace/VDS/javadoc/"/>
+            <link href="http://www.hibernate.org/hib_docs/api/"/>
+        </javadoc>
+    </target>
+    
+    <!-- ************************************************************** -->
+    <!-- Hibernate and xDoclet targets -->
+    <!-- ************************************************************** -->
+	<target name="generate-hbm" 
+		description="Generates Hibernate class descriptor files."
+        depends="build">
+	    <!-- Define the hibernatedoclet task -->
+	    <taskdef name="hibernatedoclet"
+	        classname="xdoclet.modules.hibernate.HibernateDocletTask"
+            classpathref="big_classpath">
+	    </taskdef>    
+
+	    <!-- Execute the hibernatedoclet task -->
+	    <hibernatedoclet
+	        destdir="${hbm.dir}"
+	        excludedtags="@version,@author,@todo"
+	        force="true"
+	        verbose="true">
+	        <fileset dir="${src.dir}">
+                <include name="gov/fnal/elab/db/*.java"/>
+	        </fileset>
+	        <!-- hibernate 1 and hibernate 2 mapping files are not fully compatible-->
+	        <hibernate version="2.0"/>
+	    </hibernatedoclet>
+	</target>
+
+    <!-- update the existing database with new application code -->
+    <target name="schemaupdate" depends="generate-hbm">
+        <taskdef name="schemaupdate"
+            classname="net.sf.hibernate.tool.hbm2ddl.SchemaUpdateTask"
+            classpathref="big_classpath"/>
+        <schemaupdate
+            properties="${res.dir}/hibernate.properties"
+            quiet="no">
+            <fileset dir="${gen.files.dir}">
+                <include name="**/*.hbm.xml"/>
+            </fileset>
+        </schemaupdate>
+    </target>
+
+	<!-- exports all the hbm mappings to the Postgres database -->
+	<target name="schemaexport" depends="" description="Exports all hbm.xml files in {res.dir}/hbm">
+	    <echo message="Run the schema export for all hbm.xml files in ${gen.files.dir}/hbm"/>
+		<taskdef
+			name="schemaexport"
+			classname="net.sf.hibernate.tool.hbm2ddl.SchemaExportTask"
+			classpathref="big_classpath"
+			>
+		</taskdef>
+		<schemaexport
+			properties="${res.dir}/hibernate.properties"
+			quiet="no"
+			text="no"
+			drop="no"
+			output="${gen.files.dir}/schema-export.sql">
+			<fileset dir="${gen.files.dir}">
+				<include name="**/*.hbm.xml"/>
+			</fileset>
+		</schemaexport>	
+	</target>
+</project>

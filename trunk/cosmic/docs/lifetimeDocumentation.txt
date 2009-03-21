@@ -1,0 +1,50 @@
+Vocabulary
+counters-plastic paddles that give signals from charged particles.
+signal- a pulse received from the counter.
+
+Tutorial
+The life time study takes a user defined stack of counters from the geometry file. 
+Using this stack, signals from different counters are looked at, and a single muon is traced through the stack.
+If a muon visits enough counters in sequence, we can make a guess that this signal is really a muon, and not noise.
+Where the muon trail ends, is probably where the muon has stopped. After a certain amount of time, the muon will decay and release energy through an electron. The time difference between where the muon has stopped and decayed, is then recorded as the lifetime for this particular muon. A histogram of lifetimes can then be plotted, which should follow an exponential distribution.
+
+Tutorial:LIFETIME PARAMETERS
+    Analysis Controls: Defines parameters to be used for muon decay searches
+        Coincidence: specifies the amount of counters a muon has to go through before it is considered to be a possible decay
+            '0' - Any signal can be checked for a decay.
+            '1' - Only counters part of a stack can be considered for a decay.
+            '2' - A set of signals that show a muon visiting at least 2 counters.
+            '3' - A set of signals that show a muon visiting at least 3 counters.
+            '4' - A set of signals that show a muon visiting at least 4 counters.
+        
+        Energy Check: When a muon decays there are two signals. The first one is when the muon comes to a stop inside one of the counters. The second one is from the decay itself. The decay signal should have a smaller energy than the signal from stopping.
+            'no' - Doesn't look at energies of the signal when writing muon decays.
+            'yes'- Only considers muon decays when energy of stopping signal is bigger than the energy of decay signal.
+        
+        Decay Time Inverval: Sets the limit of how long to wait for the decay signal. If we wait too long we give more time for noise or even other particles to discuise themselves as the decay signal.
+
+    Plot Controls: Defines parameters to display a histogram of muon decays
+        Number Of Bins: defines how many points the histogram is going to be made from.
+
+        X-min: Allows the user to set the left most boundary of the plot.
+        X-max: Sets the Right most boundary of the plot.
+        Y-min: Sets the lower boundary of the plot.
+        Y-max: Sets the upper boundary of the plot.
+        ** if any of the min or max values are left blank, that particular section is auto-scaled
+
+        Plot Title: Allows the user to enter a title.
+        Figure Caption: creates user defined text on the graph.
+
+    Fit Controls: 
+        Fitting Turned On:
+            'yes' - a function is fit to the histogram.
+            'no' - just a histogram is displayed.
+        X-min of Fit: From the data visible on the graph, the user can define the left most point where the fit stops.
+        X-max of Fit: From the data visible on the graph, the user can define the right-most point where the fit stops.
+
+        Fit Y-intersept: should the y-intercept be altered to get a fit?
+            Alpha: allows you to make a guess at the y-intercept which will then be kept the same or changed depending on previous selectbox. If it is left blank, then the initial guess will be 10*Max Y value.
+        Fit Lifetime: should the lifetime be altered when making a fit?
+            Lifetime: Allows the user to guess at lifetime, if no guess is made then lifetime is 2.0
+        Fit Background: should a constant value be altered when making a fit?
+            Background: Specifies initial guess of background. If none is specified, then the last right most 50% of the histogram is averaged to give a guess.

@@ -1,0 +1,12 @@
+#!/bin/sh
+# Paul Nepywoda's interface to the CRinput.sh script
+# a simple while loop...
+#modded on 1-9-04 to output "DG" to the board every minute
+
+DEV=`ls -l /dev/cu.U* | sed 's/^.*\///'`
+
+while :
+do
+	echo -n "DG" > /dev/$DEV
+	sleep 60
+done

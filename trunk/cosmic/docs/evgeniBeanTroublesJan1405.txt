@@ -1,0 +1,67 @@
+when I run lifetime or flux i get a jobId not found error:
+ERROR ONE:
+java.lang.RuntimeException: JobID not found, though it should be known at this point. Giving up.
+    org.griphyn.vdl.router.Route.requestLfn(Unknown Source)
+    org.griphyn.vdl.router.Route.requestDerivation(Unknown Source)
+    org.griphyn.vdl.router.Route.requestLfn(Unknown Source)
+    org.griphyn.vdl.router.Route.requestDerivation(Unknown Source)
+    org.griphyn.vdl.router.Route.requestLfn(Unknown Source)
+    org.griphyn.vdl.router.Route.requestDerivation(Unknown Source)
+    org.griphyn.vdl.router.Route.requestLfn(Unknown Source)
+    org.griphyn.vdl.router.Route.requestDerivation(Unknown Source)
+    org.griphyn.vdl.router.Route.requestLfn(Unknown Source)
+    org.griphyn.vdl.router.Route.requestDerivation(Unknown Source)
+    org.griphyn.vdl.router.Route.requestLfn(Unknown Source)
+    org.griphyn.vdl.router.Route.requestDerivation(Unknown Source)
+    org.griphyn.vdl.router.Route.requestLfn(Unknown Source)
+    org.griphyn.vdl.router.Route.applyTransformation(Unknown Source)
+    org.griphyn.vdl.router.Route.requestDerivation(Unknown Source)
+    org.griphyn.vdl.router.Route.requestDerivation(Unknown Source)
+    gov.fnal.elab.vds.ElabTransformation.run(ElabTransformation.java:534)
+    org.apache.jsp.cosmic.lifetimeOutput_jsp._jspService(lifetimeOutput_jsp.java:1508)
+    org.apache.jasper.runtime.HttpJspBase.service(HttpJspBase.java:133)
+    javax.servlet.http.HttpServlet.service(HttpServlet.java:856)
+    org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:311)
+    org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:301)
+    org.apache.jasper.servlet.JspServlet.service(JspServlet.java:248)
+    javax.servlet.http.HttpServlet.service(HttpServlet.java:856)
+    org.apache.jasper.runtime.PageContextImpl.doForward(PageContextImpl.java:712)
+    org.apache.jasper.runtime.PageContextImpl.forward(PageContextImpl.java:682)
+    org.apache.jsp.cosmic.lifetime_jsp._jspService(lifetime_jsp.java:1242)
+    org.apache.jasper.runtime.HttpJspBase.service(HttpJspBase.java:133)
+    javax.servlet.http.HttpServlet.service(HttpServlet.java:856)
+    org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:311)
+    org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:301)
+    org.apache.jasper.servlet.JspServlet.service(JspServlet.java:248)
+    javax.servlet.http.HttpServlet.service(HttpServlet.java:856)
+
+I have edited the beans, compiled and make a .jar file out of them. 
+Placed that .jar file into evitable. 
+I have also updated the vdl transformations to reflect the new execution path.
+I tried to make tests for the beans, But when I ran RunshowerStudy.java, after 
+compilation I got runtime errors saying " setWireDelayed" doesn't exist.
+
+I knoticed a small change in the jsp, where ".User" was appended to the derivation name
+but adding that to the jsps didn't change this error.
+
+Error TWO: when running the shower.jsp, We get an error:
+gov.fnal.elab.util.ElabException: The key: detectorCoincidence is not defined in the transformation (no Declare associated).
+    gov.fnal.elab.beans.ElabBean.addToDV(ElabBean.java:29)
+    gov.fnal.elab.cosmic.beans.ShowerBean.mapToDV(ShowerBean.java:638)
+    gov.fnal.elab.vds.ElabTransformation.createDV(ElabTransformation.java:325)
+    org.apache.jsp.cosmic.showerOutput_jsp._jspService(showerOutput_jsp.java:1134)
+    org.apache.jasper.runtime.HttpJspBase.service(HttpJspBase.java:133)
+    javax.servlet.http.HttpServlet.service(HttpServlet.java:856)
+    org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:311)
+    org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:301)
+    org.apache.jasper.servlet.JspServlet.service(JspServlet.java:248)
+    javax.servlet.http.HttpServlet.service(HttpServlet.java:856)
+    org.apache.jasper.runtime.PageContextImpl.doForward(PageContextImpl.java:712)
+    org.apache.jasper.runtime.PageContextImpl.forward(PageContextImpl.java:682)
+    org.apache.jsp.cosmic.shower_jsp._jspService(shower_jsp.java:1240)
+    org.apache.jasper.runtime.HttpJspBase.service(HttpJspBase.java:133)
+    javax.servlet.http.HttpServlet.service(HttpServlet.java:856)
+    org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:311)
+    org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:301)
+    org.apache.jasper.servlet.JspServlet.service(JspServlet.java:248)
+    javax.servlet.http.HttpServlet.service(HttpServlet.java:856)

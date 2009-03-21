@@ -1,0 +1,14 @@
+To do list
+
+Add checks for dangerous errors that signal a card is on the fritz.
+An enormously high data rate that could fill the disk.
+
+Also check for other common hardware problems and find a way of
+notifying the user that there are problems.  
+GPS reception problems.  Large changes in singles rate.
+Increased noise.
+
+Extract the environmental data in a clean way.
+
+Allow user to insert comments into either the data stream or the log
+

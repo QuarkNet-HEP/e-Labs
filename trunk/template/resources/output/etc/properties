@@ -1,0 +1,11 @@
+vds.db.vdc.schema       AnnotationSchema
+vds.db.ptc.schema       InvocationSchema
+vds.db.*.driver         Postgres
+vds.db.*.driver.url     jdbc:postgresql://data1.i2u2.org/www12_vdc
+vds.db.*.driver.user    www12
+vds.db.*.driver.password www12
+vds.rls.url             rls://sheveled.mcs.anl.gov
+vds.replica.mode        rls
+vds.exitcode.mode       all
+vds.pool.mode		xml
+vds.tc		File

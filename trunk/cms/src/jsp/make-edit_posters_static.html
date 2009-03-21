@@ -1,0 +1,148 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+    <title>Make-Edit Posters</title>
+
+</head>
+
+    
+<center>
+
+<IMG SRC=./graphics/banner_poster.jpg>
+
+
+<P>
+<TABLE WIDTH=800 CELLPADDING=4>
+<TR><TD   BGCOLOR="#66CC33">
+<FONT SIZE=+1 FACE=ARIAL color=black><B>Make or edit your poster.</B>
+</TD></TR>
+</TABLE>
+
+
+
+<!--
+Show instructions
+-->
+<P>
+<span class="displayArial">
+                   <table width="600"><tr><td>
+                                   <UL><font size="-1">
+                                      <LI>Fill in all the fields including Poster File Name if it is missing.  This is the name the poster file will get on the server. If you are making a new poster, do not use a name you have already used. To
+                                       see the posters you have made, click <b>Edit Posters</b> above.
+                                      <LI>To view the plots that you might want to include for the figures in your poster, click <B>View Plots</B> in the navigation bar. You can fill in fields for up to five figures. You don't have to fill them all in.
+                                      <LI>Click <B>Make Poster</b> to save the data for the poster.
+                                      </font></UL>
+                                      </td></tr></table>
+                                      </span>
+ 
+
+
+<!--
+Emit input form for replacement tags found in poster template
+-->
+
+<center>   <span class="displayArial">
+
+        <FORM method=post>
+           <TABLE width="650">
+
+                <TR><TD valign="top" align="right">Poster Filename:<BR>(e.g.,poster_lifetime)</td><td valign="top"><input type="text" name="posterName" value=""></td></tr>
+      
+<TR><TD align=right valign=top>Title:</TD><TD><INPUT size=50 maxlength=1000 name="WORDS:TITLE" value="This is an example page."></TD></tr>
+<TR><TD align=right valign=top>Subtitle:</TD><TD><INPUT size=50 maxlength=1000 name="WORDS:SUBTITLE" value="Here students will build their posters after logging in."></TD></tr>
+<TR><TD align=right valign=top>Date:</TD><TD><INPUT size=50 maxlength=1000 name="WORDS:DATE" value="11/30/2004"></TD></tr>
+<TR><TD align=right valign=top>Authors:</TD><TD><TEXTAREA name=PARA:AUTHORS rows=6 cols=80></TEXTAREA></TD></tr><TR><TD align=right valign=top>Abstract:</TD><TD><TEXTAREA name=PARA:ABSTRACT rows=6 cols=80></TEXTAREA></TD></tr><TR><TD align=right valign=top>Procedure:</TD><TD><TEXTAREA name=PARA:PROCEDURE rows=6 cols=80></TEXTAREA></TD></tr><TR><TD align=right valign=top>Results:</TD><TD><TEXTAREA name=PARA:RESULTS rows=6 cols=80></TEXTAREA></TD></tr>
+
+
+<TR><TD align=right valign=top>Figure1:</TD><TD><SELECT size=1 name=FIG:FIGURE1>
+<OPTION>Select graphic for figure.
+</SELECT></TD></tr>
+
+
+<TR><TD align=right valign=top>Caption1:</TD><TD><INPUT size=50 maxlength=1000 name="WORDS:CAPTION1" value=""></TD></tr>
+
+
+
+<TR><TD align=right valign=top>Figure2:</TD><TD><SELECT size=1 name=FIG:FIGURE2>
+<OPTION>Select graphic for figure.
+
+</SELECT></TD></tr>
+<TR><TD align=right valign=top>Caption2:</TD><TD><INPUT size=50 maxlength=1000 name="WORDS:CAPTION2" value=""></TD></tr>
+<TR><TD align=right valign=top>Figure3:</TD><TD><SELECT size=1 name=FIG:FIGURE3>
+<OPTION>Select graphic for figure.
+
+</SELECT></TD></tr>
+<TR><TD align=right valign=top>Caption3:</TD><TD><INPUT size=50 maxlength=1000 name="WORDS:CAPTION3" value=""></TD></tr>
+<TR><TD align=right valign=top>Figure4:</TD><TD><SELECT size=1 name=FIG:FIGURE4>
+<OPTION>Select graphic for figure.
+
+</SELECT></TD></tr>
+<TR><TD align=right valign=top>Caption4:</TD><TD><INPUT size=50 maxlength=1000 name="WORDS:CAPTION4" value=""></TD></tr>
+<TR><TD align=right valign=top>Figure5:</TD><TD><SELECT size=1 name=FIG:FIGURE5>
+<OPTION>Select graphic for figure.
+
+</SELECT></TD></tr>
+<TR><TD align=right valign=top>Caption5:</TD><TD><INPUT size=50 maxlength=1000 name="WORDS:CAPTION5" value=""></TD></tr>
+<TR><TD align=right valign=top>Conclusion:</TD><TD><TEXTAREA name=PARA:CONCLUSION rows=6 cols=80></TEXTAREA></TD></tr>
+ 
+ 
+ 
+ 
+            <tr><td colspan="2" align="center">
+            <IMG SRC=./graphics/make_poster.jpg> <FONT SIZE="-1">To see poster, don't block popups!</FONT></td></tr>
+            
+        </FORM>
+</TABLE>
+</span></center>
+
+
+
+
+<hr></center>
+</BODY>
+</HTML>

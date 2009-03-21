@@ -1,0 +1,17 @@
+#status-progress {
+	border: solid black thin;
+}
+
+#status-progress-indicator {
+	background-color: #5d89d9;
+}
+
+#analysis-table .list-progress {
+	border: solid black thin;
+	width: 100px;
+}
+
+#analysis-table .list-progress-indicator {
+	background-color: #5d89d9;
+}
+

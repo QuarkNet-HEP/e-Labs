@@ -1,0 +1,25 @@
+#!/bin/sh
+# Paul Nepywoda's script (thrown together) to output
+# cosmic ray data (8-21-03)
+
+# modified by RSP & TJ to run under bash (9 Aug 2005)
+# HOW-TO:
+#	start up 'zterm' to configure the DAQ
+#	capture to file using 'zterm': HE, DG, DC, DS, DF, DT, BA, TH
+#	close file capture
+#	start up counters: CE
+#	close 'zterm'
+#	open terminal
+#	run: '/bin/bash'
+#	find out the Keyspan device name in /dev, something like: cu.USA*
+#	run: './CRread_bash [keyspan device] [local file name]'
+#	note: $1-->device name,  $2-->local file name
+#	open 2nd terminal
+#	run: 'tail -f [local file name]' to keep an eye on things
+
+#DEV=`ls -l /dev/cu.U* | sed 's/^.*\///'`
+(stty 19200;
+stty clocal;
+exec tee $2 ) < /dev/$1
+
+

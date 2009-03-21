@@ -1,0 +1,34 @@
+cp ../images/button_images/shaded/home_unabled_alt.jpg home_button_alt.jpg
+cp ../images/button_images/shaded/library_unabled_alt.jpg library_button_alt.jpg
+cp ../images/button_images/shaded/data_unabled_alt.jpg data_button_alt.jpg
+cp ../images/button_images/posters_button.jpg poster_button_alt_alt.jpg
+cp ../images/button_images/shaded/site_index_unabled_alt.jpg site_button_alt.jpg
+cp ../images/button_images/shaded/assessment_unabled_alt.jpg assess_button_alt.jpg
+cp ../images/button_images/new_poster_button_alt.jpg poster_new_button_alt.jpg
+cp ../images/button_images/edit_posters_button.jpg poster_edit_button_alt.jpg
+cp ../images/button_images/view_poster_button.jpg poster_view_button_alt.jpg
+cp ../images/button_images/delete_posters_button.jpg poster_delete_button_alt.jpg
+cp ../images/button_images/view_plots_poster_button.jpg poster_view_plots_button_alt.jpg
+cp ../images/button_images/upload_image_button.jpg upload_image_button_alt.jpg
+
+
+
+cp ../images/button_images/new_poster_button_alt.jpg poster_new_button.jpg
+cp ../images/button_images/edit_posters_alt.jpg poster_edit_button.jpg
+cp ../images/button_images/view_poster_button_alt.jpg poster_view_button.jpg
+cp ../images/button_images/delete_posters_button_alt.jpg poster_delete_button.jpg
+cp ../images/button_images/view_plots_poster_button_alt.jpg poster_view_plots_button.jpg
+cp ../images/button_images/upload_image_button_alt.jpg upload_image_button.jpg
+cp ../images/button_images/new_poster_button.jpg poster_new_button_alt.jpg
+cp ../images/button_images/edit_posters_button.jpg poster_edit_button_alt.jpg
+cp ../images/button_images/view_poster_button.jpg poster_view_button_alt.jpg
+cp ../images/button_images/delete_posters_button.jpg poster_delete_button_alt.jpg
+cp ../images/button_images/view_plots_poster_button.jpg poster_view_plots_button_alt.jpg
+cp ../images/button_images/upload_image_button.jpg upload_image_button_alt.jpg
+
+cp ../images/button_images/shaded/home_unabled.jpg home_button.jpg
+cp ../images/button_images/shaded/library_unabled.jpg library_button.jpg
+cp ../images/button_images/shaded/data_unabled.jpg data_button.jpg
+cp ../images/button_images/posters_button_alt.jpg poster_button_alt.jpg
+cp ../images/button_images/shaded/site_index_unabled.jpg site_button.jpg
+cp ../images/button_images/shaded/assessment_unabled.jpg assess_button.jpg

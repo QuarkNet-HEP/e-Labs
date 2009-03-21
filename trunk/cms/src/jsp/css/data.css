@@ -1,0 +1,370 @@
+.data #footer {
+	border: none;
+}
+
+.data #content {
+	text-align: left;
+}
+
+#top {
+	width: 100%;
+	background-color: white;
+	color: black;
+	height: 240px;
+}
+
+h1 {
+	background-color: #8ba4f5;
+	color: #000000;
+}
+
+.data #center {
+	text-align: center;
+}
+
+.data #center h1 {
+	font-weight: normal;
+	font-size: 140%;
+	width: 100%;
+	padding-bottom: 6px;
+	border-bottom: solid 2px orange;
+	margin-left: 0px;
+}
+
+.data #center h2 {
+	font-weight: bold;
+	font-size: 120%;
+	margin-left: 0px;
+}
+
+.data #center p {
+	font-weight: normal;
+	margin-left: 10px;
+}
+
+.data #center ul {
+	padding-left: 10px;
+	padding-top: 6px;
+}
+
+.data #center ul ul ul li {
+	font-weight: normal;
+}
+
+.data #center li {
+	list-style-type: none;
+	font-weight: bold;
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+.data dt {
+	font-weight: bold;
+}
+
+.data dd {
+	padding-bottom: 6px;
+}
+
+#nav a#nav3 {
+	color: black;
+	background-image: url("../graphics/data-button-bg.jpg");
+}
+
+#nav #subnav a {
+	color: black;
+	background-image: url("../graphics/data-button-wide-bg.jpg");	
+	width: 109px;
+}
+
+#nav a#nav1:hover {
+	color: black;
+	background-image: url("../graphics/home-button-bg.jpg");
+}
+
+#nav a#nav2:hover {
+	color: black;
+	background-image: url("../graphics/library-button-bg.jpg");
+}
+
+#nav a#nav3:hover {
+	color: white;
+}
+
+#nav a#nav4:hover {
+	color: black;
+	background-image: url("../graphics/data-button-bg.jpg");
+}
+
+#nav a#nav5:hover {
+	color: black;
+	background-image: url("../graphics/site-index-button-bg.jpg");
+}
+
+#nav a#nav6:hover {
+	color: black;
+	background-image: url("../graphics/assessment-button-bg.jpg");
+}
+
+#nav #subnav a:hover {
+	color: white;
+}
+
+/************* Tab **************/
+
+.tab:before {
+	background-color: #8ba4f5;
+}
+
+.data .tab {
+	padding-top: 10px;
+	width: 100%;
+}
+
+.data .tab .tab-title {
+	background-color: #8ba4f5;
+	border-left: 1px solid #358974;
+	border-right: 1px solid #358974;
+	font-weight: bold;
+	padding-left: 3px;
+	padding-right: 3px;
+	margin: 0px;
+}
+
+.data .tab .tab-contents {
+	background-color: #bfccf5;
+	margin: 0px;
+	border-top: 2px solid black;
+	padding-bottom: 16px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.data #content .tab-contents h2 {
+	font-weight: bold;
+	font-style: italic;
+	padding-left: 10px;
+	font-size: 100%;
+}
+
+.data #content .tab-contents li {
+	font-weight: normal;
+	padding-left: 8px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.data #content .tab-contents li:before {
+	display: marker;
+	content: url("../graphics/ref_dot.gif");
+	marker-offset: auto;
+	padding-right: 3px;
+}
+
+p.search-result-bar {
+	margin-top: 0px;
+    padding-top:2px;
+    padding-bottom:2px;
+    padding-left:2px;
+    padding-right:2px;
+    border-top:1.5px solid #4382BB;
+    border-right:1.5px solid #4382BB;
+    width:97%;
+    background:#99C4EF;
+    text-align:right;
+}
+
+.search-results {
+	text-align: left;
+}
+
+.search-results .school-info p {
+	margin: 0px;
+	margin-left: 12px;
+	padding-left: 8px;
+}
+
+/*
+ * This isn't quite obvious: it refers to the school info 
+ * header in the hidden part of the switch (the class of which
+ * (school-h) is defined by the results displayer).
+ */
+.search-results .school-h .school-info {
+	padding-bottom: 16px;
+	border-bottom: thin solid black;
+	margin-bottom: 8px;
+}
+
+.search-results .school-name {
+	font-weight: bold;
+	margin-left: 4px;
+}
+
+.search-results .date-header {
+	margin-left: 32px;
+}
+
+.search-results .date-info {
+	margin-left: 4px;
+}
+
+.search-results .data-files {
+	margin-top: 16px;
+	padding-bottom: 8px;
+	padding-left: 20px;
+}
+
+.search-results .data-files table td {
+	padding: 4px;
+	width: 140px;
+	text-align: left;
+}
+
+.search-results .data-files tr.odd {
+	background-color: #ffffff;
+}
+
+.search-results .data-files tr.even {
+	background-color: #d4e0ff;
+}
+
+.search-results .data-file {
+	padding-right: 16px;
+}
+
+.search-results .data-file img {
+	border: none;
+}
+
+.search-results a.file-link{
+	padding-right: 6px;
+}
+
+.search-results .clearall {
+	padding: 6px;
+}
+
+.study-right {
+	margin-left: 10px;
+}
+
+.study-right h2 {
+	font-size: 110%;
+}
+
+#legend {
+	margin-left: 10px;
+	display: compact;
+}
+
+#legend .dt {
+	display: compact;
+	float: left;
+	clear: left;
+	text-align: right;
+	width: 30px;
+}
+
+#legend .dd {
+	margin-left: 10px;
+	float: left;
+}
+
+.form-controls {
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px dotted black;
+	padding: 8px;
+}
+
+#analysis-controls {
+	text-align: left;
+	border-style: groove;
+	background-color: #f6f6ff;
+	border-color: #ffffff;
+	border-width: 2px;
+	width: 500px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 16px;
+}
+
+#analysis-controls table {
+	text-align: center;
+	width: 100%;
+}
+
+#analyzing-list table {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.hex-data-address {
+	color: #999999;
+	text-align: right;
+	font-family: Courier, monospaced;
+}
+.hex-data-data {
+	font-family: Courier, monospaced;
+}
+
+.hex-data-data-highlight {
+	color: #00CC00;
+	font-family: Courier, monospaced;
+}
+
+#view-plot-simple #content {
+	text-align: center;
+}
+
+.analysis-output #content {
+	text-align: center;
+}
+
+#analysis-table {
+	border: thin solid black;
+	width: 800px;
+	margin-bottom: 16px;
+}
+
+#analysis-table th {
+	padding-left: 4px;
+	padding-right: 4px;
+	background-color: #c0c0c0;
+}
+
+#analysis-table td {
+	padding-left: 4px;
+	padding-right: 4px;
+	background-color: #e0e0e0;
+}
+
+.tutorial #content {
+	padding-top: 24px;
+}
+
+/*********** Progress ************/
+
+#status-progress {
+	border: solid black thin;
+}
+
+#status-progress-indicator {
+	background-color: #5d89d9;
+}
+
+#analysis-table .list-progress {
+	border: solid black thin;
+	width: 64px;
+}
+
+#analysis-table .list-progress-indicator {
+	background-color: #5d89d9;
+}
+
+/*********** Directory listing ************/
+#analysis-files table {
+	width: 400px;
+	margin-left: 32px;
+}
+

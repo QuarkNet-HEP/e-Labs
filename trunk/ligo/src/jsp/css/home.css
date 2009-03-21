@@ -1,0 +1,81 @@
+#content #center {
+	padding-top: 40px;
+	padding-left: 8px;
+}
+
+.home #center h2 {
+	display: inline;	
+	padding-bottom: 6px;
+	border-bottom: solid 2px #666666;
+	margin-left: 0px;
+	font-family: Arial, sans-serif;
+	font-weight: bold;
+	font-size: 120%;
+	color: #333399;
+}
+
+.home #center h3 {
+	font-weight: bold;
+	font-size: 120%;
+	margin-left: 10px;
+}
+
+.home #center p {
+	font-weight: normal;
+	margin-left: 10px;
+}
+
+.home #center ul {
+	margin-left: 32px;
+	padding-left: 10px;
+	padding-top: 6px;
+	list-style-type: disc;
+	list-style-image: url("../graphics/gray-disc.gif");
+}
+
+.home #center ul ul ul li {
+	font-weight: normal;
+}
+
+.home #center li {
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+.home #content a.button {
+	background-color: #ff2040;
+	border: ridge 4px #8080af;
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	color: black;
+	font-weight: bold;
+	font-family: Arial, sans-serif;
+	font-size: 12px;
+}
+
+.home dt {
+	font-weight: bold;
+}
+
+.home dd {
+	padding-bottom: 6px;
+}
+
+#nav {
+	width: 100%;
+	left: 0px;
+	top: 74px;
+	height: 20px;
+}
+
+#first-web #center em {
+	color: #333399;
+	font-weight: bold;
+	font-style: normal;
+}
+
+#first-web #center p {
+	padding-bottom: 4px;
+}

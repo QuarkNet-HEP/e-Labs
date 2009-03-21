@@ -1,0 +1,29 @@
+h1 {
+	background-color: black;
+	color: white;
+}
+
+#top {
+	height: 200px;
+}
+
+#nav {
+	left: 0px;
+}
+
+#nav table {
+	width: 800px;
+	background-image: url("../graphics/spacer_button.jpg");
+}
+
+#nav td a {
+	width: 130px;
+	color: white;
+	background-image: url("../graphics/teacher-button-bg.jpg");
+	text-shadow: white 1px 2px 1px;
+}
+
+#nav a:hover {
+	color: white;
+	background-image: url("../graphics/teacher-button-bg-hover.jpg");
+}

@@ -1,0 +1,27 @@
+<p>To save this plot permanently, enter the new name you want.</p>
+<p>Then click <b>Save Plot</b>.</p>
+<p>
+	<form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit="window.open('',this.target,'width=500,height=200,resizable=1');" align="center">
+		<e:commonMetadataToSave rawData="${showerResults.analysis.parameters['rawData']}"/>
+		<e:creationDateMetadata/>
+		<input type="hidden" name="metadata" value="transformation string Quarknet.Cosmic::ShowerStudy"/>
+		<input type="hidden" name="metadata" value="study string shower"/>
+		<input type="hidden" name="metadata" value="type string plot"/>
+		<input type="hidden" name="metadata" value="detectorcoincidence int ${showerResults.analysis.parameters['detectorCoincidence']}"/>
+		<input type="hidden" name="metadata" value="eventcoincidence int ${showerResults.analysis.parameters['eventCoincidence']}"/>
+		<input type="hidden" name="metadata" value="eventnum int ${showerResults.analysis.parameters['eventNum']}"/>
+		<input type="hidden" name="metadata" value="gate int ${showerResults.analysis.parameters['gate']}"/>
+		<input type="hidden" name="metadata" value="radius int -1"/>
+
+		<input type="hidden" name="metadata" value="title string ${showerResults.analysis.parameters['plot_title']}"/>
+		<input type="hidden" name="metadata" value="caption string ${showerResults.analysis.parameters['plot_caption']}"/>
+
+		<input type="hidden" name="srcFile" value="plot.png"/>
+		<input type="hidden" name="srcThumb" value="plot_thm.png"/>
+		<input type="hidden" name="srcFileType" value="png"/>
+		<input type="hidden" name="id" value="${showerResults.id}"/>
+		<input type="hidden" name="rundirid" value="${results.id}"/>
+		<input type="text" name="name"  size="20" maxlength="30"/>.png
+		<input type="submit" name="submit" value="Save Plot"/>
+	</form>
+</p>

@@ -1,0 +1,5 @@
+provider.analysisexecutor = gov.fnal.elab.analysis.impl.swift.SwiftAnalysisExecutor
+swift.workflow.dir = /home/mike/work/i2u2/cisvn/i2u2/trunk/embedded/src/swift
+provider.analysis = gov.fnal.elab.analysis.GenericAnalysis
+
+

@@ -1,0 +1,46 @@
+#!/bin/sh
+# raw-data-script
+#
+# Gathers raw data from the USB device for the detector board
+#
+# Written by Paul Nepywoda in January 2004 @ Fermilab
+#
+#Assume: 'perl', 'stty', 'tee', 'exec' and 'sleep' are in the $PATH for execution (standard on UNIX systems)
+
+BAUD=19200
+#USB_DEV=/dev/cu.USA19QW113P1.1
+
+if [ "$#" -lt 2 ]
+then
+ echo "usage: $0 log_file seconds-to-log [/dev/ device for the USB input]"
+ echo "(specifying the device is optional. If nothing is specified, assume device is of the form /dev/cu.USA*)"
+ exit 1
+fi
+
+if [ "$#" -eq 3 ]
+then
+ USB_DEV="$3"
+else
+ USB_DEV=`ls /dev/cu.USA*`
+fi
+
+(
+stty "$BAUD"
+stty clocal
+exec tee "$1" 
+) < $USB_DEV &
+PID=$!
+sleep "$2"
+kill $PID
+
+# Text manipulation section
+
+FILE="$1"	#the first argument specifies what the output raw data file will be named
+
+PWD=`pwd`;
+#if the user specified a file without giving an absolute path, add it onto the filename
+T=`perl -e "if('$FILE'=~/^\/.*$/){print "0"}else{print "1"}"`
+if [ $T == "1" ]
+then
+	FILE=${pwd}./${FILE}
+fi

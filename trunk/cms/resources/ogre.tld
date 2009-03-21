@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+    version="2.0">
+    
+	<tlib-version>1.1</tlib-version>
+	<jsp-version>2.0</jsp-version>
+	<short-name>o</short-name>
+	<uri>http://www.i2u2.org/jsp/ogretl</uri>
+	<display-name>OGRE Tag Library</display-name>
+		
+
+	<tag-file>
+		<name>build-plots-table</name>
+		<path>/WEB-INF/tags/build-plots-table.tag</path>
+	</tag-file>
+	
+	<tag-file>
+		<name>data-select.sql</name>
+		<path>/WEB-INF/tags/data-select.sql.tag</path>
+	</tag-file>
+	
+	<tag-file>
+		<name>data-select.xml</name>
+		<path>/WEB-INF/tags/data-select.xml.tag</path>
+	</tag-file>
+	
+	<tag-file>
+		<name>get-run-data.sql</name>
+		<path>/WEB-INF/tags/get-run-data.sql.tag</path>
+	</tag-file>
+	
+	<tag-file>
+		<name>get-run-data.xml</name>
+		<path>/WEB-INF/tags/get-run-data.xml.tag</path>
+	</tag-file>
+	
+	<tag-file>
+		<name>make-run-scripts.sql</name>
+		<path>/WEB-INF/tags/make-run-scripts.sql.tag</path>
+	</tag-file>
+	
+	<tag-file>
+		<name>make-run-scripts.xml</name>
+		<path>/WEB-INF/tags/make-run-scripts.xml.tag</path>
+	</tag-file>
+</taglib>

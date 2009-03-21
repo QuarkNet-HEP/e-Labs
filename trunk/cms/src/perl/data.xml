@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE root SYSTEM "ogre.dtd">
+
+<root type="HCAL Test Beam">
+
+  <dataset name="tb04" location="/home/mike/work/i2u2/cms-data" global_selection="beam==1">
+        <runs>
+          <type beam="muon" />
+          <type beam="electron" />
+          <type beam="pion" />
+        </runs>
+
+        <database>
+          <field name="run" />
+          <field name="nevents" />
+          <field name="dataset" />
+          <field name="filename" />
+          <field name="energy" />
+          <field name="beam" />
+          <field name="runtype" />
+          <field name="eta" />
+          <field name="phi" />
+          <field name="date" />
+          <field name="time" />
+        </database>
+
+        <file run="11000" nevents="60000" dataset="tb04" filename="r011000.root" energy="150" beam="Mu-"  runtype="muon"     eta="9"    phi="5"   date="2004-05-31" time="06:14:00"/>
+        <file run="11001" nevents="60000" dataset="tb04" filename="r011001.root" energy="150" beam="Mu-"  runtype="muon"     eta="8"    phi="5"   date="2004-05-31" time="06:26:00"/>
+        <file run="11002" nevents="60000" dataset="tb04" filename="r011002.root" energy="150" beam="Mu-"  runtype="muon"     eta="7"    phi="5"   date="2004-05-31" time="06:38:00"/>
+        <file run="11003" nevents="60000" dataset="tb04" filename="r011003.root" energy="150" beam="Mu-"  runtype="muon"     eta="6"    phi="5"   date="2004-05-31" time="06:51:00"/>
+        <file run="11004" nevents="60000" dataset="tb04" filename="r011004.root" energy="150" beam="Mu-"  runtype="muon"     eta="5"    phi="5"   date="2004-05-31" time="07:03:00"/>
+        <file run="11005" nevents="60000" dataset="tb04" filename="r011005.root" energy="150" beam="none" runtype="NULL"     eta="4"    phi="5"   date="2004-05-31" time="07:15:00"/>
+        <file run="11006" nevents="60000" dataset="tb04" filename="r011006.root" energy="150" beam="e-"   runtype="electron" eta="1"    phi="4"   date="2004-05-31" time="07:42:00"/>
+        <file run="11007" nevents="60000" dataset="tb04" filename="r011007.root" energy="150" beam="e-"   runtype="electron" eta="2"    phi="4"   date="2004-05-31" time="07:56:00"/>
+        <file run="11008" nevents="60000" dataset="tb04" filename="r011008.root" energy="150" beam="e-"   runtype="electron" eta="3"    phi="4"   date="2004-05-31" time="08:14:00"/>
+        <file run="11009" nevents="60000" dataset="tb04" filename="r011009.root" energy="150" beam="e-"   runtype="electron" eta="4"    phi="4"   date="2004-05-31" time="09:16:00"/>
+        <file run="11500" nevents="92979" dataset="tb04" filename="r011500.root" energy="150" beam="none" runtype="NULL"     eta="19.6" phi="4"   date="2004-06-06" time="06:51:00"/>
+        <file run="11504" nevents="1000"  dataset="tb04" filename="r011504.root" energy="150" beam="none" runtype="NULL"     eta="18"   phi="4"   date="2004-06-06" time="08:15:00"/>
+        <file run="11505" nevents="10000" dataset="tb04" filename="r011505.root" energy="150" beam="e-"   runtype="electron" eta="7"    phi="3"   date="2004-06-06" time="09:09:00"/>
+        <file run="11506" nevents="10000" dataset="tb04" filename="r011506.root" energy="150" beam="e-"   runtype="electron" eta="7"    phi="3.3" date="2004-06-06" time="09:16:00"/>
+        <file run="11507" nevents="10000" dataset="tb04" filename="r011507.root" energy="150" beam="e-"   runtype="electron" eta="7"    phi="3.2" date="2004-06-06" time="09:19:00"/>
+        <file run="11508" nevents="10000" dataset="tb04" filename="r011508.root" energy="150" beam="e-"   runtype="electron" eta="7"    phi="3.2" date="2004-06-06" time="09:22:00"/>
+        <file run="11509" nevents="10000" dataset="tb04" filename="r011509.root" energy="150" beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="09:25:00"/>
+        <file run="11510" nevents="4391"  dataset="tb04" filename="r011510.root" energy="150" beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="09:28:00"/>
+        <file run="11511" nevents="30000" dataset="tb04" filename="r011511.root" energy="150" beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="09:29:00"/>
+        <file run="11512" nevents="30000" dataset="tb04" filename="r011512.root" energy="150" beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="09:33:00"/>
+        <file run="11513" nevents="30000" dataset="tb04" filename="r011513.root" energy="150" beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="09:38:00"/>
+        <file run="11514" nevents="10000" dataset="tb04" filename="r011514.root" energy="300" beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="09:54:00"/>
+        <file run="11515" nevents="30000" dataset="tb04" filename="r011515.root" energy="300" beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="09:59:00"/>
+        <file run="11516" nevents="30000" dataset="tb04" filename="r011516.root" energy="300" beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="10:06:00"/>
+        <file run="11517" nevents="30000" dataset="tb04" filename="r011517.root" energy="300" beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="10:10:00"/>
+        <file run="11518" nevents="10000" dataset="tb04" filename="r011518.root" energy="300" beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="10:20:00"/>
+        <file run="11519" nevents="30000" dataset="tb04" filename="r011519.root" energy="100" beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="10:23:00"/>
+        <file run="11520" nevents="30000" dataset="tb04" filename="r011520.root" energy="100" beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="10:27:00"/>
+        <file run="11521" nevents="30000" dataset="tb04" filename="r011521.root" energy="100" beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="10:31:00"/>
+        <file run="11522" nevents="10000" dataset="tb04" filename="r011522.root" energy="100" beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="10:37:00"/>
+        <file run="11523" nevents="30000" dataset="tb04" filename="r011523.root" energy="50"  beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="10:39:00"/>
+        <file run="11524" nevents="30000" dataset="tb04" filename="r011524.root" energy="50"  beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="10:43:00"/>
+        <file run="11525" nevents="30000" dataset="tb04" filename="r011525.root" energy="50"  beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="10:47:00"/>
+        <file run="11526" nevents="10000" dataset="tb04" filename="r011526.root" energy="30"  beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="11:01:00"/>
+        <file run="11527" nevents="30000" dataset="tb04" filename="r011527.root" energy="30"  beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="11:07:00"/>
+        <file run="11528" nevents="30000" dataset="tb04" filename="r011528.root" energy="30"  beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="11:10:00"/>
+        <file run="11529" nevents="30000" dataset="tb04" filename="r011529.root" energy="30"  beam="e-"   runtype="electron" eta="7.1"  phi="3.2" date="2004-06-06" time="11:14:00"/>
+        <file run="11530" nevents="10000" dataset="tb04" filename="r011530.root" energy="50"  beam="none" runtype="NULL"     eta="7.1"  phi="3.2" date="2004-06-06" time="11:26:00"/>
+        <file run="11531" nevents="30000" dataset="tb04" filename="r011531.root" energy="50"  beam="none" runtype="NULL"     eta="7.1"  phi="3.2" date="2004-06-06" time="11:29:00"/>
+        <file run="11532" nevents="30000" dataset="tb04" filename="r011532.root" energy="50"  beam="none" runtype="NULL"     eta="7.1"  phi="3.2" date="2004-06-06" time="11:33:00"/>
+        <file run="11533" nevents="30000" dataset="tb04" filename="r011533.root" energy="50"  beam="none" runtype="NULL"     eta="7.1"  phi="3.2" date="2004-06-06" time="11:38:00"/>
+        <file run="11534" nevents="10000" dataset="tb04" filename="r011534.root" energy="50"  beam="none" runtype="NULL"     eta="7.1"  phi="3.2" date="2004-06-06" time="11:44:00"/>
+        <file run="11535" nevents="30000" dataset="tb04" filename="r011535.root" energy="100" beam="none" runtype="NULL"     eta="7.1"  phi="3.2" date="2004-06-06" time="11:46:00"/>
+        <file run="11651" nevents="10000" dataset="tb04" filename="r011651.root" energy="150" beam="e-"   runtype="electron" eta="7"    phi="4"   date="2004-06-07" time="12:34:00"/>
+        <file run="11652" nevents="10000" dataset="tb04" filename="r011652.root" energy="150" beam="e-"   runtype="electron" eta="8"    phi="4"   date="2004-06-07" time="12:51:00"/>
+        <file run="11653" nevents="10000" dataset="tb04" filename="r011653.root" energy="150" beam="e-"   runtype="electron" eta="9"    phi="4"   date="2004-06-07" time="12:58:00"/>
+        <file run="11675" nevents="1000"  dataset="tb04" filename="r011675.root" energy="150" beam="e-"   runtype="electron" eta="12"   phi="3"   date="2004-06-08" time="06:36:00"/>
+        <file run="11676" nevents="5946"  dataset="tb04" filename="r011676.root" energy="150" beam="e-"   runtype="electron" eta="12"   phi="3"   date="2004-06-08" time="06:37:00"/>
+        <file run="11677" nevents="5000"  dataset="tb04" filename="r011677.root" energy="150" beam="e-"   runtype="electron" eta="11"   phi="3"   date="2004-06-08" time="06:46:00"/>
+        <file run="11678" nevents="5000"  dataset="tb04" filename="r011678.root" energy="150" beam="e-"   runtype="electron" eta="12"   phi="3"   date="2004-06-08" time="06:50:00"/>
+        <file run="11679" nevents="5000"  dataset="tb04" filename="r011679.root" energy="150" beam="e-"   runtype="electron" eta="13"   phi="3"   date="2004-06-08" time="06:54:00"/>
+        <file run="11680" nevents="5000"  dataset="tb04" filename="r011680.root" energy="150" beam="e-"   runtype="electron" eta="14"   phi="3"   date="2004-06-08" time="06:58:00"/>
+        <file run="11681" nevents="5000"  dataset="tb04" filename="r011681.root" energy="150" beam="e-"   runtype="electron" eta="14"   phi="3"   date="2004-06-08" time="06:59:00"/>
+        <file run="11682" nevents="5000"  dataset="tb04" filename="r011682.root" energy="150" beam="Mu-"  runtype="muon"     eta="14.6" phi="3"   date="2004-06-08" time="07:02:00"/>
+        <file run="11683" nevents="5000"  dataset="tb04" filename="r011683.root" energy="150" beam="Mu-"  runtype="muon"     eta="15"   phi="3"   date="2004-06-08" time="07:05:00"/>
+        <file run="11684" nevents="5000"  dataset="tb04" filename="r011684.root" energy="150" beam="e-"   runtype="electron" eta="10.5" phi="3"   date="2004-06-08" time="07:13:00"/>
+        <file run="11685" nevents="5000"  dataset="tb04" filename="r011685.root" energy="150" beam="e-"   runtype="electron" eta="11.5" phi="3"   date="2004-06-08" time="07:18:00"/>
+        <file run="11687" nevents="5000"  dataset="tb04" filename="r011687.root" energy="150" beam="e-"   runtype="electron" eta="11.3" phi="3"   date="2004-06-08" time="07:25:00"/>
+        <file run="11688" nevents="5000"  dataset="tb04" filename="r011688.root" energy="150" beam="e-"   runtype="electron" eta="11"   phi="2.9" date="2004-06-08" time="07:31:00"/>
+        <file run="12426" nevents="5000"  dataset="tb04" filename="r012426.root" energy="150" beam="e-"   runtype="electron" eta="6"    phi="4"   date="2004-06-16" time="20:24:00"/>
+        <file run="12427" nevents="5000"  dataset="tb04" filename="r012427.root" energy="150" beam="e-"   runtype="electron" eta="7"    phi="4"   date="2004-06-16" time="20:30:00"/>
+        <file run="12428" nevents="5000"  dataset="tb04" filename="r012428.root" energy="150" beam="e-"   runtype="electron" eta="8"    phi="4"   date="2004-06-16" time="20:38:00"/>
+        <file run="12429" nevents="5000"  dataset="tb04" filename="r012429.root" energy="150" beam="e-"   runtype="electron" eta="9"    phi="4"   date="2004-06-16" time="20:43:00"/>
+        <file run="12434" nevents="5000"  dataset="tb04" filename="r012434.root" energy="150" beam="Pi-"  runtype="pion"     eta="9"    phi="5"   date="2004-06-16" time="21:41:00"/>
+        <file run="12435" nevents="5000"  dataset="tb04" filename="r012435.root" energy="150" beam="Pi-"  runtype="pion"     eta="8"    phi="5"   date="2004-06-16" time="21:54:00"/>
+        <file run="12436" nevents="5000"  dataset="tb04" filename="r012436.root" energy="150" beam="Pi-"  runtype="pion"     eta="7"    phi="5"   date="2004-06-16" time="22:00:00"/>
+        <file run="12437" nevents="5000"  dataset="tb04" filename="r012437.root" energy="150" beam="Pi-"  runtype="pion"     eta="6"    phi="5"   date="2004-06-16" time="22:05:00"/>
+        <file run="12490" nevents="5000"  dataset="tb04" filename="r012490.root" energy="150" beam="Pi-"  runtype="pion"     eta="6"    phi="6"   date="2004-06-17" time="07:46:00"/>
+        <file run="12492" nevents="5000"  dataset="tb04" filename="r012492.root" energy="150" beam="Pi-"  runtype="pion"     eta="7"    phi="6"   date="2004-06-17" time="07:53:00"/>
+        <file run="12493" nevents="5000"  dataset="tb04" filename="r012493.root" energy="150" beam="Pi-"  runtype="pion"     eta="8"    phi="6"   date="2004-06-17" time="07:58:00"/>
+        <file run="12494" nevents="5000"  dataset="tb04" filename="r012494.root" energy="150" beam="Pi-"  runtype="pion"     eta="9"    phi="6"   date="2004-06-17" time="08:03:00"/>
+  </dataset>
+
+  <tree id="1" name="Event">
+    <branch id="1" name="cluster">
+      <leaf id="1" name="c1x1.e"   title="Total Energy (1x1)"   labely="Number of Events" labelx="E (GeV)"/>
+      <leaf id="2" name="c1x1.ee"  title="Ecal Energy (1x1)"    labely="Number of Events" labelx="E (GeV)"/>
+      <leaf id="3" name="c1x1.eh"  title="Hcal Energy (1x1)"    labely="Number of Events" labelx="E (GeV)"/>
+
+      <leaf id="4" name="c3x3.e"   title="Total Energy (3x3)"   labely="Number of Events" labelx="E (GeV)"/>
+      <leaf id="5" name="c3x3.ee"  title="Ecal Energy (3x3)"    labely="Number of Events" labelx="E (GeV)"/>
+      <leaf id="6" name="c3x3.eh"  title="Hcal Energy (3x3)"    labely="Number of Events" labelx="E (GeV)"/>
+
+      <leaf id="7" name="c5x5.e"   title="Total Energy (5x5)"   labely="Number of Events" labelx="E (GeV)"/>
+      <leaf id="8" name="c5x5.ee"  title="Ecal Energy (5x5)"    labely="Number of Events" labelx="E (GeV)"/>
+      <leaf id="9" name="c5x5.eh"  title="Hcal Energy (5x5)"    labely="Number of Events" labelx="E (GeV)"/>
+    </branch>
+
+    <formula id="1" name="c1x1.ee:c1x1.eh" title="E vs H (1x1)" labely="E_E (GeV)" labelx="E_H (GeV)"/>
+    <formula id="2" name="c3x3.ee:c3x3.eh" title="E vs H (3x3)" labely="E_E (GeV)" labelx="E_H (GeV)"/>
+    <formula id="3" name="c5x5.ee:c5x5.eh" title="E vs H (5x5)" labely="E_E (GeV)" labelx="E_H (GeV)"/>
+    <formula id="4" name="c3x3.e/c5x5.e" title="3:5 Jet Size" labely="Number of Events" labelx="E3x3/E5x5"/>
+    <formula id="5" name="c1x1.e/c5x5.e" title="1:5 Jet Size" labely="Number of Events" labelx="E1x1/E5x5"/>
+    <formula id="6" name="c1x1.e/c3x3.e" title="1:3 Jet Size" labely="Number of Events" labelx="E1x1/E3x3"/>
+  </tree>
+
+</root>

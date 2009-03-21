@@ -1,0 +1,1 @@
+<%@ include file="../sensors/seismometers.jsp" %> 

@@ -1,0 +1,67 @@
+h1 {
+	background-color: #55a9b4;
+	color: #000000;
+}
+
+.info #center h1 {
+	font-weight: normal;
+	font-size: 140%;
+	width: 100%;
+	padding-bottom: 6px;
+	border-bottom: solid 2px orange;
+	margin-left: 0px;
+}
+
+.info #center h2 {
+	display: inline;	
+	padding-bottom: 6px;
+	border-bottom: solid 2px #666666;
+	margin-left: 0px;
+	font-family: verdana, arial, sans-serif;
+	font-weight: bold;
+	font-size: 120%;
+	color: #333399;
+}
+
+.info #center em {
+	color: #333399;
+	font-weight: bold;
+	font-style: normal;
+}
+
+.info #center p {
+	font-weight: normal;
+	margin-left: 10px;
+}
+
+#nav {
+	width: 100%;
+	left: 0px;
+	top: 74px;
+	height: 20px;
+}
+
+#nav #subnav li a {
+	color: #990066;
+	border-left: 3px solid;
+}
+
+/*
+	Italicisize corresponding subnav item
+*/
+#state-map		 	#subnav a[href="../maps/state.jsp"],
+#country-map	 	#subnav a[href="../maps/country.jsp"],
+#lho-site		 	#subnav a[href="../maps/lho-site.jsp"],
+#lho-diagram	 	#subnav a[href="../maps/lho-diagram.jsp"],
+#seismometers	 	#subnav a[href="../sensors/seismometers.jsp"],
+#tiltmeters		 	#subnav a[href="../sensors/tiltmeters.jsp"],
+#magnetometers	 	#subnav a[href="../sensors/magnetometers.jsp"],
+#anemometers	 	#subnav a[href="../sensors/anemometers.jsp"],
+#related-data		#subnav a[href="../info/related-data.jsp"] {
+	font-style: italic;
+}
+ 
+
+#nav #subnav ul li:first-child a {
+	border-left: none;
+}
