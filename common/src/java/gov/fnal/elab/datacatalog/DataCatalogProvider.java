@@ -63,7 +63,8 @@ public interface DataCatalogProvider {
     void delete(CatalogEntry entry) throws ElabException;
 
     /**
-     * Inserts an entry in the catalog
+     * Inserts an entry in the catalog. If the entry already
+     * exists, selectively update the metadata.
      */
     void insert(CatalogEntry entry) throws ElabException;
 
