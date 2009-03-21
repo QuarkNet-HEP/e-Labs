@@ -23,6 +23,7 @@ import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
 
 public class Analysis extends TagSupport {
@@ -87,13 +88,19 @@ public class Analysis extends TagSupport {
         }
         return EVAL_BODY_INCLUDE;
     }
-    
+
     protected boolean compareType(String t1, String t2) {
         // should we or should we not allow such incompatibilities
         return true;
     }
 
     protected void setAnalysisParams(ElabAnalysis analysis) {
+        setAnalysisParams(pageContext, analysis,
+                getParameterTransformerInstance());
+    }
+
+    protected static void setAnalysisParams(PageContext pageContext,
+            ElabAnalysis analysis, AnalysisParameterTransformer t) {
         Map aliases = (Map) pageContext.getRequest().getAttribute(
                 ParamAlias.ATTR_ALIASES);
         if (aliases == null) {
@@ -121,6 +128,10 @@ public class Analysis extends TagSupport {
                 analysis.setParameter(analysisParamName, request
                         .getParameter(name));
             }
+            else if (type.equals(Boolean.class) || type.equals(boolean.class)) {
+                analysis.setParameter(analysisParamName, Boolean
+                        .valueOf(request.getParameter(name)));
+            }
             else if (type.equals(List.class)) {
                 analysis.setParameter(analysisParamName, Arrays.asList(request
                         .getParameterValues(name)));
@@ -146,7 +157,7 @@ public class Analysis extends TagSupport {
                                 + "'. Unsupported type: " + type);
             }
         }
-        analysis.setParameterTransformer(getParameterTransformerInstance());
+        analysis.setParameterTransformer(t);
     }
 
     public String getImpl() {
