@@ -494,7 +494,8 @@ values specified with the <code>valueList</code> attribute.
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
-		<dynamic-attributes>false</dynamic-attributes>
+		
+		<dynamic-attributes>true</dynamic-attributes>
 	</tag>
 	
 	
@@ -725,6 +726,23 @@ The mode used to run the analysis (local, grid, cluster, auto)
 			<name>mode</name>
 			<required>true</required>
 			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<description>
+Allow using a bean instead of an analysis for e:tr* controls.
+		</description>
+		<name>useBean</name>
+		<tag-class>gov.fnal.elab.tags.UseBean</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>
+A bean to use. The bean must have been created previously using jsp:useBean (or similar).
+			</description>
+			<name>bean</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
 </taglib>
