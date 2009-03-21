@@ -167,7 +167,7 @@ public class BeanWrapper extends AbstractAnalysis {
     private Object invoke(String methodName, Class ret) {
         try {
             Method m = beanClass.getMethod(methodName, CLS_NO_PARAMS);
-            Object val = m.invoke(bean, null);
+            Object val = m.invoke(bean, (Object[]) null);
             if (ret != null && val != null) {
                 if (!ret.isAssignableFrom(val.getClass())) {
                     throw new RuntimeException("Invalid bean: the method '"
