@@ -5,17 +5,26 @@ package gov.fnal.elab.util;
 
 import gov.fnal.elab.ElabProperties;
 
+import java.sql.Array;
+import java.sql.Blob;
 import java.sql.CallableStatement;
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.NClob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLClientInfoException;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
+import java.sql.SQLXML;
 import java.sql.Savepoint;
 import java.sql.Statement;
+import java.sql.Struct;
 import java.util.Map;
+import java.util.Properties;
+import java.lang.reflect.*;
 
 public class DatabaseConnectionManager {
 
@@ -37,8 +46,8 @@ public class DatabaseConnectionManager {
             throw new SQLException("Couldn't find the postgres driver!");
         }
 
-        Connection conn = new Wrapper(DriverManager.getConnection("jdbc:postgresql:"
-                + userdb, userdbUsername, userdbPassword));
+        Connection conn = new Wrapper(DriverManager.getConnection(
+                "jdbc:postgresql:" + userdb, userdbUsername, userdbPassword));
         if (conn == null) {
             throw new SQLException(
                     "Connection to database failed. The SQL driver manager "
@@ -46,10 +55,10 @@ public class DatabaseConnectionManager {
         }
         return conn;
     }
-    
+
     private static class Wrapper implements Connection {
         private Connection delegate;
-        
+
         public Wrapper(Connection delegate) {
             this.delegate = delegate;
         }
@@ -70,12 +79,17 @@ public class DatabaseConnectionManager {
             return new StatementWrapper(delegate.createStatement());
         }
 
-        public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-            return delegate.createStatement(resultSetType, resultSetConcurrency, resultSetHoldability);
+        public Statement createStatement(int resultSetType,
+                int resultSetConcurrency, int resultSetHoldability)
+                throws SQLException {
+            return delegate.createStatement(resultSetType,
+                    resultSetConcurrency, resultSetHoldability);
         }
 
-        public Statement createStatement(int resultSetType, int resultSetConcurrency) throws SQLException {
-            return delegate.createStatement(resultSetType, resultSetConcurrency);
+        public Statement createStatement(int resultSetType,
+                int resultSetConcurrency) throws SQLException {
+            return delegate
+                    .createStatement(resultSetType, resultSetConcurrency);
         }
 
         public boolean getAutoCommit() throws SQLException {
@@ -118,39 +132,54 @@ public class DatabaseConnectionManager {
             return delegate.nativeSQL(sql);
         }
 
-        public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-            return delegate.prepareCall(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
+        public CallableStatement prepareCall(String sql, int resultSetType,
+                int resultSetConcurrency, int resultSetHoldability)
+                throws SQLException {
+            return delegate.prepareCall(sql, resultSetType,
+                    resultSetConcurrency, resultSetHoldability);
         }
 
-        public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
-            return delegate.prepareCall(sql, resultSetType, resultSetConcurrency);
+        public CallableStatement prepareCall(String sql, int resultSetType,
+                int resultSetConcurrency) throws SQLException {
+            return delegate.prepareCall(sql, resultSetType,
+                    resultSetConcurrency);
         }
 
         public CallableStatement prepareCall(String sql) throws SQLException {
             return delegate.prepareCall(sql);
         }
 
-        public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-            return delegate.prepareStatement(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
+        public PreparedStatement prepareStatement(String sql,
+                int resultSetType, int resultSetConcurrency,
+                int resultSetHoldability) throws SQLException {
+            return delegate.prepareStatement(sql, resultSetType,
+                    resultSetConcurrency, resultSetHoldability);
         }
 
-        public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
-            return delegate.prepareStatement(sql, resultSetType, resultSetConcurrency);
+        public PreparedStatement prepareStatement(String sql,
+                int resultSetType, int resultSetConcurrency)
+                throws SQLException {
+            return delegate.prepareStatement(sql, resultSetType,
+                    resultSetConcurrency);
         }
 
-        public PreparedStatement prepareStatement(String sql, int autoGeneratedKeys) throws SQLException {
+        public PreparedStatement prepareStatement(String sql,
+                int autoGeneratedKeys) throws SQLException {
             return delegate.prepareStatement(sql, autoGeneratedKeys);
         }
 
-        public PreparedStatement prepareStatement(String sql, int[] columnIndexes) throws SQLException {
+        public PreparedStatement prepareStatement(String sql,
+                int[] columnIndexes) throws SQLException {
             return delegate.prepareStatement(sql, columnIndexes);
         }
 
-        public PreparedStatement prepareStatement(String sql, String[] columnNames) throws SQLException {
+        public PreparedStatement prepareStatement(String sql,
+                String[] columnNames) throws SQLException {
             return delegate.prepareStatement(sql, columnNames);
         }
 
-        public PreparedStatement prepareStatement(String sql) throws SQLException {
+        public PreparedStatement prepareStatement(String sql)
+                throws SQLException {
             return delegate.prepareStatement(sql);
         }
 
@@ -197,11 +226,95 @@ public class DatabaseConnectionManager {
         public void setTypeMap(Map map) throws SQLException {
             delegate.setTypeMap(map);
         }
+
+        public Array createArrayOf(String typeName, Object[] elements)
+                throws SQLException {
+            return (Array) invoke(delegate, "createArrayOf", new Object[] {
+                    typeName, elements }, new Class[] { String.class,
+                    Object[].class });
+        }
+
+        public Blob createBlob() throws SQLException {
+            return (Blob) invoke(delegate, "createBlob", new Object[0],
+                    new Class[0]);
+        }
+
+        public Clob createClob() throws SQLException {
+            return (Clob) invoke(delegate, "createClob", new Object[0],
+                    new Class[0]);
+        }
+
+        public NClob createNClob() throws SQLException {
+            return (NClob) invoke(delegate, "createNClob", new Object[0],
+                    new Class[0]);
+        }
+
+        public SQLXML createSQLXML() throws SQLException {
+            return (SQLXML) invoke(delegate, "createSQLXML", new Object[0],
+                    new Class[0]);
+        }
+
+        public Struct createStruct(String typeName, Object[] attributes)
+                throws SQLException {
+            return (Struct) invoke(delegate, "createStruct", new Object[] {
+                    typeName, attributes }, new Class[] { String.class,
+                    Object[].class });
+        }
+
+        public Properties getClientInfo() throws SQLException {
+            return (Properties) invoke(delegate, "getClientInfo",
+                    new Object[] {}, new Class[] {});
+        }
+
+        public String getClientInfo(String name) throws SQLException {
+            return (String) invoke(delegate, "getClientInfo",
+                    new Object[] { name }, new Class[] { String.class });
+        }
+
+        public boolean isValid(int timeout) throws SQLException {
+            return ((Boolean) invoke(delegate, "isValid",
+                    new Object[] { new Integer(timeout) },
+                    new Class[] { int.class })).booleanValue();
+        }
+
+        public void setClientInfo(Properties properties)
+                throws SQLClientInfoException {
+            try {
+                invoke(delegate, "setClientInfo", new Object[] { properties },
+                        new Class[] { Properties.class });
+            }
+            catch (SQLException e) {
+                throw new SQLClientInfoException();
+            }
+        }
+
+        public void setClientInfo(String name, String value)
+                throws SQLClientInfoException {
+            try {
+                invoke(delegate, "setClientInfo", new Object[] { name, value },
+                        new Class[] { String.class, String.class });
+            }
+            catch (SQLException e) {
+                throw new SQLClientInfoException();
+            }
+        }
+
+        public boolean isWrapperFor(Class cls) throws SQLException {
+            return ((Boolean) invoke(delegate, "isWrapperFor",
+                    new Object[] { cls }, new Class[] { Class.class }))
+                    .booleanValue();
+        }
+
+        public Object unwrap(Class cls) throws SQLException {
+            return invoke(delegate, "unwrap", new Object[] { cls },
+                    new Class[] { Class.class });
+        }
+
     }
-    
+
     private static class StatementWrapper implements Statement {
         private Statement delegate;
-        
+
         public StatementWrapper(Statement delegate) {
             this.delegate = delegate;
         }
@@ -226,15 +339,18 @@ public class DatabaseConnectionManager {
             delegate.close();
         }
 
-        public boolean execute(String sql, int autoGeneratedKeys) throws SQLException {
+        public boolean execute(String sql, int autoGeneratedKeys)
+                throws SQLException {
             return delegate.execute(sql, autoGeneratedKeys);
         }
 
-        public boolean execute(String sql, int[] columnIndexes) throws SQLException {
+        public boolean execute(String sql, int[] columnIndexes)
+                throws SQLException {
             return delegate.execute(sql, columnIndexes);
         }
 
-        public boolean execute(String sql, String[] columnNames) throws SQLException {
+        public boolean execute(String sql, String[] columnNames)
+                throws SQLException {
             return delegate.execute(sql, columnNames);
         }
 
@@ -255,15 +371,18 @@ public class DatabaseConnectionManager {
             }
         }
 
-        public int executeUpdate(String sql, int autoGeneratedKeys) throws SQLException {
+        public int executeUpdate(String sql, int autoGeneratedKeys)
+                throws SQLException {
             return delegate.executeUpdate(sql, autoGeneratedKeys);
         }
 
-        public int executeUpdate(String sql, int[] columnIndexes) throws SQLException {
+        public int executeUpdate(String sql, int[] columnIndexes)
+                throws SQLException {
             return delegate.executeUpdate(sql, columnIndexes);
         }
 
-        public int executeUpdate(String sql, String[] columnNames) throws SQLException {
+        public int executeUpdate(String sql, String[] columnNames)
+                throws SQLException {
             return delegate.executeUpdate(sql, columnNames);
         }
 
@@ -363,8 +482,34 @@ public class DatabaseConnectionManager {
         public void setQueryTimeout(int seconds) throws SQLException {
             delegate.setQueryTimeout(seconds);
         }
-        
-        
+
+        public boolean isClosed() throws SQLException {
+            return ((Boolean) invoke(delegate, "isClosed", new Object[0],
+                    new Class[0])).booleanValue();
+        }
+
+        public boolean isPoolable() throws SQLException {
+            return ((Boolean) invoke(delegate, "isPoolable", new Object[0],
+                    new Class[0])).booleanValue();
+        }
+
+        public void setPoolable(boolean poolable) throws SQLException {
+            invoke(delegate, "setPoolable",
+                    new Object[] { new Boolean(poolable) },
+                    new Class[] { boolean.class });
+        }
+
+        public boolean isWrapperFor(Class cls) throws SQLException {
+            return ((Boolean) invoke(delegate, "isWrapperFor",
+                    new Object[] { cls }, new Class[] { Class.class }))
+                    .booleanValue();
+        }
+
+        public Object unwrap(Class cls) throws SQLException {
+            return invoke(delegate, "unwrap", new Object[] { cls },
+                    new Class[] { Class.class });
+        }
+
     }
 
     public static void close(Connection conn, Statement s) {
@@ -386,9 +531,20 @@ public class DatabaseConnectionManager {
             e.printStackTrace();
         }
     }
-    
+
     public static void close(Connection conn) {
         close(conn, null);
     }
 
+    private static Object invoke(Object obj, String name, Object[] args,
+            Class[] argtypes) throws SQLException {
+        Class cls = obj.getClass();
+        try {
+            Method m = cls.getMethod(name, argtypes);
+            return m.invoke(obj, args);
+        }
+        catch (Exception e) {
+            throw new SQLException(e);
+        }
+    }
 }
