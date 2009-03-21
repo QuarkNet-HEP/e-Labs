@@ -48,6 +48,7 @@
 	}
 	if (geoEntry == null) {
 		geoEntry = new GeoEntryBean();
+		request.setAttribute("geometryNotFound", Boolean.TRUE);
 	}
 	request.setAttribute("geoEntry", geoEntry);
 %>
