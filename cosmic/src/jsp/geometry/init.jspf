@@ -1,0 +1,58 @@
+<%
+	Geometries geometries = new Geometries(elab, user);
+	request.setAttribute("geometries", geometries);
+	String id = request.getParameter("detectorID");
+	String jd = request.getParameter("jd");
+	String filename = request.getParameter("filename");
+	GeoEntryBean geoEntry = null;
+	if (filename == null) {
+		if (id == null) {
+			throw new ElabJspException("Missing both file name and detector id.");
+		}
+		if (jd == null) {
+			throw new ElabJspException("Missing julian date");
+		}
+	}
+	else {
+		CatalogEntry entry = elab.getDataCatalogProvider().getEntry(filename);
+		if (entry == null) {
+	    	throw new ElabJspException("No metadata about " + filename + " found.");
+		}
+		request.setAttribute("e", entry);
+		//[m] grr 
+	 	
+		if (entry.getTupleValue("julianstartdate") == null) {
+			throw new ElabJspException(filename + " is missing the Julian start date");
+		}
+		id = (String) entry.getTupleValue("detectorid");
+		if (id == null) {
+			throw new ElabJspException("No detector associated with " + filename);
+		}
+		jd = entry.getTupleValue("julianstartdate").toString();
+	}
+	if (id != null && jd != null) {
+		Geometry g = geometries.getGeometry(id);
+		if (g == null) {
+			throw new ElabJspException("No geometry information found for detector " + id);
+		}
+		if (filename == null) {
+			geoEntry = g.getGeoEntry(jd);
+		}
+		else {
+			//so, we're looking for the last entry before the date of the file
+			//but there's some weirdness. Perhaps in the case of julian dates
+			//lexicongraphic order is the same as temporal order
+			//It certainly seems like Geometry.java thinks that way
+			SortedMap geos = g.getGeoEntriesBefore(jd);
+			if (geos.isEmpty()) {
+				throw new ElabJspException("Error: no geometry information for detector " + 
+					id + " for when this data was taken.");
+			}
+			geoEntry = (GeoEntryBean) geos.get(geos.lastKey()); 
+		}
+	}
+	else {
+		geoEntry = new GeoEntryBean();
+	}
+	request.setAttribute("geoEntry", geoEntry);
+%>

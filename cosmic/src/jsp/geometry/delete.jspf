@@ -1,0 +1,36 @@
+<%@ page import="gov.fnal.elab.datacatalog.*" %>
+
+<c:choose>
+	<c:when test="${param.delete_confirm == 'Delete Entry'}">
+		<%
+			if (geoEntry == null) {
+				throw new ElabJspException("No geometry entry found for detector " + id + " on date " + jd);
+			}
+			geometries.removeGeoEntry(id, geoEntry);
+			geometries.commit();
+	
+			DataCatalogProvider dcp = elab.getDataCatalogProvider();
+			geometries.updateMetadata(dcp, geoEntry);
+		%>
+		Geometry entry deleted.
+	</c:when>
+	<c:when test="${param.delete_confirm == 'Cancel'}">
+		<div id="title">Please choose an action to your left.</div><br><br>
+        <span style="font-size:75%">
+            Confused? Seeing errors? Please consult the <a href="tutorial.jsp">tutorial</a>.
+        </span>
+	</c:when>
+	<c:otherwise>
+		<div class="title">
+			Delete Detector ${param.detectorID} Entry
+			<fmt:formatDate pattern="MMM/dd/yy @ HH:mm" value="${geoEntry.date}"/> 
+			<a href="javascript:glossary('UTC')">UTC</a>?
+		</div>
+		<form style="text-align: center">
+			<input type="submit" name="delete_confirm" value="Cancel">
+			<input type="submit" name="delete_confirm" value="Delete Entry">
+			<e:trinput type="hidden" name="jd"/>&nbsp;&nbsp;&nbsp;
+			<e:trinput type="hidden" name="detectorID"/>
+		</form>
+	</c:otherwise>
+</c:choose>

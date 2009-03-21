@@ -1,0 +1,13 @@
+<%@ page import="gov.fnal.elab.datacatalog.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.query.*" %>
+<%@ page import="java.util.*" %>
+<%@ page import="java.text.*" %>
+<%
+	geometries.addGeoEntry(geoEntry.getDetectorID(), geoEntry);
+	geometries.commit();
+	
+	DataCatalogProvider dcp = elab.getDataCatalogProvider();
+	geometries.updateMetadata(dcp, geoEntry);
+%>
+
+Geometry updated.
