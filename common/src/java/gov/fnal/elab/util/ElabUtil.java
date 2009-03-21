@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,15 +85,48 @@ public class ElabUtil {
             List l = (List) splits.get(list);
             if (l == null) {
                 l = new ArrayList();
-                StringTokenizer st = new StringTokenizer(String.valueOf(list),
-                        ",");
-                while (st.hasMoreTokens()) {
-                    l.add(st.nextToken().trim());
+                String sl = String.valueOf(list);
+                if (sl.indexOf("..") != -1) {
+                    l = generateFromRange(sl);
+                }
+                else {
+                    StringTokenizer st = new StringTokenizer(String
+                            .valueOf(list), ",");
+                    while (st.hasMoreTokens()) {
+                        l.add(st.nextToken().trim());
+                    }
                 }
                 splits.put(list, l);
             }
             return l;
         }
+    }
+
+    private static List generateFromRange(String range) {
+        int index = range.indexOf("..");
+        String start = range.substring(0, index);
+        String end = range.substring(index + 2);
+        NumberFormat nf;
+        if (start.length() == end.length()) {
+            nf = new DecimalFormat(repeat("0", start.length()));
+        }
+        else {
+            nf = new DecimalFormat("0");
+        }
+        int iend = Integer.parseInt(end);
+        ArrayList l = new ArrayList();
+        for (int i = Integer.parseInt(start); i <= iend; i++) {
+            l.add(nf.format(i));
+        }
+        return l;
+    }
+
+    private static String repeat(String str, int count) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < count; i++) {
+            sb.append(str);
+        }
+        return sb.toString();
     }
 
     public static void optionSet(JspWriter out, String name, String values,
