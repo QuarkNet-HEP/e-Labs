@@ -276,7 +276,7 @@ namespace("vdl"
 		element(graphStuff, [tr, stagein, stageout, err, optional(args)]
 			if(
 				vdl:configProperty("pgraph") != "false" then(
-					errprops := if(err ",color=lightsalmon" "")
+					errprops := if(err ",color=lightsalmon" ",color=lightsteelblue1")
 					tp := vdl:threadPrefix()
 					to(graph, 
 						concat(str:quote(tp), " [label=", str:quote("{tr}{errprops}"), "]")
