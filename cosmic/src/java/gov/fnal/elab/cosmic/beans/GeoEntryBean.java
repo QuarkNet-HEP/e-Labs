@@ -40,7 +40,7 @@ public class GeoEntryBean implements Serializable {
     }
 
     private void addError(String err) {
-        if (errors != null) {
+        if (errors != null && !errors.contains(err)) {
             errors.add(err);
         }
     }
