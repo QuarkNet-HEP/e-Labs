@@ -78,7 +78,7 @@
 								</c:when>
 								<c:when test="${tuple.key == 'detectorid' && e.tupleMap.julianstartdate != null}">
 									<c:forEach items="${fn:split(tuple.value, ' ')}" var="f">
-										<a href="../geometry/view.jsp?id=${f}&julianstartdate=${e.tupleMap.julianstartdate}">${f}</a>
+										<a href="../geometry/view.jsp?detectorID=${f}&jd=${e.tupleMap.julianstartdate}">${f}</a>
 									</c:forEach>
 								</c:when>
 								<c:when test="${tuple.key == 'source'}">
