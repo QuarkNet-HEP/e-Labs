@@ -56,6 +56,7 @@ public class TRRadio extends TRControl {
             if (value.equals(selected)) {
                 out.write(" checked=\"checked\"");
             }
+            writeAttributes(out);
             out.write(" />");
             out.write((String) labels.get(i));
             out.write("\n");
