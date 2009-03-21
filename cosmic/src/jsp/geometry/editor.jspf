@@ -1,5 +1,4 @@
 <jsp:useBean id="errs" scope="request" class="gov.fnal.elab.cosmic.beans.GeometryErrors" />
-
 <e:useBean bean="${geoEntry}">
 	<c:choose>
 		<c:when test="${param.commit == null || !geoEntry.valid}">

@@ -1,3 +1,6 @@
+<%@ page import="gov.fnal.elab.datacatalog.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.query.*" %>
+<%@ page import="java.util.*" %>
 <%
 	Geometries geometries = new Geometries(elab, user);
 	request.setAttribute("geometries", geometries);
@@ -5,15 +8,7 @@
 	String jd = request.getParameter("jd");
 	String filename = request.getParameter("filename");
 	GeoEntryBean geoEntry = null;
-	if (filename == null) {
-		if (id == null) {
-			throw new ElabJspException("Missing both file name and detector id.");
-		}
-		if (jd == null) {
-			throw new ElabJspException("Missing julian date");
-		}
-	}
-	else {
+	if (filename != null) {
 		CatalogEntry entry = elab.getDataCatalogProvider().getEntry(filename);
 		if (entry == null) {
 	    	throw new ElabJspException("No metadata about " + filename + " found.");
@@ -51,7 +46,7 @@
 			geoEntry = (GeoEntryBean) geos.get(geos.lastKey()); 
 		}
 	}
-	else {
+	if (geoEntry == null) {
 		geoEntry = new GeoEntryBean();
 	}
 	request.setAttribute("geoEntry", geoEntry);
