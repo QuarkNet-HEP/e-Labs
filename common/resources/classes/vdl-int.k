@@ -284,7 +284,7 @@ namespace("vdl"
 					for(si, stagein
 						si := basename(si)
 						to(graph
-							concat(str:quote(si), " [shape=parallelogram{errprops}]")
+							concat(str:quote(si), " [shape=parallelogram]")
 							concat(str:quote(si), " -> ", str:quote(tp))
 						)
 					)
@@ -295,7 +295,7 @@ namespace("vdl"
 						label := vdl:niceName(var, path = path)
 						to(graph
 							concat(str:quote(file), " [shape=parallelogram,label=", 
-								str:quote(label), "{errprops}]")
+								str:quote(label), "]")
 							concat(str:quote(tp), " -> ", str:quote(file))
 						)
 					)
