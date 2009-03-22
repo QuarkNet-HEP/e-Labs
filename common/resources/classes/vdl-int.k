@@ -279,7 +279,7 @@ namespace("vdl"
 					errprops := if(err ",color=lightsalmon" ",color=lightsteelblue1")
 					tp := vdl:threadPrefix()
 					to(graph, 
-						concat(str:quote(tp), " [label=", str:quote("{tr}{errprops}"), "]")
+						concat(str:quote(tp), " [label=", str:quote(tr), "{errprops}]")
 					)
 					for(si, stagein
 						si := basename(si)
@@ -295,7 +295,7 @@ namespace("vdl"
 						label := vdl:niceName(var, path = path)
 						to(graph
 							concat(str:quote(file), " [shape=parallelogram,label=", 
-								str:quote("{label}{errprops}"), "]")
+								str:quote(label), "{errorprops}]")
 							concat(str:quote(tp), " -> ", str:quote(file))
 						)
 					)
