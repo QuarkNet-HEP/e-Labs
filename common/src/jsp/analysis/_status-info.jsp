@@ -42,7 +42,9 @@
 									<h1>The study failed to run properly</h1>
 									<h2><%= message %></h2>
 									<p>
-										Try running the <a href="${run.attributes.onError}?${run.analysis.encodedParameters}">analysis</a> with different parameters.
+										Try running the 
+										<a href="${run.attributes.onError}?${run.analysis.encodedParameters}&runMode=${run.analysis.attributes.runMode}">analysis</a>
+										with different parameters.
 									</p>
 								<%
 							}
