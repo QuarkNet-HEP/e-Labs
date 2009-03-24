@@ -11,7 +11,6 @@ import gov.fnal.elab.datacatalog.query.Equals;
 import gov.fnal.elab.util.DatabaseConnectionManager;
 import gov.fnal.elab.util.ElabException;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -126,7 +125,6 @@ public class Statistics {
                             + "where date_entered between now() - ?::interval and now() "
                             + "and research_group_id in (select research_group_id from research_group_project"
                             + "         where project_id = ?)");
-            span = 999999;
             ps.setString(1, span + " days");
             ps.setString(2, "1");
     
