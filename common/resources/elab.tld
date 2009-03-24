@@ -745,4 +745,39 @@ A bean to use. The bean must have been created previously using jsp:useBean (or 
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
+	
+	<tag>
+		<description>
+Inserts into the current document at the position of this tag the contents
+of a http(s) URL, optionally stripping certain portions of the inserted
+content.
+		</description>
+		<name>transclude</name>
+		<tag-class>gov.fnal.elab.tags.Transclude</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>
+The URL to fetch the content from.
+			</description>
+			<name>url</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+If present, ignore the content up to this string (inclusive)
+			</description>
+			<name>start</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+If present, ignore the content after this string (inclusive)
+			</description>
+			<name>end</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
 </taglib>
