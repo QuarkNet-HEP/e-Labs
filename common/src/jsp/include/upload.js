@@ -49,6 +49,6 @@ function startProgress()
     document.getElementById('uploadbutton').disabled = true;
 
     // wait a little while to make sure the upload has started ..
-    window.setTimeout("refreshProgress()", 150);
+    window.setTimeout("refreshProgress()", 3000);
     return true;
 }
