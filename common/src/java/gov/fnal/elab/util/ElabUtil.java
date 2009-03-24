@@ -514,41 +514,38 @@ public class ElabUtil {
 
         NanoDate nd = new NanoDate();
         Calendar gc = Calendar.getInstance(UTC);
-        if (fractional != 0) {
-            int hour = (int) (fractional * 24);
-            int min = (int) ((fractional * 24 - hour) * 60);
-            int sec = (int) (((fractional * 24 - hour) * 60 - min) * 60);
-            int msec = (int) ((((fractional * 24 - hour) * 60 - min) * 60 - sec) * 1000);
-            int micsec = (int) (((((fractional * 24 - hour) * 60 - min) * 60 - sec) * 1000 - msec) * 1000);
-            int nsec = (int) ((((((fractional * 24 - hour) * 60 - min) * 60 - sec) * 1000 - msec) * 1000 - micsec) * 1000);
 
-            gc.set(year, month - 1, day, (hour + 12) % 24, min, sec);
-            gc.set(Calendar.MILLISECOND, msec);
+        int hour = (int) (fractional * 24);
+        int min = (int) ((fractional * 24 - hour) * 60);
+        int sec = (int) (((fractional * 24 - hour) * 60 - min) * 60);
+        int msec = (int) ((((fractional * 24 - hour) * 60 - min) * 60 - sec) * 1000);
+        int micsec = (int) (((((fractional * 24 - hour) * 60 - min) * 60 - sec) * 1000 - msec) * 1000);
+        int nsec = (int) ((((((fractional * 24 - hour) * 60 - min) * 60 - sec) * 1000 - msec) * 1000 - micsec) * 1000);
 
-            nd.setMicroSeconds(micsec);
-            nd.setNanoSeconds(nsec);
-        }
-        else {
-            gc.set(year, month - 1, day, 0, 0, 0);
-        }
+        gc.set(year, month - 1, day, (hour + 12) % 24, min, sec);
+        gc.set(Calendar.MILLISECOND, msec);
+
+        nd.setMicroSeconds(micsec);
+        nd.setNanoSeconds(nsec);
         nd.setTime(gc.getTimeInMillis());
         return nd;
     }
 
-    private static final int[] MONTH_NUM = new int[] { 306, 337, 0, 31, 61, 92,
-            122, 153, 184, 214, 245, 275 };
-
+    /**
+     * arguments: day[1..31], month[1..12], year[..2004..], hour[0..23],
+     * min[0..59]
+     */
     public static double gregorianToJulian(int year, int month, int day,
             int hour, int minute, int second) {
-        double step1 = (year + 4712) / 4.0;
-        int step1Int = (int) step1;
-        double remainder = (step1 - step1Int) * 4;
-        int monthNum = MONTH_NUM[month + 1];
+        if (month < 3) {
+            month = month + 12;
+            year = year - 1;
+        }
 
-        double PJD = (hour * 3600 + minute * 60 + second) / 86400.0;
-        double jd = step1Int * 1461 + remainder * 365 + monthNum + day + 59
-                - 13 - .5 + PJD;
-        return jd;
+        double r = (2 - (year / 100) + (year / 400) + day
+                + (int) (365.25 * (year + 4716))
+                + (int) (30.6001 * (month + 1)) - 1524.5);
+        return r + (hour + minute / 60.0 + second / 3600.0) / 24.0;
     }
 
     public static String stripHTML(String text) {
