@@ -10,13 +10,13 @@
     	</c:choose>
     </td>
     <td>
-    	<fmt:formatDate pattern="MMM dd" value="${e.date}" />,
+    	<fmt:formatDate pattern="MMM dd" value="${e.date}" timeZone="UTC" />,
     </td>
     <td>
-    	<fmt:formatDate pattern="yyyy" value="${e.date}" />
+    	<fmt:formatDate pattern="yyyy" value="${e.date}" timeZone="UTC" />
     </td>
     <td>
-    	@ <fmt:formatDate pattern="HH:mm" value="${e.date}" />
+    	@ <fmt:formatDate pattern="HH:mm" value="${e.date}" timeZone="UTC" />
     </td>
     <td>
         <a href="edit.jsp?detectorID=${e.detectorID}&jd=${e.julianDay}" title="Edit entry">

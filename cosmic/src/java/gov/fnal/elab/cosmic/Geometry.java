@@ -10,6 +10,8 @@ import gov.fnal.elab.datacatalog.query.Equals;
 import gov.fnal.elab.datacatalog.query.GreaterThan;
 import gov.fnal.elab.datacatalog.query.ResultSet;
 import gov.fnal.elab.util.ElabException;
+import gov.fnal.elab.util.ElabUtil;
+import gov.fnal.elab.util.NanoDate;
 
 import java.io.File;
 import java.io.FileReader;
@@ -439,89 +441,15 @@ public class Geometry {
      *            float jd to convert
      * @see jdToGregorian(int, double)
      */
-    public static int[] jdToGregorian(double jd) {
+    public static NanoDate jdToGregorian(double jd) {
         String[] split = new String[2];
         Double f = new Double(jd);
         split = f.toString().split("\\.");
         split[1] = "." + split[1];
-        int jd_int = Integer.parseInt((String) split[0]);
-        double partial = Double.parseDouble((String) split[1]);
+        int jd_int = Integer.parseInt(split[0]);
+        double partial = Double.parseDouble(split[1]);
 
-        return jdToGregorian(jd_int, partial);
-    }
-
-    /**
-     * Convert a julian day to Gregorian day Thanks to:
-     * http://quasar.as.utexas.edu/BillInfo/JulianDatesG.html
-     * 
-     * @param jd
-     *            integer julian day
-     * @param partial
-     *            partial julian day (between 0 and 1)
-     * @return a native array (day[1..31], month[1..12], year[..2004..]{,
-     *         hour[0..23], min, sec, msec, micsec, nsec})
-     */
-    private static int[] jdToGregorian(int jd, double partial) {
-        int Z = (int) (jd + 0.5 + partial);
-        int W = (int) ((Z - 1867216.25) / 36524.25);
-        int X = (int) (W / 4);
-        int A = Z + 1 + W - X;
-        int B = A + 1524;
-        int C = (int) ((B - 122.1) / 365.25);
-        int D = (int) (365.25 * C);
-        int E = (int) ((B - D) / 30.6001);
-        int F = (int) (30.6001 * E);
-        int day = B - D - F;
-        int month = E - 1 <= 12 ? E - 1 : E - 13; // Month = E-1 or E-13 (must
-        // get number less than or
-        // equal to 12)
-        int year = month <= 2 ? C - 4715 : C - 4716; // Year = C-4715 (if
-        // Month is January or
-        // February) or C-4716
-        // (otherwise)
-
-        int[] array = new int[10];
-        array[0] = day;
-        array[1] = month;
-        array[2] = year;
-
-        if (partial != 0) {
-            int hour = (int) (partial * 24);
-            int min = (int) ((partial * 24 - hour) * 60);
-            int sec = (int) (((partial * 24 - hour) * 60 - min) * 60);
-            int msec = (int) ((((partial * 24 - hour) * 60 - min) * 60 - sec) * 1000);
-            int micsec = (int) (((((partial * 24 - hour) * 60 - min) * 60 - sec) * 1000 - msec) * 1000);
-            int nsec = (int) ((((((partial * 24 - hour) * 60 - min) * 60 - sec) * 1000 - msec) * 1000) * 1000);
-
-            array[3] = (hour + 12) % 24;
-            array[4] = min;
-            array[5] = sec;
-            array[6] = msec;
-            array[7] = micsec;
-            array[8] = nsec;
-        }
-
-        return array;
-    }
-
-    /**
-     * Direct helper function for Julian day conversion.
-     * 
-     * @see jdToGregorian(int, double)
-     */
-    public static double gregorianToJD(int day, int month, int year, int hour,
-            int min) {
-        // arguments: day[1..31], month[1..12], year[..2004..], hour[0..23],
-        // min[0..59]
-        if (month < 3) {
-            month = month + 12;
-            year = year - 1;
-        }
-
-        return (2 - (int) (year / 100) + (int) (year / 400) + day
-                + (int) (365.25 * (year + 4716))
-                + (int) (30.6001 * (month + 1)) - 1524.5)
-                + (hour + min / 60.0) / 24.0;
+        return ElabUtil.julianToGregorian(jd_int, partial);
     }
 
     /**

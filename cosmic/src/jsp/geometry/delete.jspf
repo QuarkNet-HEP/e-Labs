@@ -3,7 +3,7 @@
 <c:choose>
 	<c:when test="${param.delete_confirm == 'Delete Entry'}">
 		<%
-			if (geoEntry == null) {
+			if (Boolean.TRUE.equals(request.getAttribute("geometryNotFound"))) {
 				throw new ElabJspException("No geometry entry found for detector " + id + " on date " + jd);
 			}
 			geometries.removeGeoEntry(id, geoEntry);
@@ -23,7 +23,7 @@
 	<c:otherwise>
 		<div class="title">
 			Delete Detector ${param.detectorID} Entry
-			<fmt:formatDate pattern="MMM/dd/yy @ HH:mm" value="${geoEntry.date}"/> 
+			<fmt:formatDate pattern="MMM/dd/yy @ HH:mm" value="${geoEntry.date}" timeZone="UTC"/> 
 			<a href="javascript:glossary('UTC')">UTC</a>?
 		</div>
 		<form style="text-align: center">

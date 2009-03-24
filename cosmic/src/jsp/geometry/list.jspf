@@ -23,15 +23,17 @@
 						</c:forEach>
 					</table>
 					<c:choose>
-						<c:when test="${e.size > 5}">
+						<c:when test="${g.size > 5}">
 							<e:vswitch>
 								<e:visible>more...</e:visible>
 								<e:hidden>
-									<c:forEach var="e" items="${g.descendingGeoEntries}" varStatus="i">
-										<c:if test="${i.count > 5}">
-											<%@ include file="list-entry.jspf" %>				
-										</c:if>
-									</c:forEach>
+									<table>
+										<c:forEach var="e" items="${g.descendingGeoEntries}" varStatus="i">
+											<c:if test="${i.count > 5}">
+												<%@ include file="list-entry.jspf" %>				
+											</c:if>
+										</c:forEach>
+									</table>
 								</e:hidden>
 							</e:vswitch>
 						</c:when>
