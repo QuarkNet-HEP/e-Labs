@@ -597,10 +597,12 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
                     .getDV());
             
             CatalogEntry e = getEntry(lfn);
-            i = e.getTupleMap().entrySet().iterator();
-            while (i.hasNext()) {
-                Map.Entry me = (Map.Entry) i.next();
-                analysis.setAttribute(String.valueOf(me.getKey()), me.getValue());
+            if (e != null) {
+                i = e.getTupleMap().entrySet().iterator();
+                while (i.hasNext()) {
+                    Map.Entry me = (Map.Entry) i.next();
+                    analysis.setAttribute(String.valueOf(me.getKey()), me.getValue());
+                }
             }
             return analysis;
         }
