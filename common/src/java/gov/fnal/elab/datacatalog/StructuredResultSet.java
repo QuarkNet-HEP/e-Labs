@@ -203,6 +203,31 @@ public class StructuredResultSet {
         public long getEventCount() {
             return events;
         }
+
+        public boolean equals(Object obj) {
+            if (obj instanceof School) {
+                School s = (School) obj;
+                return eq(name, s.name) && eq(city, s.city) && eq(state, s.state);
+            }
+            else {
+                return false;
+            }
+        }
+
+        public int hashCode() {
+            return (name == null ? 0 : name.hashCode()) + 
+                    (city == null ? 0 : city.hashCode()) + 
+                    (state == null ? 0 : state.hashCode()); 
+        }
+        
+        private boolean eq(Object o1, Object o2) {
+            if (o1 == null) {
+                return o2 == null;
+            }
+            else {
+                return o1.equals(o2); 
+            }
+        }
     }
 
     public static class Month {
