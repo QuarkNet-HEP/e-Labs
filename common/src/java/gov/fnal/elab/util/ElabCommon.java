@@ -25,7 +25,7 @@ public class ElabCommon {
         String svgFile = null;  //the image file as a string
 
         try{
-            svgFile = (new File(svgFilename)).toURL().toString();
+            svgFile = (new File(svgFilename)).toURI().toURL().toString();
         } catch(Exception e){
             throw new ElabException("Error while opening svg file " + svgFilename + ": " + e);
         }
@@ -63,7 +63,7 @@ public class ElabCommon {
         String svgFile = null;  //the image file as a string
 
         try{
-            svgFile = (new File(svgFilename)).toURL().toString();
+            svgFile = (new File(svgFilename)).toURI().toURL().toString();
         } catch(Exception e){
             throw new ElabException("Error while opening svg file " + svgFilename + ": " + e);
         }

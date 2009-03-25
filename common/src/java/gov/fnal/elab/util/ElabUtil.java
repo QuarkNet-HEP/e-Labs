@@ -476,7 +476,7 @@ public class ElabUtil {
             PNGTranscoder t = new PNGTranscoder();
             t.addTranscodingHint(PNGTranscoder.KEY_MAX_HEIGHT, new Float(1200));
             t.addTranscodingHint(PNGTranscoder.KEY_MAX_WIDTH, new Float(1400));
-            TranscoderInput input = new TranscoderInput((new File(svg)).toURL()
+            TranscoderInput input = new TranscoderInput((new File(svg)).toURI().toURL()
                     .toString());
             OutputStream ostream = new FileOutputStream(png);
             TranscoderOutput output = new TranscoderOutput(ostream);

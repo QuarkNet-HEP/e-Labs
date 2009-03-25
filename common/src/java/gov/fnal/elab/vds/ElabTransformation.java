@@ -54,6 +54,7 @@ import org.griphyn.vdl.util.ChimeraProperties;
  * @see Transformation
  * @see Derivation
  */
+@SuppressWarnings("deprecation")
 public class ElabTransformation{
     /**
      * The {@link Transformation} instance
