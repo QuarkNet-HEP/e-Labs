@@ -1,6 +1,6 @@
 package gov.fnal.elab.survey;
 
-public class ElabSurveyQuestionAnswer implements Comparable {
+public class ElabSurveyQuestionAnswer implements Comparable<Object> {
 	private String text; 
 	private Integer id; 
 		
