@@ -28,7 +28,7 @@
 	if (id != null && jd != null) {
 		Geometry g = geometries.getGeometry(id);
 		if (g == null) {
-			throw new ElabJspException("No geometry information found for detector " + id);
+			throw new ElabJspException("No geometry information found for detector " + id + " on date " + jd);
 		}
 		if (filename == null) {
 			geoEntry = g.getGeoEntry(jd);
