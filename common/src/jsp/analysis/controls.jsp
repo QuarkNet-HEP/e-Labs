@@ -15,7 +15,7 @@
 						<optgroup>
 							<c:set var="checked" value="checked=\"true\""/>
 							<c:set var="notchecked" value=""/>
-							<input type="radio" name="runMode" value="local" ${param.runMode == null || param.runMode == 'local' ? checked : notchecked}/> Local 
+							<input type="radio" name="runMode" value="local" ${empty param.runMode || param.runMode == 'local' ? checked : notchecked}/> Local 
 								(estimated time: <e:analysisRunTimeEstimator engine="swift" mode="local"/>)<br />
 							<input type="radio" name="runMode" value="i2u2" ${param.runMode == 'i2u2' ? checked : notchecked}/> I2U2 Cluster
 								(estimated time: <e:analysisRunTimeEstimator engine="swift" mode="i2u2"/>)<br />
