@@ -7,6 +7,7 @@ import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
 import gov.fnal.elab.ElabProvider;
 import gov.fnal.elab.ElabStudent;
+import gov.fnal.elab.password.GeneratePassword;
 import gov.fnal.elab.usermanagement.AuthenticationException;
 import gov.fnal.elab.usermanagement.ElabUserManagementProvider;
 import gov.fnal.elab.util.DatabaseConnectionManager;
@@ -31,8 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.Ostermiller.util.RandPass;
-
 public class DatabaseUserManagementProvider implements
         ElabUserManagementProvider, ElabProvider {
 
@@ -55,7 +54,6 @@ public class DatabaseUserManagementProvider implements
             conn = DatabaseConnectionManager
                     .getConnection(elab.getProperties());
             s = conn.createStatement();
-            ResultSet rs;
             password = switchingElabs(s, username, password);
             ElabGroup user = createUser(s, username, password, elab.getId());
             checkResearchGroup(s, user, elab.getId());
@@ -531,10 +529,13 @@ public class DatabaseUserManagementProvider implements
         String pass = null;
         Connection con = s.getConnection();
         
+        GeneratePassword rp;  
+        
         // Create a research group if needed
         if (groupToCreate != null) {
-            RandPass rp = new RandPass();
-            pass = rp.getPass();
+        	rp = new GeneratePassword();
+        	pass = rp.getPassword();
+        	
             student.getGroup().setName(
                     checkConflict(s, student.getGroup().getName()));
             File tua = new File(et.getUserArea());
