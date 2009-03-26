@@ -39,18 +39,17 @@ public class OutputChannel extends AbstractWriteOnlyVariableArguments {
 		
 		if (str.startsWith(START)) {
 		    total++;
-		    return;
 		}
 		else if (str.startsWith(DONE)) {
 		    current++;
-		    return;
 		}
-		
-		StringTokenizer st = new StringTokenizer(str, "\n\r");
-		while (st.hasMoreTokens()) {
-		    System.out.println(prefix + ": " + st.nextToken());
+		else {
+    		StringTokenizer st = new StringTokenizer(str, "\n\r");
+    		while (st.hasMoreTokens()) {
+    		    System.out.println(prefix + ": " + st.nextToken());
+    		}
+    		sb.append(str);
 		}
-		sb.append(str);
 	}
 
 	public boolean isCommutative() {
