@@ -1,9 +1,0 @@
-These are bugs that can be found in Threshold Times
-
-3F341ABE AA 01 00 01 00 01 00 01 3F341ABC 115959.860 010604 V 00 8 -0406
-4F341ABE 00 36 00 01 00 01 00 01 3F341ABD 120000.860 010604 V 00 8 -0206
-
-In these two lines, the Julian days for the rising edge and falling edge are different.  When this happens, you get a huge negative number for the time over threshold.
-ID     Julian Day  Rising Edge         Falling Edge      Time Over Thresh
-180.1   2453157 0.9999884259265683  0.0000629913305204  -86393557549098.53
-
