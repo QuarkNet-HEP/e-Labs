@@ -320,12 +320,12 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
             boolean on = false;
             while (st.hasMoreTokens()) {
                 String line = st.nextToken().trim();
-                if (line.startsWith("STDOUT:")) {
+                if (line.startsWith("stdout.txt:")) {
                     on = false;
                 }
-                else if (line.startsWith("STDERR: ")) {
+                else if (line.startsWith("stderr.txt: ")) {
                     on = true;
-                    line = line.substring("STDERR: ".length());
+                    line = line.substring("stderr.txt: ".length());
                 }
                 if (on) {
                     sb.append(line);

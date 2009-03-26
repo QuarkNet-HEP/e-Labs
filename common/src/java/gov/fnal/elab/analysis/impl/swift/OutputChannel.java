@@ -39,9 +39,11 @@ public class OutputChannel extends AbstractWriteOnlyVariableArguments {
 		
 		if (str.startsWith(START)) {
 		    total++;
+		    return;
 		}
 		else if (str.startsWith(DONE)) {
 		    current++;
+		    return;
 		}
 		
 		StringTokenizer st = new StringTokenizer(str, "\n\r");
