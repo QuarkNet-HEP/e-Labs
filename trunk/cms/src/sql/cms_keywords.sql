@@ -1,7 +1,0 @@
-INSERT INTO keyword (keyword,description,milestone,project_id,section,section_id,type) VALUES ('test_beam_particles','Description of the test beam particles','Describe the particles used in the test beam.',2,'B',10,'S');
-INSERT INTO keyword (keyword,description,milestone,project_id,section,section_id,type) VALUES ('test_beam_setup','Description of the CMS test beam set-up','Briefly describe the setup of the CMS test beam and detector components.',2,'B',20,'S');
-INSERT INTO keyword (keyword,description,milestone,project_id,section,section_id,type) VALUES ('test_beam_data','Interpretation of test beam data using OGRE','Interpret basic CMS test beam data.',2,'B',30,'S');
-INSERT INTO keyword (keyword,description,milestone,project_id,section,section_id,type) VALUES ('cms_study_choice','Choice of Study','Choose a research question.',2,'B',40,'S');
-INSERT INTO keyword (keyword,description,milestone,project_id,section,section_id,type) VALUES ('cms_data_selection','Justification of data selection','Choose appropriate data from the data set.',2,'C',10,'S');
-INSERT INTO keyword (keyword,description,milestone,project_id,section,section_id,type) VALUES ('cms_analysis','Explanation of choice of analysis tools','Choose and apply appropriate analysis tools.',2,'C',20,'S');
-INSERT INTO keyword (keyword,description,milestone,project_id,section,section_id,type) VALUES ('cms_assessment','Explanation and assessment of results','Review, explain and assess your results.',2,'C',30,'S');

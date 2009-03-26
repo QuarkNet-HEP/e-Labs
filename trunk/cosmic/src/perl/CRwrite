@@ -1,12 +1,0 @@
-#!/bin/sh
-# Paul Nepywoda's interface to the CRinput.sh script
-# a simple while loop...
-
-DEV=`ls -l /dev/cu.U* | sed 's/^.*\///'`
-
-while :
-do
-	read I
-	echo -n "$I" > /dev/$DEV
-done
-

@@ -1,1 +1,0 @@
-<%@ include file="../data/tutorial1.jsp" %>
