@@ -89,21 +89,23 @@ function registerLabelForUpdate(name, label, dest) {
 }
 
 function updateLabels(source, name) {
-	var p = this.labelsToUpdate[name];
-	if (p) {
-		var label = p[0];
-		var dest = p[1];
-		var destInput = document.getElementById(dest);
-		var text = destInput.value;
-		var index = text.indexOf(label);
-		if (index != -1) {
-			index += label.length;
-			var nl = text.indexOf('\n', index);
-			if (nl == -1) {
-				nl = text.length;
+	if (this.labelsToUpdate != null && this.labelsToUpdate[name] != null) {
+		var p = this.labelsToUpdate[name];
+		if (p) {
+			var label = p[0];
+			var dest = p[1];
+			var destInput = document.getElementById(dest);
+			var text = destInput.value;
+			var index = text.indexOf(label);
+			if (index != -1) {
+				index += label.length;
+				var nl = text.indexOf('\n', index);
+				if (nl == -1) {
+					nl = text.length;
+				}
+				text = text.substring(0, index) + source.value + text.substring(nl);
+				destInput.value = text; 
 			}
-			text = text.substring(0, index) + source.value + text.substring(nl);
-			destInput.value = text; 
 		}
 	}
 }

@@ -213,12 +213,15 @@ $(function() {
 		    and.add(new Equals("project", elab.getName()));
 		    
 			searchResults = elab.getDataCatalogProvider().runQuery(and);
+			
+			
 			searchResultsStructured = DataTools.organizeSearchResults(searchResults);
 			searchResultsStructured.setKey(key);
 			searchResultsStructured.setValue(value);
 			long end = System.currentTimeMillis();
 			String time = ElabUtil.formatTime(end - start);
 			searchResultsStructured.setTime(time);
+			
 		}
 		else {
 		    session.setAttribute("previousSearch", null);
