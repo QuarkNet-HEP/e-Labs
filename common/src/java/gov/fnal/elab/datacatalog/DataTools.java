@@ -47,18 +47,18 @@ public class DataTools {
 
     static {
         KEYS = new HashMap();
-        KEYS.put("school", new Integer(0));
-        KEYS.put("startdate", new Integer(1));
-        KEYS.put("blessed", new Integer(2));
-        KEYS.put("stacked", new Integer(3));
-        KEYS.put("chan1", new Integer(4));
-        KEYS.put("chan2", new Integer(5));
-        KEYS.put("chan3", new Integer(6));
-        KEYS.put("chan4", new Integer(7));
-        KEYS.put("city", new Integer(8));
-        KEYS.put("state", new Integer(9));
-        KEYS.put("enddate", new Integer(10));
-        KEYS.put("detectorid", new Integer(11));
+        KEYS.put("school", 0);
+        KEYS.put("startdate", 1);
+        KEYS.put("blessed", 2);
+        KEYS.put("stacked", 3);
+        KEYS.put("chan1", 4);
+        KEYS.put("chan2", 5);
+        KEYS.put("chan3", 6);
+        KEYS.put("chan4", 7);
+        KEYS.put("city", 8);
+        KEYS.put("state", 9);
+        KEYS.put("enddate", 10);
+        KEYS.put("detectorid", 11);
     }
 
     public static final int SCHOOL = 0;
@@ -124,17 +124,18 @@ public class DataTools {
                 stateName = "Unknown State";
             }
             
-            School school = srs.getSchool(schoolName);
+            School school = srs.getSchool(schoolName, cityName, stateName);
             if (school == null) {
                 school = new School(schoolName, cityName, stateName);
                 srs.addSchool(school);
             }
             
-            // Correct city and state names if there some metadata pieces have bad data.
+            /* Correct city and state names if there some metadata pieces have bad data.
             if (school.getCity().equals("Unknown City") && !cityName.equals("Unknown City"))
             	school.setCity(cityName);
             if (school.getState().equals("Unknown State") && !stateName.equals("Uknown State"))
             	school.setState(stateName);
+            */
             
             Timestamp ts = (Timestamp) data[STARTDATE];
             String startdate = MONTH_FORMAT.format(ts);

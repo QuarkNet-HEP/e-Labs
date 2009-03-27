@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap; 
 
-public class ElabSurveyQuestion implements Cloneable, Comparable<Object> {
+public class ElabSurveyQuestion implements Cloneable, Comparable<ElabSurveyQuestion> {
 	private int id, number; 
 	private SortedMap<Integer, ElabSurveyQuestionAnswer> answers; 
 	private String text; 
@@ -113,9 +113,7 @@ public class ElabSurveyQuestion implements Cloneable, Comparable<Object> {
 	/**
 	 * Sort by question number 
 	 */
-	public int compareTo(Object o) {
-		Integer thisInt = new Integer(number);
-		Integer thatInt = new Integer(((ElabSurveyQuestion) o).getNumber());
-		return thisInt.compareTo(thatInt);
+	public int compareTo(ElabSurveyQuestion o) {
+		return Integer.valueOf(number).compareTo(Integer.valueOf(o.getNumber()));
 	}
 }
