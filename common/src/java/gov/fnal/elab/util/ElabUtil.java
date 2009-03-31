@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -29,6 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
+
+import java.net.*; 
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspWriter;
@@ -322,10 +325,16 @@ public class ElabUtil {
         return sb.toString();
     }
 
-    private static void addParam(StringBuffer sb, String key, String value) {
-        sb.append(key);
+    @SuppressWarnings("deprecation")
+	private static void addParam(StringBuffer sb, String key, String value) {
+    	sb.append(key);
         sb.append('=');
-        sb.append(value);
+    	try {
+	        sb.append(java.net.URLEncoder.encode(value, "UTF-8"));
+        }
+        catch (UnsupportedEncodingException e) {
+	        sb.append(java.net.URLEncoder.encode(value));
+        }
     }
 
     public static String join(Object[] c, String separator) {
