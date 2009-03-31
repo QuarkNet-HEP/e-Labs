@@ -51,9 +51,12 @@
 			<c:if test="${geometryNotFound}">
 				<e:error message="No geometry found for detector ${param.detectorID} on date ${param.jd}"/>
 			</c:if>
+			
 			<c:if test="${param.filename != null}">
-				<a href="../data/view.jsp?filename=${param.filename}">Show Data</a> |
-				<a href="../data/view-metadata.jsp?filename=${param.filename}">Show Metadata</a>
+				<center>
+					<a href="../data/view.jsp?filename=${param.filename}">Show Data</a> |
+					<a href="../data/view-metadata.jsp?filename=${param.filename}">Show Metadata</a>
+				</center>
 			</c:if>
 			
 			<div id="viewer">

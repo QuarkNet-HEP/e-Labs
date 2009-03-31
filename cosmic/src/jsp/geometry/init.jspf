@@ -2,7 +2,7 @@
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="java.util.*" %>
 <%
-	Geometries geometries = new Geometries(elab, user);
+	Geometries geometries = null;
 	request.setAttribute("geometries", geometries);
 	String id = request.getParameter("detectorID");
 	String jd = request.getParameter("jd");
@@ -24,6 +24,10 @@
 			throw new ElabJspException("No detector associated with " + filename);
 		}
 		jd = entry.getTupleValue("julianstartdate").toString();
+		geometries = new Geometries(elab, id);
+	}
+	else {
+		geometries = new Geometries(elab, user);
 	}
 	if (id != null && jd != null) {
 		Geometry g = geometries.getGeometry(id);
