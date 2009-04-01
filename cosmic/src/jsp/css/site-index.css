@@ -487,6 +487,10 @@ th.upload a:hover {
 	color: black;
 }
 
+td.upload {
+	background-color: #c782bc;
+}
+
 th.data {
 	background-color: #4382bb;
 	border-top: #72a1cc 1px solid;
@@ -523,6 +527,10 @@ th.home a {
 
 th.home a:hover {
 	color: black;
+}
+
+td.home { 
+	background-color: #ffb27e;
 }
 
 th.library {
@@ -563,6 +571,10 @@ th.posters a:hover {
 	color: black;
 }
 
+td.posters {
+	background-color: #7fb299;
+}
+
 th.assessments {
 	background-color: #ffcc00;
 	border-top: #ffd940 1px solid;
@@ -578,4 +590,8 @@ th.assessments a {
 
 th.assessments a:hover {
 	color: black;
+}
+
+td.assessments {
+	background-color: #ffe57f;
 }

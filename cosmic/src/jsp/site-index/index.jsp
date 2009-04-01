@@ -46,7 +46,7 @@
 		<th class="assessments"><a href="../assessment">Assessment</a></th>
 	</tr>
 	<tr>
-		<td>
+		<td class="home">
 			<ul>
 				<li><a href="../home/first.jsp">The Big Picture</a></li>
 				<li><a href="../home/first-web.jsp">The Website</a></li>
@@ -148,7 +148,8 @@
 				<li><a href="../plots/my-plots.jsp">View My Plots</a>
 			</ul>
 		</td>
-		<td>
+		<td class="assessments">
+			&nbsp; 
 		</td>
 	</tr>
 </table>
