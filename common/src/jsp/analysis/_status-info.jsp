@@ -77,6 +77,8 @@
 					%>
 					<center>
 						<h1>Running ${run.analysis.name}...</h1>
+						${run.analysis.attributes.runMode}
+						${run.analysis.attributes['runMode']}
 						<img src="../graphics/busy2.gif" alt="Image suggesting something is happening" /><br /><br /><br />
 						Progress: 
 						<table id="status-progress" width="20%">
@@ -87,6 +89,7 @@
 						</table>
 						Elapsed time: <span id="elapsed-time">${run.formattedRunTime}</span>; 
 						estimated: ${run.formattedEstimatedRunTime}
+						<div id="error-text" style="background: #ffaf70"></div>
 						
 						
 						<%@ include file="../analysis/async-update.jsp" %>
@@ -106,13 +109,17 @@
 								self.setTimeout(smoothProgress, 20);
 							}
 							
-							function update(data) {
-								if (data["error"] != null) {
+							function update(data, error) {
+								if (error != null) {
+									var diverr = document.getElementById("error-text");
+									diverr.innerHTML = error;
+									setTimeout('window.location="../analysis/status.jsp?id=${run.id}"', 1000);
+								}
+								else if (data["error"] != null) {
 									stopUpdates()
 									window.location = "../analysis/status.jsp?id=${run.id}";
 								}
 								else if (data["status"] != null) {
-									
 									if (data["status"] == "Running") {
 										var percent = (data["progress"] * 99 + 1).toFixed(0);
 										document.progressGoal = percent;
