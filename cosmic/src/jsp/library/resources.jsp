@@ -69,7 +69,7 @@
 							</li>
 							<c:if test="${user.upload}">
 					            <li>
-									<a href="../jsp/geoInstructions.jsp">Updating Geometry Tutorial</a>
+									<a href="../geometry/tutorial.jsp">Updating Geometry Tutorial</a>
 									 - Learn how to properly input the layout of your detector.
 								</li>
 							</c:if>
