@@ -100,7 +100,7 @@
 							</li>
 							<li>
 								<a href="http://gridcafe.web.cern.ch/gridcafe/">The Grid Cafe</a>
-								- An introduction to the grid.
+								- An introduction to the grid. From there, go to <a href="http://www.gridtalk.org/">Grid Talk</a> where you can read <a href="http://www.gridtalk.org/briefings.htm">Grid Briefings</a> and explore the <a href="http://www.gridguide.org/">Grid Guide</a>.
 							</li>
 							<li>
 								<a href="http://www.tryscience.org/grid/home.html" target="activity">Grids for Kids at TryScience</a>
@@ -200,7 +200,7 @@
 							</li>
 							<li>
 								<a href="../flash/DAQII.html">DAQII</a>
-								- How the DAQII board works. <strong>Has SOUND.</strong>
+								- How the DAQII board works. Rollovers provide more information on the board and the format of the data. <strong>Has SOUND.</strong>
 							</li>
 						</ul>
 					</div>
