@@ -170,7 +170,7 @@ deploy-all-clean:
 		</delete>
 	</target>
 		
-	<target name="do-deploy-common" depends="build-common">
+	<target name="do-deploy-common" depends="build-common, clean-jars">
 		<mkdir dir="${container.home}/${webapps}/elab"/>
 		<mkdir dir="${container.home}/${webapps}/elab/WEB-INF"/>
 		<mkdir dir="${container.home}/${webapps}/elab/WEB-INF/classes"/>
