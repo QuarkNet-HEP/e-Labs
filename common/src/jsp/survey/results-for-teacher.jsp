@@ -47,7 +47,7 @@
 		request.setAttribute("teacher", teacher);
 		request.setAttribute("data", true);
 	}
-	catch (Exception ex) {
+	catch (NullPointerException npe) {
 		request.setAttribute("data", false); 
 	}
 	
