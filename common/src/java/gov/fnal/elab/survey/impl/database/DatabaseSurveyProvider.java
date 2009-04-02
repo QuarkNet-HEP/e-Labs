@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import com.mallardsoft.tuple.*;
 
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
@@ -386,18 +387,22 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 		return status;
 	}
 	
-	public Map<ElabStudent, List<ElabSurveyQuestion>> getStudentResultsForTeacher(String type, ElabGroup group) throws ElabException {
+	public Map<ElabGroup, Map<ElabStudent, List<ElabSurveyQuestion>>> getStudentResultsForTeacher(String type, ElabGroup group) throws ElabException {
 		Connection con = null;
-		Map<ElabStudent, List<ElabSurveyQuestion>> results = null; 
+		Map<ElabStudent, List<ElabSurveyQuestion>> thisGroup = null; 
+				
+		Map<ElabGroup, Map<ElabStudent, List<ElabSurveyQuestion>>> results = null; 
+		
 		try {
 			con = DatabaseConnectionManager.getConnection(elab.getProperties());
-			results = new HashMap<ElabStudent, List<ElabSurveyQuestion>>(); 
+			results = new HashMap(); 
 			for (Iterator<ElabGroup> g = group.getGroups().iterator(); g.hasNext(); ) {
 				ElabGroup eg = g.next();
 				if (eg.getNewSurveyId() == null) {
 					continue; 
 				}
 				ElabSurvey survey = this.getSurvey(eg.getNewSurveyId().intValue());
+				thisGroup = new HashMap(); 
 				for (Iterator<ElabStudent> s = eg.getStudents().iterator(); s.hasNext(); ) {
 					ElabStudent es = s.next();
 					List<ElabSurveyQuestion> questions = new ArrayList<ElabSurveyQuestion>(); 
@@ -426,8 +431,9 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 						
 					}
 					java.util.Collections.sort(questions);
-					results.put(es, questions);
+					thisGroup.put(es, questions);
 				}
+				results.put(eg, thisGroup);
 			}
 		}
 		catch (Exception e) {

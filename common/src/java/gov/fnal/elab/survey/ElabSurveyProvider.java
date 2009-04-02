@@ -21,7 +21,7 @@ public interface ElabSurveyProvider {
 	
 	public Map<ElabStudent, Boolean> getStudentSurveyStatus(String type, ElabGroup group) throws ElabException;
 	
-	public Map<ElabStudent, List<ElabSurveyQuestion>> getStudentResultsForTeacher(String type, ElabGroup group) throws ElabException;
+	public Map<ElabGroup, Map<ElabStudent, List<ElabSurveyQuestion>>>  getStudentResultsForTeacher(String type, ElabGroup group) throws ElabException;
 	
 	public int getTotalStudents(ElabGroup group) throws ElabException;
 	
