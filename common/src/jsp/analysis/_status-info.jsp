@@ -77,8 +77,6 @@
 					%>
 					<center>
 						<h1>Running ${run.analysis.name}...</h1>
-						${run.analysis.attributes.runMode}
-						${run.analysis.attributes['runMode']}
 						<img src="../graphics/busy2.gif" alt="Image suggesting something is happening" /><br /><br /><br />
 						Progress: 
 						<table id="status-progress" width="20%">
