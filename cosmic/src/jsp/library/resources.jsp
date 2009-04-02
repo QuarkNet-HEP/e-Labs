@@ -110,6 +110,10 @@
 								<a href="http://farweb.minos-soudan.org/events/LiveEvent.html" target="activity">MINOS</a>
 								- Physicists detect cosmic rays in their neutrino detectors.
 							</li>
+							<li>
+								<a href="http://www.symmetrymagazine.org/cms/?pid=1000688">Cosmic Weather Gauges</a>
+								- Cosmic rays and upper atmospheric temperatures.
+							</li>
 						</ul>
 						
 						<h2>Online Labs</h2>
@@ -123,11 +127,11 @@
 						<h2>Professional Sites (Very Advanced)</h2>
 						<ul class="simple">
 							<li>
-								<a href="http://ik1au1.fzk.de/~heck/corsika/">CORSIKA</a>
+								<a href="http://www-ik.fzk.de/corsika/">CORSIKA</a>
 								- An air shower simulation program
 							</li>
 							<li>
-								<a href="http://wwwasd.web.cern.ch/wwwasd/geant4/geant4.html">GEANT4</a>
+								<a href="http://cern.ch/geant4">GEANT4</a>
 								- A toolkit for simulating the passage of particles through matter
 							</li>
 							<li>
