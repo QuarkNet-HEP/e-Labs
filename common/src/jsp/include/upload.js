@@ -29,7 +29,7 @@ function updateProgress(uploadInfo)
 
         document.getElementById('progressBarBoxContent').style.width = parseInt(progressPercent * 3.5) + 'px';
 
-        window.setTimeout('refreshProgress()', 100);
+        window.setTimeout('refreshProgress()', 1000);
     }
     else
     {
