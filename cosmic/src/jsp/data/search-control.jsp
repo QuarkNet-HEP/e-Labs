@@ -31,6 +31,9 @@ $(function() {
 		showButtonPanel: true
 	});
 });
+$(window).scroll(function(){
+	$('#right').animate({top:$(window).scrollTop()+"px" },{queue: false, duration: 0});
+});
 </script>
 
 <div class="search-quick-links">

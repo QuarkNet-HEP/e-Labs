@@ -57,11 +57,11 @@
 						</div>
 					</div>
 					<div id="right">
-						<%@ include file="help.jsp" %>
 						<div id="analyze" class="study-right">
 							<h2>Analyze</h2>
 							<input type="submit" value="Run shower study"/>
 						</div>
+						<%@ include file="help.jsp" %>
 						<%@ include file="../data/legend.jsp" %>
 					</div>
 				</form>
