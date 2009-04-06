@@ -1,0 +1,22 @@
+# This .htaccess file limits access to this directory and those
+# below it to only those users who authenticate via password.
+# What about those directories above, once we've authenticated?
+
+   AuthType Basic
+   AuthName "Bluestone, the LIGO Analysis Tool (TLA)"
+
+   # If these filepaths are not absolute then they are considered
+   # to be relative to the ServerRoot, not this directory.
+   # You'll likely need to edit to customize for your installation,
+   # but this value works at Spy Hill and LHO.
+
+   AuthUserFile  ./conf/local.d/tla-passwd
+   AuthGroupFile /dev/null
+
+   Order deny,allow
+   Deny from all
+
+   Require valid-user
+   Satisfy any
+
+##

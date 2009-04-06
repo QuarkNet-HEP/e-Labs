@@ -1,0 +1,9 @@
+tla/vi subdirectory
+===================
+
+Each of the directories here contains all that is needed to define
+and implement a transformation for Bluestone.   See plot1chan for
+what is probably the simplest example.
+
+In case you were wondering, vi stands for "Virtual Instrument", and is
+borrowed from National Instrument's very useful LabView tool.

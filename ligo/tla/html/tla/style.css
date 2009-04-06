@@ -1,0 +1,215 @@
+/***********************************************************************
+ * CSS Style for Bluestone, the LIGO Analysis Tool
+ */
+
+
+/*** Clock boxes ***/
+
+table.clock_box {
+    display: inline;
+    border: 1px;
+    border-style: solid;
+    border-color: gray;
+    //padding-left: 1.75em;
+    padding-top: 0.75em;
+    padding-bottom: -10px;
+}
+
+
+#gps_clock_field {
+    color: blue;
+}
+
+#gmt_clock_field {
+    color: green;
+}
+
+
+
+
+/******* Block Diagrams **************/ 
+
+
+*.block-list {
+    color: black;
+    font: caption;
+    font-weight: bolder;
+    text-align: center;
+    border: 2px;
+    padding-right: 2em;
+    padding-left: 2em;
+}
+
+table.block {
+    background-color: transparent;
+    width: 98%;
+    border: 2px;
+    border-style: outset;
+    margin: 0px;
+    text-align: center;
+}
+
+td.block-new {
+    background-color: wheat;
+    border: 2px;
+    border-style: outset;
+    height: 3em;
+    margin: 0;
+    padding-right: 1em;
+    padding-left: 1em;
+}
+
+
+td.block-this {
+    background-color: lightblue;
+    border: 2px;
+    border-style: inset;
+    height: 3em;
+    padding-right: 1em;
+    padding-left: 1em;
+}
+
+
+td.block-ok {
+    background-color: lightgreen;
+    border: 2px;
+    border-style: outset;
+    height: 3em;
+    padding-right: 1em;
+    padding-left: 1em;
+}
+
+td.block-fail {
+    background-color: pink;
+    border: 2px;
+    border-style: inset;
+    height: 3em;
+    padding-right: 1em;
+    padding-left: 1em;
+}
+
+td.block-arrow {
+    border: 0px;
+    height: 3em;
+    border-style: none;
+    padding-right: 0.2em;
+    padding-left: 0.2em;
+}
+
+a.block:link    { text-decoration:
+    none;
+    color: black; 
+    }
+a.block:visited {
+    text-decoration: none;
+    color: black;
+    }
+a.block:hover   {
+    text-decoration: underline; 
+    color: blue;
+}
+
+
+
+/******* Signal block **************/ 
+
+td.signal-block{ vertical-align: middle;} 
+
+
+/******* Message Area **************/ 
+
+*.message-area: {
+      color: blue;
+      background-color: white;
+      font-family: monospace;
+      border: 1px;
+      width: 100%;
+      margin: 5pt;
+      text-align: left;
+} 
+
+
+/******* Control Panel Items**************/ 
+
+*.control {
+	font-family: Verdana, Arial, Sans Serif ;
+	color: black;             
+	background-color: lightgray;
+	border: 1px;
+}
+
+table.control{
+	cellpadding: 0px;
+	cellspacing: 0px;
+}
+
+
+td.input-item-beginnner {
+    font-weight: bolder;
+    text-align: right;
+}
+
+
+
+
+/*******Menu Tabs**************/ 
+
+td.tab {
+      color: black;
+      font-weight: bolder;
+      font: caption;
+      background-color: lightgray;
+      text-align: center;
+      margin-left: 0px;
+      margin-right: 0px;
+      border-top:   1px solid gray;
+      border-left: 2px solid gray;
+      border-right: 2px solid gray;
+      border-bottom: 2px solid gray;
+}
+
+td.sub-tab {
+      color: black;
+      text-weight: bolder;
+      font: caption;
+      background-color: lightgray;	
+      text-align: center;
+      border-left: 2px solid gray;
+      border-right: 2px solid gray;
+      border-top:   0px solid gray;
+      border-bottom: 2px solid gray;
+}
+
+td.selected{
+      background-color: lightgray;	
+      border-bottom: 0px;
+}
+
+
+a.tab:link    { text-decoration: none;  color: black; }
+a.tab:visited { text-decoration: none;  color: black; }
+a.tab:hover   { text-decoration: underline; }
+a.button      { text-decoration: none; }
+
+input.button  { text-decoration: none; }
+#input.button:hover  { text-decoration: underline; }
+
+
+/* Tutorial pages and other transclusions */
+
+.editsection {
+	display: none;
+}
+
+
+.printfooter, .printfooter a {
+  font-size: small;
+   color: white;
+   text-decoration: none;
+}
+
+#catlinks {
+   display: none;
+}
+
+/**EOF**/

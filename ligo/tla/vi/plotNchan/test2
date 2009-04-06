@@ -1,0 +1,26 @@
+#!/bin/sh 
+#
+# test 2 - Simplest test of plotting two channels
+#
+
+
+GPSepoch=315964800		# start of GPS time, in Unix time 
+NOW=`date -u +%s`
+GPSend=$(( $NOW - $GPSepoch ))
+GPSstart=$(( $GPSend - 24*3600 ))
+
+DATA=$0_channelList.txt
+
+cat <<EOF > $DATA
+H0:DMT-BRMS_PEM_LVEA_SEISZ_1_3Hz.mean 
+H0:DMT-BRMS_PEM_LVEA_SEISZ_0.03-0.1Hz.mean 
+EOF
+
+NCHAN=`wc -l <$DATA`
+
+CMD="./plotNchan.sh $0_$$  $DATA  $NCHAN  $GPSstart $GPSend GMT "
+
+echo $CMD
+$CMD
+
+##

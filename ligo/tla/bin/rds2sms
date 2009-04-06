@@ -1,0 +1,170 @@
+#!/usr/bin/env perl
+#							     -*-Perl-*-
+#
+#  rds2sms - parse LIGO I2U2 RDS update and copy messages for errors
+#
+#  This script reads as input an e-mail from the scripts involved in
+#  creating RDS frame files at LHO or copying them to Spy Hill.
+#  If there is an error message in the e-mail then it condenses the 
+#  information and sends it  to my  cell phone as an SMS message.
+#
+#  Eric Myers <myers@spy-hill.net>  -  24 March 2007
+#  @(#) $Id: rds2sms,v 1.2 2007/11/06 21:20:11 myers Exp $
+######################################################################
+$GPSepoch=315964800;		# start of GPS time, in Unix time 
+
+$TZdt = 5*3600;           # LHO/NYC timezone difference is 5hrsSTD/4hrsDST
+
+
+#$NOTIFY = "8455461065\@mobile.celloneusa.com";
+$NOTIFY = "eric-mobile\@spy-hill.net";
+$FROM   = "rds2sms\@spy-hill.net";
+
+$/ = "\nFrom " ;         # Break at e-mail message boundaries, not lines
+
+
+##
+# Just daytime hours!
+
+use Date::Parse;         # to parse date of measurement
+use Date::Format;        # to format date for output to the log
+
+$dtime = time();
+$hour= time2str("%H", $dtime);
+
+
+
+die if ($hour < 7 || $hour > 21 );
+
+##
+# Options: (unused for now)
+
+#use Getopt::std          # command line options
+#%options=();
+#getopts("f:",\%options);
+
+require 'getopts.pl';     # perl4 works for me for now...
+&Getopts("f:");
+
+
+# takes argument in second and returns a human formatted time string
+# in the form D days + h Hours + m Min + s sec.
+# From BOINC's html/inc/util.inc (in PHP)
+
+sub time_diff {
+    ( $x ) = @_;
+    $days    = int(($x/86400));
+    $hours   = int((($x-$days*86400)/3600));
+    $minutes = int((($x-$days*86400-$hours*3600)/60));
+    $seconds = int(($x % 60));
+
+    $datestring = "";
+    if ($days) {
+        $datestring .= "$days d ";
+    }
+    if ($hours || length($datestring)) {
+        $datestring .= "$hours hrs ";
+    }
+    if ($minutes || length($datestring)) {
+        $datestring .= "$minutes min ";
+    }
+    if ($seconds && $x < 300 ) {
+        $datestring .= "$seconds sec ";
+    }
+    return $datestring;
+}
+
+
+
+##
+# Main Loop: (no, just do one)
+
+$Report = "";
+$Nitm = 0;
+
+while (<>) {		# scan forward for next message  unit
+  s|^From ||;		# remove initial marker
+  s|$/$|\n|;		# remove end marker
+
+  $dt = 0;
+
+  # Get received date from the first header line (the ^From line)
+  ( $who, $RcvdDate ) = /^\s*(\S+)\s+(.*)\n/;
+
+  # print "Who: $who\n";
+  # print "Recieved: $RcvdDate\n";
+
+  ( $Body ) = /\n\n(.*)\z/s ;  # maximal matching gets all but headers
+  ( $Headers ) = $`;
+  next if ( ! $Body );
+  
+  ( $Reason ) = $Body =~ /^(NO FRAME FILES WERE .*)$/m; 
+  next if( ! $Reason );
+
+  ( $RawSubj ) = $Headers =~ /^Subject: *(.*)/m;  
+
+  ( $GPStime ) = $Body =~ /Starting GPS frame is (\d+)/m;
+
+  ( $Error ) = $Body =~ /^(!Error: .*)/m; 
+  ( $Obs ) = $Error =~ m!minute-trend/(\S+)!;
+
+
+  $UTCnow = gmtime();
+  if( $RcvdDate ) {
+      $dt = str2time($UTCnow) - str2time($RcvdDate) - $TZdt;
+  }
+
+
+  # Compose report
+
+  $Subject = "$Reason";
+  die if( ! $Subject );
+
+  if( $Obs ) {
+      $Report .= "\@$Obs\n";
+  }
+  else {
+      $Report .= " /\n";
+  }
+
+
+  if( $GPStime ){
+      $Report .= "GPS $GPStime\n";
+      $Report .= "(".time2str("%C %Z", $GPStime+$GPSepoch).")";
+  }
+  $Report .= "$RcvdDate\n";
+
+  if( $dt >= 60 ) {
+      $Report .= time_diff($dt) ."ago\n";
+  }
+  else {
+      $Report .= "dt: $dt sec \n";
+   #   $Report .= "$UTCnow UTC\n";
+   #   $Report .= "Rcvd: ".str2time($UTCnow)." - "
+   #	  . str2time($RcvdDate)."\n";
+  }
+  $Report .= "\n";  
+  $Nitm++;
+}
+
+#DEBUG##
+#print "Subject: $Subject\n";
+#print $Report;
+#exit;
+
+die if ( !$Subject || !$Report);
+
+# Send summary as e-mail to SMS address(es)
+
+open(SENDMAIL, "|/usr/sbin/sendmail -oi -t ")
+    or die "Can't fork for sendmail: $!\n";
+print SENDMAIL <<"EOF";
+To: $NOTIFY
+Subject: $Subject
+Reply-to: $FROM
+
+$Report
+EOF
+close(SENDMAIL);
+
+exit;

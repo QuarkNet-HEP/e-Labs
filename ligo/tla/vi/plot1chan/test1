@@ -1,0 +1,13 @@
+#!/bin/sh  -x
+#
+# test 1 - Simplest test of plotting one DMT channel
+#
+
+GPSepoch=315964800		# start of GPS time, in Unix time 
+NOW=`date -u +%s`
+GPSend=$(( $NOW - $GPSepoch ))
+GPSstart=$(( $GPSend - 24*3600 ))
+
+./plot1chan.sh test1_$$ $GPSstart $GPSend H0:DMT-BRMS_PEM_LVEA_SEISZ_0.1_0.3Hz.mean GMT 
+
+##

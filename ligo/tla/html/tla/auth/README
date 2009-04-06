@@ -1,0 +1,9 @@
+The sole purpose of this subdirectory is to trigger user
+authentication via HTTP Basic Authentication (using the browser).
+We save the credentials in the _SESSION and that is considered
+enough proof of authentication on the rest of the site.
+
+There must be a .htaccess file in this directory (or the equivalent
+in the server configuration for this directory) to trigger the
+authentication.   
+
