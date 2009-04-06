@@ -1,0 +1,41 @@
+#!/bin/human   (running this through /bin/sh would probably work)
+#
+# Configuration used by Eric Myers to build OpenSSL 0.9.8h 
+#   - on grendel.spy-hill.net on 30 June 2008
+#   - on alvarez.spy-hill.net on 30 June 2008
+#   - on www13.i2u2.org on 30 June 2008
+#   - on data1.i2u2.org on 30 June 2008
+#   - on www13.i2u2.org on 04 Nov 2008
+#
+# Download source code from http://www.openssl.org/source
+#
+# The working directory is /usr/local/openssl (not /usr/local/ssl)
+# Configuration file openssl.conf is in /usr/local/openssl
+# Executables are put in /usr/local/bin
+# Library files are put in /usr/local/lib
+# Header files are put in /usr/local/include/openssl
+#
+# Change PREFIX from /usr/local to install somewhere else.
+#
+# Eric Myers <myers@spy-hill.net> - 30 June 2008
+# @(#) $Id: build_openssl,v 1.6 2008/12/18 19:36:39 myers Exp $
+#######################################################################
+
+# Set PREFIX to where you want things to be installed (see above)
+
+##PREFIX=$HOME/local
+PREFIX=/usr/local
+
+./config --prefix=$PREFIX  --openssldir=${PREFIX}/openssl no-shared zlib
+[ $? -ne 0 ] && exit $?
+
+make 
+[ $? -ne 0 ] && exit $?
+
+make test
+[ $? -ne 0 ] && exit $?
+
+echo 
+echo "Now you can say \`make install\` to install under $PREFIX"
+
+#EOF#

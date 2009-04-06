@@ -1,0 +1,115 @@
+#!/bin/human
+#
+# These are the steps required to start Moodle installation from scratch,
+# using MySQL database on the local machine.  For variations and
+# details see  http://docs.moodle.org/en/Installing_Moodle
+#
+# Most of the Moodle configuration is done via web server the first
+# time you connect to the new site, so this is just what I did to
+# get it running on the web server, to prime the pump.
+#
+# Requirements:  
+#		 1) Apache web server
+#                2) MySQL database server
+#		 3) PHP support (though not to run this script)
+
+# Top level directory for the site installation:
+#
+MOODLE_TOP_DIR="/opt/moodle"  
+
+# File upload directory (should not be served to web!)
+#
+MOODLE_UPLOAD_DIR="/opt/moodle/upload"
+
+# Database name, username, and password  (don't leave password in view)
+#
+MOODLE_DB_NAME="moodle"
+MOODLE_DB_USER="moodler"
+MOODLE_DB_PASS="XXXXXXX"
+
+# Apache configuration. We put site configuration in
+#   this file, and the httpd.conf either has to Include it, or
+#   you have to make some other arrangements to add it to the config.
+#  (My httpd.conf loads all *.conf files from conf/local.d/ )
+#   Edit the file APACHE_CONF after it's created.
+
+#
+APACHE_CONF_DIR="/usr/local/apache/conf/local.d"
+APACHE_USER="apache"       
+
+
+
+echo "Moodle Bootstrap: create web configuration and database. "
+echo "======================================================== "
+echo " "
+
+
+####################
+# Apache Web Server
+####################
+
+APACHE_CONF=$APACHE_CONF_DIR/moodle.conf
+
+echo "* Apache server configuration file: $APACHE_CONF "
+
+cat <<EOF >$APACHE_CONF
+# Moodle Site configuration for `hostname`
+#
+# @(#) Installed by $USER on `date`
+######################################################
+
+   Alias /moodle  $MOODLE_TOP_DIR
+
+   # Everything is served from one directory
+
+   <Directory "$MOODLE_TOP_DIR">
+       Options Indexes FollowSymLinks IncludesNoExec
+       AllowOverride AuthConfig Indexes Options Limit
+       Order allow,deny
+       Allow from all
+   </Directory>
+
+   # Except, the data directory must not be accessible directly via the web,
+   # but needs to be writeable by the web server
+
+   <Directory "$MOODLE_UPLOAD_DIR">
+       Options Indexes FollowSymLinks IncludesNoExec
+       AllowOverride AuthConfig Indexes Options Limit
+       Order deny,allow
+       Deny from all
+   </Directory>
+
+##
+EOF
+
+chown $APACHE_USER $MOODLE_UPLOAD_DIR  || exit $?
+
+echo "*   be sure to inspect/edit the file $APACHE_CONF "
+echo " "
+
+
+####################
+# Database Server
+####################
+
+echo "* MySQL: creating moodle database.  "
+echo "*   Please use the 'root' password for the database server. "
+
+cat <<EOF >/tmp/moodle.sql
+CREATE DATABASE moodle;
+ALTER DATABASE moodle DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,INDEX,ALTER 
+      ON moodle.* TO $MOODLE_DB_USER@localhost
+      IDENTIFIED BY '$MOODLE_DB_PASS' ;
+QUIT;
+EOF
+
+mysql -u root -p </tmp/moodle.sql  || exit $?
+
+echo "*   created moodle database and user $MOODLE_DB_USER "
+echo " "
+
+rm /tmp/moodle.sql
+
+exit
+

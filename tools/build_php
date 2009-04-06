@@ -1,0 +1,113 @@
+#!/bin/human   (running this through /bin/sh would probably work)
+#
+# Configuration used by Eric Myers to build PHP-5.2.6 in July 2008
+# Configuration used by Eric Myers to build PHP-5.2.4 in May 2008
+# Configuration used by Eric Myers to build PHP-5.2.3
+#		(was for www13.i2u2.org on 29 August 2007)
+#		for grendel.spy-hill.net on 29 October 2007
+#		for alvarez.spy-hill.net on 11 November 2007
+#
+#
+# Download source code from http://www.php.net
+#
+# Download pecl_http package from http://pecl.php.net/package/pecl_http
+# and unpack the tarball and move it to become ext/http 
+# We now check that this is in place first.
+#
+# Executables are put in /usr/local/bin
+# Library files are put in /usr/local/lib
+# Configuration file php.ini is in /usr/local/etc
+#
+# As you can see below, there are tests to verify that GD is loaded
+# with proper support for common image file formats.
+#
+#     need to add these, and OpenSSL
+#
+#
+# Eric Myers <myers@spy-hill.net> - 27 August 2007
+# @(#) $Id: build_php,v 1.9 2008/11/06 17:13:55 myers Exp $
+#######################################################################
+
+##PREFIX=$HOME/local
+PREFIX=/usr/local
+
+# Need curl
+#
+X=`which curl`
+if [ x$X = "x" ]; then
+  echo "Building PHP requires cURL, which doesn't seem to be installed."
+  echo "You can get the source code from http://curl.haxx.se/ "
+  exit 2
+fi
+
+
+# Need to have http extension in place
+#
+if [ ! -d ext/http ]; then
+  echo "You need to unpack the pecl_http package as ext/http first."
+  echo "You can get pecl_http from http://pecl.php.net/package/pecl_http "
+  exit 1
+fi
+
+# Need to rebuild configure script to add pecl_http extension 
+# (unless already done so)
+#
+if [ ! -f .configure.rebuilt ]; then 
+  rm configure
+  ./buildconf --force
+  touch .configure.rebuilt
+fi
+
+./configure --prefix=$PREFIX  --with-apxs2=/usr/local/sbin/apxs \
+	    --with-config-file-path=$PREFIX/etc \
+	    --with-exec-dir=$PREFIX/php/bin \
+	    --enable-force-cgi-redirect --enable-discard-path --with-readline \
+	    --with-mysql --without-pgsql --with-openssl --with-curl \
+	    --enable-ftp --enable-soap --enable-http --without-readline \
+            --with-gd --enable-gd-native-ttf  --with-jpeg-dir=/usr/lib/ \
+	    --with-png-dir=/usr/lib/ --with-xpm-dir=/usr/lib/ --with-ttf
+
+[ $? != 0 ] && exit $?
+
+make &&  exit $?
+ 
+if [ ! -x sapi/cli/php ]; then 
+  echo "* "
+  echo "* Did not build CLI executable.  Ooops. "
+  exit 4
+fi
+
+# List of capabilities
+#
+sapi/cli/php <<EOF
+<?php
+\$php_version = phpversion();
+echo "PHP version: \$php_version \n";
+
+\$gd_info=gd_info();
+\$gd_version = \$gd_info["GD Version"];
+echo "GD version: \$gd_version \n";
+
+if( ! \$gd_info["JPG Support"] ){
+    echo "Warning! JPG Support is missing! \n";
+}
+
+if( ! \$gd_info["GIF Create Support"] ){
+    echo "Warning! GIF Create Support is missing! \n";
+}
+
+echo "Loaded Extensions: ";
+\$x = get_loaded_extensions();
+foreach(\$x as \$name){
+   echo "\$name, ";
+}
+echo "\n";
+
+?>
+EOF
+
+echo " "
+echo " Now you can say \`make install\` to install under $PREFIX "
+echo " "
+
+#EOF#

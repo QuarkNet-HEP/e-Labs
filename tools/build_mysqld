@@ -1,0 +1,194 @@
+#!/bin/human   (running this through /bin/sh may or may not work)
+#
+# Configuration used by Eric Myers to build MySQL 5.0.67
+# for www10.i2u2.org on 6 November 2008
+#
+# Realy should have a 'mysql' user to run under, but there wasn't one.
+#
+# Executables are put in /usr/local/mysql/bin  (or $PREFIX/bin )
+# Configuration file is /usr/local/mysql/etc/my.cnf (or $PREFIX/etc)
+#   as well as /etc/my.cnf or ~/.my.cnf
+# Data is in whatever DATADIR is set to below.  Check it!
+#
+# Eric Myers <myers@spy-hill.net> - 27 August 2007
+# @(#) $Id: build_mysqld,v 1.9 2008/11/07 16:20:01 myers Exp $
+#######################################################################
+
+# All executables etc (except data) are stored under $PREFIX
+#
+#PREFIX=$HOME/local/mysql
+PREFIX=/usr/local/mysql
+
+# Default name of the user to run under.  This should be 'mysql', 
+#  but we don't have that yet.  Don't run as root if you can help it. 
+#
+USER=postgres
+
+X=`egrep "^${USER}:" /etc/passwd`
+if [ x$X = "x" ]; then
+  echo "* Database user $USER does not exist! "
+  echo "* you better fix that, eh?  (Press ^C to exit now) "
+  read X
+fi  
+
+
+# Default top level data directory.  InnoDB and other config data are
+# also kept there.
+#
+#DATADIR=/data/mysql
+DATADIR=/var/lib/mysql
+
+if [ ! -d $DATADIR ]; then
+  echo "* Databse data directory $DATADIR not found. "
+  echo "* You better fix that, eh?  (Press ^C to exit now) " 
+  read X
+fi
+
+
+#########################################################
+# BUILD:
+
+
+./configure --prefix=$PREFIX --with-server --with-innodb  --with-openssl \
+		--with-unix-socket-path=/var/run/mysqld/mysqld.sock \
+		--with-charset=latin1 --enable-thread-safe-client \
+		--with-comment --without-debug --with-docs  \
+	        --with-mysqld-user=$USER \
+		--datadir=$DATADIR 
+make
+
+[ $? != 0 ] && exit $?
+
+echo " "
+echo "Build suceeded.  Read the rest of the script and follow the "
+echo "instructions there to complete the installation. "
+echo "  "
+exit 
+
+
+#########################################################
+# INSTALL:
+#
+# Assuming that it all worked, here are the steps for installation,
+# as described in the file INSTALL-SOURCE in the source distribution, 
+# but with discussion and changes which match our installation.  
+# See also http://dev.mysql.com/doc/refman/5.0/en/unix-post-installation.html
+
+# First, if the build above worked then (as root) say:
+
+make install
+
+
+# Next install the master configuration file, either /etc/my.cnf
+# or $PREFIX/etc/my.cnf  (mysqld reads both!)   You may have to create
+# the directory $PREFIX/etc
+
+mkdir $PREFIX/etc
+
+
+# If there is not an existing one check for one in our CVS.
+# If none can be found copy support-files/my-large.cnf to /etc/my.cnf
+
+cp ~myers/i2u2/tools/my.cnf $PREFIX/etc
+
+# Edit the configuration file, don't just assume it's correct.
+# Note the directory specifications in this file override whatever
+# is mentioned below for log and run directories, etc.
+
+
+# Make sure the data directory exists and has the correct permissions,
+# and make sure it's listed properly in my.cnf!
+
+if [ ! -d $DATADIR ]; then
+  echo "* Databse data directory $DATADIR not found. "
+  exit 2
+fi
+
+X=`grep $DATADIR /etc/my.cnf $PREFIX/etc/my.cnf $HOME/.my.cnf`
+if [ x$X = "x" ]; then
+  echo "* Data directory not found in config file. "
+  exit 3
+fi
+
+
+# Make sure the data directory exists 
+# permissions:
+
+mkdir $DATADIR
+chown -R $USER $DATADIR
+chgrp -R mysql $DATADIR
+
+
+# Make sure the log directory (probably /var/log/mysql exists)  
+# and has the proper permissions:
+
+chown $USER /var/log/mysql
+chgrp mysql /var/log/mysql
+
+
+# Make sure /var/run/mysqld is owned by the database user
+# so that mysqld can create the sockets there  
+
+chown $USER /var/run/mysqld
+chgrp mysql /var/run/mysqld
+
+
+##
+# The first time you install, you need to run the initialization script.
+# Note! I found a bug in mysql 5.0.51 (& .67) where this looks for a 
+# script in $PREFIX/share or $PREFIX/share/mysql/ (which is correct), 
+# but `make install` had put it under $DATADIR/mysql.  Reported to 
+# bugs.mysql.com as bug #38828.  The workaround is:
+
+  mkdir $PREFIX/share
+  cp $DATADIR/mysql/*.sql $PREFIX/share
+
+# Then you can do the initialization step:
+
+cd $PREFIX
+$PREFIX/bin/mysql_install_db --user=$USER
+
+# (If you neglect the workaround steps above you'll get:
+#
+# FATAL ERROR: Could not find fill_help_tables.sql inside --basedir
+#
+# When using --basedir you must point either into a MySQL binary
+# distribution directory or a compiled tree previously populated
+# by 'make install'
+
+
+# Then start the server running for the first time:
+
+cd $PREFIX 
+$PREFIX/bin/mysqld_safe --user=$USER &
+
+
+#  You can test the MySQL daemon with mysql-test-run.pl
+#  cd mysql-test ; perl mysql-test-run.pl
+# but see comments about long log files in MySQL Manual (above)
+
+
+# After the server is running, secure the database by adding
+# a root password (for root in mysql, not Unix). 
+
+$PREFIX/bin/mysql_secure_installation
+
+
+##
+# To get the server to start as daemon at boot I did the following:
+
+mkdir /usr/local/mysql/init.d 
+cp support-files/mysql.server /usr/local/mysql/init.d
+ln -s /usr/local/init.d/mysql.server /etc/init.d/mysqld
+
+# Then you need to also set up the machine to run mysqld for
+# the initial run level.  This differs based on Linux distribution.
+# For Fedora/RedHat use chkconfig, but our servers are Debian/Ubuntu
+# so I don't yet understand.  Stay tuned.... 
+
+
+# Note also that I found a copy of mysql.server was also
+# put in $DATADIR/mysql by `make install`.  
+
+
+##EOF##

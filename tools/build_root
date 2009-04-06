@@ -1,0 +1,53 @@
+#!/bin/sh -x
+#
+# Build ROOT for Bluestone for I2U2
+#
+# Run this script from the top-level source directory.
+#
+# Philosophy: we want something portable so it can move around
+# The Grid, so disable everything you absolutely don't need.
+# But reflex appears to be necessary
+#
+# Works for ROOT 5.20.00, which is latest LIGO GDS version
+#
+#
+# Eric Myers <myers@spy-hill.net>  -   10 July 2007
+# @(#) $Id: build_root,v 1.3 2009/02/20 17:33:17 myers Exp $
+######################################################################
+
+# ROOT can be installed the old way, relative to ROOTSYS, or the newer
+# way, in a particular directory tree set by  --prefix=/usr/local/...
+# By setting ROOTSYS here we force the old relative way.
+
+export ROOTSYS=/tmp/root
+mkdir -p $ROOTSYS
+
+./configure --disable-shared --disable-xft --disable-xrootd \
+	    --disable-mysql  --disable-pgsql  --disable-sapdb \
+	    --disable-srp  --disable-rfio --disable-pythia6  \
+	    --disable-soversion --disable-krb5 --disable-ldap \
+	    --disable-ssl --disable-python \
+	    --disable-shadowpw \
+	    --enable-builtin-zlib --enable-builtin-pcre \
+   	    --enable-builtin-afterimage   --enable-builtin-ftgl \
+            --enable-builtin-freetype   
+
+[ $? != 0 ] && exit $?
+
+echo " "
+time make 
+if [ $? != 0 ]; then
+  echo "Make failed. RC=$?   Trying make -k ..."
+  echo " "
+  make -k
+  [ $? != 0 ] && exit $?
+fi
+
+echo " "
+echo "Build succeeded!  "
+echo "Now you need to be sure that ROOTSYS is properly set to the  "
+echo "real installation directory.   Then say  \`make install\`  " 
+echo " "
+exit
+
+##EOF#

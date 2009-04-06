@@ -1,0 +1,46 @@
+#!/bin/human   (running this through /bin/sh would probably work)
+#
+# Configuration used by Eric Myers to build Apache 2.2.4 
+# for www13.i2u2.org on 28 August 2007
+#
+# Obtain source code from  http://httpd.apache.org
+#
+# Executables are put in /usr/local/sbin or bin
+# Library files are put in /usr/local/lib
+# Everything else lives under /usr/local/apache
+# DSO modules are in /usr/local/apache/modules
+#
+# You have to build PHP separately, as a module.  See build_php.
+#
+# Eric Myers <myers@spy-hill.net> - 27 August 2007
+# @(#) $Id: build_apache,v 1.4 2008/12/18 20:10:08 myers Exp $
+#######################################################################
+
+#PREFIX=$HOME/local
+PREFIX=/usr/local
+
+# Just the modules we need (or might), and we'll only turn on the
+# ones we need right now.
+
+DSO_MODULES="log_io ssl cgi actions userdir asis \
+	filter mime_magic include expires rewrite \
+	proxy proxy_http proxy-balancer cache \
+	headers ident suexec info imagemap version \
+	dav dav-fs dave-lock "
+
+
+./configure --prefix=$PREFIX/apache --bindir=$PREFIX/bin \
+            --sbindir=$PREFIX/sbin  --libdir=$PREFIX/lib \
+            --mandir=$PREFIX/man    --infodir=$PREFIX/info \
+	    --with-mpm=prefork --enable-so \
+            --with-ssl=/usr/local  \
+	    --enable-mods-shared="$DSO_MODULES"
+
+make
+[ $? -ne 0 ] && exit $?
+
+echo "  "
+echo "Build completed for " `basename $PWD`
+echo "Now you can say \`make install\` to install under $PREFIX"
+
+##
