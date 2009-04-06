@@ -1,0 +1,9 @@
+This directory should not be publicly viewable.
+
+This directory contains files which support the viewable pages
+for LIGO and other I2U2 functions.  It is an interface between BOINC
+code and non-BOINC code.
+
+See also .../inc for pure BOINC include files.
+
+

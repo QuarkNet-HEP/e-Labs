@@ -1,0 +1,28 @@
+# robots.txt for i2u2.spy-hill.net
+#
+# Any URI's listed here should not be traversed by robots
+
+User-agent: *
+
+# googlebot was trying to use action=edit on the wiki.  Yikes!
+
+Disallow: library/*action=edit
+Disallow: cosmic/library/*action=edit
+
+# it's now the library
+Disallow: /glossary
+
+Disallow: /download
+Disallow: /upload
+Disallow: /cgi-bin
+Disallow: /images
+Disallow: /view
+Disallow: /slot
+Disallow: /sess
+Disallow: /img
+Disallow: /ops
+Disallow: /admin
+Disallow: *CVS*
+
+##
+
