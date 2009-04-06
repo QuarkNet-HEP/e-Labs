@@ -1,0 +1,5 @@
+This directory contains web server configuration for various
+components hosted on this machine.  Files ending in *.conf are
+loaded in alphanumeric order (hence the numeric prefix) by the
+main configuration file ../http.conf in the directory above.
+

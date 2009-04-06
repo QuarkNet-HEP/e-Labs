@@ -1,0 +1,7 @@
+#!/bin/sh
+
+/usr/local/bin/webalizer -c /usr/local/etc/webalizer.conf
+
+
+##EOF##
+

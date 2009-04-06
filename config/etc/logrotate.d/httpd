@@ -1,0 +1,31 @@
+# Rotate logs for /usr/local/apache
+#
+# @(#) Last changed: -EAM 02Apr2009
+######################################################################
+
+/usr/local/apache/logs/*_log {
+        weekly
+        missingok
+        rotate 104
+        compress
+        delaycompress
+        notifempty
+        create 640 root i2u2
+        sharedscripts
+        postrotate
+           /etc/init.d/httpd condrestart > /dev/null
+        endscript
+}
+
+/usr/local/apache/logs/*.log {
+        weekly
+        missingok
+        rotate 104
+        compress
+        delaycompress
+        notifempty
+        create 640 root i2u2
+        sharedscripts
+}
+
+##
