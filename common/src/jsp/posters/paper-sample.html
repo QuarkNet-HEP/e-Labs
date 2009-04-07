@@ -1,57 +1,12 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="../css/posters.css"/>
+		<title>Poster: Possible Particle Decays</title>
+	</head>
+	
+	<body id="display-poster" class="posters">
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -84,47 +39,59 @@ Bob Peterson<BR>
 <h2>Abstract</h2>
 <p>We grabbed the data from the WALTA telescope stand (19 August 2003) and probed it carefully for possible decays and their lifetime. We present the analysis and results of the study.</p>
 <h2>Methods and Materials</h2>
-<p>The detector was arranged in a muon telescope.This consisted of 3, 60x60 cm counters in channels 1,2,4 top to bottom, with the daq card set for:
-<BR>coincidences in channels 1,2<BR>veto in 4<BR>10 microsec gate width.<BR> (see the comments on the data file for this detail.)
-<p>We expected the trigger to collect charged particles that traversed the first two counters. Some of these decay, and one of the products is another charged particle. </p>
+<p>The detector was arranged in a muon telescope. This consisted of 3, 60x60 cm counters in channels 1,2,4 top to bottom, with the daq card set for:<br>
+
+ coincidences in channels 1,2 <br>
+
+veto in 4<br>
+
+10 microsecond gate width. <br>
+
+(see the comments on the data file for this detail.) <br>
+
+<br>We expected the trigger to collect charged particles that traversed the first two counters. Some of these decay, and one of the products is another charged particle. We looked for the amount of time betwen the arrival of the first particle and the observationl of the second. 
 
 
 
-We looked for the amount of time betwen the arrival of the first particle and the arrival of the second. 
+Our important analysis parameters were:<br>
 
+Coincidence level: 2<br>
 
+Check energy of 2nd pulse: No<br>
 
-Our important analysis parameters were:<BR>
+Gate width: 1 e<sup>-4</sup> seconds<br>
 
-Coincidence level: 2<BR>
+Number of Bins: 60<br>
 
-Check energy of 2nd pulse: No<BR>
+X-min of fit: 0.01<br>
 
-Gate width: 1 e-4 seconds<BR>
+X-max of fit: 200<br>
 
-Number of Bins: 60<BR>
+Fit all the first two parameters (Y-intercept and Lifetime) with the following initial guesses:<br>
 
-X-min of fit: 0.2<BR>
+Alpha: 494<br>
 
-X-max of fit: 20<BR>
+Lifetime: 2.0<br>
 
-Fit all three parameters with no initial guesses.</p>
+Background: 0.5<br></p>
 <h2>Results</h2>
-<p>We observed nearly 1000 candidate decays. The particle in our detector has a lifetime of 2.38076 +/- 0.1587  microseconds. We suspect that it is a muon, but want to collect more data before an announcement.</p>
+<p>We observed nearly 1000 candidate decays. The particle in our detector has a lifetime of 2.84089 +/- 0.06827  microseconds. We suspect that it is a muon, but want to collect more data before an announcement.<br>
+
+To see the provenance diagram associated with the plot, click on &#34;Show Provenance&#34; after you click on Figure 1 and see the plot.  The provenance diagram shows the different analysis steps and input parameters that were invoked to make the plot.</p>
 <h2>Figures</h2>
-<center><p><img name="IMGFIG1" src="users/AY2004/IL/Batavia/Fermilab/Jordan/fermigroup/cosmic/plots/newlifetime.png" alt="Figure1"></p>
-<p><strong><font size="2" face="Arial, Helvetica, sans-serif">The time between successive pulses in any one channel of the detector</font></strong></p>
-<p><img name="IMGFIG2" src="users/AY2004/IL/Batavia/Fermilab/Jordan/fermigroup/cosmic/plots/waltalifetimeplot_provenance.png" alt="Figure2"></p>
-<p><strong><font size="2" face="Arial, Helvetica, sans-serif">The DAG for our analysis.</font></strong></p>
-<p><img name="IMGFIG3" src="" alt="Figure3"></p>
+<center><p><img name="IMGFIG1" src="/elab/cosmic/users/AY2004/IL/Batavia/Fermilab/Jordan/fermigroup/cosmic/plots/savedimage-fermigroup-2009.0306.143249.0297.png" alt=""></p>
+<p><strong><font size="2" face="Arial, Helvetica, sans-serif">Figure 1. The time between successive pulses in any one channel of the detector</font></strong></p>
+<p><img name="IMGFIG2" src="" alt=""></p>
 <p><strong><font size="2" face="Arial, Helvetica, sans-serif"></font></strong></p>
-<p><img name="IMGFIG4" src="" alt="Figure4"></p>
+<p><img name="IMGFIG3" src="" alt=""></p>
 <p><strong><font size="2" face="Arial, Helvetica, sans-serif"></font></strong></p>
-<p><img name="IMGFIG5" src="" alt="Figure5"></p>
+<p><img name="IMGFIG4" src="" alt=""></p>
+<p><strong><font size="2" face="Arial, Helvetica, sans-serif"></font></strong></p>
+<p><img name="IMGFIG5" src="" alt=""></p>
 <p><strong><font size="2" face="Arial, Helvetica, sans-serif"></font></strong></p>
 </center>
 <h2>Discussion and Conclusions</h2>
-<p>The lifetime of the particle in the detector strongly indicates that it is a muon. Some of the muons do not have enough energy to travel through the counter. Those that do not, stop and then at decay into electrons (or positrons) and a pair of neutrinos. The entering muon creates a PMT pulse, and the charged decay product (electron or positron) creates the second pulse. Bins of time between pulses indicate a predominance of times that fit an exponential with decay constant of  2.38076 +/- 0.1587 microseconds. This closely matches the muon's lifetime.
+<p>The lifetime of the particle in the detector strongly indicates that it is a muon. Some of the muons do not have enough energy to travel through the counter. Those that do not, stop and then at decay into electrons (or positrons) and a pair of neutrinos. The entering muon creates a PMT pulse, and the charged decay product (electron or positron) creates the second pulse. Bins of time between pulses indicate a predominance of times that fit an exponential with decay constant of  2.84089 +/- 0.06827microseconds. This closely matches the muon's lifetime.<br>
 
 
 
@@ -133,8 +100,3 @@ We will continue looking for data to confirm or refute our finding in this preli
 </blockquote>
 </body>
 </html>
-
-
-
-</BODY>
-</HTML>
