@@ -22,8 +22,8 @@ public class UploadListener implements OutputStreamListener
     private HttpServletRequest request;
     private long delay = 0;
     private long startTime = 0;
-    private int totalToRead = 0;
-    private int totalBytesRead = 0;
+    private long totalToRead = 0;
+    private long totalBytesRead = 0;
     private int totalFiles = -1;
 
     public UploadListener(HttpServletRequest request, long debugDelay)
@@ -40,7 +40,7 @@ public class UploadListener implements OutputStreamListener
         updateUploadInfo("start");
     }
 
-    public void bytesRead(int bytesRead)
+    public void bytesRead(long bytesRead)
     {
         totalBytesRead = totalBytesRead + bytesRead;
         updateUploadInfo("progress");
