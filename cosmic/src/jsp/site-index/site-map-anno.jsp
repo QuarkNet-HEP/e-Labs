@@ -35,13 +35,11 @@
 <div id="content">
 <h1>Lost? Click on hotspots in this site map.</h1>
 <div align="center">
-<img src="../graphics/site-map.gif" width="670" height="524" border="0" alt="" usemap="#site_map">
+<img src="../graphics/site-map.gif" width="662" height="524" border="0" alt="" usemap="#site_map">
 
 <map name="site_map">
 <area shape="rect" alt="" coords="242,202,403,318" href="../home/">
-<!-- 
-<area shape="rect" alt="" coords="412,64,662,254" href="https://www18.i2u2.org/elab/cosmic/logbook/">
- -->
+<area shape="rect" alt="" coords="412,64,662,254" href="#" onclick="javascript:window.open('../jsp/showLogbook.jsp', 'log', 'width=800,height=600, resizable=1, scrollbars=1');return false;">
 <area shape="rect" alt="" coords="0,71,235,260" href="../assessment/index.jsp">
 <area shape="rect" alt="" coords="0,273,233,460" href="../posters/">
 <area shape="rect" alt="" coords="243,320,402,524" href="../data/">
