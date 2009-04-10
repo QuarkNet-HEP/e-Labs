@@ -33,100 +33,22 @@
 			</c:if>
 
 <div id="content">
-<h1>Find out what you can do under each tab.</h1>
+<h1>Lost? Click on hotspots in this site map.</h1>
+<div align="center">
+<img src="../graphics/site-map.gif" width="670" height="524" border="0" alt="" usemap="#site_map">
 
-
-
-<table border="0">
-	<tr>
-		<td valign="top">
-			<div id="left">
-				<div class="tab">
-					<span class="tabtitleHome"><a HREF="../home/">Home</a></span>
-					<div class="tabcontentsHome">
-					 	<h2>Homepage</h2>
-						<ul>
-							<li>Research topic.</li>
-						</ul>
-					</div>
-				</div>
-					
-
-				<div class="tab">
-					<span class="tabtitleUpload"><A HREF="../data/upload.jsp">Upload</a></span>
-					<div class="tabcontentsUpload">
-						<h2>Upload</h2>
-						<ul>
-							<li>Data</li>
-							<li>Geometry</li>
-						</ul>
-					</div>
-				</div>
-
-				<div class="tab">
-					<span class="tabtitlePoster"><A HREF="../posters/">Posters</a></span>
-					<div class="tabcontentsPoster">
-						<h2>Share Your Research</h2>
-						<ul>
-							<li>Create a Poster - Post results including graphs, notes, calculations.</li>
-							<li>Edit a Poster</li>
-							<li>View Posters - Review the work of others.</li>
-							<li>Search for Studies - Participate in a scientific dialog.</li>
-						</ul>
-					</div>
-				</div>
-         </div>
-         </td>
-         <td valign="top">
-			<div id="right">
-				<div class="tab">
-					<span class="tabtitleLibrary"><A HREF="../library/">Library</a></span>
-					<div class="tabcontentsLibrary" style="background-color: #ccffff;">
-						<h2>Use Online Library</h2>
-						<ul>
-							<li>Review Research Basics</li>
-							<li>Use Study Guide with Milestones and References</li>
-							<li>Online Resources: Physicists, Research Groups, Tutorials, Animations</LI>
-							<li>The Big Picture</LI>
-							<li>FAQs</LI>
-							<li>Site Help</LI>
-						</ul>
-					</div>
-				</div>
-					
-				<div class="tab">
-					<span class="tabtitleData"><A HREF="../data/">Data</a></span>
-					<div class="tabcontentsData" style="background-color: #99CCff;">
-						<h2>Analyze and Manage Data</h2>
-						<ul>
-							<li>Analysis - Physics studies.</li>
-							<li> Management - View and delete files.</LI>
-						</ul>
-					</div>
-				</div>
-					
-				<div class="tab">
-					<span class="tabtitleAssess"><A HREF="../assessment/">Assessment</a></span>
-					<div class="tabcontentsAssess">
-						<h2>Assess your work</h2>
-						<ul>
-							<li>Rubric</li>
-						</ul>
-					</div>
-				</div>
-         </div>
-         </td></tr>
- 
-
-		<c:if test="${param.display == 'static'}">
-  			<tr>
-  				<td colspan="2" align="center">
-  					<A HREF="javascript:window.close();">Close Window and Go Back to Getting Started Page</A>
-  				</td>
-  			</tr>
-		</c:if>
-
-     </table>
+<map name="site_map">
+<area shape="rect" alt="" coords="242,202,403,318" href="../home/">
+<!-- 
+<area shape="rect" alt="" coords="412,64,662,254" href="https://www18.i2u2.org/elab/cosmic/logbook/">
+ -->
+<area shape="rect" alt="" coords="0,71,235,260" href="../assessment/index.jsp">
+<area shape="rect" alt="" coords="0,273,233,460" href="../posters/">
+<area shape="rect" alt="" coords="243,320,402,524" href="../data/">
+<area shape="rect" alt="" coords="408,269,662,458" href="../data/upload.jsp">
+<area shape="rect" alt="" coords="242,0,402,202" href="../library/">
+</map>
+</div>
 
 			</div>
 			<!-- end content -->	
