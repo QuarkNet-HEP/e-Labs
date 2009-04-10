@@ -7,9 +7,9 @@
 		<li><a href="../sensors">LIGO Sensors</a>
 		<li><a href="../info/related-data.jsp">Related Data</a>
 		<li><a href="/glossary/index.php/LIGO_Glossary">LIGO Glossary</a>
-	  <li><a href="/ligo/tla/">Bluestone</a>
-     <li><a href="../data/tutorial.jsp">Tutorial</a>
-</ul>
+		<li><a href="/ligo/tla/">Bluestone</a>
+		<li><a href="/ligo/tla/tutorial.php">Tutorial</a>
+	</ul>
 	<img src="../graphics/lho_aerial.jpg" width="120" height="130" />
 	<img src="../graphics/llo_aerial.jpg" width="120" height="130" />
 </div>
