@@ -61,7 +61,10 @@
 				self.rcb(null, "Update failed: " + err);
 			}
 			catch(err2) {
-				window.alert("Callback failed to process error message\n" + err + "\n" + err2);
+				//Probably should write something out to the page indicating that updates
+				//Are no longer being monitored
+				//window.alert("Callback failed to process error message\n" + err + "\n" + err2);
+				self.stopUpdates(); 
 			}
 		}
 		
