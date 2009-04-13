@@ -3,7 +3,7 @@
      <title>Simple Graph: background</title>
 </head>
 
-<link rel="stylesheet"  href="include/styletut.css" type="text/css">
+<link rel="stylesheet"  href="../include/styletut.css" type="text/css">
 <body onLoad="focus()">
   
 <I><P>
@@ -32,7 +32,7 @@ Graphs and plots comprise the scientist's prime means to compactly communicate t
 <P>
 <b>ACTUAL (MEASURED) DATA</b>
     <UL>
-    <LI> Plotted data points marked by symbol point protectors: <IMG SRC="graphics/box.gif">, <IMG SRC="graphics/Delta.gif">,  <IMG SRC="graphics/diamond.gif">, <IMG SRC="graphics/circ.gif">, etc. Each different symbol indicates an alternate, independent variable.  When data points fall near each other, stack symbols; do not overdraw.
+    <LI> Plotted data points marked by symbol point protectors: <IMG SRC="../graphics/box.gif">, <IMG SRC="../graphics/Delta.gif">,  <IMG SRC="../graphics/diamond.gif">, <IMG SRC="../graphics/circ.gif">, etc. Each different symbol indicates an alternate, independent variable.  When data points fall near each other, stack symbols; do not overdraw.
     <LI> Data points are connected by straight lines for relational reference only.  Do not imply data which do not exist by drawing a "smooth" curve through data points.  Reserve continuous curves for theoretical (predicted) data.  Use superscripts on data symbols for special notes.
     </UL>
 
