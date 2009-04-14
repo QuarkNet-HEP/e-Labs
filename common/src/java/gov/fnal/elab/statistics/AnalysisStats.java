@@ -82,6 +82,11 @@ public class AnalysisStats {
             while (line != null) {
                 String[] e = line.split("\\s");
                 Date d;
+                if (e.length < 2) {
+                    System.out.println("Invalid line (missing timestamp): " + line);
+                    line = br.readLine();
+                    continue;
+                }
                 try {
                     d = DF.parse(e[1]);
                 }
