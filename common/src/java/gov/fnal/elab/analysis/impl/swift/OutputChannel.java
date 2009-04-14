@@ -24,6 +24,7 @@ public class OutputChannel extends AbstractWriteOnlyVariableArguments {
 
 	public OutputChannel(String prefix) {
 		sb = new StringBuffer();
+		this.prefix = prefix;
 	}
 
 	public String getPrefix() {
