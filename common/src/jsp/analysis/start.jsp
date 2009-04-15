@@ -66,6 +66,7 @@
 	    String workflowRunMode = request.getParameter("runMode");
 		if (workflowRunMode != null) {
 			run.setAttribute("runMode", workflowRunMode);
+			analysis.setAttribute("runMode", workflowRunMode);
 		}
 	    
 	    AnalysisManager.registerAnalysisRun(elab, user, run);

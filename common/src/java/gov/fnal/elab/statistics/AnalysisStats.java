@@ -76,43 +76,52 @@ public class AnalysisStats {
     public SortedMap[] load() throws IOException {
         SortedMap[] m = initializeMaps();
         File f = new File(LOG);
-        BufferedReader br = new BufferedReader(new FileReader(f));
-        String line = br.readLine();
-        while (line != null) {
-            String[] e = line.split("\\s");
-            Date d;
-            try {
-                d = DF.parse(e[1]);
-            }
-            catch (ParseException e1) {
-                System.out.println("Error parsing analysis log line: " + line);
+        if (f.exists()) {
+            BufferedReader br = new BufferedReader(new FileReader(f));
+            String line = br.readLine();
+            while (line != null) {
+                String[] e = line.split("\\s");
+                Date d;
+                if (e.length < 2) {
+                    System.out.println("Invalid line (missing timestamp): " + line);
+                    line = br.readLine();
+                    continue;
+                }
+                try {
+                    d = DF.parse(e[1]);
+                }
+                catch (ParseException e1) {
+                    System.out.println("Error parsing analysis log line: "
+                            + line);
+                    line = br.readLine();
+                    continue;
+                }
+                Integer type = (Integer) eventKeys.get(e[0]);
+                if (type == null) {
+                    System.out.println("Unknown event type: " + e[0]);
+                    line = br.readLine();
+                    continue;
+                }
+                switch (type.intValue()) {
+                    case RAW_DATA:
+                        m[RAW_DATA].put(d, new Entry(e[2].split(",").length));
+                        break;
+                    case SITE:
+                    case TYPE:
+                    case JOB_HOST:
+                        m[type.intValue()].put(d, new Entry(e[2]));
+                        break;
+                    case SWIFT_SUCCESS:
+                        m[SWIFT_SUCCESS].put(d, new Entry(Integer
+                                .parseInt(e[2])));
+                        break;
+                    default:
+                        m[type.intValue()].put(d, new Entry(0));
+                }
                 line = br.readLine();
-                continue;
             }
-            Integer type = (Integer) eventKeys.get(e[0]);
-            if (type == null) {
-                System.out.println("Unknown event type: " + e[0]);
-                line = br.readLine();
-                continue;
-            }
-            switch (type.intValue()) {
-                case RAW_DATA:
-                    m[RAW_DATA].put(d, new Entry(e[2].split(",").length));
-                    break;
-                case SITE:
-                case TYPE:
-                case JOB_HOST:
-                    m[type.intValue()].put(d, new Entry(e[2]));
-                    break;
-                case SWIFT_SUCCESS:
-                    m[SWIFT_SUCCESS].put(d, new Entry(Integer.parseInt(e[2])));
-                    break;
-                default:
-                    m[type.intValue()].put(d, new Entry(0));
-            }
-            line = br.readLine();
+            timestamp = f.lastModified();
         }
-        timestamp = f.lastModified();
         calculateCummulativeData(m);
         return m;
     }
@@ -217,7 +226,7 @@ public class AnalysisStats {
             bce.setRelativeSize((double) bce.getCount() / max);
         }
     }
-    
+
     private int getMax(List l) {
         int max = 1;
         Iterator i = l.iterator();
@@ -275,7 +284,7 @@ public class AnalysisStats {
         percentize(l);
         return l;
     }
-    
+
     public List getAnalysisTypes() throws IOException {
         int v;
         List l = new ArrayList();
@@ -359,7 +368,7 @@ public class AnalysisStats {
             Entry e = (Entry) i.next();
             increment(r, logRange(e.value));
         }
- 
+
         List l = new ArrayList();
         i = r.entrySet().iterator();
         int max = 1;
@@ -374,17 +383,18 @@ public class AnalysisStats {
         scale(l, max);
         return l;
     }
-    
+
     private String toInterval(Integer i) {
         if (i.intValue() < 3) {
             return i.toString();
         }
         else {
             double l2 = Math.floor(log2(i.intValue()));
-            return ((int) Math.pow(2, l2) + 1) + " - " + ((int) Math.pow(2, l2 + 1));
+            return ((int) Math.pow(2, l2) + 1) + " - "
+                    + ((int) Math.pow(2, l2 + 1));
         }
     }
-    
+
     private Integer logRange(int x) {
         if (false) {
             return new Integer(x);
@@ -393,11 +403,11 @@ public class AnalysisStats {
             return new Integer(1);
         }
         double l2 = Math.floor(log2(x)) + 1;
-        return new Integer((int) Math.pow(2, l2));  
+        return new Integer((int) Math.pow(2, l2));
     }
-    
+
     private static double log2(double x) {
-        return Math.log(x)/0.693147181;
+        return Math.log(x) / 0.693147181;
     }
 
     private static class Entry {

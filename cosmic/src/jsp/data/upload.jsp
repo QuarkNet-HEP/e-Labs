@@ -185,9 +185,10 @@ Re: the upload progress stuff
 
 
 <ul>
-	<li>Select the <strong>detector</strong> associated with the data you are uploading.
-	<li>Click <strong>Choose File/Browse</strong> to locate the data file on your computer.
-	<li>Click <strong>Upload</strong> to upload the file.
+	<li>Select the <strong>detector</strong> associated with the data you are uploading.</li>
+	<li>Click <strong>Choose File/Browse</strong> to locate the data file on your computer.</li>
+	<li>Click <strong>Upload</strong> to upload the file.</li>
+	<li><strong><em>Don't navigate away from this page</em></strong> until we've started analyzing your file!</li>
 </ul>
 
 <form name="uploadform" id="upload-form" method="post" enctype="multipart/form-data" onSubmit="startProgress()">

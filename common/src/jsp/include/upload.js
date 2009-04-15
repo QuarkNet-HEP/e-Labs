@@ -29,7 +29,7 @@ function updateProgress(uploadInfo)
 
         document.getElementById('progressBarBoxContent').style.width = parseInt(progressPercent * 3.5) + 'px';
 
-        window.setTimeout('refreshProgress()', 100);
+        window.setTimeout('refreshProgress()', 1000);
     }
     else
     {
@@ -49,6 +49,6 @@ function startProgress()
     document.getElementById('uploadbutton').disabled = true;
 
     // wait a little while to make sure the upload has started ..
-    window.setTimeout("refreshProgress()", 150);
+    window.setTimeout("refreshProgress()", 3000);
     return true;
 }

@@ -43,11 +43,10 @@ import org.griphyn.vdl.util.VDL2Config;
  * Runs analyses with Swift. Doble Yay!
  */
 public class SwiftAnalysisExecutor implements AnalysisExecutor {
-    private static final Map trees, progress;
+    private static final Map trees;
 
     static {
         trees = new HashMap();
-        progress = new HashMap();
     }
 
     protected synchronized static ElementTree getTree(Elab elab, String file)
@@ -67,8 +66,6 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
         Run run = new Run(analysis, elab, outputDir);
         return run;
     }
-
-    private static ProgressTracker pTracker = new ProgressTracker();
 
     public class Run extends AbstractAnalysisRun implements Serializable {
         private String runDir, runDirUrl, runID, runMode;
@@ -106,7 +103,6 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 ec = new VDL2ExecutionContext(tree, projectName);
                 ec.setArguments(argv);
                 out = new OutputChannel(runID);
-                out.setPattern("PROGRESS_MARKER");
                 ec.setStderr(out);
                 ec.setStdout(out);
                 ec.setRunID(runID);
@@ -284,10 +280,6 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 }
                 else {
                     log("SWIFT_SUCCESS");
-                    if (out.getPatternCounter() != 0) {
-                        pTracker.setTotal(getAnalysis().getType(), out
-                                .getPatternCounter());
-                    }
                     File[] f = new File(runDir).listFiles(new FileFilter() {
                         public boolean accept(File pathname) {
                             return pathname.getName().endsWith(".dot");
@@ -306,9 +298,8 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 this.ec = null;
             }
             else {
-                int total = pTracker.getTotal(getAnalysis().getType());
-                if (total != -1) {
-                    setProgress(((double) out.getPatternCounter()) / total);
+                if (out.getTotal() != 0) {
+                    setProgress((double) out.getCurrent() / out.getTotal());
                 }
             }
         }
@@ -329,12 +320,12 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
             boolean on = false;
             while (st.hasMoreTokens()) {
                 String line = st.nextToken().trim();
-                if (line.startsWith("STDOUT:")) {
+                if (line.startsWith("stdout.txt:")) {
                     on = false;
                 }
-                else if (line.startsWith("STDERR: ")) {
+                else if (line.startsWith("stderr.txt: ")) {
                     on = true;
-                    line = line.substring("STDERR: ".length());
+                    line = line.substring("stderr.txt: ".length());
                 }
                 if (on) {
                     sb.append(line);

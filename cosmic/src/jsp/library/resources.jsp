@@ -69,7 +69,7 @@
 							</li>
 							<c:if test="${user.upload}">
 					            <li>
-									<a href="../jsp/geoInstructions.jsp">Updating Geometry Tutorial</a>
+									<a href="../geometry/tutorial.jsp">Updating Geometry Tutorial</a>
 									 - Learn how to properly input the layout of your detector.
 								</li>
 							</c:if>
@@ -100,7 +100,7 @@
 							</li>
 							<li>
 								<a href="http://gridcafe.web.cern.ch/gridcafe/">The Grid Cafe</a>
-								- An introduction to the grid.
+								- An introduction to the grid. From there, go to <a href="http://www.gridtalk.org/">Grid Talk</a> where you can read <a href="http://www.gridtalk.org/briefings.htm">Grid Briefings</a> and explore the <a href="http://www.gridguide.org/">Grid Guide</a>.
 							</li>
 							<li>
 								<a href="http://www.tryscience.org/grid/home.html" target="activity">Grids for Kids at TryScience</a>
@@ -109,6 +109,10 @@
 							<li>
 								<a href="http://farweb.minos-soudan.org/events/LiveEvent.html" target="activity">MINOS</a>
 								- Physicists detect cosmic rays in their neutrino detectors.
+							</li>
+							<li>
+								<a href="http://www.symmetrymagazine.org/cms/?pid=1000688">Cosmic Weather Gauges</a>
+								- Cosmic rays and upper atmospheric temperatures.
 							</li>
 						</ul>
 						
@@ -123,11 +127,11 @@
 						<h2>Professional Sites (Very Advanced)</h2>
 						<ul class="simple">
 							<li>
-								<a href="http://ik1au1.fzk.de/~heck/corsika/">CORSIKA</a>
+								<a href="http://www-ik.fzk.de/corsika/">CORSIKA</a>
 								- An air shower simulation program
 							</li>
 							<li>
-								<a href="http://wwwasd.web.cern.ch/wwwasd/geant4/geant4.html">GEANT4</a>
+								<a href="http://cern.ch/geant4">GEANT4</a>
 								- A toolkit for simulating the passage of particles through matter
 							</li>
 							<li>
@@ -200,7 +204,7 @@
 							</li>
 							<li>
 								<a href="../flash/DAQII.html">DAQII</a>
-								- How the DAQII board works. <strong>Has SOUND.</strong>
+								- How the DAQII board works. Rollovers provide more information on the board and the format of the data. <strong>Has SOUND.</strong>
 							</li>
 						</ul>
 					</div>

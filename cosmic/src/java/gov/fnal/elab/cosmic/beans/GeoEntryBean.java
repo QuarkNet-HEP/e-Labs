@@ -1,6 +1,8 @@
 package gov.fnal.elab.cosmic.beans;
 
 import gov.fnal.elab.cosmic.Geometry;
+import gov.fnal.elab.util.ElabUtil;
+import gov.fnal.elab.util.NanoDate;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -40,7 +42,7 @@ public class GeoEntryBean implements Serializable {
     }
 
     private void addError(String err) {
-        if (errors != null) {
+        if (errors != null && !errors.contains(err)) {
             errors.add(err);
         }
     }
@@ -58,16 +60,13 @@ public class GeoEntryBean implements Serializable {
         julianDay = s;
         if (s != null && !s.equals("")) {
             try {
-                int[] tmp = Geometry.jdToGregorian(Double
+                NanoDate nd = Geometry.jdToGregorian(Double
                         .parseDouble(julianDay));
-                calendar = new GregorianCalendar(tmp[2], tmp[1] - 1, tmp[0],
-                        tmp[3], tmp[4]);
+                calendar = new GregorianCalendar();
                 calendar.setTimeZone(UTC);
-                int minRounded = Math.round((float) tmp[5] / 60); // round
-                                                                    // seconds
-                                                                    // to
-                                                                    // nearest
-                                                                    // minute
+                calendar.setTime(nd);
+                // round seconds to nearest minute
+                int minRounded = Math.round((float) (nd.getTime() % (60 * 1000)) / 60 / 1000); 
                 calendar.add(Calendar.MINUTE, minRounded);
             }
             catch (NumberFormatException e) {
@@ -754,13 +753,15 @@ public class GeoEntryBean implements Serializable {
     private GregorianCalendar getCalendar() {
         if (calendar == null) {
             calendar = new GregorianCalendar();
+            calendar.setTimeZone(UTC);
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
         }
         return calendar;
     }
 
-    private static final NumberFormat JD_FORMAT = new DecimalFormat("0.0");
+    // you need about 4 decimals to get minute resolution
+    private static final NumberFormat JD_FORMAT = new DecimalFormat("0.0000");
 
     private void updateJulianDay() {
         Calendar calendar = getCalendar();
@@ -769,7 +770,7 @@ public class GeoEntryBean implements Serializable {
         int year = calendar.get(Calendar.YEAR);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
-        double jd = Geometry.gregorianToJD(day, month, year, hour, minute);
+        double jd = ElabUtil.gregorianToJulian(year, month, day, hour, minute, 0);
         this.julianDay = JD_FORMAT.format(jd);
     }
 

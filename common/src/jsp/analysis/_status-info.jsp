@@ -42,7 +42,9 @@
 									<h1>The study failed to run properly</h1>
 									<h2><%= message %></h2>
 									<p>
-										Try running the <a href="${run.attributes.onError}?${run.analysis.encodedParameters}">analysis</a> with different parameters.
+										Try running the 
+										<a href="${run.attributes.onError}?${run.analysis.encodedParameters}&runMode=${run.analysis.attributes.runMode}">analysis</a>
+										with different parameters.
 									</p>
 								<%
 							}
@@ -85,6 +87,7 @@
 						</table>
 						Elapsed time: <span id="elapsed-time">${run.formattedRunTime}</span>; 
 						estimated: ${run.formattedEstimatedRunTime}
+						<div id="error-text" style="background: #ffaf70"></div>
 						
 						
 						<%@ include file="../analysis/async-update.jsp" %>
@@ -104,13 +107,17 @@
 								self.setTimeout(smoothProgress, 20);
 							}
 							
-							function update(data) {
-								if (data["error"] != null) {
+							function update(data, error) {
+								if (error != null) {
+									var diverr = document.getElementById("error-text");
+									diverr.innerHTML = error;
+									setTimeout('window.location="../analysis/status.jsp?id=${run.id}"', 1000);
+								}
+								else if (data["error"] != null) {
 									stopUpdates()
 									window.location = "../analysis/status.jsp?id=${run.id}";
 								}
 								else if (data["status"] != null) {
-									
 									if (data["status"] == "Running") {
 										var percent = (data["progress"] * 99 + 1).toFixed(0);
 										document.progressGoal = percent;

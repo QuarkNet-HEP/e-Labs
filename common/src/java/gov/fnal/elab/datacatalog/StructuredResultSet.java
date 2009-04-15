@@ -5,7 +5,6 @@ package gov.fnal.elab.datacatalog;
 
 import gov.fnal.elab.datacatalog.query.ResultSet;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,6 +15,7 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import com.mallardsoft.tuple.*;
 import org.apache.axis.types.Day;
 
 /**
@@ -24,22 +24,21 @@ import org.apache.axis.types.Day;
  * {@link School} -&gt; {@link Month} -&gt; {@link Day} -&gt; {@link File}
  */
 public class StructuredResultSet {
-    private SortedMap schoolsSorted;
-    private Map schools;
+	private SortedMap<Triple<String, String, String>, School> schools; 
     private int dataFileCount;
     private String key, value, time;
     private java.util.Date startDate, endDate;
 
     public StructuredResultSet() {
-        schools = new HashMap();
+    	schools = new TreeMap();
     }
 
-    public School getSchool(String name) {
-        return (School) schools.get(name);
+    public School getSchool(String name, String city, String state) {
+    	return schools.get(new Triple<String, String, String>(name.toLowerCase(), city.toLowerCase(), state.toLowerCase()));
     }
 
-    public void addSchool(School school) {
-        schools.put(school.getName(), school);
+    public synchronized void addSchool(School school) {
+        schools.put(new Triple<String, String, String>(school.getName().toLowerCase(), school.getCity().toLowerCase(), school.getState().toLowerCase()), school);
     }
 
     public Collection getSchools() {
@@ -51,10 +50,7 @@ public class StructuredResultSet {
     }
 
     public synchronized Collection getSchoolsSorted() {
-        if (schoolsSorted == null) {
-            schoolsSorted = new TreeMap(schools);
-        }
-        return schoolsSorted.values();
+    	return this.getSchools();
     }
 
     public int getDataFileCount() {
@@ -110,7 +106,7 @@ public class StructuredResultSet {
     }
 
 
-    public static class School {
+    public static class School implements Comparable {
         private String name, city, state;
         private int blessed, stacked, dataFiles;
         private long events;
@@ -203,10 +199,31 @@ public class StructuredResultSet {
         public long getEventCount() {
             return events;
         }
+		
+		public int compareTo(Object o) {
+			int retval = 0; 
+			if (o instanceof School) {
+				retval = name.compareToIgnoreCase(((School) o).getName());
+				if (retval == 0) {
+					retval = city.compareToIgnoreCase(((School) o).getCity()); 
+					if (retval == 0) {
+						retval = state.compareToIgnoreCase(((School) o).getState());
+					}
+				}
+			}
+			return retval; 
+		}
+		
+		public boolean equals(Object o) { 
+			if (o instanceof School) {
+				return (this.compareTo(o) == 0);
+			}
+			return false; 
+		}
     }
 
     public static class Month {
-        private SortedMap detectors;
+        private SortedMap<Integer, Detector> detectors;
         private String month;
         private Date date;
 
@@ -232,7 +249,7 @@ public class StructuredResultSet {
         	if (!detectors.containsKey(d)) {
         		this.addDetector(d);
         	}
-            ((Detector) detectors.get(d)).addFile(f);
+            detectors.get(d).addFile(f);
         }
         
         public SortedMap getDetectors() {
@@ -241,9 +258,9 @@ public class StructuredResultSet {
 
         public int getFileCount() {
             int count = 0;
-        	for (Iterator i = detectors.values().iterator(); i.hasNext(); ) {
-            	count += ((Detector) i.next()).getFileCount();
-            }
+        	for (Detector d : detectors.values()) {
+        		count += d.getFileCount();
+        	}
         	return count; 
         }
         
@@ -254,7 +271,7 @@ public class StructuredResultSet {
     
     public static class Detector implements Comparable {
     	private Integer detectorID; 
-    	private SortedSet files; 
+    	private SortedSet<File> files; 
     	
     	public Detector(int detector) {
     		this.detectorID = new Integer(detector);

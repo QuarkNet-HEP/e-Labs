@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap; 
 
-public class ElabSurveyQuestion implements Cloneable, Comparable {
+public class ElabSurveyQuestion implements Cloneable, Comparable<ElabSurveyQuestion> {
 	private int id, number; 
-	private SortedMap answers; 
+	private SortedMap<Integer, ElabSurveyQuestionAnswer> answers; 
 	private String text; 
 	private ElabSurveyQuestionAnswer correctAnswer = null, givenAnswer = null; 
 	
@@ -23,7 +23,7 @@ public class ElabSurveyQuestion implements Cloneable, Comparable {
 		this.id = id; 
 		this.number = number; 
 		this.text = text; 
-		this.answers = new TreeMap(); 
+		this.answers = new TreeMap<Integer, ElabSurveyQuestionAnswer>(); 
 	}
 	
 	public void addAnswer(ElabSurveyQuestionAnswer a) {
@@ -38,22 +38,22 @@ public class ElabSurveyQuestion implements Cloneable, Comparable {
 		return text;
 	}
 	
-	public Collection getAnswers() {
+	public Collection<ElabSurveyQuestionAnswer> getAnswers() {
 		return getAnswersByNo();
 	}
 	
-	public Collection getAnswersById() {
+	public Collection<ElabSurveyQuestionAnswer> getAnswersById() {
 		return answers.values(); 
 	}
 	
-	public Collection getAnswersByNo() {
-		List al = new ArrayList(answers.values());
+	public Collection<ElabSurveyQuestionAnswer> getAnswersByNo() {
+		List<ElabSurveyQuestionAnswer> al = new ArrayList<ElabSurveyQuestionAnswer>(answers.values());
 		java.util.Collections.sort(al);
 		return al;
 	}
 	
 	public void setCorrectAnswer(int id) {
-		this.correctAnswer = (ElabSurveyQuestionAnswer) this.answers.get(new Integer(id));
+		this.correctAnswer = this.answers.get(new Integer(id));
 	};
 
 	public void setCorrectAnswer(ElabSurveyQuestionAnswer correctAnswer) {
@@ -65,7 +65,7 @@ public class ElabSurveyQuestion implements Cloneable, Comparable {
 	}
 	
 	public void setGivenAnswer(int id) {
-		this.givenAnswer = (ElabSurveyQuestionAnswer) this.answers.get(new Integer(id));
+		this.givenAnswer = this.answers.get(new Integer(id));
 	}
 
 	public void setGivenAnswer(ElabSurveyQuestionAnswer givenAnswer) {
@@ -113,9 +113,7 @@ public class ElabSurveyQuestion implements Cloneable, Comparable {
 	/**
 	 * Sort by question number 
 	 */
-	public int compareTo(Object o) {
-		Integer thisInt = new Integer(number);
-		Integer thatInt = new Integer(((ElabSurveyQuestion) o).getNumber());
-		return thisInt.compareTo(thatInt);
+	public int compareTo(ElabSurveyQuestion o) {
+		return Integer.valueOf(number).compareTo(Integer.valueOf(o.getNumber()));
 	}
 }

@@ -9,28 +9,28 @@ import java.util.TreeMap;
 public class ElabSurvey {
 	private int id; 
 	private String name; 
-	private SortedMap questions;  // one day we can have generics! 
+	private SortedMap<Integer, ElabSurveyQuestion> questions;  
 	
 	public ElabSurvey(String name, int id) {
 		this.id = id; 
 		this.name = name; 
-		questions = new TreeMap(); 
+		questions = new TreeMap<Integer, ElabSurveyQuestion>(); 
 	}
 	
 	public String getName() { 
 		return name; 
 	}
 	
-	public Collection getQuestions() {
+	public Collection<ElabSurveyQuestion> getQuestions() {
 		return getQuestionsByNo();
 	}
 	
-	public Collection getQuestionsById() {
+	public Collection<ElabSurveyQuestion> getQuestionsById() {
 		return questions.values();
 	}
 	
-	public Collection getQuestionsByNo() {
-		List al = new ArrayList(questions.values());
+	public Collection<ElabSurveyQuestion> getQuestionsByNo() {
+		List<ElabSurveyQuestion> al = new ArrayList<ElabSurveyQuestion>(questions.values());
 		java.util.Collections.sort(al);
 		return al;
 	}

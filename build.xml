@@ -145,9 +145,6 @@ deploy-all-clean:
 			<arg value=".tldbuild/WEB-INF/elab.tld"/>
 			<classpath>
 				<pathelement location="tools/tlddoc.jar"/>
-				<pathelement location="common/lib/xml-apis.jar"/>
-				<pathelement location="common/lib/xercesImpl.jar"/>
-				<pathelement location="common/lib/xalan.jar"/>
 			</classpath>
 		</java>
 	</target>
@@ -173,7 +170,7 @@ deploy-all-clean:
 		</delete>
 	</target>
 		
-	<target name="do-deploy-common" depends="build-common">
+	<target name="do-deploy-common" depends="build-common, clean-jars">
 		<mkdir dir="${container.home}/${webapps}/elab"/>
 		<mkdir dir="${container.home}/${webapps}/elab/WEB-INF"/>
 		<mkdir dir="${container.home}/${webapps}/elab/WEB-INF/classes"/>

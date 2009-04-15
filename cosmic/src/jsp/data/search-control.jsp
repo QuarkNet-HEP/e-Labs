@@ -31,6 +31,9 @@ $(function() {
 		showButtonPanel: true
 	});
 });
+$(window).scroll(function(){
+	$('#right').animate({top:$(window).scrollTop()+"px" },{queue: false, duration: 0});
+});
 </script>
 
 <div class="search-quick-links">
@@ -213,12 +216,15 @@ $(function() {
 		    and.add(new Equals("project", elab.getName()));
 		    
 			searchResults = elab.getDataCatalogProvider().runQuery(and);
+			
+			
 			searchResultsStructured = DataTools.organizeSearchResults(searchResults);
 			searchResultsStructured.setKey(key);
 			searchResultsStructured.setValue(value);
 			long end = System.currentTimeMillis();
 			String time = ElabUtil.formatTime(end - start);
 			searchResultsStructured.setTime(time);
+			
 		}
 		else {
 		    session.setAttribute("previousSearch", null);

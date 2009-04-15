@@ -130,7 +130,7 @@
 	<script language="JavaScript" type="text/javascript">
 		registerUpdate("status-async.jsp?id=all", update);
 							
-		function update(data) {
+		function update(data, error) {
 			if (data["ids"] != null) {
 				var ids = data["ids"].split(",");
 				

@@ -196,7 +196,7 @@ public class StructuredResultSetDisplayer {
     public void displayMonthContents(JspWriter out, Month month)
             throws IOException {
     	for (Iterator i = month.getDetectors().keySet().iterator(); i.hasNext(); ) {
-    		Detector d = (Detector) month.getDetectors().get((Integer) i.next());
+    		Detector d = (Detector) month.getDetectors().get(i.next());
     		displayDetector(out, d);
     	}
     }

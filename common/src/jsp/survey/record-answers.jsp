@@ -50,10 +50,10 @@
 	}
 		
 	// Generate the list of submitted response ids
-	List answers = new ArrayList(); 
-	Map responses = request.getParameterMap();
-	for (Iterator i = responses.keySet().iterator(); i.hasNext(); ) {
-		String thisParameter = (String) i.next(); 
+	List<Integer> answers = new ArrayList<Integer>(); 
+	Map<String, String> responses = request.getParameterMap();
+	for (String i : responses.keySet()) {
+		String thisParameter = i; 
 		Integer thisAnswer; 
 		if (thisParameter.startsWith("response")) {
 			try {
