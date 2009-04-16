@@ -32,73 +32,62 @@
 			
 			<div id="content">
 
-			You can:
+				You can:
 				<strong>1)</strong> Find some help on this page
 				<strong>2)</strong>
-					<e:popup href="../posters/display.jsp?type=poster&name=adler_flux.data"
-						target="Possible Particle Decays" width="700" height="510">View</e:popup> 
-					a poster created using this study
-
+				<e:popup href="../posters/display.jsp?type=poster&name=adler_flux.data" target="Possible Particle Decays" width="700" height="510">View</e:popup> a poster created using this study
 				<strong>3)</strong>
-					<e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: 
-					Step-by-Step Instructions
+				<e:popup href="tryit.html" target="TryIt" width="510" height="600">Try it</e:popup>: Step-by-Step Instructions
 	
-			<p>
-			<center>        
-			<p>
-			<p>
-			<table width = 650 cellpadding =8>
-				<tr>
-					<td colspan = 2>
-						<center>
-							<font color="#0a5ca6" size=+3>
-								<b>
-	 								Flux Study
-	 							</b>
-	 						</font>
-	 					</center>
-	 				</td>
-	 			</tr>
+				<p>
+				<center>        
+					<p>
+					<p>
+					<table width = 650 cellpadding =8>
+						<tr>
+							<td colspan = 2>
+								<center>
+									<font color="#0a5ca6" size=+3>
+										<b>
+	 										Flux Study
+	 									</b>
+	 								</font>
+	 							</center>
+	 						</td>
+	 					</tr>
 				
 				
-				<tr>
-		 			<td width = 321 valign = top>
-		 				This is the analysis path for the <a HREF="javascript:glossary('flux',100)">flux</a> study. 
-					</td>
+						<tr>
+				 			<td width = 321 valign = top>
+		 						This is the analysis path for the <a HREF="javascript:glossary('flux',100)">flux</a> study. 
+							</td>
 					
-					<td width = 321 valign = top>
-						You may be interested in looking at flux throughout the day or year to see if there are changes in the rain of these particles.<p>
-					</td>
-				</tr>
+							<td width = 321 valign = top>
+								You may be interested in looking at flux throughout the day or year to see if there are changes in the rain of these particles.<p>
+							</td>
+						</tr>
 				
-				<tr>
-					<td colspan = 2>
-						<img src="../graphics/fluxDAG.png" align="middle">
-					</td>
-				</tr>
+						<tr>
+							<td colspan = 2>
+								<img src="../graphics/fluxDAG.png" align="middle">
+							</td>
+						</tr>
 	
-				<tr>
+						<tr>
+							<td valign=top>
+								<img src="../graphics/flux.png">
+							</td>
 			
-					<td valign=top>
-						<img src="../graphics/flux.png" width = 294 height = 304>
-					</td>
-			
-					<td valign=top>
-						&nbsp<p>
+							<td valign=top>
+								&nbsp<p>
 											
-						The plot to the left shows <a HREF="javascript:glossary('flux',350)">flux</a> 
-						measurements for <a HREF="javascript:glossary('detector',350)">detector # 180 </a> 
-						on 8 August 2003. The measurements start around <a HREF="javascript:glossary('UTC',100)">17:19</a>
-						 and end 36 minutes later at <a HREF="javascript:glossary('UTC',100)">17:45.</a><p>
-						One interesting feature occurs between <a HREF="javascript:glossary('UTC',100)">17:31</a> and 
-						<a HREF="javascript:glossary('UTC',100)">17:33</a>-the 
-						<a HREF="javascript:glossary('flux',100)">flux</a> drops from 20,000 units to very 
-						small values in a short time. What might cause this? Is the effect real or is it some 
-						artifact of the way this file was plotted? Is there a way that you can tell?
-					</td>
-				</tr>
-			</table>
-		</center>
+								The plot to the left shows <a HREF="javascript:glossary('flux',350)">flux</a> measurements for <a HREF="javascript:glossary('detector',350)">detector # 5078 </a> from 7 May to 11 May 2003.
+								<p> 
+								One interesting feature occurs periodically: the flux diminishes and increases regularly; do you see it? What might cause this? Is the effect real or is it some artifact of the way thifs file was plotted? Is there a way that you can tell?
+							</td>
+						</tr>
+					</table>
+				</center>
 
 
 			</div>
