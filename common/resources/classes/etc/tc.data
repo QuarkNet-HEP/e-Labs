@@ -31,6 +31,7 @@ localhost	Frequency		/home/mike/work/i2u2/apps/Frequency.pl						INSTALLED      
 localhost	ExtraFunctions	/home/mike/work/i2u2/apps/ExtraFunctions.pl					INSTALLED       INTEL32::LINUX null
 localhost	EventSearch		/home/mike/work/i2u2/apps/EventSearch.pl					INSTALLED       INTEL32::LINUX null
 localhost	EventChoice		/home/mike/work/i2u2/apps/EventChoice.pl					INSTALLED       INTEL32::LINUX null
+localhost	RawAnalyze		/home/mike/work/i2u2/apps/RawAnalyze.pl						INSTALLED       INTEL32::LINUX null
 localhost	SVG2PNG			/usr/bin/rsvg												INSTALLED       INTEL32::LINUX null
 
 aux			SVG2PNG			/usr/bin/rsvg												INSTALLED       INTEL32::LINUX null
