@@ -1,0 +1,123 @@
+#!/bin/sh
+#
+# This script creates soft links to the BOINC html subdirectories,
+# which are used by Bluestone for user authentication (but not guest
+# authentication via HTTP Basic auth).   You should only have to run
+# it once to set up a new installation.
+#
+# Eric Myers <Eric.Myers@ligo.org> - 21 September 2007
+# @(#) $Id: create_html_links,v 1.8 2009/02/11 20:01:17 myers Exp $
+########################################################################
+
+echo " "
+echo "This script will create soft links to the BOINC html subdirectory"
+echo "These are needed for user authentication to function correctly,  "
+echo "but are not needed for guest authentication via HTTP Basic auth"
+echo " "
+
+# Where is the BOINC forum code, either relative to the current
+# directory or as an absolute path?
+
+BOINC_HTML="../../../boinc/html"
+
+if [ ! -d $BOINC_HTML ]; then
+  echo "! Cannot find the BOINC html subdirectory $BOINC_HTML"
+  exit 1
+fi
+
+
+# Since we link to everything in one other directory, it's very
+# convenient to first link to that directory, then link via that link
+# to the subdirectories.
+
+if [ -L boinc_html ]; then
+  echo "! A link called 'boinc_html' already exists."
+  echo "  Please remove it first.  " 
+  exit 2
+fi
+
+/bin/ln -s $BOINC_HTML boinc_html
+
+if [ ! -L boinc_html ]; then
+  echo "! Falied to create the link boinc_html."
+  exit 3
+fi
+
+
+##
+# Now link to each subdiretory via this link.
+
+echo -n "Creating links: "
+
+
+DIR_LIST="inc include languages "
+
+for D in $DIR_LIST 
+do
+   echo -n $D
+   if [ -L $D ]; then
+     echo " - a link already exists! "
+     continue
+   fi
+   if [ -d $D ]; then
+     echo " - a directory (not a link) already exists. "
+     continue
+   fi
+
+   ln -s boinc_html/$D 
+   echo -n ", "
+
+done
+
+
+
+
+
+##
+# Now config.xml.  
+# Strictly speaking, it's not in the BOINC html subdirectory, but we
+# do need it for database access to the BOINC side to work correctly.
+# Remember though, we are working from the html subdirectory.
+
+# If there is already a link then don't muck with it, but do check it.
+
+if [ -L ../config.xml ];  then
+ X=`grep "<db_passwd>" ../config.xml`
+ if [ "$X" = "" ]; then
+   echo "! A link config.xml already exists, but does not contain"
+   echo "  database access information.  Please investigate.  "
+   exit 4
+ fi
+else
+  BOINC_DIR=`dirname $BOINC_HTML`
+  CONFIG_XML=$PWD/$BOINC_DIR/config.xml
+  if [ ! -f $CONFIG_XML ]; then
+    echo "! The file config.xml does not exist where I expected it to be."
+    echo "  It's not at $PWD/$CONFIG_XML "
+    
+    exit 5
+  fi
+ 
+  ln -s $CONFIG_XML ../config.xml
+  echo "config.xml " 
+
+fi
+
+
+##
+# Make sure project exists, and is a directory, not a link
+
+if [ ! -d project ]; then
+  if [ -h project ]; then
+    echo "! project is a link.  It should be a directory."
+    exit 6
+  else 
+    echo "! project subdirectory does not exist.  Use cvs update -d "
+    exit 7
+  fi
+fi
+
+
+echo " done."
+
+##
