@@ -54,17 +54,8 @@ type AxisParams {
 	app {
 		ExtraFunctions @filename(inf) @filename(out) @filename(rawFunctionFile)
 			etype 
-			/*
-			"-lowx" xLowerBound "-highx" xUpperBound
-			"-alphaValue" @quote(alphaG)
-			"-alphaYN" alphaVar
-			"-lifetimeValue" @quote(lifetimeG)
-			"-lifetimeYN" lifetimeVar
-			"-constantValue" @quote(constantG)
-			"-constantYN" constantVar
-			"-fit" turnedOn
-			*/
-			;
+			xLowerBound xUpperBound alphaG alphaVar lifetimeG
+			lifetimeVar constantG constantVar turnedOn;
 	}
 }
 
@@ -100,7 +91,10 @@ type AxisParams {
 
 
 File	rawData[] <fixed_array_mapper;files=@arg("rawData")>;
-File	thresholdAll[] <fixed_array_mapper;files=@arg("thresholdAll")>;
+//File thresholdAll[] <fixed_array_mapper;files=@arg("thresholdAll")>;
+//This is done to avoid corruption of threshold files when created
+//concurrently by multiple runs
+File 	thresholdAll[] <structured_regexp_mapper;source=rawData,match=".*/(.*)",transform="\1.thresh">;
 File	wireDelayData[] <fixed_array_mapper;files=@arg("wireDelayData")>;
 
 string 	detector = @arg("detector");

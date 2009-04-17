@@ -38,15 +38,16 @@
 
 <%@ include file="../include/delete.jsp" %>
 
-<table border="0" id="main">
-	<tr>
-		<td id="center">
-			<%@ include file="search-control.jsp" %>
-			<%@ include file="delete-results.jsp" %>
-		</td>
-	</tr>
-</table>
-
+<c:if test="${!inhibitPage}">
+	<table border="0" id="main">
+		<tr>
+			<td id="center">
+				<%@ include file="search-control.jsp" %>
+				<%@ include file="delete-results.jsp" %>
+			</td>
+		</tr>
+	</table>
+</c:if>
 
 			</div>
 			<!-- end content -->	

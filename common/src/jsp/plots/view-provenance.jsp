@@ -24,15 +24,9 @@
 	
 	String title="", study = null, provenance = null, dvName = null;
 	if (entry != null) {
-	    study = (String) entry.getTupleValue("study");
-		Timestamp ts = (Timestamp) entry.getTupleValue("creationdate");
-		//Feb 2, 2005 20:00
-		Timestamp DATE_WHEN_PROVENANCE_WAS_FIXED = new Timestamp(2005-1900, 2-1, 2, 20, 0, 0, 0);
-		if (ts != null && ts.compareTo(DATE_WHEN_PROVENANCE_WAS_FIXED) > 0) {
-		    provenance = (String) entry.getTupleValue("provenance");
-		    if (provenance != null) {
-		        provenance = plotUser.getDirURL("plots") + '/' + provenance;
-		    }
+	    provenance = (String) entry.getTupleValue("provenance");
+		if (provenance != null) {
+		    provenance = plotUser.getDirURL("plots") + '/' + provenance;
 		}
 	}
 	request.setAttribute("provenance", provenance);

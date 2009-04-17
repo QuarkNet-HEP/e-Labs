@@ -71,7 +71,7 @@
 							</tr>
 							<tr>
 								<td class="form-label">
-									<e:trlabel for="eventCoincidence" name="Coincidence Level">Event Coincidence Level:</e:trlabel>
+									<e:trlabel for="eventCoincidence" name="Coincidence Level">Event Coincidence:</e:trlabel>
 								</td>
 								<td class="form-control">
 									<e:trinput type="text" name="eventCoincidence" size="8" default="2"
@@ -170,7 +170,7 @@
 								</td>
 								<td class="form-control">
 									<e:trtextarea name="plot_caption" rows="5" cols="30"><e:default>
-<%= DataTools.getFigureCaption(elab, analysis.getParameterValues("rawData")) %>
+<%= DataTools.getFigureCaption(elab, ((ElabAnalysis) request.getAttribute("analysis")).getParameterValues("rawData")) %>
 <e:analysisParamLabel name="zeroZeroZeroID"/>
 <e:analysisParamLabel name="eventCoincidence"/>
 <e:analysisParamLabel name="detectorCoincidence"/>

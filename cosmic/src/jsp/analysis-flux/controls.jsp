@@ -21,8 +21,8 @@
 								<e:trlabel for="singlechannel_channel" name="Channel Number">Channel Number:</e:trlabel>
 							</td>
 							<td class="form-control">
-								<e:trselect name="singlechannel_channel" labelList="1, 2, 3, 4" 
-									valueList="1, 2, 3, 4" default="1"/>
+								<e:trselect name="singlechannel_channel" labelList="${channels}" 
+									valueList="${channels}" default="${channels[0]}"/>
 							</td>
 						</tr>
 					</table>
@@ -107,7 +107,7 @@
 								</td>
 								<td class="form-control">
 									<e:trtextarea name="plot_caption" rows="5" cols="30"><e:default>
-<%= DataTools.getFigureCaption(elab, analysis.getParameterValues("rawData")) %>
+<%= DataTools.getFigureCaption(elab, ((ElabAnalysis) request.getAttribute("analysis")).getParameterValues("rawData")) %>
 <e:analysisParamLabel name="singlechannel_channel"/>											
 									</e:default></e:trtextarea>
 								</td>

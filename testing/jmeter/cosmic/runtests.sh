@@ -6,19 +6,10 @@ checkenv() {
 	fi
 }
 
-checkenv JMETER_HOME $JMETER_HOME
 checkenv JMETER_TEST_HOST $JMETER_TEST_HOST
 HOST=$JMETER_TEST_HOST
 checkenv JMETER_TEST_PORT $JMETER_TEST_PORT
 PORT=$JMETER_TEST_PORT
-checkenv JMETER_OUTPUT_DIR $JMETER_OUTPUT_DIR
-
-for jar in $JMETER_HOME/lib/*.jar; do
-	CLASSPATH=$jar:$CLASSPATH
-done
-
-echo $CLASSPATH
-export CLASSPATH
 
 MPWD=${PWD//\//\\\/}
 for jmx in *.jmx; do
@@ -47,8 +38,19 @@ for jmx in *.jmx; do
 	rm -f $jmx
 	mv tmp $jmx
 done
+
 REFPATH=`pwd`
 export REFPATH
+checkenv JMETER_HOME $JMETER_HOME
+checkenv JMETER_OUTPUT_DIR $JMETER_OUTPUT_DIR
+
+for jar in $JMETER_HOME/lib/*.jar; do
+	CLASSPATH=$jar:$CLASSPATH
+done
+
+echo $CLASSPATH
+export CLASSPATH
+
 ant -Djmeterhome=$JMETER_HOME -Doutputdir=$JMETER_OUTPUT_DIR all
 ant -Djmeterhome=$JMETER_HOME -Doutputdir=$JMETER_OUTPUT_DIR htmlreports
 

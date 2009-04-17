@@ -9,7 +9,7 @@
 		<p>Click <strong>Analyze</strong> to use the default parameters. 
 		Control the analysis by expanding the options below.</p>
 		<p>
-			<e:tr name="Quarknet.Cosmic::LifeTimeStudy">
+			<e:tr name="Quarknet.Cosmic::LifetimeStudy">
 				<e:vswitch revert="true">
 					<e:visible>
 						<strong>Analysis Controls</strong> 
@@ -131,7 +131,7 @@
 								</td>
 								<td class="form-control">
 									<e:trtextarea name="plot_caption" rows="5" cols="30"><e:default>
-<%= DataTools.getFigureCaption(elab, analysis.getParameterValues("rawData")) %>
+<%= DataTools.getFigureCaption(elab, ((ElabAnalysis) request.getAttribute("analysis")).getParameterValues("rawData")) %>
 <e:analysisParamLabel name="lifetime_coincidence"/>
 									</e:default></e:trtextarea>									
 
@@ -154,8 +154,8 @@
 									<e:trlabel for="extraFun_turnedOn" name="Fitting Turned On">Fitting Turned On:</e:trlabel>
 								</td>
 								<td class="form-control">
-									<e:trselect name="extraFun_turnedOn" valueList="yes, no" labelList="Yes, No"
-										default="no"/>
+									<e:trselect name="extraFun_turnedOn" valueList="1, 0" labelList="Yes, No"
+										default="0"/>
 								</td>
 							</tr>
 							<tr>

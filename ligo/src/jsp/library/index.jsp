@@ -44,13 +44,13 @@
 					you will need for this project.
 				</li>
 				<li>
-					<a href="milestone-map.jsp">Study Guide</a> - Measure your progress
+					<a href="milestones-map.jsp">Study Guide</a> - Measure your progress
 					as you work.
 				</li>
 				<li>
 					<a href="resources.jsp">Resources</a> - Explore online resources 
 					that will help you conduct your E-Lab investigation. A 
-					<a href="tutorial.jsp">tutorial</a> will help you learn to use 
+					<a href="../data/tutorial.jsp">tutorial</a> will help you learn to use 
 					<a href="http://tekoa.ligo-wa.caltech.edu/tla">Bluestone</a>, 
 					LIGO's E-Lab data analysis software
 				</li>

@@ -88,7 +88,10 @@ File eventCandidates <single_file_mapper;file=@arg("eventCandidates")>;
 File eventFile <single_file_mapper;file=@arg("eventFile")>;
 
 File rawData[] <fixed_array_mapper;files=@arg("rawData")>;
-File thresholdAll[] <fixed_array_mapper;files=@arg("thresholdAll")>;
+//File thresholdAll[] <fixed_array_mapper;files=@arg("thresholdAll")>;
+//This is done to avoid corruption of threshold files when created
+//concurrently by multiple runs
+File thresholdAll[] <structured_regexp_mapper;source=rawData,match=".*/(.*)",transform="\1.thresh">;
 File wireDelayData[] <fixed_array_mapper;files=@arg("wireDelayData")>;
 
 string detector = @arg("detector");
@@ -99,9 +102,6 @@ File sortOut <single_file_mapper;file=@arg("sortOut")>;
 
 string geoDir = @arg("geoDir");
 File geoFiles[] <fixed_array_mapper;files=@arg("geoFiles")>;
-
-string plot_caption = @arg("plot_caption");
-File extraFun_out <single_file_mapper;file=@arg("extraFun_out")>;
 
 AxisParams x, y, z;
 
@@ -118,8 +118,6 @@ z.low  = @arg("plot_lowZ");
 z.label = @arg("plot_zlabel");
 
 
-File plot_outfile_param <single_file_mapper;file=@arg("plot_outfile_param")>;
-
 string plot_plot_type = @arg("plot_plot_type");
 string plot_title = @arg("plot_title");
 string sort_sortKey1 = @arg("sort_sortKey1");
@@ -133,17 +131,3 @@ combineOut = Combine(wireDelayData);
 sortOut = Sort(combineOut, sort_sortKey1, sort_sortKey2);
 eventCandidates = EventSearch(sortOut, gate, detectorCoincidence, channelCoincidence,
 	eventCoincidence);
-eventFile = EventChoice(eventCandidates, eventNum, zeroZeroZeroID, geoDir, geoFiles);
-
-File svg;
-(svg, plot_outfile_param) = Plot(plot_plot_type, plot_caption, x, y, z, plot_title,
-	eventFile, extraFun_out);
-
-File png <single_file_mapper;file=@arg("plot_outfile_image")>;
-
-string plot_size = @arg("plot_size");
-png = SVG2PNG(svg, plot_size);
-File thumb <single_file_mapper;file=@arg("plot_outfile_image_thumbnail")>;
-string plot_thumbnail_height = @arg("plot_thumbnail_height");
-thumb = SVG2PNG(svg, plot_thumbnail_height);
-

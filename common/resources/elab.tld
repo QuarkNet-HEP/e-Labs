@@ -519,10 +519,18 @@ Nested parameters can be specified using the {@link param} tag.
 		<body-content>JSP</body-content>
 		<attribute>
 			<description>
+The id of an analysis run. This is the preferred method of re-running analyses. 
+			</description>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
 An analysis object to be rerun.
 			</description>
 			<name>analysis</name>
-			<required>true</required>
+			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
@@ -612,4 +620,9 @@ The name of the parameter (must match the name of an analysis parameter)
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
+	
+	<tag-file>
+		<name>sort</name>
+		<path>/WEB-INF/tags/sort.tag</path>
+	</tag-file>
 </taglib>

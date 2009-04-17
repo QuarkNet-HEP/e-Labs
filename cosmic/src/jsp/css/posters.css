@@ -250,7 +250,16 @@ a.button {
 	text-align: center;
 }
 
+#search-results th {
+	text-align: left;
+}
+
 #search-results td {
 	vertical-align: middle;
 	text-align: left;
+}
+
+.current-sort-column {
+	background-color: yellow;
+	text-decoration: underline;
 }

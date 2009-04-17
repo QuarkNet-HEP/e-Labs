@@ -8,6 +8,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
+<%@ page import="gov.fnal.elab.cosmic.*" %>
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -37,10 +38,16 @@
 			</div>
 			
 			<div id="content">
-
+			
+			
 <%
 	ElabAnalysis analysis = results.getAnalysis();
 	request.setAttribute("analysis", analysis);
+	
+	String showerId = request.getParameter("showerId");
+	AnalysisRun showerResults = AnalysisManager.getAnalysisRun(elab, user, showerId);
+	request.setAttribute("showerResults", showerResults);
+	
 	String es = (String) request.getParameter("eventStart");
 	int eventStart;
 	if (es == null || es.equals("")) {
@@ -49,6 +56,7 @@
 	else {
 		eventStart = Integer.parseInt(es);
 	}
+	
 	String sc = request.getParameter("sort");
 	int sortCol = 1;
 	if (sc != null) {
@@ -66,81 +74,23 @@
 		eventNum = null;
 	}
 	int lineNo = 1;
-	final int csc = sortCol;
-	final String[] colNames = new String[] {"date", "eventCoincidence", "numDetectors"};
-	final int[] defDir = new int[] {1, -1, -1};
-	final int dir;
+	int csc = sortCol;
+	
+	int dir;
 	if (request.getParameter("dir") == null) {
-		dir = defDir[csc];
+		dir = EventCandidates.defDir[csc];
 	}
 	else {
 		dir = "a".equals(request.getParameter("dir")) ? 1 : -1;
 	}
-	Set rows = new TreeSet(new Comparator() {
-		public int compare(Object o1, Object o2) {
-		    Map m1 = (Map) o1;
-		    Map m2 = (Map) o2;
-		    int c = ((Comparable) m1.get(colNames[csc])).compareTo(m2.get(colNames[csc]));
-		    if (c == 0) {
-		    	if (csc == 0) {
-		    		return dir * ((Integer) m1.get("eventCoincidence")).compareTo(m2.get("eventCoincidence"));
-		    	}
-		    	else {
-		    		return ((Integer) m1.get("line")).compareTo(m2.get("line"));
-		    	}
-		    }
-		    else {
-		        return dir * c;
-		    }
-		}
-	});
-	Set allIds = new HashSet();
-	DateFormat df = new SimpleDateFormat("MMM d, yyyy HH:mm:ss z");
-	df.setTimeZone(TimeZone.getTimeZone("UTC"));
 	
-	File ecFile = new File(results.getOutputDir(), (String) analysis.getParameter("eventCandidates"));
-	BufferedReader br = new BufferedReader(new FileReader(ecFile));
-	String line = br.readLine();
-	while(line != null) {
-	    //ignore comments in the file
-	    if(!line.matches("^.*#.*")) {
-	    	lineNo++;
-    		if(lineNo >= eventStart) {
-		    	Map row = new HashMap();
-		    	String[] arr = line.split("\\s");
-				row.put("eventCoincidence", Integer.valueOf(arr[1]));
-				row.put("numDetectors", Integer.valueOf(arr[2]));
-				row.put("eventNum", Integer.valueOf(arr[0]));
-				row.put("line", new Integer(lineNo));
-				if (eventNum == null) {
-					eventNum = arr[0];
-				}
-				
-				Set ids = new HashSet();
-				for(int i = 3; i < arr.length; i += 3){
-		        	String[] idchan = arr[i].split("\\.");
-		        	ids.add(idchan[0]);
-		        	allIds.add(idchan[0]);
-				}
-				row.put("ids", ids);
-				
-				String jd = arr[4];
-				String partial = arr[5];
-				
-				//get the date and time of the shower
-				NanoDate nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), Double.parseDouble(partial));
-				row.put("date", nd);
-				row.put("dateF", df.format(nd));
-				rows.add(row);
-				if (eventNum.equals(arr[0])) {
-				    request.setAttribute("crtEventRow", row);
-				}
-    		}
-	    }
-		line = br.readLine();
-    }
+	
+	File ecFile = new File((String) analysis.getParameter("eventCandidates"));
+	EventCandidates ec = EventCandidates.read(ecFile, csc, dir, eventStart, eventNum);
+	Collection rows = ec.getRows(); 
 	request.setAttribute("rows", rows);
-	request.setAttribute("eventNum", eventNum);
+	request.setAttribute("eventNum", ec.getEventNum());
+	request.setAttribute("crtEventRow", ec.getCurrentRow());
 %>
 
 <h1>Shower study candidates (<%= rows.size() %>)</h1>
@@ -151,13 +101,13 @@
 			<table id="shower-events">
 				<tr>
 					<th width="98%">
-						<a href="output.jsp?id=${param.id}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }">Event Date</a>
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }">Event Date</a>
 					</th>
 					<th width="1%">
-						<a href="output.jsp?id=${param.id}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }">Event Coincidence</a>
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }">Event Coincidence</a>
 					</th>
 					<th width="1%">
-						<a href="output.jsp?id=${param.id}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }">Detector Coincidence</a>
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }">Detector Coincidence</a>
 					</th>
 				</tr>
 				<c:choose>
@@ -173,10 +123,7 @@
 				<c:forEach items="${rows}" begin="${start}" end="${end}" var="row" varStatus="li">
 					<tr bgcolor="${row.eventNum == eventNum ? '#aaaafc' : (li.count % 2 == 0 ? '#e7eefc' : '#ffffff')}">
 						<td>
-							<e:rerun type="shower" analysis="${results.analysis}" label="${row.dateF}">
-								<e:param name="eventNum" value="${row.eventNum}"/>
-								<e:param name="submit" value="true"/>
-							</e:rerun>
+							<a href="../analysis-shower/event-choice.jsp?id=${param.showerId}&eventNum=${row.eventNum}&submit=true">${row.dateF}</a>
 						</td>
 						<td>
 							${row.eventCoincidence}
@@ -198,7 +145,7 @@
 			<p>
 				Click on image for a larger view
 			</p>
-			<e:popup href="../analysis-shower/show-plot.jsp?id=${results.id}" target="showerPopup" width="650" height="750">
+			<e:popup href="../analysis-shower/show-plot.jsp?showerId=${showerResults.id}&id=${results.id}" target="showerPopup" width="650" height="750">
 				<img src="${results.outputDirURL}/plot_thm.png"/>
 			</e:popup>
 			<p>
@@ -212,11 +159,12 @@
 	</tr>
 </table>
 <p>
-	Show <e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysis-dir" 
-		width="800" height="600" toolbar="true">analysis directory</e:popup>
+	Show <e:popup href="../analysis/show-dir.jsp?id=${showerResults.id}" target="analysis-dir" 
+		width="800" height="600" toolbar="true">shower analysis directory</e:popup> or <e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysis-dir" 
+		width="800" height="600" toolbar="true">event plot analysis directory</e:popup> 
 </p>
 <p>
-	<e:rerun type="shower" analysis="${results.analysis}" label="Change"/> your parameters
+	<e:rerun type="shower" id="${showerResults.id}" label="Change"/> your parameters
 </p>
 <p><b>OR</b></p>
 <%@ include file="save-form.jspf" %>

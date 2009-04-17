@@ -11,7 +11,7 @@
       <stringProp name="TestPlan.comments"></stringProp>
     </TestPlan>
     <hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="cosmic.data.lifetime" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Cosmic Lifetime Test - VDS - Local" enabled="true">
         <longProp name="ThreadGroup.start_time">1168623658000</longProp>
         <stringProp name="ThreadGroup.delay"></stringProp>
         <stringProp name="ThreadGroup.duration"></stringProp>
@@ -35,6 +35,7 @@
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <boolProp name="HTTPSampler.image_parser">true</boolProp>
         </ConfigTestElement>
         <hashTree/>
         <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
@@ -207,7 +208,7 @@
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/elab/cosmic/analysis-lifetime/analysis.jsp?rawData=5034.2006.0802.0&amp;lifetime_coincidence=1&amp;lifetime_energyCheck=1&amp;lifetime_gatewidth=1e-5&amp;freq_binValue=40&amp;plot_lowX=&amp;plot_highX=&amp;plot_lowY=&amp;plot_highY=&amp;plot_size=600&amp;plot_title=Lifetime+Study&amp;plot_caption=Data%3A+Aug+2%2C+2006+5%3A44%3A58+GMT%0D%0ADetector%28s%29%3A+5072%0D%0ACoincidence%3A+1%0D%0A&amp;extraFun_turnedOn=0&amp;extraFun_minX=.1&amp;extraFun_maxX=10&amp;extraFun_alpha_variate=yes&amp;extraFun_alpha_guess=&amp;extraFun_lifetime_variate=yes&amp;extraFun_lifetime_guess=&amp;extraFun_constant_variate=yes&amp;extraFun_constant_guess=&amp;submit=Analyze&amp;provider=vds&amp;runMode=local</stringProp>
+          <stringProp name="HTTPSampler.path">/elab/cosmic/analysis-lifetime/analysis.jsp?rawData=5034.2006.0802.0&amp;lifetime_coincidence=1&amp;lifetime_energyCheck=0&amp;lifetime_gatewidth=1e-5&amp;freq_binValue=40&amp;plot_lowX=&amp;plot_highX=&amp;plot_lowY=&amp;plot_highY=&amp;plot_size=600&amp;plot_title=Lifetime+Study&amp;plot_caption=Data%3A+Aug+2%2C+2006+5%3A44%3A58+GMT%0D%0ADetector%28s%29%3A+5072%0D%0ACoincidence%3A+1%0D%0A&amp;extraFun_turnedOn=0&amp;extraFun_minX=.1&amp;extraFun_maxX=10&amp;extraFun_alpha_variate=yes&amp;extraFun_alpha_guess=&amp;extraFun_lifetime_variate=yes&amp;extraFun_lifetime_guess=&amp;extraFun_constant_variate=yes&amp;extraFun_constant_guess=&amp;submit=Analyze&amp;provider=vds&amp;runMode=local</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -244,7 +245,7 @@
         </WhileController>
         <hashTree>
           <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Wait 2 seconds" enabled="true">
-            <stringProp name="ConstantTimer.delay">2000</stringProp>
+            <stringProp name="ConstantTimer.delay">5000</stringProp>
           </ConstantTimer>
           <hashTree/>
           <HTTPSampler guiclass="HttpTestSampleGui" testclass="HTTPSampler" testname="Check status" enabled="true">
@@ -269,8 +270,8 @@
           </HTTPSampler>
           <hashTree>
             <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
-              <stringProp name="RegexExtractor.default">Running</stringProp>
-              <stringProp name="RegexExtractor.regex">status=(\s*)</stringProp>
+              <stringProp name="RegexExtractor.default">Failed</stringProp>
+              <stringProp name="RegexExtractor.regex">&amp;status=([^&amp;]*)&amp;.*</stringProp>
               <stringProp name="RegexExtractor.useHeaders">false</stringProp>
               <stringProp name="RegexExtractor.match_number">0</stringProp>
               <stringProp name="RegexExtractor.template">$1$</stringProp>
@@ -317,17 +318,6 @@
             <stringProp name="RegexExtractor.default">missing</stringProp>
             <stringProp name="RegexExtractor.match_number">0</stringProp>
           </RegexExtractor>
-          <hashTree/>
-        </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Wait 4 seconds" enabled="true">
-          <boolProp name="TransactionController.parent">false</boolProp>
-        </TransactionController>
-        <hashTree>
-          <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Wait 4 seconds" enabled="true">
-            <intProp name="ActionProcessor.target">0</intProp>
-            <intProp name="ActionProcessor.action">1</intProp>
-            <intProp name="ActionProcessor.duration">4000</intProp>
-          </TestAction>
           <hashTree/>
         </hashTree>
         <HTTPSampler guiclass="HttpTestSampleGui" testclass="HTTPSampler" testname="Check Plot" enabled="true">

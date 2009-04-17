@@ -14,7 +14,7 @@ public class SingleSelectStructuredResultSetDisplayer extends
 
     public void displayFileContents(JspWriter out, File file)
             throws IOException {
-        out.write("<input type=\"radio\" name=\"rawData\" value=\""
+        out.write("<input type=\"radio\" name=\"" + getControlName() + "\" value=\""
                 + file.getLFN() + "\"/>");
         super.displayFileContents(out, file);
     }

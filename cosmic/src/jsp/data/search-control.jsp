@@ -42,9 +42,9 @@
 						</select>
 					</td>
 					<td>
-						<input name="date1" size="10" maxlength="15" value="${param.date1}" />
+						<e:trinput name="date1" size="10" maxlength="15" default="01/01/2004"/>
 						to
-						<input name="date2" size="10" maxlength="15" value="${param.date2}" />
+						<e:trinput name="date2" size="10" maxlength="15" default="12/30/2050"/>
 					</td>
 				</tr>
 				<tr>
@@ -54,7 +54,7 @@
 					<td>
 						by
 						<e:select name="sortField" valueList="city, state, stacked, blessed, group, year, detectorid, creationdate, chan1, chan2, chan3, chan4"
-							labelList="City, State, Geometry, Blessed, Group, Academic Year, Detector ID, Upload Date, Cahnnel 1 events, Channel 2 events, Channel 3 events, Channel 4 events"/>
+							labelList="City, State, Geometry, Blessed, Group, Academic Year, Detector ID, Upload Date, Channel 1 events, Channel 2 events, Channel 3 events, Channel 4 events"/>
 					</td>
 				</tr>
 				<tr>
@@ -87,7 +87,7 @@
 		String value = request.getParameter("value");
 		if (value == null) value="";
 		String date1 = request.getParameter("date1");
-		if (date1 == null || date1.equals("")) date1="1/1/2004";
+		if (date1 == null || date1.equals("")) date1="01/01/2004";
 		String date2 = request.getParameter("date2");
 		if (date2 == null || date2.equals("")) date2="12/30/2050";
 		String sortDirection = request.getParameter("sortDirection");
@@ -109,7 +109,7 @@
 			if ("within".equals(request.getParameter("searchIn"))) {
 				and.add((QueryElement) session.getAttribute("previousSearch"));
 			}
-			if (!"all".equals(key)) {
+			if (!"all".equals(key) && !(value == null) && !"".equals(value)) {
 			    and.add(new Equals(key, value));
 			}
 		    
@@ -119,23 +119,23 @@
 		    }
 		    
 		    if ("yes".equals(blessed)) {
-		    	and.add(new Equals("blessed", "t"));
+		    	and.add(new Equals("blessed", Boolean.TRUE));
 		    }
 		    if ("no".equals(blessed)) {
-		    	and.add(new Equals("blessed", "f"));
+		    	and.add(new Equals("blessed", Boolean.FALSE));
 		    }
 		    
 		    if ("yes".equals(stacked)) {
-		    	and.add(new Equals("stacked", "t"));
+		    	and.add(new Equals("stacked", Boolean.TRUE));
 		    }
 		    if ("no".equals(stacked)) {
-		    	and.add(new Equals("stacked", "f"));
+		    	and.add(new Equals("stacked", Boolean.FALSE));
 		    }
 		    
 		    
 		    and.add(new Equals("type", "split"));
 		    and.add(new Equals("project", elab.getName()));
-
+		    
 			searchResults = elab.getDataCatalogProvider().runQuery(and);
 			searchResultsStructured = DataTools.organizeSearchResults(searchResults);
 			searchResultsStructured.setKey(key);
