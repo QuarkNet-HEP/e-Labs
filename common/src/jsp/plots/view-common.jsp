@@ -15,7 +15,7 @@
 	String pfn = plotUser.getDir("plots") + File.separator + filename;
 	String url = plotUser.getDirURL("plots") + '/' + filename;
 	
-	String title="", study = null, provenance = null, dvName = null;
+	String title="", study = null, provenance = null, dvName = null, name = null;
 	if (entry != null) {
 	    study = (String) entry.getTupleValue("study");
 		Timestamp ts = (Timestamp) entry.getTupleValue("creationdate");
@@ -24,14 +24,25 @@
 		if (ts != null && ts.compareTo(DATE_WHEN_DVS_WERE_FIXED) > 0) {
 		    dvName = (String) entry.getTupleValue("dvname");
 		}
+		name = (String) entry.getTupleValue("name");
 				
 	}
+	request.setAttribute("name", name);
 	request.setAttribute("study", study);
 	request.setAttribute("provenance", entry.getTupleValue("provenance"));
 	request.setAttribute("dvName", dvName);
 	request.setAttribute("url", url);
 	%> 
-		<h2>${param.filename}</h2><br/>
+		<h2>
+		<c:choose>
+			<c:when test="${name != null}">
+				${name}
+			</c:when>
+			<c:otherwise>
+				${param.filename}
+			</c:otherwise>
+		</c:choose>
+		</h2><br/>
 		<img src="${url}"/><br/>
 		<a href="../data/view-metadata.jsp?filename=${param.filename}&menu=${param.menu}">Show details (metadata)</a><br/>
 		<c:if test="${provenance != null}">

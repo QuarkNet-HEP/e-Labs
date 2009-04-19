@@ -334,7 +334,7 @@ String submit =  request.getParameter("submit");
 
                                             //else add the new teacher
                                             int i=0;
-                                            i = s.executeUpdate("INSERT INTO teacher (name, email, school_id) SELECT '" + teacherNew + "', '" + teacherEmail + "',  '" + school_id +"');");
+                                            i = s.executeUpdate("INSERT INTO teacher (name, email, school_id) SELECT '" + teacherNew + "', '" + teacherEmail + "',  '" + school_id +"';");
                                             if(i != 1){	
                                                 warn(out, "Weren't able to add a teacher to the database! " + i + " rows updated. Please alert the database admin.");
                                                 return;
