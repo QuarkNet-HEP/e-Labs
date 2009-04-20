@@ -90,10 +90,10 @@
 		<link rel="stylesheet"  href="../include/styletut.css" type="text/css">
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
-	<body onLoad="resizeWinTo(300,'txt');" background="../graphics/Quadrille.gif">
+	<body onLoad="resizeWinTo(400,'txt');" background="../graphics/Quadrille.gif">
 		<center>
 			<div ID="txt" style="left:0px;top:0px;text-align:center;">
-				<table align="center" width="240">
+				<table align="center" width="340">
 					<tr>
 						<td>
 							<jsp:include page="${file}"/>
