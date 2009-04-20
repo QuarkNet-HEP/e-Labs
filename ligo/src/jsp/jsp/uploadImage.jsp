@@ -3,8 +3,16 @@
 <%@ page import="org.apache.commons.fileupload.*" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ include file="common.jsp" %>
-
 <%
+/***********************************************************************
+ *  Form to allow users to upload images created outside of our analysis
+ *  system.
+ * 
+ *  This form is also used by Bluestone to "save" plots.   
+ *  They are uploaded via HTTP POST, but to the user and our
+ *  archive they are treated as a "plot" rather than an "uploadedimage"
+ */
+
 String name = "";           //user-input name of file, stored in metadata
 String filename = "";       //unique name to be generated and saved in rc.data
 String thumbFilename = "";  //thumbnail of "filename"
@@ -12,7 +20,11 @@ String origName = "";       //name of file on user's local machine
 String ret = "";            //string which is returned to the user after an attempted file upload
 boolean valid = true;       //false if there's any errors
 String comments = "";       //optional comments on file
+String upload_type = "uploadedimage";   // uploaded (external) or saved (internal)?
+
 DiskFileUpload fu = new DiskFileUpload();
+
+ArrayList meta = new ArrayList();
 
 if (fu.isMultipartContent(request)) {
     fu.setSizeMax(10 * 1024 * 1024);    //10MB max
@@ -22,18 +34,38 @@ if (fu.isMultipartContent(request)) {
     java.util.List fileItems = fu.parseRequest(request);
     for (Iterator i = fileItems.iterator(); i.hasNext();) {
         FileItem fi = (FileItem) i.next();
+
         if (fi.isFormField()) {
             String fieldName = fi.getFieldName();
+
             if(fieldName.equals("name")){
                 name = fi.getString();
                 if(name.equals("")){
                     ret = "Please enter the name of your file.";
                     valid = false;
                 }
+		continue;		
             }
             if(fieldName.equals("comments")){
                 comments = fi.getString();
+		continue;
             }
+
+	    if( fieldName.equals("upload_type") ){
+	        upload_type = "savedimage";	// new default
+		String x = fi.getString();  // only certain values are allowed  
+		if( x.equals("savedimage") )    upload_type = x;
+		if( x.equals("uploadedimage") ) upload_type = x;
+		if( x.equals("plot") )          upload_type = "savedimage";
+		continue;
+	    }
+
+	    if( fieldName.startsWith("metadata") ){
+		String fieldValue = fi.getString();      
+		meta.add(fieldValue);
+		continue;
+	    }
+
         }
         else{   //it's the uploaded file
             uploadedImage = fi;
@@ -42,6 +74,8 @@ if (fu.isMultipartContent(request)) {
                 ret = "Your image is 0 bytes in size. You must upload an image which contains some data!";
                 valid = false;
             }
+            // TODO: check MIME/type not filename extension.
+            //      (or extension only if MIME/type fails.)
             if (!origName.endsWith(".jpg") && !origName.endsWith(".jpeg") 
             	&& !origName.endsWith(".png") && !origName.endsWith(".gif")) {
             	ret = "Invalid image type. Valid extensions are: .jpg, .jpeg, .png, .gif";
@@ -61,8 +95,8 @@ if (fu.isMultipartContent(request)) {
         extension = extension.toLowerCase();
         String date = sdf.format(gc.getTime());
 
-        filename = "uploadedimage-" + groupName + "-" + date + "." + extension;
-        thumbFilename = "uploadedimage-" + groupName + "-" + date + "_thm." + extension;
+        filename = upload_type+"-" + groupName + "-" + date + "." + extension;
+        thumbFilename = upload_type+"-" + groupName + "-" + date + "_thm." + extension;
 
         boolean added = addRC(filename, plotDir + filename);
         /*
@@ -72,8 +106,8 @@ if (fu.isMultipartContent(request)) {
         int collision = 0;
         while(added == false && collision < 50){
             collision++;
-            filename = "uploadedimage-" + groupName + "-" + date + "-" + collision + "." + extension;
-            thumbFilename = "uploadedimage-" + groupName + "-" + date + "-" + collision + "_thm." + extension;
+            filename = upload_type+"-" + groupName + "-" + date + "-" + collision + "." + extension;
+            thumbFilename = upload_type+"-" + groupName + "-" + date + "-" + collision + "_thm." + extension;
             added = addRC(plotDir + filename, filename);
             //t = getMetaKey(filename, "name");
             //isFile = (t == null) ? false : true;
@@ -122,9 +156,13 @@ if (fu.isMultipartContent(request)) {
             */
 
 
-            ArrayList meta = new ArrayList();
+	    // Basic metadata (in addition to POSTed stuff above)
+
             meta.add("origname string " + origName);
-            meta.add("type string uploadedimage");
+	    //TODO: allow 'savedimage' as synonym for 'plot'
+            //      I consider this a workaround -EAM 20Apr2009
+	    if( upload_type.equals("savedimage") ) upload_type = "plot";
+	    meta.add("type string "+ upload_type);
             meta.add("name string " + name);
             meta.add("group string " + groupName);
             meta.add("teacher string " + groupTeacher);
@@ -154,8 +192,9 @@ if (fu.isMultipartContent(request)) {
         }
     }
 }
-%>
 
+
+%>
 <html>
 <head>
 <title>Upload Image</title>
