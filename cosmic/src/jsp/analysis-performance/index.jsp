@@ -37,9 +37,10 @@
 			<div id="content">
 				
 <h1>Choose data for performance study.</h1>
-
+<div id="rationale">Science requires reliable measurement of variables. You must be able to trust your data in order to draw conclusions that make sense to you and others. Would you believe a bathroom scale that reads 487 pounds when a house cat steps on it? This analysis pathway allows you to check the consistency of the detector recording your data. Big changes in performance can mean two things: some interesting physics occurred or the detector has lost calibration. It's important to know which one happened.
+</div>
 <table border="0" id="main">
-	<tr>
+<tr>
 		<td>
 			<div id="ltbr">
 				<div id="top-left">
