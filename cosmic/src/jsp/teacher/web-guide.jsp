@@ -99,15 +99,20 @@
 	when a definition or resource is needed. The entire glossary and resource list 
 	are available from the study guide page.
 </p>
-<h2>e-Logbook</h2>
+<h2>e-Logbook - Opportunities for feedback</h2>
 <p>
-	As students work through the study guide they have access to an optional online 
-	logbook where they can save their notes. They can enter notes for each milestone 
-	in the study guide and into general notes. Teachers are able to access this work, 
-	track and assess student progress and give comments.
+	Because this is a student-led <b>teacher-guided</b> investigation, it is important 
+	for students to get frequent feedback. 
+	<p>As students work through the study guide they have access to an online 
+	logbook where they can save their notes. They can enter notes for each milestone
+	 and into general notes. They can respond to teacher prompts to reflect on their progress. 
+	Teachers are able to access this work, 
+	track and assess student progress and provide feedback. 
+	<P>Teachers also have a logbook in which they can make notes on 
+	teaching strategies, resources, etc. for the next year.
 	Access is through link in upper right hand corner on every page. 
 	<img src="../graphics/logbook_link.gif"/><br/>
-	From their logbook, they can access:
+	From their logbook, teachers can access:
 	<ul>
 		<li>
 			by milestone for all their student research groups. 
@@ -136,7 +141,7 @@
 <h2><a href="../posters/"><strong>Posters</strong></a></h2>
 <p>
 	Students may publish their work as a poster or a paper. We provide a webform for 
-	them to enter text, select figures from the website, and coming soon uploaded 
+	them to enter text, select figures from the website and uploaded 
 	images of their own.
 </p>
 <p>
