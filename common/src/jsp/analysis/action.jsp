@@ -60,7 +60,10 @@
 			}
 			else if (request.getParameter("background") != null) {
 				%> 
-					<h1>The analysis has been added to the <a href="list.jsp">analysis list</a> and continues to run</h1>
+					<h1>The analysis has been added to the <a href="list.jsp">analysis list</a> and continues to run.</h1>
+					
+					<h2><b>Warning:</b> The submitted analyses only stay on this queue for forty eight hours, so it is important for you to get your results
+					from the Analysis list and save them as plots if you want to keep them.  You can have a maximum of eighty in the list.</h2>
 				<%
 			}
 		}
