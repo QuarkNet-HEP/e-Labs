@@ -18,9 +18,11 @@
 			Use the data to provide evidence to support your claims.
 		</li>
 
+<!-- 
 		<li>
 			Describe the contribution team members make in a several-person project.
 		</li>
+ -->
 	</ul>
 </li>
 
