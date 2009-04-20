@@ -42,7 +42,8 @@
 			<!-- end content -->	
 		
 			<div id="footer">
-				<a href="references/showAll.jsp?t=glossary">Glossary</a> - 
+			    <a href="milestones-map.jsp">Study Guide (Graphical)</a> -
+				<a href="../references/showAll.jsp?t=glossary">Glossary</a> - 
 				<a href="../references/showAll.jsp?t=reference">All References for Study Guide</a>
 				<a href="../references/showAll.jsp?t=reference">
 					<img src="../graphics/ref.gif">

@@ -1,1 +1,83 @@
-<HTML><HEAD><TITLE>Student Studies</TITLE></HEAD><%@ include file="../jsp/include/javascript.jsp" %><BODY BGCOLOR=FFFFFF><TABLE WIDTH=800><TR><TD VALIGN=TOP><IMG SRC="../graphics/crop.jpg" BORDER=1></TD><TD width="20">&nbsp;</td><TD VALIGN=TOP><FONT FACE=ARIAL SIZE=-1><FONT SIZE=+1><B>Cosmic Ray Studies with Data from Classroom Detectors</B></FONT><hr color=orange height=6 width=350 align="left"><OL><LI>Calibrations and performance studies<LI>Flux experiments<LI>Muon lifetime experiments<LI>Shower studies<LI>Other studies devised by students</OL><B>Calibrations and Performance Studies</B><BR> Before you can "trust" your equipment, you should do some calibrations to study the response of the counters and the board. Calibration studies include plateauing the counters, threshold selection and barometer calibration. <P>In addition, the QuarkNet online analysis tools include a "system performance" study for uploaded data. <B>Most</B> uploaded data will be checked automatically. However, your teacher may ask you to check your own.<P>  <B>Flux Experiments</B><BR>  You can do a variety of experiments investigating such things as cosmic ray  <A HREF="javascript:glossary('flux')">flux</A> as a function of time of day, solar activity, angle from vertical, barometric pressure, altitude. The list goes on. This can be an exciting set of experiments where <B>you</B> determine factors you want to test.<P> <B>Muon Lifetime Experiment</B><BR>  You can find the muon "lifetime." (Lifetime is one of many characteristics that allow us to describe particles. Others include mass and electric charge.) Some cosmic rays reach earth's surface in the form of muons. These short-lived particles may stop in the detector, wait around a while and then decay into an electron and two neutrinos. <P>  <B>Muon Lifetime Experiment to Verify Time Dilation</B><BR> A classic modern physics experiment to verify time dilation is the measurement of the muon mean lifetime. Since nearly all of the cosmic ray muons are created in the upper part of the atmosphere (>>30 km above the earth's surface), the time of flight for these muons as they travel to earth should be at least 100 ms. This assumes that muons are traveling at the speed of light - anything slower would require even more time. If you determine the muon lifetime that it is significantly less than this time, you are presented with the wonderful dilemma that the muon's time of flight is longer than its lifetime!<P> This time dilation "proof" assumes that all muons are created in the upper atmosphere. Although this is actually a good approximation, you cannot test it. However, by using the mean lifetime value and by measuring flux rates at two significantly different elevations, you can develop experimental proof for time dilation. This experiment requires you to have access to a mountain, an airplane, or collaboration with a team from another school that is at a significantly different altitude! Here is a wonderful opportunity for you to work together proving time dilation. <P> <B>Shower Studies</B><BR> With the GPS device connected to your DAQ board, the absolute time stamp allows a network of detectors (at the same site or at different schools) to study cosmic ray showers. You can look for small showers or collaborate with other schools in your area to look for larger showers.<P> The online analysis tools allow you to not only look for showers but to calculate the direction from which the shower (and thus the primary cosmic ray) originated.</FONT><P>Need more information on the possible studies?  The Cosmic Ray e-Lab Resources:<A HREF="javascript:showRefLink('../library/resources.jsp')">Resources</a> page tells more.<br></TD></TR></TABLE>
+<html>
+	<head>
+		<title>
+			Planning your research
+		</title>
+		<%@ include file="../jsp/include/javascript.jsp" %>
+	</head>
+	
+	<link rel="stylesheet"  href="../include/styletut.css" type="text/css">
+
+	<body onLoad="focus()" background="../graphics/Quadrille.gif">
+		<table WIDTH=450>
+	    	<tr>
+	    		<td>
+   		    		<p>
+    			 		<b>
+    	 					Cosmic Ray Studies with the QuarkNet Detector
+		    	 		</b>
+    			 	</p>
+    	
+ 			   		<ol>
+						<li>Performance studies
+						<li>Shower studies
+						<li>Flux studies
+						<li>Muon lifetime experiments
+						<li>Time dilation experiment
+						<li>Other studies devised by students
+					</ol>
+
+					<p>
+						<b>
+							Performance Studies
+						</b> - 
+						In order to believe in any science results from your analysis, you must first believe that the detector is performing reliably over time. Do data collected today look like data collected a year ago? If they data look different is it because the detector has changed or some interesting physics has occured. Understanding detector performance will allow you to do "good science."
+					</p>
+	
+					<p>
+						<b>
+							Muon Shower Studies
+						</b> - 
+						<IMG SRC="../graphics/array.jpg" BORDER=1 ALIGN=left> Cosmic ray showers can pepper an area of Earth's surface in a very tiny window of time. These detectors measure time accurately and precisely. Two nearby detectors can independently measure the muons within these showers. You can search for data from nearby schools and look for showers that the detectors may have caught.
+					</p>
+
+					<p>
+						<b>
+							Muon Flux Studies
+						</b> - 
+						<IMG SRC="../graphics/stacked.jpg" BORDER=1 ALIGN=left> 
+						The detectors record the arrival time of arrival of the muons. You can ask questions like: How does the arrival rate depend on time of day? or solar activity? These can be exciting experiments that may show dependenices that make no sense at all! It also can lead to collaboration with research groups in other schools, maybe even around the world.
+					</p>
+
+					<p>
+						<b>
+							Muon Lifetime Experiment
+						</b> - 
+						The short-lived muons may stop in a counter, wait around a while and then decay into an electron and two neutrinos. You can verify the muon "lifetime" with a properly configured detector. The muon will leave one signature in the detector, the electron will leave another. You can look for patterns in the time difference between two consecutive pulses. Occasionally the difference will be from a decay. Seeing many of these can increase your confidence in what you are observing.
+					</p>
+
+					<p>
+						<b>
+							Time Dilation Experiment
+						</b> - 
+						Most muons are created in the upper atmosphere and travel towards earth's surface at nearly light speed.
+						The muon's mean lifetime is so brief that there is insufficient time for them to reach the detectors.
+						You are presented with the wonderful dilemma that the muon's time of flight is longer than its lifetime! The solution to the dilemma lies in the so-called "Time Dilation" that creates differences in times as measured by clocks moving with respect to each other.
+					</p>
+
+					<p>
+						You can develop experimental proof for time dilation. This experiment requires you to have access to a mountain, an airplane, or collaboration with a detector group from at a significantly different altitude! Here is a wonderful opportunity for schools to work together. You will need a strong background to understand this experiment.
+					</p> 
+				</td>
+			</tr>
+   		
+   			<tr>
+   				<td align="right">
+   					<HR><A HREF="javascript:window.close();">Close Window</font></A>
+   				</td>
+   			</tr>
+   		</table>
+	</body>
+</html>
+
+    

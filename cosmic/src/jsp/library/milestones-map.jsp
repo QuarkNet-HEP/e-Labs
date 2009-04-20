@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Cosmic Resources: Study Guide</title>
+		<title>Cosmic Resources: Study Guide (Milestones)</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
@@ -29,7 +29,7 @@
 			
 			<div id="content">
 				
-<h1>Getting started! Work as a team. Make sure each team member meets these milestones.</h1>
+<h1>Work as a team. Make sure each team member contributes.</h1>
 
 <table border="0" id="main">
 	<tr>
@@ -40,22 +40,11 @@
 		</td>
 		<td>
 			<div id="center">
-				<p>
-					Follow the workflow map below to guide your work. Click on
-					the hotspots to get references for accomplishing your
-					milestones.
-				</p>
+					
+<div style="text-align:center; font-size: 16px; font-weight:bold">Study Guide</div>
+<p>Your team may use this study guide, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results. 
+</p>
 
-				<p>
-				
-					<img src="../graphics/interaction_point.gif" alt="Interaction
-					Point" class="float"/> These dots in your workflow indicate where  your 
-					teacher monitors your progress by commenting on the entries
-					you make in your logbook related to each milestone.  Be sure
-					to read the comments!
-
-				</p>
-				
 				<%
 					if (user.getGroup().isProfDev()) {
 						%>
@@ -83,7 +72,7 @@
 			<!-- end content -->	
 		
 			<div id="footer">
-				<a href="milestones.jsp">Milestones (text version)</a>
+				<a href="milestones.jsp">Study Guide (text version)</a>
 				 - 
 				<a href="../references/showAll.jsp?t=glossary">Glossary</a>
 				 - 

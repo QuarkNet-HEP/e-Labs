@@ -43,22 +43,19 @@
 					<div class="tab-contents">
 						<ul class="simple">
 							<li>
-							<a HREF="research-basics.jsp">The Basics</a> - Review research skills you need for this project. 
+							<a HREF="milestones-map.jsp">Study Guide</a> - Follow the guide for you work. 
 							</li>
 							<li>
-							<a HREF="milestones-map.jsp">Study Guide</a> - Measure your progress as you work. 
+							<a HREF="resources.jsp">Resources</a> - Explore <i>Tutorials, Online Resources, Animations</i> and <i>Contacts</i>.  Tutorials help you analyze the data. Contacts connect you to experts and other student research groups.  Animations demonstrate the hardware and what happens when you are uploading data and using grid techniques. <i>Online Resources</i> broaden your understanding of cosmic rays and research. 
 							</li>
 							<li>
-							<a HREF="resources.jsp">Resources</a> - Explore Tutorials, Online Resources, Animations and Contacts.  The tutorials should help you use this website. The contacts will allow you to contact other student research groups.  The animations demonstrate your hardware and what happens when you are uploading data and using grid techniques. The Online Resources will broaden your understanding of cosmic rays and research. 
+							<a HREF="../home/first.jsp">Big Picture</a> - Read a project overview and view a sample poster. 
 							</li>
 							<li>
-							<a HREF="../home/first.jsp">Big Picture</a> - Read an overview of this project and view a sample poster. 
+							<a HREF="FAQ.jsp">FAQs</a> - Find answers for frequently asked questions. 
 							</li>
 							<li>
-							<a HREF="FAQ.jsp">FAQs</a> - Read the FAQs for answers to your questions. 
-							</li>
-							<li>
-							<a HREF="../home/first-web.jsp">Site Help</a> - Learn how to use the website.
+							<a HREF="site-help.jsp">Site Tips</a> - Check out tips for using the website.
 							</li>
 						</ul>
 					</div>
