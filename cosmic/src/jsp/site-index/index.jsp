@@ -31,7 +31,7 @@
 
 			<div id="content">
 
-<h1>Lost? You can go to any of the pages on this site from this list.</h1>
+<h1>Lost? You can go to any of the pages <i>on this site</i> from this list.</h1>
 
 
 <table border="0" id="main">
@@ -48,65 +48,85 @@
 	<tr>
 		<td class="home">
 			<ul>
-				<li><a href="../home/first.jsp">The Big Picture</a></li>
-				<li><a href="../home/first-web.jsp">The Website</a></li>
+				<li><a href="../home/first.jsp">Get Started</a></li>
+				
 			</ul>
 		</td>
 		<td class="library">
 			<ul>
 				<li>
-					<a href="../library/milestones-map.jsp">Study Guide</a> and 
-					<a href="../library/milestones.jsp"><strong>text version</strong></a>
+					<a href="../library/milestones-map.jsp"><b>Study Guide</b></a> & 
+					<a href="../library/milestones.jsp">text version</a>
 					<ul>
-						<li><a href="../references/showAll.jsp?t=reference">View References for Study Guide</a></li>
-						<li><a href="../references/showAll.jsp?t=glossary">View Glossary</a></li>
+						<li><a href="../references/showAll.jsp?t=reference">All References for Study Guide</a></li>
+						<li><a href="../references/showAll.jsp?t=glossary">Glossary</a></li>
 					</ul>
 				</li>
-				<li><a href="../library/resources.jsp">Resources</a></li>
-				<li>
-					Online Links
+				<li><a href="../library/resources.jsp"><b>Resources</B></a></li>
+				
 					<ul>
 						<li>
-							Contacts
+							<b>Contacts</b>
 							<ul>
 								<li><a href="../library/students.jsp">Students</a></li>
 							</ul>
 						</li>
 						<li>
-							Tutorials
+							<b>Tutorials</b>
+							<ul><li>Performance Study</li>
 							<ul>
-								<li><a href="../analysis-performance/tutorial.jsp">Performance Study Background</a></li>
-								<li><a href="../analysis-performance/tryit.html">Step-by-Step Instructions: Performance</a></li>
-								<li><a href="../analysis-lifetime/tutorial.jsp">Lifetime Study Background</a></li>
-								<li><a href="../analysis-lifetime/tryit.html">Step-by-Step Instructions: Lifetime</a></li>
-								<li><a href="../analysis-flux/tutorial.jsp">Flux Study Background</a></li>
-								<li><a href="../analysis-flux/tryit.html">Step-by-Step Instructions: Flux</a></li>
-								<li><a href="../analysis-shower/tutorial.jsp">Shower Study Tutorial</a></li>
-								<li><a href="../analysis-shower/tryit.html">Step-by-Step Instructions: Shower</a></li>
-								<li><a href="../jsp/geoInstructions.jsp">Updating Geometry Tutorial</a></li>
+								<li><a href="../analysis-performance/tutorial.jsp">Tutorial</a> &
+								<a href="../analysis-performance/tryit.html">Step-by-Step Instructions</a></li>
+</ul>
+								
+								<li>Shower</li>
+								<ul>
+								<li><a href="../analysis-shower/tutorial.jsp">Tutorial</a> &
+								<a href="../analysis-shower/tryit.html">Step-by-Step Instructions</a></li>
+</ul>
+
+<li>Flux Study</li>
+								<ul>
+								<li><a href="../analysis-flux/tutorial.jsp">Tutorial</a> &
+								<a href="../analysis-flux/tryit.html">Step-by-Step Instructions</a></li>
+</ul>
+
+<li>Lifetime Study</li>
+								<ul>
+								<li><a href="../analysis-lifetime/tutorial.jsp">Tutorial</a> &
+								<a href="../analysis-lifetime/tryit.html">Step-by-Step Instructions</a></li>
+								</ul>
+								
+							<li><a href="../jsp/geoInstructions.jsp">Updating Geometry Tutorial</a></li>	
+								
 							</ul>
-						</li>
+						
 						<li>
-							Animations
+							<b>Animations</b>
 							<ul>
 								<li><a href="../flash/daq_only_standalone.html" >Classroom Cosmic Ray Detector</a></li>
-								<li><a href="../flash/daq_portal_rays.html" >Sending Data to Grid Portal</a></li>
+								<li><a href="../flash/daq_portal_rays.html" >Sending Data to Grid</a></li>
 								<li><a href="../flash/analysis.html" >Analysis</a></li>
 								<li><a href="../flash/collaboration.html" >Collaboration</a></li>
-								<li><a href="../flash/SC2003.html" >Loop</a></li>
-								<li><a href="../flash/griphyn-animate_sc2003.html" >CMS vs. QuarkNet</a></li>
-								<li><a href="../flash/DAQII.html" >DAQII</a></li>
+								
+								<li><a href="../flash/griphyn-animate_sc2003.html" >Exploring Virtual Data</a></li>
+								<li><a href="../flash/DAQII.html" >Data Aquistion Card</a></li>
 							</ul>
-						</li>
+						
 					</ul>
+					</li>
+							<li><a href="../library/big-picture.jsp"><b>The Big Picture</b></a></li>
+<li><a href="../library/FAQ.jsp"><b>FAQs</b></a></li>
+<li><a href="../library/site-help.jsp"><b>Site Help</b></a></li>
 				</li>
 			</ul>
 		</td>
 		<c:if test="${user.upload}">
 			<td class="upload">
 				<ul>
-					<li><a href="../data/upload.jsp">Upload Data</a></li>
-					<li><a href="../geometry/">Upload Geometry</a></li>
+					<li><a href="../data/upload.jsp"><b>Upload Data</b></a></li>
+					<li><a href="../geometry/"><b>Upload Geometry</b></a></li>
+					
 				</ul>
 			</td>
 		</c:if>
@@ -126,7 +146,6 @@
 					<ul>
 						<li><a href="../data/search.jsp">Data Files</a></li>
 						<li><a href="../plots/search.jsp">Plots</a></li>
-						<li><a href="../posters/search.jsp">Posters</a></li>
 					</ul>
 				</li>
 				<li>
@@ -134,18 +153,18 @@
 					<ul>
 						<li><a href="../data/delete.jsp">Data Files</a></li>
 						<li><a href="../plots/delete.jsp">Plots</a></li>
-						<li><a href="../posters/delete.jsp">Posters</a></li>
 					</ul>
 				</li>
 			</ul>
 		</td>
 		<td class="posters">
 			<ul>
-				<li><a href="../posters/new.jsp">New Poster</a></li>
-				<li><a href="../posters/edit.jsp">Edit Posters</a></li>
-				<li><a href="../posters/search.jsp">View Posters</a></li>
-				<li><a href="../posters/delete.jsp">Delete Posters</a></li>
-				<li><a href="../plots/my-plots.jsp">View My Plots</a>
+				<li><a href="../posters/new.jsp"><b>New Poster</b></a></li>
+				<li><a href="../posters/edit.jsp"><b>Edit Posters</b></a></li>
+				<li><a href="../posters/search.jsp"><b>View Posters</b></a></li>
+				<li><a href="../posters/delete.jsp"><b>Delete Posters</b></a></li>
+				<li><a href="../plots/my-plots.jsp"><b>View My Plots</b></a></li>
+<li><a href="../jsp/uploadimages.jsp"><b>Upload Images</b></a></li>
 			</ul>
 		</td>
 		<td class="assessments">
