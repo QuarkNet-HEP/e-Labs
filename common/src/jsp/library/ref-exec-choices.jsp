@@ -69,7 +69,7 @@ This table summarizes the features of the different choices you can make. The te
 <br />
    <img src="../graphics/in-progress.jpg" alt="in-progress.jpg" width='593' height='313' border="1" />
 <p />
-<p>Later you can click on the Analysis submenu on the Data Menu and see a list showing how your submitted analyses are doing and click on the results when they are done:
+<p>Later you can click on the Analyses submenu on the Data Menu and see a list showing how your submitted analyses are doing and click on the results when they are done:
 <strong>The submitted analyses only stay on this queue for a set period of time, so it is important to get your results and save them as plots if you want to keep them.</strong></p>
 <p />
 <br />
