@@ -34,8 +34,13 @@
 			
 			<div id="content">
 
-<h1>Analysis list</h1>
+<h1>Analysis list - a list of the analyses you have run recently.</h1>
+<p>Check the status of the analyses you have run to see if they have completed.
+Click on the link in the Analysis column to see the plot you made and save it permanently if
+you are satisfied with it.  You can always run the analysis again and change the input parmaeters.</p>
 
+<p>Items remain for a maximum of 48 hours with a limit of 80 items per research group. The oldest items get removed first.
+<div style="color: red">Be sure to save your plots permanently!</div><p>
 <%
 	request.setAttribute("runs", AnalysisManager.getAnalysisRuns(elab, user));
 %>
