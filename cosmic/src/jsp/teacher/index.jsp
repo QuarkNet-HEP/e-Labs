@@ -50,18 +50,19 @@
 				<p>
 					Working in a research group, students experience the environment of scientific collaborations 
 					in this series of investigations into high-energy cosmic rays. 
-					From start to finish this is a student-led, teacher-guided project. 
+					From start to finish this is a student-led, <b>teacher-guided</B> project. 
 					Schools with cosmic ray detectors can upload data to the web. 
-					A virtual data portal enables students to share this data and 
+					A virtual data portal enables students to share these data and 
 					associated analysis code with students at other schools whether 
 					or not those schools have their own cosmic ray detectors. 
 				</p>
 				<p>
 					To begin, students check the performance of the detectors they 
-					have chosen for their study. They can then perform one of three 
+					have chosen for their study. Then they can perform one of three 
 					investigations: muon lifetime, muon flux or extended air showers. 
-					Students post the results of their studies as online posters. 
-					Then the real scientific collaboration begins. Students can 
+					Students can use a study guide with milestones to conduct their reseach and
+					can record their work and reflect on their progress in their e-Logbook. Students post the results of their studies as online posters. 
+					The real scientific collaboration follows. Students can 
 					review the results of other studies online comparing data and 
 					analyses. Using online tools, they can correspond with other 
 					research groups, post comments and questions, prepare summary 
@@ -82,9 +83,7 @@
 				
 				<h2>Introduction to Research:</h2>
 				<p>
-					The QuarkNet/Grid Project explores the potential of using virtual 
-					data grid tools and techniques for secondary science education. 
-					The project begins with a pilot cosmic ray study that provides 
+					The Cosmic Ray e-Lab provides
 					an opportunity for:
 				</p>
 				<ul>
@@ -115,8 +114,8 @@
 					through the earth and are generally undetected.) 
 				</p>
 				<p>
-					Occasionally the primary possesses tremendous energy. These create 
-					many, many decay products. An array of detectors on the earth's 
+					Occasionally the primary cosmic ray possesses tremendous energy, creating
+					many decay products. An array of detectors on the earth's 
 					surface can indirectly measure the energy of the primary by counting 
 					the number of particles in the detector array simultaneously. These 
 					observations can lead to a calculation of the part of the sky that 
@@ -142,7 +141,7 @@
 					<a href="../library/research-basics.jsp">Review of Basic Skills</a>
 				</p>
 					
-				<h2>Learner Outcomes:</h2>
+				<h2>Learner Outcomes and Assessment:</h2>
 				<p>
 					Students will know and be able to: 
 				</p>
@@ -160,6 +159,52 @@
 							
 							<%@ include file="learner-outcomes.jsp" %>
 					</ul>
+					<p>
+					Assessment is aligned to learner outcomes. While many teachers will want to design their own assessments, 
+					we provide some options. 
+					
+				</p>
+
+				<ul>
+					<li>
+						<B>Rubrics:</B> <A HREF="../assessment/rubric-ci.html">Content & Investigation</A>,
+						<A HREF="../assessment/rubric-r.html">Process</A>, <A HREF="../assessment/rubric-t.html">Computing</A>,
+						<A HREF="../assessment/rubric-wla.html">Literacy</A> and <A HREF="../assessment/rubric-p.html">Poster</A>
+					</li>
+					<e:restricted role="teacher">
+						<li>
+							<b>Tests</b>: <a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
+							- and <a href="../test/test.jsp?type=postsurvey&studentid=0">post</a>
+							- tests of content knowledge and student results for 
+							<a href="../test/results.jsp?type=presurvey">pre</a>
+							- and <a href="../test/results.jsp?type=postsurvey">post</a>- tests.
+						</li>
+						<c:if test="${newSurvey == true }">
+							<li>
+								<i>For the study you have joined:</i>
+								<a href="../survey/survey.jsp?type=pre&studentid=0">Pre</a>
+								- and <a href="../survey/survey.jsp?type=post&studentid=0">post</a>
+								- tests of content knowledge and student results for 
+								<a href="../survey/results.jsp?type=pre">pre</a>
+								- and <a href="../survey/results.jsp?type=post">post</a>- tests.
+							</li>
+						</c:if>
+					</e:restricted>
+				
+							<li>
+							<b>e-Logbooks:</b> Track progress and provide feedback on student work.<br>
+							Review student evidence of what they know/understand and reflections on their research.<br> 
+							Review all student entries for a particular milestone, e.g., class cosmic ray descriptions, and make notes in your logbook for next year. 
+							Look at this <a href="#" onclick="javascript:window.open('../graphics/logbook-sample.gif', 'content', 'width=680,height=901, resizable=1, scrollbars=1');return false;">sample logbook</a>.
+							
+							</li>
+							<li>
+							<b>Milestone Seminars:</b> Check student understanding before they move from one section of the study guide to another. 
+							</li>
+					
+				</ul>
+			
+					 
 				
 				<h2>Research Question:</h2>
 				<p>
@@ -169,8 +214,8 @@
 					students but well answered by physicists. These include the 
 					muon lifetime, rate of cosmic ray arrival as well as the 
 					source of low-energy air showers. However, the origin of the 
-					highest-energy cosmic rays is an open question-several 
-					experiments are actually exploring it now. Students may be 
+					highest-energy cosmic rays is an open question&mdash;scientists are trying
+					to answer this question now. Students may be 
 					able to contribute data to these efforts.
 
 					Many experiments have measured cosmic array showers, including 
@@ -183,50 +228,12 @@
 					Students will be able to look into the size of cosmic ray 
 					showers by comparing their cosmic ray detector data with that 
 					from others across a wide area to see where particles struck 
-					earth's surface in closely correlated time windows. Also, 
-					students will be a part of this ongoing research by providing 
-					data to a collaboration of their peers. These data contain 
-					stamps for time and geographic location information.
+					earth's surface in closely correlated time windows. (Data contain time and geographic location information.)  
+					Students will be a part of this ongoing research by providing 
+					data to a collaboration of their peers. 
 				</p>
  
-				<h2>Assessment:</h2>
-				<p>
-					Asssessment is aligned to learner outcomes.  We provide the
-					following tools to meet specific outcomes for your students.
-					You may wish to modify some to meet your needs.
-				</p>
-
-				<ul>
-					<li>
-						<B>Rubrics:</B> <A HREF="../assessment/rubric-ci.html">Content & Investigation</A>,
-						<A HREF="../assessment/rubric-r.html">Process</A>, <A HREF="../assessment/rubric-t.html">Computing</A>,
-						<A HREF="../assessment/rubric-wla.html">Literacy</A> and <A HREF="../assessment/rubric-p.html">Poster</A>
-					</li>
-					<e:restricted role="teacher">
-						<li>
-							<a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
-							- and <a href="../test/test.jsp?type=postsurvey&studentid=0">post</a>
-							- tests of content knowledge and student results for 
-							<a href="../test/results.jsp?type=presurvey">pre</a>
-							- and <a href="../test/results.jsp?type=postsurvey">post</a>- tests.
-						</li>
-						<c:if test="${newSurvey == true }">
-							<li>
-								<i>For those of you recruited to beta-test the "new pre/post test" (you know who you are):</i>
-								<a href="../survey/survey.jsp?type=pre&studentid=0">Pre</a>
-								- and <a href="../survey/survey.jsp?type=post&studentid=0">post</a>
-								- tests of content knowledge and student results for 
-								<a href="../survey/results.jsp?type=pre">pre</a>
-								- and <a href="../survey/results.jsp?type=post">post</a>- tests.
-							</li>
-						</c:if>
-					</e:restricted>
-					<li>
-						e-Logbooks: Track and comment on student work. Review 
-						group logbook or all student entries for a particular 
-						milestone, e.g., class cosmic ray descriptions.
-					</li>
-				</ul>
+				
 			</div>
 		</td>
 		<td>
