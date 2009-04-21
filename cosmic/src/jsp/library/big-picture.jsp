@@ -10,6 +10,7 @@
 		<title>Cosmic e-Lab Tips</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/three-column.css"/>
 		
 	</head>
 	
@@ -35,6 +36,11 @@
 				</h1>
 				<table border="0" id="main">
 					<tr>
+					  <td>
+	  		           <div id="left">
+			        	<%@ include file="../include/left.jsp" %>
+			          </div>
+			          </td>
 						<td>
 							<div id="center">
 								<b>
