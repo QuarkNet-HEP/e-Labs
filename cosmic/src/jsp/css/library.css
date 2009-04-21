@@ -206,11 +206,18 @@ a.button {
 .library .tab .tab-contents {
 	background-color: #ccffff;
 	margin: 0px;
+	border: 1px solid black;
+/*
 	border-top: 2px solid black;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+	border-left: 1px solid black;
+*/
 	padding-bottom: 16px;
 	padding-left: 8px;
 	padding-right: 8px;
 }
+
 
 .library #content .tab-contents h2 {
 	font-weight: bold;
@@ -232,6 +239,45 @@ a.button {
 	marker-offset: auto;
 	padding-right: 3px;
 }
+
+.library .tab .tab-contents-sublevel {
+	background-color: #ffffff;
+	margin: 0px;
+	border: 1px solid black;
+/*
+	border-top: 2px solid black;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+	border-left: 1px solid black;
+*/
+	padding-bottom: 16px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.library #content .tab-contents-sublevel h2 {
+	font-weight: bold;
+	font-style: italic;
+	padding-left: 10px;
+	font-size: 100%;
+}
+
+.library #content .tab-contents-sublevel li {
+	font-weight: normal;
+	padding-left: 8px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.library #content .tab-contents-sublevel li:before {
+	display: marker;
+	content: url("../graphics/ref_dot.gif");
+	marker-offset: auto;
+	padding-right: 3px;
+}
+
+
+
 
 .float {
 	float: left;
