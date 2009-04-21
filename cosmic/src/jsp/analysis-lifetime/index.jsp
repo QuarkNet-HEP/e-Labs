@@ -38,6 +38,7 @@
 				
 <h1>Choose data for lifetime study.</h1>
 <div id="rationale">One way to classify objects is by measurable characteristics. All electrons have the same mass, charge and spin. What characteristics can you measure about the cosmic ray particles that reach Earth's surface? These unstable particles decay with a characteristic signal in a characteristic time. Can you measure it? If so, that characteristic is one way to determine what the particles are.</div>
+<div id="rationale">Gain confidence by running a practice analysis.</div>
 
 <table border="0" id="main">
 	<tr>

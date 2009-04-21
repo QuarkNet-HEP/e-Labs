@@ -81,6 +81,9 @@
 <c:choose>
 	<c:when test="${analysis.parameters.rawData != null}">
 		<h1>Calculate the flux for your data file. Remember, flux = particles / time / area</h1>
+<div id="rationale">This analysis looks at the arrival rate of cosmic ray muons over time. The calculations average the instantaneous arrivals and create a scatter plot of rate vs. time.</div>
+<div id="rationale">Gain confidence by running a practice analysis.</div>
+<hr>
 		<table border="0" id="main">
 			<tr>
 				<td id="center">

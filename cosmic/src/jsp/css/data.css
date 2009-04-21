@@ -212,7 +212,7 @@ a.button {
 .data .tab .tab-contents {
 	background-color: #99ccff;
 	margin: 0px;
-	border-top: 2px solid black;
+	border: 1px solid black;
 	padding-bottom: 16px;
 	padding-left: 8px;
 	padding-right: 8px;
@@ -238,6 +238,16 @@ a.button {
 	marker-offset: auto;
 	padding-right: 3px;
 }
+
+.data #content #rationale {
+	width: 790px;
+	font-size: 12px;
+	font-weight: bold;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 4px;
+	}
+
 
 p.search-result-bar {
 	margin-top: 0px;

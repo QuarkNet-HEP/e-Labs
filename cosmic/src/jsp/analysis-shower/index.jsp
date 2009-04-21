@@ -38,6 +38,7 @@
 				
 <h1>Choose data for shower study.</h1>
 <div id="rationale">The universe is a big place. Cosmic ray primaries drift around and get energy boosts from multiple sources. Some primaries attain enormous energies. When they strike the upper atmosphere, they create Extended Area Showers. These events create thousands of particles that simultaneously reach a small section of Earth's surface. Can you find out how often nearby detectors "light up" with cosmic rays? If they do, is it a random coincidence or a measurement of violent conditions in another galaxy?</div>
+<div id="rationale">Gain confidence by running a practice search.</div>
 <table border="0" id="main">
 	<tr>
 		<td>

@@ -136,37 +136,68 @@
 						</ul>
 					</div>
 				</div>
-				<div class="tab" id="tab-animations">
-					<span class="tab-title">IT Careers</span>
-					<div class="tab-contents-sublevel">
-						<ul class="simple">
-							<li>
-								<a href="http://www2.edc.org/ewit/materials/ITCCBRO.pdf">Career Cluster Pamphlet</a>,
-								(pdf) from Vocational information Center's <A href="http://www.khake.com/page17.html">Computer Science Career Guide</a>
-							</li>
-							<li>
-								<a href="http://www.microsoft.com/learning/training/careers/prepare.mspx">Prepare for an Information Technology (IT) Career</a>,
-								from Microsoft Learning
-							</li>
-								</ul>
-					</div>
-				</div>				
 				
+					
+					<div class="tab" id="tab-animations">
+					<span class="tab-title">Plots</span>
+					<div class="tab-contents-sublevel">
+						
+				<ul  class="simple">
+						
+						<li>
+					 <a href="http://nces.ed.gov/nceskids/graphing/">
+  Create a Graph</a> - Practice
+  making area, bar and line graphs and pie charts, from <i>Kids'Zone</i> at Shodor.</il>
 
+<li><a href="http://www.shodor.org/interactivate/activities/flydata/index.html">
+  Interactive X-Y plot</a> - Enter and practice plotting your
+  data, from Inter<i>activate</i> at Shodor.</il>
 
+ <li><A HREF="http://www.shodor.org/interactivate/activities/scatterplot/index.html">
+  Scatter Plots</a> - Create the most basic scatter plot, from Inter<i>activate</i> at Shodor.</il>
+  
 
+ <li><a href="http://musr.physics.ubc.ca/~jess/hr/skept/Meas/node2.html">
+  Graphs and Error Bars</a> - A definition from <i>Believe It or Not - A Skeptics Guide</I></il>
 
-			</div>
+ <li><a href="http://www.purplemath.com/modules/graphexp.htm">
+  Graphing Exponential Equations</a> - Lessons from
+  <i>Purplemath</i>.<//il>
+
+<li><a href="http://www.shodor.org/interactivate/activities/histogram/">
+  Histogram</a> - All about histograms with an
+  interactive example from Inter<i>activate</i> at Shodor</il>
+
+<li><a href="http://www.teacherschoice.com.au/images/histogram.gif">
+  Histogram</a> - An example</il>
+
+<li><a href="http://www.deakin.edu.au/~agoodman/sci101/chap12.php#RTFToC12">
+  3D Graphs</a> - Wxamples from an individual at Deakin University</il>
+  
+  <li><a href="http://www.teacherschoice.com.au/images/scientific_plot.gif">
+  Scientific Plot</a> - A line graph with error bars on
+  points and best fit line</li>
+
+ <a href="http://instruct1.cit.cornell.edu/courses/virtual_lab/LabZero/Experimental_Error.shtml">Experimental Error</a>, from Cornell University</li>
+
+ <a href="http://www.batesville.k12.in.us/physics/APPhyNet/Measurement/Measurement_Intro.html">Physics and Measurements</a>, by  JL Stanbrough
+  </li>
+
+						</ul>
+						</div>		
+						</div>
 		</td>
 		<td>
 		
 		<div id="right">
 					
 				<div class="tab" id="tab-online">
-					<span class="tab-title">Online</span>
+					<span class="tab-title">Cosmic Ray Sites</span>
 					<div class="tab-contents-sublevel">
 						<h2>General Background</h2>
 						<ul class="simple">
+						
+						<li><a href="http://en.wikipedia.org/wiki/Cosmic_rays">Wikipedia</a>, a good place to start
 							<li>
 								<a href="../content/CosmicExtremes.pdf">Cosmic Extremes</a>
 								- Excellent cosmic ray overview rom Columbia University (pdf file)
@@ -200,6 +231,9 @@
 								<a href="http://www.symmetrymagazine.org/cms/?pid=1000688">Cosmic Weather Gauges</a>
 								- Cosmic rays and upper atmospheric temperatures from Symmetry Magazine
 							</li>
+							<li><a href="http://ed.fnal.gov/pdf/leo.pdf">Leo's Logbook</a> - Tips for keeping a logbook</il>
+						
+							
 						</ul>
 						<h2>Cosmic Ray Simulations (need
   QuickTime plugin)</h2>
@@ -211,6 +245,7 @@
   <li><a href=
   "javascript:showRefLink('http://www.th.physik.uni-frankfurt.de/~drescher/CASSIM/c10.mpg',800,700)">
 Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
+	
   </ul>
 						
 						<h2>Online Labs</h2>
@@ -221,17 +256,7 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 							</li>
 						</ul>
 						
-						<h2>Grid Computing</h2>
-						<ul  class="simple">
-							<li>
-								<a href="http://gridcafe.web.cern.ch/gridcafe/">The Grid Cafe</a>
-								- An introduction. From there, go to <a href="http://www.gridtalk.org/">Grid Talk</a> where you can read <a href="http://www.gridtalk.org/briefings.htm">Grid Briefings</a> and explore the <a href="http://www.gridguide.org/">Grid Guide</a>, from CERN.
-							</li>
-							<li>
-								<a href="http://www.tryscience.org/grid/home.html" target="activity">Grids for Kids at TryScience</a>
-								- Use grid computing to model Mt. Vesuvius' volcanic activity and discover whether residents need warning, from New York Museum of Science. 
-							</li>
-							</ul>
+						
 
 						<h2>Professional Sites (Very Advanced)</h2>
 						<ul class="simple">
@@ -249,8 +274,57 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 								 laboratory in Geneva, Switzerland.
 							</li>
 						</ul>
+						</div>
+						<div class="tab" id="tab-online">
+					<span class="tab-title">Grid Computing</span>
+					<div class="tab-contents-sublevel">
+						<ul  class="simple">
+							<li>
+								<a href="http://gridcafe.web.cern.ch/gridcafe/">The Grid Cafe</a>
+								- An introduction. From there, go to <a href="http://www.gridtalk.org/">Grid Talk</a> where you can read <a href="http://www.gridtalk.org/briefings.htm">Grid Briefings</a> and explore the <a href="http://www.gridguide.org/">Grid Guide</a>, from CERN.
+							</li>
+							<li>
+								<a href="http://www.tryscience.org/grid/home.html" target="activity">Grids for Kids at TryScience</a>
+								- Use grid computing to model Mt. Vesuvius' volcanic activity and discover whether residents need warning, from New York Museum of Science. 
+							</li>
+							</ul>
+							</div>
+							</div>
+							
+							<div class="tab" id="tab-animations">
+					<span class="tab-title">IT Careers</span>
+					<div class="tab-contents-sublevel">
+						<ul class="simple">
+							<li>
+								<a href="http://www2.edc.org/ewit/materials/ITCCBRO.pdf">Career Cluster Pamphlet</a>,
+								(pdf) from Vocational information Center's <A href="http://www.khake.com/page17.html">Computer Science Career Guide</a>
+							</li>
+							<li>
+								<a href="http://www.microsoft.com/learning/training/careers/prepare.mspx">Prepare for an Information Technology (IT) Career</a>,
+								from Microsoft Learning
+							</li>
+								</ul>
 					</div>
-				</div>
+							
+							<div class="tab" id="tab-online">
+					<span class="tab-title">Reporting Research</span>
+					<div class="tab-contents-sublevel">
+						<ul  class="simple">
+
+		
+						<ul  class="simple">
+						
+						<li><a href="http://www.madsci.org/posts/archives/2004-02/1075755143.Me.r.html">
+  Defend your reseach</a>, from <i>MacSci Network</i></li>
+  
+ <li><a href="http://leo.stcloudstate.edu/bizwrite/abstracts.html">
+  Writing Abstracts</a> - A good tutorial from <i>Write Place</i></li>
+  
+<li><a href="http://www.space.com/scienceastronomy/gravity_speed_030116.html">
+  Science at odds</a>, from SPACE.COM showing when science requires public
+  discourse among experts to advance
+						</li>
+					</div>
 				
 				
 			</div>

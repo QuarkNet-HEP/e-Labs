@@ -79,7 +79,10 @@
 <c:choose>
 	<c:when test="${analysis.parameters.rawData != null}">
 		<h1>Calculate the lifetime of muons that stop in the detector</h1>
-		<table border="0" id="main">
+<div id="rationale">This analysis determines the time difference between consecutive photomultiplier tube signals. Two consecutive signals might be one cosmic ray muon followed by another. Two signals may also come from a muon (the first signal) which then decays into an electron, a neutrino and an anti-neutrino. The electron will create a second signal. The routine displays a histogram of the signal separations that "pass" criteria you set in a the fields below.</div>
+<div id="rationale">Gain confidence by running a practice analysis.</div>
+<hr>
+<table border="0" id="main">
 			<tr>
 				<td id="center">
 					<p>

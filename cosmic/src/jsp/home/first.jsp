@@ -67,7 +67,7 @@
 		</td>
 		<td>
 			<div id="right">
-				<a class="button" href="first-web.jsp">Get Started</a>
+				<a class="button" href="../library/milestones-map.jsp">Get Started</a>
 				<%@ include file="../posters/poster-sample-small.jsp" %>
 			</div>
 		</td>
