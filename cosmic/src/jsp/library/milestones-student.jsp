@@ -25,7 +25,7 @@
 			<div id="left">
 				<div class="tab">
 					<span class="tab-title">Research Basics</span>
-					<div class="tab-contents">
+					<div class="tab-contents-sublevel">
 						<h2>Use these milestones if you need background on:</h2>
 						<ul>
 							<li>
@@ -64,7 +64,7 @@
 				</div>
 				<div class="tab">
 					<span class="tab-title">B. Figure It Out</span>
-					<div class="tab-contents">
+					<div class="tab-contents-sublevel">
 						<h2>Prepares the team to analyze data:</h2>
 						<ul>
 							<li>
@@ -94,7 +94,7 @@
 			<div id="right">
 				<div class="tab">
 					<span class="tab-title">A. Get Started</span>
-					<div class="tab-contents">
+					<div class="tab-contents-sublevel">
 						<h2>Prepares the team to design the investigation:</h2>
 						<ul>
 							<li>
@@ -127,7 +127,7 @@
 				</div>
 				<div class="tab">
 					<span class="tab-title">C. Tell Others</span>
-					<div class="tab-contents">
+					<div class="tab-contents-sublevel">
 						<h2>Prepares the team to enter into scientific discourse with other researchers:</h2>
 						<ul>
 							<li>
