@@ -135,11 +135,7 @@
 				</ul>
 				<p>
 					We provide refresher references for students who need to brush up on 
-					these skills. Here is what the students see:
-				</p>
-				<p>
-					<a href="../library/research-basics.jsp">Review of Basic Skills</a>
-				</p>
+					these skills. Students access these from "The Basics" section of the <a href="../library/milestones-map.jsp" target="show">study guide</a>. 
 					
 				<h2>Learner Outcomes and Assessment:</h2>
 				<p>
