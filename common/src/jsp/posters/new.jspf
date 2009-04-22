@@ -202,7 +202,7 @@ pageContext.setAttribute("images", images);
 			fill them all in.
 		</li>
 		<li>
-			Click <b>${edit?'Save Changes':'Make Poster'}</b> to save the data for the poster. <b>Don't block pop-ups or you won't see your poster.</b>
+			Click <b>${edit?'Save Changes':'Make Poster'}</b> to save the data for the poster and display your poster. If you have "pop-ups" blocked, you will need to click on </b>Display Poster</b> below.
 		</li>
 	</ul>
 
@@ -280,7 +280,7 @@ pageContext.setAttribute("images", images);
 		<tr>
 			<td colspan="2" align="center">
 	            <input type="submit" name="button" value="${edit?'Save Changes':'Make Poster'}"/>
-    	        <font size="-1">To see poster, don't block popups!</font>
+    	        <font size="-1">To see poster, don't block popups! Otherwise click <b>Display Poster</b> below.</font>
 			</td>
 		</tr>
 	</form>
@@ -324,5 +324,10 @@ if ("Make Poster".equals(reqType) || "Save Changes".equals(reqType)) {
     }
 }
 
-
+%>
+<% if (dfile != "") {
+%>
+<div align="center"><a href="../posters/display.jsp?name=<%= dfile %>" target="poster:" width="700" height="900" now="true">Display Poster</a></div>
+<%
+}
 %>
