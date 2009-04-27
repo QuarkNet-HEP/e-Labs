@@ -550,6 +550,11 @@ function show_select_from_array($name, $array, $selection) {
     echo select_from_array($name,$array,$selection);
 }
 
+// Shows the forum "title" as a hierarchical list of forum  & thread
+// so user can click back up.
+// I2U2 modification: don't show link to overview page, except to
+// admin and dev
+//
 function show_forum_title($forum=NULL, $thread=NULL, $helpdesk=false) {
     echo "<p>\n";
     if (!$forum && !$thread) {
@@ -563,17 +568,29 @@ function show_forum_title($forum=NULL, $thread=NULL, $helpdesk=false) {
         echo "<span class=title>";
         if ($helpdesk) {
             echo "<a href=\"forum_help_desk.php\">", " Questions/Answers</a> : ";
-        } else {
-            echo "<a href=\"forum_index.php\">", " Discussion/Logbook</a> : ";
+        }
+	else {
+	  if( user_has_role('admin') || user_has_role('dev') ){ 
+	    echo "<a href=\"forum_index.php\">", " Discussion/Logbook</a> : ";
+	  }
+	  else {
+            echo "Discussion/Logbook: ";
+	  }
         }
         echo $forum->title;
         echo "</span><br>";
-    } else if ($forum && $thread) {
+    }
+    else if ($forum && $thread) {
         echo "<span class=title>";
         if ($helpdesk) {
             echo "<a href=\"forum_help_desk.php\">", " Questions and problems</a> : ";
         } else {
-            echo "<a href=\"forum_index.php\">", " Message boards</a> : ";
+	  if( user_has_role('admin') || user_has_role('dev') ){ 
+	    echo "<a href=\"forum_index.php\">", " Discussion/Logbook</a> : ";
+	  }
+	  else {
+            echo "Discussion/Logbook: ";
+	  }
         }
         echo "<a href=\"forum_forum.php?id=$forum->id\">", $forum->title, "</a> : ";
         echo cleanup_title($thread->title);
@@ -713,5 +730,5 @@ function reply_warning(){
 
 
 //Generated automatically - do not edit
-$cvs_version_tracker[]="\$Id: forum.inc,v 1.9 2007/11/26 19:16:57 myers Exp $";  
+$cvs_version_tracker[]="\$Id: forum.inc,v 1.10 2009/04/27 19:44:11 myers Exp $";  
 ?>

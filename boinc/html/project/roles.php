@@ -14,7 +14,6 @@
 if( !$BOINC_html ) $BOINC_html=realpath("../");
 
 require_once("$BOINC_html/inc/forum.inc");
-
 require_once("$BOINC_html/include/roles.php");
 
 
@@ -45,9 +44,10 @@ function category_is_private($catid){
 
 
 /**
- * Check a forum room/thread to see if even reading, let alone posting, is allowed.
- * Implement your policy here.
- * TODO: does this conflict with category_is_private() or are they complementary?
+ * Check a forum room/thread to see if even reading, let alone posting, is
+ *  allowed. Implement your policy here.
+ * TODO: does this conflict with category_is_private() 
+  *	or are they complementary?
  */
 
 function check_reading_is_allowed($logged_in_user, $forum, $thread=NULL){
@@ -257,6 +257,7 @@ function check_posting_is_allowed($logged_in_user, $forum, $thread=NULL){
 }
 
 
+
 /*******************************
  * Functions to test user's Roles. 
  *   THE OLDER WAY - PLEASE DON'T USE THESE ANYMORE.
@@ -270,9 +271,11 @@ if( !function_exists('is_Administrator') ){
     }
  }
 
+
 function user_has_permission($p){ //OLD NAME  
     return user_has_role($p);
 }
+
 
 function is_HS_teacher($user){
     $user= getForumPreferences($user);

@@ -38,7 +38,6 @@ if( function_exists('check_reading_is_allowed') ){
  }
 
 
-
 if ($category->is_helpdesk) {
     if (!$sort_style) {
         $sort_style = getSortStyle($logged_in_user,"faq");

@@ -14,10 +14,6 @@ require_once("../inc/sanitize_html.inc");
 
 require_once("../project/project.inc");
 
-require_once("../project/roles.php");		// special_user stuff
-require_once("../include/transclude.php");	// mashups
-
-
 
 // Uncomment this and at the bottom if page needs to be cached for performance
 //start_cache(index_page_ttl);

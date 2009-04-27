@@ -5,7 +5,7 @@
  *  Functions to support getting content from some other URI,
  *  such as a wiki page, and then inserting it into a page.
  *
- * @(#) $Id: transclude.php,v 1.4 2009/03/26 19:50:51 myers Exp $
+ * @(#) $Id: transclude.php,v 1.5 2009/04/27 19:39:55 myers Exp $
 \***********************************************************************/
 
 // This can be set earlier, in which case we won't override
@@ -55,6 +55,13 @@ function get_wiki_article($title,
     $body = substr($body,0,$i);
   }
   if( empty($body) ) return NULL;
+
+
+  // Images in the wiki are linked to their wiki page
+  // Remove that link, while preserving the image
+
+  $pattern = "<a href=[^>]+Image:[^>]+>(<img[^>]+)</a>";
+
 
 
   $body = "\n\n<!-- Transcluded from wiki article $title -->\n\n"

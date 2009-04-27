@@ -11,13 +11,6 @@
  * @(#) Last changed: -EAM 26Sep2007
 \**********************************************************************/
 
-if( !function_exists('debug_msg') ) {
-    require_once("../include/debug.php");
- }
-
-require_once('../project/project.inc');
-require_once("../project/roles.php");
-
 
 // Forum settings, above and beyond BOINC
 //

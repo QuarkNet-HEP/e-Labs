@@ -35,6 +35,13 @@ function user_has_role($p){
     $logged_in_user = get_logged_in_user(false); 
     if( empty($logged_in_user) ) return false;
 
+    // TODO: here we could check a list of roles the user has from user
+    // table, instead of or before special-user bits.
+
+
+    // TODO: check effective role here.
+
+
     // BOINC special user bits are in forum_prefrences
     $logged_in_user= getForumPreferences($logged_in_user);
 

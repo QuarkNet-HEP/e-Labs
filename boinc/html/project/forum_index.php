@@ -37,7 +37,13 @@ function show_forums() {
 
 // BEGIN:
 
-db_init();
+$dbrc =  db_init_aux();
+
+if( !user_has_role('admin') && !user_has_role('dev') ){
+   error_page("You must be an <b>Administrator</b> or <b>project developer</b>"
+                   ." to view this page.");
+}
+
 
 page_head(tr(FORUM_TITLE,PROJECT));
 

@@ -11,9 +11,18 @@
 \**********************************************************************/
 
 require_once("../project/extras.php");
+require_once("../project/roles.php");		// special_user stuff
+require_once("../include/transclude.php");	// mashups
 
-// Primary configuration settings:
-//
+
+if( !function_exists('debug_msg') ) {
+    require_once("../include/debug.php");
+ }
+
+/************************************\
+ * Primary configuration settings:
+ */
+
 define("PROJECT", "I2U2");
 define("MASTER_URL", "http://www13.i2u2.org/");
 define("URL_BASE", "http://www13.i2u2.org/");
