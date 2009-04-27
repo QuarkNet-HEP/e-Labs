@@ -72,7 +72,7 @@
 					<dt>Popup Windows:</dt>
 					<dd>Be sure that you are not blocking popup windows in your browser.</dd>
 
-					<dt>References:</dt>
+					<dt>Resources:</dt>
 					<dd>Explore tutorials, online resources, animations and contacts.</dd>
 					
 					<dt>Study Guide - A List of Milestones:</dt>
@@ -82,7 +82,7 @@
 						</p>
 	
 						<p>
-							To access resources associated with milestones, click on <img src="../graphics/ref.gif">.
+							To access pop-up references associated with milestones, click on <img src="../graphics/ref.gif">.
 						</p>
 						
 						<p>
