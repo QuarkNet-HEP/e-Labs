@@ -1,0 +1,70 @@
+#sitehelp-library
+{
+z-index: 5;
+background-color: #55a9b4;
+width: 100px;
+border: 1px solid #444444;
+margin: auto;
+text-align: center;
+position: absolute; top: 240px; left: 405px;
+display: none;
+}
+#sitehelp-library a {
+	color: #000000;
+	text-decoration: none;
+
+}
+
+#sitehelp-data
+{
+z-index: 5;
+background-color: #63a2db;
+width: 100px;
+border: 1px solid #444444;
+margin: auto;
+text-align: center;
+position: absolute; top: 600px; left: 405px;
+display: none;
+}
+#sitehelp-data a {
+	color: #000000;
+	text-decoration: none;
+
+}
+
+#sitehelp-posters
+{
+z-index: 5;
+background-color: #408c66;
+width: 100px;
+border: 1px solid #444444;
+margin: auto;
+text-align: center;
+position: absolute; top: 550px; left: 165px;
+display: none;
+}
+#sitehelp-posters a {
+	color: #000000;
+	text-decoration: none;
+
+}
+
+
+#sitehelp-upload
+{
+z-index: 5;
+background-color: #ad499d;
+width: 100px;
+border: 1px solid #444444;
+margin: auto;
+text-align: center;
+position: absolute; top: 540px; left: 625px;
+display: none;
+}
+#sitehelp-upload a {
+	color: #000000;
+	text-decoration: none;
+
+}
+
+
