@@ -12,7 +12,15 @@
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column-wide.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-	</head>
+
+
+<script type="text/javascript">
+function setDisplay(objectID,state) {
+	var object = document.getElementById(objectID);	
+	object.style.display = state;
+}
+</script>
+</head>
 	
 	<body id="lifetime-tutorial" class="data, tutorial">
 		<!-- entire page container -->
@@ -60,6 +68,42 @@
 				</center>
 					<p>&nbsp;
 				
+<<<<<<< .mine
+				<tr>
+					<td colspan="2" valign="top" align="center">
+						<div id="image" style="display:block"><a href="javascript:setDisplay('image','none');setDisplay('movie','block');">
+						<img src="../graphics/decay.gif" alt="" width="508" height="220" align="middle"/></a></div>
+						
+						<div id="movie"  style="display:none"><object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" 
+							codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" 
+							width="504" height="216" id="muondecay2" align="middle">
+							<param name="allowScriptAccess" value="sameDomain" />
+							<param name="movie" value="../flash/muondecay2.swf" />
+							<param name="quality" value="high" />
+							<param name="bgcolor" value="#ffffff" />
+							<embed src="../flash/muondecay2.swf" quality="high" bgcolor="#ffffff" width="504" 
+							height="216" name="muondecay2" align="middle" allowscriptaccess="sameDomain" 
+							type="application/x-shockwave-flash" 
+							pluginspage="http://www.macromedia.com/go/getflashplayer"/>
+						</object>
+						</div>
+<p>Click to see an animation.</p>
+					</td>
+				</tr>
+				
+				<tr>
+					<td colspan ="2">
+							
+					</td>
+				</tr>
+				
+				<tr>
+					<td width = "321" valign="top">
+						Once the PMT "sees" the electron, we know the amount of time between the muon 
+						stopping and decaying. The node that asks "Any Decays" looks for a light 
+						signal from one counter (the incoming muon) and then waits. 
+					</td>
+=======
 							<p>Once the charged electon leaves a signal in the detector, we know the amount of time between the muon 
 						stopping and decaying. <p>We look for a 
 						signal from one counter (the incoming muon) and then wait. 
@@ -70,6 +114,7 @@
 		 				is from an electron (indicating a decay) or from the next 
 		 				muon coming through the dectector. 
 		 				They both look similar to the <a href="javascript:glossary('photomultiplier_tube',100)">photomultiplier tube</a>.
+>>>>>>> .r1793
 					
 					<p>&nbsp;
 					<center>
