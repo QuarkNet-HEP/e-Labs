@@ -31,28 +31,41 @@
 			</div>
 			
 			<div id="content">
-
-		<center>	
-<h1>Shower Study</h1>
-				
-				<table width="650" cellpadding="8">
-				<tr width="341">
+<p>
+<center>
+<p>
+<p>	
+	
+				<table width="655">
+				<tr>
+							<td colspan = 3>
+								<center>
+									<font color="#0a5ca6" size=+3>
+										<b>
+	 										Shower Study
+	 									</b>
+	 								</font>
+	 							</center>
+	 						</td>
+	 					</tr>
+				<tr width="322">
 		 			<td valign="top">
-            <table cellspacing="0" cellpadding="2" border="0">
+		 			&nbsp<p>
+            <table cellspacing="2" border="0">
                 <tr>
                     <td align="center" width="180">
                         Event Date
                     </td>
-                    <td align="center" width="61">
+                    <td align="center" width="70">
                         Event Coincidence
                     </td>
-                    <td align="center" width="80">
+                    <td align="center" width="71">
                         Detector Coincidence
                     </td>
                 </tr>
 <tr bgcolor="#aaaafc">
 
-                    <td align="center" >
+                    <td align="center">
                        Oct 19, 2004 12:07:06 AM CDT
                     </td>
                     <td align="center">
@@ -103,33 +116,30 @@
 
                 </table>
                </td>
+               <td width=10>&nbsp;
+							</td>
                
-               <td valign="top" width="301">
+               <td valign="top" width="322">
+               &nbsp;<p>
                	We entered parameters for the event and got back the table on the left. 
                	These "candidates" satisfy our requirements for an event. What do you 
                	think we entered for the event coincidence level? What about 
-               	<a href="javascript:glossary('detector',350)"> detector</a> coincidence?<p>
+              detector coincidence?<p>
 
 				The analysis software can only find 
-				<a href="javascript:glossary('pulse',350)">pulses</a> that match your parameter 
-				settings. You have to decide which of the candidates is an event-if any!<p>
+				signals that match the parameter 
+				settings. You have to decide which of the candidates is an event&mdash;if any!<p>
 
 				What will you do to make this decision? What does an event look like? 
 				How will you know when you are right?
+				<p align="center">
+				</td></tr
+				<tr><td colspan=3>
+					&nbsp<p align=center> Tutorial Pages: <a href="tutorial.jsp">1</a> <a href="tutorial2.jsp">2</a> <b>3</b> <a href="tutorial4.jsp">4</a> & <a href="index.jsp">Analysis</a>
                	</td>
                </tr>
           		
-          		<tr>
-					
-					<td>
-						&nbsp
-					</td>
-					
-					<td colspan = "2" align="right">
-					    Want to <a href="tutorial4.jsp">know more?</a>
-					</td>
-					
-				</tr>
+          		
                </table>
                
 			</div>

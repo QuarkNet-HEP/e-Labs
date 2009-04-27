@@ -40,59 +40,75 @@
 	<b>2)</b> <e:popup href="tryit.html" target="TryIt" width="600" height="600">Try it</e:popup>: 
 	Step-by-Step Instructions
 </center>		
-<h1>Shower Study</h1>
-<center>	
+<p>
+<center>
+<p>
+<p>	
 	
-	<table width="670" cellpadding="8">
+	<table width="655">
 		<tr>
- 			<td width="321" valign="top">
- 				This is the analysis path for the 
- 				<a href="javascript:glossary('shower',350)">shower</a> 
- 				study. Showers can pepper an large area of Earth's surface 
+							<td colspan = 3>
+								<center>
+									<font color="#0a5ca6" size=+3>
+										<b>
+	 										Shower Study
+	 									</b>
+	 								</font>
+	 							</center>
+	 						</td>
+	 					</tr><tr>
+ 			<td colspan=3>
+ 				<a href="javascript:glossary('shower',350)">Showers</a>  can pepper an large area of Earth's surface 
  				in a very tiny window of time. They can be rare, especially 
  				if the area you are looking in is large.
-			</td>
-					
-			<td width="321" valign="top">
-				The many particles a shower light up the detector's 
-				<a href="javascript:glossary('photomultiplier_tube',350)">PMTs</a> 
-				with many <a href="javascript:glossary('pulse',350)">pulses</a> 
+		
+				The many particles in a shower light up the detector's 
+				<a href="javascript:glossary('photomultiplier_tube',350)">photomultiplier tubes</a> (PMT)
+				with many signals 
 				one after another. The more particles in the shower, the larger 
-				area it covers, the more interesting it is.
-			</td>
-		</tr>
+				area it covers, the more interesting it is. You could find out the extent of the shower or perhaps the origin of the primary cosmic ray.
+				We set up the detector with the counters unstacked, <img src="../graphics/unstacked.gif" />. <br>(How the <A href="../flash/daq_only_standalone.html">detector works</a>) 
 			
-		<tr>
-			<td valign="top" colspan ="2" >
+		<p align=center> <font size=+2><b>From Raw Data to Plot</b></font>
+		
 				<img src="../graphics/showerDAG.png" alt=""/>
+				<p>
+				<hr>
+				<p>
 			</td>
 		</tr>
 				
-		<tr>					
-			<td valign="top">
-				In the event shown on the right, the electronics captured 12 
-				<a href="javascript:glossary('photomultiplier_tube',350)">photomultiplier</a> 
-				signals. These signals came from three different locations. Each location 
-				contributed four pulses to the event.<br/>
-					
-				<a href="javascript:glossary('pulse',350)">Pulses</a> are  marked by the red 
+		<tr>
+		<td  valign="top" width=322>
+				<img src="../graphics/shower.png" height= "350" width = "350" alt=""/>
+			</td>	
+		<td width=5>&nbsp;
+							</td>					
+			<td valign="top" width=322>
+				&nbsp<p>
+				&nbsp<p>
+				In this event, the detector captured 12 
+				PMT
+				signals from 3 different locations. <br/>
+				<p>	
+				Signals are  marked by the red 
 				polygons. The polygon's height above the x-y plane (the green spike) tells 
 				us the amount of time between the beginning of the shower and the start of 
-				the PMT pulse at that x-y location. A polygon with no tail represents the 
+				the PMT signal at that x-y location. A polygon with no tail represents the 
 				beginning of the event. <br/>
-	
-				We said there are 12 pulses in the event. The plot only shows three. Where 
+	<p>
+				We said there are 12 signals in the event. The plot only shows three. Where 
 				are the other nine?<br/>
 
-				<p align="right">
-					Want to <a href="tutorial2.jsp">know more?</a>
+				<p align="center">
+				</td></tr>
+				<tr><td colspan=3>
+					               <p align=center> Tutorial Pages: <b>1</b> <a href="tutorial2.jsp">2</a> <a href="tutorial3.jsp">3</a> <a href="tutorial4.jsp">4</a> & <a href="index.jsp">Analysis</a>
 				</p>
 					
 			</td>
 					
-			<td  valign="top" >
-				<img src="../graphics/shower.png" height= "350" width = "350" alt=""/>
-			</td>				
+						
 		</tr>
 	</table>
 				

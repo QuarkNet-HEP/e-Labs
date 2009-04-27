@@ -31,22 +31,39 @@
 			</div>
 			
 			<div id="content">
-		<center>	
-<h1>Shower Study</h1>
-				
-				<table width="650" cellpadding="8">
+		<p>
+<center>
+<p>
+<p>
+				<table width="655">
 				<tr>
-		 			<td width="321" valign="top">
+							<td colspan = 3>
+								<center>
+									<font color="#0a5ca6" size=+3>
+										<b>
+	 										Shower Study
+	 									</b>
+	 								</font>
+	 								&nbsp;<p>
+	 							</center>
+	 						</td>
+	 					</tr>
+				<tr>
+		 			<td width="322" valign="top">
 		 				<img src="../graphics/shower.png" height="350" width="350" alt="">
 					</td>
+					<td width=10>&nbsp;
+							</td>
 					
-					<td width="321" valign="top">
-						The plot shows only three of the 12 <a href="javascript:glossary('pulse',350)">pulses</a>.
+					<td width="322" valign="top">
+					&nbsp<p>
+				&nbsp<p>
+						The plot shows only 3 of the 12 signals.
 						 How did we know that there were 12? Take a look at the data table 
 						 (you'll see a data table for each shower candidate that meets your input parameters): <p>
 
 
-							<table cellspacing="0" cellpadding="2" border="0">
+							<table cellspacing="2" border="0">
                 <tr>
                     <td align="center">
                         East/West
@@ -282,10 +299,10 @@
                 </tr>
                 </table>
                 			<p>
-                			You can see that the event fired PMTs in three 
-                			<a href="javascript:glossary('detector',350)">detectors</a>: 141, 119 and 150. <p>
+                			You can see that the event fired <a href="javascript:glossary('photomultiplier_tube',350)">PMTs</a> in three 
+                			<a href="javascript:glossary('detector',350)">detectors</a>: 141, 119 and 150. 
 
-Look at the amount of time between the <a href="javascript:glossary('pulse',350)">pulses</a> in detector 119. How much time elapsed between the first and last pulses in that detector?
+
 
                 
                 
@@ -293,25 +310,18 @@ Look at the amount of time between the <a href="javascript:glossary('pulse',350)
 				</tr>
 				
 				<tr>
-					<td valign="top" colspan ="2" >
-					The plot can tell us that detector 141 fired first then 119 and 150 fired last. The table can give us much more information. Does this event candidate look like a shower to you?
+					<td colspan ="3" >
+					Look at the amount of time between the signals in detector 119. The signal times are so close together that they only show up as one polygon on this plot. if you zoom in (rerun the analysis with a different time scale), you can see the others.
+<p>
+					The plot can tell us that detector 141 fired first then 119 and 150 fired last. The table can give us much more information. Does this event candidate look like a shower to you?</p>
 
-<p align = "right">
-							Want to <a href="tutorial3.jsp">know more?</a>
+&nbsp;<p align=center>
+
+							         Tutorial Pages: <a href="tutorial.jsp">1</a> <b>2</b> <a href="tutorial3.jsp">3</a> <a href="tutorial4.jsp">4</a> & <a href="index.jsp">Analysis</a>
 					</td>
 				</tr>
 				
-				<tr>
-					
-					<td valign="top">
-
-					</td>
-					
-					<td  valign = "top" >
-						
-					</td>
 				
-				</tr>
 				
 				
 			</table>
