@@ -9,7 +9,7 @@
 		<title>${elab.properties.formalName} e-Lab Home</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/three-column.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/two-column-home.css"/>
 	</head>
 	
 	<body id="home" class="home">
@@ -33,40 +33,28 @@
 <!-- there is no way to do this without tables unfortunately -->
 <table border="0" id="main">
 	<tr>
+	    <td>
+ 	 <c:if test="${user != null}">
+  
+	    <h2 style="text-align:center"><A href="../library/big-picture.jsp">Cool Science</a> - <a href="../site-index/site-map-anno.jsp">Explore</a> - <a href="about-us.jsp">About Us</a></h2>
+	  </c:if>  
+	    </td>
+	
+	
+	</tr>
+	<tr>
 		<td>
 			<div id="left">
-				<img src="../graphics/crop.jpg"/>
-			</div>
-		</td>
-		<td>
-			<div id="center">
-				<h2>Why cosmic rays?</h2>
-				<h3>Spending all your time in a shower?</h3>
+	 <c:if test="${user != null}">
+		<script type="text/javascript" src="../include/elab.js"></script>
+        <%@ include file="../login/login-required.jsp" %>
+	    <%@ include file="../library/milestones-map-student.jsp" %>
+	  </c:if>  
+ 	 <c:if test="${user == null}">
+ 	    <%@ include file="../home/splash-home.html" %>
 
-				<p>When you're sleeping or sitting in class, cosmic rays shower the earth and everything on it.</p>
-
-				<ul>
-					<li>What are cosmic rays?</li>
-					<li>Where do they come from?</li>
-					<li>Where do they hit?</li>
-				</ul>
-
-				<p>Some cosmic rays have so much energy that scientists are not sure where they come from. 
-				A number of reseach projects are looking at this question.</p>
-
-
-				<h2>Who are we?</h2>
-				<p>We're a collaboration of high school students and teachers collecting and analyzing 
-				cosmic ray data to answer some of these questions. We're working with
-				computer scientists to provide cutting edge tools that use <strong>grid techniques</strong>
-				to help you share data, graphs, and posters and collaborate with other students nationwide.</p>
-
-
-				<h2>Who can join?</h2>
-				<p><strong>You</strong>! Think about steps you'd take to investigate cosmic rays. 
-				How would you get started? What do you need to know? Can you collect and use data?</p>
-
-			</div>
+	  </c:if>  
+ 			</div>
 		</td>
 		<td>
 			<div id="right">
