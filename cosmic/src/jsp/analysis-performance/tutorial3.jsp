@@ -31,41 +31,61 @@
 			
 			<div id="content">
 
-<h1>Detector Performance Study</h1>
+
 	<p>
 	
 		<center>
-			<table width=650>
+			<table width=655>
+					<td colspan = 3>
+								<center>
+									<font color="#0a5ca6" size=+3>
+								
+										<b>
+	 										Detector Performance Study
+	 									</b>
+	 								</font>
+	 							</center>
+	 						</td>
+	 					</tr>
 				<tr>
-					<td valign=top>
-						This study aims to understand the quality of the collected data. One tool for this is a 
-						histogram of the number of events with a particular length of Time over Threshold (ToT).<p>
-
-						In a very loose sense, ToT is a measure of the amount of energy deposited in the 
-						<a HREF="javascript:glossary('scintillator',350)">scintillator</a> for a given 
-						<a HREF="javascript:glossary('muon',100)">muon </a>passage. There is a correlation 
-						between the<a HREF="javascript:glossary('pulse_width',350)"> width of the pulse</a> 
-						in time and the height of the pulse. A well calibrated 
-						<a HREF="javascript:glossary('counter',350)"> counter</a> shows a good 
-						Gaussian distribution of ToT.<p>
-
-						This particular graph shows a very noisy counter with a large peak centered at 3 ns. 
-						This peak is so large that the Gaussian that may be centered near 8 ns is obscured.
-					</td>
 				
-					<td valign=top>
+					<td valign=top width=322>
+						&nbsp<p>
 						<img src="../graphics/Ballard3.gif" alt="">
+							<p>&nbsp
 					</td>
+					<td width=10>&nbsp
+					</td>
+					<td valign=top width=322>
+						&nbsp<p>
+						This particular graph shows a very noisy counter with a large peak centered at 3 ns. 
+						This peak is so large that it may be masking the good data  centered near 8 ns that we saw previously.
+<p>
+
+
+						In a very loose sense, time over threshold is a measure of the amount of energy deposited in the 
+						<a HREF="javascript:glossary('scintillator',350)">scintillator</a> for a given 
+						<a HREF="javascript:glossary('muon',100)">muon</a>. There is a correlation 
+						between the<a HREF="javascript:glossary('pulse_width',350)"> width of the pulse</a> 
+						in time and the height of the pulse. 
+
+						
+					</td>
+					
+				
 				</tr>
 			
 				<tr>
-					<td align=right>
-						Go back to the <a href="index.jsp">analysis</a>
+					<td align=center colspan=3>
+					
+						
+					Tutorial Pages: <a href="tutorial.jsp">1</a> <a href="tutorial2.jsp">2</a> <b>3</b> &
+						
+					
+						<a href="index.jsp">Analysis</a>
 					</td>
 					
-					<td>
-						&nbsp
-					</td>
+					
 				</tr>
 			</table>
 		</center>			

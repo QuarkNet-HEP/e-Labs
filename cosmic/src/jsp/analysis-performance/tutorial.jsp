@@ -50,9 +50,12 @@
 	
 			<table width = "650" cellpadding ="8">
 				<tr>
-					<td colspan = "2">
+					<td colspan = "3">
 						<center>
 							<font color="#0a5ca6" size="+3">
+							<p>
+						
+							
 								<b>
 									Detector Performance Study
 								</b>
@@ -62,49 +65,65 @@
 	 			</tr>
 	 			
 	 			<tr>
-	 				<td width="321" valign="top">
-	 					This is the analysis path for the performance study. The plot shows 
-	 					how often the <a href="javascript:glossary('pulse_width',350)">pulse widths</a> 
-	 					were a particular value. 
-					</td>
-				
-					<td width="321" valign="top">
-						Many, many short pulses with few longer pulses may indicate a noisy 
+	 				<td colspan=3>
+	 				<p>&nbsp;
+	 				<p>	
+	 				In order to believe in any science results from your analysis, you must first believe that the detector is performing reliably over time. We measure the length of time the <a href="javascript:glossary('photomultiplier_tube',150)">photomultiplier tube</a> responds to a <a HREF="javascript:glossary('muon',100)">muon</a> and count the number of muons 
+	 					for each value. A lot of  muons with short response times and only a few muons with longer times may indicate a noisy 
 						<a href="javascript:glossary('counter',350)">counter</a>.
-					</td>
-				</tr>
-		
-				<tr>
-					<td colspan="2">
-						<img src="../graphics/performanceDAG.png" alt="">
-					</td>
-				</tr>
-		
-				<tr>
-					<td colspan="2" align="right">
-						Want to <a href="tutorial2.jsp">know more?</a>
-					</td>
-				</tr>
-		
-				<tr>
-					<td colspan="2">
-						Inspect the plots below. Which one shows a counter with an enormous number of 
-						short pulses? Which two counters have similar performance? What would you 
-						do if you owned these four counters?
-					</td>
-				</tr>
-		
-				<tr>
-					<td>
-						<img src="../graphics/Ballard1.gif" alt=""></td><td><img src="../graphics/Ballard2.gif" alt=""> 
-					</td>
-				</tr>
-				
-				<tr>
-					<td>
-						&nbsp;
+						<br> (How the <A href="../flash/daq_only_standalone.html">detector works</a>) 
+	 				<p align=center><font size=+2><b>
+	 					From Raw Data to a Plot</b></font>
+	 				
 					</td>
 					
+				</tr>
+		
+				<tr>
+					<td colspan="3">
+						<img src="../graphics/performanceDAG.png" alt="">
+						<p>
+<hr>
+<p>
+					</td>
+				</tr>
+		
+				
+		
+				<tr>
+					<td colspan="3">
+				
+						
+						<p>Inspect these plots. Which one shows a counter with an enormous number of 
+						short signals? Which two counters have similar performance? What would you 
+						do if you owned these four counters?
+					<p>&nbsp;
+					</td>
+				</tr>
+		<tr>
+					<td colspan="3" align="center">
+						
+					Tutorial Pages: <b>1</b> <a href="tutorial2.jsp">2</a> <a href="tutorial3.jsp">3</a> &
+						
+					
+						<a href="index.jsp">Analysis</a>
+							<p>&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td>
+					
+						<img src="../graphics/Ballard1.gif" alt=""></td><td width=5>&nbsp;
+							</td><td><img src="../graphics/Ballard2.gif" alt=""> 
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						&nbsp;
+					</td>
+					<td width=5>&nbsp;
+							</td>
 					<td>
 						&nbsp;
 					</td>
@@ -112,7 +131,8 @@
 				
 				<tr>
 					<td>
-						<img src="../graphics/Ballard3.gif" alt=""></td><td><img src="../graphics/Ballard4.gif" alt="">
+						<img src="../graphics/Ballard3.gif" alt=""></td><td width=5>&nbsp;
+							</td><td><img src="../graphics/Ballard4.gif" alt="">
 					</td>
 				</tr>
 			</table>

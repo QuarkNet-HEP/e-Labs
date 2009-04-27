@@ -31,29 +31,50 @@
 			
 			<div id="content">
 
-<h1>Detector Performance Study</h1>
+
 <p>
 	
 	
 	
 	
 	<center>
-			<table width="650">
+			<table width="655">
+					<td colspan = 3>
+								<center>
+									<font color="#0a5ca6" size=+3>
+								
+										<b>
+	 										Detector Performance Study
+	 									</b>
+	 								</font>
+	 							</center>
+	 						</td>
+	 					</tr>
 				<tr>
-					<td valign="top">
-						Imagine standing at an intersection and counting the number and type of 
-						vehicles that drive past in 20 minutes. <p>
+					<td valign="top" width=322>
+						&nbsp<p>
+						<b>Example Observing Cars</b>
+						<br>
+						Imagine standing at an intersection, counting the number and type of 
+						cars that drive past in 20 minutes. <p>
 
-						If you put these on a histogram, the x-axis would say "Chevrolet, Ford, 
-						Toyota, Saab, Volkswagen." The y-axis would have the numbers 0-14 and 
-						you could draw a bar to the proper height for each make of car
+						On your <a href="http://www.shodor.org/interactivate/activities/histogram/">histogram</a>, the x-axis would say "Chevrolet, Ford, 
+						Saab, Toyota, Volkswagen." The y-axis would have the numbers 0-14. 
+						You would draw a bar to the proper height for each make of car
 						(<e:popup href="../graphics/car_hist.gif" width="740" height="510" target="_">Illustration</e:popup>).<p>
-					</td>
 					
-					<td valign="top">
+							</td>
+							</p>
+					<td width=10>&nbsp;
+							</td>
+					
+					<td valign="top" width=322>
+						&nbsp<p>
+					
 							<center>
-								<table border="1" cellpadding="2">
-									<tr><td>Make</td>		<td>Count</td></tr>
+								<table border="1" cellpadding="2" width=125>
+									<tr><td><b>Make</b><hr></td>		<td><b>Count</b><hr></td></tr>
+
 									<tr><td>Chevrolet</td>	<td>12</td></tr>
  									<tr><td>Ford</td>		<td>8</td></tr>
 									<tr><td>Saab</td>		<td>1</td></tr>
@@ -65,42 +86,51 @@
 					</tr>
 					
 					<tr>
-						<td colspan="2">
+						<td colspan="3">
+						<p>
 							<hr>
+							<p>
 						</td>
 					</tr>
 			
 					<tr>
-						<td valign="bottom">
+						<td valign="bottom" width=322>
 							<img src="../graphics/Ballard3.gif" alt="">
+								<p>&nbsp;
 						</td>
-				
-						<td valign="top">
-							Our histogram labels read "Time over Threshold (ns)" and "Frequency." 
-							Time over threshold, also called 
-							<a href="javascript:glossary('pulse_width',350)">pulse width</a>, 
-							indicates the length of time that the 
-							<a href="javascript:glossary('photomultiplier_tube',150)">photomultiplier tube</a> 
-							responded to the passage of the particle. The frequency indicates how often 
-							that particular length occurred in the data set.<p>
+				<td width=10>&nbsp;
+							</td>
+						<td valign="top" width=322>
+							Our histogram labels read "Time over Threshold (ns)" and "Number of Muons." 
+							We measure the length of the response time as <a href="javascript:glossary('pulse_width',350)"><i>time over threshold</i></a>. 
+							<p>
 	
-							The question to consider is: "Do these measurements look right?" Go back to 
-							the automobile example. If you saw 18 Saabs and 1 Chevrolet would you 
-							believe it? Perhaps, if one collected the data in Sweden!<p>
-
-							Your answer depends on what the 
+							The question is: "Do these measurements look right?" Your answer depends on what the 
 							<a href="javascript:glossary('detector',350)"> detector</a> 
-							usually sees. Is today's performance close to yesterday's? 
+							usually sees. This plot looks pretty good; The <a HREF="javascript:glossary('counter',350)"> counter</a> is well callibrated. 
+							<p>
+							But, is today's performance close to yesterday's? 
 							Does each of the four counters on one detector indicate the 
-							same measurement? Did everyone at the street corner see all of the 
-							cars or did one person see only Chevys? <p>
+							same measurement? 
+							
+							<p>Back to the cars: Do these measurements look right? If you saw 18 Saabs and 1 Chevrolet would you 
+							believe it? Perhaps, if you collected the data in Sweden!
+
+							What if several of you took data. Did everyone at the street corner see all of the 
+							cars or did one person see only Chevys? 
+							
 						</td>
 					</tr>
 		
 					<tr>
-						<td colspan="2" align="right">
-							Want to <a href="tutorial3.jsp">know more?</a>
-						</td>
+						<td colspan="3" align="center">
+						
+					Tutorial Pages: <a href="tutorial.jsp">1</a> <b>2</b> <a href="tutorial3.jsp">3</a> &
+						
+					
+						<a href="index.jsp">Analysis</a>
+						
+					</td>
 					</tr>
 				</table>
 			</cener>
