@@ -6,13 +6,13 @@
  * This is just for settings, not code.
  *
  * Eric Myers <myers@spy-hill.net  - 30 March 2006
- * @(#) $Id: config.php,v 1.54 2009/03/24 15:29:15 myers Exp $
+ * @(#) $Id: config.php,v 1.56 2009/04/09 15:40:56 myers Exp $
 \***********************************************************************/
 
 // Bluestone version is put at the bottom of every page, 
 // using the CVS tag
 //
-define('CVS_TAG', '\$Name: version_0_71 $');
+define('CVS_TAG', '\$Name: version_0_72  $');
 
 
 // "Tickets" were for cross-site authentication.  They are not presently
@@ -28,6 +28,12 @@ define("MAX_TICKET_AGE", 3600);     // one hour is long enough for a class
 define("MAX_SESSION_AGE", 3600);       
 
 
+// Path to wiki, for tutorial or other transclusions.  Relative path
+//
+$Path_to_wiki='/library';
+
+
+
 // Configuration info about this server and setup, global to
 // all pages which include this file (which is most everything).
 //
@@ -36,6 +42,7 @@ $local_server = $_SERVER['SERVER_NAME'];
 $user_IP=$_SERVER['REMOTE_ADDR']; 
 $URI=$_SERVER['REQUEST_URI'];
 $this_dir = dirname($self);
+
 
 // From whence we came?
 //
@@ -122,5 +129,5 @@ $TLA_tool_name='Bluestone';
 
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: config.php,v 1.54 2009/03/24 15:29:15 myers Exp $";
+    "\$Id: config.php,v 1.56 2009/04/09 15:40:56 myers Exp $";
 ?>

@@ -5,7 +5,7 @@
  * Anything that gets too specialilzed should be moved to a separate file.
  *
  * Eric Myers <myers@spy-hill.net  - 30 March 2006
- * @(#) $Id: util.php,v 1.61 2009/02/06 21:45:48 myers Exp $
+ * @(#) $Id: util.php,v 1.62 2009/04/08 19:25:49 myers Exp $
 \***********************************************************************/
 
 require_once("debug.php");         
@@ -34,41 +34,98 @@ function memory_format($n){
 
 
  
-/* Is there a destintation URL we should know about?   Check for both
- * prefPage and next_url via either GET or POST.  Later checks take
- * precidence over earlier. */
+/* Is there a final destintation URL we should know about? 
+ * Check several different mechanism, last one wins. 
+ * 
+ * @uses $self
+ * @uses $SESSION
+ */
 
 function get_destination(){
+  global $self; 
+  global $SESSION;
+
+  $next_url="";
+
+  // Moodle uses $SESSION->wantsurl and now we do too.
+  //
+  if( isset($SESSION->wantsurl) ){
+    $next_url=$SESSION->wantsurl;
+    debug_msg(2,"Found SESSION->wantsurl set to $next_url ");
+  }
+
+  // eLab JSP uses 'prevPage'
+  //
+  if( isset($_GET['prevPage']) ){
+    $next_url = $_GET['prevPage'];
+  }
+  if( isset($_POST['prevPage']) ){
+    $next_url = $_POST['prevPage'];
+  }
+
+  // BOINC uses 'next_url'
+  //
+  if( isset($_GET['next_url']) ){
+    $next_url = $_GET['next_url'];
+  }
+  if( isset($_POST['next_url']) ){
+    $next_url = $_POST['next_url'];
+   }
+
+  debug_msg(1,"get_destination(): $next_url");
+
+
+  // If we are already there, then we are already there. 
+  //
+  if( $self == $next_url ){
     $next_url="";
-
-    // eLab JSP uses 'prevPage'
-    //
-   if( isset($_GET['prevPage']) ){
-       $next_url = $_GET['prevPage'];
-   }
-   if( isset($_POST['prevPage']) ){
-       $next_url = $_POST['prevPage'];
-    }
-
-   // BOINC uses 'next_url'
-   //
-   if( isset($_GET['next_url']) ){
-       $next_url = $_GET['next_url'];
-   }
-   if( isset($_POST['next_url']) ){
-       $next_url = $_POST['next_url'];
-    }
-   debug_msg(1,"get_destination(): $next_url");
-   return $next_url;
+    debug_msg(1, "We are already there: $self ");
+    if( $SESSION->wantsurl ) unset($_SESSION["SESSION"]->wantsurl);
+  }
+  return $next_url;
 }
 
 
-// Fill in host and path parts of URL (ignores query part)
-//
+
+
+/* Set our desired final destination, even as we wander around
+ * our little web...
+ *
+ * @uses $SESSION
+ * @uses $self
+ */
+
+function set_destination($next_url){
+  global $self; 
+  global $SESSION;
+
+  debug_msg(3,"set_destination($next_url)");
+
+  if( !$next_url) return FALSE; 
+
+  // If we are already there, then we are already there. 
+  //
+  if( $next_url === $self ){
+    $next_url="";
+    if( $SESSION->wantsurl ) unset($SESSION->wantsurl);
+    debug_msg(1, "We are already there: $self ");
+  }
+  else {
+    $SESSION->wantsurl = $next_url;
+  }
+  remember_variable('SESSION');	// be sure it's saved
+}
+
+
+
+/* Fill in host and path parts of URL 
+ * (BUG! ignores query part)
+ */
+
 function fill_in_url($url){
     if( empty($url) ) return "";
 
-    debug_msg(1,"fill_in_url() started with: $url");
+    debug_msg(1,"fill_in_url($url)...");
 
     $dest_parts = parse_url($url);
     $host = $dest_parts['host'];
@@ -80,16 +137,10 @@ function fill_in_url($url){
 
     $url = 'http://'.$host.$path;
 
-    //$query = $dest_parts['query'];   // Fails if multiple ?'s
-    $query='';
-    if( $n = strpos($url,'?') ){
-        // Allow for encoded query string
-        $query =  html_entity_decode(substr($url,$n));
-        debug_msg(1,"fill_in_url(): query=$query");
-    }
+    $query = $dest_parts['query'];  
     if($query) $url .= "?$query";
 
-    debug_msg(1,"  filled-in URL: $url");
+    debug_msg(1,"filled-in URL: $url");
     return  $url;
 }
 
@@ -438,8 +489,7 @@ function recall_variable($name) {
 
     if( isset($_SESSION[$name]) ){
         $GLOBALS[$name] = $_SESSION[$name];
-        debug_msg(5, "Recalled $name (value=" .$GLOBALS[$name]
-                  . ") from session.");
+        debug_msg(5, "Recalled $name from session.");
         return true;       
     }
     debug_msg(5, "Cannot recall $name from _SESSION .");
@@ -507,5 +557,5 @@ function cvs_version($with_name=0){ // with or without name part?
 
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: util.php,v 1.61 2009/02/06 21:45:48 myers Exp $";
+    "\$Id: util.php,v 1.62 2009/04/08 19:25:49 myers Exp $";
 ?>

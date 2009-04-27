@@ -201,11 +201,23 @@ input.button  { text-decoration: none; }
 	display: none;
 }
 
+table.tutorial tr td {
+       font-size: 80%;
+}
+
+table.tutorial tr td.screenshot {
+       border: 3px outset;
+       text-algin: center;
+}
 
 .printfooter, .printfooter a {
+   display: none;
+}
+
+.edit_link a {
   font-size: small;
-   color: white;
-   text-decoration: none;
+  color: gray;
+  text-decoration: none;
 }
 
 #catlinks {

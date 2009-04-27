@@ -4,8 +4,8 @@
  *
  *
  *
- * Eric Myers <myers@spy-hill.net  - 30 March 2006
- * @(#) $Id: decoration.php,v 1.50 2009/03/24 15:28:18 myers Exp $
+ * eric myers <myers@spy-hill.net  - 30 march 2006
+ * @(#) $id: decoration.php,v 1.50 2009/03/24 15:28:18 myers exp $
 \***********************************************************************/
 
 require_once("debug.php");   
@@ -13,60 +13,59 @@ require_once("config.php");
 
 
 /*****************************************************************\ 
- * Begin/End HTML pages 
+ * begin/end html pages 
  */
 
-/*  html_begin() starts the HTML output for a page.   Don't call it
+/*  html_begin() starts the html output for a page.   don't call it
  *  until you are sure you don't want to send headers()  */
 
 function html_begin($title,$right_stuff='') {
     global $self, $user_level, $debug_level;
 
-    /* Track memory usage */
+    /* track memory usage */
 
     if($debug_level>1){
         memory_save_usage('memory_html_begin');
     }
 
-    /* Background color based on user level */
+    /* background color based on user level */
 
     $bgc='lightgrey';
     if( isset($user_level) ) {
         if($user_level==1)  $bgc='#ccffcc';
         if($user_level==2)  $bgc='lightblue';
         if($user_level>2)   $bgc='lightgrey';
-        //NO//if($user_level==5)  $bgc='white';
+        //no//if($user_level==5)  $bgc='white';
     }
     $bgc='lightgrey';
 
-    /* Begin Document: */
+    /* begin document: */
 
-    //  TODO: need to sort out which one we want to claim to support ***
-    echo "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' "
-        ." 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'> \n";
+    //  todo: need to sort out which one we want to claim to support ***
+    echo "<!doctype html public '-//w3c//dtd xhtml 1.0 transitional//en' "
+        ." 'http://www.w3.org/tr/xhtml1/dtd/xhtml1-transitional.dtd'> \n";
 
-    echo "<HTML>\n<HEAD> \n";
+    echo "<html>\n<head> \n";
 
-    echo "<TITLE>"  .$title. "\n</TITLE>\n";
-    // TODO: <META> tags go here
+    echo "<title>"  .$title. "\n</title>\n";
+    // todo: <meta> tags go here
 
 
-    /* Favicon & Style Sheets */
+    /* favicon & style sheets */
 
     echo "<link rel='shortcut icon' type='image/x-icon' href='/favicon.ico'>\n";
     echo "<link rel=stylesheet type='text/css' href='style.css'>\n";
 
-    echo "</HEAD>\n <BODY bgcolor='$bgc'>\n";
+    echo "</head>\n <body bgcolor='$bgc'>\n";
 
     /* the entire page is a self-posting form */
 
-    $self = $_SERVER['PHP_SELF'];        // this is global so others may use it
     $form_name=basename($self,'.php');
-    echo "<form name='$form_name' method='POST' action='$self'>\n";
+    echo "<form name='$form_name' method='post' action='$self'>\n";
 
     recall_variable('auto_update');
     global $auto_update;
-    echo "<script language='JavaScript'>function submit_form(f){";
+    echo "<script language='javascript'>function submit_form(f){";
     if( $auto_update == 'on') echo " f.submit(); ";
     else echo " /* do nothing */ ";
     echo "} </script>\n";
@@ -76,16 +75,16 @@ function html_begin($title,$right_stuff='') {
 }
 
 
-/* The masthead is displayed at the top of EVERY page 
- * //TODO: link to MASTER_URL that works on all sites */
+/* the masthead is displayed at the top of every page 
+ * //todo: link to master_url that works on all sites */
 
 function tool_masthead($title,$right_stuff='&nbsp;'){
-    echo "\n<!-- Tool Masthead -->
-     <TABLE class='masthead' width=100% border=0 BGCOLOR='black' ><TR>
-       <TD WIDTH=15% VALIGN='TOP' ALIGN=LEFT>
+    echo "\n<!-- tool masthead -->
+     <table class='masthead' width=100% border=0 bgcolor='black' ><tr>
+       <td width=15% valign='top' align=left>
               <a href='/' >
               <img src='img/ligo_logo.gif' border='0'
-                   valign='TOP' align='LEFT' alt='LIGO' 
+                   valign='top' align='left' alt='ligo' 
                    title='return to the top level'></a>
        </TD>";
 
@@ -219,16 +218,38 @@ function tool_footer($show_return='', $show_date=false) {
 
 
 /* end_html() ends the page, possibly with a link back to the page
- * we were called from.   This will likely fork into two version.... */
+ * we were called from.  
+ *
+ * @uses $gWikiTitle - array of wiki pages transcluded into this page
+ * @uses $Path_to_wiki to construct link to wiki page names
+ */
 
 function html_end(){
-    global $orig_referer, $debug_level;
+  global $gWikiTitle, $Path_to_wiki;
 
+  global $orig_referer, $debug_level;
+
+  // Link back to referer, if there is one
+  //
   if( $orig_referer ) {
     echo "<P><a href='" .$orig_referer.
       "'>Click here to go back to what you were doing...</a></P>\n";
   }
   echo "\n</form>\n";    
+
+
+  // Show links to transcluded content
+  //
+  if ( !empty($gWikiTitle) ){
+    $wiki_url ="http://" . $_SERVER['SERVER_NAME'] . $Path_to_wiki . "/";
+    echo "<div class='edit_link'>";
+    foreach ($gWikiTitle as $title ){
+      $edit_url = $wiki_url . "index.php/$title";
+      echo "<a href='$edit_url'>$title</a> ";
+    }
+    echo "</div>\n";
+  }
+
   echo "</BODY>\n</HTML>\n";
 }
 
@@ -401,5 +422,5 @@ function form_end(){
 }
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: decoration.php,v 1.50 2009/03/24 15:28:18 myers Exp $";
+    "\$Id: decoration.php,v 1.51 2009/04/09 15:40:56 myers Exp $";
 ?>

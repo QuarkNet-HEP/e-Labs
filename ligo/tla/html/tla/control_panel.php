@@ -11,7 +11,7 @@
  * user gets a GO button.  
  *
  * Eric Myers <myers@spy-hill.net  - 30 March 2006
- * @(#) $Id: control_panel.php,v 1.71 2009/03/23 21:07:21 myers Exp $
+ * @(#) $Id: control_panel.php,v 1.72 2009/04/08 19:25:48 myers Exp $
 \***********************************************************************/
 
 require_once("macros.php");              // general utilities
@@ -26,6 +26,7 @@ handle_reset();
 
 $this_step = update_step('main_steps');
 recall_variable('msgs_list');
+recall_variable('SESSION');
 
 // General:
 recall_variable('elab_group');
@@ -716,6 +717,7 @@ debug_msg(9, "control_panel.php: End.");
  */
 
 // General:
+remember_variable('SESSION'); 
 remember_variable('main_steps'); 
 remember_variable('this_step'); 
 remember_variable('msg_list'); 
@@ -741,5 +743,5 @@ tool_footer();
 html_end();
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: control_panel.php,v 1.71 2009/03/23 21:07:21 myers Exp $";
+    "\$Id: control_panel.php,v 1.72 2009/04/08 19:25:48 myers Exp $";
 ?>

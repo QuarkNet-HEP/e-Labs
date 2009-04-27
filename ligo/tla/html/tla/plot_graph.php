@@ -4,7 +4,7 @@
  *
  *
  * Eric Myers <myers@spy-hill.net  - 30 March 2006
- * @(#) $Id: plot_graph.php,v 1.53 2009/03/23 21:07:21 myers Exp $
+ * @(#) $Id: plot_graph.php,v 1.55 2009/04/22 14:59:27 myers Exp $
 \***********************************************************************/
 
 require_once("macros.php");             // general utilities
@@ -18,6 +18,7 @@ handle_reset();
 
 $this_step = update_step('main_steps');
 recall_variable('msgs_list');
+recall_variable('SESSION');
 
 // General:
 //
@@ -58,7 +59,7 @@ load_vi_settings($WorkFlow);
  * Action:
 \***********************************************************************/
 
-elab_ping();
+//elab_ping();
 
 
 // Return code from ROOT script, either task execution or plot options.
@@ -128,6 +129,7 @@ if( $Nplot==1 &&  $user_level < 3 ) {
     update_plot_option_item('plot_title', $channel_description[1]);
     set_plot_title_root_cmd();
 
+
     // Units [DISABLED - this is now done in ROOT]
     $u = $input_channels[1]->units;
     if( 0 && !empty($u) ){// test that ROOT does it right
@@ -137,6 +139,7 @@ if( $Nplot==1 &&  $user_level < 3 ) {
     else {
         debug_msg(3,"No units for input channel 1");
     }
+
     apply_plot_options();      // creates update file
 }
 
@@ -191,9 +194,11 @@ if ( !file_exists($imgfile) ) {
  }
 
 
-/**
- *  Save the plot?  User must press "Save Mu
+/*****************
+ *  Save the plot?  User must press "Save Plot As:"
  */
+
+$plot_name="";
 
 // Name to save the plot under...
 //
@@ -205,8 +210,8 @@ if( isset($_POST['plot_name']) && !empty($_POST['plot_name'])){
     $plot_name = $_POST['plot_name'];
 }
 
-debug_msg(4, "metadata array has size ". sizeof($metadata) );
-debug_msg(5, "metadata array: <hr><pre>".print_r($metadata,true)."</pre><hr>");
+debug_msg(3, "metadata array has size ". sizeof($metadata) );
+debug_msg(4, "metadata array: <hr><pre>".print_r($metadata,true)."</pre><hr>");
 
 if( !empty($_POST['save_plot']) || !empty($_GET['save_plot']) ){
 
@@ -219,10 +224,9 @@ if( !empty($_POST['save_plot']) || !empty($_GET['save_plot']) ){
     if( empty($elab_cookies[$elab]) || empty($elab_group) ){
         add_message("You must grant Bluestone access to your LIGO e-Lab group to save a plot",
                     MSG_WARNING,2);
-        $u = "elab_login.php?next_url=".$self;
-
-	//TODO: THIS IS FAILING. GET DOESN'T WORK HERE 
-        $u = $u.'?'.htmlentities("plot_name=$plot_name&save_plot=1");
+	$next_url = $self."?save_plot=1&plot_name=$plot_name";
+	set_destination($next_url);
+        $u = "elab_login.php";
         debug_msg(1,"Jumping to $u...");
         header("Location: " .$u);      // Redirect!
         exit(0);        
@@ -230,6 +234,7 @@ if( !empty($_POST['save_plot']) || !empty($_GET['save_plot']) ){
 
     debug_msg(1,"save_plot: are authenticated to e-lab as group $elab_group.");
     debug_msg(1,"save_plot: Auth cookie: ".$elab_cookies[$elab]['Value']);
+
 
     $file_path = "$TLA_TOP_DIR/html/tla/$slot_url$imgfile";
 
@@ -424,6 +429,7 @@ echo "<P>\n";
  * DONE:
  */
 
+remember_variable('SESSION'); 
 remember_variable('main_steps'); 
 remember_variable('this_step'); 
 
@@ -444,5 +450,5 @@ tool_footer();
 html_end();
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: plot_graph.php,v 1.53 2009/03/23 21:07:21 myers Exp $";
+    "\$Id: plot_graph.php,v 1.55 2009/04/22 14:59:27 myers Exp $";
 ?>

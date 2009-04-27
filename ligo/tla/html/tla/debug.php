@@ -24,7 +24,7 @@
  * echoing.   See messages.php for how the message dispaly system works.
  *
  * Eric Myers <myers@spy-hill.net>  - July 2005
- * @(#) $Id: debug.php,v 1.30 2008/07/17 14:55:46 myers Exp $
+ * @(#) $Id: debug.php,v 1.32 2009/04/14 18:30:52 myers Exp $
 \**********************************************************************/
 
 require_once("messages.php");
@@ -48,19 +48,21 @@ function debug_msg_to_file($level, $message){
         error_log("Warning: $debug_log_dir exists but is not writeable.");
         return;
     }
-    $debug_log_file = $debug_log_dir."/php_debug.log";
+    $debug_log_file = $debug_log_dir."/tla_debug.log";
 
     if( file_exists($debug_log_file)) $x = 'a';
     else                              $x = 'w';
-    $h = fopen($debug_log_file, 'a');
+    $h = fopen($debug_log_file, $x);
     if($h) {
-        $timestamp=gmdate('j M Y G:i:s', time());
+        $timestamp=gmdate('M j G:i:s', time());
         fwrite($h,$timestamp);
         fwrite($h," [$level] ");
         fwrite($h,$message);
         fwrite($h,"\n");
         fclose($h);
+	return TRUE;
     }
+    return FALSE;
 }
 
 
@@ -130,7 +132,7 @@ function is_test_client(){
     $ip_addr=$_SERVER['REMOTE_ADDR'];
     $internal="/^192\.168\.1\.|^204\.210\.158\.6|^198\.129\.208\.|"
         ."^137\.140\.48|^69\.86\.26\.53|^76\.15\.26\.166|"
-        ."^76\.15\.106\.184/";
+        ."^76\.15\.106\.184|^198\.140\.183/";
     if( preg_match($internal,$ip_addr) ) return TRUE;
     return FALSE;
 }

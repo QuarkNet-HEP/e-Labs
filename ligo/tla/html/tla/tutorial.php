@@ -8,7 +8,7 @@
  * the wiki content.
  *
  * Eric Myers <myers@spy-hill.net  - 31 July 2008
- * @(#) $Id: tutorial.php,v 1.1 2009/03/23 21:02:22 myers Exp $
+ * @(#) $Id: tutorial.php,v 1.2 2009/04/09 15:41:15 myers Exp $
 \***********************************************************************/
 
 require_once("macros.php");             // general TLA utilities
@@ -21,7 +21,6 @@ $caching=FALSE;
 
 check_authentication();	// check authentication, but do not require it
 
-html_begin("Bluestone Tutorial");  // Will be moved below later...
 
 /***********************************************************************\
  * Action: process the tutorial buttons
@@ -45,19 +44,27 @@ $body = get_wiki_article($title);
  */
 
 // 1. Unlink wiki links to pages that don't exist in the wiki
-//
+//      (as evidenced by the action=edit suffix)
+// 
 $pattern = ',<a href="/library/index.php[^"]*&amp;action=edit"'
 	  .'[^>]*>([^<]*)</a>,si';
 $body = preg_replace($pattern, " \\1 ", $body); 
 
 
-// 2. Convert tutorial wiki link to just this tutorial
+// 2. Images in the wiki are linked to their wiki page
+//    Remove that link, while preserving the image
+
+$pattern = ',<a href=[^>]+/Image:[^>]+>(<img [^>]+>)</a>,si';
+$body = preg_replace($pattern, " \\1 ", $body); 
+
+
+// 3. Convert tutorial wiki link to just this tutorial
 //
 $pattern=',href="/library/index.php/Bluestone_Tutorial%2C_step_(\d+)",si';
 $body = preg_replace($pattern, 'href="tutorial.php?step=\\1"',  $body);
 
 
-// 3. Convert other wiki links to pop-ups (eg. glossary words)
+// 4. Convert other wiki links to Glossary pop-ups 
 //
 
 $pattern='%<a href="/library/index.php/([^"]+)"[^>]*>([^<]+)</a>%si';
@@ -75,8 +82,10 @@ $body = preg_replace($pattern, $replacement, $body);
 /***********************************************************************\
  * Display Page: 
 \***********************************************************************/
- 
 
+$title = "Bluestone Tutorial, step $step";
+
+html_begin($title);
 
 if( !empty($body) ){
    echo "<blockquote>\n$body\n</blockquote>\n\n";

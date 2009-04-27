@@ -19,7 +19,7 @@
  * user instead of asking them to log in. 
  *
  * Eric Myers <myers@spy-hill.net>  - 21 July 2008
- * @(#) $Id: elab_interface.php,v 1.14 2009/03/24 15:02:07 myers Exp $
+ * @(#) $Id: elab_interface.php,v 1.17 2009/04/27 20:03:33 myers Exp $
 \***********************************************************************/
 
 require_once("debug.php");      
@@ -33,6 +33,8 @@ require_once("http_util.php");   // general utilities for HTTP
  * Use HTTP POST to "log in" to the JSP e-Lab site, where access is based
  * research group name (ie userid) and password.   Returns FALSE on failure.
  * On success it returs TRUE and sets $elab_cookies and $elab_group 
+ *
+ * @sets $elab,  $elab_cookies, $elab_group, $elab_timestamp
  */
 
 function elab_login($user='guest', $passwd='guest'){
@@ -321,14 +323,21 @@ function elab_upload($file_path, $file_name='', $comments='',
 
     // Form for UPLOAD to JSP
     //
-    //$form_url=ELAB_URL."/$elab/jsp/uploadImage.jsp";
-    $form_url=ELAB_URL."/$elab/jsp/uploadImage2.jsp"; // TESTING 
+    $form_url=ELAB_URL."/$elab/jsp/uploadImage.jsp";
     $form_fields = array('name' => $file_name,
                          'comments' => $comments,
+	                 'upload_type' => 'savedimage', 
                          'load' => 'Upload'  );
+
+    // Add metadata array as individual items
+    //
     if( !empty($metadata) ) {
         debug_msg(1,"Adding metadata to POST fields.");
-        $form_fields['metadata'] = $metadata;
+	$i=0;
+	foreach($metadata as $line){
+	    $idx = "metadata".$i++;
+	    $form_fields[$idx] = $line;
+	}
     }
 
     $image_file = array('name' => 'image',      // $file_name,
@@ -382,17 +391,15 @@ function elab_upload($file_path, $file_name='', $comments='',
     // Check for clear failure:  alter response code to match
     //
     if( $response_body ) {
-
         $bad_msgs = array(
                           array( 'text' => "Invalid username or password",
                                  'rc' => 401),
                           array( 'text' => "Access to this page is restricted",
                                  'rc' => 401),
                           array( 'text' => "Invalid image type",
-                                 'rc' => 415 ),
+                                 'rc' => 415),
                           array( 'text' => "Error saving metadata",
-                                 'rc' => 417),
-
+                                 'rc' => 503),
                           );
 
         foreach( $bad_msgs as $msg ){
@@ -402,11 +409,13 @@ function elab_upload($file_path, $file_name='', $comments='',
                 add_message($msg, MSG_ERROR);
                 $response_code = $msg->rc;
                 if( $response_code == 401 ){
-                    elab_logout(); // clear bogus credentials
-                }
-            }
-        }
+		  //elab_logout(); // clear bogus credentials
+		  //TODO: re-login again first.
+		}
+	    }
+	}
     }
+
 
     // Check for clear success, & try to grab the link
     //
@@ -417,7 +426,7 @@ function elab_upload($file_path, $file_name='', $comments='',
         foreach( $good_msgs as $msg ){
             $x = strstr($response_body, $msg);
             if( !empty($x) ){
-                add_message($msg);
+                // add_message($msg);
                 if( preg_match("/<a href=\"(\S+)\"/", $x, $matches) > 0 ){
                     debug_msg(2, "Link to image is '". $matches[1]."'");
                     $url = $matches[1];
@@ -490,6 +499,7 @@ function elab_save_passwd($password){
 }
 
 
+
 /**
  * Look up elab group name and password so we don't have to ask for it.
  * Returns an object with $r->group_name and $r->password members,
@@ -529,6 +539,8 @@ function elab_get_saved_info(){
  * elab_ping() - establishes that we are logged in to the e-lab
  *              (or forces us to do so) and then keeps the session alive.
  *  Return values don't mean anything for now;  Don't test them.
+ *
+ *
  */
 
 function elab_ping(){
@@ -540,24 +552,24 @@ function elab_ping(){
 
     // Only works for now if the session was authenticated via referer
     //
-    if($auth_type != 'referer' ) return FALSE;
+    //if( $auth_type != 'referer' ) return FALSE;
 
     debug_msg(3,"elab_ping(): keeping e-lab session alive...");
 
-    // If not logged in to the elab we need to do that first
+    // If not logged in to the elab then skip it.
     //
-    if( empty($elab_group) || empty($elab_cookies[$elab]) ){
-        $u = $this_dir."/elab_login?next_url=$self";
-        header("Location: $u");
-        exit(0);
-    }
+    if( empty($elab_group) || empty($elab_cookies[$elab]) ) return FALSE;
 
     debug_msg(1,"elab_ping(): group $elab_group - keeping e-lab session alive...");
 
     $url= ELAB_URL ."/$elab/home/index.jsp";
     $x = elab_get($url);
     // DO we care if it worked or not?  Can we do anything about it?
-    if( empty($x) ) debug_msg(1,"elab_ping() failed.");
+    if( empty($x) ) {
+      debug_msg(1,"elab_ping() failed.");
+      return FALSE;
+    }
+    return TRUE;	
 }
 
 

@@ -7,7 +7,7 @@
  * actually does the logging in.
  *
  * Eric Myers <myers@spy-hill.net  - 21 July 2008
- * @(#) $Id: elab_login.php,v 1.10 2009/01/29 19:57:49 myers Exp $
+ * @(#) $Id: elab_login.php,v 1.13 2009/04/22 18:06:35 myers Exp $
 \***********************************************************************/
 
 require_once("macros.php");             // general TLA utilities
@@ -18,14 +18,14 @@ handle_auto_update();
 
 recall_variable('elab_group');
 recall_variable('elab_cookies');
+recall_variable('SESSION');
 
 
 /***********************************************************************\
  * Functions:
 \***********************************************************************/
 
-// Things borrowed from BOINC can/should be factored in/out later.
-
+// TODO: Things borrowed from BOINC can/should be factored in/out later.
 // Tables  (borrowed from BOINC):
 
 function start_table($extra="width=100%") {
@@ -96,22 +96,22 @@ $came_from = basename($_SERVER['HTTP_REFERER']);
 
 if($came_from == "auth_required.php"  ||
    $came_from == "index.php"          ||
-   $came_from =='elab_login.php'      ||
-   $came_from == "login.php" ){
-    $came_from="";
+   $came_from == "elab_login.php"     ||
+   $came_from == "login.php" ){ // THEN...
+   $came_from="";
  }
 
 if( !empty($came_from) ){
-    debug_msg(2, "Refered here by:  $came_from ");
+    debug_msg(2, "elab_login: Refered here by  $came_from ");
  }
 
 
 // Where do we go after the login?
 // TODO: this is failing to get plot_name GET argument...
+//	 because fill_in_url strips out query part!
 //
 $next_url = get_destination();
-$next_url = fill_in_url($next_url);
-
+$next_url = fill_in_url($next_url);  
 
 
 // If nothing specified, pick a reasonable default
@@ -131,9 +131,8 @@ if( !empty($next_url) && !empty($came_from) ){
 // Debugging: always logout and login again.
 
 if( $debug_level > 1 ){
-  debug_msg(2, "Logout first.");
+  debug_msg(3, "Logout first.");
   elab_logout();
-  $next_url="elab_login.php";
 }
 
 
@@ -175,8 +174,6 @@ if( isset($_POST['login']) ){
         add_message("Research group: $elab_group" );
         remember_variable('elab_group');
         remember_variable('elab_cookies');
-        //header("Location: $next_url");
-        //exit(0);
     }
  }
 
@@ -262,5 +259,5 @@ tool_footer();
 html_end();
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: elab_login.php,v 1.10 2009/01/29 19:57:49 myers Exp $";
+    "\$Id: elab_login.php,v 1.13 2009/04/22 18:06:35 myers Exp $";
 ?>

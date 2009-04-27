@@ -6,7 +6,7 @@
  * to the proper place.   It does not actually display anything.
  *
  * Eric Myers <myers@spy-hill.net  - 31 July 2008
- * @(#) $Id: index.php,v 1.8 2009/03/24 14:55:37 myers Exp $
+ * @(#) $Id: index.php,v 1.10 2009/04/22 18:18:41 myers Exp $
 \***********************************************************************/
 
 require_once("macros.php");             // general TLA utilities
@@ -31,15 +31,17 @@ debug_msg(4,"main_steps will pass us to " . $main_steps[1]->url );
 
 // Determine destination
 //
-$next_url=get_destination();
+$next_url = get_destination();
 if( empty($next_url) ){
     $next_url=fill_in_url($this_dir."/" . $main_steps[1]->url);
  }
 
-debug_msg(3,"index: next_url is $next_url");
+debug_msg(2,"index: next_url is $next_url");
 
-// REQUIRE STUDENT elab_group or cookie
-// DISABLED FOR NOW
+// get student elab_group or cookie
+// BYPASS THIS FOR NOW...
+
+debug_msg(2,"auth_type: $auth_type");
 
 if( 0 && ($auth_type == 'referer' || $_SESSION['AUTH_TYPE'] == 'referer') ){
 
@@ -51,14 +53,15 @@ if( 0 && ($auth_type == 'referer' || $_SESSION['AUTH_TYPE'] == 'referer') ){
                         ." to the e-Lab site" , MSG_WARNING);
             add_message("(Bluestone requires the http_pecl extension for that.)"
                         , MSG_INFO);
-    }
+	}
     else {
         add_message("You need to grant Bluestone access to your e-Lab.");
         add_message("Please enter the name and password of your research group.");
-        $next_url=$this_dir."/elab_login.php?next_url=$next_url";
-        debug_msg(4,"Location: $next_url");
-        //header("Location: $next_url");
-        //exit(0);
+	set_destination($next_url);
+        $u = $this_dir."/elab_login.php";
+        debug_msg(1,"Jumping to $u...");
+        //header("Location: " .$u);      // Redirect!
+        //exit(0);        
     }
  }
  else {
@@ -78,7 +81,7 @@ if( $debug_level < 3 ) {// TESTING ONLY - TO BE REMOVED
 
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: index.php,v 1.8 2009/03/24 14:55:37 myers Exp $";
+    "\$Id: index.php,v 1.10 2009/04/22 18:18:41 myers Exp $";
 
 
 /***********************************************************************\

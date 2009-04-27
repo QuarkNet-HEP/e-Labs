@@ -16,7 +16,7 @@
  *
  *
  * Eric Myers <myers@spy-hill.net  - 24 May 2006
- * @(#) $Id: plot_options.php,v 1.30 2008/10/30 20:32:34 myers Exp $
+ * @(#) $Id: plot_options.php,v 1.31 2009/04/22 14:59:27 myers Exp $
 \***********************************************************************/
 
 
@@ -151,12 +151,14 @@ function apply_plot_options(){
   global $plot_options;
   global $Npens;
 
-
-  if(empty($plot_options)) return;
+  if( empty($plot_options) ) return;
 
   $Nchanged=0;
-  foreach($plot_options as $opt){
-    if( !empty($opt->root_cmd) ) $Nchanged++;
+  foreach($plot_options as $name => $opt){
+    if( !empty($opt->root_cmd) ) {
+      $Nchanged++;
+      debug_msg(3,"Changed plot option: ".$name);
+    }
   }
   debug_msg(4,"apply_plot_options(): $Nchanged items changed");
   if($Nchanged==0) return;  // no changes!
@@ -479,7 +481,7 @@ function set_y_axis_title_root_cmd(){
 function set_y_log_root_cmd(){
   global $plot_options;
 
-  $x=get_plot_option('y_log');
+  $x = get_plot_option('y_log');
   debug_msg(1, "set_y_log_root_cmd: Logarithmic is $x");
   if($x=='on') {
     $root_cmd  = "Pen01->SetMinimum(1.0);\n  ";

@@ -25,7 +25,7 @@
  * use add_message() to show something to the user.
  *
  * Eric Myers <myers@spy-hill.net>  - 20 June 2006
- * @(#) $Id: auth.php,v 1.45 2009/03/24 14:57:15 myers Exp $
+ * @(#) $Id: auth.php,v 1.46 2009/04/22 18:05:50 myers Exp $
 \***********************************************************************/
 
 require_once("debug.php");      
@@ -43,8 +43,9 @@ function require_authentication(){
     $authenticated = check_authentication();
     if( $authenticated ) return TRUE;
 
-    $url=fill_in_url($self);
-    header("Location: auth_required.php?next_url=$url");
+    $url = fill_in_url($self);
+    set_destination($url);
+    header("Location: auth_required.php");
     exit(0);
 }
 
@@ -396,7 +397,7 @@ function show_user_login_name($username='') {
 
     if ( empty($username) ) {// No username set, so we are not logged in.
         echo "Not logged in";
-        {//if( $auth_type=='BOINC' ){ //TODO: go to login choice page?
+        { //if( $auth_type=='BOINC' ){ //TODO: go to login choice page?
             echo "&nbsp;&nbsp;<a href='auth_required.php'>[Login]</a>"; 
         }
     }
@@ -425,5 +426,5 @@ function show_user_login_name($username='') {
 
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: auth.php,v 1.45 2009/03/24 14:57:15 myers Exp $";
+    "\$Id: auth.php,v 1.46 2009/04/22 18:05:50 myers Exp $";
 ?>

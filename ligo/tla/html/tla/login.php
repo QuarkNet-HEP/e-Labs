@@ -10,7 +10,7 @@
  * which also works.
  *
  * Eric Myers <myers@spy-hill.net  - 12 December 2006
- * @(#) $Id: login.php,v 1.10 2008/03/20 20:00:43 myers Exp $
+ * @(#) $Id: login.php,v 1.11 2009/04/22 18:06:35 myers Exp $
 \***********************************************************************/
 
 require_once("macros.php");             // general TLA utilities
@@ -35,7 +35,7 @@ $next_url = fill_in_url($next_url);
 
 
 if( !isset($next_url) || empty($next_url) ) {
-    $next_url=fill_in_url($this_dir."/index.php");
+    $next_url = fill_in_url($this_dir."/index.php");
     debug_msg(2,"Destination URL: $next_url");
  }
 

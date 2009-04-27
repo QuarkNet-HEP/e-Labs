@@ -9,7 +9,7 @@
  * this file is included within the scope of a function.
  *
  * Eric Myers <Eric.Myers@ligo.org> - 29 June 2008
- * @(#) $Id: settings.php,v 1.5 2008/10/31 16:44:08 myers Exp $
+ * @(#) $Id: settings.php,v 1.6 2009/04/27 20:02:20 myers Exp $
 \***********************************************************************/
 
 $vi_name='plot1chan';
@@ -120,7 +120,7 @@ if( is_step_named('plot_graph') ){
     for($i=1; $i <= $N; $i++){
         $metadata[] = "channel string ". $input_channels[$i]->name; 
         $ttype = $input_channels[$i]->ttype;
-        $metadata[] = "trendType char ".$ttype;
+        $metadata[] = "trendType string ".$ttype;
     }
  }// plot_graph
 
