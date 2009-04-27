@@ -43,9 +43,9 @@
 	
 	<p>
 			<center>
-			<table width = "650" cellpadding ="8">
+			<table width = "655" cellpadding ="8">
 				<tr>
-					<td colspan = "2">
+					<td colspan = "3">
 						<center>
 							<font color="#0a5ca6" size="+3">
 								<b>
@@ -57,45 +57,56 @@
 				</tr>
 			
 				<tr>
-					<td width="321" valign="top">
-		 				This is the analysis path for the lifetime study. One node asks "Any Decays?" What are those?
-					</td>
+					<td colspan=3>
+		 				
 					
-					<td width="321" valign="top">
-						Some cosmic rays reach earth's surface in the form of <a href="javascript:glossary('muon',100)">muons</a>. 
-						These short-lived particles may stop in the <a href="javascript:glossary('counter',350)">counter</a>, 
-						wait around a while and then decay into an electron and two neutrinos.
-					</td>
-				</tr>
+						
+						Some short-lived cosmic rays <a href="javascript:glossary('muon',100)">muons</a> that reach Earth's surface  may stop in a <a href="javascript:glossary('counter',350)">counter</a>, 
+						wait around a while and then <a href="javascript:glossary('decay',350)">decay</a>  into an electron, a neutrino and an anti-neutrino. The muon will leave one signature in the detector, the electron will leave another. You can ask, "How long before the muon decays?" "What is their <a href="javascript:glossary('lifetime',100)">
+						lifetime</a>?"<br> (How the <A href="../flash/daq_only_standalone.html">detector works</a>) 
+					
+				<p align=center><font size=+2><b>From Raw Data to Plot</b></font></p>
 				
-				<tr>
-					<td colspan="2" valign="top">
 						<img src="../graphics/lifetimeDAG.png" alt="">
+						<p>
+						<hr>
+						<p>
 					</td>
 				</tr>
 								
 				<tr>
-					<td colspan="2" align="right">
-						Want to <a href="tutorial2.jsp">know more?</a>
+					
 					</td>
 				</tr>
 				
 				<tr>
-					<td valign="top">
+					<td valign="top" width=322>
 						<center>
 							<img src="../graphics/lifetime_example.gif">
 						</center>
 					</td>
+					<td width=5>&nbsp;
+							</td>
 					
-					<td valign = "top">
-						<a href="javascript:glossary('muon',100)">Muon </a>
-						<a href="javascript:glossary('decay',350)">decay </a> follows an exponential 
-						law-just like radioactive particles and many other natural phenomenon. 
-						Plots of exponents have a characteristic shape.<p>
+					<td valign = "top" width=322>
+					&nbsp;<p>
+					
+					Muon
+						decay follows an exponential 
+						law&mdash;just like radioactive decay and many other natural phenomenon. 
+						<a href="http://www.purplemath.com/modules/graphexp.htm">Exponential plots</a> have a characteristic shape.<p>
 						
-						Finding the value of the exponent leads to the <a href="javascript:glossary('lifetime',100)">
-						lifetime</a> of the particle-one of many characteristics that allow us to describe 
+						Finding the value of the exponent leads to the 
+						lifetime of the particle&mdash;one of many characteristics that allow us to describe 
 						particles. Others include mass and electric charge.<p>
+						<P>
+						We measure the time between two signals in the same counter and look for patterns in the time difference between two consecutive signals. Occasionally the difference will be from a decay. Seeing many of these can increase your confidence in what you are observing.
+						</td></tr>
+						<tr>
+						<td colspan=3>
+						&nbsp;
+						<p align=center> Tutorial Pages: <b>1</b> <a href="tutorial2.jsp">2</a> <a href="tutorial3.jsp">3</a>  & <a href="index.jsp">Analysis</a>
+				</p>
 						
 					</td>
 				</tr>
