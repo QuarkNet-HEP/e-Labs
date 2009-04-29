@@ -573,7 +573,7 @@ if(file_exists('../project/sponsors.html')){
 }
 
 
-page_tail(true);
+page_tail_main(false);
 
 //end_cache(INDEX_PAGE_TTL);
 

@@ -344,7 +344,7 @@ function project_footer($show_return, $show_date) {
       echo "<div class='edit_link'>";
       foreach ($gWikiTitle as $title ){
         $edit_url = $wiki_url . "index.php/$title";
-        echo "<a href='$edit_url'>$title</a> ";
+	echo "<a href='$edit_url'>&middot; $title</a>&nbsp; ";
       }
       echo "</div>\n";
     }

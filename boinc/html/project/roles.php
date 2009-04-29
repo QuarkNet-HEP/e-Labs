@@ -6,7 +6,7 @@
  * See ../include/roles.php for generic support functions.
  *
  * Eric Myers <myers@spy-hill.net> - 13 February 2009
- * @(#) $Id: roles.php,v 1.2 2009/03/20 13:32:32 myers Exp $
+ * @(#) $Id: roles.php,v 1.3 2009/04/29 20:07:18 myers Exp $
 \***********************************************************************/
 
 // This is needed for wiki/BOINC interface                                      
