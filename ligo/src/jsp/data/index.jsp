@@ -99,7 +99,9 @@
 		         <LI><a href="https://www.lsc-group.phys.uwm.edu/lscdatagrid/">
 						LSC DataGrid</a> - grid computing for the LIGO
 						Scientific Collbaration (LSC)
-				<LI><a href="http://www.wikipedia.org/wiki/Grid_computing"> 
+		         <LI><a href="http://www.opensciencegrid.org/">
+						Open Science Grid</a> (OSG) 
+				 <LI><a href="http://www.wikipedia.org/wiki/Grid_computing"> 
 						Grid computing </a> article from Wikipedia
 				</UL>
 				</p>
