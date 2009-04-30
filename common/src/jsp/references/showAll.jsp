@@ -68,13 +68,15 @@
 			
 			<div id="content">
 
-<h1>View References for Study Guide</h1>
+<h1>View <%=prefix%></h1>
 
+<!-- 
 <p align="center">
 	<a href="../references/showAll.jsp?t=reference">View References for Study Guide</a>
 	-
 	<a href="../references/showAll.jsp?t=glossary">View Glossary</a>
 </p>
+ -->
 
 <table id="references-table" cellpadding="4" cellspacing="4">
 	<c:forEach items="${files}" var="file">
