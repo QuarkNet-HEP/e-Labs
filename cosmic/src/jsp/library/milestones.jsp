@@ -7,7 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Cosmic Resources: Study Guide</title>
+		<title>Cosmic Resources: Project Milestones</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
@@ -42,12 +42,7 @@
 			<!-- end content -->	
 		
 			<div id="footer">
-			    <a href="milestones-map.jsp">Study Guide (Graphical)</a> -
-				<a href="../references/showAll.jsp?t=glossary">Glossary</a> - 
-				<a href="../references/showAll.jsp?t=reference">All References for Study Guide</a>
-				<a href="../references/showAll.jsp?t=reference">
-					<img src="../graphics/ref.gif">
-				</a>
+			    <a href="../home/index.jsp">Project Milestones (Graphical)</a>
 			</div>
 		</div>
 		<!-- end container -->

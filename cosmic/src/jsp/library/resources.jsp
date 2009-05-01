@@ -33,7 +33,6 @@
 			<div id="content">
 				
 <h1>Looking for information? Check out the online resources or contact someone.</h1>
-<p>You can find lots of information in the e-Lab's <a href="../references/showAll.jsp?t=reference">References for the Study Guide</a> and <a href="../references/showAll.jsp?t=glossary">Glossary</a>.</p>
 <table border="0" id="main">
 	<tr>
 		<td>

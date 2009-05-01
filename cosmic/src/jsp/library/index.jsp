@@ -43,7 +43,7 @@
 					<div class="tab-contents">
 						<ul class="simple">
 							<li>
-							Study Guide <a HREF="milestones-map.jsp">Map</a> - <a HREF="milestones.jsp">Text</a> - Follow the guide for you work. 
+							<a HREF="../references/showAll.jsp?t=glossary">Glossary </a> - Look up terms you don't know. 
 							</li>
 							<li>
 							<a HREF="resources.jsp">Resources</a> - Explore <i>Tutorials, Online Resources, Animations</i> and <i>Contacts</i>.  Tutorials help you analyze the data. Contacts connect you to experts and other student research groups.  Animations demonstrate the hardware and what happens when you are uploading data and using grid techniques. <i>Online Resources</i> broaden your understanding of cosmic rays and research. 
@@ -56,6 +56,9 @@
 							</li>
 							<li>
 							<a HREF="site-help.jsp">Site Tips</a> - Check out tips for using the website.
+							</li>
+							<li>
+							<a HREF="milestones.jsp">Project Milestones (text)</a> - An alternate version.
 							</li>
 						</ul>
 					</div>

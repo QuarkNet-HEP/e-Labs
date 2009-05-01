@@ -31,7 +31,7 @@
 						<b>
 							Performance Studies
 						</b> - 
-						In order to believe in any science results from your analysis, you must first believe that the detector is performing reliably over time. Do data collected today look like data collected a year ago? If they data look different is it because the detector has changed or some interesting physics has occured. Understanding detector performance will allow you to do "good science."
+						In order to believe in any science results from your analysis, you must first believe that the detector is performing reliably over time. Do data collected today look like data collected a year ago? If the data look different, is it because the detector has changed or some interesting physics has occurred. Understanding detector performance will allow you to do "good science."
 					</p>
 	
 					<p>
@@ -46,21 +46,21 @@
 							Muon Flux Studies
 						</b> - 
 						<IMG SRC="../graphics/stacked.jpg" BORDER=1 ALIGN=left> 
-						The detectors record the arrival time of arrival of the muons. You can ask questions like: How does the arrival rate depend on time of day? or solar activity? These can be exciting experiments that may show dependenices that make no sense at all! It also can lead to collaboration with research groups in other schools, maybe even around the world.
+						The detectors record the arrival time of the muons. You can ask questions like: How does the arrival rate depend on time of day? or solar activity? These can be exciting experiments that may show dependencies that make no sense at all! It also can lead to collaboration with research groups in other schools, maybe even around the world.
 					</p>
 
 					<p>
 						<b>
 							Muon Lifetime Experiment
 						</b> - 
-						The short-lived muons may stop in a counter, wait around a while and then decay into an electron and two neutrinos. You can verify the muon "lifetime" with a properly configured detector. The muon will leave one signature in the detector, the electron will leave another. You can look for patterns in the time difference between two consecutive pulses. Occasionally the difference will be from a decay. Seeing many of these can increase your confidence in what you are observing.
+						The short-lived muons may stop in a counter, wait around a while and then decay into an electron and two neutrinos. You can verify the muon "lifetime" with a properly configured detector. The muon will leave one signature in the detector; the electron will leave another. You can look for patterns in the time difference between two consecutive pulses. Occasionally the difference will be from a decay. Seeing many of these can increase your confidence in what you are observing.
 					</p>
 
 					<p>
 						<b>
 							Time Dilation Experiment
 						</b> - 
-						Most muons are created in the upper atmosphere and travel towards earth's surface at nearly light speed.
+						Most muons are created in the upper atmosphere and travel towards Earth's surface at nearly light speed.
 						The muon's mean lifetime is so brief that there is insufficient time for them to reach the detectors.
 						You are presented with the wonderful dilemma that the muon's time of flight is longer than its lifetime! The solution to the dilemma lies in the so-called "Time Dilation" that creates differences in times as measured by clocks moving with respect to each other.
 					</p>

@@ -75,7 +75,7 @@
 					<dt>Resources:</dt>
 					<dd>Explore tutorials, online resources, animations and contacts.</dd>
 					
-					<dt>Study Guide - A List of Milestones:</dt>
+					<dt>Project Milestones:</dt>
 					<dd>
 						<p>
 							Concepts you need to know. Skills you need to use. Tasks you need to accomplish.
@@ -90,7 +90,7 @@
 						</p>
 
 						<p>
-							Work your way through the list of milestones in the Study Guide.
+							Work your way through the list of milestones in the Project Milestones.
 						</p>
 					</dd>
 

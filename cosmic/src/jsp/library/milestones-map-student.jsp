@@ -27,7 +27,7 @@
 <area shape="rect" alt="" coords="288,116,364,144" href="javascript:reference('cosmic rays',420)">
 <area shape="rect" alt="" coords="715,19,773,63" href="${post}">
 <area shape="rect" alt="" coords="0,19,58,63" href="${pre}">
-<area shape="poly" alt="" coords="66,44, 98,40, 108,13, 134,13, 138,40, 156,43, 160,55, 140,60, 68,60, 66,46, 66,44" href="big-picture.jsp">
+<area shape="poly" alt="" coords="66,44, 98,40, 108,13, 134,13, 138,40, 156,43, 160,55, 140,60, 68,60, 66,46, 66,44" href="../library/big-picture.jsp">
 <area shape="rect" alt="" coords="204,105,286,132" href="javascript:reference('research plan')">
 <area shape="rect" alt="" coords="200,176,283,215" href="javascript:reference('research question',300)">
 <area shape="poly" alt="" coords="156,203, 176,202, 184,225, 200,228, 201,251, 132,251, 136,235, 150,227, 156,203" href="javascript:reference('simple graphs',600)">
