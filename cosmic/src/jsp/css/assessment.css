@@ -1,12 +1,30 @@
+/* Navbar */ 
+#nav #subnav ul#data { display:none }
+#nav #subnav ul#library { display:none; }
+#nav #subnav ul#posters { display:none; } 
+#nav #subnav ul#siteindex { display:none; } 
+#nav #subnav ul#posters { display:none; } 
+#nav #subnav ul#upload { display:none; }
+
+a#nav-assessment {
+	background-color: #ffcc00;
+	border-top: #ffd940 1px solid;
+	border-left: #ffd940 1px solid;
+	border-bottom: #b59100 1px solid;
+	border-right: #b59100 1px solid;
+}
+
+/* Content */ 
+
 #assessment h1 {
 	background-color: #ffcc00;
 	color: #000000;
-	width: 650px;
+	width: 100%;
 }
 
 #assessment #content {
-	margin-left: 10px;
-	width: 650px;
+	margin: 0px auto;
+	width: 790px;
 }
 
 #assessment table, td {
@@ -38,13 +56,6 @@
   text-align: left;
 }
   
-#nav a#nav6 {
-	background-color: #ffcc00;
-	border-top: #ffd940 1px solid;
-	border-left: #ffd940 1px solid;
-	border-bottom: #b59100 1px solid;
-	border-right: #b59100 1px solid;
-}
   
 #assessmentRubric {
 	margin-left: 20px;
@@ -87,78 +98,3 @@
 	font-weight: normal;
 	vertical-align: top;
 }
-
-
-#nav a#nav1:hover {
-	color: black;
-	background-color: #ff6600;
-	border-top: #ffa76c 1px solid;
-	border-left: #ffa76c 1px solid;
-	border-bottom: #b54800 1px solid;
-	border-right: #b54800 1px solid;
-}
-
-#nav a#nav2:hover {
-	color: black;
-	background-color: #55a9b4;
-	border-top: #a7d2d8 1px solid;
-	border-left: #a7d2d8 1px solid;
-	border-bottom: #3c777f 1px solid;
-	border-right: #3c777f 1px solid;
-}
-
-#nav a#nav3:hover {
-	color: black;
-	background-color: #4382bb;
-	border-top: #72a1cc 1px solid;
-	border-left: #72a1cc 1px solid;
-	border-bottom: #305c85 1px solid;
-	border-right: #305c85 1px solid;
-}
-
-#nav a#nav4:hover {
-	color: black;
-	background-color: #408c66;
-	border-top: #70a98c 1px solid;
-	border-left: #70a98c 1px solid;
-	border-bottom: #2d6348 1px solid;
-	border-right: #2d6348 1px solid;
-}
-
-#nav a#nav5:hover {
-	color: black;
-	background-color: #ff3000;
-	border-top: #ff6640 1px solid;
-	border-left: #ff6640 1px solid;
-	border-bottom: #b52400 1px solid;
-	border-right: #b52400 1px solid;
-}
-
-#nav a#nav-upload:hover {
-	color:black;
-	background-color: #ad499d;
-	border-top: #c276b6 1px solid;
-	border-left: #c276b6 1px solid;
-	border-bottom: #7b346f 1px solid;
-	border-right: #7b346f 1px solid;
-}
-
-
-#nav a#nav6:hover {
-	color: black;
-	background-color: #ffcc00;
-	border-top: #ffd940 1px solid;
-	border-left: #ffd940 1px solid;
-	border-bottom: #b59100 1px solid;
-	border-right: #b59100 1px solid;
-}
-
-#nav #subnav a:hover {
-	color: white;
-	background-color: #55a9b4;
-	border-top: #a7d2d8 1px solid;
-	border-left: #a7d2d8 1px solid;
-	border-bottom: #3c777f 1px solid;
-	border-right: #3c777f 1px solid;
-}
-
