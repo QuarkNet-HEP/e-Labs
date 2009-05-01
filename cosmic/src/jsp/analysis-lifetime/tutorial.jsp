@@ -100,7 +100,7 @@
 						lifetime of the particle&mdash;one of many characteristics that allow us to describe 
 						particles. Others include mass and electric charge.<p>
 						<P>
-						We measure the time between two signals in the same counter and look for patterns in the time difference between two consecutive signals. Occasionally the difference will be from a decay. Seeing many of these can increase your confidence in what you are observing.
+						We measure the time between two <a href="javascript:glossary('signal',350)">signals</a>  in the same counter and look for patterns in the time difference between two consecutive signals. Occasionally the difference will be from a decay. Seeing many of these can increase your confidence in what you are observing.
 						</td></tr>
 						<tr>
 						<td colspan=3>
