@@ -95,7 +95,7 @@
 				
 						
 						<p>Inspect these plots. Which one shows a counter with an enormous number of 
-						short signals? Which two counters have similar performance? What would you 
+						short <a href="javascript:glossary('signal',350)">signals</a>? Which two counters have similar performance? What would you 
 						do if you owned these four counters?
 					<p>&nbsp;
 					</td>

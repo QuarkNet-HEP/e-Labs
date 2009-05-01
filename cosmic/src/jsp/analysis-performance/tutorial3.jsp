@@ -66,8 +66,8 @@
 						In a very loose sense, time over threshold is a measure of the amount of energy deposited in the 
 						<a HREF="javascript:glossary('scintillator',350)">scintillator</a> for a given 
 						<a HREF="javascript:glossary('muon',100)">muon</a>. There is a correlation 
-						between the<a HREF="javascript:glossary('pulse_width',350)"> width of the pulse</a> 
-						in time and the height of the pulse. 
+						between the <a HREF="javascript:glossary('signal_width',350)">width of the signal</a> 
+						in time and the height of the signal. 
 
 						
 					</td>

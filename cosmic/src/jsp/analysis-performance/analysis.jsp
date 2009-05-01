@@ -109,7 +109,7 @@
 <c:choose>
 	<c:when test="${analysis.parameters.rawData != null}">
 		<h1>Do you trust the detector? Analyze its performance before you use the data for other studies.</h1>
-<div id="rationale">This analysis looks at the signals generated when cosmic ray muons passes through a counter. The values are displayed in a histogram. </div>
+<div id="rationale">This analysis looks at the <a href="javascript:glossary('signal',150)">signals</a> generated when cosmic ray muons passes through a counter. The values are displayed in a histogram. </div>
 <div id="rationale">Gain confidence by running a practice analysis.</div>
 <hr>
 		<table border="0" id="main">
