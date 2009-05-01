@@ -7,4 +7,5 @@
 	<p><e:popup href="../library/FAQ.jsp" target="tryit" width="700" height="600">FAQs</e:popup></p>
 	<p>States include provinces and countries. Enter the 
 	<e:popup href="../jsp/showStates.jsp" target="states" width="400" height="700">abbreviation</e:popup></p>
+    <%@ include file="../include/analysis-milestones.jsp" %>
 </div>

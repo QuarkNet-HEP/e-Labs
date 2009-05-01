@@ -64,7 +64,7 @@
 		
 				The many particles in a shower light up the detector's 
 				<a href="javascript:glossary('photomultiplier_tube',350)">photomultiplier tubes</a> (PMT)
-				with many signals 
+				with many <a href="javascript:glossary('signal',350)">signals</a> 
 				one after another. The more particles in the shower, the larger 
 				area it covers, the more interesting it is. You could find out the extent of the shower or perhaps the origin of the primary cosmic ray.
 				We set up the detector with the counters unstacked, <img src="../graphics/unstacked.gif" />. <br>(How the <A href="../flash/daq_only_standalone.html">detector works</a>) 

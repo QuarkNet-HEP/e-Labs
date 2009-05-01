@@ -76,7 +76,7 @@
 <c:choose>
 	<c:when test="${analysis.parameters.rawData != null}">
 		<h1>Look for showers in your data</h1>
-<div id="rationale">This analysis looks for cosmic ray muons that arrive at or near the same time over the geographic area defined by data you select. The routine displays a list of events that "pass" criteria that you set in the fields below. The plot shows the location and timing separation of signals observed in your event. 
+<div id="rationale">This analysis looks for cosmic ray muons that arrive at or near the same time over the geographic area defined by data you select. The routine displays a list of events that "pass" criteria that you set in the fields below. The plot shows the location and timing separation of <a href="javascript:glossary('signal',350)">signals</a> observed in your event. 
 </div>
 <div id="rationale">Gain confidence by running a practice analysis.</div>
 <hr>
