@@ -10,8 +10,8 @@
 <p>When running an analysis, you get to choose where the analysis is run.</p>
 
 <p> The analysis can run in three places:</p> <ul>
-<li> Local machine,
-</li> <li> I2U2 cluster,
+<li> Local machine
+</li> <li> I2U2 cluster
 </li> <li> Grid (initially the Teraport cluster at the Computation Institute, University of Chicago)
 </li></ul> 
 <p />
@@ -33,7 +33,7 @@ This table summarizes the features of the different choices you can make. The te
     <th width="68" valign="top" align="center">Reliability</th>
     <th width="118" valign="top" align="center">Pros</th>
     <th width="95" valign="top" align="center">Cons</th>
-    <th width="173" valign="top" align="center">Best For</th>
+    <th width="173" valign="top" align="center">Best for</th>
   </tr>
   <tr  bgcolor="#FFFF66">
     <td width="69" valign="top">Local</td>
@@ -44,16 +44,16 @@ This table summarizes the features of the different choices you can make. The te
     <td width="173" valign="top">Fast jobs involving small datasets</td>
   </tr>
   <tr  bgcolor="#FFFF66">
-    <td width="69" valign="top">i2u2 cluster</td>
+    <td width="69" valign="top">I2U2 cluster</td>
     <td width="69" valign="top">Half as fast as local</td>
     <td width="68" valign="top">Still in testing</td>
-    <td width="118" valign="top">Larger analyses can be run without affecting local analyses</td>
+    <td width="118" valign="top">Larger analyses can be run without affecting local analyses.</td>
     <td width="95" valign="top">Slower; still being tested     </td>
     <td width="173" valign="top">Intermediate size jobs with medium data sets</td>
   </tr>
   <tr   bgcolor="#FFFF66">
     <td width="69" valign="top">Grid<br />
-    (Cutting-Edge Tool Still in Development)</td>
+    (Cutting-edge tool in development)</td>
     <td width="69" valign="top">Slow</td>
     <td width="68" valign="top">Least reliable</td>
     <td width="118" valign="top">Ability to run large CPU and data intensive jobs</td>
@@ -63,7 +63,7 @@ This table summarizes the features of the different choices you can make. The te
 </table>
 <p />
 <p />
-<h2><a name="Screens_Encountered_After_Submit"></a> Screens Encountered After Submitting a Job to i2u2 Cluster or the Grid. </h2>
+<h2><a name="Screens_Encountered_After_Submit"></a> Screens Encountered after Submitting a Job to I2U2 Cluster or the Grid</h2>
 <p>You can watch the progress and queue an analysis so you can go work on something else.  You will see the following on your screen once you have started the analysis:</p>
 <p />
 <br />
