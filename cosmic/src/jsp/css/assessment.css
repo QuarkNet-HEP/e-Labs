@@ -7,6 +7,7 @@
 #nav #subnav ul#upload { display:none; }
 
 a#nav-assessment {
+	color: black; 
 	background-color: #ffcc00;
 	border-top: #ffd940 1px solid;
 	border-left: #ffd940 1px solid;
