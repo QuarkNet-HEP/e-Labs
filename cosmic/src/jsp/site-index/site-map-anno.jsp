@@ -2,8 +2,6 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ page import="gov.fnal.elab.util.ElabUtil" %>
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -12,8 +10,30 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/site-index.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
+		<link href="../css/site-help.css" rel="stylesheet" type="text/css" />
 	</head>
-	<body class="siteindex">
+<script type="text/javascript">
+    hideAll();
+    
+function setDisplay(objectID,state) {
+    var object=document.getElementById(objectID);
+    if (object != null) object.style.display=state;
+    }
+
+
+
+function hideAll()
+{
+     setDisplay("sitehelp-home","none");
+     setDisplay("sitehelp-library","none");
+     setDisplay("sitehelp-data","none");
+     setDisplay("sitehelp-posters","none");
+     setDisplay("sitehelp-upload","none");
+}
+
+
+</script>
+	<body class="siteindex" onload="hideAll()">
 		<!-- entire page container -->
 		<div id="container">
 
@@ -33,21 +53,61 @@
 			</c:if>
 
 <div id="content">
-<h1>Lost? Click on hotspots in this site map.</h1>
-<div align="center">
-<img src="../graphics/site-map.gif" width="662" height="524" border="0" alt="" usemap="#site_map">
-
-<map name="site_map">
-<area shape="rect" alt="" coords="242,202,403,318" href="../home/">
-<area shape="rect" alt="" coords="412,64,662,254" href="#" onclick="javascript:window.open('../jsp/showLogbook.jsp', 'log', 'width=800,height=600, resizable=1, scrollbars=1');return false;">
-<area shape="rect" alt="" coords="0,71,235,260" href="../assessment/index.jsp">
-<area shape="rect" alt="" coords="0,273,233,460" href="../posters/">
-<area shape="rect" alt="" coords="243,320,402,524" href="../data/">
-<area shape="rect" alt="" coords="408,269,662,458" href="../data/upload.jsp">
-<area shape="rect" alt="" coords="242,0,402,202" href="../library/">
+<h1>Explore! Click on hotspots in this site map.</h1>
+<div id="sitemap" align="center" >
+<table width="736" cellpadding="0" cellspacing="0">
+<tr><td width="130" valign="bottom">
+<div id="sitehelp-home">
+<a href="../home/index.jsp">Home</a><br>
+<a href="../library/milestones.jsp">Project Milestones (txt)</a><br>
+<a href="../home/cool-science.jsp">Cool Science</a><br>
+<a href="../home/about-us.jsp">About Us</a><br>
+<a href="javascript:window.open('../jsp/showLogbook.jsp', 'log', 'width=800,height=600, resizable=1, scrollbars=1');return false;">Logbook</a><br>
+<td width="122" valign="bottom"  align="center">
+<div id="sitehelp-library">
+<a href="../references/showAll.jsp?t=glossary">Glossary</a><br>
+<a href="../library/resources.jsp">Resources</a><br>
+<a href="../library/big-picture.jsp">Big Picture</a><br>
+<a href="../library/FAQ.jsp">FAQs</a><br>
+<a href="../library/site-help.jsp">Site Help</a>
+</div></td>
+<td width="126" valign="bottom" align="center">
+<div id="sitehelp-upload">
+<a href="../data/upload.jsp">Upload Data</a><br>
+<a href="../geometry">Geometry</a>
+</div></td>
+<td width="120" valign="bottom" align="center">
+<div id="sitehelp-data">
+<a href="../data/search.jsp">View Data</a><br>
+<a href="../analysis-performance/">Performance</a><br>
+<a href="../analysis-flux/">Flux</a><br>
+<a href="../analysis-shower/">Shower</a><br>
+<a href="../analysis-lifetime/">Lifetime</a><br>
+<a href="../plots/">View Plots</a><br>
+<a href="../analysis/list.jsp">Analyses</a>
+</div></td>
+<td width="120" valign="bottom" align="center">
+<div id="sitehelp-posters">
+<a href="../posters/new.jsp">New Poster</a><br>
+<a href="../posters/edit.jsp">Edit Poster</a><br>
+<a href="../posters/view.jsp">View Posters</a><br>
+<a href="../posters/delete.jsp">Edit Poster</a><br>
+<a href="../plots?submit=true&key=group&value=guest&uploaded=true">View Plots</a><br>
+<a href="../jsp/uploadImage.jsp">Upload Image</a>
+</div></td>
+<td width="122" height="110"  border="0"><div id="placeholder">&nbsp;</div></td>
+<tr><td colspan="6" >
+<img src="../graphics/site-map.gif" width="732" height="170" border="0" alt="" usemap="#site_map2_Map">
+<map name="site_map2_Map">
+<area shape="rect" alt="" coords="0,1,119,167" href="../home/" onmouseover="javascript:hideAll();setDisplay('sitehelp-home','block')">
+<area shape="rect" alt="" coords="614,0,734,108" href="../assessment/index.jsp">
+<area shape="rect" alt="" coords="498,0,614,158" href="../posters/" onmouseover="javascript:hideAll();setDisplay('sitehelp-posters','block')">
+<area shape="rect" alt="" coords="377,1,496,160" href="../data/" onmouseover="javascript:hideAll();setDisplay('sitehelp-data','block')">
+<area shape="rect" alt="" coords="251,1,373,134" href="../data/upload.jsp" onmouseover="javascript:hideAll();setDisplay('sitehelp-upload','block')">
+<area shape="rect" alt="" coords="127,0,254,170" href="../library/" onmouseover="javascript:hideAll();setDisplay('sitehelp-library','block')">
 </map>
-</div>
-
+</td></tr></table>
+</div> <!-- end sitemap -->
 			</div>
 			<!-- end content -->	
 		
