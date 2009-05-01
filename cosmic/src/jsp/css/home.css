@@ -51,6 +51,7 @@
 	text-align: center;
 }
 
+
 #first-web #content #right {
 	width: 140px;
 }
@@ -139,4 +140,20 @@ a.button {
 	border-bottom: #7b346f 1px solid;
 	border-right: #7b346f 1px solid;
 }
+
+#links {
+	font-weight: normal;
+	font-size: 140%;
+	width: 100%;
+	margin: auto;
+	text-align: center;
+}
+#links a {
+	text-decoration: none; color: #ff6600;
+	font-weight: bold;
+}
+
+#links a:hover {color:#000000;  }
+#links a:active: {color: #222222;   }
+#links a:visited: {color: #000000;  }
 
