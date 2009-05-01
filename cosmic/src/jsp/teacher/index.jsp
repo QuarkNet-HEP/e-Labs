@@ -60,7 +60,7 @@
 					To begin, students check the performance of the detectors they 
 					have chosen for their study. Then they can perform one of three 
 					investigations: muon lifetime, muon flux or extended air showers. 
-					Students can use a study guide with milestones to conduct their reseach and
+					Students can use the Project Milestones to conduct their reseach and
 					can record their work and reflect on their progress in their e-Logbook. Students post the results of their studies as online posters. 
 					The real scientific collaboration follows. Students can 
 					review the results of other studies online comparing data and 
@@ -135,7 +135,7 @@
 				</ul>
 				<p>
 					We provide refresher references for students who need to brush up on 
-					these skills. Students access these from "The Basics" section of the <a href="../library/milestones-map.jsp" target="show">study guide</a>. 
+					these skills. Students access these from "The Basics" section of the <a href="../home/index.jsp" target="show">Project Milestones</a>. 
 					
 				<h2>Learner Outcomes and Assessment:</h2>
 				<p>
@@ -195,7 +195,7 @@
 							
 							</li>
 							<li>
-							<b>Milestone Seminars:</b> Check student understanding before they move from one section of the study guide to another. 
+							<b>Milestone Seminars:</b> Check student understanding before they move from one section of the project milestones to another. 
 							</li>
 					
 				</ul>
