@@ -9,7 +9,7 @@
 		<title>${elab.properties.formalName} e-Lab Home</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/three-column.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/two-column-home.css"/>
 	</head>
 	
 	<body id="home" class="home">
@@ -29,27 +29,23 @@
 			<div id="content">
 				
 <h1>Welcome! Contribute to our scientific collaboration. Who are we?</h1>
+ 	 <c:if test="${user != null}">
+	   <div id="links"><table align="center"><tr>
+	   <td width="150" align="center"><A href="cool-science.jsp"><img src="../graphics/cool-science-button.gif" border="0"><br>Cool Science</a></td>
+	   <td width="150" align="center"><a href="../site-index/site-map-anno.jsp"><img src="../graphics/site-map-button.gif" border="0"><br>Explore!</a></td>
+	   <td width="150"align="center"><a href="about-us.jsp"><img src="../graphics/about-us-button.gif" border="0"><br>About Us</a></td></tr></table></div>
+	  </c:if>  
 
 <!-- there is no way to do this without tables unfortunately -->
 <table border="0" id="main">
 	<tr>
-	    <td  colspan="3">
- 	 <c:if test="${user != null}">
-  
-	    <h2 style="text-align:center"><A href="../library/big-picture.jsp">Cool Science</a> - <a href="../site-index/site-map-anno.jsp">Explore</a> - <a href="about-us.jsp">About Us</a></h2>
-	  </c:if>  
-	    </td>
-	
-	
-	</tr>
-	<tr>
 		<td>
-			<div id="left">
+			<div id="left-column">
 				<img src="../graphics/crop.jpg"/>
 			</div>
 		</td>
 		<td>
-			<div id="center">
+			<div id="right-column">
 
 				<h2>Who are we?</h2>
 				<p>We're a collaboration of high school students and teachers collecting and analyzing cosmic ray data. We're working with cutting edge tools that use the grid techniques to share data, create plots and posters and collaborate with other students internationally.</p>

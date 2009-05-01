@@ -8,8 +8,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>${elab.properties.formalName} e-Lab Home</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column-home.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
 	</head>
 	
 	<body id="home" class="home">
@@ -30,31 +30,45 @@
 				
 <h1>Join a national collaboration of high school students to study cosmic rays.</h1>
 
-<!-- there is no way to do this without tables unfortunately -->
-<table border="0" id="main">
-	<tr>
-	    <td>
  	 <c:if test="${user != null}">
   
-	    <h2 style="text-align:center"><A href="../library/big-picture.jsp">Cool Science</a> - <a href="../site-index/site-map-anno.jsp">Explore</a> - <a href="about-us.jsp">About Us</a></h2>
+	   <div id="links"><table align="center"><tr>
+	   <td width="150" align="center"><A href="cool-science.jsp"><img src="../graphics/cool-science-button.gif" border="0"><br>Cool Science</a></td>
+	   <td width="150" align="center"><a href="../site-index/site-map-anno.jsp"><img src="../graphics/site-map-button.gif" border="0"><br>Explore!</a></td>
+	   <td width="150"align="center"><a href="about-us.jsp"><img src="../graphics/about-us-button.gif" border="0"><br>About Us</a></td></tr></table></div>
+	  </c:if>  
+<p>Your team may use the Project Milestones below, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results. 
+</p>
+
+<!-- there is no way to do this without tables unfortunately -->
+<table border="0" id="main">
+<!-- 
+	<tr>
+	    <td colspan="2">
+ 	 <c:if test="${user != null}">
+  
+	   <div id="links"><A href="../library/big-picture.jsp">Cool Science</a> - <a href="../site-index/site-map-anno.jsp">Explore</a> - <a href="about-us.jsp">About Us</a></div>
 	  </c:if>  
 	    </td>
 	
 	
 	</tr>
+ -->
 	<tr>
 		<td>
-			<div id="left">
 	 <c:if test="${user != null}">
+			<div id="left">
 		<script type="text/javascript" src="../include/elab.js"></script>
         <%@ include file="../login/login-required.jsp" %>
 	    <%@ include file="../library/milestones-map-student.jsp" %>
+ 		</div>
 	  </c:if>  
  	 <c:if test="${user == null}">
+		<div id="left-animation">
  	    <%@ include file="../home/splash-home.html" %>
+ 		</div>
 
 	  </c:if>  
- 			</div>
 		</td>
 		<td>
 			<div id="right">
