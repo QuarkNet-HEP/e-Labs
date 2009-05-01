@@ -13,7 +13,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Metadata for ${param.filename}</title>
+		<title>Details (Metadata) for ${param.filename}</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
@@ -66,7 +66,7 @@
 			<c:if test="${e.tupleMap.type == 'split'}">
 				<a href="../data/download?filename=${param.filename}&elab=${elab.name}&type=${e.tupleMap.type}">Download</a>
 			</c:if>
-			<h2>Metadata for ${param.filename}</h2>
+			<h2>Details (<a href="javascript:glossary('metadata')">Metadata</a>) for ${param.filename}</h2>
 			<table border="0">
 				<c:forEach items="${e.tupleIterator}" var="tuple">
 					<tr>
