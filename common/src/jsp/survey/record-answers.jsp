@@ -117,7 +117,7 @@
 <c:choose>
 	<c:when test="${totalTaken == total}">
 		<p>
-			Your group can now <a href="../home/first.jsp">start its Cosmic Investigation.</a>
+			Your group can now <a href="../home/index.jsp">start its Cosmic Investigation.</a>
 		</p>
 	</c:when>
 	<c:otherwise>
