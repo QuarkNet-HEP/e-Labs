@@ -29,6 +29,7 @@ function hideAll()
      setDisplay("sitehelp-data","none");
      setDisplay("sitehelp-posters","none");
      setDisplay("sitehelp-upload","none");
+     setDisplay("sitehelp-assessment","none");
 }
 
 
@@ -51,7 +52,7 @@ function hideAll()
 <h1>Explore! Click on hotspots in this site map.</h1>
 <div id="sitemap" align="center" >
 <table width="736" cellpadding="0" cellspacing="0">
-<tr><td width="130" valign="bottom">
+<tr><td width="128" valign="bottom">
 <div id="sitehelp-home">
 <a href="../home/index.jsp">Home</a><br>
 <a href="../library/milestones.jsp">Project Milestones (txt)</a><br>
@@ -81,7 +82,7 @@ function hideAll()
 <a href="../plots/">View Plots</a><br>
 <a href="../analysis/list.jsp">Analyses</a>
 </div></td>
-<td width="120" valign="bottom" align="center">
+<td width="116" valign="bottom" align="center">
 <div id="sitehelp-posters">
 <a href="../posters/new.jsp">New Poster</a><br>
 <a href="../posters/edit.jsp">Edit Poster</a><br>
@@ -90,12 +91,14 @@ function hideAll()
 <a href="../plots?submit=true&key=group&value=guest&uploaded=true">View Plots</a><br>
 <a href="../jsp/uploadImage.jsp">Upload Image</a>
 </div></td>
-<td width="122" height="110"  border="0"><div id="placeholder">&nbsp;</div></td>
+<td width="116" height="110"  valign="bottom" border="0"><div id="sitehelp-assessment">
+<a href="../assessment/index.jsp">Assessment</a>
+</div></td></tr>
 <tr><td colspan="6" >
-<img src="../graphics/site-map.gif" width="732" height="170" border="0" alt="" usemap="#site_map2_Map">
+<img src="../graphics/site-map.gif" width="736" height="170" border="0" alt="" usemap="#site_map2_Map">
 <map name="site_map2_Map">
 <area shape="rect" alt="" coords="0,1,119,167" href="../home/" onmouseover="javascript:hideAll();setDisplay('sitehelp-home','block')">
-<area shape="rect" alt="" coords="614,0,734,108" href="../assessment/index.jsp">
+<area shape="rect" alt="" coords="614,0,734,108" href="../assessment/index.jsp"  onmouseover="javascript:hideAll();setDisplay('sitehelp-assessment','block')">
 <area shape="rect" alt="" coords="498,0,614,158" href="../posters/" onmouseover="javascript:hideAll();setDisplay('sitehelp-posters','block')">
 <area shape="rect" alt="" coords="377,1,496,160" href="../data/" onmouseover="javascript:hideAll();setDisplay('sitehelp-data','block')">
 <area shape="rect" alt="" coords="251,1,373,134" href="../data/upload.jsp" onmouseover="javascript:hideAll();setDisplay('sitehelp-upload','block')">
