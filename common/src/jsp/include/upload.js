@@ -23,7 +23,7 @@ function updateProgress(uploadInfo)
         
         var fileIndex = uploadInfo.fileIndex;
 
-        var progressPercent = upload.progressPercent; 
+        var progressPercent = uploadInfo.progressPercent; 
         
         document.getElementById('progressBarText').innerHTML = 'Upload in progress: ' + progressPercent + '%';
 
