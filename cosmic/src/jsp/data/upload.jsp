@@ -188,14 +188,18 @@ Re: the upload progress stuff
 	<li>Select the <strong>detector</strong> associated with the data you are uploading.</li>
 	<li>Click <strong>Choose File/Browse</strong> to locate the data file on your computer.</li>
 	<li>Click <strong>Upload</strong> to upload the file.</li>
-	<li><strong><em>Don't navigate away from this page</em></strong> until we've started analyzing your file!</li>
 </ul>
 
 <form name="uploadform" id="upload-form" method="post" enctype="multipart/form-data" onSubmit="startProgress()">
     <!-- file, detector, and upload table -->	
+    <div class="redborder">
+<strong>Please <em>do not</em> upload files larger than 2 GB in size. You'll have to split them up into smaller pieces. Questions? See the <a href="../library/FAQ.jsp">FAQ</a> </strong>
+</div>
 	<p>
-		Choose <label for="detector">detector:</label>
-		<e:trselect id="uf1" name="detector" labelList="${detectorIDs}" valueList="${detectorIDs}"/>
+		<u>Choose <label for="detector">detector</label></u><br />	
+		<c:forEach items="${detectorIDs}" var="d">
+			<input type="radio" name="detector" value="${d}" />${d}
+		</c:forEach>
     </p>
 	<p>
 		<label for="ds">Raw Data File:</label>
@@ -215,7 +219,7 @@ Re: the upload progress stuff
 					<input name="load" type="submit" value="Upload" id="uploadbutton"/>
 				</td>
 				<td>
-					<div id="progressBar" style="display: none;">
+					<div id="progressBar" style="display: none">
 						<div id="theMeter">
 
 							<div id="progressBarBox">
@@ -223,10 +227,14 @@ Re: the upload progress stuff
 								<div id="progressBarText"></div>
 							</div>
 						</div>
+						
 					</div>
 				</td>
 			</tr>
 		</table>
+		<div id="uploadwarning" class="redborder">
+			<strong><em>Don't navigate away from this page</em></strong> until we've started analyzing your file!
+		</div>
 	</div>
 </form>
 
