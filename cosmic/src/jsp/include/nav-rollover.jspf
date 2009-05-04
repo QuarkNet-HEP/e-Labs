@@ -55,20 +55,19 @@
 			<ul id="data">
 				<li><a href="../data/search.jsp">View Data</a></li>
 				<li><a href="../analysis-performance">Performance</a></li>
-				<li><a href="../analysis-lifetime">Lifetime</a></li>
 				<li><a href="../analysis-flux">Flux</a></li>
 				<li><a href="../analysis-shower">Shower</a></li>
+				<li><a href="../analysis-lifetime">Lifetime</a></li>				
 				<li><a href="../plots">View Plots</a></li>
 				<li><a href="../analysis/list.jsp">Analyses</a></li>
 			</ul>
 			
 			<ul id="library">
-				<li><a href="../library/research-basics.jsp">The Basics</a></li>
-				<li><a href="../library/milestones-map.jsp">Study Guide</a></li>
+				<li><a href="../references/showAll.jsp?t=glossary">Glossary</a></li>
 				<li><a href="../library/resources.jsp">Resources</a></li>
 				<li><a href="../home/first.jsp">Big Picture</a></li>
-				<li><a href="../library/FAQ.jsp">FAQs</a></li>
-				<li><a href="../home/first-web.jsp">Site Help</a></li>
+				<li><a href="../library/big-picture.jsp">FAQs</a></li>
+				<li><a href="../library/site-help.jsp">Site Help</a></li>
 			</ul>
 			
 			<ul id="posters">
