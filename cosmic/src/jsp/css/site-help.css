@@ -10,7 +10,7 @@ text-align: center;
 #sitehelp-home a {
 	color: #000000;
 	text-decoration: none;
-    width: 120px;
+    width: 118px;
 }
 
 #sitehelp-library
@@ -65,7 +65,7 @@ text-align: center;
 {
 z-index: 5;
 background-color: #408c66;
-width: 118px;
+width: 116px;
 border: 1px solid #444444;
 margin: auto;
 text-align: center;
@@ -77,37 +77,40 @@ text-align: center;
 
 }
 
-#placeholder
+
+#sitehelp-assessment
 {
 z-index: 5;
-background-color: #ffffff;
-width: 120px;
-height: 2em;
+background-color: #ffcc00;
+width: 116px;
+//height: 2em;
+border: 1px solid #444444;
 margin: auto;
 text-align: center;
 }
-#placeholder a {
+#sitehelp-assessment a {
 	color: #000000;
 	text-decoration: none;
 
 }
 
+
 #sitemap a:link {
 color: #000000;
-    width: 120px;
+    width: 116px;
 }
 #sitemap a:visited {
 color: #FFFFFF;
-    width: 120px;
+    width: 116px;
 }
 #sitemap a:hover {
 color: #CCCCCC;
 background-color: #333333;
 text-decoration: none;
-    width: 120px;
+    width: 116px;
 }
 #sitemap a:active {
 color: #333333;
-    width: 120px;
+    width: 116px;
 }
 
