@@ -33,8 +33,8 @@
 	   <td width="150" align="center"><a href="../site-index/site-map-anno.jsp"><img src="../graphics/site-map-button.gif" border="0"><br>Explore!</a></td>
 	   <td width="150"align="center"><a href="about-us.jsp"><img src="../graphics/about-us-button.gif" border="0"><br>About Us</a></td></tr></table></div>
 	  </c:if>  
-<p>Your team may use the Project Milestones below, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results. 
-</p>
+<h3>Your team may use the Project Milestones below, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results. 
+</h3>
 
 <!-- there is no way to do this without tables unfortunately -->
 <table border="0" id="main">
