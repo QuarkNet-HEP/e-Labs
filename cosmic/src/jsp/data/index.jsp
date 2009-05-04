@@ -44,10 +44,6 @@
 							- Look at data from a detector. Can you trust the data?
 						</p>
 						<p>
-							<a href="../analysis-lifetime">Lifetime Study</a>
-							- How long before muons decay? Combine a lifetime study with flux studies to determine whether you live in Newton's or Einstein's world.
-						</p>
-						<p>
 							<a href="../analysis-flux">Flux Study</a>
 							- The shower of particles has many interesting properties including its 
 							<a href="javascript:glossary('flux')">flux</a>.
@@ -59,6 +55,10 @@
 							Your colleagues at other schools will want to know when you detect one, 
 							so they can check for coincident showers at their school. Contribute 
 							to cutting-edge research on the origin of high-energy primary cosmic rays.
+						</p>
+						<p>
+							<a href="../analysis-lifetime">Lifetime Study</a>
+							- How long before muons decay? Combine a lifetime study with flux studies to determine whether you live in Newton's or Einstein's world.
 						</p>
 					</div>
 				</div>		
