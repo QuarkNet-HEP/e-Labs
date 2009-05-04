@@ -19,8 +19,8 @@ function updateProgress(uploadInfo)
         document.getElementById('uploadbutton').disabled = true;
         document.getElementById('uf2').disabled = true;
         document.getElementById('uf3').disabled = true;
-        document.getElementsByName('detector').disabled = true; 
-
+        disableGroup('detector')
+        
         var fileIndex = uploadInfo.fileIndex;
 
         var progressPercent = upload.progressPercent; 
@@ -36,7 +36,7 @@ function updateProgress(uploadInfo)
         document.getElementById('uploadbutton').disabled = false;
         document.getElementById('uf2').disabled = false;
         document.getElementById('uf3').disabled = false;
-        document.getElementsByName('detector').disabled = false; 
+        enableGroup('detector');
     }
 
     return true;
@@ -52,4 +52,20 @@ function startProgress()
     // wait a little while to make sure the upload has started ..
     window.setTimeout("refreshProgress()", 3000);
     return true;
+}
+
+function disableGroup(groupName)
+{
+	var thisGroup = document.getElementsByName('detector'); 
+	for (var i = 0; i < thisGroup.length; ++i) {
+		thisGroup[i].disable = true; 
+	}
+}
+
+function enableGroup(groupName)
+{
+	var thisGroup = document.getElementsByName(groupName); 
+	for (var i = 0; i < thisGroup.length; ++i) {
+		thisGroup[i].disable = false; 
+	}
 }
