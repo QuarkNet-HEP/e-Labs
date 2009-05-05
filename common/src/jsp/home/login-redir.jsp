@@ -38,13 +38,11 @@
 			return; 
 		}
 	}
-
-	if (!user.isFirstTime()) {
+	else if (!user.isFirstTime()) {
 		response.sendRedirect(response.encodeRedirectURL(elab.nonSecure("home/")));
 	}
 	else {
 		user.resetFirstTime();
 	    response.sendRedirect(response.encodeRedirectURL(elab.nonSecure("home/first.jsp")));
 	}
-	return; 
 %>
