@@ -411,10 +411,10 @@ public class Elab {
     	String url = properties.getProperty("elab.url");
     	if (url == null || url.equals("")) {
     		url = "http://" + properties.getRequired("elab.host");
-    		String port = properties.getProperty("elab.port");
+    		/*String port = properties.getProperty("elab.port");
     		if (port != null) {
     			url = url + ":" + port;
-    		}
+    		}*/
     	}
     	return url;
     }
