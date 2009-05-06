@@ -43,7 +43,9 @@
 	<tr>
 		<td class="home">
 			<ul>
-				<li><a href="../home/first.jsp">Get Started</a></li>
+				<li><a href="../home/cool-science.jsp">Cool Science</a></li>
+				<li><a href="../site-index/site-map-anno.jsp">Explore</a></li>
+				<li><a href="../home/about-us.jsp">About Us</a></li>
 				
 			</ul>
 		</td>
