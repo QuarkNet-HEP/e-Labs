@@ -55,7 +55,35 @@
         cookie2.setPath("/elab/dwr");
         response.addCookie(cookie2);
         
-		response.sendRedirect(prevPage);
+        if (!request.getParameterMap().isEmpty()) {
+        	request.setAttribute("pmap", request.getParameterMap());
+        	%>
+        		<html>
+        			<head>
+        				<title>Log-in redirect page</title>
+        			</head>
+        			<body>
+        				<form name="redirect" method="post" action="${param.prevPage}">
+        					<c:forEach var="e" items="${pmap}">
+        						<c:if test="${e.key != 'user' && e.key != 'pass' && e.key != 'login' && e.key != 'project' && e.key != 'prevPage'}">
+        							<c:forEach var="v" items="${e.value}">
+        								<input type="hidden" name="${e.key}" value="${v}" />
+        							</c:forEach>
+        						</c:if>
+        					</c:forEach>
+        					If you are not redirected automatically, please click the following button:
+        					<input type="submit" name="loginredirsubmit" value="Redirect" />
+        				</form>
+        				<script language="JavaScript">
+        					document.redirect.submit();
+        				</script>
+        			</body>
+        		</html>
+        	<%
+        }
+        else {
+			response.sendRedirect(prevPage);
+		}
 	}
 	else {
 %>

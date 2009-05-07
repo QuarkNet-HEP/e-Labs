@@ -4,8 +4,10 @@
 	ElabGroup user = ElabGroup.getUser(session);
 	//hmm
 	request.setAttribute("request", request);
+	
 	if (user == null) {
 		%>
+			<c:set var="postParams" scope="session" value="${request.parameterMap}"/>
 			<c:choose>
 				<c:when test="${request.queryString != null}">
 					<jsp:include page="../login/login.jsp">
