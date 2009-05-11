@@ -5,7 +5,7 @@
 <%@ page import="java.util.*" %>
 
 <div class="search-quick-links">
-	Show plots by:&nbsp; 
+	Quick Searches - Show Plots by:&nbsp; 
 	<e:quicksearch key="group" value="${user.name}" suffix="&uploaded=${param.uploaded}"/>
 	<e:quicksearch key="teacher" value="<%= user.getTeacher() %>" suffix="&uploaded=${param.uploaded}"/>
 	<e:quicksearch key="school" value="${user.school}" suffix="&uploaded=${param.uploaded}"/>
