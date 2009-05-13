@@ -229,7 +229,7 @@
 		        </td>
 			</c:if>
 		</tr>
-	<tbody>
+	</tbody>
 </table>
 </form>
 </div>
