@@ -165,7 +165,7 @@
 	}
 	
 	/* Shoot things off for analysis */
-	else if ("Run lifetime study".equalsIgnoreCase(action)) {
+	else if ("Run flux study".equalsIgnoreCase(action)) {
 		// Get the data in the way the analysis page wants it 
 		String s = "";
 		if (h != null) {
