@@ -196,14 +196,16 @@
 						<h2>General Background</h2>
 						<ul class="simple">
 						
-						<li><a href="http://en.wikipedia.org/wiki/Cosmic_rays">Wikipedia</a>, a good place to start
-							<li>
-								<a href="../content/CosmicExtremes.pdf">Cosmic Extremes</a>
-								- Excellent cosmic ray overview rom Columbia University (pdf file)
-							</li>
+						<li><a href="http://en.wikipedia.org/wiki/Cosmic_rays">Wikipedia</a>, a good place to start</li>
+
 							<li>
 								<a href="http://www.auger.org/">Pierre Auger Cosmic Ray Observatory</a>
 								- Background and Q&A
+							</li>
+
+							<li>
+								<a href="../content/CosmicExtremes.pdf">Cosmic Extremes</a>
+								- Excellent cosmic ray overview rom Columbia University (pdf file)
 							</li>
 							
 							 
