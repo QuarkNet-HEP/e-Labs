@@ -28,48 +28,41 @@
 
 <h1>Website features that guide and support student research.</h1>
 
-<h2>Research Guidance for Students</h2>
-<p>
-	<a href="notes.jsp">Notes</a> - <a href="strategy.jsp">Teaching Strategies</a> - 
-	<a href="web-guide.jsp">Research Guidance</a> - 
-	<a href="activities.jsp">Sample Classroom Activities</a>
-</p>
 <h2>Getting Started</h2>
 <p>
-	The first time students enter the website, an animation flashes sample research 
-	questions. Students must go through several pages in order:
-	<ol>
-		<li>
-			<strong>Pre-test</strong> if their teacher requested it when registering 
-			them. Students will not be able to access the Welcome page until all 
-			students in their research group have taken the pre-test.
-		</li>
-		<li>
-			<strong>Welcome:</strong> Who are we and what will students do. Sample 
-			poster and paper show the end product of the research.
-		</li>
-		<li>
-			<strong>Tips for using the website.</strong>
-		</li>
-		<li>
-			<strong>Project Milestones:</strong> Presents a series of research milestones. 
-			Each milestone has a link <img src="../graphics/ref.gif"/> to resources 
-			and an electronic logbook so students can save their work as they go.
-		</li>
-	</ol>
-</p>
+	When students go to the website, an animation flashes sample research 
+	questions. If your students are taking the <b>pre- and post-test</b>, each member of a research group must complete the pre-test
+	before they can start using the website. Then when they log in, they see the navigation bar, three Quick Links and the Project Map. 
+
 <h2>Navigation Bar</h2>
 <p>
-	The main navigation bar appears first on the Project Milestones after a student logs in (#3 above). <img src="../graphics/nav.jpg"/> 
+ <img src="../graphics/nav.jpg"/> 
 </p>
-<p>
-	Most of the pages also have a sub menu to provide both an overview of what is 
-	available and  easy access. <img src="../graphics/tryPerf/data_menu_75.gif"/>
+
+<p>Most menu items have submenus. When you rollover the navigation bar, all the submenus show up. Here is how it looks when you roll over "Library".</p>
+<p>	<img src="../graphics/menu-rollover.gif"/>
 </p>
-<h2><a href="../home/"><strong>Project Milestones</strong></a> and alternate 
-	<a href="../library/milestones.jsp"><strong>text version</strong></a></h2>
+<h2>Quick Links</h2>
 <p>
-	The Project Milestones are divided into four sections excluding the pre-test and post-test:
+ <img src="../graphics/quick-links.gif"/> 
+</p>
+
+<ul>
+		<li>
+			<strong>Cool Science</strong> -  Who Cares? An introduction to cosmic ray research.
+		</li>
+		<li>
+			<strong>Explore!</strong> -  Get comfortable!  Find out what's in the website with a graphical overview.
+		</li>
+		<li>
+			<strong>About Us</strong> -  Who are we? An introduction to the collaboration.
+		</li>
+	</ul>
+</p>
+<h2><strong>Project Map</strong></h2>
+	
+<p>	<img src="../graphics/project-map.gif"/>
+<p>	Think of this map as a subway map with one main line and four branch lines.  Along the main line are stops, milestone seminars, opportunities to check how the work is going. Off each main stop are branch lines where each stop is a project milestone. The branch lines include:</p> 
 	<ul>
 		<li>
 			<strong>The Basics:</strong> Reviews basic research skills.
@@ -90,11 +83,13 @@
 			comment on the work of others.
 		</li>
 	</ul>
+<p>We provide an alternate 
+	<a href="../library/milestones.jsp"><strong>text version</strong></a> for accessiblity.
 </p>
 <h2>Glossary and References</h2>
 <p>
 	The website has a glossary and references for the milestones 
-	(represented by <img src="../graphics/ref.gif"/> in the text version or <img src="../graphics/milestone-dot.gif"> in the graphical version). Entries show in popup windows 
+	(accessed by clicking on the milestone in the graphical version and on the icon <img src="../graphics/ref.gif"/> in the text version). Entries show in popup windows 
 	when a definition or reference is needed. The entire glossary is available from the Library submenu.
 </p>
 <h2>e-Logbook - Opportunities for feedback</h2>
@@ -153,10 +148,13 @@
 </p>
 <p>
 	The student site overview provides a graphical interface to <strong> important pages on this 
-	site available to students</strong>. Just rollover the main sections to see the items available for access in each section.
+	site available to students</strong>. Just rollover the main sections to see the items available for access in each section. This same interface
+	is accessible from the "Explore!" Quick link on the home page.  Your students may like it as an easy way to get around the website. Here the student
+	has rolled over the Library and exposed the Library Links.
 </p>
-
-			</div>
+<p>
+ <img src="../graphics/site-map-small.gif"/> 
+</p>			</div>
 			<!-- end content -->
 
 			<div id="footer">
