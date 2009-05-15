@@ -5,7 +5,7 @@
 <%@ page import="java.util.*" %>
 
 <div class="search-quick-links">
-	Show posters by:&nbsp; 
+	Quick Searches - Show posters by:&nbsp; 
 	<e:quicksearch key="group" value="${user.name}"/>,
 	<e:quicksearch key="teacher" value="<%= user.getTeacher() %>"/>,
 	<e:quicksearch key="school" value="${user.school}"/>,
