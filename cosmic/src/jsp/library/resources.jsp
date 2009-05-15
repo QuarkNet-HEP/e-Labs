@@ -49,16 +49,16 @@
 								 - Understand how to do and interpret the output of the <b>Performance Study</b>.
 							</li>
 							<li>
-								<e:popup href="../analysis-shower/tryit.html" 
-									target="TryIt" width="520" height="600">Step-by-Step Instructions</e:popup>
-								and  <a href="../analysis-shower/tutorial.jsp">Tutorial</a>
-								- Discover how to tell if you have seen a <b>shower</b>.
-							</li>
-							<li>
 								<e:popup href="../analysis-flux/tryit.html" 
 									target="TryIt" width="520" height="600">Step-by-Step Instructions</e:popup>
 								and <a href="../analysis-flux/tutorial.jsp">Tutorial</a>
 								- Learn how to understand the results of a <b>Flux Study</b>.
+							</li>
+							<li>
+								<e:popup href="../analysis-shower/tryit.html" 
+									target="TryIt" width="520" height="600">Step-by-Step Instructions</e:popup>
+								and  <a href="../analysis-shower/tutorial.jsp">Tutorial</a>
+								- Discover how to tell if you have seen a <b>shower</b>.
 							</li>
 							<li>
            						<e:popup href="../analysis-lifetime/tryit.html" 
