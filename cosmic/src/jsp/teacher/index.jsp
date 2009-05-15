@@ -80,6 +80,9 @@
 					View Student Home as a: <a href="../home/first.jsp">new student</a>
 					- <a href = "../home/">returning student</a>.
 				</p>
+				<p>
+					Read about the <a href="web-guide.jsp">website features</a> that guide and support student research.
+				</p>
 				
 				<h2>Introduction to Research:</h2>
 				<p>
