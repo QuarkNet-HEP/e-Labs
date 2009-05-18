@@ -42,7 +42,7 @@
 			<div id="center">
 			
 				<p>
-					This project demonstrates some elements of the following from 
+					This project demonstrates the following elements from 
 					the <a href="http://books.nap.edu/openbook.php?record_id=4962">National
 					Science Education Standards</a>: 
 				</p>
