@@ -43,22 +43,19 @@
 	<tr>
 		<td class="home">
 			<ul>
-				<li><a href="../home/cool-science.jsp">Cool Science</a></li>
-				<li><a href="../site-index/site-map-anno.jsp">Explore</a></li>
-				<li><a href="../home/about-us.jsp">About Us</a></li>
+				<li><a href="../home/cool-science.jsp"><b>Cool Science</b></a></li>
+				<li><a href="../site-index/site-map-anno.jsp"><b>Explore</b></a></li>
+				<li><a href="../home/about-us.jsp"><b>About Us</b></a></li>
 				
 			</ul>
 		</td>
 		<td class="library">
 			<ul>
-				<li>
-					<a href="../library/milestones-map.jsp"><b>Study Guide</b></a> & 
-					<a href="../library/milestones.jsp">text version</a>
-					<ul>
-						<li><a href="../references/showAll.jsp?t=reference">All References for Study Guide</a></li>
-						<li><a href="../references/showAll.jsp?t=glossary">Glossary</a></li>
-					</ul>
-				</li>
+				
+				
+						<li><a href="../references/showAll.jsp?t=glossary"><b>Glossary</b></a></li>
+
+				
 				<li><a href="../library/resources.jsp"><b>Resources</B></a></li>
 				
 					<ul>
@@ -116,6 +113,11 @@
 <li><a href="../library/FAQ.jsp"><b>FAQs</b></a></li>
 <li><a href="../library/site-help.jsp"><b>Site Help</b></a></li>
 				</li>
+				<li>
+					
+					Milestones - <a href="../library/milestones.jsp">text version</a></il>
+
+						<li><a href="../references/showAll.jsp?t=reference">All References for Project Map</a></li>
 			</ul>
 		</td>
 		<c:if test="${user.upload}">
