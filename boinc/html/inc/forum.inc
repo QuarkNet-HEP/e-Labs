@@ -295,7 +295,7 @@ function show_post($post, $thread, $logged_in_user, $n, $controls=FORUM_CONTROLS
         <td rowspan=\"3\"><a name=\"$post->id\"></a>\n\t\t<div class=\"authorcol\">
     ";
 
-    echo user_links($user, URL_BASE);
+    echo user_links($user);
     echo "<br>";
     global $special_user_bitfield; 
     $fstatus="";
@@ -316,7 +316,8 @@ function show_post($post, $thread, $logged_in_user, $n, $controls=FORUM_CONTROLS
     echo "<font size=-2>";
     if (!$filter || !$rated_below_threshold){
         if ($user->has_avatar and $logged_in_user->hide_avatars!=1) {
-            echo "<img width=\"".AVATAR_WIDTH."\" height=\"".AVATAR_HEIGHT."\" src=\"".$user->avatar."\" alt=\"Avatar\"><br>";
+	  echo "<img width='".AVATAR_WIDTH."' height='".AVATAR_HEIGHT."'
+		src='".$user->avatar."'  alt='Avatar'><br>";
         }
         echo "Joined: ", gmdate('M j, Y', $user->create_time), "<br>Posts: $user->posts<br>";
     }
@@ -571,10 +572,10 @@ function show_forum_title($forum=NULL, $thread=NULL, $helpdesk=false) {
         }
 	else {
 	  if( user_has_role('admin') || user_has_role('dev') ){ 
-	    echo "<a href=\"forum_index.php\">", " Discussion/Logbook</a> : ";
+	    echo "<a href=\"forum_index.php\">", " Discussion</a> : ";
 	  }
 	  else {
-            echo "Discussion/Logbook: ";
+            echo "Discussion: ";
 	  }
         }
         echo $forum->title;
@@ -730,5 +731,5 @@ function reply_warning(){
 
 
 //Generated automatically - do not edit
-$cvs_version_tracker[]="\$Id: forum.inc,v 1.10 2009/04/27 19:44:11 myers Exp $";  
+$cvs_version_tracker[]="\$Id: forum.inc,v 1.12 2009/05/18 21:25:20 myers Exp $";  
 ?>
