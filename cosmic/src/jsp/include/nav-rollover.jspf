@@ -88,7 +88,7 @@
 			
 			<ul id="siteindex">
 				<li><a href="../site-index">Site Index</a></li>
-				<li><a href="../site-index/site-map-anno.jsp">Overview</a></li>
+				<li><a href="../site-index/site-map-anno.jsp">Explore!</a></li>
 			</ul>
 			
 			<c:if test="${user.upload}">
