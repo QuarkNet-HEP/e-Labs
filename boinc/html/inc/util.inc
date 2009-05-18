@@ -530,7 +530,7 @@ function project_is_stopped() {
 function user_links($user) {
     $x = "<a href=show_user.php?userid=$user->id>$user->name</a>";
     if ($user->has_profile) {
-        $x .= " <a href=view_profile.php?userid=$user->id><img border=0 src=head_20.png></a>";
+        $x .= " <a href=view_profile.php?userid=$user->id><img border=0 src=img/head_20.png></a>";
     }
     # Does this project accept donations?
     # If so, do you want to have a link next to user name as it appears on the web site?
@@ -666,5 +666,5 @@ function link_with_GET_variables($text, $baseurl, $variable_name, $variable_valu
 }
 
 //Generated automatically - do not edit
-$cvs_version_tracker[]="\$Id: util.inc,v 1.11 2008/06/18 13:29:20 myers Exp $";  
+$cvs_version_tracker[]="\$Id: util.inc,v 1.12 2009/05/05 15:53:39 myers Exp $";  
 ?>
