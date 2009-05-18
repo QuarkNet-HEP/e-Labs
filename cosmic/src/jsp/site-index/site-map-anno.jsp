@@ -55,7 +55,7 @@ function hideAll()
 <tr><td width="128" valign="bottom">
 <div id="sitehelp-home">
 <a href="../home/index.jsp">Home</a><br>
-<a href="../library/milestones.jsp">Project Milestones (txt)</a><br>
+<a href="../library/milestones.jsp">Milestones (text)</a><br>
 <a href="../home/cool-science.jsp">Cool Science</a><br>
 <a href="../home/about-us.jsp">About Us</a><br>
 <a href="javascript:window.open('../jsp/showLogbook.jsp', 'log', 'width=800,height=600, resizable=1, scrollbars=1');return false;">Logbook</a><br>
