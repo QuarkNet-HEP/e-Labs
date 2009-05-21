@@ -241,10 +241,10 @@
 						<ul class="simple">
 						
 						<li><a href=
-  "javascript:showRefLink('http://astro.uchicago.edu/cosmus/projects/aires/protonshoweroverchicago.mpeg',800,600)">COSMUS</a>,  from University of  Chicago </li>
+  "http://astro.uchicago.edu/cosmus/projects/aires/protonshoweroverchicago.mpeg">COSMUS</a>,  from University of  Chicago </li>
   
   <li><a href=
-  "javascript:showRefLink('http://www.th.physik.uni-frankfurt.de/~drescher/CASSIM/c10.mpg',800,700)">
+  "http://www.th.physik.uni-frankfurt.de/~drescher/CASSIM/c10.mpg">
 Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 	
   </ul>
