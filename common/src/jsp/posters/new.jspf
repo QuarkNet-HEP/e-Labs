@@ -315,7 +315,7 @@ if ("Make Poster".equals(reqType) || "Save Changes".equals(reqType)) {
 
             String posterURL = "../posters/display.jsp?name=" + dfile;
 			%> 
-				<e:popup href="<%= posterURL %>" target="poster" width="700" height="900" now="true"/>
+				<e:popup href="<%= posterURL %>" target="_blank" width="700" height="900" now="true"/>
 			<%
         }
         catch (Exception e) { 
@@ -327,7 +327,7 @@ if ("Make Poster".equals(reqType) || "Save Changes".equals(reqType)) {
 %>
 <% if (dfile != "") {
 %>
-<div align="center"><a href="../posters/display.jsp?name=<%= dfile %>" target="poster:" width="700" height="900" now="true">Display Poster</a></div>
+<div align="center"><a href="../posters/display.jsp?name=<%= dfile %>" target="_blank" width="700" height="900" now="true">Display Poster</a></div>
 <%
 }
 %>
