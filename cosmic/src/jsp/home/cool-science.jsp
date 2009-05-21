@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>${elab.properties.formalName} e-Lab Home</title>
+		<title>${elab.properties.formalName} e-Lab: Cool Science</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column-home.css"/>
@@ -28,10 +28,13 @@
 			
 			<div id="content">
 				
-<h1>Studying cosmic rays; solving scientific mysteries!</h1>
+<h1>Cool Science: Studying cosmic rays &mdash; solving scientific mysteries!</h1>
  	 <c:if test="${user != null}">
 	   <div id="links"><table align="center"><tr>
+	   <td width="150" align="center"><A href="index.jsp"><img src="../graphics/home-button.gif" border="0"><br>Project Map</a></td>
+<!-- 
 	   <td width="150" align="center"><A href="cool-science.jsp"><img src="../graphics/cool-science-button.gif" border="0"><br>Cool Science</a></td>
+ -->
 	   <td width="150" align="center"><a href="../site-index/site-map-anno.jsp"><img src="../graphics/site-map-button.gif" border="0"><br>Explore!</a></td>
 	   <td width="150"align="center"><a href="about-us.jsp"><img src="../graphics/about-us-button.gif" border="0"><br>About Us</a></td></tr></table></div>
 	  </c:if>  
@@ -60,7 +63,7 @@
 									
 									<p>
 										<i>
-											Something out there &mdash; no one knows what &mdash; is hurling incredibly energetic particles around the universe. Do these particles come from some unknown superpowerful cosmic explosion? From a huge black hole sucking stars to their violent deaths? From colliding galaxies? From the collapse of massive invisible relics from the origin of the universe? We don't yet know the answers, but we do know that solving this mystery will take scientists another step forward in understanding the universe."
+											Something out there &mdash; no one knows what &mdash; is hurling incredibly energetic particles around the universe. Do these particles come from some unknown superpowerful cosmic explosion? From a huge black hole sucking stars to their violent deaths? From colliding galaxies? We don't yet know the answers, but we do know that solving this mystery will take scientists another step forward in understanding the universe."
 										</i>
 									</p>
 									<p align=right>
@@ -71,7 +74,7 @@
 								</blockquote>
 
 								<p>
-									When distant stars explode, charged particles are ejected into space. These nuclei (mostly protons) drift through the universe; some collide with Earth's atmosphere and become "cosmic rays." These collisions create showers of lower energy particles. Some you may know &mdash; protons, neutrons, smaller nuclei. Some are more exotic &mdash; pions, kaons, muons. Some of the exotic particles decay in the upper atmosphere; longer-lived particles reach  Earth's surface. Each second, about 100 of these secondary cosmic rays pass though your body.
+									When charged particles are ejected into space, these nuclei (mostly protons) drift through the universe; some collide with Earth's atmosphere and become "cosmic rays." These collisions create showers of lower energy particles. Some you may know &mdash; protons, neutrons, smaller nuclei. Some are more exotic &mdash; pions, kaons, muons. Some of the exotic particles decay in the upper atmosphere; longer-lived particles reach  Earth's surface. Each second, about 100 of these secondary cosmic rays pass though your body.
 								</p>
 								
 								<p>
