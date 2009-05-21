@@ -38,7 +38,7 @@
 				
 <h1>Choose data for flux study.</h1>
 <div id="rationale">Things in nature change over time. Populations grow, stars explode, galaxies spin, and the universe expands. Measuring some attribute over time, observing it change and then looking for what caused the change is central to all of the physical sciences. The rate at which cosmic rays arrive is called "flux." You can look to see if the flux at a certain place changes over time or compare rates at different places. Can you find out why?</div>
-<div id="rationale">Gain confidence by running a practice search.</div>
+<div id="rationale">Gain confidence by watching a flux analysis done.</div>
 <table border="0" id="main">
 	<tr>
 		<td>
