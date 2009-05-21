@@ -1,14 +1,10 @@
 /* I2U2 Discussion Site style sheet.
- * @(#) $Id: i2u2.css,v 1.8 2009/03/20 13:29:25 myers Exp $
+ * @(#) $Id: i2u2.css,v 1.12 2009/05/12 18:50:12 myers Exp $
  */
 
-
-
-@import "bugrpt.css";
-
 body {
-     background-color: white;
      color: black;
+     background-color: white;
 }
 
 img {
@@ -21,13 +17,12 @@ body , table , input , select {
 }
 
 
-.right {
-	float: right;
-}	
+/* Genera property classes */
 
-.left {
-	float: left;
-}	
+.right { float: right; }	
+.left {	float: left; }	
+
+
 
 /** Tables **/
 
@@ -36,7 +31,6 @@ body , table , input , select {
     border: 0px;		/* normal use */
     /** border: 1px solid black;   /* for testing */
 }
-
 
 
 table.bordered {
@@ -48,9 +42,11 @@ th {
 	font-weight: bold;
 }
 
+
 td {
     border: 1px solid white;
 }
+
 
 td.bordered {
         border: 1px solid grey;
@@ -60,8 +56,18 @@ td.indent {
          border-left: 4px solid white;
 }
 
+
+th.heading, table.thread th  {
+	color: white;
+	background-color: black;
+	font-weight: bold;
+	font-family: Verdana, Arial, Sans-Serif;
+}
+
+
 td.heading {
-        background-color: rgb(217,217,217);
+        color: white; 
+        background-color: black;
         font-weight: bold;
 	font-family: Verdana, Arial, Sans-Serif;
 }
@@ -72,15 +78,6 @@ td.fieldname {
 
 td.category {
         border: 1px solid black;
-}
-
-
-td.masthead {
-        text-align: center;
-	vertical-align: middle;
-	color: white;
-	background-color: 888888;
-        border: 0px;
 }
 
 
@@ -117,23 +114,12 @@ a:visited {
 }
 
 a:active {
-	color: blue;
+	text-decoration: none;
 }
 
-a.masthead:visited {
-	   color: white;
-	   text-decoration: none;
-}
-
-a.masthead:link {
-	   color: white;
-	   text-decoration: none;
-}
 
 
 /** Headings **/
-
-
 
 h1 , h2 {
 	color: black;
@@ -210,7 +196,8 @@ td.frontpage_status {
 /************** New stuff from BOINC 5.2.15 *****************/
 
 td.heading2 {
-    background-color:#c0c0ff;
+    color: white;
+    background-color:black;
     font-weight: bold;
 }
 
@@ -354,6 +341,7 @@ p/** RSS News display on front page **/
 }
 
 
+
 /* List of calendars */
 
 dl.calendars {
@@ -363,9 +351,6 @@ dl.calendars {
 dl.calendars dt {
     font-weight: bold;  
 }
-
-
-
 
 
 
@@ -425,6 +410,119 @@ table.e-labs_main td:hover {
    color: grey;
    text-decoration: none;
 }
+
+.edit_link a:hover {
+   color: grey;
+   text-decoration: underline;
+}
+
+.edit_link ul li {
+   display: inline;
+   margin-right: 1em;
+}
+
+
+/* Additional style elements */
+
+@import "bugrpt.css";
+@import "new_forum.css";
+
+
+/* e-Lab Page style */
+
+.header-title {
+  color: white;
+  font-size: 2em;
+  font-weight: bolder;
+  font-family: helvetica,sans-serif;
+  text-align: left;
+}
+
+
+.header-subtitle {
+  color: white;
+  font-family: helvetica,sans-serif;
+  text-align: left;
+}
+
+
+.second-header-title {
+  color: grey;
+  font-family: helvetica,sans-serif;
+  font-weight: bold;
+  text-align: right;
+  vertical-algin: top;
+}
+
+
+.third-header-title {
+  color: grey;
+  font-family: helvetica,sans-serif;
+  font-weight: bold;
+  text-align: left;
+  vertical-algin: top;
+}
+
+
+/* General Masthead  and Menu Bar */
+
+.masthead,
+.masthead tr, .masthead tr td {
+    color: white;
+    background-color: black;
+    border: 0px;
+}
+
+
+table.masthead {
+    width: 100%; 
+}
+
+
+
+
+.masthead tr td a {
+	   color: white;
+	   text-decoration: none;
+}
+
+.masthead tr td a:hover {
+	   text-decoration: underline;
+}
+
+
+a.masthead:visited,
+.masthead tr td a:visited {
+	   color: white;
+	   text-decoration: none;
+}
+
+table.menu_bar {
+    width: 100%; 
+    background-color: black;
+    color: white;
+    border: 0px;
+}
+
+.menu_bar,
+.menu_bar tr td {
+    border: 0px;
+}
+
+.menu_bar tr td {
+    text-align: center;
+}
+
+.menu_bar tr td a {
+     color: white; 
+     text-decoration: none;
+}
+
+.menu_bar tr td a:hover {
+     color: white; 
+     text-decoration: underline;
+}
+
 
 
 /*EOF*/
