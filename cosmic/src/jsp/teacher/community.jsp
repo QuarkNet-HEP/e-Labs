@@ -21,13 +21,13 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div id="content">
- 
+<!-- transcluded from http://${elab.properties['elab.host']}/elab/cosmic/teacher/library/body.php/Cosmic_Rays_Teaching_Community" -->
 <e:transclude
- url="http://www16.i2u2.org/cosmic/library/body.php/Cosmic_Rays_Teaching_Community"
+ url="http://${elab.properties['elab.host']}/elab/cosmic/teacher/library/body.php/Cosmic_Rays_Teaching_Community"
      start="<!-- start content -->"
-      end="<div class=\"printfooter\">"
+     end="<div class=\"printfooter\">"
 />
 
 			</div>
