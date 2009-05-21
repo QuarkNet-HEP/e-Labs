@@ -1,4 +1,14 @@
 <?php
+/***********************************************************************\
+ * Display a forum (discussion room).
+ *
+ * Requires one input, via GET or POST, id=<room number>
+ * 
+ * Modified from BOINC forum code (http://boinc.berkeley.edu)
+ * by Eric Myers <myers@spy-hill.net> for the I2U2 project (www.i2u2.org)
+ *
+ * @(#) $Id: forum_forum.php,v 1.7 2009/05/05 15:53:39 myers Exp $
+\***********************************************************************/ 
 
 require_once('../inc/forum.inc');
 require_once('../inc/util.inc');
@@ -7,7 +17,8 @@ require_once('../inc/forum_show.inc');
 
 require_once('../project/project.inc'); // for category privacy policy
 
-db_init();
+//set_debug_level(3);
+
 
 $id = get_int("id",true);
 $sort_style = get_str("sort", true);
@@ -15,8 +26,17 @@ if(!$sort_style) $sort_style = post_str("sort", true);
 $start = get_int("start", true);
 if (!$start) $start = 0;
 
+db_init();
+
+
 $forum = getForum($id);
+if( !$forum ){
+   error_page("Discussion room $id does not exist.");
+}
+
+$title = $forum->title;
 $category = getCategory($forum->category);
+
 //// HACK FOR PRIVATE FORUMS, do this before page_head()
 $pvt=false;
 
@@ -26,7 +46,6 @@ if( function_exists('category_is_private') ){
 
 $logged_in_user = get_logged_in_user($pvt) ;
 $logged_in_user = getForumPreferences($logged_in_user);
-
 
 
 // Access controls:
@@ -45,7 +64,7 @@ if ($category->is_helpdesk) {
         setSortStyle($logged_in_user,"faq",$sort_style);
     }
     if (!$sort_style) $sort_style = 'timestamp';
-    page_head('Help Desk');
+    //$title = "Help Desk: $title";
 }
  else {
     if (!$sort_style) {
@@ -54,12 +73,18 @@ if ($category->is_helpdesk) {
         setSortStyle($logged_in_user, "forum",$sort_style);
     }
     if (!$sort_style) $sort_style = 'modified-new';
-    page_head('Message boards : '.$forum->title);
-    echo "<link href=\"forum_index.php\" rel=\"up\" title=\"Forum Index\">";
+    $title = "Discussion: $title";
 }
 
-echo "
-    <form action=forum_forum.php method=get>
+
+/***********************************************************************\
+ * Display Page:
+ */
+
+page_head($title);
+
+echo "<!-- BEGIN forum_forum -->
+    <form method='GET' action='forum_forum.php' >
     <input type=hidden name=id value=", $forum->id, ">
     <table width=100% cellspacing=0 cellpadding=0>
     <tr valign=bottom>
@@ -82,15 +107,18 @@ echo "<td align=right>";
 if ($category->is_helpdesk) {
   //show_select_from_array("sort", $faq_sort_styles, $sort_style);
   echo  auto_select_from_array("sort", $faq_sort_styles, $sort_style,'Ok');
-} else {
+}
+else {
   //show_select_from_array("sort", $forum_sort_styles, $sort_style);
   echo  auto_select_from_array("sort", $forum_sort_styles, $sort_style,'Ok');
 }
 //echo "<input type=submit value=OK></td>\n";
-echo "</tr>\n</table>\n</form>";
+
+echo "</tr>\n</table>\n";
 
 show_forum($category, $forum, $start, $sort_style, $logged_in_user);
 
+echo "\n</form><!-- END forum_forum -->\n";
 page_tail();
 
 ?>
