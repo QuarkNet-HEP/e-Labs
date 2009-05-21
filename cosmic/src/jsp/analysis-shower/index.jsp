@@ -37,7 +37,7 @@
 			<div id="content">
 				
 <h1>Choose data for shower study.</h1>
-<div id="rationale">The universe is a big place. Cosmic ray primaries drift around and get energy boosts from multiple sources. Some primaries attain enormous energies. When they strike the upper atmosphere, these create Extended Area Showers. These events create thousands of particles that simultaneously reach a small section of Earth's surface. More energetic primaries affect larger sections of the surface. Can you find out how often nearby detectors simultaneously "light up" with cosmic rays? If they do, is it a randomness or a measurement of one of these showers?</div>
+<div id="rationale">The universe is a big place. <a href="javascript:glossary('primary cosmic ray',100)">Cosmic ray primaries</a> drift around and get energy boosts from multiple sources. Some primaries attain enormous energies. When they strike the upper atmosphere, these create Extended Area Showers. These events create thousands of particles that simultaneously reach a small section of Earth's surface. More energetic primaries affect larger sections of the surface. Can you find out how often nearby detectors simultaneously "light up" with cosmic rays? If they do, is it a randomness or a measurement of one of these showers?</div>
 <div id="rationale">Gain confidence by watching a shower analysis done.</div>
 <table border="0" id="main">
 	<tr>
