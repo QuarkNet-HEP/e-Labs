@@ -20,7 +20,7 @@
   * but setting a debug level also turns on the display of PHP errors.
   *
   * Eric Myers <myers@spy-hill.net>  - July 2005
-  * @(#) $Id: debug.php,v 1.4 2008/04/28 21:00:23 myers Exp $
+  * @(#) $Id: debug.php,v 1.5 2009/05/05 15:53:39 myers Exp $
  \**********************************************************************/
 
 
@@ -58,7 +58,7 @@ function set_debug_level($level){
     $ip_addr=$_SERVER['REMOTE_ADDR'];
     $internal="/^192\.168\.1\.|^204\.210\.158\.6|^198\.129\.208\.|"
         ."^137\.140\.48|^69\.86\.26\.53|^76\.15\.26\.166|"
-        ."^76\.15\.106\.184/";
+        ."^76\.15\.106\.184|^198\.140\.183\./";
     if( preg_match($internal,$ip_addr) ){
         $debug_level = $level;
 
