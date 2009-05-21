@@ -1,23 +1,13 @@
 <?php 
 /***********************************************************************\
- *  extras.inc -  extra functions for BOINC forums for I2U2 
+ *  extras.inc -  additional functions for BOINC 
  * 
- * This is mainly for stuff I work on, which should then move
- * out to another file when it's ready.
- *
- * THIS STUFF, WHEN WORKING, SHOULD MIGRATE TO ../inclue/util.php
+ * These are additional functions above and beyond what is provided
+ * by BOINC.   They may or may not be worth feeding back into BOINC.
  *
  *
- * @(#) Last changed: -EAM 26Sep2007
+ * @(#) Last changed: -EAM 05May2009
 \**********************************************************************/
-
-
-// Forum settings, above and beyond BOINC
-//
-define('FORUM_KEYWORDS',1);
-define('FORUM_ATTACHMENTS',1);
-define('FORUM_MAX_AGE', 365);   // max age, in days
-
 
 /***********
  * Input selector for choosing a team.  On a large project you probably

@@ -6,15 +6,17 @@
  * See ../include/roles.php for generic support functions.
  *
  * Eric Myers <myers@spy-hill.net> - 13 February 2009
- * @(#) $Id: roles.php,v 1.3 2009/04/29 20:07:18 myers Exp $
+ * @(#) $Id: roles.php,v 1.4 2009/05/05 15:53:39 myers Exp $
 \***********************************************************************/
 
-// This is needed for wiki/BOINC interface                                      
+// This is needed for wiki/BOINC interface 
 
 if( !$BOINC_html ) $BOINC_html=realpath("../");
 
-require_once("$BOINC_html/inc/forum.inc");
-require_once("$BOINC_html/include/roles.php");
+require_once("$BOINC_html/inc/forum.inc");	
+require_once("$BOINC_html/include/roles.php");	// general role functions
+
+require_once("$BOINC_html/project/i2u2-roles.php");// project roles
 
 
 /***********************************************************************\
