@@ -120,7 +120,7 @@ if (($thread->hidden) && (!isSpecialUser($logged_in_user,0))) {
     if ($category->is_helpdesk) {
         $link = $link . "&helpdesk=1#input\">Answer this question";
     } else {
-        $link = $link . "#input\">Reply to this thread";
+        $link = $link . "#input\">Post to this thread";
     }
 
     echo $link, "</a> &nbsp;-&nbsp;";
@@ -182,7 +182,7 @@ if (($thread->hidden) && (!isSpecialUser($logged_in_user,0))) {
     if ($category->is_helpdesk) {
         $link = $link . "&helpdesk=1#input\">Answer this question";
     } else {
-        $link = $link . "#input\">Reply to this thread";
+        $link = $link . "#input\">Post to this thread";
     }
 
     echo $link, "</a><br>\n</p>";
