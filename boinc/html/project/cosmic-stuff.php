@@ -3,7 +3,7 @@
  * Project specific functions for Cosmic Ray e-Lab
  *
  *
- * @(#) $Id: cosmic-stuff.php,v 1.2 2009/05/12 18:50:12 myers Exp $
+ * @(#) $Id: cosmic-stuff.php,v 1.3 2009/05/22 13:04:02 myers Exp $
 \**********************************************************************/
 
 function cosmic_masthead($title='',$right_stuff='&nbsp;'){

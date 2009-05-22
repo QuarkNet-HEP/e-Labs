@@ -7,7 +7,7 @@
  * Modified from BOINC forum code (http://boinc.berkeley.edu)
  * by Eric Myers <myers@spy-hill.net> for the I2U2 project (www.i2u2.org)
  *
- * @(#) $Id: forum_forum.php,v 1.7 2009/05/05 15:53:39 myers Exp $
+ * @(#) $Id: forum_forum.php,v 1.8 2009/05/22 13:05:46 myers Exp $
 \***********************************************************************/ 
 
 require_once('../inc/forum.inc');
