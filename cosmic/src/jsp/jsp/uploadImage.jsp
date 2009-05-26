@@ -178,10 +178,11 @@ String headerType = "Posters";
     <TR>
         <TD BGCOLOR="#408C66">
             <FONT COLOR=000000 face=arial SIZE=+1>
-                <B>Upload images to use with Posters.</B>
+                <B>Upload Image: Upload images to use with Posters.</B>
             </FONT>
         </TD>
     </TR>
+    <tr><td> </td></tr>
     <tr>
         <td>
             <font face="arial" size="-1">
