@@ -36,7 +36,7 @@
 			
 			<div id="content">
 				
-<h1>Search and view uploaded data.</h1>
+<h1>View Data: Search and view uploaded data.</h1>
 
 <table border="0" id="main">
 	<tr>
