@@ -21,7 +21,7 @@
 			</div>
 			<div id="content">
 
-			<h1>Objectives: Assessing Your Work</h1>
+			<h1>Assessment: Measure your work against these objectives.</h1>
 				  <div id="objectives">
 			
 			<p>
