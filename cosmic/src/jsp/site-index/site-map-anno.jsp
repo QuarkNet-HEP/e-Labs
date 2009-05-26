@@ -49,7 +49,8 @@ function hideAll()
 			</c:if>
 
 <div id="content">
-<h1>Explore! Click on hotspots in this site map.</h1>
+<h1><img src="../graphics/site-map-button.gif" border="1" style="border-color: white" valign="bottom"> Explore! Click on hotspots in this site map.</h1>
+<p>You can always return to this page by clicking "Explore!" on the Site Index submenu.</p>
 <div id="sitemap" align="center" >
 <table width="736" cellpadding="0" cellspacing="0">
 <tr><td width="128" valign="bottom">

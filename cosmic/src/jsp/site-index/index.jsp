@@ -26,7 +26,7 @@
 
 			<div id="content">
 
-<h1>Lost? You can go to any of the pages <i>on this site</i> from this list.</h1>
+<h1>Site Index: Lost? You can go to any of the pages <i>on this site</i> from this list.</h1>
 
 
 <table border="0" id="main">
