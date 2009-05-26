@@ -34,7 +34,7 @@
 			
 			<div id="content">
 
-<h1>Analysis list - a list of the analyses you have run recently.</h1>
+<h1>Analyses: Check the list of the analyses you have run recently.</h1>
 <p>Check the status of the analyses you have run to see if they have completed.
 Click on the link in the Analysis column to see the plot you made and save it permanently if
 you are satisfied with it.  You can always run the analysis again and change the input parmaeters.</p>
