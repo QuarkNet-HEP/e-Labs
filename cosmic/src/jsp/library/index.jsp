@@ -32,7 +32,7 @@
 			
 			
 			
-<h1>Use the library as you work.</h1>
+<h1>Library: Use the reference materials as you work.</h1>
 
 <table border="0" id="main">
 	<tr>

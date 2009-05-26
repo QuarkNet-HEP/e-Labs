@@ -30,7 +30,7 @@
 
 			<div id="content">
 				
-<h1>Use these tips to help you use the e-Lab.</h1>
+<h1>Site Help: Use these tips to help you use the e-Lab.</h1>
 
 <table border="0" id="main">
 	<tr>

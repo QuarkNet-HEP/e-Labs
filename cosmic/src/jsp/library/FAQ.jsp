@@ -30,7 +30,7 @@
 			
 			<div id="content">
 				
-<h1>Frequently Asked Questions</h1>
+<h1>Frequently Asked Questions: Find answers to common questions.</h1>
 
 <table id="main">
 	<tr>

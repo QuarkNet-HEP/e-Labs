@@ -32,7 +32,7 @@
 			
 			<div id="content">
 				
-<h1>Looking for information? Check out the online resources or contact someone.</h1>
+<h1>Resources: Check out the online resources or contact someone.</h1>
 <table border="0" id="main">
 	<tr>
 		<td>

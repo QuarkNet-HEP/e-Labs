@@ -32,7 +32,7 @@
 			<div id="content">
 				
 				<h1>
-					Studying cosmic rays; solving scientific mysteries!
+					The Big Picture: Studying cosmic rays; solving scientific mysteries!
 				</h1>
 				<table border="0" id="main">
 					<tr>
