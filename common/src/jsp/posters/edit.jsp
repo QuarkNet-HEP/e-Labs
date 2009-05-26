@@ -34,7 +34,7 @@
 			
 			<div id="content">
 
-<h1>Click on a poster to edit it.</h1>
+<h1>Edit Posters: Click on a poster to edit it.</h1>
 
 <%@ include file="edit.jspf" %>
 

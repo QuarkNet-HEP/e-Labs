@@ -41,7 +41,7 @@
 			
 			<div id="content">
 
-<h1>Make or edit your poster</h1>
+<h1>New Poster: Make or edit your poster</h1>
 
 <%@ include file="new.jspf" %>
 

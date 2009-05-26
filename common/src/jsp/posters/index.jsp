@@ -31,7 +31,7 @@
 
 
 
-<h1>Post your results. Compare results. Draw conclusions!</h1>
+<h1>Posters: Post your results. Compare results. Draw conclusions!</h1>
 
 
 <table border="0" id="main">

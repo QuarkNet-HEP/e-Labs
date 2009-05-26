@@ -34,7 +34,7 @@
 			
 			<div id="content">
 				
-<h1>Search for and delete posters.</h1>
+<h1>Delete Posters: Search for and delete posters.</h1>
 
 <%@ include file="../include/delete.jsp" %>
 
