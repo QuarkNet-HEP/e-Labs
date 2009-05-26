@@ -34,7 +34,7 @@
 			
 			<div id="content">
 				
-<h1>Search for and view plots.</h1>
+<h1>View Plots: Search for and view plots.</h1>
 
 <table border="0" id="main">
 	<tr>
