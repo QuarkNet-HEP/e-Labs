@@ -30,7 +30,7 @@
 			
 			<div id="content">
 				
-<h1>What can you learn? Choose data and conduct a study</h1>
+<h1>Data: What can you learn? Choose data and conduct a study</h1>
 
 <table border="0" id="main">
 	<tr>
