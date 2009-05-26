@@ -9,7 +9,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>e-Lab Teacher Site Map</title>
+		<title>e-Lab Teacher Site Index</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
@@ -30,7 +30,7 @@
 			<div id="content">
 
 
-<h1>Cosmic Site Map</h1>
+<h1>Cosmic Ray e-Lab Site Index</h1>
 
 <%
 	// Check if the teacher is in the study
