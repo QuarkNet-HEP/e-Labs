@@ -9,11 +9,14 @@
 <%
 	String type = request.getParameter("t");
 	String prefix;
+	String h1Text;
 	if ("reference".equals(type)) {
 		prefix = "Reference";
+		h1Text= "References: View the references associated with the milestones.";
 	}
 	else if ("glossary".equals(type)) {
 		prefix = "Glossary";
+		h1Text= "Glossary: Look up unfamiliar words.";
 	}
 	else {
 		throw new ElabJspException("Unknown reference type: " + type);
@@ -68,13 +71,13 @@
 			
 			<div id="content">
 
-<h1>View <%=prefix%></h1>
+<h1><%=h1Text%></h1>
 
 <!-- 
 <p align="center">
 	<a href="../references/showAll.jsp?t=reference">View References for Study Guide</a>
 	-
-	<a href="../references/showAll.jsp?t=glossary">View Glossary</a>
+	<a href="../references/showAll.jsp?t=glossary">Glossary: Look up unfamiliar words.</a>
 </p>
  -->
 
