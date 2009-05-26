@@ -24,17 +24,23 @@
 			
 			<div id="content">
 				
-<h1>Join a national collaboration of high school students to study cosmic rays.</h1>
 
  	 <c:if test="${user != null}">
+<h1>Home: Join a national collaboration of high school students to study cosmic rays.</h1>
   
 	   <div id="links"><table align="center"><tr>
 	   <td width="150" align="center"><A href="cool-science.jsp"><img src="../graphics/cool-science-button.gif" border="0"><br>Cool Science</a></td>
 	   <td width="150" align="center"><a href="../site-index/site-map-anno.jsp"><img src="../graphics/site-map-button.gif" border="0"><br>Explore!</a></td>
 	   <td width="150"align="center"><a href="about-us.jsp"><img src="../graphics/about-us-button.gif" border="0"><br>About Us</a></td></tr></table></div>
-	  </c:if>  
-<h3>Your team may use the Project Milestones below, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results. 
+<h3>Project Map: Your team may use the milestones below, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results. 
 </h3>
+<h4>Think of this map as a subway map with one main line and four branch lines.  Along the main line are stops, milestone seminars, opportunities to check how the work is going. Off each main stop are branch lines where each stop is a project milestone.
+ Hover over each milestone or milestone seminar to preview; click milestones to open. 
+</h4>
+	  </c:if>  
+ 	 <c:if test="${user == null}">
+<h1>Welcome: Join a national collaboration of high school students to study cosmic rays.</h1>
+	  </c:if>  
 
 <!-- there is no way to do this without tables unfortunately -->
 <table border="0" id="main">
