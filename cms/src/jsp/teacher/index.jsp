@@ -36,48 +36,16 @@
 			<div id="center">
 				<h2>Abstract:</h2>
 				<p>
-					Students can join a scientific collaboration in this 
-					series of studies of high-energy collisions from the 
-					Large Hadron Collider(LHC) at CERN. We are collaborating with 
-					the Compact Muon Solenoid(CMS) Collaboration. From start to finish 
-					this is a student-led, teacher-guided project. At the present we 
-					have test beam data for analysis. When the LHC starts producing 
-					data, students will be able to request data with specific 
-					parameters. By using the web and GRID computing technology students will 
-					be able to analyze the data. A virtual data portal enables 
-					students to share this data and associated analysis code with
-					students and other researchers.
-				</p>
-				<p>
-					Students use a data base and analysis tool on the 
-					website. The Online Graphical ROOT Environment(OGRE) is the analysis 
-					tool used to analyze the data they have chosen for their study. Many 
-					tutorials are available to build basic scientific skills, to explain 
-					the how the detector works, to increase students understanding of 
-					subatomic particles, to direct in using the analysis tools and 
-					to explain how to use plots to analyze data. Students can then perform any 
-					of four studies:  shower depth, lateral size, beam purity 
-					or detector resolution. Students post the results of their 
-					studies as online posters. Then the real scientific 
-					collaboration begins. Students can review the results of other 
-					studies online comparing data and analyses. Using online tools, 
-					they can correspond with other research groups, post comments 
-					and questions, prepare summary reports and in general, 
-					participate in an aspect of scientific research that is often 
-					left out of classroom experiments.
+					Students can join a scientific collaboration in this series of studies of high-energy collisions from the Large Hadron Collider (LHC) at CERN. We are collaborating with the Compact Muon Solenoid (CMS) Experiment to produce a student-led, teacher-guided project. This e-Lab offers test beam data for analysis. In a separate CMS e-Lab, Monte Carlo (simulated) and run (actual experimental) data will be available for the full CMS detector. When the LHC starts producing collisions, students will be able to request run data from the CMS experiment with specific parameters. By using the web and GRID computing technology students will be able to analyze the data. A virtual data portal enables students to share this data and associated analysis code with fellow students and other researchers.
+</p><p>
+Students use a data base and analysis tool on the website. The Online Graphical ROOT Environment (OGRE) is the analysis tool used to analyze the data they have chosen for their study. Tutorials are available to build basic scientific skills, to explain the how the detector works, to increase students' understanding of subatomic particles, to direct them in using the analysis tools and to explain how to use plots to analyze data. At the Test Beam level, students can then perform any of four studies: shower depth, lateral size, beam purity or detector resolution. Students post the results of their studies as online posters, and then review the results of other studies online, comparing data and analyses. Using online tools, they can correspond with other research groups, post comments and questions, prepare summary reports and in general, participate in an aspect of scientific research that is often left out of classroom experiments.
 				</p>
 				
-				<p>
-					View Student Home as a: <a href="../home/first.jsp">new student</a>
-					- <a href = "../home/">returning student</a>.
-				</p>
+				
 				
 				<h2>Introduction to Research:</h2>
 				<p>
-					The CMS Project explores the potential 
-					of using virtual data grid tools and techniques for secondary 
-					science education. Like the cosmic ray e-Lab, this e-Lab 
-					provides an opportunity for:
+					The CMS Project explores the potential of using virtual data grid tools and techniques for secondary science education. Like the cosmic ray e-Lab, this e-Lab provides an opportunity for:
 					<ul>
 						<li>
 							Students to do authentic research using exploratory 
@@ -96,25 +64,10 @@
 					</ul>
 				</p>
 				<p>
-					With the CMS detector we will be studying proton-proton 
-					collisions, in search of the predicted Higgs boson that may be 
-					instrumental in explaining why particles have mass. Pions, 
-					muons, electrons, photons, neutrinos and other particles are 
-					produced in these collisions and subsequent decays. When a proton-proton collision 
-					takes place, these particles interact with the detector in ways 
-					particular to each particle(the particles's signature in the 
-					detector).
-				</p>
-				<p>
-					By observing how particles interact with the detector, a 
-					researcher can determine which types of particles were produced 
-					in the collision. Because CMS will use a much higher energy 
-					beam than was previously available,  higher 
-					mass particles will be able to be detected. Many top quarks 
-					are expected to be seen and the predicted Higgs boson may 
-					be discovered. The possibility of finding 
-					particles that were previously "un-seeable" with other detectors 
-					at other facilities is exciting.
+					When situated in the LHC, the CMS detector will be used to study proton-proton collisions, in search of the predicted Higgs boson that may be instrumental in explaining why particles have mass. Pions, muons, electrons, photons, neutrinos and other particles are produced in these collisions and subsequent decays. When a proton-proton collision takes place, these particles interact with the detector in ways particular to each particle. This way of interacting particular to each kind of particle are known as a particle signature in the detector. While the CMS detector in the LHC will produce much more complicated sets of particles, viewing Test Beam data provides a way for students to get an introductory feel for basic particle signatures, and to explore properties of the detector which will be important background for subsequent CMS research in the LHC.
+</p><p>
+By observing how particles interact with the detector, a researcher can determine which types of particles were produced in the collision. Because CMS will use a much higher energy beam than was previously available, higher mass particles will be able to be detected. Many top quarks are expected to be seen and the predicted Higgs boson may be discovered. The possibility of finding particles that were previously "un-seeable" with other detectors at other facilities is exciting.
+
 				</p>	
 				<h2>Prior Knowledge and Skills:</h2>
 				<p>
@@ -128,11 +81,10 @@
 					</ul>
 
 					We provide refresher references for students who need to brush up on 
-					these skills. Here is what the students see: 
-					<a href="../research_basics.jsp">Review of Basic Skills</a>
+					these skills. Students access these from "The Basics" section of the <a href="../home/index.jsp" target="show">Project Milestones</a>. 
 				</p>
 				
-				<h2>Learner Outcomes:</h2>
+				<h2>Learner Outcomes and Assessment:</h2>
 				<p>
 					Students will know and be able to:  
 					<ul>
@@ -147,6 +99,51 @@
 							<%@ include file="learner-outcomes.jsp" %>
 					</ul>
 				</p>
+				<p>
+					Assessment is aligned to learner outcomes. While many teachers will want to design their own assessments, 
+					we provide some options. 
+					
+				</p>
+
+				<ul>
+					<li>
+						<B>Rubrics:</B> <A HREF="../assessment/rubric-ci.html">Content & Investigation</A>,
+						<A HREF="../assessment/rubric-r.html">Process</A>, <A HREF="../assessment/rubric-t.html">Computing</A>,
+						<A HREF="../assessment/rubric-wla.html">Literacy</A> and <A HREF="../assessment/rubric-p.html">Poster</A>
+					</li>
+					
+
+
+
+
+
+
+	
+						<li>
+							<b>Tests</b>: <a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
+							- and <a href="../test/test.jsp?type=postsurvey&studentid=0">post</a>
+							- tests of content knowledge and student results for 
+							<a href="../test/results.jsp?type=presurvey">pre</a>
+							- and <a href="../test/results.jsp?type=postsurvey">post</a>- tests.
+						</li>
+						
+					
+
+				
+							<li>
+							<b>e-Logbooks:</b> Track progress and provide feedback on student work.<br>
+							Review student evidence of what they know/understand and reflections on their research.<br> 
+							Review all student entries for a particular milestone, e.g., class cosmic ray descriptions, and make notes in your logbook for next year. 
+							Look at this <a href="#" onclick="javascript:window.open('../graphics/logbook-sample.gif', 'content', 'width=680,height=901, resizable=1, scrollbars=1');return false;">sample logbook</a>.
+							
+							</li>
+							<li>
+							<b>Milestone Seminars:</b> Check student understanding before they move from one section of the project milestones to another. 
+							</li>
+					
+				</ul>
+			
+					 
 
 				<h2>Research Question:</h2>
 				<p>
@@ -174,33 +171,7 @@
 					peers.
 				</p>
   
-				<h2>Assessment:</h2>
-				<p>
-					Asssessment is aligned to learner outcomes.  We provide the
-					following tools to meet specific outcomes for your students.
-					You may wish to modify some to meet your needs.
-				</p>
-
-				<ul>
-					<li>
-						<B>Rubrics:</B> <A HREF="../assessment/rubric-ci.html">Overall Content & Investigation</A>,
-						<A HREF="../assessment/rubric-r.html">Research Skills</A>, <A HREF="../assessment/rubric-t.html">Technology Skills</A>,
-						<A HREF="../assessment/rubric-wla.html">Writing and Language Arts</A> and <A HREF="../assessment/rubric-p.html">Poster</A>
-					</li>
-					<li>
-						<a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
-						- and <a href="../test/test.jsp?type=postsurvey&studentid=0">post</a>
-						- tests of content knowledge.</li>
-						<li>Student results for 
-						<a href="../test/results.jsp?type=presurvey">pre</a>
-						- and <a href="../test/results.jsp?type=postsurvey">post</a>- tests.
-					</li>
-					<li>
-						e-Logbooks: Track and comment on student work. Review 
-						group logbook or all student entries for a particular 
-						milestone, e.g., class cosmic ray descriptions.
-					</li>
-				</ul>
+				
 			</div>
 		</td>
 		<td>
