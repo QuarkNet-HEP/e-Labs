@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>${elab.properties.formalName} e-Lab Home</title>
+		<title>${elab.properties.formalName} e-Lab: About Us</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column-home.css"/>
@@ -31,9 +31,13 @@
 <h1>Welcome! Contribute to our scientific collaboration. Who are we?</h1>
  	 <c:if test="${user != null}">
 	   <div id="links"><table align="center"><tr>
+	   <td width="150" align="center"><A href="index.jsp"><img src="../graphics/home-button.gif" border="0"><br>Project Map</a></td>
 	   <td width="150" align="center"><A href="cool-science.jsp"><img src="../graphics/cool-science-button.gif" border="0"><br>Cool Science</a></td>
 	   <td width="150" align="center"><a href="../site-index/site-map-anno.jsp"><img src="../graphics/site-map-button.gif" border="0"><br>Explore!</a></td>
-	   <td width="150"align="center"><a href="about-us.jsp"><img src="../graphics/about-us-button.gif" border="0"><br>About Us</a></td></tr></table></div>
+<!-- 
+	   <td width="150"align="center"><a href="about-us.jsp"><img src="../graphics/about-us-button.gif" border="0"><br>About Us</a></td>
+ -->
+	  </tr></table></div>
 	  </c:if>  
 
 <!-- there is no way to do this without tables unfortunately -->
