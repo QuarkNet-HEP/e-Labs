@@ -54,23 +54,23 @@
 							<li>
 								<b>A: Science as Inquiry</b> - Abilities necessary to do scientific inquiry and understandings about scientific inquiry
 								<ul>
-									<li>Identify questions and concepts that guide scientific investigations</li>
-									<li>Design and conduct scientific investigations</li>
-									<li>Use technology and mathematics to improve investigations and communications</li>
-									<li>Formulate and revise scientific explanation and models using logic and evidence</li>
-									<li>Recognize and analyze alternative explanations and models</li>
-									<li>Communicate and defend a scientific argument</li>
+									<li>Identify questions and concepts that guide scientific investigations.</li>
+									<li>Design and conduct scientific investigations.</li>
+									<li>Use technology and mathematics to improve investigations and communications.</li>
+									<li>Formulate and revise scientific explanation and models using logic and evidence.</li>
+									<li>Recognize and analyze alternative explanations and models.</li>
+									<li>Communicate and defend a scientific argument.</li>
 								</ul>
 							</li>
 							<li>
-								<b>B: Physical science</b> - Developing student understanding
+								<b>B: Physical Science</b> - Developing student understanding
 								<ul>
 									<li>Structure and properties of matter</li>
 									<li>Interactions of energy and matter</li>
 								</ul>
 							</li>
 							<li>
-								<b>G: History and Nature of Science</b> - Developing Student Understanding
+								<b>G: History and Nature of Science</b> - Developing student understanding
 							</li>
 								<ul>
 									<li>Nature of scientific knowledge</li>
@@ -92,11 +92,11 @@
 
 						<ul>
 					        <li>
-					        	Formulate questions that can be addressed with data and collect, organize, and display relevant data to answer them
+					        	Formulate questions that can be addressed with data and collect, organize, and display relevant data to answer them.
 					        	
 					        	<ul>
-					        		<li>Understand the meaning of measurement data and categorical data, of univariate and bivariate data, and of the term variable;</li>
-					        		<li>Understand histograms, parallel box plots, and scatterplots and use them to display data;</li>
+					        		<li>Understand the meaning of measurement data and categorical data, of univariate and bivariate data, and of the term variable.</li>
+					        		<li>Understand histograms, parallel box plots, and scatterplots and use them to display data.</li>
 					        	</ul>
 							</li>
 							<li>
@@ -104,8 +104,8 @@
 								
 													        	
 					        	<ul>
-					        		<li>Understand how sample statistics reflect the values of population parameters and use sampling distributions as the basis for informal inference;</li>
-					        		<li>Evaluate published reports that are based on data by examining the design of the study, the appropriateness of the data analysis, and the validity of conclusions;</li>
+					        		<li>Understand how sample statistics reflect the values of population parameters and use sampling distributions as the basis for informal inference.</li>
+					        		<li>Evaluate published reports that are based on data by examining the design of the study, the appropriateness of the data analysis, and the validity of conclusions.</li>
 					        	</ul>
 
 							</li>
@@ -130,7 +130,7 @@
 <a name="language"><h2>Alignment with NCTE / IRA Standards for the English Language Arts</h2></a>
 				<p>
 					This project demonstrates some elements of the following from the 
-					<a href="http://www.ncte.org/standards">NCTE / IRA Standards for the English Language Arts</a>:
+					<a href="http://www.ncte.org/standards">NCTE/IRA Standards for the English Language Arts</a>:
 				</p>
 
 				<ol start="3">
@@ -159,10 +159,10 @@
 					<a href="http://cnets.iste.org/">National Education Technology Standards</a>:
 				</p>
 
-				<ol>
+				<ol style="font-weight:bold;">
 					<li>
 						<h2>Basic Operations and Concepts</h2>
-				    	<ul>
+				    	<ul style="font-weight:normal;">
 				    		<li>
 				    			Students demonstrate a sound understanding of the nature and 
 					    		operation of technology systems.
@@ -174,7 +174,7 @@
 					</li>
 					<li>
 						<h2>Social, Ethical, and Human Issues</h2>
-						<ul>
+						<ul style="font-weight:normal;">
 							<li>
 								Students practice responsible use of technology systems, 
 								information, and software.
@@ -188,7 +188,7 @@
 					</li>
 					<li>
 						<h2>Technology Productivity Tools</h2>
-						<ul>
+						<ul style="font-weight:normal;">
 							<li>
 								Students use technology tools to enhance learning, increase 
 								productivity, and promote creativity. 
@@ -215,7 +215,7 @@
 					</li>
 					<li>
 						<h2>Technology Research Tools</h2>
-						<ul>
+						<ul style="font-weight:normal;">
 							<li>
 								Students use technology to locate, evaluate, and collect 
 								information from a variety of sources. 
@@ -233,7 +233,7 @@
 					</li>
 					<li>
 						<h2>Technology Problem-Solving and Decision-Making Tools</h2>
-						<ul>
+						<ul style="font-weight:normal;">
 							<li>
 								Students use technology resources for solving problems 
 								and making informed decisions. 

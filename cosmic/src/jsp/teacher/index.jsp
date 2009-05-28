@@ -56,30 +56,27 @@
 					associated analysis code with students at other schools whether 
 					or not those schools have their own cosmic ray detectors. 
 				</p>
+<!-- 
+					<p>
+					Students start this e-lab with an animation that raises
+					questions researchers ask about cosmic rays.
+				</p>
+ -->
 				<p>
-					To begin, students check the performance of the detectors they 
+					To begin their research, students check the performance of the detectors they 
 					have chosen for their study. Then they can perform one of three 
 					investigations: muon lifetime, muon flux or extended air showers. 
-					Students can use the Project Milestones to conduct their reseach and
+					Students can use the project milestones to conduct their research and
 					can record their work and reflect on their progress in their e-Logbook. Students post the results of their studies as online posters. 
 					The real scientific collaboration follows. Students can 
 					review the results of other studies online comparing data and 
 					analyses. Using online tools, they can correspond with other 
 					research groups, post comments and questions, prepare summary 
-					reports, and in general participate in the part of scientific 
+					reports and, in general, participate in the part of scientific 
 					research that is often left out of classroom experiments. 
 				</p>
 				
-				<p>
-					Students start this e-lab with an <A href="../home/splash.html">animation</A> that raises
-					questions researchers ask about cosmic rays. <B>Bookmark it</B> as it is different
-					than either Student Home below and you will want to direct your students there. 
-				</p>
 
-				<p>
-					View Student Home as a: <a href="../home/first.jsp">new student</a>
-					- <a href = "../home/">returning student</a>.
-				</p>
 				<p>
 					Read about the <a href="web-guide.jsp">website features</a> that guide and support student research.
 				</p>
@@ -110,7 +107,7 @@
 					particles that originate in any number of astronomical objects. 
 					When these "primary" cosmic rays encounter earth's atmosphere, they 
 					can interact with nuclei of atoms and produce new, often unstable 
-					particles (e.g., pions and kaons.) In turn, these secondary cosmic 
+					particles (e.g., pions and kaons). In turn, these secondary cosmic 
 					rays further decay and create muons, electrons, photons and neutrinos. 
 					If these cosmic rays are sufficiently energetic, they can reach the 
 					earth's surface and be detected. (Neutrinos are capable of passing 
@@ -138,7 +135,7 @@
 				</ul>
 				<p>
 					We provide refresher references for students who need to brush up on 
-					these skills. Students access these from "The Basics" section of the <a href="../home/index.jsp" target="show">Project Milestones</a>. 
+					these skills. Students access these from "The Basics" section of the <a href="../home/index.jsp" target="show">Project Map</a>. 
 					
 				<h2>Learner Outcomes and Assessment:</h2>
 				<p>
@@ -151,7 +148,7 @@
 								<li>Identify cosmic ray sources and describe how the resulting muons are created in the atmosphere.</li> 
 								<li>Explain what the cosmic ray detector measures.</li> 
 								<li>Manipulate the data in a way that helps them understand characteristics of the muon.</li> 
-								<li>Design an investigation that asks a testable hypothesis which can be answered from the cosmic ray data and provides a description of cosmic ray phenomena.</li> 
+								<li>Design an investigation that asks a testable hypothesis, which can be answered from the cosmic ray data and provides a description of cosmic ray phenomena.</li> 
  
 							</ul>
 						</li>
@@ -192,8 +189,8 @@
 				
 							<li>
 							<b>e-Logbooks:</b> Track progress and provide feedback on student work.<br>
-							Review student evidence of what they know/understand and reflections on their research.<br> 
-							Review all student entries for a particular milestone, e.g., class cosmic ray descriptions, and make notes in your logbook for next year. 
+							Review students' evidence of what they know/understand and reflections on their research.<br> 
+							Review all students' entries for a particular milestone, e.g., class cosmic ray descriptions, and make notes in your logbook for next year. 
 							Look at this <a href="#" onclick="javascript:window.open('../graphics/logbook-sample.gif', 'content', 'width=680,height=901, resizable=1, scrollbars=1');return false;">sample logbook</a>.
 							
 							</li>
@@ -219,9 +216,9 @@
 
 					Many experiments have measured cosmic array showers, including 
 					<a href="http://en.wikipedia.org/wiki/Chicago_Air_Shower_Array">CASA</a> 
-					(Chicago Area Scintillator Array), project <a href="http://www.nd.edu/~grand/index.html">G.R.A.N.D.</a>  
+					(Chicago Air Shower Array), project <a href="http://www.nd.edu/~grand/index.html">G.R.A.N.D.</a>  
 					(Gamma Ray Astrophysics at Notre Dame) and the <a href="http://www.auger.org/">Pierre Auger 
-					Project</a> (an array being set up in Argentina). 
+					Project</a> (an array in Argentina). 
 				</p>
 				<p>
 					Students will be able to look into the size of cosmic ray 

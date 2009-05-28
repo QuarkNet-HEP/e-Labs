@@ -26,20 +26,20 @@
 			<div id="content">
 
 
-<h1>Website features that guide and support student research.</h1>
+<h1>Website features that guide and support student research</h1>
 
 <h2>Getting Started</h2>
 <p>
 	When students go to the website, an animation flashes sample research 
 	questions. If your students are taking the <b>pre- and post-test</b>, each member of a research group must complete the pre-test
-	before they can start using the website. Then when they log in, they see the navigation bar, three Quick Links and the Project Map. 
+	before they can start using the website. Then when they log in, they see the navigation bar, three quick links and the project map. 
 
 <h2>Navigation Bar</h2>
 <p>
  <img src="../graphics/nav.jpg"/> 
 </p>
 
-<p>Most menu items have submenus. When you rollover the navigation bar, all the submenus show up. Here is how it looks when you roll over "Library".</p>
+<p>Most menu items have submenus. When you roll over the navigation bar, all the submenus show up. Here is how it looks when you roll over "Library."</p>
 <p>	<img src="../graphics/menu-rollover.gif"/>
 </p>
 <h2>Quick Links</h2>
@@ -78,7 +78,7 @@
 			analysis tools, etc.
 		</li>
 		<li>
-			<strong>Tell Others:</strong> Prepared team to enter into scientific 
+			<strong>Tell Others:</strong> Prepares the team to enter into scientific 
 			discourse. Links to how to write up investigation, create a poster and 
 			comment on the work of others.
 		</li>
@@ -89,33 +89,33 @@
 <h2>Glossary and References</h2>
 <p>
 	The website has a glossary and references for the milestones 
-	(accessed by clicking on the milestone in the graphical version and on the icon <img src="../graphics/ref.gif"/> in the text version). Entries show in popup windows 
+	(accessed by clicking on the milestone in the graphical version and on the icon <img src="../graphics/ref.gif"/> in the text version). Entries show in pop-up windows 
 	when a definition or reference is needed. The entire glossary is available from the Library submenu.
 </p>
-<h2>e-Logbook - Opportunities for feedback</h2>
+<h2>e-Logbook - Opportunities for Feedback</h2>
 <p>
-	Because this is a student-led <b>teacher-guided</b> investigation, it is important 
+	Because this is a student-led, <b>teacher-guided</b> investigation, it is important 
 	for students to get frequent feedback. 
-	<p>As students work through the milestones they have access to an online 
+	<p>As students work through the milestones, they have access to an online 
 	logbook where they can save their notes. They can enter notes for each milestone
 	 and into general notes. They can respond to teacher prompts to reflect on their progress. 
 	Teachers are able to access this work, 
 	track and assess student progress and provide feedback. 
 	<P>Teachers also have a logbook in which they can make notes on 
 	teaching strategies, resources, etc. for the next year.
-	Access is through link in upper right hand corner on every page. 
+	Access is through a link in upper right-hand corner on every page. 
 	<img src="../graphics/logbook_link.gif"/><br/>
-	From their logbook, teachers can access:
+	From their logbook, teachers can access entries:
 	<ul>
 		<li>
-			by milestone for all their student research groups. 
+			By milestone for all their student research groups. 
 			<img src="../graphics/logbook_milestone.gif"/>
 		</li>
 		<li>
-			by student research group. <img src="../graphics/logbook_group.gif"/> 
+			By student research group. <img src="../graphics/logbook_group.gif"/> 
 		</li>
 		<li>
-			their own logbooks of entries about each research group. 
+			They have written about each research group in their private logbooks. 
 			<img src="../graphics/logbook_my.gif"/>
 		</li>
 	</ul>
@@ -148,9 +148,9 @@
 </p>
 <p>
 	The student site overview provides a graphical interface to <strong> important pages on this 
-	site available to students</strong>. Just rollover the main sections to see the items available for access in each section. This same interface
-	is accessible from the "Explore!" Quick link on the home page.  Your students may like it as an easy way to get around the website. Here the student
-	has rolled over the Library and exposed the Library Links.
+	site available to students</strong>. Just roll over the main sections to see the items available for access in each section. This same interface
+	is accessible from the "Explore!" quick link on the home page.  Your students may like it as an easy way to get around the website. Here the student
+	has rolled over the Library and exposed the Library links.
 </p>
 <p>
  <img src="../graphics/site-map-small.gif"/> 
