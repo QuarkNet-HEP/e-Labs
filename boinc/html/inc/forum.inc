@@ -569,36 +569,42 @@ function show_forum_title($forum=NULL, $thread=NULL, $helpdesk=false) {
             echo " Message boards</p>";
         }
     } else if ($forum && !$thread) {
-        echo "<span class=title>";
+//        echo "<span class=title>";
+        echo "<div class=title>";
         if ($helpdesk) {
             echo "<a href=\"forum_help_desk.php\">", " Questions/Answers</a> : ";
         }
 	else {
 	  if( user_has_role('admin') || user_has_role('dev') ){ 
-	    echo "<a href=\"forum_index.php\">", " Discussion</a> : ";
+//	    echo "<a href=\"forum_index.php\">", " Discussion</a> : ";
+	    echo " Discussion: ";
 	  }
 	  else {
             echo "Discussion: ";
 	  }
         }
         echo $forum->title;
-        echo "</span><br>";
+//        echo "</span><br>";
+        echo "</div>";
     }
     else if ($forum && $thread) {
-        echo "<span class=title>";
+//LQ        echo "<span class=title>";
+        echo "<div class=title>";
         if ($helpdesk) {
             echo "<a href=\"forum_help_desk.php\">", " Questions and problems</a> : ";
         } else {
 	  if( user_has_role('admin') || user_has_role('dev') ){ 
-	    echo "<a href=\"forum_index.php\">", " Discussion/Logbook</a> : ";
+//	    echo "<a href=\"forum_index.php\">", " Discussion/Logbook</a> : ";
+	    echo " Discussion: ";
 	  }
 	  else {
-            echo "Discussion/Logbook: ";
+            echo "Discussion: ";
 	  }
         }
         echo "<a href=\"forum_forum.php?id=$forum->id\">", $forum->title, "</a> : ";
         echo cleanup_title($thread->title);
-        echo "</span><br>";
+//        echo "</span><br>";
+        echo "</div>";
     } else {
         echo "Invalid input to show_forum_title<br>";
     }
