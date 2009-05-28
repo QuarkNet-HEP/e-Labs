@@ -33,17 +33,31 @@ function unsubscribe($thread, $user=null) {
 }
 
 function show_result_page($action, $success, $thread) {
+
+
+
     if ($action == "subscribe" && $success) {
         page_head("Subscription Successful");
-        echo "<span class=\"title\">Subscription successful</span>";
+
+       echo "<div id=\"maincontent\">";  //lq
+
+
+//        echo "<span class=\"title\">Subscription successful</span>";
+        echo "<div class=\"title\">Subscription successful</div>";
         echo "<p>You are now subscribed to <b>", stripslashes($thread->title), "</b>.  You will receive an email whenever another user posts to this thread.</p>";
     } else if ($action == "unsubscribe" && $success) {
         page_head("Unsubscription Successful");
-        echo "<span class=title>Unsubscription successful</span>";
+
+        echo "<div id=\"maincontent\">";  //lq
+
+//        echo "<span class=title>Unsubscription successful</span>";
+        echo "<div class=title>Unsubscription successful</div>";
         echo "<p>You have successfully unsubscribed from <b>", stripslashes($thread->title), "</b>.  You will no longer receive emails for posts to this thread.</p>";
     } else if ($action == "subscribe" && !$success) {
         page_head("Subscription Failed");
-        echo "<span class=title>Subscription failed</span>";
+        echo "<div id=\"maincontent\">";  //lq
+//        echo "<span class=title>Subscription failed</span>";
+        echo "<div class=title>Subscription failed</div>";
         if ($thread) {
             echo "<p>There was a problem subscribing you to ", stripslashes($thread->title), ".  Please try again later.</p>";
         } else {
@@ -51,7 +65,9 @@ function show_result_page($action, $success, $thread) {
         }
     } else if ($action == "unsubscribe" && !$success) {
         page_head("Unsubscription Failed");
+        echo "<div id=\"maincontent\">";  //lq
         echo "<span class=\"title\">Unsubscription failed</span>";
+        echo "<div class=\"title\">Unsubscription failed</div>";
         if ($thread) {
             echo "<p>There was a problem unsubscribing you from ", stripslashes($thread->title), ".  Please try again later.</p>";
         } else {
@@ -59,13 +75,17 @@ function show_result_page($action, $success, $thread) {
         }
     } else {
         page_head("Unknown action");
-        echo "<span class=\"title\">Unknown action</span>";
+        echo "<div id=\"maincontent\">";  //lq
+//        echo "<span class=\"title\">Unknown action</span>";
+        echo "<div class=\"title\">Unknown action</div>";
         echo "<p>The action you requested is not known</p>";
     }
 
     echo "<a href=forum_thread.php?id=$thread->id>Return to thread</a>";
 
-    page_tail();
+    echo "<br /><br /></div>"; //lq
+
+//    page_tail();
 
 }
 
