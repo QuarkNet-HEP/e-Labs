@@ -7,7 +7,7 @@
 		
 		<li>
 			Evaluate the data to decide which are reliable/usable and which are not 
-			and explain how you arrived at the decision to include some data and exclude others.
+			and explain how they arrived at the decision to include some data and exclude others.
 		</li>
 
 		<li>
@@ -15,7 +15,7 @@
 		</li>
 
 		<li>
-			Use the data to provide evidence to support your claims.
+			Use the data to provide evidence to support their claims.
 		</li>
 
 <!-- 
