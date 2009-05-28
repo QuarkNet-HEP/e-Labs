@@ -46,7 +46,7 @@ which represent continuous validity, unlike the separate measured data points.
     
     </UL>
     
-    <A HREF="http://www.teacherschoice.com.au/images/scientific_plot.gif"><b>Scientific Plot</b></A> - Good example of scale spacing and titles; note actual data and theoretical data.
+    <A HREF="../library/ref-scientific-plot.jsp"><b>Scientific Plot</b></A> - Good example of scale spacing and titles; note actual data and theoretical data.
     
 </TD></TR>
    <tr><td align="right"><HR><A HREF="javascript:window.close();">Close Window</A></td></tr></table>
