@@ -20,14 +20,14 @@ function cosmic_masthead($title='',$right_stuff='&nbsp;'){
                    title='return to the e-Lab home'
                    alt='' /></a>
        </td>\n";
-
+// LQ - took out $title from subtitle section
     echo "
        <TD class='noborder' width='60%' align='LEFT' >
 	<div class='header-title'>
 		Cosmic Ray e-Lab
 	</div>
-	<div class='header-subtitle'>
-	    $title
+<div class='header-subtitle'>
+	    
         </div>
        </td>\n ";
 
