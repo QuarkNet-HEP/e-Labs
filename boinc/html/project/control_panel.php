@@ -79,7 +79,7 @@ echo "
     <tr valign='top'>
 	<td class='border' width='25%'>
     <ul>
-    <li><a href='/manage_user.php'>Manage a user</a></li>
+    <li><a href='/ops/manage_user.php'>Manage a user</a></li>
     <li><a href='/ops/list_new_users.php'>List new users</a></li>
     <li><a href='/ops/profile_screen_form.php'>Screen user profiles </a></li>
     <li><a href='/ops/list_uotd_candidates.php'>List UOTD candidates</a>

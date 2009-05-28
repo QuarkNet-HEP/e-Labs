@@ -25,6 +25,9 @@ $special_user_bitfield[2]="Project developer";
 //I2U2//$special_user_bitfield[5]="Volunteer tester";
 $special_user_bitfield[6]="Project scientist";
 
+require_once('../project/i2u2-roles.php');
+
+
 define('ST_NEW_TIME', 1209600); //3600*24*14 = 14 days
 define('ST_NEW', 'New member');
 
@@ -731,5 +734,5 @@ function reply_warning(){
 
 
 //Generated automatically - do not edit
-$cvs_version_tracker[]="\$Id: forum.inc,v 1.12 2009/05/18 21:25:20 myers Exp $";  
+$cvs_version_tracker[]="\$Id: forum.inc,v 1.13 2009/05/28 16:20:54 myers Exp $";  
 ?>

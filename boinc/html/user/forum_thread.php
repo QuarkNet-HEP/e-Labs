@@ -106,7 +106,8 @@ if (($thread->hidden) && (!isSpecialUser($logged_in_user,0))) {
     + * Otherwise, hide the thread.
     + */
     error_page("This thread has been hidden for administrative purposes");
-} else {
+}
+else {
     
     echo "
         <form action='forum_thread.php'>
@@ -140,7 +141,10 @@ if (($thread->hidden) && (!isSpecialUser($logged_in_user,0))) {
         }
     }
 
-    if (isSpecialUser($logged_in_user,0)){    //If logged in users is moderator
+   // Special user links for moderators and administrators
+   //
+   if( user_has_role('moderator') || user_has_role('admin') ||
+       user_has_role('dev') ){
         echo "<br /><a href=\"forum_moderate_thread.php?action=hide&amp;thread=$thread->id\">Delete this thread</a>";
 	if($thread->sticky){
 	  echo "&nbsp;-&nbsp;<a href=\"forum_moderate_thread_action.php?action=desticky&amp;thread=$thread->id\">De-sticky this thread</a>"; 

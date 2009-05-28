@@ -11,10 +11,12 @@ require_once("../inc/forum.inc");
 db_init();
 $user = get_logged_in_user();
 $user = getForumPreferences($user);
-if (!isSpecialUser($user,0)) {
-    // Can't moderate without being moderator
-    echo "You are not authorized to moderate this post.";
-    exit();
+
+// Verify Authorization 
+//
+if( !user_has_role('moderator') && !user_has_role('admin') &&
+       !user_has_role('dev') ){
+  error_page("You are not authorized to moderate this thread.");
 }
 
 // TODO:  Write a request_str function to prevent stuff like this

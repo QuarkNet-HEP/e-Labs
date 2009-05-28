@@ -1,6 +1,7 @@
 <?php
 
 /* Show the links for possible moderation actions related to a single post */
+
 function show_post_moderation_links($post){
     if ($post->hidden){
 	echo " - <a href=\"forum_moderate_post_action.php?action=unhide&id=".$post->id."\">[undelete post]</a> - ";

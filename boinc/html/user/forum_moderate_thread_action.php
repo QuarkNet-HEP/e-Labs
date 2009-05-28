@@ -31,10 +31,11 @@ if (!$thread){
 $forum = getForum($thread->forum);
 
 
-if (!isSpecialUser($user,0)) {
-    // Can't moderate without being moderator
-    echo "You are not authorized to moderate this post.";
-    exit();
+// Verify Authorization 
+//
+if( !user_has_role('moderator') && !user_has_role('admin') &&
+       !user_has_role('dev') ){
+  error_page("You are not authorized to moderate this thread.");
 }
 
 if ($action=="hide"){
@@ -70,7 +71,8 @@ if ($result) {
     if (post_str('reason', true)){
         send_thread_moderation_email(lookup_user_id($post->user),$thread, post_str("reason"));
     }
-    header('Location: forum_forum.php?id='.$forum->id);
+    //OLD//header('Location: forum_forum.php?id='.$forum->id);
+    header('Location: forum_thread.php?id='.$thread->id);
 } else {
     page_head("Moderation update");
     echo "Couldn't moderate the thread.<br>\n";

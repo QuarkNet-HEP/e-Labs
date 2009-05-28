@@ -14,7 +14,7 @@
  *
  *
  *  Eric Myers <myers@spy-hill.net> - Fall 2006
- * @(#) $Id: roles.php,v 1.12 2009/04/27 20:18:56 myers Exp $
+ * @(#) $Id: roles.php,v 1.13 2009/05/28 16:20:54 myers Exp $
 \***********************************************************************/
 
 
@@ -49,6 +49,7 @@ function user_has_role($p){
     case 'admin':
     case 'administrator': 
         return isSpecialUser($logged_in_user, S_ADMIN);
+    case 'mod':
     case 'moderator':
         return isSpecialUser($logged_in_user, S_MODERATOR); 
     case 'dev':
