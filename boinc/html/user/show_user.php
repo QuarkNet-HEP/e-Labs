@@ -45,14 +45,23 @@ if(PROJECT=='I2U2')    $logged_in_user = get_logged_in_user(true);
         show_user_xml($user, $show_hosts);
     } else {
         page_head("Account data for $user->name");
+        
+       echo "<div id=\"maincontent\">"; //added by LQ
+       echo "<h1> Account data for $user->name </h1>";
         start_table();
         show_user_summary_public($user);
         show_profile_link($user);
         end_table();
         project_user_summary($user);
+        echo "</div><BR />";  //added by LQ
+
+
+
         page_tail(true);
     }
     if ($id) {
         end_cache(USER_PAGE_TTL,$cache_args);
     }
+    
+
 ?>
