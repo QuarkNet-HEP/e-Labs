@@ -4,11 +4,13 @@ h1 {
 }
 
 #nav {
+	position: absolute;
 	width: 100%;
 	left: 0px;
-	top: 70px;
+	top: 60px;
 	height: 20px;
 	text-align: center;
+	border: none;
 }
 
 #nav ul {
@@ -18,12 +20,14 @@ h1 {
 #nav li a {
 	width: 160px;
 	color: white;
-	border: 2px solid black;
+//	border: 2px solid black;
 }
 
 #nav li a:hover {
-	color: red;
-	text-decoration: underline;
+	color: black;  // not red
+	background-color: white; 
+//	text-decoration: underline;
+    text-decoration: none;
 }
 
 .centered img {
@@ -33,3 +37,80 @@ h1 {
 #footer {
 	margin-top: 24px;
 }
+
+/*=========== Footer =========== Overriding General Ones*/
+
+#header-logout {
+	position: absolute;
+	top: 0px;
+}
+// improved for cosmic-style project page
+
+#main #left {
+	width: 130px;
+	margin-right,margin-left: 2px;
+	background-color: black;
+	height: 100%;
+	padding: 0px;
+}
+
+#main #center {
+margin-left: 10px;
+}
+
+#main #right {
+	padding-left: 10px;
+	text-align: center;
+}
+#side-panel {
+	font-family: Arial, sans-serif;
+	padding: 0px;
+	padding-top: 2px;
+	padding-left: 6px;
+	background-color: black;
+//	border: 2px solid gray;
+	border: none;
+	width: 134px;
+	font-size: 14px;
+}
+#side-panel img {
+	padding: 4px;
+	padding-bottom: 8px;
+	padding-top: 8px;
+}
+
+#content {
+	width: 780px;
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 9pt;
+}
+#footer {
+	width: 600px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 10px;
+	padding-bottom: 20px;
+//	border-bottom: 1px #808080 dashed;
+	clear: both;
+}
+
+#footertext {
+	float: left;
+	width: 50%;
+	height: 100%;
+	font-size: 80%;
+	text-align: left;
+}
+
+#footertext p {
+	padding: 0px;
+	margin: 0px;
+}
+
+.logogroup {
+	vertical-align: middle;
+	height: 100%;
+	padding-right: 30px;
+}
+
