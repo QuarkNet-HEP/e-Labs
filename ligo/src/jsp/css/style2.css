@@ -3,6 +3,7 @@
 	font-family: Arial, sans-serif;
 	text-align: center;
 	font-size: 110%;
+	margin: auto;
 }
 
 #main {
@@ -77,19 +78,19 @@ body {
 
 #header-current-user {
 	position: absolute;
-	top: 28px;
+	top: 18px;
 	right: 160px;
 }
 
 #header-logout {
 	position: absolute;
-	top: 28px;
+	top: 18px;
 	right: 8px;
 }
 
 #header-logbook {
 	position: absolute;
-	top: 48px;
+	top: 38px;
 	right: 8px;
 }
 
@@ -97,13 +98,7 @@ body {
 	color: red;
 }
 
-#nav {
-	position: absolute;
-	bottom: 0px;
-	text-align: center;
-	border-top: solid #b0b0b0 2px;
-	width: 500px;
-}
+	color: white;  // not red
 
 #nav-footer {
 	height: 22px;
