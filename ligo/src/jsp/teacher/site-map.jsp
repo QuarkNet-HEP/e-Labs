@@ -35,27 +35,21 @@
 			<div id="left">
 				<h2>Teacher Pages</h2>
 				<ul class="simple">
-					<li><a href="index.jsp">Teacher Page</a></li>
-					<li><a href="notes.jsp">Classroom Notes</a></li>
-					<li><a href="web-guide.jsp">Research Guidance</a></li>
-					<li><a href="activities.jsp">Sample Classroom Activities</a></li>
-					<li><a href="strategy.jsp">Teaching Strategies</a></li>
-					<li><a href="standards.jsp">Alignment with Standards</a></li>
-					<e:restricted role="teacher">
-						<li><a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
-						- and <a href="../test/test.jsp?type=postsurvey&studentid=0">Post</a> Tests.</li>
-						<li>Student Results for <a href="../test/results.jsp?type=presurvey">Pre</a>
-						- and <a href="../test/results.jsp?type=postsurvey">Post</a>- tests.</li>
-					</e:restricted>
-					<e:restricted role="admin">
-						<li><a href="../test/show-teachers.jsp">Show Student Test Results for all Teachers</a></li>
-					</e:restricted>
-					<li><a href="registration.jsp">General Registration</a></li>
-					<li><a href="register-students.jsp">Student Research Group Registration</a></li>
-                    <li><a href="mass-registration.jsp">Mass Registration (Spreadsheet)</a></li>
-                    <li><a href="update-groups.jsp">Update Student Research Groups</a></li>
-                    <li><a href="update-group-projects.jsp">Update e-Lab Assignments for Groups</a></li>
-					<li><a href="site-map.jsp">Site Map</a></li>
+					<li><a href="index.jsp"><b>Home</b></a></li>
+					<ul class="simple">
+					<li><a href="web-guide.jsp">Website Features</a></li>
+					<li>Rubrics - <A HREF="../assessment/rubric-ci.html">Content & Investigation</A>,
+						<A HREF="../assessment/rubric-r.html">Process</A>, <A HREF="../assessment/rubric-t.html">Computing</A>,
+						<A HREF="../assessment/rubric-wla.html">Literacy</A> and <A HREF="../assessment/rubric-p.html">Poster</A></li>
+</ul>
+
+					<li><a href="community.jsp"><b>Community</b></a> - Library and Forum</li>
+					
+					
+					<li><a href="standards.jsp"><b>Standards</b></a></li>
+<li><a href="site-map.jsp"><b>Site Index</b></a></li>
+
+
 				</ul>
 				
 			</div>

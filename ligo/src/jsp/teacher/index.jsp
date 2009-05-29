@@ -25,7 +25,7 @@
 			
 			<div id="content">
 
-<h1>Teacher Home</h1>
+<h1>Teacher Home - Bookmark It!</h1>
 
 <table border="0" id="main">
 	<tr>
@@ -44,6 +44,9 @@
 					same way as a professional scientist. E-Lab tools will facilitate 
 					collaboration between students as they develop their projects and 
 					report their results.
+				</p>
+				<p>
+					Read about the <a href="web-guide.jsp">website features</a> that guide and support student research.
 				</p>
 				
 				<h2>Introduction to Research:</h2>
@@ -76,10 +79,10 @@
 							<li>Make a research plan</li>
 						</ul>
 					We provide a refresher for students who need to brush up on these skills.
-					Here is what the students see:  <a href="../library/research-basics.jsp">Review of Basic Skills</a>
+					Students access these from "The Basics" section of the <a href="../home/index.jsp" target="show">project milestones</a>. 
 				</p>
 				
-				<h2>Learner Outcomes:</h2>
+				<h2>Learner Outcomes and Assessment:</h2>
 				<p>
 					Here are the E-Lab outcomes that students must demonstrate:</p> 
 					<ul>
@@ -95,7 +98,7 @@
 									Explain how LIGO's measurement of seismic waves contributes to the project's effort to detect gravitational waves.
 								</li>
 								<li>
-									Design an investigation that asks a testable hypothesis, can be answered from seismic data and provides an explanation of what you learn about seismic data.								
+									Design an investigation that asks a testable hypothesis, which can be answered from seismic data and provides an explanation of what you learn about seismic data.								
 								</li>
 							</ul>
 							</li>
@@ -103,6 +106,30 @@
 							<%@ include file="learner-outcomes.jsp" %>
 			   	</ul>
 				</p>
+				Assessment is aligned to learner outcomes. While many teachers will want to design their own assessments, 
+					we provide some options. 
+					
+				</p>
+
+				<ul>
+					<li>
+						<B>Rubrics:</B> <A HREF="../assessment/rubric-ci.html">Content & Investigation</A>,
+						<A HREF="../assessment/rubric-r.html">Process</A>, <A HREF="../assessment/rubric-t.html">Computing</A>,
+						<A HREF="../assessment/rubric-wla.html">Literacy</A> and <A HREF="../assessment/rubric-p.html">Poster</A>
+					</li>
+							<li>
+							<b>e-Logbooks:</b> Track progress and provide feedback on student work.<br>
+							Review students' evidence of what they know/understand and reflections on their research.<br> 
+							Review all students' entries for a particular milestone, e.g., class cosmic ray descriptions, and make notes in your logbook for next year. 
+							Look at this <a href="#" onclick="javascript:window.open('../graphics/logbook-sample.gif', 'content', 'width=680,height=901, resizable=1, scrollbars=1');return false;">sample logbook</a>.
+							
+							</li>
+							<li>
+							<b>Milestone Seminars:</b> Check student understanding before they move from one section of the project milestones to another. 
+							</li>
+					
+				</ul>
+			
 
 				<h2>Research Question:</h2>
 				<p>
@@ -120,35 +147,7 @@
 					to gain ideas for research questions. 
 				</p>
   
-				<h2>Assessment:</h2>
-				<p>
-					Asssessment is aligned to learner outcomes. We provide the following 
-					tools to meet specific outcomes for your students. You may wish to 
-					modify some to meet your needs.
-					
-					<ul>
-						<li>
-							Rubrics: <a href="../assessment/rubric-ci.html">Content & Investigation</a>, 
-							<a href="../assessment/rubric-r.html">Process</a>, 
-							<a href="../assessment/rubric-t.html">Computing</a>,
-							<a href="../assessment/rubric-wla.html">Literacy</a> and 
-							<a href="../assessment/rubric-p.html">Poster</a>
-						</li>
-						<li>
-							<a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
-							- and <a href="../test/test.jsp?type=postsurvey&studentid=0">post</a>
-							- tests of content knowledge.</li>
-						<li>Student results for 
-							<a href="../test/results.jsp?type=presurvey">pre</a>
-							- and <a href="../test/results.jsp?type=postsurvey">post</a>-tests.
-						</li>
-						<li>
-							e-Logbooks: Track and comment on student work. Review 
-							group logbook or all student entries for a particular 
-							milestone, e.g., class cosmic ray descriptions.
-						</li>
-					</ul>
-				</p>
+				
 			</div>
 		</td>
 		<td>
