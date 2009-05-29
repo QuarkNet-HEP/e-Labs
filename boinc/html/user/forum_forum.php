@@ -7,7 +7,7 @@
  * Modified from BOINC forum code (http://boinc.berkeley.edu)
  * by Eric Myers <myers@spy-hill.net> for the I2U2 project (www.i2u2.org)
  *
- * @(#) $Id: forum_forum.php,v 1.8 2009/05/22 13:05:46 myers Exp $
+ * @(#) $Id: forum_forum.php,v 1.9 2009/05/29 13:23:08 myers Exp $
 \***********************************************************************/ 
 
 require_once('../inc/forum.inc');
@@ -44,6 +44,7 @@ if( function_exists('category_is_private') ){
     $pvt=category_is_private($category->id);
  }
 
+$next_url=$self;  // come back, Shane!
 $logged_in_user = get_logged_in_user($pvt) ;
 $logged_in_user = getForumPreferences($logged_in_user);
 
@@ -80,22 +81,18 @@ if ($category->is_helpdesk) {
 /***********************************************************************\
  * Display Page:
  */
+
 page_head($title);
 
-
-echo "<div id=\"maincontent\">";
-
 show_forum_title($forum, NULL, $category->is_helpdesk);
-
 
 echo "<!-- BEGIN forum_forum -->
     <form method='GET' action='forum_forum.php' >
     <input type=hidden name=id value=", $forum->id, ">
-    <table width=\"100%\" cellspacing=0 cellpadding=0>
+    <table width=100% cellspacing=0 cellpadding=0>
     <tr valign=bottom>
-    <td align=left style=\"border:0px\">
+    <td class='left noborder'>
 ";
-
 
 echo "<p>\n<a href=forum_post.php?id=$id>";
 if ($category->is_helpdesk) {
@@ -107,8 +104,7 @@ if ($category->is_helpdesk) {
 
 echo "\n</p>\n</td>";
 
-echo "<td align=right>";
-//echo "<td>";
+echo "<td align='right'>";
 if ($category->is_helpdesk) {
   //show_select_from_array("sort", $faq_sort_styles, $sort_style);
   echo  auto_select_from_array("sort", $faq_sort_styles, $sort_style,'Ok');
@@ -119,15 +115,11 @@ else {
 }
 //echo "<input type=submit value=OK></td>\n";
 
-echo "</td></tr>\n</table>\n";
+echo "</tr>\n</table>\n";
 
 show_forum($category, $forum, $start, $sort_style, $logged_in_user);
 
 echo "\n</form><!-- END forum_forum -->\n";
-
-echo "</div>";
-
-
 page_tail();
 
 ?>

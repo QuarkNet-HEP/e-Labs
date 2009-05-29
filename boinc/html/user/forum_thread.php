@@ -97,8 +97,6 @@ if(!empty($logged_in_user)) {
     }
 }
 
-echo "<div id=\"maincontent\">";
-
 
 show_forum_title($forum, $thread, $category->is_helpdesk);
 
@@ -192,11 +190,8 @@ else {
     }
 
     echo $link, "</a><br>\n</p>";
-echo "</div><br />";
-//    show_forum_title($forum, $thread, $category->is_helpdesk);
-        page_tail(true);
-
+    show_forum_title($forum, $thread, $category->is_helpdesk);
 }
 
-//page_tail();
+page_tail();
 ?>

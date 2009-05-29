@@ -282,8 +282,6 @@ $page_title="Forum";   //TODO: more detailed title
 if ($helpdesk) $page_title="Help Desk";
 page_head($page_title);
 
-echo "<div id=\"maincontent\">";  //lq
-
 show_forum_title($forum, NULL, $helpdesk);
 
 if (0&&  $helpdesk) { // no need for these messages on a reply!
@@ -303,8 +301,6 @@ if( $reply_post ) {
    if( $parent_post ) $self.="&post=".$parent_post->id;
 }
 
-
-
 echo "\n<form action='".$self."' method='POST'
             enctype='multipart/form-data'>
      <input type='hidden' name='MAX_FILE_SIZE' value= ".$max_file_size." >\n";
@@ -312,7 +308,6 @@ echo "\n<form action='".$self."' method='POST'
 start_table("width='100%' class='thread' ");
 
 if($reply_post) {
-// row1("<font size='+1'><em>".$title."</em></font>");
  row1("<em>".$title."</em>");
  }
 
@@ -546,7 +541,6 @@ echo "<tr><td class='authorcol'><b>Preview/Post</b><br>
 
 
 if($reply_post){
-//    row1(" <font size='+1'><em>".$title."</em></font>");
     row1(" <em>".$title."</em>");
 }
 end_forum_table();
@@ -607,9 +601,6 @@ if( $debug_level>3 ) {
     echo print_r($attach_file, TRUE);
     echo "</pre></blockquote>\n";
  }
-
-
-echo "</div>"; //lq
 
 page_tail();
 
