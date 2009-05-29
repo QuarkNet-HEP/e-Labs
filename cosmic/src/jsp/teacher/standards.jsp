@@ -100,7 +100,7 @@
 					        	</ul>
 							</li>
 							<li>
-								Develop and evaluate inferences and predictions that are based on data
+								Develop and evaluate inferences and predictions that are based on data.
 								
 													        	
 					        	<ul>
@@ -117,9 +117,9 @@
 
 						<ul>
 							<li>
-								Understand measurable attributes of objects and the units, systems, and processes of measurement
+								Understand measurable attributes of objects and the units, systems, and processes of measurement.
 					        	<ul>
-					        		<li>Make decisions about units and scales that are appropriate for problem situations involving measurement</li>
+					        		<li>Make decisions about units and scales that are appropriate for problem situations involving measurement.</li>
 					        	</ul>
 							</li>
 						</ul>
@@ -127,7 +127,7 @@
 				</ul>
 
 <hr>				
-<a name="language"><h2>Alignment with NCTE / IRA Standards for the English Language Arts</h2></a>
+<a name="language"><h2>Alignment with NCTE/IRA Standards for the English Language Arts</h2></a>
 				<p>
 					This project demonstrates some elements of the following from the 
 					<a href="http://www.ncte.org/standards">NCTE/IRA Standards for the English Language Arts</a>:
