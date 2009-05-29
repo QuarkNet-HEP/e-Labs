@@ -56,9 +56,9 @@ if ($mode == "Log in with email/password") {
     if (strlen($next_url) == 0) $next_url = "home.php";
 
     if ($_POST['send_cookie']) { // this is the 'remember me' checkbox
-        setcookie('auth', $authenticator, time()+3600*24*365);
-        setcookie('boinc_auth', $authenticator, time()+3600*24*365); 
-        setcookie('i2u2_auth',  $authenticator, time()+3600*24*365); 
+        setcookie('auth', $authenticator, time()+3600*24*365, '/');
+        setcookie('boinc_auth', $authenticator, time()+3600*24*365, '/'); 
+        setcookie('i2u2_auth',  $authenticator, time()+3600*24*365, '/'); 
     }
     Header("Location: $next_url");
     exit();
