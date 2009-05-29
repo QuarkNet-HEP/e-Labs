@@ -7,18 +7,25 @@
 </div>
 
 <div id="header-title">
-	Welcome to the LIGO I2U2 e-Lab
+	LIGO e-Lab
 </div>
 
 <div id="second-header-title">
+	&nbsp;
+</div>
+
+
+<!-- 
+<div id="second-header-title">
 	Laser Interferometer Gravitational-Wave Observatory
 </div>
+ -->
 
 <%
 	if (ElabGroup.isUserLoggedIn(session)) {
 		%>
 			<div id="header-current-user">
-				E-Lab login group: 
+				Logged in as group: 
 					<a href="../login/user-info.jsp"><%= ElabGroup.getUser(session).getName() %></a>				
 			</div>
 			<div id="header-logout">
@@ -36,6 +43,6 @@
 			</div>
 		<%
 	}
-	request.setAttribute("headerIncluded", Boolean.TRUE);
+	//request.setAttribute("headerIncluded", Boolean.TRUE);
 	out.flush();
 %>
