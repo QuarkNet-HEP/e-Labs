@@ -2,35 +2,58 @@
 /**
  * MediaWiki skin 'Cosmic' for the I2U2 cosmic rayS e-Lab
  * Originally derived from the CologneBlue skin, and 
- * then modified (a lot?).
+ * then modified to work with the BOINC forums.
  *
  */
 
 if( !defined( 'MEDIAWIKI' ) )
   die( -1 );
 
+/**
+ * BOINC interface
+ */
+
 if( empty($elab) ) $elab='cosmic';
 if( empty($BOINC_html) ) $BOINC_html = "/home/i2u2/boinc/html/";
 
+//require_once("$BOINC_html/project/project.inc.php");
+
 require_once("$BOINC_html/project/$elab-stuff.php");
 
-/**
+// TODO: stuff to get user login for the header bar
+
+
+
+
+
+/***********************************************************************\
  * @todo document
  * @addtogroup Skins
  */
 class SkinCosmic extends Skin {
 
-  private $searchboxes = '';
   // How many search boxes have we made?  Avoid duplicate id's.
-
-  function getStylesheet() {
-    //TODO: add cascade of e-Lab style sheets here. NOCANDO
-    return 'common/cosmic.css';
-  }
-
+  private $searchboxes = '';  
 
   function getSkinName() {
     return "cosmic";
+  }
+
+  function getStylesheet() {
+    return 'common/cosmic.css';
+  }
+
+  // re-define how we determine what is the "main" page.
+
+  function mainPageLink() {
+    global $wgMainPage;
+    if( empty($wgMainPage) ){ 
+      $s = $this->makeKnownLinkObj( Title::newMainPage(), wfMsg( 'mainpage' ) );
+    }
+    else {
+      $s = $this->makeKnownLinkObj( Title::newMainPage($wgMainPage), $wgMainPage );
+    }
+    return $s;
   }
 
 
@@ -45,20 +68,20 @@ class SkinCosmic extends Skin {
     $mainPageObj = Title::newMainPage();
     //
     $s .= cosmic_banner();
-    $s .= cosmic_teacher_menu_bar();
+    $s .= cosmic_menu_bar();
     $s .= "\n<div id='content'>\n<div id='topbar'>";
     //
 
-    /*********************
-    $s .= 	      "<table width='100%' border='0' cellspacing='0' cellpadding='8'><tr>";
+    /*******************************
+     * ORIGINAL TOP BAR 
+    $s .= "<table width='100%' border='0' cellspacing='0' cellpadding='8'><tr>";
     $s .= "<td class='top' align='left' valign='middle' nowrap='nowrap'>";
     $s .= "<a href=\"" . $mainPageObj->escapeLocalURL() . "\">";
     $s .= "<span id='sitetitle'>" . wfMsg( "sitetitle" ) . "</span></a>";
 
     $s .= "</td><td class='top' align='right' valign='bottom' width='100%'>";
-    $s .= $this->sysLinks();
+    //$s .= $this->sysLinks();
     $s .= "</td></tr><tr><td valign='top'>";
-
     $s .= "<font size='-1'><span id='sitesub'>";
     $s .= htmlspecialchars( wfMsg( "sitesubtitle" ) ) . "</span></font>";
     $s .= "</td><td align='right'>" ;
@@ -70,14 +93,16 @@ class SkinCosmic extends Skin {
     $s .= "<br />" . $this->pageTitleLinks();
     $s .= "</span></font>";
     $s .= "</td></tr></table>\n";
-    *************/
-    $s .= "\n</div>\n<div id='article'>";
+    $s .= "\n</div>";
     $notice = wfGetSiteNotice();
     if( $notice ) {
       $s .= "\n<div id='siteNotice'>$notice</div>\n";
     }
+    /*************/
+
+    $s .= "\n<div id='article'>";
     $s .= $this->pageTitle();
-    //NO SUBTITLE$s .= $this->pageSubtitle() . "\n";
+    //$s .= $this->pageSubtitle() . "\n";
     return $s;
   }
 
@@ -88,8 +113,7 @@ class SkinCosmic extends Skin {
   {
     global $wgOut;
 
-    $s = "\n</div><br clear='all' />\n";
-
+    $s = "\n<hr></div><br clear='all' />\n";
     $s .= "\n<div id='footer'>";
     $s .= "<table width='98%' border='0' cellspacing='0'><tr>";
 
@@ -99,10 +123,10 @@ class SkinCosmic extends Skin {
     }
     $s .= "<td class='bottom' align='center' valign='top'>";
 
-    $s .= $this->bottomLinks();
-    $s .= "\n<br />" . $this->makeKnownLinkObj( Title::newMainPage() ) . " | "
-      . $this->aboutLink() . " | "
-      . $this->searchForm( wfMsg( "qbfind" ) );
+    //$s .= $this->bottomLinks();
+    //$s .= "\n<br />" . $this->makeKnownLinkObj( Title::newMainPage() ) . " | "
+    //. $this->aboutLink() . " | "
+    //. $this->searchForm( wfMsg( "qbfind" ) );
 
     $s .= "\n<br />" . $this->pageStats();
 
@@ -121,6 +145,8 @@ class SkinCosmic extends Skin {
     global $wgOut;
     $s = parent::doGetUserStyles();
     $qb = $this->qbSetting();
+
+    $qb = 1;   // Force default for now -EAM 01Jun2009
 
     if ( 1 == $qb ) {
       $s .= "#quickbar { position: absolute; left: 4px; }\n" .
@@ -149,8 +175,10 @@ class SkinCosmic extends Skin {
 
   function sysLinks() {
     global $wgUser, $wgContLang, $wgTitle;
-    $li = $wgContLang->specialPage("Userlogin");
-    $lo = $wgContLang->specialPage("Userlogout");
+    //$li = $wgContLang->specialPage("Userlogin");
+    $li = "/login_form.php?next_url=";
+    //$lo = $wgContLang->specialPage("Userlogout");
+    $lo = "/logout.php?next_url=";
 
     $rt = $wgTitle->getPrefixedURL();
     if ( 0 == strcasecmp( urlencode( $lo ), $rt ) ) {
@@ -196,14 +224,12 @@ class SkinCosmic extends Skin {
 
 
     $s = "\n<div id='quickbar'>";
-
     $sep = "<br />";
-    $s .= $this->menuHead( "qbfind" );
-    $s .= $this->searchForm();
 
+    // Browse menus:
+    //
     $s .= $this->menuHead( "qbbrowse" );
-
-# Use the first heading from the Monobook sidebar as the "browse" section
+    // Uses ONLY the first heading from the Monobook sidebar as the "browse" section
     $bar = $this->buildSidebar();
     $browseLinks = reset( $bar );
 
@@ -214,6 +240,8 @@ class SkinCosmic extends Skin {
       }
     }
 
+    // Article Menus:
+    //
     if ( $wgOut->isArticle() ) {
       $s .= $this->menuHead( "qbedit" );
       $s .= "<strong>" . $this->editThisPage() . "</strong>";
@@ -264,7 +292,17 @@ class SkinCosmic extends Skin {
       $s .= $sep;
     }
 
+    // Search Form:
+    //
+    $s .= $this->menuHead( "qbfind" );
+    $s .= $this->searchForm();
+
+
+
+    // Personal Links:
+    //
     $s .= $this->menuHead( "qbmyoptions" );
+    $me = htmlspecialchars($_SERVER['REQUEST_URI']); // this page
     if ( $wgUser->isLoggedIn() ) {
       $name = $wgUser->getName();
       $tl = $this->makeKnownLinkObj( $wgUser->getTalkPage(),
@@ -279,10 +317,17 @@ class SkinCosmic extends Skin {
 	. $sep . $this->specialLink( "watchlist" )
 	. $sep . $this->makeKnownLinkObj( SpecialPage::getSafeTitleFor( "Contributions", $wgUser->getName() ),
 					  wfMsg( "mycontris" ) )
-	. $sep . $this->specialLink( "preferences" )
-	. $sep . $this->specialLink( "userlogout" );
-    } else {
-      $s .= $this->specialLink( "userlogin" );
+	. $sep . $this->specialLink( "preferences" );
+
+        // Intercept logout link
+        $u = "/logout.php?next_url=$me";
+        $s .= $sep . '<a href="'.$u.'">Logout</a>';
+
+    }
+    else {
+     // intercept login link
+     $u = "/login_form.php?next_url=$me";
+     $s .= '<a href="'.$u.'">Login</a>';
     }
 
     $s .= $this->menuHead( "qbspecialpages" )

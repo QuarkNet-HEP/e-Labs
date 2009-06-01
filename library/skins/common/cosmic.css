@@ -1,8 +1,4 @@
-@import "http://www15.i2u2.org/i2u2.css";
-@import "/elab/cosmic/css/elab.css";
-@import "/elab/cosmic/css/cosmic.css";
-@import "/elab/cosmic/css/teacher.css";
-@import "/elab/cosmic/css/library.css";
+@import "http://www15.i2u2.org/i2u2.css"; /* to be Deprecated */
 
 body {
 margin: 0px; padding: 0px; color: black; }
@@ -120,3 +116,31 @@ input.mw-searchInput { width: 106px; }
 
 #footer { padding: 4px; }
 #footer form { display: inline; }
+
+
+/* Making the Table of Contents float to the right allows more content
+ * area on the page and less wasted empty space.
+ */
+
+#toc, .toc {
+   float: right;
+   margin: 0.5em;
+}
+
+#wikiPreview {
+        border: 1px solid red;
+        background-color: #fff9f9;
+        /* TODO: background with "DRAFT" in it? */
+}
+
+.previewnote {
+       color: RED;
+       border-bottom: 1px solid RED;
+       background-color: #fff9f9;
+}
+
+@import "/elab/cosmic/css/elab.css";
+@import "/elab/cosmic/css/cosmic.css";
+@import "/elab/cosmic/css/teacher.css";
+@import "/elab/cosmic/css/library.css";
+
