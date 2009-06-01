@@ -20,10 +20,21 @@ if( empty($BOINC_html) ) $BOINC_html = "/home/i2u2/boinc/html/";
 
 require_once("$BOINC_html/project/$elab-stuff.php");
 
-// TODO: stuff to get user login for the header bar
+function elab_forum_login_link($key='userlogin'){
+  global $elab;
+  $me = htmlspecialchars($_SERVER['REQUEST_URI']); // this page
+  $u = "/elab/$elab/teacher/forum/login_form.php?next_url=$me";
+  $s = "<a href='$u'>". wfMsg( $key ) ."</a>";
+  return $s;
+}
 
-
-
+function elab_forum_logout_link($key='userlogout'){
+  global $elab;
+  $me = htmlspecialchars($_SERVER['REQUEST_URI']); // this page
+  $u = "/elab/$elab/teacher/forum/logout.php?next_url=$me";
+  $s = "<a href='$u'>". wfMsg( $key ) ."</a>";
+  return $s;
+}
 
 
 /***********************************************************************\
@@ -172,13 +183,18 @@ class SkinCosmic extends Skin {
   }
 
 
+  /**
+   * System links to for general wiki functions 
+   * (as opposed to page-specific functions).
+   * this is currently not used here.  -EAM 01Jun2009
+   */
 
   function sysLinks() {
     global $wgUser, $wgContLang, $wgTitle;
     //$li = $wgContLang->specialPage("Userlogin");
-    $li = "/login_form.php?next_url=";
+    $li = elab_forum_login_link();
     //$lo = $wgContLang->specialPage("Userlogout");
-    $lo = "/logout.php?next_url=";
+    $lo = elab_forum_logout_link();
 
     $rt = $wgTitle->getPrefixedURL();
     if ( 0 == strcasecmp( urlencode( $lo ), $rt ) ) {
@@ -318,16 +334,13 @@ class SkinCosmic extends Skin {
 	. $sep . $this->makeKnownLinkObj( SpecialPage::getSafeTitleFor( "Contributions", $wgUser->getName() ),
 					  wfMsg( "mycontris" ) )
 	. $sep . $this->specialLink( "preferences" );
-
-        // Intercept logout link
-        $u = "/logout.php?next_url=$me";
-        $s .= $sep . '<a href="'.$u.'">Logout</a>';
-
+      //$s .= $sep . $this->speciallink( "userlogout" );
+      $s .= $sep . elab_forum_logout_link();
     }
     else {
-     // intercept login link
-     $u = "/login_form.php?next_url=$me";
-     $s .= '<a href="'.$u.'">Login</a>';
+      //$s .= $this->specialLink( "userlogin" );
+      //$s .= $sep ;
+      $s .= elab_forum_login_link();
     }
 
     $s .= $this->menuHead( "qbspecialpages" )
