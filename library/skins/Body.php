@@ -98,7 +98,6 @@ class BodyTemplate extends QuickTemplate {
 		if($this->data['pagecss'   ]) { ?>
 		<style type="text/css"><?php $this->html('pagecss'   ) ?></style>
 <?php	} ?>
-
 <div id="globalWrapper">
      <div id="column-content">
 	<div id="content">
@@ -109,8 +108,10 @@ class BodyTemplate extends QuickTemplate {
 			<h3 id="siteSub"><?php $this->msg('tagline') ?></h3>
 			<div id="contentSub"><?php $this->html('subtitle') ?></div>
 
-
 			<!-- start content -->
+			<style type="text/css">
+			.editsection {	display: none; }
+			</style>
 			<?php $this->html('bodytext') ?>
 			<?php if($this->data['catlinks']) { ?><div id="catlinks"><?php       $this->html('catlinks') ?></div><?php } ?>
 			<!-- end content -->
