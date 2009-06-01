@@ -11,6 +11,41 @@
 if( !defined( 'MEDIAWIKI' ) )
 	die( -1 );
 
+/**
+ * If this skin is loaded then set these bare defaults for user options 
+ * TODO: move this into initialization
+ */
+
+$wgDefaultUserOptions = array( 
+	'quickbar' 		=> 0,
+	'underline' 		=> 2,
+	'skin' 			=> false,
+	'math' 			=> 1,
+	'highlightbroken'	=> 0,
+	'stubthreshold' 	=> 0,
+	'previewontop' 		=> 0,
+	'editsection'		=> 0,
+	'editsectiononrightclick'=> 0,
+	'showtoc'		=> 0,
+	'showtoolbar' 		=> 0,
+	'date' 			=> 'default',
+	'imagesize' 		=> 2,
+	'thumbsize'		=> 2,
+	'rememberpassword' 	=> 0,
+	'enotifwatchlistpages' 	=> 0,
+	'enotifusertalkpages' 	=> 0,
+	'enotifminoredits' 	=> 0,
+	'enotifrevealaddr' 	=> 0,
+	'shownumberswatching' 	=> 0,
+	'fancysig' 		=> 0,
+	'externaleditor' 	=> 0,
+	'externaldiff' 		=> 0,
+	'showjumplinks'		=> 0,
+	'numberheadings'	=> 0,
+	'uselivepreview'	=> 0,
+);
+
+
 /** */
 require_once('includes/SkinTemplate.php');
 
@@ -25,6 +60,9 @@ class SkinBody extends SkinTemplate {
 		$this->skinname  = 'body';
 		$this->stylename = 'body';
 		$this->template  = 'BodyTemplate';
+
+		global 	$wgDefaultUserOptions;
+		$wgDefaultUserOptions['editsection'] = 0;
 	}
 }
 
@@ -48,22 +86,8 @@ class BodyTemplate extends QuickTemplate {
 
 		// Suppress warnings to prevent notices about missing indexes in $this->data
 		wfSuppressWarnings();
-
-
-?>
-		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/main.css?<?php echo $GLOBALS['wgStyleVersion'] ?>"; /*]]>*/</style>
-		<link rel="stylesheet" type="text/css" <?php if(empty($this->data['printable']) ) { ?>media="print"<?php } ?> href="<?php $this->text('stylepath') ?>/common/commonPrint.css?<?php echo $GLOBALS['wgStyleVersion'] ?>" />
-		<link rel="stylesheet" type="text/css" media="handheld" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/handheld.css?<?php echo $GLOBALS['wgStyleVersion'] ?>" />
-		<!--[if lt IE 5.5000]><style type="text/css">@import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/IE50Fixes.css?<?php echo $GLOBALS['wgStyleVersion'] ?>";</style><![endif]-->
-		<!--[if IE 5.5000]><style type="text/css">@import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/IE55Fixes.css?<?php echo $GLOBALS['wgStyleVersion'] ?>";</style><![endif]-->
-		<!--[if IE 6]><style type="text/css">@import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/IE60Fixes.css?<?php echo $GLOBALS['wgStyleVersion'] ?>";</style><![endif]-->
-		<!--[if IE 7]><style type="text/css">@import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/IE70Fixes.css?<?php echo $GLOBALS['wgStyleVersion'] ?>";</style><![endif]-->
-		<!--[if lt IE 7]><script type="<?php $this->text('jsmimetype') ?>" src="<?php $this->text('stylepath') ?>/common/IEFixes.js?<?php echo $GLOBALS['wgStyleVersion'] ?>"></script>
-		<meta http-equiv="imagetoolbar" content="no" /><![endif]-->
-		
-		<?php print Skin::makeGlobalVariablesScript( $this->data ); ?>
-
-<?php	if($this->data['pagecss'   ]) { ?>
+		print Skin::makeGlobalVariablesScript( $this->data ); 
+		if($this->data['pagecss'   ]) { ?>
 		<style type="text/css"><?php $this->html('pagecss'   ) ?></style>
 <?php	} ?>
 
