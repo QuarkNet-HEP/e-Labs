@@ -74,6 +74,7 @@ function init_session() {
 function require_login($user) {
     if (!$user) {
         print_login_form();
+        page_tail();
         exit();
     }
 }
@@ -102,6 +103,7 @@ function get_logged_in_user($must_be_logged_in=true) {
     if ($must_be_logged_in) {
         require_login($user);
     }
+
     ///////TODO: BOINC/Mediawiki cross-authentication: -EAM 14Jun2006
     if( !empty($authenticator) ) {
         $_SESSION['i2u2_auth']=$authenticator;
@@ -355,14 +357,13 @@ function print_login_form_aux($next_url, $user) {
 		</span>",
         "<input type=checkbox name=send_cookie checked>"
     );
+
     if ($user) {
         row1("Log out");
         row2("You are logged in as $user->name",
             "<a href=logout.php>Log out</a>"
         );
     }
-
-
 
     if( PROJECT != "I2U2" ){
     row1("Log in with account key:
@@ -385,18 +386,19 @@ function print_login_form_aux($next_url, $user) {
     ";
 }
 
-
-
-
 function print_login_form() {
     page_head("Please log in");
     echo "<font color='RED'>
         This function requires that you log in.
 	</font></br>
     ";
-    $next_url = $_SERVER['REQUEST_URI'];
+    global $next_url;
+    if( empty($next_url) ){
+      $next_url = $_SERVER['REQUEST_URI']; // Come back here!
+    }
     print_login_form_aux($next_url, null);
     page_tail();
+    exit();
 }
 
 // Look for an element in a line of XML text
@@ -666,5 +668,5 @@ function link_with_GET_variables($text, $baseurl, $variable_name, $variable_valu
 }
 
 //Generated automatically - do not edit
-$cvs_version_tracker[]="\$Id: util.inc,v 1.12 2009/05/05 15:53:39 myers Exp $";  
+$cvs_version_tracker[]="\$Id: util.inc,v 1.13 2009/05/29 13:22:31 myers Exp $";  
 ?>
