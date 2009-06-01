@@ -55,15 +55,23 @@ require_once('includes/SkinTemplate.php');
  * @addtogroup Skins
  */
 class SkinBody extends SkinTemplate {
-	function initPage( &$out ) {
-		SkinTemplate::initPage( $out );
-		$this->skinname  = 'body';
-		$this->stylename = 'body';
-		$this->template  = 'BodyTemplate';
+  function initPage( &$out ) {
+    SkinTemplate::initPage( $out );
+    $this->skinname  = 'body';
+    $this->stylename = 'body';
+    $this->template  = 'BodyTemplate';
 
-		global 	$wgDefaultUserOptions;
-		$wgDefaultUserOptions['editsection'] = 0;
-	}
+    // Settings specific to this skin
+
+    global $wgDisabledActions, $wgReadOnly, $wgAllowUserCss;
+    $wgDisabledActions[] = 'edit';
+    $wgReadOnly=" You cannot edit this glossary. ";
+    $wgAllowUserCss = false;
+
+    global $wgSkipSkins;
+    $wgSkipSkins = array("monobook", "cologneblue", "myskin", "simple",
+			 "nostalgia", "standard", "chick");
+  }
 }
 
 
