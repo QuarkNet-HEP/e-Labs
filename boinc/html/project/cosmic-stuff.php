@@ -3,57 +3,67 @@
  * Project specific functions for Cosmic Ray e-Lab
  *
  *
- * @(#) $Id: cosmic-stuff.php,v 1.4 2009/05/28 21:36:50 myers Exp $
+ * @(#) $Id: cosmic-stuff.php,v 1.3 2009/05/22 13:04:02 myers Exp $
 \**********************************************************************/
 
-
 function cosmic_masthead($title='',$right_stuff='&nbsp;'){
-  echo "\n<!-- BEGIN Cosmic Ray e-lab masthead -->\n<div class='top'>\n";
-  echo cosmic_banner($title,$right_stuff);
-  echo cosmic_teacher_menu_bar();
-  echo "\n</div><!-- END e-lab masthead -->\n";
-}
 
-
-function cosmic_banner($title='',$right_stuff='&nbsp;'){// returns $x
   // TODO: make this smarter - teacher or student?
   $home_link="/elab/cosmic/teacher/";
   $elab_logo="/elab/cosmic/graphics/blast.jpg";
 
-  $x = "<TABLE class='masthead' width='100%' bgcolor='black' ><tr>
+  echo "\n<!-- BEGIN Cosmic Ray e-lab masthead -->\n<div class='top'>\n".
+     "<TABLE class='masthead' width='100%' bgcolor='black' ><tr>
        <TD class='noborder' width='15%' valign='TOP' align='CENTER'>
               <a href='$home_link' >
 	      <img src='$elab_logo'
                    title='return to the e-Lab home'
                    alt='' /></a>
-       </td>
+       </td>\n";
+    echo "
        <TD class='noborder' width='60%' align='LEFT' >
 	<div class='header-title'>
 		Cosmic Ray e-Lab
 	</div>
+<div class='header-subtitle'>
+	    
+        </div>
        </td>\n ";
-   $x .= "
-       <TD class='noborder' width='25%' valign='TOP' align='RIGHT'>\n";
 
+    echo "
+       <TD class='noborder' width='25%' valign='TOP' align='RIGHT'>\n";
        if( isset($hide_user) && $hide_user ) {   // don't show user/login or cache indicator
-	 $x .= "&nbsp;";
+	 echo "&nbsp;";
        }
        else {      
         // need to see if the person is authenticated, cookie or not
         $authenticator = init_session();
-        $x .= "<font size='1' color='white'>";
+        echo "<font size='1' color='white'>";
         $logged_in_user = get_logged_in_user(false);
-        $x .= show_login_name($logged_in_user);
-        $x .=  "</font>\n";
+        show_login_name($logged_in_user);
+        echo "</font>\n";
     }
-    $x .=  "\n</TD></TR>\n";
-    $x .=  "</TABLE>";
-    return $x;
+    echo "\n</TD></TR>\n";
+
+    echo "</TABLE>";
+
+    //project_menu_bar();
+    cosmic_menu_bar();
+
+    echo "\n</div><!-- END e-lab masthead -->\n";
+  }
+
+
+
+
+function cosmic_menu_bar(){
+  //TODO: detect teacher -vs- student URL and change accordingly
+  cosmic_teacher_menu_bar();
 }
 
 
 function cosmic_teacher_menu_bar(){
-    $x = "
+    echo "
     <!-- Teacher's menu bar for Cosmic Ray e-Lab -->
     <TABLE class='menu_bar'><TR>
       <TD>&nbsp;</TD>
@@ -61,36 +71,36 @@ function cosmic_teacher_menu_bar(){
             Teacher Home</a>
       </td>";
 
-    $x .= "
+    echo "
       <TD><a href='/elab/cosmic/teacher/community.jsp'>
             Community</a>
       </td>";
 
-    $x .= "
+    echo "
       <TD><a href='/elab/cosmic/teacher/standards.jsp'>
             Standards</a>
       </td>";
 
-    $x .= "
+    echo "
       <TD><a href='/elab/cosmic/teacher/site-map.jsp'>
             Site Index</a>
       </td>";
 
-    $x .= "
+    echo "
       <TD><a href='/elab/cosmic/teacher/registration.jsp'>
             Registration</a>
       </td>";
 
-    $x .= "
+    echo "
       <TD><a href='/elab/cosmic/home/'>
             Student Home</a>
       </td>";
 
-    $x .= "\n    </TR>
+    echo "\n    </TR>
     </TABLE><!-- END menu bar -->\n";
-
-    return $x;
 }
+
+
 
 
 // Previous Attempt... 
