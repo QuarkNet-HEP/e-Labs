@@ -55,6 +55,23 @@
         cookie2.setPath("/elab/dwr");
         response.addCookie(cookie2);
         
+
+        // Forum authentication the quick-N-dirty way.
+        // To allow a teacher to seamlessly access the forums after
+        // login do the following:
+        //  1. verify it's a teacher login, and get teacher ID #
+        //  2. From teacher table get "authenticator"
+
+        String authenticator = "deadbeefdeadbeefdeadbeefdeadbeef";
+				// this should be the teacher's authenticator
+
+        //  3. Set cookie named "auth" with value of the authenticator
+		//     with path "/" and expiration timestamp for end of session
+
+        Cookie cookie3 = new Cookie("auth",  authenticator);
+        cookie3.setPath("/");
+        response.addCookie(cookie3);
+
 		response.sendRedirect(prevPage);
 	}
 	else {
