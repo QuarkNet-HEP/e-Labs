@@ -1,6 +1,8 @@
-#nav { height: 44px; } 
+#nav { height: 48px; } 
 
-#header #header-image img { height: 96px; }
+#menu { text-align: right; }
+
+#header #header-image img { height: 100%; }
 
 #subnav #data li a {
 	color: black;
@@ -15,12 +17,12 @@
 }
 
 #subnav #library {
-	margin-right: 35px; 
+	text-align:center;
 }
 
 #subnav #library li a {
 	color: black; 
-	width: 100px;
+	width: 7em;
 	background-color: #55a9b4;
 	border-top: #a7d2d8 1px solid;
 	border-left: #a7d2d8 1px solid;
@@ -50,10 +52,11 @@
 }
 
 #subnav #posters {
-	margin-right: 50px;
+	text-align: center;
 }
 
 #subnav #posters li a {
+	width: 7.5em;
 	color: black;
 	background-color: #408c66;
 	border-top: #82b49b 1px solid;
