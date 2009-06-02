@@ -7,7 +7,7 @@
  *
  *
  * Eric Myers <myers@spy-hill.net  - 12 December 2006
- * @(#) $Id: logout.php,v 1.13 2008/08/01 19:39:00 myers Exp $
+ * @(#) $Id: logout.php,v 1.14 2009/04/29 20:43:24 myers Exp $
 \***********************************************************************/
 
 require_once("macros.php");             // general TLA utilities
@@ -81,7 +81,10 @@ if( $basic_auth ){
  * Display Page:
 \***********************************************************************/
 
-html_begin("Logout");
+$title="Logout";
+html_begin($title);
+title_bar($title);
+
 controls_begin();
 
 echo "You may now:
@@ -108,5 +111,5 @@ html_end();
  */
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: logout.php,v 1.13 2008/08/01 19:39:00 myers Exp $";
+    "\$Id: logout.php,v 1.14 2009/04/29 20:43:24 myers Exp $";
 ?>

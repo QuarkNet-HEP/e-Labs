@@ -4,7 +4,7 @@
  *
  *
  * Eric Myers <myers@spy-hill.net  - 30 March 2006
- * @(#) $Id: view_logs.php,v 1.7 2009/03/23 21:07:21 myers Exp $
+ * @(#) $Id: view_logs.php,v 1.8 2009/04/29 20:43:24 myers Exp $
 \***********************************************************************/
 
 require_once("macros.php");             // general utilities
@@ -38,8 +38,9 @@ $errfile = $id ."_err.log";
  * Display Page:
 \***********************************************************************/
 
-html_begin("View Log Files");
-//form_begin('view_logs');
+$title="View Log Files";
+html_begin($title);
+title_bar($title);
 controls_begin();
 
 show_log_files($Nplot);

@@ -19,7 +19,7 @@
  * user instead of asking them to log in. 
  *
  * Eric Myers <myers@spy-hill.net>  - 21 July 2008
- * @(#) $Id: elab_interface.php,v 1.17 2009/04/27 20:03:33 myers Exp $
+ * @(#) $Id: elab_interface.php,v 1.19 2009/06/02 13:48:23 myers Exp $
 \***********************************************************************/
 
 require_once("debug.php");      
@@ -49,7 +49,6 @@ function elab_login($user='guest', $passwd='guest'){
                     , MSG_WARNING);
         return FALSE;
     }
-
 
     // TODO: urlencode password to escape "&" and "?" 
 
@@ -142,7 +141,7 @@ function elab_login($user='guest', $passwd='guest'){
         // If we are authenticated to BOINC then save group/passwd there
         elab_save_passwd($passwd);        
 
-        //return TRUE;
+        //DEBUG//return TRUE;
     }
 
     /*************************************************************
@@ -235,8 +234,13 @@ function elab_login($user='guest', $passwd='guest'){
 
 function elab_logout(){
     global $elab, $elab_group, $elab_cookies;
-    unset($elab_group);
+
+    // clear any JSP session cookie
+    $AuthCookie = $elab_cookies[$elab];
+    setcookie( $AuthCookie['Name'], '', time()-86400, "/");
     unset($elab_cookies[$elab]);
+
+    unset($elab_group);
     return;
 }
 
@@ -458,7 +462,6 @@ function elab_upload($file_path, $file_name='', $comments='',
 
 
 
-
 /***********
  * Save group/passwd to BOINC
  */
@@ -472,29 +475,43 @@ function elab_save_passwd($password){
     // Verify we have something to save
     //
     if( empty($password) ) return FALSE;
+    debug_msg(2,"elab_save_passwd(): password to save: $password");
     if( !elab_is_logged_in() ) return FALSE;
 
     // Check for BOINC login and database access
     //
+    debug_msg(2,"elab_save_passwd(): are we logged in to Forums? ");
     if( empty($authenticator) ) return FALSE;
+
+    debug_msg(2,"elab_save_passwd(): get_logged_in_user()? ");
     if( !function_exists('get_logged_in_user') ) return FALSE;
+
+    debug_msg(2,"elab_save_passwd(): initialize BOINC database? ");
     if( db_init_aux() != 0 ) return FALSE;
 
     $u = get_logged_in_user(false); // false means *try* to get BOINC user
+    debug_msg(2,"elab_save_passwd(): logged in as ". $u->name);
+
     if( empty($u) ) return FALSE;
 
     $userid=$u->id;
     $elab_name=$elab;
     $group_name = $elab_group;
+    debug_msg(2,"elab_save_passwd(): elab: $elab_name "
+	       ."group: $group_name ");
+
         
     // Insert/Replace what we now know, with a timestamp
     //
     $q = "REPLACE INTO elab_group "
         ."(userid, elab_name, group_name, password, timestamp) "
-        ."VALUES ($userid, $elab_name, $group_name, $password, ". time()." ) ";
+        ."VALUES ($userid, \"$elab_name\", \"$group_name\", \"$password\", "
+	. time()." ) ";
+    debug_msg(2,"elab_save_passwd(): query: $q ");
     $result = mysql_query($q);
     $x = !empty($result);
-    mysql_free_result($result);
+    if( $x ) mysql_free_result($result);
+    else  debug_msg(2,"  FAILED. ");
     return $x;
 }
 

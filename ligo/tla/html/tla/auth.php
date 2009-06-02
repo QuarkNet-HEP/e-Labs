@@ -25,7 +25,7 @@
  * use add_message() to show something to the user.
  *
  * Eric Myers <myers@spy-hill.net>  - 20 June 2006
- * @(#) $Id: auth.php,v 1.46 2009/04/22 18:05:50 myers Exp $
+ * @(#) $Id: auth.php,v 1.47 2009/05/26 20:55:24 myers Exp $
 \***********************************************************************/
 
 require_once("debug.php");      
@@ -104,25 +104,7 @@ function check_authentication(){
     debug_msg(5,"get_logged_in_user() exists?");
 
     if( !function_exists('get_logged_in_user') ) { 
-        if( file_exists("../inc/util.inc") ) {  // from BOINC?
-            debug_msg(6,"loading ../inc/util.inc");
-            include_once("../inc/util.inc");
-            debug_msg(6,"loaded ../inc/util.inc");
-        }
-        elseif( file_exists("../include/util.php") ) { // or from other?
-            debug_msg(6,"loading ../include/util.php");
-            include_once("../include/util.php");
-        }
-
-        // Eventually we'll just use this
-        elseif( file_exists("$BOINC_html/include/util.php") ) {
-            debug_msg(6,"loading $BOINC_html/include/util.php");
-            include_once("$BOINC_html/include/util.php");
-        }
-        else {
-            debug_msg(0,"Cannot find the BOINC utilities I need!!!");
-            debug_msg(0,"(I even looked in $BOINC_html/include)" );
-        }
+	load_BOINC_util();
     }
 
     // Keep in mind that get_logged_in_user() returns a BOINC user _Object_  
@@ -323,6 +305,34 @@ function check_authentication(){
 }// check_authentication()
 
 
+// Load the BOINC inc/util.inc file, or something that can take it's place. 
+//
+
+function load_BOINC_util(){
+  global $BOINC_html;
+
+  if( file_exists("../inc/util.inc") ) {  // from BOINC?
+    debug_msg(6,"loading ../inc/util.inc");
+    include_once("../inc/util.inc");
+    debug_msg(6,"loaded ../inc/util.inc");
+  }
+  elseif( file_exists("../include/util.php") ) { // or from other?
+    debug_msg(6,"loading ../include/util.php");
+    include_once("../include/util.php");
+  }
+
+  // Eventually we'll just use this
+  elseif( file_exists("$BOINC_html/include/util.php") ) {
+    debug_msg(6,"loading $BOINC_html/include/util.php");
+    include_once("$BOINC_html/include/util.php");
+  }
+  else {
+    debug_msg(0,"Cannot find the BOINC utilities I need!!!");
+    debug_msg(0,"(I even looked in $BOINC_html/include)" );
+  }
+}
+
+
 
 /**
  * HTTP Basic authentication I: previous HTTP authentication? */
@@ -426,5 +436,5 @@ function show_user_login_name($username='') {
 
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: auth.php,v 1.46 2009/04/22 18:05:50 myers Exp $";
+    "\$Id: auth.php,v 1.47 2009/05/26 20:55:24 myers Exp $";
 ?>

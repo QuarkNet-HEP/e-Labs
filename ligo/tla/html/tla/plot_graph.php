@@ -4,7 +4,7 @@
  *
  *
  * Eric Myers <myers@spy-hill.net  - 30 March 2006
- * @(#) $Id: plot_graph.php,v 1.55 2009/04/22 14:59:27 myers Exp $
+ * @(#) $Id: plot_graph.php,v 1.57 2009/05/26 20:55:38 myers Exp $
 \***********************************************************************/
 
 require_once("macros.php");             // general utilities
@@ -59,7 +59,7 @@ load_vi_settings($WorkFlow);
  * Action:
 \***********************************************************************/
 
-//elab_ping();
+elab_ping();
 
 
 // Return code from ROOT script, either task execution or plot options.
@@ -259,7 +259,10 @@ if( !empty($_POST['save_plot']) || !empty($_GET['save_plot']) ){
  * Display Page:
 \***********************************************************************/
 
-html_begin("Plot Graph","Plot # ".$Nplot);
+$title="Plot Graph";
+html_begin($title);
+title_bar($title,"Plot # ".$Nplot);
+
 controls_begin();  // includes message area
 
 echo "<TABLE width='100%' bgcolor='white' border=4>
@@ -450,5 +453,5 @@ tool_footer();
 html_end();
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: plot_graph.php,v 1.55 2009/04/22 14:59:27 myers Exp $";
+    "\$Id: plot_graph.php,v 1.57 2009/05/26 20:55:38 myers Exp $";
 ?>

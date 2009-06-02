@@ -4,7 +4,7 @@
  *
  *
  * Eric Myers <myers@spy-hill.net  - 30 March 2006
- * @(#) $Id: data_select.php,v 1.49 2009/03/23 21:07:21 myers Exp $
+ * @(#) $Id: data_select.php,v 1.50 2009/04/29 20:43:24 myers Exp $
 \***********************************************************************/
 
 require_once("macros.php");             // general utilities
@@ -158,7 +158,9 @@ if( all_channels_valid($input_channels) ){
  * Display Page:
 \***********************************************************************/
 
-html_begin("Data Selection");
+$title="Data Selection";
+html_begin($title);
+title_bar($title);
 controls_begin();
 
 
@@ -329,5 +331,5 @@ tool_footer();
 html_end();
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: data_select.php,v 1.49 2009/03/23 21:07:21 myers Exp $";
+    "\$Id: data_select.php,v 1.50 2009/04/29 20:43:24 myers Exp $";
 ?>

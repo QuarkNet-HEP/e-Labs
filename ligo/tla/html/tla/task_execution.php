@@ -9,7 +9,7 @@
  *
  *
  * Eric Myers <myers@spy-hill.net  - 25 October 2007
- * @(#) $Id: task_execution.php,v 1.29 2009/03/23 21:07:21 myers Exp $
+ * @(#) $Id: task_execution.php,v 1.30 2009/04/29 20:43:24 myers Exp $
 \***********************************************************************/
 
 require_once("macros.php");              // general utilities
@@ -347,7 +347,9 @@ if( $exec_type=='post' || $exec_type=='swift'){
  * Display Page:  form input for the basics
 \***********************************************************************/
 
-html_begin("Task progress: $task_id");
+$title="Task progress: $task_id";
+html_begin($title);
+title_bar($title);
 controls_begin();  // includes message area
 
 // Task Control bar 
@@ -553,5 +555,5 @@ tool_footer();
 html_end();
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: task_execution.php,v 1.29 2009/03/23 21:07:21 myers Exp $";
+    "\$Id: task_execution.php,v 1.30 2009/04/29 20:43:24 myers Exp $";
 ?>

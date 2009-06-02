@@ -6,7 +6,7 @@
  * This is just for settings, not code.
  *
  * Eric Myers <myers@spy-hill.net  - 30 March 2006
- * @(#) $Id: config.php,v 1.56 2009/04/09 15:40:56 myers Exp $
+ * @(#) $Id: config.php,v 1.58 2009/05/26 20:55:38 myers Exp $
 \***********************************************************************/
 
 // Bluestone version is put at the bottom of every page, 
@@ -129,5 +129,5 @@ $TLA_tool_name='Bluestone';
 
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: config.php,v 1.56 2009/04/09 15:40:56 myers Exp $";
+    "\$Id: config.php,v 1.58 2009/05/26 20:55:38 myers Exp $";
 ?>

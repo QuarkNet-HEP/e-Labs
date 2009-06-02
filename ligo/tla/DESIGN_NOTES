@@ -1,0 +1,454 @@
+			     DESIGN NOTES
+		    for the LIGO I2U2 Analysis Tool
+
+			      Eric Myers
+			 <myers@spy-hill.net>
+
+			     - General -
+
+ The purpose of the analysis tool (it doesn't yet have a formal name)
+ is to provide web access to LIGO data channels to allow high school
+ students and their teachers to use LIGO environmental data from
+ sensors such as seismometers, magnetometers, tilt-meters and weather
+ stations for investigative exercises called e-Labs.  This is part of
+ LIGO's contribution to "Interactions in Understanding the Universe"
+ (I2U2) [//http://www-ed.fnal.gov/uueo/i2u2.html]
+
+ Since the tool does not yet have a name the letters TLA are used as a
+ placeholder.  Just about every other LIGO tool has a name that gets
+ turned into a three letter acronym (DMT, DTT, GDS, etc) so TLA stands
+ for "three letter acronym".  If you don't like that and are willing
+ to use military-style jargon, you can also think that it stands for
+ "Tool, LIGO Analysis".  This is so bad that we will be forced at some
+ point to create a better name, perhaps even one that is not a three
+ letter acronym.  I've tried to minimize the use of TLA or any other
+ name or identifier for the package so that it can easily be changed.
+
+ If you are reading the code and you find something that looks
+ incomplete then it probably is.  This tool was put together first as
+ proof of concept and then as a quickly built tool for the first LIGO
+ e-Lab, with the idea that it would be refined as further development
+ proceeded.  There is a lot more that needs to be done.  I have tried
+ to anticipate future developments in the design, where possible.
+
+
+		      - Server Side Scripting -
+
+ Server: The tool runs on an Apache web server with server side
+ scripting using PHP.  (Any other web server which supports PHP would
+ probably also work, but Apache is the best.)  The continuous dialog
+ between the user and the server is maintained using PHP's session
+ management features.  The server keeps track of the session variables
+ between web page visits by using a web 'cookie' to identify the
+ session.  That means that the user's browser must have cookies
+ enabled, at least to exchange cookies between the same site that sets
+ them.  This is the way just about every web commerce site
+ (eg. Amazon, e-Bay, mySpace) works, so it should present no problems.
+
+ Cookies: It is recommended that the users only allow cookies to only
+ be sent back to the pages that set them.  That presents a problem if
+ we use multiple servers to interact with the user, which we hope to
+ do.  More on the complications of that later when we deal with the
+ issue of single-sign-on.
+
+
+			 - Script Structure -
+
+ Each interactive web page is an HTML form which always submits the
+ form variables back to itself.  Because of this, each PHP file for a
+ page has a definite structure.  First there is some "setup" and
+ authentication, then the "action" part of the form, based on any
+ inputs, then the "display" part of the form, which shows any results
+ or to update the output, and finally the "closing" part of the form
+ which saves any state for the next iteration and finishes the page
+ output.
+
+ Be careful not to deviate too much from this structure.  The "setup"
+ or "action" parts of the script may want to transfer control to a
+ different script, using an HTTP location header (a 'redirect'), or
+ HTTP refresh header, but you cannot send such headers if output has
+ begun.  Therefore, we always write output to the web page after any
+ such processing and decision making.
+
+ Another thing to watch out for is any output at all before the
+ headers are to be sent.  Each file must begin with "<?php" as the
+ very first line. Otherwise anything in front of that is sent as
+ output, and since output has begun you cannot send headers.
+ Remember, PHP is a 'pre-processor', and anything not between <?php
+ and ?> is just echoed to the browser.  Which can be useful.  This is
+ a general issue with PHP, not something specific to our project.
+
+ Debugging:  The functions in debug.php support the display of
+ debugging messages based on a global variable called $debug_level,
+ which generally ranges from 0 to 10.   The higher the level, the more
+ verbose the output.  Messages with levels under 5 are for warnings or
+ errors and are shown in red, while higher levels are for information
+ or tracing and are shown in orange.  Use higher levels inside loops,
+ lower levels outside, and you can easily control the level of verbosity.
+ The display of PHP warnings or errors is also controlled by the debug
+ level, but this is only turned on for selected IP addresses so that
+ only the developers will see these errors, not our 'customers'.
+ There is a "pi" link at the bottom of pages where debugging is
+ enabled.  This will show the contents of _SESSION variables and other
+ useful information.  
+
+ As a general rule I try to use single quotes in HTML so that it can
+ then be enclosed by double quotes in PHP without having to worry
+ about escaping all the quotation marks.
+
+
+                          - Data Flows -
+
+ The analysis dataflows are to be evaluated by an Execution Engine,
+ which may or may not be based on the Grid tool VDS (Virtual Data
+ System) using VDL (the Virtual Data Language).  Regardless of the
+ implementation, the idea is that each analysis flow is a
+ transformation of input data into output data, and each
+ transformation may itself composed of an arrangement of several
+ smaller data transformations.  Right now we just run one ROOT script,
+ but in the future we can run just about anything in its place
+ (including a program or script which runs a ROOT script.)
+
+ LabView: Many physicists and physics students are already familiar
+ with another data flow tool called LabView (a commercial product of
+ National Instruments, which works with hardware they also sell).  Or
+ they should be.  I have modeled the data flow block diagrams on those
+ used by LabView so that (1) anybody already familiar with LabView
+ will know how our tool is supposed to work, or (2) anybody who uses
+ our tool will then also quickly understand how to use LabView.  I
+ hope that this does not cause patent, trademark or copyright problems
+ with National Instruments, and I've tried to avoid anything that
+ would clearly cause be an infringement.  If there is a question of a
+ conflict we might ask them for permission.  Since they already have a
+ graphical editor for creating data flows (they call them VI's --
+ Virtual Instruments) it might be easy/useful to be able to use their
+ software for our dataflows.
+
+ ROOT: The graphics are produced using the ROOT software package from
+ CERN.  This is the best tool for the job, since this is also used in
+ the LIGO Control Room tools, but there is nothing specific in the
+ tool that requires ROOT.  You could also use gnuplot or octave/matlab
+ or grace/xmgr for plotting.
+
+ dmtroot: The ROOT scripts make use of 'dmtroot', a collection of ROOT
+ macros and ROOT enabled dynamic libraries which come from the LIGO
+ Data Monitoring Tool (DMT) software, which is now a a part of the
+ LIGO Global Diagnostic Software (GDS).  I had to do a lot to get GDS
+ to build on Linux and to get ROOT to use the libraries and macros.
+ There are (or will be) separate notes on this.
+
+
+		 - Transformations and DMT Monitors -
+
+  Data Monitors are daemon processes which run in the LIGO control
+room and generate both plots on the main display and digested data
+products.  So, for example, we use the output frames from one of these
+to get bandwidth filtered seismic data.  There is a software framework
+in DMT which lets the scientists write a new monitor by only writing a
+few key routines that are specific to that monitor, not all the other
+common stuff to get it working within DMT.  I'd like to modify or add
+to that framework so that we can use existing monitor code, but in an
+off-line mode as a part of the data flow for this tool.  Thus, for
+example, we could use the current seismic filter code, but feed it
+data from the magnetometer channels, obtaining bandwidth filtered data
+from those sensors.  We could also use the earthquake monitor code to
+search for isolated electromagnetic events in the magnetometer
+channels.  So this approach would very quickly open up a whole new set
+of possible e-Labs using the magnetometers.
+
+  In the long run it could also run the other way.  If someone
+develops an interesting transformation using the Analysis Tool it
+would then be possible and relatively easy to bring it into the
+control room as a new DMT monitor.  I don't know if that will ever
+happen with student created analyses, but I would like to make it a
+possibility.  It certainly would be a sure sign of success for the
+students involved, and something like this did happen in the earlier
+Gladstone project.
+
+  Keep in mind that if we set up our Execution Engine to use the
+(modified?) DMT Monitor Framework and to be compatible with VDS then
+the transformations we build could be used much more widely than just
+in this tool.
+
+
+             - Browsers and Client Side Scripting -
+
+ Browser: Development was mainly done using Mozilla Firefox but it is
+ a design goal that this work with all 'major' browsers (see below).
+ So it needs to be tested from time to time to verify that it is not
+ browser dependent.  I have not done this.  It also needs to be tested
+ to see that it works on large screens, small screens, and with and
+ without scripting.  I have not done this (or at least not enough).
+
+ JavaScript: JavaScript is used to make the web pages easier to use,
+ but we also recognize that some users may want to turn JavaScript
+ off.  Some schools may require that it be turned off.  JavaScript is
+ not as secure as Java for client side procedures, though it is more
+ common.  JavaScript flaws in some browsers have presented dangerous
+ security holes.  For example, scripts run on Internet Explorer can
+ change the status bar at the bottom of the screen to present a fake
+ URL, which is used as a part of 'phishing' scams.  (Firefox lets you
+ turn this off, and you should.)  Given the security problems with
+ scripting, some users may choose or even require that scripting be
+ turned off in the browser.  Therefore, it is a design goal that the
+ web site should work correctly with JavaScript turned off, even if it
+ is a little more complicated or if added bonus features do not work.
+ Be sure to test this whenever the software is updated or released.
+
+ Browser Features: If you do need a feature from JavaScript that may
+ not be available in all browsers, do not try to figure out if it is
+ available via browser detection.  That is complicated and doomed to
+ failure, if not now then in the future.  Instead, always test
+ directly for the feature.  If the feature isn't available (or you
+ cannot detect it) then have a viable alternative action.  This
+ simpler approach avoids a lot of problems associated with 'browser
+ detection' based on what the browser reports as the User Agent string.
+
+ DOM: If you do try to use special features with JavaScript, please
+ try to conform to the W3C Document Object Model (DOM) as much as
+ possible.  If you need a feature that does not conform to the DOM,
+ you really need to have a good reason to use it.  Using the DOM means
+ that it will work on all current and future browsers (well, IE 7 is
+ headed that way, even if it's not fully DOM compliant).  Supporting
+ older browsers, if possible, is a good reason, but not a requirement.
+  
+ Pull-down menus:  I've just learned how to do pull-down menus in CSS,
+ which does not require JavaScript.  This is implemented in the e-Lab
+ documentation part of the site (html/ligo), and I will later try to
+ add this to the Analysis Tool itself.  But this does not work for IE6,
+ which does not do CSS correctly.  So there is a supporting JavaScript
+ module to fix the CSS hover capability in IE6.   That could be turned
+ on just via browser detection.  IE7 supposedly does CSS correct (or
+ more correct) and so we may not need the extra JavaScripting.  But
+ this should all be tested, and so far it has not.
+
+
+			    - Web Design -
+
+ I've tried to follow some important guiding principles while designing
+ the web client part of the Analysis Tool.  These are intended to make
+ the pages easy to read, easy to navigate, and easy to use, with
+ little or no formal training.  The pages need to pass these tests (at
+ a minimum):
+
+ * First Impressions: someone unfamiliar with the project should be
+   able to figure out from the main page what the project is about,
+   and what they should/could do next.   And they should be able to
+   get to the main page easily from any other page, usually from a
+   link in the upper left corner (could be the logo, could be "Home",
+   could be both).
+
+ * Menus are shortcuts, not primary links: The pull-down menus or
+   sidebars are helpers.  Primary links for the flow of the dialog
+   should be in the body of the page, even if they are also in such
+   menus.  Here is the test: does the page work as intended even if
+   these menus/sidebars are removed?
+
+ * JavaScript:  the page should function correctly, albeit perhaps not
+   as nicely, even with client side scripting (JavaScript) turned off.
+   (See above.)
+
+ * Size and scaling: All screen measurements for the sizes of things
+   (eg. widths of tables, indentations) should be relative not
+   absolute.  Use 5% instead of 100px, and use 1em instead of 10px, so
+   that measurements will adjust to the user's browser preferences.
+
+   Here are the tests:  
+
+      1. Change the browser window sizes, to fill the screen, or to be
+         tall and narrow, or a small square.  The page should look
+         okay.  It should not have a forced fixed size.
+
+      2. Widen the page, then narrow it until a horizontal scroll bar
+         appears.  Is this reasonable?   You should not have to use
+         this scroll bar under normal operation for a normal page layout.
+
+      3. On windows (or X11 can do this too) change the screen
+         resolution, from 800x600 to 1280x1024 and in between and
+         maybe even higher res.  The page should look okay, and not be
+         small and isolated compared to other windows.
+
+
+  * Font sizes: users can change the default font size, and the pages
+    should still have a reasonable look with no broken lines or other
+    artifacts.   Try viewing the page at several font sizes, larger
+    and smaller than what you think is "normal" to verify.
+  
+ * Browser independence: The page(s) should work on all 'major'
+   browsers, and on all platforms.  So the web pages should be tested on
+   Windows, Mac, and Linux (and perhaps Sun) with Firefox, Internet
+   Explorer (IE6/IE7), Safari, Opera, Netscape (newer versions, at least),
+   and (what others?).   Perhaps even AOL and Compuserve, as students
+   may be using our pages via those from home.
+
+   Our user base of teachers and students is likely to use the Windows
+   browsers almost exclusively, though there is currently pressure
+   against adoption of IE7.   Even if we develop on Firefox we need to
+   be sure that our pages  work with IE6 and IE7, and whatever
+   follows.  The best way to do that is to try always to use standard
+   conventions and stay away from browser-specific "tricks".
+
+
+ * New windows: Do not create new windows with "target=_blank", which
+   always creates yet another new window.  Instead, if you must create
+   a new window (and often it's likely you don't really need to) then
+   make the target a named window which matches the function of the
+   window.  For example, to pop open a new window with instruction for
+   the current window (so you don't loose that window) set
+   "target=help", and then all "help" instructions are confined to the one
+   new "help" window.   This has it's own problems: if the "help"
+   window is open but obscured, pressing the button which usually pops
+   it up will appear to have no effect.
+
+
+		       - Server Configuration -
+
+ Right now special care has to be taken to configure the server so
+ that image files are not cached by the browser.  Otherwise the user
+ will sometimes see an old, stale version of a plot even though a new
+ one has been created on the server.  This is a bug.  It happens
+ mainly when the "undo" feature is uses, but other times as well, such
+ as starting a new analysis.  This requires the server have the
+ mod_expires module, which also has to be turned on explicitly.  You
+ could configure this in the site config file or in a .htaccess file
+ in the working (session) directory.  I have used the latter.  In the
+ working directory sess/ I put a .htaccess file containing
+
+    ExpiresActive On
+    ExpiresByType image/jpeg now
+    ExpiresByType image/gif now
+    ExpiresByType image/svg now
+    ExpiresByType image/png now
+
+    # also for the web pages themselves and any .C ROOT files:
+
+    ExpiresByType text/plain now
+    ExpiresByType text/html now
+
+ Note also that for this to work from a .htaccess file you have to 
+ have the server configured to allow the use of a .htaccess file 
+ for that directory and to allow an override of "Index" information.
+ So in the apache config file you must have an "AllowOverride Indexes" 
+ which applies to the session directory.
+
+ I don't like this, and it also fails with some browsers which don't
+ seem to be as smart as they could about using the Expires: headers.  
+ The 'right' way to do this is to give each image file it's own unique
+ name, and to track that name even as the "undo" feature is used.  I'm
+ working toward that as I work on the code, but it's not all in place yet.
+
+
+			  - Channel Names -
+
+ I have followed the LIGO channel naming scheme as much as possible,
+ but with some parts made a little bit more understandable for
+ beginners.  The first part, which is something like H2: or L1: (or
+ H0: for LHO PEM data) is called the "site" for beginners, though it
+ is really the "device" which produces the data, or the "source" of
+ the data.  The label changes for higher user levels, and misleading
+ students a little bit so that they understand what is going on is not
+ a bad thing if you clear up the distinction later.  When we only
+ offer PEM or PEM-derived data then "site" and "device" are really the
+ same thing.  Students with more experience can understand the
+ distinction between H0, H1 and H2.
+
+ The LIGO channel naming scheme is device:subsystem_station_sensor.ttype.  
+ The "ttype" is absent for untrended data, and will be "mean" or "rms"
+ or something else for trended channels.  In general the "station" is
+ the location of the sensor, such as EX, EY, LVEA, etc.   DMT monitors
+ which derive their data from a particular sensor then have the same
+ "station" as the sensor.  Some monitors, such as the GDS earthquake
+ monitor, don't have a "station", so we use "monitor" to reserve the
+ position and preserve the pattern.
+
+ Non-LIGO data can be made to fit into the same scheme.  This is not
+ hard, because _any_ data source can be classified by some hierarchical
+ scheme, so the only real question is how many level of hierarchy are
+ we using?  For non-LIGO sources we substitute something else for the
+ "device", such as NOAA for buoys.  Then we can use "BUOY" for the
+ subsystem, the buoy number or name for the "station", and the
+ particular sensor name on the buoy for the "sensor".   Or for NOAA
+ surface observations we can use "METAR" for the "subsystem" for surface
+ observations, and the station ID (eg. KPOU or KRLD) for the "station"
+ So with only minor wiggling everything seems to fit this naming
+ scheme. 
+
+
+			   - Plot Options -
+
+ The way plot options and other controls are dealt with deserves
+ explanation.  For each "control" there is a function to display an
+ input item (text field, pull-down or radio button), and there is
+ another function to "handle" the input from that input item control
+ (or maybe a set of them).  Plot options are kept in an array of
+ ROOT_Plot_Option objects, and any changes are recorded in the array
+ as the explicit ROOT command which will make the appropriate change.
+ When a plot is to be updated we run through this list of options and
+ emit the ROOT commands for all options that have changed.  Then we
+ run ROOT, first with the file which produced the original (or
+ previous plot), then with the file containing the commands to modify
+ the plot, then a file to write both the new plot and the commands to
+ produce it (for the next iteration).
+
+
+			  - Authentication -
+
+We want to allow the Analysis Tool to be accessible in two different
+ways, either as an anonymous 'guest' user or by authenticating as a
+previously registered user who has their own personal account on the
+logbook/discussion site.  We require some kind of authentication so
+that we can limit use of the tool to only those who are participating
+in the program while it's being developed, and in anticipation of a
+need for authentication when the user base is larger.  If we tie in
+authentication to the Analysis Tool with authentication to the
+logbook/discussion site then we can provide simpler single-sign on,
+and we can eventually allow users to save the results of their
+investigations in a "file locker" associated with their account.
+
+   However, we have observed from the way our teachers and their
+students have used the tool that it is much easier for beginners to
+get started without having to set up an account on the
+logbook/discussion site.  A guest login will also let us demonstrate
+the Analysis Tool to people who are not directly involved in the
+program and not likely to need or want a personal account.  So we
+really need to support both methods of access.
+
+  I have set up a somewhat clever way to use HTTP basic authentication
+for guest accounts on the machine on which the Analysis Tool is
+running.  Normally this kind of authentication is not optional.  You
+either require it or you don't use it.  What I have done is direct
+guest logins to a sub-directory for which HTTP "basic" authentication
+is required.  Once they successfully authenticate a script in that
+sub-directory saves the authentication information into the PHP
+session, and that in turn confers authentication to the whole Analysis
+Tool even though the server and browser only negotiated access for the
+subdirectory.
+
+  For authentication via a user account (not a guest account which
+uses HTTP basic authentication) we want to allow authentication on the
+logbook/discussion site to confer authentication to the Analysis Tool
+without the user having to stop and enter their password again.  The
+way this is implemented is that on the discussion site we generate a
+long random hex number called a 'ticket'. (It's similar in principle
+to a Kerberos ticket in that it's a short-term token for
+authentication, but it's not the same implementation.)  The user's
+name, IP address and authenticator are sent with the ticket number to
+the remote server via a secure back channel (currently SSH, could be a
+secure SQL connection), then the user's session is redirected to the
+remote server with the ticket number in the URL.  If the ticket is not
+too old and the ticket number and IP address match then the user is
+automatically authenticated on the remote server.  (If we use a
+database we could also mark the ticket as 'used'.)
+
+  The ticket generation and redirection are in relay.php.  Acceptance
+of the ticket is in auth.php.  An unauthenticated request is sent to
+auth_required.php.  All guest logins are sent to tekoa to use the
+subdirectory trick described above for HTTP basic authentication.  All
+user logins are sent to the discussion site for login or verification
+of authentication, then redirect to tekoa with a ticket via relay.php.
+This is all almost completely symmetric -- it should work almost same
+on both servers, or more than these if we add more servers.
+
+  A diagram of how a web request is shuttled between pages based on
+previous authentication and the user's choice of guest or user login
+is shown in cross-server-auth.dia (and img/cross-server-auth.png).

@@ -1,0 +1,26 @@
+			The LIGO Analsis Tool
+
+			      Eric Myers
+			 <myers@spy-hill.net>
+
+ 
+The code here is for a web-based interactive Analysis Tool, designed
+originally for LIGO PEM and DMT/PEM data for the I2U2 project.
+
+See the file DESIGN_NOTES for the details of how it works or why it
+  works a particular way.
+
+See the file RELEASE_NOTES to see what is new or what's been changed.
+
+See http://i2u2.spy-hill.net for the logbook/discussion site and links
+to a working version of the tool (and possibly test and development
+versions as well).
+
+Feel free to send me any questions, comments, or suggestions.
+
+
+--
+Eric Myers            <myers@spy-hill.net>      503-564-4169
+
+PGP Key #6E2D2259/RSA: BA39 1D46 5EC3 0D59 C2AC 6FCB F920 4DC8
+PGP Key #AC3A8E09/DSS: F57E 7D79 21B7 BB3C 1112 4394 158F AC54 AC3A 8E09

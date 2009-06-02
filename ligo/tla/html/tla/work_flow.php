@@ -4,7 +4,7 @@
  *                  they wish to use.
  *
  * Eric Myers <myers@spy-hill.net  - 30 March 2006
- * @(#) $Id: work_flow.php,v 1.33 2009/03/23 21:07:21 myers Exp $
+ * @(#) $Id: work_flow.php,v 1.34 2009/04/29 20:43:24 myers Exp $
 \***********************************************************************/
 
 require_once("macros.php");             // general utilities
@@ -83,7 +83,9 @@ debug_msg(6, "User level: ".$user_level);
  * Display Page:
 \***********************************************************************/
 
-html_begin("Workflow");
+$title="Workflow";
+html_begin($title);
+title_bar($title);
 controls_begin();
 
 echo "<b>Workflow:&nbsp;</b> ";
@@ -160,5 +162,5 @@ tool_footer();
 html_end();
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: work_flow.php,v 1.33 2009/03/23 21:07:21 myers Exp $";
+    "\$Id: work_flow.php,v 1.34 2009/04/29 20:43:24 myers Exp $";
 ?>

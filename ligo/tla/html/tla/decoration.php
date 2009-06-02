@@ -37,6 +37,7 @@ function html_begin($title,$right_stuff='') {
         if($user_level>2)   $bgc='lightgrey';
         //no//if($user_level==5)  $bgc='white';
     }
+    // Override: setting background was overkill -EAM
     $bgc='lightgrey';
 
     /* begin document: */
@@ -51,14 +52,28 @@ function html_begin($title,$right_stuff='') {
     // todo: <meta> tags go here
 
 
-    /* favicon & style sheets */
+    /* favicon is the Address Bar icon */
 
     echo "<link rel='shortcut icon' type='image/x-icon' href='/favicon.ico'>\n";
+
+    /* Style sheets come in a full cascade... */
+
     echo "<link rel=stylesheet type='text/css' href='style.css'>\n";
+
+
+
+
+
+
+
+
+
+
+
 
     echo "</head>\n <body bgcolor='$bgc'>\n";
 
-    /* the entire page is a self-posting form */
+    /* The entire page is a self-posting form */
 
     $form_name=basename($self,'.php');
     echo "<form name='$form_name' method='post' action='$self'>\n";
@@ -70,15 +85,15 @@ function html_begin($title,$right_stuff='') {
     else echo " /* do nothing */ ";
     echo "} </script>\n";
 
-    tool_masthead($title);
-    title_bar($title,$right_stuff);
+    ligo_masthead($title);
 }
 
 
-/* the masthead is displayed at the top of every page 
- * //todo: link to master_url that works on all sites */
+/*****************
+ * The masthead is displayed at the top of every page 
+ */
 
-function tool_masthead($title,$right_stuff='&nbsp;'){
+function ligo_masthead($title,$right_stuff='&nbsp;'){
     echo "\n<!-- tool masthead -->
      <table class='masthead' width=100% border=0 bgcolor='black' ><tr>
        <td width=15% valign='top' align=left>
@@ -90,27 +105,32 @@ function tool_masthead($title,$right_stuff='&nbsp;'){
 
     echo "
        <TD valign='CENTER' align='CENTER' >
-          <font size='4' color='white' face='helvetica,sans-serif' ><b>
-        <div id='header-title'>
-                	Welcome to the LIGO I2U2 e-Lab
+	<div class='header-title'>
+		LIGO e-Lab
+	</div>
+	<div class='header-subtitle'>
+	    $title
         </div>
-            </b></font>
+
        </TD>\n ";
 
     echo "
        <TD valign='TOP' align='RIGHT' >
-          <font size='3' color='grey' face='helvetica,sans-serif' ><b>
-        <div id='second-header-title'>
+        <div class='second-header-title'>
         	Laser Interferometer Gravitational-Wave Observatory
         </div>
-            </b></font>
-       </TD>\n ";
+       </TD></TR>\n ";
 
 
-echo "</TR><TD colspan='3'> <hr color='white'></TD></TR>\n  ";
+    /*********
+    echo "<TR><TD colspan='3'>
+        <div class='third-header-title'>
+          &nbsp; Laser Interferometer Gravitational-Wave Observatory
+        </div>
+	</TD></TR>\n";
+    *********/
 
     echo "</TABLE>";
-
     echo "\n<!-- END Tool Masthead -->\n";
 }
 
@@ -245,7 +265,7 @@ function html_end(){
     echo "<div class='edit_link'>";
     foreach ($gWikiTitle as $title ){
       $edit_url = $wiki_url . "index.php/$title";
-      echo "<a href='$edit_url'>$title</a> ";
+      echo "<a href='$edit_url'>&middot; $title</a>&nbsp; ";
     }
     echo "</div>\n";
   }
@@ -422,5 +442,5 @@ function form_end(){
 }
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: decoration.php,v 1.51 2009/04/09 15:40:56 myers Exp $";
+    "\$Id: decoration.php,v 1.53 2009/05/12 15:45:01 myers Exp $";
 ?>

@@ -1,0 +1,449 @@
+ 	Bluestone  (or TLA = Tool, LIGO Analysis) -- RELEASE NOTES
+
+This file contains a list of notable changes to Bluestone, the LIGO
+Analysis Tool software, along with the dates when a particular version
+is made the "Test" or "Production" release
+
+For changes to particular files please see also the CVS check-in notes
+for that particular file.
+
+==Release Types==
+
+There are three release levels for the software, so that we can
+continue development while providing a stable platform for teachers
+and students.  They are:
+
+   * Production:  the best, most stable version we have to date.  This
+	          is what teachers and students should be using, unless
+	          specifically asked to test a new feature
+
+   * Testing:     a version which we think works but which needs to be
+	          tested further before it is considered ready for
+	          general use.  This is a "release candidate".  This is
+	          beta testing.  If major errors are not found then it
+	          will likely become the Production release.
+
+   * Development: stuff we are still working on, and it likely as not
+		  does not yet work.  Only developers will want to use
+		  this version.  This is alpha testing.  Once we have it
+		  in a working form it may become a Testing release.
+
+
+==Releases by Version==
+
+This is a history of the Bluestone/TLA software releases, by version
+number and date: 
+
+
+== 0.74 ==
+('testing' on 2 June 2009) 
+
+   * Authorizing Bluestone to access your e-lab group also logs
+     you in to the e-lab. 
+
+
+== 0.73 ==
+('testing' on 26 May 2009, production 26 May 2009)
+
+   * Save e-lab group/password to database table when we know them
+
+   * functionalize load_BOINC_util()
+
+   * Revised masthead
+
+
+== 0.72 ==
+
+   * New tutorial transcluded from wiki pages
+
+   * List links to transcluded content in the footer
+
+   * Improved mechanisms for reaching a "final destination" next_url
+
+== 0.71 ==
+
+   * Adjust user levels of various channels
+   
+   * Add calibration info for ANL cluster machines 
+
+   * Check for authorization but do no require it (default to Guest)
+
+   * use TLA_ROOT_DIR not ROOT_DIR.
+
+   * Functionalize internals of run_dmtroot.sh
+
+   * Link to tutorial offered for beginners.
+
+   * Glossary term pop-ups done with JavaScript
+
+
+=== 0.70 ===
+('testing' on 31 October 2008)
+
+   * User can now specify minimum y value for a plot.
+
+   * Implemented "Cancel" button on the task_execution page. 
+
+   * Channel selector has a yellow/green status indicator, with green
+     indicating a valid, selected channel, while yellow indicates a
+     channel selection that is pending.
+
+   * All plot options (max/min y, pen color) are reset whenever
+     you press 'GO'. 
+
+   * While a task is in progress an interesting question is posed
+     to give the student something to think about while waiting.
+ 
+   * Task parameter files now written correctly, so we now give a link
+     to the parameter file (metadata) along with download links.
+
+   * elab_login() says it needs you to authorize Bluestone to access
+     your e-Lab group account, and the button says "Authorize" not
+     login.   This makes the purpose of the request clearer; it's more
+     like using a keychain than logging in.
+
+   * Lists of channels moved up to etc/ subdirectory, out of html/tla.
+     This is where all supporting files should live.
+
+   * GDS-EARTHQUAKE channels moved to Advanced user level, since it
+     might confuse new users that many earthquakes do not show up,
+     and to introduce just PEM channels at Intermediate level.
+
+   * PEM seismic channels default to .rms component, never mean, while
+     DMT-BLRM default to .mean component,  never .rms.    We take
+     square root of RMS channels in either case to always get microns/s.
+
+   * Move mean/min/max trend components to Advanced level, to lessen
+     confusion. 
+
+   * Fixed how auto_update control is handled, including initialization.
+
+   * Fixed problem where task_execution would continue indefinitely
+     even after analysis had completed.
+
+
+=== 0.62 ===
+('testing' on 13 October 2008, production 17 Oct 2008)
+
+   * Fix problem with task_execution iterating even after task
+     completes successfully.  This seemed to happen only after an
+     analysis completed and then you go back and modify parameters and
+     run it again.
+
+   * Do not show "Save As" button, since tekoa cannot make use of it.
+
+
+=== 0.61 ===
+('testing' on 5 August, 2008, production 9 Sept 2008)
+
+   * Check for pecl_http functions before using them, and if not found
+     (as is the case on tekoa) then fail more gracefully.
+
+
+=== 0.60 ===
+('testing' on 5 August, 2008)
+
+   * Authentication to the e-Lab site now working.  This will be used
+     to submit tasks to Swift and to save plots to the e-Lab site.
+
+   * "Save Plot As" button works to save a plot to the e-Lab site.
+      It asks for authentication to the e-Lab site if not already done.
+
+   * After you jump to task_exectution page you wait until expected
+     time of task completion, instead of refreshing every 5 seconds.
+     If the task is not yet done, then refresh every 5 seconds until
+     it finishes.
+
+   * Glossary and Help links, which pop open a new window, use the
+     'kiwki' skin to just show the text, no wiki controls, but with
+     a "close window" button.
+   
+   * Seismometer units changed to "microns/s" as more understandable,
+     (and avoids \\mum/s bug).
+
+   * Fixed calibration bug where older DMT seismic channels without
+     "BRMS" in the name were not being calibrated.   Also deal with
+     negative BRMS values (these should not happen, but they exist).
+
+
+=== 0.52 ===
+('testing' on 17 July, 2008, production 18 July 2008)
+
+   * Allow guest authentication based on referer domain name .i2u2.org
+  
+   * Provide 'default' authentication as 'guest', which short-circuits
+     use of HTTP Basic Auth
+
+   * Seismometer units changed to "microns/s" as more understandable,
+     (and avoids \\mum/s bug).
+
+
+=== 0.51 ===
+('testing' on 18 June, 2008, 'production' on 11 July 2008)
+
+   * Units are set for a channel (in ROOT, not the GUI code) and the
+     proper calibration is applied (eg. for DMT channels take sqrt() )
+
+   * If a task completes but with non-zero return code then stop in
+     Task Execution step and display log files.
+
+   * Return codes from task are translated into text error messages,
+     both when task is launched and when it completes.
+
+   * Detects changes between production/test/development release and 
+     forces a reset.
+
+   * view_log_files() function now works correctly both from main tla
+     directory and from the slot.
+
+   * Password file for guest acceses moved to ./conf/local.d/tla-passwd
+     relative to the apache httpd ServerRoot
+
+
+=== 0.50 ===
+('testing' on 9 May 2008, production June 18 2008)
+
+   * Added "Task Execution" step.  When an analysis is launched it
+     immediately goes to this step, and then polls the server until
+     the task is done, instead of the browser waiting.  This is also
+     in preparation for managing Grid execution.
+
+   * Found and fixed a problem with memory usage.  (The channel
+     selector, which is large,  was taking twice as much space as necessary.)
+
+   * Added execution selector to allow the user to select 'local'
+     execution, and eventually 'Swift' or 'Pegasus', or 'tekoa' to use
+     have a task run on tekoa from some other machine.  For testing we
+     also have 'POST', to test the HTTP POST API.  Added a
+     TaskExecution object to support this, in new file execution.php
+
+   * Fixed a problem with finding the 'bin' directory for executable
+     scripts, which was preventing the data_prep script from running
+     for second-trends.
+
+   * Added "Report a Bug" button to pop open a bug report form.
+
+   * Next/Previous buttons are now in the control box with everything else.
+
+   * Test and Development versions of the release show a warning to
+     that effect in the message area.
+
+
+
+=== 0.42 ===
+('testing' on 12 December 2008, 'production' 9 May 2008)
+
+   * At the beginner level the flow diagram boxes do not have links
+     in them if the boxes are not green (have not yet been completed).
+
+   * Reset button under a finished plot now says "New Session", which
+     is a little clearer about that it does at that point.
+
+   * At beginner level moving the mouse over the step blocks gives
+     tooltip help. 
+
+   * Show GMT time on data selection time, all user_levels. 
+     Advanced users also get current GPS time.
+
+   * Track memory usage.
+
+   * Fixed problem with GDS-EARTHQUAKE channel being considered invalid.
+     (Actually any GDS channel, but this is currently the only one.)
+
+   * Internal changes to prepare for Grid execution, or general
+     ability to launch, monitor, and kill tasks.
+
+   * Fixed a problem with finding the 'bin' directory for executable
+     scripts, which was preventing the data_prep script from running
+     for second-trends. [Backport from v0.50]
+
+   * Fixed a problem with memory usage.  (The channel selector, which
+     is large,  was taking more space than necessary.) [Backport from v0.50] 
+
+
+
+=== 0.41 ===
+('testing' on 24 October 2007, 'production' 28 November 2007)
+
+   * Allow authentication from co-located project Pirates@Home,
+     to allow volunteers from that project to assist with beta
+     testing.
+
+
+=== 0.40 ===
+('testing' on 2 October 2007)
+
+   * All the little fixes required to get this to run on the I2U2
+     cluster at Argonne National Laboratory.  This works at Argonne,
+     Hanford, and Spy Hill.
+
+   * Rearranged directory structure, so that supporting files are at
+     the top, along with bin and root subdirectories.  Under this an
+     html subdirectory containing tla (the tool) and either
+     subdirectories or links to other components (eg BOINC utilities).
+     Future segregation into presentation code and supporting code
+     might be useful.
+
+   * Cross site authentication is not so strict that it fails when
+     parsing the token when it's a non-critical part.   This makes
+     authentication less likely to cause problems.
+
+   * If the analysis runs with no error but no image file is found
+     then we might just be early and it's not converted or returned
+     yet.  Try again (5 times) before we give up.
+
+   * If the user tried to visit Plot Graph tab but they have not yet
+     finished at the Control Panel (and pressed GO) then they are
+     brought back to Control Panel with an error message.
+     (Now we need to make it so that they can go back and forth
+     between tabs at will after a plot has been created, to create the 
+     next analysis.)
+
+
+=== 0.35 ===
+('testing' on 19 June 2007, production on 2 August 2007)
+
+   * Added an attempt at some interpretation of return codes from
+     running the ROOT script or supporting scripts.   This is better
+     than just getting an error code number.   Some relabling and
+     grouping of error codes to make tracking the source easier.
+    
+   * Macros loaded from DMT_ROOT_MACROS, dynamic libraries loaded
+     from DMT_ROOT_LIBS.  Still the same places, but these can now
+     be changed as needed.
+
+   * Scripts update-rds.php and copy-rds.php moved to bin directory.
+     They are smarter about finding where the data lives and setting
+     paramters based on trend type.
+
+
+=== 0.34=== 
+('testing' on 15 May 2007)
+
+   * Beginner and intermediate channel selector now has links to glossary
+
+   * Change "device" to "source" internally.   Beginners get "site" but 
+       this should really by "source" for more advanced users.   
+
+   * PEM seismic channels available for beginners.
+
+   * Added second-trend channels (raw channels don't quite work yet,
+    but we are close).
+
+   * Handle BLRM with hyphen separated frequency range, so that new
+    sub-microseism 0.01-0.3Hz channels can be used (level 3).
+
+   * Fixed problem entering times as GPS times.
+
+   * Fixed problem with scale change after plot has been revised a
+    couple of times.
+
+   * Frames on the fly: When you are going to run an analysis using
+    second trends, when you go from data selection to the control
+    panel is launches a task in the background to run `update-rds.php -x` 
+    on tekoa (either locally or via ssh if it's remote) and then
+    copy-rds.php if not on tekoa.  The control panel monitors the task
+    and only presents the "GO" button when the task is done.
+
+    I don't necessarily like this - I think one could also just run a
+    specific transformation to do this - but it works and is something
+    to try for now.
+
+   * Ticket sent to remote server now includes name of the server we
+    are jumping from.  Can be used later to check against referer, and/or
+    to access user database on one of several possible feeder sites.
+  
+   * Known problem: if your session gets stale the automatic
+    authentication handoff from spy-hill to tekoa may fail, and you'll
+    be asked to log-in again, even though you were logged in.
+
+
+=== 0.33=== 
+('testing' on 26 Mar 2007, 'production' 17 April 2007)
+
+   * Cross-server authentication works.  
+
+   * Add sub-microseism 0.01-0.3Hz BLRM channels to the list (they are
+    not yet usable)
+
+   * Add working GPS clock for advanced users, implemented in JavaScript.
+
+   * Head-shot images on auth_required.php make it easier to choose
+    between user login and guest login.
+
+   * Organize each display page to handle inputs in proper order.
+    Debug level is adjusted first, reset is tested last, as it will
+    clear anything before it, as it should.  Then show "general"
+    variables, then variables specific to the page.
+
+   * Auto_apply now works in all cases
+
+   * Split require_authentication() to a separate piece 
+    check_authentication() just to check for authentication.
+
+   * Split handle_reset() into a part to check and a part to do it.
+
+   * If /tmp/debug exists and we can open a file there for writing then
+    all debug messages are copied there. 
+  
+   * Added "units" to the channel Object, and set it for BLRMS and PEM
+    channels.
+
+
+=== 0.32=== 
+('testing' on 20 Feb 2007, never released for 'production')
+
+   * Fixed problem where y-axis lable gets moved to left edge of pad
+    whenever a plot is modified. 
+
+   * For the lower user levels the input selection box is a vertical list of
+    items, not one horizontal bar.  A "sampling" item has been added,
+    though it is fixed on "minute trend, mean" for now.
+
+   * user_level 2 (beginner) is not allowed to run an analysis over
+    300 sec (5min).  A warning is shown if over 60 sec (1min). 
+
+   * User's session is automatically reset if it's over an hour old.
+
+   * user_level 5 (Super-Expert) shows up for 7 seconds but then 
+    reverts to "Advanced" - just to show off that higher levels are 
+    possible
+
+   * Authentication can either be based on a user's personal account
+    on the discussion site (using BOINC's auth system) or using a
+    'guest' account (using HTTP Basic auth via web browser).
+    Fixed "forgotten password" link, and fixed logout.   If you are
+    logged in via a 'guest' account you are told you must close your
+    browser to really be logged out.
+
+    Cross-site authentication is still not available.  This is just
+    for authentication by one of two methods on the same server.
+
+   * GDS monitor names show up in plot title (now just "EARTHQUAKE")
+    (but it's not yet updating in real time in the channel selector)
+
+   * macros.php looks for $tla_src_path and includes all file with
+    that prefix.  This will makes things a bit more portable.
+
+
+=== 0.31=== 
+('testing' on 12 December 2006, 'production' on 18 January 2007)
+
+   * Each session runs the analysis in it's own working directory,
+    called a 'slot'.   
+
+   * Thus the session_id is still in the URL, but now as a directory, 
+    so it is not a part of the name of the file.  This means saving
+    the image or log file with "Save As..." is much simpler.
+
+   * Locate the top level data directory using environmental variable
+     DATA_DIR.  This means we can find data on spy-hill and tekoa
+     without having to edit source files.
+
+
+=== 0.29=== 
+('production' on 1 December 2006)
+
+   * no notes on what was added when before this, but you could
+     probably check the CVS checkin notes if it really matters.
+

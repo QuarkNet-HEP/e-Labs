@@ -3,6 +3,46 @@
  */
 
 
+/* e-Lab Page style */
+
+.header-title {
+  color: white;
+  font-size: 2em;
+  font-weight: bolder;
+  font-family: helvetica,sans-serif;
+  text-align: left;
+}
+
+
+.header-subtitle {
+  color: white;
+  font-family: helvetica,sans-serif;
+  text-align: left;
+}
+
+
+.second-header-title {
+  color: grey;
+  font-family: helvetica,sans-serif;
+  font-weight: bold;
+  text-align: right;
+  vertical-algin: top;
+}
+
+
+.third-header-title {
+  color: grey;
+  font-family: helvetica,sans-serif;
+  font-weight: bold;
+  text-align: left;
+  vertical-algin: top;
+}
+
+
+
+
+
+
 /*** Clock boxes ***/
 
 table.clock_box {

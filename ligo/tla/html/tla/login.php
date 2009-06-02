@@ -10,7 +10,7 @@
  * which also works.
  *
  * Eric Myers <myers@spy-hill.net  - 12 December 2006
- * @(#) $Id: login.php,v 1.11 2009/04/22 18:06:35 myers Exp $
+ * @(#) $Id: login.php,v 1.12 2009/04/29 20:43:24 myers Exp $
 \***********************************************************************/
 
 require_once("macros.php");             // general TLA utilities
@@ -108,7 +108,9 @@ if( !empty($next_url) && !empty($came_from) ){
  * Display Page:
 \***********************************************************************/
 
-html_begin("Login");
+$title="Login";
+html_begin($title);
+title_bar($title);
 controls_begin();
 
 start_table();

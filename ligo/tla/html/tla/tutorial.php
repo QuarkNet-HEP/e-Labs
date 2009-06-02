@@ -8,7 +8,7 @@
  * the wiki content.
  *
  * Eric Myers <myers@spy-hill.net  - 31 July 2008
- * @(#) $Id: tutorial.php,v 1.2 2009/04/09 15:41:15 myers Exp $
+ * @(#) $Id: tutorial.php,v 1.4 2009/05/12 15:45:46 myers Exp $
 \***********************************************************************/
 
 require_once("macros.php");             // general TLA utilities
@@ -83,12 +83,13 @@ $body = preg_replace($pattern, $replacement, $body);
  * Display Page: 
 \***********************************************************************/
 
-$title = "Bluestone Tutorial, step $step";
-
+if( $step ){
+  $title = "Bluestone Tutorial, step $step";
+ }
 html_begin($title);
 
 if( !empty($body) ){
-   echo "<blockquote>\n$body\n</blockquote>\n\n";
+   echo "\n$body\n\n";
 }
 
 html_end();

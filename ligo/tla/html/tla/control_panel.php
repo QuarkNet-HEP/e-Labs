@@ -11,7 +11,7 @@
  * user gets a GO button.  
  *
  * Eric Myers <myers@spy-hill.net  - 30 March 2006
- * @(#) $Id: control_panel.php,v 1.72 2009/04/08 19:25:48 myers Exp $
+ * @(#) $Id: control_panel.php,v 1.73 2009/04/29 20:43:24 myers Exp $
 \***********************************************************************/
 
 require_once("macros.php");              // general utilities
@@ -588,7 +588,9 @@ debug_msg(5,"Nplot is $Nplot, Ntry is $Ntry");
  * Display the page:
 \***********************************************************************/
 
-html_begin("Control Panel");
+$title="Control Panel";
+html_begin($title);
+title_bar($title);
 controls_begin();
 
 
@@ -743,5 +745,5 @@ tool_footer();
 html_end();
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: control_panel.php,v 1.72 2009/04/08 19:25:48 myers Exp $";
+    "\$Id: control_panel.php,v 1.73 2009/04/29 20:43:24 myers Exp $";
 ?>

@@ -5,7 +5,7 @@
  *
  *
  * Eric Myers <myers@spy-hill.net  - 30 March 2006
- * @(#) $Id: testing.php,v 1.13 2008/08/01 19:39:01 myers Exp $
+ * @(#) $Id: testing.php,v 1.14 2009/04/29 20:43:24 myers Exp $
 \***********************************************************************/
 
 require_once("macros.php");             // general utilities
@@ -59,7 +59,9 @@ add_message("<b> MESSAGE BOX</b><P>
  * Display Page:
 \***********************************************************************/
 
-html_begin("TLA Testing Page");
+$title="TLA Testing Page";
+html_begin($title);
+title_bar($title);
 
 //show_message_area();
 
