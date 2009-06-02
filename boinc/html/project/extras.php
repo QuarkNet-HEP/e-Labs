@@ -82,27 +82,29 @@ function array_of_values($a) {
 /* This is show_login() but modified for our project. 
  * Now with added avatar goodness! */
 
-function show_login_name($user) {
+function show_login_name($user){
+    $x = "";
     if( !empty($user) ) {
         $username=$user->name;
-        echo tr(LOGGED_IN_AS) ." ". $username;
+        $x .=  tr(LOGGED_IN_AS) ." ". $username;
         $user = getForumPreferences($user);
         $avatar = $user->avatar;
         if( !empty($avatar) ){
-          echo "<br><img src='/$avatar' width='50' >\n";
+          $x .=  "<br><img src='/$avatar' width='50' >\n";
       }
-      echo "<br><a href='/logout.php'>";
-      echo "["  .tr(LOG_OUT). "]</a>";
-      //echo   "<img src='/images/Logout.png' alt='".tr(LOG_OUT)."'>";
-      echo "</a>";
+      $x .=  "<br><a href='/logout.php'>";
+      $x .=  "["  .tr(LOG_OUT). "]</a>";
+      //$x .=    "<img src='/images/Logout.png' alt='".tr(LOG_OUT)."'>";
+      $x .=  "</a>";
   }
   else {
-      echo "Not logged in";
-      echo "<br><a href='/login_form.php'>";
-      echo "[" .tr(LOG_IN). "]</a>"; 
-      //echo "<img src='/images/Login.png' alt='".tr(LOG_IN)."' >";
-      echo "</a>";
+      $x .=  "Not logged in";
+      $x .=  "<br><a href='/login_form.php'>";
+      $x .=  "[" .tr(LOG_IN). "]</a>"; 
+      //$x .=  "<img src='/images/Login.png' alt='".tr(LOG_IN)."' >";
+      $x .=  "</a>";
   }
+  return $x;
 }
 
 

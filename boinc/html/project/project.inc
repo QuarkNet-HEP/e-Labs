@@ -15,6 +15,7 @@
 \**********************************************************************/
 
 require_once("../project/i2u2-stuff.php");	// support for THIS project
+require_once("../project/cosmic-stuff.php");	// support for THIS project
 require_once("../project/roles.php");		// special_user stuff
 require_once("../project/extras.php");		// Additions to BOINC
 
@@ -174,7 +175,15 @@ function page_head($title, $java_onload=null, $title_plain=null, $prefix="") {
         echo "<BODY>";
     }
     project_banner($title, $prefix);
+    echo "\n\n<div id='maincontent'>\n";
+
 }
+
+function page_tail($show_date=false, $prefix="") {
+    echo "\n</div id='maincontent'>\n";
+    page_tail_aux(true, $show_date, $prefix);
+}
+
 
 
 
@@ -253,20 +262,19 @@ function project_footer($show_return, $show_date) {
     global $Path_to_wiki;         // top level path to the wiki
     global $gElab;		// set if we detected e-lab
 
-
-    echo "\n<!-- Footer -->\n";
+    echo "\n<!-- Footer -->\n<P>\n";
     if ($show_return && empty($gElab) ) {
-        echo "<P><div class='footer right more'>
+        echo "<P>\n<div class='footer right more'>
         <a href='".URL_BASE."'>Return to ".PROJECT." main page &gt;&gt</a>
-        </div><br clear='right'>\n\n";
+        </div>\n<br clear='right'>\n\n";
     }
 
     $elab = get_elab_from_URL();
 
-    if( $elab=='cosmic') cosmic_menu_bar();
-    if( $elab=='ligo')   ligo_menu_bar();
-    if( $elab=='cms')    cms_menu_bar();
-    if( empty($elab) )   project_menu_bar();
+    if( $elab=='cosmic') echo cosmic_menu_bar();
+    if( $elab=='ligo')   echo ligo_menu_bar();
+    if( $elab=='cms')    echo cms_menu_bar();
+    if( empty($elab) )   echo project_menu_bar();
 
     // editing links to transcluded content
     //
