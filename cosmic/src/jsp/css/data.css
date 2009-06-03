@@ -1,3 +1,9 @@
+#nav #subnav ul#library { display:none; }
+#nav #subnav ul#posters { display:none; } 
+#nav #subnav ul#siteindex { display:none; } 
+#nav #subnav ul#posters { display:none; } 
+#nav #subnav ul#upload { display:none; } 
+
 .data #footer {
 	border: none;
 }
