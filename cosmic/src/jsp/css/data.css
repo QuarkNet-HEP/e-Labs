@@ -1,7 +1,15 @@
 #nav #subnav ul#library { display:none; }
 #nav #subnav ul#posters { display:none; } 
 #nav #subnav ul#siteindex { display:none; } 
-#nav #subnav ul#upload { display:none; } 
+#nav #subnav ul#upload { display:none; }
+
+#nav a#nav-data {
+	background-color: #4382bb;
+	border-top: #72a1cc 1px solid;
+	border-left: #72a1cc 1px solid;
+	border-bottom: #305c85 1px solid;
+	border-right: #305c85 1px solid;
+}
 
 .data #footer {
 	border: none;
@@ -75,25 +83,6 @@ a.button {
 
 .data dd {
 	padding-bottom: 6px;
-}
-
-#nav #subnav li a {
-	background-color: #4382bb;
-	border-top: #72a1cc 1px solid;
-	border-left: #72a1cc 1px solid;
-	border-bottom: #305c85 1px solid;
-	border-right: #305c85 1px solid;
-}
-
-#nav #subnav ul {
-	width: 732px;
-	float: right;
-	text-align: right;
-	/*border: 1px dashed yellow;*/
-	position: relative;
-	right: 0px;
-	margin: 0px;
-	padding-right: 0px;
 }
 
 #top {
