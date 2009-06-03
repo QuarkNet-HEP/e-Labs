@@ -61,8 +61,8 @@ if( preg_match($pattern,$_SERVER['PHP_SELF'],$matches) > 0){
     if( $filename != "index" ){
         $skin_name = $filename;
         $wgHooks['OutputPageParserOutput'][] = 'set_skin_from_url';
-        $wgScript  ="$wgScriptPath/$skin_name.php"; // keep links in this skin
-        $wgArticlePath      = "$wgScript/$1";
+        //$wgScript  ="$wgScriptPath/$skin_name.php"; // keep links in this skin
+        //$wgArticlePath      = "$wgScript/$1";
     }
  }
 
@@ -98,5 +98,3 @@ function set_skin_from_url(){
 }
 
 ?>
-
-
