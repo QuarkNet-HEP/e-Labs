@@ -1,10 +1,10 @@
-#nav { height: 48px; } 
+#nav { height: 48px; }
 
 #menu { text-align: right; }
 
 #header #header-image img { height: 100%; }
 
-#subnav #data li a {
+#subnav #sub-data li a {
 	color: black;
 	background-color: #4382bb;
 	border-top: #72a1cc 1px solid;
@@ -12,15 +12,15 @@
 	border-bottom: #305c85 1px solid;
 	border-right: #305c85 1px solid;
 }
-#subnav #data li a:hover {
+#subnav #sub-data li a:hover {
 	color: white;
 }
 
-#subnav #library {
+#subnav #sub-library {
 	text-align:center;
 }
 
-#subnav #library li a {
+#subnav #sub-library li a {
 	color: black; 
 	width: 7em;
 	background-color: #55a9b4;
@@ -30,15 +30,15 @@
 	border-right: #3c777f 1px solid;
 }
 
-#subnav #library li a:hover {
+#subnav #sub-library li a:hover {
 	color: white;
 }
 
-#subnav #upload {
+#subnav #sub-upload {
 	margin-right: 365px;		
 }
 
-#subnav #upload li a {
+#subnav #sub-upload li a {
 	color: black;
 	background-color: #ad499d;
 	border-top: #c276b6 1px solid;
@@ -47,15 +47,15 @@
 	border-right: #7b346f 1px solid;
 }
 
-#subnav #upload li a:hover {
+#subnav #sub-upload li a:hover {
 	color: white;
 }
 
-#subnav #posters {
+#subnav #sub-posters {
 	text-align: center;
 }
 
-#subnav #posters li a {
+#subnav #sub-posters li a {
 	width: 7.5em;
 	color: black;
 	background-color: #408c66;
@@ -65,11 +65,11 @@
 	border-right: #1b3b2b 1px solid;
 }
 
-#subnav #posters li a:hover {
+#subnav #sub-posters li a:hover {
 	color: white;
 }
 
-#subnav #siteindex li a {
+#subnav #sub-siteindex li a {
 	color: black;
 	background-color: #FF3000;
 	border-top: #ff6640 1px solid;
@@ -78,7 +78,7 @@
 	border-right: #b52400 1px solid;
 }
 
-#subnav #siteindex li a:hover {
+#subnav #sub-siteindex li a:hover {
 	color: white;
 }
 

@@ -1,8 +1,8 @@
-#nav #subnav ul#data { display:none; }
-#nav #subnav ul#library { display:none; }
-#nav #subnav ul#posters { display:none; } 
-#nav #subnav ul#siteindex { display:none; } 
-#nav #subnav ul#upload { display:none; } 
+#nav #subnav ul#sub-data { display:none; }
+#nav #subnav ul#sub-library { display:none; }
+#nav #subnav ul#sub-posters { display:none; } 
+#nav #subnav ul#sub-siteindex { display:none; } 
+#nav #subnav ul#sub-upload { display:none; } 
 
 #content h1 {
 	background-color: #ff6600;
