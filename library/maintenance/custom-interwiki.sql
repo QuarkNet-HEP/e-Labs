@@ -7,11 +7,12 @@
 DELETE FROM /*$wgDBprefix*/interwiki;
 
 REPLACE INTO /*$wgDBprefix*/interwiki (iw_prefix,iw_url,iw_local) VALUES
-('pirates', 'http://pirates.spy-hill.net/glossary/index.php/$1', 1),
-('i2u2',  'http://www.i2u2.org/library/index.php/$1', 1),
-('boinc', 'http://boinc.berkeley.edu/wiki/$1', 0),
-('bugzilla', 'http://bugzilla.mcs.anl.gov/i2u2/show_bug.cgi?id=$1',0),
-('bz',	     'http://bugzilla.mcs.anl.gov/i2u2/show_bug.cgi?id=$1',0),
+('glossary', 'http://www13.i2u2.org/glossary/index.php/$1', 1),
+('lib',      'http://www13.i2u2.org/glossary/index.php/$1', 1),
+
+('i2u2_p', 'http://www13.i2u2.org/$1', 1),
+('i2u2_g', 'http://www13.i2u2.org/glossary/index.php/$1', 1),
+('ligo_g', 'http://www13.i2u2.org/glossary/index.php/$1', 1),
 
 ('wikipedia','http://en.wikipedia.org/wiki/$1',0),
 ('w',        'http://en.wikipedia.org/wiki/$1',0),
@@ -19,12 +20,16 @@ REPLACE INTO /*$wgDBprefix*/interwiki (iw_prefix,iw_url,iw_local) VALUES
 ('mw',        'http://www.mediawiki.org/wiki/$1', 0),
 ('meta','http://meta.wikimedia.org/wiki/$1',0),
 ('m',   'http://meta.wikimedia.org/wiki/$1',0),
-('wikiquote','http://en.wikiquote.org/wiki/$1',0),
-('wq',       'http://en.wikiquote.org/wiki/$1',0),
 ('wiktionary','http://en.wiktionary.org/wiki/$1',0),
-('wikimedia','http://wikimediafoundation.org/wiki/$1',0)
+('wikibooks','http://en.wikibooks.org/wiki/$1',0),
+('wikimedia','http://wikimediafoundation.org/wiki/$1',0),
+('wikiquote','http://en.wikiquote.org/wiki/$1',0),
+('wikisource','http://sources.wikipedia.org/wiki/$1',0),
+('wikispecies','http://species.wikipedia.org/wiki/$1',0),
+('wikia','http://www.wikia.com/wiki/index.php/$1',0)
 
 -- be sure to end the list with a semi-colon, not a comma 
+
 ;
 
 
