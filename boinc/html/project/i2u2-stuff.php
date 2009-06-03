@@ -7,6 +7,9 @@
 \**********************************************************************/
 
 
+/**
+ * Determine the elab name from the URL /elab/<name>/...
+ */
 function get_elab_from_URL(){
   global $gElab;	// also set this globally
 
@@ -21,8 +24,36 @@ function get_elab_from_URL(){
   }
 
 
-// Generate links for cascade of style sheets 
-//
+
+/**
+ * Link to Help Desk Request form
+ */
+function elab_help_link($elab){
+  global $BOINC_prefix;
+  $x = "";
+  $elab_list=array('any' => 'Any/All',
+		   'cosmic' => 'Cosmic Rays',
+		   'cms' => 'CMS',
+		   'ligo' => 'LIGO',
+		   'adler' => 'Adler iLab');
+
+  $elab_name = $elab_list[$elab]; 
+  $elab_arg = empty($elab_name) ? "" : "?elab=".urlencode($elab_name);
+
+  $x .=  "<div class='help_link right'>
+	Report a problem or ask a question:
+	<a target='_blank'
+   	   href='".$BOINC_prefix
+		  ."/HelpDeskRequest.php$elab_arg'>Help Desk Request Form</a>
+	</div>\n";	
+  $x .= "\n<br/><hr noshade size=1>\n";
+  return $x;
+}
+
+
+/**
+ * Generate links for cascade of style sheets 
+ */
 function elab_stylesheets($elab,$styleSheet=''){
   global $gStyleSheets;
 

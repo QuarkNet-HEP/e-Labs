@@ -14,16 +14,21 @@
  * @(#) $Id: project.inc,v 1.21 2009/05/12 20:31:30 myers Exp $
 \**********************************************************************/
 
-require_once("../project/i2u2-stuff.php");	// support for THIS project
-require_once("../project/cosmic-stuff.php");	// support for THIS project
 require_once("../project/roles.php");		// special_user stuff
 require_once("../project/extras.php");		// Additions to BOINC
-
+require_once("../project/i2u2-stuff.php");	// support for THIS project
 
 require_once("../include/transclude.php");	// mashup support
 if( !function_exists('debug_msg') ) {		// debugging support
     require_once("../include/debug.php");
- }
+}
+
+require_once("../project/cosmic-stuff.php");	// support for THIS project
+$elab = get_elab_from_URL();
+if( !empty($elab) ) {
+  require_once("../project/".$elab."-stuff.php");  // particular e-Lab
+}
+
 
 /************************************\
  * Primary configuration settings:
@@ -114,6 +119,11 @@ $post_keywords=array_of_values(
 $hostname=trim(exec('hostname -s'));
 $local_server = $_SERVER['SERVER_NAME'];
 $hostname=trim($local_server);
+
+// This is used in wiki and forum extensions.  
+// Base it on how we were called.
+
+$BOINC_prefix = dirname($_SERVER['REQUEST_URI']);
 
 
 /**************
@@ -276,11 +286,12 @@ function project_footer($show_return, $show_date) {
     if( $elab=='cms')    echo cms_menu_bar();
     if( empty($elab) )   echo project_menu_bar();
 
+    echo elab_help_link($elab);
+
     // editing links to transcluded content
     //
     if( user_has_role('admin') || user_has_role('dev') ){
 
-      echo "\n<hr noshade size=1>\n";
       if ( !empty($gWikiTitle) ){
 	$wiki_url ="http://" . $_SERVER['SERVER_NAME'] . $Path_to_wiki . "/";
 	echo "<div class='edit_link'>\n";

@@ -384,6 +384,26 @@ table.e-labs_main td:hover {
    margin-right: 3px;
 }
 
+/**  Help Desk link **/
+
+.help_link {
+   color: grey;
+   font-size: x-small;
+}
+
+.help_link a {
+   color: black;
+   text-decoration: none;
+}
+
+
+.help_link a:hover {
+  color: blue;
+  text-decoration: underline; 
+}
+
+
+
 /** wiki page transclusion **/
 
 .editsection,
@@ -399,7 +419,6 @@ table.e-labs_main td:hover {
 .wikibody ul li a {
    text-decoration: none;
 }
-
 
 .edit_link {
    color: grey;
