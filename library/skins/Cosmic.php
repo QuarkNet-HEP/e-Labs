@@ -13,12 +13,11 @@ if( !defined( 'MEDIAWIKI' ) )
  * BOINC interface
  */
 
-if( empty($elab) ) $elab='cosmic';
 if( empty($BOINC_html) ) $BOINC_html = "/home/i2u2/boinc/html/";
-
-//require_once("$BOINC_html/project/project.inc.php");
-
+require_once("$BOINC_html/project/i2u2-stuff.php");
+if( empty($elab) ) $elab=get_elab_from_URL();
 require_once("$BOINC_html/project/$elab-stuff.php");
+
 
 function elab_forum_login_link($key='userlogin'){
   global $elab;
@@ -113,6 +112,7 @@ class SkinCosmic extends Skin {
 
     $s .= "\n<div id='article'>";
     $s .= $this->pageTitle();
+    $s .= "\n<hr>\n\n";
     //$s .= $this->pageSubtitle() . "\n";
     return $s;
   }
@@ -134,6 +134,9 @@ class SkinCosmic extends Skin {
     }
     $s .= "<td class='bottom' align='center' valign='top'>";
 
+    $elab = get_elab_from_URL();
+    $s .=  elab_help_link($elab);
+
     //$s .= $this->bottomLinks();
     //$s .= "\n<br />" . $this->makeKnownLinkObj( Title::newMainPage() ) . " | "
     //. $this->aboutLink() . " | "
@@ -146,6 +149,13 @@ class SkinCosmic extends Skin {
       $s .= $this->getQuickbarCompensator();
     }
     $s .= "</tr></table>\n</div>\n</div>\n";
+
+    if($this->data['poweredbyico']) { 
+      $s .= "<div id='f-poweredbyico'>" .$this->html('poweredbyico') ."</div>";
+    }
+    if($this->data['copyrightico']) { 
+      $s .= "<div id='f-copyrightico'>" .$this->html('copyrightico')."</div>";
+    }
 
     if ( 0 != $qb ) { $s .= $this->quickBar(); }
     return $s;
