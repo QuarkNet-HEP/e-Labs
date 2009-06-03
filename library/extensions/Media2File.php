@@ -1,6 +1,6 @@
 <?php
 /***********************************************************************\
- * Media2File.php                            Version 0.2 of 6 Sept. 2007
+ * Media2File.php                            Version 0.3 of 6 Sept. 2007
  *
  * This is a MediaWiki extension which changes the name of the 
  * pseudo-namespace for non-image uploaded files from "Media:" to "File:"
@@ -16,8 +16,8 @@
  * The default behaviour is that Media: no longer works, but see below
  * about how to make Media: continue to work as before.
  *
- * Written by Eric Myers <myers@spy-hill.net>  - 12 Oct 2006 / 14 Jan 2007
- * @(#) $Id: BOINCAuthPlugin.php,v 1.3 2007/09/05 19:40:08 myers Exp $
+ * Written by Eric Myers <myers@spy-hill.net>  - 6 September 2007
+ * @(#) $Id: $
 \***********************************************************************/
 
 // Extension information (shown by Special:Version)
@@ -31,7 +31,7 @@ $wgExtensionCredits['other'][] =
           'description' => 'Changes the Media: pseudo-namespace into File: ',
           'date' => '6 September 2007',
           'type' => 'parser'
-          //          'url' => 'http://pirates.spy-hill.net/glossary/index.php/BOINC_Authentication'
+          // 'url' => 'http://pirates.spy-hill.net/glossary/index.php/BOINC_Authentication'
           );
 
 
@@ -50,11 +50,10 @@ function SetupMedia2File(){
     $wgHooks['LogPageValidTypes'][] = 'turn_Media_into_File';
 
     //TODO: find another hook before Language.php is loaded.
-
-    //NOPE//   $wgHooks['AuthPluginSetup'][] = 'turn_Media_into_File';
-    //NOPE//   $wgHooks['SiteNoticeBefore'][] = 'turn_Media_into_File';
-    //NOPE//    $wgHooks['ArticleFromTitle'][] = 'turn_Media_into_File';
-    //NOPE//$wgHooks['GetFullURL'][] = 'turn_Media_into_File';
+    //NOPE// $wgHooks['AuthPluginSetup'][] = 'turn_Media_into_File';
+    //NOPE// $wgHooks['SiteNoticeBefore'][] = 'turn_Media_into_File';
+    //NOPE// $wgHooks['ArticleFromTitle'][] = 'turn_Media_into_File';
+    //NOPE// $wgHooks['GetFullURL'][] = 'turn_Media_into_File';
 
 }
 
