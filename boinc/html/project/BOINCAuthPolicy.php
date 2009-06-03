@@ -39,7 +39,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 \***********************************************************************/
 
-$debug_level=0;
+//$debug_level=3;
 
 // This is needed for wiki/BOINC interface
 
@@ -58,10 +58,9 @@ if( $debug_level ){
 //
 if( !function_exists('isSpecialUser') ) {
   function isSpecialUser($boinc_user, $specialbit){
-      $forum_prefs = getUserPrefs($boinc_user->id);
       debug_msg(3,"isSpecialUser(): ".$boinc_user->name
 		." has bits ". $forum_prefs->special_user);
-      return (substr($forum_prefs->special_user, $specialbit,1)==1);
+      return (substr($boinc_user->special_user, $specialbit,1)==1);
   }
   debug_msg(1,"I had to define my own isSpecialUser()");
  }
@@ -95,11 +94,12 @@ function BOINCAuthPolicy($boinc_user, $user){
     log_error("User: ".$boinc_user->name." has no forum preferences.");
   }
   if( !empty($forum_preferences) ){
-
+    $boinc_user->special_user = $forum_preferences->special_user;
     debug_msg(3,"add/remove for ".$boinc_user->name
 		." / ". $boinc_user->special_user);
 
     add_remove_group($boinc_user,$user,S_ADMIN,'admin');
+    add_remove_group($boinc_user,$user,S_DEV,'dev');
 
     add_remove_group($boinc_user,$user,S_QN_FELLOW,'elab_fellow');
     add_remove_group($boinc_user,$user,S_QN_FELLOW,'fellow');
