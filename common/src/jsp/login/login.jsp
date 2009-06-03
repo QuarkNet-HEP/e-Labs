@@ -47,13 +47,13 @@
         // the elab, so in order for certain things to work properly (user directories)
         // that object needs to be re-created for each elab.
         
-        Cookie cookie = new Cookie("JSESSIONID", session.getId());
-        cookie.setPath("/elab/" + elab.getName());
-        response.addCookie(cookie);
+        Cookie elabSessionCookie = new Cookie("JSESSIONID", session.getId());
+        elabSessionCookie.setPath("/elab/" + elab.getName());
+        response.addCookie(elabSessionCookie);
         
-        Cookie cookie2 = new Cookie("JSESSIONID", session.getId());
-        cookie2.setPath("/elab/dwr");
-        response.addCookie(cookie2);
+        Cookie elabDWRSessionCookie = new Cookie("JSESSIONID", session.getId());
+        elabDWRSessionCookie.setPath("/elab/dwr");
+        response.addCookie(elabDWRSessionCookie);
         
 
         // Forum authentication the quick-N-dirty way.
@@ -61,16 +61,14 @@
         // login do the following:
         //  1. verify it's a teacher login, and get teacher ID #
         //  2. From teacher table get "authenticator"
-
-        String authenticator = "deadbeefdeadbeefdeadbeefdeadbeef";
-				// this should be the teacher's authenticator
-
-        //  3. Set cookie named "auth" with value of the authenticator
+ 		//  3. Set cookie named "auth" with value of the authenticator
 		//     with path "/" and expiration timestamp for end of session
-
-        Cookie cookie3 = new Cookie("auth",  authenticator);
-        cookie3.setPath("/");
-        response.addCookie(cookie3);
+        if (user.getRole() == "teacher") {
+        	String authenticator = user.getAuthenticator();
+        	Cookie authenticationCookie = new Cookie("auth",  authenticator);
+        	authenticationCookie.setPath("/");
+            response.addCookie(authenticationCookie);
+        }
 
 		response.sendRedirect(prevPage);
 	}

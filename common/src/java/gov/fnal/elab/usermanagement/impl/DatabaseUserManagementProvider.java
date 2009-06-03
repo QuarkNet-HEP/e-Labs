@@ -421,7 +421,7 @@ public class DatabaseUserManagementProvider implements
         }
         user.getGroups().clear();
 
-        rs = s.executeQuery("SELECT name, email FROM teacher WHERE id = '"
+        rs = s.executeQuery("SELECT name, email, authenticator FROM teacher WHERE id = '"
                 + teacherId + "'");
         if (!rs.next()) {
             // TODO Apparently not having teacher data in the DB is a valid
@@ -430,6 +430,7 @@ public class DatabaseUserManagementProvider implements
         }
         else {
             user.setEmail(rs.getString("email"));
+            user.setAuthenticator(rs.getString("authenticator"));
         }
 
         rs = s
@@ -455,7 +456,7 @@ public class DatabaseUserManagementProvider implements
         ResultSet rs;
         String projectId = elab.getId();
 
-        rs = s.executeQuery("select name, email from teacher where id = '"
+        rs = s.executeQuery("select name, email, authenticator from teacher where id = '"
                 + teacherId + "'");
         if (!rs.next()) {
             throw new SQLException("Invalid teacher id: " + teacherId);
@@ -464,6 +465,7 @@ public class DatabaseUserManagementProvider implements
         t.setName(rs.getString("name"));
         t.setEmail(rs.getString("email"));
         t.setId(teacherId);
+        t.setAuthenticator(rs.getString("authenticator"));
 
         rs = s
                 .executeQuery("select name, userarea from research_group where teacher_id = '"

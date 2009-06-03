@@ -39,6 +39,8 @@ public class ElabGroup {
 
     private ElabUserManagementProvider provider;
 
+    private String authenticator; 
+    
     public ElabGroup() {
         new Exception("Don't use this constructor. Use ElabGroup(Elab)").printStackTrace();
     }
@@ -472,5 +474,13 @@ public class ElabGroup {
 
 	public boolean isStudy() {
 		return study;
+	}
+
+	public void setAuthenticator(String authenticator) {
+		this.authenticator = authenticator;
+	}
+
+	public String getAuthenticator() {
+		return authenticator;
 	}
 }
