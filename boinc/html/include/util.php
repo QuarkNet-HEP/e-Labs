@@ -2,8 +2,131 @@
 /***********************************************************************\
  * include/util.php - general utilities, separate from BOINC html/inc/util.php 
  *
- * @(#) $Id: util.php,v 1.4 2007/11/26 19:34:53 myers Exp $
+ * @(#) $Id: util.php,v 1.5 2009/05/29 13:14:37 myers Exp $
 \***********************************************************************/
+
+
+/* Is there a final destintation URL we should know about? 
+ * Use several different mechanism to find out. Last one wins.
+ * 
+ * @uses $self
+ * @uses $SESSION
+ */
+
+function get_destination(){
+  global $self; 
+  global $SESSION;
+
+  $next_url="";
+
+  // Moodle uses $SESSION->wantsurl and now we do too.
+  //
+  if( isset($SESSION->wantsurl) ){
+    $next_url=$SESSION->wantsurl;
+    debug_msg(2,"Found SESSION->wantsurl set to $next_url ");
+  }
+
+  // eLab JSP uses 'prevPage'
+  //
+  if( isset($_GET['prevPage']) ){
+    $next_url = $_GET['prevPage'];
+  }
+  if( isset($_POST['prevPage']) ){
+    $next_url = $_POST['prevPage'];
+  }
+
+  // BOINC uses 'next_url'
+  //
+  if( isset($_GET['next_url']) ){
+    $next_url = $_GET['next_url'];
+  }
+  if( isset($_POST['next_url']) ){
+    $next_url = $_POST['next_url'];
+   }
+
+
+  // If we came here from any .jsp page then we want to go back
+  //
+  $referer = $_SESSION['HTTP_REFERER'];
+  $p = pathinfo($referer);
+  if( $p['extension']=='jsp' ) $next_url = $referer;
+
+  debug_msg(1,"get_destination(): $next_url");
+
+
+  // If we are already there, then we are already there. 
+  //
+  if( $next_url && $self == $next_url ){
+    $next_url="";
+    debug_msg(1, "We are already there: $self ");
+    if( $SESSION->wantsurl ) unset($_SESSION["SESSION"]->wantsurl);
+  }
+  return $next_url;
+}
+
+
+
+
+/* Set our desired final destination, even as we wander around
+ * our little web...
+ *
+ * @uses $SESSION
+ * @uses $self
+ */
+
+function set_destination($next_url){
+  global $self; 
+  global $SESSION;
+
+  debug_msg(3,"set_destination($next_url)");
+
+  if( !$next_url) return FALSE; 
+
+  // If we are already there, then we are already there. 
+  //
+  if( $next_url === $self ){
+    $next_url="";
+    if( $SESSION->wantsurl ) unset($SESSION->wantsurl);
+    debug_msg(1, "We are already there: $self ");
+  }
+  else {
+    $SESSION->wantsurl = $next_url;
+  }
+  remember_variable('SESSION');	// be sure it's saved
+}
+
+
+
+/* Fill in host and path parts of URL 
+ * (BUG! ignores query part)
+ */
+
+function fill_in_url($url){
+    if( empty($url) ) return "";
+
+    debug_msg(1,"fill_in_url($url)...");
+
+    $dest_parts = parse_url($url);
+    $host = $dest_parts['host'];
+    $host = empty($host) ? $_SERVER['SERVER_NAME'] : $host;
+
+    $path = $dest_parts['path'];
+    $path = empty($path) ? dirname($_SERVER['REQUEST_URI']) : $path;
+    if( strpos($path,'/') !==0 ) $path = '/'.$path;
+
+    $url = 'http://'.$host.$path;
+
+    $query = $dest_parts['query'];  
+    if($query) $url .= "?$query";
+
+    debug_msg(1,"filled-in URL: $url");
+    return  $url;
+}
+
+
+
+
+
 
 
 /**
