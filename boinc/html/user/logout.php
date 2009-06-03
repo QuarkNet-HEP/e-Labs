@@ -47,6 +47,11 @@ clear_cookie($wiki_prefix."UserName");
 //
 setcookie('i2u2_auth', "",  time()-42000, '/', '.spy-hill.net');
 
+// e-Lab JSP session
+
+clear_cookie('JSESSIONID');
+
+
 session_destroy();      // clears the cookie
 $_SESSION = array();    // clears the session
 $_COOKIE=array();       // clear for this session
