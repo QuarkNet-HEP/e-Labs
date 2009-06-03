@@ -1,6 +1,6 @@
 <?php
 /***********************************************************************\
- * BOINCAuthPlugin.php                       Version 1.0.beta6 of 13 Sept. 2007
+ * BOINCAuthPlugin.php             Version 1.1
  *
  * This is a MediaWiki extension for automatic authentication to a 
  * MediaWiki site based on prior authentication to a co-existing BOINC project.
@@ -50,13 +50,13 @@
  *  Set this here, or in LocalSettings.php after you've loaded this extension.
  */
 
-$BOINC_html = "../";
+if( empty($BOINC_html) ) $BOINC_html = "../";
 
 /* Prefix added to URL's which point to the BOINC project 
  * This is used for constructing the login/logout links.
  */
 
-$BOINC_prefix = "";
+if( empty($BOINC_prefix) ) $BOINC_prefix = "";
 
 
 /* Where is the BOINC config.xml file?
@@ -64,7 +64,8 @@ $BOINC_prefix = "";
  * the BOINC user.  If it's not set then it is assumed to be the directory 
  * above $BOINC_html.  So set this explicitly if config.xml is elsewhere.  */
 
-## $BOINC_config_xml="/usr04/i2u2/boinc/config.xml"; 
+if( empty($BOINC_config_xml) ) $BOINC_config_xml="$BOINC_html/../config.xml"; 
+
 
 /* Re-check interval: how often should we re-check user's BOINC status,
  * even if there is no direct indication that it has changed? */
@@ -766,10 +767,14 @@ function LoginLinks(&$personal_urls , $title){
 function use_BOINC_login(&$form=NULL){  // $form is the just-created login form
     global $personal_urls;
     global $wgOut;   
+    global $BOINC_prefix;
+
 
     $login_url = $personal_urls['login']['href'];
-    if( !$login_url ) $login_url=$BOINC_prefix."/login_form.php";
-
+    if( !$login_url ) {
+       $login_url = $BOINC_prefix. "/login_form.php?next_url=".
+	 wfUrlencode($title->getFullURL());
+    }
     $wgOut->redirect( $login_url );
     return false;   // short circuits hook call
 }
