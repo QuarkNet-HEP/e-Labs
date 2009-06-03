@@ -39,8 +39,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 \***********************************************************************/
 
-$debug_level=3;
-
+$debug_level=0;
 
 // This is needed for wiki/BOINC interface
 
@@ -50,7 +49,6 @@ if( !$BOINC_html ) $BOINC_html="..";
 //
 require_once("$BOINC_html/project/i2u2-roles.php");
 
-
 if( $debug_level ){
   require_once("$BOINC_html/include/debug.php");
  }
@@ -59,21 +57,25 @@ if( $debug_level ){
 // Check if user has special user bit enabled 
 //
 if( !function_exists('isSpecialUser') ) {
-  function isSpecialUser($user, $specialbit){
-    return (substr($user->special_user, $specialbit,1)==1);
+  function isSpecialUser($boinc_user, $specialbit){
+      $forum_prefs = getUserPrefs($boinc_user->id);
+      debug_msg(3,"isSpecialUser(): ".$boinc_user->name
+		." has bits ". $forum_prefs->special_user);
+      return (substr($forum_prefs->special_user, $specialbit,1)==1);
   }
+  debug_msg(1,"I had to define my own isSpecialUser()");
  }
 
 // Add/remove user from wiki group based on BOINC special user bit
 //
 function add_remove_group($boinc_user, $user, $special_id, $group){
   if( isSpecialUser($boinc_user, $special_id) ){
-    debug_msg(1,"Add user ".$boinc_user->name." to group $group"); 
+    debug_msg(2,"Add user ".$boinc_user->name." to group $group"); 
     $user->addGroup($group);        
   }
   else {
     $user->removeGroup($group); 
-    debug_msg(1,"Remove user ".$boinc_user->name." from group $group"); 
+    debug_msg(2,"Remove user ".$boinc_user->name." from group $group"); 
   }
 }
 
@@ -89,13 +91,14 @@ function BOINCAuthPolicy($boinc_user, $user){
 
   $forum_preferences =  getUserPrefs($boinc_user->id);
   if( empty($forum_preferences) ){
+    debug_msg(1, "User: ".$boinc_user->name." has no forum preferences.");
     log_error("User: ".$boinc_user->name." has no forum preferences.");
   }
   if( !empty($forum_preferences) ){
 
-    if( isSpecialUser($boinc_user, S_ADMIN) ){
-      $user->addGroup('Sysops');        
-    }
+    debug_msg(3,"add/remove for ".$boinc_user->name
+		." / ". $boinc_user->special_user);
+
     add_remove_group($boinc_user,$user,S_ADMIN,'admin');
 
     add_remove_group($boinc_user,$user,S_QN_FELLOW,'elab_fellow');
