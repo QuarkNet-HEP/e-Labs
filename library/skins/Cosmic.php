@@ -293,8 +293,8 @@ class SkinCosmic extends Skin {
 
       $s .= $this->menuHead( "qbpageoptions" );
       $s .= $this->talkLink()
-	. $sep . $this->commentLink()
-	. $sep . $this->printableLink();
+	/** . $sep . $this->commentLink() **/
+	. $sep . $this->printableLink();  //  BROKEN? -EAM 03Jun2009
       if ( $wgUser->isLoggedIn() ) {
 	$s .= $sep . $this->watchThisPage();
       }
