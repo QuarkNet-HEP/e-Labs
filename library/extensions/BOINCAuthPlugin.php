@@ -1,9 +1,10 @@
 <?php
 /***********************************************************************\
- * BOINCAuthPlugin.php             Version 1.1
+ * BOINCAuthPlugin.php                    Version 1.22  3 June 2009
  *
  * This is a MediaWiki extension for automatic authentication to a 
  * MediaWiki site based on prior authentication to a co-existing BOINC project.
+ * See http://boinc.berkeley.edu for more about BOINC.
  *
  * Installation:
  *    1) Move this file to the 'extensions' subdirectory of the wiki, 
@@ -22,8 +23,9 @@
  * then this will be invoked to allow implementation of a customized user
  * access policy without the need of editing the extension itself.
  * 
- *    Tested  recently with MediaWiki 1.10.1 and BOINC 5.9.3.
- *    Tested previously with MediaWiki 1.8.2 and BOINC 5.7.5.
+ *    Tested with MediaWiki 1.10.3 and BOINC 5.9.3.
+ *    Tested with MediaWiki 1.8.2 and BOINC 5.7.5.
+ *    Tested with MediaWiki 1.13.3 and BOINC 6.7.0   
  *
  * To get automatic redirection of the login form (not link) to the BOINC login
  * form you need to also insert a hook into SpecialUserlogin.php, at least until
@@ -35,41 +37,46 @@
  *  II) authentication class to extend AuthPlugin
  * III) code to take care of the "automagic" transparent login
  *
- *
  * Written by Eric Myers <myers@spy-hill.net>  - 12 Oct 2006 / 14 Jan 2007
- * @(#) $Id: BOINCAuthPlugin.php,v 1.4 2007/09/07 19:55:14 myers Exp $
+ * @(#) $Id: BOINCAuthPlugin.php,v 1.21 2009/02/11 13:45:45 myers Exp $ 
+\***********************************************************************/
+/* Copyright (c) 2009 by Eric Myers;  all rights reserved
+ * 
+ * Distribution of this file is allowed under the terms of 
+ * the GNU General Public License (GPL) Version 2
+ * See http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
 \***********************************************************************/
 
-/***********
- * Configuration settings:
- */
+// Configuration settings:
 
 /*  Where is the BOINC project's html subdirectory located?
  *  This could be absolute, or relative to the wiki top level. 
  *  It's used to find the access policy in html/project/BOINCAuthPolicy.php 
- *  Set this here, or in LocalSettings.php after you've loaded this extension.
+ *  Set this in LocalSettings.php if not using the default.
  */
-
 if( empty($BOINC_html) ) $BOINC_html = "../";
+
 
 /* Prefix added to URL's which point to the BOINC project 
  * This is used for constructing the login/logout links.
  */
-
 if( empty($BOINC_prefix) ) $BOINC_prefix = "";
 
 
 /* Where is the BOINC config.xml file?
  * This is used to get the user/password for the BOINC database, to look up 
  * the BOINC user.  If it's not set then it is assumed to be the directory 
- * above $BOINC_html.  So set this explicitly if config.xml is elsewhere.  */
+ * above $BOINC_html.  So only set this explicitly if config.xml is elsewhere. 
+ */
+if( empty($BOINC_config_xml) ) {
+  $BOINC_config_xml=$BOINC_html . "../config.xml";
+ }
 
-if( empty($BOINC_config_xml) ) $BOINC_config_xml="$BOINC_html/../config.xml"; 
 
-
-/* Re-check interval: how often should we re-check user's BOINC status,
- * even if there is no direct indication that it has changed? */
-
+/* Re-check interval: how often (in seconds) should we re-check user's 
+ * BOINC status, even if there is no direct indication that it has changed? 
+ * TODO: make this configurable (variable, not define'd)
+ */
 define("RECHECK_INTERVAL", 3600);
 
 
@@ -77,18 +84,17 @@ define("RECHECK_INTERVAL", 3600);
  * Access settings:  these are just for the example access policy
  * shown below.  
  * 
-/* Name of your project (same as in project.inc).
- * Used below just for access policy examples, otherwise not needed. */
+/* Name of your project (same as in project.inc, you could include that).
+ * (Used below just for access policy examples, otherwise not needed.) */
 
-define('PROJECT',"Pirates@Home");
+define('PROJECT',"I2U2");
 
 /* Credit Thresholds: users must have at least this much recent average 
  * credit (RAC) in order to edit existing pages or add new pages, at least 
  * by the default policy included here as an example. */
 
-define('RAC_TO_EDIT', 0.01);
+define('RAC_TO_EDIT', 0.50);
 define('RAC_TO_ADD',  1.00);
-
 
 
 /***********
@@ -99,29 +105,29 @@ $wgExtensionFunctions[] = 'SetupBOINCAuth';   // run automatically
 $wgExtensionCredits['other'][] =
     array(
           'name' => 'BOINCAuthPlugin',
-          'version' => '1.0.beta6',
+          'version' => '1.22',
           'author' => 'Eric Myers',
           'description' => 'Authentication to the wiki based on authentication '.
                            'to a co-located BOINC project', 
-          'date' => '13 September 2007', 
-          'url' => 'http://pirates.spy-hill.net/glossary/index.php/BOINC_Authentication'
+          'date' => '3 June 2009', 
+          'url' => 'http://www.mediawiki.org/wiki/Extension:BOINC_Authentication'
           );
 
 
 /* Debuging -- will be disabled or removed once this is all working. 
  * Turn it back on if you find you need it. */
 
-##function debug_msg($level, $message){}; // use this to disable easily
-
-$BOINC_html="/home/myers/i2u2/boinc/html";
-require_once( $BOINC_html."/include/debug.php" ); 
-set_debug_level(0);
-
-debug_msg(2,"BOINCAuthPlugin.php loading....");
+if( !function_exists('debug_msg') ){// Extra protection. (Why?) -EAM 03Jun2009
+    function debug_msg($level, $message){};  /* comment out this line to debug */
+}
+if( !function_exists('debug_msg') ){
+    require_once( $BOINC_html."/include/debug.php" ); 
+    set_debug_level(2);
+    debug_msg(2,"BOINCAuthPlugin.php loading....");
+ }
 
 
 /***********************************************************************\
-
  * Minimal set of stuff we need from BOINC to be able to access BOINC's
  * xml configuration file and database.   In BOINC the user's 'id' and 
  * 'authenticator' are unique and invariant, but the username and e-mail
@@ -262,8 +268,8 @@ function getUserPrefs($user_id){
 // Not in BOINC, but maybe it should be? 
 //
 function valid_authenticator($auth){
-    $t = preg_replace("/[^0-9A-Fa-f]/", "", $auth);
-    if(strlen($t)==32) return true;
+    $t = preg_replace("/[^0-9A-Fa-f]/", "", $auth); // remove non-hex
+    if( strlen($t)==32 ) return true;
     debug_msg(1,"Authenticator fails: $t has length ". strlen($t));
     return false;
 }
@@ -286,6 +292,7 @@ class BOINCAuthPlugin extends AuthPlugin {
      * @access public
      */
     function userExists( $username ) {
+        //TODO: do we need to check?
         return true;   
     }
 
@@ -374,7 +381,8 @@ class BOINCAuthPlugin extends AuthPlugin {
 
         debug_msg(2,"BOINCAuthPlugin->updateUser()....");
 
-        if( !$bgAuthenticator || !valid_authenticator($bgAuthenticator) ) return;
+        if( !$bgAuthenticator ||
+            !valid_authenticator($bgAuthenticator) ) return;
 
         db_init_aux();         // connect to BOINC user database 
         $boinc_user = lookup_user_auth($bgAuthenticator);
@@ -417,7 +425,7 @@ class BOINCAuthPlugin extends AuthPlugin {
          * which is just an example you can modify for your own project.
          */
 
-        if( !isset($BOINC_html) ) { // default if not set
+        if( !isset($BOINC_html) ) { // default if not set by now, so... 
             $BOINC_html = "../";
         }
         if( is_dir($BOINC_html) ){
@@ -434,7 +442,8 @@ class BOINCAuthPlugin extends AuthPlugin {
         }
 
         /* What follows is just an illustrative example, so it's disabled 
-         * by default for all but our test project */
+         * by default for all but our test project.  Wiki users are put into
+         * groups based on Recent Average Credit (RAC) on the BOINC project */
 
         if( PROJECT != "Pirates@Home" ) return;
 
@@ -496,6 +505,7 @@ class BOINCAuthPlugin extends AuthPlugin {
         return; 
     }// updateUser()
 
+
     /**
      * Return true if the wiki should create a new local account automatically
      * when asked to login a user who doesn't exist in the wiki but does
@@ -520,6 +530,7 @@ class BOINCAuthPlugin extends AuthPlugin {
     /**
      * Set the given password in the external authentication database.
      * Return true if successful.   We don't allow that for BOINC.
+     * You have to change your password on the BOINC side.
      *
      * @param string $password
      * @return bool
@@ -587,7 +598,7 @@ class BOINCAuthPlugin extends AuthPlugin {
      * @access public
      */
     function strict() {
-        return true;   // false for now, but ultimately true
+        return false;   // false for now, but ultimately true
     }
 
     /**
@@ -608,7 +619,7 @@ class BOINCAuthPlugin extends AuthPlugin {
         global $bgAuthenticator;
 
         $this->updateUser($user);             // update BOINC user info
-        $user->mPassword = $bgAuthenticator;  // not encrypted, not a password
+        $user->mPassword = ":C:".$this->mId.":$bgAuthenticator";  // not encrypted, not a password
     }
 
     /**
@@ -651,18 +662,20 @@ function SetupBOINCAuth(){
     global $wgHooks;
     global $wgAuth;
     global $wgEnableEmail;
-    global $bgAuthenticator;
+    global $bgAuthenticator;    // BOINC authenticator (private code)
     global $BOINC_prefix;
 
     debug_msg(1,"SetupBOINCAuth(): started.");
-    debug_msg(1,"scroll..<pre>\n\n\n\n\n\n\n</pre>" ); // past the logo
+    // only makes sense for Monobook...
+    //debug_msg(1,"scroll..<pre>\n\n\n\n\n\n\n</pre>" ); // past the logo
 
     debug_msg(4," PHP session_id(): ". session_id() );
     if( !isset($_SESSION) ) return;
 
-    /* Hooks to intercept wiki login/logout - use BOINC instead */
+    /* Hooks to intercept wiki login/logout, to use BOINC instead. 
+     * These hooks don't exist, you have to add them to the source. */
 
-    $wgHooks['UserLogin'][] = 'use_BOINC_login'; 
+    $wgHooks['UserLogin'][]  = 'use_BOINC_login'; 
     $wgHooks['UserLogout'][] = 'use_BOINC_logout';  
 
     /* first look for existing authenticator in this session */
@@ -696,17 +709,22 @@ function SetupBOINCAuth(){
 
     if( $bgAuthenticator ) { /* user is _possibly_ authenticated to BOINC */
         debug_msg(1,"SetupBOINCAuth(): setting up AutoAuthenticate...");
-        $wgHooks['AutoAuthenticate'][] = 'BOINCAutoAuth'; 
+        $wgHooks['AutoAuthenticate'][] = 'BOINCAutoAuth';         // pre 1.13
+        $wgHooks['UserLoadFromSession'][] = 'BOINC_Auto_Auth';    // MW 1.13
         $wgHooks['PersonalUrls'][] = 'LogoutLinks'; 
-        $wgAuth = new BOINCAuthPlugin();
+        $wgAuth = new BOINCAuthPlugin();        
     }
     else { /* nobody is authenticated to BOINC, so just show the login link */
         debug_msg(2,"SetupBOINCAuth(): no BOINC user session found.");
+
+        $wgHooks['PersonalUrls'][] = 'LoginLinks'; 
+
         // make sure nobody (else?) is logged in to the wiki
 
         /************ MW 1.8 to 1.10 compatibility: *********
          * User::loadFromSession() was made private; now use User::newFromSession(),
-         * but only if older is no longer available.  */
+         * but only if older is no longer available.
+         */
 
         $use_loadFromSession = in_array( 'loadFromSession', get_class_methods('User') );
         
@@ -725,33 +743,50 @@ function SetupBOINCAuth(){
                       . $tmpuser->mName);
             $tmpuser->logout();
         }
-        $wgHooks['PersonalUrls'][] = 'LoginLinks'; 
     }
-}
+}// end of setup
+
+
+
 
 /****
  * Disable anonymous user page links, point login to BOINC project login form .
  */
 
-function LoginLinks(&$personal_urls , $title){
+function LoginLinks(&$personal_urls , &$title){
     global $BOINC_prefix;
 
-    debug_msg(1,"LoginLinks() ...");
+    debug_msg(1," * invoked LoginLinks() ...");
+
+    if(empty($personal_urls)){
+        debug_msg(1," * empty personal_urls array! ");
+    }
+    else {
+        $x = '';
+        foreach( $personal_urls as $key => $value){
+            $x .= " $key,";
+        }
+        debug_msg(1,"Personal links: $x");
+    }
+
     unset($personal_urls['anontalk']);
     unset($personal_urls['anonlogin']);
     unset($personal_urls['anonuserpage']);
 
    // Login link now brings you back to this page.
     $personal_urls['login'] =
-        array( 'text' => 'Login',
-               'href' => $BOINC_prefix.'/login_form.php?next_url='.
-               wfUrlencode($title->getFullURL())
+        array('text' => wfMsg('userlogin'),
+              'href' => $BOINC_prefix.'/login_form.php?next_url='.
+                          wfUrlencode($title->getFullURL()),
+              'active' => false
                );
 
-    debug_msg(3, "personal_urls contains: <pre>"
+    debug_msg(5, "personal_urls contains: <pre>"
               .print_r($personal_urls,true)."</pre>");
-    debug_msg(3, "title contains: <pre>" .print_r($title,true)."</pre>");
+    debug_msg(8, "title contains: <pre>" .print_r($title,true)."</pre>");
+    return true;
 }
+
 
 /****
  * This function is to be called by the hook 'UserLogin' in SpecialUserlogin.php
@@ -767,14 +802,12 @@ function LoginLinks(&$personal_urls , $title){
 function use_BOINC_login(&$form=NULL){  // $form is the just-created login form
     global $personal_urls;
     global $wgOut;   
-    global $BOINC_prefix;
-
 
     $login_url = $personal_urls['login']['href'];
     if( !$login_url ) {
-       $login_url = $BOINC_prefix. "/login_form.php?next_url=".
-	 wfUrlencode($title->getFullURL());
-    }
+        $login_url = $BOINC_prefix. "/login_form.php?next_url=".
+            wfUrlencode($title->getFullURL());
+     }
     $wgOut->redirect( $login_url );
     return false;   // short circuits hook call
 }
@@ -784,25 +817,44 @@ function use_BOINC_login(&$form=NULL){  // $form is the just-created login form
  * Add link to logout from BOINC project, disable anonymous page/talk links
  */
 
-function LogoutLinks(&$personal_urls, $title){
-    global $wgHooks;
+function LogoutLinks(&$personal_urls, &$title){
     global $BOINC_prefix;
 
-    unset($personal_urls['anonuserpage']);
-    unset($personal_urls['anontalk']);
-    unset($personal_urls['anonlogin']);
+    debug_msg(2,"LogoutLinks: setting personal toolbar links");
+
+    if(empty($personal_urls)){
+        debug_msg(1," * empty personal_urls array! ");
+    }
+    else {
+        $x = '';
+        foreach( $personal_urls as $key => $value){
+            $x .= " $key,";
+        }
+        debug_msg(1,"Personal links: $x");
+    }
+
+    // Clear these:
+    unset( $personal_urls['anonuserpage'] );
+    unset( $personal_urls['anontalk'] );
+    unset( $personal_urls['anonlogin'] );
+    unset( $personal_urls['login'] );
 
     $personal_urls['logout'] =
-        array( 'text' => 'Logout',
-               'href' => $BOINC_prefix.'/logout.php');
+        array( 'text' => wfMsg('userlogout'),
+               'href' => $BOINC_prefix.'/logout.php',
+               'active' => false
+               );
+
     /************
-     * If you want to come right back use this version (but is that right?)
+     * If you want to come right back, use this version (but is that right?)
      *        'href' => $BOINC_prefix.'/logout.php?next_url='.
      *          wfUrlencode($title->getFullURL())
      *            );
      *************/
 
-    debug_msg(6, "personal_urls contains: <pre>" .print_r($personal_urls,true)."</pre>");
+    debug_msg(5, "LogoutLinks: personal_urls contains: <pre>"
+              .print_r($personal_urls,true)."</pre>");
+    return true;
 }
 
 
@@ -831,8 +883,18 @@ function use_BOINC_logout(&$user){// redirect to the BOINC logout page
  *  already authenticating to the BOINC project.
  */
 
+// MW 1.13 version
+//
+function  BOINC_Auto_Auth($user, &$result) {
+    debug_msg(3,"BOINC_Auto_Auth() for MW 1.13 entered.");
+    $result=BOINCAutoAuth($user);
+    return false;
+}
+
+// pre 1.13
+//
 function BOINCAutoAuth($user){
-    global $wgUser;
+    global $wgUser, $wgHooks;
     global $wgContLang;  
     global $wgAuth;
     global $bgAuthenticator;
@@ -841,17 +903,25 @@ function BOINCAutoAuth($user){
     debug_msg(3,"BOINCAutoAuth(): entered.");
 
     if( !$bgAuthenticator || !valid_authenticator($bgAuthenticator) ){
-        return;         // not authenticated to BOINC, so bail 
+        //$wgHooks['PersonalUrls'][] = 'LoginLinks'; 
+        return false;         // not authenticated to BOINC, so bail 
     }
 
+    if( empty($user) ){
+        debug_msg(1,"User is empty!");
+    }
     debug_msg(4,"User last touched: ".  $user->mTouched);
 
-    $tmpuser =&$user;
+    $tmpuser = &$user;
     if( $tmpuser != null && $tmpuser->isLoggedIn() ){
         debug_msg(2,"BOINCAutoAuth():  user ".$tmpuser->mName." is ALREADY logged in.");
         debug_msg(3,"  authenticator: $bgAuthenticator");
+        debug_msg(3,"  compare to password: ".$tmpuser->mPassword);
 
-        if( $tmpuser->mPassword == $bgAuthenticator ) {// and these match? We're in!
+        // Check that passwords match.  
+        // Checking the last 32 characters matches old and new hash formats
+        //
+        if( substr($tmpuser->mPassword,-32) == $bgAuthenticator ) {
 
             /*  When the user's status changes the timestamp in $user->mTouched is
              *  updated.  If that is later than the session timestamp (or if there 
@@ -869,42 +939,52 @@ function BOINCAutoAuth($user){
             if( $user_last_checked < $user_touched ||
                 $user_last_checked < $recheck_time ){ 
                 debug_msg(1," Time to UPDATE USER!");
-                $wgAuth->updateUser( $tmpuser );   // this also resets both timestamps
+                $wgAuth->updateUser( $tmpuser );// also resets both timestamps
             }
-            return;  // we are now logged in, so we are done here
+            $wgHooks['PersonalUrls'][] = 'LogoutLinks'; 
+            return true;  // we are now logged in, so we are done here
         }
-    }
+    }// logged in?
 
     debug_msg(1,"BOINCAutoAuth(): user is NOT already logged in.");
 
-    /* Is the BOINC user already in the MW database?  The password field
-     * holds the BOINC authenticator, so look up user with that. */
-
-    $dbr =& wfGetDB( DB_SLAVE );
+    // Is the BOINC user already in the MW database?  The password field
+    // holds the BOINC authenticator, so look up user with that.
+    //
+    $dbr  =&wfGetDB( DB_SLAVE );
     $name = $dbr->selectField( 'user', 'user_name',
                                array('user_password' => $bgAuthenticator));
+
+    // MW 1.13 uses different password hash format
+    //
+    if( empty($name) ) {
+        debug_msg(1, "User not found via simple password match.  "
+                  ."Trying new hash format...");
+        $name = $dbr->selectField( 'user', 'user_name',
+                               'user_password LIKE ":%:%:'.$bgAuthenticator.'"');
+    }
     if( is_string( $name ) ) { /* found something */
+        debug_msg(2,"Found user $name");
         $tmpuser= User::newFromName( $name, true );  // with name validation
         if( $tmpuser != null && $tmpuser->getID() != 0 ){
-
-            $tmpuser->loadFromDatabase();      // fill in wiki info
-                                               // (to be private some day?)
-            $wgAuth->updateUser( $tmpuser );  // update with BOINC info
-            $wgUser = &$tmpuser;       
+            $tmpuser->loadFromDatabase();      // fill in data from wiki db
+            $wgUser = $tmpuser;                // Copying to $wgUser 
             $wgUser->setCookies();
             $wgUser->setupSession();
+            $wgAuth->updateUser( $wgUser );    // update with BOINC info
             global $wgClockSkewFudge;
             $_SESSION['user_last_checked'] = wfTimestamp( TS_MW, time() + $wgClockSkewFudge );
-            debug_msg(2,"BOINCAutoAuth():  user ".$tmpuser->mName." logged in.");
-            return;
+           debug_msg(2,"BOINCAutoAuth():  user ".$wgUser->mName." logged in, "
+                      ."userID ".$wgUser->getID() );
+           $wgHooks['PersonalUrls'][] = 'LogoutLinks'; 
+            return true;
         }
     }
 
+    // Did not find a user (with valid user name) in the database, so 
+    // create a NEW wiki user, based on BOINC user information    
+    //
     debug_msg(1,"BOINCAutoAuth(): user is NOT in MW database. Create one.");
-
-    /* Did not find a user (with valid user name) in the database, so 
-     * create a NEW wiki user, based on BOINC user information     */
-
     db_init_aux();    
     $boinc_user = lookup_user_auth($bgAuthenticator);
     debug_msg(1,"BOINC user: ". $boinc_user->name);
@@ -926,16 +1006,18 @@ function BOINCAutoAuth($user){
         if( $tmpuser ) debug_msg(2,"Got wiki name ".$tmpuser->mName);
         if( $tmpuser != null && User::idFromName($tmpuser->mName) == 0 ) break;
     }
-    if($tmpuser == null ) return;  // none of those worked.  Bummer.
+    if($tmpuser == null ) return false;  // none of those worked.  Bummer.
 
     /* Add this new user to the database and log them in  */
 
     debug_msg(1,"Adding the new user to the database...");
-    $wgAuth->initUser( $tmpuser );   // sets mPassword <- bgAuthenticator
-    $tmpuser->addToDatabase();
-    $wgUser = &$tmpuser;
+
+    $wgUser = $tmpuser;
+    $wgAuth->initUser( $wgUser );   // sets mPassword <- bgAuthenticator
+    $wgUser->addToDatabase();
     $wgUser->setCookies();
     $wgUser->setupSession();
+    return true;
 }
 
 debug_msg(2,"BOINCAuthPlugin.php loaded.");
