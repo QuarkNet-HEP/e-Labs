@@ -1,12 +1,11 @@
 /* Navbar */ 
-#nav #subnav ul#data { display:none }
-#nav #subnav ul#library { display:none; }
-#nav #subnav ul#posters { display:none; } 
-#nav #subnav ul#siteindex { display:none; } 
-#nav #subnav ul#upload { display:none; }
+#nav #subnav ul#sub-data { display:none }
+#nav #subnav ul#sub-library { display:none; }
+#nav #subnav ul#sub-posters { display:none; } 
+#nav #subnav ul#sub-siteindex { display:none; } 
+#nav #subnav ul#sub-upload { display:none; }
 
 a#nav-assessment {
-	color: black; 
 	background-color: #ffcc00;
 	border-top: #ffd940 1px solid;
 	border-left: #ffd940 1px solid;
@@ -16,7 +15,7 @@ a#nav-assessment {
 
 /* Content */ 
 
-#assessment h1 {
+#assessment #content h1 {
 	background-color: #ffcc00;
 	color: #000000;
 	width: 100%;
@@ -27,22 +26,22 @@ a#nav-assessment {
 	width: 790px;
 }
 
-#assessment table, td {
+#assessment #content table, td {
 	border: 1px solid gray;
 }
 
-#assessment table {
+#assessment #content table {
 	width: 550px;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-#assessment td {
+#assessment #content td {
 	padding: 6px;
   vertical-align: top;
 }
 
-#assessment th {
+#assessment #content th {
 	font-weight: normal;
   vertical-align: top;
 }
