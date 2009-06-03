@@ -50,7 +50,11 @@ $Email_From = "help@i2u2.org";
  * Lists for input selectors:
  */
 
-$elab_list=array('Any/All', 'Cosmic Rays', 'CMS', 'LIGO', 'ATLAS', 'STAR', 'Adler');
+$elab_list=array('any' => 'Any/All',
+		 'cosmic' => 'Cosmic Rays',
+		 'cms' =>'CMS',
+		 'ligo' => 'LIGO',
+		 'adler' => 'Adler iLab');
 
 // TODO: This will become a list of checkboxes, possibly each with
 // it's own class, to allow us to control visibility.
@@ -956,7 +960,7 @@ if( isset($_POST['submit_report']) && empty($input_error) ){
 // Input selectors work more easily if these arrays have the value as the index
 //  (Function is from ../include/utils.php)
 //
-$elab_list=array_of_values($elab_list);
+//$elab_list=array_of_values($elab_list);
 $severity_list = array_of_values($severity_list);
 $part_list=array_of_values($part_list);
 $platform_list = array_of_values($platform_list);
@@ -1208,7 +1212,7 @@ echo "<P>
 
 
 echo "\n<p style='color:grey; text-align: right;'>"
-        . strtr('$Version: 1.9+ $','$',' ')      ."</p>\n\n";
+        . strtr('$Revision: 1.27+$','$',' ')      ."</p>\n\n";
 
 
 // Form adjustments:  set initial visibility of sections, 
