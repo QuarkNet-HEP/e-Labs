@@ -1,0 +1,17 @@
+This directory contains software tools used in support of the I2U2
+web site and analysis tools.
+
+The scripts build_* contain instructions for building the software.
+They are usually just invocations to ./configure with the proper
+flags, followed by `make` and perhaps `make test`.
+
+The scripts deploy-* contain instructions for deploying different
+software components onto a server.
+
+Note that scripts which begin #!/bin/human *might* work if you run
+them through bash, but maybe not.   They are intended to be an outline
+of the steps I took, not necessarily automated scripts for every 
+occasion.  (But in fact I ran them to do my builds, so there.)
+
+-Eric
+

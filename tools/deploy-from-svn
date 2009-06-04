@@ -1,0 +1,21 @@
+#!/bin/bash
+# run this as yourself with appropriate cvs access (eg ssh forward)
+
+ROOT=~quarkcat
+export ROOT
+
+
+if [ "$1" == "" ] ; then
+  echo "Missing argument."
+  echo
+  echo "Usage:"
+  echo "    deploy-from-svn (trunk|tags/<tag>|branches/<branch>|update)"
+  exit 1
+else
+  if [ "$USER" == "quarkcat" ]; then
+    $ROOT/internal-deploy-from-svn $1
+  else
+	echo "($HOSTNAME password)"
+    sudo -u quarkcat $ROOT/internal-deploy-from-svn "$@"
+  fi
+fi

@@ -1,0 +1,54 @@
+#!/bin/bash
+#
+# Run this script to deploy the BOINC forum code from SVN 
+# on a server.  Run this AFTER the internal deply script updates
+# sw/i2u2svn to the branch/tag/trunk that you want.
+#
+# Eric Myers <myers@spy-hill.net>
+# @(#) $Id:$
+######################################################################
+
+# BOINC top-level directory:
+
+BOINCDIR=/home/i2u2/boinc
+
+# Where we expect to find a Subversion sandbox with the BOINC code
+# The code should already have been checked out here. 
+
+SVNDIR=/home/quarkcat/sw/i2u2svn/boinc
+
+# Make a tarball copy of whatever is saved in SVN
+# and then unpack it to the BOINCDIR.  This effectively overlays
+# anything that was in SVN without wiping out anything extra.
+# And it includes .svn subdirectories (which I like).
+
+TARBALL=/tmp/deploy-forums-$$
+
+cd $SVNDIR
+cd ..
+tar cf $TARBALL  boinc
+
+cd $BOINCDIR
+cd ..
+tar xf $TARBALL
+
+# Make sure group i2u2 works
+
+chgrp -R i2u2 boinc
+chmod -R g+w boinc
+
+
+# If run as root then we can change file groups and permissions,
+# There is a script to get them all set right, so run it
+
+if [ "$USER" == "root" ]; then
+  pushd $BOINCDIR/bin
+  sh ./set_boinc_file_permissions
+  popd
+fi
+
+# Clean up
+
+rm $TARBALL
+
+##EOF##

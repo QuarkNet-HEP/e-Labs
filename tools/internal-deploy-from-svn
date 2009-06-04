@@ -1,0 +1,85 @@
+#!/bin/bash
+
+# run this as quarkcat
+
+ROOT=~quarkcat
+HOME=~quarkcat
+OPT=$2
+
+op() {
+	OP=$1
+	echo "$OP..."
+}
+
+error() {
+	echo "$OP failed"
+	echo "Check log ($LOG) for details"
+	exit 1
+}
+
+if [ "$USER" != "quarkcat" ]; then
+    echo "This script must be run as quarkcat"
+    exit 1
+fi
+
+LOG=$ROOT/deployment.log
+if [ -f $LOG ]; then
+	op "Backing up previous log"
+	mv -f $LOG $LOG.old || error
+fi
+	
+
+if [ "$NO_CHECKOUT" == "" ]; then
+	if [ "$1" == "update" ]; then
+		op "Updating checkout"
+		pushd $PWD >>$LOG
+		cd $ROOT/sw/i2u2svn
+		svn up >>$LOG || error
+		popd >>$LOG
+	else
+		op "Removing previous checkout"
+		rm -rf $ROOT/sw/i2u2svn >>$LOG 2>&1 || error
+		op "Checking out code"
+		svn co https://svn.ci.uchicago.edu/svn/i2u2/$1 $ROOT/sw/i2u2svn >>$LOG || error
+	fi
+fi
+
+op "Setting up environment"
+source ~quarkcat/setenv.sh >>$LOG 2>&1 || error
+
+pushd $PWD >>$LOG
+
+cd ~quarkcat/sw
+op "Applying local settings"
+cp -r local-settings/* i2u2svn >>$LOG 2>&1 || error
+cd i2u2svn
+op "Deploying"
+ant deploy-all-clean >>$LOG 2>&1 || error
+op "Generating javadoc/tlddoc"
+ant javadoc-common >>$LOG 2>&1 || error  
+
+if [ "$1" != "" ]; then
+	op "Generating version file"
+    echo $1 > ~quarkcat/sw/tomcat/webapps/elab/version.jsp 2>>$LOG || error
+fi
+
+if [ "$OPT" != "norestart" ]; then
+	op "Shutting down tomcat"
+	$CATALINA_HOME/bin/shutdown.sh >>$LOG 2>&1 || error
+	op "Sleeping a bit"
+	sleep 20s
+	op "Starting tomcat"
+	$CATALINA_HOME/bin/startup.sh >>$LOG 2>&1 || error
+fi
+popd >>$LOG
+
+op "Sleeping a bit more"
+sleep 10s
+
+if [ "$NO_TESTS" == "" ]; then
+	op "Running tests"
+	./runtests.sh >>$LOG 2>&1 || error
+fi
+
+echo "THE END"
+

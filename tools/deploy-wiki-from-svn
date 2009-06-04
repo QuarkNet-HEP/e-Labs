@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+# Run this script to deploy the wiki extensions and skins from SVN
+# Run this AFTER the internal deploy script updates sw/i2u2svn to 
+# the branch/tag/trunk that you want to use.   There are at least two
+# wiki installations (maybe more some day?) so we'll have to unpack
+# into each of them.
+#
+# Eric Myers <myers@spy-hill.net>
+# @(#) $Id:$
+######################################################################
+
+# Top level directory above where the wikis are served from
+
+TOPDIR=/home/i2u2
+
+# Where we expect to find a Subversion sandbox with the BOINC code
+# The code should already have been checked out here. 
+
+SVNDIR=/home/quarkcat/sw/i2u2svn/library
+
+# Make a tarball copy of whatever is saved in SVN.
+# Exclude LocalSettings.php, which must be modified by hand.
+
+TARBALL=/tmp/deploy-wiki-$$
+
+cd $SVNDIR
+tar cf $TARBALL  --exclude LocalSettings.php  .
+
+# Now unpack these things into the wiki installations.
+
+cd $TOPDIR/library
+tar xf $TARBALL
+chgrp -R i2u2 .
+chmod -R g+w .
+
+cd $TOPDIR/teacher/library
+tar xf $TARBALL
+chgrp -R i2u2 .
+chmod -R g+w .
+
+
+# Clean up
+
+rm $TARBALL
+
+##EOF##
