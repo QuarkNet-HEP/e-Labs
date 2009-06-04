@@ -10,6 +10,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column-home.css"/>
+		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	
 	<body id="home" class="home">
@@ -70,15 +71,19 @@
 								</blockquote>
 
 								<p>
-									When charged particles are ejected into space, these nuclei (mostly protons) drift through the universe; some collide with Earth's atmosphere and become "cosmic rays." These collisions create showers of lower energy particles. Some you may know &mdash; protons, neutrons, smaller nuclei. Some are more exotic &mdash; pions, kaons, muons. Some of the exotic particles decay in the upper atmosphere; longer-lived particles reach  Earth's surface. Each second, about 100 of these secondary cosmic rays pass though your body.
+									When charged particles are ejected into space, these cosmic rays (mostly protons) drift through the universe; some collide with Earth's atmosphere and create showers of lower energy particles. You may know some of these  &mdash; protons, neutrons, smaller nuclei. Some are more exotic  &mdash; pions, kaons, muons. Some of the exotic particles promptly decay; longer-lived particles  &mdash; like muons  &mdash; reach Earth's surface. Many of these secondary cosmic rays pass though your body every second.
 								</p>
 								
 								<p>
-									The particles that reach the earth are very easy to detect. One way is to use our <a href="../flash/daq_only_standalone.html"> setup</a> of counters, photomiltiplier tubes (PMT) and a data acquisition card (DAQ). Together, these represent a simple system that records indirect evidence of cosmic ray activity. 
+									The particles that reach the earth are very easy to detect. One way is to use our <a href="../flash/daq_only_standalone.html"> setup</a> of counters, photomiltiplier tubes (PMT) and a data acquisition card (DAQ). Together, these represent a simple system that records indirect evidence of cosmic ray activity.
 								</p>
 
 								<p>
 									The DAQ records this evidence in local computer files; detector owners can upload these files to our server, and you can investigate the data. We provide analysis tools and even connect to the Grid, giving you access to computing resources for number crunching. The raw data, analysis tools and other features are collectively known as the <b>Cosmic Ray e-Lab</b>. Using it requires some guidance for asking good research questions and understanding the entire research process.
+								</p>
+								<p>
+									Physicist Hans-Joachim Drescher created a <a href=
+  "javascript:showRefLink('../flash/cassim-video.html',700,600)">simulation</a> of a cosmic ray creating a shower. Watch it and the accompanying <a href="javascript:showRefLink('../flash/cassim-animation.html',700,600)">animation</a>.
 								</p>
 							</div>
 						</td>
