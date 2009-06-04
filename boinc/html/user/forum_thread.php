@@ -102,12 +102,13 @@ show_forum_title($forum, $thread, $category->is_helpdesk);
 
 if (($thread->hidden) && (!isSpecialUser($logged_in_user,0))) {
     /* If the user logged in is a moderator, show him the
-    + * thread if he goes so far as to name it by ID like this.
-    + * Otherwise, hide the thread.
-    + */
+     * thread if he goes so far as to name it by ID like this.
+     * Otherwise, hide the thread.
+     */
     error_page("This thread has been hidden for administrative purposes");
+    exit(); 
 }
-else {
+
     
     echo "
         <form action='forum_thread.php'>
@@ -180,18 +181,28 @@ else {
     show_posts($thread, $sort_style, $filter, true, true, $category->is_helpdesk);
     end_forum_table();
 
+    // Link to post to thread
+
     echo "<p>";
-
-    $link = "<a href=\"forum_reply.php?thread=" . $thread->id;
+    $link = "<a href='forum_reply.php?thread=" . $thread->id;
     if ($category->is_helpdesk) {
-        $link = $link . "&helpdesk=1#input\">Answer this question";
+        $link = $link . "&helpdesk=1#input'>Answer this question";
     } else {
-        $link = $link . "#input\">Post to this thread";
+        $link = $link . "#input'>Post to this thread";
     }
+    echo $link, "</a>\n";
 
-    echo $link, "</a><br>\n</p>";
+    // Link to return to forum listing
+    //
+    $link  = "<a href='forum_forum.php?id=" . $forum->id ."'>";
+    $link .= $link ."Return to overview</a>\n";
+    echo " &nbsp;|&nbsp; ";
+    echo "$link \n";
+
+    // Forum title again at bottom
+
     show_forum_title($forum, $thread, $category->is_helpdesk);
-}
+
 
 page_tail();
 ?>
