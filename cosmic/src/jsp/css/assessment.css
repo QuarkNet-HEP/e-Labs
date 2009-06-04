@@ -26,7 +26,7 @@ a#nav-assessment {
 	width: 790px;
 }
 
-#assessment #content table, td {
+#assessment #content table td {
 	border: 1px solid gray;
 }
 
