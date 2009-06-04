@@ -92,9 +92,11 @@ echo "
 
 	<td class='border' width='25%'>
     <ul>
-    <li><a href='create_forum.php'>Create forum room</a>
-    <li><a href='manage_forums.php'>Manage Forums</a> [Unfinished]
-    <li><a href='forum_repair.php'>Forum repair</a>
+    <li><a href='../forum_index.php'>View all Forums</a>
+    <li><a href='./create_forum.php'>Create forum room</a>
+	<P>
+    <li><a href='./manage_forums.php'>Manage Forums</a> [Unfinished]
+    <li><a href='./forum_repair.php'>Forum repair</a>
     </ul>
     </td>
      ";
