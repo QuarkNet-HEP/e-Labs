@@ -260,6 +260,9 @@ public class DatabaseUserManagementProvider implements
         user.setNewSurvey(rs.getBoolean("new_survey"));
         user.setNewSurveyId((Integer) rs.getObject("test_id")); 
         setMiscGroupData(user, rs.getString("ay"), user.getUserArea());
+        if (user.isTeacher()) {
+            addTeacherInfo(s, user);
+        }
         return user;
     }
 
