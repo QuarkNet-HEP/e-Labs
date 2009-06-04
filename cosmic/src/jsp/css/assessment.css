@@ -77,7 +77,7 @@ a#nav-assessment {
 	font-size: 100%; 
 }
 
-#assessmentRubric table, td {
+#assessmentRubric table td {
 	border: 1px solid gray;
 		font-size: 90%; 
 }
