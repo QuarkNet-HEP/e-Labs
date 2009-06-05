@@ -84,6 +84,9 @@
 			</div>
 		<%
 	}
+	else if (srs == null || srs.isEmpty()) {
+		%> <h3>No results</h3> <%
+	}
 	else if (request.getParameter("submit") != null) {
 	    %> <h3>No results</h3> <%
 	}
