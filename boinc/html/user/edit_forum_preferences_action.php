@@ -24,7 +24,7 @@ if (substr($avatar_url,0,4)!="http") $avatar_url="http://".$avatar_url;
 $avatar_type = intval($HTTP_POST_VARS["avatar_select"]);
 $newfile=IMAGE_PATH.$user->id."_avatar.jpg";
 if ($avatar_type<0 or $avatar_type>3) $avatar_type=0;
-if ($avatar_type==0){
+if (0 && $avatar_type==0){
     if (file_exists($newfile)){
         unset($newfile);      //Delete the file on the server if the user
                               //decides not to use an avatar
@@ -108,6 +108,8 @@ for ($i=1;$i<sizeof($ignored_users);$i++){
 if ($minimum_wrap_postcount<0) $minimum_wrap_postcount=0;
 if ($display_wrap_postcount>$minimum_wrap_postcount) $display_wrap_postcount=round($minimum_wrap_postcount/2);
 if ($display_wrap_postcount<5) $display_wrap_postcount=5;
+
+// TODO: add         avatar_type='".$avatar_type."',
 
 $result = mysql_query(
     "update forum_preferences set 
