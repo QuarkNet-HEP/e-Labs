@@ -1,12 +1,24 @@
 <?php
+/***********************************************************************\
+ * Form to allow users to adjust discussion forum preferences.
+ * See edit_forum_preferences_action.php for execution.
+ *
+ * From BOINC disucssion forums.
+\***********************************************************************/
 
 require_once("../inc/db.inc");
 require_once("../inc/forum.inc");
 require_once("../inc/util.inc");
+require_once("../include/util.php");	// for get_destination()
 
 db_init();
 $user = get_logged_in_user();
 $user = getForumPreferences($user);
+
+// Is there a destination after this?
+$next_url = get_destination();
+
+
 
 page_head("Edit Discussion preferences");
 
@@ -22,16 +34,21 @@ echo "<script type=\"text/javascript\">
      else
      countfield.value = maxlimit - field.value.length // the number of the remaining chars is displayed
      } 
-</script>";
+</script>\n\n";
 
 
 echo "<h1>Edit discussion forum preferences</h1> 
 	Use this form to control how your information appears in the discussion forums,
-     and to control how the discussion forums are displayed for you. <br>\n";
+     and to control how the discussion forums are displayed for you. <br>\n\n";
 
 start_table();
-echo "<form method=\"post\" action=\"edit_forum_preferences_action.php\"
-   	    enctype=\"multipart/form-data\">";
+echo "\n<form method=\"post\" action=\"edit_forum_preferences_action.php\"
+   	    enctype=\"multipart/form-data\">\n";
+
+if( $next_url ) {
+  echo "   <input type='hidden' name='next_url' value='$next_url'>\n";
+}
+
 
 if ($user->avatar_type==0){
     $zero_select="checked=\"checked\"";

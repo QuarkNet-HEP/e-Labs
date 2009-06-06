@@ -7,6 +7,8 @@ require_once("../inc/util.inc");
 require_once("../inc/image.inc");
 require_once("../inc/forum.inc");
 
+require_once("../include/util.php");	// for get_destination
+
 /////
 // Need this because register_globals is off by default in PHP 4.2.0
 // and beyond, as it well should be -EAM 06Jan2005
@@ -18,6 +20,9 @@ $HTTP_POST_VARS=$_POST;  // register_globals is off!
 db_init();
 $user = get_logged_in_user();
 $user = getForumPreferences($user);
+
+$next_url=get_destination();
+
 
 $avatar_url = mysql_real_escape_string($HTTP_POST_VARS["avatar_url"]);
 if (substr($avatar_url,0,4)!="http") $avatar_url="http://".$avatar_url;
@@ -129,10 +134,17 @@ $result = mysql_query(
 	display_wrap_postcount='".$display_wrap_postcount."'
     where userid=$user->id"
 );
+
+
+
+// TODO: if $next_url is set then go there instead
+//         (this is all a bit crude)   -EAM 06Jun2009
+
 if ($result) {
     echo mysql_error();
     Header("Location: edit_forum_preferences_form.php");
-} else {
+} 
+else {
     page_head("Forum preferences update");
     echo "Couldn't update forum preferences.<br>\n";
     echo mysql_error();

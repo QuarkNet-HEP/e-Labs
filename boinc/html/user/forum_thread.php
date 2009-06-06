@@ -194,9 +194,17 @@ if (($thread->hidden) && (!isSpecialUser($logged_in_user,0))) {
 
     // Link to return to forum listing
     //
+    echo " &nbsp;|&nbsp; ";
     $link  = "<a href='forum_forum.php?id=" . $forum->id ."'>";
     $link .= $link ."Return to overview</a>\n";
+    echo "$link \n";
+
+    // Link to set forum preferences
+    //
     echo " &nbsp;|&nbsp; ";
+    $next_url = "forum_forum.php?id=" . $forum->id;
+    $link  = "<a href='edit_forum_preferences_form.php?next_url=$next_url'>";
+    $link .= $link ."Forum preferences</a>\n";
     echo "$link \n";
 
     // Forum title again at bottom
