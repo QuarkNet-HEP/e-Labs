@@ -8,7 +8,7 @@
 		<e:trinput type="hidden" name="rawData"/>
 	
 		<p>Click <strong>Analyze</strong> to use the default parameters. 
-		Control the analysis by expanding the options below.</p>
+		Control the analysis by expanding the options below. Be sure to click the question icon next to "Bin width (ns)."</p>
 		<p>
 			<e:vswitch revert="true">
 				<e:visible>
