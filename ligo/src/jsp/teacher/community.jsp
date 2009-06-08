@@ -23,7 +23,7 @@
 			</div>
 
 			<div id="content">
-<h1>LIGO e-Lab Teaching Community: collaborate with colleagues</h1>
+
 <!-- transcluded from http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php/LIGO_e-Lab_Teaching_Community" -->
 <e:transclude
  url="http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php/LIGO_e-Lab_Teaching_Community"
@@ -38,6 +38,6 @@
 			</div>
 		
 		</div>
-		<!-- end container -->
+		<!-- end page container -->
 	</body>
 </html>
