@@ -36,7 +36,13 @@
 
 	/* Stuff our checked data into the page object, if it already exists? Overwrite */
 	String[] rawData = request.getParameterValues("rawData");
-	HashMap<Integer, String[]> h = (HashMap) session.getAttribute("rawDataMap");
+	HashMap<Integer, String[]> h;
+	try {
+		h = (HashMap) session.getAttribute("rawDataMap");
+	}
+	catch (ClassCastException ex) {
+		h = null;
+	}
 	if (rawData != null) {
 		if (h == null) {
 			h = new HashMap(10, 0.75f);
