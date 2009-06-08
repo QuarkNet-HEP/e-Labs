@@ -304,7 +304,7 @@ String typeConstraint=" AND keyword.type in ('SW','S')";
               }
             if (!showFullLog)
             {
-            linkText="<A HREF=\"showLogbookRGforT.jsp?research_group_name="+research_group_name+"&keyword="+keyword+"&log_id="+log_id+"\">Read more</A>";
+            linkText="<A HREF=\"showLogbookRGforT.jsp?research_group_name="+research_group_name+"&keyword="+keyword+"&log_id="+log_id+"#"+log_id+"\">Read more</A>";
             }
 
 
@@ -352,7 +352,7 @@ String typeConstraint=" AND keyword.type in ('SW','S')";
            %>
           
          <tr><td valign="top" width="175" align="right"><A HREF="logCommentEntry.jsp?log_id=<%=log_id%>&keyword=<%=keyword_name%>&research_group_name=<%=research_group_name%>&path=RG"><IMG SRC="graphics/logbook_pencil.gif" border="0" align="top"</A> <%=dateText%><%=comment_info%></td><td width="400" valign="top">
-         	<e:whitespaceAdjust text="<%=log_text_truncated%>"/><%=elipsis%><%=linkText%></td></tr>
+         	<a name="<%=log_id%>"><e:whitespaceAdjust text="<%=log_text_truncated%>"/></a><%=elipsis%><%=linkText%></td></tr>
           <%
           
              
