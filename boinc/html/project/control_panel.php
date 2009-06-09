@@ -6,7 +6,7 @@
  * and then gutted to leave only the things of interest for I2U2.
  *
  * 
- * @(#) $Id: index.php,v 1.9 2008/05/08 17:25:16 myers Exp $
+ * @(#) $Id: control_panel.php,v 1.1 2009/06/09 16:48:11 myers Exp $
 \***********************************************************************/
 
 require_once("../inc/db_ops.inc");
@@ -16,6 +16,9 @@ require_once("../project/roles.php");
 
 
 $config = get_config();
+
+$external="<img src='/library/skins/monobook/external.png'>";
+
 
 db_init();
 
@@ -81,12 +84,13 @@ echo "
     <ul>
     <li><a href='/ops/manage_user.php'>Manage a user</a></li>
     <li><a href='/ops/list_new_users.php'>List new users</a></li>
+	<P>
     <li><a href='/ops/profile_screen_form.php'>Screen user profiles </a></li>
     <li><a href='/ops/list_uotd_candidates.php'>List UOTD candidates</a>
-	<P>
+    <li><a href='list_all_users.php'>List ALL users</a></li>
+	<hr>
     <li><a href='/ops/manage_special_users.php'>Manage special users</a>[OLD!]</li>
     <li><a href='mass_email.php'>Send mass email to a selected set of users</a>
-    <li><a href='list_all_users.php'>List ALL users</a></li>
     </ul>
     </td> 
 
@@ -94,8 +98,8 @@ echo "
     <ul>
     <li><a href='../forum_index.php'>View all Forums</a>
     <li><a href='./create_forum.php'>Create forum room</a>
-	<P>
-    <li><a href='./manage_forums.php'>Manage Forums</a> [Unfinished]
+	<hr>
+    <li><a href='./manage_forums.php'>Manage Forums</a>
     <li><a href='./forum_repair.php'>Forum repair</a>
     </ul>
     </td>
@@ -106,8 +110,13 @@ echo "
 echo "
 	<td class='border' width='25%'>
     <ul>
-    <li><a href='news_admin.php'>Front Page/RSS News </a>
-
+    <li><a href='news_admin.php'>News Feed </a>
+    <LI><a href='/library/index.php/I2U2:Site_Status'>Site Status Block</a> 
+	<P>
+    <LI><a href='../Calendar.php'>I2U2 Calendar</a> 
+    <LI><a href='http://spreadsheets.google.com/ccc?key=pvw2y9-_Vf3gNVzPlbw9nfw&hl=en'>
+	I2U2 Gantt Chart</a> $external
+    <LI><a href='http://www.quarknet.us/Calendar.php'>QuarkNet Calendars</a> $external
 
     </ul>
     </td> 
@@ -136,6 +145,6 @@ echo "
 admin_page_tail();
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: index.php,v 1.9 2008/05/08 17:25:16 myers Exp $";  
+    "\$Id: control_panel.php,v 1.1 2009/06/09 16:48:11 myers Exp $";  
 
 ?>
