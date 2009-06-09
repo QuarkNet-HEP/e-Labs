@@ -15,6 +15,8 @@
 	
 	ElabGroup user = null;
 	if (username != null && password != null) {
+		username = username.trim();
+		password = password.trim();
 		try {
 			user = elab.authenticate(username, password);
 		}
@@ -27,6 +29,7 @@
 		//login successful
 		ElabGroup.setUser(session, user);
 		String prevPage = request.getParameter("prevPage");
+		String redirect = prevPage; 
 		if(prevPage == null) {
     		prevPage = elab.getProperties().getLoggedInHomePage();
 		}
@@ -63,21 +66,24 @@
         //  2. From teacher table get "authenticator"
  		//  3. Set cookie named "auth" with value of the authenticator
 		//     with path "/" and expiration timestamp for end of session
-        if (user.getRole() == "teacher") {
+        if (user.getRole().equals(ElabGroup.ROLE_TEACHER)) {
         	String authenticator = user.getAuthenticator();
         	Cookie authenticationCookie = new Cookie("auth",  authenticator);
         	authenticationCookie.setPath("/");
             response.addCookie(authenticationCookie);
-        }
-
-		response.sendRedirect(prevPage);
+            if (password.length() < 6) {
+            	redirect = "small-password.jsp?prevPage=" + URLEncoder.encode(prevPage);
+            }
+        }  
+       	response.sendRedirect(redirect);
 	}
 	else {
 %>
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+<%@page import="java.net.URLEncoder"%><html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Login to ${elab.properties.formalName}</title>

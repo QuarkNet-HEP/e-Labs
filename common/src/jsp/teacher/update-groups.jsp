@@ -48,9 +48,9 @@
 	if ("Update Group Information".equals(submit)) {
 		if (groupName != null && ay != null && role != null 
 		        && survey != null) {
-		    if (passwd1 != null && !passwd1.equals(passwd2)) {
+		    if (passwd1 != null && !passwd1.equals(passwd2) && passwd1.length() < 6) {
 				%>
-					<div class="error">Passwords do not match</div>
+					<div class="error">Passwords do not match or are too short (must be at least six characters long)</div>
 				<%		        
 		    }
 		    else {
