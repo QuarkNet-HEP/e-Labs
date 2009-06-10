@@ -20,14 +20,15 @@ TOPDIR=/home/i2u2
 SVNDIR=/home/quarkcat/sw/i2u2svn/library
 
 # Make a tarball copy of whatever is saved in SVN.
-# Exclude LocalSettings.php, which must be modified by hand.
+# We no longer exclude LocalSettings.php
 
 TARBALL=/tmp/deploy-wiki-$$
 
 cd $SVNDIR
-tar cf $TARBALL  --exclude LocalSettings.php  .
+#tar cf $TARBALL  --exclude LocalSettings.php  .
+tar cf $TARBALL  
 
-# Now unpack these things into the wiki installations.
+# Now unpack these things into the wiki installations (all of 'em)
 
 cd $TOPDIR/library
 tar xf $TARBALL
