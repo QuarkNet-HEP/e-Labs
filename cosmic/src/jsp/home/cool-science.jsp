@@ -57,7 +57,7 @@
 			'codebase', 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0',
 			'width', '640',
 			'height', '480',
-			'src', 'cassim-animation',
+			'src', 'cassim-animation-collision',
 			'quality', 'high',
 			'pluginspage', 'http://www.macromedia.com/go/getflashplayer',
 			'align', 'middle',
@@ -66,22 +66,22 @@
 			'scale', 'showall',
 			'wmode', 'window',
 			'devicefont', 'false',
-			'id', 'cassim-animation',
+			'id', 'cassim-animation-collision',
 			'bgcolor', '#ffffff',
-			'name', 'cassim-animation',
+			'name', 'cassim-animation-collision',
 			'menu', 'true',
 			'allowFullScreen', 'false',
 			'allowScriptAccess','sameDomain',
-			'movie', 'cassim-animation',
+			'movie', 'cassim-animation-collision',
 			'salign', ''
 			); //end AC code
 	}
 </script>
 <noscript>
-	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="640" height="480" id="cassim-animation" align="middle">
+	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="640" height="480" id="cassim-animation-collision" align="middle">
 	<param name="allowScriptAccess" value="sameDomain" />
 	<param name="allowFullScreen" value="false" />
-	<param name="movie" value="cassim-animation.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />	<embed src="cassim-animation.swf" quality="high" bgcolor="#ffffff" width="640" height="480" name="cassim-animation" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+	<param name="movie" value="cassim-animation-collision.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />	<embed src="cassim-animation-collision.swf" quality="high" bgcolor="#ffffff" width="640" height="480" name="cassim-animation-collision" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
 	</object>
 </noscript>
 </td></tr>
