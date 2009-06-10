@@ -23,6 +23,7 @@
 			</div>
 
 			<div id="content">
+<h1>Community: Learn how to do studies using LIGO data in your classroom.</h1>   
 
 <!-- transcluded from http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php/LIGO_e-Lab_Teaching_Community" -->
 <e:transclude
