@@ -187,7 +187,7 @@ function AC_Generateobj(objAttrs, params, embedAttrs)
     str += '> </embed>';
   }
 
-  alert(str);
+//  alert(str);
   document.write(str);
 }
 
