@@ -1,4 +1,10 @@
 <?php
+/***********************************************************************\
+ * edit_forum_preferences_action.php -- handle preferences form
+ * 
+ * From BOINC (http://boinc.berkeley.edu) with local modifications
+ * @(#) $Id:$
+\***********************************************************************/
 
 require_once("../inc/db.inc");
 require_once("../inc/user.inc");
@@ -9,40 +15,56 @@ require_once("../inc/forum.inc");
 
 require_once("../include/util.php");	// for get_destination
 
-/////
-// Need this because register_globals is off by default in PHP 4.2.0
-// and beyond, as it well should be -EAM 06Jan2005
+/*********************
+ * Need this because register_globals is off by default in PHP 4.2.0
+ *  and beyond, as it well should be. -EAM 06Jan2005
+ * (That means this code is really, really old!) 
+ */
 
 $HTTP_POST_VARS=$_POST;  // register_globals is off!
-////
+
+/*********************/
 
 
 db_init();
 $user = get_logged_in_user();
 $user = getForumPreferences($user);
 
-$next_url=get_destination();
+$next_url=get_destination();  // anywhere we should end up?
 
-
-$avatar_url = mysql_real_escape_string($HTTP_POST_VARS["avatar_url"]);
-if (substr($avatar_url,0,4)!="http") $avatar_url="http://".$avatar_url;
-$avatar_type = intval($HTTP_POST_VARS["avatar_select"]);
+$avatar_url = mysql_real_escape_string($_POST["avatar_url"]);
+if (substr($avatar_url,0,4) !="http") $avatar_url="http://".$avatar_url;
 $newfile=IMAGE_PATH.$user->id."_avatar.jpg";
-if ($avatar_type<0 or $avatar_type>3) $avatar_type=0;
-if (0 && $avatar_type==0){
-    if (file_exists($newfile)){
+$avatar_type = intval($_POST["avatar_type"]);
+if ($avatar_type<0 or $avatar_type>4) $avatar_type=0;
+
+
+// They uploaded a picture.  Then assume it's for an avatar.
+
+if( $_FILES['picture']['tmp_name']!="" ) {
+  $avatar_type=2;
+}
+
+if ($avatar_type==0){ // no avatar
+    if( file_exists($newfile) ){
         unset($newfile);      //Delete the file on the server if the user
                               //decides not to use an avatar
                               // - or should it be kept?
     }
     $avatar_url="";
-} elseif ($avatar_type==2){
+}
+
+if ($avatar_type==1){
+  //TODO: go grab it via URL
+}
+
+if( $avatar_type==2 ){// UPLOAD IT
     if ($_FILES['picture']['tmp_name']!=""){
             $file=$_FILES['picture']['tmp_name'];
         $size = getImageSize($file);
         if ($size[2]<1 and $size[2]>3){
             //Not the right kind of file
-            Echo "Error: Not the right kind of file, only PNG, JPEG, and GIF  are supported.";
+            echo "Error: Not the right kind of file, only PNG, JPEG, and GIF  are supported.";
             exit();
         }
         $width = $size[0];
@@ -57,6 +79,7 @@ if (0 && $avatar_type==0){
         $avatar_url="";
     }
 }
+
 
 $image_as_link = ($HTTP_POST_VARS["forum_images_as_links"]!="");
 $link_externally = ($HTTP_POST_VARS["forum_link_externally"]!="");
@@ -114,10 +137,12 @@ if ($minimum_wrap_postcount<0) $minimum_wrap_postcount=0;
 if ($display_wrap_postcount>$minimum_wrap_postcount) $display_wrap_postcount=round($minimum_wrap_postcount/2);
 if ($display_wrap_postcount<5) $display_wrap_postcount=5;
 
-// TODO: add         avatar_type='".$avatar_type."',
+
+// Apply Database update
+
 
 $result = mysql_query(
-    "update forum_preferences set 
+    "UPDATE forum_preferences SET 
         avatar='".$avatar_url."', 
         images_as_links='".$image_as_link."', 
         link_popup='".$link_externally."', 
@@ -132,7 +157,7 @@ $result = mysql_query(
         high_rating_threshold='".$high_rating_threshold."',
 	minimum_wrap_postcount='".$minimum_wrap_postcount."',
 	display_wrap_postcount='".$display_wrap_postcount."'
-    where userid=$user->id"
+    WHERE userid=$user->id"
 );
 
 
@@ -140,9 +165,11 @@ $result = mysql_query(
 // TODO: if $next_url is set then go there instead
 //         (this is all a bit crude)   -EAM 06Jun2009
 
+if( empty($next_url) ) $next_url = "edit_forum_preferences_form.php";
+
 if ($result) {
     echo mysql_error();
-    Header("Location: edit_forum_preferences_form.php");
+    Header("Location: $next_url");
 } 
 else {
     page_head("Forum preferences update");
