@@ -30,6 +30,13 @@
       end="<div class=\"printfooter\">"
 />
 <div align="center"><A href="http://${elab.properties['elab.host']}/elab/cosmic/forum/forum_thread.php?id=309">Workshop Deliverables Thread</A></div>
+
+<e:transclude
+ url="http://${elab.properties['elab.host']}/cosmic/library/body.php/Implementation_Plan_Sections"
+     start="<!-- start content -->"
+      end="<div class=\"printfooter\">"
+/>
+
 			</div>
 			<!-- end content -->
 
