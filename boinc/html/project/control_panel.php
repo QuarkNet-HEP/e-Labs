@@ -97,7 +97,10 @@ echo "
 	<td class='border' width='25%'>
     <ul>
     <li><a href='../forum_index.php'>View all Forums</a>
-    <li><a href='./create_forum.php'>Create forum room</a>
+    <LI><a href='../forum_forum.php?id=43'>Developer's Workroom</a>
+    <LI><a href='../forum_forum.php?id=51'>Boiler Room</a>
+
+    <li><a href='./create_forum.php'>Create new forum room</a>
 	<hr>
     <li><a href='./manage_forums.php'>Manage Forums</a>
     <li><a href='./forum_repair.php'>Forum repair</a>
