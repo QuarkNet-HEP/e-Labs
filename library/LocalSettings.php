@@ -51,12 +51,14 @@ $wgSessionName      = "boinc_session"; //to match the BOINC project
 ## defaults for all runtime URL paths are based off of this.
 $wgScriptPath       = "/cosmic/library";
 
-$elab = "";
+$elab = "none";
 $referer = $_SERVER['HTTP_REFERER']; 
 $self = $_SERVER['PHP_SELF']; 
 $url_pattern=",^/elab/(\w+)/teacher/,";
 $n = preg_match($url_pattern, $self, $matches);
 if($n>0) list($all, $elab) = $matches;
+
+
 
 ## Default skin: you can change the default skin. Use the internal symbolic
 ## names, ie 'standard', 'nostalgia', 'cologneblue', 'monobook':
@@ -79,6 +81,16 @@ if( $elab == "cosmic" ){
   $BOINC_prefix = "/elab/cosmic/teacher/forum";
 }
 
+if( $elab == "ligo" || $elab == "LIGO" ){
+  $wgLogo = "/elab/ligo/graphics/LIGOicon.jpg";
+  $wgScriptPath = "/elab/ligo/teacher/library";
+  $wgDefaultSkin = 'cosmic';
+  $wgSitename    = "LIGO Teachers' Library";
+  $wgCookiePath = '/';
+  $wgMainPage = "LIGO e-Lab Teaching Community";
+  $BOINC_prefix = "/elab/ligo/teacher/forum";
+}
+
 $wgScript           = "$wgScriptPath/index.php";
 $wgRedirectScript   = "$wgScriptPath/redirect.php";
 
@@ -88,7 +100,6 @@ $wgRedirectScript   = "$wgScriptPath/redirect.php";
 ## If using PHP as a CGI module, the ?title= style usually must be used.
 $wgArticlePath      = "$wgScript/$1";
 ##$wgArticlePath      = "$wgScript?title=$1";
-
 
 
 $wgEnableEmail      = true;
@@ -319,6 +330,13 @@ require_once( "$IP/extensions/ParserFunctions/ParserFunctions.php" );
 
 # Display pages based on skin name as alternate page entry point                
 require_once( "$IP/extensions/SkinByURL.php" );
+
+# Display pages based on skin name as alternate page entry point                
+require_once( "$IP/extensions/inputbox.php" );
+
+
+# {{elab}} (and other magic words?)
+require_once("$IP/extensions/MagicWords.php");	
 
 
 ################################### 
