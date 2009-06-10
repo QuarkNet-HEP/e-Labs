@@ -40,6 +40,7 @@ public class ElabGroup {
     private ElabUserManagementProvider provider;
 
     private String authenticator; 
+    private Integer forumId; 
     
     public ElabGroup() {
         new Exception("Don't use this constructor. Use ElabGroup(Elab)").printStackTrace();
@@ -482,5 +483,13 @@ public class ElabGroup {
 
 	public String getAuthenticator() {
 		return authenticator;
+	}
+
+	public void setForumId(Integer forumId) {
+		this.forumId = forumId;
+	}
+
+	public Integer getForumId() {
+		return forumId;
 	}
 }
