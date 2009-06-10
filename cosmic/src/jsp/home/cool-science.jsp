@@ -11,6 +11,8 @@
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column-home.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
+<script language="javascript">AC_FL_RunContent = 0;</script>
+<script src="../flash/AC_RunActiveContent.js" language="javascript"></script>
 	</head>
 	
 	<body id="home" class="home">
@@ -38,57 +40,59 @@
 
 <!-- there is no way to do this without tables unfortunately -->
 			<div id="content">
+			<div align="center">
+							<h2>
+									Scientists study cosmic rays with large arrays of detectors. You can too!
+
+								</h2>
 				
-				<table border="0" id="main">
-					<tr>
-					  <td>
-	  		           <div id="left-column">
-			        	<%@ include file="../include/left.jsp" %>
-			          </div>
-			          </td>
-						<td>
-							<div id="right-column">
-								<b>
-									Cosmic rays are streaming through you at this very moment. Find out what they are and how you can learn about them.
-								</b>
-								<blockquote>
-									<p>
-										<i>
-											Scientists love a mystery, because solving a mystery in nature means the opportunity to learn something new about the universe. High-energy cosmic rays are just such a mystery.
-										</i>
-									</p>
-									
-									<p>
-										<i>
-											Something out there &mdash; no one knows what &mdash; is hurling incredibly energetic particles around the universe. Do these particles come from some unknown superpowerful cosmic explosion? From a huge black hole sucking stars to their violent deaths? From colliding galaxies? We don't yet know the answers, but we do know that solving this mystery will take scientists another step forward in understanding the universe."
-										</i>
-									</p>
-									<p align=right>
-										<font size=-1>
-											(Pierre Auger Project www.auger.org/cosmic_rays)
-										</font>
-									</p>
-								</blockquote>
-
-								<p>
-									When charged particles are ejected into space, these cosmic rays (mostly protons) drift through the universe; some collide with Earth's atmosphere and create showers of lower energy particles. You may know some of these  &mdash; protons, neutrons, smaller nuclei. Some are more exotic  &mdash; pions, kaons, muons. Some of the exotic particles promptly decay; longer-lived particles  &mdash; like muons  &mdash; reach Earth's surface. Many of these secondary cosmic rays pass though your body every second.
-								</p>
-								
-								<p>
-									The particles that reach the earth are very easy to detect. One way is to use our <a href="../flash/daq_only_standalone.html"> setup</a> of counters, photomiltiplier tubes (PMT) and a data acquisition card (DAQ). Together, these represent a simple system that records indirect evidence of cosmic ray activity.
-								</p>
-
-								<p>
-									The DAQ records this evidence in local computer files; detector owners can upload these files to our server, and you can investigate the data. We provide analysis tools and even connect to the Grid, giving you access to computing resources for number crunching. The raw data, analysis tools and other features are collectively known as the <b>Cosmic Ray e-Lab</b>. Using it requires some guidance for asking good research questions and understanding the entire research process.
-								</p>
-								<p>
-									Physicist Hans-Joachim Drescher created a <a href=
-  "javascript:showRefLink('../flash/cassim-video.html',700,600)">simulation</a> of a cosmic ray creating a shower. Watch it and the accompanying <a href="javascript:showRefLink('../flash/cassim-animation.html',700,600)">animation</a>.
-								</p>
-							</div>
-						</td>
-					</tr>
-				</table>
+	<table width="640" height="480" bgcolor="black"><tr><td valign="center"><!--url's used in the movie-->
+<!--text used in the movie-->
+<!-- saved from url=(0013)about:internet -->
+<script language="javascript">
+	if (AC_FL_RunContent == 0) {
+		alert("This page requires AC_RunActiveContent.js.");
+	} else {
+		AC_FL_RunContent(
+			'codebase', 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0',
+			'width', '640',
+			'height', '480',
+			'src', 'cassim-animation',
+			'quality', 'high',
+			'pluginspage', 'http://www.macromedia.com/go/getflashplayer',
+			'align', 'middle',
+			'play', 'true',
+			'loop', 'false',
+			'scale', 'showall',
+			'wmode', 'window',
+			'devicefont', 'false',
+			'id', 'cassim-animation',
+			'bgcolor', '#ffffff',
+			'name', 'cassim-animation',
+			'menu', 'true',
+			'allowFullScreen', 'false',
+			'allowScriptAccess','sameDomain',
+			'movie', 'cassim-animation',
+			'salign', ''
+			); //end AC code
+	}
+</script>
+<noscript>
+	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="640" height="480" id="cassim-animation" align="middle">
+	<param name="allowScriptAccess" value="sameDomain" />
+	<param name="allowFullScreen" value="false" />
+	<param name="movie" value="cassim-animation.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />	<embed src="cassim-animation.swf" quality="high" bgcolor="#ffffff" width="640" height="480" name="cassim-animation" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+	</object>
+</noscript>
+</td></tr>
+</table>
+<table width="648" style="padding: 10px;">
+<tr><td>
+<p>Physicist, Hans-Joachim Drescher, of Frankfurt University in Germany, created the simulation that provides the background  for animation of what happens when a cosmic ray, a proton, hits an air molecule and creates a shower of particles.  Among these particles
+is a muon like the ones you can detect with your detector. Watch more of Drescher's <a href="http://th.physik.uni-frankfurt.de/~drescher/CASSIM/" target="cassim">simulations</a>.</P>
+</td></tr>
+</table>
+			</div>
 			</div>
 			<!-- end content -->	
 		
