@@ -64,17 +64,20 @@
         // login do the following:
         //  1. verify it's a teacher login, and get teacher ID #
         //  2. From teacher table get "authenticator"
- 		//  3. Set cookie named "auth" with value of the authenticator
+		//  3. Set cookie named "auth" with value of the authenticator
 		//     with path "/" and expiration timestamp for end of session
+
+        String authenticator = "-bogus-";
         if (user.getRole().equals(ElabGroup.ROLE_TEACHER)) {
-        	String authenticator = user.getAuthenticator();
-        	Cookie authenticationCookie = new Cookie("auth",  authenticator);
-        	authenticationCookie.setPath("/");
-            response.addCookie(authenticationCookie);
-            if (password.length() < 6) {
+		    authenticator = user.getAuthenticator();
+            if (password.length() < 6) { // Why not everybody? -EAM 10Jun2009
             	redirect = "small-password.jsp?prevPage=" + URLEncoder.encode(prevPage);
             }
         }  
+        Cookie authenticationCookie = new Cookie("auth",  authenticator);
+        authenticationCookie.setPath("/");
+        response.addCookie(authenticationCookie);
+
        	response.sendRedirect(redirect);
 	}
 	else {
