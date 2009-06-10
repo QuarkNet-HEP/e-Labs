@@ -153,7 +153,7 @@ function show_user_info_private($user) {
          );
     row2("<b>Library preferences</b><br><span class=description>
                 Change your preferences for the wiki used as the Library<span>",
-         "<a href='glossary/index.php/Special:Preferences'>View
+         "<a href='../library/index.php/Special:Preferences'>View
                 or edit wiki preferences</a>"
          );
 
