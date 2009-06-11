@@ -85,6 +85,7 @@ a.button {
 }
 
 #nav a#nav-home {
+	color: white; 
 	background-color: #ff6600;
 	border-top: #ffa76c 1px solid;
 	border-left: #ffa76c 1px solid;
