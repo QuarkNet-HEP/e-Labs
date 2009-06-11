@@ -181,12 +181,9 @@
 		String s = "";
 		if (h != null) {
 			for (String ids[] : h.values()) {
-				for (int i = 0; ids!= null && i < ids.length; ++i) {
-					   s += "rawData=" + ids[i] + "";
-					   if (i != ids.length - 1) {
-						   s += "&";
-					   }
-				   }
+				for (String id : ids) {
+					s += "rawData=" + id + "&";
+				}
 			}
 		}
 		response.setStatus(java.net.HttpURLConnection.HTTP_SEE_OTHER);
