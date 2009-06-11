@@ -36,20 +36,25 @@
 
 	/* Stuff our checked data into the page object, if it already exists? Overwrite */
 	String[] rawData = request.getParameterValues("rawData");
-	HashMap<Integer, String[]> h;
+	HashMap<Integer, String[]> h = null;
 	try {
 		h = (HashMap) session.getAttribute("rawDataMap");
 	}
 	catch (ClassCastException ex) {
 		h = null;
 	}
-	if (rawData != null) {
+	finally {
 		if (h == null) {
 			h = new HashMap(10, 0.75f);
 		}
-		h.put(pageNo, rawData);
-		session.setAttribute("rawDataMap", h);
 	}
+	if (rawData != null) {
+		h.put(pageNo, rawData); // Insert new data if anything is checked
+	}
+	else {
+		h.remove(pageNo); // No checkboxes? Remove this page's information
+	}
+	session.setAttribute("rawDataMap", h);
 	
 	/* Initial search submission */ 
 	if ("Search Data".equalsIgnoreCase(action)) {
