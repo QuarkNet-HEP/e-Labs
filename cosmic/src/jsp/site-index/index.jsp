@@ -111,7 +111,7 @@
 					</li>
 							<li><a href="../library/big-picture.jsp"><b>The Big Picture</b></a></li>
 <li><a href="../library/FAQ.jsp"><b>FAQs</b></a></li>
-<li><a href="../library/site-help.jsp"><b>Site Help</b></a></li>
+<li><a href="../library/site-help.jsp"><b>Site Tips</b></a></li>
 				</li>
 				<li>
 					

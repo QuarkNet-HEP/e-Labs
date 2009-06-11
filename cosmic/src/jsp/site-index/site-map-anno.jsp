@@ -66,7 +66,7 @@ function hideAll()
 <a href="../library/resources.jsp">Resources</a><br>
 <a href="../library/big-picture.jsp">Big Picture</a><br>
 <a href="../library/FAQ.jsp">FAQs</a><br>
-<a href="../library/site-help.jsp">Site Help</a>
+<a href="../library/site-help.jsp">Site Tips</a>
 </div></td>
 <td width="126" valign="bottom" align="center">
 <div id="sitehelp-upload">
