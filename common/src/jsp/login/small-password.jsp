@@ -44,13 +44,19 @@ ElabGroup user = (ElabGroup) request.getAttribute("user");
 		</td>
 		<td>
 			<div id="center">
-				<p>We're adding great new futures to our eLabs but to access these new features you'll need a password
+				<p>We're adding great new futures to our e-labs but to access these new features you'll need a password
 				at least six characters long (and your password is shorter than that). You don't have to change it now, but we'll
 				give you a friendly reminder on each login until then. </p>
 				
-				<p><a href="/elab/cosmic/teacher/update-groups.jsp?submit=Show+Group+Info&chooseGroup=<%=user.getName()%>">Click here to change your password</a>.</p>
+				<form method="post" action="../teacher/update-groups.jsp">
+					<input type="hidden" name="chooseGroup" value="<%=user.getName()%>" />
+					<input type="hidden" name="prevPage" value="<%=prevPage%>" />
+					<button type="submit" name="submit" value="Show Group Info">
+						Click here to change your password
+					</button>
+				</form> 
 				
-				<p><a href="<%=URLDecoder.decode(prevPage)%>">Click here to continue on into the eLab.</a></p>
+				<p><a href="<%=URLDecoder.decode(prevPage)%>">Click here to continue on into the e-lab.</a></p>
 			</div>
 		</td>
 		<td>

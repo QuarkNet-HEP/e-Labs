@@ -43,6 +43,7 @@
 	String passwd1 = request.getParameter("passwd1");
 	String passwd2 = request.getParameter("passwd2");
 	String submit = request.getParameter("submit");
+	String prevPage = request.getParameter("prevPage");
 	String[] studentsToDelete = request.getParameterValues("deleteStudents");
 	
 	if ("Update Group Information".equals(submit)) {
@@ -68,7 +69,11 @@
 						elab.getUserManagementProvider().deleteStudent(group, studentsToDelete[j]);
 					}
 				}
-				out.write("<div class=\"results\">" + groupName + " successfully updated.</div>");
+				out.write("<div class=\"results\">" + groupName + "'s information was successfully updated. ");
+				if (prevPage != null && !prevPage.isEmpty()) {
+					out.write("<a href=\"" + java.net.URLDecoder.decode(prevPage) + "\">Click here to continue onto the e-lab</a>");
+				}
+				out.write("</div>");
 				request.setAttribute("group", group);
 		    }
 		}
@@ -84,6 +89,7 @@
 
 %>
 <form name="update-group-form" method="post" action="">
+	<input type="hidden" name="prevPage" value="<%=prevPage%>"/>
 	<p>
 		<e:trselect name="chooseGroup" valueList="${user.groupNames}" labelList="${user.groupNames}"/>
 		<input type="submit" name="submit" value="Show Group Info"/>
