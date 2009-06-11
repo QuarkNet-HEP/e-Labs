@@ -44,8 +44,9 @@ ElabGroup user = (ElabGroup) request.getAttribute("user");
 		</td>
 		<td>
 			<div id="center">
-				<p>We're adding great new futures to our eLabs but to access these new features you'll need to change your
-				password. It should be at least six characters long. </p>
+				<p>We're adding great new futures to our eLabs but to access these new features you'll need a password
+				at least six characters long (and your password is shorter than that). You don't have to change it now, but we'll
+				give you a friendly reminder on each login until then. </p>
 				
 				<p><a href="/elab/cosmic/teacher/update-groups.jsp?submit=Show+Group+Info&chooseGroup=<%=user.getName()%>">Click here to change your password</a>.</p>
 				
