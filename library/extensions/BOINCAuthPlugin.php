@@ -1,6 +1,6 @@
 <?php
 /***********************************************************************\
- * BOINCAuthPlugin.php                    Version 1.22  3 June 2009
+ * BOINCAuthPlugin.php                    Version 1.23  15 June 2009
  *
  * This is a MediaWiki extension for automatic authentication to a 
  * MediaWiki site based on prior authentication to a co-existing BOINC project.
@@ -38,7 +38,7 @@
  * III) code to take care of the "automagic" transparent login
  *
  * Written by Eric Myers <myers@spy-hill.net>  - 12 Oct 2006 / 14 Jan 2007
- * @(#) $Id: BOINCAuthPlugin.php,v 1.21 2009/02/11 13:45:45 myers Exp $ 
+ * @(#) $Id: BOINCAuthPlugin.php,v 1.23 2009/06/15 17:10:16 myers Exp $ 
 \***********************************************************************/
 /* Copyright (c) 2009 by Eric Myers;  all rights reserved
  * 
@@ -105,11 +105,11 @@ $wgExtensionFunctions[] = 'SetupBOINCAuth';   // run automatically
 $wgExtensionCredits['other'][] =
     array(
           'name' => 'BOINCAuthPlugin',
-          'version' => '1.22',
+          'version' => '1.23',
           'author' => 'Eric Myers',
           'description' => 'Authentication to the wiki based on authentication '.
                            'to a co-located BOINC project', 
-          'date' => '3 June 2009', 
+          'date' => '15 June 2009', 
           'url' => 'http://www.mediawiki.org/wiki/Extension:BOINC_Authentication'
           );
 
@@ -125,7 +125,6 @@ if( !function_exists('debug_msg') ){
     set_debug_level(2);
     debug_msg(2,"BOINCAuthPlugin.php loading....");
  }
-
 
 /***********************************************************************\
  * Minimal set of stuff we need from BOINC to be able to access BOINC's
@@ -750,10 +749,11 @@ function SetupBOINCAuth(){
 
 
 /****
- * Disable anonymous user page links, point login to BOINC project login form .
+ * Disable anonymous user page links, 
+ * point login to BOINC project login form .
  */
 
-function LoginLinks(&$personal_urls , &$title){
+function LoginLinks(&$personal_urls , &$form){
     global $BOINC_prefix;
 
     debug_msg(1," * invoked LoginLinks() ...");
@@ -773,19 +773,43 @@ function LoginLinks(&$personal_urls , &$title){
     unset($personal_urls['anonlogin']);
     unset($personal_urls['anonuserpage']);
 
-   // Login link now brings you back to this page.
+    // Login link now brings you back to this page, or "ReturnTo" page.
+
+    $login_url = $BOINC_prefix. "/login_form.php";
+    $next_url = get_next_url($form);
+    if( $next_url ) {
+      $login_url .= "?next_url=$next_url";
+    }
     $personal_urls['login'] =
-        array('text' => wfMsg('userlogin'),
-              'href' => $BOINC_prefix.'/login_form.php?next_url='.
-                          wfUrlencode($title->getFullURL()),
-              'active' => false
-               );
+      array('text' => wfMsg('userlogin'),
+	    'href' => $login_url, 
+	    'active' => false
+	    );
 
     debug_msg(5, "personal_urls contains: <pre>"
               .print_r($personal_urls,true)."</pre>");
-    debug_msg(8, "title contains: <pre>" .print_r($title,true)."</pre>");
     return true;
 }
+
+
+/**
+ * Return full URL of ReturnTo destination
+ * or blank, as appropriate
+ */
+
+function get_next_url(&$form){
+  global $wgScript;
+
+  $next_url="";
+  if( !empty($form) ){
+    $return_to = $form->mReturnTo; 
+    if( !empty($return_to) ){
+      $next_url="$wgScript?title=$return_to";
+    }
+  }
+  return $next_url;
+}
+
 
 
 /****
@@ -800,16 +824,19 @@ function LoginLinks(&$personal_urls , &$title){
  */
 
 function use_BOINC_login(&$form=NULL){  // $form is the just-created login form
-    global $personal_urls;
-    global $wgOut;   
+  global $personal_urls;
+  global $wgOut;   
 
-    $login_url = $personal_urls['login']['href'];
-    if( !$login_url ) {
-        $login_url = $BOINC_prefix. "/login_form.php?next_url=".
-            wfUrlencode($title->getFullURL());
-     }
-    $wgOut->redirect( $login_url );
-    return false;   // short circuits hook call
+  $login_url = $personal_urls['login']['href'];
+  if( !$login_url ) {
+    $login_url = $BOINC_prefix. "/login_form.php";
+    $next_url = get_next_url($form);
+    if( $next_url ) {
+      $login_url .= "?next_url=$next_url";
+    }
+  }
+  $wgOut->redirect( $login_url );
+  return false;   // short circuits hook call
 }
 
 
@@ -839,18 +866,16 @@ function LogoutLinks(&$personal_urls, &$title){
     unset( $personal_urls['anonlogin'] );
     unset( $personal_urls['login'] );
 
+    $logout_url = $BOINC_prefix.'/logout.php';
+    $next_url = get_next_url($form);
+    if( $next_url ) {
+      $logout_url .= "?next_url=$next_url";
+    }
     $personal_urls['logout'] =
-        array( 'text' => wfMsg('userlogout'),
-               'href' => $BOINC_prefix.'/logout.php',
-               'active' => false
-               );
-
-    /************
-     * If you want to come right back, use this version (but is that right?)
-     *        'href' => $BOINC_prefix.'/logout.php?next_url='.
-     *          wfUrlencode($title->getFullURL())
-     *            );
-     *************/
+      array( 'text' => wfMsg('userlogout'),
+	     'href' => $logout_url,
+	     'active' => false
+	     );
 
     debug_msg(5, "LogoutLinks: personal_urls contains: <pre>"
               .print_r($personal_urls,true)."</pre>");
@@ -871,8 +896,13 @@ function use_BOINC_logout(&$user){// redirect to the BOINC logout page
     $user->mTouched =  wfTimestamp( TS_MW, time() + $wgClockSkewFudge );
 
     $logout_url = $personal_urls['logout']['href'];
-    // TODO: make this logout.php?returnto= here
-    if( !$logout_url ) $logout_url=$BOINC_prefix."/logout.php";
+    if( !$logout_url ) {
+      $logout_url=$BOINC_prefix."/logout.php";
+      $next_url = get_next_url($form);
+      if( $next_url ) {
+	$logout_url .= "?next_url=$next_url";
+      }
+    }
     $wgOut->redirect($logout_url);
     return false;   // short circuits calling function
 }
