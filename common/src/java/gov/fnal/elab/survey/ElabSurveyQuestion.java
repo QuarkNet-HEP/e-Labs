@@ -116,4 +116,13 @@ public class ElabSurveyQuestion implements Cloneable, Comparable<ElabSurveyQuest
 	public int compareTo(ElabSurveyQuestion o) {
 		return Integer.valueOf(number).compareTo(Integer.valueOf(o.getNumber()));
 	}
+	
+	public int getNumAnswers() { 
+		try {
+			return answers.size();
+		}
+		catch(NullPointerException npe) {
+			return 0;
+		}
+	}
 }

@@ -59,6 +59,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 				String thisQuestionText = rs.getString("question_text");
 				int thisQuestionCorrectAnswerId = rs.getInt("answer_id");
 				int thisAnswerId = rs.getInt("id");
+				int thisResponseNo = rs.getInt("response_no");
 				String thisAnswerText = rs.getString("response_text");
 				
 				if (esq == null) {
@@ -66,7 +67,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 				}
 				
 				// Create an answer
-				ElabSurveyQuestionAnswer currentAnswer = new ElabSurveyQuestionAnswer(thisAnswerId, thisAnswerText);
+				ElabSurveyQuestionAnswer currentAnswer = new ElabSurveyQuestionAnswer(thisAnswerId, thisAnswerText, thisResponseNo);
 				
 				// Add the answer into the current question
 				esq.addAnswer(currentAnswer);
@@ -112,7 +113,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 				survey = new ElabSurvey(rs1.getString("description"), rs1.getInt("id"));
 				
 				PreparedStatement ps = con.prepareStatement(
-						"SELECT q.id AS \"question_id\", m.question_no, q.question_text, q.answer_id, r.id, r.response_text " +
+						"SELECT q.id AS \"question_id\", m.question_no, q.question_text, q.answer_id, r.response_no, r.id, r.response_text " +
 						"FROM \"newSurvey\".questions AS q " + 
 						"LEFT OUTER JOIN \"newSurvey\".responses AS r ON (q.id = r.question_id) " +
 						"LEFT OUTER JOIN \"newSurvey\".map_questions_tests AS m ON (q.id = m.question_id) " +
@@ -128,7 +129,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 					int thisQuestionNo = rs.getInt("question_no");
 					String thisQuestionText = rs.getString("question_text");
 					int thisQuestionCorrectAnswerId = rs.getInt("answer_id");
-					
+					int thisResponseNo = rs.getInt("response_no");
 					int thisAnswerId = rs.getInt("id");
 					String thisAnswerText = rs.getString("response_text");
 					
@@ -141,7 +142,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 					}
 					
 					// Create an answer
-					ElabSurveyQuestionAnswer currentAnswer = new ElabSurveyQuestionAnswer(thisAnswerId, thisAnswerText);
+					ElabSurveyQuestionAnswer currentAnswer = new ElabSurveyQuestionAnswer(thisAnswerId, thisAnswerText, thisResponseNo);
 					
 					// Add the answer into the current question
 					currentQuestion.addAnswer(currentAnswer);
