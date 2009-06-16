@@ -10,7 +10,7 @@
     </head>
     <body>
 
-            <table width="800"><tr><td width="150">&nbsp;</td><td width="100" align="right"><IMG SRC="graphics/logbook_view_large.gif" align="middle" border="0"></td><td width="550"><font size="+2">Teachers: View Your <b>Private</b> Logbook<BR>on Student Research Groups</font></td></tr></table>
+            <table width="800"><tr><td width="150">&nbsp;</td><td width="100" align="right"><IMG SRC="graphics/logbook_view_large.gif" align="middle" border="0"></td><td width="550"><font size="+2">Teachers: View Your <b>Private</b> Logbook<BR>on Student Research Groups.</font></td></tr></table>
             <center>
 <!-- creates variables ResultSet rs and Statement s to use: -->
 <%@ include file="include/jdbc_userdb.jsp" %>
