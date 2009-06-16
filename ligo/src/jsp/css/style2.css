@@ -18,7 +18,11 @@ body {
 	margin: 0px;
 }
 
-/*=========== Header ===========*/
+/* Remove this once the Cascade is in the JSP code */
+
+/** file: ligo.css **/ 
+
+/*=========== e-Lab Header ===========*/
 
 #top {
 	position: relative;
@@ -95,10 +99,10 @@ body {
 }
 
 #header-logbook a {
-	color: red;
+	color: white;  // not red
 }
 
-	color: white;  // not red
+
 
 #nav-footer {
 	height: 22px;
@@ -109,6 +113,11 @@ body {
 	margin-top: 24px;
 }
 
+#nav {
+	position: absolute;
+	top: 40px; 
+}
+
 #nav ul, #nav-footer ul {
 	position: relative;
 	width: 780px;
@@ -117,7 +126,6 @@ body {
 	margin-top: 2px;
 	margin-left: auto;
 	margin-right: auto;
-	/*border: 1px dashed white;*/
 	padding: 0px;
 }
 
@@ -126,13 +134,13 @@ body {
 }
 
 #subnav {
-	text-align: left;
 	position: absolute;
-	left: 148px;
 	top: 50px;
-	background-color: #999999;
+	left: 148px;
 	right: 8px;
+	text-align: left;
 	height: 24px;
+	background-color: #999999;
 }
 
 #subnav ul {
@@ -216,6 +224,10 @@ a#nav6 {
 #nav-footer a#nav6 {
 	border-right: none;
 }
+
+/** EOF ligo.css **/
+
+
 
 /*=========== Content ===========*/
 
