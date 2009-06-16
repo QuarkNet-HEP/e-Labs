@@ -12,6 +12,9 @@ public class ElabSurveyQuestion implements Cloneable, Comparable<ElabSurveyQuest
 	private String text; 
 	private ElabSurveyQuestionAnswer correctAnswer = null, givenAnswer = null; 
 	
+	// hack
+	private java.util.Date answeredTime; 
+	
 	/**
 	 * Constructor for an ElabSurveyQuestion
 	 * 
@@ -124,5 +127,13 @@ public class ElabSurveyQuestion implements Cloneable, Comparable<ElabSurveyQuest
 		catch(NullPointerException npe) {
 			return 0;
 		}
+	}
+
+	public void setAnsweredTime(java.util.Date answeredTime) {
+		this.answeredTime = answeredTime;
+	}
+
+	public java.util.Date getAnsweredTime() {
+		return answeredTime;
 	}
 }
