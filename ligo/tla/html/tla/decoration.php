@@ -38,7 +38,7 @@ function html_begin($title,$right_stuff='') {
         //no//if($user_level==5)  $bgc='white';
     }
     // Override: setting background was overkill -EAM
-    $bgc='lightgrey';
+    $bgc='white';
 
     /* begin document: */
 
@@ -442,5 +442,5 @@ function form_end(){
 }
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: decoration.php,v 1.53 2009/05/12 15:45:01 myers Exp $";
+    "\$Id: decoration.php,v 1.54 2009/06/17 20:54:23 myers Exp $";
 ?>

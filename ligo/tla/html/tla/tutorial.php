@@ -8,7 +8,7 @@
  * the wiki content.
  *
  * Eric Myers <myers@spy-hill.net  - 31 July 2008
- * @(#) $Id: tutorial.php,v 1.4 2009/05/12 15:45:46 myers Exp $
+ * @(#) $Id: tutorial.php,v 1.7 2009/06/17 21:02:46 myers Exp $
 \***********************************************************************/
 
 require_once("macros.php");             // general TLA utilities
@@ -35,7 +35,6 @@ if( is_numeric($step) ){
 
 debug_msg(2,"Wiki page title: $title");
 
-
 $body = get_wiki_article($title);
 
 
@@ -46,30 +45,34 @@ $body = get_wiki_article($title);
 // 1. Unlink wiki links to pages that don't exist in the wiki
 //      (as evidenced by the action=edit suffix)
 // 
-$pattern = ',<a href="/library/index.php[^"]*&amp;action=edit"'
+$pattern = ',<a href="/library/[A-Za-z0-9]+\.php[^"]*action=edit"'
 	  .'[^>]*>([^<]*)</a>,si';
 $body = preg_replace($pattern, " \\1 ", $body); 
 
 
 // 2. Images in the wiki are linked to their wiki page
 //    Remove that link, while preserving the image
+//    Works for both index.php/Image:Name and index.php?title=Image:Name
 
-$pattern = ',<a href=[^>]+/Image:[^>]+>(<img [^>]+>)</a>,si';
-$body = preg_replace($pattern, " \\1 ", $body); 
+$pattern = ',<a href=[^>]+(/|\?title=)Image:[^>]+>(<img [^>]+>)</a>,si';
+$body = preg_replace($pattern, " \\2 ", $body); 
 
 
 // 3. Convert tutorial wiki link to just this tutorial
+//     (Note use of , for regexp because / is for paths) 
+//    This gets both index.php/Article and index.php?title=Article
 //
-$pattern=',href="/library/index.php/Bluestone_Tutorial%2C_step_(\d+)",si';
-$body = preg_replace($pattern, 'href="tutorial.php?step=\\1"',  $body);
+$pattern=',href="/library/[A-Za-z0-9]+\.php(/|\?title=)Bluestone_Tutorial%2C_step_(\d+)",si';
+$body = preg_replace($pattern, 'href="tutorial.php?step=\\2"',  $body);
 
 
 // 4. Convert other wiki links to Glossary pop-ups 
+//    Now this handles both index.php/Article and index.php?title=Article
 //
 
-$pattern='%<a href="/library/index.php/([^"]+)"[^>]*>([^<]+)</a>%si';
+$pattern='%<a href="/library/[A-Za-z0-9]+\.php(/|\?title=)([^"]+)"[^>]*>([^<]+)</a>%si';
 debug_msg(4,"Searching for pattern <code>$pattern</code>");
-$url="/library/kiwi.php/\\1";
+$url="/library/kiwi.php/\\2";
 $onclick = "onclick=\"javascript:window.open('$url', 'Glossary: \\2',"
 	      ." 'width=520,height=600, resizable=1, scrollbars=1'); "
 	      ." return false;\" " ;
