@@ -212,7 +212,7 @@ pageContext.setAttribute("images", images);
 	<form method="post">
            <table width="550">
                 <tr>
-                	<td valign="top" align="right">Poster Filename:<br>(e.g.,poster_lifetime)</td>
+                	<td valign="top" align="right">Poster File Name:<br>(e.g.,poster_lifetime)</td>
                 	<td valign="top" align="left"><e:trinput type="text" name="posterName"/></td>
                 </tr>
       

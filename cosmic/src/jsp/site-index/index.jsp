@@ -44,7 +44,7 @@
 		<td class="home">
 			<ul>
 				<li><a href="../home/cool-science.jsp"><b>Cool Science</b></a></li>
-				<li><a href="../site-index/site-map-anno.jsp"><b>Explore</b></a></li>
+				<li><a href="../site-index/site-map-anno.jsp"><b>Explore!</b></a></li>
 				<li><a href="../home/about-us.jsp"><b>About Us</b></a></li>
 				
 			</ul>
@@ -104,7 +104,7 @@
 								<li><a href="../flash/collaboration.html" >Collaboration</a></li>
 								
 								<li><a href="../flash/griphyn-animate_sc2003.html" >Exploring Virtual Data</a></li>
-								<li><a href="../flash/DAQII.html" >Data Aquistion Card</a></li>
+								<li><a href="../flash/DAQII.html" >Data Acquistion Card</a></li>
 							</ul>
 						
 					</ul>

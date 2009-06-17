@@ -175,7 +175,7 @@ Re: the upload progress stuff
 			
 			<div id="content">
 
-<h1>Upload Raw Data Collected by Cosmic Ray Detector.</h1>
+<h1>Upload raw data collected by your cosmic ray detector.</h1>
 
 
 
