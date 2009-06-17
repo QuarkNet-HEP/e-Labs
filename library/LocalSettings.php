@@ -104,11 +104,10 @@ if( $path_dir == "/library") {	// Public Library
   $wgSitename   = "I2U2";  
   $wgLogo	= $wgScriptPath."/UUEOb-med.gif";
   $wgFavicon    = $wgScriptPath."/UUEOb-favicon.jpg";
-
-
 }
 
-if( $path_dir == "/teacher/library") {  // Teachers Library
+if( $path_dir == "/teacher/library" || 
+    $path_dir == "/cosmic/library" ) {  // Teachers Library
   $wgScriptPath=$path_dir;
   $wgSitename = "QNFellows";  
   $wgLogo              = $wgScriptPath."/QNsplat2.jpg";
