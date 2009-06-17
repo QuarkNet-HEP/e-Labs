@@ -79,7 +79,7 @@
 			        // Start by making the SVG image using dot.
 					        
 			        String dotCmd = elab.getProperties().getProperty("dot.location", "/usr/bin/dot") + 
-				            " -Tsvg -o " + provenanceDir + "/dv.svg " + provenanceDir + "/dv.dot";
+				            " -Tsvg -o \"" + provenanceDir + "/dv.svg\" \"" + provenanceDir + "/dv.dot\"";
 			        ElabUtil.runCommand(elab, dotCmd);
 			        ElabUtil.SVG2PNG(provenanceDir + File.separator + "dv.svg", plotDir + File.separator + provenanceFile);
 					            
