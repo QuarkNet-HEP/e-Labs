@@ -149,8 +149,8 @@ $wgRedirectScript   = "$wgScriptPath/redirect.php";
 ## For more information on customizing the URLs please see:
 ## http://www.mediawiki.org/wiki/Manual:Short_URL
 ## If using PHP as a CGI module, the ?title= style usually must be used.
-##$wgArticlePath      = "$wgScript/$1";
-$wgArticlePath      = "$wgScript?title=$1";
+$wgArticlePath      = "$wgScript/$1";
+#$wgArticlePath      = "$wgScript?title=$1";
 
 
 ## For a detailed description of the following switches see
@@ -335,7 +335,7 @@ unset($wgWhitelistAccount['user']);
  * preferences used by anonymous visitors and newly created accounts.
  */
 
-// $wgDefaultUserOptions ['editsection'] = 0;
+//$wgDefaultUserOptions ['editsection'] = 0;
 
 
 /***********************************************************************
@@ -373,7 +373,7 @@ if( empty($BOINC_prefix ) ){
 #$wfPolyglotFollowRedirects=true;
 
 # Parser Functions are used by the Google-trans template 
-##require_once( "$IP/extensions/ParserFunctions/ParserFunctions.php" );
+require_once( "$IP/extensions/ParserFunctions/ParserFunctions.php" );
 
 # Display pages based on skin name as alternate page entry point 
 require_once( "$IP/extensions/SkinByURL.php" );
