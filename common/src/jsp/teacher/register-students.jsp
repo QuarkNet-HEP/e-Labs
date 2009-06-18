@@ -36,19 +36,8 @@
 	int newSurveyId = -1; 
 	boolean teacherInStudy = "yes".equalsIgnoreCase(request.getParameter("eval"));
 
+	// Only for teachers in our study. 
 	if (teacherInStudy) {
-		if (user.getNewSurveyId() == null) { 
-			if (elab.getId().equals("1")) {
-				newSurveyId = Integer.parseInt(elab.getProperty("cosmic.newsurvey"));
-				user.setNewSurveyId(newSurveyId);
-			}
-			// set handlers for everything else. 
-		}
-		else {
-			newSurveyId = user.getNewSurveyId().intValue();
-		}
-		
-		// Quick check to make sure this works properly 
 		%> <i>You have agreed to enter our study</i><% 
 		
 		// Set teacher's database flag so we know he or she is in the survey.
@@ -58,7 +47,19 @@
 			// set this in the database. 
 		}
 	}
-
+	
+	// New survey/test handler is active by default. 
+	if (user.getNewSurveyId() == null) { 
+		if (elab.getId().equals("1")) {
+			newSurveyId = Integer.parseInt(elab.getProperty("cosmic.newsurvey"));
+			user.setNewSurveyId(newSurveyId);
+		}
+		// set handlers for everything else. 
+	}
+	else {
+		newSurveyId = user.getNewSurveyId().intValue();
+	}
+		
 	String optionList = "<option value=\"discard\">Choose group</option>";
 	for (Iterator ite = user.getGroups().iterator(); ite.hasNext();) {
 		ElabGroup group = (ElabGroup) ite.next();
@@ -114,15 +115,10 @@
 				}
 				
 				if (elab.getId().equals("1")) { // cosmic
-					if (teacherInStudy == true) { // New survey handler 
-						group.setSurvey(false); // old, deprecated handler
-						group.setStudy(groupInSurvey);
-						group.setNewSurvey(groupInSurvey);
-						group.setNewSurveyId(newSurveyId);
-					}
-					else {
-						group.setSurvey(groupInSurvey);	
-					}
+					group.setSurvey(false); // old, deprecated handler is disabled
+					group.setStudy(teacherInStudy);
+					group.setNewSurvey(groupInSurvey);
+					group.setNewSurveyId(newSurveyId);
 				}
 				else if (elab.getId().equals("2")) {
 					// TODO: LIGO 
