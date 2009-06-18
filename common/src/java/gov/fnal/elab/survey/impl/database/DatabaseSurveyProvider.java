@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -59,6 +60,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 				String thisQuestionText = rs.getString("question_text");
 				int thisQuestionCorrectAnswerId = rs.getInt("answer_id");
 				int thisAnswerId = rs.getInt("id");
+				int thisResponseNo = rs.getInt("response_no");
 				String thisAnswerText = rs.getString("response_text");
 				
 				if (esq == null) {
@@ -66,7 +68,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 				}
 				
 				// Create an answer
-				ElabSurveyQuestionAnswer currentAnswer = new ElabSurveyQuestionAnswer(thisAnswerId, thisAnswerText);
+				ElabSurveyQuestionAnswer currentAnswer = new ElabSurveyQuestionAnswer(thisAnswerId, thisAnswerText, thisResponseNo);
 				
 				// Add the answer into the current question
 				esq.addAnswer(currentAnswer);
@@ -112,7 +114,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 				survey = new ElabSurvey(rs1.getString("description"), rs1.getInt("id"));
 				
 				PreparedStatement ps = con.prepareStatement(
-						"SELECT q.id AS \"question_id\", m.question_no, q.question_text, q.answer_id, r.id, r.response_text " +
+						"SELECT q.id AS \"question_id\", m.question_no, q.question_text, q.answer_id, r.response_no, r.id, r.response_text " +
 						"FROM \"newSurvey\".questions AS q " + 
 						"LEFT OUTER JOIN \"newSurvey\".responses AS r ON (q.id = r.question_id) " +
 						"LEFT OUTER JOIN \"newSurvey\".map_questions_tests AS m ON (q.id = m.question_id) " +
@@ -128,7 +130,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 					int thisQuestionNo = rs.getInt("question_no");
 					String thisQuestionText = rs.getString("question_text");
 					int thisQuestionCorrectAnswerId = rs.getInt("answer_id");
-					
+					int thisResponseNo = rs.getInt("response_no");
 					int thisAnswerId = rs.getInt("id");
 					String thisAnswerText = rs.getString("response_text");
 					
@@ -141,7 +143,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 					}
 					
 					// Create an answer
-					ElabSurveyQuestionAnswer currentAnswer = new ElabSurveyQuestionAnswer(thisAnswerId, thisAnswerText);
+					ElabSurveyQuestionAnswer currentAnswer = new ElabSurveyQuestionAnswer(thisAnswerId, thisAnswerText, thisResponseNo);
 					
 					// Add the answer into the current question
 					currentQuestion.addAnswer(currentAnswer);
@@ -409,7 +411,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 					for (Iterator<ElabSurveyQuestion> q = survey.getQuestionsById().iterator(); q.hasNext(); ) {
 						ElabSurveyQuestion question = (ElabSurveyQuestion) q.next().clone();
 						PreparedStatement ps = con.prepareStatement(
-								"SELECT a.response_id AS \"ans_ptr\" " +
+								"SELECT a.response_id AS \"ans_ptr\",  c.time " +
 								"FROM \"newSurvey\".answers AS a " +
 								"LEFT OUTER JOIN \"newSurvey\".responses AS r ON (a.response_id = r.id) " +
 								"LEFT OUTER JOIN \"newSurvey\".questions AS q ON (r.question_id = q.id) " +
@@ -425,6 +427,8 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 						if (rs.next()) {
 							// set given answer
 							int givenAnswerId = rs.getInt("ans_ptr");
+							Date answeredDate = rs.getDate("time");
+							question.setAnsweredTime(answeredDate);
 							question.setGivenAnswer(givenAnswerId);
 							questions.add(question);
 						}

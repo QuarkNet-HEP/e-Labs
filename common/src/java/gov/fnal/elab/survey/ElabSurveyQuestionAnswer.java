@@ -3,10 +3,12 @@ package gov.fnal.elab.survey;
 public class ElabSurveyQuestionAnswer implements Comparable<ElabSurveyQuestionAnswer> {
 	private String text; 
 	private Integer id; 
+	private int number; 
 
-	public ElabSurveyQuestionAnswer(int id, String text ) {
+	public ElabSurveyQuestionAnswer(int id, String text, int response_no) {
 		this.id = new Integer(id);
 		this.text = text; 
+		this.number = response_no;
 	}
 	
 	public void setText(String text) {
@@ -32,5 +34,13 @@ public class ElabSurveyQuestionAnswer implements Comparable<ElabSurveyQuestionAn
 	
 	public boolean equals(ElabSurveyQuestionAnswer o) {
 		return this.compareTo(o) == 0;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
+	public int getNumber() {
+		return number;
 	}
 }
