@@ -14,6 +14,8 @@ import gov.fnal.elab.util.DatabaseConnectionManager;
 import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.util.ElabUtil;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -327,7 +329,7 @@ public class DatabaseUserManagementProvider implements
     protected void setMiscGroupData(ElabGroup group, String ay, String userArea) {
         if (userArea != null) {
             String[] sp = userArea.split("/");
-            if (ay == null || ay.equals("")) {
+            if (StringUtils.isBlank(ay)) {
                 group.setYear(sp[0]);
             }
             else {
@@ -385,8 +387,7 @@ public class DatabaseUserManagementProvider implements
                     t.setId(rs.getString("id"));
                     t.setTeacherId(rs.getString("teacherid"));
                     g = new ElabGroup(elab, this);
-                    if (rs.getString("rguserarea") != null
-                            && !rs.getString("rguserarea").equals("")) {
+                    if (StringUtils.isNotBlank(rs.getString("rguserarea"))) {
                         String[] brokenSchema = rs.getString("rguserarea")
                                 .split("/");
                         if (brokenSchema != null) {
@@ -475,8 +476,7 @@ public class DatabaseUserManagementProvider implements
 
         while (rs.next()) {
             ElabGroup g = new ElabGroup(elab, this);
-            if (rs.getString("userarea") != null
-                    && !rs.getString("userarea").equals("")) {
+            if (StringUtils.isNotBlank(rs.getString("userarea"))) {
                 String[] brokenSchema = rs.getString("userarea").split("/");
                 if (brokenSchema != null) {
                     g.setSchool(brokenSchema[3].replaceAll("_", " "));
@@ -610,7 +610,7 @@ public class DatabaseUserManagementProvider implements
                             + elab.getId() + ")");
             
             
-            if (groupToCreate.isStudy() == true) {
+            if (groupToCreate.isNewSurvey() == true) {
             	s.executeUpdate("INSERT INTO research_group_test (research_group_id, test_id) "
             			+ "values((select id from research_group where name ilike '"
                         + ElabUtil.fixQuotes(group.getName())
@@ -786,27 +786,50 @@ public class DatabaseUserManagementProvider implements
 
     public void updateGroup(ElabGroup group, String password)
             throws ElabException {
-        Statement s = null;
         Connection conn = null;
         try {
             conn = DatabaseConnectionManager
                     .getConnection(elab.getProperties());
-            s = conn.createStatement();
-            String passQ = "";
-            if (password != null && !password.equals("")) {
-                passQ = ", password = '" + ElabUtil.fixQuotes(password) + "'";
+            boolean pass = false; 
+            String sql = "UPDATE research_group SET ay = ?, role = ?, survey = ?, new_survey = ?";
+            if (StringUtils.isNotBlank(password)) {
+            	sql += ", password = ? ";
+            	pass = true;
             }
-            s.executeUpdate("UPDATE research_group SET ay = '"
-                    + group.getYear() + "', role = '" + group.getRole()
-                    + "', survey = "
-                    + String.valueOf(group.getSurvey()).toUpperCase() + passQ
-                    + " WHERE id = '" + group.getId() + "';");
+            sql += "WHERE id = ?;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, group.getYear());
+            ps.setString(2, group.getRole());
+            ps.setBoolean(3, group.getSurvey());
+            ps.setBoolean(4, group.isNewSurvey());
+            if (pass) {
+            	ps.setString(5, password);
+            	ps.setString(6, group.getId());
+            }
+            else {
+            	ps.setString(5, group.getId());
+            }
+            
+            ps.executeUpdate();
+            
+            if (group.isNewSurvey()) {
+            	PreparedStatement ps2 = conn.prepareStatement("INSERT INTO research_group_test (research_group_id, test_id) " + 
+				"SELECT ?, ? WHERE NOT EXISTS " +
+					"(SELECT research_group_id, test_id FROM research_group_test " + 
+					"WHERE research_group_id = ? AND test_id = ?)" + 
+				";");
+            	ps2.setInt(1, Integer.parseInt(group.getId()));
+            	ps2.setInt(2, group.getNewSurveyId());
+            	ps2.setInt(3, Integer.parseInt(group.getId()));
+            	ps2.setInt(4, group.getNewSurveyId());
+            	ps2.executeUpdate();
+            }
         }
         catch (Exception e) {
             throw new ElabException(e);
         }
         finally {
-            DatabaseConnectionManager.close(conn, s);
+            DatabaseConnectionManager.close(conn);
         }
     }
 

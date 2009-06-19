@@ -50,32 +50,23 @@
 				<ul class="simple">
 					<li><a href="index.jsp"><b>Home</b></a></li>
 					<ul class="simple">
-					<li><a href="web-guide.jsp">Website Features</a></li>
-					<li>Rubrics - <A HREF="../assessment/rubric-ci.html">Content & Investigation</A>,
-						<A HREF="../assessment/rubric-r.html">Process</A>, <A HREF="../assessment/rubric-t.html">Computing</A>,
-						<A HREF="../assessment/rubric-wla.html">Literacy</A> and <A HREF="../assessment/rubric-p.html">Poster</A></li>
-</ul>
-
+						<li><a href="web-guide.jsp">Website Features</a></li>
+						<li>Rubrics - <A HREF="../assessment/rubric-ci.html">Content & Investigation</A>,
+							<a href="../assessment/rubric-r.html">Process</a>, <a href="../assessment/rubric-t.html">Computing</a>,
+							<a href="../assessment/rubric-wla.html">Literacy</a> and <a href="../assessment/rubric-p.html">Poster</a></li>
+					</ul>
 					<li><a href="community.jsp"><b>Community</b></a> - Library and Forum</li>
-					
-					
 					<li><a href="standards.jsp"><b>Standards</b></a></li>
-<li><a href="site-map.jsp"><b>Site Index</b></a></li>
-<e:restricted role="teacher">
-<li><b>Registration</b>
-<p>
-<ul class="simple">
-					
-					<li><a href="registration.jsp">General Registration</a></li>
-					<li><a href="register-students.jsp">Student Research Group Registration</a></li>
-                    <li><a href="mass-registration.jsp">Mass Registration (Spreadsheet)</a></li>
-                    <li><a href="update-groups.jsp">Update Student Research Groups</a></li>
-                    <li><a href="update-group-projects.jsp">Update e-Lab Assignments for Groups</a></li>
-                   </ul>
-					</e:restricted>
-<e:restricted role="teacher">
-						<li><a href="../test/test.jsp?type=presurvey&studentid=0">Pre-test</a> and <a href="../test/test.jsp?type=postsurvey&studentid=0">Post-test</a>.</li>
-						<li>Student Results for the <a href="../test/results.jsp?type=presurvey">pre-test</a> and the <a href="../test/results.jsp?type=postsurvey">post-test</a>.</li>
+					<li><a href="site-map.jsp"><b>Site Index</b></a></li>
+					<e:restricted role="teacher">
+						<li><b>Registration</b></li>
+						<ul class="simple">
+							<li><a href="registration.jsp">General Registration</a></li>
+							<li><a href="register-students.jsp">Student Research Group Registration</a></li>
+		                    <li><a href="mass-registration.jsp">Mass Registration (Spreadsheet)</a></li>
+		                    <li><a href="update-groups.jsp">Update Student Research Groups</a></li>
+		                    <li><a href="update-group-projects.jsp">Update e-Lab Assignments for Groups</a></li>
+                   		</ul>
 					</e:restricted>
 					<e:restricted role="admin">
 						<li><a href="../test/show-teachers.jsp">Show Student Test Results for all Teachers</a></li>
@@ -99,10 +90,16 @@
 				<c:choose>
 					<c:when test="${newSurvey == true }">
 						<e:restricted role="teacher">
-						<h2>Study-Specific Tools</h2>
+						<h2>Test results</h2>
+						<b>For research groups created after Summer 2009</b>
 						<ul class="simple">
 							<li><a href="../survey/survey.jsp?type=pre&studentid=0">Pre-test</a> and <a href="../survey/survey.jsp?type=post&studentid=0">Post-test</a>.</li>
 							<li>Student Results for the <a href="../survey/results.jsp?type=pre">pre-test</a> and the <a href="../survey/results.jsp?type=post">post-test</a>.</li>
+						</ul>
+						<b>For research groups created before Summer 2009</b>
+						<ul class="simple">
+							<li><a href="../test/test.jsp?type=presurvey&studentid=0">Pre-test</a> and <a href="../test/test.jsp?type=postsurvey&studentid=0">Post-test</a>.</li>
+							<li>Student Results for the <a href="../test/results.jsp?type=presurvey">pre-test</a> and the <a href="../test/results.jsp?type=postsurvey">post-test</a>.</li>
 						</ul>
 						</e:restricted>
 					</c:when>
