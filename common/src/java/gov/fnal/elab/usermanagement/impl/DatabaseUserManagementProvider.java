@@ -329,7 +329,7 @@ public class DatabaseUserManagementProvider implements
     protected void setMiscGroupData(ElabGroup group, String ay, String userArea) {
         if (userArea != null) {
             String[] sp = userArea.split("/");
-            if (StringUtils.isNotBlank(ay)) {
+            if (StringUtils.isBlank(ay)) {
                 group.setYear(sp[0]);
             }
             else {
