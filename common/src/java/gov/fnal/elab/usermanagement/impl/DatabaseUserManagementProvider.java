@@ -610,7 +610,7 @@ public class DatabaseUserManagementProvider implements
                             + elab.getId() + ")");
             
             
-            if (groupToCreate.isStudy() == true) {
+            if (groupToCreate.isNewSurvey() == true) {
             	s.executeUpdate("INSERT INTO research_group_test (research_group_id, test_id) "
             			+ "values((select id from research_group where name ilike '"
                         + ElabUtil.fixQuotes(group.getName())
