@@ -786,27 +786,45 @@ public class DatabaseUserManagementProvider implements
 
     public void updateGroup(ElabGroup group, String password)
             throws ElabException {
-        Statement s = null;
         Connection conn = null;
         try {
             conn = DatabaseConnectionManager
                     .getConnection(elab.getProperties());
-            s = conn.createStatement();
-            String passQ = "";
+            boolean pass = false; 
+            String sql = "UPDATE research_group SET ay = ?, role = ?, survey = ?, new_survey = ?";
             if (password != null && !password.equals("")) {
-                passQ = ", password = '" + ElabUtil.fixQuotes(password) + "'";
+            	sql += ", password = ? ";
+            	pass = true;
             }
-            s.executeUpdate("UPDATE research_group SET ay = '"
-                    + group.getYear() + "', role = '" + group.getRole()
-                    + "', survey = "
-                    + String.valueOf(group.getSurvey()).toUpperCase() + passQ
-                    + " WHERE id = '" + group.getId() + "';");
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, group.getYear());
+            ps.setString(2, group.getRole());
+            ps.setBoolean(3, group.getSurvey());
+            ps.setBoolean(4, group.isNewSurvey());
+            if (pass) {
+            	ps.setString(5, password);
+            	ps.setString(6, group.getId());
+            }
+            else {
+            	ps.setString(5, group.getId());
+            }
+            
+            ps.executeUpdate();
+            
+            if (group.isNewSurvey()) {
+            	PreparedStatement ps2 = conn.prepareStatement("INSERT INTO research_group_test (research_group_id, test_id) " + 
+				"SELECT ?, ? WHERE NOT EXISTS " +
+					"(SELECT research_group_id, test_id FROM research_group_test " + 
+					"WHERE research_group_id = ? AND test_id = ?)" + 
+				";");
+            	ps2.executeUpdate();
+            }
         }
         catch (Exception e) {
             throw new ElabException(e);
         }
         finally {
-            DatabaseConnectionManager.close(conn, s);
+            DatabaseConnectionManager.close(conn);
         }
     }
 

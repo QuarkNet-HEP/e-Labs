@@ -57,7 +57,7 @@
 		    else {
 				//add the new registration information to research_group
 				ElabGroup group = user.getGroup(groupName);
-				int newSurveyId; 
+				int newSurveyId = -1; 
 				boolean inSurvey = "yes".equals(survey);
 				if (group == null) {
 				    throw new ElabJspException("You are not the teacher for the specified group.");
