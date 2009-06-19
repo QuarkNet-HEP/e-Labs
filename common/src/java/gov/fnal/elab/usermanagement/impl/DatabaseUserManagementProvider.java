@@ -14,6 +14,8 @@ import gov.fnal.elab.util.DatabaseConnectionManager;
 import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.util.ElabUtil;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -327,7 +329,7 @@ public class DatabaseUserManagementProvider implements
     protected void setMiscGroupData(ElabGroup group, String ay, String userArea) {
         if (userArea != null) {
             String[] sp = userArea.split("/");
-            if (ay == null || ay.equals("")) {
+            if (StringUtils.isNotBlank(ay)) {
                 group.setYear(sp[0]);
             }
             else {
@@ -385,8 +387,7 @@ public class DatabaseUserManagementProvider implements
                     t.setId(rs.getString("id"));
                     t.setTeacherId(rs.getString("teacherid"));
                     g = new ElabGroup(elab, this);
-                    if (rs.getString("rguserarea") != null
-                            && !rs.getString("rguserarea").equals("")) {
+                    if (StringUtils.isNotBlank(rs.getString("rguserarea"))) {
                         String[] brokenSchema = rs.getString("rguserarea")
                                 .split("/");
                         if (brokenSchema != null) {
@@ -475,8 +476,7 @@ public class DatabaseUserManagementProvider implements
 
         while (rs.next()) {
             ElabGroup g = new ElabGroup(elab, this);
-            if (rs.getString("userarea") != null
-                    && !rs.getString("userarea").equals("")) {
+            if (StringUtils.isNotBlank(rs.getString("userarea"))) {
                 String[] brokenSchema = rs.getString("userarea").split("/");
                 if (brokenSchema != null) {
                     g.setSchool(brokenSchema[3].replaceAll("_", " "));
@@ -792,7 +792,7 @@ public class DatabaseUserManagementProvider implements
                     .getConnection(elab.getProperties());
             boolean pass = false; 
             String sql = "UPDATE research_group SET ay = ?, role = ?, survey = ?, new_survey = ?";
-            if (password != null && !password.equals("")) {
+            if (StringUtils.isNotBlank(password)) {
             	sql += ", password = ? ";
             	pass = true;
             }
