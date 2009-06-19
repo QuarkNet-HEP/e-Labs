@@ -796,6 +796,7 @@ public class DatabaseUserManagementProvider implements
             	sql += ", password = ? ";
             	pass = true;
             }
+            sql += "WHERE id = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, group.getYear());
             ps.setString(2, group.getRole());
@@ -817,6 +818,10 @@ public class DatabaseUserManagementProvider implements
 					"(SELECT research_group_id, test_id FROM research_group_test " + 
 					"WHERE research_group_id = ? AND test_id = ?)" + 
 				";");
+            	ps2.setInt(1, Integer.parseInt(group.getId()));
+            	ps2.setInt(2, group.getNewSurveyId());
+            	ps2.setInt(3, Integer.parseInt(group.getId()));
+            	ps2.setInt(4, group.getNewSurveyId());
             	ps2.executeUpdate();
             }
         }
