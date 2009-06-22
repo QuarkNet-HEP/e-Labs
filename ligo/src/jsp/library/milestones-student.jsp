@@ -7,26 +7,20 @@
 							</a>
 						</li>
 						<li>
-							Describe the basic properties of seismic waves.
-							<a href="javascript:reference('wave properties',420)">
-								<img src="../graphics/ref.gif">
-							</a>
-						</li>
-						<li>
-							Explain the need for LIGO to study seismic data.
+							Explain why LIGO monitors the environment at the observatories.
 							<a href="javascript:reference('seismic data importance',420)">
 								<img src="../graphics/ref.gif">
 							</a>
 						</li>
 						<li>
-							Identify locations of LIGO seismometers.
-							<a href="javascript:reference('seismometer locations',400)">
+							Describe basic wave properties.
+							<a href="javascript:reference('wave properties',420)">
 								<img src="../graphics/ref.gif">
 							</a>
 						</li>
 
 						<li>
-							Practice making plots of LIGO seismic data.
+							Learn how to read LIGO seismic data.
 							<a href="javascript:reference('practice making plots',400)">
 								<img src="../graphics/ref.gif">
 							</a>
