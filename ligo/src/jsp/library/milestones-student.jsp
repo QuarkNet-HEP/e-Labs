@@ -20,17 +20,8 @@
 						</li>
 
 						<li>
-							Learn how to read LIGO seismic data.
+							Learn how to read seismic data.
 							<a href="javascript:reference('practice making plots',400)">
-								<img src="../graphics/ref.gif">
-							</a>
-						</li>
-
-
-
-						<li>
-							Make a research question and plan.
-							<a href="javascript:reference('ligo research question',400)">
 								<img src="../graphics/ref.gif">
 							</a>
 						</li>
@@ -53,6 +44,18 @@
 						<li>
 							Improve your answer. 
 							<a href="javascript:reference('ligo improve answer',450)">
+								<img src="../graphics/ref.gif">
+							</a>
+						</li>
+						<li>
+							Look for patterns in LIGO seismic data. 
+							<a href="javascript:reference('seismometer locations',450)">
+								<img src="../graphics/ref.gif">
+							</a>
+						</li>
+						<li>
+							Make a research question and plan.
+							<a href="javascript:reference('ligo research question',400)">
 								<img src="../graphics/ref.gif">
 							</a>
 						</li>
