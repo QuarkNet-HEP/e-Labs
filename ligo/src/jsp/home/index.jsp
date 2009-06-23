@@ -74,15 +74,19 @@
 					<span id="links">
 						<table align="center">
 							<tr>
-								<td align="center"><a href="/elab/ligo/library/big-picture.jsp">Cool Science</a></td>
-								<td align="center"><a href="/elab/ligo/site-index/site-map-anno.jsp">Explore!</a></td>
-								<td align="center"><a href="about-us.jsp">About Us</a></td>
+								<td style="width:150px; text-align:center;"><a href="/elab/ligo/library/big-picture.jsp">Cool Science</a></td>
+								<td style="width:150px; text-align:center;"><a href="/elab/ligo/site-index/site-map-anno.jsp">Explore!</a></td>
+								<td style="width:150px; text-align:center;"><a href="about-us.jsp">About Us</a></td>
 							</tr>
 						</table>
 					</span>
-					<h3>Project Map: Your team may use the milestones below, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results. </h3>
-					<h4>Think of this map as a subway map with one main line and four branch lines.  Along the main line are stops, milestone seminars, opportunities to check how the work is going. Off each main stop are branch lines where each stop is a project milestone. Hover over each milestone or milestone seminar to preview; click milestones to open. </h4>
-					<%@ include file="../library/milestones-map-student.jsp" %>
+					<p>Project Map: Your team may use the milestones below, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results. </p>
+					<p>Think of this map as a subway map with one main line and four branch lines.  Along the main line are stops, milestone seminars, opportunities to check how the work is going. Off each main stop are branch lines where each stop is a project milestone. Hover over each milestone or milestone seminar to preview; click milestones to open. </p>
+					<center>
+						<%@ include file="../library/milestones-map-student.jsp" %>
+						<p><a href="http://localhost:8080/elab/ligo/library/milestones.jsp">Milestones (text version)</a></p>
+					</center>
+					
 				</td>
 			</tr>
 		</table>
