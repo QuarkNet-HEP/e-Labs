@@ -10,7 +10,7 @@
 	<area shape="rect" alt="" coords="625,124,714,183" href="javascript:reference('discuss results',420)">
 	<area shape="rect" alt="" coords="626,207,704,262" href="javascript:reference('publish results',280)">
 	<area shape="rect" alt="" coords="561,208,620,266" href="javascript:reference('assemble evidence',250)">
-	<area shape="rect" alt="" coords="472,123,555,158" href="javascript:reference('ligo improve  answer',400)">
+	<area shape="rect" alt="" coords="472,123,555,158" href="javascript:reference('ligo improve answer',400)">
 	<area shape="rect" alt="" coords="479,220,544,262" href="javascript:reference('ligo_test_answer',450)">
 	<area shape="rect" alt="" coords="400,221,476,275" href="javascript:reference('ligo analysis',420)">
 	<area shape="rect" alt="" coords="333,121,399,167" href="javascript:reference('ligo research question',450)">

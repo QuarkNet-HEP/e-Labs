@@ -38,44 +38,25 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>The Big Picture: LIGO and the Search for Gravitational Waves</h2>
+			<h2>LIGO: A New Way to Explore the Universe.</h2>
 			
 			<p>
 				<img class="float-right" src="../graphics/colliding_blackholes.jpg" 
 					width="204" height="120" alt="[black_holes]" />
-				<em>LIGO.</em> the Laser Interferometer Gravitational Wave Observatory, 
-				searches for gravitational waves from exotic events in the universe 
-				such as  black hole collisions, supernovae and the spinning of neutron 
-				star pulsars. Direct detections of gravitational waves have never 
-				occurred. LIGO and several sister projects around the world are 
-				striving to make the first historic detections that will open the 
-				exctiting new field of gravitational wave astronomny.
+				You can diagnose seismic noise at LIGO Hanford Observatory and join scientists in their efforts to understand how ground vibrations influence LIGO's detectors. 
 			</p>
 			<p>
 				<img class="float-right" src="../graphics/3Dinspiral.gif" 
 					width="185" height="150" alt="[inspiral]" />
-				<em>Gravitational waves</em> are ripples in the fabric of space (or 
-				space-time). LIGO searches for the passage of these ripples using 
-				huge interferometers in Washington State and Louisiana. These 
-				interferometers are incredibly sensitive, capable of measuring 
-				movements that are smaller that a thousandth of the size of an 
-				atomic nucleus.  Only by operating at such radical sensitivities 
-				will the detectors register the faint whispers of gravitational 
-				waves.
+				LIGO scientists seek to measure faint ripples of space called gravitational waves. Einstein predicted gravitational waves in 1916 as part of the theory of general relativity. However, he had little confidence that scientists would ever detect these waves&mdash;their effects on scientific instruments would be too small.
 			</p>
 			<p>
-				<em>The Earth</em> constantly vibrates at levels far above the 
-				effects of gravitational waves.  LIGO relies on several subsystems to 
-				filter these sources of "noise" out of the detectors' data streams. 
-				Scientists can't devise filters unless the noise is well understood. 
-				For this reason, LIGO constantly monitors the environments of the 
-				Observatories with a large set of sensors -- seismometers, weather 
-				stations, magnetometers, tilt meters and others.  In the LIGO E-Lab 
-				you will analyze data from seismometers at the Hanford Observatory. 
-				You will join LIGO scientists in their efforts to understand how the 
-				ground vibrates and how these vibrations influence LIGO's 
-				gravitational wave detectors.
+				Using huge interferometers in Washington State and Louisiana, LIGO, the Laser Interferometer Gravitational Wave Observatory, measures movements that are smaller that a thousandth of the size of an atomic nucleus. This radical level of sensitivity creates the possibility that gravitational waves now can be directly detected.
 			</p>
+			<p>
+				LIGO is built on the ground, and the ground constantly vibrates at levels much greater than the effects of gravitational waves.  This background of seismic noise must be filtered to prevent it from contaminating LIGO's ultra-sensitive detectors. To better understand the noise, LIGO operates and monitors a network of seismometers and other instruments related to ground vibrations such as tiltmeters and weather stations. Using the LIGO e-Lab, you can play a role in LIGO's "noise diagnosis" process by studying seismic data from the LIGO Hanford facility.
+			</p>
+			
 			<blockquote>
 				Colliding Black Holes courtesy of Werner Benger, Zuse Institute 
 				Berlin, Max-Planck Institutue fuer Gravitational Physics (Albert 
