@@ -47,7 +47,7 @@ echo "
 
 // Special user bits testing:
 //
-if(1){
+if(0){
 
     echo "<P>Special user bits for user ". $logged_in_user->userid. ": <tt>"
         . $logged_in_user->special_user . "</tt>\n";
@@ -67,7 +67,24 @@ if(1){
 //
 check_ops_secured();
 check_account_creation();
-check_uotd_candidates();
+//check_uotd_candidates();
+
+
+// System Load
+
+if( function_exists('sys_getloadavg') ){ // requires PHP 5.1.3+
+
+ $loads = sys_getloadavg();
+
+  echo "\n<table align='center' cellspacing='5' cellpadding='5'>
+	<TR><TH>&nbsp;</TH><TH>1 min</TH><TH>5 min</TH><TH>15 min</TH></TR>
+	<TR><TD><b>Load Averages:</b></TD>
+	    <TD>".$loads[0]."</TD>
+	    <TD>".$loads[1]."</TD>
+	    <TD>".$loads[2]."</TD>
+         </TR>
+        </table> \n\n";
+}
 
 
 /*********************
@@ -88,8 +105,7 @@ echo "
     <li><a href='/ops/profile_screen_form.php'>Screen user profiles </a></li>
     <li><a href='/ops/list_uotd_candidates.php'>List UOTD candidates</a>
     <li><a href='list_all_users.php'>List ALL users</a></li>
-	<hr>
-    <li><a href='/ops/manage_special_users.php'>Manage special users</a>[OLD!]</li>
+	<P>
     <li><a href='mass_email.php'>Send mass email to a selected set of users</a>
     </ul>
     </td> 
@@ -99,27 +115,29 @@ echo "
     <li><a href='../forum_index.php'>View all Forums</a>
     <LI><a href='../forum_forum.php?id=43'>Developer's Workroom</a>
     <LI><a href='../forum_forum.php?id=51'>Boiler Room</a>
-
+	<P>
     <li><a href='./create_forum.php'>Create new forum room</a>
-	<hr>
     <li><a href='./manage_forums.php'>Manage Forums</a>
-    <li><a href='./forum_repair.php'>Forum repair</a>
     </ul>
     </td>
      ";
-
-
 
 echo "
 	<td class='border' width='25%'>
     <ul>
     <li><a href='news_admin.php'>News Feed </a>
-    <LI><a href='/library/index.php/I2U2:Site_Status'>Site Status Block</a> 
+    <LI><a href='/library/index.php/Project:Site_Status'>Site Status Block</a> 
+    <LI><a href='/library/index.php/Project:Site_Overview'>Site Overview Block</a> 
 	<P>
     <LI><a href='../Calendar.php'>I2U2 Calendar</a> 
     <LI><a href='http://spreadsheets.google.com/ccc?key=pvw2y9-_Vf3gNVzPlbw9nfw&hl=en'>
 	I2U2 Gantt Chart</a> $external
     <LI><a href='http://www.quarknet.us/Calendar.php'>QuarkNet Calendars</a> $external
+
+	<P>
+    <LI><a href='http://www.ci.uchicago.edu/wiki/bin/view/I2U2/WebHome'>CI Wiki</a>
+
+
 
     </ul>
     </td> 
@@ -133,6 +151,13 @@ echo "
                 >server-status</a>
     <LI><a href='http://".$_SERVER['SERVER_NAME']."/server-info'
                 >server-info</a>
+
+	<P>
+    <LI><a href='http://".$_SERVER['SERVER_NAME']."/elab/cosmic/monitor/'
+                >Cluster Monitor</a>
+
+
+
 
     </ul>
     </td>
