@@ -40,6 +40,18 @@
 		<td id="center">
 			<h2>Welcome to our scientific collaboration! </h2>
 			
+			<p />
+			
+			<span id="links">
+				<table align="center">
+					<tr>
+						<td style="width:150px; text-align:center;"><a href="/elab/ligo/home/">Project Map</a></td>
+						<td style="width:150px; text-align:center;"><a href="/elab/ligo/site-index/site-map-anno.jsp">Explore!</a></td>
+						<td style="width:150px; text-align:center;"><a href="/elab/ligo/home/about-us.jsp">About Us</a></td>
+					</tr>
+				</table>
+			</span>
+			
 			<h3>Who are we?</h3>
 			<p>
 				We're a collaboration of high school students and teachers analyzing data from LIGO, the Laser Interferometer Gravitational-wave Observatory. We're learning how and why the ground shakes by looking at LIGO seismic data and correlating it to other data such as activity from earthquakes or ocean waves, human-induced seismic activity and more. We're working with cutting edge tools that use the grid techniques to share data, create plots and posters and collaborate with other students internationally.

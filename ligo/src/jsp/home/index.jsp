@@ -74,7 +74,7 @@
 					<span id="links">
 						<table align="center">
 							<tr>
-								<td style="width:150px; text-align:center;"><a href="/elab/ligo/library/big-picture.jsp">Cool Science</a></td>
+								<td style="width:150px; text-align:center;"><a href="cool-science.jsp">Cool Science</a></td>
 								<td style="width:150px; text-align:center;"><a href="/elab/ligo/site-index/site-map-anno.jsp">Explore!</a></td>
 								<td style="width:150px; text-align:center;"><a href="about-us.jsp">About Us</a></td>
 							</tr>

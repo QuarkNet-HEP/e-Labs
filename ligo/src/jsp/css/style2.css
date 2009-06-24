@@ -297,9 +297,12 @@ a#nav6 {
 	list-style-image: url("../graphics/gray-disc.gif");
 }
 
+/*
 #content #center li {
 	padding-bottom: 12px;
 }
+
+*/
 
 #content #center ul ul {
 	margin-left: 16px;
