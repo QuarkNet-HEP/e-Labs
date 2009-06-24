@@ -84,7 +84,7 @@
 					<p>Think of this map as a subway map with one main line and four branch lines.  Along the main line are stops, milestone seminars, opportunities to check how the work is going. Off each main stop are branch lines where each stop is a project milestone. Hover over each milestone or milestone seminar to preview; click milestones to open. </p>
 					<center>
 						<%@ include file="../library/milestones-map-student.jsp" %>
-						<p><a href="http://localhost:8080/elab/ligo/library/milestones.jsp">Milestones (text version)</a></p>
+						<p><a href="/elab/ligo/library/milestones.jsp">Milestones (text version)</a></p>
 					</center>
 					
 				</td>

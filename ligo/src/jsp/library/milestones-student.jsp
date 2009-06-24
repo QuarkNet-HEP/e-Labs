@@ -7,21 +7,32 @@
 							</a>
 						</li>
 						<li>
+							Describe basic wave properties.
+							<a href="javascript:reference('wave properties',420)">
+								<img src="../graphics/ref.gif">
+							</a>
+						</li>
+						<li>
 							Explain why LIGO monitors the environment at the observatories.
 							<a href="javascript:reference('seismic data importance',420)">
 								<img src="../graphics/ref.gif">
 							</a>
 						</li>
 						<li>
-							Describe basic wave properties.
-							<a href="javascript:reference('wave properties',420)">
+							Learn how to read seismic data.
+							<a href="javascript:reference('practice making plots',400)">
 								<img src="../graphics/ref.gif">
 							</a>
 						</li>
-
 						<li>
-							Learn how to read seismic data.
-							<a href="javascript:reference('practice making plots',400)">
+							Look for patterns in LIGO seismic data. 
+							<a href="javascript:reference('seismometer locations',450)">
+								<img src="../graphics/ref.gif">
+							</a>
+						</li>
+						<li>
+							Make a research question and plan.
+							<a href="javascript:reference('ligo research question',400)">
 								<img src="../graphics/ref.gif">
 							</a>
 						</li>
@@ -44,18 +55,6 @@
 						<li>
 							Improve your answer. 
 							<a href="javascript:reference('ligo improve answer',450)">
-								<img src="../graphics/ref.gif">
-							</a>
-						</li>
-						<li>
-							Look for patterns in LIGO seismic data. 
-							<a href="javascript:reference('seismometer locations',450)">
-								<img src="../graphics/ref.gif">
-							</a>
-						</li>
-						<li>
-							Make a research question and plan.
-							<a href="javascript:reference('ligo research question',400)">
 								<img src="../graphics/ref.gif">
 							</a>
 						</li>
