@@ -158,7 +158,7 @@ if( 0 && file_exists( STATUS_TEXT ) ){
 }
 else {// Try to get the page contents from a wiki article:
   // TODO: strip HTML comments
-  $status_txt = trim(get_wiki_article("I2U2:Site Status"));
+  $status_txt = trim(get_wiki_article("Project:Site Status"));
 }
 
 
@@ -265,7 +265,7 @@ if ( 0 && file_exists( OVERVIEW )) {
   $overview_text=  file_get_contents( OVERVIEW );
 }
 else {// Try to get the box contents from a wiki article:
-  $overview_text = trim(get_wiki_article("I2U2:Site Overview"));
+  $overview_text = trim(get_wiki_article("Project:Site Overview"));
 }
 
 
