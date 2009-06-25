@@ -44,7 +44,7 @@
 
 <!-- there is no way to do this without tables unfortunately -->
 <table border="0" id="main">
-<!-- 
+<%--
 	<tr>
 	    <td colspan="2">
  	 <c:if test="${user != null}">
@@ -55,21 +55,20 @@
 	
 	
 	</tr>
- -->
+ --%>
 	<tr>
 		<td>
 	 <c:if test="${user != null}">
-			<div id="left">
-		<script type="text/javascript" src="../include/elab.js"></script>
-        <%@ include file="../login/login-required.jsp" %>
-	    <%@ include file="../library/milestones-map-student.jsp" %>
+		<div id="left">
+			<script type="text/javascript" src="../include/elab.js"></script>
+	        <%@ include file="../login/login-required.jsp" %>
+		    <%@ include file="../library/milestones-map-student.jsp" %>
  		</div>
 	  </c:if>  
  	 <c:if test="${user == null}">
 		<div id="left-animation">
- 	    <%@ include file="../home/splash-home.html" %>
+ 	    	<%@ include file="../home/splash-home.html" %>
  		</div>
-
 	  </c:if>  
 		</td>
 		<td>
@@ -82,6 +81,12 @@
 		</td>
 	</tr>
 </table>
+
+	<c:if test="${user != null}">
+		<div style="text-align: center;">
+	    	<a href="../library/milestones.jsp">Milestones (text version)</a>
+	    </div>
+	</c:if>
 
 
 			</div>
