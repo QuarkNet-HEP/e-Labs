@@ -57,7 +57,7 @@
  * 
  *
  * Eric Myers <myers@spy-hill.net>  - 9 May 2006
- * @(#) $Id: update-rds.php,v 1.38 2008/10/30 21:11:31 myers Exp $
+ * @(#) $Id: update-rds.php,v 1.39 2009/06/25 00:33:59 myers Exp $
 \***********************************************************************/
 
 // Configuration defaults:
@@ -120,8 +120,8 @@ function frame_filepath($GPS_time, $ttype='M', $site='H'){
   $GPS_frame = $frame_length * intval($GPS_time/$frame_length);
 
   $p .= "/L".$site."O";
-  $p .= "/H-$ttype-$GPS_block";
-  $p .= "/H-$ttype-$GPS_frame-$frame_length.gwf";
+  $p .= "/$site-$ttype-$GPS_block";
+  $p .= "/$site-$ttype-$GPS_frame-$frame_length.gwf";
   return $p;
 }
 
