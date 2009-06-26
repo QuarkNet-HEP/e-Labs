@@ -69,7 +69,9 @@
 
         String authenticator = "-bogus-";
         if (user.isTeacher()) {
-		    authenticator = user.getAuthenticator();
+		    String x = user.getAuthenticator();
+            if( x != null ) authenticator = x;
+
             if (password.length() < 6) { // Why not everybody? -EAM 10Jun2009 
             		                     // only teachers have access to the password change page
             	redirect = "small-password.jsp?prevPage=" + URLEncoder.encode(prevPage);
