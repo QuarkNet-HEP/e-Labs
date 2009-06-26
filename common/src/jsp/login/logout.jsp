@@ -24,17 +24,17 @@
 
 	/* Logout of BOINC by clearing auth cookies */
 	
-	Cookie authCookie = new Cookie("auth", "");
+	Cookie authCookie = new Cookie("auth", "-logout-");
 	authCookie.setPath("/");
 	authCookie.setMaxAge(0);
 	response.addCookie(authCookie);
 	
-	Cookie forumAuthCookie = new Cookie("boinc_auth", "");
+	Cookie forumAuthCookie = new Cookie("boinc_auth", "-logout-");
 	forumAuthCookie.setPath("/");
 	forumAuthCookie.setMaxAge(0);
 	response.addCookie(forumAuthCookie);
 	
-	Cookie i2u2AuthCookie = new Cookie("i2u2_auth", "");
+	Cookie i2u2AuthCookie = new Cookie("i2u2_auth", "-logout-");
 	i2u2AuthCookie.setPath("/");
 	i2u2AuthCookie.setMaxAge(0);
 	response.addCookie(i2u2AuthCookie);
