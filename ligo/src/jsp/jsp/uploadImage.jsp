@@ -76,8 +76,8 @@ if (fu.isMultipartContent(request)) {
             }
             // TODO: check MIME/type not filename extension.
             //      (or extension only if MIME/type fails.)
-            if (!origName.endsWith(".jpg") && !origName.endsWith(".jpeg") 
-            	&& !origName.endsWith(".png") && !origName.endsWith(".gif")) {
+            if (!origName.toLowerCase().endsWith(".jpg") && !origName.toLowerCase().endsWith(".jpeg") 
+            	&& !origName.toLowerCase().endsWith(".png") && !origName.toLowerCase().endsWith(".gif")) {
             	ret = "Invalid image type. Valid extensions are: .jpg, .jpeg, .png, .gif";
             	valid = false;
             }
