@@ -7,7 +7,7 @@
     $user = get_logged_in_user();
     //    $teamid = $_POST["id"];  // IGNORE THIS
 
-    page_head("Remove School");
+    page_head("Remove School Affiliation");
 
     $team = lookup_team($user->teamid);
     $teamid = lookup_team($user->teamid);
