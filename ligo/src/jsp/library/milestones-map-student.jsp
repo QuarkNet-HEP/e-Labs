@@ -14,8 +14,8 @@
 	<area shape="rect" alt="" coords="479,220,544,262" href="javascript:reference('ligo_test_answer',450)">
 	<area shape="rect" alt="" coords="400,221,476,275" href="javascript:reference('ligo analysis',420)">
 	<area shape="rect" alt="" coords="333,121,399,167" href="javascript:reference('ligo research question',450)">
-	<area shape="rect" alt="" coords="335,178,415,218" href="javascript:reference('practice making plots',400)">
-	<area shape="rect" alt="" coords="302,236,399,278" href="javascript:reference('seismometer locations',550)">
+	<area shape="rect" alt="" coords="335,178,415,218" href="javascript:reference('seismic data',400)">
+	<area shape="rect" alt="" coords="302,236,399,278" href="javascript:reference('data patterns',550)">
 	<area shape="rect" alt="" coords="221,118,300,159" href="javascript:reference('ligo science goals',420)">
 	<area shape="rect" alt="" coords="622,46,672,84" href="showStudents.jsp?type=post">
 	<area shape="rect" alt="" coords="0,47,50,85" href="showStudents.jsp?type=pre">

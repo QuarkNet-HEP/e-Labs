@@ -57,13 +57,13 @@
 							</li>
 							<li>
 								Learn how to read seismic data.
-								<a href="javascript:reference('practice making plots',400)">
+								<a href="javascript:reference('seismic data',400)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Look for patterns in LIGO seismic data. 
-								<a href="javascript:reference('seismometer locations',450)">
+								<a href="javascript:reference('data patterns',450)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
