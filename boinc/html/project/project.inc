@@ -11,7 +11,7 @@
  * extras.php for more general additions beyond what BOINC provides.
  *
  * Last changed: -EAM 05May2009
- * @(#) $Id: project.inc,v 1.21 2009/05/12 20:31:30 myers Exp $
+ * @(#) $Id: project.inc,v 1.22 2009/06/24 17:44:31 myers Exp $
 \**********************************************************************/
 
 require_once("../project/roles.php");		// special_user stuff

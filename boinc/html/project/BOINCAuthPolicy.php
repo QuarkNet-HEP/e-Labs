@@ -13,7 +13,7 @@
  * to the directory above a directory called "project"
  *
  * Eric Myers <myers@spy-hill.net> - 5 February 2007
- * @(#) $Id: BOINCAuthPolicy.php,v 1.1 2009/03/20 13:34:22 myers Exp $
+ * @(#) $Id: BOINCAuthPolicy.php,v 1.2 2009/06/24 17:44:31 myers Exp $
 \***********************************************************************/
 /* Copyright (c) 2009 by Eric Myers;  all rights reserved
  *
