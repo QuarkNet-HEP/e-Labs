@@ -145,7 +145,7 @@ msgstr "Invitation Code"
 
 msgid  "AC_INVITE_CODE_DESC"
 msgstr "A valid invitation code is required to create an account."
-       "<br> You can get one from your teacher." 
+       "<br> You can get one from your workshop leader. "
 
 msgid "CREATE_AC_USE_CLIENT"
 msgstr "To log in to this site next time you will need to give "
