@@ -9,10 +9,15 @@
 \***********************************************************************/
 
 // This can be set earlier, in which case we won't override
+// TODO: There could be several wikis.  Allow selection.
 //
 if( !isset($Path_to_wiki) )  {
   $Path_to_wiki="/library";
 }
+
+
+
+
 
 // Get body of a wiki page for transclusion into another page.
 // Returns the text between strings $start and $end.
@@ -20,7 +25,7 @@ if( !isset($Path_to_wiki) )  {
 //
 function get_wiki_article($title, 
 			  $start = "<!-- start content -->",
-			  $end = "<!-- end content -->" ){
+			  $end = "<!-- end content -->", $path='' ){
    global $Path_to_wiki;
    global $gWikiTitle;
 
@@ -30,10 +35,12 @@ function get_wiki_article($title,
 
    $gWikiTitle[] = $title;	// save for page_tail()
 
+   if( empty($path) ) $path = $Path_to_wiki;
+
 
   // 1. Get body from wiki
 
-  $url ="http://" . $_SERVER['SERVER_NAME'] . $Path_to_wiki . "/";
+  $url ="http://" . $_SERVER['SERVER_NAME'] . $path . "/";
   $url .= "body.php/$title";
   debug_msg(2,"  URL: $url");
   $body = file_get_contents($url);
@@ -56,22 +63,28 @@ function get_wiki_article($title,
   }
   if( empty($body) ) return NULL;
 
+  // Check for "There is currently no text in this page" message
 
-  // Images in the wiki are linked to their wiki page
+  $i = strpos($body,"There is currently no text in this page");
+  if( $i !== FALSE && $i > 0 && $i < 400) return NULL;
+
+
+  // Images in the wiki are linked to their wiki page.
   // Remove that link, while preserving the image
 
-  $pattern = "<a href=[^>]+Image:[^>]+>(<img[^>]+)</a>";
-
-
-
-  $body = "\n\n<!-- Transcluded from wiki article $title -->\n\n"
-	 ."<div class='wikibody'>\n$body\n</div>\n"
-         ."\n<!-- end transcluded text -->\n\n";
+  $pattern = ',<a href=[^>]+(/|\?title=)Image:[^>]+>(<img [^>]+>)</a>,si';
+  $body = preg_replace($pattern, " \\2 ", $body); 
 
   //FIXME: body skin returns body skin links (ie using body.php not index.php)
   // This corrects the problem, but the real fix is probably in the skin itself
 
   $body = preg_replace("/body.php/", "index.php", $body);
+
+  // Output:
+
+  $body = "\n\n<!-- Transcluded from wiki article $title -->\n\n"
+	 ."<div class='wikibody'>\n$body\n</div>\n"
+         ."\n<!-- end transcluded text -->\n\n";
 
   return $body;
 }
