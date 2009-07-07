@@ -57,7 +57,7 @@
 				<div class="link-list">
 					<a href="milestones-map.jsp">Milestones (map version)</a>
 				 	|
-					<a href="http://www13.i2u2.org/library/index.php/LIGO_Glossary">LIGO Glossary</a>
+					<a href="/library/index.php/LIGO_Glossary">LIGO Glossary</a>
 				 	| 
 					<a href="../references/showAll.jsp?t=reference">All References for Study Guide <img src="../graphics/ref.gif"/></a>
 				</div>

@@ -48,7 +48,7 @@
 					<h2>Welcome: Join a national collaboration of high school students to study LIGO seismic data.</h2>	  
 					<table> 
 						<tr>
-							<td><img src="http://www13.i2u2.org/elab/ligo/graphics/lho_aerial_photo.jpg" /></td>
+							<td><img src="/elab/ligo/graphics/lho_aerial_photo.jpg" /></td>
 							<td class="float-right bordered">
 								<jsp:include page="../login/login-control.jsp">
 									<jsp:param name="prevPage" value="../home/login-redir.jsp"/>

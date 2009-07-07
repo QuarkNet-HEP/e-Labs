@@ -279,7 +279,7 @@ if( $exec_type=='post' || $exec_type=='swift'){
     // For Swift we can just get status directly if we have ID#
 
     if(!$next_url && $exec_type=='swift' ){
-        $next_url="http://www12.i2u2.org:9080/elab/ligo/analysis/status.jsp";
+        $next_url="/elab/ligo/analysis/status.jsp";
     }
 
     if( !$next_url ){ // nowhere to go?

@@ -110,7 +110,7 @@ if( 0 &&  $hostname !='tekoa' ){
 //
 $exec_list['swift']= new TaskExecution('swift', 'Swift',3);
 $exec_list['swift']->method = 'POST';
-$exec_list['swift']->submit_url = "http://www12.i2u2.org:9080/elab/ligo/analysis-plot1chan/analysis.jsp";
+$exec_list['swift']->submit_url = "/elab/ligo/analysis-plot1chan/analysis.jsp";
 $exec_list['swift']->run_time="<font color='ORANGE'>Not Available</font>";
 
 
