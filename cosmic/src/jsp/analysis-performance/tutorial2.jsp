@@ -56,7 +56,7 @@
 						On your <a href="http://www.shodor.org/interactivate/activities/histogram/">histogram</a>, the x-axis would say "Chevrolet, Ford, 
 						Saab, Toyota, Volkswagen." The y-axis would have the numbers 0-14. 
 						You would draw a bar to the proper height for each make of car
-						(<e:popup href="../graphics/car_hist.gif" width="740" height="510" target="_">Illustration</e:popup>).<p>
+						(<e:popup href="../graphics/car_hist.gif" width="740" height="510" target="illustration">Illustration</e:popup>).<p>
 					
 							</td>
 							</p>

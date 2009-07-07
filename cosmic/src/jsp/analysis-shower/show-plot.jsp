@@ -36,7 +36,7 @@
 <img src="${results.outputDirURL}/plot.png" />
 
 <p>
-	Show <e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysis-dir" 
+	Show <e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysisdir" 
 		width="800" height="600" toolbar="true">analysis directory</e:popup>
 </p>
 
