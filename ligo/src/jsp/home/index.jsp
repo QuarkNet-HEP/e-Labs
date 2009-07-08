@@ -81,11 +81,11 @@
 						</table>
 					</span>
 					<p>Project Map: Your team may use the milestones below, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results. </p>
-					<p>Think of this map as a subway map with one main line and four branch lines.  Along the main line are stops, milestone seminars, opportunities to check how the work is going. Off each main stop are branch lines where each stop is a project milestone. Hover over each milestone or milestone seminar to preview; click milestones to open. </p>
 					<center>
 						<%@ include file="../library/milestones-map-student.jsp" %>
 						<p><a href="/elab/ligo/library/milestones.jsp">Milestones (text version)</a></p>
 					</center>
+					<p>Think of this map as a subway map with one main line and four branch lines.  Along the main line are stops, milestone seminars, opportunities to check how the work is going. Off each main stop are branch lines where each stop is a project milestone. Hover over each milestone or milestone seminar to preview; click milestones to open. </p>
 					
 				</td>
 			</tr>
