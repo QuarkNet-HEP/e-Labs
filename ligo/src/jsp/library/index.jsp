@@ -37,15 +37,10 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Use the e-Lab library of resources as you work</h2>
+			<h2>Library: Use the e-Lab library of reference material as you work</h2>
 			<ul>
 				<li>
-					<a href="research-basics.jsp">The Basics</a> - Review research skills that 
-					you will need for this project.
-				</li>
-				<li>
-					<a href="milestones-map.jsp">Study Guide</a> - Measure your progress
-					as you work.
+					<a href="/library/index.php/LIGO_Glossary">The Glossary</a> - Look up terms you don't know.
 				</li>
 				<li>
 					<a href="resources.jsp">Resources</a> - Explore online resources 
@@ -62,7 +57,10 @@
 					<a href="FAQ.jsp">FAQs</a> - Read the FAQs for answers to your questions.
 				</li>
 				<li>
-					<a href="../site-index">Site Help</a> - Learn how to use the website.
+					<a href="site-tips.jsp">Site Tips</a> - Check out tips on how to use the website.
+				</li>
+				<li>
+				<a HREF="milestones.jsp">Project Milestones (text)</a> - An alternate version.
 				</li>
 			</ul>
 		</td>

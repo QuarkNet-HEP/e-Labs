@@ -37,7 +37,7 @@
 		<td id="center">
 
 
- <h2>e-Lab Questions and Answers</h2> 
+ <h2>FAQs: e-Lab Questions and Answers</h2> 
 
   <P></P>
 
