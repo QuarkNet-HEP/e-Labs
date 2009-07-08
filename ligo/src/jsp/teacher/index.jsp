@@ -41,7 +41,7 @@
 					At this Web site students will work with scientific data from  LIGO, 
 					the Laser Interferometer Gravitational-wave Observatory. Students 
 					will design and execute an inquiry-based investigation in much the 
-					same way as a professional scientist. E-Lab tools will facilitate 
+					same way as a professional scientist. e-Lab tools will facilitate 
 					collaboration between students as they develop their projects and 
 					report their results.
 				</p>
@@ -69,7 +69,7 @@
 					
 				<h2>Prior Knowledge and Skills:</h2>
 				<p>
-					Before doing the LIGO E-Lab, students should be comfortable with these 
+					Before doing the LIGO e-Lab, students should be comfortable with these 
 					skills:
 						<ul>
 							<li>Make simple measurements</li>   
@@ -84,7 +84,7 @@
 				
 				<h2>Learner Outcomes and Assessment:</h2>
 				<p>
-					Here are the E-Lab outcomes that students must demonstrate:</p> 
+					Here are the e-Lab outcomes that students must demonstrate:</p> 
 					<ul>
 						<li>Content and Investigation:
 							<ul>
@@ -134,7 +134,7 @@
 				<h2>Research Question:</h2>
 				<p>
 					Developing a good research question is one of the most challenging 
-					parts of the E-Lab for many students. A good research question provides 
+					parts of the e-Lab for many students. A good research question provides 
 					a framework around which the students can build a research plan. Good 
 					research questions are testable. "How often do earthquakes happen?" 
 					might not be a helpful research question since it doesn't point to a 
@@ -142,7 +142,7 @@
 					how often earthquakes happen and <i>where</i> they happen (epicenter)?" 
 					is a better question because the researcher will inevitably be faced 
 					with cause-and-effect connections as the reserch plan unfolds. The LIGO 
-					E-Lab provides the opportunity for many good research questions based on 
+					e-Lab provides the opportunity for many good research questions based on 
 					earthquakes.  Students should look through the on-line discussion rooms
 					to gain ideas for research questions. 
 				</p>

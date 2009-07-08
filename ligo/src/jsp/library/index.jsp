@@ -37,7 +37,7 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Use the E-Lab library of resources as you work</h2>
+			<h2>Use the e-Lab library of resources as you work</h2>
 			<ul>
 				<li>
 					<a href="research-basics.jsp">The Basics</a> - Review research skills that 
@@ -49,10 +49,10 @@
 				</li>
 				<li>
 					<a href="resources.jsp">Resources</a> - Explore online resources 
-					that will help you conduct your E-Lab investigation. A 
+					that will help you conduct your e-Lab investigation. A 
 					<a href="../data/tutorial.jsp">tutorial</a> will help you learn to use 
 					<a href="/ligo/tla/">Bluestone</a>, 
-					LIGO's E-Lab data analysis software
+					LIGO's e-Lab data analysis software
 				</li>
 				<li>
 					<a href="big-picture.jsp">Big Picture</a> - Read an overview of 

@@ -40,9 +40,9 @@
 			</div>
 
 
-<h2>Getting Started on the LIGO I2U2 E-Lab</h2>
+<h2>Getting Started on the LIGO I2U2 e-Lab</h2>
 <p>
-  <em>The E-Lab process</em> follows three basic steps. The E-Lab road 
+  <em>The e-Lab process</em> follows three basic steps. The e-Lab road 
   map that you'll see when you click 
   <a href="../library/milestones-map.jsp">Study Guide</a> (on the 
   <a href="../library">Library</a> submenu) shows you the steps.
@@ -68,11 +68,11 @@
 </p>
 <p>
   <em>Use</em> the link menus to help you! The top link menu provides guidance 
-  for accomplishing the E-Lab. The sidebar links give you additional science 
+  for accomplishing the e-Lab. The sidebar links give you additional science 
   resources, a Bluestone tutorial, a Bluestone link and Discussion Site links.
 </p>
 <p>
-  <em>Watch</em> for little icons on the E-Lab screens. Clicking on 
+  <em>Watch</em> for little icons on the e-Lab screens. Clicking on 
   <img src="../graphics/ref.gif" /> will give you a reference popup that will 
   help with a milestone. The logbook icon, 
   <img src="../graphics/logbook_pencil.gif" align="middle">, will open your 
@@ -81,7 +81,7 @@
   you access teacher comments about your log entries.
 </p>
 <p>
-  <em>The heart</em> of the LIGO E-Lab is software named 
+  <em>The heart</em> of the LIGO e-Lab is software named 
   <a href="/ligo/tla/">Bluestone</a>.  Bluestone lets 
   you to select the LIGO data channels that you wish to view and lets you 
   control the features of the plots that you make.  Bluestone mimics software 
@@ -89,7 +89,7 @@
   teacher will tell you how to use Bluestone.
 </p> 
 <p>
-  <em>Another</em> key feature of the LIGO E-Lab is a comprehensive
+  <em>Another</em> key feature of the LIGO e-Lab is a comprehensive
   portal site.   Here you will also find a
   <a href="/glossary/">glossary</a>, 
    along with 
@@ -101,7 +101,7 @@
 
 <p>
   <em>Now What?</em> Hit the <a href="../library/milestones-map.jsp">Let's Go</a> link above 
-  and start working your way through the E-Lab!
+  and start working your way through the e-Lab!
 </p>
 
 

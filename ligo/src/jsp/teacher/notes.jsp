@@ -47,7 +47,7 @@
 				</p>
 				<h2>Earthquake Studies</h2>
 				<p>
-					A number of earthquake studies are possible with the E-Lab 
+					A number of earthquake studies are possible with the e-Lab 
 					data. From what epicenter distance can LIGO detect earthquake 
 					waves? How fast do earthquake waves travel? Are P and S waves 
 					distinguishable in the data? If so, what can we learn about 

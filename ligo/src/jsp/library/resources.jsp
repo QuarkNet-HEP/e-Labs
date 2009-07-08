@@ -49,7 +49,7 @@
 <ul>
        <li><a href="../data/tutorial.jsp">Bluestone Tutorial</a></li>
 
-       <li><a href="ligo_elab1.pdf">E-Lab Seismic Study (PDF)</a></li>
+       <li><a href="ligo_elab1.pdf">e-Lab Seismic Study (PDF)</a></li>
 
        <li><a href="http://www.ligo-wa.caltech.edu"
 	      target='_blank'>LIGO Hanford Observatory</a>

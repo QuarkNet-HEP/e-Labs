@@ -37,11 +37,11 @@ response.sendRedirect("/elab/ligo/home/");
 		</td>
 		<td id="center">
 			<div class="float-right bordered">
-				<a class="button" href="first-web.jsp">Start Your E-Lab Here!</a>
+				<a class="button" href="first-web.jsp">Start Your e-Lab Here!</a>
 				<%@ include file="../posters/poster-sample-small.jsp" %>
 			</div>
 
-			<h2>Join the LIGO I2U2 E-Lab Collaboration!</h2>
+			<h2>Join the LIGO I2U2 e-Lab Collaboration!</h2>
 			<p>Here's your chance to do a research study.</p>
 			<ul>
 				<li>Ask a question and make a research plan</li>
