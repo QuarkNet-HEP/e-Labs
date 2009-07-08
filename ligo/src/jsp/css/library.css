@@ -79,6 +79,7 @@ a.button {
 #resources		 	#subnav a[href="../library/resources.jsp"],
 #big-picture	 	#subnav a[href="../library/big-picture.jsp"],
 #faq			 	#subnav a[href="../library/FAQ.jsp"],
+#site-tips			 	#subnav a[href="../library/site-tips.jsp"],
 #library 			#subnav a[href="../library"] {
 	font-style: italic;
 }
