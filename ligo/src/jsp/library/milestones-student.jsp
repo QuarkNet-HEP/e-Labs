@@ -91,7 +91,7 @@
 								</a>
 							</li>
 							<li>
-								Improve your answer. 
+								Ask other questions. 
 								<a href="javascript:reference('ligo improve answer',450)">
 									<img src="../graphics/ref.gif">
 								</a>
