@@ -1,0 +1,15 @@
+#!/bin/sh -f
+#
+# Copy from DEVELOPMENT RDS into PRODUCTION RDS
+
+PATH=/usr/local/bin:/usr/bin
+export PATH
+
+#EXCLUDE="/home/i2u2/ligo/copy-rds.exclude"
+#FLAGS="-aqzHx  -e ssh  --exclude-from=$EXCLUDES  --delete "
+
+FLAGS="-aqzHx "
+
+rsync  $FLAGS /disks/i2u2-dev/ligo/data/  /disks/i2u2/ligo/data/ 
+
+#
