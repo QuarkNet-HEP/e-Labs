@@ -1,10 +1,20 @@
 #!/bin/sh -f
 #
-# Copy from DEVELOPMENT RDS into PRODUCTION RDS
+# This script copies data from the development RDS to the production RDS.
+# It can be run periodically from cron.  By not running this script
+# we can test new data before releasing it to the public.
+# At least that's the theory.
+#
+# @(#) $Id:$
+#######################################################################
+
 
 PATH=/usr/local/bin:/usr/bin
 export PATH
 
+## 
+# If we need to exclude copying certain files then enable this to do so
+#
 #EXCLUDE="/home/i2u2/ligo/copy-rds.exclude"
 #FLAGS="-aqzHx  -e ssh  --exclude-from=$EXCLUDES  --delete "
 
@@ -12,4 +22,4 @@ FLAGS="-aqzHx "
 
 rsync  $FLAGS /disks/i2u2-dev/ligo/data/  /disks/i2u2/ligo/data/ 
 
-#
+#EOF#
