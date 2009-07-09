@@ -70,12 +70,19 @@ $work_end=time()-12*3600;       // 12 hours ago, a reasonable default
 $tmpfile="/tmp/" .uniqid(). "-copy-rds.log";
 
 
-// Data source:
+// Data source: old 
 
 $RDS_Login = "myers";
 $RDS_Server = "tekoa.ligo-wa.caltech.edu";
 $RDS_data_source="$RDS_Login@$RDS_Server";
 $RDS_data_path="/data/ligo/frames/";
+
+// Data source: new
+
+$RDS_Login = "i2u2data";
+$RDS_Server = "terra.ligo.caltech.edu";
+$RDS_data_source="$RDS_Login@$RDS_Server";
+$RDS_data_path="/ligo/";
 
 
 // Data destination:
@@ -83,13 +90,13 @@ $RDS_data_path="/data/ligo/frames/";
 $HOME = getenv("HOME");
 if( is_dir("/disks/i2u2-dev/ligo/data/frames/") ){       # Argonne I2U2 dev
    $RDS_local_path = "/disks/i2u2-dev/ligo/data/frames/";
-   $httpd_group="www-data";   // Debian
+   $httpd_group="www-data";   // Debian 
 }
 elseif( is_dir("/disks1/myers/data/ligo/frames/") ){    # Argonne I2U2 old
    $RDS_local_path = "/disks1/myers/data/ligo/frames/";
    $httpd_group="www-data";   // Debian
 }
-elseif( is_dir($HOME."/i2u2/data/ligo/frames/") ){         # Spy Hill
+elseif( is_dir($HOME."/i2u2/data/ligo/frames/") ){      # Spy Hill
    $RDS_local_path=$HOME."/i2u2/data/ligo/frames/";
    $httpd_group="apache";   // Fedora, probably everybody else
  }
@@ -213,7 +220,6 @@ if( isset($options['e']) && $options['e'] !== FALSE ) {
 
 
 
-
 /*******************************
  * Source and Destination paths and parameters:
  * Frame files are stored in subdirectories of the form
@@ -264,7 +270,7 @@ switch($ttype){
  * Source and destination directories
  */
 
-$source_dir .= $RDS_data_source  .":". $RDS_data_path 
+$source_dir .= "rsync://" .$RDS_data_source . $RDS_data_path 
         . $data_path . "L" .$site."O/";   
 
 $dir_prefix=$site."-".$ttype."-";  // eg. "H-M-"
@@ -316,6 +322,11 @@ if( $ttype == 'H') echo ", hour trends ";
 
 echo "\n";
 
+// I proposed IP address based restrictions, but
+// someone at Caltech wanted a password, just to keep
+// bots from scanning our server.  This seems to be enough for that.
+//
+putenv("RSYNC_PASSWORD=".str_rot13("v2h2bayl") );
 
 
 /**********************
@@ -354,11 +365,13 @@ while( $GPS_prefix > 700 ) {
 
     // Construct rsync command for this sub-directory
 
-    $rsync_flags = "-az -v ";  // -v to get files listed
-    $rsync_cmd = "/usr/bin/rsync $rsync_flags -e \"/usr/bin/ssh -l $RDS_Login \" ";
+    $rsync_flags = "-az ";
+    //$rsync_cmd = "rsync -v $rsync_flags -e \"/usr/bin/ssh -l $RDS_Login \" ";
+    $rsync_cmd = "rsync -v $rsync_flags ";
+
 
     $cmd = "$rsync_cmd $src_subdir/ $dest_subdir/";
-    //echo "% $cmd \n";
+    echo "% $cmd \n";
     $out="";
     $txt = exec($cmd,$out,$rc);
     if($rc) echo "!Error: rsync returned RC=".$rc."\n";
