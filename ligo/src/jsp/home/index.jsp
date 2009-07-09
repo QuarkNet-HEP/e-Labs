@@ -74,9 +74,9 @@
 					<span id="links">
 						<table align="center">
 							<tr>
-								<td style="width:150px; text-align:center;"><a href="cool-science.jsp">Cool Science</a></td>
-								<td style="width:150px; text-align:center;"><a href="/elab/ligo/site-index/site-map-anno.jsp">Explore!</a></td>
-								<td style="width:150px; text-align:center;"><a href="about-us.jsp">About Us</a></td>
+								<td style="width:150px; text-align:center;"><a href="cool-science.jsp" style="text-decoration: none;"><img src="../graphics/cool-science-button.gif" border="0"><br>Cool Science</a></td>
+								<td style="width:150px; text-align:center;"><a href="/elab/ligo/site-index/site-map-anno.jsp"style="text-decoration: none;"><img src="../graphics/site-map-button.gif" border="0"><br>Explore!</a></td>
+								<td style="width:150px; text-align:center;"><a href="about-us.jsp" style="text-decoration: none;"><img src="../graphics/about-us-button.gif" border="0"><br>About Us</a></td>
 							</tr>
 						</table>
 					</span>
