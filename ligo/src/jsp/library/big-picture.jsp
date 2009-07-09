@@ -38,7 +38,7 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>LIGO: A New Way to Explore the Universe.</h2>
+			<h2>Big Picture: LIGO &mdash; A New Way to Explore the Universe.</h2>
 			
 			<p>
 				<img class="float-right" src="../graphics/colliding_blackholes.jpg" 
