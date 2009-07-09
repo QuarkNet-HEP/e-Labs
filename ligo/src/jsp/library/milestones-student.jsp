@@ -32,6 +32,9 @@
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
+							<li>
+								<b>Milestone Seminar</b>
+							</li>
 						</ul>
 					</li>
 					<li>
@@ -73,6 +76,9 @@
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
+							<li>
+								<b>Milestone Seminar</b>
+							</li>
 						</ul>
 					</li>
 					<li>
@@ -96,6 +102,9 @@
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
+							<li>
+								<b>Milestone Seminar</b>
+							</li>
 						</ul>
 					</li>
 					<li>
@@ -114,6 +123,9 @@
 								</a>
 							</li>
 							<li>
+								<b>Milestone Seminar</b>
+							</li>
+							<li>
 								Use the e-Lab to discuss results with your peers. 
 								<a href="javascript:reference('discuss results',420)">
 									<img src="../graphics/ref.gif">
@@ -122,4 +134,4 @@
 						</ul>
 					</li>
 				</ol>
- 
+ <h3>Take the <a href="../survey/show-students.jsp?type=post">Post-Test</a> when you have completed the e-Lab.</h3>

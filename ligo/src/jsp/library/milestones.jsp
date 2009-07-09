@@ -38,8 +38,7 @@
 		<td id="center">
 			<h2>Getting started! Make sure you meet each of these milestones below.</h2>
 			<p>
-				 Now you're ready to begin.  Follow the workflow list below to guide your work. Go through the e-Lab tasks one at a time; 
-				<a href="research-basics.jsp">The Basics</a> (optional), Get Started, Figure It Out and Tell Others.
+				 Now you're ready to begin.  Follow the workflow list below to guide your work. Go through the e-Lab tasks one at a time. Use the <a href="../home/index.jsp">Project Map</a> if you prefer.
 			</p>
 			<p><b>Click on <img border="0" src="../graphics/ref.gif" /> for
 	  	references to help you meet each milestone.</b></p>
@@ -54,14 +53,10 @@
 						<%@ include file="milestones-student.jsp" %>
 					</c:otherwise>
 				</c:choose>
-				<div class="link-list">
-					<a href="milestones-map.jsp">Milestones (map version)</a>
-				 	|
-					<a href="/library/index.php/LIGO_Glossary">LIGO Glossary</a>
-				 	| 
-					<a href="../references/showAll.jsp?t=reference">All References for Study Guide <img src="../graphics/ref.gif"/></a>
-				</div>
 <!--
+				<div class="link-list">
+					<a href="../home/index.jsp">Project Map: Milestones (map version)</a>
+				</div>
 			</center>
 -->
 			
