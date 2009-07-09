@@ -108,6 +108,7 @@ define("INVITE_CODES", "/ndqc|quarknet|inquiry|sjhsrc|parabola|ubiquitous|curiou
 $post_keywords=array_of_values(
    array(" ", "The Basics", "A-1: Describe  ", "A-2: Investigate ", 
               "A-3: Proposal ", "B: Figure it Out ", "C: Tell Others",
+	"Classroom Activity", 
          "Analysis Tool", "Data Acquisition", "Data Monitor",
          "calibration", "commissioning", "maintenance", "debugging", 
          "feature request", "complaint" ));
