@@ -425,9 +425,11 @@ function setup_visibility(){
         var items = getElementsByClassName(class_name); 
         for (var i=0; i<items.length; i++){
             if(isOn) {
+            	items[i].style.visibility = \"visible\";
             	items[i].style.display = \"\"; 
             }
             else {
+            	items[i].style.visibility = \"collapse\";
             	items[i].style.display = \"none\";
             }
         }    
@@ -436,6 +438,7 @@ function setup_visibility(){
     function makeClassVisible(class_name){
         var items = getElementsByClassName(class_name); 
         for (var i=0; i<items.length; i++){
+			items[i].style.visibility = \"visible\";
             items[i].style.display = \"\"; 
         }    
     };
@@ -443,6 +446,7 @@ function setup_visibility(){
     function makeClassInvisible(class_name){
         var items = getElementsByClassName(class_name); 
         for (var i=0; i<items.length; i++){
+        	items[i].style.visibility = \"collapse\";
             items[i].style.display = \"none\";
         }    
     };
