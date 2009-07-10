@@ -3,7 +3,7 @@
  * Project specific functions for I2U2 in general, not specific e-Labs
  *
  *
- * @(#) $Id: i2u2-stuff.php,v 1.2 2009/05/12 18:50:12 myers Exp $
+ * @(#) $Id: i2u2-stuff.php,v 1.3 2009/06/24 17:44:31 myers Exp $
 \**********************************************************************/
 
 

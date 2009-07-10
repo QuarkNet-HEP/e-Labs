@@ -9,39 +9,23 @@
 	if (prevPage == null) {
    		prevPage = elab.getProperties().getLoggedOutHomePage();
 	}
-	
-	/* Nuke e-Lab cookies */ 
-	
-	Cookie elabSessionCookie = new Cookie("JSESSIONID", "");
-    elabSessionCookie.setPath("/elab/" + elab.getName());
-    elabSessionCookie.setMaxAge(0);
-    response.addCookie(elabSessionCookie);
-    
-    Cookie elabDWRSessionCookie = new Cookie("JSESSIONID", "");
-    elabDWRSessionCookie.setPath("/elab/dwr");
-    elabDWRSessionCookie.setMaxAge(0);
-    response.addCookie(elabDWRSessionCookie);
 
 	/* Logout of BOINC by clearing auth cookies */
 	
-	Cookie authCookie = new Cookie("auth", "-logout-");
-	authCookie.setPath("/");
-	authCookie.setMaxAge(0);
-	response.addCookie(authCookie);
+	Cookie cookie1 = new Cookie("auth", "");
+	cookie1.setPath("/");
+	cookie1.setMaxAge(0);
+	response.addCookie(cookie1);
 	
-	Cookie forumAuthCookie = new Cookie("boinc_auth", "-logout-");
-	forumAuthCookie.setPath("/");
-	forumAuthCookie.setMaxAge(0);
-	response.addCookie(forumAuthCookie);
+	Cookie cookie2 = new Cookie("boinc_auth", "");
+	cookie1.setPath("/");
+	cookie2.setMaxAge(0);
+	response.addCookie(cookie2);
 	
-	Cookie i2u2AuthCookie = new Cookie("i2u2_auth", "-logout-");
-	i2u2AuthCookie.setPath("/");
-	i2u2AuthCookie.setMaxAge(0);
-	response.addCookie(i2u2AuthCookie);
-	
-	/* Invalidate the session */ 
-	
-	session.invalidate();
+	Cookie cookie3 = new Cookie("i2u2_auth", "");
+	cookie1.setPath("/");
+	cookie2.setMaxAge(0);
+	response.addCookie(cookie3);
 
 	response.sendRedirect(prevPage);
 %>

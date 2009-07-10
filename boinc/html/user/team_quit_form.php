@@ -7,14 +7,18 @@ require_once("../inc/team.inc");
 db_init();
 $user = get_logged_in_user(true);
 
-page_head("Remove School");
+page_head("Remove School Affiliation");
 
 $team = lookup_team($user->teamid);
 if (!$team) {
   echo "<p>
-	It look like you do not currently have any school affiliation, 
-	but press the button at the bottom of the page to
-	remove a school anyway.
+	It looks like you do not currently have any school affiliation.
+        <br>
+    Press your browser's <b>back</b> button to go back.
+        
+    <P>
+	(You can press the button at the bottom of the page to try
+	to remove a school anyway, if you think I made a mistake.)
 	<P>  ";
  }
  else {

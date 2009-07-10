@@ -244,23 +244,28 @@ function team_edit_form($team, $label, $url) {
 
 
     start_table();
-    row2( "School name, text version
-        <br><font size=-2>
-        Don't use any HTML tags.
-        This name will be used in the searchable team list.",
+    row2( "<b>School name</b> <br><font size=-2>
+        Don't use any HTML tags.",
         "<input name=name type=text size=50 value='$team->name'>"
     );
+
+	/************
     row2("School name, HTML version
         <br><font size=-2>
         You may include HTML formatting, link, and image tags.
         If you don't know HTML, just leave this box blank.",
         "<input name=name_html type=text size=50 value=\"".str_replace('"',"'",$team->name_html)."\">"
     );
-    row2("URL of school web page, if any:<br><font size=-2>(without \"http://\")
-        This URL will be linked to from the groups's page on this site.",
+	*************/
+
+
+
+    row2("<b>School URL</b><br><font size=-2>(without \"http://\")
+        This URL will be linked to from your groups's page on this site.",
         "<input name=url size=60 value='$team->url'>"
     );
-    row2("Description of your school:",
+    row2("<b>Description</b><br><font size=-2>Please tell us something
+		about your school.",
         "<textarea name=description cols=60 rows=10>$team->description</textarea>"
     );
 

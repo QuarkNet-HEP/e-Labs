@@ -6,7 +6,7 @@
  * and then gutted to leave only the things of interest for I2U2.
  *
  * 
- * @(#) $Id: control_panel.php,v 1.1 2009/06/09 16:48:11 myers Exp $
+ * @(#) $Id: control_panel.php,v 1.2 2009/06/24 17:44:31 myers Exp $
 \***********************************************************************/
 
 require_once("../inc/db_ops.inc");
@@ -148,6 +148,6 @@ echo "
 admin_page_tail();
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: control_panel.php,v 1.1 2009/06/09 16:48:11 myers Exp $";  
+    "\$Id: control_panel.php,v 1.2 2009/06/24 17:44:31 myers Exp $";  
 
 ?>

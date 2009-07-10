@@ -5,12 +5,12 @@
     require_once("../include/util.php"); // additional useful stuff
 
     require_once("../include/debug.php");
-    set_debug_level(3);
+    //set_debug_level(3);
+
 
     db_init();
     $user = get_logged_in_user(false);
 
-    //$next_url = $_GET["next_url"];
     $next_url = get_destination();
 
     page_head("Log in/out");

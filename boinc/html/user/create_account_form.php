@@ -88,21 +88,18 @@ row2("<b>Confirm password</b><br><span class=description>
 // Country (this is actually State for I2U2) 
 
 row2_init("<b>".
-          tr(CREATE_AC_COUNTRY)."</b><br><span class=description>".
+          tr(CREATE_AC_COUNTRY)."</b><br><span class=description>\n".
           tr(CREATE_AC_COUNTRY_DESC)."</span>",
           "<select name=country>"
           );
 print_country_select();
 echo "</select></td></tr>\n";
 
-if( function_exists('team_select') ){
-    $x = "Team Affiliation";
-    if(PROJECT=="I2U2") $x = "School"; 
-    $y = "Choose a team to join, if you want to join a team";
-    if(PROJECT=="I2U2") $y = "Your institutional affiliation.
-        If it's not in the list then you can set this later.";
-    row2("<b>$x</b><br><span class=description>$y</span>", team_select() );
- }
+
+row2("<b>".tr(CREATE_AC_AFFILIATION)."</b><br> <span class=description>\n".
+      tr(CREATE_AC_AFFILIATION_DESC)."</span>",
+      team_select() );
+
 
 row2("<b>".
      tr(CREATE_AC_ZIP)."</b><br><span class=description>".
@@ -119,7 +116,7 @@ end_table();
 echo "<P>
         Once your account has been created you can create and edit your
         own personal profile,
-        and you can add an \"avatar\" image for the discussion forums.
+        and you can add a \"head shot\" image for the discussion forums.
         </P>\n";
 
 echo "

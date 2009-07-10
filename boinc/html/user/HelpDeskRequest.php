@@ -10,11 +10,11 @@
  *
  * Certain parts of the form will only show for a particular e-lab.  This
  * is controlled by CSS class.  So for example, items of class 'cosmics_elab'
- * are only visible if the user has selected the "Cosmic Rays" e-lab.
+ * are only visible if the user has selected the "cosmic" e-lab.
  * The mechanism for this is quite general, so apply as needed.
  *
  * Eric Myers <myers@spy-hill.net> - 5 March 2008
- * @(#) $Id: HelpDeskRequest.php,v 1.27 2009/02/13 19:41:30 myers Exp $
+ * @(#) $Id: HelpDeskRequest.php,v 1.28 2009/07/08 16:25:36 myers Exp $
 \***********************************************************************/
 
 // These things are borrowed from the BOINC forum code.
@@ -108,15 +108,17 @@ $user_agent = $_SERVER['HTTP_USER_AGENT'];           // User's browser
 $input_error=array();           // empty means no errors (yet)
 
 
-/* Tekoa proxy redirect.  OLD STUFF
+/*********************************************
+ * Tekoa proxy redirect.  OLD STUFF
  *  If the remote address of the visitor is the IP address of tekoa
  * then we are being accessed via a reverse proxy.   Instead of
  * another set of keys, we just send the user to i2u2.org
- */
 if( $_SERVER["REMOTE_ADDR"] == "198.129.208.188" ){
     header("Location: http://www.i2u2.org/".$self);
     exit;
  }
+*************************************************/
+
 
 
 
@@ -226,17 +228,18 @@ function report_checkbox_item($name,$text,$marker='x'){
 // Here $tag is a shorthand name for variable $name.
 // But you can also use the full name
 //
-function get_default($name,$tag=''){
+function get_default($name, $tag=''){
     global $$name;
 
     if( !empty($tag) ){ // first try by short 'tag'
         if( isset($_GET[$tag]) ){
             $$name = trim($_GET[$tag]);
-            debug_msg(3,"set $name to ".$$name." from URL");
+            debug_msg(3,"set $name to '".$$name."' from URL");
         }
     }
     if( isset($_GET[$name]) ){ // then try by full variable name
         $$name = trim($_GET[$name]);
+        debug_msg(3,"set $name to '".$$name."' from URL");
     }
 }
 
@@ -316,23 +319,25 @@ function req($text='*'){  // emit marker for required fields
 
 
 // generate a "select" element from an array of values
-// THIS SHOULD BE IN ../include/util.php
+// THIS SHOULD BE IN ../include/util.php  but maybe not?
 //
 if( !function_exists('selector_from_array') ) {// in case another
 
-    function selector_from_array($name, $array, $selection,$onChange='') {
+    function selector_from_array($name, $array, $selection, $onChange='') {
         $out = "\n<select name=\"$name\" ";
-        if($onChange) $out .= " onChange=\"$onChange\" ";
+        if(!empty($onChange)) {
+	  $out .= " onChange=\"$onChange\" ";
+        }
         $out .= ">";
 
         foreach ($array as $key => $value) {
-            $out.= "<option ";
+            $out.= "\n<option ";
             if ($key == $selection) {
                 $out.= "selected ";
             }
-            $out.= "value=\"". $key. "\">". $value. "</option>\n";
+            $out.= "value=\"". $key. "\">". $value. "</option>";
         }
-        $out.= "</select>";
+        $out.= "\n</select>\n";
         return $out;
     }
  }
@@ -344,7 +349,7 @@ if( !function_exists('selector_from_array') ) {// in case another
 // Use setup_time_button() once on a page to define insertTime(dt).
 //
 function setup_time_button(){
-    echo "\n\n<script language='JavaScript'>
+    echo "\n\n<script type=\"text/javascript\">
     function insertTime(dt){
        d = new Date;
        d.setDate(d.getDate()+dt);
@@ -378,10 +383,10 @@ function setup_referer_button(){
     if( $referer == $my_url ) return;
     debug_msg(1,"referer: $referer, while my_url is $my_url");
 
-    echo "\n\n<script language='JavaScript'>
+    echo "\n\n<script type=\"text/javascript\">
     function insertRefererURL(){
        document.bugrpt.url.value=\"$referer\";
-    }\n</script>\n\n";
+    };\n</script>\n\n";
 }
 
 
@@ -404,46 +409,56 @@ function use_referer_button($label){
 //
 // 
 function setup_visibility(){
-    echo "\n\n<script language='JavaScript'>
-        function getElementsByClassName(class) {
-                var classElements = new Array();
-                var pattern = new RegExp(\"(^|\\s)\"+class+\"(\\b|$)\");
-                var list = document.getElementsByTagName('*');
-                for (var i = 0; i < list.length; i++) {
-                        var classes = list[i].className;
-                        if (pattern.test(classes))  classElements.push(list[i]);
-                }
-                return classElements;
-        };
+  echo "\n\n<script type=\"text/javascript\">
+    function getElementsByClassName(class_name) {
+        var classElements = new Array();
+        var pattern = new RegExp(\"(^|\\s)\"+class_name+\"(\\b|$)\");
+        var list = document.getElementsByTagName('*');
+        for (var i = 0; i < list.length; i++) {
+          var classes = list[i].className;
+          if(pattern.test(classes))  classElements.push(list[i]);
+        }
+        return classElements;
+    };
 
-    function setClassVisibility(Class,isOn){
-        var items = getElementsByClassName(Class); 
+    function setClassVisibility(class_name,isOn){
+        var items = getElementsByClassName(class_name); 
         for (var i=0; i<items.length; i++){
-            if(isOn) items[i].style.visibility = \"visible\";
-            else     items[i].style.visibility = \"collapse\";
+            if(isOn) {
+            	items[i].style.visibility = \"visible\";
+            	items[i].style.display = \"\"; 
+            }
+            else {
+            	items[i].style.visibility = \"collapse\";
+            	items[i].style.display = \"none\";
+            }
         }    
-    }
+    };
 
-    function makeClassVisible(Class){
-        var items = getElementsByClassName(Class); 
+    function makeClassVisible(class_name){
+        var items = getElementsByClassName(class_name); 
         for (var i=0; i<items.length; i++){
-            items[i].style.visibility = \"visible\";
+			items[i].style.visibility = \"visible\";
+            items[i].style.display = \"\"; 
         }    
-    }
+    };
 
-    function makeClassInvisible(Class){
-        var items = getElementsByClassName(Class); 
+    function makeClassInvisible(class_name){
+        var items = getElementsByClassName(class_name); 
         for (var i=0; i<items.length; i++){
-            items[i].style.visibility = \"collapse\";
+        	items[i].style.visibility = \"collapse\";
+            items[i].style.display = \"none\";
         }    
-    }
+    };
 
     function updateClassVisibility(){
-          setClassVisibility(\"cosmics_elab\",
-                (document.bugrpt.elab.value==\"Cosmic Rays\" ) );
-          setClassVisibility(\"ligo_elab\",
-                ( document.bugrpt.elab.value==\"LIGO\" ) );
-    }
+          setClassVisibility(\"cosmics_elab\",  "
+                ."(document.bugrpt.elab.value==\"cosmic\") );
+          setClassVisibility(\"ligo_elab\",  "
+                ."(document.bugrpt.elab.value==\"ligo\") );
+          setClassVisibility(\"cms_elab\",  "
+                ."(document.bugrpt.elab.value==\"cms\") );
+    };
    \n</script>\n\n";
 }
 
@@ -512,11 +527,11 @@ function fill_in_report($body=''){
     if( $elab == "LIGO"){
         global $GPS_start_time, $GPS_end_time, $channel_list;
 
-        if( $GPS_start_time || $GPS_end_time ){
-            $body .= "\nGPS time interval: $GPS_start_time to $GPS_end_time\n";
-        }
         if( $channel_list ){
             $body .= "Channels: $channel_list \n";
+        }
+        if( $GPS_start_time || $GPS_end_time ){
+            $body .= "\nGPS time interval: $GPS_start_time to $GPS_end_time\n";
         }
     }
 
@@ -804,9 +819,9 @@ if($daq_other) $ck_daq_other=TRUE;  // is enough for us
 
 // LIGO: GPS times and channels
 //
+grab_input('channel_list');
 grab_input('GPS_start_time');
 grab_input('GPS_end_time');
-grab_input('channel_list');
 
 
 // Try to get user's name for the message, but make sure that we can 
@@ -1021,17 +1036,18 @@ form_item("Date/Time",
 form_item("Which e-Lab?",
           "Which at is the general area of the problem?  "
           .error_text('elab'), 
-          selector_from_array('elab', $elab_list,
-                            $elab, "updateClassVisibility()" )
+          selector_from_array('elab', $elab_list, $elab,
+				"updateClassVisibility()" )
           );
 
 form_item("Which part?",
           "What part of the e-Lab does this report apply to? "
           .error_text('component'),
-          selector_from_array('component', $part_list, $component)
-        . "<span class='description'> 
-        (This item will be changed soon to checkboxes)
-         </span>"
+          selector_from_array('component', $part_list, $component, 
+				"updateClassVisibility()" )
+          ."<span class='description'> 
+                (This item will be changed soon to checkboxes)
+           </span>"
           );
 
 form_item("Severity",
@@ -1084,7 +1100,7 @@ form_item("Problem Description:",
 // Cosmics-only items:
 
 form_item("CRMD Hardware Component:",
-          "Cosmic Rays e-Lab only: If your problem is a hardware problem,
+          "Cosmic Rays e-Lab only.<br> If your problem is a hardware problem,
                which hardware elements are involved?",
           "<span class='description'> "
           .checkbox_item('ck_daq_gps',"GPS", "Global Positioning System")
@@ -1100,7 +1116,7 @@ form_item("CRMD Hardware Component:",
         'cosmics_elab');
 
 form_item("DAQ Card #:",
-          "Cosmic Rays e-Lab only: Serial number of cosmic ray data aquisition 
+          "Cosmic Rays e-Lab only.<br> Serial number of cosmic ray data aquisition 
                 (DAQ) card.  " ,
           "<input type='text' name='daq_card' value='$daq_card'
                         size='10' maxlength='15'>".
@@ -1109,8 +1125,14 @@ form_item("DAQ Card #:",
         'cosmics_elab');
 
 
+form_item("Channel(s):",
+          "LIGO e-Lab only.<br> What detector channel or channels were you using (or trying to use)?",
+          "<textarea name='channel_list' rows=5 cols=60>$channel_list</textarea>",
+        'ligo_elab');
+
+
 form_item("Time interval:",
-          "LIGO e-Lab only: What time interval were you looking at?",
+          "LIGO e-Lab only.<br> What time interval were you looking at?",
           "Start time:
           <input type='text' name='GPS_start_time' value='$GPS_start_time'
                         size='25'> 
@@ -1118,11 +1140,6 @@ form_item("Time interval:",
            End time:
            <input type='text' name='GPS_end_time' value='$GPS_end_time'
                         size='25'> ",
-        'ligo_elab');
-
-form_item("Channel(s):",
-          "LIGO e-Lab only: What detector channel or channels were you using (or trying to use)?",
-          "<textarea name='channel_list' rows=5 cols=60>$channel_list</textarea>",
         'ligo_elab');
 
 form_item("Network Component:",
@@ -1212,16 +1229,18 @@ echo "<P>
 
 
 echo "\n<p style='color:grey; text-align: right;'>"
-        . strtr('$Revision: 1.27+$','$',' ')      ."</p>\n\n";
+        . strtr('$Revision: 1.28 $','$',' ')      ."</p>\n\n";
 
 
 // Form adjustments:  set initial visibility of sections, 
 // Fill in some blanks with client-side scripting, if we can:
 //
-echo "\n\n<script language='JavaScript'>
+echo "\n
+  <script type=\"text/javascript\">
    setClassVisibility(\"cosmics_elab\", ( \"$elab\"==\"Cosmic Rays\" ) );
    setClassVisibility(\"ligo_elab\", ( \"$elab\"==\"LIGO\" ) );
-   makeClassInisible(\"networking_part\");
+   setClassVisibility(\"cms_elab\", ( \"$elab\"==\"CMS\" ) );
+   makeClassInvisible(\"networking_part\");
    updateClassVisibility();\n";
 
 // If there are arguments in the URL (ie GET) then automatically insert 
@@ -1231,10 +1250,10 @@ if( !empty($_GET) && !empty($referer) ){
     echo "insertRefererURL();\n";
 }
 
-echo "\n</script>\n";
+echo "\n  </script>\n";
 
 page_tail();
 
 $cvs_version_tracker[]=        //Generated automatically - do not edit
-    "\$Id: HelpDeskRequest.php,v 1.27 2009/02/13 19:41:30 myers Exp $"; 
+    "\$Id: HelpDeskRequest.php,v 1.28 2009/07/08 16:25:36 myers Exp $"; 
 ?>
