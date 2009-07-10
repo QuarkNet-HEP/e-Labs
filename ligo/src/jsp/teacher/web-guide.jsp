@@ -62,10 +62,7 @@
 </p>
 <h2><strong>Project Map</strong></h2>
 	
-<p>	<img src="../graphics/ligo_workflow.gif"  />
-<!-- 
 <p>	<img src="../graphics/project-map.gif"/>
- -->
 <p>	Think of this map as a subway map with one main line and four branch lines.  Along the main line are stops, milestone seminars, opportunities to check how the work is going. Off each main stop are branch lines where each stop is a project milestone. The branch lines include:</p> 
 	<ul>
 		<li>
