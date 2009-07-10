@@ -349,7 +349,7 @@ if( !function_exists('selector_from_array') ) {// in case another
 // Use setup_time_button() once on a page to define insertTime(dt).
 //
 function setup_time_button(){
-    echo "\n\n<script language='JavaScript'>
+    echo "\n\n<script type=\"text/javascript\">
     function insertTime(dt){
        d = new Date;
        d.setDate(d.getDate()+dt);
@@ -383,7 +383,7 @@ function setup_referer_button(){
     if( $referer == $my_url ) return;
     debug_msg(1,"referer: $referer, while my_url is $my_url");
 
-    echo "\n\n<script language='JavaScript'>
+    echo "\n\n<script type=\"text/javascript\">
     function insertRefererURL(){
        document.bugrpt.url.value=\"$referer\";
     };\n</script>\n\n";
@@ -409,7 +409,7 @@ function use_referer_button($label){
 //
 // 
 function setup_visibility(){
-  echo "\n\n<script language='JavaScript'>
+  echo "\n\n<script type=\"text/javascript\">
     function getElementsByClassName(class_name) {
         var classElements = new Array();
         var pattern = new RegExp(\"(^|\\s)\"+class_name+\"(\\b|$)\");
@@ -424,22 +424,26 @@ function setup_visibility(){
     function setClassVisibility(class_name,isOn){
         var items = getElementsByClassName(class_name); 
         for (var i=0; i<items.length; i++){
-            if(isOn) items[i].style.visibility = \"visible\";
-            else     items[i].style.visibility = \"collapse\";
+            if(isOn) {
+            	items[i].style.display = \"\"; 
+            }
+            else {
+            	items[i].style.display = \"none\";
+            }
         }    
     };
 
     function makeClassVisible(class_name){
         var items = getElementsByClassName(class_name); 
         for (var i=0; i<items.length; i++){
-            items[i].style.visibility = \"visible\";
+            items[i].style.display = \"\"; 
         }    
     };
 
     function makeClassInvisible(class_name){
         var items = getElementsByClassName(class_name); 
         for (var i=0; i<items.length; i++){
-            items[i].style.visibility = \"collapse\";
+            items[i].style.display = \"none\";
         }    
     };
 
@@ -1228,7 +1232,7 @@ echo "\n<p style='color:grey; text-align: right;'>"
 // Fill in some blanks with client-side scripting, if we can:
 //
 echo "\n
-  <script language='JavaScript'>
+  <script type=\"text/javascript\">
    setClassVisibility(\"cosmics_elab\", ( \"$elab\"==\"Cosmic Rays\" ) );
    setClassVisibility(\"ligo_elab\", ( \"$elab\"==\"LIGO\" ) );
    setClassVisibility(\"cms_elab\", ( \"$elab\"==\"CMS\" ) );
