@@ -36,7 +36,7 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Assessing Your Work:</h2>
+			<h2>Assessment: Measure your work against these objectives.</h2>
 				
 			<p>
 				The following objectives outline what you will learn and be able 
@@ -48,21 +48,13 @@
 				<li>
 					Content and Investigation Objectives:
 					<ul>
-						<li>
-							Define and describe frequency in the context of wave 
-							behavior.
-						</li>
-						<li>
-							Describe causes effecting the environmental changes being measured by LIGO's environmental sensing data in your study.
-						</li>
-						<li>
-							Explain how LIGO's measurements of seismic waves 
+						<li>Define and describe frequency in the context of wave 
+							behavior.</li>
+						<li>Describe causes effecting the environmental changes being measured by LIGO's environmental sensing data in your study.</li>
+						<li>Explain how LIGO's measurements of seismic waves 
 							contributes to the project's effort to detect 
-							gravitational waves.
-						</li>
-						<li>
-							Design an investigation that asks a testable hypothesis, can be answered from seismic data and provides an explanation of what you learn about seismic data.								
-						</li>
+							gravitational waves.</li>
+						<li>Design an investigation that asks a testable hypothesis, can be answered from seismic data and provides an explanation of what you learn about seismic data.</li>
 					</ul>
 				</li>
 							<%@ include file="../teacher/learner-outcomes.jsp" %>
