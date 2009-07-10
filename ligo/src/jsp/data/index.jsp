@@ -36,11 +36,22 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Access LIGO data using Bluestone</h2>
-			
+		<h2>Data: What can you learn? Choose data and conduct a study.</h2>
+					<h3>Studies with LIGO Data</h3>
+
+				<ul>
+					<li>Earthquake Studies &mdash; LIGO's seismometer data supports many research questions related to earthquakes.  Look for earthquakes in the data in LIGO's low-frequency seismic channels &mdash; 0.03 to 0.1 Hz and 0.1 Hz to 0.3 Hz.
+
+					<li>Environment Correlation Studies &mdash; Can you see relationships between seismic activity at LIGO and other environmental influences such as rainfall, wind patterns or temperature changes?
+
+					<li>Human Activity Studies &mdash; Can you see relationships between seismic activity at LIGO and human activities such as traffic patterns?
+
+					<li>Microseism Studies &mdash; Ocean waves produce seismic signals in the 0.1 - 0.3 Hz band of frequencies.  Can you see relationships between ground vibrations at LIGO and wind and wave activity on the oceans?
+</ul>
+<p>LIGO's data analysis software, <a href="/ligo/tla/">Bluestone</a>, provides access to LIGO seismometer data plus wind, temperature and rainfall data.  
+Use the <a href="http://neic.usgs.gov/neis/epic/epic.html">USGS Earthquake Archive</a> to find information on worldwide earthquakes.  Use <a href="http://www.ndbc.noaa.gov/">NOAA's ocean buoy network</a> to find wind and wave height data from buoys.</p>
 			<p>
-				Bluestone is the analysis software for the LIGO e-Lab.
-		        It allows you to select and plot data from LIGO data
+				Bluestone allows you to select and plot data from LIGO data
 		        channels, and it will eventually allow you to perform
 				more complex analyses using LIGO data.
 				<ul>
@@ -49,45 +60,23 @@
 				<li>Then fire up 
 				<a href="/ligo/tla/">Bluestone</a>
 				as you start investigating your research question.
+				<li>Once you generate a good plot, save it so you can add it to your poster.
+				</ul>
 				</ul>
 			</p>
 			
-			<h2>Access your plots, uploaded images and posters</h2>
+			<h3>Access your plots and uploaded images</h3>
 			
-			<p>
-				<table>
-					<tr>
-						<th>View</th>
-						<th>Delete</th>
-					</tr>
-					<tr>
-						<td>
-							<p> 
-								<a href="../plots">Plots</a>
+			<ul>
+								<li><a href="../plots">View Plots</a>
 								- Look at what you and other groups have found!
-							</p>
-							<p>
-								<a href="../posters">Posters</a>
-								- View and create posters of your plots.
-							</p>
-						</td>
-						<td>
-							<p>
-								<a href="../plots/delete.jsp">Plots</a>
+								<li><a href="../plots/delete.jsp">Delete Plots</a>
 								- Delete plots your group owns.
-							</p>
-							<p>
-								<a href="../posters/delete.jsp">Posters</a>
-								- Delete posters your group has made.
-							</p>
-						</td>
-					</tr>
-				</table>
-			</p>
+			</ul>
 			
-			<h2>
+			<h3>
 				Grid Computing
-			</h2>
+			</h3>
 				<p>
 				Analysis of large amounts of data, like that produced by
 				LIGO, is made possible by <b>Grid computing</b>.
