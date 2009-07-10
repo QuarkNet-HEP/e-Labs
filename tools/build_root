@@ -19,7 +19,7 @@
 # way, in a particular directory tree set by  --prefix=/usr/local/...
 # By setting ROOTSYS here we force the old relative way.
 
-export ROOTSYS=/tmp/root
+export ROOTSYS=/opt/root
 mkdir -p $ROOTSYS
 
 ./configure --disable-shared --disable-xft --disable-xrootd \
