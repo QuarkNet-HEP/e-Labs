@@ -271,12 +271,13 @@ a#nav6 {
 
 #content a {
 	text-decoration: none;
-	color: #990066;
+	color: #ff9933;
+	font-weight: bold;
 }
 
 #content a:hover {
 	text-decoration: underline;
-	color: #ff0033
+	color: #cf411d;
 }
 
 #content h1 {
@@ -439,6 +440,7 @@ a > img {
 #news-box-footer {
 	padding: 4px;
 }
+
 
 /*============= Left links ==============*/
 

@@ -1,18 +1,4 @@
-h1 {
-	background-color: #55a9b4;
-	color: #000000;
-}
-
 .library #center h1 {
-	font-weight: normal;
-	font-size: 140%;
-	width: 100%;
-	padding-bottom: 6px;
-	border-bottom: solid 2px orange;
-	margin-left: 0px;
-}
-
-.library #center h2 {
 	display: inline;	
 	padding-bottom: 6px;
 	border-bottom: solid 2px #666666;
@@ -20,6 +6,17 @@ h1 {
 	font-family: verdana, arial, sans-serif;
 	font-weight: bold;
 	font-size: 120%;
+	color: #333399;
+
+}
+
+.library #center h2 {
+//	display: inline;	
+	padding-bottom: 6px;
+	margin-left: 0px;
+	font-family: verdana, arial, sans-serif;
+	font-weight: bold;
+	font-size: 100%;
 	color: #333399;
 }
 
