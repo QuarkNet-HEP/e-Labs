@@ -39,7 +39,7 @@
 		<td id="center">
 
 
-<h2>Getting Started on the LIGO I2U2 e-Lab</h2>
+<h1>Getting Started on the LIGO I2U2 e-Lab</h1>
 <p>
   <em>The e-Lab process</em> follows three basic steps. The e-Lab road map 
   that you'll see when you click 

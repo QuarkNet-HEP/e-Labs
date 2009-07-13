@@ -43,7 +43,7 @@
 			</td>
 		</c:if>
 		<td id="center">
-			<h2>LIGO e-Lab Site Map</h2>
+			<h1>LIGO e-Lab Site Map</h1>
 			
 			<ul>
 				<li>
