@@ -37,7 +37,7 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Library: Use the e-Lab library of reference material as you work</h2>
+			<h1>Library: Use the e-Lab library of reference material as you work</h1>
 			<ul>
 				<li>
 					<a href="/library/index.php/LIGO_Glossary">The Glossary</a> - Look up terms you don't know.

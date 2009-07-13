@@ -39,7 +39,7 @@
 		<td id="center">
 
 
-<h2>Site Tips: Use these tips to help you use the e-Lab.</h2>
+<h1>Site Tips: Use these tips to help you use the e-Lab.</h1>
 <p>
   <em>Use</em><font class=content_text> the Project Map on the home page to guide your research.
 </p>
