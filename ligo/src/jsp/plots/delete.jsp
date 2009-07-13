@@ -42,7 +42,7 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Delete plots.</h2>
+			<h1>Delete plots.</h1>
 			<p>
 				<%@ include file="search-control.jsp" %>
 				<%@ include file="delete-results.jsp" %>

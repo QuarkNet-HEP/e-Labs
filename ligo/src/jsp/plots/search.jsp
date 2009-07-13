@@ -40,7 +40,7 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Search for and view plots.</h2>
+			<h1>Search for and view plots.</h1>
 			
 			<p>
 				<div class="search-control">
