@@ -35,7 +35,7 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Posters: Post your results. Compare results. Draw conclusions.</h2>
+			<h1>Posters: Post your results. Compare results. Draw conclusions.</h1>
 			<p>
 				Congratulations!
 				You've developed a research question and planned 

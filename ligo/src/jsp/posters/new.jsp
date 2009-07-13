@@ -47,7 +47,7 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Make or edit your poster</h2>
+			<h1>Make or edit your poster</h1>
 			
 <%@ include file="new.jspf" %>
 

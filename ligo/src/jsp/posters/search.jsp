@@ -41,7 +41,7 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Search for and view posters.</h2>
+			<h1>Search for and view posters.</h1>
 			<p>
 				<%@ include file="search-control.jsp" %>
 				<%@ include file="search-results.jsp" %>
