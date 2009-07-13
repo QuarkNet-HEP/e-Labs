@@ -228,7 +228,7 @@ if (fu.isMultipartContent(request)) {
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Upload Image</h2>
+			<h1>Upload Image</h1>
 <center>
 <P>
 <!-- instruction table -->
