@@ -42,6 +42,9 @@
 <!-- begin content body --> 
 
 <div class='body'>
+<h1>Resources: Check out the online resources or contact someone.</h1>
+
+
 <%@ include file="../library/resources.htm" %>
 </div>
 
