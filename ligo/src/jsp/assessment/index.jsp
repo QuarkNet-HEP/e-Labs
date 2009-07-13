@@ -36,7 +36,7 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Assessment: Measure your work against these objectives.</h2>
+			<h1>Assessment: Measure your work against these objectives.</h1>
 				
 			<p>
 				The following objectives outline what you will learn and be able 
