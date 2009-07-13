@@ -36,7 +36,7 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-		<h2>Data: What can you learn? Choose data and conduct a study.</h2>
+		<h1>Data: What can you learn? Choose data and conduct a study.</h1>
 					<h3>Studies with LIGO Data</h3>
 
 				<ul>
