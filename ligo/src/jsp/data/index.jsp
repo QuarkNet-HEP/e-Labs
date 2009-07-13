@@ -74,26 +74,6 @@ Use the <a href="http://neic.usgs.gov/neis/epic/epic.html">USGS Earthquake Archi
 								- Delete plots your group owns.
 			</ul>
 			
-			<h3>
-				Grid Computing
-			</h3>
-				<p>
-				Analysis of large amounts of data, like that produced by
-				LIGO, is made possible by <b>Grid computing</b>.
-		        Learn more about Grid computing here:
-
-				<UL>
-				<LI><a href="http://gridcafe.web.cern.ch/gridcafe/">
-						GridCafe</a> from CERN.
-		         <LI><a href="https://www.lsc-group.phys.uwm.edu/lscdatagrid/">
-						LSC DataGrid</a> - grid computing for the LIGO
-						Scientific Collbaration (LSC)
-		         <LI><a href="http://www.opensciencegrid.org/">
-						Open Science Grid</a> (OSG) 
-				 <LI><a href="http://www.wikipedia.org/wiki/Grid_computing"> 
-						Grid computing </a> article from Wikipedia
-				</UL>
-				</p>
 
 		</td>
 	</tr>
