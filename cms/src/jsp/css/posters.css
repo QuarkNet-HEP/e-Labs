@@ -176,3 +176,8 @@ h1 {
 	vertical-align: middle;
 	text-align: left;
 }
+
+#image-preview {
+	border: solid 1px #606060;
+	background-color: white;
+}
