@@ -46,6 +46,7 @@
 				</td>
 				<td id="center">
 					<h2>Welcome: Join a national collaboration of students to study LIGO seismic data.</h2>	  
+					<p> </p>
 					<table> 
 						<tr>
 							<td><img src="/elab/ligo/graphics/lho_aerial_photo.jpg" /></td>
@@ -74,7 +75,7 @@
 					<span id="links">
 						<table align="center">
 							<tr>
-								<td style="width:150px; text-align:center;"><a href="cool-science.jsp" style="text-decoration: none;"><img src="../graphics/cool-science-button.gif" border="0"><br>Cool Science</a></td>
+								<td style="width:150px; text-align:center;"><a href="cool-science.jsp" style="text-decoration: none; color="#ff9933"><img src="../graphics/cool-science-button.gif" border="0"><br><span style="color="#ff9933">Cool Science</span></a></td>
 								<td style="width:150px; text-align:center;"><a href="/elab/ligo/site-index/site-map-anno.jsp"style="text-decoration: none;"><img src="../graphics/site-map-button.gif" border="0"><br>Explore!</a></td>
 								<td style="width:150px; text-align:center;"><a href="about-us.jsp" style="text-decoration: none;"><img src="../graphics/about-us-button.gif" border="0"><br>About Us</a></td>
 							</tr>
