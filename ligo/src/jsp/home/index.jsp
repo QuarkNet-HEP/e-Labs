@@ -46,7 +46,6 @@
 				</td>
 				<td id="center">
 					<h2>Welcome: Join a national collaboration of students to study LIGO seismic data.</h2>	  
-					<p> </p>
 					<table> 
 						<tr>
 							<td><img src="/elab/ligo/graphics/lho_aerial_photo.jpg" /></td>
