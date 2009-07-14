@@ -184,3 +184,8 @@ a.button {
 	background-color: yellow;
 	text-decoration: underline;
 }
+
+#image-preview {
+	border: solid 1px #606060;
+	background-color: white;
+}
