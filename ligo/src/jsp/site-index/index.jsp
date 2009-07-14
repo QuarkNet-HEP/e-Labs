@@ -9,8 +9,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Site Help</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/site-index.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/site-index.css"/>
 	</head>
 		
 	<body id="site-index" class="site-index">
@@ -39,68 +39,93 @@
 		<td id="center">
 
 
-<h1>Getting Started on the LIGO I2U2 e-Lab</h1>
-<p>
-  <em>The e-Lab process</em> follows three basic steps. The e-Lab road map 
-  that you'll see when you click 
-  <a href="../library/milestones-map.jsp">Study Guide</a> (on the 
-  <a href="../library">Library</a> submenu) shows you the steps.
-</p>
-<p>
-  <em>Step 1: Get Started</em> Review and refresh some of your basic science 
-  skills. Practice using <a href="/ligo/tla/" target="_blank">Bluestone</a> 
-  to make graphs of real seismometer data.
-</p>
-<p>
-  <em>Step 2: Figure It Out</em> Make your research question. Use Bluestone 
-  to plot LIGO seismometer data. You will test and improve your ideas (your 
-  hypothesis) by making more plots and by looking at other sources of data. 
-  You will share your ideas with classmates and with your teacher. 
-  Eventually your research will lead you to an answer to your research 
-  question.  It's the scientific method at work!
-</p>
-<p>
-  <em>Step 3: Tell Others</em> Build an online poster and use it to discuss 
-  your research and your conclusions with your classmates and others.
-</p>
-<p>
-  <em>Use</em><font class=content_text> the link menus to help you! The top 
-  link menu provides guidance for accomplishing the e-Lab. The sidebar 
-  links give you additional science resources, a Bluestone tutorial, a 
-  Bluestone link and Discussion Site links.
-</p>
-<p>
-  <em>Watch</em><font class=content_text> for little icons on the e-Lab 
-  screens. Clicking on <img src="../graphics/ref.gif" /> will give you a 
-  reference popup that will help with a milestone.  The logbook icon, 
-  <img src="../graphics/logbook_pencil.gif" align="middle" />, will open 
-  your electronic log book. The looking glass, 
-  <img src="../graphics/logbook_view_comments_small.gif" align="middle" />, 
-  lets you access teacher comments about your log entries.
-</p>
-<p>
-  <em>The heart</em><font class=content_text> of the LIGO e-Lab is software
-   named <a href="/ligo/tla/">Bluestone</a>. 
-   Bluestone lets you to select the LIGO data channels that you wish to 
-   view and lets you control the features of the plots that you make.
-   Bluestone mimics software that LIGO scientists and engineers use at the 
-   Observatory sites.  Your teacher will show you how to use Bluestone.
-</p> 
-<p>
-  <em>Another</em> key feature of the LIGO e-Lab is a comprehensive
-   portal site.   Here you will also find a
-   <a href="/glossary/">glossary</a>, 
-   along with 
-  <a href="/forum_index.php">discussion rooms</a>
-  in which you can share research ideas with others.
-  Your teacher will tell you how to log in.
-</p>
+<h1>Site Index: Lost? Go to any of the pages <i>on this site</i> from here.</h1>
+<br /><br />
 
+<table border="0" id="main">
+	<tr>
+		<th class="home"><a href="../home">Home</a></th>
+		<th class="library"><a href="../library"  class="library">Library</a></th>
+		<th class="data"><a href="../data">Data</a></th>
+		<th class="posters"><a href="../posters">Posters</a></th>
+		<th class="assessments"><a href="../assessment">Assessment</a></th>
+	</tr>
+	<tr>
+		<td class="home">
+			<ul>
+				<li><a href="../home/cool-science.jsp"><b>Cool Science</b></a></li>
+				<li><a href="../site-index/site-map-anno.jsp"><b>Explore!</b></a></li>
+				<li><a href="../home/about-us.jsp"><b>About Us</b></a></li>
+				
+			</ul>
+		</td>
+		<td class="library">
+			<ul>
+				<li><a href="/library/index.php/LIGO_Glossary"><b>Glossary</b></a></li>
+				<li><a href="../library/resources.jsp"><b>Resources</B></a></li>
+					<ul>
+						<li>
+							<b>Contacts</b>
+							<ul>
+								<li><a href="../library/students.jsp">Students</a></li>
+							</ul>
+						</li>
+					</ul>
+						
+						
+					<li><a href="../library/big-picture.jsp"><b>The Big Picture</b></a></li>
+                   <li><a href="../library/FAQ.jsp"><b>FAQs</b></a></li>
+<li><a href="../library/site-help.jsp"><b>Site Tips</b></a></li>
+				</li>
+				<li>
+					
+					Milestones - <a href="../library/milestones.jsp">text version</a></il>
 
-
+						<li><a href="../references/showAll.jsp?t=reference">All References for Project Map</a></li>
+			</ul>
+		</td>
+		<td class="data">
+			<ul>
+				<li>
+					<strong>Analysis</strong>
+					<ul>
+						<li><a href="../data">Data</a></li>
+						<li><a href="/ligo/tla/tutorial.php">Tutorial</a></li>
+						<li><a href="/ligo/tla/">Bluestone</a></li>
+						<li><a href="../plots/">View Plots</a></li>
+						<li><a href="../analysis/list.jsp">Analyses</a></li>
+					</ul>
+				</li>
+				<li>
+					<strong>View</strong>
+					<ul>
+						<li><a href="../plots/">View Plots</a></li>
+					</ul>
+				</li>
+				<li>
+					<strong>Delete</strong>
+					<ul>
+						<li><a href="../plots/delete.jsp">Plots</a></li>
+					</ul>
+				</li>
+			</ul>
+		</td>
+		<td class="posters">
+			<ul>
+				<li><a href="../posters/new.jsp"><b>New Poster</b></a></li>
+				<li><a href="../posters/edit.jsp"><b>Edit Posters</b></a></li>
+				<li><a href="../posters/search.jsp"><b>View Posters</b></a></li>
+				<li><a href="../posters/delete.jsp"><b>Delete Posters</b></a></li>
+				<li><a href="../plots/my-plots.jsp"><b>View My Plots</b></a></li>
+<li><a href="../jsp/uploadimages.jsp"><b>Upload Images</b></a></li>
+			</ul>
+		</td>
+		<td class="assessments">
+			&nbsp; 
 		</td>
 	</tr>
 </table>
+
 
 
 			</div>
