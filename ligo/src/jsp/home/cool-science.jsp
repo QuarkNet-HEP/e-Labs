@@ -14,6 +14,8 @@
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 	</head>
+<script language="javascript">AC_FL_RunContent = 0;</script>
+<script src="AC_RunActiveContent.js" language="javascript"></script>
 		
 	<body id="big-picture" class="library">
 		<!-- entire page container -->
@@ -21,7 +23,12 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
-					<%@ include file="../include/nav-rollover.jsp" %>
+					<div id="nav">
+						<%@ include file="../include/nav.jsp" %>
+						<div id="subnav">
+							<%@ include file="../include/nav-library.jsp" %>
+						</div>
+					</div>
 				</div>
 			</div>
 			
@@ -33,7 +40,7 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h1>LIGO: A New Way to Explore the Universe.</h1>
+			<h2>LIGO: A New Way to Explore the Universe.</h2>
 			
 			<p />
 			
@@ -46,35 +53,46 @@
 					</tr>
 				</table>
 			</span>
-			
-			<p>
-				<img class="float-right" src="../graphics/colliding_blackholes.jpg" 
-					width="204" height="120" alt="[black_holes]" />
-				You can diagnose seismic noise at LIGO Hanford Observatory and join scientists in their efforts to understand how ground vibrations influence LIGO's detectors. 
-			</p>
-			<p>
-				<img class="float-right" src="../graphics/3Dinspiral.gif" 
-					width="185" height="150" alt="[inspiral]" />
-				LIGO scientists seek to measure faint ripples of space called gravitational waves. Einstein predicted gravitational waves in 1916 as part of the theory of general relativity. However, he had little confidence that scientists would ever detect these waves&mdash;their effects on scientific instruments would be too small.
-			</p>
-			<p>
-				Using huge interferometers in Washington State and Louisiana, LIGO, the Laser Interferometer Gravitational Wave Observatory, measures movements that are smaller that a thousandth of the size of an atomic nucleus. This radical level of sensitivity creates the possibility that gravitational waves now can be directly detected.
-			</p>
-			<p>
-				LIGO is built on the ground, and the ground constantly vibrates at levels much greater than the effects of gravitational waves.  This background of seismic noise must be filtered to prevent it from contaminating LIGO's ultra-sensitive detectors. To better understand the noise, LIGO operates and monitors a network of seismometers and other instruments related to ground vibrations such as tiltmeters and weather stations. Using the LIGO e-Lab, you can play a role in LIGO's "noise diagnosis" process by studying seismic data from the LIGO Hanford facility.
-			</p>
-			
-			<blockquote>
-				Colliding Black Holes courtesy of Werner Benger, Zuse Institute 
-				Berlin, Max-Planck Institutue fuer Gravitational Physics (Albert 
-				Einstein Institute) and   the Center for Computation &amp; 
-				Technology at Louisiana State   Universityr. 3D inspiral courtesy 
-				of Patrick Brady
-			</blockquote>
-			<center>
-				<img src="../graphics/lho_aerial_photo.jpg" 
-					width="574" height="418" alt="[lho]" />
-			</center>
+			<br />
+			<div id="movie" align="center">
+<script language="javascript">
+	if (AC_FL_RunContent == 0) {
+		alert("This page requires AC_RunActiveContent.js.");
+	} else {
+		AC_FL_RunContent(
+			'codebase', 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0',
+			'width', '550',
+			'height', '400',
+			'src', 'ligo',
+			'quality', 'high',
+			'pluginspage', 'http://www.macromedia.com/go/getflashplayer',
+			'align', 'middle',
+			'play', 'true',
+			'loop', 'false',
+			'scale', 'showall',
+			'wmode', 'window',
+			'devicefont', 'false',
+			'id', 'ligo',
+			'bgcolor', '#000000',
+			'name', 'ligo',
+			'menu', 'true',
+			'allowFullScreen', 'false',
+			'allowScriptAccess','sameDomain',
+			'movie', 'ligo',
+			'salign', ''
+			); //end AC code
+	}
+</script>
+<noscript>
+	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="550" height="400" id="ligo" align="middle">
+	<param name="allowScriptAccess" value="sameDomain" />
+	<param name="allowFullScreen" value="false" />
+	<param name="movie" value="ligo.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#000000" />	<embed src="ligo.swf" quality="high" bgcolor="#000000" width="550" height="400" name="ligo" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+	</object>
+</noscript>
+<br />Be sure to turn on your sound!
+</div>
+
 		</td>
 	</tr>
 </table>
