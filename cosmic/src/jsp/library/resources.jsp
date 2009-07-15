@@ -283,6 +283,18 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 								<a href="http://www.tryscience.org/grid/home.html" target="activity">Grids for Kids at TryScience</a>
 								- Use grid computing to model Mt. Vesuvius' volcanic activity and discover whether residents need warning, from New York Museum of Science. 
 							</li>
+							<li>
+								<a href="http://www.tryscience.org/grid/home.html" target="activity">Grids for Kids at TryScience</a>
+								- Use grid computing to model Mt. Vesuvius' volcanic activity and discover whether residents need warning, from New York Museum of Science. 
+							</li>
+							
+							<li>
+								<a href="http://www.wikipedia.org/wiki/Grid_computing">Grid Computing</a>
+								- Read the Wikipedia article on the grid computing. 
+							</li>
+							
+							
+							
 							</ul>
 							</div>
 							</div>
