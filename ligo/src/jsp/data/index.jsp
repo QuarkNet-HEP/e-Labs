@@ -36,8 +36,8 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-		<h1>Data: What can you learn? Choose data and conduct a study.</h1>
-					<h3>Studies with LIGO Data</h3>
+		<h1>Data: What can you learn? Choose data and conduct a study.</h1> 
+					<h2>Studies with LIGO Data</h2>
 
 				<ul>
 					<li>Earthquake Studies &mdash; LIGO's seismometer data supports many research questions related to earthquakes.  Look for earthquakes in the data in LIGO's low-frequency seismic channels &mdash; 0.03 to 0.1 Hz and 0.1 Hz to 0.3 Hz.

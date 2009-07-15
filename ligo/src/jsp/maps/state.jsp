@@ -21,12 +21,7 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
-					<div id="nav">
-						<%@ include file="../include/nav.jsp" %>
-						<div id="subnav">
-							<%@ include file="../include/nav-maps.jsp" %>
-						</div>
-					</div>
+					<%@ include file="../include/nav-rollover.jsp" %>
 				</div>
 			</div>
 			
@@ -38,7 +33,9 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>State Map</h2>
+			<h1>State Map</h1>
+			
+			<%@ include file="../include/nav-maps.jsp" %>
 			
 			<p align="center">
 				<img src="../graphics/lhomap_1.jpg" alt="LIGO State Map" 

@@ -19,16 +19,16 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
-					<div id="nav">
-						<c:choose>
-							<c:when test="${user != null}">
-								<%@ include file="../include/nav.jsp" %>
-							</c:when>
-							<c:otherwise>
+					<c:choose>
+						<c:when test="${user != null}">
+							<%@ include file="../include/nav-rollover.jsp" %>
+						</c:when>
+						<c:otherwise>
+							<div id="nav">
 								<h1>Build Your Own Research Project Using Professional Science Data</h1>
-							</c:otherwise>
-						</c:choose>
-					</div>
+							</div>
+						</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 			
@@ -45,7 +45,7 @@
 					<%-- include file="../include/left.jsp" --%>
 				</td>
 				<td id="center">
-					<h2>Welcome: Join a national collaboration of students to study LIGO seismic data.</h2>	  
+					<h1>Welcome: Join a national collaboration of students to study LIGO seismic data.</h1>	  
 					<p> </p>
 					<table> 
 						<tr>
@@ -69,7 +69,7 @@
 					<%@ include file="../include/left-alt.jsp" %>
 				</td>
 				<td id="center">
-					<h2>Join a national collaboration of students to study LIGO seismic data.</h2>
+					<h1>Join a national collaboration of students to study LIGO seismic data.</h1>
 					<br />
 					<br />
 					<span id="links">

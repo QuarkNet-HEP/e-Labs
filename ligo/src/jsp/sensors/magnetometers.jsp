@@ -21,12 +21,7 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
-					<div id="nav">
-						<%@ include file="../include/nav.jsp" %>
-						<div id="subnav">
-							<%@ include file="../include/nav-sensors.jsp" %>
-						</div>
-					</div>
+					<%@ include file="../include/nav-rollover.jsp" %>
 				</div>
 			</div>
 			
@@ -38,7 +33,9 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>LIGO Environmental Sensors: Magnetometers</h2>
+			<h1>LIGO Environmental Sensors: Magnetometers</h1>
+			
+			<%@ include file="../include/nav-sensors.jsp" %>
 			
 			<p align="center">
 				<img src="../graphics/magnetometer.jpg" width="284" height="510" />

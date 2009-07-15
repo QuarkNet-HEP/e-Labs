@@ -21,14 +21,7 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
-					<div id="nav">
-						<%@ include file="../include/nav.jsp" %>
-						<div id="subnav">
-							<ul>
-								<li><a href="../info/related-data.jsp">Related Data</a></li>
-							</ul>
-						</div>
-					</div>
+					<%@ include file="../include/nav-rollover.jsp" %>
 				</div>
 			</div>
 			
@@ -40,7 +33,9 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>LIGO Environmental Sensors: Anemometers</h2>
+			<h1>LIGO Environmental Sensors: Anemometers</h1>
+			
+			<%@ include file="../include/nav-sensors.jsp" %>
 			
 			<p align="center">
 				<img src="../graphics/anemometer.jpg" width="455" height="415" />

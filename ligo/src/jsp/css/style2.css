@@ -1,5 +1,15 @@
+#sub-library, #sub-data, #sub-posters, #sub-siteindex {
+	display: none; 
+}
+
+#nav ul li a:hover, #subnav ul li a:hover {
+	color: white;
+	text-decoration: underline; 
+}
+
+
 #container {
-	width: 100%;
+	width: 900px;
 	font-family: Arial, sans-serif;
 	text-align: center;
 	font-size: 110%;
@@ -114,8 +124,9 @@ body {
 }
 
 #nav {
-	position: absolute;
-	top: 40px; 
+	/*position: absolute;
+	top: 50px;
+	left: 20px; */
 }
 
 #nav ul, #nav-footer ul {
@@ -134,13 +145,13 @@ body {
 }
 
 #subnav {
-	position: absolute;
+	/*position: absolute;
 	top: 50px;
 	left: 148px;
 	right: 8px;
 	text-align: left;
 	height: 24px;
-	background-color: #999999;
+	background-color: #999999;*/
 }
 
 #subnav ul {
@@ -177,7 +188,7 @@ body {
 	padding-bottom: 0px;
 	padding-left: 3px;
 	padding-right: 3px;
-	width: 114px;
+	width: 6em;
 	color: white;
 }
 
@@ -265,7 +276,7 @@ a#nav6 {
 }
 
 #content #center {
-	padding-top: 80px;
+	padding-top: 8px;
 	padding-left: 8px;
 }
 
@@ -281,14 +292,14 @@ a#nav6 {
 }
 
 #content h1 {
-	width: 790px;
-	font-size: 17px;
+	display: inline;	
+	/*padding-bottom: 6px;*/
+	border-bottom: solid 2px #666666;
+	margin-left: 0px;
+	font-family: Arial, sans-serif;
 	font-weight: bold;
-	margin-top: 32px;
-	margin-bottom: 20px;
-	margin-left: 2px;
-	margin-right: 2px;
-	padding: 4px;
+	font-size: 130%;
+	color: #333399;
 }
 
 #content #center ul {
@@ -552,8 +563,8 @@ a img {
 }
 
 .link-list a {
-	padding-left: 32px;
-	padding-right: 32px;
+	padding-left: 4px;
+	padding-right: 4px;
 }
 
 .float-right {

@@ -1,26 +1,3 @@
-
-.data #center h1 {
-	display: inline;
-	padding-bottom: 6px;
-	border-bottom: solid 2px #666666;
-	margin-left: 0px;
-	font-family: verdana, arial, sans-serif;
-	font-weight: bold;
-	font-size: 120%;
-	color: #333399;
-}
-
-.data #center h2 {
-	display: inline;
-	padding-bottom: 6px;
-	border-bottom: solid 2px #666666;
-	margin-left: 0px;
-	font-family: verdana, arial, sans-serif;
-	font-weight: bold;
-	font-size: 120%;
-	color: #333399;
-}
-
 .data #center em {
 	color: #333399;
 	font-weight: bold;
