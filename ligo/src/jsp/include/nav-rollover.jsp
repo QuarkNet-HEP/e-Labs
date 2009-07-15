@@ -32,21 +32,6 @@
 		});
 	});
 	</script>
-	
-	<style type="text/css">
-	a#nav-home { color: #ff9933; }
-	a#nav-library { color: #33ffcc; }
-	a#nav-data { color: #3399ff; }
-	a#nav-posters { color: #33cc33; }
-	a#nav-siteindex { color: #ff0000; }
-	a#nav-assessment { color: #ffff00; }
-	
-	#sub-library li a { color: #33ffcc; }
-	#sub-data li a { color: #3399ff; }
-	#sub-posters li a { color: #33cc33; }
-	#sub-siteindex li a { color: #ff0000; }
-	#sub-assessment li a { color: #ffff00; }
-	</style>
 
 	<div id="nav">
 		<table>
@@ -65,11 +50,11 @@
 			<tr>
 				<td id="subnav">
 					<ul id="sub-library">
-						<li><a href="../library/research-basics.jsp">The Basics</a></li>
-						<li><a href="../library/milestones-map.jsp">Study Guide</a></li>
+						<li><a href="/library/index.php/Category:LIGO">Glossary</a></li>
 						<li><a href="../library/resources.jsp">Resources</a></li>
-						<li><a href="../library/big-picture.jsp">The Big Picture</a></li>
+						<li><a href="../library/big-picture.jsp">Big Picture</a></li>
 						<li><a href="../library/FAQ.jsp">FAQs</a></li>
+						<li><a href="../library/site-tips.jsp">Site Tips</a></li>
 					</ul>
 					<ul id="sub-data">
 						<li><a href="/ligo/tla/tutorial.php">Tutorial</a></li>

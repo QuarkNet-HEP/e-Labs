@@ -2,12 +2,6 @@
 	display: none; 
 }
 
-#nav ul li a:hover, #subnav ul li a:hover {
-	color: white;
-	text-decoration: underline; 
-}
-
-
 #container {
 	width: 900px;
 	font-family: Arial, sans-serif;
@@ -275,6 +269,10 @@ a#nav6 {
 	color: #333333;
 }
 
+td#center {
+	border: 0px;
+}
+
 #content #center {
 	padding-top: 8px;
 	padding-left: 8px;
@@ -304,9 +302,11 @@ a#nav6 {
 
 #content #center ul {
 	margin-left: 0px;
-	padding-left: 32px;
-	list-style-type: disc;
-	list-style-image: url("../graphics/gray-disc.gif");
+	padding-left: 16px;
+}
+
+li {
+	padding-bottom: 0.5ex;
 }
 
 /*
@@ -318,11 +318,10 @@ a#nav6 {
 
 #content #center ul ul {
 	margin-left: 16px;
+	padding-left: 8px;
+	
 }
 
-#content #center ul ul li {
-	list-style-image: url("../graphics/circ.gif");
-}
 
 #center p {
 	padding-top: 4px;

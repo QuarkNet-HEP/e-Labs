@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+
+#assessment #top {
+	visibility: hidden;
+	display: none;
+} 
+
+#assessment #left {
+	visibility: hidden;
+	display: none;
+}
+
+#assessment h1 { 
+	color: black;
+	font-weight: normal;
+	font-size: 100%;
+}

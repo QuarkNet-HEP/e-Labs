@@ -1,0 +1,24 @@
+/* Top-level navigation link colors */ 
+a#nav-home { color: #ff9933; }
+a#nav-library { color: #33ffcc; }
+a#nav-data { color: #3399ff; }
+a#nav-posters { color: #33cc33; }
+a#nav-siteindex { color: #ff0000; }
+a#nav-assessment { color: #ffff00; }
+
+/* Subnavigation link colors */
+#sub-library li a { color: #33ffcc; }
+#sub-data li a { color: #3399ff; }
+#sub-posters li a { color: #33cc33; }
+#sub-siteindex li a { color: #ff0000; }
+#sub-assessment li a { color: #ffff00; }
+
+/* Mousover selection effects */ 
+#nav ul li a:hover, #subnav ul li a:hover {
+	font-style: italic; 
+}
+
+/* Table */
+#nav table, #nav table tr, #nav table tr td {
+	border: 0px; 
+}

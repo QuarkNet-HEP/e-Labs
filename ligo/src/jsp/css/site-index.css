@@ -140,10 +140,28 @@ th.library {
 	border-right: #3c777f 1px solid;
 }
 
-th.library a {
+#main th.library a {
 	text-decoration: none; 
 	color: #33ffcc;
 }
+
+#main th.posters a {
+	text-decoration: none; 
+	color: #33CC33;
+}
+
+#main th.data a {
+	text-decoration: none; 
+	color: #88BBFF;
+}
+
+
+#main th.assessments a {
+	text-decoration: none; 
+	color: #FFFF00;
+}
+
+
 
 th.library a:link {
 	text-decoration: none; 

@@ -1,25 +1,11 @@
 
-
-.assessment #center h1 {
-	display: inline;	
-	padding-bottom: 6px;
-	border-bottom: solid 2px #666666;
-	margin-left: 0px;
-	font-family: arial, sans-serif;
-	font-weight: bold;
-	font-size: 120%;
-	color: #333399;
+#content #center ul ul {
+	margin-left: 1.5em; 
+	/*padding-left: 16px;*/
 }
 
-.assessment #center h2 {
-	display: inline;	
-	padding-bottom: 6px;
-	border-bottom: solid 2px #666666;
-	margin-left: 0px;
-	font-family: arial, sans-serif;
-	font-weight: bold;
-	font-size: 120%;
-	color: #333399;
+#content #center ul {
+	 margin-left: 10px;
 }
 
 .assessment #center em {
@@ -31,7 +17,6 @@
 .assessment #center p {
 	font-weight: normal;
 	margin-left: 10px;
-	font-size: 110%;
 }
 
 .assessment #center ul {
@@ -39,59 +24,7 @@
 	margin-left: 10px;
 	margin-left: 0px;
 	padding-left: 32px;
-	list-style-type: disc;
-	list-style-image: url("../graphics/gray-disc.gif");
-	font-size: 110%;
 }
-
-#content #center li {
-	padding-bottom: 12px;
-	font-size: 100%;
-}
-
-#content #center ul ul {
-	margin-left: 16px;
-	font-size: 100%;
-}
-
-#content #center ul ul li {
-	list-style-image: url("../graphics/circ.gif");
-	font-size: 95%;
-}
-
-
-
-.assessment #center table,tr,td  {
-	font-weight: normal;
-	margin-left: 10px;
-	vertical-align: top;
-	font-size: 110%;
-}
-
-
-.assessment dt {
-	font-weight: bold;
-}
-
-.assessment dd {
-	padding-bottom: 6px;
-}
-
-.assessment table {
-	border: none;
-}
-
-.assessment td {
-	border: none;
-}
-
-#nav {
-	width: 100%;
-	left: 0px;
-	top: 74px;
-	height: 20px;
-}
-
 
 /*
 	Italiciize corresponding subnav item 
@@ -131,7 +64,7 @@ margin-left: 20px;
 	font-size: 90%; 
 }
 
-#assessmentRubric table, td {
+#assessmentRubric table td {
 	border: 1px solid gray;
 		font-size: 85%; 
 }
