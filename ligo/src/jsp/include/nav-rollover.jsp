@@ -91,7 +91,6 @@
 						<li><a href="../jsp/uploadImage.jsp">Upload Image</a></li>
 					</ul>
 					<ul id="sub-siteindex">
-						<li><a href="../site-index">Site Index</a></li>
 						<li><a href="../site-index/site-map-anno.jsp">Overview</a></li>	
 					</ul>
 				</td>
