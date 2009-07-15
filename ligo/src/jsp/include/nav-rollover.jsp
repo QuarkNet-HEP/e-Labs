@@ -74,6 +74,7 @@
 					<ul id="sub-data">
 						<li><a href="/ligo/tla/tutorial.php">Tutorial</a></li>
 						<li><a href="/ligo/tla/">Bluestone</a></li>
+						<li><a href="../plots/">Plots</a></li>
 					</ul>
 					<ul id="sub-posters"> 
 						<li><a href="../posters/new.jsp">New Poster</a></li>
@@ -91,7 +92,8 @@
 						<li><a href="../jsp/uploadImage.jsp">Upload Image</a></li>
 					</ul>
 					<ul id="sub-siteindex">
-						<li><a href="../site-index/site-map-anno.jsp">Overview</a></li>	
+						<li><a href="../site-index/site-map-anno.jsp">Site Index</a></li>	
+						<li><a href="../site-index/site-map-anno.jsp">Explore!</a></li>
 					</ul>
 				</td>
 			</tr>

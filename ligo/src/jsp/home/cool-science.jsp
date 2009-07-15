@@ -33,7 +33,7 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>LIGO: A New Way to Explore the Universe.</h2>
+			<h1>LIGO: A New Way to Explore the Universe.</h1>
 			
 			<p />
 			
