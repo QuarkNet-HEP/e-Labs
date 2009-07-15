@@ -64,13 +64,6 @@ a.button {
 	padding-bottom: 6px;
 }
 
-#nav #subnav li a {
-	background-color: #ad499d;
-	border-top: #c276b6 1px solid;
-	border-left: #c276b6 1px solid;
-	border-bottom: #7b346f 1px solid;
-	border-right: #7b346f 1px solid;
-}
 
 #subnav ul {
 	float: right;

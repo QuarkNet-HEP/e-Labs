@@ -32,7 +32,7 @@
 	margin-left: 10px;
 }
 
-.posters #center tr,td {
+.posters #center tr td {
 	font-weight: normal;
 	margin-left: 10px;
   font-size: 95%;
@@ -68,10 +68,6 @@ a.button {
 	height: 20px;
 }
 
-#nav #subnav li a {
-	color: #006600;
-	border-left: 3px solid;
-}
 
 /*
 	Italicisize corresponding subnav item
