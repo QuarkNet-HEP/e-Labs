@@ -15,6 +15,10 @@
 	background-color: #006633;
 }
 
+#poster_header {
+	padding-bottom: 48px;
+}
+
 .poster_title {
 	background-color: #006633; 
 	color: #FFFFFF;
@@ -26,13 +30,14 @@
 	background-color: #006633; 
 	color: #FFFFFF;
 	font-family: arial;
-	font-size: 120%; 
+	font-size: 120%;
 }
 
 .poster_detail_frame {
 	background-color: #66CC99;
 	text-align: center;
-	font-size: 85%; 
+	font-size: 85%;
+	border-bottom: solid 16px #006633;
 }
 
 .poster_detail_head {
