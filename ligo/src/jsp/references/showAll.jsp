@@ -69,7 +69,7 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-<h2>View References for Study Guide</h2>
+<h1>View References for Study Guide</h1>
 
 <p align="center">
 	<a href="../references/showAll.jsp?t=reference">View References for Study Guide</a>

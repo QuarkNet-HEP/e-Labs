@@ -48,7 +48,7 @@ String fileType=request.getParameter("t");
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Add Comments</h2>
+			<h1>Add Comments</h1>
 
 <%
 String dateString=new String();

@@ -31,7 +31,7 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Getting started! Make sure you meet each of these milestones below.</h2>
+			<h1>Getting started! Make sure you meet each of these milestones below.</h1>
 			<p>
 				 Now you're ready to begin.  Follow the workflow list below to guide your work. Go through the e-Lab tasks one at a time. Use the <a href="../home/index.jsp">Project Map</a> if you prefer.
 			</p>

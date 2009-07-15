@@ -33,7 +33,7 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Join a national collaboration of students to study LIGO seismic data. </h2>
+			<h1>Join a national collaboration of students to study LIGO seismic data. </h1>
 			
 			<p />
 			

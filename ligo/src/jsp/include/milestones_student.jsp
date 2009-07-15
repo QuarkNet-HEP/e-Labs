@@ -23,7 +23,7 @@
 <IMG border="0" SRC="graphics/ref_dot.gif"> Choose a data channel and ask a research question <A HREF="javascript:reference('channel_question',420)"><IMG border="0" SRC="graphics/ref.gif"></A><br>
 <IMG border="0" SRC="graphics/ref_dot.gif"> Make your research plan. <A HREF="javascript:reference('make_plan',400)"><IMG border="0" SRC="graphics/ref.gif"></A><br>
 <P>&nbsp;
-<h2>Milestone Seminar</h2>
+<h1>Milestone Seminar</h1>
 </TD></TR>
 </TABLE>
 <center><P>

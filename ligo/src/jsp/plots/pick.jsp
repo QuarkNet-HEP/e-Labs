@@ -28,7 +28,7 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-			<h2>Choose plot</h2>
+			<h1>Choose plot</h1>
 			
 			<p>
 				<%@ include file="search-control.jsp" %>
