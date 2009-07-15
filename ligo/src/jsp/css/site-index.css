@@ -1,24 +1,5 @@
-.site-index #center h1 {
-	display: inline;	
-	padding-bottom: 6px;
-	border-bottom: solid 2px #666666;
-	margin-left: 0px;
-	font-family: verdana, arial, sans-serif;
-	font-weight: bold;
-	font-size: 120%;
-	color: #333399;
-
-}
-
-.site-index #center h2 {
-	display: inline;	
-	padding-bottom: 6px;
-	border-bottom: solid 2px #666666;
-	margin-left: 0px;
-	font-family: verdana, arial, sans-serif;
-	font-weight: bold;
-	font-size: 120%;
-	color: #333399;
+a#nav-siteindex {
+	font-style: italic;
 }
 
 .site-index #center em {
@@ -53,12 +34,6 @@ a.button {
 	padding-bottom: 6px;
 }
 
-#nav {
-	width: 100%;
-	left: 0px;
-	top: 74px;
-	height: 20px;
-}
 /*
 	Italicisize corresponding subnav item
 */
@@ -160,7 +135,6 @@ th.library {
 	text-decoration: none; 
 	color: #FFFF00;
 }
-
 
 
 th.library a:link {

@@ -186,11 +186,6 @@ body {
 	color: white;
 }
 
-#nav a:hover, #nav-footer a:hover, #top a:hover, #nav #subnav li a:hover {
-	color: #cc00cc;
-	text-decoration: underline;
-}
-
 #nav h1 {
 	font-size: 100%;
 	font-weight: bold;

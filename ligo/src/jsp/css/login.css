@@ -12,12 +12,6 @@
 	font-size: 120%;
 }
 
-h1 {
-	background-color: #99cccc;
-	color: black;
-	text-align: center;
-}
-
 #login #left, #right {
 	display: none;
 }

@@ -1,3 +1,7 @@
+a#nav-data {
+	font-style: italic;
+}
+
 .data #center em {
 	color: #333399;
 	font-weight: bold;
@@ -15,13 +19,6 @@
 
 .data dd {
 	padding-bottom: 6px;
-}
-
-#nav {
-	width: 100%;
-	left: 0px;
-	top: 74px;
-	height: 20px;
 }
 
 /*

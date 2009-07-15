@@ -1,24 +1,5 @@
-.posters #center h1 {
-	display: inline;	
-	padding-bottom: 6px;
-	border-bottom: solid 2px #666666;
-	margin-left: 0px;
-	font-family: verdana, arial, sans-serif;
-	font-weight: bold;
-	font-size: 120%;
-	color: #333399;
-
-}
-
-.posters #center h2 {
-	display: inline;	
-	padding-bottom: 6px;
-	border-bottom: solid 2px #666666;
-	margin-left: 0px;
-	font-family: arial, sans-serif;
-	font-weight: bold;
-	font-size: 120%;
-	color: #333399;
+a#nav-posters {
+	font-style: italic;
 }
 
 .posters #center em {
