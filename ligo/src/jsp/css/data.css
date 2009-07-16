@@ -1,3 +1,19 @@
+#sub-library {
+	display: none; 
+}
+
+#sub-data {
+	display: block; 
+}
+
+#sub-posters {
+	display: none; 
+}
+
+#sub-siteindex {
+	display: none; 
+}
+
 a#nav-data {
 	font-style: italic;
 }
