@@ -140,6 +140,7 @@
 	template = template.replaceAll("%PARA:PROCEDURE%", "Not entered"); 
 	template = template.replaceAll("%PARA:RESULTS%", "Not entered"); 
 	template = template.replaceAll("%PARA:CONCLUSION%", "Not entered");
+	template = template.replaceAll("%PARA:BIBLIOGRAPHY%", "Not entered");
 	template = template.replaceAll("%PARA:AUTHORS%", "Not entered");
 	template = template.replaceAll("%WORDS:TITLE%", "Not entered"); 
 	template = template.replaceAll("%WORDS:SUBTITLE%", "Not entered"); 
