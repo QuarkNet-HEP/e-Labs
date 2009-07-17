@@ -26,6 +26,7 @@
 			<div id="content">
 
 
+
 <table border="0" id="main">
 	<tr>
 		<td id="left">
@@ -35,42 +36,77 @@
 
 
 <h1>Site Tips: Use these tips to help you use the e-Lab.</h1>
-<p>
-  <em>Use</em><font class=content_text> the Project Map on the home page to guide your research.
-</p>
-<p>
-  <em>Use</em><font class=content_text> the navigation bars and the links in the sidebars to help you! The top 
-  navigation bar gives you access to the main parts of the e-Lab. The sidebar 
-  links give you additional science resources, a Bluestone tutorial, a 
-  Bluestone link.
-</p>
-<p>
-  <em>Watch</em><font class=content_text> for little icons on the e-Lab 
-  screens. Clicking on <img src="../graphics/ref.gif" /> will give you a 
-  reference popup that will help with a milestone.  The logbook icon, 
-  <img src="../graphics/logbook_pencil.gif" align="middle" />, will open 
-  your electronic log book. The looking glass, 
-  <img src="../graphics/logbook_view_comments_small.gif" align="middle" />, 
-  lets you access teacher comments about your log entries.
-</p>
-<p>
-  <em>The heart</em><font class=content_text> of the LIGO e-Lab is software
-   named <a href="/ligo/tla/">Bluestone</a>. 
-   Bluestone lets you to select the LIGO data channels that you wish to 
-   view and lets you control the features of the plots that you make.
-   Bluestone mimics software that LIGO scientists and engineers use at the 
-   Observatory sites.  Your teacher will show you how to use Bluestone.
-</p> 
-<p>
-  <em>Another</em> key feature of the LIGO e-Lab is a comprehensive
-   portal site.   Here you will also find a
-   <a href="/glossary/">glossary</a>, 
-   along with 
-  <a href="/forum_index.php">discussion rooms</a>
-  in which you can share research ideas with others.
-  Your teacher will tell you how to log in.
-</p>
+				<dl>
+					<dt>Log in/Log out:</dt>
+					<dd>Check the upper right hand corner to see the current status.</dd>
+					
+					<dt>Getting Around:</dt>
+					<dd>
+						Use the navigation bar.
+						<p>
+							<img src="../graphics/nav.jpg">
+						</p>
+						<p>Most of the pages also have a sub menu to provide both an overview of what is available and easy access. Here is the submenu for <b>Library</b>.
+							<img src="../graphics/subnav.jpg">
+						</p>
+						<p>
+							<a target="map" href="../site-index/site-map-anno.jsp?display=static">Navigation Overview</a>
+						</p>
+					</dd>
+					
+					<dt>Special icons and links:</dt>
+					<dd>
+						Click on these.
+						<p>
+							<img src="../graphics/question.gif"> and links in the text for explanations 
+							of terms in the glossary and variables in the analyses.
+						</p>
+						<p>
+ 							<img src="../graphics/Tright.gif"> and <img src="../graphics/Tdown.gif"> 
+							to show and hide search results.
+						</p>
+					</dd>
+					
+					<dt>Popup Windows:</dt>
+					<dd>Be sure that you are not blocking popup windows in your browser.</dd>
 
+					<dt>Resources:</dt>
+					<dd>Explore tutorials, online resources, animations and contacts.</dd>
+					
+					<dt>Project Milestones:</dt>
+					<dd>
+						<p>
+							Concepts you need to know. Skills you need to use. Tasks you need to accomplish. Use the Project Map on the home page to guide your research. </p><p>Think of this map as a subway map with one main line and four branch lines.  Along the main line are stops, milestone seminars, opportunities to check how the work is going. Off each main stop are branch lines where each stop is a project milestone. The branch lines include: <b>The Basics</b>, <b>Getting Started</b>, <b>Figure It Out</b> and <b>Tell others</b>.</p><p>For review, go through the milestones in <b>The Basics</b>. Work your way through the list of milestones in the Project Map. Click the milestones to see the references associated with each milestone.</p> 
+
+	
+                        <p>	<img src="../graphics/project-map.gif"/>
+
+						<p>
+							A <a href="milestones.jsp">text version</a> of the project milestones is available in the Library. To access pop-up references associated with milestones in the text version, click on <img src="../graphics/ref.gif">.
+						</p>
+						
+						<p>
+							For review, go through the milestones in The Basics.
+						</p>
+
+						<p>
+							
+						</p>
+					</dd>
+
+					<dt>Log Book:</dt>
+					<dd>
+						Check the upper right hand corner to get to your logbook. Click on these.
+						<p>
+							<img src="../graphics/logbook_pencil.gif"> and "<strong>Log it!</strong>"
+							to add notes to your log book related to the milestones
+						</p>
+						
+						<p>
+							<img src="../graphics/logbook_view_comments_small.gif"> to access teacher comments in your logbook.
+						</p>
+					</dd>
+				</dl>
 
 
 		</td>
