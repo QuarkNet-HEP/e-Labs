@@ -14,6 +14,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 	</head>
+	
 <script language="javascript">AC_FL_RunContent = 0;</script>
 <script src="AC_RunActiveContent.js" language="javascript"></script>
 		
@@ -58,7 +59,7 @@
 			'codebase', 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0',
 			'width', '650',
 			'height', '450',
-			'src', 'ligo-dale',
+			'src', 'ligo',
 			'quality', 'high',
 			'pluginspage', 'http://www.macromedia.com/go/getflashplayer',
 			'align', 'middle',
@@ -67,22 +68,22 @@
 			'scale', 'showall',
 			'wmode', 'window',
 			'devicefont', 'false',
-			'id', 'ligo-dale',
+			'id', 'ligo',
 			'bgcolor', '#000000',
-			'name', 'ligo-dale',
+			'name', 'ligo',
 			'menu', 'true',
 			'allowFullScreen', 'false',
 			'allowScriptAccess','sameDomain',
-			'movie', 'ligo-dale',
+			'movie', 'ligo',
 			'salign', ''
 			); //end AC code
 	}
 </script>
 <noscript>
-	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="650" height="450" id="ligo-dale" align="middle">
+	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="650" height="450" id="ligo" align="middle">
 	<param name="allowScriptAccess" value="sameDomain" />
 	<param name="allowFullScreen" value="false" />
-	<param name="movie" value="ligo-dale.swf" /><param name="loop" value="false" /><param name="quality" value="high" /><param name="bgcolor" value="#000000" />	<embed src="ligo-dale.swf" loop="false" quality="high" bgcolor="#000000" width="650" height="450" name="ligo-dale" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+	<param name="movie" value="ligo.swf" /><param name="loop" value="false" /><param name="quality" value="high" /><param name="bgcolor" value="#000000" />	<embed src="ligo.swf" loop="false" quality="high" bgcolor="#000000" width="650" height="450" name="ligo" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
 	</object>
 </noscript>
 
