@@ -11,7 +11,8 @@
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-	</head>
+		<script src="insertMovie.js" language="JavaScript" type="text/javascript"></script>
+</head>
 	
 	<body id="home" class="home">
 		<!-- entire page container -->
@@ -49,7 +50,12 @@
 					<p> </p>
 					<table> 
 						<tr>
-							<td><img src="/elab/ligo/graphics/lho_aerial_photo.jpg" /></td>
+							<td style="text-align: center; width: 450px;">
+							<script language="JavaScript" type="text/javascript">InsertSampleMovie();</script><br />
+							
+							<div style="font-size:80%";margin-bottom:12px;>Credit: Henze, NASA</div>
+							<p >The LIGO experiment seeks to detect gravitational<br>waves like these from two black holes<br>orbiting 
+							around each other.</p><p>It has to distinguish signals from noise such as seismic<br>waves from those from gravitational waves.</p></td>
 							<td class="float-right bordered">
 								<jsp:include page="../login/login-control.jsp">
 									<jsp:param name="prevPage" value="../home/login-redir.jsp"/>
