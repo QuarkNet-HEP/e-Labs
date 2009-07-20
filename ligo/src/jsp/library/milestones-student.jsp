@@ -33,7 +33,7 @@
 								</a>
 							</li>
 							<li>
-								<b>Milestone Seminar</b>
+								<a href="#" onclick="javascript:window.open('/library/kiwi.php/Milestone_Seminar', 'milestone seminar', 'width=600,height=450, resizable=1, scrollbars=1');return false;"><b>Milestone Seminar</b></a>
 							</li>
 						</ul>
 					</li>
