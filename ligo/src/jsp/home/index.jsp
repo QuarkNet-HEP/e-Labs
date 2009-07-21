@@ -11,6 +11,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
+		<script type="text/javascript" src="../include/elab-custom.js"></script>
 		<script src="insertMovie.js" language="JavaScript" type="text/javascript"></script>
 </head>
 	
