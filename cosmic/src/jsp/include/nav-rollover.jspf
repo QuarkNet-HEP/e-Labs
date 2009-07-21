@@ -51,7 +51,7 @@
 						</c:if>
 						<li><a href="../data" id="nav-data">Data</a></li>
 						<li><a href="../posters" id="nav-posters">Posters</a></li>
-						<li><a href="../site-index" id="nav-siteindex">Site Index</a></li>
+						<li><a href="../site-index" id="nav-siteindex">Site Map</a></li>
 						<li><a href="../assessment/index.jsp" id="nav-assessment">Assessment</a></li>
 					</ul>
 				</td>
