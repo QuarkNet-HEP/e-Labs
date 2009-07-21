@@ -14,6 +14,10 @@
 	display: none; 
 }
 
+#sub-home {
+	display: none;
+}
+
 a#nav-data {
 	font-style: italic;
 }

@@ -10,6 +10,7 @@
 	$(document).ready(function() {
 		$("#nav-home").mouseover(function(){ // Home
 			$("#subnav").children().hide(); 
+			$("#sub-home").show();
 		});
 		$("#nav-library").mouseover(function(){ // Library
 			$("#subnav").children().hide();
@@ -42,13 +43,18 @@
 						<li><a href="../library" id="nav-library">Library</a></li>
 						<li><a href="../data" id="nav-data">Data</a></li>
 						<li><a href="../posters" id="nav-posters">Posters</a></li>
-						<li><a href="../site-index" id="nav-siteindex">Site Help</a></li>
+						<li><a href="../site-index" id="nav-siteindex">Site Map</a></li>
 						<li><a href="../assessment/index.jsp" id="nav-assessment">Assessment</a></li>
 					</ul>
 				</td>
 			</tr>
 			<tr>
 				<td id="subnav">
+					<ul id="sub-home">
+						<li><a href="../home/cool-science.jsp">Cool Science</a></li>
+						<li><a href="../site-index/site-map-anno.jsp">Explore!</a></li>
+						<li><a href="../home/about-us.jsp">About Us</a></li>
+					</ul>
 					<ul id="sub-library">
 						<li><a href="/library/index.php/Category:LIGO">Glossary</a></li>
 						<li><a href="../library/resources.jsp">Resources</a></li>

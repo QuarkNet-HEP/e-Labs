@@ -18,6 +18,10 @@ a#nav-posters {
 	font-style: italic;
 }
 
+#sub-home {
+	display: none;
+}
+
 .posters #center em {
 	color: #333399;
 	font-weight: bold;

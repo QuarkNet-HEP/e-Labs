@@ -22,6 +22,10 @@ a#nav-library {
 	display: block;
 }
 
+#sub-home {
+	display: none;
+}
+
 .library #center h2 {
 //	display: inline;	
 	padding-bottom: 6px;

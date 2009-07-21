@@ -7,6 +7,7 @@ a#nav-siteindex { color: #ff0000; }
 a#nav-assessment { color: #ffff00; }
 
 /* Subnavigation link colors */
+#sub-home li a { color: #ff9933; }
 #sub-library li a { color: #33ffcc; }
 #sub-data li a { color: #3399ff; }
 #sub-posters li a { color: #33cc33; }

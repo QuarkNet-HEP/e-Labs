@@ -11,7 +11,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>About Us</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 	</head>
 		
