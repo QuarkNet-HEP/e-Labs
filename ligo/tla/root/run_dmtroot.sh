@@ -500,7 +500,7 @@ unset DMTINPUT
 
 # Build command line:
 
-CMD="$ROOT_EXE -b -l -n -q ${ROOT_CMD_LINE}"
+CMD="nice $ROOT_EXE -b -l -n -q ${ROOT_CMD_LINE}"
 
 # TODO: right now plot_chan.C includes dmtroot.C itself, 
 # but I would rather do this, if I can, someday.  It doesn't yet work.

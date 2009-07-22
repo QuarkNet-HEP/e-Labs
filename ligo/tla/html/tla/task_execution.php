@@ -206,7 +206,7 @@ if( $exec_type == 'local' ){
             $t = $task_time_end - time();  // time remaining
             if( $t < 0 ) {
                 $est_dt = $task_time_end - $task_time_start;
-                if( abs($t) > 2*$est_dt ){ // really overdue!
+                if( abs($t) > (2*$est_dt + 900) ){ // overdue by twice estimate plus fifteen minutes
                     set_step_status('main_steps', STEP_FAIL );  
                     @unlink($lockfile);
                     add_message(" Task failed to complete in time ($est_dt sec). ", 
