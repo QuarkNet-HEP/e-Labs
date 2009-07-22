@@ -43,22 +43,22 @@ function ligo_masthead($title='',$right_stuff='&nbsp;'){
     }
     echo "\n</TD></TR>\n ";
 
-    echo "<TR ><TD class='noborder' colspan='3'>
+    /*echo "<TR ><TD class='noborder' colspan='3'>
         <div class='third-header-title'>
           &nbsp; Laser Interferometer Gravitational-Wave Observatory
         </div>
-	</TD></TR>\n";
+	</TD></TR>\n";*/
 
     echo "</TABLE>";
     echo "\n<!-- END Tool Masthead -->\n";
 
     //project_menu_bar();
-     LIGO_menu_bar();
+    echo LIGO_menu_bar();
 }
 
 function LIGO_menu_bar(){
   //TODO: detect teacher -vs- student URL and change accordingly
-  return cosmic_teacher_menu_bar();
+  return LIGO_teacher_menu_bar();
 }
 
 
