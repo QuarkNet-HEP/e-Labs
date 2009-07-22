@@ -54,9 +54,10 @@
 							<td style="text-align: center; width: 450px;">
 							<script language="JavaScript" type="text/javascript">InsertSampleMovie();</script><br />
 							
-							<div style="font-size:80%";margin-bottom:12px;>Credit: Henze, NASA</div>
-							<p >The LIGO experiment seeks to detect gravitational<br>waves like these from two black holes<br>orbiting 
-							around each other.</p><p>It has to distinguish signals from noise such as seismic<br>waves from those from gravitational waves.</p></td>
+							<div style="font-size:80%";margin-bottom:12px;>Orbiting Black Holes Creating Gravitational Waves<br>Credit: Henze, NASA</div>
+							<p style="font-size:90%">LIGO seeks to detect gravitational waves from orbiting black holes, neutron stars and other sources.</p>
+							<p style="font-size:90%">Scientists must distinguish gravitational waves  from "noise" caused by seismic waves passing through the ground underneath LIGO's detectors.
+							</td>
 							<td class="float-right bordered">
 								<jsp:include page="../login/login-control.jsp">
 									<jsp:param name="prevPage" value="../home/login-redir.jsp"/>
