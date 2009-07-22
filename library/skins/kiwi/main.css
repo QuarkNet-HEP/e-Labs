@@ -31,7 +31,8 @@ img {
 }
 p {
     margin: 0.4em 0em 0.5em 0em;
-    line-height: 1.5em;
+    line-height: 1.2em;
+    font-size: .9em
 }
 
 p img { margin: 0; }
@@ -523,6 +524,7 @@ div.gallerytext {
  }
 
 div#catlinks {   /* Category box */
+ display: none; 
  margin-top: 4em;
  margin-bottom: 2em;
 }
@@ -532,11 +534,12 @@ div#catlinks {   /* Category box */
 
 
 body {
-    padding: 2em;
+    padding: .5em;
     background: url(Quadrille.gif);
 }
 
 h1.firstHeading {  
    text-align: center;
+   font-size: 1.4em;
 }
 
