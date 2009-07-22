@@ -196,6 +196,10 @@ pageContext.setAttribute("images", images);
 			making a new poster, do not use a name you have already used. To
      	            see the posters you have made, click <b>Edit Posters</b> above.
      	        </li>
+     	  <li>
+			Be sure to write a good <a href="javascript:glossary('abstract',200)">abstract</a>.
+		</li>
+
 		<li>
 			To view the plots that you might want to include for the figures 
 			in your poster, click <b>View Plots</b> in the navigation bar. 
@@ -255,9 +259,11 @@ pageContext.setAttribute("images", images);
                     pageContext.setAttribute("name", name);
                     pageContext.setAttribute("plotsurl", user.getDirURL("plots"));
                     int previewIndex = 0;
+                    String nameAnnotation="";
+                     if (fixedName.equals("Abstract")) {nameAnnotation="<br>(Brief Overview of purpose, procedures, results & conclusions)";}
                     %>
                     	<tr>
-                    		<td align="right" valign="top"><%= fixedName %></td>
+                    		<td align="right" valign="top"><b><%= fixedName %></b>:<%= nameAnnotation %></td>
                     		<c:choose>
                     			<c:when test="${type == 'PARA'}">
                     				<td align="left">
