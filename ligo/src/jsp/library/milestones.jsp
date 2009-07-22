@@ -10,6 +10,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
+		<script type="text/javascript" src="../include/elab-custom.js"></script>
 	</head>
 	
 	<body id="milestones-map" class="library">
@@ -36,7 +37,7 @@
 				 Now you're ready to begin.  Follow the workflow list below to guide your work. Go through the e-Lab tasks one at a time. Use the <a href="../home/index.jsp">Project Map</a> if you prefer.
 			</p>
 			<p><b>Click on <img border="0" src="../graphics/ref.gif" /> for
-	  	references to help you meet each <a href="#" onclick="javascript:window.open('/library/kiwi.php/Milestone', 'milestone', 'width=600,height=450, resizable=1, scrollbars=1');return false;"><b>milestone</b></a>.</p>
+	  	references to help you meet each <a href="#" onclick="javascript:glossary('Milestone',250);return false;"><b>milestone</b></a>.</p>
 <!--
 			<center>
 -->
