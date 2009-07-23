@@ -11,23 +11,30 @@
 		<link rel="stylesheet" type="text/css" href="../css/site-index.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 		<link href="../css/site-help.css" rel="stylesheet" type="text/css" />
-		<script type="text/javascript">
-			function setDisplay(objectID,state) {
-			    var object=document.getElementById(objectID);
-			    if (object != null) object.style.visibility=state;
-		    }
-
-			function hideAll()
-			{
-			     setDisplay("sitehelp-home","hidden");
-			     setDisplay("sitehelp-library","hidden");
-			     setDisplay("sitehelp-data","hidden");
-			     setDisplay("sitehelp-posters","hidden");
-			     setDisplay("sitehelp-upload","hidden");
-			     setDisplay("sitehelp-assessment","hidden");
-			}
-		</script>
 	</head>
+<script type="text/javascript">
+    hideAll();
+    
+function setDisplay(objectID,state) {
+    var object=document.getElementById(objectID);
+    if (object != null) object.style.visibility=state;
+    }
+
+
+
+function hideAll()
+{
+     setDisplay("sitehelp-home","hidden");
+     setDisplay("sitehelp-library","hidden");
+     setDisplay("sitehelp-data","hidden");
+     setDisplay("sitehelp-posters","hidden");
+     setDisplay("sitehelp-upload","hidden");
+     setDisplay("sitehelp-assessment","hidden");
+    
+}
+
+
+</script>
 	<body class="siteindex" onLoad="hideAll();">
 		<!-- entire page container -->
 		<div id="container">
@@ -46,9 +53,19 @@
 				<h1><img src="../graphics/site-map-button.gif" border="1" style="border-color: white" valign="bottom" /> Explore! Click on hotspots in this site map.</h1>
 				<p>You can always return to this page by clicking "Explore!" on the Site Index submenu.</p>
 				<div id="sitemap" align="center" >
-					<table width="736" cellpadding="0" cellspacing="0">
+					<table width="762" cellpadding="0" cellspacing="0">
+							<tr>
+							    <td  width="127"><a href="../home/" onmouseover="javascript:hideAll();setDisplay('sitehelp-home','visible')" /><img src="../graphics/explore-home.gif"></a></td>
+									<td  width="127"><a href="../library/" onmouseover="javascript:hideAll();setDisplay('sitehelp-library','visible')" /><img src="../graphics/explore-library.gif"></a></td>
+									<td  width="127"><a href="../data/" onmouseover="javascript:hideAll();setDisplay('sitehelp-upload','visible')" /><img src="../graphics/explore-upload.gif"></a></td>
+									<td  width="127"><a href="../data/" onmouseover="javascript:hideAll();setDisplay('sitehelp-data','visible')" /><img src="../graphics/explore-data.gif"></a></td>
+									<td  width="127"><a href="../posters/" onmouseover="javascript:hideAll();setDisplay('sitehelp-posters','visible')" /><img src="../graphics/explore-posters.gif"></a></td>
+									<td width="127"><a href="../assessment/index.jsp"  onmouseover="javascript:hideAll();setDisplay('sitehelp-assessment','visible')" /><img src="../graphics/explore-assessment.gif"></a></td>
+								
+							</td>
+						</tr>
 						<tr>
-							<td width="128" valign="bottom">
+							<td width="127" valign="top"   align="center">
 								<div id="sitehelp-home">
 									<a href="../home/index.jsp">Home</a><br />
 									<a href="../library/milestones.jsp">Milestones (text)</a><br />
@@ -57,7 +74,7 @@
 									<a href="javascript:window.open('../jsp/showLogbook.jsp', 'log', 'width=800,height=600, resizable=1, scrollbars=1');return false;">Logbook</a><br />
 								</div>
 							</td>
-							<td width="122" valign="bottom"  align="center">
+							<td  width="127" valign="top"  align="center">
 								<div id="sitehelp-library">
 									<a href="../references/showAll.jsp?t=glossary">Glossary</a><br />
 									<a href="../library/resources.jsp">Resources</a><br />
@@ -66,13 +83,13 @@
 									<a href="../library/site-help.jsp">Site Tips</a>
 								</div>
 							</td>
-							<td width="126" valign="bottom" align="center">
+							<td  width="127" valign="top" align="center">
 								<div id="sitehelp-upload">
 									<a href="../data/upload.jsp">Upload Data</a><br />
 									<a href="../geometry">Geometry</a>
 								</div>
 							</td>
-							<td width="120" valign="bottom" align="center">
+							<td  width="127" valign="top" align="center">
 								<div id="sitehelp-data">
 									<a href="../data/search.jsp">View Data</a><br />
 									<a href="../analysis-performance/">Performance</a><br />
@@ -83,7 +100,7 @@
 									<a href="../analysis/list.jsp">Analyses</a>
 								</div>
 							</td>
-							<td width="116" valign="bottom" align="center">
+							<td  width="127" valign="top" align="center">
 								<div id="sitehelp-posters">
 									<a href="../posters/new.jsp">New Poster</a><br />
 									<a href="../posters/edit.jsp">Edit Poster</a><br />
@@ -93,12 +110,13 @@
 									<a href="../jsp/uploadImage.jsp">Upload Image</a>
 								</div>
 							</td>
-							<td width="116" height="110"  valign="bottom" border="0">
+							<td  width="127" valign="top"  valign="bottom" border="0"   align="center">
 								<div id="sitehelp-assessment">
 									<a href="../assessment/index.jsp">Assessment</a>
 								</div>
 							</td>
 						</tr>
+<!-- 
 						<tr>
 							<td colspan="6" >
 								<img src="../graphics/site-map.gif" width="736" height="170" border="0" alt="" usemap="#site_map2_Map" />
@@ -112,6 +130,7 @@
 								</map>
 							</td>
 						</tr>
+ -->
 					</table>
 				</div> <!-- end sitemap -->
 			</div>
