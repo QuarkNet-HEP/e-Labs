@@ -73,11 +73,13 @@
 					<dt>Project Milestones:</dt>
 					<dd>
 						<p>
-							Concepts you need to know. Skills you need to use. Tasks you need to accomplish.
-						</p>
+							Concepts you need to know. Skills you need to use. Tasks you need to accomplish. Use the Project Map on the home page to guide your research. </p><p>Think of this map as a subway map with one main line and four branch lines.  Along the main line are stops, milestone seminars, opportunities to check how the work is going. Off each main stop are branch lines where each stop is a project milestone. The branch lines include: <b>The Basics</b>, <b>Getting Started</b>, <b>Figure It Out</b> and <b>Tell others</b>.</p><p>For review, go through the milestones in <b>The Basics</b>. Work your way through the list of milestones in the Project Map. Click the milestones to see the references associated with each milestone.</p> 
+
 	
+                        <p>	<img src="../graphics/project-map.gif"/>
+
 						<p>
-							To access pop-up references associated with milestones, click on <img src="../graphics/ref.gif">.
+							A <a href="milestones.jsp">text version</a> of the project milestones is available in the Library. To access pop-up references associated with milestones in the text version, click on <img src="../graphics/ref.gif">.
 						</p>
 						
 						<p>
@@ -85,7 +87,7 @@
 						</p>
 
 						<p>
-							Work your way through the list of milestones in the Project Milestones.
+							
 						</p>
 					</dd>
 
