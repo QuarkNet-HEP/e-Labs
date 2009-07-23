@@ -102,4 +102,42 @@ function LIGO_teacher_menu_bar(){
     return $x;
 }
 
+function ligo_banner($title='',$right_stuff='&nbsp;'){// returns $x
+  // TODO: make this smarter - teacher or student?
+  $home_link="/elab/ligo/teacher/";
+  $elab_logo="/elab/ligo/graphics/ligo_logo.gif";
+
+  $x = "<TABLE class='masthead' width='100%' bgcolor='black' ><tr>
+       <TD class='noborder' width='15%' valign='TOP' align='CENTER'>
+              <a href='$home_link' >
+	      <img src='$elab_logo'
+                   title='return to the e-Lab home'
+                   alt='' /></a>
+       </td>
+       <TD class='noborder' width='60%' align='LEFT' >
+	<div class='header-title'>
+		LIGO e-Lab
+	</div>
+       </td>\n ";
+   $x .= "
+       <TD class='noborder' width='25%' valign='TOP' align='RIGHT'>\n";
+
+       if( 1 || isset($hide_user) && $hide_user ) {   // don't show user/login or cache indicator
+	 $x .= "&nbsp;";
+       }
+       else {      
+        // need to see if the person is authenticated, cookie or not
+        $authenticator = init_session();
+        $x .= "<font size='1' color='white'>";
+        $logged_in_user = get_logged_in_user(false);
+        $x .= show_login_name($logged_in_user);
+        $x .=  "</font>\n";
+    }
+    $x .=  "\n</TD></TR>\n";
+    $x .=  "</TABLE>";
+    return $x;
+}
+
+
+
 ?>
