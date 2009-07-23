@@ -82,10 +82,10 @@ $role_list=array('Student', 'Teacher', 'QuarkNet Fellow',
 // Where to post the report.  For each e-lab, by name, we associate a
 // help desk forum, by numerical id.
 //
-$elab_forum_id= array('Any/All' => 52,
-                      'Cosmic Rays' => 57,
-	              'CMS' => 60,
-                      'LIGO' => 58);  
+$elab_forum_id= array('any' => 52,
+                      'cosmic' => 57,
+	              'cms' => 60,
+                      'ligo' => 58);  
 
 // For testing.  If the server name contains "spy-hill" 
 // then only send to Eric.  Other variations are possible. 
@@ -654,7 +654,10 @@ function send_report_via_email($thread_id=0){
     global $elab, $elab_list, $elab_forum_id, $forum_id;
     global $user_name, $user_role, $role_list, $return_address;
 
-    if( !array_key_exists($elab,$elab_forum_id) ) return;
+    if( !array_key_exists($elab,$elab_forum_id) ) {
+      debug_msg(1,"Cannot find forum_id for e-Lab $elab");
+      return;
+    }
     $forum_id = $elab_forum_id[$elab];   // and it's global, for later
 
     $form_url="http://" . $_SERVER['SERVER_NAME']. "/forum_post.php?id=".
