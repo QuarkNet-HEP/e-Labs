@@ -2,6 +2,7 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ page import="gov.fnal.elab.util.ElabUtil" %>
+<%@ page import="gov.fnal.elab.ElabGroup" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -37,6 +38,11 @@ function hideAll()
 </script>
 	<body class="siteindex" onLoad="hideAll();">
 		<!-- entire page container -->
+<%
+	ElabGroup currentUser = ElabGroup.getUser(session);
+	request.setAttribute("request", request);
+	
+%>
 		<div id="container">
 
 			<c:if test="${param.display != 'static'}">
@@ -55,12 +61,12 @@ function hideAll()
 				<div id="sitemap" align="center" >
 					<table width="762" cellpadding="0" cellspacing="0">
 							<tr>
-							    <td  width="127"><a href="../home/" onmouseover="javascript:hideAll();setDisplay('sitehelp-home','visible')" /><img src="../graphics/explore-home.gif"></a></td>
-									<td  width="127"><a href="../library/" onmouseover="javascript:hideAll();setDisplay('sitehelp-library','visible')" /><img src="../graphics/explore-library.gif"></a></td>
-									<td  width="127"><a href="../data/" onmouseover="javascript:hideAll();setDisplay('sitehelp-upload','visible')" /><img src="../graphics/explore-upload.gif"></a></td>
-									<td  width="127"><a href="../data/" onmouseover="javascript:hideAll();setDisplay('sitehelp-data','visible')" /><img src="../graphics/explore-data.gif"></a></td>
-									<td  width="127"><a href="../posters/" onmouseover="javascript:hideAll();setDisplay('sitehelp-posters','visible')" /><img src="../graphics/explore-posters.gif"></a></td>
-									<td width="127"><a href="../assessment/index.jsp"  onmouseover="javascript:hideAll();setDisplay('sitehelp-assessment','visible')" /><img src="../graphics/explore-assessment.gif"></a></td>
+							    <td  width="127" align="center"><a href="../home/" onmouseover="javascript:hideAll();setDisplay('sitehelp-home','visible')" /><img src="../graphics/explore-home.gif"></a></td>
+									<td  width="127" align="center"><a href="../library/" onmouseover="javascript:hideAll();setDisplay('sitehelp-library','visible')" /><img src="../graphics/explore-library.gif"></a></td>
+<%	if (currentUser.isUpload()) { %> <td  width="127" td align="center" ><a href="../data/upload.jsp" onmouseover="javascript:hideAll();setDisplay('sitehelp-upload','visible')" /><img src="../graphics/explore-upload.gif"></a></td>
+<%}%>								<td  width="127" align="center"><a href="../data/" onmouseover="javascript:hideAll();setDisplay('sitehelp-data','visible')" /><img src="../graphics/explore-data.gif"></a></td>
+									<td  width="127" align="center"><a href="../posters/" onmouseover="javascript:hideAll();setDisplay('sitehelp-posters','visible')" /><img src="../graphics/explore-posters.gif"></a></td>
+									<td width="127" align="center"><a href="../assessment/index.jsp"  onmouseover="javascript:hideAll();setDisplay('sitehelp-assessment','visible')" /><img src="../graphics/explore-assessment.gif"></a></td>
 								
 							</td>
 						</tr>
@@ -83,12 +89,13 @@ function hideAll()
 									<a href="../library/site-help.jsp">Site Tips</a>
 								</div>
 							</td>
-							<td  width="127" valign="top" align="center">
+<%	if (currentUser.isUpload()) { %>     
+								<td  width="127" valign="top" align="center"> 
 								<div id="sitehelp-upload">
 									<a href="../data/upload.jsp">Upload Data</a><br />
 									<a href="../geometry">Geometry</a>
 								</div>
-							</td>
+							</td> <%}%>
 							<td  width="127" valign="top" align="center">
 								<div id="sitehelp-data">
 									<a href="../data/search.jsp">View Data</a><br />
