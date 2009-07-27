@@ -135,15 +135,16 @@
 		template = template.replaceAll("%" + key + "%", sb.toString());
 	}
 
-	// replace all the empty information with "not provided"
+	// Replace empty content fields with "not entered" and empty title fields with blank strings 
 	template = template.replaceAll("%PARA:ABSTRACT%", "Not entered"); 
 	template = template.replaceAll("%PARA:PROCEDURE%", "Not entered"); 
 	template = template.replaceAll("%PARA:RESULTS%", "Not entered"); 
 	template = template.replaceAll("%PARA:CONCLUSION%", "Not entered");
 	template = template.replaceAll("%PARA:BIBLIOGRAPHY%", "Not entered");
-	template = template.replaceAll("%PARA:AUTHORS%", "Not entered");
-	template = template.replaceAll("%WORDS:TITLE%", "Not entered"); 
-	template = template.replaceAll("%WORDS:SUBTITLE%", "Not entered"); 
+	template = template.replaceAll("%PARA:AUTHORS%", "");
+	template = template.replaceAll("%WORDS:TITLE%", ""); 
+	template = template.replaceAll("%WORDS:SUBTITLE%", ""); 
+	
 	if ("paper".equals(type)) {
 		// replace src=" with src="+ path to plots (in user area).
 		template = template.replaceAll("src=\"","src=\"" + plotURL); //really only matters for paper
@@ -156,7 +157,8 @@
 		template = template.replaceAll(plotURL + "%FIG:FIGURE2%", ""); 
 		template = template.replaceAll(plotURL + "%FIG:FIGURE3%", ""); 
 		template = template.replaceAll(plotURL + "%FIG:FIGURE4%", ""); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE5%", ""); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE5%", ""); 		
+		
 	}
 
 	out.println(template);
