@@ -40,6 +40,8 @@
 			<p align="center">
 				<img src="../graphics/lhomap_3.jpg" alt="Bird's Eye View of LHO" 
 					width="564" height="423" />
+				<br />
+				LIGO Hanford's seismometers are located in the five buildings along the beam line plus the vault.
 			</p>
 		</td>
 	</tr>

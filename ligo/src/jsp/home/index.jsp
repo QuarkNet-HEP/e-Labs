@@ -89,7 +89,7 @@
 							</tr>
 						</table>
 					</span>
-					<p>Project Map: Your team may use the milestones below, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results. </p>
+					<p>Project Map: Use the milestones below to guide you through the e-Lab. Make sure you know how to record your progress, keep your teacher apprised of your work and publish your results. </p>
 					<center>
 						<%@ include file="../library/milestones-map-student.jsp" %>
 						<p><a href="/elab/ligo/library/milestones.jsp">Milestones (text version)</a></p>
