@@ -120,7 +120,7 @@
 							<li>
 							<b>e-Logbooks:</b> Track progress and provide feedback on student work.<br>
 							Review students' evidence of what they know/understand and reflections on their research.<br> 
-							Review all students' entries for a particular milestone, e.g., class cosmic ray descriptions, and make notes in your logbook for next year. 
+							Review all students' entries for a particular milestone and make notes in your logbook for next year. 
 							Look at this <a href="#" onclick="javascript:window.open('../graphics/logbook-sample.gif', 'content', 'width=680,height=901, resizable=1, scrollbars=1');return false;">sample logbook</a>.
 							
 							</li>
