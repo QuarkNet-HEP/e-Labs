@@ -221,19 +221,21 @@ function apply_plot_options(){
 \***************************************************/
 
 function time_axis_control(){
-  global $user_level, $plot_options, $time_input_pref;  // assumed recalled
+	global $user_level, $plot_options, $time_input_pref;  // assumed recalled
 
-  $buttons['GMT'] = "GMT";
-  if( $user_level>1 || $time_input_pref=='GPS') { 
-     $buttons['GPS'] = "GPS";
-  }
-  if($user_level>3) { // TODO: decide appropriate level
-    $buttons['LCL'] = "Local";   // later...
-  }
+	if ($user_level <= 1) {
+		//no point displaying radio button with one option
+  		return;
+	} 
+  	$buttons['GMT'] = "GMT";
+  	$buttons['GPS'] = "GPS";
+	if ($user_level>3) { // TODO: decide appropriate level
+		$buttons['LCL'] = "Local";   // later...
+	}
 
-  /* Try to use existing value as default */
+  	/* Try to use existing value as default */
   
-  $selected="GMT";      // default (best guess)
+	$selected="GMT";      // default (best guess)
 
   if( empty($plot_options) || !array_key_exists('time_axis', $plot_options) ){
     $plot_options['time_axis'] = new ROOT_Plot_Option;
@@ -248,11 +250,9 @@ function time_axis_control(){
     debug_msg(6,"Time axis option uses previous value: " .$time_input_pref);      
   }
 
-  echo "<table class='control' width='100%'>
-        <TR><TH align='left'>Time Axis:</TH></TR><TR>
-        <TD ALIGN='center'>\n";
+  echo "<div class=\"vindent\"><b>Time Axis:</b><br />";
   echo auto_buttons_from_array('time_axis', $buttons, $selected);
-  echo "</TD>\n</TR></TABLE>\n ";
+  echo "</div>";
 }
         
 
@@ -300,11 +300,11 @@ function max_y_control(){
 
     $max_y=get_plot_option('max_y');
 
-    echo "<table class='control'>
-        <TR><TH align='left'>Maximum y value:</TH></TR>
-        <TR><TD ALIGN='center'>\n";
-    echo " <input type='text' name='max_y' size=10 value='$max_y'></TD>";
-    echo "</TR>\n</TABLE>\n ";
+echo <<<END
+    <div class="vindent">
+    	<b>Maximum y value:</b><br />&nbsp;&nbsp;<input class="textfield" type="text" name="max_y" size="10" value="$max_y" />
+	</div>
+END;
 }
 
 function handle_max_y(){
@@ -337,11 +337,11 @@ function min_y_control(){
 
     $min_y=get_plot_option('min_y');
 
-    echo "<table class='control'>
-        <TR><TH align='left'>Minimum y value:</TH></TR>
-        <TR><TD ALIGN='center'>\n";
-    echo " <input type='text' name='min_y' size=10 value='$min_y'></TD>";
-    echo "</TR>\n</TABLE>\n ";
+echo <<<END
+	<div class="vindent">
+    	<b>Minimum y value:</b><br/>&nbsp;&nbsp;<input class="textfield" type="text" name="min_y" size="10" value="$min_y" />
+    </div>
+END;
 }
 
 
@@ -400,10 +400,13 @@ function plot_title_control(){	// control panel item
   global $plot_options;
 
   $plot_title=get_plot_option('plot_title');
-  echo "<table class='control'>
-        <TR><TD width='100' align='right'><b>Plot Title:</b></TD><TD>
-        <input type='text' name='plot_title' size=40 value='$plot_title'>
-        </TD></TR></TABLE>\n ";
+
+echo <<<END
+	<div class="vindent">
+    	<b>Plot title:</b><br/>
+    	<input class="textfield" type="text" name="plot_title" size="18" value="$plot_title" />
+    </div>
+END;
 }
 
 function handle_plot_title(){ // handle input from control panel item
@@ -433,21 +436,18 @@ function y_axis_control(){
     $y_axis_title=get_plot_option('y_axis_title');
     $y_log=get_plot_option('y_log');
 
-    echo "<table class='control' border=0>
-        <TR><TD width='100' align='right'><b>Y-Axis:</b></TD><TD>
-        <input type='text' name='y_axis_title' size=40 value='$y_axis_title'>
-        ";
+echo <<<END
+	<div class="vindent">
+    	<b>Y Axis Label:</b><br/>
+    	<input class="textfield" type="text" name="y_axis_title" size="18" value="$y_axis_title"></input><br />
+END;
 
     if( $user_level>1 ){// No Log scale for Beginners
         debug_msg(2,"y_axis_control(): y_log is >$y_log<");
-        echo "<input type='checkbox' name='y_log' ";
-        if( $y_log=='on' ) echo " CHECKED ";
-        echo " onChange='submit_form(this.form)'> ";
-        echo "Logarithmic \n";
+        echo checkbox("y_log", $y_log, "Logarithmic");
     }
 
-    echo " 
-      </TD></TR></TABLE>\n";
+    echo "</div>\n";
 }
 
 
@@ -511,9 +511,8 @@ function pen_color_control(){
   $title="Pen&nbsp;Color";
   if($Npens>1) $title.="s";
 
-  echo "<table class='control' width='100%'>
-        <TR><TH width='100' align='left'><b>".$title.":</b></TH></TR>
-        ";
+  echo "<div class=\"vindent\">";
+  echo "<b>".$title.":</b><br/>";
 
   for($p=1;$p<=$Npens; $p++){
       $p0 = sprintf("%'02d", $p);    
@@ -522,12 +521,11 @@ function pen_color_control(){
     $n = get_plot_option($item);
     if( empty($n) ) $n=$p;
 
-    echo "<TR><TD align='center'>$p:";
+    echo "&nbsp;&nbsp;$p:";
     echo auto_select_from_array($item, $color_list, $n);
-    echo "</TD></TR>\n";
+	echo "<br />\n";
   }
-  echo " 
-        </TABLE>\n";
+  echo "</div>";
 }
 
 
