@@ -177,7 +177,7 @@ class InChannel{
 
         if( !isset($channel_info[$this->source][$this->subsys][$this->station]
                    [$this->sensor][$this->ttype][$this->tcomp]) ){
-            debug_msg(3,"is_valid: Trend channel does not exist: channel_info".
+            debug_msg(3,"is_valid: Trend channel (".$this->tcomp.") does not exist: channel_info".
                       "[$this->source][$this->subsys][$this->station]".
                       "[$this->sensor][$this->ttype][$this->tcomp]");
             return false;
@@ -416,6 +416,184 @@ function replace_if_set(&$list, $item, $text){
 }
 //
 
+define("SITE_LEVEL", 0);
+define("SUBSYS_LEVEL", 1);
+define("STATION_LEVEL", 2);
+define("SENSOR_LEVEL", 3);
+define("TREND_LEVEL", 4);
+define("TCOMP_LEVEL", 5);
+
+function nice_name($item, $node, $itemlevel) {
+	global $user_level;
+	if ($itemlevel == SITE_LEVEL) {
+		//site
+		if ($user_level == 1) {
+			if ($item == "H0") return "Hanford";
+			if ($item == "L0") return "Livingston";
+			if ($item == "NOAA") return "National Oceanic and Atmospheric Admin.";
+    	}
+    	else if($user_level == 2) {
+    		if ($item == "H0") return "Hanford (LHO)";
+			if ($item == "L0") return "Livingston (LLO)";
+			if ($item == "NOAA") return "National Oceanic and Atmospheric Admin. (NOAA)";
+    	}
+    	else {
+    		return $item;
+    	}
+	}
+	else if ($itemlevel == SUBSYS_LEVEL) {
+		//subsystem
+		$k = $item;
+		if ($user_level <= 2){ 
+	        if ($item == "DMT") $k = "Data Monitoring Tool";
+	        if ($item == "GDS") $k = "Global Diagnostic System";
+	        if ($item == "PEM") $k = "Physics Environment Monitoring";
+	        if ($item == "NDBC") $k = "National Data Buoy Center";
+	        if ($item == "METAR") $k = "Meteorlogical Airport Report";
+	        if ($item == "LSC") $k = "Length Sensing and Control";
+	    }
+	    if ($user_level == 2) {
+	        $k = $k." (".$item.")";
+	    }
+	    return $k;
+	}
+	else if ($itemlevel == STATION_LEVEL) {
+		//station
+		$k = $item;
+		if ($user_level <= 2) {
+	        if ($item == "LVEA") $k = 'Corner Station';
+	        if ($item == "EX") $k = 'End Station, X-arm';
+	        if ($item == "EY") $k = 'End Station, Y-arm';
+	        if ($item == "MX") $k = 'Middle Station, X-arm';
+	        if ($item == "MY") $k = 'Middle Station, Y-arm';
+	        if ($item == "VAULT") $k = 'Seismometer Vault';
+	        if ($item == "MONITOR") $k = 'Control Room';
+	    }
+	    if ($user_level == 2) {
+	        $k = $k." (".$item.")";
+	    }
+	    return $k;
+	}
+	else if ($itemlevel == SENSOR_LEVEL) {
+		//sensor
+		$a = array_keys($node);
+		if (!empty($a)) {
+			$node = $node[$a[0]];
+			$a = array_keys($node);
+			if (!empty($a)) {
+				$node = $node[$a[0]];
+			}
+		}
+        if ($user_level == 1) $text = $node->desc;  // verbose description
+        if ($user_level == 2) $text=$node->info;  // terse description
+        if (empty($text)) $text = $item;
+        return $text;
+	}
+	else if ($itemlevel == TREND_LEVEL) {
+		if ($item == "M") return 'minute trend';
+    	if ($item == "T") return 'second trend';
+    	if ($item == "R") return 'raw';
+    	if ($item == "D") return '10-minute trend';
+    	if ($item == "H") return 'hour trend';
+	}
+	else if ($itemlevel == TCOMP_LEVEL) {
+		return $item;
+	}
+	return $itemlevel.$item;
+}
+
+function mahash($list, $level) {
+	ksort($list);
+	$s = "";
+	foreach ($list as $k => $v) {
+		if (is_array($v)) {
+			$s = $s.mahash($v, $level + 1);
+		}
+		else {
+			$s = $s.$level.":".$k.";";
+		}
+	}
+	return $s;
+}
+
+function generate_array($list, $level, &$cache, &$count) {
+	if ($level > TCOMP_LEVEL) {
+		return "null";
+	}
+	$hash = mahash($list, 0);
+	if (array_key_exists($hash, $cache)) {
+		$sym = $cache[$hash];
+		return $sym;
+	}
+	$i = count($list);
+	$l = array();
+	$s = array();
+	foreach($list as $k => $v) {
+		$l[$k] = generate_array($v, $level + 1, $cache, $count);
+	}
+	$sym = "c".$count;
+	$count++;
+	echo($sym." = new Array(");
+	$i = count($l);
+	foreach ($l as $key => $value) {
+		$nice = nice_name($key, $list[$key], $level);
+		echo("new Node(\"".$key."\", \"".$nice."\", ".$value.")");
+		if ($i > 1) {
+			echo(", ");
+		}
+		$i--;
+	}
+	echo(");\n");
+	$cache[$hash] = $sym;
+	return $sym;
+}
+
+/***********************************************
+ * Generates a tree of javascript arrays containing
+ * all the possible selections
+ */
+function generate_data_tree($i, $channel_info) {
+	if ($i != 1) {
+		//only do this once
+		return;
+	}
+	
+echo <<<END
+	<script language="JavaScript">
+		function Node(name, niceName, subtree) {
+			this.name = name;
+			this.niceName = niceName;
+			this.subtree = subtree;
+		}
+
+END;
+	
+	$cache = array();
+	$count = 0;
+	$sym = generate_array($channel_info, 0, $cache, $count);
+echo <<<END
+		var choiceTree = $sym;
+	</script>
+END;
+}
+
+function _list_all_types($level, $crt, $list, &$result) {
+	foreach ($list as $k => $v) {
+		if ($level == $crt) {
+			$result[$k] = nice_name($k, $v, $crt);
+		}
+		else {
+			_list_all_types($level, $crt + 1, $v, $result);
+		}
+	}
+}
+
+function list_all_types($level, $channel_info) {
+	$l = array();
+	_list_all_types($level, 0, $channel_info, $l);
+	return $l;
+}
+
 
 /************************************************
  * Show a single Input Channel Selector (control item).  
@@ -436,169 +614,13 @@ function input_channel_control($i){
 
     /* In general we prepare lists first, then assemble the selectors */
 
-    $Inxx = $input_channels[$i];   // temporary object, as much as we've got
-
-
-    /* Source (H0, L0, NOAA, etc...) */
-
-    $source_list = array_of_keys($channel_info);
-    $source = 'H0';  // default value, then check what's already set
-    $x = $Inxx->source;
-    if( isset($x) && in_array($x, $source_list) ){
-        $source=$x;
-    }
-
-
-    /* Subsystem: (DMT, GDS, PEM, etc... )  */
- 
-    $subsys_list = array_of_keys($channel_info[$source]);
-    $subsys='DMT'; // default
-    $x = $Inxx->subsys;
-    if( isset($x) && in_array($x, $subsys_list) ){
-        $subsys=$x;
-    }
-
-
-    /* Station (location, position of sensor)  */
-
-    $station_list = array_of_keys($channel_info[$source][$subsys]);
-    debug_msg(4, "Station list: ". print_r($station_list,true));
-
-    $station=current($station_list);
-    $x = $Inxx->station;
-    if( isset($x) && in_array($x, $station_list) ){
-        $station=$x;
-    }
-
-
-    /* Sensor list */
-
-    $sensor_list = array_of_keys($channel_info[$source][$subsys][$station]);
-    $x = $Inxx->sensor;
-    if( isset($x) && array_key_exists($x, $sensor_list) ) {
-        $sensor = $x;
-    }
-    else { // if a value is not already set then set defaults in a cycle
-        debug_msg(2, "no previous sensor chosen.  Cycle through defaults");
-        $keys = array_keys($sensor_list);
-        $j = ($i-1) % sizeof($sensor_list);
-        $sensor = $keys[$j];
-    }
-
-
-    /* Sampling: type (M,T,R) and component (mean, min, max...) lists     */
-
-    $trend_list =
-        array_of_keys($channel_info[$source][$subsys][$station][$sensor]);
-    debug_msg(3, "Trend list: ". print_r($trend_list,true));
-
-    $ttype='M';         // Default if unset
-    $x = $Inxx->ttype;
-    if( isset($x) && in_array($x, $trend_list) ){
-        $ttype=$x;
-    }
-
-    $tcomp_list =
-      array_of_keys($channel_info[$source][$subsys][$station][$sensor][$ttype]);
-    debug_msg(3, "Trend component list: ". print_r($tcomp_list,true));
-
-    $tcomp =  ($subsys=="PEM") ? "rms" : "mean" ; // default
-
-    if( count($tcomp_list)==1) { // is there only one choice? 
-        $x = array_values($tcomp_list);
-        $tcomp = $x[0];
-        debug_msg(3,"Forced tcomp to $tcomp");
-    }
-
-    $x = $Inxx->tcomp;          // previously selected value (may be invalid)
-    if( isset($x) && in_array($x, $tcomp_list) ){ // if allowed, use it
-        $tcomp=$x;
-    }
-
-
-    /* Now modify the item lists to be more helpful to newer users  */
-
-    if($user_level==1) {
-        replace_if_set($source_list, 'H0',   "Hanford");
-        replace_if_set($source_list, 'L0',   "Livingston");
-        replace_if_set($source_list, 'NOAA', "National Oceanic and Atmospheric Admin.");
-    }
-    if($user_level==2) {
-        replace_if_set($source_list, 'H0', "Hanford (LHO)");
-        replace_if_set($source_list, 'L0', "Livingston (LLO)");
-        replace_if_set($source_list, 'NOAA', "Nat'l Oceanic and Atmospheric Admin. (NOAA)");
-    }
-
-    // Subsystems:
-
-    if( $user_level<=2 ){
-        replace_if_set($subsys_list, 'DMT', "Data Monitoring Tool");
-        replace_if_set($subsys_list, 'GDS', "Global Diagnostic System");
-        replace_if_set($subsys_list, 'PEM', "Physics Environment Monitoring");
-        replace_if_set($subsys_list, 'NDBC', "National Data Buoy Center");
-        replace_if_set($subsys_list, 'METAR', "Meteorlogical Airport Report");
-        replace_if_set($subsys_list, 'LSC',  "Length Sensing and Control");
-    }
-    if($user_level==2){
-        foreach($subsys_list as $key=>$text){
-            $subsys_list[$key]= "$text ($key)";
-        }
-    }
-
-    // Stations:
-
-    if( $user_level <=2 ){
-        replace_if_set($station_list, 'LVEA', 'Corner Station');
-        replace_if_set($station_list, 'EX', 'End Station, X-arm');
-        replace_if_set($station_list, 'EY', 'End Station, Y-arm');
-        replace_if_set($station_list, 'MX', 'Middle Station, X-arm');
-        replace_if_set($station_list, 'MY', 'Middle Station, Y-arm');
-        replace_if_set($station_list, 'VAULT', 'Seismometer Vault');
-        replace_if_set($station_list, 'MONITOR', 'Control Room');
-    }
-    if( $user_level==2 ){
-        foreach($station_list as $key=>$text){
-            $station_list[$key]= "$text ($key)";
-        }
-    }
-
-    // Sensor description from ->desc or ->info
-
-    foreach( $sensor_list as $s=>$text ){
-        $text = $s;
-        if( $ttype=='R'){
-            $Inxx = $channel_info[$source][$subsys][$station][$s][$ttype];
-        }
-        else {
-            $Inxx = $channel_info[$source][$subsys][$station][$s][$ttype][$tcomp];
-        }
-        if( $user_level == 1)   $text=$Inxx->desc;  // verbose description
-        if( $user_level == 2)   $text=$Inxx->info;  // terse description
-        if( empty($text) ) $text=$s;
-        $sensor_list[$s]=$text;  // will be $x->info or $x->desc
-    }
-
-
-    // Trend type
-
-    replace_if_set($trend_list, 'M', 'minute trend');
-    replace_if_set($trend_list, 'T', 'second trend');
-    replace_if_set($trend_list, 'R', 'raw');
-    replace_if_set($trend_list, 'D', '10-minute trend');
-    replace_if_set($trend_list, 'H', 'hour trend');
-
-    if( $user_level==2 ){
-        foreach($trend_list as $key=>$text){
-            $trend_list[$key]= "$text [$key]";
-        }
-    }
-
-
     /*********************************
      * Display the channel control.    There are two forms. 
      * Multi-line is easier to read if you are a new user.
      * Single line is more compact and easier to use when you know
      *   what you are doing, and when there are several channels. */
+    
+    generate_data_tree($i, $channel_info);
 
     $dev_hdr="Site";
     if($user_level>3) $dev_hdr="Instrument";
@@ -606,64 +628,74 @@ function input_channel_control($i){
     // DAQ sensors are "sensors", DMT Monitors are "Monitors"
     $sensor_hdr="Sensor";
     if( $subsys=='GDS' ) $sensor_hdr="Monitor";
-
+	echo "<div class=\"control\">\n";
     if($user_level > 2){
-
-        echo "\n <TABLE align='left' border=1><TR>
+        echo "\n <TABLE cellspacing=\"0\" class=\"input\"><TR>
         <th>$dev_hdr</th><th>Subsys</th><th>Station</th>
                 <th>$sensor_hdr</th><th>Sampling</th></TR>
         <TR>";
 
-        echo "<TD align='center' valign='top'>\n";  
-        echo auto_select_from_array('source_'.$i, $source_list, $source);
+        echo "<TD align='center' valign='top'>&nbsp;\n";  
+        echo auto_select_from_array('source_'.$i, list_all_types(SITE_LEVEL, $channel_info), 
+        	array("selected" => $source, "changeHandler" => "updateSelectors"));
         echo "</TD>\n";
 
-        echo "<TD align='center' valign='top'>\n";
-        echo auto_select_from_array('subsys_'.$i, $subsys_list, $subsys);
+        
+        echo "<TD align='left' valign='top'>&nbsp;\n"; 
+		echo auto_select_from_array('subsys_'.$i, list_all_types(SUBSYS_LEVEL, $channel_info), 
+			array("selected" => $source, "changeHandler" => "updateSelectors"));
         echo "</TD>\n";
 
-        echo "<TD align='center' valign='top'>\n";
-        echo auto_select_from_array('station_'.$i, $station_list, $station);
+        echo "<TD align='left' valign='top'>&nbsp;\n";
+        echo auto_select_from_array('station_'.$i, list_all_types(STATION_LEVEL, $channel_info), 
+        	array("selected" => $source, "changeHandler" => "updateSelectors"));
         echo "</TD>\n";
+        	
 
-        echo "<TD align='center' valign='top'>\n";
-        echo auto_select_from_array('sensor_'.$i, $sensor_list, $sensor);
+        echo "<TD align='left' valign='top'>&nbsp;\n";
+        echo auto_select_from_array('sensor_'.$i, list_all_types(SENSOR_LEVEL, $channel_info), 
+        	array("selected" => $source, "changeHandler" => "updateSelectors"));
         echo "</TD>\n";
-
+        	
+        	
         //TODO: Make this sampling selector work
-        echo "<TD align='center' valign='top'>\n";
-        echo auto_select_from_array('ttype_'.$i, $trend_list, $ttype);
-        if( $ttype!='R' ){
-            echo auto_select_from_array('tcomp_'.$i, $tcomp_list, $tcomp);        
-        }
-        echo "</TD>\n";
-
+        echo "<TD align='left' valign='top'>\n";
+        echo auto_select_from_array('ttype_'.$i, list_all_types(TREND_LEVEL, $channel_info), 
+        	array("selected" => $source, "changeHandler" => "updateSelectors"));
+        
+        echo auto_select_from_array('tcomp_'.$i, list_all_types(TCOMP_LEVEL, $channel_info), 
+        	array("selected" => $source, "changeHandler" => "updateSelectors"));
+        
+        echo "</TD></tr>\n";
         echo "   </TR></TABLE>\n ";
 
     }
     else { // level 1 & 2
         $help="[what's this?]";          // TODO: replace with an image?       
         if($user_level==2) $help="[?]";  // TODO: replace with an image?
-
-        echo "\n <TABLE align='left' border=0>  \n";
+        echo "\n <TABLE border=\"0\">  \n";
 
         echo "<TR><TD class='input-item-beginnner' > $dev_hdr: </td><TD>   \n";  
-        echo auto_select_from_array('source_'.$i, $source_list, $source);
+        echo auto_select_from_array('source_'.$i, list_all_types(SITE_LEVEL, $channel_info), 
+        	array("selected" => $source, "changeHandler" => "updateSelectors"));
         echo help_link("Data_Channel#Source");
         echo "</TD></TR>\n";
 
         echo "<TR><TD class='input-item-beginnner' > Subsystem: </td><TD>  \n";
-        echo auto_select_from_array('subsys_'.$i, $subsys_list, $subsys);
+        echo auto_select_from_array('subsys_'.$i, list_all_types(SUBSYS_LEVEL, $channel_info), 
+        	array("selected" => $source, "changeHandler" => "updateSelectors"));
         echo help_link("Data_Channel#Subsystem");
         echo "</TD></TR>\n";
 
         echo "<TR><TD class='input-item-beginnner' > Station: </td><TD>   \n";
-        echo auto_select_from_array('station_'.$i, $station_list, $station);
+        echo auto_select_from_array('station_'.$i, list_all_types(STATION_LEVEL, $channel_info), 
+        	array("selected" => $source, "changeHandler" => "updateSelectors"));
         echo help_link("Data_Channel#Station");
         echo "</TD></TR>\n";
 
         echo "<TR><TD class='input-item-beginnner' > $sensor_hdr:  </td><TD>\n";
-        echo auto_select_from_array('sensor_'.$i, $sensor_list, $sensor);
+        echo auto_select_from_array('sensor_'.$i, list_all_types(SENSOR_LEVEL, $channel_info), 
+        	array("selected" => $source, "changeHandler" => "updateSelectors"));
         echo help_link("Data_Channel#Sensor");
         echo "</TD></TR>\n";
 
@@ -672,9 +704,11 @@ function input_channel_control($i){
         //
         if( sizeof($trend_list) > 1 || sizeof($tcomp_list) > 1 ){
             echo "<TR><TD class='input-item-beginnner' > Sampling:  </td><TD>\n";
-            echo auto_select_from_array('ttype_'.$i, $trend_list, $ttype);
+            echo auto_select_from_array('ttype_'.$i, list_all_types(TREND_LEVEL, $channel_info), 
+            	array("selected" => $source, "changeHandler" => "updateSelectors"));
             if( $ttype!='R' ){
-                echo auto_select_from_array('tcomp_'.$i, $tcomp_list, $tcomp); 
+                echo auto_select_from_array('tcomp_'.$i, list_all_types(TCOMP_LEVEL, $channel_info), 
+                	array("selected" => $source, "changeHandler" => "updateSelectors")); 
             }
             echo help_link("Data_Channel#Sampling");
             echo "</TD></TR>\n";
@@ -683,20 +717,209 @@ function input_channel_control($i){
         // If no choices  then just use hidden variables 
         //
         else {
-            echo "<TR><TD>\n ";
-            echo " <input type='hidden' name='ttype_$i' value='$ttype'>\n";
+            echo "<TR><TD colspan=\"2\">\n ";
+            echo " <input type='hidden' id=\"ttype_$i\" name='ttype_$i' value='M'>\n";
             if( $ttype!='R' ){// all but raw frames have a trend component too
                 if( !array_key_exists($tcomp, $tcomp_list) ){// need default?
                     $x = array_values($tcomp_list);
                     $tcomp = $x[0];
                 }
-                echo " <input type='hidden' name='tcomp_$i' value='$tcomp'>\n";
+                echo " <input type='hidden' id=\"tcomp_$i\" name='tcomp_$i' value='mean'>\n";
             }
             echo "</TD></TR>\n ";
         }
 
         echo "   </TABLE>\n ";
     }
+    echo "</div>\n";
+    
+echo <<<END
+		<script language="JavaScript">
+			var types = ["source", "subsys", "station", "sensor", "ttype", "tcomp"];
+			
+			function getSelector(i, j) {
+				var id = types[j] + "_" + i;
+				return document.getElementById(id);
+			}
+			
+			function getSelected(i, j) {
+				var d = getSelector(i, j);
+				if (d == null) {
+					return null;
+				}
+				if (d.nodeName.toLowerCase() == "select") {
+					var index = d.selectedIndex;
+					if (index < 0) {
+						return null;
+					}
+					else {
+						return d.options[index].value;
+					}
+				}
+				else if (d.nodeName.toLowerCase() == "input") {
+					return d.value;
+				}
+				else {
+					return null;
+				}
+			}
+			
+			function trace(i, j) {
+				var a = new Array();
+				for (var k = 0; k <= j; k++) {
+					a.push(getSelected(i, k));
+				}
+				return a;
+			}
+			
+			function getSubNode(node, option) {
+				for (var j in node.subtree) {
+					if (option == node.subtree[j].name) {
+						return node.subtree[j];
+					}
+				}
+			}
+			
+			function getNode(t) {
+				var crt = new Node("", "", choiceTree);
+				for (var i in t) {
+					crt = getSubNode(crt, t[i]);
+				}
+				return crt;
+			}
+			
+			function setSignal(i) {
+				var s = document.getElementById("signal_" + i);
+				if (s == null) {
+					return;
+				}
+				else {
+					s.src = "img/signal_green.gif";
+				}
+			}
+			
+			function updateChannelStatus(i) {
+				//site:subsys-station_sensor.sampling [trend]
+				if ($user_level != 1) {
+					var d = document.getElementById("status_" + i);
+					if (d != null) {
+						var s = getSelected(i, 0) + ":" + getSelected(i, 1) + "-" + 
+							getSelected(i, 2) + "_" + getSelected(i, 3) + "." + 
+							getSelected(i, 5) + " [" + getSelected(i, 4) + "]";
+						d.innerHTML = s;
+					}
+				}
+			}
+			
+			function populateSelect(i, j, node, s) {
+				var o = getSelected(i, j);
+				while (s.length > 0) {
+					s.remove(0);
+				}
+				
+				var found = false;
+				for (var newo in node.subtree) {
+					var opt = new Option();
+					opt.value = node.subtree[newo].name;
+					opt.text = node.subtree[newo].niceName;
+					try {
+						s.add(opt, null);
+					}
+					catch (ex) {
+						s.add(opt);
+					}
+					if (opt.value == o) {
+						opt.selected = true;
+						found = true;
+					}
+				}
+				if (!found) {
+					s.selectedIndex = 0;
+					o = s.options[0].value;
+				}
+				populate(i, j + 1, getSubNode(node, o));
+			}
+			
+			function hasValue(node, v) {
+				for (var i in node.subtree) {
+					if (node.subtree[i].name == v) {
+						return true;
+					}
+				}
+				return false;
+			}
+			
+			function populateHidden(i, j, node, s) {
+				//return;
+				// for hidden trend preference is: minute trend, second trend
+				// for hidden trend subchannel: mean, rms
+				if (hasValue(node, "M")) {
+					s.value = "M";
+				}
+				else if (hasValue(node, "T")) {
+					s.value = "T";
+				}
+				else if (hasValue(node, "mean")) {
+					s.value = "mean";
+				}
+				else if (hasValue(node, "rms")) {
+					s.value = "rms";
+				}
+				else {
+					//last resort: use first
+					s.value = node.subtree[0].name;
+				}
+				populate(i, j + 1, getSubNode(node, s.value));
+			}
+			
+			function populate(i, j, node) {
+				var s = getSelector(i, j);
+				if (s == null) {
+					return;
+				}
+				if (s.nodeName.toLowerCase() == "select") {
+					populateSelect(i, j, node, s);
+				}
+				else if (s.nodeName.toLowerCase() == "input") {
+					populateHidden(i, j, node, s);
+				}
+			}
+			
+			function _updateSelectors(i, j) {
+				var node = getNode(trace(i, j));
+				populate(i, j + 1, node);
+				setSignal(i);
+				updateChannelStatus(i);
+			}
+			
+			function findIndex(type) {
+				for (var i = 0; i < types.length; i++) {
+					if (types[i] == type) {
+						return i;
+					}
+				}
+				return -1;
+			}
+			
+			function updateSelectors(id) {
+				var s = id.split("_");
+				_updateSelectors(s[1], findIndex(s[0]));
+			}
+			
+			//discover how many channels we have
+			
+			for (var i = 1; i <= 10; i++) {
+				var d = document.getElementById("source_" + i);
+				if (d == null) {
+					document.channelCount = i - 1;
+					break;
+				}
+				else {
+					_updateSelectors(i, 0);
+				}
+			}
+		</script>
+END;
 }
 
 
