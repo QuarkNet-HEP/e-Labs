@@ -44,7 +44,7 @@ recall_variable('time_input_pref');
 recall_variable('task_id');
 recall_variable('exec_type');   // REPLACE WITH TASK OBJECT?
 recall_variable('Nplot');
-recall_variable('launch_rc');   
+recall_variable('launch_rc');
 
 recall_variable('response_status');
 recall_variable('response_headers');
@@ -74,16 +74,17 @@ debug_msg(9, "task_execution.php: Avanti!");
 
 elab_ping();
 
-
+debug_msg(2, "_GET['task_id']=".$_GET['task_id'].", isset(...)=".isset($_GET['task_id']));
 // If the task_id is in the URL then use that instead
 //
 if( isset($_GET['task_id']) ){
     $task_id = $_GET['task_id'];
  }
-
+debug_msg(2, "empty(task_id)=".empty($task_id));
 // If the task_id is still empty then try to guess it, but worry about it.
-//
-if( empty($task_id) ){
+// I changed empty() to isset(). Php treats '0' as empty, and '0' is a
+// valid task id.
+if( !isset($task_id) ){
     $task_id = uniq_id();
     debug_msg(1,"No task ID was set, so I'm guessing $task_id");
  }
@@ -184,6 +185,7 @@ if( $exec_type == 'local' ){
         }
     }
     else {// Not done yet.
+    	set_step_status('main_steps', STEP_IN_PROGRESS);
         debug_msg(2,"Checking for lockfile $lockfile");
         if( file_exists($lockfile) ) {
             add_message( dateHms()."Task $task_id is still running.");
@@ -248,8 +250,106 @@ if( $exec_type == 'local' ){
 /********************
  * HTTP POST submission, local or abroad
  */
+if ($exec_type == "swift") {
+	debug_msg(2, "Checking on swift task ".$task_id." status");
+	
+	$form_url=ELAB_URL."/ligo/analysis/status-async.jsp?id=".$task_id;
+    debug_msg(2,"POST URL: $form_url");
+    recall_variable("re_arranged_ligo_cookies");
+    $form_options=array( 'cookies' => $re_arranged_ligo_cookies );
+    debug_msg(2, "Form options: ".print_r($form_options, TRUE));
 
-if( $exec_type=='post' || $exec_type=='swift'){
+    $response = http_get($form_url, $form_options);
+        
+    if (empty($response)) {
+     	add_message("Failed to retrieve analysis status.", MSG_ERROR);
+        add_message("Please see the log files for futher information. ",
+                    MSG_WARNING);
+        set_step_status('main_steps', STEP_FAIL);
+        clear_steps_after();
+    }
+    else {
+        
+	    $response_status = parse_http_response($response,
+                                               $response_headers,
+       	                                       $response_body);
+	    debug_msg(3,"HTTP status: $response_status");
+ 
+        if ($response_status == 200) {
+        
+        	if (preg_match("/<form method=\"post\".*login\.jsp/", $response, $matches)) {
+        		add_message("Error retrieving status: got the login page", MSG_ERROR);
+		        add_message("Please see the log files for futher information. ",
+        		            MSG_WARNING);
+        	}
+        	else {
+		        $status_array = explode("&", $response);
+    		    $status_fields = array();
+        	
+       			foreach ($status_array as $i) {
+       				$pair = explode("=", $i);
+	        		$status_fields[$pair[0]] = $pair[1];
+	    	    }
+    		    
+				if ($status_fields["status"] == "Running") {
+					add_message( dateHms()."Analysis $task_id is still running. Progress: ".$status["progress"]);
+	        	    debug_msg(1,"Still in progress... keep on truckin...");
+	            
+	            	$t =  4;  
+			        $u = $main_steps[$this_step]->url."?task_id=".$task_id;  
+			        debug_msg(3, "Analysis is still running.  Try again in $t seconds...");
+			        debug_msg(1," URL: $u");
+		    	    header("Refresh: $t; URL=$u");
+				}
+				elseif ($status_fields["status"] == "Failed") {
+					$form_url=ELAB_URL."/ligo/analysis/status.jsp?id=".$task_id;
+					debug_msg(2, "Retrieving details from ".$form_url);
+					$response = http_get($form_url, $form_options);
+				
+					$success = 0;
+				
+					if (!empty($response)) {
+						$response_status = parse_http_response($response,
+                	    			                           $response_headers,
+       	    	                    			               $response_body);
+				    	debug_msg(3, "HTTP status: $response_status");
+					    if ($response_status == 200) {
+					    	if (preg_match("@Execution failed:(.*)<hr\s*/>@U", $response, $matches)) {
+								add_message("Reason for failure: ".$matches[1]);
+								$success = 1;				    		
+					    	}
+					    	else {
+					    		debug_msg(2, "Did not find failure reason in status page");
+					    	}
+					    }
+					}
+					if ($success == 0) {
+						add_message("Failed to retrieve detailed analysis status.", MSG_ERROR);
+						set_step_status("main_steps", STEP_FAIL);
+						clear_steps_after();
+					}
+				}
+				elseif ($status_fields["status"] == "Completed") {
+					add_message( dateHms()."Analysis task $task_id is done.");
+	            	set_step_status('main_steps', STEP_DONE);
+	    	        $t =  1 + $debug_level;  
+    	    	    $u = $main_steps[$this_step+1]->url;
+        	    	header("Refresh: $t; URL=$u");
+	        	    debug_msg(3,"Jumping in $t seconds forward to $u");
+				}
+			}
+    	}
+    	else {
+    		add_message("Failed to retrieve analysis status.", MSG_ERROR);
+	        add_message("Please see the log files for futher information. ",
+                        MSG_WARNING);
+       	    set_step_status('main_steps', STEP_FAIL);
+           	clear_steps_after();
+    	}
+    }
+}
+
+if( $exec_type=='post'){
 
     debug_msg(2, basename($self).": Checking on task $task_id, "
               ." submitted via '$exec_type' ");
@@ -278,10 +378,6 @@ if( $exec_type=='post' || $exec_type=='swift'){
 
     // For Swift we can just get status directly if we have ID#
 
-    if(!$next_url && $exec_type=='swift' ){
-        $next_url="/elab/ligo/analysis/status.jsp";
-    }
-
     if( !$next_url ){ // nowhere to go?
         debug_msg(1, "No next location! Aye Carumba. ");
         add_message("Analysis cannot continue!", MSG_ERROR);
@@ -295,8 +391,7 @@ if( $exec_type=='post' || $exec_type=='swift'){
         debug_msg(1,"Jumping in $t seconds back to $u");
     }
     else {   
-        debug_msg(3, "Next Location: $next_url");
-
+        
         // Are we 'done' yet?
         //
         if( strpos($next_url, "done") !== FALSE ){
@@ -339,7 +434,7 @@ if( $exec_type=='post' || $exec_type=='swift'){
  }// POST submission, local or Swift
 
 
- if( !empty($task_time_end) && $main_steps[$this_step]->status < 1) 
+ if( !empty($task_time_end) && $main_steps[$this_step]->status == STEP_IN_PROGRESS) 
     add_message("Expected to finish at " . gmdate('r',$task_time_end) );
 
 
@@ -354,27 +449,7 @@ controls_begin();  // includes message area
 
 // Task Control bar 
 //
-echo "<P align='LEFT'>\n";
-if( $task_rc<1 ){
-    echo "
-                <input type='submit' name='cancel' value='Cancel Task'>\n";
- }
-echo "
-              <!--  <input type='submit' name='queue_it' value='Queue Task'>-->
-                <input type='submit' name='refresh' value='Refresh Page'>\n";
-
-echo " <a class='button' href='view_logs.php' target='_view'>
-                  <input type='button' class='button' name='view_logs'
-                                       value='View Logs'></a>\n";
-
-if( $task_rc>0 || $debug_level > 0 ){
-        echo "\n
-        <input type='submit' name='reset_session' value='New Analysis'>\n";
- }
-
-
-
-
+echo "<div class=\"control\">\n";
 
 controls_next();
 
@@ -382,21 +457,16 @@ if( $task_rc != 0){
     show_log_files();
  }
  else{
-     echo "<TABLE width='100%' border=0><TR>\n";
-
-     if( $main_steps[$this_step]->status == 1){
-         echo "<td valign='top'><b>Task completed!</b></td>\n";
-     }
-     else {
-         echo "<td valign='top'><b>Task in progress...</b></td>\n";
-     }
-     echo "<td align='right' valign='top'>\n";
-     echo GMT_clock_box();
-     echo "</td></tr>\n";
-     echo "<tr><td colspan=2' valign='center'>\n";
-
-     echo steps_as_signals('main_steps');
-
+	echo "<TABLE width='100%' border=0><TR>\n";
+	if( $main_steps[$this_step]->status == 1){
+		echo "<td valign='top'><b>Task completed!</b></td>\n";
+	}
+	else {
+		echo "<td valign='top'><b>Task in progress...</b></td>\n";
+	}
+	echo "<td align='right' valign='top'>\n";
+	echo GMT_clock_box();
+	echo "</td></tr></table>\n";     
 
      // If we got a response body then strip out the insides
      // and show them.
@@ -455,7 +525,7 @@ if( $task_rc != 0){
      else {// No response, so just show 'busy' image 
            // and something to think about while waiting.
 
-         echo "<blockquote>\n";
+         echo "<p style=\"text-align: center\">\n";
 
          $i = $Nbusy%4;
          debug_msg(3,"Nbusy is $Nbusy, i is $i");
@@ -463,6 +533,8 @@ if( $task_rc != 0){
          case 0:
              $x = 'img/Speed_of_light_from_Earth_to_Moon.gif';
              echo " <img width='80%' align='center' valign='middle' src='$x'>\n";
+             echo "</p>";
+             echo "<p style=\"text-align: left;\">";
              echo " <br><b>Do you know?</b>
                 The image above demonstrates the actual time 
                 it would take for a beam of light to go from
@@ -474,6 +546,8 @@ if( $task_rc != 0){
          case 1:
              $x = 'img/Speed_of_light_from_Earth_to_Moon.gif';
              echo " <img width='80%' align='center' valign='middle' src='$x'>\n";
+             echo "</p>";
+             echo "<p style=\"text-align: left;\">";
              echo " <br><b>Can you tell?</b>
                 The image above shows a beam of light traveling from the 
                 the Earth to the Moon.
@@ -484,6 +558,8 @@ if( $task_rc != 0){
          case 2:
              $x = 'img/Speed_of_light_from_Earth_to_Moon.gif';
              echo " <img width='80%' align='center' valign='middle' src='$x'>\n";
+             echo "</p>";
+             echo "<p style=\"text-align: left;\">";
              echo " <br><b>Can you compute?</b>
                 The image above shows a beam of light traveling from the 
                 the Earth to the Moon.  
@@ -494,6 +570,8 @@ if( $task_rc != 0){
          case 3:
              $x = 'img/Speed_of_light_from_Earth_to_Moon.gif';
              echo " <img width='80%' align='center' valign='middle' src='$x'>\n";
+             echo "</p>";
+             echo "<p style=\"text-align: left;\">";
              echo " <br><b>Do you know?</b>
                 The image above shows a beam of light traveling from the 
                 the Earth to the Moon.  
@@ -502,13 +580,24 @@ if( $task_rc != 0){
                 <p>";
              break;
          }
-         echo "</blockquote>\n";
+         echo "</p>\n";
 
 
      }// response_body
- }
+}
 
-echo "</td></tr></TABLE>\n";
+echo "</div>\n";
+echo "<div class=\"control\" style=\"text-align: center;\">\n";
+if ($task_rc < 1) {
+	echo "<input class=\"button\" type='submit' name='cancel' value='Cancel Task'>\n";
+}
+echo "<input class=\"button\" type='submit' name='refresh' value='Refresh Page'>\n";
+
+echo " <a class='button' href='view_logs.php' target='_view'>
+                  <input type='button' class='button' name='view_logs'
+                                       value='View Logs'></a>\n";     
+
+echo "</div>\n"; 
 
 
 if( $debug_level > 2 && ($response_headers || $response_body) ) {
