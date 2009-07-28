@@ -41,6 +41,8 @@ recall_variable('GPS_start_time');
 recall_variable('GPS_end_time');
 recall_variable('time_input_pref');
 
+// This way of passing IDs will probably not work with
+// concurrent analyses in the same session
 // Task launch:
 recall_variable('task_id');
 recall_variable('exec_type');   // REPLACE WITH TASK OBJECT
@@ -389,8 +391,6 @@ if($is_go) {
     remember_variable('plot_options');  
  }
 
-
-
 // If not ready yet, then just ask user to review and press GO
 //
 if( !$is_go || !get_posted('submit_task') ){ // not ready, or no button push?
@@ -400,13 +400,14 @@ if( !$is_go || !get_posted('submit_task') ){ // not ready, or no button push?
     }
  }
 
+debug_msg(2, "Is go: $is_go");
 
 if( $is_go && get_posted('submit_task') ){ // ready and GO!
     if( empty($exec_type) ){
         debug_msg(1,"Execution type unknown.");
         $exec_type='unknown';
     }
-
+	
     // Fresh start...
     //
     clear_log_files();
@@ -420,10 +421,12 @@ if( $is_go && get_posted('submit_task') ){ // ready and GO!
 
     // The actual work is done in the slot directory
     chdir($slot);
+    // Wonderful assumption for remote execution ;)
 
     add_message(dateHms()." Engage: Task $task_id to be run as '$exec_type' "
                 ."in slot ".getcwd() );
 
+	debug_msg(2,"Exec type: $exec_type");
 
     // Local:
     //
@@ -449,7 +452,8 @@ if( $is_go && get_posted('submit_task') ){ // ready and GO!
  
             $task_rc=0;
             remember_variable('task_rc');
-            $t = 1 + $debug_level;
+            //$t = 1 + $debug_level;
+            $t = 0;
             $u = $main_steps[$this_step+1]->url;  
             header("Refresh: $t; URL=$u");
         }
@@ -473,9 +477,9 @@ if( $is_go && get_posted('submit_task') ){ // ready and GO!
         //
         if( $exec_type=='post' ){ 
             $form_url="http://".$local_server.$this_dir."/plot1chan_submit.php";
-                 debug_msg(3,"POST URL: $form_url");
+            debug_msg(3,"POST URL: $form_url");
 
-            $form_fields = array('task_id' => $task_id, 
+            $form_fields = array('outputDir' => $slot, 
                      'chName' => $input_channels[1]->name,
                      'GPS_start_time' => $GPS_start_time,
                      'GPS_end_time' => $GPS_end_time,
@@ -496,7 +500,8 @@ if( $is_go && get_posted('submit_task') ){ // ready and GO!
 
             elab_login(); // should set $elab_cookies
 
-            $form_fields = array('task_id' => $task_id, 
+            $form_fields = array('outputDir' => $slot,
+            					 'task_id' => $task_id,
                                  'GPS_start_time' => $GPS_start_time,
                                  'GPS_end_time' => $GPS_end_time,
                                  'channelName' => $input_channels[1]->name, 
@@ -505,7 +510,16 @@ if( $is_go && get_posted('submit_task') ){ // ready and GO!
                                  'submit' => 'Analyze' 
                                  );
             $form_files=array();  // no files (for now)
-            $form_options=array( 'cookies' => $elab_cookies );
+            $ligo_cookies = $elab_cookies['ligo'];
+            //According to the docs at us3.php.net/manual/en/http.request.options.php,
+            //"list of cookies as associative array like array("cookie" => "value")
+            $re_arranged_ligo_cookies = array();
+            $re_arranged_ligo_cookies[$ligo_cookies['Name']] = $ligo_cookies['Value'];
+            remember_variable("re_arranged_ligo_cookies");
+            $plot_id = $task_id;
+            remember_variable("plot_id");
+            debug_msg(2, "JSESSIONID: ".$re_arranged_ligo_cookies['JSESSIONID']);
+            $form_options=array( 'cookies' => $re_arranged_ligo_cookies );
         }
 
 
@@ -514,6 +528,7 @@ if( $is_go && get_posted('submit_task') ){ // ready and GO!
         $response = http_post_fields($form_url, $form_fields, $form_files,
                                      $form_options ); 
 
+		debug_msg(2, "posted");
         if( empty($response) ){
             add_message("Remote analysis failed! No reponse.", MSG_ERROR);
             add_message("Please see the log files for futher information. ",
@@ -552,7 +567,11 @@ if( $is_go && get_posted('submit_task') ){ // ready and GO!
                 // But will that be enough to get us through all steps?
                 // Trick: append my own Location: url to $response_headers
                 //         (don't forget \r\n)
-
+                debug_msg(3, "HTTP Response: $response");
+                if (preg_match("/status\.jsp\?id=([0-9]*)/", $response, $matches)) {
+                	$task_id = $matches[1];
+                	debug_msg(3, "Task id: $task_id");
+                }
                 add_message("Remote analysis start? maybe/maybe not.", MSG_WARNING);
                 add_message("Status code ".$response_status
                             ." means something came back.", MSG_WARNING);
@@ -565,7 +584,8 @@ if( $is_go && get_posted('submit_task') ){ // ready and GO!
                 remember_variable('response_headers');
                 remember_variable('response_body');
                 $t =  3 + $debug_level;  
-                $u = $main_steps[$this_step+1]->url;  
+                $u = $main_steps[$this_step+1]->url."?task_id=".$task_id;
+                debug_msg(3, "Redirect to $u");
                 header("Refresh: $t; URL=$u");
             }
             else {
@@ -597,12 +617,15 @@ controls_begin();
 /**
  * Data Flow:
  */
+$wf = $WorkFlow_list[$WorkFlow];
+echo "<div class=\"control\">\n";
+echo "<b>Analysis Type:</b> $wf->name ";
+if( $user_level == 1 ) echo "- $wf->desc "; 
+if( $user_level == 2 ) echo "- $wf->info "; 
 
-echo steps_as_signals('main_steps'); // artificially right justified
+echo "</div>\n";
 
-echo "<b>Work Flow:&nbsp;</b> ";
-echo "'$WorkFlow' <P>\n";
-
+echo "<div class=\"control\">\n";
 if( $Ninputs==1 ) echo "<b>Input Channel:&nbsp;</b> ";
 else           echo "<b>Input Channels:&nbsp;</b> ";
 
@@ -611,13 +634,13 @@ for($i=1; $i<=$Ninputs;$i++){
   echo "\n<br>&nbsp;&nbsp;" . $channel_description[$i]; 
   echo "[$ttype] ";
 }
-echo "\n<P>\n";
+echo "</div>\n";
 
 
 /**
  * Time Interval:
  */
-
+echo "<div class=\"control\">\n";
 echo "<b>Time interval:</b>";
 echo printable_dt($dt);
 
@@ -626,7 +649,7 @@ echo " (estimated $Nframes frame files) <br/>\n";
 
 debug_msg(6,"User's input time preference is $time_input_pref");
 
-echo "<p align='center'>". GPS_to_User($GPS_start_time);
+echo "&nbsp;&nbsp;".GPS_to_User($GPS_start_time);
 
 if($user_level>2) echo  " (".GPS_to_Other($GPS_start_time). ") ";
 echo  "\n to ". GPS_to_User($GPS_end_time); 
@@ -646,69 +669,42 @@ echo "<P align='center'>
         </p>\n";
 ****************/
 
-
+echo "</div>\n";
 /**
  * Execution Controls:
  */
-controls_next();
-
-echo "<b>Execution:&nbsp;</b><br/>
-        Select how you want to run your analysis:"
-        . help_link("Execution type") ."<br/>\n <blockquote>\n";
+echo "<div class=\"control\">\n";
+echo "<b>Execution:</b><br/>
+        &nbsp;&nbsp;Select how you want to run your analysis:"
+        . help_link("Execution type") ."<br/>\n";
 
 if( empty($exec_type) ) $exec_type = $best_exec_type;
 exec_type_options();
 
-echo "        </blockquote>\n";
 
 
 /**
  * Only show the GO button if we really are ready to go.
  */
 
-if( $is_go ){
-  echo "<P align='RIGHT'><font color='GREEN'>
-         Press the 'Go' button to start the analysis.
-        </font></p>        
-        <P align='right'>
-        <input type='submit' name='submit_task' value='Go'> \n";        
- }
- else {
+if( !$is_go ){
      if( $main_steps[$this_step-1] == STEP_FAIL ){
          echo "<P align='RIGHT'><font color='RED'> 
                 Correct all problems before proceeding.
                 </font></p>\n";
      }
- }
+}
 
-if( $launch_rc >0 || $task_rc >0 || $debug_level > 2 ) {
+/*if( $launch_rc >0 || $task_rc >0 || $debug_level > 2 ) {
   show_log_files($Nplot);
- }
+}*/
 
 
 if( $debug_level > 2 && ($response_headers || $response_body) ) {
     display_http_response($response_headers,$response_body);
- }
+}
 
-
-
-/**
- * Alternate Controls
- */
-
-controls_next();
-
-echo "<b>Output Files:&nbsp;</b> ";
-echo "<blockquote>
-        [Here you would select names for intermediate output files 
-        (LIGO_LW format)
-        or export files (eg. R or MS Excel files)
-        associated with any output terminals in the block diagram
-        (if there are any).]
-        </blockquote>
-        ";
-
-
+echo("</div>\n");
 
 controls_end();
 
