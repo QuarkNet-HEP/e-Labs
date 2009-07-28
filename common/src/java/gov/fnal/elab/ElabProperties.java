@@ -27,6 +27,7 @@ public class ElabProperties extends AbstractProperties {
     public static final String PROP_DATA_DIR = "data.dir";
     
     public static final String PROP_NEW_COSMIC_SURVEY = "cosmic.newsurvey";
+    public static final String PROP_LIGO_SURVEY = "ligo.newsurvey";
 
     private String elabName;
 
@@ -110,7 +111,15 @@ public class ElabProperties extends AbstractProperties {
         return getRequired(ElabProperties.PROP_USER_DIR);
     }
     
-    public String getNewSurveyId() {
+    /**
+     * Returns the configuration-defined survey IDs from the database. 
+     */
+    
+    public String getCosmicSurveyId() {
     	return getRequired(ElabProperties.PROP_NEW_COSMIC_SURVEY);
+    }
+    
+    public String getLigoSurveyId() {
+    	return getRequired(ElabProperties.PROP_LIGO_SURVEY);
     }
 }

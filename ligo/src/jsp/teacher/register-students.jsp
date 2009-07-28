@@ -33,80 +33,129 @@
 			<div id="content">
 
 <%
-	String optionList = "<option value=\"discard\">Choose group</option>";
-	for (Iterator ite = user.getGroups().iterator(); ite.hasNext();) {
-		ElabGroup group = (ElabGroup) ite.next();
-		String name = group.getName();
-		if (!name.equals(user.getName())) {
-		    optionList += "<option value=\"" + name + "\">" + name + "</option>";
-		}
+int newSurveyId = -1; 
+boolean teacherInStudy = "yes".equalsIgnoreCase(request.getParameter("eval"));
+
+// Only for teachers in our study. 
+if (teacherInStudy) {
+	%> <i>You have agreed to enter our study</i><% 
+	
+	// Set teacher's database flag so we know he or she is in the survey.
+	if (user.isStudy() == false) {
+		elab.getUserManagementProvider().setTeacherInStudy(user, newSurveyId); 
+		user.setStudy(true);
+		// set this in the database. 
 	}
+}
 
-	String submit = request.getParameter("submit");
-	if (submit != null) {
-	    try {
-	        List students = new ArrayList();
-	        List newGroups = new ArrayList();
-	        
-			for (int formNum = 0; formNum < 10; formNum++) {
-				String last = request.getParameter("last" + formNum);
-				String first = request.getParameter("first" + formNum);
-				String resName = request.getParameter("res_name" + formNum);
-				String resNameChoose = request.getParameter("res_name_choose" + formNum);
-				String upload = request.getParameter("is_upload" + formNum);
-				String survey = request.getParameter("is_survey" + formNum);
-				
-				boolean isNewGroup = true;
-				if (resName == null || resName.equals("Group Name")) {
-					resName = resNameChoose;
-					isNewGroup = false;
-				}
-				
-				if (last == null || first == null || resName == null ||
-					last.equals("") || first.equals("") || resName.equals("") ||
-					last.equals("Last Name") || first.equals("First Name") || resName.equals("Group Name") || 
-					resName.equals("discard")) {
-					continue;
-				}
-				
-				ElabStudent newUser = new ElabStudent();
-				first = first.replaceAll(" ", "").toLowerCase();
-				last = last.replaceAll(" ", "").toLowerCase();
-				String studentName = first.substring(0, 1) + last.substring(0, (last.length() < 7 ? last.length() : 7));
-				
-				newUser.setName(studentName);
+// New survey/test handler is active by default. 
+if (user.getNewSurveyId() == null) { 
+	if (elab.getId().equals("1")) {
+		newSurveyId = Integer.parseInt(elab.getProperty("cosmic.newsurvey"));
+		user.setNewSurveyId(newSurveyId);
+	}
+	else if (elab.getId().equals("2")) {
+		newSurveyId = Integer.parseInt(elab.getProperty("ligo.newsurvey"));
+		user.setNewSurveyId(newSurveyId);
+	}
+	// set handlers for everything else. 
+}
+else {
+	newSurveyId = user.getNewSurveyId().intValue();
+}
+	
+String optionList = "<option value=\"discard\">Choose group</option>";
+for (Iterator ite = user.getGroups().iterator(); ite.hasNext();) {
+	ElabGroup group = (ElabGroup) ite.next();
+	String name = group.getName();
+	if (!name.equals(user.getName())) {
+	    optionList += "<option value=\"" + name + "\">" + name + "</option>";
+	}
+}
 
-				ElabGroup group = new ElabGroup(elab);
-				newUser.setGroup(group);
-				group.setName(resName);
-				if ("yes".equalsIgnoreCase(upload) || "true".equalsIgnoreCase(upload)) {
-				    group.setRole(ElabUser.ROLE_UPLOAD);
-				}
-				group.setSurvey("yes".equalsIgnoreCase(survey) || "true".equalsIgnoreCase(survey));
-				students.add(newUser);
-				newGroups.add(Boolean.valueOf(isNewGroup));
+String submit = request.getParameter("submit");
+if (submit != null) {
+    try {
+        List students = new ArrayList();
+        List newGroups = new ArrayList();
+        
+		for (int formNum = 0; formNum < 10; formNum++) {
+			String last = request.getParameter("last" + formNum);
+			String first = request.getParameter("first" + formNum);
+			String resName = request.getParameter("res_name" + formNum);
+			String resNameChoose = request.getParameter("res_name_choose" + formNum);
+			String survey = request.getParameter("is_survey" + formNum);
+			
+			boolean isNewGroup = true;
+			
+			boolean groupInSurvey = (StringUtils.containsIgnoreCase(survey, "yes") || 
+					StringUtils.containsIgnoreCase(survey, "true"));
+			
+			if (resName == null || resName.equals("Group Name")) {
+				resName = resNameChoose;
+				isNewGroup = false;
 			}
-			List passwords = elab.getUserManagementProvider().addStudents(user, students, newGroups);
-			List results = new ArrayList();
-			Iterator i = students.iterator(), j = passwords.iterator();
-			while (i.hasNext()) {
-				String password = (String) j.next();
-				ElabStudent u = (ElabStudent) i.next();
-			    if (password != null) {
-			        List l = new LinkedList();
-			        l.add(u.getGroup().getName());
-			        l.add(password);
-			        results.add(l);
-			    }
+			
+			if (last == null || first == null || resName == null ||
+				last.equals("") || first.equals("") || resName.equals("") ||
+				last.equals("Last Name") || first.equals("First Name") || resName.equals("Group Name") || 
+				resName.equals("discard")) {
+				continue;
 			}
-			request.setAttribute("valid", Boolean.TRUE);
-			request.setAttribute("results", results);
-	    }
-	    catch (Exception e) {
-	   		e.printStackTrace();
-	        request.setAttribute("valid", Boolean.FALSE);
-	        request.setAttribute("error", e.getMessage());
-	    }
+			
+			ElabStudent newUser = new ElabStudent();
+			first = first.replaceAll(" ", "").toLowerCase();
+			last = last.replaceAll(" ", "").toLowerCase();
+			String studentName = first.substring(0, 1) + last.substring(0, (last.length() < 7 ? last.length() : 7));
+			
+			newUser.setName(studentName);
+
+			ElabGroup group = new ElabGroup(elab);
+			newUser.setGroup(group);
+			group.setName(resName);
+
+			if (elab.getId().equals("1")) { // cosmic
+				group.setSurvey(false); // old, deprecated handler is disabled
+				group.setStudy(teacherInStudy);
+				group.setNewSurvey(groupInSurvey);
+				group.setNewSurveyId(newSurveyId);
+			}
+			else if (elab.getId().equals("2")) {
+				// TODO: LIGO 
+				// Anyone taking this test will be in the 'New Survey' system
+				group.setSurvey(false);
+				group.setStudy(false);
+				group.setNewSurvey(groupInSurvey);
+				group.setNewSurveyId(newSurveyId);
+			}
+			else if (elab.getId().equals("3")) {
+				// TODO: CMS
+				// Anyone taking this test will be in the 'New Survey' system
+			}
+			students.add(newUser);
+			newGroups.add(Boolean.valueOf(isNewGroup));
+		}
+		List passwords = elab.getUserManagementProvider().addStudents(user, students, newGroups);
+		List results = new ArrayList();
+		Iterator i = students.iterator(), j = passwords.iterator();
+		while (i.hasNext()) {
+			String password = (String) j.next();
+			ElabStudent u = (ElabStudent) i.next();
+		    if (password != null) {
+		        List l = new LinkedList();
+		        l.add(u.getGroup().getName());
+		        l.add(password);
+		        results.add(l);
+		    }
+		}
+		request.setAttribute("valid", Boolean.TRUE);
+		request.setAttribute("results", results);
+    }
+    catch (Exception e) {
+   		e.printStackTrace();
+        request.setAttribute("valid", Boolean.FALSE);
+        request.setAttribute("error", e.getMessage());
+    }
 		
 		%>
 			<c:choose>
@@ -149,10 +198,6 @@
 				</li>
 				<li>
 					We will create new groups and their associated passwords for you.
-				</li>
-				<li>
-					Select &nbsp;<img src="../graphics/upload_registration.gif" valign="middle"/>&nbsp; if 
-					you want to grant the new group upload permissions for your detectors.
 				</li>
 				<li>
 					Select &nbsp;<img src="../graphics/logbook_pencil.gif" valign="middle"/>&nbsp;&nbsp;&nbsp; 
@@ -213,8 +258,10 @@
     </td>
     <td align="left" valign="middle">
         <div id="is_upload_box<%=i%>" style="visibility:hidden; display:none;">
+        	<%-- Disabled for LIGO
             <input type="checkbox" name="is_upload<%=i%>" value="yes"/>
             <img src="../graphics/upload_registration.gif" valign="middle"/>
+             --%>
         </div>
     </td>
     <td align="left" valign="middle">

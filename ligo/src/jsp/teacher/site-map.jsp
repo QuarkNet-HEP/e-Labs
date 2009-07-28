@@ -27,7 +27,7 @@
 			<div id="content">
 
 
-<h1>Cosmic Site Map</h1>
+<h1>LIGO Site Map</h1>
 
 <table border="0" id="main">
 	<tr>
@@ -66,6 +66,22 @@
 					<li><a href="../home/">Home</a></li>
 					<li><a href="../site-index/">Site Index</a></li>
 				</ul>
+				<%--
+				<c:choose>
+					<c:when test="${newSurvey == true }">
+						<e:restricted role="teacher">
+						 --%>
+						<h2>Test results</h2>
+						<b>For research groups created after Summer 2009</b>
+						<ul class="simple">
+							<li><a href="../survey/survey.jsp?type=pre&studentid=0&id=3">Pre-test</a> and <a href="../survey/survey.jsp?type=post&studentid=0">Post-test</a>.</li>
+							<li>Student Results for the <a href="../survey/results.jsp?type=pre">pre-test</a> and the <a href="../survey/results.jsp?type=post">post-test</a>.</li>
+						</ul>
+						<%--
+						</e:restricted>
+					</c:when>
+				</c:choose>
+				--%>
 			</div>
 		</td>
 	</tr>

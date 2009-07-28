@@ -54,7 +54,7 @@
 			
 			<h3>Who can join the LIGO e-Lab collaboration!</h3>
 			<p>
-				<strong>You</strong>! Think about steps you'd take to investigate cosmic rays. How would you get started? What do you need to know? Can you collect and use data?
+				<strong>You</strong>! Think about steps you'd take to investigate how the ground shakes. How would you get started? What do you need to know? Can you collect and use data?
 			</p>
 			<ul>
 				<li>Here's your chance to do a research study.</li>
@@ -67,13 +67,13 @@
 				<li>
 					You will:
 					<ul>
-						<li>Ask questions about cosmic rays.</li>
+						<li>Ask questions about seismic activity.</li>
 						<li>Develop a study plan to answer these questions.</li>
 						<li>
 							Execute your plan.
 							<!-- ?? -->
 							<ul>
-								<li>Gather data (if you have a detector in your classroom).</li>
+								<li>Gather data by using our Internet software.</li>
 								<li>Gather evidence from data.</li>
 							</ul>
 						</li>
