@@ -87,8 +87,12 @@ if( $main_steps[$this_step-1]->status != STEP_DONE ){
 if( empty($Nplot) || !is_numeric($Nplot) || $Nplot < 1 )  $Nplot=1;
 if( empty($Ntry)) $Ntry=0;
 
-if(empty($plot_id) ) $plot_id = uniq_id($Nplot);
+recall_variable('plot_id');
+if (empty($plot_id)) {
+	$plot_id = uniq_id($Nplot);
+}
 
+debug_msg(2, "Plot id is ".$plot_id);
 
 // deal with 'undo' button
 //
@@ -163,7 +167,7 @@ if( file_exists($update_file) ){
   debug_msg(2, " Found update file.  Updating to Nplot='$Nplot' ....");
   $root_rc = plot_update($task_id, $Nplot); // removes update file
   if( $root_rc != 0 ) {
-    debug_msg(2, "<br><tt>ROOT RC=". $root_rc );
+    debug_msg(2, "ROOT RC=". $root_rc );
   }
 }
 
@@ -178,7 +182,7 @@ $imgfile = $plot_id.".jpg";
 if ( !file_exists($imgfile) ) {
     add_message("Image file not found: $imgfile  ", MSG_WARNING);
 
-  if( $Ntry < 5 ) {
+  /*if( $Ntry < 5 ) {
       add_message("Trying again in a second (try $Ntry)... ", MSG_WARNING);
       header("Refresh: 1; URL=plot_graph.php");
       $Ntry ++;
@@ -187,7 +191,7 @@ if ( !file_exists($imgfile) ) {
       add_message("After $Ntry attempts I give up.", MSG_ERROR);
       $main_steps[$this_step]->status=STEP_FAIL;    
       $Ntry = 0;
-  }
+  }*/
 }
  else {
      $main_steps[$this_step]->status=STEP_DONE;    
@@ -265,99 +269,69 @@ title_bar($title,"Plot # ".$Nplot);
 
 controls_begin();  // includes message area
 
-echo "<TABLE width='100%' bgcolor='white' border=4>
-         <TR>\n";
+if (!file_exists($imgfile)) {
+	echo "(No image file available.)\n";
+}
+else {
 
+	echo <<<END
+		<table border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td class="control">
+   					<div class="textarea">
+   						<img src="$slot_url$imgfile" />   
+   					</div>
+   				</td>
+   				<td class="control" valign="top" width="100%">
+END;
+	plot_title_control();
+	hrule();
+	time_axis_control();
+	y_axis_control();
+	hrule();
+	max_y_control();
+	min_y_control();
+	hrule();
+	pen_color_control();
+	hrule();
+	echo "<input class=\"button\" type=\"submit\" name=\"apply\" value=\"Update\" />";
+	if ($Nplot > 1) {
+		echo "<input class=\"button\" type=\"submit\" name=\"undo_plot\" value=\"Undo\" />";
+	}
+	// View Logs is not shown to Beginners.
+	//
+	if ($user_level > 1) {
+	    echo "
+	       <a class='button' href='view_logs.php' target='_view'>
+	          <input type='button' class='button' name='view_logs'
+	                 value='View Logs'></a>
+	              ";
+	}
+	echo "<br />";
+	// Save this plot (to the e-Lab, if we are logged in to it) 
+	//
 
-if ( !file_exists($imgfile) ) {
-  echo "<blockquote>(No image file available.)</blockquote>\n";
- }
- else {
-
-   echo "<TD valign='TOP'>   <img src='$slot_url$imgfile' border='1'>   </TD>\n";
-
-   // Controls to the right
-
-   echo "<TD class='control' width='20%' valign='top'>\n";
-
-   time_axis_control();
-   hrule();
-   max_y_control();
-   min_y_control();
-   hrule();
-   pen_color_control();
-   hrule();
-   if( $user_level < 3) {
-       steps_as_signals('main_steps'); // artificially right justified
-   }
-   //
-   // Any other controls would go here
-   //
-   echo "</TD>\n";
- }
-
-echo "</TR>\n</TABLE>\n";
-
-// Control bar under plot
-
-controls_next();
-
-echo "<span align='LEFT'>
-          <input type='submit' name='apply' value='Apply'>
-        ";
-
-if( $Nplot > 1 ) {
-    echo "<input type='submit' name='undo_plot' value='Undo'>";
- }
-
-
-// View Logs is not shown to Beginners.
-//
-if( $user_level > 1 ){
-    echo "
-       <a class='button' href='view_logs.php' target='_view'>
-          <input type='button' class='button' name='view_logs'
-                 value='View Logs'></a>
-              ";
- }
-
-
-// New Analysis (just resets the session)
-//
-
-echo "\n <input type='submit' name='reset_session' value='New Analysis'>\n";
-
-
-// Save this plot (to the e-Lab, if we are logged in to it) 
-//
-
-if( function_exists("http_get") ){
-    echo "&nbsp;|&nbsp;  ";
-    echo "\n <input type='submit' name='save_plot' value='Save Plot As:'>
-        <input type='text' name='plot_name' value='$plot_name'
-                    size='10'>\n";
-     echo "&nbsp;|&nbsp;  ";
- }
-
-
-echo "\n</span>\n";
+	if (function_exists("http_get")) {
+    	echo "\n<input class=\"button\" type='submit' name='save_plot' value='Save Plot As:'><br />
+        	<input class=\"textfield\" type='text' name='plot_name' value='$plot_name'
+                    size='18'>\n";
+	}
+	
+	//
+	// Any other controls would go here
+	//
+	echo "</td></tr></table>\n";
+}
 
 // Bottom controls:
-
-echo "\n<hr>\n";
-
 echo "<TABLE class='control' width='100%'>
         <TR><TD ALIGN='left'>
         ";
 
-plot_title_control();
-y_axis_control();
-
 
 // Downloadable image and metadata files:
 //
-echo "\n<hr>\n";
-echo "<b>Download links:</b>&nbsp;&nbsp; ";
+echo "<b>Download plot as:</b>&nbsp;&nbsp; ";
 
 function download_image_link($imgfile ,$tag){
     global $slot_url;
@@ -417,9 +391,7 @@ echo "
 /****************************
  * Log files?  Debug control?
  */
-
 if( !empty($root_rc) || $debug_level > 2 ) {
-    controls_next();
     show_log_files($Nplot);
  }
 
