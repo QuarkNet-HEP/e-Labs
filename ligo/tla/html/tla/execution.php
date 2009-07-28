@@ -108,10 +108,11 @@ if( 0 &&  $hostname !='tekoa' ){
 
 // Grid execution options
 //
-$exec_list['swift']= new TaskExecution('swift', 'Swift',3);
-$exec_list['swift']->method = 'POST';
-$exec_list['swift']->submit_url = "/elab/ligo/analysis-plot1chan/analysis.jsp";
-$exec_list['swift']->run_time="<font color='ORANGE'>Not Available</font>";
+//$exec_list['swift']= new TaskExecution('swift', 'Swift',3);
+//$exec_list['swift']->method = 'POST';
+//$exec_list['swift']->submit_url = ELAB_URL."/ligo/analysis-plot1chan/analysis.jsp";
+//$exec_list['swift']->run_time="<font color='ORANGE'>Not Available</font>";
+//$exec_list['swift']->run_time=1;
 
 
 $exec_list['vds']= new TaskExecution('vds', 'VDS',5);
@@ -183,18 +184,16 @@ function handle_exec_type(){
 function exec_type_options(){
     global $exec_list;
     global $user_level;
+    global $exec_type;
 
-    echo " <table border='0' align='left'>\n";
+    $l = array();
 
-    foreach($exec_list as $key=>$obj){
+    foreach ($exec_list as $key => $obj) {
         if($obj->level > $user_level) continue;
 
-        echo "<tr><td> ". exec_type_input($obj)."
-                  </td>\n";
-        echo "<td> ". exec_run_time($obj). "
-        </td></tr>\n";
+        $l[$key] = "<b>".$obj->label.":</b> ".exec_run_time($obj);       
     }
-    echo "  </table>\n";
+    echo auto_buttons_from_array("exec_type", $l, $exec_type, true);
 }
 
 
