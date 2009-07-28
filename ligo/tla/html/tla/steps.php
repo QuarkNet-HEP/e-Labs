@@ -392,7 +392,7 @@ function prev_next_buttons($step_list_name, $reset = true){
 
     echo "<TD width='33%' align='CENTER'>";
     if ($reset) {
-       echo "<input class=\"button\" type='submit' name='reset_session' value='Reset Session'>";
+       echo "<input class=\"button\" type='submit' name='reset_session' value='Start Over'>";
     }
     echo "</TD>\n";
 

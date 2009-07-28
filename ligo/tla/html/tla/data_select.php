@@ -294,7 +294,12 @@ for($i=1; $i<=$Ninputs;$i++){
   //  echo "[$icon]&nbsp;";
   echo "<img id=\"signal_".$i."\" src='img/$icon'>&nbsp;";
   echo "<b>Input ";
-  printf("In%02d", $i);
+  if ($user_level == 1) {
+  	printf("%d", $i);
+  }
+  else {
+  	printf("In%02d", $i);
+  }
   echo ": </b> ";
   echo "<span id=\"status_$i\" class=\"channel_status\">$status</span>\n";
 

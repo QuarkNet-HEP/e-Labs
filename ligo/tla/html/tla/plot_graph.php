@@ -177,7 +177,7 @@ if( file_exists($update_file) ){
  */
 
 if(empty($plot_id)) $plot_id = uniq_id($Nplot);
-$imgfile = $plot_id.".jpg";
+$imgfile = $plot_id.".png";
 
 if ( !file_exists($imgfile) ) {
     add_message("Image file not found: $imgfile  ", MSG_WARNING);
@@ -340,8 +340,10 @@ function download_image_link($imgfile ,$tag){
         title='right click to download image'>$tag</span></a>]&nbsp;\n";
 }
 
+/* We probably don't want JPEG  
 $imgfile = $plot_id.".jpg";
 download_image_link($imgfile,"JPEG");
+*/
 
 $imgfile = $plot_id.".eps";
 download_image_link($imgfile,"EPS");

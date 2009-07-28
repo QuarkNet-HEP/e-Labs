@@ -276,7 +276,7 @@ show_global_array($_SESSION);
  */
 
 echo "<h2>RESET SESSION</h2>
-       <input type='submit' name='reset_session' value='Reset Session'>
+       <input type='submit' name='reset_session' value='Start Over'>
         ";
 
 /**

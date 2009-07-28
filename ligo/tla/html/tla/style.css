@@ -106,6 +106,7 @@ td.block-new {
     margin: 0;
     padding-right: 1em;
     padding-left: 1em;
+    text-align: center;
 }
 
 
@@ -115,6 +116,7 @@ td.block-this {
     height: 3em;
     padding-right: 1em;
     padding-left: 1em;
+    text-align: center;
 }
 
 
@@ -124,6 +126,7 @@ td.block-ok {
     height: 3em;
     padding-right: 1em;
     padding-left: 1em;
+    text-align: center; 
 }
 
 td.block-fail {
