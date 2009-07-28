@@ -94,57 +94,64 @@ function html_begin($title,$right_stuff='') {
  */
 
 function ligo_masthead($title,$right_stuff='&nbsp;'){
-    echo "\n<!-- tool masthead -->
-     <table class='masthead' width=100% border=0 bgcolor='black' ><tr>
-       <td width=15% valign='top' align=left>
-              <a href='/' >
-              <img src='img/ligo_logo.gif' border='0'
-                   valign='top' align='left' alt='ligo' 
-                   title='return to the top level'></a>
-       </TD>";
+echo <<<END
+	<!-- tool masthead -->
+	<table class='masthead' width=100% border=0 bgcolor='black' ><tr>
+		<td width=15% valign='top' align=left>
+			<a href='/'>
+				<img src='img/ligo_logo.gif' border='0' valign='top' align='left' alt='ligo' 
+					title='return to the top level'>
+			</a>
+		</td>
+		<TD valign='CENTER' align='CENTER' >
+			<div class='header-title'>LIGO e-Lab</div>
+			&nbsp;
+		</TD>
 
-    echo "
-       <TD valign='CENTER' align='CENTER' >
-	<div class='header-title'>
-		LIGO e-Lab
-	</div>
-	<div class='header-subtitle'>
-	    $title
-        </div>
-
-       </TD>\n ";
-
-    echo "
-       <TD valign='TOP' align='RIGHT' >
-        <div class='second-header-title'>
-        	Laser Interferometer Gravitational-Wave Observatory
-        </div>
-       </TD></TR>\n ";
-
-
-    /*********
-    echo "<TR><TD colspan='3'>
-        <div class='third-header-title'>
-          &nbsp; Laser Interferometer Gravitational-Wave Observatory
-        </div>
-	</TD></TR>\n";
-    *********/
-
-    echo "</TABLE>";
-    echo "\n<!-- END Tool Masthead -->\n";
+		<TD valign='TOP' align='RIGHT' >
+			<div class="second-header-title">
+        		Laser Interferometer Gravitational-Wave Observatory
+			</div>
+			<div class="user-tools">
+END;
+			user_tools();
+echo <<<END
+			</div>
+		</TD></TR>
+	</TABLE>
+    <!-- END Tool Masthead -->
+END;
 }
 
+function user_tools() {
+	global $user_level, $logged_in_user;
+	
+	if( isset($hide_user) && $hide_user ) {   // don't show user/login or cache indicator
+        echo "&nbsp;";
+    }
+    else {              
+        echo "<font size='-1'>\n";
+        show_user_login_name();
+        echo "</font>\n";
+    }
+	
+	if( !isset($user_level) ) $user_level=1;
+    debug_msg(7,"User level is " .$user_level);
+    user_level_control();
+}
 
 
 /* The title_bar() shows the title and user info  */
 
 function title_bar($title){
-    global $user_level, $logged_in_user;
+    
+    global $current_step_title;
+    
+    $current_step_title = $title;
 
     echo "\n<!-- Tile/User Bar -->\n";
     echo " <TABLE WIDTH=100% border=0 ><TR>
-           <TD ALIGN=LEFT><font size=+2 face='helvetica,arial'><b><em>\n"
-        .$title.
+           <TD ALIGN=LEFT><font size=+2 face='helvetica,arial'><b><em>\n".
         "\n</b></em></font><br/> </TD>\n";
 
     echo "<TD align='CENTER' valign='TOP' width='33%'>\n";
@@ -154,20 +161,6 @@ function title_bar($title){
     /* User level control and login info */
 
     echo " <TD ALIGN=RIGHT VALIGN=TOP> \n";
-
-    if( !isset($user_level) ) $user_level=1;
-    debug_msg(7,"User level is " .$user_level);
-    user_level_control();
-
-    if( isset($hide_user) && $hide_user ) {   // don't show user/login or cache indicator
-        echo "&nbsp;";
-    }
-    else {              
-        echo "&nbsp;<br>&nbsp;";
-        echo "<font size='-1'>\n";
-        show_user_login_name();
-        echo "</font>\n";
-    }
 
     echo "</TD></TR></TABLE>";
     echo "\n<!-- END Tile/User Bar -->\n";
@@ -317,8 +310,8 @@ function help_link($term){
     if($user_level>1) $help="?";   // TODO: replace with an image
 
     return "<sup>[<a target='_help' href='$url'
-               onclick=\"javascript:window.open('$url', 'Glossary: $term', 'width=520,height=600, resizable=1, scrollbars=1');return false;\"
-                >$help</a>]</sup>";
+               onclick=\"javascript:window.open('$url', 'Glossary: $term', 'width=520,height=600, resizable=1, scrollbars=1');return false;\"".
+                ">$help</a>]</sup>";
 }
 
 
@@ -329,32 +322,35 @@ function help_link($term){
 
 function controls_begin(){
     global $user_level;
+    
+    global $current_step_title;
+    
+    if (empty($current_step_title)) {
+    	$current_step_title = "&nbsp;";
+    }
 
-    echo "<div class='control' >
-       <TABLE width='100%' border=7  >
-       <TR><TD>\n        ";
+    echo "  <table border=\"0\" id=\"frame\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n";
+    echo "    <tr><td id=\"frame-top-left\"></td><td id=\"frame-top-left-inner\"></td>";
+    echo "      <td id=\"frame-top\"><div id=\"title\">$current_step_title</div></td><td id=\"frame-top-right-inner\"></td>";
+    echo "      <td id=\"frame-top-right\"></td></tr>\n";
+    echo "    <tr><td id=\"frame-left\"></td><td colspan=\"3\" id=\"center\">\n";
 
-    steps_as_tabs('main_steps');
-    controls_next();
+    steps_as_blocks('main_steps');
     show_message_area();
-    controls_next();
 }
 
 
 function controls_next(){ // TODO:  change this to controls_sep()??
-    echo "</TD></TR></TR><TD>\n";
+    //echo "</TD></TR></TR><TD>\n";
 }
 
 
 function controls_end(){
     global $debug_level, $user_level ,$Nplot;
 
-    controls_next();
+	echo "<div class=\"control\">\n";
 
     echo "<table width='100%' border=0><tr><td>\n";
-
-
-    auto_update_control();
 
     // Plot number
 
@@ -404,10 +400,14 @@ function controls_end(){
 
     // Back/Reset/Next buttons inside the control panel
     //
-    controls_next();
     prev_next_buttons('main_steps');
-
-    echo "</TD></TR></TABLE></div>\n"; // end of entire control box
+    echo "</div>\n";
+    
+    echo "    </td><td id=\"frame-right\"></td></tr>\n";
+    echo "    <tr><td id=\"frame-bottom-left\"></td><td id=\"frame-bottom-left-inner\"></td>";
+    echo "      <td id=\"frame-bottom\"></td><td id=\"frame-bottom-right-inner\"></td>";
+    echo "      <td id=\"frame-bottom-right\"></td></tr>\n";
+    echo "  </table>\n";
 }
 
 
