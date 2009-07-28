@@ -183,12 +183,11 @@ function show_log_files($Nplot=''){
 
     // Output Log:
 
+    echo "<div class=\"control\">\n";
     $fn =  $slot.$logfile;
     if( file_exists($fn) ) {
-        controls_next();
-
         echo "<b>LOG FILE OUTPUT:</b><br>
-          <TABLE width='100%' bgcolor='white' border=4>
+          <TABLE width='100%' class=\"textarea\" border=\"0\">
            <TR><TD>";
 
         echo "<pre>\n";
@@ -203,16 +202,15 @@ function show_log_files($Nplot=''){
 
     $fn =  $slot. $errfile;
     if (file_exists($fn)) {
-        controls_next();
         echo "<b><font color='RED'>ERROR LOG OUTPUT:</font></b><br>
-          <TABLE width='100%' bgcolor='white' border=4>
+          <TABLE width='100%' class=\"textarea\" border=\"0\">
            <TR><TD>";
         echo "<pre>\n";
         system("/usr/bin/fold  -s -w 99 $fn");
         echo "</pre>\n";
         echo "</TD></TR>\n</TABLE>\n";
     }
-
+	echo "</div>\n";
 }
 
 // TODO? handle_view_logs button?  Can you do that with headers() 
@@ -260,6 +258,11 @@ function posted_to_self(){
 }
 
 
+function default_value(&$a, $k, $v) {
+	if (!array_key_exists($k, $a)) {
+		$a[$k] = $v;
+	}
+}
 
 /**
  * Generate a "select" element from an array of values which automaticically
@@ -268,20 +271,44 @@ function posted_to_self(){
  * Note: result passed as returned value, so you probably want to echo it.
  */
 
-function auto_select_from_array($name, $array, $selection='same', $button='Set') {
+function auto_select_from_array($name, $array, $options = NULL) {
     // 'same' means take value from variable named $name
+    
+	if (!is_array($options)) {
+		$options = array("selection" => $options);
+	}
+	if (empty($array)) {
+		default_value($options, "selection", "same");
+	}
+	else {
+		default_value($options, "selection", $array[0]);
+	}
+	default_value($options, "inhibitEmpty", false);
+	default_value($options, "changeHandler", "");
   
-    if( $selection=='same' ){ 
+    if ($options["selection"] == "same") { 
         global $$name;
         if( isset($$name) ) {
-            $selection=$$name;
+            $options["selection"]=$$name;
             debug_msg(8,$name." defaults to previous value ".$$name); 
         }
     }
-    debug_msg(9,$name." has ".$selection." selected.");
-
+    debug_msg(9,$name." has ".$options["selection"]." selected.");
+	
+    if (empty($array) && $options["inhibitEmpty"] == true) {
+    	return;
+    }
+    
+    if ($options["changeHandler"] != "") {
+    	if(strpos($options["changeHandler"], "javascript:") === false) {
+    		$options["changeHandler"] = " onChange=\"".$options["changeHandler"]."('".$name."')\"";
+    	}
+    	else {
+    		$options["changeHandler"] = " onChange=\"".$options["changeHandler"]."\"";
+    	}
+    }
     $out = "
-      <select name='$name' onChange='submit_form(this.form)'>\n";
+      <select id=\"$name\" name=\"$name\"".$options["changeHandler"].">\n";
 
     if(!is_array($array) ){
         debug_msg(1, "selector $name not given an array of values.");
@@ -289,7 +316,9 @@ function auto_select_from_array($name, $array, $selection='same', $button='Set')
 
     foreach ($array as $key => $value) {
         $out .= "        <option value='". $key. "' ";
-        if ( $key == $selection ) {  $out .= " SELECTED "; }
+        if ($options["selection"] == $key) {
+        	$out .= " SELECTED "; 
+       	}
         $out .=">". $value. "</option>\n";
     }
     $out .= "      </select>\n";
@@ -299,6 +328,85 @@ function auto_select_from_array($name, $array, $selection='same', $button='Set')
 }
 
 
+function custom_controls() {
+	global $custom_controls;
+	
+	$out = "";
+	if (!$custom_controls || empty($custom_controls)) {
+	    $out .= <<<END
+	    	<script language="JavaScript">
+	    		
+	    		function radioImg(on) {
+	    			if (on) {
+	    				return "img/radio-on.gif";
+	    			}
+	    			else {
+	    				return "img/radio-off.gif";
+	    			}
+	    		}
+	    		
+	    		function checkboxImg(on) {
+	    			if (on) {
+	    				return "img/checkbox-on.gif";
+	    			}
+	    			else {
+	    				return "img/checkbox-off.gif";
+	    			}
+	    		}
+	    		
+	    		function radioChecked(id, index, value) {
+	    			for (var i = 1; i < 10; i++) {
+	    				var rimg = document.getElementById(id + i);
+	    				if (rimg != null) {
+	    					rimg.src = radioImg(index == i);
+	    				}
+	    			}
+	    			var input = document.getElementById(id + "-input");
+	    			if (input != null) {
+	    				input.value = value;
+	    			}
+	    		} 
+	
+	    		function genRadio(name, index, on, key, value) {
+	    			document.write('<a class="radio" href="javascript:radioChecked(\'' + name + 
+	    				'\', ' + index + ', \'' + key + '\')"><img alt="()" id="' + name + index + 
+	    				'" src="' + radioImg(on) + '"></img>' + value + '</a>\\n');
+	    		}
+	    		
+	    		function genCheckbox(name, on, value) {
+	    			//maybe I'm doing something wrong (like not using a tested lib for this)
+	    			//and maybe IE is indeed silly
+	    			if (navigator.appName == "Microsoft Internet Explorer" && (navigator.appVersion.indexOf("MSIE 8") != -1)) {
+	    				document.write('<a href="#"></a>');
+	    			}
+	    			if (navigator.appName == "Opera") {
+	    				document.write('<input type="checkbox" name="' + name + '" ' + (on ? 'checked="true" ' : '') + ' />' + value); 
+	    			}
+	    			else {
+	    				var href = "javascript:checkboxClicked('" + name + "')";
+	    				document.write('<a class="checkbox" href="' + href + '"><img alt="[]" id="' + 
+	    					name + '" src="' + checkboxImg(on) + '"></img>' + value + '</a>\\n');
+	    			}
+	    		}
+	    		
+	    		function checkboxClicked(id) {
+	    			var input = document.getElementById(id + "-input");
+	    			if (input == null) {
+	    				return;
+	    			}
+	    			var img = document.getElementById(id);
+	    			if (img == null) {
+	    				return;
+	    			}
+	    			input.checked = !input.checked;
+	    			img.src = checkboxImg(input.checked);
+	    		}
+    	</script>
+END;
+		$custom_controls = true;
+	}
+	return $out;
+}
 
 /**
  * Generate a set of radio buttons to select one of several choices from an array 
@@ -306,7 +414,7 @@ function auto_select_from_array($name, $array, $selection='same', $button='Set')
  * Note: result passed as returned value, so you probably want to echo it.
  */
 
-function auto_buttons_from_array($name, $array, $selection='same'){
+function auto_buttons_from_array($name, $array, $selection='same', $vertical = false) {
     // 'same' means take value from variable named $name
   
     if( $selection=='same' ){ 
@@ -317,17 +425,59 @@ function auto_buttons_from_array($name, $array, $selection='same'){
         }
     }
     debug_msg(9,$name." has ".$selection." selected.");
-
-    $out = '';
+    $divclass = $vertical ? "buttons-v" : "buttons";
+    $sep = $vertical ? "<br />" : "&nbsp;&nbsp;";
+	
+    // radio buttons and CSS don't mix much
+    $out = custom_controls();
+	$out .= <<<END
+		<script language="JavaScript">
+    		document.write('<input type="hidden" id="$name-input" name="$name" value="$selection" />');
+    		document.write('<div class="$divclass">');
+    		
+END;
+	$index = 1;
     foreach ($array as $key => $value) {
-        $out .= "        <input type='radio' name='$name' value='". $key. "' ";
-        if ( $key == $selection ) {  $out .= " CHECKED "; }
-
-        $out .=" onChange='submit_form(this.form)' >". $value. "</br>\n";
+    	$value = str_replace("\n", "\\n", $value);
+    	$on = ($key == $selection) ? "true" : "false";
+    	$out .= "genRadio(\"$name\", $index, $on, \"$key\", \"$value\");\n";
+    	$out .= "document.write('$sep');\n";
+    	$index++;
     }
+	$out .= <<<END
+			document.write('</div>');
+    	</script> 
+		<noscript>
+			<div class="$divclass">
+			
+END;
+    foreach ($array as $key => $value) {
+    	$checked = ($key == $selection) ? "checked=\"true\"" : "";
+    	$out .= <<< END
+        <input class="radio" type="radio" name="$name" value="$key" $checked>$value</input>$sep\n
+        	
+END;
+    }
+    $out .= "</div></noscript>\n";
     // uncomment if you need this, but we now  have at least one submit button per form
     //  $out .= "      <noscript><input type='SUBMIT' value='$button' ></noscript>\n";
     return $out;
+}
+
+function checkbox($name, $checked, $label) {
+	$chk = $checked ? "checked=\"true\"" : "";
+	$on = $checked ? "true" : "false";
+    $out = custom_controls();
+	$out .= <<<END
+		<script language="JavaScript">
+    		document.write('<input type="checkbox" style="position: absolute;left: -9000px;" id="$name-input" name="$name" $chk" />');
+    		genCheckbox("$name", $on, "$label");
+    	</script>
+    	<noscript>
+    		<input class="checkbox" type="checkbox" name="$name" $chk>$value</input>
+    	</noscript>
+END;
+	return $out;
 }
 
 
@@ -449,14 +599,17 @@ function slot_dir(){
         $d = "$d/".session_id();  // default slot 
     }
 
+	// The user under which the elab runs on needs to
+	// be able to write to this dir. Typically, this
+	// won't work with 0770.
     if( file_exists($d) && is_dir($d) ) {
-        chmod($d, 0770);
+        chmod($d, 0777);
         return $d;
     }
     debug_msg(1,"$d is not an existing directory");
 
-    if( mkdir($d,0770) ) {
-        chmod($d, 0770);  // seemed to be needed
+    if( mkdir($d,0777) ) {
+        chmod($d, 0777);  // seemed to be needed
         return $d;
     }
     debug_msg(1,"Could not mkdir($d,0777)");
@@ -464,8 +617,8 @@ function slot_dir(){
     /* maybe we try to create it in /tmp rather than ./sess/ ? */
 
     $d = "/tmp/".$d;
-    if( mkdir($d,0770,true) ) {
-        chmod($d, 0770);  // seemed to be needed
+    if( mkdir($d,0777,true) ) {
+        chmod($d, 0777);  // seemed to be needed
         debug_msg(0,"Warning: Had to create slot under /tmp");
         return $d;
     }
