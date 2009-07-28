@@ -47,7 +47,7 @@ if( $x = get_posted('WorkFlow') ) {
     }
     $WorkFlow=$x;
     remember_variable('WorkFlow');
- }
+}
 
 if( isset($WorkFlow) )  set_step_status('main_steps', STEP_DONE);
 debug_msg(2,"WorkFlow is set to $WorkFlow");
@@ -67,10 +67,10 @@ load_all_vi_settings();         // All of them!
 // Helpful? user message
 
 if($user_level<3){
-    add_message(" Use the control below to select the ".glink('workflow')
-                ."for your analysis.....");
+    add_message(" Use the control below to select the ".glink('analysis type')
+                ."...");
     if($user_level<2){
-    add_message(" (The workflow determines what kind of processing is applied "
+    add_message(" (The analysis type determines what kind of processing is applied "
                 ."to the data.) ");
     }
  }
@@ -83,13 +83,18 @@ debug_msg(6, "User level: ".$user_level);
  * Display Page:
 \***********************************************************************/
 
-$title="Workflow";
+$title="Analysis Type";
 html_begin($title);
 title_bar($title);
 controls_begin();
 
-echo "<b>Workflow:&nbsp;</b> ";
-if( $user_level < 3) echo "Select the workflow for your analysis."; 
+echo "<div class=\"control\">\n";
+if( $user_level < 3) {
+	echo "Select the <b>analysis type</b>:"; 
+}
+else {
+	echo "<b>Analysis Type:&nbsp;</b> ";	
+}
 echo "<P align='CENTER'>";
 
 
@@ -141,6 +146,8 @@ if( file_exists($img_file) ){
     if( $x ) echo "title='$WorkFlow: $x' ";
     echo ">\n";
  }
+ 
+echo "</div>\n";
 
 controls_end();
 
