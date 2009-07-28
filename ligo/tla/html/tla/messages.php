@@ -64,22 +64,36 @@ function show_message_area(){
 
   if( !isset($msgs_list) )  recall_variable('msgs_list');
 
-  // Box height varies with user level
+  //delete old messages before checking if the list is empty
+  if( !empty($msgs_list) ){
+    foreach ($msgs_list as $i=>$msg){
 
+      if( $msg->Nshow < 1 ) {      // remove old messages
+        debug_msg(5,"Need to delete message $i from list.");
+        unset($msgs_list[$i]);
+      }
+    }
+  }
+  
+  if (empty($msgs_list) && empty($status_msg) && (empty($main_steps) || $user_level > 1)) {
+  	return;
+  }
+
+  // Box height varies with user level
   if( $user_level == 1) $ht = 120;
   if( $user_level == 2) $ht = 90;
   if( $user_level > 2)  $ht = 60;
 
-  echo "   <TABLE height='$ht' width=100% align='CENTER'
-                bgcolor='white'>
+  echo "<div class=\"control\">\n";
+
+  echo "   <TABLE class=\"textarea\" height=\"$ht\">
            <TR><TD class='message-area'>\n";
 
   // Beginners get the block diagram  at every step...
 
   if( $user_level==1 && !empty($main_steps) ){
      echo "<font color='black'>
-          Follow these steps to complete your analysis:</font>\n";
-      steps_as_blocks('main_steps');
+          Follow the above steps to complete your analysis.</font><br>\n";
       echo "Further details may be found in the 
 		<a target='_tutorial' href='tutorial.php'
 		   title='Open the tutorial in another window'>Tutorial</a>
@@ -93,13 +107,6 @@ function show_message_area(){
 
   if( !empty($msgs_list) ){
     foreach ($msgs_list as $i=>$msg){
-
-      if( $msg->Nshow < 1 ) {      // remove old messages
-        debug_msg(5,"Need to delete message $i from list.");
-        unset($msgs_list[$i]);
-        continue;
-      }
-
       switch($msg->level){
       case MSG_GOOD:
         $color='GREEN';
@@ -130,9 +137,9 @@ function show_message_area(){
         $status_msg 
         </font>\n";
   }
-  else  echo "&nbsp;";
 
   echo   "\n   </TD></TR></TABLE>\n    ";
+  echo "</div>\n";
 
   $messages_shown=true;  // flag for debug messages
 }
