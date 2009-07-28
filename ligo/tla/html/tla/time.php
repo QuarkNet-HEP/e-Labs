@@ -283,9 +283,7 @@ function handle_time_input(){
 function GPS_clock_box(){
     $gps_now =  Unix_to_GPS(time());
     $x = "
-     <table class='clock_box'><tr><td>
-         <b>GPS Time:  </b><span id='gps_clock_field' > $gps_now </span></td>
-     </tr></table> \n";
+     <div class='clock_box'><b>GPS Time:  </b><span id='gps_clock_field' > $gps_now </span></div> \n";
     $x .= "
      <script language='JavaScript'>
      function updateGPStime(){
@@ -313,9 +311,7 @@ function GPS_clock_box(){
 function GMT_clock_box(){
     $gmt_now = gmdate("j M Y H:i:s ",time())." GMT";
     $x = "
-     <table class='clock_box'><tr>
-        <td><b>Time:  </b><span id='gmt_clock_field' > $gmt_now </span></td>
-     </tr></table>\n";
+     <div class=\"clock_box\"><b>Time:  </b><span id='gmt_clock_field' > $gmt_now </span></div>\n";
     $x .= "
      <script language='JavaScript'>
      function updateGMTtime(){
