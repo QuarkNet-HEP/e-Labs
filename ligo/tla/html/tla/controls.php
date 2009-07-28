@@ -353,7 +353,7 @@ function user_level_control(){
   
     // This is redundant, but we'll keep it for now because it triggers
     // the right behaviour if user tries to become a Super Expert (level 5)
-    // handle_user_level();   
+    // handle_user_level();
 
     $level[1] = 'Beginner';
     $level[2] = 'Intermediate';
@@ -368,19 +368,18 @@ function user_level_control(){
     echo "\n<!-- User Level Control -->\n";
 
     // Show the level image
-
+	echo "<div id=\"user-level-control\">";
     $image="img/level_" .$user_level. ".gif";
-    echo "<img src='" .$image. "' valign='TOP' border=0
+    echo "<img src='" .$image. "' valign='bottom' border=0
                alt='User Level: " .$level[$user_level]. "'
                title='User Level: " .$level[$user_level]. "'>";
 
     // Selector:
 
-    echo  auto_select_from_array('user_level', $level, $user_level );
-    echo "\n";
-    if( !isset($auto_update) || $auto_update=='off') {
-        echo "<input type='submit' name='Apply' value='Set'>\n";
-    }
+    echo  auto_select_from_array('user_level', $level, array("selection" => $user_level, 
+    	"changeHandler" => "javascript:this.form.submit();") );
+    echo "<noscript><input type=\"submit\" value=\"Set\"></input></noscript>\n";
+    echo "</div>\n";
 }
 
 
