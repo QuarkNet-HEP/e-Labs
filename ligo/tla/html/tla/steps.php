@@ -19,6 +19,7 @@ require_once("util.php");
 define('STEP_NEW',   0);
 define('STEP_DONE',  1);
 define('STEP_FAIL', -1);
+define('STEP_IN_PROGRESS', 2);
 
  
 /*******************************
@@ -58,7 +59,7 @@ function main_steps_init($step_list_name='main_steps'){
     }
 
     debug_msg(4,"Set/reset $step_list_name array to initial values.");
-    $step_array[1] = new Process_Step("Work Flow",  'work_flow.php',
+    $step_array[1] = new Process_Step("Analysis Type",  'work_flow.php',
                                       "How the data will be processed.");
     $step_array[] = new Process_Step("Data Selection",  'data_select.php',
                                      "Which data to process (time interval and channel).");
@@ -195,7 +196,7 @@ function update_step($step_list_name){
     global $$step_list_name;
 
     // First recall any settings we've already remembered
-    steps_recall($step_list_name);   
+    steps_recall($step_list_name);
 
     // If still not set, then intitialize
     if( !isset($$step_list_name) ) {
@@ -284,21 +285,22 @@ function steps_as_blocks($step_list_name){
     }
     $Nsteps=sizeof($$step_list_name);  
 
+    echo "<div class=\"control\">\n";
+    prev_next_buttons($step_list_name, false);
     echo "\n<TABLE class='block-list' align='center' >
         <TR>\n";
-
     $i=1;
     foreach($$step_list_name as $s){
         if( $s->status == 0) {
             $c='block-new';
-            if( $i == $this_step)  $c='block-this';
         }
         if( $s->status < 0)    $c='block-fail';
         if( $s->status > 0)    $c='block-ok';
+        if( $i == $this_step)  $c='block-this';
         echo "  <TD align='center' valign='center'>\n";
-        echo "     <TABLE 'class='$c'><TR><TD class='$c' title='".
+        echo "     <TABLE class='$c'><TR><TD class='$c' title='".
             $s->description."'>\n";
-        $show_link =  ($i != $this_step) && ($s->status > 0);
+        $show_link =  ($i != $this_step) && ($s->status != 0);
 
         if($show_link) echo "<a href='" .$s->url."' class='block'>";
         echo "$s->label";
@@ -315,6 +317,7 @@ function steps_as_blocks($step_list_name){
      </TD></TR>
      </TABLE>
         ";
+    echo "</div>\n";
 }
 
 
@@ -362,9 +365,15 @@ function steps_as_signals($step_list_name){
 
 // Show the Next/Previous buttons:  
 // 
-function prev_next_buttons($step_list_name){
+function prev_next_buttons($step_list_name, $reset = true){
     global $this_step,  $$step_list_name;
+    global $count;
     if( !isset($$step_list_name) ) return;
+    
+    if (!isset($count)) {
+    	$count = 0;
+    }
+    $count++;
 
     $list=$$step_list_name; 
     $Nsteps = sizeof($list);
@@ -374,21 +383,46 @@ function prev_next_buttons($step_list_name){
 
     $bt = "&nbsp;";
     if( $this_step > 1) {
-        $bt = "<INPUT type='SUBMIT' name='previous' value='<< Previous Step'>";
+        $bt = "<INPUT class=\"button\" type='SUBMIT' name='previous' value='<< Previous Step'>";
+    }
+	else {
+        //$bt = "<INPUT disabled=\"true\" class=\"button\" type='SUBMIT' name='previous' value='<< Previous Step'>";
     }
     echo "   <TD width='33%' align='LEFT'> $bt      </TD>\n";
 
-    echo "<TD width='33%' align='CENTER'>
-       <input type='submit' name='reset_session' value='Reset Session'>
-        </TD>
-        ";
+    echo "<TD width='33%' align='CENTER'>";
+    if ($reset) {
+       echo "<input class=\"button\" type='submit' name='reset_session' value='Reset Session'>";
+    }
+    echo "</TD>\n";
 
     $bt = "&nbsp;";
-    if( $list[$this_step]->status==STEP_DONE && $this_step < $Nsteps ){
-        $bt = "<INPUT type='submit' name='next' value='Next Step >>'> ";
+	
+    if($list[$this_step]->status==STEP_DONE && $this_step < $Nsteps ){
+        $bt = "<INPUT class=\"button\" type='submit' name='next' value='Next Step >>'> ";
+    }
+    else if ($list[$this_step]->status != STEP_IN_PROGRESS && $this_step < $Nsteps) {
+    	$bt = "<INPUT class=\"button\" type='submit' id=\"apply-button-$count\" name='apply' value='Apply'> ";
     }
     echo "<TD width='33%' align='RIGHT'> $bt </TD>\n";
     echo " </TR></TABLE>\n";
+	echo <<<END
+		<script language="JavaScript">
+			for (var i = 1; i < 4; i++) {
+				var apply = document.getElementById("apply-button-" + i);
+				if (apply != null) {
+					apply.name = "next";
+					apply.value = "Next Step >>";
+				}
+			}
+			var spans = document.getElementsByTagName("span");
+			for (s in spans) {
+				if (spans[s].className == "hideme") {
+					spans[s].style.display = "none";
+				}
+			}
+		</script>
+END;
 }
 
 
