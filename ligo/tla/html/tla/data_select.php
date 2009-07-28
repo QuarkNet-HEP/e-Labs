@@ -50,8 +50,8 @@ if($user_level==1){
           You must select both a <i>".glink('time interval')."</i>  to view
           and a <i>".glink('data channel')."</i> to plot. 
           <P>
-          Press \"Apply\" to make your selections take effect.<br>
-          Then press the \"Next Step\" button at the bottom of the page.
+          <span class=\"hideme\">Press \"Apply\" to make your selections take effect.<br></span>
+          Then press the \"Next Step\" button at the bottom or top of the page to continue.
           ");
  }
 
@@ -134,7 +134,17 @@ if( $Ninputs < count($input_channels) ){// Need to slice the list?
  }
 $n =  build_channel_info();
 debug_msg(4,"Channel selector has $n items. ");
-if( !empty($wf) )  handle_channel_input($wf);  
+if( !empty($wf) )  handle_channel_input($wf);
+
+// Step status:
+//
+if (all_channels_valid($input_channels)) {
+	set_step_status('main_steps', STEP_DONE);
+}
+else {
+	debug_msg(1, "Invalid input channel(s).");
+	$main_steps[$this_step]->status = STEP_FAIL;    
+}
 
 
 /**
@@ -142,16 +152,6 @@ if( !empty($wf) )  handle_channel_input($wf);
  */
 
 handle_prev_next('main_steps');  // do this *after* user input is processed
-
-// Step status:
-//
-if( all_channels_valid($input_channels) ){
-   set_step_status('main_steps', STEP_DONE ) ;
-}
- else {
-     debug_msg(1, "Invalid input channel(s).");
-     $main_steps[$this_step]->status=STEP_FAIL;    
- }
 
 
 /***********************************************************************\
@@ -176,17 +176,18 @@ echo "  <!-- cute, but may not work over a long time?
 *******/
 
 
-echo "<TABLE width='100%' border=1><TR><TD>\n";
-echo "<TABLE width='100%' border=0><TR>\n";
+echo "<div class=\"control\">\n";
+echo "<table width=\"100%\" border=\"0\"><tr>\n";
 
-echo "<TD valign='top'> <b>Time Interval:</b> ";
+echo "<td valign=\"top\"> <b>Time Interval:</b> ";
 echo printable_dt($dt);
 
-echo "</td><td align='right' valign='top'>\n";
+echo "</td><td align=\"right\" valign=\"bottom\" width=\"600px\">\n";
 if( $user_level > 2) echo GPS_clock_box();
 echo GMT_clock_box();
 
-echo "</td></tr>\n";
+echo "</td></tr></table>\n";
+echo "<table width=\"100%\" border=\"0\"><tr>\n";
  
 if($user_level<3) {
   echo "<tr><td colspan='2'> Select start and stop times for your analysis:
@@ -194,8 +195,8 @@ if($user_level<3) {
  }
 
 
-echo " <TR><TD> Starting Date/Time:
-                <input type='text' name='start_time'
+echo " <TR><TD valign=\"top\"> Starting Date/Time:
+                <input class=\"text\" type='text' name='start_time'
                        size=25 value='$start_time'>
                 ";
 
@@ -207,8 +208,8 @@ if($user_level >=3) {
  }
 echo "  </TD>\n ";
 
-echo "<TD> Ending Date/Time:
-                <input type='text' name='end_time'
+echo "<TD valign=\"top\"> Ending Date/Time:
+                <input class=\"text\" type='text' name='end_time'
                        size=25 value='$end_time'>
                 ";
 if($user_level >=3) {
@@ -221,7 +222,7 @@ if($user_level >=3) {
 echo "  </TD>\n ";
 
 echo " </TR>\n</TABLE>\n ";
-echo " </TD></TR></TABLE>\n ";
+echo " </div>\n ";
 
 controls_next();
 
@@ -231,8 +232,8 @@ controls_next();
  * Display the Workflow and get number of inputs
  */
 
-echo "<TABLE width='100%' border=1><TR>\n";
-echo "<TD><b>Work Flow:</b> $wf->name ";
+echo "<div class=\"control\">\n";
+echo "<b>Analysis Type:</b> $wf->name ";
 if( $user_level == 1 ) echo "- $wf->desc "; 
 if( $user_level == 2 ) echo "- $wf->info "; 
 
@@ -245,12 +246,12 @@ if( $NinMax > 1 ){
     $x = array();
     for($i=2;$i<=$NinMax;$i++) $x[$i]=$i;
 
-    echo  auto_select_from_array('Ninputs', $x, $selection=$Ninputs);
+    echo  auto_select_from_array('Ninputs', $x, array("selection" => $Ninputs, "changeHandler" => "javascript:this.form.submit()"));
+    echo "<noscript><input type=\"submit\" value=\"Apply\"></input></noscript>\n";
     //echo "<input type='text' size='2' name='Ninputs' value='$Ninputs'> \n";
     //if( $user_level < 4 )  echo " (maximum $ninmax)";
  }
-echo "</td>\n";
-echo " </tr>\n</table>\n ";
+echo "</div>\n ";
 
 controls_next();
  
@@ -260,7 +261,7 @@ controls_next();
  */
 for($i=1; $i<=$Ninputs;$i++){
 
-  echo "<TABLE width='100%' border='1'><TR><TD>\n";
+  echo "<div class=\"control\">\n";
    
   $icon='signal_white.gif';
   $status='';
@@ -291,15 +292,15 @@ for($i=1; $i<=$Ninputs;$i++){
   }
 
   //  echo "[$icon]&nbsp;";
-  echo "<img src='img/$icon'>&nbsp;";
+  echo "<img id=\"signal_".$i."\" src='img/$icon'>&nbsp;";
   echo "<b>Input ";
   printf("In%02d", $i);
   echo ": </b> ";
-  echo "<font size='-1'>$status</font>\n";
+  echo "<span id=\"status_$i\" class=\"channel_status\">$status</span>\n";
 
   echo " <br> ";
+  echo "</div>\n";
   input_channel_control($i);
-  echo "</TD></TR></TABLE>\n";
  }
 /*******/
 
