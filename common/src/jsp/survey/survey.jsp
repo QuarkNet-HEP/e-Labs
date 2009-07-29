@@ -11,10 +11,10 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Test</title>
-		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/test.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/one-column.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/test.css"/>
 	</head>
 
 	<body id="test">
