@@ -457,4 +457,17 @@ table.tutorial tr td.screenshot {
    display: none;
 }
 
+#sub-library, #sub-home, #sub-posters, #sub-siteindex {
+	display: none; 
+}
+
+#sub-data {
+	display: block; 
+}
+
+#data #subnav a[href="/ligo/tla/"] {
+	font-style: italic; 
+}
+
+
 /**EOF**/

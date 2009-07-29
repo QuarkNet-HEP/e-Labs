@@ -368,7 +368,7 @@ function user_level_control(){
     echo "\n<!-- User Level Control -->\n";
 
     // Show the level image
-	echo "<div id=\"user-level-control\">";
+	echo "<div id=\"header-logbook\">";
     $image="img/level_" .$user_level. ".gif";
     echo "<img src='" .$image. "' valign='bottom' border=0
                alt='User Level: " .$level[$user_level]. "'

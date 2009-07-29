@@ -95,30 +95,105 @@ function html_begin($title,$right_stuff='') {
 
 function ligo_masthead($title,$right_stuff='&nbsp;'){
 echo <<<END
-	<!-- tool masthead -->
-	<table class='masthead' width=100% border=0 bgcolor='black' ><tr>
-		<td width=15% valign='top' align=left>
-			<a href='/'>
-				<img src='img/ligo_logo.gif' border='0' valign='top' align='left' alt='ligo' 
-					title='return to the top level'>
-			</a>
-		</td>
-		<TD valign='CENTER' align='CENTER' >
-			<div class='header-title'>LIGO e-Lab</div>
-			&nbsp;
-		</TD>
-
-		<TD valign='TOP' align='RIGHT' >
-			<div class="second-header-title">
-        		Laser Interferometer Gravitational-Wave Observatory
+	<!-- Begin Tool Masthead -->
+	<div id="top">
+		<div id="header">
+			<div id="header-image">
+				<img src="/elab/ligo/graphics/ligo_logo.gif" alt="Header Image" />
 			</div>
-			<div class="user-tools">
+			<div id="header-title">
+				LIGO e-Lab
+			</div>
+			<div id="second-header-title">
+				&nbsp;
+			</div>
+			<link type="text/css" href="/elab/ligo/css/header.css" rel="Stylesheet" />
+			<link type="text/css" href="/elab/ligo/css/nav-rollover.css" rel="Stylesheet" />
+			<link type="text/css" href="/elab/ligo/include/jquery/css/default/jquery-ui-1.7.custom.css" rel="Stylesheet" />	
+			<script type="text/javascript" src="/elab/ligo/include/jquery/js/jquery-1.3.2.min.js"></script>
+			<script type="text/javascript" src="/elab/ligo/include/jquery/js/jquery-ui-1.7.custom.min.js"></script>
+		
+			<script type="text/javascript">
+			$(document).ready(function() {
+				$("#nav-home").mouseover(function(){ // Home
+					$("#subnav").children().hide(); 
+					$("#sub-home").show();
+				});
+				$("#nav-library").mouseover(function(){ // Library
+					$("#subnav").children().hide();
+					$("#sub-library").show(); 
+				});
+				$("#nav-data").mouseover(function(){ // Data
+					$("#subnav").children().hide();
+					$("#sub-data").show(); 
+				});
+				$("#nav-posters").mouseover(function(){ // Posters
+					$("#subnav").children().hide();
+					$("#sub-posters").show();
+				});
+				$("#nav-siteindex").mouseover(function(){ // Site Index
+					$("#subnav").children().hide();
+					$("#sub-siteindex").show();
+				});
+				$("#nav-assessment").mouseover(function(){ // Assessment
+					$("#subnav").children().hide();
+				});
+			});
+			</script>
+		
+			<div id="nav">
+				<table>
+					<tr>
+						<td id="menu">
+							<ul>
+								<li><a href="/elab/ligo/home" id="nav-home">Home</a></li>
+								<li><a href="/elab/ligo/library" id="nav-library">Library</a></li>
+								<li><a href="/elab/ligo/data" id="nav-data">Data</a></li>
+								<li><a href="/elab/ligo/posters" id="nav-posters">Posters</a></li>
+								<li><a href="/elab/ligo/site-index" id="nav-siteindex">Site Map</a></li>
+								<li><a href="/elab/ligo/assessment/index.jsp" id="nav-assessment">Assessment</a></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td id="subnav">
+							<ul id="sub-home">
+								<li><a href="/elab/ligo/home/cool-science.jsp">Cool Science</a></li>
+								<li><a href="/elab/ligo/site-index/site-map-anno.jsp">Explore!</a></li>
+								<li><a href="/elab/ligo/home/about-us.jsp">About Us</a></li>
+							</ul>
+							<ul id="sub-library">
+								<li><a href="/library/index.php/Category:LIGO">Glossary</a></li>
+								<li><a href="/elab/ligo/library/resources.jsp">Resources</a></li>
+								<li><a href="/elab/ligo/library/big-picture.jsp">Big Picture</a></li>
+								<li><a href="/elab/ligo/library/FAQ.jsp">FAQs</a></li>
+								<li><a href="/elab/ligo/library/site-tips.jsp">Site Tips</a></li>
+							</ul>
+							<ul id="sub-data">
+								<li><a href="/ligo/tla/tutorial.php">Tutorial</a></li>
+								<li><a href="/ligo/tla/">Bluestone</a></li>
+								<li><a href="/elab/ligo/plots/">Plots</a></li>
+							</ul>
+							<ul id="sub-posters"> 
+								<li><a href="/elab/ligo/posters/new.jsp">New Poster</a></li>
+								<li><a href="/elab/ligo/posters/edit.jsp">Edit Posters</a></li>
+								<li><a href="/elab/ligo/posters/view.jsp">View Posters</a></li>
+								<li><a href="/elab/ligo/posters/delete.jsp">Delete Poster</a></li>
+								<li><a href="/elab/ligo/plots">View Plots</a></li>
+								<li><a href="/elab/ligo/jsp/uploadImage.jsp">Upload Image</a></li>
+							</ul>
+							<ul id="sub-siteindex">
+								<li><a href="/elab/ligo/site-index/site-map-anno.jsp">Site Index</a></li>	
+								<li><a href="/elab/ligo/site-index/site-map-anno.jsp">Explore!</a></li>
+							</ul>
+						</td>
+					</tr>
+				</table>
+			</div>	
 END;
 			user_tools();
 echo <<<END
-			</div>
-		</TD></TR>
-	</TABLE>
+		</div>
     <!-- END Tool Masthead -->
 END;
 }
@@ -130,9 +205,9 @@ function user_tools() {
         echo "&nbsp;";
     }
     else {              
-        echo "<font size='-1'>\n";
+        echo "<div id=\"header-current-user\">";
         show_user_login_name();
-        echo "</font>\n";
+        echo "</div>\n";
     }
 	
 	if( !isset($user_level) ) $user_level=1;

@@ -1,0 +1,202 @@
+
+
+/*=========== e-Lab Header ===========*/
+
+#top {
+	position: relative;
+	background-color: black;
+	color: white;
+	height: 96px;
+	text-align: left;
+	border: 2px solid gray;
+}
+
+#header {
+	position: relative;
+	width: 100%;
+	/*border: 1px solid green;*/
+	height: inherit;
+	margin-left: auto;
+	margin-right: auto;
+	color: #b0b0b0;
+	font-weight: bold;
+	font-family: Tahoma, Arial, sans-serif;
+	font-size: 14px;
+}
+
+#header a {
+	color: #88bbff;
+	text-decoration: none;
+}
+
+#header a:hover {
+	text-decoration: underline;
+}
+
+#header-image {
+	position: relative;
+	float: left;
+	left: 0px;
+	margin-left: 0px;
+}
+
+#header-image img {
+}
+
+#header-title {
+	font-family: Arial, sans-serif;
+	font-size: 20px;
+	font-weight: bold;
+	padding-top: 16px;
+	margin-left: 140px;
+	color: white;
+}
+
+#second-header-title {
+	position: absolute;
+	top: 0px;
+	right: 8px;
+}
+
+#header-current-user {
+	position: absolute;
+	top: 18px;
+	right: 160px;
+}
+
+#header-logout {
+	position: absolute;
+	top: 18px;
+	right: 8px;
+}
+
+#header-logbook {
+	position: absolute;
+	top: 38px;
+	right: 8px;
+}
+
+#header-logbook a {
+	color: white;  // not red
+}
+
+
+
+#nav-footer {
+	height: 22px;
+	background-color: black;
+	border: double 3px #a0a0a0;
+	width: 760px;
+	float: right;
+	margin-top: 24px;
+}
+
+#nav {
+	/*position: absolute;
+	top: 50px;
+	left: 20px; */
+}
+
+#nav ul, #nav-footer ul {
+	position: relative;
+	width: 780px;
+	text-align: center;
+	margin: 0px;
+	margin-top: 2px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 0px;
+}
+
+#nav-footer ul {
+	margin-top: 1px;
+}
+
+#subnav {
+	/*position: absolute;
+	top: 50px;
+	left: 148px;
+	right: 8px;
+	text-align: left;
+	height: 24px;
+	background-color: #999999;*/
+}
+
+#subnav ul {
+	width: 100%;
+	margin-top: 4px;
+}
+
+#nav #subnav a {
+	width: auto;
+	padding-left: 16px;
+	padding-right: 16px;
+}
+
+#nav li, #nav-footer li {
+	display: inline;
+	text-align: center;
+	list-style: none;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+#nav a, #nav-footer a {
+	display: block;
+	float: left;
+	text-align: center;
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: bold;
+	margin-left: 4px;
+	margin-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 3px;
+	padding-right: 3px;
+	width: 6em;
+	color: white;
+}
+
+#nav h1 {
+	font-size: 100%;
+	font-weight: bold;
+	margin: 0px;
+	padding: 2px;
+}
+
+a#nav1 {
+	color: #ff9933;
+}
+
+a#nav2 {
+	color: #33ffcc;
+}
+
+a#nav3 {
+	color: #3399ff;
+}
+
+a#nav4 {
+	color: #33cc33;
+}
+
+a#nav5 {
+	color: #ff0000;
+}
+
+a#nav6 {
+	color: #ffff00;
+}
+
+#nav-footer a {
+	border-right: 2px solid #333399;
+}
+
+#nav-footer a#nav6 {
+	border-right: none;
+}
+
+/** EOF ligo.css **/
