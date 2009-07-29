@@ -59,8 +59,8 @@
 								</a>
 							</li>
 							<li>
-								Learn how to read seismic data.
-								<a href="javascript:reference('seismic data',400)">
+								Learn how to read and estimate wave frequencies.
+								<a href="javascript:reference('wave frequencies',400)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
