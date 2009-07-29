@@ -50,6 +50,9 @@ plot_save(TString plot_id,  int Nplot){
 
   fname = plot_id + ".svg";  
   cGDS->SaveAs(fname);
+  
+  fname = plot_id + ".png";
+  cGDS->SaveAs(fname);
 }
 
 //EOF

@@ -35,6 +35,9 @@ void save_plots(TString plot_id){
 
     fname = plot_id + ".svg";  
     cGDS->SaveAs(fname);
+    
+    fname = plot_id + ".png";
+    cGDS->SaveAs(fname);
   }
 }
 
