@@ -3,6 +3,7 @@ function InsertSampleMovie() {
 	document.write('<param name="src" value="gravity-waves.mov" />\n');
 	document.write('<param name="autoplay" value="true" />\n');
 	document.write('<param name="controller" value="false" />\n');
-	document.write('<embed src="gravity-waves.mov" src="gravity-waves.mov" width="320" height="240" autoplay="true" loop="true" controller="false" pluginspage="http://www.apple.com/quicktime/"></embed>\n');
+	document.write('<param name="loop" value="true" />\n');
+	document.write('<embed src="gravity-waves.mov" width="320" height="240" autoplay="true" loop="true" controller="false" pluginspage="http://www.apple.com/quicktime/"></embed>\n');
 	document.write('</object>\n');
 }
