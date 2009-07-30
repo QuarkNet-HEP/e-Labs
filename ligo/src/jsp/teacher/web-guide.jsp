@@ -50,7 +50,7 @@
 
 <ul>
 		<li>
-			<strong>Cool Science</strong> -  Who Cares? An introduction to cosmic ray research.
+			<strong>Cool Science</strong> -  Who Cares? An introduction to seismic data research.
 		</li>
 		<li>
 			<strong>Explore!</strong> -  Get comfortable!  Find out what's in the website with a graphical overview.
@@ -70,7 +70,7 @@
 		</li>
 		<li>
 			<strong>Get Started:</strong> Prepares the team to design their 
-			investigation with links to information about cosmic rays, the detector 
+			investigation with links to information about LIGO, seismic events 
 			and a research proposal.
 		</li>
 		<li>
