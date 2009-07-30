@@ -13,6 +13,7 @@
 		<script type="text/javascript" src="../include/elab.js"></script>
 		<script type="text/javascript" src="../include/elab-custom.js"></script>
 		<script src="insertMovie.js" language="JavaScript" type="text/javascript"></script>
+		<%@ include file="../include/quicktime-detect.jsp" %>
 </head>
 	
 	<body id="home" class="home">
@@ -52,7 +53,18 @@
 					<table> 
 						<tr>
 							<td style="text-align: center; width: 450px;">
-							<script language="JavaScript" type="text/javascript">InsertSampleMovie();</script><br />
+							<script type="text/javascript">
+								if (haveqt) {
+									QT_WriteOBJECT('gravity-waves.mov', '320', '240', '', 'AUTOPLAY', 'true', 'CONTROLLER', 'false', 'LOOP', 'true');
+								}
+								else {
+									document.write('<img src="gravity.jpg" />');
+								}
+							</script>
+							<noscript>
+								<img src="gravity.jpg" />
+							</noscript>
+							<br />
 							
 							<div style="font-size:80%";margin-bottom:12px;>Orbiting Black Holes Creating Gravitational Waves<br>Credit: Henze, NASA</div>
 							<p style="font-size:90%">LIGO seeks to detect gravitational waves from orbiting black holes, neutron stars and other sources.</p>
