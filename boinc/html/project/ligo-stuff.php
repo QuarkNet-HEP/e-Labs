@@ -43,63 +43,17 @@ function ligo_masthead($title='',$right_stuff='&nbsp;'){
     }
     echo "\n</TD></TR>\n ";
 
-    /*echo "<TR ><TD class='noborder' colspan='3'>
+    echo "<TR ><TD class='noborder' colspan='3'>
         <div class='third-header-title'>
           &nbsp; Laser Interferometer Gravitational-Wave Observatory
         </div>
-	</TD></TR>\n";*/
+	</TD></TR>\n";
 
     echo "</TABLE>";
     echo "\n<!-- END Tool Masthead -->\n";
 
-    //project_menu_bar();
-    echo LIGO_menu_bar();
-}
-
-function LIGO_menu_bar(){
-  //TODO: detect teacher -vs- student URL and change accordingly
-  return LIGO_teacher_menu_bar();
-}
-
-
-function LIGO_teacher_menu_bar(){
-    $x = "
-    <!-- Teacher's menu bar for Cosmic Ray e-Lab -->
-    <TABLE class='menu_bar'><TR>
-      <TD>&nbsp;</TD>
-      <TD><a href='/elab/ligo/teacher/'>
-            Teacher Home</a>
-      </td>";
-
-    $x .= "
-      <TD><a href='/elab/ligo/teacher/community.jsp'>
-            Community</a>
-      </td>";
-
-    $x .= "
-      <TD><a href='/elab/ligo/teacher/standards.jsp'>
-            Standards</a>
-      </td>";
-
-    $x .= "
-      <TD><a href='/elab/ligo/teacher/site-map.jsp'>
-            Site Index</a>
-      </td>";
-
-    $x .= "
-      <TD><a href='/elab/ligo/teacher/registration.jsp'>
-            Registration</a>
-      </td>";
-
-    $x .= "
-      <TD><a href='/elab/ligo/home/'>
-            Student Home</a>
-      </td>";
-
-    $x .= "\n    </TR>
-    </TABLE><!-- END menu bar -->\n";
-
-    return $x;
+    project_menu_bar();
+     //LIGO_menu_bar();
 }
 
 function ligo_banner($title='',$right_stuff='&nbsp;'){// returns $x
@@ -138,6 +92,53 @@ function ligo_banner($title='',$right_stuff='&nbsp;'){// returns $x
     return $x;
 }
 
+
+
+function ligo_menu_bar(){
+  //TODO: detect teacher -vs- student URL and change accordingly
+  return ligo_teacher_menu_bar();
+}
+
+
+function ligo_teacher_menu_bar(){
+    $x = "
+    <!-- Teacher's menu bar for LIGO e-Lab -->
+    <TABLE class='menu_bar'><TR>
+      <TD>&nbsp;</TD>
+      <TD><a href='/elab/ligo/teacher/'>
+            Teacher Home</a>
+      </td>";
+
+    $x .= "
+      <TD><a href='/elab/ligo/teacher/community.jsp'>
+            Community</a>
+      </td>";
+
+    $x .= "
+      <TD><a href='/elab/ligo/teacher/standards.jsp'>
+            Standards</a>
+      </td>";
+
+    $x .= "
+      <TD><a href='/elab/ligo/teacher/site-map.jsp'>
+            Site Index</a>
+      </td>";
+
+    $x .= "
+      <TD><a href='/elab/ligo/teacher/registration.jsp'>
+            Registration</a>
+      </td>";
+
+    $x .= "
+      <TD><a href='/elab/ligo/home/'>
+            Student Home</a>
+      </td>";
+
+    $x .= "\n    </TR>
+    </TABLE><!-- END menu bar -->\n";
+
+    return $x;
+}
 
 
 ?>

@@ -131,7 +131,9 @@ if( $elab == "cosmic" ){
 }
 
 if( $elab == "ligo" || $elab == "LIGO" ){
-  $wgLogo = "/elab/ligo/graphics/LIGOicon.jpg";
+  $wgLogo = "/elab/ligo/graphics/ligo_logo.gif";
+  $wgScriptPath = "/elab/cosmic/teacher/library";
+  $wgDefaultSkin = 'ligo';
   $wgSitename    = "LIGO Teachers' Library";
   $wgMainPage = "LIGO e-Lab Teaching Community";
   $BOINC_prefix = "/elab/ligo/teacher/forum";
@@ -175,8 +177,7 @@ $wgDiff3 = "/usr/bin/diff3";
 
 ## If you have the appropriate support software installed
 ## you can enable inline LaTeX equations:
-## TODO: LETS GET THIS WORKING!!  -EAM 17Jun2009
-$wgUseTeX           = false;
+$wgUseTeX           = true;
 
 $wgLocalInterwiki   = $wgSitename;
 
@@ -341,7 +342,6 @@ unset($wgWhitelistAccount['user']);
 /***********************************************************************
  * Extensions:
  */ 
-
 # Citations via <ref> text </ref> and <references/>
 require_once( "{$IP}/extensions/Cite/Cite.php" ); 
 
@@ -353,6 +353,9 @@ require_once( "extensions/NamespacePermissions.php" );
 
 # Turn the Media: pseudo-namespace into File:
 require_once( "extensions/Media2File.php" );  
+
+# Category mashups
+require_once("extensions/intersection/DynamicPageList.php");
 
 #  Automatic BOINC authentication:
 #
