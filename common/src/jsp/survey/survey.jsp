@@ -35,15 +35,23 @@
 			<div id="content">
 			
 <%
-	int id;
+	int id = -1;
 	String type; 
 	
-	try {
+	try { // Hardcoded surveys are default 
 		id = Integer.parseInt(request.getParameter("id"));
 	}
 	catch (Exception ex) {
 		try {
-			id = user.getNewSurveyId().intValue();
+			if (user.getNewSurveyId() != null) { // Check user-defined test 
+				id = user.getNewSurveyId().intValue();
+			}
+			else if (elab.getId().equals("1")) { // Default Cosmic Handler 
+				id = Integer.parseInt(elab.getProperties().getCosmicSurveyId());
+			}
+			else if (elab.getId().equals("2")) { // Default LIGO Handler 
+				id = Integer.parseInt(elab.getProperties().getLigoSurveyId());
+			}
 		}
 		catch(Exception exn) {
 			throw new ElabJspException("Missing test id"); 
