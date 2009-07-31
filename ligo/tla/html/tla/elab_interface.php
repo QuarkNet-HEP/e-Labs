@@ -113,6 +113,7 @@ function elab_login($user='guest', $passwd='guest'){
     // Parse the session cookie, which may come in several lines
     // TODO: parse ALL cookies, not just this one?
     //
+    // TODO: or at least select the one with path=/elab/ligo
     $AuthCookie = array();
 
     foreach( $hdrs['Set-Cookie'] as $c){
@@ -575,11 +576,11 @@ function elab_ping(){
 
     // If not logged in to the elab then skip it.
     //
-    if( empty($elab_group) || empty($elab_cookies[$elab]) ) return FALSE;
+    //if( empty($elab_group) || empty($elab_cookies[$elab]) ) return FALSE;
 
     debug_msg(1,"elab_ping(): group $elab_group - keeping e-lab session alive...");
 
-    $url= ELAB_URL ."/$elab/home/index.jsp";
+    $url= ELAB_URL ."/$elab/login/user-info.jsp";
     $x = elab_get($url);
     // DO we care if it worked or not?  Can we do anything about it?
     if( empty($x) ) {
@@ -615,12 +616,18 @@ function elab_get($url, $options=array() ){
                     , MSG_WARNING);
         return FALSE;
     }
-
+        
+    if (!empty($_COOKIE["JSESSIONID"])) {
+	// the jsp code sets this for us
+	$jsessionid = $_COOKIE["JSESSIONID"];
+    }
+    else {
+	$jsessionid = $elab_cookies[$elab]['Value'];
+    }
 
     // TODO: _merge_ $options with $cookie_list 
 
-    $cookie_list = array( 'JSESSIONID' => 
-                          $elab_cookies[$elab]['Value'] );
+    $cookie_list = array( 'JSESSIONID' => $jsessionid );
     $location = $url;
 
     while( !empty($location) ){
@@ -650,6 +657,19 @@ function elab_get($url, $options=array() ){
             debug_msg(2,"elab_login(): Redirect! $location");
             continue;
         }
+	
+	$cookies = http_parse_cookie($hdrs["Set-Cookie"]);
+	
+	if (!empty($cookies->cookies) && $cookies->cookies["JSESSIONID"] == $jsessionid) {
+	    //elab returned the same session id, so it's valid
+	    $elab_cookies[$elab] = array("Name" => "JSESSIONID", "Value" => $jsessionid);
+	    //try to figure out the group
+	    if (preg_match("/.*Your username: ([^\s]*)\s.*/", $response_body, $matches)) {
+		$elab_group = $matches[1];
+		return true;
+	    }
+	    return NULL;
+	}
 
         // Check for clear failure:
         //
