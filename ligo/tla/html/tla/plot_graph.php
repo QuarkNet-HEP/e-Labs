@@ -177,7 +177,7 @@ if( file_exists($update_file) ){
  */
 
 if(empty($plot_id)) $plot_id = uniq_id($Nplot);
-$imgfile = $plot_id.".jpg";
+$imgfile = $plot_id.".png";
 
 if ( !file_exists($imgfile) ) {
     add_message("Image file not found: $imgfile  ", MSG_WARNING);
@@ -226,7 +226,6 @@ if( !empty($_POST['save_plot']) || !empty($_GET['save_plot']) ){
     // have to do that now (once)
     //
     if( empty($elab_cookies[$elab]) || empty($elab_group) ){
-	echo "-NO-";
         add_message("You must grant Bluestone access to your LIGO e-Lab group to save a plot",
                     MSG_WARNING,2);
 	$next_url = $self."?save_plot=1&plot_name=$plot_name";
