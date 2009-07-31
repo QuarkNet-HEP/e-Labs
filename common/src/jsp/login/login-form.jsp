@@ -32,4 +32,12 @@
 	</table>
 	<input type="hidden" name="project" value="${elab.name}" />
 	<input type="hidden" name="prevPage" value="<%= prevPage %>" />
+	<c:forEach var="e" items="${postParams}">
+		<c:forEach var="v" items="${e.value}">
+			<input type="hidden" name="${e.key}" value="${v}" />
+		</c:forEach>
+	</c:forEach>
+	<%
+		session.removeAttribute("postParams");
+	%>
 </form>
