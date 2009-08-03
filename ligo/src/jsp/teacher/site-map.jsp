@@ -74,7 +74,7 @@
 						<h2>Test results</h2>
 						<b>For research groups created after Summer 2009</b>
 						<ul class="simple">
-							<li><a href="../survey/survey.jsp?type=pre&studentid=0&id=3">Pre-test</a> and <a href="../survey/survey.jsp?type=post&studentid=0">Post-test</a>.</li>
+							<li><a href="../survey/survey.jsp?type=pre&studentid=0&id=1">Pre-test</a> and <a href="../survey/survey.jsp?type=post&studentid=0&id=1">Post-test</a>.</li>
 							<li>Student Results for the <a href="../survey/results.jsp?type=pre">pre-test</a> and the <a href="../survey/results.jsp?type=post">post-test</a>.</li>
 						</ul>
 						<%--
