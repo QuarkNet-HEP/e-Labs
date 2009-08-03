@@ -507,10 +507,10 @@ function mahash($list, $level) {
 	$s = "";
 	foreach ($list as $k => $v) {
 		if (is_array($v)) {
-			$s = $s.mahash($v, $level + 1);
+			$s = $s.$k.".".mahash($v, $level + 1);
 		}
 		else {
-			$s = $s.$level.":".$k.";";
+			$s = $s.$level.".".$k.",";
 		}
 	}
 	return $s;
@@ -1036,7 +1036,7 @@ function build_channel_info_subset($ttype){
           /* Now get station and sensor */
 
           $station_pat = "/(.*)(LVEA|EX|EY|MX|MY|VAULT|BSC\d+|COIL)_(\S+)/";
-          $n = preg_match($station_pat, $full_sensor, $matches);
+          $n = preg_match($station_pat, $full_sensor, $matches);  
           if($n >0) {// if no match it's probably GDS, so try that
               $blrm = $matches[1];
               $station = $matches[2];
@@ -1061,7 +1061,7 @@ function build_channel_info_subset($ttype){
             }
         }
 
-
+        
         /* Create new channel object.
          * (This is clearer than positional parameters in constructor.) */
 
