@@ -43,7 +43,7 @@
 			<p>
 				<img class="float-right" src="../graphics/3Dinspiral.gif" 
 					width="185" height="150" alt="[inspiral]" />
-				LIGO scientists seek to measure faint ripples of space called gravitational waves. Einstein predicted gravitational waves in 1916 as part of the theory of general relativity. However, he had little confidence that scientists would ever detect these waves&mdash;their effects on scientific instruments would be too small.
+				LIGO scientists seek to measure faint ripples of space called gravitational waves. This is a new way to explore the Universe! Einstein predicted gravitational waves in 1916 as part of the theory of general relativity. However, he had little confidence that scientists would ever detect these waves&mdash;their effects on scientific instruments would be too small.
 			</p>
 			<p>
 				Using huge interferometers in Washington State and Louisiana, LIGO, the Laser Interferometer Gravitational Wave Observatory, measures movements that are smaller that a thousandth of the size of an atomic nucleus. This radical level of sensitivity creates the possibility that gravitational waves now can be directly detected.
