@@ -71,8 +71,8 @@
 								</a>
 							</li>
 							<li>
-								Make a research question and plan.
-								<a href="javascript:reference('ligo research question',400)">
+								Make a data analysis plan. What will you study?
+								<a href="javascript:reference('data analysis plan',400)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
