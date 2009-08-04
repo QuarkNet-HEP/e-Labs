@@ -72,7 +72,7 @@
 							</li>
 							<li>
 								Make a data analysis plan. What will you study?
-								<a href="javascript:reference('data analysis plan',400)">
+								<a href="javascript:reference('plan data analysis',400)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
@@ -82,7 +82,7 @@
 						</ul>
 					</li>
 					<li>
-						Figure It Out: <i>Prepares the team to analyze data:</i>
+						Figure It Out: <i>Aids the team in data analysis:</i>
 						<ul>
 							<li>
 								Analyze data to answer your research question. 
