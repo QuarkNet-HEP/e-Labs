@@ -5,7 +5,7 @@
 <%@ page import="gov.fnal.elab.usermanagement.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 <%@ page import="java.util.*" %>
-
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
 <html xmlns="http://www.w3.org/1999/xhtml">
