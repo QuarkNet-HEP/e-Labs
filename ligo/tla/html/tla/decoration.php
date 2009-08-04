@@ -194,6 +194,7 @@ END;
 			user_tools();
 echo <<<END
 		</div>
+	</div>
     <!-- END Tool Masthead -->
 END;
 }
@@ -217,6 +218,7 @@ function user_tools() {
 
 
 /* The title_bar() shows the title and user info  */
+// TODO: remove as it does nothing
 
 function title_bar($title){
     
