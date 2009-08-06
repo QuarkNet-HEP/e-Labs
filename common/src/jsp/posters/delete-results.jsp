@@ -12,10 +12,17 @@
 	<script type="text/javascript" src="../include/jquery/js/jquery.tablesorter.min.js"></script>
 	<link type="text/css" rel="stylesheet" href="../include/jquery/css/blue/style.css" />
 	<script type="text/javascript">
-	$(document).ready(function() { 
-	        $("#search-results").tablesorter({headers: {0:{sorter:false}, 9:{sorter:false}}}); 
-	    } 
-	); 
+		$(document).ready(function() { 
+	        $("#search-results").tablesorter({headers: {0:{sorter:false}, 9:{sorter:false}}});
+       		$("input:checkbox").change(function() {
+   	       		if ($(this).attr("checked")) {
+   	       			$(this).parent().parent().children().addClass("selected"); 
+   	       		}
+   	       		else {
+   	       			$(this).parent().parent().children().removeClass("selected");
+   	       		}
+       		});
+	    }); 
 	</script>
 	<form method="get" action="delete.jsp">
 		<table id="search-results" class="tablesorter">
