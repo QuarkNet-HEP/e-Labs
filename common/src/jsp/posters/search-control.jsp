@@ -4,38 +4,31 @@
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="java.util.*" %>
 
-<p></p>
-
+<div class="poster-search-control"> 
 <div class="search-quick-links">
-	Quick Searches - Show posters by:&nbsp; 
+	Quick Searches:&nbsp; 
 	<e:quicksearch key="group" value="${user.name}"/>,
 	<e:quicksearch key="teacher" value="<%= user.getTeacher() %>"/>,
 	<e:quicksearch key="school" value="${user.school}"/>,
 	<e:quicksearch key="all" value="" label="All"/>
 </div>
 
-<p>or search posters by</p>
 <form name="search" method="get">
-	<p>
 		<e:select name="key" valueList="title, group, teacher, school, city, state, year"
 					labelList="Title, Group, Teacher, School, City, State, Year"
 					default="${param.key}"/>
 		<input name="value" size="40" maxlength="40" value="${param.value}"/>
 		<input type="submit" name="submit" value="Search Data"/>
-	</p>
-	<p>
-		States include provinces and foreign countries. Enter the 
-		<e:popup href="../jsp/showStates.jsp" target="states" width="400" height="700">abbreviation</e:popup>
-	</p>
-	<p>
-		(Optional) limit search by creation date:
-	</p>
-	<p>
-		<label for="date1">Date:</label>
+		<br />
+		<label for="date1">(Optional) Date:</label>
 		<e:trinput type="text" size="10" maxlength="15" name="date1" default="1/1/2004"/>
 		<label for="date2">to</label>
 		<e:trinput type="text" size="10" maxlength="15" name="date2" default="12/30/2050"/>
+	<p>
+		States include provinces and foreign countries. Use the 
+		<e:popup href="../jsp/showStates.jsp" target="states" width="400" height="700">abbreviation</e:popup>
 	</p>
+
 	<%
 		String order = request.getParameter("order");
 		boolean descending = "true".equals(request.getParameter("desc"));
@@ -73,3 +66,4 @@
 	%>
 		
 </form>
+</div>
