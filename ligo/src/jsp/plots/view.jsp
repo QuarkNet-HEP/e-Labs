@@ -37,9 +37,11 @@
 			
 <table border="0" id="main">
 	<tr>
-		<td id="left">
-			<%@ include file="../include/left-alt.jsp" %>
-		</td>
+		<c:if test="${param.menu != 'no'}">
+			<td id="left">
+				<%@ include file="../include/left-alt.jsp" %>
+			</td>
+		</c:if>
 		<td id="center">
 			<%@ include file="view-common.jsp" %>
 		</td>

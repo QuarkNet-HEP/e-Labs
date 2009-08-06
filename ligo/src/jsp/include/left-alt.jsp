@@ -1,7 +1,7 @@
 <div id="side-panel">
 	<img src="../graphics/wave_graphic.jpg" width="120" height="140" />
 	<ul id="left-links">
-		<li><a href="../library/big-picture.jsp">About LIGO</a>
+		<li><a href="../library/big-picture.jsp">LIGO Big Picture</a>
 		<%-- not sure why the distinction from library is necessary --%>
 		<li><a href="../maps">LIGO Maps</a>
 		<li><a href="../sensors">LIGO Sensors</a>
