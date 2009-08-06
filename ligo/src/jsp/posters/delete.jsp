@@ -37,6 +37,7 @@
 		</td>
 		<td id="center">
 			<h1>Search for and delete posters.</h1>
+			<p />
 			<%@ include file="../include/delete.jsp" %>
 			<%@ include file="search-control.jsp" %>
 			<%@ include file="delete-results.jsp" %>
