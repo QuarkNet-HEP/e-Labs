@@ -41,7 +41,7 @@ function get_wiki_article($title,
   // 1. Get body from wiki
 
   $url ="http://" . $_SERVER['SERVER_NAME'] . $path . "/";
-  $url .= "body.php/$title";
+  $url .= "index.php?title=$title";
   debug_msg(2,"  URL: $url");
   $body = file_get_contents($url);
   
