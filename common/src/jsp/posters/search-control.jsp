@@ -4,6 +4,8 @@
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="java.util.*" %>
 
+<p></p>
+
 <div class="search-quick-links">
 	Quick Searches - Show posters by:&nbsp; 
 	<e:quicksearch key="group" value="${user.name}"/>,
