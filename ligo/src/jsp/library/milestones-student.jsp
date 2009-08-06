@@ -59,7 +59,7 @@
 								</a>
 							</li>
 							<li>
-								Learn how to read and estimate wave frequencies.
+								Learn how to estimate wave frequencies.
 								<a href="javascript:reference('wave frequencies',400)">
 									<img src="../graphics/ref.gif">
 								</a>
