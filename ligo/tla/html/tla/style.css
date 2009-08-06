@@ -6,7 +6,13 @@
 /* e-Lab Page style */
 
 body {
-	background: lightgray;
+	background: white;
+}
+
+.wikibody {
+	width: 910px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .header-title {
