@@ -580,6 +580,6 @@ tr, td {
 	text-align: left;
 }
 
-.poster-search-control {
+.poster-search-control, .plot-search-control {
 	font-size: 85%;
 }
