@@ -678,25 +678,25 @@ function input_channel_control($i){
         echo "<TR><TD class='input-item-beginnner' > $dev_hdr: </td><TD>   \n";  
         echo auto_select_from_array('source_'.$i, list_all_types(SITE_LEVEL, $channel_info), 
         	array("selected" => $source, "changeHandler" => "updateSelectors"));
-        echo help_link("Data_Channel#Source");
+        echo help_link("Data_Channel_Source");
         echo "</TD></TR>\n";
 
         echo "<TR><TD class='input-item-beginnner' > Subsystem: </td><TD>  \n";
         echo auto_select_from_array('subsys_'.$i, list_all_types(SUBSYS_LEVEL, $channel_info), 
         	array("selected" => $source, "changeHandler" => "updateSelectors"));
-        echo help_link("Data_Channel#Subsystem");
+        echo help_link("Data_Channel_Subsystem");
         echo "</TD></TR>\n";
 
         echo "<TR><TD class='input-item-beginnner' > Station: </td><TD>   \n";
         echo auto_select_from_array('station_'.$i, list_all_types(STATION_LEVEL, $channel_info), 
         	array("selected" => $source, "changeHandler" => "updateSelectors"));
-        echo help_link("Data_Channel#Station");
+        echo help_link("Data_Channel_Station");
         echo "</TD></TR>\n";
 
         echo "<TR><TD class='input-item-beginnner' > $sensor_hdr:  </td><TD>\n";
         echo auto_select_from_array('sensor_'.$i, list_all_types(SENSOR_LEVEL, $channel_info), 
         	array("selected" => $source, "changeHandler" => "updateSelectors"));
-        echo help_link("Data_Channel#Sensor");
+        echo help_link("Data_Channel_Sensor");
         echo "</TD></TR>\n";
 
 
@@ -710,7 +710,7 @@ function input_channel_control($i){
                 echo auto_select_from_array('tcomp_'.$i, list_all_types(TCOMP_LEVEL, $channel_info), 
                 	array("selected" => $source, "changeHandler" => "updateSelectors")); 
             }
-            echo help_link("Data_Channel#Sampling");
+            echo help_link("Data_Channel_Sampling");
             echo "</TD></TR>\n";
         }
 
