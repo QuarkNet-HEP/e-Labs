@@ -48,7 +48,7 @@
 					<%-- include file="../include/left.jsp" --%>
 				</td>
 				<td id="center" style="text-align: center;">
-					<h1>Welcome: Join a national collaboration of students to study LIGO seismic data.</h1>	  
+					<h1>Join a national collaboration of students to study LIGO seismic data.</h1>	  
 					<p> </p>
 					<table> 
 						<tr>
