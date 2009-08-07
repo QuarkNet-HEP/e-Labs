@@ -52,8 +52,8 @@ function ligo_masthead($title='',$right_stuff='&nbsp;'){
     echo "</TABLE>";
     echo "\n<!-- END Tool Masthead -->\n";
 
-    project_menu_bar();
-     //LIGO_menu_bar();
+    //project_menu_bar();
+    echo ligo_menu_bar();
 }
 
 function ligo_banner($title='',$right_stuff='&nbsp;'){// returns $x
