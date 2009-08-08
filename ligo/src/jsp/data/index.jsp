@@ -44,12 +44,7 @@
 					<li>Microseism Studies &mdash; Ocean waves produce seismic signals in the 0.1 - 0.3 Hz band of frequencies.  Can you see relationships between ground vibrations at LIGO and wind and wave activity on the oceans?
 </ul>
 <p>LIGO's data analysis software, <a href="/ligo/tla/">Bluestone</a>, provides access to LIGO seismometer data plus wind, temperature and rainfall data.  
-Use the 
-<ul>
-<li><a href="http://neic.usgs.gov/neis/epic/epic.html">USGS Earthquake Archive</a> to find information on worldwide earthquakes.
-</li>
-<li><a href="http://www.ndbc.noaa.gov/">NOAA's ocean buoy network</a> to find wind and wave height data from buoys.</li></p>
-</ul>
+Use the <a href="../info/related-data.jsp">Related Data</a> to find data from non-LIGO sources.
 			<p>
 				Bluestone allows you to select and plot data from LIGO data
 		        channels, and it will eventually allow you to perform
@@ -65,7 +60,7 @@ Use the
 				</ul>
 			</p>
 			
-			<h3>Access your plots and uploaded images</h3>
+			<h3>Access your plots.</h3>
 			
 			<ul>
 								<li><a href="../plots">View Plots</a>

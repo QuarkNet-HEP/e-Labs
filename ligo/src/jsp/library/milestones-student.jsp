@@ -59,7 +59,7 @@
 								</a>
 							</li>
 							<li>
-								Learn how to read and estimate wave frequencies.
+								Learn how to estimate wave frequencies.
 								<a href="javascript:reference('wave frequencies',400)">
 									<img src="../graphics/ref.gif">
 								</a>
@@ -71,8 +71,8 @@
 								</a>
 							</li>
 							<li>
-								Make a research question and plan.
-								<a href="javascript:reference('ligo research question',400)">
+								Make a data analysis plan. What will you study?
+								<a href="javascript:reference('plan data analysis',400)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
@@ -82,7 +82,7 @@
 						</ul>
 					</li>
 					<li>
-						Figure It Out: <i>Prepares the team to analyze data:</i>
+						Figure It Out: <i>Aids the team in data analysis:</i>
 						<ul>
 							<li>
 								Analyze data to answer your research question. 

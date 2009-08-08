@@ -44,31 +44,31 @@
 	<c:when test="${user == null}">
 		<table border="0" id="main">
   			<tr>
-				<td id="left">
+				<td id="left" style="display: none;" >
 					<%-- include file="../include/left.jsp" --%>
 				</td>
-				<td id="center">
-					<h1>Welcome: Join a national collaboration of students to study LIGO seismic data.</h1>	  
+				<td id="center" style="text-align: center;">
+					<h1>Join a national collaboration of students to study LIGO seismic data.</h1>	  
 					<p> </p>
 					<table> 
 						<tr>
-							<td style="text-align: center; width: 450px;">
-							<script type="text/javascript">
-								if (haveqt) {
-									QT_WriteOBJECT('gravity-waves.mov', '320', '240', '', 'AUTOPLAY', 'true', 'CONTROLLER', 'false', 'LOOP', 'true');
-								}
-								else {
-									document.write('<img src="gravity.jpg" />');
-								}
-							</script>
-							<noscript>
-								<img src="gravity.jpg" />
-							</noscript>
-							<br />
-							
-							<div style="font-size:80%";margin-bottom:12px;>Orbiting Black Holes Creating Gravitational Waves<br>Credit: Henze, NASA</div>
-							<p style="font-size:90%">LIGO seeks to detect gravitational waves from orbiting black holes, neutron stars and other sources.</p>
-							<p style="font-size:90%">Scientists must distinguish gravitational waves  from "noise" caused by seismic waves passing through the ground underneath LIGO's detectors.</p>
+							<td style="text-align: center;">
+								<script type="text/javascript">
+									if (haveqt) {
+										QT_WriteOBJECT('gravity-waves.mov', '320', '240', '', 'AUTOPLAY', 'true', 'CONTROLLER', 'false', 'LOOP', 'true');
+									}
+									else {
+										document.write('<img src="gravity.jpg" />');
+									}
+								</script>
+								<noscript>
+									<img src="gravity.jpg" />
+								</noscript>
+								<br />
+								
+								<div style="font-size:80%";margin-bottom:12px;>Orbiting Black Holes Creating Gravitational Waves<br>Credit: Henze, NASA</div>
+								<p style="font-size:90%">LIGO seeks to detect gravitational waves from orbiting black holes, neutron stars and other sources.</p>
+								<p style="font-size:90%">Scientists must distinguish gravitational waves  from "noise" caused by seismic waves passing through the ground underneath LIGO's detectors.</p>
 							</td>
 							<td class="float-right bordered">
 								<jsp:include page="../login/login-control.jsp">

@@ -29,7 +29,6 @@
 			
 			<div id="content">
 
-<%@ include file="../include/delete.jsp" %>
 
 <table border="0" id="main">
 	<tr>
@@ -39,6 +38,7 @@
 		<td id="center">
 			<h1>Delete plots.</h1>
 			<p>
+				<%@ include file="../include/delete.jsp" %>
 				<%@ include file="search-control.jsp" %>
 				<%@ include file="delete-results.jsp" %>
 			</p>

@@ -66,11 +66,18 @@ class KiwiTemplate extends QuickTemplate {
 	 * @access private
 	 */
 	function execute() {
-		global $wgUser;
+		global $wgUser, $wgScriptPath;
 		$skin = $wgUser->getSkin();
 
 		// Suppress warnings to prevent notices about missing indexes in $this->data
 		wfSuppressWarnings();
+		
+		// Make intrawiki links use kiwi.php
+        // This may break if links are external and happen to have a
+        // similarly ($wgScriptPath/index.php/$title) constructed URL
+        $bodytext = $this->data["bodytext"];
+        $bodytext = preg_replace("#$wgScriptPath/index.php/([_a-zA-Z0-9]*)\"#", "$wgScriptPath/kiwi.php/$1\"", $bodytext);
+        $this->data["bodytext"] = $bodytext;		
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="<?php $this->text('xhtmldefaultnamespace') ?>" <?php 

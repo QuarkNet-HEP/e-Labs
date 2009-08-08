@@ -7,6 +7,9 @@
 ** Loosely based on Monobook by Gabriel Wicke
 */
 
+div#content {
+	font-size: 90%;
+}
 
 body {
     font-family: sans-serif;

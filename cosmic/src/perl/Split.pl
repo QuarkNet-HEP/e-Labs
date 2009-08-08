@@ -544,7 +544,7 @@ sub calculate_cpld_frequency {
 		else {
 			$cpld_freq = $fg1 if $ID < 6000; 	#These data are from an older board--assuming the ID is correct!
 			$cpld_freq = $fg2 if $ID > 5999;	#. . .  newer board
-			push @cpld_frequency, $freq;
+			push @cpld_frequency, $cpld_freq;
 			$cpld_sigma = 0.0; 
 			print "Warning: Not enough data to calculate CPLD frequency. Your DAQ serial number is $ID so we are using $cpld_freq\n";
 			return;

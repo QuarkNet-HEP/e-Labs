@@ -507,10 +507,10 @@ function mahash($list, $level) {
 	$s = "";
 	foreach ($list as $k => $v) {
 		if (is_array($v)) {
-			$s = $s.mahash($v, $level + 1);
+			$s = $s.$k.".".mahash($v, $level + 1);
 		}
 		else {
-			$s = $s.$level.":".$k.";";
+			$s = $s.$level.".".$k.",";
 		}
 	}
 	return $s;
@@ -678,25 +678,25 @@ function input_channel_control($i){
         echo "<TR><TD class='input-item-beginnner' > $dev_hdr: </td><TD>   \n";  
         echo auto_select_from_array('source_'.$i, list_all_types(SITE_LEVEL, $channel_info), 
         	array("selected" => $source, "changeHandler" => "updateSelectors"));
-        echo help_link("Data_Channel#Source");
+        echo help_link("Data_Channel_Source");
         echo "</TD></TR>\n";
 
         echo "<TR><TD class='input-item-beginnner' > Subsystem: </td><TD>  \n";
         echo auto_select_from_array('subsys_'.$i, list_all_types(SUBSYS_LEVEL, $channel_info), 
         	array("selected" => $source, "changeHandler" => "updateSelectors"));
-        echo help_link("Data_Channel#Subsystem");
+        echo help_link("Data_Channel_Subsystem");
         echo "</TD></TR>\n";
 
         echo "<TR><TD class='input-item-beginnner' > Station: </td><TD>   \n";
         echo auto_select_from_array('station_'.$i, list_all_types(STATION_LEVEL, $channel_info), 
         	array("selected" => $source, "changeHandler" => "updateSelectors"));
-        echo help_link("Data_Channel#Station");
+        echo help_link("Data_Channel_Station");
         echo "</TD></TR>\n";
 
         echo "<TR><TD class='input-item-beginnner' > $sensor_hdr:  </td><TD>\n";
         echo auto_select_from_array('sensor_'.$i, list_all_types(SENSOR_LEVEL, $channel_info), 
         	array("selected" => $source, "changeHandler" => "updateSelectors"));
-        echo help_link("Data_Channel#Sensor");
+        echo help_link("Data_Channel_Sensor");
         echo "</TD></TR>\n";
 
 
@@ -710,7 +710,7 @@ function input_channel_control($i){
                 echo auto_select_from_array('tcomp_'.$i, list_all_types(TCOMP_LEVEL, $channel_info), 
                 	array("selected" => $source, "changeHandler" => "updateSelectors")); 
             }
-            echo help_link("Data_Channel#Sampling");
+            echo help_link("Data_Channel_Sampling");
             echo "</TD></TR>\n";
         }
 
@@ -1036,7 +1036,7 @@ function build_channel_info_subset($ttype){
           /* Now get station and sensor */
 
           $station_pat = "/(.*)(LVEA|EX|EY|MX|MY|VAULT|BSC\d+|COIL)_(\S+)/";
-          $n = preg_match($station_pat, $full_sensor, $matches);
+          $n = preg_match($station_pat, $full_sensor, $matches);  
           if($n >0) {// if no match it's probably GDS, so try that
               $blrm = $matches[1];
               $station = $matches[2];
@@ -1061,7 +1061,7 @@ function build_channel_info_subset($ttype){
             }
         }
 
-
+        
         /* Create new channel object.
          * (This is clearer than positional parameters in constructor.) */
 

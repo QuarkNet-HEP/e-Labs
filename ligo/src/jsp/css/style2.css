@@ -579,3 +579,7 @@ tr, td {
 	width: auto;
 	text-align: left;
 }
+
+.poster-search-control, .plot-search-control {
+	font-size: 85%;
+}

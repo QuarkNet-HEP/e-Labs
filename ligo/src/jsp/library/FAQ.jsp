@@ -31,7 +31,14 @@
 		</td>
 		<td id="center">
 
+<e:transclude
+ url="http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php/LIGO_FAQ"
+     start="<!-- start content -->"
+     end="<div class=\"printfooter\">"
+/>
 
+
+<!-- 
  <h1>FAQs: e-Lab Questions and Answers</h1> 
 
   <P></P>
@@ -40,24 +47,17 @@ Several resources are available to get answers to questions, or to ask for
 help from other LIGO e-Lab participants:
 
 <UL>
-<LI> Use <a href="/glossary">the Glossary</a> to 
+<LI> Use <a href="/library/kiwi.php/Category:LIGO">the Glossary</a> to 
      look up technical terms or to read articles about LIGO components and
      systems.</LI>
-
-<LI> News and current status may be available from the (prototype!) 
-     <a href='/'>main portal page</a>, or posted to 
-     <a href='/forum_forum.php?id=38'>The
-     Bulletin Board</a>.</LI>
-
-<LI> You can report a problem or make a request to the I2U2 Help Desk
-     using the <a href='/HelpDeskRequest.php'>Help
-     Desk Request Form</a>.</LI>
 
 </UL>
 
 <P></P>
+ -->
 
 
+<!-- 
 <h2>Still under development...</h2>
 <P></P>
 <UL>
@@ -67,13 +67,8 @@ help from other LIGO e-Lab participants:
 
 <LI> Post a question directly to the <a href='/forum_forum.php?id=58'>
      LIGO Help Desk</a></LI>
+ -->
 
-<LI> Visit the other  
-     <a href='/forum_index.php'>discussion forums</a> 
-     to find out what is happening with other e-Labs, or have a look at the
-     other <a href='/forum_help_desk.php'>Help Desks</a></LI>
-
-</UL>
 
 
 

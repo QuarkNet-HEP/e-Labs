@@ -56,7 +56,7 @@
 						<li><a href="../home/about-us.jsp">About Us</a></li>
 					</ul>
 					<ul id="sub-library">
-						<li><a href="/library/index.php/Category:LIGO">Glossary</a></li>
+						<li><a href="/library/kiwi.php/Category:LIGO">Glossary</a></li>
 						<li><a href="../library/resources.jsp">Resources</a></li>
 						<li><a href="../library/big-picture.jsp">Big Picture</a></li>
 						<li><a href="../library/FAQ.jsp">FAQs</a></li>
@@ -83,7 +83,7 @@
 						<li><a href="../jsp/uploadImage.jsp">Upload Image</a></li>
 					</ul>
 					<ul id="sub-siteindex">
-						<li><a href="../site-index/site-map-anno.jsp">Site Index</a></li>	
+						<li><a href="../site-index/">Site Index</a></li>	
 						<li><a href="../site-index/site-map-anno.jsp">Explore!</a></li>
 					</ul>
 				</td>

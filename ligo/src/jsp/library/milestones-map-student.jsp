@@ -18,13 +18,13 @@
 <area shape="rect" alt="" coords="512,93,590,127" href="javascript:reference('ligo improve answer',400)", title="What new questions does your research lead to?">
 <area shape="rect" alt="" coords="509,177,571,216" href="javascript:reference('ligo test answer',450)" title="Gain confidence that your data support your answer.">
 <area shape="rect" alt="" coords="434,178,506,228" href="javascript:reference('ligo analysis',420)" title="Find LIGO data. You may need to compare LIGO data with other data of interest.">
-<area shape="rect" alt="" coords="376,73,438,117" href="javascript:reference('ligo research question',450)" title="Write a research question and plan. What will you study?">
+<area shape="rect" alt="" coords="376,73,438,117" href="javascript:reference('plan data analysis',450)" title="Write a data analysis plan. What will you study?">
 <area shape="rect" alt="" coords="361,130,437,168" href="javascript:reference('data patterns',400)" title="Look for similar patterns in data from LIGO seismometers.">
-<area shape="rect" alt="" coords="376,180,433,222" href="javascript:reference('wave frequencies',550)" title="Read and estimate wave frequencies.">
+<area shape="rect" alt="" coords="376,180,433,222" href="javascript:reference('wave frequencies',550)" title="Estimate wave frequencies.">
 <area shape="rect" alt="" coords="264,74,326,113" href="javascript:reference('ligo science goals',420)" title="What major questions are LIGO scientists researching?">
 <area shape="rect" alt="" coords="587,3,651,58" href="#" title="Goal: Make a poster and discuss results.">
 <area shape="rect" alt="" coords="4,12,60,55" href="../survey/show-students.jsp?type=pre" title="Take the pre-test. See what you already know.">
-<area shape="poly" alt="" coords="71,40, 98,36, 107,8, 129,7, 133,36, 148,39, 151,52, 135,57, 72,57, 70,42, 71,40" href="big-picture.jsp" title="Read about the cool science.">
+<area shape="poly" alt="" coords="71,40, 98,36, 107,8, 129,7, 133,36, 148,39, 151,52, 135,57, 72,57, 70,42, 71,40" href="../library/big-picture.jsp" title="Read about the LIGO science.">
 <area shape="poly" alt="" coords="135,75, 258,78, 249,25, 163,21, 135,75" href="#" title="Goal: Review necessary skills for a study.">
 </map>
 

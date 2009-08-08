@@ -59,35 +59,37 @@
 	</table>
 	
 	<c:if test="${param.confirm != 'Delete' && !empty ok}">
-		<h2>Are you sure you want to delete the following files?</h2>
+		<div style="border: 2px solid red;">
+			<h2>Are you sure you want to delete the following files?</h2>
 		
-		<form method="get">
-			 <table id="deletion-results">
-				<c:forEach items="${ok}" var="m">
+			<form method="get">
+				 <table id="deletion-results">
+					<c:forEach items="${ok}" var="m">
+						<tr>
+							<td>
+								<c:choose>
+									<c:when test="${m.tupleMap.name != null}">
+										${m.tupleMap.name} (${m.LFN})
+									</c:when>
+									<c:otherwise>
+										${m.LFN}
+									</c:otherwise>
+								</c:choose>
+								<input type="hidden" name="file" value="${m.LFN}" />
+							</td>
+						</tr>
+					</c:forEach>
 					<tr>
 						<td>
-							<c:choose>
-								<c:when test="${m.tupleMap.name != null}">
-									${m.tupleMap.name} (${m.LFN})
-								</c:when>
-								<c:otherwise>
-									${m.LFN}
-								</c:otherwise>
-							</c:choose>
-							<input type="hidden" name="file" value="${m.LFN}" />
+							<p align="center">
+								<input type="submit" name="confirm" value="Cancel" />
+								<input type="submit" name="confirm" value="Delete" />
+							</p>
 						</td>
 					</tr>
-				</c:forEach>
-				<tr>
-					<td>
-						<p align="center">
-							<input type="submit" name="confirm" value="Cancel" />
-							<input type="submit" name="confirm" value="Delete" />
-						</p>
-					</td>
-				</tr>
-			</table>
-		</form>
+				</table>
+			</form>
+		</div>
 	</c:if>
 	<c:if test="${param.confirm == 'Delete'}">
 		<table id="deletion-results">

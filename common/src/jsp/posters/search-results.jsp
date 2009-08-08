@@ -6,37 +6,55 @@
 
 
 <c:if test="${!empty searchResults}">
-	<table id="search-results">
-		<tr>
-			<th><e:sort key="title">Title</e:sort></th>
-			<th><e:sort key="date">Date</e:sort></th>
-			<th><e:sort key="group">Group</e:sort></th>
-			<th><e:sort key="teacher">Teacher</e:sort></th>
-			<th><e:sort key="school">School</e:sort></th>
-			<th><e:sort key="city">City</e:sort></th>
-			<th><e:sort key="state">State</e:sort></th>
-			<th><e:sort key="year">Year</e:sort></th>
-			<th></th>
-			<th></th>
-			<th></th>
-		</tr>
-		<c:forEach items="${searchResults}" var="poster">
-			<c:set var="tuples" value="${poster.tupleMap}"/>
+	You can sort the results by clicking on the header. 
+	
+	<script type="text/javascript" src="../include/jquery/js/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript" src="../include/jquery/js/jquery.tablesorter.min.js"></script>
+	<link type="text/css" rel="stylesheet" href="../include/jquery/css/blue/style.css" />
+	<script type="text/javascript">
+	$(document).ready(function() { 
+	        $("#search-results").tablesorter({headers: {8:{sorter:false}}}); 
+	    } 
+	); 
+	</script>
+
+	<table id="search-results" class="tablesorter">
+		<thead>
 			<tr>
-				<td>
-					<e:popup href="../posters/display.jsp?name=${tuples.name}" target="poster" width="700" height="900">${tuples.title}</e:popup>
-				</td>
-				<td><e:format type="date" format="MMMMMMMMM dd, yyyy" value="${tuples.date}"/></td>
-				<td>${tuples.group}</td>
-				<td>${tuples.teacher}</td>
-				<td>${tuples.school}</td>
-				<td>${tuples.city}</td>
-				<td>${tuples.state}</td>
-				<td>${tuples.year}</td>
-				<td><a href="../jsp/add-comments.jsp?t=poster&fileName=${tuples.name}">View/Add Comments</a></td>
-				<td><a href="../posters/display.jsp?type=paper&name=${tuples.name}">View as Paper</a></td>
-				<td><a href="../data/view-metadata.jsp?filename=${poster.LFN}">View Metadata</a></td>
+				<th>Title</th>
+				<th>Date</th>
+				<th>Group</th>
+				<th>Teacher</th>
+				<th>School</th>
+				<th>City</th>
+				<th>State</th>
+				<th>Year</th>
+				<th>&nbsp;</th>
 			</tr>
-		</c:forEach>
+		</thead>
+		<tbody>
+			<c:forEach items="${searchResults}" var="poster">
+				<c:set var="tuples" value="${poster.tupleMap}"/>
+				<tr>
+					<td>
+						<e:popup href="../posters/display.jsp?name=${tuples.name}" target="poster" width="700" height="900">${tuples.title}</e:popup>
+					</td>
+					<td><e:format type="date" format="MMMMMMMMM dd, yyyy" value="${tuples.date}"/></td>
+					<td>${tuples.group}</td>
+					<td>${tuples.teacher}</td>
+					<td>${tuples.school}</td>
+					<td>${tuples.city}</td>
+					<td>${tuples.state}</td>
+					<td>${tuples.year}</td>
+					<td>
+						<ul>
+							<li><a href="../jsp/add-comments.jsp?t=poster&fileName=${tuples.name}">View or Add Comments</a></li>
+							<li><a href="../posters/display.jsp?type=paper&name=${tuples.name}">View as Paper</a></li>
+							<li><a href="../data/view-metadata.jsp?filename=${poster.LFN}">View Metadata</a></li>
+						</ul>
+					</td>
+				</tr>
+			</c:forEach>
+		</tbody>
 	</table>
 </c:if>
