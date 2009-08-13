@@ -77,7 +77,7 @@
 							newSurveyId = Integer.parseInt(elab.getProperty("cosmic.newsurvey"));
 							user.setNewSurveyId(newSurveyId);
 						}
-						if (elab.getId().equals("2")) {
+						if (elab.getId().equals("3")) {
 							newSurveyId = Integer.parseInt(elab.getProperty("ligo.newsurvey"));
 							user.setNewSurveyId(newSurveyId);
 						}

@@ -120,7 +120,7 @@ if (submit != null) {
 				group.setNewSurvey(groupInSurvey);
 				group.setNewSurveyId(newSurveyId);
 			}
-			else if (elab.getId().equals("2")) {
+			else if (elab.getId().equals("3")) {
 				// TODO: LIGO 
 				// Anyone taking this test will be in the 'New Survey' system
 				group.setSurvey(false);
@@ -128,7 +128,7 @@ if (submit != null) {
 				group.setNewSurvey(groupInSurvey);
 				group.setNewSurveyId(newSurveyId);
 			}
-			else if (elab.getId().equals("3")) {
+			else if (elab.getId().equals("2")) {
 				// TODO: CMS
 				// Anyone taking this test will be in the 'New Survey' system
 			}
