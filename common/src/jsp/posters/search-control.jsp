@@ -53,7 +53,7 @@
 			    and.add(new Equals("type", "poster"));
 				if (!"all".equals(key)) {
 					value = value.replace('*', '%'); // Allow asterisk
-				    and.add(new Like(key, value));
+				    and.add(new ILike(key, value));
 				}
 				    
 			//hmm. posters use "date" instead of "creationdate"
