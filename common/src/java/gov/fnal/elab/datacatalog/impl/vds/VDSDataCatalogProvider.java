@@ -39,7 +39,8 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import org.griphyn.vdl.annotation.Predicate;
+//import org.griphyn.vdl.annotation.Predicate;
+import gov.fnal.elab.datacatalog.ElabPredicate;
 import org.griphyn.vdl.annotation.QueryParser;
 import org.griphyn.vdl.annotation.QueryTree;
 import org.griphyn.vdl.annotation.TupleBoolean;
@@ -112,8 +113,8 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
     }
 
     private void print(QueryTree tree, StringBuffer sb) {
-        Predicate p = tree.getData();
-        sb.append(Predicate.PREDICATE_STRING[p.getPredicate()]);
+        ElabPredicate p = (ElabPredicate) tree.getData();
+        sb.append(ElabPredicate.PREDICATE_STRING[p.getPredicate()]);
         if (p.getKey() != null) {
             sb.append('*');
         }
@@ -322,7 +323,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
     protected QueryTree buildQueryTree(Iterator i, int type) {
         QueryElement qe = (QueryElement) i.next();
         if (i.hasNext()) {
-            QueryTree qt = new QueryTree(new Predicate(getPredicateType(type)));
+            QueryTree qt = new QueryTree(new ElabPredicate(getPredicateType(type)));
             qt.setLchild(buildQueryTree(qe));
             qt.setRchild(buildQueryTree(i, type));
             return qt;
@@ -354,7 +355,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
             QueryElement qe = (QueryElement) i.next();
             int type = qe.getType();
             if (i.hasNext()) {
-                qt = new QueryTree(new Predicate(getPredicateType(query
+                qt = new QueryTree(new ElabPredicate(getPredicateType(query
                         .getType())));
                 qt.setLchild(buildQueryTree(qe));
                 qt.setRchild(buildQueryTree(i, meq.getType()));
@@ -365,7 +366,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         }
         else {
             QueryLeaf t = (QueryLeaf) query;
-            qt = new QueryTree(new Predicate(getPredicateType(query.getType()),
+            qt = new QueryTree(new ElabPredicate(getPredicateType(query.getType()),
                     t.getKey(), getType(t.getValue()), quote(format(t))));
         }
         return qt;
@@ -389,45 +390,47 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
 
     protected int getType(Object value) {
         if (value instanceof String) {
-            return Predicate.TYPE_STRING;
+            return ElabPredicate.TYPE_STRING;
         }
         else if (value instanceof Date) {
-            return Predicate.TYPE_DATE;
+            return ElabPredicate.TYPE_DATE;
         }
         else if (value instanceof Double || value instanceof Float) {
-            return Predicate.TYPE_FLOAT;
+            return ElabPredicate.TYPE_FLOAT;
         }
         else if (value instanceof Integer || value instanceof Long) {
-            return Predicate.TYPE_INT;
+            return ElabPredicate.TYPE_INT;
         }
         else if (value instanceof Boolean) {
-            return Predicate.TYPE_BOOL;
+            return ElabPredicate.TYPE_BOOL;
         }
         else {
-            return Predicate.TYPE_STRING;
+            return ElabPredicate.TYPE_STRING;
         }
     }
 
     protected int getPredicateType(int qetype) {
         switch (qetype) {
             case QueryElement.AND:
-                return Predicate.AND;
+                return ElabPredicate.AND;
             case QueryElement.OR:
-                return Predicate.OR;
+                return ElabPredicate.OR;
             case QueryElement.EQ:
-                return Predicate.EQ;
+                return ElabPredicate.EQ;
             case QueryElement.LT:
-                return Predicate.LT;
+                return ElabPredicate.LT;
             case QueryElement.GT:
-                return Predicate.GT;
+                return ElabPredicate.GT;
             case QueryElement.LE:
-                return Predicate.LE;
+                return ElabPredicate.LE;
             case QueryElement.GE:
-                return Predicate.GE;
+                return ElabPredicate.GE;
             case QueryElement.BETWEEN:
-                return Predicate.BETWEEN;
+                return ElabPredicate.BETWEEN;
             case QueryElement.LIKE:
-                return Predicate.LIKE;
+                return ElabPredicate.LIKE;
+            case QueryElement.ILIKE:
+            	return ElabPredicate.ILIKE;
             default:
                 throw new IllegalArgumentException(
                         "Unknown QueryElement type: " + qetype);

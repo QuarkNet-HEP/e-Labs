@@ -23,10 +23,12 @@ public interface QueryElement {
     public static final int LT = 10;
     public static final int GE = 11;
     public static final int LE = 12;
+    public static final int ILIKE = 13;
+    public static final int IN = 14; 
 
     public static final String[] NAMES = new String[] { "AND", "OR", "NOT",
             "EXISTS", "LIKE", "BETWEEN", "CONTAINS", "EQ", "NE", "GT", "LT",
-            "GE", "LE" };
+            "GE", "LE", "ILIKE", "IN" };
 
     int getType();
 
