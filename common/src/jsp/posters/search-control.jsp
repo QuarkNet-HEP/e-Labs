@@ -17,7 +17,7 @@
 	
 	<form name="search" method="get">
 		<e:select name="key" valueList="title, group, teacher, school, city, state, year"
-					labelList="Title, Group, Teacher, School, City, State, Year"
+					labelList="Title, Group, Teacher, School, City, State, Academic Year"
 					default="${param.key}"/>
 		<input name="value" size="40" maxlength="40" value="${param.value}"/>
 		<input type="submit" name="submit" value="Search Data"/>
@@ -43,6 +43,13 @@
 			if (date1 == null) date1="1/1/2004";
 			String date2 = request.getParameter("date2");
 			if (date2 == null) date2="12/30/2050";
+			
+			if (value != null) {
+				value = value.trim();
+			}
+			else {
+				value = "";
+			}
 	
 			boolean submit = request.getParameter("submit") != null;
 				
@@ -51,12 +58,30 @@
 			    And and = new And();
 			    and.add(new Equals("project", elab.getName()));
 			    and.add(new Equals("type", "poster"));
-				if (!"all".equals(key)) {
-					value = value.replace('*', '%'); // Allow asterisk
-				    and.add(new ILike(key, value));
-				}
+			    if (value.isEmpty()) {
+			    	// do nothing
+			    }
+			    else if (!key.equals("year")) {
+			    	// Automatically generate wildcard, make case-insensitive
+			    	and.add(new ILike(key, "%" + value + "%"));
+			    }
+			    else {
+			    	if (value.toUpperCase().startsWith("AY")) {
+			    		and.add(new Equals(key, value));
+			    	}
+			    	else { 
+			    		try {
+			    			Integer.parseInt(value);
+			    			and.add(new Equals(key, "AY" + value));
+			    		}
+			    		catch (Exception ex) {
+			    			// do nothing if we can't parse the string
+			    		}
+			    	}
+			    }
 				    
 			//hmm. posters use "date" instead of "creationdate"
+			// Probably should do this Cosmic-style 
 		        and.add(new Between("date", new Date(date1), new Date(date2 + " 23:59:59")));
 	
 				searchResults = elab.getDataCatalogProvider().runQuery(and);
