@@ -12,7 +12,7 @@
 			</td>
 			<td class="form-control">
 				<input type="text" id="user" name="user" size="16" tabindex="1" />
-				<script language="JavaScript">
+				<script type="text/javascript">
 					document.getElementById("user").focus();
 				</script>
 			</td>
