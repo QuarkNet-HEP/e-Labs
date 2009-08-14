@@ -58,10 +58,9 @@
 			    else {
 				    and.add(new Equals("type", "plot"));
 			    }
-				if (!"all".equals(key)) {
-					value = value.replace('*', '%'); // Allow asterisk
-				    and.add(new ILike(key, value));
-				}
+			    if (!value.isEmpty()) {
+			    	and.add(new ILike(key, "%" + value + "%"));
+			    }
 				    
 		        and.add(new Between("creationdate", new Date(date1), new Date(date2 + " 23:59:59")));
 	
