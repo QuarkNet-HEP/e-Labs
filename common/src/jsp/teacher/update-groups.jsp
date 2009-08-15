@@ -14,7 +14,8 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Update your groups</title>
-		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
@@ -74,6 +75,10 @@
 					if (user.getNewSurveyId() == null) { 
 						if (elab.getId().equals("1")) {
 							newSurveyId = Integer.parseInt(elab.getProperty("cosmic.newsurvey"));
+							user.setNewSurveyId(newSurveyId);
+						}
+						if (elab.getId().equals("3")) {
+							newSurveyId = Integer.parseInt(elab.getProperty("ligo.newsurvey"));
 							user.setNewSurveyId(newSurveyId);
 						}
 						// set handlers for everything else. 

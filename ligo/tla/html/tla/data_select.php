@@ -47,8 +47,8 @@ if($user_level==1){
   add_message(" Use the controls below to select the data you wish
           to include in your analysis. 
           <br>
-          You must select both a <i>".glink('time interval')."</i>  to view
-          and a <i>".glink('data channel')."</i> to plot. 
+          You must select both a <i>".glossary_link('Time interval', 'time interval')."</i>  to view
+          and a <i>".glossary_link('Data Channel', 'data channel')."</i> to plot. 
           <P>
           <span class=\"hideme\">Press \"Apply\" to make your selections take effect.<br></span>
           Then press the \"Next Step\" button at the bottom or top of the page to continue.

@@ -67,7 +67,7 @@ load_all_vi_settings();         // All of them!
 // Helpful? user message
 
 if($user_level<3){
-    add_message(" Use the control below to select the ".glink('analysis type')
+    add_message(" Use the control below to select the ".glossary_link('Analysis type', 'analysis type')
                 ."...");
     if($user_level<2){
     add_message(" (The analysis type determines what kind of processing is applied "

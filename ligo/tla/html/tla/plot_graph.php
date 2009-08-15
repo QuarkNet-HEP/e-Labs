@@ -285,6 +285,15 @@ else {
    				<td class="control" valign="top" width="100%">
 END;
 	plot_title_control();
+	if (function_exists("http_get")) {
+		hrule(); 
+echo <<<END
+	<div class="vindent">
+    	<b>Plot Filename:</b><br/>
+    	<input class="textfield" type="text" name="plot_name" value="$plot_name" size="18"></input>
+    </div>
+END;
+	}
 	hrule();
 	time_axis_control();
 	y_axis_control();
@@ -312,9 +321,10 @@ END;
 	//
 
 	if (function_exists("http_get")) {
-    	echo "\n<input class=\"button\" type='submit' name='save_plot' value='Save Plot As:'><br />
-        	<input class=\"textfield\" type='text' name='plot_name' value='$plot_name'
-                    size='18'>\n";
+		hrule(); 
+echo <<<END
+    	<input class="button" type="submit" name='save_plot' value="Save Plot"><br />
+END;
 	}
 	
 	//
