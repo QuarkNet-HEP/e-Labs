@@ -22,14 +22,22 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class Statistics {
+    public static final Set<String> FILTERED_GROUPS = new HashSet<String>() {{
+        add("TestTeacher");
+        add("admin");
+    }};
+    
+    
     private String start;
     private String end;
     private int span;
@@ -96,9 +104,9 @@ public class Statistics {
                     .prepareStatement("select count(*) from research_group "
                             + "where role=? "
                             + "     and id in (select research_group_id from research_group_project"
-                            + "         where project_id = ?) ");
+                            + "         where project_id = ?) and name not in " + getGroupFilter());
             ps.setString(1, role);
-            ps.setString(2, elab.getId());
+            ps.setInt(2, Integer.parseInt(elab.getId()));
     
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -112,6 +120,30 @@ public class Statistics {
             DatabaseConnectionManager.close(con);
         }
     }
+    
+    private String groupFilter;
+    
+    private synchronized String getGroupFilter() {
+        if (groupFilter == null) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(" (");
+            Iterator<String> i = FILTERED_GROUPS.iterator();
+            while (i.hasNext()) {
+                sb.append("'");
+                sb.append(i.next());
+                sb.append("'");
+                if (i.hasNext()) {
+                    sb.append(',');
+                }
+            }
+            if (FILTERED_GROUPS.isEmpty()) {
+                sb.append("'<none>'");
+            }
+            sb.append(')');
+            groupFilter = sb.toString();
+        }
+        return groupFilter;
+    }
 
     public String getLogIns() throws SQLException {
         Connection con = DatabaseConnectionManager.getConnection(elab
@@ -124,9 +156,10 @@ public class Statistics {
                     .prepareStatement("select count(id) from usage "
                             + "where date_entered between now() - ?::interval and now() "
                             + "and research_group_id in (select research_group_id from research_group_project"
-                            + "         where project_id = ?)");
+                            + "         where project_id = ?) "
+                            + "and research_group_id not in (select id from research_group where name in " + getGroupFilter() + ")");
             ps.setString(1, span + " days");
-            ps.setString(2, "1");
+            ps.setInt(2, Integer.parseInt(elab.getId()));
     
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -164,11 +197,12 @@ public class Statistics {
                             + "and research_group_id in "
                             + "   (select research_group_id from research_group_project "
                             + "         where project_id = ?) "
+                            + "and research_group_id not in (select id from research_group where name in " + getGroupFilter() + ") "
                             + "group by date_trunc('" + granularity + "', date_entered) " 
                             + "order by date_trunc('" + granularity + "', date_entered)");
             ps.setString(1, start);
             ps.setString(2, end);
-            ps.setString(3, elab.getId());
+            ps.setInt(3, Integer.parseInt(elab.getId()));
             PreparedStatement gs = con
                     .prepareStatement("select to_char(date_trunc('" + granularity + "', date_entered), '" + format + "'), count(date_entered) from usage "
                             + "where date_entered between ?::timestamp and ?::timestamp "
@@ -179,16 +213,33 @@ public class Statistics {
                             + "order by date_trunc('" + granularity + "', date_entered)");
             gs.setString(1, start);
             gs.setString(2, end);
-            gs.setString(3, elab.getId());
+            gs.setInt(3, Integer.parseInt(elab.getId()));
 
             ResultSet rs = ps.executeQuery();
             ResultSet gss = gs.executeQuery();
+            
+            Map<String, Integer> gssm = new HashMap<String, Integer>();
+            while (gss.next()) {
+                gssm.put(gss.getString(1), gss.getInt(2));
+            }
+            
             List l = new ArrayList();
-            while (rs.next() && gss.next()) {
-                BarChartEntry bce = new BarChartEntry(rs.getString(1), rs
-                        .getInt(2));
-                bce.setGuestPercentage((double) gss.getInt(2) / rs.getInt(2)
-                        * 100);
+            while (rs.next()) {
+                String name = rs.getString(1);
+                int count = rs.getInt(2);
+                BarChartEntry bce = new BarChartEntry(name, count);
+                if (count == 0) {
+                    continue;
+                }
+                int guestCount;
+                if (gssm.containsKey(name)) {
+                    guestCount = gssm.get(name);
+                }
+                else {
+                    guestCount = 0;
+                }
+                
+                bce.setGuestPercentage((double) guestCount / count * 100);
                 l.add(bce);
             }
             int maxCount = 1;
@@ -221,12 +272,13 @@ public class Statistics {
                             + "         and research_group_id in "
                             + "             (select research_group_id from research_group_project "
                             + "                 where project_id = ?) "
+                            + " and research_group_id not in (select id from research_group where name in " + getGroupFilter() + ") "
                             + "     group by research_group_id "
                             + "     order by count(research_group_id) desc"
                             + "     limit 32");
             ps.setString(1, start);
             ps.setString(2, end);
-            ps.setString(3, elab.getId());
+            ps.setInt(3, Integer.parseInt(elab.getId()));
     
             ResultSet rs = ps.executeQuery();
     
@@ -262,7 +314,7 @@ public class Statistics {
                             + "     where id in (select teacher_id from research_group "
                             + "         where id in (select research_group_id from research_group_project "
                             + "             where project_id = ?)))");
-            ps.setString(1, elab.getId());
+            ps.setInt(1, Integer.parseInt(elab.getId()));
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getString(1);
@@ -284,7 +336,7 @@ public class Statistics {
                     .prepareStatement("select count(*) from survey "
                             + "where project_id = ? " + "and " + type
                             + "survey = true");
-            ps.setString(1, elab.getId());
+            ps.setInt(1, Integer.parseInt(elab.getId()));
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getString(1);
