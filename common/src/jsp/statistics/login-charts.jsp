@@ -88,7 +88,7 @@
 				<table border="0" cellpadding="0" cellspacing="0" 
 					style="background-color: #a0ff00; width: 40px; height: ${e.relativeSize * 100}px;">
 					<tr style="background-color: #c0ff90;" height="${e.guestPercentage}%"><td></td></tr>
-					<tr><td></td></tr>
+					<tr><td height="${100 - e.guestPercentage}%"></td></tr>
 				</table>
 			</td>
 		</c:forEach>
@@ -145,7 +145,7 @@
 					style="background-color: #ffaf00; width: ${e.relativeSize * 200}px; margin-left: 0px;">
 					<tr>
 						<td height="10px" width="${100 - e.guestPercentage}%"></td>
-						<td style="background-color: #ffdfb0;"></td>
+						<td style="background-color: #ffdfb0;" width="${e.guestPercentage}%"></td>
 					</tr>
 				</table>
 			</td>
