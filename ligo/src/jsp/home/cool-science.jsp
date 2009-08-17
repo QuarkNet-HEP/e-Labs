@@ -24,7 +24,7 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
-					<%@ include file="../include/nav-rollover.jsp" %>
+					<%@ include file="../include/nav-rollover.jspf" %>
 				</div>
 			</div>
 			
