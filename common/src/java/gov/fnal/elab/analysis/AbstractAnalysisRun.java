@@ -6,7 +6,6 @@ package gov.fnal.elab.analysis;
 import gov.fnal.elab.Elab;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +19,9 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
     private static int sid = 0;
     private Map attributes;
     private Date startTime, endTime;
+    
+    public AbstractAnalysisRun() {
+    }
 
     public AbstractAnalysisRun(ElabAnalysis analysis, Elab elab,
             String outputDir) {
@@ -89,7 +91,7 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
     }
 
     public Map getAttributes() {
-        return Collections.unmodifiableMap(attributes);
+        return attributes;
     }
 
     public ElabAnalysis getAnalysis() {
@@ -149,7 +151,7 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
         return startTime;
     }
 
-    protected void setStartTime(Date startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
@@ -157,7 +159,7 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
         return endTime;
     }
 
-    protected void setEndTime(Date endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 
@@ -177,6 +179,30 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
         }
         else {
             return "-";
+        }
+    }
+
+    public void setAttributes(Map attributes) {
+        this.attributes = attributes;
+    }
+
+    public void setAnalysis(ElabAnalysis analysis) {
+        this.analysis = analysis;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+        synchronized (AnalysisRun.class) {
+            int aid;
+            try {
+                aid = Integer.parseInt(id);
+            }
+            catch (NumberFormatException e) {
+                aid = 0;
+            }
+            if (sid < aid) {
+                sid = aid;
+            }
         }
     }
 }
