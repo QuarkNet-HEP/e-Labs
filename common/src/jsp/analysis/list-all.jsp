@@ -62,7 +62,7 @@
 						<td>${uentry.key}</td>
 						<td>${run.id}</td>
 						<td>
-							<a href="status.jsp?id=${run.id}">${run.analysis.name}</a>
+							<a href="status.jsp?id=${run.id}&user=${uentry.key}">${run.analysis.name}</a>
 						</td>
 						<td>
 							${run.attributes.runMode}
