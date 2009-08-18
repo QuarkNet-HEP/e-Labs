@@ -10,21 +10,25 @@
 package gov.fnal.elab.analysis.impl.swift;
 
 import java.util.StringTokenizer;
+import java.io.Serializable;
 
 import org.globus.cog.karajan.arguments.AbstractWriteOnlyVariableArguments;
 
-public class OutputChannel extends AbstractWriteOnlyVariableArguments {
+public class OutputChannel extends AbstractWriteOnlyVariableArguments implements Serializable {
     public static final String START = "PROGRESS_INIT";
     public static final String DONE = "PROGRESS_MARKER";
-    
+        
 	private StringBuffer sb;
 	private int total, current;
 	
 	private String prefix;
+	
+	public OutputChannel() {
+	}
 
 	public OutputChannel(String prefix) {
+	    this.prefix = prefix;
 		sb = new StringBuffer();
-		this.prefix = prefix;
 	}
 
 	public String getPrefix() {
