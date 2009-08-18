@@ -71,10 +71,14 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
         private String runDir, runDirUrl, runID, runMode;
         private volatile transient double progress;
         private transient VDL2ExecutionContext ec;
-        private transient OutputChannel out;
+        private OutputChannel out;
         private boolean updated;
+        
+        public Run() {
+            super();
+        }
 
-        protected Run(ElabAnalysis analysis, Elab elab, String outputDir) {
+        public Run(ElabAnalysis analysis, Elab elab, String outputDir) {
             super(analysis, elab, outputDir);
         }
 
