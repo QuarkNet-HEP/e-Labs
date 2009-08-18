@@ -6,6 +6,7 @@ package gov.fnal.elab.analysis;
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
@@ -53,7 +55,7 @@ public class AnalysisManager {
     public static Map getAnalysisRuns(Elab elab, ElabGroup user) {
         Map a;
         synchronized (AnalysisManager.class) {
-            Map users = getAnalysisRuns(elab);
+            Map users = getAnalysisRuns0(elab);
             a = (Map) users.get(user.getName());
             if (a == null) {
                 a = new TreeMap(new IDComparator());
@@ -63,7 +65,7 @@ public class AnalysisManager {
         return a;
     }
 
-    private static Map getAnalysisRuns(Elab elab) {
+    private static Map getAnalysisRuns0(Elab elab) {
         synchronized (AnalysisManager.class) {
             Map users = (Map) elab.getAttribute(ANALYSES);
             if (users == null) {
@@ -72,6 +74,19 @@ public class AnalysisManager {
                 initializeReaper(elab);
             }
             return users;
+        }
+    }
+    
+    public static Map getAnalysisRuns(Elab elab) {
+        synchronized(AnalysisManager.class) {
+            Map users = getAnalysisRuns0(elab);
+            Map copy = new HashMap();
+            Iterator i = users.entrySet().iterator();
+            while (i.hasNext()) {
+                Map.Entry e = (Map.Entry) i.next();
+                copy.put(e.getKey(), new TreeMap((SortedMap) e.getValue()));
+            }
+            return copy;
         }
     }
 
@@ -139,7 +154,7 @@ public class AnalysisManager {
             try {
                 while (true) {
                     Thread.sleep(REAPER_WAKE_INTERVAL);
-                    Map runs = getAnalysisRuns(elab);
+                    Map runs = getAnalysisRuns0(elab);
                     Map copy;
                     synchronized (AnalysisManager.class) {
                         copy = new HashMap(runs);
@@ -187,7 +202,7 @@ public class AnalysisManager {
         }
     }
     
-    private static class IDComparator implements Comparator {
+    private static class IDComparator implements Comparator, Serializable {
         public int compare(Object o1, Object o2) {
             String id1 = (String) o1;
             String id2 = (String) o2;
