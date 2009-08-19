@@ -62,40 +62,35 @@
 			<div id="content">
 	
 <c:choose>
-	<c:when test="${deleted == -1}">
-${param.confirm}
-<h1>Delete canceled</h1>
-
-<p>Go back to the <a href="../data/check-missing.jsp">missing files page</a></p>
-
-	
+	<c:when test="${deleted == -1}">	
+		<h1>Delete canceled</h1>
+		<p>Go back to the <a href="../data/check-missing.jsp">missing files page</a></p>
 	</c:when>
+	
 	<c:when test="${deleted != null}">
-	
-<h1>${deleted} files deleted</h1>
-
-<p>Go back to the <a href="../data/check-missing.jsp">missing files page</a></p>
-	
+		<h1>${deleted} files deleted</h1>
+		<p>Go back to the <a href="../data/check-missing.jsp">missing files page</a></p>
 	</c:when>
+
 	<c:otherwise>
 			
-<h1>Confirmation needed</h1>
-
-<p>This operation cannot be undone!</p>
-<p>Are you sure you want to remove the following entries?</p>
-<form method="POST" action="../data/remove-entries.jsp">
-	<ol>
-		<c:forEach items="${l}" var="i">
-			<li>
-				${i}
-				<input type="hidden" name="remove-${i}" value="true" />
-			</li>
-		</c:forEach>
-	</ol>
-
-	<input type="submit" name="confirm" value="Keep" />
-	<input type="submit" name="confirm" value="Remove" />
-</form>
+		<h1>Confirmation needed</h1>
+		
+		<p>This operation cannot be undone!</p>
+		<p>Are you sure you want to remove the following entries?</p>
+		<form method="POST" action="../data/remove-entries.jsp">
+			<ol>
+				<c:forEach items="${l}" var="i">
+					<li>
+						${i}
+						<input type="hidden" name="remove-${i}" value="true" />
+					</li>
+				</c:forEach>
+			</ol>
+		
+			<input type="submit" name="confirm" value="Keep" />
+			<input type="submit" name="confirm" value="Remove" />
+		</form>
 
 	</c:otherwise>
 </c:choose>
