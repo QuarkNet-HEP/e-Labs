@@ -39,7 +39,7 @@
 
 <c:choose>
 	<c:when test="${done}">
-		<jsp:include page="output.jsp?f=${fn:join(outFiles, '&f=')}"/>
+		<jsp:include page="output.jsp"/>
 	</c:when>
 	<c:otherwise>
 		<e:analysis name="analysis" type="I2U2.Cosmic::RawAnalyzeStudy">
