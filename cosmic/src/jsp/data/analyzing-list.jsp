@@ -75,7 +75,7 @@
 			
 			//number of files. Initially display the top 10
 			int num_files = 0;
-			SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy H:m:s");
+			SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy HH:mm:ss");
 			//sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 			SimpleDateFormat sef = new SimpleDateFormat("MM/dd/yyyy H:mm");
 			//Since we're using Java classes and don't know what class instance to call,
@@ -220,7 +220,7 @@
 		        <font color="grey"><%=chanTotal[3]%></font>
 		    </td>
 		    <td colspan="2" align="center">
-	    	    <a href="../analysis-raw-multiple/analysis.jsp?<%=queryFilenames%>">Compare files</a>
+	    	    <a href="../analysis-raw-multiple/analysis.jsp?submit=true&<%=queryFilenames%>">Compare files</a>
 		    </td>
 		    <c:if test="${count > 1}">
 			    <!--  allow removal of files if analyzing more than one -->
