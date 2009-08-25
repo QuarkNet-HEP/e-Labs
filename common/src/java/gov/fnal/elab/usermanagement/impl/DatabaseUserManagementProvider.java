@@ -804,10 +804,10 @@ public class DatabaseUserManagementProvider implements
             ps.setBoolean(4, group.isNewSurvey());
             if (pass) {
             	ps.setString(5, password);
-            	ps.setString(6, group.getId());
+            	ps.setInt(6, Integer.parseInt(group.getId()));
             }
             else {
-            	ps.setString(5, group.getId());
+            	ps.setInt(5, Integer.parseInt(group.getId()));
             }
             
             ps.executeUpdate();
