@@ -24,7 +24,6 @@
 # /usr/local by Eric Myers <myers@spy-hill.net> - 24 Sept. 2007
 #######################################################################
 
-
 # Init script function library.   This stuff is Red Hat specific,
 # but if those functions are not found we create our own simple replacements.
 # (The idea for replacing the functions came from OpenAFS.  Thanks guys!)
@@ -64,8 +63,9 @@ apachectl=${APACHECTL-"/usr/local/sbin/apachectl"}
 httpd=${HTTPD-"/usr/local/sbin/httpd"}
 prog=`basename $httpd`
 pidfile=${PIDFILE-/var/run/httpd.pid}
-lockfile=${LOCKFILE-/var/lock/subsys/httpd}
-RETVAL=0
+
+lockfile=${LOCKFILE-/var/lock/httpd}
+[ -d /var/lock/subsys ] && lockfile=${LOCKFILE-/var/lock/subsys/httpd}
 
 
 ## Look for any local configuration settings, which override the above
@@ -149,6 +149,8 @@ reload() {
     echo
 }
 
+
+RETVAL=0
 
 
 # See how we were called, and do it.
