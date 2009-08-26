@@ -35,9 +35,8 @@
 	<tr>
 		<td>
 			<div id="left"><p>
-			To view data for CMS studies, you need to <a href="http://leptoquark.hep.nd.edu:8080/OGRE/ogre.jsp">access OGRE</a> and click <b>Data Selection</b> at the bottom of the page. This will bring up a separate window like the one shown here.
+			To view data for CMS studies, you need to <a href="http://129.74.67.184/~ogre/" target="ogre">access OGRE</a> and click <b>Select Data</b>.  If it asks you to log in, use your research group name.
 			</p>
-			<img src="../graphics/ogre-data-chooser.gif" align="center"></div>
 		</td>
 	</tr>
 </table>
