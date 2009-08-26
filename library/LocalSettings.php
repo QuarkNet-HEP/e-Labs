@@ -16,7 +16,7 @@
  * (different URL paths) we provide.  At least that is the theory.
  *
  * First Created: -EAM 11Sep2007
- * Last changed:  -EAM 17Jun2009
+ * Last changed:  -PXN 25Aug2009
  * 
  * @(#) $Id: LocalSettings.php,v 1.10 2009/05/07 20:33:07 myers Exp $ 
 \***********************************************************************/
@@ -66,7 +66,7 @@ $wgSessionName      = "boinc_session"; //to match the BOINC project
 ## The URL base path to the directory containing the wiki;
 ## defaults for all runtime URL paths are based off of this.
 
-$wgScriptPath       = "/library";
+$wgScriptPath       = "/cosmic/library";
 $wgLogo	= $wgScriptPath."/UUEOb-med.gif";
 $wgFavicon    = $wgScriptPath."/UUEOb-favicon.jpg";
 
@@ -99,46 +99,46 @@ $path_dir=dirname($self);  // how did we get here?
 
 // top-level access
 
-if( $path_dir == "/library") {	// Public Library
-  $wgScriptPath = $path_dir;
-  $wgSitename   = "I2U2";  
-  $wgLogo	= $wgScriptPath."/UUEOb-med.gif";
-  $wgFavicon    = $wgScriptPath."/UUEOb-favicon.jpg";
-}
+function startsWith($haystack,$needle,$case=true)
+{
+   if($case)
+       return strpos($haystack, $needle, 0) === 0;
 
-if( $path_dir == "/teacher/library" || 
-    $path_dir == "/cosmic/library" ) {  // Teachers Library
-  $wgScriptPath=$path_dir;
-  $wgSitename = "QNFellows";  
-  $wgLogo              = $wgScriptPath."/QNsplat2.jpg";
-  $wgFavicon           = $wgScriptPath."/blast_icon.gif";
+   return stripos($haystack, $needle, 0) === 0;
 }
-
 
 // Individual e-Lab entry points
 
-if( !empty($elab) )   {
+if( !empty($elab) ) {
   $wgScriptPath = "/elab/$elab/teacher/library";
   $wgDefaultSkin = 'cosmic';
+  if($elab == "cosmic"){
+    $wgLogo = "/elab/cosmic/graphics/blast.jpg";
+    $wgSitename    = "Teachers' Library";
+    $wgMainPage = "Cosmic Ray e-Lab Teacher Community";
+    $BOINC_prefix = "/elab/cosmic/teacher/forum";
+  }
+  elseif ($elab == "ligo") {
+    $wgLogo = "/elab/ligo/graphics/ligo_logo.gif";
+    $wgScriptPath = "/elab/ligo/teacher/library";
+    $wgDefaultSkin = 'ligo';
+    $wgSitename    = "LIGO Teachers' Library";
+    $wgMainPage = "LIGO e-Lab Teaching Community";
+    $BOINC_prefix = "/elab/ligo/teacher/forum";
+  }
 }
-
-
-if( $elab == "cosmic" ){
-  $wgLogo = "/elab/cosmic/graphics/blast.jpg";
-  $wgSitename    = "Teachers' Library";
-  $wgMainPage = "Cosmic Ray e-Lab Teacher Community";
-  $BOINC_prefix = "/elab/cosmic/teacher/forum";
+else {
+  $wgSitename          = "QNFellows";
+  $wgLogo              = $wgScriptPath."/QNsplat2.jpg";
+  $wgFavicon           = $wgScriptPath."/blast_icon.gif";
+  $wgScriptPath        = "/teacher/library";
+  if (startsWith($path_dir, "/cosmic/library", false)) {
+    $wgScriptPath="/cosmic/library";
+  }
+  elseif (startsWith($path_dir, "/ligo/library", false)) { 
+    $wgScriptPath="/ligo/library";
+  }
 }
-
-if( $elab == "ligo" || $elab == "LIGO" ){
-  $wgLogo = "/elab/ligo/graphics/ligo_logo.gif";
-  $wgScriptPath = "/elab/cosmic/teacher/library";
-  $wgDefaultSkin = 'ligo';
-  $wgSitename    = "LIGO Teachers' Library";
-  $wgMainPage = "LIGO e-Lab Teaching Community";
-  $BOINC_prefix = "/elab/ligo/teacher/forum";
-}
-
 
 /***********************************************************************
  * Stuff below may be based on stuff above
