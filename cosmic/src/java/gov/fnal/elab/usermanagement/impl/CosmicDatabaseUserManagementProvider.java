@@ -19,9 +19,9 @@ import java.sql.Savepoint;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -104,7 +104,7 @@ public class CosmicDatabaseUserManagementProvider extends
         Connection conn = null;
         PreparedStatement ps = null;
         Savepoint svpt = null; 
-        SortedSet<Integer> ids = new TreeSet();
+        Set<Integer> ids = new HashSet();
         int groupId = Integer.parseInt(group.getId());
         
         // validate data 
