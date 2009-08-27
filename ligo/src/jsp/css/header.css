@@ -80,8 +80,6 @@
 	color: white;  // not red
 }
 
-
-
 #nav-footer {
 	height: 22px;
 	background-color: black;
@@ -89,12 +87,6 @@
 	width: 760px;
 	float: right;
 	margin-top: 24px;
-}
-
-#nav {
-	/*position: absolute;
-	top: 50px;
-	left: 20px; */
 }
 
 #nav ul, #nav-footer ul {
