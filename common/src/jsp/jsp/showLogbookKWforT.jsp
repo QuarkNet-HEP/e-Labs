@@ -108,15 +108,20 @@ String teacher_id="";
    		<td align="left" width="20" valign="top"><IMG SRC="graphics/blue_square.gif" border="0" width="2" height="475"></td>
    		
         <td valign="top" align="center">
+        
+             <div style="border-style:dotted; border-width:1px;">
+     <table width="600">
+       <tr><td align="left" colspan="4"><font  SIZE="+1" FACE="Comic Sans MS">Instructions</font></td></tr>
+
              <table>
         <tr><td align="right">&nbsp;</td><td align="left">Click <b>Read more</b> to read full log entry and reset "new log" status.</td>
-        </tr>      <tr><td align="right"><IMG SRC="graphics/logbook_pencil.gif" align="center" border="0"></td><td align="left">Click to add and view comments on a logbook entry.</td>
+        </tr>      <tr><td align="right"><IMG SRC="graphics/logbook_pencil.gif" align="center" border="0"></td><td align="left">Button to add and view comments on a logbook entry.</td>
         </tr>
 
         <tr><td colspan="2">&nbsp;</td></tr>
         <tr><td align="right" colspan="2"><font size="-2">Log Status: New log entries are marked as <IMG SRC="graphics/new_flag.gif" border=0 align="center"> <font color="#AA3366">New log entry</font>. Number of your comments (<font color="#AA3366"> number unread by students. </FONT>)</font></font> </td></tr>
 
-</table>
+</table></div>
 
         <%
 
