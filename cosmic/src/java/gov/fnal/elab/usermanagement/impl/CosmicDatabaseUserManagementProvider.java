@@ -12,15 +12,18 @@ import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.util.ElabUtil;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import org.apache.commons.lang.StringUtils;
 
 public class CosmicDatabaseUserManagementProvider extends
         DatabaseUserManagementProvider implements
@@ -85,7 +88,7 @@ public class CosmicDatabaseUserManagementProvider extends
             throws SQLException {
         ResultSet rs = s
                 .executeQuery("SELECT detectorid FROM research_group_detectorid WHERE research_group_id = '"
-                        + ElabUtil.fixQuotes(group.getId()) + "';");
+                        + ElabUtil.fixQuotes(group.getId()) + "' ORDER BY detectorid;");
         List ids = new ArrayList();
         while (rs.next()) {
             ids.add(rs.getString("detectorid"));
@@ -93,12 +96,16 @@ public class CosmicDatabaseUserManagementProvider extends
         return ids;
     }
 
-    public void setDetectorIds(ElabGroup group, Collection detectorIds)
+    public void setDetectorIds(ElabGroup group, Collection<String> detectorIds)
             throws ElabException {
         // maybe when I grow up I'll know how to do this better
+    	// we have grown up now :) -pxn
         System.out.println(detectorIds);
-        Statement s = null;
         Connection conn = null;
+        PreparedStatement ps = null;
+        Savepoint svpt = null; 
+        SortedSet<Integer> ids = new TreeSet();
+        int groupId = Integer.parseInt(group.getId());
         
         // validate data 
         // DAQ board serial numbers are in the following form: 
@@ -108,61 +115,51 @@ public class CosmicDatabaseUserManagementProvider extends
         // User is only permitted to insert detector IDs <= 4 digits 
         // i.e. 8, 56, 201, 6XXX, 5XXX, etc.  
         String message = ""; 
-        for (Iterator it = detectorIds.iterator(); it.hasNext(); ) { 
-        	String thisID = ((String) it.next()).trim(); 
-	         
-	        // Easy check since DAQ IDs are <= 4 chars  
-	        if (thisID.length() > 4) { 
-                message += thisID + " ";  
-                continue; 
+        
+        for (String detectorId : detectorIds) {
+        	String thisId = detectorId.trim();
+        	if (StringUtils.isEmpty(thisId)) {
+        		continue; 
+        	}
+        	if (thisId.length() > 4) {
+        		message += detectorId + " ";
+        		continue;
+        	}
+        	try {
+        		ids.add(Integer.parseInt(thisId));
+        	}
+        	catch (NumberFormatException nfe) { 
+                message += thisId + " "; 
 	        } 
-	         
-	        // Is this four-character string even a number?  
-	        try { 
-                Integer.parseInt(thisID); 
-	        } 
-	        catch (NumberFormatException nfe) { 
-                message += thisID + " "; 
-	        } 
-        } 
+        }
         if (message.length() != 0) { 
             throw new ElabException(message); 
         } 
-        
         try {
             conn = DatabaseConnectionManager
-                    .getConnection(elab.getProperties());
-            s = conn.createStatement();
-            Collection current = getDetectorIds(s, group);
-            Set toAdd = new HashSet(detectorIds);
-            toAdd.removeAll(current);
-            Set toRemove = new HashSet(current);
-            toRemove.removeAll(detectorIds);
+                    .getConnection(elab.getProperties());       
             boolean ac = conn.getAutoCommit();
+            conn.setAutoCommit(false);
+            svpt = conn.setSavepoint();
             try {
-                conn.setAutoCommit(false);
-                Iterator i;
-                i = toRemove.iterator();
-                while (i.hasNext()) {
-                    s
-                            .executeUpdate("DELETE FROM research_group_detectorid WHERE research_group_id = '"
-                                    + ElabUtil.fixQuotes(group.getId())
-                                    + "' AND detectorid = '"
-                                    + ElabUtil.fixQuotes(i.next().toString()) + "';");
-                }
-                i = toAdd.iterator();
-                while (i.hasNext()) {
-                    s
-                            .executeUpdate("INSERT INTO research_group_detectorid (research_group_id, detectorid) "
-                                    + "VALUES ('"
-                                    + ElabUtil.fixQuotes(group.getId())
-                                    + "', '"
-                                    + ElabUtil.fixQuotes(i.next().toString()) + "');");
-                }
+            	ps = conn.prepareStatement(
+        			"DELETE FROM research_group_detectorid WHERE research_group_id = ?;");
+            	ps.setInt(1, groupId);
+            	ps.executeUpdate();
+            	ps = conn.prepareStatement(
+        			"INSERT INTO research_group_detectorid (research_group_id, detectorid) VALUES (?, ?);");
+            	for (Integer i : ids) {
+            		ps.setInt(1, groupId);
+            		ps.setInt(2, i);
+            		ps.addBatch();            		
+            	}
+            	ps.executeBatch();
                 conn.commit();
             }
+            catch(SQLException e) {
+            	conn.rollback(svpt);
+            }
             finally {
-                conn.rollback();
                 conn.setAutoCommit(ac);
             }
         }
@@ -170,7 +167,7 @@ public class CosmicDatabaseUserManagementProvider extends
             throw new ElabException(e);
         }
         finally {
-            DatabaseConnectionManager.close(conn, s);
+            DatabaseConnectionManager.close(conn, ps);
         }
     }
 }
