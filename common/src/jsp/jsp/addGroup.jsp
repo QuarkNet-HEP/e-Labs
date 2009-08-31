@@ -353,8 +353,9 @@ String submit =  request.getParameter("submit");
                                         out.write("<input type=\"hidden\" name=\"teacher\" value=\"" + teacher +"\">\n");
                                         out.write("</td></tr>");
                                         //grab the teacher's email from the database (either JUST added, or is there already)
-                                        rs = s.executeQuery("SELECT teacher.email FROM teacher, school, city WHERE Upper(teacher.name)=Upper('" + teacher + "') AND school.name='" + school + "' AND city.id='" + city_id + "';");
+                                        rs = s.executeQuery("SELECT teacher.email, teacher.id FROM teacher, school, city WHERE Upper(teacher.name)=Upper('" + teacher + "') AND school.name='" + school + "' AND city.id='" + city_id + "';");
                                         if(rs.next() != false){
+                                        	teacherId = rs.getInt(2);
                                             teacherEmail = rs.getString(1);
                                         }
                                         else{
