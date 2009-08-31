@@ -335,7 +335,7 @@ String submit =  request.getParameter("submit");
 
                                             //else add the new teacher
                                             int i=0;
-                                            rs = s.executeQuery("INSERT INTO teacher (name, email, school_id) SELECT '" + teacherNew + "', '" + teacherEmail + "',  '" + school_id +"' RETURNING id;");
+                                            rs = s.executeQuery("INSERT INTO teacher (name, email, school_id) VALUES ('" + teacherNew + "', '" + teacherEmail + "',  '" + school_id +"') RETURNING id;");
                                             if(rs.next()) {
                                             	teacherId = rs.getInt(1);
                                             }
