@@ -227,8 +227,9 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 			for (Integer answer : answers) {
 				insertAnswer.setInt(1, answer.intValue());
 				insertAnswer.setInt(2, completionId);
-				insertAnswer.executeUpdate();
+				insertAnswer.addBatch();
 			}
+			insertAnswer.executeBatch();
 			
 			// Commit the transaction. 
 			con.commit();
