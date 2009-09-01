@@ -136,7 +136,6 @@ public class DatabaseUserManagementProvider implements
             throw new AuthenticationException("Invalid username or password");
         }
 
-        ps.close();
         return createUser(c, username, rs);
     }
 
@@ -156,7 +155,6 @@ public class DatabaseUserManagementProvider implements
             throw new ElabException("Invalid username (" + username + ")");
         }
 
-        ps.close();
         return createUser(c, username, rs);
     }
     
@@ -171,13 +169,14 @@ public class DatabaseUserManagementProvider implements
         		"WHERE rg.id = ? ;");
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
+        String name = rs.getString("name");
+        ps.close();
 
         if (!rs.next()) {
             throw new ElabException("Invalid user id (" + id + ")");
         }
 
-        ps.close();
-        return createUser(c, rs.getString("name"), projectId);
+        return createUser(c, name, projectId);
     }
 
     private ElabGroup createUser(Connection c, String username, ResultSet rs)
