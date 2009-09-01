@@ -290,7 +290,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 					"LEFT OUTER JOIN research_group_project AS rgp ON rg.id = rgp.research_group_id " +
 					"WHERE rg.id = ? AND rgp.project_id = ?;");
 			ps.setInt(1, group.getId());
-			ps.setInt(2, Integer.parseInt(elab.getId()));
+			ps.setInt(2, elab.getId());
 			
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {

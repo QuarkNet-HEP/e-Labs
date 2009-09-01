@@ -27,7 +27,7 @@ public interface ElabUserManagementProvider extends ElabProvider {
     /**
      * Resets the first time flag for a group
      */
-    void resetFirstTime(ElabGroup grup) throws ElabException;
+    void resetFirstTime(ElabGroup group) throws ElabException;
     
     /**
      * Returns a collection of all the teachers register with this provider's elab
@@ -61,12 +61,12 @@ public interface ElabUserManagementProvider extends ElabProvider {
      */
     ElabGroup getTeacher(ElabGroup user) throws ElabException;
     
-    ElabGroup getTeacher(String id) throws ElabException;
+    ElabGroup getTeacher(int id) throws ElabException;
     
     /**
      * Removes a student from a group
      */
-    void deleteStudent(ElabGroup group, String studentId) throws ElabException;
+    void deleteStudent(ElabGroup group, int studentId) throws ElabException;
     
     /**
      * Returns a collection of available project names (elabs) in this deployment 
@@ -86,11 +86,11 @@ public interface ElabUserManagementProvider extends ElabProvider {
     /**
      * Returns <code>true</code> if a specific student belongs to the given group
      */
-    boolean isStudentInGroup(ElabGroup group, String studentId) throws ElabException;
+    boolean isStudentInGroup(ElabGroup group, int studentId) throws ElabException;
     
     ElabGroup getGroup(String name) throws ElabException;
     
-    ElabGroup getGroupById(String id) throws ElabException; 
+    ElabGroup getGroupById(int id) throws ElabException; 
     
     void setTeacherInStudy(ElabGroup group) throws ElabException;
     

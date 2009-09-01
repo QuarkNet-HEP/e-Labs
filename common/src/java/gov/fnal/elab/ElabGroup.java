@@ -385,7 +385,7 @@ public class ElabGroup {
         students.remove(student.getId());
     }
 
-    public ElabStudent getStudent(String id) {
+    public ElabStudent getStudent(int id) {
         return (ElabStudent) students.get(id);
     }
 
