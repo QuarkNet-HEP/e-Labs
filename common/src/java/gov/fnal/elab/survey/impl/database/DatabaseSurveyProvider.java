@@ -113,12 +113,12 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 				survey = new ElabSurvey(rs1.getString("description"), rs1.getInt("id"));
 				
 				PreparedStatement ps = con.prepareStatement(
-						"SELECT q.id AS \"question_id\", m.question_no, q.question_text, q.answer_id, r.response_no, r.id, r.response_text " +
-						"FROM \"newSurvey\".questions AS q " + 
-						"LEFT OUTER JOIN \"newSurvey\".responses AS r ON (q.id = r.question_id) " +
-						"LEFT OUTER JOIN \"newSurvey\".map_questions_tests AS m ON (q.id = m.question_id) " +
-						"WHERE m.test_id = ? " +
-						"ORDER BY m.question_no ASC, r.response_no ASC;");
+					"SELECT q.id AS \"question_id\", m.question_no, q.question_text, q.answer_id, r.response_no, r.id, r.response_text " +
+					"FROM \"newSurvey\".questions AS q " + 
+					"LEFT OUTER JOIN \"newSurvey\".responses AS r ON (q.id = r.question_id) " +
+					"LEFT OUTER JOIN \"newSurvey\".map_questions_tests AS m ON (q.id = m.question_id) " +
+					"WHERE m.test_id = ? " +
+					"ORDER BY m.question_no ASC, r.response_no ASC;");
 						
 				ps.setInt(1, surveyId);
 				ResultSet rs = ps.executeQuery();
@@ -180,6 +180,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 		Connection con = null;
 		
 		try {
+			int completionId; 
 			ResultSet rs = null; 
 			con = DatabaseConnectionManager.getConnection(elab.getProperties());
 			
@@ -188,18 +189,25 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 			svpt = con.setSavepoint();
 			
 			// TODO: Insert a new completion for the student
-			// Need student ID, test ID, time, type
+			// Need student ID, test ID, time, type, return the new id
 			PreparedStatement insertCompletion = con.prepareStatement(
 					"INSERT INTO \"newSurvey\".completions " +
 					"(test_id, time, student_id, type) " +
-					"VALUES (?, ?, ?, ?);");
+					"VALUES (?, ?, ?, ?) RETURNING id;");
 			insertCompletion.setInt(1, surveyId);
 			insertCompletion.setTimestamp(2, ts); 
 			insertCompletion.setInt(3, studentId);
 			insertCompletion.setString(4, type);
-			insertCompletion.executeUpdate(); 
+			rs = insertCompletion.executeQuery();
 			
-			// TODO: Get lastval() for for the generated completion ID 
+			if (rs.next()) {
+				completionId = rs.getInt(1);
+			}
+			else { 
+				throw new SQLException("No data back from the prepared statement");
+			}
+			
+			/* DONE: Get lastval() for for the generated completion ID 
 			int completionId = -1;
 			PreparedStatement queryCompletionId = con.prepareStatement("SELECT lastval(); ");
 			rs = queryCompletionId.executeQuery(); 
@@ -208,15 +216,15 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 			}
 			else {
 				throw new SQLException("No data back from the prepared statement");
-			}
+			} */
 			
-			// TODO: Insert all the answers
+			// DONE: Insert all the answers
 			// Need response ID, completion ID; 
+			PreparedStatement insertAnswer = con.prepareStatement(
+				"INSERT INTO \"newSurvey\".answers " +
+				"(response_id, completion_id) " +
+				"VALUES (?, ?); ");
 			for (Integer answer : answers) {
-				PreparedStatement insertAnswer = con.prepareStatement(
-						"INSERT INTO \"newSurvey\".answers " +
-						"(response_id, completion_id) " +
-						"VALUES (?, ?); ");
 				insertAnswer.setInt(1, answer.intValue());
 				insertAnswer.setInt(2, completionId);
 				insertAnswer.executeUpdate();
@@ -284,11 +292,11 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 		try { 
 			con = DatabaseConnectionManager.getConnection(elab.getProperties());
 			PreparedStatement ps = con.prepareStatement(
-					"SELECT COUNT(rg.id) " +
-					"FROM research_group AS rg " +
-					"LEFT OUTER JOIN research_group_student AS rgs ON rg.id = rgs.research_group_id " +
-					"LEFT OUTER JOIN research_group_project AS rgp ON rg.id = rgp.research_group_id " +
-					"WHERE rg.id = ? AND rgp.project_id = ?;");
+				"SELECT COUNT(rg.id) " +
+				"FROM research_group AS rg " +
+				"LEFT OUTER JOIN research_group_student AS rgs ON rg.id = rgs.research_group_id " +
+				"LEFT OUTER JOIN research_group_project AS rgp ON rg.id = rgp.research_group_id " +
+				"WHERE rg.id = ? AND rgp.project_id = ?;");
 			ps.setInt(1, group.getId());
 			ps.setInt(2, elab.getId());
 			
@@ -316,13 +324,13 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 		try {
 			con = DatabaseConnectionManager.getConnection(elab.getProperties());			
 			PreparedStatement ps = con.prepareStatement(
-					"SELECT COUNT(student_id) " +
-					"FROM \"newSurvey\".completions " +
-					"WHERE test_id = ? AND type = ? AND student_id IN " +
-					"(SELECT student.id FROM student, research_group_student, research_group_project " +
-						"WHERE research_group_student.research_group_id = ? " +
-						"AND research_group_project.research_group_id = ? " +
-						"AND research_group_student.student_id = student.id); "); 
+				"SELECT COUNT(student_id) " +
+				"FROM \"newSurvey\".completions " +
+				"WHERE test_id = ? AND type = ? AND student_id IN " +
+				"(SELECT student.id FROM student, research_group_student, research_group_project " +
+					"WHERE research_group_student.research_group_id = ? " +
+					"AND research_group_project.research_group_id = ? " +
+					"AND research_group_student.student_id = student.id); "); 
 			ps.setInt(1, surveyId);
 			ps.setString(2, type);
 			ps.setInt(3, group.getId());
@@ -359,11 +367,10 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 				ResultSet rs = null; 
 				status = new HashMap<ElabStudent, Boolean>(); 
 
-				for (Iterator<ElabStudent> i = group.getStudents().iterator(); i.hasNext(); ) {
-					ElabStudent student = i.next();
-					PreparedStatement ps = con.prepareStatement(
-							"SELECT id FROM \"newSurvey\".completions " +
-							"WHERE student_id = ? AND test_id = ? AND type = ?; ");
+				PreparedStatement ps = con.prepareStatement(
+					"SELECT id FROM \"newSurvey\".completions " +
+					"WHERE student_id = ? AND test_id = ? AND type = ?; ");
+				for (ElabStudent student : group.getStudents()) {
 					ps.setInt(1, student.getId());
 					ps.setInt(2, surveyId);
 					ps.setString(3, type);
@@ -404,20 +411,18 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 				}
 				ElabSurvey survey = this.getSurvey(eg.getNewSurveyId().intValue());
 				thisGroup = new HashMap(); 
-				for (Iterator<ElabStudent> s = eg.getStudents().iterator(); s.hasNext(); ) {
-					ElabStudent es = s.next();
-					List<ElabSurveyQuestion> questions = new ArrayList<ElabSurveyQuestion>(); 
-					for (Iterator<ElabSurveyQuestion> q = survey.getQuestionsById().iterator(); q.hasNext(); ) {
-						ElabSurveyQuestion question = (ElabSurveyQuestion) q.next().clone();
-						PreparedStatement ps = con.prepareStatement(
-								"SELECT a.response_id AS \"ans_ptr\",  c.time " +
-								"FROM \"newSurvey\".answers AS a " +
-								"LEFT OUTER JOIN \"newSurvey\".responses AS r ON (a.response_id = r.id) " +
-								"LEFT OUTER JOIN \"newSurvey\".questions AS q ON (r.question_id = q.id) " +
-								"LEFT OUTER JOIN \"newSurvey\".completions AS c ON (c.id = a.completion_id) " +
-								"LEFT OUTER JOIN \"newSurvey\".map_questions_tests AS m on (q.id = m.question_id) " +
-								"WHERE c.student_id = ? AND c.type = ? AND q.id = ? "
-								);
+				PreparedStatement ps = con.prepareStatement(
+					"SELECT a.response_id AS \"ans_ptr\",  c.time " +
+					"FROM \"newSurvey\".answers AS a " +
+					"LEFT OUTER JOIN \"newSurvey\".responses AS r ON (a.response_id = r.id) " +
+					"LEFT OUTER JOIN \"newSurvey\".questions AS q ON (r.question_id = q.id) " +
+					"LEFT OUTER JOIN \"newSurvey\".completions AS c ON (c.id = a.completion_id) " +
+					"LEFT OUTER JOIN \"newSurvey\".map_questions_tests AS m on (q.id = m.question_id) " +
+					"WHERE c.student_id = ? AND c.type = ? AND q.id = ? ");
+				for (ElabStudent es : eg.getStudents()) { 
+					List<ElabSurveyQuestion> questions = new ArrayList<ElabSurveyQuestion>();
+					for (ElabSurveyQuestion q : survey.getQuestionsById()) {
+						ElabSurveyQuestion question = q.clone();
 						ps.setInt(1, es.getId());
 						ps.setString(2, type);
 						ps.setInt(3, question.getId());

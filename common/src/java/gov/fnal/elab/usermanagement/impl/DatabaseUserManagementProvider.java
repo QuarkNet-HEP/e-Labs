@@ -797,11 +797,12 @@ public class DatabaseUserManagementProvider implements
             ps.executeUpdate();
             
             if (group.isNewSurvey()) {
-            	PreparedStatement ps2 = conn.prepareStatement("INSERT INTO research_group_test (research_group_id, test_id) " + 
-				"SELECT ?, ? WHERE NOT EXISTS " +
-					"(SELECT research_group_id, test_id FROM research_group_test " + 
-					"WHERE research_group_id = ? AND test_id = ?)" + 
-				";");
+            	PreparedStatement ps2 = conn.prepareStatement(
+        			"INSERT INTO research_group_test (research_group_id, test_id) " + 
+					"SELECT ?, ? WHERE NOT EXISTS " +
+						"(SELECT research_group_id, test_id FROM research_group_test " + 
+						"WHERE research_group_id = ? AND test_id = ?)" + 
+					";");
             	ps2.setInt(1, group.getId());
             	ps2.setInt(2, group.getNewSurveyId());
             	ps2.setInt(3, group.getId());
@@ -855,12 +856,12 @@ public class DatabaseUserManagementProvider implements
         }
     }
 
-    private Collection getProjectNames(Connection c, ElabGroup group)
+    private Collection<String> getProjectNames(Connection c, ElabGroup group)
             throws SQLException {
         List names = new ArrayList();
         PreparedStatement ps = c.prepareStatement(
-        		"SELECT name FROM project WHERE id IN "
-                + "(SELECT project_id FROM research_group_project WHERE research_group_id = ?);");
+    		"SELECT name FROM project WHERE id IN " +
+            "(SELECT project_id FROM research_group_project WHERE research_group_id = ?);");
         ps.setInt(1, group.getId());
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
@@ -888,15 +889,14 @@ public class DatabaseUserManagementProvider implements
                 }
                 Collection current = getProjectNames(conn, group);
                 List updated = new ArrayList();
-                for (int i = 0; i < projectNames.length; i++) {
-                    updated.add(projectNames[i]);
+                for (String projectName : projectNames) {
+                	updated.add(projectName);
                 }
                 Set toRemove = new HashSet(current);
                 toRemove.removeAll(updated);
                 Set toAdd = new HashSet(updated);
                 toAdd.removeAll(current);
-                Iterator i;
-                i = toRemove.iterator();
+                Iterator i = toRemove.iterator();
                 ps = conn.prepareStatement(
                 		"DELETE FROM research_group_project " + 
                 		"WHERE research_group_id = ? AND project_id = ?;");
