@@ -9,6 +9,8 @@ import gov.fnal.elab.util.ElabException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -30,8 +32,8 @@ public class ElabGroup {
     private Elab elab;
     private String year, city, state, school, teacher;
     private String namelc;
-    private Map<String, ElabGroup> groups; 
-    private Map<Integer, ElabStudent> students;
+    private SortedMap<String, ElabGroup> groups; 
+    private SortedMap<Integer, ElabStudent> students;
     private Map attributes;
     
     // Used only if a group is in a study
@@ -58,8 +60,8 @@ public class ElabGroup {
         this.provider = provider;
         this.elab = elab;
         this.webapp = elab.getProperties().getProperty("elab.webapp", "elab");
-        this.groups = new HashMap();
-        this.students = new HashMap();
+        this.groups = new TreeMap(String.CASE_INSENSITIVE_ORDER);
+        this.students = new TreeMap();
         this.attributes = new HashMap();
     }
 

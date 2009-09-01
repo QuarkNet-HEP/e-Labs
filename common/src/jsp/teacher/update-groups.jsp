@@ -123,7 +123,7 @@
 <form name="update-group-form" method="post" action="">
 	<input type="hidden" name="prevPage" value="<%=prevPage%>"/>
 	<p>
-		<e:trselect name="chooseGroup" valueList="${user.groupNamesSorted}" labelList="${user.groupNamesSorted}"/>
+		<e:trselect name="chooseGroup" valueList="${user.groupNames}" labelList="${user.groupNames}"/>
 		<input type="submit" name="submit" value="Show Group Info"/>
 	</p>
 	<c:if test="${not empty group}">
