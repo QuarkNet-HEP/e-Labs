@@ -4,22 +4,23 @@
 package gov.fnal.elab;
 
 public class ElabStudent {
-    private String id, name;
+	private int id;
+    private String name;
     private ElabGroup group;
 
     public ElabStudent() {
     }
 
-    public ElabStudent(String id, String name) {
+    public ElabStudent(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -36,12 +37,12 @@ public class ElabStudent {
     }
 
     public boolean equals(Object obj) {
-        if (id == null || name == null) {
+        if (name == null) {
             return false;
         }
         if (obj instanceof ElabStudent) {
             ElabStudent s = (ElabStudent) obj;
-            return id.equals(s.id) && name.equals(s.name);
+            return (s.id == id) && name.equals(s.name);
         }
         else {
             return false;
@@ -49,10 +50,7 @@ public class ElabStudent {
     }
 
     public int hashCode() {
-        int hc = 0;
-        if (id != null) {
-            hc += id.hashCode();
-        }
+        int hc = id;
         if (name != null) {
             hc += name.hashCode();
         }

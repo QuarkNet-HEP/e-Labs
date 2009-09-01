@@ -21,9 +21,11 @@ public class ElabGroup {
     public static final String ROLE_UPLOAD = "upload";
 
     public static final String USER_SESSION_VARIABLE = "elab.user";
+    
+    private int teacherId, id; 
 
-    private String teacherId, role, userArea, userDirURL, userDir, name,
-            webapp, id, email;
+    private String role, userArea, userDirURL, userDir, name,
+            webapp, email;
     private boolean firstTime, guest, survey;
     private Elab elab;
     private String year, city, state, school, teacher;
@@ -114,11 +116,11 @@ public class ElabGroup {
     /**
      * Returns the ID of the teacher that this user belongs to
      */
-    public String getTeacherId() {
+    public int getTeacherId() {
         return teacherId;
     }
 
-    public void setTeacherId(String teacherId) {
+    public void setTeacherId(int teacherId) {
         this.teacherId = teacherId;
     }
 
@@ -289,11 +291,11 @@ public class ElabGroup {
         }
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
