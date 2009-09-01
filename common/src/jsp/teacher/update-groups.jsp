@@ -5,6 +5,7 @@
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="java.util.*" %>
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 
@@ -73,11 +74,11 @@
 					group.setSurvey(false);
 					group.setNewSurvey(true);
 					if (user.getNewSurveyId() == null) { 
-						if (elab.getId().equals("1")) {
+						if (StringUtils.equalsIgnoreCase(elab.getName(), "cosmic")) {
 							newSurveyId = Integer.parseInt(elab.getProperty("cosmic.newsurvey"));
 							user.setNewSurveyId(newSurveyId);
 						}
-						if (elab.getId().equals("3")) {
+						if (StringUtils.equalsIgnoreCase(elab.getName(), "ligo")) {
 							newSurveyId = Integer.parseInt(elab.getProperty("ligo.newsurvey"));
 							user.setNewSurveyId(newSurveyId);
 						}
@@ -94,9 +95,10 @@
 				}
 				
 				elab.getUserManagementProvider().updateGroup(group, passwd1);
-				if (studentsToDelete != null && studentsToDelete.length != 0) {
-					for (int j = 0; j < studentsToDelete.length; j++) {
-						elab.getUserManagementProvider().deleteStudent(group, studentsToDelete[j]);
+				if (studentsToDelete != null) {
+					for (String s : studentsToDelete) {
+						int studentToDelete = Integer.parseInt(s); 
+						elab.getUserManagementProvider().deleteStudent(group, studentToDelete);
 					}
 				}
 				out.write("<div class=\"results\">" + groupName + "'s information was successfully updated. ");
@@ -121,7 +123,7 @@
 <form name="update-group-form" method="post" action="">
 	<input type="hidden" name="prevPage" value="<%=prevPage%>"/>
 	<p>
-		<e:trselect name="chooseGroup" valueList="${user.groupNames}" labelList="${user.groupNames}"/>
+		<e:trselect name="chooseGroup" valueList="${user.groupNamesSorted}" labelList="${user.groupNamesSorted}"/>
 		<input type="submit" name="submit" value="Show Group Info"/>
 	</p>
 	<c:if test="${not empty group}">

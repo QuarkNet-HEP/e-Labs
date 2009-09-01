@@ -50,11 +50,11 @@ if (teacherInStudy) {
 
 // New survey/test handler is active by default. 
 if (user.getNewSurveyId() == null) { 
-	if (elab.getId().equals("1")) {
+	if (StringUtils.equalsIgnoreCase(elab.getName(), "cosmic")) {
 		newSurveyId = Integer.parseInt(elab.getProperty("cosmic.newsurvey"));
 		user.setNewSurveyId(newSurveyId);
 	}
-	else if (elab.getId().equals("3")) {
+	else if (StringUtils.equalsIgnoreCase(elab.getName(), "ligo")) {
 		newSurveyId = Integer.parseInt(elab.getProperty("ligo.newsurvey"));
 		user.setNewSurveyId(newSurveyId);
 	}
@@ -114,13 +114,13 @@ if (submit != null) {
 			newUser.setGroup(group);
 			group.setName(resName);
 
-			if (elab.getId().equals("1")) { // cosmic
+			if (StringUtils.equalsIgnoreCase(elab.getName(), "cosmic")) { // cosmic
 				group.setSurvey(false); // old, deprecated handler is disabled
 				group.setStudy(teacherInStudy);
 				group.setNewSurvey(groupInSurvey);
 				group.setNewSurveyId(newSurveyId);
 			}
-			else if (elab.getId().equals("3")) {
+			else if (StringUtils.equalsIgnoreCase(elab.getName(), "ligo")) {
 				// TODO: LIGO 
 				// Anyone taking this test will be in the 'New Survey' system
 				group.setSurvey(false);
@@ -128,7 +128,7 @@ if (submit != null) {
 				group.setNewSurvey(groupInSurvey);
 				group.setNewSurveyId(newSurveyId);
 			}
-			else if (elab.getId().equals("2")) {
+			else if (StringUtils.equalsIgnoreCase(elab.getName(), "cms")) {
 				// TODO: CMS
 				// Anyone taking this test will be in the 'New Survey' system
 			}
