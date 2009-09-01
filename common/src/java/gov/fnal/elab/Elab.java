@@ -142,7 +142,7 @@ public class Elab {
 
     private String name;
     private ElabProperties properties;
-    private String id;
+    private int id;
     private ElabFAQ faq;
     private ServletContext context;
     private ServletConfig config;
@@ -211,8 +211,8 @@ public class Elab {
             rs = s.executeQuery("SELECT id from project where "
                     + "project.name='" + ElabUtil.fixQuotes(name) + "';");
             if (rs.next()) {
-                this.id = rs.getString(1);
-                int id = Integer.parseInt(this.id);
+                this.id = rs.getInt(1);
+                int id = this.id;
                 sid = Math.max(sid, id + 1);
             }
             else {
@@ -224,7 +224,7 @@ public class Elab {
             System.out.println("Failed to update elab id for " + name
                     + ". Using elab name as ID.");
             e.printStackTrace();
-            this.id = String.valueOf(sid++);
+            this.id = sid++;
         }
         finally {
             DatabaseConnectionManager.close(conn, s);
@@ -234,14 +234,14 @@ public class Elab {
     /**
      * Returns this elab's ID.
      */
-    public String getId() {
+    public int getId() {
         return id;
     }
 
     /**
      * Sets the ID of this elab
      */
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
