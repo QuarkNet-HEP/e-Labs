@@ -58,11 +58,13 @@
        keyword_description=rs.getString("description");}
        if (keyword_id.equals("")) {%> Problem with id for log. <%=keyword%><BR><% return;}
     %>
-
     <h1><font  FACE="Comic Sans MS">Comments on Your Logbook Entries for<BR>
       "<%=keyword_description%>"</FONT></h1>
-    <h2><font  FACE="Comic Sans MS">Comments in <b><FONT color="red">red</FONT></b> are new. Be sure you read them.</FONT></h2>
-<h2><IMG SRC="graphics/logbook_pencil.gif" border="0"  align="middle"><font FACE="Comic Sans MS"> Click to add a logbook entry for "<%=keyword_text%>".</font></h2>
+     <div style="border-style:dotted; border-width:1px; width: 500px">
+<h2>Instructions</h2>
+    <p><font  FACE="Comic Sans MS">Comments in <b><FONT color="red">red</FONT></b> are new. Be sure you read them.</FONT></p>
+<p><IMG SRC="graphics/logbook_pencil.gif" border="0"  align="middle"><font FACE="Comic Sans MS"> Button to add a logbook entry for "<%=keyword_text%>".</font></p>
+<p><IMG SRC="graphics/logbook_view.gif" border="0"  align="middle"><font FACE="Comic Sans MS"> Button to view your logbook".</font></p></div>
 <P>
       
       <table width="800" cellspacing="5" cellpadding="5">

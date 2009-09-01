@@ -4,8 +4,8 @@
     <head>
       <title>OGRE CMS HCAL TB04 Page</title>
 
-      <Script Language="JavaScript" Type="Text/JavaScript" SRC="http://leptoquark.hep.nd.edu/~ogre/run_utilities.js"></SCRIPT>
-      <Script Language="JavaScript" Type="Text/JavaScript" SRC="http://leptoquark.hep.nd.edu/~ogre/utilities.js"></Script>
+      <Script Language="JavaScript" Type="Text/JavaScript" SRC="http://129.74.67.184/~ogre/run_utilities.js"></SCRIPT>
+      <Script Language="JavaScript" Type="Text/JavaScript" SRC="http://129.74.67.184/~ogre/utilities.js"></Script>
 
     </head>
 <%@ include file="include/javascript.jsp" %>
@@ -53,13 +53,13 @@
    <h2  align="center" >OGRE <%=studyTitle%> Study</h2>
   <h3 align="center" class="style2" style='text-align:center'><%=studySubtext%> Need <A HREF="javascript:showRefLink('<%=studyResource%>',930,700)"> Background</a>?</h3>
 
-<iframe src=http://leptoquark.hep.nd.edu/~ogre/test4/ width=100% height=1300>
+<iframe src=http://129.74.67.184/~ogre/test4/ width=100% height=1300>
 
 <%--    <CENTER>
 
     <!-- Change CGI path on moving! -->
     <form method="POST" name="getData" 
-      action="http://leptoquark.hep.nd.edu/~ogre/cgi-bin/get_histo.pl.cgi" target="graphics"
+      action="http://129.74.67.184/~ogre/cgi-bin/get_histo.pl.cgi" target="graphics"
       onsubmit="javascript:popGraphics();">
 
 	<H2>CMS HCal Testbeam 04 Data</H2>

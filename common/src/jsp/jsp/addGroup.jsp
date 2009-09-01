@@ -297,6 +297,7 @@ String submit =  request.getParameter("submit");
                                  String teacher = request.getParameter("teacher");
                                 String teacherNew = request.getParameter("teacherNew");
                                 String teacherEmail = request.getParameter("teacherEmail");
+                                int teacherId = -1;
                                 if(school != null){
                                     out.write("<tr><td>Teacher/Leader</td><td>");
                                     if(teacher == null && teacherNew == null){
@@ -334,8 +335,11 @@ String submit =  request.getParameter("submit");
 
                                             //else add the new teacher
                                             int i=0;
-                                            i = s.executeUpdate("INSERT INTO teacher (name, email, school_id) SELECT '" + teacherNew + "', '" + teacherEmail + "',  '" + school_id +"';");
-                                            if(i != 1){	
+                                            rs = s.executeQuery("INSERT INTO teacher (name, email, school_id) VALUES ('" + teacherNew + "', '" + teacherEmail + "',  '" + school_id +"') RETURNING id;");
+                                            if(rs.next()) {
+                                            	teacherId = rs.getInt(1);
+                                            }
+                                            else {
                                                 warn(out, "Weren't able to add a teacher to the database! " + i + " rows updated. Please alert the database admin.");
                                                 return;
                                             }
@@ -349,8 +353,9 @@ String submit =  request.getParameter("submit");
                                         out.write("<input type=\"hidden\" name=\"teacher\" value=\"" + teacher +"\">\n");
                                         out.write("</td></tr>");
                                         //grab the teacher's email from the database (either JUST added, or is there already)
-                                        rs = s.executeQuery("SELECT teacher.email FROM teacher, school, city WHERE Upper(teacher.name)=Upper('" + teacher + "') AND school.name='" + school + "' AND city.id='" + city_id + "';");
+                                        rs = s.executeQuery("SELECT teacher.email, teacher.id FROM teacher, school, city WHERE Upper(teacher.name)=Upper('" + teacher + "') AND school.name='" + school + "' AND city.id='" + city_id + "';");
                                         if(rs.next() != false){
+                                        	teacherId = rs.getInt(2);
                                             teacherEmail = rs.getString(1);
                                         }
                                         else{
@@ -663,6 +668,7 @@ String submit =  request.getParameter("submit");
  
                                     //add the new registration information to research_group
                                     int i=0;
+                                    int researchGroupId = -1;
                                     String SQLstatement = "INSERT INTO research_group (name, password, teacher_id, role, userarea, ay, survey) SELECT " +
                                                             "'" + group + "', " +
                                                             "'" + passwd1 + "', " +
@@ -671,23 +677,26 @@ String submit =  request.getParameter("submit");
                                                             "'" + newUserArea + "', " + 
                                                             "'" + ay + "', " +
                                                             "'" + survey + "'" +
-                                                            "FROM teacher WHERE name='" + teacher + "';";
+                                                            "FROM teacher WHERE teacher.id ='" + teacherId + "' RETURNING research_group.id;";
                                     try{
-                                        i = s.executeUpdate(SQLstatement);
+                                        rs = s.executeQuery(SQLstatement);
                                     } catch (SQLException se){
                                         warn(out, "There was some error entering your info into the research_group table.\n<br>Please contact the database admin with this information:\n<br>SQLstatement: " + SQLstatement);
                                         return;
                                     }
-                                    if(i != 1){
+                                    if(rs.next()){
+                                    	researchGroupId = rs.getInt(1);
+                                    }
+                                    else {
                                         warn(out, "Weren't able to add your info to the database! " + i + " rows updated.\n<br>Please alert the database admin with this information:\n<br>SQLstatement: " + SQLstatement);
                                         return;
                                     }
                                     //add the new group-project pair to research_group_project
                                     i=0;
                                     SQLstatement = "INSERT INTO research_group_project " +
-                                                    "SELECT research_group.id, project.id " +
-                                                    "FROM research_group, project " + 
-                                                    "WHERE research_group.name='" + group + "' AND project.name='" + project + "';";
+                                                    "SELECT '" + researchGroupId + "', project.id " +
+                                                    "FROM project " + 
+                                                    "WHERE project.name='" + project + "';";
                                     i = s.executeUpdate(SQLstatement);
                                     if(i != 1){
                                         warn(out, "Weren't able to add your info to the database! " + i + " rows updated.\n<br>Please alert the database admin with this information:\n<br>SQLstatement: " + SQLstatement);
@@ -698,9 +707,7 @@ String submit =  request.getParameter("submit");
                                         i=0;
                                         for(int j=0; j<detectorIDs.length; j++){
                                             SQLstatement = "INSERT INTO research_group_detectorid (research_group_id, detectorid) " +
-                                                "SELECT id, '" + detectorIDs[j] + "' " +
-                                                "FROM research_group " +
-                                                "WHERE research_group.name='" + group + "';";
+                                                "VALUES ('" + detectorIDs[j] + "', '" + researchGroupId + "');";
                                             i = s.executeUpdate(SQLstatement);
                                             if(i != 1){
                                                 warn(out, "Weren't able to add your info to the database! " + i + " rows updated.\n<br>Please alert the database admin with this information:\n<br>SQLstatement: " + SQLstatement);

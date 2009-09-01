@@ -172,10 +172,14 @@ if (groupName.startsWith("pd_")||groupName.startsWith("PD_")) {typeConstraint=" 
       }
       %>
       <table><tr><td align="center" height="20">&nbsp;</td></tr></table>
-      <table width="600"><tr align="center"><td align="right"><IMG SRC="graphics/logbook_pencil.gif" align="middle" border="0"></td><td align="left"><font FACE="Comic Sans MS">Click to add a logbook entry.</font></td>
-        <td align="right"><IMG SRC="graphics/logbook_view_comments_small.gif" border="0"  align="middle"></td><td align="left"><font FACE="Comic Sans MS">Click to view your teacher's comments.</font></td></tr>
+     <div style="border-style:dotted; border-width:1px;">
+     <table width="600">
+       <tr><td align="left" colspan="4"><font  SIZE="+1" FACE="Comic Sans MS">Instructions</font></td></tr>
+       <tr align="center"><td align="right"><IMG SRC="graphics/logbook_pencil.gif" align="middle" border="0"></td><td align="left"><font FACE="Comic Sans MS">Button to add a logbook entry.</font></td>
+        <td align="right"><IMG SRC="graphics/logbook_view_comments_small.gif" border="0"  align="middle"></td><td align="left"><font FACE="Comic Sans MS">Button to view your teacher's comments.</font></td></tr>
         <tr><td align="center" colspan="4"><font size="-2" FACE="Comic Sans MS">Comments: Number of teacher comments (<font color="#AA3366"> number unread </FONT>). New comments by your teacher are marked as <IMG SRC="graphics/new_flag.gif" border=0 align="center"></font>.</td></tr>
-</table>
+     </table>
+    </div>
 
       
 <P>
