@@ -11,7 +11,7 @@ import gov.fnal.elab.util.ElabException;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -27,20 +27,21 @@ public class Geometries implements Serializable {
         this.reset();
     }
 
-    public Geometries(String groupID, String dataDirectory, Connection c)
+    public Geometries(int groupID, String dataDirectory, Connection c)
             throws ElabException {
         this.reset();
         try {
-            Statement s = c.createStatement();
-            ResultSet rs = s
-                .executeQuery("SELECT detectorid FROM research_group_detectorid WHERE research_group_id='"
-                        + groupID + "' ORDER BY detectorid");
+            PreparedStatement ps = c.prepareStatement(
+            		"SELECT detectorid FROM research_group_detectorid " +
+    				"WHERE research_group_id= ? ORDER BY detectorid");
+            ps.setInt(1, groupID);
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                addGeometry(new Geometry(dataDirectory, rs.getString(1)));
+                addGeometry(new Geometry(dataDirectory, rs.getInt("detectorid")));
             }
-            if (s != null)
-                s.close();
+            if (ps != null)
+                ps.close();
             if (c != null)
                 c.close();
         }
@@ -50,7 +51,7 @@ public class Geometries implements Serializable {
         }
     }
 
-    public Geometries(Elab elab, String detectorID) throws ElabException {
+    public Geometries(Elab elab, int detectorID) throws ElabException {
         this.reset();
         addGeometry(new Geometry(elab.getProperties().getDataDir(), detectorID));
         readOnly = true;
@@ -58,26 +59,27 @@ public class Geometries implements Serializable {
 
     public Geometries(Elab elab, ElabGroup group) throws ElabException {
         this.reset();
-        Statement s = null;
         Connection conn = null;
+        PreparedStatement ps = null;
         try {
             conn = DatabaseConnectionManager
                 .getConnection(elab.getProperties());
-            s = conn.createStatement();
-            ResultSet rs = s
-                .executeQuery("SELECT detectorid FROM research_group_detectorid WHERE research_group_id='"
-                        + group.getId() + "' ORDER BY detectorid");
+            ps = conn.prepareStatement(
+            		"SELECT detectorid FROM research_group_detectorid WHERE research_group_id = ? " +
+                    "ORDER BY detectorid");
+            ps.setInt(1, group.getId());
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 addGeometry(new Geometry(elab.getProperties().getDataDir(), rs
-                    .getString(1)));
+                    .getInt("detectorid")));
             }
         }
         catch (Exception e) {
             throw new ElabException(e);
         }
         finally {
-            DatabaseConnectionManager.close(conn, s);
+            DatabaseConnectionManager.close(conn, ps);
         }
     }
 

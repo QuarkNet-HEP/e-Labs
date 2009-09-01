@@ -106,7 +106,7 @@ public class Statistics {
                             + "     and id in (select research_group_id from research_group_project"
                             + "         where project_id = ?) and name not in " + getGroupFilter());
             ps.setString(1, role);
-            ps.setInt(2, Integer.parseInt(elab.getId()));
+            ps.setInt(2, elab.getId());
     
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -202,7 +202,7 @@ public class Statistics {
                             + "order by date_trunc('" + granularity + "', date_entered)");
             ps.setString(1, start);
             ps.setString(2, end);
-            ps.setInt(3, Integer.parseInt(elab.getId()));
+            ps.setInt(3, elab.getId());
             PreparedStatement gs = con
                     .prepareStatement("select to_char(date_trunc('" + granularity + "', date_entered), '" + format + "'), count(date_entered) from usage "
                             + "where date_entered between ?::timestamp and ?::timestamp "
@@ -213,7 +213,7 @@ public class Statistics {
                             + "order by date_trunc('" + granularity + "', date_entered)");
             gs.setString(1, start);
             gs.setString(2, end);
-            gs.setInt(3, Integer.parseInt(elab.getId()));
+            gs.setInt(3, elab.getId());
 
             ResultSet rs = ps.executeQuery();
             ResultSet gss = gs.executeQuery();
@@ -278,7 +278,7 @@ public class Statistics {
                             + "     limit 32");
             ps.setString(1, start);
             ps.setString(2, end);
-            ps.setInt(3, Integer.parseInt(elab.getId()));
+            ps.setInt(3, elab.getId());
     
             ResultSet rs = ps.executeQuery();
     
@@ -314,7 +314,7 @@ public class Statistics {
                             + "     where id in (select teacher_id from research_group "
                             + "         where id in (select research_group_id from research_group_project "
                             + "             where project_id = ?)))");
-            ps.setInt(1, Integer.parseInt(elab.getId()));
+            ps.setInt(1, elab.getId());
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getString(1);
@@ -336,7 +336,7 @@ public class Statistics {
                     .prepareStatement("select count(*) from survey "
                             + "where project_id = ? " + "and " + type
                             + "survey = true");
-            ps.setInt(1, Integer.parseInt(elab.getId()));
+            ps.setInt(1, elab.getId());
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getString(1);

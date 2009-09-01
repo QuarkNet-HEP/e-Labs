@@ -25,7 +25,7 @@ public class GeoEntryBean implements Serializable {
 
     private String julianDay;
     private GregorianCalendar calendar;
-    private String detectorID;
+    private int detectorID;
     private String stackedState;
     private String latitude, longitude, altitude;
     private ChannelProperties[] channels;
@@ -98,11 +98,11 @@ public class GeoEntryBean implements Serializable {
         return getCalendar().getTime();
     }
 
-    public void setDetectorID(String detectorID) {
+    public void setDetectorID(int detectorID) {
         this.detectorID = detectorID;
     }
 
-    public String getDetectorID() {
+    public int getDetectorID() {
         return detectorID;
     }
 
@@ -720,16 +720,15 @@ public class GeoEntryBean implements Serializable {
      */
     public boolean equals(GeoEntryBean geb) {
         return julianDay != null && geb.getJulianDay() != null
-                && julianDay.equals(geb.getJulianDay()) && detectorID != null
-                && geb.getDetectorID() != null
-                && detectorID.equals(geb.getDetectorID());
+                && julianDay.equals(geb.getJulianDay()) 
+                && detectorID == geb.getDetectorID();
     }
 
     // reset all variables to defaults
     public void reset() {
         julianDay = null;
         calendar = null;
-        detectorID = "";
+        detectorID = -1;
         stackedState = "0";
         latitude = "0:0.0 N";
         longitude = "0:0.0 W";
@@ -823,7 +822,7 @@ public class GeoEntryBean implements Serializable {
         if (obj instanceof GeoEntryBean) {
             GeoEntryBean g = (GeoEntryBean) obj;
             return julianDay.equals(g.getJulianDay())
-                    && detectorID.equals(g.getDetectorID());
+                    && detectorID == g.getDetectorID();
         }
         else {
             return false;

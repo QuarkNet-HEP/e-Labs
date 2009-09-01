@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -202,14 +202,13 @@ public class Elab {
 
     protected void updateId() throws SQLException, ElabException {
         // this should perhaps be moved somewhere else?
-        Statement s = null;
+        PreparedStatement ps = null;
         Connection conn = null;
         try {
             conn = DatabaseConnectionManager.getConnection(properties);
-            s = conn.createStatement();
-            ResultSet rs;
-            rs = s.executeQuery("SELECT id from project where "
-                    + "project.name='" + ElabUtil.fixQuotes(name) + "';");
+            ps = conn.prepareStatement("SELECT id FROM project WHERE name = ?;");
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 this.id = rs.getInt(1);
                 int id = this.id;
@@ -227,7 +226,7 @@ public class Elab {
             this.id = sid++;
         }
         finally {
-            DatabaseConnectionManager.close(conn, s);
+            DatabaseConnectionManager.close(conn, ps);
         }
     }
 

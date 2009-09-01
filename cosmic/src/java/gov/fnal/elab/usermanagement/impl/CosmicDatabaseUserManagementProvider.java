@@ -14,7 +14,7 @@ import gov.fnal.elab.util.ElabUtil;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -41,55 +41,56 @@ public class CosmicDatabaseUserManagementProvider extends
         return group;
     }
 
-    protected String addStudent(Statement s, ElabGroup et, ElabStudent student,
+    protected String addStudent(Connection c, ElabGroup et, ElabStudent student,
             ElabGroup group) throws SQLException, ElabException {
-        String pwd = super.addStudent(s, et, student, group);
-        ResultSet rs = s
-                .executeQuery("SELECT id FROM research_group WHERE name = '"
-                        + ElabUtil.fixQuotes(student.getGroup().getName()) + "'");
+        String pwd = super.addStudent(c, et, student, group);
+        PreparedStatement ps = c.prepareStatement(
+        		"SELECT id FROM research_group WHERE name = ?;");
+        ps.setString(1, student.getGroup().getName());
+        ResultSet rs = ps.executeQuery();
         if (!rs.next()) {
             throw new ElabException("Error retrieving the student's group from the database.");
         }
-        String groupId = rs.getString("id");
+        int groupId = rs.getInt("id");
         if ("cosmic".equals(elab.getName())) {
             // Connect the detector id from the teacher with the group
             // if it exists.
-            s
-                    .executeUpdate("INSERT INTO research_group_detectorid (research_group_id, detectorid) "
-                            + "(SELECT '"
-                            + ElabUtil.fixQuotes(groupId)
-                            + "', detectorid FROM research_group_detectorid WHERE research_group_id = '"
-                            + ElabUtil.fixQuotes(et.getId()) + "');");
+        	ps = c.prepareStatement(
+        			"INSERT INTO research_group_detectorid (research_group_id, detectorid) "
+                    + "(SELECT ?, detectorid FROM research_group_detectorid WHERE research_group_id = ?);");
+        	ps.setInt(1, groupId);
+        	ps.setInt(2, et.getId());
         }
+        ps.close();
         return pwd;
     }
 
     public Collection getDetectorIds(ElabGroup group) throws ElabException {
-        Statement s = null;
         Connection conn = null;
         try {
             conn = DatabaseConnectionManager
                     .getConnection(elab.getProperties());
-            s = conn.createStatement();
-            return getDetectorIds(s, group);
+            return getDetectorIds(conn, group);
         }
         catch (Exception e) {
             throw new ElabException(e);
         }
         finally {
-            DatabaseConnectionManager.close(conn, s);
+            DatabaseConnectionManager.close(conn);
         }
     }
 
-    private Collection getDetectorIds(Statement s, ElabGroup group)
+    private Collection getDetectorIds(Connection c, ElabGroup group)
             throws SQLException {
-        ResultSet rs = s
-                .executeQuery("SELECT detectorid FROM research_group_detectorid WHERE research_group_id = '"
-                        + ElabUtil.fixQuotes(group.getId()) + "';");
+    	PreparedStatement ps = c.prepareStatement(
+    			"SELECT detectorid FROM research_group_detectorid WHERE research_group_id = ?;");
+    	ps.setInt(1, group.getId());
+    	ResultSet rs = ps.executeQuery();
         List ids = new ArrayList();
         while (rs.next()) {
             ids.add(rs.getString("detectorid"));
         }
+        ps.close();
         return ids;
     }
 
@@ -97,8 +98,8 @@ public class CosmicDatabaseUserManagementProvider extends
             throws ElabException {
         // maybe when I grow up I'll know how to do this better
         System.out.println(detectorIds);
-        Statement s = null;
         Connection conn = null;
+        PreparedStatement ps = null; 
         
         // validate data 
         // DAQ board serial numbers are in the following form: 
@@ -132,8 +133,7 @@ public class CosmicDatabaseUserManagementProvider extends
         try {
             conn = DatabaseConnectionManager
                     .getConnection(elab.getProperties());
-            s = conn.createStatement();
-            Collection current = getDetectorIds(s, group);
+            Collection current = getDetectorIds(conn, group);
             Set toAdd = new HashSet(detectorIds);
             toAdd.removeAll(current);
             Set toRemove = new HashSet(current);
@@ -143,26 +143,29 @@ public class CosmicDatabaseUserManagementProvider extends
                 conn.setAutoCommit(false);
                 Iterator i;
                 i = toRemove.iterator();
+                ps = conn.prepareStatement(
+                		"DELETE FROM research_group_detectorid " +
+                		"WHERE research_group_id = ? AND detectorid = ?;");
                 while (i.hasNext()) {
-                    s
-                            .executeUpdate("DELETE FROM research_group_detectorid WHERE research_group_id = '"
-                                    + ElabUtil.fixQuotes(group.getId())
-                                    + "' AND detectorid = '"
-                                    + ElabUtil.fixQuotes(i.next().toString()) + "';");
+                	ps.setInt(1, group.getId());
+                	ps.setInt(2, (Integer) i.next());
+                	ps.executeUpdate();
                 }
                 i = toAdd.iterator();
+                ps = conn.prepareStatement(
+                		"INSERT INTO research_group_detectorid (research_group_id, detectorid) " + 
+                		"VALUES (?, ?);");
                 while (i.hasNext()) {
-                    s
-                            .executeUpdate("INSERT INTO research_group_detectorid (research_group_id, detectorid) "
-                                    + "VALUES ('"
-                                    + ElabUtil.fixQuotes(group.getId())
-                                    + "', '"
-                                    + ElabUtil.fixQuotes(i.next().toString()) + "');");
+                	 ps.setInt(1, group.getId());
+                     ps.setInt(2, (Integer) i.next());
+                     ps.executeUpdate();
                 }
                 conn.commit();
             }
+            catch (SQLException se) {
+            	conn.rollback();
+            }
             finally {
-                conn.rollback();
                 conn.setAutoCommit(ac);
             }
         }
@@ -170,7 +173,7 @@ public class CosmicDatabaseUserManagementProvider extends
             throw new ElabException(e);
         }
         finally {
-            DatabaseConnectionManager.close(conn, s);
+            DatabaseConnectionManager.close(conn, ps);
         }
     }
 }
