@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import com.mallardsoft.tuple.*;
 
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
@@ -290,7 +289,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 					"LEFT OUTER JOIN research_group_student AS rgs ON rg.id = rgs.research_group_id " +
 					"LEFT OUTER JOIN research_group_project AS rgp ON rg.id = rgp.research_group_id " +
 					"WHERE rg.id = ? AND rgp.project_id = ?;");
-			ps.setInt(1, Integer.parseInt(group.getId()));
+			ps.setInt(1, group.getId());
 			ps.setInt(2, Integer.parseInt(elab.getId()));
 			
 			ResultSet rs = ps.executeQuery();
@@ -326,8 +325,8 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 						"AND research_group_student.student_id = student.id); "); 
 			ps.setInt(1, surveyId);
 			ps.setString(2, type);
-			ps.setInt(3, Integer.parseInt(group.getId()));
-			ps.setInt(4, Integer.parseInt(group.getId()));
+			ps.setInt(3, group.getId());
+			ps.setInt(4, group.getId());
 						
 			ResultSet rs = ps.executeQuery(); 
 			if (rs.next()) {
@@ -365,7 +364,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 					PreparedStatement ps = con.prepareStatement(
 							"SELECT id FROM \"newSurvey\".completions " +
 							"WHERE student_id = ? AND test_id = ? AND type = ?; ");
-					ps.setInt(1, Integer.parseInt(student.getId()));
+					ps.setInt(1, student.getId());
 					ps.setInt(2, surveyId);
 					ps.setString(3, type);
 					
@@ -419,7 +418,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 								"LEFT OUTER JOIN \"newSurvey\".map_questions_tests AS m on (q.id = m.question_id) " +
 								"WHERE c.student_id = ? AND c.type = ? AND q.id = ? "
 								);
-						ps.setInt(1, Integer.parseInt(es.getId()));
+						ps.setInt(1, es.getId());
 						ps.setString(2, type);
 						ps.setInt(3, question.getId());
 						
