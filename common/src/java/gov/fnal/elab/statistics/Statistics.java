@@ -159,7 +159,7 @@ public class Statistics {
                             + "         where project_id = ?) "
                             + "and research_group_id not in (select id from research_group where name in " + getGroupFilter() + ")");
             ps.setString(1, span + " days");
-            ps.setInt(2, Integer.parseInt(elab.getId()));
+            ps.setInt(2, elab.getId());
     
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
