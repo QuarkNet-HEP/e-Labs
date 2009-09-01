@@ -30,7 +30,9 @@ public class ElabGroup {
     private Elab elab;
     private String year, city, state, school, teacher;
     private String namelc;
-    private Map groups, students, attributes;
+    private Map<String, ElabGroup> groups; 
+    private Map<Integer, ElabStudent> students;
+    private Map attributes;
     
     // Used only if a group is in a study
     private boolean study = false;
@@ -358,11 +360,11 @@ public class ElabGroup {
      * Retrieve a collection of <code>ElabGroup</code> objects containing
      * information about the groups associated with this teacher.
      */
-    public Collection getGroups() {
+    public Collection<ElabGroup> getGroups() {
         return groups.values();
     }
 
-    public Collection getGroupNames() {
+    public Collection<String> getGroupNames() {
         return groups.keySet();
     }
 
@@ -371,7 +373,7 @@ public class ElabGroup {
     }
 
     public ElabGroup getGroup(String name) {
-        return (ElabGroup) groups.get(name);
+        return groups.get(name);
     }
 
     public void addStudent(ElabStudent student) {
@@ -386,10 +388,10 @@ public class ElabGroup {
     }
 
     public ElabStudent getStudent(int id) {
-        return (ElabStudent) students.get(id);
+        return students.get(id);
     }
 
-    public Collection getStudents() {
+    public Collection<ElabStudent> getStudents() {
         return students.values();
     }
 
