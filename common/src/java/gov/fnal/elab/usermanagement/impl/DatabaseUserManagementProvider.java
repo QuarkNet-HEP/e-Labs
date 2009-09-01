@@ -56,10 +56,10 @@ public class DatabaseUserManagementProvider implements
             conn = DatabaseConnectionManager
                     .getConnection(elab.getProperties());
             s = conn.createStatement();
-            password = switchingElabs(s, username, password);
-            ElabGroup user = createUser(s, username, password, elab.getId());
-            checkResearchGroup(s, user, elab.getId());
-            updateUsage(s, user);
+            password = switchingElabs(conn, username, password);
+            ElabGroup user = createUser(conn, username, password, elab.getId());
+            checkResearchGroup(conn, user, elab.getId());
+            updateUsage(conn, user);
             return user;
         }
         catch (SQLException e) {
@@ -99,7 +99,7 @@ public class DatabaseUserManagementProvider implements
     			+ "WHERE research_group_project.project_id = ? "
     			+ "AND research_group_project.research_group_id = ?;");
     	ps.setInt(1, projectID);
-    	ps.setInt(2, Integer.parseInt(user.getGroup().getId()));
+    	ps.setInt(2, user.getGroup().getId());
         ResultSet rs = ps.executeQuery();
         if (!rs.next() && !user.isTeacher() && !user.isAdmin()) {
             throw new AuthenticationException(
@@ -111,7 +111,7 @@ public class DatabaseUserManagementProvider implements
 
     private void updateUsage(Connection c, ElabGroup user) throws SQLException {
     	PreparedStatement ps = c.prepareStatement("INSERT INTO usage (research_group_id) VALUES (?);");
-    	ps.setInt(1, Integer.parseInt(user.getGroup().getId()));
+    	ps.setInt(1, user.getGroup().getId());
     	int rows = ps.executeUpdate();
         if (rows != 1) {
             // logging?
@@ -122,14 +122,14 @@ public class DatabaseUserManagementProvider implements
     }
 
     private ElabGroup createUser(Connection c, String username, String password,
-            String projectId) throws SQLException, AuthenticationException {
+            int projectId) throws SQLException, AuthenticationException {
     	PreparedStatement ps = c.prepareStatement(
     			"SELECT rg.id, rg.name, rg.password, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
     			"FROM research_group AS rg " +
     			"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
     			"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
     			"LEFT OUTER JOIN \"newSurvey\".tests AS t ON (rgp.project_id = t.proj_id) " +
-    			"WHERE rg.name = ? AND rg.password =?;");
+    			"WHERE rg.name = ? AND rg.password = ?;");
     	ps.setString(1, username);
     	ps.setString(2, password);
     	ResultSet rs = ps.executeQuery();
@@ -140,46 +140,50 @@ public class DatabaseUserManagementProvider implements
         return createUser(c, username, rs);
     }
 
-    private ElabGroup createUser(Statement s, String username, String projectId)
+    private ElabGroup createUser(Connection c, String username, int projectId)
             throws SQLException, ElabException {
-        ResultSet rs = s.executeQuery(
+		PreparedStatement ps = c.prepareStatement(
         		"SELECT rg.id, rg.name, rg.password, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
         		"FROM research_group AS rg " +
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
         		"LEFT OUTER JOIN \"newSurvey\".tests AS t ON (rgp.project_id = t.proj_id) " +
-        		"WHERE rg.name = '" + ElabUtil.fixQuotes(username) + "';");
+        		"WHERE rg.name = ? ;");
+		ps.setString(1, username);
+		ResultSet rs = ps.executeQuery();
 
         if (!rs.next()) {
             throw new ElabException("Invalid username (" + username + ")");
         }
 
-        return createUser(s, username, rs);
+        return createUser(c, username, rs);
     }
     
-    private ElabGroup createUserById(Statement s, String id, String projectId)
+    private ElabGroup createUserById(Connection c, int id, int projectId)
             throws SQLException, ElabException {
-        ResultSet rs = s.executeQuery(
+        PreparedStatement ps = c.prepareStatement(
         		"SELECT rg.id, rg.name, rg.password, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
         		"FROM research_group AS rg " +
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
         		"LEFT OUTER JOIN \"newSurvey\".tests AS t ON (rgp.project_id = t.proj_id) " +
-        		"WHERE rg.id = '" + ElabUtil.fixQuotes(id) + "';");
+        		"WHERE rg.id = ? ;");
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
 
         if (!rs.next()) {
             throw new ElabException("Invalid user id (" + id + ")");
         }
 
-        return createUser(s, rs.getString("name"), projectId);
+        return createUser(c, rs.getString("name"), projectId);
     }
 
-    private ElabGroup createUser(Statement s, String username, ResultSet rs)
+    private ElabGroup createUser(Connection c, String username, ResultSet rs)
             throws SQLException {
         ElabGroup user = new ElabGroup(elab, this);
         user.setName(username);
-        user.setId(rs.getString("id"));
-        user.setTeacherId(rs.getString("teacher_id"));
+        user.setId(rs.getInt("id"));
+        user.setTeacherId(rs.getInt("teacher_id"));
         user.setRole(rs.getString("role"));
         user.setSurvey(rs.getBoolean("survey"));
         user.setUserArea(rs.getString("userarea"));
@@ -188,68 +192,64 @@ public class DatabaseUserManagementProvider implements
         user.setNewSurveyId((Integer) rs.getObject("test_id"));
         setMiscGroupData(user, rs.getString("ay"), user.getUserArea());
         if (user.isTeacher()) {
-            addTeacherInfo(s, user);
+            addTeacherInfo(c, user);
         }
-        addStudents(s, user);
+        addStudents(c, user);
         return user;
     }
 
     public ElabGroup getGroup(String username) throws ElabException {
-        Statement s = null;
         Connection conn = null;
         try {
             conn = DatabaseConnectionManager
                     .getConnection(elab.getProperties());
-            s = conn.createStatement();
-            return createUser(s, username, elab.getId());
+            return createUser(conn, username, elab.getId());
         }
         catch (SQLException e) {
             throw new ElabException("Database error: " + e.getMessage(), e);
         }
         finally {
-            DatabaseConnectionManager.close(conn, s);
+            DatabaseConnectionManager.close(conn);
         }
     }
     
-    public ElabGroup getGroupById(String id) throws ElabException {
-        Statement s = null;
+    public ElabGroup getGroupById(int id) throws ElabException {
         Connection conn = null;
         try {
             conn = DatabaseConnectionManager
                     .getConnection(elab.getProperties());
-            s = conn.createStatement();
-            return createUserById(s, id, elab.getId());
+            return createUserById(conn, id, elab.getId());
         }
         catch (SQLException e) {
             throw new ElabException("Database error: " + e.getMessage(), e);
         }
         finally {
-            DatabaseConnectionManager.close(conn, s);
+            DatabaseConnectionManager.close(conn);
         }
     }
 
-    private void addStudents(Statement s, ElabGroup group) throws SQLException {
-        ResultSet rs;
-        rs = s
-                .executeQuery("SELECT id, name FROM student "
-                        + "WHERE id IN "
-                        + "(SELECT student_id FROM research_group_student WHERE research_group_id = '"
-                        + group.getId() + "');");
+    private void addStudents(Connection c, ElabGroup group) throws SQLException {
+        PreparedStatement ps = c.prepareStatement(
+        		"SELECT id, name FROM student WHERE id IN " +
+        		"(SELECT student_id FROM research_group_student WHERE research_group_id = ?);");
+        ps.setInt(1, group.getId());
+        ResultSet rs = ps.executeQuery();
         while (rs.next()) {
-            group.addStudent(new ElabStudent(rs.getString("id"), rs
-                    .getString("name")));
+            group.addStudent(new ElabStudent(rs.getInt("id"), rs.getString("name")));
         }
     }
 
-    private ElabGroup createGroup(Statement s, String groupName,
+    private ElabGroup createGroup(Connection c, String groupName,
             String projectId) throws SQLException {
-        ResultSet rs = s.executeQuery(
+        PreparedStatement ps = c.prepareStatement(
         		"SELECT rg.id, rg.name, rg.password, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
         		"FROM research_group AS rg " +
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
         		"LEFT OUTER JOIN \"newSurvey\".tests AS t ON (rgp.project_id = t.proj_id) " +
-        		"WHERE rg.name = '" + ElabUtil.fixQuotes(groupName) + "';");
+        		"WHERE rg.name = ?;");
+        ps.setString(1, groupName);
+        ResultSet rs = ps.executeQuery();
  
         if (!rs.next()) {
             throw new SQLException(
@@ -257,8 +257,8 @@ public class DatabaseUserManagementProvider implements
         }
         ElabGroup user = new ElabGroup(elab, this);
         user.setName(groupName);
-        user.setId(rs.getString("id"));
-        user.setTeacherId(rs.getString("teacher_id"));
+        user.setId(rs.getInt("id"));
+        user.setTeacherId(rs.getInt("teacher_id"));
         user.setRole(rs.getString("role"));
         user.setSurvey(rs.getBoolean("survey"));
         user.setUserArea(rs.getString("userarea"));
@@ -277,7 +277,7 @@ public class DatabaseUserManagementProvider implements
                     .getConnection(elab.getProperties());
             PreparedStatement ps = conn.prepareStatement(
             		"UPDATE research_group SET first_time='f' WHERE id = ? ;");
-            ps.setInt(1, Integer.parseInt(group.getId()));
+            ps.setInt(1, group.getId());
             ps.executeUpdate(); 
             group.setFirstTime(false);
         }
@@ -295,7 +295,7 @@ public class DatabaseUserManagementProvider implements
     		con = DatabaseConnectionManager.getConnection(elab.getProperties());
     		java.sql.PreparedStatement ps = con.prepareStatement(
     				"UPDATE research_group SET in_study = 't', new_survey = 't' WHERE id = ?;");
-    		ps.setInt(1, Integer.parseInt(group.getId()));
+    		ps.setInt(1, group.getId());
     		ps.execute();
     	}
     	catch (Exception e) {
@@ -317,9 +317,9 @@ public class DatabaseUserManagementProvider implements
     					"(SELECT research_group_id, test_id FROM research_group_test " + 
     					"WHERE research_group_id = ? AND test_id = ?)" + 
 					";");
-    		ps.setInt(1, Integer.parseInt(group.getId()));
+    		ps.setInt(1, group.getId());
     		ps.setInt(2, testId);
-    		ps.setInt(3, Integer.parseInt(group.getId()));
+    		ps.setInt(3, group.getId());
     		ps.setInt(4, testId);
     		ps.execute();
     	}
@@ -354,24 +354,23 @@ public class DatabaseUserManagementProvider implements
     }
 
     public Collection getTeachers() throws ElabException {
-        Statement s = null;
         Connection conn = null;
         ResultSet rs;
         try {
             conn = DatabaseConnectionManager
                     .getConnection(elab.getProperties());
-            s = conn.createStatement();
-            String projectId = elab.getId();
-            rs = s
-                    .executeQuery("SELECT distinct teacher.name as tname, teacher.email as temail, "
+            int projectId = elab.getId();
+            PreparedStatement ps = conn.prepareStatement(
+            		"SELECT distinct teacher.name as tname, teacher.email as temail, "
                             + "teacher.id as teacherid, research_group.id as id,"
                             + "research_group.name as rgname, research_group.userarea as rguserarea "
                             + "FROM teacher, research_group "
                             + "WHERE research_group.teacher_id = teacher.id "
-                            + "AND research_group.id in "
-                            + "(Select distinct research_group_id from research_group_project where "
-                            + " research_group_project.project_id ='"
-                            + projectId + "') ORDER BY tname ASC;");
+                            + "AND research_group.id IN "
+                            + "(SELECT distinct research_group_id FROM research_group_project WHERE "
+                            + " research_group_project.project_id = ? ) ORDER BY tname ASC;");
+            ps.setInt(1, projectId);
+            rs = ps.executeQuery();
             List teachers = new ArrayList();
             // the first one is a dummy, but it makes the code below less
             // cluttered
@@ -389,8 +388,8 @@ public class DatabaseUserManagementProvider implements
                     t = new ElabGroup(elab, this);
                     t.setName(name);
                     t.setEmail(rs.getString("temail"));
-                    t.setId(rs.getString("id"));
-                    t.setTeacherId(rs.getString("teacherid"));
+                    t.setId(rs.getInt("id"));
+                    t.setTeacherId(rs.getInt("teacherid"));
                     g = new ElabGroup(elab, this);
                     if (StringUtils.isNotBlank(rs.getString("rguserarea"))) {
                         String[] brokenSchema = rs.getString("rguserarea")
@@ -412,19 +411,16 @@ public class DatabaseUserManagementProvider implements
             throw new ElabException(e);
         }
         finally {
-            DatabaseConnectionManager.close(conn, s);
+            DatabaseConnectionManager.close(conn);
         }
     }
 
     protected void addTeacherInfo(Statement s, ElabGroup user)
             throws SQLException {
         ResultSet rs;
-        String projectId = elab.getId();
-        String teacherId = user.getTeacherId();
-        if (teacherId == null) {
-            System.out.println(user.getName() + " does not have a teacher id.");
-            return;
-        }
+        int projectId = elab.getId();
+        int teacherId = user.getTeacherId();
+        
         user.getGroups().clear();
 
         rs = s.executeQuery("SELECT name, email, authenticator, forum_id FROM teacher WHERE id = '"
