@@ -13,5 +13,5 @@ public interface CosmicElabUserManagementProvider extends
 
     Collection getDetectorIds(ElabGroup group) throws ElabException;
     
-    void setDetectorIds(ElabGroup group, Collection detectorIds) throws ElabException;
+    void setDetectorIds(ElabGroup group, Collection<String> detectorIds) throws ElabException;
 }
