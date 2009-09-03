@@ -1,3 +1,14 @@
+<%@ page import="org.apache.regexp.*" %>
+<%@ page import="org.apache.commons.lang.*" %>
+<%@ page import="java.util.*" %>
+<%@ page import="java.io.*" %>
+<%@ page import="java.text.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.query.*" %>
+<%@ page import="gov.fnal.elab.util.*" %>
+<%@ page import="org.owasp.validator.html.*" %>
+
+
 <%
 	String title = "Make/Edit Poster";
 	Date now = new Date();
@@ -13,24 +24,18 @@
 	String dfile = ""; //data file (e.g., poster.data)
    
 	String selectDefault = "Select graphic for figure.";
-	HashMap tags = new HashMap();
+	HashMap<String, String> tags = new HashMap();
 	String pdata = ""; // data written to the poster.data file.
 
 	String posterName = request.getParameter("posterName");
-	if (posterName != null) {
-    	posterName = posterName.trim();
-	    if (posterName.length() > 0) {
-    	    posterNameEntered = true;
-        	posterName = posterName.replace(' ', '_');
-	        posterName = posterName.replace('/', '_');
-    	    posterName = posterName.toLowerCase();
-        	dfile = posterName + ".data";
-	    }
-	    request.setAttribute("edit", Boolean.TRUE);
+	if (StringUtils.isNotBlank(posterName)) {
+   	    posterNameEntered = true;
+       	posterName = posterName.replace(' ', '_');
+        posterName = posterName.replace('/', '_');
+   	    posterName = posterName.toLowerCase();
+       	dfile = posterName + ".data";
 	}
-	else {
-		request.setAttribute("edit", Boolean.FALSE);
-	}
+	request.setAttribute("edit", posterNameEntered);
 
 	String posterTitle = request.getParameter("WORDS:TITLE");
 	if ((posterTitle != null) && (posterTitle.length() == 0)) {
@@ -45,148 +50,159 @@
 	request.setAttribute("plotDirURL", plotDirURL);
 	String templateDir = user.getDir("templates");
 
-if ("Make Poster".equals(reqType) || "View Poster".equals(reqType) || "Save Changes".equals(reqType)) {
-    Enumeration fields = request.getParameterNames();
-    while (fields.hasMoreElements()) {
-        String name = (String) fields.nextElement();
-        String val = request.getParameter(name);
-        val = val.replaceAll("\"", doubleQuote); //Avoid double quotes
-        RE re = new RE("(PARA|WORDS|FIG):([A-Z0-9]+)");
-        if (val.length() > 0 && re.match(name) && !val.equals(selectDefault)) {
-            pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
-        }
-    }
-    try {
-		if (!posterNameEntered) {
-		    throw new ElabJspException("Missing poster name. Please go back and enter the filename for the poster.");
-        }
-            
-		// TODO: this all needs to go into the new replica API rather than
-		//       using the rc.data api
-		// ensure the posterDir exists
-		new File(posterDir).mkdirs();
-		
-		File f = new File(posterDir, dfile);
-		boolean fileExists = f.exists();  // we want to check before writing into rc.data so we don't fail.
-		PrintWriter pw = new PrintWriter(new FileWriter(f));
-		pw.println(pdata);
-		pw.close();
-		    
-		//get metadata 
-		String author = request.getParameter("PARA:AUTHORS");
-		author = author.replace('\n',' ');
-		
-		ArrayList meta = new ArrayList();
-		meta.add("year string " + user.getGroup().getYear());
-		meta.add("state string " + user.getGroup().getState());
-		meta.add("city string " + user.getGroup().getCity());
-		meta.add("school string " + user.getGroup().getSchool());
-		meta.add("teacher string " + user.getGroup().getTeacher());
-		meta.add("project string " + elab.getName());
-		meta.add("group string " + user.getGroup().getName());
-		meta.add("type string " + "poster");
-		meta.add("title string "+ request.getParameter("WORDS:TITLE"));
-		meta.add("author string "+ author);
-		meta.add("date date " + dateString);
-		meta.add("name string " + dfile);
-		meta.add("plotURL string " + plotDirURL);
-		
-		DataCatalogProvider dcp = elab.getDataCatalogProvider();
-		if(meta != null && dfile != null) {
-		    dcp.insert(DataTools.buildCatalogEntry(dfile, meta));
-		}
-    }
-    catch (ElabJspException e) {
-        throw e;
-    }
-    catch (Exception e) { 
-        throw new JspException(e.getMessage(), e);
-    }
-}
-
-// For all requests, render the page from the current template.html and poster.data file
-// template.html determines fields to show on form, and the fiel types
-// poster.data supplies field values. If file not present, fields are empty
-// GRAPH and DATA files in poster directory determine drop-down menu values for figures
-
-// Read poster template
-
-String tfile = "template_poster.htmt";
-String template = "";
-try {
-    FileReader fr = new FileReader(new File(templateDir, tfile));
-    int count = 0;
-    char buf[] = new char[100000];
-    count = fr.read(buf, 0, 100000);
-    fr.close();
-    template = String.valueOf(buf, 0, count);
-}
-catch (Exception e) {
-    throw new JspException("Error reading template " + tfile + ": " + e.getMessage(), e);
-}
-
-// Read and store tags from poster data file if it exists - this can't work if you have no posterName in entry
-if (posterNameEntered) { // if not entered, then we will use pdata that we built from input parameters.
-    File physicalF = new File(posterDir, dfile);
-    pdata = "";
-    if(physicalF.exists()) {
-
-        // Read the poster data file
-
-        try {
-            FileReader fr = new FileReader(new File(posterDir, dfile));
-            int count = 0;
-            char buf[] = new char[100000];
-            count=fr.read(buf, 0, 100000);
-            fr.close();
-            pdata = String.valueOf(buf, 0, count);
-        }
-        catch (Exception e) {
-            throw new JspException("Error reading template " + tfile + ": " + e.getMessage(), e);
-        }
-    }
-
-    // Store poster data into hash table, keyed by "tagtype:tagname"
-
-    RE re = new RE("%(FIG|PARA|WORDS):([A-Z0-9]+)%\\n(.*?\\n)%END%");
-    re.setMatchFlags(RE.MATCH_SINGLELINE);
-    int p = 0;
-    while (re.match(pdata, p)) {
-        String tagtype = re.getParen(1);
-        String tagname = re.getParen(2);
-        String tagval = re.getParen(3).trim();
-        p = re.getParenEnd(0);
-        //          if (tagtype.equals("FIG")) tagval = tagval.trim();
-        tags.put(tagtype+":"+tagname, tagval);
-    }
-}
-
-// Find files posted to plot directory
-
-Map images = new TreeMap();
-And q = new And();
-Or or = new Or();
-or.add(new Equals("type", "plot"));
-or.add(new Equals("type", "uploadedimage"));
-q.add(or);
-q.add(new Equals("project", elab.getName()));
-q.add(new Equals("group", user.getGroup().getName()));
-
-ResultSet rs = elab.getDataCatalogProvider().runQuery(q);
-
-if (rs != null) {
-	Iterator i = rs.iterator();
-	while (i.hasNext()) {
-	    CatalogEntry e = (CatalogEntry) i.next();
-	    String lfn = e.getLFN();
-	    String name = (String) e.getTupleValue("name");
-	    if (lfn.endsWith(".gif") || lfn.endsWith(".jpg") || lfn.endsWith(".png") || lfn.endsWith(".jpeg")) {	        
-	        images.put(name != null ? name : lfn, lfn);
+	if ("Make Poster".equals(reqType) || "View Poster".equals(reqType) || "Save Changes".equals(reqType)) {
+	    Enumeration fields = request.getParameterNames();
+	    while (fields.hasMoreElements()) {
+	        String name = (String) fields.nextElement();
+	        String val = request.getParameter(name);
+	        val = val.replaceAll("\"", doubleQuote); //Avoid double quotes
+	        RE re = new RE("(PARA|WORDS|FIG):([A-Z0-9]+)");
+	        if (val.length() > 0 && re.match(name) && !val.equals(selectDefault)) {
+	            pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
+	        }
+	    }
+	    try {
+			if (!posterNameEntered) {
+			    throw new ElabJspException("Missing poster name. Please go back and enter the filename for the poster.");
+	        }
+	            
+			// TODO: this all needs to go into the new replica API rather than
+			//       using the rc.data api
+			// ensure the posterDir exists
+			new File(posterDir).mkdirs();
+			
+			File f = new File(posterDir, dfile);
+			boolean fileExists = f.exists();  // we want to check before writing into rc.data so we don't fail.
+			PrintWriter pw = new PrintWriter(new FileWriter(f));
+			pw.println(pdata);
+			pw.close();
+			    
+			//get metadata 
+			String author = request.getParameter("PARA:AUTHORS");
+			author = author.replace('\n',' ');
+			
+			ArrayList meta = new ArrayList();
+			meta.add("year string " + user.getGroup().getYear());
+			meta.add("state string " + user.getGroup().getState());
+			meta.add("city string " + user.getGroup().getCity());
+			meta.add("school string " + user.getGroup().getSchool());
+			meta.add("teacher string " + user.getGroup().getTeacher());
+			meta.add("project string " + elab.getName());
+			meta.add("group string " + user.getGroup().getName());
+			meta.add("type string " + "poster");
+			meta.add("title string "+ request.getParameter("WORDS:TITLE"));
+			meta.add("author string "+ author);
+			meta.add("date date " + dateString);
+			meta.add("name string " + dfile);
+			meta.add("plotURL string " + plotDirURL);
+			
+			DataCatalogProvider dcp = elab.getDataCatalogProvider();
+			if(meta != null && dfile != null) {
+			    dcp.insert(DataTools.buildCatalogEntry(dfile, meta));
+			}
+	    }
+	    catch (ElabJspException e) {
+	        throw e;
+	    }
+	    catch (Exception e) { 
+	        throw new JspException(e.getMessage(), e);
 	    }
 	}
-}
 
-pageContext.setAttribute("images", images);
+	// For all requests, render the page from the current template.html and poster.data file
+	// template.html determines fields to show on form, and the fiel types
+	// poster.data supplies field values. If file not present, fields are empty
+	// GRAPH and DATA files in poster directory determine drop-down menu values for figures
+	
+	// Read poster template
+
+	String tfile = "template_poster.htmt";
+	String template = "";
+	try {
+	    FileReader fr = new FileReader(new File(templateDir, tfile));
+	    int count = 0;
+	    char buf[] = new char[100000];
+	    count = fr.read(buf, 0, 100000);
+	    fr.close();
+	    template = String.valueOf(buf, 0, count);
+	}
+	catch (Exception e) {
+	    throw new JspException("Error reading template " + tfile + ": " + e.getMessage(), e);
+	}
+
+	// Read and store tags from poster data file if it exists - this can't work if you have no posterName in entry
+	if (posterNameEntered) { // if not entered, then we will use pdata that we built from input parameters.
+	    File physicalF = new File(posterDir, dfile);
+	    pdata = "";
+	    if(physicalF.exists()) {
+	        // Read the poster data file
+	        try {
+	            FileReader fr = new FileReader(new File(posterDir, dfile));
+	            int count = 0;
+	            char buf[] = new char[100000];
+	            count=fr.read(buf, 0, 100000);
+	            fr.close();
+	            pdata = String.valueOf(buf, 0, count);
+	        }
+	        catch (Exception e) {
+	            throw new JspException("Error reading template " + tfile + ": " + e.getMessage(), e);
+	        }
+	    }
+	
+	    // Store poster data into hash table, keyed by "tagtype:tagname"
+	    RE re = new RE("%(FIG|PARA|WORDS):([A-Z0-9]+)%\\n(.*?\\n)%END%");
+	    re.setMatchFlags(RE.MATCH_SINGLELINE);
+	    int p = 0;
+	    
+	    // Load cleaning stuff
+	    String cleaned = "";
+	    Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
+	    AntiSamy as = new AntiSamy(); 
+	    
+	    while (re.match(pdata, p)) {
+	        String tagtype = re.getParen(1);
+	        String tagname = re.getParen(2);
+	        String tagval = re.getParen(3).trim();
+	        
+	        try {
+	        	cleaned = as.scan(tagval, policy).getCleanHTML();
+	        }
+	        catch(ScanException se) {
+	        	cleaned = "Something was wrong with the HTML in this field; please re-insert it." ; 
+	        }
+	        
+	        p = re.getParenEnd(0);
+	        //          if (tagtype.equals("FIG")) tagval = tagval.trim();
+	        tags.put(tagtype+":"+tagname, cleaned);
+	    }
+	}
+
+	// Find files posted to plot directory
+	
+	Map images = new TreeMap();
+	And q = new And();
+	Or or = new Or();
+	or.add(new Equals("type", "plot"));
+	or.add(new Equals("type", "uploadedimage"));
+	q.add(or);
+	q.add(new Equals("project", elab.getName()));
+	q.add(new Equals("group", user.getGroup().getName()));
+	
+	ResultSet rs = elab.getDataCatalogProvider().runQuery(q);
+	
+	if (rs != null) {
+		Iterator i = rs.iterator();
+		while (i.hasNext()) {
+		    CatalogEntry e = (CatalogEntry) i.next();
+		    String lfn = e.getLFN();
+		    String name = (String) e.getTupleValue("name");
+		    if (lfn.toLowerCase().endsWith(".gif") || lfn.toLowerCase().endsWith(".jpg") || lfn.toLowerCase().endsWith(".png") || lfn.toLowerCase().endsWith(".jpeg")) {	        
+		        images.put(name != null ? name : lfn, lfn);
+		    }
+		}
+	}
+	
+	pageContext.setAttribute("images", images);
 %>
 	<!-- Show instructions -->
 	<ul>
@@ -245,7 +261,7 @@ pageContext.setAttribute("images", images);
                     String name = re.getParen(2);
                     String lowerPart = (name.substring(1, name.length())).toLowerCase();
                     String fixedName = name.substring(0, 1) + lowerPart;
-                    String val = (String) tags.get(type + ":" + name);
+                    String val = tags.get(type + ":" + name);
                     if ((val == null) || (val.length() == 0)) {
                         if (name.equals("DATE")) {
                             val = dateString;
@@ -325,11 +341,9 @@ if ("Make Poster".equals(reqType) || "Save Changes".equals(reqType)) {
         // If "Make Poster" request, merge tag values into html template, by iterating over hash
         // of tag values and inserting them into the template string;
         // then write template into (user's) poster_mgb.html file XXXX
-
-        Iterator it = tags.keySet().iterator();
-        while (it.hasNext()) {
-            String key = (String) it.next();
-            template = template.replaceAll("%" + key + "%", (String) tags.get(key));
+        
+        for (Map.Entry<String, String> e : tags.entrySet()) {
+        	template = template.replaceAll("%" + e.getKey() + "%", e.getValue());
         }
 
         // Write out the new poster
