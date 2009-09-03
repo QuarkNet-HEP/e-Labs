@@ -20,6 +20,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,7 +38,7 @@ public class DatabaseUserManagementProvider implements
         ElabUserManagementProvider, ElabProvider {
 
     public static final String SWITCHING_ELABS = "switchingelabs";
-
+    
     protected Elab elab;
 
     public DatabaseUserManagementProvider() {
@@ -72,7 +73,7 @@ public class DatabaseUserManagementProvider implements
             throws SQLException, AuthenticationException {
         if (SWITCHING_ELABS.equals(password)) {            
             PreparedStatement ps = c.prepareStatement(
-            		"SELECT password FROM research_group WHERE name = ?;");
+            		"SELECT password FROM research_group WHERE name ILIKE ?;");
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
@@ -91,18 +92,16 @@ public class DatabaseUserManagementProvider implements
     private void checkResearchGroup(Connection c, ElabGroup user,
             int projectID) throws SQLException, AuthenticationException {
     	PreparedStatement ps = c.prepareStatement(
-    			"SELECT research_group_project.project_id "
-    			+ "FROM research_group_project "
-    			+ "WHERE research_group_project.project_id = ? "
-    			+ "AND research_group_project.research_group_id = ?;");
+    			"SELECT research_group_project.project_id " +
+    			"FROM research_group_project " +
+    			"WHERE research_group_project.project_id = ? " +
+    			"AND research_group_project.research_group_id = ?;");
     	ps.setInt(1, projectID);
     	ps.setInt(2, user.getGroup().getId());
         ResultSet rs = ps.executeQuery();
         if (!rs.next() && !user.isTeacher() && !user.isAdmin()) {
             throw new AuthenticationException(
-                    "Your group is not associated with this project. "
-                            + "Contact the person who entered your "
-                            + "group into the database and tell them this.");
+                    "Your group isn't registered in this project, please tell your teacher" );
         }
         ps.close();
     }
@@ -202,8 +201,7 @@ public class DatabaseUserManagementProvider implements
     public ElabGroup getGroup(String username) throws ElabException {
         Connection conn = null;
         try {
-            conn = DatabaseConnectionManager
-                    .getConnection(elab.getProperties());
+            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             return createUser(conn, username, elab.getId());
         }
         catch (SQLException e) {
@@ -217,8 +215,7 @@ public class DatabaseUserManagementProvider implements
     public ElabGroup getGroupById(int id) throws ElabException {
         Connection conn = null;
         try {
-            conn = DatabaseConnectionManager
-                    .getConnection(elab.getProperties());
+            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             return createUserById(conn, id, elab.getId());
         }
         catch (SQLException e) {
@@ -546,6 +543,9 @@ public class DatabaseUserManagementProvider implements
         ElabGroup group = student.getGroup();
         // More work to do if we haven't seen this one yet.
         String pass = null;
+        int result; 
+        int studentId; 
+        int researchGroupId;
         
         GeneratePassword rp;  
         
@@ -570,7 +570,7 @@ public class DatabaseUserManagementProvider implements
             ps = c.prepareStatement(
             		"INSERT INTO research_group " +
             		"(name, password, teacher_id, role, userarea, ay, survey, new_survey, in_study) " +
-            		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);");
+            		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;");
             ps.setString(1, group.getName());
             ps.setString(2, pass);
             ps.setInt(3, et.getTeacherId());
@@ -580,23 +580,20 @@ public class DatabaseUserManagementProvider implements
             ps.setBoolean(7, group.getSurvey());
             ps.setBoolean(8, group.isNewSurvey());
             ps.setBoolean(9, group.isStudy());
-            ps.executeUpdate();
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+            	researchGroupId = rs.getInt(1);
+            }
+            else {
+            	throw new SQLException("Database Error: Could not create a research group for" + group.getName());
+            }
             
             ps = c.prepareStatement(
-            		"INSERT INTO research_group_project " +
-            		"(research_group_id, project_id) " +
-            		"VALUES((SELECT id FROM research_group WHERE name = ?), ?);)");
-            ps.setString(1, group.getName());
+            		"INSERT INTO research_group_project (research_group_id, project_id) VALUES(?, ?);)");
+            ps.setInt(1, researchGroupId);
             ps.setInt(2, elab.getId());
             ps.executeUpdate();
-            
-            if (groupToCreate.isNewSurvey() == true) {
-            	ps = c.prepareStatement("INSERT INTO research_group_test (research_group_id, test_id) "
-            			+ "VALUES((SELECT id FROM research_group WHERE name ILIKE ?), ?);");
-            	ps.setString(1, group.getName());
-            	ps.setInt(2, groupToCreate.getNewSurveyId());
-            	ps.executeUpdate();
-            }
 
             String usersDir = elab.getAbsolutePath(elab.getProperties()
                     .getUsersDir());
@@ -625,40 +622,38 @@ public class DatabaseUserManagementProvider implements
                         + student.getGroup().getName() + "\") does not exist");
             }
         }
-
-        // Just insert the student into the DB.
-        int studentNameAddOn = 0;
-        ps = c.prepareStatement("SELECT * FROM student WHERE name = ?;");
-        ps.setString(1, student.getName());
-        rs = ps.executeQuery();
         
-        ps = c.prepareStatement("SELECT * FROM student WHERE name = ?;");
-        while (rs.next()) {
-            studentNameAddOn++;
-            ps.setString(1, student.getName() + studentNameAddOn);
-            rs = ps.executeQuery();
-        }
-        if (studentNameAddOn > 0) {
-            student.setName(student.getName() + studentNameAddOn);
-        }
-
-        ps = c.prepareStatement("INSERT INTO student (name) VALUES (?)");
-        ps.setString(1, student.getName());
-        ps.executeUpdate();
+        java.util.Random rand = new java.util.Random();
+        String studentNameAddOn = "";
+        ps = c.prepareStatement("INSERT INTO student (name) VALUES (?) RETURNING id;");
+        do {
+        	try {
+	        	ps.setString(1, student.getName() + studentNameAddOn);
+	        	rs = ps.executeQuery();
+        	}
+        	catch (SQLException e) {
+        		// 23XXX-type errors are okay, we just attempt a re-insert 
+        		if (!e.getSQLState().startsWith("23")) {
+        			throw e; 
+        		}
+        		// If this is an integrity violation error, eat the exception and attempt a re-insert 
+        	}
+        	studentNameAddOn = Integer.toString(rand.nextInt(1000));
+        } while ((rs == null) || !rs.next());
+        studentId = rs.getInt(1);
         
         ps = c.prepareStatement("INSERT INTO research_group_student(research_group_id, student_id) "
-                        + "VALUES((SELECT id FROM research_group WHERE name = ?), "
-                        + "(SELECT id FROM student WHERE name = ?));");
-        ps.setString(1, group.getName());
-        ps.setString(2, student.getName());
+                        + "VALUES(?, ?);");
+        ps.setInt(1, group.getId());
+        ps.setInt(2, studentId);
         ps.executeUpdate();
         
-        if (group.getSurvey()) {
-        	ps = c.prepareStatement("INSERT INTO survey(student_id, project_id) " + 
-        			"VALUES((SELECT id FROM student WHERE name = ?), ?);");
-        	ps.setString(1, student.getName());
-        	ps.setInt(1, elab.getId());
-        	ps.executeUpdate();
+        if (group.isNewSurvey() == true) {
+        	ps = c.prepareStatement("INSERT INTO research_group_test (research_group_id, test_id) "
+        			+ "VALUES(?, ?);");
+        	ps.setInt(1, group.getId());
+        	ps.setInt(2, group.getNewSurveyId());
+        	result = ps.executeUpdate();
         }
         return pass;
     }
@@ -685,45 +680,54 @@ public class DatabaseUserManagementProvider implements
         return newName;
     }
 
-    public List addStudents(ElabGroup teacher, List students, List createGroups)
+    public List addStudents(ElabGroup teacher, List<ElabStudent> students, List<Boolean> createGroups)
             throws ElabException {
         List passwords = new ArrayList();
         Connection conn = null;
+        Savepoint svpt; 
+        Boolean autoCommit; 
         if (students.size() != createGroups.size()) {
             throw new IllegalArgumentException(
                     "User list and createGroups list have different sizes");
         }
-        Map groups = new HashMap();
-        Iterator i = students.iterator(), j = createGroups.iterator();
-        while (i.hasNext()) {
-            ElabStudent student = (ElabStudent) i.next();
-            ElabGroup group = student.getGroup();
-            Boolean createGroup = (Boolean) j.next();
-            if (createGroup.booleanValue()) {
-                ElabGroup existing = (ElabGroup) groups.get(group.getName());
-                if (existing == null) {
-                    groups.put(group.getName(), group);
-                }
-                else {
-                    if (group.isUpload()) {
-                        existing.setRole(ElabGroup.ROLE_UPLOAD);
+        Map<String, ElabGroup> groups = new HashMap();
+        
+        for (ElabStudent student : students) {
+        	ElabGroup group = student.getGroup();
+        	for (Boolean createGroup : createGroups) {
+        		if (createGroup.booleanValue()) {
+        			ElabGroup existing = groups.get(group.getName());
+        			if (existing == null) {
+                        groups.put(group.getName(), group);
                     }
-                    if (group.getSurvey()) {
-                        existing.setSurvey(true);
+        			else {
+                        if (group.isUpload()) {
+                            existing.setRole(ElabGroup.ROLE_UPLOAD);
+                        }
+                        if (group.isNewSurvey()) {
+                        	existing.setNewSurvey(true);
+                        }
+                        else if (group.getSurvey()) {
+                            existing.setSurvey(true);
+                        }
+                        else {
+                        	existing.setSurvey(false);
+                        	existing.setNewSurvey(false);
+                        }
+                        
                     }
-                }
-            }
+        		}
+        	}
         }
+        
         try {
-            conn = DatabaseConnectionManager
-                    .getConnection(elab.getProperties());
+            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+            autoCommit = conn.getAutoCommit();
             conn.setAutoCommit(false);
+            svpt = conn.setSavepoint(); 
             try {
-                i = students.iterator();
-                while (i.hasNext()) {
-                    ElabStudent student = (ElabStudent) i.next();
-                    ElabGroup group = (ElabGroup) groups.remove(student.getGroup()
-                            .getName());
+                for (ElabStudent student : students) {
+                	ElabGroup group = groups.remove(student.getGroup().getName());
                     passwords.add(addStudent(conn, teacher, student, group));
                 }
                 conn.commit();
@@ -732,8 +736,11 @@ public class DatabaseUserManagementProvider implements
                 addTeacherInfo(conn, teacher);
             }
             catch (SQLException e) {
-                conn.rollback();
+                conn.rollback(svpt);
                 throw e;
+            }
+            finally {
+            	conn.setAutoCommit(autoCommit);
             }
             return passwords;
         }
@@ -771,43 +778,56 @@ public class DatabaseUserManagementProvider implements
             throws ElabException {
         Connection conn = null;
         PreparedStatement ps = null; 
+        Savepoint svpt = null; 
         try {
-            conn = DatabaseConnectionManager
-                    .getConnection(elab.getProperties());
-            boolean pass = false; 
-            String sql = "UPDATE research_group SET ay = ?, role = ?, survey = ?, new_survey = ?";
-            if (StringUtils.isNotBlank(password)) {
-            	sql += ", password = ? ";
-            	pass = true;
+            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+            try {
+	            conn.setAutoCommit(false);
+	            svpt = conn.setSavepoint();
+	            boolean pass = false; 
+	            String sql = "UPDATE research_group SET ay = ?, role = ?, survey = ?, new_survey = ?";
+	            if (StringUtils.isNotBlank(password)) {
+	            	sql += ", password = ? ";
+	            	pass = true;
+	            }
+	            sql += "WHERE id = ?;";
+	            ps = conn.prepareStatement(sql);
+	            ps.setString(1, group.getYear());
+	            ps.setString(2, group.getRole());
+	            ps.setBoolean(3, group.getSurvey());
+	            ps.setBoolean(4, group.isNewSurvey());
+	            if (pass) {
+	            	ps.setString(5, password);
+	            	ps.setInt(6, group.getId());
+	            }
+	            else {
+	            	ps.setInt(5, group.getId());
+	            }
+	            
+	            ps.executeUpdate();
+	            
+	            if (group.isNewSurvey()) {
+	            	PreparedStatement ps2 = conn.prepareStatement(
+	        			"INSERT INTO research_group_test (research_group_id, test_id) " + 
+						"SELECT ?, ? WHERE NOT EXISTS " +
+							"(SELECT research_group_id, test_id FROM research_group_test " + 
+							"WHERE research_group_id = ? AND test_id = ?)" + 
+						";");
+	            	ps2.setInt(1, group.getId());
+	            	ps2.setInt(2, group.getNewSurveyId());
+	            	ps2.setInt(3, group.getId());
+	            	ps2.setInt(4, group.getNewSurveyId());
+	            	ps2.executeUpdate();
+	            }
+	            
+	            conn.commit();
             }
-            sql += "WHERE id = ?;";
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, group.getYear());
-            ps.setString(2, group.getRole());
-            ps.setBoolean(3, group.getSurvey());
-            ps.setBoolean(4, group.isNewSurvey());
-            if (pass) {
-            	ps.setString(5, password);
-            	ps.setInt(6, group.getId());
+            catch (SQLException e) {
+            	conn.rollback(svpt);
+            	throw e; 
             }
-            else {
-            	ps.setInt(5, group.getId());
-            }
-            
-            ps.executeUpdate();
-            
-            if (group.isNewSurvey()) {
-            	PreparedStatement ps2 = conn.prepareStatement(
-        			"INSERT INTO research_group_test (research_group_id, test_id) " + 
-					"SELECT ?, ? WHERE NOT EXISTS " +
-						"(SELECT research_group_id, test_id FROM research_group_test " + 
-						"WHERE research_group_id = ? AND test_id = ?)" + 
-					";");
-            	ps2.setInt(1, group.getId());
-            	ps2.setInt(2, group.getNewSurveyId());
-            	ps2.setInt(3, group.getId());
-            	ps2.setInt(4, group.getNewSurveyId());
-            	ps2.executeUpdate();
+            finally {
+            	conn.setAutoCommit(true);
             }
         }
         catch (Exception e) {

@@ -5,6 +5,7 @@ package gov.fnal.elab.usermanagement;
 
 import gov.fnal.elab.ElabGroup;
 import gov.fnal.elab.ElabProvider;
+import gov.fnal.elab.ElabStudent;
 import gov.fnal.elab.util.ElabException;
 
 import java.util.Collection;
@@ -44,7 +45,7 @@ public interface ElabUserManagementProvider extends ElabProvider {
      * student in the students list, whether the group associated with the student (and
      * accessible through {@link ElabStudent.getGroup()}) should also be registered. 
      */
-    List addStudents(ElabGroup teacher, List students, List createGroups) throws ElabException;
+    List addStudents(ElabGroup teacher, List<ElabStudent> students, List<Boolean> createGroups) throws ElabException;
     
     /**
      * Updates group information based on information stored in the group parameter and eventually
