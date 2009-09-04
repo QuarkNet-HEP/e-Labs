@@ -2,8 +2,11 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="java.util.regex.*" %>
 <%@ page import="org.apache.regexp.*" %>
+<%@ page import="org.apache.commons.lang.*" %>
 <%@ page import="gov.fnal.elab.*" %>
+<%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 
@@ -120,19 +123,11 @@
 	while (it.hasNext()) {
 		String key = (String) it.next();
 		StringBuffer sb = new StringBuffer((String) tags.get(key));
-		// Have to write a down and dirty replace for the dollar-sign character. It will throw 
-		// an out of bounds exception if left to its own devices.
-		int i = sb.indexOf("$", 0);
-		while (i >= 0 && i < sb.length()) {
-			sb = sb.insert(i, '\\');
-			i += 2;
-			i = sb.indexOf("$", i);
-		}
 		if ("paper".equals(type) && key.startsWith("WORDS:CAPTION")) { 
-			template = template.replaceAll("%" + key + "%", "Figure " + 
-				key.substring(key.length() - 1) + ". " + sb.toString()); 
+			template = template.replaceAll("%" + key + "%", Matcher.quoteReplacement("Figure " + 
+				key.substring(key.length() - 1) + ". " + sb.toString())); 
 		}
-		template = template.replaceAll("%" + key + "%", sb.toString());
+		template = template.replaceAll("%" + key + "%", Matcher.quoteReplacement(sb.toString()));
 	}
 
 	// Replace empty content fields with "not entered" and empty title fields with blank strings 

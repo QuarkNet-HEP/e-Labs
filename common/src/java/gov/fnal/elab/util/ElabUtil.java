@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import java.net.*; 
 
@@ -39,6 +41,8 @@ import javax.servlet.jsp.JspWriter;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 
 public class ElabUtil {
 
@@ -577,6 +581,21 @@ public class ElabUtil {
             }
         }
         return sb.toString();
+    }
+    
+    public static String escapePoster(String unescaped) {
+    	String escaped = unescaped.replaceAll(Pattern.quote("\'"), "&#39;");
+    	escaped = escaped.replaceAll("%", "&#37;");
+    	return escaped;
+    }
+    
+    public static String unescapePoster(String escaped) {
+    	String unescaped = escaped.replaceAll("&#37;", "%");
+    	unescaped = unescaped.replaceAll("&#34;", Matcher.quoteReplacement("\""));
+    	unescaped = unescaped.replaceAll("&quot;", Matcher.quoteReplacement("\""));
+    	unescaped = unescaped.replaceAll("&#39;", Matcher.quoteReplacement("\'"));
+    	unescaped = unescaped.replaceAll("&amp;", "&");
+    	return unescaped;
     }
 
     public static String whitespaceAdjust(String text) {

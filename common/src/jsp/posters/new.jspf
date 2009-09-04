@@ -1,6 +1,7 @@
 <%@ page import="org.apache.regexp.*" %>
 <%@ page import="org.apache.commons.lang.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="java.util.regex.*" %>
 <%@ page import="java.io.*" %>
 <%@ page import="java.text.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
@@ -10,17 +11,16 @@
 
 
 <%
+	Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
+	AntiSamy as = new AntiSamy(); 
+
 	String title = "Make/Edit Poster";
 	Date now = new Date();
 	DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 	String dateString = df.format(now);
-	String singleQuote = "&#39;";
-	String doubleQuote = "&#34;";
-
 
 	boolean posterNameEntered = false; //true if the field is filled in by the user.
-	
-	
+
 	String dfile = ""; //data file (e.g., poster.data)
    
 	String selectDefault = "Select graphic for figure.";
@@ -55,7 +55,8 @@
 	    while (fields.hasMoreElements()) {
 	        String name = (String) fields.nextElement();
 	        String val = request.getParameter(name);
-	        val = val.replaceAll("\"", doubleQuote); //Avoid double quotes
+	        val = as.scan(val, policy).getCleanHTML();  // Sanitize input
+	        val = ElabUtil.escapePoster(val);           // Escape to HTML entities 
 	        RE re = new RE("(PARA|WORDS|FIG):([A-Z0-9]+)");
 	        if (val.length() > 0 && re.match(name) && !val.equals(selectDefault)) {
 	            pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
@@ -71,6 +72,7 @@
 			// ensure the posterDir exists
 			new File(posterDir).mkdirs();
 			
+	        // Write the content to file
 			File f = new File(posterDir, dfile);
 			boolean fileExists = f.exists();  // we want to check before writing into rc.data so we don't fail.
 			PrintWriter pw = new PrintWriter(new FileWriter(f));
@@ -154,32 +156,23 @@
 	    re.setMatchFlags(RE.MATCH_SINGLELINE);
 	    int p = 0;
 	    
-	    // Load cleaning stuff
-	    String cleaned = "";
-	    Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
-	    AntiSamy as = new AntiSamy(); 
-	    
+	    // Parse the poster data file 
 	    while (re.match(pdata, p)) {
 	        String tagtype = re.getParen(1);
 	        String tagname = re.getParen(2);
 	        String tagval = re.getParen(3).trim();
 	        
-	        try {
-	        	cleaned = as.scan(tagval, policy).getCleanHTML();
-	        }
-	        catch(ScanException se) {
-	        	cleaned = "Something was wrong with the HTML in this field; please re-insert it." ; 
-	        }
+	        tagval = ElabUtil.unescapePoster(tagval);
 	        
 	        p = re.getParenEnd(0);
 	        //          if (tagtype.equals("FIG")) tagval = tagval.trim();
-	        tags.put(tagtype+":"+tagname, cleaned);
+	        tags.put(tagtype+":"+tagname, tagval);
 	    }
 	}
 
 	// Find files posted to plot directory
 	
-	Map images = new TreeMap();
+	Map<String, String> images = new TreeMap();
 	And q = new And();
 	Or or = new Or();
 	or.add(new Equals("type", "plot"));
@@ -262,7 +255,7 @@
                     String lowerPart = (name.substring(1, name.length())).toLowerCase();
                     String fixedName = name.substring(0, 1) + lowerPart;
                     String val = tags.get(type + ":" + name);
-                    if ((val == null) || (val.length() == 0)) {
+                    if (StringUtils.isBlank(val)) {
                         if (name.equals("DATE")) {
                             val = dateString;
                         }
@@ -270,6 +263,7 @@
                             val = "";
                         }
                     }
+                                        
                     pageContext.setAttribute("type", type);
                     pageContext.setAttribute("tvalue", val);
                     pageContext.setAttribute("name", name);
@@ -289,7 +283,7 @@
                     			<c:when test="${type == 'WORDS'}">
                     				<td align="left">
                     					<input size="50" maxlength="1000" name="${type}:${name}"
-                    						value="<%= val.replaceAll("\"", doubleQuote) %>"/>
+                    						value="${tvalue}"/>
                     				</td>
                     			</c:when>
                     			<c:when test="${type == 'FIG'}">
@@ -343,7 +337,7 @@ if ("Make Poster".equals(reqType) || "Save Changes".equals(reqType)) {
         // then write template into (user's) poster_mgb.html file XXXX
         
         for (Map.Entry<String, String> e : tags.entrySet()) {
-        	template = template.replaceAll("%" + e.getKey() + "%", e.getValue());
+        	template = template.replaceAll("%" + e.getKey() + "%", Matcher.quoteReplacement(e.getValue()));
         }
 
         // Write out the new poster
