@@ -1,10 +1,9 @@
 #sitehelp-home
 {
-//z-index: 5;
+/* z-index: 5; */
 background-color: #ff6600;
 width: 127px;
 border: 1px solid #444444;
-//margin: auto;
 text-align: center;
 }
 #sitehelp-home a {
@@ -15,11 +14,9 @@ text-align: center;
 
 #sitehelp-library
 {
-//z-index: 5;
 background-color: #55a9b4;
 width: 127px;
 border: 1px solid #444444;
-//margin: auto;
 text-align: center;
 }
 #sitehelp-library a {
@@ -30,11 +27,9 @@ text-align: center;
 
 #sitehelp-upload
 {
-//z-index: 5;
 background-color: #ad499d;
 width: 127px;
 border: 1px solid #444444;
-//margin: auto;
 text-align: center;
 }
 #sitehelp-upload a {
@@ -47,11 +42,9 @@ text-align: center;
 
 #sitehelp-data
 {
-//z-index: 5;
 background-color: #63a2db;
 width: 127px;
 border: 1px solid #444444;
-//margin: auto;
 text-align: center;
 }
 #sitehelp-data a {
@@ -63,11 +56,9 @@ text-align: center;
 
 #sitehelp-posters
 {
-//z-index: 5;
 background-color: #408c66;
 width: 127px;
 border: 1px solid #444444;
-//margin: auto;
 text-align: center;
 }
 #sitehelp-posters a {
@@ -80,12 +71,9 @@ text-align: center;
 
 #sitehelp-assessment
 {
-//z-index: 5;
 background-color: #ffcc00;
 width: 127px;
-//height: 2em;
 border: 1px solid #444444;
-//margin: auto;
 text-align: center;
 }
 #sitehelp-assessment a {
