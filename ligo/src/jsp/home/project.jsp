@@ -9,7 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/project.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/three-column.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 	</head>
 
 	<body id="project">
