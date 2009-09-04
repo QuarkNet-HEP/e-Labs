@@ -108,7 +108,7 @@ String research_group_name = groupName; // group name of the teacher whose logbo
      <div style="border-style:dotted; border-width:1px;">
      <table width="600">
        <tr><td align="left" colspan="4"><font  SIZE="+1" FACE="Comic Sans MS">Instructions</font></td></tr>
-      <tr><td align="right"><IMG SRC="graphics/logbook_pencil.gif" align="middle" border="0"></td><td align="left">Button to add/edit logbook entry.</td>
+      <tr><td align="right"><IMG SRC="graphics/logbook_pencil.gif" align="middle" border="0"></td><td align="left">Button to add logbook entry.</td>
         </tr></table></div>
 
         <%
