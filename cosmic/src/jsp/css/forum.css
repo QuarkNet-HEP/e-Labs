@@ -46,8 +46,6 @@ td.postheader {
 
 td.postfooter {
         background-color: rgb(230,230,230);
-//        border-top: 1px solid rgb(190,190,200);
-//        border-top: 1px solid rgb(190,190,200);
         border-top: 1px solid white;
         height: 2em;       /* max-height doesn't work in table elements! */
         max-height: 2em;       /* try max-height just in case... */
@@ -60,14 +58,11 @@ tr.helpdeskseperator {
 }
 
 tr.postseperator {
-//        background-color: rgb(210,240,210);
         background-color: rgb(160,160,160);
         height:1px;
 }
 
 tr.postseperator td {
-//        border-top: 1px     solid rgb(170,255,170);
-//        border-bottom: 1px  solid rgb(170,255,170);
         border-top: 1px     solid white;
         border-bottom: 1px  solid white;
 }
@@ -81,7 +76,6 @@ tr.row0 {
 }
 
 tr.row1 {
-//        background-color: rgb(240,255,240);
         background-color:  rgb(212,212,203);
 }
 
