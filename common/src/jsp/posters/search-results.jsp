@@ -13,9 +13,14 @@
 	<link type="text/css" rel="stylesheet" href="../include/jquery/css/blue/style.css" />
 	<script type="text/javascript">
 	$(document).ready(function() { 
-	        $("#search-results").tablesorter({headers: {8:{sorter:false}}}); 
-	    } 
-	); 
+		$.tablesorter.addParser({
+			id: "MMMM dd yyyy", 
+			is: function(s) { return false; },
+			format: function(s) { return $.tablesorter.formatFloat(new Date(s + " 00:00").getTime()); },
+			type: "numeric"
+		});
+		$("#search-results").tablesorter({headers: {1:{sorter:'MMMM dd yyyy'}, 8:{sorter:false}}});
+	}); 
 	</script>
 
 	<table id="search-results" class="tablesorter">
@@ -39,7 +44,7 @@
 					<td>
 						<e:popup href="../posters/display.jsp?name=${tuples.name}" target="poster" width="700" height="900">${tuples.title}</e:popup>
 					</td>
-					<td><e:format type="date" format="MMMMMMMMM dd, yyyy" value="${tuples.date}"/></td>
+					<td><e:format type="date" format="MMMM d, yyyy" value="${tuples.date}"/></td>
 					<td>${tuples.group}</td>
 					<td>${tuples.teacher}</td>
 					<td>${tuples.school}</td>
