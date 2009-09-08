@@ -38,10 +38,11 @@ DATEFORMAT.setLenient(false);
 				<tr><td>
 					Please enter dates in MM/dd/yyyy format (e.g. <%= DATEFORMAT.format(new Date()) %>).<br />
 					You may leave one or both date fields blank.<br />
-					From: 
+					Date Range: &nbsp;&nbsp;&nbsp;From: 
 					<e:trinput name="date1" id="date1" size="10" maxlength="15" />
 					to
 					<e:trinput name="date2" id="date2" size="10" maxlength="15" />
+					
 					</td></tr>
 				</table>
 			</e:hidden>
