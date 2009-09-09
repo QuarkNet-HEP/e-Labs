@@ -6,7 +6,10 @@
 <%@ page import="gov.fnal.elab.usermanagement.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 <%@ page import="com.Ostermiller.util.*" %>
+<%@ page import="org.apache.commons.lang.*" %>
 <%@ page import="org.apache.commons.fileupload.*" %>
+<%@ page import="org.apache.commons.fileupload.servlet.*" %>
+<%@ page import="org.apache.commons.fileupload.disk.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.io.*" %>
 
@@ -38,112 +41,110 @@
 
 <h1>e-Lab Mass Registration</h1>
 <%
-	if (FileUpload.isMultipartContent(request)) {
+	if (ServletFileUpload.isMultipartContent(request)) {
 	    try {
-	DiskFileUpload fu = new DiskFileUpload();
-	fu.setSizeMax(50*1024);   // 50K, it's only text.
-	// maximum size that will be stored in memory
-	fu.setSizeThreshold(4096);
-	
-	List fileItems = fu.parseRequest(request);
+	    	DiskFileItemFactory factory = new DiskFileItemFactory();
+	    	ServletFileUpload upload = new ServletFileUpload(factory);
+	    	
+	    	upload.setSizeMax(50*1024);			// 50KiB max
+	    	factory.setSizeThreshold(4096);	
+	    	
+	    	List<FileItem> fileItems = upload.parseRequest(request);
+	    	
+	    	for (FileItem file : fileItems) {
+	    		String regFile = file.getName();
+	    		if (StringUtils.isBlank(regFile)) continue; 
+	    		File f = File.createTempFile("upload", ".csv");
+	    		if (file.getSize() > 0) {
+	    			// write the file
+	    			file.write(f);
+	    			// Strip the file of Mac or MS-DOS line breaks.
+	    			String[] cmd = new String[]{"bash", "-c", "/usr/bin/perl -pi -e 's/\\r\\n?/\\n/g' " + 
+	    				f.getAbsolutePath()};
 
-	Iterator fi = fileItems.iterator();
+	    			Process p = Runtime.getRuntime().exec(cmd);
+	    			if (p.waitFor() != 0) {
+	    				throw new ElabJspException("Cannot clean line breaks from the file \"" + f.getAbsolutePath() 
+	    					+ "\" on the filesystem. Please contact the administrator about this error.");
+	    			}
 
-	while (fi.hasNext()) { 
-		FileItem file = (FileItem) fi.next();
-		String regFile = file.getName();
-		if (regFile == null || regFile.equals("")) {
-			continue;
+	    			// Parse the registration file.
+	    			LabeledCSVParser lcsvp = null;
+	    			try { 
+	    				String appType = request.getParameter("application_type");
+	    				if (appType != null && appType.equals("other")) {
+	    					lcsvp = new LabeledCSVParser(new CSVParser(new FileReader(f)));
+	    				}
+	    				else {
+	    					lcsvp = new LabeledCSVParser(new ExcelCSVParser(new FileReader(f)));
+	    				}
+	    			}
+	    			catch (IOException e) {
+	    				throw new ElabJspException("Error reading file \"" + f.getAbsolutePath() 
+	    					+ "\". Please contact the administrator about this error.");
+	    			} 
+	    		
+	    			List students = new ArrayList();
+	    	        List newGroups = new ArrayList();
+	    			while (lcsvp.getLine() != null) {
+	    				String last = lcsvp.getValueByLabel("Last Name");
+	    				String first = lcsvp.getValueByLabel("First Name");
+	    				String resName = lcsvp.getValueByLabel("Research Group Name");
+	    				String upload = lcsvp.getValueByLabel("Upload");
+	    				String survey = lcsvp.getValueByLabel("In Survey");
+	    			
+	    				if (last == null || first == null || resName == null ||
+	    					last.equals("") || first.equals("") || resName.equals("")) {
+	    				    throw new ElabJspException("An error has occurred while parsing row " 
+	    			            + lcsvp.getLastLineNumber() + ". "
+	    			            + "Please make sure your file conforms to the format shown in the example "
+	    			            + "and that it was saved in the <strong>CSV</strong> format.");
+	    				}
+	    		
+	    				ElabStudent newStudent = new ElabStudent();
+	    				first = first.replaceAll(" ", "").toLowerCase();
+	    				last = last.replaceAll(" ", "").toLowerCase();
+	    				String studentName = first.substring(0, 1) + last.substring(0, (last.length() < 7 ? last.length() : 7));
+	    		
+	    				newStudent.setName(studentName);
+
+	    				ElabGroup group = new ElabGroup(elab);
+	    				newStudent.setGroup(group);
+	    				group.setName(resName);
+	    				if ("yes".equalsIgnoreCase(upload) || "true".equalsIgnoreCase(upload)) {
+	    				    group.setRole(ElabUser.ROLE_UPLOAD);
+	    				}
+	    				group.setSurvey(false);
+	    				group.setStudy(false);
+	    				group.setNewSurvey("yes".equalsIgnoreCase(survey) || "true".equalsIgnoreCase(survey));
+	    				students.add(newStudent);
+	    				//as far as I understand from the old code, with the mass registration, the 
+	    				//groups are always created
+	    				newGroups.add(true);
+	    			}
+	    			List passwords = elab.getUserManagementProvider().addStudents(user, students, newGroups);
+	    			List results = new ArrayList();
+	    			Iterator i = students.iterator(), j = passwords.iterator();
+	    			while (i.hasNext()) {
+	    				String password = (String) j.next();
+	    				ElabStudent u = (ElabStudent) i.next();
+	    		    	if (password != null) {
+	    		        	List l = new LinkedList();
+	    			        l.add(u.getGroup().getName());
+	    			        l.add(password);
+	    			        results.add(l);
+	    		    	}
+	    			}
+	    			request.setAttribute("valid", Boolean.TRUE);
+	    			request.setAttribute("results", results);
+	    			break;
+	    		}
+	    	}
 		}
-		File f = File.createTempFile("upload", ".csv");
-		if (file.getSize() > 0) {
-			// write the file
-			file.write(f);
-			// Strip the file of Mac or MS-DOS line breaks.
-			String[] cmd = new String[]{"bash", "-c", "/usr/bin/perl -pi -e 's/\\r\\n?/\\n/g' " + 
-				f.getAbsolutePath()};
-
-			Process p = Runtime.getRuntime().exec(cmd);
-			if (p.waitFor() != 0) {
-				throw new ElabJspException("Cannot clean line breaks from the file \"" + f.getAbsolutePath() 
-					+ "\" on the filesystem. Please contact the administrator about this error.");
-			}
-
-			// Parse the registration file.
-			LabeledCSVParser lcsvp = null;
-			try { 
-				String appType = request.getParameter("application_type");
-				if (appType != null && appType.equals("other")) {
-					lcsvp = new LabeledCSVParser(new CSVParser(new FileReader(f)));
-				}
-				else {
-					lcsvp = new LabeledCSVParser(new ExcelCSVParser(new FileReader(f)));
-				}
-			}
-			catch (IOException e) {
-				throw new ElabJspException("Error reading file \"" + f.getAbsolutePath() 
-					+ "\". Please contact the administrator about this error.");
-			} 
-		
-			List students = new ArrayList();
-	        List newGroups = new ArrayList();
-			while (lcsvp.getLine() != null) {
-				String last = lcsvp.getValueByLabel("Last Name");
-				String first = lcsvp.getValueByLabel("First Name");
-				String resName = lcsvp.getValueByLabel("Research Group Name");
-				String upload = lcsvp.getValueByLabel("Upload");
-				String survey = lcsvp.getValueByLabel("In Survey");
-			
-				if (last == null || first == null || resName == null ||
-					last.equals("") || first.equals("") || resName.equals("")) {
-				    throw new ElabJspException("An error has occurred while parsing row " 
-			            + lcsvp.getLastLineNumber() + ". "
-			            + "Please make sure your file conforms to the format shown in the example "
-			            + "and that it was saved in the <strong>CSV</strong> format.");
-				}
-		
-				ElabStudent newStudent = new ElabStudent();
-				first = first.replaceAll(" ", "").toLowerCase();
-				last = last.replaceAll(" ", "").toLowerCase();
-				String studentName = first.substring(0, 1) + last.substring(0, (last.length() < 7 ? last.length() : 7));
-		
-				newStudent.setName(studentName);
-
-				ElabGroup group = new ElabGroup(elab);
-				newStudent.setGroup(group);
-				group.setName(resName);
-				if ("yes".equalsIgnoreCase(upload) || "true".equalsIgnoreCase(upload)) {
-				    group.setRole(ElabUser.ROLE_UPLOAD);
-				}
-				group.setSurvey("yes".equalsIgnoreCase(survey) || "true".equalsIgnoreCase(survey));
-				students.add(newStudent);
-				//as far as I understand from the old code, with the mass registration, the 
-				//groups are always created
-				newGroups.add(Boolean.TRUE);
-			}
-			List passwords = elab.getUserManagementProvider().addStudents(user, students, newGroups);
-			List results = new ArrayList();
-			Iterator i = students.iterator(), j = passwords.iterator();
-			while (i.hasNext()) {
-				String password = (String) j.next();
-				ElabStudent u = (ElabStudent) i.next();
-		    	if (password != null) {
-		        	List l = new LinkedList();
-			        l.add(u.getGroup().getName());
-			        l.add(password);
-			        results.add(l);
-		    	}
-			}
-			request.setAttribute("valid", Boolean.TRUE);
-			request.setAttribute("results", results);
-			break;
-		}// if fsize>0
-	}//while
-}
-catch (Exception e) {
-	request.setAttribute("valid", Boolean.FALSE);
-	request.setAttribute("error", e.getMessage());
-}
+		catch (Exception e) {
+			request.setAttribute("valid", Boolean.FALSE);
+			request.setAttribute("error", e.getMessage());
+		}
 
 %>
 			<c:choose>
