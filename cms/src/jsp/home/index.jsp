@@ -8,8 +8,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>${elab.properties.formalName} e-Lab Home</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/two-column-home.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/three-column.css"/>
 	</head>
 	
 	<body id="home" class="home">
@@ -28,41 +28,52 @@
 			
 			<div id="content">
 				
-<h1>Join a national collaboration of high school students to study CMS test beam data.</h1>
+
+ 	 <c:if test="${user != null}">
+<h1>Home: Join a national collaboration of high school students to study CMS test beam data.</h1>
+  
+	   <div id="links"><table align="center"><tr>
+	   <td width="150" align="center"><A href="cool-science.jsp"><img src="../graphics/cool-science-button.gif" border="0"><br>Cool Science</a></td>
+	   <td width="150" align="center"><a href="../site-index/site-map-anno.jsp"><img src="../graphics/site-map-button.gif" border="0"><br>Explore!</a></td>
+	   <td width="150"align="center"><a href="about-us.jsp"><img src="../graphics/about-us-button.gif" border="0"><br>About Us</a></td></tr></table></div>
+<h3>Project Map: Your team may use the milestones below, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results. 
+</h3>
+<h4>Think of this map as a subway map with one main line and four branch lines.  Along the main line are stops, milestone seminars, opportunities to check how the work is going. Off each main stop are branch lines where each stop is a project milestone.
+ Hover over each milestone or milestone seminar to preview; click milestones to open. 
+</h4>
+	  </c:if>  
+ 	 <c:if test="${user == null}">
+<h1>Welcome: Join a national collaboration of high school students to study CMS test beam data.</h1>
+	  </c:if>  
 
 <!-- there is no way to do this without tables unfortunately -->
 <table border="0" id="main">
+<%--
+	<tr>
+	    <td colspan="2">
+ 	 <c:if test="${user != null}">
+  
+	   <div id="links"><A href="../library/big-picture.jsp">Cool Science</a> - <a href="../site-index/site-map-anno.jsp">Explore</a> - <a href="about-us.jsp">About Us</a></div>
+	  </c:if>  
+	    </td>
+	
+	
+	</tr>
+ --%>
 	<tr>
 		<td>
-			<div id="left">
-				<img src="../graphics/final_animation_small.gif" alt="Collision" />
-			</div>
-		</td>
-		<td>
-			<div id="center">
-				<h2>How small?</h2>
-
-				<ul>
-					<li>How small is so small that we can get no smaller?</li>
-					<li>Why do objects have mass?</li>
-					<li>How do scientists "see" particles much smaller than an atom?</li>
-					<li>Understand how a 12,000 ton detector &quot;sees&quot; electrons, muons and other particles.</li>
-				</ul>
-
-				<h2>Who are we?</h2>
-				<p>We're a collaboration of high school students and teachers analyzing data
-        		from the <emph>Compact Muon Solenoid Collaboration,</emph> CMS, experiment at 
-        		CERN in Geneva, Switzerland to answer some of these questions. We're working 
-        		with computer scientists to provide cutting edge tools that use <strong>grid techniques</strong>
-        		to help you share data, graphs, and posters and collaborate with other students nationwide.</p>
-
-
-				<h2>Who can join?</h2>
-				<p><strong>You</strong>! Think about steps you'd take to investigate particle 
-				collisions at the highest accelerator energies. How would you get started? 
-				What do you need to know? Can you analyze data?</p>
-
-			</div>
+	 <c:if test="${user != null}">
+		<div id="left">
+			<script type="text/javascript" src="../include/elab.js"></script>
+	        <%@ include file="../login/login-required.jsp" %>
+		    <%@ include file="../library/milestones-map-student.jsp" %>
+ 		</div>
+	  </c:if>  
+ 	 <c:if test="${user == null}">
+		<div id="left-animation">
+ 	    	<%@ include file="../home/splash-home.html" %>
+ 		</div>
+	  </c:if>  
 		</td>
 		<td>
 			<div id="right">
@@ -74,6 +85,12 @@
 		</td>
 	</tr>
 </table>
+
+	<c:if test="${user != null}">
+		<div style="text-align: center;">
+	    	<a href="../library/milestones.jsp">Milestones (text version)</a>
+	    </div>
+	</c:if>
 
 
 			</div>
