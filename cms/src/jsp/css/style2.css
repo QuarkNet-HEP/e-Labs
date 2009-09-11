@@ -16,7 +16,7 @@
 	width: 100%;
 	color: white;
 	text-align: center;
-	height: 160px;
+	height: 140px;
 }
 
 #header {
@@ -48,7 +48,7 @@
 }
 
 #header-title {
-	display: none;
+   display: none; 
 }
 
 #header-current-user {
@@ -78,7 +78,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	text-align: right;
-	top: 150px;
+	top: 140px;
 }
 
 #nav #nav-list {
@@ -136,7 +136,7 @@
 	width: 790px;
 	margin-left: auto;
 	margin-right: auto;
-	font-size: 100%;
+	font-size: 10pt;
 }
 
 #content h1 {
@@ -149,6 +149,7 @@
 	margin-right: 4px;
 	padding: 4px;
 }
+
 
 table#main {
 	width: 100%;
