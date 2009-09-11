@@ -28,12 +28,6 @@
 
 <h1>Website features that guide and support student research.</h1>
 
-<h2>Research Guidance for Students</h2>
-<p>
-	<a href="notes.jsp">Notes</a> - <a href="strategy.jsp">Teaching Strategies</a> - 
-	<a href="web-guide.jsp">Research Guidance</a> - 
-	<a href="activities.jsp">Sample Classroom Activities</a>
-</p>
 <h2>Getting Started</h2>
 <p>
 	The first time students enter the website, an animation flashes sample research 
@@ -60,8 +54,7 @@
 </p>
 <h2>Navigation Bar</h2>
 <p>
-	The main navigation bar appears first on the Study Guide (#3 above) and on all 
-	pages after that. <img src="../graphics/nav.jpg"/> 
+	The main navigation bar appears after logging in to the e-Lab.<br /> <img src="../graphics/navigation_bar.jpg"/> 
 </p>
 <p>
 	Most of the pages also have a sub menu to provide both an overview of what is 
