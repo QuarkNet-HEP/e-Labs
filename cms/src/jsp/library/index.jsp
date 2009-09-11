@@ -43,47 +43,28 @@
 					<div class="tab-contents">
 						<ul class="simple">
 							<li>
-								<a HREF="research-basics.jsp">The Basics</a> - 
-								Review research skills you need for this project. 
+							<a HREF=/library/kiwi.php/Category:CMS">Glossary</a> - Look up terms you don't know. 
 							</li>
 							<li>
-								<a HREF="milestones-map.jsp">Study Guide</a> - 
-								Measure your progress as you work. 
+							<a HREF="resources.jsp">Resources</a> - Explore <i>Online Resources, Tutorials, Contacts</i> and <i>Slide Shows</i>.  
+							Tutorials help you analyze the data. Contacts connect you to experts and other student research groups.  Slideshows give more background. <i>Online Resources</i> broaden your understanding of particle physics, the detector and the collider. 
 							</li>
 							<li>
-								<a HREF="resources.jsp">Resources</a> - 
-								Explore Tutorials, Online Resources, Animations and Contacts. 
-								The tutorials should help you use this website. The contacts 
-								will allow you to contact other student research groups. 
-								The animations demonstrate your hardware and what happens 
-								when you are uploading data and using grid techniques. The 
-								Online Resources will broaden your understanding of particle
-								physics	and research.
+							<a HREF="big-picture.jsp">Big Picture</a> - Read a project overview and view a sample poster. 
 							</li>
 							<li>
-								<a HREF="../home/first.jsp">Big Picture</a> - 
-								Read an overview of this project and view a sample poster. 
+							<a HREF="FAQ.jsp">FAQs</a> - Find answers for frequently asked questions. 
 							</li>
 							<li>
-								<a href="http://cmsinfo.cern.ch/Welcome.html">CMS Overview</a> - 
-								Educational Outreach  of the Compact Muon Solenoid Collaboration.
+							<a HREF="site-help.jsp">Site Tips</a> - Check out tips for using the website.
 							</li>
 							<li>
-								<a href="http://www.uscms.org/scpac/Detector/HCAL/tb2004/rcr/">CMS Test Beam Overview</a> - 
-								Explanation and description of Compact Muon Solenoid Collaboration&rsquo;s 
-								Test Beam effort.
-							</li>
-							<li>
-								<a HREF="FAQ.jsp">FAQs</a> - Read the FAQs for answers to 
-								your questions. 
-							</li>
-							<li>
-								<a HREF="../home/first-web.jsp">Site Help</a> - Learn how 
-								to use the website.
+							<a HREF="milestones.jsp">Project Milestones (text)</a> - An alternate version.
 							</li>
 						</ul>
 					</div>
 				</div>
+
 			</div>
 		</td>
 		<td>
