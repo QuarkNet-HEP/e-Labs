@@ -4,9 +4,6 @@
 	<tr>
 		<td><a href="../home" id="nav1">Home</a></td>
 		<td><a href="../library" id="nav2">Library</a></td>
-		<c:if test="${user.upload}">
-			<td><a href="../data/upload.jsp" id="nav-upload">Upload</a></td>
-		</c:if>
 		<td><a href="../data" id="nav3">Data</a></td>
 		<td><a href="../posters" id="nav4">Posters</a></td>
 		<td><a href="../site-index" id="nav5">Site Index</a></td>
