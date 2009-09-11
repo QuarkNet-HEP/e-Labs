@@ -43,7 +43,7 @@
 					</div>
 				</div>
 				<div class="tab">
-					<span class="tab-title">C. Get Started</span>
+					<span class="tab-title">C. Tell Others</span>
 					<div class="tab-contents">						
 						<h2>Prepares the team to enter into scientific discourse with other researchers.</h2>
 						<ul>
