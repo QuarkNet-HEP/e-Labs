@@ -33,7 +33,7 @@
 				
 <h1>Lifetime: Choose data for lifetime study.</h1>
 <div id="rationale">One way to classify objects is by measurable characteristics. All electrons have the same mass, charge and spin. What characteristics can you measure about the cosmic ray particles that reach Earth's surface? These unstable particles decay with a characteristic <a href="javascript:glossary('signal',350)">signal</a> in a characteristic time. Can you measure it? If so, that characteristic is one way to determine what the particles are.</div>
-<div id="rationale">Gain confidence by watching a <a href="#" onclick="javascript:window.open('../flash/performance-movie.html','_blank', 'width=920,height=760, resizable=1, scrollbars=1');return false;">performance analysis</a> done.</div>
+<div id="rationale">Gain confidence by watching a <a href="#" onclick="javascript:window.open('../flash/lifetime-movie.html','_blank', 'width=920,height=760, resizable=1, scrollbars=1');return false;">lifetime analysis</a> done.</div>
 <table border="0" id="main">
 	<tr>
 		<td>

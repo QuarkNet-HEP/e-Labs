@@ -33,7 +33,7 @@
 				
 <h1>Flux: Choose data for flux study.</h1>
 <div id="rationale">Things in nature change over time. Populations grow, stars explode, galaxies spin, and the universe expands. Measuring some attribute over time, observing it change and then looking for what caused the change is central to all of the physical sciences. The rate at which cosmic rays arrive is called "flux." You can look to see if the flux at a certain place changes over time or compare rates at different places. Can you find out why?</div>
-<div id="rationale">Gain confidence by watching a <a href="#" onclick="javascript:window.open('../flash/performance-movie.html','_blank', 'width=920,height=760, resizable=1, scrollbars=1');return false;">performance analysis</a> done.</div><table border="0" id="main">
+<div id="rationale">Gain confidence by watching a <a href="#" onclick="javascript:window.open('../flash/flux-movie.html','_blank', 'width=920,height=760, resizable=1, scrollbars=1');return false;">flux analysis</a> done.</div><table border="0" id="main">
 	<tr>
 		<td>
 			<div id="ltbr">
