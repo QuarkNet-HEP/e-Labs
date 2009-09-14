@@ -261,7 +261,11 @@ pageContext.setAttribute("images", images);
                     int previewIndex = 0;
                     String nameAnnotation="";
                      if (fixedName.equals("Abstract")) {nameAnnotation="<br>(Brief Overview of purpose, procedures, results & conclusions)";}
-                    %>
+                     if (fixedName.equals("Procedure")) {nameAnnotation="<br>(Research or study plan)";}
+                     if (fixedName.equals("Results")) {nameAnnotation="<br>(Support claims with data)";}
+                     if (fixedName.equals("Conclusion")) {nameAnnotation="<br>(Interpret results, suggest further study)";}
+ 
+                     %>
                     	<tr>
                     		<td align="right" valign="top"><b><%= fixedName %></b>:<%= nameAnnotation %></td>
                     		<c:choose>
