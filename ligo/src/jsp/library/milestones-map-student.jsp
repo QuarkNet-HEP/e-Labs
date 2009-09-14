@@ -1,7 +1,7 @@
 <img src="../graphics/ligo_workflow.gif" width="717" height="233" border="0" alt="" usemap="#ligo_workflow_Map">
 <map name="ligo_workflow_Map">
 <area shape="rect" alt="" coords="455,7,530,62" href="#" title="Goal: Create data analysis plots.">
-<area shape="rect" alt="" coords="328,5,396,61" href="#" title="Goal: Write a proposal.">
+<area shape="rect" alt="" coords="328,5,396,61" href="#" title="Goal: Plan your investigation.">
 <area shape="rect" alt="" coords="658,7,709,57" href="../survey/show-students.jsp?type=post" title="Take the post-test. See what you learned.">
 <area shape="rect" alt="" coords="4,133,81,170" href="#" onclick="javascript:glossary('Milestone',250);return false;" title="Learn about milestones.">
 <area shape="rect" alt="" coords="5,95,82,132"  href="#" onclick="javascript:glossary('Milestone_Seminar',300);return false;" title="Learn about milestone seminars.">
