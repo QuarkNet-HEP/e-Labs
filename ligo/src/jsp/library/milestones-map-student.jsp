@@ -5,11 +5,11 @@
 <area shape="rect" alt="" coords="658,7,709,57" href="../survey/show-students.jsp?type=post" title="Take the post-test. See what you learned.">
 <area shape="rect" alt="" coords="4,133,81,170" href="#" onclick="javascript:glossary('Milestone',250);return false;" title="Learn about milestones.">
 <area shape="rect" alt="" coords="5,95,82,132"  href="#" onclick="javascript:glossary('Milestone_Seminar',300);return false;" title="Learn about milestone seminars.">
-<area shape="rect" alt="" coords="270,173,335,218" href="javascript:reference('seismic data importance',550)" title="Why do LIGO scientists keep track of ground vibrations?">
+<area shape="rect" alt="" coords="270,173,335,218" href="javascript:reference('environmental_monitoring',550)" title="Why do LIGO scientists keep track of ground vibrations?">
 <area shape="rect" alt="" coords="255,121,317,170" href="javascript:reference('wave properties',550)" title="Describe these basice wave properties: speed, wavelength, frequency, amplitude and arrival time.">
 <area shape="rect" alt="" coords="196,90,249,130" href="javascript:reference('research plan')" title="Background on research proposals">
 <area shape="rect" alt="" coords="196,166,252,198" href="javascript:reference('research question',300)" title="Background on research questions">
-<area shape="poly" alt="" coords="150,188, 168,187, 176,207, 189,210, 191,230, 129,230, 132,216, 144,209, 150,188" href="javascript:reference('simple graphs',600)" title="Background on simple plots">
+<area shape="poly" alt="" coords="150,188, 168,187, 176,207, 189,210, 191,230, 129,230, 132,216, 144,209, 150,188" href="javascript:reference('simple graphs',600)" title="Background on simple plots. Look at Scatter Plots.">
 <area shape="rect" alt="" coords="82,165,134,211" href="javascript:reference('simple calculations')" title="Background on simple calculations">
 <area shape="rect" alt="" coords="83,82,152,122" href="javascript:reference('simple measurement')" title="Background on simple measurements">
 <area shape="rect" alt="" coords="657,80,713,130" href="javascript:reference('discuss results',420)"title="Use the e-Lab to discuss your results. Exchange comments with other researchers - participate in scientific discourse.">
