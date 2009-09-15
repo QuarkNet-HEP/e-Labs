@@ -77,19 +77,11 @@
 							<a href="../plots/?submit=true&key=all&uploaded=true">Plots</a>
 							- Look at what you and other groups have uploaded! Coming soon - plots saved from OGRE...
 						</p>
-						<p>
-							<a href="../posters">Posters</a>
-							- View and create posters of your plots.
-						</p>
 						<h2>DELETE</h2>
 						<p>
 							<a href="../plots/delete.jsp">Plots</a>
 							- Delete plots your group owns.
 						</p>
-						<p>
-							<a href="../posters/delete.jsp">Posters</a>
-							- Delete posters your group has made.
-						</p>					
 					</div>
 				</div>
 			</div>
