@@ -1,0 +1,92 @@
+#sitehelp-home
+{
+/* z-index: 5; */
+background-color: #F88730;
+width: 127px;
+border: 1px solid #444444;
+text-align: center;
+}
+#sitehelp-home a {
+	color: #000000;
+	text-decoration: none;
+    width: 118px;
+}
+
+#sitehelp-library
+{
+background-color: #5DFACD;
+width: 127px;
+border: 1px solid #444444;
+text-align: center;
+}
+#sitehelp-library a {
+	color: #000000;
+	text-decoration: none;
+    width: 120px;
+}
+
+
+
+
+#sitehelp-data
+{
+background-color: #7278e8;
+width: 127px;
+border: 1px solid #444444;
+text-align: center;
+}
+#sitehelp-data a {
+	color: #000000;
+	text-decoration: none;
+    width: 120px;
+
+}
+
+#sitehelp-posters
+{
+background-color: #C4EC45;
+width: 127px;
+border: 1px solid #444444;
+text-align: center;
+}
+#sitehelp-posters a {
+	color: #000000;
+	text-decoration: none;
+    width: 120px;
+
+}
+
+
+#sitehelp-assessment
+{
+background-color: #F1C638;
+width: 127px;
+border: 1px solid #444444;
+text-align: center;
+}
+#sitehelp-assessment a {
+	color: #000000;
+	text-decoration: none;
+
+}
+
+
+#sitemap a:link {
+color: #000000;
+    width: 116px;
+}
+#sitemap a:visited {
+color: #444444;
+    width: 116px;
+}
+#sitemap a:hover {
+color: #CCCCCC;
+background-color: #333333;
+text-decoration: none;
+    width: 116px;
+}
+#sitemap a:active {
+color: #333333;
+    width: 116px;
+}
+
