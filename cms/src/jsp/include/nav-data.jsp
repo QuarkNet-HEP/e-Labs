@@ -7,7 +7,7 @@
 		<td><a href="../data/view.jsp">View Data</a></td>
 <!--   LQ - took this out until we actually have plots to view.
 		<td><a href="../plots/view.jsp">View Plots</a></td>
--->
 		<td><a href="../analysis/list.jsp">Analyses</a></td>
+-->
 	</tr>
 </table>
