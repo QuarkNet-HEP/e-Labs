@@ -2,8 +2,7 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ page import="gov.fnal.elab.util.ElabUtil" %>
-
-
+<%@ page import="gov.fnal.elab.ElabGroup" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -12,10 +11,40 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/site-index.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
+		<link href="../css/site-help.css" rel="stylesheet" type="text/css" />
 	</head>
-	<body class="siteindex">
+<script type="text/javascript">
+    hideAll();
+    
+function setDisplay(objectID,state) {
+    var object=document.getElementById(objectID);
+    if (object != null) object.style.visibility=state;
+    }
+
+
+
+function hideAll()
+{
+     setDisplay("sitehelp-home","hidden");
+     setDisplay("sitehelp-library","hidden");
+     setDisplay("sitehelp-data","hidden");
+     setDisplay("sitehelp-posters","hidden");
+     setDisplay("sitehelp-upload","hidden");
+     setDisplay("sitehelp-assessment","hidden");
+    
+}
+
+
+</script>
+	<body class="siteindex" onLoad="hideAll();">
 		<!-- entire page container -->
+<%
+	ElabGroup currentUser = ElabGroup.getUser(session);
+	request.setAttribute("request", request);
+	
+%>
 		<div id="container">
+
 			<c:if test="${param.display != 'static'}">
 			<!-- display set to "static" allows showing a site overview without a real menu -->
 				<div id="top">
@@ -30,95 +59,85 @@
 					</div>
 				</div>
 			</c:if>
-			
+
 			<div id="content">
-			
-<h1>Find out what you can do under each tab.</h1>
-
-
-
-<table border="0">
-	<tr>
-		<td valign="top">
-			<div id="left">
-				<div class="tab tabHome">
-					<span class="tabtitleHome"><a HREF="../home/">Home</a></span>
-					<div class="tabcontentsHome">
-					 	<h2>Homepage</h2>
-						<ul>
-							<li>Research topic.</li>
-						</ul>
-					</div>
-				</div>
-				
-				<div class="tab tabLibrary">
-					<span class="tabtitleLibrary"><A HREF="../library/">Library</a></span>
-					<div class="tabcontentsLibrary">
-						<h2>Look for links</h2>
-						<ul>
-							<li>Online Resources - If you find a really good resource not listed, let us know</li>
-							<li>Physicists - Contacts at CMS</li>
-							<li>Student Research Groups - Other studies in the field</li>
-							<li>Tutorials - Practice new skills</li>
-							<li>Animations - How the CMS project works</li>
-						</ul>
-					</div>
-				</div>
-				
-				<div class="tab tabAssess">
-					<span class="tabtitleAssess"><A HREF="../assessment/">Assessment</a></span>
-					<div class="tabcontentsAssess">
-						<h2>Assess your work</h2>
-						<ul>
-							<li>Rubric</li>
-						</ul>
-					</div>
-				</div>
-
-         </div>
-         </td>
-         <td valign="top">
-			<div id="right">
-					
-				<div class="tab tabData">
-					<span class="tabtitleData"><A HREF="../data/">Data</a></span>
-					<div class="tabcontentsData" style="background-color: #99CCff;">
-						<h2>Analyze and Manage Data</h2>
-						<ul>
-							<li>Physics studies</li>
-							<li>View and delete files</li>
-							<li>Get data to analyze</li>
-							<li>Practice skills</li>
-						</ul>
-					</div>
-				</div>
-
-				<div class="tab tabPoster">
-					<span class="tabtitlePoster"><A HREF="../posters/">Posters</a></span>
-					<div class="tabcontentsPoster">
-						<h2>Share Your Research</h2>
-						<ul>
-							<li>Create a Poster - Post results including graphs, notes, calculations.</li>
-							<li>Edit a Poster</li>
-							<li>View Posters - Review the work of others.</li>
-							<li>Search for Studies - Participate in a scientific dialog.</li>
-						</ul>
-					</div>
-				</div>					
-         </div>
-         </td></tr>
- 
-
-		<c:if test="${param.display == 'static'}">
-  			<tr>
-  				<td colspan="2" align="center">
-  					<A HREF="javascript:window.close();">Close Window and Go Back to Getting Started Page</A>
-  				</td>
-  			</tr>
-		</c:if>
-		
-     </table>
-
+				<h1><img src="../graphics/site-map-button.gif" border="1" style="border-color: white" valign="bottom" /> Explore! Click on hotspots in this site map.</h1>
+				<p>You can always return to this page by clicking "Explore!" on the Site Index submenu.</p>
+				<div id="sitemap" align="center" >
+					<table width="762" cellpadding="0" cellspacing="0">
+							<tr>
+							    <td  width="127" align="center"><a href="../home/" onmouseover="javascript:hideAll();setDisplay('sitehelp-home','visible')" /><img src="../graphics/explore-home.gif"></a></td>
+									<td  width="127" align="center"><a href="../library/" onmouseover="javascript:hideAll();setDisplay('sitehelp-library','visible')" /><img src="../graphics/explore-library.gif"></a></td>
+ 							 	    <td  width="127" align="center"><a href="../data/" onmouseover="javascript:hideAll();setDisplay('sitehelp-data','visible')" /><img src="../graphics/explore-data.gif"></a></td>
+									<td  width="127" align="center"><a href="../posters/" onmouseover="javascript:hideAll();setDisplay('sitehelp-posters','visible')" /><img src="../graphics/explore-posters.gif"></a></td>
+									<td width="127" align="center"><a href="../assessment/index.jsp"  onmouseover="javascript:hideAll();setDisplay('sitehelp-assessment','visible')" /><img src="../graphics/explore-assessment.gif"></a></td>
+								
+							</td>
+						</tr>
+						<tr>
+							<td width="127" valign="top"   align="center">
+								<div id="sitehelp-home">
+									<a href="../home/index.jsp">Home</a><br />
+									<a href="../library/milestones.jsp">Milestones (text)</a><br />
+									<a href="../home/cool-science.jsp">Cool Science</a><br />
+									<a href="../home/about-us.jsp">About Us</a><br />
+									<a href="javascript:window.open('../jsp/showLogbook.jsp', 'log', 'width=800,height=600, resizable=1, scrollbars=1');return false;">Logbook</a><br />
+								</div>
+							</td>
+							<td  width="127" valign="top"  align="center">
+								<div id="sitehelp-library">
+									<a href="../references/showAll.jsp?t=glossary">Glossary</a><br />
+									<a href="../library/resources.jsp">Resources</a><br />
+									<a href="../library/big-picture.jsp">Big Picture</a><br />
+									<a href="../library/FAQ.jsp">FAQs</a><br />
+									<a href="../library/site-tips.jsp">Site Tips</a>
+								</div>
+							</td>
+							<td  width="127" valign="top" align="center">
+								<div id="sitehelp-data">
+									<a href="../data/view.jsp">View Data</a><br />
+									<a href="../analysis-shower-depth/">Shower Depth</a><br />
+									<a href="../analysis-lateral-size/">Lateral Shower Size</a><br />
+									<a href="../analysis-beam-purity/">Beam Purity</a><br />
+									<a href="../analysis-resolution/">Detector Resolution</a><br />
+									<a href="../plots/?submit=true&key=all&uploaded=true">View Plots</a><br />
+<!-- 
+									<a href="../analysis/list.jsp">Analyses</a>
+ -->
+								</div>
+							</td>
+							<td  width="127" valign="top" align="center">
+								<div id="sitehelp-posters">
+									<a href="../posters/new.jsp">New Poster</a><br />
+									<a href="../posters/edit.jsp">Edit Poster</a><br />
+									<a href="../posters/view.jsp">View Posters</a><br />
+									<a href="../posters/delete.jsp">Edit Poster</a><br />
+									<a href="../plots?submit=true&key=group&value=guest&uploaded=true">View Plots</a><br />
+								</div>
+							</td>
+							<td  width="127" valign="top"  valign="bottom" border="0"   align="center">
+								<div id="sitehelp-assessment">
+									<a href="../assessment/index.jsp">Assessment</a>
+								</div>
+							</td>
+						</tr>
+<!-- 
+						<tr>
+							<td colspan="6" >
+								<img src="../graphics/site-map.gif" width="736" height="170" border="0" alt="" usemap="#site_map2_Map" />
+								<map name="site_map2_Map">
+									<area shape="rect" alt="" coords="0,1,119,167" href="../home/" onmouseover="javascript:hideAll();setDisplay('sitehelp-home','visible')" />
+									<area shape="rect" alt="" coords="614,0,734,108" href="../assessment/index.jsp"  onmouseover="javascript:hideAll();setDisplay('sitehelp-assessment','visible')" />
+									<area shape="rect" alt="" coords="498,0,614,158" href="../posters/" onmouseover="javascript:hideAll();setDisplay('sitehelp-posters','visible')" />
+									<area shape="rect" alt="" coords="377,1,496,160" href="../data/" onmouseover="javascript:hideAll();setDisplay('sitehelp-data','visible')" />
+									<area shape="rect" alt="" coords="251,1,373,134" href="../data/upload.jsp" onmouseover="javascript:hideAll();setDisplay('sitehelp-upload','visible')" />
+									<area shape="rect" alt="" coords="127,0,254,170" href="../library/" onmouseover="javascript:hideAll();setDisplay('sitehelp-library','visible')" />
+								</map>
+							</td>
+						</tr>
+ -->
+					</table>
+				</div> <!-- end sitemap -->
 			</div>
 			<!-- end content -->	
 		
@@ -126,5 +145,5 @@
 			</div>
 		</div>
 		<!-- end container -->
-</BODY>
-</HTML>
+	</body>
+</html>
