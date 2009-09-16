@@ -11,7 +11,7 @@ package gov.fnal.elab.datacatalog.query;
 
 public class Between extends And {
     public Between(String key, Object value1, Object value2) {
-        super.add(new GreaterThan(key, value1));
-        super.add(new LessThan(key, value2));
+        super.add(new GreaterOrEqual(key, value1));
+        super.add(new LessOrEqual(key, value2));
     }
 }
