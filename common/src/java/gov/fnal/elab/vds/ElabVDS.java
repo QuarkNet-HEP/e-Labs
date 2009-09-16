@@ -357,11 +357,11 @@ public class ElabVDS {
             /*
              * Search for lfns
              */
-            annotation = (Annotation)dbschema;
+            annotation = (AnnotationSchema)dbschema;
             StringReader sr = new StringReader(query);
             QueryParser parser = new QueryParser(sr);
             QueryTree tree = parser.parse(); 
-            lfns = annotation.searchAnnotation(kind, null, tree);
+            lfns = ((AnnotationSchema) annotation).searchAnnotationSafe(kind, null, tree);
         } catch (Exception e) {
             throw new ElabException("Error searching metadata..." + e.getMessage());
         } finally {
@@ -460,7 +460,7 @@ public class ElabVDS {
             StringReader sr = new StringReader(query);
             QueryParser parser = new QueryParser(sr);
             QueryTree tree = parser.parse(); 
-            lfns = annotation.searchAnnotation(kind, null, tree);
+            lfns = ((AnnotationSchema) annotation).searchAnnotationSafe(kind, null, tree);
         } catch (Exception e) {
             throw new ElabException("Error searching annotations. Using query string: " + query + "..." + e);
         } finally {

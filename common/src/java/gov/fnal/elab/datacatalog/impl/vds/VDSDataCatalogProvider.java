@@ -148,7 +148,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         long start = System.currentTimeMillis();
         try {
             AnnotationSchema annotationschema = null;
-            List lfns = annotation.searchAnnotation(Annotation.CLASS_FILENAME,
+            List lfns = ((AnnotationSchema) annotation).searchAnnotationSafe(Annotation.CLASS_FILENAME,
                     null, tree);
             if (lfns == null || lfns.isEmpty()) {
                 return ResultSet.EMPTY_RESULT_SET;
@@ -185,7 +185,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         long start = System.currentTimeMillis();
         try {
             AnnotationSchema annotationschema = null;
-            List lfns = annotation.searchAnnotation(Annotation.CLASS_FILENAME,
+            List lfns = ((AnnotationSchema) annotation).searchAnnotationSafe(Annotation.CLASS_FILENAME,
                     null, tree);
             if (lfns == null || lfns.isEmpty()) {
                 return ResultSet.EMPTY_RESULT_SET;
