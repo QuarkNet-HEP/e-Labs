@@ -11,7 +11,6 @@ package gov.fnal.elab.datacatalog.query;
 
 public class Between extends QueryLeaf {
 	public Between(String key, Object value1, Object value2) {
-		super(QueryElement.BETWEEN, key, value1, value2);
-		
+		super(QueryElement.TYPES.BETWEEN, key, value1, value2);
 	}
 }

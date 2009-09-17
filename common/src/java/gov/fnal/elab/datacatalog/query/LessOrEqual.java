@@ -11,6 +11,6 @@ package gov.fnal.elab.datacatalog.query;
 
 public class LessOrEqual extends QueryLeaf {
     public LessOrEqual(String key, Object value) {
-        super(QueryElement.LE, key, value);
+        super(QueryElement.TYPES.LE, key, value);
     }
 }

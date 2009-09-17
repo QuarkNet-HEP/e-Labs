@@ -319,7 +319,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         }
     }
 
-    protected QueryTree buildQueryTree(Iterator i, int type) {
+    protected QueryTree buildQueryTree(Iterator i, QueryElement.TYPES type) {
         QueryElement qe = (QueryElement) i.next();
         if (i.hasNext()) {
             QueryTree qt = new QueryTree(new Predicate(getPredicateType(type)));
@@ -352,7 +352,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
             }
             Iterator i = c.iterator();
             QueryElement qe = (QueryElement) i.next();
-            int type = qe.getType();
+            QueryElement.TYPES type = qe.getType();
             if (i.hasNext()) {
                 qt = new QueryTree(new Predicate(getPredicateType(query
                         .getType())));
@@ -414,31 +414,31 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         }
     }
 
-    protected int getPredicateType(int qetype) {
+    protected int getPredicateType(QueryElement.TYPES qetype) {
         switch (qetype) {
-            case QueryElement.AND:
+            case AND:
                 return Predicate.AND;
-            case QueryElement.OR:
+            case OR:
                 return Predicate.OR;
-            case QueryElement.EQ:
+            case EQ:
                 return Predicate.EQ;
-            case QueryElement.LT:
+            case LT:
                 return Predicate.LT;
-            case QueryElement.GT:
+            case GT:
                 return Predicate.GT;
-            case QueryElement.LE:
+            case LE:
                 return Predicate.LE;
-            case QueryElement.GE:
+            case GE:
                 return Predicate.GE;
-            case QueryElement.BETWEEN:
+            case BETWEEN:
                 return Predicate.BETWEEN;
-            case QueryElement.LIKE:
+            case LIKE:
                 return Predicate.LIKE;
-            case QueryElement.ILIKE:
+            case ILIKE:
             	return Predicate.ILIKE;
-            case QueryElement.IN:
+            case IN:
             	return Predicate.IN;
-            case QueryElement.NOT:
+            case NOT:
             	return Predicate.NOT;
             default:
                 throw new IllegalArgumentException(

@@ -11,6 +11,6 @@ package gov.fnal.elab.datacatalog.query;
 
 public class GreaterOrEqual extends QueryLeaf {
     public GreaterOrEqual(String key, Object value) {
-        super(QueryElement.GE, key, value);   
+        super(QueryElement.TYPES.GE, key, value);   
     }
 }

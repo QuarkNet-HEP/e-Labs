@@ -10,6 +10,7 @@
 package gov.fnal.elab.datacatalog.query;
 
 public interface QueryElement {
+	/*
     public static final int AND = 0;
     public static final int OR = 1;
     public static final int NOT = 2;
@@ -29,8 +30,13 @@ public interface QueryElement {
     public static final String[] NAMES = new String[] { "AND", "OR", "NOT",
             "EXISTS", "LIKE", "BETWEEN", "CONTAINS", "EQ", "NE", "GT", "LT",
             "GE", "LE", "ILIKE", "IN" };
-
-    int getType();
+    */
+	
+	public static enum TYPES {
+		AND, OR, NOT, EXISTS, LIKE, BETWEEN, CONTAINS, EQ, NE, GT, LT, GE, LE, ILIKE, IN
+	};
+	
+    QueryElement.TYPES getType();
 
     boolean isLeaf();
 }

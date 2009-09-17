@@ -11,6 +11,6 @@ public class In extends OneChildQueryElement {
 	 * @param child Child QueryElement defining the IN search space
 	 */
     public In(QueryElement root, QueryElement child) {
-    	super(QueryElement.IN, root, child);
+    	super(QueryElement.TYPES.IN, root, child);
     }
 }

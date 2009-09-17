@@ -11,6 +11,6 @@ package gov.fnal.elab.datacatalog.query;
 
 public class Like extends QueryLeaf {
     public Like(String key, Object value) {
-        super(QueryElement.LIKE, key, value);   
+        super(QueryElement.TYPES.LIKE, key, value);   
     }
 }

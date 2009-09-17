@@ -11,6 +11,6 @@ package gov.fnal.elab.datacatalog.query;
 
 public class LessThan extends QueryLeaf {
     public LessThan(String key, Object value) {
-        super(QueryElement.LT, key, value);   
+        super(QueryElement.TYPES.LT, key, value);   
     }
 }

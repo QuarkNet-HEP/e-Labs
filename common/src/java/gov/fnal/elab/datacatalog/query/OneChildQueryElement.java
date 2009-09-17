@@ -1,10 +1,10 @@
 package gov.fnal.elab.datacatalog.query;
 
 public abstract class OneChildQueryElement implements QueryElement {
-	private final int type;
+	private final QueryElement.TYPES type;
 	private QueryElement root, child; 
 
-	public OneChildQueryElement(int type, QueryElement root, QueryElement child) {
+	public OneChildQueryElement(QueryElement.TYPES type, QueryElement root, QueryElement child) {
 		this.type = type;
 		this.setRoot(root);
 		this.setChild(child); 
@@ -26,12 +26,12 @@ public abstract class OneChildQueryElement implements QueryElement {
 		return child;
 	}
 
-	public int getType() {
+	public QueryElement.TYPES getType() {
 		return type; 
 	}
 
 	public String toString() {
-		return "(" + root.toString() + ") " + NAMES[type] + " (" + child.toString() + ")";
+		return "(" + root.toString() + ") " + type.toString() + " (" + child.toString() + ")";
 	}
 
 	public boolean isLeaf() {

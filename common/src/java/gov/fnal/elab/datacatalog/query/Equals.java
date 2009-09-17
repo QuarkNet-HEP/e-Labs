@@ -11,6 +11,6 @@ package gov.fnal.elab.datacatalog.query;
 
 public class Equals extends QueryLeaf {
     public Equals(String key, Object value) {
-        super(QueryElement.EQ, key, value);   
+        super(QueryElement.TYPES.EQ, key, value);   
     }
 }

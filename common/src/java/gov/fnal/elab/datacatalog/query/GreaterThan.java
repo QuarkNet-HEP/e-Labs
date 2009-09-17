@@ -11,6 +11,6 @@ package gov.fnal.elab.datacatalog.query;
 
 public class GreaterThan extends QueryLeaf {
     public GreaterThan(String key, Object value) {
-        super(QueryElement.GT, key, value);   
+        super(QueryElement.TYPES.GT, key, value);   
     }
 }
