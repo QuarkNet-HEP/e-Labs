@@ -10,10 +10,7 @@ public abstract class QueryLeaf implements QueryElement {
     private Object value2; 
     
     public QueryLeaf(int type, String key, Object value) {
-        this.type = type;
-        this.key = key;
-        this.value1 = value;
-        this.value2 = null; 
+        this(type, key, value, null);
     }
     
     public QueryLeaf(int type, String key, Object value1, Object value2) {
