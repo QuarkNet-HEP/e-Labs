@@ -430,6 +430,10 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
                 return Predicate.LIKE;
             case QueryElement.ILIKE:
             	return Predicate.ILIKE;
+            case QueryElement.IN:
+            	return Predicate.IN;
+            case QueryElement.NOT:
+            	return Predicate.NOT;
             default:
                 throw new IllegalArgumentException(
                         "Unknown QueryElement type: " + qetype);
