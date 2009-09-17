@@ -10,30 +10,34 @@
 package gov.fnal.elab.datacatalog.query;
 
 public interface QueryElement {
-	/*
-    public static final int AND = 0;
-    public static final int OR = 1;
-    public static final int NOT = 2;
-    public static final int EXISTS = 3;
-    public static final int LIKE = 4;
-    public static final int BETWEEN = 5;
-    public static final int CONTAINS = 6;
-    public static final int EQ = 7;
-    public static final int NE = 8;
-    public static final int GT = 9;
-    public static final int LT = 10;
-    public static final int GE = 11;
-    public static final int LE = 12;
-    public static final int ILIKE = 13;
-    public static final int IN = 14; 
-
-    public static final String[] NAMES = new String[] { "AND", "OR", "NOT",
-            "EXISTS", "LIKE", "BETWEEN", "CONTAINS", "EQ", "NE", "GT", "LT",
-            "GE", "LE", "ILIKE", "IN" };
-    */
-	
 	public static enum TYPES {
-		AND, OR, NOT, EXISTS, LIKE, BETWEEN, CONTAINS, EQ, NE, GT, LT, GE, LE, ILIKE, IN
+		AND(0, "AND"), 
+		OR(1, "OR"), 
+		NOT(2, "NOT"), 
+		EXISTS(3, "EXISTS"), 
+		LIKE(4, "LIKE"), 
+		BETWEEN(5, "BETWEEN"), 
+		CONTAINS(6, "CONTAINS"), 
+		EQ(7, "=="), 
+		NE(8, "!="), 
+		GT(9, ">"), 
+		LT(10, "<"), 
+		GE(11, ">="), 
+		LE(12, "<="), 
+		ILIKE(13, "ILIKE"), 
+		IN(14, "IN");
+		
+		private final int vdsCode; 
+		private final String description;
+		
+		TYPES(int vdsCode, String description) {
+			this.vdsCode = vdsCode;
+			this.description = description; 
+		}
+		
+		public String toString() {
+			return description; 
+		}
 	};
 	
     QueryElement.TYPES getType();
