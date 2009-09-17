@@ -366,7 +366,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         else {
             QueryLeaf t = (QueryLeaf) query;
             qt = new QueryTree(new Predicate(getPredicateType(query.getType()),
-                    t.getKey(), getType(t.getValue()), quote(format(t))));
+                    t.getKey(), getType(t.getValue()), format(t.getValue1()), format(t.getValue2())));
         }
         return qt;
     }
@@ -374,13 +374,19 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
     private static final DateFormat DF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
     
     private String format(QueryLeaf t) {
-        Object v = t.getValue();
-        if (v instanceof Date) {
-            return DF.format(v);
-        }
-        else {
-            return String.valueOf(v);
-        }
+        return format(t.getValue());
+    }
+    
+    public String format(Object o) {
+    	if (o == null) {
+    		return null; 
+    	}
+    	if (o instanceof Date) {
+    		return DF.format(o);
+    	}
+    	else {
+    		return String.valueOf(o);
+    	}
     }
 
     public static String quote(String param) {

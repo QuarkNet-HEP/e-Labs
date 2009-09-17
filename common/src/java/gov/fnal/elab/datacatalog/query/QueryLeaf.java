@@ -6,12 +6,18 @@ package gov.fnal.elab.datacatalog.query;
 public abstract class QueryLeaf implements QueryElement {
     private final int type;
     private String key;
-    private Object value;
+    private Object value1;
+    private Object value2 = null; 
     
     public QueryLeaf(int type, String key, Object value) {
         this.type = type;
         this.key = key;
-        this.value = value;
+        this.value1 = value;
+    }
+    
+    public QueryLeaf(int type, String key, Object value1, Object value2) {
+    	this(type, key, value1);
+    	this.value2 = value2; 
     }
 
     public String getKey() {
@@ -23,11 +29,27 @@ public abstract class QueryLeaf implements QueryElement {
     }
 
     public Object getValue() {
-        return value;
+        return this.getValue1();
+    }
+    
+    public Object getValue1() {
+    	return value1;
+    }
+    
+    public Object getValue2() {
+    	return value2; 
     }
 
     public void setValue(Object value) {
-        this.value = value;
+        setValue1(value);
+    }
+    
+    public void setValue1(Object value) {
+    	this.value1 = value; 
+    }
+    
+    public void setValue2(Object value) {
+    	this.value2 = value; 
     }
 
     public int getType() {
@@ -44,7 +66,11 @@ public abstract class QueryLeaf implements QueryElement {
         sb.append('(');
         sb.append(key);
         sb.append(", ");
-        sb.append(value);
+        sb.append(value1);
+        if (value2 != null) {
+        	sb.append(", ");
+            sb.append(value2);
+        }
         sb.append(')');
         return sb.toString();
     }
