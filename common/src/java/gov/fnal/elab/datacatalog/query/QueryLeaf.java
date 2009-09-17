@@ -7,16 +7,19 @@ public abstract class QueryLeaf implements QueryElement {
     private final int type;
     private String key;
     private Object value1;
-    private Object value2 = null; 
+    private Object value2; 
     
     public QueryLeaf(int type, String key, Object value) {
         this.type = type;
         this.key = key;
         this.value1 = value;
+        this.value2 = null; 
     }
     
     public QueryLeaf(int type, String key, Object value1, Object value2) {
-    	this(type, key, value1);
+    	this.type = type;
+        this.key = key;
+        this.value1 = value1;
     	this.value2 = value2; 
     }
 
