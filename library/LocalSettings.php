@@ -126,6 +126,14 @@ if( !empty($elab) ) {
     $wgMainPage = "LIGO e-Lab Teaching Community";
     $BOINC_prefix = "/elab/ligo/teacher/forum";
   }
+  elseif ($elab == "cms") {
+    $wgLogo = "/elab/cms/graphics/ligo_logo.gif";
+    $wgScriptPath = "/elab/cms/teacher/library";
+    $wgDefaultSkin = 'cms';
+    $wgSitename    = "CMS Teachers' Library";
+    $wgMainPage = "CMS e-Lab Teaching Community";
+    $BOINC_prefix = "/elab/cms/teacher/forum";
+  }
 }
 else {
   $wgSitename          = "QNFellows";
