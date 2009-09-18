@@ -10,6 +10,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column-home.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
+<script type="text/javascript" src="/include/elab-custom.js"></script>
 	</head>
 	
 	<body id="home" class="home">
@@ -65,6 +66,7 @@
 	 <c:if test="${user != null}">
 		<div id="left">
 			<script type="text/javascript" src="../include/elab.js"></script>
+            <script type="text/javascript" src="../include/elab-custom.js"></script>
 	        <%@ include file="../login/login-required.jsp" %>
 		    <%@ include file="../library/milestones-map-student.jsp" %>
  		</div>
