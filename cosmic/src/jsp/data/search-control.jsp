@@ -142,7 +142,14 @@ $(window).scroll(function(){
 		if (submit) {
 		    long start = System.currentTimeMillis();
 		    
-		    And and = new And();
+		    /* For performance reasons, order of insertion into this In 
+		     * predicate matters. Elements should be added in order of decreasing
+		     * set size 
+		     */ 
+		    In and = new In();
+		    
+		    and.add(new Equals("project", elab.getName()));
+		    and.add(new Equals("type", "split"));
 		    
 		    /* This parameter is never set 
 			   if ("within".equals(request.getParameter("searchIn"))) {
@@ -150,14 +157,21 @@ $(window).scroll(function(){
 			}
 		    */
 			
-			// Allow use of asterisk wildcards, remove leading/trailing whitespace 
-			if (StringUtils.isNotBlank(value) && !key.equals("all")) {
-				value = value.replace('*', '%').trim();
-				and.add(new Like(key, value)); 
-			}
-					
-			
-			// Date bounds are only needed if specified   
+			if ("yes".equals(stacked)) {
+		    	and.add(new Equals("stacked", Boolean.TRUE));
+		    }
+		    if ("no".equals(stacked)) {
+		    	and.add(new Equals("stacked", Boolean.FALSE));
+		    }
+					    
+		    if ("yes".equals(blessed)) {
+		    	and.add(new Equals("blessed", Boolean.TRUE));
+		    }
+		    if ("no".equals(blessed)) {
+		    	and.add(new Equals("blessed", Boolean.FALSE));
+		    }
+		    
+		 	// Date bounds are only needed if specified   
 		    String datetype = request.getParameter("datetype");
 			if (StringUtils.isNotBlank(date1) || StringUtils.isNotBlank(date2)) {
 				// In case someone makes their own search string and forgets the date type 
@@ -197,26 +211,14 @@ $(window).scroll(function(){
 					return; 
 				}
 			}
-					    
-		    if ("yes".equals(blessed)) {
-		    	and.add(new Equals("blessed", Boolean.TRUE));
-		    }
-		    if ("no".equals(blessed)) {
-		    	and.add(new Equals("blessed", Boolean.FALSE));
-		    }
 		    
-		    if ("yes".equals(stacked)) {
-		    	and.add(new Equals("stacked", Boolean.TRUE));
-		    }
-		    if ("no".equals(stacked)) {
-		    	and.add(new Equals("stacked", Boolean.FALSE));
-		    }
-		    
-		    and.add(new Equals("type", "split"));
-		    and.add(new Equals("project", elab.getName()));
+		 	// Allow use of asterisk wildcards, remove leading/trailing whitespace 
+			if (StringUtils.isNotBlank(value) && !key.equals("all")) {
+				value = value.replace('*', '%').trim();
+				and.add(new Like(key, value)); 
+			}
 		    
 			searchResults = elab.getDataCatalogProvider().runQuery(and);
-			
 			
 			searchResultsStructured = DataTools.organizeSearchResults(searchResults);
 			searchResultsStructured.setKey(key);
