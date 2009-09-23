@@ -1,4 +1,4 @@
-@import "http://www15.i2u2.org/i2u2.css"; /* to be Deprecated */
+@import "/i2u2.css"; /* to be Deprecated */
 
 body {
 margin: 0px; padding: 0px; color: black; }
