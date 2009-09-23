@@ -17,6 +17,7 @@ import gov.fnal.elab.datacatalog.DataTools;
 import gov.fnal.elab.datacatalog.Tuple;
 import gov.fnal.elab.datacatalog.query.CatalogEntry;
 import gov.fnal.elab.datacatalog.query.MultiQueryElement;
+import gov.fnal.elab.datacatalog.query.NestedQueryElement;
 import gov.fnal.elab.datacatalog.query.QueryElement;
 import gov.fnal.elab.datacatalog.query.QueryLeaf;
 import gov.fnal.elab.datacatalog.query.ResultSet;
@@ -343,7 +344,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
          * weird.
          */
         QueryTree qt;
-        if (!query.isLeaf()) {
+    	if (query instanceof MultiQueryElement) {
             MultiQueryElement meq = (MultiQueryElement) query;
             Collection c = meq.getAll();
             if (c.size() < 1) {
@@ -352,7 +353,6 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
             }
             Iterator i = c.iterator();
             QueryElement qe = (QueryElement) i.next();
-            QueryElement.TYPES type = qe.getType();
             if (i.hasNext()) {
                 qt = new QueryTree(new Predicate(getPredicateType(query
                         .getType())));
@@ -362,7 +362,15 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
             else {
                 qt = buildQueryTree(qe);
             }
-        }
+    	}
+    	else if (query instanceof NestedQueryElement) {        		
+    		NestedQueryElement nqe = (NestedQueryElement) query;
+    		QueryLeaf root = (QueryLeaf) nqe.getRoot(); // Root of a NQE has values like leaves 
+    		QueryElement child = nqe.getChild(); 
+    		qt = new QueryTree(new Predicate(getPredicateType(nqe.getType()), 
+    				root.getKey(), getType(root.getType()), format(root.getValue1()), format(root.getValue2())));
+    		qt.setRchild(buildQueryTree(child));
+    	}
         else {
             QueryLeaf t = (QueryLeaf) query;
             qt = new QueryTree(new Predicate(getPredicateType(query.getType()),
@@ -373,11 +381,27 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
     
     private static final DateFormat DF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
     
-    private String format(QueryLeaf t) {
+    /**
+     * Private helper function to convert proper objects into string representations
+     * since @org.griphyn.vdl.annotation.Predicate only stores strings (not objects) 
+     * 
+     * @deprecated QueryLeaf nodes may have 1-2 values; this is a legacy function that
+     * assumes only one value. 
+     * 
+     * @param t
+     * @return
+     */
+    @Deprecated private String format(QueryLeaf t) {
         return format(t.getValue());
     }
     
-    public String format(Object o) {
+    /**
+     * Private helper function to convert proper objects into string representations since {@link #Predicate} only stores strings (not objects) 
+     * 
+     * @param o
+     * @return
+     */
+    private String format(Object o) {
     	if (o == null) {
     		return null; 
     	}
@@ -389,7 +413,14 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
     	}
     }
 
-    public static String quote(String param) {
+    /**
+     * Helper functions to escape quotes in SQL input. 
+     * 
+     * @deprecated Escaping quotes does not protect SQL input, use {@link java.sql.PreparedStatement} instead 
+     * @param param String with unescaped quotes
+     * @return String with escaped quotes 
+     */
+    @Deprecated public static String quote(String param) {
         return ElabUtil.fixQuotes(param);
     }
 
@@ -414,8 +445,8 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         }
     }
 
-    protected int getPredicateType(QueryElement.TYPES qetype) {
-        switch (qetype) {
+    protected int getPredicateType(QueryElement.TYPES type) {
+        switch (type) {
             case AND:
                 return Predicate.AND;
             case OR:
@@ -442,7 +473,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
             	return Predicate.NOT;
             default:
                 throw new IllegalArgumentException(
-                        "Unknown QueryElement type: " + qetype);
+                        "Unknown QueryElement type: " + type);
         }
     }
 
