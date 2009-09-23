@@ -365,7 +365,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
     	}
     	else if (query instanceof NestedQueryElement) {        		
     		NestedQueryElement nqe = (NestedQueryElement) query;
-    		QueryLeaf root = (QueryLeaf) nqe.getRoot(); // Root of a NQE has values like leaves 
+    		QueryLeaf root = nqe.getRoot(); // Root of a NQE has values like leaves 
     		QueryElement child = nqe.getChild(); 
     		qt = new QueryTree(new Predicate(getPredicateType(nqe.getType()), 
     				root.getKey(), getType(root.getType()), format(root.getValue1()), format(root.getValue2())));
