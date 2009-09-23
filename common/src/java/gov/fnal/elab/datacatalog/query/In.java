@@ -10,7 +10,7 @@ public class In extends MultiQueryElement {
 	 * @param root Parent QueryElement 
 	 * @param child Child QueryElement defining the IN search space
 	 */
-    public In(QueryLeaf root, QueryElement child) {
+    public In() {
     	super(QueryElement.TYPES.IN);
     }
 }
