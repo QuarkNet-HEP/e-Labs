@@ -1,10 +1,10 @@
 package gov.fnal.elab.datacatalog.query;
 
-public abstract class OneChildQueryElement implements QueryElement {
+public abstract class NestedQueryElement implements QueryElement {
 	private final QueryElement.TYPES type;
 	private QueryElement root, child; 
 
-	public OneChildQueryElement(QueryElement.TYPES type, QueryElement root, QueryElement child) {
+	public NestedQueryElement(QueryElement.TYPES type, QueryElement root, QueryElement child) {
 		this.type = type;
 		this.setRoot(root);
 		this.setChild(child); 
