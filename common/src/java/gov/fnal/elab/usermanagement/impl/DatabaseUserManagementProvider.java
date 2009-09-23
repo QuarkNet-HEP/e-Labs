@@ -554,8 +554,11 @@ public class DatabaseUserManagementProvider implements
         	rp = new GeneratePassword();
         	pass = rp.getPassword();
         	
-            student.getGroup().setName(
-                    checkConflict(c, student.getGroup().getName()));
+        	/* TODO: This really, really shouldn't be used. This is vulnerable to race conditions :( 
+        	 * We should be inserting and checking for an exception
+        	 */ 
+            student.getGroup().setName(checkConflict(c, student.getGroup().getName()));
+            
             File tua = new File(et.getUserArea());
             group.setUserArea(new File(tua.getParentFile(), group.getName())
                     .getPath());
@@ -658,26 +661,26 @@ public class DatabaseUserManagementProvider implements
         return pass;
     }
 
+    @Deprecated 
     protected String checkConflict(Connection conn, String name)
             throws SQLException, ElabException {
-        String c = "";
+    	java.util.Random rand = new java.util.Random();
+        String studentNameAddOn = "";
         ResultSet rs = null; 
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM research_group WHERE name = ?;");
         for (int i = 0; i < 100; i++) {
-            c = i == 0 ? "" : String.valueOf(i);
-            ps.setString(1, name + c);
+            ps.setString(1, name + studentNameAddOn);
             rs = ps.executeQuery();
             if (!rs.next()) {
                 break;
             }
             if (i == 99) {
-                throw new ElabException("Could not create group with name \""
-                        + name + "\".");
+                throw new ElabException("Could not create group with name \"" + name + "\".");
             }
+            studentNameAddOn = Integer.toString(rand.nextInt(1000));
         }
-        String newName = name + c;
-        ps.close();
-        return newName;
+        ps.close();        
+        return name + studentNameAddOn;
     }
 
     public List addStudents(ElabGroup teacher, List<ElabStudent> students, List<Boolean> createGroups)
