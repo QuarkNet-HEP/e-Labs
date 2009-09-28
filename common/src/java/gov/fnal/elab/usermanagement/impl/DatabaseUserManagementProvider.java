@@ -593,7 +593,7 @@ public class DatabaseUserManagementProvider implements
             }
             
             ps = c.prepareStatement(
-            		"INSERT INTO research_group_project (research_group_id, project_id) VALUES(?, ?);)");
+            		"INSERT INTO research_group_project (research_group_id, project_id) VALUES(?, ?);");
             ps.setInt(1, researchGroupId);
             ps.setInt(2, elab.getId());
             ps.executeUpdate();
