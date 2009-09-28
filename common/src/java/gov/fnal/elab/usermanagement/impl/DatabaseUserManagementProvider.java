@@ -545,7 +545,7 @@ public class DatabaseUserManagementProvider implements
         String pass = null;
         int result; 
         int studentId; 
-        int researchGroupId;
+        int researchGroupId = -1;
         
         GeneratePassword rp;  
         
@@ -612,13 +612,13 @@ public class DatabaseUserManagementProvider implements
         }
         else {
             boolean found = false;
-            Iterator i = et.getGroups().iterator();
-            while (i.hasNext()) {
-                ElabGroup g = (ElabGroup) i.next();
-                if (g.getName().equals(student.getGroup().getName())) {
-                    found = true;
-                    break;
-                }
+            
+            for (ElabGroup eg : et.getGroups()) {
+            	if (eg.getName().equals(student.getGroup().getName())) {
+            		found = true;
+            		researchGroupId = eg.getId();
+            		break;
+            	}
             }
             if (!found) {
                 throw new ElabException("The requested group (\""
@@ -647,14 +647,14 @@ public class DatabaseUserManagementProvider implements
         
         ps = c.prepareStatement("INSERT INTO research_group_student(research_group_id, student_id) "
                         + "VALUES(?, ?);");
-        ps.setInt(1, group.getId());
+        ps.setInt(1, researchGroupId);
         ps.setInt(2, studentId);
         ps.executeUpdate();
         
         if (group.isNewSurvey() == true) {
         	ps = c.prepareStatement("INSERT INTO research_group_test (research_group_id, test_id) "
         			+ "VALUES(?, ?);");
-        	ps.setInt(1, group.getId());
+        	ps.setInt(1, researchGroupId);
         	ps.setInt(2, group.getNewSurveyId());
         	result = ps.executeUpdate();
         }
