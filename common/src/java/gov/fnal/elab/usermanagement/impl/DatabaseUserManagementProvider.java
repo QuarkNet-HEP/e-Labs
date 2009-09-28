@@ -612,9 +612,9 @@ public class DatabaseUserManagementProvider implements
             
             if (groupToCreate.isNewSurvey() == true) {
             	s.executeUpdate("INSERT INTO research_group_test (research_group_id, test_id) "
-            			+ "values((select id from research_group where name ilike '"
+            			+ "values((select distinct id from research_group where name ilike '"
                         + ElabUtil.fixQuotes(group.getName())
-                        + "'), "
+                        + "' LIMIT 1), "
                         + groupToCreate.getNewSurveyId().toString() + ");");
             }
 
@@ -727,6 +727,9 @@ public class DatabaseUserManagementProvider implements
                     if (group.getSurvey()) {
                         existing.setSurvey(true);
                     }
+                    if (group.isNewSurvey()) {
+                    	existing.setNewSurvey(true);
+                    }
                 }
             }
         }
@@ -748,7 +751,7 @@ public class DatabaseUserManagementProvider implements
                 // groups
                 addTeacherInfo(s, teacher);
             }
-            catch (SQLException e) {
+            catch (Exception e) {
                 conn.rollback();
                 throw e;
             }
