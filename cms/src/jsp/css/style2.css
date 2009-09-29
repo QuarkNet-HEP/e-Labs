@@ -16,7 +16,7 @@
 	width: 100%;
 	color: white;
 	text-align: center;
-	height: 140px;
+	height: 6.25em;
 	background-color: black; 
 }
 
@@ -194,7 +194,7 @@
 }
 
 #content h1 {
-	width: 784px;
+	width: 100%;
 	font-size: 17px;
 	font-weight: bold;
 	margin-top: 4px;
@@ -202,8 +202,11 @@
 	margin-left: 4px;
 	margin-right: 4px;
 	padding: 4px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;	
+	padding-left: 8px;
 }
-
 
 table#main {
 	width: 100%;
