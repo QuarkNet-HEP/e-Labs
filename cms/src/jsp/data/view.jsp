@@ -18,12 +18,7 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
-					<div id="nav">
-						<%@ include file="../include/nav.jsp" %>
-						<div id="subnav">
-							<%@ include file="../include/nav-data.jsp" %>
-						</div>
-					</div>
+					<%@ include file="../include/nav-rollover.jspf" %>
 				</div>
 			</div>
 			

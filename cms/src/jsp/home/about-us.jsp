@@ -18,10 +18,7 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
-					<div id="nav">
-						<c:if test="${user != null}">
-							<%@ include file="../include/nav.jsp" %>
-						</c:if>
+					<%@ include file="../include/nav-rollover.jspf" %>
 				</div>
 			</div>
 		</div>
