@@ -2,7 +2,6 @@
 #nav #subnav ul#sub-library { display:none; }
 #nav #subnav ul#sub-posters { display:none; } 
 #nav #subnav ul#sub-siteindex { display:none; } 
-#nav #subnav ul#sub-upload { display:none; } 
 
 #home #nav a {
 	color: black;
@@ -14,7 +13,7 @@
 
 #nav a#nav-home {
 	color: white; 
-	background-color: #ff6600;
+	background-color: /* #ff6600; */ #fca544;
 	border-top: #ffa76c 1px solid;
 	border-left: #ffa76c 1px solid;
 	border-bottom: #b54800 1px solid;
@@ -22,7 +21,7 @@
 }
 
 #nav a#nav-library {
-	background-color: #55a9b4;
+	background-color: /* #55a9b4 */ #5df3c2;
 	border-top: #a7d2d8 1px solid;
 	border-left: #a7d2d8 1px solid;
 	border-bottom: #3c777f 1px solid;
@@ -30,7 +29,7 @@
 }
 
 #nav a#nav-data {
-	background-color: #4382bb;
+	background-color: /* #4382bb; */ #8ba4f5;
 	border-top: #72a1cc 1px solid;
 	border-left: #72a1cc 1px solid;
 	border-bottom: #305c85 1px solid;
@@ -38,7 +37,7 @@
 }
 
 #nav a#nav-posters {
-	background-color: #408c66;
+	background-color: /* #408c66; */ #66cc33;
 	border-top: #70a98c 1px solid;
 	border-left: #70a98c 1px solid;
 	border-bottom: #2d6348 1px solid;

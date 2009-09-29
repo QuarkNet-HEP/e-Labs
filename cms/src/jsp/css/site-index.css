@@ -1,13 +1,18 @@
+#nav a#nav-siteindex {
+	background-color: #ff3000;
+	border-top: #ff6640 1px solid;
+	border-left: #ff6640 1px solid;
+	border-bottom: #b52400 1px solid;
+	border-right: #b52400 1px solid;
+}
+
+#nav #subnav ul#sub-data { display:none; }
+#nav #subnav ul#sub-library { display:none; }
+#nav #subnav ul#sub-posters { display:none; } 
+
 h1 {
 	background-color: #FF3000;
 	color: #000000;
-}
-
-#top {
-	width: 100%;
-	background-color: white;
-	color: black;
-	height: 240px;
 }
 
 .siteindex  h1 {
@@ -84,59 +89,6 @@ h1 {
 
 .siteindex dd {
 	padding-bottom: 6px;
-}
-
-#nav a#nav5 {
-	color: black;
-	background-image: url("../graphics/site-index-button-bg.jpg");
-}
-
-#nav #subnav table {
-	width: 262px;
-	margin-right: 0px;
-	margin-left: auto;
-}
-
-#nav #subnav {
-	text-align: right;
-}
-
-#nav #subnav a {
-	color: black;
-	background-image: url("../graphics/site-index-button-bg.jpg");	
-}
-
-#nav a#nav1:hover {
-	color: black;
-	background-image: url("../graphics/home-button-bg.jpg");
-}
-
-#nav a#nav2:hover {
-	color: black;
-	background-image: url("../graphics/library-button-bg.jpg");
-}
-
-#nav a#nav3:hover {
-	color: black;
-	background-image: url("../graphics/data-button-bg.jpg");
-}
-
-#nav a#nav4:hover {
-	color: black;
-	background-image: url("../graphics/posters-button-bg.jpg");
-}
-
-#nav a#nav5:hover {
-	color: white;
-}
-
-#nav a#nav6:hover {
-	color: black;
-	background-image: url("../graphics/assessment-button-bg.jpg");
-}
-
-#nav #subnav a:hover {
-	color: white;
 }
 
 /************* Very small text for list **************/

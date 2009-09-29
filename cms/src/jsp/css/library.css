@@ -1,3 +1,15 @@
+#nav #subnav ul#sub-data { display:none; }
+#nav #subnav ul#sub-posters { display:none; } 
+#nav #subnav ul#sub-siteindex { display:none; } 
+
+#nav a#nav-library {
+	background-color: #55a9b4;
+	border-top: #a7d2d8 1px solid;
+	border-left: #a7d2d8 1px solid;
+	border-bottom: #3c777f 1px solid;
+	border-right: #3c777f 1px solid;
+}
+
 h1 {
 	background-color: #99ffcc;
 	background-color: #53fdc2;
@@ -52,68 +64,7 @@ h1 {
 	padding-bottom: 6px;
 }
 
-#top {
-	width: 100%;
-	background-color: white;
-	color: black;
-	height: 240px;
-}
-
 .library #nav ul li a {
-	color: white;
-}
-
-
-#nav a#nav2 {
-	color: black;
-	background-image: url("../graphics/library-button-bg.jpg");
-}
-
-#nav #subnav a {
-	color: black;
-	background-image: url("../graphics/library-button-bg.jpg");
-}
-
-#nav a#nav1:hover {
-	color: black;
-	background-image: url("../graphics/home-button-bg.jpg");
-}
-
-#nav a#nav2:hover {
-	color: white;
-}
-
-#nav a#nav3:hover {
-	color: black;
-	background-image: url("../graphics/data-button-bg.jpg");
-}
-
-#nav a#nav4:hover {
-	color: black;
-	background-image: url("../graphics/posters-button-bg.jpg");
-}
-
-#nav a#nav5:hover {
-	color: black;
-	background-image: url("../graphics/site-index-button-bg.jpg");
-}
-
-#nav a#nav-upload:hover {
-	color:black;
-	background-color: #ad499d;
-	border-top: #c276b6 1px solid;
-	border-left: #c276b6 1px solid;
-	border-bottom: #7b346f 1px solid;
-	border-right: #7b346f 1px solid;
-}
-
-
-#nav a#nav6:hover {
-	color: black;
-	background-image: url("../graphics/assessment-button-bg.jpg");
-}
-
-#nav #subnav a:hover {
 	color: white;
 }
 

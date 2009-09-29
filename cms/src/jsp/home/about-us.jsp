@@ -21,7 +21,6 @@
 					<%@ include file="../include/nav-rollover.jspf" %>
 				</div>
 			</div>
-		</div>
 			
 			<div id="content">
 				
