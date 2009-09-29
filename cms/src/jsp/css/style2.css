@@ -70,8 +70,8 @@
 	right: 0px;
 }
 
+/*
 #nav {
-	/*border: 1px solid red;*/
 	position: absolute;
 	width: 100%;
 	bottom: 0px;
@@ -89,7 +89,6 @@
 #nav #nav-list tr {
 	background-image: url("../graphics/spacer_button.jpg");
 	background-repeat: repeat-x;
-	/*border: 1px dashed red;*/
 }
 
 #subnav table {
@@ -126,8 +125,62 @@
 	width: 99px;
 	height: 28px;
 	color: white;
-	/*the thing below is needed for the text shadow hack*/
 	position: relative;
+}
+*/
+
+#nav {
+	/*border: 1px solid red;*/
+	position: absolute;
+	width: 100%;
+	bottom: 0px;
+	right: 0px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: right;
+}
+
+#nav ul {
+	float: right;
+	text-align: right;
+	/*border: 1px dashed white;*/
+	position: relative;
+	right: 0px;
+	margin: 0px;
+	padding-right: 0px;
+	padding-bottom: 4px;
+}
+
+#subnav {
+	text-align: right;
+}
+
+#nav li {
+	display: inline;
+	text-align: center;
+	list-style: none;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+#nav a {
+	display: block;
+	float: left;
+	text-align: center;
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: bold;
+	margin-left: 4px;
+	margin-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 3px;
+	padding-right: 3px;
+	width: 92px;
+	color: white;
+	border: 1px solid black;
 }
 
 
