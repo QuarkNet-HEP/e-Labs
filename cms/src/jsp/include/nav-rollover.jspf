@@ -60,21 +60,20 @@
 			<tr>
 				<td id="subnav">
 					<ul id="sub-data">
-						<li><a href="../data/search.jsp">View Data</a></li>
-						<li><a href="../analysis-performance">Performance</a></li>
-						<li><a href="../analysis-flux">Flux</a></li>
-						<li><a href="../analysis-shower">Shower</a></li>
-						<li><a href="../analysis-lifetime">Lifetime</a></li>				
+						<li><a href="../analysis-shower-depth">Shower Depth</a></li>
+						<li><a href="../analysis-lateral-size">Lateral Size</a></li>
+						<li><a href="../analysis-beam-purity">Beam Purity</a></li>
+						<li><a href="../analysis-resolution">Resolution</a></li>
+						<li><a href="../data/view.jsp">View Data</a></li>
 						<li><a href="../plots">View Plots</a></li>
-						<li><a href="../analysis/list.jsp">Analyses</a></li>
 					</ul>
 					
 					<ul id="sub-library">
-						<li><a href="../references/showAll.jsp?t=glossary">Glossary</a></li>
+						<li><a href="/library/kiwi.php/Category:CMS">Glossary</a></li>
 						<li><a href="../library/resources.jsp">Resources</a></li>
 						<li><a href="../library/big-picture.jsp">Big Picture</a></li>
 						<li><a href="../library/FAQ.jsp">FAQs</a></li>
-						<li><a href="../library/site-help.jsp">Site Tips</a></li>
+						<li><a href="../library/site-tips.jsp">Site Tips</a></li>
 					</ul>
 					
 					<ul id="sub-posters">
@@ -90,20 +89,13 @@
 								<li><a href="../plots">View Plots</a></li>
 							</c:otherwise>
 						</c:choose>
-						<li><a href="../jsp/uploadImage.jsp">Upload</a></li>
+						<li><a href="../jsp/uploadImage.jsp">Upload Image</a></li>
 					</ul>
 					
 					<ul id="sub-siteindex">
 						<li><a href="../site-index">Site Index</a></li>
 						<li><a href="../site-index/site-map-anno.jsp">Explore!</a></li>
 					</ul>
-					
-					<c:if test="${user.upload}">
-						<ul id="sub-upload">
-							<li><a href="../data/upload.jsp">Data</a></li>
-							<li><a href="../geometry">Geometry</a></li>
-						</ul>
-					</c:if>
 				</td>
 			</tr>
 		</table>

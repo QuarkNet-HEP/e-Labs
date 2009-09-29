@@ -69,14 +69,9 @@
 	border-right: #7b346f 1px solid;
 }
 
-
 #content h1 {
 	background-color: #fca544;
 	color: #000000;
-	-moz-border-radius: 8px;
-	-webkit-border-radius: 8px;
-	border-radius: 8px;	
-	padding-left: 8px;
 }
 
 .home #center h2 {
