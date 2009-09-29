@@ -17,6 +17,7 @@
 	color: white;
 	text-align: center;
 	height: 140px;
+	background-color: black; 
 }
 
 #header {
@@ -43,12 +44,12 @@
 	display: none;
 }
 
-#header-image img {
-	width: 800px;
-}
-
 #header-title {
-   display: none; 
+	float: left;
+	font-family: Arial, sans-serif;
+	font-size: 200%;
+	margin-left: 20px;
+	padding-top: 4px;
 }
 
 #header-current-user {

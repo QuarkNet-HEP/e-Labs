@@ -3,11 +3,13 @@
 <%@ page import="gov.fnal.elab.*" %>
 
 
+<%--
 <div id="header-image">
 	<img src="../graphics/cms_poster_horizontal_final.jpg" alt="Header Image" />
 </div>
-<div id="header-image-teacher">
-	<img src="../graphics/blast.jpg" alt="Teacher Header Image" />
+--%>
+<div id="header-image">
+	<img src="../graphics/blast.jpg" alt="CMS Logo" />
 </div>
 <div id="header-title">CMS Test Beam e-Lab</div>
 <%
