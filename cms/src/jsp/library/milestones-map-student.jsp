@@ -21,7 +21,7 @@
 <area shape="rect" alt="" coords="440,178,507,219" href="javascript:reference('cms_data_selection',420)" title="Choose appropriate data from the test beam data set.">
 <area shape="rect" alt="" coords="471,100,516,133" href="not-satisfied.jsp" title="Are you satisfied with your results or do you need to analyze more data?">
 <area shape="rect" alt="" coords="376,82,438,121" href="javascript:reference('cms_study_choice',450)"  title="Choose a study and write your proposal.">
-<area shape="rect" alt="" coords="376,170,440,212" href="javascript:reference('test_beam_data ',550)" title="What types of data sets are produced in the test beam?">
+<area shape="rect" alt="" coords="376,170,440,212" href="javascript:reference('test_beam_data',550)" title="What types of data sets are produced in the test beam?">
 <area shape="rect" alt="" coords="259,74,321,124" href="javascript:reference('test_beam_particles',420)"  title="What particles are used to study the detector's behavior?">
 
 <area shape="rect" alt="" coords="587,3,651,58" href="#" title="Goal: Make a poster and discuss results.">
