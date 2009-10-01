@@ -2,6 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="gov.fnal.elab.*" %>
 
+<script type="text/javascript" src="../include/jquery/js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="../include/json2.js"></script>
+<script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.custom.min.js"></script>
+<script type="text/javascript" src="../include/jquery/js/jquery.event.hover-1.0.js"></script>
+<script type="text/javascript" src="../include/jquery/js/css-gradients-via-canvas.js"></script>
+
 
 <%--
 <div id="header-image">
