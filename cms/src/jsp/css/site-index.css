@@ -13,6 +13,12 @@
 h1 {
 	background-color: #FF3000;
 	color: #000000;
+	
+	/* Gradients: WebKit, Firefox 3.6+, IE8, IE7 */
+	background-image:-webkit-gradient(linear, left top, left bottom, from(#FF3000), to(#fff));
+	background-image:-moz-linear-gradient(left top, left bottom, from(#FF3000), to(#fff));
+	-ms-filter: "progid:DXImageTransform.Microsoft.Gradient(enabled='true', startColorstr='#00FF3000', endColorstr='#FFFFFFFF')";
+	filter: progid:DXImageTransform.Microsoft.Gradient(enabled='true', startColorstr='#00FF3000', endColorstr='#FFFFFFFF');
 }
 
 .siteindex  h1 {
@@ -20,7 +26,7 @@ h1 {
 	font-size: 140%;
 	width: 100%;
 	padding-bottom: 6px;
-	border-bottom: solid 2px orange;
+	/* border-bottom: solid 2px orange; */
 	margin-left: 0px;
 }
 

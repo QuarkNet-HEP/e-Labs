@@ -5,11 +5,18 @@
 		<title>CMS Test Beam Rubric</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/assessment.css"/>
+		<link rel="stylesheet" type="text/css" media="print" href="../css/assessment-print.css" />
 	</head>
 	
 	<body id="assessment" class="assessment">
 		<!-- entire page container -->
 		<div id="container">	
+			<div id="top" style="height:96px;">
+				<div id="header">
+					<%@ include file="../include/header.jsp" %>
+					<%@ include file="../include/nav-rollover.jspf" %>
+				</div>
+			</div>
 			<div id="content">
 
 			<h1>Objectives: Assessing Your Work (CMS Test Beam e-Lab)</h1>
