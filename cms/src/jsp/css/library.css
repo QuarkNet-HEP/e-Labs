@@ -11,9 +11,14 @@
 }
 
 h1 {
-	background-color: #99ffcc;
 	background-color: #53fdc2;
 	color: #000000;
+	
+	/* Gradients: WebKit, Firefox 3.6+, IE8, IE7 */
+	background-image:-webkit-gradient(linear, left top, left bottom, from(#53fdc2), to(#fff)) !important;
+	background-image:-moz-linear-gradient(left top, left bottom, from(#53fdc2), to(#fff)) !important;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Gradient(enabled='true', startColorstr='#0053fdc2', endColorstr='#FFFFFFFF')";
+	filter: progid:DXImageTransform.Microsoft.Gradient(enabled='true', startColorstr='#0053fdc2', endColorstr='#FFFFFFFF');
 }
 
 .library #center h1 {
