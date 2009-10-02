@@ -38,7 +38,7 @@
 					<div class="tab-contents">
 						<ul class="simple">
 							<li>
-							<a HREF=/library/kiwi.php/Category:CMS">Glossary</a> - Look up terms you don't know. 
+							<a HREF="/library/kiwi.php/CMS_Glossary" target="glossary">Glossary</a> - Look up terms you don't know. 
 							</li>
 							<li>
 							<a HREF="resources.jsp">Resources</a> - Explore <i>Online Resources, Tutorials, Contacts</i> and <i>Slide Shows</i>.  
