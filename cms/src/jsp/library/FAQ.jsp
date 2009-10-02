@@ -25,52 +25,16 @@
 			
 			<div id="content">
 				
-<h1>Frequently Asked Questions</h1>
+<e:transclude
+ url="http://${elab.properties['elab.host']}/elab/cms/teacher/library/body.php/CMS_FAQ"
+     start="<!-- start content -->"
+     end="<div class=\"printfooter\">"
+/>
 
-<table id="main">
-	<tr>
-		<td>
-			<div id="left">
-				<!-- nothing here -->
-			</div>
-		</td>
-		<td>
-			<div id="center">
-				<%
-					Collection entries = elab.getFAQ().entries();
-					if (entries.isEmpty()) {
-						%>
-							<div class="warning">There are no FAQs in the database!</div>
-						<%
-					}
-					else {
-						%>
-							<p>
-						<%
-						Iterator i = entries.iterator();
-						while (i.hasNext()) {
-							String e = (String) i.next();
-							out.write(e);	
-						}
-						%>
-							</p>
-						<%
-					}
-				%>
-			</div>
-		</td>
-		<td>
-			<div id="right">
-				<!-- nothing here either -->
-			</div>
-		</td>
-	</tr>
-</table>
 
 
 			</div>
-			<!-- end content -->	
-		
+			<!-- end content -->			
 			<div id="footer">
 			</div>
 		</div>
