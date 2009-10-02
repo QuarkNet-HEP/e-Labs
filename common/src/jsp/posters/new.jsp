@@ -22,6 +22,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/posters.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
+		<script type="text/javascript" src="../include/elab-custom.js"></script>
 	</head>
 	
 	<body id="new-poster" class="posters">
