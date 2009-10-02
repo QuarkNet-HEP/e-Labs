@@ -47,7 +47,6 @@
 	String posterDirURL = user.getDirURL("posters");
 	String plotDir = user.getDir("plots");
 	String plotDirURL = user.getDirURL("plots");
-	request.setAttribute("plotDirURL", plotDirURL);
 	String templateDir = user.getDir("templates");
 
 	if ("Make Poster".equals(reqType) || "View Poster".equals(reqType) || "Save Changes".equals(reqType)) {
@@ -206,7 +205,7 @@
      	            see the posters you have made, click <b>Edit Posters</b> above.
      	        </li>
      	  <li>
-			Be sure to write a good <a href="javascript:glossary('abstract',200)">abstract</a>.
+			Be sure to write a good <a href="javascript:glossary('abstract',200);return false;">abstract</a>.
 		</li>
 
 		<li>
@@ -222,26 +221,11 @@
 
 
 	<!-- Emit input form for replacement tags found in poster template -->
-	<script language="JavaScript">
-		function previewImage(name) {
-			var div = document.getElementById("image-preview");
-			div.innerHTML = "<img width=\"320\" src=\"${plotDirURL}/" + name + "\" alt=\"Image not found\"/>";
-			div.style.display = "block";
-			div.style.visibility = "visible";
-		}
-
-		function clearPreviewImage() {
-			var div = document.getElementById("image-preview");
-			div.innerHTML = "";
-			div.style.display = "none";
-			div.style.visibility = "";
-		}
-	</script>
 
 	<form method="post">
            <table width="550">
                 <tr>
-                	<td valign="top" align="right">Poster File Name:<br>(e.g.,poster_lifetime)</td>
+                	<td valign="top" align="right">Poster Filename:<br>(e.g.,poster_lifetime)</td>
                 	<td valign="top" align="left"><e:trinput type="text" name="posterName"/></td>
                 </tr>
       
@@ -271,6 +255,9 @@
                     int previewIndex = 0;
                     String nameAnnotation="";
                      if (fixedName.equals("Abstract")) {nameAnnotation="<br>(Brief Overview of purpose, procedures, results & conclusions)";}
+                     if (fixedName.equals("Procedure")) {nameAnnotation="<br>(Research or study plan)";}
+                     if (fixedName.equals("Results")) {nameAnnotation="<br>(Support claims with data)";}
+                     if (fixedName.equals("Conclusion")) {nameAnnotation="<br>(Interpret results, suggest further study)";}
                     %>
                     	<tr>
                     		<td align="right" valign="top"><b><%= fixedName %></b>:<%= nameAnnotation %></td>
@@ -288,22 +275,15 @@
                     			</c:when>
                     			<c:when test="${type == 'FIG'}">
                     				<td align="left">
-                    					<c:if test="${name == 'FIGURE1'}">
-                    						<div id="image-preview" style="display: none; position: fixed; left: 1%; bottom: 4%;">image-preview</div>
-                    					</c:if>
                     					<select name="${type}:${name}">
                     						<option><%= selectDefault %></option>
                     						<c:forEach items="${images}" var="image">
                     							<c:choose>
                     								<c:when test="${tvalue == image.value}">
-                    									<option selected="true" value="${image.value}"
-                    										onmouseout="clearPreviewImage();" 
-                    										onmouseover="previewImage('${image.value}');">${image.key}</option>
+                    									<option selected="true" value="${image.value}" >${image.key}</option>
 													</c:when>
 													<c:otherwise>
-														<option value="${image.value}"
-															onmouseout="clearPreviewImage();" 
-															onmouseover="previewImage('${image.value}');">${image.key}</option>
+														<option value="${image.value}">${image.key}</option>
 													</c:otherwise>
 												</c:choose>
                     						</c:forEach>
