@@ -1,10 +1,11 @@
 h1 {
 	background-color: black;
 	color: white;
-}
-
-#top {
-	height: 200px;
+	
+	background-image:-webkit-gradient(linear, left top, left bottom, from(#000), to(#fff));
+	background-image:-moz-linear-gradient(left top, left bottom, from(#000), to(#fff));
+	-ms-filter: "progid:DXImageTransform.Microsoft.Gradient(enabled='true', startColorstr='#00000000', endColorstr='#FFFFFFFF')";
+	filter: progid:DXImageTransform.Microsoft.Gradient(enabled='true', startColorstr='#00000000', endColorstr='#FFFFFFFF');
 }
 
 #nav {
@@ -13,17 +14,25 @@ h1 {
 
 #nav table {
 	width: 800px;
-	background-image: url("../graphics/spacer_button.jpg");
+	/* background-image: url("../graphics/spacer_button.jpg"); */
 }
 
-#nav td a {
-	width: 130px;
-	color: white;
-	background-image: url("../graphics/teacher-button-bg.jpg");
-	text-shadow: white 1px 2px 1px;
+#nav ul li a {
+	width: 8em;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;	
 }
 
-#nav a:hover {
-	color: white;
-	background-image: url("../graphics/teacher-button-bg-hover.jpg");
+a#nav1 {
+	background-color: black;
+}
+
+a#nav2 {	
+	color: white; 
+	background-color: /* #ff6600; */ #f67527;
+	border-top: #ffa76c 1px solid;
+	border-left: #ffa76c 1px solid;
+	border-bottom: #b54800 1px solid;
+	border-right: #b54800  1px solid;
 }
