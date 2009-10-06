@@ -41,12 +41,12 @@
 				<p>
                     The CMS Test Beam e-Lab provides an opportunity for students to conduct studies of high-energy
                     particle collisions from CERN's Large Hadron Collider (LHC) which will probe deeper into matter
-                    than ever before.  This e-Lab provides students with the opportunity to study
+                    than ever before. This e-Lab provides students with the opportunity to study
                     (as particle physicists do) the properties of the CMS Calorimeter (electronic and hadronic)
                     subsystems as they are exposed to test beams consisting of particles of known particle types and energies.
                     These test beam studies provide background for students and CMS scientists to better understand the operation
                     of the CMS detector when deployed around the LHC beam line, where the particle types and energies are not known
-                    in advance. Students can probe the same data, using the same analysis tools that CMS scientists use, though the
+                    in advance. Students can probe the same data, using the same analysis tools that CMS scientists use, though the
                     access to those tools has been made much easier through the Online Graphical Root Environment (OGRE).				</p>
 				<a href="/elab"><strong>Information common for all e-Labs</strong></a>
 			</div>
