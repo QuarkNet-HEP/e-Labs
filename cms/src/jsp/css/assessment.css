@@ -1,7 +1,20 @@
+#nav #subnav ul#sub-data { display:none; }
+#nav #subnav ul#sub-library { display:none; }
+#nav #subnav ul#sub-posters { display:none; } 
+#nav #subnav ul#sub-siteindex { display:none; } 
+
+#nav a#nav-assessment {
+	background-color: /* #ffcc00; */ #f4ba39;
+	border-top: #ffd940 1px solid;
+	border-left: #ffd940 1px solid;
+	border-bottom: #b59100 1px solid;
+	border-right: #b59100 1px solid;
+}
+
 #assessment h1 {
 	background-color: #ffcc00;
 	color: #000000;
-	width: 650px;
+	width: 790px;
 	
 	/* Gradients: WebKit, Firefox 3.6+, IE8, IE7 */
 	background-image:-webkit-gradient(linear, left top, left bottom, from(#ffcc00), to(#fff));
@@ -11,28 +24,28 @@
 }
 
 #assessment #content {
-	margin-left: 10px;
-	width: 650px;
+	margin: 0px auto;
+	width: 790px;
 }
 
-#assessment table, td {
+#assessment #content table td {
 	border: 1px solid gray;
 }
 
-#assessment table {
+#assessment #content table {
 	width: 550px;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-#assessment td {
+#assessment #content td {
 	padding: 6px;
-	vertical-align: top;
+  vertical-align: top;
 }
 
-#assessment th {
+#assessment #content th {
 	font-weight: normal;
-	vertical-align: top;
+  vertical-align: top;
 }
 
 #assessment #footer {
@@ -40,12 +53,13 @@
 }
 
 #assessment #objectives {
-  font-size: 16px;
+  font-size: 14px;
   text-align: left;
-  }
+}
   
-  #assessmentRubric {
-margin-left: 20px;
+  
+#assessmentRubric {
+	margin-left: 20px;
 }
 
 #assessmentRubric h1 {
@@ -57,20 +71,21 @@ margin-left: 20px;
 
 #assessmentRubric #content {
 	margin-left: 10px;
-	width: 600px;
+	width: 700px;
   font-size: 14px;
 }
 
 .assessmentRubric p {
-	font-size: 90%; 
+	font-size: 100%; 
 }
 
-#assessmentRubric table, td {
+#assessmentRubric table td {
 	border: 1px solid gray;
-		font-size: 85%; 
+		font-size: 90%; 
 }
 
 #assessmentRubric table {
+	width: 650px;
 	margin-left: auto;
 	margin-right: auto;
 }
