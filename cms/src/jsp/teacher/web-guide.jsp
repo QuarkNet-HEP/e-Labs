@@ -111,8 +111,7 @@
 		<li>
 			By student research group. <img src="../graphics/logbook_group.gif"/> 
 		</li>
-		<li>
-			They have written about each research group in their private logbooks. 
+		<li>by what they have written about each research group in their private logbooks. 
 			<img src="../graphics/logbook_my.gif"/>
 		</li>
 	</ul>
