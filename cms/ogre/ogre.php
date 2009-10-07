@@ -57,6 +57,14 @@
     </style>
     <![endif]-->
 
+    <!--[if lte IE 8]>
+    <style>
+    h6#userLevelLabel {top:28%;}
+    h6#dataSetLabel {top:28%;}
+    h6#selectLabel {top:28%;}
+
+    </style>
+    <![endif]-->
   </head>
 
   <?php if ( isset($_GET['dataset']) ) {$dataset = $_GET['dataset'];} else {$dataset = "mc09";} ?>
@@ -102,7 +110,7 @@
 	<button name="button" class="buttons" href="#" style="float:right;margin-left:5px;"
 		onClick='javascript:archWin.show();'>Restore</button>
 
-        <br><br><hr width=100%><br>
+        <br><br><hr width=98%><br>
 
 	<div name='button' class='tooltip' id='tooltipDiv'>
 	  <input type='checkbox' style='cursor:pointer;' checked id='tooltips' onChange='javascript:showToolTips=!showToolTips;'/>ToolTips?
@@ -138,12 +146,7 @@
           <option value=13>Simple</option>
         </select>
 
-        <!-- Button for toggling back to the menu interface 
-        <button name="button" class="buttons" id='toggle' href="#" 
-                onClick='javascript:toggleMenu();'>Use Menu</button>
-        -->
-
-        <br><br><hr width=100%><br>
+        <br><br><hr width=98%><br>
 
         <!-- button that opens up overlay -->
 	<div name="button" class="button buttons" id='tutorial'>
@@ -155,7 +158,7 @@
           <button href="#" onClick='javascript:demoWin.show();'>CMS Detector Demo</button>
         </div>
 
-        <br><br><hr width=100%><br>
+        <br><br><hr width=98%><br>
 
 	<div name="button" class="address buttons" id='address'>
 	  <address><a href="mailto:karmgard.1@nd.edu?subject=Bug the OGRE">Bug the OGRE</a></address>

@@ -842,11 +842,11 @@ function mouseDown(ev){
 		}
 		target.origParentNode.style.border = "none";
 	    } else {
-		target.droptarget.style.border = "#ff0000 1px solid";
+		target.droptarget.style.border = "#ff0000 2px solid";
 		target.origParentNode.style.border = "none";
 	    }
 	} else {
-	    target.origParentNode.style.border = "#ff0000 1px solid";
+	    target.origParentNode.style.border = "#ff0000 2px solid";
 	    target.droptarget.style.border = "#669999 1px solid";
 	}
     }

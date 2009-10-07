@@ -39,6 +39,23 @@ div#moveVars {
     width: 95%;
 }
 
+button#makePlot {
+    position:absolute;
+    bottom:-2.2em;
+    font-size:0.75em;
+    cursor:pointer;
+    width:10em;
+    right:0em;
+}
+button#gotoData {
+    position:absolute;
+    bottom:-2.2em;
+    font-size:0.75em;
+    cursor:pointer;
+    width:10em;
+    left:0em;
+}
+
 .vDragContainer {
     float: left;
     margin: 1px;
@@ -51,7 +68,7 @@ div#moveVars {
 }
 
 .DragContainer1 {
-    min-height: 1em;
+    min-height: .5em;
 }
 
 .DragContainer2 {
@@ -185,6 +202,7 @@ div#moveVars {
 
 fieldset#variables {
     width: 99%;
+    height: 100%;
 }
 
 .options {

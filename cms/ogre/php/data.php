@@ -175,13 +175,21 @@ if ( !isset($dataset) ) {
     </fieldset>
 
     <div id='navButtons'>
+	    
+      <button id='gotoCntl' 
+	onClick='javascript:cntlWin.show();'
+	onMouseOver='javascript:Tip("Access OGRE Controls")';
+        onMouseOut='javascript:UnTip();'>
+	OGRE Controls
+      </button>
+
       <button id='gotoVars' 
-        style='position:absolute;bottom:0em;right:0em;font-size:0.5em;cursor:pointer;'
 	onClick='javascript:variWin.show();'
 	onMouseOver='javascript:Tip("Access the available plots")';
         onMouseOut='javascript:UnTip();'>
 	Build Plots
       </button>
+
     </div>
 
 </div>

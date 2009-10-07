@@ -250,7 +250,7 @@ function fnLoadPngs(img, width, height) {
     // doesn't exist for 5.0... The
     // only solution is to use JPG and
     // no filter effects in the theme
-    if ( browser.ieVer < 5.5 )
+    if ( browser.ieVer < 5.5 || browser.ieVer > 6 )
 	return false;
 
     // Last ditch fallback for setting height/width of the image
@@ -1034,6 +1034,13 @@ function _changeBkg(newBkg, useTheme) {
 }
 
 function _dragStart(event) {
+
+    // Special call for CMS eLab.... inhibit motion for beginning/intermediate users
+    if ( document.getElementById('userLevel') ) {
+	var userLevel = document.getElementById('userLevel').selectedIndex;
+	if ( userLevel < 2 )
+	    return false;
+    }
 
     event = (!event) ? window.event : event;
 

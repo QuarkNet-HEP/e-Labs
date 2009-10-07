@@ -106,15 +106,13 @@ if ( !isset($dataset) ) {
 
      <div id='navButtons'>
       <button id='gotoData' 
-        style='position:absolute;bottom:-2.2em;left:0em;font-size:0.5em;cursor:pointer;'
 	onClick='javascript:dataWin.show();'
         onMouseOver='javascript:Tip("Access the available data");'
         onMouseOut='javascript:UnTip();'>
 	Select Data
       </button>
 
-      <button id='makePlot' 
-        style='position:absolute;bottom:-2.2em;right:0em;font-size:0.5em;cursor:pointer;'
+      <button id='makePlot'
 	onClick='javascript:submitGetData(document.forms["getData"]);'
         onMouseOver='javascript:Tip("Make a plot with the currect selections");'
         onMouseOut='javascript:UnTip();'>

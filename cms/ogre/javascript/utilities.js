@@ -137,6 +137,13 @@ function initTwo(sID) {
 	sendState("userLevel", userLevel, false);
 	levelChange();
     }
+
+    // For beginners... Pin the windowltes to the browser
+    if ( userLevel < 2 )
+	singleWindow = true;
+    else
+	singleWindow = false;
+
     try {
 	// Update the menu selections to reflect the proper level
 	document.getElementById('userLevel').selectedIndex = userLevel;    // HTML Select
@@ -283,25 +290,29 @@ function initTwo(sID) {
     document.getElementById('wrapper').style.display = "block";
 
     cntlWin.show();
-    introWin.show();
+
     //Code to show the right ogre graphic
-    switch (userLevel)
-    {
+    var backgroundImg = document.getElementById("bkgImg");
+    if ( !backgroundImg )
+	backgroundImg = document.getElementById("bkgImgieDiv");
+
+    switch (userLevel) {
     case 0:
-	document.getElementById("bkgImg").src = "/~ogre/graphics/ogre-mirror-new-hat.png";
+	introWin.show();
+	backgroundImg.src = "/~ogre/graphics/ogre-mirror-new-hat.png";
 	break;
     case 1:
-	document.getElementById("bkgImg").src = "/~ogre/graphics/ogre-mirror-new-glasses.png";
+	backgroundImg.src = "/~ogre/graphics/ogre-mirror-new-glasses.png";
 	break;
     case 2:
-	document.getElementById("bkgImg").src = "/~ogre/graphics/ogre-mirror-new-mortar.png";
+	backgroundImg.src = "/~ogre/graphics/ogre-mirror-new-mortar.png";
 	break;
     case 3:
-	document.getElementById("bkgImg").src = "/~ogre/graphics/ogre-mirror-new-wand.png";
+	backgroundImg.src = "/~ogre/graphics/ogre-mirror-new-wand.png";
 	break;
     default:
-	alert (userLevel);
-	document.getElementById("bkgImg").src = "/~ogre/graphics/ogre-mirror-new-hat.png";
+	introWin.show();
+	backgroundImg.src = "/~ogre/graphics/ogre-mirror-new-hat.png";
     }
     
     return true;
@@ -976,7 +987,12 @@ function simpleMenuLevel(level) {
 	source = "/~ogre/graphics/ogre-mirror-new-hat.png";
 	singleWindow = false;
     }
-    document.getElementById("bkgImg").src = source;
+    var backgroundImg = document.getElementById("bkgImg");
+    //if ( !backgroundImg ) {
+    //backgroundImg = document.getElementById("bkgImgieDiv");
+    //} else {
+	backgroundImg.src = source;
+	//}
 
     if ( useDynMenu ) {
 	// Sync the fancy menu...

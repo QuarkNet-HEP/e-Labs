@@ -228,3 +228,21 @@ form#tgetData {
 select#select1 {
     display: none;
 }
+
+button#gotoVars {
+    position:absolute;
+    bottom:0em;
+    right:0em;
+    font-size:0.75em;
+    cursor:pointer;
+    width:10em;
+}
+
+button#gotoCntl {
+    position:absolute;
+    bottom:0em;
+    left:0em;
+    font-size:0.75em;
+    cursor:pointer;
+    width:10em;
+}
