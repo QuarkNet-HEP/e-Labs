@@ -1,0 +1,221 @@
+img#vbgImg {
+    position:absolute;
+    top: 0px;
+    left: 0px;
+    width: 99%;
+    z-index:-1;
+}
+
+div#vdataSet {
+    position: absolute;
+    top: 3em;
+    left: 5%;
+    width: 89%;
+}
+
+div#vTitle {
+    position: relative;
+    color: #ffffff;
+    font-size: 0.75em;
+    margin-left: 40px;
+    width: 12em;
+    cursor: move;
+}
+
+div#vDraggable {
+    position: relative;
+    top: 16px;
+    margin-left: 3.5%;
+    margin-right: 5%;
+    width: 41.5em;/*92%;*/
+    height: 20px;
+    cursor: move;
+}
+
+div#moveVars {
+    position: absolute;
+    top: 8px;
+    left: 24px;
+    width: 95%;
+}
+
+.vDragContainer {
+    float: left;
+    margin: 1px;
+    padding: 2px;
+    border: none;
+    width: 98%;
+    height: 78%;
+    text-align: center;
+    vertical-align: bottom;
+}
+
+.DragContainer1 {
+    min-height: 1em;
+}
+
+.DragContainer2 {
+    float:left;
+    width:73%;
+    padding:0px;
+    margin: 4px;
+    border: #669999 1px solid;
+}
+
+.DragContainer3 {
+    width:20%;
+    padding:1px;
+    /*border: #669999 1px solid;*/
+}
+
+.DragContainer4 {
+    width:10%;
+    /*border: #669999 10px solid;*/
+}
+
+.DragContainer5 {
+    width:10%;
+    /*border: #669999 1px solid;*/
+}
+
+.DragContainer6 {
+    width:28%;
+    /*border: #669999 1px solid;*/
+}
+
+.DragContainer7 {
+    width:10%;
+    /*border: #669999 1px solid;*/
+}
+
+.DragContainer8 {
+    float:right;
+    width:20%;
+    margin: 4px;
+    padding: 0px;
+    border: #669999 1px solid;
+}
+
+.colorDragBox {
+    float: left;
+    border: #000 1px solid;
+    padding: 1px;
+    font-size: 10px;
+    margin-bottom: 0.25em;
+    margin-left: 0.25em;
+    width: 1.5em;
+    height: 1.5em;
+    cursor: url('/~ogre/graphics/draggable.gif'), pointer;
+    font-family: verdana, tahoma, arial;
+}
+
+.red {background-color:#ff0000;}
+.green {background-color:#00ff00;}
+.blue{background-color:#0000ff;}
+.black{background-color:#000000;}
+.white{background-color:#ffffff;}
+.yellow{background-color:#ffff00;}
+.purple{background-color:#ff00ff;}
+.none{background-color:transparent;border:#000000 1px solid;}
+
+.OvercolorDragBox {
+    opacity: 0.25;
+}
+
+.vDragBox, .OvervDragBox, .vDragDragBox, .vminiDragBox { /* item containers */
+    border: #000 1px solid;
+    padding: 1px;
+    font-size: 10px;
+    width: 4em;
+    cursor: url('/~ogre/graphics/draggable.gif'), pointer;
+    font-family: verdana, tahoma, arial;
+    background-color: #eee;
+
+    float: left;
+    margin-left: 0.25em;
+    margin-bottom: 0.25em;
+}
+
+.vminiDragBox {
+    float: left;
+    margin-bottom:0.1em;
+    margin-left:  0.1em;
+    width: 2.6em;
+    height: 2.6em;
+}
+
+.OvervminiDragBox {
+    background-color: #ffff99;
+}
+
+.vDragBox1, .OvervDragBox1, .vDragDragBox1 {
+    border: #000 1px solid;
+    padding: 1px;
+    font-size: 10px;
+    width: 11em;
+    cursor: url('/~ogre/graphics/draggable.gif'),pointer;
+    font-family: verdana, tahoma, arial;
+    color: #000000;
+
+    float: left;
+    margin-left: 0.2em;
+    margin-bottom: 0.5em;
+}
+
+.OvervDragContainer {
+    background-color: #fff;
+}
+
+.OvervDragBox, .OvervDragBox1 {
+    background-color: #ffff99;
+}
+
+.vDragDragBox, .vDragDragBox1 {   /* Box being drug... */
+    opacity: 0.50;              /* the correct CSS3 syntax */
+    background-color: #ff99cc;
+    cursor: url('/~ogre/graphics/grab.gif'),pointer;
+}
+
+.fieldset {
+    width: 48%;
+    height: 8em;
+    padding: 1px;
+    border: 2px ridge #d755d5;
+}
+
+fieldset#variables {
+    width: 99%;
+}
+
+.options {
+    width: 42%;
+    float: right;
+}
+
+.targets {
+    width: 54%;
+}
+
+.variables {
+    width: 96%;
+}
+
+fieldset#history {
+    display: none;
+}
+
+div#History2 {
+    display: none;
+    font-size: .5em;
+    overflow: auto;
+    width: 100%;
+    font-family: verdana, tahoma, arial;
+    height: 128px;
+}
+
+legend {
+    font-weight: bold;
+    font-size: 10px;
+    color: #666699;
+    font-family: verdana, tahoma, arial;
+}

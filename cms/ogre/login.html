@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title>Login to OGRE</title>
+    <link rel="stylesheet" type="text/css" href="stylesheets/login.css"/>
+    <Script Language="JavaScript" Type="Text/Javascript" SRC="javascript/ogre-includes.js"></Script>
+    
+    <Script>
+      var i = 0;
+      
+      function changeSrc() {
+        if (i > 5 && i < 9){
+	      document.getElementById("funnyOgre").src = "/~ogre/graphics/ogre-mirror-new-glasses.png";
+          } else {
+              document.getElementById("funnyOgre").src = "/~ogre/graphics/ogre.png";
+          }
+          i = i + 1;
+      }
+      
+      function Login() {
+          var xmlHttp;
+          var request;
+          var message;
+          var userName;
+          var mesParsed = new Array(2);
+          userName = document.getElementById("user").value;
+
+          if (userName == "Bert"){
+              alert("You aren't Bert! I am!");
+              return false;
+          } else if ( userName.length == 0 ) {
+	    userName = "guest";
+	  } else
+	    userName = userName.split(' ').join('_');
+
+          try {
+	      // Firefox, Opera 8.0+, Safari
+	      xmlHttp=new XMLHttpRequest();
+          } catch (e) {
+	      // Internet Explorer
+	      try {
+	          xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+	      } catch (e) {
+	          try {
+		      xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+	          } catch (e) {
+		      alert("Your browser does not support AJAX!");
+		      return false;
+	          }
+	      }
+          }
+
+          // Retrieve the session ID
+          var request = "/~ogre/asp/Burrito.asp?sessid=" + userName + "&iotype=getID";
+
+          // Send the Ajax request to the server
+          xmlHttp.open("GET",request,false);
+          xmlHttp.send(null);
+          message = xmlHttp.responseText;
+
+          // Determine whether or not there are multiple sessions going. 
+	  // If not, go to only session. if no sessions going,create a new entry for their session.
+          mesParsed = message.split(":");
+	  mesParsed[mesParsed.length] = "New Session";
+	  mesParsed[0]++;
+
+	  // If we're logging in as "guest" then make a new session and go to the front page.
+	  if ( userName.indexOf("guest") > -1 ) {
+            // The user chose to create a new session... whack any old ones
+	    sessionID = createSessionID();
+
+	    request = "/~ogre/asp/Burrito.asp?sessid=" + sessionID + "&userName=" + userName + "&iotype=create";
+	    xmlHttp.open("GET",request,false);
+	    xmlHttp.send(null);
+	    message = xmlHttp.responseText;
+
+	    location.href="ogre.php?user=" + userName;
+	    return;
+	  }
+
+	  // If the user only has one session... go right to it without further ado
+          if (mesParsed[0] == 1) {
+              //Code for creating a new session
+	      sessionID = createSessionID();
+
+	      request = "/~ogre/asp/Burrito.asp?sessid=" + sessionID + "&userName=" + userName + "&iotype=create";
+	      xmlHttp.open("GET",request,false);
+	      xmlHttp.send(null);
+	      message = xmlHttp.responseText;
+
+              location.href="ogre.php?user=" + userName;
+	      return;
+
+	  } else {
+	    message = "Restore session?\n";
+            for (i = 0; i < mesParsed[0]; i++) {
+              message += (i + 1) + ": " + mesParsed[i + 1] + "\n";
+            }
+            i = parseInt(prompt(message, "1"));
+	    if ( isNaN(i) )
+	      return false;
+          }
+
+	  if ( i == mesParsed.length-1 ) {
+            // The user chose to create a new session... whack any old ones
+	    sessionID = createSessionID();
+
+	    request = "/~ogre/asp/Burrito.asp?sessid=" + sessionID + "&userName=" + userName + "&iotype=create";
+
+	    xmlHttp.open("GET",request,false);
+	    xmlHttp.send(null);
+	    message = xmlHttp.responseText;
+
+	    location.href="ogre.php?user=" + userName;
+	    return;
+	  } else {
+
+	  // Set the session ID
+	  sessionID = mesParsed[i];
+
+	  // First... see if the study is still in the tmp directory
+	  var request = "/~ogre/asp/check_archive.asp?sessionID="+sessionID+"&iotype=study";
+	  var xmlHttp=new XMLHttpRequest();
+	  xmlHttp.open("GET",request,false);
+	  xmlHttp.send(null);
+	  var isUnPacked = parseInt(xmlHttp.responseText);
+	  if ( isUnPacked ) {
+	    location.href="tmp/"+sessionID+"/temp.000.html";
+	    return;
+	  }
+	  
+	  // Not in the tmp directory? Try the archives...
+	  var request = "/~ogre/asp/check_archive.asp?sessionID="+sessionID+"&iotype=archive";
+	  var xmlHttp=new XMLHttpRequest();
+	  xmlHttp.open("GET",request,false);
+	  xmlHttp.send(null);
+	  var isArchived = parseInt(xmlHttp.responseText);
+
+	  if ( isArchived ) {
+	    // It's been archived... unpack it and send the user to the study
+	    document.getElementById('restoreForm').sessionID.value = sessionID;
+            restoreArchive(null,sessionID);
+
+	  } else {
+			 
+	    // get the user name associated with this session ID
+	    var request = "/~ogre/asp/Burrito.asp?sessid="+sessionID+"&iotype=getUser";
+	    var xmlHttp=new XMLHttpRequest();
+	    xmlHttp.open("GET",request,false);
+	    xmlHttp.send(null);
+	    var userName = xmlHttp.responseText;
+
+	    if ( userName.length > 0 ) {
+	      setCookie('sessionID',sessionID);
+	      document.location.href = "/~ogre/ogre.php?user="+userName;
+	    } else {
+              // No such session... log them in as a guest
+	      sessionID = createSessionID();
+
+	      request = "/~ogre/asp/Burrito.asp?sessid=" + sessionID + "&userName=guest&iotype=create";
+	      xmlHttp.open("GET",request,false);
+	      xmlHttp.send(null);
+	      message = xmlHttp.responseText;
+
+              document.location.href="/~ogre/ogre.php?user=guest";
+	    }
+	  }
+
+
+
+	  /*
+            try {
+              location.href="tmp/" + mesParsed[i]+"/temp.000.html";
+	      return;
+            } catch (e) {
+               alert("You have a hidden file!");
+            }
+	    */
+	  }
+      }
+
+    </Script>
+  </head>
+  <body>
+    <h1>Please login to access OGRE</h1>
+    <p>Logging in will allow you to move from page to page without losing settings, as well as bring you to your studies faster</p>
+    <h2>Type in your username</h2>
+(if you've never used OGRE before, this will create a new account for you. Leave blank to login as guest)<br>
+    <input Type=Text id='user' size=16
+	   onKeyDown='javascript:if(event.keyCode == 13){document.getElementById("login").click();}'><br>
+    <input Type=Button id='login' value="Login"
+	   onClick="javascript:Login();"><br>
+    <div class="background" name="Bert" id="background" onMouseDown='javascript:changeSrc()'>
+      <img src="/~ogre/graphics/ogre.png" id="funnyOgre">
+    </div>
+
+    <!-- Form for grabbing & unpacking previous investigations -->
+    <form method="POST" id='restoreForm' name="restore"
+	action="/~ogre/cgi-bin/restore.pl.cgi"
+	style="float:right;">
+	<input type='hidden' name="sessionID"/>
+    </form>
+
+  </body>
+</html>

@@ -1,0 +1,136 @@
+div.stdWin {
+    position: absolute;
+    padding: 0px;
+    margin: 0px;
+    z-index: 2;
+
+    /*border: #ff0000 1px solid;*/
+}
+
+img.stdBkg, div.stdBkgIE {
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+    left: 0px;
+
+    /*border: #00ff00 1px dashed;*/
+}
+
+div.stdIcon {    
+    position: relative;
+    display: block;
+    float: left;
+
+    font-size: 0.75em;
+    color: #ffffff;
+    text-align: center;
+
+    background-color: #880088;
+    border: #ffffff 1px dashed;
+
+    width: 128px;
+    margin: 2px;
+}
+
+div.stdTitleBar {
+    position: absolute;
+    width: 99%;
+    top: 0px;
+    left: 0px;
+    height: 18px;
+    font-size: 0.75em;
+    color: #ffffff;
+    
+    /*border: #ffff00 1px solid;*/
+}
+
+/* This is what happens to the title bar when the windowlet goes inactive */
+div.stdInactive {
+    position: absolute;
+    width: 99.5%;
+    top: 0px;
+    left: 0px;
+    height: 18px;
+    font-size: 0.75em;
+    color: #ffffff;
+    background-color: #a3a3a3;
+    opacity: 0.5;
+
+    /*filter: progid:DXImageTransform.Microsoft.Alpha(opacity=25);*/
+
+    /*border: #ffffff 1px solid;*/
+}
+
+div.stdDragBar {
+    position: absolute;
+    cursor: move;
+    width: 98%;
+    height: 18px;
+    background: url(iebkg.gif); /* So IE notices mouse events */
+    padding-left: 4px;
+    padding-top: 4px;
+
+    /*border: #00ffff 1px dotted;*/
+}
+
+div.stdFooter {
+    position: absolute;
+    height: 16px;
+    bottom: 2px;
+    left: 0px;
+    width: 99.5%;
+
+    /*border: #00ff00 1px dashed;*/
+}
+
+div.stdStatus {
+    position: absolute;
+    width: 97%;
+    height: 100%;
+    font-size: 0.667em;
+    color: #000000;
+    padding-left: 4px;
+    padding-bottom: 4px;
+
+    /*border: #00ffff 1px dotted;*/
+}
+
+div.stdExpand {
+    position: relative;
+    float:right;
+    cursor: se-resize;
+    width: 2.5%;
+    height: 100%;
+    background: url(iebkg.gif); /* So IE notices mouse events */
+
+    /*border: #ff00ff 1px solid;*/
+}
+
+.stdContent {
+    position: absolute;
+    width: 630px;
+    height: 310px;
+    overflow: auto;
+    left: 2px;
+    top: 24px;
+    z-index: 3;
+    /*border: #ffffff 1px solid;*/
+}
+
+/*-- Definitions for buttons on the windowlets --*/
+div.stdExit, div.stdMax, div.stdMin, div.stdHelp {
+    position: relative;
+    float: right;
+    padding: 2px;
+    width: 1.25em;
+    height: 1.25em;
+    cursor: pointer;
+}
+img.stdExit, div.stdExitIE, img.stdMax, div.stdMaxIE,
+img.stdHelp, div.stdHelpIE, img.stdMin, div.stdMinIE {
+    width: 1.25em;
+    height: 1.25em;
+}
+img.stdHelp, div.stdHelpIE {
+    cursor: help;
+}

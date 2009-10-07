@@ -1,0 +1,13 @@
+Options -Indexes +FollowSymLinks +ExecCGI
+#DirectoryIndex ogre.php
+DirectoryIndex login.html
+ErrorDocument 404 /~ogre/php/goodbye.php
+
+PerlModule  Apache::ASP
+<Files ~ (\.asp)>    
+  SetHandler  perl-script
+  PerlHandler Apache::ASP
+  PerlSetVar  Global .
+  PerlSetVar  StateDir /tmp/asp
+  PerlSetVar UniquePackages 1
+</Files>

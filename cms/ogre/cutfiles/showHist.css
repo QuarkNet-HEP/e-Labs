@@ -1,0 +1,54 @@
+/*
+applet {
+    position: absolute;
+    top: 40px;
+    left: 10px;
+    z-index: 1;
+}
+
+iframe {
+    position: relative;
+}
+*/
+div#hist {
+    position: absolute;
+    background-color: transparent;
+    border: none;
+    top: 2em;
+    right: 5px;
+    width:  400px;     /* replace width */
+    height: 400px;     /* replace height */
+    z-index: 4;
+    cursor:move;
+}
+
+form {
+    position:fixed;
+    top:0em;
+    left:1%;
+    z-index: 5;
+}
+
+
+h5, h6 {
+    position: fixed;
+    cursor: pointer;
+    top: -1.5em;
+    right: 1%;
+    z-index: 5;
+    color: #0000ff;
+}
+
+.clicker {
+    cursor:pointer;
+    color:blue;
+}
+
+img.closeBtn {
+    position: absolute;
+    left: 92%;
+    top: 8px;
+    z-index: 5;
+    display: block;
+    cursor: pointer;
+}

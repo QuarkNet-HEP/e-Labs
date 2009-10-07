@@ -1,0 +1,111 @@
+/*-- Style rules for the archive picture show --*/
+div.archWin {
+    position: absolute;
+    padding: 0px;
+    margin: 0px;
+    z-index: 2;
+
+    /*border: #00ff00 1px solid;*/
+}
+
+img.archBkg, div.archBkgIE {
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+    left: 0px;
+
+    /*border: #ff0000 1px solid;*/
+}
+
+div.archIcon {
+    position: relative;
+    float: left;
+    top: 2em;
+    display: block;
+
+    font-size: 0.75em;
+    color: #ffffff;
+    text-align: center;
+
+    background-color: #880088;
+    border: 1px dashed;
+
+    width: 128px;
+    margin: 2px;
+}
+
+div.archTitleBar {
+    position: absolute;
+    width: 93%;
+    top: 22px;
+    left: 24px;
+    height: 18px;
+    font-size: 0.75em;
+    color: #ff00ff;
+
+    /*border: #00ff00 1px dashed;*/
+}
+
+/* This is what happens to the title bar when the windowlet goes inactive */
+div.archInactive {
+    position: absolute;
+    width: 93%;
+    top: 22px;
+    left: 24px;
+    height: 18px;
+    font-size: 0.75em;
+    color: #ff00ff;
+
+    background-color: #a3a3a3;
+    opacity: 0.5;
+    /*filter: progid:DXImageTransform.Microsoft.Alpha(opacity=25);*/
+
+    /*border: #00ff00 1px dashed;*/
+}
+
+div.archDragBar {
+    position: absolute;
+    cursor: move;
+    width: 98%;
+    height: 100%;
+    background: url(iebkg.gif); /* So IE notices mouse events */
+    padding-left: 5px;
+    padding-top: 1px;
+
+    /*border: #00ffff 1px dotted;*/
+}
+
+.archContent {
+    position: relative;
+    width: 640px;
+    height: 480px;
+    left: 30px;
+    top: 48px;
+    z-index: 3;
+    margin: 0px;
+    padding: 0px;
+
+    /*border: #00ff00 1px solid;*/
+}
+/*-- Definitions for buttons on the windowlets --*/
+div.archExit, div.archMin, div.archHelp {
+    position: relative;
+    float: right;
+    padding-top: 2px;
+    width: 1.25em;
+    height: 1.25em;
+    cursor: pointer;
+    /*cursor: hand;*/
+}
+img.archExit, div.archExitIE {
+    width: 1.25em;
+    height: 1.25em;
+}
+img.archMin, div.archMinIE {
+    width: 1.25em;
+    height: 1.25em;
+}
+img.archHelp, div.archHelpIE {
+    width: 1.25em;
+    height: 1.25em;   /* Both required by IE to keep aspect ratio */
+}

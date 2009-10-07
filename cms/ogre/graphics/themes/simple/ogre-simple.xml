@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Name of the theme and the path to the theme files -->
+<theme name="ogre-simple" path="/~ogre/graphics/themes/simple/">
+
+  <!-- 
+       The name is basically useless... but the path is important. It may be
+       either a relative path on the servers filesystem, or a fully qualified
+       url. If the path doesn't exist here, then everything else down the line
+       (stylesheets, image file names in the src attribute, etc) MUST have
+       a fully qualified path so the client machine knows how to find them.
+       If the path is there the class will append a "/" to the path just in
+       case since everything else (except the javascripts) are assumed to be 
+       relative to the path.
+    -->
+  <!-- definitions for a standard windowlet -->
+  <windowlet    class="stdWin">
+
+    <background class="stdBkg" src="gray-bkg.jpg"     width="640" height="360"/>
+    <icon       class="stdIcon"/>
+
+    <titleBar   class="stdTitleBar">
+      <!-- titleBkg class="stdTitleBkg" src="titleBkg.png"/-->
+      <titleIn  class="stdInactive"/>
+      <dragBar  class="stdDragBar" />
+      <button   class="stdExit" src="exit.jpg"     event='onmousedown' action='close'    />
+      <button   class="stdMax"  src="maximize.jpg" event='onmousedown' action='maximize' />
+      <button   class="stdMin"  src="minimize.jpg" event='onmousedown' action='minimize' />
+      <button   class="stdHelp" src="help.jpg"     event='onmousedown' action='help'     /> 
+    </titleBar>
+
+    <footer     class="stdFooter">
+      <status   class="stdStatus" />
+      <expand   class="stdExpand" event='onmousedown' action='expand'/>
+    </footer>
+
+    <content    class="stdContent" />
+
+  </windowlet>
+  
+  <!-- definitions for an archive windowlet -->
+  <windowlet    class="archWin">
+    <background class="archBkg" src="offwhite-640.jpg" width="640" height="480"/>
+    <icon       class="archIcon"/>
+    <titleBar   class="archTitleBar">
+      <titleIn  class="archInactive"/>
+      <dragBar  class="archDragBar" />
+      <button   class="archExit" src="exit.jpg"     event='onmousedown' action='destruct'/>
+      <button   class="archMin"  src="minimize.jpg" event='onmousedown' action='minimize' />
+      <button   class="archHelp" src="help.jpg"     event='onmousedown' action='help'     /> 
+    </titleBar>
+    <content    class="archContent" />
+  </windowlet>
+
+  <!-- definitions for a help windowlet -->
+  <windowlet    class="hlpWin">
+    <background class="hlpBkg" src="white-bkg.jpg"     width="640" height="360"/>
+    <titleBar   class="hlpTitleBar">
+      <titleIn  class="hlpInactive"/>
+      <dragBar  class="hlpDragBar" />
+      <button   class="hlpExit" src="exit.jpg" event='onmousedown' action='close'/>
+    </titleBar>
+    <footer     class="hlpFooter">
+      <status   class="hlpStatus" />
+      <expand   class="hlpExpand" event='onmousedown' action='expand'/>
+    </footer>
+    <content    class="hlpContent" />
+  </windowlet>
+
+  <!-- style sheets continaing the style definitons for the windowlets -->
+  <style type="stylesheet">std.css</style>
+  <style type="stylesheet">hlp.css</style>
+  <style type="stylesheet">arch.css</style>
+
+  <!-- Other js scripts which should be loaded to expand the class functionality 
+  <script type="javascript">javascript/wz_tooltip.js</script>
+  <script type="javascript">javascript/wz_jsgraphics.js</script>
+  -->
+
+</theme>

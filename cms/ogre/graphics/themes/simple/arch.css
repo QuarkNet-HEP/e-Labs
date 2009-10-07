@@ -1,0 +1,130 @@
+div.archWin {
+    position: absolute;
+    padding: 0px;
+    margin: 0px;
+    z-index: 2;
+
+    /*border: #ff0000 1px solid;*/
+}
+
+img.archBkg, div.archBkgIE {
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+    left: 0px;
+
+    /*border: #00ff00 1px dashed;*/
+}
+
+div.archIcon {    
+    position: relative;
+    display: block;
+    float: left;
+
+    font-size: 0.75em;
+    color: #ffffff;
+    text-align: center;
+
+    background-color: #880088;
+    border: #ffffff 1px dashed;
+
+    width: 128px;
+    margin: 2px;
+}
+
+div.archTitleBar {
+    position: absolute;
+    width: 99.5%;
+    height: 18px;
+    font-size: 0.75em;
+    color: #ff00ff;
+    top: 0px;
+    left: 0px;
+    /*border: #ffff00 1px solid;*/
+}
+/* This is what happens to the title bar when the windowlet goes inactive */
+div.archInactive {
+   position: absolute;
+    width: 99.75%;
+    height: 18px;
+    font-size: 0.75em;
+    color: #000000;
+    top: 0px;
+    left: 0px;
+    background-color: #a3a3a3;
+    opacity: 0.5;
+
+    /*filter: progid:DXImageTransform.Microsoft.Alpha(opacity=25);*/
+
+    /*border: #ffffff 1px solid;*/
+}
+
+div.archDragBar {
+    position: absolute;
+    cursor: move;
+    width: 98%;
+    height: 100%;
+    background: url(iebkg.gif); /* So IE notices mouse events */
+    padding-left: 4px;
+    padding-top: 4px;
+
+    /*border: #00ffff 1px dotted;*/
+}
+
+div.archFooter {
+    position: absolute;
+    height: 16px;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+
+    /*border: #00ff00 1px dashed;*/
+}
+
+div.archStatus {
+    position: absolute;
+    width: 97%;
+    height: 100%;
+    font-size: 0.667em;
+    color: #000000;
+    padding-left: 4px;
+    padding-bottom: 4px;
+
+    /*border: #00ffff 1px dotted;*/
+}
+
+div.archExpand {
+    position: relative;
+    float:right;
+    cursor: se-resize;
+    width: 2.5%;
+    height: 100%;
+    background: url(iebkg.gif); /* So IE notices mouse events */
+
+    /*border: #ff00ff 1px solid;*/
+}
+
+.archContent {
+    position: absolute;
+    width: 640px;
+    height: 480px;
+    overflow: auto;
+    left: 2px;
+    top: 24px;
+    z-index: 3;
+}
+
+/*-- Definitions for buttons on the windowlets --*/
+div.archExit, div.archMax, div.archMin, div.archHelp {
+    position: relative;
+    float: right;
+    padding: 2px;
+    width: 1.25em;
+    height: 1.25em;
+    cursor: pointer;
+}
+img.archExit, div.archExitIE, img.archMax, div.archMaxIE,
+img.archHelp, div.archHelpIE, img.archMin, div.archMinIE {
+    width: 1.25em;
+    height: 1.25em;
+}

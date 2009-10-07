@@ -1,0 +1,80 @@
+div.previous {
+    position: absolute;
+    top: 0em;
+    left: 0em;
+    width: 90%;
+    z-index:5;
+    padding: 1em;
+    margin: 1em;
+}
+
+img#pbgImg {
+    position:absolute;
+    top: 0px;
+    left: 0px;
+    width: 99%;
+    z-index:-1;
+}
+
+img#pebgImg {
+    position: absolute;
+}
+
+img#expanded_image {
+    position: relative;
+    top: 35px;
+    left: 30px;
+    width: 640px;
+}
+
+div#movePrev {
+    position: absolute;
+    top: 8px;
+    left: 24px;
+    width: 95%;
+/*
+    top: 3em;
+    left: 2.5em;
+    width: 45em;
+    display:block;
+    z-index:1;
+*/
+}
+
+.icons {
+    position: relative;
+    float:left;
+    padding:0.25em;
+    left: 20px;
+    top: 10px;
+    cursor: pointer;
+}
+
+div#pExpander {
+    position: absolute;
+    top: 0.75em;
+    left: 3em;
+    z-index: 17;
+    display: none;
+}
+
+div#pTitle {
+    position: relative;
+    top: -18px;
+    color: #ffffff;
+    font-size: 0.75em;
+    margin-left: 40px;
+    width: 15em;
+    cursor: move;
+}
+div#pDraggable {
+    position: relative;
+    top: -1px;
+    margin-left: 12px;
+    margin-right: 5px;
+    width: 43em; /*97%;*/
+    height: 20px;
+/*    background-color: #a3a3a3;
+    opacity: 0.1;*/
+    cursor: move;
+}

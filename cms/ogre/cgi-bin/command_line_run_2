@@ -1,0 +1,1 @@
+./ogre.pl.cgi leaf=3 leaf=1 leaf=3 root_leaf=c1x1.eh root_leaf=c1x1.e root_leaf=c1x1.eh color=2 color=6 color=2 xmlfile=tb_data.xml dataset=tb04 run_number=11514 run_number=11515 run_number=11516 run_number=11517 run_number=11518 logy=1 type=png gWidth=640 gHeight=480 verbose=1

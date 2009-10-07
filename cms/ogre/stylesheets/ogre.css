@@ -1,0 +1,260 @@
+@import "tutorial.css";
+@import "triggers.css";
+@import "variables.css";
+@import "archive.css";
+@import "previous.css";
+
+body {
+    background: #cccccc;
+}
+
+.buttons {
+    display: block;
+    cursor:pointer;
+}
+
+div.background {
+    position: fixed;
+    bottom: 2.6em;
+    right: 2px;
+    width:122px;
+    height:190px;
+    z-index: 1;
+    cursor: pointer;
+}
+
+div#load {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background: #cccccc;
+}
+
+div#progress {
+    bottom:10%;
+    margin:10% 10%;
+    background-color:#696969;
+    width:1%;
+    height:20px;
+}
+
+div#bkgImg {
+    width: 122px;
+    height:190px;
+    top: 0px;
+    left:0px;
+}
+
+img#loadImg {
+    position: fixed;
+    width: 100%;
+    height:100%;
+    top: 0px;
+    left: 0px;
+}
+
+div.wrapper {
+}
+
+div.header {
+    position: fixed;
+    top: 0em;
+    left: 0em;
+    width: 100%;
+    border-bottom: 1px solid #f3f3f3;
+    z-index:0;
+    opacity:1;
+    background: #a3a3a3;
+    font-size: 1.25em;
+    text-align: center;
+    vertical-align: top;
+    color: #8b0000;
+}
+
+div.footer {
+    position: fixed;
+    bottom: 0em;
+    height: 2em;
+    left: 0em;
+    width: 100%;
+    border-top: 1px solid #f3f3f3;
+    z-index:15;
+    opacity:1;
+    background: #a3a3a3;
+}
+
+div.address {
+    position: absolute;
+    right:15em;
+    bottom:0px;
+}
+
+div.tooltip {
+    position: absolute;
+    top: 29%;
+    left: 30em;
+}
+
+div.dragdrop {
+    position: absolute;
+    top: 35%;
+    left: 30em;
+}
+
+div.effectToggle {
+    position: absolute;
+    top: 41%;
+    left: 30em;
+}
+
+div#demoBtn {
+    position: absolute;
+    top: 60%;
+    float: left;
+}
+
+div#tutorial {
+    position: absolute;
+    top: 60%;
+    left:35%;
+}
+
+h6#userLevelLabel {
+    position: absolute;
+    top: 20%;
+    left: 36px;
+    size:0.66em;
+    color: #aa0000;
+}
+
+select#userLevel {
+    position: absolute;
+    top: 33%;
+}
+
+h6#dataSetLabel {
+    position: absolute;
+    top: 20%;
+    left: 17.75em;
+    size:0.66em;
+    color: #aa0000;
+}
+
+select#dsSelection {
+    position: absolute;
+    top: 33%;
+    left: 12em;
+}
+
+h6#selectLabel {
+    position: absolute;
+    top: 20%;
+    left: 30.5em;
+    size:0.66em;
+    color: #aa0000;
+}
+
+select#themes {
+    position: absolute;
+    top: 33%;
+    left: 21.5em;
+}
+
+button#toggle {
+    position:absolute;
+    left:19em;
+    bottom: 10%;
+    width:7em;
+}
+
+div#menu {
+    position: absolute;
+    bottom: 1px;
+    left: 1px;
+    display: none;
+}
+
+select#menu {
+    position: fixed;
+    bottom: 1%;
+    left: 1%;
+    display: block;
+}
+
+div#demo {
+    position: relative;
+    top: -4px;
+}
+
+div#flashWrapper {
+    position: relative;
+}
+
+div.intro, div.datahelp, div.varhelp, div.archhelp, div.credits {
+    position: absolute;
+    top: 5.5em;
+    left: 6em;
+    width: 656px;
+    height: 360px;
+    font-size: 0.75em;
+    display: none;
+    z-index: 3;
+}
+
+div#introImg, div#dataImg, div#varsImg, div#archImg {
+    position: absolute;
+    display: block;
+    top: 5.5em;
+    left: 4em;
+    width: 656px;
+    height: 360px;
+}
+
+img.closeBtn {
+    position: absolute;
+    left: 93%;
+    top: 17px;
+    z-index: 5;
+    display: block;
+    cursor: pointer;
+    width: 20px;
+}
+
+img.helpBtn {
+    position: absolute;
+    left: 90%;
+    top: 17px;
+    z-index: 5;
+    display: block;
+    cursor: help;
+    width: 20px;
+}
+
+div.archhelp {
+    bottom:1%;
+    right:10%;
+}
+
+div.text {
+    position:absolute;
+    width: 100%;
+    height: 100%;
+}
+
+h2 {
+    color: #00cc00;
+    text-align: center;
+    font-size: 1.25em;
+    padding: 0px;
+    margin: 0px;
+}
+
+div.moveImg {
+    position: absolute;
+    top: 5px;
+    left: 42.5em;
+    width: 48em;
+    height: 28em;
+}

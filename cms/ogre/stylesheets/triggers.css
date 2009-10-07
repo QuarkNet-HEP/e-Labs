@@ -1,0 +1,230 @@
+img#tbgImg {
+    position:absolute;
+    top: 0px;
+    left: 0px;
+    width: 99%;
+    z-index:-1;
+}
+
+div#tdataSet {
+    position: absolute;
+    top: 8px;
+    left: 18px;
+    width: 97%;
+}
+div#moveData, div.moveData {
+    position: absolute;
+    top: 8px;
+    left: 18px;
+    width: 97%;
+    min-height: 95%;
+}
+
+div#tTitle {
+    position: relative;
+    color: #ffffff;
+    font-size: 0.75em;
+    margin-left: 40px;
+    width: 12em;
+    cursor: move;
+}
+
+div#tDraggable {
+    position: relative;
+    top: 16px;;
+    margin-left: 3.5%;
+    margin-right: 5%;
+    width: 41.5em; /*92%;*/
+    height: 20px;
+    cursor: move;
+}
+
+.tDragContainer, .OvertDragContainer {
+    float: left; 
+    margin: 0px;
+    width: 4em;
+    border: #669999 1px solid;
+    padding: 1px;
+}
+
+div#DragContainer11, div#DragContainer12, div#DragContainer13,
+div#DragContainer15, div#DragContainer16, div#DragContainer17 {
+    min-height: 1em;
+    min-width: 1em;
+}
+
+div#DragContainer14 {
+    float: left;
+    margin: 1px;
+    border: none;
+    padding: 1px;
+    border: none;
+    min-height: 2em;
+    width:99%;
+/*
+    border: 1px solid #ff00ff;
+    background-color: #ff00ff;
+*/
+}
+
+.tDragBox, .OvertDragBox, .tDragDragBox, .tminiDragBox {
+    float: left;
+    border: #000 1px solid;
+    padding: 0px;
+    font-size: 10px;
+    margin-bottom: 0.5em;
+    margin-left: 0.1em;
+    width: 5em;
+    cursor: url('/~ogre/graphics/draggable.gif'), pointer;
+    font-family: verdana, tahoma, arial;
+    background-color: #eee;
+    text-align: center;
+}
+
+.tDragBox1, .OvertDragBox1, .tDragDragBox1 {
+    float: left;
+    border: #000 1px solid;
+    padding: 0px;
+    font-size: 9px;
+    margin-bottom: 1px;
+    width: 12em;
+    cursor: url('/~ogre/graphics/grab.gif'), pointer;
+    font-family: verdana, tahoma, arial;
+    text-align: center;
+    margin-left: 0.1em;
+}
+
+.tOverDragContainer {
+    background-color: #ff99cc;
+    cursor: url('/~ogre/graphics/grab.gif'), move;
+}
+
+.OvertDragBox, .tDragDragBox {
+    background-color: #ffff99;
+}
+
+.tDragDragBox, .tDragDragBox1 {   /* Box being drug... */
+    opacity: 0.25;
+    background-color: #ff99cc;
+    cursor: url('/~ogre/graphics/grab.gif'), move;
+}
+
+label {
+    font-style: italic;
+    font-size: 10px;
+    color: #666699;
+    font-family: verdana, tahoma, arial;
+}
+
+legend {
+    font-weight: bold;
+    font-size: 10px;
+    color: #666699;
+    font-family: verdana, tahoma, arial;
+}
+
+legend#select_legend, legend#reject_legend {
+    cursor:move;
+}
+
+fieldset {
+    padding: 1px;
+    margin:  1px;
+    border: 2px ridge #d755d5;
+}
+
+fieldset#Demo0 {
+    width: 47%;
+}
+
+fieldset#Demo1 {
+    width: 47%;
+}
+
+fieldset#triggers {
+    /*position: absolute;
+    top: 10.5em;*/
+    width:98.5%;
+    margin-left:2px;
+    margin-right:2px;
+}
+
+fieldset#data {
+    float:right;
+    width:50%;
+}
+
+fieldset#tHistory {
+    position: relative;
+    top: 4em;
+    width: 98%;
+    display: none;
+}
+
+div#History1 {
+    font-size: 10px;
+    overflow: auto;
+    width: 100%;
+    font-family: verdana, tahoma, arial;
+    height: 3em;;
+}
+
+.tLogic {
+    float: right;
+    font-size: 10px;
+    overflow:auto;
+    width: 96%;
+    padding:2px;
+    margin:2px;
+    border:#e3e3e3 1px solid;
+    background-color:#d3d3d3;
+    font-family: verdana, tahoma, arial;
+}
+
+.tData {
+    font-size: 10px;
+    overflow:auto;
+    height: 122px;
+    font-family: verdana, tahoma, arial;
+}
+.tminiDragBox {
+    float: left;
+    margin: 0 5px 5px 0;
+    width: 20px;
+    height: 20px;
+}
+
+div {
+    border: none;
+}
+div#leftcol {
+    float: left;
+    width:64px;
+    padding: 10px;
+    margin-left: 1px;
+    margin-top: 0px;
+    text-align: center;
+}
+div#centcol {
+    float:left;
+    width:64px;
+    padding: 10px;
+    margin-left:10px;
+    margin-right:10px;
+    margin-top: 0px;
+    text-align: center;
+}
+div#rightcol {
+    float: left;
+    width:64px;
+    padding: 10px;
+    margin-right: 1px;
+    text-align: center;
+}
+
+form#tgetData {
+    display: none;
+}
+select#select1 {
+    display: none;
+}

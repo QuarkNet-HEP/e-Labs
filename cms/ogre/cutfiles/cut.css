@@ -1,0 +1,48 @@
+body {
+    background-color: #cccccc;
+}
+div.background {
+
+    position: fixed;
+
+    background-image: url("/~ogre/graphics/king-ogre.png");
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
+    /*border: #669999 2px solid;*/
+
+    bottom: 1px;
+    right: 2px;
+    width:179px;
+    height:213px;
+    z-index: 15;
+}
+
+div.wrapper {
+}
+
+div.header {
+    position: fixed;
+    top: 0em;
+    left: 0em;
+    width: 100%;
+    border-bottom: 1px solid #f3f3f3;
+    z-index:10;
+    opacity:1;
+    background: #a3a3a3;
+    font-size: 1.25em;
+    text-align: left;
+    vertical-align: top;
+    color: #8b0000;
+}
+
+div.footer {
+    position: fixed;
+    bottom: 0em;
+    height: 2.5em;
+    left: 0em;
+    width: 100%;
+    border-top: 1px solid #f3f3f3;
+    z-index:10;
+    opacity:1;
+    background: #a3a3a3;
+}

@@ -1,0 +1,217 @@
+package MySQL;
+use strict;
+use warnings;
+use Data::Dumper;
+use DBI;
+
+# Define what happens to a new instance of the class
+sub new {
+  my ($class) = @_;
+
+  # Basic data for connecting to the local database
+  my $host   = "localhost"; #"leptoquark.hep.nd.edu";
+  my $dbtype = "mysql";
+  my $db     = "ogredb";
+  my $user   = "ogre";
+
+  my $dbh = DBI->connect("DBI:$dbtype:$db:$host", "$user") or
+    die "Unable to connect to DB: $!\n";
+
+  my $self = {
+    _MySQLHashRef => undef,
+    _dbh          => $dbh,
+    _table        => "",
+    _query_run    => 0
+  };
+
+  bless $self, $class;
+  return $self;
+}
+
+sub updateSettingsDB {
+  my ($self,$sID,$newSID) = @_;
+
+  # See if the current session ID is already in the table...
+  my $query = "select count(sID) from settings where sID='$sID'";
+  my $data = $self->{_dbh}->prepare($query);
+  $data->execute() || warn "Unable to update sessionID!\n";
+
+  my ($numRows) = $data->fetchrow_array();
+
+  if ( $numRows == 0 ) {  # Not there... insert the new sessionID
+      $query = "insert into settings (sID) values('$newSID')";
+  } else {                # otherwise... update the old ID to the new ID
+      $query = "update settings set sID='$newSID' where sID='$sID'";
+  }
+
+  $data = $self->{_dbh}->prepare($query);
+  $data->execute();
+
+  return;
+}
+
+sub getMySQLHashRef {
+  my ($self) = @_;
+  return $self->{_MySQLHashRef} if defined $self->{_MySQLHashRef} || undef;
+}
+
+sub dumpMySQL {
+  my ($self) = @_;
+
+  my $mysql_dump = Dumper($self->{_MySQLHashRef});
+  $mysql_dump =~ s/\$VAR1/MySQL/;
+  print $mysql_dump;
+  return;
+}
+
+sub get_dataset(\$) {
+  my ($self, $thisset) = @_;
+  my $dbh = $self->{_dbh};
+
+  my %ds = ();
+
+  # Get the basic data from the datasets table
+  my $ds_table = "datasets";
+  my $ds_query = "select * from $ds_table where name=\"$thisset\"";
+
+  my $ds_data = $dbh->prepare($ds_query);
+  $ds_data->execute();
+
+  my @row = $ds_data->fetchrow_array();
+  $ds_data->finish();
+
+  %ds = (
+      'name'        => $row[0],
+      'datatable'   => $row[1],
+      'description' => $row[2],
+      'location'    => $row[3],
+      'xml'         => $row[4],
+      'selection'   => $row[5],
+      'access'      => $row[6]
+      );
+
+  # The dataset should contain a pointer to the runtime
+  # table containing a description of the data to use..
+  # If it does... use it.
+  $self->{_table} = $ds{'datatable'} || "mcdb";
+
+  return \%ds;
+}
+
+sub procDBRequest {
+  my ($self) = @_;
+
+  if ( $self->{_query_run} ) {
+    warn "Reentrent!\n";
+    return;
+  }
+  $self->{_query_run} = 1;
+
+  my $dbh = $self->{_dbh};
+
+  my $cmdl_options = $ogre::cgi->getCGIHashRef();
+  my $DEBUG = $cmdl_options->{'DEBUG'};
+
+  my %mysql_data = ();
+  my $dataset;
+  my $query;
+
+  # See if we're specifying datasets
+  if ( $cmdl_options->{dataSets} ) {
+    eval { if ( exists( $cmdl_options->{dataSets}[0] ) ) {;} };
+
+    if ( !$@ ) {
+      foreach my $thisset (@{$cmdl_options->{dataSets}}) {
+
+	# call the DB and grab the data from the dataset
+        $dataset = $self->get_dataset( $thisset );
+
+	my $table = $self->{_table};
+	$query = "select filename from $table where (dataset=\"$thisset\" or ";
+
+	# Save the results of the dataset search
+	while ( my ($key, $value) = each(%$dataset) ) {
+	  $mysql_data{$key} = $value;
+	}
+      }
+    } else {
+      my $set = $cmdl_options->{dataSets};
+      # call the DB and grab the data from the dataset
+      $dataset = $self->get_dataset( $set );
+
+      my $table = $self->{_table};
+      $query = "select filename from $table where (dataset=\"$set\" or ";
+
+      # Save the results of the dataset search
+      while ( my ($key, $value) = each(%$dataset) ) {
+	$mysql_data{$key} = $value;
+      }
+    }
+
+    $query =~ s/ or $//;
+    $query = $query . ")";
+  }
+
+  # See if the user passed on a trigger list
+  if ( $cmdl_options->{triggers} ) {
+      # If we've already got a partial query... add an and to it
+    if ( $query =~ m/dataset/ ) {
+      $query = $query . " AND ";
+    }
+    $query = $query . "(" . $cmdl_options->{triggers} . ")";
+  }
+
+  # see if we're going to specify a run type
+  if ( $cmdl_options->{runTypes} ) {
+    # If we've already got a partial query... add an and to it
+    if ( $query =~ m/dataset/ ) {
+      $query = $query . " and ";
+    }
+    $query = $query . "(";
+    foreach my $thistype (@{$cmdl_options->{runTypes}}) {
+      $query = $query . "runtype=\"$thistype\" or ";
+    }
+
+    $query =~ s/ or $//;
+    $query = $query . ")";
+  }
+
+  # See if we're selecting by run number
+  if ( $cmdl_options->{runNumbers} ) {
+    # If we've already got a partial query... add an and to it
+    if ( $query =~ m/dataset/  or $query =~ m/runtype/) {
+      $query = $query . " and ";
+    }
+    $query = $query . "(";
+    foreach my $thisnumber (@{$cmdl_options->{runNumbers}}) {
+      $query = $query . "run=$thisnumber or ";
+    }
+    $query =~ s/ or $//;
+    $query = $query . ")";
+  }
+  if ( $DEBUG ) {
+    print "Running MySQL query: $query\n";
+  }
+
+  my $data = $dbh->prepare($query);
+  $data->execute();
+
+  my @runFiles;
+  while ( my ($filename) = $data->fetchrow_array() ) {
+    push(@runFiles, "$mysql_data{'location'}/$filename");
+
+  }
+  $data->finish();
+
+  $mysql_data{'files'} = \@runFiles;
+  $self->{_MySQLHashRef} = \%mysql_data;
+
+  if ( $ogre::cgi->getCGIParam('DEBUG') ) {
+    $self->dumpMySQL();
+  }
+
+  return;
+}
+
+################################################################################################
+return 1;

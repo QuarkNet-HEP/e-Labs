@@ -1,0 +1,111 @@
+div.sWindowlet {
+    position: absolute;
+    padding: 0px;
+    margin: 0px;
+    z-index: 2;
+
+    /*border: #ff0000 1px solid;*/
+}
+
+img.sBkg, div.sBkgIE {
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+    left: 0px;
+
+    /*border: #00ff00 1px dashed;*/
+}
+
+div.sIcon {    
+    position: relative;
+    display: block;
+    float: left;
+
+    font-size: 0.75em;
+    color: #ffffff;
+    text-align: center;
+
+    background-color: #880088;
+    border: #ffffff 1px dashed;
+
+    width: 128px;
+    margin: 2px;
+}
+
+div.sTitle {
+    position: absolute;
+    width: 100%;
+    height: 32px;
+    font-size: 0.75em;
+    color: #ffffff;
+    
+    /*border: #00ff00 1px dashed;*/
+}
+
+div.sDrag {
+    position: absolute;
+    cursor: move;
+    width: 98%;
+    height: 100%;
+    background: url(iebkg.gif); /* So IE notices mouse events */
+    padding-left: 4px;
+    padding-top: 4px;
+
+    /*border: #00ffff 1px dotted;*/
+}
+
+div.sFooter {
+    position: absolute;
+    height: 16px;
+    bottom: 0px;
+    width: 100%;
+
+    /*border: #00ff00 1px dashed;*/
+}
+
+div.sStatus {
+    position: absolute;
+    width: 97%;
+    height: 100%;
+    font-size: 0.667em;
+    color: #000000;
+    padding-left: 4px;
+    padding-bottom: 4px;
+
+    /*border: #00ffff 1px dotted;*/
+}
+
+div.sExpand {
+    position: relative;
+    float:right;
+    cursor: se-resize;
+    width: 2.5%;
+    height: 100%;
+    background: url(iebkg.gif); /* So IE notices mouse events */
+
+    /*border: #ff00ff 1px solid;*/
+}
+
+.sContent {
+    position: absolute;
+    width: 630px;
+    height: 400px;
+    overflow: auto;
+    left: 2px;
+    top: 34px;
+    z-index: 3;
+}
+
+/*-- Definitions for buttons on the windowlets --*/
+div.sExit {
+    position: relative;
+    float: right;
+    padding: 4px;
+    width: 1.5em;
+    height: 1.5em;
+    cursor: pointer;
+}
+img.sExit, div.sExitIE {
+    width: 1.5em;
+    height: 1.5em;
+}

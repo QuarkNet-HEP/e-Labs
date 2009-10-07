@@ -1,0 +1,1 @@
+./ogre.pl.cgi dataset=mc09 xmlfile=mc_data.xml leaf=2 root_leaf=superClusterEnergy_ color=10 type=png gWidth=640 gHeight=480 logy=1 sID=68f4fa688d6d6e0ad964c49c1463b8f9 triggers=sig holders=DragContainer11 verbose=1

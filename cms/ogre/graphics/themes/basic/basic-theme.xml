@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<theme name="ogre" path="graphics/themes/basic">
+
+  <!-- definitions for a standard windowlet -->
+  <windowlet    class="bWin">
+    <background class="bBkg"      width="640" height="360"/>
+    <icon       class="bIcon"/>
+    <titleBar   class="bTitleBar">
+      <titleIn  class="bTitleInactive"/>
+      <dragBar  class="bDragBar" />
+      <button   class="bExit" event='onmousedown' action='close'    />
+      <button   class="bMax"  event='onmousedown' action='maximize' />
+      <button   class="bMin"  event='onmousedown' action='minimize' />
+      <button   class="bHelp" event='onmousedown' action='help'     /> 
+    </titleBar>
+    <footer     class="bFooter">
+      <status   class="bStatus" />
+      <expand   class="bExpand" event='onmousedown' action='expand'/>
+    </footer>
+    <content    class="bContent" />
+  </windowlet>
+  
+  <!-- style sheets continaing the style definitons for the windowlets -->
+  <style type="stylesheet">basic.css</style>
+
+</theme>

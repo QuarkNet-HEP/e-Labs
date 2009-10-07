@@ -1,0 +1,154 @@
+/* Style rules for standard windowlets */
+div.stdWin {
+    position: absolute;
+    top: 5em;
+    left: 4em;
+    padding: 0px;
+    margin: 0px;
+    z-index: 2;
+
+    /*border: #ff0000 1px solid;*/
+}
+
+div.stdIcon {
+    position: relative;
+    display: block;
+    float: left;
+    top: 2em;
+    font-size: 0.75em;
+    color: #ffffff;
+    text-align: center;
+
+    background-color: #880088;
+    border: #ffffff 1px dashed;
+
+    width: 128px;
+    margin: 2px;
+}
+
+img.stdTitleBkg, div.stdTitleBkgIE {
+    position: absolute;
+    z-index: -1;
+    top: 40px;
+    left: 40px;
+
+    /*border: #00ff00 1px dashed;*/
+}
+
+div.stdTitleBar {
+    position: absolute;
+
+    width: 93%;
+    top: 13px;
+    left: 22px;
+    height: 19px;
+
+    font-size: 0.75em;
+    color: #ffffff;
+
+    /*border: #ffffff 1px solid;*/
+}
+
+/* This is what happens to the title bar when the windowlet goes inactive */
+div.stdInactive {
+   position: absolute;
+
+    width: 93%;
+    top: 13px;
+    left: 22px;
+    height: 19px;
+
+    font-size: 0.75em;
+    color: #ffffff;
+
+    background-color: #a3a3a3;
+    opacity: 0.5;
+    /*filter: progid:DXImageTransform.Microsoft.Alpha(opacity=25);*/
+
+    /*border: #ffffff 1px solid;*/
+}
+
+div.stdDragBar {
+    position: absolute;
+    cursor: move;
+    width: 90%;
+    height: 90%;
+    background: url(iebkg.gif); /* So IE notices mouse events */
+    padding-left: 5px;
+    padding-top: 2px;
+
+    /*border: #00ffff 1px dotted;*/
+}
+
+div.stdFooter {
+    position: absolute;
+    height: 16px;
+    left: 23px;
+    bottom: 16px;
+    width: 92.5%;
+
+    /*border: #00ff00 1px dashed;*/
+}
+
+div.stdStatus {
+    position: absolute;
+    width: 97%;
+    height: 100%;
+    font-size: 0.667em;
+    color: #ff00ff;
+    padding-left: 2px;
+
+    /*border: #00ffff 1px dotted;*/
+}
+
+div.stdExpand {
+    position: relative;
+    float:right;
+    cursor: se-resize;
+    width: 2.5%;
+    height: 100%;
+    background: url(iebkg.gif); /* So IE notices mouse events */
+
+    /*border: #ff00ff 1px solid;*/
+}
+
+.stdContent {
+    position: absolute;
+    width: 624px;
+    height: 289px;
+    overflow: auto;
+    left: 8px;
+    top: 34px;
+    font-size: 0.975em;
+    z-index: 3;
+
+    /*border: #ff00ff 1px solid;*/
+}
+
+/*-- Definitions for buttons on the windowlets --*/
+div.stdExit, div.stdMin, div.stdMax, div.stdHelp {
+    position: relative;
+    float: right;
+    padding-top: 2px;
+    width: 1.25em;
+    height: 1.25em;
+    cursor: pointer;
+    /*cursor: hand;*/     /* Another IEism for people on IE v5.5 and lower */
+}
+img.stdExit, div.stdExitIE {
+    width: 1.25em;
+    height: 1.25em;   /* IE requires both... stoopid win(DOH!)$ */
+}
+img.stdMax, div.stdMaxIE {
+    width: 1.25em;
+    height: 1.25em;
+}
+img.stdMin, div.stdMinIE {
+    width: 1.25em;
+    height: 1.25em;
+}
+img.stdHelp, div.stdHelpIE {
+    width: 1.25em;
+    height: 1.25em;
+    cursor: help;
+}
