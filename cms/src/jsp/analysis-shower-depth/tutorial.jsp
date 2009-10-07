@@ -34,8 +34,8 @@
       <p align="left">The deposition of  energy in a calorimeter is often called a shower because its shape is similar  to that of a shower (i.e. begins narrowly and spreads out with increasing depth).</p>
       <p align="left"> In the calorimeter, particles pass first through the electromagnetic calorimeter  (Ecal) and then through the hadronic calorimeter (Hcal). Particles that  deposit most of their energy in Ecal are said to have a lesser shower depth, and  those that deposit most of their energy in Hcal are said to have a greater  shower depth.</p>
       <p align="left"> One might imagine that the location of the energy (whether it&rsquo;s  in Ecal or Hcal) might depend on the type of beam (e.g. electron, muon or pion)  and the energy of the beam (e.g. 30GeV, 100GeV or 300GeV).</p>
-      <p align="left"> To simplify your  study we suggest you begin by investigating data sets that have a common  particle identity and energy (e.g. either 50GeV electrons or 100GeV pions).</p>
-      <p align="left"><strong>Research Question: </strong>Does the particle I am studying deposit most of its energy in Ecal or Hcal? </p>
+      <p align="left"> To simplify your  study we suggest you begin by investigating data sets that have a common  particle identity and energy (e.g. either 50GeV electrons or 100GeV pions) and then move on the effects of beam energy, particle type, etc.</p>
+      <p align="left"><strong>Sample Research Question: </strong>How does pion penetration of the Ecal vary as a function of beam energy? </p>
       <table width="665" border="0" align="left">
         <tr>
           <th scope="col"><p><strong>Hints</strong></p>
