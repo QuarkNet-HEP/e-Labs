@@ -29,7 +29,8 @@
 
 <h1>e-Lab Registration</h1>
 
-<table border="0" id="registration-links-table">
+<!-- <table border="0" id="registration-links-table"> -->
+<table border="0"  cellspacing="10">
 	<tr>
 		<td valign="top" width="40%">
 			<a href="mass-registration.jsp">Register student research groups with a spreadsheet.</a>
