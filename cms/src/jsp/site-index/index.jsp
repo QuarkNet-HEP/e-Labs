@@ -25,103 +25,95 @@
 
 			<div id="content">
 
-<h1>Lost? You can go to any of the pages on this site from this list.</h1>
-
-
-<table border="0" id="main">
-	<tr>
-		<th><a href="../home">Home</a></th>
-		<th><a href="../library">Library</a></th>
-		<th><a href="../data">Data</a></th>
-		<th><a href="../posters">Posters</a></th>
-		<th><a href="../assessment">Assessment</a></th>
-	</tr>
-	<tr>
-		<td>
-			<ul>
-				<li><a href="../home/first.jsp">The Big Picture</a></li>
-				<li><a href="../home/first-web.jsp">The Website</a></li>
-			</ul>
-		</td>
-		<td>
-			<ul>
-				<li>
-					<a href="../library/milestones-map.jsp">Study Guide</a>
-					<ul>
-						<li><a href="../jsp/showReferences.jsp?t=reference&amp;f=peruse">View Resources for Study Guide</a></li>
-						<li><a href="../jsp/showReferences.jsp?t=glossary&amp;f=peruse">View Glossary</a></li>
-					</ul>
-				</li>
-				<li><a href="../library/resources.jsp">Resources</a></li>
-				<li>
-					Online Links
-					<ul>
-						<li>
-							Tutorials
+				<h1>Site Index: Lost? You can go to any of the pages <i>on this site</i> from this list.</h1>
+				<table border="0" id="main">
+					<tr>
+						<th class="home"><a href="../home">Home</a></th>
+						<th class="library"><a href="../library">Library</a></th>
+						<th class="data"><a href="../data">Data</a></th>
+						<th class="posters"><a href="../posters">Posters</a></th>
+						<th class="assessments"><a href="../assessment">Assessment</a></th>
+					</tr>
+					<tr>
+						<td class="home">
 							<ul>
-								<li><a href="ogre_tutorial_index.htm">Ogre Tutorial</a></li>
-								<li><a href="http://www-root.fnal.gov/root/">Root Tutoria</a></li>
+								<li><a href="../home/cool-science.jsp"><b>Cool Science</b></a></li>
+								<li><a href="../site-index/site-map-anno.jsp"><b>Explore!</b></a></li>
+								<li><a href="../home/about-us.jsp"><b>About Us</b></a></li>
+								
+							</ul>
+						</td>
+			<td class="library">
+			<ul>
+								<li><a href="/library/kiwi.php/CMS_Glossary" target="glossary"><b>Glossary</b></a></li>
+								<li><a href="../library/resources.jsp"><b>Resources</b></a></li>
+								<li>
+									<ul>
+					<li><b>Online Links</b>
+					<ul>
+									<li><a href="http://cmsinfo.cern.ch/">CMS Experiment</a></li></ul>
+						<li><b>Tutorials</b>
+							<ul>
+								<li><a href="http://www-root.fnal.gov/root/">Root Tutorial</a></li>
 							</ul>
 						</li>
 						<li>
 							Notes
 						</li>
 						<li>
-							Contacts
-						</li>
-						<li>
 							Slide Shows
 						</li>
+															<li>
+											<b>Contacts</b>
+											<ul>
+												<li><a href="../library/students.jsp">Students</a></li>
+											</ul>
+										</li>
+
 					</ul>
 				</li>
 				<li>
-					<a href="first.jsp">Big Picture</a>
+					<a href="../library/big-picture.jsp">Big Picture</a>
 				</li>
 				<li>
-					<a href="site-map-anno.jsp">CMS Overview</a>
+					<a href="../library/FAQ.jsp">FAQ</a>
 				</li>
 				<li>
-					<a href="http://cmsinfo.cern.ch/Welcome.html">CMS Test Beam</a>
+					<a href="../library/site-tips.jsp">Site Tips</a>
 				</li>
-				<li>
-					<a href="first_web.jsp">Site Help</a>
-				</li>
-				<li>
-					<a href="FAQ.jsp">FAQ</a>
-				</li>
+				<li>Milestones - <a href="../library/milestones.jsp">text version</a></li>
+
 			</ul>
 		</td>
-		<td>
+		<td class="data" >
 			<ul>
 				<li>
-					<a href="search.jsp">Test Beam Analysis</a>
+					<a href="../data/">Test Beam Analysis</a>
 					<ul>
-         				<li><a href="ogre-base.jsp?analysis=shower_depth">Shower Depth</a></li>
-						<li><a href="ogre-base.jsp?analysis=shower_depth?analysis=lateral_size">Lateral Size</a></li>         
-						<li><a href="ogre-base.jsp?analysis=beam_purity">Beam Purity</a></li>
-						<li><a href="ogre-base.jsp?analysis=resolution">Resolution</a></li>
+         				<li><a href="../analysis-shower-depth/">Shower Depth</a></li>
+						<li><a href="../analysis-lateral-size/">Lateral Size</a></li>         
+						<li><a href="../analysis-beam-purity/">Beam Purity</a></li>
+						<li><a href="../analysis-resolution/">Resolution</a></li>
 					</ul>
 				</li>
-				<li>
-					<a href="search.jsp">Management</a>
-					<ul>
-            			<li>View Files and Posters</li>
-						<li>Delete Files and Posters</li>
-					</ul>
-				</li>
+				<li><b><a href="../plots/search.jsp">View Plots</a></b></li>
+					<li><b><a href="../plots/delete.jsp">Delete Plots</a></b>
+					</li>
 			</ul>
 		</td>
-		<td>
-			<ul>
-				<li><a href="../posters/new.jsp">New Poster</a></li>
-				<li><a href="../posters/edit.jsp">Edit Posters</a></li>
-				<li><a href="../posters/search.jsp">View Posters</a></li>
-				<li><a href="../posters/delete.jsp">Delete Posters</a></li>
-				<li><a href="../plots/my-plots.jsp">View My Plots</a>
-			</ul>
-		</td>
-		<td>
-		</td>
+						<td class="posters">
+							<ul>
+								<li><a href="../posters/new.jsp"><b>New Poster</b></a></li>
+								<li><a href="../posters/edit.jsp"><b>Edit Posters</b></a></li>
+								<li><a href="../posters/search.jsp"><b>View Posters</b></a></li>
+								<li><a href="../posters/delete.jsp"><b>Delete Posters</b></a></li>
+								<li><a href="../plots/my-plots.jsp"><b>View My Plots</b></a></li>
+								<li><a href="../jsp/uploadImage.jsp"><b>Upload Images</b></a></li>
+							</ul>
+						</td>
+						<td class="assessments">
+							&nbsp; 
+						</td>
 	</tr>
 </table>
 
