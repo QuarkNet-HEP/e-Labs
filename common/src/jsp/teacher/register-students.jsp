@@ -189,7 +189,7 @@
 			<ul>
 				<li>
 					Register new students below.  To register more students, click on the&nbsp; 
-					<strong>+</strong> &nbsp;button.
+					<strong>+</strong> &nbsp;button.<br /><br />
 				</li>
 				<li>
 					We will create new groups and their associated passwords for you.
