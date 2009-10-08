@@ -51,17 +51,19 @@
 	String templateDir = user.getDir("templates");
 
 	if ("Make Poster".equals(reqType) || "View Poster".equals(reqType) || "Save Changes".equals(reqType)) {
-	    Enumeration fields = request.getParameterNames();
-	    while (fields.hasMoreElements()) {
-	        String name = (String) fields.nextElement();
-	        String val = request.getParameter(name);
-	        val = as.scan(val, policy).getCleanHTML();  // Sanitize input
-	        val = ElabUtil.escapePoster(val);           // Escape to HTML entities 
-	        RE re = new RE("(PARA|WORDS|FIG):([A-Z0-9]+)");
-	        if (val.length() > 0 && re.match(name) && !val.equals(selectDefault)) {
-	            pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
-	        }
+	    String val = "", name = ""; 
+	    RE re = new RE("(PARA|WORDS|FIG):([A-Z0-9]+)");
+	    Map<String, String[]> fieldMap = request.getParameterMap();
+	    for (Map.Entry<String, String[]> entry : fieldMap.entrySet()) {
+	    	val = entry.getValue()[0].trim(); 
+	    	name = entry.getKey();
+	    	if (!val.equals(selectDefault) && re.match(name)) {  
+		    	val = as.scan(val, policy).getCleanHTML();
+		    	val = ElabUtil.escapePoster(val); 
+		    	pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
+	    	}
 	    }
+	    
 	    try {
 			if (!posterNameEntered) {
 			    throw new ElabJspException("Missing poster name. Please go back and enter the filename for the poster.");
