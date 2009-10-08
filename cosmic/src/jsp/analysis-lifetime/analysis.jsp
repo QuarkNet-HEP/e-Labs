@@ -88,7 +88,7 @@
 					
 					<p id="other-analyses">
 						Analyze the same files in 
-						<e:link href="../analysis-flux/analysis.jsp" rawData="${analysis.parameters.rawData}">flux</e:link>
+						<e:link href="../analysis-flux/analysis.jsp" rawData="${analysis.parameters.rawData}">flux</e:link>&nbsp;or&nbsp;
 						<e:link href="../analysis-shower/analysis.jsp" rawData="${analysis.parameters.rawData}">shower</e:link>
 					</p>
 					

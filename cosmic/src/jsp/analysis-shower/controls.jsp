@@ -20,7 +20,7 @@
 <div id="analysis-controls">
 	<form method="post" action="../analysis-shower/analysis.jsp">
 		<e:trinput type="hidden" name="rawData"/>
-		<e:trinput type="hidden" name="eventNum" default="1"/>
+		<e:trinput type="hidden" name="eventNum" default="0"/>
 	
 		<p>Click <strong>Analyze</strong> to use the default parameters. 
 		Control the analysis by expanding the options below.</p>
