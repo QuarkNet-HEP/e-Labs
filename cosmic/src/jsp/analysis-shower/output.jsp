@@ -125,7 +125,7 @@
 						</td>
 						<td>
 							${row.numDetectors}
-								(<c:forEach items="${row.ids}" var="detectorId"> <e:popup href="../data/detector-info.jsp?id=${detectorId}" target="new" width="460" height="160">${detectorId}</e:popup> </c:forEach>)
+								(<c:forEach items="${row.ids}" var="detectorId"> <e:popup href="../data/detector-info.jsp?id=${detectorId}" target="new" width="460" height="160">${detectorId}</e:popup>&nbsp;</c:forEach>)
 						</td>
 					</tr>
 				</c:forEach>
