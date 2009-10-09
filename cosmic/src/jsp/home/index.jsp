@@ -1,5 +1,6 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ include file="../login/login-required.jsp" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -9,6 +10,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column-home.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
+		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	
 	<body id="home" class="home">
@@ -58,21 +60,11 @@
 						</div>
 						<h3>Project Map: Your team may use the milestones below, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results.</h3>
 						<h4>Think of this map as a subway map with one main line and four branch lines.  Along the main line are stops, milestone seminars, opportunities to check how the work is going. Off each main stop are branch lines where each stop is a project milestone. Hover over each milestone or milestone seminar to preview; click milestones to open.</h4>
-						<table border="0" id="main">
-							<tr>
-								<td>
-									<div id="left">
-										<script type="text/javascript" src="../include/elab.js"></script>
-								        <%@ include file="../login/login-required.jsp" %>
-									    <%@ include file="../library/milestones-map-student.jsp" %>
-									    <br />
-									    <div style="text-align: center;">
-						   					<a href="../library/milestones.jsp">Milestones (text version)</a>
-						   				</div>
-							 		</div>
-						 		</td>
-							</tr>
-						</table>
+						<div style="text-align: center;">
+						    <%@ include file="../library/milestones-map-student.jsp" %>
+						    <br />
+		   					<a href="../library/milestones.jsp">Milestones (text version)</a>
+				 		</div>
 					</c:otherwise>
 				</c:choose>
 			</div>
