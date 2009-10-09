@@ -1,6 +1,5 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ include file="../login/login-required.jsp" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -60,7 +59,7 @@
 						</div>
 						<h3>Project Map: Your team may use the milestones below, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results.</h3>
 						<div style="text-align: center;">
-						    <%@ include file="../library/milestones-map-student.jsp" %>
+						    <jsp:include page="../library/milestones-map-student.jsp" />
 						    <br />
 		   					<a href="../library/milestones.jsp">Milestones (text version)</a>
 				 		</div>
