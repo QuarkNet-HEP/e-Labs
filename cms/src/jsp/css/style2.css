@@ -226,6 +226,23 @@
 	border-top-right-radius: 8px;	
 }
 
+h1.bottomheader, #content h1.bottomheader {
+	/* Rounded corners, Mozilla, Webkit, CSS3 */
+	-moz-border-radius-topleft: 0px;
+	-moz-border-radius-topright: 0px;
+	-webkit-border-radius-topleft: 0px;
+	-webkit-border-radius-topright: 0px;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;	
+	
+	-moz-border-radius-bottomleft: 8px;
+	-moz-border-radius-bottomright: 8px;
+	-webkit-border-radius-bottomleft: 8px;
+	-webkit-border-radius-bottomright: 8px;
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;	
+}
+
 table#main {
 	width: 100%;
 	padding: 0px;

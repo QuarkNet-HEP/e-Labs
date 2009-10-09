@@ -21,6 +21,17 @@ h1 {
 	filter: progid:DXImageTransform.Microsoft.Gradient(enabled='true', startColorstr='#0053fdc2', endColorstr='#FFFFFFFF');
 }
 
+h1.bottomheader {
+	background-color: #53fdc2;
+	color: #000000;
+	
+	/* Gradients: WebKit, Firefox 3.6+, IE8, IE7 */
+	background-image:-webkit-gradient(linear, left top, left bottom, from(#fff), to(#53fdc2)) !important;
+	background-image:-moz-linear-gradient(left top, left bottom, from(#fff), to(#53fdc2)) !important;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Gradient(enabled='true', startColorstr='#FFFFFFFF', endColorstr='#0053fdc2')";
+	filter: progid:DXImageTransform.Microsoft.Gradient(enabled='true', startColorstr='#FFFFFFFF', endColorstr='#0053fdc2');
+}
+
 .library #center h1 {
 	font-weight: normal;
 	font-size: 140%;

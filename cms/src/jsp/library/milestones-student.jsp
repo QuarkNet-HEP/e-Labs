@@ -147,5 +147,5 @@
 		</td>
 	</tr>
 </table>
-<h1>Take the <a href="../survey/show-students.jsp?type=post">Post-Test</a> when you have completed the e-Lab.</h1>
+<h1 class="bottomheader">Take the <a href="../survey/show-students.jsp?type=post">Post-Test</a> when you have completed the e-Lab.</h1>
 
