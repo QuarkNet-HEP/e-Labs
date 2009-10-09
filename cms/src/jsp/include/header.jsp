@@ -15,7 +15,7 @@
 </div>
 --%>
 <div id="header-image">
-	<img src="../graphics/blast.jpg" alt="CMS Logo" />
+	<img src="../graphics/cms_logo.png" alt="CMS Logo" />
 </div>
 <div id="header-title">CMS Test Beam e-Lab</div>
 <%
