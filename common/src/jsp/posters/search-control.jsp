@@ -59,7 +59,7 @@ DATEFORMAT.setLenient(false);
 			if (StringUtils.isBlank(key)) key="name";
 			
 			String value = request.getParameter("value");
-			value = StringUtils.isBlank(value) ? "" : value.trim();
+			value = StringUtils.trimToEmpty(value);
 			
 			String date1 = request.getParameter("date1");
 			String date2 = request.getParameter("date2");
@@ -87,7 +87,7 @@ DATEFORMAT.setLenient(false);
 			    			Integer.parseInt(value);
 			    			and.add(new Equals(key, "AY" + value));
 			    		}
-			    		catch (Exception ex) {
+			    		catch (NumberFormatException ex) {
 			    			errors += "The system did not understand the academic year you typed in, please check what you typed. <br />";
 			    		}
 			    	}
