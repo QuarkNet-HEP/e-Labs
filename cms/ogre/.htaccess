@@ -1,7 +1,12 @@
-Options -Indexes +FollowSymLinks +ExecCGI
-#DirectoryIndex ogre.php
 DirectoryIndex login.html
 ErrorDocument 404 /~ogre/php/goodbye.php
+Options MultiViews -Indexes FollowSymLinks +ExecCGI
+Allow from all
+
+<Files ~ (\.cgi-bin)>
+  Options  ExecCGI
+  SetHandler cgi-script
+</Files>
 
 PerlModule  Apache::ASP
 <Files ~ (\.asp)>    
