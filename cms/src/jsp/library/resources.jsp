@@ -102,16 +102,16 @@
 								- Learn how to use ROOT (the underpinnings of OGRE)  to analyze any aspect of the data directly.
 							</li>
 							<li>
-           						<a href="../analysis-shower-depth/tutorial.jsp">Shower Depth Study </a> - Description of a Shower Depth Study
+           						<a href="../analysis-shower-depth/background.jsp">Shower Depth Study </a> - Background
 							</li>
 							<li>
-								<a href="../analysis-lateral-size/tutorial.jsp">Lateral Size Study </a>- Description of a Lateral Size Study
+								<a href="../analysis-lateral-size/background.jsp">Lateral Size Study </a>- Background
 							</li>
 							<li>
-								<a href="../analysis-beam-purity/tutorial.jsp">Beam Purity Study </a>- Description of a Beam Purity Study
+								<a href="../analysis-beam-purity/background.jsp">Beam Purity Study </a>- Background
 							</li>
 				            <li>
-								<a href="../analysis-resolution/tutorial.jsp">Detector Resolution Study </a>- Description of a Detector Resolution Study
+								<a href="../analysis-resolution/background.jsp">Detector Resolution Study </a>- Background
 							</li>
 						</ul>
 					</div>
