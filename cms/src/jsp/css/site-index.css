@@ -336,7 +336,7 @@ ul.simpleTine li:before {
 	text-align: left;
 }
 th.data {
-	background-color: #4572dd;
+	background-color: #2E58DC;
 	border-top: #72a1cc 1px solid;
 	border-left: #72a1cc 1px solid;
 	border-bottom: #305c85 1px solid;
@@ -357,7 +357,7 @@ th.data a:hover {
 }
 
 th.home {
-	background-color: #e98f43;
+	background-color: #f67527;
 	border-top: #ffa76c 1px solid;
 	border-left: #ffa76c 1px solid;
 	border-bottom: #b54800 1px solid;
@@ -378,7 +378,7 @@ td.home {
 }
 
 th.library {
-	background-color: #7be5a6;
+	background-color: #33E890;
 	border-top: #a7d2d8 1px solid;
 	border-left: #a7d2d8 1px solid;
 	border-bottom: #3c777f 1px solid;
@@ -399,7 +399,7 @@ td.library {
 }
 
 th.posters {
-	background-color: #cae55b;
+	background-color: #B4E734;
 	border-top: #70a98c 1px solid;
 	border-left: #70a98c 1px solid;
 	border-bottom: #2d6348 1px solid;
@@ -420,7 +420,7 @@ td.posters {
 }
 
 th.assessments {
-	background-color: #eebf53;
+	background-color: #f4ba39;
 	border-top: #ffd940 1px solid;
 	border-left: #ffd940 1px solid;
 	border-bottom: #b59100 1px solid;
