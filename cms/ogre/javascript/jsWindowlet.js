@@ -1252,13 +1252,13 @@ function _dragStop(event) {
     }
     //Send coordinates to settings database
     if (windowNum > 0 && windowNum < 4){
-	request = "/~ogre/asp/Burrito.asp?sessid=" + sessionID + "&iotype=send&parameter=left" +  windowNum + "&value=" + parseInt(dragObj.elNode.style.left);
+	request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID + "&iotype=send&parameter=left" +  windowNum + "&value=" + parseInt(dragObj.elNode.style.left);
 	xmlHttp[0].open("GET",request,true);
 	xmlHttp[0].send(null);
-	request = "/~ogre/asp/Burrito.asp?sessid=" + sessionID + "&iotype=send&parameter=top" +  windowNum + "&value=" + parseInt(dragObj.elNode.style.top);
+	request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID + "&iotype=send&parameter=top" +  windowNum + "&value=" + parseInt(dragObj.elNode.style.top);
 	xmlHttp[1].open("GET",request,true);
 	xmlHttp[1].send(null);
-	request = "/~ogre/asp/Burrito.asp?sessid=" + sessionID + "&iotype=send&parameter=activeWin&value='" + dragObj.elNode.id + "'";
+	request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID + "&iotype=send&parameter=activeWin&value='" + dragObj.elNode.id + "'";
 	xmlHttp[2].open("GET",request,true);
 	xmlHttp[2].send(null);
     }

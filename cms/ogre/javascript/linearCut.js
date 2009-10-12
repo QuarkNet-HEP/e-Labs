@@ -14,20 +14,19 @@ function include(filename) {
 
     head.appendChild(script);
 }
-
 var useDynMenu  = false;
 var useDragDrop = true;
 
-include("/~ogre/javascript/utilities.js");
-include("/~ogre/javascript/submitForms.js");
-include("/~ogre/javascript/cookies.js");
+include(baseURL+"/javascript/utilities.js");
+include(baseURL+"/javascript/submitForms.js");
+include(baseURL+"/javascript/cookies.js");
 
 // Include Walter Zorns wonderful javascript graphics package
-include("/~ogre/javascript/wz_jsgraphics.js");
+include(baseURL+"/javascript/wz_jsgraphics.js");
 
 // Include the script for the menu
 if ( useDynMenu )
-    include("/~ogre/javascript/menu/dmenu.js");
+    include(baseURL + "/javascript/menu/dmenu.js");
 
 var dragDiv;
 var xmin   = 0;
@@ -56,7 +55,7 @@ var hlpWin = new Object();
 var hstWin = new Object();
 
 // Define the work path for the menu
-var dmWorkPath   = "/~ogre/javascript/menu/";
+var dmWorkPath   = baseURL + "/javascript/menu/";
 
 /*-- Get the position of the cursor sanely for everyone --*/
 function getMousePosition(e) {
@@ -246,7 +245,7 @@ function stopDrag(event) {
 
 	var newCut = cuts.replace(lo, pixel2plot(xmin));
 	newCut = newCut.replace(hi,pixel2plot(xmax-mouseOffSet));
-	//setCorokie(corokie,newCut);
+	//setCookie(cookie,newCut);
 	
 	sendState("selection", newCut.replace(/&/g,"%26"), true);
     }
@@ -386,8 +385,12 @@ function onMouseClick(event) {
 }
 
 function pageLoad() {
-    //retrieve the session ID if it hasn't been passed along,
-    //var sessionID = getCookie("sessionID");
+
+    // Sync the session ID cookie....
+    if ( sessionID && testCookies() )
+	setCookie('sessionID', sessionID);
+
+
     //load the coodinates
     var xmlHttp;
     var request;
@@ -418,18 +421,19 @@ function pageLoad() {
      *         4 == The request is complete
      */
     // Request coordinates from the server
-    var request = "/~ogre/asp/Burrito.asp?sessid=" + sessionID + "&iotype=retrieve";
+    var request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID + "&iotype=retrieve";
+
     // Send the Ajax request to the server
     xmlHttp.open("GET",request,false);
     xmlHttp.send(null);
     message = xmlHttp.responseText;
     if (message == ":::::::::::::"){
-	request = "/~ogre/asp/Burrito.asp?sessid=" + sessionID +"&iotype=create";
+	request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID +"&iotype=create";
 	xmlHttp.open("GET",request,false);
 	xmlHttp.send(null);
 	message = xmlHttp.responseText;
     }
-    //alert(message);
+
     var Xcoords = new Array(3);
     var Ycoords = new Array(3);
     mesParsed = message.split(":",14);
@@ -438,7 +442,7 @@ function pageLoad() {
 	Ycoords[i] = parseInt(mesParsed[7 + 2*i + 1]);
 	}
 
-    var xmlTheme = (xmlTheme) ? xmlTheme : "/~ogre/graphics/themes/ogre/ogre-theme.xml";
+    var xmlTheme = (xmlTheme) ? xmlTheme : baseURL + "/xml/ogre-theme.xml";
 
     // First we initialize the DIV (container) of the draggable image as 'canvas'.
     container = document.getElementById("graph");
@@ -513,7 +517,7 @@ function pageLoad() {
     } catch (e) {;}
 
     if ( cuts )
-	//setCorokie(corokie,cuts);
+	//setCookie(cookie,cuts);
 	sendState("selection", cuts.replace(/&/g,"%26"), true);
 
     // MSIE v6 and prior doesn't respect the "fixed" positioning directive
@@ -620,7 +624,7 @@ function pageLoad() {
     }
 
     // Request the history page from the server
-    var request = '/~ogre/asp/getHistory.asp?id='+document.forms['recut'].directory.value;
+    var request = baseURL + '/asp/getHistory.asp?id='+document.forms['recut'].directory.value;
 
     // Send the Ajax request to the server
     xmlHttp.open("GET",request,true);
@@ -654,8 +658,8 @@ function callMenu(option) {
 	return false;
     else if ( option == 1 )
 	submitForm(document.forms['recut']);
-    //else if ( option == 2 )
-	//delCorokie('selection', "/~ogre/");
+    else if ( option == 2 )
+	delCookie('selection', baseURL + "/");
     else if ( option == 3 )
 	archiveStudy(document.forms['recut']);
     else if ( option == 4 )
@@ -691,9 +695,9 @@ function callMenu(option) {
 	flushTheme();
 
 	if ( option == 9 )
-	    xmlThemeFile = '/~ogre/graphics/themes/ogre/ogre-theme.xml';
+	    xmlThemeFile = baseURL + '/xml/ogre-theme.xml'; //'/graphics/themes/ogre/ogre-theme.xml';
 	else if ( option == 10 )
-	    xmlThemeFile = '/~ogre/graphics/themes/simple/ogre-simple.xml';
+	    xmlThemeFile = baseURL + '/xml/ogre-simple.xml'; //'/graphics/themes/simple/ogre-simple.xml';
 	else
 	    return false;
 

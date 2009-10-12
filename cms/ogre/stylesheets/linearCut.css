@@ -30,7 +30,7 @@ div#alertdiv {
     left: 2em;
     z-index: 5;
     display: none;
-    background: url("/~ogre/graphics/white3.png") no-repeat;
+    background: url("../graphics/white3.png") no-repeat;
     width: 656px;
     height: 360px;
     overflow: hidden;

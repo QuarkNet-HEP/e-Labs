@@ -64,6 +64,27 @@ sub dumpMySQL {
   return;
 }
 
+sub getXMLPath {
+    my ($self) = @_;
+    my $dbh = $self->{_dbh};
+    my $query = "select ogreXML from bootstrap";
+    my $data = $dbh->prepare($query);
+    $data->execute();
+
+    my $xmlLoc = ($data->fetchrow_array);
+    return $xmlLoc;
+}
+
+sub getXMLURL {
+    my ($self) = @_;
+    my $dbh = $self->{_dbh};
+    my $query = "select xmlURL from bootstrap";
+    
+    my $data = $dbh->prepare($query);
+    $data->execute();
+    return ($data->fetchrow_array);
+}
+
 sub get_dataset(\$) {
   my ($self, $thisset) = @_;
   my $dbh = $self->{_dbh};

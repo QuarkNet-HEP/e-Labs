@@ -295,9 +295,10 @@ function mouseMove(ev){
 	    if ( curTarget.origParentNode ) {
 
 		if ( !browser.isIE || browser.ieVersion >= 6 ) {
-		    document.getElementById('body').style.cursor = "url('/~ogre/graphics/grab.gif'),pointer";
-		    dragHelper.style.cursor = "url('/~ogre/graphics/grab.gif'),pointer";
-		    dragHelper.firstChild.style.cursor = "url('/~ogre/graphics/grab.gif'),pointer";
+		    var url = "url('" + baseURL + "/graphics/grab.gif'),pointer";
+		    document.getElementById('body').style.cursor = url;
+		    dragHelper.style.cursor = url;
+		    dragHelper.firstChild.style.cursor = url;
 		} else {
 		    document.getElementById('body').style.cursor = "hand";
 		    dragHelper.style.cursor = "hand";
@@ -682,7 +683,7 @@ function mouseUp(ev){
     if ( clickTarget ) {
 	document.getElementById('body').style.cursor = "auto";
 	if ( !browser.isIE || browser.ieVersion >= 6 )
-	    clickTarget.style.cursor = "url('/~ogre/graphics/draggable.gif'),pointer";
+	    clickTarget.style.cursor = "url('" + baseURL + "/graphics/draggable.gif'),pointer";
 	else
 	    clickTarget.style.cursor = "hand";
 	clickTarget = null;
@@ -815,7 +816,7 @@ function mouseDown(ev){
     if ( target.origParentNode ) {
 	// Grab the element
 	if ( !browser.isIE || browser.ieVersion >= 6 )
-	    target.style.cursor = "url('/~ogre/graphics/grab.gif'),pointer";
+	    target.style.cursor = "url('" + baseURL + "/graphics/grab.gif'),pointer";
 	else
 	    target.style.cursor = "hand";
 
@@ -968,7 +969,7 @@ function dragLoad() {
 
     if(Demos[2]) {    //Demos[2] is from the variables page
 	//var hasCookie = getCookie('selection');
-	var request = "/~ogre/asp/getCookie.asp?sessionID=" + sessionID;
+	var request = baseURL+"/asp/getCookie.asp?sessionID=" + sessionID;
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.open("GET",request,false);
 	xmlHttp.send(null);
@@ -1361,9 +1362,9 @@ function asyncDB() {
 
     var request = new String();
     if ( dset.indexOf('tb04') > -1 )
-	request = '/~ogre/asp/DBRequest.asp?varlist=run,nevents,energy,beam,eta,phi';
+	request = baseURL + '/asp/DBRequest.asp?varlist=run,nevents,energy,beam,eta,phi';
     else if (dset.indexOf('mc09') > -1 )
-	request = '/~ogre/asp/DBRequest.asp?varlist=run,nevents,description';
+	request = baseURL + '/asp/DBRequest.asp?varlist=run,nevents,description';
 
     request += '&dataset='+dset;
     request += '&selection=' + logicString;

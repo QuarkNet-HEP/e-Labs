@@ -4,7 +4,7 @@ use warnings;
 use Data::Dumper;
 use XML::Simple;
 use Cwd;
-
+use MySQL;
 use File::Find;
 use LWP::UserAgent;
 use HTTP::Headers;
@@ -19,9 +19,13 @@ sub new {
   my $ogreXMLRef;
 
   if ( !$xmlPath ) {
-    $xmlPath = "./";
+      my $mysql = new MySQL();
+      $xmlPath = $mysql->getXMLPath();
+      undef $mysql;
+      if ( !$xmlPath ) {
+	  $xmlPath = "../xml/ogre.xml";
+      }
   }
-
   my $self = {
     _ogreXMLRef  => \$ogreXMLRef,
     _dataXMLRef  => undef
@@ -127,7 +131,7 @@ sub read_ogre_xml(\$) {
   my $temp_hash_ref;
 
   # The ogre.xml file is in the same directory as this script.
-  my $xmlFile = $_[0]."/ogre.xml";
+  my $xmlFile = $_[0];   #."/ogre.xml";
   if ( -e $xmlFile ) {
     $data = $xml->XMLin($xmlFile);
   } else {
@@ -152,6 +156,7 @@ sub read_ogre_xml(\$) {
     }
 
   }
+
 
   while ( my $temp = each(%$temp_hash_ref) ) {
       my $value = $temp_hash_ref->{$temp}->{value};

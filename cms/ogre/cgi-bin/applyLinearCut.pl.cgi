@@ -25,7 +25,7 @@ my $histVisible  = $query->param('historyVisible');
 my $units        = $query->param('units');
 
 # Grab hold of some of the global stuff we'll be needin
-my $ogreXML      = new ogreXML("./");
+my $ogreXML      = new ogreXML();
 my $path         = $ogreXML->getOgreParam('baseDir');
 my $archivesDir  = $ogreXML->getOgreParam('archiveDir');
 my $resultsDir   = $ogreXML->getOgreParam('resultsDir');
@@ -228,12 +228,16 @@ open (newScript, ">$path/$scriptName");
 print newScript $newscript;
 close(newScript);
 
+chmod(0666, "$path/$scriptName");
+
 my $filePath = "$path/$scriptName";
 
 #
 ### Run root all over again with the new selection
 #
 my @output = `$rootbin -b -l -n -q $filePath 2>/dev/null`;
+
+chmod(0666, "$path/$newPng.$type");
 
 #
 ### Copy back the output of the script to put into the applet

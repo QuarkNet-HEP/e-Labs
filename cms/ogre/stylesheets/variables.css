@@ -122,7 +122,7 @@ button#gotoData {
     margin-left: 0.25em;
     width: 1.5em;
     height: 1.5em;
-    cursor: url('/~ogre/graphics/draggable.gif'), pointer;
+    cursor: url('../graphics/draggable.gif'), pointer;
     font-family: verdana, tahoma, arial;
 }
 
@@ -144,7 +144,7 @@ button#gotoData {
     padding: 1px;
     font-size: 10px;
     width: 4em;
-    cursor: url('/~ogre/graphics/draggable.gif'), pointer;
+    cursor: url('../graphics/draggable.gif'), pointer;
     font-family: verdana, tahoma, arial;
     background-color: #eee;
 
@@ -170,7 +170,7 @@ button#gotoData {
     padding: 1px;
     font-size: 10px;
     width: 11em;
-    cursor: url('/~ogre/graphics/draggable.gif'),pointer;
+    cursor: url('../graphics/draggable.gif'),pointer;
     font-family: verdana, tahoma, arial;
     color: #000000;
 
@@ -190,7 +190,7 @@ button#gotoData {
 .vDragDragBox, .vDragDragBox1 {   /* Box being drug... */
     opacity: 0.50;              /* the correct CSS3 syntax */
     background-color: #ff99cc;
-    cursor: url('/~ogre/graphics/grab.gif'),pointer;
+    cursor: url('../graphics/grab.gif'),pointer;
 }
 
 .fieldset {

@@ -4,10 +4,13 @@ use warnings;
 use CGI;
 use Archive::Tar;
 use File::chdir;
+use ogreXML;
 
 my $query = new CGI;
 my $sessionID = $query->param('sessionID');
-my $path    = "/home/ogre/public_html/";
+
+my $xml = new ogreXML();
+my $path = $xml->getOgreParam('baseDir');
 
 if ( !$sessionID ) {
   # Start with the header so browsers know it's html

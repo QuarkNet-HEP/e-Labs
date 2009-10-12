@@ -36,5 +36,5 @@ function include(filename) {
     head.appendChild(script);
 }
 
-include("/~ogre/javascript/cookies.js");
-include("/~ogre/javascript/drag_drop.js");
+include(baseURL+"/javascript/cookies.js");
+include(baseURL+"/javascript/drag_drop.js");

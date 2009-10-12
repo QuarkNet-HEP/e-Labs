@@ -7,29 +7,38 @@
     <title>OGRE: CMS On-Line Data Analysis Project</title>
 
     <link rel="stylesheet" type="text/css" href="stylesheets/ogre.css"/>
-    <link rel="shortcut icon" href="/~ogre/graphics/ogre.icon.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="graphics/ogre.icon.png" type="image/x-icon" />
 
     <!-- Include file for javascript needed on this page -->
     <Script Language="JavaScript" Type="Text/JavaScript" SRC="javascript/ogre-includes.js"></Script>
 
     <!-- include the scipts for the flowplayer flash -->
-    <script Language="JavaScript" Type="Text/JavaScript" src="javascript/flowplayer.js"></script>
+    <script type="Text/JavaScript" Language="JavaScript" src="javascript/flowplayer.js"></script>
     <script type="Text/JavaScript" Language="JavaScript" src="javascript/showTutorial.js"></script>
+
 
    <script type='text/javascript'>
 <?php
+
+   include 'php/getBaseURL.php';
+   if ( isset($urlPath) ) {
+     print "\tvar baseURL = '$urlPath';\n";
+   } else {
+     print "\tvar baseURL = '';\n";
+   }
+
    if ( isset($_GET['theme']) ) {
      $theme = $_GET['theme'];
      print "\t// Location of the theme definition file for decorating the windowlets\n";
      if ( $theme == "ogre" ) {
-       print "\tvar xmlThemeFile = \"/~ogre/graphics/themes/ogre/ogre-theme.xml\"\n";
+       print "\tvar xmlThemeFile = \"$urlPath/xml/ogre-theme.xml\"\n";
      } else if ( $theme == "simple" ) {
-       print "\tvar xmlThemeFile = \"/~ogre/graphics/themes/simple/ogre-simple.xml\"\n";
+       print "\tvar xmlThemeFile = \"$urlPath/xml/ogre-simple.xml\"\n";
      } else {
-       print "\tvar xmlThemeFile = \"/~ogre/graphics/themes/ogre/ogre-theme.xml\"\n";
+       print "\tvar xmlThemeFile = \"$urlPath/xml/ogre-theme.xml\"\n";
      }
    } else {
-     print "\tvar xmlThemeFile = \"/~ogre/graphics/themes/ogre/ogre-theme.xml\"\n";
+     print "\tvar xmlThemeFile = \"$urlPath/xml/ogre-theme.xml\"\n";
    }
 
   // If we're restoring a previous session state... do it here
@@ -71,7 +80,7 @@
 
   <?php
     if ( isset($path) ) {
-      print "<body id='body' onLoad='javascript:initTwo();restoreMe(triggers, holder, plots, color, opts);'>\n";
+      print "<body id='body' onLoad='javascript:initTwo();restoreMe(triggers, holder, plots, color, opts, sID);'>\n";
     } else {
       print "<body id='body' onLoad='javascript:initTwo(sessionID);'>\n";
     }
@@ -79,7 +88,6 @@
     <Script Language="JavaScript" Type="Text/JavaScript" SRC="javascript/wz_tooltip.js"></Script>
 
    <div id='load'>
-     <!-- img src='/~ogre/graphics/gray.png' id='loadImg'/-->
      <div id='loadTxt' class='text' style='top:40%;z-index:20;'>
         <center><font color='#ff00ff'><H1>Loading OGRE Applications</H1></font></center>
        <div id='progress'></div>
@@ -211,7 +219,7 @@
 <script type='text/javascript'>updateProgress(30);</script>
 
       <div class="background" name="Bert" id="background" onMouseDown='javascript:bkgClick(event);'>
-	<img id='bkgImg' src="/~ogre/graphics/ogre-mirror-new.png">
+	<img id='bkgImg' src="graphics/ogre-mirror-new.png">
       </div>
 
       <div class="footer" id='footer'> <!-- persistant footer -->
@@ -263,7 +271,7 @@
     <div class="overlay" style="background-image:url('graphics/gray.png');">
 
       <!-- flowplayer container -->
-      <a id="player" href="ogre.flv">
+      <a id="player" href="../ogre.flv">
 
   	<!-- some initial content so that player is not loaded upon page load -->
 	&nbsp;

@@ -2,11 +2,11 @@ div.overlay {
     padding:40px;	
     width:625px;  
     display:none;
-    background-image:url(/~ogre/graphics/white3.png);
+    background-image:url('../graphics/white3.png');
 }
 
 div.overlay div.close {
-    background:url(/~ogre/graphics/close.png) no-repeat;
+    background:url('../graphics/close.png') no-repeat;
     position:absolute;
     top:2px;
     right:10px; 
@@ -16,7 +16,7 @@ div.overlay div.close {
 }
 
 div.overlay div.drag {
-    background:url(/~ogre/graphics/move.png) no-repeat;
+    background:url('../graphics/move.png') no-repeat;
     position:absolute;
     top:2px;
     left:10px; 

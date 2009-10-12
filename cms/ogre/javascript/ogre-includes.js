@@ -15,8 +15,52 @@ function include(filename) {
     head.appendChild(script);
 }
 
+function getBaseURLPath () {
+
+    var xmlHttp;
+    try {
+	// Firefox, Opera 8.0+, Safari
+	xmlHttp=new XMLHttpRequest();
+    } catch (e) {
+	// Internet Explorer
+	try {
+	    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+	} catch (e) {
+	    try {
+		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+	    } catch (e) {
+		alert("Your browser does not support AJAX!");
+		return false;
+	    }
+	}
+    }
+
+    // Process this as a synchronus request since we need to 
+    // deal with the result before continuing
+    var request = "asp/getBaseXMLURL.asp";
+    xmlHttp.open("GET",request,false);
+    xmlHttp.send(null);
+
+    var xmlURL = xmlHttp.responseText;
+        
+    // Now that we have the path to the XML file... get it and read it in
+    xmlHttp.open("GET",xmlURL,false);
+    xmlHttp.send(null);
+    var xml = xmlHttp.responseXML;
+
+    var nodes = xml.getElementsByTagName("parameter");
+    var url = new String();
+    for ( i=0; i<nodes.length; i++ ) {
+	if ( nodes[i].getAttribute('name') == "urlPath" )
+            url = nodes[i].getAttribute('value');
+    }
+    return url;
+}
+
+var baseURL      = getBaseURLPath ();
+var sessionID    = null;
 var showToolTips = true;
-var dmWorkPath   = "./javascript/menu/";
+var dmWorkPath   = baseURL+"/javascript/menu/";
 var useDynMenu   = false;
 
 // Objects that will get bound into jsWindowlets
@@ -32,16 +76,16 @@ var archWin  = new Object();
 var prevWin  = new Object();
 var demoWin  = new Object();
 
-include("/~ogre/javascript/cookies.js");
-include("/~ogre/javascript/utilities.js");
-include("/~ogre/javascript/procForm.js");
-include("/~ogre/javascript/drag_drop.js");
+include(baseURL+"/javascript/cookies.js");
+include(baseURL+"/javascript/utilities.js");
+include(baseURL+"/javascript/procForm.js");
+include(baseURL+"/javascript/drag_drop.js");
 
-include("/~ogre/javascript/jsWindowlet.js");
-include("/~ogre/javascript/triggers-include.js");
-include("/~ogre/javascript/variable-include.js");
-include("/~ogre/javascript/archive-include.js");
-include("/~ogre/javascript/previous-include.js");
+include(baseURL+"/javascript/jsWindowlet.js");
+include(baseURL+"/javascript/triggers-include.js");
+include(baseURL+"/javascript/variable-include.js");
+include(baseURL+"/javascript/archive-include.js");
+include(baseURL+"/javascript/previous-include.js");
 
 if ( useDynMenu )
-    include("/~ogre/javascript/menu/dmenu.js");
+    include(baseURL+"/javascript/menu/dmenu.js");

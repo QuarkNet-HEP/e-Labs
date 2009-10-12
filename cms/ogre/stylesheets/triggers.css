@@ -75,7 +75,7 @@ div#DragContainer14 {
     margin-bottom: 0.5em;
     margin-left: 0.1em;
     width: 5em;
-    cursor: url('/~ogre/graphics/draggable.gif'), pointer;
+    cursor: url('../graphics/draggable.gif'), pointer;
     font-family: verdana, tahoma, arial;
     background-color: #eee;
     text-align: center;
@@ -88,7 +88,7 @@ div#DragContainer14 {
     font-size: 9px;
     margin-bottom: 1px;
     width: 12em;
-    cursor: url('/~ogre/graphics/grab.gif'), pointer;
+    cursor: url('../graphics/grab.gif'), pointer;
     font-family: verdana, tahoma, arial;
     text-align: center;
     margin-left: 0.1em;
@@ -96,7 +96,7 @@ div#DragContainer14 {
 
 .tOverDragContainer {
     background-color: #ff99cc;
-    cursor: url('/~ogre/graphics/grab.gif'), move;
+    cursor: url('../graphics/grab.gif'), move;
 }
 
 .OvertDragBox, .tDragDragBox {
@@ -106,7 +106,7 @@ div#DragContainer14 {
 .tDragDragBox, .tDragDragBox1 {   /* Box being drug... */
     opacity: 0.25;
     background-color: #ff99cc;
-    cursor: url('/~ogre/graphics/grab.gif'), move;
+    cursor: url('../graphics/grab.gif'), move;
 }
 
 label {

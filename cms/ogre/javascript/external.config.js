@@ -8,7 +8,7 @@ var conf = {
 
         autoPlay: true, 
         autoBuffering: true, 
-	baseUrl: '/~ogre/graphics/',
+	baseUrl: 'graphics/',
 
         // functions are also supported 
         onBegin: function() { 

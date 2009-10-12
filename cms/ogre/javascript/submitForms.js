@@ -74,16 +74,28 @@ function archiveStudy(thisForm) {
 	if ( xmlHttp.readyState == 0 ) {
 	} else if ( xmlHttp.readyState == 4 ) {
 
-	    var check = xmlHttp.responseText.substring(0,6).toLowerCase();
+	    var check = xmlHttp.responseText.substring(0,1);
+
 	    var alert = document.getElementById('alertdiv');
 	    var text  = document.getElementById('alerttext');
-	    text.style.color = "#00ff00";
+	    text.innerHTML = xmlHttp.responseText.substring(2);
 
-	    if (  check == "unable" ) {
-		text.innerHTML = xmlHttp.responseText;
+	    if (  check == 0 ) {
+		text.style.color = '#00ff00';
+		text.style.margin = "20% 25%";
+		text.style.fontSize = '3em';
+	    } else if ( check == 1 ) {
 		text.style.color = '#ff0000';
-	    } else {
-		text.innerHTML = xmlHttp.responseText;
+		text.style.margin = "15% 4.5%";
+		text.style.fontSize = '2em';
+	    } else if ( check == 2 ) {
+		text.style.color = '#ff0000';
+		text.style.margin = "25% 4.5%";
+		text.style.fontSize = '3em';
+	    } else if ( check == 3 ) {
+		text.style.color = '#ff0000';
+		text.style.margin = "15% 5%";
+		text.style.fontSize = '3em';
 	    }
 
 	    // Pop up the alert div to let the user see that something happened
@@ -105,7 +117,7 @@ function archiveStudy(thisForm) {
     var typ = document.forms['recut'].type.value;
     var ver = document.forms['recut'].version.value;
 
-    var request = '/~ogre/asp/saveStudy.asp?directory=' +
+    var request = baseURL+'/asp/saveStudy.asp?directory=' +
 	dir + '&version=' + ver + '&type=' + typ + '&overwrite=' + !isArchived + 
 	'&finalize=' + 0;
 
@@ -151,41 +163,51 @@ function finalizeStudy(thisForm) {
     xmlHttp.onreadystatechange=function() {
 	if ( xmlHttp.readyState == 0 ) {
 	} else if ( xmlHttp.readyState == 4 ) {
-	    var check = xmlHttp.responseText.substring(0,6).toLowerCase();
+
+	    var check = xmlHttp.responseText.substring(0,1);
+
 	    var alert = document.getElementById('alertdiv');
 	    var text  = document.getElementById('alerttext');
+	    text.innerHTML = xmlHttp.responseText.substring(2);
 
-	    text.style.color = "#00ff00";
-	    text.style.fontSize = '5em';
-	    text.style.width = '48em';
-	    text.style.left = "1em";
-	    text.innerHTML = "";
-
-	    if (  check == "unable" ) {
-		text.innerHTML = xmlHttp.responseText;
-		text.style.color = '#ff0000';
-	    } else {
+	    if (  check == 0 ) {
 		text.style.color = '#ff00ff';
 		text.style.fontSize = '2em';
 		text.style.width = '18em';
-		text.style.left = "1.75em";
+		text.style.margin = "5% 7.5%";
 		text.innerHTML = "Congratulations young scientist... " +
 		"your study is complete!" +
 		" We shall now return thee whence thou came..." +
 		"<br><br><br>(Say howdy-do to Bert for us)";
+	    } else if ( check == 1 ) {
+		text.style.color = '#ff0000';
+		text.style.margin = "15% 4.5%";
+		text.style.fontSize = '2em';
+	    } else if ( check == 2 ) {
+		text.style.color = '#ff0000';
+		text.style.margin = "25% 4.5%";
+		text.style.fontSize = '3em';
+	    } else if ( check == 3 ) {
+		text.style.color = '#ff0000';
+		text.style.margin = "15% 5%";
+		text.style.fontSize = '3em';
 	    }
 
 	    // Pop up the alert div to let the user see that something happened
+	    alert.style.zIndex = 15;
 	    alert.style.display = "block";
 	    
 	    // and fade it away slowly
 	    var turnOff = new Array( alert );
 	    var fadeStep = (check != "unable") ? 0.005 : 0.005;
-	    
+
+	    var userName = getUserName();
+	    var url = baseURL+'/ogre.php?user='+userName;
+
 	    // if it worked, wait a couple seconds... then return the user to the front page
 	    if ( check != "unable" ) {
 		var timer = 2000 + 10/fadeStep;
-		setTimeout(function(){document.location.href="/~ogre/";}, timer);
+		setTimeout(function(){document.location.href=url;}, timer);
 	    } else {
 		crossFade(null, turnOff, fadeStep);
 	    }
@@ -198,7 +220,7 @@ function finalizeStudy(thisForm) {
     var typ = document.forms['recut'].type.value;
     var ver = document.forms['recut'].version.value;
 
-    var request = '/~ogre/asp/saveStudy.asp?directory=' +
+    var request = baseURL+'/asp/saveStudy.asp?directory=' +
 	dir + '&version=' + ver + '&type=' + typ + '&overwrite=' + !isArchived
 	+ '&finalize='+1;
 
@@ -208,4 +230,32 @@ function finalizeStudy(thisForm) {
 
     return false;
 
+}
+
+function getUserName() {
+    var sessionID = getCookie('sessionID');
+    if ( !sessionID )
+	return null;
+
+    var xmlHttp;
+    try {
+	// Firefox, Opera 8.0+, Safari
+	xmlHttp=new XMLHttpRequest();
+    } catch (e) {
+	// Internet Explorer
+	try {
+	    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+	} catch (e) {
+	    try {
+		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+	    } catch (e) {
+		alert("Your browser does not support AJAX!");
+		return null;
+	    }
+	}
+    }
+    var request = baseURL + '/asp/Burrito.asp?sessid='+sessionID+'&iotype=getUser';
+    xmlHttp.open("GET",request,false);
+    xmlHttp.send(null);
+    return xmlHttp.responseText;
 }

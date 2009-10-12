@@ -18,8 +18,8 @@ var pressedItem=-2;
 var itemCursor="default";
 var itemTarget="_self";
 var statusString="link";
-var blankImage="/~ogre/graphics/menu/blank.gif";
-var pathPrefix_img="/~ogre/graphics/menu/";
+var blankImage=baseURL+"/graphics/menu/blank.gif";
+var pathPrefix_img=baseURL+"/graphics/menu/";
 var pathPrefix_link="";
 
 //--- Dimensions

@@ -53,6 +53,6 @@ function showCompletedCanvas(which) {
     return;
 }
 
-include("/~ogre/javascript/cookies.js");
-include("/~ogre/javascript/utilities.js");
-include("/~ogre/javascript/procForm.js");
+include(baseURL+"/javascript/cookies.js");
+include(baseURL+"/javascript/utilities.js");
+include(baseURL+"/javascript/procForm.js");

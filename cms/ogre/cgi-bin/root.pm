@@ -113,6 +113,7 @@ sub makeRootScript {
   my $filePath = "$tmpdir/$random/script.000.C";
 
   mkdir("$tmpdir/$random", 0777)  || die "Unable to make temp directory $tmpdir/$random: $!\n";
+  chmod(0777, "$tmpdir/$random");  # Stoopid fucking perl thinks it know what I want.... X-(
   open($fileHandle, ">$filePath") || die "unable to open $fileHandle: $!\n";
 
   print $fileHandle "{\n\t/*\n";
@@ -405,6 +406,8 @@ sub makeRootScript {
   print $fileHandle "}\n";
   close($fileHandle);
 
+  chmod (0666, $filePath);
+
   # Now that the script is generated... run it :D and whack the script when we're done
 #  my $redirect = "/dev/null";
 #  if ( $savedata ) {
@@ -455,6 +458,15 @@ sub runRootScript() {
   copy("$tmpdir/../cutfiles/htaccess",              "$tmpdir/$random/.htaccess");
   copy("$tmpdir/../cutfiles/ogre-thumbnail.$type",  "$tmpdir/$random/ogre-thumbnail.$type");
 
+  # !@#%$#% perl refuses to just copy files with the correct permissions....
+  # so force it here otherwise we'll have piles of errors when we try 
+  # delete it later on... !@$%!#%
+  chmod(0666, "$tmpdir/$random/cutList");
+  chmod(0666, "$tmpdir/$random/index.html");
+  chmod(0666, "$tmpdir/$random/nodemap");
+  chmod(0666, "$tmpdir/$random/.htaccess");
+  chmod(0666, "$tmpdir/$random/ogre-thumbnail.$type");
+
   # If there's a global cut... stick it into the cutList
   if ( $gCut ) {
       my $cutPath = "$tmpdir/$random/cutList";
@@ -468,6 +480,9 @@ sub runRootScript() {
       open (CUTS, ">$cutPath");
       print CUTS $list, "\n";
       close(CUTS);
+
+      chmod(0666,$cutPath);
+
   }
 
   if ( $self->{_cutstyle} eq "javaapplet" ) {
@@ -481,6 +496,8 @@ sub runRootScript() {
 
   my $filePath = "$tmpdir/$random/script.000.C";
   my @output = `$rootbin -b -l -n -q $filePath 2>/dev/null`;
+
+  chmod(0666,"$tmpdir/$random/canvas.000.$type");
 
   my $appletData;
   for (my $i=2; $i<=$#output; $i++) {

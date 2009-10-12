@@ -8,12 +8,12 @@
     
     <Script>
       var i = 0;
-      
+
       function changeSrc() {
         if (i > 5 && i < 9){
-	      document.getElementById("funnyOgre").src = "/~ogre/graphics/ogre-mirror-new-glasses.png";
+	      document.getElementById("funnyOgre").src = baseURL + "/graphics/ogre-mirror-new-glasses.png";
           } else {
-              document.getElementById("funnyOgre").src = "/~ogre/graphics/ogre.png";
+              document.getElementById("funnyOgre").src = baseURL + "/graphics/ogre.png";
           }
           i = i + 1;
       }
@@ -26,8 +26,8 @@
           var mesParsed = new Array(2);
           userName = document.getElementById("user").value;
 
-          if (userName == "Bert"){
-              alert("You aren't Bert! I am!");
+          if (userName == "Bert" || userName == "bert" ){
+              alert("You aren't "+userName+"! I am!");
               return false;
           } else if ( userName.length == 0 ) {
 	    userName = "guest";
@@ -52,7 +52,7 @@
           }
 
           // Retrieve the session ID
-          var request = "/~ogre/asp/Burrito.asp?sessid=" + userName + "&iotype=getID";
+          var request = baseURL + "/asp/Burrito.asp?sessid=" + userName + "&iotype=getID";
 
           // Send the Ajax request to the server
           xmlHttp.open("GET",request,false);
@@ -70,7 +70,7 @@
             // The user chose to create a new session... whack any old ones
 	    sessionID = createSessionID();
 
-	    request = "/~ogre/asp/Burrito.asp?sessid=" + sessionID + "&userName=" + userName + "&iotype=create";
+	    request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID + "&userName=" + userName + "&iotype=create";
 	    xmlHttp.open("GET",request,false);
 	    xmlHttp.send(null);
 	    message = xmlHttp.responseText;
@@ -79,12 +79,12 @@
 	    return;
 	  }
 
-	  // If the user only has one session... go right to it without further ado
+	  // If the user no saved sessions ... create a new one & go
           if (mesParsed[0] == 1) {
               //Code for creating a new session
 	      sessionID = createSessionID();
 
-	      request = "/~ogre/asp/Burrito.asp?sessid=" + sessionID + "&userName=" + userName + "&iotype=create";
+	      request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID + "&userName=" + userName + "&iotype=create";
 	      xmlHttp.open("GET",request,false);
 	      xmlHttp.send(null);
 	      message = xmlHttp.responseText;
@@ -106,7 +106,7 @@
             // The user chose to create a new session... whack any old ones
 	    sessionID = createSessionID();
 
-	    request = "/~ogre/asp/Burrito.asp?sessid=" + sessionID + "&userName=" + userName + "&iotype=create";
+	    request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID + "&userName=" + userName + "&iotype=create";
 
 	    xmlHttp.open("GET",request,false);
 	    xmlHttp.send(null);
@@ -120,7 +120,7 @@
 	  sessionID = mesParsed[i];
 
 	  // First... see if the study is still in the tmp directory
-	  var request = "/~ogre/asp/check_archive.asp?sessionID="+sessionID+"&iotype=study";
+	  var request = baseURL + "/asp/check_archive.asp?sessionID="+sessionID+"&iotype=study";
 	  var xmlHttp=new XMLHttpRequest();
 	  xmlHttp.open("GET",request,false);
 	  xmlHttp.send(null);
@@ -131,7 +131,7 @@
 	  }
 	  
 	  // Not in the tmp directory? Try the archives...
-	  var request = "/~ogre/asp/check_archive.asp?sessionID="+sessionID+"&iotype=archive";
+	  var request = baseURL + "/asp/check_archive.asp?sessionID="+sessionID+"&iotype=archive";
 	  var xmlHttp=new XMLHttpRequest();
 	  xmlHttp.open("GET",request,false);
 	  xmlHttp.send(null);
@@ -143,9 +143,8 @@
             restoreArchive(null,sessionID);
 
 	  } else {
-			 
 	    // get the user name associated with this session ID
-	    var request = "/~ogre/asp/Burrito.asp?sessid="+sessionID+"&iotype=getUser";
+	    var request = baseURL + "/asp/Burrito.asp?sessid="+sessionID+"&iotype=getUser";
 	    var xmlHttp=new XMLHttpRequest();
 	    xmlHttp.open("GET",request,false);
 	    xmlHttp.send(null);
@@ -153,32 +152,21 @@
 
 	    if ( userName.length > 0 ) {
 	      setCookie('sessionID',sessionID);
-	      document.location.href = "/~ogre/ogre.php?user="+userName;
+	      document.location.href = baseURL + "/ogre.php?user="+userName;
 	    } else {
               // No such session... log them in as a guest
 	      sessionID = createSessionID();
 
-	      request = "/~ogre/asp/Burrito.asp?sessid=" + sessionID + "&userName=guest&iotype=create";
+	      request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID + "&userName=guest&iotype=create";
 	      xmlHttp.open("GET",request,false);
 	      xmlHttp.send(null);
 	      message = xmlHttp.responseText;
 
-              document.location.href="/~ogre/ogre.php?user=guest";
+              document.location.href=baseURL + "/ogre.php?user=guest";
 	    }
-	  }
-
-
-
-	  /*
-            try {
-              location.href="tmp/" + mesParsed[i]+"/temp.000.html";
-	      return;
-            } catch (e) {
-               alert("You have a hidden file!");
-            }
-	    */
-	  }
-      }
+	}
+	}
+	}
 
     </Script>
   </head>
@@ -192,12 +180,12 @@
     <input Type=Button id='login' value="Login"
 	   onClick="javascript:Login();"><br>
     <div class="background" name="Bert" id="background" onMouseDown='javascript:changeSrc()'>
-      <img src="/~ogre/graphics/ogre.png" id="funnyOgre">
+      <img src="graphics/ogre.png" id="funnyOgre">
     </div>
 
     <!-- Form for grabbing & unpacking previous investigations -->
     <form method="POST" id='restoreForm' name="restore"
-	action="/~ogre/cgi-bin/restore.pl.cgi"
+	action="cgi-bin/restore.pl.cgi"
 	style="float:right;">
 	<input type='hidden' name="sessionID"/>
     </form>

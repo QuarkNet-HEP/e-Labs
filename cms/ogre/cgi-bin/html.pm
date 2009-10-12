@@ -6,11 +6,15 @@ use File::Copy;
 use Image::Magick;
 use Data::Dumper;
 
+use ogreXML;
 use population;
 
 sub new {
   my ($class, $width, $height, $tmpdir, $random, $type, $stacked, $path, 
       $urlPath, $verbose, $histVisible, $logX, $logY, $units, @leaves) = @_;
+
+  my $xml = new ogreXML();
+  my $baseURL = $xml->getOgreParam('urlPath');
 
   my $self = { 
     _width   => $width,
@@ -26,7 +30,8 @@ sub new {
     _logx    => $logX,
     _logy    => $logY,
     _units   => $units,
-    _leaves  => \@leaves
+    _leaves  => \@leaves,
+    _baseURL => $baseURL
   };
   bless $self, $class;
   return $self;
@@ -109,8 +114,11 @@ sub finalPage {
   return;
 }
 
+use ogreXML;
+
 sub redirectPage(\$) {
   my ($self, $whichPage) = @_;
+  my $xml = new ogreXML();
 
   #################### Redirect the results page to the temp file we just created ################
 
@@ -118,9 +126,7 @@ sub redirectPage(\$) {
   print "Content-type: text/html\n\n";
 
   # Get the tmp directory in a url friendly fashion
-  my $tmp = $self->{_tmpdir};
-  $tmp =~ /.*public_html\/(.*)/;
-  $tmp = $1;
+  my $tmp = $xml->getOgreParam('tmpURL');
 
   my $url = $self->{_urlPath} . "/$tmp/$self->{_random}/";
   $url .= (defined($whichPage)) && "$whichPage" || "index.html";
@@ -155,6 +161,7 @@ sub makeRestoreURL() {
       open(DUMP, ">$restore_path");
       print DUMP "$restore";
       close(DUMP);
+      chmod(0666, "$restore_path");
 
       # While the full path is helpful for the open/write...
       # a relative path is better for the URL encoding...
@@ -210,6 +217,7 @@ sub makeHistoryPage {
   my $DEBUG  = $self->{_verbose};
   my $path   = $self->{_path};
   my $urlPath = $self->{_urlPath};
+  my $baseURL = $self->{_baseURL};
 
   # Get the restore link
   my $restore = $self->makeRestoreURL();
@@ -419,6 +427,9 @@ sub makeHistoryPage {
       $x = $image->Write("$type:$graphicFile");
       $self->debug($x) if $x && $DEBUG;
 
+      # Make sure the file is deletable by the apache user later on
+      chmod(0666, $graphicFile);
+
       # Write out the results to HTML map file....
       my $coords = sprintf("%04i, %04i, %04i, %04i", $X, $Y, $X+$width, $Y+$height);
 
@@ -460,6 +471,9 @@ sub makeHistoryPage {
   print HTML "</map>\n";
   close(HTML);
 
+# Make sure we can delete the file later on...
+  chmod(0666, "$htmlFile");
+
 # Clean up our mess....
   undef $image;
 
@@ -477,6 +491,7 @@ sub makeActiveScriptPage(\$ \%) {
     my $logx    = $self->{_logx};
     my $logy    = $self->{_logy};
     my $units   = $self->{_units};
+    my $baseURL = $self->{_baseURL};
 
     my $width   = $appletData->{'width'};
     my $height  = $appletData->{'height'};
@@ -517,11 +532,9 @@ sub makeActiveScriptPage(\$ \%) {
     print $fileHandle "    <meta HTTP-EQUIV=\"CACHE-CONTROL\" CONTENT=\"NO-CACHE\">\n";
     print $fileHandle "    <meta HTTP-EQUIV=\"PRAGMA\"        CONTENT=\"NO-CACHE\">\n";
     print $fileHandle "    <title>OGRE Selection</title>\n";
-    print $fileHandle "    <link rel=\"stylesheet\" type=\"text/css\" href=\"/~ogre/stylesheets/linearCut.css\"/>\n";
-    print $fileHandle "    <link rel=\"shortcut icon\" href=\"/~ogre/graphics/ogre.icon.png\" type=\"image/x-icon\" />\n";
+    print $fileHandle "    <link rel=\"stylesheet\" type=\"text/css\" href=\"$baseURL/stylesheets/linearCut.css\"/>\n";
+    print $fileHandle "    <link rel=\"shortcut icon\" href=\"$baseURL/graphics/ogre.icon.png\" type=\"image/x-icon\" />\n";
 
-    print $fileHandle "    <script type=\"Text/JavaScript\" src=\"/~ogre/javascript/linearCut.js\"></script>\n";
-    print $fileHandle "    <script type=\"Text/JavaScript\" src=\"/~ogre/javascript/jsWindowlet.js\"></script>\n";
     print $fileHandle "    <script>\n";
     print $fileHandle "      var cuts='";
     print $fileHandle "$leaves[0]>$xmin&&$leaves[0]<$xmax";
@@ -534,16 +547,21 @@ sub makeActiveScriptPage(\$ \%) {
 #save the session ID here
     print $fileHandle "$self->{_random}";
     print $fileHandle "';\n";
-    print $fileHandle "      var xmlTheme = \"/~ogre/graphics/themes/ogre/ogre-theme.xml\";\n";
+#    print $fileHandle "      var xmlTheme = \"$baseURL/graphics/themes/ogre/ogre-theme.xml\";\n";
+    print $fileHandle "      var xmlTheme = \"$baseURL/xml/ogre-theme.xml\";\n";
+    print $fileHandle "      var baseURL  = \"$baseURL\";\n";
     print $fileHandle "      function fetch(url) {\n";
     print $fileHandle "        parent.location = url;\n";
     print $fileHandle "      }\n";
     print $fileHandle "    </script>\n";
+    print $fileHandle "    <script type=\"Text/JavaScript\" src=\"$baseURL/javascript/linearCut.js\"></script>\n";
+    print $fileHandle "    <script type=\"Text/JavaScript\" src=\"$baseURL/javascript/jsWindowlet.js\"></script>\n";
+
     print $fileHandle "  </head>\n\n";
 
     print $fileHandle "  <body onload='javascript:pageLoad();'>\n\n";
     
-    print $fileHandle "    <script type=\"Text/JavaScript\" src=\"/~ogre/javascript/wz_tooltip.js\"></script>\n";
+    print $fileHandle "    <script type=\"Text/JavaScript\" src=\"$baseURL/javascript/wz_tooltip.js\"></script>\n";
     print $fileHandle "    <div class=\"wrapper\" id=\"wrapper\">\n";
     print $fileHandle "    <div class=\"background\" id=\"background\"\n";
     print $fileHandle "         onMouseDown='javascript:bkgClick(event);'>\n";
@@ -552,7 +570,7 @@ sub makeActiveScriptPage(\$ \%) {
     print $fileHandle "    <div class=\"header\" id=\"header\"></div>\n";
 
     print $fileHandle "    <div id='controls'>\n";
-    print $fileHandle "      <form  method=POST action='/~ogre/cgi-bin/applyLinearCut.pl.cgi' id='recut'>\n";
+    print $fileHandle "      <form  method=POST action='$baseURL/cgi-bin/applyLinearCut.pl.cgi' id='recut'>\n";
     print $fileHandle "        <input type='hidden' name='cutMin'/>\n";
     print $fileHandle "        <input type='hidden' name='cutMax'/>\n";
     print $fileHandle "        <input type='hidden' name='directory' value='$random'/>\n";
@@ -569,7 +587,7 @@ sub makeActiveScriptPage(\$ \%) {
 
     print $fileHandle "      <br><br><hr width=100%><br>\n";
 
-    print $fileHandle "      <input type=BUTTON class='button' name='button' value='Clear Saved Cuts'  onClick='javascript:delCookie(cookie,\"/~ogre/\");'/>\n";
+    print $fileHandle "      <input type=BUTTON class='button' name='button' value='Clear Saved Cuts'  onClick='javascript:delCookie(cookie,\"$baseURL/\");'/>\n";
     print $fileHandle "      <input type=BUTTON class='button' name='button' value='Selection History' onClick='javascript:hstWin.show();'/>\n\n";
 
     print $fileHandle "      <!-- Selection for changing themes -->\n";
@@ -629,7 +647,7 @@ sub makeActiveScriptPage(\$ \%) {
 
     print $fileHandle "     <div id='footer'>\n";
     print $fileHandle "       <div id='menu'>\n";
-    print $fileHandle "         <script type='text/javascript' src='/~ogre/javascript/menu/cut-menu.js'></script>\n";
+    print $fileHandle "         <script type='text/javascript' src='$baseURL/javascript/menu/cut-menu.js'></script>\n";
     print $fileHandle "       </div>\n";
     print $fileHandle "     </div>\n\n";
 
@@ -640,6 +658,10 @@ sub makeActiveScriptPage(\$ \%) {
     print $fileHandle "</html>\n";
 
     close($fileHandle);
+
+    # Make sure we can delete the file later on...
+    chmod(0666, "$tmpdir/$random/$newFile");
+
     return;
 }
 
@@ -653,6 +675,7 @@ sub makeActiveAppletPage(\$ \%) {
   my @leaves  = @{$self->{_leaves}};
   my $logx    = $self->{_logx};
   my $logy    = $self->{_logy};
+  my $baseURL = $self->{_baseURL};
 
   my $width   = $appletData->{'width'};
   my $height  = $appletData->{'height'};
@@ -687,8 +710,8 @@ sub makeActiveAppletPage(\$ \%) {
   print $fileHandle "    <title>OGRE Selection</title>\n\n";
   print $fileHandle "    <link rel=\"stylesheet\" type=\"text/css\" href=\"showHist.css\"/>\n";
   print $fileHandle "    <link rel=\"stylesheet\" type=\"text/css\" href=\"cut.css\"/>\n";
-  print $fileHandle "    <link rel=\"shortcut icon\" href=\"/~ogre/graphics/ogre.icon.png\" type=\"image/x-icon\" />\n";
-  print $fileHandle "    <script type=\"Text/JavaScript\" src=\"/~ogre/javascript/showhide.js\"></script>\n";
+  print $fileHandle "    <link rel=\"shortcut icon\" href=\"$baseURL/graphics/ogre.icon.png\" type=\"image/x-icon\" />\n";
+  print $fileHandle "    <script type=\"Text/JavaScript\" src=\"$baseURL/javascript/showhide.js\"></script>\n";
   print $fileHandle "    <script type=\"Text/JavaScript\" src=\"submitForms.js\"></script>\n";
   print $fileHandle "    <script type=\"Text/JavaScript\" src=\"cookies.js\"></script>\n";
   print $fileHandle "    <script>\n";
@@ -713,14 +736,14 @@ sub makeActiveAppletPage(\$ \%) {
   print $fileHandle "  <body onload='javascript:loadPage();'\n";
   print $fileHandle "        	onunload='javascript:archiveStudy(document.getElementById(\"recut\"));'>\n\n";
 
-  print $fileHandle "    <script type=\"Text/JavaScript\" src=\"/~ogre/javascript/wz_tooltip.js\"></script>\n";
+  print $fileHandle "    <script type=\"Text/JavaScript\" src=\"$baseURL/javascript/wz_tooltip.js\"></script>\n";
   print $fileHandle "    <div class=\"wrapper\" id=\"wrapper\">\n";
   print $fileHandle "    <div class=\"background\" id=\"background\"\n";
   print $fileHandle "         onMouseOver=\"javascript:this.style.cursor='pointer';Tip('Miss Bert?<BR>We can send you back to his cave.',WIDTH,100);\"\n";
   print $fileHandle "         onMouseOut=\"javascript:this.style.cursor='default';UnTip();\"\n";
-  print $fileHandle "         onClick='javascript:document.location.href=\"/~ogre/\";'></div>\n\n";
+  print $fileHandle "         onClick='javascript:document.location.href=\"$baseURL/\";'></div>\n\n";
 
-  print $fileHandle "      <form  method=POST action='/~ogre/cgi-bin/applyLinearCut.pl.cgi' name='recut'>\n";
+  print $fileHandle "      <form  method=POST action='$baseURL/cgi-bin/applyLinearCut.pl.cgi' name='recut'>\n";
   print $fileHandle "        <input type='hidden' name='cutMin'/>\n";
   print $fileHandle "        <input type='hidden' name='cutMax'/>\n";
   print $fileHandle "        <input type='hidden' name='directory' value='$random'/>\n";
@@ -732,7 +755,7 @@ sub makeActiveAppletPage(\$ \%) {
 
   print $fileHandle "    <div class=\"header\" id=\"header\">\n";
   print $fileHandle "        <input type=SUBMIT   value='Apply'     onClick='javascript:submitForm(this.form);'/>\n";
-  print $fileHandle "        <input type=BUTTON   value='Clear Cuts' onClick='javascript:delCookie(cookie,\"/~ogre/\");'/>\n";
+  print $fileHandle "        <input type=BUTTON   value='Clear Cuts' onClick='javascript:delCookie(cookie,\"$baseURL/\");'/>\n";
   print $fileHandle "        <input type=BUTTON   value='Archive'   onClick='javascript:archiveStudy(this.form);'/>\n";
   print $fileHandle "        <input type=BUTTON   value='Finalize'  onClick='javascript:finalizeStudy(this.form);'/>\n";
   print $fileHandle "    </div>\n\n";
@@ -744,7 +767,7 @@ sub makeActiveAppletPage(\$ \%) {
   print $fileHandle "        <font color='blue'>How did I get here?</font></h5>\n";
   print $fileHandle "    <iframe frameborder='0' scrolling='no' id='hist' src='history.html'></iframe>\n\n";
 
-  print $fileHandle "    <applet code='linearCut' name='select' codebase='/~ogre/tmp/$random' width='$width' height='$height' cache_option=\"Yes\">\n";
+  print $fileHandle "    <applet code='linearCut' name='select' codebase='$baseURL/tmp/$random' width='$width' height='$height' cache_option=\"Yes\">\n";
   print $fileHandle "      <param name='file' value='./$file?key=$random_key'/>\n";
   print $fileHandle "      <param name='width' value='$width'/>\n";
   print $fileHandle "      <param name='height' value='$height'/>\n";
@@ -766,6 +789,10 @@ sub makeActiveAppletPage(\$ \%) {
   print $fileHandle "</html>\n";
 
   close($fileHandle);
+
+  # Make sure we can delete the file later on...
+  chmod(0666, "$tmpdir/$random/$newFile");
+
   return;
 }
 

@@ -14,7 +14,7 @@ function include(filename) {
 
     head.appendChild(script);
 }
-include("/~ogre/javascript/cookies.js");
-include("/~ogre/javascript/utilities.js");
-include("/~ogre/javascript/drag.js");
-include("/~ogre/javascript/procForm.js");
+include(baseURL+"/javascript/cookies.js");
+include(baseURL+"/javascript/utilities.js");
+include(baseURL+"/javascript/drag.js");
+include(baseURL+"/javascript/procForm.js");

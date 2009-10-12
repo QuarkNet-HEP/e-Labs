@@ -9,7 +9,6 @@ use File::Find;
 use File::chdir;
 use Cwd;
 
-#use html;
 use ogreXML;
 use MySQL;
 
@@ -17,7 +16,7 @@ sub new {
   my ($class,$dir,$active,$type,$overwrite,$final) = @_;
 
   # Get some of the basic structure information from the ogre.xml file
-  my $ogreXML = new ogreXML("../cgi-bin");
+  my $ogreXML = new ogreXML();
 
   my $self = {
     _archivesDir => $ogreXML->getOgreParam('archiveDir'),
@@ -28,6 +27,7 @@ sub new {
     _dir         => $dir,
     _type        => $type
   };
+
 
   if ( $overwrite ) {
       $self->{_overwrite} = $overwrite;

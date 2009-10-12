@@ -117,8 +117,9 @@ if ( !isset($dataset) ) {
           // Set the location of the XML file to read
           if ( isset($dataset) ) {
 	    include "mysql.php";
+	 
 	  } else {
-	    $xmlFile = "/home/ogre/public_html/xml/mc_data.xml";
+	    $xmlFile = "xml/mc_data.xml";
 	  }
 
           //this option ensures that unneccessary white spaces

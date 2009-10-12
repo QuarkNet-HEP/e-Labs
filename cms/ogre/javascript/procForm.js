@@ -114,7 +114,19 @@ function submitForm(thisForm, sID) {
     return true;
 }
 
-function restoreMe(triggers, holder, plots, color, opts) {
+function restoreMe(triggers, holder, plots, color, opts, sessionID) {
+
+    // First.... restore the session so we've got the user ID
+    var request = baseURL + "/asp/Burrito.asp?sessid="+sessionID+"&iotype=getUser";
+    var xmlHttp=new XMLHttpRequest();
+    xmlHttp.open("GET",request,false);
+    xmlHttp.send(null);
+    var userName = xmlHttp.responseText;
+
+    // Update the session ID cookie if they're allowed
+    if ( testCookies() )
+	setCookie('sessionID', sessionID);
+
 
     // Array of id's for the logic boxes... 
     var trigHolder = ['DragContainer11','DragContainer12','DragContainer13',
@@ -148,7 +160,7 @@ function restoreMe(triggers, holder, plots, color, opts) {
 	container.appendChild(child);
     }
 
-    // Update the data selectio nto reflect the current conditions
+    // Update the data selection to reflect the current conditions
     updateLogic();
 
     // Rebuild the plot box...

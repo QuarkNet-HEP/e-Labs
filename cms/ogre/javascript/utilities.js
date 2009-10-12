@@ -3,8 +3,6 @@ var browser = new Object();
 browser.isIE = (/MSIE (\d+\.\d+);/.test(navigator.userAgent));
 browser.ieVer = (browser.isIE) ? new Number(RegExp.$1) : -1;
 
-var sessionID = null;
-
 function updateProgress(progress) {
     var progBar = document.getElementById('progress');
     progBar.style.width = progress+'%';
@@ -37,6 +35,7 @@ function createSessionID() {
 }
 
 function initTwo(sID) {
+
     // Grab hold of the session ID... assuming that it's there
     var userLevel = -1;
     var ds;
@@ -86,14 +85,14 @@ function initTwo(sID) {
      *         4 == The request is complete
      */
     // Send the actual request for information
-    request = "/~ogre/asp/Burrito.asp?sessid=" + sessionID + "&iotype=retrieve";
+    request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID + "&iotype=retrieve";
 
     // Send the Ajax request to the server
     xmlHttp.open("GET",request,false);
     xmlHttp.send(null);
     message = xmlHttp.responseText;
     if (message == "::::::::::::::"){
-	request = "/~ogre/asp/Burrito.asp?sessid="+ "&userName=" + userName  + sessionID +"&iotype=create";
+	request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID + "&userName=" + userName  + "&iotype=create";
 	xmlHttp.open("GET",request,false);
 	xmlHttp.send(null);
 	message = xmlHttp.responseText;
@@ -105,9 +104,9 @@ function initTwo(sID) {
     changeDataset(ds);
     document.getElementById("themes").value = mesParsed[3];
     if (mesParsed[3] == 12 )
-	xmlThemeFile = '/~ogre/graphics/themes/ogre/ogre-theme.xml';
+	xmlThemeFile = baseURL + '/xml/ogre-theme.xml';
     else if (mesParsed[3] == 13 )
-	xmlThemeFile = '/~ogre/graphics/themes/simple/ogre-simple.xml';
+	xmlThemeFile = baseURL + '/xml/ogre-simple.xml';
     else
 	    return false;
     if (mesParsed[4] == 1)
@@ -208,6 +207,10 @@ function initTwo(sID) {
 			      document.getElementById('archhelp'), 'hlpWin',
 			      "Previous and Intermediate Results");
 
+    prevHlp = new jsWindowlet(xmlThemeFile, false, true, 
+			      document.getElementById('prevhelp'), 'hlpWin',
+			      "Previous and Intermediate Results");
+
     cntlWin = new jsWindowlet(xmlThemeFile, false, true, 
 			      document.getElementById('controls'), 'stdWin',
 			      "OGRE Controls");
@@ -237,7 +240,7 @@ function initTwo(sID) {
     prevWin = new jsWindowlet(xmlThemeFile, false, true, 
 			      document.getElementById('movePrev'), 
 			      'stdWin', "Completed Studies");
-    prevWin.bind('stdHelp', archHlp);
+    prevWin.bind('stdHelp', prevHlp);
 
     // Construct the windowlets for the flash demo of the detector
     demoHlp = new jsWindowlet(xmlThemeFile, false, true, 
@@ -299,20 +302,20 @@ function initTwo(sID) {
     switch (userLevel) {
     case 0:
 	introWin.show();
-	backgroundImg.src = "/~ogre/graphics/ogre-mirror-new-hat.png";
+	backgroundImg.src = baseURL + "/graphics/ogre-mirror-new-hat.png";
 	break;
     case 1:
-	backgroundImg.src = "/~ogre/graphics/ogre-mirror-new-glasses.png";
+	backgroundImg.src = baseURL + "/graphics/ogre-mirror-new-glasses.png";
 	break;
     case 2:
-	backgroundImg.src = "/~ogre/graphics/ogre-mirror-new-mortar.png";
+	backgroundImg.src = baseURL + "/graphics/ogre-mirror-new-mortar.png";
 	break;
     case 3:
-	backgroundImg.src = "/~ogre/graphics/ogre-mirror-new-wand.png";
+	backgroundImg.src = baseURL + "/graphics/ogre-mirror-new-wand.png";
 	break;
     default:
 	introWin.show();
-	backgroundImg.src = "/~ogre/graphics/ogre-mirror-new-hat.png";
+	backgroundImg.src = baseURL + "/graphics/ogre-mirror-new-hat.png";
     }
     
     return true;
@@ -365,14 +368,19 @@ function sendState (parameter, value, encase) {
 		levelChange(true);
 	}
     }
+
+    // Make sure we know the sessionID
+    if ( !sessionID )
+	sessionID = getCookie('sessionID');
+
     // Request the history page from the server
-    request = "/~ogre/asp/Burrito.asp?sessid=" + sessionID + "&iotype=send&parameter=" + parameter + "&value=" + value;
+    request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID + "&iotype=send&parameter=" + parameter + "&value=" + value;
     // Send the Ajax request to the server
     //alert (request);
     xmlHttp.open("GET",request,true);
     xmlHttp.send(null);
 
-return;
+    return;
 }
 
 function init() {
@@ -698,9 +706,9 @@ function callButton(option) {
 	flushTheme();
 
 	if ( option == 12 )
-	    xmlThemeFile = '/~ogre/graphics/themes/ogre/ogre-theme.xml';
+	    xmlThemeFile = baseURL + '/xml/ogre-theme.xml'; //'/graphics/themes/ogre/ogre-theme.xml';
 	else if ( option == 13 )
-	    xmlThemeFile = '/~ogre/graphics/themes/simple/ogre-simple.xml';
+	    xmlThemeFile = baseURL + '/xml/ogre-simple.xml'; //'/graphics/themes/simple/ogre-simple.xml';
 	else
 	    return false;
 	sendState ("theme", option, false);
@@ -731,7 +739,11 @@ function callButton(option) {
 	archWin.bind('stdHelp', archHlp);
 	prevWin.bind('stdHelp', archHlp);
 
-	demoWin.changeBkg("white-640.png");
+	if ( xmlThemeFile.indexOf("ogre-theme") > -1 )
+	    demoWin.changeBkg("white-640.png");
+	else if ( xmlThemeFile.indexOf("ogre-simple") > -1 )
+	    demoWin.changeBkg("white-640.jpg");
+
 	demoWin.bind('archHelp', demoHlp);
 
     }
@@ -846,10 +858,15 @@ function restoreArchive(event, sID, srcID) {
 	    return false;
     }
 
+    var hasCookies = testCookies();
     var retVal = true;
     if ( sID ) {
 	var form = parent.document.getElementById('restoreForm');
 	retVal = submitForm(form, sID);
+
+	if ( hasCookies ) {
+	    setCookie('sessionID',sID);
+	}
     }
 
     sID = 0;
@@ -911,9 +928,9 @@ function levelChange(firstTime) {
     // Request the data page for the new user level
     var dataset = document.getElementById('dataset').value;
     if ( firstTime )
-	request = '/~ogre/asp/refreshUserLevel.asp?page=data&sessionID='+sessionID;
+	request = baseURL + '/asp/refreshUserLevel.asp?page=data&sessionID='+sessionID;
     else
-	request = '/~ogre/asp/refreshUserLevel.asp?page=vars&sessionID='+sessionID;
+	request = baseURL + '/asp/refreshUserLevel.asp?page=vars&sessionID='+sessionID;
 
     // Send the Ajax request to the server
     xmlHttp.open("GET",request,true);
@@ -968,23 +985,23 @@ function simpleMenuLevel(level) {
     var source; // = new String();
     switch (level) {
     case 0:
-	source = "/~ogre/graphics/ogre-mirror-new-hat.png";
+	source = baseURL + "/graphics/ogre-mirror-new-hat.png";
 	singleWindow = true;
 	break;
     case 1:
-	source = "/~ogre/graphics/ogre-mirror-new-glasses.png";
+	source = baseURL + "/graphics/ogre-mirror-new-glasses.png";
 	singleWindow = true;
 	break;
     case 2:
-	source = "/~ogre/graphics/ogre-mirror-new-mortar.png";
+	source = baseURL + "/graphics/ogre-mirror-new-mortar.png";
 	singleWindow = false;
 	break;
     case 3:
-	source = "/~ogre/graphics/ogre-mirror-new-wand.png";
+	source = baseURL + "/graphics/ogre-mirror-new-wand.png";
 	singleWindow = false;
 	break;
     default:
-	source = "/~ogre/graphics/ogre-mirror-new-hat.png";
+	source = baseURL + "/graphics/ogre-mirror-new-hat.png";
 	singleWindow = false;
     }
     var backgroundImg = document.getElementById("bkgImg");

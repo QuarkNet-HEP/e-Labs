@@ -41,7 +41,6 @@ function root2hex($rColor) {
   return;
 }
 
-
 // Open the restoration file and read the url
 if ( isset($path) ) {
   $fHandle = fopen($path,"r");
@@ -121,7 +120,11 @@ for ( $i=0; $i<count($varList); $i++ ) {
 
   } else if ( $var == "holders" ) {
     array_push($holders, "'$val'");
+
+  } else if ( $var == "sID" ) {
+    $sessionID = $val;
   }
+
 }
 
 $size = $width . "x" . $height;
@@ -136,5 +139,5 @@ print "      var holder   = new Array( " . join(",",$holders)   . " );\n";
 print "      var plots    = new Array( " . join(",",$leafID)    . " );\n";
 print "      var color    = new Array( " . join(",", $color)    . " );\n";
 print "      var opts     = new Array( " . join(",", $opts)     . " );\n";
-
+print "      var sID      = '$sessionID';\n";
 ?>

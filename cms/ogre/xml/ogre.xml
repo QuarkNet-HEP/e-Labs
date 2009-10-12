@@ -14,4 +14,5 @@
   <parameter name="resultsDir"     value="results"                  type="relpath" />
   <parameter name="archiveDir"     value="archives"                 type="relpath" />
   <parameter name="urlPath"        value="/~ogre"                   type="url"     />
+  <parameter name="tmpURL"         value="tmp"                      type="url"     />
 </ogre>

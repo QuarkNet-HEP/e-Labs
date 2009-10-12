@@ -75,7 +75,7 @@ $(function() {
 		    //turnOff[0] = document.getElementById("wrapper");
 		    //fader(null, turnOff, 0.05);
 		    // fade the background out
-		    setAlpha(document.getElementById('wrapper'), 0.25);
+		    //setAlpha(document.getElementById('wrapper'), 0.25);
 
 		    player.load();
 		},
@@ -83,7 +83,7 @@ $(function() {
 		// when overlay is closed, unload our player
 		onClose: function() {
 		    player.unload();
-		    fader(document.getElementById("wrapper"), null, 1, 0.25);
+		    //fader(document.getElementById("wrapper"), null, 1, 0.25);
 		}
 	    });
     });

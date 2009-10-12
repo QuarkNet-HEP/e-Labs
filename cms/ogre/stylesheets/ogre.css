@@ -3,6 +3,7 @@
 @import "variables.css";
 @import "archive.css";
 @import "previous.css";
+@import "help.css";
 
 body {
     background: #cccccc;
