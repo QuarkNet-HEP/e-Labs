@@ -36,7 +36,7 @@
 					<span class="tab-title">Analysis</span>
 					<div class="tab-contents">
 						<p>
-							<a href="tutorial.jsp">Lateral Size Study Tutorial</a> -
+							<a href="background.jsp">Lateral Size Study Background</a> -
 							Read background information about the lateral size study.
 						</p>
 						<p>
