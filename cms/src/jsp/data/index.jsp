@@ -25,7 +25,6 @@
 			<div id="content">
 				
 <h1>What can you learn? Choose a study.</h1>
-
 <table border="0" id="main">
 	<tr>
 		<td>
@@ -33,6 +32,8 @@
 				<div class="tab">
 					<span class="tab-title">Analysis</span>
 					<div class="tab-contents">
+					<p>We recommend doing the studies in the order shown below.</p>
+
 						<p>
 							<a href="../analysis-shower-depth">Shower Depth</a> -
 							Determine shower length in the detector.
