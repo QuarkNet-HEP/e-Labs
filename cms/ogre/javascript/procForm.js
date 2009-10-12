@@ -118,7 +118,23 @@ function restoreMe(triggers, holder, plots, color, opts, sessionID) {
 
     // First.... restore the session so we've got the user ID
     var request = baseURL + "/asp/Burrito.asp?sessid="+sessionID+"&iotype=getUser";
-    var xmlHttp=new XMLHttpRequest();
+    var xmlHttp;
+    try {
+	// Firefox, Opera 8.0+, Safari
+	xmlHttp=new XMLHttpRequest();
+    } catch (e) {
+	// Internet Explorer
+	try {
+	    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+	} catch (e) {
+	    try {
+		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+	    } catch (e) {
+		alert("Your browser does not support AJAX!");
+		return null;
+	    }
+	}
+    }
     xmlHttp.open("GET",request,false);
     xmlHttp.send(null);
     var userName = xmlHttp.responseText;

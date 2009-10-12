@@ -3,16 +3,18 @@ use strict;
 use warnings;
 use Data::Dumper;
 use DBI;
+use DBDefs;
 
 # Define what happens to a new instance of the class
 sub new {
   my ($class) = @_;
 
-  # Basic data for connecting to the local database
-  my $host   = "localhost"; #"leptoquark.hep.nd.edu";
-  my $dbtype = "mysql";
-  my $db     = "ogredb";
-  my $user   = "ogre";
+  my $dbdefs = new DBDefs();
+
+  my $host = $dbdefs->getHost();
+  my $dbtype = $dbdefs->getType();
+  my $db = $dbdefs->getDB();
+  my $user = $dbdefs->getUser();
 
   my $dbh = DBI->connect("DBI:$dbtype:$db:$host", "$user") or
     die "Unable to connect to DB: $!\n";

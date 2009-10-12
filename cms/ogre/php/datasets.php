@@ -1,11 +1,7 @@
 <?php
 
-// DB connection information
-$dbhost = "localhost";
-$dbuser = "ogre";
-$dbpass = null;
-$dbname = "ogredb";
-$table  = "datasets";
+// Include the DB connection information
+include "DBDefs.php";
 
 // Connect to the database...
 $conn = mysql_connect($dbhost, $dbuser, $dbpass) or 

@@ -2,12 +2,15 @@
 
 use DBI;
 use CGI;
+use DBDefs;
 
-# Basic data for connecting to the local database
-my $host   = "localhost";
-my $dbtype = "mysql";
-my $db     = "ogredb";
-my $user   = "ogre";
+# Get the basic data for connecting to the local database
+my $dbdefs = new DBDefs();
+
+my $host = $dbdefs->getHost();
+my $dbtype = $dbdefs->getType();
+my $db = $dbdefs->getDB();
+my $user = $dbdefs->getUser();
 my $dbh;
 
 my $cgi = new CGI();

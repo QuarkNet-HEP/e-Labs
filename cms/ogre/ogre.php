@@ -71,7 +71,12 @@
     h6#userLevelLabel {top:28%;}
     h6#dataSetLabel {top:28%;}
     h6#selectLabel {top:28%;}
-
+    div.stdContent {
+      overflow:visible; 
+      overflow-x:hidden;
+      overflow-y:auto;
+      padding-bottom:20px;
+    }
     </style>
     <![endif]-->
   </head>

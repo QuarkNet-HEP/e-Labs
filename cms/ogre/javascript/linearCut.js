@@ -50,9 +50,10 @@ var logx = false;
 
 // Objects that will hold the windowlets...
 var browser = new Object();
-var cutWin = new Object();
-var hlpWin = new Object();
-var hstWin = new Object();
+var cutWin  = new Object();
+var hlpWin  = new Object();
+var hstWin  = new Object();
+var ctlHlp  = new Object();
 
 // Define the work path for the menu
 var dmWorkPath   = baseURL + "/javascript/menu/";
@@ -460,7 +461,7 @@ function pageLoad() {
 
     // Adjust for the drop shadows on the graphic
  
-   cutWin.shAdjust(24, 24, width, height);
+    cutWin.shAdjust(24, 24, width, height);
     cutWin.setMinTop(5);
 
     // Make a windowlet for the control buttons

@@ -116,7 +116,7 @@ div.stdExpand {
     position: absolute;
     width: 624px;
     height: 289px;
-    /*overflow: auto;*/
+    overflow: auto;
     left: 8px;
     top: 34px;
     font-size: 0.975em;

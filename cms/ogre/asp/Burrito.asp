@@ -2,12 +2,15 @@
 
 use DBI;
 use CGI;
+use DBDefs;
+
+my $dbdefs = new DBDefs();
 
 my $i;
-my $host = "localhost";
-my $dbtype = "mysql";
-my $db = "ogredb";
-my $user = "ogre";
+my $host = $dbdefs->getHost();
+my $dbtype = $dbdefs->getType();
+my $db = $dbdefs->getDB();
+my $user = $dbdefs->getUser();
 my $dbh;
 my $cgi = new CGI();
 my $query;
