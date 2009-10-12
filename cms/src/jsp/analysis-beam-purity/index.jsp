@@ -36,7 +36,7 @@
 					<span class="tab-title">Analysis</span>
 					<div class="tab-contents">
 						<p>
-							<a href="tutorial.jsp">Beam Purity Tutorial</a> -
+							<a href="background.jsp">Beam Purity Tutorial</a> -
 							Read background information about the shower study.
 						</p>
 						<p>
