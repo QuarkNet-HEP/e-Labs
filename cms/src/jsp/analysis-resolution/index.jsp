@@ -36,8 +36,8 @@
 					<span class="tab-title">Analysis</span>
 					<div class="tab-contents">
 						<p>
-							<a href="tutorial.jsp">Detector Resolution Tutorial</a> -
-							Read background information about the shower study.
+							<a href="background.jsp">Detector Resolution Background</a> -
+							Read background information about the detector resolution.
 						</p>
 						<p>
 							<a href="http://129.74.67.184/~ogre/" target="ogre">Access OGRE</a> -
