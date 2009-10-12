@@ -36,7 +36,7 @@
 					<span class="tab-title">Analysis</span>
 					<div class="tab-contents">
 						<p>
-							<a href="tutorial.jsp">Shower Depth Study Tutorial</a> -
+							<a href="background.jsp">Shower Depth Study Background</a> -
 							Read background information about the shower depth study.
 						</p>
 						<p>
