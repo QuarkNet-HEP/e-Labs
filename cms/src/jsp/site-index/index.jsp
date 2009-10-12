@@ -52,8 +52,12 @@
 					<li><b>Online Links</b>
 					<ul>
 									<li><a href="http://cmsinfo.cern.ch/">CMS Experiment</a></li></ul>
-						<li><b>Tutorials</b>
+						<li><b>Tutorials/Background</b>
 							<ul>
+								<li><a href="../analysis-shower-depth/background.jsp">Shower Depth</a></li>
+								<li><a href="../analysis-lateral-size/background.jsp">Lateral Size</a></li>         
+								<li><a href="../analysis-beam-purity/background.jsp">Beam Purity</a></li>
+								<li><a href="../analysis-resolution/background.jsp">Resolution</a></li>
 								<li><a href="http://www-root.fnal.gov/root/">Root Tutorial</a></li>
 							</ul>
 						</li>
