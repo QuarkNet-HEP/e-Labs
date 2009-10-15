@@ -20,7 +20,6 @@
     <icon       class="stdIcon"/>
 
     <titleBar   class="stdTitleBar">
-      <!-- titleBkg class="stdTitleBkg" src="titleBkg.png"/-->
       <titleIn  class="stdInactive"/>
       <dragBar  class="stdDragBar" />
       <button   class="stdExit" src="exit.png"     event='onmousedown' action='close'    />
