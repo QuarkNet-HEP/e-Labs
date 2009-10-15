@@ -3,9 +3,14 @@ ErrorDocument 404 /~ogre/php/goodbye.php
 Options MultiViews -Indexes FollowSymLinks +ExecCGI
 Allow from all
 
-<Files ~ (\.cgi-bin)>
-  Options  ExecCGI
-  SetHandler cgi-script
+<Files ~ (\.inc)>
+  order allow,deny
+  Deny from all
+</Files>
+
+<Files ~ (\.root)>
+  order allow,deny
+  Deny from all
 </Files>
 
 PerlModule  Apache::ASP
