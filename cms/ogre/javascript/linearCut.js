@@ -669,7 +669,7 @@ function callMenu(option) {
 	ctlWin.setMinTop(25);
 	ctlHlp.setMinTop(35);
 	hlpWin.setMinTop(35);
-	histWin.setMinTop(35);
+	hstWin.setMinTop(35);
 
     }
 
