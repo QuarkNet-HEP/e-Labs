@@ -2,6 +2,7 @@
 
 use DBI;
 use CGI;
+use lib "../cgi-bin";
 use DBDefs;
 
 # Get the basic data for connecting to the local database

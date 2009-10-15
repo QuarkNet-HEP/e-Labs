@@ -34,7 +34,7 @@ function createSessionID() {
     return sessionID;
 }
 
-function initTwo(sID) {
+function init(sID) {
 
     // Grab hold of the session ID... assuming that it's there
     var userLevel = -1;
@@ -52,38 +52,13 @@ function initTwo(sID) {
 	sessionID = createSessionID();
     }
 
-    // This function is a duplicate of the init function for modification and testing before replacement
-    //First, read in the data required for these forms
-    var xmlHttp;
+    //First, read in the data required for the forms
+    var xmlHttp = createXMLHttp();
     var request;
     var message;
     var mesParsed;
     var i;
 
-    try {
-	// Firefox, Opera 8.0+, Safari
-	xmlHttp=new XMLHttpRequest();
-    } catch (e) {
-	// Internet Explorer
-	try {
-	    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
-	} catch (e) {
-	    try {
-		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
-	    } catch (e) {
-		alert("Your browser does not support AJAX!");
-		return false;
-	    }
-	}
-    }
-
-    /*
-     * States: 0 == The request is not initialized
-     *         1 == The request has been set up
-     *         2 == The request has been sent
-     *         3 == The request is in process
-     *         4 == The request is complete
-     */
     // Send the actual request for information
     request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID + "&iotype=retrieve";
 
@@ -92,7 +67,8 @@ function initTwo(sID) {
     xmlHttp.send(null);
     message = xmlHttp.responseText;
     if (message == "::::::::::::::"){
-	request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID + "&userName=" + userName  + "&iotype=create";
+	request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID + 
+	    "&userName=" + userName  + "&iotype=create";
 	xmlHttp.open("GET",request,false);
 	xmlHttp.send(null);
 	message = xmlHttp.responseText;
@@ -103,17 +79,19 @@ function initTwo(sID) {
     ds = mesParsed[2];
     changeDataset(ds);
     document.getElementById("themes").value = mesParsed[3];
+    document.getElementById("themesBtm").value = mesParsed[3];
     if (mesParsed[3] == 12 )
 	xmlThemeFile = baseURL + '/xml/ogre-theme.xml';
     else if (mesParsed[3] == 13 )
 	xmlThemeFile = baseURL + '/xml/ogre-simple.xml';
     else
-	    return false;
+	return false;
     if (mesParsed[4] == 1)
 	showToolTips = true;
     else
 	showToolTips = false;
     document.getElementById("tooltips").checked = showToolTips;
+    document.getElementById("tooltipsBtm").checked = showToolTips;
     if (mesParsed[5] == 1)
 	useDragDrop = true;
     else
@@ -137,7 +115,7 @@ function initTwo(sID) {
 	levelChange();
     }
 
-    // For beginners... Pin the windowltes to the browser
+    // For beginners... Pin the windowlets to the browser and only show one at a time
     if ( userLevel < 2 )
 	singleWindow = true;
     else
@@ -145,15 +123,9 @@ function initTwo(sID) {
 
     try {
 	// Update the menu selections to reflect the proper level
-	document.getElementById('userLevel').selectedIndex = userLevel;    // HTML Select
-	if ( useDynMenu )
-	    dm_ext_changeItem(0, 5, userLevel, [, , , , , "_"]);           // Deluxe menu userLevel
-
+	document.getElementById('userLevel').selectedIndex = userLevel;
+	document.getElementById('userLevelBtm').selectedIndex = userLevel;
     } catch (e) {}
-
-    // Init the menu structure 
-    if ( useDynMenu )
-	toggleMenu(null);
 
     // Init the dataset selection box
     var select = document.getElementById('dsSelection');
@@ -161,22 +133,6 @@ function initTwo(sID) {
     for ( var i=0; i<select.length; i++ ) {
 	if (select[i].value.indexOf(ds) > -1)
 	    select.selectedIndex = i;
-    }
-
-    if ( useDynMenu ) {
-	// Init the deluxe menu to reflect the dataset options
-	var menuEntry = new Array();
-	for ( var i=0; i<select.length; i++ ) {
-	    if ( select[i].value.length ) {
-		var value = select[i].value;
-		var descr = select[i].innerHTML.substr(12);
-		menuEntry = [descr,"javascript:changeDataset('"+value+"');"];
-		dm_ext_addItem(0,6,menuEntry);
-
-		if ( select[i].value.indexOf(ds) > -1 )
-		    dm_ext_changeItem(0, 6, i, [, , , , , "_"]);
-	    }
-	}
     }
 
     // Set the drag/drop option
@@ -242,7 +198,7 @@ function initTwo(sID) {
 			      'stdWin', "Completed Studies");
     prevWin.bind('stdHelp', prevHlp);
 
-    // Construct the windowlets for the flash demo of the detector
+    // Construct the windowlets for the flash demo of the detector & the tutorial
     demoHlp = new jsWindowlet(xmlThemeFile, false, true, 
 			      document.getElementById('demohelp'), 
 			      'hlpWin', "Using the CMS Detector Demonstration");
@@ -251,6 +207,11 @@ function initTwo(sID) {
 			      document.getElementById('demo'), 
 			      'archWin', "CMS Detector Demo");
 
+    tutrWin = new jsWindowlet(xmlThemeFile, false, true, 
+			      document.getElementById('tutorial'), 
+			      'stdWin', "OGRE Tutorial");
+
+
     if ( xmlThemeFile.indexOf("ogre-theme") > -1 )
 	demoWin.changeBkg("white-640.png");
     else if ( xmlThemeFile.indexOf("ogre-simple") > -1 )
@@ -258,28 +219,58 @@ function initTwo(sID) {
     demoWin.bind('archHelp', demoHlp);
 
     // Make sure all the windowlets appear & stay in the active area
-    introWin.setMinTop(25);
-    cntlWin.setMinTop(25);
-    dataHlp.setMinTop(25);
-    variHlp.setMinTop(25);
-    archHlp.setMinTop(25);
-    crdtWin.setMinTop(25);
-    dataWin.setMinTop(25);
-    variWin.setMinTop(25);
-    archWin.setMinTop(25);
-    prevWin.setMinTop(25);
-    demoHlp.setMinTop(25);
-    demoHlp.setMinTop(25);
-    demoWin.setMinTop(25);
+    introWin.setMinTop(45);
+    cntlWin.setMinTop(45);
+    dataHlp.setMinTop(45);
+    variHlp.setMinTop(45);
+    archHlp.setMinTop(45);
+    crdtWin.setMinTop(45);
+    dataWin.setMinTop(45);
+    variWin.setMinTop(45);
+    archWin.setMinTop(45);
+    prevWin.setMinTop(45);
+    demoHlp.setMinTop(45);
+    demoHlp.setMinTop(45);
+    demoWin.setMinTop(45);
 
     // Since our background image is an alpha channel PNG... 
     // IE 6 & under is gonna choke on it. Reload the image
     // for bad browsers using the AlphaImageLoader filter
     // from M$ (located in jsWindowlet.js). Bad form, but
     // there it is.
-    fnLoadPngs(document.getElementById('bkgImg'), 122, 190)
+    fnLoadPngs(document.getElementById('bkgImg'), 122, 190);
 
-    // Close the splash screen and show the page
+    //cntlWin.show();
+
+    //Code to show the right ogre graphic
+    var backgroundImg = document.getElementById("bkgImg");
+    if ( !backgroundImg )
+	backgroundImg = document.getElementById("bkgImgieDiv");
+
+    switch (userLevel) {
+    case 0:
+	introWin.show();   // For beginners... show the intro
+	toggleMenu();      // and use the header/footer controls
+	backgroundImg.src = baseURL + "/graphics/ogre-beanie.png";
+	break;
+    case 1:
+	backgroundImg.src = baseURL + "/graphics/ogre-glasses.png";
+	toggleMenu();      // Use the header/footer controls
+	break;
+    case 2:
+	backgroundImg.src = baseURL + "/graphics/ogre-mortar.png";
+	cntlWin.show();
+	break;
+    case 3:
+	backgroundImg.src = baseURL + "/graphics/ogre-wand.png";
+	cntlWin.show();
+	break;
+    default:
+	introWin.show();
+	backgroundImg.src = baseURL + "/graphics/ogre.png";
+    }
+    
+    // Close the splash screen.... 
     try {
 	document.getElementById('loadTxt').innerHTML = 
 	    "<center><font color='green'><H1>Done!</H1></font></center><div id='progress'>";
@@ -290,40 +281,20 @@ function initTwo(sID) {
 
     } catch (e) {}
 
+    // Render the page visible....
     document.getElementById('wrapper').style.display = "block";
 
-    cntlWin.show();
+    // And allow the tutorial to show (since it's flash if it's 
+    // display is set to block straight away it'll show up over
+    // the splash screen, ruining the effect).
+    document.getElementById('tutorial').style.display="block";
 
-    //Code to show the right ogre graphic
-    var backgroundImg = document.getElementById("bkgImg");
-    if ( !backgroundImg )
-	backgroundImg = document.getElementById("bkgImgieDiv");
-
-    switch (userLevel) {
-    case 0:
-	introWin.show();
-	backgroundImg.src = baseURL + "/graphics/ogre-mirror-new-hat.png";
-	break;
-    case 1:
-	backgroundImg.src = baseURL + "/graphics/ogre-mirror-new-glasses.png";
-	break;
-    case 2:
-	backgroundImg.src = baseURL + "/graphics/ogre-mirror-new-mortar.png";
-	break;
-    case 3:
-	backgroundImg.src = baseURL + "/graphics/ogre-mirror-new-wand.png";
-	break;
-    default:
-	introWin.show();
-	backgroundImg.src = baseURL + "/graphics/ogre-mirror-new-hat.png";
-    }
-    
     return true;
 }
 
 function sendState (parameter, value, encase) {
     // send a parameter and value to be stored
-    var xmlHttp;
+    var xmlHttp=createXMLHttp();
     var request;
     var message;
     if (encase == true){
@@ -336,23 +307,6 @@ function sendState (parameter, value, encase) {
         value = 0;
     }
     message = parameter + "=" + value;
-    //alert(message);
-    try {
-	// Firefox, Opera 8.0+, Safari
-	xmlHttp=new XMLHttpRequest();
-    } catch (e) {
-	// Internet Explorer
-	try {
-	    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
-	} catch (e) {
-	    try {
-		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
-	    } catch (e) {
-		alert("Your browser does not support AJAX!");
-		return false;
-	    }
-	}
-    }
 
     /*
      * States: 0 == The request is not initialized
@@ -374,216 +328,91 @@ function sendState (parameter, value, encase) {
 	sessionID = getCookie('sessionID');
 
     // Request the history page from the server
-    request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID + "&iotype=send&parameter=" + parameter + "&value=" + value;
+    request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID + 
+	"&iotype=send&parameter=" + parameter + "&value=" + value;
+
     // Send the Ajax request to the server
-    //alert (request);
     xmlHttp.open("GET",request,true);
     xmlHttp.send(null);
 
     return;
 }
 
-function init() {
-
-    // Initialize the drag & drop interface (in javascript/drag_drop)
-    dragLoad();
-
-    // Initialize the user level selection box
-    var userLevel = -1;
-    userLevel = parseInt(getCookie("userLevel"));
-    if ( isNaN(userLevel) || userLevel == -1 ) {
-	userLevel = 0;
-	setCookie("userLevel", userLevel);
-	levelChange();
-    }
+function createXMLHttp() {
+    var xmlHttp;
     try {
-	// Update the menu selections to reflect the proper level
-	document.getElementById('userLevel').selectedIndex = userLevel;    // HTML Select
-	if ( useDynMenu )
-	    dm_ext_changeItem(0, 5, userLevel, [, , , , , "_"]);           // Deluxe menu userLevel
-
-    } catch (e) {}
-
-    // Init the menu structure 
-    if ( useDynMenu )
-	toggleMenu(null);
-
-    // Init the dataset selection box
-    var ds = document.getElementById('dataset').value;
-    var select = document.getElementById('dsSelection');
-
-    for ( var i=0; i<select.length; i++ ) {
-	if (select[i].value.indexOf(ds) > -1)
-	    select.selectedIndex = i;
-    }
-
-    if ( useDynMenu ) {
-	// Init the deluxe menu to reflect the dataset options
-	var menuEntry = new Array();
-	for ( var i=0; i<select.length; i++ ) {
-	    if ( select[i].value.length ) {
-		var value = select[i].value;
-		var descr = select[i].innerHTML.substr(12);
-		menuEntry = [descr,"javascript:changeDataset('"+value+"');"];
-		dm_ext_addItem(0,6,menuEntry);
-
-		if ( select[i].value.indexOf(ds) > -1 )
-		    dm_ext_changeItem(0, 6, i, [, , , , , "_"]);
+	// Firefox, Opera 8.0+, Safari
+	xmlHttp=new XMLHttpRequest();
+    } catch (e) {
+	// Internet Explorer
+	try {
+	    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+	} catch (e) {
+	    try {
+		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+	    } catch (e) {
+		alert("Your browser does not support AJAX!");
+		return false;
 	    }
 	}
-    }    
+    }
+    return xmlHttp;
+}
 
-    // Set the drag/drop option
-    document.getElementById('dragdrop').checked  = useDragDrop;
-    document.getElementById('dragdrop').disabled = false;
+function toggleDragDrop() {
+    var xmlHttp=createXMLHttp();
 
-    // See if this browser is accepting cookies...
-    var hasCookies = testCookies();
+    useDragDrop = !useDragDrop;
+    document.getElementById("dragdrop").checked=useDragDrop;
 
-    if ( hasCookies ) {
-	// Grab hold of the session ID... assuming that it's there
+    // Make sure we know the sessionID
+    if ( !sessionID )
 	sessionID = getCookie('sessionID');
-    }
 
-    if ( !sessionID ) { // If it ain't there ... we'll have to make our own
-	var dec2hex = [ '0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f' ];
-	var hex = new String();
+    // Request the history page from the server
+    request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID + 
+	"&iotype=send&parameter=dragDrop&value=" + useDragDrop;
 
-	for ( i=0; i<4; i++ ) {
-	    var decimal = Math.round(4294967296*Math.random()+1,0);
-	    hex += dec2hex[ decimal%16 ];
-	    decimal = Math.round(decimal/16,0);
+    // Send the Ajax request to the server
+    xmlHttp.open("GET",request,true);
+    xmlHttp.send(null);
+    return;
+}
 
-	    while ( decimal > 1 ) {
-		hex += dec2hex[ decimal%16 ];
-		decimal = Math.round(decimal/16,0);
-	    }
-	}
+function toggleTips() {
 
-	sessionID = hex;
-	if ( hasCookies )
-	    setCookie('sessionID', sessionID);
-    }
+    var xmlHttp=createXMLHttp();
 
-    // Initialize the windowlets we'll be using
-    introWin = new jsWindowlet(xmlThemeFile, false, true,
-			       document.getElementById('intro'), 'hlpWin', 
-			       "Introducing...Bert! (the ogre)" );
+    showToolTips = !showToolTips;
+    document.getElementById("tooltips").checked=showToolTips;
+    document.getElementById("tooltipsBtm").checked=showToolTips;
 
-    var stat = 'Hint: use "zoom" to adjust the view -- <code>(CNTL) & +/-</code> in most browsers)';
-    introWin.setStatus(stat);
+    // Make sure we know the sessionID
+    if ( !sessionID )
+	sessionID = getCookie('sessionID');
 
-    cntlHlp = new jsWindowlet(xmlThemeFile, false, true, 
-			      document.getElementById('cntlhelp'), 'hlpWin',
-			      "Using the Controls");
+    // Request the history page from the server
+    request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID + 
+	"&iotype=send&parameter=tooltip&value=" + showToolTips;
 
-    dataHlp = new jsWindowlet(xmlThemeFile, false, true, 
-			      document.getElementById('datahelp'), 'hlpWin',
-			      "Selecting Data");
-
-    variHlp = new jsWindowlet(xmlThemeFile, false, true, 
-			      document.getElementById('varhelp'), 'hlpWin',
-			      "Selecting Quantities to Analyze");
-
-    archHlp = new jsWindowlet(xmlThemeFile, false, true, 
-			      document.getElementById('archhelp'), 'hlpWin',
-			      "Previous and Intermediate Results");
-
-    cntlWin = new jsWindowlet(xmlThemeFile, false, true, 
-			      document.getElementById('controls'), 'stdWin',
-			      "OGRE Controls");
-    cntlWin.bind('stdHelp', cntlHlp);
-
-    crdtWin = new jsWindowlet(xmlThemeFile, false, true, 
-			      document.getElementById('credits'), 'hlpWin',
-			      "Programming Credits");
-
-    dataWin = new jsWindowlet(xmlThemeFile, false, true,
-			      document.getElementById('moveData'), 
-			      'stdWin', "Data Selection");
-    var stat = "Hint: Drag one of the filters to a selection box";
-    dataWin.setStatus(stat);
-    dataWin.bind('stdHelp',dataHlp);
-
-    variWin = new jsWindowlet(xmlThemeFile, false, true, 
-			      document.getElementById('moveVars'), 
-			      'stdWin', "Plot Selection");
-    variWin.bind('stdHelp', variHlp);
-
-    archWin = new jsWindowlet(xmlThemeFile, false, true, 
-			      document.getElementById('moveArch'), 
-			      'stdWin', "Studies In Progress");
-    archWin.bind('stdHelp', archHlp);
-
-    prevWin = new jsWindowlet(xmlThemeFile, false, true, 
-			      document.getElementById('movePrev'), 
-			      'stdWin', "Completed Studies");
-    prevWin.bind('stdHelp', archHlp);
-
-    // Construct the windowlets for the flash demo of the detector
-    demoHlp = new jsWindowlet(xmlThemeFile, false, true, 
-			      document.getElementById('demohelp'), 
-			      'hlpWin', "Using the CMS Detector Demonstration");
-
-    demoWin = new jsWindowlet(xmlThemeFile, false, true, 
-			      document.getElementById('demo'), 
-			      'archWin', "CMS Detector Demo");
-
-    if ( xmlThemeFile.indexOf("ogre-theme") > -1 )
-	demoWin.changeBkg("white-640.png");
-    else if ( xmlThemeFile.indexOf("ogre-simple") > -1 )
-	demoWin.changeBkg("white-640.jpg");
-    demoWin.bind('archHelp', demoHlp);
-
-    // Make sure all the windowlets appear & stay in the active area
-    introWin.setMinTop(25);
-    cntlWin.setMinTop(25);
-    dataHlp.setMinTop(25);
-    variHlp.setMinTop(25);
-    archHlp.setMinTop(25);
-    crdtWin.setMinTop(25);
-    dataWin.setMinTop(25);
-    variWin.setMinTop(25);
-    archWin.setMinTop(25);
-    prevWin.setMinTop(25);
-    demoHlp.setMinTop(25);
-    demoHlp.setMinTop(25);
-    demoWin.setMinTop(25);
-
-    // Since our background image is an alpha channel PNG... 
-    // IE 6 & under is gonna choke on it. Reload the image
-    // for bad browsers using the AlphaImageLoader filter
-    // from M$ (located in jsWindowlet.js). Bad form, but
-    // there it is.
-    fnLoadPngs(document.getElementById('bkgImg'), 122, 190)
-
-    // Close the splash screen and show the page
-    try {
-	document.getElementById('loadTxt').innerHTML = 
-	    "<center><font color='green'><H1>Done!</H1></font></center><div id='progress'>";
-	updateProgress(80);
-
-	document.getElementById('load').style.display = "none";
-	document.body.removeChild(document.getElementById('load'));
-
-    } catch (e) {}
-
-    document.getElementById('wrapper').style.display = "block";
-
-    cntlWin.show();
-    introWin.show();
-    return true;
-
+    // Send the Ajax request to the server
+    xmlHttp.open("GET",request,true);
+    xmlHttp.send(null);
+    return;
 }
 
 function changeDataset(newSet) {
 
     var newXMLName = new String();
-    if ( newSet.indexOf("tb04") > -1 )
+    if ( newSet.indexOf("tb04") > -1 ) {
 	newXMLName = "tb_data.xml";
-    else if ( newSet.indexOf("mc09") > -1 )
+	document.getElementById('dsSelection').selectedIndex = 0;
+	document.getElementById('dsSelectionBtm').selectedIndex = 0;
+    } else if ( newSet.indexOf("mc09") > -1 ) {
 	newXMLName = "mc_data.xml";
-    else
+	document.getElementById('dsSelection').selectedIndex = 1;
+	document.getElementById('dsSelectionBtm').selectedIndex = 1;
+    } else
 	return false;
 
     // Step one... reset the global dataset variable
@@ -606,31 +435,8 @@ function changeDataset(newSet) {
     // And save the new setting in the settings DB on the server...
     sendState ("dataSet", newSet, true);
 
-    // Now change the relevant parts of the page... 
-    // essentially identical to a user level change
-    // without changing the user level
-    //levelChange(true);
-
-    if ( !useDynMenu )
-	return true;
-
     // finally reset the menu to reflect the new situation
     var select = document.getElementById('dsSelection');
-    var menuEntry = new Array();
-
-    for ( var i=0; i<select.length; i++ ) {
-	if ( select[i].value.length ) {
-
-	    var value = select[i].value;
-	    var descr = select[i].innerHTML.substr(12);
-	    menuEntry = [descr,"javascript:changeDataset('"+value+"');" , , , ""];
-
-	    if ( select[i].value.indexOf(newSet) > -1 )
-		dm_ext_changeItem(0, 6, i, [, , , , , "_"]);
-	    else
-		dm_ext_changeItem(0, 6, i, menuEntry);
-	}
-    }
 
     return true;
 }
@@ -667,17 +473,6 @@ function callButton(option) {
 	    } catch(e) {}
 	}
 	sendState("tooltip", showToolTips, true);
-	// Update the fancy menu to reflect the next choice that could be made
-	for ( var i=0; i<menuItems.length; i++ ) {
-	    if ( menuItems[i][0].indexOf("ToolTips") > -1 ) {
-		if ( showToolTips )
-		    menuItems[i][0] = "ToolTips Off";
-		else
-		    menuItems[i][0] = "ToolTips On";
-
-		dm_ext_changeItem(0,4,4, menuItems[i]);
-	    }
-	}
 
     } else if ( option == 9 )
 	toggleMenu();
@@ -688,27 +483,18 @@ function callButton(option) {
     else if ( option == 11 ) {
 	showEffects = !showEffects;
 	sendState ("effects", showEffects, true);
-
-	// Update the fancy menu to reflect the next choice that could be made
-	for ( var i=0; i<menuItems.length; i++ ) {
-	    if ( menuItems[i][0].indexOf("Effects") > -1 ) {
-		if ( showEffects )
-		    menuItems[i][0] = "Effects Off";
-		else
-		    menuItems[i][0] = "Effects On";
-
-		try {
-		    dm_ext_changeItem(0,4,5, menuItems[i]);
-		} catch (e) {}
-	    }
-	}
+	
     } else if ( option == 12 || option == 13 ) {
 	flushTheme();
 
+	// Sync the controls window selector with the footer selection
+	document.getElementById('themes').selectedIndex = option-12;
+	document.getElementById('themesBtm').selectedIndex = option-12;
+
 	if ( option == 12 )
-	    xmlThemeFile = baseURL + '/xml/ogre-theme.xml'; //'/graphics/themes/ogre/ogre-theme.xml';
+	    xmlThemeFile = baseURL + '/xml/ogre-theme.xml';
 	else if ( option == 13 )
-	    xmlThemeFile = baseURL + '/xml/ogre-simple.xml'; //'/graphics/themes/simple/ogre-simple.xml';
+	    xmlThemeFile = baseURL + '/xml/ogre-simple.xml';
 	else
 	    return false;
 	sendState ("theme", option, false);
@@ -746,47 +532,49 @@ function callButton(option) {
 
 	demoWin.bind('archHelp', demoHlp);
 
-    }
-    else if (option == 14){
+	// Make sure all the windowlets appear & stay in the active area
+	introWin.setMinTop(45);
+	cntlWin.setMinTop(45);
+	dataHlp.setMinTop(45);
+	variHlp.setMinTop(45);
+	archHlp.setMinTop(45);
+	crdtWin.setMinTop(45);
+	dataWin.setMinTop(45);
+	variWin.setMinTop(45);
+	archWin.setMinTop(45);
+	prevWin.setMinTop(45);
+	demoHlp.setMinTop(45);
+	demoHlp.setMinTop(45);
+	demoWin.setMinTop(45);
+	
+    } else if (option == 14){
 	//make the ogre dance
     }
 
-    document.getElementById('menu').selectedIndex = 0;
     return true;
 }
 
 function toggleMenu() {
-    // Toggle between menu driven & button driven styles
-    try {
-	var menu = document.getElementById('menu');
-    } catch (e) {return false;}
+    var btnWrapperTop = document.getElementById('buttonWrapperTop');
+    var btnWrapperBtm = document.getElementById('buttonWrapperBtm');
 
-    if ( !menu )
-	return false;
-
-    if ( !menu.style.display )
-	menu.style.display = "none";
-
-    if (menu.style.display == "block") {
-
-	var buttons = new Array();
-	buttons = document.getElementsByName('button');
-	for ( var i=0; i<buttons.length; i++ ) {
-	    buttons[i].style.display = "block";
+    if ( !btnWrapperTop.style.display || btnWrapperTop.style.display == "none" ) {
+	btnWrapperTop.style.display = "block";
+	btnWrapperBtm.style.display = "block";
+	try {
+	    cntlWin.hide();
+	} catch (e) {
+	    ctlWin.hide();
 	}
-
-	menu.style.display = "none";
     } else {
-
-	var buttons = new Array();
-	buttons = document.getElementsByName('button');
-	for ( var i=0; i<buttons.length; i++ ) {
-	    buttons[i].style.display = "none";
+	btnWrapperTop.style.display = "none";
+	btnWrapperBtm.style.display = "none";
+	try {
+	    cntlWin.show();
+	} catch (e) {
+	    ctlWin.show();
 	}
-
-	menu.style.display = "block";
     }
-
     return true;
 }
 
@@ -808,6 +596,18 @@ function bkgClick(event) {
     var selection = -1;
     var button    = event.button || event.which;
 
+    // Dig out the userLevel from the settings table
+    var xmlHttp=createXMLHttp();
+    var request = baseURL+"/asp/Burrito.asp?sessid="+sessionID+"&iotype=retrieve";
+    xmlHttp.open("GET",request,false);
+    xmlHttp.send(null);
+
+    // Parse the response...
+    var mesParsed = xmlHttp.responseText.split(":",15);
+    
+    // And set the userLevel
+    var userLevel = mesParsed[1];
+
     if ( button == 1 ) {
 	if ( !(event.shiftKey || event.ctrlKey) )
 	    selection = 1;
@@ -819,32 +619,22 @@ function bkgClick(event) {
 
     // The background OGRE image was just clicked... find out what the user wants
     if ( selection == 1 ) {
-	try {
-	    cntlWin.show();
-	} catch (e) {
+	if ( userLevel > 1 ) {
 	    try {
-		ctlWin.show();
+		cntlWin.show();
+	    } catch (e) {
+		try {
+		    ctlWin.show();
+		} catch(e) {}
+	    }
+	} else {
+	    try {
+		introWin.show();
 	    } catch(e) {}
 	}
     } else if ( selection == 2 ) {
 	toggleMenu();
 
-	var menu = document.getElementById('menu');
-	if ( menu.style.display == 'none' ) {
-	    try {
-		cntlWin.show();
-	    } catch (e) {
-		ctlWin.show();
-	    }
-	} else {
-	    try {
-		cntlWin.hide();
-		cntlHlp.hide();
-	    } catch (e) {
-		ctlWin.hide();
-		ctlHlp.hide();
-	    }
-	}
     } else if ( selection == 3 )
 	try { (document.getElementById('credits'))?toggle("credits"):null } catch(e){};
 
@@ -876,27 +666,11 @@ function restoreArchive(event, sID, srcID) {
 
 function levelChange(firstTime) {
     /*-- When the user level changes... update the pages to reflect the status --*/
-
     var firstTime = (firstTime != null) ? firstTime : true;
 
-    var xmlHttp;
+    var xmlHttp=createXMLHttp();
     var request;
-    try {
-	// Firefox, Opera 8.0+, Safari
-	xmlHttp=new XMLHttpRequest();
-    } catch (e) {
-	// Internet Explorer
-	try {
-	    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
-	} catch (e) {
-	    try {
-		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
-	    } catch (e) {
-		alert("Your browser does not support AJAX!");
-		return false;
-	    }
-	}
-    }
+
     /*
      * States: 0 == The request is not initialized
      *         1 == The request has been set up
@@ -926,7 +700,9 @@ function levelChange(firstTime) {
     }
 
     // Request the data page for the new user level
-    var dataset = document.getElementById('dataset').value;
+    if ( !document.getElementById('dataset') )
+	return;
+
     if ( firstTime )
 	request = baseURL + '/asp/refreshUserLevel.asp?page=data&sessionID='+sessionID;
     else
@@ -941,35 +717,6 @@ function levelChange(firstTime) {
 
 } // End of ayncDB function
 
-// Call for the fancy menu for the onChange event
-// seperated from the simple call so that we can 
-// sync the simple menu with this one.
-function menuLevel(level) {
-    if ( level < 0 || level > 3 )
-	return false;
-
-    // First... set the new level
-    sendState("userLevel",level);
-
-    // Sync the simple select to the menu if necessary
-    document.getElementById('userLevel').options.selectedIndex = level;
-
-    if ( useDynMenu ) {
-
-	// Menu items 13-16 are the user levels.. reset them
-	for ( var i=13; i<17; i++ )
-	    dm_ext_changeItem(0,5,eval(i-13),menuItems[i]);
-
-	// and disable this item
-	dm_ext_changeItem(0, 5, level, [, , , , , "_"]);    
-    }
-
-    // and throw the call to levelChange to update the page
-    //levelChange();
-
-    return true;
-}
-
 // Call for the simple select menu for the onChange event
 function simpleMenuLevel(level) {
 
@@ -982,47 +729,74 @@ function simpleMenuLevel(level) {
     sendState("userLevel",level, false);
 
     // Update Bert to reflect the newfound understanding....
-    var source; // = new String();
+    var source = new String();
     switch (level) {
     case 0:
-	source = baseURL + "/graphics/ogre-mirror-new-hat.png";
+	source = baseURL + "/graphics/ogre-beanie.png";
 	singleWindow = true;
 	break;
     case 1:
-	source = baseURL + "/graphics/ogre-mirror-new-glasses.png";
+	source = baseURL + "/graphics/ogre-glasses.png";
 	singleWindow = true;
 	break;
     case 2:
-	source = baseURL + "/graphics/ogre-mirror-new-mortar.png";
+	source = baseURL + "/graphics/ogre-mortar.png";
 	singleWindow = false;
 	break;
     case 3:
-	source = baseURL + "/graphics/ogre-mirror-new-wand.png";
+	source = baseURL + "/graphics/ogre-wand.png";
 	singleWindow = false;
 	break;
     default:
-	source = baseURL + "/graphics/ogre-mirror-new-hat.png";
+	source = baseURL + "/graphics/ogre.png";
 	singleWindow = false;
     }
     var backgroundImg = document.getElementById("bkgImg");
+
     //if ( !backgroundImg ) {
     //backgroundImg = document.getElementById("bkgImgieDiv");
     //} else {
-	backgroundImg.src = source;
-	//}
+    backgroundImg.src = source;
+    //}
 
-    if ( useDynMenu ) {
-	// Sync the fancy menu...
-	// Menu items 13-16 are the user levels.. reset them
-	for ( var i=13; i<17; i++ )
-	    dm_ext_changeItem(0,5,eval(i-13),menuItems[i]);
+    // Sync the two level selectors... control window & footer
+    document.getElementById('userLevelBtm').selectedIndex = level;
+    document.getElementById('userLevel').selectedIndex = level;
 
-	// and disable this item
-	dm_ext_changeItem(0, 5, level, [, , , , , "_"]);    
+    switch (level) {
+    case 0:
+	try {
+	    cntlWin.hide();
+	} catch (e) {
+	    ctlWin.hide();
+	}
+	document.getElementById('buttonWrapperTop').style.display="block";
+	document.getElementById('buttonWrapperBtm').style.display="block";
+	introWin.show();
+	break;
+
+     case 1:
+	try {
+	    cntlWin.hide();
+	} catch (e) {
+	    ctlWin.hide();
+	}
+	document.getElementById('buttonWrapperTop').style.display="block";
+	document.getElementById('buttonWrapperBtm').style.display="block";
+	introWin.hide();
+	break;
+
+    case 2: case 3:
+	try {
+	    cntlWin.show();
+	} catch (e) {
+	    ctlWin.show();
+	}
+	document.getElementById('buttonWrapperTop').style.display="none";
+	document.getElementById('buttonWrapperBtm').style.display="none";
+	introWin.hide();
+	break;
     }
-
-    // and throw the call to levelChange to update the page
-    //levelChange();
 
     return true;
 }

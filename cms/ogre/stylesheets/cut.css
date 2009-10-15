@@ -20,6 +20,19 @@ div#background {
 div#wrapper {
 }
 
+div#buttonWrapperTop, div#buttonWrapperBtm,div#alertDiv {
+    display:none;
+}
+
+select#themesBtm {
+    position:absolute;
+    right:182px;
+}
+
+button,input,select {
+    cursor:pointer;
+}
+
 div#header,div.header {
     position: fixed;
     width: 100%;

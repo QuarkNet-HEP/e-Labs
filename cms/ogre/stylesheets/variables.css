@@ -86,22 +86,27 @@ button#gotoData {
 }
 
 .DragContainer4 {
-    width:10%;
-    /*border: #669999 10px solid;*/
+    width:12%;
+    padding:1px;
+    /*border: #669999 1px solid;*/
 }
 
 .DragContainer5 {
     width:10%;
+    padding:1px;
+    display:none;
     /*border: #669999 1px solid;*/
 }
 
 .DragContainer6 {
     width:28%;
+    padding:1px;
     /*border: #669999 1px solid;*/
 }
 
 .DragContainer7 {
     width:10%;
+    padding:1px;
     /*border: #669999 1px solid;*/
 }
 

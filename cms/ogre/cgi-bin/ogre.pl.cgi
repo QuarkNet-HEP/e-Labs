@@ -1,4 +1,4 @@
-#!/usr/bin/perl -I../asp
+#!/usr/bin/perl
 use strict;
 use warnings;
 

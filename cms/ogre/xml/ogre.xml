@@ -3,16 +3,15 @@
 <!-- Change absolute paths on moving! -->
 
 <ogre name="constants">
-  <parameter name="MAX_PLOTS"      value="8"                        type="int"     />
-  <parameter name="activeCut"      value="javascript"               type="switch"  />
-  <parameter name="rootsys"        value="/home/ogre/root"          type="path"    />
-  <parameter name="rootBinaryPath" value="/home/ogre/root/bin/root" type="path"    />
-  <parameter name="baseDir"        value="/home/ogre/public_html"   type="path"    />
-  <parameter name="tmpDir"         value="tmp"                      type="relpath" />
-  <parameter name="MetaDataSource" value="MySQL"                    type="switch"  />
-  <parameter name="xmlDir"         value="xml"                      type="relpath" />
-  <parameter name="resultsDir"     value="results"                  type="relpath" />
-  <parameter name="archiveDir"     value="archives"                 type="relpath" />
-  <parameter name="urlPath"        value="/~ogre"                   type="url"     />
-  <parameter name="tmpURL"         value="tmp"                      type="url"     />
+  <parameter name="MAX_PLOTS"      value="8"                        type="int"      />
+  <parameter name="MetaDataSource" value="MySQL"                    type="switch"   />
+  <parameter name="rootsys"        value="/home/ogre/root"          type="path"     />
+  <parameter name="rootBinaryPath" value="/home/ogre/root/bin/root" type="path"     />
+  <parameter name="baseDir"        value="/home/ogre/public_html"   type="path"     />
+  <parameter name="tmpDir"         value="tmp"                      type="relpath"  />
+  <parameter name="xmlDir"         value="xml"                      type="relpath"  />
+  <parameter name="resultsDir"     value="results"                  type="relpath"  />
+  <parameter name="archiveDir"     value="archives"                 type="relpath"  />
+  <parameter name="urlPath"        value="/~ogre"                   type="url"      />
+  <parameter name="tmpURL"         value="tmp"                      type="url"      />
 </ogre>

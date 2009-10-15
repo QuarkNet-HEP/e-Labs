@@ -69,7 +69,7 @@ if ( $type == "relpath" ) {
   $path = $xmlDir;
 }
 
-$query = "SELECT xml from $table where name='$dataset'";
+$query = "SELECT xml from datasets where name='$dataset'";
 
 $result = mysql_query($query, $conn);
 if ( !$result ) {

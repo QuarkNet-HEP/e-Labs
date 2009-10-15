@@ -5,6 +5,8 @@ var logicTip = 'Text equivilent of the boxes in the Select/Reject regions above'
 var anyofTip = 'accept data which matches any of the conditions in this box (logical OR)';
 var allofTip = 'accept data which matches all of the conditions in this box (logical AND)';
 var oneofTip = 'accept data which matches one or the other, but not both, of the conditions in this box (logical XOR)';
+var plotBtn  = 'Access the available plots';
+var ogreBtn  = 'Access the OGRE Controls';
 
 function showtrigToolTip(text, reject) {
 

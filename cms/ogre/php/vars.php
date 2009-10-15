@@ -43,7 +43,7 @@ if ( !isset($dataset) ) {
                  style="background-color: #ffff00;" name="color" id="color" value="yellow"></div>
 	<div class="colorDragBox purple" overClass="colorDragBox OvercolorDragBox" 
                  style="background-color: #ff00ff;" name="color" id="color" value="purple"></div>
-	<div class="colorDragBox none"                                      name="color" id="color" value="none"  ></div>
+	<div class="colorDragBox none" name="color" id="color" value="none"  ></div>
       </div>
 
       <!-- Change linear plots to semilog or log-log form -->
@@ -75,7 +75,7 @@ if ( !isset($dataset) ) {
 	<div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" id="gcut"
              onMouseOver="showvarsToolTip(tip7_1);" onMouseOut="UnTip();">My Cuts</div>
 
-	<div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" id="savedata"
+	<div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" id="savedata" style='display:none;'
              onMouseOver="showvarsToolTip(tip7_2);" onMouseOut="UnTip();">Raw Data</div>
 
       </div>
@@ -107,14 +107,14 @@ if ( !isset($dataset) ) {
      <div id='navButtons'>
       <button id='gotoData' 
 	onClick='javascript:dataWin.show();'
-        onMouseOver='javascript:Tip("Access the available data");'
+        onMouseOver='javascript:showvarsToolTip(tip9_1);'
         onMouseOut='javascript:UnTip();'>
 	Select Data
       </button>
 
       <button id='makePlot'
 	onClick='javascript:submitGetData(document.forms["getData"]);'
-        onMouseOver='javascript:Tip("Make a plot with the currect selections");'
+        onMouseOver='javascript:showvarsToolTip(tip9_2);'
         onMouseOut='javascript:UnTip();'>
 	Plot It!
       </button>

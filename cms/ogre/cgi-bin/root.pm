@@ -20,8 +20,7 @@ sub new {
     _titleList => undef,
     _cutlist   => undef,
     _rootsys   => $rootsys,
-    _rootbin   => $rootbin,
-    _cutstyle  => $cutStyle
+    _rootbin   => $rootbin
   };
 
   bless $self, $class;
@@ -452,17 +451,24 @@ sub runRootScript() {
   my $stacked = $ogre::cgi->getCGIParam('allonone');
   my $gCut    = $ogre::cgi->getCGIParam('global_cut');
 
-  copy("$tmpdir/../cutfiles/cutList",               "$tmpdir/$random/cutList");
-  copy("$tmpdir/../cutfiles/index.html",            "$tmpdir/$random/index.html");
-  copy("$tmpdir/../cutfiles/nodemap",               "$tmpdir/$random/nodemap");
-  copy("$tmpdir/../cutfiles/htaccess",              "$tmpdir/$random/.htaccess");
-  copy("$tmpdir/../cutfiles/ogre-thumbnail.$type",  "$tmpdir/$random/ogre-thumbnail.$type");
+  # Make some of the files we'll need to track the user interactions
+  my $fileHandle;
+  open($fileHandle, ">$tmpdir/$random/cutList");
+  print $fileHandle "000\n";
+  close($fileHandle);
 
-  # !@#%$#% perl refuses to just copy files with the correct permissions....
-  # so force it here otherwise we'll have piles of errors when we try 
-  # delete it later on... !@$%!#%
+  open($fileHandle, ">$tmpdir/$random/nodemap");
+  print $fileHandle "000=>\n";
+  close($fileHandle);
+
+  open($fileHandle, ">$tmpdir/$random/.htaccess");
+  print $fileHandle "Options -Indexes -FollowSymLinks -ExecCGI\nDirectoryIndex temp.000.html\n";
+  close($fileHandle);
+
+  copy("$tmpdir/../graphics/ogre-thumbnail.$type",  "$tmpdir/$random/ogre-thumbnail.$type");
+
+  # Set the permissions on the new files so we can delete them later on
   chmod(0666, "$tmpdir/$random/cutList");
-  chmod(0666, "$tmpdir/$random/index.html");
   chmod(0666, "$tmpdir/$random/nodemap");
   chmod(0666, "$tmpdir/$random/.htaccess");
   chmod(0666, "$tmpdir/$random/ogre-thumbnail.$type");
@@ -483,15 +489,6 @@ sub runRootScript() {
 
       chmod(0666,$cutPath);
 
-  }
-
-  if ( $self->{_cutstyle} eq "javaapplet" ) {
-      copy("$tmpdir/../cutfiles/cookies.js",            "$tmpdir/$random/cookies.js");
-      copy("$tmpdir/../cutfiles/linearCut.class",       "$tmpdir/$random/linearCut.class");
-      copy("$tmpdir/../cutfiles/cut.css",               "$tmpdir/$random/cut.css");
-      copy("$tmpdir/../cutfiles/showHist.js",           "$tmpdir/$random/showHist.js");
-      copy("$tmpdir/../cutfiles/submitForms.js",        "$tmpdir/$random/submitForms.js");
-      copy("$tmpdir/../cutfiles/j2js.html",             "$tmpdir/$random/j2js.html");
   }
 
   my $filePath = "$tmpdir/$random/script.000.C";
@@ -596,12 +593,7 @@ sub runRootScript() {
 
   # Call the routines in the HTML class to make the necessary output pages
   $html->makeHistoryPage(undef, 0, $titleList[0], ("000=>"));
-
-  if ( $self->{_cutstyle} eq "javaapplet" ) {
-      $html->makeActiveAppletPage("temp.000.html", "000", $appletData);
-  } elsif ( $self->{_cutstyle} eq "javascript" ) {
-      $html->makeActiveScriptPage("temp.000.html", "000", $appletData);
-  }
+  $html->makeActivePage("temp.000.html", "000", $appletData);
 
   # Once the pages are made... redirect the browser to the new directory
   # to continue the study

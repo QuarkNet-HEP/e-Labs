@@ -45,23 +45,7 @@ function setCuts(s) {
 }
 
 function archiveStudy(thisForm) {
-    var xmlHttp;
-    try {
-	// Firefox, Opera 8.0+, Safari
-	xmlHttp=new XMLHttpRequest();
-    } catch (e) {
-	// Internet Explorer
-	try {
-	    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
-	} catch (e) {
-	    try {
-		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
-	    } catch (e) {
-		alert("Your browser does not support AJAX!");
-		return false;
-	    }
-	}
-    }
+    var xmlHttp=createXMLHttp();
 
     /*
      * States: 0 == The request is not initialized
@@ -135,23 +119,7 @@ function closeAlert() {
 }
 
 function finalizeStudy(thisForm) {
-    var xmlHttp;
-    try {
-	// Firefox, Opera 8.0+, Safari
-	xmlHttp=new XMLHttpRequest();
-    } catch (e) {
-	// Internet Explorer
-	try {
-	    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
-	} catch (e) {
-	    try {
-		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
-	    } catch (e) {
-		alert("Your browser does not support AJAX!");
-		return false;
-	    }
-	}
-    }
+    var xmlHttp=createXMLHttp();
 
     /*
      * States: 0 == The request is not initialized
@@ -215,6 +183,21 @@ function finalizeStudy(thisForm) {
 	}
     }
 
+    //////////////////////////////////////
+    // Now that they've completed a study... bump the user level up a notch
+    var ajax = createXMLHttp();
+    var request = baseURL + "/asp/Burrito.asp?iotype=retrieve&sessid=" + sessionID;
+    ajax.open("GET", request, false);
+    ajax.send(null);
+
+    var mesParsed = ajax.responseText.split(":",15);
+    var userLevel = mesParsed[1];
+    if ( userLevel < 3 ) {
+	userLevel++;
+	sendState("userLevel", userLevel, false);
+    }
+    /////////////////////////////////////
+
     // Build the request
     var dir = document.forms['recut'].directory.value;
     var typ = document.forms['recut'].type.value;
@@ -237,23 +220,8 @@ function getUserName() {
     if ( !sessionID )
 	return null;
 
-    var xmlHttp;
-    try {
-	// Firefox, Opera 8.0+, Safari
-	xmlHttp=new XMLHttpRequest();
-    } catch (e) {
-	// Internet Explorer
-	try {
-	    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
-	} catch (e) {
-	    try {
-		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
-	    } catch (e) {
-		alert("Your browser does not support AJAX!");
-		return null;
-	    }
-	}
-    }
+    var xmlHttp=createXMLHttp();
+
     var request = baseURL + '/asp/Burrito.asp?sessid='+sessionID+'&iotype=getUser';
     xmlHttp.open("GET",request,false);
     xmlHttp.send(null);

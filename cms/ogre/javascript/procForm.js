@@ -215,16 +215,7 @@ function restoreMe(triggers, holder, plots, color, opts, sessionID) {
 	    var child = document.getElementById(opts[i]);
 	    optBox.appendChild(child);
 
-	// Size & type aren't unique ids... so we've got to loop and find it by value
-	} else if ( opts[i] == 'type' ) {
-	    var types = document.getElementsByName("type");
-	    for ( var j=0; j<types.length; j++ ) {
-		var value = types[j].getAttribute("value");
-		if ( value == opts[eval(i+1)] ) {
-		    optBox.appendChild(types[j]);
-		    break;
-		}
-	    }
+	// Size isn't a unique id... so we've got to loop and find it by value
 	} else if ( opts[i] == 'size' ) {
 	    var sizes = document.getElementsByName("size");
 	    for ( var j=0; j<sizes.length; j++ ) {
@@ -355,6 +346,21 @@ function submitGetData(thisForm) {
 	thisForm.appendChild(ele);
     }
 
+    // Use the current theme to determine the proper graphics type
+    ele = document.createElement('input');
+    ele.type  = 'hidden';
+    ele.name  = 'type';
+    ele.id    = 'type';
+
+    if ( xmlThemeFile.indexOf('simple') > -1 || xmlThemeFile.indexOf('basic') > -1 )
+	ele.value = 'jpg';
+    else
+	ele.value = 'png';
+    thisForm.appendChild(ele);
+
+    opts[opts.length++] = 'type';
+    opts[opts.length++] = ele.value;
+
     // DragContainer8 contains the options... size, logX/logY, etc
     vEle = document.getElementById('DragContainer8');
     child = vEle.firstChild;
@@ -374,18 +380,6 @@ function submitGetData(thisForm) {
 	    ele.id    = child.id;
 	    thisForm.appendChild(ele);
 	    opts[opts.length++] = child.id;
-
-	} else if ( child.id == 'type' ) {
-
-	    ele = document.createElement('input');
-	    ele.type  = 'hidden';
-	    ele.name  = child.id;
-	    ele.id    = child.id;
-	    ele.value = child.getAttribute("value");
-	    thisForm.appendChild(ele);
-
-	    opts[opts.length++] = child.id;
-	    opts[opts.length++] = child.getAttribute("value");
 
 	} else if ( child.id == 'size' ) {
 
@@ -416,10 +410,7 @@ function submitGetData(thisForm) {
 	    ele.type  = 'hidden';
 	    ele.name  = 'mycuts';
 	    ele.id    = 'mycuts';
-	    //ele.value = getCookie('selection');
 	    ele.value = selection;
-	    //alert(ele.id+' '+ele.name+' '+ele.value);
-	    //return true;
 
 	    thisForm.appendChild(ele);
 

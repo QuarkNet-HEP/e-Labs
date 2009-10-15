@@ -14,7 +14,6 @@ function include(filename) {
 
     head.appendChild(script);
 }
-var useDynMenu  = false;
 var useDragDrop = true;
 
 include(baseURL+"/javascript/utilities.js");
@@ -23,10 +22,6 @@ include(baseURL+"/javascript/cookies.js");
 
 // Include Walter Zorns wonderful javascript graphics package
 include(baseURL+"/javascript/wz_jsgraphics.js");
-
-// Include the script for the menu
-if ( useDynMenu )
-    include(baseURL + "/javascript/menu/dmenu.js");
 
 var dragDiv;
 var xmin   = 0;
@@ -391,29 +386,13 @@ function pageLoad() {
     if ( sessionID && testCookies() )
 	setCookie('sessionID', sessionID);
 
-
     //load the coodinates
-    var xmlHttp;
+    var xmlHttp=createXMLHttp();
     var request;
     var message;
     var mesParsed;
     var i;
-    try {
-	// Firefox, Opera 8.0+, Safari
-	xmlHttp=new XMLHttpRequest();
-    } catch (e) {
-	// Internet Explorer
-	try {
-	    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
-	} catch (e) {
-	    try {
-		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
-	    } catch (e) {
-		alert("Your browser does not support AJAX!");
-		return false;
-	    }
-	}
-    }
+
     /*
      * States: 0 == The request is not initialized
      *         1 == The request has been set up
@@ -443,6 +422,9 @@ function pageLoad() {
 	Ycoords[i] = parseInt(mesParsed[7 + 2*i + 1]);
 	}
 
+    // Set the user level...
+    var userLevel =  mesParsed[1];
+
     var xmlTheme = (xmlTheme) ? xmlTheme : baseURL + "/xml/ogre-theme.xml";
 
     // First we initialize the DIV (container) of the draggable image as 'canvas'.
@@ -460,30 +442,45 @@ function pageLoad() {
     cutWin.make(container, 'archWin', 'Data Selection', parseInt(1.11*width), parseInt(1.2*height));
 
     // Adjust for the drop shadows on the graphic
- 
     cutWin.shAdjust(24, 24, width, height);
-    cutWin.setMinTop(5);
+    cutWin.setMinTop(25);
 
     // Make a windowlet for the control buttons
     ctlWin = new jsWindowlet(xmlTheme);
     ctlWin.make(document.getElementById('controls'), 'stdWin', 
 		'OGRE Controls');
-    ctlWin.setMinTop(5);
-    ctlWin.show();
+    ctlWin.setMinTop(25);
+    //ctlWin.show();
 
     ctlHlp = new jsWindowlet(xmlTheme);
     ctlHlp.make(document.getElementById('ctlHlp'), 'hlpWin', 
 		'Using OGRE Controls');
-    ctlHlp.setMinTop(5);
+    ctlHlp.setMinTop(35);
 
     ctlWin.bind('stdHelp', ctlHlp);
 
     // And bind some help text to it
     hlpWin = new jsWindowlet(xmlTheme);
     hlpWin.make(document.getElementById('cuthelp'), 'hlpWin', "Refining Data Selection");
-    hlpWin.setMinTop(5);
+    hlpWin.setMinTop(35);
 
     cutWin.bind('archHelp', hlpWin);
+    //cutWin.show();
+
+    // Now then.... let's see what it is we're supposed to be showing...
+    if ( userLevel < 2 ) {
+	document.getElementById('buttonWrapperTop').style.display="block";
+	document.getElementById('buttonWrapperBtm').style.display="block";
+	singleWindow = true;
+
+    } else {
+	document.getElementById('buttonWrapperTop').style.display="none";
+	document.getElementById('buttonWrapperBtm').style.display="none";
+	singleWindow = false;
+
+	ctlWin.show();
+    }
+
     cutWin.show();
 
    // Offset of the graph on the page
@@ -518,58 +515,12 @@ function pageLoad() {
     } catch (e) {;}
 
     if ( cuts )
-	//setCookie(cookie,cuts);
 	sendState("selection", cuts.replace(/&/g,"%26"), true);
 
-    // MSIE v6 and prior doesn't respect the "fixed" positioning directive
-    // and it drops back to static... :O so if we're dealing with an old
-    // IE version force the fixed elements to absolute positioning
-    if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
-	var ieversion=new Number(RegExp.$1); // capture the version number
-	if ( ieversion <= 6 ) {
-
-	    try {
-		document.getElementById('background').style.position = "absolute";
-	    } catch (e) {}
-	    try {
-		document.getElementById('header').style.position = "absolute";
-	    } catch (e) {}
-	    try {
-		document.getElementById('footer').style.position = "absolute";
-	    } catch (e) {}
-	    try {
-		document.getElementById('recut').style.position = "absolute";
-	    } catch (e) {}
-	    try {
-		document.getElementById('myNotice').style.position = "absolute";
-	    } catch (e) {}
-	}
-    }
-    if ( ieversion < 6 ) {
-	try {
-	    document.getElementById('header').style.width = document.body.clientWidth - 20;
-	} catch (e) {}
-    }
-
     // load the history page into a div
-    var xmlHttp;
+    var xmlHttp=createXMLHttp();
     var request;
-    try {
-	// Firefox, Opera 8.0+, Safari
-	xmlHttp=new XMLHttpRequest();
-    } catch (e) {
-	// Internet Explorer
-	try {
-	    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
-	} catch (e) {
-	    try {
-		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
-	    } catch (e) {
-		alert("Your browser does not support AJAX!");
-		return false;
-	    }
-	}
-    }
+
     /*
      * States: 0 == The request is not initialized
      *         1 == The request has been set up
@@ -596,14 +547,13 @@ function pageLoad() {
 	    hstWin.make(hist, 'hlpWin', "Selection History", eval(width+50), eval(height+64));
 	    hstWin.changeBkg("gray-plain.png");
 	    hstWin.shAdjust(16, 24, width, height);
-	    hstWin.setMinTop(5);
+	    hstWin.setMinTop(35);
 
-	    if ( historyVisible )
+	    if ( historyVisible && !singleWindow )
 		hstWin.show();
 
 	    // Set the graphics window to the top of the stack by default
 	    cutWin.setStack(cutWin.newWin);
-
 	    // And move stuff about to the way it was 
 	    ctlWin.moveTo(Xcoords[0],Ycoords[0]);
 	    cutWin.moveTo(Xcoords[1],Ycoords[1]);
@@ -692,24 +642,41 @@ function callMenu(option) {
 	document.location.href = 
 	    "mailto:karmgard.1@nd.edu?subject=Bug the OGRE";
 
-    else if ( option == 9 || option == 10 ) {
+    else if ( option == 12 || option == 13 ) {
 	flushTheme();
 
-	if ( option == 9 )
-	    xmlThemeFile = baseURL + '/xml/ogre-theme.xml'; //'/graphics/themes/ogre/ogre-theme.xml';
-	else if ( option == 10 )
-	    xmlThemeFile = baseURL + '/xml/ogre-simple.xml'; //'/graphics/themes/simple/ogre-simple.xml';
+	// Sync the controls window selector with the footer selection
+	document.getElementById('themes').selectedIndex = option-12;
+	document.getElementById('themesBtm').selectedIndex = option-12;
+
+	if ( option == 12 )
+	    xmlThemeFile = baseURL + '/xml/ogre-theme.xml';
+	else if ( option == 13 )
+	    xmlThemeFile = baseURL + '/xml/ogre-simple.xml';
 	else
 	    return false;
 
 	ctlWin.reTheme(xmlThemeFile,'stdWin');
 	cutWin.reTheme(xmlThemeFile,'archWin');
 	ctlHlp.reTheme(xmlThemeFile,'hlpWin');
-	cutHlp.reTheme(xmlThemeFile,'hlpWin');
+	hlpWin.reTheme(xmlThemeFile,'hlpWin');
 
 	ctlWin.bind('stdHelp', ctlHlp);
-	cutWin.bind('archHlp', cutHlp);
+	cutWin.bind('archHlp', hlpWin);
+
+	// And adjust the sizes, shadows, etc...
+	cutWin.setMinTop(35);
+	ctlWin.setMinTop(25);
+	ctlHlp.setMinTop(35);
+	hlpWin.setMinTop(35);
+	histWin.setMinTop(35);
+
     }
 
    return true;
+}
+
+function clearCuts() {
+    sendState("selection", 'blah', true);
+    return true;
 }

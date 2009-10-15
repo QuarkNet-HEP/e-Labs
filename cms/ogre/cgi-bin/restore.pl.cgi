@@ -9,8 +9,12 @@ use ogreXML;
 my $query = new CGI;
 my $sessionID = $query->param('sessionID');
 
-my $xml = new ogreXML();
-my $path = $xml->getOgreParam('baseDir');
+my $xml     = new ogreXML();
+my $path    = $xml->getOgreParam('baseDir');
+my $tmpDir  = $xml->getOgreParam('tmpDir');
+my $tmpURL  = $xml->getOgreParam('tmpURL');
+my $archDir = $xml->getOgreParam('archiveDir');
+my $resDir  = $xml->getOgreParam('resultsDir');
 
 if ( !$sessionID ) {
   # Start with the header so browsers know it's html
@@ -21,22 +25,25 @@ if ( !$sessionID ) {
 }
 
 # So we have a valid session ID... try and find the archive
-if ( -f "$path/archives/study-$sessionID.tar.gz" ) {
+if ( -f "$archDir/study-$sessionID.tar.gz" ) {
 
-  my $archive = "$path/archives/study-$sessionID.tar.gz";
-  chdir("$path/tmp");
+  my $archive = "$archDir/study-$sessionID.tar.gz";
+  chdir("$tmpDir");
   my $tar = Archive::Tar->new($archive);
   $tar->extract();
   chdir("-");
 
-} elsif (-f "$path/results/study-$sessionID.tar.gz") {
+  chmod(0777, "$tmpDir/$sessionID");
 
-  my $archive = "$path/results/study-$sessionID.tar.gz";
-  chdir("$path/tmp");
+} elsif (-f "$resDir/study-$sessionID.tar.gz") {
+
+  my $archive = "$resDir/study-$sessionID.tar.gz";
+  chdir("$tmpDir");
   my $tar = Archive::Tar->new($archive);
   $tar->extract();
   chdir("-");
 
+  chmod(0777, "$tmpDir/$sessionID");
 
 } else {
   # Not found... announce to the user that they've failed.
@@ -56,7 +63,7 @@ my $url = $query->self_url;
 ($url) = split(/\?/, $url);
 
 # And reform it to point to the correct tmp directory
-$url =~ s/cgi-bin\/restore.pl.cgi/tmp\/$sessionID\/index.html/;
+$url =~ s/cgi-bin\/restore.pl.cgi/$tmpURL\/$sessionID\//;
 
 # Start with the header so browsers know it's html
 print "Content-type: text/html\n\n";

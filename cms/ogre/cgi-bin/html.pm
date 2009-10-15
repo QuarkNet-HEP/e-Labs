@@ -129,7 +129,10 @@ sub redirectPage(\$) {
   my $tmp = $xml->getOgreParam('tmpURL');
 
   my $url = $self->{_urlPath} . "/$tmp/$self->{_random}/";
-  $url .= (defined($whichPage)) && "$whichPage" || "index.html";
+  if ( defined($whichPage) ) {
+      $url .= $whichPage;
+  }
+#  $url .= (defined($whichPage)) && "$whichPage" || "index.html";
 
   my $tmpSite = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n";
   $tmpSite .= "<html>\n";
@@ -480,7 +483,7 @@ sub makeHistoryPage {
   return;
 }
 
-sub makeActiveScriptPage(\$ \%) {
+sub makeActivePage(\$ \%) {
     my ($self, $newFile, $version, $appletData) = @_;
 
     my $tmpdir  = $self->{_tmpdir};
@@ -512,7 +515,7 @@ sub makeActiveScriptPage(\$ \%) {
     my $image=Image::Magick->new;
     my $imageFile = sprintf("%s/%s/canvas.%03i.%s", $tmpdir, $random, $version, $type);
     $image->Read("$type:$imageFile");
-    #( $width, $height ) = $image->Get('width','height');
+
     my @temp = $image->Get('width','height');
 
     $width  = ($temp[0]) ? $temp[0] : $width;
@@ -542,12 +545,11 @@ sub makeActiveScriptPage(\$ \%) {
 	print $fileHandle "&&$leaves[$i]>$xmin&&$leaves[$i]<$xmax";
     }
     print $fileHandle "';\n";
-    print $fileHandle "      var cookie='selection';\n";
     print $fileHandle "      var sessionID ='";
-#save the session ID here
+
+    #save the session ID here
     print $fileHandle "$self->{_random}";
     print $fileHandle "';\n";
-#    print $fileHandle "      var xmlTheme = \"$baseURL/graphics/themes/ogre/ogre-theme.xml\";\n";
     print $fileHandle "      var xmlTheme = \"$baseURL/xml/ogre-theme.xml\";\n";
     print $fileHandle "      var baseURL  = \"$baseURL\";\n";
     print $fileHandle "      function fetch(url) {\n";
@@ -567,7 +569,13 @@ sub makeActiveScriptPage(\$ \%) {
     print $fileHandle "         onMouseDown='javascript:bkgClick(event);'>\n";
     print $fileHandle "    </div>\n\n";
 
-    print $fileHandle "    <div class=\"header\" id=\"header\"></div>\n";
+    print $fileHandle "    <div class='header' id='header'>\n";
+    print $fileHandle "      <div id='buttonWrapperTop'>\n";
+    print $fileHandle "    	<input type=SUBMIT   class='button' value='Apply Selection'   onClick='javascript:submitForm(document.forms[\"recut\"]);'/>\n";
+    print $fileHandle "    	<input type=BUTTON   class='button' value='Save Current Work' onClick='javascript:archiveStudy(document.forms[\"recut\"]);'/>\n";
+    print $fileHandle "    	<input type=BUTTON   class='button' value='Finalize Study'    onClick='javascript:finalizeStudy(document.forms[\"recut\"]);'/>\n";
+    print $fileHandle "       </div>\n";
+    print $fileHandle "     </div> <!-- End of header div -->\n";
 
     print $fileHandle "    <div id='controls'>\n";
     print $fileHandle "      <form  method=POST action='$baseURL/cgi-bin/applyLinearCut.pl.cgi' id='recut'>\n";
@@ -580,18 +588,19 @@ sub makeActiveScriptPage(\$ \%) {
     print $fileHandle "        <input type='hidden' name='archive'   value='0'/>\n";
     print $fileHandle "        <input type='hidden' name='finalize'  value='0'/>\n\n";
 
-    print $fileHandle "        <input type=SUBMIT   class='button' name='button' value='Apply Selection'   onClick='javascript:submitForm(this.form);'/>\n";
-    print $fileHandle "        <input type=BUTTON   class='button' name='button' value='Save Current Work' onClick='javascript:archiveStudy(this.form);'/>\n";
-    print $fileHandle "        <input type=BUTTON   class='button' name='button' value='Finalize Study'    onClick='javascript:finalizeStudy(this.form);'/>\n";
+    print $fileHandle "        <input type=SUBMIT   class='button' value='Apply Selection'   onClick='javascript:submitForm(this.form);'/>\n";
+    print $fileHandle "        <input type=BUTTON   class='button' value='Save Current Work' onClick='javascript:archiveStudy(this.form);'/>\n";
+    print $fileHandle "        <input type=BUTTON   class='button' value='Finalize Study'    onClick='javascript:finalizeStudy(this.form);'/>\n";
     print $fileHandle "      </form>\n\n";
 
     print $fileHandle "      <br><br><hr width=100%><br>\n";
 
-    print $fileHandle "      <input type=BUTTON class='button' name='button' value='Clear Saved Cuts'  onClick='javascript:delCookie(cookie,\"$baseURL/\");'/>\n";
-    print $fileHandle "      <input type=BUTTON class='button' name='button' value='Selection History' onClick='javascript:hstWin.show();'/>\n\n";
+    print $fileHandle "      <input type=BUTTON class='button' value='Clear Saved Cuts'  onClick='javascript:clearCuts();'/>\n";
+    print $fileHandle "      <input type=BUTTON class='button' value='Selection History' onClick='javascript:hstWin.show();'/>\n\n";
+    print $fileHandle "      <input type=BUTTON class='button' value='Show Graph'        onClick='javascript:cutWin.show();'/>\n";
 
     print $fileHandle "      <!-- Selection for changing themes -->\n";
-    print $fileHandle "      <select name='button' class='buttons' id='themes'\n";
+    print $fileHandle "      <select class='buttons' id='themes'\n";
     print $fileHandle "          onChange='javascript:callMenu(this.options[this.selectedIndex].value);'>\n";
     print $fileHandle "        <option value=0>Select Theme</option>\n";
     print $fileHandle "        <option value=12 selected>&nbsp;&nbsp;Standard</option>\n";
@@ -600,20 +609,14 @@ sub makeActiveScriptPage(\$ \%) {
 
     print $fileHandle "      <br><br><hr width=100%><br>\n\n";
 
-    print $fileHandle "      <div name='button' class='address buttons' id='address'>\n";
+    print $fileHandle "      <div class='address buttons' id='address'>\n";
     print $fileHandle "        <address><a href=# onClick='javascript:callMenu(8);'>Bug the OGRE</a></address>\n";
     print $fileHandle "      </div>\n";
-    print $fileHandle "    </div>\n";
+    print $fileHandle "    </div> <!-- End of controls div -->\n";
 
     print $fileHandle "    <div id='hist'></div>\n";
 
     print $fileHandle "      <div id=\"graph\">\n"; 
-#    print $fileHandle "        onmouseover='javascript:mouseTrap(event);'\n";
-#    print $fileHandle "        onmouseout='javascript:mouseRelease();'\n";
-#    print $fileHandle "        onmousedown='javascript:startDrag(event);'\n";
-#    print $fileHandle "        onmouseup='javascript:stopDrag(event);';\n";
-#    print $fileHandle "        onclick='javascript:clearSelection();'>\n";
-
     print $fileHandle "        <img id='image' src=\"$file\" name=\"canvas\" width='$width'/>\n";
     print $fileHandle "       </div>\n";
 
@@ -639,19 +642,29 @@ sub makeActiveScriptPage(\$ \%) {
     print $fileHandle "     </div>   <!-- end of ctlhlp div -->\n\n";
 
     print $fileHandle "    <div id='cuthelp'>\n";
-    print $fileHandle "    <H2>Refining Data Selection</H2>\n";
-    print $fileHandle "       <div id=\"text\" class=\"text\">\n";
+    print $fileHandle "      <H2>Refining Data Selection</H2>\n";
+    print $fileHandle "      <div id=\"text\" class=\"text\">\n";
     print $fileHandle "Moving your cursor sideways moves a vertical red line across your plot. This line will indicate the exact x-axis value it is aligned with. You can also use this red line to refine your data selection. If you click and drag across the plot, the red line will highlight a section in pale yellow. The end x-coordinates of the selected section will be shown at the top of the plot. You will be able to work further with this selection if you move to the <i>OGRE Controls</i> window.\n";
     print $fileHandle "       </div> <!-- End of text div -->\n";
     print $fileHandle "     </div>   <!-- end of cuthelp div -->\n\n";
 
     print $fileHandle "     <div id='footer'>\n";
-    print $fileHandle "       <div id='menu'>\n";
-    print $fileHandle "         <script type='text/javascript' src='$baseURL/javascript/menu/cut-menu.js'></script>\n";
+    print $fileHandle "       <div id='buttonWrapperBtm'>\n";
+    print $fileHandle "         <input type=BUTTON class='button' value='Clear Saved Cuts'  onClick='javascript:clearCuts();'/>\n";
+    print $fileHandle "         <input type=BUTTON class='button' value='Selection History' onClick='javascript:hstWin.show();'/>\n";
+    print $fileHandle "         <input type=BUTTON class='button' value='Show Graph'        onClick='javascript:cutWin.show();'/>\n\n";
+ 
+    print $fileHandle "         <!-- Selection for changing themes -->\n";
+    print $fileHandle "         <select class='buttons' id='themesBtm'\n";
+    print $fileHandle "     	        onChange='javascript:callMenu(this.options[this.selectedIndex].value);'>\n";
+    print $fileHandle "           <option value=0>Select Theme</option>\n";
+    print $fileHandle "           <option value=12 selected>&nbsp;&nbsp;Standard</option>\n";
+    print $fileHandle "           <option value=13>&nbsp;&nbsp;Simple</option>\n";
+    print $fileHandle "         </select>\n";
     print $fileHandle "       </div>\n";
-    print $fileHandle "     </div>\n\n";
+    print $fileHandle "     </div> <!-- End of Footer DIV -->\n\n";
 
-    print $fileHandle "     <div id='alertdiv' style='display:none;'>\n";
+    print $fileHandle "     <div id='alertdiv'>\n";
     print $fileHandle "       <div id='alerttext'></div>\n";
     print $fileHandle "     </div>\n\n";
     print $fileHandle "  </body>\n";
@@ -663,137 +676,6 @@ sub makeActiveScriptPage(\$ \%) {
     chmod(0666, "$tmpdir/$random/$newFile");
 
     return;
-}
-
-sub makeActiveAppletPage(\$ \%) {
-  my ($self, $newFile, $version, $appletData) = @_;
-
-  my $tmpdir  = $self->{_tmpdir};
-  my $random  = $self->{_random};
-  my $type    = $self->{_type};
-  my $stacked = $self->{_stacked};
-  my @leaves  = @{$self->{_leaves}};
-  my $logx    = $self->{_logx};
-  my $logy    = $self->{_logy};
-  my $baseURL = $self->{_baseURL};
-
-  my $width   = $appletData->{'width'};
-  my $height  = $appletData->{'height'};
-  my $file    = $appletData->{'file'};
-  my $xmin    = $appletData->{'xmin'};
-  my $xmax    = $appletData->{'xmax'};
-  my $pmin    = $appletData->{'pmin'};
-  my $pmax    = $appletData->{'pmax'};
-  my $Xcst    = $appletData->{'Xcst'};
-  my $X2px    = $appletData->{'X2px'};
-
-  my $random_key  = int( rand(64535) + 1 ); # 16-bit random number for the "key=" variable in the applet code
-                                            # The reason for this is that Java automatically caches the
-                                            # graphic no matter what I want it to do. And it treats 
-                                            # canvas.003 and canvas.000 as though they are the same
-                                            # file. So you never see anything resulting from a selection.
-                                            # Having a unique key forces the applet to treat every new graphic
-                                            # as being unique and reloading it from the server. So there!
-  #
-  ########################### Create the new web page #############################
-  #
-  my $fileHandle;
-  open($fileHandle, ">$tmpdir/$random/$newFile");
-
-  # And dump the page to the browser
-  print $fileHandle "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"";
-  print $fileHandle "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
-  print $fileHandle "<html xmlns=\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
-  print $fileHandle "  <meta HTTP-EQUIV=\"CACHE-CONTROL\" CONTENT=\"NO-CACHE\">\n";
-  print $fileHandle "  <meta HTTP-EQUIV=\"PRAGMA\"        CONTENT=\"NO-CACHE\">\n";
-  print $fileHandle "  <head>\n";
-  print $fileHandle "    <title>OGRE Selection</title>\n\n";
-  print $fileHandle "    <link rel=\"stylesheet\" type=\"text/css\" href=\"showHist.css\"/>\n";
-  print $fileHandle "    <link rel=\"stylesheet\" type=\"text/css\" href=\"cut.css\"/>\n";
-  print $fileHandle "    <link rel=\"shortcut icon\" href=\"$baseURL/graphics/ogre.icon.png\" type=\"image/x-icon\" />\n";
-  print $fileHandle "    <script type=\"Text/JavaScript\" src=\"$baseURL/javascript/showhide.js\"></script>\n";
-  print $fileHandle "    <script type=\"Text/JavaScript\" src=\"submitForms.js\"></script>\n";
-  print $fileHandle "    <script type=\"Text/JavaScript\" src=\"cookies.js\"></script>\n";
-  print $fileHandle "    <script>\n";
-  print $fileHandle "      var cuts='";
-  print $fileHandle "$leaves[0]>$xmin&&$leaves[0]<$xmax";
-  for ( my $i=1; $i<=$#leaves; $i++ ) {
-      print $fileHandle "&&$leaves[$i]>$xmin&&$leaves[$i]<$xmax";
-  }
-  print $fileHandle "';\n";
-  print $fileHandle "      var cookie='selection';\n";
-  print $fileHandle "      function loadPage() {\n";
-#  print $fileHandle "        toggleNextByTagName('h5');\n";
-#  print $fileHandle "        toggleNextByTagName('h4');\n";
-
-  print $fileHandle "        document.getElementById(\"hist\").style.display = \"none\";\n";
-  print $fileHandle "        document.getElementById(\"hist\").style.opacity = 1.0;\n";
-  print $fileHandle "        setCookie(cookie,cuts);\n";
-  print $fileHandle "      }\n";
-  print $fileHandle "    </script>\n";
-  print $fileHandle "  </head>\n\n";
-
-  print $fileHandle "  <body onload='javascript:loadPage();'\n";
-  print $fileHandle "        	onunload='javascript:archiveStudy(document.getElementById(\"recut\"));'>\n\n";
-
-  print $fileHandle "    <script type=\"Text/JavaScript\" src=\"$baseURL/javascript/wz_tooltip.js\"></script>\n";
-  print $fileHandle "    <div class=\"wrapper\" id=\"wrapper\">\n";
-  print $fileHandle "    <div class=\"background\" id=\"background\"\n";
-  print $fileHandle "         onMouseOver=\"javascript:this.style.cursor='pointer';Tip('Miss Bert?<BR>We can send you back to his cave.',WIDTH,100);\"\n";
-  print $fileHandle "         onMouseOut=\"javascript:this.style.cursor='default';UnTip();\"\n";
-  print $fileHandle "         onClick='javascript:document.location.href=\"$baseURL/\";'></div>\n\n";
-
-  print $fileHandle "      <form  method=POST action='$baseURL/cgi-bin/applyLinearCut.pl.cgi' name='recut'>\n";
-  print $fileHandle "        <input type='hidden' name='cutMin'/>\n";
-  print $fileHandle "        <input type='hidden' name='cutMax'/>\n";
-  print $fileHandle "        <input type='hidden' name='directory' value='$random'/>\n";
-  print $fileHandle "        <input type='hidden' name='version'   value='$version'/>\n";
-  print $fileHandle "        <input type='hidden' name='stacked'   value=$stacked/>\n";
-  print $fileHandle "        <input type='hidden' name='type'      value='$type'/>\n";
-  print $fileHandle "        <input type='hidden' name='archive'   value=0/>\n";
-  print $fileHandle "        <input type='hidden' name='finalize'  value=0/>\n";
-
-  print $fileHandle "    <div class=\"header\" id=\"header\">\n";
-  print $fileHandle "        <input type=SUBMIT   value='Apply'     onClick='javascript:submitForm(this.form);'/>\n";
-  print $fileHandle "        <input type=BUTTON   value='Clear Cuts' onClick='javascript:delCookie(cookie,\"$baseURL/\");'/>\n";
-  print $fileHandle "        <input type=BUTTON   value='Archive'   onClick='javascript:archiveStudy(this.form);'/>\n";
-  print $fileHandle "        <input type=BUTTON   value='Finalize'  onClick='javascript:finalizeStudy(this.form);'/>\n";
-  print $fileHandle "    </div>\n\n";
-  print $fileHandle "      </form>\n";
-
-  print $fileHandle "    <h5 onclick='javascript:toggle(\"hist\");'\n";
-  print $fileHandle "        onmouseover='javascript:this.style.cursor=\"pointer\";'\n";
-  print $fileHandle "        onmouseout='javascript:this.style.cursor=\"default\";'>\n";
-  print $fileHandle "        <font color='blue'>How did I get here?</font></h5>\n";
-  print $fileHandle "    <iframe frameborder='0' scrolling='no' id='hist' src='history.html'></iframe>\n\n";
-
-  print $fileHandle "    <applet code='linearCut' name='select' codebase='$baseURL/tmp/$random' width='$width' height='$height' cache_option=\"Yes\">\n";
-  print $fileHandle "      <param name='file' value='./$file?key=$random_key'/>\n";
-  print $fileHandle "      <param name='width' value='$width'/>\n";
-  print $fileHandle "      <param name='height' value='$height'/>\n";
-  print $fileHandle "      <param name='xmin' value='$xmin'/>\n";
-  print $fileHandle "      <param name='xmax' value='$xmax'/>\n";
-  print $fileHandle "      <param name='pmin' value='$pmin'/>\n";
-  print $fileHandle "      <param name='pmax' value='$pmax'/>\n";
-  print $fileHandle "      <param name='Xcst' value='$Xcst'/>\n";
-  print $fileHandle "      <param name='X2px' value='$X2px'/>\n";
-  print $fileHandle "      <param name='logX' value='$self->{_logx}'/>\n";
-  print $fileHandle "      <param name='logY' value='$self->{_logy}'/>\n";
-  print $fileHandle "    </applet>\n\n";
-
-  print $fileHandle "  </div>\n\n";
-
-  print $fileHandle "    <!-- Put in a place to catch applet communications without LiveConnect -->\n";
-  print $fileHandle "    <iframe frameborder=0 scrolling='no' name='j2js' src='j2js.html' class='hidden' width=0 height=0></iframe>\n\n";
-  print $fileHandle "  </body>\n";
-  print $fileHandle "</html>\n";
-
-  close($fileHandle);
-
-  # Make sure we can delete the file later on...
-  chmod(0666, "$tmpdir/$random/$newFile");
-
-  return;
 }
 
 ################################################################################################

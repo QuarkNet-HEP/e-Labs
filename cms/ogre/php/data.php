@@ -110,7 +110,7 @@ if ( !isset($dataset) ) {
       <legend>Data Filters</legend>
       <div id="DragContainer14" history="History1">
 
-        <?PHP             // Get a list of triggers to use with the data selector
+        <?php // Get a list of triggers to use with the data selector
           //create xml parser object
           $parser = xml_parser_create();
 
@@ -176,17 +176,19 @@ if ( !isset($dataset) ) {
     </fieldset>
 
     <div id='navButtons'>
-	    
-      <button id='gotoCntl' 
-	onClick='javascript:cntlWin.show();'
-	onMouseOver='javascript:Tip("Access OGRE Controls")';
-        onMouseOut='javascript:UnTip();'>
-	OGRE Controls
-      </button>
-
+      <?php
+	    if ( $userLevel > 1 ) {
+	      print "\t<button id='gotoCntl'\n"; 
+	      print "\t        onClick='javascript:cntlWin.show();'\n";
+	      print "\t        onMouseOver='javascript:showtrigToolTip(ogreBtn)';\n";
+	      print "\t        onMouseOut='javascript:UnTip();'>\n";
+	      print "\t  OGRE Controls\n";
+	      print "\t</button>\n";
+	    }
+      ?>
       <button id='gotoVars' 
 	onClick='javascript:variWin.show();'
-	onMouseOver='javascript:Tip("Access the available plots")';
+	onMouseOver='javascript:showtrigToolTip(plotBtn)';
         onMouseOut='javascript:UnTip();'>
 	Build Plots
       </button>

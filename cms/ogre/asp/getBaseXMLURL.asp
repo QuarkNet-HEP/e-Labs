@@ -1,6 +1,7 @@
 <%
 use DBI;
 use CGI;
+use lib "../cgi-bin";
 use DBDefs;
 
 $Response->{expires} = -1;

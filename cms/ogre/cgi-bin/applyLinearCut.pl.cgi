@@ -33,7 +33,6 @@ my $tmpDir       = $ogreXML->getOgreParam('tmpDir');
 my $urlPath      = $ogreXML->getOgreParam('urlPath');
 my $rootsys      = $ogreXML->getOgreParam('rootsys');
 my $rootbin      = $ogreXML->getOgreParam('rootBinaryPath');
-my $cutType      = $ogreXML->getOgreParam('activeCut');
 
 # Always set the ROOTSYS environment variable
 # root will choke without it
@@ -323,13 +322,9 @@ my $html = new html($width, $height,  $tmpDir,
                     $path,  $urlPath, 0, $histVisible,
                     $logx,  $logy,    $units, @plotList);
 
+# (re)Make the pages the user will need... and redirect the browser to it
 $html->makeHistoryPage($cutList, $activeNode, $plot, @nodeList);
-if ( $cutType eq "javaapplet" ) {
-    $html->makeActiveAppletPage("temp.$activeNode.html", $index, $appletData);
-} elsif ( $cutType eq "javascript" ) {
-    $html->makeActiveScriptPage("temp.$activeNode.html", $index, $appletData);
-}
-
+$html->makeActivePage("temp.$activeNode.html", $index, $appletData);
 $html->redirectPage("temp.$activeNode.html");
 
 exit 0;

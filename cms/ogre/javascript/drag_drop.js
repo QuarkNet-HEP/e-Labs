@@ -941,10 +941,8 @@ function dragLoad() {
 	CreateDragContainer(document.getElementById('Demo0'),
 			    document.getElementById('Demo1'));
 
-
 	document.getElementById('DragContainer14').setAttribute('DropObj',1);
 	makeClickable(document.getElementById('DragContainer14'));
-
 
 	// Define the original container of the draggable elements
 	var node = document.getElementById('DragContainer14');
@@ -968,25 +966,9 @@ function dragLoad() {
    } // End of Demos[0]
 
     if(Demos[2]) {    //Demos[2] is from the variables page
-	//var hasCookie = getCookie('selection');
 	var request = baseURL+"/asp/getCookie.asp?sessionID=" + sessionID;
-	var xmlHttp;
-	try {
-	    // Firefox, Opera 8.0+, Safari
-	    xmlHttp=new XMLHttpRequest();
-	} catch (e) {
-	    // Internet Explorer
-	    try {
-		xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
-	    } catch (e) {
-		try {
-		    xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
-		} catch (e) {
-		    alert("Your browser does not support AJAX!");
-		    return false;
-		}
-	    }
-	}
+	var xmlHttp=createXMLHttp();;
+
 	xmlHttp.open("GET",request,false);
 	xmlHttp.send(null);
 	var hasCookie = (xmlHttp.responseText != null && xmlHttp.responseText != "null" );
@@ -1055,12 +1037,6 @@ function dragLoad() {
 
 	// Set some basic defaults for the variables page..
 	var ele = new Array();
-	ele = document.getElementsByName("type");
-	for ( var i=0; i<ele.length; i++ ) {
-	    if ( ele[i] && ele[i].getAttribute("value") == "png" ) {
-		document.getElementById("DragContainer8").appendChild(ele[i]);
-	    }
-	}
 
 	// set up the default plot size based on the users browser size
 	ele = document.getElementsByName("size");
@@ -1308,23 +1284,8 @@ function asyncDB() {
 	return;
     }
 
-    var xmlHttp;
-    try {
-	// Firefox, Opera 8.0+, Safari
-	xmlHttp=new XMLHttpRequest();
-    } catch (e) {
-	// Internet Explorer
-	try {
-	    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
-	} catch (e) {
-	    try {
-		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
-	    } catch (e) {
-		alert("Your browser does not support AJAX!");
-		return false;
-	    }
-	}
-    }
+    var xmlHttp=createXMLHttp();;
+
     /*
      * States: 0 == The request is not initialized
      *         1 == The request has been set up

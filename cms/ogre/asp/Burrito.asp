@@ -2,6 +2,7 @@
 
 use DBI;
 use CGI;
+use lib "../cgi-bin";
 use DBDefs;
 
 my $dbdefs = new DBDefs();
@@ -57,7 +58,7 @@ if ($cgi->param('iotype') eq "getID") {
 if ($cgi->param('iotype') eq "create")
 {
 	my $userName = $cgi->param('userName') || 'default';
-	$query = "INSERT INTO settings VALUES ('$userName','$sessId', 0, 'mc09', 12, 1, 1, 0, 10, 10, 20, 20, 30, 30, 'histWin', 'blah');";
+	$query = "INSERT INTO settings VALUES ('$userName','$sessId', 0, 'mc09', 12, 1, 1, 0, 10, 10, 20, 20, 30, 30, 'graphWin', 'blah');";
 	$data = $dbh->prepare($query);
 	$data->execute();
 	$Nacho = "$sessId:0:mc09:12:1:1:0:10:10:20:20:30:30:histWin:blah";

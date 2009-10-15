@@ -1,3 +1,19 @@
+var tipTip = "Show tooltips?";
+var lvlTip = "Set User Level";
+var thmTip = "Select active theme";
+var dsTip  = "Select Dataset";
+var tutTip = "Play the OGRE Tutorial Movie";
+var dmoTip = "Run the CMS Detector Demo";
+
+function showogreToolTip(text) {
+    try {
+	if (showToolTips)
+	    Tip(text);
+    } catch (e) {}
+
+    return false;
+}
+
 function include(filename) {
     var head = document.getElementsByTagName('head')[0];
     var scripts = head.getElementsByTagName('script');
@@ -60,8 +76,6 @@ function getBaseURLPath () {
 var baseURL      = getBaseURLPath ();
 var sessionID    = null;
 var showToolTips = true;
-var dmWorkPath   = baseURL+"/javascript/menu/";
-var useDynMenu   = false;
 
 // Objects that will get bound into jsWindowlets
 var introWin = new Object();
@@ -75,6 +89,7 @@ var variWin  = new Object();
 var archWin  = new Object();
 var prevWin  = new Object();
 var demoWin  = new Object();
+var tutrWin  = new Object();
 
 include(baseURL+"/javascript/cookies.js");
 include(baseURL+"/javascript/utilities.js");
@@ -86,6 +101,3 @@ include(baseURL+"/javascript/triggers-include.js");
 include(baseURL+"/javascript/variable-include.js");
 include(baseURL+"/javascript/archive-include.js");
 include(baseURL+"/javascript/previous-include.js");
-
-if ( useDynMenu )
-    include(baseURL+"/javascript/menu/dmenu.js");

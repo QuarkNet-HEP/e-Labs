@@ -28,7 +28,7 @@
 	    If you should get lost wandering about my forest home.... don't panic! I'll stay down here in
 	    the corner, and you can get back to the controls by poking me.... Good luck, young scientist...
 	    we're all counting on you.
-            <button id='start' class='helpButton' onClick='javascript:cntlWin.show();'>Start</button>
+            <button id='start' class='helpButton' onClick='javascript:dataWin.show();'>Start</button>
 	  </p>
 	</div> <!-- End of text div -->
       </div> <!-- end of intro div -->

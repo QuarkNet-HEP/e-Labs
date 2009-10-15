@@ -9,6 +9,8 @@ var tip6   = 'How big do you want it?';
 var tip7_1 = 'Apply previously saved cuts to new plots';
 var tip7_2 = 'Get the numbers as well as the pictures (not working yet)';
 var tip8   = 'Drag options here';
+var tip9_1 = 'Access the available data';
+var tip9_2 = 'Make a plot with the currect selections';
 
 function showvarsToolTip(text) {
     try {

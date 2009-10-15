@@ -97,6 +97,27 @@ function _add_style(filename) {
     return;
 }
 
+function createXMLHttp() {
+    var xmlHttp;
+    try {
+	// Firefox, Opera 8.0+, Safari
+	xmlHttp=new XMLHttpRequest();
+    } catch (e) {
+	// Internet Explorer
+	try {
+	    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+	} catch (e) {
+	    try {
+		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+	    } catch (e) {
+		alert("Your browser does not support AJAX!");
+		return false;
+	    }
+	}
+    }
+    return xmlHttp;
+}
+
 // Declare the global variables (used by all instances of the psuedo-class)
 var stack = (stack == null) ? new Array() : stack;
 
@@ -216,23 +237,7 @@ function jsWindowlet (xmlFile, showMe, makeMe, element, myClass, title, width, h
 
 function _getXMLTheme(themeXML) {
 
-    var xmlHttp;
-    try {
-	// Firefox, Opera 8.0+, Safari
-	xmlHttp=new XMLHttpRequest();
-    } catch (e) {
-	// Internet Explorer
-	try {
-	    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
-	} catch (e) {
-	    try {
-		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
-	    } catch (e) {
-		alert("Your browser does not support AJAX!");
-		return false;
-	    }
-	}
-    }
+    var xmlHttp=createXMLHttp();
 
     // Process this as a synchronus request since we need the result to proceed
     var request = themeXML;
@@ -242,6 +247,8 @@ function _getXMLTheme(themeXML) {
 }
 
 function fnLoadPngs(img, width, height) {
+
+    return false;
 
     // Do a last chance browser check... 
     // if this is IE v5.0 and the theme
@@ -1036,11 +1043,17 @@ function _changeBkg(newBkg, useTheme) {
 function _dragStart(event) {
 
     // Special call for CMS eLab.... inhibit motion for beginning/intermediate users
-    if ( document.getElementById('userLevel') ) {
-	var userLevel = document.getElementById('userLevel').selectedIndex;
-	if ( userLevel < 2 )
-	    return false;
-    }
+    var xmlHttp = createXMLHttp();
+    var request = baseURL + "/asp/Burrito.asp?iotype=retrieve&sessid=" + sessionID;
+    xmlHttp.open("GET", request, false);
+    xmlHttp.send(null);
+
+    var mesParsed = xmlHttp.responseText.split(":",15);
+    var userLevel = mesParsed[1];
+
+    if ( userLevel < 2 )
+	return;
+    //////////////////////////////////////////////////////////////////////////////////
 
     event = (!event) ? window.event : event;
 
@@ -1189,25 +1202,10 @@ function _dragStop(event) {
     var xmlHttp = [];
     var request;
     var windowNum;
-    try {
-	// Firefox, Opera 8.0+, Safari
-	for (i = 0; i < 3; i++)
-	    xmlHttp[i]=new XMLHttpRequest();
-    } catch (e) {
-	// Internet Explorer
-	try {
-	    for (i = 0; i < 3; i++)
-		xmlHttp[i]=new ActiveXObject("Msxml2.XMLHTTP");
-	} catch (e) {
-	    try {
-		for (i = 0; i < 3; i++)
-		    xmlHttp[i]=new ActiveXObject("Microsoft.XMLHTTP");
-	    } catch (e) {
-		alert("Your browser does not support AJAX!");
-		return false;
-	    }
-	}
-    }
+
+    for ( i=0; i<3; i++ )
+	xmlHttp[i] = createXMLHttp();
+
     /*
      * States: 0 == The request is not initialized
      *         1 == The request has been set up
@@ -1217,26 +1215,24 @@ function _dragStop(event) {
      */
     xmlHttp[0].onreadystatechange=function (){
 	if(xmlHttp[0].readyState==4) {
-	    //alert(xmlHttp[0].responseText);
 	    xmlHttp[0].close;
 	    return true;
 	}
     }
     xmlHttp[1].onreadystatechange=function (){
 	if(xmlHttp[1].readyState==4) {
-	    //alert(xmlHttp[1].responseText);
 	    xmlHttp[1].close;
 	    return true;
 	}
     }
     xmlHttp[2].onreadystatechange=function (){
 	if(xmlHttp[2].readyState==4) {
-	    //alert(xmlHttp[2].responseText);
 	    xmlHttp[0].close;
 	    return true;
 	}
     }
-    //Determine which window is being moved
+
+    //Determine which window was being moved
     switch(dragObj.elNode.id){
     case "controlsWin":
 	windowNum = 1;
@@ -1328,24 +1324,9 @@ function _loadContent(URI) {
 	return false;
 
     // load the URI page into the content div
-    var xmlHttp;
+    var xmlHttp=createXMLHttp();
     var request;
-    try {
-	// Firefox, Opera 8.0+, Safari
-	xmlHttp=new XMLHttpRequest();
-    } catch (e) {
-	// Internet Explorer
-	try {
-	    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
-	} catch (e) {
-	    try {
-		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
-	    } catch (e) {
-		alert("Your browser does not support AJAX!");
-		return false;
-	    }
-	}
-    }
+
     /*
      * States: 0 == The request is not initialized
      *         1 == The request has been set up
