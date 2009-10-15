@@ -232,6 +232,12 @@ function init(sID) {
     demoHlp.setMinTop(45);
     demoHlp.setMinTop(45);
     demoWin.setMinTop(45);
+    tutrWin.setMinTop(45);
+
+    // Forbid the flash content from overflowing the windowlet since it's 
+    // damned near impossible to get flash to act nicely 
+    demoWin.setStyle(demoWin.newWin.content, 'overflow', 'hidden');
+    tutrWin.setStyle(tutrWin.newWin.content, 'overflow', 'hidden');
 
     // Since our background image is an alpha channel PNG... 
     // IE 6 & under is gonna choke on it. Reload the image

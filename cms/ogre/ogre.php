@@ -325,7 +325,7 @@
      <div id='flashWrapper'>
         <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width=600 height=280
            codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" 
-           id="CMS_Slice_Demo" align="center">
+           id="ogreTutorial" align="center">
 
           <param name="movie"    value="graphics/ogre.swf">
           <param name="Show All" value="true">

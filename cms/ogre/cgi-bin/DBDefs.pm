@@ -2,6 +2,7 @@ package DBDefs;
 use strict;
 use warnings;
 use Data::Dumper;
+use Cwd;
 
 sub new {
     my ($class) = @_;
@@ -15,7 +16,28 @@ sub new {
 	pass => undef
     };
 
-    open (DBINC, "<dbconst.inc") or $readfail=1;
+    my $counter = 0;
+    my $dbdeffile = "dbconst.inc";
+
+    if ( !(-f $dbdeffile) ) {
+	$dbdeffile = "cgi-bin/$dbdeffile";
+    }
+
+    while ( !(-f $dbdeffile) && $counter++ < 5 ) {
+	$dbdeffile = "../$dbdeffile";
+    }
+
+    my $whereami = Cwd::cwd();
+    chomp($whereami);
+    $dbdeffile = "$whereami/$dbdeffile";
+
+    if ( !(-f $dbdeffile) ) {
+        warn "$dbdeffile: $!\n";
+	bless $self, $class;
+	return $self;
+    }
+
+    open (DBINC, "<$dbdeffile") or $readfail=1;
     my @dbconsts = <DBINC>;
     close(DBINC);
 

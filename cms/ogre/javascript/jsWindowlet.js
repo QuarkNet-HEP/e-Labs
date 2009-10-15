@@ -1024,7 +1024,6 @@ function _setStatus( text ) {
 
 // simple routine to set the style of an element
 function _setStyle(element, property, value) {
-
     if ( element ) {
 	try {
 	    (element.style||element)[property] = value;
@@ -1042,18 +1041,9 @@ function _changeBkg(newBkg, useTheme) {
 
 function _dragStart(event) {
 
-    // Special call for CMS eLab.... inhibit motion for beginning/intermediate users
-    var xmlHttp = createXMLHttp();
-    var request = baseURL + "/asp/Burrito.asp?iotype=retrieve&sessid=" + sessionID;
-    xmlHttp.open("GET", request, false);
-    xmlHttp.send(null);
-
-    var mesParsed = xmlHttp.responseText.split(":",15);
-    var userLevel = mesParsed[1];
-
-    if ( userLevel < 2 )
+    // If we're only showing windowlets one at a time... inhibit dragging
+    if (singleWindow)
 	return;
-    //////////////////////////////////////////////////////////////////////////////////
 
     event = (!event) ? window.event : event;
 
@@ -1567,6 +1557,11 @@ function _maximize() {
 }
 
 function _expand(event) {
+
+    // If there's only one window... inhibit drag resizing
+    // (max and min still work, but there's really no need for this)
+    if ( singleWindow )
+	return;
 
     var windowlet = this.parentNode.parentNode;
     if ( windowlet.maximized )

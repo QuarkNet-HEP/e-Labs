@@ -12,11 +12,15 @@ while ( !is_file($dbconstfile) && $counter < 5 ) {
   $counter++;
 }
 
-if ( $counter >= 5 ) {
+if ( $counter >= 5 || !is_file($dbconstfile) ) {
   print "Unable to find DB connection information!\n";
   print "Bailing right the heck now!\n";
   exit;
 }
+
+$whereami = getcwd();
+$whereami = trim($whereami);
+$dbconstfile = "$whereami/$dbconstfile";
 
 $fh = fopen($dbconstfile, 'r');
 $dbparams = fread($fh, filesize($dbconstfile));
