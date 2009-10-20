@@ -93,11 +93,9 @@ public class DatabaseUserManagementProvider implements
     private void checkResearchGroup(Statement s, ElabGroup user,
             String projectID) throws SQLException, AuthenticationException {
         ResultSet rs;
-        rs = s.executeQuery("SELECT research_group_project.project_id "
-                + "FROM research_group_project "
-                + "WHERE research_group_project.project_id='" + projectID
-                + "' and research_group_project.research_group_id='"
-                + user.getGroup().getId() + "';");
+        rs = s.executeQuery("SELECT project_id FROM research_group_project "
+                + "WHERE project_id='" + projectID + "' " +
+                + "AND research_group_id='" + user.getGroup().getId() + "';");
         if (!rs.next() && !user.isTeacher() && !user.isAdmin()) {
             throw new AuthenticationException(
                     "Your group is not associated with this project. "
@@ -173,15 +171,15 @@ public class DatabaseUserManagementProvider implements
             throws SQLException {
         ElabGroup user = new ElabGroup(elab, this);
         user.setName(username);
-        user.setId(rs.getString("id"));
-        user.setTeacherId(rs.getString("teacher_id"));
-        user.setRole(rs.getString("role"));
-        user.setSurvey(rs.getBoolean("survey"));
-        user.setUserArea(rs.getString("userarea"));
-        user.setStudy(rs.getBoolean("in_study"));
-        user.setNewSurvey(rs.getBoolean("new_survey"));
-        user.setNewSurveyId((Integer) rs.getObject("test_id"));
-        setMiscGroupData(user, rs.getString("ay"), user.getUserArea());
+        user.setId(rs.getString("rg.id"));
+        user.setTeacherId(rs.getString("rg.teacher_id"));
+        user.setRole(rs.getString("rg.role"));
+        user.setSurvey(rs.getBoolean("rg.survey"));
+        user.setUserArea(rs.getString("rg.userarea"));
+        user.setStudy(rs.getBoolean("rg.in_study"));
+        user.setNewSurvey(rs.getBoolean("rg.new_survey"));
+        user.setNewSurveyId((Integer) rs.getObject("rg.test_id"));
+        setMiscGroupData(user, rs.getString("rg.ay"), user.getUserArea());
         if (user.isTeacher()) {
             addTeacherInfo(s, user);
         }
