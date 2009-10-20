@@ -94,7 +94,7 @@ public class DatabaseUserManagementProvider implements
             String projectID) throws SQLException, AuthenticationException {
         ResultSet rs;
         rs = s.executeQuery("SELECT project_id FROM research_group_project "
-                + "WHERE project_id='" + projectID + "' " +
+                + "WHERE project_id='" + projectID + "' "
                 + "AND research_group_id='" + user.getGroup().getId() + "';");
         if (!rs.next() && !user.isTeacher() && !user.isAdmin()) {
             throw new AuthenticationException(
