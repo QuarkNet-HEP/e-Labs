@@ -493,7 +493,7 @@ deploy-all-clean:
 			<fileset dir="${elab.name}/build" includes="**/*.*"/>
 		</copy>
 		<copy todir="${container.home}/${webapps}/elab/${elab.name}" overwrite="true">
-			<fileset dir="${elab.name}/src/jsp" includes="**/*.*"/>
+			<fileset dir="${elab.name}/src/jsp" includes="**/*.*" defaultexcludes="no"/>
 		</copy>
 		<exec executable="ln" logError="true">
 			<arg value="-s"/>
