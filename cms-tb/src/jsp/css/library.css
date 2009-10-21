@@ -1,0 +1,140 @@
+#nav #subnav ul#sub-data { display:none; }
+#nav #subnav ul#sub-posters { display:none; } 
+#nav #subnav ul#sub-siteindex { display:none; } 
+
+#nav a#nav-library {
+	background-color: #33e890;
+	border-top: #a7d2d8 1px solid;
+	border-left: #a7d2d8 1px solid;
+	border-bottom: #3c777f 1px solid;
+	border-right: #3c777f 1px solid;
+}
+
+h1 {
+	background-color: #53fdc2;
+	color: #000000;
+	
+	/* Gradients: WebKit, Firefox 3.6+, IE8, IE7 */
+	background-image:-webkit-gradient(linear, left top, left bottom, from(#53fdc2), to(#fff)) !important;
+	background-image:-moz-linear-gradient(left top, left bottom, from(#53fdc2), to(#fff)) !important;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Gradient(enabled='true', startColorstr='#0053fdc2', endColorstr='#FFFFFFFF')";
+	filter: progid:DXImageTransform.Microsoft.Gradient(enabled='true', startColorstr='#0053fdc2', endColorstr='#FFFFFFFF');
+}
+
+h1.bottomheader {
+	background-color: #53fdc2;
+	color: #000000;
+	
+	/* Gradients: WebKit, Firefox 3.6+, IE8, IE7 */
+	background-image:-webkit-gradient(linear, left top, left bottom, from(#fff), to(#53fdc2)) !important;
+	background-image:-moz-linear-gradient(left top, left bottom, from(#fff), to(#53fdc2)) !important;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Gradient(enabled='true', startColorstr='#FFFFFFFF', endColorstr='#0053fdc2')";
+	filter: progid:DXImageTransform.Microsoft.Gradient(enabled='true', startColorstr='#FFFFFFFF', endColorstr='#0053fdc2');
+}
+
+.library #center h1 {
+	font-weight: normal;
+	font-size: 140%;
+	width: 100%;
+	padding-bottom: 6px;
+	border-bottom: solid 2px orange;
+	margin-left: 0px;
+}
+
+.library #center h2 {
+	font-weight: bold;
+	font-size: 120%;
+	margin-left: 0px;
+}
+
+.library #center p {
+	font-weight: normal;
+	margin-left: 10px;
+}
+
+.library .tab-contents ul {
+	padding-left: 10px;
+	padding-top: 6px;
+}
+
+.library .tab-contents  ul ul ul li {
+	font-weight: normal;
+}
+
+.library .tab-contents li {
+	list-style-type: none;
+	font-weight: bold;
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+#first-web #content #right {
+	width: 140px;
+}
+
+.library dt {
+	font-weight: bold;
+}
+
+.library dd {
+	padding-bottom: 6px;
+}
+
+.library #nav ul li a {
+	color: white;
+}
+
+/************* Tab **************/
+
+.tab:before {
+	background-color: #40ffb3;
+}
+
+.library .tab {
+	padding-top: 10px;
+	width: 100%;
+}
+
+.library .tab .tab-title {
+	background-color: #40ffb3;
+	border-left: 1px solid #358974;
+	border-right: 1px solid #358974;
+	/*border-top: 1px solid #358974;*/
+	font-weight: bold;
+	margin: 0px;
+}
+
+.library .tab .tab-contents {
+	background-color: #99ffcc;
+	margin: 0px;
+	border-top: 2px solid black;
+	padding-bottom: 16px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.library #content .tab-contents h2 {
+	font-weight: bold;
+	font-style: italic;
+	padding-left: 10px;
+	font-size: 100%;
+}
+
+.library #content .tab-contents li {
+	font-weight: normal;
+	padding-left: 8px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.library #content .tab-contents li:before {
+	display: marker;
+	content: url("../graphics/ref_dot.gif");
+	marker-offset: auto;
+	padding-right: 3px;
+}
+
+.float {
+	float: left;
+	padding-right: 8px;
+}
