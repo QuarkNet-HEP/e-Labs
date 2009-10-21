@@ -92,10 +92,8 @@ public class DatabaseUserManagementProvider implements
     private void checkResearchGroup(Connection c, ElabGroup user,
             int projectID) throws SQLException, AuthenticationException {
     	PreparedStatement ps = c.prepareStatement(
-    			"SELECT research_group_project.project_id " +
-    			"FROM research_group_project " +
-    			"WHERE research_group_project.project_id = ? " +
-    			"AND research_group_project.research_group_id = ?;");
+    			"SELECT project_id FROM research_group_project " +
+    			"WHERE project_id = ? AND research_group_id = ?;");
     	ps.setInt(1, projectID);
     	ps.setInt(2, user.getGroup().getId());
         ResultSet rs = ps.executeQuery();
@@ -127,7 +125,7 @@ public class DatabaseUserManagementProvider implements
     			"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
     			"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
     			"LEFT OUTER JOIN \"newSurvey\".tests AS t ON (rgp.project_id = t.proj_id) " +
-    			"WHERE rg.name = ? AND rg.password = ?;");
+    			"WHERE rg.name ILIKE ? AND rg.password = ?;");
     	ps.setString(1, username);
     	ps.setString(2, password);
     	ResultSet rs = ps.executeQuery();
@@ -146,7 +144,7 @@ public class DatabaseUserManagementProvider implements
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
         		"LEFT OUTER JOIN \"newSurvey\".tests AS t ON (rgp.project_id = t.proj_id) " +
-        		"WHERE rg.name = ? ;");
+        		"WHERE rg.name ILIKE ? ;");
 		ps.setString(1, username);
 		ResultSet rs = ps.executeQuery();
 
@@ -246,7 +244,7 @@ public class DatabaseUserManagementProvider implements
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
         		"LEFT OUTER JOIN \"newSurvey\".tests AS t ON (rgp.project_id = t.proj_id) " +
-        		"WHERE rg.name = ?;");
+        		"WHERE rg.name ILIKE ?;");
         ps.setString(1, groupName);
         ResultSet rs = ps.executeQuery();
  
@@ -366,13 +364,13 @@ public class DatabaseUserManagementProvider implements
                     .getConnection(elab.getProperties());
             int projectId = elab.getId();
             ps = conn.prepareStatement(
-            		"SELECT distinct teacher.name as tname, teacher.email as temail, "
-                            + "teacher.id as teacherid, research_group.id as id,"
-                            + "research_group.name as rgname, research_group.userarea as rguserarea "
+            		"SELECT DISTINCT teacher.name AS tname, teacher.email AS temail, "
+                            + "teacher.id AS teacherid, research_group.id AS id,"
+                            + "research_group.name AS rgname, research_group.userarea AS rguserarea "
                             + "FROM teacher, research_group "
                             + "WHERE research_group.teacher_id = teacher.id "
                             + "AND research_group.id IN "
-                            + "(SELECT distinct research_group_id FROM research_group_project WHERE "
+                            + "(SELECT DISTINCT research_group_id FROM research_group_project WHERE "
                             + " research_group_project.project_id = ? ) ORDER BY tname ASC;");
             ps.setInt(1, projectId);
             rs = ps.executeQuery();
