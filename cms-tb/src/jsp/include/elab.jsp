@@ -4,7 +4,7 @@
 <%@ include file="../login/session-invalidator.jspf" %>
 
 <%	
-	Elab elab = Elab.getElab(pageContext, "cms");
+	Elab elab = Elab.getElab(pageContext, "cms-tb");
 	request.setAttribute("elab", elab);
 	request.setAttribute("user", ElabGroup.getUser(session));
 %>
