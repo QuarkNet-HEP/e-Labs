@@ -10,15 +10,20 @@ help:
 	You are looking at it
 	
 build-cms:
-	Builds the CMS e-Lab
+	Builds the CMS Monte-Carlo/Rundata e-Lab
+			
+build-cms-tb:
+	Builds the CMS Test Beam e-Lab
 	
 build-cms-vdl2:
 	Builds the VDL2 version of the CMS e-Lab
 	
 deploy-cms:
-	Deploys the CMS e-Lab into the container
+	Deploys the CMS Monte-Carlo/Rundata e-Lab into the container
 	
-	
+deploy-cms-tb:
+	Deploys the CMS Test Beam e-Lab into the container
+			
 deploy-cms-vdl2:
 	Deploys the VDL2 version of the CMS e-Lab into the container
 	
@@ -71,6 +76,12 @@ deploy-all-clean:
 	
 	<path id="cp-cms">
 		<fileset dir="cms">
+			<include name="lib/**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<path id="cp-cms-tb">
+		<fileset dir="cms-tb">
 			<include name="lib/**/*.jar"/>
 		</fileset>
 	</path>
@@ -268,7 +279,80 @@ deploy-all-clean:
 			<arg value="${container.home}/${webapps}/elab/${elab.name}/test"/>
 		</exec>
 	</target>
-
+	
+	<!-- ================================= 
+		target: build-cms              
+		================================= -->
+	<target name="build-cms-tb" depends="build-common" description="--> builds CMS">
+		<mkdir dir="cms-tb/build"/>
+		<javac srcdir="cms-tb/src/java" destdir="cms-tb/build" debug="true">
+			<include name="**/*.java"/>
+			<classpath refid="cp-common"/>
+			<classpath refid="cp-cms-tb"/>
+			<compilerarg value="-deprecation"/>
+		</javac>
+		<!-- The copying to common has to do with timestamps          -->
+		<!-- From looking at Ant, this seems like the way to achieve: -->
+		<!--   - updating of the deployed prop file IFF any of the    -->
+		<!--     common or elab properties are newer                  -->
+		<!--   - not ending up with the same property repeated        -->
+		<!--     multiple times in the deployed file                  -->
+		
+		<copy todir="common/build">
+			<fileset dir="cms-tb" includes="elab.properties.cms-tb"/>
+			<filterset>
+				<filter token="container.home" value="${container.home}"/>
+				<filter token="webapps" value="${webapps}"/>
+				<filter token="elab.name" value="${elab.name}"/>
+				<filter token="vds.home" value="${vds.home}"/>
+				<filter token="portal.home" value="${portal.home}"/>
+			</filterset>
+		</copy>
+	</target>
+	
+	<target name="deploy-cms-tb">
+		<antcall target="do-deploy-cms-tb">
+			<param name="elab.name" value="cms-tb"/>
+		</antcall>
+	</target>
+		
+	<target name="do-deploy-cms-tb" depends="build-cms-tb, do-deploy-common">
+		<mkdir dir="${container.home}/${webapps}/elab/${elab.name}"/>
+	
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
+			<fileset dir="${elab.name}" includes="lib/**/*.jar"/>
+		</copy>
+		<mkdir dir="${elab.name}/resources"/>
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
+			<fileset dir="${elab.name}/resources" includes="**/*.*"/>
+		</copy>
+		<copy todir="${container.home}/${webapps}/elab/WEB-INF/classes">
+			<fileset dir="${elab.name}/build" includes="**/*.*"/>
+		</copy>
+		<copy todir="${container.home}/${webapps}/elab/${elab.name}" overwrite="true">
+			<fileset dir="${elab.name}/src/jsp" includes="**/*.*"/>
+		</copy>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/jsp"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/users"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/jsp"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/references"/>
+		</exec>
+		<exec executable="ln" logError="true">
+			<arg value="-s"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/graphics"/>
+			<arg value="${container.home}/${webapps}/elab/${elab.name}/test"/>
+		</exec>
+	</target>
 
 	<!-- ================================= 
 		target: build-cms-vdl2
@@ -478,7 +562,6 @@ deploy-all-clean:
 		</antcall>
 	</target>
 	
-	
 	<target name="do-deploy-ligo" depends="build-ligo, do-deploy-common">
 		<mkdir dir="${container.home}/${webapps}/elab/${elab.name}"/>
 	
@@ -534,7 +617,7 @@ deploy-all-clean:
 		target: deploy-all
 		================================= -->
 
-	<target name="deploy-all" depends="deploy-cosmic, deploy-cms, deploy-ligo, deploy-embedded, deploy-i2u2">
+	<target name="deploy-all" depends="deploy-cosmic, deploy-cms, deploy-cms-tb, deploy-ligo, deploy-embedded, deploy-i2u2">
 	</target>
 	
 	<!-- ================================= 
