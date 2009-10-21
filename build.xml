@@ -281,7 +281,7 @@ deploy-all-clean:
 	</target>
 	
 	<!-- ================================= 
-		target: build-cms              
+		target: build-cms-tb              
 		================================= -->
 	<target name="build-cms-tb" depends="build-common" description="--> builds CMS">
 		<mkdir dir="cms-tb/build"/>
