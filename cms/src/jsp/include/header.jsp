@@ -17,7 +17,7 @@
 <div id="header-image">
 	<img src="../graphics/cms_logo.png" alt="CMS Logo" />
 </div>
-<div id="header-title">CMS Test Beam e-Lab</div>
+<div id="header-title">CMS e-Lab</div>
 <%
 	if (ElabGroup.isUserLoggedIn(session)) {
 		%>
