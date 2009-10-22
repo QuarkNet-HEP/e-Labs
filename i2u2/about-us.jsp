@@ -31,6 +31,7 @@
 			<div id="contentWithMargin">
 <h2>About Us: The I2U2 Organization Chart</h2>
 <img src="/graphics/org-chart.gif" border="0" align="center">
+<h3 style="text-align:center"><a href="mailto:mbardeen@fnal.gov">Project Contact</a></h3>
 			</div>
 		</div>
 	</body>
