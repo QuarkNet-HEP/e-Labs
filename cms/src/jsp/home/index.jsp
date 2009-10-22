@@ -44,7 +44,7 @@
 		 	 			</table>
 					</c:when>
 					<c:otherwise> <%-- User is logged in --%>
-						<h1>Home: Join a national collaboration of high school students to study CMS test beam data.</h1>
+						<h1>Home: Join a national collaboration of high school students to study CMS data.</h1>
 						<div id="links">
 							<table align="center">
 								<tr>
