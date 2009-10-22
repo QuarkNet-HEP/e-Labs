@@ -2,8 +2,9 @@
 
 <table width="794" cellpadding="4">
 	<tr>
-		<td><font face="ARIAL" size="+1"><b>Click on <img border="0" src="../graphics/ref.gif"> for
-		references to help you meet each <a href="javascript:glossary('milestone_text')">milestone</a>.</b></font></td>
+		<td><p>Follow the workflow list below to guide your work. Go through the e-Lab milestones one at a time. Use the <a href="../home/index.jsp">Project Map</a> if you prefer.
+Click on <img border="0" src="../graphics/ref.gif"> for
+		references to help you meet each <a href="javascript:glossary('milestone_text')">milestone</a>.</p></td>
 	</tr>
 </table>
 <table border="0" id="main">
@@ -47,6 +48,7 @@
 							</li>
 						</ul>
 						<h2><a href="javascript:glossary('milestone_seminar_text')">Milestone Seminar</a></h2>
+						<br><br><br><br><br><br>
 					</div>
 				</div>
 				<div class="tab">
@@ -85,26 +87,31 @@
 						<h2>Prepares the team to design the investigation:</h2>
 						<ul>
 							<li>
-								Describe the particles used in the test beam.
-								<a href="javascript:reference('test beam particles',420)">
+								Describe the physics questions that CMS is designed to address.
+								<a href="javascript:reference('describe physics',420)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
-								Briefly describe the setup of the CMS test beam and detector components.
-								<a href="javascript:reference('test beam setup',420)">
+							Identify and describe the particles colliding inside the CMS detector and those predicted by the Standard Model to emerge from the collisions.
+							<a href="javascript:reference('describe particles',420)">
+									<img src="../graphics/ref.gif">
+								</a>
+							</li><li>
+								List each CMS subdetector, in order, and explain that order in terms of the properties of the particles each detects.
+								<a href="javascript:reference('list subdetectors',420)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
-								Interpret basic test beam data using OGRE.
-								<a href="javascript:reference('test beam data',400)">
+								Relate energy, mass and momentum and explain the role of conservation of mass/energy, momentum and charge in analyzing CMS events.
+								<a href="javascript:reference('relate emp',400)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
-								Choose a study and write a proposal.
-								<a href="javascript:reference('cms study choice',400)">
+								Formulate a specific research question.
+								<a href="javascript:reference('cms design study',400)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
