@@ -6,7 +6,6 @@
 <area shape="rect" alt="" coords="4,133,81,170" href="#" onclick="javascript:glossary('Milestone',250);return false;" title="Learn about milestones.">
 <area shape="rect" alt="" coords="5,95,82,132"  href="#" onclick="javascript:glossary('Milestone_Seminar',300);return false;" title="Learn about milestone seminars.">
 
-<area shape="rect" alt="" coords="261,163,326,208" href="javascript:reference('test_beam_setup',550)" title="What two detector subsystems do physicists use to study the detector's behavior?">
 <area shape="rect" alt="" coords="196,90,249,130" href="javascript:reference('research plan')" title="Background on research proposals">
 <area shape="rect" alt="" coords="196,166,252,198" href="javascript:reference('research question',300)" title="Background on research questions">
 <area shape="poly" alt="" coords="150,188, 168,187, 176,207, 189,210, 191,230, 129,230, 132,216, 144,209, 150,188" href="javascript:reference('simple_graphs',600)"  title="Background on simple plots">
@@ -18,11 +17,18 @@
 
 <area shape="rect" alt="" coords="520,93,590,127" href="javascript:reference('cms_assessment',400)" title="Assess your plots and see if they support your ideas.">
 <area shape="rect" alt="" coords="509,177,577,216" href="javascript:reference('cms_analysis',450)" title="Use OGRE to analyze your data.">
-<area shape="rect" alt="" coords="440,178,507,219" href="javascript:reference('cms_data_selection',420)" title="Choose appropriate data from the test beam data set.">
+<area shape="rect" alt="" coords="440,178,507,219" href="javascript:reference('cms_data_selection',420)" title="Choose appropriate data from the data sets.">
 <area shape="rect" alt="" coords="471,100,516,133" href="not-satisfied.jsp" title="Are you satisfied with your results or do you need to analyze more data?">
-<area shape="rect" alt="" coords="376,82,438,121" href="javascript:reference('cms_study_choice',450)"  title="Choose a study and write your proposal.">
-<area shape="rect" alt="" coords="376,170,440,212" href="javascript:reference('test_beam_data',550)" title="What types of data sets are produced in the test beam?">
-<area shape="rect" alt="" coords="259,74,321,124" href="javascript:reference('test_beam_particles',420)"  title="What particles are used to study the detector's behavior?">
+
+<area shape="rect" alt="" coords="376,82,438,121" href="javascript:reference('cms_design_study',450)"  title="Formulate a specific research question.">
+<area shape="rect" alt="" coords="261,151,326,186" href="javascript:reference('identify_particles',550)"  title="Identify and describe the particles colliding inside the CMS detector and those predicted by the Standard Model to emerge from the collisions.">
+<area shape="rect" alt="" coords="317,187,377,229" href="javascript:reference('list_subdetectors',550)"  title="List each CMS subdetector, in order, and explain the particles it detects.">
+<area shape="rect" alt="" coords="374,157,438,197" href="javascript:reference('relate_emp',550)"  title="Relate energy, mass and momentum and explain the role of conservation of mass/energy, momentum and charge in analyzing CMS events. ">
+<area shape="rect" alt="" coords="259,74,321,124" href="javascript:reference('describe_physics',420)"  title="Describe the physics questions that CMS  is designed to address.">
+
+
+
+
 
 <area shape="rect" alt="" coords="587,3,651,58" href="#" title="Goal: Make a poster and discuss results.">
 <area shape="rect" alt="" coords="4,12,60,55" href="../survey/show-students.jsp?type=pre" title="Take the pre-test. See what you already know.">
