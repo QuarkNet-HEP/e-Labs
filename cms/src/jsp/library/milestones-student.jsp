@@ -93,7 +93,7 @@ Click on <img border="0" src="../graphics/ref.gif"> for
 								</a>
 							</li>
 							<li>
-							Identify and describe the particles colliding inside the CMS detector and those predicted by the Standard Model to emerge from the collisions.
+							Describe the particles colliding inside the CMS detector and those predicted by the Standard Model to emerge from the collisions.
 							<a href="javascript:reference('describe particles',420)">
 									<img src="../graphics/ref.gif">
 								</a>
@@ -110,7 +110,7 @@ Click on <img border="0" src="../graphics/ref.gif"> for
 								</a>
 							</li>
 							<li>
-								Formulate a specific research question.
+								Design a study to answer your own research question.
 								<a href="javascript:reference('cms design study',400)">
 									<img src="../graphics/ref.gif">
 								</a>
