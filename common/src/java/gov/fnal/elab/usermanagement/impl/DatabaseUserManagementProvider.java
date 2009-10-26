@@ -643,17 +643,24 @@ public class DatabaseUserManagementProvider implements
         studentId = rs.getInt(1);
         
         ps = c.prepareStatement("INSERT INTO research_group_student(research_group_id, student_id) "
-                        + "VALUES(?, ?);");
+                        + "SELECT ?, ? WHERE NOT EXISTS (SELECT 1 FROM research_group_student "
+                        + "WHERE research_group_id = ? AND student_id = ?);");
         ps.setInt(1, researchGroupId);
         ps.setInt(2, studentId);
-        ps.executeUpdate();
+        ps.setInt(3, researchGroupId);
+        ps.setInt(4, studentId);
+    	ps.executeUpdate();
         
         if (group.isNewSurvey() == true) {
         	ps = c.prepareStatement("INSERT INTO research_group_test (research_group_id, test_id) "
-        			+ "VALUES(?, ?);");
+        			+ "SELECT ?, ? WHERE NOT EXISTS (SELECT 1 FROM research_group_test "
+        			+ "WHERE research_group_id = ? AND test_id = ?);");
         	ps.setInt(1, researchGroupId);
         	ps.setInt(2, group.getNewSurveyId());
+        	ps.setInt(3, researchGroupId);
+        	ps.setInt(4, group.getNewSurveyId());
         	result = ps.executeUpdate();
+        	
         }
         return pass;
     }
@@ -714,7 +721,6 @@ public class DatabaseUserManagementProvider implements
                         	existing.setSurvey(false);
                         	existing.setNewSurvey(false);
                         }
-                        
                     }
         		}
         	}
