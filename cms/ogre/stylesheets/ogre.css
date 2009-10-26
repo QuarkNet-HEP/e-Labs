@@ -133,7 +133,11 @@ div#demoBtn {
     top: 60%;
     float: left;
 }
-
+div#statBtn {
+    position: absolute;
+    top: 60%;
+    float: left;
+}
 div#tutrBtn {
     position: absolute;
     top: 60%;
@@ -210,6 +214,11 @@ select#menu {
 }
 
 div#demo {
+    position: relative;
+    top: -4px;
+}
+
+div#stat {
     position: relative;
     top: -4px;
 }
@@ -344,6 +353,10 @@ div#demoBtn {
     top:0px;
     right:10%;
 }
+div#statBtn {
+    top:0px;
+    right:22.5%;
+}
 div#hdrText {
     position:relative;
     left:34%;
@@ -351,6 +364,6 @@ div#hdrText {
     font-size:1em;
 }
 div#addressBtm {
-    top: 3px;
-    left: 55%;
+    top: 4px;
+    left: 53%;
 }

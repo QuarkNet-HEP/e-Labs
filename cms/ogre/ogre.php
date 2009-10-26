@@ -64,9 +64,16 @@
     <!--[if IE]>
     <script type="Text/JavaScript" language="JavaScript" src="javascript/IE8.js"></script>
     <style>
-    h6#userLevelLabel {top:28%;}
-    h6#dataSetLabel {top:28%;}
-    h6#selectLabel {top:28%;}
+	h6#userLevelLabel {top:28%;}
+	h6#dataSetLabel {top:28%;}
+	h6#selectLabel {top:28%;}
+
+	div.stdContent {
+          overflow:hidden;
+          /*overflow-x:hidden;
+          overflow-y:auto; 
+          padding-bottom:15px;*/
+        }
     </style>
     <![endif]-->
   </head>
@@ -177,6 +184,11 @@
           <button href="#" onClick='javascript:demoWin.show();'>CMS Detector Demo</button>
         </div>
 
+        <!-- Button that shows the statistics demo -->
+        <div name="button" class="buttons" id='statBtnTop'>
+          <button href="#" onClick='javascript:statWin.show();'>Statistical Demo</button>
+        </div>
+
         <br><br><hr width=98%><br>
 
 	<div name="button" class="address buttons" id='address'>
@@ -278,6 +290,13 @@
                     onMouseOut='javascript:UnTip();'>CMS Demo</button>
           </div>
 
+          <!-- Button that shows the statistics demo -->
+          <div name="button" class="buttons" id='statBtn'>
+            <button href="#" onClick='javascript:statWin.show();'
+                    onMouseOver='javascript:showogreToolTip(staTip);'
+                    onMouseOut='javascript:UnTip();'>Statistics</button>
+          </div>
+
 	  <div name="button" class="address buttons" id='addressBtm'>
 	    <address><a href="mailto:karmgard.1@nd.edu?subject=Bug the OGRE">Bug the OGRE</a></address>
 	  </div>
@@ -318,8 +337,31 @@
 
 <script type='text/javascript'>updateProgress(50);</script>
 
+      <div id='statdemo'>
+        <div id='flashWrapper'>
+        <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width=620 height=450
+           codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" 
+           id="statdemo" align="center">
+
+          <param name="movie"    value="graphics/masspec.swf">
+          <param name="Show All" value="true">
+          <param name="quality"  value="medium">
+          <param name="bgcolor"  value="#FFFFFF"> 
+
+          <embed src="graphics/masspec.swf" 
+	      quality="high" bgcolor="#FFFFFF" 
+	      width="620" height="450" 
+	      name="Statistical Demo" align="center" 
+	      type="application/x-shockwave-flash" 
+	      pluginspage="http://www.macromedia.com/go/getflashplayer">
+        </object>
+        </div>
+      </div>
+
     <!-- load the text for the context sensative help pages -->
     <?php include "php/help.php"; ?>
+
+<script type='text/javascript'>updateProgress(60);</script>
 
     <div id='tutorial'>
      <div id='flashWrapper'>

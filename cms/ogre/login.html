@@ -83,7 +83,7 @@
           // Determine whether or not there are multiple sessions going. 
 	  // If not, go to only session. if no sessions going,create a new entry for their session.
           mesParsed = message.split(":");
-	  mesParsed[mesParsed.length] = "New Session";
+	  mesParsed[mesParsed.length] = "New Session\n\n";
 	  mesParsed[0]++;
 
 	  // If we're logging in as "guest" then make a new session and go to the front page.

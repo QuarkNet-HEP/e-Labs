@@ -98,6 +98,33 @@ You can also choose colors for the data you plot. Just drag a color on top of th
 
  <script type='text/javascript'>updateProgress(70);</script>
 
+      <div id="statdemohelp">
+	<div id="text" class="text">
+        <BR>
+        Data from the LHC is usually not analyzed event-by-event. Rather, data is accumulated 
+        and analyed statistically. Finding Z bosons, for example, starts by thinking about 
+        the characteristics of the particle and how it may manifest itself in our detector.
+        The Z will frequently (30% of the time) decay into a pair of oppositely charged leptons
+        (Why are they oppositely charged?). In other words, it is a two-body decay problem
+        not really any different from what you might see in a classroom excersize on conservation
+        of energy and momentum (two things physicists are inordinately fond of). So if we look 
+        for oppositely charge electrons or muons we can use conservation laws to reconstruct the 
+        mass of the original particle. Most of the time though, the electrons or muons came 
+        from other processes that have nothing to do with the Z. In these cases the "mass" that
+        we reconstruct is random (though significantly favoring lower values). Onto this
+        <i>background</i> (or noise) the Z produces a distinct bump that becomes obvious <i>only</i>
+        after enough data has been collected. This video is a simulation of that process. At first 
+        there is only a small amount of data, and it looks random. As more and more data becomes
+        available structure begins to appear, but not quite enough to say for certain that there
+        is definitely something there. Eventually, there is so much data that it becomes obvious
+        that the bump is a feature (now know as a <i>signal</i>) and not just chance. Then, and
+        only then, do we cry <i><b>Eureka!</b></i>
+	<button id='start' class='helpButton' onClick='javascript:statWin.show();'>Return</button>
+	</div> <!-- End of text div -->
+      </div>   <!-- end of stathelp div -->
+
+ <script type='text/javascript'>updateProgress(80);</script>
+
      <div id="credits">
         <div id="text" class="text">
           <H2>Programming Credits</H2>

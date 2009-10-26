@@ -211,12 +211,23 @@ function init(sID) {
 			      document.getElementById('tutorial'), 
 			      'stdWin', "OGRE Tutorial");
 
+    statWin = new jsWindowlet(xmlThemeFile, false, true, 
+			      document.getElementById('statdemo'), 
+			      'archWin', "Statistical Demo");
 
-    if ( xmlThemeFile.indexOf("ogre-theme") > -1 )
+    statHlp = new jsWindowlet(xmlThemeFile, false, true, 
+			      document.getElementById('statdemohelp'), 
+			      'hlpWin', "The Statistical Nature of Data");
+
+    if ( xmlThemeFile.indexOf("ogre-theme") > -1 ) {
 	demoWin.changeBkg("white-640.png");
-    else if ( xmlThemeFile.indexOf("ogre-simple") > -1 )
+	statWin.changeBkg("white-640.png");
+    } else if ( xmlThemeFile.indexOf("ogre-simple") > -1 ) {
 	demoWin.changeBkg("white-640.jpg");
+	statWin.changeBkg("white-640.jpg");
+    }
     demoWin.bind('archHelp', demoHlp);
+    statWin.bind('archHelp', statHlp);
 
     // Make sure all the windowlets appear & stay in the active area
     introWin.setMinTop(45);
@@ -230,9 +241,10 @@ function init(sID) {
     archWin.setMinTop(45);
     prevWin.setMinTop(45);
     demoHlp.setMinTop(45);
-    demoHlp.setMinTop(45);
-    demoWin.setMinTop(45);
-    tutrWin.setMinTop(45);
+    demoWin.setMinTop(35);
+    statHlp.setMinTop(45);
+    statWin.setMinTop(35);
+    tutrWin.setMinTop(35);
 
     // Forbid the flash content from overflowing the windowlet since it's 
     // damned near impossible to get flash to act nicely 

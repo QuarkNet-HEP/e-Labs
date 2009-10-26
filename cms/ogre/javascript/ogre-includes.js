@@ -4,6 +4,7 @@ var thmTip = "Select active theme";
 var dsTip  = "Select Dataset";
 var tutTip = "Play the OGRE Tutorial Movie";
 var dmoTip = "Run the CMS Detector Demo";
+var staTip = "Demo of the statistical nature of data.";
 
 function showogreToolTip(text) {
     try {

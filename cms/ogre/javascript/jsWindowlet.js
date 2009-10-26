@@ -248,8 +248,6 @@ function _getXMLTheme(themeXML) {
 
 function fnLoadPngs(img, width, height) {
 
-    return false;
-
     // Do a last chance browser check... 
     // if this is IE v5.0 and the theme
     // includes PNGs ... we're screwed
@@ -269,7 +267,6 @@ function fnLoadPngs(img, width, height) {
     if ( img.src.match(/\.png$/i) != null ) {
 	var src = img.src;
 	var div = document.createElement("DIV");
-	//div.id = img.id+'ieDiv';
 
 	div.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + 
 	    src + "', sizingMethod='scale')";
@@ -1590,7 +1587,7 @@ function _expand(event) {
 
     // Put in a transparent gif background... otherwise IE 
     // won't recognize that the div can recieve mouse events
-    expObj.style.background = 'url(graphics/iebkg.gif)';
+    expObj.style.background = 'url('+baseURL+'/graphics/iebkg.gif)';
 
     expObj.style.top    = windowlet.style.top;
     expObj.style.left   = windowlet.style.left;
