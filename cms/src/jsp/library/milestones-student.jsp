@@ -110,7 +110,7 @@ Click on <img border="0" src="../graphics/ref.gif"> for
 								</a>
 							</li>
 							<li>
-								Design a study to answer your own research question.
+								Design a study to answer your own specific research question.
 								<a href="javascript:reference('cms design study',400)">
 									<img src="../graphics/ref.gif">
 								</a>

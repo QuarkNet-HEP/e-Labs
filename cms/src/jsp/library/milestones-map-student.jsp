@@ -20,7 +20,7 @@
 <area shape="rect" alt="" coords="440,178,507,219" href="javascript:reference('cms_data_selection',420)" title="Choose appropriate data from the data sets.">
 <area shape="rect" alt="" coords="471,100,516,133" href="not-satisfied.jsp" title="Are you satisfied with your results or do you need to analyze more data?">
 
-<area shape="rect" alt="" coords="376,82,438,121" href="javascript:reference('cms_design_study',450)"  title="Design a study to answer your own research question.">
+<area shape="rect" alt="" coords="376,82,438,121" href="javascript:reference('cms_design_study',450)"  title="Design a study to answer your own specific research question.">
 <area shape="rect" alt="" coords="261,151,326,186" href="javascript:reference('describe_particles',550)"  title="Identify and describe the particles colliding inside the CMS detector and those predicted by the Standard Model to emerge from the collisions.">
 <area shape="rect" alt="" coords="317,187,377,229" href="javascript:reference('list_subdetectors',550)"  title="List each CMS subdetector, in order, and explain the particles it detects.">
 <area shape="rect" alt="" coords="374,157,438,197" href="javascript:reference('relate_emp',550)"  title="Relate energy, mass and momentum and explain the role of conservation of mass/energy, momentum and charge in analyzing CMS events. ">
