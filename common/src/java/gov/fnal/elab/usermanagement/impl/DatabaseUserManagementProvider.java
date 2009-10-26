@@ -448,13 +448,12 @@ public class DatabaseUserManagementProvider implements
         rs = ps.executeQuery();
 
         // Can't do another query while iterating over a result set
-        List names = new LinkedList();
+        List<String> names = new LinkedList();
         while (rs.next()) {
             names.add(rs.getString("name"));
         }
-        Iterator i = names.iterator();
-        while (i.hasNext()) {
-            ElabGroup g = createGroup(c, (String) i.next(), elab.getId());
+        for (String name : names) {
+        	ElabGroup g = createGroup(c, name, elab.getId());
             System.out.println(g);
             user.addGroup(g);
             addStudents(c, g);
@@ -879,7 +878,7 @@ public class DatabaseUserManagementProvider implements
 
     private Collection<String> getProjectNames(Connection c, ElabGroup group)
             throws SQLException {
-        List names = new ArrayList();
+        List<String> names = new ArrayList();
         PreparedStatement ps = c.prepareStatement(
     		"SELECT name FROM project WHERE id IN " +
             "(SELECT project_id FROM research_group_project WHERE research_group_id = ?);");
