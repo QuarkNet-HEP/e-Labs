@@ -97,7 +97,7 @@ public class DatabaseUserManagementProvider implements
     	ps.setInt(1, projectID);
     	ps.setInt(2, user.getGroup().getId());
         ResultSet rs = ps.executeQuery();
-        if (!rs.next() && !user.isTeacher() && !user.isAdmin()) {
+        if (!rs.next() && !user.isTeacher() && !user.isAdmin() && !user.isGuest()) {
             throw new AuthenticationException(
                     "Your group isn't registered in this project, please tell your teacher" );
         }
