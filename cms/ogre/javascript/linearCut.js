@@ -241,8 +241,6 @@ function stopDrag(event) {
 
 	var newCut = cuts.replace(lo, pixel2plot(xmin));
 	newCut = newCut.replace(hi,pixel2plot(xmax-mouseOffSet));
-	//setCookie(cookie,newCut);
-	
 	sendState("selection", newCut.replace(/&/g,"%26"), true);
     }
 
@@ -514,8 +512,10 @@ function pageLoad() {
 	hist.style.opacity = 1.0;
     } catch (e) {;}
 
+    /*
     if ( cuts )
 	sendState("selection", cuts.replace(/&/g,"%26"), true);
+    */
 
     // load the history page into a div
     var xmlHttp=createXMLHttp();

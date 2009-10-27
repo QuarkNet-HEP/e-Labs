@@ -105,7 +105,7 @@ for ( $i=0; $i<count($varList); $i++ ) {
   } else if ( $var == "logy" ) {
     array_push($opts,"'logy'");
 
-  } else if ( $var == "gcut" ) {
+  } else if ( $var == "gcut" || $var == "mycuts" ) {
     array_push($opts, "'gcut'");
 
   } else if ( $var == "savedata" ) {

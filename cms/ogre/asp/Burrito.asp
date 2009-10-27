@@ -65,8 +65,8 @@ if ($cgi->param('iotype') eq "create")
 	$Response->Write($Nacho);
 }
 
-if ($cgi->param('iotype') eq "send" && $cgi->param('parameter') eq "userLevel")
-{
+if ($cgi->param('iotype') eq "send") {
+   if ($cgi->param('parameter') eq "userLevel") {
 	$query = "SELECT userName FROM settings WHERE sID = '$sessId'";
 	$data = $dbh->prepare($query);
 	$data->execute();
@@ -77,13 +77,77 @@ if ($cgi->param('iotype') eq "send" && $cgi->param('parameter') eq "userLevel")
 	$data = $dbh->prepare($query);
 	$data->execute();
 
-} 
-elsif ($cgi->param('iotype') eq "send")
-{
+   } elsif ($cgi->param('parameter') eq "selection") {
+
+     # Get the new cuts the user wants...
+     my $cuts  = $cgi->param("value");
+     
+     if ( $cuts =~ m/'/ ) {
+       # Remove the ' from the string
+       my @temp = split(/'/,$cuts);
+       $cuts = $temp[1]; 
+     }
+
+     # If we're flushing the cuts... just do it and be done with it
+     if ( $cuts eq "blah" ) {
+       $query = "UPDATE settings SET selection='' WHERE sID='$sessId'";
+       $data = $dbh->prepare($query);
+       $data->execute();
+       return;
+     }
+
+     # And get the name of the variable being cut upon
+     my ($var) = split(/>/, $cuts);
+     
+     $query = "SELECT selection from settings where sID='$sessId'";
+     $data = $dbh->prepare($query);
+     $data->execute();
+     my ($curSel) = $data->fetchrow_array();
+
+     # If this variable exists in the current cuts... replace it with the new ones
+     if ( $curSel =~ m/$var/ ) {
+
+       $curSel =~ /.*$var>(.*)&&$var<(.*)/;
+       my $upper = $2;
+       my $lower = $1;
+
+       if ( $upper =~ m/&&/ ) {
+         ($upper) = split /&&/, $upper;
+       }
+
+       my $compval = "$var>$lower&&$var<$upper";
+
+       $curSel =~ /.*($compval).*/;
+       $newSel = $curSel;
+       $newSel =~ s/$1/$cuts/;
+
+#       warn "replacing $var in\n$curSel\nwith\n$newSel";
+ 
+       $query = "UPDATE settings SET selection='$newSel' WHERE sID='$sessId'";
+       $data = $dbh->prepare($query);
+       $data->execute();
+
+     # Otherwise just append it to the current cuts if any
+     } elsif (length($curSel) > 0 ) {
+
+       my $newSel = $curSel . "&&" . $cuts;
+       $query = "UPDATE settings SET selection='$newSel' WHERE sID='$sessId'";
+       $data = $dbh->prepare($query);
+       $data->execute();
+     } else {
+
+       $query = "UPDATE settings SET selection='$cuts' WHERE sID='$sessId'";
+       $data = $dbh->prepare($query);
+       $data->execute();
+
+     }
+
+   } else {
 	$query = "UPDATE settings SET ".$cgi->param('parameter')."=".$cgi->param('value')." WHERE sID = '$sessId';";
 	$Response->Write($query);
 	$data = $dbh->prepare($query);
 	$data->execute();
+   }
 }
 
 %>

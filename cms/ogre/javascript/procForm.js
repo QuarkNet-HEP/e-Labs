@@ -118,23 +118,8 @@ function restoreMe(triggers, holder, plots, color, opts, sessionID) {
 
     // First.... restore the session so we've got the user ID
     var request = baseURL + "/asp/Burrito.asp?sessid="+sessionID+"&iotype=getUser";
-    var xmlHttp;
-    try {
-	// Firefox, Opera 8.0+, Safari
-	xmlHttp=new XMLHttpRequest();
-    } catch (e) {
-	// Internet Explorer
-	try {
-	    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
-	} catch (e) {
-	    try {
-		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
-	    } catch (e) {
-		alert("Your browser does not support AJAX!");
-		return null;
-	    }
-	}
-    }
+    var xmlHttp = createXMLHttp();
+
     xmlHttp.open("GET",request,false);
     xmlHttp.send(null);
     var userName = xmlHttp.responseText;
@@ -142,7 +127,6 @@ function restoreMe(triggers, holder, plots, color, opts, sessionID) {
     // Update the session ID cookie if they're allowed
     if ( testCookies() )
 	setCookie('sessionID', sessionID);
-
 
     // Array of id's for the logic boxes... 
     var trigHolder = ['DragContainer11','DragContainer12','DragContainer13',
@@ -211,7 +195,7 @@ function restoreMe(triggers, holder, plots, color, opts, sessionID) {
     // And restore the original options
     for ( var i=0; i<opts.length; i++ ) {
 	// These options are on/off switches, so we can treat them simply
-	if ( opts[i] == 'logy' || opts[i] == 'logx' || opts[i] == 'gcut' || opts[i] == 'savedata' ) {
+	if ( opts[i] == 'logy' || opts[i] == 'logx' || opts[i] == 'gcut' || opts[i] == 'mycuts' ) {
 	    var child = document.getElementById(opts[i]);
 	    optBox.appendChild(child);
 
@@ -233,6 +217,12 @@ function restoreMe(triggers, holder, plots, color, opts, sessionID) {
     introWin.hide();
     dataWin.show();
     variWin.show();
+
+    // Now that we've restored the session... whack the tmp directory
+    request = baseURL + "/asp/whackStudy.asp?directory="+sessionID;
+
+    xmlHttp.open("GET",request,false);
+    xmlHttp.send(null);
 
     return;
 }

@@ -32,7 +32,7 @@
 
     <trigger name="ele low"   id="(e30 or e50) and not (e100)" description="Low energy electrons" level="1"/>
     <trigger name="ele high"  id="e100"  description="high energy electrons" level="1"/>
-    <trigger name="muons"     id="m150"  description="muons"   level="1"/>
+    <!-- trigger name="muons"     id="m150"  description="muons"   level="1"/ -->
     <trigger name="jets"      id="j150"  description="quark jets from Pi-" level="1"/>
 
     <trigger name="e30"  id="e30"  description="At least one electron with energy greater than or equal to 30 GeV"    level="2"/>

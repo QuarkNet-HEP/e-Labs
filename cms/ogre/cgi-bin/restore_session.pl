@@ -90,7 +90,7 @@ for ( my $i=0; $i<=$#varlist; $i++ ) {
     } elsif ( $var eq "logy" ) {
 	push(@opts,"'logy'");
 
-    } elsif ( $var eq "gcut" ) {
+    } elsif ( $var eq "gcut" || $var eq "mycuts" ) {
 	push(@opts, "'gcut'");
 
     } elsif ( $var eq "savedata" ) {

@@ -22,6 +22,10 @@ function submitForm(thisForm) {
 	finalize.value = 0;
     }
 
+    // Update the selection criteria with the new cuts
+    //alert(newCut);
+    //sendState("selection", newCut.replace(/&/g,"%26"), true);
+
     thisForm.submit();
     return false;
 }

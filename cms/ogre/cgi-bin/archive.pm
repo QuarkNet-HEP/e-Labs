@@ -191,6 +191,23 @@ sub dec_to_hex {
 }
 
 #
+### Whack the temporary directory associated with a study
+#
+sub deleteStudy {
+  my ($self) = @_;
+  my $tmpDir = $self->{_tmpDir};
+  my $stdDir = $self->{_dir};
+
+#  warn "chdir(\"$tmpDir\")\nrmtree(\"$stdDir\")\nchdir(\"-\")\n";
+
+  chdir("$tmpDir");
+  rmtree("$stdDir");
+  chdir("-");
+
+  return;
+}
+
+#
 ### Change the random directory assigned in case of a collision
 #
 sub moveStudy {
