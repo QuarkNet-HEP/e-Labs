@@ -186,13 +186,16 @@ function finalizeStudy(thisForm) {
     //////////////////////////////////////
     // Now that they've completed a study... bump the user level up a notch
     var ajax = createXMLHttp();
+
     var request = baseURL + "/asp/Burrito.asp?iotype=retrieve&sessid=" + sessionID;
     ajax.open("GET", request, false);
     ajax.send(null);
 
     var mesParsed = ajax.responseText.split(":",15);
     var userLevel = mesParsed[1];
-    if ( userLevel < 3 ) {
+    var user      = getUserName();
+
+    if ( userLevel < 3 && user.indexOf('guest') == -1 ) {
 	userLevel++;
 	sendState("userLevel", userLevel, false);
     }

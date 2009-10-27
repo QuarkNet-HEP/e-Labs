@@ -65,7 +65,20 @@ if ($cgi->param('iotype') eq "create")
 	$Response->Write($Nacho);
 }
 
-if ($cgi->param('iotype') eq "send")
+if ($cgi->param('iotype') eq "send" && $cgi->param('parameter') eq "userLevel")
+{
+	$query = "SELECT userName FROM settings WHERE sID = '$sessId'";
+	$data = $dbh->prepare($query);
+	$data->execute();
+	my ($userName) = $data->fetchrow_array();
+	
+	$query = "UPDATE settings SET ".$cgi->param('parameter')."=".$cgi->param('value')." WHERE userName = '$userName'";
+	$Response->Write($query);
+	$data = $dbh->prepare($query);
+	$data->execute();
+
+} 
+elsif ($cgi->param('iotype') eq "send")
 {
 	$query = "UPDATE settings SET ".$cgi->param('parameter')."=".$cgi->param('value')." WHERE sID = '$sessId';";
 	$Response->Write($query);
