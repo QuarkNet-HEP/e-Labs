@@ -63,7 +63,7 @@
 					<li>
 						You will:
 						<ul>
-							<li>Ask questions about test beam data.</li>
+							<li>Ask questions about CMS data.</li>
 							<li>Develop a study plan to answer these questions.</li>
 							<li>
 								Execute your plan.
