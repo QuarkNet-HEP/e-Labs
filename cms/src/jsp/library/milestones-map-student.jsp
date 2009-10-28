@@ -18,7 +18,7 @@
 <area shape="rect" alt="" coords="520,93,590,127" href="javascript:reference('cms_assessment',400)" title="Assess your plots and see if they support your ideas.">
 <area shape="rect" alt="" coords="509,177,577,216" href="javascript:reference('cms_analysis',450)" title="Use OGRE to analyze your data.">
 <area shape="rect" alt="" coords="440,178,507,219" href="javascript:reference('cms_data_selection',420)" title="Choose appropriate data from the data sets.">
-<area shape="rect" alt="" coords="471,100,516,133" href="not-satisfied.jsp" title="Are you satisfied with your results or do you need to analyze more data?">
+<area shape="rect" alt="" coords="471,100,516,133" href="#" title="Are you satisfied with your results or do you need to analyze more data?">
 
 <area shape="rect" alt="" coords="376,82,438,121" href="javascript:reference('cms_design_study',450)"  title="Design a study to answer your own specific research question.">
 <area shape="rect" alt="" coords="261,151,326,186" href="javascript:reference('describe_particles',550)"  title="Identify and describe the particles colliding inside the CMS detector and those predicted by the Standard Model to emerge from the collisions.">
