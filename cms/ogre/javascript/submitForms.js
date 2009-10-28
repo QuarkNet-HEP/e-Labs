@@ -17,6 +17,14 @@ function submitForm(thisForm) {
 
     thisForm.appendChild(unit);
 
+    var sID   = document.createElement('INPUT');
+    sID.name  = 'sessionID';
+    sID.type  = 'hidden';
+    sID.value = sessionID;
+
+    thisForm.appendChild(sID);
+
+
     with (thisForm) {
 	archive.value = 0;
 	finalize.value = 0;
@@ -24,7 +32,7 @@ function submitForm(thisForm) {
 
     // Update the selection criteria with the new cuts
     //alert(newCut);
-    //sendState("selection", newCut.replace(/&/g,"%26"), true);
+    sendState("selection", newCut.replace(/&/g,"%26"), true);
 
     thisForm.submit();
     return false;

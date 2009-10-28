@@ -30,6 +30,40 @@ sub new {
   return $self;
 }
 
+sub getSelection {
+    my ($self,$sID) = @_;
+    my $query = "select selection from settings where sID='$sID'";
+    my $data = $self->{_dbh}->prepare($query);
+    $data->execute() || warn "Unable to get selection!\n";
+    my ($selection) = $data->fetchrow_array();
+
+    if ( $selection =~ /blah/ ) {
+	$selection =~ s/blah&&//;
+	$query = "update settings set selection='$selection' where sID='$sID'";
+	$data = $self->{_dbh}->prepare($query);
+	$data->execute() || warn "Unable to update selection!\n";
+    }
+
+    return $selection;
+}
+
+sub getGlobalCut {
+    my ($self,$sID) = @_;
+
+    my $query = "select dataSet from settings where sID='$sID'";
+    my $data = $self->{_dbh}->prepare($query);
+    $data->execute() || warn "Unable to update sessionID!\n";
+    my ($set) = $data->fetchrow_array();
+
+    $query = "select selection from datasets where name='$set'";
+    $data = $self->{_dbh}->prepare($query);
+    $data->execute() || warn "Unable to update sessionID!\n";
+
+    my ($gCut) = $data->fetchrow_array();
+
+    return $gCut;
+}
+
 sub updateSettingsDB {
   my ($self,$sID,$newSID) = @_;
 

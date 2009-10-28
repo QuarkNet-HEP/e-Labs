@@ -31,6 +31,7 @@ var width  = 0;
 var height = 0;
 var dragging = false;
 var selection = new String();
+var newCut;
 
 // Constants for converting graph units to pixels 
 var graphXmin;
@@ -239,9 +240,9 @@ function stopDrag(event) {
 		hi = temp[i].split('<')[1];
 	}
 
-	var newCut = cuts.replace(lo, pixel2plot(xmin));
+	newCut = cuts.replace(lo, pixel2plot(xmin));
 	newCut = newCut.replace(hi,pixel2plot(xmax-mouseOffSet));
-	sendState("selection", newCut.replace(/&/g,"%26"), true);
+	//sendState("selection", newCut.replace(/&/g,"%26"), true);
     }
 
     return;

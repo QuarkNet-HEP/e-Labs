@@ -23,6 +23,7 @@ my $type         = $query->param('type');
 my $stacked      = $query->param('stacked');
 my $histVisible  = $query->param('historyVisible');
 my $units        = $query->param('units');
+my $sessionID    = $query->param('sessionID');
 
 # Grab hold of some of the global stuff we'll be needin
 my $ogreXML      = new ogreXML();
@@ -109,96 +110,128 @@ my $oldMin;
 my $oldMax;
 my @newCutValues = ();
 
-for ( my $i=0; $i<=$#oldCutValues; $i++ ) {
-    $oldCutValues[$i] =~ m/>(\d+)/;
-    if ( $1 ) {
-	$oldMin = $1;
-	$newCutValues[$i] = $oldCutValues[$i];
-	$newCutValues[$i] =~ s/$oldMin/$min/;
-    }
-    $oldCutValues[$i] =~ m/<(\d+)/;
-    if ( $1 ) {
-	$oldMax = $1;
-	if ( exists $newCutValues[$i] ) {
-	    $newCutValues[$i] =~ s/$oldMax/$max/;
-	} else {
-	    $newCutValues[$i] = $oldCutValues[$i];
-	    $newCutValues[$i] =~ s/$oldMax/$max/;
-	}
-    }
+#for ( my $i=0; $i<=$#oldCutValues; $i++ ) {
+#    $oldCutValues[$i] =~ m/>(\d+)/;
+#    if ( $1 ) {
+#	$oldMin = $1;
+#	$newCutValues[$i] = $oldCutValues[$i];
+#	$newCutValues[$i] =~ s/$oldMin/$min/;
+#    }
+#    $oldCutValues[$i] =~ m/<(\d+)/;
+#    if ( $1 ) {
+#	$oldMax = $1;
+#	if ( exists $newCutValues[$i] ) {
+#	    $newCutValues[$i] =~ s/$oldMax/$max/;
+#	} else {
+#	    $newCutValues[$i] = $oldCutValues[$i];
+#	    $newCutValues[$i] =~ s/$oldMax/$max/;
+#	}
+#    }
 
     # Escape some special characters so that the RegExp replace works
-    $oldCutValues[$i] =~ s/\[/\\\[/;
-    $oldCutValues[$i] =~ s/\]/\\\]/;
+#    $oldCutValues[$i] =~ s/\[/\\\[/;
+#    $oldCutValues[$i] =~ s/\]/\\\]/;
 
     # No cut values around to modify :O 
     # probably a first pass with a global cut
-    if ( !$newCutValues[$i] ) {
+#    if ( !$newCutValues[$i] ) {
 
 	# We'll need to extract the variable name(s)
-	my ($variable) = grep( /test\[$i\]/, @temp1);
-	$variable =~ m/chain->Draw\("(.*)"/;
-	$variable = $1;
+#	my ($variable) = grep( /test\[$i\]/, @temp1);
+#	$variable =~ m/chain->Draw\("(.*)"/;
+#	$variable = $1;
 
 	### Place holder for dealing with box plots in linearCut.js ###
-	if ( $variable =~ m/:/ ) {
-	    $variable =~ m/.*:(.*)/;
-	    if ( $1 ) {
-		$variable = $1;
-	    }
-	}
+#	if ( $variable =~ m/:/ ) {
+#	    $variable =~ m/.*:(.*)/;
+#	    if ( $1 ) {
+#		$variable = $1;
+#	    }
+#	}
 	################################################################
 
 	# Look for a global cut... 
-	if ( $oldCutValues[$i] =~ m/==/ ) {
-	    # Global cut... we'll have to append to it
-	    my $tempCut = $oldCutValues[$i];
-	    chop($tempCut);
+#	if ( $oldCutValues[$i] =~ m/==/ ) {
+#	    # Global cut... we'll have to append to it
+#	    my $tempCut = $oldCutValues[$i];
+#	    chop($tempCut);
 
-	    $newCutValues[$i] = "$tempCut&&$variable<$max&&$variable>$min\"";
-	} else {
+#	    $newCutValues[$i] = "$tempCut&&$variable<$max&&$variable>$min\"";
+#	} else {
 	    # No global cut at all.... create a brand new cut for this
-	    $oldCutValues[$i] = "cuts\\[$i\\] = $oldCutValues[$i]";
-	    $newCutValues[$i] = "cuts\[$i\] = \"$variable<$max&&$variable>$min\"";
-	}
-    }
+#	    $oldCutValues[$i] = "cuts\\[$i\\] = $oldCutValues[$i]";
+#	    $newCutValues[$i] = "cuts\[$i\] = \"$variable<$max&&$variable>$min\"";
+#	}
+#    }
 
     # Now put the new values of the cuts into the new script
-    $newscript =~ s/$oldCutValues[$i]/$newCutValues[$i]/;
+#    $newscript =~ s/$oldCutValues[$i]/$newCutValues[$i]/;
+#}
+
+
+################### Reset the cuts using the database ###################
+use MySQL;
+my $mysql = new MySQL();
+my $selection = $mysql->getSelection($sessionID);
+my $globalCut = $mysql->getGlobalCut($sessionID);
+
+if ( $globalCut ) {
+    $selection = "$globalCut&&$selection";
 }
+$selection = "\"$selection\";";
+
+my $oldSelect;
+$newscript =~ /.*cuts\[\d+\] = (.*)/;
+if ( $1 ) {
+    $oldSelect = $1;
+    $newscript =~ s/$oldSelect/$selection/ or warn "Unable to update cuts: $!\n";
+} else {
+
+    $newscript =~ /(.*TString cuts.*)/;
+    $oldSelect = $1;
+
+    $selection = "$oldSelect\n\tcuts\[0\] = $selection\n";
+
+    $oldSelect =~ s/\[/\\[/;
+    $oldSelect =~ s/\]/\\]/;
+
+    $newscript =~ s/$oldSelect/$selection/ or warn "Unable to update $!\n";
+
+}
+#########################################################################
 
 #### No cuts in the initial file... so we'll have to build them from scratch
-if ( $#oldCutValues == -1 ) {
-    my @cuts;
-    @oldCutValues = grep( /chain->Draw/, @temp1 );
-    for ( my $i=0; $i<=$#oldCutValues; $i++ ) {
-	$oldCutValues[$i] =~ m/Draw."(.*)".*/;
-	if ( $1 ) {
+#if ( $#oldCutValues == -1 ) {
+#    my @cuts;
+#    @oldCutValues = grep( /chain->Draw/, @temp1 );
+#    for ( my $i=0; $i<=$#oldCutValues; $i++ ) {
+#	$oldCutValues[$i] =~ m/Draw."(.*)".*/;
+#	if ( $1 ) {
 
-	    my $variable = $1;
+#	    my $variable = $1;
 	    ### Place holder for dealing with box plots in linearCut.js ###
-	    if ( $variable =~ m/:/ ) {
-		$variable =~ m/.*:(.*)/;
-		if ( $1 ) {
-		    $variable = $1;
-		}
-	    }
+#	    if ( $variable =~ m/:/ ) {
+#		$variable =~ m/.*:(.*)/;
+#		if ( $1 ) {
+#		    $variable = $1;
+#		}
+#	    }
 	    ################################################################
 
-	    push(@cuts, "cuts[$i] = \"$variable>$min&&$variable<$max\";");
-	}
-    }
+#	    push(@cuts, "cuts[$i] = \"$variable>$min&&$variable<$max\";");
+#	}
+#    }
 
-    my ($oldCut) = grep( /TString cuts/, @temp1 );
-    $oldCut =~ m/(TString.*)/;
-    $oldCut = $1;
+#    my ($oldCut) = grep( /TString cuts/, @temp1 );
+#    $oldCut =~ m/(TString.*)/;
+#    $oldCut = $1;
 
-    my $newCut = $oldCut . "\n\t" . join("\n\t",@cuts);
+#    my $newCut = $oldCut . "\n\t" . join("\n\t",@cuts);
 
-    $oldCut =~ s/\[/\\\[/;
-    $oldCut =~ s/\]/\\\]/;
-    $newscript =~ s/$oldCut/$newCut/;
-}
+#    $oldCut =~ s/\[/\\\[/;
+#    $oldCut =~ s/\]/\\\]/;
+#    $newscript =~ s/$oldCut/$newCut/;
+#}
 
 my @array1 = grep( /chain->Draw/, @temp1);
 my @plotList = ();
