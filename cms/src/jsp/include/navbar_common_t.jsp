@@ -71,7 +71,7 @@ if (!headerType.equals("Data")) {
         }
 %>
         <td bgcolor=000000 align="left">
-            <font color=FFFFFF face=arial size=+3>&nbsp;CMS Test Beam e-Lab</font>
+            <font color=FFFFFF face=arial size=+3>&nbsp;CMS e-Lab</font>
         </td>
         <td valign="top" align="right">
 <%
