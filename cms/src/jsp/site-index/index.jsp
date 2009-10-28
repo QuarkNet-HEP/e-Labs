@@ -92,13 +92,15 @@
 		<td class="data" >
 			<ul>
 				<li>
-					<a href="../data/">Test Beam Analysis</a>
+					<a href="../data/">Data Analysis</a>
+<!-- 
 					<ul>
          				<li><a href="../analysis-shower-depth/">Shower Depth</a></li>
 						<li><a href="../analysis-lateral-size/">Lateral Size</a></li>         
 						<li><a href="../analysis-beam-purity/">Beam Purity</a></li>
 						<li><a href="../analysis-resolution/">Resolution</a></li>
 					</ul>
+ -->
 				</li>
 				<li><b><a href="../plots/search.jsp">View Plots</a></b></li>
 					<li><b><a href="../plots/delete.jsp">Delete Plots</a></b>
