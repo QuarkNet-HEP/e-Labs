@@ -27,7 +27,7 @@
 			
 			<div id="content">
 				
-<h1>Cool Science: Studying CMS test beam data &mdash; solving scientific mysteries!</h1>
+<h1>Cool Science: Studying CMS data &mdash; solving scientific mysteries!</h1>
  	 <c:if test="${user != null}">
 	   <div id="links"><table align="center"><tr>
 	   <td width="150" align="center"><A href="index.jsp"><img src="../graphics/home-button.gif" border="0"><br>Project Map</a></td>
@@ -45,7 +45,7 @@
 							and the universe by analyzing data from the Compact Muon Solenoid<br>Collaboration, CMS, experiment at CERN in Geneva. Join them!
 								</h2>
 				
-	<table width="640" height="480" bgcolor="black"><tr><td valign="center"><!--url's used in the movie-->
+	<table width="476" height="360" bgcolor="white"><tr><td valign="center"><!--url's used in the movie-->
 <!--text used in the movie-->
 <!-- saved from url=(0013)about:internet -->
 <script language="javascript">
@@ -54,40 +54,41 @@
 	} else {
 		AC_FL_RunContent(
 			'codebase', 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0',
-			'width', '640',
-			'height', '480',
-			'src', 'CMS_Slice',
+			'width', '476',
+			'height', '360',
+			'src', 'cms-animation-wobutton',
 			'quality', 'high',
 			'pluginspage', 'http://www.macromedia.com/go/getflashplayer',
 			'align', 'middle',
 			'play', 'true',
-			'loop', 'false',
+			'loop', 'true',
 			'scale', 'showall',
 			'wmode', 'window',
 			'devicefont', 'false',
-			'id', 'CMS_Slice',
+			'id', 'cms-animation-wobutton',
 			'bgcolor', '#ffffff',
-			'name', 'CMS_Slice',
+			'name', 'cms-animation-wobutton',
 			'menu', 'true',
 			'allowFullScreen', 'false',
 			'allowScriptAccess','sameDomain',
-			'movie', 'CMS_Slice',
+			'movie', 'cms-animation-wobutton',
 			'salign', ''
 			); //end AC code
 	}
 </script>
 <noscript>
-	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="640" height="480" id="CMS_Slice" align="middle">
+	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="476" height="360" id="cms-animation-wobutton" align="middle">
 	<param name="allowScriptAccess" value="sameDomain" />
 	<param name="allowFullScreen" value="false" />
-	<param name="movie" value="CMS_Slice.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />	<embed src="CMS_Slice.swf" quality="high" bgcolor="#ffffff" width="640" height="480" name="CMS_Slice" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+	<param name="movie" value="cms-animation-wobutton.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />	<embed src="cms-animation-wobutton.swf" quality="high" bgcolor="#ffffff" width="476" height="360" name="cms-animation-wobutton" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
 	</object>
 </noscript>
+
 </td></tr>
 </table>
 <table width="648" style="padding: 10px;">
-<tr><td><p>Scientists must understand how well their detector works before taking real collider data. They bombard each detector component with known particles and<br>collect and analyze "test beam data".</p>
-<p>This interactive from the CERN laboratory in Geneva shows how particles move through the CMS detector.  Click on one of the particles to see how it is trapped in the various sub-detectors and its characteristics measured.
+<tr><td align="center">
+<p>Thanks to CMS Outreach at CERN for the use of this animation.
 </p></td></tr>
 </table>
 			</div>
