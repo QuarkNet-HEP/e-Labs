@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
-		<title> CMS Classroom Test Beam e-Lab Notes</title>
+		<title> CMS Classroom  e-Lab Notes</title>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
@@ -25,7 +25,7 @@
 			<div id="content">
  
 <e:transclude
- url="http://${elab.properties['elab.host']}/cosmic/library/body.php/CMSTB_Notes"
+ url="http://${elab.properties['elab.host']}/cms/library/body.php/CMSTB_Notes"
      start="<!-- start content -->"
       end="<div class=\"printfooter\">"
 />

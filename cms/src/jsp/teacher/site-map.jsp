@@ -30,7 +30,7 @@
 			<div id="content">
 
 
-<h1>CMS Test Beam e-Lab Teacher Site Index</h1>
+<h1>CMS e-Lab Teacher Site Index</h1>
 
 <%
 	// Check if the teacher is in the study

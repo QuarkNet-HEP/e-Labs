@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
-		<title> CMS Test Beam Ray e-Lab Teacher Community</title>
+		<title> CMS e-Lab Teacher Community</title>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
@@ -23,7 +23,7 @@
 			</div>
 
 			<div id="content">
-<h1>Community: Learn how to do CMS Test Beam studies in your classroom.</h1>   
+<h1>Community: Learn how to do CMS studies in your classroom.</h1>   
 <!-- transcluded from http://${elab.properties['elab.host']}/elab/cosmic/teacher/library/body.php/Cosmic_Rays_Teaching_Community" -->
 <e:transclude
  url="http://${elab.properties['elab.host']}/elab/cms/teacher/library/body.php/CMS_e-Lab_Teacher_Community"

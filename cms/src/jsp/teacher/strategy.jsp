@@ -26,7 +26,7 @@
 			<div id="content">
 
 
-<h1>How other teachers have managed a CMS Test Beam project.</h1>
+<h1>How other teachers have managed a CMS project.</h1>
 
 <h2>Teaching Strategies</h2>
 <p>
@@ -35,9 +35,9 @@
 	<a href="activities.jsp">Sample Classroom Activities</a>
 </p>
 <p>
-	The very nature of the CMS Test Beam eLab is quite different 
+	The very nature of the CMS eLab is quite different 
 	from traditional labs that can be completed in a lab period or a 
-	couple of lab periods. Test Beam experiments typically require 
+	couple of lab periods. CMS e-Lab experiments typically require 
 	a great deal of  computer time to analyze data. Extra class time, 
 	however, is not something most teachers have in an already full 
 	course. You may also wonder how to provide each student time to 

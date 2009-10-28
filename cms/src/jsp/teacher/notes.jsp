@@ -25,7 +25,7 @@
 			<div id="content">
 
 
-<h1>Learn how to do CMS Test Beam studies in your classroom.</h1>
+<h1>Learn how to do CMS Data studies in your classroom.</h1>
 
 <table border="0" id="main">
 	<tr>
