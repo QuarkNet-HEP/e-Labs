@@ -32,29 +32,7 @@
 				<div class="tab">
 					<span class="tab-title">Analysis</span>
 					<div class="tab-contents">
-					<p>We recommend doing the studies in the order shown below.</p>
-
-						<p>
-							<a href="../analysis-shower-depth">Shower Depth</a> -
-							Determine shower length in the detector.
-						</p>
-						<p>
-							<a href="../analysis-lateral-size">Lateral Shower Size</a> -
-							Determine shower width in the detector.
-						</p>
-						<p>
-							<a href="../analysis-beam-purity">Beam Purity</a> -
-							Determine beam composition.
-						</p>
-						<p>
-							<a href="../analysis-resolution">Detector Resolution</a> -
-							Determine the precision of the energy measurements.
-						</p>
-						<p>
-							<a href="http://www-root.fnal.gov/root/">ROOT Tutorial</a> - 
-							Learn how to use ROOT (the underpinnings of OGRE) to analyze
-							any aspect of the data directly
-						</p>
+					 Access <a href="http://129.74.67.184/~ogre/" target="ogre">OGRE</a> to do your analysis.
 					</div>
 				</div>		
 			</div>
