@@ -39,7 +39,7 @@
 		<td>
 			<div id="center">
 				<p>
-                    The CMS Test Beam e-Lab provides an opportunity for students to conduct studies of high-energy
+                    The CMS e-Lab provides an opportunity for students to conduct studies of high-energy
                     particle collisions from CERN's Large Hadron Collider (LHC) which will probe deeper into matter
                     than ever before. This e-Lab provides students with the opportunity to study
                     (as particle physicists do) the properties of the CMS Calorimeter (electronic and hadronic)
