@@ -2,8 +2,9 @@
 
 <table width="794" cellpadding="4">
 	<tr>
-		<td><font face="ARIAL" size="+1"><b>Click on <img border="0" src="../graphics/ref.gif"> for
-		references to help you meet each <a href="javascript:glossary('milestone_text')">milestone</a>.</b></font></td>
+		<td><p>Follow the workflow list below to guide your work. Go through the e-Lab milestones one at a time. Use the <a href="../home/index.jsp">Project Map</a> if you prefer.
+Click on <img border="0" src="../graphics/ref.gif"> for
+		references to help you meet each <a href="javascript:glossary('milestone_text')">milestone</a>.</p></b></td>
 	</tr>
 </table>
 <table border="0" id="main">
@@ -56,19 +57,19 @@
 						<ul>
 							<li>
 								Select appropriate data from the available data set. 
-								<a href="javascript:reference('cms data selection',450)">
+								<a href="javascript:reference('cmstb data selection',450)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Choose and apply appropriate analysis tools. 
-								<a href="javascript:reference('cms analysis',420)">
+								<a href="javascript:reference('cmstb analysis',420)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Review, explain and assess your results. 
-								<a href="javascript:reference('cms assessment',450)">
+								<a href="javascript:reference('cmstb assessment',450)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
@@ -104,7 +105,7 @@
 							</li>
 							<li>
 								Choose a study and write a proposal.
-								<a href="javascript:reference('cms study choice',400)">
+								<a href="javascript:reference('cmstb study choice',400)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>

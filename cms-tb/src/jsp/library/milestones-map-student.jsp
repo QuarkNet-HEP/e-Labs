@@ -16,11 +16,11 @@
 <area shape="rect" alt="" coords="647,155,712,207" href="javascript:reference('publish results',280)" title="Use the e-Lab to publish your results. Create a poster.">
 <area shape="rect" alt="" coords="578,157,641,211" href="javascript:reference('assemble evidence',250)" title="Assemble evidence for your results. Select the best plots for your poster.">
 
-<area shape="rect" alt="" coords="520,93,590,127" href="javascript:reference('cms_assessment',400)" title="Assess your plots and see if they support your ideas.">
-<area shape="rect" alt="" coords="509,177,577,216" href="javascript:reference('cms_analysis',450)" title="Use OGRE to analyze your data.">
-<area shape="rect" alt="" coords="440,178,507,219" href="javascript:reference('cms_data_selection',420)" title="Choose appropriate data from the test beam data set.">
-<area shape="rect" alt="" coords="471,100,516,133" href="not-satisfied.jsp" title="Are you satisfied with your results or do you need to analyze more data?">
-<area shape="rect" alt="" coords="376,82,438,121" href="javascript:reference('cms_study_choice',450)"  title="Choose a study and write your proposal.">
+<area shape="rect" alt="" coords="520,93,590,127" href="javascript:reference('cmstb_assessment',400)" title="Assess your plots and see if they support your ideas.">
+<area shape="rect" alt="" coords="509,177,577,216" href="javascript:reference('cmstb_analysis',450)" title="Use OGRE to analyze your data.">
+<area shape="rect" alt="" coords="440,178,507,219" href="javascript:reference('cmstb_data_selection',420)" title="Choose appropriate data from the test beam data set.">
+<area shape="rect" alt="" coords="471,100,516,133" href="#" title="Are you satisfied with your results or do you need to analyze more data?">
+<area shape="rect" alt="" coords="376,82,438,121" href="javascript:reference('cmstb_study_choice',450)"  title="Choose a study and write your proposal.">
 <area shape="rect" alt="" coords="376,170,440,212" href="javascript:reference('test_beam_data',550)" title="What types of data sets are produced in the test beam?">
 <area shape="rect" alt="" coords="259,74,321,124" href="javascript:reference('test_beam_particles',420)"  title="What particles are used to study the detector's behavior?">
 
