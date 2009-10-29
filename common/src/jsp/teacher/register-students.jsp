@@ -54,6 +54,18 @@
 			user.setNewSurveyId(newSurveyId);
 		}
 		// set handlers for everything else. 
+		else if (StringUtils.equalsIgnoreCase(elab.getName(), "ligo")) {
+			newSurveyId = Integer.parseInt(elab.getProperty("ligo.newsurvey"));
+			user.setNewSurveyId(newSurveyId);
+		}
+		else if (StringUtils.equalsIgnoreCase(elab.getName(), "cms")) {
+			newSurveyId = Integer.parseInt(elab.getProperty("cms-tb.newsurvey"));
+			user.setNewSurveyId(newSurveyId);
+		}
+		else if (StringUtils.equalsIgnoreCase(elab.getName(), "cms")) {
+			newSurveyId = Integer.parseInt(elab.getProperty("cms-tb.newsurvey"));
+			user.setNewSurveyId(newSurveyId);
+		}
 	}
 	else {
 		newSurveyId = user.getNewSurveyId().intValue();
@@ -119,13 +131,13 @@
 					group.setNewSurvey(groupInSurvey);
 					group.setNewSurveyId(newSurveyId);
 				}
-				else if (StringUtils.equalsIgnoreCase(elab.getName(), "ligo")) {
-					// TODO: LIGO 
-					// Anyone taking this test will be in the 'New Survey' system
-				}
-				else if (StringUtils.equalsIgnoreCase(elab.getName(), "cms")) {
-					// TODO: CMS
-					// Anyone taking this test will be in the 'New Survey' system
+				else if (StringUtils.equalsIgnoreCase(elab.getName(), "ligo") ||
+						 StringUtils.equalsIgnoreCase(elab.getName(), "cms") ||
+						 StringUtils.equalsIgnoreCase(elab.getName(), "cms-tb")) {
+					group.setSurvey(false);
+					group.setStudy(false);
+					group.setNewSurvey(groupInSurvey);
+					group.setNewSurveyId(newSurveyId);
 				}
 				students.add(newUser);
 				newGroups.add(Boolean.valueOf(isNewGroup));

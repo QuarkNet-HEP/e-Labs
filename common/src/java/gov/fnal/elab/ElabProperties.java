@@ -28,6 +28,8 @@ public class ElabProperties extends AbstractProperties {
     
     public static final String PROP_NEW_COSMIC_SURVEY = "cosmic.newsurvey";
     public static final String PROP_LIGO_SURVEY = "ligo.newsurvey";
+    public static final String PROP_CMS_SURVEY = "cms.newsurvey";
+    public static final String PROP_CMS_TB_SURVEY = "cms-tb.newsurvey";
 
     private String elabName;
 

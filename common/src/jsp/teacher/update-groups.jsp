@@ -82,6 +82,14 @@
 							newSurveyId = Integer.parseInt(elab.getProperty("ligo.newsurvey"));
 							user.setNewSurveyId(newSurveyId);
 						}
+						if (StringUtils.equalsIgnoreCase(elab.getName(), "cms")) {
+							newSurveyId = Integer.parseInt(elab.getProperty("cms.newsurvey"));
+							user.setNewSurveyId(newSurveyId);
+						}
+						if (StringUtils.equalsIgnoreCase(elab.getName(), "cms-tb")) {
+							newSurveyId = Integer.parseInt(elab.getProperty("cms-tb.newsurvey"));
+							user.setNewSurveyId(newSurveyId);
+						}
 						// set handlers for everything else. 
 					}
 					else {
@@ -102,7 +110,7 @@
 					}
 				}
 				out.write("<div class=\"results\">" + groupName + "'s information was successfully updated. ");
-				if (prevPage != null && !prevPage.isEmpty()) {
+				if (StringUtils.isNotBlank(prevPage) && !prevPage.endsWith("null")) {
 					out.write("<a href=\"" + java.net.URLDecoder.decode(prevPage) + "\">Click here to continue onto the e-lab</a>");
 				}
 				out.write("</div>");
