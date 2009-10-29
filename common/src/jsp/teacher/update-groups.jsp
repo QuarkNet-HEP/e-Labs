@@ -160,8 +160,14 @@
 					<label for="role">Role:</label>
 				</td>
 				<td>
-					<e:trselect name="role" valueList="user, upload, teacher"
-						labelList="user, upload, teacher" value="${group.role}"/>
+					<c:choose>
+						<c:when test='${elab.name == "cosmic" }'>
+							<e:trselect name="role" valueList="user, upload, teacher" labelList="user, upload, teacher" value="${group.role}"/>
+						</c:when>
+						<c:otherwise>
+							<e:trselect name="role" valueList="user, teacher" labelList="user, teacher" value="${group.role}"/>
+						</c:otherwise>
+					</c:choose>
 				</td>
 			</tr>
 			<tr>
