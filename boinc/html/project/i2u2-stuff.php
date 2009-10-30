@@ -15,7 +15,7 @@ function get_elab_from_URL(){
 
   $elab = "";
   $self = $_SERVER['PHP_SELF']; 
-  $url_pattern=",^/elab/(\w+)/,";
+  $url_pattern=",^/elab/([-a-zA-Z0-9]+)/,";
   $n = preg_match($url_pattern, $self, $matches);
   if($n>0) list($all, $elab) = $matches;
   debug_msg(3,"elab: $elab");

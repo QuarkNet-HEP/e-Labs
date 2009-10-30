@@ -90,7 +90,7 @@ $wgEmergencyContact = "myers@spy-hill.net";
 $elab = "";
 $hostname=$_SERVER['SERVER_NAME'];
 $self = $_SERVER['PHP_SELF']; 
-$url_pattern=",^/elab/(\w+)/teacher/,";
+$url_pattern=",^/elab/([-a-zA-Z0-9]+)/teacher/,";
 $n = preg_match($url_pattern, $self, $matches);
 if($n>0) list($all, $elab) = $matches;
 
@@ -132,6 +132,14 @@ if( !empty($elab) ) {
     $wgDefaultSkin = 'cms';
     $wgSitename    = "CMS Teachers' Library";
     $wgMainPage = "CMS e-Lab Teaching Community";
+    $BOINC_prefix = "/elab/cms/teacher/forum";
+  }
+  elseif ($elab == "cms-tb") {
+    $wgLogo = "/elab/cms-tb/graphics/ligo_logo.gif";
+    $wgScriptPath = "/elab/cms-tb/teacher/library";
+    $wgDefaultSkin = 'cms';
+    $wgSitename    = "CMS Test Beam Teachers' Library";
+    $wgMainPage = "CMS Test Beam e-Lab Teaching Community";
     $BOINC_prefix = "/elab/cms/teacher/forum";
   }
 }
