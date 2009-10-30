@@ -26,7 +26,7 @@
 <h1>Community: Learn how to do CMS Test Beam studies in your classroom.</h1>   
 <!-- transcluded from http://${elab.properties['elab.host']}/elab/cosmic/teacher/library/body.php/Cosmic_Rays_Teaching_Community" -->
 <e:transclude
- url="http://${elab.properties['elab.host']}/elab/cms/teacher/library/body.php/CMS_e-Lab_Teacher_Community"
+ url="http://${elab.properties['elab.host']}/elab/cms-tb/teacher/library/body.php/CMS_e-Lab_Teacher_Community"
      start="<!-- start content -->"
      end="<div class=\"printfooter\">"
 />
