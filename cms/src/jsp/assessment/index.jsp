@@ -36,14 +36,14 @@
 				<li>
 					Content and Investigation Objectives:
 					<ul>
-								<li>Describe how determination of particle signatures from the test beam contributes to the calibration of, and particle identification in, the CMS detector.</li>
-								<li>Describe the role of each sub-detector in data analysis.</li>
-								<li>Use data to measure and describe detector characteristics.</li>
-								<li>Design an investigation with a testable hypothesis that can be answered from CMS Test Beam data. Describe what you will learn about the CMS detector from carrying out the investigation.</li>
+						<li>Describe particles colliding in and emerging from collisions detected by CMS as predicted by the Standard Model.</li>
+						<li>List in order and describe the CMS subdetectors in terms of the properties of the particles they detect.</li>
+						<li>Explain the role that conservation of mass/energy, momentum, and charge play in analyzing events detected at CMS.</li>
+						<li>Design, conduct and report on an investigation of a testable hypothesis for which evidence can be provided using CMS data.</li>
 					</ul>
 				</li>
 							<%@ include file="../teacher/learner-outcomes.jsp" %>
-			</ul>
+		 	</ul>
 			
 				</div>  <!-- end objectives -->	
 				</div>  <!-- end content -->	
