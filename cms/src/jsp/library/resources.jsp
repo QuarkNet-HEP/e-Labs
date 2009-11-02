@@ -89,6 +89,33 @@
 						</ul>
 					</div>
 				</div>
+				
+				
+							<div class="tab" id="tab-grid-computing">
+					<span class="tab-title">Grid Computing</span>
+					<div class="tab-contents">
+						<ul  class="simple">
+							<li>
+								<a href="http://gridcafe.web.cern.ch/gridcafe/">The Grid Cafe</a>
+								- An introduction. From there, go to <a href="http://www.gridtalk.org/">Grid Talk</a> where you can read <a href="http://www.gridtalk.org/briefings.htm">Grid Briefings</a> and explore the <a href="http://www.gridguide.org/">Grid Guide</a>, from CERN.
+							</li>
+							<li>
+								<a href="http://www.tryscience.org/grid/home.html" target="activity">Grids for Kids at TryScience</a>
+								- Use grid computing to model Mt. Vesuvius' volcanic activity and discover whether residents need warning, from New York Museum of Science. 
+							</li>
+							<li>
+								<a href="http://www.wikipedia.org/wiki/Grid_computing">Grid Computing</a>
+								- Read the Wikipedia article on the grid computing. 
+							</li>
+							
+							
+							
+							</ul>
+							</div>
+							</div>
+							
+				
+				
 			</div>
 		</td>
 		<td>
@@ -157,6 +184,25 @@
 						</ul>
 					</div>
 				</div>
+
+					<div class="tab" id="tab-it-careers">
+					<span class="tab-title">IT Careers</span>
+					<div class="tab-contents">
+						<ul class="simple">
+							<li>
+								<a href="http://www2.edc.org/ewit/materials/ITCCBRO.pdf">Career Cluster Pamphlet</a>,
+								(pdf) from Vocational information Center's <A href="http://www.khake.com/page17.html">Computer Science Career Guide</a>
+							</li>
+							<li>
+								<a href="http://www.microsoft.com/learning/training/careers/prepare.mspx">Prepare for an Information Technology (IT) Career</a>,
+								from Microsoft Learning
+							</li>
+							</ul>
+					</div>			
+				
+	             </div>			
+
+
 
 			</div>
 		</td>
