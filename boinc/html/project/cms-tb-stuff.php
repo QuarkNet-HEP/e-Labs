@@ -12,7 +12,7 @@ function cms_masthead($title='',$right_stuff='&nbsp;'){
      <table class='masthead,noborder' width=100% bgcolor='black' ><tr>
        <td class='noborder' width=15% valign='top' align=left>
               <a href='/' >
-               <img src='/img/cms_logo.gif' border='0'
+               <img src='/img/cms_logo.png' border='0'
                    valign='top' align='left' alt='[cms logo]' 
                    title='return to the top level'></a>
        </TD>";
@@ -45,7 +45,7 @@ function cms_masthead($title='',$right_stuff='&nbsp;'){
 
     echo "<TR ><TD class='noborder' colspan='3'>
         <div class='third-header-title'>
-          &nbsp; Laser Interferometer Gravitational-Wave Observatory
+          &nbsp; Compact Muon Solenoid
         </div>
 	</TD></TR>\n";
 
@@ -58,8 +58,8 @@ function cms_masthead($title='',$right_stuff='&nbsp;'){
 
 function cms_banner($title='',$right_stuff='&nbsp;'){// returns $x
   // TODO: make this smarter - teacher or student?
-  $home_link="/elab/cms/teacher/";
-  $elab_logo="/elab/cms/graphics/cms_logo.gif";
+  $home_link="/elab/cms-tb/teacher/";
+  $elab_logo="/elab/cms-tb/graphics/cms_logo.png";
 
   $x = "<TABLE class='masthead' width='100%' bgcolor='black' ><tr>
        <TD class='noborder' width='15%' valign='TOP' align='CENTER'>
@@ -70,7 +70,7 @@ function cms_banner($title='',$right_stuff='&nbsp;'){// returns $x
        </td>
        <TD class='noborder' width='60%' align='LEFT' >
 	<div class='header-title'>
-		cms e-Lab
+		CMS Test Beam e-Lab
 	</div>
        </td>\n ";
    $x .= "
@@ -105,32 +105,32 @@ function cms_teacher_menu_bar(){
     <!-- Teacher's menu bar for cms e-Lab -->
     <TABLE class='menu_bar'><TR>
       <TD>&nbsp;</TD>
-      <TD><a href='/elab/cms/teacher/'>
+      <TD><a href='/elab/cms-tb/teacher/'>
             Teacher Home</a>
       </td>";
 
     $x .= "
-      <TD><a href='/elab/cms/teacher/community.jsp'>
+      <TD><a href='/elab/cms-tb/teacher/community.jsp'>
             Community</a>
       </td>";
 
     $x .= "
-      <TD><a href='/elab/cms/teacher/standards.jsp'>
+      <TD><a href='/elab/cms-tb/teacher/standards.jsp'>
             Standards</a>
       </td>";
 
     $x .= "
-      <TD><a href='/elab/cms/teacher/site-map.jsp'>
+      <TD><a href='/elab/cms-tb/teacher/site-map.jsp'>
             Site Index</a>
       </td>";
 
     $x .= "
-      <TD><a href='/elab/cms/teacher/registration.jsp'>
+      <TD><a href='/elab/cms-tb/teacher/registration.jsp'>
             Registration</a>
       </td>";
 
     $x .= "
-      <TD><a href='/elab/cms/home/'>
+      <TD><a href='/elab/cms-tb/home/'>
             Student Home</a>
       </td>";
 

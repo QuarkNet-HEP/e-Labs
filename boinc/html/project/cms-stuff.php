@@ -12,7 +12,7 @@ function cms_masthead($title='',$right_stuff='&nbsp;'){
      <table class='masthead,noborder' width=100% bgcolor='black' ><tr>
        <td class='noborder' width=15% valign='top' align=left>
               <a href='/' >
-               <img src='/img/cms_logo.gif' border='0'
+               <img src='/img/cms_logo.png' border='0'
                    valign='top' align='left' alt='[cms logo]' 
                    title='return to the top level'></a>
        </TD>";
@@ -45,7 +45,7 @@ function cms_masthead($title='',$right_stuff='&nbsp;'){
 
     echo "<TR ><TD class='noborder' colspan='3'>
         <div class='third-header-title'>
-          &nbsp; Laser Interferometer Gravitational-Wave Observatory
+          &nbsp; Compact Muon Solenoid
         </div>
 	</TD></TR>\n";
 
@@ -59,7 +59,7 @@ function cms_masthead($title='',$right_stuff='&nbsp;'){
 function cms_banner($title='',$right_stuff='&nbsp;'){// returns $x
   // TODO: make this smarter - teacher or student?
   $home_link="/elab/cms/teacher/";
-  $elab_logo="/elab/cms/graphics/cms_logo.gif";
+  $elab_logo="/elab/cms/graphics/cms_logo.png";
 
   $x = "<TABLE class='masthead' width='100%' bgcolor='black' ><tr>
        <TD class='noborder' width='15%' valign='TOP' align='CENTER'>
@@ -70,7 +70,7 @@ function cms_banner($title='',$right_stuff='&nbsp;'){// returns $x
        </td>
        <TD class='noborder' width='60%' align='LEFT' >
 	<div class='header-title'>
-		cms e-Lab
+		CMS e-Lab
 	</div>
        </td>\n ";
    $x .= "
