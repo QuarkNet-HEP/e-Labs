@@ -27,17 +27,11 @@
 <h1>Classroom Activities from Teachers and Staff</h1>
 
 <e:transclude
- url="http://${elab.properties['elab.host']}/cosmic/library/body.php/Add_Classroom_Activity"
+ url="http://${elab.properties['elab.host']}/cosmic/library/body.php/Cosmic_Classroom_Activities"
      start="<!-- start content -->"
       end="<div class=\"printfooter\">"
 />
 
- 
-<e:transclude
- url="http://${elab.properties['elab.host']}/cosmic/library/body.php/Classroom_Activities"
-     start="<!-- start content -->"
-      end="<div class=\"printfooter\">"
-/>
 
 			</div>
 			<!-- end content -->
