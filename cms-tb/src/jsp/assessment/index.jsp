@@ -28,7 +28,7 @@
 			
 			<p>
 				The following objectives outline what you will learn and be able 
-				to do during this study of seismic waves. For assessment follow 
+				to do during this study of CMS Test Beam data. For assessment follow 
 				the guidance your teacher gave you at the beginning of the project.
 			</p>
 				
