@@ -51,7 +51,7 @@
 							Determine the precision of the energy measurements.
 						</p>
 						<p>
-							<a href="http://www-root.fnal.gov/root/">ROOT Tutorial</a> - 
+							<b>Advanced:</b> <a href="http://www-root.fnal.gov/root/">ROOT Tutorial</a> - 
 							Learn how to use ROOT (the underpinnings of OGRE) to analyze
 							any aspect of the data directly
 						</p>
