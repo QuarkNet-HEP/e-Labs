@@ -40,7 +40,7 @@
 							Read background information about the detector resolution.
 						</p>
 						<p>
-							<a href="http://129.74.67.184/~ogre/" target="ogre">Access OGRE</a> -
+							<a href="/~ogre/" target="ogre">Access OGRE</a> -
 							Do your analysis with OGRE (Online Graphical ROOT Environment). Remember to save any good plots so you can upload
 							them when you make a poster.
 						</p>
