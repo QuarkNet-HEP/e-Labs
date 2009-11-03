@@ -125,10 +125,6 @@
 					<div class="tab-contents">
 						<ul class="simple">
 							<li>
-								<a href="http://www-root.fnal.gov/root/">ROOT Tutorial</a>
-								- Learn how to use ROOT (the underpinnings of OGRE)  to analyze any aspect of the data directly.
-							</li>
-							<li>
            						<a href="../analysis-shower-depth/background.jsp">Shower Depth Study </a> - Background
 							</li>
 							<li>
@@ -140,6 +136,11 @@
 				            <li>
 								<a href="../analysis-resolution/background.jsp">Detector Resolution Study </a>- Background
 							</li>
+							<li>
+								<b>Advanced:</b> <a href="http://www-root.fnal.gov/root/">ROOT Tutorial</a>
+								- Learn how to use ROOT (the underpinnings of OGRE)  to analyze any aspect of the data directly.
+							</li>
+
 						</ul>
 					</div>
 				</div>
