@@ -54,12 +54,15 @@
 									<li><a href="http://cmsinfo.cern.ch/">CMS Experiment</a></li></ul>
 						<li><b>Tutorials/Background</b>
 							<ul>
+<!-- 
 								<li><a href="../analysis-shower-depth/background.jsp">Shower Depth</a></li>
 								<li><a href="../analysis-lateral-size/background.jsp">Lateral Size</a></li>         
 								<li><a href="../analysis-beam-purity/background.jsp">Beam Purity</a></li>
 								<li><a href="../analysis-resolution/background.jsp">Resolution</a></li>
-								<li><a href="http://www-root.fnal.gov/root/">Root Tutorial</a></li>
-							</ul>
+-->									
+                <li><b>Advanced:</b> <a href="http://www-root.fnal.gov/root/">Root Tutorial</a></li>
+					</ul>
+	
 						</li>
 						<li>
 							Notes
@@ -93,15 +96,15 @@
 			<ul>
 				<li>
 					<a href="../data/">Data Analysis</a>
-<!-- 
 					<ul>
-         				<li><a href="../analysis-shower-depth/">Shower Depth</a></li>
-						<li><a href="../analysis-lateral-size/">Lateral Size</a></li>         
+	         <li><a href="/~ogre/" target="ogre">OGRE</a></li>
+<!-- 
+					<li><a href="../analysis-lateral-size/">Lateral Size</a></li>         
 						<li><a href="../analysis-beam-purity/">Beam Purity</a></li>
 						<li><a href="../analysis-resolution/">Resolution</a></li>
+-->
 					</ul>
- -->
-				</li>
+ 				</li>
 				<li><b><a href="../plots/search.jsp">View Plots</a></b></li>
 					<li><b><a href="../plots/delete.jsp">Delete Plots</a></b>
 					</li>
