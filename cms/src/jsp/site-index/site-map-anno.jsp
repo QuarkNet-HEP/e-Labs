@@ -91,11 +91,8 @@ function hideAll()
 							<td  width="127" valign="top" align="center">
 								<div id="sitehelp-data">
 									<a href="../data/view.jsp">View Data</a><br />
-									<a href="../analysis-shower-depth/">Shower Depth</a><br />
-									<a href="../analysis-lateral-size/">Lateral Shower Size</a><br />
-									<a href="../analysis-beam-purity/">Beam Purity</a><br />
-									<a href="../analysis-resolution/">Detector Resolution</a><br />
-									<a href="../plots/?submit=true&key=all&uploaded=true">View Plots</a><br />
+									<a href="http://129.74.67.184/~ogre/"target="ogre">OGRE</a><br />
+										<a href="../plots/?submit=true&key=all&uploaded=true">View Plots</a><br />
 <!-- 
 									<a href="../analysis/list.jsp">Analyses</a>
  -->
