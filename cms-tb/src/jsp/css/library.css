@@ -1,6 +1,7 @@
 #nav #subnav ul#sub-data { display:none; }
 #nav #subnav ul#sub-posters { display:none; } 
 #nav #subnav ul#sub-siteindex { display:none; } 
+#nav #subnav ul#sub-home { display:none; } 
 
 #nav a#nav-library {
 	background-color: #33e890;
