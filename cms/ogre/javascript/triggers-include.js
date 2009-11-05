@@ -11,8 +11,12 @@ var ogreBtn  = 'Access the OGRE Controls';
 function showtrigToolTip(text, reject) {
 
     var reject = (reject) ? reject : false;
-    if ( reject )
+    if ( reject ) {
 	text = text.replace("accept", "reject");
+	text = text.replace("OR", "NOR");
+	text = text.replace("AND", "NAND");
+	text = text.replace("XOR", "NXOR");
+    }
 
     try {
 	if (showToolTips)

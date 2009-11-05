@@ -404,8 +404,18 @@ sub makeRootScript {
   # Close out the script & the file
   print $fileHandle "}\n";
   close($fileHandle);
-
   chmod (0666, $filePath);
+
+  # Save the information for color keys
+  my $keyHandle;
+  my @imColors = ('','black','red','green','blue','yellow','purple','','','','white');
+  open ($keyHandle, ">$tmpdir/$random/key");
+  for (my $i=0; $i<=$#titleList; $i++) {
+      print $keyHandle "$titleList[$i]," . $imColors[$colors[$i]] . "\n";
+  }
+  close($keyHandle);
+  chmod (0666, "$tmpdir/$random/key");
+
 
   # Now that the script is generated... run it :D and whack the script when we're done
 #  my $redirect = "/dev/null";
@@ -579,6 +589,7 @@ sub runRootScript() {
   $stacked   = $ogre::cgi->getCGIParam('allonone');
   $tmpdir    = $ogre::ogreXML->getOgreParam('tmpDir');
 
+  my $baseDir   = $ogre::ogreXML->getOgreParam('baseDir'); #"/home/ogre/public_html/";
   my $urlPath   = $ogre::cgi->getCGIParam('URL');
   my $verbose   = $ogre::cgi->getCGIParam('DEBUG');
   my $path      = "$tmpdir/$random";
@@ -586,14 +597,58 @@ sub runRootScript() {
   my $logY      = $ogre::cgi->getCGIParam('logY') || 0;
   my @variables = @{$graphics_options->{plots}};
 
+
+################################# Massage the image a bit ##############################################
+  my $image=Image::Magick->new;
+  my $imageFile = "$tmpdir/$random/canvas.000.$type";
+
+  $image->Read("$type:$imageFile");
+
+  # Get the "draft" overlay
+  my $draft = Image::Magick->new;
+  $draft->Read("png:$baseDir/graphics/draft.png");
+
+  # Scale the "draft" image to the correct size
+  if ( $width != 640 ) {
+      $draft->Scale(width=>$width, height=>$height);
+  }
+
+  # Get the width/height from the image since ROOT 
+  # tends to shrink by 6% or so
+  ($width,$height) = $image->Get('width','height');
+
+  # Alter the image file with dislaimers & such
+  my $err;
+
+  if ( -e "$path/key" ) {
+      open(KEY, "<$path/key");
+      my @keys = <KEY>;
+      close(KEY);
+
+      my $vertPos = 100;
+      foreach my $key (@keys) {
+	  my ($plotTitle, $color) = split(/,/,$key);
+	  $err = $image->Annotate(font=>'Generic.ttf', pointsize=>'16',
+				  fill=>$color, text=>$plotTitle,
+				  scale=>'1', x=>0.75*$width, y=>$vertPos);
+          warn $err if $err;
+          $vertPos += 20;
+      }
+  }
+  $err = $image->Composite(image=>$draft);
+  warn $err if $err;
+
+  $image->Write("$type:$imageFile");
+##########################################################################################################
+
   my $html = new html($width,  $height,  $tmpdir, 
 		      $random, $type,    $stacked, 
 		      $path,   $urlPath, $verbose, 1,
 		      $logX,   $logY,    $units, @variables);
 
   # Call the routines in the HTML class to make the necessary output pages
-  $html->makeHistoryPage(undef, 0, $titleList[0], ("000=>"));
   $html->makeActivePage("temp.000.html", "000", $appletData);
+  $html->makeHistoryPage(undef, 0, $titleList[0], ("000=>"));
 
   # Once the pages are made... redirect the browser to the new directory
   # to continue the study

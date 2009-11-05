@@ -85,3 +85,30 @@ div#menu {
     margin-right:5px;
     display: block;
 }
+.rbutton {
+    position: relative;
+    float: right;
+    margin-right:5px;
+    display: block;
+}
+.address {
+    position: relative;
+}
+
+.hdrTxt {
+    position:relative;
+    float:right;
+    bottom:24px;
+}
+.winTxt {
+    position:relative;
+    float:left;
+    bottom:18px;
+    color:#8c0000;
+}
+
+.bottomLine {
+    position:relative;
+    float:right;
+    bottom:24px;
+}

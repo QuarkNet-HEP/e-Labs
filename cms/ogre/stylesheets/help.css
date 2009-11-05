@@ -1,6 +1,15 @@
 button.helpButton {
     position:relative;
     float:right;
+    bottom:-10px;
+    cursor:pointer;
+    font-size: 1em;
+    background-color: #ff00ff;
+}
+button.startButton {
+    position:relative;
+    float:right;
+    right: 10px;
     bottom:10px;
     cursor:pointer;
     font-size: 1em;

@@ -15,6 +15,7 @@ sub new {
 
   my $xml = new ogreXML();
   my $baseURL = $xml->getOgreParam('urlPath');
+  my $baseDir = $xml->getOgreParam('baseDir');
 
   my $self = { 
     _width   => $width,
@@ -31,7 +32,9 @@ sub new {
     _logy    => $logY,
     _units   => $units,
     _leaves  => \@leaves,
-    _baseURL => $baseURL
+    _baseURL => $baseURL,
+    _baseDir => $baseDir
+	
   };
   bless $self, $class;
   return $self;
@@ -509,18 +512,6 @@ sub makeActivePage(\$ \%) {
     my $hHeight = $self->{_histHeight};
     my $hWidth  = $self->{_histWidth};
 
-    # Get the width/height directly from the image since root 
-    # tends to cut it down by ~ 6% or so (but carefully...
-    # if width/height => 0 things will fail down the line)
-    my $image=Image::Magick->new;
-    my $imageFile = sprintf("%s/%s/canvas.%03i.%s", $tmpdir, $random, $version, $type);
-    $image->Read("$type:$imageFile");
-
-    my @temp = $image->Get('width','height');
-
-    $width  = ($temp[0]) ? $temp[0] : $width;
-    $height = ($temp[1]) ? $temp[1] : $height;
-
     #
     ########################### Create the new web page #############################
     #
@@ -554,7 +545,10 @@ sub makeActivePage(\$ \%) {
     print $fileHandle "      var baseURL  = \"$baseURL\";\n";
     print $fileHandle "      function fetch(url) {\n";
     print $fileHandle "        parent.location = url;\n";
-    print $fileHandle "      }\n";
+    print $fileHandle "      }\n\n";
+    print $fileHandle "      var replaceTip = 'Replace the selection from \"My Cuts\" with the current selection';\n";
+    print $fileHandle "      var appendTip  = 'Append the current selection to the selection from \"My Cuts\"';\n";
+    print $fileHandle "      var clearTip   = 'Clear the selection criteria from \"My Cuts\"';\n";
     print $fileHandle "    </script>\n";
     print $fileHandle "    <script type=\"Text/JavaScript\" src=\"$baseURL/javascript/linearCut.js\"></script>\n";
     print $fileHandle "    <script type=\"Text/JavaScript\" src=\"$baseURL/javascript/jsWindowlet.js\"></script>\n";
@@ -573,7 +567,16 @@ sub makeActivePage(\$ \%) {
     print $fileHandle "      <div id='buttonWrapperTop'>\n";
     print $fileHandle "    	<input type=SUBMIT   class='button' value='Apply Selection'   onClick='javascript:submitForm(document.forms[\"recut\"]);'/>\n";
     print $fileHandle "    	<input type=BUTTON   class='button' value='Save Current Work' onClick='javascript:archiveStudy(document.forms[\"recut\"]);'/>\n";
-    print $fileHandle "    	<input type=BUTTON   class='button' value='Finalize Study'    onClick='javascript:finalizeStudy(document.forms[\"recut\"]);'/>\n";
+    print $fileHandle "    	<input type=BUTTON   class='button' value='Finalize Study'    onClick='javascript:finalizeStudy(document.forms[\"recut\"]);'/>\n\n";
+
+    print $fileHandle "    	<input type=BUTTON   class='rbutton' value='Clear'   onClick='javascript:clearCuts();'\n";
+    print $fileHandle "    	  onMouseOver='javascript:Tip(clearTip);' onMouseOut='javascript:UnTip();'/>\n";
+    print $fileHandle "    	<input type=BUTTON   class='rbutton' value='Append'  onClick='javascript:appendCuts();'\n";
+    print $fileHandle "    	  onMouseOver='javascript:Tip(appendTip);' onMouseOut='javascript:UnTip();'/>\n";
+    print $fileHandle "    	<input type=BUTTON   class='rbutton' value='Replace' onClick='javascript:replaceCuts();'\n";
+    print $fileHandle "    	  onMouseOver='javascript:Tip(replaceTip);' onMouseOut='javascript:UnTip();'/>\n";
+    print $fileHandle "    	<h4 class='hdrTxt'>Selection:&nbsp;</h4>\n\n";
+
     print $fileHandle "       </div>\n";
     print $fileHandle "     </div> <!-- End of header div -->\n";
 
@@ -595,7 +598,7 @@ sub makeActivePage(\$ \%) {
 
     print $fileHandle "      <br><br><hr width=100%><br>\n";
 
-    print $fileHandle "      <input type=BUTTON class='button' value='Clear Saved Cuts'  onClick='javascript:clearCuts();'/>\n";
+#    print $fileHandle "      <input type=BUTTON class='button' value='Clear Saved Cuts'  onClick='javascript:clearCuts();'/>\n";
     print $fileHandle "      <input type=BUTTON class='button' value='Selection History' onClick='javascript:hstWin.show();'/>\n\n";
     print $fileHandle "      <input type=BUTTON class='button' value='Show Graph'        onClick='javascript:cutWin.show();'/>\n";
 
@@ -608,6 +611,16 @@ sub makeActivePage(\$ \%) {
     print $fileHandle "      </select>\n\n";
 
     print $fileHandle "      <br><br><hr width=100%><br>\n\n";
+
+    print $fileHandle "    	<h4 class='winTxt'>Selection:&nbsp;&nbsp;</h4>\n";
+    print $fileHandle "    	<input type=BUTTON   class='button' value='Append'  onClick='javascript:appendCuts();'\n";
+    print $fileHandle "    	  onMouseOver='javascript:Tip(appendTip);' onMouseOut='javascript:UnTip();'/>\n";
+    print $fileHandle "    	<input type=BUTTON   class='button' value='Replace' onClick='javascript:replaceCuts();'\n";
+    print $fileHandle "    	  onMouseOver='javascript:Tip(replaceTip);' onMouseOut='javascript:UnTip();'/>\n";
+    print $fileHandle "    	<input type=BUTTON   class='button' value='Clear'   onClick='javascript:clearCuts();'\n";
+    print $fileHandle "    	  onMouseOver='javascript:Tip(clearTip);' onMouseOut='javascript:UnTip();'/>\n\n";
+
+    print $fileHandle "    	<br><br><hr class='bottomLine' width=100%><br>\n\n";
 
     print $fileHandle "      <div class='address buttons' id='address'>\n";
     print $fileHandle "        <address><a href=# onClick='javascript:callMenu(8);'>Bug the OGRE</a></address>\n";
@@ -650,7 +663,7 @@ sub makeActivePage(\$ \%) {
 
     print $fileHandle "     <div id='footer'>\n";
     print $fileHandle "       <div id='buttonWrapperBtm'>\n";
-    print $fileHandle "         <input type=BUTTON class='button' value='Clear Saved Cuts'  onClick='javascript:clearCuts();'/>\n";
+#    print $fileHandle "         <input type=BUTTON class='button' value='Clear Saved Cuts'  onClick='javascript:clearCuts();'/>\n";
     print $fileHandle "         <input type=BUTTON class='button' value='Selection History' onClick='javascript:hstWin.show();'/>\n";
     print $fileHandle "         <input type=BUTTON class='button' value='Show Graph'        onClick='javascript:cutWin.show();'/>\n\n";
  

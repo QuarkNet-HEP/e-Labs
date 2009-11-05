@@ -1,8 +1,14 @@
 <?php
    if ( isset($_GET['directory']) ) {
      $directory = $_GET['directory'];
-   } else if ( !$directory ) {
+   } else if ( !isset($directory) ) {
      $directory = "../archives";
+   }
+
+   if ( isset($_GET['userName']) ) {
+     $userName = $_GET['userName'];
+   } else if ( !isset($userName) ) {
+     $userName = 'guest';
    }
 
    if ( isset($directory) && $directory != "results" )
@@ -27,7 +33,7 @@ function aScandir($path) {
   return $list ;
   }
 
-function aGetCanvai($path) {
+function aGetCanvai($path, $userName) {
   $files = @aScandir($path);
 
   if ( !isset($files) ) {
@@ -35,6 +41,35 @@ function aGetCanvai($path) {
   }
 
   sort($files);
+
+  // If we're looking at stored archives... restrict the results to this user only
+  if ( isset($path) && preg_match("/archives/",$path) ) {
+
+    // Get a list from the database of the sessions this user has
+    // Include the DB connection information
+    include "DBDefs.php";
+
+    // Connect to the database...
+    $conn = mysql_connect($dbhost, $dbuser, $dbpass) or 
+      die ('Error connecting to database');
+
+    if ( !mysql_select_db($dbname, $conn) ) {
+      echo mysql_errno($conn) . ":" . mysql_error($conn) . "\n";
+    }
+
+    // Dump out all sessionIDs this user has
+    $query = "SELECT sID from settings where username='$userName'";
+
+    $result = mysql_query($query, $conn);
+    if ( !$result ) {
+      echo mysql_errno($conn) . ":" . mysql_error($conn) . "\n";
+    }
+
+    $activeID = array();
+    while ($row = mysql_fetch_array($result, MYSQL_ASSOC))
+      array_push($activeID, $row['sID']);
+  }
+
   foreach ($files as $fileName) {
 
     if ( fileType( $fileName ) ) {
@@ -54,16 +89,17 @@ function aGetCanvai($path) {
 	$id = "";
       }
       if ( $id != "" && ($ext == "png" || $ext == "jpg") ) {
-	print "<img class=\"icons\" width=64 src=\"$path/$file\" id='$id'";
-	//print " onClick='javascript:expand(this, \"aExpander\");'/>\n";
-	print " onClick='javascript:showArchivedCanvas(this);'/>\n";
+	if ( isset($activeID) && count(preg_grep("/$id/", $activeID)) ) {
+	  print "<img class=\"icons\" width=64 src=\"$path/$file\" id='$id'";
+	  print " onClick='javascript:showArchivedCanvas(this);'/>\n";
+	}
       }
     }
   }
 }
 
 if ( $directory ) {
-  aGetCanvai($directory);
+  aGetCanvai($directory,$userName);
 }
 
 ?>

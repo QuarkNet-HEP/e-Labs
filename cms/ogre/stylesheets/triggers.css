@@ -134,23 +134,27 @@ fieldset {
 }
 
 fieldset#Demo0 {
-    width: 47%;
+    width: 45%;
+    margin-left:5px;
 }
 
 fieldset#Demo1 {
-    width: 47%;
+    width: 45%;
+    margin-left:5px;
+    margin-top:1.33em;
 }
 
 fieldset#triggers {
-    /*position: absolute;
-    top: 10.5em;*/
-    width:98.5%;
-    margin-left:2px;
-    margin-right:2px;
+    width:97%;
+    margin-left:5px;
+    margin-right:5px;
 }
 
 fieldset#data {
     float:right;
+    position: relative;
+    /*right:0.5em;*/
+    margin-right:7px;
     width:50%;
 }
 
@@ -200,7 +204,7 @@ div {
 div#leftcol {
     float: left;
     width:64px;
-    padding: 10px;
+    padding: 5px;
     margin-left: 1px;
     margin-top: 0px;
     text-align: center;
@@ -208,7 +212,7 @@ div#leftcol {
 div#centcol {
     float:left;
     width:64px;
-    padding: 10px;
+    padding: 5px;
     margin-left:10px;
     margin-right:10px;
     margin-top: 0px;
@@ -217,7 +221,7 @@ div#centcol {
 div#rightcol {
     float: left;
     width:64px;
-    padding: 10px;
+    padding: 5px;
     margin-right: 1px;
     text-align: center;
 }
@@ -231,8 +235,8 @@ select#select1 {
 
 button#gotoVars {
     position:absolute;
-    bottom:0em;
-    right:0em;
+    bottom:0.1em;
+    right:5px;
     font-size:0.75em;
     cursor:pointer;
     width:10em;
@@ -240,8 +244,8 @@ button#gotoVars {
 
 button#gotoCntl {
     position:absolute;
-    bottom:0em;
-    left:0em;
+    bottom:0.1em;
+    left:5px;
     font-size:0.75em;
     cursor:pointer;
     width:10em;

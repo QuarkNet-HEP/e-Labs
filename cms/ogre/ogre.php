@@ -210,6 +210,7 @@
           $directory = "results";
           include "php/previous.php";
           $directory = "archives";
+          $userName  = $_GET['user'];
           include "php/archive.php";
         ?>
       </form>

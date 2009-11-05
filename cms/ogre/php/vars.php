@@ -7,7 +7,10 @@ if ( isset($argv) ) {
 	$userLevel = $temp[1];
       } else if ( strtolower($temp[0]) == "dataset" ) {
 	$dataset = $temp[1];
+      } else if ( strtolower($temp[0]) == "sessionid" ) {
+	$sessionID = $temp[1];
       }
+
     }
 }
 
@@ -71,13 +74,58 @@ if ( !isset($dataset) ) {
 	<div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" name="size" id="size" value="1600x1200" >1600</div>
       </div>
 
-      <div class="vDragContainer DragContainer7" id="DragContainer7" history="History2">
-	<div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" id="gcut"
-             onMouseOver="showvarsToolTip(tip7_1);" onMouseOut="UnTip();">My Cuts</div>
+      <div class='vDragContainer DragContainer7' id='DragContainer7' history='History2'>
+<?php
 
-	<div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" id="savedata" style='display:none;'
-             onMouseOver="showvarsToolTip(tip7_2);" onMouseOut="UnTip();">Raw Data</div>
+  echo "\t  <div class='vminiDragBox' overClass='vminiDragBox OvervminiDragBox' id='gcut'\n";
 
+  if ( isset($_GET['sessionID']) ) {
+    $sessionID = $_GET['sessionID'];
+  }
+
+  if ( isset($sessionID) ) {
+
+    // Include the DB connection information
+    include "DBDefs.php";
+
+    // Connect to the database...
+    $conn = mysql_connect($dbhost, $dbuser, $dbpass) or 
+    die ('Error connecting to database');
+
+    if ( !mysql_select_db($dbname, $conn) ) {
+      echo mysql_errno($conn) . ":" . mysql_error($conn) . "\n";
+    }
+
+    // Read the selection from the settings table to include it as a tooltip
+    $query = "SELECT selection from settings where sID='$sessionID'";
+
+    $result = mysql_query($query, $conn);
+    if ( !$result ) {
+      echo mysql_errno($conn) . ":" . mysql_error($conn) . "\n";
+    }
+
+    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+      $selection = $row['selection'];
+    }
+
+    /*
+    if ( $selection ) {
+      if ( preg_match("/,/",$selection) ) {
+	$temp = explode(",", $selection);
+	$selection = $temp[0];
+      }
+    }
+    */
+  }
+
+  print "\t    onMouseOver='showvarsToolTip(tip7_1";
+  if ( isset($selection) )
+    print "+\"<BR>$selection\"";
+  print ");' onMouseOut='UnTip();'>My Cuts</div>\n";
+?>
+
+        <div class='vminiDragBox' overClass='vminiDragBox OvervminiDragBox' id='savedata' style='display:none;'
+          onMouseOver='showvarsToolTip(tip7_2);' onMouseOut='UnTip();'>Raw Data</div>
       </div>
 
     </fieldset>
@@ -93,9 +141,8 @@ if ( !isset($dataset) ) {
 
     <fieldset id="variables" class="fieldset">
       <legend>Available Plots</legend>
-      <div class="vDragContainer DragContainer1" id="DragContainer1" history="History2" 
-           onMouseOver="showvarsToolTip(tip1);" onMouseOut="UnTip();">
-    <?php include "xmlVar.php";?>
+      <div class="vDragContainer DragContainer1" id="DragContainer1" history="History2"> 
+        <?php include "xmlVar.php";?>
       </div>
     </fieldset>
 

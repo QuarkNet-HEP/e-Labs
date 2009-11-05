@@ -240,9 +240,9 @@ function stopDrag(event) {
 		hi = temp[i].split('<')[1];
 	}
 
-	newCut = cuts.replace(lo, pixel2plot(xmin));
-	newCut = newCut.replace(hi,pixel2plot(xmax-mouseOffSet));
-	//sendState("selection", newCut.replace(/&/g,"%26"), true);
+	newCut = cuts.replace(new RegExp(lo,"g"), pixel2plot(xmin));
+	newCut = newCut.replace(new RegExp(hi,"g"),pixel2plot(xmax-mouseOffSet));
+	//sendState("selection", newCut.replace(/&/g,"%26"), true, true);
     }
 
     return;
@@ -515,7 +515,7 @@ function pageLoad() {
 
     /*
     if ( cuts )
-	sendState("selection", cuts.replace(/&/g,"%26"), true);
+	sendState("selection", cuts.replace(/&/g,"%26"), true, true);
     */
 
     // load the history page into a div
@@ -678,6 +678,22 @@ function callMenu(option) {
 }
 
 function clearCuts() {
-    sendState("selection", 'blah', true);
+    sendState("selection", 'blah', true, true);
+    return true;
+}
+
+function replaceCuts() {
+    if ( newCut )
+	sendState("replaceCut", newCut.replace(/&/g,"%26"), true, true);
+    else
+	alert("No selection defined!");
+    return true;
+}
+
+function appendCuts() {
+    if ( newCut )
+	sendState("appendCut", newCut.replace(/&/g,"%26"), false, true);
+    else
+	alert("No selection defined!");
     return true;
 }

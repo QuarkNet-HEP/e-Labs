@@ -39,7 +39,7 @@ $data->execute();
 my ($dataset) = $data->fetchrow_array();
 $data->finish();
 
-my @lines = `php ../php/$page.php userLevel=$userLevel dataset=$dataset`;
+my @lines = `php ../php/$page.php userLevel=$userLevel dataset=$dataset sessionID=$sessionID`;
 
 $response = "$page\n";
 for ( my $i=2; $i<$#lines-2; $i++ ) {

@@ -58,7 +58,8 @@ if ($cgi->param('iotype') eq "getID") {
 if ($cgi->param('iotype') eq "create")
 {
 	my $userName = $cgi->param('userName') || 'default';
-	$query = "INSERT INTO settings VALUES ('$userName','$sessId', 0, 'mc09', 12, 1, 1, 0, 10, 10, 20, 20, 30, 30, 'graphWin', 'blah');";
+	$query = "INSERT INTO settings VALUES ('$userName','$sessId', 0, 'mc09', 
+	  12, 1, 1, 0, 10, 10, 20, 20, 30, 30, 'graphWin', 'blah',1,1,1,1,1,1,1,1,0);";
 	$data = $dbh->prepare($query);
 	$data->execute();
 	$Nacho = "$sessId:0:mc09:12:1:1:0:10:10:20:20:30:30:histWin:blah";
@@ -77,7 +78,32 @@ if ($cgi->param('iotype') eq "send") {
 	$data = $dbh->prepare($query);
 	$data->execute();
 
-   } elsif ($cgi->param('parameter') eq "selection") {
+} elsif ($cgi->param('parameter') eq "appendCut") {
+
+  # See what the current cut is...
+  $query = "select selection from settings where sID='$sessId'";
+  $data = $dbh->prepare($query);
+  $data->execute();
+  my ($selection) = $data->fetchrow_array();
+  $data->finish();
+
+  # If it's undefined the just do a replace....
+  if ( $selection eq "blah" || $selection eq "1" || !$selection ) {
+    $query = "update settings set selection='" . $cgi->param('value') . "' where sID='$sessId'";
+  } else { # Otherwise, append it to the current selection
+    $query = "update settings set selection=concat(selection,'&&" . $cgi->param('value') . "') where sID='$sessId'";
+  }
+
+  $data = $dbh->prepare($query);
+  $data->execute();
+
+} elsif ($cgi->param('parameter') eq "replaceCut") {
+
+  $query = "update settings set selection=" . $cgi->param('value') . " where sID='$sessId'";
+  $data = $dbh->prepare($query);
+  $data->execute();
+
+} elsif ($cgi->param('parameter') eq "selection") {
 
      # Get the new cuts the user wants...
      my $cuts  = $cgi->param("value");
@@ -121,8 +147,6 @@ if ($cgi->param('iotype') eq "send") {
        $newSel = $curSel;
        $newSel =~ s/$1/$cuts/;
 
-#       warn "replacing $var in\n$curSel\nwith\n$newSel";
- 
        $query = "UPDATE settings SET selection='$newSel' WHERE sID='$sessId'";
        $data = $dbh->prepare($query);
        $data->execute();

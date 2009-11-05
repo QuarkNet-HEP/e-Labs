@@ -96,7 +96,7 @@
 	    xmlHttp.send(null);
 	    message = xmlHttp.responseText;
 
-	    location.href="ogre.php?user=" + userName;
+	    location.href="ogre.php?user=" + userName+"&sessionID="+sessionID;
 	    return;
 	  }
 
@@ -110,7 +110,7 @@
 	      xmlHttp.send(null);
 	      message = xmlHttp.responseText;
 
-              location.href="ogre.php?user=" + userName;
+              location.href="ogre.php?user=" + userName+"&sessionID="+sessionID;
 	      return;
 
 	  } else {
@@ -133,7 +133,7 @@
 	    xmlHttp.send(null);
 	    message = xmlHttp.responseText;
 
-	    location.href="ogre.php?user=" + userName;
+	    location.href="ogre.php?user=" + userName+"&sessionID="+sessionID;
 	    return;
 	  } else {
 
@@ -146,7 +146,7 @@
 	  xmlHttp.send(null);
 	  var isUnPacked = parseInt(xmlHttp.responseText);
 	  if ( isUnPacked ) {
-	    location.href="tmp/"+sessionID+"/temp.000.html";
+	    location.href="tmp/"+sessionID;
 	    return;
 	  }
 	  
@@ -170,7 +170,7 @@
 
 	    if ( userName.length > 0 ) {
 	      setCookie('sessionID',sessionID);
-	      document.location.href = baseURL + "/ogre.php?user="+userName;
+	      document.location.href = baseURL + "/ogre.php?user="+userName+"&sessionID="+sessionID;
 	    } else {
               // No such session... log them in as a guest
 	      sessionID = createSessionID();
@@ -180,7 +180,7 @@
 	      xmlHttp.send(null);
 	      message = xmlHttp.responseText;
 
-              document.location.href=baseURL + "/ogre.php?user=guest";
+              document.location.href=baseURL + "/ogre.php?user=guest&sessionID="+sessionID;
 	    }
 	}
 	}

@@ -151,6 +151,7 @@ sub procCGI {
       my $db = new MySQL();          # Yup... update the DB with the new sessionID
       $db->updateSettingsDB($sessionID, $random);
       undef $db;
+      $sessionID = $random;
   }
 
   $cgi_hash{tempIndex} = $random;
@@ -378,8 +379,15 @@ sub procCGI {
   }
   $cgi_hash{cuts} = ( $#cuts >= 0 ) ? \@cuts : ();
 
-  my $mycuts = $query->param('mycuts');
-  $cgi_hash{mycuts} = $query->param('mycuts');
+  # See if the user is requesting a general selection
+  if ( $query->param('mycuts') ) {
+      my $db = new MySQL();
+
+      $cgi_hash{mycuts} = $db->getSelection($sessionID);
+      $db->setApplySavedCuts($sessionID);
+ 
+      undef $db;
+  }
 
   # Add in a personal private switch for me when I'm testing
   $cgi_hash{DEBUG} = ($query->param("verbose")) ? $query->param("verbose") : 0;

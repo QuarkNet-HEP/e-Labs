@@ -11,6 +11,7 @@ function updateProgress(progress) {
 
 function createSessionID() {
 
+    /*
     var dec2hex = [ '0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f' ];
     var hex = new String();
     var hasCookies = testCookies();
@@ -27,9 +28,24 @@ function createSessionID() {
     }
 
     sessionID = hex;
-    if ( hasCookies ) {
+    */
+
+    // This routine has been returning 4 identical 8-byte "random" numbers
+    // which makes it kind of pointless. So, do the job on the server using
+    // /dev/urandom (could go to /dev/random if we needed really high quality
+    // but that's a lot slower)
+
+    var xmlHttp = createXMLHttp();
+    var request = baseURL + "/asp/createSID.asp";
+    xmlHttp.open("GET", request, false); // Synchronous request since we need the response to proceed
+    xmlHttp.send(null);
+    var sessionID = xmlHttp.responseText;
+
+    if ( testCookies() ) {
 	setCookie('sessionID',sessionID);
     }
+
+    alert(sessionID);
 
     return sessionID;
 }
@@ -111,7 +127,7 @@ function init(sID) {
     // Initialize the user level selection box
     if ( isNaN(userLevel) || userLevel == -1 ) {
 	userLevel = 0;
-	sendState("userLevel", userLevel, false);
+	sendState("userLevel", userLevel, false, true);
 	levelChange();
     }
 
@@ -310,7 +326,8 @@ function init(sID) {
     return true;
 }
 
-function sendState (parameter, value, encase) {
+function sendState (parameter, value, encase, async) {
+
     // send a parameter and value to be stored
     var xmlHttp=createXMLHttp();
     var request;
@@ -350,7 +367,7 @@ function sendState (parameter, value, encase) {
 	"&iotype=send&parameter=" + parameter + "&value=" + value;
 
     // Send the Ajax request to the server
-    xmlHttp.open("GET",request,true);
+    xmlHttp.open("GET",request,async);
     xmlHttp.send(null);
 
     return;
@@ -451,7 +468,7 @@ function changeDataset(newSet) {
     document.getElementById('xmlfile').value = dsXML;
 
     // And save the new setting in the settings DB on the server...
-    sendState ("dataSet", newSet, true);
+    sendState ("dataSet", newSet, true, true);
 
     // finally reset the menu to reflect the new situation
     var select = document.getElementById('dsSelection');
@@ -490,7 +507,7 @@ function callButton(option) {
 		document.getElementById('tooltips').checked = false;
 	    } catch(e) {}
 	}
-	sendState("tooltip", showToolTips, true);
+	sendState("tooltip", showToolTips, true, true);
 
     } else if ( option == 9 )
 	toggleMenu();
@@ -500,7 +517,7 @@ function callButton(option) {
 
     else if ( option == 11 ) {
 	showEffects = !showEffects;
-	sendState ("effects", showEffects, true);
+	sendState ("effects", showEffects, true, true);
 	
     } else if ( option == 12 || option == 13 ) {
 	flushTheme();
@@ -515,7 +532,7 @@ function callButton(option) {
 	    xmlThemeFile = baseURL + '/xml/ogre-simple.xml';
 	else
 	    return false;
-	sendState ("theme", option, false);
+	sendState ("theme", option, false, true);
 
 	introWin = introWin.reTheme(xmlThemeFile,'hlpWin');
 	cntlHlp  = cntlHlp.reTheme(xmlThemeFile,'hlpWin');
@@ -744,7 +761,7 @@ function simpleMenuLevel(level) {
 	return false;
 
     // First... set the new level
-    sendState("userLevel",level, false);
+    sendState("userLevel",level, false, true);
 
     // Update Bert to reflect the newfound understanding....
     var source = new String();

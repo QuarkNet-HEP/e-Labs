@@ -7,6 +7,7 @@ use Switch;
 use ogreXML;
 use archive;
 use html;
+use MySQL;
 
 ##################### Start main here ########################
 my $query = new CGI;
@@ -96,6 +97,12 @@ $plot = $temp2[1];
 my $logx = ( $newscript =~ m/SetLogx/ );
 my $logy = ( $newscript =~ m/SetLogy/ );
 
+my $numberOfCuts = 0;
+$newscript =~ /.*TString cuts\[(\d+)\].*/;
+if ( $1 ) {
+    $numberOfCuts = $1;
+}
+
 # Get whatever was plotted, and the cuts applied
 my @oldCutValues = grep( /cuts\[\d+\] = (.*)/, @temp1 );
 
@@ -106,91 +113,49 @@ for ( my $i=0; $i<=$#oldCutValues; $i++ ) {
     }
 }
 
-my $oldMin;
-my $oldMax;
-my @newCutValues = ();
-
-#for ( my $i=0; $i<=$#oldCutValues; $i++ ) {
-#    $oldCutValues[$i] =~ m/>(\d+)/;
-#    if ( $1 ) {
-#	$oldMin = $1;
-#	$newCutValues[$i] = $oldCutValues[$i];
-#	$newCutValues[$i] =~ s/$oldMin/$min/;
-#    }
-#    $oldCutValues[$i] =~ m/<(\d+)/;
-#    if ( $1 ) {
-#	$oldMax = $1;
-#	if ( exists $newCutValues[$i] ) {
-#	    $newCutValues[$i] =~ s/$oldMax/$max/;
-#	} else {
-#	    $newCutValues[$i] = $oldCutValues[$i];
-#	    $newCutValues[$i] =~ s/$oldMax/$max/;
-#	}
-#    }
-
-    # Escape some special characters so that the RegExp replace works
-#    $oldCutValues[$i] =~ s/\[/\\\[/;
-#    $oldCutValues[$i] =~ s/\]/\\\]/;
-
-    # No cut values around to modify :O 
-    # probably a first pass with a global cut
-#    if ( !$newCutValues[$i] ) {
-
-	# We'll need to extract the variable name(s)
-#	my ($variable) = grep( /test\[$i\]/, @temp1);
-#	$variable =~ m/chain->Draw\("(.*)"/;
-#	$variable = $1;
-
-	### Place holder for dealing with box plots in linearCut.js ###
-#	if ( $variable =~ m/:/ ) {
-#	    $variable =~ m/.*:(.*)/;
-#	    if ( $1 ) {
-#		$variable = $1;
-#	    }
-#	}
-	################################################################
-
-	# Look for a global cut... 
-#	if ( $oldCutValues[$i] =~ m/==/ ) {
-#	    # Global cut... we'll have to append to it
-#	    my $tempCut = $oldCutValues[$i];
-#	    chop($tempCut);
-
-#	    $newCutValues[$i] = "$tempCut&&$variable<$max&&$variable>$min\"";
-#	} else {
-	    # No global cut at all.... create a brand new cut for this
-#	    $oldCutValues[$i] = "cuts\\[$i\\] = $oldCutValues[$i]";
-#	    $newCutValues[$i] = "cuts\[$i\] = \"$variable<$max&&$variable>$min\"";
-#	}
-#    }
-
-    # Now put the new values of the cuts into the new script
-#    $newscript =~ s/$oldCutValues[$i]/$newCutValues[$i]/;
-#}
-
-
 ################### Reset the cuts using the database ###################
-use MySQL;
 my $mysql = new MySQL();
-my $selection = $mysql->getSelection($sessionID);
+
+my $selection;
+if ( $mysql->applySavedCuts($sessionID) ) {
+    $selection = $mysql->getSelection($sessionID);
+}
+
+my @newCutValues;
 my $globalCut = $mysql->getGlobalCut($sessionID);
 
-if ( $globalCut ) {
-    $selection = "$globalCut&&$selection";
+for ( my $i=0; $i<$numberOfCuts; $i++ ) {
+
+    if ( $globalCut && $selection ) {
+	$newCutValues[$i] = "$globalCut&&$selection";
+    } elsif ( $globalCut ) {
+	$newCutValues[$i] = $globalCut;
+    } elsif ( $selection ) {
+	$newCutValues[$i] = $selection;
+    }
+
+    if ( $mysql->getCut($sessionID, $i) ) {
+	if ( $newCutValues[$i] ) {
+	    $newCutValues[$i] = $newCutValues[$i] . "&&" . $mysql->getCut($sessionID, $i);
+	} else {
+	    $newCutValues[$i] = $mysql->getCut($sessionID, $i);
+	}
+    }
+    $newCutValues[$i] = "\"$newCutValues[$i]\"";
 }
-$selection = "\"$selection\";";
 
-my $oldSelect;
-$newscript =~ /.*cuts\[\d+\] = (.*)/;
-if ( $1 ) {
-    $oldSelect = $1;
-    $newscript =~ s/$oldSelect/$selection/ or warn "Unable to update cuts: $!\n";
+if ( $#oldCutValues > -1 ) {
+    for ( my $i=0; $i<=$#newCutValues; $i++ ) {
+	$newscript =~ s/$oldCutValues[$i]/$newCutValues[$i]/;
+    }
 } else {
-
     $newscript =~ /(.*TString cuts.*)/;
-    $oldSelect = $1;
+    my $oldSelect = $1;
 
-    $selection = "$oldSelect\n\tcuts\[0\] = $selection\n";
+    $selection = "$oldSelect\n";
+    for ( my $i=0; $i<$numberOfCuts; $i++ ) {
+	$selection .= "\tcuts\[$i\] = \"" . $newCutValues[$i] . "\"\n";
+    }
 
     $oldSelect =~ s/\[/\\[/;
     $oldSelect =~ s/\]/\\]/;
@@ -198,40 +163,6 @@ if ( $1 ) {
     $newscript =~ s/$oldSelect/$selection/ or warn "Unable to update $!\n";
 
 }
-#########################################################################
-
-#### No cuts in the initial file... so we'll have to build them from scratch
-#if ( $#oldCutValues == -1 ) {
-#    my @cuts;
-#    @oldCutValues = grep( /chain->Draw/, @temp1 );
-#    for ( my $i=0; $i<=$#oldCutValues; $i++ ) {
-#	$oldCutValues[$i] =~ m/Draw."(.*)".*/;
-#	if ( $1 ) {
-
-#	    my $variable = $1;
-	    ### Place holder for dealing with box plots in linearCut.js ###
-#	    if ( $variable =~ m/:/ ) {
-#		$variable =~ m/.*:(.*)/;
-#		if ( $1 ) {
-#		    $variable = $1;
-#		}
-#	    }
-	    ################################################################
-
-#	    push(@cuts, "cuts[$i] = \"$variable>$min&&$variable<$max\";");
-#	}
-#    }
-
-#    my ($oldCut) = grep( /TString cuts/, @temp1 );
-#    $oldCut =~ m/(TString.*)/;
-#    $oldCut = $1;
-
-#    my $newCut = $oldCut . "\n\t" . join("\n\t",@cuts);
-
-#    $oldCut =~ s/\[/\\\[/;
-#    $oldCut =~ s/\]/\\\]/;
-#    $newscript =~ s/$oldCut/$newCut/;
-#}
 
 my @array1 = grep( /chain->Draw/, @temp1);
 my @plotList = ();
@@ -350,14 +281,58 @@ if ( $cutList->{'000'}->{'base'} ) {
 }
 close(CUTS);
 
+################################# Massage the image a bit ##############################################
+my $image=Image::Magick->new;
+my $imageFile = "$path/$newPng.$type";
+$image->Read("$type:$imageFile");
+
+my $baseDir = $ogreXML->getOgreParam('baseDir');
+my $draft = Image::Magick->new;
+$draft->Read("png:$baseDir/graphics/draft.png");
+
+# Scale the "draft" image to the correct size
+if ( $width != 640 ) {
+    $draft->Scale(width=>$width, height=>$height);
+}
+
+# Get the width/height from the image since ROOT 
+# tends to shrink by 6% or so
+($width,$height) = $image->Get('width','height');
+
+# Alter the image file with dislaimers & such
+my $err;
+
+# If we've got multiple plots.... put on a key
+if ( -e "$path/key" ) {
+    open (KEY, "<$path/key");
+    my @keys = <KEY>;
+    close(KEY);
+
+    my $vertPos = 100;
+    foreach my $key (@keys) {
+	my ($plotTitle, $color) = split(/,/,$key);
+	
+	$err = $image->Annotate(font=>'Generic.ttf', pointsize=>'16',
+				fill=>$color, text=>$plotTitle,
+				scale=>'1', y=>$vertPos, x=>0.75*$width);
+        warn $err if $err;
+        $vertPos += 20;
+    }
+}
+$err = $image->Composite(image=>$draft);
+warn $err if $err;
+
+$image->Write("$type:$imageFile");
+##########################################################################################################
+
 my $html = new html($width, $height,  $tmpDir, 
                     $dir,   $type,    $stacked, 
                     $path,  $urlPath, 0, $histVisible,
                     $logx,  $logy,    $units, @plotList);
 
 # (re)Make the pages the user will need... and redirect the browser to it
-$html->makeHistoryPage($cutList, $activeNode, $plot, @nodeList);
 $html->makeActivePage("temp.$activeNode.html", $index, $appletData);
+$html->makeHistoryPage($cutList, $activeNode, $plot, @nodeList);
 $html->redirectPage("temp.$activeNode.html");
 
 exit 0;

@@ -88,7 +88,9 @@ for($i=0; $i<count($i_ar['tree']); $i++) {
             echo "        <div class=\"vDragBox1\" history=\"History1\" ";
             echo "name=\"{$d_ar[$j]['attributes']['name']}\"";
             echo " id=\"leaf{$d_ar[$j]['attributes']['id']}";
-            echo "\" overClass=\"OvervDragBox1\" dragClass=\"vDragDragBox1\">";
+            echo "\" overClass=\"OvervDragBox1\" dragClass=\"vDragDragBox1\" ";
+	    echo "onMouseOver='javascript:Tip(\"{$d_ar[$j]['attributes']['description']}\");'";
+	    echo "onMouseOut='javascript:UnTip();'>";
             echo "{$d_ar[$j]['attributes']['title']}</div>\n";
 	  }
 
@@ -101,9 +103,9 @@ for($i=0; $i<count($i_ar['tree']); $i++) {
 	    echo "        <div class=\"vDragBox1\" history=\"History1\" ";
 	    echo "name=\"{$d_ar[$j]['attributes']['name']}\" ";
             echo "id=\"formula{$d_ar[$j]['attributes']['id']}\"";
-
-#	    echo ++$form_number;
-	    echo "\" overClass=\"OvervDragBox1\" dragClass=\"vDragDragBox1\">";
+	    echo "\" overClass=\"OvervDragBox1\" dragClass=\"vDragDragBox1\" ";
+	    echo "onMouseOver='javascript:Tip(\"{$d_ar[$j]['attributes']['description']}\");' ";
+            echo "onMouseOut='javascript:UnTip();'>";
 	    echo " {$d_ar[$j]['attributes']['title']}</div>\n";
 	  }
 

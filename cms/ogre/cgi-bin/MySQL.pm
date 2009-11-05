@@ -30,12 +30,49 @@ sub new {
   return $self;
 }
 
+sub setApplySavedCuts {
+    my ($self,$sID) = @_;
+    my $query = "update settings set applyMyCuts=1 where sID='$sID'";
+    my $data = $self->{_dbh}->prepare($query);
+    $data->execute() || warn "Unable to get url!\n";
+    return;
+}
+
+sub applySavedCuts {
+    my ($self,$sID) = @_;
+    my $query = "select applyMyCuts from settings where sID='$sID'";
+    my $data = $self->{_dbh}->prepare($query);
+    $data->execute() || warn "Unable to get url!\n";
+    my ($apply) = $data->fetchrow_array();
+
+    return $apply;
+}
+
+sub getCut {
+    my ($self, $sID, $whichCut) = @_;
+
+    my $query = "SELECT cut" . $whichCut . " from settings where sID='$sID'";
+    my $data = $self->{_dbh}->prepare($query);
+    $data->execute() || warn "Unable to get cut $whichCut!\n";
+    my ($cut) = $data->fetchrow_array();
+
+    if ( $cut ) {
+	return $cut;
+    } else {
+	return 0;
+    }
+}
+
 sub getSelection {
     my ($self,$sID) = @_;
     my $query = "select selection from settings where sID='$sID'";
     my $data = $self->{_dbh}->prepare($query);
     $data->execute() || warn "Unable to get selection!\n";
     my ($selection) = $data->fetchrow_array();
+
+    if ( !$selection ) {
+	return 1;
+    }
 
     if ( $selection =~ /blah/ ) {
 	$selection =~ s/blah&&//;
@@ -84,6 +121,32 @@ sub updateSettingsDB {
   $data->execute();
 
   return;
+}
+
+# Processes an arbitrary query to ogredb and returns
+# a hash of arrays keyed on the first field in the query
+sub processDBQuery {
+    my ($self, $query) = @_;
+    my %dbResult = ();
+
+    my $data = $self->{_dbh}->prepare($query);
+    $data->execute() || return;
+
+    ### If this was a selection.... process the result(s)
+    if ( $query =~ /select/i ) {
+	while ( my (@row) = $data->fetchrow_array() ) {
+
+	    @row = reverse(@row);
+	    my $index = pop(@row);
+	    @row = reverse(@row);
+
+	    $dbResult{$index} = \@row;
+	}
+    }
+
+    $data->finish();
+
+    return %dbResult;
 }
 
 sub getMySQLHashRef {

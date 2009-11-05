@@ -24,18 +24,21 @@ function submitForm(thisForm) {
 
     thisForm.appendChild(sID);
 
-
     with (thisForm) {
 	archive.value = 0;
 	finalize.value = 0;
     }
 
-    // Update the selection criteria with the new cuts
-    //alert(newCut);
-    sendState("selection", newCut.replace(/&/g,"%26"), true);
+    // Build an AJAX request to update the cuts in the database
+    var xmlHttp = createXMLHttp();
+    var request = baseURL + '/asp/updateCuts.asp?sessionID='+sessionID+
+	'&selection='+newCut.replace(/&/g,"%26");
+
+    xmlHttp.open("GET",request,false); // Asynchronus request
+    xmlHttp.send(null);
 
     thisForm.submit();
-    return false;
+    return true;
 }
 
 function setCuts(s) {
@@ -209,7 +212,7 @@ function finalizeStudy(thisForm) {
 
     if ( userLevel < 3 && user.indexOf('guest') == -1 ) {
 	userLevel++;
-	sendState("userLevel", userLevel, false);
+	sendState("userLevel", userLevel, false, true);
     }
     /////////////////////////////////////
 
