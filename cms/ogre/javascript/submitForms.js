@@ -34,7 +34,7 @@ function submitForm(thisForm) {
     var request = baseURL + '/asp/updateCuts.asp?sessionID='+sessionID+
 	'&selection='+newCut.replace(/&/g,"%26");
 
-    xmlHttp.open("GET",request,false); // Asynchronus request
+    xmlHttp.open("GET",request,false); // synchronus request
     xmlHttp.send(null);
 
     thisForm.submit();

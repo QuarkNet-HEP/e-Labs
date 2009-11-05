@@ -38,6 +38,14 @@ sub setApplySavedCuts {
     return;
 }
 
+sub unsetApplySavedCuts {
+    my ($self,$sID) = @_;
+    my $query = "update settings set applyMyCuts=0 where sID='$sID'";
+    my $data = $self->{_dbh}->prepare($query);
+    $data->execute() || warn "Unable to get url!\n";
+    return;
+}
+
 sub applySavedCuts {
     my ($self,$sID) = @_;
     my $query = "select applyMyCuts from settings where sID='$sID'";

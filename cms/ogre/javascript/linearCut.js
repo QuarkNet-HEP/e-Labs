@@ -235,14 +235,13 @@ function stopDrag(event) {
 	var temp = cuts.split('&&');
 	for ( var i=0; i<temp.length; i++ ) {
 	    if ( temp[i].indexOf('>') > -1 )   // Min cut
-		lo = temp[i].split('>')[1];
+		lo = '>' + temp[i].split('>')[1];
 	    else if ( temp[i].indexOf('<') )   // Max cut
-		hi = temp[i].split('<')[1];
+		hi = '<' + temp[i].split('<')[1];
 	}
 
-	newCut = cuts.replace(new RegExp(lo,"g"), pixel2plot(xmin));
-	newCut = newCut.replace(new RegExp(hi,"g"),pixel2plot(xmax-mouseOffSet));
-	//sendState("selection", newCut.replace(/&/g,"%26"), true, true);
+	newCut = cuts.replace(new RegExp(lo,"g"), '>'+pixel2plot(xmin));
+	newCut = newCut.replace(new RegExp(hi,"g"),'<'+pixel2plot(xmax-mouseOffSet));
     }
 
     return;

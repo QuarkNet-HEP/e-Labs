@@ -630,7 +630,7 @@ sub runRootScript() {
 	  my ($plotTitle, $color) = split(/,/,$key);
 	  $err = $image->Annotate(font=>'Generic.ttf', pointsize=>'16',
 				  fill=>$color, text=>$plotTitle,
-				  scale=>'1', x=>0.75*$width, y=>$vertPos);
+				  scale=>'1', x=>0.667*$width, y=>$vertPos);
           warn $err if $err;
           $vertPos += 20;
       }

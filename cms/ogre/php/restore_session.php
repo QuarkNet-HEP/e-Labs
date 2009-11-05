@@ -123,6 +123,9 @@ for ( $i=0; $i<count($varList); $i++ ) {
 
   } else if ( $var == "sID" ) {
     $sessionID = $val;
+
+  } else if ( $var == "user" ) {
+    $user = $val;
   }
 
 }
@@ -134,10 +137,11 @@ array_push($opts, "'$size'");
 // And dump out the results
 #print "$url\n";
 
-print "      var triggers = new Array( " . join(",", $triggers) . " );\n";
-print "      var holder   = new Array( " . join(",",$holders)   . " );\n";
-print "      var plots    = new Array( " . join(",",$leafID)    . " );\n";
-print "      var color    = new Array( " . join(",", $color)    . " );\n";
-print "      var opts     = new Array( " . join(",", $opts)     . " );\n";
-print "      var sID      = '$sessionID';\n";
+print "      var triggers  = new Array( " . join(",", $triggers) . " );\n";
+print "      var holder    = new Array( " . join(",",$holders)   . " );\n";
+print "      var plots     = new Array( " . join(",",$leafID)    . " );\n";
+print "      var color     = new Array( " . join(",", $color)    . " );\n";
+print "      var opts      = new Array( " . join(",", $opts)     . " );\n";
+print "      var sID       = '$sessionID';\n";
+print "      var userName  = '$user';\n";
 ?>

@@ -44,12 +44,13 @@
     }
   }
 
-  if ( isset($_GET['user']) ) {
-    print "\tvar userName = '" . $_GET['user'] . "';\n";
-  } else {
-    print "\tvar userName = 'guest';\n";
+  if ( !isset($user) ) {
+    if ( isset($_GET['user']) ) {
+      print "\tvar userName = '" . $_GET['user'] . "';\n";
+    } else {
+      print "\tvar userName = 'guest';\n";
+    }
   }
-
 ?>
     </script>
 
@@ -210,7 +211,9 @@
           $directory = "results";
           include "php/previous.php";
           $directory = "archives";
-          $userName  = $_GET['user'];
+          if ( isset($_GET['user']) )
+            $userName  = $_GET['user'];
+          
           include "php/archive.php";
         ?>
       </form>

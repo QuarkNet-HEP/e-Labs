@@ -141,7 +141,10 @@ for ( my $i=0; $i<$numberOfCuts; $i++ ) {
 	    $newCutValues[$i] = $mysql->getCut($sessionID, $i);
 	}
     }
-    $newCutValues[$i] = "\"$newCutValues[$i]\"";
+
+    if ( !($newCutValues[$i] =~ /\"/) ) {
+	$newCutValues[$i] = "\"$newCutValues[$i]\"";
+    }
 }
 
 if ( $#oldCutValues > -1 ) {
@@ -154,7 +157,7 @@ if ( $#oldCutValues > -1 ) {
 
     $selection = "$oldSelect\n";
     for ( my $i=0; $i<$numberOfCuts; $i++ ) {
-	$selection .= "\tcuts\[$i\] = \"" . $newCutValues[$i] . "\"\n";
+	$selection .= "\tcuts\[$i\] = " . $newCutValues[$i] . ";\n";
     }
 
     $oldSelect =~ s/\[/\\[/;
@@ -314,7 +317,7 @@ if ( -e "$path/key" ) {
 	
 	$err = $image->Annotate(font=>'Generic.ttf', pointsize=>'16',
 				fill=>$color, text=>$plotTitle,
-				scale=>'1', y=>$vertPos, x=>0.75*$width);
+				scale=>'1', y=>$vertPos, x=>0.667*$width);
         warn $err if $err;
         $vertPos += 20;
     }

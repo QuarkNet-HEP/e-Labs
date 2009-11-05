@@ -431,6 +431,16 @@ function submitGetData(thisForm) {
 	ele.value = sessionID;
 	thisForm.appendChild(ele);
     }
+    
+    // Append the user name to the form
+    if ( userName ) {
+	ele = document.createElement('input');
+	ele.type  = 'hidden';
+	ele.name  = 'user';
+	ele.id    = 'user';
+	ele.value = userName;
+	thisForm.appendChild(ele);
+    }
 
     // Append the page state to the form
     for ( var i=0; i<triggers.length; i++ ) {

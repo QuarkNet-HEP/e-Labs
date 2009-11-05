@@ -380,14 +380,15 @@ sub procCGI {
   $cgi_hash{cuts} = ( $#cuts >= 0 ) ? \@cuts : ();
 
   # See if the user is requesting a general selection
+  my $db = new MySQL();
   if ( $query->param('mycuts') ) {
-      my $db = new MySQL();
-
       $cgi_hash{mycuts} = $db->getSelection($sessionID);
       $db->setApplySavedCuts($sessionID);
- 
-      undef $db;
+  } else {
+      $db->unsetApplySavedCuts($sessionID);
   }
+  undef $db;
+
 
   # Add in a personal private switch for me when I'm testing
   $cgi_hash{DEBUG} = ($query->param("verbose")) ? $query->param("verbose") : 0;
