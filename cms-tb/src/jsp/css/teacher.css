@@ -5,10 +5,8 @@
 	height: 80px;
 }
 
-#header-image {
-	display: none;
-	width: 0px;
-	height: 0px;
+#header-image img {
+	height: 68px;
 }
 
 #header-image-teacher {
