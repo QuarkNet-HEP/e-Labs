@@ -364,13 +364,13 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 		if (group.getNewSurveyId() != null) {
 			surveyId = group.getNewSurveyId().intValue();
 			try {
-				con = DatabaseConnectionManager.getConnection(elab.getProperties());			
+				con = DatabaseConnectionManager.getConnection(elab.getProperties());		
+				PreparedStatement ps = con.prepareStatement(
+						"SELECT id FROM \"newSurvey\".completions " +
+						"WHERE student_id = ? AND test_id = ? AND type = ?; ");
+				
 				ResultSet rs = null; 
 				status = new HashMap<ElabStudent, Boolean>(); 
-
-				PreparedStatement ps = con.prepareStatement(
-					"SELECT id FROM \"newSurvey\".completions " +
-					"WHERE student_id = ? AND test_id = ? AND type = ?; ");
 				for (ElabStudent student : group.getStudents()) {
 					ps.setInt(1, student.getId());
 					ps.setInt(2, surveyId);
@@ -384,7 +384,6 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 						status.put(student, Boolean.valueOf(false));
 					}
 				}
-				 
 			}
 			catch (Exception e) {
 				throw new ElabException(e);
@@ -399,11 +398,18 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 	public Map<ElabGroup, Map<ElabStudent, List<ElabSurveyQuestion>>> getStudentResultsForTeacher(String type, ElabGroup group) throws ElabException {
 		Connection con = null;
 		Map<ElabStudent, List<ElabSurveyQuestion>> thisGroup = null; 
-				
 		Map<ElabGroup, Map<ElabStudent, List<ElabSurveyQuestion>>> results = null; 
 		
 		try {
 			con = DatabaseConnectionManager.getConnection(elab.getProperties());
+			PreparedStatement ps = con.prepareStatement(
+					"SELECT a.response_id AS \"ans_ptr\",  c.time " +
+					"FROM \"newSurvey\".answers AS a " +
+					"LEFT OUTER JOIN \"newSurvey\".responses AS r ON (a.response_id = r.id) " +
+					"LEFT OUTER JOIN \"newSurvey\".questions AS q ON (r.question_id = q.id) " +
+					"LEFT OUTER JOIN \"newSurvey\".completions AS c ON (c.id = a.completion_id) " +
+					"LEFT OUTER JOIN \"newSurvey\".map_questions_tests AS m on (q.id = m.question_id) " +
+					"WHERE c.student_id = ? AND c.type = ? AND q.id = ? ");
 			results = new HashMap(); 
 			for (Iterator<ElabGroup> g = group.getGroups().iterator(); g.hasNext(); ) {
 				ElabGroup eg = g.next();
@@ -412,18 +418,11 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 				}
 				ElabSurvey survey = this.getSurvey(eg.getNewSurveyId().intValue());
 				thisGroup = new HashMap(); 
-				PreparedStatement ps = con.prepareStatement(
-					"SELECT a.response_id AS \"ans_ptr\",  c.time " +
-					"FROM \"newSurvey\".answers AS a " +
-					"LEFT OUTER JOIN \"newSurvey\".responses AS r ON (a.response_id = r.id) " +
-					"LEFT OUTER JOIN \"newSurvey\".questions AS q ON (r.question_id = q.id) " +
-					"LEFT OUTER JOIN \"newSurvey\".completions AS c ON (c.id = a.completion_id) " +
-					"LEFT OUTER JOIN \"newSurvey\".map_questions_tests AS m on (q.id = m.question_id) " +
-					"WHERE c.student_id = ? AND c.type = ? AND q.id = ? ");
 				for (ElabStudent es : eg.getStudents()) { 
 					List<ElabSurveyQuestion> questions = new ArrayList<ElabSurveyQuestion>();
 					for (ElabSurveyQuestion q : survey.getQuestionsById()) {
 						ElabSurveyQuestion question = q.clone();
+						ps.clearParameters();
 						ps.setInt(1, es.getId());
 						ps.setString(2, type);
 						ps.setInt(3, question.getId());
@@ -455,4 +454,28 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 		return results; 
 	}
 
+	public Map<Integer, String> getElabSurveyListForProject(int projectId) throws ElabException {
+		Connection con = null;
+		Map<Integer, String> surveys = new java.util.TreeMap(); 
+		
+		try { 
+			con = DatabaseConnectionManager.getConnection(elab.getProperties());
+			PreparedStatement ps = con.prepareStatement(
+					"SELECT * FROM \"newSurvey\".tests WHERE proj_id = ?;");
+			ps.setInt(1, projectId);
+			ResultSet rs = ps.executeQuery(); 
+			while (rs.next()) {
+				// Construct description string 
+				String val = rs.getString("description") + " for " + rs.getString("timeframe_description");
+				surveys.put(rs.getInt("id"), val);
+			}
+		}
+		catch (Exception e) {
+			throw new ElabException(e);
+		}
+		finally {
+			DatabaseConnectionManager.close(con);
+		}
+		return surveys; 
+	}
 }
