@@ -49,7 +49,10 @@
 
 								<p>Scientists analyze data
         		from the <emph>Compact Muon Solenoid Collaboration,</emph> CMS, experiment at 
-        		CERN in Geneva, Switzerland to answer some of these questions. You, too, can analyze this data. We provide analysis tools and even connect to the Grid, giving you access to computing resources for number crunching. The raw data, analysis tools and other features are collectively known as the <b>CMS e-Lab</b>. Using it requires some guidance for asking good research questions and understanding the entire research process.
+        		CERN in Geneva, Switzerland to answer some of these questions. You, too, can analyze this data. 
+We provide analysis tools and even connect to the Grid, giving you access to computing resources for number crunching.
+ The raw data, analysis tools and other features are collectively known as the <b>CMS e-Lab</b>. 
+The e-Lab also provides some necessary background in particle physics and some guidance for asking good research questions.
 								</p>
 							</div>
 						</td>
