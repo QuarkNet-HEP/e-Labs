@@ -194,7 +194,7 @@ public class Geometry {
             return;
         Pattern p1 = Pattern.compile("^[0-9]{7}(\\.[0-9]*)*$");
         LineNumberReader in = new LineNumberReader(new FileReader(geoFile));
-        String s = new String();
+        String s = "";
         String[] split = new String[4];
         try {
             while ((s = in.readLine()) != null) {
