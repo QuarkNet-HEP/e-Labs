@@ -51,7 +51,7 @@ public class AnalysisStats {
     private static Map eventKeys;
 
     private static void addEventKey(String key, int value) {
-        eventKeys.put(key, new Integer(value));
+        eventKeys.put(key, Integer.valueOf(value));
     }
 
     static {
@@ -330,7 +330,7 @@ public class AnalysisStats {
             c = new Integer(1);
         }
         else {
-            c = new Integer(c.intValue() + 1);
+            c = Integer.valueOf(c.intValue() + 1);
         }
         r.put(key, c);
     }

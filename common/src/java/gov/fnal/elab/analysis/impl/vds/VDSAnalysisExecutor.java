@@ -112,7 +112,7 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
                 }
                 
                 Estimator p = AnalysisRunTimeEstimator.getEstimator(getElab(), "vds", "local", getAnalysis().getType());
-                getAnalysis().setAttribute("estimatedTime", new Integer(p.estimate(getElab(), getAnalysis())));
+                getAnalysis().setAttribute("estimatedTime",  Integer.valueOf(p.estimate(getElab(), getAnalysis())));
                 
                 thread = new Thread(this);
                 thread.start();

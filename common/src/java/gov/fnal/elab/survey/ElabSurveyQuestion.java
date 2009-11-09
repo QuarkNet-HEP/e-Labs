@@ -56,7 +56,7 @@ public class ElabSurveyQuestion implements Cloneable, Comparable<ElabSurveyQuest
 	}
 	
 	public void setCorrectAnswer(int id) {
-		this.correctAnswer = this.answers.get(new Integer(id));
+		this.correctAnswer = this.answers.get(Integer.valueOf(id));
 	};
 
 	public void setCorrectAnswer(ElabSurveyQuestionAnswer correctAnswer) {
@@ -68,7 +68,7 @@ public class ElabSurveyQuestion implements Cloneable, Comparable<ElabSurveyQuest
 	}
 	
 	public void setGivenAnswer(int id) {
-		this.givenAnswer = this.answers.get(new Integer(id));
+		this.givenAnswer = this.answers.get(Integer.valueOf(id));
 	}
 
 	public void setGivenAnswer(ElabSurveyQuestionAnswer givenAnswer) {

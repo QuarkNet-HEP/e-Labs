@@ -273,7 +273,7 @@ public class DatabaseConnectionManager {
 
         public boolean isValid(int timeout) throws SQLException {
             return ((Boolean) invoke(delegate, "isValid",
-                    new Object[] { new Integer(timeout) },
+                    new Object[] { Integer.valueOf(timeout) },
                     new Class[] { int.class })).booleanValue();
         }
 

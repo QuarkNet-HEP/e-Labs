@@ -165,7 +165,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 		}
 		
 		synchronized(this.tests) {
-			this.tests.put(new Integer(surveyId), survey);
+			this.tests.put(Integer.valueOf(surveyId), survey);
 		}
 		
 		return survey; 

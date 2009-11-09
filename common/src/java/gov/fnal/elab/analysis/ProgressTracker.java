@@ -23,7 +23,7 @@ public class ProgressTracker {
 
     public void setTotal(String type, int total) {
         synchronized (progressMap) {
-            progressMap.put(type, new Integer(total));
+            progressMap.put(type, Integer.valueOf(total));
         }
     }
 }

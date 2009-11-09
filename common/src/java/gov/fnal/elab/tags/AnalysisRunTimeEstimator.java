@@ -56,7 +56,7 @@ public class AnalysisRunTimeEstimator extends TagSupport {
 
     private String engine, mode;
 
-    private static final Integer NONE = new Integer(-1);
+    private static final Integer NONE = Integer.valueOf(-1);
 
     public int doStartTag() throws JspException {
         try {

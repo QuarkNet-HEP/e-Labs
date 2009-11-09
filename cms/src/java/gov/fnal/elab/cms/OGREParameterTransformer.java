@@ -37,8 +37,8 @@ public class OGREParameterTransformer implements AnalysisParameterTransformer {
         Map n = new HashMap();
         int leaf = bitmask(params.get("leaf"));
         int formula = bitmask(params.get("formula"));
-        n.put("leaf", new Integer(leaf));
-        n.put("formula", new Integer(formula));
+        n.put("leaf", Integer.valueOf(leaf));
+        n.put("formula", Integer.valueOf(formula));
         n.put("color", join(leaf, params.get("color")));
         List cuts = new ArrayList();
         cuts.addAll(trcuts(leaf, params.get("root_leaf"),

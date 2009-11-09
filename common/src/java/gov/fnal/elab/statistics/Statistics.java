@@ -373,7 +373,7 @@ public class Statistics {
         return getDataCounts("yyyy-MM");
     }
 
-    public static final Integer ONE = new Integer(1);
+    public static final Integer ONE = Integer.valueOf(1);
 
     private List getDataCounts(String format) throws ElabException,
             ParseException {
@@ -402,7 +402,7 @@ public class Statistics {
                 c = ONE;
             }
             else {
-                c = new Integer(c.intValue() + 1);
+                c = Integer.valueOf(c.intValue() + 1);
             }
             if (c.intValue() > max) {
                 max = c.intValue();

@@ -464,7 +464,7 @@ public class ElabGroup {
 	}
 	
 	public void setNewSurveyId(int id) {
-		this.newSurveyId = new Integer(id);
+		this.newSurveyId = Integer.valueOf(id);
 	}
 
 	public void setNewSurvey(boolean newSurvey) {

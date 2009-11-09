@@ -34,7 +34,7 @@ public class VSwitch extends TagSupport {
             else {
                 id = oldid.intValue() + 1;
             }
-            pageContext.setAttribute(ATTR_ID, new Integer(id));
+            pageContext.setAttribute(ATTR_ID, Integer.valueOf(id));
             pageContext.setAttribute(ATTR_CLS, cls);
             if (revert != null) {
                 pageContext.setAttribute(ATTR_REVERT, revert);

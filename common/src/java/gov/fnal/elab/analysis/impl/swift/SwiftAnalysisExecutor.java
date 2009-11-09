@@ -147,7 +147,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
 
                 Estimator p = AnalysisRunTimeEstimator.getEstimator(getElab(), "swift",
                         runMode, getAnalysis().getType());
-                setAttribute("estimatedTime", new Integer(p.estimate(getElab(),
+                setAttribute("estimatedTime", Integer.valueOf(p.estimate(getElab(),
                         getAnalysis())));
 
                 stack.setGlobal(ConfigProperty.INSTANCE_CONFIG, conf);

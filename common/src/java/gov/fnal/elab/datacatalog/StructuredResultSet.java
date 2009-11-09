@@ -245,7 +245,7 @@ public class StructuredResultSet {
         }
 
         public void addFile(File f) {
-        	Integer d = new Integer(f.getDetector());
+        	Integer d = Integer.valueOf(f.getDetector());
         	if (!detectors.containsKey(d)) {
         		this.addDetector(d);
         	}
@@ -274,7 +274,7 @@ public class StructuredResultSet {
     	private SortedSet<File> files; 
     	
     	public Detector(int detector) {
-    		this.detectorID = new Integer(detector);
+    		this.detectorID = Integer.valueOf(detector);
     		files = new TreeSet(); 
     	}
 

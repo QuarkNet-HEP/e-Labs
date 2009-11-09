@@ -40,7 +40,7 @@ public class ElabSurvey {
 	}
 	
 	public void addQuestion(ElabSurveyQuestion q) {
-		questions.put(new Integer(q.getId()), q);
+		questions.put(Integer.valueOf(q.getId()), q);
 	}
 
 	public void setId(int id) {

@@ -307,7 +307,7 @@ public class StructuredResultSetDisplayer {
     	
     	while (i.hasNext()) {
     		File f = (File) i.next();
-    		Integer currentID = new Integer(f.getDetector());
+    		Integer currentID = Integer.valueOf(f.getDetector());
     		if (h.containsKey(currentID)) {
     			((Collection) h.get(currentID)).add(f);
     		}
