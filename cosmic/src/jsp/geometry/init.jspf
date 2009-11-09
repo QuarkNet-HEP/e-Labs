@@ -1,6 +1,7 @@
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
+<%@ page import="gov.fnal.elab.cosmic.*" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.*" %>
 <%@ page import="java.util.*" %>
 
