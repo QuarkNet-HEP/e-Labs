@@ -457,7 +457,7 @@ public class ElabUtil {
             }
         }
         catch (IOException e) {
-            throw new ElabJspException("Failed to run '" + fullcmd + "'. "
+            throw new ElabJspException("Failed to run '" + Arrays.toString(fullcmd) + "'. "
                     + e.getMessage(), e);
         }
     }
