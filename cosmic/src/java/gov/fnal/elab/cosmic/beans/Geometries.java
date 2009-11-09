@@ -19,8 +19,8 @@ import java.util.TreeMap;
 
 public class Geometries implements Serializable {
 
-    private TreeMap geometries;
-    private HashSet changedGeometries;
+    private TreeMap<Integer, Geometry> geometries;
+    private HashSet<Geometry> changedGeometries;
     private boolean readOnly;
 
     public Geometries() {
@@ -30,8 +30,9 @@ public class Geometries implements Serializable {
     public Geometries(int groupID, String dataDirectory, Connection c)
             throws ElabException {
         this.reset();
+        PreparedStatement ps = null; 
         try {
-            PreparedStatement ps = c.prepareStatement(
+            ps = c.prepareStatement(
             		"SELECT detectorid FROM research_group_detectorid " +
     				"WHERE research_group_id= ? ORDER BY detectorid");
             ps.setInt(1, groupID);
@@ -40,14 +41,13 @@ public class Geometries implements Serializable {
             while (rs.next()) {
                 addGeometry(new Geometry(dataDirectory, rs.getInt("detectorid")));
             }
-            if (ps != null)
-                ps.close();
-            if (c != null)
-                c.close();
         }
         catch (Exception e) {
             throw new ElabException(
                 "Problem occured when assembling geometries from database: ", e);
+        }
+        finally {
+        	DatabaseConnectionManager.close(c, ps);
         }
     }
 
@@ -110,12 +110,12 @@ public class Geometries implements Serializable {
         }
     }
 
-    public Geometry getGeometry(String detectorID) {
-        return (Geometry) geometries.get(detectorID);
+    public Geometry getGeometry(int detectorID) {
+        return geometries.get(detectorID);
     }
 
-    public void addGeoEntry(String detectorID, GeoEntryBean geb) throws ElabJspException {
-        Geometry g = (Geometry) geometries.get(detectorID);
+    public void addGeoEntry(int detectorID, GeoEntryBean geb) throws ElabJspException {
+        Geometry g = geometries.get(detectorID);
         if (g == null) {
             throw new ElabJspException("You are not allowed to modify this detector configuration");
         }
@@ -123,15 +123,14 @@ public class Geometries implements Serializable {
         changedGeometries.add(g);
     }
 
-    public void removeGeoEntry(String detectorID, GeoEntryBean geb) {
-        Geometry g = (Geometry) geometries.get(detectorID);
+    public void removeGeoEntry(int detectorID, GeoEntryBean geb) {
+        Geometry g = geometries.get(detectorID);
         g.removeGeoEntry(geb);
         changedGeometries.add(g);
     }
 
-    public GeoEntryBean getGeoEntry(String detectorID, String jd) {
-        Geometry g = (Geometry) geometries.get(detectorID);
-        return g.getGeoEntry(jd);
+    public GeoEntryBean getGeoEntry(int detectorID, String jd) {
+        return geometries.get(detectorID).getGeoEntry(jd);
     }
 
     public Iterator iterator() {
@@ -146,26 +145,22 @@ public class Geometries implements Serializable {
         if (readOnly) {
             throw new ElabException("You are not allowed to modify this detector configuration");
         }
-        Iterator i = changedGeometries.iterator();
-        while (i.hasNext()) {
-            ((Geometry) i.next()).commit();
+        for (Geometry g : changedGeometries) {
+        	g.commit(); 
         }
     }
 
     public void updateMetadata(DataCatalogProvider dcp, GeoEntryBean geoEntry)
             throws ElabException {
-        Iterator i = changedGeometries.iterator();
-        while (i.hasNext()) {
-            ((Geometry) i.next()).updateMetadata(dcp, geoEntry);
+        for (Geometry g : changedGeometries) {
+        	g.updateMetadata(dcp, geoEntry);
         }
     }
 
     public String dump() {
-        Iterator i = geometries.values().iterator();
         String s = "";
-        while (i.hasNext()) {
-            Geometry g = (Geometry) i.next();
-            s += "detectorID:" + g.getDetectorID() + "<br>";
+        for (Geometry g : geometries.values()) {
+        	s += "detectorID:" + g.getDetectorID() + "<br>"; 
         }
         return s;
     }

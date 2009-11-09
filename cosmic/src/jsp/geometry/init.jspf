@@ -24,7 +24,7 @@
 			throw new ElabJspException("No detector associated with " + filename);
 		}
 		jd = entry.getTupleValue("julianstartdate").toString();
-		geometries = new Geometries(elab, id);
+		geometries = new Geometries(elab, Integer.parseInt(id));
 	}
 	else {
 		geometries = new Geometries(elab, user);
