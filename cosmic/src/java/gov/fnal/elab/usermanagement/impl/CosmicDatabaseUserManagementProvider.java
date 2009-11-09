@@ -111,7 +111,7 @@ CosmicElabUserManagementProvider {
 		// 6000:  6XXXLLLL  (L: Lot number) 
 		// User is only permitted to insert detector IDs <= 4 digits 
 		// i.e. 8, 56, 201, 6XXX, 5XXX, etc.  
-		String message = ""; 
+		StringBuilder message = new StringBuilder(); 
 
 		for (String detectorId : detectorIds) {
 			String thisId = detectorId.trim();
@@ -119,18 +119,20 @@ CosmicElabUserManagementProvider {
 				continue; 
 			}
 			if (thisId.length() > 4) {
-				message += detectorId + " ";
+				message.append(detectorId);
+				message.append(" ");
 				continue;
 			}
 			try {
 				ids.add(Integer.parseInt(thisId));
 			}
 			catch (NumberFormatException nfe) { 
-				message += thisId + " "; 
+				message.append(thisId);
+				message.append(" ");
 			} 
 		}
 		if (message.length() != 0) { 
-			throw new ElabException(message); 
+			throw new ElabException(message.toString()); 
 		} 
 		try {
 			conn = DatabaseConnectionManager

@@ -565,13 +565,14 @@ public class ShowerBean extends ElabBean implements Serializable, MappableBean{
                             String min,
                             String max)
                             throws ElabException{
-        java.util.List badkeys = getInvalidKeys();
+        java.util.List<String> badkeys = getInvalidKeys();
         if(badkeys.size() > 0){
-            String s = "The following keys are invalid within the bean: ";
-            for(Iterator i=badkeys.iterator(); i.hasNext(); ){
-                s += (String)i.next() + " ";
+            StringBuilder sb = new StringBuilder("The following keys are invalid within the bean: ");
+            for (String s : badkeys) {
+            	sb.append(s);
+            	sb.append(" ");
             }
-            throw new ElabException(s);
+            throw new ElabException(sb.toString());
         }
 
         //copy tr variable (used in addToDV)

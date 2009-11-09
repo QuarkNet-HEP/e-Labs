@@ -158,10 +158,12 @@ public class Geometries implements Serializable {
     }
 
     public String dump() {
-        String s = "";
+        StringBuilder sb = new StringBuilder();
         for (Geometry g : geometries.values()) {
-        	s += "detectorID:" + g.getDetectorID() + "<br>"; 
+        	sb.append("detectorID: ");
+        	sb.append(g.getDetectorID());
+        	sb.append("<br>"); 
         }
-        return s;
+        return sb.toString();
     }
 }
