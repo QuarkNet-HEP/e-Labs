@@ -96,8 +96,8 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 	
 	public ElabSurvey getSurvey(int surveyId) throws ElabException {
 		synchronized (this.tests) {
-            if (this.tests.containsKey(new Integer(surveyId))) {
-                return this.tests.get(new Integer(surveyId));
+            if (this.tests.containsKey(Integer.valueOf(surveyId))) {
+                return this.tests.get(Integer.valueOf(surveyId));
             }
         }		
 		

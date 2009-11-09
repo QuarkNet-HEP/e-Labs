@@ -327,7 +327,7 @@ public class AnalysisStats {
     private void increment(Map r, Object key) {
         Integer c = (Integer) r.get(key);
         if (c == null) {
-            c = new Integer(1);
+            c = Integer.valueOf(1);
         }
         else {
             c = Integer.valueOf(c.intValue() + 1);
@@ -397,13 +397,13 @@ public class AnalysisStats {
 
     private Integer logRange(int x) {
         if (false) {
-            return new Integer(x);
+            return Integer.valueOf(x);
         }
         if (x == 1) {
-            return new Integer(1);
+            return Integer.valueOf(1);
         }
         double l2 = Math.floor(log2(x)) + 1;
-        return new Integer((int) Math.pow(2, l2));
+        return Integer.valueOf((int) Math.pow(2, l2));
     }
 
     private static double log2(double x) {

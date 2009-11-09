@@ -495,7 +495,7 @@ public class DatabaseConnectionManager {
 
         public void setPoolable(boolean poolable) throws SQLException {
             invoke(delegate, "setPoolable",
-                    new Object[] { new Boolean(poolable) },
+                    new Object[] { Boolean.valueOf(poolable) },
                     new Class[] { boolean.class });
         }
 

@@ -446,7 +446,7 @@ public class Statistics {
                 c = ONE;
             }
             else {
-                c = new Integer(c.intValue() + 1);
+                c = Integer.valueOf(c.intValue() + 1);
             }
             if (c.intValue() > max) {
                 max = c.intValue();
