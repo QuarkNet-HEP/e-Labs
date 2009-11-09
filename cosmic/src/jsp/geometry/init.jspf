@@ -1,6 +1,9 @@
+<%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
+<%@ page import="gov.fnal.elab.cosmic.beans.*" %>
 <%@ page import="java.util.*" %>
+
 <%
 	Geometries geometries = null;
 	request.setAttribute("geometries", geometries);
@@ -8,6 +11,7 @@
 	String jd = request.getParameter("jd");
 	String filename = request.getParameter("filename");
 	GeoEntryBean geoEntry = null;
+	
 	if (filename != null) {
 		CatalogEntry entry = elab.getDataCatalogProvider().getEntry(filename);
 		if (entry == null) {
@@ -30,7 +34,7 @@
 		geometries = new Geometries(elab, user);
 	}
 	if (id != null && jd != null) {
-		Geometry g = geometries.getGeometry(id);
+		Geometry g = geometries.getGeometry(Integer.parseInt(id));
 		if (g == null) {
 			throw new ElabJspException("No geometry information found for detector " + id + " on date " + jd);
 		}
