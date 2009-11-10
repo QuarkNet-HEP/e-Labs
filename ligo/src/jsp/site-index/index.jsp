@@ -112,7 +112,7 @@
 				<li><a href="../posters/search.jsp"><b>View Posters</b></a></li>
 				<li><a href="../posters/delete.jsp"><b>Delete Posters</b></a></li>
 				<li><a href="../plots/my-plots.jsp"><b>View My Plots</b></a></li>
-<li><a href="../jsp/uploadimages.jsp"><b>Upload Images</b></a></li>
+				<li><a href="../jsp/uploadImage.jsp"><b>Upload Images</b></a></li>
 			</ul>
 		</td>
 		<td class="assessments">
