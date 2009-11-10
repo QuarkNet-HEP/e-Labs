@@ -39,7 +39,7 @@
 <%
 	String groupName = request.getParameter("group");
 	String ay = request.getParameter("ay");
-	String role = request.getParameter("role");
+	String upload = request.getParameter("upload");
 	String survey = request.getParameter("survey");
 	String detectorString = request.getParameter("detectorString");
 	String passwd1 = request.getParameter("passwd1");
@@ -49,8 +49,7 @@
 	String[] studentsToDelete = request.getParameterValues("deleteStudents");
 	
 	if ("Update Group Information".equals(submit)) {
-		if (groupName != null && ay != null && role != null 
-		        && survey != null) {
+		if (groupName != null && ay != null && upload != null && survey != null) {
 		    if (passwd1 != null && !passwd1.equals(passwd2) && passwd1.length() < 6) {
 				%>
 					<div class="error">Passwords do not match or are too short (must be at least six characters long)</div>
@@ -61,10 +60,17 @@
 				ElabGroup group = user.getGroup(groupName);
 				int newSurveyId = -1; 
 				boolean inSurvey = "yes".equals(survey);
+				boolean canUpload = "yes".equals(upload); 
 				if (group == null) {
 				    throw new ElabJspException("You are not the teacher for the specified group.");
 				}
-				group.setRole(role);
+				
+				if (canUpload && !group.getRole().equals("teacher")) {
+					group.setRole("upload");
+				}
+				else if (!canUpload && !group.getRole().equals("teacher")) {
+					group.setRole("user");
+				}
 				group.setYear(ay);
 				
 				if (group.getSurvey()) { // legacy handler, let the teacher remove them or do nothing. 
@@ -160,16 +166,28 @@
 					<label for="role">Role:</label>
 				</td>
 				<td>
-					<c:choose>
-						<c:when test='${elab.name == "cosmic" }'>
-							<e:trselect name="role" valueList="user, upload, teacher" labelList="user, upload, teacher" value="${group.role}"/>
-						</c:when>
-						<c:otherwise>
-							<e:trselect name="role" valueList="user, teacher" labelList="user, teacher" value="${group.role}"/>
-						</c:otherwise>
-					</c:choose>
+					${group.role}
 				</td>
 			</tr>
+			<c:if test='${elab.name == "cosmic" }'>
+				<tr>
+					<td>
+						<label for="upload">Upload:</label>
+					</td>
+					<td>
+						<c:choose>
+							<c:when test='${group.role == "upload"}'>
+								<input type="radio" name="upload" value="no">No</input>
+								<input type="radio" name="upload" value="yes" checked>Yes</input>
+							</c:when>
+							<c:otherwise>
+								<input type="radio" name="upload" value="no" checked>No</input>
+								<input type="radio" name="upload" value="yes">Yes</input>
+							</c:otherwise>
+						</c:choose>
+					</td>
+				</tr>
+			</c:if>
 			<tr>
 				<td>
 					<label for="survey">In survey:</label>
