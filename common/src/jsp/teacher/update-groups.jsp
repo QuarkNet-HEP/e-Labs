@@ -166,7 +166,18 @@
 					<label for="role">Role:</label>
 				</td>
 				<td>
-					${group.role}
+					<c:choose>
+						<c:when test='${group.role == "admin"}'>
+							Administrator
+						</c:when>
+						<c:when test='${group.role == "teacher"}'>
+							Teacher
+						</c:when>
+						<c:otherwise>
+							User
+						</c:otherwise>
+					</c:choose>
+					
 				</td>
 			</tr>
 			<c:if test='${elab.name == "cosmic" }'>
