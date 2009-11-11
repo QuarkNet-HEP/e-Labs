@@ -234,22 +234,25 @@ public class ElabTransformation{
     public void generateOutputDir(String baseDir) throws ElabException{
         GregorianCalendar gc = new GregorianCalendar();
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
-        String dirName = "run-" + sdf.format(gc.getTime());
+        
+        StringBuilder dirName = new StringBuilder("run-");
+        dirName.append(sdf.format(gc.getTime()));
 
-        File fDirName = new File(dirName);
+        File fDirName = new File(dirName.toString());
         boolean isDirectory = fDirName.isDirectory();
         int collision = 0;
         while(isDirectory == true && collision < 50){
             collision++;
-            dirName += "." + collision;
-            fDirName = new File(dirName);
+            dirName.append(".");
+            dirName.append(collision);
+            fDirName = new File(dirName.toString());
             isDirectory = fDirName.isDirectory();
         }
         if(isDirectory == true){
             throw new ElabException("Too many users on the system at once (" + collision + " max). Try again.\nError: cannot create directory: " + dirName);
         }
         outputDir = baseDir + "/" + dirName;
-        outputDirName = dirName;
+        outputDirName = dirName.toString();
 
         // now check that outputDir exists:
         // benc TODO
