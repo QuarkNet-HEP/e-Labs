@@ -512,10 +512,14 @@ public class DatabaseConnectionManager {
 
     }
 
-    public static void close(Connection conn, Statement s) {
+    public static void close(Connection conn, Statement... statements) {
         try {
-            if (s != null) {
-                s.close();
+        	if (statements != null) {
+	            for (Statement s : statements) {
+	            	if (s != null) {
+	            		s.close();
+	            	}
+	            }
             }
         }
         catch (SQLException e) {
@@ -525,7 +529,6 @@ public class DatabaseConnectionManager {
             if (conn != null) {
                 conn.close();
             }
-
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -533,7 +536,7 @@ public class DatabaseConnectionManager {
     }
 
     public static void close(Connection conn) {
-        close(conn, null);
+        close(conn, (Statement[]) null);
     }
 
     private static Object invoke(Object obj, String name, Object[] args,
