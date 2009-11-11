@@ -97,10 +97,10 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
         // test
         // name
         String bctype = null;
-        if (type.equals("presurvey")) {
+        if ("presurvey".equals(type)) {
             bctype = "pretest";
         }
-        if (type.equals("postsurvey")) {
+        if ("postsurvey".equals(type)) {
             bctype = "posttest";
         }
         String typeConstraint = table + "test_name='"
