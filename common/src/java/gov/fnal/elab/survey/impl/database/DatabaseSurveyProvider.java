@@ -39,10 +39,11 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 
 	public ElabSurveyQuestion getSurveyQuestion(int surveyId, int questionId, int responseId) throws ElabException {
 		Connection con = null; 
+		PreparedStatement queryQuestion = null;
 		ElabSurveyQuestion esq = null; 
 		try { 
 			con = DatabaseConnectionManager.getConnection(elab.getProperties());
-			PreparedStatement queryQuestion = con.prepareStatement(
+			queryQuestion = con.prepareStatement(
 					"SELECT q.id AS \"question_id\", m.question_no, q.question_text, q.answer_id, r.response_no, r.id, r.response_text " +
 					"FROM \"newSurvey\".questions AS q " +
 					"LEFT OUTER JOIN \"newSurvey\".responses AS r ON r.question_id = q.id " +
@@ -87,7 +88,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 			throw new ElabException(e);
 		}
 		finally {
-			DatabaseConnectionManager.close(con);
+			DatabaseConnectionManager.close(con, queryQuestion);
 		}
 		
 		return esq;
@@ -103,16 +104,17 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 		
 		ElabSurvey survey = null;
 		Connection con = null; 
+		PreparedStatement ps = null, querySurvey = null;
 		try {
 			con = DatabaseConnectionManager.getConnection(this.elab.getProperties());
-			PreparedStatement querySurvey = con.prepareStatement(
+			querySurvey = con.prepareStatement(
 					"SELECT * FROM \"newSurvey\".tests WHERE id = ?;");
 			querySurvey.setInt(1, surveyId);
 			ResultSet rs1 = querySurvey.executeQuery();
 			if (rs1.next()) {
 				survey = new ElabSurvey(rs1.getString("description"), rs1.getInt("id"));
 				
-				PreparedStatement ps = con.prepareStatement(
+				ps = con.prepareStatement(
 					"SELECT q.id AS \"question_id\", m.question_no, q.question_text, q.answer_id, r.response_no, r.id, r.response_text " +
 					"FROM \"newSurvey\".questions AS q " + 
 					"LEFT OUTER JOIN \"newSurvey\".responses AS r ON (q.id = r.question_id) " +
@@ -161,7 +163,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 			throw new ElabException(e);
 		}
 		finally {
-			DatabaseConnectionManager.close(con);
+			DatabaseConnectionManager.close(con, ps, querySurvey);
 		}
 		
 		synchronized(this.tests) {
@@ -178,6 +180,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 		
 		Savepoint svpt = null; 
 		Connection con = null;
+		PreparedStatement insertCompletion = null, insertAnswer = null;
 		
 		try {
 			int completionId; 
@@ -190,7 +193,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 			
 			// TODO: Insert a new completion for the student
 			// Need student ID, test ID, time, type, return the new id
-			PreparedStatement insertCompletion = con.prepareStatement(
+			insertCompletion = con.prepareStatement(
 					"INSERT INTO \"newSurvey\".completions " +
 					"(test_id, time, student_id, type) " +
 					"VALUES (?, ?, ?, ?) RETURNING id;");
@@ -220,7 +223,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 			
 			// DONE: Insert all the answers
 			// Need response ID, completion ID; 
-			PreparedStatement insertAnswer = con.prepareStatement(
+			insertAnswer = con.prepareStatement(
 				"INSERT INTO \"newSurvey\".answers " +
 				"(response_id, completion_id) " +
 				"VALUES (?, ?); ");
@@ -246,12 +249,12 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 				throw new ElabException(ex);
 			}
 			finally {
-				DatabaseConnectionManager.close(con);
+				DatabaseConnectionManager.close(con, insertCompletion, insertAnswer);
 			}
 			throw new ElabException(e);
 		}
 		finally {
-			DatabaseConnectionManager.close(con);
+			DatabaseConnectionManager.close(con, insertCompletion, insertAnswer);
 		}
 	}
 	
@@ -260,11 +263,12 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 		
 		boolean taken = false; 
 		Connection con = null;
+		PreparedStatement ps = null;
 		
 		try {
 			con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
 			
-			PreparedStatement ps = con.prepareStatement(
+			ps = con.prepareStatement(
 					"SELECT id FROM \"newSurvey\".completions " +
 					"WHERE student_id = ? AND test_id = ? AND type = ?;");
 			ps.setInt(1, studentId);
@@ -281,7 +285,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 			throw new ElabException(e); 
 		}
 		finally {
-			DatabaseConnectionManager.close(con);
+			DatabaseConnectionManager.close(con, ps);
 		}
 		
 		return taken; 
@@ -289,10 +293,11 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 	
 	public int getTotalStudents(ElabGroup group) throws ElabException {
 		Connection con = null; 
+		PreparedStatement ps = null;
 		int total = -1; 
 		try { 
 			con = DatabaseConnectionManager.getConnection(elab.getProperties());
-			PreparedStatement ps = con.prepareStatement(
+			ps = con.prepareStatement(
 				"SELECT COUNT(rg.id) " +
 				"FROM research_group AS rg " +
 				"LEFT OUTER JOIN research_group_student AS rgs ON rg.id = rgs.research_group_id " +
@@ -313,18 +318,19 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 			throw new ElabException(e);
 		}
 		finally {
-			DatabaseConnectionManager.close(con);
+			DatabaseConnectionManager.close(con, ps);
 		}
 		return total;
 	}
 
 	public int getTotalTaken(String type, ElabGroup group) throws ElabException {
 		Connection con = null;
+		PreparedStatement ps = null;
 		int surveyId = group.getNewSurveyId().intValue();
 		int total = -1; 
 		try {
 			con = DatabaseConnectionManager.getConnection(elab.getProperties());			
-			PreparedStatement ps = con.prepareStatement(
+			ps = con.prepareStatement(
 				"SELECT COUNT(student_id) " +
 				"FROM \"newSurvey\".completions " +
 				"WHERE test_id = ? AND type = ? AND student_id IN " +
@@ -350,7 +356,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 			throw new ElabException(e);
 		}
 		finally {
-			DatabaseConnectionManager.close(con);
+			DatabaseConnectionManager.close(con, ps);
 		}
 		
 		return total; 
@@ -359,13 +365,14 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 
 	public Map<ElabStudent, Boolean> getStudentSurveyStatus(String type, ElabGroup group) throws ElabException {
 		Connection con = null; 
+		PreparedStatement ps = null;
 		Map<ElabStudent, Boolean> status = null;
 		int surveyId;
 		if (group.getNewSurveyId() != null) {
 			surveyId = group.getNewSurveyId().intValue();
 			try {
 				con = DatabaseConnectionManager.getConnection(elab.getProperties());		
-				PreparedStatement ps = con.prepareStatement(
+				ps = con.prepareStatement(
 						"SELECT id FROM \"newSurvey\".completions " +
 						"WHERE student_id = ? AND test_id = ? AND type = ?; ");
 				
@@ -389,7 +396,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 				throw new ElabException(e);
 			}
 			finally {
-				DatabaseConnectionManager.close(con);
+				DatabaseConnectionManager.close(con, ps);
 			}
 		}
 		return status;
@@ -397,12 +404,13 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 	
 	public Map<ElabGroup, Map<ElabStudent, List<ElabSurveyQuestion>>> getStudentResultsForTeacher(String type, ElabGroup group) throws ElabException {
 		Connection con = null;
+		PreparedStatement ps = null;
 		Map<ElabStudent, List<ElabSurveyQuestion>> thisGroup = null; 
 		Map<ElabGroup, Map<ElabStudent, List<ElabSurveyQuestion>>> results = null; 
 		
 		try {
 			con = DatabaseConnectionManager.getConnection(elab.getProperties());
-			PreparedStatement ps = con.prepareStatement(
+			ps = con.prepareStatement(
 					"SELECT a.response_id AS \"ans_ptr\",  c.time " +
 					"FROM \"newSurvey\".answers AS a " +
 					"LEFT OUTER JOIN \"newSurvey\".responses AS r ON (a.response_id = r.id) " +
@@ -448,7 +456,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 			throw new ElabException(e);
 		}
 		finally {
-			DatabaseConnectionManager.close(con);
+			DatabaseConnectionManager.close(con, ps);
 		}
 	
 		return results; 
@@ -456,11 +464,12 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 
 	public Map<Integer, String> getElabSurveyListForProject(int projectId) throws ElabException {
 		Connection con = null;
+		PreparedStatement ps = null;
 		Map<Integer, String> surveys = new java.util.TreeMap(); 
 		
 		try { 
 			con = DatabaseConnectionManager.getConnection(elab.getProperties());
-			PreparedStatement ps = con.prepareStatement(
+			ps = con.prepareStatement(
 					"SELECT * FROM \"newSurvey\".tests WHERE proj_id = ?;");
 			ps.setInt(1, projectId);
 			ResultSet rs = ps.executeQuery(); 
@@ -474,7 +483,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 			throw new ElabException(e);
 		}
 		finally {
-			DatabaseConnectionManager.close(con);
+			DatabaseConnectionManager.close(con, ps);
 		}
 		return surveys; 
 	}

@@ -783,7 +783,7 @@ public class DatabaseUserManagementProvider implements
     public void updateGroup(ElabGroup group, String password)
             throws ElabException {
         Connection conn = null;
-        PreparedStatement ps = null; 
+        PreparedStatement ps = null, ps2 = null; 
         Savepoint svpt = null; 
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
@@ -813,7 +813,7 @@ public class DatabaseUserManagementProvider implements
 	            ps.executeUpdate();
 	            
 	            if (group.isNewSurvey()) {
-	            	PreparedStatement ps2 = conn.prepareStatement(
+	            	ps2 = conn.prepareStatement(
 	        			"INSERT INTO research_group_test (research_group_id, test_id) " + 
 						"SELECT ?, ? WHERE NOT EXISTS " +
 							"(SELECT research_group_id, test_id FROM research_group_test " + 
@@ -840,7 +840,7 @@ public class DatabaseUserManagementProvider implements
             throw new ElabException(e);
         }
         finally {
-            DatabaseConnectionManager.close(conn, ps);
+            DatabaseConnectionManager.close(conn, ps, ps2);
         }
     }
 
