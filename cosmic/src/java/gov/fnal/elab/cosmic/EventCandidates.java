@@ -6,6 +6,8 @@ package gov.fnal.elab.cosmic;
 import gov.fnal.elab.util.ElabUtil;
 import gov.fnal.elab.util.NanoDate;
 
+import org.apache.commons.lang.time.DateFormatUtils;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -29,12 +31,9 @@ public class EventCandidates {
     private Row crt;
     private Set allIds;
     private String eventNum;
-
-    public static final DateFormat DF;
-    static {
-        DF = new SimpleDateFormat("MMM d, yyyy HH:mm:ss z");
-        DF.setTimeZone(TimeZone.getTimeZone("UTC"));
-    }
+    
+    public static final String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
+    public static final TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
 
     public EventCandidates(Comparator c) {
         rows = new TreeSet(c);
@@ -159,7 +158,7 @@ public class EventCandidates {
         }
         
         public String getDateF() {
-            return DF.format(date);
+        	return DateFormatUtils.format(date, DATEFORMAT, TIMEZONE);
         }
 
         public void setDate(Date date) {

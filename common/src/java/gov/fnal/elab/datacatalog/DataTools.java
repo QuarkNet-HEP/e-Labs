@@ -19,6 +19,7 @@ import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.util.ElabUtil;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -74,11 +75,7 @@ public class DataTools {
     public static final int ENDDATE = 10;
     public static final int DETECTORID = 11; 
 
-    public static final DateFormat MONTH_FORMAT;
-
-    static {
-        MONTH_FORMAT = new SimpleDateFormat("MMMM yyyy");
-    }
+    public static final String MONTH_FORMAT = "MMMM yyyy";
 
     /**
      * Organizes the search results in a hierarchical fashion and returns a
@@ -138,7 +135,7 @@ public class DataTools {
             */
             
             Timestamp ts = (Timestamp) data[STARTDATE];
-            String startdate = MONTH_FORMAT.format(ts);
+            String startdate = DateFormatUtils.format(ts.getTime(), MONTH_FORMAT);
             Month month = school.getMonth(startdate);
             if (month == null) {
             	month = new Month(startdate, ts);

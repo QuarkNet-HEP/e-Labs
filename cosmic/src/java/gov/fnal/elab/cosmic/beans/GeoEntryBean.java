@@ -4,6 +4,8 @@ import gov.fnal.elab.cosmic.Geometry;
 import gov.fnal.elab.util.ElabUtil;
 import gov.fnal.elab.util.NanoDate;
 
+import org.apache.commons.lang.time.DateFormatUtils;
+
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -19,8 +21,7 @@ import java.util.TimeZone;
 //made with: ./bean_skeleton.pl --scalar "stackedState latitude longitude altitude chan1X chan1Y chan1Z chan1Area chan1CableLength chan2X chan2Y chan2Z chan2Area chan2CableLength chan3X chan3Y chan3Z chan3Area chan3CableLength chan4X chan4Y chan4Z chan4Area chan4CableLength gpsCableLength" --list "" GeoEntryBean
 
 public class GeoEntryBean implements Serializable {
-    public static final DateFormat FORMAT = new SimpleDateFormat(
-            "MM/dd/yyyy hh:mm zzz");
+    public static final String DATE_FORMAT = "MM/dd/yyyy hh:mm zzz";
     public static final TimeZone UTC = TimeZone.getTimeZone("UTC");
 
     private String julianDay;
@@ -91,7 +92,7 @@ public class GeoEntryBean implements Serializable {
     }
 
     public String getFormattedDate() {
-        return FORMAT.format(calendar.getTime());
+    	return DateFormatUtils.format(calendar.getTime(), DATE_FORMAT);
     }
 
     public Date getDate() {

@@ -27,8 +27,6 @@ import gov.fnal.elab.vds.ElabTransformation;
 
 import java.io.StringReader;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -39,6 +37,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.WeakHashMap;
+
+import org.apache.commons.lang.time.DateFormatUtils;
 
 import org.griphyn.vdl.annotation.Predicate;
 import org.griphyn.vdl.annotation.QueryParser;
@@ -379,7 +379,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         return qt;
     }
     
-    private static final DateFormat DF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
+    private static String DATEFORMAT = "yyyy-MM-dd HH:mm:ssZ";
     
     /**
      * Private helper function to convert proper objects into string representations
@@ -406,7 +406,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
     		return null; 
     	}
     	if (o instanceof Date) {
-    		return DF.format(o);
+    		return DateFormatUtils.format((Date) o, DATEFORMAT);
     	}
     	else {
     		return String.valueOf(o);
