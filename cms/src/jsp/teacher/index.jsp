@@ -123,7 +123,7 @@ Students use a data base and analysis tool on the website. The Online Graphical 
 							<li>
 							<b>e-Logbooks:</b> Track progress and provide feedback on student work.<br>
 							Review student evidence of what they know/understand and reflections on their research.<br> 
-							Review all student entries for a particular milestone, e.g., class cosmic ray descriptions, and make notes in your logbook for next year. 
+							Review all student entries for a particular milestone&mdash;e.g., describe CMS physics&mdash;and make notes in your teacher's logbook for next year. 
 							Look at this <a href="#" onclick="javascript:window.open('../graphics/logbook-sample.gif', 'content', 'width=504,height=373, resizable=1, scrollbars=1');return false;">sample logbook</a>.
 							
 							</li>
