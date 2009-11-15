@@ -37,22 +37,12 @@
    }
 
   // If we're restoring a previous session state... do it here
-  if ( isset($_COOKIE['sessionID']) ) {
-    $sessionID = $_COOKIE['sessionID'];
-    $path = "tmp/$sessionID/url";
-    //error_log("Trying to restore from $path");
-
-    if ( file_exists($path) ) {
-      include "php/restore_session.php";
-    }
-  } else if ( isset($_GET['restore']) ) {
+  if ( isset($_GET['restore']) ) {
     $path = $_GET['restore'];
     if ( isset($path) ) {
       include 'php/restore_session.php';
     }
-  } //else {
-    //error_log("Unable to find anything to retore from");
-//}
+  }
 
   if ( !isset($user) ) {
     if ( isset($_GET['user']) ) {
