@@ -58,11 +58,23 @@ if ($cgi->param('iotype') eq "getID") {
 if ($cgi->param('iotype') eq "create")
 {
 	my $userName = $cgi->param('userName') || 'default';
-	$query = "INSERT INTO settings VALUES ('$userName','$sessId', 0, 'mc09', 
+
+	# First... see if this user already has defined sessions
+	# If so... assign the existing userLevel to the new session
+	$query = "select userLevel from settings where userName='$userName' order by userLevel desc";
+	$data = $dbh->prepare($query);
+	$data->execute();
+	my ($userLevel) = $data->fetchrow_array();
+	if ( !$userLevel ) {
+	  $userLevel = 0;
+	}
+	$data->finish();
+
+	$query = "INSERT INTO settings VALUES ('$userName','$sessId', $userLevel, 'mc09', 
 	  12, 1, 1, 0, 10, 10, 20, 20, 30, 30, 'graphWin', 'blah',1,1,1,1,1,1,1,1,0);";
 	$data = $dbh->prepare($query);
 	$data->execute();
-	$Nacho = "$sessId:0:mc09:12:1:1:0:10:10:20:20:30:30:histWin:blah";
+	$Nacho = "$sessId:$userLevel:mc09:12:1:1:0:10:10:20:20:30:30:histWin:blah";
 	$Response->Write($Nacho);
 }
 

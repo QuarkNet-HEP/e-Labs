@@ -30,6 +30,20 @@ sub new {
   return $self;
 }
 
+sub getUserDataSet {
+    my ($self, $sID) = @_;
+    my $query = "select dataSet from settings where sID='$sID'";
+    my $data = $self->{_dbh}->prepare($query);
+    $data->execute() || warn "Unable to get dataset for $sID\n";
+    my ($set) = $data->fetchrow_array();
+
+    if ( $set ) {
+	return $set;
+    } else {
+	return 0;
+    }
+}
+
 sub setApplySavedCuts {
     my ($self,$sID) = @_;
     my $query = "update settings set applyMyCuts=1 where sID='$sID'";

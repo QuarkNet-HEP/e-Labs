@@ -294,12 +294,15 @@ sub procXML {
   my $leaves     = ($command_line->{leaves})   ? $command_line->{leaves}   : 0;
   my $formulas   = ($command_line->{formulas}) ? $command_line->{formulas} : 0;
 
-  my @runFiles;
-  my @variableList;
-  my @treeList;
-  my @labelXList;
-  my @titleList;
-  my @labelYList;
+  my @runFiles     = ();
+  my @variableList = ();
+  my @treeList     = ();
+  my @labelXList   = ();
+  my @labelYList   = ();
+  my @labelZList   = ();
+  my @titleList    = ();
+  my @unitsList    = ();
+  my @idList       = ();
 
   my $variable = 0;
 
@@ -570,10 +573,13 @@ sub procXML {
 	    } else {
 		$variableList[$variable] = $b->{name}.".".$l->{name};
 	    }
+	    $idList[$variable] = $id+1;
 	    $treeList[$variable] = $t->{name};
 	    $labelXList[$variable] = $l->{labelx};
 	    $labelYList[$variable] = $l->{labely};
+	    $labelZList[$variable] = $l->{labelz};
 	    $titleList[$variable] = $l->{title};
+	    $unitsList[$variable] = $l->{units};
 	    $variable++;
 	  }
 	}
@@ -599,10 +605,13 @@ sub procXML {
 	      } else {
 		  $variableList[$variable] = $b->{name}.".".$b->{leaf}->{name};
 	      }
-	      $treeList[$variable] = $t->{name};
+	      $idList[$variable]     = $id+1;
+	      $treeList[$variable]   = $t->{name};
 	      $labelXList[$variable] = $b->{leaf}->{labelx};
 	      $labelYList[$variable] = $b->{leaf}->{labely};
-	      $titleList[$variable] = $b->{leaf}->{title};
+	      $labelZList[$variable] = $b->{leaf}->{labelz};
+	      $titleList[$variable]  = $b->{leaf}->{title};
+	      $unitsList[$variable]  = $b->{leaf}->{units};
 	      $variable++;
 	  }
 	} else {
@@ -611,10 +620,13 @@ sub procXML {
 	  foreach $branch (@xmlbranches) {
 	    if ( length($branch) <= 0 || $t->{branch}->{name} eq $branch ) {
 	      $variableList[$variable] = $b->{name};
-	      $treeList[$variable] = $t->{name};
+	      $idList[$variable]     = $b->{id};
+	      $treeList[$variable]   = $t->{name};
 	      $labelXList[$variable] = $b->{labelx};
 	      $labelYList[$variable] = $b->{labely};
-	      $titleList[$variable] = $b->{title};
+	      $labelZList[$variable] = $b->{labelz};
+	      $titleList[$variable]  = $b->{title};
+	      $unitsList[$variable]  = $b->{units};
 	      $variable++;
 	    }
 	  }
@@ -649,12 +661,14 @@ sub procXML {
       foreach $f (@{$t->{formula}}) {
 	my $id = atoi($f->{id}) - 1;
 	if ( $formulas & (1<<$id) ) {
-	  $xmlformulas[$i++] = $f;
+	  $xmlformulas[$i++]       = $f;
 	  $variableList[$variable] = $f->{name};
-	  $treeList[$variable] = $t->{name};
-	  $labelXList[$variable] = $f->{labelx};
-	  $labelYList[$variable] = $f->{labely};
-	  $titleList[$variable] = $f->{title};
+	  $treeList[$variable]     = $t->{name};
+	  $labelXList[$variable]   = $f->{labelx};
+	  $labelYList[$variable]   = $f->{labely};
+	  $labelZList[$variable]   = $f->{labelz};
+	  $titleList[$variable]    = $f->{title};
+	  $unitsList[$variable]    = $f->{units};
 	  $variable++;
 	}
       }
@@ -665,12 +679,14 @@ sub procXML {
       #
       my $id = atoi($t->{formula}->{id}) - 1;
       if ( $formulas & (1<<$id) ) {
-	$xmlformulas[0] = $t->{formula};
+	$xmlformulas[0]          = $t->{formula};
 	$variableList[$variable] = $t->{formula}->{name};
-	$treeList[$variable] = $t->{name};
-	$labelXList[$variable] = $t->{formula}->{labelx};
-	$labelYList[$variable] = $t->{formula}->{labely};
-	$titleList[$variable] = $t->{formula}->{title};
+	$treeList[$variable]     = $t->{name};
+	$labelXList[$variable]   = $t->{formula}->{labelx};
+	$labelYList[$variable]   = $t->{formula}->{labely};
+	$labelZList[$variable]   = $t->{formula}->{labelz};
+	$titleList[$variable]    = $t->{formula}->{title};
+	$unitsList[$variable]    = $t->{formula}->{units};
 	$variable++;
       }
     }
@@ -692,22 +708,175 @@ sub procXML {
     warn "Nothing to plot! I won't even try to figure this out.\n";
   }
 
+  # See if the user request mathematical operations on the variables
+  my @leaf_operations = @{$command_line->{leafOps}};
+
+  my $line = join(' ', @leaf_operations);
+  my @order = ();
+  while ( $line =~ /leaf(\d+)/ ) {
+      push(@order, int($1));
+      $line =~ s/leaf\d+/none/;
+  }
+
+  # We'd damned well better have the same number of items in each list
+  if ( $#idList != $#order ) {
+      die "Kicking & screaming!\n";
+  }
+
+  # Sort the variable list so it matches the operations order....
+  # Slapping up histograms onto a stack is order agnostic, so
+  # it doesn't matter which order we found the variables in.
+  # But for mathematical operations.... order matters. So fix it
+
+  # Get a mapping of how to reorder the ID list from the XML file
+  my %reorder = ();
+  for ( my $i=0; $i<=$#order;  $i++ ) {
+      for ( my $j=0; $j<=$#idList; $j++ ) {
+	  if ( $idList[$j] == $order[$i] ) {
+	      $reorder{$j} = $i;
+	  }
+      }
+  }
+
+  # Store things in a temp space....
+  my @tempVar    = @variableList;
+  my @tempLabelX = @labelXList;
+  my @tempLabelY = @labelYList;
+  my @tempLabelZ = @labelZList;
+  my @tempTitle  = @titleList;
+  my @tempID     = @idList;
+  my @tempUnits  = @unitsList;
+
+  # Remap all the various ordered stuff we've got hanging around
+  while ( my ($key,$value)=each (%reorder) ) {
+      $idList[$value] = int($tempID[$key]);
+
+      $variableList[$value] = $tempVar[$key];
+      $labelXList[$value]   = $tempLabelX[$key];
+      $labelYList[$value]   = $tempLabelY[$key];
+      $labelZList[$value]   = $tempLabelZ[$key];
+      $titleList[$value]    = $tempTitle[$key];
+      $unitsList[$value]    = $tempUnits[$key];
+  }
+
+  # Now that things are in proper order... 
+  # Put them together into the requested operations
+  my @temp = ();
+  my $j = 0;
+  if ( $#leaf_operations > -1 ) { # If so... we'll have to massage things a bit to get it right
+
+      for ( my $i=0; $i<=$#leaf_operations; $i++ ) {
+	  push(@temp,$leaf_operations[$i]);
+	  while ( $temp[$#temp] =~ /leaf(\d+)/ ) {
+	      $temp[$#temp] =~ s/leaf\d+/$variableList[$j++]/;
+	  }
+      }
+
+      # Flush the variable list....
+      @variableList = ();
+
+      # And replace it with the full on operational list
+      @variableList = @temp;
+
+      # And do the same thing for the title(s)
+      $j = 0;
+      @temp = ();
+      for ( my $i=0; $i<=$#leaf_operations; $i++ ) {
+	  push(@temp, $leaf_operations[$i]);
+	  while ( $temp[$#temp] =~ /leaf/ ) {
+	      $temp[$#temp] =~ s/leaf\d+/$titleList[$j++]/;
+	  }
+      }
+      # Flush the variable list....
+      @titleList = ();
+
+      # And replace it with the full on operational list
+      @titleList = @temp;
+
+
+      # And do the same thing for the labels
+      $j = 0;
+      @temp = ();
+      for ( my $i=0; $i<=$#leaf_operations; $i++ ) {
+	  push(@temp, $leaf_operations[$i]);
+	  while ( $temp[$#temp] =~ /leaf/ ) {
+	      $temp[$#temp] =~ s/leaf\d+/$labelXList[$j++]/;
+	  }
+      }
+      # Flush the X-axis labels ....
+      @labelXList = ();
+
+      # And replace it with the full on operational list
+      @labelXList = @temp;
+
+      # Now do that same thing for the units....
+      $j = 0;
+      @temp = ();
+      for ( my $i=0; $i<=$#leaf_operations; $i++ ) {
+	  push(@temp, $leaf_operations[$i]);
+	  while ( $temp[$#temp] =~ /leaf/ ) {
+	      $temp[$#temp] =~ s/leaf\d+/$unitsList[$j++]/;
+	  }
+      }
+      # Flush the units labels ....
+      @unitsList = ();
+
+      # And replace it with the full on operational list
+      @unitsList = @temp;
+
+      # Scan the request for scatter plots... 
+      # which means we'll need to double up on the axis labels
+      for ( my $i=0; $i<=$#leaf_operations; $i++ ) {
+	  if ( $leaf_operations[$i] =~ /\:/ ) {
+	      #print "Found scatter plot at $i\n";
+	      #print "Splitting  $labelXList[$i] into \$labelYList[$i]\n";
+	      @temp = split(/\:/, $labelXList[$i]);
+	      $labelXList[$i] = $temp[0];
+	      $labelYList[$i] = $temp[1];
+	      $labelZList[$i] = ($temp[2]) ? $temp[2] : undef;
+
+	      # Split up the units as well... and put 'em on each axis
+	      @temp = split(/\:/, $unitsList[$i]);
+	      $labelXList[$i] .= " ($temp[0])";
+	      $labelYList[$i] .= " ($temp[1])";
+	      $labelZList[$i] .= ($temp[2]) ? " ($temp[2])" : '';
+
+	  } else {
+	      $labelXList[$i] .= " ($unitsList[$i])";
+	  }
+      }
+
+      # Clean up the lists so they all align
+      for ( my $i=$#labelYList; $i>$#variableList; $i-- ) {
+	  pop(@labelYList);
+	  pop(@labelZList);
+	  pop(@treeList);
+      }
+  }
+
+  # If there's nothing in the Z-axis label list... remove it
+  for ( my $i=$#labelZList; $i>=0; $i-- ) {
+      if ( !($labelZList[$i]) ) {
+	  $labelZList[$i] = '';
+      }
+  }
+
   if ($DEBUG) {
     # Dump out the list of variables to be plotted... it should be complete at this point
-    my $v;
-    if ( $variable == 1 ) {
+    if ( !$#variableList ) {
       print "\nPlot request:\n"
-    } elsif ( $variable > 1 ) {
+    } elsif ( $#variableList > 0 ) {
       print "\nPlot requests:\n";
     }
-    my $i = 0;
-    for ($i=0; $i<$variable; $i++) {
+
+    for ( my $i=0; $i<=$#variableList; $i++) {
       print "\t", $treeList[$i],":",$variableList[$i],
 	" labeled with Title: ", $titleList[$i],
 	  " X: ", $labelXList[$i], 
 	    " Y: ", $labelYList[$i], "\n";
     }
   }
+
 
   # Now build up the list of things we'll need to pass to root for the plotting
   $return_hash_ref->{files} = \@runFiles;
@@ -716,6 +885,8 @@ sub procXML {
   $return_hash_ref->{title} = \@titleList;
   $return_hash_ref->{lblsX} = \@labelXList;
   $return_hash_ref->{lblsY} = \@labelYList;
+  $return_hash_ref->{lblsZ} = \@labelZList;
+  $return_hash_ref->{units} = \@unitsList;
 
   # And pass the hash reference back to the main program
   $self->{_dataXMLRef} = $return_hash_ref;

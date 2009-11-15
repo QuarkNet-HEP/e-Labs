@@ -67,55 +67,66 @@ button#gotoData {
     vertical-align: bottom;
 }
 
-.DragContainer1 {
+.DragContainer1 {   /* Variable home container */
     min-height: .5em;
+    padding: 0px;
+    margin: 0px;
 }
 
-.DragContainer2 {
+.DragContainer2 {  /* Plot container */
     float:left;
-    width:73%;
+    width:72%;
     padding:0px;
-    margin: 4px;
     border: #669999 1px solid;
 }
 
-.DragContainer3 {
-    width:20%;
-    padding:1px;
-    /*border: #669999 1px solid;*/
-}
-
-.DragContainer4 {
-    width:12%;
-    padding:1px;
-    /*border: #669999 1px solid;*/
-}
-
-.DragContainer5 {
-    width:10%;
-    padding:1px;
-    display:none;
-    /*border: #669999 1px solid;*/
-}
-
-.DragContainer6 {
-    width:28%;
-    padding:1px;
-    /*border: #669999 1px solid;*/
-}
-
-.DragContainer7 {
-    width:10%;
-    padding:1px;
-    /*border: #669999 1px solid;*/
-}
-
-.DragContainer8 {
+.DragContainer8 {  /* selected options container */
     float:right;
     width:20%;
-    margin: 4px;
     padding: 0px;
     border: #669999 1px solid;
+}
+
+.DragContainer3 {  /* Color box container */
+    width:21.5%;
+    padding:1px;
+    margin-left:1px;
+}
+
+.DragContainer4 {  /* Log & MyCuts container */
+    width:14%;
+    padding:1px;
+    margin-left:3px;
+}
+
+.DragContainer5 {  /* Graphics type ... not used */
+    width:10%;
+    padding:1px;
+    margin-left:3px;
+    display:none;
+}
+
+.DragContainer6 {  /*Size options container */
+    width:13%;
+    padding:1px;
+    margin-left:3px;
+}
+
+.DragContainer7 { /* Old MyCuts save data container ... not used */
+    width:15%;
+    padding:1px;
+    margin-left:3px;
+}
+
+.DragContainer9 { /* Math operations container */
+    width:31.5%;
+    margin-left: 5px;
+    padding: 1px;
+}
+
+.DragContainer3, .DragContainer4, .DragContainer6,
+.DragContainer8, .DragContainer9 {
+    /*border: #669999 1px solid;*/
 }
 
 .colorDragBox {
@@ -144,7 +155,8 @@ button#gotoData {
     opacity: 0.25;
 }
 
-.vDragBox, .OvervDragBox, .vDragDragBox, .vminiDragBox { /* item containers */
+ /* item containers */
+.vDragBox, .OvervDragBox, .vDragDragBox, .vminiDragBox {
     border: #000 1px solid;
     padding: 1px;
     font-size: 10px;
@@ -162,25 +174,43 @@ button#gotoData {
     float: left;
     margin-bottom:0.1em;
     margin-left:  0.1em;
-    width: 2.6em;
-    height: 2.6em;
+    width: 3em;
+    height: 1.67em;
 }
 
+.vminiOpsDragBox {
+    float: left;
+    padding: 1px;
+    cursor: url('../graphics/draggable.gif'), pointer;
+    font-size: 12px;
+    font-family: verdana, tahoma, arial;
+
+    border: none;
+    min-width: 20px;
+    height:11px;
+
+    margin-left: 0px;
+    margin-bottom: 0px;
+
+}
+.OvervminiOpsDragBox {
+    background-color: #ffff99;
+}
 .OvervminiDragBox {
     background-color: #ffff99;
 }
 
 .vDragBox1, .OvervDragBox1, .vDragDragBox1 {
     border: #000 1px solid;
-    padding: 1px;
+    padding: 0.005em;
     font-size: 10px;
-    width: 11em;
+    width: 9em;
     cursor: url('../graphics/draggable.gif'),pointer;
     font-family: verdana, tahoma, arial;
     color: #000000;
 
     float: left;
-    margin-left: 0.2em;
+    margin-left: 0.25em;
     margin-bottom: 0.5em;
 }
 
@@ -199,7 +229,6 @@ button#gotoData {
 }
 
 .fieldset {
-    width: 48%;
     height: 8em;
     padding: 1px;
     border: 2px ridge #d755d5;
@@ -211,12 +240,12 @@ fieldset#variables {
 }
 
 .options {
-    width: 42%;
+    width: 36%;
     float: right;
 }
 
 .targets {
-    width: 54%;
+    width: 60%;
 }
 
 .variables {

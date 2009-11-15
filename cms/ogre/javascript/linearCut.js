@@ -415,10 +415,10 @@ function pageLoad() {
     var Xcoords = new Array(3);
     var Ycoords = new Array(3);
     mesParsed = message.split(":",14);
-    for (i = 0; i < 3; i++){
+    for (i = 0; i < 3; i++) {
 	Xcoords[i] = parseInt(mesParsed[7 + 2*i]);
 	Ycoords[i] = parseInt(mesParsed[7 + 2*i + 1]);
-	}
+    }
 
     // Set the user level...
     var userLevel =  mesParsed[1];
@@ -670,7 +670,12 @@ function callMenu(option) {
 	ctlHlp.setMinTop(35);
 	hlpWin.setMinTop(35);
 	hstWin.setMinTop(35);
+    }
 
+    // For advanced users... push the header/footer to the background
+    if ( userLevel > 1 ) {
+	document.getElementById('header').style.zIndex = -1;
+	document.getElementById('footer').style.zIndex = -1;
     }
 
    return true;

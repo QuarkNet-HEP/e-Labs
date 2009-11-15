@@ -27,6 +27,8 @@ var tempDiv     = null;
 var rootParent  = null;
 var rootSibling = null;
 
+var saveTarget = null;
+
 var mouseLeft   = 0;
 var mouseTop    = 0;
 
@@ -153,7 +155,7 @@ setColor.target = null;
 setColor.color  = "#000000";
 
 function mouseMove(ev){
-    ev         = ev || window.event;
+    ev = ev || window.event;
 
     /*
       We are setting target to whatever item the mouse is currently on
@@ -202,6 +204,10 @@ function mouseMove(ev){
 	    if(iMouseDown && !lMouseState){
 		writeHistory(target, 'Start Dragging');
 		
+		// Save a copy of the target in case we want to keep it in it's original 
+		// container after it's been drug to a new place.
+		saveTarget = document.getElementById(target.id);
+
 		// mouseDown target
 		curTarget     = target;
 
@@ -417,7 +423,6 @@ function mouseMove(ev){
 		if(beforeNode){
 		    if(beforeNode!=curTarget.nextSibling){
 			writeHistory(curTarget, 'Inserted Before '+beforeNode.id);
-			
 			activeCont.insertBefore(curTarget, beforeNode);
 		    }
 
@@ -425,7 +430,6 @@ function mouseMove(ev){
 		} else {
 		    if((curTarget.nextSibling) || (curTarget.parentNode!=activeCont)){
 			writeHistory(curTarget, 'Inserted at end of '+activeCont.id);
-			
 			activeCont.appendChild(curTarget);
 		    }
 		}
@@ -473,7 +477,7 @@ function mouseMove(ev){
 
     // track the current mouse state so we can compare against it next time
     lMouseState = iMouseDown;
-    
+
     // this prevents items on the page from being highlighted while dragging
     if(curTarget || dragObject) return false;
 
@@ -495,7 +499,8 @@ function inchildContainer(parentNode, xPos, yPos) {
 		var startHeight = parseInt(getAttribute('startHeight'));
 
 		if ( startLeft < xPos && startLeft+startWidth > xPos &&
-		     startTop  < yPos && startTop+startHeight > yPos ) {
+		     startTop  < yPos && startTop+startHeight > yPos &&
+		     id.indexOf("ops") == -1 ) {
 		    return subcontainer;
 		}
 	    }
@@ -507,6 +512,16 @@ function inchildContainer(parentNode, xPos, yPos) {
 
 } // End inchildContainer
 
+function mouseUp2(ev) {
+
+    if ( !iMouseDown )
+	return;
+    curTarget = null;
+    dragHelper.style.display = 'none';
+    dragObject = null;
+    iMouseDown = false;
+}
+
 function mouseUp(ev){
 
     if ( !useDragDrop )
@@ -515,6 +530,17 @@ function mouseUp(ev){
     if ( Demos[0] ) {
 
 	if(curTarget) {
+
+	    // Make sure we don't already have a copy of this in here already
+	    var parent = curTarget.parentNode;
+	    if ( parent && parent.id == "DragContainer14" ) {
+		for ( var i=0; i<parent.childNodes.length; i++ ) {
+		    if ( parent.childNodes[i].id == curTarget.id && parent.childNodes[i] != curTarget ) {
+			parent.removeChild(parent.childNodes[i]);
+		    }
+		}
+	    }
+
 	    writeHistory(curTarget, 'Mouse Up Fired');
 
 	    var id   = curTarget.parentNode.id;
@@ -551,7 +577,6 @@ function mouseUp(ev){
 		}
 		dragHelper.style.display = 'none';
 		document.getElementById('Demo0').appendChild(curTarget);
-		//Demos[0].appendChild(curTarget);
 
 	    } else if ( curTarget.id == 'reject_legend' ) {
 
@@ -587,26 +612,85 @@ function mouseUp(ev){
 
 	    // And update the trigger logic
 	    updateLogic();
-	}
-	curTarget  = null;
-    } else if ( Demos[2] ) {
-	
-	if ( curTarget ) {
-	    var id   = rootParent.id;
-	    if ( id == 'DragContainer2' ) {
-		var parent = document.getElementById('DragContainer2');
-		if ( parent.childNodes.length >= 8 ) {
-		    // Too many plots... pop the last one out before inserting this one
-		    parent.lastChild.origParentNode.appendChild(parent.lastChild);
+
+	    // If we've dragged a filter to a logic box... keep a copy of the filter for later use
+	    if ( rootParent.id == "DragContainer14" ) {
+		var isThere = false;
+		for ( var i=0; i<rootParent.childNodes.length; i++ ) {
+		    if ( rootParent.childNodes[i].id == curTarget.id ) {
+			isThere = true;
+			i += rootParent.childNodes.length;
+		    }
+		}
+		if ( !isThere ) {
+		    var temp = curTarget.cloneNode(true);
+		    temp.origParentNode = rootParent;
+		    temp.droptarget = curTarget.droptarget;
+		    temp.style.backgroundColor = "#eeeeee";
+		    temp.setAttribute('overClass', curTarget.getAttribute('overClass'));
+
+		    if ( !browser.isIE || browser.ieVersion >= 6 )
+			temp.style.cursor = "url('" + baseURL + "/graphics/draggable.gif'),pointer";
+		    else
+			temp.style.cursor = "hand";
+
+		    if ( rootSibling )
+			rootParent.insertBefore(temp, rootSibling);
+		    else
+			rootParent.appendChild(temp);
+
 		}
 	    }
+
+	    curTarget = null;
 	}
 
+    } else if ( Demos[2] ) {
 	if ( curTarget ) {
+
+	    // Make sure we don't already have a copy of this in here already
+	    var parent = curTarget.parentNode;
+	    if ( parent && parent.id == "DragContainer9" ) {
+		for ( var i=0; i<parent.childNodes.length; i++ ) {
+		    if ( parent.childNodes[i].id == curTarget.id && parent.childNodes[i] != curTarget ) {
+			parent.removeChild(parent.childNodes[i]);
+		    }
+		}
+	    }
+
+	    var id   = curTarget.parentNode.id;
+	    if ( id == 'DragContainer2' ) {
+
+		if ( curTarget.parentNode.id == "DragContainer9" ) {
+		    curTarget.style.border = "none";
+		    curTarget.style.padding = "0px";
+		    curTarget.style.margin = "0px";
+		}
+		var parent = document.getElementById('DragContainer2');
+
+		var plots = 0;
+		for ( var i=0; i<parent.childNodes.length; i++ ) {
+
+		    if ( parent.childNodes[i].id.indexOf('ops') == -1 )
+			plots++;
+		}
+
+		if ( plots > 8 ) {
+		    // Too many plots... pop the last one out before inserting this one
+		    for ( var i=parent.childNodes.length-1; i>=0; i-- ) {
+			if ( parent.childNodes[i].id.indexOf('ops') == -1 ) {
+			    parent.childNodes[i].origParentNode.appendChild(parent.childNodes[i]);
+			    i = -1;
+			}
+		    }
+		}
+
+	    } // End if ( id == 'DragContainer2' )
+
 	    writeHistory(curTarget, 'Mouse Up Fired');
 
 	    dragHelper.style.display = 'none';
-	    if(curTarget.style.display == 'none'){
+	    if (curTarget.style.display == 'none') {
 		if(rootSibling){
 		    rootParent.insertBefore(curTarget, rootSibling);
 		} else {
@@ -636,12 +720,12 @@ function mouseUp(ev){
 	    // If we just dropped something into DragContainer8, we'd best check if 
 	    // there's already something similar there (esp a size or type element)
 	    if ( curTarget.parentNode.id == 'DragContainer8' ) {
-		if ( curTarget.id == "size" || curTarget.id == "type" ) {
+		if ( curTarget.id.indexOf("size") > -1 || curTarget.id.indexOf("type") > -1 ) {
 
 		    // Danger! Danger! Danger Will Robinson!
 		    var kiddes = curTarget.parentNode.firstChild;
 		    while ( kiddes ) {
-			if ( kiddes.id == curTarget.id && kiddes != curTarget ) {
+			if ( kiddes.name == curTarget.name && kiddes != curTarget ) {
 
 			    // OK... we just doubled up on a single value option :-<
 			    // Dump the old one back into it's original container
@@ -653,9 +737,39 @@ function mouseUp(ev){
 		}
 	    }
 
-	} // End if ( curTarget )
+	    // If we've dragged an operation to the plot box ... keep a copy for later use
+	    if ( rootParent.id == "DragContainer9" ) {
 
-	curTarget  = null;
+		var isThere = false;
+		for ( var i=0; i<rootParent.childNodes.length; i++ ) {
+		    if ( rootParent.childNodes[i].id == curTarget.id ) {
+			isThere = true;
+			i += rootParent.childNodes.length;
+		    }
+		}
+		if ( !isThere ) {
+		    var temp = curTarget.cloneNode(true);
+		    temp.origParentNode = rootParent;
+		    temp.droptarget = curTarget.droptarget;
+		    temp.style.border = "none";
+		    temp.setAttribute('overClass', curTarget.getAttribute('overClass'));
+
+		    if ( !browser.isIE || browser.ieVersion >= 6 )
+			temp.style.cursor = "url('" + baseURL + "/graphics/draggable.gif'),pointer";
+		    else
+			temp.style.cursor = "hand";
+
+		    if ( rootSibling )
+			rootParent.insertBefore(temp, rootSibling);
+		    else
+			rootParent.appendChild(temp);
+
+		}
+	    }
+
+	    curTarget = null;
+
+	} // End if ( curTarget )
 
 	// Just in case... reset the borders to their default values
 	// Needed here in case someone clicked an element but never
@@ -663,19 +777,23 @@ function mouseUp(ev){
 	document.getElementById('DragContainer1').style.border = "none";
 	document.getElementById('DragContainer3').style.border = "none";
 	document.getElementById('DragContainer4').style.border = "none";
-	document.getElementById('DragContainer5').style.border = "none";
+	//document.getElementById('DragContainer5').style.border = "none";
 	document.getElementById('DragContainer6').style.border = "none";
-	document.getElementById('DragContainer7').style.border = "none";
+	//document.getElementById('DragContainer7').style.border = "none";
+	document.getElementById('DragContainer9').style.border = "none";
 	document.getElementById('DragContainer2').style.border = "#669999 1px solid";
 	document.getElementById('DragContainer8').style.border = "#669999 1px solid";
 
 	var child = document.getElementById('DragContainer2').firstChild;
+
 	while ( child ) {
-	    child.style.border = "#000 1px solid";
+	    if ( child.id.indexOf('leaf') > -1 )
+		child.style.border = "#000 1px solid";
 	    child = child.nextSibling;
 	}
 
     } // End else if ( Demos[2] )
+
 
     // Reset pointers to drag in progress
     dragObject = null;
@@ -840,7 +958,9 @@ function mouseDown(ev){
 		var child = target.droptarget.firstChild;
 		while ( child ) {
 
-		    child.style.border = "#ff0000 1px solid";
+		    if ( child.id.indexOf("ops") == -1 )
+			child.style.border = "#ff0000 1px solid";
+
 		    child = child.nextSibling;
 		}
 		target.origParentNode.style.border = "none";
@@ -882,16 +1002,25 @@ function addDropTarget(item, target){
     item.droptarget = target;
 } // End addDropTarget(item, target)
 
-function mouseDblClick(ev) {
-    ev         = ev || window.event;
-    var target = ev.target || ev.srcElement;
+function goHome(target) {
 
     // See if this is a draggable element
-    if ( !target.parentNode || !target.origParentNode )
+    if ( !target || !target.parentNode || !target.origParentNode )
 	return;
 
     // If we've caught a double click on something that isn't 
     // in it's original place... send it home
+
+    // Make sure we don't already have a copy of this in here already
+    var parent = target.origParentNode;
+    if ( parent && (parent.id == "DragContainer14" || parent.id == "DragContainer9") ) {
+	for ( var i=0; i<parent.childNodes.length; i++ ) {
+	    if ( parent.childNodes[i].id == target.id && parent.childNodes[i] != target ) {
+		parent.removeChild(parent.childNodes[i]);
+	    }
+	}
+    }
+
     if ( target.parentNode.id != target.origParentNode.id ) {
 	target.parentNode.removeChild(target);
 	target.origParentNode.appendChild(target);
@@ -906,6 +1035,47 @@ function mouseDblClick(ev) {
 	updateLogic();
 
     return false;
+
+}
+function mouseDblClick(ev) {
+    ev         = ev || window.event;
+    var target = ev.target || ev.srcElement;
+
+    // If this is a double-click on the plot container... clear it out
+    if ( target.id == "DragContainer2" ) {
+	window.status = target.childNodes.length + ' targets...';
+	var child = target.firstChild;
+	var sibling;
+	while (child) {
+	    sibling = child.nextSibling;
+	    goHome(child);
+	    child = sibling;
+	}
+	return false;
+
+	// Maybe clearing out the data filters?
+    } else if ( target.id == "Demo0" || target.id == "Demo1" ) {
+	
+	var containers = new Array( "DragContainer11", "DragContainer12", "DragContainer13",
+				    "DragContainer15", "DragContainer16", "DragContainer17" );
+
+	for ( var i=0; i<containers.length; i++ ) { // Cycle over the sub-containers
+	    var container = document.getElementById(containers[i]);
+	    var child = container.firstChild;
+	    var sibling;
+	    while ( child ) {
+		sibling = child.nextSibling;
+		goHome( child );
+		child = sibling;
+	    }
+	}
+	updateLogic();
+	return false;
+    }
+
+    // Nope... clearing a single element... send it home
+    return goHome(target);
+
 } // End mouseDblClick(ev)
 
 document.onmousemove = mouseMove;
@@ -983,18 +1153,20 @@ function dragLoad() {
 				document.getElementById('DragContainer2'),
 				document.getElementById('DragContainer3'),
 				document.getElementById('DragContainer4'),
-				document.getElementById('DragContainer5'),
+				//document.getElementById('DragContainer5'),
 				document.getElementById('DragContainer6'),
-				document.getElementById('DragContainer7'),
-				document.getElementById('DragContainer8'));
+				//document.getElementById('DragContainer7'),
+				document.getElementById('DragContainer8'),
+				document.getElementById('DragContainer9'));
 	} else {
 	    CreateDragContainer(document.getElementById('DragContainer1'),
 				document.getElementById('DragContainer2'),
 				document.getElementById('DragContainer3'),
 				document.getElementById('DragContainer4'),
-				document.getElementById('DragContainer5'),
+				//document.getElementById('DragContainer5'),
 				document.getElementById('DragContainer6'),
-				document.getElementById('DragContainer8'));
+				document.getElementById('DragContainer8'),
+				document.getElementById('DragContainer9'));
 	}
 	
 	// Define the parent node of the children in the containers
@@ -1003,12 +1175,13 @@ function dragLoad() {
 	var containerList = new Array( 'DragContainer1',
 				       'DragContainer3',
 				       'DragContainer4',
-				       'DragContainer5',
-				       'DragContainer6'
-				       );
+				       //'DragContainer5',
+				       'DragContainer6',
+				       'DragContainer9'
+			       );
 
-	if ( hasCookie )
-	    containerList[containerList.length++] = 'DragContainer7';
+	//if ( hasCookie )
+	//containerList[containerList.length++] = 'DragContainer7';
 
 	for ( var i=0; i<containerList.length; i++ ) {
 	    var node = document.getElementById(containerList[i]);
@@ -1017,10 +1190,10 @@ function dragLoad() {
 		child.origParentNode = node;
 
 		switch (node.id) {
-		case 'DragContainer1': case 'DragContainer3':
+		case 'DragContainer1': case 'DragContainer3': case 'DragContainer9': 
 		    addDropTarget(child, document.getElementById('DragContainer2'));
 		    break;
-		case 'DragContainer4': case 'DragContainer5':case 'DragContainer6': case 'DragContainer7':
+		case 'DragContainer4': case 'DragContainer5' : case 'DragContainer6' : case 'DragContainer7':
 		    addDropTarget(child, document.getElementById('DragContainer8'));
 		    break;
 		}
@@ -1030,7 +1203,8 @@ function dragLoad() {
 	}
 
 	if ( !hasCookie )
-	    document.getElementById('DragContainer7').style.display = 'none';
+	    document.getElementById('gcut').style.display = 'none';
+	//document.getElementById('DragContainer7').style.display = 'none';
 
 	// Create a drag helper which will container the object being dragged
 	dragHelper = document.createElement('div');

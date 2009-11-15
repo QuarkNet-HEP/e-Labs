@@ -49,13 +49,14 @@ if ( !isset($dataset) ) {
 	<div class="colorDragBox none" name="color" id="color" value="none"  ></div>
       </div>
 
+<?php
+  /*
       <!-- Change linear plots to semilog or log-log form -->
       <div class="vDragContainer DragContainer4" id="DragContainer4" history="History2" 
            onMouseOver="showvarsToolTip(tip4);" onMouseOut="UnTip();">
 	<div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" id="logx">LogX</div>
 	<div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" id="logy">LogY</div>
       </div>
-
       <!-- Output graphics formats -->
      <div class="vDragContainer DragContainer5" id="DragContainer5" history="History2" 
           onMouseOver="showvarsToolTip(tip5);" onMouseOut="UnTip();">
@@ -63,21 +64,19 @@ if ( !isset($dataset) ) {
 	<div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" name="type" id="type" value="jpg" >jpg</div>
 	<div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" name="type" id="type" value="eps" >eps</div>
       </div>
+  */
+?>
 
-      <!-- Output graphics sizes -->
-      <div class="vDragContainer DragContainer6" id="DragContainer6" history="History2" 
-           onMouseOver="showvarsToolTip(tip6);" onMouseOut="UnTip();">
-	<div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" name="size" id="size" value="640x480"   > 640</div>
-	<div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" name="size" id="size" value="800x600"   > 800</div>
-	<div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" name="size" id="size" value="1024x768"  >1024</div>
-	<div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" name="size" id="size" value="1280x1024" >1280</div>
-	<div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" name="size" id="size" value="1600x1200" >1600</div>
-      </div>
-
-      <div class='vDragContainer DragContainer7' id='DragContainer7' history='History2'>
+  <!-- Change linear plots to semilog or log-log form, apply previously saved cuts, dump out the raw data -->
+      <div class="vDragContainer DragContainer4" id="DragContainer4" history="History2">
+	<div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" id="logx" 
+           onMouseOver="showvarsToolTip(tip4);" onMouseOut="UnTip();">LogX</div>
+	<div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" id="logy" 
+           onMouseOver="showvarsToolTip(tip4);" onMouseOut="UnTip();">LogY</div>
 <?php
+  //      <div class='vDragContainer DragContainer7' id='DragContainer7' history='History2'>
 
-  echo "\t  <div class='vminiDragBox' overClass='vminiDragBox OvervminiDragBox' id='gcut'\n";
+  echo "\t  <div class='vminiDragBox' overClass='vminiDragBox OvervminiDragBox' style='height:2.67em;' id='gcut'\n";
 
   if ( isset($_GET['sessionID']) ) {
     $sessionID = $_GET['sessionID'];
@@ -107,15 +106,6 @@ if ( !isset($dataset) ) {
     while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
       $selection = $row['selection'];
     }
-
-    /*
-    if ( $selection ) {
-      if ( preg_match("/,/",$selection) ) {
-	$temp = explode(",", $selection);
-	$selection = $temp[0];
-      }
-    }
-    */
   }
 
   print "\t    onMouseOver='showvarsToolTip(tip7_1";
@@ -124,8 +114,49 @@ if ( !isset($dataset) ) {
   print ");' onMouseOut='UnTip();'>My Cuts</div>\n";
 ?>
 
-        <div class='vminiDragBox' overClass='vminiDragBox OvervminiDragBox' id='savedata' style='display:none;'
-          onMouseOver='showvarsToolTip(tip7_2);' onMouseOut='UnTip();'>Raw Data</div>
+    <div class='vminiDragBox' overClass='vminiDragBox OvervminiDragBox' id='savedata' style='display:none;;'
+      onMouseOver='showvarsToolTip(tip7_2);' onMouseOut='UnTip();'>Raw Data</div>
+    </div>
+
+      <!-- Output graphics sizes -->
+      <div class="vDragContainer DragContainer6" id="DragContainer6" history="History2" 
+        onMouseOver="showvarsToolTip(tip6);" onMouseOut="UnTip();">
+        <div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" name="size" id="size" value="640x480"   > 640</div>
+        <div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" name="size" id="size" value="800x600"   > 800</div>
+        <div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" name="size" id="size" value="1024x768"  >1024</div>
+        <div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" name="size" id="size" value="1280x1024" >1280</div>
+        <div class="vminiDragBox" overClass="vminiDragBox OvervminiDragBox" name="size" id="size" value="1600x1200" >1600</div>
+      </div>
+    
+      <!-- Mathematical operations that can be performed on the data as it goes into a histogram -->
+      <div class="vDragContainer DragContainer9" id="DragContainer9" history="History2" 
+           onMouseOver="showvarsToolTip(tip10);" onMouseOut="UnTip();">
+
+<?php
+
+    print "\t<div class='vminiOpsDragBox' overClass='vminiOpsDragBox OvervminiOpsDragBox' name='plus' id='ops0' value='plus'>+</div>\n";
+    print "\t<div class='vminiOpsDragBox' overClass='vminiOpsDragBox OvervminiOpsDragBox' name='-' id='ops1' value='-'>-</div>\n";
+    print "\t<div class='vminiOpsDragBox' overClass='vminiOpsDragBox OvervminiOpsDragBox' name=':' id='ops4' value=':'>:</div>\n";
+    print "\t<div class='vminiOpsDragBox' overClass='vminiOpsDragBox OvervminiOpsDragBox' name='|' id='ops7' value='|'>|</div>\n";
+
+if ( $userLevel >= 1 ) {
+        print "\t<div class='vminiOpsDragBox' overClass='vminiOpsDragBox OvervminiOpsDragBox' name='*' id='ops2' value='*'>*</div>\n";
+        print "\t<div class='vminiOpsDragBox' overClass='vminiOpsDragBox OvervminiOpsDragBox' name='/' id='ops3' value='/'>/</div>\n";
+        print "\t<div class='vminiOpsDragBox' overClass='vminiOpsDragBox OvervminiOpsDragBox' name='(' id='ops5' value='('>(</div>\n";
+        print "\t<div class='vminiOpsDragBox' overClass='vminiOpsDragBox OvervminiOpsDragBox' name=')' id='ops6' value=')'>)</div>\n";
+}
+
+if ( $userLevel >=2 ) {
+      print "\t<div class='vminiOpsDragBox' overClass='vminiOpsDragBox OvervminiOpsDragBox' name='tan'  id='ops9'  value='tan'>tan</div>\n";
+      print "\t<div class='vminiOpsDragBox' overClass='vminiOpsDragBox OvervminiOpsDragBox' name='sin'  id='ops10' value='sin'>sin</div>\n";
+      print "\t<div class='vminiOpsDragBox' overClass='vminiOpsDragBox OvervminiOpsDragBox' name='cos'  id='ops11' value='cos'>cos</div>\n";
+}
+if ( $userLevel > 2 ) {
+      print "\t<div class='vminiOpsDragBox' overClass='vminiOpsDragBox OvervminiOpsDragBox' name='exp'  id='ops8'  value='exp'>exp</div>\n";
+      print "\t<div class='vminiOpsDragBox' overClass='vminiOpsDragBox OvervminiOpsDragBox' name='ln'   id='ops12' value='ln'>ln</div>\n";
+      print "\t<div class='vminiOpsDragBox' overClass='vminiOpsDragBox OvervminiOpsDragBox' name='sqrt' id='ops13' value='sqrt'>sqrt</div>\n";
+}
+?>
       </div>
 
     </fieldset>

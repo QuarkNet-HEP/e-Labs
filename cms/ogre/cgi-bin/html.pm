@@ -499,15 +499,17 @@ sub makeActivePage(\$ \%) {
     my $units   = $self->{_units};
     my $baseURL = $self->{_baseURL};
 
-    my $width   = $appletData->{'width'};
-    my $height  = $appletData->{'height'};
-    my $file    = $appletData->{'file'};
-    my $xmin    = $appletData->{'xmin'};
-    my $xmax    = $appletData->{'xmax'};
-    my $pmin    = $appletData->{'pmin'};
-    my $pmax    = $appletData->{'pmax'};
-    my $Xcst    = $appletData->{'Xcst'};
-    my $X2px    = $appletData->{'X2px'};
+    my $ver = sprintf("%03i", $version);
+
+    my $width   = ($appletData->{'width'})  ? $appletData->{'width'}  : 640;
+    my $height  = ($appletData->{'height'}) ? $appletData->{'height'} : 480;
+    my $file    = ($appletData->{'file'})   ? $appletData->{'file'}   : "canvas.$ver.$type";
+    my $xmin    = ($appletData->{'xmin'})   ? $appletData->{'xmin'}   : 0;
+    my $xmax    = ($appletData->{'xmax'})   ? $appletData->{'xmax'}   : $width;
+    my $pmin    = ($appletData->{'pmin'})   ? $appletData->{'pmin'}   : 0;
+    my $pmax    = ($appletData->{'pmax'})   ? $appletData->{'pmax'}   : $width;
+    my $Xcst    = ($appletData->{'Xcst'})   ? $appletData->{'Xcst'}   : 1;
+    my $X2px    = ($appletData->{'X2px'})   ? $appletData->{'X2px'}   : 1;
 
     my $hHeight = $self->{_histHeight};
     my $hWidth  = $self->{_histWidth};

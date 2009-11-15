@@ -314,7 +314,9 @@ function fnLoadPngs(img, width, height) {
     }
 
     img.style.visibility = "visible";
-    div.id = img.id+'ieDiv';
+
+    if ( div )
+	div.id = img.id+'ieDiv';
     
     return div;
 }

@@ -11,6 +11,7 @@ var tip7_2 = 'Get the numbers as well as the pictures (not working yet)';
 var tip8   = 'Drag options here';
 var tip9_1 = 'Access the available data';
 var tip9_2 = 'Make a plot with the currect selections';
+var tip10  = 'Perform operations on histograms';
 
 function showvarsToolTip(text) {
     try {

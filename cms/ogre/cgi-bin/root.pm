@@ -62,7 +62,7 @@ sub makeRootScript {
     }
   }
 
-  my $allonone   = (exists $cmdl_options->{allonone})   ?    $cmdl_options->{allonone}   : 0;
+  my $stacked    = (exists $cmdl_options->{stacked})    ?    $cmdl_options->{stacked}    : 0;
   my $logX       = (exists $cmdl_options->{logX})       ?    $cmdl_options->{logX}       : 0;
   my $logY       = (exists $cmdl_options->{logY})       ?    $cmdl_options->{logY}       : 0;
   my $logZ       = (exists $cmdl_options->{logZ})       ?    $cmdl_options->{logZ}       : 0;
@@ -76,13 +76,11 @@ sub makeRootScript {
   my $random     = (exists $cmdl_options->{tempIndex})  ?    $cmdl_options->{tempIndex}  : int( rand(4294967295) + 1 );
   my $mycuts     = (exists $cmdl_options->{mycuts})     ?    $cmdl_options->{mycuts}     : 0;
 
-
   # Make sure we're using a supported output type
   if ( $type ne "eps" && $type ne "png" && $type ne "jpg" && $type ne "svg" ) {
     ( $cmdl_options->{DEBUG} ) && warn "Unsupported output! Use eps, png, svg, or jpg: Using png\n";
     $type = "png";
   }
-
 
   my @treeList     = ($#{$graphics_options->{trees}}  >= 0 ) ? @{$graphics_options->{trees}}  : ();
   my @colors       = ($#{$cmdl_options->{colors}}     >= 0 ) ? @{$cmdl_options->{colors}}     : ();
@@ -112,7 +110,7 @@ sub makeRootScript {
   my $filePath = "$tmpdir/$random/script.000.C";
 
   mkdir("$tmpdir/$random", 0777)  || die "Unable to make temp directory $tmpdir/$random: $!\n";
-  chmod(0777, "$tmpdir/$random");  # Stoopid fucking perl thinks it know what I want.... X-(
+  chmod(0777, "$tmpdir/$random");  # Stoopid fucking perl thinks it knows what I want.... X-(
   open($fileHandle, ">$filePath") || die "unable to open $fileHandle: $!\n";
 
   print $fileHandle "{\n\t/*\n";
@@ -132,20 +130,7 @@ sub makeRootScript {
 
   # Create a canvas to draw upon, and divide it into enough parts for the number of variables we have
   print $fileHandle "\t// Create a new object to hold the graphics\n";
-  ( !$allonone ) && print $fileHandle "\t// and split it into pieces, one for each histogram\n";
   print $fileHandle "\tTCanvas *canvas = new TCanvas(\"c1\",\"\",width,height);\n";
-
-  if ( !$allonone ) {
-    if ( $variable == 4 ) {
-      print $fileHandle "\tcanvas->Divide(2,2);\n";
-    } elsif ( $variable == 5 || $variable ==6 ) {
-      print $fileHandle "\tcanvas->Divide(3,2);\n";
-    } elsif ( $variable == 7 || $variable ==8 ) {
-      print $fileHandle "\tcanvas->Divide(4,2);\n";
-    } else {
-      print $fileHandle "\tcanvas->Divide(1,",$variable+1,");\n";
-    }
-  }
 
   # Create a new chain, and add the requested files to it
   print $fileHandle "\n\t// Create a new chain, and add all the requested data files to it\n";
@@ -180,15 +165,11 @@ sub makeRootScript {
 	  }
       }
   }
+##########################################################################
+  if ( !$stacked ) {              # Looks like we're doing scatter plots
 
-  if ( !$allonone ) {              # If we're plotting each histogram on it's own pad.....
     # Run through the variables and pop them onto the canvas
     for ( my $v=0; $v<=$variable; $v++ ) {
-      #my $pad = $v + 1;
-      # Set the focus to the next pad
-      #print $fileHandle "\n\t// Set pad #$pad as active and render the histogram\n";
-      #print $fileHandle "\tc1_$pad->cd();\n";
-
       # Set the focus to the canvas
       print $fileHandle "\n\t// Set the canvas as the active pallette and render the histogram(s)\n";
       print $fileHandle "\tc1->cd();\n";
@@ -201,8 +182,10 @@ sub makeRootScript {
 
       # Set the histogram fill color
       if ( exists $colors[$v] ) {
+	print $fileHandle "\tchain->SetMarkerColor($colors[$v]);\n";
 	print $fileHandle "\tchain->SetFillColor($colors[$v]);\n";
       } else {
+	print $fileHandle "\tchain->SetMarkerColor(0);\n";
 	print $fileHandle "\tchain->SetFillColor(0);\n";
       }
 
@@ -212,12 +195,8 @@ sub makeRootScript {
 
       # Form the selection cuts: Any global cuts + any cuts for this variable and NULL if neither
       if ( exists $cuts[$v] ) {
-	#$draw_options = $draw_options . ",\"$cuts[$v]\"";
 	$scancuts = $scancuts . "$cuts[$v]" ."&&";
-      } #else {
-	#$draw_options = $draw_options; . ", NULL, NULL";
-      #}
-
+      }
       my $cuts = $scancuts;
       $cuts =~ s/&&$//;
 
@@ -226,7 +205,11 @@ sub makeRootScript {
       if ( $cuts ) {
 	  print $fileHandle "\tcuts[0] = \"$cuts\";\n";
       }
-      print $fileHandle "\ttest[$v] = chain->Draw($draw_options, cuts[0]);\n";
+      if ( !$v ) {
+	  print $fileHandle "\ttest[$v] = chain->Draw($draw_options, cuts[0]);\n";
+      } else {
+	  print $fileHandle "\ttest[$v] = chain->Draw($draw_options, cuts[0], \"same\");\n";
+      }
       print $fileHandle "\tif ( !test[$v] ) {\n";
       print $fileHandle "\t  TString lo  = cuts(cuts.First(\">\")+1,3);\n";
       print $fileHandle "\t  TString hi  = cuts(cuts.First(\"<\")+1,3);\n";
@@ -235,20 +218,29 @@ sub makeRootScript {
       print $fileHandle "\t  TH1F *htemp = new TH1F(\"htemp\",\"\",100, lof, hif);\n";
       print $fileHandle "\t}\n";
 
-      # And set the titles for the pads
-      ( exists $labelXList[$v] ) && print $fileHandle "\thtemp->GetXaxis()->SetTitle(\"$labelXList[$v]\");\n";
-      ( exists $labelYList[$v] ) && print $fileHandle "\thtemp->GetYaxis()->SetTitle(\"$labelYList[$v]\");\n";
-      ( exists $labelZList[$v] ) && print $fileHandle "\thtemp->GetZaxis()->SetTitle(\"$labelZList[$v]\");\n";
-
       # For the title... if there was a cut applied stick it on here
-      if ( exists $titleList[$v] ) {
-	if ( exists $cuts[$v] ) {
-	  print $fileHandle "\thtemp->SetTitle(\"$titleList[$v]:$cuts[$v]\");\n";
-	} else {
-	  print $fileHandle "\thtemp->SetTitle(\"$titleList[$v]\");\n";
-	}
+      if ( exists $titleList[$v] && exists $cuts[$v] ) {
+	    $titleList[$v] .= ":$cuts[$v]";
       }
+
+    } # End for ( my $v=0; $v<=$variable; $v++ ) {
+
+    # Put up the titles, axis labels, etc for everything that went into the plot
+    if ( $#titleList > -1 ) {
+	print $fileHandle "\thtemp->SetTitle(\"" . join(", ", @titleList) . "\");\n";
     }
+    if ( $#labelXList > -1 ) {
+	print $fileHandle "\thtemp->GetXaxis()->SetTitle(\"" . join(", ", @labelXList) . "\");\n";
+    }
+    if ( $#labelYList > -1 ) {
+	print $fileHandle "\thtemp->GetYaxis()->SetTitle(\"" . join(", ", @labelYList) . "\");\n";
+    }
+    if ( $#labelZList > -1 ) {
+	print $fileHandle "\thtemp->GetZaxis()->SetTitle(\"" . join(", ", @labelZList) . "\");\n";
+    }
+
+##########################################################################
+
   } else {              # Else we're stacking the histograms on top of each other
 
     print $fileHandle "\n\t// Declare a set of histograms and a stack to plot everything on\n";
@@ -290,9 +282,9 @@ sub makeRootScript {
 
       # Set the histogram fill color
       if ( exists $colors[$v] ) {
-	print $fileHandle "\t  h[$v]->SetFillColor($colors[$v]);\n";
+	  print $fileHandle "\t  h[$v]->SetFillColor($colors[$v]);\n";   # Bar-graph style...
       } else {
-	print $fileHandle "\t  h[$v]->SetFillColor(0);\n";
+	  print $fileHandle "\t  h[$v]->SetFillColor(0);\n";             # Bar-graph style...
       }
 
       print $fileHandle "\t}\n\n";
@@ -304,7 +296,7 @@ sub makeRootScript {
     print $fileHandle "\t// and the scales are adjusted automatically for us\n";
     print $fileHandle "\tstack = new THStack();\n";
     for ( my $v=0; $v<=$variable; $v++ ) {
-      print $fileHandle "\t(test[$v]) && stack->Add(h[$v]);\n";
+	print $fileHandle "\t(test[$v]) && stack->Add(h[$v]);\n";
     }
     print $fileHandle "\n";
 
@@ -351,7 +343,9 @@ sub makeRootScript {
       print $fileHandle "\tstack->Draw(\"nostack\");\n";
     }
 
-  } ### End if-then-else (!$allonone)
+  } ### End if-then-else (!$stacked)
+
+###############################################################################
 
   # Clean up the scan list & cuts
   $scanlist =~ s/:$//;
@@ -374,7 +368,7 @@ sub makeRootScript {
 
   # Put in the stuff for the graphical cut analysis
   print $fileHandle "\t// Get a handle to the X-Axis\n";
-  if ( !$allonone ) {
+  if ( !$stacked ) {
     print $fileHandle "\tTAxis *x = new TAxis();\n\tx = htemp->GetXaxis();\n\n";
   } else {
     print $fileHandle "\tTAxis *x = new TAxis();\n\tx = stack->GetXaxis();\n\n";
@@ -408,23 +402,18 @@ sub makeRootScript {
 
   # Save the information for color keys
   my $keyHandle;
-  my @imColors = ('','black','red','green','blue','yellow','purple','','','','white');
+  my @imColors = ('none','black','red','green','blue','yellow','purple','','','','white');
   open ($keyHandle, ">$tmpdir/$random/key");
   for (my $i=0; $i<=$#titleList; $i++) {
-      print $keyHandle "$titleList[$i]," . $imColors[$colors[$i]] . "\n";
+      print $keyHandle "$titleList[$i],"; # . $imColors[$colors[$i]] . "\n";
+      if ( $colors[$i] ) {
+	  print $keyHandle $imColors[$colors[$i]] ."\n";
+      } else {
+	  print $keyHandle "none\n";
+      }
   }
   close($keyHandle);
   chmod (0666, "$tmpdir/$random/key");
-
-
-  # Now that the script is generated... run it :D and whack the script when we're done
-#  my $redirect = "/dev/null";
-#  if ( $savedata ) {
-#    $redirect = "$tmpdir/scan.out";
-#  }
-#  if ( -e $filePath ) {
-#    `$rootbin -b -q -l -n $filePath >$redirect 2>/dev/null;echo $?` || warn "ROOT batch run failed: $!\n";
-#  }
 
   $self->{_titleList} = \@titleList;
   $self->{_cutlist}   = \@cuts;
@@ -458,8 +447,9 @@ sub runRootScript() {
   my $width   = $ogre::cgi->getCGIParam('width');
   my $height  = $ogre::cgi->getCGIParam('height');
   my $type    = $ogre::cgi->getCGIParam('type');
-  my $stacked = $ogre::cgi->getCGIParam('allonone');
+  my $stacked = $ogre::cgi->getCGIParam('stacked');
   my $gCut    = $ogre::cgi->getCGIParam('global_cut');
+  my $dataset = $ogre::cgi->getCGIParam('dataSets');
 
   # Make some of the files we'll need to track the user interactions
   my $fileHandle;
@@ -568,28 +558,23 @@ sub runRootScript() {
 
   # Take the labels axis labels apart and get the units
   my $graphics_options = $ogre::ogreXML->getDataXMLRef();
-  my @labelXList   = ($#{$graphics_options->{lblsX}}  >= 0 ) ? @{$graphics_options->{lblsX}}  : ();
+  my @unitsList = ($#{$graphics_options->{units}}  >= 0 ) ? @{$graphics_options->{units}}  : ();
 
-  my $units = "";
-  foreach my $label (@labelXList) {
-      $label =~ m/\((.*)\)/;            # Units *should* be in parantheses
-      if ( $1 ) {
-	  if ( !($units =~ m/$1/) ) {
-	      $units .= "$1,";
-	  }
-      }
+  my $units;
+  foreach my $unit (@unitsList) {
+      $units .= $unit;
   }
   $units =~ s/,,/,/g;
-  chop($units);
+  chomp($units);
 
   $width     = $ogre::cgi->getCGIParam('width');
   $height    = $ogre::cgi->getCGIParam('height');
   $random    = $ogre::cgi->getCGIParam('tempIndex');
   $type      = $ogre::cgi->getCGIParam('type');
-  $stacked   = $ogre::cgi->getCGIParam('allonone');
+  $stacked   = $ogre::cgi->getCGIParam('stacked');
   $tmpdir    = $ogre::ogreXML->getOgreParam('tmpDir');
 
-  my $baseDir   = $ogre::ogreXML->getOgreParam('baseDir'); #"/home/ogre/public_html/";
+  my $baseDir   = $ogre::ogreXML->getOgreParam('baseDir');
   my $urlPath   = $ogre::cgi->getCGIParam('URL');
   my $verbose   = $ogre::cgi->getCGIParam('DEBUG');
   my $path      = "$tmpdir/$random";
@@ -597,46 +582,43 @@ sub runRootScript() {
   my $logY      = $ogre::cgi->getCGIParam('logY') || 0;
   my @variables = @{$graphics_options->{plots}};
 
-
 ################################# Massage the image a bit ##############################################
+
   my $image=Image::Magick->new;
   my $imageFile = "$tmpdir/$random/canvas.000.$type";
+  my $err;
 
-  $image->Read("$type:$imageFile");
+  $err = $image->Read("$type:$imageFile");
+  
+  if ( !$image || $err ) {    # ROOT failed....
+      $image=Image::Magick->new;
 
-  # Get the "draft" overlay
-  my $draft = Image::Magick->new;
-  $draft->Read("png:$baseDir/graphics/draft.png");
+      my $geom = $width . 'x' . $height;
+      $err = $image->Set(size=>"$geom");
+      warn $err if $err;
 
-  # Scale the "draft" image to the correct size
-  if ( $width != 640 ) {
-      $draft->Scale(width=>$width, height=>$height);
+      $err = $image->ReadImage('xc:white');
+      warn $err if $err;
+
+      $geom = "+" . int(0.2*$width) . "+" . int($height/2);
+      $err = $image->Annotate(font=>'Generic.ttf', pointsize=>64,
+			      fill=>'lightgray', stroke=>'black', strokewidth=>1,
+			      geometry=>$geom,text=>"No Results!");
+      warn $err if $err;
   }
+
+  # Annotate the image file
+  my $isData;
+  if ( $dataset =~ /mc/ ) {
+      $isData = 0;
+  } else {
+      $isData = 1;
+  }
+  annotateImage("$tmpdir/$random", $width, $height, $image);
 
   # Get the width/height from the image since ROOT 
   # tends to shrink by 6% or so
   ($width,$height) = $image->Get('width','height');
-
-  # Alter the image file with dislaimers & such
-  my $err;
-
-  if ( -e "$path/key" ) {
-      open(KEY, "<$path/key");
-      my @keys = <KEY>;
-      close(KEY);
-
-      my $vertPos = 100;
-      foreach my $key (@keys) {
-	  my ($plotTitle, $color) = split(/,/,$key);
-	  $err = $image->Annotate(font=>'Generic.ttf', pointsize=>'16',
-				  fill=>$color, text=>$plotTitle,
-				  scale=>'1', x=>0.667*$width, y=>$vertPos);
-          warn $err if $err;
-          $vertPos += 20;
-      }
-  }
-  $err = $image->Composite(image=>$draft);
-  warn $err if $err;
 
   $image->Write("$type:$imageFile");
 ##########################################################################################################
@@ -658,5 +640,159 @@ sub runRootScript() {
 }
 ################################################################################################
 
+#
+### Routine for annotating the plot *before* it gets to
+### the user... that way the disclaimers are there and
+### difficult to remove with PhotShop/Gimp/etc
+#
+sub annotateImage {
+    my ($path, $width, $height, $image, $isData) = @_;
+
+    ### Numericals.....
+    my $geom;
+    my $angle = -34;
+    my $size;
+
+    if ( $width == 640 ) {
+	$geom  = '+70+440';
+	$size  = 140;
+    } elsif ( $width == 800 ) {
+	$geom  = '+90+550';
+	$size  = 175;
+    } elsif ( $width == 1024 ) {
+	$geom = '+120+720';
+	$size = 230;
+    } elsif ( $width == 1280 ) {
+	$geom = '+160+930';
+	$size = 290;
+    } elsif ( $width == 1600 ) {
+	$geom = '+200+1150';
+	$size = 360;
+    }
+    
+    # Alter the image file with dislaimers & such
+    my $err;
+    my $text;
+
+    if ( $isData ) {
+	$text = "Preliminary";
+	$size = int(0.95*$size);
+    } else {
+	$text = "Simulation";
+    }
+
+    $err = $image->Annotate(font=>'Generic.ttf', pointsize=>$size,
+			    fill=>'none', stroke=>'lightgray', strokewidth=>1,
+			    rotate=>$angle, geometry=>$geom,
+			    text=>$text);
+    warn $err if $err;
+
+    if ( $width == 640 ) {
+	$geom = '+75+75';
+	$size = 18;
+    } elsif ( $width == 800 ) {
+	$geom = '+100+90';
+	$size = 20;
+    } elsif ( $width == 1024 ) {
+	$geom = '+120+100';
+	$size = 24;
+    } elsif ( $width == 1280 ) {
+	$geom = '+160+130';
+	$size = 28;
+    } elsif ( $width == 1600 ) {
+	$geom = '+180+150';
+	$size = 36;
+    }
+
+    $err = $image->Annotate(font=>'Generic.ttf', pointsize=>$size,
+			    fill=>'purple', geometry=>$geom,
+			    text=>'Data courtesy the CMS Experiment Educational Data Stream');
+    warn $err if $err;
+
+    if ( $width == 640 ) {
+	$geom = '+70+445';
+	$size = 24;
+    } elsif ( $width == 800 ) {
+	$geom = '+100+565';
+	$size = 26;
+    } elsif ( $width == 1024 ) {
+	$geom = '+120+720';
+	$size = 24;
+    } elsif ( $width == 1280 ) {
+	$geom = '+160+980';
+	$size = 28;
+    } elsif ( $width == 1600 ) {
+	$geom = '+180+1140';
+	$size = 36;
+    }
+    
+    $err = $image->Annotate(font=>'Generic.ttf', pointsize=>$size,
+			    fill=>'red', geometry=>$geom,
+			    text=>'http://cms.cern.ch/');
+    warn $err if $err;
+
+    # If we've got multiple plots.... put on a key
+    if ( -e "$path/key" ) {
+	open (KEY, "<$path/key");
+	my @keys = <KEY>;
+	close(KEY);
+
+	my $vertPos;
+
+	if ( $width == 640 ) {
+	    $vertPos = 100;
+	    $geom = '+' . int(0.667*$width) . '+' . $vertPos;
+	    $size = 16;
+	} elsif ( $width == 800 ) {
+	    $vertPos = 120;
+	    $geom = '+' . int(0.7*$width) . '+' . $vertPos;
+	    $size = 18;
+	} elsif ( $width == 1024 ) {
+	    $vertPos = 140;
+	    $geom = '+' . int(0.75*$width) . '+' . $vertPos;
+	    $size = 20;
+	} elsif ( $width == 1280 ) {
+	    $vertPos = 180;
+	    $geom = '+' . int(0.75*$width) . '+' . $vertPos;
+	    $size = 24;
+	} elsif ( $width == 1600 ) {
+	    $vertPos = 200;
+	    $geom = '+' . int(0.75*$width) . '+' . $vertPos;
+	    $size = 28;
+	}
+
+	foreach my $key (@keys) {
+	    my ($plotTitle, $color) = split(/,/,$key);
+	    chomp($plotTitle);
+	    chomp($color);
+
+	    my $stroke = $color;
+	    if ( $color eq 'none' ) {
+		$stroke = 'black';
+	    }
+	    $err = $image->Annotate(font=>'Generic.ttf', pointsize=>$size,
+				    fill=>$color, stroke=>$stroke, strokewidth=>1,
+				    text=>$plotTitle,geometry=>$geom);
+	    warn $err if $err;
+
+	    if ( $width == 640 ) {
+		$vertPos += 20;
+		$geom = '+' . int(0.667*$width) . '+' . $vertPos;
+	    } elsif ( $width == 800 ) {
+		$vertPos += 20;
+		$geom = '+' . int(0.7*$width) . '+' . $vertPos;
+	    } elsif ( $width == 1024 ) {
+		$vertPos += 20;
+		$geom = '+' . int(0.75*$width) . '+' . $vertPos;
+	    } elsif ( $width == 1280 ) {
+		$vertPos += 30;
+		$geom = '+' . int(0.75*$width) . '+' . $vertPos;
+	    } elsif ( $width == 1600 ) {
+		$vertPos += 30;
+		$geom = '+' . int(0.75*$width) . '+' . $vertPos;
+	    }
+	}
+    }
+}
 
 return 1;

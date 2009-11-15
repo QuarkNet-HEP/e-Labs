@@ -166,21 +166,40 @@ function restoreMe(triggers, holder, plots, color, opts, sessionID) {
     // Rebuild the plot box...
     var plotBox  = document.getElementById('DragContainer2');
     var plotHome = document.getElementById('DragContainer1');
+    var optsHome = document.getElementById('DragContainer9');
     
     // First clear it out of anything that might be there
     dChild = plotBox.firstChild;
     while ( dChild ) {
 	var next = dChild.nextSibling;
-	plotHome.appendChild(dChild);
-	dChild.style.backgroundColor = "";
+	var digits = /\d+/;
+	if ( digits.test(/\d+/) ) {
+	    plotHome.appendChild(dChild);
+	    dChild.style.backgroundColor = "";
+	} else
+	    opsHome.appendChild(dChild);
+
 	dChild = next;
     }
 
     // Then loop over the saved plot state and restore it
     for ( var i=0; i<plots.length; i++ ) {
-	var child = document.getElementById(plots[i]);
-	plotBox.appendChild(child);
-	child.style.backgroundColor = color[i];
+	var digits = /\d+/;
+	if ( digits.test(plots[i]) ) {
+	    var child = document.getElementById(plots[i]);
+	    plotBox.appendChild(child);
+	    if ( color[i] )
+		child.style.backgroundColor = color[i];
+	} else {
+	    var name = plots[i].substring(4,plots[i].length);
+	    var child = document.getElementsByName(name)[0];
+	    if ( child ) {
+		var temp = child.cloneNode(true);
+		temp.origParentNode = child.origParentNode;
+		temp.droptarget = child.droptarget;
+		plotBox.appendChild(temp);
+	    }
+	}
     }
 
     // Clear out the options box of whatever's in there
@@ -264,7 +283,6 @@ function submitGetData(thisForm) {
 
     //
     // Get some "must be there" data options
-    // !document.getElementById("select1").length <== Old version... selection by run number
     if ( !triggers.length ) {
 	alert("No data... :( \nPlease give me something to do... please?\nPretty please?");
 	return false;
@@ -278,6 +296,8 @@ function submitGetData(thisForm) {
     var child = vEle.firstChild;
     var numLeaves = 0;
 
+    var request = new String();
+
     if ( !child ) {     // Nothing to plot :(
  	alert("No plots selected! You didn't even try!\nPetulantly refusing to continue this charade.");
 	return false;
@@ -290,26 +310,28 @@ function submitGetData(thisForm) {
     plots.length = 0;
     color.length = 0;
 
+    var nostack = false;
+
     while ( child ) {
 	ele = null;
 
-	if ( child.id.substring(0,4) == "leaf" || child.id.substring(0,7) == "formula" ) {
+	if ( child.id.substring(0,4) == "leaf" || child.id.substring(0,7) == "formula" || child.id.indexOf('ops') > -1 ) {
 	    numLeaves++;
 
 	    ele = document.createElement('input');
 	    ele.type  = 'hidden';
-	    ele.name  = (child.id.substring(0,4)=="leaf") ? "leaf" : "formula";
-	    
-	    ele.value = (child.id.substring(0,4)=="leaf") ?
-		parseInt(child.id.substring(4,child.id.length)) :
-		parseInt(child.id.substring(7,child.id.length));
+	    ele.name  = (child.id.indexOf('formula') > -1) ? "formula" : "leaf";
 
-	    thisForm.appendChild(ele);
+	    if ( child.id.substring(0,4)=="leaf" )
+		ele.value = parseInt(child.id.substring(4,child.id.length));
+	    else if ( child.id.substring(0,7)=="formula" )
+		ele.value = parseInt(child.id.substring(7,child.id.length));
+	    else
+		ele.value = child.getAttribute('value');
 
-	    ele = document.createElement('input');
-	    ele.type  = 'hidden';
-	    ele.name  = "root_leaf";
-	    ele.value = child.getAttribute('name');
+	    if ( ele.value.indexOf(':') > -1 )
+		nostack = true;
+
 	    thisForm.appendChild(ele);
 
 	    ele = document.createElement('input');
@@ -328,11 +350,11 @@ function submitGetData(thisForm) {
  	alert("Nothing to plot. :O\nBailing out now while there's still time.");
 	return false;
  
-    } else if ( numLeaves > 1 ) { // send the all-on-one signal to stack multiple plots
+    } else if ( nostack ) { // send the signal not to use the TStack
 	ele = document.createElement('input');
 	ele.type  = 'hidden';
-	ele.name  = 'allonone';
-	ele.value = 1;
+	ele.name  = 'stacked';
+	ele.value = 0;
 	thisForm.appendChild(ele);
     }
 
@@ -456,6 +478,17 @@ function submitGetData(thisForm) {
 	ele.value = holder[i];
 	thisForm.appendChild(ele);
     }
+
+    /*
+    // Test the parser
+    var xmlHttp = createXMLHttp();
+    request = "asp/parseOps.asp?" + request.substring(1,request.length);
+    
+    xmlHttp.open("GET", request,false);
+    xmlHttp.send(null);
+    if ( xmlHttp.responseText )
+	alert(xmlHttp.responseText);
+    */
 
     //
     // Submit the form to the server for processing

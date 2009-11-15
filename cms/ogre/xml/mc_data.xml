@@ -13,44 +13,116 @@
   </dataset>
 
   <triggers level="0">
-    <trigger name="signal" id="sig" description="Z -> ee Signal events"     level="0"/>
-    <trigger name="backgd" id="bkg" description="TTbar and QCD backgrounds" level="0"/>
+    <trigger name="signal" id="sig" description="Simulated Z Signal events"   level="0"/>
+    <trigger name="backgd" id="bkg" description="Simulated Background events" level="0"/>
+
+    <trigger name="ee"     id="ee"   description="Di-electron events"  level="1"/>
+    <trigger name="mumu"   id="uu"   description="Di-muon events"      level="1"/>
+    <trigger name="tautau" id="tt"   description="Tau-Tau events"      level="1"/>
+    <trigger name="enu"    id="enu"  description="electron+MET events" level="1"/>
+    <trigger name="munu"   id="munu" description="muon+MET events"     level="1"/>
+
   </triggers>
 
   <tree id="1" name="Events" level="0">
-    <branch id="1"  name="patElectrons_selectedLayer1Electrons__PAT.obj" level="0">
+    <branch id="1"  name="patElectrons_cleanLayer1Electrons__PAT.obj" level="0">
+
       <leaf id="1"  name="pt_" 
-	    title="Electron Momentum"   labely="Number of Events" labelx="P_t (GeV)" level="0" description="Momentum of the electrons (GeV/c)"/>
-      <leaf id="2"  name="superClusterEnergy_"       
-	    title="Electron Energy"   labely="Number of Events" labelx="E_dep (GeV)" level="0" description="Energy of the electrons (GeV)"/>
+	    title="Electron P_t"   labely="Number of Events" labelx="P_t" units="GeV/c" 
+            level="0" description="Transverse momentum of the electrons (GeV/c)"/>
+
+      <leaf id="2"  name="corrections_.ecalEnergy"       
+	    title="Electron Energy"   labely="Number of Events" labelx="E_e" units="GeV" 
+            level="0" description="Energy of the electrons (GeV)"/>
 
       <leaf id="3"  name="eta_"                      
-	    title="Electron Eta"   labely="Number of Events" labelx="Eta" level="1" description="Psudeorapidity of the electrons. eta = -ln[tan(theta/2)] where theta is the pitch angle (angle between the momentum vector and the z-axis)"/>
+	    title="Electron Eta"   labely="Number of Events" labelx="Eta" units=""
+	    level="1" description="Psudeorapidity of the electrons. eta = -ln[tan(theta/2)] where theta is the pitch angle (angle between the momentum vector and the z-axis)"/>
+
       <leaf id="4"  name="phi_"
-            title="Electron Phi"   labely="Number of Events" labelx="Phi (rad)" level="1" description="Phi (rotation angle in the X-Y plane) of the electrons (rad)"/>
+            title="Electron Phi"   labely="Number of Events" labelx="Phi" units="rad" 
+	    level="1" description="Phi (rotation angle in the X-Y plane) of the electrons (rad)"/>
 
-      <leaf id="5"  name="vertex_.fCoordinates.fY"   
-	    title="Electron Vertex Y"   labely="Number of Events" labelx="Y_v (cm)" level="2" description="Y Position where the electron appears to have originated (cm)" />
-      <leaf id="6"  name="vertex_.fCoordinates.fZ"   
-	    title="Electron Vertex Z"   labely="Number of Events" labelx="Z_v (cm)" level="2" description="Z Position where the electron appears to have originated (cm)"/>
+      <leaf id="5"  name="vertex_.fCoordinates.fX"   
+	    title="Electron Vtx X"   labely="Number of Events" labelx="X_v" units="cm" 
+	    level="2" description="X Position where the electron appears to have originated (cm)" />
+
+      <leaf id="6"  name="vertex_.fCoordinates.fY"   
+	    title="Electron Vtx Y"   labely="Number of Events" labelx="Y_v" units="cm" 
+	    level="2" description="Y Position where the electron appears to have originated (cm)" />
+
+      <leaf id="7"  name="vertex_.fCoordinates.fZ"   
+	    title="Electron Vtx Z"   labely="Number of Events" labelx="Z_v" units="cm" 
+	    level="2" description="Z Position where the electron appears to have originated (cm)"/>
     </branch>
 
-    <branch id="2"  name="patPhotons_selectedLayer1Photons__PAT.obj" level="0">
-      <leaf id="7"  name="pt_"
-	    title="Photon Momentum"   labely="Number of Events" labelx="P_t (GeV)" level="0" description="Momentum of the photons (GeV/c)" />
+    <branch id="2"  name="patMuons_cleanLayer1Muons__PAT.obj" level="0">
 
-      <leaf id="8"  name="eta_"                      
-	    title="Photon Eta"   labely="Number of Events" labelx="Eta" level="1" description="Psuedorapidity of the photons. eta = -ln[tan(theta/2)] where theta is the pitch angle (angle between the momentum vector and the z-axis)"/>
-      <leaf id="9"  name="phi_"
-            title="Photon Phi"   labely="Number of Events" labelx="Phi (rad)" level="1" description="Phi (rotation angle in the X-Y plane) of the photons (rad)"/>
+      <leaf id="8"  name="pt_" 
+	    title="Muon P_t"   labely="Number of Events" labelx="P_t" units="GeV/c" 
+            level="0" description="Transverse momentum of the muons (GeV/c)"/>
 
-      <leaf id="10" name="vertex_.fCoordinates.fY"   
-	    title="Photon Vertex Y"   labely="Number of Events" labelx="Y_v (cm)" level="2" description="Y Position where the photon appears to have originated (cm)"/>
-      <leaf id="11" name="vertex_.fCoordinates.fZ"   
-	    title="Photon Vertex Z"   labely="Number of Events" labelx="Z_v (cm)" level="2" description="Z Position where the photon seems to have originated (cm)"/>
+      <leaf id="9"  name="eta_"                      
+	    title="Muon Eta"   labely="Number of Events" labelx="Eta" units=""
+	    level="1" description="Psudeorapidity of the muons. eta = -ln[tan(theta/2)] where theta is the pitch angle (angle between the momentum vector and the z-axis)"/>
+
+      <leaf id="10"  name="phi_"
+            title="Muon Phi"   labely="Number of Events" labelx="Phi" units="rad" 
+	    level="1" description="Phi (rotation angle in the X-Y plane) of the muons (rad)"/>
+
+      <leaf id="11"  name="vertex_.fCoordinates.fX"   
+	    title="Muon Vtx X"   labely="Number of Events" labelx="X_v" units="cm" 
+	    level="2" description="X Position where the muon appears to have originated (cm)" />
+
+      <leaf id="12"  name="vertex_.fCoordinates.fY"   
+	    title="Muon Vtx Y"   labely="Number of Events" labelx="Y_v" units="cm" 
+	    level="2" description="Y Position where the muon appears to have originated (cm)" />
+
+      <leaf id="13"  name="vertex_.fCoordinates.fZ"   
+	    title="Muon Vtx Z"   labely="Number of Events" labelx="Z_v" units="cm" 
+	    level="2" description="Z Position where the muon appears to have originated (cm)"/>
     </branch>
-    <branch id="3" name="recoCompositeCandidates_ZCandidates__PAT.obj" level="0">
-      <leaf id="12" name="mass_" title="Mass" labely="Number of Events" labelx="M_ee (GeV/c^2)" level="0" description="Invarient mass calculated from the two most energetic electrons in each event (GeV/c^2)"/>
+
+    <branch id="3"  name="patPhotons_cleanLayer1Photons__PAT.obj" level="0">
+
+      <leaf id="14"  name="pt_"
+	    title="Photon P_t"   labely="Number of Events" labelx="P_t" units="GeV/c" 
+	    level="0" description="Transverse momentum of the photons (GeV/c)" />
+
+      <leaf id="15"  name="showerShapeBlock_.e3x3"       
+	    title="Photon Energy"   labely="Number of Events" labelx="E_p" units="GeV" 
+            level="0" description="Energy of the photons (GeV)"/>
+
+      <leaf id="16"  name="eta_"                      
+	    title="Photon Eta"   labely="Number of Events" labelx="Eta" units="" level="1" 
+	    description="Psuedorapidity of the photons. eta = -ln[tan(theta/2)] where theta is the pitch angle (angle between the momentum vector and the z-axis)"/>
+
+      <leaf id="17"  name="phi_"
+            title="Photon Phi"   labely="Number of Events" labelx="Phi" units="rad" 
+	    level="1" description="Phi (rotation angle in the X-Y plane) of the photons (rad)"/>
+
+      <leaf id="18" name="vertex_.fCoordinates.fX"   
+	    title="Photon Vtx X"   labely="Number of Events" labelx="X_v" units="cm" 
+	    level="2" description="X Position where the photon appears to have originated (cm)"/>
+
+      <leaf id="19" name="vertex_.fCoordinates.fY"   
+	    title="Photon Vtx Y"   labely="Number of Events" labelx="Y_v" units="cm" 
+	    level="2" description="Y Position where the photon appears to have originated (cm)"/>
+
+      <leaf id="20" name="vertex_.fCoordinates.fZ"   
+	    title="Photon Vtx Z"   labely="Number of Events" labelx="Z_v" units="cm" 
+	    level="2" description="Z Position where the photon seems to have originated (cm)"/>
     </branch>
+
+    <branch id="4" name="recoCompositeCandidates_ZtoeeCands__PAT.obj" level="0">
+      <leaf id="21" name="mass_" title="DiElectron Mass" labely="Number of Events" labelx="M_ee" units="GeV/c^2" level="0" 
+                    description="Invarient mass calculated from the two most energetic electrons in each event (GeV/c^2)"/>
+    </branch>
+
+    <branch id="5" name="recoCompositeCandidates_ZtomumuCands__PAT.obj" level="0">
+      <leaf id="22" name="mass_" title="DiMuon Mass" labely="Number of Events" labelx="M_mumu" units="GeV/c^2" level="0" 
+                    description="Invarient mass calculated from the two most energetic muons in each event (GeV/c^2)"/>
+    </branch>
+
   </tree>
 </root>

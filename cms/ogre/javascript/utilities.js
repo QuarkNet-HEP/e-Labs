@@ -45,8 +45,6 @@ function createSessionID() {
 	setCookie('sessionID',sessionID);
     }
 
-    alert(sessionID);
-
     return sessionID;
 }
 
@@ -59,9 +57,22 @@ function init(sID) {
     // See if this browser is accepting cookies...
     var hasCookies = testCookies();
 
-    if ( hasCookies ) {
+    // See if we can get a hold of the session ID
+    if ( sID ) {                 // Was it passed in to us?
+	sessionID = sID;
+
+    } else if ( hasCookies ) {   // Maybe stored in a cookie?
 	// Grab hold of the session ID... assuming that it's there
 	sessionID = getCookie('sessionID');
+
+    } else if ( document.location.href.indexOf('sessionID') > -1 ) { // In the URL?
+	var whereami = document.location.href;
+	var temp = whereami.split('?')[1];
+	var temp1 = temp.split('&');
+	for ( var i=0; i<temp1.length; i++ ) {
+	    if ( temp1[i].indexOf('sessionID') > -1 )
+		sessionID = temp1[i].split('=')[1];
+	}
     }
 
     if ( !sessionID ) { // If it ain't there ... we'll have to make our own
@@ -90,8 +101,8 @@ function init(sID) {
 	message = xmlHttp.responseText;
     }
     mesParsed = message.split(":",15);
-
     userLevel = parseInt(mesParsed[1]);
+
     ds = mesParsed[2];
     changeDataset(ds);
     document.getElementById("themes").value = mesParsed[3];
@@ -788,11 +799,10 @@ function simpleMenuLevel(level) {
     }
     var backgroundImg = document.getElementById("bkgImg");
 
-    //if ( !backgroundImg ) {
-    //backgroundImg = document.getElementById("bkgImgieDiv");
-    //} else {
-    backgroundImg.src = source;
-    //}
+    if ( browser.isIE && browser.ieVer < 7 )
+	document.getElementById("bkgImgieDiv").src = source;
+    else
+	backgroundImg.src = source;
 
     // Sync the two level selectors... control window & footer
     document.getElementById('userLevelBtm').selectedIndex = level;

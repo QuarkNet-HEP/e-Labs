@@ -45,7 +45,7 @@ sub new () {
   $cmdl_hash->{logZ}       = 0;     # Z-axis log style (boolean)
   $cmdl_hash->{width}      = 800;   # How wide is the graphic (unsigned int)
   $cmdl_hash->{height}     = 600;   # How tall is the graphic (unsigned int)
-  $cmdl_hash->{allonone}   = 0;     # Slap everything on one plot? (unimplemented) (boolean)
+  $cmdl_hash->{stacked}    = 0;     # Use ROOTs' TStack for histograms.. fails with scatter plots
   $cmdl_hash->{DEBUG}      = 0;     # Print out gobs of useless verbosity? (boolean)
   $cmdl_hash->{type}       = "png"; # What type of graphic should we return? (string: png, jpg, or eps)
 
@@ -89,7 +89,7 @@ sub new () {
 	     'logx|x'          => \$cmdl_hash->{logX},
 	     'logy|y'          => \$cmdl_hash->{logY},
 	     'logz|z'          => \$cmdl_hash->{logZ},
-	     'allonone|a'      => \$cmdl_hash->{allonone},
+	     'stacked|a'       => \$cmdl_hash->{stacked},
 	     'type|T=s'        => \$cmdl_hash->{type},
 	     'width|w=i'       => \$cmdl_hash->{width},
 	     'height|h=i'      => \$cmdl_hash->{height},

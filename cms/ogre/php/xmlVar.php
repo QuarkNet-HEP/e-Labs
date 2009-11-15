@@ -86,10 +86,11 @@ for($i=0; $i<count($i_ar['tree']); $i++) {
 
 	    // Dump out the leaf for the drag and drop frame
             echo "        <div class=\"vDragBox1\" history=\"History1\" ";
-            echo "name=\"{$d_ar[$j]['attributes']['name']}\"";
+#            echo "name=\"{$d_ar[$j]['attributes']['name']}\"";
+	    echo "name='leaf'";
             echo " id=\"leaf{$d_ar[$j]['attributes']['id']}";
             echo "\" overClass=\"OvervDragBox1\" dragClass=\"vDragDragBox1\" ";
-	    echo "onMouseOver='javascript:Tip(\"{$d_ar[$j]['attributes']['description']}\");'";
+	    echo "onMouseOver='javascript:showvarsToolTip(\"{$d_ar[$j]['attributes']['description']}\");'";
 	    echo "onMouseOut='javascript:UnTip();'>";
             echo "{$d_ar[$j]['attributes']['title']}</div>\n";
 	  }
@@ -101,10 +102,11 @@ for($i=0; $i<count($i_ar['tree']); $i++) {
 
 	    // Dump out the leaf for the drag and drop frame
 	    echo "        <div class=\"vDragBox1\" history=\"History1\" ";
-	    echo "name=\"{$d_ar[$j]['attributes']['name']}\" ";
+#	    echo "name=\"{$d_ar[$j]['attributes']['name']}\" ";
+	    echo "name='formula'";
             echo "id=\"formula{$d_ar[$j]['attributes']['id']}\"";
 	    echo "\" overClass=\"OvervDragBox1\" dragClass=\"vDragDragBox1\" ";
-	    echo "onMouseOver='javascript:Tip(\"{$d_ar[$j]['attributes']['description']}\");' ";
+	    echo "onMouseOver='javascript:showvarsToolTip(\"{$d_ar[$j]['attributes']['description']}\");' ";
             echo "onMouseOut='javascript:UnTip();'>";
 	    echo " {$d_ar[$j]['attributes']['title']}</div>\n";
 	  }

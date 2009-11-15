@@ -116,6 +116,9 @@ for ( my $i=0; $i<=$#oldCutValues; $i++ ) {
 ################### Reset the cuts using the database ###################
 my $mysql = new MySQL();
 
+# Get the dataset the user is working with for annotating the image later on
+my $dataset = $mysql->getUserDataSet($sessionID);
+
 my $selection;
 if ( $mysql->applySavedCuts($sessionID) ) {
     $selection = $mysql->getSelection($sessionID);
@@ -226,8 +229,8 @@ for (my $i=2; $i<=$#output; $i++) {
   }
 }
 
-my $width  = $appletData->{'width'};
-my $height = $appletData->{'height'};
+my $width  = ($appletData->{'width'})  ? $appletData->{'width'}  : 640;
+my $height = ($appletData->{'height'}) ? $appletData->{'height'} : 480;
 
 ### Open the node map & get the relationship between the population nodes
 my $filename = "$path/nodemap";
@@ -287,43 +290,39 @@ close(CUTS);
 ################################# Massage the image a bit ##############################################
 my $image=Image::Magick->new;
 my $imageFile = "$path/$newPng.$type";
-$image->Read("$type:$imageFile");
+my $err;
 
-my $baseDir = $ogreXML->getOgreParam('baseDir');
-my $draft = Image::Magick->new;
-$draft->Read("png:$baseDir/graphics/draft.png");
+$err = $image->Read("$type:$imageFile");
 
-# Scale the "draft" image to the correct size
-if ( $width != 640 ) {
-    $draft->Scale(width=>$width, height=>$height);
+if ( !$image || $err ) {    # ROOT failed....
+    $image=Image::Magick->new;
+
+    my $geom = $width . 'x' . $height;
+    $err = $image->Set(size=>"$geom");
+    warn $err if $err;
+
+    $err = $image->ReadImage('xc:white');
+    warn $err if $err;
+
+    $geom = "+" . int(0.2*$width) . "+" . int($height/2);
+    $err = $image->Annotate(font=>'Generic.ttf', pointsize=>64,
+			    fill=>'lightgray', stroke=>'black', strokewidth=>1,
+			    geometry=>$geom,text=>"No Results!");
+    warn $err if $err;
 }
+
+# Slap up disclaimers and so on right onto the graphic file
+my $isData;
+if ( $dataset =~ /mc/ ) {
+    $isData = 0;
+} else {
+    $isData = 1;
+}
+annotateImage($width, $height, $image, $isData);
 
 # Get the width/height from the image since ROOT 
 # tends to shrink by 6% or so
 ($width,$height) = $image->Get('width','height');
-
-# Alter the image file with dislaimers & such
-my $err;
-
-# If we've got multiple plots.... put on a key
-if ( -e "$path/key" ) {
-    open (KEY, "<$path/key");
-    my @keys = <KEY>;
-    close(KEY);
-
-    my $vertPos = 100;
-    foreach my $key (@keys) {
-	my ($plotTitle, $color) = split(/,/,$key);
-	
-	$err = $image->Annotate(font=>'Generic.ttf', pointsize=>'16',
-				fill=>$color, text=>$plotTitle,
-				scale=>'1', y=>$vertPos, x=>0.667*$width);
-        warn $err if $err;
-        $vertPos += 20;
-    }
-}
-$err = $image->Composite(image=>$draft);
-warn $err if $err;
 
 $image->Write("$type:$imageFile");
 ##########################################################################################################
@@ -337,5 +336,161 @@ my $html = new html($width, $height,  $tmpDir,
 $html->makeActivePage("temp.$activeNode.html", $index, $appletData);
 $html->makeHistoryPage($cutList, $activeNode, $plot, @nodeList);
 $html->redirectPage("temp.$activeNode.html");
+
+#
+### Routine for annotating the plot *before* it gets to
+### the user... that way the disclaimers are there and
+### difficult to remove with PhotShop/Gimp/etc
+#
+sub annotateImage {
+    my ($width, $height, $image, $isData) = @_;
+
+    ### Numericals.....
+    my $geom;
+    my $angle = -34;
+    my $size;
+
+    if ( $width == 640 ) {
+	$geom  = '+70+440';
+	$size  = 140;
+    } elsif ( $width == 800 ) {
+	$geom  = '+90+550';
+	$size  = 175;
+    } elsif ( $width == 1024 ) {
+	$geom = '+120+720';
+	$size = 230;
+    } elsif ( $width == 1280 ) {
+	$geom = '+160+930';
+	$size = 290;
+    } elsif ( $width == 1600 ) {
+	$geom = '+200+1150';
+	$size = 360;
+    }
+    
+    # Alter the image file with dislaimers & such
+    my $err;
+    my $text;
+
+    if ( $isData ) {
+	$text = "Preliminary";
+	$size = int(0.95*$size);
+    } else {
+	$text = "Simulation";
+    }
+
+    $err = $image->Annotate(font=>'Generic.ttf', pointsize=>$size,
+			    fill=>'none', stroke=>'lightgray', strokewidth=>1,
+			    rotate=>$angle, geometry=>$geom,
+			    text=>$text);
+    warn $err if $err;
+
+    if ( $width == 640 ) {
+	$geom = '+75+75';
+	$size = 18;
+    } elsif ( $width == 800 ) {
+	$geom = '+100+90';
+	$size = 20;
+    } elsif ( $width == 1024 ) {
+	$geom = '+120+100';
+	$size = 24;
+    } elsif ( $width == 1280 ) {
+	$geom = '+160+130';
+	$size = 28;
+    } elsif ( $width == 1600 ) {
+	$geom = '+180+150';
+	$size = 36;
+    }
+
+    $err = $image->Annotate(font=>'Generic.ttf', pointsize=>$size,
+			    fill=>'purple', geometry=>$geom,
+			    text=>'Data courtesy the CMS Experiment Educational Data Stream');
+    warn $err if $err;
+
+    if ( $width == 640 ) {
+	$geom = '+70+445';
+	$size = 24;
+    } elsif ( $width == 800 ) {
+	$geom = '+100+565';
+	$size = 26;
+    } elsif ( $width == 1024 ) {
+	$geom = '+120+720';
+	$size = 24;
+    } elsif ( $width == 1280 ) {
+	$geom = '+160+980';
+	$size = 28;
+    } elsif ( $width == 1600 ) {
+	$geom = '+180+1140';
+	$size = 36;
+    }
+    
+    $err = $image->Annotate(font=>'Generic.ttf', pointsize=>$size,
+			    fill=>'red', geometry=>$geom,
+			    text=>'http://cms.cern.ch/');
+    warn $err if $err;
+
+    # If we've got multiple plots.... put on a key
+    if ( -e "$path/key" ) {
+	open (KEY, "<$path/key");
+	my @keys = <KEY>;
+	close(KEY);
+
+	my $vertPos;
+
+	if ( $width == 640 ) {
+	    $vertPos = 100;
+	    $geom = '+' . int(0.667*$width) . '+' . $vertPos;
+	    $size = 16;
+	} elsif ( $width == 800 ) {
+	    $vertPos = 120;
+	    $geom = '+' . int(0.7*$width) . '+' . $vertPos;
+	    $size = 18;
+	} elsif ( $width == 1024 ) {
+	    $vertPos = 140;
+	    $geom = '+' . int(0.75*$width) . '+' . $vertPos;
+	    $size = 20;
+	} elsif ( $width == 1280 ) {
+	    $vertPos = 180;
+	    $geom = '+' . int(0.75*$width) . '+' . $vertPos;
+	    $size = 24;
+	} elsif ( $width == 1600 ) {
+	    $vertPos = 200;
+	    $geom = '+' . int(0.75*$width) . '+' . $vertPos;
+	    $size = 28;
+	}
+
+	foreach my $key (@keys) {
+	    my ($plotTitle, $color) = split(/,/,$key);
+	    chomp($plotTitle);
+	    chomp($color);
+
+	    my $stroke = $color;
+	    if ( $color eq 'none' ) {
+		$stroke = 'black';
+	    }
+
+	    $err = $image->Annotate(font=>'Generic.ttf', pointsize=>$size,
+				    fill=>$color, stroke=>$stroke, strokewidth=>1,
+				    text=>$plotTitle,geometry=>$geom);
+	    warn $err if $err;
+
+	    if ( $width == 640 ) {
+		$vertPos += 20;
+		$geom = '+' . int(0.667*$width) . '+' . $vertPos;
+	    } elsif ( $width == 800 ) {
+		$vertPos += 20;
+		$geom = '+' . int(0.7*$width) . '+' . $vertPos;
+	    } elsif ( $width == 1024 ) {
+		$vertPos += 20;
+		$geom = '+' . int(0.75*$width) . '+' . $vertPos;
+	    } elsif ( $width == 1280 ) {
+		$vertPos += 30;
+		$geom = '+' . int(0.75*$width) . '+' . $vertPos;
+	    } elsif ( $width == 1600 ) {
+		$vertPos += 30;
+		$geom = '+' . int(0.75*$width) . '+' . $vertPos;
+	    }
+	}
+    }
+}
 
 exit 0;

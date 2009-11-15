@@ -7,6 +7,7 @@ use CGI;
 use Cwd;
 use MySQL;
 use cmdLine;
+use parseOps;
 use Data::Dumper;
 
 # define what happens what we instantiate a new instance of this class
@@ -179,15 +180,25 @@ sub procCGI {
   }
 
   # Decide which variables we're plotting, and how
-  my @leaves = $query->param("leaf");
+  @temp = $query->param("leaf");              # Get the request leaves to plot
+  my $parser = new parseOps(@temp);           # Create a parser to deal with math operations
+
+  my @leaves  = $parser->extractLeaves();     # Extract the individual leaf numbers (for ogreXML)
 
   my $leafmask = 0;
   for ( my $i=0; $i<=$#leaves; $i++ ) {
-    $leafmask = $leafmask + (1<<($leaves[$i]-1));
+      if ( $leaves[$i] =~ /\d+/ ) {
+	  $leafmask = $leafmask + (1<<($leaves[$i]-1));
+      }
   }
+
   if ( $leafmask ) {
     $cgi_hash{leaves} = $leafmask;
   }
+
+  @leaves = $parser->parse();                 # Now parse the full request and save it for when we get the ROOT names
+  ($#leaves > -1) ? $cgi_hash{leafOps} = \@leaves : ();
+
 
   my @formula = $query->param("formula");
   my $formmask = 0;
@@ -301,12 +312,9 @@ sub procCGI {
   $cgi_hash{width}  = ($query->param("gWidth"))  ? $query->param("gWidth")   : 800;
   $cgi_hash{height} = ($query->param("gHeight")) ? $query->param("gHeight")  : 600;
 
-  # If there are many plots, should they be superimposed?
-  $cgi_hash{allonone} = ($query->param("allonone")) ? $query->param("allonone") : 0;
-
-  # For the graphical cuts... we can only deal with one histogram, if 
-  # there are many plots force them to be stacked onto one plot
-  $cgi_hash{allonone} = ($#leaves>1 || $#formula > 1 || $#leaves+$#formula>1) ? 1 : $cgi_hash{'allonone'};
+  # Plots are automagically stacked... but scatter plots don't work with ROOTs' TStack
+  # So for scatter plots we have to do a few different things
+  $cgi_hash{stacked} = ($query->param("stacked")) ? $query->param("stacked") : 0;
 
   # Should we save the raw data?
   $cgi_hash{savedata} = ($query->param("savedata")) ? $query->param("savedata") : 0;
@@ -315,15 +323,29 @@ sub procCGI {
   $cgi_hash{type} = ($query->param("type")) ? $query->param("type") : "png";
 
   # Get the histogram fill colors
-  my @colors = $query->param("color");;
+  my @colors = $query->param("color");
 
-  # for the leaves...
-#  my @colorList = $query->param("color");
-#  for ( my $i=0; $i<=$#colorList; $i++ ) {
-#    if ( $leafmask & (1<<$i) ) {
-#      $colors[++$#colors] = $colorList[$i];
-#    }
-#  }
+  # Consolidate the colors.... If there are more colors than
+  # plots (easily possible since there could be many quantities that
+  # go into a single plot now), arbitrarily take the first color 
+  # as the color for the plot
+  if ( $#colors > $#leaves ) {
+      my $temp;
+      my $colormap;
+      my $j=0;
+      for ( my $i=0; $i<=$#leaves; $i++ ) {
+	  $temp = $leaves[$i];
+	  while ( $temp =~ /leaf/ ) {
+	      $temp =~ s/leaf/none/;
+	      $colormap .= "$colors[$j++],";
+	  }
+	  ($colors[$i]) = split(/,/, $colormap);
+	  $colormap = "";
+      }
+      for ( my $i=$#colors; $i>$#leaves; $i-- ) {
+	  pop(@colors);
+      }
+  }
 
   # And formula...
   my @colorfList = $query->param("colorf");

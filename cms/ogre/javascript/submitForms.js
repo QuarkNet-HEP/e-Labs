@@ -29,10 +29,23 @@ function submitForm(thisForm) {
 	finalize.value = 0;
     }
 
+    // Encode the cuts for transmission to the server
+    var submitCuts = newCut;
+    submitCuts = submitCuts.replace(/\+/g, "%2B");
+    submitCuts = submitCuts.replace(/\*/g, "%2A");
+    submitCuts = submitCuts.replace(/\//g, "%2F");
+    submitCuts = submitCuts.replace(/\)/g, "%29");
+    submitCuts = submitCuts.replace(/\(/g, "%28");
+    submitCuts = submitCuts.replace(/\:/g, "%3A");
+    submitCuts = submitCuts.replace(/\|/g, "%7C");
+    submitCuts = submitCuts.replace(/\>/g, "%3E");
+    submitCuts = submitCuts.replace(/\</g, "%3C");
+    submitCuts = submitCuts.replace(/\&/g, "%26");
+
     // Build an AJAX request to update the cuts in the database
     var xmlHttp = createXMLHttp();
     var request = baseURL + '/asp/updateCuts.asp?sessionID='+sessionID+
-	'&selection='+newCut.replace(/&/g,"%26");
+	'&selection='+submitCuts;
 
     xmlHttp.open("GET",request,false); // synchronus request
     xmlHttp.send(null);

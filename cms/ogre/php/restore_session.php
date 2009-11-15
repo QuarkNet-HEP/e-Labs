@@ -17,6 +17,7 @@ if ( !isset($path) ) {
 if ( !isset($path) ) {
   exit;
 }
+//error_log("Restoring session $sessionID");
 
 function root2hex($rColor) {
 

@@ -37,12 +37,22 @@
    }
 
   // If we're restoring a previous session state... do it here
-  if ( isset($_GET['restore']) ) {
+  if ( isset($_COOKIE['sessionID']) ) {
+    $sessionID = $_COOKIE['sessionID'];
+    $path = "tmp/$sessionID/url";
+    //error_log("Trying to restore from $path");
+
+    if ( file_exists($path) ) {
+      include "php/restore_session.php";
+    }
+  } else if ( isset($_GET['restore']) ) {
     $path = $_GET['restore'];
     if ( isset($path) ) {
       include 'php/restore_session.php';
     }
-  }
+  } //else {
+    //error_log("Unable to find anything to retore from");
+//}
 
   if ( !isset($user) ) {
     if ( isset($_GET['user']) ) {
@@ -71,10 +81,13 @@
 
 	div.stdContent {
           overflow:hidden;
-          /*overflow-x:hidden;
-          overflow-y:auto; 
-          padding-bottom:15px;*/
         }
+	button#gotoVars, button#gotoCntl {
+	  bottom: -0.5em;
+        }
+        DragContainer9 {
+	  margin-left: 1px;
+	}
     </style>
     <![endif]-->
   </head>
