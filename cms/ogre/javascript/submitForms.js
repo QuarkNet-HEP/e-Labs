@@ -17,6 +17,13 @@ function submitForm(thisForm) {
 
     thisForm.appendChild(unit);
 
+    var plotType = document.createElement('INPUT');
+    plotType.name = 'plotType';
+    plotType.type = 'hidden';
+    plotType.value = document.forms['hiddenInput'].plType.value;
+
+    thisForm.appendChild(plotType);
+
     var sID   = document.createElement('INPUT');
     sID.name  = 'sessionID';
     sID.type  = 'hidden';
@@ -51,7 +58,7 @@ function submitForm(thisForm) {
     xmlHttp.send(null);
 
     thisForm.submit();
-    return true;
+    return false;
 }
 
 function setCuts(s) {

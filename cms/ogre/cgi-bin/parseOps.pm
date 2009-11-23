@@ -80,4 +80,27 @@ sub extractLeaves {           # Ignore the operations and just extract the leaf 
     return @leaves;
 }
 
+# If there's a | seperator, delete the associated color
+# since that'll screw things up when we build the colormap
+sub correctColors {
+    my ($self, @colors) = @_;
+    my @leaves = @{$self->{_temp}};
+    my @tempColors = ();
+
+    for ( my $i=0; $i<=$#leaves; $i++ ) {
+	if ( $leaves[$i] =~ /\d+/ ) {
+	    push(@tempColors, $colors[$i]);
+	}
+    }
+
+    return @tempColors;
+}
+
+
+sub dumpLeaves {
+    my ($self) = @_;
+    print join(" ", @{$self->{_temp}}), "\n";
+    return;
+}
+
 return 1;

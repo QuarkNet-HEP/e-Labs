@@ -310,7 +310,7 @@ function submitGetData(thisForm) {
     plots.length = 0;
     color.length = 0;
 
-    var nostack = false;
+    var stack   = true;  // Shall we use the TStack class in ROOT?
 
     while ( child ) {
 	ele = null;
@@ -330,7 +330,7 @@ function submitGetData(thisForm) {
 		ele.value = child.getAttribute('value');
 
 	    if ( ele.value.indexOf(':') > -1 )
-		nostack = true;
+		stack = false;
 
 	    thisForm.appendChild(ele);
 
@@ -350,11 +350,12 @@ function submitGetData(thisForm) {
  	alert("Nothing to plot. :O\nBailing out now while there's still time.");
 	return false;
  
-    } else if ( nostack ) { // send the signal not to use the TStack
+    } else {
 	ele = document.createElement('input');
 	ele.type  = 'hidden';
 	ele.name  = 'stacked';
-	ele.value = 0;
+	ele.id    = 'stacked';
+	ele.value = (stack) ? 1 : 0;
 	thisForm.appendChild(ele);
     }
 

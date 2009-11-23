@@ -11,29 +11,30 @@ use population;
 
 sub new {
   my ($class, $width, $height, $tmpdir, $random, $type, $stacked, $path, 
-      $urlPath, $verbose, $histVisible, $logX, $logY, $units, @leaves) = @_;
+      $urlPath, $verbose, $histVisible, $logX, $logY, $units, $plotType, @leaves) = @_;
 
   my $xml = new ogreXML();
   my $baseURL = $xml->getOgreParam('urlPath');
   my $baseDir = $xml->getOgreParam('baseDir');
 
   my $self = { 
-    _width   => $width,
-    _height  => $height,
-    _tmpdir  => $tmpdir,
-    _random  => $random,
-    _type    => $type,
-    _stacked => $stacked,
-    _path    => $path,
-    _urlPath => $urlPath,
-    _verbose => $verbose,
-    _hVisble => $histVisible,
-    _logx    => $logX,
-    _logy    => $logY,
-    _units   => $units,
-    _leaves  => \@leaves,
-    _baseURL => $baseURL,
-    _baseDir => $baseDir
+    _width    => $width,
+    _height   => $height,
+    _tmpdir   => $tmpdir,
+    _random   => $random,
+    _type     => $type,
+    _stacked  => $stacked,
+    _path     => $path,
+    _urlPath  => $urlPath,
+    _verbose  => $verbose,
+    _hVisble  => $histVisible,
+    _logx     => $logX,
+    _logy     => $logY,
+    _units    => $units,
+    _leaves   => \@leaves,
+    _baseURL  => $baseURL,
+    _baseDir  => $baseDir,
+    _plotType => $plotType
 	
   };
   bless $self, $class;
@@ -489,27 +490,36 @@ sub makeHistoryPage {
 sub makeActivePage(\$ \%) {
     my ($self, $newFile, $version, $appletData) = @_;
 
-    my $tmpdir  = $self->{_tmpdir};
-    my $random  = $self->{_random};
-    my $type    = $self->{_type};
-    my $stacked = $self->{_stacked};
-    my @leaves  = @{$self->{_leaves}};
-    my $logx    = $self->{_logx};
-    my $logy    = $self->{_logy};
-    my $units   = $self->{_units};
-    my $baseURL = $self->{_baseURL};
+    my $tmpdir   = $self->{_tmpdir};
+    my $random   = $self->{_random};
+    my $type     = $self->{_type};
+    my $stacked  = $self->{_stacked};
+    my @leaves   = @{$self->{_leaves}};
+    my $logx     = $self->{_logx};
+    my $logy     = $self->{_logy};
+    my $units    = $self->{_units};
+    my $baseURL  = $self->{_baseURL};
+    my $plotType = $self->{_plotType};
 
     my $ver = sprintf("%03i", $version);
 
     my $width   = ($appletData->{'width'})  ? $appletData->{'width'}  : 640;
     my $height  = ($appletData->{'height'}) ? $appletData->{'height'} : 480;
     my $file    = ($appletData->{'file'})   ? $appletData->{'file'}   : "canvas.$ver.$type";
+
     my $xmin    = ($appletData->{'xmin'})   ? $appletData->{'xmin'}   : 0;
     my $xmax    = ($appletData->{'xmax'})   ? $appletData->{'xmax'}   : $width;
-    my $pmin    = ($appletData->{'pmin'})   ? $appletData->{'pmin'}   : 0;
-    my $pmax    = ($appletData->{'pmax'})   ? $appletData->{'pmax'}   : $width;
+#    my $pxmin   = ($appletData->{'pxmin'})  ? $appletData->{'pxmin'}   : 0;
+#    my $pxmax   = ($appletData->{'pxmax'})  ? $appletData->{'pxmax'}   : $width;
     my $Xcst    = ($appletData->{'Xcst'})   ? $appletData->{'Xcst'}   : 1;
     my $X2px    = ($appletData->{'X2px'})   ? $appletData->{'X2px'}   : 1;
+
+    my $ymin    = ($appletData->{'ymin'})   ? $appletData->{'ymin'}   : 0;
+    my $ymax    = ($appletData->{'ymax'})   ? $appletData->{'ymax'}   : $height;
+#    my $pymin   = ($appletData->{'pymin'})  ? $appletData->{'pymin'}   : 0;
+#    my $pymax   = ($appletData->{'pymax'})  ? $appletData->{'pymax'}   : $height;
+    my $Ycst    = ($appletData->{'Ycst'})   ? $appletData->{'Ycst'}   : 1;
+    my $Y2px    = ($appletData->{'Y2px'})   ? $appletData->{'Y2px'}   : 1;
 
     my $hHeight = $self->{_histHeight};
     my $hWidth  = $self->{_histWidth};
@@ -528,15 +538,36 @@ sub makeActivePage(\$ \%) {
     print $fileHandle "    <meta HTTP-EQUIV=\"CACHE-CONTROL\" CONTENT=\"NO-CACHE\">\n";
     print $fileHandle "    <meta HTTP-EQUIV=\"PRAGMA\"        CONTENT=\"NO-CACHE\">\n";
     print $fileHandle "    <title>OGRE Selection</title>\n";
-    print $fileHandle "    <link rel=\"stylesheet\" type=\"text/css\" href=\"$baseURL/stylesheets/linearCut.css\"/>\n";
+    print $fileHandle "    <link rel=\"stylesheet\" type=\"text/css\" href=\"$baseURL/stylesheets/selection.css\"/>\n";
     print $fileHandle "    <link rel=\"shortcut icon\" href=\"$baseURL/graphics/ogre.icon.png\" type=\"image/x-icon\" />\n";
 
     print $fileHandle "    <script>\n";
     print $fileHandle "      var cuts='";
-    print $fileHandle "$leaves[0]>$xmin&&$leaves[0]<$xmax";
-    for ( my $i=1; $i<=$#leaves; $i++ ) {
-	print $fileHandle "&&$leaves[$i]>$xmin&&$leaves[$i]<$xmax";
+
+    if ( $plotType == 1 ) {
+	print $fileHandle "$leaves[0]>$xmin&&$leaves[0]<$xmax";
+    } elsif ( $plotType == 2 ) {
+	if ( $leaves[0] =~ /:/ ) {
+	    my @temp = split(/:/, $leaves[0]);
+	    print $fileHandle "$temp[0]>$xmin&&$temp[1]>$ymin&&$temp[0]<$xmax&&$temp[1]<$ymax";
+	} else {
+	    print $fileHandle "$leaves[0]>$xmin&&$leaves[0]<$xmax";
+	}
     }
+
+    for ( my $i=1; $i<=$#leaves; $i++ ) {
+	if ( $plotType == 1 ) {
+	    print $fileHandle ",$leaves[$i]>$xmin&&$leaves[$i]<$xmax";
+	} elsif ( $plotType == 2 ) {
+	    if ( $leaves[$i] =~ /:/ ) {
+		my @temp = split(/:/, $leaves[$i]);
+		print $fileHandle ",$temp[0]>$xmin&&$temp[1]>$ymin&&$temp[0]<$xmax&&$temp[1]<$ymax";
+	    } else {
+		print $fileHandle ",$leaves[$i]>$xmin&&$leaves[$i]<$xmax";
+	    }
+	}
+    }
+
     print $fileHandle "';\n";
     print $fileHandle "      var sessionID ='";
 
@@ -552,7 +583,7 @@ sub makeActivePage(\$ \%) {
     print $fileHandle "      var appendTip  = 'Append the current selection to the selection from \"My Cuts\"';\n";
     print $fileHandle "      var clearTip   = 'Clear the selection criteria from \"My Cuts\"';\n";
     print $fileHandle "    </script>\n";
-    print $fileHandle "    <script type=\"Text/JavaScript\" src=\"$baseURL/javascript/linearCut.js\"></script>\n";
+    print $fileHandle "    <script type=\"Text/JavaScript\" src=\"$baseURL/javascript/selection.js\"></script>\n";
     print $fileHandle "    <script type=\"Text/JavaScript\" src=\"$baseURL/javascript/jsWindowlet.js\"></script>\n";
 
     print $fileHandle "  </head>\n\n";
@@ -567,25 +598,37 @@ sub makeActivePage(\$ \%) {
 
     print $fileHandle "    <div class='header' id='header'>\n";
     print $fileHandle "      <div id='buttonWrapperTop'>\n";
-    print $fileHandle "    	<input type=SUBMIT   class='button' value='Apply Selection'   onClick='javascript:submitForm(document.forms[\"recut\"]);'/>\n";
+    print $fileHandle "    	<input type=SUBMIT   class='button' value='Apply Selection'   onClick='javascript:submitForm(document.forms[\"recut\"]);'";
+    if ( $plotType > 2 ) {
+	print $fileHandle " disabled='true'";
+    }
+    print $fileHandle "/>\n";
+
     print $fileHandle "    	<input type=BUTTON   class='button' value='Save Current Work' onClick='javascript:archiveStudy(document.forms[\"recut\"]);'/>\n";
     print $fileHandle "    	<input type=BUTTON   class='button' value='Finalize Study'    onClick='javascript:finalizeStudy(document.forms[\"recut\"]);'/>\n\n";
 
-    print $fileHandle "    	<input type=BUTTON   class='rbutton' value='Clear'   onClick='javascript:clearCuts();'\n";
-    print $fileHandle "    	  onMouseOver='javascript:Tip(clearTip);' onMouseOut='javascript:UnTip();'/>\n";
-    print $fileHandle "    	<input type=BUTTON   class='rbutton' value='Append'  onClick='javascript:appendCuts();'\n";
-    print $fileHandle "    	  onMouseOver='javascript:Tip(appendTip);' onMouseOut='javascript:UnTip();'/>\n";
-    print $fileHandle "    	<input type=BUTTON   class='rbutton' value='Replace' onClick='javascript:replaceCuts();'\n";
-    print $fileHandle "    	  onMouseOver='javascript:Tip(replaceTip);' onMouseOut='javascript:UnTip();'/>\n";
-    print $fileHandle "    	<h4 class='hdrTxt'>Selection:&nbsp;</h4>\n\n";
-
+    if ( $plotType == 1 || $plotType == 2 ) {
+	print $fileHandle "    	<input type=BUTTON   class='rbutton' value='Clear'   onClick='javascript:clearCuts();'\n";
+	print $fileHandle "    	  onMouseOver='javascript:Tip(clearTip);' onMouseOut='javascript:UnTip();'/>\n";
+	print $fileHandle "    	<input type=BUTTON   class='rbutton' value='Append'  onClick='javascript:appendCuts();'\n";
+	print $fileHandle "    	  onMouseOver='javascript:Tip(appendTip);' onMouseOut='javascript:UnTip();'/>\n";
+	print $fileHandle "    	<input type=BUTTON   class='rbutton' value='Replace' onClick='javascript:replaceCuts();'\n";
+	print $fileHandle "    	  onMouseOver='javascript:Tip(replaceTip);' onMouseOut='javascript:UnTip();'/>\n";
+	print $fileHandle "    	<h4 class='hdrTxt'>Selection:&nbsp;</h4>\n\n";
+    }
     print $fileHandle "       </div>\n";
     print $fileHandle "     </div> <!-- End of header div -->\n";
 
     print $fileHandle "    <div id='controls'>\n";
     print $fileHandle "      <form  method=POST action='$baseURL/cgi-bin/applyLinearCut.pl.cgi' id='recut'>\n";
-    print $fileHandle "        <input type='hidden' name='cutMin'/>\n";
-    print $fileHandle "        <input type='hidden' name='cutMax'/>\n";
+    print $fileHandle "        <input type='hidden' name='cutXMin'/>\n";
+    print $fileHandle "        <input type='hidden' name='cutXMax'/>\n";
+
+    if ( $plotType == 2 ) {
+	print $fileHandle "        <input type='hidden' name='cutYMin'/>\n";
+	print $fileHandle "        <input type='hidden' name='cutYMax'/>\n";
+    }
+
     print $fileHandle "        <input type='hidden' name='directory' value='$random'/>\n";
     print $fileHandle "        <input type='hidden' name='version'   value='$version'/>\n";
     print $fileHandle "        <input type='hidden' name='stacked'   value='$stacked'/>\n";
@@ -593,14 +636,18 @@ sub makeActivePage(\$ \%) {
     print $fileHandle "        <input type='hidden' name='archive'   value='0'/>\n";
     print $fileHandle "        <input type='hidden' name='finalize'  value='0'/>\n\n";
 
-    print $fileHandle "        <input type=SUBMIT   class='button' value='Apply Selection'   onClick='javascript:submitForm(this.form);'/>\n";
+    print $fileHandle "        <input type=SUBMIT   class='button' value='Apply Selection'   onClick='javascript:submitForm(this.form);'";
+    if ( $plotType > 2 ) {
+	print $fileHandle " disabled='true'";
+    }
+    print $fileHandle "/>\n";
+
     print $fileHandle "        <input type=BUTTON   class='button' value='Save Current Work' onClick='javascript:archiveStudy(this.form);'/>\n";
     print $fileHandle "        <input type=BUTTON   class='button' value='Finalize Study'    onClick='javascript:finalizeStudy(this.form);'/>\n";
     print $fileHandle "      </form>\n\n";
 
     print $fileHandle "      <br><br><hr width=100%><br>\n";
 
-#    print $fileHandle "      <input type=BUTTON class='button' value='Clear Saved Cuts'  onClick='javascript:clearCuts();'/>\n";
     print $fileHandle "      <input type=BUTTON class='button' value='Selection History' onClick='javascript:hstWin.show();'/>\n\n";
     print $fileHandle "      <input type=BUTTON class='button' value='Show Graph'        onClick='javascript:cutWin.show();'/>\n";
 
@@ -614,13 +661,15 @@ sub makeActivePage(\$ \%) {
 
     print $fileHandle "      <br><br><hr width=100%><br>\n\n";
 
-    print $fileHandle "    	<h4 class='winTxt'>Selection:&nbsp;&nbsp;</h4>\n";
-    print $fileHandle "    	<input type=BUTTON   class='button' value='Append'  onClick='javascript:appendCuts();'\n";
-    print $fileHandle "    	  onMouseOver='javascript:Tip(appendTip);' onMouseOut='javascript:UnTip();'/>\n";
-    print $fileHandle "    	<input type=BUTTON   class='button' value='Replace' onClick='javascript:replaceCuts();'\n";
-    print $fileHandle "    	  onMouseOver='javascript:Tip(replaceTip);' onMouseOut='javascript:UnTip();'/>\n";
-    print $fileHandle "    	<input type=BUTTON   class='button' value='Clear'   onClick='javascript:clearCuts();'\n";
-    print $fileHandle "    	  onMouseOver='javascript:Tip(clearTip);' onMouseOut='javascript:UnTip();'/>\n\n";
+    if ( $plotType == 1 || $plotType == 2 ) {
+	print $fileHandle "    	<h4 class='winTxt'>Selection:&nbsp;&nbsp;</h4>\n";
+	print $fileHandle "    	<input type=BUTTON   class='button' value='Append'  onClick='javascript:appendCuts();'\n";
+	print $fileHandle "    	  onMouseOver='javascript:Tip(appendTip);' onMouseOut='javascript:UnTip();'/>\n";
+	print $fileHandle "    	<input type=BUTTON   class='button' value='Replace' onClick='javascript:replaceCuts();'\n";
+	print $fileHandle "    	  onMouseOver='javascript:Tip(replaceTip);' onMouseOut='javascript:UnTip();'/>\n";
+	print $fileHandle "    	<input type=BUTTON   class='button' value='Clear'   onClick='javascript:clearCuts();'\n";
+	print $fileHandle "    	  onMouseOver='javascript:Tip(clearTip);' onMouseOut='javascript:UnTip();'/>\n\n";
+    }
 
     print $fileHandle "    	<br><br><hr class='bottomLine' width=100%><br>\n\n";
 
@@ -637,13 +686,23 @@ sub makeActivePage(\$ \%) {
 
     print $fileHandle "     <form name='hiddenInput' id='hiddenInput'>\n";
     print $fileHandle "      <input type='hidden' name='width'  value='$width'/>\n";
-    print $fileHandle "      <input type='hidden' name='height' value='$height'/>\n";
+    print $fileHandle "      <input type='hidden' name='height' value='$height'/>\n\n";
+
     print $fileHandle "      <input type='hidden' name='xmin'   value='$xmin'/>\n";
     print $fileHandle "      <input type='hidden' name='xmax'   value='$xmax'/>\n";
-    print $fileHandle "      <input type='hidden' name='pmin'   value='$pmin'/>\n";
-    print $fileHandle "      <input type='hidden' name='pmax'   value='$pmax'/>\n";
+#    print $fileHandle "      <input type='hidden' name='pxmin'  value='$pxmin'/>\n";
+#    print $fileHandle "      <input type='hidden' name='pxmax'  value='$pxmax'/>\n";
     print $fileHandle "      <input type='hidden' name='Xcst'   value='$Xcst'/>\n";
-    print $fileHandle "      <input type='hidden' name='X2px'   value='$X2px'/>\n";
+    print $fileHandle "      <input type='hidden' name='X2px'   value='$X2px'/>\n\n";
+
+    print $fileHandle "      <input type='hidden' name='ymin'   value='$ymin'/>\n";
+    print $fileHandle "      <input type='hidden' name='ymax'   value='$ymax'/>\n";
+#    print $fileHandle "      <input type='hidden' name='pymin'   value='$pymin'/>\n";
+#    print $fileHandle "      <input type='hidden' name='pymax'   value='$pymax'/>\n";
+    print $fileHandle "      <input type='hidden' name='Ycst'   value='$Ycst'/>\n";
+    print $fileHandle "      <input type='hidden' name='Y2px'   value='$Y2px'/>\n\n";
+
+    print $fileHandle "      <input type='hidden' name='plType' value='$plotType'/>\n";
     print $fileHandle "      <input type='hidden' name='logX'   value='$self->{_logx}'/>\n";
     print $fileHandle "      <input type='hidden' name='logY'   value='$self->{_logy}'/>\n";
     print $fileHandle "      <input type='hidden' name='units'  value='$units'/>\n";

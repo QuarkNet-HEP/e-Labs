@@ -16,11 +16,11 @@
     <trigger name="signal" id="sig" description="Simulated Z Signal events"   level="0"/>
     <trigger name="backgd" id="bkg" description="Simulated Background events" level="0"/>
 
-    <trigger name="ee"     id="ee"   description="Di-electron events"  level="1"/>
-    <trigger name="mumu"   id="uu"   description="Di-muon events"      level="1"/>
-    <trigger name="tautau" id="tt"   description="Tau-Tau events"      level="1"/>
-    <trigger name="enu"    id="enu"  description="electron+MET events" level="1"/>
-    <trigger name="munu"   id="munu" description="muon+MET events"     level="1"/>
+    <trigger name="ee"     id="ee"   description="Di-electron events"  level="0"/>
+    <trigger name="mumu"   id="uu"   description="Di-muon events"      level="0"/>
+    <trigger name="tautau" id="tt"   description="Tau-Tau events"      level="0"/>
+    <trigger name="enu"    id="enu"  description="electron+MET events" level="0"/>
+    <trigger name="munu"   id="munu" description="muon+MET events"     level="0"/>
 
   </triggers>
 
@@ -45,15 +45,15 @@
 
       <leaf id="5"  name="vertex_.fCoordinates.fX"   
 	    title="Electron Vtx X"   labely="Number of Events" labelx="X_v" units="cm" 
-	    level="2" description="X Position where the electron appears to have originated (cm)" />
+	    level="0" description="X Position where the electron appears to have originated (cm)" />
 
       <leaf id="6"  name="vertex_.fCoordinates.fY"   
 	    title="Electron Vtx Y"   labely="Number of Events" labelx="Y_v" units="cm" 
-	    level="2" description="Y Position where the electron appears to have originated (cm)" />
+	    level="0" description="Y Position where the electron appears to have originated (cm)" />
 
       <leaf id="7"  name="vertex_.fCoordinates.fZ"   
 	    title="Electron Vtx Z"   labely="Number of Events" labelx="Z_v" units="cm" 
-	    level="2" description="Z Position where the electron appears to have originated (cm)"/>
+	    level="0" description="Z Position where the electron appears to have originated (cm)"/>
     </branch>
 
     <branch id="2"  name="patMuons_cleanLayer1Muons__PAT.obj" level="0">

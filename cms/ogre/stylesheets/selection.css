@@ -112,3 +112,71 @@ div#menu {
     float:right;
     bottom:24px;
 }
+
+div#graph {
+    position: absolute;
+}
+
+img#image {
+    position: absolute;
+    top: 0px;
+    left: 10px;
+}
+div.text {
+    position: absolute;
+    width: 99%;
+    height: 90%;
+}
+
+h2 {
+    color: #00cc00;
+    text-align: center;
+    font-size: 1.25em;
+    padding: 0px;
+    margin: 0px;
+}
+
+div#alertdiv {
+    position: absolute;
+    top: 5.5em;
+    left: 2em;
+    z-index: 5;
+    display: none;
+    background: url("../graphics/white3.png") no-repeat;
+    width: 656px;
+    height: 360px;
+    overflow: hidden;
+}
+
+div#alerttext {
+    position:relative;
+    width:48em;
+    margin: 25% 25%;
+    font-size: 3em;
+    color: #00ff00;
+}
+div#hist {
+    position: absolute;
+    display: block;
+}
+
+form {
+    position:fixed;
+    top:0em;
+    left:1%;
+    z-index: 5;
+}
+
+h5, h6 {
+    position: fixed;
+    cursor: pointer;
+    top: -1.5em;
+    right: 1%;
+    z-index: 5;
+    color: #0000ff;
+}
+
+.clicker {
+    cursor:pointer;
+    color:blue;
+}

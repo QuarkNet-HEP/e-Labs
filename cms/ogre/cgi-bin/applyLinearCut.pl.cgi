@@ -18,13 +18,16 @@ my $archiveStudy = $query->param('archive');
 my $finishStudy  = $query->param('finalize');
 my $dir          = $query->param('directory');
 my $prev         = $query->param('version');
-my $min          = $query->param('cutMin');
-my $max          = $query->param('cutMax');
+my $xmin         = $query->param('cutXMin');
+my $xmax         = $query->param('cutXMax');
+my $ymin         = $query->param('cutYMin');
+my $ymax         = $query->param('cutYMax');
 my $type         = $query->param('type');
 my $stacked      = $query->param('stacked');
 my $histVisible  = $query->param('historyVisible');
 my $units        = $query->param('units');
 my $sessionID    = $query->param('sessionID');
+my $plotType     = $query->param('plotType');
 
 # Grab hold of some of the global stuff we'll be needin
 my $ogreXML      = new ogreXML();
@@ -65,7 +68,7 @@ $path = "$tmpDir/$dir";
 
 my $index = 0;
 
-if ( !$min && !$max ) {
+if ( !$xmin && !$xmax ) {
   warn "AAAAAAARRRRRRGGGGGGG! Where'd our cuts go!?!\n";
 }
 
@@ -220,12 +223,21 @@ for (my $i=2; $i<=$#output; $i++) {
     case "file"   { $appletData->{'file'}   = $temp[1]};
     case "width"  { $appletData->{'width'}  = $temp[1]};
     case "height" { $appletData->{'height'} = $temp[1]};
+
     case "xmin"   { $appletData->{'xmin'}   = $temp[1]};
     case "xmax"   { $appletData->{'xmax'}   = $temp[1]};
-    case "pmin"   { $appletData->{'pmin'}   = $temp[1]};
-    case "pmax"   { $appletData->{'pmax'}   = $temp[1]};
+#    case "pxmin"  { $appletData->{'pxmin'}  = $temp[1]};
+#    case "pxmax"  { $appletData->{'pxmax'}  = $temp[1]};
     case "Xcst"   { $appletData->{'Xcst'}   = $temp[1]};
     case "X2px"   { $appletData->{'X2px'}   = $temp[1]};
+
+    case "ymin"   { $appletData->{'ymin'}   = $temp[1]};
+    case "ymax"   { $appletData->{'ymax'}   = $temp[1]};
+#    case "pymin"  { $appletData->{'pymin'}  = $temp[1]};
+#    case "pymax"  { $appletData->{'pymax'}  = $temp[1]};
+    case "Ycst"   { $appletData->{'Ycst'}   = $temp[1]};
+    case "Y2px"   { $appletData->{'Y2px'}   = $temp[1]};
+
   }
 }
 
@@ -273,17 +285,44 @@ foreach my $line (@temp) {
 }
 
 # Add in the current cut...
-$cutList->{$activeNode} = {
-			base => $cutList->{'000'}->{'base'},
-			min  => $min,
-			max  => $max
-		       };
+if ( $plotType == 1 ) {
+    $cutList->{$activeNode} = {
+	base => $cutList->{'000'}->{'base'},
+	xmin  => $xmin,
+	xmax  => $xmax
+    };
+} elsif ( $plotType == 2 ) {
+        $cutList->{$activeNode} = {
+	base => $cutList->{'000'}->{'base'},
+	xmin  => $xmin,
+	xmax  => $xmax,
+	ymin  => $ymin,
+	ymax  => $ymax
+    };
+} else {
+        $cutList->{$activeNode} = {
+	base => $cutList->{'000'}->{'base'},
+	xmin  => 0,
+	xmax  => 0,
+	};
+}
+
 # And record it in the cut history
 open(CUTS, ">>$cutFile");
 if ( $cutList->{'000'}->{'base'} ) {
-    printf(CUTS "%03i,%s,%.0f,%.0f\n", $activeNode, $cutList->{'000'}->{'base'}, $min, $max);
+    printf(CUTS "%03i,%s,%.0f,%.0f", $activeNode, $cutList->{'000'}->{'base'}, $xmin, $xmax);
+    if ( $plotType == 2 ) {
+	printf(CUTS ",%.0f,%.0f\n", $ymin, $ymax);
+    } else {
+	printf(CUTS "\n");
+    }
 } else {
-    printf(CUTS "%03i,,%.0f,%.0f\n", $activeNode, $min, $max);
+    printf(CUTS "%03i,,%.0f,%.0f", $activeNode, $xmin, $xmax);
+    if ( $plotType == 2 ) {
+	printf(CUTS ",%.0f,%.0f\n", $ymin, $ymax);
+    } else {
+	printf(CUTS "\n");
+    }
 }
 close(CUTS);
 
@@ -330,7 +369,8 @@ $image->Write("$type:$imageFile");
 my $html = new html($width, $height,  $tmpDir, 
                     $dir,   $type,    $stacked, 
                     $path,  $urlPath, 0, $histVisible,
-                    $logx,  $logy,    $units, @plotList);
+                    $logx,  $logy,    $units, $plotType,
+		    @plotList);
 
 # (re)Make the pages the user will need... and redirect the browser to it
 $html->makeActivePage("temp.$activeNode.html", $index, $appletData);

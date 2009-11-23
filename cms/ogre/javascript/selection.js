@@ -27,6 +27,11 @@ var dragDiv;
 var xmin   = 0;
 var xmax   = 0;
 var startX = 0;
+
+var ymin   = 0;
+var ymax   = 0;
+var startY = 0;
+
 var width  = 0;
 var height = 0;
 var dragging = false;
@@ -36,13 +41,25 @@ var newCut;
 // Constants for converting graph units to pixels 
 var graphXmin;
 var graphXmax;
+var graphYmin;
+var graphYmax;
 var X0;
 var Y0;
+
+var Xmin, Xmax, Ymin, Ymax;
+
 var mouseOffSet;
 var pixel2X;
 var pixel2Xk;
+var pixel2Y;
+var pixel2Yk;
+
 var units = new String();
 var logx = false;
+var logy = false;
+var range = {x:0, y:0};
+
+var plotType = 0;
 
 // Objects that will hold the windowlets...
 var browser = new Object();
@@ -51,11 +68,11 @@ var hlpWin  = new Object();
 var hstWin  = new Object();
 var ctlHlp  = new Object();
 
-// Define the work path for the menu
-var dmWorkPath   = baseURL + "/javascript/menu/";
-
 /*-- Get the position of the cursor sanely for everyone --*/
 function getMousePosition(e) {
+
+    if ( plotType != 1 && plotType != 2 )
+	return {x:0,y:0};
 
     var coords = {x:0, y:0};
     if (!e) var e = window.event;
@@ -98,40 +115,49 @@ Math.round3 = function(arg) {
     return Math.round(1000*arg)/1000;
 }
 
-var range = 0.0;
-
 /*-- Convert pixel values to plot values --*/
 function pixel2plot(pixel) {
 
-    var a = 1;//0.993;
+    var a = 1;
     var pos = 0.0;
+    var coords = {x:0, y:0};
 
     if ( logx )
-	pos = eval(Math.pow(10,a*pixel2Xk + a*pixel2X*(pixel - X0)));
+	coords.x = eval(Math.pow(10,a*pixel2Xk + a*pixel2X*(pixel.x - X0)));
     else
-	pos = eval(a*pixel2Xk + a*pixel2X*(pixel - X0));
+	coords.x = eval(a*pixel2Xk + a*pixel2X*(pixel.x - X0));
 
-    if ( range < 25 )
-	return Math.round3(pos);
-    else if ( range < 50 )
-	return Math.round2(pos);
-    else return Math.round(pos);
-}
+    // Since y starts low at the top and increases as you go down the page
+    // flip the axis to match what we'll be getting from the mouse
+    pixel.y = Ymin + Ymax - pixel.y;
 
-/*-- And backwards from plot to pixel --*/
-function plot2pixel(plot) {
-
-    var a = 1;//1.0067;
-    plot = (logx && plot <= 0) ? 0.465 : plot;
-
-    if ( logx )
-	return Math.round( eval( X0 + (a*Math.log10(plot) - pixel2Xk)/(pixel2X) ) );
+    if ( logy )
+	coords.y = eval(Math.pow(10,pixel2Yk - pixel2Y*pixel.y));
     else
-	return Math.round( eval( X0 + Math.round( (a*plot - pixel2Xk)/pixel2X) ) );
-    
+	coords.y = eval(pixel2Yk - pixel2Y*pixel.y);
+
+    if ( range.x < 25 )
+	coords.x = Math.round3(coords.x);
+    else if ( range.x < 50 )
+	coords.x = Math.round2(coords.x);
+    else
+	coords.x = Math.round(coords.x);
+
+    if ( range.y < 25 ) 
+	coords.y = Math.round3(coords.y);
+    else if ( range.y < 50 )
+	coords.y = Math.round2(coords.y);
+    else
+	coords.y = Math.round(coords.y);
+
+    return coords;
 }
 
 function mouseTrap (event) {
+
+    if ( plotType != 1 && plotType != 2 )
+	return false;
+
     dragDiv = (!dragDiv) ? document.getElementById("graph") : dragDiv;
     if ( !dragDiv )
 	alert("Can't find dragDiv!");
@@ -146,6 +172,9 @@ function mouseTrap (event) {
 }
 
 function mouseRelease() {
+    if ( plotType != 1 && plotType != 2 )
+	return false;
+
     if ( browser.isIE )
 	document.detachEvent("onmousemove", select);
     else
@@ -160,11 +189,11 @@ function clearSelection(event) {
 	coords = getMousePosition(event);
 	if ( !isActive(coords.x, coords.y) ) {
 	    jg.clear();
-	    xmin=xmax=startX=plot2pixel(graphXmin) - 10;
+	    xmin=xmax=startX=Xmin-10;
 	}
     } else {
 	jg.clear();
-	xmin=xmax=startX=plot2pixel(graphXmin) - 10;
+	xmin=xmax=startX=Xmin-10;
     }
 
     selection = "";
@@ -172,10 +201,24 @@ function clearSelection(event) {
 }
 
 function isActive(x, y) {
+    var coords = {x:x, y:y};
+    var place  = {x:0, y:0};
+
     try {
-	if ( y > Ymin && y < Ymax && pixel2plot(x) > graphXmin && pixel2plot(x) < graphXmax)
-	    return true;
-	else
+	place = pixel2plot(coords);
+
+	if ( plotType == 1 ) {
+	    if ( y > Ymin && y < Ymax && place.x > graphXmin && place.x < graphXmax)
+		return true;
+	    else
+		return false;
+
+	} else if ( plotType == 2 ) {
+	    if ( place.y > graphYmin && place.y < graphYmax && place.x > graphXmin && place.x < graphXmax )
+		return true;
+	    else
+		return false;
+	} else
 	    return false;
     } catch (e) {return false;}
 }
@@ -194,10 +237,17 @@ function startDrag(event) {
  	event.preventDefault();
     }
 
-    startX = xmin = xmax = getMousePosition(event).x - mouseOffSet;
+    startX = xmin = xmax = getMousePosition(event).x - mouseOffSet.x;
+    startY = ymin = ymax = getMousePosition(event).y - mouseOffSet.y;
 
-    var plotX = pixel2plot(xmin);
+    var plotX = pixel2plot(xmin).x;
     if ( plotX > graphXmax || plotX < graphXmin ) {
+	dragging = false;
+	return false;
+    }
+
+    var plotY = pixel2plot(ymin).y;
+    if ( plotY > graphYmax || plotY < graphYmin ) {
 	dragging = false;
 	return false;
     }
@@ -210,6 +260,12 @@ function startDrag(event) {
 
 function stopDrag(event) {
 
+    if ( !dragging )
+	return;
+
+    if ( plotType != 1 && plotType != 2 )
+	return false;
+
     var button;
     if (event)
 	button = event.button || event.which;
@@ -221,83 +277,178 @@ function stopDrag(event) {
 
     dragging = false;
 
+    var coordsHi = {x:xmax-mouseOffSet.x, y:ymin};
+    coordsHi = pixel2plot(coordsHi);
+
+    var coordsLo = {x:xmin, y:ymax-mouseOffSet.y};
+    coordsLo = pixel2plot(coordsLo);
+
+    var xunits = units.split(':')[0];
+    var yunits = units.split(':')[1];
+
     // Show the user what (s)he's done....
-    selection = "Selected ("+pixel2plot(xmin)+" "+units+", "+
-	pixel2plot(xmax-mouseOffSet)+" "+units+")";
+    if ( plotType == 1 )
+	selection = 'Selected (' + coordsLo.x + ' ' + xunits + ', ' + coordsHi.x + ' ' + xunits + ')';
+    else
+	selection = 'Selected [(' + coordsLo.x + ' ' + xunits + ', ' + coordsLo.y + ' ' + yunits + '), ('
+	    + coordsHi.x + ' ' + xunits + ', ' + coordsHi.y + ' ' + yunits + ')]';
 
     // And record the cuts...
-    try {
-	document.forms["recut"].cutMin.value = pixel2plot(xmin);
-	document.forms["recut"].cutMax.value = pixel2plot(xmax-mouseOffSet);
-    } catch (e) {
-	document.forms["recut"].cutXMin.value = pixel2plot(xmin);
-	document.forms["recut"].cutXMax.value = pixel2plot(xmax-mouseOffSet);
+    document.forms["recut"].cutXMin.value = coordsLo.x;
+    document.forms["recut"].cutXMax.value = coordsHi.x;
+    if ( plotType == 2 ) {
+	document.forms["recut"].cutYMin.value = coordsLo.y;
+	document.forms["recut"].cutYMax.value = coordsHi.y;
     }
 
-    if ( xmin != xmax-mouseOffSet ) {
-	var lo;
-	var hi;
-	var temp = cuts.split('&&');
-	for ( var i=0; i<temp.length; i++ ) {
-	    if ( temp[i].indexOf('>') > -1 )   // Min cut
-		lo = '>' + temp[i].split('>')[1];
-	    else if ( temp[i].indexOf('<') )   // Max cut
-		hi = '<' + temp[i].split('<')[1];
+    var temp = new Array();
+    var currentSelection;
+
+    if ( plotType == 1 ) {
+
+	newCut = "";
+	var selections = cuts.split(',');
+
+	for ( var j=0; j<selections.length; j++ ) {
+	    temp = selections[j].split('&&');
+
+	    for ( var i=0; i<temp.length; i++ ) {
+
+		if ( temp[i].indexOf('>') > -1 ) {  // x-axis lower bound
+		    currentSelection = temp[i].split('>')[1];
+		    temp[i] = temp[i].replace(currentSelection, coordsLo.x);
+
+		} else {                            // x-axis upper bound
+
+		    currentSelection = temp[i].split('\<')[1];
+		    temp[i] = temp[i].replace(currentSelection, coordsHi.x);
+
+		}
+	    }
+
+	    if ( j == 0 ) 
+		newCut = temp.join("&&");
+	    else
+		newCut += "," + temp.join("&&");
+
+	    temp = new Array();
 	}
 
-	newCut = cuts.replace(new RegExp(lo,"g"), '>'+pixel2plot(xmin));
-	newCut = newCut.replace(new RegExp(hi,"g"),'<'+pixel2plot(xmax-mouseOffSet));
-    }
 
+    } else if ( plotType ==2 ) {   // Cuts are in the page x vs y for scatter plots (type 2) 
+
+	newCut = "";
+	var selections = cuts.split(',');
+
+	for ( var j=0; j<selections.length; j++ ) {
+	    temp = selections[j].split('&&');
+
+	    for ( var i=0; i<temp.length; i++ ) {
+
+		if ( !(i%2) ) {                         // x-axis
+
+		    if ( temp[i].indexOf('>') > -1 ) {  // x-axis lower bound
+			currentSelection = temp[i].split('>')[1];
+			temp[i] = temp[i].replace(currentSelection, coordsLo.x);
+
+		    } else {                            // x-axis upper bound
+
+			currentSelection = temp[i].split('\<')[1];
+			temp[i] = temp[i].replace(currentSelection, coordsHi.x);
+
+		    }
+		
+		} else {                                // y-axis
+
+		    if ( temp[i].indexOf('>') > -1 ) {  // y-axis lower bound
+
+			currentSelection = temp[i].split('>')[1];
+			temp[i] = temp[i].replace(currentSelection, coordsLo.y);
+
+		    } else {                            // y-axis upper bound
+
+			currentSelection = temp[i].split('\<')[1];
+			temp[i] = temp[i].replace(currentSelection, coordsHi.y);
+
+		    }
+		}
+
+	    }
+	    
+	    if ( j == 0 )
+		newCut = temp.join("&&");
+	    else
+		newCut += "," + temp.join("&&");
+
+	    temp = new Array();
+	}
+    }
+  
     return;
 }
 
 function select(event) {
 
+    if ( plotType != 1 && plotType != 2 )
+	return false;
+
     var coords = {x:0, y:0};
     coords = getMousePosition(event);
-    var x = eval(coords.x - mouseOffSet);
-    var y = coords.y;
-
-    var temp = parseInt(coords.x) - parseInt(mouseOffSet);
+    var x = eval(coords.x - mouseOffSet.x);
+    var y = eval(coords.y - mouseOffSet.y);
 
     var selOpacity = 0.25;
     var rejOpacity = 0.20;
 
     if ( !isActive(x,y) )
 	return false;
+    
+    var xunits = units.split(':')[0];
+    var yunits = units.split(':')[1];
+    var coordsHi = {x:0,y:0};
+    var coordsLo = {x:0,y:0};
 
     jg.clear();
 
     if ( dragging ) {
 
+	// Get the current mouse coordinates, and convert them from pixels to plot units
+	coordsHi = {x:(startX<x)?startX:x, y:(startY<y)?y:startY};
+	coordsHi = pixel2plot(coordsHi);
+
+	coordsLo = {x:(startX<x)?x:startX, y:(startY<y)?startY:y};
+	coordsLo = pixel2plot(coordsLo);
+
 	/*-- put the current selection on the status bar --*/
-	selection = '(' + pixel2plot( (startX < x) ? startX : x) + ' ' + units + ', ' +
-	    pixel2plot( (startX < x) ? x : startX) + ' ' + units + ')';
+	if ( plotType == 1 ) {
+	    selection = '(' + coordsHi.x + ' ' + xunits + ', ' + coordsLo.x + ' ' + xunits + ')';
+	} else {
+	    selection = '[(' + coordsHi.x + ' ' + xunits + ', ' + coordsHi.y + ' ' + yunits + '), ('
+		+ coordsLo.x + ' ' + xunits + ', ' + coordsLo.y + ' ' + yunits + ')]';
+	}
+
+	/*-- Fade out the graph... --*/
+	jg.setColor('#aaaaaa');
+	jg.fillRect(Xmin, Ymin, Math.abs(Xmax-Xmin), Math.abs(Ymax-Ymin), rejOpacity);
 
 	/*-- Highlight the selected region --*/
 	jg.setColor('#ffff00');
-	jg.fillRect( (startX<x)?startX:x, Ymin, Math.abs(startX-x), Ymax-Ymin, selOpacity);
 
-	/*-- And fade out the rest of the graph --*/
+	if ( plotType == 1 )
+	    jg.fillRect( (startX<x)?startX:x, Ymin, Math.abs(startX-x), Math.abs(Ymax-Ymin), selOpacity);
+	else
+	    jg.fillRect( (startX<x)?startX:x, (startY<y)?startY:y, 
+			 Math.abs(startX-x), Math.abs(startY-y), selOpacity);
+
+    } else if ( xmin > Xmin ) {
 	jg.setColor('#aaaaaa');
+	jg.fillRect(Xmin, Ymin, Math.abs(Xmax-Xmin), Math.abs(Ymax-Ymin), rejOpacity);
 
-	if ( startX < x ) {
-	    jg.fillRect(plot2pixel(graphXmin), Ymin, 
-			startX - plot2pixel(graphXmin), Ymax-Ymin, rejOpacity);
-	    jg.fillRect(x, Ymin, plot2pixel(graphXmax) - x, Ymax - Ymin, rejOpacity);
-	} else {
-	    jg.fillRect(plot2pixel(graphXmin), Ymin, 
-			x - plot2pixel(graphXmin), Ymax-Ymin, rejOpacity);
-	    jg.fillRect(startX, Ymin, plot2pixel(graphXmax) - startX, Ymax-Ymin, rejOpacity);
-	}
-    } else if ( xmin > plot2pixel( graphXmin) ) {
 	jg.setColor('#ffff00');
-	jg.fillRect( xmin, Ymin, xmax-xmin-mouseOffSet, Ymax-Ymin, selOpacity);
-
-	jg.setColor('#aaaaaa');
-	jg.fillRect(plot2pixel(graphXmin), Ymin, xmin - plot2pixel(graphXmin), Ymax-Ymin, rejOpacity);
-	jg.fillRect(xmax-mouseOffSet, Ymin, plot2pixel(graphXmax)-xmax+mouseOffSet, Ymax-Ymin, rejOpacity);
+	if ( plotType == 1 )
+	    jg.fillRect( xmin, Ymin, Math.abs(xmax-xmin-mouseOffSet.x), Math.abs(Ymax-Ymin), selOpacity);
+	else
+	    jg.fillRect(xmin, ymin, Math.abs(xmax-xmin-mouseOffSet.x), Math.abs(ymax-ymin-mouseOffSet.y), selOpacity);
     }
 
     if ( useDragDrop ) {
@@ -305,21 +456,42 @@ function select(event) {
 	jg.setColor('#ff0000');
 	jg.drawLine(x,Ymax,x,Ymin);
 
-	var position = pixel2plot(x);
+	if ( plotType == 2 )
+	    jg.drawLine(Xmin, y, Xmax, y);
+
+	var position = {x:x, y:y};
+	position = pixel2plot(position);
 	var plotRange = graphXmax - graphXmin;
 	if ( plotRange < 25 )
-	    position = Math.round3(position);
+	    position.x = Math.round3(position.x);
 	else if ( plotRange < 50 )
-	    position = Math.round2(position);
+	    position.x = Math.round2(position.x);
 	else
-	    position = Math.round(position);
+	    position.x = Math.round(position.x);
 
-	jg.drawString(position+" "+units, x+15,y-50);
+	if ( plotType == 2 ) {
+	    plotRange = graphYmax - graphYmin;
+	    if ( plotRange < 25 )
+		position.y = Math.round3(position.y);
+	    else if ( plotRange < 50 )
+		position.y = Math.round2(position.y);
+	    else
+		position.y = Math.round(position.y);
+	}
+
+	var label  = position.x+" "+xunits;
+	if ( plotType == 2 ) {
+	    label = '(' + label;
+	    label += ', '+position.y+" "+yunits+")";
+	}
+
+	jg.drawString(label, x+10,y-20);
+	
     }
 
     // Put up the current selection
     jg.setColor('#ff0000');
-    jg.drawString(selection,width/2.5,Ymin-18);
+    jg.drawString(selection,width/3,Ymin-18);
 
     jg.paint();
 
@@ -327,9 +499,20 @@ function select(event) {
     if ( dragging ) {
 	xmin = (startX < x) ? startX : x;
 	xmax = (startX < x) ? x : startX;
-	xmax += mouseOffSet;
+	xmax += mouseOffSet.x;
 
-	range = pixel2plot(xmax) - pixel2plot(xmin);
+	ymin = (startY < y) ? startY : y;
+	ymax = (startY < y) ? y : startY;
+	ymax += mouseOffSet.y;
+
+	coordsHi = {x:xmax,y:ymin};
+	coordsLo = {x:xmin,y:ymax};
+
+	coordsHi = pixel2plot(coordsHi);
+	coordsLo = pixel2plot(coordsLo);
+
+	range.x = coordsHi.x - coordsLo.x;
+	range.y = coordsHi.y - coordsLo.y;
     }
 
     return true;
@@ -345,7 +528,7 @@ function onMouseClick(event) {
 
     var coords = {x:0, y:0};
     coords = getMousePosition(event);
-    var x = eval(coords.x);// - mouseOffSet);
+    var x = coords.x;
     var y = coords.y;
 
     if ( !click1 ) {
@@ -369,11 +552,11 @@ function onMouseClick(event) {
 	    coords = getMousePosition(event);
 	    if ( !isActive(coords.x, coords.y) ) {
 		jg.clear();
-		xmin=xmax=startX=plot2pixel(graphXmin) - 10;
+		xmin=xmax=startX=Xmin-10;
 	    }
 	} else {
 	    jg.clear();
-	    xmin=xmax=startX=plot2pixel(graphXmin) - 10;
+	    xmin=xmax=startX=Xmin-10;
 	}
 
 	selection = "";
@@ -396,13 +579,6 @@ function pageLoad() {
     var mesParsed;
     var i;
 
-    /*
-     * States: 0 == The request is not initialized
-     *         1 == The request has been set up
-     *         2 == The request has been sent
-     *         3 == The request is in process
-     *         4 == The request is complete
-     */
     // Request coordinates from the server
     var request = baseURL + "/asp/Burrito.asp?sessid=" + sessionID + "&iotype=retrieve";
 
@@ -453,7 +629,6 @@ function pageLoad() {
     ctlWin.make(document.getElementById('controls'), 'stdWin', 
 		'OGRE Controls');
     ctlWin.setMinTop(25);
-    //ctlWin.show();
 
     ctlHlp = new jsWindowlet(xmlTheme);
     ctlHlp.make(document.getElementById('ctlHlp'), 'hlpWin', 
@@ -468,7 +643,6 @@ function pageLoad() {
     hlpWin.setMinTop(35);
 
     cutWin.bind('archHelp', hlpWin);
-    //cutWin.show();
 
     // Now then.... let's see what it is we're supposed to be showing...
     if ( userLevel < 2 ) {
@@ -489,7 +663,7 @@ function pageLoad() {
    // Offset of the graph on the page
     X0    = 11;
     Y0    = 0;
-    mouseOffSet = 32;
+    mouseOffSet = {x:32, y:41};
 
     // Get the scale factors
     try {
@@ -499,9 +673,20 @@ function pageLoad() {
 	var scaleX = 1;
     }
 
-    // Xmin/Xmax of the graph in pixels
+    try {
+	var h = document.hiddenInput.height.value;
+	var scaleY = eval(h/height);
+    } catch(e) {
+	var scaleY = 1;
+    }
+
+    // Xmin/Xmax of the graph in graph units
     graphXmin = document.hiddenInput.xmin.value;
     graphXmax = document.hiddenInput.xmax.value;
+
+    // Ymin/Ymax of the graph in graph units
+    graphYmin = document.hiddenInput.ymin.value;
+    graphYmax = document.hiddenInput.ymax.value;
 
     // Ymin/Ymax of the graph in pixels
     Ymin = Y0 + Math.round(eval(0.105*height)) - 2;
@@ -511,16 +696,20 @@ function pageLoad() {
     pixel2X  = eval(scaleX*document.hiddenInput.X2px.value);
     pixel2Xk = document.hiddenInput.Xcst.value;
 
+    // Pixel-to-Y conversion parameters
+    pixel2Y  = document.hiddenInput.Y2px.value;
+    pixel2Yk = document.hiddenInput.Ycst.value;
+
+    // Xmin/Xmax of the graph in pixels
+    Xmin = X0 + Math.round(eval(0.0975*width));
+    Xmax = X0 + Math.round(eval(0.8975*width));
+
+    ///////////////////////////// Windowlet popping ///////////////////////
     var hist = new Object();
     try {
 	hist = document.getElementById("hist");
 	hist.style.opacity = 1.0;
     } catch (e) {;}
-
-    /*
-    if ( cuts )
-	sendState("selection", cuts.replace(/&/g,"%26"), true, true);
-    */
 
     // load the history page into a div
     var xmlHttp=createXMLHttp();
@@ -589,8 +778,9 @@ function pageLoad() {
     // Grab the plot units from the page...
     units = document.hiddenInput.units.value;
 
-    // And see if this is a logX plot...
+    // And see if this is a log-log or semi-log plot...
     logx = (document.hiddenInput.logX.value == 0) ? false : true;
+    logy = (document.hiddenInput.logY.value == 0) ? false : true;
 
     // Finally... bind over the mouse moves & clicks & whatnot to the histogram
     var graphics = document.getElementById('graph');
@@ -604,7 +794,16 @@ function pageLoad() {
 	graphics.onclick     = onMouseClick;
 
     // And set the page range for reporting significant digits
-    range = graphXmax - graphXmin;
+    range.x = graphXmax - graphXmin;
+    range.y = graphYmax - graphYmin;
+
+    // And find out the type of plot we've got... 1 => histogram, 2=> scatter plot
+    plotType = document.hiddenInput.plType.value;
+
+    // If plotType != 1||2... then we're not doing selection at all...
+    // So inhibit all the buttons which deal with selections
+    //if ( plotType != 1 && plotType != 2 ) {;}
+
 
     return;
 }
@@ -693,7 +892,7 @@ function clearCuts() {
 
 function replaceCuts() {
     if ( newCut )
-	sendState("replaceCut", newCut.replace(/&/g,"%26"), true, true);
+	sendState("replaceCut", escapeCuts(newCut), true, true);
     else
 	alert("No selection defined!");
     return true;
@@ -701,8 +900,22 @@ function replaceCuts() {
 
 function appendCuts() {
     if ( newCut )
-	sendState("appendCut", newCut.replace(/&/g,"%26"), false, true);
+	sendState("appendCut", escapeCuts(newCut), false, true);
     else
 	alert("No selection defined!");
     return true;
+}
+
+function escapeCuts(submitCuts) {
+    submitCuts = submitCuts.replace(/\+/g, "%2B");
+    submitCuts = submitCuts.replace(/\*/g, "%2A");
+    submitCuts = submitCuts.replace(/\//g, "%2F");
+    submitCuts = submitCuts.replace(/\)/g, "%29");
+    submitCuts = submitCuts.replace(/\(/g, "%28");
+    submitCuts = submitCuts.replace(/\:/g, "%3A");
+    submitCuts = submitCuts.replace(/\|/g, "%7C");
+    submitCuts = submitCuts.replace(/\>/g, "%3E");
+    submitCuts = submitCuts.replace(/\</g, "%3C");
+    submitCuts = submitCuts.replace(/\&/g, "%26");
+    return submitCuts;
 }

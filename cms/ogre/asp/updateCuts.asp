@@ -24,24 +24,32 @@ my %mysql_data = ();
 $dbh = DBI->connect("DBI:$dbtype:$db:$host", "$user")
      or die "Unable to access DB server!: $!";
 
-my @cuts = split(/&&/, $cut);
-my $j = 0;
-
+my @cuts = split(/,/, $cut);
 for ( my $i=0; $i<=$#cuts; $i++ ) {
-    if ( $cuts[$i] =~ /\:/ ) {
-        my @temp = split(/\:/, $cuts[$i]);
-    	$cuts[$i] = $temp[1];
-    }
-}
-
-for ( my $i=0; $i<$#cuts; $i+=2 ) {
-    my $thisCut = $cuts[$i]."&&".$cuts[$i+1];
-
-    $query = "update settings set cut$j='$thisCut' where sID='$sessId'";
+    $query = "update settings set cut$i='$cuts[$i]' where sID='$sessId'";
     $data = $dbh->prepare($query);
     $data->execute();
-
-    $j++;
 }
+
+#my @cuts = split(/&&/, $cut);
+#my $j = 0;
+
+#for ( my $i=0; $i<=$#cuts; $i++ ) {
+#    if ( $cuts[$i] =~ /\:/ ) {
+#        my @temp = split(/\:/, $cuts[$i]);
+#    	$cuts[$i] = $temp[1];
+#    }
+#}
+
+
+#for ( my $i=0; $i<$#cuts; $i+=2 ) {
+#    my $thisCut = $cuts[$i]."&&".$cuts[$i+1];
+
+#    $query = "update settings set cut$j='$thisCut' where sID='$sessId'";
+#    $data = $dbh->prepare($query);
+#    $data->execute();
+
+#    $j++;
+#}
 
 %> 

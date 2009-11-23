@@ -196,9 +196,23 @@ sub procCGI {
     $cgi_hash{leaves} = $leafmask;
   }
 
-  @leaves = $parser->parse();                 # Now parse the full request and save it for when we get the ROOT names
+  @leaves = $parser->parse();                 # Now parse the full request and save 
+                                              # it for when we get the ROOT names
   ($#leaves > -1) ? $cgi_hash{leafOps} = \@leaves : ();
 
+  $cgi_hash{plotType} = 1;                    # Default plotType == histogram
+  my @dummy = split(/\|/,join('',@temp));     # Copy plots into a temp array for checking
+
+  for ( my $i=0; $i<=$#dummy; $i++ ) {
+      if ($dummy[$i] =~ /\:/) {               # OK.. see if we have a scatter plot(s) or a 3D plot
+	  my $count = 1;                      # Type 1 = histogram, type 2 = scatter plot, type 3+ = 3D
+	  $count++ while $dummy[$i] =~ /\:/g; # Used in html.pm to decide what selection type we'll be
+	                                      # be using later on. 1=>linear, 2=>box, 3+ => none
+	  if ( $count > $cgi_hash{plotType} ) {
+	      $cgi_hash{plotType} = $count;
+	  }
+      }
+  }
 
   my @formula = $query->param("formula");
   my $formmask = 0;
@@ -325,6 +339,10 @@ sub procCGI {
   # Get the histogram fill colors
   my @colors = $query->param("color");
 
+  # If there's a | seperator, delete the associated color
+  # since that'll screw things up when we build the colormap
+  @colors = $parser->correctColors(@colors);
+
   # Consolidate the colors.... If there are more colors than
   # plots (easily possible since there could be many quantities that
   # go into a single plot now), arbitrarily take the first color 
@@ -337,7 +355,7 @@ sub procCGI {
 	  $temp = $leaves[$i];
 	  while ( $temp =~ /leaf/ ) {
 	      $temp =~ s/leaf/none/;
-	      $colormap .= "$colors[$j++],";
+	      $colormap .= (exists $colors[$j]) ? "$colors[$j++]," : 0;
 	  }
 	  ($colors[$i]) = split(/,/, $colormap);
 	  $colormap = "";

@@ -75,6 +75,7 @@ sub makeRootScript {
   my $savedata   = (exists $cmdl_options->{savedata})   ?    $cmdl_options->{savedata}   : 0;
   my $random     = (exists $cmdl_options->{tempIndex})  ?    $cmdl_options->{tempIndex}  : int( rand(4294967295) + 1 );
   my $mycuts     = (exists $cmdl_options->{mycuts})     ?    $cmdl_options->{mycuts}     : 0;
+  my $plotType   = (exists $cmdl_options->{plotType})   ?    $cmdl_options->{plotType}   : 1;
 
   # Make sure we're using a supported output type
   if ( $type ne "eps" && $type ne "png" && $type ne "jpg" && $type ne "svg" ) {
@@ -156,20 +157,23 @@ sub makeRootScript {
   }
 
   # If this is a log plot... restrict the variable to >0 since log(0) = -inf
-  if ( $logX ) {
-      for ( my $v=0; $v<=$variable; $v++ ) {
-	  if ( exists $cuts[$v] ) {
-	      $cuts[$v] .= "&&$variableList[$v]>0";
-	  } else {
-	      $cuts[$v] = "$variableList[$v]>0";
-	  }
-      }
-  }
+#  if ( $logX ) {
+#      for ( my $v=0; $v<=$variable; $v++ ) {
+#	  if ( exists $cuts[$v] ) {
+#	      $cuts[$v] .= "&&$variableList[$v]>0";
+#	  } else {
+#	      $cuts[$v] = "$variableList[$v]>0";
+#	  }
+#      }
+#  }
 ##########################################################################
   if ( !$stacked ) {              # Looks like we're doing scatter plots
 
+    my $markerType = 21;   # Start with squares and increment for each plot
+
     # Run through the variables and pop them onto the canvas
     for ( my $v=0; $v<=$variable; $v++ ) {
+
       # Set the focus to the canvas
       print $fileHandle "\n\t// Set the canvas as the active pallette and render the histogram(s)\n";
       print $fileHandle "\tc1->cd();\n";
@@ -183,11 +187,14 @@ sub makeRootScript {
       # Set the histogram fill color
       if ( exists $colors[$v] ) {
 	print $fileHandle "\tchain->SetMarkerColor($colors[$v]);\n";
+	print $fileHandle "\tchain->SetMarkerStyle($markerType);\n";
 	print $fileHandle "\tchain->SetFillColor($colors[$v]);\n";
       } else {
 	print $fileHandle "\tchain->SetMarkerColor(0);\n";
+	print $fileHandle "\tchain->SetMarkerStyle($markerType);\n";
 	print $fileHandle "\tchain->SetFillColor(0);\n";
       }
+      $markerType++;
 
       # Initialize the holding place for the arguments to the Draw() command
       my $draw_options = "\"$variableList[$v]\"";
@@ -201,7 +208,14 @@ sub makeRootScript {
       $cuts =~ s/&&$//;
 
       # Now that we have everything... Put this plot onto the pad
-      print $fileHandle "\n\tTString cuts[1];\n"; 
+      if ( $v == 0 ) {
+	  print $fileHandle "\n\tTString cuts[";
+	  print $fileHandle $variable+1;
+	  print $fileHandle "];\n"; 
+      } else {
+	  print $fileHandle "\n";
+      }
+
       if ( $cuts ) {
 	  print $fileHandle "\tcuts[0] = \"$cuts\";\n";
       }
@@ -235,7 +249,7 @@ sub makeRootScript {
     if ( $#labelYList > -1 ) {
 	print $fileHandle "\thtemp->GetYaxis()->SetTitle(\"" . join(", ", @labelYList) . "\");\n";
     }
-    if ( $#labelZList > -1 ) {
+    if ( $plotType == 3 && $#labelZList > -1 ) {
 	print $fileHandle "\thtemp->GetZaxis()->SetTitle(\"" . join(", ", @labelZList) . "\");\n";
     }
 
@@ -335,7 +349,7 @@ sub makeRootScript {
 
       ( exists $labelXList[0] ) && print $fileHandle "\tstack->GetXaxis()->SetTitle(\"$labelXList[0]\");\n";
       ( exists $labelYList[0] ) && print $fileHandle "\tstack->GetYaxis()->SetTitle(\"$labelYList[0]\");\n";
-      ( exists $labelZList[0] ) && print $fileHandle "\tstack->GetZaxis()->SetTitle(\"$labelZList[0]\");\n";
+      ( $plotType==3 && exists $labelZList[0] ) && print $fileHandle "\tstack->GetZaxis()->SetTitle(\"$labelZList[0]\");\n";
 
       print $fileHandle "\n\t// Since we've got axis labels we have to redraw the plot\n";
       print $fileHandle "\t// (no axes existed until it was drawn in the first place\n";
@@ -390,10 +404,35 @@ sub makeRootScript {
   print $fileHandle "\tcout << \"height=\" << height     << \"\\n\";\n";
   print $fileHandle "\tcout << \"xmin=\"   << min        << \"\\n\";\n";
   print $fileHandle "\tcout << \"xmax=\"   << max        << \"\\n\";\n";
-  print $fileHandle "\tcout << \"pmin=\"   << pixelMin   << \"\\n\";\n";
-  print $fileHandle "\tcout << \"pmax=\"   << pixelMax   << \"\\n\";\n";
+#  print $fileHandle "\tcout << \"pxmin=\"  << pixelMin   << \"\\n\";\n";
+#  print $fileHandle "\tcout << \"pxmax=\"  << pixelMax   << \"\\n\";\n";
   print $fileHandle "\tcout << \"Xcst=\"   << graphMin   << \"\\n\";\n";
-  print $fileHandle "\tcout << \"X2px=\"   << conversion << \"\\n\";\n\n";
+  print $fileHandle "\tcout << \"X2px=\"   << conversion << \"\\n\";\n";
+
+  if ( !$stacked ) {
+
+      print $fileHandle "\n\t// Get a handle to the Y-Axis\n";
+      print $fileHandle "\tTAxis *y = new TAxis();\n";
+      print $fileHandle "\ty = htemp->GetYaxis();\n\n";
+
+      print $fileHandle "\t// Get the range information from the plot\n";
+      print $fileHandle "\tmin = y->GetXmin();\n";
+      print $fileHandle "\tmax = y->GetXmax();\n\n";
+
+      print $fileHandle "\t// Get the pixel-to-plot coordinate transformations\n";
+      print $fileHandle "\tpixelMin   = c1->YtoPixel(min);\n";
+      print $fileHandle "\tpixelMax   = c1->YtoPixel(max);\n";
+      print $fileHandle "\tgraphMin   = c1->PixeltoY(0);\n";
+      print $fileHandle "\tgraphMax   = c1->PixeltoY(height);\n";
+      print $fileHandle "\tconversion = (graphMax - graphMin)/(double)height;\n\n";
+
+      print $fileHandle "\tcout << \"ymin=\"   << min        << \"\\n\";\n";
+      print $fileHandle "\tcout << \"ymax=\"   << max        << \"\\n\";\n";
+#      print $fileHandle "\tcout << \"pymin=\"  << pixelMin   << \"\\n\";\n";
+#      print $fileHandle "\tcout << \"pymax=\"  << pixelMax   << \"\\n\";\n";
+      print $fileHandle "\tcout << \"Ycst=\"   << graphMin   << \"\\n\";\n";
+      print $fileHandle "\tcout << \"Y2px=\"   << conversion << \"\\n\";\n";
+  }
 
   # Close out the script & the file
   print $fileHandle "}\n";
@@ -442,14 +481,15 @@ sub runRootScript() {
   use Switch;
   use File::Copy;
 
-  my $tmpdir  = $ogre::ogreXML->getOgreParam('tmpDir');
-  my $random  = $ogre::cgi->getCGIParam('tempIndex');
-  my $width   = $ogre::cgi->getCGIParam('width');
-  my $height  = $ogre::cgi->getCGIParam('height');
-  my $type    = $ogre::cgi->getCGIParam('type');
-  my $stacked = $ogre::cgi->getCGIParam('stacked');
-  my $gCut    = $ogre::cgi->getCGIParam('global_cut');
-  my $dataset = $ogre::cgi->getCGIParam('dataSets');
+  my $tmpdir   = $ogre::ogreXML->getOgreParam('tmpDir');
+  my $random   = $ogre::cgi->getCGIParam('tempIndex');
+  my $width    = $ogre::cgi->getCGIParam('width');
+  my $height   = $ogre::cgi->getCGIParam('height');
+  my $type     = $ogre::cgi->getCGIParam('type');
+  my $stacked  = $ogre::cgi->getCGIParam('stacked');
+  my $gCut     = $ogre::cgi->getCGIParam('global_cut');
+  my $dataset  = $ogre::cgi->getCGIParam('dataSets');
+  my $plotType = $ogre::cgi->getCGIParam('plotType');
 
   # Make some of the files we'll need to track the user interactions
   my $fileHandle;
@@ -505,12 +545,21 @@ sub runRootScript() {
       case "file"   { $appletData->{'file'}   = $temp[1]};
       case "width"  { $appletData->{'width'}  = $temp[1]};
       case "height" { $appletData->{'height'} = $temp[1]};
+
       case "xmin"   { $appletData->{'xmin'}   = $temp[1]};
       case "xmax"   { $appletData->{'xmax'}   = $temp[1]};
-      case "pmin"   { $appletData->{'pmin'}   = $temp[1]};
-      case "pmax"   { $appletData->{'pmax'}   = $temp[1]};
+#      case "pxmin"  { $appletData->{'pxmin'}  = $temp[1]};
+#      case "pxmax"  { $appletData->{'pxmax'}  = $temp[1]};
       case "Xcst"   { $appletData->{'Xcst'}   = $temp[1]};
       case "X2px"   { $appletData->{'X2px'}   = $temp[1]};
+
+      case "ymin"   { $appletData->{'ymin'}   = $temp[1]};
+      case "ymax"   { $appletData->{'ymax'}   = $temp[1]};
+#      case "pymin"  { $appletData->{'pymin'}  = $temp[1]};
+#      case "pymax"  { $appletData->{'pymax'}  = $temp[1]};
+      case "Ycst"   { $appletData->{'Ycst'}   = $temp[1]};
+      case "Y2px"   { $appletData->{'Y2px'}   = $temp[1]};
+      
     }
   }
 
@@ -621,12 +670,14 @@ sub runRootScript() {
   ($width,$height) = $image->Get('width','height');
 
   $image->Write("$type:$imageFile");
+
 ##########################################################################################################
 
   my $html = new html($width,  $height,  $tmpdir, 
 		      $random, $type,    $stacked, 
 		      $path,   $urlPath, $verbose, 1,
-		      $logX,   $logY,    $units, @variables);
+		      $logX,   $logY,    $units, $plotType,
+		      @variables);
 
   # Call the routines in the HTML class to make the necessary output pages
   $html->makeActivePage("temp.000.html", "000", $appletData);
