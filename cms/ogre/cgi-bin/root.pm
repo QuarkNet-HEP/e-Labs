@@ -125,7 +125,7 @@ sub makeRootScript {
   print $fileHandle " every event\n\tint test[", $variable+1, "];\n\n";
   print $fileHandle "\t// Define the output file names\n";
   print $fileHandle "\tchar *oFile = \"$tmpdir/$random/canvas.000.$type\";\n\n";
-#  print $fileHandle "\tchar *rFile = \"$tmpdir/$random/canvas.000.root\";\n\n";
+  print $fileHandle "\tchar *rFile = \"$tmpdir/$random/canvas.root\";\n\n";
 
   $tree = $treeList[0]; # Keep it simple for now... one tree at a time
 
@@ -308,7 +308,7 @@ sub makeRootScript {
     print $fileHandle "\t// Create a new stack and pop the histograms onto it\n";
     print $fileHandle "\t// This way the histograms are all on the same plot\n";
     print $fileHandle "\t// and the scales are adjusted automatically for us\n";
-    print $fileHandle "\tstack = new THStack();\n";
+    print $fileHandle "\tstack = new THStack(\"stack\",\"\");\n";
     for ( my $v=0; $v<=$variable; $v++ ) {
 	print $fileHandle "\t(test[$v]) && stack->Add(h[$v]);\n";
     }
@@ -369,8 +369,8 @@ sub makeRootScript {
   print $fileHandle "\n\t// Make the main canvas active, update it, and save it to a file\n";
   print $fileHandle "\tcanvas->cd();\n";
   print $fileHandle "\tcanvas->Update();\n";
-  print $fileHandle "\tcanvas->SaveAs(oFile);\n\n";
-#  print $fileHandle "\t//canvas->SaveAs(rFile);\n\n";
+  print $fileHandle "\tcanvas->SaveAs(oFile);\n";
+  print $fileHandle "\tcanvas->SaveAs(rFile);\n\n";
 
   # If we're saving the data... put the scan into the script
   if ( $savedata ) {

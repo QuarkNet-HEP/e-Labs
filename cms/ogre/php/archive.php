@@ -21,8 +21,6 @@
     $userName = 'guest';
   }
 
-error_log('Checking archives for '.$userName);
-
   if ( isset($directory) && $directory != "results" )
      print "<div id='moveArch'>\n";
   else

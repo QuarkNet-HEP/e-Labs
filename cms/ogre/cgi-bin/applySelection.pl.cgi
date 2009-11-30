@@ -16,22 +16,23 @@ my @names = $query->param;
 # Check for the archive flag before doing anything else
 my $archiveStudy = $query->param('archive');
 my $finishStudy  = $query->param('finalize');
-my $dir          = $query->param('directory');
+#my $dir          = $query->param('directory');         #### This is new!
 my $prev         = $query->param('version');
 my $xmin         = $query->param('cutXMin');
 my $xmax         = $query->param('cutXMax');
 my $ymin         = $query->param('cutYMin');
 my $ymax         = $query->param('cutYMax');
 my $type         = $query->param('type');
-my $stacked      = $query->param('stacked');
-my $histVisible  = $query->param('historyVisible');
+
+#my $stacked      = $query->param('stacked');           #### This is new!
+#my $histVisible  = $query->param('historyVisible');    #### This is new!
 my $units        = $query->param('units');
-my $sessionID    = $query->param('sessionID');
 my $plotType     = $query->param('plotType');
+my $sessionID    = $query->param('sessionID');
 
 # Grab hold of some of the global stuff we'll be needin
 my $ogreXML      = new ogreXML();
-my $path         = $ogreXML->getOgreParam('baseDir');
+#my $path         = $ogreXML->getOgreParam('baseDir');  #### This is new!
 my $archivesDir  = $ogreXML->getOgreParam('archiveDir');
 my $resultsDir   = $ogreXML->getOgreParam('resultsDir');
 my $tmpDir       = $ogreXML->getOgreParam('tmpDir');
@@ -43,14 +44,10 @@ my $rootbin      = $ogreXML->getOgreParam('rootBinaryPath');
 # root will choke without it
 $ENV{ROOTSYS} = $rootsys;
 
-#
-### Figure out what type of graphics file we're using
-#
-
 # Check if we're archiving the study
 if ( $archiveStudy || $finishStudy ) {
   use archive;
-  my $archive = new archive($dir, $prev, $type);
+  my $archive = new archive($sessionID, $prev, $type);
 
   if ($archiveStudy) {
     $archive->archiveStudy();
@@ -63,22 +60,13 @@ if ( $archiveStudy || $finishStudy ) {
 # If we're here... then the action continues!
 # Apply a new cut to the old data.....
 
-# Redefine the $path variable now to point to our temp directory
-$path = "$tmpDir/$dir";
-
-my $index = 0;
-
-if ( !$xmin && !$xmax ) {
-  warn "AAAAAAARRRRRRGGGGGGG! Where'd our cuts go!?!\n";
+my $stacked = 1;
+if ( $plotType == 2 ) {
+    $stacked = 0;
 }
 
-# Find the index of the next version number
-my $newVersionName = "$path/canvas.000.$type";
-while ( -e $newVersionName ) {
-  $newVersionName = sprintf("$path/canvas.%03i.$type", ++$index);
-}
-
-open (oldScript, "<$path/script.000.C");
+############################### Read in the old script to get some basics ###
+open (oldScript, "<$tmpDir/$sessionID/script.000.C");
 my $newscript = "";
 while (my $bytesread = read(oldScript, my $buffer, 1024)) {
   $newscript .=  $buffer;
@@ -100,79 +88,6 @@ $plot = $temp2[1];
 my $logx = ( $newscript =~ m/SetLogx/ );
 my $logy = ( $newscript =~ m/SetLogy/ );
 
-my $numberOfCuts = 0;
-$newscript =~ /.*TString cuts\[(\d+)\].*/;
-if ( $1 ) {
-    $numberOfCuts = $1;
-}
-
-# Get whatever was plotted, and the cuts applied
-my @oldCutValues = grep( /cuts\[\d+\] = (.*)/, @temp1 );
-
-for ( my $i=0; $i<=$#oldCutValues; $i++ ) {
-    $oldCutValues[$i] =~ m/cuts\[\d+\] = (.*);/;
-    if ( $1 ) {
-	$oldCutValues[$i] = $1;
-    }
-}
-
-################### Reset the cuts using the database ###################
-my $mysql = new MySQL();
-
-# Get the dataset the user is working with for annotating the image later on
-my $dataset = $mysql->getUserDataSet($sessionID);
-
-my $selection;
-if ( $mysql->applySavedCuts($sessionID) ) {
-    $selection = $mysql->getSelection($sessionID);
-}
-
-my @newCutValues;
-my $globalCut = $mysql->getGlobalCut($sessionID);
-
-for ( my $i=0; $i<$numberOfCuts; $i++ ) {
-
-    if ( $globalCut && $selection ) {
-	$newCutValues[$i] = "$globalCut&&$selection";
-    } elsif ( $globalCut ) {
-	$newCutValues[$i] = $globalCut;
-    } elsif ( $selection ) {
-	$newCutValues[$i] = $selection;
-    }
-
-    if ( $mysql->getCut($sessionID, $i) ) {
-	if ( $newCutValues[$i] ) {
-	    $newCutValues[$i] = $newCutValues[$i] . "&&" . $mysql->getCut($sessionID, $i);
-	} else {
-	    $newCutValues[$i] = $mysql->getCut($sessionID, $i);
-	}
-    }
-
-    if ( !($newCutValues[$i] =~ /\"/) ) {
-	$newCutValues[$i] = "\"$newCutValues[$i]\"";
-    }
-}
-
-if ( $#oldCutValues > -1 ) {
-    for ( my $i=0; $i<=$#newCutValues; $i++ ) {
-	$newscript =~ s/$oldCutValues[$i]/$newCutValues[$i]/;
-    }
-} else {
-    $newscript =~ /(.*TString cuts.*)/;
-    my $oldSelect = $1;
-
-    $selection = "$oldSelect\n";
-    for ( my $i=0; $i<$numberOfCuts; $i++ ) {
-	$selection .= "\tcuts\[$i\] = " . $newCutValues[$i] . ";\n";
-    }
-
-    $oldSelect =~ s/\[/\\[/;
-    $oldSelect =~ s/\]/\\]/;
-
-    $newscript =~ s/$oldSelect/$selection/ or warn "Unable to update $!\n";
-
-}
-
 my @array1 = grep( /chain->Draw/, @temp1);
 my @plotList = ();
 foreach my $draw (@array1) {   
@@ -188,27 +103,124 @@ $graphicWidth = $1;
 (my $graphicHeight) = grep(/int height/, @temp1);
 $graphicHeight =~ /^\tint height\s+=\s+(\d{3,4});$/;
 $graphicHeight = $1;
+#############################################################################
 
-my $oldPng = "canvas.000";
-my $newPng = sprintf("canvas.%03i",$index);
-$newscript =~ s/$oldPng/$newPng/g;
 
+# Get the dataset the user is working with for annotating the image later on
+my $mysql = new MySQL();
+my $dataset = $mysql->getUserDataSet($sessionID);
+
+
+# Redefine the $path variable now to point to our temp directory
+my $path = "$tmpDir/$sessionID";
+
+my $index = 0;
+
+if ( !$xmin && !$xmax ) {
+  warn "AAAAAAARRRRRRGGGGGGG! Where'd our cuts go!?!\n";
+}
+
+# Find the index of the next version number
+my $newVersionName = "$path/canvas.000.$type";
+while ( -e $newVersionName ) {
+    $newVersionName = sprintf("$path/canvas.%03i.$type", ++$index);
+}
+
+### Use the index to set the proper names
 my $scriptName = sprintf("script.%03i.C", $index);
-$newscript =~ s/script.000.C/$scriptName/g;
+my $newPng = sprintf("canvas.%03i",$index);
 
 open (newScript, ">$path/$scriptName");
-print newScript $newscript;
+print newScript "{\n";
+print newScript "\tchar *oFile = \"$newVersionName\";\n";
+print newScript "\tint  width  = $graphicWidth;\n";
+print newScript "\tint  height = $graphicHeight;\n\n";
+
+print newScript "\t// Now output the parameters we'll need to put up the cut page\n";
+print newScript "\tcout << \"file=\"   << \"$newPng.$type\" << \"\\n\";\n";
+print newScript "\tcout << \"width=\"  << width      << \"\\n\";\n";
+print newScript "\tcout << \"height=\" << height     << \"\\n\";\n\n";
+
+print newScript "\t// Open the original canvas for editing...\n";
+print newScript "\tTFile *file = new TFile(\"$tmpDir/$sessionID/canvas.root\");\n";
+print newScript "\tc1->Draw();\n\n";
+
+print newScript "THStack *stack = c1->FindObject(\"stack\");\n\n";
+
+# Put in the stuff for the graphical cut analysis
+print newScript "\t// Get a handle to the X-Axis\n";
+if ( !$stacked ) {  # $stacked = false => this is a scatter plot... 
+    print newScript "\tTAxis *x = new TAxis();\n\tx = htemp->GetXaxis();\n\n";
+} else {
+    print newScript "\tTAxis *x = new TAxis();\n\tx = stack->GetXaxis();\n\n";
+}
+
+print newScript "\t// Apply the X-Axis cut\n";
+print newScript "\tx->SetLimits($xmin,$xmax);\n";
+
+if ( !$stacked ) {
+    print newScript "\n\t// Get a handle to the Y-Axis\n";
+    print newScript "\tTAxis *y = new TAxis();\n";
+    print newScript "\ty = htemp->GetYaxis();\n\n";
+
+    print newScript "\t// Apply the Y-Axis cut\n";
+    print newScript "\ty->SetLimits($ymin,$ymax);\n";
+}
+
+print newScript "\tc1->Update();\n";
+print newScript "\tc1->Draw();\n\n";
+
+print newScript "\t// Get the range information from the plot\n";
+print newScript "\tdouble min = x->GetXmin();\n";
+print newScript "\tdouble max = x->GetXmax();\n\n";
+
+print newScript "\t// Get the pixel-to-plot coordinate transformations\n";
+print newScript "\tint    pixelMin   = c1->XtoPixel(min);\n";
+print newScript "\tint    pixelMax   = c1->XtoPixel(max);\n";
+print newScript "\tdouble graphMin   = c1->PixeltoX(0);\n";
+print newScript "\tdouble graphMax   = c1->PixeltoX(width);\n";
+print newScript "\tdouble conversion = (graphMax - graphMin)/(double)width;\n\n";
+
+print newScript "\t// Specific parameters for converting pixels-to-units in X\n";
+print newScript "\tcout << \"xmin=\"   << min        << \"\\n\";\n";
+print newScript "\tcout << \"xmax=\"   << max        << \"\\n\";\n";
+print newScript "\tcout << \"Xcst=\"   << graphMin   << \"\\n\";\n";
+print newScript "\tcout << \"X2px=\"   << conversion << \"\\n\";\n\n";
+
+if ( !$stacked ) { # $stacked = true => a histogram
+    print newScript "\t// Get the range information from the plot\n";
+    print newScript "\tmin = y->GetXmin();\n";
+    print newScript "\tmax = y->GetXmax();\n\n";
+
+    print newScript "\t// Get the pixel-to-plot coordinate transformations\n";
+    print newScript "\tpixelMin   = c1->YtoPixel(min);\n";
+    print newScript "\tpixelMax   = c1->YtoPixel(max);\n";
+    print newScript "\tgraphMin   = c1->PixeltoY(0);\n";
+    print newScript "\tgraphMax   = c1->PixeltoY(height);\n";
+    print newScript "\tconversion = (graphMax - graphMin)/(double)height;\n\n";
+
+    print newScript "\t// Specific parameters for converting pixels-to-units in X\n";
+    print newScript "\tcout << \"ymin=\"   << min        << \"\\n\";\n";
+    print newScript "\tcout << \"ymax=\"   << max        << \"\\n\";\n";
+    print newScript "\tcout << \"Ycst=\"   << graphMin   << \"\\n\";\n";
+    print newScript "\tcout << \"Y2px=\"   << conversion << \"\\n\";\n";
+}
+
+print newScript "\n\t// Update the canvas.. and save the result of the selection\n";
+print newScript "\tc1->SaveAs(oFile);\n";
+print newScript "\tfile->Close();\n";
+
+print newScript "}\n";
+
 close(newScript);
 
 chmod(0666, "$path/$scriptName");
-
 my $filePath = "$path/$scriptName";
 
 #
 ### Run root all over again with the new selection
 #
 my @output = `$rootbin -b -l -n -q $filePath 2>/dev/null`;
-
 chmod(0666, "$path/$newPng.$type");
 
 #
@@ -226,21 +238,16 @@ for (my $i=2; $i<=$#output; $i++) {
 
     case "xmin"   { $appletData->{'xmin'}   = $temp[1]};
     case "xmax"   { $appletData->{'xmax'}   = $temp[1]};
-#    case "pxmin"  { $appletData->{'pxmin'}  = $temp[1]};
-#    case "pxmax"  { $appletData->{'pxmax'}  = $temp[1]};
     case "Xcst"   { $appletData->{'Xcst'}   = $temp[1]};
     case "X2px"   { $appletData->{'X2px'}   = $temp[1]};
 
     case "ymin"   { $appletData->{'ymin'}   = $temp[1]};
     case "ymax"   { $appletData->{'ymax'}   = $temp[1]};
-#    case "pymin"  { $appletData->{'pymin'}  = $temp[1]};
-#    case "pymax"  { $appletData->{'pymax'}  = $temp[1]};
     case "Ycst"   { $appletData->{'Ycst'}   = $temp[1]};
     case "Y2px"   { $appletData->{'Y2px'}   = $temp[1]};
 
   }
 }
-
 my $width  = ($appletData->{'width'})  ? $appletData->{'width'}  : 640;
 my $height = ($appletData->{'height'}) ? $appletData->{'height'} : 480;
 
@@ -326,7 +333,6 @@ if ( $cutList->{'000'}->{'base'} ) {
 }
 close(CUTS);
 
-################################# Massage the image a bit ##############################################
 my $image=Image::Magick->new;
 my $imageFile = "$path/$newPng.$type";
 my $err;
@@ -366,11 +372,10 @@ annotateImage($width, $height, $image, $isData);
 $image->Write("$type:$imageFile");
 ##########################################################################################################
 
-my $html = new html($width, $height,  $tmpDir, 
-                    $dir,   $type,    $stacked, 
-                    $path,  $urlPath, 0, $histVisible,
-                    $logx,  $logy,    $units, $plotType,
-		    @plotList);
+my $html = new html($width, $height,   $tmpDir, $sessionID,
+                    $type,  $stacked,  $path,   $urlPath, 
+		    0,      0,         $logx,   $logy,
+		    $units, $plotType, @plotList);
 
 # (re)Make the pages the user will need... and redirect the browser to it
 $html->makeActivePage("temp.$activeNode.html", $index, $appletData);

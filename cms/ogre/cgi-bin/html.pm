@@ -192,7 +192,7 @@ sub makeRestoreURL() {
       my $index = index($temp[0], "cgi");
       $link = substr($temp[0], 0, $index) . "ogre.php" . $restore_params;
   } else {
-      # Otherwise... we're coming in from applyLinearCut.pl.cgi
+      # Otherwise... we're coming in from applySelection.pl.cgi
       # so just grab the link out of the history file
 
       # Read in the current history file
@@ -302,7 +302,7 @@ sub makeHistoryPage {
   print HTML "<form id='mapSize'>\n";
   print HTML "  <input type='hidden' id='histWidth'  value=$maxX></input>\n";
   print HTML "  <input type='hidden' id='histHeight' value=$maxY></input>\n";
-  print HTML "  <input type='hidden' id='histVisible' value=$self->{_hVisble}></input>\n";
+#  print HTML "  <input type='hidden' id='histVisible' value=$self->{_hVisble}></input>\n";
   print HTML "</form>\n";
 
   print HTML "<img src=\"./map.$type\" border=\"0\" usemap=\"#map\" style=\"position:absolute;\"/>\n";
@@ -620,7 +620,7 @@ sub makeActivePage(\$ \%) {
     print $fileHandle "     </div> <!-- End of header div -->\n";
 
     print $fileHandle "    <div id='controls'>\n";
-    print $fileHandle "      <form  method=POST action='$baseURL/cgi-bin/applyLinearCut.pl.cgi' id='recut'>\n";
+    print $fileHandle "      <form  method=POST action='$baseURL/cgi-bin/applySelection.pl.cgi' id='recut'>\n";
     print $fileHandle "        <input type='hidden' name='cutXMin'/>\n";
     print $fileHandle "        <input type='hidden' name='cutXMax'/>\n";
 

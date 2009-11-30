@@ -452,6 +452,7 @@ function select(event) {
     }
 
     if ( useDragDrop ) {
+
 	/*-- put up a line by the mouse to guide the selection --*/
 	jg.setColor('#ff0000');
 	jg.drawLine(x,Ymax,x,Ymin);
