@@ -23,6 +23,7 @@
 			</div>
 			
 			<div id="content">
+<h1>CMS e-Lab Notes</h1>
  
 <e:transclude
  url="http://${elab.properties['elab.host']}/cms/library/body.php/CMS_e-Lab_Notes"
