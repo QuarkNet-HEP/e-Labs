@@ -32,7 +32,7 @@
 				<div class="tab">
 					<span class="tab-title">Analysis</span>
 					<div class="tab-contents">
-					 Access <a href="/~ogre/" target="ogre">OGRE</a> to do your analysis.
+					 Access <a href="${elab.properties['ogre']}" target="ogre">OGRE</a> to do your analysis.
 					</div>
 				</div>		
 			</div>

@@ -97,7 +97,7 @@
 				<li>
 					<a href="../data/">Data Analysis</a>
 					<ul>
-	         <li><a href="/~ogre/" target="ogre">OGRE</a></li>
+	         <li><a href="${elab.properties['ogre']}" target="ogre">OGRE</a></li>
 <!-- 
 					<li><a href="../analysis-lateral-size/">Lateral Size</a></li>         
 						<li><a href="../analysis-beam-purity/">Beam Purity</a></li>

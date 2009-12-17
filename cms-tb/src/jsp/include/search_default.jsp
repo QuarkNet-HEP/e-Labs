@@ -43,7 +43,7 @@
 <p style="margin-left: 10px">
  <B>VIEW</b> 
        <p style="margin-left: 20px">  
-      <a href="http://129.74.67.184/~ogre/"  target="ogre">Data Files</a> - See what data has been uploaded into the system using
+      <a href="${elab.properties['ogre']}"  target="ogre">Data Files</a> - See what data has been uploaded into the system using
           OGRE. 
       <p style="margin-left: 20px">     
           

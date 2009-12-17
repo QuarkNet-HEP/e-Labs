@@ -59,7 +59,7 @@
 						<li><a href="../analysis-beam-purity">Beam Purity</a></li>
 						<li><a href="../analysis-resolution">Resolution</a></li>
 						<li><a href="../data/view.jsp">View Data</a></li>
-						<%-- <li><a href="/~ogre/" target="ogre">OGRE</a></li> --%>
+						<%-- <li><a href="${elab.properties['ogre']}" target="ogre">OGRE</a></li> --%>
 						<li><a href="../plots">View Plots</a></li>
 					</ul>
 					

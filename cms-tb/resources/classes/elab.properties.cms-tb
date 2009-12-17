@@ -11,3 +11,5 @@ usedb = true
 dataset = tb04
 xmlfile = tb_data.xml
 xmldir = xml
+
+ogre = http://leptoquark.hep.nd.edu/~ogre
