@@ -9,6 +9,16 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="org.owasp.validator.html.*" %>
 
+<script type="text/javascript" src="../include/tiny_mce/jquery.tinymce.js"></script>
+<script>
+	$().ready(function() {
+		$('textarea.tinymce').tinymce({
+			script_url : '../include/tiny_mce/tiny_mce.js',
+			theme : 'simple'
+		});
+	});
+</script>
+
 
 <%
 	Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
@@ -283,7 +293,7 @@
                     		<c:choose>
                     			<c:when test="${type == 'PARA'}">
                     				<td align="left">
-                    					<textarea name="${type}:${name}" rows="6" cols="80">${tvalue}</textarea>
+                    					<textarea name="${type}:${name}" rows="6" cols="80" class="tinymce">${tvalue}</textarea>
                     				</td>
                     			</c:when>
                     			<c:when test="${type == 'WORDS'}">
