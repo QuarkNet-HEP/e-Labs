@@ -16,13 +16,18 @@
 		<blockquote>
 			<h2 align="center"><font color="#0080FF" face="Arial, Helvetica, sans-serif">%WORDS:TITLE%</font></h2>
 			<p align="center"><font face="Arial, Helvetica, sans-serif" size="+1">%WORDS:SUBTITLE%</font></p>
-			<p align="center">%WORDS:DATE%</p>
+			
 			<div align="center">
-				%PARA:AUTHORS%
+				%WORDS:AUTHORS%
 			</div>
+			
+			<p align="center">%WORDS:DATE%</p>
 			
 			<h2>Abstract</h2>
 			<p>%PARA:ABSTRACT%</p>
+			
+			<h2>Introduction</h2>
+			<p>%PARA:INTRODUCTION%</p>
 			
 			<h2>Methods and Materials</h2>
 			<p>%PARA:PROCEDURE%</p>

@@ -33,6 +33,12 @@
 	font-size: 120%;
 }
 
+.poster_subsubtitle {
+	background-color: #006633; 
+	color: #FFFFFF;
+	font-family: arial;
+}
+
 .poster_detail_frame {
 	background-color: #66CC99;
 	text-align: center;

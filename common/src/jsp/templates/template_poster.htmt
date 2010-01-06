@@ -28,28 +28,42 @@
 				<tr>
       				<td colspan="2" id="poster_header"> 
         				<table width="100%">
-        					<tr><td align="left" class="poster_title" valign="top">%WORDS:TITLE%</td></tr>
-           					<tr><td align="left" class="poster_subtitle">%WORDS:SUBTITLE%</td></tr>
+        					<tr><td align="center" class="poster_title" valign="top">%WORDS:TITLE%</td></tr>
+           					<tr><td align="center" class="poster_subtitle">%WORDS:SUBTITLE%</td></tr>
+           					<tr><td align="center" class="poster_subsubtitle">%WORDS:AUTHORS%</td></tr>
+           					<tr><td align="center" class="poster_subsubtitle">%WORDS:DATE%</td></tr>
            				</table>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" valign="top" class="poster_detail_frame">
+						<a name="bibliography"></a>
+						<table width="632" class="poster_detail_head">
+							<tr>
+								<td class="poster_detail_body">
+									<br>
+									<p class="poster_detail_subhead">Abstract</p>
+									<p>
+										%PARA:ABSTRACT%
+									</p>
+									<br>
+									<p>&nbsp;</p>
+								</td>
+								<td></td>
+							</tr>
+						</table>
 					</td>
 				</tr>
 				<tr>
 					<td valign="TOP" class="poster_detail_frame" width="310">
 						<a name="authors"> </a>
 						<table class="poster_detail_head" width="302">
-							<tr>
-								<td>
-									<br>
-									<p><b>%WORDS:DATE%<br>%PARA:AUTHORS%</b></p>
-									<p></p>
-								</td>
-							</tr>
 							<a name="abstract"></a>
 							<tr>
 								<td align="left" class="poster_detail_body">
-									<p class="poster_detail_subhead">Abstract</p>
+									<p class="poster_detail_subhead">Introduction</p>
 									<p>
-										%PARA:ABSTRACT%
+										%PARA:INTRODUCTION%
 									</p>&nbsp;
 								</td>
 								<td></td>

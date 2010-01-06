@@ -118,6 +118,9 @@
 	// of tag values and inserting them into the template string;
 	// then write template into (user's) poster_mgb.html file
 
+	// Legacy handling
+	template = template.replaceAll("%PARA:AUTHORS%", "%WORDS:AUTHORS%");
+	
 	Iterator it = tags.keySet().iterator();
 	String prevKey = null;
 	while (it.hasNext()) {
@@ -136,7 +139,8 @@
 	template = template.replaceAll("%PARA:RESULTS%", "Not entered"); 
 	template = template.replaceAll("%PARA:CONCLUSION%", "Not entered");
 	template = template.replaceAll("%PARA:BIBLIOGRAPHY%", "Not entered");
-	template = template.replaceAll("%PARA:AUTHORS%", "");
+	template = template.replaceAll("%PARA:INTRODUCTION%", "Not entered");
+	template = template.replaceAll("%WORDS:AUTHORS%", "");
 	template = template.replaceAll("%WORDS:TITLE%", ""); 
 	template = template.replaceAll("%WORDS:SUBTITLE%", ""); 
 	

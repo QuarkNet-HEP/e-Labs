@@ -14,7 +14,8 @@
 	$().ready(function() {
 		$('textarea.tinymce').tinymce({
 			script_url : '../include/tiny_mce/tiny_mce.js',
-			theme : 'simple'
+			theme : 'simple',
+			plugins : 'tabfocus'
 		});
 	});
 </script>
@@ -92,7 +93,7 @@
 			pw.close();
 			    
 			//get metadata 
-			String author = request.getParameter("PARA:AUTHORS");
+			String author = request.getParameter("WORDS:AUTHORS");
 			author = author.replace('\n',' ');
 			
 			ArrayList meta = new ArrayList();
@@ -178,6 +179,10 @@
 	        
 	        p = re.getParenEnd(0);
 	        //          if (tagtype.equals("FIG")) tagval = tagval.trim();
+	        if (tagtype.equals("PARA") && tagname.equals("AUTHORS")) {
+	        	// Legacy handling
+	        	tagtype = "WORDS"; 
+	        }
 	        tags.put(tagtype+":"+tagname, tagval);
 	    }
 	}
@@ -286,6 +291,7 @@
                      if (fixedName.equals("Procedure")) {nameAnnotation="<br>(Research or study plan)";}
                      if (fixedName.equals("Results")) {nameAnnotation="<br>(Support claims with data)";}
                      if (fixedName.equals("Conclusion")) {nameAnnotation="<br>(Interpret results, suggest further study)";}
+                     if (fixedName.equals("Introduction")) {nameAnnotation="<br>(Background and researchable question)";}
  
                      %>
                     	<tr>
