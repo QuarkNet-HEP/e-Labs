@@ -39,7 +39,7 @@ set_debug_level(0);
 
 // List of addresses to send to (comma separated):
 //
-$Email_List = "help@i2u2.org, hategan@mcs.anl.gov, myers@fnal.gov";
+$Email_List = "help@i2u2.org, hategan@mcs.anl.gov"; /* , myers@fnal.gov"; */
 
 
 // Return address for e-mail sent from this form:
@@ -146,18 +146,23 @@ $priv_key_file = "../../keys/reCAPTCHA_private_key";
 if( strpos($_SERVER['SERVER_NAME'], "i2u2.org" ) ){
   $pub_key_file = "../../keys/www13.reCAPTCHA_public_key";
   $priv_key_file = "../../keys/www13.reCAPTCHA_private_key";
- }
+  $mailhide_pub_key_file  = "../../keys/reCAPTCHA_Mailhide_public_key";
+  $mailhide_priv_key_file = "../../keys/reCAPTCHA_Mailhide_private_key"; 
+}
 
 
 // Verify the keys exist and are usable
 //
-if( !file_exists($pub_key_file) || !file_exists($priv_key_file) ){
+if( !file_exists($pub_key_file) || !file_exists($priv_key_file) ||
+    !file_exists($mailhide_priv_key_file) || !file_exists($mailhide_pub_key_file) ) {
     error_page("Server configuration error. Cannot access keys.   
         Please report this to the project administrators.");
  }
 
 $public_key = file_get_contents($pub_key_file);
 $private_key = file_get_contents($priv_key_file);
+$mailhide_public_key = trim(file_get_contents($mailhide_pub_key_file));
+$mailhide_private_key = trim(file_get_contents($mailhide_priv_key_file));
 
 if( empty($public_key) || empty($private_key) ){
     error_page("Server configuration error. Empty key.
@@ -653,6 +658,7 @@ function send_report_via_email($thread_id=0){
     global $subject, $problem, $error_msg;
     global $elab, $elab_list, $elab_forum_id, $forum_id;
     global $user_name, $user_role, $role_list, $return_address;
+    global $mailhide_public_key, $mailhide_private_key;
 
     if( !array_key_exists($elab,$elab_forum_id) ) {
       debug_msg(1,"Cannot find forum_id for e-Lab $elab");
@@ -693,6 +699,7 @@ function send_report_via_email($thread_id=0){
 
     $body = fill_in_report();
 
+    /*
     $hidden_name = $user_name;
     if( !$logged_in_user )  $hidden_name = "Name-On-File";
     if( user_has_role('student') ) $hidden_name = "Name Hidden";
@@ -700,9 +707,16 @@ function send_report_via_email($thread_id=0){
     $hidden_addr = preg_replace("/(.*)\@(.*)/", "....@$2", $return_address);
     $body = preg_replace("/Submitted by: (.*) \<(.*\@.*)\>/",
 			 "Submitted by: $hidden_name <$hidden_addr>", $body);
+    */
+
+
+    $hidden_addr_url = recaptcha_mailhide_url($mailhide_public_key, $mailhide_private_key, $return_address);
+
+    $forum_body = "[pre]".preg_replace("/Submitted by: (.*) \<(.*\@.*)\>/", 
+                         "[/pre]Submitted by: [url=".$hidden_addr_url."]$1[/url][pre]", $body)."[/pre]";
 
     $form_fields = array('title' => "[bugrpt] $subject", 
-                         'content' => "[pre]".$body."[/pre]",
+                         'content' => "$forum_body",
                          'add_signature' => 'add_it', 
                          'postit' => 'Post'  );
     $form_files=array();
