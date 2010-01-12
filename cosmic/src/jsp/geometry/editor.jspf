@@ -121,7 +121,7 @@
         			</ul>
         		</c:when>
         		<c:otherwise>
-        			<p class="invalid" style="font-size: 120%">Some fields are invalid and are hightlighted in red</p>
+        			<p class="invalid" style="font-size: 120%">Some fields are invalid and are highlighted in red</p>
         		</c:otherwise>
         	</c:choose>
         	<br /><br />
