@@ -99,6 +99,9 @@
 	catch (Exception e) {
 		throw new JspException("Error reading poster file " + e.getMessage());
 	}
+	
+	// Legacy handling
+	pdata = pdata.replaceAll("PARA:AUTHORS", Matcher.quoteReplacement("WORDS:AUTHORS"));
 
 	// Store poster data into hash table, keyed by "tagtype:tagname"
 
@@ -117,9 +120,6 @@
 	// Merge tag values into html template, by iterating over hash
 	// of tag values and inserting them into the template string;
 	// then write template into (user's) poster_mgb.html file
-
-	// Legacy handling
-	template = template.replaceAll("%PARA:AUTHORS%", "%WORDS:AUTHORS%");
 	
 	Iterator it = tags.keySet().iterator();
 	String prevKey = null;
