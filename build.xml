@@ -636,4 +636,13 @@ deploy-all-clean:
 	
 	<target name="deploy-all-clean" depends="distclean, deploy-all">
 	</target>
+	
+	<target name="gen-parser">
+		<java fork="true" jar="common/lib/grammatica-20100112.jar">
+			<arg value="common/src/grammar/i2u2exp.grammar"/>
+			<arg value="--javaoutput"/><arg value="common/src/java"/>
+			<arg value="--javapackage"/><arg value="gov.fnal.elab.expression.evaluator.parser"/>
+			<arg value="--javapublic"/>
+		</java>
+	</target>
 </project>
