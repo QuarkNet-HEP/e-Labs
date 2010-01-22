@@ -71,34 +71,34 @@
 							</c:if>
 							
 							<li>
+								Advanced details on how to use the CRMD<br />
 								<a href="http://${elab.properties['elab.host']}/cosmic/library/upload/b/ba/6000CRMDUserManual.pdf">
 								Series "6000" CRMD Users Manual 
 								</a>
-								and
+								<br />
 								<a href="http://quarknet.fnal.gov/toolkits/ati/det-user.pdf">
 								Series "200" &amp; "5000" CRMD Users Manual
 								</a>
-								- Advanced details on how to use the CRMD
 							</li>
 							<li>
+								Learn how to assemble the CRMD<br />
 								<a href="http://${elab.properties['elab.host']}/cosmic/library/upload/6/60/6000CRMDAssemblyInstructions.pdf">
 								Series "6000" CRMD Assembly Instructions 
 								</a>
-								and
+								<br />
 								<a href="http://${elab.properties['elab.host']}/cosmic/library/upload/b/bd/CRMDAssemblyInstructionsV1.3.pdf">
 								Series "5000" CRMD Assembly Instructions
 								</a>
-								- Learn how to assemble the CRMD
 							</li>
 							<li>
+								Series "6000" CRMD Plateauing Instructions<br />
 								<a href="http://${elab.properties['elab.host']}/cosmic/library/upload/3/3f/6000CRMD_How_to_Plateau.ppt">
 								"6000" HOWTO PowerPoint 
 								</a>
-								and
+								<br />
 								<a href="http://${elab.properties['elab.host']}/cosmic/library/upload/1/1b/6000Plateau_Template.xls">
 								"6000" SpreadSheet Form
 								</a>
-								- Series "6000" CRMD Plateauing Instructions
 							</li>
 						</ul>
 					</div>
