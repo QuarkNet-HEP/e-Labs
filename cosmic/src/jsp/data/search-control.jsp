@@ -15,9 +15,9 @@ SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false);
 %>
 
-<link type="text/css" href="../include/jquery/css/default/jquery-ui-1.7.custom.css" rel="Stylesheet" />	
-<script type="text/javascript" src="../include/jquery/js/jquery-1.3.2.min.js"></script>
-<script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.custom.min.js"></script>
+<link type="text/css" href="../include/jquery/css/default/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />	
+<script type="text/javascript" src="../include/jquery/js/jquery-1.4.min.js"></script>
+<script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.2.custom.min.js"></script>
 <script type="text/javascript">
 $(function() {
 	$("#date1").datepicker({
