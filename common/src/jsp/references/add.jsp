@@ -257,6 +257,11 @@
 						<a href="javascript:${referenceType}('<%=simpleName%>')">Preview ${referenceText}</a>
             		<%
             		}
+            		else if (referenceType.equals("FAQ")) {
+            		%>
+            			<a href="../library/FAQ.jsp">Preview FAQ</a>
+            		<%
+            		}
             		else {
             		%>
                 		<a href="${referenceType}.jsp">Preview ${referenceType} page</a>
