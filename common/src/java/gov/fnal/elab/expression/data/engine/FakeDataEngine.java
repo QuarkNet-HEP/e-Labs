@@ -3,6 +3,9 @@
  */
 package gov.fnal.elab.expression.data.engine;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 public class FakeDataEngine implements DataEngine {
     
     public DataSet get(String path, Range range, Options options) {
@@ -10,31 +13,46 @@ public class FakeDataEngine implements DataEngine {
     }
     
     private static class FakeDataSet extends AbstractDataSet {
-        public static final int SINE = 0;
-        public static final int CONST = 1;
-        public static final int ARCTAN = 2;
+    	private enum functionType { SINE, CONST, ARCTAN, OTHER };
         
         private String path;
         private int samples;
         private Range xrange, yrange;
         private Unit xunit, yunit;
-        private final int type;
+        private final functionType type;
+        
+        private Method method; 
         
         public FakeDataSet(String path, Range range, Options options) {
             this.path = path;
             
             if ("const".equals(path)) {
-                type = CONST;
+                type = functionType.CONST;
             }
             else if ("arctan".equals(path)) {
-                type = ARCTAN;
+                type = functionType.ARCTAN;
+            }
+            else if ("sine".equals(path)) {
+            	type = functionType.SINE; 
             }
             else {
-                type = SINE;
+                type = functionType.OTHER;
+                try {
+                	method = Math.class.getMethod(path, new Class[] { double.class });
+                }
+                catch (NoSuchMethodException nsme) {
+                	throw new IllegalArgumentException("The specified function \"" + path + "\" does not exist in java.lang.Math.");
+                } 
+                catch (SecurityException e) {
+                	throw new IllegalArgumentException("The specified function \"" + path + "\" has triggered a SecurityException.");
+				} 
+                catch (IllegalArgumentException e) {
+					throw new IllegalArgumentException("You must only use functions specifying one argument of type double.");
+				} 
             }
             this.samples = options.getSamples();
-            if (this.samples == 0) {
-                throw new IllegalArgumentException("Sample size cannot be zero");
+            if (this.samples < 1) {
+                throw new IllegalArgumentException("Sample size needs to be at least one.");
             }
             xrange = range;
             yrange = new Range(-10.0, 10.0);
@@ -68,8 +86,15 @@ public class FakeDataEngine implements DataEngine {
                     return 10;
                 case ARCTAN:
                     return 10*Math.atan(getX(index).doubleValue() / 10);
+                case SINE: 
+                	return 10*Math.sin(getX(index).doubleValue() / 10);
                 default:
-                    return 10*Math.sin(getX(index).doubleValue() / 10);
+					try {
+						return (Number) method.invoke(path, getX(index).doubleValue());
+					}
+					catch (Exception e) {
+						return 0;
+					}
             }
         }
 
