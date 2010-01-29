@@ -12,8 +12,8 @@ import java.sql.SQLException;
 
 class FloatDataReader extends DataReader<Float, Double> {
 
-    public FloatDataReader(Connection conn, String table) {
-        super(conn, table);
+    public FloatDataReader(Connection conn, String table, AbstractDataTool impd) {
+        super(conn, table, impd);
     }
 
     @Override
@@ -73,5 +73,15 @@ class FloatDataReader extends DataReader<Float, Double> {
     @Override
     protected Double subtract(Double s, Double v) {
         return s - v;
+    }
+
+    @Override
+    protected void writeSum(PGDataFileWriter wr, Double sum) throws IOException {
+        wr.writeDouble(sum);
+    }
+
+    @Override
+    protected void writeValue(PGDataFileWriter wr, Float value) throws IOException {
+        wr.writeFloat(value);
     }
 }

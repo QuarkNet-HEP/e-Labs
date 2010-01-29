@@ -12,8 +12,8 @@ import java.sql.SQLException;
 
 class DoubleDataReader extends DataReader<Double, Double> {
 
-    public DoubleDataReader(Connection conn, String table) {
-        super(conn, table);
+    public DoubleDataReader(Connection conn, String table, AbstractDataTool impd) {
+        super(conn, table, impd);
     }
 
     protected Double readOne(InputStream is) throws IOException {
@@ -72,6 +72,16 @@ class DoubleDataReader extends DataReader<Double, Double> {
     @Override
     protected Double subtract(Double s, Double v) {
         return s - v;
+    }
+
+    @Override
+    protected void writeSum(PGDataFileWriter wr, Double sum) throws IOException {
+        wr.writeDouble(sum);
+    }
+
+    @Override
+    protected void writeValue(PGDataFileWriter wr, Double value) throws IOException {
+        wr.writeDouble(value);
     }
 
 }

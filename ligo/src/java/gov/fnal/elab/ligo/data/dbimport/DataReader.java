@@ -16,15 +16,15 @@ import java.util.List;
 
 abstract class DataReader<ValueType extends Number, SumType extends Number> {
 
-    public static DataReader<?, ?> instance(String type, Connection conn, String table) {
+    public static DataReader<?, ?> instance(String type, Connection conn, AbstractDataTool impd, String table) {
         if (type.equals("int")) {
-            return new IntDataReader(conn, table);
+            return new IntDataReader(conn, table, impd);
         }
         else if (type.equals("double")) {
-            return new DoubleDataReader(conn, table);
+            return new DoubleDataReader(conn, table, impd);
         }
         else if (type.equals("float")) {
-            return new FloatDataReader(conn, table);
+            return new FloatDataReader(conn, table, impd);
         }
         else {
             throw new RuntimeException("No reader for type " + type);
@@ -35,10 +35,13 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
     private List<DataReaderEntry<ValueType, SumType>> data;
     private Connection conn;
     private String table;
+    private AbstractDataTool impd;
+    private double minTime;
 
-    protected DataReader(Connection conn, String table) {
+    protected DataReader(Connection conn, String table, AbstractDataTool impd) {
         this.conn = conn;
         this.table = table;
+        this.impd = impd;
         rms = new ArrayList<ValueType>();
         mean = new ArrayList<ValueType>();
     }
@@ -69,13 +72,15 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
             ValueType value = mean.get(i);
             sum = add(sum, widen(value));
             ValueType vrms = rms.get(i);
-            ssq = add(ssq, multiply(sqr(vrms), ImportData.RAW_SAMPLES_PER_SECOND));
+            ssq = add(ssq, multiply(sqr(vrms), AbstractDataTool.RAW_SAMPLES_PER_SECOND));
             data.add(new DataReaderEntry<ValueType, SumType>(time, value, sum, ssq));
         }
     }
 
-    public void insertIntoDatabase() throws Exception {
-        conn.setAutoCommit(false);
+    public void insertIntoDatabase(String key, boolean transactional, boolean shiftSums) throws Exception {
+        if (transactional) {
+            conn.setAutoCommit(false);
+        }
         try {
             double startTime = data.get(0).gpstime;
             double endTime = data.get(data.size() - 1).gpstime;
@@ -87,10 +92,10 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
             // updating
             boolean overlap = false;
 
-            DataReaderEntry<ValueType, SumType> upper = getLargestMinorant(conn, table, startTime);
+            DataReaderEntry<ValueType, SumType> upper = getLargestMinorant(conn, table, endTime);
 
             if (lower.gpstime != upper.gpstime) {
-                removeData(lower.gpstime, upper.gpstime);
+                removeData(lower.gpstime, endTime);
             }
 
             SumType lsum = data.get(data.size() - 1).sum;
@@ -99,8 +104,10 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
             // lower.sum)
             // which should be 0 if no removal occurred;
             // add lsum to that
-            insertSumShift(startTime, endTime, subtract(lsum, subtract(upper.sum, lower.sum)), subtract(lssq, subtract(
-                upper.ssq, lower.ssq)));
+            if (shiftSums) {
+                insertSumShift(startTime, endTime, subtract(lsum, subtract(upper.sum, lower.sum)), subtract(lssq,
+                    subtract(upper.ssq, lower.ssq)));
+            }
 
             Timings.timingStart("insertData");
             PreparedStatement in1 = conn.prepareStatement("INSERT INTO " + table + " VALUES (?, ?, ?, ?)");
@@ -116,19 +123,27 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
 
             in1.close();
             Timings.timingStart("commitTransaction");
-            conn.commit();
+            if (transactional) {
+                conn.commit();
+            }
             Timings.timingEnd("commitTransaction");
         }
         catch (BatchUpdateException e) {
-            conn.rollback();
+            if (transactional) {
+                conn.rollback();
+            }
             throw e.getNextException();
         }
         catch (Exception e) {
-            conn.rollback();
+            if (transactional) {
+                conn.rollback();
+            }
             throw e;
         }
         finally {
-            conn.setAutoCommit(true);
+            if (transactional) {
+                conn.setAutoCommit(true);
+            }
         }
     }
 
@@ -137,12 +152,12 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
         // instead, add a record of what needs to be shifted and do it
         // after everything else is done
         Timings.timingStart("insertSumShift");
-        PreparedStatement qs3 = conn.prepareStatement("SELECT time FROM " + table
-                + " WHERE time > ? LIMIT 1");
+        PreparedStatement qs3 = conn.prepareStatement("SELECT time FROM " + table + " WHERE time > ? LIMIT 1");
         qs3.setDouble(1, end);
         ResultSet qr3 = qs3.executeQuery();
         if (!qr3.next()) {
             // no data after this, so no need to update sums
+            Timings.timingEnd("insertSumShift");
             return;
         }
         PreparedStatement qs1 = conn.prepareStatement("SELECT time FROM " + table
@@ -232,7 +247,8 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
      * Removes entries from the table in the interval (start, end]
      */
     private void removeData(double start, double end) throws SQLException {
-        PreparedStatement ps = conn.prepareStatement("REMOVE FROM " + table + " WHERE time > ? AND time <= ?");
+        Timings.timingStart("removeData");
+        PreparedStatement ps = conn.prepareStatement("DELETE FROM " + table + " WHERE time >= ? AND time <= ?");
         try {
             ps.setDouble(1, start);
             ps.setDouble(2, end);
@@ -241,13 +257,14 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
         finally {
             ps.close();
         }
+        Timings.timingEnd("removeData");
     }
 
     private DataReaderEntry<ValueType, SumType> getLargestMinorant(Connection conn, String table, double startTime)
             throws SQLException {
         Timings.timingStart("getLargestMinorant");
         PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM " + table
-                + " WHERE time = (SELECT MAX(time) FROM " + table + " WHERE time < ?)");
+                + " WHERE time = (SELECT MAX(time) FROM " + table + " WHERE time <= ?)");
         try {
             ps1.setDouble(1, startTime);
             ResultSet rs1 = ps1.executeQuery();
@@ -263,6 +280,27 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
             ps1.close();
         }
     }
+
+    public void write(PGDataFileWriter wr) throws IOException {
+        Timings.timingStart("write");
+        for (DataReaderEntry<ValueType, SumType> e : data) {
+            wr.newRow(4);
+            wr.writeDouble(e.gpstime);
+            writeValue(wr, e.value);
+            writeSum(wr, e.sum);
+            writeSum(wr, e.ssq);
+        }
+        Timings.timingEnd("write");
+    }
+    
+
+    public double[] getTimeRange() {
+        return new double[] { data.get(0).gpstime, data.get(data.size() - 1).gpstime };
+    }
+
+    protected abstract void writeSum(PGDataFileWriter wr, SumType sum) throws IOException;
+
+    protected abstract void writeValue(PGDataFileWriter wr, ValueType value) throws IOException;
 
     protected abstract void setValue(PreparedStatement ps, int i, ValueType value) throws SQLException;
 

@@ -12,8 +12,8 @@ import java.sql.SQLException;
 
 class IntDataReader extends DataReader<Integer, Long> {
 
-    public IntDataReader(Connection conn, String table) {
-        super(conn, table);
+    public IntDataReader(Connection conn, String table, AbstractDataTool impd) {
+        super(conn, table, impd);
     }
 
     @Override
@@ -72,6 +72,16 @@ class IntDataReader extends DataReader<Integer, Long> {
     @Override
     protected Long subtract(Long s, Long v) {
         return s - v;
+    }
+
+    @Override
+    protected void writeSum(PGDataFileWriter wr, Long sum) throws IOException {
+        wr.writeLong(sum);
+    }
+
+    @Override
+    protected void writeValue(PGDataFileWriter wr, Integer value) throws IOException {
+        wr.writeInt(value);
     }
 
 }

@@ -4,12 +4,13 @@
 package gov.fnal.elab.ligo.data.dbimport;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
@@ -19,36 +20,41 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class CreateDatabase implements Runnable {
-    private String frdumpOut, dburl, dbuser, dbpass;
+    private String dburl, dbuser, dbpass;
     private Connection conn;
     private Set<String> seen;
     private boolean drop;
-    
+    private String ligoToolsHome;
+
     public static final Map<String, String> TYPE_MAPPING, DOUBLE_TYPE_MAPPING;
-    
+
     static {
         TYPE_MAPPING = new HashMap<String, String>();
         DOUBLE_TYPE_MAPPING = new HashMap<String, String>();
-        
+
         TYPE_MAPPING.put("int", "integer");
         DOUBLE_TYPE_MAPPING.put("int", "bigint");
-        
+
         TYPE_MAPPING.put("double", "double precision");
         DOUBLE_TYPE_MAPPING.put("double", "double precision");
-        
+
         TYPE_MAPPING.put("float", "real");
         DOUBLE_TYPE_MAPPING.put("float", "double precision");
     }
 
-    public CreateDatabase(String frdumpOut, String dburl, String dbuser, String dbpass, boolean drop) {
-        this.frdumpOut = frdumpOut;
+    public CreateDatabase(String dburl, String dbuser, String dbpass, boolean drop) {
         this.dburl = dburl;
         this.dbuser = dbuser;
         this.dbpass = dbpass;
         this.seen = new HashSet<String>();
         this.drop = drop;
+
+    }
+
+    public CreateDatabase(Connection conn) {
+        this.conn = conn;
+        drop = false;
     }
 
     public void run() {
@@ -62,41 +68,62 @@ public class CreateDatabase implements Runnable {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
-    
-    public static final Pattern DEBUG_LEVEL = Pattern.compile("\\s*Debug level\\s*:\\s*(\\d)+"); 
-    public static final Pattern ADC_LINE = Pattern.compile("\\s*ADC:\\s*(\\w+:\\w+-[\\w\\.\\-]+)\\.mean\\s.*nBits=(\\d+) bias=((?:\\w|\\-|\\.)+) slope=((?:\\w|\\-|\\.)+) units=(.*)");
+
+    public static final Pattern DEBUG_LEVEL = Pattern.compile("\\s*Debug level\\s*:\\s*(\\d)+");
+    public static final Pattern ADC_LINE = Pattern
+        .compile("\\s*ADC:\\s*(\\w+:\\w+-[\\w\\.\\-]+)\\.mean\\s.*nBits=(\\d+) bias=((?:\\w|\\-|\\.)+) slope=((?:\\w|\\-|\\.)+) units=(.*)");
     public static final Pattern DATA_LINE = Pattern.compile("\\s*Data\\((\\w+)\\).*");
 
     private void run2() throws Exception {
-        BufferedReader br;
-        if (frdumpOut.equals("-")) {
-            br = new BufferedReader(new InputStreamReader(System.in));
-        }
-        else {
-            br = new BufferedReader(new FileReader(frdumpOut));
-        }
+        connectToDb();
+        createDescriptionTables();
+        System.out.println("All done");
+    }
+
+    public Map<String, String> createChannelTables(String ligoToolsHome, File f) throws Exception {
+        String[] c = new String[] { ligoToolsHome + File.separator + "bin" + File.separator + "FrDump", "-i",
+                f.getAbsolutePath(), "-d", "4" };
+        Process p = Runtime.getRuntime().exec(c);
+        String out = ProcessTools.getOutput("FrDump", p, f);
+        BufferedReader br = new BufferedReader(new StringReader(out));
         Matcher level = skipToNotNull(br, DEBUG_LEVEL);
         if (!"4".equals(level.group(1))) {
             throw new RuntimeException("You must run FrDump with the \"-d 4\" option.");
         }
-        connectToDb();
-        createDescriptionTables();
+
+        Set<String> indb = new HashSet<String>();
+        Statement s = conn.createStatement();
+        ResultSet rs = s.executeQuery("SELECT name FROM channels");
+        while (rs.next()) {
+            indb.add(rs.getString(1));
+        }
+        s.close();
+
+        Map<String, String> tables = new HashMap<String, String>();
         Matcher adc = skipTo(br, ADC_LINE);
         while (adc != null) {
             Matcher data = skipToNotNull(br, DATA_LINE);
-            createChannelTable(adc.group(1), data.group(1), adc.group(2), adc.group(3), adc.group(4), adc.group(5));
+            if (indb.contains(adc.group(1))) {
+                adc = skipTo(br, ADC_LINE);
+                continue;
+            }
+            String table = createChannelTable(adc.group(1), data.group(1), adc.group(2), adc.group(3), adc.group(4),
+                adc.group(5));
+            tables.put(adc.group(1), table);
             adc = skipTo(br, ADC_LINE);
         }
         br.close();
-        System.out.println("All done");
+        return tables;
     }
 
-
-    private void createChannelTable(String name, String datatype, String nbits, String bias, String slope, String units) throws SQLException {
-        if (seen.contains(name)) {
-            return;
+    private String createChannelTable(String name, String datatype, String nbits, String bias, String slope,
+            String units) throws SQLException {
+        if (seen != null) {
+            if (seen.contains(name)) {
+                return null;
+            }
+            seen.add(name);
         }
-        seen.add(name);
         System.out.println("Adding channel " + name + "...");
         PreparedStatement s = conn.prepareStatement("INSERT INTO channels VALUES (?, ?, ?, ?, ?, ?, ?)");
         s.setString(1, name);
@@ -109,7 +136,7 @@ public class CreateDatabase implements Runnable {
         s.setString(7, tblname);
         s.execute();
         s.close();
-        
+
         String sqltype = TYPE_MAPPING.get(datatype);
         String sqltype2 = DOUBLE_TYPE_MAPPING.get(datatype);
         if (sqltype == null || sqltype2 == null) {
@@ -126,14 +153,15 @@ public class CreateDatabase implements Runnable {
             }
         }
         Statement s2 = conn.createStatement();
-        s2.execute("CREATE TABLE " + tblname + " (" +
-        		   "  time numeric(14, 3) PRIMARY KEY," +
-        		   "  value " + sqltype + "," +
-        		   "  sum " + sqltype2 + "," +
-        		   "  sumsq " + sqltype2 +
-        		   ") TABLESPACE ligodata");
+        s2.execute("CREATE TABLE " + tblname + " (" + 
+                   "  time double precision PRIMARY KEY," + 
+                   "  value " + sqltype + "," + 
+                   "  sum " + sqltype2 + "," + 
+                   "  sumsq " + sqltype2 + 
+                   ") TABLESPACE ligodata");
         s2.execute("CREATE INDEX " + tblname + "_index ON " + tblname + " (time) TABLESPACE ligodata");
         s2.close();
+        return tblname;
     }
 
     private String specialToUnderscore(String name) {
@@ -169,31 +197,34 @@ public class CreateDatabase implements Runnable {
         }
         System.out.println("Creating channel descriptor table...");
         Statement s = conn.createStatement();
-        s.execute("CREATE TABLE channels (" +
-        		  "  name      varchar(80) NOT NULL," +
-        		  "  units     varchar(8)," +
-        		  "  datatype  varchar(16) NOT NULL," +
-        		  "  nBits     integer," +
-        		  "  slope     double precision," +
-        		  "  bias      double precision," +
-        		  "  tablename varchar(80) NOT NULL" +
-        		  ") TABLESPACE ligodata");
-        s.execute("CREATE TABLE sumupdates (" +
-                  "  id        SERIAL," +
-        		  "  tablename varchar(80) NOT NULL," +
-        		  "  starttime numeric(14, 3)," +
-        		  "  endtime   numeric(14, 3)," +
-        		  "  sumdeltad double precision," +
-        		  "  sumdeltai bigint," +
-        		  "  ssqdeltad double precision," +
-        		  "  ssqdeltai bigint" +
-        		  ") TABLESPACE ligodata");
+        s.execute("CREATE TABLE channels (" + 
+                  "  name      varchar(80) NOT NULL," + 
+                  "  units     varchar(8)," + 
+                  "  datatype  varchar(16) NOT NULL," + 
+                  "  nBits     integer," +  
+                  "  slope     double precision," +
+                  "  bias      double precision," + 
+                  "  tablename varchar(80) NOT NULL" +
+                  ") TABLESPACE ligodata");
+        s.execute("CREATE TABLE sumupdates (" + 
+                  "  id        SERIAL," + 
+                  "  tablename varchar(80) NOT NULL," + 
+                  "  starttime double precision," + 
+                  "  endtime   double precision," + 
+                  "  sumdeltad double precision," +
+                  "  sumdeltai bigint," + 
+                  "  ssqdeltad double precision," + 
+                  "  ssqdeltai bigint"
+                + ") TABLESPACE ligodata");
+        s.execute("CREATE TABLE files (" + 
+                  "  name      varchar(80) PRIMARY KEY" + 
+                  ") TABLESPACE ligodata");
+        s.execute("CREATE INDEX files_index ON files (name) TABLESPACE ligodata");
     }
 
     private void connectToDb() throws SQLException {
         System.out.println("Connecting to database...");
-        conn = DriverManager.getConnection(
-                "jdbc:postgresql:" + dburl, dbuser, dbpass);
+        conn = DriverManager.getConnection("jdbc:postgresql:" + dburl, dbuser, dbpass);
     }
 
     private Matcher skipToNotNull(BufferedReader br, Pattern p) throws IOException {
@@ -219,15 +250,15 @@ public class CreateDatabase implements Runnable {
     }
 
     public static void main(String[] args) {
-        if (args.length < 4) {
+        if (args.length < 3) {
             error("Incorrect number of arguments", 1);
         }
         boolean drop = false;
-        if (args.length == 5 && args[4].equals("--drop")) {
+        if (args.length == 4 && args[3].equals("--drop")) {
             drop = true;
         }
         try {
-            new CreateDatabase(args[0], args[1], args[2], args[3], drop).run();
+            new CreateDatabase(args[0], args[1], args[2], drop).run();
         }
         catch (Exception e) {
             error(e.getMessage(), 2);
@@ -241,9 +272,8 @@ public class CreateDatabase implements Runnable {
     }
 
     public static void help() {
-        System.err.println("Usage: CreateDatabase <frdump> <dburl> <dbuser> <dbpass> [--drop]");
+        System.err.println("Usage: CreateDatabase <dburl> <dbuser> <dbpass> [--drop]");
         System.err.println("  where:");
-        System.err.println("    <frdump> is the output from FrDump on a frame file with -d 4 (or '-' for stdin)");
         System.err.println("    <dburl> is the url for the PostgreSQL server");
         System.err.println("    <dbuser> the database username");
         System.err.println("    <dbpass> the database password");

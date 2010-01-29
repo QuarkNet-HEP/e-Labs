@@ -8,20 +8,23 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LIGOFile implements Comparable<LIGOFile> {
+    public static final int SECOND_TREND = 0;
+    public static final int MINUTE_TREND = 0;
+    
     public final int trend, site;
-    public final File f;
+    public final File file;
 
     public LIGOFile(int site, int trend, File f) {
         this.site = site;
         this.trend = trend;
-        this.f = f;
+        this.file = f;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof LIGOFile) {
             LIGOFile other = (LIGOFile) obj;
-            return f.getAbsolutePath().equals(other.f.getAbsolutePath());
+            return file.getAbsolutePath().equals(other.file.getAbsolutePath());
         }
         else {
             return false;
@@ -30,7 +33,7 @@ public class LIGOFile implements Comparable<LIGOFile> {
 
     @Override
     public int hashCode() {
-        return f.getName().hashCode() + trend * 113 + site * 9771;
+        return file.getName().hashCode() + trend * 113 + site * 9771;
     }
     
     public static final Pattern RE_FILE_GPS_TIME = Pattern.compile("[H|L]-[T|M]-(\\d+)-(\\d+).gwf");
@@ -39,11 +42,11 @@ public class LIGOFile implements Comparable<LIGOFile> {
         if (this.equals(o)) {
             return 0;
         }
-        Matcher m1 = RE_FILE_GPS_TIME.matcher(this.f.getName());
+        Matcher m1 = RE_FILE_GPS_TIME.matcher(this.file.getName());
         if (m1.matches()) {
             long t1 = Long.parseLong(m1.group(1));
             int d1 = Integer.parseInt(m1.group(2));
-            Matcher m2 = RE_FILE_GPS_TIME.matcher(o.f.getName());
+            Matcher m2 = RE_FILE_GPS_TIME.matcher(o.file.getName());
             if (m2.matches()) {
                 long t2 = Long.parseLong(m2.group(1));
                 int d2 = Integer.parseInt(m2.group(2));
@@ -59,10 +62,10 @@ public class LIGOFile implements Comparable<LIGOFile> {
                 }
                 // <-(----)--> or (--<---->---)
                 if (t1 <= t2 && t1 + d1 >= t2 + d2 || t2 <= t1 && t2 + d2 >= t1 + d1) {
-                    if (trend == ImportData.SECOND_TREND) {
+                    if (trend == SECOND_TREND) {
                         return 1;
                     }
-                    if (o.trend == ImportData.SECOND_TREND) {
+                    if (o.trend == SECOND_TREND) {
                         return -1;
                     }
                     throw new RuntimeException("This should be unreachable 1");
@@ -70,10 +73,10 @@ public class LIGOFile implements Comparable<LIGOFile> {
                 // <--(---->--) or (--<----)-->
                 // this shouldn't actually be happening, since data is aligned
                 if (t1 <= t2 && t1 + d1 > t2 || t2 <= t1 && t2 + d2 > t1) {
-                    if (trend == ImportData.SECOND_TREND) {
+                    if (trend == SECOND_TREND) {
                         return 1;
                     }
-                    if (o.trend == ImportData.SECOND_TREND) {
+                    if (o.trend == SECOND_TREND) {
                         return -1;
                     }
                     throw new RuntimeException("This should be unreachable 2");
@@ -81,12 +84,12 @@ public class LIGOFile implements Comparable<LIGOFile> {
                 throw new RuntimeException("This should be unreachable 3");
             }
         }
-        throw new RuntimeException("Invalid ligo file: " + f);
+        throw new RuntimeException("Invalid ligo file: " + file);
     }
 
     @Override
     public String toString() {
-        return f.getName();
+        return file.getName();
     }
     
 }
