@@ -3,7 +3,7 @@
  */
 package gov.fnal.elab.expression.evaluator;
 
-public class EvaluationException extends RuntimeException {
+public class EvaluationException extends Exception {
 
     public EvaluationException() {
     }

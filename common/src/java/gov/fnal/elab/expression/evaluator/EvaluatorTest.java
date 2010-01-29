@@ -6,7 +6,7 @@ package gov.fnal.elab.expression.evaluator;
 import org.junit.Test;
 
 public class EvaluatorTest {
-    @Test public void testBasicWorkings() {
+    @Test public void testBasicWorkings() throws EvaluationException {
         Evaluator.getDefault().evaluate("log(threshold(data(\"sine\", 0, 40, 100), 1, 5))");
     }
 }

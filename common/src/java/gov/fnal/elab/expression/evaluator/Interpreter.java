@@ -39,12 +39,12 @@ public class Interpreter implements I2u2expConstants {
         return engine;
     }
 
-    public DataSet run() {
+    public DataSet run() throws EvaluationException {
         reduce(n);
         return ((Value) n.getValue(0)).getDataSetValue();
     }
 
-    private void reduce(Node n) {
+    private void reduce(Node n) throws EvaluationException {
         switch (n.getId()) {
             case NUMBER:
                 Value v = new Value((Number) n.getValue(0));
@@ -71,7 +71,7 @@ public class Interpreter implements I2u2expConstants {
         }
     }
 
-    private Function getFunction(String name) {
+    private Function getFunction(String name) throws EvaluationException {
         Function f = functions.get(name);
         if (f == null) {
             throw new EvaluationException("No such function: " + name);

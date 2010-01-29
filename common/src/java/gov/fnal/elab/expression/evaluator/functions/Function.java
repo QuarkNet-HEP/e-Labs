@@ -3,13 +3,13 @@
  */
 package gov.fnal.elab.expression.evaluator.functions;
 
+import gov.fnal.elab.expression.evaluator.EvaluationException;
 import gov.fnal.elab.expression.evaluator.Interpreter;
 
 public abstract class Function {
     private Interpreter interpreter;
     
     public Function() {
-        
     }
     
     public Function(Interpreter interpreter) {
@@ -20,7 +20,7 @@ public abstract class Function {
         return interpreter;
     }
 
-    public abstract Value invoke(Value[] args);
+    public abstract Value invoke(Value[] args) throws EvaluationException;
 
     protected void checkArgs(Value[] args, int[] expectedTypes) {
         if (args.length != expectedTypes.length) {

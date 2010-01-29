@@ -18,7 +18,7 @@ public class Evaluator {
         this.engine = engine;
     }
     
-    public DataSet evaluate(String expr) {
+    public DataSet evaluate(String expr) throws EvaluationException {
         try {
             Parser p = new Parser(expr);
             Node n = p.parse();
@@ -26,10 +26,10 @@ public class Evaluator {
             return interp.run();
         }
         catch (ParserCreationException e) {
-            throw new RuntimeException("Failed to create parser", e);
+            throw new EvaluationException("Failed to create parser", e);
         }
         catch (ParserLogException e) {
-            throw new RuntimeException("Failed to parse input", e);
+            throw new EvaluationException("Failed to parse input", e);
         }
     }
     

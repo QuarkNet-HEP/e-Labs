@@ -3,8 +3,11 @@
  */
 package gov.fnal.elab.expression.evaluator.functions;
 
+import gov.fnal.elab.expression.data.engine.DataBackendException;
+import gov.fnal.elab.expression.data.engine.DataPath;
 import gov.fnal.elab.expression.data.engine.Options;
 import gov.fnal.elab.expression.data.engine.Range;
+import gov.fnal.elab.expression.evaluator.EvaluationException;
 import gov.fnal.elab.expression.evaluator.Interpreter;
 
 public class Data extends Function {
@@ -15,7 +18,7 @@ public class Data extends Function {
     }
 
     @Override
-    public Value invoke(Value[] args) {
+    public Value invoke(Value[] args) throws EvaluationException {
         checkArgs(args, TYPES);
         Range range;
         if (args[1].getNumericValue() instanceof Integer) {
@@ -24,7 +27,12 @@ public class Data extends Function {
         else {
             range = new Range(args[1].getNumericValue().doubleValue(), args[2].getNumericValue().doubleValue());
         }
-        return new Value(getInterpreter().getEngine().get(args[0].getStringValue(), range,
-            new Options().setSamples(args[3].getNumericValue().intValue())));
+        try {
+            return new Value(getInterpreter().getEngine().get(new DataPath(args[0].getStringValue()), range,
+                new Options().setSamples(args[3].getNumericValue().intValue())));
+        }
+        catch (DataBackendException e) {
+            throw new EvaluationException(e);
+        }
     }
 }
