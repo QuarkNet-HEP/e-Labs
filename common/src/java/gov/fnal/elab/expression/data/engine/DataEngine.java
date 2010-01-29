@@ -3,6 +3,10 @@
  */
 package gov.fnal.elab.expression.data.engine;
 
+import java.util.List;
+
 public interface DataEngine {
-    DataSet get(String path, Range range, Options options);
+    DataSet get(DataPath path, Range range, Options options) throws DataBackendException;
+    
+    List<DataPath> getPaths() throws DataBackendException;
 }
