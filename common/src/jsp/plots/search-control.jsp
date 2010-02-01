@@ -100,7 +100,6 @@ DATEFORMAT.setLenient(false);
 			    		}
 			    	}
 			    }
-				    
 			//hmm. posters use "date" instead of "creationdate"
 			// Probably should do this Cosmic-style 
 		    if (StringUtils.isNotBlank(date1) || StringUtils.isNotBlank(date2)) {
