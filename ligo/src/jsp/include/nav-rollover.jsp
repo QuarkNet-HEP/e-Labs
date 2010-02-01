@@ -8,27 +8,32 @@
 
 	<script type="text/javascript">
 	$(document).ready(function() {
-		$("#nav-home").mouseover(function(){ // Home
+		var hoverAttributes = { 
+				speed: 10, 
+				delay: 100 
+		}; 
+		
+		$("#nav-home").bind("hover", hoverAttributes, function(){ // Home
 			$("#subnav").children().hide(); 
 			$("#sub-home").show();
 		});
-		$("#nav-library").mouseover(function(){ // Library
+		$("#nav-library").bind("hover", hoverAttributes, function(){ // Library
 			$("#subnav").children().hide();
 			$("#sub-library").show(); 
 		});
-		$("#nav-data").mouseover(function(){ // Data
+		$("#nav-data").bind("hover", hoverAttributes, function(){ // Data
 			$("#subnav").children().hide();
 			$("#sub-data").show(); 
 		});
-		$("#nav-posters").mouseover(function(){ // Posters
+		$("#nav-posters").bind("hover", hoverAttributes, function(){// Posters
 			$("#subnav").children().hide();
 			$("#sub-posters").show();
 		});
-		$("#nav-siteindex").mouseover(function(){ // Site Index
+		$("#nav-siteindex").bind("hover", hoverAttributes, function(){ // Site Index
 			$("#subnav").children().hide();
 			$("#sub-siteindex").show();
 		});
-		$("#nav-assessment").mouseover(function(){ // Assessment
+		$("#nav-assessment").bind("hover", hoverAttributes, function(){ // Assessment
 			$("#subnav").children().hide();
 		});
 	});
