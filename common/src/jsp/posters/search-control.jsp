@@ -11,6 +11,25 @@ SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false);
 %>
 
+<script type="text/javascript">
+$(function() {
+	var calendarParam = {
+			showOn: 'button', 
+			buttonImage: '../graphics/calendar-blue.png',
+			buttonImageOnly: true, 
+			changeMonth: true,
+			changeYear: true, 
+			showButtonPanel: true,
+			minDate: new Date(2000, 11-1, 30), // Earliest known date of data - probably should progamatically find. 
+			maxDate: new Date() // Should not look later than today
+	};
+	$('.datepicker').datepicker(calendarParam);
+	$("#data1").datepicker('option', 'buttonText', 'Choose start date.');
+	$("#data2").datepicker('option', 'buttonText', 'Choose start date.');
+	$('img.ui-datepicker-trigger').css('vertical-align', 'text-bottom'); 
+});
+</script>
+
 <div class="poster-search-control"> 
 	<div class="search-quick-links">
 		Quick Searches:&nbsp; 
@@ -39,9 +58,9 @@ DATEFORMAT.setLenient(false);
 					Please enter dates in MM/dd/yyyy format (e.g. <%= DATEFORMAT.format(new Date()) %>).<br />
 					You may leave one or both date fields blank.<br />
 					Date Range: &nbsp;&nbsp;&nbsp;From: 
-					<e:trinput name="date1" id="date1" size="10" maxlength="15" />
+					<e:trinput name="date1" id="date1" size="10" maxlength="15" class="datepicker" />
 					to
-					<e:trinput name="date2" id="date2" size="10" maxlength="15" />
+					<e:trinput name="date2" id="date2" size="10" maxlength="15" class="datepicker" />
 					
 					</td></tr>
 				</table>

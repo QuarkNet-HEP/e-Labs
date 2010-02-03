@@ -15,21 +15,22 @@ SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false);
 %>
 
-<link type="text/css" href="../include/jquery/css/default/jquery-ui-1.7.custom.css" rel="Stylesheet" />	
-<script type="text/javascript" src="../include/jquery/js/jquery-1.3.2.min.js"></script>
-<script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.custom.min.js"></script>
 <script type="text/javascript">
 $(function() {
-	$("#date1").datepicker({
-		changeMonth: true,
-		changeYear: true, 
-		showButtonPanel: true
-	});
-	$("#date2").datepicker({
-		changeMonth: true,
-		changeYear: true, 
-		showButtonPanel: true
-	});
+	var calendarParam = {
+			showOn: 'button', 
+			buttonImage: '../graphics/calendar-blue.png',
+			buttonImageOnly: true, 
+			changeMonth: true,
+			changeYear: true, 
+			showButtonPanel: true,
+			minDate: new Date(2000, 11-1, 30), // Earliest known date of data - probably should progamatically find. 
+			maxDate: new Date() // Should not look later than today
+	};
+	$('.datepicker').datepicker(calendarParam);
+	$("#data1").datepicker('option', 'buttonText', 'Choose start date.');
+	$("#data2").datepicker('option', 'buttonText', 'Choose start date.');
+	$('img.ui-datepicker-trigger').css('vertical-align', 'text-bottom'); 
 });
 $(window).scroll(function(){
 	$('#right').animate({top:$(window).scrollTop()+"px" },{queue: false, duration: 0});
@@ -67,7 +68,7 @@ $(window).scroll(function(){
 				<tr>
 					<td colspan="2">
 					Please enter dates in MM/dd/yyyy format (e.g. <%= DATEFORMAT.format(new Date()) %>).<br />
-					You may leave one or both date fields blank.
+					You may leave one or both date fields blank.<br />
 					</td>
 				</tr>
 				<tr>
@@ -78,12 +79,12 @@ $(window).scroll(function(){
 						</select>
 					</td>
 					<td>
-						<e:trinput name="date1" id="date1" size="10" maxlength="15" />
+						<e:trinput name="date1" id="date1" size="10" maxlength="15" class="datepicker"/>
 						to
-						<e:trinput name="date2" id="date2" size="10" maxlength="15" />
+						<e:trinput name="date2" id="date2" size="10" maxlength="15" class="datepicker"/>
 					</td>
 				</tr>
-				<!-- Sort field and search-within-data don't work. 
+				<%-- Sort field and search-within-data don't work. 
 				<tr>
 					<td align="right">
 						<e:select name="sortDirection" valueList="sortAsc, sortDesc" labelList="Sort Ascending, Sort Descending"/>
@@ -103,7 +104,7 @@ $(window).scroll(function(){
 					    <input type="radio" name="searchIn" value="within"/ >Within results
 					</td>
 				</tr>
-				-->
+				--%>
 				<tr>
 					<td>
 						Stacked:
