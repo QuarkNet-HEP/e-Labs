@@ -10,6 +10,14 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column-home.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
+
+<style type="text/css">
+#news-box {
+   width: 100%;
+   margin-bottom: 5px;
+}
+</style>
+
 	</head>
 	
 	<body id="home" class="home">
@@ -27,6 +35,9 @@
 
  	 <c:if test="${user != null}">
 <h1>Home: Join a national collaboration of high school students to study cosmic rays.</h1>
+
+				<%@ include file="../include/newsbox.jsp" %>
+
   
 	   <div id="links"><table align="center"><tr>
 	   <td width="150" align="center"><A href="cool-science.jsp"><img src="../graphics/cool-science-button.gif" border="0"><br>Cool Science</a></td>
@@ -40,6 +51,8 @@
 	  </c:if>  
  	 <c:if test="${user == null}">
 <h1>Welcome: Join a national collaboration of high school students to study cosmic rays.</h1>
+<%@ include file="../include/newsbox.jsp" %>
+
 	  </c:if>  
 
 <!-- there is no way to do this without tables unfortunately -->
@@ -48,7 +61,6 @@
 	<tr>
 	    <td colspan="2">
  	 <c:if test="${user != null}">
-  
 	   <div id="links"><A href="../library/big-picture.jsp">Cool Science</a> - <a href="../site-index/site-map-anno.jsp">Explore</a> - <a href="about-us.jsp">About Us</a></div>
 	  </c:if>  
 	    </td>
@@ -62,6 +74,7 @@
 		<div id="left">
 			<script type="text/javascript" src="../include/elab.js"></script>
 	        <%@ include file="../login/login-required.jsp" %>
+
 		    <%@ include file="../library/milestones-map-student.jsp" %>
  		</div>
 	  </c:if>  
@@ -73,7 +86,6 @@
 		</td>
 		<td>
 			<div id="right">
-				<%@ include file="../include/newsbox.jsp" %>
 				<jsp:include page="../login/login-control.jsp">
 					<jsp:param name="prevPage" value="../home/login-redir.jsp"/>
 				</jsp:include>
