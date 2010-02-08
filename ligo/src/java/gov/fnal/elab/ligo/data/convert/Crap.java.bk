@@ -1,0 +1,479 @@
+/*
+ * Created on Jan 25, 2010
+ */
+package gov.fnal.elab.ligo.data.dbimport;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Crap implements Runnable {
+
+    
+    public static final double END_OF_TIME = Double.MAX_VALUE;
+
+    /**
+     * Assume that the channels don't vary for a given site/trend
+     */
+    public static final boolean ASSUME_STABLE_CHANNELS = true;
+
+    
+
+    
+    
+    
+
+    
+
+    private Map<LIGOFileClass, Set<String>> cachedChannels;
+
+    private String pathToData, pathToLigoTools, tmpdir;
+    private String dburl, dbuser, dbpass;
+    private Connection conn;
+    private Map<String, String> tables;
+    private Map<String, String> types;
+    private long flen;
+    private Map<String, Double> mintime, maxtime;
+    
+
+    // start and end times of covered time intervals
+    private SortedSet<Long> starts, ends;
+    protected boolean initial;
+
+    public Crap(String pathToData, String pathToLigoTools, String tmpdir, String dburl, String dbuser,
+            String dbpass, boolean initial) {
+        this.pathToData = pathToData;
+        this.pathToLigoTools = pathToLigoTools;
+        this.tmpdir = tmpdir;
+        this.dburl = dburl;
+        this.dbuser = dbuser;
+        this.dbpass = dbpass;
+        starts = new TreeSet<Long>();
+        ends = new TreeSet<Long>();
+        mintime = new HashMap<String, Double>();
+        maxtime = new HashMap<String, Double>();
+        cachedChannels = new HashMap<LIGOFileClass, Set<String>>();
+        
+        this.initial = initial;
+    }
+
+    public void run() {
+        try {
+            run2();
+        }
+        catch (RuntimeException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    private void run2() throws Exception {
+        connectToDb();
+        loadChannelInfo();
+        loadMinMaxTimes();
+        for (int i = 0; i < SITES.length; i++) {
+            System.out.println("Importing " + SITES[i] + " data");
+            SortedSet<LIGOFile> l = findFiles(i);
+            if (initial) {
+                // importByChannel(l);
+                convertAndImport(l);
+            }
+            else {
+                importFiles(l);
+            }
+        }
+    }
+
+    
+
+
+    
+
+    
+
+    private void importByChannel(SortedSet<LIGOFile> files) throws Exception {
+        int j = 0;
+        int col = 0;
+        for (Map.Entry<String, String> e : tables.entrySet()) {
+            System.out.println("Importing channel " + e.getKey());
+            File data = File.createTempFile("ldtemp", ".bin");
+            // data.deleteOnExit();
+            PGDataFileWriter wr;
+            wr = new PGDataBinaryFileWriter(data, false);
+
+            int i = 0;
+            long start = System.currentTimeMillis();
+            double gpsstart = Double.MAX_VALUE, gpsend = 0;
+            for (LIGOFile f : files) {
+                double[] range = convert(e.getKey(), f.site, f.trend, f.file, wr);
+                if (range[0] < gpsstart) {
+                    gpsstart = range[0];
+                }
+                if (range[1] > gpsend) {
+                    gpsend = range[1];
+                }
+                i++;
+                j++;
+                if (i % 100 == 0) {
+                    long now = System.currentTimeMillis();
+                    long estc = (now - start) * (files.size() - i) / i;
+                    long estt = (now - start) * (files.size() * tables.size() - j) / j;
+                    System.out.println(i + "/" + files.size() + " (" + (i * 100 / files.size())
+                            + "%); est. channel time left: " + formatTime(estc) + ", est. total time left: "
+                            + formatTime(estt));
+                    Timings.print();
+                }
+            }
+            wr.close();
+            dbDelete(e.getValue(), gpsstart, gpsend);
+            dbCopy(data, e.getValue());
+            data.delete();
+        }
+    }
+
+    private void dbDelete(String table, double gpsstart, double gpsend) throws SQLException {
+        System.out.println("Removing previous data in range [" + gpsstart + ", " + gpsend + "]...");
+        PreparedStatement ps = conn.prepareStatement("DELETE FROM " + table + " WHERE gpstime > ? AND gpstime < ?");
+        ps.setDouble(1, gpsstart);
+        ps.setDouble(2, gpsend);
+        ps.execute();
+    }
+
+    private void clearTable(String table) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement("DELETE FROM " + table + "");
+        ps.execute();
+    }
+
+    
+
+    private void importFiles(SortedSet<LIGOFile> files) throws Exception {
+        int i = 0;
+        for (LIGOFile f : files) {
+            flen += f.file.length();
+            long start = System.currentTimeMillis();
+            checkDuration(f.file, f.trend);
+            importFile(f.site, f.trend, f.file);
+            i++;
+            if (i % 10 == 0) {
+                Timings.print();
+            }
+            long now = System.currentTimeMillis();
+            long est = (now - start) * (files.size() - i);
+            System.out.println(i + "/" + files.size() + " (" + i * 100 / files.size() + "%, " + formatSize(flen)
+                    + ") done; estimated time left: " + formatTime(est));
+        }
+    }
+
+    
+
+    
+    
+
+    private double[] convert(String channel, int site, int trend, File f, PGDataFileWriter wr) throws Exception {
+        Timings.timingStart("convert");
+        Set<String> c = getActualChannels(site, trend, f, false);
+        if (!c.contains(channel)) {
+            return new double[] { 0, 0 };
+        }
+        File tmp = new File(tmpdir + File.separator + getElements(f, 4));
+        if (!tmp.exists() && !tmp.mkdirs()) {
+            throw new RuntimeException("Cannot create directory " + tmp);
+        }
+        String tmpprefix = tmp.getAbsolutePath() + File.separator + "ldump-";
+        extractData(channel, site, trend, f);
+        DataReader<?, ?> data;
+        try {
+            data = readChannelData(channel, tmpprefix, site, trend, f, false);
+        }
+        catch (BrokenDataException e) {
+            new File(tmp, "ldump-" + channel + ".rms.txt").delete();
+            extractData(channel, site, trend, f);
+            data = readChannelData(channel, tmpprefix, site, trend, f, false);
+        }
+        data.write(wr);
+        Timings.timingEnd("convert");
+        return data.getTimeRange();
+    }
+
+    private String getElements(File f, int n) {
+        if (n == 1) {
+            return f.getName();
+        }
+        else {
+            return getElements(f.getParentFile(), n - 1) + File.separator + f.getName();
+        }
+    }
+
+    private void importFile(int site, int trend, File f) throws Exception {
+        if (fileIsImported(f)) {
+            System.out.println("Skipping " + f.getName());
+            return;
+        }
+        System.out.print("Processing " + f.getName() + "...");
+        Set<String> c = getActualChannels(site, trend, f, false);
+        String tmpprefix = runFrameDataDump2(f, c, null);
+
+        for (String channel : c) {
+            DataReader<?, ?> data = readChannelData(channel, tmpprefix, site, trend, f, true);
+            data.insertIntoDatabase(f.getName());
+        }
+        markFileAsImported(f);
+        System.out.println();
+    }
+
+    
+
+    
+
+    
+    private void extractData(String channel, int site, int trend, File f) throws Exception {
+        Timings.timingStart("extractData");
+        File dir = new File(tmpdir + File.separator + getElements(f, 4));
+        File rmstxt = new File(dir, "ldump-" + channel + ".rms.txt");
+        if (rmstxt.exists()) {
+            Timings.timingEnd("extractData");
+            return;
+        }
+        else {
+            runFrameDataDump2(f, getActualChannels(site, trend, f, false), dir);
+        }
+        Timings.timingEnd("extractData");
+    }
+
+    private Set<String> getCachedChannels(int site, int trend, File f) throws Exception {
+        return getActualChannels(site, trend, f, false);
+    }
+
+    private Set<String> getActualChannels(int site, int trend, File f, boolean force) throws Exception {
+        Set<String> l = null;
+        if (!force) {
+            l = cachedChannels.get(new LIGOFileClass(site, trend));
+            if (l != null) {
+                return l;
+            }
+        }
+        Timings.timingStart("getActualChannels");
+        String frChannels = pathToLigoTools + File.separator + "bin" + File.separator + "FrChannels";
+        String[] cmd = new String[] { frChannels, f.getAbsolutePath() };
+        Process p = Runtime.getRuntime().exec(cmd);
+        String out = ProcessTools.getOutput(p.getInputStream());
+        String err = ProcessTools.getOutput(p.getErrorStream());
+        int ec = p.waitFor();
+        if (ec != 0) {
+            throw new RuntimeException("FrChannels on " + f + " failed: " + err);
+        }
+        BufferedReader br = new BufferedReader(new StringReader(out));
+        l = new HashSet<String>();
+        String line = br.readLine();
+        while (line != null) {
+            String[] s1 = line.split("\\s+");
+            int i = s1[0].lastIndexOf('.');
+            l.add(s1[0].substring(0, i));
+            line = br.readLine();
+        }
+        Timings.timingEnd("getActualChannels");
+        cachedChannels.put(new LIGOFileClass(site, trend), l);
+        return l;
+    }
+
+    
+
+    private String runFrameDataDump(File f, Set<String> channels) throws Exception {
+        Timings.timingStart("runFrameDataDump");
+        File tmp = File.createTempFile("ldump-", "");
+        for (String channel : channels) {
+            runFrameDataDump(f, channel, tmp);
+        }
+        tmp.delete();
+        Timings.timingEnd("runFrameDataDump");
+        return tmp.getAbsolutePath();
+    }
+
+    private void runFrameDataDump(File f, String channel, File tmp) throws Exception {
+        String frameDataDump = pathToLigoTools + File.separator + "bin" + File.separator + "FrameDataDump";
+        File rms = new File(tmp.getAbsolutePath() + channel + ".rms.bin");
+        File mean = new File(tmp.getAbsolutePath() + channel + ".mean.bin");
+        String[] crms = new String[] { frameDataDump, "-I" + f.getAbsolutePath(), "-C" + channel + ".rms",
+                "-O" + rms.getAbsolutePath() };
+        String[] cmean = new String[] { frameDataDump, "-I" + f.getAbsolutePath(), "-C" + channel + ".mean",
+                "-O" + mean.getAbsolutePath() };
+        Process prms = Runtime.getRuntime().exec(crms);
+        Process pmean = Runtime.getRuntime().exec(cmean);
+        String orms = ProcessTools.getOutput("FrameDataDump", prms, f);
+        String omean = ProcessTools.getOutput("FrameDataDump", pmean, f);
+        FileWriter fwrms = new FileWriter(new File(tmp.getAbsolutePath() + channel + ".rms.txt"));
+        fwrms.write(orms);
+        fwrms.close();
+        FileWriter fwmean = new FileWriter(new File(tmp.getAbsolutePath() + channel + ".mean.txt"));
+        fwmean.write(omean);
+        fwmean.close();
+    }
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    private PreparedStatement psIsKeyInDb, psInsertKeyInDb;
+
+    private boolean fileIsImported(File f) throws SQLException {
+        if (psIsKeyInDb == null) {
+            psIsKeyInDb = conn.prepareStatement("SELECT name FROM files WHERE name = ?");
+        }
+        psIsKeyInDb.setString(1, f.getName());
+        ResultSet rs = psIsKeyInDb.executeQuery();
+        return rs.next();
+    }
+
+    private boolean channelRangeInDatabase(int site, int trend, long start, int len, String table) throws SQLException {
+        if (initial) {
+            return false;
+        }
+        if (start > maxtime.get(table)) {
+            return false;
+        }
+        Timings.timingStart("inDatabase");
+        long end = start + len;
+        Timings.timingStart("getCachedStatement");
+        PreparedStatement s = getCachedInDatabaseStatement(table);
+        Timings.timingEnd("getCachedStatement");
+        s.setDouble(1, start);
+        s.setDouble(2, end);
+
+        ResultSet rs = s.executeQuery();
+        Timings.timingEnd("inDatabase");
+        return rs.next();
+    }
+
+    private Map<String, PreparedStatement> inDatabaseStatements = new HashMap<String, PreparedStatement>();
+
+    private PreparedStatement getCachedInDatabaseStatement(String table) throws SQLException {
+        PreparedStatement ps = inDatabaseStatements.get(table);
+        if (ps == null) {
+            ps = conn.prepareStatement("SELECT time FROM " + table + " WHERE time >= ? AND time <= ? LIMIT 1");
+            inDatabaseStatements.put(table, ps);
+        }
+        return ps;
+    }
+
+    
+    
+
+    private void shiftSums() throws Exception {
+        if (initial) {
+            return;
+        }
+        System.out.println("Updating sums...");
+        conn.setAutoCommit(false);
+        try {
+            PreparedStatement ps1 = conn.prepareStatement("SELECT DISTINCT tablename FROM sumupdates");
+
+            ResultSet rs1 = ps1.executeQuery();
+            while (rs1.next()) {
+                String table = rs1.getString(1);
+                System.out.print(table + "...");
+                PreparedStatement ps2 = conn.prepareStatement("SELECT "
+                        + "(starttime, endtime, sumdeltad, sumdeltai, ssqdeltad, ssqdeltai, sumdeltad ISNULL) "
+                        + "FROM sumupdates WHERE tablename = ? ORDER BY starttime ASC");
+                final int STARTTIME = 1, ENDTIME = 2, SUMDELTAD = 3, SUMDELTAI = 4, SSQDELTAD = 5, SSQDELTAI = 6;
+                ps2.setString(1, table);
+                ResultSet rs2 = ps2.executeQuery();
+                double sumdeltad = 0, ssqdeltad = 0;
+                long sumdeltai = 0, ssqdeltai = 0;
+
+                rs2.next();
+                while (true) {
+                    System.out.print(".");
+                    boolean isint = rs2.getBoolean(7);
+                    double start = rs2.getDouble(STARTTIME);
+                    double end = rs2.getDouble(ENDTIME);
+                    sumdeltad += rs2.getDouble(SUMDELTAD);
+                    sumdeltai += rs2.getLong(SUMDELTAI);
+                    ssqdeltad += rs2.getDouble(SSQDELTAD);
+                    ssqdeltai += rs2.getLong(SSQDELTAI);
+
+                    double ustart = end;
+                    double uend;
+                    boolean last = false;
+
+                    if (rs2.next()) {
+                        uend = rs2.getDouble(STARTTIME);
+                    }
+                    else {
+                        uend = END_OF_TIME;
+                        last = true;
+                    }
+
+                    PreparedStatement us = conn.prepareStatement("UPDATE " + table
+                            + " SET sum = sum + ?, sumsq = sumsq + ? WHERE time > ? AND time < ?");
+                    if (isint) {
+                        us.setLong(1, sumdeltai);
+                        us.setLong(2, ssqdeltai);
+                    }
+                    else {
+                        us.setDouble(1, sumdeltad);
+                        us.setDouble(2, ssqdeltad);
+                    }
+                    us.setDouble(3, ustart);
+                    us.setDouble(4, uend);
+                    us.execute();
+                    us.close();
+                    if (last) {
+                        break;
+                    }
+                }
+
+                System.out.println();
+            }
+
+            conn.commit();
+        }
+        catch (Exception e) {
+            conn.rollback();
+            throw e;
+        }
+        finally {
+            conn.setAutoCommit(true);
+        }
+    }
+
+    private void connectToDb() throws SQLException {
+        System.out.println("Connecting to database...");
+        conn = DriverManager.getConnection("jdbc:postgresql:" + dburl, dbuser, dbpass);
+    }
+
+    
+}
