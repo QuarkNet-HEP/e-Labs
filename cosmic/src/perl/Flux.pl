@@ -160,10 +160,11 @@ sub freq_analyze {
             #my $current_flux = ($freq{($keysWanted[$keyIterator])}/(eval $ARGV[2])/$areaArray[$keyIterator]);
             # Flux should be in units of counts/min/m^2, not counts/sec/m^2, hence the extra factor of 60
 			my $current_flux = ($freq{($keysWanted[$keyIterator])}/($ARGV[2]/60)/$areaArray[$keyIterator]);
+			my $current_flux_error = (sqrt($freq{($keysWanted[$keyIterator])})/($ARGV[2]/60)/$areaArray[$keyIterator]);
 			
             my $binmiddle = $keysWanted[$keyIterator]-($binwidth/2);     #gnuplot plots values at the middle of bins
             ($day, $month, $year, $hour, $min, $sec) = &jd_to_gregorian($firstJd+ int($binmiddle), $binmiddle-int($binmiddle));
-            printf OUT "%02d/%02d/%02d %02d:%02d:%02d %f\n", $month, $day, $year, $hour, $min, $sec, $current_flux;
+            printf OUT "%02d/%02d/%02d %02d:%02d:%02d %f %f\n", $month, $day, $year, $hour, $min, $sec, $current_flux, $current_flux_error;
             $fluxFound++;
             $keyIterator++;
         }

@@ -89,9 +89,8 @@ elsif($plot_type == 1){	#Line
     &ticLevels();
     push @options, $setTics;
 
-	#push @options, "plot '$infile[0]' using 1:3 with points lw $lineWidthSize pt 1, '$infile[0]' using 1:3:(sqrt(\$3)) with yerrorbars";
-	#remove the error bars until we can calculate them correctly
-	push @options, "plot '$infile[0]' using 1:3 with points lw $lineWidthSize pt 1";
+	#Plot Flux error bars by using pre computer error from column 4.(bz343)
+	push @options, "plot '$infile[0]' using 1:3 with points lw $lineWidthSize pt 1, '$infile[0]' using 1:3:4 with yerrorbars";
 
 }
 elsif($plot_type == 2){	#3D
