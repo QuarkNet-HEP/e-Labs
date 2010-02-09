@@ -24,7 +24,11 @@ public class LIGOFile implements Comparable<LIGOFile> {
     public boolean equals(Object obj) {
         if (obj instanceof LIGOFile) {
             LIGOFile other = (LIGOFile) obj;
-            return file.getAbsolutePath().equals(other.file.getAbsolutePath());
+            /*
+             * Can't use absolute path because some files appear twice.
+             * Maybe this is just a Bluestone requirement, but it happens
+             */
+            return file.getName().equals(other.file.getName());
         }
         else {
             return false;
