@@ -233,7 +233,7 @@ public abstract class AbstractDataTool {
             throw new RuntimeException("Size mismatch. Expected " + nsamples + " words, but only " + dp.size()
                     + " were found in the data file");
         }
-        
+
         if (channel.equals("H0:PEM-VAULT_SEISZ")) {
             System.out.println("");
         }
@@ -283,14 +283,19 @@ public abstract class AbstractDataTool {
 
     private String read(File f) throws IOException {
         BufferedReader fw = new BufferedReader(new FileReader(f));
-        StringBuilder sb = new StringBuilder();
-        String line = fw.readLine();
-        while (line != null) {
-            sb.append(line);
-            sb.append('\n');
-            line = fw.readLine();
+        try {
+            StringBuilder sb = new StringBuilder();
+            String line = fw.readLine();
+            while (line != null) {
+                sb.append(line);
+                sb.append('\n');
+                line = fw.readLine();
+            }
+            return sb.toString();
         }
-        return sb.toString();
+        finally {
+            fw.close();
+        }
     }
 
     public static final Pattern FRD_FRAME_TIME = Pattern.compile("The first frame begins at GPS time ([0-9\\.]+)");
