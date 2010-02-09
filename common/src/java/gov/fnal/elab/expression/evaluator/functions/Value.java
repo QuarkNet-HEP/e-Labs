@@ -6,32 +6,42 @@ package gov.fnal.elab.expression.evaluator.functions;
 import gov.fnal.elab.expression.data.engine.DataSet;
 
 public class Value {
-    public static final int DATASET = 0;
-    public static final int NUMBER = 1;
-    public static final int STRING = 2;
+    public static enum Types { 
+    	DATASET(0), 
+    	NUMBER(1), 
+    	STRING(2);
+    	
+    	public final int value; 
+    	
+    	Types(int value) {
+    		this.value = value; 
+    	}
+    	
+    	public int value() { return value; }
+    }; 
     
     private Object value;
-    private int type;
+    private Types type;
     
-    public Value(int type, Object value) {
+    public Value(Types type, Object value) {
         this.type = type;
         this.value = value;
     }
     
     public Value(String val) {
-        this(STRING, val);
+        this(Types.STRING, val);
     }
     
     public Value(Number val) {
-        this(NUMBER, val);
+        this(Types.NUMBER, val);
     }
     
     public Value(DataSet val) {
-        this(DATASET, val);
+        this(Types.DATASET, val);
     }
     
     public String getStringValue() {
-        if (type != STRING) {
+        if (type != Types.STRING) {
             throw new TypeException(value + " is not a string");
         }
         else {
@@ -40,7 +50,7 @@ public class Value {
     }
     
     public Number getNumericValue() {
-        if (type != NUMBER) {
+        if (type != Types.NUMBER) {
             throw new TypeException(value + " is not a number");
         }
         else {
@@ -49,7 +59,7 @@ public class Value {
     }
     
     public DataSet getDataSetValue() {
-        if (type != DATASET) {
+        if (type != Types.DATASET) {
             throw new TypeException(value + " is not a dataset");
         }
         else {
@@ -61,7 +71,7 @@ public class Value {
         return value;
     }
     
-    public static String niceType(int type) {
+    public static String niceType(Types type) {
         switch (type) {
             case NUMBER: return "Number";
             case STRING: return "String";
@@ -70,7 +80,7 @@ public class Value {
         }
     }
 
-    public int getType() {
+    public Types getType() {
         return type;
     }
 }

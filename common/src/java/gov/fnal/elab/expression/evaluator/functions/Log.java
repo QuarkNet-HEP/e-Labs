@@ -9,7 +9,7 @@ import gov.fnal.elab.expression.data.engine.Range;
 import gov.fnal.elab.expression.data.engine.Unit;
 
 public class Log extends Function {
-    public static final int[] TYPES = new int[] { Value.DATASET };
+    public static final Value.Types[] TYPES = new Value.Types[] { Value.Types.DATASET };
 
     @Override
     public Value invoke(Value[] args) {

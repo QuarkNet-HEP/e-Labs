@@ -11,7 +11,7 @@ import gov.fnal.elab.expression.evaluator.EvaluationException;
 import gov.fnal.elab.expression.evaluator.Interpreter;
 
 public class Data extends Function {
-    public static final int[] TYPES = new int[] { Value.STRING, Value.NUMBER, Value.NUMBER, Value.NUMBER };
+    public static final Value.Types[] TYPES = new Value.Types[] { Value.Types.STRING, Value.Types.NUMBER, Value.Types.NUMBER, Value.Types.NUMBER };
 
     public Data(Interpreter interpreter) {
         super(interpreter);

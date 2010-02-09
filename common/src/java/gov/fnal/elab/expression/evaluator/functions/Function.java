@@ -22,7 +22,7 @@ public abstract class Function {
 
     public abstract Value invoke(Value[] args) throws EvaluationException;
 
-    protected void checkArgs(Value[] args, int[] expectedTypes) {
+    protected void checkArgs(Value[] args, Value.Types[] expectedTypes) {
         if (args.length != expectedTypes.length) {
             throw new TypeException("Argument size mismatch. Expected: " + niceTypes(expectedTypes) + ", actual: "
                     + niceArgs(args));
@@ -33,7 +33,7 @@ public abstract class Function {
         StringBuffer sb = new StringBuffer();
         sb.append("(");
         for (int i = 0; i < args.length; i++) {
-            if (args[i].getType() == Value.DATASET) {
+            if (args[i].getType() == Value.Types.DATASET) {
                 sb.append("<data>");
             }
             else {
@@ -47,7 +47,7 @@ public abstract class Function {
         return sb.toString();
     }
 
-    private String niceTypes(int[] t) {
+    private String niceTypes(Value.Types[] t) {
         StringBuffer sb = new StringBuffer();
         sb.append("(");
         for (int i = 0; i < t.length; i++) {

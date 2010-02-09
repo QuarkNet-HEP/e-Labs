@@ -8,7 +8,7 @@ import gov.fnal.elab.expression.data.engine.DelegatedDataSet;
 import gov.fnal.elab.expression.data.engine.Range;
 
 public class Threshold extends Function {
-    public static final int[] TYPES = new int[] { Value.DATASET, Value.NUMBER, Value.NUMBER };
+    public static final Value.Types[] TYPES = new Value.Types[] { Value.Types.DATASET, Value.Types.NUMBER, Value.Types.NUMBER };
 
     @Override
     public Value invoke(Value[] args) {
