@@ -71,7 +71,7 @@ public class LIGOFile implements Comparable<LIGOFile> {
                     if (o.trend == SECOND_TREND) {
                         return 1;
                     }
-                    throw new RuntimeException("This should be unreachable 1");
+                    throw new RuntimeException("This should be unreachable 1 (" + this + ", " + o + ")");
                 }
                 // <--(---->--) or (--<----)-->
                 // this shouldn't actually be happening, since data is aligned
@@ -82,9 +82,9 @@ public class LIGOFile implements Comparable<LIGOFile> {
                     if (o.trend == SECOND_TREND) {
                         return 1;
                     }
-                    throw new RuntimeException("This should be unreachable 2");
+                    throw new RuntimeException("This should be unreachable 2 (" + this + ", " + o + ")");
                 }
-                throw new RuntimeException("This should be unreachable 3");
+                throw new RuntimeException("This should be unreachable 3 (" + this + ", " + o + ")");
             }
         }
         throw new RuntimeException("Invalid ligo file: " + file);
@@ -94,5 +94,4 @@ public class LIGOFile implements Comparable<LIGOFile> {
     public String toString() {
         return file.getName();
     }
-    
 }
