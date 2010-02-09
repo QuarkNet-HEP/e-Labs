@@ -1,0 +1,333 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Flot Examples</title>
+    <link href="layout.css" rel="stylesheet" type="text/css"></link>
+    <!--[if IE]><script language="javascript" type="text/javascript" src="../excanvas.pack.js"></script><![endif]-->
+    <script language="javascript" type="text/javascript" src="jquery.js"></script>
+    <script language="javascript" type="text/javascript" src="jquery.flot.js"></script>
+ </head>
+    <body>
+
+	<table border="0">
+		<tr>
+			<td valign="top">
+				Channel:<br />
+				<select name="channel0" id="channels-selector0" onchange="updatePlot(0)">
+					<option>Select channel...</option>
+				</select>
+			</td>
+			<td valign="top">
+				Start time:<br />
+				<input type="text" name="starttime" id="starttime" onchange="updatePlot(0)"></input><br />
+				<span id="starttime-nice"></span>
+			</td valign="top">
+			<td>
+				End time:<br />
+				<input type="text" name="endtime" id="endtime" onchange="updatePlot(0)"></input><br />
+				<span id="endtime-nice"></span>
+			</td>
+			<td>
+				<input id="zoom" type="button" value="Zoom selected" onclick="zoomToSelection(0);"></input>
+			</td>
+			<td>
+    			<input id="zoomout" type="button" value="Zoom out" onclick="zoomOut();"></input>
+			</td>
+		</tr>
+	</table>
+	
+	<p>Selection: <span id="selection"></span></p>
+	
+	<div id="query"></div>
+	<div id="error" style="whitespace: pre;"></div>
+    <div id="placeholder0" style="width:600px;height:300px"></div>
+    
+    <table border="0">
+		<tr>
+			<td>
+				Channel:<br />
+				<select name="channel1" id="channels-selector1" onchange="updatePlot(1)">
+					<option>Select channel...</option>
+				</select>
+			</td>
+		</tr>
+	</table>
+	
+    <div id="placeholder1" style="width:600px;height:300px"></div>
+    
+    <input id="convolve" type="button" value="Convolve" onclick="convolve();"></input>
+    <input id="ft" type="button" value="FT" onclick="ft();"></input> 
+    
+    <div id="placeholder2" style="width:600px;height:300px"></div>
+
+<script id="source" language="javascript" type="text/javascript">
+
+	var TIMEOUT = 10000;
+	AsyncRequest = function(url, callback) {
+		var responseReceived = false;
+
+		var ro = null;
+
+		if (navigator.appName == "Microsoft Internet Explorer") {
+			ro = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		else {
+			ro = new XMLHttpRequest();
+		}
+		ro.onreadystatechange = handleResponse;
+
+		function handleResponse() {
+			if (ro.readyState == 4) {
+				responseReceived = true;
+				try {
+					var response = ro.responseText;
+					var i;
+					for(i = 0; i < response.length; i++) {
+						var c = response.charAt(i);
+						if (c != '\n' && c != '\t' && c != '\r' && c != ' ' && c != '\f') {
+							break;
+						}
+					}
+					response = response.substring(i);
+				}
+				catch(err) {
+					callback(null, "Error processing response from server: " + err);
+				}
+				try {				
+					callback(response, null);
+				}
+				catch(err) {
+					callbackErr(err);
+				}
+			}
+		}
+
+		function callbackErr(err) {
+			try {
+				callback(null, "Update failed: " + err);
+			}
+			catch(err2) {
+				error("Callback failed to process error message\n" + err + "\n" + err2);
+			}
+		}
+		
+		replyTimeout = function() {
+			if (!responseReceived) {
+				callbackErr("Reply timeout");
+			}
+		}
+
+		this.send = function() {
+			ro.open('get', url);
+			ro.send(null);
+			self.setTimeout(replyTimeout, TIMEOUT);
+		}
+	}
+
+	function error(msg) {
+		document.getElementById("error").innerHTML = msg;
+	}
+	
+	function invoke(name, params, callback) {
+		self.callback = callback;
+		var url = "/elab/ligo/data/data-server.jsp?fn=" + name + "&params=" + params;
+		try {
+			document.getElementById("query").innerHTML = "<a href=\"" + url + "\">linky</a>";
+		}
+		catch (err) {
+			error(err);
+		}
+		var request = new AsyncRequest(url, callback);
+		request.send();
+	}
+	
+	function getChannels() {
+		invoke("getChannels", null, getChannelsCB);
+	}
+	
+	function getChannelsCB(data, err) {
+		if (err != null) {
+			error("getChannelsCB: " + err);
+			return;
+		}
+		var channels = data.split(" ");
+		for (var i = 0; i < 2; i++) {
+			var s = document.getElementById("channels-selector" + i);
+			for (var c in channels) {
+				var opt = document.createElement('option');
+				opt.text = channels[c];
+				try {
+					s.add(opt, null);
+				}
+				catch (ex) {
+					s.add(opt);
+				}
+			}
+		}
+	}
+
+	function updateTimes() {
+		invoke("getTimeRange", null, updateTimesCB);
+	}
+
+	function updateTimesCB(data, err) {
+		var s = data.split(" ");
+		document.getElementById("starttime").value = s[0];
+		document.getElementById("endtime").value = s[1];
+		document.getElementById("starttime-nice").innerHTML = GPStoTime(s[0]);
+		document.getElementById("endtime-nice").innerHTML = GPStoTime(s[1]);
+	}
+
+	function updatePlot(num) {
+		var s = document.getElementById("channels-selector" + num);
+		var channel = s.options[s.selectedIndex].text;
+		if (channel == "Select channel...") {
+			return;
+		}
+		invoke("getData", 
+			[channel, num, 
+				document.getElementById("starttime").value, 
+				document.getElementById("endtime").value], 
+			updatePlotCB);
+	}
+
+	function updatePlotCB(data, err) {
+		if (err != null) {
+			error("updatePlotCB: " + err);
+			return;
+		}
+		var s = data.split(" ");
+		var a = new Array();
+		var num = s[0];
+		for (var i = 0; i < s.length / 2 - 1; i++) {
+			a.push([s[i * 2 + 1], s[i * 2 + 2]]);
+		}
+		var data = [{data: a}];
+		document.plots[num].setData(data);
+		document.plots[num].setupGrid();
+		document.plots[num].draw();
+	}
+
+	function convolve() {
+		var cs0 = document.getElementById("channels-selector0");
+		var c0 = cs0.options[cs0.selectedIndex].text;
+		var cs1 = document.getElementById("channels-selector1");
+		var c1 = cs1.options[cs1.selectedIndex].text;
+		invoke("convolve", 
+				[c0, c1, 
+					document.getElementById("starttime").value, 
+					document.getElementById("endtime").value], 
+					convolveCB);
+	}
+
+	function convolveCB(data, err) {
+		var st = document.getElementById("starttime").value;
+		var et = document.getElementById("endtime").value;
+		var s = data.split(" ");
+		var a = new Array();
+		for (var i = 0; i < s.length - 1; i++) {
+			a.push([(i - s.length / 2) * (et - st) / s.length, s[i]]);
+		}
+		var data = [{data: a}];
+		document.plots[2].setData(data);
+		document.plots[2].setupGrid();
+		document.plots[2].draw();
+	}
+
+	function ft() {
+		var cs0 = document.getElementById("channels-selector0");
+		var c0 = cs0.options[cs0.selectedIndex].text;
+		invoke("ft", 
+				[c0, 
+					document.getElementById("starttime").value, 
+					document.getElementById("endtime").value], 
+					ftCB);
+	}
+
+	function ftCB(data, err) {
+		var s = data.split(" ");
+		var a = new Array();
+		for (var i = 0; i < s.length - 1; i++) {
+			a.push([i, s[i]]);
+		}
+		var data = [{data: a}];
+		document.plots[2].setData(data);
+		document.plots[2].setupGrid();
+		document.plots[2].draw();
+	}
+
+	function zoomToSelection() {
+		for (var i = 0; i < document.plots.length; i++) {
+			document.plots[i].clearSelection();
+			document.getElementById("starttime").value = document.selectionstart;
+			document.getElementById("endtime").value = document.selectionend;
+			document.getElementById("starttime-nice").innerHTML = GPStoTime(document.selectionstart);
+			document.getElementById("endtime-nice").innerHTML = GPStoTime(document.selectionend);
+			updatePlot(i);
+		}
+	}
+
+	function zoomOut() {
+		updateTimes();
+		document.getElementById("selection").innerHTML = "";
+		for (var i = 0; i < document.plots.length; i++) {
+			updatePlot(i);
+		}
+	}
+
+	function GPStoTime(gpstime) {
+		gpszero = Date.parse("01/06/1980 00:00:00 UTC");
+		var d = new Date();
+		d.setTime(gpszero + gpstime * 1000);
+		return "??";
+		return d.getUTCMonth() + "/" + d.getUTCDay() + "/" + d.getUTCFullYear() + " " + 
+			d.getUTCHours() + ":" + d.getUTCMinutes() + ":" + d.getUTCSeconds();
+	}
+
+
+$(function () {
+	d = new Array();
+    var data = [
+        {
+            data: d
+        }
+    ];
+
+    var options = {
+        lines: { show: true },
+        points: { show: false },
+        legend: { noColumns: 2 },
+        xaxis: { tickDecimals: 0 },
+        yaxis: { autoscaleMargin: 0.1 },
+        y2axis: { autoscaleMargin: 0.1 },
+        selection: { mode: "x" }
+    };
+
+    document.plots = new Array();
+
+    for (var i = 0; i < 3; i++) {
+	    var placeholder = $("#placeholder" + i);
+	
+	    placeholder.bind("plotselected", function (event, ranges) {
+	        $("#selection").text(ranges.xaxis.from.toFixed(0) + " to " + ranges.xaxis.to.toFixed(0));
+	
+	        document.selectionstart = ranges.xaxis.from.toFixed(0);
+	        document.selectionend = ranges.xaxis.to.toFixed(0);
+	    });
+	    
+	    document.plots.push($.plot(placeholder, data, options));
+	
+	    $("#clearSelection" + i).click(function () {
+	        document.plots[i].clearSelection();
+	    });
+    }
+
+    getChannels();
+
+	updateTimes();
+});
+</script>
+
+ </body>
+</html>
