@@ -196,7 +196,14 @@ public class ImportData extends AbstractDataTool {
     private void convertFile(final LIGOFile f) throws Exception {
         System.out.print("Processing " + f.file.getName() + "...");
         long time = fileGPSTime(f.file);
-        String tmpprefix = runFrameDataDump2(f.file, null);
+        String tmpprefix;
+        try {
+            tmpprefix = runFrameDataDump2(f.file, null);
+        }
+        catch (ToolException e) {
+            System.err.println("FrameDataDump2 failed: " + e.getMessage() + ". Skipping file.");
+            return;
+        }
 
         Set<String> dumpedc = getDumpedChannels(tmpprefix);
         Set<String> dcc = new HashSet<String>(dumpedc);
