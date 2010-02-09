@@ -431,7 +431,7 @@ public class ImportData extends AbstractDataTool {
     }
 
     public static void help() {
-        System.err.println("Usage: ImportData <pathToData> <pathToLigoTools> <outputDir> <dburl> <dbsuser> <dbsupass>");
+        System.err.println("Usage: ImportData <pathToData> <pathToLigoTools> <outputDir>");
         System.err.println("  where:");
         System.err.println("    <pathToData> path to data in standard ligo trend directories");
         System.err.println("    <pathToLigoTools> path to LIGO tools (in particular FrDump and FrameDataDump2)");
