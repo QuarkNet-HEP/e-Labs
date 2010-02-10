@@ -37,7 +37,7 @@ public class ImportData extends AbstractDataTool {
 
     private long flen;
 
-    private Map<ChannelName, DataFileWriter> writers;
+    private Map<String, DataFileWriter> writers;
 
     private Map<ChannelName, Double> maxtime;
 
@@ -47,7 +47,7 @@ public class ImportData extends AbstractDataTool {
         this.pathToData = pathToData;
         this.pathToLIGOTools = pathToLIGOTools;
         this.outputPath = outputPath;
-        writers = new HashMap<ChannelName, DataFileWriter>();
+        writers = new HashMap<String, DataFileWriter>();
         maxtime = new HashMap<ChannelName, Double>();
     }
 
@@ -331,20 +331,20 @@ public class ImportData extends AbstractDataTool {
     }
 
     private DataFileWriter getWriter(ChannelName channel) throws IOException {
-        DataFileWriter w = writers.get(channel);
+        DataFileWriter w = writers.get(channel.uniformName);
         if (w == null) {
             w = new DataBinaryFileWriter(new File(outputPath + File.separator + channel.uniformName + ".bin"), true);
-            writers.put(channel, w);
+            writers.put(channel.uniformName, w);
         }
         return w;
     }
 
     private DataFileWriter getIndexWriter(ChannelName channel) throws IOException {
-        DataFileWriter w = writers.get(channel);
+        DataFileWriter w = writers.get(channel.uniformName + ".index");
         if (w == null) {
             w = new DataBinaryFileWriter(new File(outputPath + File.separator + channel.uniformName + ".index.bin"),
                 true);
-            writers.put(channel, w);
+            writers.put(channel.uniformName + ".index", w);
         }
         return w;
     }
@@ -384,14 +384,15 @@ public class ImportData extends AbstractDataTool {
                 continue;
             }
 
-            FileWriter fw = new FileWriter(workdir + File.separator + adc.group(1) + ".info");
+            ChannelName channel = new ChannelName(adc.group(1));
+            FileWriter fw = new FileWriter(workdir + File.separator + channel.uniformName + ".info");
             fw.write("datatype = " + data.group(1) + "\n");
             fw.write("nbits = " + adc.group(2) + "\n");
             fw.write("bias = " + adc.group(3) + "\n");
             fw.write("slope = " + adc.group(4) + "\n");
             fw.write("units = " + adc.group(5) + "\n");
             fw.close();
-            types.put(new ChannelName(adc.group(1)), data.group(1));
+            types.put(channel, data.group(1));
             adc = skipTo(br, ADC_LINE);
         }
         br.close();
