@@ -12,8 +12,10 @@ import java.io.RandomAccessFile;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-class DoubleDataReader extends DataReader<Double, Double> {
+final class DoubleDataReader extends DataReader<Double, Double> {
 
     public DoubleDataReader(AbstractDataTool impd) {
         super(impd);
@@ -27,10 +29,24 @@ class DoubleDataReader extends DataReader<Double, Double> {
             return null;
         }
     }
+    
+    @Override
+    protected void removeBoundaries(List<Double> data) {
+        for (int i = 1; i < data.size(); i++) {
+            if (data.get(i) == 0) {
+                data.set(i - 1, 0.0);
+            }
+        }
+        for (int i = data.size() - 1; i > 1; i--) {
+            if (data.get(i - 1) == 0) {
+                data.set(i, 0.0);
+            }
+        }
+    }
 
     @Override
     protected boolean isZero(Double value) {
-        return value == 0;
+        return value.doubleValue() == 0;
     }
 
     @Override

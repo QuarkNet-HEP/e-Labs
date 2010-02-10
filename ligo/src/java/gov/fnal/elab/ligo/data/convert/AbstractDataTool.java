@@ -5,6 +5,7 @@ package gov.fnal.elab.ligo.data.convert;
 
 import gov.fnal.elab.ligo.data.engine.ChannelProperties;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
@@ -270,8 +271,8 @@ public abstract class AbstractDataTool {
     }
 
     protected void readData(DataReader<?, ?> dp, File rms, File mean) throws IOException {
-        InputStream isrms = new FileInputStream(rms);
-        InputStream ismean = new FileInputStream(mean);
+        InputStream isrms = new BufferedInputStream(new FileInputStream(rms));
+        InputStream ismean = new BufferedInputStream(new FileInputStream(mean));
 
         while (dp.readOne(isrms, ismean)) {
             // noop

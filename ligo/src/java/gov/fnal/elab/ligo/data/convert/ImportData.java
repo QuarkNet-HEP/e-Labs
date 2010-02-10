@@ -21,11 +21,15 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ImportData extends AbstractDataTool {
+
+    private static final int DUMPAHEAD_SIZE = 8;
 
     private String pathToData, pathToLIGOTools;
     private Set<String> processedFiles;
@@ -34,6 +38,8 @@ public class ImportData extends AbstractDataTool {
     private static final int BATCH_SIZE = 10;
     private String outputPath;
     private PrintWriter error;
+    private SortedSet<LIGOFile> files;
+    private SortedMap<LIGOFile, Object> doneDumps;
 
     private long flen;
 
@@ -43,12 +49,15 @@ public class ImportData extends AbstractDataTool {
 
     private static Object SHUTDOWN_LOCK = new Object();
 
+    private long startTime;
+
     public ImportData(String pathToData, String pathToLIGOTools, String outputPath) {
         this.pathToData = pathToData;
         this.pathToLIGOTools = pathToLIGOTools;
         this.outputPath = outputPath;
         writers = new HashMap<String, DataFileWriter>();
         maxtime = new HashMap<ChannelName, Double>();
+        doneDumps = new TreeMap<LIGOFile, Object>();
     }
 
     public void run() {
@@ -70,12 +79,14 @@ public class ImportData extends AbstractDataTool {
         loadChannelInfo(outputPath);
         loadMaxTimes();
 
+        startTime = System.currentTimeMillis();
         for (int i = 0; i < SITES.length; i++) {
             System.out.println("Importing " + SITES[i] + " data");
-            SortedSet<LIGOFile> l = findFiles(i, pathToData);
+            files = findFiles(i, pathToData);
 
-            convertAndImport(l);
+            convertAndImport(files);
         }
+        System.out.println("Total time: " + formatTime(System.currentTimeMillis() - startTime));
     }
 
     @Override
@@ -198,7 +209,7 @@ public class ImportData extends AbstractDataTool {
         long time = fileGPSTime(f.file);
         String tmpprefix;
         try {
-            tmpprefix = runFrameDataDump2(f.file, null);
+            tmpprefix = getFrameDataDump2Dir(f);
         }
         catch (ToolException e) {
             System.err.println("FrameDataDump2 failed: " + e.getMessage() + ". Skipping file.");
@@ -315,6 +326,60 @@ public class ImportData extends AbstractDataTool {
             s.add(new ChannelName(name.substring(0, name.length() - ".rms.txt".length())));
         }
         return s;
+    }
+
+    private static final boolean DUMPAHEAD = true;
+
+    private String getFrameDataDump2Dir(LIGOFile lf) throws Exception {
+        if (DUMPAHEAD) {
+            synchronized (doneDumps) {
+                SortedSet<LIGOFile> tm = files.tailSet(lf);
+                Iterator<LIGOFile> i = tm.iterator();
+                while (doneDumps.size() < DUMPAHEAD_SIZE && i.hasNext()) {
+                    LIGOFile nlf = i.next();
+                    if (!doneDumps.containsKey(nlf)) {
+                        startDump(nlf);
+                    }
+                }
+
+                Object result = doneDumps.remove(lf);
+                while (result == null) {
+                    doneDumps.wait();
+                    result = doneDumps.remove(lf);
+                }
+
+                if (result instanceof String) {
+                    return (String) result;
+                }
+                else {
+                    throw (Exception) result;
+                }
+            }
+        }
+        else {
+            return runFrameDataDump2(lf.file, null);
+        }
+    }
+
+    private void startDump(final LIGOFile nlf) {
+        doneDumps.put(nlf, null);
+        new Thread() {
+
+            @Override
+            public void run() {
+                Object result;
+                try {
+                    result = runFrameDataDump2(nlf.file, null);
+                }
+                catch (Exception e) {
+                    result = e;
+                }
+                synchronized (doneDumps) {
+                    doneDumps.put(nlf, result);
+                    doneDumps.notifyAll();
+                }
+            }
+        }.start();
     }
 
     private String runFrameDataDump2(File f, File dir) throws Exception {

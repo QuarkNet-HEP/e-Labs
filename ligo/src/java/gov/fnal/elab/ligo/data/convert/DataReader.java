@@ -32,12 +32,16 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
         }
     }
 
-    private List<ValueType> rms, mean;
-    private List<DataReaderEntry<ValueType, SumType>> data;
+    protected List<ValueType> rms;
+    protected List<ValueType> mean;
+    protected List<DataReaderEntry<ValueType, SumType>> data;
     private AbstractDataTool impd;
-    private double minTime, lastAddedTime;
-    private SumType sumOffset, ssqOffset;
-    private ValueType lastKnownGoodValue, lastKnownGoodSquare;
+    private double minTime;
+    protected double lastAddedTime;
+    protected SumType sumOffset;
+    protected SumType ssqOffset;
+    protected ValueType lastKnownGoodValue;
+    protected ValueType lastKnownGoodSquare;
 
     protected DataReader(AbstractDataTool impd) {
         this.impd = impd;
@@ -126,7 +130,7 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
         samplingInterval = currentSamplingInterval;
     }
 
-    private void fillAsInvalid(double start, double end, int rawSamplesPerSecond) {
+    protected void fillAsInvalid(double start, double end, int rawSamplesPerSecond) {
         // one raw sample
         double offset = 1.0 / rawSamplesPerSecond;
         // add sums at the beginning and end of gap
@@ -143,7 +147,7 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
         lastAddedTime = end - offset;
     }
 
-    private void removeBoundaries(List<ValueType> data) {
+    protected void removeBoundaries(List<ValueType> data) {
         // find boundaries of zeroed intervals
         // because they are means made with partial zeroed data and
         // partially valid data, but they throw the mean and rms
@@ -164,7 +168,8 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
         }
     }
 
-    private double lastWrittenTime = 0, samplingInterval = -1;
+    protected double lastWrittenTime = 0;
+    protected double samplingInterval = -1;
 
     public void write(DataFileWriter wr, DataFileWriter index) throws IOException {
         for (DataReaderEntry<ValueType, SumType> e : data) {
