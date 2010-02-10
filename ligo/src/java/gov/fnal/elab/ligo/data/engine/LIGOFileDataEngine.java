@@ -15,6 +15,8 @@ import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +56,8 @@ public class LIGOFileDataEngine implements DataEngine {
             channels.put(channel, new ChannelProperties(f));
         }
     }
+    
+    public static final NumberFormat NF = new DecimalFormat("0.0000000");
 
     public DataSet get(DataPath path, Range range, Options options) throws DataBackendException {
         int ip = path.getName().lastIndexOf('.');
@@ -100,9 +104,11 @@ public class LIGOFileDataEngine implements DataEngine {
                 if (!rec.valid) {
                     values[i] = Double.NaN;
                     lastInvalid = true;
+                    System.out.println((Double.isNaN(values[i]) ? "NaN         ":NF.format(values[i])) + " - " + recordIndex + " - " + last + " - " + rec);
                 }
                 else {
                     // last should be the last valid record
+                    System.out.println((Double.isNaN(values[i]) ? "NaN         ":NF.format(values[i])) + " - " + recordIndex + " - " + last + " - " + rec);
                     last = rec;
                 }
                 
@@ -181,12 +187,12 @@ public class LIGOFileDataEngine implements DataEngine {
     public static void main(String[] args) {
         try {
             time("");
-            LIGOFileDataEngine eng = new LIGOFileDataEngine("/mnt/ubuntu/tmp/test");
+            LIGOFileDataEngine eng = new LIGOFileDataEngine("/mnt/ubuntu/tmp/funny2");
             time("new");
             List<DataPath> dps = eng.getPaths();
             time("getpaths");
             for (int i = 0; i < 1; i++) {
-                eng.get(new DataPath("H0:PEM-MY_SEISZ.rms"), new Range(915199610, 915223854), new Options()
+                eng.get(new DataPath("H0:PEM-MX_TILTT.mean"), new Range(855226905, 864311035), new Options()
                     .setSamples(800));
                 time("get");
             }

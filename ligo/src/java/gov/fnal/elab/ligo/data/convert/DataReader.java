@@ -127,6 +127,7 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
     }
 
     private void fillAsInvalid(double start, double end, int rawSamplesPerSecond) {
+        // one raw sample
         double offset = 1.0 / rawSamplesPerSecond;
         // add sums at the beginning and end of gap
         int n = 1;

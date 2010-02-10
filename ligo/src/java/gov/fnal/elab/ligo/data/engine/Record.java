@@ -17,7 +17,7 @@ public class Record {
         this.sum = sum;
     }
     
-    private static final NumberFormat NF = new DecimalFormat("0000");
+    private static final NumberFormat NF = new DecimalFormat("0000.000");
     
     public String toString() {
         return NF.format(time) + ": " + sum + (valid ? "" : " (invalid)");

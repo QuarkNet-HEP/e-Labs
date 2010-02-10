@@ -37,9 +37,9 @@ public class ImportData extends AbstractDataTool {
 
     private long flen;
 
-    private Map<String, DataFileWriter> writers;
+    private Map<ChannelName, DataFileWriter> writers;
 
-    private Map<String, Double> maxtime;
+    private Map<ChannelName, Double> maxtime;
 
     private static Object SHUTDOWN_LOCK = new Object();
 
@@ -47,8 +47,8 @@ public class ImportData extends AbstractDataTool {
         this.pathToData = pathToData;
         this.pathToLIGOTools = pathToLIGOTools;
         this.outputPath = outputPath;
-        writers = new HashMap<String, DataFileWriter>();
-        maxtime = new HashMap<String, Double>();
+        writers = new HashMap<ChannelName, DataFileWriter>();
+        maxtime = new HashMap<ChannelName, Double>();
     }
 
     public void run() {
@@ -97,7 +97,7 @@ public class ImportData extends AbstractDataTool {
     }
 
     private void loadMaxTimes() throws IOException {
-        for (String channel : types.keySet()) {
+        for (ChannelName channel : types.keySet()) {
             if (!maxtime.containsKey(channel)) {
                 Double time = loadMaxTime(channel);
                 if (time == null) {
@@ -110,8 +110,8 @@ public class ImportData extends AbstractDataTool {
         }
     }
 
-    private Double loadMaxTime(String channel) throws IOException {
-        File f = new File(outputPath + File.separator + channel + ".bin");
+    private Double loadMaxTime(ChannelName channel) throws IOException {
+        File f = new File(outputPath + File.separator + channel.uniformName + ".bin");
         if (!f.exists() || f.length() < 24) {
             return null;
         }
@@ -176,11 +176,11 @@ public class ImportData extends AbstractDataTool {
         log = new BufferedWriter(new FileWriter(f, true));
     }
 
-    private void commit(Map<String, DataReader<?, ?>> s, File file) throws Exception {
+    private void commit(Map<ChannelName, DataReader<?, ?>> s, File file) throws Exception {
         synchronized (SHUTDOWN_LOCK) {
-            Iterator<Map.Entry<String, DataReader<?, ?>>> i = s.entrySet().iterator();
+            Iterator<Map.Entry<ChannelName, DataReader<?, ?>>> i = s.entrySet().iterator();
             while (i.hasNext()) {
-                Map.Entry<String, DataReader<?, ?>> e = i.next();
+                Map.Entry<ChannelName, DataReader<?, ?>> e = i.next();
                 DataFileWriter wr = getWriter(e.getKey());
                 DataFileWriter ir = getIndexWriter(e.getKey());
                 e.getValue().write(wr, ir);
@@ -188,7 +188,7 @@ public class ImportData extends AbstractDataTool {
                 ir.flush();
                 i.remove();
             }
-            
+
             log(file.getName());
         }
     }
@@ -205,8 +205,8 @@ public class ImportData extends AbstractDataTool {
             return;
         }
 
-        Set<String> dumpedc = getDumpedChannels(tmpprefix);
-        Set<String> dcc = new HashSet<String>(dumpedc);
+        Set<ChannelName> dumpedc = getDumpedChannels(tmpprefix);
+        Set<ChannelName> dcc = new HashSet<ChannelName>(dumpedc);
         dcc.removeAll(types.keySet());
         if (!dcc.isEmpty()) {
             try {
@@ -223,8 +223,8 @@ public class ImportData extends AbstractDataTool {
             }
         }
 
-        final Map<String, DataReader<?, ?>> s = new HashMap<String, DataReader<?, ?>>();
-        for (String channel : dumpedc) {
+        final Map<ChannelName, DataReader<?, ?>> s = new HashMap<ChannelName, DataReader<?, ?>>();
+        for (ChannelName channel : dumpedc) {
             DataReader<?, ?> data = readChannelData(channel, tmpprefix, f, true);
 
             if (data == null) {
@@ -241,17 +241,17 @@ public class ImportData extends AbstractDataTool {
         commit(s, f.file);
     }
 
-    private DataReader<?, ?> readChannelData(String channel, String tmpprefix, LIGOFile f, boolean delete)
+    private DataReader<?, ?> readChannelData(ChannelName channel, String tmpprefix, LIGOFile f, boolean delete)
             throws Exception {
         DataReader<?, ?> data = null;
-        File rmsbin = new File(tmpprefix + channel + ".rms.bin");
-        File meanbin = new File(tmpprefix + channel + ".mean.bin");
-        File rmstxt = new File(tmpprefix + channel + ".rms.txt");
-        File meantxt = new File(tmpprefix + channel + ".mean.txt");
+        File rmsbin = new File(tmpprefix + channel.originalName + ".rms.bin");
+        File meanbin = new File(tmpprefix + channel.originalName + ".mean.bin");
+        File rmstxt = new File(tmpprefix + channel.originalName + ".rms.txt");
+        File meantxt = new File(tmpprefix + channel.originalName + ".mean.txt");
 
         if (!rmstxt.exists()) {
             // check if this file really doesn't have that channel
-            Set<String> channels = getFileChannels(f, pathToLIGOTools);
+            Set<ChannelName> channels = getFileChannels(f, pathToLIGOTools);
             if (channels.contains(channel)) {
                 throw new RuntimeException("Channel " + channel
                         + " not produced by FrameDataDump, but FrChannels claims it exists in " + f);
@@ -285,7 +285,7 @@ public class ImportData extends AbstractDataTool {
         return data;
     }
 
-    private boolean rangeCovered(long starttime, int len, String channel) {
+    private boolean rangeCovered(long starttime, int len, ChannelName channel) {
         Double mt = maxtime.get(channel);
         if (mt == null) {
             mt = Double.valueOf(0);
@@ -294,17 +294,17 @@ public class ImportData extends AbstractDataTool {
     }
 
     @Override
-    protected void setLastSums(String channel, DataReader<?, ?> reader) throws IOException {
-        reader.readLastSums(new File(outputPath + File.separator + channel + ".bin"));
+    protected void setLastSums(ChannelName channel, DataReader<?, ?> reader) throws IOException {
+        reader.readLastSums(new File(outputPath + File.separator + channel.uniformName + ".bin"));
     }
 
     @Override
-    protected double getMaxTime(String channel) {
+    protected double getMaxTime(ChannelName channel) {
         return maxtime.get(channel);
     }
 
-    private Set<String> getDumpedChannels(String tmpprefix) {
-        Set<String> s = new HashSet<String>();
+    private Set<ChannelName> getDumpedChannels(String tmpprefix) {
+        Set<ChannelName> s = new HashSet<ChannelName>();
         File[] fs = new File(tmpprefix).listFiles(new FileFilter() {
             public boolean accept(File pathname) {
                 return pathname.getName().endsWith(".rms.txt");
@@ -312,7 +312,7 @@ public class ImportData extends AbstractDataTool {
         });
         for (int i = 0; i < fs.length; i++) {
             String name = fs[i].getName();
-            s.add(name.substring(0, name.length() - ".rms.txt".length()));
+            s.add(new ChannelName(name.substring(0, name.length() - ".rms.txt".length())));
         }
         return s;
     }
@@ -330,17 +330,23 @@ public class ImportData extends AbstractDataTool {
         return tmp.getAbsolutePath() + "/";
     }
 
-    private DataFileWriter getWriter(String channel) throws IOException {
+    private DataFileWriter getWriter(ChannelName channel) throws IOException {
         DataFileWriter w = writers.get(channel);
         if (w == null) {
-            w = new DataBinaryFileWriter(new File(outputPath + File.separator + channel + ".bin"), true);
+            w = new DataBinaryFileWriter(new File(outputPath + File.separator + channel.uniformName + ".bin"), true);
             writers.put(channel, w);
         }
         return w;
     }
 
-    private DataFileWriter getIndexWriter(String channel) throws IOException {
-        return getWriter(channel + ".index");
+    private DataFileWriter getIndexWriter(ChannelName channel) throws IOException {
+        DataFileWriter w = writers.get(channel);
+        if (w == null) {
+            w = new DataBinaryFileWriter(new File(outputPath + File.separator + channel.uniformName + ".index.bin"),
+                true);
+            writers.put(channel, w);
+        }
+        return w;
     }
 
     private void log(String f) throws IOException {
@@ -353,8 +359,8 @@ public class ImportData extends AbstractDataTool {
         .compile("\\s*ADC:\\s*(\\w+:\\w+-[\\w\\.\\-]+)\\.mean\\s.*nBits=(\\d+) bias=((?:\\w|\\-|\\.)+) slope=((?:\\w|\\-|\\.)+) units=(.*)");
     public static final Pattern DATA_LINE = Pattern.compile("\\s*Data\\((\\w+)\\).*");
 
-    public Map<String, String> createDescriptorFiles(String ligoToolsHome, String workdir, File f, Set<String> channels)
-            throws Exception {
+    public Map<ChannelName, String> createDescriptorFiles(String ligoToolsHome, String workdir, File f,
+            Set<ChannelName> channels) throws Exception {
         String[] c = new String[] { ligoToolsHome + File.separator + "bin" + File.separator + "FrDump", "-i",
                 f.getAbsolutePath(), "-d", "4" };
         Process p = Runtime.getRuntime().exec(c);
@@ -365,11 +371,11 @@ public class ImportData extends AbstractDataTool {
             throw new RuntimeException("You must run FrDump with the \"-d 4\" option.");
         }
 
-        Set<String> existing = new HashSet<String>();
+        Set<ChannelName> existing = new HashSet<ChannelName>();
 
         existing.addAll(channels);
 
-        Map<String, String> types = new HashMap<String, String>();
+        Map<ChannelName, String> types = new HashMap<ChannelName, String>();
         Matcher adc = skipTo(br, ADC_LINE);
         while (adc != null) {
             Matcher data = skipToNotNull(br, DATA_LINE);
@@ -385,7 +391,7 @@ public class ImportData extends AbstractDataTool {
             fw.write("slope = " + adc.group(4) + "\n");
             fw.write("units = " + adc.group(5) + "\n");
             fw.close();
-            types.put(adc.group(1), data.group(1));
+            types.put(new ChannelName(adc.group(1)), data.group(1));
             adc = skipTo(br, ADC_LINE);
         }
         br.close();

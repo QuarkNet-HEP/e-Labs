@@ -52,14 +52,14 @@ public abstract class AbstractDataTool {
         }
     };
 
-    protected Map<String, String> types;
-    protected Map<String, DataReader<?, ?>> readers;
+    protected Map<ChannelName, String> types;
+    protected Map<ChannelName, DataReader<?, ?>> readers;
 
     protected AbstractDataTool() {
     }
 
     protected void loadChannelInfo(String pathToData) throws IOException {
-        types = new HashMap<String, String>();
+        types = new HashMap<ChannelName, String>();
         File[] infos = new File(pathToData).listFiles(new FileFilter() {
             public boolean accept(File pathname) {
                 return pathname.getName().endsWith(".info");
@@ -68,7 +68,7 @@ public abstract class AbstractDataTool {
         for (File info : infos) {
             ChannelProperties cp = new ChannelProperties(info);
             String fn = info.getName();
-            types.put(fn.substring(0, fn.length() - ".info".length()), cp.getDataType());
+            types.put(new ChannelName(fn.substring(0, fn.length() - ".info".length())), cp.getDataType());
         }
     }
 
@@ -167,7 +167,7 @@ public abstract class AbstractDataTool {
         }
     }
 
-    protected Set<String> getFileChannels(LIGOFile f, String pathToLIGOTools) throws Exception {
+    protected Set<ChannelName> getFileChannels(LIGOFile f, String pathToLIGOTools) throws Exception {
         String frChannels = pathToLIGOTools + File.separator + "bin" + File.separator + "FrChannels";
         String[] cmd = new String[] { frChannels, f.file.getAbsolutePath() };
         Process p = Runtime.getRuntime().exec(cmd);
@@ -178,12 +178,12 @@ public abstract class AbstractDataTool {
             throw new RuntimeException("FrChannels on " + f + " failed: " + err);
         }
         BufferedReader br = new BufferedReader(new StringReader(out));
-        Set<String> l = new HashSet<String>();
+        Set<ChannelName> l = new HashSet<ChannelName>();
         String line = br.readLine();
         while (line != null) {
             String[] s1 = line.split("\\s+");
             int i = s1[0].lastIndexOf('.');
-            l.add(s1[0].substring(0, i));
+            l.add(new ChannelName(s1[0].substring(0, i)));
             line = br.readLine();
         }
         return l;
@@ -204,7 +204,7 @@ public abstract class AbstractDataTool {
     private File lastBrokenFile = null;
 
     protected DataReader<?, ?> readFrameDataDump(File f, File rmsbin, File rmstxt, File meanbin, File meantxt,
-            String channel) throws IOException {
+            ChannelName channel) throws IOException {
         String[] info = checkFrDumpOutput(read(rmstxt), types.get(channel), TYPE_SIZES.get(types.get(channel)));
         checkFrDumpOutput(read(meantxt), types.get(channel), TYPE_SIZES.get(types.get(channel)));
         double starttime = Double.parseDouble(info[0]);
@@ -243,10 +243,10 @@ public abstract class AbstractDataTool {
         return dp;
     }
 
-    private DataReader<?, ?> getReader(String channel, String string, AbstractDataTool abstractDataTool)
+    private DataReader<?, ?> getReader(ChannelName channel, String string, AbstractDataTool abstractDataTool)
             throws IOException {
         if (readers == null) {
-            readers = new HashMap<String, DataReader<?, ?>>();
+            readers = new HashMap<ChannelName, DataReader<?, ?>>();
         }
         DataReader<?, ?> reader = readers.get(channel);
         if (reader == null) {
@@ -257,7 +257,7 @@ public abstract class AbstractDataTool {
         return reader;
     }
 
-    protected void setLastSums(String channel, DataReader<?, ?> reader) throws IOException {
+    protected void setLastSums(ChannelName channel, DataReader<?, ?> reader) throws IOException {
 
     }
 
@@ -265,7 +265,7 @@ public abstract class AbstractDataTool {
         System.err.println(string);
     }
 
-    protected double getMaxTime(String channel) {
+    protected double getMaxTime(ChannelName channel) {
         return 0;
     }
 
