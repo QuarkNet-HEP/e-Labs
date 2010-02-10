@@ -20,7 +20,9 @@ public class ChannelProperties {
 
     private void load(File propfile) throws IOException {
         Properties props = new Properties();
-        props.load(new FileInputStream(propfile));
+        FileInputStream fis = new FileInputStream(propfile);
+        props.load(fis);
+        fis.close();
         dataType = getProp(props, "datatype");
         nbits = Integer.parseInt(getProp(props, "nbits"));
         bias = Double.parseDouble(getProp(props, "bias"));
