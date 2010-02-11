@@ -36,6 +36,7 @@ public class ProcessTools {
             sb.append('\n');
             line = br.readLine();
         }
+        is.close();
         return sb.toString();
     }
 }

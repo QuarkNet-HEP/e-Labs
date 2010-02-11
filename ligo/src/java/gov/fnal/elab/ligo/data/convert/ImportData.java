@@ -28,6 +28,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ImportData extends AbstractDataTool {
+    
+    public static final String LOCKNAME = ".lock";
 
     private static final int DUMPAHEAD_SIZE = 8;
 
@@ -50,6 +52,8 @@ public class ImportData extends AbstractDataTool {
     private static Object SHUTDOWN_LOCK = new Object();
 
     private long startTime;
+    
+    private File lockfile;
 
     public ImportData(String pathToData, String pathToLIGOTools, String outputPath) {
         this.pathToData = pathToData;
@@ -58,6 +62,7 @@ public class ImportData extends AbstractDataTool {
         writers = new HashMap<String, DataFileWriter>();
         maxtime = new HashMap<ChannelName, Double>();
         doneDumps = new TreeMap<LIGOFile, Object>();
+        lockfile = new File(pathToData + File.separator + LOCKNAME);
     }
 
     public void run() {
@@ -75,6 +80,7 @@ public class ImportData extends AbstractDataTool {
     private void run2() throws Exception {
         error = new PrintWriter(new FileWriter("ImportData.errors"));
         addShutdownHook();
+        lockfile.createNewFile();
 
         loadChannelInfo(outputPath);
         loadMaxTimes();
@@ -102,6 +108,9 @@ public class ImportData extends AbstractDataTool {
             public void run() {
                 synchronized (SHUTDOWN_LOCK) {
                     System.out.println("Shutting down...");
+                }
+                if (lockfile != null) {
+                    lockfile.delete();
                 }
             }
         });

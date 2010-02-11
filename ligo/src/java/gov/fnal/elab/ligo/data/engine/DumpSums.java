@@ -3,6 +3,8 @@
  */
 package gov.fnal.elab.ligo.data.engine;
 
+import gov.fnal.elab.ligo.data.convert.ChannelName;
+
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.text.DecimalFormat;
@@ -19,7 +21,7 @@ public class DumpSums {
             String channel = "H0:PEM-MX_TILTT";
             
             ChannelProperties props = new ChannelProperties(new File(dir + "/" + channel + ".info"));
-            LIGOFileReader rf = LIGOFileReader.instance(props, "mean", 
+            LIGOFileReader rf = LIGOFileReader.instance(new ChannelName(channel), props, "mean", 
                 new RandomAccessFile(new File(dir + "/" + channel + ".bin"), "r"));
             ChannelIndex ci = new ChannelIndex(new File(dir + "/" + channel + ".index.bin"));
             long rec = ci.getRecordIndex(start);

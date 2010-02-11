@@ -4,6 +4,7 @@
 package gov.fnal.elab.ligo.data.engine;
 
 import gov.fnal.elab.ligo.data.convert.AbstractDataTool;
+import gov.fnal.elab.ligo.data.convert.ChannelName;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -24,7 +25,7 @@ public abstract class LIGOFileReader {
         CLASSES.get("rms").put("double", RMSDoubleLIGOFileReader.class);
     }
 
-    public static LIGOFileReader instance(ChannelProperties props, String type, RandomAccessFile f) {
+    public static LIGOFileReader instance(ChannelName channel, ChannelProperties props, String type, RandomAccessFile f) {
         if (!CLASSES.containsKey(type)) {
             throw new RuntimeException("Unknown reader type: " + type);
         }
@@ -34,6 +35,7 @@ public abstract class LIGOFileReader {
         Class<? extends LIGOFileReader> cls = CLASSES.get(type).get(props.getDataType());
         try {
             LIGOFileReader r = cls.newInstance();
+            r.setChannel(channel);
             r.setFile(f);
             return r;
         }
@@ -44,6 +46,7 @@ public abstract class LIGOFileReader {
 
     protected final int recordSize, skip;
     protected RandomAccessFile f;
+    protected int samplingRateAdjust;
 
     protected LIGOFileReader(int recordSize, int skip) {
         this.recordSize = recordSize;
@@ -52,6 +55,10 @@ public abstract class LIGOFileReader {
 
     protected void setFile(RandomAccessFile f) {
         this.f = f;
+    }
+    
+    protected void setChannel(ChannelName channel) {
+        this.samplingRateAdjust = AbstractDataTool.getSamplingRateAdjust(channel);
     }
 
     public Record readRecord(long recordIndex) throws IOException {
@@ -79,7 +86,7 @@ public abstract class LIGOFileReader {
 
         @Override
         public Double value(Record last, Record rec) {
-            return (rec.sum.doubleValue() - last.sum.doubleValue()) / ((rec.time - last.time) * AbstractDataTool.RAW_SAMPLES_PER_SECOND);
+            return (rec.sum.doubleValue() - last.sum.doubleValue()) / ((rec.time - last.time) * samplingRateAdjust);
         }
     }
 
@@ -91,7 +98,7 @@ public abstract class LIGOFileReader {
         @Override
         public Double value(Record last, Record rec) {
             return Math.sqrt((rec.sum.doubleValue() - last.sum.doubleValue())
-                    / ((rec.time - last.time) * AbstractDataTool.RAW_SAMPLES_PER_SECOND));
+                    / ((rec.time - last.time) * samplingRateAdjust));
         }
     }
 

@@ -28,11 +28,13 @@ import java.util.regex.Pattern;
 
 public abstract class AbstractDataTool {
     public static final boolean FILE_ONLY = true;
+    
+    public static final int SITE_LHO = 0;
+    public static final int SITE_LLO = 1;
+    
+    public static final int SECOND_TREND = 0;
+    public static final int MINUTE_TREND = 1;
 
-    /**
-     * Used to reconstruct the sums of squares from a RMS value
-     */
-    public static final int RAW_SAMPLES_PER_SECOND = 250;
     public static final String[] SITES = new String[] { "LHO", "LLO" };
     public static final String[] TRENDS = new String[] { "second-trend", "minute-trend" };
     public static final int[] TREND_FILE_DURATION = new int[] { 60, 3600 };
@@ -50,6 +52,59 @@ public abstract class AbstractDataTool {
             put("double", 8);
             put("int", 4);
             put("float", 4);
+        }
+    };
+    
+    public static final Map<String, Integer> SAMPLING_RATE_ADJUST = new HashMap<String, Integer>() {
+        {
+            put("EARTHQUAKE", 16);
+            put("RAIN", 16);
+            put("WDIR", 16);
+            put("WIND", 16);
+            put("WINDMPH", 16);
+            
+            put("MAGX", 2048);
+            put("MAGY", 2048);
+            put("MAGZ", 2048);
+            put("MAG1X", 2048);
+            put("MAG1Y", 2048);
+            put("MAG1Z", 2048);
+            
+            put("TILTX", 256);
+            put("TILTY", 256);
+            put("TILTT", 256);
+            
+            put("SEISX", 256);
+            put("SEISY", 256);
+            put("SEISZ", 256);
+            
+            put("SEIS2X", 256);
+            put("SEIS2Y", 256);
+            put("SEIS2Z", 256);
+            
+            put("SEISX_0.03_0.1Hz", 1);
+            put("SEISY_0.03_0.1Hz", 1);
+            put("SEISZ_0.03_0.1Hz", 1);
+            
+            put("SEISX_0.1_0.3Hz", 1);
+            put("SEISY_0.1_0.3Hz", 1);
+            put("SEISZ_0.1_0.3Hz", 1);
+            
+            put("SEISX_0.3_1Hz", 1);
+            put("SEISY_0.3_1Hz", 1);
+            put("SEISZ_0.3_1Hz", 1);
+            
+            put("SEISX_1_3Hz", 1);
+            put("SEISY_1_3Hz", 1);
+            put("SEISZ_1_3Hz", 1);
+            
+            put("SEISX_3_10Hz", 1);
+            put("SEISY_3_10Hz", 1);
+            put("SEISZ_3_10Hz", 1);
+            
+            put("SEISX_10_30Hz", 1);
+            put("SEISY_10_30Hz", 1);
+            put("SEISZ_10_30Hz", 1);
         }
     };
 
@@ -239,9 +294,17 @@ public abstract class AbstractDataTool {
             System.out.println("");
         }
 
-        dp.process(starttime, lentime, RAW_SAMPLES_PER_SECOND);
+        dp.process(starttime, lentime, getSamplingRateAdjust(channel));
 
         return dp;
+    }
+
+    public static int getSamplingRateAdjust(ChannelName channel) {
+        Integer i = SAMPLING_RATE_ADJUST.get(channel.getSubsystem());
+        if (i == null) {
+            throw new RuntimeException("No sampling rate adjustement for subsystem " + channel.getSubsystem());
+        }
+        return i;
     }
 
     private DataReader<?, ?> getReader(ChannelName channel, String string, AbstractDataTool abstractDataTool)

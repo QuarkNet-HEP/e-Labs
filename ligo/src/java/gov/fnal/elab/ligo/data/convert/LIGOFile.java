@@ -13,7 +13,7 @@ public class LIGOFile implements Comparable<LIGOFile> {
     
     public final int trend, site;
     public final File file;
-
+   
     public LIGOFile(int site, int trend, File f) {
         this.site = site;
         this.trend = trend;

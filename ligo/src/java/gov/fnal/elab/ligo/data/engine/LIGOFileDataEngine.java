@@ -9,10 +9,10 @@ import gov.fnal.elab.expression.data.engine.DataPath;
 import gov.fnal.elab.expression.data.engine.DataSet;
 import gov.fnal.elab.expression.data.engine.Options;
 import gov.fnal.elab.expression.data.engine.Range;
+import gov.fnal.elab.ligo.data.convert.ChannelName;
+import gov.fnal.elab.ligo.data.convert.ImportData;
 
 import java.io.File;
-import java.io.FileFilter;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.text.DecimalFormat;
@@ -21,20 +21,44 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class LIGOFileDataEngine implements DataEngine {
-
     private String dir;
     private Map<String, ChannelProperties> channels;
     private Map<String, ChannelIndex> indexes;
     private Map<String, RandomAccessFile> files;
     private List<DataPath> paths;
+    private Map<String, ChannelName> names;
+    private Map<String, Long> fileTime;
+    private ModificationChecker modcheck;
+    private ReadWriteLock lock;
 
     public LIGOFileDataEngine(String dir) throws IOException {
         this.dir = dir;
-        loadChannelInfo();
-        loadChannelIndexes();
-        files = new HashMap<String, RandomAccessFile>();
+        fileTime = new HashMap<String, Long>();
+        lock = new ReentrantReadWriteLock();
+        reload();
+        modcheck = new ModificationChecker(this);
+    }
+
+    public void reload() throws IOException {
+        lock.writeLock().lock();
+        try {
+            loadChannelInfo();
+            loadChannelIndexes();
+            if (files == null) {
+                files = new HashMap<String, RandomAccessFile>();
+            }
+            else {
+                files.clear();
+            }
+            paths = null;
+        }
+        finally {
+            lock.writeLock().unlock();
+        }
     }
 
     private void loadChannelIndexes() throws IOException {
@@ -45,91 +69,105 @@ public class LIGOFileDataEngine implements DataEngine {
     }
 
     private void loadChannelInfo() throws IOException {
-        File[] info = new File(dir).listFiles(new FileFilter() {
-            public boolean accept(File pathname) {
-                return pathname.getName().endsWith(".info");
-            }
-        });
+        File d = new File(dir);
+        if (!d.exists()) {
+            throw new EngineException("The specified data directory (" + d.getAbsolutePath() + ") does not exist.");
+        }
+        File[] info = new File(dir).listFiles(new InfoFileFilter());
+
+        if (info == null) {
+            throw new EngineException("No data found in the specified directory (" + d.getAbsolutePath() + ")");
+        }
         channels = new HashMap<String, ChannelProperties>();
+        names = new HashMap<String, ChannelName>();
         for (File f : info) {
             String channel = f.getName().substring(0, f.getName().length() - ".info".length());
             channels.put(channel, new ChannelProperties(f));
+            names.put(channel, new ChannelName(channel));
         }
     }
-    
+
     public static final NumberFormat NF = new DecimalFormat("0.0000000");
 
     public DataSet get(DataPath path, Range range, Options options) throws DataBackendException {
-        int ip = path.getName().lastIndexOf('.');
-        String channel = path.getName().substring(0, ip);
-        String type = path.getName().substring(ip + 1);
-        ChannelIndex index = indexes.get(channel);
-        ChannelProperties props = channels.get(channel);
-        Double[] values = new Double[options.getSamples()];
-        double min = Double.MAX_VALUE;
-        double max = Double.MIN_VALUE;
-
+        lock.readLock().lock();
         try {
-            LIGOFileReader rf = LIGOFileReader.instance(props, type, getFile(channel));
-            Record last = rf.readRecord(index.getRecordIndex(range.getStart().doubleValue()) - 1);
-            boolean lastInvalid = false;
-            if (last == null) {
-                last = new Record(false, 0, 0);
-                lastInvalid = true;
-            }
-            double lastvalue = 0;
-            
-            for (int i = 0; i < options.getSamples(); i++) {
-                double time = range.getStart().doubleValue() + i * range.getRange().doubleValue()
-                        / options.getSamples();
-                long recordIndex = index.getRecordIndex(time);
+            int ip = path.getName().lastIndexOf('.');
+            String channel = path.getName().substring(0, ip);
+            String type = path.getName().substring(ip + 1);
+            ChannelIndex index = indexes.get(channel);
+            ChannelProperties props = channels.get(channel);
+            Double[] values = new Double[options.getSamples()];
+            double min = Double.MAX_VALUE;
+            double max = Double.MIN_VALUE;
 
-                Record rec = rf.readRecord(recordIndex);
-                if (rec == null) {
-                    values[i] = Double.NaN;
-                    continue;
-                }
-
-                if (rec.time == last.time) {
-                    // I'm not sure this is strictly correct
-                    values[i] = lastvalue;
-                }
-                else {
-                    values[i] = rf.value(last, rec);
-                }
-                if (lastInvalid) {
-                    values[i] = Double.NaN;
-                    lastInvalid = false;
-                }
-                if (!rec.valid) {
-                    values[i] = Double.NaN;
+            try {
+                LIGOFileReader rf = LIGOFileReader.instance(getName(channel), props, type, getFile(channel));
+                Record last = rf.readRecord(index.getRecordIndex(range.getStart().doubleValue()) - 1);
+                boolean lastInvalid = false;
+                if (last == null) {
+                    last = new Record(false, 0, 0);
                     lastInvalid = true;
-                    System.out.println((Double.isNaN(values[i]) ? "NaN         ":NF.format(values[i])) + " - " + recordIndex + " - " + last + " - " + rec);
                 }
-                else {
-                    // last should be the last valid record
-                    System.out.println((Double.isNaN(values[i]) ? "NaN         ":NF.format(values[i])) + " - " + recordIndex + " - " + last + " - " + rec);
-                    last = rec;
+                double lastvalue = 0;
+
+                for (int i = 0; i < options.getSamples(); i++) {
+                    double time = range.getStart().doubleValue() + i * range.getRange().doubleValue()
+                            / options.getSamples();
+                    long recordIndex = index.getRecordIndex(time);
+
+                    Record rec = rf.readRecord(recordIndex);
+                    if (rec == null) {
+                        values[i] = Double.NaN;
+                        continue;
+                    }
+
+                    if (rec.time == last.time) {
+                        // I'm not sure this is strictly correct
+                        values[i] = lastvalue;
+                    }
+                    else {
+                        values[i] = rf.value(last, rec);
+                    }
+                    if (lastInvalid) {
+                        values[i] = Double.NaN;
+                        lastInvalid = false;
+                    }
+                    if (!rec.valid) {
+                        values[i] = Double.NaN;
+                        lastInvalid = true;
+                    }
+                    else {
+                        // last should be the last valid record
+                        last = rec;
+                    }
+
+                    lastvalue = values[i];
+
+                    values[i] = values[i].doubleValue() * props.getSlope() + props.getBias();
+                    if (values[i] > max) {
+                        max = values[i];
+                    }
+                    if (values[i] < min) {
+                        min = values[i];
+                    }
                 }
-                
-                lastvalue = values[i];
-                
-                values[i] = values[i].doubleValue() * props.getSlope() + props.getBias();
-                if (values[i] > max) {
-                    max = values[i];
-                }
-                if (values[i] < min) {
-                    min = values[i];
-                }
+                return new NumberArrayDataSet(path, range, new Range(min, max), values, props.getUnits());
             }
-            return new NumberArrayDataSet(path, range, new Range(min, max), values, props.getUnits());
+            catch (IOException e) {
+                throw new DataBackendException(e);
+            }
         }
-        catch (IOException e) {
-            throw new DataBackendException(e);
+        finally {
+            lock.readLock().unlock();
         }
     }
 
-    private RandomAccessFile getFile(String channel) throws FileNotFoundException {
+    private ChannelName getName(String channel) {
+        return names.get(channel);
+    }
+
+    private RandomAccessFile getFile(String channel) throws IOException {
         synchronized (files) {
             RandomAccessFile f = files.get(channel);
             if (f == null) {
@@ -140,16 +178,40 @@ public class LIGOFileDataEngine implements DataEngine {
         }
     }
 
-    public List<DataPath> getPaths() throws DataBackendException {
-        if (paths == null) {
-            paths = new ArrayList<DataPath>();
-            for (Map.Entry<String, ChannelIndex> e : indexes.entrySet()) {
-                Range range = getRange(e.getKey());
-                paths.add(new DataPath(e.getKey() + ".mean", range));
-                paths.add(new DataPath(e.getKey() + ".rms", range));
-            }
+    private long fileTime(String channel) {
+        return new File(dir + File.separator + channel + ".bin").lastModified();
+    }
+
+    private long storedFileTime(String channel) {
+        Long l = fileTime.get(channel);
+        if (l == null) {
+            return 0;
         }
-        return paths;
+        else {
+            return l.longValue();
+        }
+    }
+
+    public List<DataPath> getPaths() throws DataBackendException {
+        lock.readLock().lock();
+        try {
+            if (paths == null) {
+                paths = new ArrayList<DataPath>();
+                for (Map.Entry<String, ChannelIndex> e : indexes.entrySet()) {
+                    Range range = getRange(e.getKey());
+                    if (!e.getKey().endsWith("Hz")) {
+                        // the bandwidth filtered channels only have rms info
+                        // i.e. rms = mean = min = max
+                        paths.add(new DataPath(e.getKey() + ".mean", range));
+                    }
+                    paths.add(new DataPath(e.getKey() + ".rms", range));
+                }
+            }
+            return paths;
+        }
+        finally {
+            lock.readLock().unlock();
+        }
     }
 
     private Range getRange(String channel) throws DataBackendException {
@@ -163,6 +225,10 @@ public class LIGOFileDataEngine implements DataEngine {
                 double start = EncodingTools.readDouble(raf);
                 raf.seek(raf.length() - 24);
                 double end = EncodingTools.readDouble(raf);
+                File fl = new File(dir + File.separator + ImportData.LOCKNAME);
+                if (fl.exists()) {
+                    throw new EngineException("Data is being updated");
+                }
                 return new Range(start, end);
             }
             finally {
@@ -200,5 +266,9 @@ public class LIGOFileDataEngine implements DataEngine {
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public String getDataDirectory() {
+        return dir;
     }
 }
