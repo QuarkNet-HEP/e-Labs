@@ -96,14 +96,26 @@ public class LIGOFileDataEngine implements DataEngine {
             String channel = path.getName().substring(0, ip);
             String type = path.getName().substring(ip + 1);
             ChannelIndex index = indexes.get(channel);
+            if (index == null) {
+                throw new DataBackendException("Invalid data path: " + path);
+            }
             ChannelProperties props = channels.get(channel);
             Double[] values = new Double[options.getSamples()];
             double min = Double.MAX_VALUE;
             double max = Double.MIN_VALUE;
 
+            long[] indices = new long[options.getSamples() + 1];
+            indices[0] = index.getRecordIndex(range.getStart().doubleValue()) - 1;
+            for (int i = 0; i < options.getSamples(); i++) {
+                double time = range.getStart().doubleValue() + i * range.getRange().doubleValue()
+                        / options.getSamples();
+                indices[i + 1] = index.getRecordIndex(time);
+            }
+
             try {
                 LIGOFileReader rf = LIGOFileReader.instance(getName(channel), props, type, getFile(channel));
-                Record last = rf.readRecord(index.getRecordIndex(range.getStart().doubleValue()) - 1);
+                Record[] records = rf.readRecords(indices);
+                Record last = records[0];
                 boolean lastInvalid = false;
                 if (last == null) {
                     last = new Record(false, 0, 0);
@@ -112,11 +124,7 @@ public class LIGOFileDataEngine implements DataEngine {
                 double lastvalue = 0;
 
                 for (int i = 0; i < options.getSamples(); i++) {
-                    double time = range.getStart().doubleValue() + i * range.getRange().doubleValue()
-                            / options.getSamples();
-                    long recordIndex = index.getRecordIndex(time);
-
-                    Record rec = rf.readRecord(recordIndex);
+                    Record rec = records[i + 1];
                     if (rec == null) {
                         values[i] = Double.NaN;
                         continue;
@@ -240,28 +248,50 @@ public class LIGOFileDataEngine implements DataEngine {
         }
     }
 
-    private static long time = 0;
+    private static ThreadLocal<Long> time = new ThreadLocal<Long>();
 
     private static void time(String s) {
         long now = System.currentTimeMillis();
-        if (time != 0) {
-            System.out.println(s + " (" + (now - time) + "ms)");
+        if (time.get() != null) {
+            System.out.println(s + " (" + (now - time.get()) + "ms)");
         }
-        time = now;
+        time.set(now);
     }
+
+    private static final int NTHREADS = 10;
 
     public static void main(String[] args) {
         try {
             time("");
-            LIGOFileDataEngine eng = new LIGOFileDataEngine("/mnt/ubuntu/tmp/funny2");
+            final LIGOFileDataEngine eng = new LIGOFileDataEngine("/mnt/ubuntu/tmp/test");
             time("new");
             List<DataPath> dps = eng.getPaths();
             time("getpaths");
-            for (int i = 0; i < 1; i++) {
-                eng.get(new DataPath("H0:PEM-MX_TILTT.mean"), new Range(855226905, 864311035), new Options()
-                    .setSamples(800));
-                time("get");
+            Thread[] threads = new Thread[NTHREADS];
+            for (int j = 0; j < NTHREADS; j++) {
+                final int k = j;
+                threads[j] = new Thread() {
+                    public void run() {
+                        try {
+                            for (int i = 0; i < 20; i++) {
+                                eng.get(new DataPath("H0:PEM-MX_TILTT.mean"), new Range(915109200 + (int) (Math
+                                    .random() * 15109200), 948645719 - (int) (Math.random() * 15109200)), new Options()
+                                    .setSamples(800));
+                                time("get");
+                            }
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                threads[j].start();
             }
+
+            for (int j = 0; j < NTHREADS; j++) {
+                threads[j].join();
+            }
+            time("total");
         }
         catch (Exception e) {
             e.printStackTrace();

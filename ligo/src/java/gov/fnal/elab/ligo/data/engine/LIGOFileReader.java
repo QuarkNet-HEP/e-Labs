@@ -56,7 +56,7 @@ public abstract class LIGOFileReader {
     protected void setFile(RandomAccessFile f) {
         this.f = f;
     }
-    
+
     protected void setChannel(ChannelName channel) {
         this.samplingRateAdjust = AbstractDataTool.getSamplingRateAdjust(channel);
     }
@@ -72,6 +72,16 @@ public abstract class LIGOFileReader {
             double time = EncodingTools.readDouble(f);
             f.skipBytes(skip);
             return new Record(valid, time, readSum());
+        }
+    }
+
+    public Record[] readRecords(long[] indices) throws IOException {
+        synchronized (f) {
+            Record[] records = new Record[indices.length];
+            for (int i = 0; i < indices.length; i++) {
+                records[i] = readRecord(indices[i]);
+            }
+            return records;
         }
     }
 
