@@ -26,6 +26,6 @@ public class DataPath {
 
     @Override
     public String toString() {
-        return name + totalRange;
+        return name + (totalRange == null ? "" : totalRange.toString());
     }
 }
