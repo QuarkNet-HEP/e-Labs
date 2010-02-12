@@ -36,4 +36,8 @@ public class Range {
     public String toString() {
         return "[" + start + ", " + end + "]";
     }
+
+    public boolean contains(Number v) {
+        return (v.doubleValue() >= start.doubleValue()) && (v.doubleValue() <= end.doubleValue());
+    }
 }
