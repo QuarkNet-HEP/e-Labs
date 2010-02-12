@@ -9,7 +9,7 @@ import net.percederberg.grammatica.parser.ProductionPattern;
 public class CacheableProduction extends Production {
 
     public CacheableProduction(ProductionPattern pattern) {
-        super(pattern);       
+        super(pattern);
     }
 
     @Override
@@ -22,10 +22,20 @@ public class CacheableProduction extends Production {
             if (getChildCount() != other.getChildCount()) {
                 return false;
             }
-            for (int i = 0; i < getChildCount(); i++) {
-                if (!getChildAt(i).equals(other.getChildAt(i))) {
-                    return false;
-                }
+            switch (getPattern().getId()) {
+                case I2u2expConstants.IDENT:
+                case I2u2expConstants.NUMBER:
+                case I2u2expConstants.STRING:
+                    if (!getValue(0).equals(other.getValue(0))) {
+                        return false;
+                    }
+                    break;
+                default:
+                    for (int i = 0; i < getChildCount(); i++) {
+                        if (!getChildAt(i).equals(other.getChildAt(i))) {
+                            return false;
+                        }
+                    }
             }
             return true;
         }
@@ -36,9 +46,17 @@ public class CacheableProduction extends Production {
 
     @Override
     public int hashCode() {
-        int hc = getPattern().getName().hashCode();
-        for (int i = 0; i < getChildCount(); i++) {
-            hc += getChildAt(i).hashCode();
+        int hc = 0;
+        switch (getPattern().getId()) {
+            case I2u2expConstants.IDENT:
+            case I2u2expConstants.NUMBER:
+            case I2u2expConstants.STRING:
+                hc += getValue(0).hashCode();
+                break;
+            default:
+                for (int i = 0; i < getChildCount(); i++) {
+                    hc += getChildAt(i).hashCode();
+                }
         }
         return hc;
     }
