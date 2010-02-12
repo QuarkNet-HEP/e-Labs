@@ -6,6 +6,7 @@ package gov.fnal.elab.expression.evaluator.parser;
 import net.percederberg.grammatica.parser.Node;
 import net.percederberg.grammatica.parser.ParseException;
 import net.percederberg.grammatica.parser.Production;
+import net.percederberg.grammatica.parser.ProductionPattern;
 import net.percederberg.grammatica.parser.Token;
 
 public class CustomAnalyzer extends I2u2expAnalyzer {
@@ -102,5 +103,10 @@ public class CustomAnalyzer extends I2u2expAnalyzer {
     protected Node exitIdent(Token node) throws ParseException {
         node.addValue(node.getImage());
         return node;
+    }
+
+    @Override
+    protected Production newProduction(ProductionPattern pattern) {
+        return new CacheableProduction(pattern);
     }
 }
