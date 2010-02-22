@@ -42,8 +42,8 @@ $(function() {
 	</div>
 	
 	<form name="search" method="get">
-	<e:select name="key" valueList="title, group, teacher, school, city, state, year"
-		labelList="Title, Group, Teacher, School, City, State, Academic Year"
+	<e:select name="key" valueList="name, title, group, teacher, school, city, state, year"
+		labelList="Filename, Title, Group, Teacher, School, City, State, Academic Year"
 		default="${param.key}" />
 	<input name="value" id="name" size="40" maxlength="40" value="${param.value}" />
 	<input type="submit" name="submit" value="Search Data" />
@@ -139,16 +139,16 @@ $(function() {
 				
 					// Start date undefined, therefore less or equal to the end date just before midnight
 					if (StringUtils.isBlank(date1)) {
-						and.add(new LessOrEqual("date", endDate));
+						and.add(new LessOrEqual("creationdate", endDate));
 					}
 					
 					// End date undefined, therefore greater than or equal to the start date
 					else if (StringUtils.isBlank(date2)) {
-						and.add(new GreaterOrEqual("date", startDate));
+						and.add(new GreaterOrEqual("creationdate", startDate));
 					}
 					// Date range 
 					else {
-						and.add(new Between("date", startDate, endDate));
+						and.add(new Between("creationdate", startDate, endDate));
 					}
 				}
 				catch (Exception ex) {
