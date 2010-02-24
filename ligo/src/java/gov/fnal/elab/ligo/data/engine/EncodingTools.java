@@ -75,4 +75,17 @@ public class EncodingTools {
     public static boolean readBoolean(RandomAccessFile f) throws IOException {
         return f.read() != 0;
     }
+    
+    public static boolean readBoolean(InputStream is) throws IOException {
+        int i = is.read();
+        if (i == 0xff) {
+            return true;
+        }
+        else if (i == 0) {
+            return false;
+        }
+        else {
+            throw new IOException("Invalid boolean " + i);
+        }
+    }
 }

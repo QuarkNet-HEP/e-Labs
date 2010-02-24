@@ -21,8 +21,7 @@ public class DumpSums {
             String channel = "H0:PEM-MX_TILTT";
             
             ChannelProperties props = new ChannelProperties(new File(dir + "/" + channel + ".info"));
-            LIGOFileReader rf = LIGOFileReader.instance(new ChannelName(channel), props, "mean", 
-                new RandomAccessFile(new File(dir + "/" + channel + ".bin"), "r"));
+            LIGOFileReader rf = DirectLIGOFileReader.getFactory(dir).newReader(new ChannelName(channel), props, "mean");
             ChannelIndex ci = new ChannelIndex(new File(dir + "/" + channel + ".index.bin"));
             long rec = ci.getRecordIndex(start);
             long endrec = ci.getRecordIndex(end);

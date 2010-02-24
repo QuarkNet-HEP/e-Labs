@@ -24,20 +24,19 @@ import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class LIGOFileDataEngine implements DataEngine {
+public class LIGOFileDataEngine implements DataEngine, Modifiable {
     private String dir;
     private Map<String, ChannelProperties> channels;
     private Map<String, ChannelIndex> indexes;
-    private Map<String, RandomAccessFile> files;
     private List<DataPath> paths;
     private Map<String, ChannelName> names;
-    private Map<String, Long> fileTime;
     private ModificationChecker modcheck;
     private ReadWriteLock lock;
+    private LIGOFileReaderFactory lfrFactory;
 
-    public LIGOFileDataEngine(String dir) throws IOException {
+    public LIGOFileDataEngine(String dir, LIGOFileReaderFactory lfrFactory) throws IOException {
         this.dir = dir;
-        fileTime = new HashMap<String, Long>();
+        this.lfrFactory = lfrFactory;
         lock = new ReentrantReadWriteLock();
         reload();
         modcheck = new ModificationChecker(this);
@@ -48,12 +47,6 @@ public class LIGOFileDataEngine implements DataEngine {
         try {
             loadChannelInfo();
             loadChannelIndexes();
-            if (files == null) {
-                files = new HashMap<String, RandomAccessFile>();
-            }
-            else {
-                files.clear();
-            }
             paths = null;
         }
         finally {
@@ -113,7 +106,7 @@ public class LIGOFileDataEngine implements DataEngine {
             }
 
             try {
-                LIGOFileReader rf = LIGOFileReader.instance(getName(channel), props, type, getFile(channel));
+                LIGOFileReader rf = lfrFactory.newReader(getName(channel), props, type);
                 Record[] records = rf.readRecords(indices);
                 Record last = records[0];
                 boolean lastInvalid = false;
@@ -175,31 +168,6 @@ public class LIGOFileDataEngine implements DataEngine {
         return names.get(channel);
     }
 
-    private RandomAccessFile getFile(String channel) throws IOException {
-        synchronized (files) {
-            RandomAccessFile f = files.get(channel);
-            if (f == null) {
-                f = new RandomAccessFile(dir + File.separator + channel + ".bin", "r");
-                files.put(channel, f);
-            }
-            return f;
-        }
-    }
-
-    private long fileTime(String channel) {
-        return new File(dir + File.separator + channel + ".bin").lastModified();
-    }
-
-    private long storedFileTime(String channel) {
-        Long l = fileTime.get(channel);
-        if (l == null) {
-            return 0;
-        }
-        else {
-            return l.longValue();
-        }
-    }
-
     public List<DataPath> getPaths() throws DataBackendException {
         lock.readLock().lock();
         try {
@@ -258,12 +226,15 @@ public class LIGOFileDataEngine implements DataEngine {
         time.set(now);
     }
 
-    private static final int NTHREADS = 10;
+    private static final int NTHREADS = 4;
+    private static final int TOTAL = 128;
 
     public static void main(String[] args) {
         try {
             time("");
-            final LIGOFileDataEngine eng = new LIGOFileDataEngine("/mnt/ubuntu/tmp/test");
+            String dir = "/mnt/ubuntu/tmp/test";
+            //final LIGOFileDataEngine eng = new LIGOFileDataEngine(dir, DirectLIGOFileReader.getFactory(dir));
+            final LIGOFileDataEngine eng = new LIGOFileDataEngine(dir, ServiceLIGOFileReader.getFactory("http://localhost:8100"));
             time("new");
             List<DataPath> dps = eng.getPaths();
             time("getpaths");
@@ -273,7 +244,7 @@ public class LIGOFileDataEngine implements DataEngine {
                 threads[j] = new Thread() {
                     public void run() {
                         try {
-                            for (int i = 0; i < 20; i++) {
+                            for (int i = 0; i < TOTAL / NTHREADS; i++) {
                                 eng.get(new DataPath("H0:PEM-MX_TILTT.mean"), new Range(915109200 + (int) (Math
                                     .random() * 15109200), 948645719 - (int) (Math.random() * 15109200)), new Options()
                                     .setSamples(800));

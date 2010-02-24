@@ -11,10 +11,10 @@ public class ModificationChecker extends Thread {
     public static final int CHECK_INTERVAL = 60 * 60 * 1000;
     public static final int LOCK_CHECK_INTERVAL = 10 * 1000;
 
-    private final LIGOFileDataEngine engine;
+    private final Modifiable engine;
     private long checksum;
     
-    public ModificationChecker(LIGOFileDataEngine engine) {
+    public ModificationChecker(Modifiable engine) {
         this.engine = engine;
         setDaemon(true);
         setName("Data modification checker");
