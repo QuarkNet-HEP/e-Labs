@@ -226,8 +226,9 @@ public class DatabaseUserManagementProvider implements
 
     private void addStudents(Connection c, ElabGroup group) throws SQLException {
         PreparedStatement ps = c.prepareStatement(
-        		"SELECT id, name FROM student WHERE id IN " +
-        		"(SELECT student_id FROM research_group_student WHERE research_group_id = ?);");
+        		"SELECT s.id, s.name FROM research_group_student AS rgs " +
+        		"LEFT OUTER JOIN student AS s ON rgs.student_id = s.id " +
+        		"WHERE research_group_id = ?;");
         ps.setInt(1, group.getId());
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
@@ -364,14 +365,11 @@ public class DatabaseUserManagementProvider implements
                     .getConnection(elab.getProperties());
             int projectId = elab.getId();
             ps = conn.prepareStatement(
-            		"SELECT DISTINCT teacher.name AS tname, teacher.email AS temail, "
-                            + "teacher.id AS teacherid, research_group.id AS id,"
-                            + "research_group.name AS rgname, research_group.userarea AS rguserarea "
-                            + "FROM teacher, research_group "
-                            + "WHERE research_group.teacher_id = teacher.id "
-                            + "AND research_group.id IN "
-                            + "(SELECT DISTINCT research_group_id FROM research_group_project WHERE "
-                            + " research_group_project.project_id = ? ) ORDER BY tname ASC;");
+            		"SELECT DISTINCT teacher.name AS tname, teacher.email AS temail, teacher.id AS teacherid, research_group.id AS id, research_group.name AS rgname, research_group.userarea AS rguserarea " +
+            		"FROM research_group_project " + 
+            		"LEFT OUTER JOIN research_group ON research_group.id = research_group_project.research_group_id " + 
+            		"INNER JOIN teacher ON research_group.teacher_id = teacher.id " +  
+            		"WHERE research_group_project.project_id = ? ORDER BY tname ASC;");
             ps.setInt(1, projectId);
             rs = ps.executeQuery();
             List teachers = new ArrayList();
@@ -886,8 +884,9 @@ public class DatabaseUserManagementProvider implements
             throws SQLException {
         List<String> names = new ArrayList();
         PreparedStatement ps = c.prepareStatement(
-    		"SELECT name FROM project WHERE id IN " +
-            "(SELECT project_id FROM research_group_project WHERE research_group_id = ?);");
+        		"SELECT p.name FROM research_group_project AS rgp " +
+        		"LEFT OUTER JOIN project AS p ON p.id = rgp.project_id " +
+        		"WHERE research_group_id = ?;");
         ps.setInt(1, group.getId());
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
@@ -908,7 +907,7 @@ public class DatabaseUserManagementProvider implements
             conn.setSavepoint();
             try {
                 Map ids = new HashMap();
-                ps = conn.prepareStatement("SELECT id, name FROM project");
+                ps = conn.prepareStatement("SELECT id, name FROM project;");
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     ids.put(rs.getString("name"), rs.getInt("id"));
