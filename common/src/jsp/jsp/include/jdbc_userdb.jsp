@@ -39,9 +39,9 @@ if (conn == null){
     warn(out, "There was an error in the user database connection code.");
     return;
 }
-Statement s = null;
+PreparedStatement s = null;
 try {
-    s = conn.createStatement();
+    conn.isValid(1); 
 } catch (SQLException se) {
     warn(out, "We got an exception while creating a statement:" +
          "that probably means we're no longer connected to the user data database.");
