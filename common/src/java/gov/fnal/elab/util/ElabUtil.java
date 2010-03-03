@@ -66,7 +66,7 @@ public class ElabUtil {
         }
     }
 
-    public static String fixQuotes(String param) {
+    @Deprecated public static String fixQuotes(String param) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < param.length(); i++) {
             char c = param.charAt(i);
@@ -561,7 +561,7 @@ public class ElabUtil {
         return r + (hour + minute / 60.0 + second / 3600.0) / 24.0;
     }
 
-    public static String stripHTML(String text) {
+    @Deprecated public static String stripHTML(String text) {
         StringBuffer sb = new StringBuffer();
         boolean tag = false;
         for (int i = 0; i < text.length(); i++) {
@@ -583,13 +583,13 @@ public class ElabUtil {
         return sb.toString();
     }
     
-    public static String escapePoster(String unescaped) {
+    @Deprecated public static String escapePoster(String unescaped) {
     	String escaped = unescaped.replaceAll(Pattern.quote("\'"), "&#39;");
     	escaped = escaped.replaceAll("%", "&#37;");
     	return escaped;
     }
     
-    public static String unescapePoster(String escaped) {
+    @Deprecated public static String unescapePoster(String escaped) {
     	String unescaped = escaped.replaceAll("&#37;", "%");
     	unescaped = unescaped.replaceAll("&#34;", Matcher.quoteReplacement("\""));
     	unescaped = unescaped.replaceAll("&quot;", Matcher.quoteReplacement("\""));
@@ -598,7 +598,8 @@ public class ElabUtil {
     	return unescaped;
     }
 
-    public static String whitespaceAdjust(String text) {
+    
+    @Deprecated public static String whitespaceAdjust(String text) {
         text = text.replaceAll("\n", "<br />");
         // this should be changed to only allow <a> and <img> tags
         text = text.replaceAll("(?i)</?\\s*script[^>]*>", "");
