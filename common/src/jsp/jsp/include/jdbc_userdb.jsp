@@ -41,7 +41,7 @@ if (conn == null){
 }
 PreparedStatement s = null;
 try {
-    conn.isValid(1); 
+    s = conn.prepareStatement("");
 } catch (SQLException se) {
     warn(out, "We got an exception while creating a statement:" +
          "that probably means we're no longer connected to the user data database.");
