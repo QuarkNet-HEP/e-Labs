@@ -1,3 +1,4 @@
+<% if (request.getAttribute("async-update-included") == null) { %>
 <script language="JavaScript" type="text/javascript">
 	var INITIAL = 1000;
 	var DELAY = 2000;
@@ -83,8 +84,10 @@
 	}
 		
 		
-	function registerUpdate(url, callback) {
-		self.setTimeout(tick, INITIAL);
+	function registerUpdate(url, callback, initial, delay) {
+		if (initial === undefined) { initial = INITIAL; }
+		if (delay === undefined) { delay = DELAY; }
+		self.setTimeout(tick, initial);
 		self.tcb = callback;
 		self.done = false;
 		
@@ -96,7 +99,7 @@
 		function reply(stuff, error) {
 			self.tcb(stuff, error);
 			if (!self.done) {
-				self.setTimeout(tick, DELAY);
+				self.setTimeout(tick, delay);
 			}
 		}
 	}
@@ -106,3 +109,5 @@
 	}
 	
 </script>
+<% } %>
+<% request.setAttribute("async-update-included", Boolean.TRUE); %>
