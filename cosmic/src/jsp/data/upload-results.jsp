@@ -124,8 +124,8 @@
 	                cpldFrequency += tmp[2] + " ";
                 }
                 else if (tmp[0].equals("julianstartdate")) {
-                	Geometry geometry = new Geometry(elab.getProperties().getDataDir(), detectorId);
-					if (geometry != null && !geometry.isEmpty()) {	
+                	Geometry geometry = new Geometry(elab.getProperties().getDataDir(), Integer.parseInt(detectorId));
+					if (geometry != null && !geometry.isEmpty()) {
 						SortedMap geos = geometry.getGeoEntriesBefore(tmp[2]);
 						if (!geos.isEmpty()) {
 							GeoEntryBean g = (GeoEntryBean) geos.get(geos.lastKey());
