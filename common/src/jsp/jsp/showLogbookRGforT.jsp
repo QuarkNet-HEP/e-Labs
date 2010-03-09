@@ -20,7 +20,7 @@
 	</tr>
 </table>
 <center><!-- creates variables ResultSet rs and Statement s to use: -->
-<%@ include file="include/jdbc_userdb.jsp"%> <%
+<%@ include file="include/jdbc_userdb_ps.jsp"%> <%
  	// invoked with optional research_group_name and keyword
  	// if no research_group_name is passed, 
  	String role = (String) session.getAttribute("role");
@@ -31,7 +31,6 @@
  	// it will display all or one keyword for a particular research group.
  	// If the research_group_name is not passed, then it will show a list of research groups that teacher has for this e-Lab and return.
  	// Each of these will link to this page with research_group_name passed without a keyword.
- 	String query = "";
  	String queryItems = "";
  	String querySort = "";
  	String queryWhere = "";
@@ -40,44 +39,51 @@
  	String linksToEach = "";
  	String linksToEachGroup = "";
  	String keyword_loop = "";
- 	String keyword_id = "";
- 	String research_group_name = request
- 			.getParameter("research_group_name");
- 	String passed_log_id = request.getParameter("log_id");
+ 	String research_group_name = request.getParameter("research_group_name");
+ 	String keyword = request.getParameter("keyword");
  	String current_section = "";
  	String keyColor = "";
- 	String typeConstraint = " AND keyword.type in ('SW','S')";
+ 	String typeConstraint = "AND keyword.type IN ('SW','S') ";
+ 	
+ 	Integer keyword_id, passed_log_id, project_id = null; 
+ 	
  	if (!(research_group_name == null)) {
  		if (research_group_name.startsWith("pd_")
  				|| research_group_name.startsWith("PD_")) {
- 			typeConstraint = " AND keyword.type in ('SW','W')";
+ 			typeConstraint = "AND keyword.type IN ('SW','W') ";
  		}
  	}
- 	String keyword = request.getParameter("keyword");
  	if (keyword == null) {
  		keyword = "";
  	} // note - display all entries
+ 	 	
+ 	try { 
+ 		passed_log_id = Integer.valueOf(request.getParameter("log_id"));
+ 	}
+ 	catch (NumberFormatException nfe) {
+ 		passed_log_id = null; 
+ 	}
+ 	
  	// get project ID
  	//eLab defined in common.jsp
- 	String project_id = "";
- 	query = "select id from project where name=\'" + eLab + "\';";
- 	rs = s.executeQuery(query);
+ 	s = conn.prepareStatement("SELECT id FROM project WHERE name = ?;");
+ 	s.setString(1, eLab);
+ 	rs = s.executeQuery();
  	if (rs.next()) {
- 		project_id = rs.getString("id");
+ 		project_id = (Integer) rs.getObject("id");
  	}
- 	if (project_id.equals("")) {
- %> Problem with id for project <%=eLab%><br>
-<%
-	return;
+ 	if (project_id == null) {
+ 		%> Problem with id for project <%=eLab%><br><%
+		return;
 	}
-
-	query = "select id,name from research_group,research_group_project where (role='user' or role='upload') and research_group_project.project_id="
-			+ project_id
-			+ " and research_group_project.research_group_id=research_group.id and research_group.teacher_id IN (select teacher_id from research_group where research_group.name=\'"
-			+ groupName + "\');";
-	//out.write(query);
-
-	rs = s.executeQuery(query);
+	
+	s = conn.prepareStatement(
+			"SELECT id, name FROM research_group, research_group_project " + 
+			"WHERE role IN ('user', 'upload') AND research_group_project.project_id = ? AND research_group_project.research_group_id = research_group.id AND research_group.teacher_id " +
+			"IN (SELECT teacher_id FROM research_group WHERE research_group.name = ?);");
+	s.setInt(1, project_id); 
+	s.setString(2, groupName); 
+	rs = s.executeQuery();
 	while (rs.next()) {
 		String rg_name = rs.getString("name");
 		linksToEachGroup = linksToEachGroup
@@ -108,12 +114,12 @@
 			<%
 				if (!(research_group_name == null)) {
 					String yesNo = "no";
-
-					query = "select distinct keyword_id from log,research_group,keyword where keyword.keyword=\'general\' and keyword.id=log.keyword_id and research_group.name=\'"
-							+ research_group_name
-							+ "\' and research_group.id=log.research_group_id and log.project_id="
-							+ project_id + ";";
-					rs = s.executeQuery(query);
+					s = conn.prepareStatement(
+							"SELECT DISTINCT keyword_id FROM log, research_group, keyword " +
+							"WHERE keyword.keyword = 'general' and keyword.id = log.keyword_id and research_group.name = ? AND research_group.id = log.research_group_id AND log.project_id = ?;");
+					s.setString(1, research_group_name); 
+					s.setInt(2, project_id); 
+					rs = s.executeQuery();
 					if (rs.next()) {
 						yesNo = "yes";
 					}
@@ -145,25 +151,27 @@
 
 			<%
 				HashMap keywordTracker = new HashMap();
-					query = "select distinct keyword_id from log,research_group where research_group.name=\'"
-							+ research_group_name
-							+ "\' and research_group.id=log.research_group_id and project_id="
-							+ project_id + ";";
-					rs = s.executeQuery(query);
+					s = conn.prepareStatement(
+							"SELECT DISTINCT keyword_id FROM log, research_group " + 
+							"WHERE research_group.name = ? AND research_group.id = log.research_group_id AND project_id = ?;");
+					s.setString(1, research_group_name); 
+					s.setInt(2, project_id); 
+					rs = s.executeQuery();
 					while (rs.next()) {
-						keyword_id = rs.getString("keyword_id");
-						keywordTracker.put(keyword_id, new Boolean(true));
+						keyword_id = (Integer) rs.getObject("keyword_id");
+						keywordTracker.put(keyword_id, true);
 					}
 
 					//provide access to all possible items to view logs on. 
-					query = "select id,keyword,description,section,section_id from keyword where keyword.project_id in (0,"
-							+ project_id
-							+ ") "
-							+ typeConstraint
-							+ "order by section,section_id;";
-					rs = s.executeQuery(query);
+					s = conn.prepareStatement(
+							"SELECT id, keyword, description, section, section_id FROM keyword " + 
+							"WHERE keyword.project_id IN (0,?) " + 
+							typeConstraint +
+							"ORDER BY section, section_id;");
+					s.setInt(1, project_id);
+					rs = s.executeQuery();
 					while (rs.next()) {
-						keyword_id = rs.getString("id");
+						keyword_id = (Integer) rs.getObject("id");
 						keyword_loop = rs.getString("keyword");
 						keyword_text = keyword_loop.replaceAll("_", " ");
 						keyword_description = rs.getString("description");
@@ -270,15 +278,15 @@
 
 					// get group ID
 					//groupName defined in common.jsp
-					String research_group_id = "";
-					query = "select id from research_group where name=\'"
-							+ research_group_name + "\';";
-					rs = s.executeQuery(query);
+					Integer research_group_id = null;
+					s = conn.prepareStatement("SELECT id FROM research_group WHERE name = ?");
+					s.setString(1, research_group_name);
+					rs = s.executeQuery();
 					if (rs.next()) {
-						research_group_id = rs.getString("id");
+						research_group_id = (Integer) rs.getObject("id");
 					}
 
-					if (research_group_id.equals("")) {
+					if (research_group_id == null) {
 			%>
 			Problem with ID for research group
 			<%=research_group_id%><br>
@@ -288,17 +296,19 @@
 
 					// Always pass keyword, not id so we can pick off the description
 					//   String keyword_description="";
-					keyword_id = "";
+					keyword_id = null;
 					if (!keyword.equals("")) {
 						// first make sure a keyword was passed in the call
-						query = "select id,keyword,description from keyword where project_id in (0,"
-								+ project_id + ") and keyword=\'" + keyword + "\';";
-						rs = s.executeQuery(query);
+						s = conn.prepareStatement(
+								"SELECT id, keyword, description FROM keyword WHERE project_id IN (0,?) AND keyword = ?;");
+						s.setInt(1, project_id); 
+						s.setString(2, keyword);
+						rs = s.executeQuery();
 						if (rs.next()) {
-							keyword_id = rs.getString("id");
+							keyword_id = (Integer) rs.getObject("id");
 							keyword_description = rs.getString("description");
 						}
-						if (keyword_id.equals("")) {
+						if (keyword_id == null) {
 			%>
 			Problem with id for log.
 			<%=keyword%><br>
@@ -308,27 +318,33 @@
 
 					}
 
-					if (keyword_id.equals("")) {
-			%>
-			<h2>All logbook entries for group "<%=research_group_name%>"</h2>
-			<%
-				keyword_description = "";
-						queryWhere = "  where log.project_id="
-								+ project_id
-								+ " and keyword.project_id  in (0,"
-								+ project_id
-								+ ") and log.keyword_id=keyword.id and research_group_id="
-								+ research_group_id + " and role=\'user\'";
+					querySort =  "ORDER BY keyword.section, keyword.section_id, log.id DESC;";
+					queryItems = "SELECT log.id AS log_id, to_char(log.date_entered,'MM/DD/YYYY HH12:MI') AS date_entered, log_text, keyword.description AS description, keyword.id AS data_keyword_id, keyword.keyword AS keyword_name, keyword.section AS section, keyword.section_id AS section_id, log.new_log AS new FROM log, keyword";
+					
+					if (keyword_id == null) {
+						%><h2>All logbook entries for group "<%=research_group_name%>"</h2><%
+						
+						s = conn.prepareStatement(
+								queryItems + 
+								"WHERE log.project_id = ? AND keyword.project_id IN (0, ?) AND log.keyword_id = keyword.id AND research_group_id = ? AND role = 'user' " +
+								querySort);
+						s.setInt(1, project_id); 
+						s.setInt(2, project_id);
+						s.setInt(3, research_group_id);
 
-					} else {
-			%>
-			<h2>Logbook entry for group "<%=research_group_name%>"</h2>
-			<%
-				queryWhere = "  where log.project_id=" + project_id
-								+ " and keyword.project_id  in (0," + project_id
-								+ ") and research_group_id=" + research_group_id
-								+ " and log.keyword_id=keyword.id and keyword_id="
-								+ keyword_id + " and role=\'user\'";
+						keyword_description = "";
+					} 
+					else {
+						%><h2>Logbook entry for group "<%=research_group_name%>"</h2><%
+						
+						s = conn.prepareStatement(
+								queryItems +
+								"WHERE log.project_id = ? AND keyword.project_id IN (0, ?) AND log.keyword_id = keyword.id AND research_group_id = ? AND role = 'user' AND keyword_id = ?" + 
+								querySort);
+						s.setInt(1, project_id); 
+						s.setInt(2, project_id);
+						s.setInt(3, research_group_id);
+						s.setInt(4, keyword_id); 
 
 					}
 			%>
@@ -339,29 +355,25 @@
 				<%
 					// look for any previous log entries for this keyword
 
-						querySort = " order by keyword.section,keyword.section_id,log.id DESC;";
-						queryItems = "select log.id as log_id, to_char(log.date_entered,'MM/DD/YYYY HH12:MI') as date_entered,log_text,keyword.description as description, keyword.id as data_keyword_id, keyword.keyword as keyword_name,keyword.section as section, keyword.section_id as section_id,log.new_log as new from log,keyword";
-						query = queryItems + queryWhere + querySort;
-
-						Statement sInner = null;
+						PreparedStatement sInner = null;
 						ResultSet innerRs = null;
 
 						int itemCount = 0;
 						boolean showFullLog = false;
 						String elipsis = "";
 						String linkText = "";
-						String current_keyword_id = "";
+						Integer current_keyword_id = null;
 						String sectionText = "";
 						current_section = "";
-						rs = s.executeQuery(query);
+						rs = s.executeQuery();
 						while (rs.next()) {
-							String data_keyword_id = rs.getString("data_keyword_id");
+							Integer data_keyword_id = (Integer) rs.getObject("data_keyword_id");
 							String dateText = rs.getString("date_entered");
 							keyword_description = rs.getString("description");
 							String log_text = rs.getString("log_text");
 
-							String log_id = rs.getString("log_id");
-							String new_log = rs.getString("new");
+							Integer log_id = (Integer) rs.getObject("log_id");
+							Boolean new_log = (Boolean) rs.getObject("new");
 							showFullLog = false;
 							if (log_id.equals(passed_log_id)) {
 								showFullLog = true;
@@ -386,38 +398,36 @@
 							String keyword_name = rs.getString("keyword_name");
 							String keyword_display = keyword_name.replaceAll("_", " ");
 							String section = rs.getString("section");
-							String section_id = rs.getString("section_id");
-							String comment_count = "";
-							String comment_new = "";
+							Integer section_id = (Integer) rs.getObject("section_id");
+							Long comment_count = null;
+							Long comment_new = null;
 							String comment_info = "";
-							sInner = conn.createStatement();
 							//  Do a query for this log entry to see if there are any unread comments on it and if it has comments on it.
-							String innerQuery = "select count(id) as comment_count from comment where  log_id="
-									+ log_id + ";";
-							//   out.write("\r\r"+innerQuery);
-							innerRs = sInner.executeQuery(innerQuery);
+							sInner = conn.prepareStatement("SELECT COUNT(id) AS comment_count FROM comment WHERE log_id = ?;");
+							sInner.setInt(1, log_id);
+							innerRs = sInner.executeQuery();
 							if (innerRs.next()) {
-								comment_count = innerRs.getString("comment_count");
+								comment_count = (Long) innerRs.getObject("comment_count");
 							}
-							innerQuery = "select count(comment.id) as comment_new from comment where comment.new_comment='t' and log_id="
-									+ log_id + ";";
-							//  out.write(innerQuery);
-							innerRs = sInner.executeQuery(innerQuery);
+
+							sInner = conn.prepareStatement("SELECT COUNT(comment.id) AS comment_new FROM comment WHERE comment.new_comment = 't' and log_id = ?;");
+							sInner.setInt(1, log_id);
+							innerRs = sInner.executeQuery();
 							if (innerRs.next()) {
-								comment_new = innerRs.getString("comment_new");
+								comment_new = (Long) innerRs.getObject("comment_new");
 							}
-							if (new_log != null && new_log.equals("t") && !showFullLog) {
+							if (new_log != null && new_log == true && !showFullLog) {
 								comment_info = comment_info
 										+ "<BR><IMG SRC=\'graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font>";
 							}
-							if (!comment_count.equals("") && !comment_count.equals("0")) {
-								if (comment_new.equals("0")) {
+							if (comment_count == null || comment_count == 0L) {
+								if (comment_new == 0L) {
 									comment_info = comment_info
 											+ "<BR><FONT size=-2>comments: "
 											+ comment_count + "</font>";
 								} else {
-									if (comment_count.equals("")) {
-										comment_count = "0";
+									if (comment_count == null) {
+										comment_count = 0L;
 									}
 									comment_info = comment_info
 											+ "<BR><FONT size=-2 >comments: "
@@ -500,19 +510,16 @@
 				</tr>
 				<%
 					if (showFullLog) {
-
-								innerQuery = "UPDATE log SET new_log=\'f\'  WHERE id="
-										+ log_id + ";";
-								innerQuery = "UPDATE log SET new_log=\'f\'  WHERE id="
-										+ log_id + ";";
+								sInner = conn.prepareStatement("UPDATE log SET new_log = 'f' WHERE id = ?");
+								sInner.setInt(1, log_id);
 								int k = 0;
 								try {
-									k = sInner.executeUpdate(innerQuery);
+									k = sInner.executeUpdate();
 								} catch (SQLException se) {
 									warn(
 											out,
 											"There was some error updating your info into the log table.\n<br>Please contact the database admin with this information:\n<br>SQLstatement: "
-													+ query);
+													+ sInner);
 									return;
 								} // try-catch for updating survey table
 								if (k != 1) {
@@ -521,7 +528,7 @@
 											"Weren't able to update your info to the database! "
 													+ k
 													+ " rows updated.\n<br>Please alert the database admin with this information:\n<br>SQLstatement: "
-													+ query);
+													+ sInner);
 									return;
 								} //!k=1 test 
 
