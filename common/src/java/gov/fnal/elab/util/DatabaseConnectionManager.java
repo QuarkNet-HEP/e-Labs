@@ -5,6 +5,7 @@ package gov.fnal.elab.util;
 
 import gov.fnal.elab.ElabProperties;
 
+import java.lang.reflect.Method;
 import java.sql.Array;
 import java.sql.Blob;
 import java.sql.CallableStatement;
@@ -22,13 +23,48 @@ import java.sql.SQLXML;
 import java.sql.Savepoint;
 import java.sql.Statement;
 import java.sql.Struct;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.lang.reflect.*;
+import java.util.WeakHashMap;
 
 public class DatabaseConnectionManager {
+    public static final boolean USE_CACHE = true;
+
+    private static WeakHashMap<ElabProperties, LinkedList<Connection>> cache;
+    static {
+        if (USE_CACHE) {
+            cache = new WeakHashMap<ElabProperties, LinkedList<Connection>>();
+        }
+    }
 
     public static Connection getConnection(ElabProperties properties)
+            throws SQLException {
+        if (USE_CACHE) {
+            synchronized (cache) {
+                // presumably the properties are a good key, since each
+                // instance, while not enforced, has invariant db props
+                LinkedList<Connection> l = cache.get(properties);
+                if (l == null) {
+                    l = new LinkedList<Connection>();
+                    cache.put(properties, l);
+                }
+                Connection conn;
+                if (l.size() == 0) {
+                    return getConnection0(properties);
+                }
+                else {
+                    return l.removeFirst();
+                }
+            }
+        }
+        else {
+            return getConnection0(properties);
+        }
+    }
+
+    private static Connection getConnection0(ElabProperties properties)
             throws SQLException {
         String userdb = properties.getProperty(ElabProperties.PROP_USERDB_DB);
         String userdbUsername = properties
@@ -47,20 +83,23 @@ public class DatabaseConnectionManager {
         }
 
         Connection conn = new Wrapper(DriverManager.getConnection(
-                "jdbc:postgresql:" + userdb, userdbUsername, userdbPassword));
+                "jdbc:postgresql:" + userdb, userdbUsername,
+                userdbPassword), properties);
         if (conn == null) {
             throw new SQLException(
-                    "Connection to database failed. The SQL driver manager "
-                            + "did not return a valid connection");
+                "Connection to database failed. The SQL driver manager "
+                    + "did not return a valid connection");
         }
         return conn;
     }
 
     private static class Wrapper implements Connection {
-        private Connection delegate;
+        private final Connection delegate;
+        private final ElabProperties properties;
 
-        public Wrapper(Connection delegate) {
+        public Wrapper(Connection delegate, ElabProperties properties) {
             this.delegate = delegate;
+            this.properties = properties;
         }
 
         public void clearWarnings() throws SQLException {
@@ -68,7 +107,15 @@ public class DatabaseConnectionManager {
         }
 
         public void close() throws SQLException {
-            delegate.close();
+            if (USE_CACHE) {
+                synchronized (cache) {
+                    LinkedList<Connection> l = cache.get(properties);
+                    l.add(this);
+                }
+            }
+            else {
+                delegate.close();
+            }
         }
 
         public void commit() throws SQLException {
@@ -133,14 +180,15 @@ public class DatabaseConnectionManager {
         }
 
         public CallableStatement prepareCall(String sql, int resultSetType,
-                int resultSetConcurrency, int resultSetHoldability)
-                throws SQLException {
+                int resultSetConcurrency,
+                int resultSetHoldability) throws SQLException {
             return delegate.prepareCall(sql, resultSetType,
                     resultSetConcurrency, resultSetHoldability);
         }
 
         public CallableStatement prepareCall(String sql, int resultSetType,
-                int resultSetConcurrency) throws SQLException {
+                int resultSetConcurrency)
+                throws SQLException {
             return delegate.prepareCall(sql, resultSetType,
                     resultSetConcurrency);
         }
@@ -230,8 +278,8 @@ public class DatabaseConnectionManager {
         public Array createArrayOf(String typeName, Object[] elements)
                 throws SQLException {
             return (Array) invoke(delegate, "createArrayOf", new Object[] {
-                    typeName, elements }, new Class[] { String.class,
-                    Object[].class });
+                    typeName, elements }, new Class[] {
+                    String.class, Object[].class });
         }
 
         public Blob createBlob() throws SQLException {
@@ -257,8 +305,8 @@ public class DatabaseConnectionManager {
         public Struct createStruct(String typeName, Object[] attributes)
                 throws SQLException {
             return (Struct) invoke(delegate, "createStruct", new Object[] {
-                    typeName, attributes }, new Class[] { String.class,
-                    Object[].class });
+                    typeName, attributes }, new Class[] {
+                    String.class, Object[].class });
         }
 
         public Properties getClientInfo() throws SQLException {
@@ -292,7 +340,8 @@ public class DatabaseConnectionManager {
                 throws SQLClientInfoException {
             try {
                 invoke(delegate, "setClientInfo", new Object[] { name, value },
-                        new Class[] { String.class, String.class });
+                        new Class[] { String.class,
+                        String.class });
             }
             catch (SQLException e) {
                 throw new SQLClientInfoException();
@@ -514,12 +563,12 @@ public class DatabaseConnectionManager {
 
     public static void close(Connection conn, Statement... statements) {
         try {
-        	if (statements != null) {
-	            for (Statement s : statements) {
-	            	if (s != null) {
-	            		s.close();
-	            	}
-	            }
+            if (statements != null) {
+                for (Statement s : statements) {
+                    if (s != null) {
+                        s.close();
+                    }
+                }
             }
         }
         catch (SQLException e) {
