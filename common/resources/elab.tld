@@ -135,6 +135,14 @@ If "true" instruct the browser to show a toolbar in the new browser window
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<attribute>
+			<description>
+And optional css class for the generated element
+			</description>
+			<name>cclass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 	</tag>
 	
 	<tag-file>
@@ -610,6 +618,14 @@ A label for the link
 			</description>
 			<name>label</name>
 			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+And optional css class for the generated control
+			</description>
+			<name>cclass</name>
+			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
