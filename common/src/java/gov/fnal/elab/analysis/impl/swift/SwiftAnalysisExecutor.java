@@ -35,7 +35,10 @@ import org.globus.cog.karajan.stack.VariableStack;
 import org.globus.cog.karajan.workflow.ElementTree;
 import org.globus.cog.karajan.workflow.ExecutionException;
 import org.globus.cog.karajan.workflow.events.Event;
+import org.globus.cog.karajan.workflow.events.EventClass;
 import org.globus.cog.karajan.workflow.events.EventListener;
+import org.globus.cog.karajan.workflow.events.NotificationEvent;
+import org.globus.cog.karajan.workflow.events.NotificationEventType;
 import org.globus.cog.karajan.workflow.nodes.FlowElement;
 import org.griphyn.vdl.karajan.Loader;
 import org.griphyn.vdl.karajan.VDL2ExecutionContext;
@@ -268,13 +271,17 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
         public void setProgress(double progress) {
             this.progress = progress;
         }
-
+        
         public void updateStatus() {
+            updateStatus(false);
+        }
+
+        public void updateStatus(boolean callerIsSureECisDone) {
             VDL2ExecutionContext ec = this.ec;
             if (ec == null) {
                 return;
             }
-            else if (ec.done() && !updated) {
+            else if ((ec.done() || callerIsSureECisDone) && !updated) {
                 setEndTime(new Date());
                 if (ec.isFailed()) {
                     log("SWIFT_FAILURE");
@@ -350,7 +357,13 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
 
         public void event(Event e) throws ExecutionException {
             try {
-                updateStatus();
+                if (e.getEventClass().equals(EventClass.NOTIFICATION_EVENT)) {
+                    NotificationEvent ne = (NotificationEvent) e;
+                    if (ne.getType().equals(NotificationEventType.EXECUTION_COMPLETED) 
+                            || ne.getType().equals(NotificationEventType.EXECUTION_FAILED)) {
+                        updateStatus(true);
+                    }
+                }
             }
             catch (Exception ex) {
                 ex.printStackTrace();
