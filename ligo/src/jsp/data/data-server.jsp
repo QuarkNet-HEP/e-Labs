@@ -25,11 +25,17 @@
 	    session.setAttribute("dc", m);
 	}
 	
-	LIGOFileDataEngine de = (LIGOFileDataEngine) session.getAttribute("de");
-	if (de == null) {
-	    de = new LIGOFileDataEngine("/mnt/ubuntu/tmp/test/");
-	    //de = new LIGOFileDataEngine("/mnt/ubuntu/tmp/funny/");
-	    session.setAttribute("de", de);
+	LIGOFileDataEngine de;
+	synchronized(session) {
+		de = (LIGOFileDataEngine) session.getAttribute("de");
+		if (de == null) {
+		    de = LIGOFileDataEngine.getEngine("/disks/i2u2-dev/ligo/data/streams", 
+		            ServiceLIGOFileReader.getFactory("http://data2:8100"));
+		    //de = new LIGOFileDataEngine("/mnt/ubuntu/tmp/test/");
+		    //de = new LIGOFileDataEngine("/mnt/ubuntu/tmp/funny/");
+		    //de = new LIGOFileDataEngine("/mnt/ubuntu/tmp/funny2/");
+		    session.setAttribute("de", de);
+		}
 	}
 	
 	    
