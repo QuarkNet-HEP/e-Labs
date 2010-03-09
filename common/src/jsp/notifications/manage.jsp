@@ -8,7 +8,7 @@
 <%
 	{
 		ElabNotificationsProvider np = ElabFactory.getNotificationsProvider((Elab) session.getAttribute("elab"));
-		request.setAttribute("notifications2", np.getSystemNotifications(user, -1));
+		request.setAttribute("notifications2", np.getSystemNotifications(-1));
 	}
 %>
 
