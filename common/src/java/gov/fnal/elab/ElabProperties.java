@@ -3,6 +3,8 @@
  */
 package gov.fnal.elab;
 
+import gov.fnal.elab.notifications.DatabaseNotificationsProvider;
+
 /**
  * This class contains properties associated with an elab. Typically the
  * properties are loaded automatically when an elab is instantiated through one
@@ -36,6 +38,7 @@ public class ElabProperties extends AbstractProperties {
     public ElabProperties(String elabName) {
         super(elabName + " elab");
         this.elabName = elabName;
+        put("provider.notifications", DatabaseNotificationsProvider.class.getName());
     }
 
     /**

@@ -17,8 +17,9 @@ import gov.fnal.elab.analysis.InitializationException;
 import gov.fnal.elab.analysis.impl.vds.VDSAnalysis;
 import gov.fnal.elab.datacatalog.CachingDataCatalogProvider;
 import gov.fnal.elab.datacatalog.DataCatalogProvider;
+import gov.fnal.elab.notifications.ElabNotificationsProvider;
+import gov.fnal.elab.survey.ElabSurveyProvider;
 import gov.fnal.elab.test.ElabTestProvider;
-import gov.fnal.elab.survey.ElabSurveyProvider; 
 import gov.fnal.elab.usermanagement.ElabUserManagementProvider;
 
 import java.util.HashMap;
@@ -201,5 +202,17 @@ public class ElabFactory {
     private static void setVDSHome(Elab elab) {
         System.setProperty("vds.home", elab.getProperties().getProperty(
                 "vds.home"));
+    }
+    
+    private static final String NOTIFICATIONS = "notifications";
+    
+    public static synchronized ElabNotificationsProvider getNotificationsProvider(
+            Elab elab) {
+        Object p = get(elab, NOTIFICATIONS);
+        if (p == null) {
+            p = newInstance(elab, NOTIFICATIONS);
+            set(elab, NOTIFICATIONS, p);
+        }
+        return (ElabNotificationsProvider) p;
     }
 }
