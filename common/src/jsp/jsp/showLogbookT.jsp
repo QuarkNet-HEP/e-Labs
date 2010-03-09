@@ -22,7 +22,7 @@
 	</tr>
 </table>
 <center><!-- creates variables ResultSet rs and Statement s to use: -->
-<%@ include file="include/jdbc_userdb.jsp"%> <%
+<%@ include file="include/jdbc_userdb_ps.jsp"%> <%
  	// invoked with optional research_group_name
  	// if no research_group_name is passed, 
  	String role = (String) session.getAttribute("role");

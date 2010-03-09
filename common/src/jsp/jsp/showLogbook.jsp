@@ -15,7 +15,7 @@
 <table width="800" cellpadding="0" border="0" align="left">
 	<tr>
 		<td valign="top" align="150"><!-- creates variables ResultSet rs and Statement s to use: -->
-			<%@ include file="include/jdbc_userdb.jsp"%>
+			<%@ include file="include/jdbc_userdb_ps.jsp"%>
 			<%
 			String role = (String)session.getAttribute("role");
 			
