@@ -341,7 +341,6 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 "CREATE TABLE notifications (" +
                     "  id serial NOT NULL, " +
                     "  \"time\" timestamp with time zone NOT NULL, " +
-                    "  \"read\" boolean NOT NULL DEFAULT false, " +
                     "  message character varying, " +
                     "  recipientid integer, " +
                     "  projectid integer, " +
