@@ -39,7 +39,7 @@ function insertImgSrc()
  	int count; 
  	
  	try { 
- 		log_id = Integer.valueOf(request.getParameter("project_id"));
+ 		project_id = Integer.valueOf(request.getParameter("project_id"));
  	}
  	catch (NumberFormatException nfe) { 
  		project_id = null;
@@ -51,7 +51,7 @@ function insertImgSrc()
  		log_id = null;
  	}
  	try { 
- 		log_id = Integer.valueOf(request.getParameter("research_group_id"));
+ 		research_group_id = Integer.valueOf(request.getParameter("research_group_id"));
  	}
  	catch (NumberFormatException nfe) { 
  		research_group_id = null;
