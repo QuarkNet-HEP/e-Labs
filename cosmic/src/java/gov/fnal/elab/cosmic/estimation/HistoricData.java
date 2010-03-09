@@ -106,7 +106,7 @@ public class HistoricData {
         load();
         updated = false;
         timer = new Timer();
-        timer.schedule(new PruneAndSave(), PRUNE_AND_SAVE_INTERVAL);
+        timer.schedule(new PruneAndSave(), PRUNE_AND_SAVE_INTERVAL, PRUNE_AND_SAVE_INTERVAL);
     }
 
     private void load() {
