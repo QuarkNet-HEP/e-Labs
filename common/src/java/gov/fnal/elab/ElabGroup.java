@@ -143,7 +143,9 @@ public class ElabGroup {
         if (elab != null) {
             this.userDirURL = elab.getProperties().getUsersDir() + '/'
                     + userArea + '/' + elab.getName();
-            this.userDir = elab.getServletContext().getRealPath(userDirURL);
+            if (elab.getServletContext() != null) {
+                this.userDir = elab.getServletContext().getRealPath(userDirURL);
+            }
         }
     }
 
