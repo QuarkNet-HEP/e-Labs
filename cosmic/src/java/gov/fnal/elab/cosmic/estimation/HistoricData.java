@@ -7,6 +7,7 @@ import gov.fnal.elab.Elab;
 import gov.fnal.elab.analysis.AnalysisRun;
 import gov.fnal.elab.analysis.ElabAnalysis;
 import gov.fnal.elab.cosmic.util.AnalysisParameterTools;
+import gov.fnal.elab.estimation.EstimationHistoryTracker;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,7 +28,7 @@ import java.util.TimerTask;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-public class HistoricData {
+public class HistoricData implements EstimationHistoryTracker {
     public static final String LOG = System.getProperty("user.home") + File.separator + ".analysis-times";
     public static final String TMP = System.getProperty("user.home") + File.separator + ".analysis-times.tmp";
 

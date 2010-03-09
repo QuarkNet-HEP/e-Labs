@@ -22,13 +22,12 @@ public class FluxEstimator implements Estimator {
         this.c = c;
     }
 
-    public synchronized int estimate(Elab elab, ElabAnalysis analysis)
-            throws ElabException {
+    public synchronized int estimate(Elab elab, ElabAnalysis analysis) throws ElabException {
         Collection rd = (Collection) analysis.getParameter("rawData");
         String channel = (String) analysis.getParameter("singlechannel_channel");
         int events = AnalysisParameterTools.getEventCount(elab, rd, Integer.parseInt(channel));
         double ms = a + b * events + c * events * Math.log(events);
-        
+
         return (int) (ms / 1000);
     }
 }

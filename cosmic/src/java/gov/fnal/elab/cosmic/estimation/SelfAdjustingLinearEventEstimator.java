@@ -7,6 +7,7 @@ import gov.fnal.elab.Elab;
 import gov.fnal.elab.analysis.ElabAnalysis;
 import gov.fnal.elab.cosmic.estimation.HistoricData.Parameters;
 import gov.fnal.elab.cosmic.util.AnalysisParameterTools;
+import gov.fnal.elab.estimation.EstimationHistoryTracker;
 import gov.fnal.elab.estimation.Estimator;
 import gov.fnal.elab.util.ElabException;
 
@@ -24,6 +25,7 @@ public class SelfAdjustingLinearEventEstimator implements Estimator {
 
     public int estimate(Elab elab, ElabAnalysis analysis) throws ElabException {
         HistoricData.Parameters p = HistoricData.instance().getParameters(type, mode, guess);
+        analysis.setAttribute(EstimationHistoryTracker.KEY, HistoricData.instance());
         
         Collection rd = (Collection) analysis.getParameter("rawData");
         int events = AnalysisParameterTools.getEventCount(elab, rd);
