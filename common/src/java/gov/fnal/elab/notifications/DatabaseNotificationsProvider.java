@@ -186,11 +186,11 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 }
                 int count = rs.getInt(1);
                 if (count == 0) {
-                    ps = conn.prepareStatement("INSERT INTO notifications_state (notification_id, group_id, read) " +
+                    ps = conn.prepareStatement("INSERT INTO notifications_state (notification_id, group_id, \"read\") " +
                             "VALUES (?, ?, true)");
                 }
                 else {
-                    ps = conn.prepareStatement("UPDATE notifications_state SET read = true " +
+                    ps = conn.prepareStatement("UPDATE notifications_state SET \"read\" = true " +
                             "WHERE notification_id = ? AND group_id = ?");
                 }
                 ps.setInt(1, nid);
@@ -226,7 +226,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                     "WHERE (recipientid=? OR recipientid=-1) " +
                     "AND (projectid=? OR projectid=-1) " +
                     "AND expires > NOW() " +
-                    "AND (read IS NULL OR read=false) " +
+                    "AND (\"read\" IS NULL OR \"read\"=false) " +
                     "AND (deleted IS NULL OR deleted=false)");
             ps.setInt(1, group.getId());
             ps.setInt(2, group.getId());
@@ -267,12 +267,12 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         try {
             // I declare a recipientid/projectid of -1 to mean "all"
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            PreparedStatement ps = conn.prepareStatement("SELECT id, message, time, expires, priority, read "
+            PreparedStatement ps = conn.prepareStatement("SELECT id, message, time, expires, priority, \"read\" "
                     + "FROM notifications "
                     + "LEFT OUTER JOIN notifications_state ON id = notification_id AND group_id = ? "
                     + "WHERE ((recipientid=? OR recipientid=-1) "
                     + (intersect ? "AND" : "OR") + " (projectid=? OR projectid=-1)) "
-                    + (includeRead ? "" : " AND (read IS NULL OR read=false) ")
+                    + (includeRead ? "" : " AND (\"read\" IS NULL OR \"read\"=false) ")
                     + "AND (deleted IS NULL OR deleted=false) "
                     + "AND expires > NOW() "
                     + "ORDER BY time" + (count > 0 ? " LIMIT " + count : ""));
