@@ -281,117 +281,106 @@
 					itemCount++;
 					if (!(current_keyword_id.equals(data_keyword_id))) {
 						current_keyword_id=data_keyword_id;
-					
-					if (itemCount>1) {
-                  		%>
-						</table>
-						<p></p>
-						<% 
-					}
-					if (keyword_name.equals("general") || (current_section.equals(section))) { 
-						sectionText = "";
-					}
-					else {
-						sectionText = "";
-						char this_section_char = section.charAt(0);
-						switch( this_section_char ) {
-						case 'A': sectionText="Research Basics";break;
-						case 'B': sectionText="A: Get Started";break;
-						case 'C': sectionText="B: Figure it Out";break;      
-						case 'D': sectionText="C: Tell Others";break;    
+						if (itemCount>1) {
+	                  		%>
+							</table>
+							<p></p>
+							<% 
 						}
-						current_section=section;
-					}
-					%>
-					<table cellpadding="5" width="600">
-						<% 
-						if (!sectionText.equals("")) {
-          					%>
-							<tr align="left">
-								<td colspan="2"><font face="Comic Sans MS" size="+2"><%=sectionText%></font></td>
-							</tr>
-							<%
+						if (keyword_name.equals("general") || (current_section.equals(section))) { 
+							sectionText = "";
+						}
+						else {
+							sectionText = "";
+							char this_section_char = section.charAt(0);
+							switch( this_section_char ) {
+							case 'A': sectionText="Research Basics";break;
+							case 'B': sectionText="A: Get Started";break;
+							case 'C': sectionText="B: Figure it Out";break;      
+							case 'D': sectionText="C: Tell Others";break;    
+							}
+							current_section=section;
 						}
 						%>
-						<tr align="left">
-							<td colspan="2"><font face="Comic Sans MS" size="+1"
-								color="#AA3366"><%=keyword_display%></font> - <font
-								face="Comic Sans MS"><%=keyword_description%></font> <a
-								href="logEntry.jsp?keyword=<%=keyword_name%>"><img
-								src="graphics/logbook_pencil.gif" border="0" align="middle" alt=""></a>&nbsp;&nbsp;<a
-								href="showCommentsForKW.jsp?keyword=<%=keyword_name%>"><img
-								src="graphics/logbook_view_comments_small.gif" border="0"
-								align="middle" alt=""></a></td>
-						</tr>
-						<%
+						<table cellpadding="5" width="600">
+							<% 
+							if (!sectionText.equals("")) {
+	          					%>
+								<tr align="left">
+									<td colspan="2"><font face="Comic Sans MS" size="+2"><%=sectionText%></font></td>
+								</tr>
+								<%
+							}
+							%>
+							<tr align="left">
+								<td colspan="2"><font face="Comic Sans MS" size="+1"
+									color="#AA3366"><%=keyword_display%></font> - <font
+									face="Comic Sans MS"><%=keyword_description%></font> <a
+									href="logEntry.jsp?keyword=<%=keyword_name%>"><img
+									src="graphics/logbook_pencil.gif" border="0" align="middle" alt=""></a>&nbsp;&nbsp;<a
+									href="showCommentsForKW.jsp?keyword=<%=keyword_name%>"><img
+									src="graphics/logbook_view_comments_small.gif" border="0"
+									align="middle" alt=""></a></td>
+							</tr>
+							<%
+					}
+					// get comment information
+					String comment_count="";
+					String comment_new="";
+					String comment_info="";
+					sInner = conn.createStatement();
+					String innerQuery="select count(id) as comment_count from comment where  log_id="+log_id+";";
+					innerRs = sInner.executeQuery(innerQuery);
+					if (innerRs.next()) {
+						comment_count=innerRs.getString("comment_count");
+					}
+					innerQuery="select count(comment.id) as comment_new from comment where comment.new_comment='t' and log_id="+log_id+";";
+					innerRs = sInner.executeQuery(innerQuery);
+					if (innerRs.next()) {
+						comment_new=innerRs.getString("comment_new");
+					}
+					if (!comment_count.equals("") && !comment_count.equals("0") ) {
+						if (comment_new.equals("0")) {
+							comment_info=comment_info+"<BR><FONT size=-2>comments: "+comment_count+"</font>";
+						}
+						else {
+							if (comment_count.equals("")) {
+								comment_count="0";
+							}
+							comment_info=comment_info+"<BR><IMG SRC=\'graphics/new_flag.gif\' border=0 align=\'middle\'> <FONT size=-2 >comments: " + comment_count + " (<FONT color=\"#AA3366\">"+comment_new+"</FONT>) " +"</font>";
+						}
+					}
+					%>
+					<tr>
+						<td valign="top" width="150" align="right"><font
+							face="Comic Sans MS"><%=dateText%><%=comment_info%><font>
+						</font></font></td>
+						<td width="450" valign="top"><font face="Comic Sans MS"><e:whitespaceAdjust
+							text="<%= log_text %>" /></font></td>
+					</tr>
+					<%
+          
 				}
-				// get comment information
-				String comment_count="";
-				String comment_new="";
-				String comment_info="";
-				sInner = conn.createStatement();
-				
-				String innerQuery="select count(id) as comment_count from comment where  log_id="+log_id+";";
-				// out.write("\r\r"+innerQuery);
-         
-innerRs = sInner.executeQuery(innerQuery);
-          if (innerRs.next()){
-              comment_count=innerRs.getString("comment_count");
-              }
-          innerQuery="select count(comment.id) as comment_new from comment where comment.new_comment='t' and log_id="+log_id+";";
-        //  out.write(innerQuery);
-          innerRs = sInner.executeQuery(innerQuery);
-          if (innerRs.next()){
-                comment_new=innerRs.getString("comment_new");
-              }
-          if (!comment_count.equals("") && !comment_count.equals("0") ) {
-              if (comment_new.equals("0")) {
-              comment_info=comment_info+"<BR><FONT size=-2>comments: "+comment_count+"</font>";
-              }
-              else
-              {
-              if (comment_count.equals("")) {comment_count="0";}
-              
-              comment_info=comment_info+"<BR><IMG SRC=\'graphics/new_flag.gif\' border=0 align=\'middle\'> <FONT size=-2 >comments: " + comment_count + " (<FONT color=\"#AA3366\">"+comment_new+"</FONT>) " +"</font>";
-              }
-             // out.write("New comments="+comment_new);
-              }
 
-          %>
-			<tr>
-				<td valign="top" width="150" align="right"><font
-					face="Comic Sans MS"><%=dateText%><%=comment_info%><font>
-				</font></font></td>
-				<td width="450" valign="top"><font face="Comic Sans MS"><e:whitespaceAdjust
-					text="<%= log_text %>" /></font></td>
-			</tr>
-			<%
-          }
-          if (itemCount==0) {
-          String keyword_name=keyword.replaceAll("_"," ");
-          %>
-
-			<tr align="center">
-				<td colspan="2"><font face="Comic Sans MS" size="+1">No
-				entries for<br>
-				"<%=keyword_name%>: <%=keyword_description%>"</font> <a
-					href="logEntry.jsp?keyword=<%=keyword%>"><img
-					src="graphics/logbook_pencil.gif" border="0" align="middle" alt=""></a></td>
-			</tr>
-			<%
-           }
+				if (itemCount==0) {
+					String keyword_name=keyword.replaceAll("_"," ");
+					%>
+					<tr align="center">
+						<td colspan="2"><font face="Comic Sans MS" size="+1">No
+						entries for<br>
+						"<%=keyword_name%>: <%=keyword_description%>"</font> <a
+							href="logEntry.jsp?keyword=<%=keyword%>"><img
+							src="graphics/logbook_pencil.gif" border="0" align="middle" alt=""></a></td>
+					</tr>
+					<%
+				}
 
          %>
 
 		</table>
-		</p>
-		</p>
 		</td>
 	</tr>
 </table>
-
-
-
 
 </center>
 </body>
