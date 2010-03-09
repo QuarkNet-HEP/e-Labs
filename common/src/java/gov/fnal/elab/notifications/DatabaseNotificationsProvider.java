@@ -347,7 +347,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                     "  projectid integer, " +
                     "  priority integer NOT NULL DEFAULT 0, " +
                     "  expires timestamp with time zone, " +
-                    "  CONSTRAINT pkey PRIMARY KEY (id), " +
+                    "  CONSTRAINT pkey PRIMARY KEY (id) " +
                                 // currently the special value for projectid and recipientid
                     // of -1 means "all", which would not be useable if the
                     // foreign key constraint was enforced unless there was
@@ -386,7 +386,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                     "  USING btree (notification_id, group_id);");
             // created automatically; though it may be better to create it
             // manually
-            // since it is referrenced manually
+            // since it is referenced manually
             /*
              * s.execute("CREATE SEQUENCE notifications_id_seq INCREMENT 1 MINVALUE 1 "
              * + "MAXVALUE 9223372036854775807 START 1 CACHE 1");
