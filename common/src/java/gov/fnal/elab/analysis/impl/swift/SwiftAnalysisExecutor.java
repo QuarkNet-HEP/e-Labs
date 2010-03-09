@@ -9,10 +9,9 @@ import gov.fnal.elab.analysis.AbstractAnalysisRun;
 import gov.fnal.elab.analysis.AnalysisExecutor;
 import gov.fnal.elab.analysis.AnalysisParameterTransformer;
 import gov.fnal.elab.analysis.AnalysisRun;
-import gov.fnal.elab.analysis.AnalysisRunListener;
 import gov.fnal.elab.analysis.ElabAnalysis;
 import gov.fnal.elab.analysis.NullAnalysisParameterTransformer;
-import gov.fnal.elab.cosmic.estimation.HistoricData;
+import gov.fnal.elab.estimation.EstimationHistoryTracker;
 import gov.fnal.elab.estimation.Estimator;
 import gov.fnal.elab.tags.AnalysisRunTimeEstimator;
 
@@ -302,7 +301,11 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                         f[0].renameTo(new File(runDir, "dv.dot"));
                     }
                     setStatus(STATUS_COMPLETED);
-                    HistoricData.instance().add(getElab(), this);
+                    EstimationHistoryTracker hist = (EstimationHistoryTracker) 
+                            this.getAnalysis().getAttribute(EstimationHistoryTracker.KEY);
+                    if (hist != null) {
+                        hist.add(getElab(), this);
+                    }
                 }
                 updated = true;
                 this.ec = null;
