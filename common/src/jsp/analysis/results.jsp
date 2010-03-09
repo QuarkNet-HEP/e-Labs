@@ -1,5 +1,6 @@
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
+<%@ page import="gov.fnal.elab.notifications.*" %>
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 
 <%
@@ -15,5 +16,10 @@
 		    throw new ElabJspException("Invalid analysis id: " + id);
 		}
 		request.setAttribute("results", results);
+		Integer nid = (Integer) results.getAttribute("notification-id");
+		if (nid != null) {
+		    ElabNotificationsProvider np = ElabFactory.getNotificationsProvider(elab);
+		    np.markAsRead(user, nid);
+		}
 	}
 %>

@@ -68,10 +68,19 @@
 			run.setAttribute("runMode", workflowRunMode);
 			analysis.setAttribute("runMode", workflowRunMode);
 		}
+		
+		String notifier = request.getParameter("notifier");
+		if (notifier == null || notifier.length() == 0) {
+		    notifier = "default";
+		}
 	    
 	    AnalysisManager.registerAnalysisRun(elab, user, run);
+	    AnalysisNotifier n = AnalysisNotifierFactory.newNotifier(notifier);
+	    n.setRun(run);
+	    run.setListener(n);
+	    
 	    run.start();
-	    %> 
+	    %>
 	    	<jsp:include page="status.jsp">
 	    		<jsp:param name="id" value="<%= run.getId() %>"/>
 	    	</jsp:include> 
