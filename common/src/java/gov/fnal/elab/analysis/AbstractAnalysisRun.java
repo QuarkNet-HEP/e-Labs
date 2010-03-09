@@ -19,6 +19,7 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
     private static int sid = 0;
     private Map attributes;
     private Date startTime, endTime;
+    private AnalysisRunListener listener;
     
     public AbstractAnalysisRun() {
     }
@@ -60,7 +61,15 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
     }
 
     public void setStatus(int status) {
-        this.status = status;
+        boolean changed;
+        synchronized(this) {
+            changed = status != this.status;
+            this.status = status;
+        }
+
+        if (changed && getListener() != null) {
+            getListener().runStatusChanged(status);
+        }
     }
 
     public boolean isFailed() {
@@ -204,5 +213,13 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
                 sid = aid;
             }
         }
+    }
+
+    public void setListener(AnalysisRunListener l) {
+        this.listener = l;
+    }
+
+    public AnalysisRunListener getListener() {
+        return listener;
     }
 }

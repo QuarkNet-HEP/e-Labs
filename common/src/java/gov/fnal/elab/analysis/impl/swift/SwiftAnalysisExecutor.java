@@ -9,9 +9,10 @@ import gov.fnal.elab.analysis.AbstractAnalysisRun;
 import gov.fnal.elab.analysis.AnalysisExecutor;
 import gov.fnal.elab.analysis.AnalysisParameterTransformer;
 import gov.fnal.elab.analysis.AnalysisRun;
+import gov.fnal.elab.analysis.AnalysisRunListener;
 import gov.fnal.elab.analysis.ElabAnalysis;
 import gov.fnal.elab.analysis.NullAnalysisParameterTransformer;
-import gov.fnal.elab.analysis.ProgressTracker;
+import gov.fnal.elab.cosmic.estimation.HistoricData;
 import gov.fnal.elab.estimation.Estimator;
 import gov.fnal.elab.tags.AnalysisRunTimeEstimator;
 
@@ -33,6 +34,9 @@ import org.globus.cog.karajan.SpecificationException;
 import org.globus.cog.karajan.stack.LinkedStack;
 import org.globus.cog.karajan.stack.VariableStack;
 import org.globus.cog.karajan.workflow.ElementTree;
+import org.globus.cog.karajan.workflow.ExecutionException;
+import org.globus.cog.karajan.workflow.events.Event;
+import org.globus.cog.karajan.workflow.events.EventListener;
 import org.globus.cog.karajan.workflow.nodes.FlowElement;
 import org.griphyn.vdl.karajan.Loader;
 import org.griphyn.vdl.karajan.VDL2ExecutionContext;
@@ -67,7 +71,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
         return run;
     }
 
-    public class Run extends AbstractAnalysisRun implements Serializable {
+    public class Run extends AbstractAnalysisRun implements Serializable, EventListener {
         private String runDir, runDirUrl, runID, runMode;
         private volatile transient double progress;
         private transient VDL2ExecutionContext ec;
@@ -158,6 +162,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 createRunDir();
                 ec.setCwd(runDir);
 
+                ec.addEventListener(this);
                 ec.start(stack);
                 setStatus(STATUS_RUNNING);
             }
@@ -297,6 +302,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                         f[0].renameTo(new File(runDir, "dv.dot"));
                     }
                     setStatus(STATUS_COMPLETED);
+                    HistoricData.instance().add(getElab(), this);
                 }
                 updated = true;
                 this.ec = null;
@@ -337,6 +343,15 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 }
             }
             return sb.toString();
+        }
+
+        public void event(Event e) throws ExecutionException {
+            try {
+                updateStatus();
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 

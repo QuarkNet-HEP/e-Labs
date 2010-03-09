@@ -148,4 +148,6 @@ public interface AnalysisRun {
     String getFormattedRunTime();
     
     String getFormattedEstimatedRunTime();
+
+    void setListener(AnalysisRunListener l); 
 }

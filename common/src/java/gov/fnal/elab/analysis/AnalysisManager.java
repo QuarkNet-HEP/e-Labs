@@ -45,6 +45,8 @@ public class AnalysisManager {
         Map a = getAnalysisRuns(elab, user);
         synchronized (a) {
             a.put(run.getId(), run);
+            run.getAnalysis().setElab(elab);
+            run.getAnalysis().setUser(user);
         }
     }
 

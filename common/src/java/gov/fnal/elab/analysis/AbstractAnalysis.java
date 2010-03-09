@@ -3,6 +3,9 @@
  */
 package gov.fnal.elab.analysis;
 
+import gov.fnal.elab.Elab;
+import gov.fnal.elab.ElabGroup;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -15,6 +18,8 @@ public abstract class AbstractAnalysis implements ElabAnalysis {
     private String type;
     private AnalysisParameterTransformer parameterTransformer;
     private Map attributes;
+    private Elab elab;
+    private ElabGroup user;
     
     
     public String getType() {
@@ -105,5 +110,21 @@ public abstract class AbstractAnalysis implements ElabAnalysis {
 
     public Map getAttributes() {
         return attributes;
+    }
+
+    public Elab getElab() {
+        return elab;
+    }
+
+    public void setElab(Elab elab) {
+        this.elab = elab;
+    }
+
+    public ElabGroup getUser() {
+        return user;
+    }
+
+    public void setUser(ElabGroup user) {
+        this.user = user;
     }
 }
