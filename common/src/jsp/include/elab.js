@@ -1,3 +1,13 @@
+function populateInputs() {
+	var inputs = document.getElementsByTagName("input");
+	for (var i = 0; i < inputs.length; i++) {
+		if (inputs[i].type == "text" && inputs[i].getAttribute("placeholder") != null) {
+			inputs[i].style.color = "gray";
+			inputs[i].value = inputs[i].getAttribute("placeholder");
+		}
+	}
+}
+
 function aLs(layerID) {
 	return document.getElementById(layerID).style;
 }
@@ -109,3 +119,4 @@ function updateLabels(source, name) {
 		}
 	}
 }
+
