@@ -1,5 +1,6 @@
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
+<%@ page import="gov.fnal.elab.notifications.*" %>
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 
 <%
@@ -37,6 +38,13 @@
 		else {
 			request.setAttribute("run", run);
 			int status = run.getStatus();
+			if (status == AnalysisRun.STATUS_COMPLETED || status == AnalysisRun.STATUS_FAILED) {
+			    Integer nid = (Integer) run.getAttribute("notification-id");
+				if (nid != null) {
+				    ElabNotificationsProvider np = ElabFactory.getNotificationsProvider(elab);
+				    np.markAsRead(user, nid);
+				}
+			}
 			if (status == AnalysisRun.STATUS_COMPLETED && showStatus == null) {
 				String cont = (String) run.getAttribute("continuation");
 				System.out.println("Initial continuation: " + cont);
