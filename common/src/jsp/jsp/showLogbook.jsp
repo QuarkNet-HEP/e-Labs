@@ -67,7 +67,7 @@
 					"WHERE keyword.keyword = 'general' AND keyword.id = log.keyword_id and research_group.name ILIKE ? AND research_group.id = log.research_group_id AND log.project_id = ?;");
 			s.setString(1, groupName); 
 			s.setInt(2, project_id);
-			rs = s.executeQuery(query);
+			rs = s.executeQuery();
 			if (rs.next()) {
 	      		yesNo = "yes";
 			}
@@ -174,7 +174,7 @@
 		
 		// Always pass keyword, not id so we can pick off the description
 		
-		keyword_id = "";
+		keyword_id = -1;
 		if (!keyword.equals("")) {
 			// first make sure a keyword was passed in the call
 			s = conn.prepareStatement(
@@ -191,70 +191,71 @@
 				%> Problem with id for log. <%=keyword%><br> <% 
 				return;
 			}
+		}
   
-			if (keyword_id.equals("")) {
-				%>
-				<table width="600">
-					<tr>
-						<td align="right"><img src="graphics/logbook_large.gif"
-							align="middle" border="0" alt=""></td>
-						<td>
-						<h2><font face="Comic Sans MS">Logbook Entries for Group
-						"<%=groupName%>"</font></h2>
-						</td>
-					</tr>
-				</table>
-				<%
-				queryWhere="  where log.project_id=" + project_id + " and keyword.project_id in (0,"+project_id+") and log.keyword_id=keyword.id and research_group_id="+research_group_id+" and role=\'user\'";
-				
-			}
-			else {
-				%>
-				<table width="600">
-					<tr>
-						<td align="right"><img src="graphics/logbook_large.gif"
-							align="middle" border="0" alt=""></td>
-						<td>
-						<h2><font face="Comic Sans MS">Logbook Entry for Group "<%=groupName%>"</font></h2>
-						</td>
-					</tr>
-				</table>
-				<%
-     			queryWhere="  where log.project_id=" + project_id + " and keyword.project_id  in (0,"+project_id+") and research_group_id="+research_group_id+" and log.keyword_id=keyword.id and keyword_id="+keyword_id+" and role=\'user\'";
-			}
-      		%>
-			<table>
+		if (keyword_id == -1) {
+			%>
+			<table width="600">
 				<tr>
-					<td align="center" height="20">&nbsp;</td>
+					<td align="right"><img src="graphics/logbook_large.gif"
+						align="middle" border="0" alt=""></td>
+					<td>
+					<h2><font face="Comic Sans MS">Logbook Entries for Group
+					"<%=groupName%>"</font></h2>
+					</td>
 				</tr>
 			</table>
-			<div style="border-style: dotted; border-width: 1px;">
-				<table width="600">
-					<tr>
-						<td align="left" colspan="4"><font size="+1"
-							face="Comic Sans MS">Instructions</font></td>
-					</tr>
-					<tr align="center">
-						<td align="right"><img src="graphics/logbook_pencil.gif"
-							align="middle" border="0" alt=""></td>
-						<td align="left"><font face="Comic Sans MS">Button to
-						add a logbook entry.</font></td>
-						<td align="right"><img
-							src="graphics/logbook_view_comments_small.gif" border="0"
-							align="middle" alt=""></td>
-						<td align="left"><font face="Comic Sans MS">Button to
-						view your teacher's comments.</font></td>
-					</tr>
-					<tr>
-						<td align="center" colspan="4"><font size="-2"
-							face="Comic Sans MS">Comments: Number of teacher comments (<font
-							color="#AA3366"> number unread </font>). New comments by your
-						teacher are marked as <img src="graphics/new_flag.gif" border="0"
-							align="center" alt=""></font>.</td>
-					</tr>
-				</table>
-			</div>
-			<p></p>
+			<%
+			queryWhere="  where log.project_id=" + project_id + " and keyword.project_id in (0,"+project_id+") and log.keyword_id=keyword.id and research_group_id="+research_group_id+" and role=\'user\'";
+			
+		}
+		else {
+			%>
+			<table width="600">
+				<tr>
+					<td align="right"><img src="graphics/logbook_large.gif"
+						align="middle" border="0" alt=""></td>
+					<td>
+					<h2><font face="Comic Sans MS">Logbook Entry for Group "<%=groupName%>"</font></h2>
+					</td>
+				</tr>
+			</table>
+			<%
+    			queryWhere="  where log.project_id=" + project_id + " and keyword.project_id  in (0,"+project_id+") and research_group_id="+research_group_id+" and log.keyword_id=keyword.id and keyword_id="+keyword_id+" and role=\'user\'";
+		}
+    	%>
+		<table>
+			<tr>
+				<td align="center" height="20">&nbsp;</td>
+			</tr>
+		</table>
+		<div style="border-style: dotted; border-width: 1px;">
+			<table width="600">
+				<tr>
+					<td align="left" colspan="4"><font size="+1"
+						face="Comic Sans MS">Instructions</font></td>
+				</tr>
+				<tr align="center">
+					<td align="right"><img src="graphics/logbook_pencil.gif"
+						align="middle" border="0" alt=""></td>
+					<td align="left"><font face="Comic Sans MS">Button to
+					add a logbook entry.</font></td>
+					<td align="right"><img
+						src="graphics/logbook_view_comments_small.gif" border="0"
+						align="middle" alt=""></td>
+					<td align="left"><font face="Comic Sans MS">Button to
+					view your teacher's comments.</font></td>
+				</tr>
+				<tr>
+					<td align="center" colspan="4"><font size="-2"
+						face="Comic Sans MS">Comments: Number of teacher comments (<font
+						color="#AA3366"> number unread </font>). New comments by your
+					teacher are marked as <img src="graphics/new_flag.gif" border="0"
+						align="center" alt=""></font>.</td>
+				</tr>
+			</table>
+		</div>
+		<p></p>
 			<table width="600" cellspacing="5">
 				<%
 				Statement sInner = null;
@@ -267,7 +268,8 @@
 				String current_keyword_id="";
 				String sectionText="";
 				current_section="";
-				rs = s.executeQuery(query);
+				s = conn.prepareStatement(query);
+				rs = s.executeQuery();
 				while (rs.next()) {
 					String data_keyword_id=rs.getString("data_keyword_id");
 					String dateText=rs.getString("date_entered");
@@ -374,6 +376,7 @@
 					</tr>
 					<%
 				}
+	
 
          %>
 
