@@ -285,7 +285,6 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 l.add(new Notification(rs.getInt(1), rs.getString(2), groupid, elabid, rs.getTimestamp(3).getTime(),
                     rs.getTimestamp(4).getTime(), rs.getInt(5), rs.getBoolean(6)));
             }
-            System.out.println("nsz: " + l.size());
             return l;
         }
         catch (SQLException e) {
