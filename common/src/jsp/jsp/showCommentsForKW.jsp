@@ -7,51 +7,49 @@
 <link rel="stylesheet" href="include/styletut.css" type="text/css">
 <body>
 <center><!-- creates variables ResultSet rs and Statement s to use: -->
-<%@ include file="include/jdbc_userdb.jsp"%> <%
+<%@ include file="include/jdbc_userdb_ps.jsp"%> <%
  	// This will display all the comments associated with a particular keyword.
  	// e.g. select log.id,log.date_entered,log.log_text,comment.date_entered,comment.id,comment.comment from comment,log,keyword 
  	// where log.id=comment.log_id and log.keyword_id=keyword.id and keyword.id=17 and log.research_group_id=57 and project_id=1; 
  	String keyword = request.getParameter("keyword");
- 	String keyword_id = "";
  	String keyword_description = "";
- 	String research_group_id = "";
- 	String query = "";
- 	Statement sInner = null;
+ 	Boolean new_comment; 
+ 	PreparedStatement sInner = null;
  	ResultSet innerRs = null;
- 	sInner = conn.createStatement();
-
- 	String new_comment = "";
+ 	Integer keyword_id, project_id, research_group_id = null; 
 
  	// get group ID
  	//groupName defined in common.jsp
- 	research_group_id = "";
- 	query = "select id from research_group where name=\'" + groupName
- 			+ "\';";
- 	rs = s.executeQuery(query);
+ 	s = conn.prepareStatement("SELECT id FROM research_group WHERE name = ?;");
+ 	s.setString(1, groupName); 
+ 	rs = s.executeQuery();
  	if (rs.next()) {
- 		research_group_id = rs.getString("id");
+ 		research_group_id = (Integer) rs.getObject("id");
  	}
 
- 	if (research_group_id.equals("")) {
- %> Problem with ID for
-research group <%=groupName%><br>
-<%
-	return;
+ 	if (research_group_id == null) {
+ 		%> Problem with ID for research group <%=groupName%><br> <%
+		return;
 	}
-	String project_id = request.getParameter("project_id");
+	try { 
+		project_id = Integer.valueOf(request.getParameter("project_id"));
+	}
+	catch (NumberFormatException nfe) {
+		project_id = null; 
+	}
+	
 	if (project_id == null) {
 		// get project ID
 		//eLab defined in common.jsp
-		project_id = "";
-		query = "select id from project where name=\'" + eLab + "\';";
-		rs = s.executeQuery(query);
+		s = conn.prepareStatement("SELECT id FROM project WHERE name = ?;");
+		s.setString(1, eLab); 
+		rs = s.executeQuery();
 		if (rs.next()) {
-			project_id = rs.getString("id");
+			project_id = (Integer) rs.getObject("id");
 		}
-		if (project_id.equals("")) {
-%> Problem with id for project <%=eLab%><br>
-<%
-	return;
+		if (project_id == null) {
+			%> Problem with id for project <%=eLab%><br><%
+			return;
 		}
 	}
 	// Always pass keyword, not id so we can pick off the description
@@ -61,17 +59,19 @@ research group <%=groupName%><br>
 	String keyword_text = keyword.replaceAll("_", " ");
 
 	// first make sure a keyword was passed in the call
-	query = "select id,description from keyword where project_id in (0,"
-			+ project_id + ") and keyword=\'" + keyword + "\';";
-	rs = s.executeQuery(query);
+	s = conn.prepareStatement(
+			"SELECT id, description FROM keyword " + 
+			"WHERE project_id IN (0,?) AND keyword = ?;");
+	s.setInt(1, project_id);
+	s.setString(2, keyword);
+	rs = s.executeQuery();
 	while (rs.next()) {
-		keyword_id = rs.getString("id");
+		keyword_id = (Integer) rs.getObject("id");
 		keyword_description = rs.getString("description");
 	}
-	if (keyword_id.equals("")) {
-%> Problem with id for log. <%=keyword%><br>
-<%
-	return;
+	if (keyword_id == null) {
+		%> Problem with id for log. <%=keyword%><br><%
+		return;
 	}
 %>
 <h1><font face="Comic Sans MS">Comments on Your Logbook
@@ -93,26 +93,27 @@ logbook".</font></p>
 <table width="800" cellspacing="5" cellpadding="5">
 	<%
 		// look for any previous log entries for this keyword
-		query = "select log.id as log_id,to_char(log.date_entered,'MM/DD/YYYY HH12:MI') as log_date,log.log_text as log_text,to_char(comment.date_entered,'MM/DD/YYYY HH12:MI') as comment_date,comment.id as comment_id,comment.comment as comment,comment.new_comment as new_comment from comment,log,keyword ";
-		query = query
-				+ "where log.id=comment.log_id and log.keyword_id=keyword.id and keyword.id="
-				+ keyword_id + " and log.research_group_id="
-				+ research_group_id + " and log.project_id=" + project_id
-				+ " and keyword.project_id in (0," + project_id + ")";
-		query = query + " order by log_id DESC,comment_id DESC;";
+		s = conn.prepareStatement(
+				"SELECT log.id AS log_id, to_char(log.date_entered,'MM/DD/YYYY HH12:MI') AS log_date,l og.log_text AS log_text, to_char(comment.date_entered,'MM/DD/YYYY HH12:MI') AS comment_date, comment.id AS comment_id, comment.comment AS comment, comment.new_comment AS new_comment FROM comment, log, keyword " +
+				"WHERE log.id = comment.log_id AND log.keyword_id = keyword.id AND keyword.id = ? AND log.research_group_id = ? AND log.project_id = ? AND keyword.project_id in (0,?) " +
+				"ORDER BY log_id DESC, comment_id DESC;");
+		s.setInt(1, keyword_id); 
+		s.setInt(2, research_group_id); 
+		s.setInt(3, project_id); 
+		s.setInt(4, project_id); 
 		int itemCount = 0;
-		String curLogId = "";
-		rs = s.executeQuery(query);
+		int curLogId;
+		rs = s.executeQuery();
 		while (rs.next()) {
-			String log_id = rs.getString("log_id");
+			int log_id = rs.getInt("log_id");
 			String log_date = rs.getString("log_date");
 			String log_text = rs.getString("log_text");
-			String comment_id = rs.getString("comment_id");
+			int comment_id = rs.getInt("comment_id");
 			String comment_date = rs.getString("comment_date");
 			String comment_text = rs.getString("comment");
-			new_comment = rs.getString("new_comment");
+			new_comment = rs.getBoolean("new_comment");
 			itemCount++;
-			if (curLogId.equals(log_id)) {
+			if (curLogId == log_id) {
 				log_text = " ";
 				log_date = " ";
 			} else {
@@ -165,16 +166,16 @@ logbook".</font></p>
 	<%
 		if (new_comment != null && new_comment.equals("t")) {
 				//reset  new_comment to false
-				String innerQuery = "UPDATE comment SET new_comment=\'f\'  WHERE id="
-						+ comment_id + ";";
+				sInner = conn.prepareStatement("UPDATE comment SET new_comment = 'f' WHERE id = ?;");
+				sInner.setInt(1, comment_id); 
 				int k = 0;
 				try {
-					k = sInner.executeUpdate(innerQuery);
+					k = sInner.executeUpdate();
 				} catch (SQLException se) {
 					warn(
 							out,
 							"There was some error updating your info into the comment table.\n<br>Please contact the database admin with this information:\n<br>SQLstatement: "
-									+ query);
+									+ sInner);
 					return;
 				} // try-catch for updating survey table
 				if (k != 1) {
@@ -183,7 +184,7 @@ logbook".</font></p>
 							"Weren't able to update your info to the database! "
 									+ k
 									+ " rows updated.\n<br>Please alert the database admin with this information:\n<br>SQLstatement: "
-									+ query);
+									+ sInner);
 					return;
 				} //!k=1 test 
 
