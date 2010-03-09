@@ -138,7 +138,7 @@ Re: the upload progress stuff
 						<e:trdefault name="detectorid" value="${detectorid}"/>
 						<e:trdefault name="comments" value="${comments}"/>
 						
-						<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp">
+						<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload">
 							<jsp:param name="provider" value="shell"/>
 						</jsp:include>
 					</e:analysis>
