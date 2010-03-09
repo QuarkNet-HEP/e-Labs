@@ -18,82 +18,99 @@
  		return;
  	}
  	String submit = request.getParameter("button");
- 	String log_id = request.getParameter("log_id");
  	String log_text = request.getParameter("log_text");
  	String img_src = request.getParameter("img_src");
- 	if (img_src == null)
- 		img_src = "";
- 	String count = request.getParameter("count");
- 	if (count == null)
- 		count = "0";
- 	String research_group_id = request
- 			.getParameter("research_group_id");
- 	String ref_rg_id = request.getParameter("ref_rg_id");
  	String ref_rg_name = "";
  	String buttonText = "Add Your Logbook Entry";
- 	String query = "";
+ 	
+ 	Integer log_id, research_group_id, keyword_id, project_id, ref_rg_id;
+ 	int count; 
+ 	
+ 	try { 
+ 		project_id = Integer.valueOf(request.getParameter("project_id"));
+ 	}
+ 	catch (NumberFormatException nfe) { 
+ 		project_id = null;
+ 	}
+ 	try { 
+ 		log_id = Integer.valueOf(request.getParameter("log_id"));
+ 	}
+ 	catch (NumberFormatException nfe) { 
+ 		log_id = null;
+ 	}
+ 	try { 
+ 		research_group_id = Integer.valueOf(request.getParameter("research_group_id"));
+ 	}
+ 	catch (NumberFormatException nfe) { 
+ 		research_group_id = null;
+ 	}
+ 	try { 
+ 		ref_rg_id = Integer.valueOf(request.getParameter("ref_rg_id"));
+ 	}
+ 	catch (NumberFormatException nfe) { 
+ 		ref_rg_id = null;
+ 	}
+ 	try {
+ 		count = Integer.parseInt(request.getParameter("count"));
+ 	}
+ 	catch (NumberFormatException nfe) {
+ 		count = 0;
+ 	}
+ 	if (img_src == null)
+ 		img_src = "";
 
  	if (research_group_id == null) {
  		// get group ID
  		//groupName defined in common.jsp
- 		research_group_id = "";
- 		query = "select id from research_group where name=\'"
- 				+ groupName + "\';";
- 		rs = s.executeQuery(query);
+ 		s = conn.prepareStatement("SELECT id FROM research_group WHERE name = ?;");
+ 		s.setString(1, eLab);
+ 		rs = s.executeQuery();
  		if (rs.next()) {
- 			research_group_id = rs.getString("id");
+ 			research_group_id = (Integer) rs.getObject("id");
  		}
 
- 		if (research_group_id.equals("")) {
- %> Problem with ID for
-research group <%=groupName%><br>
-<%
-	return;
+ 		if (research_group_id == null) {
+ 			%> Problem with ID for research group <%=groupName%><br><%
+		return;
 		}
 	}
-	if (ref_rg_id == null)
-	// this is not optional; we have to know which student group it is.
-	{
-%> No student research group passed.<br>
-<%
-	return;
-	} else {
+	if (ref_rg_id == null) {
+		// this is not optional; we have to know which student group it is.
+		%> No student research group passed.<br><%
+		return;
+	} 
+	else {
 		// get name of student research group
 		//groupName defined in common.jsp
 		if (ref_rg_id.equals(research_group_id)) {
 			ref_rg_name = "General Notes";
-		} else {
-			ref_rg_name = "";
-			query = "select name from research_group where id=\'"
-					+ ref_rg_id + "\';";
-			rs = s.executeQuery(query);
+		} 
+		else {
+			s = conn.prepareStatement("SELECT name FROM research_group WHERE id = ?;");
+			s.setInt(1, ref_rg_id);
+			rs = s.executeQuery();
 			if (rs.next()) {
 				ref_rg_name = rs.getString("name");
 			}
-
 			if (ref_rg_name.equals("")) {
-%> Problem with ID for student
-research group,<br>
-<%
-	return;
+				%> Problem with ID for student research group,<br><%
+				return;
 			}
 		}
 	}
 
-	String project_id = request.getParameter("project_id");
 	if (project_id == null) {
 		// get project ID
 		//eLab defined in common.jsp
-		project_id = "";
-		query = "select id from project where name=\'" + eLab + "\';";
-		rs = s.executeQuery(query);
+		s = conn.prepareStatement("SELECT id FROM project WHERE name = ?;");
+ 		s.setString(1, eLab);
+ 		rs = s.executeQuery();
 		if (rs.next()) {
-			project_id = rs.getString("id");
+			project_id = (Integer) rs.getObject("id");
 		}
-		if (project_id.equals("")) {
-%> Problem with id for project <%=eLab%><br>
-<%
-	return;
+		if (project_id == null) {
+			%> Problem with id for project <%=eLab%><br><%
+			return;
 		}
 	}
 %>
@@ -108,23 +125,22 @@ research group,<br>
 </table>
 <%
 	String currentEntries = "";
-
-	if (log_id == null) {
-		log_id = "";
-	}
-	// look for any previous log entries for this keyword
-	query = "select log.id as cur_id, to_char(log.date_entered,'MM/DD/YYYY HH12:MI') as date_entered,log.log_text as cur_text from log where project_id="
-			+ project_id
-			+ " and research_group_id="
-			+ research_group_id
-			+ " and ref_rg_id="
-			+ ref_rg_id
-			+ " and role=\'" + role + "\' order by cur_id;";
-	rs = s.executeQuery(query);
 	boolean first = true;
+
+	// look for any previous log entries for this keyword
+	s = conn.prepareStatement(
+			"SELECT id AS cur_id, to_char(date_entered,'MM/DD/YYYY HH12:MI') AS date_entered, log_text AS cur_text FROM log " + 
+			"WHERE project_id = ? AND research_group_id = ? AND ref_rg_id = ? AND role = ? " +
+			"ORDER BY cur_id;");
+	s.setInt(1, project_id);
+	s.setInt(2, research_group_id);
+	s.setInt(3, ref_rg_id); 
+	s.setString(4, role); 
+	s.executeQuery();
+	
 	while (rs.next()) {
-		String curLogId = rs.getString("cur_id");
-		if (!(curLogId.equals(log_id))) {
+		int curLogId = rs.getInt("cur_id");
+		if (!(curLogId == log_id)) {
 			String curDate = rs.getString("date_entered");
 			String curText = rs.getString("cur_text");
 			if (first) {
@@ -152,27 +168,24 @@ research group,<br>
 					+ "--\\)", parsed[i]);
 		}
 		log_enter = log_enter.replaceAll("'", "''");
-		if (log_id == "") {
+		if (log_id == null) {
 			//we have to insert a new row into table
 			int i = 0;
-			query = "INSERT INTO log (project_id, research_group_id, ref_rg_id, role,log_text) VALUES ("
-					+ project_id
-					+ ","
-					+ research_group_id
-					+ ","
-					+ ref_rg_id
-					+ ",\'"
-					+ role
-					+ "\','"
-					+ log_enter
-					+ "\');";
+			s = conn.prepareStatement(
+					"INSERT INTO log (project_id, research_group_id, ref_rg_id, role, log_text) " +
+					"VALUES (?, ?, ?, ?, ?);");
+			s.setInt(1, project_id);
+			s.setInt(2, research_group_id);
+			s.setInt(3, ref_rg_id); 
+			s.setString(4, role);
+			s.setString(5, role); 
 			try {
-				i = s.executeUpdate(query);
+				i = s.executeUpdate();
 			} catch (SQLException se) {
 				warn(
 						out,
 						"There was some error entering your info into the log table.\n<br>Please contact the database admin with this information:\n<br>SQLstatement: "
-								+ query);
+								+ s);
 				return;
 			}
 			if (i != 1) {
@@ -181,27 +194,25 @@ research group,<br>
 						"Weren't able to add your info to the database! "
 								+ i
 								+ " rows updated.\n<br>Please alert the database admin with this information:\n<br>SQLstatement: "
-								+ query);
+								+ s);
 				return;
 			}
 			// get the log_id of the entry you just entered
-			query = "select log.id as id from log where research_group_id="
-					+ research_group_id
-					+ " and project_id="
-					+ project_id
-					+ " and ref_rg_id="
-					+ ref_rg_id
-					+ " and role=\'"
-					+ role
-					+ "\' order by log.id DESC;";
-			rs = s.executeQuery(query);
+			s = conn.prepareStatement(
+					"SELECT id FROM log " + 
+					"WHERE research_group_id = ? AND project_id = ? AND ref_rg_id = ? and role = ? " + 
+					"ORDER BY id DESC; ");
+			s.setInt(1, research_group_id);
+			s.setInt(2, project_id); 
+			s.setInt(3, ref_rg_id); 
+			s.setString(4, role); 
+			rs = s.executeQuery();
 			if (rs.next()) {
-				log_id = rs.getString("id");
+				log_id = (Integer) rs.getObject("id");
 			}
-			if (log_id.equals("")) {
-%> Problem with ID for log entered.<br>
-<%
-	return;
+			if (log_id == null) {
+				%> Problem with ID for log entered.<br><%
+				return;
 			}
 %>
 <h2><font face="arial MS">Your log was successfully entered.
@@ -211,16 +222,17 @@ your logbook.</font></h2>
 <%
 	} else if (!log_text.equals("")) {
 			//we need to update row with id=log_id 
-			query = "UPDATE log SET log_text=\'" + log_enter
-					+ "\' WHERE id=" + log_id + ";";
+			s = conn.prepareStatement("UPDATE log SET log_text = ? WHERE id = ?;");
+			s.setString(1, log_text);
+			s.setInt(2, log_id); 
 			int k = 0;
 			try {
-				k = s.executeUpdate(query);
+				k = s.executeUpdate();
 			} catch (SQLException se) {
 				warn(
 						out,
 						"There was some error entering your info into the log table.\n<br>Please contact the database admin with this information:\n<br>SQLstatement: "
-								+ query);
+								+ s);
 				return;
 			} // try-catch for updating survey table
 			if (k != 1) {
@@ -229,7 +241,7 @@ your logbook.</font></h2>
 						"Weren't able to add your info to the database! "
 								+ k
 								+ " rows updated.\n<br>Please alert the database admin with this information:\n<br>SQLstatement: "
-								+ query);
+								+ s);
 				return;
 			} //!k=1 test
 %>
@@ -261,7 +273,7 @@ your logbook.</font></h2>
 		<tr>
 			<td colspan="2">
 			<%
-				if (log_id != "") {
+				if (log_id != null) {
 			%> <input type="hidden" name="log_id"
 				value="<%=log_id%>"> <%
  	}
