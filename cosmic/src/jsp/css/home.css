@@ -154,6 +154,5 @@ a.button {
 }
 
 #links a:hover {color:#000000;  }
-#links a:active: {color: #222222;   }
-#links a:visited: {color: #000000;  }
-
+#links a:active {color: #222222;   }
+#links a:visited {color: #000000;  }
