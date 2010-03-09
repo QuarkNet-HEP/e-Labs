@@ -151,7 +151,8 @@ singleChannelOut = SingleChannel(combineOut, singlechannel_channel);
 //sortOut = Sort(singleChannelOut[0], sort_sortKey1, sort_sortKey2);
 sortOut = Sort(singleChannelOut, sort_sortKey1, sort_sortKey2);
 fluxOut = Flux(sortOut, binWidth, geoDir, geoFiles);
-File svg;
+File svg <"plot.svg">;
+
 (svg, plot_outfile_param) = Plot(plot_plot_type, plot_caption, x, y, z, plot_title,
 	fluxOut);
 
