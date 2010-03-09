@@ -257,14 +257,8 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         return getNotifications(group.getId(), true, elab.getId(), count, includeRead);
     }
 
-    public List<Notification> getSystemNotifications(ElabGroup admin, int count) throws ElabException {
-        if (!admin.isAdmin()) {
-            throw new ElabException("Security exception: user " + admin
-                    + " does not have permissions to see system notifications");
-        }
-        List<Notification> l = getNotifications(-1, false, -1, -1, true);
-        System.out.println("ssz: " + l.size());
-        return l;
+    public List<Notification> getSystemNotifications(int count) throws ElabException {
+        return getNotifications(-1, false, -1, -1, true);
     }
 
     private List<Notification> getNotifications(int groupid, boolean intersect, int elabid, int count, boolean includeRead)
