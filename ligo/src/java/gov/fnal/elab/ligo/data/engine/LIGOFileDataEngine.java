@@ -18,6 +18,7 @@ import java.io.RandomAccessFile;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,24 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class LIGOFileDataEngine implements DataEngine, Modifiable {
+	private static final Map<List<?>, LIGOFileDataEngine> ENGINES;
+	
+	static {
+		ENGINES = new HashMap<List<?>, LIGOFileDataEngine>();
+	}
+	
+	public static LIGOFileDataEngine getEngine(String dir, LIGOFileReaderFactory lfrFactory) throws IOException {
+		synchronized(ENGINES) {
+			List<?> key = Arrays.asList(dir, lfrFactory);
+			LIGOFileDataEngine engine = ENGINES.get(key);
+			if (engine == null) {
+				engine = new LIGOFileDataEngine(dir, lfrFactory);
+				ENGINES.put(key, engine);
+			}
+			return engine;
+		}
+	}
+	
     private String dir;
     private Map<String, ChannelProperties> channels;
     private Map<String, ChannelIndex> indexes;
