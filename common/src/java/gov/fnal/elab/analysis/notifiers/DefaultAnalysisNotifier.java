@@ -28,7 +28,9 @@ public class DefaultAnalysisNotifier implements AnalysisRunListener, AnalysisNot
             n.setGroupId(run.getAnalysis().getUser().getId());
             n.setProjectId(elab.getId());
             String s = failed ? "failed" : "completed";
-            String cont = (String) (failed ? run.getAttribute("onError") : run.getAttribute("continuation"));
+            Object cobj = run.getAttribute("continuation");
+            Object eobj = run.getAttribute("onError");
+            String cont = (String) (failed && eobj != null ? eobj : cobj);
             n.setMessage("<a href=\"" + cont + "\">" + run.getAnalysis().getName() + "</a> " + s);
             try {
                 np.addNotification(run.getAnalysis().getUser(), n);
