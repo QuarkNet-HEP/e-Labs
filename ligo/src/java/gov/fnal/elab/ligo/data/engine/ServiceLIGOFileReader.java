@@ -7,6 +7,8 @@ import gov.fnal.elab.ligo.data.convert.AbstractDataTool;
 import gov.fnal.elab.ligo.data.convert.ChannelName;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -86,7 +88,7 @@ public abstract class ServiceLIGOFileReader implements LIGOFileReader {
 
     public Record[] readRecords(long[] indices) throws IOException {
         HttpURLConnection c = request(indices);
-        is = new BufferedInputStream(c.getInputStream());
+        is = c.getInputStream();
         try {
             Record[] records = new Record[indices.length];
             for (int i = 0; i < indices.length; i++) {
