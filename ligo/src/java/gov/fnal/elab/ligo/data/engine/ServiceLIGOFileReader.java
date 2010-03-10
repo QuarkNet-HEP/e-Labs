@@ -94,6 +94,7 @@ public abstract class ServiceLIGOFileReader implements LIGOFileReader {
                 double time = EncodingTools.readDouble(is);
                 if (time == 0) {
                     records[i] = null;
+                    is.skip(recordSize - 9);
                 }
                 else {
                     is.skip(skip);
