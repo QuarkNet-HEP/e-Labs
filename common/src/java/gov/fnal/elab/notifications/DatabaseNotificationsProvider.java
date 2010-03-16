@@ -86,9 +86,10 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             throw new ElabException("User " + admin + " is not allowed to remove notifications");
         }
         Connection conn = null;
+        PreparedStatement ps = null; 
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM notifications WHERE id = ?");
+            ps = conn.prepareStatement("DELETE FROM notifications WHERE id = ?"); 
             ps.setInt(1, id);
             ps.execute();
         }
@@ -96,14 +97,13 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             throw new ElabException(e);
         }
         finally {
-            if (conn != null) {
-                DatabaseConnectionManager.close(conn);
-            }
+            DatabaseConnectionManager.close(conn, ps);
         }
     }
 
     public void markAsDeleted(ElabGroup user, int id) throws ElabException {
         Connection conn = null;
+        PreparedStatement ps = null; 
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             boolean ac = conn.getAutoCommit();
@@ -112,7 +112,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 // while notification ids are globally unique, the user id
                 // serves to
                 // prevent accidental deletion of other user's messages
-                PreparedStatement ps = conn.prepareStatement(
+                ps = conn.prepareStatement(
                     "SELECT recipientid, deleted IS NOT NULL FROM notifications " +
                         "LEFT OUTER JOIN notifications_state ON id = notification_id AND group_id = ? " +
                         "WHERE id = ?");
@@ -120,19 +120,18 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 ps.setInt(2, id);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
-                    int recipientid = rs.getInt(1);
-                    boolean deletedPresent = rs.getBoolean(2);
-                    if (recipientid == -1) {
+                    Integer recipientid = (Integer) rs.getObject("recipientid");
+                    boolean deletedPresent = rs.getBoolean("deleted");
+                    if (recipientid == null) {
                         // broadcast; insert deletion state
                         if (deletedPresent) {
-                            ps = conn.prepareStatement("UPDATE notifications_state SET deleted=true " +
+                            ps = conn.prepareStatement("UPDATE notifications_state SET deleted = TRUE " +
                                     "WHERE notification_id = ? AND group_id = ?");
                         }
                         else {
                             ps = conn
-                                .prepareStatement("INSERT INTO notifications_state (notification_id, group_id, deleted) "
-                                        +
-                                        "VALUES (?, ?, true)");
+                                .prepareStatement("INSERT INTO notifications_state (notification_id, group_id, deleted) " +
+                                        "VALUES (?, ?, TRUE)");
                         }
                     }
                     else if (recipientid == user.getId()) {
@@ -171,31 +170,28 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
 
     public void markAsRead(ElabGroup group, int nid) throws ElabException {
         Connection conn = null;
+        PreparedStatement ps = null; 
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             boolean ac = conn.getAutoCommit();
             try {
+            	int updateRows = 0, insertRows = 0; 
                 conn.setAutoCommit(false);
-                PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) FROM notifications_state " +
-                        "WHERE notification_id=? AND group_id=?");
+                ps = conn.prepareStatement("UPDATE notifications_state SET \"read\" = TRUE " +
+                		"WHERE notification_id = ? AND group_id = ?;"); 
                 ps.setInt(1, nid);
                 ps.setInt(2, group.getId());
-                ResultSet rs = ps.executeQuery();
-                if (!rs.next()) {
-                    throw new ElabException("Query did not return a count");
+                updateRows = ps.executeUpdate(); 
+                if (updateRows == 0) { // Not found 
+                	ps = conn.prepareStatement("INSERT INTO notifications_state (notification_id, group_id, \"read\") " +
+                			"VALUES (?, ?, TRUE);");
+                	ps.setInt(1, nid);
+                    ps.setInt(2, group.getId());
+                    insertRows = ps.executeUpdate(); 
+                    if (insertRows == 0) { // Something's gone wrong 
+                    	throw new SQLException("Cannot mark notification ID " + nid + " for group " + group.getName() + " as read.");
+                    }
                 }
-                int count = rs.getInt(1);
-                if (count == 0) {
-                    ps = conn.prepareStatement("INSERT INTO notifications_state (notification_id, group_id, \"read\") " +
-                            "VALUES (?, ?, true)");
-                }
-                else {
-                    ps = conn.prepareStatement("UPDATE notifications_state SET \"read\" = true " +
-                            "WHERE notification_id = ? AND group_id = ?");
-                }
-                ps.setInt(1, nid);
-                ps.setInt(2, group.getId());
-                ps.execute();
                 conn.commit();
             }
             catch (SQLException e) {
@@ -211,32 +207,32 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         }
         finally {
             if (conn != null) {
-                DatabaseConnectionManager.close(conn);
+                DatabaseConnectionManager.close(conn, ps);
             }
         }
     }
 
-    public int getUnreadNotificationsCount(ElabGroup group) throws ElabException {
+    public long getUnreadNotificationsCount(ElabGroup group) throws ElabException {
         Connection conn = null;
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             PreparedStatement ps = conn.prepareStatement(
                 "SELECT COUNT(id) FROM notifications " +
                     "LEFT OUTER JOIN notifications_state ON id = notification_id AND group_id = ?" +
-                    "WHERE (recipientid=? OR recipientid=-1) " +
-                    "AND (projectid=? OR projectid=-1) " +
+                    "WHERE (recipientid=? OR recipientid IS NULL) " +
+                    "AND (projectid=? OR projectid IS NULL) " +
                     "AND expires > NOW() " +
-                    "AND (\"read\" IS NULL OR \"read\"=false) " +
-                    "AND (deleted IS NULL OR deleted=false)");
+                    "AND (\"read\" IS NOT TRUE) " +
+                    "AND (deleted IS NOT TRUE)");
             ps.setInt(1, group.getId());
             ps.setInt(2, group.getId());
             ps.setInt(3, elab.getId());
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1);
+                return rs.getLong(1);
             }
             else {
-                throw new ElabException("No results returned by query");
+                throw new ElabException("Cannot get unread notification count for group " + group.getName());
             }
         }
         catch (SQLException e) {
@@ -257,23 +253,48 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         return getNotifications(group.getId(), true, elab.getId(), count, includeRead);
     }
 
-    public List<Notification> getSystemNotifications(int count) throws ElabException {
-        return getNotifications(-1, false, -1, -1, true);
+    public List<Notification> getSystemNotifications() throws ElabException {
+    	Connection conn = null; 
+    	PreparedStatement ps = null; 
+    	try {
+    		conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+    		ps = conn.prepareStatement(
+				"SELECT id, message, time, expires, priority, \"read\" FROM notifications " + 
+				"LEFT OUTER JOIN notifications_state ON id = notification_id " + 
+				"WHERE (recipientid IS NULL) AND (project_id IS NULL) AND (\"read\" IS NOT TRUE) AND (deleted IS NOT TRUE) AND (expires > NOW()) " +
+				"ORDER BY time;");
+    		ResultSet rs = ps.executeQuery();
+    		List<Notification> l = new ArrayList<Notification>();
+            while (rs.next()) {
+                l.add(new Notification(rs.getInt("id"), rs.getString("message"), Notification.USER_EVERYONE, Notification.USER_EVERYONE, rs.getTimestamp("time").getTime(),
+                    rs.getTimestamp("expires").getTime(), rs.getInt("priority"), rs.getBoolean("read")));
+            }
+            return l;
+    	}
+    	catch (SQLException e) {
+            throw new ElabException(e);
+        }
+        finally {
+            if (conn != null) {
+                DatabaseConnectionManager.close(conn, ps);
+            }
+        }
     }
 
-    private List<Notification> getNotifications(int groupid, boolean intersect, int elabid, int count, boolean includeRead)
+    private List<Notification> getNotifications(int groupid, boolean intersect, Integer elabid, int count, boolean includeRead)
             throws ElabException {
         Connection conn = null;
+        PreparedStatement ps = null;
         try {
-            // I declare a recipientid/projectid of -1 to mean "all"
+            // I declare a recipientid/projectid of NULL to mean "all"
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            PreparedStatement ps = conn.prepareStatement("SELECT id, message, time, expires, priority, \"read\" "
+            ps = conn.prepareStatement("SELECT id, message, time, expires, priority, \"read\" "
                     + "FROM notifications "
                     + "LEFT OUTER JOIN notifications_state ON id = notification_id AND group_id = ? "
-                    + "WHERE ((recipientid=? OR recipientid=-1) "
-                    + (intersect ? "AND" : "OR") + " (projectid=? OR projectid=-1)) "
-                    + (includeRead ? "" : " AND (\"read\" IS NULL OR \"read\"=false) ")
-                    + "AND (deleted IS NULL OR deleted=false) "
+                    + "WHERE ((recipientid=? OR recipientid IS NULL) "
+                    + (intersect ? "AND" : "OR") + " (projectid=? OR projectid IS NULL)) "
+                    + (includeRead ? "" : " AND (\"read\" IS NOT TRUE) ")
+                    + "AND (deleted IS NOT TRUE) "
                     + "AND expires > NOW() "
                     + "ORDER BY time" + (count > 0 ? " LIMIT " + count : ""));
             List<Notification> l = new ArrayList<Notification>();
@@ -292,7 +313,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         }
         finally {
             if (conn != null) {
-                DatabaseConnectionManager.close(conn);
+                DatabaseConnectionManager.close(conn, ps);
             }
         }
     }
@@ -320,16 +341,23 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
     }
 
     private boolean tableExists(Connection conn) throws SQLException {
-        Statement s = conn.createStatement();
+    	ResultSet rs = null;
+    	Statement s = null; 
         try {
-            s.executeQuery("SELECT COUNT(*) FROM notifications");
-            return true;
-        }
-        catch (SQLException e) {
+        	s  = conn.createStatement();
+            rs = s.executeQuery("SELECT tablename FROM pg_tables WHERE tablename = 'notifications'");
+            if (rs.next()) {
+            	return true; 
+            }
             return false;
         }
+        catch (SQLException e) {
+            return false; 
+        }
         finally {
-            s.close();
+            if (s != null) {
+            	s.close();
+            }
         }
     }
 
@@ -346,10 +374,8 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                     "  priority integer NOT NULL DEFAULT 0, " +
                     "  expires timestamp with time zone, " +
                     "  CONSTRAINT pkey PRIMARY KEY (id) " +
-                                // currently the special value for projectid and recipientid
-                    // of -1 means "all", which would not be useable if the
-                    // foreign key constraint was enforced unless there was
-                    // an actuall project/group with an id of -1
+                    // currently the special value for projectid and recipientid
+                    // of NULL means "all", 
                     /*
                      * "  CONSTRAINT project_id FOREIGN KEY (projectid) " +
                      * "    REFERENCES project (id) MATCH SIMPLE " +

@@ -8,6 +8,7 @@ import java.util.Date;
 public class Notification {
     public static final int PRIORITY_NORMAL = 0;
     public static final int PRIORITY_SYSTEM_MESSAGE = 1;
+    public static final int USER_EVERYONE = -1; 
     
     private int id;
     private String message;
@@ -18,7 +19,7 @@ public class Notification {
     public Notification() {
     }
 
-    public Notification(int id, String message, int groupId, int projectId, long time, long expires, int priority,
+    public Notification(int id, String message, Integer groupId, Integer projectId, long time, long expires, int priority,
             boolean read) {
         this.id = id;
         this.message = message;

@@ -10,13 +10,15 @@ import gov.fnal.elab.util.ElabException;
 import java.util.List;
 
 public interface ElabNotificationsProvider extends ElabProvider {
-    int getUnreadNotificationsCount(ElabGroup group) throws ElabException;
+	public static final int MAX_COUNT = -1;
+	
+    long getUnreadNotificationsCount(ElabGroup group) throws ElabException;
     
     List<Notification> getNotifications(ElabGroup group, int max) throws ElabException;
     
     List<Notification> getNotifications(ElabGroup group, int max, boolean includeOld) throws ElabException;
     
-    List<Notification> getSystemNotifications(int count) throws ElabException;
+    List<Notification> getSystemNotifications() throws ElabException;
     
     void addNotification(ElabGroup group, Notification notification) throws ElabException;
     
