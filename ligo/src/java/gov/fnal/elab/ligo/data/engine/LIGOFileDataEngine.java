@@ -37,8 +37,12 @@ public class LIGOFileDataEngine implements DataEngine, Modifiable {
 			List<?> key = Arrays.asList(dir, lfrFactory);
 			LIGOFileDataEngine engine = ENGINES.get(key);
 			if (engine == null) {
+			    System.out.println("Creating new engine for " + dir);
 				engine = new LIGOFileDataEngine(dir, lfrFactory);
 				ENGINES.put(key, engine);
+			}
+			else {
+			    System.out.println("Using cached engine for " + dir);
 			}
 			return engine;
 		}
