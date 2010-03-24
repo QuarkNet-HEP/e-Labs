@@ -5,6 +5,7 @@ package gov.fnal.elab.ligo.data.engine;
 
 import gov.fnal.elab.ligo.data.convert.AbstractDataTool;
 import gov.fnal.elab.ligo.data.convert.ChannelName;
+import gov.fnal.elab.ligo.data.engine.ServiceLIGOFileReader.Factory;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,6 +61,20 @@ public abstract class DirectLIGOFileReader implements LIGOFileReader {
             return new RandomAccessFile(dir + File.separator + name.uniformName + ".bin", "r");
         }
 
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof Factory) {
+                return dir.equals(((Factory) obj).dir);
+            }
+            else {
+                return false;
+            }
+        }
+
+        @Override
+        public int hashCode() {
+            return dir.hashCode();
+        }
     }
 
     protected final int recordSize, skip;

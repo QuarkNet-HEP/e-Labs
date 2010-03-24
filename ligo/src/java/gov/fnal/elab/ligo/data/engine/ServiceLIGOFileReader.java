@@ -6,9 +6,6 @@ package gov.fnal.elab.ligo.data.engine;
 import gov.fnal.elab.ligo.data.convert.AbstractDataTool;
 import gov.fnal.elab.ligo.data.convert.ChannelName;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -59,6 +56,21 @@ public abstract class ServiceLIGOFileReader implements LIGOFileReader {
             catch (Exception e) {
                 throw new RuntimeException(e);
             }
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof Factory) {
+                return serviceURL.equals(((Factory) obj).serviceURL);
+            }
+            else {
+                return false;
+            }
+        }
+
+        @Override
+        public int hashCode() {
+            return serviceURL.hashCode();
         }
     }
 
