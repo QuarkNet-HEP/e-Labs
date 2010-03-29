@@ -624,17 +624,20 @@ public class DatabaseUserManagementProvider implements
         java.util.Random rand = new java.util.Random();
         String studentNameAddOn = "";
         ps = c.prepareStatement("INSERT INTO student (name) VALUES (?) RETURNING id;");
+        Savepoint beforeStudentInsert = c.setSavepoint("student_insert");
         do {
         	try {
 	        	ps.setString(1, student.getName() + studentNameAddOn);
 	        	rs = ps.executeQuery();
         	}
         	catch (SQLException e) {
-        		// 23XXX-type errors are okay, we just attempt a re-insert 
-        		if (!e.getSQLState().startsWith("23")) {
-        			throw e; 
+        		// 23XXX-type errors are okay (key violation) - roll back to pre-insertion attempt state and try again. 
+        		if (e.getSQLState().startsWith("23")) {
+        			c.rollback(beforeStudentInsert);
         		}
-        		// If this is an integrity violation error, eat the exception and attempt a re-insert 
+        		else {
+        			throw e;
+        		}
         	}
         	studentNameAddOn = Integer.toString(rand.nextInt(1000));
         } while ((rs == null) || !rs.next());
