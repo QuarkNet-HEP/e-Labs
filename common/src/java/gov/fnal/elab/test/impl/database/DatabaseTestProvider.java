@@ -16,6 +16,7 @@ import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.util.ElabUtil;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -378,4 +379,29 @@ public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
             DatabaseConnectionManager.close(conn, s);
         }
     }
+    
+    public boolean hasTeacherAssignedTest(int teacherId) throws ElabException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		boolean retval = false; 
+		
+		try {
+			con = DatabaseConnectionManager.getConnection(elab.getProperties());
+			ps = con.prepareStatement(
+					"SELECT COUNT (*) FROM research_group WHERE teacher_id = ? AND survey = TRUE AND role IN ('user, upload')");
+			ps.setInt(1, teacherId);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next() && rs.getLong(1) > 0L) {
+				retval = true;
+			}
+		}
+		catch (Exception e) {
+			throw new ElabException(e);
+		}
+		finally {
+			DatabaseConnectionManager.close(con, ps);
+		}
+		
+		return retval; 
+	}
 }

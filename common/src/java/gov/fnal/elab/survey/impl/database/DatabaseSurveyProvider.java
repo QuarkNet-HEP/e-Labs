@@ -487,4 +487,30 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 		}
 		return surveys; 
 	}
+	
+	public boolean hasTeacherAssignedSurvey(int teacherId) throws ElabException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		boolean retval = false; 
+		
+		try {
+			con = DatabaseConnectionManager.getConnection(elab.getProperties());
+			ps = con.prepareStatement(
+					"SELECT COUNT (*) FROM research_group WHERE teacher_id = ? AND new_survey = TRUE AND role IN ('user, upload')");
+			ps.setInt(1, teacherId);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next() && rs.getLong(1) > 0L) {
+				retval = true;
+			}
+		}
+		catch (Exception e) {
+			throw new ElabException(e);
+		}
+		finally {
+			DatabaseConnectionManager.close(con, ps);
+		}
+		
+		return retval; 
+	}
+	
 }

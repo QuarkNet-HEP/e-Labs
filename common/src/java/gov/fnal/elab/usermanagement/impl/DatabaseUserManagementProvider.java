@@ -157,6 +157,7 @@ public class DatabaseUserManagementProvider implements
     
     private ElabGroup createUserById(Connection c, int id, int projectId)
             throws SQLException, ElabException {
+    	String name = "";
         PreparedStatement ps = c.prepareStatement(
         		"SELECT rg.id, rg.name, rg.password, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
         		"FROM research_group AS rg " +
@@ -166,10 +167,11 @@ public class DatabaseUserManagementProvider implements
         		"WHERE rg.id = ? ;");
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
-        String name = rs.getString("name");
-        ps.close();
-
-        if (!rs.next()) {
+        if (rs.next()) {
+        	name = rs.getString("name");
+        	ps.close();
+        }
+        else {
             throw new ElabException("Invalid user id (" + id + ")");
         }
 

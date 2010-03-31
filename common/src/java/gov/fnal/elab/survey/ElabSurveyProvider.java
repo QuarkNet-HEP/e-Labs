@@ -27,4 +27,10 @@ public interface ElabSurveyProvider {
 	
 	public Map<Integer, String> getElabSurveyListForProject(int projectId) throws ElabException; 
 	
+	public boolean hasTeacherAssignedSurvey(int teacherId) throws ElabException;
+	
+	/* TODO: FOR LATER
+	 * public boolean teacherAssignedSurvey(int teacherId, int surveyId) throws ElabException;
+	 */
+	
 }
