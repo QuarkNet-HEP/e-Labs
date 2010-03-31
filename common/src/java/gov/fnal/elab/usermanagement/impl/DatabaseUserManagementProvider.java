@@ -543,6 +543,7 @@ public class DatabaseUserManagementProvider implements
         int researchGroupId = -1;
         
         GeneratePassword rp;  
+        java.util.Random rand = new java.util.Random();
         
         // Create a research group if needed
         if (groupToCreate != null) {
@@ -552,7 +553,7 @@ public class DatabaseUserManagementProvider implements
         	/* TODO: This really, really shouldn't be used. This is vulnerable to race conditions :( 
         	 * We should be inserting and checking for an exception
         	 */ 
-            student.getGroup().setName(checkConflict(c, student.getGroup().getName()));
+            //student.getGroup().setName(checkConflict(c, student.getGroup().getName()));
             
             File tua = new File(et.getUserArea());
             group.setUserArea(new File(tua.getParentFile(), group.getName())
@@ -565,11 +566,12 @@ public class DatabaseUserManagementProvider implements
             }
             String ay = "AY" + year;
             
+            Savepoint beforeRGInsert = c.setSavepoint("beforerginsert");
+            String groupNameAddon = "";
             ps = c.prepareStatement(
             		"INSERT INTO research_group " +
             		"(name, password, teacher_id, role, userarea, ay, survey, new_survey, in_study) " +
             		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;");
-            ps.setString(1, group.getName());
             ps.setString(2, pass);
             ps.setInt(3, et.getTeacherId());
             ps.setString(4, group.isUpload() ? "upload" : "user");
@@ -578,14 +580,25 @@ public class DatabaseUserManagementProvider implements
             ps.setBoolean(7, group.getSurvey());
             ps.setBoolean(8, group.isNewSurvey());
             ps.setBoolean(9, group.isStudy());
-            rs = ps.executeQuery();
             
-            if (rs.next()) {
-            	researchGroupId = rs.getInt(1);
+            do {
+            	try {
+		            ps.setString(1, group.getName() + groupNameAddon);
+		            rs = ps.executeQuery();
+            	}
+            	catch (SQLException e) {
+            		if (e.getSQLState().startsWith("23")) {
+            			c.rollback(beforeRGInsert);
+            			groupNameAddon = Integer.toString(rand.nextInt(1000));
+            		}
+            		else {
+            			throw e; 
+            		}
+            	}
             }
-            else {
-            	throw new SQLException("Database Error: Could not create a research group for" + group.getName());
-            }
+            while ((rs == null) || (!rs.next()));
+            
+        	researchGroupId = rs.getInt(1);
             
             ps = c.prepareStatement(
             		"INSERT INTO research_group_project (research_group_id, project_id) VALUES(?, ?);");
@@ -621,7 +634,6 @@ public class DatabaseUserManagementProvider implements
             }
         }
         
-        java.util.Random rand = new java.util.Random();
         String studentNameAddOn = "";
         ps = c.prepareStatement("INSERT INTO student (name) VALUES (?) RETURNING id;");
         Savepoint beforeStudentInsert = c.setSavepoint("student_insert");
@@ -634,12 +646,12 @@ public class DatabaseUserManagementProvider implements
         		// 23XXX-type errors are okay (key violation) - roll back to pre-insertion attempt state and try again. 
         		if (e.getSQLState().startsWith("23")) {
         			c.rollback(beforeStudentInsert);
+        			studentNameAddOn = Integer.toString(rand.nextInt(1000));
         		}
         		else {
         			throw e;
         		}
         	}
-        	studentNameAddOn = Integer.toString(rand.nextInt(1000));
         } while ((rs == null) || !rs.next());
         studentId = rs.getInt(1);
         
