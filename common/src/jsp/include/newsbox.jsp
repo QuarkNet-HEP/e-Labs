@@ -9,7 +9,7 @@
 
 <%
     ElabNotificationsProvider np = ElabFactory.getNotificationsProvider((Elab) session.getAttribute("elab"));
-    List<Notification> l = np.getSystemNotifications(-1);
+    List<Notification> l = np.getSystemNotifications();
     List<Notification> nl = new ArrayList<Notification>();
     for (Notification n : l) {
         if (n.getPriority() == Notification.PRIORITY_SYSTEM_MESSAGE) {
