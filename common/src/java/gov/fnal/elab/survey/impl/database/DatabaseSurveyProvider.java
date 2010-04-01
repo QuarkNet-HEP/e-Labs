@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
@@ -418,9 +419,8 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 					"LEFT OUTER JOIN \"newSurvey\".completions AS c ON (c.id = a.completion_id) " +
 					"LEFT OUTER JOIN \"newSurvey\".map_questions_tests AS m on (q.id = m.question_id) " +
 					"WHERE c.student_id = ? AND c.type = ? AND q.id = ? ");
-			results = new HashMap(); 
-			for (Iterator<ElabGroup> g = group.getGroups().iterator(); g.hasNext(); ) {
-				ElabGroup eg = g.next();
+			results = new TreeMap();
+			for (ElabGroup eg : group.getGroups()) {
 				if (eg.getNewSurveyId() == null) {
 					continue; 
 				}
