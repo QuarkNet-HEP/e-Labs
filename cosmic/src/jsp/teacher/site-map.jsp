@@ -39,8 +39,8 @@
 	
 	if (user != null) {
 		if (user.getRole().equalsIgnoreCase("teacher")) {
-			newSurvey = elab.getSurveyProvider().hasTeacherAssignedSurvey(user.getId());
-			oldSurvey = elab.getTestProvider().hasTeacherAssignedTest(user.getId());
+			newSurvey = elab.getSurveyProvider().hasTeacherAssignedSurvey(Integer.parseInt(user.getId()));
+			oldSurvey = elab.getTestProvider().hasTeacherAssignedTest(Integer.parseInt(user.getId()));
 		}
 		request.setAttribute("userId", user.getId());
 	}
