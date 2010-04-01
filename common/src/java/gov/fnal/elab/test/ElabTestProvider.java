@@ -64,4 +64,6 @@ public interface ElabTestProvider {
      */
     Map getStudentResultsForTeacher(String type, ElabGroup teacher)
             throws ElabException;
+    
+    public boolean hasTeacherAssignedTest(int teacherId) throws ElabException; 
 }

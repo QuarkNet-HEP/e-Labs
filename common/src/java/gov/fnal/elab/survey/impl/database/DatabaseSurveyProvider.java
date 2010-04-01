@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import com.mallardsoft.tuple.*;
+import java.util.TreeMap;
 
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
@@ -397,7 +398,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 		
 		try {
 			con = DatabaseConnectionManager.getConnection(elab.getProperties());
-			results = new HashMap(); 
+			results = new TreeMap(); 
 			for (Iterator<ElabGroup> g = group.getGroups().iterator(); g.hasNext(); ) {
 				ElabGroup eg = g.next();
 				if (eg.getNewSurveyId() == null) {
@@ -450,4 +451,55 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider 
 		return results; 
 	}
 
+	public Map<Integer, String> getElabSurveyListForProject(int projectId) throws ElabException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		Map<Integer, String> surveys = new java.util.TreeMap(); 
+		
+		try { 
+			con = DatabaseConnectionManager.getConnection(elab.getProperties());
+			ps = con.prepareStatement(
+					"SELECT * FROM \"newSurvey\".tests WHERE proj_id = ?;");
+			ps.setInt(1, projectId);
+			ResultSet rs = ps.executeQuery(); 
+			while (rs.next()) {
+				// Construct description string 
+				String val = rs.getString("description") + " for " + rs.getString("timeframe_description");
+				surveys.put(rs.getInt("id"), val);
+			}
+		}
+		catch (Exception e) {
+			throw new ElabException(e);
+		}
+		finally {
+			DatabaseConnectionManager.close(con, ps);
+		}
+		return surveys; 
+	}
+	
+	public boolean hasTeacherAssignedSurvey(int teacherId) throws ElabException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		boolean retval = false; 
+		
+		try {
+			con = DatabaseConnectionManager.getConnection(elab.getProperties());
+			ps = con.prepareStatement(
+					"SELECT COUNT (*) FROM research_group WHERE teacher_id = ? AND new_survey = TRUE AND role IN ('user, upload')");
+			ps.setInt(1, teacherId);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next() && rs.getLong(1) > 0L) {
+				retval = true;
+			}
+		}
+		catch (Exception e) {
+			throw new ElabException(e);
+		}
+		finally {
+			DatabaseConnectionManager.close(con, ps);
+		}
+		
+		return retval; 
+	}
+	
 }

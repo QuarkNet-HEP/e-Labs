@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Encapsulates information about an elab user.
  */
-public class ElabGroup {
+public class ElabGroup implements Comparable {
     public static final String ROLE_TEACHER = "teacher";
     public static final String ROLE_ADMIN = "admin";
     public static final String ROLE_UPLOAD = "upload";
@@ -491,5 +491,11 @@ public class ElabGroup {
 
 	public Integer getForumId() {
 		return forumId;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		return this.getName().compareTo(((ElabGroup) o).getName());
 	}
 }

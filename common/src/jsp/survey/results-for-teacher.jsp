@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
-<%@ include file="../login/admin-login-required.jsp" %>
+<%@ include file="../login/teacher-login-required.jsp" %>
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.survey.*" %>
@@ -40,7 +40,7 @@
 		throw new ElabJspException("Missing group id for teacher");
 	}
 	try {
-		ElabGroup teacher = elab.getUserManagementProvider().getGroupById(id);
+		ElabGroup teacher = elab.getUserManagementProvider().getGroupById(Integer.parseInt(id));
 		Map results = elab.getSurveyProvider().getStudentResultsForTeacher(type, teacher);
 		String testName = elab.getSurveyProvider().getSurvey(teacher.getNewSurveyId().intValue()).getName();
 		request.setAttribute("results", results);
