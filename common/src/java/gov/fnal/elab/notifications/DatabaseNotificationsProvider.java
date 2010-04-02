@@ -261,7 +261,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
     		ps = conn.prepareStatement(
 				"SELECT id, message, time, expires, priority, \"read\" FROM notifications " + 
 				"LEFT OUTER JOIN notifications_state ON id = notification_id " + 
-				"WHERE (recipientid IS NULL) AND (project_id IS NULL) AND (\"read\" IS NOT TRUE) AND (deleted IS NOT TRUE) AND (expires > NOW()) " +
+				"WHERE (recipientid IS NULL) AND (projectid IS NULL) AND (\"read\" IS NOT TRUE) AND (deleted IS NOT TRUE) AND (expires > NOW()) " +
 				"ORDER BY time;");
     		ResultSet rs = ps.executeQuery();
     		List<Notification> l = new ArrayList<Notification>();
