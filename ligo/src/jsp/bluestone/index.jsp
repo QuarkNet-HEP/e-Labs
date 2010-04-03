@@ -10,143 +10,131 @@
 	    <script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.min.js"></script>
 	    <script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.selection.min.js"></script>
 		<script language="javascript" type="text/javascript"> 
-			$(function () {
-			   var options = {
-					   lines: { show: true, lineWidth: 1 },
-					   points: { show: false },
-					   xaxis: { tickDecimals: 0, tickSize: 100 },
-					   legend: { show: false },
-					   selection: { mode: "x" }
-			   };
-			   var data = []; 
-			   var placeholder = $("#chart");
-			   var timeout = 500; 
-			   var index = 0; 
+			$(document).ready(function() {
+				// Setup flot defaults
+				var options = { 
+						lines: {show: true, lineWidth: 1},
+						points: {show: false},
+						legend: {show: false},
+						xaxis: { mode: 'time'},
+						selection: { mode: "x" }
+				};
+				var data = []; 
+				var placeholder = $("#chart");
+				var timeout = 10000;
+				var dataServerUrl = '/elab/ligo/data/data-server.jsp';
 
-			   $.plot(placeholder, data, options); 
+				// Setup datepicker defaults
+				var calendarParam = {
+						showOn: 'button', 
+						buttonImage: '../graphics/calendar-blue.png',
+						buttonImageOnly: true, 
+						changeMonth: true,
+						changeYear: true, 
+						showButtonPanel: true,
+						minDate: new Date(2003, 3-1, 5), // Earliest known date of data - probably should progamatically find. 
+						maxDate: new Date() // Should not look later than today
+				};
 
-			   // fetch one series, adding to what we got
-			   var alreadyFetched = {};
+				var xminGPSTime;
+				var xmaxGPSTime; 
 
-			   $("#parseDropDown").click(function() {
-				   var f = $("#channelSelector").val(); 
-				   var n = $("#channelSelector :selected").text(); 
-				   var xmin = $("#xmin").val(); // TODO: Validate
-				   var xmax = $("#xmax").val(); // TODO: Validate
-				   var command = "data(\"" + f + "\", " + xmin + "," + xmax + "," + "100)"; 
-				   var dataURL = "../../cosmic/data/data-server.jsp?q=" + command;
-				   
-				   // Get the data via AJAJ call
-				   if (!alreadyFetched[command]) {
-					   $.ajax({
-						   url: dataURL,
-						   method: 'GET', 
-						   dataType: 'json',
-						   success: onDataReceived,
-						   error: onErrorReceived
-					   });
-				   }
+				var ligoMinTime; 
+				var ligoMaxTime; 
 
-				   // Do something with the data (i.e. plot it)
-				   function onDataReceived(series) { 
-			            series.label = f; 
-			            series.shadowSize = 0;  
-			            series.color = index; 
-			            
+				// $("#xmin").datepicker('option', 'buttonText', 'Choose start date.');
+				// $("#xmax").datepicker('option', 'buttonText', 'Choose end date.');
+				
+				// Get maximum timespan to start
+				$.ajax({
+					url: dataServerUrl + '?fn=getTimeRange', 
+					method: 'GET',
+					dataType: 'text', 
+					timeout: 10000,
+					success: onTimeRangeReceived,
+					beforeSend: spinnerOn,
+					complete: onTimeRangeCompleted
+				});
 
-			            // let's add it to our current data
-		                data.push(series);
-		                alreadyFetched[command] = true; 
-			            
-			            // and plot all we got
-			            //var plot = $.plot(placeholder, data, options);
-			            addTableEntry();
-			            plotChart(); 
+				function onTimeRangeReceived(series) {
+					var s = $.trim(series).split(" ");
+					xminGPSTime = s[0];
+					ligoMinTime = s[0];
+					xmaxGPSTime = s[1];
+					ligoMaxTime = s[1];
+					$("#xmin").val((new Date(convertTimeGPSToUNIX(parseFloat(xminGPSTime)) * 1000.0)).toDateString()); 
+					$("#xmax").val((new Date(convertTimeGPSToUNIX(parseFloat(xmaxGPSTime)) * 1000.0)).toDateString());
+				}
 
-			            index++;  
-				   }
+				function onTimeRangeCompleted() {
+					spinnerOff();
+				}
 
-				   // Timeout/corrupt data/other badness? Do something!
+				function spinnerOn() {
+					$("#busySpinner").css('visibility', 'visible');
+				}
 
-				   // Add to the table of things below (checked)
-				   function addTableEntry() {
-					   $("#entryList tr:last").after("<tr id=\"" + f + "\"><td><input type=\"checkbox\" id=\"checkIndex" + index + "\" checked></input></td><td id=\"colorIndex" + index + "\">" + index  + "</td><td>" + n + "</td></tr>");
-				   } 
+				function spinnerOff() {
+					$("#busySpinner").css('visibility', 'hidden');
+				}
 
-				   // Setup handler so we can hide/unhide chart elements 
-			   });
+				$("#buttonZoom").click(function() {
+					$("#parseDropDown").trigger('click');
+				});
 
-			   // Function to (1) regenerate the table and (2) put a color marker on it. 
-			   // table has CHECKBOX	COLOR	LABEL
+				$("#buttonZoomOut").click(function() {
+					xminGPSTime = ligoMinTime;
+					xmaxGPSTime = ligoMaxTime;
+					$("#parseDropDown").trigger('click');
+				});
 
-			   function plotChart() {
-				   // set colors
-				   
-				   // regen table
-				   
-				   // plot chart
-				   var plot = $.plot(placeholder, data, options);
-				   var allSeries = plot.getData(); 
+				placeholder.bind("plotselected", function(event, ranges) {
+					xminGPSTime = convertTimeUNIXtoGPS(ranges.xaxis.from / 1000.0); 
+					xmaxGPSTime = convertTimeUNIXtoGPS(ranges.xaxis.to / 1000.0); 
+					$("#xmin").val((new Date(convertTimeGPSToUNIX(parseFloat(xminGPSTime)) * 1000.0)).toDateString()); 
+					$("#xmax").val((new Date(convertTimeGPSToUNIX(parseFloat(xmaxGPSTime)) * 1000.0)).toDateString());
+				});
 
-				   for (var i = 0; i < allSeries.length ; ++i) {
-					   $("td#colorIndex" + i).css("background-color", allSeries[i].color); 
-				   } 
+				$("#parseDropDown").click(function() {
+					var c = $("#channelSelector :selected").val();
+					if (c == "placeholder") {
+						return;
+					}
 
-				   
-			   }
-			   
-			   function onErrorReceived(XMLHttpRequest, textStatus) {
-				    if (textStatus == "timeout") {
-					    $("#errorMessage").text("Sorry, the request timed out, please try again in a moment."); 
-				    }
-				    else if (textStatus == "error") {
-					    $("#errorMessage").text("It looks like you mistyped something; please check your expression."); 
-				    }
-				    else {
-					    $("#error").text() = "Oops"; 
-				    }
-			   }
+					var url = dataServerUrl + '?fn=getData&params=' + c + ',0,' + xminGPSTime + ',' + xmaxGPSTime;
 
-			   $("#chart").bind("plotselected", function (event, ranges) {
-				   // first plot low-res data
-				   // then grab new data 
-				   // plot new data
-				   // probably should show some sort of 'WORKING' spinny icon
-				   var plot = $.plot(placeholder, data,
-						   $.extend(true, {}, options, {
-							   xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to }
-						   }));
-				   var allSeries = plot.getData(); 
+					// Get the data via AJAT call
+					$.ajax({ 
+						url: url,
+						method: 'GET', 
+						dataType: 'text',
+						timeout: timeout,
+						success: onChannelDataReceived,
+						beforeSend: spinnerOn,
+						complete: spinnerOff
+					});
 
-				   var thisCommand; 
-				   var thisDataUrl; 
-				   var newData = []; 
-				   alreadyFetched = {}; 
-				   for (var i = 0; i < allSeries.length ; ++i) {
-					   thisCommand = "data(\"" + allSeries[i].label   + "\", " + ranges.xaxis.from.toFixed() + "," + ranges.xaxis.to.toFixed() + "," + "100)";
-					   thisDataUrl = "../../cosmic/data/data-server.jsp?q=" + thisCommand;
+					function onChannelDataReceived(series) { 
+						var s = series.split(" ");
+						var a = new Array();
+						var num = s[0];
+						for (var i = 0; i < s.length / 2 - 1; i++) {
+							a.push([convertTimeGPSToUNIX(parseFloat(s[i * 2 + 1])) * 1000.0, s[i * 2 + 2]]);
+						}
+						data = [{data: a}];
 
-					   $.ajax({
-						   url: thisDataUrl,
-						   method: 'GET', 
-						   dataType: 'json',
-						   success: onDataReceived,
-						   error: onErrorReceived,
-						   async: false
-					   });
-				   } 
-				   
-				   $.plot(placeholder, newData, options); 
+						$.plot(placeholder, data, options); 
+					}
+				});
 
-				   function onDataReceived(series) {
-					   series.shadowSize = 0;  
-			           series.color = index;
+				function convertTimeGPSToUNIX(x) { 
+					// TODO: Make a proper offset, this is off depending on leap seconds
+					return x + 315964787.0;
+				}
 
-			           newData.push(series); 
-				   }
- 
-			   });
-			   
+				function convertTimeUNIXtoGPS(x) {
+					return x - 315964787.0;
+				}
 			});
 		</script> 
 	</head>
@@ -158,11 +146,15 @@
 				<td>
 					<div id="chart" style="width:550px; height:250px;"></div></td>
 				<td valign="top">
-					X<sub>min</sub>: <input type="text" name="xmin" id="xmin" value="0" size="4"></input>
+					X<sub>min</sub>: <input readonly type="text" name="xmin" id="xmin" size="15" class="datepicker"></input>
 					<br />
-					X<sub>max</sub>: <input type="text" name="xmax" id="xmax" value="10" size="4"></input>
+					X<sub>max</sub>: <input readonly type="text" name="xmax" id="xmax" size="15" class="datapicker"></input>
 					<br />
-					<button title="Zoom to selection" id="buttonZoom" >Zoom to selection</button>
+					<button title="Zoom to selection" id="buttonZoom">Zoom to selection</button>
+					<br />
+					<button title="Zoom all the way out" id="buttonZoomOut">Zoom all the way out</button>
+					<br />
+					<img src="../graphics/busy2.gif" id="busySpinner" style="visibility: hidden"></img>
 				</td>
 			</tr>
 		</table>
@@ -179,18 +171,15 @@
 		<div id="channel_list">
 			<select name="channel" id="channelSelector"> 
 				<option value="placeholder">Select a channel: </option>
-				<option value="sin">Sine</option>
-				<option value="cos">Cosine</option>
+				<option value="L0:PEM-LVEA_SEISX.mean">Livingston X-Axis Vault Seismometer</option>
+				<option value="L0:PEM-LVEA_SEISY.mean">Livingston Y-Axis Vault Seismometer</option>
+				<option value="L0:PEM-LVEA_SEISZ.mean">Livingston Z-Axis Vault Seismometer</option>
+				<option value="H0:PEM-LVEA_SEISX.mean">Hanford X-Axis Vault Seismometer</option>
+				<option value="H0:PEM-LVEA_SEISY.mean">Hanford Y-Axis Vault Seismometer</option>
+				<option value="H0:PEM-LVEA_SEISZ.mean">Hanford Z-Axis Vault Seismometer</option>
 			</select>
-			<input id="parseDropDown" type="button" value="Add to chart"></input>
+			<input id="parseDropDown" type="button" value="Plot"></input>
 		</div>
 		
-		<table border="1" id="entryList">
-			<tr>
-				<th>&nbsp;</th>
-				<th>Color</th>
-				<th>Channel</th>
-			</tr>
-		</table>		
 	</body>
 </html>
