@@ -8,6 +8,7 @@ import gov.fnal.elab.expression.data.engine.DataSet;
 import gov.fnal.elab.expression.evaluator.functions.Data;
 import gov.fnal.elab.expression.evaluator.functions.Function;
 import gov.fnal.elab.expression.evaluator.functions.Log;
+import gov.fnal.elab.expression.evaluator.functions.Abs;
 import gov.fnal.elab.expression.evaluator.functions.Threshold;
 import gov.fnal.elab.expression.evaluator.functions.Value;
 import gov.fnal.elab.expression.evaluator.parser.I2u2expConstants;
@@ -36,6 +37,7 @@ public class Interpreter implements I2u2expConstants {
         functions.put("data", new Data(this));
         functions.put("log", new Log());
         functions.put("threshold", new Threshold());
+        functions.put("abs", new Abs());
     }
 
     public DataEngine getEngine() {
