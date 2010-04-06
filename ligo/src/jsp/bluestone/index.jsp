@@ -11,39 +11,25 @@
 	    <script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.selection.min.js"></script>
 		<script language="javascript" type="text/javascript"> 
 			$(document).ready(function() {
-				// Setup flot defaults
 				var options = { 
-						lines: {show: true, lineWidth: 1},
+						lines: {show: true, lineWidth: 1 },
 						points: {show: false},
 						legend: {show: false},
 						xaxis: { mode: 'time'},
-						selection: { mode: "x" }
+						selection: { mode: "x" },
+						shadowSize: 0,
 				};
+				
 				var data = []; 
 				var placeholder = $("#chart");
 				var timeout = 10000;
 				var dataServerUrl = '/elab/ligo/data/data-server.jsp';
-
-				// Setup datepicker defaults
-				var calendarParam = {
-						showOn: 'button', 
-						buttonImage: '../graphics/calendar-blue.png',
-						buttonImageOnly: true, 
-						changeMonth: true,
-						changeYear: true, 
-						showButtonPanel: true,
-						minDate: new Date(2003, 3-1, 5), // Earliest known date of data - probably should progamatically find. 
-						maxDate: new Date() // Should not look later than today
-				};
 
 				var xminGPSTime;
 				var xmaxGPSTime; 
 
 				var ligoMinTime; 
 				var ligoMaxTime; 
-
-				// $("#xmin").datepicker('option', 'buttonText', 'Choose start date.');
-				// $("#xmax").datepicker('option', 'buttonText', 'Choose end date.');
 				
 				// Get maximum timespan to start
 				$.ajax({
@@ -85,14 +71,16 @@
 				$("#buttonZoomOut").click(function() {
 					xminGPSTime = ligoMinTime;
 					xmaxGPSTime = ligoMaxTime;
+					$("#xmin").val((new Date(convertTimeGPSToUNIX(parseFloat(xminGPSTime)) * 1000.0)).toDateString()); 
+					$("#xmax").val((new Date(convertTimeGPSToUNIX(parseFloat(xmaxGPSTime)) * 1000.0)).toDateString());
 					$("#parseDropDown").trigger('click');
 				});
 
 				placeholder.bind("plotselected", function(event, ranges) {
 					xminGPSTime = convertTimeUNIXtoGPS(ranges.xaxis.from / 1000.0); 
 					xmaxGPSTime = convertTimeUNIXtoGPS(ranges.xaxis.to / 1000.0); 
-					$("#xmin").val((new Date(convertTimeGPSToUNIX(parseFloat(xminGPSTime)) * 1000.0)).toDateString()); 
-					$("#xmax").val((new Date(convertTimeGPSToUNIX(parseFloat(xmaxGPSTime)) * 1000.0)).toDateString());
+					$("#xmin").val((new Date(ranges.xaxis.from)).toDateString()); 
+					$("#xmax").val((new Date(ranges.xaxis.to)).toDateString());
 				});
 
 				$("#parseDropDown").click(function() {
