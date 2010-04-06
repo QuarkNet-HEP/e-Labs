@@ -6,30 +6,37 @@
 		<title>Charting Test Page</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	    <!--[if IE]><script language="javascript" type="text/javascript" src="../include/excanvas.min.js"></script><![endif]--> 
+	    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+	    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 	    <script language="javascript" type="text/javascript" src="../include/jquery/js/jquery-1.4.min.js"></script> 
 	    <script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.min.js"></script>
 	    <script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.selection.min.js"></script>
 		<script language="javascript" type="text/javascript"> 
 			$(document).ready(function() {
 				var options = { 
-						lines: {show: true, lineWidth: 1 },
+						lines: {show: true, lineWidth: 1, shadowSize: 0 },
 						points: {show: false},
 						legend: {show: false},
 						xaxis: { mode: 'time'},
 						selection: { mode: "x" },
-						shadowSize: 0,
+						shadowSize: 0
 				};
 				
 				var data = []; 
 				var placeholder = $("#chart");
 				var timeout = 10000;
 				var dataServerUrl = '/elab/ligo/data/data-server.jsp';
+				var plot = null; 
 
 				var xminGPSTime;
 				var xmaxGPSTime; 
 
 				var ligoMinTime; 
 				var ligoMaxTime; 
+
+				$.plot(placeholder, { }, options);
+
+				$("#resizablecontainer").resizable(); 
 				
 				// Get maximum timespan to start
 				$.ajax({
@@ -41,7 +48,7 @@
 					beforeSend: spinnerOn,
 					complete: onTimeRangeCompleted
 				});
-
+				
 				function onTimeRangeReceived(series) {
 					var s = $.trim(series).split(" ");
 					xminGPSTime = s[0];
@@ -109,10 +116,20 @@
 						for (var i = 0; i < s.length / 2 - 1; i++) {
 							a.push([convertTimeGPSToUNIX(parseFloat(s[i * 2 + 1])) * 1000.0, s[i * 2 + 2]]);
 						}
-						data = [{data: a}];
+						data = [{data: a, shadowSize: 0}];
 
-						$.plot(placeholder, data, options); 
+						plot = $.plot(placeholder, data, options); 
+						
 					}
+				});
+
+				$("#resizablecontainer").bind("resizestop", function(event, ui) {
+					$("#chart").css('width', ui.size.width - 8);
+					$("#chart").css('height', ui.size.height - 8);
+					if (plot != null) {
+						$.plot(placeholder, data, options);  
+					}
+					
 				});
 
 				function convertTimeGPSToUNIX(x) { 
@@ -132,7 +149,10 @@
 		<table>
 			<tr>
 				<td>
-					<div id="chart" style="width:550px; height:250px;"></div></td>
+					<div id="resizablecontainer" >
+						<div id="chart" style="width:550px; height:250px; text-align: left;"></div>
+					</div>
+				</td>
 				<td valign="top">
 					X<sub>min</sub>: <input readonly type="text" name="xmin" id="xmin" size="15" class="datepicker"></input>
 					<br />
