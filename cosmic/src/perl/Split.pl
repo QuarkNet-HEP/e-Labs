@@ -254,7 +254,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
        		$lastDay = $day; 
        		
 	        # hmm. there's an assumption there about the cpld frequency
-	        $CPLDdifference = (hex($row[0])-hex($row[9]))/41666667;
+	        $CPLDdifference = (hex($dataRow[0])-hex($dataRow[9]))/41666667;
 	        $sec_offset = sprintf("%.0f", $sec + $msec/1000 + $offset/1000);
 	        $sec = $sec_offset + $CPLDdifference;
 	        #this is here because we require lines to go in the absolute correct day (with offsets taken into consideration)
@@ -438,7 +438,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
         	if ($cpld_day_seconds == 86400){
             	$cpld_day_seconds = 0;
 	        }
-    	    if (($cpld_hex eq $row[9]) || ($cpld_seconds == $cpld_day_seconds) || ($interrupt != 0) || ($time == $split_line[10])){ 
+    	    if (($cpld_hex eq $dataRow[9]) || ($cpld_seconds == $cpld_day_seconds) || ($interrupt != 0) || ($time == $split_line[10])){ 
         		# both columns must advance to calculate the change
             	next;
 	        }
