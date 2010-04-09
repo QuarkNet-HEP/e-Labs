@@ -18,6 +18,8 @@
 # jordant  changed 8-15-06: fixed dropped first lines from raw data file if there was an incomplete pulse on the first line. Solution: increment $total_events in the FOR $ch_num 1..4 loop's first IF (line 113 right now) This allows the if $total_events > 0 conditional to fire-that's where the print SPLIT lives.
 # jordant  changed 12-18-06: fixed line dropping when CPLD rollovers go asynchronous. We were throwing away too many lines by just looking at the time calculation.
 # hategan  changed 02-20-08: fixed CPLD frequency calculations
+# jordant  changed 09-06-09: added status line parsing
+# jordant  changed 04-01-10: created a flag (#5) for occurences of the date changing before midnight. We now discard the lines.
 
 if($#ARGV < 2){
 	die "usage: Split.pl [filename to parse] [output DIRECTORY] [board ID]\n";
@@ -76,9 +78,9 @@ $sum_alts = 0;						#sum of altitudes from "DG" lines in the raw datafile
 $lat_count = 0;						#number of latitude lines
 $long_count = 0;					#number of longitude lines
 $alt_count = 0;						#number of altitude lines
-$cpld_latch = 0;					#CPLD count of GPS arrival $row[9]
-$last_cpld_latch;					#CPLD count of GPS arrival on the _last_ line
-$cpld_trig = 0;						#CPLD count of trigger $row[0]
+$cpld_latch = 0;					#CPLD count of GPS arrival $dataRow[9]
+$last_cpld_latch = 0;				#CPLD count of GPS arrival on the _last_ line
+$cpld_trig = 0;						#CPLD count of trigger $dataRow[0]
 $last_cpld_trig = 0;				#CPLD count of trigger on the _last_ line
 $data_line = 0;						#increments on each acceptably formatted data line
 
@@ -109,13 +111,73 @@ while(<IN>){
 	#$re="^([0-9A-F]{8}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{8}) (\\d{6}\\.\\d{3}) (\\d{6}) ([AV]) (\\d\\d) ([0-9A-F]) ([-+]\\d{4})\$";
 	
 	#OK the new regExp on the next line works. I did not add the + to the offset (word 16) but left it bare. The question is what does ThresholdTimes do with this? Do I need to add the + to make ThresholdTimes happy?
-	$re="^([0-9A-F]{8}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{8}) (\\d{6}\\.\\d{3}) (\\d{6}) ([AV]) (\\d\\d) ([0-9A-F]) ([-+ ]\\d{4})\$";
+	$reData="^([0-9A-F]{8}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{8}) (\\d{6}\\.\\d{3}) (\\d{6}) ([AV]) (\\d\\d) ([0-9A-F]) ([-+ ]\\d{4})\$";
 
+	#additional regExp to catch status lines
+	$reStatus0="^([A-Z]{2}) ([0-9]{4}) ([-+ 0-9]{4}) ([-+ 0-9]{4}) ([0-9]{4}) ([0-9]{6}) ([0-9]{6}) ([AV]) ([0-9]{2}) ([0-9A-F]{8}) ([0-9]{3}) ([0-9]{4}) ([0-9A-F]{8}) ([0-9A-F]{8})\$";
+	$reStatus1="^([A-Z]{2}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8})\$";
+		
+	#regExp for the output of the TL command:
+	$reThreshold0="^TL L0=([0-9]+) L1=([0-9]+) L2=([0-9]+) L3=([0-9]+)\$";
+	
 	#*performance* using an RE is 30% faster than splitting by whitespace
-	if(/$re/o){
-		@row = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16);
+	if(/$reData/o){
+		@dataRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16);
+		#$lastDay = substr($dataRow[11], 0, 2);
+		$day = substr($dataRow[11], 0, 2);
+		$month = substr($dataRow[11], 2, 2);
+    	$year = substr($dataRow[11], 4, 2) + 2000;   # Assume no records before 2000
+    	$hour = substr($dataRow[10], 0, 2);
+	    $min = substr($dataRow[10], 2, 2);
+	    $sec = substr($dataRow[10], 4, 2);
+	    $msec = substr($dataRow[10], 7, 3);
+	    $offset = $dataRow[15];
 		$data_line ++;
 	}
+
+	#inserted by TJ to look for status update lines
+	#Need to fix the problem with ST2 and ST3. The former does not reset the counter, and may roll over. We have asked the users to use ST2, but cannot trust that. I'll write the ST values to an array, scan the entire file, do a comparison on the DS values to determine if the user did ST2 or ST3 and do the subtraction (or not).
+	
+	elsif(/$reStatus0/o){
+		@stRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14);
+		$stRow = @stRow; 
+		#print "ST line going by Boss.", "\n";
+		push(@stTime, substr($stRow[5], 0, 2)*3600 + substr($stRow[5], 2, 2)*60 + substr($stRow[5], 4, 6));
+		#$stRow[1], "\t", $stRow[3]/10, "\t", $stRow[4]/1000, "\t", $stRow[8], "\n"
+		push(@stPress, $stRow[1]);
+		push(@stTemp, $stRow[3]/10);
+		push(@stVcc, $stRow[4]/1000);
+		push(@stGPSSats, $stRow[8]);
+		#$statusTime = substr($stRow[5], 0, 2)*3600 + substr($stRow[5], 2, 2)*60 + substr($stRow[5], 4, 6);
+		#We could look at ConReg and TMCReg to see if they change. If they do, we need to start another split file.
+		$ConReg = $stRow[13];
+		$TMCReg = $stRow[12];
+		$DAQFirmware = $stRow[10];
+		next; #we need a next here to get the second line present in the output of ST.
+	}
+	
+	elsif(/$reStatus1/o){
+		@dsRow = ($1, $2, $3, $4, $5, $6);
+		#$totalEvents += hex($dsRow[5]);
+		#print "DS line going by Boss.", "\n";
+		push (@stCount0, hex($dsRow[1]));
+		push (@stCount1, hex($dsRow[2]));
+		push (@stCount2, hex($dsRow[3]));
+		push (@stCount3, hex($dsRow[4]));
+		push (@stEvents, hex($dsRow[5]));
+		#print "@STEvents", "\n"; 
+		#$statusFlag = 1;
+		#print $blessFile $statusTime, "\t", hex($dsRow[1]), "\t", sprintf("%.0f", sqrt(hex($dsRow[1]))), "\t", hex($dsRow[2]), "\t", sprintf("%.0f", sqrt(hex($dsRow[2]))), "\t", hex($dsRow[3]), "\t", sprintf("%.0f", sqrt(hex($dsRow[3]))), "\t", hex($dsRow[4]), "\t", sprintf("%.0f", sqrt(hex($dsRow[4]))), "\t", hex($dsRow[5]), "\t", sprintf("%.0f", sqrt(hex($dsRow[5]))), "\t", $stRow[1], "\t", $stRow[3]/10, "\t", $stRow[4]/1000, "\n";
+		next; #get the next line in the input file. All the lifting is done on this one.
+	}
+
+	elsif(/$reThreshold0/o){
+		@thRow = ($1, $2, $3, $4);
+		#print "TH line going by Boss.", "\n";
+		next; #get the next line in the input file. All the lifting is done on this one.
+		#print "LOOK, LOOK, LOOK,", @thRow, "\n"; 
+	}
+
 	elsif(&gps_check($_)){
         next;
 	}
@@ -132,20 +194,21 @@ while(<IN>){
 
 	#GPS flag = 4 in the raw data indicates that the GPS time in that line is suspect. Indeed, our calculation confirms this so we should ignore the lines with a GPS flag = 4. Now we do.
 	#Actually it should check if bit 2 is 1. Otherwise it may accept invalid lines.
-	next if ($row[14] & 0x04 != 0); 
+	next if ($dataRow[14] & 0x04 != 0); 
 
 	#There are four asynchronous cpld rollover errors that can appear in the data, we can trap those and be more clever about dropping data lines.
 
 	#first set the variables
-	$cpld_latch = hex($row[9]);
-	$cpld_trig = hex($row[0]);
+	$cpld_latch = hex($dataRow[9]);
+	$cpld_trig = hex($dataRow[0]);
 		
 	#Set the flag with a simple comparison of the buffers. Use the value of the flag as a control on further checks. Those checks can reset the flag to zero and go on or reset the flag to zero and discard the current line (rare).
 	$rollover_flag = 1 if ($cpld_trig <= $last_cpld_trig && $cpld_latch > $last_cpld_latch);
 	$rollover_flag = 2 if ($cpld_trig == $last_cpld_trig && $cpld_latch < $last_cpld_latch); #flag == 1 and flag == 2 can be dealt with in the same way.
 	$rollover_flag = 3 if ($cpld_trig == $last_cpld_trig && $cpld_latch > $last_cpld_latch);
-	$rollover_flag = 4 if ($pld_trig > $last_cpld_trig && $cpld_latch > $last_cpld_latch); #This should never, ever happen. Ever. Still. . . 
-	
+	$rollover_flag = 4 if ($cpld_trig > $last_cpld_trig && $cpld_latch > $last_cpld_latch); #This should never, ever happen. Ever. Still. . . 
+	#A new rollover case appeared in firmware 1.12 The GPS date could increment before the clock reached midnight.
+	$rollover_flag = 5 if ($day != $lastDay) && (substr($dataRow[10], 0, 2) == 23) && (substr($dataRow[10], 2, 2) > 55); 
 	#Set the current values of trig and latch for later comparison.
 	$last_cpld_trig = $cpld_trig;
 	$last_cpld_latch = $cpld_latch;
@@ -171,25 +234,27 @@ while(<IN>){
 	}
 	
 	if ($rollover_flag == 4){
+		#print $rollover_flag,"\t", $_;
+		$rollover_flag = 0;
+		next;
+	}
+	
+	if ($rollover_flag == 5){
+		#print $rollover_flag, "\t", $_;
 		$rollover_flag = 0;
 		next;
 	}
 	
 if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 	# get date/time of the current line
-		if($last_time ne $row[0].$row[9].$row[10].$row[15]){
+		if($last_time ne $dataRow[0].$dataRow[9].$dataRow[10].$dataRow[15]){
         	#*performance* NOT using a function call saves some compute time here
         	#($sec, $min, $hour, $day, $month, $year) = &curr_line_time_setup(@row);
-       		$day = substr($row[11], 0, 2);
-	        $month = substr($row[11], 2, 2);
-    	    $year = substr($row[11], 4, 2) + 2000;   # Assume no records before 2000
-        	$hour = substr($row[10], 0, 2);
-	        $min = substr($row[10], 2, 2);
-	        $sec = substr($row[10], 4, 2);
-	        $msec = substr($row[10], 7, 3);
-	        $offset = $row[15];
+       		
+       		$lastDay = $day; 
+       		
 	        # hmm. there's an assumption there about the cpld frequency
-	        $CPLDdifference = (hex($row[0])-hex($row[9]))/41666667;
+	        $CPLDdifference = (hex($dataRow[0])-hex($dataRow[9]))/41666667;
 	        $sec_offset = sprintf("%.0f", $sec + $msec/1000 + $offset/1000);
 	        $sec = $sec_offset + $CPLDdifference;
 	        #this is here because we require lines to go in the absolute correct day (with offsets taken into consideration)
@@ -201,9 +266,9 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			$month = sprintf("%02d", $month+1);
 			$day = sprintf("%02d", $day);
 		}
-		$last_time = $row[0].$row[9].$row[10].$row[15];
+		$last_time = $dataRow[0].$dataRow[9].$dataRow[10].$dataRow[15];
 
-		#This next line may not be necessary after the Rrow[14]==4 check implemented above.
+		#This next line may not be necessary after the dataRow[14]==4 check implemented above.
 		next if($curr_gm_time < $last_gm_time);	#make sure that the GPS times are increasing
 	
 		$last_gm_time = $curr_gm_time;
@@ -211,18 +276,20 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 		$date = sprintf("%04d-%02d-%02d", $year, $month, $day);
 		$time = sprintf("%02d:%02d:%02d", $hour, $min, $sec);
 	
+		
+		#The stuff in the next for loop is really unneccessary with the data blessing scheme. I'm taking it out later.
 		#count how many events are in this file in each channel
 		for my $ch_num (1..4){
 			$RE = $ch_num*2 - 1;	#index of each RE in the line
 			$FE = $RE+1;
 
-			if(hex($row[1]) & 0b10000000){
+			if(hex($dataRow[1]) & 0b10000000){
 				$chanRE[$ch_num] = 0;
 				$total_events++;
 			}
 
 			#if there's a vaild (6th bit in binary is 1) rising edge we need to match
-			if($chanRE[$ch_num] == 1 and (hex($row[$FE]) & 0b100000)){
+			if($chanRE[$ch_num] == 1 and (hex($dataRow[$FE]) & 0b100000)){
 				$split_chan[$ch_num]++;
 				$raw_chan[$ch_num]++;
 				$total_events++;
@@ -230,16 +297,16 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 				$chanRE[$ch_num] = 0;
 
 				#now, if there's rising edge data on the same line, it's the start of a new event (unrelated to the falling edge on this line)
-				if(hex($row[$RE]) & 0b100000){
+				if(hex($dataRow[$RE]) & 0b100000){
 					$chanRE[$ch_num] = 1;
 				}
 			}
 			#else, this rising edge is unmatched and is the start of a new event
-			elsif(hex($row[$RE]) & 0b100000){
+			elsif(hex($dataRow[$RE]) & 0b100000){
 				$chanRE[$ch_num] = 1;
 
 				#now, if there's a valid falling edge (on the same line)
-            	if(hex($row[$FE]) & 0b100000){
+            	if(hex($dataRow[$FE]) & 0b100000){
 				    $split_chan[$ch_num]++;
 				    $raw_chan[$ch_num]++;
 				    $total_events++;
@@ -289,7 +356,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 
 			if($date ne $lastdate) {	#start of a new output file
 				if ($lastdate ne "") {
-
+					
 					# Write additional metadata annotation for most recent split file
 
 					print META "chan1 int $split_chan[1]\n";
@@ -361,24 +428,24 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
     	    #@cpld_line = split(/\s+/, $_);
         
 	        # if servicing 1PPS interrupt, the GPS time may be funny
-		    $interrupt = (hex($row[14]) & 0x01);
+		    $interrupt = (hex($dataRow[14]) & 0x01);
         	# calculates the number of seconds from the time and CPLD offset
-	        $cpld_hour = substr($row[10], 0, 2);
-    	    $cpld_min = substr($row[10], 2, 2);
-        	$cpld_sec = substr($row[10], 4, 6);
-	        $cpld_sec_offset = sprintf("%.0f", $cpld_sec + ($row[15]/1000));
+	        $cpld_hour = substr($dataRow[10], 0, 2);
+    	    $cpld_min = substr($dataRow[10], 2, 2);
+        	$cpld_sec = substr($dataRow[10], 4, 6);
+	        $cpld_sec_offset = sprintf("%.0f", $cpld_sec + ($dataRow[15]/1000));
     	    $cpld_day_seconds = $cpld_hour*3600 + $cpld_min*60 + $cpld_sec_offset;
         	if ($cpld_day_seconds == 86400){
             	$cpld_day_seconds = 0;
 	        }
-    	    if (($cpld_hex eq $row[9]) || ($cpld_seconds == $cpld_day_seconds) || ($interrupt != 0) || ($time == $split_line[10])){ 
+    	    if (($cpld_hex eq $dataRow[9]) || ($cpld_seconds == $cpld_day_seconds) || ($interrupt != 0) || ($time == $split_line[10])){ 
         		# both columns must advance to calculate the change
             	next;
 	        }
         
         
     	    if (defined($cpld_hex)){
-        	    $cpld_ticks_new = hex($row[9]);
+        	    $cpld_ticks_new = hex($dataRow[9]);
             	$cpld_ticks_old = hex($cpld_hex);
             
 	            $dc = ($cpld_ticks_new - $cpld_ticks_old) % $N;
@@ -399,8 +466,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
         	    $cpld_count++;
         	}
         	# redefines variables for checking to see if the next line has the same data as this line
-        	$cpld_time = $row[10];
-        	$cpld_hex = $row[9];
+        	$cpld_time = $dataRow[10];
+        	$cpld_hex = $dataRow[9];
         	$cpld_seconds = $cpld_day_seconds;
 		}	#end if total_events > 0
 	} #end of rollover_flag == 0;
