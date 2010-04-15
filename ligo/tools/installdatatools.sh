@@ -118,7 +118,7 @@ cd $DIR/tmp >>$LOG 2>&1
 
 
 step "Downloading ligotools_init"
-wget -o $LOG -O ligotools_init_2.4.tar http://www.ldas-sw.ligo.caltech.edu/ligotools/ligotools_init/ligotools_init_2.4.tar >>$LOG 2>&1
+wget -a $LOG -O ligotools_init_2.4.tar http://www.ldas-sw.ligo.caltech.edu/ligotools/ligotools_init/ligotools_init_2.4.tar >>$LOG 2>&1
 
 
 step "Unpacking ligotools_init"
@@ -149,7 +149,7 @@ eval `$DIR/ligotools/bin/use_ligotools` >>$LOG 2>&1
 
 
 step "Downloading tclexe"
-wget -o $LOG -O tclexe_8.4.7_Linux.tar.gz http://www.ldas-sw.ligo.caltech.edu/ligotools/tclexe/8.4.7/tclexe_8.4.7_Linux.tar.gz >>$LOG 2>&1
+wget -a $LOG -O tclexe_8.4.7_Linux.tar.gz http://www.ldas-sw.ligo.caltech.edu/ligotools/tclexe/8.4.7/tclexe_8.4.7_Linux.tar.gz >>$LOG 2>&1
 
 
 step "Installing tclexe"
