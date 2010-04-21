@@ -7,141 +7,13 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	    <!--[if IE]><script language="javascript" type="text/javascript" src="../include/excanvas.min.js"></script><![endif]--> 
 	    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" type="text/javascript"></script>
 	    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" type="text/javascript"></script> 
 	    <script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.min.js"></script>
 	    <script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.selection.min.js"></script>
-		<script language="javascript" type="text/javascript"> 
-			$(document).ready(function() {
-				var options = { 
-						lines: {show: true, lineWidth: 1, shadowSize: 0 },
-						points: {show: false},
-						legend: {show: false},
-						xaxis: { mode: 'time'},
-						selection: { mode: "x" },
-						shadowSize: 0
-				};
-				
-				var data = []; 
-				var placeholder = $("#chart");
-				var timeout = 10000;
-				var dataServerUrl = '/elab/ligo/data/data-server.jsp';
-				var plot = null; 
-
-				var xminGPSTime;
-				var xmaxGPSTime; 
-
-				var ligoMinTime; 
-				var ligoMaxTime; 
-
-				$.plot(placeholder, { }, options);
-
-				$("#resizablecontainer").resizable(); 
-				
-				// Get maximum timespan to start
-				$.ajax({
-					url: dataServerUrl + '?fn=getTimeRange', 
-					method: 'GET',
-					dataType: 'text', 
-					timeout: 10000,
-					success: onTimeRangeReceived,
-					beforeSend: spinnerOn,
-					complete: onTimeRangeCompleted
-				});
-				
-				function onTimeRangeReceived(series) {
-					var s = $.trim(series).split(" ");
-					xminGPSTime = s[0];
-					ligoMinTime = s[0];
-					xmaxGPSTime = s[1];
-					ligoMaxTime = s[1];
-					$("#xmin").val((new Date(convertTimeGPSToUNIX(parseFloat(xminGPSTime)) * 1000.0)).toDateString()); 
-					$("#xmax").val((new Date(convertTimeGPSToUNIX(parseFloat(xmaxGPSTime)) * 1000.0)).toDateString());
-				}
-
-				function onTimeRangeCompleted() {
-					spinnerOff();
-				}
-
-				function spinnerOn() {
-					$("#busySpinner").css('visibility', 'visible');
-				}
-
-				function spinnerOff() {
-					$("#busySpinner").css('visibility', 'hidden');
-				}
-
-				$("#buttonZoom").click(function() {
-					$("#parseDropDown").trigger('click');
-				});
-
-				$("#buttonZoomOut").click(function() {
-					xminGPSTime = ligoMinTime;
-					xmaxGPSTime = ligoMaxTime;
-					$("#xmin").val((new Date(convertTimeGPSToUNIX(parseFloat(xminGPSTime)) * 1000.0)).toDateString()); 
-					$("#xmax").val((new Date(convertTimeGPSToUNIX(parseFloat(xmaxGPSTime)) * 1000.0)).toDateString());
-					$("#parseDropDown").trigger('click');
-				});
-
-				placeholder.bind("plotselected", function(event, ranges) {
-					xminGPSTime = convertTimeUNIXtoGPS(ranges.xaxis.from / 1000.0); 
-					xmaxGPSTime = convertTimeUNIXtoGPS(ranges.xaxis.to / 1000.0); 
-					$("#xmin").val((new Date(ranges.xaxis.from)).toDateString()); 
-					$("#xmax").val((new Date(ranges.xaxis.to)).toDateString());
-				});
-
-				$("#parseDropDown").click(function() {
-					var c = $("#channelSelector :selected").val();
-					if (c == "placeholder") {
-						return;
-					}
-
-					var url = dataServerUrl + '?fn=getData&params=' + c + ',0,' + xminGPSTime + ',' + xmaxGPSTime;
-
-					// Get the data via AJAT call
-					$.ajax({ 
-						url: url,
-						method: 'GET', 
-						dataType: 'text',
-						timeout: timeout,
-						success: onChannelDataReceived,
-						beforeSend: spinnerOn,
-						complete: spinnerOff
-					});
-
-					function onChannelDataReceived(series) { 
-						var s = series.split(" ");
-						var a = new Array();
-						var num = s[0];
-						for (var i = 0; i < s.length / 2 - 1; i++) {
-							a.push([convertTimeGPSToUNIX(parseFloat(s[i * 2 + 1])) * 1000.0, s[i * 2 + 2]]);
-						}
-						data = [{data: a, shadowSize: 0}];
-
-						plot = $.plot(placeholder, data, options); 
-						
-					}
-				});
-
-				$("#resizablecontainer").bind("resizestop", function(event, ui) {
-					$("#chart").css('width', ui.size.width - 8);
-					$("#chart").css('height', ui.size.height - 8);
-					if (plot != null) {
-						$.plot(placeholder, data, options);  
-					}
-					
-				});
-
-				function convertTimeGPSToUNIX(x) { 
-					// TODO: Make a proper offset, this is off depending on leap seconds
-					return x + 315964787.0;
-				}
-
-				function convertTimeUNIXtoGPS(x) {
-					return x - 315964787.0;
-				}
-			});
-		</script> 
+	    
+	    <script src="general.js" type="text/javascript"></script> <%-- General common stuff --%>
+	    <script src="advanced.js" type="text/javascript"></script> <%-- Advanced Mode --%>
 	</head>
 	<body>
 		<h1>Engineering Prototype for Super-Bluestone</h1>
@@ -149,8 +21,9 @@
 		<table>
 			<tr>
 				<td>
-					<div id="resizablecontainer" >
+					<div id="resizablecontainer" style="margin-bottom: 10px; margin-right: 10px;" >
 						<div id="chart" style="width:550px; height:250px; text-align: left;"></div>
+						<div id="slider"></div>
 					</div>
 				</td>
 				<td valign="top">
@@ -176,6 +49,8 @@
 		<input class="parseCommandLine" type="button" value="Execute Command"></input>
 		<input class="fetchData" type="button" value="Get Test Data!"></input>  --%>
 		
+		<%-- Super basic demo mode stuff for testing / showing-off
+		
 		<div id="channel_list">
 			<select name="channel" id="channelSelector"> 
 				<option value="placeholder">Select a channel: </option>
@@ -189,5 +64,27 @@
 			<input id="parseDropDown" type="button" value="Plot"></input>
 		</div>
 		
+		--%>
+		
+		<%-- Advanced Mode --%>
+		
+		<div id="channel-list-advanced">
+			<select name="site" id="site">
+				<option value="H0">H0</option>
+				<option value="L0">L0</option>
+			</select>
+			<select name="subsystem" id="subsystem">
+				<option value="DMT-BRMS_PEM_">DMT</option>
+				<option value="PEM-">PEM</option>
+				<option value="GDS-">GDS</option>
+			</select>
+			<select name="station" id="station"></select>
+			<select name="sensor" id="sensor"></select>
+			<select name="sampling" id="sampling"></select>
+			<input id="parseDropDownAdvanced" type="button" value="Plot"></input>
+			<span id="dataName"></span>
+		</div>
+				
 	</body>
+	
 </html>
