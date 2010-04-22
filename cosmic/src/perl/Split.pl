@@ -206,7 +206,8 @@ while(<IN>){
 	$rollover_flag = 1 if ($cpld_trig <= $last_cpld_trig && $cpld_latch > $last_cpld_latch);
 	$rollover_flag = 2 if ($cpld_trig == $last_cpld_trig && $cpld_latch < $last_cpld_latch); #flag == 1 and flag == 2 can be dealt with in the same way.
 	$rollover_flag = 3 if ($cpld_trig == $last_cpld_trig && $cpld_latch > $last_cpld_latch);
-	$rollover_flag = 4 if ($cpld_trig > $last_cpld_trig && $cpld_latch > $last_cpld_latch); #This should never, ever happen. Ever. Still. . . 
+	#$rollover_flag = 4 if ($cpld_trig > $last_cpld_trig && $cpld_latch > $last_cpld_latch); #This should never, ever happen. Ever. Still. . . 
+	#In fact it does happen. On every trigger. Always. The previous line is a good way to drop the first line of each event.
 	#A new rollover case appeared in firmware 1.12 The GPS date could increment before the clock reached midnight.
 	$rollover_flag = 5 if ($day != $lastDay) && (substr($dataRow[10], 0, 2) == 23) && (substr($dataRow[10], 2, 2) > 55); 
 	#Set the current values of trig and latch for later comparison.
@@ -233,11 +234,11 @@ while(<IN>){
 		}
 	}
 	
-	if ($rollover_flag == 4){
+	#if ($rollover_flag == 4){
 		#print $rollover_flag,"\t", $_;
-		$rollover_flag = 0;
-		next;
-	}
+	#	$rollover_flag = 0;
+	#	next;
+	#}
 	
 	if ($rollover_flag == 5){
 		#print $rollover_flag, "\t", $_;
