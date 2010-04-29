@@ -840,7 +840,7 @@ public class GeoEntryBean implements Serializable {
             x = "0";
             y = "0";
             z = "0";
-            area = "625.0";
+            area = "0.0";
             cableLength = "0";
         }
 
@@ -895,7 +895,7 @@ public class GeoEntryBean implements Serializable {
 
         public boolean isActive() {
             return !"0".equals(x) || !"0".equals(y) || !"0".equals(z)
-                    || !"625.0".equals(area) || !"0.0".equals(cableLength);
+                    || !"0.0".equals(area) || !"0.0".equals(cableLength);
         }
 
         public String toString() {
