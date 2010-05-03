@@ -116,7 +116,7 @@ public class GeoEntryBean implements Serializable {
     }
 
     public void setLatitude(String s) {
-        latitude = s;
+        latitude = s.trim();
     }
 
     /**
@@ -158,7 +158,7 @@ public class GeoEntryBean implements Serializable {
     }
 
     public void setLongitude(String s) {
-        longitude = s;
+        longitude = s.trim();
     }
 
     public String getLongitude() {
@@ -180,7 +180,7 @@ public class GeoEntryBean implements Serializable {
     }
 
     public void setAltitude(String s) {
-        altitude = s;
+        altitude = s.trim();
     }
 
     public String getAltitude() {
@@ -384,7 +384,7 @@ public class GeoEntryBean implements Serializable {
     }
 
     public void setGpsCableLength(String s) {
-        gpsCableLength = s;
+        gpsCableLength = s.trim();
     }
 
     public String getGpsCableLength() {
@@ -858,7 +858,7 @@ public class GeoEntryBean implements Serializable {
         }
 
         public void setX(String x) {
-            this.x = x;
+            this.x = x.trim();
         }
 
         public String getY() {
@@ -866,7 +866,7 @@ public class GeoEntryBean implements Serializable {
         }
 
         public void setY(String y) {
-            this.y = y;
+            this.y = y.trim();
         }
 
         public String getZ() {
@@ -874,7 +874,7 @@ public class GeoEntryBean implements Serializable {
         }
 
         public void setZ(String z) {
-            this.z = z;
+            this.z = z.trim();
         }
 
         public String getArea() {
@@ -882,7 +882,7 @@ public class GeoEntryBean implements Serializable {
         }
 
         public void setArea(String area) {
-            this.area = area;
+            this.area = area.trim();
         }
 
         public String getCableLength() {
@@ -890,7 +890,7 @@ public class GeoEntryBean implements Serializable {
         }
 
         public void setCableLength(String length) {
-            this.cableLength = length;
+            this.cableLength = length.trim();
         }
 
         public boolean isActive() {
