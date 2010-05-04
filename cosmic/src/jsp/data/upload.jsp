@@ -12,6 +12,7 @@
 <%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="org.apache.commons.fileupload.*" %>
+<%@ page import="org.apache.commons.fileupload.disk.*" %>
 <%@ page import="org.apache.commons.fileupload.servlet.*" %>
 <%@ page import="be.telio.mediastore.ui.upload.*" %>
 <%@ page import="gov.fnal.elab.upload.*" %>
@@ -51,7 +52,6 @@ Re: the upload progress stuff
     }
     request.setAttribute("detectorIDs", ids);
 
-
 	String lfn="";              //lfn on the USERS home computer
 	String fn = "";             //filename without slashes
 	String ds = "";
@@ -60,6 +60,9 @@ Re: the upload progress stuff
 	String dataDir = elab.getProperties().getDataDir();
 	request.setAttribute("datadir", dataDir);
 	int channels[] = new int[4];
+	
+	File tempRepo = new File(dataDir + "/temp"); 
+	int sizeThreshold = 0; 
 
 	List splits = new ArrayList();  //for both the split name and the channel validity information
 
@@ -68,7 +71,8 @@ Re: the upload progress stuff
 	    UploadListener listener = new UploadListener(request, 0);
 
 	    // Create a factory for disk-based file items
-	    FileItemFactory factory = new NewLineConvertingMonitoredDiskFileItemFactory(listener);
+	    FileItemFactory factory = new NewLineConvertingMonitoredDiskFileItemFactory(
+	    		sizeThreshold, tempRepo, listener); 
 
     	// Create a new file upload handler
 	    ServletFileUpload upload = new ServletFileUpload(factory);
@@ -97,7 +101,7 @@ Re: the upload progress stuff
 		it = fileItems.iterator();
 
 		while (it.hasNext()) { 
-        	FileItem fi = (FileItem) it.next();
+        	DiskFileItem fi = (DiskFileItem) it.next();
 			if (!fi.isFormField()) {
 				lfn = fi.getName();
 				if (lfn.equals("")) {
@@ -124,8 +128,13 @@ Re: the upload progress stuff
 				        new File(dataDir));
                	String rawName = f.getName();
 
-               	// write the file
-               	fi.write(f);
+               	// write the file from memory or relocate it on disk.
+               	if (fi.isInMemory()) {
+               		fi.write(f);
+               	}
+               	else {
+               		fi.getStoreLocation().renameTo(f);
+               	}
        	        out.println("<!-- " + rawName + " added to Catalog -->");
        	        request.setAttribute("in", f.getAbsolutePath());
        	        request.setAttribute("detectorid", detectorId);
