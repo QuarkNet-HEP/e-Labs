@@ -14,6 +14,8 @@
 <%@ page import="org.apache.commons.fileupload.*" %>
 <%@ page import="org.apache.commons.fileupload.disk.*" %>
 <%@ page import="org.apache.commons.fileupload.servlet.*" %>
+<%@ page import="org.apache.commons.lang.*" %>
+<%@ page import="org.apache.commons.io.*" %>
 <%@ page import="be.telio.mediastore.ui.upload.*" %>
 <%@ page import="gov.fnal.elab.upload.*" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.Geometries" %>
@@ -66,7 +68,7 @@ Re: the upload progress stuff
 
 	List splits = new ArrayList();  //for both the split name and the channel validity information
 
-	if (FileUpload.isMultipartContent(request)) {
+	if (ServletFileUpload.isMultipartContent(request)) {
 	    //BEGIN upload_progress_stuff
 	    UploadListener listener = new UploadListener(request, 0);
 
@@ -78,42 +80,26 @@ Re: the upload progress stuff
 	    ServletFileUpload upload = new ServletFileUpload(factory);
     	//END upload_progress_stuff
     	
-		List fileItems = upload.parseRequest(request);
+		List<DiskFileItem> fileItems = upload.parseRequest(request); 
+    	
+		if (StringUtils.isBlank(request.getParameter("detector"))) {
+			throw new ElabJspException("You must enter a detector number for this data.");
+		}
+		else { 
+			detectorId = request.getParameter("detector");
+		}
+		if (StringUtils.isNotBlank(request.getParameter("comments"))) {
+			comments = request.getParameter("comments"); 
+		}		
 
-		Iterator it = fileItems.iterator();
-
-		while (it.hasNext()) { 
-        	FileItem fi = (FileItem) it.next();
-			if (fi.isFormField()) {
-            	String name = fi.getFieldName();
-            	if (name.equals("detector")) {
-                	detectorId = fi.getString();
-                	if(detectorId.equals("")) {
-                    	throw new ElabJspException("You must enter a detector number for this data.");
-					}
-				}
-				if(name.equals("comments")) {
-                	comments = fi.getString();
-				}
-        	}
-        }
-        
-		it = fileItems.iterator();
-
-		while (it.hasNext()) { 
-        	DiskFileItem fi = (DiskFileItem) it.next();
+		for (DiskFileItem fi : fileItems) {
 			if (!fi.isFormField()) {
 				lfn = fi.getName();
-				if (lfn.equals("")) {
+				if (StringUtils.isBlank(lfn)) {
                 	throw new ElabJspException("Missing file.");
     	        }
-	            //fn is the filename without slashes (which lfn has)
-    	        int i = lfn.lastIndexOf('\\');
-        	    int j = lfn.lastIndexOf('/');
-            	i = (i > j) ? i : j;
-	            if (i != -1) {
-    	            fn = lfn.substring(i + 1);
-        	    } 
+	            //fn is the filename without slashes (which lfn has)    	       
+	            fn = FilenameUtils.getName(lfn);
 				if (fi.getSize() == 0) {
 				    throw new ElabJspException("Your file is zero-length. You must upload a file which has some data.");
 				}
