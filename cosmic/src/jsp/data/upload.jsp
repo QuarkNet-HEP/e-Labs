@@ -101,16 +101,6 @@ Re: the upload progress stuff
     			}
     		}
     	}
-    	
-		if (StringUtils.isBlank(request.getParameter("detector"))) {
-			throw new ElabJspException("You must enter a detector number for this data.");
-		}
-		else { 
-			detectorId = request.getParameter("detector");
-		}
-		if (StringUtils.isNotBlank(request.getParameter("comments"))) {
-			comments = request.getParameter("comments"); 
-		}		
 		
 		for (DiskFileItem fi : fileItems) {
 			if (!fi.isFormField()) {
