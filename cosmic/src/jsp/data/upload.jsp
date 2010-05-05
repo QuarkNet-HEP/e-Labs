@@ -82,6 +82,26 @@ Re: the upload progress stuff
     	
 		List<DiskFileItem> fileItems = upload.parseRequest(request); 
     	
+    	for (DiskFileItem fi : fileItems) { 
+    		if (fi.isFormField()) {
+    			String name = fi.getFieldName();
+    			String content = fi.getString();
+    			if ("detector".equals(name)) {
+    				if (StringUtils.isBlank(content)) {
+    					throw new ElabJspException("You must enter a detector number for this data.");
+    				}
+    				else {
+    					detectorId = content;
+    				}
+    			}
+    			else if ("comment".equals(name)) {
+    				if (StringUtils.isNotBlank(content)) {
+    					comments = content; 
+    				}
+    			}
+    		}
+    	}
+    	
 		if (StringUtils.isBlank(request.getParameter("detector"))) {
 			throw new ElabJspException("You must enter a detector number for this data.");
 		}
@@ -91,7 +111,7 @@ Re: the upload progress stuff
 		if (StringUtils.isNotBlank(request.getParameter("comments"))) {
 			comments = request.getParameter("comments"); 
 		}		
-
+		
 		for (DiskFileItem fi : fileItems) {
 			if (!fi.isFormField()) {
 				lfn = fi.getName();
