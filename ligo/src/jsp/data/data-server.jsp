@@ -55,13 +55,19 @@
 	    List<DataPath> paths = de.getPaths();
 	    double min = Double.MAX_VALUE, max = Double.MIN_VALUE;
 	    for (DataPath dp : paths) {
-	        if (dp.getTotalRange().getStart().doubleValue() < min) {
-	            min = dp.getTotalRange().getStart().doubleValue();
-	        }
+	    	try {
+	    		if (dp.getTotalRange().getStart().doubleValue() < min) {
+		            min = dp.getTotalRange().getStart().doubleValue();
+		        }
+		        
+		        if (dp.getTotalRange().getEnd().doubleValue() > max) {
+		            max = dp.getTotalRange().getEnd().doubleValue();
+		        }
+	    	}
+	    	catch (NullPointerException npe) {
+	    		// do nothing - some entries may not have values?! 
+	    	}
 	        
-	        if (dp.getTotalRange().getEnd().doubleValue() > max) {
-	            max = dp.getTotalRange().getEnd().doubleValue();
-	        }
 	    }
 		out.write(nf.format(min));
 		out.write(" ");
@@ -75,14 +81,19 @@
 		
 		out.write(p[1]);
 		out.write(" ");
-		
-		DataSet ds = de.get(new DataPath(channel), new Range(start, end), new Options().setSamples(SAMPLES_PER_REQUEST));
-		for (int i = 0; i < ds.size(); i++) {
-			out.write(ds.getX(i).toString());
-			out.write(" ");
-			out.write(ds.getY(i).toString());
-			out.write(" ");
+		try {
+			DataSet ds = de.get(new DataPath(channel), new Range(start, end), new Options().setSamples(SAMPLES_PER_REQUEST));
+			for (int i = 0; i < ds.size(); i++) {
+				out.write(ds.getX(i).toString());
+				out.write(" ");
+				out.write(ds.getY(i).toString());
+				out.write(" ");
+			}
 		}
+		catch(Exception e) {
+			// do nothing right now - should we output 404 or something? 
+		}
+		
 	}
 	else if (fn.equals("convolve")) {
 	    Double[] p = new Double[0];
