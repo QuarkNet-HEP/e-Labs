@@ -189,9 +189,9 @@ public class ElabUtil {
             String cls, String image) throws IOException {
         vsWriteVisibleStart(out, id, cls, image, false);
     }
-
+    
     public static void vsWriteVisibleStart(JspWriter out, String id,
-            String cls, String image, boolean revert) throws IOException {
+            String cls, String image, boolean revert, String title, String titleclass) throws IOException {
         out.write("<div ");
         if (cls != null) {
             out.write("class=\"");
@@ -206,7 +206,13 @@ public class ElabUtil {
         else {
             out.write("-v\" style=\"visibility:visible; display:\">\n");
         }
-        out.write("<a href=\"#\" onclick=\"HideShow('");
+        out.write("<a href=\"#\"");
+        if (titleclass != null) {
+            out.write(" class=\"");
+            out.write(titleclass);
+            out.write("\"");
+        }
+        out.write(" onclick=\"HideShow('");
         out.write(id);
         out.write("-v');HideShow('");
         out.write(id);
@@ -215,7 +221,16 @@ public class ElabUtil {
             image = "../graphics/Tright.gif";
         }
         out.write(image);
-        out.write("\" alt=\" \" border=\"0\" /></a>");
+        out.write("\" alt=\" \" border=\"0\" />");
+        if (title != null) {
+            out.write(title);
+        }
+        out.write("</a>");
+    }
+
+    public static void vsWriteVisibleStart(JspWriter out, String id,
+            String cls, String image, boolean revert) throws IOException {
+        vsWriteVisibleStart(out, id, cls, image, revert, null, null);
     }
 
     public static void vsWriteVisibleEnd(JspWriter out) throws IOException {
@@ -226,9 +241,14 @@ public class ElabUtil {
             String image) throws IOException {
         vsWriteHiddenStart(out, id, cls, image, false);
     }
-
+    
     public static void vsWriteHiddenStart(JspWriter out, String id, String cls,
             String image, boolean revert) throws IOException {
+        vsWriteHiddenStart(out, id, cls, image, revert, null, null);
+    }
+
+    public static void vsWriteHiddenStart(JspWriter out, String id, String cls,
+            String image, boolean revert, String title, String titleclass) throws IOException {
         out.write("<div ");
         if (cls != null) {
             out.write("class=\"");
@@ -243,7 +263,13 @@ public class ElabUtil {
         else {
             out.write("-h\" style=\"visibility:hidden; display: none\">\n");
         }
-        out.write("<a href=\"#\" onclick=\"HideShow('");
+        out.write("<a href=\"#\"");
+        if (titleclass != null) {
+            out.write(" class=\"");
+            out.write(titleclass);
+            out.write("\"");
+        }
+        out.write(" onclick=\"HideShow('");
         out.write(id);
         out.write("-v');HideShow('");
         out.write(id);
@@ -252,7 +278,11 @@ public class ElabUtil {
             image = "../graphics/Tdown.gif";
         }
         out.write(image);
-        out.write("\" alt=\" \" border=\"0\" /></a>");
+        out.write("\" alt=\" \" border=\"0\" />");
+        if (title != null) {
+            out.write(title);
+        }
+        out.write("</a>");
     }
 
     public static void vsWriteHiddenEnd(JspWriter out) throws IOException {
