@@ -23,6 +23,26 @@ function HideShow(ID) {
 	}
 }
 
+function vSwitchShow(id) {
+	show(id + "-h");
+	hide(id + "-v");
+}
+
+function vSwitchHide(id) {
+	show(id + "-v");
+	hide(id + "-h");
+}
+
+function hide(id) {
+	aLs(id).visibility = "hidden";
+	aLs(id).display = "none";
+}
+
+function show(id) {
+	aLs(id).visibility = "visible";
+	aLs(id).display = "";
+}
+
 function selectAll(start, finish, direction) {
 	for (var i = start; i < finish; i++) {
 		fldObj = document.getElementById("cb" + i);
@@ -120,3 +140,29 @@ function updateLabels(source, name) {
 	}
 }
 
+function firstNonTextChild(obj) {
+    for (var i in obj.childNodes) {
+        if (obj.childNodes[i].nodeName != "#text") {
+	        return obj.childNodes[i];
+        }
+    }
+    return null;
+}
+
+function getAncestor(obj, level) {
+    if (level == 0) {
+        return obj;
+    }
+    else {
+        return getAncestor(obj.parentNode, level - 1);
+    }
+}
+
+function log(text) {
+	//return;
+    var l = document.getElementById("log");
+    if (l) {
+    	l.innerHTML = l.innerHTML + "<br />\n" + new Date().toGMTString() + " " + text;
+    	l.scrollTop = l.scrollHeight;
+    }
+}
