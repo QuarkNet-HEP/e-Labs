@@ -1,0 +1,70 @@
+<li value=".pt_">
+	<span class="label">p<sub>t</sub></span>
+	<ul>
+		<li value="patElectrons_cleanPatElectrons__PAT.obj">electron</li>
+		<li value="patMuons_cleanPatMuons__PAT.obj">muon</li>
+		<li value="patPhotons_cleanPatPhotons__PAT.obj">photon</li>
+	</ul>
+</li>
+<li value="">
+	<span class="label">energy</span>
+	<ul>
+		<li value="patElectrons_cleanPatElectrons__PAT.obj.corrections_.ecalEnergy">electron</li>
+		<li value="patPhotons_cleanPatPhotons__PAT.obj.showerShapeBlock_e3x3">photon</li>
+	</ul>
+</li>
+<li value=".eta_">
+	<span class="label">&eta;</span>
+	<ul>
+		<li value="patElectrons_cleanPatElectrons__PAT.obj">electron</li>
+		<li value="patMuons_cleanPatMuons__PAT.obj">muon</li>
+		<li value="patPhotons_cleanPatPhotons__PAT.obj">photon</li>
+	</ul>
+</li>
+<li value=".phi_">
+	<span class="label">&phi;</span>
+	<ul>
+		<li value="patElectrons_cleanPatElectrons__PAT.obj">electron</li>
+		<li value="patMuons_cleanPatMuons__PAT.obj">muon</li>
+		<li value="patPhotons_cleanPatPhotons__PAT.obj">photon</li>
+	</ul>
+</li>
+<li value=".fCoordinates.fX">
+	<span class="label">X vertex</span>
+	<ul>
+		<li value="patElectrons_cleanPatElectrons__PAT.obj">electron</li>
+		<li value="patMuons_cleanPatMuons__PAT.obj">muon</li>
+		<li value="patPhotons_cleanPatPhotons__PAT.obj">photon</li>
+	</ul>
+</li>
+<li value=".fCoordinates.fY">
+	<span class="label">Y vertex</span>
+	<ul>
+		<li value="patElectrons_cleanPatElectrons__PAT.obj">electron</li>
+		<li value="patMuons_cleanPatMuons__PAT.obj">muon</li>
+		<li value="patPhotons_cleanPatPhotons__PAT.obj">photon</li>
+	</ul>
+</li>
+<li value=".fCoordinates.fZ">
+	<span class="label">Z vertex</span>
+	<ul>
+		<li value="patElectrons_cleanPatElectrons__PAT.obj">electron</li>
+		<li value="patMuons_cleanPatMuons__PAT.obj">muon</li>
+		<li value="patPhotons_cleanPatPhotons__PAT.obj">photon</li>
+	</ul>
+</li>
+<li value=".mass_">
+	<span class="label">mass</span>
+	<ul>
+		<li value="recoCompositeCandidates_ZtoEleEle__PAT.obj">e<sup>-</sup>e<sup>-</sup></li>
+		<li value="recoCompositeCandidates_ZtoAEleAEle__PAT.obj">e<sup>+</sup>e<sup>+</sup></li>
+		<li value="recoCompositeCandidates_ZtoAEleEle__PAT.obj">e<sup>+</sup>e<sup>-</sup></li>
+		<li value="recoCompositeCandidates_ZtoMuonMuon__PAT.obj">&mu;<sup>-</sup>&mu;<sup>-</sup></li>
+		<li value="recoCompositeCandidates_ZtoAMuonAMuon__PAT.obj">&mu;<sup>+</sup>&mu;<sup>+</sup></li>
+		<li value="recoCompositeCandidates_ZtoMuonAMuon__PAT.obj">&mu;<sup>-</sup>&mu;<sup>+</sup></li>
+		<li value="recoCompositeCandidates_ZtoEleMuon__PAT.obj">e<sup>-</sup>&mu;<sup>-</sup></li>
+		<li value="recoCompositeCandidates_ZtoEleAMuon__PAT.obj">e<sup>-</sup>&mu;<sup>+</sup></li>
+		<li value="recoCompositeCandidates_ZtoAEleMuon__PAT.obj">e<sup>+</sup>&mu;<sup>-</sup></li>
+		<li value="recoCompositeCandidates_ZtoAEleAMuon__PAT.obj">e<sup>+</sup>&mu;<sup>+</sup></li>
+	</ul>
+</li>

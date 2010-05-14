@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root type="HCAL Test Beam">
+
+  <dataset name="tb04" location="/home/ogre/tbdata" global_selection="beam==1">
+        <runs>
+          <type beam="muon" />
+          <type beam="electron" />
+          <type beam="pion" />
+        </runs>
+
+        <database>
+          <field name="run" />
+          <field name="nevents" />
+          <field name="dataset" />
+          <field name="filename" />
+          <field name="energy" />
+          <field name="beam" />
+          <field name="runtype" />
+          <field name="eta" />
+          <field name="phi" />
+          <field name="date" />
+          <field name="time" />
+        </database>
+  </dataset>
+
+  <triggers level="0">
+    <trigger name="electrons" id="e30"  description="electrons" level="0" group="0" fake="true"/>
+    <trigger name="muons"     id="m150" description="muons"     level="0" group="0" fake="true"/>
+    <trigger name="quarks"    id="j150" description="quarks"    level="0" group="0" fake="true"/>
+
+    <trigger name="ele low"   id="(e30 or e50) and not (e100)" description="Low energy electrons" level="1" group="1" fake="true"/>
+    <trigger name="ele high"  id="e100"  description="high energy electrons" level="1" group="1" fake="true"/>
+    <!-- trigger name="muons"     id="m150"  description="muons"   level="1"/ -->
+    <trigger name="jets"      id="j150"  description="quark jets from Pi-" level="1" group="1" fake="true"/>
+
+    <trigger name="e30"  id="e30"  description="At least one electron with energy greater than or equal to 30 GeV"    level="2" group="2"/>
+    <trigger name="e50"  id="e50"  description="At least one electron with energy greater than or equal to 50 GeV"    level="2" group="2"/>
+    <trigger name="e100" id="e100" description="At least one electron with energy greater than or equal to 100 GeV"   level="2" group="2"/>
+    <trigger name="e150" id="e150" description="At least one electron with energy greater than or equal to 150 GeV"   level="2" group="2"/>
+    <trigger name="e300" id="e300" description="At least one electron with energy greater than or equal to 300 GeV"   level="2" group="2"/>
+    <trigger name="m150" id="m150" description="At least one muon with energy greater than or equal to 150 GeV"       level="2" group="2"/>
+    <trigger name="j150" id="j150" description="At least one jet (pion) with energy greater than or equal to 150 GeV" level="2" group="2"/>
+  </triggers>
+
+  <tree id="1" name="Event" level="0">
+    <branch id="1" name="cluster" level="0">
+      <leaf id="1" name="c1x1.e"   title="Total Energy (1x1)"   labely="Number of Events" labelx="E" units="GeV" level="0" 
+        description="The total energy deposited in the primary calorimeter elements (ECAL+HCAL)"/>
+      <leaf id="2" name="c1x1.ee"  title="Ecal Energy (1x1)"    labely="Number of Events" labelx="E" units="GeV" level="1" 
+        description="The energy deposited in the primary crystal"/>
+      <leaf id="3" name="c1x1.eh"  title="Hcal Energy (1x1)"    labely="Number of Events" labelx="E" units="GeV" level="2"
+        description="The energy deposited in the primary tile"/>
+
+      <leaf id="4" name="c3x3.e"   title="Total Energy (3x3)"   labely="Number of Events" labelx="E" units="GeV" level="0" 
+         description="The total energy in the primary calorimeter elements (ECAL+HCAL) plus the 3x3 array around the primary elements"/>
+      <leaf id="5" name="c3x3.ee"  title="Ecal Energy (3x3)"    labely="Number of Events" labelx="E" units="GeV" level="1"
+         description="The energy deposited in the primary crystal plus the 3x3 array of crystals around the primary"/>
+      <leaf id="6" name="c3x3.eh"  title="Hcal Energy (3x3)"    labely="Number of Events" labelx="E" units="GeV" level="2"
+         description="The energy deposited in the primary tile plus the 3x3 array of tiles around the primary"/>
+
+      <leaf id="7" name="c5x5.e"   title="Total Energy (5x5)"   labely="Number of Events" labelx="E" units="GeV" level="0" 
+        description="The total energy in the primary calorimeter elements (ECAL+HCAL) plus the 5x5 array around the primary elements"/>
+      <leaf id="8" name="c5x5.ee"  title="Ecal Energy (5x5)"    labely="Number of Events" labelx="E" units="GeV" level="1"
+        description="The energy deposited in the primary crystal plus the 5x5 array of crystals around the primary"/>
+      <leaf id="9" name="c5x5.eh"  title="Hcal Energy (5x5)"    labely="Number of Events" labelx="E" units="GeV" level="2"
+        description="The energy deposited in the primary tile plus the 5x5 array of tiles around the primary"/>
+
+      <leaf id="10" name="c1x1.ee:c1x1.eh" title="ECal vs. HCal" labely="E_e (GeV)" labelx="E_h" units="GeV" level="0"
+        description="Scatter plot of ECal(1x1) vs. HCal(1x1)"/>
+    </branch>
+
+    <formula id="1" name="c1x1.ee:c1x1.eh" title="E vs H (1x1)" labely="E_E (GeV)" labelx="E_H" units="GeV"      level="3"
+      description="Scatter plot of ECal(1x1) vs HCal(1x1)"/>
+    <formula id="2" name="c3x3.ee:c3x3.eh" title="E vs H (3x3)" labely="E_E (GeV)" labelx="E_H" units="GeV"      level="3"
+      description="Scatter plot of ECal(3x3) vs HCal(3x3)"/>
+    <formula id="3" name="c5x5.ee:c5x5.eh" title="E vs H (5x5)" labely="E_E (GeV)" labelx="E_H" units="GeV"      level="3"
+      description="Scatter plot of ECal(3x3) vs HCal(3x3)"/>
+<!--
+    <formula id="4" name="c3x3.e/c5x5.e" title="3:5 Jet Size" labely="Number of Events" labelx="E3x3/E5x5" level="3"
+      description="Ratio of total energies in a 3x3 and a 5x5 array"/>
+    <formula id="5" name="c1x1.e/c5x5.e" title="1:5 Jet Size" labely="Number of Events" labelx="E1x1/E5x5" level="3"
+      description="Ratio of energies in a 1x1 and a 5x5 array"/>
+    <formula id="6" name="c1x1.e/c3x3.e" title="1:3 Jet Size" labely="Number of Events" labelx="E1x1/E3x3" level="3"
+      description="Ratio of energies in a 1x1 and a 3x3 array"/>
+-->
+  </tree>
+
+</root>
