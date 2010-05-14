@@ -13,3 +13,7 @@ xmlfile = tb_data.xml
 xmldir = xml
 
 ogre = http://leptoquark.hep.nd.edu/~ogre
+
+ogredb.database=//localhost/ogredb
+ogredb.username=ogre
+ogredb.password=ogre
