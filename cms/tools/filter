@@ -1,0 +1,29 @@
+#!/usr/bin/perl
+
+my $crtevent = "0";
+my @l;
+print "# eventnumber [value1 [value2 [value3 [...]]]]\n\n";
+while(<>) {
+	if (/\*\s+([0-9]+)\s+\*\s+([0-9]+)\s+\*\s+([0-9.]*)\s+\*/) {
+		if ($1 ne $crtevent) {
+			print "$crtevent";
+			foreach (@l) {
+				print "\t$_";
+			}
+			print "\n";
+			@l = ();
+		}
+		if ( $3 ne "" ) {
+			push(@l, $3);
+		}
+		$crtevent = $1;
+	}
+}
+
+if (scalar(@l) != 0) {
+	print "$crtevent";
+	foreach (@l) {
+		print "\t$_";
+	}
+	print "\n";
+}
