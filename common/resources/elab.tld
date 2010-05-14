@@ -28,6 +28,16 @@ by the user. The visible and hidden parts of the document can be specified using
 		<body-content>JSP</body-content>
 		<attribute>
 			<description>
+If specified the hidden div will get a DOM id of "${id}-h" and the
+visible div will get a DOM id of "${id}-v". If not specified an automatically
+generated id will be used.
+			</description>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
 If present, it can give the HTML div element encapsulating this switch a certain 
 class.
 			</description>
@@ -41,6 +51,23 @@ If present and set to true, it will revert the default state of the switch (i.e.
 hidden part will be visible and the visible part will be hidden).
 			</description>
 			<name>revert</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+If present, the given text will be displayed after the switch image and can also
+be used to expand/collapse the panel
+			</description>
+			<name>title</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+If given, the image and title will be enclosed in an element with this class
+			</description>
+			<name>titleclass</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
