@@ -34,13 +34,14 @@ public class Visible extends TagSupport {
     public int doStartTag() throws JspException {
         try {
             JspWriter out = pageContext.getOut();
-            String id = "vsId"
-                    + pageContext.getAttribute(VSwitch.ATTR_ID);
+            String id = (String) pageContext.getAttribute(VSwitch.ATTR_ID);
             String cls = (String) pageContext.getAttribute(VSwitch.ATTR_CLS);
+            String title = (String) pageContext.getAttribute(VSwitch.ATTR_TITLE);
+            String titleclass = (String) pageContext.getAttribute(VSwitch.ATTR_TITLE_CLS);
             Boolean revert = (Boolean) pageContext
                     .getAttribute(VSwitch.ATTR_REVERT);
             ElabUtil.vsWriteVisibleStart(out, id, cls, image,
-                    revert == null ? false : revert.booleanValue());
+                    revert == null ? false : revert.booleanValue(), title, titleclass);
         }
         catch (Exception e) {
             throw new JspException("Exception in elab:visible", e);
