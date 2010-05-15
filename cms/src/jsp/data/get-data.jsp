@@ -10,6 +10,7 @@
 	<jsp:param name="dataset" value="${param.dataset}"/>
 </jsp:include>
 <%
+	// the dataset is validated by dataset-info
 	String dataset = request.getParameter("dataset");
 	String runs = request.getParameter("runs");
 	String plots = request.getParameter("plots");
@@ -99,8 +100,7 @@
 	System.out.println("dsrunfiles load time: " + (System.currentTimeMillis() - st) + "ms");
 	st = System.currentTimeMillis();
 	
-	// the DOM API is ridiculous
-	String location = doc.getElementsByTagName("dataset").item(0).getAttributes().getNamedItem("location").getNodeValue();
+	String location = elab.getProperties().getProperty("dataset." + dataset + ".location");
 	
 	String[] sruns = runs.split("\\s+");
 	String[] splots = plots.split("\\s+");
