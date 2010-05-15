@@ -20,6 +20,7 @@ function clearPlots() {
 	while (table.rows.length > 2) {
 		table.deleteRow(1);
 	}
+	document.getElementById("plot-submit").disabled = true;
 }
 
 function updatePlotsFromValue(val, label) {
@@ -47,10 +48,22 @@ function addPlotRow(value, label) {
 	$("#plot-template .active-label").html(html);
 	$("#plot-template .active-label").attr("value", value);
 	row.innerHTML = $("#plot-template").html();
-	options['onSelect'] = addParam;
+	options["onSelect"] = addParam;
 	$(".addparam").jeegoocontext("param-list", options);
-	options['onSelect'] = setColor;
+	options["onSelect"] = setColor;
 	$(".colorbutton").jeegoocontext("color-list", options);
+	$("input.log").change(updatePlotList);
+	$(".remove .tbutton").click(removePlotRow);
+}
+
+function removePlotRow(c) {
+	log("remove plot row: " + this.parentNode.parentNode.rowIndex);
+	var tbl = document.getElementById("plots");
+	tbl.deleteRow(this.parentNode.parentNode.rowIndex);
+	if (updatePlotList() == 1) {
+		var list = document.getElementById("plots-input");
+		setSimplifiedPlotsValue(list.value.split(":")[0]);
+	}
 }
 
 var addPlot = function(e, context) {
@@ -73,16 +86,21 @@ function updatePlotList() {
 	var str = "";
 	var tbl = document.getElementById("plots");
 	for (var i = 1; i < tbl.rows.length - 1; i++) {
-		var a = firstNonTextChild(tbl.rows[i].cells[1]);
+		var a = firstNonTextChild(tbl.rows[i].cells[2]);
 		var img = firstNonTextChild(a);
 		var color = img.getAttribute("value");
 		if (color == null || color == "") {
 			color = "black";
 		}
-		str += tbl.rows[i].cells[2].getAttribute("value") + ":" + color + " ";
+		var logx = firstNonTextChild(tbl.rows[i].cells[3]).checked ? "logx" : "";
+		var logy = firstNonTextChild(tbl.rows[i].cells[4]).checked ? "logy" : "";
+		str += tbl.rows[i].cells[1].getAttribute("value") + ":" + color + ":" + logx + ":" + logy + " ";
 	}
-	log(str);
 	list.value = str;
+	log("plot str: " + str);
+	document.getElementById("plot-submit").disabled = str == "";
+	log("plot count: " + (tbl.rows.length - 2));
+	return tbl.rows.length - 2;
 }
 
 function initializeFromPlotParams() {
@@ -91,6 +109,7 @@ function initializeFromPlotParams() {
 	if (plots.value == null || plots.value == "") {
 		return;
 	}
+	document.getElementById("plot-submit").disabled = false;
 	var tbl = document.getElementById("plots");
 	var s = plots.value.split(" ");
 	var count = 0;
@@ -102,9 +121,23 @@ function initializeFromPlotParams() {
 				single = p[0];
 			}
 			addPlotRow(p[0], document.plotTypes[p[0]]);
-			var a = firstNonTextChild(tbl.rows[i + 1].cells[1]);
+			var a = firstNonTextChild(tbl.rows[i + 1].cells[2]);
 			var img = firstNonTextChild(a);
 			img.style.backgroundColor = p[1];
+			img.setAttribute("value", p[1]);
+			if (p[2] && p[2] == "logx") {
+				firstNonTextChild(tbl.rows[i + 1].cells[3]).checked = true;
+			}
+			else {
+				firstNonTextChild(tbl.rows[i + 1].cells[3]).checked = false;
+			}
+			
+			if (p[3] && p[3] == "logy") {
+				firstNonTextChild(tbl.rows[i + 1].cells[4]).checked = true;
+			}
+			else {
+				firstNonTextChild(tbl.rows[i + 1].cells[4]).checked = false;
+			}
 		}
 	}
 	if (count == 1) {

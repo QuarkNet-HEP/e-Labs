@@ -30,12 +30,20 @@
 			</div>
 			<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
 			<div id="content">
-
 <h1>Z Mass Study</h1>
-dataset: ${param.dataset}, runs: ${param.runs}, expr: ${param.expr}, plots: ${param.plots}
+<script>
+	initlog();
+	log("<span class='red'>dataset: ${param.dataset}</span>");
+	log("<span class='red'>runs: ${param.runs}</span>");
+	log("<span class='red'>expr: ${param.expr}</span>");
+	log("<span class='red'>plots: ${param.plots}</span>");
+	log("<span class='red'>commbine: ${param.combine}</span>");
+</script>
+
 <form action="../analysis-zmass/plot-params.jsp">
 	<e:trinput type="hidden" name="dataset" id="dataset-input" default="${dataset}"/>
 	<e:trinput type="hidden" name="plots"/>
+	<e:trinput type="hidden" name="combine"/>
 	<table border="0" id="main">
 		<tr>
 			<td>
@@ -63,7 +71,16 @@ dataset: ${param.dataset}, runs: ${param.runs}, expr: ${param.expr}, plots: ${pa
 					</script>
 				</div>
 				
-				<e:vswitch id="selected-events-panel" title="Selected Events" titleclass="panel-title">
+				<e:vswitch id="data-selection-panel" title="Advanced Data Selection" titleclass="panel-title">
+					<e:visible image="../graphics/plus.png">
+					</e:visible>
+					<e:hidden image="../graphics/minus.png">
+						<jsp:include page="../data/triggers.jsp">
+							<jsp:param name="dataset" value="${dataset}"/>
+						</jsp:include>
+					</e:hidden>
+				</e:vswitch>
+				<e:vswitch id="selected-events-panel" title="Advanced Run Selection" titleclass="panel-title">
 					<e:visible image="../graphics/plus.png">
 					</e:visible>
 					<e:hidden image="../graphics/minus.png">
@@ -78,15 +95,6 @@ dataset: ${param.dataset}, runs: ${param.runs}, expr: ${param.expr}, plots: ${pa
 					</e:hidden>
 				</e:vswitch>
 				
-				<e:vswitch id="data-selection-panel" title="Data Selection" titleclass="panel-title">
-					<e:visible image="../graphics/plus.png">
-					</e:visible>
-					<e:hidden image="../graphics/minus.png">
-						<jsp:include page="../data/triggers.jsp">
-							<jsp:param name="dataset" value="${dataset}"/>
-						</jsp:include>
-					</e:hidden>
-				</e:vswitch>
 				<table id="step-buttons" border="0" width="100%">
 					<tr>
 						<td width="100%">
@@ -100,8 +108,6 @@ dataset: ${param.dataset}, runs: ${param.runs}, expr: ${param.expr}, plots: ${pa
 		</tr>
 	</table>
 </form>
-<div id="log">
-</div>
 
 			</div>
 			<!-- end content -->	

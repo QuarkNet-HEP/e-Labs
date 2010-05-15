@@ -29,9 +29,16 @@
 			<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
 		    <script type="text/javascript" src="../analysis-zmass/plot-params.js"></script>
 			<div id="content">
-				
 <h1>Z Mass Study</h1>
-dataset: ${param.dataset}, runs: ${param.runs}, expr: ${param.expr}, plots: ${param.plots} 
+<script>
+	initlog();
+	log("<span class='red'>dataset: ${param.dataset}</span>");
+	log("<span class='red'>runs: ${param.runs}</span>");
+	log("<span class='red'>expr: ${param.expr}</span>");
+	log("<span class='red'>plots: ${param.plots}</span>");
+	log("<span class='red'>commbine: ${param.combine}</span>");
+</script>
+ 
 <form action="../data/plot.jsp">
 <e:trinput type="hidden" name="plots" id="plots-input" />
 <e:trinput type="hidden" name="dataset"/>
@@ -75,18 +82,7 @@ dataset: ${param.dataset}, runs: ${param.runs}, expr: ${param.expr}, plots: ${pa
 			<table id="controls">
 				<tr id="global-plot-options">
 					<td>
-						<input type="checkbox" /> Log X
-						<input type="checkbox" /> Log Y
-					</td>
-					<td>
-						Plot size:
-						<select>
-							<option>1600x1200</option>
-							<option>1280x1024</option>
-							<option>1024x768</option>
-							<option selected="true">800x600</option>
-							<option>640x480</option>
-						</select>
+						<e:trinput type="checkbox" name="combine" /> Combine plots that have the same units
 					</td>
 				</tr>
 				<tr>
@@ -95,9 +91,11 @@ dataset: ${param.dataset}, runs: ${param.runs}, expr: ${param.expr}, plots: ${pa
 <table border="0" id="plots">
 	<tr>
 		<th>#</th>
-		<th>Color</th>
 		<th>Plot Content</th>
-		<th></th>
+		<th>Color</th>
+		<th>Log&nbsp;X</th>
+		<th>Log&nbsp;Y</th>
+		<th>Remove</th>
 	</tr>
 	<tr>
 		<td id="addplotcell" colspan="3">
@@ -106,7 +104,7 @@ dataset: ${param.dataset}, runs: ${param.runs}, expr: ${param.expr}, plots: ${pa
 			</div>
 		</td>
 	</tr>
-</table>				
+</table>
 					</td>
 				</tr>				
 	
@@ -121,7 +119,7 @@ dataset: ${param.dataset}, runs: ${param.runs}, expr: ${param.expr}, plots: ${pa
 						<td width="100%">
 						</td>
 						<td>
-							<input type="submit" name="forward" value="Plot >" />
+							<input id="plot-submit" type="submit" name="forward" value="Plot >" disabled="true" />
 						</td>
 					</tr>
 				</table>
@@ -151,17 +149,15 @@ dataset: ${param.dataset}, runs: ${param.runs}, expr: ${param.expr}, plots: ${pa
 	<a class="tbutton addparam" href="#" style="display: inline"><img class="buttonicon" src="../graphics/plus.png"></a>
 </div>
 
-<div id="log">
-</div>
-
-
 <table>
 	<tr id="plot-template" class="template">
 		<td class="plot-index">0</td>
+		<td class="active-label" width="100%"></td>
 		<td class="color">
 			<a class="tbutton colorbutton" href="#"><img class="colorbox" src="../graphics/colorbox.png"></a>
 		</td>
-		<td class="active-label" width="100%"></td>
+		<td><input type="checkbox" class="log"/></td>
+		<td><input type="checkbox" class="log"/></td>
 		<td class="remove">
 			<a class="tbutton" href="#"><img src="../graphics/minus.png"></a>
 		</td>
