@@ -159,10 +159,29 @@ function getAncestor(obj, level) {
 }
 
 function log(text) {
-	//return;
     var l = document.getElementById("log");
     if (l) {
     	l.innerHTML = l.innerHTML + "<br />\n" + new Date().toGMTString() + " " + text;
     	l.scrollTop = l.scrollHeight;
     }
+}
+
+function initlog() {
+	document.write(
+		'<div id="log">' + 
+			'<input id="logtoggle" type="button" value="Hide Log" onclick="toggleLog();" style="position: fixed; bottom: 4px; right: 20px;"/>' + 
+		'</div>');
+}
+
+function toggleLog() {
+	var l = document.getElementById("log");
+	var lt = document.getElementById("logtoggle");
+	if (l.style.height == "6px") {
+		l.style.height = "100px";
+		lt.value = "Hide Log";
+	}
+	else {
+		l.style.height = "6px";
+		lt.value = "Show Log";
+	}
 }
