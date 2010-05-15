@@ -17,3 +17,6 @@ ogre = http://leptoquark.hep.nd.edu/~ogre
 ogredb.database=//localhost/ogredb
 ogredb.username=ogre
 ogredb.password=ogre
+
+dataset.tb04.location=/disks/i2u2/cms/data/tbdata
+dataset.mc09.location=/home/mike/work/i2u2/cms-data/mcdata
