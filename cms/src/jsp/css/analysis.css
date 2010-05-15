@@ -317,7 +317,7 @@ tr#global-plot-options {
 	width: 600px;
 }
 
-#cursor {
+.cursor {
 	color: red;
 }
 

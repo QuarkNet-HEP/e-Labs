@@ -424,12 +424,11 @@ function bindButtons(index) {
 	$(plot + " .placeholder").bind("plotunselected", function() {plotUnselected(index);});
 	
 	$(plot + " .placeholder").bind("plothover", function(event, pos, item) {
-		var crs = document.getElementById("cursor");
-		var crsVal = document.getElementById("cursorValue");
 		$(plot + " .cursor").css("left", (pos.pageX + 6) + "px");
 		$(plot + " .cursor").css("top", (pos.pageY - 20) + "px");
 		$(plot + " .cursorValue").html(Math.round(pos.x * 10) / 10);
 	});
+	
 	$(plot + " .placeholder").bind("mouseenter", function() {
 		$(plot + " .cursor").css("display", "block");
 	});

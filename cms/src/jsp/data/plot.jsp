@@ -83,7 +83,7 @@
 			</td>
 		</tr>
 	</table>
-	<div class="cursor" style="position: absolute; z-index: 10; display: none;"><span id="cursorValue"></span> <span id="cursorUnit"></span></div>
+	<div class="cursor" style="position: absolute; z-index: 10; display: none;"><span class="cursorValue"></span> <span class="cursorUnit"></span></div>
 	<div class="frame" style="position: relative;">
 		<div class="placeholder" style="width:768px;height:380px; margin-bottom: 16px; margin-left: 16px;"></div>
 		<div class="selection" style="position: absolute; top: 40px; z-index: 10;"></div>
