@@ -172,6 +172,27 @@ function updateExpr() {
 	updateData(expr);
 }
 
+function clearExpr() {
+	document.getElementById("expr").value = "";
+	clearTriggerTable(document.getElementById("incltable"));
+	clearTriggerTable(document.getElementById("excltable"));
+	var st = document.getElementById("simplified-triggers");
+	if (st) {
+		setSelected(st, 0);
+	}
+}
+
+function setSelected(list, index) {
+	for (var i = 0; i < list.options.length; i++) {
+		if (i == index) {
+			list.options[i].selected = true;
+		}
+		else {
+			list.options[i].selected = false;
+		}
+	}
+}
+
 function clearTriggerTable(table) {
     log("Clearing previous selections from " + table);
     var row = table.rows[0];

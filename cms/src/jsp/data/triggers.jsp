@@ -64,6 +64,9 @@
 								<td width="100%">
 									<input id="expr" name="expr" type="text" size="100" onchange="initializeFromExpr()" value="${param.expr}"/>
 								</td>
+								<td>
+									<input id="clear" type="button" value="Clear" onclick="clearExpr();" />
+								</td>
 							</tr>
 						</table>
 					</td>
