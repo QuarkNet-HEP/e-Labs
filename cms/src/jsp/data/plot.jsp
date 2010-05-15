@@ -41,43 +41,55 @@
 			<div id="content">
 				
 <h1>Z Mass Study</h1>
-dataset: ${param.dataset}, runs: ${param.runs}, expr: ${param.expr}, plots: ${param.plots}
+<script>
+	initlog();
+	log("<span class='red'>dataset: ${param.dataset}</span>");
+	log("<span class='red'>runs: ${param.runs}</span>");
+	log("<span class='red'>expr: ${param.expr}</span>");
+	log("<span class='red'>plots: ${param.plots}</span>");
+	log("<span class='red'>commbine: ${param.combine}</span>");
+</script>
 
-<div id="cursor" style="position: absolute; z-index: 10; display: none;"><span id="cursorValue"></span> <span id="cursorUnit"></span></div>
-<div id="frame" style="position: relative;">
-	<div id="placeholder" style="width:800px;height:400px"></div>
-	<div id="selection" style="position: absolute; top: 40px; z-index: 10;"></div>
+<div id="plot-container">
 </div>
-<table id="toolbox">
-	<tr>
-		<td>
-			<div class="toolbox-group">
-				<span class="group-title">Selection:</span>
-				<input type="button" id="apply-selection" value="Apply" disabled="true" />
-				<input type="button" id="reset-selection" value="Reset" />
-			</div>
-		</td>
-		<td>
-			<div class="toolbox-group">
-				<e:vswitch id="animation-panel" title="Animation Controls" titleclass="group-title">
-					<e:visible image="../graphics/plus.png">
-					</e:visible>
-					<e:hidden image="../graphics/minus.png">
-						<a id="anim-bskip" class="tbutton" href="#"><img src="../graphics/bskip.png"></a>
-						<a id="anim-playpause" class="tbutton" href="#"><img src="../graphics/play.png"></a>
-						<a id="anim-fstep" class="tbutton disabled" href="#"><img src="../graphics/fstep.png"></a>
-						<a id="anim-fskip" class="tbutton disabled" href="#"><img src="../graphics/fskip.png"></a>
-						<span id="crtevent"></span>/<span id="totalevents"></span>
-						Speed: <span id="crtspeed">1</span>
-						<a id="anim-incspeed" class="tbutton" href="#"><img src="../graphics/plus.png"></a>
-						<a id="anim-decspeed" class="tbutton" href="#"><img src="../graphics/minus.png"></a>
-					</e:hidden>
-				</e:vswitch>
-			</div>
-		</td>
-	</tr>
-</table>
-<div id="log">
+
+<div id="plot-template" style="display: none">
+	<table class="toolbox">
+		<tr>
+			<td>
+				<div class="toolbox-group">
+					<span class="group-title">Selection:</span>
+					<input type="button" class="apply-selection" value="Apply" disabled="true" />
+					<input type="button" class="reset-selection" value="Reset" />
+				</div>
+			</td>
+			<td>
+				<div class="toolbox-group">
+					<e:vswitch id="animation-panel" title="Animation" titleclass="group-title">
+						<e:visible image="../graphics/plus.png">
+						</e:visible>
+						<e:hidden image="../graphics/minus.png">
+							<a class="anim-bskip tbutton" href="#"><img src="../graphics/bskip.png"></a>
+							<a class="anim-playpause tbutton" href="#"><img src="../graphics/play.png"></a>
+							<a class="anim-fstep tbutton disabled" href="#"><img src="../graphics/fstep.png"></a>
+							<a class="anim-fskip tbutton disabled" href="#"><img src="../graphics/fskip.png"></a>
+							<span class="crtevent"></span>/<span class="totalevents"></span>
+							Speed: <span class="crtspeed">1</span>
+							<a class="anim-incspeed tbutton" href="#"><img src="../graphics/plus.png"></a>
+							<a class="anim-decspeed tbutton" href="#"><img src="../graphics/minus.png"></a>
+						</e:hidden>
+					</e:vswitch>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<div class="cursor" style="position: absolute; z-index: 10; display: none;"><span id="cursorValue"></span> <span id="cursorUnit"></span></div>
+	<div class="frame" style="position: relative;">
+		<div class="placeholder" style="width:768px;height:380px; margin-bottom: 16px; margin-left: 16px;"></div>
+		<div class="selection" style="position: absolute; top: 40px; z-index: 10;"></div>
+		<div class="xlabel" style="position: absolute; left: 400px; bottom: -14px;"></div>
+		<div class="ylabel" style="position: absolute; left: -50px; top: 200px;writing-mode: tb-rl; filter: flipV flipH; -webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);"></div>
+	</div>
 </div>
 
 <script>
@@ -92,7 +104,7 @@ dataset: ${param.dataset}, runs: ${param.runs}, expr: ${param.expr}, plots: ${pa
 	    lines: { show: true, fill: false, lineWidth: 1.2 },
 	    grid: { hoverable: true, autoHighlight: false },
 	    points: { show: false },
-	    legend: { noColumns: 2 },
+	    legend: { noColumns: 1 },
 	    xaxis: { tickDecimals: 0 },
 	    yaxis: { autoscaleMargin: 0.1 },
 	    y2axis: { autoscaleMargin: 0.1 },
@@ -100,68 +112,7 @@ dataset: ${param.dataset}, runs: ${param.runs}, expr: ${param.expr}, plots: ${pa
 	    selection: { mode: "x", color: "yellow" }
 	};
 
-
-	var placeholder = $("#placeholder");
-
-	placeholder.bind("plotselected", function (event, ranges) {
-		$("#selection").css("display", "block");
-		var scale = document.plot.getAxes().xaxis.scale;
-		var pos = ranges.xaxis.from;
-		var client = document.plot.getAxes().xaxis.p2c(pos);
-		$("#selection").text(ranges.xaxis.from.toFixed(1) + " - " + ranges.xaxis.to.toFixed(1));
-		$("#selection").css("left", (client + 30) + "px");
-		$("#apply-selection").attr("disabled", false);
-	});
-
-	plotUnselected = function(event) {
-		$("#selection").css("display", "none");
-    	$("#selection").text("none");
-    	$("#apply-selection").attr("disabled", true);
-	};
-	
-	placeholder.bind("plotunselected", plotUnselected);
-	
-	placeholder.bind("plothover", function(event, pos, item) {
-		var crs = document.getElementById("cursor");
-		var crsVal = document.getElementById("cursorValue");
-		crs.style.left = (pos.pageX + 6) + "px";
-		crs.style.top = (pos.pageY - 20) + "px";
-		crsVal.innerHTML = Math.round(pos.x * 10) / 10;
-	});
-	placeholder.bind("mouseenter", function() {
-		var crs = document.getElementById("cursor");
-		crs.style.display = "block";
-	});
-	placeholder.bind("mouseleave", function() {
-		var crs = document.getElementById("cursor");
-		crs.style.display = "none";
-	});
-
-	$("#apply-selection").bind("click", function() {
-		var r = document.plot.getSelection();
-		document.plot = $.plot(placeholder, document.data,
-                $.extend(true, {}, options, {
-                    xaxis: { min: r.xaxis.from, max: r.xaxis.to }
-                }));
-    	plotUnselected();
-	});
-
-	$("#reset-selection").bind("click", function() {
-		document.plot = $.plot(placeholder, document.data, options);
-		plotUnselected();
-	});
-
-	document.plot = $.plot(placeholder, data, options);
-
-	getData("${param.dataset}", "${param.runs}", "${param.plots}");
-
-	$("#anim-bskip").bind("click", animationBSkip);
-	$("#anim-playpause").bind("click", animationPlayPause);
-	$("#anim-fstep").bind("click", animationFStep);
-	$("#anim-fskip").bind("click", animationFSkip);
-	$("#anim-incspeed").bind("click", animationIncSpeed);
-	$("#anim-decspeed").bind("click", animationDecSpeed);
-	document.animSpeed = 1;	
+	getData("${param.dataset}", "${param.runs}", "${param.plots}", "${param.combine}");	
 </script>
 
 			</div>
