@@ -2,7 +2,8 @@
 	import="java.util.*"
 	import="java.io.*"
 	import="org.w3c.dom.*"
-	import="java.sql.*" 
+	import="java.sql.*"
+	import="gov.fnal.elab.cms.*"
 %>
 <%@ include file="../include/elab.jsp" %>
 <jsp:include page="../data/dataset-info.jsp">
@@ -39,7 +40,8 @@
 		    	Map<String, String> p = new HashMap<String, String>();
 		    	dsprops.put(v1 + "." + v2, p);
 		    	for (String attr : new String[] { "title", "labelx", "labely", "units", "description" }) {
-		    	    p.put(attr, leaf.getAttributes().getNamedItem(attr).getNodeValue());
+		    	    p.put(attr, 
+		    	    	LabelPrettyPrinter.formatLabel(leaf.getAttributes().getNamedItem(attr).getNodeValue()));
 		    	}
 		    }
 		}
@@ -102,6 +104,13 @@
 	
 	String[] sruns = runs.split("\\s+");
 	String[] splots = plots.split("\\s+");
+	String combine = request.getParameter("combine");
+	if (combine == null || combine.equals("") || combine.equals("off") || combine.equals("false")) {
+		out.write("combine: false\n");
+	}
+	else {
+	    out.write("combine: true\n");
+	}
 
 	for (String plot : splots) {
 	    String[] cp = plot.split(":");
@@ -109,6 +118,18 @@
 	    String color = cp[1];
 		out.write("path: " + path + "\n");
 		Map<String, String> p = dsprops.get(path);
+		if (cp.length > 2 && "logx".equals(cp[2])) {
+		    out.write("logx: true\n");
+		}
+		else {
+		    out.write("logx: false\n");
+		}
+		if (cp.length > 3 && "logy".equals(cp[3])) {
+		    out.write("logy: true\n");
+		}
+		else {
+		    out.write("logy: false\n");
+		}
 		for (String attr : new String[] { "title", "labelx", "labely", "units", "description" }) {
 		 	out.write(attr + ": " + p.get(attr) + "\n");   
 		}
