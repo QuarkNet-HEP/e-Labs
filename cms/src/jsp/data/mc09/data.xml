@@ -26,89 +26,89 @@
     <branch id="1"  name="patElectrons_cleanPatElectrons__PAT.obj" level="0">
 
       <leaf id="1"  name="pt_" 
-	    title="Electron P_t"   labely="Number of Events" labelx="P_t" units="GeV/c" 
+	    title="Electron p_t"   labely="Number of Events" labelx="Transversal Momentum" units="GeV/c" 
             level="0" description="Transverse momentum of the electrons (GeV/c)"/>
 
       <leaf id="2"  name="corrections_.ecalEnergy"       
-	    title="Electron Energy"   labely="Number of Events" labelx="E_e" units="GeV" 
+	    title="Electron Energy"   labely="Number of Events" labelx="Energy" units="GeV" 
             level="0" description="Energy of the electrons (GeV)"/>
 
       <leaf id="3"  name="eta_"                      
-	    title="Electron Eta"   labely="Number of Events" labelx="Eta" units=""
+	    title="Electron \eta"   labely="Number of Events" labelx="Eta" units=""
 	    level="1" description="Psudeorapidity of the electrons. eta = -ln[tan(theta/2)] where theta is the pitch angle (angle between the momentum vector and the z-axis)"/>
 
       <leaf id="4"  name="phi_"
-            title="Electron Phi"   labely="Number of Events" labelx="Phi" units="rad" 
+            title="Electron \phi"   labely="Number of Events" labelx="Phi" units="rad" 
 	    level="1" description="Phi (rotation angle in the X-Y plane) of the electrons (rad)"/>
 
       <leaf id="5"  name="vertex_.fCoordinates.fX"   
-	    title="Electron Vtx X"   labely="Number of Events" labelx="X_v" units="cm" 
+	    title="Electron Vtx X"   labely="Number of Events" labelx="x_V" units="cm" 
 	    level="0" description="X Position where the electron appears to have originated (cm)" />
 
       <leaf id="6"  name="vertex_.fCoordinates.fY"   
-	    title="Electron Vtx Y"   labely="Number of Events" labelx="Y_v" units="cm" 
+	    title="Electron Vtx Y"   labely="Number of Events" labelx="y_V" units="cm" 
 	    level="0" description="Y Position where the electron appears to have originated (cm)" />
 
       <leaf id="7"  name="vertex_.fCoordinates.fZ"   
-	    title="Electron Vtx Z"   labely="Number of Events" labelx="Z_v" units="cm" 
+	    title="Electron Vtx Z"   labely="Number of Events" labelx="z_V" units="cm" 
 	    level="0" description="Z Position where the electron appears to have originated (cm)"/>
     </branch>
 
     <branch id="2"  name="patMuons_cleanPatMuons__PAT.obj" level="0">
 
       <leaf id="8"  name="pt_" 
-	    title="Muon P_t"   labely="Number of Events" labelx="P_t" units="GeV/c" 
+	    title="Muon P_t"   labely="Number of Events" labelx="Transversal Momentum" units="GeV/c" 
             level="0" description="Transverse momentum of the muons (GeV/c)"/>
 
       <leaf id="9"  name="eta_"                      
-	    title="Muon Eta"   labely="Number of Events" labelx="Eta" units=""
+	    title="Muon \eta"   labely="Number of Events" labelx="Eta" units=""
 	    level="1" description="Psudeorapidity of the muons. eta = -ln[tan(theta/2)] where theta is the pitch angle (angle between the momentum vector and the z-axis)"/>
 
       <leaf id="10"  name="phi_"
-            title="Muon Phi"   labely="Number of Events" labelx="Phi" units="rad" 
+            title="Muon \phi"   labely="Number of Events" labelx="Phi" units="rad" 
 	    level="1" description="Phi (rotation angle in the X-Y plane) of the muons (rad)"/>
 
       <leaf id="11"  name="vertex_.fCoordinates.fX"   
-	    title="Muon Vtx X"   labely="Number of Events" labelx="X_v" units="cm" 
+	    title="Muon Vtx X"   labely="Number of Events" labelx="x_V" units="cm" 
 	    level="2" description="X Position where the muon appears to have originated (cm)" />
 
       <leaf id="12"  name="vertex_.fCoordinates.fY"   
-	    title="Muon Vtx Y"   labely="Number of Events" labelx="Y_v" units="cm" 
+	    title="Muon Vtx Y"   labely="Number of Events" labelx="y_V" units="cm" 
 	    level="2" description="Y Position where the muon appears to have originated (cm)" />
 
       <leaf id="13"  name="vertex_.fCoordinates.fZ"   
-	    title="Muon Vtx Z"   labely="Number of Events" labelx="Z_v" units="cm" 
+	    title="Muon Vtx Z"   labely="Number of Events" labelx="z_V" units="cm" 
 	    level="2" description="Z Position where the muon appears to have originated (cm)"/>
     </branch>
 
     <branch id="3"  name="patPhotons_cleanPatPhotons__PAT.obj" level="0">
 
       <leaf id="14"  name="pt_"
-	    title="Photon P_t"   labely="Number of Events" labelx="P_t" units="GeV/c" 
+	    title="Photon P_t"   labely="Number of Events" labelx="Transversal Momentum" units="GeV/c" 
 	    level="0" description="Transverse momentum of the photons (GeV/c)" />
 
       <leaf id="15"  name="showerShapeBlock_.e3x3"       
-	    title="Photon Energy"   labely="Number of Events" labelx="E_p" units="GeV" 
+	    title="Photon Energy"   labely="Number of Events" labelx="Energy" units="GeV" 
             level="0" description="Energy of the photons (GeV)"/>
 
       <leaf id="16"  name="eta_"                      
-	    title="Photon Eta"   labely="Number of Events" labelx="Eta" units="" level="1" 
+	    title="Photon \eta"   labely="Number of Events" labelx="Eta" units="" level="1" 
 	    description="Psuedorapidity of the photons. eta = -ln[tan(theta/2)] where theta is the pitch angle (angle between the momentum vector and the z-axis)"/>
 
       <leaf id="17"  name="phi_"
-            title="Photon Phi"   labely="Number of Events" labelx="Phi" units="rad" 
+            title="Photon \phi"   labely="Number of Events" labelx="Phi" units="rad" 
 	    level="1" description="Phi (rotation angle in the X-Y plane) of the photons (rad)"/>
 
       <leaf id="18" name="vertex_.fCoordinates.fX"   
-	    title="Photon Vtx X"   labely="Number of Events" labelx="X_v" units="cm" 
+	    title="Photon Vtx X"   labely="Number of Events" labelx="x_V" units="cm" 
 	    level="2" description="X Position where the photon appears to have originated (cm)"/>
 
       <leaf id="19" name="vertex_.fCoordinates.fY"   
-	    title="Photon Vtx Y"   labely="Number of Events" labelx="Y_v" units="cm" 
+	    title="Photon Vtx Y"   labely="Number of Events" labelx="y_V" units="cm" 
 	    level="2" description="Y Position where the photon appears to have originated (cm)"/>
 
       <leaf id="20" name="vertex_.fCoordinates.fZ"   
-	    title="Photon Vtx Z"   labely="Number of Events" labelx="Z_v" units="cm" 
+	    title="Photon Vtx Z"   labely="Number of Events" labelx="z_V" units="cm" 
 	    level="2" description="Z Position where the photon seems to have originated (cm)"/>
     </branch>
 
@@ -126,56 +126,56 @@
 
     <!-- electron + e,p,m,am) two-particle mass -->
     <branch id="5" name="recoCompositeCandidates_ZtoEleEle__PAT.obj" level="5">
-      <leaf id="30" name="mass_" title="e+e Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c&lt;sup&gt;2&lt;/sup&gt;" level="5" description="ee Mass"/>
+      <leaf id="30" name="mass_" title="e^- e^- Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="ee Mass"/>
     </branch>
 
     <branch id="6" name="recoCompositeCandidates_ZtoAEleEle__PAT.obj" level="5">
-      <leaf id="31" name="mass_" title="e+p Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c&lt;sup&gt;2&lt;/sup&gt;" level="5" description="ep Mass"/>
+      <leaf id="31" name="mass_" title="e^- e^+ Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="ep Mass"/>
     </branch>
 
     <branch id="7" name="recoCompositeCandidates_ZtoEleMuon__PAT.obj" level="5">
-      <leaf id="32" name="mass_" title="e+mu Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c&lt;sup&gt;2&lt;/sup&gt;" level="5" description="e-mu Mass"/>
+      <leaf id="32" name="mass_" title="e^- \mu ^- Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="e-mu Mass"/>
     </branch>
 
     <branch id="8" name="recoCompositeCandidates_ZtoEleAMuon__PAT.obj" level="5">
-      <leaf id="33" name="mass_" title="e+antimuon Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c&lt;sup&gt;2&lt;/sup&gt;" level="5" description="e-amu Mass"/>
+      <leaf id="33" name="mass_" title="e^- \mu ^+ Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="e-amu Mass"/>
     </branch>
 
     <!-- positron + (p,m,am) two particle mass -->
     <branch id="9" name="recoCompositeCandidates_ZtoAEleAEle__PAT.obj" level="5">
-      <leaf id="34" name="mass_" title="p+p Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c&lt;sup&gt;2&lt;/sup&gt;" level="5" description="positron-positron Mass"/>
+      <leaf id="34" name="mass_" title="e^+ e^+ Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="positron-positron Mass"/>
     </branch>
 
     <branch id="10" name="recoCompositeCandidates_ZtoAEleMuon__PAT.obj" level="5">
-      <leaf id="35" name="mass_" title="p+mu Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c&lt;sup&gt;2&lt;/sup&gt;" level="5" description="positron-muon Mass"/>
+      <leaf id="35" name="mass_" title="e^+ \mu ^- Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="positron-muon Mass"/>
     </branch>
 
     <branch id="11" name="recoCompositeCandidates_ZtoAEleAMuon__PAT.obj" level="5">
-      <leaf id="36" name="mass_" title="p+antimuon Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c&lt;sup&gt;2&lt;/sup&gt;" level="5" description="positron+antimuon Mass"/>
+      <leaf id="36" name="mass_" title="e^+ \mu ^+ Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="positron+antimuon Mass"/>
     </branch>
 
     <!-- muon + (m,am) two particle mass -->
     <branch id="12" name="recoCompositeCandidates_ZtoMuonMuon__PAT.obj" level="5">
-      <leaf id="37" name="mass_" title="mu+mu Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c&lt;sup&gt;2&lt;/sup&gt;" level="5" description="positron-muon Mass"/>
+      <leaf id="37" name="mass_" title="\mu ^- \mu ^- Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="positron-muon Mass"/>
     </branch>
 
     <branch id="13" name="recoCompositeCandidates_ZtoMuonAMuon__PAT.obj" level="5">
-      <leaf id="38" name="mass_" title="muon+antimuon Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c&lt;sup&gt;2&lt;/sup&gt;" level="5" description="muon+antimuon Mass"/>
+      <leaf id="38" name="mass_" title="\mu ^- \mu ^+ Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="muon+antimuon Mass"/>
     </branch>
 
     <!-- antimuon + antimuon two particle mass -->
     <branch id="14" name="recoCompositeCandidates_ZtoAMuonAMuon__PAT.obj" level="5">
-      <leaf id="39" name="mass_" title="antimuon+antimuon Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c&lt;sup&gt;2&lt;/sup&gt;" level="5" description="antimuon-antimuon Mass"/>
+      <leaf id="39" name="mass_" title="\mu ^+ \mu ^+ Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="antimuon-antimuon Mass"/>
     </branch>
 
   </tree>
