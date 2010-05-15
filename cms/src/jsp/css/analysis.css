@@ -97,6 +97,7 @@ td#excl, #excl td {
 	padding-right: 4px;
 	background-color: #e0e0e0;
 	display: block;
+	min-width: 36px;
 }
 
 #inclexcl .active-trigger td {
@@ -172,16 +173,18 @@ td.vopcell {
 }
 
 #log {
-	margin-top: 32px;
-	width: 800px;
-	height: 136px;
+	left: 0px;
+	right: 0px;
+	height: 106px;
 	border: thin solid black;
 	font-size: 8pt;
-	background-color: white;
+	background-color: #e0e0e0;
+	padding: 4px;
 	color: black;
 	overflow: auto;
-	margin-left: auto;
-	margin-right: auto;
+	position: fixed;
+	bottom: 0px;
+	opacity: 0.9;
 }
 
 #runs-header {
@@ -198,7 +201,7 @@ td.vopcell {
 
 #runs {
 	width: 597px;
-	height: 136px;
+	height: 236px;
 	border: thin solid #e0e0e0;
 	font-size: 8pt;
 	background-color: white;
@@ -269,6 +272,26 @@ table#main {
 	text-align: left;
 }
 
+#plots th {
+	padding: 4px;
+}
+
+#plots td {
+	vertical-align: middle;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+#plots .remove {
+	text-align: center;
+}
+
+#plots .remove .tbutton {
+	width: 10px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .plot-entry {
 	width: 100%;
 }
@@ -298,10 +321,11 @@ tr#global-plot-options {
 	color: red;
 }
 
-#toolbox { 
+table.toolbox { 
 	background-color: white; 
 	margin-top: 6px;
 	padding: 2px;
+	margin-left: 8px;
 }
 
 .toolbox-group {
@@ -317,12 +341,12 @@ tr#global-plot-options {
 	font-weight: bold;
 }
 
-#selection {
+.selection {
 	background-color: yellow;
 	border: thin solid orange;
 }
 
-#animation-panel-h, #animation-panel-v {
+.toolbox-group>div {
 	vertical-align: middle;
 	padding-top: 4px;
 }
@@ -337,20 +361,20 @@ a.group-title img {
 	margin-right: 2px;
 }
 
-#plot-page #animation-panel-h a.tbutton {
+#plot-page a.tbutton {
 	display: inline;
 	border: thin solid gray;
 }
 
-#plot-page #animation-panel-h a.tbutton.disabled img {
+#plot-page a.tbutton.disabled img {
 	opacity: 0.2;
 }
 
-#plot-page #animation-panel-h a.tbutton.disabled:hover {
+#plot-page a.tbutton.disabled:hover {
 	border: thin solid gray;
 }
 
-#plot-page #animation-panel-h a.tbutton:hover {
+#plot-page a.tbutton:hover {
 	border: thin solid red;
 }
 
@@ -365,4 +389,19 @@ a.group-title img {
 	height: 10px;
 	background-color: gray;
 	border: thin solid red;
+}
+
+.xlabel, .ylabel {
+	font-weight: bold;
+}
+
+#plot-page #container .plot {
+	padding-bottom: 8px;
+	margin-bottom: 24px;
+	border: thin dashed gray;
+	text-align: left;
+}
+
+.red {
+	color: red;
 }
