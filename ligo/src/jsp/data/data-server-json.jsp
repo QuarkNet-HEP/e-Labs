@@ -131,4 +131,8 @@
 		    out.write(s + " ");
 		}
 	}
+<<<<<<< HEAD
 %>
+=======
+%>
+>>>>>>> Test page for JSON handling
