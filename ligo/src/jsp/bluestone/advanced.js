@@ -19,17 +19,22 @@ var DMTPrefix = "";
 var DMTSampling = [ "rms"];
 var Sampling = [ "rms", "mean"];
 
-$(document).ready(function() {
-	/* Initialize the list */ 
-	subsystemChangeCB(); 
-	sensorChangeCB();
-	samplingCB();
-	displayFilename();
+var data = { };
 
-	function samplingCB() {
+var rows = 0; 
+
+$(document).ready(function() {
+	/* Initialize the initial dropdown list */ 
+	subsystemChangeCB(0); 
+	sensorChangeCB(0);
+	samplingCB(0);
+	displayFilename(0);
+	initBinding();
+
+	function samplingCB(index) {
 		var ptr = null; 
 		
-		switch($("#subsystem :selected").text()) {
+		switch($("#subsystem_" + index + " :selected").text()) {
 		case "DMT": 
 			ptr = DMTSampling;
 			break;
@@ -40,21 +45,21 @@ $(document).ready(function() {
 		default: 
 			return;
 		}
-		$("#sampling").children().remove();
-		$.each(ptr, function(index, value){
-			$("#sampling").append($("<option></option>").attr("value", value).text(value));
+		$("#sampling_" + index).children().remove();
+		$.each(ptr, function(i, value){
+			$("#sampling_" + index).append($("<option></option>").attr("value", value).text(value));
 		}); 
 	}
 
-	function sensorChangeCB() {
+	function sensorChangeCB(index) {
 		var ptr = null; 
 		
-		switch($("#subsystem :selected").text()) {
+		switch($("#subsystem_" + index + " :selected").text()) {
 		case "DMT":
 			ptr = DMTSensors;
 			break;
 		case "PEM":
-			switch($("#station :selected").val()) {
+			switch($("#station_" + index + " :selected").val()) {
 			case "EX":
 			case "EY":
 			case "LVEA":
@@ -86,16 +91,16 @@ $(document).ready(function() {
 			return; 
 		}
 		
-		$("#sensor").children().remove();
-		$.each(ptr, function(index, value){
-			$("#sensor").append($("<option></option>").attr("value", value).text(value));
+		$("#sensor_" + index).children().remove();
+		$.each(ptr, function(i, value){
+			$("#sensor_" + index).append($("<option></option>").attr("value", value).text(value));
 		}); 
 	}
 
-	function subsystemChangeCB() { 
+	function subsystemChangeCB(index) { 
 		var ptr = null; 
 		 
-		switch($("#subsystem :selected").text()) {
+		switch($("#subsystem_" + index + " :selected").text()) {
 		case "DMT": 
 			ptr = DMTStations; 
 			break;
@@ -109,63 +114,48 @@ $(document).ready(function() {
 			return; 	
 		}
 		
-		$("#station").children().remove();
-		$.each(ptr, function(index, value){
-			$("#station").append($("<option></option>").attr("value", value).text(value));
+		$("#station_" + index).children().remove();
+		$.each(ptr, function(i, value){
+			$("#station_" + index).append($("<option></option>").attr("value", value).text(value));
 		}); 
 	}
 
-	function generateFilename() { 
-		return $("#site :selected").val() + ":" + $("#subsystem :selected").val()  + 
-			$("#station :selected").val() + "_" + $("#sensor :selected").val() + "." +
-			$("#sampling :selected").val(); 
+	function generateFilename(index) { 
+		return $("#site_" + index + " :selected").val() + ":" + $("#subsystem_" + index + " :selected").val()  + 
+			$("#station_" + index + " :selected").val() + "_" + $("#sensor_" + index + " :selected").val() + "." +
+			$("#sampling_" + index + " :selected").val(); 
 	}
 
-	function displayFilename() { 
-		$("#dataName").text(generateFilename());
+	function displayFilename(index) { 
+		$("#dataName_" + index).text(generateFilename(index));
 	}
 
-	/* Change Station */ 
-	$("#subsystem").change(function() {
-		subsystemChangeCB(); 
-		sensorChangeCB();
-		samplingCB();
-	});
-
-	/* Change Sensor */ 
-	$("#station").change(function() {
-		sensorChangeCB(); 
-		samplingCB();
-	}); 
-
-	$("#site, #subsystem, #station, #sensor, #sampling").change(function() {
-		displayFilename(); 
-	});
-	
 	$("#parseDropDownAdvanced").bind('click', function() {
-		var c = generateFilename();
+		var c = "";
+		
+		$(".dataName").each(function(i){
+			c = c + $(this).text() + ","
+		});
+		
+		if (c != "") {
+			c = c.substr(0, c.length - 1);
+		}
 
-		var url = dataServerUrl + '?fn=getData&params=' + c + ',0,' + xminGPSTime + ',' + xmaxGPSTime;
+		var url = dataServerUrl + '?fn=getData&channels=' + c + '&startTime=' + xminGPSTime + '&endTime=' + xmaxGPSTime;
 
-		// Get the data via AJAT call
+		// Get the data via AJAJ call
 		$.ajax({ 
 			url: url,
 			method: 'GET', 
-			dataType: 'text',
+			dataType: 'json',
 			timeout: timeout,
 			success: onChannelDataReceived,
 			beforeSend: spinnerOn,
 			complete: spinnerOff
 		});
 
-		function onChannelDataReceived(series) { 
-			var s = series.split(" ");
-			var a = new Array();
-			var num = s[0];
-			for (var i = 0; i < s.length / 2 - 1; i++) {
-				a.push([convertTimeGPSToUNIX(parseFloat(s[i * 2 + 1])) * 1000.0, s[i * 2 + 2]]);
-			}
-			data = [{data: a, shadowSize: 0}];
+		function onChannelDataReceived(json) { 
+			data = json;
 			plot = $.plot(placeholder, data, options); 
 		}
 	});
@@ -181,6 +171,66 @@ $(document).ready(function() {
 		$("#xmax").val((new Date(convertTimeGPSToUNIX(parseFloat(xmaxGPSTime)) * 1000.0)).toDateString());
 		$("#parseDropDownAdvanced").trigger('click');
 	});
+	
+	function getIndex(objName) {
+		var tokens = objName.split("_", 2);
+		return tokens[1];
+	}
+	
+	function addNewRow(index) {
+		var foo = $("#channel-list-advanced");
 		
+		// Site Dropdown
+		var siteSelector = $("<select></select>").attr("name", "site").attr("id", "site_" + index).attr("class", "site");
+		siteSelector.append($("<option></option>").attr("value", "H0").text("H0"));
+		siteSelector.append($("<option></option>").attr("value", "L0").text("L0"));
+		
+		// Subsystem Dropdown
+		var subsysSelector = $("<select></select>").attr("name", "subsystem").attr("id", "subsystem_" + index).attr("class", "subsystem");
+		subsysSelector.append($("<option></option>").attr("value", "DMT-BRMS_PEM_").text("DMT"));
+		subsysSelector.append($("<option></option>").attr("value", "PEM-").text("PEM"));
+		subsysSelector.append($("<option></option>").attr("value", "GDS-").text("GDS"));
+		
+		var stationSelector = $("<select></select>").attr("name", "station").attr("id", "station_" + index).attr("class", "station");
+		var sensorSelector = $("<select></select>").attr("name", "sensor").attr("id", "sensor_" + index).attr("class", "sensor");
+		var samplingSelector = $("<select></select>").attr("name", "sampling").attr("id", "sampling_" + index).attr("class", "sampling");
+		var nameLabel = $("<span></span>").attr("id", "dataName_" + index).attr("class", "dataName");
+		
+		foo.append(siteSelector).append(subsysSelector).append(stationSelector).append(sensorSelector).append(samplingSelector).append(nameLabel).append($("<br />"));
+		subsystemChangeCB(index); 
+		sensorChangeCB(index);
+		samplingCB(index);
+		displayFilename(index);
+		initBinding();
+	}
+	
+	$("#addNewRow").click(function() {
+		++rows;
+		addNewRow(rows);
+	});
+		
+	function initBinding() {
+		/* Change Station */ 
+		$(".subsystem").change(function() {
+			var index = getIndex($(this).attr('id'));
+			subsystemChangeCB(index); 
+			sensorChangeCB(index);
+			samplingCB(index);
+			displayFilename(index);
+		});
+
+		/* Change Sensor */ 
+		$(".station").change(function() {
+			var index = getIndex($(this).attr('id'));
+			sensorChangeCB(index); 
+			samplingCB(index);
+			displayFilename(index);
+		}); 
+
+		$(".site, .sensor, .sampling").change(function() {
+			var index = getIndex($(this).attr('id'));
+			displayFilename(index); 
+		});
+	}
 });
 

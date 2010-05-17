@@ -7,6 +7,8 @@
 <%@ page import="org.apache.commons.lang.*" %>
 <%@ page import="com.google.gson.*" %>
 
+<%@ page contentType="application/json" %>
+
 <%
 	DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss zzz");
 	NumberFormat nf = new DecimalFormat("0000.00");
@@ -73,13 +75,13 @@
 		
 		List<String> exceptionList = new ArrayList();
 				
-		if (StringUtils.isBlank("channels")) {
+		if (StringUtils.isBlank(request.getParameter("channels"))) {
 			exceptionList.add("Please specify a channel to lookup"); 
 		}
-		if (StringUtils.isBlank("startTime")) {
+		if (StringUtils.isBlank(request.getParameter("startTime"))) {
 			exceptionList.add("Please specify a start time");
 		}
-		if (StringUtils.isBlank("endTime")) {
+		if (StringUtils.isBlank(request.getParameter("endTime"))) {
 			exceptionList.add("Please specify an end time");
 		}
 				
@@ -97,9 +99,16 @@
 			
 			Collection<DataSet> dataList = new ArrayList(); 
 			for(String channel : channels) {
-				dataList.add((NumberArrayDataSet) de.get(new DataPath(channel), new Range(startTime, endTime), new Options().setSamples(SAMPLES_PER_REQUEST)));
+				try {
+					NumberArrayDataSet nads = (NumberArrayDataSet) de.get(new DataPath(channel), new Range(startTime, endTime), new Options().setSamples(SAMPLES_PER_REQUEST));
+					dataList.add(nads);
+				}
+				catch(Exception e) {
+					// the data doesn't exist, don't add it. Flag user
+					exceptionList.add(channel + " doesn't exist");
+				}
 			}
-			out.write(gson.toJson(dataList));
+			out.write(gson.toJson(dataList).replaceAll("NaN", "null"));
 		}
 	}
 	else if (fn.equals("convolve")) {

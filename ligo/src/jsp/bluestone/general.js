@@ -1,7 +1,7 @@
 var data = []; 
 var timeout = 10000;
 var dataPoints = 1200; 
-var dataServerUrl = 'http://www13.i2u2.org:8080/elab/ligo/data/data-server.jsp';
+var dataServerUrl = '/elab/ligo/data/data-server-json.jsp';
 var plot = null; 
 var placeholder = null; 
 
@@ -50,7 +50,7 @@ $(document).ready(function() {
 	$.ajax({
 		url: dataServerUrl + '?fn=getTimeRange', 
 		method: 'GET',
-		dataType: 'text', 
+		dataType: 'json', 
 		timeout: 10000,
 		success: onTimeRangeReceived,
 		beforeSend: spinnerOn,
@@ -58,11 +58,10 @@ $(document).ready(function() {
 	});
 	
 	function onTimeRangeReceived(series) {
-		var s = $.trim(series).split(" ");
-		xminGPSTime = s[0];
-		ligoMinTime = s[0];
-		xmaxGPSTime = s[1];
-		ligoMaxTime = s[1];
+		xminGPSTime = series.minTime; 
+		ligoMinTime = series.minTime; 
+		xmaxGPSTime = series.maxTime; 
+		ligoMaxTime = series.maxTime; 
 		$("#xmin").val((new Date(convertTimeGPSToUNIX(parseFloat(xminGPSTime)) * 1000.0)).toDateString()); 
 		$("#xmax").val((new Date(convertTimeGPSToUNIX(parseFloat(xmaxGPSTime)) * 1000.0)).toDateString());
 		ligoMaxRange = ligoMaxTime - ligoMinTime; 

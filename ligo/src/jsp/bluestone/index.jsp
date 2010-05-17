@@ -1,5 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    
+    
+<%	String channels = request.getParameter("channels");
+	String startTime = request.getParameter("startTime");
+	String endTime = request.getParameter("startTime"); 
+
+
+
+%>
+    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
@@ -18,24 +28,20 @@
 	<body>
 		<h1>Engineering Prototype for Super-Bluestone</h1>
 		
+		Time<sub>start</sub>: <input readonly type="text" name="xmin" id="xmin" size="15" class="datepicker"></input>
+		Time<sub>end</sub>: <input readonly type="text" name="xmax" id="xmax" size="15" class="datapicker"></input>
+		<button title="Zoom to selection" id="buttonZoom">Zoom to selection</button>
+		<button title="Zoom all the way out" id="buttonZoomOut">Zoom all the way out</button>
 		<table>
 			<tr>
+				<td valign="top">
+					<img src="../graphics/busy2.gif" id="busySpinner" style="visibility: hidden"></img>
+				</td>
 				<td>
 					<div id="resizablecontainer" style="margin-bottom: 10px; margin-right: 10px;" >
 						<div id="chart" style="width:550px; height:250px; text-align: left;"></div>
 						<div id="slider"></div>
 					</div>
-				</td>
-				<td valign="top">
-					X<sub>min</sub>: <input readonly type="text" name="xmin" id="xmin" size="15" class="datepicker"></input>
-					<br />
-					X<sub>max</sub>: <input readonly type="text" name="xmax" id="xmax" size="15" class="datapicker"></input>
-					<br />
-					<button title="Zoom to selection" id="buttonZoom">Zoom to selection</button>
-					<br />
-					<button title="Zoom all the way out" id="buttonZoomOut">Zoom all the way out</button>
-					<br />
-					<img src="../graphics/busy2.gif" id="busySpinner" style="visibility: hidden"></img>
 				</td>
 			</tr>
 		</table>
@@ -69,21 +75,24 @@
 		<%-- Advanced Mode --%>
 		
 		<div id="channel-list-advanced">
-			<select name="site" id="site">
+			<select name="site" id="site_0" class="site">
 				<option value="H0">H0</option>
 				<option value="L0">L0</option>
 			</select>
-			<select name="subsystem" id="subsystem">
+			<select name="subsystem" id="subsystem_0" class="subsystem">
 				<option value="DMT-BRMS_PEM_">DMT</option>
 				<option value="PEM-">PEM</option>
 				<option value="GDS-">GDS</option>
 			</select>
-			<select name="station" id="station"></select>
-			<select name="sensor" id="sensor"></select>
-			<select name="sampling" id="sampling"></select>
-			<input id="parseDropDownAdvanced" type="button" value="Plot"></input>
-			<span id="dataName"></span>
+			<select name="station" id="station_0" class="station"></select>
+			<select name="sensor" id="sensor_0" class="sensor"></select>
+			<select name="sampling" id="sampling_0" class="sampling"></select>
+			<span id="dataName_0" class="dataName"></span>
+			<br />
 		</div>
+		
+		<input id="addNewRow" type="button" value="+"></input>
+		<input id="parseDropDownAdvanced" type="button" value="Plot"></input>
 				
 	</body>
 	
