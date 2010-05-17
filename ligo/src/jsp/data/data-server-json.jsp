@@ -94,7 +94,7 @@
 			double endTime = Double.parseDouble(request.getParameter("endTime"));
 			
 			GsonBuilder gb = new GsonBuilder();
-			gb.registerTypeAdapter(NumberArrayDataSet.class, new DataSetSerializer());
+			gb.registerTypeAdapter(NumberArrayDataSet.class, new GPSConvertingJSMillisDataSetSerializer());
 			Gson gson = gb.serializeNulls().create();
 			
 			Collection<DataSet> dataList = new ArrayList(); 
