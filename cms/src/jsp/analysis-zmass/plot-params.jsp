@@ -93,8 +93,6 @@
 		<th>#</th>
 		<th>Plot Content</th>
 		<th>Color</th>
-		<th>Log&nbsp;X</th>
-		<th>Log&nbsp;Y</th>
 		<th>Remove</th>
 	</tr>
 	<tr>
@@ -140,7 +138,7 @@
 
 
 <ul id="color-list" class="jeegoocontext cm_blue">
-	<c:forEach var="color" items="Black,Red,Green,Blue,Gold,Pink,Purple,Orange">
+	<c:forEach var="color" items="Black,Red,Green,Blue,Cyan,Magenta,Orange">
 		<li value="${color}"><img style="background-color: ${color}" class="colorbox" src="../graphics/colorbox.png">${color}</li>
 	</c:forEach>
 </ul>
@@ -156,8 +154,6 @@
 		<td class="color">
 			<a class="tbutton colorbutton" href="#"><img class="colorbox" src="../graphics/colorbox.png"></a>
 		</td>
-		<td><input type="checkbox" class="log"/></td>
-		<td><input type="checkbox" class="log"/></td>
 		<td class="remove">
 			<a class="tbutton" href="#"><img src="../graphics/minus.png"></a>
 		</td>

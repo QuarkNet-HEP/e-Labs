@@ -29,13 +29,6 @@ function updatePlotsFromValue(val, label) {
 	updatePlotList();
 }
 
-var addParam = function(e, context) {
-	var div = getAncestor(context, 1);
-	var span = document.createElement("span")
-	span.innerHTML = $(this).text();
-	div.insertBefore(span, context);
-}
-
 function addPlotRow(value, label) {
 	var tbl = document.getElementById("plots");
 	var row = tbl.insertRow(tbl.rows.length - 1);
@@ -48,8 +41,6 @@ function addPlotRow(value, label) {
 	$("#plot-template .active-label").html(html);
 	$("#plot-template .active-label").attr("value", value);
 	row.innerHTML = $("#plot-template").html();
-	options["onSelect"] = addParam;
-	$(".addparam").jeegoocontext("param-list", options);
 	options["onSelect"] = setColor;
 	$(".colorbutton").jeegoocontext("color-list", options);
 	$("input.log").change(updatePlotList);
@@ -92,9 +83,7 @@ function updatePlotList() {
 		if (color == null || color == "") {
 			color = "black";
 		}
-		var logx = firstNonTextChild(tbl.rows[i].cells[3]).checked ? "logx" : "";
-		var logy = firstNonTextChild(tbl.rows[i].cells[4]).checked ? "logy" : "";
-		str += tbl.rows[i].cells[1].getAttribute("value") + ":" + color + ":" + logx + ":" + logy + " ";
+		str += tbl.rows[i].cells[1].getAttribute("value") + ":" + color + ":: ";
 	}
 	list.value = str;
 	log("plot str: " + str);
@@ -125,19 +114,6 @@ function initializeFromPlotParams() {
 			var img = firstNonTextChild(a);
 			img.style.backgroundColor = p[1];
 			img.setAttribute("value", p[1]);
-			if (p[2] && p[2] == "logx") {
-				firstNonTextChild(tbl.rows[i + 1].cells[3]).checked = true;
-			}
-			else {
-				firstNonTextChild(tbl.rows[i + 1].cells[3]).checked = false;
-			}
-			
-			if (p[3] && p[3] == "logy") {
-				firstNonTextChild(tbl.rows[i + 1].cells[4]).checked = true;
-			}
-			else {
-				firstNonTextChild(tbl.rows[i + 1].cells[4]).checked = false;
-			}
 		}
 	}
 	if (count == 1) {
