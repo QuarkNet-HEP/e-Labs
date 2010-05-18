@@ -324,15 +324,15 @@ tr#global-plot-options {
 table.toolbox { 
 	background-color: white; 
 	margin-top: 6px;
+	margin-bottom: 6px;
 	padding: 2px;
-	margin-left: 8px;
+	width: 780px;
 }
 
 .toolbox-group {
 	padding: 4px;
+	padding-left: 0px;
 	background-color: #e0e0e0;
-	margin: 1px;
-	margin: 4px;
 	height: 24px;
 	vertical-align: middle;
 }
@@ -349,6 +349,13 @@ table.toolbox {
 .toolbox-group>div {
 	vertical-align: middle;
 	padding-top: 4px;
+}
+
+.group-title {
+	background-color: #d0d0d0;
+	padding: 8px 6px 8px 6px;
+	margin-right: 8px;
+	height: 24px;
 }
 
 a.group-title {
