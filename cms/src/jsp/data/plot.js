@@ -34,9 +34,23 @@ function createPlot(index) {
 	var id = "#plot" + index;
 	$("#plot-container").append("<div class=\"plot\" id=\"plot" + index + "\"></div>");
 	$(id).html($("#plot-template").html().replace(/animation-panel/g, "animation-panel" + index));
-	document.plots[index] = $.plot($(id + " .placeholder"), {data: []}, options);
+	document.plots[index] = $.plot($(id + " .placeholder"), {data: []}, $.extend(options, {index: index}));
 	document.animSpeed[index] = 1;
 	bindButtons(index);
+}
+
+function bindEventsHook(plot, eventHolder) {
+	// why here? because doing it directly on the placeholder
+	// does not properly behave when the mouse is over the legend
+	eventHolder.mouseout(function() {
+		var p = "#plot" + plot.getOptions().index;
+		$(p + " .cursor").css("display", "none");
+	});
+	
+	eventHolder.mouseenter(function() {
+		var p = "#plot" + plot.getOptions().index;
+		$(p + " .cursor").css("display", "block");
+	});
 }
 
 plotUnselected = function(index) {
@@ -54,11 +68,17 @@ function updatePlot(index, stack) {
 	var te = totalEvents(index);
 	setCurrentEvent(index, te);
 	$(id + " .totalevents").html(te);
+	if (stack[0]["maxy"] != null) {
+		$(id + " .maxy").value(stack[0]["maxy"]);
+	}
 	log("plot setup done");
 }
 
 function redrawPlot(index, stack) {
 	log("redrawing plot " + index);
+	if (stack == null) {
+		stack = document.plotData[index];
+	}
 	var pdata = new Array();
 	for (var sp = 0; sp < stack.length; sp++) {
 		crt = stack[sp];
@@ -67,7 +87,7 @@ function redrawPlot(index, stack) {
 		var last = 0;
 		for (var i = crt["histmin"]; i <= crt["histmax"]; i++) {
 			var x = i;
-			var y = h[i];
+			var y = h[x];
 			if (y == null) {
 				y = 0;
 			}
@@ -101,11 +121,15 @@ function redrawPlot2(index, options) {
 		ty = ln;
 		ity = exp;
 	}
+	var minx = document.plotData[index][0]["minx"];
+	var maxx = document.plotData[index][0]["maxx"];
+	var maxy = document.plotData[index][0]["maxy"];
 	document.plots[index] = $.plot($("#plot" + index + " .placeholder"), document.data[index],
             $.extend(true, {}, options, {
-                xaxis: { transform: tx, inverseTransform: itx },
-                yaxis: { transform: ty, inverseTransform: ity }
+                xaxis: { min: minx, max: maxx, transform: tx, inverseTransform: itx },
+                yaxis: { max: maxy, transform: ty, inverseTransform: ity }
             }));
+	$("#plot" + index + " .legendColorBox").jeegoocontext("color-list", popupOptions);
 }
 
 ln = function(v) { return v > 0 ? Math.log(v) : 0; }
@@ -191,6 +215,9 @@ function parseReply(text) {
 			case "description":
 			case "logx":
 			case "logy":
+			case "minx":
+			case "maxx":
+			case "maxy":
 			case "run":
 				crt[kv[0]] = value;
 				break; 
@@ -429,23 +456,79 @@ function bindButtons(index) {
 		$(plot + " .cursorValue").html(Math.round(pos.x * 10) / 10);
 	});
 	
-	$(plot + " .placeholder").bind("mouseenter", function() {
-		$(plot + " .cursor").css("display", "block");
-	});
-	$(plot + " .placeholder").bind("mouseleave", function() {
-		$(plot + " .cursor").css("display", "none");
-	});
 
 	$(plot + " .apply-selection").bind("click", function() {
 		var r = document.plots[index].getSelection();
-		redrawPlot2(index, $.extend(true, {}, options, {
-            xaxis: { min: r.xaxis.from, max: r.xaxis.to }
-        }));
+		document.plotData[index][0]["minx"] = r.xaxis.from;
+		document.plotData[index][0]["maxx"] = r.xaxis.to;
+		redrawPlot2(index, options);
     	plotUnselected(index);
 	});
 
 	$(plot + " .reset-selection").bind("click", function() {
+		document.plotData[index][0]["minx"] = null;
+		document.plotData[index][0]["maxx"] = null;
 		redrawPlot2(index, options);
+		plotUnselected(index);
+	});
+	
+	$(plot + " .logx").bind("change", function() {
+		document.plotData[index][0]["logx"] = $(this).attr("checked") ? "true" : "false";
+		redrawPlot(index);
+		plotUnselected(index);
+	});
+	
+	$(plot + " .logy").bind("change", function() {
+		document.plotData[index][0]["logy"] = $(this).attr("checked") ? "true" : "false";
+		redrawPlot(index);
+		plotUnselected(index);
+	});
+	
+	$(plot + " .maxy").bind("keyup", function() {
+		// the input doesn't see the results of the keypress 
+		// until after this handler is called, at least on chrome
+		setTimeout(function() {
+			var text = $(plot + " .maxy");
+			var value = text.attr("value");
+			var maxy = parseInt(text.attr("value"));
+			if (value == "" && document.plotData[index][0]["maxy"] != null) {
+				$(plot + " .apply-maxy").removeAttr("disabled");
+				$(plot + " .apply-maxy").attr("value", "Reset");
+				log("ee");
+				return;
+			}
+			else {
+				$(plot + " .apply-maxy").attr("value", "Set");
+			}
+			if (isNaN(maxy)) {
+				text.css("color", "red");
+				$(plot + " .apply-maxy").attr("disabled", true);
+				log("d");
+			}
+			else {
+				text.css("color", "black");
+				$(plot + " .apply-maxy").removeAttr("disabled");
+				log("e");
+			}
+		}, 20);
+	});
+	
+	$(plot + " .apply-maxy").bind("click", function() {
+		var value = $(plot + " .maxy").attr("value");
+		var maxy = parseInt(value);
+		if (value == "") {
+			document.plotData[index][0]["maxy"] = null; //auto
+			$(plot + " .apply-maxy").attr("disabled", true);
+			$(plot + " .apply-maxy").attr("value", "Set");
+		}
+		else if (isNaN(maxy)) {
+			return;
+		}
+		else {
+			document.plotData[index][0]["maxy"] = maxy;
+		}
+		log("maxy: " + maxy);
+		redrawPlot(index);
 		plotUnselected(index);
 	});
 
@@ -455,4 +538,34 @@ function bindButtons(index) {
 	$(plot + " .anim-fskip").bind("click", function() {animationFSkip(index)});
 	$(plot + " .anim-incspeed").bind("click", function() {animationIncSpeed(index)});
 	$(plot + " .anim-decspeed").bind("click", function() {animationDecSpeed(index)});
+}
+
+var popupOptions = {
+		widthOverflowOffset: 0,
+        heightOverflowOffset: 3,
+        submenuLeftOffset: -4,
+        submenuTopOffset: -5,
+        event: 'click',
+        onSelect: updateColor
+};
+
+function findPlotIndex(el) {
+	if (el == null) {
+		return -1;
+	}
+	else if (el.className == "plot") {
+		return parseInt(el.id.substring(4));
+	}
+	else {
+		return findPlotIndex(el.parentNode);
+	}
+}
+
+function updateColor(e, context) {
+	var color = $(this).context.getAttribute("value");
+	var index = findPlotIndex(context);
+	var sp = context.parentNode.rowIndex;
+	log("change color for index: " + sp + ", plot: " + index + ", color: " + color);
+	document.plotData[index][sp]["color"] = color;
+	redrawPlot(index);
 }

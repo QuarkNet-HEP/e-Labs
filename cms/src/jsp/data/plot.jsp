@@ -58,12 +58,22 @@
 		<tr>
 			<td>
 				<div class="toolbox-group">
-					<span class="group-title">Selection:</span>
+					<span class="group-title">Selection</span>
 					<input type="button" class="apply-selection" value="Apply" disabled="true" />
 					<input type="button" class="reset-selection" value="Reset" />
 				</div>
 			</td>
 			<td>
+				<div class="toolbox-group">
+					<span class="group-title">Axes</span>
+					Max Y: <input type="text" class="maxy" size="6" /><input type="button" class="apply-maxy" value="Set" disabled="true" />
+					<input type="checkbox" class="logx" />Log X
+					<input type="checkbox" class="logy" />Log Y
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
 				<div class="toolbox-group">
 					<e:vswitch id="animation-panel" title="Animation" titleclass="group-title">
 						<e:visible image="../graphics/plus.png">
@@ -92,6 +102,12 @@
 	</div>
 </div>
 
+<ul id="color-list" class="jeegoocontext cm_blue">
+	<c:forEach var="color" items="Black,Red,Green,Blue,Cyan,Magenta,Orange">
+		<li value="${color}"><img style="background-color: ${color}" class="colorbox" src="../graphics/colorbox.png">${color}</li>
+	</c:forEach>
+</ul>
+
 <script>
 	d = new Array();
 	var data = [
@@ -109,7 +125,8 @@
 	    yaxis: { autoscaleMargin: 0.1 },
 	    y2axis: { autoscaleMargin: 0.1 },
 	    crosshair: { mode: "x" },
-	    selection: { mode: "x", color: "yellow" }
+	    selection: { mode: "x", color: "yellow" },
+	    hooks: { bindEvents: [bindEventsHook] }
 	};
 
 	getData("${param.dataset}", "${param.runs}", "${param.plots}", "${param.combine}");	
