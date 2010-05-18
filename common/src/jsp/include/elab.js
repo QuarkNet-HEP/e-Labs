@@ -141,6 +141,9 @@ function updateLabels(source, name) {
 }
 
 function firstNonTextChild(obj) {
+	if (obj == null) {
+		printStackTrace();
+	}
     for (var i in obj.childNodes) {
         if (obj.childNodes[i].nodeName != "#text") {
 	        return obj.childNodes[i];
@@ -183,5 +186,19 @@ function toggleLog() {
 	else {
 		l.style.height = "6px";
 		lt.value = "Show Log";
+	}
+}
+
+function printStackTrace() {
+	try {
+		kaboom();
+	} 
+	catch (e) {
+		if (e.stack) {
+			var lines = e.stack.split('\n');
+			for (var i = 0, len = lines.length; i < len; i++) {
+				log(lines[i]);
+			}
+		}
 	}
 }
