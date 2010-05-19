@@ -29,14 +29,7 @@ public class GPSConvertingJSMillisDataSetSerializer implements
 		for (int i=0; i < src.size(); ++i) {
 			JsonArray ija = new JsonArray();
 			ija.add(new JsonPrimitive(convertTimeGPSToUNIX(src.getX(i).doubleValue()) * 1000.0 ));
-			
-			if (Double.isNaN(src.getY(i).doubleValue())) {
-				ija.add(new JsonPrimitive((Number) null)); 
-			}
-			else {
-				ija.add(new JsonPrimitive(src.getY(i)));
-			}
-			
+			ija.add(new JsonPrimitive(src.getY(i)));
 			ja.add(ija);
 		}
 		jo.add("data", ja);
