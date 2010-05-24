@@ -10,13 +10,13 @@
 
 <%
 	DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss zzz");
-	NumberFormat nf = new DecimalFormat("0000.00");
+	NumberFormat nf = new DecimalFormat("00.0000");
 	Date gpsepoch = df.parse("01/06/1980 00:00:00 GMT");
 	
 	int CHUNK_SIZE = 1000000;
 	int SAMPLING_INTERVAL = 60;
 	int SAMPLES_PER_CHUNK = 16667;
-	int SAMPLES_PER_REQUEST = 1200;
+	int SAMPLES_PER_REQUEST = 120;
 	
 	SortedMap sm = new TreeMap();
 	sm.put(new Long(0), null);
@@ -40,11 +40,31 @@
 	//fn=getData&channels=H0:PEM-EX_SEISX.rms&startTime=820260469.9171033&endTime=841752175.4160292
 	
 	String CHANNEL = "H0:PEM-EX_SEISX.rms";
-	double STARTTIME = 820260469, ENDTIME = 841752175;
+	double STARTTIME = 833177533, ENDTIME = 835682226;
 	
-	NumberArrayDataSet nads = (NumberArrayDataSet) de.get(new DataPath(CHANNEL), new Range(STARTTIME, ENDTIME), new Options().setSamples(SAMPLES_PER_REQUEST));
+	NumberArrayDataSet ds = (NumberArrayDataSet) de.get(new DataPath(CHANNEL), new Range(STARTTIME, ENDTIME), new Options().setSamples(SAMPLES_PER_REQUEST));
+
+	// simple adapter since I am lazy and don't wnat ot deal with charts4j right now
 	
-	XYLineChart chart = XYLineChartAdapter.newXYLineChart(nads); 
+	String baseURL = "http://chart.apis.google.com/chart?cht=lxy&chs=550x250";
+	
+	List<Integer> tempListX = new ArrayList<Integer>();
+	List<Double> tempListY = new ArrayList<Double>();
+	for (int i=0; i < ds.size(); ++i) {
+		tempListX.add(ds.getX(i).intValue());
+		tempListY.add(ds.getY(i).doubleValue());
+		
+	}
+	
+	String xList = StringUtils.join(tempListX, ',');
+	String yList = StringUtils.join(tempListY, ',');
+	
+	double min = Collections.min(tempListY);
+	double max = Collections.max(tempListY);
+	yList = yList.replaceAll("NaN", "_"); 
+	
+	String requestURL = baseURL + "&chd=t:-1|" + yList + "&chds=" + min + "," + max; 
+	
 %>
 
-<%= chart.toURLString() %>
+<%= requestURL %> 

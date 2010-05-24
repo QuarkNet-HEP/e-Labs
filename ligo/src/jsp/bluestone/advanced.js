@@ -179,6 +179,8 @@ $(document).ready(function() {
 	
 	function addNewRow(index) {
 		var foo = $("#channel-list-advanced");
+		// Delete button
+		var deleteButton = $("<input></input>").attr("type", "button").attr("id", "deleteRow_" + index).attr("value", "-").attr("class", "removeRow");
 		
 		// Site Dropdown
 		var siteSelector = $("<select></select>").attr("name", "site").attr("id", "site_" + index).attr("class", "site");
@@ -196,7 +198,7 @@ $(document).ready(function() {
 		var samplingSelector = $("<select></select>").attr("name", "sampling").attr("id", "sampling_" + index).attr("class", "sampling");
 		var nameLabel = $("<span></span>").attr("id", "dataName_" + index).attr("class", "dataName");
 		
-		foo.append(siteSelector).append(subsysSelector).append(stationSelector).append(sensorSelector).append(samplingSelector).append(nameLabel).append($("<br />"));
+		foo.append(deleteButton).append(siteSelector).append(subsysSelector).append(stationSelector).append(sensorSelector).append(samplingSelector).append(nameLabel).append($("<br />"));
 		subsystemChangeCB(index); 
 		sensorChangeCB(index);
 		samplingCB(index);
@@ -230,6 +232,11 @@ $(document).ready(function() {
 		$(".site, .sensor, .sampling").change(function() {
 			var index = getIndex($(this).attr('id'));
 			displayFilename(index); 
+		});
+		
+		$(".removeRow").click(function() {
+			var index = getIndex($(this).attr('id'));
+			// delete stuff
 		});
 	}
 });

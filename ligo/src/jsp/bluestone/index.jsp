@@ -75,6 +75,7 @@
 		<%-- Advanced Mode --%>
 		
 		<div id="channel-list-advanced">
+			<input type="button" value="-" id="removeRow_0" class="removeRow"></input>
 			<select name="site" id="site_0" class="site">
 				<option value="H0">H0</option>
 				<option value="L0">L0</option>
