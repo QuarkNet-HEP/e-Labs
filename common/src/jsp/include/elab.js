@@ -202,3 +202,37 @@ function printStackTrace() {
 		}
 	}
 }
+
+function spinnerOn(selector) {
+	$(selector).each(function(i, e) {
+		$(this).css("position", "relative");
+		var imgHeight = 20;
+		var imgWidth = 20;
+		var myHeight = $(this).height();
+		var myWidth = $(this).width();
+		var top;
+		var left;
+		var img;
+		if (myHeight == 0) {
+			top = "50%";
+			left = "50%";
+		}
+		else {
+			top = (myHeight - imgHeight) / 2 + "px";
+			left = (myWidth - imgWidth) / 2 + "px";
+		}
+		if (myHeight > 48 || myHeight == 0) {
+			img = "spinner-large.gif";
+		}
+		else {
+			img = "spinner-small.gif";
+		}
+		$(this).append('<div class="spinner-background" style="position: absolute; width: 100%; height: 100%; left: 0px; top: 0px; "></div>');
+		$(this).append('<img class="spinner-image" style="position: absolute; left: ' + left + '; top: ' + top + ';" src="../graphics/' + img + '" />');
+	});
+}
+
+function spinnerOff(selector) {
+	$(selector + " .spinner-background").remove();
+	$(selector + " .spinner-image").remove();
+}
