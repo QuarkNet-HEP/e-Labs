@@ -66,6 +66,18 @@
 								updateFromSimpleExpr(expr);
 							}
 						}
+
+						updatingStarted = function() {
+							log("Updating started");
+							$("#plot-params-button").attr("disabled", true);
+							spinnerOn(".wait-on-runs");
+						}
+
+						updatingDone = function() {
+							log("Updating done");
+							$("#plot-params-button").removeAttr("disabled");
+							spinnerOff(".wait-on-runs");
+						}
 						
 						$('#simplified-triggers').change(updateTriggers);
 					</script>
@@ -84,13 +96,15 @@
 					<e:visible image="../graphics/plus.png">
 					</e:visible>
 					<e:hidden image="../graphics/minus.png">
-						<div id="runs-header">
-							<input type="checkbox" id="select-all" checked="true" onchange="selectAll();"/>All
-							<e:trinput type="hidden" name="runs" id="runs-input" />
-						</div>
-						<div id="runs">
-						</div>
-						<div id="totals">
+						<div class="wait-on-runs">
+							<div id="runs-header">
+								<input type="checkbox" id="select-all" checked="true" onchange="selectAll();"/>All
+								<e:trinput type="hidden" name="runs" id="runs-input" />
+							</div>
+							<div id="runs">
+							</div>
+							<div id="totals">
+							</div>
 						</div>
 					</e:hidden>
 				</e:vswitch>
@@ -100,7 +114,9 @@
 						<td width="100%">
 						</td>
 						<td>
-							<input type="submit" value="Plot Parameters >" />
+							<div class="wait-on-runs">
+								<input id="plot-params-button" type="submit" value="Plot Parameters >" />
+							</div>
 						</td>
 					</tr>
 				</table>

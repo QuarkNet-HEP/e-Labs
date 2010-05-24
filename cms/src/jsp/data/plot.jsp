@@ -10,6 +10,14 @@
 		<jsp:param name="plots" value="${param.plots}"/>
 	</jsp:forward>
 </c:if>
+<c:if test="${!empty param.backhalf}">
+	<jsp:forward page="../analysis-${param.analysis}/plot-params.jsp">
+		<jsp:param name="dataset" value="${param.dataset}"/>
+		<jsp:param name="runs" value="${param.runs}"/>
+		<jsp:param name="expr" value="${param.expr}"/>
+		<jsp:param name="plots" value="${param.plots}"/>
+	</jsp:forward>
+</c:if>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -49,6 +57,28 @@
 	log("<span class='red'>plots: ${param.plots}</span>");
 	log("<span class='red'>commbine: ${param.combine}</span>");
 </script>
+<form action="../data/plot.jsp">
+	<e:trinput type="hidden" name="plots" id="plots-input" />
+	<e:trinput type="hidden" name="dataset"/>
+	<e:trinput type="hidden" name="runs"/>
+	<e:trinput type="hidden" name="expr"/>
+	<input type="hidden" name="analysis" value="zmass"/>
+	<table border="0" width="100%" id="step-buttons">
+		<tr>
+			<td>
+				<input type="submit" name="back" value="&lt; Data Selection" />
+			</td>
+			<td>
+				<input type="submit" name="backhalf" value="&lt; Plot Selection" />
+			</td>
+			<td width="100%">
+			</td>
+		</tr>
+	</table>
+</form>
+
+<div class="wait-on-data" style="width: 100%; height: 64px;">
+</div>
 
 <div id="plot-container">
 </div>
@@ -128,6 +158,17 @@
 	    selection: { mode: "x", color: "yellow" },
 	    hooks: { bindEvents: [bindEventsHook] }
 	};
+
+	updatingStarted = function() {
+		log("Updating started");
+		spinnerOn(".wait-on-data");
+	}
+
+	updatingDone = function() {
+		log("Updating done");
+		spinnerOff(".wait-on-data");
+		$(".wait-on-data").css("display", "none");
+	}
 
 	getData("${param.dataset}", "${param.runs}", "${param.plots}", "${param.combine}");	
 </script>

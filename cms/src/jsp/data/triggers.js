@@ -151,7 +151,13 @@ function updateData(expr) {
     		if (someFilteredRuns) {
     			vSwitchShow("selected-events-panel");
     		}
+    		if (typeof updatingDone == "function") {
+    			updatingDone();
+    		}
     	}
+    }
+    if (typeof updatingStarted == "function") {
+    	updatingStarted();
     }
     var url = "../data/db-async.jsp?dataset=" + dataset + "&texpr=" + expr;
     log("db-request: " + url)

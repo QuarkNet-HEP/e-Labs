@@ -274,7 +274,13 @@ function getData(dataset, runs, plots, combine) {
     	if (ro.readyState == 4) {
     		var text = ro.responseText;
     		updatePlots(parseReply(text));
+    		if (typeof updatingDone == "function") {
+    			updatingDone();
+    		}
     	}
+    }
+    if (typeof updatingStarted == "function") {
+    	updatingStarted();
     }
     var url = "../data/get-data.jsp?dataset=" + dataset + "&runs=" + runs + "&plots=" + plots + "&combine=" + combine;
     log("plot-data: <a href=\"" + url + "\">" + url + "</a>");
