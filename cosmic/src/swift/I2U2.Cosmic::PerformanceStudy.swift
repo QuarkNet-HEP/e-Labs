@@ -77,7 +77,7 @@ File rawData[] <fixed_array_mapper;files=@arg("rawData")>;
 //This is done to avoid corruption of threshold files when created
 //concurrently by multiple runs
 File thresholdAll[] <structured_regexp_mapper;source=rawData,match=".*/(.*)",transform="\\1.thresh">;
-File combineOut;
+File combineOut <"combine.out">;
 
 string detectors[] = @strsplit(@arg("detector"), "\\s");
 string cpldfreqs[] = @strsplit(@arg("cpldfreqs"), "\\s");
@@ -120,7 +120,7 @@ combineOut = Combine(thresholdAll);
 singleChannelOut = SingleChannel(combineOut, singlechannel_channel);
 freqOut = FrequencyMultiple(singleChannelOut, freq_binType, freq_binValue, freq_col);
 
-File svg;
+File svg <"plot.svg">;
 (svg, plot_outfile_param) = Plot(plot_plot_type, plot_caption, x, y, z, plot_title,
 	freqOut);
 

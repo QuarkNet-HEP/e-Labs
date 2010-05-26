@@ -84,7 +84,7 @@ string sort_sortKey2 = @arg("sort_sortKey2");
 
 eventFile = EventChoice(eventCandidates, eventNum, zeroZeroZeroID, geoDir, geoFiles);
 
-File svg;
+File svg <"plot.svg">;
 (svg, plot_outfile_param) = Plot(plot_plot_type, plot_caption, x, y, z, plot_title,
 	eventFile, extraFun_out);
 

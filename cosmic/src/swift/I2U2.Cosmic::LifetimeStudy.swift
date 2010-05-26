@@ -184,7 +184,7 @@ frequencyOut = Frequency(lifetimeOut, freq_binType, freq_binValue, freq_col);
 	extraFun_minX, extraFun_maxX,
 	extraFun_turnedOn);
 	
-File svg;
+File svg <"plot.svg">;
 (svg, plot_outfile_param) = Plot(plot_plot_type, plot_caption, x, y, z, plot_title,
 	frequencyOut, extraFun_out);
 
