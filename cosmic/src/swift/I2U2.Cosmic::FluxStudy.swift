@@ -99,10 +99,10 @@ File thresholdAll[] <structured_regexp_mapper;source=rawData,match=".*/(.*)",tra
 File wireDelayData[] <fixed_array_mapper;files=@arg("wireDelayData")>;
 string detectors[] = @strsplit(@arg("detector"), "\\s");
 string cpldfreqs[] = @strsplit(@arg("cpldfreqs"), "\\s");
-File combineOut;
-File fluxOut;
+File combineOut <"combine.out">;
+File fluxOut <"flux.out">;
 File singleChannelOut <single_file_mapper;file=@arg("singlechannelOut")>;
-File sortOut;
+File sortOut <"sort.out">;
 
 string binWidth = @arg("flux_binWidth");
 string geoDir = @arg("geoDir");
