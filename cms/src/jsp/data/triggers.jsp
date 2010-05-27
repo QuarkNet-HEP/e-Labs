@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+
+<%@ page import="gov.fnal.elab.cms.dataset.*" %>
 
 <script type="text/javascript" src="../data/triggers.js"></script>
 <table id="triggers">
@@ -76,29 +77,23 @@
 	</tr>
 </table>
 
-<jsp:include page="../data/dataset-info.jsp">
-	<jsp:param name="dataset" value="${param.dataset}"/>
-</jsp:include>
+<%
+	request.setAttribute("dataset", Datasets.getDataset(elab, session, request.getParameter("dataset")));
+%>
 
 <c:set var="lastgroup" value=""/>
 <ul id="trigger-list" class="jeegoocontext cm_blue">
-	<x:forEach var="trigger" select="$currentDataset/root/triggers/trigger">
-		<x:set var="id" select="string($trigger/@id)"/>
-		<x:set var="name" select="string($trigger/@displayname)"/>
-		<x:set var="desc" select="string($trigger/@description)"/>
-		<x:set var="group" select="string($trigger/@group)"/>
-		<x:set var="fake" select="string($trigger/@fake)"/>
-		<c:if test="${fake != 'true'}">
-			<c:if test="${name == ''}">
-				<x:set var="name" select="string($trigger/@name)"/>
-			</c:if>
-			<c:if test="${(group != lastgroup) and (lastgroup != '')}">
-				<li class="separator"></li>
-			</c:if>
-			<li value="${id}">${name}</li>
-			<c:set var="lastgroup" value="${group}"/>
+	<c:forEach var="trigger" items="${dataset.triggers}">
+		<c:set var="name" value="${trigger.displayName}"/>
+		<c:if test="${name == ''}">
+			<c:set var="name" value="${trigger.name}"/>
 		</c:if>
-	</x:forEach>
+		<c:if test="${(trigger.group != lastgroup) and (lastgroup != '')}">
+			<li class="separator"></li>
+		</c:if>
+		<li value="${trigger.id}">${name}</li>
+		<c:set var="lastgroup" value="${trigger.group}"/>
+	</c:forEach>
 </ul>
 <ul id="trigger-list-and" class="jeegoocontext cm_blue">
 </ul>
