@@ -177,21 +177,6 @@ td.vopcell {
 	margin-bottom: 16px;
 }
 
-#log {
-	left: 0px;
-	right: 0px;
-	height: 106px;
-	border: thin solid black;
-	font-size: 8pt;
-	background-color: #e0e0e0;
-	padding: 4px;
-	color: black;
-	overflow: auto;
-	position: fixed;
-	bottom: 0px;
-	opacity: 0.9;
-}
-
 #runs-header {
 	width: 597px;
 	height: 20px;
@@ -429,4 +414,8 @@ a.group-title img {
 
 .spinner-image {
 	margin-top: auto;
+}
+
+#save-plot-form {
+	display: inline;
 }

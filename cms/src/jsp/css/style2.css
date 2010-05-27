@@ -481,3 +481,18 @@ label {
 a img {
 	border: none;
 }
+
+#log {
+	left: 0px;
+	right: 0px;
+	height: 106px;
+	border: thin solid black;
+	font-size: 8pt;
+	background-color: #e0e0e0;
+	padding: 4px;
+	color: black;
+	overflow: auto;
+	position: fixed;
+	bottom: 0px;
+	opacity: 0.9;
+}
