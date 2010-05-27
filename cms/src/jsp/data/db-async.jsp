@@ -3,10 +3,9 @@
 		 import="java.util.*"
 		 import="java.sql.*" 
 		 import="gov.fnal.elab.*"
-		 import="gov.fnal.elab.cms.triggerexpr.*" %>
-<jsp:include page="../data/dataset-info.jsp">
-	<jsp:param name="dataset" value="${param.dataset}"/>
-</jsp:include><%
+		 import="gov.fnal.elab.cms.triggerexpr.*" 
+		 import="gov.fnal.elab.cms.dataset.*" 
+%><%
 
 String db = elab.getProperties().getProperty("ogredb.database");
 String dbuser = elab.getProperties().getProperty("ogredb.username");
@@ -24,34 +23,23 @@ if (texpr == null) {
     throw new ElabJspException("Missing trigger expression");  
 }
 
-String dataset = request.getParameter("dataset");
+String pdataset = request.getParameter("dataset"); 
 String table, columns;
-if ("tb04".equals(dataset)) {
+if ("tb04".equals(pdataset)) {
     table = "rundb";
     columns = "run, nevents, energy, beam, eta, phi";
 }
 else {
     table = "mcdb";
-    dataset = "mc09";
+    pdataset = "mc09";
     columns = "run, nevents, description";
 }
-
+Dataset dataset = Datasets.getDataset(elab, session, pdataset);
 Set<String> validTriggers = new HashSet<String>();
-Document doc = (Document) request.getAttribute("currentDataset");
-if (doc == null) {
-    throw new ElabJspException("No current dataset");
-}
-NodeList triggers = doc.getElementsByTagName("trigger");
-for (int i = 0; i < triggers.getLength(); i++) {
-    NamedNodeMap attrs = triggers.item(i).getAttributes();
-    if (attrs == null) {
-        continue;
-    }
-    org.w3c.dom.Node fake = attrs.getNamedItem("fake");
-    if (fake != null && "true".equals(fake.getNodeValue())) {
-        continue;
-    }
-    validTriggers.add(attrs.getNamedItem("id").getNodeValue());
+
+List<Trigger> triggers = dataset.getTriggers();
+for (Trigger t : triggers) {
+    validTriggers.add(t.getId());
 }
 
 String whereclause;

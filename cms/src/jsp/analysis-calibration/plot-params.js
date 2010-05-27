@@ -94,9 +94,9 @@ function updatePlotList() {
 
 function msplit(str, sep1, sep2) {
 	var map = new Array();
-	String[] s1 = str.split(sep1);
+	var s1 = str.split(sep1);
 	for (var i = 0; i < s1.length; i++) {
-		String[] s2 = s1[i].split(sep2);
+		var s2 = s1[i].split(sep2);
 		map[s2[0]] = s2[1];
 	}
 	return map;

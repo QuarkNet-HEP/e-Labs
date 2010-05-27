@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ include file="../include/elab.jsp" %>
 <%@ page import="gov.fnal.elab.cms.dataset.*" %>
 
 <script type="text/javascript" src="../data/triggers.js"></script>
