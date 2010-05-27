@@ -18,5 +18,9 @@ ogredb.database=//localhost/ogredb
 ogredb.username=ogre
 ogredb.password=ogre
 
-dataset.tb04.location=/disks/i2u2/cms/data/tbdata
-dataset.mc09.location=/home/mike/work/i2u2/cms-data/mcdata
+dataset.descriptor.tb04=tb04-data.xml
+dataset.descriptor.mc09=mc09-data.xml
+dataset.location.tb04=/disks/i2u2/cms/data/tbdata
+dataset.location.mc09=/home/mike/work/i2u2/cms-data/mcdata
+
+plot.image.cache=/home/mike/work/i2u2/cms-image-cache
