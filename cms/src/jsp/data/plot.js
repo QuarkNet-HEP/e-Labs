@@ -1,3 +1,16 @@
+var defaultPlotOptions = {
+    lines: { show: true, fill: false, lineWidth: 1.2 },
+    grid: { hoverable: true, autoHighlight: false },
+    points: { show: false },
+    legend: { noColumns: 1 },
+    xaxis: { tickDecimals: 0 },
+    yaxis: { autoscaleMargin: 0.1 },
+    y2axis: { autoscaleMargin: 0.1 },
+    crosshair: { mode: "x" },
+    selection: { mode: "x", color: "yellow" },
+    hooks: { bindEvents: [bindEventsHook] }
+};
+
 function isArray(testObject) {   
     return testObject && !(testObject.propertyIsEnumerable('length')) && typeof testObject === 'object' && typeof testObject.length === 'number';
 }
@@ -34,7 +47,7 @@ function createPlot(index) {
 	var id = "#plot" + index;
 	$("#plot-container").append("<div class=\"plot\" id=\"plot" + index + "\"></div>");
 	$(id).html($("#plot-template").html().replace(/animation-panel/g, "animation-panel" + index));
-	document.plots[index] = $.plot($(id + " .placeholder"), {data: []}, $.extend(options, {index: index}));
+	document.plots[index] = $.plot($(id + " .placeholder"), {data: []}, $.extend(defaultPlotOptions, {index: index}));
 	document.animSpeed[index] = 1;
 	bindButtons(index);
 }
@@ -63,15 +76,43 @@ function updatePlot(index, stack) {
 	redrawPlot(index, stack);
 	var id = "#plot" + index;
 	$(id + " .cursorUnit").html(stack[0]["units"]);
-	$(id + " .xlabel").html(stack[0]["labelx"]);
+	$(id + " .xlabel").html(stack[0]["labelx"] + " (" + stack[0]["units"] + ")");
 	$(id + " .ylabel").html(stack[0]["labely"]);
 	var te = totalEvents(index);
 	setCurrentEvent(index, te);
 	$(id + " .totalevents").html(te);
 	if (stack[0]["maxy"] != null) {
-		$(id + " .maxy").value(stack[0]["maxy"]);
+		$(id + " .maxy").val(stack[0]["maxy"]);
+	}
+	if (stack[0]["logy"] == "true") {
+		$(id + " .logy").attr("checked", "true");
+	}
+	else {
+		$(id + " .logy").removeAttr("checked");
+	}
+	if (stack[0]["logx"] == "true") {
+		$(id + " .logx").attr("checked", "true");
+	}
+	else {
+		$(id + " .logx").removeAttr("checked");
 	}
 	log("plot setup done");
+}
+
+function updateInternalPlotString(index) {
+	var stack = document.plotData[index];
+	var s = "";
+	var keys = ["path", "color", "logx", "logy", "maxy", "minx", "maxx"];
+	for(var sp = 0; sp < stack.length; sp++) { 
+		for(var k in keys) {
+			if (stack[sp][keys[k]] != null) {
+				s += keys[k] + ":" + stack[sp][keys[k]] + ",";
+			}
+		}
+		s += " ";
+	}
+	log(index + ": " + s);
+	$("#plot" + index + " .plots-input").val(s);
 }
 
 function redrawPlot(index, stack) {
@@ -79,6 +120,7 @@ function redrawPlot(index, stack) {
 	if (stack == null) {
 		stack = document.plotData[index];
 	}
+	log("color: '" + stack[0]["color"] + "'");
 	var pdata = new Array();
 	for (var sp = 0; sp < stack.length; sp++) {
 		crt = stack[sp];
@@ -105,7 +147,7 @@ function redrawPlot(index, stack) {
 		pdata.push(d);
 	}
 	document.data[index] = pdata;
-	redrawPlot2(index, options);
+	redrawPlot2(index, defaultPlotOptions);
 }
 	
 function redrawPlot2(index, options) {
@@ -129,7 +171,11 @@ function redrawPlot2(index, options) {
                 xaxis: { min: minx, max: maxx, transform: tx, inverseTransform: itx },
                 yaxis: { max: maxy, transform: ty, inverseTransform: ity }
             }));
-	$("#plot" + index + " .legendColorBox").jeegoocontext("color-list", popupOptions);
+	
+	if (typeof $("#plot" + index + " .legendColorBox").jeegoocontext == "function") {
+		$("#plot" + index + " .legendColorBox").jeegoocontext("color-list", popupOptions);
+	}
+	updateInternalPlotString(index);
 }
 
 ln = function(v) { return v > 0 ? Math.log(v) : 0; }
@@ -272,10 +318,19 @@ function getData(dataset, runs, plots, combine) {
     function cb() {
     	var dataset;
     	if (ro.readyState == 4) {
-    		var text = ro.responseText;
-    		updatePlots(parseReply(text));
-    		if (typeof updatingDone == "function") {
-    			updatingDone();
+    		if (ro.status == 200) {
+    			var text = ro.responseText;
+    			updatePlots(parseReply(text));
+    			if (typeof updatingDone == "function") {
+    				updatingDone();
+    			}
+    		}
+    		else {
+    	    	log("status: " + ro.status);
+    	    	log("statusText: " + ro.statusText);
+    			if (typeof updatingFailed == "function") {
+    				updatingFailed(ro.status, ro.statusText, ro.responseText);
+    			}
     		}
     	}
     }
@@ -467,14 +522,14 @@ function bindButtons(index) {
 		var r = document.plots[index].getSelection();
 		document.plotData[index][0]["minx"] = r.xaxis.from;
 		document.plotData[index][0]["maxx"] = r.xaxis.to;
-		redrawPlot2(index, options);
+		redrawPlot2(index, defaultPlotOptions);
     	plotUnselected(index);
 	});
 
 	$(plot + " .reset-selection").bind("click", function() {
 		document.plotData[index][0]["minx"] = null;
 		document.plotData[index][0]["maxx"] = null;
-		redrawPlot2(index, options);
+		redrawPlot2(index, defaultPlotOptions);
 		plotUnselected(index);
 	});
 	
@@ -574,4 +629,31 @@ function updateColor(e, context) {
 	log("change color for index: " + sp + ", plot: " + index + ", color: " + color);
 	document.plotData[index][sp]["color"] = color;
 	redrawPlot(index);
+}
+
+updatingStarted = function() {
+	log("Updating started");
+	spinnerOn(".wait-on-data");
+}
+
+updatingDone = function() {
+	log("Updating done");
+	spinnerOff(".wait-on-data");
+}
+
+function flotify() {
+	var index = 0;
+	$(".flotifiable").each(function() {
+		log("flotifying " + $(this).attr("src"));
+		var src = $(this).attr("src");
+		var sp = src.split("?", 2);
+		var pels = sp[1].split("&");
+		var params = new Array();
+		for (var i = 0; i < pels.length; i++) {
+			var kv = pels[i].split("=", 2);
+			params[kv[0]] = kv[1];
+		}
+		$(this).replaceWith('<div id="plot-container" class="wait-on-data" style="width: 800px; height: 400px;"></div>');
+		getData(params["dataset"], params["runs"], params["plots"], "on");
+	});
 }

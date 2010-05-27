@@ -1,7 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
-
+<%
+	session.setAttribute("cms.datasets", null);
+%>
 <c:if test="${!empty param.back}">
 	<jsp:forward page="../analysis-${param.analysis}/index.jsp">
 		<jsp:param name="dataset" value="${param.dataset}"/>
@@ -103,7 +105,21 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
+			<td width="38%">
+				<div class="toolbox-group">
+					<span class="group-title">Save</span>
+					<form name="savePlotFrom" id="save-plot-form" action="../analysis/save.jsp"  method="get" 
+						target="saveWindow" onsubmit="window.open('',this.target,'width=500,height=200,resizable=1');">
+						<e:trinput type="hidden" name="dataset"/>
+						<e:trinput type="hidden" name="runs"/>
+						<e:trinput type="hidden" name="expr"/>
+						<e:trinput type="hidden" name="plots" class="plots-input"/>
+						<input type="text" name="name" emptytext="plot name" class="plotname" size="10" />
+						<input type="submit" class="save" value="Save Plot"/>
+					</form>
+				</div>
+			</td>
+			<td>
 				<div class="toolbox-group">
 					<e:vswitch id="animation-panel" title="Animation" titleclass="group-title">
 						<e:visible image="../graphics/plus.png">
@@ -125,9 +141,9 @@
 	</table>
 	<div class="cursor" style="position: absolute; z-index: 10; display: none;"><span class="cursorValue"></span> <span class="cursorUnit"></span></div>
 	<div class="frame" style="position: relative;">
-		<div class="placeholder" style="width:768px;height:380px; margin-bottom: 16px; margin-left: 16px;"></div>
+		<div class="placeholder" style="width:758px;height:380px; margin-bottom: 26px; margin-left: 26px;"></div>
 		<div class="selection" style="position: absolute; top: 40px; z-index: 10;"></div>
-		<div class="xlabel" style="position: absolute; left: 400px; bottom: -14px;"></div>
+		<div class="xlabel" style="position: absolute; left: 400px; bottom: -24px;"></div>
 		<div class="ylabel" style="position: absolute; left: -50px; top: 200px;writing-mode: tb-rl; filter: flipV flipH; -webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);"></div>
 	</div>
 </div>
@@ -139,37 +155,23 @@
 </ul>
 
 <script>
-	d = new Array();
-	var data = [
-	    {
-	        data: d
-	    }
-	];
-	
-	var options = {
-	    lines: { show: true, fill: false, lineWidth: 1.2 },
-	    grid: { hoverable: true, autoHighlight: false },
-	    points: { show: false },
-	    legend: { noColumns: 1 },
-	    xaxis: { tickDecimals: 0 },
-	    yaxis: { autoscaleMargin: 0.1 },
-	    y2axis: { autoscaleMargin: 0.1 },
-	    crosshair: { mode: "x" },
-	    selection: { mode: "x", color: "yellow" },
-	    hooks: { bindEvents: [bindEventsHook] }
-	};
-
 	updatingStarted = function() {
 		log("Updating started");
 		spinnerOn(".wait-on-data");
 	}
-
+	
 	updatingDone = function() {
 		log("Updating done");
 		spinnerOff(".wait-on-data");
 		$(".wait-on-data").css("display", "none");
 	}
-
+	
+	updatingFailed = function(status, statusText, content) {
+		log("Updating failed");
+		spinnerOff(".wait-on-data");
+		$(".wait-on-data").html(content);
+	}
+	
 	getData("${param.dataset}", "${param.runs}", "${param.plots}", "${param.combine}");	
 </script>
 
