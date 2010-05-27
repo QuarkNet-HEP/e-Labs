@@ -50,42 +50,47 @@
 			%>
 			
 			<c:if test="${e.tupleMap.type == 'plot'}">
-				<a href="../plots/view.jsp?filename=${param.filename}&menu=${param.menu}">Show Plot</a> |
+				<a href="../plots/view.jsp?filename=${param.filename}&menu=${param.menu}">Show Plot</a>
 			</c:if>
 			<c:if test="${e.tupleMap.type == 'split'}">
-				<a href="../data/view.jsp?filename=${param.filename}&menu=${param.menu}">Show Data</a> |
+				| <a href="../data/view.jsp?filename=${param.filename}&menu=${param.menu}">Show Data</a>
 			</c:if>
 			<c:if test="${e.tupleMap.detectorid != null && e.tupleMap.julianstartdate != null}">
-				<a href="../geometry/view.jsp?filename=${param.filename}&menu=${param.menu}">Show Geometry</a> |
+				| <a href="../geometry/view.jsp?filename=${param.filename}&menu=${param.menu}">Show Geometry</a>
 			</c:if>
 			<c:if test="${e.tupleMap.type == 'split'}">
-				<a href="../data/download?filename=${param.filename}&elab=${elab.name}&type=${e.tupleMap.type}">Download</a>
+				| <a href="../data/download?filename=${param.filename}&elab=${elab.name}&type=${e.tupleMap.type}">Download</a>
 			</c:if>
 			<h2>Details (<a href="javascript:glossary('metadata')">Metadata</a>) for ${param.filename}</h2>
 			<table border="0">
 				<c:forEach items="${e.tupleIterator}" var="tuple">
 					<tr>
-						<td align="right">${tuple.key}:&nbsp;</td>
-						<td align="left">
-							<c:choose>
-								<c:when test="${tuple.key == 'provenance'}">
-									<e:popup href="../plots/view-provenance.jsp?filename=${param.filename}" target="Provenance" width="800" height="850">${tuple.value}</e:popup>
-								</c:when>
-								<c:when test="${tuple.key == 'detectorid' && e.tupleMap.julianstartdate != null}">
-									<c:forEach items="${fn:split(tuple.value, ' ')}" var="f">
-										<a href="../geometry/view.jsp?detectorID=${f}&jd=${e.tupleMap.julianstartdate}">${f}</a>
-									</c:forEach>
-								</c:when>
-								<c:when test="${tuple.key == 'source'}">
-									<c:forEach items="${fn:split(tuple.value, ' ')}" var="f">
-										<a href="../data/view.jsp?filename=${f}">${f}</a>
-									</c:forEach>
-								</c:when>
-								<c:otherwise>
-									${tuple.value}
-								</c:otherwise>
-							</c:choose>
-						</td>
+						<c:if test="${!fn:startsWith(tuple.key, '_')}">
+							<td align="right">${tuple.key}:&nbsp;</td>
+							<td align="left">
+								<c:choose>
+									<c:when test="${fn:endsWith(tuple.key, 'URL')}">
+										<e:popup href="${tuple.value}" target="ViewURL" width="800" height="850">view</e:popup>
+									</c:when>
+									<c:when test="${tuple.key == 'provenance'}">
+										<e:popup href="../plots/view-provenance.jsp?filename=${param.filename}" target="Provenance" width="800" height="850">${tuple.value}</e:popup>
+									</c:when>
+									<c:when test="${tuple.key == 'detectorid' && e.tupleMap.julianstartdate != null}">
+										<c:forEach items="${fn:split(tuple.value, ' ')}" var="f">
+											<a href="../geometry/view.jsp?detectorID=${f}&jd=${e.tupleMap.julianstartdate}">${f}</a>
+										</c:forEach>
+									</c:when>
+									<c:when test="${tuple.key == 'source'}">
+										<c:forEach items="${fn:split(tuple.value, ' ')}" var="f">
+											<a href="../data/view.jsp?filename=${f}">${f}</a>
+										</c:forEach>
+									</c:when>
+									<c:otherwise>
+										${tuple.value}
+									</c:otherwise>
+								</c:choose>
+							</td>
+						</c:if>
 					</tr>
 				</c:forEach>
 			</table>
