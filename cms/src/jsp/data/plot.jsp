@@ -64,7 +64,7 @@
 	<e:trinput type="hidden" name="dataset"/>
 	<e:trinput type="hidden" name="runs"/>
 	<e:trinput type="hidden" name="expr"/>
-	<input type="hidden" name="analysis" value="zmass"/>
+	<e:trinput type="hidden" name="analysis"/>
 	<table border="0" width="100%" id="step-buttons">
 		<tr>
 			<td>
