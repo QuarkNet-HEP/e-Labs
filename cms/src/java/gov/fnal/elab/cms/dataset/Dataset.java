@@ -45,8 +45,7 @@ public class Dataset {
         try {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
                     .parse(is);
-            this.dataLocation = doc.getElementsByTagName("dataset").item(0).getAttributes()
-                    .getNamedItem("location").getNodeValue();
+            this.dataLocation = elab.getProperty("dataset.location." + name);
             populateTriggers(doc);
             populateLeaves(doc);
         }
