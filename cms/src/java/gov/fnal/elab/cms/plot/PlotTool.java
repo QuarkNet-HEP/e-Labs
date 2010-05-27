@@ -33,6 +33,7 @@ import javax.imageio.ImageIO;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.LogAxis;
 import org.jfree.chart.axis.LogarithmicAxis;
 import org.jfree.chart.plot.DefaultDrawingSupplier;
 import org.jfree.chart.plot.PlotOrientation;
@@ -40,7 +41,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 public class PlotTool {
-    public static final String VERSION = "0.1";
+    public static final String VERSION = "0.2";
     
     public static File[] getOrCreatePlot(Elab elab, Dataset dataset, String runs, String plot)
             throws PlotException {
@@ -129,18 +130,25 @@ public class PlotTool {
         }
         JFreeChart chart = ChartFactory.createXYLineChart("", "", "", col,
                 PlotOrientation.VERTICAL, false, false, false);
-        if (logx) {
-            chart.getXYPlot().setRangeAxis(new LogarithmicAxis(""));
-        }
+        chart.getPlot().setBackgroundPaint(Color.WHITE);
+        chart.getPlot().setOutlineStroke(new BasicStroke(1.5f));
         if (logy) {
+            LogarithmicAxis l = new LogarithmicAxis("");
+            l.setStrictValuesFlag(false);
+            chart.getXYPlot().setRangeAxis(l);
+        }
+        if (logx) {
             chart.getXYPlot().setDomainAxis(new LogarithmicAxis(""));
         }
         if (maxy != null) {
-            chart.getXYPlot().getRangeAxis().setRange(0, maxy);
+            if (logy) {
+                chart.getXYPlot().getRangeAxis().setRange(1, maxy);
+            }
+            else {
+                chart.getXYPlot().getRangeAxis().setRange(0, maxy);
+            }
         }
         
-        chart.getPlot().setBackgroundPaint(Color.WHITE);
-        chart.getPlot().setOutlineStroke(new BasicStroke(1.5f));
         chart.getPlot().setDrawingSupplier(new DefaultDrawingSupplier() {
             int index = 0;
 
