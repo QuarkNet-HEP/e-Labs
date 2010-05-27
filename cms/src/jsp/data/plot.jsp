@@ -114,6 +114,7 @@
 						<e:trinput type="hidden" name="runs"/>
 						<e:trinput type="hidden" name="expr"/>
 						<e:trinput type="hidden" name="plots" class="plots-input"/>
+						<e:trinput type="hidden" name="analysis"/>
 						<input type="text" name="name" emptytext="plot name" class="plotname" size="10" />
 						<input type="submit" class="save" value="Save Plot"/>
 					</form>

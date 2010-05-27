@@ -9,7 +9,8 @@
 		throw new ElabJspException("No entry found in the data catalog for " + filename + ".");
 	}
 
-	String params = "dataset=" + entry.getTupleValue("dataset") + "&runs=" + entry.getTupleValue("runs") + "&plots=" + entry.getTupleValue("_plots");
+	String params = "dataset=" + entry.getTupleValue("dataset") + "&runs=" + entry.getTupleValue("runs") + 
+		"&plots=" + entry.getTupleValue("_plots") + "&analysis=" + entry.getTupleValue("analysis");
 	request.setAttribute("params", params);
 %>
 

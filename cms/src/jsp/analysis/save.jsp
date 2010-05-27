@@ -23,6 +23,7 @@
 					String runs = request.getParameter("runs");
 					String plots = request.getParameter("plots");
 					String expr = request.getParameter("expr");
+					String analysis = request.getParameter("analysis");
 					
 					String base = "dataset=" + dataset + "&runs=" + runs + "&plots=" + plots;
 					String plotURL = "../data/plot-image.jsp?" + base;
@@ -58,6 +59,7 @@
 					meta.add("thumbnailURL string " + thumbnailURL);
 					meta.add("dataset string " + dataset);
 					meta.add("runs string " + runs);
+					meta.add("analysis string " + analysis);
 					
 					String[] plotsv = plots.split("\\s+");
 					for (int i = 0; i < plotsv.length; i++) {
