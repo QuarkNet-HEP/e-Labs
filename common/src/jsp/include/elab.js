@@ -171,21 +171,23 @@ function log(text) {
 
 function initlog() {
 	document.write(
-		'<div id="log">' + 
-			'<input id="logtoggle" type="button" value="Hide Log" onclick="toggleLog();" style="position: fixed; bottom: 4px; right: 20px;"/>' + 
+		'<a onclick="toggleLog();" style="position: fixed; bottom: 4px; right: 20px; z-index: 1;"><img id="logtoggle" src="../graphics/plus.png" alt="Show Log" /></a>' +
+		'<div id="log" style="display: none; z-index: 0; height: 100px;">' + 
 		'</div>');
 }
 
 function toggleLog() {
 	var l = document.getElementById("log");
 	var lt = document.getElementById("logtoggle");
-	if (l.style.height == "6px") {
-		l.style.height = "100px";
-		lt.value = "Hide Log";
+	if (l.style.display == "none") {
+		l.style.display = "block";
+		lt.alt = "Hide Log";
+		lt.src = "../graphics/minus.png"; 
 	}
 	else {
-		l.style.height = "6px";
-		lt.value = "Show Log";
+		l.style.display = "none";
+		lt.alt = "Show Log";
+		lt.src = "../graphics/plus.png";
 	}
 }
 
