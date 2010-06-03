@@ -174,7 +174,7 @@ function loadEvent() {
 	var file = document.currentFileList[document.selectedFileIndex];
 	var event = document.currentEventList[document.selectedEventIndex];
 	var size = event.size;
-	var ro = startDownload(file.name, event.name);
+	var ro = startDownload(document.settings.lastDir + "/" + file.name, event.name);
 	var progress = function() {
 		if (ro.readyState == 1) {
 			updateProgress(0.5, "Connection opened");
