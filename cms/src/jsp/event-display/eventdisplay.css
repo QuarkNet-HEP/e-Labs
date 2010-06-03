@@ -1,0 +1,203 @@
+body * {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+body.white {
+    background-color: white;
+    color: black;
+}
+body.black {
+	background-color: black;
+	color: white;
+}
+
+span.spaceyspan {
+	margin-right: 20px;
+}
+div.centeredDiv {
+	text-align: center;
+}
+ul {
+  	padding: 0px;
+}
+
+li {
+	list-style: none;
+}
+
+td {
+	padding-right: 10px;
+}
+
+#log {
+	left: 0px;
+	right: 0px;
+	height: 106px;
+	border: thin solid black;
+	font-size: 8pt;
+	background-color: #e0e0e0;
+	padding: 4px;
+	color: black;
+	overflow: auto;
+	position: fixed;
+	bottom: 0px;
+	opacity: 0.9;
+}
+.black .bordered {
+	border: thin solid gray;
+}
+.white .bordered {
+	border: thin solid #e0e0e0;
+}
+.group {
+	font-weight: bold;
+	padding-left: 4px;
+}
+.black .group {
+	background-color: #202020;
+}
+.white .group {
+	background-color: #e0e0e0;
+}
+.sw {
+	padding-left: 12px;
+	font-size: 11px;
+}
+#canvas {
+	shape-rendering: optimize-speed;
+	cursor: move;
+}
+.ctrl {
+	vertical-align: middle;
+	text-align: right;
+}
+.ctrl img {
+	vertical-align: middle;
+}
+.key {
+	padding-left: 2px;
+	padding-right: 2px;
+	height: 24px;
+	color: black;
+	background-color: #e0e0e0;
+	border: 3px solid #e0e0e0;
+	border-style: outset;
+	border-top: 2px outset white;
+	top: 0px;
+}
+#title {
+	width: 100%;
+	height: 20px;
+	text-align: center;
+	font-weight: bold;
+}
+
+.button {
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border: solid thin #606060;
+	background-color: #404040;
+	padding: 2px;
+ 	padding-left: 4px;
+ 	padding-right: 4px;
+ 	text-decoration: none;
+ 	background-image: url("../graphics/button-bg1-dark.png");
+ 	background-position: top left;
+ 	background-repeat: repeat-x;
+ 	display: block;
+ 	margin: 0px;
+ 	color: white;
+ 	cursor: pointer;
+}
+
+.white .button {
+	border: solid thin #d0d0d0;
+	background-image: url("../graphics/button-bg1.png");
+	background-color: #e0e0e0;
+	color: black;
+}
+
+a.disabled {
+	color: #808080;
+}
+	
+.toolbar-button {
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border: solid thin #d0d0d0;
+	background-color: #e0e0e0;
+ 	padding-left: 1px;
+ 	padding-right: 1px;
+ 	text-decoration: none;
+ 	background-image: url("../graphics/button-bg1.png");
+ 	background-position: top left;
+ 	background-repeat: repeat-x;
+ 	display: block;
+ 	margin: 0px;
+}
+
+#toolbar td.toolbar-separator {
+	border-left: thin solid #808080;
+	padding: 0px;
+}
+
+#toolbar td {
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+.dialog-window {
+	position: fixed;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	background-color: black;
+	z-index: 10;
+	border: thin solid #e0e0e0;
+	display: none;
+	padding: 0px;
+}
+
+.white .dialog-window {
+	border: thin solid #202020;
+}
+
+.white .dialog-window {
+	background-color: white;
+	border: thin solid #202020;
+}
+
+.title {
+	left: 0px;
+	right: 0px;
+	padding: 0px;
+	text-align: center;
+	font-weight: bold;
+}
+
+.titlebar {
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	width: 100%;
+	background-color: #404040;
+}
+
+.white .titlebar {
+	background-color: #b0b0b0;
+}
+
+.titlebar .buttons {
+	width: 20px;
+}
+
+.titlebar-button img {
+	padding: 1px;
+	display: block;
+}
+
+.titlebar-button img:hover {
+	background-color: #404040;
+}
