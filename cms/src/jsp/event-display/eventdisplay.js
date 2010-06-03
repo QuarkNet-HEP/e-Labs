@@ -43,7 +43,7 @@ function clearSwitchRows() {
 	}
 }
 
-if (d_event) {
+if (typeof(d_event) == "undefined") {
 	document.d_event = {"Collections": {}}; 
 }
 
