@@ -21,7 +21,6 @@
 		<script src="../include/jquery/js/jquery-1.4.min.js"></script>
 		<script src="../include/pre3d.js"></script>
 		<script src="../include/pre3d_shape_utils.js"></script>
-		<script src="event_102.js"></script>
 		<script src="demo_utils.js"></script>
 		<script src="object-conversion.js"></script>
 		<script src="data-description.js"></script>
