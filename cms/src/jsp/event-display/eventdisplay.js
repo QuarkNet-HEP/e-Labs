@@ -133,6 +133,7 @@ function initializeData() {
 }
 
 function buildPerformanceWeights() {
+	var d_event = document.d_event;
 	var pw = [];
 	for (var key in d_descr) {
 		var desc = d_descr[key];

@@ -56,6 +56,13 @@ function updateFileList(list, dir) {
 	fleXenv.fleXcrollMain("browser-files-div");
 }
 
+function stripOne(f) {
+	var fs = f.split("/");
+	fs.pop();
+	window.alert(fs);
+	return fs.join("/");
+}
+
 function selectFile(index) {
 	if (document.selectedFileIndex) {
 		$("#browser-file-" + document.selectedFileIndex).removeClass("selected");
@@ -68,7 +75,15 @@ function selectFile(index) {
 		$("#selected-event").html("");
 		$("#browser-load").addClass("disabled");
 		document.selectedFileIndex = null;
-		browserFileList(document.settings.lastDir + "/" + f.name);
+		var dir;
+		if (f.name == "..") {
+			dir = stripOne(document.settings.lastDir);
+		}
+		else {
+			dir = document.settings.lastDir + "/" + f.name;
+		}
+		document.settings.lastDir = dir;
+		browserFileList(dir);
 	}
 	else {
 		document.selectedFileIndex = index;
@@ -113,7 +128,8 @@ function selectEvent(index) {
 	$("#browser-event-" + index).addClass("selected");
 	document.selectedEventIndex = index;
 	var event = document.currentEventList[index];
-	$("#selected-event").html(file.name + ":" + event.name);
+	var ld = document.settings.lastDir;
+	$("#selected-event").html(ld + "/" + file.name + ":" + event.name);
 	$("#browser-load").removeClass("disabled");
 }
 
@@ -135,6 +151,7 @@ function browserRequest(name, paramStr, callback, data) {
 	    		log("    status: " + ro.status);
     	    	log("    statusText: " + ro.statusText);
     	    	log("    responseText: " + ro.responseText);
+    	    	callback(ro.responseText, data, ro.statusText);
     		}
     	}
     }
@@ -182,7 +199,12 @@ function startDownload(file, event) {
 	return browserRequest("get", file + ":" + event, loadEventCB, null);
 }
 
-function loadEventCB(text) {
+function loadEventCB(text, data, error) {
+	if (error) {
+		window.alert("Error: " + error);
+		$("#load-progress-window").hide();
+		return;
+	}
 	updateProgress(91, "Parsing data");
 	var nan = Number.NaN;
 	try {

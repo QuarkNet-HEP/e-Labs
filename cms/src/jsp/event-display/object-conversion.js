@@ -379,7 +379,7 @@ function makeTrackCurves2(data, rd, descr, data2, assoc) {
 	return l;
 }
 
-function getRankingData(ig, desc, data) {
+function getRankingData(d_event, desc, data) {
 	if (!desc.rank) {
 		return null;
 	}
