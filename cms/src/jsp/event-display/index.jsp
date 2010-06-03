@@ -3,7 +3,7 @@
 
 		<title>CMS 3D Event Display</title>
 
-		<link href="../css/scrollbar2.css" rel="stylesheet" type="text/css" />
+		<link href="scrollbar.css" rel="stylesheet" type="text/css" />
 		<link href="eventdisplay.css" rel="stylesheet" type="text/css" />
 		<link href="eventdisplay.css" rel="stylesheet" type="text/css" />
 		
