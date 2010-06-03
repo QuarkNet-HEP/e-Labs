@@ -59,7 +59,6 @@ function updateFileList(list, dir) {
 function stripOne(f) {
 	var fs = f.split("/");
 	fs.pop();
-	window.alert(fs);
 	return fs.join("/");
 }
 
