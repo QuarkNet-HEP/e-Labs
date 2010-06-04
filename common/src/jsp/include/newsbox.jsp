@@ -7,7 +7,7 @@
 <%@ page import="java.text.ParseException" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 
-<%
+<%--
     ElabNotificationsProvider np = ElabFactory.getNotificationsProvider((Elab) session.getAttribute("elab"));
     List<Notification> l = np.getSystemNotifications();
     List<Notification> nl = new ArrayList<Notification>();
@@ -17,7 +17,7 @@
         }
     }
     request.setAttribute("notifications", nl);
-%>
+--%>
 
 <c:if test="${!empty notifications}">
 	<div id="news-box">
