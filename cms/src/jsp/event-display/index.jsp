@@ -33,7 +33,7 @@
 			<%@ include file="toolbar.jspf" %>
 		</td>
 		<td class="bordered">
-			<div id="title">Title</div>
+			<div id="title"></div>
 		</td>
 	</tr>
 	<tr>
@@ -45,7 +45,7 @@
 		</td>
 		<td class="bordered">
 			<canvas id="canvas" width="800" height="600">
-  				Sorry, this demo requires a web browser which supports HTML5 canvas!
+  				Sorry, this requires a web browser which supports HTML5 canvas.
 			</canvas>
 		</td>
 	</tr>
