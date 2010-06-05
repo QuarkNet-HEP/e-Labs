@@ -325,16 +325,19 @@ Pre3d = (function() {
   }
   
   function makeAxisAngleRotationAffine(e, t) {
-	  // I cos t + I (1 - cos t)ee^t + [e]_x sin t
+	  // I cos t + I (1 - cos t)ee^T + [e]_x sin t
 	  var cost = Math.cos(t);
 	  var sint = Math.sin(t);
 	  var m1cost = 1 - cost;
-	  var enorm = vecMag3d(e);
-	  
+	  enorm = vecMag3d(e);
+	  var ex = e.x;
+	  var ey = e.y;
+	  var ez = e.z;
+	   
 	  return new AffineMatrix(
-		cost + m1cost * e.x * e.x, 	-e.z * sint, 				e.y * sint,					0,
-		e.z * sint,					cost + m1cost * e.y * e.y, 	-e.x * sint,				0,
-		-e.y * sint,				e.x * sint,					cost + m1cost * e.z * e.z,	0
+		cost + m1cost * ex * ex, 		ex * ey * m1cost -e.z * sint, 	ex * ez * m1cost + e.y * sint,	0,
+		ey * ex * m1cost + e.z * sint,	cost + m1cost * e.y * e.y, 		ey * ez * m1cost - e.x * sint,	0,
+		ez * ex * m1cost - e.y * sint,	ez * ey * m1cost + e.x * sint,	cost + m1cost * e.z * e.z,		0
 	  );
   }
 
@@ -436,7 +439,7 @@ Pre3d = (function() {
   
   Transform.prototype.rotateAroundAxis = function(axis, angle) {
 	  var e = normalize(axis);
-	  this.m = multiplyAffine(this.m, makeAxisAngleRotationAffine(e, angle));
+	  this.m = multiplyAffine(makeAxisAngleRotationAffine(e, angle), this.m);
   };
 
   // Transform and return a new array of points with transform matrix |t|.
@@ -1211,7 +1214,6 @@ Pre3d = (function() {
     var curves = path.curves;
     for (var j = 0, jl = curves.length; j < jl; ++j) {
       var curve = curves[j];
-
       if (curve.isQuadratic() === true) {
         var c0 = screen_points[curve.c0];
         var ep = screen_points[curve.ep];
@@ -1223,7 +1225,10 @@ Pre3d = (function() {
         ctx.bezierCurveTo(c0.x, c0.y, c1.x, c1.y, ep.x, ep.y);
       }
     }
-
+    if (path.drawEndPoints) {
+    	square(ctx, start_point);
+    	square(ctx, screen_points[curves[curves.length - 1].ep]);
+    }
     // We've connected all our Curves into a <canvas> path, now draw it.
     if (opts.fill === true) {
       ctx.fill();
@@ -1241,15 +1246,23 @@ Pre3d = (function() {
 		        transformPoint(this.precomputedTransform, c.p2));
 	  var d1 = this.projectPointToCanvas(
 		        transformPoint(this.precomputedTransform, c.d1));
-	  var d2 = this.projectPointToCanvas(
-		        transformPoint(this.precomputedTransform, c.d2));
-	  if (p1 === null || p2 === null || d1 === null || d2 === null) {
+	  var quadratic = c.d2 === null;
+	  if (!quadratic) {
+		  var d2 = this.projectPointToCanvas(
+				transformPoint(this.precomputedTransform, c.d2));
+	  }
+	  if (p1 === null || p2 === null || d1 === null || (d2 === null && !quadratic)) {
 		  return;
 	  }
 	  
 	  ctx.beginPath();
 	  ctx.moveTo(p1.x, p1.y);
-	  ctx.bezierCurveTo(d1.x, d1.y, d2.x, d2.y, p2.x, p2.y);
+	  if (quadratic) {
+		  ctx.quadraticCurveTo(d1.x, d1.y, p2.x, p2.y);
+	  }
+	  else {
+		  ctx.bezierCurveTo(d1.x, d1.y, d2.x, d2.y, p2.x, p2.y);
+	  }
 	  square(ctx, p1);
 	  square(ctx, p2);
 	  ctx.stroke();
