@@ -173,7 +173,8 @@ function loadEvent() {
 	var file = document.currentFileList[document.selectedFileIndex];
 	var event = document.currentEventList[document.selectedEventIndex];
 	var size = event.size;
-	var ro = startDownload(document.settings.lastDir + "/" + file.name, event.name);
+	var path = document.settings.lastDir + "/" + file.name;
+	var ro = startDownload(path + ":" + event.name);
 	var progress = function() {
 		if (ro.readyState == 1) {
 			updateProgress(0.5, "Connection opened");
@@ -194,11 +195,11 @@ function loadEvent() {
 	setTimeout(progress, 100);
 }
 
-function startDownload(file, event) {
-	return browserRequest("get", file + ":" + event, loadEventCB, null);
+function startDownload(path) {
+	return browserRequest("get", path, loadEventCB, path);
 }
 
-function loadEventCB(text, data, error) {
+function loadEventCB(text, title, error) {
 	if (error) {
 		window.alert("Error: " + error);
 		$("#load-progress-window").hide();
@@ -219,6 +220,7 @@ function loadEventCB(text, data, error) {
 		throw e;
 	}
 	$("#load-progress-window").hide();
+	$("#title").html(title);
 }
 
 function updateProgress(p, text) {
