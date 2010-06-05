@@ -76,7 +76,7 @@
 	     	 	else {
 	     	 	    out.write(", ");
 	     	 	}
-	     	 	out.write("{ type: 2, name: \"" + e.getName().substring("Events/".length()) + "\", size: " + e.getSize() + " }");  
+	     	 	out.write("{ type: 2, name: \"" + e.getName() + "\", size: " + e.getSize() + " }");  
 	        }
 	    }
 	    out.write("]");
@@ -90,7 +90,10 @@
 	        throw new RuntimeException("Invalid file: " + ps[0]);
 	    }
 	    ZipFile zf = new ZipFile(igf);
-	    ZipEntry e = zf.getEntry("Events/" + ps[1]);
+	    ZipEntry e = zf.getEntry(ps[1]);
+	    if (e == null) {
+	    	throw new RuntimeException("Event not found: " + ps[1]);
+	    }
 	    BufferedInputStream bis = new BufferedInputStream(zf.getInputStream(e));
 	    out.write("(");
 	    byte[] buf = new byte[16384];
