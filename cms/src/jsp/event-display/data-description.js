@@ -5,14 +5,15 @@ var SHAPE = 3;
 var LINES = 4;
 var TRACK = 5;
 var CURVES = 6;
+var PATHS = 7;
 
 var WEIGHTS = { 0: 1, 1: 4, 2: 8, 3: 16, 4: 4, 5: 16, 6: 4 };
 
 var d_descr = {
-	"Tracks_V1": { type: CURVES, on: true, group: "Tracking", desc: "Tracks (reco.)",
+	"Tracks_V1": { type: PATHS, on: true, group: "Tracking", desc: "Tracks (reco.)",
 		dataref: "Extras_V1", assoc: "TrackExtras_V1",
 		fn: makeTrackCurves2, color: [1, 0.7, 0, 0.9], lineCaps: "square", lineWidth: 2 },
-	"GsfTracks_V1": { type: CURVES, on: false, group: "Tracking", desc: "Tracks (GSF)",
+	"GsfTracks_V1": { type: PATHS, on: false, group: "Tracking", desc: "Tracks (GSF)",
 		dataref: "GsfExtras_V1", assoc: "GsfTrackExtras_V1", 
 		fn: makeTrackCurves2, color: [1, 0.9, 0, 0.9], lineCaps: "square", lineWidth: 1.5 },
 	"SiStripDigis_V1": { type: POINT, on: false, group: "Tracking", desc: "Digis (Si Strips)",
