@@ -1199,7 +1199,7 @@ Pre3d = (function() {
     var ctx = this.ctx;
     var opts = opts || { };
 
-    var screen_points = this.projectPointsToCanvas(
+    var screen_points = this.projectPointsToCanvas3(
         transformPoints(this.precomputedTransform, path.points));
 
     // Start the path at (0, 0, 0) unless there is an explicit starting point.
@@ -1207,7 +1207,9 @@ Pre3d = (function() {
         this.projectPointToCanvas(transformPoint(t, {x: 0, y: 0, z: 0})) :
         screen_points[path.starting_point]);
     
-
+    if (start_point === null) {
+    	return;
+    }
     ctx.beginPath();
     ctx.moveTo(start_point.x, start_point.y);
 
@@ -1217,11 +1219,25 @@ Pre3d = (function() {
       if (curve.isQuadratic() === true) {
         var c0 = screen_points[curve.c0];
         var ep = screen_points[curve.ep];
+        if (ep === null) {
+        	break;
+        }
+        if (c0 === null) {
+        	ctx.moveTo(ep.x, ep.y);
+        	continue;
+        }
         ctx.quadraticCurveTo(c0.x, c0.y, ep.x, ep.y);
       } else {
         var c0 = screen_points[curve.c0];
         var c1 = screen_points[curve.c1];
         var ep = screen_points[curve.ep];
+        if (ep === null) {
+        	break;
+        }
+        if (c0 === null || c1 === null) {
+        	ctx.moveTo(ep.x, ep.y);
+        	continue;
+        }
         ctx.bezierCurveTo(c0.x, c0.y, c1.x, c1.y, ep.x, ep.y);
       }
     }
