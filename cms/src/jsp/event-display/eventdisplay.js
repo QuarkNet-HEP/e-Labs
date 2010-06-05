@@ -105,7 +105,7 @@ function initializeData() {
 		if (desc.dataref) {
 			dataref = d_event["Collections"][desc.dataref];
 		}
-		if (type == TRACK || type == CURVES) {
+		if (type == TRACK || type == CURVES || type == PATHS) {
 			lines = fn(edata, rd, desc, dataref, d_event["Associations"][desc.assoc]);
 			for (var k = 0; k < lines.length; k++) {
 				vec.push(lines[k]);
@@ -163,6 +163,7 @@ function getIndex(rd, i) {
 var GLOBAL_RANK_THRESHOLD = 0.9;
 
 window.addEventListener('load', function() {
+	//startDownload("/RelValH130GGgluonfusion.ig:Events/Run_1/Event_1501");
 	restoreSettingsFromCookie();
 	if (document.settings.invertColors) {
 		document.body.className = "white";
@@ -310,6 +311,11 @@ window.addEventListener('load', function() {
 				case CURVES:
 					for (var j = 0; j < vec.length; j++) {
 						renderer.drawCurve(vec[j]);
+					}
+					break;
+				case PATHS:
+					for (var j = 0; j < vec.length; j++) {
+						renderer.drawPath(vec[j]);
 					}
 					break;
 				case POINT:
