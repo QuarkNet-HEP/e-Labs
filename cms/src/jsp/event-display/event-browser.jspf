@@ -53,7 +53,7 @@
 	<table class="titlebar">
 		<tr>
 			<td>
-				<div class="title">Loading Event...</div>
+				<div class="title" id="load-progress-window-title"></div>
 			</td>
 		</tr>
 	</table>
