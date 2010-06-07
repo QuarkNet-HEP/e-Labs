@@ -581,6 +581,11 @@ Pre3d = (function() {
     this.c0 = c0;
     this.c1 = c1;
   };
+  
+  function Wireframe() {
+	  this.points = [];
+	  this.lines = [];
+  }
 
   // A path is a collection of Curves.  The path starts implicitly at
   // (0, 0, 0), and then continues along each curve, each piece of curve
@@ -973,7 +978,7 @@ Pre3d = (function() {
         v: world_vertices,
         lines: shape.lines,
         intensity: intensity,
-        draw_overdraw: this.draw_overdraw,
+        draw_overdraw: this.draw_overdraw || shape.drawOverdraw,
         texture: this.texture,
         fill_rgba: shape.fillColor,
         stroke_rgba: shape.strokeColor,
@@ -1301,7 +1306,10 @@ Pre3d = (function() {
   
   Renderer.prototype.drawRect = function drawRect(vs) {
 	  var ctx = this.ctx;
-	  var vpt = this.projectPointsToCanvas(transformPoints(this.precomputedTransform, vs));
+	  var vpt = this.projectPointsToCanvas2(transformPoints(this.precomputedTransform, vs));
+	  if (vpt === null) {
+		  return;
+	  }
 	  
 	  ctx.beginPath();
 	  ctx.moveTo(vpt[0].x, vpt[0].y);
@@ -1366,6 +1374,26 @@ Pre3d = (function() {
 	    	}
 	    	ctx.stroke();
 		  };
+		  
+	Renderer.prototype.drawWireframe = function drawWireframe(frame) {
+		var ctx = this.ctx;
+	    var vpt = this.projectPointsToCanvas3(transformPoints(this.precomputedTransform, frame.points));
+	    var lines = frame.lines;
+	    
+	    ctx.beginPath();
+	    
+	    for (var i = 0; i < lines.length; i++) {
+	    	var l = lines[i];
+	    	var p1 = vpt[l.p1];
+	    	var p2 = vpt[l.p2];
+	    	if (p1 === null || p2 === null) {
+	    		continue;
+	    	}
+	    	ctx.moveTo(p1.x, p1.y);
+	    	ctx.lineTo(p2.x, p2.y);
+	    }
+	    ctx.stroke();
+	}
 	  
 	  Renderer.prototype.drawLines = function drawLines(lines) {
 		    var ctx = this.ctx;
@@ -1536,6 +1564,7 @@ Pre3d = (function() {
     Shape: Shape,
     Curve: Curve,
     Path: Path,
+    Wireframe: Wireframe,
     Camera: Camera,
     TextureInfo: TextureInfo,
     Renderer: Renderer,
