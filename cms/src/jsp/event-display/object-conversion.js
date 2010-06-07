@@ -103,14 +103,18 @@ function makeQuad(f1, f2, f3, f4, b1, b2, b3, b4, fill, stroke) {
     s.quads = [
       new Pre3d.QuadFace(0, 1, 2, 3),  // Front
       new Pre3d.QuadFace(4, 5, 6, 7),  // Back
-      //new Pre3d.QuadFace(0, 1, 5, 4),
-      //new Pre3d.QuadFace(2, 4, 7, 6),
-      //new Pre3d.QuadFace(1, 2, 6, 5),
-      //new Pre3d.QuadFace(0, 3, 7, 4),
     ];
-    //s.rects = [[f1, f2, f3, f4], [b1, b2, b3, b4]];
-    s.lines = [{v1: 0, v2: 4}, {v1: 1, v2: 5}, {v1: 2, v2: 6}, {v1: 3, v2: 7}];
-    // much faster to draw lines instead of the 4 faces
+    if (document.settings.calorimeterTowersWireSides) {
+    	// much faster to draw lines instead of the 4 faces
+    	s.lines = [{v1: 0, v2: 4}, {v1: 1, v2: 5}, {v1: 2, v2: 6}, {v1: 3, v2: 7}];
+    }
+    else {
+	    s.quads.push(new Pre3d.QuadFace(0, 1, 5, 4));
+	    s.quads.push(new Pre3d.QuadFace(2, 3, 7, 6));
+	    s.quads.push(new Pre3d.QuadFace(1, 2, 6, 5));
+	    s.quads.push(new Pre3d.QuadFace(0, 4, 7, 3));
+    }
+    
     s.fillColor = fill;
     s.strokeColor = stroke;
 
@@ -118,13 +122,99 @@ function makeQuad(f1, f2, f3, f4, b1, b2, b3, b4, fill, stroke) {
     return s;
 }
 
+function makeTowers(data, rd, descr, front, back, energy) {
+	var settings = document.settings;
+	if (settings.calorimeterTowers) {
+		 if (!energy) {
+			 energy = getRankValue(data, rd);
+		 }
+		 var len;
+		 if (settings.calorimeterTowersLogScale) {
+			 len = Math.log(energy) * settings.calorimeterTowersLogFactor;
+		 }
+		 else {
+			 len = settings.calorimeterTowersMaxLength * energy / rd.range;
+		 }
+		 var superFront = new Array();
+		 for (var i = 0; i < 4; i++) {
+			 var side = Pre3d.Math.subPoints3d(back[i], front[i]);
+			 superFront.push(Pre3d.Math.addPoints3d(back[i], Pre3d.Math.mulPoint3d(side, len)));
+		 }
+		 front = superFront;
+		 var a = settings.calorimeterTowersWireSides ? 1.0 : 0.3;
+		 return makeQuad(front[0], front[1], front[2], front[3],
+					back[0], back[1], back[2], back[3], 
+					makeColor(descr.fill, a),
+					makeColor(descr.color, a));
+	}
+	else {
+		return makeQuad(front[0], front[1], front[2], front[3],
+				back[0], back[1], back[2], back[3], 
+				makeColor(descr.fill, getRankValue(data, rd) * 0.8 + 0.2),
+				makeColor(descr.color, getRankValue(data, rd) * 0.8 + 0.2));
+	}
+}
+
 function makeRecHits(data, rd, descr) {
 	//["energy", "double"],["eta", "double"],["phi", "double"],["detid", "int"],
 	//["front_1", "v3d"],["front_2", "v3d"],["front_3", "v3d"],["front_4", "v3d"],["back_1", "v3d"],["back_2", "v3d"],["back_3", "v3d"],["back_4", "v3d"]
-	return makeQuad(makePoint(data[4]), makePoint(data[5]), makePoint(data[6]), makePoint(data[7]),
-			makePoint(data[8]), makePoint(data[9]), makePoint(data[10]), makePoint(data[11]), 
-			makeColor(descr.fill, getRankValue(data, rd) * 0.8 + 0.2),
-			makeColor(descr.color, getRankValue(data, rd) * 0.8 + 0.2));
+	var front = new Array();
+	var back = new Array();
+	front.push(makePoint(data[4]));
+	front.push(makePoint(data[5]));
+	front.push(makePoint(data[6]));
+	front.push(makePoint(data[7]));
+	back.push(makePoint(data[8]));
+	back.push(makePoint(data[9]));
+	back.push(makePoint(data[10]));
+	back.push(makePoint(data[11]));
+	return makeTowers(data, rd, descr, front, back, data[0]);
+}
+
+var cnt = 0;
+function makeDetectorPiece(data, rd, descr) {
+	//["detid", "int"],
+	//["front_1", "v3d"],["front_2", "v3d"],["front_3", "v3d"],["front_4", "v3d"],["back_1", "v3d"],["back_2", "v3d"],["back_3", "v3d"],["back_4", "v3d"]
+	var front = new Array();
+	var back = new Array();
+	front.push(makePoint(data[0]));
+	front.push(makePoint(data[1]));
+	front.push(makePoint(data[2]));
+	front.push(makePoint(data[3]));
+	back.push(makePoint(data[4]));
+	back.push(makePoint(data[5]));
+	back.push(makePoint(data[6]));
+	back.push(makePoint(data[7]));
+	return [{p1: front[0], p2: front[1]}, {p1: front[1], p2: front[2]}, {p1: front[2], p2: front[3]}];
+}
+
+function makeSimpleDetectorPiece(data, rd, descr) {
+	//subdiv, p1...p4
+	var p1 = makePoint(data[0]);
+	var p2 = makePoint(data[1]);
+	var p3 = makePoint(data[2]);
+	var p4 = makePoint(data[3]);
+	return [p1, p2, p3, p4];
+}
+
+function makeWireframe(data, rd, descr) {
+	var points = data[0];
+	var lines = data[1];
+	var wp = [];
+	var wl = [];
+	
+	for (var i = 0; i < points.length; i++) {
+		wp.push(makePoint(points[i]));
+	}
+	for (var i = 0; i < lines.length; i++) {
+		wl.push({p1: lines[i][0], p2: lines[i][1]});
+	}
+	
+	var w = new Pre3d.Wireframe();
+	w.points = wp;
+	w.lines = wl;
+	
+	return [w];
 }
 
 function makeSimpleRecHits(data, rd, descr) {
@@ -142,18 +232,18 @@ function makeCaloTowers(data, rd, descr) {
 	//["et", "double"],["eta", "double"],["phi", "double"],["iphi", "double"],["hadEnergy", "double"],["emEnergy", "double"],
 	//["pos", "v3d"],
 	//["front_1", "v3d"],["front_2", "v3d"],["front_3", "v3d"],["front_4", "v3d"],["back_1", "v3d"],["back_2", "v3d"],["back_3", "v3d"],["back_4", "v3d"]
-	var f1 = makePoint(data[7]);
-	var f2 = makePoint(data[8]);
-	var f3 = makePoint(data[9]);
-	var f4 = makePoint(data[10]);
-	var b1 = makePoint(data[11]);
-	var b2 = makePoint(data[12]);
-	var b3 = makePoint(data[13]);
-	var b4 = makePoint(data[14]);
+	var front = new Array();
+	var back = new Array();
+	front.push(makePoint(data[7]));
+	front.push(makePoint(data[8]));
+	front.push(makePoint(data[9]));
+	front.push(makePoint(data[10]));
+	back.push(makePoint(data[11]));
+	back.push(makePoint(data[12]));
+	back.push(makePoint(data[13]));
+	back.push(makePoint(data[14]));
 	
-	return makeQuad(f1, f2, f3, f4, b1, b2, b3, b4, 
-			makeColor(descr.fill, getRankValue(data, rd) * 0.8 + 0.2),
-			makeColor(descr.color, getRankValue(data, rd) * 0.8 + 0.2));
+	return makeTowers(data, rd, descr, front, back, data[4] + data[5]);
 }
 
 var MAX_JET_LENGTH = 4; 
@@ -537,7 +627,7 @@ function getRankingData(d_event, desc, data) {
 	var tdata = d_event["Types"][desc.key];
 	var index = null;
 	for (var i = 0; i < tdata.length; i++) {
-		if (desc.rank = tdata[i][0]) {
+		if (desc.rank == tdata[i][0]) {
 			index = i;
 			break;
 		}
