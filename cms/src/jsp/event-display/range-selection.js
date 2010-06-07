@@ -55,7 +55,12 @@ function setupMouse(key, canvas, ctx, rd) {
 		setCut(key, ctx, rd, dragInfo.xstart, dragInfo.xend);
 	};
 	canvas.onmouseout = function(event) {
+		var wasPressed = dragInfo.buttonPressed;
 		dragInfo.buttonPressed = false;
+		if (wasPressed) {
+			dragInfo.xend = event.clientX;
+			setCut(key, ctx, rd, dragInfo.xstart, dragInfo.xend);
+		}
 	}
 }
 
