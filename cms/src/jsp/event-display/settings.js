@@ -1,7 +1,11 @@
 document.settings = {
 	invertColors: false,
 	showFPS: false, 
-	calorimeterTowers: false,
+	calorimeterTowers: true,
+	calorimeterTowersLogScale: false,
+	calorimeterTowersMaxLength: 4,
+	calorimeterTowersLogFactor: 0.2,
+	calorimeterTowersWireSides: true,
 	globalCaloEnergyCutEnabled: true,
 	globalCaloEnergyLowCut: 0.75,
 	lastDir: "",
@@ -88,5 +92,10 @@ function toggleFPS() {
 function toggleGlobalCut() {
 	document.settings.globalCaloEnergyCutEnabled = !document.settings.globalCaloEnergyCutEnabled;
 	setInputEnabled("settings-global-low-cut-percentage", document.settings.globalCaloEnergyCutEnabled);
+	document.draw();
+}
+
+function setTowers(val) {
+	document.settings.calorimeterTowers = val;
 	document.draw();
 }
