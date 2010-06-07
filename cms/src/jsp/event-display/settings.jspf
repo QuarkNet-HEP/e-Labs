@@ -42,8 +42,8 @@
 						<td>
 							<div class="radio-group">
 								<div class="radio-group-label">Calorimeter energy display mode</div>
-								<div class="radio"><input type="radio" name="calorimeter-display" value="opacity" />Opacity is proportional to energy (faster)</div>
-								<div class="radio"><input type="radio" name="calorimeter-display" value="towers" checked="true" />Size is proportional to energy (slower but consistent with lego plots)</div>
+								<div class="radio"><input type="radio" name="calorimeter-display" value="opacity" checked="true" onclick="setTowers(false);"/>Opacity is proportional to energy (faster)</div>
+								<div class="radio"><input type="radio" name="calorimeter-display" value="towers" onclick="setTowers(true);" />Size is proportional to energy (slower but consistent with lego plots)</div>
 							</div>
 						</td>
 					</tr>
