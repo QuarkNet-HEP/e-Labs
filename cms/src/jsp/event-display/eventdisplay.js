@@ -43,13 +43,9 @@ function clearSwitchRows() {
 	}
 }
 
-if (typeof(d_event) == "undefined") {
-	document.d_event = {"Collections": {}}; 
-}
+var NOEVENT = {"Collections": {}};
 
-function initializeData() {
-	var d_event = document.d_event;
-	clearSwitchRows();
+function addSwitchRows(d_event) {
 	for (var g = 0; g < d_groups.length; g++) {
 		addSwitchRow('<td colspan="2" class="group">' + d_groups[g] + '</td>');
 		for (var key in d_descr) {
@@ -68,7 +64,12 @@ function initializeData() {
 			if (desc == null) {
 				desc = key;
 			}
-			var html = '<td class="sw">' + desc + ' (' + count + ')</td><td><input type="checkbox" id="' + key + '"' + on + ' onchange="toggle(\''+ key + '\');">';
+			var count = "(" + count + ")";
+			if (d_descr[key].group == "Detector Model") {
+				//don't show count for the model; it doesn't make much sense
+				count = "";
+			}
+			var html = '<td class="sw">' + desc + count + '</td><td><input type="checkbox" id="' + key + '"' + on + ' onchange="toggle(\''+ key + '\');">';
 			if (d_descr[key].rank) {
 				html += '</td><td><img src="../graphics/range-selector.png" class="range-selector-button" onclick="showRange(event, \'' + key + '\');" />';
 			}
@@ -80,8 +81,60 @@ function initializeData() {
 		}
 	}
 	fleXenv.fleXcrollMain("switches-div");
+} 
+
+function isModel(ev) {
+	if (ev && ev["Collections"] && ev["Collections"]["Tracker3D_MODEL"]) {
+		return true;
+	}
+	return false;
+}
+
+function combineData(a) {
+	var c = {};
+	for (var i = 0; i < a.length; i++) {
+		if (a[i] !== null) {
+			var d = a[i];
+			for (var k in d) {
+				if (c[k]) {
+					var sd = d[k];
+					for (var l in sd) {
+						c[k][l] = sd[l];
+					}
+				}
+				else {
+					c[k] = d[k];
+				}
+			}
+		}
+	}
+
+	return c;
+}
+
+function detectorModelLoaded(data) {
+	document.detectorModel = data;
+	document.eventData = NOEVENT;
+	initializeData();
+	document.draw();
+}
+
+function eventDataLoaded(data) {
+	document.eventData = data;
+	initializeData();
+	document.draw();
+}
+
+function initializeData() {
 	
-	document.perfWeights = buildPerformanceWeights();
+	clearSwitchRows();
+	
+	document.d_event = combineData([document.detectorModel, document.eventData]);
+	var d_event = document.d_event;
+	
+	addSwitchRows(d_event);
+	
+	document.perfWeights = buildPerformanceWeights(document.perfWeights);
 	
 	var data = new Array();
 	  
@@ -105,27 +158,45 @@ function initializeData() {
 		if (desc.dataref) {
 			dataref = d_event["Collections"][desc.dataref];
 		}
-		if (type == TRACK || type == CURVES || type == PATHS) {
-			lines = fn(edata, rd, desc, dataref, d_event["Associations"][desc.assoc]);
-			for (var k = 0; k < lines.length; k++) {
-				vec.push(lines[k]);
-			}
-		}
-		else if (type == LINES) {
-			for (var j = 0; j < edata.length; j++) {
-				lines = fn(edata[j], rd, desc);
+		switch (type) {
+			case TRACK:
+			case CURVES:
+			case PATHS:
+				lines = fn(edata, rd, desc, dataref, d_event["Associations"][desc.assoc]);
 				for (var k = 0; k < lines.length; k++) {
 					vec.push(lines[k]);
 				}
-			}
-		}
-		else {
-			for (var j = 0; j < edata.length; j++) {
-				var obj = fn(edata[getIndex(rd, j)], rd, desc);
-				if (obj != null) {
-					vec.push(obj);
+				break;
+			case LINES:
+			case RECTS:
+				for (var j = 0; j < edata.length; j++) {
+					lines = fn(edata[j], rd, desc);
+					if (lines !== null) {
+						for (var k = 0; k < lines.length; k++) {
+							vec.push(lines[k]);
+						}
+					}
 				}
-			}
+				break;
+			case WIREFRAME:
+				for (var j = 0; j < edata.length; j++) {
+					var obj = fn(edata[getIndex(rd, j)], rd, desc);
+					if (obj !== null) {
+						for (var k = 0; k < obj.length; k++) {
+							if (obj[k] !== null) {
+								vec.push(obj[k]);
+							}
+						}	
+					}
+				}
+				break;
+			default:
+				for (var j = 0; j < edata.length; j++) {
+					var obj = fn(edata[getIndex(rd, j)], rd, desc);
+					if (obj != null) {
+						vec.push(obj);
+					}
+				}
 		}
 	}
 	
@@ -164,6 +235,9 @@ var GLOBAL_RANK_THRESHOLD = 0.9;
 
 window.addEventListener('load', function() {
 	//startDownload("/RelValH130GGgluonfusion.ig:Events/Run_1/Event_1501");
+	document.d_event = NOEVENT;
+	document.perfWeights = [];
+	
 	restoreSettingsFromCookie();
 	if (document.settings.invertColors) {
 		document.body.className = "white";
@@ -171,8 +245,6 @@ window.addEventListener('load', function() {
 	else {
 		document.body.className = "black";
 	}
-	
-	initializeData();
 	
 	var black = new Pre3d.RGBA(0, 0, 0, 1);
 	var white = new Pre3d.RGBA(1, 1, 1, 1);
@@ -190,7 +262,7 @@ window.addEventListener('load', function() {
 	arrowZ.fillColor = new Pre3d.RGBA(0, 0, 1, 1);
 	
 	
-	var TARGET_FPS = 30;
+	var TARGET_FPS = 20;
 	var NEVER = 100000000000000000;
 	var fastDraw = null;
     var slowDraw = null;
@@ -229,7 +301,7 @@ window.addEventListener('load', function() {
 	
 	var lastRoundCount = 1000;
 	var lastChunkCount = 100000;
-
+	
 	function draw(deadline) {
 		var start = new Date().getTime();
 		if (deadline == NEVER) {
@@ -318,6 +390,20 @@ window.addEventListener('load', function() {
 						renderer.drawPath(vec[j]);
 					}
 					break;
+				case RECT:
+				case RECTS:
+					for (var j = 0; j <= vec.length / 500; j++) {
+						var jp = j * 500;
+						var end = Math.min(500, vec.length - jp);
+						for (var k = 0; k < end; k++) {
+							renderer.drawRect(vec[jp + k]);
+						}
+						if (j == lastChunkCount || pastDeadline(deadline)) {
+							lastChunkCount = j;
+							break;
+						}
+					}
+					break;
 				case POINT:
 					var shape;
 					if (d.shape) {
@@ -344,8 +430,18 @@ window.addEventListener('load', function() {
 						first = rd.lowIndex;
 						last = rd.highIndex;
 					}
+					var count = 0;
 					for (var j = first; j < last; j++) {
 						renderer.bufferShape(vec[j]);
+						count++;
+						if (count % 1000 == 0 && pastDeadline(deadline)) {
+							break;
+						}
+					}
+					break;
+				case WIREFRAME:
+					for (var j = 0; j < vec.length; j++) {
+						renderer.drawWireframe(vec[j]);
 					}
 					break;
 			}
@@ -357,6 +453,7 @@ window.addEventListener('load', function() {
 			}
 		}
 	
+		renderer.ctx.lineWidth = 0.5;
 		renderer.drawBuffer();
 		renderer.emptyBuffer();
 		
@@ -417,9 +514,10 @@ window.addEventListener('load', function() {
 		toggleBackground();
 	}, false);
 	
-
-	redraw();
 	document.draw = redraw;
+	redraw();
+	
+	startDownload("/cms-geometry.ig:Geometry/detector-model-geometry.js", "Loading detector model...", detectorModelLoaded);
 }, false);
 
 function toggleBackground() {
