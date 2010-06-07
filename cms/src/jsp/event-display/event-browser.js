@@ -167,14 +167,12 @@ function loadEvent() {
 		return;
 	}
 	closeEventBrowser();
-	updateProgress(0, "Initializing");
-	centerElement("load-progress-window");
-	$("#load-progress-window").show();
+	
 	var file = document.currentFileList[document.selectedFileIndex];
 	var event = document.currentEventList[document.selectedEventIndex];
 	var size = event.size;
 	var path = document.settings.lastDir + "/" + file.name;
-	var ro = startDownload(path + ":" + event.name);
+	var ro = startDownload(path + ":" + event.name, "Loading " + path + ":" + event.name + "...", eventDataLoaded);
 	var progress = function() {
 		if (ro.readyState == 1) {
 			updateProgress(0.5, "Connection opened");
@@ -195,11 +193,17 @@ function loadEvent() {
 	setTimeout(progress, 100);
 }
 
-function startDownload(path) {
-	return browserRequest("get", path, loadEventCB, path);
+function startDownload(path, title, callback) {
+	updateProgress(0, "Initializing");
+	centerElement("load-progress-window");
+	$("#load-progress-window-title").html(title);
+	$("#load-progress-window").show();
+	return browserRequest("get", path, loadEventCB, [path, callback]);
 }
 
-function loadEventCB(text, title, error) {
+function loadEventCB(text, data, error) {
+	var path = data[0];
+	var callback = data[1];
 	if (error) {
 		window.alert("Error: " + error);
 		$("#load-progress-window").hide();
@@ -208,14 +212,14 @@ function loadEventCB(text, title, error) {
 	updateProgress(91, "Parsing data");
 	var nan = Number.NaN;
 	try {
-		document.d_event = eval(text);
+		var ed = eval(text);
 		updateProgress(93, "Initializing objects");
-		initializeData();
-		document.draw();
+		callback(ed);
 		updateProgress(100, "Done");
 	}
 	catch (e) {
-		window.alert("Data loading failed: ", e);
+		log(e.stack);
+		window.alert("Data loading failed: ", e.stack);
 		$("#load-progress-window").hide();
 		throw e;
 	}
