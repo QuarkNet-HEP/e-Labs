@@ -23,6 +23,7 @@
 		<script src="../include/pre3d_shape_utils.js"></script>
 		<script src="demo_utils.js"></script>
 		<script src="object-conversion.js"></script>
+		<script src="detector-model-gen.js"></script>
 		<script src="data-description.js"></script>
 	</head>
 	<body class="black">
@@ -39,7 +40,7 @@
 	<tr>
 		<td width="280px" class="bordered">
 			<div id="switches-div" style="overflow: auto; height: 600px;" class="flexcroll">
-				<table id="switches">
+				<table id="switches" width="266px">
 				</table>
 			</div>
 		</td>
