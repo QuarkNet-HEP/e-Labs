@@ -69,7 +69,7 @@
 	        if (e.isDirectory()) {
 	            continue;
 	        }
-	        if (e.getName().startsWith("Events")) {
+	        if (e.getName().startsWith("Events") || e.getName().startsWith("Geometry")) {
 	     	 	if (first) {
 	     	 	    first = false;
 	     	 	}
