@@ -6,13 +6,60 @@ var LINES = 4;
 var TRACK = 5;
 var CURVES = 6;
 var PATHS = 7;
+var RECT = 8;
+var RECTS = 9;
+var WIREFRAME = 10;
 
 var WEIGHTS = { 0: 1, 1: 4, 2: 8, 3: 16, 4: 4, 5: 16, 6: 4 };
 
 var d_descr = {
+	"Tracker3D_V1": {type: LINES, on: false, group: "Detector", desc: "Tracker",
+		fn: makeDetectorPiece, color: [0, 1, 1, 0.5], fill: [0, 1, 1, 0.5], lineWidth: 0.5},
+	"Tracker3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "Tracker",
+		fn: makeWireframe, color: [1, 1, 0, 0.5], lineWidth: 0.5},
+	"Tracker3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "Tracker",
+		fn: makeModelTracker, color: [1, 1, 0, 0.3], lineWidth: 0.5},
+	"EcalBarrel3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "ECAL Barrel",
+		fn: makeWireframe, color: [0, 1, 1, 0.5], lineWidth: 0.5},
+	"EcalBarrel3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "ECAL Barrel",
+		fn: makeModelEcalBarrel, color: [0, 1, 1, 0.5], lineWidth: 0.5},
+	"EcalEndcap3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "ECAL Endcap",
+		fn: makeWireframe, color: [0, 1, 1, 0.5], lineWidth: 0.5},
+	"EcalEndcap3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "ECAL Endcap",
+		fn: makeModelEcalEndcap, color: [0, 1, 1, 0.5], lineWidth: 0.5},
+	"HcalBarrel3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "HCAL Barrel",
+		fn: makeWireframe, color: [0.8, 1, 0, 0.5], lineWidth: 0.5},
+	"HcalBarrel3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "HCAL Barrel",
+		fn: makeModelHcalBarrel, color: [0.8, 1, 0, 0.5], lineWidth: 0.5},
+	"HcalEndcap3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "HCAL Endcap",
+		fn: makeWireframe, color: [0.8, 1, 0, 0.5], lineWidth: 0.5},
+	"HcalEndcap3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "HCAL Endcap",
+		fn: makeModelHcalEndcap, color: [0.8, 1, 0, 0.5], lineWidth: 0.5},
+	"HcalOuter3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "HCAL Outer",
+		fn: makeWireframe, color: [0.8, 1, 0, 0.5], lineWidth: 0.5},
+	"HcalOuter3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "HCAL Outer",
+		fn: makeModelHcalOuter, color: [0.8, 1, 0, 0.5], lineWidth: 0.5},
+	"HcalForward3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "HCAL Forward",
+		fn: makeWireframe, color: [0.8, 1, 0, 0.5], lineWidth: 0.5},
+	"HcalForward3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "HCAL Forward",
+		fn: makeModelHcalForward, color: [0.8, 1, 0, 0.5], lineWidth: 0.5},
+	"DTs3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "Drift Tubes",
+		fn: makeWireframe, color: [1, 0.6, 0, 0.3], lineWidth: 0.8},
+	"DTs3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "Drift Tubes",
+		fn: makeWireframe, color: [1, 0.6, 0, 0.8], lineWidth: 0.9},
+	"CSC3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "Cathode Strip Chambers",
+		fn: makeWireframe, color: [1, 1, 0, 0.3], lineWidth: 0.8},
+	"CSC3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "Cathode Strip Chambers",
+		fn: makeCSCs, color: [1, 1, 0, 0.5], lineWidth: 0.5},
+	"RPC3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "Resistive Plate Chambers",
+		fn: makeWireframe, color: [0.2, 1, 0, 0.3], lineWidth: 0.8},
+	"RPC3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "Resistive Plate Chambers",
+		fn: makeRPCs, color: [0.8, 1, 0, 0.4], lineWidth: 0.8},
+		
+		
 	"Tracks_V1": { type: PATHS, on: true, group: "Tracking", desc: "Tracks (reco.)",
 		dataref: "Extras_V1", assoc: "TrackExtras_V1",
-		fn: makeTrackCurves2, color: [1, 0.7, 0, 0.9], lineCaps: "square", lineWidth: 2 },
+		fn: makeTrackCurves2, color: [1, 0.7, 0, 0.7], lineCaps: "square", lineWidth: 2 },
 	"GsfTracks_V1": { type: PATHS, on: false, group: "Tracking", desc: "Tracks (GSF)",
 		dataref: "GsfExtras_V1", assoc: "GsfTrackExtras_V1", 
 		fn: makeTrackCurves2, color: [1, 0.9, 0, 0.9], lineCaps: "square", lineWidth: 1.5 },
@@ -47,12 +94,12 @@ var d_descr = {
 	"ESRecHits_V1": { type: SHAPE, on: false, group: "ECAL", desc: "Preshower Rec. Hits", rank: "energy",
 		fn: makeSimpleRecHits, color: [1, 0.2, 0, 1], fill: [1, 0.2, 0.2, 1], lineWidth: 1 },
 		
-	"HBRecHits_V1": { type: SHAPE, on: false, group: "HCAL", desc: "Barrel Rec. Hits", rank: "energy",
+	"HBRecHits_V1": { type: SHAPE, on: true, group: "HCAL", desc: "Barrel Rec. Hits", rank: "energy",
 		fn: makeRecHits, color: [0.2, 0.7, 1, 1], fill: [0.2, 0.7, 1, 1], lineWidth: 0.5 },
 	"HERecHits_V1": { type: SHAPE, on: false, group: "HCAL", desc: "Endcap Rec. Hits", rank: "energy",
-		fn: makeRecHits, color: [0.2, 0.7, 1, 0.4], fill: [0.2, 0.7, 1, 0.2], lineWidth: 0.5 },
+		fn: makeRecHits, color: [0.2, 0.7, 1, 1], fill: [0.2, 0.7, 1, 1], lineWidth: 0.5 },
 	"HFRecHits_V1": { type: SHAPE, on: false, group: "HCAL", desc: "Forward Rec. Hits", rank: "energy",
-		fn: makeRecHits, color: [0.2, 0.7, 1, 0.4], fill: [0.2, 0.7, 1, 0.2], lineWidth: 0.5 },
+		fn: makeRecHits, color: [0.2, 0.7, 1, 1], fill: [0.2, 0.7, 1, 1], lineWidth: 0.5 },
 	"HORecHits_V1": { type: SHAPE, on: false, group: "HCAL", desc: "Outer Rec. Hits", rank: "energy",
 		fn: makeRecHits, color: [0.2, 0.7, 1, 0.4], fill: [0.2, 0.7, 1, 0.2], lineWidth: 0.5 },
 		
@@ -76,10 +123,10 @@ var d_descr = {
 	"GlobalMuons_V1": { type: TRACK, on: false, group: "Physics Objects", desc: "Global Muons (Reco)",
 		dataref: "Points_V1", assoc: "MuonGlobalPoints_V1", 
 		fn: makeTrackPoints, color: [1, 0, 0.2, 1], lineCaps: "+", lineWidth: 1},
-	"CaloTowers_V1": { type: SHAPE, on: false, group: "Physics Objects", desc: "Calorimeter Energy Towers", rank: "energy",
+	"CaloTowers_V1": { type: SHAPE, on: false, group: "Physics Objects", desc: "Calorimeter Energy Towers", rank: "et",
 		fn: makeCaloTowers, color: [0, 1, 0, 1], fill: [0, 1, 0, 1], lineWidth: 0.5 },
-	"Jets_V1": { type: SHAPE, on: false, group: "Physics Objects", desc: "Jets", rank: "energy",
+	"Jets_V1": { type: SHAPE, on: false, group: "Physics Objects", desc: "Jets", rank: "et",
 		fn: makeJet, color: [1, 1, 0, 1], fill: [1, 1, 0, 0.5] },
 };
 
-var d_groups = ["Tracking", "ECAL", "HCAL", "Muon", "Particle Flow", "Physics Objects"];
+var d_groups = ["Detector Model", "Tracking", "ECAL", "HCAL", "Muon", "Particle Flow", "Physics Objects"];
