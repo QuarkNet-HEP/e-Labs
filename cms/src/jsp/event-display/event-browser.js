@@ -224,7 +224,7 @@ function loadEventCB(text, data, error) {
 		throw e;
 	}
 	$("#load-progress-window").hide();
-	$("#title").html(title);
+	$("#title").html(path);
 }
 
 function updateProgress(p, text) {
