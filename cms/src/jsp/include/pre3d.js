@@ -292,6 +292,14 @@ Pre3d = (function() {
        0,  0, sz, 0
     );
   }
+  
+  function makeProjectionAffine(f, x0, y0) {
+	return new AffineMatrix(
+	  -f * y0,      0, x0,  0,
+	       0,  f * y0, y0,  0,
+	       0,       0,  1,  0
+	);
+  }
 
   // Return a copy of the affine matrix |m|.
   function dupAffine(m) {
@@ -329,7 +337,6 @@ Pre3d = (function() {
 	  var cost = Math.cos(t);
 	  var sint = Math.sin(t);
 	  var m1cost = 1 - cost;
-	  enorm = vecMag3d(e);
 	  var ex = e.x;
 	  var ey = e.y;
 	  var ez = e.z;
@@ -727,40 +734,27 @@ Pre3d = (function() {
     this.buffered_quads_ = [ ];
   };
 
-  // TODO(deanm): Pull the project stuff off the class if possible.
-
-  // http://en.wikipedia.org/wiki/Pinhole_camera_model
-  //
-  // Project the 3d point |p| to a point in 2d.
-  // Takes the current focal_length_ in account.
+  /**
+   * The projection transform did most of the work
+   */
   Renderer.prototype.projectPointToCanvas = function projectPointToCanvas(p) {
     // We're looking down the z-axis in the negative direction...
 	if (p.z > 0) {
 		return null;
 	}
-    var v = this.camera.focal_length / -p.z;
-    var scale = this.scale_;
-    // Map the height to -1 .. 1, and the width to maintain aspect.
-    return {x: p.x * v * scale + this.xoff_,
-            y: p.y * v * -scale + scale};
+	return {x: p.x / p.z, y: p.y / p.z};
   };
 
-  // Project a 3d point onto the 2d canvas surface (pixel coordinates).
-  // Takes the current focal_length in account.
-  // TODO: flatten this calculation so we don't need make a method call.
+  /**
+   * Project a series of points
+   */
   Renderer.prototype.projectPointsToCanvas =
       function projectPointsToCanvas(ps) {
     var il = ps.length;
-    var fl = this.camera.focal_length;
     var out = Array(il);
-    var scale = this.scale_;
-    var xoff = this.xoff_;
     for (var i = 0; i < il; ++i) {
     	var p = ps[i];
-       	var v = fl / -p.z;
-	   	var vscale = v * scale;
-	   	out[i] = {x: p.x * vscale + xoff,
-	             y: p.y * -vscale + scale};
+	   	out[i] = {x: p.x / p.z, y: p.y / p.z};
     }
     return out;
   };
@@ -775,17 +769,11 @@ Pre3d = (function() {
   Renderer.prototype.projectPointsToCanvas2 =
       function projectPointsToCanvas2(ps) {
     var il = ps.length;
-    var fl = this.camera.focal_length;
     var out = Array(il);
-    var scale = this.scale_;
-    var xoff = this.xoff_;
     for (var i = 0; i < il; ++i) {
     	var p = ps[i];
     	if (p.z < 0) {
-	    	var v = fl / -p.z;
-	    	var vscale = v * scale;
-	    	out[i] = {x: p.x * vscale + xoff,
-	              y: p.y * -vscale + scale};
+	    	out[i] = {x: p.x / p.z, y: p.y / p.z};
     	}
     	else {
     		return null;
@@ -802,17 +790,11 @@ Pre3d = (function() {
   Renderer.prototype.projectPointsToCanvas3 =
       function projectPointsToCanvas3(ps) {
     var il = ps.length;
-    var fl = this.camera.focal_length;
     var out = Array(il);
-    var scale = this.scale_;
-    var xoff = this.xoff_;
     for (var i = 0; i < il; ++i) {
     	var p = ps[i];
     	if (p.z < 0) {
-	    	var v = fl / -p.z;
-	    	var vscale = v * scale;
-	    	out[i] = {x: p.x * vscale + xoff,
-	              y: p.y * -vscale + scale};
+	    	out[i] = {x: p.x / p.z, y: p.y / p.z};
     	}
     	else {
     		out[i] = null;
@@ -903,8 +885,7 @@ Pre3d = (function() {
     var quad_callback = this.quad_callback;
 
     // Our vertex transformation matrix.
-    var t = multiplyAffine(this.camera.transform.m,
-                           this.transform.m);
+    var t = this.precomputedTransform;
     // Our normal transformation matrix.
     var tn = transAdjoint(t);
 
@@ -1428,10 +1409,11 @@ Pre3d = (function() {
 			    }
 			    ctx.stroke();
 			  };
-	  
+	    
   Renderer.prototype.precomputeTransform = function precomputeTransform() {
-	  this.precomputedTransform = multiplyAffine(this.camera.transform.m,
-              this.transform.m);
+	  this.precomputedTransform = multiplyAffine(
+			  makeProjectionAffine(this.camera.focal_length, this.xoff_, this.scale_), 
+			  multiplyAffine(this.camera.transform.m, this.transform.m));
   }
   
   Renderer.prototype.drawPoint = function drawPoint(p3d, shape) {
@@ -1483,8 +1465,9 @@ Pre3d = (function() {
 
 		    var sp = this.projectPointToCanvas(
 		        transformPoint(this.precomputedTransform, p3d));
-		    
-		    ctx.fillText(text, sp.x, sp.y);
+		    if (sp != null) {
+		    	ctx.fillText(text, sp.x, sp.y);
+		    }
 		  };
 	  
 	  Renderer.prototype.drawPoints = function drawPoints(p3da, shape, start, end) {
