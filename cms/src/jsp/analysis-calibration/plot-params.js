@@ -40,7 +40,23 @@ function addPlotRow(value, label) {
 	}
 	$("#plot-template .active-label").html(html);
 	$("#plot-template .active-label").attr("value", value);
-	row.innerHTML = $("#plot-template").html();
+	
+	var trow = document.getElementById("plot-template");
+	for (var i = 0; i < trow.cells.length; i++) {
+		var tcell = trow.cells[i];
+		var cell = row.insertCell(row.cells.length);
+		cell.innerHTML = tcell.innerHTML;
+		if (tcell.className) {
+			cell.className = tcell.className;
+		}
+		if (tcell.width) {
+			cell.width = tcell.width;
+		}
+		if (tcell.getAttribute("value")) {
+			cell.setAttribute("value", tcell.getAttribute("value"));
+		}
+	}
+	
 	options["onSelect"] = setColor;
 	$(".colorbutton").jeegoocontext("color-list", options);
 	$("input.log").change(updatePlotList);
