@@ -128,24 +128,28 @@ function makeTowers(data, rd, descr, front, back, energy) {
 		 if (!energy) {
 			 energy = getRankValue(data, rd);
 		 }
+		 if (energy < 0) {
+			 return null; // Java and Javascript should have a WTF constant, with a different meaning than NaN.
+		 }
 		 var len;
 		 if (settings.calorimeterTowersLogScale) {
 			 len = Math.log(energy) * settings.calorimeterTowersLogFactor;
 		 }
 		 else {
-			 len = settings.calorimeterTowersMaxLength * energy / rd.range;
+			 len = energy / rd.range * document.settings.calorimeterTowersMaxLength;
 		 }
 		 var superFront = new Array();
 		 for (var i = 0; i < 4; i++) {
-			 var side = Pre3d.Math.subPoints3d(back[i], front[i]);
-			 superFront.push(Pre3d.Math.addPoints3d(back[i], Pre3d.Math.mulPoint3d(side, len)));
+			 superFront.push(Pre3d.Math.linearInterpolatePoints3d(back[i], front[i], len));
 		 }
 		 front = superFront;
 		 var a = settings.calorimeterTowersWireSides ? 1.0 : 0.3;
-		 return makeQuad(front[0], front[1], front[2], front[3],
+		 var shape = makeQuad(front[0], front[1], front[2], front[3],
 					back[0], back[1], back[2], back[3], 
 					makeColor(descr.fill, a),
 					makeColor(descr.color, a));
+		 shape.drawOverdraw = true;
+		 return shape;
 	}
 	else {
 		return makeQuad(front[0], front[1], front[2], front[3],
@@ -635,10 +639,16 @@ function getRankingData(d_event, desc, data) {
 	if (index === null) {
 		throw "Invalid rank for " + desc.key + ": " + desc.rank;
 	}
+	var rfn = desc.rankingFunction;
+	if (!rfn) {
+		rfn = function(data) {
+			return data[index];
+		};
+	}
 	var v = new Array();
 	var indices = new Array();
 	for (var i = 0; i < data.length; i++) {
-		var vv = data[i][index];
+		var vv = rfn(data[i]);
 		if (vv == null) {
 			log("Invalid " + desc.rank + " for " + desc.key + "[" + i + "]");
 		}
@@ -661,30 +671,41 @@ function getRankingData(d_event, desc, data) {
 		dirty: true,
 		lowCut: document.settings.globalCaloEnergyLowCut,
 		highCut: 1.0,
+		rfn: rfn,
 	};
 	log("ranking for " + desc.key + ": index = " + index + ", range = " + range + ", v = " + v.length);
 	return rd;
 }
 
 function rebuildRankingIndices(rd) {
-	rd.lowIndex = findIndex(rd.sorted, rd.lowCut * rd.range);
-	rd.highIndex = findIndex(rd.sorted, rd.highCut * rd.range) + 1;
+	rd.lowIndex = findLIndex(rd.sorted, rd.lowCut * rd.range);
+	rd.highIndex = findHIndex(rd.sorted, rd.highCut * rd.range);
 	rd.dirty = false;
 }
 
-function findIndex(vec, value) {
+function findLIndex(vec, value) {
 	for (var i = 0; i < vec.length; i++) {
 		if (vec[i] >= value) {
 			return i;
 		}
 	}
+	return vec.length;
+}
+
+function findHIndex(vec, value) {
+	for (var i = 0; i < vec.length; i++) {
+		if (vec[i] > value) {
+			return i - 1;
+		}
+	}
+	return vec.length - 1;
 }
 
 function getRankValue(data, rd) {
 	if (rd) {
-    	return data[rd.index] / rd.range;
+    	return rd.rfn(data) / rd.range;
     }
 	else {
 		return null;
 	}
-} 
+}
