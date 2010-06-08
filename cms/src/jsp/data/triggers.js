@@ -262,11 +262,16 @@ function updateFromExpr(expr) {
 	updateSimpleList(expr);
 }
 
+var NODETYPE_TEXT = 3;
+
 function updateSimpleList(expr) {
 	var sl = document.getElementById("simplified-triggers");
 	var any = false;
 	for (var i = 0; i < sl.childNodes.length; i++) {
 		var option = sl.childNodes[i];
+		if (option.nodeType == NODETYPE_TEXT) {
+			continue;
+		}
 		if (option.value == expr) {
 			any = true;
 			option.selected = true;
@@ -286,10 +291,10 @@ function updateFromSimpleExpr(expr) {
     var tf = document.getElementById("expr");
     tf.value = expr;
     var norm = expr.replace("[\\(\\)]", "");
-    incl = new Array();
-    excl = new Array();
+    var incl = new Array();
+    var excl = new Array();
     var terms = expr.split(" ");
-    crt = incl;
+    var crt = incl;
     var lastop = "start";
     for (var i = 0; i < terms.length; i++) {
         if (terms[i] == "not") {
