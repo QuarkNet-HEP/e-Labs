@@ -124,7 +124,8 @@ var d_descr = {
 		dataref: "Points_V1", assoc: "MuonGlobalPoints_V1", 
 		fn: makeTrackPoints, color: [1, 0, 0.2, 1], lineCaps: "+", lineWidth: 1},
 	"CaloTowers_V1": { type: SHAPE, on: false, group: "Physics Objects", desc: "Calorimeter Energy Towers", rank: "et",
-		fn: makeCaloTowers, color: [0, 1, 0, 1], fill: [0, 1, 0, 1], lineWidth: 0.5 },
+		fn: makeCaloTowers, color: [0, 1, 0, 1], fill: [0, 1, 0, 1], lineWidth: 0.5, 
+		rankingFunction: function(data) {return data[4] + data[5];}},
 	"Jets_V1": { type: SHAPE, on: false, group: "Physics Objects", desc: "Jets", rank: "et",
 		fn: makeJet, color: [1, 1, 0, 1], fill: [1, 1, 0, 0.5] },
 };
