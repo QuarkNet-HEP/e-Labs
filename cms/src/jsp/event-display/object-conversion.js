@@ -655,13 +655,14 @@ function getRankingData(d_event, desc, data) {
 		v.push(vv);
 		indices.push([vv, i]);
 	}
-	v.sort();
-	indices.sort(function(a, b) { return a[0] - b[0] });
+	v.sort(function(a, b) { return a - b });
+	indices.sort(function(a, b) { return a[0] - b[0];});
 	var dataOrder = new Array();
 	for (var i = 0; i < indices.length; i++) {
 		dataOrder.push(indices[i][1]);
 	}
 	var range = v[v.length - 1];
+	log(v);
 	var thresholdIndex = Math.round(v.length * GLOBAL_RANK_THRESHOLD);
 	var rd = {
 		index: index,
