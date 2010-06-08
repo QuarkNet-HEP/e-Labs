@@ -42,8 +42,12 @@
 						<td>
 							<div class="radio-group">
 								<div class="radio-group-label">Calorimeter energy display mode</div>
-								<div class="radio"><input type="radio" name="calorimeter-display" value="opacity" checked="true" onclick="setTowers(false);"/>Opacity is proportional to energy (faster)</div>
-								<div class="radio"><input type="radio" name="calorimeter-display" value="towers" onclick="setTowers(true);" />Size is proportional to energy (slower but consistent with lego plots)</div>
+								<div class="radio">
+									<input type="radio" name="calorimeter-display" value="opacity" checked="true" onclick="setTowers(false);"/>Opacity is proportional to energy (faster)
+								</div>
+								<div class="radio">
+									<input type="radio" name="calorimeter-display" value="towers" onclick="setTowers(true);" />Size is proportional to energy (slower but consistent with lego plots)
+								</div>
 							</div>
 						</td>
 					</tr>
@@ -51,6 +55,11 @@
 						<td>
 							<input type="checkbox" id="setting-global-cut" onclick="toggleGlobalCut();" />Show only calorimeter hits with energies in the top 
 							<input class="text-input" type="text" id="settings-global-low-cut-percentage" size="5"/> percent.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="checkbox" id="wireframe-sides" onclick="toggleTowersWireframe();" />Show tower sides as wireframes.
 						</td>
 					</tr>
 				</table>

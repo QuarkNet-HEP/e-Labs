@@ -1,14 +1,16 @@
-document.settings = {
+document.defaultSettings = {
 	invertColors: false,
 	showFPS: false, 
 	calorimeterTowers: true,
 	calorimeterTowersLogScale: false,
-	calorimeterTowersMaxLength: 4,
-	calorimeterTowersLogFactor: 0.2,
+	calorimeterTowersMaxLength: 1,
 	calorimeterTowersWireSides: true,
 	globalCaloEnergyCutEnabled: true,
 	globalCaloEnergyLowCut: 0.75,
 	lastDir: "",
+}
+
+document.settings = {
 };
 
 function saveSettingsToCookie() {
@@ -16,6 +18,10 @@ function saveSettingsToCookie() {
 	var first = true;
 	for (var k in document.settings) {
 		var value = document.settings[k];
+		if (value == document.defaultSettings[k]) {
+			// do not save setting if it's the default
+			continue;
+		}
 		if (first) {
 			first = false;
 		}
@@ -41,6 +47,10 @@ function saveSettingsToCookie() {
 function restoreSettingsFromCookie() {
 	var cookies = document.cookie;
 	var cv = cookies.split(";");
+	//populate defaults first
+	for (var k in document.defaultSettings) {
+		document.settings[k] = document.defaultSettings[k];
+	}
 	for (var i = 0; i < cv.length; i++) {
 		var kv = cv[i].split("=", 2);
 		var cname = jQuery.trim(kv[0]);
@@ -71,6 +81,7 @@ function showSettings() {
 	var settings = $("#settings");
 	setCheckbox("setting-invert-colors", document.settings.invertColors);
 	setCheckbox("setting-show-fps", document.settings.showFPS);
+	setCheckbox("wireframe-sides", document.settings.calorimeterTowersWireSides);
 	setRadio("calorimeter-display", document.settings.calorimeterTowers ? "towers" : "opacity");
 	setCheckbox("setting-global-cut", document.settings.globalCaloEnergyCutEnabled);
 	setInputEnabled("settings-global-low-cut-percentage", document.settings.globalCaloEnergyCutEnabled);
@@ -87,6 +98,10 @@ function saveAndHideSettings() {
 function toggleFPS() {
 	document.settings.showFPS = !document.settings.showFPS;
 	document.draw();
+}
+
+function toggleTowersWireframe() {
+	document.settings.calorimeterTowersWireSides = !document.settings.calorimeterTowersWireSides;
 }
 
 function toggleGlobalCut() {
