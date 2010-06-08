@@ -11,27 +11,6 @@ var defaultPlotOptions = {
     hooks: { bindEvents: [bindEventsHook] }
 };
 
-function isArray(testObject) {   
-    return testObject && !(testObject.propertyIsEnumerable('length')) && typeof testObject === 'object' && typeof testObject.length === 'number';
-}
-
-function pp(obj) {
-	if (isArray(obj)) {
-		s = "[";
-		for (var i in obj) {
-			s += i + ": " + pp(obj[i]) + ", "; 
-		}
-		s += "]";
-		return s;
-	}
-	else if (obj == null) {
-		return null;
-	}
-	else {
-		return obj.toString();
-	}
-}
-
 function updatePlots(data) {
 	document.plots = new Array();
 	document.data = new Array();
