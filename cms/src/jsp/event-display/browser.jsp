@@ -9,6 +9,8 @@
 	String op = request.getParameter("op");
 	String param = request.getParameter("param");
 	
+	response.setHeader("Cache-Control", "no-cache");
+	
 	if ("list".equals(op)) {
 	    if (param == null) {
 	        throw new RuntimeException("Missing directory parameter");
