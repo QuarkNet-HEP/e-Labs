@@ -24,7 +24,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Plot</title>
+		<title>View Histogram</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
@@ -45,12 +45,13 @@
 			</div>
 			<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>
 			<script language="javascript" type="text/javascript" src="../data/plot.js"></script>	
+			<script language="javascript" type="text/javascript" src="../include/excanvas.min.js"></script>
 		    <script language="javascript" type="text/javascript" src="../include/jquery.flot.js"></script>
 		    <script language="javascript" type="text/javascript" src="../include/jquery.flot.selection.js"></script>
 		    <script language="javascript" type="text/javascript" src="../include/jquery.flot.crosshair.js"></script>
 			<div id="content">
 				
-<h1>Z Mass Study</h1>
+<h1>View Histogram</h1>
 <script>
 	initlog();
 	log("<span class='red'>dataset: ${param.dataset}</span>");
