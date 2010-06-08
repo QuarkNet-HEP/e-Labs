@@ -193,9 +193,7 @@ function initializeData() {
 			default:
 				for (var j = 0; j < edata.length; j++) {
 					var obj = fn(edata[getIndex(rd, j)], rd, desc);
-					if (obj != null) {
-						vec.push(obj);
-					}
+					vec.push(obj);
 				}
 		}
 	}
@@ -431,8 +429,11 @@ window.addEventListener('load', function() {
 						last = rd.highIndex;
 					}
 					var count = 0;
-					for (var j = first; j < last; j++) {
-						renderer.bufferShape(vec[j]);
+					for (var j = first; j <= last; j++) {
+						var shape = vec[j];
+						if (shape !== null) {
+							renderer.bufferShape(vec[j]);
+						}
 						count++;
 						if (count % 1000 == 0 && pastDeadline(deadline)) {
 							break;
