@@ -140,9 +140,9 @@ function makeTowers(data, rd, descr, front, back, energy) {
 		 }
 		 var superFront = new Array();
 		 for (var i = 0; i < 4; i++) {
-			 superFront.push(Pre3d.Math.linearInterpolatePoints3d(back[i], front[i], len));
+			 superFront.push(Pre3d.Math.linearInterpolatePoints3d(front[i], back[i], len));
 		 }
-		 front = superFront;
+		 back = superFront;
 		 var a = settings.calorimeterTowersWireSides ? 1.0 : 0.3;
 		 var shape = makeQuad(front[0], front[1], front[2], front[3],
 					back[0], back[1], back[2], back[3], 
