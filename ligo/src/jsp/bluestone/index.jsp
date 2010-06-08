@@ -37,12 +37,16 @@
 				<td valign="top">
 					<img src="../graphics/busy2.gif" id="busySpinner" style="visibility: hidden"></img>
 				</td>
+				 
 				<td>
 					<div id="resizablecontainer" style="margin-bottom: 10px; margin-right: 10px;" >
 						<div id="chart" style="width:550px; height:250px; text-align: left;"></div>
+						<%-- Temporarily disabled while I figure out how to properly resize the bar - pxn
 						<div id="slider"></div>
+						--%>
 					</div>
 				</td>
+				
 			</tr>
 		</table>
 		
@@ -74,6 +78,8 @@
 		
 		<%-- Advanced Mode --%>
 		
+		<h2>Data Selection</h2>
+		
 		<div id="channel-list-advanced">
 			<input type="button" value="-" id="removeRow_0" class="removeRow"></input>
 			<select name="site" id="site_0" class="site">
@@ -94,6 +100,11 @@
 		
 		<input id="addNewRow" type="button" value="+"></input>
 		<input id="parseDropDownAdvanced" type="button" value="Plot"></input>
+		
+		<h2>Save This Plot</h2>
+		
+		Title: <input id="userPlotTitle" name="title" type="text" maxlength="200" size="30"></input>
+		<input id="savePlotToDisk" type="button" value="Save"></input>
 				
 	</body>
 	

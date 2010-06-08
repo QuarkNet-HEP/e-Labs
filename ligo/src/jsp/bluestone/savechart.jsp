@@ -1,27 +1,36 @@
-<%@ page import="java.util.*" %>
 <%@ page import="java.io.*" %>
+<%@ page import="java.sql.Timestamp" %>
 <%@ page import="java.text.*" %>
+<%@ page import="java.util.*" %>
+<%@ page import="gov.fnal.elab.*" %>
+<%@ page import="gov.fnal.elab.analysis.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.*" %>
+<%@ page import="gov.fnal.elab.expression.data.engine.*" %>
 <%@ page import="gov.fnal.elab.ligo.data.engine.*" %>
 <%@ page import="gov.fnal.elab.ligo.data.json.*"%>
-<%@ page import="gov.fnal.elab.expression.data.engine.*" %>
+<%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="org.apache.commons.lang.*" %>
 <%@ page import="org.jfree.*" %>
 <%@ page import="org.jfree.chart.*" %>
 <%@ page import="org.jfree.chart.axis.*" %>
 <%@ page import="org.jfree.chart.plot.*" %>
 <%@ page import="org.jfree.data.xy.*" %>
+<%@ include file="../include/elab.jsp" %>
+<%@ include file="../login/login-required.jsp" %>
 
 <%
-
 	/* What to do:
 	   1. Generate a chart
-	   2. Put some fields in for the user to write 
 	   3. Write out metadata to VDS and save file to the right place [requires login]
 	*/
 
+	/* Chart data parameters */ 
 	String channelParam = request.getParameter("channels");
 	String startTimeParam = request.getParameter("startTime");
 	String endTimeParam = request.getParameter("endTime");
+	
+	/* Metadata title parameter */ 
+	String titleParam = request.getParameter("title"); 
 	
 	if (channelParam == null || startTimeParam == null || endTimeParam == null) {
 		response.sendError(HttpServletResponse.SC_BAD_REQUEST, "missing channels, startTime or endTime parameters");
@@ -116,10 +125,47 @@
 	    chart.getXYPlot().setDomainAxis(da); 
 	    chart.getXYPlot().setRangeAxis(na);
 	    
-	    response.setHeader("Content-Disposition", "inline; filename=\"ligochart.png\"");
-	    response.setContentType("image/png");
-	    
-	    ChartUtilities.writeBufferedImageAsPNG(response.getOutputStream(), chart.createBufferedImage(width, height));
+	    /* Save the chart */  
+		ElabGroup group = user.getGroup();
+		
+		String groupName = user.getGroup().getName();
+		String plotDir = user.getDir("plots");
+		
+		GregorianCalendar gc = new GregorianCalendar();
+	    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
+	    String date = sdf.format(gc.getTime());
 
+	    String dstFile = "savedimage-" + groupName + "-" + date + ".png";
+	    String dstThumb = "savedimage-" + groupName + "-" + date + "_thm.png";
+	    
+	    File chartFile = new File(plotDir, dstFile);
+	    File chartThumbnailFile = new File(plotDir, dstThumb); 
+	    ChartUtilities.saveChartAsPNG(chartFile, chart, width, height);
+	    ChartUtilities.saveChartAsPNG(chartThumbnailFile, chart, 150, 150);
+		
+		/* Write the metadata */ 
+		DataCatalogProvider dcp = elab.getDataCatalogProvider();
+		List<String> meta = new ArrayList();
+		
+		meta.add("city string " + group.getCity());
+		meta.add("group string " + group.getName());
+		meta.add("name string " + title);
+		meta.add("project string " + elab.getName());
+		meta.add("school string " + group.getSchool());
+		meta.add("state string " + group.getState());
+		meta.add("teacher string " + group.getTeacher());
+		meta.add("year string " + group.getYear());
+		meta.add("thumbnail string " + dstThumb);
+		meta.add("filename string " + dstFile);
+		meta.add("GPS_start_time string " + startTimeParam);
+		meta.add("GPS_end_time string " + endTimeParam);
+		meta.add("channel string " + channelParam); 
+		meta.add("type string plot"); 
+		meta.add("creationdate date " + (new Timestamp(System.currentTimeMillis())).toString()); 
+		meta.add("analysis string superbluestone-advanced"); 
+		
+		dcp.insert(DataTools.buildCatalogEntry(dstFile, meta));
 	}
+
 %>
+	

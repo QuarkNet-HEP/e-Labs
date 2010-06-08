@@ -15,7 +15,7 @@ var ligoMaxRange;
 var options = { 
 	lines: {show: true, lineWidth: 1, shadowSize: 0 },
 	points: {show: false},
-	legend: {show: false},
+	legend: {show: true},
 	xaxis: { mode: 'time'},
 	selection: { mode: "x" },
 	shadowSize: 0

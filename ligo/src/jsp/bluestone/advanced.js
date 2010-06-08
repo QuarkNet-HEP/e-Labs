@@ -23,6 +23,8 @@ var data = { };
 
 var rows = 0; 
 
+var hasBeenPlotted = false; 
+
 $(document).ready(function() {
 	/* Initialize the initial dropdown list */ 
 	subsystemChangeCB(0); 
@@ -131,6 +133,7 @@ $(document).ready(function() {
 	}
 
 	$("#parseDropDownAdvanced").bind('click', function() {
+		hasBeenPlotted = true; 
 		var c = "";
 		
 		$(".dataName").each(function(i){
@@ -160,6 +163,26 @@ $(document).ready(function() {
 		}
 	});
 	
+	$("#savePlotToDisk").bind('click', function() {
+		// need start, end, channels, title 
+		var title = $("#userPlotTitle").val(); 
+		var channelArray = []; 
+		$.each($(".dataName"), function(i, value) {
+			channelArray.push(value.text()); 
+		});
+		var channels = channelArray.join(",");
+		$.ajax({
+			url: "savechart.jsp", 
+			type: "POST",
+			data: { startTime: ligoMinTime, endTime: ligoMaxTime, title: title, channels: channels },
+			timeout: timeout,
+			success: onPlotSaved, 
+			error: onPlotError,
+			beforeSend: spinnerOn, 
+			complete: spinnerOff
+		});
+	});
+	
 	$("#buttonZoom").click(function() {
 		$("#parseDropDownAdvanced").trigger('click');
 	});
@@ -180,7 +203,7 @@ $(document).ready(function() {
 	function addNewRow(index) {
 		var foo = $("#channel-list-advanced");
 		// Delete button
-		var deleteButton = $("<input></input>").attr("type", "button").attr("id", "deleteRow_" + index).attr("value", "-").attr("class", "removeRow");
+		var deleteButton = $("<input></input>").attr("type", "button").attr("id", "removeRow_" + index).attr("value", "-").attr("class", "removeRow");
 		
 		// Site Dropdown
 		var siteSelector = $("<select></select>").attr("name", "site").attr("id", "site_" + index).attr("class", "site");
@@ -198,7 +221,7 @@ $(document).ready(function() {
 		var samplingSelector = $("<select></select>").attr("name", "sampling").attr("id", "sampling_" + index).attr("class", "sampling");
 		var nameLabel = $("<span></span>").attr("id", "dataName_" + index).attr("class", "dataName");
 		
-		foo.append(deleteButton).append(siteSelector).append(subsysSelector).append(stationSelector).append(sensorSelector).append(samplingSelector).append(nameLabel).append($("<br />"));
+		foo.append(deleteButton).append(siteSelector).append(subsysSelector).append(stationSelector).append(sensorSelector).append(samplingSelector).append(nameLabel).append($("<br id=\"br_" + index + "\" />"));
 		subsystemChangeCB(index); 
 		sensorChangeCB(index);
 		samplingCB(index);
@@ -236,7 +259,16 @@ $(document).ready(function() {
 		
 		$(".removeRow").click(function() {
 			var index = getIndex($(this).attr('id'));
-			// delete stuff
+			/* delete stuff - should probably switch to simply assigning each row element a class index rather
+			   than appending to ID. Oops. */
+			$("#removeRow_" + index).remove();
+			$("#site_" + index).remove();
+			$("#sensor_" + index).remove();
+			$("#sampling_" + index).remove();
+			$("#subsystem_" + index).remove();
+			$("#station_" + index).remove();
+			$("#dataName_" + index).remove();
+			$("#br_" + index).remove();
 		});
 	}
 });
