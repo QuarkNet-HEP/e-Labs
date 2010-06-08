@@ -144,7 +144,7 @@ function firstNonTextChild(obj) {
 	if (obj == null) {
 		printStackTrace();
 	}
-    for (var i in obj.childNodes) {
+    for (var i = 0; i < obj.childNodes.length; i++) {
         if (obj.childNodes[i].nodeName != "#text") {
 	        return obj.childNodes[i];
         }
@@ -169,11 +169,14 @@ function log(text) {
     }
 }
 
-function initlog() {
+function initlog(defaultOn) {
 	document.write(
 		'<a onclick="toggleLog();" style="position: fixed; bottom: 4px; right: 20px; z-index: 1;"><img id="logtoggle" src="../graphics/plus.png" alt="Show Log" /></a>' +
 		'<div id="log" style="display: none; z-index: 0; height: 100px;">' + 
 		'</div>');
+	if (defaultOn) {
+		toggleLog();
+	}
 }
 
 function toggleLog() {
@@ -196,13 +199,19 @@ function printStackTrace() {
 		kaboom();
 	} 
 	catch (e) {
-		if (e.stack) {
-			var lines = e.stack.split('\n');
-			for (var i = 0, len = lines.length; i < len; i++) {
-				log(lines[i]);
-			}
+		log("<pre>" + e.stack + "</pre>");
+	}
+}
+
+function getStackTrace(e) {
+	var s = "";
+	if (e.stack) {
+		var lines = e.stack.split('\n');
+		for (var i = 0, len = lines.length; i < len; i++) {
+			s += lines[i] + "\n";
 		}
 	}
+	return s;
 }
 
 function spinnerOn(selector) {
@@ -237,4 +246,25 @@ function spinnerOn(selector) {
 function spinnerOff(selector) {
 	$(selector + " .spinner-background").remove();
 	$(selector + " .spinner-image").remove();
+}
+
+function isArray(testObject) {   
+    return testObject && !(testObject.propertyIsEnumerable('length')) && typeof testObject === 'object' && typeof testObject.length === 'number';
+}
+
+function pp(obj) {
+	if (isArray(obj)) {
+		s = "[";
+		for (var i in obj) {
+			s += i + ": " + pp(obj[i]) + ", "; 
+		}
+		s += "]";
+		return s;
+	}
+	else if (obj == null) {
+		return null;
+	}
+	else {
+		return obj.toString();
+	}
 }
