@@ -133,7 +133,6 @@ $(document).ready(function() {
 	}
 
 	$("#parseDropDownAdvanced").bind('click', function() {
-		hasBeenPlotted = true; 
 		var c = "";
 		
 		$(".dataName").each(function(i){
@@ -160,6 +159,10 @@ $(document).ready(function() {
 		function onChannelDataReceived(json) { 
 			data = json;
 			plot = $.plot(placeholder, data, options); 
+			
+			// We have a plot, therefore let someone save it 
+			hasBeenPlotted = true; 
+			$("#savePlotToDisk").removeAttr("disabled");
 		}
 	});
 	
@@ -174,7 +177,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: "savechart.jsp", 
 			type: "GET",
-			dataType: "text",
+			dataType: "json",
 			data: { startTime: xminGPSTime, endTime: xmaxGPSTime, title: title, channels: channels },
 			timeout: timeout,
 			success: onPlotSaved, 
@@ -183,10 +186,18 @@ $(document).ready(function() {
 			complete: spinnerOff
 		});
 		
-		function onPlotSaved(data) {
+		function onPlotSaved(json) {
 			/* TODO: Implement parsing of correct result codes 
 			 * Probably should get the filename back and a link so the user can
 			 * see it without resorting to going to the plot-search page */ 
+			
+			if (json.success == true) {
+				$("#savedPlotLink").attr("href", plotViewerURL + "?filename=" + json.filename);
+				$("#savedPlotLink").show();
+			}
+			else {
+				/* Display that something went wrong */ 
+			}
 			return;  
 		}
 		

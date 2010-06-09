@@ -16,7 +16,10 @@
 <%@ page import="org.jfree.chart.plot.*" %>
 <%@ page import="org.jfree.data.xy.*" %>
 <%@ include file="../include/elab.jsp" %>
+<%@ page import="com.google.gson.*" %>
 <%@ include file="../login/login-required.jsp" %>
+
+<%@ page contentType="application/json" %>
 
 <%
 	/* What to do:
@@ -173,7 +176,10 @@
 		
 		dcp.insert(DataTools.buildCatalogEntry(dstFile, meta));
 		
-		%> SUCCESS <% 
+		JsonObject jo = new JsonObject();
+		jo.addProperty("success", true);
+		jo.addProperty("filename", dstFile);
+		out.write(jo.toString());
 	}
 
 %>

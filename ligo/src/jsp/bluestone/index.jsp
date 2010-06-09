@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ include file="../include/elab.jsp" %>
+<%@ include file="../login/login-required.jsp" %>
+
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Big Picture</title>
+		<title>Super-Bluestone</title>
 		<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../include/excanvas.min.js"></script><![endif]-->
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
@@ -29,6 +31,7 @@
 			</div>
 			
 			<div id="content">
+				<noscript><b>This page requires Javascript</b><br /><br /></noscript>
 				<%-- Scripts need to be loaded after nav-rollover since that is where the js pages live --%>
 				<script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.min.js"></script>
 			    <script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.selection.min.js"></script>
@@ -40,7 +43,7 @@
 							<%@ include file="../include/left-alt.jsp" %>
 						</td>
 						<td id="center">
-							<h1>Super Bluestone Public Beta 1</h1>
+							<h1>Super Bluestone <span style="color: red">Public Beta 1</span></h1>
 							<br /><br />
 							Time<sub>start</sub>: <input readonly type="text" name="xmin" id="xmin" size="15" class="datepicker"></input>
 							Time<sub>end</sub>: <input readonly type="text" name="xmax" id="xmax" size="15" class="datapicker"></input>
@@ -118,7 +121,8 @@
 							<h2>Save This Plot</h2>
 							
 							Title: <input id="userPlotTitle" name="title" type="text" maxlength="200" size="30"></input>
-							<input id="savePlotToDisk" type="button" value="Save"></input>
+							<input id="savePlotToDisk" type="button" value="Save" disabled></input>
+							<a href="#" target="_new" id="savedPlotLink" style="display: none;">View saved plot (popup)</a> 
 						</td>
 					</tr>
 				</table>
