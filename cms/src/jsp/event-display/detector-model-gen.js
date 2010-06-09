@@ -284,6 +284,11 @@ function makeModelEcalEndcap(data, rd, descr) {
 	return [makeTube(0.35, 1.5, 0.05, 3.2, 24, 2), makeTube(0.35, 1.5, -0.05, -3.2, 24, 2)];
 }
 
+function makeModelEcalPreshower(data, rd, descr) {
+	return [makeDisc(0.4, 1.3, 3.025, 24), makeDisc(0.4, 1.3, 3.075, 24), 
+	        makeDisc(0.4, 1.3, -3.025, 24), makeDisc(0.4, 1.3, -3.075, 24)]
+}
+
 function makeModelEcalBarrel(data, rd, descr) {
 	var hr = data[0];
 	var pos = data[1];
@@ -317,7 +322,7 @@ function makeModelEcalBarrel(data, rd, descr) {
 			
 			var so1 = a * pos.length * 2;
 			var so2 = ((a + 1) % slices) * pos.length * 2;
-			var ix1 = i + pos.length; 
+			var ix1 = i + pos.length;
 			if (i < pos.length - 1) {
 				lines.push({p1: so1 + ix1, p2: so1 + ix1 + 1});
 			}

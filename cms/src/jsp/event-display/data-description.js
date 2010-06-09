@@ -27,6 +27,8 @@ var d_descr = {
 		fn: makeWireframe, color: [0, 1, 1, 0.5], lineWidth: 0.5},
 	"EcalEndcap3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "ECAL Endcap",
 		fn: makeModelEcalEndcap, color: [0, 1, 1, 0.5], lineWidth: 0.5},
+	"EcalPreshower3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "ECAL Preshower",
+		fn: makeModelEcalPreshower, color: [1, 0, 0, 0.5], lineWidth: 0.5},
 	"HcalBarrel3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "HCAL Barrel",
 		fn: makeWireframe, color: [0.8, 1, 0, 0.5], lineWidth: 0.5},
 	"HcalBarrel3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "HCAL Barrel",
@@ -57,7 +59,7 @@ var d_descr = {
 		fn: makeRPCs, color: [0.8, 1, 0, 0.4], lineWidth: 0.8},
 		
 		
-	"Tracks_V1": { type: PATHS, on: true, group: "Tracking", desc: "Tracks (reco.)",
+	"Tracks_V1": { type: PATHS, on: false, group: "Tracking", desc: "Tracks (reco.)",
 		dataref: "Extras_V1", assoc: "TrackExtras_V1",
 		fn: makeTrackCurves2, color: [1, 0.7, 0, 0.7], lineCaps: "square", lineWidth: 2 },
 	"GsfTracks_V1": { type: PATHS, on: false, group: "Tracking", desc: "Tracks (GSF)",
@@ -94,7 +96,7 @@ var d_descr = {
 	"ESRecHits_V1": { type: SHAPE, on: false, group: "ECAL", desc: "Preshower Rec. Hits", rank: "energy",
 		fn: makeSimpleRecHits, color: [1, 0.2, 0, 1], fill: [1, 0.2, 0.2, 1], lineWidth: 1 },
 		
-	"HBRecHits_V1": { type: SHAPE, on: true, group: "HCAL", desc: "Barrel Rec. Hits", rank: "energy",
+	"HBRecHits_V1": { type: SHAPE, on: false, group: "HCAL", desc: "Barrel Rec. Hits", rank: "energy",
 		fn: makeRecHits, color: [0.2, 0.7, 1, 1], fill: [0.2, 0.7, 1, 1], lineWidth: 0.5 },
 	"HERecHits_V1": { type: SHAPE, on: false, group: "HCAL", desc: "Endcap Rec. Hits", rank: "energy",
 		fn: makeRecHits, color: [0.2, 0.7, 1, 1], fill: [0.2, 0.7, 1, 1], lineWidth: 0.5 },
