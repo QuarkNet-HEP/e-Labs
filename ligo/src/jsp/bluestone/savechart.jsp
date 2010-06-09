@@ -139,8 +139,15 @@
 	    String dstThumb = "savedimage-" + groupName + "-" + date + "_thm.png";
 	    
 	    File chartFile = new File(plotDir, dstFile);
-	    File chartThumbnailFile = new File(plotDir, dstThumb); 
 	    ChartUtilities.saveChartAsPNG(chartFile, chart, width, height);
+	    
+	    // Modify chart for thumbnail purposes
+	    chart.getXYPlot().getRangeAxis().setVisible(false); 
+	    chart.getXYPlot().getDomainAxis().setVisible(false);
+	    chart.getTitle().setVisible(false);
+	    chart.removeLegend(); 
+	    
+	    File chartThumbnailFile = new File(plotDir, dstThumb); 
 	    ChartUtilities.saveChartAsPNG(chartThumbnailFile, chart, 150, 150);
 		
 		/* Write the metadata */ 
