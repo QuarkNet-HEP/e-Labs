@@ -1,24 +1,15 @@
-/* 
- * CSS Gradients via Canvas v1.2 <http://weston.ruter.net/projects/css-gradients-via-canvas/>
- *  by Weston Ruter, Shepherd Interactive <http://www.shepherd-interactive.com/>
- *  Latest: http://shepherd-interactive.googlecode.com/svn/trunk/css-gradients-via-canvas/css-gradients-via-canvas.js
+/*!
+ * CSS Gradients via Canvas v1.3
+ *  by Weston Ruter <http://weston.ruter.net/> @westonruter
+ *  Homepage: http://weston.ruter.net/projects/css-gradients-via-canvas/
+ *  Latest: http://github.com/westonruter/css-gradients-via-canvas
+ *  Copyright (c) 2009: Weston Ruter,
+ *                      Shepherd Interactive <http://shepherdinteractive.com/>
+ *  License: GPL <http://creativecommons.org/licenses/GPL/2.0/> and
+ *           MIT <http://creativecommons.org/licenses/MIT/>
  * 
- * Some comments include excerpts from "Introducing CSS Gradients" <http://webkit.org/blog/175/introducing-css-gradients/>
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * $Id$
+ * Some comments include excerpts from "Introducing CSS Gradients"
+ *   <http://webkit.org/blog/175/introducing-css-gradients/>
  */
 
 var cssGradientsViaCanvas = {
@@ -48,7 +39,8 @@ var config = cssGradientsViaCanvas;
 var div = document.createElement('div');
 div.style.cssText = [
 	"background-image:-webkit-gradient(linear, 0% 0%, 0% 100%, from(red), to(blue));",
-	"background-image:-moz-linear-gradient(top left, bottom right, from(red), to(blue));"
+	"background-image:-moz-linear-gradient(top left, bottom right, from(red), to(blue));", /*Firefox 3.6 Alpha*/
+	"background-image:-moz-linear-gradient(left, red, blue);" /*Firefox 3.6*/
 ].join('');
 if(div.style.backgroundImage){
 	config.enabled = false;
