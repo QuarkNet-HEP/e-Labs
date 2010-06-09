@@ -167,13 +167,14 @@ $(document).ready(function() {
 		// need start, end, channels, title 
 		var title = $("#userPlotTitle").val(); 
 		var channelArray = []; 
-		$.each($(".dataName"), function(i, value) {
-			channelArray.push(value.text()); 
+		$(".dataName").each(function(index) {
+			channelArray.push($(this).text());
 		});
 		var channels = channelArray.join(",");
 		$.ajax({
 			url: "savechart.jsp", 
-			type: "POST",
+			type: "GET",
+			dataType: "text",
 			data: { startTime: ligoMinTime, endTime: ligoMaxTime, title: title, channels: channels },
 			timeout: timeout,
 			success: onPlotSaved, 
@@ -181,7 +182,17 @@ $(document).ready(function() {
 			beforeSend: spinnerOn, 
 			complete: spinnerOff
 		});
+		
+		function onPlotSaved(data) {
+			return;  
+		}
+		
+		function onPlotError(data) {
+			return; 
+		}
 	});
+	
+	
 	
 	$("#buttonZoom").click(function() {
 		$("#parseDropDownAdvanced").trigger('click');

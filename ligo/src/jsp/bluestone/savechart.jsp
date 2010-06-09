@@ -165,6 +165,8 @@
 		meta.add("analysis string superbluestone-advanced"); 
 		
 		dcp.insert(DataTools.buildCatalogEntry(dstFile, meta));
+		
+		%> SUCCESS <% 
 	}
 
 %>
