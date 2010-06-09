@@ -41,9 +41,20 @@ function setupMouse(key, canvas, ctx, rd) {
 		if (event.button != 0) {
 			return;
 		}
+		var handle = getClickedHandle(ctx, rd, event.clientX, event.clientY);
+		if (handle == -1) {
+			return;
+		}
 		dragInfo.buttonPressed = true;
 		dragInfo.xstart = event.clientX;
 		dragInfo.xend = event.clientX;
+		dragInfo.handle = handle;
+		if (handle == 1) {//lower handle
+			dragInfo.xstart = cutToClient(ctx, rd, rd.highCut);
+		}
+		else if (handle == 2) {
+			dragInfo.xstart = cutToClient(ctx, rd, rd.lowCut);
+		}
 		setCut(key, ctx, rd, dragInfo.xstart, dragInfo.xend);
 	};
 	canvas.onmouseup = function(event) {
@@ -51,6 +62,7 @@ function setupMouse(key, canvas, ctx, rd) {
 			return;
 		}
 		dragInfo.buttonPressed = false;
+		
 		dragInfo.xend = event.clientX;
 		setCut(key, ctx, rd, dragInfo.xstart, dragInfo.xend);
 	};
@@ -71,7 +83,7 @@ function setCut(key, ctx, rd, xs, xe) {
 	rd.lowCut = clamp(Math.min(cxs, cxe), 0, 1);
 	rd.highCut = clamp(Math.max(cxs, cxe), 0, 1);
 	rd.dirty = true;
-	log("range: " + rd.range + ", lowCut: " + rd.lowCut + ", highCut: " + rd.highCut + ", xs: " + xs + ", xe: " + xe);
+	//log("range: " + rd.range + ", lowCut: " + rd.lowCut + ", highCut: " + rd.highCut + ", xs: " + xs + ", xe: " + xe);
 	drawRange(key, ctx, rd);
 	document.draw();
 }
@@ -109,7 +121,27 @@ function drawAxes(ctx) {
 }
 
 function clientToCut(ctx, rd, x) {
-	return (x - ctx.left - 20) / (ctx.width - 20) * 2;
+	return (x - ctx.left - 15) / (ctx.width - 20) * 2;
+}
+
+function cutToClient(ctx, rd, cut) {
+	return cut * (ctx.width - 20) / 2 + ctx.left + 15;
+}
+
+function getClickedHandle(ctx, rd, x, y) {
+	var bottom = parseInt(ctx.top) + parseInt(ctx.height) - 55;
+	if (y > bottom) {
+		var cxl = cutToClient(ctx, rd, rd.lowCut);
+		var cxh = cutToClient(ctx, rd, rd.highCut);
+		if (x <= cxl && x >= cxl - 10) {
+			return 1;
+		}
+		if (x >= cxh && x <= cxh + 10) {
+			return 2;
+		}
+		return -1;
+	}
+	return 0;	
 }
 
 function drawHistogram(ctx, rd) {
