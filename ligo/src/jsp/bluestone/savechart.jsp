@@ -156,7 +156,7 @@
 		
 		meta.add("city string " + group.getCity());
 		meta.add("group string " + group.getName());
-		meta.add("name string " + title);
+		meta.add("title string " + title);
 		meta.add("project string " + elab.getName());
 		meta.add("school string " + group.getSchool());
 		meta.add("state string " + group.getState());
