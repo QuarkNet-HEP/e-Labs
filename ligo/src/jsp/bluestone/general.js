@@ -1,5 +1,5 @@
 var data = []; 
-var timeout = 10000;
+var timeout = 30000; /* Some data takes awhile to load; 30sec should be enough?  */ 
 var dataPoints = 1200; 
 var dataServerUrl = '/elab/ligo/data/data-server-json.jsp';
 var plot = null; 
