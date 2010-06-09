@@ -293,11 +293,19 @@ Pre3d = (function() {
     );
   }
   
-  function makeProjectionAffine(f, x0, y0) {
+  function makePerspectiveProjectionAffine(f, x0, y0) {
 	return new AffineMatrix(
 	  -f * y0,      0, x0,  0,
 	       0,  f * y0, y0,  0,
 	       0,       0,  1,  0
+	);
+  }
+  
+  function makeOrthographicProjectionAffine(s, x0, y0) {
+	return new AffineMatrix(
+		-s, 0,  0,  -x0,
+	    0, s,  0,  -y0,
+	    0, 0,  0,  -1
 	);
   }
 
@@ -655,6 +663,11 @@ Pre3d = (function() {
     this.draw_overdraw = true;
     // Should we skip backface culling.
     this.draw_backfaces = false;
+    
+    // whether to do perspective projection or isometric projection
+    this.orthographicProjection = false;
+    
+    this.orthographicScale = 320;
 
     this.texture = null;
     this.fill_rgba = new RGBA(1, 0, 0, 1);
@@ -887,7 +900,7 @@ Pre3d = (function() {
     // Our vertex transformation matrix.
     var t = this.precomputedTransform;
     // Our normal transformation matrix.
-    var tn = transAdjoint(t);
+    var tn = this.precomputedAdjoint;
 
     // We are transforming the points even if we decide it's back facing.
     // We could just transform the normal, and then only transform the
@@ -915,9 +928,9 @@ Pre3d = (function() {
 
       // Cull quads that are behind the camera.
       // TODO(deanm): this should probably involve the focal point?
-      if (centroid.z >= -1)
+      if (centroid.z > 0) {
         continue;
-
+      }
       // NOTE: The transform tn isn't going to always keep the vectors unit
       // length, so n1 and n2 should be normalized if needed.
       // We unit vector n1 (for lighting, etc).
@@ -1082,8 +1095,6 @@ Pre3d = (function() {
       var qf = obj.qf;
       
       var wv = this.projectPointsToCanvas(obj.v);
-      // why project the same vertice(s) multiple times?
-      //this.projectQuadFaceToCanvasIP(qf);
 
       var is_triangle = qf.isTriangle();
       var wp0 = wv[qf.i0];
@@ -1411,9 +1422,20 @@ Pre3d = (function() {
 			  };
 	    
   Renderer.prototype.precomputeTransform = function precomputeTransform() {
-	  this.precomputedTransform = multiplyAffine(
-			  makeProjectionAffine(this.camera.focal_length, this.xoff_, this.scale_), 
-			  multiplyAffine(this.camera.transform.m, this.transform.m));
+	  var pt;
+	  if (this.orthographicProjection) {
+		  var s = -this.camera.focal_length / this.camera.transform.m.e11;
+		  if (s < 0) {
+			  s = 0;
+		  }
+		  pt = makeOrthographicProjectionAffine(this.orthographicScale * s, this.xoff_, this.scale_);
+	  }
+	  else {
+		  pt = makePerspectiveProjectionAffine(this.camera.focal_length, this.xoff_, this.scale_);
+	  }
+	  this.precomputedTransformNoProjection = multiplyAffine(this.camera.transform.m, this.transform.m);
+	  this.precomputedAdjoint = transAdjoint(this.precomputedTransformNoProjection);
+	  this.precomputedTransform = multiplyAffine(pt, this.precomputedTransformNoProjection);
   }
   
   Renderer.prototype.drawPoint = function drawPoint(p3d, shape) {
