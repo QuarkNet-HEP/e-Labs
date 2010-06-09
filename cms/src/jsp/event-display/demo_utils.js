@@ -197,7 +197,7 @@ DemoUtils = (function() {
       }
       else if (info.ctrl) {
     	  camera_state.x -= info.delta_x * 0.01;
-    	  camera_state.y -= info.delta_y * 0.01;
+    	  camera_state.y += info.delta_y * 0.01;
       }
       else {
     	  camera_state.rotate_y -= info.delta_x * 0.01;
