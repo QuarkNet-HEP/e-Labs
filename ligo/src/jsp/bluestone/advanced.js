@@ -175,7 +175,7 @@ $(document).ready(function() {
 			url: "savechart.jsp", 
 			type: "GET",
 			dataType: "text",
-			data: { startTime: ligoMinTime, endTime: ligoMaxTime, title: title, channels: channels },
+			data: { startTime: xminGPSTime, endTime: xmaxGPSTime, title: title, channels: channels },
 			timeout: timeout,
 			success: onPlotSaved, 
 			error: onPlotError,
@@ -184,10 +184,14 @@ $(document).ready(function() {
 		});
 		
 		function onPlotSaved(data) {
+			/* TODO: Implement parsing of correct result codes 
+			 * Probably should get the filename back and a link so the user can
+			 * see it without resorting to going to the plot-search page */ 
 			return;  
 		}
 		
 		function onPlotError(data) {
+			/* TODO: Implement parsing of error codes in case something goes wrong */ 
 			return; 
 		}
 	});
