@@ -122,6 +122,7 @@
 							
 							Title: <input id="userPlotTitle" name="title" type="text" maxlength="200" size="30"></input>
 							<input id="savePlotToDisk" type="button" value="Save" disabled></input>
+							<img src="../graphics/busySmall.gif" style="visibility: hidden;" id="busySpinnerSmall"></img>
 							<a href="#" target="_new" id="savedPlotLink" style="display: none;">View saved plot (popup)</a> 
 						</td>
 					</tr>

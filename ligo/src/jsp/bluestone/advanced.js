@@ -182,8 +182,8 @@ $(document).ready(function() {
 			timeout: timeout,
 			success: onPlotSaved, 
 			error: onPlotError,
-			beforeSend: spinnerOn, 
-			complete: spinnerOff
+			beforeSend: smallSpinnerOn, 
+			complete: smallSpinnerOff
 		});
 		
 		function onPlotSaved(json) {

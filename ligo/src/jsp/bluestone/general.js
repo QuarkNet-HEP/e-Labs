@@ -30,6 +30,14 @@ function spinnerOff() {
 	$("#busySpinner").css('visibility', 'hidden');
 }
 
+function smallSpinnerOn() {
+	$("#busySpinnerSmall").css('visibility', 'visible');
+}
+
+function smallSpinnerOff() {
+	$("#busySpinnerSmall").css('visibility', 'hidden');
+}
+
 function convertTimeGPSToUNIX(x) { 
 	// TODO: Make a proper offset, this is off depending on leap seconds
 	return x + 315964787.0;
