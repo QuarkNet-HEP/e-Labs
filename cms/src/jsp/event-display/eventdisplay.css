@@ -126,7 +126,7 @@ a.disabled {
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
-	border: solid thin #d0d0d0;
+	border: outset thin #d0d0d0;
 	background-color: #e0e0e0;
  	padding-left: 1px;
  	padding-right: 1px;
@@ -136,6 +136,12 @@ a.disabled {
  	background-repeat: repeat-x;
  	display: block;
  	margin: 0px;
+}
+
+.toolbar-button.selected {
+	background-color: #d0d0d0;
+	background-image: url("../graphics/button-bg1-in.png");
+	border: thin inset #f0f000;
 }
 
 #toolbar td.toolbar-separator {

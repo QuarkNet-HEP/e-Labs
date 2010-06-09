@@ -1,25 +1,48 @@
 <table id="toolbar">
 	<tr>
 		<td>
-			<a class="toolbar-button" onclick="showEventBrowser();"><img src="../graphics/open.png" /></a>
+			<a class="toolbar-button" onclick="showEventBrowser();">
+				<img src="../graphics/open.png" title="Open"/>
+			</a>
 		</td>
 		<td class="toolbar-separator">
 			&nbsp;
 		</td>
 		<td>
-			<a class="toolbar-button" onclick="showSettings();"><img src="../graphics/settings.png" /></a>
+			<a class="toolbar-button" onclick="showSettings();">
+				<img src="../graphics/settings.png" title="Settings"/>
+			</a>
 		</td>
 		<td class="toolbar-separator">
 			&nbsp;
 		</td>
 		<td>
-			<a class="toolbar-button" onclick="setCameraRotation(0, 0, 0);"><img src="../graphics/z-plane.png" /></a>
+			<a class="toolbar-button" onclick="setCameraRotation(0, 0, 0);">
+				<img src="../graphics/z-plane.png" title="X-Y Plane"/>
+			</a>
 		</td>
 		<td>
-			<a class="toolbar-button" onclick="setCameraRotation(0, Math.PI / 2, Math.PI / 2);"><img src="../graphics/y-plane.png" /></a>
+			<a class="toolbar-button" onclick="setCameraRotation(0, Math.PI / 2, Math.PI / 2);">
+				<img src="../graphics/y-plane.png" title="Z-X Plane"/>
+			</a>
 		</td>
 		<td>
-			<a class="toolbar-button" onclick="setCameraRotation(0, Math.PI / 2, 0);"><img src="../graphics/x-plane.png" /></a>
+			<a class="toolbar-button" onclick="setCameraRotation(0, Math.PI / 2, 0);">
+				<img src="../graphics/x-plane.png" title="Y-Z Plane"/>
+			</a>
+		</td>
+		<td class="toolbar-separator">
+			&nbsp;
+		</td>
+		<td>
+			<a class="toolbar-button" id="perspective-view" onclick="setPerspectiveProjection(true);">
+				<img src="../graphics/perspective-projection.png" title="Perspective View"/>
+			</a>
+		</td>
+		<td>
+			<a class="toolbar-button" id="orthographic-view" onclick="setPerspectiveProjection(false);">
+				<img src="../graphics/orthographic-projection.png" title="Orthographic View"/>
+			</a>
 		</td>
 	</tr>
 </table>

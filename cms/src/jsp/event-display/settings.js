@@ -8,6 +8,7 @@ document.defaultSettings = {
 	globalCaloEnergyCutEnabled: true,
 	globalCaloEnergyLowCut: 0.75,
 	lastDir: "",
+	orthographicProjection: true,
 }
 
 document.settings = {
@@ -74,6 +75,7 @@ function restoreSettingsFromCookie() {
 			}
 		}
 	}
+	updateProjectionIcons();
 }
 
 function showSettings() {
@@ -113,4 +115,22 @@ function toggleGlobalCut() {
 function setTowers(val) {
 	document.settings.calorimeterTowers = val;
 	document.draw();
+}
+
+function setPerspectiveProjection(val) {
+	document.settings.orthographicProjection = !val;
+	saveSettingsToCookie();
+	updateProjectionIcons();
+	document.draw();
+}
+
+function updateProjectionIcons() {
+	if (document.settings.orthographicProjection) {
+		$("#perspective-view").removeClass("selected");
+		$("#orthographic-view").addClass("selected");
+	}
+	else {
+		$("#perspective-view").addClass("selected");
+		$("#orthographic-view").removeClass("selected");
+	}
 }

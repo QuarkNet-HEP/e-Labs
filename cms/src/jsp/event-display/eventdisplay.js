@@ -112,17 +112,19 @@ function combineData(a) {
 	return c;
 }
 
+function eventDataLoaded(data) {
+	document.eventData = data;
+	initializeData();
+	document.draw();
+}
+
 function detectorModelLoaded(data) {
 	document.detectorModel = data;
 	document.eventData = NOEVENT;
 	initializeData();
 	document.draw();
-}
-
-function eventDataLoaded(data) {
-	document.eventData = data;
-	initializeData();
-	document.draw();
+	//startDownload("/RelValH130GGgluonfusion.ig:Events/Run_1/Event_1501", "Loading data...", eventDataLoaded);
+	//startDownload("/Dir1/RelValSingleMuPt1000.ig:Events/Run_1/Event_102", "Loading data...", eventDataLoaded);
 }
 
 function initializeData() {
@@ -232,7 +234,6 @@ function getIndex(rd, i) {
 var GLOBAL_RANK_THRESHOLD = 0.9;
 
 window.addEventListener('load', function() {
-	//startDownload("/RelValH130GGgluonfusion.ig:Events/Run_1/Event_1501");
 	document.d_event = NOEVENT;
 	document.perfWeights = [];
 	
@@ -311,6 +312,7 @@ window.addEventListener('load', function() {
 		var d_event = document.d_event;
 		var data = document.data;
 		
+		renderer.orthographicProjection = document.settings.orthographicProjection;
 		renderer.precomputeTransform();
 		renderer.ambientLight = 0.5;
 		renderer.draw_overdraw = false;
@@ -478,9 +480,10 @@ window.addEventListener('load', function() {
 		  
 		renderer.ambientLight = 0.2;
 		var ct = renderer.camera.transform;
-		var x = ct.m.e3;
-		var y = ct.m.e7;
-		var z = ct.m.e11;
+		var m = ct.m;
+		var x = m.e3;
+		var y = m.e7;
+		var z = m.e11;
 		ct.translate(-x, -y, -z - 20);
 		renderer.precomputeTransform();
 		renderer.draw_overdraw = true;
@@ -491,7 +494,7 @@ window.addEventListener('load', function() {
 		renderer.bufferShape(arrowX);
 		renderer.bufferShape(arrowY);
 		renderer.bufferShape(arrowZ);
-		renderer.drawBuffer();
+		var n = renderer.drawBuffer();
 		renderer.emptyBuffer();
 		renderer.ctx.setStrokeColor(1, 1, 0, 1);
 		renderer.ctx.setFillColor(1, 1, 0, 1);
@@ -501,7 +504,6 @@ window.addEventListener('load', function() {
 		renderer.drawText({x: 0, y: 0, z: 1.1}, "z");
 		renderer.ctx.restore();
 		renderer.draw_overdraw = false;
-		ct.translate(x, y, z + 20);
 	}
 
 	renderer.camera.focal_length = 2.5;
