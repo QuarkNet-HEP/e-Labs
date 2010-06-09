@@ -31,13 +31,13 @@ function browserFileList(dir) {
 
 function browserFileListCB(text, dir) {
 	try {
-		list = eval(text);
+		resp = eval(text);
 	}
 	catch (e) {
 		window.alert("Invalid response: " + text);
 	}
-	listCache[dir] = list;
-	updateFileList(list, dir);
+	listCache[dir] = resp[1];
+	updateFileList(resp[1], resp[0]);
 }
 
 function updateFileList(list, dir) {
@@ -98,12 +98,12 @@ function browserEventListCB(text, fileIndex) {
 	document.selectedFileIndex = fileIndex;
 	$("#browser-file-" + fileIndex).addClass("selected");
 	try {
-		list = eval(text);
+		resp = eval(text);
 	}
 	catch (e) {
 		window.alert("Invalid response: " + text);
 	}
-	updateEventsList(list);
+	updateEventsList(resp[1]);
 }
 
 function updateEventsList(list) {
@@ -194,6 +194,9 @@ function loadEvent() {
 }
 
 function startDownload(path, title, callback) {
+	if (!callback) {
+		throw "No callback supplied";
+	}
 	updateProgress(0, "Initializing");
 	centerElement("load-progress-window");
 	$("#load-progress-window-title").html(title);
