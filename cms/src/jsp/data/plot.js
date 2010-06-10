@@ -113,6 +113,9 @@ function redrawPlot(index, stack) {
 		for (var i = crt["histmin"]; i <= crt["histmax"]; i++) {
 			var x = i * binwidth;
 			var y = h[i];
+			if (isNaN(y)) {
+				y = 0;
+			}
 			dd.push([x - 0.0001, last]);
 			dd.push([x, y]);
 			dd.push([x + binwidth - 0.0001, y]);
