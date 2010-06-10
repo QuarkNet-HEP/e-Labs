@@ -87,57 +87,75 @@
 </div>
 
 <div id="plot-template" style="display: none">
-	<table class="toolbox">
+	<table class="toolbox-set">
 		<tr>
-			<td>
-				<div class="toolbox-group">
-					<span class="group-title">Selection</span>
-					<input type="button" class="apply-selection" value="Apply" disabled="true" />
-					<input type="button" class="reset-selection" value="Reset" />
-				</div>
-			</td>
-			<td>
-				<div class="toolbox-group">
-					<span class="group-title">Axes</span>
-					Max Y: <input type="text" class="maxy" size="6" /><input type="button" class="apply-maxy" value="Set" disabled="true" />
-					<input type="checkbox" class="logx" />Log X
-					<input type="checkbox" class="logy" />Log Y
-				</div>
+			<td class="toolbox-row">
+				<table class="toolbox">
+					<tr>
+						<td class="group-title">
+							Selection
+						</td>
+						<td class="toolbox-group">
+							<input type="button" class="apply-selection" value="Apply" disabled="true" />
+							<input type="button" class="reset-selection" value="Reset" />
+						</td>
+						<td class="group-title">
+							Axes
+						</td>
+						<td class="toolbox-group">
+							Max Y: <input type="text" class="maxy" size="6" /><input type="button" class="apply-maxy" value="Set" disabled="true" />
+							<input type="checkbox" class="logx" />Log X
+							<input type="checkbox" class="logy" />Log Y
+						</td>
+						<td class="group-title">
+							Plot
+						</td>
+						<td class="toolbox-group">
+							Bin Width: <input type="text" class="binwidth" size="6" /><input type="button" class="apply-binwidth" value="Set" disabled="true" />
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 		<tr>
-			<td width="38%">
-				<div class="toolbox-group">
-					<span class="group-title">Save</span>
-					<form name="savePlotFrom" id="save-plot-form" action="../analysis/save.jsp"  method="get" 
-						target="saveWindow" onsubmit="window.open('',this.target,'width=500,height=200,resizable=1');">
-						<e:trinput type="hidden" name="dataset"/>
-						<e:trinput type="hidden" name="runs"/>
-						<e:trinput type="hidden" name="expr"/>
-						<e:trinput type="hidden" name="plots" class="plots-input"/>
-						<e:trinput type="hidden" name="analysis"/>
-						<input type="text" name="name" emptytext="plot name" class="plotname" size="10" />
-						<input type="submit" class="save" value="Save Plot"/>
-					</form>
-				</div>
-			</td>
-			<td>
-				<div class="toolbox-group">
-					<e:vswitch id="animation-panel" title="Animation" titleclass="group-title">
-						<e:visible image="../graphics/plus.png">
-						</e:visible>
-						<e:hidden image="../graphics/minus.png">
-							<a class="anim-bskip tbutton" href="#"><img src="../graphics/bskip.png"></a>
-							<a class="anim-playpause tbutton" href="#"><img src="../graphics/play.png"></a>
-							<a class="anim-fstep tbutton disabled" href="#"><img src="../graphics/fstep.png"></a>
-							<a class="anim-fskip tbutton disabled" href="#"><img src="../graphics/fskip.png"></a>
-							<span class="crtevent"></span>/<span class="totalevents"></span>
-							Speed: <span class="crtspeed">1</span>
-							<a class="anim-incspeed tbutton" href="#"><img src="../graphics/plus.png"></a>
-							<a class="anim-decspeed tbutton" href="#"><img src="../graphics/minus.png"></a>
-						</e:hidden>
-					</e:vswitch>
-				</div>
+			<td class="toolbox-row">
+				<table class="toolbox">
+					<tr>
+						<td class="group-title">
+							Save
+						</td>
+						<td class="toolbox-group">
+								<form name="savePlotFrom" id="save-plot-form" action="../analysis/save.jsp"  method="get" 
+									target="saveWindow" onsubmit="window.open('',this.target,'width=500,height=200,resizable=1');">
+									<e:trinput type="hidden" name="dataset"/>
+									<e:trinput type="hidden" name="runs"/>
+									<e:trinput type="hidden" name="expr"/>
+									<e:trinput type="hidden" name="plots" class="plots-input"/>
+									<e:trinput type="hidden" name="analysis"/>
+									<input type="text" name="name" emptytext="plot name" class="plotname" size="10" />
+									<input type="submit" class="save" value="Save Plot"/>
+								</form>
+							</div>
+						</td>
+						<td class="group-title">
+							<a href="#" id="animation-panel" class="group-title" onclick="switchPanel(this);">
+								<img src="../graphics/plus.png" /> Animation
+							</a>
+						</td>
+						<td class="toolbox-group panel">
+							<div id="animation-panel-v" style="display: none">
+								<a class="anim-bskip tbutton" href="#"><img src="../graphics/bskip.png"></a>
+								<a class="anim-playpause tbutton" href="#"><img src="../graphics/play.png"></a>
+								<a class="anim-fstep tbutton disabled" href="#"><img src="../graphics/fstep.png"></a>
+								<a class="anim-fskip tbutton disabled" href="#"><img src="../graphics/fskip.png"></a>
+								<span class="crtevent"></span>/<span class="totalevents"></span>
+								Speed: <span class="crtspeed">1</span>
+								<a class="anim-incspeed tbutton" href="#"><img src="../graphics/plus.png"></a>
+								<a class="anim-decspeed tbutton" href="#"><img src="../graphics/minus.png"></a>
+							</div>
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 	</table>
