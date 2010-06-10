@@ -311,25 +311,31 @@ tr#global-plot-options {
 	color: red;
 }
 
-table.toolbox { 
-	background-color: white; 
+.toolbox-set {
 	margin-top: 6px;
 	margin-bottom: 6px;
-	padding: 2px;
 	width: 780px;
 }
 
-.toolbox-group {
-	padding: 4px;
-	padding-left: 0px;
+.toolbox-row {
+	text-align: left;
 	background-color: #e0e0e0;
-	height: 24px;
-	vertical-align: middle;
-	font-size: 12px;
 }
 
-.group-title {
-	font-weight: bold;
+table.toolbox { 
+	background-color: white;
+	border-collapse: collapse;
+	margin-left: 0px;
+}
+
+.toolbox-group {
+	padding-left: 4px;
+	padding-right: 8px;
+	background-color: #e0e0e0;
+	vertical-align: middle;
+	font-size: 12px;
+	vertical-align: top;
+	white-space: nowrap;
 }
 
 .selection {
@@ -337,27 +343,28 @@ table.toolbox {
 	border: thin solid orange;
 }
 
-.toolbox-group>div {
-	vertical-align: middle;
-	padding-top: 4px;
-}
-
 .group-title {
 	background-color: #d0d0d0;
-	padding: 8px 6px 8px 6px;
-	margin-right: 8px;
-	height: 24px;
+	padding-right: 4px;
+	padding-left: 4px;
 	font-size: 12px;
+	font-weight: bold;
 }
 
 a.group-title {
 	text-decoration: none;
 	color: black;
 	font-weight: bold;
+	height: 24px;
+	vertical-align: middle;
 }
 
 a.group-title img {
 	margin-right: 2px;
+}
+
+.panel {
+	vertical-align: middle;
 }
 
 #plot-page a.tbutton {
