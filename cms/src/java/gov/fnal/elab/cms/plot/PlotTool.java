@@ -11,9 +11,7 @@ import gov.fnal.elab.cms.dataset.Leaf;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Paint;
 import java.awt.RenderingHints;
-import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -33,10 +31,10 @@ import javax.imageio.ImageIO;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.LogAxis;
 import org.jfree.chart.axis.LogarithmicAxis;
-import org.jfree.chart.plot.DefaultDrawingSupplier;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -110,6 +108,7 @@ public class PlotTool {
         XYSeriesCollection col = new XYSeriesCollection();
         for (int i = 0; i < histograms.size(); i++) {
             Leaf leaf = leaves.get(i);
+            System.out.println("plotting " + leaf.getId());
             Map<Integer, Integer> h = histograms.get(i);
             XYSeries s = new XYSeries("");
             List<Integer> l = new ArrayList<Integer>(h.keySet());
@@ -120,16 +119,24 @@ public class PlotTool {
                 if (x < minx || x > maxx) {
                     continue;
                 }
-                int y = h.get(bin);
+                Integer y = h.get(bin);
+                if (y == null) {
+                    continue;
+                }
                 s.add(x - 0.0001, lasty);
                 s.add(x, y);
-                s.add(x + 0.9999, y);
+                s.add(x + binWidth - 0.0001, y);
                 lasty = y;
             }
             col.addSeries(s);
         }
         JFreeChart chart = ChartFactory.createXYLineChart("", "", "", col,
                 PlotOrientation.VERTICAL, false, false, false);
+        for (int i = 0; i < histograms.size(); i++) {
+            XYItemRenderer r = ((XYPlot) chart.getPlot()).getRenderer();
+            r.setSeriesPaint(i, COLORS.get(opts.get(i).get("color").toLowerCase()));
+            r.setSeriesStroke(i, new BasicStroke(4.0f));
+        }
         chart.getPlot().setBackgroundPaint(Color.WHITE);
         chart.getPlot().setOutlineStroke(new BasicStroke(1.5f));
         if (logy) {
@@ -149,23 +156,10 @@ public class PlotTool {
             }
         }
         
-        chart.getPlot().setDrawingSupplier(new DefaultDrawingSupplier() {
-            int index = 0;
-
-            @Override
-            public Paint getNextPaint() {
-                return COLORS.get(opts.get(index++).get("color").toLowerCase());
-            }
-
-            @Override
-            public Stroke getNextStroke() {
-                return new BasicStroke(4.0f);
-            }
-        });
         ChartUtilities.saveChartAsPNG(fplot, chart, 769, 380);
         BufferedImage src = ImageIO.read(fplot);
-        int thmh = 150;
-        int thml = 150;
+        int thmh = 100;
+        int thml = 200;
         BufferedImage thm = new BufferedImage(thml, thmh, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = thm.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
