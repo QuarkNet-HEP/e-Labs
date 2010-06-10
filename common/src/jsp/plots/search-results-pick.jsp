@@ -52,10 +52,10 @@ function Send(url, link)
 	            		<a href="#" onClick="return Send('${plotURL}/${e.LFN}', '../plots/view.jsp?filename=${e.LFN}');">
 		            		<c:choose>
 	            				<c:when test="${!empty e.tupleMap.thumbnailURL}">
-		            				<img class="plot-thumbnail-image" src="${e.tupleMap.thumbnailURL}" width="150" height="150" alt="Thumbnail not found" /><br/>
+		            				<img class="plot-thumbnail-image" src="${e.tupleMap.thumbnailURL}" alt="Thumbnail not found" /><br/>
 		            			</c:when>
 		            			<c:otherwise>
-		            				<img class="plot-thumbnail-image" src="${plotURL}/${e.tupleMap.thumbnail}" width="150" height="150" alt="Thumbnail not found" /><br/>
+		            				<img class="plot-thumbnail-image" src="${plotURL}/${e.tupleMap.thumbnail}" alt="Thumbnail not found" /><br/>
 		            			</c:otherwise>
 		            		</c:choose>
 		            	</a>
