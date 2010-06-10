@@ -53,6 +53,9 @@
 		if (pp.containsKey("maxx")) {
 		    out.write("maxx: " + pp.get("maxx") + "\n");
 		}
+		if (pp.containsKey("binwidth")) {
+			out.write("binwidth: " + pp.get("binwidth") + "\n");
+		}
 	
 		Leaf leaf = dataset.getLeaf(path);
 		
