@@ -496,3 +496,8 @@ a img {
 	bottom: 0px;
 	opacity: 0.9;
 }
+
+.plot-thumbnail-image {
+	width: 200px;
+	height: 100px;
+}
