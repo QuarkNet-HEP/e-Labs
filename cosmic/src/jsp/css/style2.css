@@ -495,3 +495,23 @@ a img {
 .send-notifications #destination {
 	width: 100%;
 }
+
+#log {
+	left: 0px;
+	right: 0px;
+	height: 106px;
+	border: thin solid black;
+	font-size: 8pt;
+	background-color: #e0e0e0;
+	padding: 4px;
+	color: black;
+	overflow: auto;
+	position: fixed;
+	bottom: 0px;
+	opacity: 0.9;
+}
+
+.plot-thumbnail-image {
+	width: 150px;
+	height: 150px;
+}
