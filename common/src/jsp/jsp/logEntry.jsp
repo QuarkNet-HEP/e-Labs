@@ -35,7 +35,7 @@ function insertImgSrc()
  	String img_src = request.getParameter("img_src");
 	String keyword = request.getParameter("keyword");
 
- 	Integer log_id, research_group_id, keyword_id, project_id;
+ 	Integer log_id, research_group_id, keyword_id = null, project_id;
  	int count; 
  	
  	try { 
