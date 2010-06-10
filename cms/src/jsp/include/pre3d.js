@@ -901,6 +901,7 @@ Pre3d = (function() {
     var t = this.precomputedTransform;
     // Our normal transformation matrix.
     var tn = this.precomputedAdjoint;
+    var tnp = this.precomputedTransformNoProjection;
 
     // We are transforming the points even if we decide it's back facing.
     // We could just transform the normal, and then only transform the
@@ -924,7 +925,7 @@ Pre3d = (function() {
       if (quad_callback !== null && quad_callback(qf, j, shape) === true)
         continue;
 
-      var centroid = transformPoint(t, qf.centroid);
+      var centroid = transformPoint(tnp, qf.centroid);
 
       // Cull quads that are behind the camera.
       // TODO(deanm): this should probably involve the focal point?
