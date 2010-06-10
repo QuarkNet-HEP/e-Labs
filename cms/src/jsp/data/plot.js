@@ -81,7 +81,7 @@ function updatePlot(index, stack) {
 function updateInternalPlotString(index) {
 	var stack = document.plotData[index];
 	var s = "";
-	var keys = ["path", "color", "logx", "logy", "maxy", "minx", "maxx"];
+	var keys = ["path", "color", "logx", "logy", "maxy", "minx", "maxx", "binwidth"];
 	for(var sp = 0; sp < stack.length; sp++) { 
 		for(var k in keys) {
 			if (stack[sp][keys[k]] != null) {
@@ -94,6 +94,9 @@ function updateInternalPlotString(index) {
 	$("#plot" + index + " .plots-input").val(s);
 }
 
+/**
+ * Recalculates the data and draws the plot
+ */
 function redrawPlot(index, stack) {
 	log("redrawing plot " + index);
 	if (stack == null) {
@@ -104,24 +107,22 @@ function redrawPlot(index, stack) {
 	for (var sp = 0; sp < stack.length; sp++) {
 		crt = stack[sp];
 		var h = crt["histogram"];
+		var binwidth = getBinWidth(crt);
 		var dd = new Array();
 		var last = 0;
 		for (var i = crt["histmin"]; i <= crt["histmax"]; i++) {
-			var x = i;
-			var y = h[x];
-			if (y == null) {
-				y = 0;
-			}
+			var x = i * binwidth;
+			var y = h[i];
 			dd.push([x - 0.0001, last]);
 			dd.push([x, y]);
-			dd.push([x + 0.9999, y]);
+			dd.push([x + binwidth - 0.0001, y]);
 			last = y;
 		}
 		var d = {
 			shadowSize: 0,
 			color: crt["color"],
 			label: crt["title"],
-			data: dd
+			data: dd,
 		};
 		pdata.push(d);
 	}
@@ -129,6 +130,9 @@ function redrawPlot(index, stack) {
 	redrawPlot2(index, defaultPlotOptions);
 }
 	
+/**
+ * Only redraws the plot with possibly updated parameters
+ */
 function redrawPlot2(index, options) {
 	var tx = null;
 	var itx = null;
@@ -176,12 +180,67 @@ function totalEvents(index) {
 	return max;
 }
 
+/**
+ * Recomputes the histogram based on a possibly changed bin width
+ * and redraws
+ */
+function reBin(index) {
+	stack = document.plotData[index];
+	for (var sp = 0; sp < stack.length; sp++) {
+		crt = stack[sp];
+		buildHistogram(crt);
+	}
+	redrawPlot(index, stack);
+}
+
+function getBinWidth(crt) {
+	var binWidth = parseFloat(crt["binwidth"]);
+	if (!binWidth) {
+		binWidth = 1.0;//GeV
+	}
+	return binWidth;
+}
+
+/**
+ * Since hashes are weird in javascript, use a normal
+ * array for the histogram and scale when drawing using the bin width
+ */
+function buildHistogram(crt) {
+	var binWidth = getBinWidth(crt);
+	var data = crt["data"];
+	var histogram = [];
+	var histmin = 999999;
+	var histmax = 0;
+	for (var i in data) {
+		var va = data[i];
+		for (var j = 1; j < va.length; j++) {
+			var v = Math.floor(va[j] / binWidth);
+			while (histogram.length <= v) {
+				histogram.push(0);
+			}
+			var count = histogram[v];
+			if (count == null) {
+				count = 0;
+			}
+			histogram[v] = ++count;
+			if (histmin > v) {
+				histmin = v;
+			}
+			if (histmax < v) {
+				histmax = v;
+			}
+		}
+	}
+	crt["histmin"] = histmin;
+	crt["histmax"] = histmax;
+	crt["histogram"] = histogram;
+}
+
 function parseReply(text) {
 	log("received reply: " + text.length + " bytes");
 	var plots = new Array();
 	var crt = null;
 	var data = null;
-	var histogram = null;
 	var eventCount = 0;
 	var combined = new Array();
 	var index = -1;
@@ -193,14 +252,16 @@ function parseReply(text) {
 			continue;
 		}
 		var kv = line.split(': ', 2);
+		var key = kv[0];
 		var value = kv[1];
-		switch (kv[0]) {
+		switch (key) {
 			case "combine":
 				document.combinePlots = value == "true";
 				break;
 			case "path":
 				if (crt != null) {
 					crt["eventcount"] = eventCount;
+					buildHistogram(crt);
 					log(crt["path"] + ": " + (crt["data"].length) + " events, out of which " + eventCount + " are valid, " + crt["histogram"].length + " bins");
 					eventCount = 0;
 					if (index == -1) {
@@ -213,11 +274,7 @@ function parseReply(text) {
 				crt = new Array();
 				crt["path"] = value;
 				data = new Array();
-				histogram = new Array();
 				crt["data"] = data;
-				crt["histogram"] = histogram;
-				crt["histmin"] = 99999999;
-				crt["histmax"] = 0;
 				break;
 			case "units":
 				//this relies on logx logy info appearing in the stream before the units
@@ -240,40 +297,30 @@ function parseReply(text) {
 			case "description":
 			case "logx":
 			case "logy":
+			case "run":
 			case "minx":
 			case "maxx":
 			case "maxy":
-			case "run":
-				crt[kv[0]] = value;
-				break; 
+			case "binwidth":
+				crt[key] = value;
+				break;
 			default:
 				if (value == null) {
 					break;
 				}
 				eventCount++;
 				var s = value.split("\s+");
-				var va = new Array();
-				data.push([kv[0], va]);
+				var va = new Array(); 
+				data.push([key, va]);
 				for (var j = 0; j < s.length; j++) {
 					var vf = parseFloat(s[j]);
 					va.push(vf);
-					var v = Math.floor(vf);
-					var count = histogram[v];
-					if (count == null) {
-						count = 0;
-					}
-					histogram[v] = ++count;
-					if (crt["histmin"] > v) {
-						crt["histmin"] = v;
-					}
-					if (crt["histmax"] < v) {
-						crt["histmax"] = v;
-					}
 				}
 		}
 	}
 	if (crt != null) {
 		crt["eventcount"] = eventCount;
+		buildHistogram(crt);
 		log(crt["path"] + ": " + (crt["data"].length) + " events, out of which " + eventCount + " are valid, " + crt["histogram"].length + " bins");
 		if (index == -1) {
 			plots.push([crt]);
@@ -495,82 +542,36 @@ function bindButtons(index) {
 		$(plot + " .cursor").css("top", (pos.pageY - 20) + "px");
 		$(plot + " .cursorValue").html(Math.round(pos.x * 10) / 10);
 	});
-	
 
 	$(plot + " .apply-selection").bind("click", function() {
 		var r = document.plots[index].getSelection();
-		document.plotData[index][0]["minx"] = r.xaxis.from;
-		document.plotData[index][0]["maxx"] = r.xaxis.to;
+		setAll(document.plotData[index], "minx", r.xaxis.from);
+		setAll(document.plotData[index], "maxx", r.xaxis.to);
 		redrawPlot2(index, defaultPlotOptions);
     	plotUnselected(index);
 	});
 
 	$(plot + " .reset-selection").bind("click", function() {
-		document.plotData[index][0]["minx"] = null;
-		document.plotData[index][0]["maxx"] = null;
+		setAll(document.plotData[index], "minx", null);
+		setAll(document.plotData[index], "maxx", null);
 		redrawPlot2(index, defaultPlotOptions);
 		plotUnselected(index);
 	});
 	
 	$(plot + " .logx").bind("change", function() {
-		document.plotData[index][0]["logx"] = $(this).attr("checked") ? "true" : "false";
+		setAll(document.plotData[index], "logx", $(this).attr("checked") ? "true" : "false");
 		redrawPlot(index);
 		plotUnselected(index);
 	});
 	
 	$(plot + " .logy").bind("change", function() {
-		document.plotData[index][0]["logy"] = $(this).attr("checked") ? "true" : "false";
+		setAll(document.plotData[index], "logy", $(this).attr("checked") ? "true" : "false");
 		redrawPlot(index);
 		plotUnselected(index);
 	});
 	
-	$(plot + " .maxy").bind("keyup", function() {
-		// the input doesn't see the results of the keypress 
-		// until after this handler is called, at least on chrome
-		setTimeout(function() {
-			var text = $(plot + " .maxy");
-			var value = text.attr("value");
-			var maxy = parseInt(text.attr("value"));
-			if (value == "" && document.plotData[index][0]["maxy"] != null) {
-				$(plot + " .apply-maxy").removeAttr("disabled");
-				$(plot + " .apply-maxy").attr("value", "Reset");
-				log("ee");
-				return;
-			}
-			else {
-				$(plot + " .apply-maxy").attr("value", "Set");
-			}
-			if (isNaN(maxy)) {
-				text.css("color", "red");
-				$(plot + " .apply-maxy").attr("disabled", true);
-				log("d");
-			}
-			else {
-				text.css("color", "black");
-				$(plot + " .apply-maxy").removeAttr("disabled");
-				log("e");
-			}
-		}, 20);
-	});
-	
-	$(plot + " .apply-maxy").bind("click", function() {
-		var value = $(plot + " .maxy").attr("value");
-		var maxy = parseInt(value);
-		if (value == "") {
-			document.plotData[index][0]["maxy"] = null; //auto
-			$(plot + " .apply-maxy").attr("disabled", true);
-			$(plot + " .apply-maxy").attr("value", "Set");
-		}
-		else if (isNaN(maxy)) {
-			return;
-		}
-		else {
-			document.plotData[index][0]["maxy"] = maxy;
-		}
-		log("maxy: " + maxy);
-		redrawPlot(index);
-		plotUnselected(index);
-	});
+	bindTextWithApply(index, "maxy", "apply-maxy", "maxy", redrawPlot, function(x) {return !isNaN(x);});
+	bindTextWithApply(index, "binwidth", "apply-binwidth", "binwidth", reBin, function(x) {return !isNaN(x) && x > 0;});
 
 	$(plot + " .anim-bskip").bind("click", function() {animationBSkip(index)});
 	$(plot + " .anim-playpause").bind("click", function() {animationPlayPause(index)});
@@ -578,6 +579,71 @@ function bindButtons(index) {
 	$(plot + " .anim-fskip").bind("click", function() {animationFSkip(index)});
 	$(plot + " .anim-incspeed").bind("click", function() {animationIncSpeed(index)});
 	$(plot + " .anim-decspeed").bind("click", function() {animationDecSpeed(index)});
+}
+
+function bindTextWithApply(index, textClass, applyClass, propName, callback, isValid) {
+	var textSelector = "#plot" + index + " ." + textClass;
+	var applySelector = "#plot" + index + " ." + applyClass;
+	$(textSelector).bind("keyup", function() {
+		// the input doesn't see the results of the keypress 
+		// until after this handler is called, at least on chrome
+		setTimeout(function() {
+			var text = $(textSelector);
+			var value = text.attr("value");
+			var textval = parseFloat(text.attr("value"));
+			if (value == "" && document.plotData[index][0][propName] != null) {
+				$(applySelector).removeAttr("disabled");
+				$(applySelector).attr("value", "Reset");
+				return;
+			}
+			else {
+				$(applySelector).attr("value", "Set");
+			}
+			if (!isValid(textval)) {
+				text.css("color", "red");
+				$(applySelector).attr("disabled", true);
+			}
+			else {
+				text.css("color", "black");
+				$(applySelector).removeAttr("disabled");
+			}
+		}, 20);
+	});
+	
+	$(applySelector).bind("click", function() {
+		var value = $(textSelector).attr("value");
+		var textval = parseFloat(value);
+		if (value == "") {
+			setAll(document.plotData[index], propName, null); //auto
+			$(applySelector).attr("disabled", true);
+			$(applySelector).attr("value", "Set");
+		}
+		else if (!isValid(textval)) {
+			return;
+		}
+		else {
+			setAll(document.plotData[index], propName, textval);
+		}
+		log(propName + ": " + textval);
+		callback(index);
+		plotUnselected(index);
+	});
+}
+
+/**
+ * When plots are stacked, most of the code here references
+ * the first plot in the stack to get various parameters (such as logx). This
+ * is because plots are combined before the determination of their compatibility 
+ * of units is done. So it's a simplifying assumption.
+ * 
+ * However, when saving a plot, if only the parameters for the first plot are modified,
+ * upon re-plotting them it may result in separate plots. So when things like logx are
+ * changed, all plots in the stack should be internally updated.
+ */
+function setAll(stack, key, value) {
+	for (var sp = 0; sp < stack.length; sp++) {
+		stack[sp][key] = value;
+	}
 }
 
 var popupOptions = {
@@ -635,4 +701,21 @@ function flotify() {
 		$(this).replaceWith('<div id="plot-container" class="wait-on-data" style="width: 800px; height: 400px;"></div>');
 		getData(params["dataset"], params["runs"], params["plots"], "on");
 	});
+}
+
+function switchPanel(obj) {
+	var vid = obj.id + "-v";
+	var v = document.getElementById(vid);
+	if (v) {
+		var on = v.style.display == "block";
+		var img = firstNonTextChild(obj);
+		if (on) {
+			v.style.display = "none";
+			img.src = "../graphics/plus.png";
+		}
+		else {
+			v.style.display = "block";
+			img.src = "../graphics/minus.png";
+		}
+	}
 }
