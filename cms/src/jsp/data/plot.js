@@ -480,6 +480,7 @@ function histogramFStep(index, steps) {
 		var data = pd["data"];
 		var histogram = pd["histogram"];
 		var events = data.length;
+		var binWidth = getBinWidth(pd);
 		for (var i = 0; i < steps && event < events; i++) {
 			var kv = data[event++];
 			if (kv == null) {
@@ -487,7 +488,7 @@ function histogramFStep(index, steps) {
 			}
 			var s = kv[1];
 			for (var j = 0; j < s.length; j++) {
-				var v = Math.floor(s[j]);
+				var v = Math.floor(s[j] / binWidth);
 				var count = histogram[v];
 				if (count == null) {
 					count = 0;
