@@ -99,7 +99,7 @@ function updatePlotList() {
 		if (color == null || color == "") {
 			color = "black";
 		}
-		str += "path:" + tbl.rows[i].cells[1].getAttribute("value") + ",color:" + color;
+		str += "path:" + tbl.rows[i].cells[1].getAttribute("value") + ",color:" + color + " ";
 	}
 	list.value = str;
 	log("plot str: " + str);
