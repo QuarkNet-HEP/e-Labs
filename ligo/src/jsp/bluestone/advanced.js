@@ -247,7 +247,17 @@ $(document).ready(function() {
 		var samplingSelector = $("<select></select>").attr("name", "sampling").attr("id", "sampling_" + index).attr("class", "sampling");
 		var nameLabel = $("<span></span>").attr("id", "dataName_" + index).attr("class", "dataName");
 		
-		foo.append(deleteButton).append(siteSelector).append(subsysSelector).append(stationSelector).append(sensorSelector).append(samplingSelector).append(nameLabel).append($("<br id=\"br_" + index + "\" />"));
+		$("#channelTable > tbody:last").append(
+			$("<tr></tr>").attr("id", "row_" + index).append(
+				$("<td></td>").append(deleteButton)).append(
+				$("<td></td>").append(siteSelector)).append(
+				$("<td></td>").append(subsysSelector)).append(
+				$("<td></td>").append(stationSelector)).append(
+				$("<td></td>").append(sensorSelector)).append(
+				$("<td></td>").append(samplingSelector)).append(
+				$("<td></td>").append(nameLabel))
+		)
+					
 		subsystemChangeCB(index); 
 		sensorChangeCB(index);
 		samplingCB(index);
@@ -287,14 +297,7 @@ $(document).ready(function() {
 			var index = getIndex($(this).attr('id'));
 			/* delete stuff - should probably switch to simply assigning each row element a class index rather
 			   than appending to ID. Oops. */
-			$("#removeRow_" + index).remove();
-			$("#site_" + index).remove();
-			$("#sensor_" + index).remove();
-			$("#sampling_" + index).remove();
-			$("#subsystem_" + index).remove();
-			$("#station_" + index).remove();
-			$("#dataName_" + index).remove();
-			$("#br_" + index).remove();
+			$("#row_" + index).empty().remove();
 		});
 	}
 });
