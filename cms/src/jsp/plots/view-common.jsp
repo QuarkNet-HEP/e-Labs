@@ -26,15 +26,15 @@
 </h2><br/>
 
 <a href="../data/view-metadata.jsp?filename=${param.filename}&menu=${param.menu}">Show details (metadata)</a>&nbsp;|&nbsp;
-<a href="../data/plot.jsp?${params}">Edit this plot</a>
+<a href="../data/plot.jsp?${params}&combine=on">Edit this plot</a>
 <script type="text/javascript" src="../include/jquery/js/jquery-1.4.min.js"></script>
 <script language="javascript" type="text/javascript" src="../include/excanvas.min.js"></script>
-<script language="javascript" type="text/javascript" src="../data/plot.js"></script>	
+<script language="javascript" type="text/javascript" src="../data/plot.js"></script>
 <script language="javascript" type="text/javascript" src="../include/jquery.flot.js"></script>
 <script type="text/javascript" src="../include/elab.js"></script>
 <script>
 	initlog();
-	log("start");			
+	log("start");	
 </script>
 
 <img class="flotifiable" src="../data/plot-image.jsp?${params}" />
