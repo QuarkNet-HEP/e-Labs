@@ -319,14 +319,28 @@ window.addEventListener('load', function() {
 		//renderer.createOffscreenBuffer();
 
 		if (document.settings.invertColors) {
-			renderer.ctx.setStrokeColor = function setStrokeColor(r, g, b, a) {
+			/*renderer.ctx.setStrokeColor = function setStrokeColor(r, g, b, a) {
 		        var rgba = [Math.floor((1-r) * 255), Math.floor((1-g) * 255), Math.floor((1-b) * 255), a];
 		        this.strokeStyle = 'rgba(' + rgba.join(',') + ')';
 		      }
 			renderer.ctx.setFillColor = function setFillColor(r, g, b, a) {
 		        var rgba = [Math.floor((1-r) * 255), Math.floor((1-g) * 255), Math.floor((1-b) * 255), a];
 		        this.fillStyle = 'rgba(' + rgba.join(',') + ')';
+		      }*/
+			renderer.ctx.setStrokeColor = function setStrokeColor(r, g, b, a) {
+		        var rgba = [Math.floor(r * 172), Math.floor(g * 172), Math.floor(b * 172), a];
+		        this.strokeStyle = 'rgba(' + rgba.join(',') + ')';
 		      }
+			renderer.ctx.setFillColor = function setFillColor(r, g, b, a) {
+				if (r === 1 && g === 1 && b === 1) {
+					this.fillStyle = "rgba(255, 255, 255, " + a + ")";
+				}
+				else {
+					var rgba = [Math.floor(r * 172), Math.floor(g * 172), Math.floor(b * 172), a];
+					this.fillStyle = 'rgba(' + rgba.join(',') + ')';
+				}
+		      }
+			renderer.ctx.setFillColor(1, 1, 1, 1);
 		} 
 		else {
 			renderer.ctx.setStrokeColor = function setStrokeColor(r, g, b, a) {
@@ -337,9 +351,9 @@ window.addEventListener('load', function() {
 		        var rgba = [Math.floor(r * 255), Math.floor(g * 255), Math.floor(b * 255), a];
 		        this.fillStyle = 'rgba(' + rgba.join(',') + ')';
 		      }
+			renderer.ctx.setFillColor(0, 0, 0, 1);
 		}
 		
-		renderer.ctx.setFillColor(0, 0, 0, 1);
 		renderer.drawBackground();
     
 		for (var i = 0; i < perfWeights.length; i++) {
