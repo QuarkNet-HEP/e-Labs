@@ -16,7 +16,7 @@
  	Boolean new_comment; 
  	PreparedStatement sInner = null;
  	ResultSet innerRs = null;
- 	Integer keyword_id, project_id, research_group_id = null; 
+ 	Integer keyword_id = null, project_id, research_group_id = null; 
 
  	// get group ID
  	//groupName defined in common.jsp
@@ -94,7 +94,7 @@ logbook".</font></p>
 	<%
 		// look for any previous log entries for this keyword
 		s = conn.prepareStatement(
-				"SELECT log.id AS log_id, to_char(log.date_entered,'MM/DD/YYYY HH12:MI') AS log_date,l og.log_text AS log_text, to_char(comment.date_entered,'MM/DD/YYYY HH12:MI') AS comment_date, comment.id AS comment_id, comment.comment AS comment, comment.new_comment AS new_comment FROM comment, log, keyword " +
+				"SELECT log.id AS log_id, to_char(log.date_entered,'MM/DD/YYYY HH12:MI') AS log_date, log.log_text AS log_text, to_char(comment.date_entered,'MM/DD/YYYY HH12:MI') AS comment_date, comment.id AS comment_id, comment.comment AS comment, comment.new_comment AS new_comment FROM comment, log, keyword " +
 				"WHERE log.id = comment.log_id AND log.keyword_id = keyword.id AND keyword.id = ? AND log.research_group_id = ? AND log.project_id = ? AND keyword.project_id in (0,?) " +
 				"ORDER BY log_id DESC, comment_id DESC;");
 		s.setInt(1, keyword_id); 
@@ -102,7 +102,7 @@ logbook".</font></p>
 		s.setInt(3, project_id); 
 		s.setInt(4, project_id); 
 		int itemCount = 0;
-		int curLogId;
+		int curLogId = -1;
 		rs = s.executeQuery();
 		while (rs.next()) {
 			int log_id = rs.getInt("log_id");

@@ -72,7 +72,7 @@ function insertImgSrc()
  		// get group ID
  		//groupName defined in common.jsp
  		s = conn.prepareStatement("SELECT id FROM research_group WHERE name = ?;");
- 		s.setString(1, eLab);
+ 		s.setString(1, groupName);
  		rs = s.executeQuery();
  		if (rs.next()) {
  			research_group_id = (Integer) rs.getObject("id");
@@ -135,7 +135,7 @@ function insertImgSrc()
 	// look for any previous log entries for this keyword
 	s = conn.prepareStatement(
 			"SELECT log.id AS cur_id, to_char(log.date_entered,'MM/DD/YYYY HH12:MI') AS date_entered, log.log_text AS cur_text FROM log " + 
-			"WHERE project_id = ? AND keyword_id = ? AND research_group_id AND role = 'user' " +
+			"WHERE project_id = ? AND keyword_id = ? AND research_group_id = ? AND role = 'user' " +
 			"ORDER BY cur_id DESC;");
 	s.setInt(1, project_id);
 	s.setInt(2, keyword_id); 
@@ -235,7 +235,7 @@ function insertImgSrc()
 			s.setInt(1, project_id);
 			s.setInt(2, research_group_id);
 			s.setInt(3, keyword_id);
-			s.setString(5, log_enter); 
+			s.setString(4, log_enter); 
 			try {
 				i = s.executeUpdate();
 			} catch (SQLException se) {

@@ -50,8 +50,8 @@
  	//groupName defined in common.jsp
  	Integer research_group_id = null;
  	s = conn.prepareStatement("SELECT id FROM research_group WHERE name = ?;");
- 	s.setString(1, "research_group_name");
- 	s.executeQuery();
+ 	s.setString(1, research_group_name);
+ 	rs = s.executeQuery();
  	if (rs.next()) {
  		research_group_id = (Integer) rs.getObject("id");
  	}

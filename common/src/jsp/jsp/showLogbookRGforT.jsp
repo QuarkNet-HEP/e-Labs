@@ -319,7 +319,7 @@
 					}
 
 					querySort =  "ORDER BY keyword.section, keyword.section_id, log.id DESC;";
-					queryItems = "SELECT log.id AS log_id, to_char(log.date_entered,'MM/DD/YYYY HH12:MI') AS date_entered, log_text, keyword.description AS description, keyword.id AS data_keyword_id, keyword.keyword AS keyword_name, keyword.section AS section, keyword.section_id AS section_id, log.new_log AS new FROM log, keyword";
+					queryItems = "SELECT log.id AS log_id, to_char(log.date_entered,'MM/DD/YYYY HH12:MI') AS date_entered, log_text, keyword.description AS description, keyword.id AS data_keyword_id, keyword.keyword AS keyword_name, keyword.section AS section, keyword.section_id AS section_id, log.new_log AS new FROM log, keyword ";
 					
 					if (keyword_id == null) {
 						%><h2>All logbook entries for group "<%=research_group_name%>"</h2><%
@@ -450,7 +450,7 @@
 							}
 
 							itemCount++;
-							if (!(current_keyword_id.equals(data_keyword_id))) {
+							if (current_keyword_id == null || !(current_keyword_id.equals(data_keyword_id))) {
 								current_keyword_id = data_keyword_id;
 								if (itemCount > 1) {
 				%>

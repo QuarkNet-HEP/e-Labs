@@ -203,7 +203,7 @@
 				// first make sure a keyword was passed in the call
 				s = conn.prepareStatement(
 						"SELECT id, keyword, description FROM keyword " +
-						"WHERE project_id in (0,?) AND keyword = ?;)");
+						"WHERE project_id in (0,?) AND keyword = ?;");
 				s.setInt(1, project_id);
 				s.setString(2, keyword);
 				rs = s.executeQuery();
@@ -261,7 +261,7 @@
 						String log_text = rs.getString("log_text");
 						int log_id = rs.getInt("log_id");
 						showFullLog = false;
-						if (log_id == passed_log_id) {
+						if (passed_log_id != null && log_id == passed_log_id) {
 							showFullLog = true;
 							elipsis = "";
 							linkText = "";

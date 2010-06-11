@@ -63,7 +63,7 @@
 	Integer research_group_id = null;	
 	s = conn.prepareStatement(
 			"SELECT research_group.id AS rg_id, teacher.name AS teacher_name FROM research_group, teacher " +
-			"WHERE research_group.name = ? AND reseach_group.teacher_id = teacher.id;");
+			"WHERE research_group.name = ? AND research_group.teacher_id = teacher.id;");
 	s.setString(1, research_group_name); 
 	rs = s.executeQuery();
 	if (rs.next()) {
@@ -220,7 +220,7 @@
 				// look for any previous log entries for this keyword
 				
 				int itemCount = 0;
-				int current_ref_rg_id;
+				int current_ref_rg_id = -1;
 				rs = queryWhere.executeQuery();
 				while (rs.next()) {
 					String dateText = rs.getString("date_entered");
@@ -266,7 +266,7 @@
 				}
 				if (itemCount == 0) {
 					%> <tr align="center"> <td colspan="2"><font size="+1">No entries.</font> <%
- 					if (!(ref_rg_id.equals(""))) {
+ 					if (!(ref_rg_id == null)) {
  						%> <a href="logEntryT.jsp?research_group_id=<%=research_group_id%>&amp;ref_rg_id=<%=ref_rg_id%>"><img src="graphics/logbook_pencil.gif" border="0" align="top" alt=""></a> <%
 					} 
  					else {

@@ -178,7 +178,7 @@
 			s.setInt(2, research_group_id);
 			s.setInt(3, ref_rg_id); 
 			s.setString(4, role);
-			s.setString(5, role); 
+			s.setString(5, log_enter); 
 			try {
 				i = s.executeUpdate();
 			} catch (SQLException se) {
