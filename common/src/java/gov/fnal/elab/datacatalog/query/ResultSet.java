@@ -85,7 +85,12 @@ public class ResultSet extends AbstractCollection<CatalogEntry> {
     }
     
     public void sort(String key, boolean descending) {
-        Collections.sort(entries, new CatalogEntryComparator(key, descending));
+    	if (descending) {
+    		Collections.sort(entries, new CatalogEntry.KEY_COMPARATOR_DESCENDING(key));
+    	}
+    	else {
+    		Collections.sort(entries, new CatalogEntry.KEY_COMPARATOR_ASCENDING(key));
+    	}
     }
     
     public void sort(String key) {
