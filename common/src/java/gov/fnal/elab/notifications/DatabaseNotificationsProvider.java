@@ -321,6 +321,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
     public void markAsRead(Notification notification) {
     }
 
+    @Override
     public void setElab(Elab elab) {
         this.elab = elab;
         Connection conn = null;

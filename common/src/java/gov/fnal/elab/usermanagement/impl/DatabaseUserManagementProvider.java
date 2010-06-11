@@ -5,7 +5,7 @@ package gov.fnal.elab.usermanagement.impl;
 
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
-import gov.fnal.elab.ElabProvider;
+import gov.fnal.elab.ElabProviderHandled;
 import gov.fnal.elab.ElabStudent;
 import gov.fnal.elab.password.GeneratePassword;
 import gov.fnal.elab.usermanagement.AuthenticationException;
@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class DatabaseUserManagementProvider implements
-        ElabUserManagementProvider, ElabProvider {
+        ElabUserManagementProvider, ElabProviderHandled {
 
     public static final String SWITCHING_ELABS = "switchingelabs";
     
@@ -44,6 +44,7 @@ public class DatabaseUserManagementProvider implements
     public DatabaseUserManagementProvider() {
     }
 
+    @Override
     public void setElab(Elab elab) {
         this.elab = elab;
     }

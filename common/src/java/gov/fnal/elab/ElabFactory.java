@@ -32,36 +32,36 @@ import java.util.Map;
  */
 public class ElabFactory {
     
-    private static Map providers = new HashMap();
+    private static Map<String, ElabProvider> providers = new HashMap();
     
-    private static Object get(Elab elab, String provider) {
+    private static ElabProvider get(Elab elab, String provider) {
         synchronized(providers) {
             return providers.get(elab.getName() + ":" + provider);
         }
     }
     
-    private static void set(Elab elab, String provider, Object value) {
+    private static void set(Elab elab, String provider, ElabProvider value) {
         synchronized(providers) {
             providers.put(elab.getName() + ":" + provider, value);
         }
     }
 
-    private static Object newInstance(Elab elab, String provider)
+    private static ElabProvider newInstance(Elab elab, String provider)
             throws ElabInstantiationException {
         String clsname = elab.getProperties().getProperty(
                 "provider." + provider.toLowerCase());
         return newInstance(elab, provider, clsname);
     }
 
-    private static Object newInstance(Elab elab, String provider, String clsname) {
+    private static ElabProvider newInstance(Elab elab, String provider, String clsname) {
         try {
         	clsname = clsname.trim();
             Class cls = ElabFactory.class.getClassLoader().loadClass(clsname);
-            Object p = cls.newInstance();
-            if (p instanceof ElabProvider) {
-                ((ElabProvider) p).setElab(elab);
+            ElabProvider ep = (ElabProvider) cls.newInstance();
+            if (ep instanceof ElabProviderHandled) {
+            	((ElabProviderHandled) ep).setElab(elab);
             }
-            return p;
+            return ep;
         }
         catch (Exception e) {
             throw new ElabInstantiationException(
@@ -82,7 +82,7 @@ public class ElabFactory {
      */
     public static synchronized ElabUserManagementProvider getUserManagementProvider(
             Elab elab) {
-        Object p = get(elab, USERMANAGEMENT);
+    	ElabProvider p = get(elab, USERMANAGEMENT);
         if (p == null) {
             p = newInstance(elab, USERMANAGEMENT);
             set(elab, USERMANAGEMENT, p);
@@ -98,7 +98,7 @@ public class ElabFactory {
      */
     public static synchronized DataCatalogProvider getDataCatalogProvider(
             Elab elab) {
-        Object p = get(elab, DATACATALOG);
+    	ElabProvider p = get(elab, DATACATALOG);
         if (p == null) {
             setVDSHome(elab);
             p = new CachingDataCatalogProvider((DataCatalogProvider) newInstance(elab, DATACATALOG));
@@ -115,7 +115,7 @@ public class ElabFactory {
      * This is for older survey implementations and is deprecated. 
      */
     public static synchronized ElabTestProvider getTestProvider(Elab elab) {
-        Object p = get(elab, TEST);
+    	ElabProvider p = get(elab, TEST);
         if (p == null) {
             p = newInstance(elab, TEST);
             set(elab, TEST, p);
@@ -130,7 +130,7 @@ public class ElabFactory {
      * survey provider implements functionality related to surveys. 
      */
     public static synchronized ElabSurveyProvider getSurveyProvider(Elab elab) {
-    	Object p = get(elab, SURVEY);
+    	ElabProvider p = get(elab, SURVEY);
     	if (p == null) { 
     		p = newInstance(elab, SURVEY);
     		set(elab, SURVEY, p);
@@ -145,7 +145,7 @@ public class ElabFactory {
      * provider is used to run analyses.
      */
     public static synchronized AnalysisExecutor getAnalysisProvider(Elab elab) {
-        Object p = get(elab, ANALYSISEXECUTOR);
+    	ElabProvider p = get(elab, ANALYSISEXECUTOR);
         if (p == null) {
             setVDSHome(elab);
             p = newInstance(elab, ANALYSISEXECUTOR);
@@ -208,7 +208,7 @@ public class ElabFactory {
     
     public static synchronized ElabNotificationsProvider getNotificationsProvider(
             Elab elab) {
-        Object p = get(elab, NOTIFICATIONS);
+    	ElabProvider p = get(elab, NOTIFICATIONS);
         if (p == null) {
             p = newInstance(elab, NOTIFICATIONS);
             set(elab, NOTIFICATIONS, p);

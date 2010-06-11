@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import gov.fnal.elab.ElabGroup;
-import gov.fnal.elab.ElabProvider;
+import gov.fnal.elab.ElabProviderHandled;
 import gov.fnal.elab.ElabStudent;
 import gov.fnal.elab.util.ElabException;
 
-public interface ElabSurveyProvider extends ElabProvider {
+public interface ElabSurveyProvider extends ElabProviderHandled {
 	
 	public ElabSurvey getSurvey(int surveyId) throws ElabException;
 	

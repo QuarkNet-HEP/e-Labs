@@ -4,12 +4,12 @@
 package gov.fnal.elab.notifications;
 
 import gov.fnal.elab.ElabGroup;
-import gov.fnal.elab.ElabProvider;
+import gov.fnal.elab.ElabProviderHandled;
 import gov.fnal.elab.util.ElabException;
 
 import java.util.List;
 
-public interface ElabNotificationsProvider extends ElabProvider {
+public interface ElabNotificationsProvider extends ElabProviderHandled {
 	public static final int MAX_COUNT = -1;
 	
     long getUnreadNotificationsCount(ElabGroup group) throws ElabException;

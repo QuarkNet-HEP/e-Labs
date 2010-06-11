@@ -16,7 +16,6 @@ import java.util.TreeMap;
 
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
-import gov.fnal.elab.ElabProvider;
 import gov.fnal.elab.ElabStudent;
 import gov.fnal.elab.survey.ElabSurvey;
 import gov.fnal.elab.survey.ElabSurveyProvider;
@@ -34,6 +33,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider {
 		tests = new HashMap<Integer, ElabSurvey>();
 	}
 	
+	@Override 
 	public void setElab(Elab elab) {
         this.elab = elab;
     }

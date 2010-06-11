@@ -5,10 +5,8 @@ package gov.fnal.elab;
 
 /**
  * 
- * Provider that want a handle on the elab they're used in should implement this
- * interface
+ * Generic root interface for all providers. See {@link ElabProviderHandled} to enforce a needed handle
  * 
  */
 public interface ElabProvider {
-    void setElab(Elab elab);
 }
