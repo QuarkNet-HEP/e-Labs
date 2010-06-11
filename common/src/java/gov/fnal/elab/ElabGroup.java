@@ -7,6 +7,7 @@ import gov.fnal.elab.usermanagement.ElabUserManagementProvider;
 import gov.fnal.elab.util.ElabException;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Encapsulates information about an elab user.
  */
-public class ElabGroup implements Comparable {
+public class ElabGroup implements Comparable<ElabGroup> {
     public static final String ROLE_TEACHER = "teacher";
     public static final String ROLE_ADMIN = "admin";
     public static final String ROLE_UPLOAD = "upload";
@@ -502,8 +503,22 @@ public class ElabGroup implements Comparable {
 	}
 
 	@Override
-	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		return this.getName().compareTo(((ElabGroup) o).getName());
+	public int compareTo(ElabGroup eg) {
+		return (new NAME_ORDER()).compare(this, eg);
 	}
+	
+	public static class NAME_ORDER implements Comparator<ElabGroup> {
+		@Override
+		public int compare(ElabGroup o1, ElabGroup o2) {
+			return o1.compareTo(o2);
+		}
+	}
+	
+	public static class ID_ORDER implements Comparator<ElabGroup> {
+		@Override
+		public int compare(ElabGroup o1, ElabGroup o2) {
+			return ((Integer) o1.getId()).compareTo(o2.getId());
+		}
+	}
+	
 }
