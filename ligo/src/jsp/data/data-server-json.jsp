@@ -50,6 +50,7 @@
 	}
 	else if (fn.equals("getTimeRange")) {
 		/* Call with data-server.jsp?fn=getTimeRange */
+		/* TODO: Fix this so it isn't slow. The speed is unacceptable for the first load. 
 	    List<DataPath> paths = de.getPaths();
 	    double min = Double.MAX_VALUE, max = Double.MIN_VALUE;
 	    for (DataPath dp : paths) {
@@ -65,6 +66,11 @@
 	    		// do nothing if the data is missing start/end data. 
 	    	}
 	    }
+	    */
+	    
+	    // Temporarily hardcode this for SPEED. Need fixing
+	    final double min = 730922400.0; 
+	    final double max = 949814519.0; 
 	    JsonObject jo = new JsonObject();
 	    jo.addProperty("minTime", min);
 	    jo.addProperty("maxTime", max);
