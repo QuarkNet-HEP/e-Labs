@@ -49,23 +49,8 @@
 	
 	// New survey/test handler is active by default. 
 	if (user.getNewSurveyId() == null) { 
-		if (StringUtils.equalsIgnoreCase(elab.getName(), "cosmic")) {
-			newSurveyId = Integer.parseInt(elab.getProperty("cosmic.newsurvey"));
-			user.setNewSurveyId(newSurveyId);
-		}
-		// set handlers for everything else. 
-		else if (StringUtils.equalsIgnoreCase(elab.getName(), "ligo")) {
-			newSurveyId = Integer.parseInt(elab.getProperty("ligo.newsurvey"));
-			user.setNewSurveyId(newSurveyId);
-		}
-		else if (StringUtils.equalsIgnoreCase(elab.getName(), "cms")) {
-			newSurveyId = Integer.parseInt(elab.getProperty("cms-tb.newsurvey"));
-			user.setNewSurveyId(newSurveyId);
-		}
-		else if (StringUtils.equalsIgnoreCase(elab.getName(), "cms")) {
-			newSurveyId = Integer.parseInt(elab.getProperty("cms-tb.newsurvey"));
-			user.setNewSurveyId(newSurveyId);
-		}
+		newSurveyId = Integer.parseInt(elab.getProperty(elab.getName() + ".newsurvey"));
+		user.setNewSurveyId(newSurveyId);
 	}
 	else {
 		newSurveyId = user.getNewSurveyId().intValue();

@@ -118,12 +118,7 @@
 				group.setStudy(false);
 				group.setNewSurvey("yes".equalsIgnoreCase(survey) || "true".equalsIgnoreCase(survey));
 				if (group.isNewSurvey() && group.getNewSurveyId() == null) {
-					if (elab.getId().equals("1")) {
-					   group.setNewSurveyId(Integer.parseInt(elab.getProperty("cosmic.newsurvey")));
-					}
-					if (elab.getId().equals("3")) {
-					    group.setNewSurveyId(Integer.parseInt(elab.getProperty("ligo.newsurvey")));
-					}
+					group.setNewSurveyId(Integer.parseInt(elab.getProperty(elab.getName() + ".newsurvey")));
 				}
 				students.add(newStudent);
 				//as far as I understand from the old code, with the mass registration, the 
