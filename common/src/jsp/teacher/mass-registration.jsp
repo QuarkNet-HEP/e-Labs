@@ -128,7 +128,7 @@
 				students.add(newStudent);
 				//as far as I understand from the old code, with the mass registration, the 
 				//groups are always created
-				newGroups.add(Boolean.TRUE);
+				newGroups.add(true);
 			}
 			List passwords = elab.getUserManagementProvider().addStudents(user, students, newGroups);
 			List results = new ArrayList();

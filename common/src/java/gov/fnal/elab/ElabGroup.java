@@ -465,10 +465,6 @@ public class ElabGroup implements Comparable<ElabGroup> {
 	public Integer getNewSurveyId() {
 		return newSurveyId;
 	}
-	
-	public void setNewSurveyId(int id) {
-		this.newSurveyId = Integer.valueOf(id);
-	}
 
 	public void setNewSurvey(boolean newSurvey) {
 		this.newSurvey = newSurvey;
