@@ -37,7 +37,7 @@ import javax.servlet.jsp.PageContext;
  * properties and providers.
  */
 public class Elab implements Serializable {
-    private static Map elabs;
+    private static Map<String, Elab> elabs;
     private static Elab global;
 
     private static int sid = 0;
@@ -90,7 +90,7 @@ public class Elab implements Serializable {
         if (elabs == null) {
             elabs = new HashMap();
         }
-        Elab elab = (Elab) elabs.get(name);
+        Elab elab = elabs.get(name);
         if (elab == null) {
             elab = Elab.newELab(context, name, properties, global
                     .getProperties());
@@ -151,7 +151,7 @@ public class Elab implements Serializable {
     private ServletContext context;
     private ServletConfig config;
     private PageContext pageContext;
-    private Map attributes;
+    private Map<String, Object> attributes;
 
     /**
      * Instantiates a new Elab object using the specified
@@ -454,7 +454,7 @@ public class Elab implements Serializable {
     	return url;
     }
 
-    public Map getAttributes() {
+    public Map<String, Object> getAttributes() {
         return attributes;
     }
 
@@ -466,13 +466,13 @@ public class Elab implements Serializable {
         return attributes.get(name);
     }
 
-    private Map realPaths;
+    private Map<Elab, ServletContext> realPaths;
 
     /**
      * Returns a lazy map that can be used to figure out the absolute paths of
      * files relative to an elab.
      */
-    public synchronized Map getRealPaths() {
+    public synchronized Map<Elab, ServletContext> getRealPaths() {
         if (realPaths == null) {
             realPaths = new RealPathMap(this, context);
         }
