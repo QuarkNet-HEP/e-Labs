@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class DatabaseTestProvider implements ElabTestProvider, ElabProvider {
+public class DatabaseTestProvider implements ElabTestProvider {
 
     private Elab elab;
     private Map tests;

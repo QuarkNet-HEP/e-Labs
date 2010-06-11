@@ -25,7 +25,7 @@ import gov.fnal.elab.survey.ElabSurveyQuestionAnswer;
 import gov.fnal.elab.util.DatabaseConnectionManager;
 import gov.fnal.elab.util.ElabException;
 
-public class DatabaseSurveyProvider implements ElabSurveyProvider, ElabProvider {
+public class DatabaseSurveyProvider implements ElabSurveyProvider {
 	
 	private Elab elab;
 	private Map<Integer, ElabSurvey> tests; 
