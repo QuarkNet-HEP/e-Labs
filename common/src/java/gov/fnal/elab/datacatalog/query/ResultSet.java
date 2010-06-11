@@ -79,7 +79,7 @@ public class ResultSet extends AbstractCollection<CatalogEntry> {
     public String[] getLfnArray() {
         String[] lfna = new String[entries.size()];
         for (int i = 0; i < lfna.length; i++) {
-            lfna[i] = ((CatalogEntry) entries.get(i)).getLFN();
+            lfna[i] = entries.get(i).getLFN();
         }
         return lfna;
     }
