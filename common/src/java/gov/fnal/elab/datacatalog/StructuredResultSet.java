@@ -8,6 +8,7 @@ import gov.fnal.elab.datacatalog.query.ResultSet;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -108,12 +109,10 @@ public class StructuredResultSet {
         this.startDate = startDate;
     }
 
-
     public static class School implements Comparable<School> {
         private String name, city, state;
         private int blessed, stacked, dataFiles;
         private long events;
-        private SortedMap<Date, Month> monthsSorted;
         private Map<String, Month> months;
 
         public School(String name, String city, String state) {
@@ -163,17 +162,10 @@ public class StructuredResultSet {
             return dataFiles;
         }
         
-        public synchronized Collection getMonthsSorted() {
-            if (monthsSorted == null) {
-                monthsSorted = new TreeMap();
-                Iterator i = months.values().iterator();
-                while (i.hasNext()) {
-                    Month m = (Month) i.next();
-                    monthsSorted.put(m.getDate(), m);
-                }
-            }
         public synchronized Collection<Month> getMonthsSorted() {
-            return monthsSorted.values();
+            List<Month> monthsSorted = new ArrayList(months.values()); 
+            Collections.sort(monthsSorted, new Month.DATE_ORDER()); 
+            return monthsSorted; 
         }
 
         public String getCity() {
@@ -265,6 +257,13 @@ public class StructuredResultSet {
         
         public Date getDate() {
             return date;
+        }
+        
+        public static class DATE_ORDER implements Comparator<Month> {
+    		@Override
+    		public int compare(Month o1, Month o2) {
+    			return o1.getDate().compareTo(o2.getDate());
+    		}
         }
     }
     
