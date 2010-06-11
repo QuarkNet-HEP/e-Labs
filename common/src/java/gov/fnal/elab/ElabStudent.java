@@ -36,17 +36,8 @@ public class ElabStudent {
         return "ElabStudent[id=" + id + ", name=" + name + "]";
     }
 
-    public boolean equals(Object obj) {
-        if (name == null) {
-            return false;
-        }
-        if (obj instanceof ElabStudent) {
-            ElabStudent s = (ElabStudent) obj;
-            return (s.id == id) && name.equals(s.name);
-        }
-        else {
-            return false;
-        }
+    public boolean equals(ElabStudent es) {
+    	return (es.id == id) && name.equals(es.name);
     }
 
     public int hashCode() {
