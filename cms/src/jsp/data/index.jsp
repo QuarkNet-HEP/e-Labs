@@ -45,7 +45,7 @@
 							<p><a href="../analysis-calibration">Determination of the Upsilon and J-Psi masses</a>
 							- Confirm that the detector is able to measure the Upsilon and J-Psi masses.</p>
 							
-							<p><a href="../analysis-calibration">Energy - Momentum equivalence.</a>
+							<p><a href="../analysis-calibration">Energy - Momentum Equivalence.</a>
 							- Use CMS data to confirm energy - momentum equivalence (for low-mass particles in high energy physics) .
 						</p>
 						
