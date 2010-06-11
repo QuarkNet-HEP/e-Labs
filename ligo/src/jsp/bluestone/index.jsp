@@ -43,6 +43,7 @@
 				Time<sub>end</sub>: <input readonly type="text" name="xmax" id="xmax" size="15" class="datapicker"></input>
 				<button title="Zoom to selection" id="buttonZoom">Zoom to selection</button>
 				<button title="Zoom all the way out" id="buttonZoomOut">Zoom all the way out</button>
+				<input type="checkbox" name="log" value="y-axis" id="logYcheckbox" class="logCheckbox" />Y-Axis Log Scale
 				<table>
 					<tr>
 						<td valign="top">
@@ -138,7 +139,7 @@
 				</div>
 				
 				<input id="addNewRow" type="button" value="+"></input>
-				<input id="parseDropDownAdvanced" type="button" value="Plot"></input>
+				<input id="plotButton" type="button" value="Plot"></input>
 				
 				<h2>Save This Plot</h2>
 				

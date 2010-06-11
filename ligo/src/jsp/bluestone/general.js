@@ -22,6 +22,9 @@ var options = {
 	shadowSize: 0
 };
 
+ln = function(v) { return v > 0 ? Math.log(v) : 0; }
+exp = function(v) { return Math.exp(v); }
+
 function spinnerOn() {
 	$("#busySpinner").css('visibility', 'visible');
 }
