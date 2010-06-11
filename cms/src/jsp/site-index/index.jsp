@@ -59,8 +59,8 @@
 								<li><a href="../analysis-lateral-size/background.jsp">Lateral Size</a></li>         
 								<li><a href="../analysis-beam-purity/background.jsp">Beam Purity</a></li>
 								<li><a href="../analysis-resolution/background.jsp">Resolution</a></li>
--->									
                 <li><b>Advanced:</b> <a href="http://www-root.fnal.gov/root/">Root Tutorial</a></li>
+-->									
 					</ul>
 	
 						</li>
@@ -97,9 +97,9 @@
 				<li>
 					<a href="../data/">Data Analysis</a>
 					<ul>
-	         <li><a href="${elab.properties['ogre']}" target="ogre">OGRE</a></li>
+					<li><a href="../analysis-calibration/">Calibration</a></li>         
 <!-- 
-					<li><a href="../analysis-lateral-size/">Lateral Size</a></li>         
+	         <li><a href="${elab.properties['ogre']}" target="ogre">OGRE</a></li>
 						<li><a href="../analysis-beam-purity/">Beam Purity</a></li>
 						<li><a href="../analysis-resolution/">Resolution</a></li>
 -->

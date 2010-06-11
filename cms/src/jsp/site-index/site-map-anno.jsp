@@ -90,8 +90,10 @@ function hideAll()
 							</td>
 							<td  width="127" valign="top" align="center">
 								<div id="sitehelp-data">
-									<a href="../data/view.jsp">View Data</a><br />
+									<a href="../analysis-calibration/">Calibration</a><br />
+<!-- 
 									<a href="${elab.properties['ogre']}" target="ogre">OGRE</a><br />
+ -->
 										<a href="../plots/?submit=true&key=all&uploaded=true">View Plots</a><br />
 <!-- 
 									<a href="../analysis/list.jsp">Analyses</a>
