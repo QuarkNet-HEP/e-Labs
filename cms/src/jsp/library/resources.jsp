@@ -120,8 +120,9 @@
 		</td>
 		<td>
 			<div id="right">
+<!-- 
 				<div class="tab" id="tab-tutorials">
-					<span class="tab-title">Tutorials</span>
+					<span class="tab-title">Tutorials - Coming Soon</span>
 					<div class="tab-contents">
 						<ul class="simple">
 								<li>
@@ -130,6 +131,7 @@
 							</li>
 							</ul>
 					</div>
+ -->
 				</div>
 				
 				<div class="tab" id="tab-contacts">
@@ -140,9 +142,11 @@
 							<li>
 								<a href="mailto:karmgard.1@nd.edu">Dan Karmgard</a> - University of Notre Dame
 							</li>
+<!-- 
 							<li>
 								<a href="mailto:pmooney@nd.edu">Patrick Mooney</a> - University of Notre Dame
 							</li>
+ -->
 							<li>
 								<a href="mailto:rruchti@nsf.gov">Randy Ruchti</a> - NSF and University of Notre Dame
 							</li>
