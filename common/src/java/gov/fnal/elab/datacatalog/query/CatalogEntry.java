@@ -18,7 +18,7 @@ import java.util.Set;
  * This class implements a single entry returned by a data catalog query
  * function.
  */
-public abstract class CatalogEntry {
+public abstract class CatalogEntry implements Iterable<Tuple> {
     private String lfn;
 
     /**
@@ -44,13 +44,17 @@ public abstract class CatalogEntry {
      * in this <code>CatalogEntry</code>. Each item returned by the
      * {@link Iterator.next} method is of type {@link Tuple}.
      */
-    public abstract Iterator tupleIterator();
+    public abstract Iterator<Tuple> tupleIterator();
 
     /**
      * To make JSP EL happy. This method is equivalent to {@link tupleIterator}.
      */
-    public Iterator getTupleIterator() {
+    public Iterator<Tuple> getTupleIterator() {
         return tupleIterator();
+    }
+    
+    public Iterator<Tuple> iterator() {
+    	return tupleIterator(); 
     }
 
     public abstract Collection getTuples();

@@ -51,7 +51,7 @@ public interface DataCatalogProvider extends ElabProvider {
      * The number of returned entries may be smaller then the size of the
      * specified collection (if some entries are not found).
      */
-    ResultSet getEntries(Collection lfns) throws ElabException;
+    ResultSet getEntries(Collection<String> lfns) throws ElabException;
 
     /**
      * Returns a single entry from the catalog matching the specified logical

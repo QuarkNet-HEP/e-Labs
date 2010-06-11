@@ -91,14 +91,10 @@ public class DataTools {
 
         StructuredResultSet srs = new StructuredResultSet();
         srs.setDataFileCount(rs.size());
-        Iterator i = rs.iterator();
-        while (i.hasNext()) {
-            CatalogEntry e = (CatalogEntry) i.next();
-            Iterator j = e.tupleIterator();
-
+        for (CatalogEntry e : rs) {
             Object[] data = new Object[KEYS.size()];
-            while (j.hasNext()) {
-                Tuple t = (Tuple) j.next();
+            
+            for (Tuple t : e) {
                 Integer index = (Integer) KEYS.get(t.getKey());
                 if (index != null) {
                     data[index.intValue()] = t.getValue();
@@ -213,7 +209,7 @@ public class DataTools {
      * 
      * @return A figure caption
      */
-    public static String getFigureCaption(Elab elab, Collection files)
+    public static String getFigureCaption(Elab elab, Collection<String> files)
             throws ElabException {
         if (files == null || files.size() == 0) {
             return "";
@@ -306,20 +302,14 @@ public class DataTools {
      * @return A {@link Collection} of values
      * 
      */
-    public static Collection getUniqueValues(Elab elab, Collection files,
+    public static Collection getUniqueValues(Elab elab, Collection<String> files,
             String key) throws ElabException {
         ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
         Set s = new HashSet();
-        Iterator i = rs.iterator();
-        while (i.hasNext()) {
-            CatalogEntry e = (CatalogEntry) i.next();
-            if (e == null) {
-                continue;
-            }
-            Object v = e.getTupleValue(key);
-            if (v != null) {
-                s.add(v);
-            }
+        for (CatalogEntry e : rs) {
+        	if (e != null && e.getTupleValue(key) != null) {
+        		s.add(e.getTupleValue(key));
+        	}
         }
         return s;
     }
@@ -397,11 +387,9 @@ public class DataTools {
      * @return A {@link CatalogEntry}
      */
     public static CatalogEntry buildCatalogEntry(final String lfn,
-            final Collection metadata) {
-        final Map tuples = new HashMap();
-        Iterator i = metadata.iterator();
-        while (i.hasNext()) {
-            String m = (String) i.next();
+            final Collection<String> metadata) {
+        final Map<String, Object> tuples = new HashMap();
+        for (String m : metadata) {
             int n = m.indexOf(' ');
             int t = m.indexOf(' ', n + 1);
             if (n == -1 || t == -1) {
@@ -441,7 +429,7 @@ public class DataTools {
                 throw new UnsupportedOperationException("setTupleValue");
             }
 
-            public Iterator tupleIterator() {
+            public Iterator<Tuple> tupleIterator() {
                 final Iterator i = tuples.entrySet().iterator();
 
                 return new Iterator() {
@@ -450,8 +438,8 @@ public class DataTools {
                     }
 
                     public Object next() {
-                        Map.Entry e = (Map.Entry) i.next();
-                        return new Tuple((String) e.getKey(), e.getValue());
+                        Map.Entry<String, Object> e = (Map.Entry) i.next();
+                        return new Tuple(e.getKey(), e.getValue());
                     }
 
                     public void remove() {

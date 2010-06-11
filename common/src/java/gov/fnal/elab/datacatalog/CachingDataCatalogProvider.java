@@ -21,7 +21,7 @@ import java.util.HashSet;
 public class CachingDataCatalogProvider implements DataCatalogProvider {
     private DataCatalogProvider delegate;
 
-    private Collection lastFiles;
+    private Collection<String> lastFiles;
     private ResultSet lastResultSet;
     private boolean updating;
     
@@ -32,7 +32,7 @@ public class CachingDataCatalogProvider implements DataCatalogProvider {
         this.delegate = delegate;
     }
 
-    private ResultSet getCachedEntries(Collection files) throws ElabException {
+    private ResultSet getCachedEntries(Collection<String> files) throws ElabException {
     	long now;
         synchronized (this) {
         	now = System.currentTimeMillis();
@@ -59,7 +59,7 @@ public class CachingDataCatalogProvider implements DataCatalogProvider {
         }
     }
     
-    public ResultSet getEntries(Collection lfns) throws ElabException {
+    public ResultSet getEntries(Collection<String> lfns) throws ElabException {
         return getCachedEntries(lfns);
     }
 
