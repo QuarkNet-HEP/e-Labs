@@ -49,7 +49,7 @@ import org.griphyn.vdl.util.VDL2Config;
  * Runs analyses with Swift. Doble Yay!
  */
 public class SwiftAnalysisExecutor implements AnalysisExecutor {
-    private static final Map trees;
+    private static final Map<String, DatedTree> trees;
 
     static {
         trees = new HashMap();
@@ -57,8 +57,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
 
     protected synchronized static ElementTree getTree(Elab elab, String file)
             throws SpecificationException, IOException, Exception {
-        DatedTree tree;
-        tree = (DatedTree) trees.get(file);
+        DatedTree tree = trees.get(file);
         if (tree == null) {
             tree = new DatedTree(elab, file);
             trees.put(file, tree);
