@@ -11,9 +11,8 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-public class GPSConvertingJSMillisDataSetSerializer implements
-		JsonSerializer<DataSet> {
-	protected int shadowSize = 0; 
+public class GPSConvertingJSMillisDataSetSerializer extends DataSetSerializer {
+	private int shadowSize = 0; 
 
 	@Override
 	public JsonElement serialize(DataSet src, Type typeOfSrc,
