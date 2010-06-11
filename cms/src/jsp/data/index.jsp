@@ -32,8 +32,25 @@
 				<div class="tab">
 					<span class="tab-title">Analysis</span>
 					<div class="tab-contents">
-					 Access <a href="${elab.properties['ogre']}" target="ogre">OGRE</a> to do your analysis.
-					</div>
+					<p>
+						<b>Calibration Studies: Use CMS data to confirm that the detector is working.</b></p>
+							
+						<div style="margin-left: 10px">
+							<p><a href="../analysis-calibration">Determination of Z mass</a>
+							- Confirm that the detector is able to measure the Z mass.</p>
+						
+						
+						<p><i>Coming Soon:</i></p>
+							
+							<p><a href="../analysis-calibration">Determination of the Upsilon and J-Psi masses</a>
+							- Confirm that the detector is able to measure the Upsilon and J-Psi masses.</p>
+							
+							<p><a href="../analysis-calibration">Energy - Momentum equivalence.</a>
+							- Use CMS data to confirm energy - momentum equivalence (for low-mass particles in high energy physics) .
+						</p>
+						
+						</div>
+				</div>
 				</div>		
 			</div>
 		</td>
