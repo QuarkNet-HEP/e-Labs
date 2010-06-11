@@ -3,12 +3,15 @@
  */
 package gov.fnal.elab.datacatalog;
 
+import edu.emory.mathcs.backport.java.util.Collections;
 import gov.fnal.elab.datacatalog.query.ResultSet;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -41,7 +44,7 @@ public class StructuredResultSet {
         schools.put(new Triple<String, String, String>(school.getName().toLowerCase(), school.getCity().toLowerCase(), school.getState().toLowerCase()), school);
     }
 
-    public Collection getSchools() {
+    public Collection<School> getSchools() {
         return schools.values();
     }
 
@@ -49,7 +52,7 @@ public class StructuredResultSet {
         return schools.size();
     }
 
-    public synchronized Collection getSchoolsSorted() {
+    public synchronized Collection<School> getSchoolsSorted() {
     	return this.getSchools();
     }
 
@@ -106,12 +109,12 @@ public class StructuredResultSet {
     }
 
 
-    public static class School implements Comparable {
+    public static class School implements Comparable<School> {
         private String name, city, state;
         private int blessed, stacked, dataFiles;
         private long events;
-        private SortedMap monthsSorted;
-        private Map months;
+        private SortedMap<Date, Month> monthsSorted;
+        private Map<String, Month> months;
 
         public School(String name, String city, String state) {
             this.name = name;
@@ -141,14 +144,14 @@ public class StructuredResultSet {
         }
 
         public Month getMonth(String month) {
-            return (Month) months.get(month);
+            return months.get(month);
         }
 
         public void addDay(Month month) {
             months.put(month.getMonth(), month);
         }
 
-        public Collection getMonths() {
+        public Collection<Month> getMonths() {
             return months.values();
         }
 
@@ -169,6 +172,7 @@ public class StructuredResultSet {
                     monthsSorted.put(m.getDate(), m);
                 }
             }
+        public synchronized Collection<Month> getMonthsSorted() {
             return monthsSorted.values();
         }
 
@@ -200,25 +204,20 @@ public class StructuredResultSet {
             return events;
         }
 		
-		public int compareTo(Object o) {
+		public int compareTo(School s) {
 			int retval = 0; 
-			if (o instanceof School) {
-				retval = name.compareToIgnoreCase(((School) o).getName());
+			retval = name.compareToIgnoreCase(s.getName());
+			if (retval == 0) {
+				retval = city.compareToIgnoreCase(s.getCity()); 
 				if (retval == 0) {
-					retval = city.compareToIgnoreCase(((School) o).getCity()); 
-					if (retval == 0) {
-						retval = state.compareToIgnoreCase(((School) o).getState());
-					}
+					retval = state.compareToIgnoreCase(s.getState());
 				}
 			}
 			return retval; 
 		}
 		
-		public boolean equals(Object o) { 
-			if (o instanceof School) {
-				return (this.compareTo(o) == 0);
-			}
-			return false; 
+		public boolean equals(School s) { 
+			return this.compareTo(s) == 0; 
 		}
     }
 
@@ -269,7 +268,7 @@ public class StructuredResultSet {
         }
     }
     
-    public static class Detector implements Comparable {
+    public static class Detector implements Comparable<Detector> {
     	private Integer detectorID; 
     	private SortedSet<File> files; 
     	
@@ -278,8 +277,8 @@ public class StructuredResultSet {
     		files = new TreeSet(); 
     	}
 
-		public int compareTo(Object o) {
-			return this.detectorID.compareTo(((Detector) o).getDetectorID()); 
+		public int compareTo(Detector d) {
+			return this.detectorID.compareTo(d.getDetectorID()); 
 		}
 
 		public void setDetectorID(Integer detectorID) {
@@ -304,7 +303,7 @@ public class StructuredResultSet {
 		
     }
 
-    public static class File implements Comparable {
+    public static class File implements Comparable<File> {
         private boolean blessed;
         private Boolean stacked;
         private final String lfn;
@@ -359,14 +358,13 @@ public class StructuredResultSet {
             this.startDate = startDate;
         }
 
-        public int compareTo(Object o) {
-            File other = (File) o;
-            int d = startDate.compareTo(other.startDate);
+        public int compareTo(File f) {
+            int d = startDate.compareTo(f.startDate);
             if (d != 0) {
                 return d;
             }
             else {
-                return lfn.compareTo(other.lfn);
+                return lfn.compareTo(f.lfn);
             }
         }
 
