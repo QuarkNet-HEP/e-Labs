@@ -20,14 +20,12 @@
 <area shape="rect" alt="" coords="440,178,507,219" href="javascript:reference('cms_data_selection',420)" title="Choose appropriate data from the data sets.">
 <area shape="rect" alt="" coords="471,100,516,133" href="#" title="Are you satisfied with your results or do you need to analyze more data?">
 
-<area shape="rect" alt="" coords="376,82,438,121" href="javascript:reference('cms_design_study',450)"  title="Design a study to answer your own specific research question.">
-<area shape="rect" alt="" coords="261,151,326,186" href="javascript:reference('describe_particles',550)"  title="Identify and describe the particles colliding inside the CMS detector and those predicted by the Standard Model to emerge from the collisions.">
-<area shape="rect" alt="" coords="317,187,377,229" href="javascript:reference('list_subdetectors',550)"  title="List each CMS subdetector, in order, and explain the particles it detects.">
-<area shape="rect" alt="" coords="374,157,438,197" href="javascript:reference('relate_emp',550)"  title="Relate energy, mass and momentum and explain the role of conservation of mass/energy, momentum and charge in analyzing CMS events. ">
-<area shape="rect" alt="" coords="259,74,321,124" href="javascript:reference('describe_physics',420)"  title="Describe the physics questions that CMS  is designed to address.">
-
-
-
+<area shape="rect" alt="" coords="376,79,438,118" href="javascript:reference('cms_design_study',450)"  title=Choose from among suggested studies, or design your own!">
+<area shape="rect" alt="" coords="260,181,325,219" href="javascript:reference('describe_particles',550)"  title="Become familiar with particles colliding and produced in the LHC.">
+<area shape="rect" alt="" coords="260,125,326,164" href="javascript:reference('detector_geom',550)"  title="Get to know the structure and function of CMS detector sub-detectors.">
+<area shape="rect" alt="" coords="372,123,451,164" href="javascript:reference('relate_emp',550)"  title="Apply conservation of energy, mass and momentum to CMS events.">
+<area shape="rect" alt="" coords="259,74,326,117" href="javascript:reference('physics_questions',420)"  title="Prepare to discuss the big physics questions driving CMS discovery science.">
+<area shape="rect" alt="" coords="358,180,418,223" href="javascript:reference('event_displays',550)" title="Make sense of event displays in 2- and 3-D.">
 
 
 <area shape="rect" alt="" coords="587,3,651,58" href="#" title="Goal: Make a poster and discuss results.">

@@ -87,19 +87,27 @@ Click on <img border="0" src="../graphics/ref.gif"> for
 						<h2>Prepares the team to design the investigation:</h2>
 						<ul>
 							<li>
-								Describe the physics questions that CMS is designed to address.
-								<a href="javascript:reference('describe physics',420)">
+								Describe physics questions that CMS is designed to address.
+								<a href="javascript:reference('physics questions',420)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
-							Describe the particles colliding inside the CMS detector and those predicted by the Standard Model to emerge from the collisions.
+								Describe the structure and function of CMS detector.
+								<a href="javascript:reference('detector geom',420)">
+									<img src="../graphics/ref.gif">
+								</a>
+							</li>
+							<li>
+							Describe the particles interacting in the CMS detector.
 							<a href="javascript:reference('describe particles',420)">
 									<img src="../graphics/ref.gif">
 								</a>
-							</li><li>
-								List each CMS subdetector, in order, and explain that order in terms of the properties of the particles each detects.
-								<a href="javascript:reference('list subdetectors',420)">
+							</li>
+
+							<li>
+								Interpret basic event displays.
+								<a href="javascript:reference('event displays',400)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
@@ -110,7 +118,7 @@ Click on <img border="0" src="../graphics/ref.gif"> for
 								</a>
 							</li>
 							<li>
-								Design a study to answer your own specific research question.
+								Choose a study (or design your own!).
 								<a href="javascript:reference('cms design study',400)">
 									<img src="../graphics/ref.gif">
 								</a>
