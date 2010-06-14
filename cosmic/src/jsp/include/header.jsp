@@ -30,6 +30,7 @@
 			<a href="#" onClick="javascript:displayNotifications();">
 				<img id="notifications-icon" title="Notifications" src="../notifications/icon.jsp?elab=${elab.name}" />
 			</a>
+			
 			<script type="text/javascript" src="../include/notifications.js"></script>
 			<div id="notifications-popup" style="display: none">
 				<h1>Notifications</h1>

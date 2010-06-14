@@ -19,20 +19,32 @@ g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QU
 BufferedImage baseIcon = ImageIO.read(new File(application.getRealPath(elab + "/graphics/notifications.png")));
 g2.drawImage(baseIcon, 0, 0, null);
 
-ElabGroup user = ElabGroup.getUser(session);
-if (user != null) {
-	ElabNotificationsProvider np = ElabFactory.getNotificationsProvider(Elab.getElab(pageContext, elab));
-	long count = np.getUnreadNotificationsCount(user);
-	if (count > 0L) {
-		String str = String.valueOf(count);
-		Font font = new Font("sans", Font.BOLD, 9); 
-		int radius = count < 10 ? 6 : count < 100 ? 7 : 10; 
-		g2.setColor(Color.RED);
-		g2.fillOval(15 - radius, 10 - radius, radius * 2, radius * 2);
-		g2.setFont(font);
-		g2.setColor(Color.WHITE);
-		g2.drawString(String.valueOf(count), 24 - radius * 2, 13);
+try {
+	ElabGroup user = ElabGroup.getUser(session);
+	if (user != null) {
+		ElabNotificationsProvider np = ElabFactory.getNotificationsProvider(Elab.getElab(pageContext, elab));
+		long count = np.getUnreadNotificationsCount(user);
+		if (count > 0L) {
+			String str = String.valueOf(count);
+			Font font = new Font("sans", Font.BOLD, 9); 
+			int radius = count < 10 ? 6 : count < 100 ? 7 : 10; 
+			g2.setColor(Color.RED);
+			g2.fillOval(15 - radius, 10 - radius, radius * 2, radius * 2);
+			g2.setFont(font);
+			g2.setColor(Color.WHITE);
+			g2.drawString(str, 24 - radius * 2, 13);
+		}
 	}
+}
+catch(Exception e) {
+	String str = "?";
+	Font font = new Font("sans", Font.BOLD, 9); 
+	int radius = 6;  
+	g2.setColor(Color.GRAY);
+	g2.fillOval(15 - radius, 10 - radius, radius * 2, radius * 2);
+	g2.setFont(font);
+	g2.setColor(Color.WHITE);
+	g2.drawString(str, 24 - radius * 2, 13);
 }
 
 response.setContentType("image/png");

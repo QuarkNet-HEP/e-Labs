@@ -25,7 +25,7 @@ public class DefaultAnalysisNotifier implements AnalysisRunListener, AnalysisNot
             Elab elab = run.getAnalysis().getElab();
             ElabNotificationsProvider np = ElabFactory.getNotificationsProvider(elab);
             Notification n = new Notification();
-            n.setGroupId(run.getAnalysis().getUser().getId());
+            n.setCreatorGroupId(run.getAnalysis().getUser().getId());
             String s = failed ? "failed" : "completed";
             n.setMessage("<a href=\"../analysis/status.jsp?id=" + run.getId() + "\">" + run.getAnalysis().getName() + "</a> " + s);
             try {

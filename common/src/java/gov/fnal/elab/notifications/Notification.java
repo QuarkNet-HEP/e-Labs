@@ -43,22 +43,21 @@ public class Notification {
 	}
     
     private int id;
-    private String message;
-    private long creation, expiration; 
+    private String message = "";
+    private long creation = System.currentTimeMillis(), expiration; 
     private boolean read = false, deleted = false, broadcast = false;
     private MessageType type = MessageType.NORMAL;
     
-    private int groupId;  
+    private int creatorGroupId;  
     
     public Notification() {
-   
     }
     
-    public Notification(int id, String message, int groupId, long creation, long expiration, int type,
+    public Notification(int id, String message, int creatorGroupId, long creation, long expiration, int type,
             boolean read, boolean deleted) {
         this.id = id;
         this.message = message;
-        this.groupId = groupId;
+        this.creatorGroupId = creatorGroupId;
         this.read = read;
         this.type = MessageType.fromCode(type);
         this.creation = creation; 
@@ -81,12 +80,12 @@ public class Notification {
         this.message = message;
     }
 
-    public int getGroupId() {
-        return groupId;
+    public int getCreatorGroupId() {
+        return creatorGroupId;
     }
 
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
+    public void setCreatorGroupId(int creatorGroupId) {
+        this.creatorGroupId = creatorGroupId;
     }
 
     public long getCreationDate() {

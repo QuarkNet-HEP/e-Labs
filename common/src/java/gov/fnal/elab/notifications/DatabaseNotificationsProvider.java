@@ -47,13 +47,13 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             boolean ac = conn.getAutoCommit();
             psMessage = conn.prepareStatement(
-            		"INSERT INTO notifications.message (time, expiration, message, type) " +
-                    "VALUES (?, ?, ?, ?, ?, ?) RETURNING id;"); 
+            		"INSERT INTO notifications.message (time, expiration, message, type, creator_research_group_id) " +
+                    "VALUES (?, ?, ?, ?, ?) RETURNING id;"); 
             psState = conn.prepareStatement(
-            		"INSERT INTO notification.state (message_id, research_group_id) " +
+            		"INSERT INTO notifications.state (message_id, research_group_id) " +
             		"VALUES (?, ?);");
             psProject = conn.prepareStatement(
-            		"INSERT INTO notification.broadcast (message_id, project_id) " +
+            		"INSERT INTO notifications.broadcast (message_id, project_id) " +
             		"VALUES (?, ?);"); 
             try {
                 conn.setAutoCommit(false);
@@ -62,6 +62,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 psMessage.setTimestamp(2, new Timestamp(n.getExpirationDate())); 
                 psMessage.setString(3, n.getMessage());
                 psMessage.setInt(4, n.getType().getDBCode());
+                psMessage.setInt(5, n.getCreatorGroupId());
                 
                 ResultSet rs = psMessage.executeQuery(); 
                 if (rs.next()) {

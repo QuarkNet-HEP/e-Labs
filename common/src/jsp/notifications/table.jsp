@@ -15,9 +15,7 @@
 		<tr id="not${n.id}">
 			<td>${n.message}</td>
 			<td class="remove">
-				<c:if test="${n.groupId != -1}">
-					<a href="javascript:markAsDeleted('not', ${n.id}, '${elab.name}')"><img src="../graphics/notification-remove.png" /></a>
-				</c:if>
+				<a href="javascript:markAsDeleted('not', ${n.id}, '${elab.name}')"><img src="../graphics/notification-remove.png" /></a>
 			</td>
 		</tr>
 	</c:forEach>

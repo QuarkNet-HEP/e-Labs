@@ -6,6 +6,7 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/teacher-login-required.jsp" %>
 <%@ page import="org.owasp.validator.html.*" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 
 <%
 	String send = request.getParameter("send");
@@ -15,9 +16,11 @@
 	    if ((recipients == null || recipients.length == 0) && !all) {
 	        throw new ElabJspException("Please select at least one recipient");
 	    }
-	    List<String> lrec = new ArrayList<String>();
+	    List<ElabGroup> groupsToNotify = new ArrayList();
 	    if (all) {
-	        lrec.addAll(user.getGroupNames());
+	        for (ElabGroup eg : user.getGroups()) {
+	        	groupsToNotify.add(eg);
+	        }
 	    }
 	    else {
 	        for (String rec : recipients) {
@@ -25,13 +28,13 @@
 	                throw new ElabJspException(rec + " is not one of your groups");
 	            }
 	            else {
-	                lrec.add(rec);
+	            	groupsToNotify.add(user.getGroup(rec));
 	            }
 	        }
 	    }
 	    
 	    String message = request.getParameter("message");
-	    if (message == null || message.length() == 0) {
+	    if (StringUtils.isBlank(message)) {
 	        throw new ElabJspException("Message is empty");
 	    }
 	    message = message.trim();
@@ -60,15 +63,18 @@
 	    }
 	    
 	    ElabNotificationsProvider np = ElabFactory.getNotificationsProvider((Elab) session.getAttribute("elab"));
-	    for (String rec : lrec) {
-	        Notification n = new Notification();
-	        n.setGroupId(user.getGroup(rec).getId());
-	        n.setMessage(message);
-	        if (expirestoggle) {
-	            n.setExpirationDate(System.currentTimeMillis() + 1000 * 3600 * expval * ("day".equals(expiresunit) ? 1 : 24));
-	        }
-	        np.addNotification(user, n);
-	    }
+        Notification n = new Notification();
+        n.setCreatorGroupId(user.getId());
+        n.setMessage(message);
+        if (expirestoggle) {
+            n.setExpirationDate(System.currentTimeMillis() + 1000 * 3600 * expval * ("day".equals(expiresunit) ? 1 : 24));
+        }
+        else {
+        	GregorianCalendar gc = new GregorianCalendar(); 
+        	gc.add(Calendar.YEAR, 1);
+        	n.setExpirationDate(gc.getTimeInMillis());
+        }
+        np.addUserNotification(groupsToNotify, n);
 	}
 %>
 

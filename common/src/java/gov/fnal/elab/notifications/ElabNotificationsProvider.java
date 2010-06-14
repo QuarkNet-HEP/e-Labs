@@ -20,9 +20,13 @@ public interface ElabNotificationsProvider extends ElabProviderHandled {
     
     List<Notification> getSystemNotifications(int count) throws ElabException;
     
-    public void addNotification(ElabGroup eg, Notification n) throws ElabException; 
+    void addNotification(ElabGroup eg, Notification n) throws ElabException; 
     
     void addNotification(List<ElabGroup> groupList, List<Integer> projectList, Notification n) throws ElabException;
+    
+    public void addUserNotification(List<ElabGroup> groupList, Notification n) throws ElabException;
+    
+    public void addProjectNotification(List<Integer> projectList, Notification n) throws ElabException;
     
     void markAsRead(Notification notification);
     

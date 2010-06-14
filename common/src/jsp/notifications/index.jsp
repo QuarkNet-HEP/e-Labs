@@ -49,9 +49,7 @@
 							${n.message}
 						</td>
 						<td width="2%">
-							<c:if test="${n.groupId != -1}">
-								<a href="javascript:markAsDeleted('next', ${n.id}, '${elab.name}')"><img src="../graphics/notification-remove.png" /></a>
-							</c:if>
+							<a href="javascript:markAsDeleted('next', ${n.id}, '${elab.name}')"><img src="../graphics/notification-remove.png" /></a>
 						</td>
 					</tr>
 				</c:forEach>
