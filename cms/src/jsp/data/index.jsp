@@ -33,7 +33,7 @@
 					<span class="tab-title">Analysis</span>
 					<div class="tab-contents">
 					<p>
-						<b>Calibration Studies: Use CMS data to confirm that the detector is working.</b></p>
+						<b>Calibration Studies:</b> Use CMS data to confirm that the detector is working.</p>
 							
 						<div style="margin-left: 10px">
 							<p><a href="../analysis-calibration">Determination of Z mass</a>
