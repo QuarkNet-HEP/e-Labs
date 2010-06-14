@@ -73,6 +73,19 @@ h1.bottomheader {
 	width: 140px;
 }
 
+a.button {
+	background-color: #ff6600;
+	border-top: #ffa76c 1px solid;
+	border-left: #ffa76c 1px solid;
+	border-bottom: #b54800 1px solid;
+	border-right: #b54800 1px solid;
+	padding-left: 6px;
+	padding-right: 6px;
+	color: black;
+	text-decoration: none;
+	font-weight: bold;
+}
+
 .library dt {
 	font-weight: bold;
 }
@@ -87,28 +100,41 @@ h1.bottomheader {
 
 /************* Tab **************/
 
-.tab:before {
-	background-color: #40ffb3;
-}
 
 .library .tab {
 	padding-top: 10px;
 	width: 100%;
 }
 
+.tab:before {
+	background-color: #40ffb3;
+}
+
+
 .library .tab .tab-title {
 	background-color: #40ffb3;
-	border-left: 1px solid #358974;
+border-left: 1px solid #358974;
 	border-right: 1px solid #358974;
-	/*border-top: 1px solid #358974;*/
+/*	border-top: 1px solid #358974;
+*/
 	font-weight: bold;
+	padding-left: 3px;
+	padding-right: 3px;
 	margin: 0px;
+	/*width: 144px;*/
+
 }
 
 .library .tab .tab-contents {
 	background-color: #99ffcc;
 	margin: 0px;
+	border: 1px solid black;
+/*
 	border-top: 2px solid black;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+	border-left: 1px solid black;
+*/
 	padding-bottom: 16px;
 	padding-left: 8px;
 	padding-right: 8px;
@@ -135,7 +161,57 @@ h1.bottomheader {
 	padding-right: 3px;
 }
 
+.library .tab .tab-contents-sublevel {
+	background-color: #ffffff;
+	margin: 0px;
+	border: 1px solid black;
+	padding-bottom: 16px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.library #content .tab-contents-sublevel h2 {
+	font-weight: bold;
+	font-style: italic;
+	padding-left: 10px;
+	font-size: 100%;
+}
+
+.library #content .tab-contents-sublevel li {
+	font-weight: normal;
+	padding-left: 8px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.library #content .tab-contents-sublevel li:before {
+	display: marker;
+	content: url("../graphics/ref_dot.gif");
+	marker-offset: auto;
+	padding-right: 3px;
+}
+
+
+
+
 .float {
 	float: left;
 	padding-right: 8px;
+}
+
+#show-all-references {
+	background-image: url("../graphics/Quadrille.gif");
+}
+
+#show-all-references #references-table {
+	border: thin outset gray;
+}
+
+#show-all-references #references-table td {
+	border: thin inset gray;
+	padding: 4px;
+}
+
+#show-all-references #references-table .reference-text {
+	background-color: white;
 }
