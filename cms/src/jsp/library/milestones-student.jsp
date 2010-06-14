@@ -63,7 +63,7 @@ Click on <img border="0" src="../graphics/ref.gif"> for
 								</a>
 							</li>
 							<li>
-								Choose and apply appropriate analysis tools. 
+								Apply appropriate analysis tool. 
 								<a href="javascript:reference('cms analysis',420)">
 									<img src="../graphics/ref.gif">
 								</a>

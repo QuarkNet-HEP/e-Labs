@@ -16,7 +16,7 @@
 <area shape="rect" alt="" coords="578,157,641,211" href="javascript:reference('assemble evidence',250)" title="Assemble evidence for your results. Select the best plots for your poster.">
 
 <area shape="rect" alt="" coords="520,93,590,127" href="javascript:reference('cms_assessment',400)" title="Assess your plots and see if they support your ideas.">
-<area shape="rect" alt="" coords="509,177,577,216" href="javascript:reference('cms_analysis',450)" title="Use OGRE to analyze your data.">
+<area shape="rect" alt="" coords="509,177,577,216" href="javascript:reference('cms_analysis',450)" title="Apply appropriate analysis tool.">
 <area shape="rect" alt="" coords="440,178,507,219" href="javascript:reference('cms_data_selection',420)" title="Choose appropriate data from the data sets.">
 <area shape="rect" alt="" coords="471,100,516,133" href="#" title="Are you satisfied with your results or do you need to analyze more data?">
 
