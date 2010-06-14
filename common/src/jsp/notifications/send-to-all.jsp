@@ -6,28 +6,36 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/admin-login-required.jsp" %>
 <%@ page import="org.owasp.validator.html.*" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
+
 
 <%
 	String send = request.getParameter("send");
 	if ("Send".equals(send)) {
-	    String[] recipients = request.getParameterValues("destination");
-	    boolean all = request.getParameter("allelabs") != null && request.getParameter("allelabs").length() > 0; 
+		String[] recipients = request.getParameterValues("recipients"); 
+	    boolean all = StringUtils.isNotBlank(request.getParameter("allelabs")); 
 	    if ((recipients == null || recipients.length == 0) && !all) {
-	        throw new ElabJspException("Please select at least one elab");
+	        throw new ElabJspException("Please select at least one eLab");
 	    }
-	    List<Integer> lrec = new ArrayList<Integer>();
-	    if (!all) {
+	    List<Integer> projectIds = new ArrayList<Integer>();
+	    if (all) {
 	        for (Elab e : elab.getAllElabs()) {
-	            lrec.add(e.getId());
+	        	projectIds.add(e.getId());
 	        }
 	    }
 	    else {
-	        lrec.add(-1);
+	    	for (Elab e : elab.getAllElabs()) {
+	        	for (String s : recipients) {
+	        		if (e.getName().equalsIgnoreCase(s)) {
+	        			projectIds.add(e.getId());
+	        		}
+	        	}
+	        }
 	    }
 	    
 	    String message = request.getParameter("message");
-	    if (message == null || message.length() == 0) {
-	        throw new ElabJspException("Message is empty");
+	    if (StringUtils.isBlank(message)) {
+	        throw new ElabJspException("Please write a message");
 	    }
 	    message = message.trim();
 	    message = message.substring("<p>".length(), message.length() - "</p>".length());
@@ -59,20 +67,23 @@
 	        priority = Integer.parseInt(request.getParameter("priority"));
 	    }
 	    catch (NumberFormatException e) {
-	        throw new ElabJspException("Priority is not numeric: " + request.getParameter("priority"));
+	        throw new ElabJspException("Please select a priority: " + request.getParameter("priority"));
 	    }
 
 	    ElabNotificationsProvider np = ElabFactory.getNotificationsProvider((Elab) session.getAttribute("elab"));
-	    for (int elabid : lrec) {
-	        Notification n = new Notification();
-	        n.setGroupId(-1);
-	        n.setMessage(message);
-	        if (expirestoggle) {
-	            n.setExpirationDate(System.currentTimeMillis() + 1000 * 3600 * expval * ("day".equals(expiresunit) ? 1 : 24));
-	        }
-	        n.setType(Notification.MessageType.fromCode(priority)); 
-	        np.addNotification(user, n);
-	    }
+        Notification n = new Notification();
+        n.setCreatorGroupId(user.getId());
+        n.setMessage(message);
+        if (expirestoggle) {
+            n.setExpirationDate(System.currentTimeMillis() + 1000 * 3600 * expval * ("day".equals(expiresunit) ? 1 : 24));
+        }
+        else {
+        	GregorianCalendar gc = new GregorianCalendar(); 
+        	gc.add(Calendar.YEAR, 1);
+        	n.setExpirationDate(gc.getTimeInMillis());
+        }
+        n.setType(Notification.MessageType.fromCode(priority)); 
+        np.addProjectNotification(projectIds, n);
 	}
 %>
 

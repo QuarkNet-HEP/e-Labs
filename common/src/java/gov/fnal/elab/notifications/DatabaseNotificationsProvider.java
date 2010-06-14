@@ -155,7 +155,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
 
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
-                	ps = conn.prepareStatement("UPDATE notifications.state SET deleted = TRUE WHERE message_id = ? AND research_group_id = ?;");
+                	ps = conn.prepareStatement("UPDATE notifications.state SET deleted = TRUE, read = TRUE WHERE message_id = ? AND research_group_id = ?;");
         			ps.setInt(1, id);
         			ps.setInt(2, user.getId());
         			int rows = ps.executeUpdate();

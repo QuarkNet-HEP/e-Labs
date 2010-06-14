@@ -12,7 +12,7 @@
 	String send = request.getParameter("send");
 	if ("Send".equals(send)) {
 	    String[] recipients = request.getParameterValues("destination");
-	    boolean all = request.getParameter("allgroups") != null && request.getParameter("allgroups").length() > 0; 
+	    boolean all = StringUtils.isNotBlank(request.getParameter("allgroups")); 
 	    if ((recipients == null || recipients.length == 0) && !all) {
 	        throw new ElabJspException("Please select at least one recipient");
 	    }
