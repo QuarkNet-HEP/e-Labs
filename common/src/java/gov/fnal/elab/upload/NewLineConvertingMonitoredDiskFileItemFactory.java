@@ -31,6 +31,13 @@ public class NewLineConvertingMonitoredDiskFileItemFactory extends
 		super();
 		this.listener = listener;
 	}
+	
+	public NewLineConvertingMonitoredDiskFileItemFactory(int sizeThreshold, 
+			OutputStreamListener listener) {
+		super();
+		this.setSizeThreshold(sizeThreshold);
+		this.listener = listener; 
+	}
 
 	public NewLineConvertingMonitoredDiskFileItemFactory(int sizeThreshold,
 			File repository, OutputStreamListener listener) {
