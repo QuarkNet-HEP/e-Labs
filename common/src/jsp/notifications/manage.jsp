@@ -8,7 +8,7 @@
 <%
 	{
 		ElabNotificationsProvider np = ElabFactory.getNotificationsProvider((Elab) session.getAttribute("elab"));
-		request.setAttribute("notifications2", np.getSystemNotifications(-1));
+		request.setAttribute("notifications2", np.getSystemNotifications(ElabNotificationsProvider.MAX_COUNT));
 	}
 %>
 
@@ -54,11 +54,11 @@
 						<td>
 							${n.groupId}
 						</td>
-						<td>
+						<%--<td>
 							${n.projectId}
-						</td>
+						</td>  --%>
 						<td>
-							${n.priority}
+							${type}
 						</td>
 						<td>
 							${n.message}

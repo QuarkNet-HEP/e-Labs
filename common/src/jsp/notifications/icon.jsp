@@ -22,8 +22,8 @@ g2.drawImage(baseIcon, 0, 0, null);
 ElabGroup user = ElabGroup.getUser(session);
 if (user != null) {
 	ElabNotificationsProvider np = ElabFactory.getNotificationsProvider(Elab.getElab(pageContext, elab));
-	int count = np.getUnreadNotificationsCount(user);
-	if (count > 0) {
+	long count = np.getUnreadNotificationsCount(user);
+	if (count > 0L) {
 		String str = String.valueOf(count);
 		Font font = new Font("sans", Font.BOLD, 9); 
 		int radius = count < 10 ? 6 : count < 100 ? 7 : 10; 

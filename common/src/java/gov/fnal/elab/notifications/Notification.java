@@ -3,32 +3,66 @@
  */
 package gov.fnal.elab.notifications;
 
-import java.util.Date;
+import gov.fnal.elab.ElabGroup;
+
+import java.sql.Timestamp;
+import java.util.*;
 
 public class Notification {
-    public static final int PRIORITY_NORMAL = 0;
-    public static final int PRIORITY_SYSTEM_MESSAGE = 1;
-    public static final int USER_EVERYONE = -1; 
+	public static enum MessageType {
+		NORMAL(0),
+		SYSTEM(1),
+		STAFF(2);
+		
+		private static final Map<Integer, MessageType> reverse; 
+		
+		private final int dbCode; 
+		
+		static {
+			reverse = new HashMap();
+			for (MessageType mt : EnumSet.allOf(MessageType.class)) {
+				reverse.put(mt.getDBCode(), mt);
+			}
+		}
+		
+		private MessageType(int dbCode) {
+			this.dbCode = dbCode; 
+		}
+		
+		public int getDBCode() {
+			return dbCode; 
+		}
+		
+		public static MessageType fromCode(int value) {
+			MessageType ret = reverse.get(value);
+			if (ret == null) {
+				throw new IllegalArgumentException();
+			}
+			return ret; 
+		}
+	}
     
     private int id;
     private String message;
-    private int groupId, projectId, priority;
-    private long time, expires;
-    private boolean read;
-
+    private long creation, expiration; 
+    private boolean read = false, deleted = false, broadcast = false;
+    private MessageType type = MessageType.NORMAL;
+    
+    private int groupId;  
+    
     public Notification() {
+   
     }
-
-    public Notification(int id, String message, Integer groupId, Integer projectId, long time, long expires, int priority,
-            boolean read) {
+    
+    public Notification(int id, String message, int groupId, long creation, long expiration, int type,
+            boolean read, boolean deleted) {
         this.id = id;
         this.message = message;
         this.groupId = groupId;
-        this.projectId = projectId;
-        this.time = time;
         this.read = read;
-        this.expires = expires;
-        this.priority = priority;
+        this.type = MessageType.fromCode(type);
+        this.creation = creation; 
+        this.expiration = expiration; 
     }
 
     public int getId() {
@@ -55,12 +89,12 @@ public class Notification {
         this.groupId = groupId;
     }
 
-    public long getTime() {
-        return time;
+    public long getCreationDate() {
+        return creation;
     }
 
-    public void setTime(long time) {
-        this.time = time;
+    public void setCreationDate(long creation) {
+        this.creation = creation; 
     }
 
     public boolean isRead() {
@@ -71,35 +105,28 @@ public class Notification {
         this.read = read;
     }
 
-    public int getProjectId() {
-        return projectId;
+    public MessageType getType() {
+        return type;
     }
 
-    public void setProjectId(int projectId) {
-        this.projectId = projectId;
+    public void setType(MessageType type) {
+        this.type = type;
     }
 
-    public int getPriority() {
-        return priority;
+    public long getExpirationDate() {
+        return expiration;
     }
 
-    public void setPriority(int priority) {
-        this.priority = priority;
+    public void setExpirationDate(long expiration) {
+        this.expiration = expiration;
     }
-
-    public long getExpires() {
-        return expires;
-    }
-
-    public void setExpires(long expires) {
-        this.expires = expires;
+    
+    public boolean isBroadcast() {
+    	return broadcast; 
     }
     
     public Date getTimeAsDate() {
-        return new Date(time);
+    	return new Date(creation);
     }
     
-    public Date getExpiresAsDate() {
-        return new Date(expires);
-    }
 }

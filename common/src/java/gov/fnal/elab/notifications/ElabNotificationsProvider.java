@@ -18,9 +18,11 @@ public interface ElabNotificationsProvider extends ElabProviderHandled {
     
     List<Notification> getNotifications(ElabGroup group, int max, boolean includeOld) throws ElabException;
     
-    List<Notification> getSystemNotifications() throws ElabException;
+    List<Notification> getSystemNotifications(int count) throws ElabException;
     
-    void addNotification(ElabGroup group, Notification notification) throws ElabException;
+    public void addNotification(ElabGroup eg, Notification n) throws ElabException; 
+    
+    void addNotification(List<ElabGroup> groupList, List<Integer> projectList, Notification n) throws ElabException;
     
     void markAsRead(Notification notification);
     

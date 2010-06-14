@@ -68,10 +68,9 @@
 	        n.setGroupId(-1);
 	        n.setMessage(message);
 	        if (expirestoggle) {
-	            n.setExpires(System.currentTimeMillis() + 1000 * 3600 * expval * ("day".equals(expiresunit) ? 1 : 24));
+	            n.setExpirationDate(System.currentTimeMillis() + 1000 * 3600 * expval * ("day".equals(expiresunit) ? 1 : 24));
 	        }
-	        n.setProjectId(elabid);
-	        n.setPriority(priority);
+	        n.setType(Notification.MessageType.fromCode(priority)); 
 	        np.addNotification(user, n);
 	    }
 	}

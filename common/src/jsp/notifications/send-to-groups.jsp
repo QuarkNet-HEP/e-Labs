@@ -65,9 +65,8 @@
 	        n.setGroupId(user.getGroup(rec).getId());
 	        n.setMessage(message);
 	        if (expirestoggle) {
-	            n.setExpires(System.currentTimeMillis() + 1000 * 3600 * expval * ("day".equals(expiresunit) ? 1 : 24));
+	            n.setExpirationDate(System.currentTimeMillis() + 1000 * 3600 * expval * ("day".equals(expiresunit) ? 1 : 24));
 	        }
-	        n.setProjectId(elab.getId());
 	        np.addNotification(user, n);
 	    }
 	}

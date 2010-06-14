@@ -28,7 +28,6 @@ public class UploadNotifier implements AnalysisRunListener, AnalysisNotifier {
             ElabNotificationsProvider np = ElabFactory.getNotificationsProvider(elab);
             Notification n = new Notification();
             n.setGroupId(run.getAnalysis().getUser().getId());
-            n.setProjectId(elab.getId());
             String s = failed ? " failed" : " completed";
             String cont = (String) (failed ? run.getAttribute("onError") : run.getAttribute("continuation"));            
             String fn = String.valueOf(run.getAnalysis().getParameter("in"));
