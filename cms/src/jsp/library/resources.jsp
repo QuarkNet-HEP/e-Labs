@@ -36,64 +36,155 @@
 		<td>
 			<div id="left">
 					
+
 				<div class="tab" id="tab-online">
-					<span class="tab-title">Online</span>
-					<div class="tab-contents">
+					<span class="tab-title">Websites</span>
+					<div class="tab-contents-sublevel">
 						<h2>Student-Friendly Sites</h2>
 						<ul class="simple">
 							<li>
-								<a href="http://cmsinfo.cern.ch/outreach/CMSmedia/CMSmovies.html">2 minute video Introduction to Cern</a>
-								- A two minute video to introduce CERN- a downloadable Real/Video file. 7 MB.
+								<a href=" http://cms.web.cern.ch/cms/index.html">Welcome to CMS</a>
+								- From CMS at CERN.
 							</li>
 							<li>
-								<a href="http://cmsinfo.cern.ch/Welcome.html/">CMS Outreach Activities</a>
-								- Decent site, includes CMS trivia, information, and picture.
+<a href="http://public.web.cern.ch/public/en/LHC/CMS-en.html">CMS: Compact Muon Solenoid</a>
+								- From the CERN public website.
+							</li>
+
+							<li>
+								<a href="http://particleadventure.org/modern_detect.html">The Particle Adventure</a>
+								- Modern Detectors.
+							</li>
+
+							<li>
+								<a href="http://www.fnal.gov/pub/inquiring/matter/madeof/index.html">What is the world made of?</a>
+								- From Inquiring Minds - Fermilab.
+							</li>
+
+							<li>
+								<a href="http://hands-on-cern.physto.se/hoc_v21en/index.html">Hands-on-CERN</a>
 							</li>
 							<li>
-								<a href="http://www.phys.ufl.edu/hee/cms/">CMS Experiment</a>
-								- Concise explanation of CMS, links, and picture.
+								<a href="http://www.lhc.ac.uk/">The Large Hadron Collider</a> - from the Science and Technology Facilities Council, Great Britain
 							</li>
 							<li>
-								<a href="http://www.iisc.ernet.in/pramana/april2000/dae11.htm">LHC Program/CMS Experiment</a>
-								- PDF file &ndash; extremely detailed, would recommend site for someone who already has a good
-								idea of the CMS experiment.
-							</li>
-							<li>
-								<a href="http://en.wikipedia.org/wiki/Compact_Muon_Solenoid">CMS Wikipedia Encyclopedia Definition</a>
-								- Definition of CMS, relevant links.
-							</li>
-							<li>
-								<a href="http://www.phy.hr/~dpaar/fizicari/">Famous Physicists</a>
-								- List of many famous physicists with a picture and small biography.
-							</li>
-							<li>
-								<a href="http://physics.about.com/cs/glossary/a/glossary.htm">Physics Glossary</a>
-								- Physics glossary with terms and definitions.
-							</li>
-							<li>
-								<a href="http://www.exploratorium.edu/origins/cern/tools/lhc.html">The Large Hadron Collider </a>
-								- Detailed explanation of the LHC, with pictures, and links. Easy to understand explanation.
+								<a href="http://atlas.ch/">The Atlas Detector</a> - Atlas website at CERN
 							</li>
 						</ul>
 
 						<h2>Professional Sites</h2>
 						<ul class="simple">
-							<li>
-								<a href="http://www.gaengineering.com/INGLESE%20ok/INDUSTRIAL%20PROGRAMMES/CMS/CMS.htm">G&amp;A Engineering CMS</a>
-								- Description of the CMS detector, including a mission overview and CMS layout.
-							</li>
-							<li>
-								<a href="http://www-td.fnal.gov/projects/muon.html">Fermilab's CMS Website</a>
-								- Description of CMS with good links.
-							</li>
 						</ul>
 					</div>
 				</div>
 				
 				
+							<div class="tab" id="tab-video">
+					<span class="tab-title">Video</span>
+					<div class="tab-contents-sublevel">
+						<ul  class="simple">
+
+<li>
+								<a href="http://news.bbc.co.uk/2/hi/science/nature/7543089.stm">Guide to the LHC</a> - from the BBC
+							</li>
+							<li>
+								<a href="http://www.youtube.com/watch?v=EaDRu9sV_zs">The LHC - how it works</a> 
+							</li>
+							<li>
+								<a href="http://www.youtube.com/user/SciTechUK">In Search of Giants</a>
+								- from SciTechUK 
+							</li>
+							<li>
+								<a href="http://www.youtube.com/watch?v=Kf3T4ZHnuvc&feature=related">First Images after Proton Beam Passes through LHC</a>
+								- from New Scientist
+							</li>							
+
+							<li>
+								<a href="http://www.youtube.com/watch?v=rgLdIly2Xtw&feature=related">LHC Accelerator at CERN</a>
+								- from CERN Multimedia Productions
+							</li>							
+							<li>
+								<a href="http://www.youtube.com/user/CERNTV">CERN-TV</a>
+							</li>							
+
+							
+							
+							</ul>
+							</div>
+							</div>
+							
+				
+				
+			</div>
+		</td>
+		<td>
+			<div id="right">
+<%-- 
+				<div class="tab" id="tab-tutorials">
+					<span class="tab-title">Tutorials - Coming Soon</span>
+					<div class="tab-contents-sublevel">
+						<ul class="simple">
+								<li>
+								<b>Advanced:</b> <a href="http://www-root.fnal.gov/root/">ROOT Tutorial</a>
+								- Learn how to use ROOT (the underpinnings of OGRE)  to analyze any aspect of the data directly.
+							</li>
+							</ul>
+					</div>
+--%>
+				</div>
+				
+				<div class="tab" id="tab-contacts">
+					<span class="tab-title">Contacts</span>	
+					<div class="tab-contents-sublevel">
+						<h2>Physicists</h2>
+						<ul class="simple">
+							<li>
+								<a href="mailto:karmgard.1@nd.edu">Dan Karmgard</a> - University of Notre Dame
+							</li>
+							<li>
+								<a href="mailto:pmooney@nd.edu">Patrick Mooney</a> - University of Notre Dame
+							</li>
+							<li>
+								<a href="mailto:rruchti@nsf.gov">Randy Ruchti</a> - NSF and University of Notre Dame
+							</li>
+						</ul>
+						<h2><a href="../library/students.jsp">Student Research Groups</a></h2>
+					</div>
+				</div>
+				
+				<div class="tab" id="tab-slideshows">
+					<span class="tab-title">Slideshows</span>
+					<div class="tab-contents-sublevel">
+						<ul class="simple">
+							<li>
+								<a href="http://outreach.phys.uh.edu/index_files/PPT/Notre%20Dame/CMS_Coll.ppt">The 
+                  				Compact Muon Solenoid at the Large  Collider</a> - Presentation on the Compact Muon 
+                  				Solenoid, written by Dan Green.
+							</li>
+						</ul>
+					</div>
+				</div>
+
+					<div class="tab" id="tab-it-careers">
+					<span class="tab-title">IT Careers</span>
+					<div class="tab-contents-sublevel">
+						<ul class="simple">
+							<li>
+								<a href="http://www2.edc.org/ewit/materials/ITCCBRO.pdf">Career Cluster Pamphlet</a>,
+								(pdf) from Vocational information Center's <A href="http://www.khake.com/page17.html">Computer Science Career Guide</a>
+							</li>
+							<li>
+								<a href="http://www.microsoft.com/learning/training/careers/prepare.mspx">Prepare for an Information Technology (IT) Career</a>,
+								from Microsoft Learning
+							</li>
+							</ul>
+					</div>			
+				
+	             </div>			
+
 							<div class="tab" id="tab-grid-computing">
 					<span class="tab-title">Grid Computing</span>
-					<div class="tab-contents">
+					<div class="tab-contents-sublevel">
 						<ul  class="simple">
 							<li>
 								<a href="http://gridcafe.web.cern.ch/gridcafe/">The Grid Cafe</a>
@@ -113,87 +204,6 @@
 							</ul>
 							</div>
 							</div>
-							
-				
-				
-			</div>
-		</td>
-		<td>
-			<div id="right">
-<%-- 
-				<div class="tab" id="tab-tutorials">
-					<span class="tab-title">Tutorials - Coming Soon</span>
-					<div class="tab-contents">
-						<ul class="simple">
-								<li>
-								<b>Advanced:</b> <a href="http://www-root.fnal.gov/root/">ROOT Tutorial</a>
-								- Learn how to use ROOT (the underpinnings of OGRE)  to analyze any aspect of the data directly.
-							</li>
-							</ul>
-					</div>
---%>
-				</div>
-				
-				<div class="tab" id="tab-contacts">
-					<span class="tab-title">Contacts</span>	
-					<div class="tab-contents">
-						<h2>Physicists</h2>
-						<ul class="simple">
-							<li>
-								<a href="mailto:karmgard.1@nd.edu">Dan Karmgard</a> - University of Notre Dame
-							</li>
-<%-- 
-							<li>
-								<a href="mailto:pmooney@nd.edu">Patrick Mooney</a> - University of Notre Dame
-							</li>
---%>
-							<li>
-								<a href="mailto:rruchti@nsf.gov">Randy Ruchti</a> - NSF and University of Notre Dame
-							</li>
-						</ul>
-						<h2><a href="../library/students.jsp">Student Research Groups</a></h2>
-					</div>
-				</div>
-				
-				<div class="tab" id="tab-slideshows">
-					<span class="tab-title">Slideshows</span>
-					<div class="tab-contents">
-						<ul class="simple">
-							<li>
-								<a href="http://www.phys.ufl.edu/~acosta/cms/mcdonald_reu_talk.pdf">Study 
-                  				of the Optimum Momentum Resolution of CMS Experiment</a>
-                  				- Presentation on CMS experiment. Written by Timothy McDonald
-							</li>
-							<li>
-								<a href="http://www.wlap.org/wl-repository/umich/phys/um-cern-reu/2004/20040805-umwlap002-08-wagner/real/sld001.htm">Muon Identification in CMS</a>
-								- Slideshow on the CMS experiment, written by Andrew Wagner.
-							</li>
-							<li>
-								<a href="http://outreach.phys.uh.edu/index_files/PPT/Notre%20Dame/CMS_Coll.ppt">The 
-                  				Compact Muon Solenoid at the Large  Collider</a> - Presentation on the Compact Muon 
-                  				Solenoid, written by Dan Green.
-							</li>
-						</ul>
-					</div>
-				</div>
-
-					<div class="tab" id="tab-it-careers">
-					<span class="tab-title">IT Careers</span>
-					<div class="tab-contents">
-						<ul class="simple">
-							<li>
-								<a href="http://www2.edc.org/ewit/materials/ITCCBRO.pdf">Career Cluster Pamphlet</a>,
-								(pdf) from Vocational information Center's <A href="http://www.khake.com/page17.html">Computer Science Career Guide</a>
-							</li>
-							<li>
-								<a href="http://www.microsoft.com/learning/training/careers/prepare.mspx">Prepare for an Information Technology (IT) Career</a>,
-								from Microsoft Learning
-							</li>
-							</ul>
-					</div>			
-				
-	             </div>			
-
 
 
 			</div>
