@@ -65,22 +65,19 @@
 	padding-top: 4px;
 }
 
-#header-current-user {
-	position: absolute;
-	top: 0px;
-	left: 500px;
-	color: white;
+#header-toolbar a {
+	font-size: small;
+	font-weight: bold; 
+	text-decoration: none;
 }
 
-#header-logout {
+#header-toolbar {
 	position: absolute;
 	right: 0px;
 }
 
-#header-logbook {
-	position: absolute;
-	top: 20px;
-	right: 0px;
+#logout {
+	color: red;
 }
 
 /*

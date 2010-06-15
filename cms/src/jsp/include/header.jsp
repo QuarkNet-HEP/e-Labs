@@ -8,38 +8,36 @@
 <script type="text/javascript" src="../include/jquery/js/jquery.event.hover-1.0.js"></script>
 <script type="text/javascript" src="../include/jquery/js/css-gradients-via-canvas.js"></script>
 
+<%
+	boolean loggedIn = ElabGroup.isUserLoggedIn(session);
+	request.setAttribute("loggedin", loggedIn);
+	if (loggedIn) {
+	    ElabGroup group = ElabGroup.getUser(session);
+	    request.setAttribute("username", group.getName());
+	}
+%>
 
-<%--
-<div id="header-image">
-	<img src="../graphics/cms_poster_horizontal_final.jpg" alt="Header Image" />
-</div>
---%>
 <div id="header-image">
 	<img src="../graphics/cms_logo.png" alt="CMS Logo" />
 </div>
 <div id="header-title">CMS e-Lab</div>
-<%
-	if (ElabGroup.isUserLoggedIn(session)) {
-		%>
-			<div id="header-current-user">
-				Logged in as group: 
-					<a href="../login/user-info.jsp"><%= ElabGroup.getUser(session).getName() %></a>				
-			</div>
-			<div id="header-logout">
-				<a href="../login/logout.jsp">Logout</a>
-			</div>
-			<div id="header-logbook">
-				<c:choose>
-					<c:when test="${user.teacher}">
-						<e:popup href="../jsp/showLogbookT.jsp" target="log" width="800" height="600">My Logbook</e:popup>
-					</c:when>
-					<c:otherwise>
-						<e:popup href="../jsp/showLogbook.jsp" target="log" width="800" height="600">My Logbook</e:popup>
-					</c:otherwise>
-				</c:choose>
-			</div>
-		<%
-	}
-	request.setAttribute("headerIncluded", Boolean.TRUE);
-	out.flush();
-%>
+<c:choose>
+	<c:when test="${loggedin}">
+		<div id="header-toolbar">
+			<c:choose>
+				<c:when test="${user.teacher}">
+					<e:popup href="/elab/cosmic/teacher/forum/HelpDeskRequest.php" target="helpdesk" width="800" height="600"><img title="Helpdesk" src="../graphics/helpdesk.png" /></e:popup>
+					<e:popup href="../jsp/showLogbookT.jsp" target="log" width="800" height="600"><img title="Logbook" src="../graphics/logbook.png" /></e:popup>
+				</c:when>
+				<c:otherwise>
+					<e:popup href="../jsp/showLogbook.jsp" target="log" width="800" height="600"><img title="Logbook" src="../graphics/logbook.png" /></e:popup>
+				</c:otherwise>
+			</c:choose>
+			<a id="username" href="../login/user-info.jsp"><span class="toolbar-text-link">${username}</span></a>
+			<a href="../login/logout.jsp"><span id="logout" class="toolbar-text-link">Log out</span></a>
+		</div>
+		<span id="toolbar-error-text"></span>
+		<c:set var="headerIncluded" value="true" scope="request"/>
+		<% out.flush(); %>
+	</c:when>
+</c:choose>
