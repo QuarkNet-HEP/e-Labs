@@ -278,6 +278,7 @@ function parseReply(text) {
 				crt["path"] = value;
 				data = new Array();
 				crt["data"] = data;
+				crt["binwidth"] = 1;
 				break;
 			case "units":
 				//this relies on logx logy info appearing in the stream before the units
@@ -574,8 +575,8 @@ function bindButtons(index) {
 		plotUnselected(index);
 	});
 	
-	bindTextWithApply(index, "maxy", "apply-maxy", "maxy", redrawPlot, function(x) {return !isNaN(x);});
-	bindTextWithApply(index, "binwidth", "apply-binwidth", "binwidth", reBin, function(x) {return !isNaN(x) && x > 0;});
+	bindTextWithApply(index, "maxy", "apply-maxy", "maxy", null, redrawPlot, function(x) {return !isNaN(x);});
+	bindTextWithApply(index, "binwidth", "apply-binwidth", "binwidth", 1, reBin, function(x) {return !isNaN(x) && x > 0;});
 
 	$(plot + " .anim-bskip").bind("click", function() {animationBSkip(index)});
 	$(plot + " .anim-playpause").bind("click", function() {animationPlayPause(index)});
@@ -585,9 +586,12 @@ function bindButtons(index) {
 	$(plot + " .anim-decspeed").bind("click", function() {animationDecSpeed(index)});
 }
 
-function bindTextWithApply(index, textClass, applyClass, propName, callback, isValid) {
+function bindTextWithApply(index, textClass, applyClass, propName, defaultValue, callback, isValid) {
 	var textSelector = "#plot" + index + " ." + textClass;
 	var applySelector = "#plot" + index + " ." + applyClass;
+	if (defaultValue != null) {
+		$(textSelector).attr("value", defaultValue);
+	}
 	$(textSelector).bind("keyup", function() {
 		// the input doesn't see the results of the keypress 
 		// until after this handler is called, at least on chrome
@@ -618,7 +622,10 @@ function bindTextWithApply(index, textClass, applyClass, propName, callback, isV
 		var value = $(textSelector).attr("value");
 		var textval = parseFloat(value);
 		if (value == "") {
-			setAll(document.plotData[index], propName, null); //auto
+			setAll(document.plotData[index], propName, defaultValue); //auto
+			if (defaultValue != null) {
+				$(textSelector).attr("value", defaultValue);
+			}
 			$(applySelector).attr("disabled", true);
 			$(applySelector).attr("value", "Set");
 		}

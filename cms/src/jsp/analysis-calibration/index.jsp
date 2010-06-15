@@ -9,7 +9,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Detector Calibration Study</title>
+		<title>Data Selection - Detector Calibration Study</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
@@ -30,7 +30,7 @@
 			</div>
 			<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
 			<div id="content">
-<h1>Detector Calibration Study</h1>
+<h1>Data Selection - Detector Calibration Study</h1>
 <script>
 	initlog();
 	log("<span class='red'>dataset: ${param.dataset}</span>");
@@ -44,12 +44,14 @@
 	<e:trinput type="hidden" name="dataset" id="dataset-input" default="${dataset}"/>
 	<e:trinput type="hidden" name="plots"/>
 	<e:trinput type="hidden" name="combine"/>
+	<e:trinput type="hidden" name="analysisName" default="Detector Calibration Study"/>
+	<e:trinput type="hidden" name="analysis" default="calibration"/>
 	<table border="0" id="main">
 		<tr>
 			<td>
 				<div id="simple-form">
 					<select id="simplified-triggers">
-						<option value="none">Choose events...</option>
+						<option value="none">Choose event type...</option>
 						<option value="uu">Muons</option>
 						<option value="ee">Electrons</option>
 						<option value="uu or ee">Muons or Electrons</option>
@@ -83,16 +85,19 @@
 					</script>
 				</div>
 				
-				<e:vswitch id="data-selection-panel" title="Advanced Data Selection" titleclass="panel-title">
-					<e:visible image="../graphics/plus.png">
-					</e:visible>
-					<e:hidden image="../graphics/minus.png">
-						<jsp:include page="../data/triggers.jsp">
-							<jsp:param name="dataset" value="${dataset}"/>
-						</jsp:include>
-					</e:hidden>
-				</e:vswitch>
-				<e:vswitch id="selected-events-panel" title="Advanced Run Selection" titleclass="panel-title">
+				<table id="step-buttons" border="0" width="100%">
+					<tr>
+						<td width="100%">
+						</td>
+						<td>
+							<div class="wait-on-runs">
+								<input id="plot-params-button" type="submit" value="Plot Selection >" />
+							</div>
+						</td>
+					</tr>
+				</table>
+				
+				<e:vswitch id="selected-events-panel" title="Run Selection" titleclass="panel-title">
 					<e:visible image="../graphics/plus.png">
 					</e:visible>
 					<e:hidden image="../graphics/minus.png">
@@ -108,18 +113,16 @@
 						</div>
 					</e:hidden>
 				</e:vswitch>
+				<e:vswitch id="data-selection-panel" title="Advanced Data Selection" titleclass="panel-title">
+					<e:visible image="../graphics/plus.png">
+					</e:visible>
+					<e:hidden image="../graphics/minus.png">
+						<jsp:include page="../data/triggers.jsp">
+							<jsp:param name="dataset" value="${dataset}"/>
+						</jsp:include>
+					</e:hidden>
+				</e:vswitch>
 				
-				<table id="step-buttons" border="0" width="100%">
-					<tr>
-						<td width="100%">
-						</td>
-						<td>
-							<div class="wait-on-runs">
-								<input id="plot-params-button" type="submit" value="Plot Parameters >" />
-							</div>
-						</td>
-					</tr>
-				</table>
 			</td>
 		</tr>
 	</table>

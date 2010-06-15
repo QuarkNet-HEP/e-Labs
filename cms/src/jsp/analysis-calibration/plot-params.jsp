@@ -7,7 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Plot Selection</title>
+		<title>Plot Selection - ${param.analysisName}</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
@@ -29,7 +29,7 @@
 			<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
 		    <script type="text/javascript" src="../analysis-calibration/plot-params.js"></script>
 			<div id="content">
-<h1>Plot selection</h1>
+<h1>Plot selection - ${analysisName}</h1>
 <script>
 	initlog();
 	log("<span class='red'>dataset: ${param.dataset}</span>");
@@ -44,7 +44,8 @@
 <e:trinput type="hidden" name="dataset"/>
 <e:trinput type="hidden" name="runs"/>
 <e:trinput type="hidden" name="expr"/>
-<input type="hidden" name="analysis" value="calibration"/>
+<e:trinput type="hidden" name="analysisName"/>
+<e:trinput type="hidden" name="analysis"/>
 <table border="0" id="main">
 	<tr>
 		<td>
@@ -74,6 +75,19 @@
 					$('#simplified-plots').change(updatePlots);
 				</script>
 			</div>
+			
+			<table border="0" width="100%" id="step-buttons">
+				<tr>
+					<td>
+						<input type="submit" name="back" value="&lt; Data Selection" />
+					</td>
+					<td width="100%">
+					</td>
+					<td>
+						<input id="plot-submit" type="submit" name="forward" value="Plot >" disabled="true" />
+					</td>
+				</tr>
+			</table>
 			
 	<e:vswitch id="advanced-plot-panel" title="Advanced Plot Selection" titleclass="panel-title">
 		<e:visible image="../graphics/plus.png">
@@ -108,19 +122,7 @@
 	
 			</table>
 		</e:hidden>
-	</e:vswitch>
-				<table border="0" width="100%" id="step-buttons">
-					<tr>
-						<td>
-							<input type="submit" name="back" value="&lt; Data Selection" />
-						</td>
-						<td width="100%">
-						</td>
-						<td>
-							<input id="plot-submit" type="submit" name="forward" value="Plot >" disabled="true" />
-						</td>
-					</tr>
-				</table>
+	</e:vswitch>				
 </td>
 </tr>
 </table>
