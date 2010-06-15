@@ -35,11 +35,15 @@
 <%
 	// Check if the teacher is in the study
 	ElabGroup user = (ElabGroup) request.getAttribute("user");
+	boolean newSurvey = false;  
+	
 	if (user != null) {
-		boolean newSurvey = (user.isStudy() || user.isNewSurvey());
-		request.setAttribute("newSurvey", new Boolean(newSurvey));
+		if (user.getRole().equalsIgnoreCase("teacher")) {
+			newSurvey = elab.getSurveyProvider().hasTeacherAssignedSurvey(user.getId());
+		}
+		request.setAttribute("userId", user.getId());
 	}
-
+	request.setAttribute("newSurvey", newSurvey);
 %>
 
 <table border="0" id="main">
@@ -90,17 +94,12 @@
 				<c:choose>
 					<c:when test="${newSurvey == true }">
 						<e:restricted role="teacher">
-						<h2>Test results</h2>
-						<b>For research groups created after Summer 2009</b>
-						<ul class="simple">
-							<li><a href="../survey/survey.jsp?type=pre&studentid=0&id=0">Pre-test</a> and <a href="../survey/survey.jsp?type=post&studentid=0&id=0">Post-test</a>.</li>
-							<li>Student Results for the <a href="../survey/results.jsp?type=pre">pre-test</a> and the <a href="../survey/results.jsp?type=post">post-test</a>.</li>
-						</ul>
-						<b>For research groups created before Summer 2009</b>
-						<ul class="simple">
-							<li><a href="../test/test.jsp?type=presurvey&studentid=0">Pre-test</a> and <a href="../test/test.jsp?type=postsurvey&studentid=0">Post-test</a>.</li>
-							<li>Student Results for the <a href="../test/results.jsp?type=presurvey">pre-test</a> and the <a href="../test/results.jsp?type=postsurvey">post-test</a>.</li>
-						</ul>
+							<h2>Test results</h2>
+							<b>For research groups created after Summer 2009</b>
+							<ul class="simple">
+								<li><a href="../survey/survey.jsp?type=pre&studentid=0&id=0">Pre-test</a> and <a href="../survey/survey.jsp?type=post&studentid=0&id=0">Post-test</a>.</li>
+								<li>Student Results for the <a href="../survey/results.jsp?type=pre">pre-test</a> and the <a href="../survey/results.jsp?type=post">post-test</a>.</li>
+							</ul>
 						</e:restricted>
 					</c:when>
 				</c:choose>

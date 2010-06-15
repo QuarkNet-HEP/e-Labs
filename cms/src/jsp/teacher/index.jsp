@@ -26,6 +26,20 @@
 
 <h1>Teacher Home - Bookmark It!</h1>
 
+<%
+	// Check if the teacher is in the study
+	ElabGroup user = (ElabGroup) request.getAttribute("user");
+	boolean newSurvey = false;  
+	
+	if (user != null) {
+		if (user.getRole().equalsIgnoreCase("teacher")) {
+			newSurvey = elab.getSurveyProvider().hasTeacherAssignedSurvey(user.getId());
+		}
+		request.setAttribute("userId", user.getId());
+	}
+	request.setAttribute("newSurvey", newSurvey);
+%>
+
 <table border="0" id="main">
 	<tr>
 		<td>
