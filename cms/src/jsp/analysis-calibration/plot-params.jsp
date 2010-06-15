@@ -31,7 +31,7 @@
 			<div id="content">
 			
 <a class="help-icon" target="help" href="plot-params-help.jsp"><img src="../graphics/help.png" /></a>
-<h1>Plot selection - ${analysisName}</h1>
+<h1>Plot selection - ${param.analysisName}</h1>
 <script>
 	initlog();
 	log("<span class='red'>dataset: ${param.dataset}</span>");
