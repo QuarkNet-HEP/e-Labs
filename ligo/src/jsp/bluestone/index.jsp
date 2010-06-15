@@ -40,7 +40,7 @@
 				<h1>Super Bluestone <span style="color: red">Public Beta 1</span></h1>
 				<br /><br />
 				Time<sub>start</sub>: <input readonly type="text" name="xmin" id="xmin" size="15" class="datepicker"></input>
-				Time<sub>end</sub>: <input readonly type="text" name="xmax" id="xmax" size="15" class="datapicker"></input>
+				Time<sub>end</sub>: <input readonly type="text" name="xmax" id="xmax" size="15" class="datepicker"></input>
 				<button title="Zoom to selection" id="buttonZoom">Zoom to selection</button>
 				<button title="Zoom all the way out" id="buttonZoomOut">Zoom all the way out</button>
 				<input type="checkbox" name="log" value="y-axis" id="logYcheckbox" class="logCheckbox" />Y-Axis Log Scale

@@ -13,6 +13,8 @@ var ligoMinTime;
 var ligoMaxTime; 
 var ligoMaxRange; 
 
+var hasBeenPlotted = false; 
+
 var options = { 
 	lines: {show: true, lineWidth: 1, shadowSize: 0 },
 	points: {show: false},
@@ -20,6 +22,19 @@ var options = {
 	xaxis: { mode: 'time'},
 	selection: { mode: "x" },
 	shadowSize: 0
+};
+
+var calendarParam = {
+	showOn: 'button', 
+	buttonImage: '../graphics/calendar-blue.png',
+	buttonImageOnly: true, 
+	changeMonth: true,
+	changeYear: true, 
+	showButtonPanel: true,
+	dateFormat: 'D M dd yy',
+	minDate: new Date(2003, 3-1, 5),
+	maxDate: new Date(2010, 2-1, 2),
+	onSelect: datePickerSelected
 };
 
 ln = function(v) { return v > 0 ? Math.log(v) : 0; }
@@ -50,7 +65,31 @@ function convertTimeUNIXtoGPS(x) {
 	return x - 315964787.0;
 }
 
+function zoomButtonSet() {
+	if (hasBeenPlotted) {
+		$("#buttonZoom").removeAttr("disabled");
+		$("#buttonZoomOut").removeAttr("disabled");
+	}
+}
+
+function datePickerSelected(dateText, inst) {
+	plot.clearSelection(false);
+	var d = new Date(inst.currentYear, inst.currentMonth, inst.currentDay, 0, 0, 0)
+	
+	if (inst.id == "xmin") {
+		xminGPSTime = convertTimeUNIXtoGPS(d.getTime() / 1000);
+	}
+	else if (inst.id == "xmax") {
+		xmaxGPSTime = convertTimeUNIXtoGPS(d.getTime() / 1000);
+	}
+}
+
 $(document).ready(function() {
+	$('.datepicker').datepicker(calendarParam);
+	$("#xmin").datepicker('option', 'buttonText', 'Choose start date.');
+	$("#xmax").datepicker('option', 'buttonText', 'Choose end date.');
+	$('img.ui-datepicker-trigger').css('vertical-align', 'text-bottom'); 
+	
 	placeholder = $("#chart");
 	
 	$.plot(placeholder, { }, options);

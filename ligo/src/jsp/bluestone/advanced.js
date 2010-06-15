@@ -23,8 +23,6 @@ var data = { };
 
 var rows = 0; 
 
-var hasBeenPlotted = false; 
-
 function samplingCB(index) {
 	var ptr = null; 
 	
@@ -268,6 +266,7 @@ function getDataAndPlotCB() {
 		
 		// We have a plot, therefore let someone save it 
 		hasBeenPlotted = true; 
+		zoomButtonSet(); 
 		$("#savePlotToDisk").removeAttr("disabled");
 	}
 }
@@ -338,7 +337,7 @@ $(document).ready(function() {
 		xmaxGPSTime = ligoMaxTime;
 		$("#xmin").val((new Date(convertTimeGPSToUNIX(parseFloat(xminGPSTime)) * 1000.0)).toDateString()); 
 		$("#xmax").val((new Date(convertTimeGPSToUNIX(parseFloat(xmaxGPSTime)) * 1000.0)).toDateString());
-		$("#parseDropDownAdvanced").trigger('click');
+		getDataAndPlotCB(); 
 	});
 	
 	$("#plotButton").bind('click', function() {
