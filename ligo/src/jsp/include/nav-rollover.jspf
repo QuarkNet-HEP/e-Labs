@@ -71,6 +71,7 @@
 					<ul id="sub-data">
 						<li><a href="/ligo/tla/tutorial.php">Tutorial</a></li>
 						<li><a href="/ligo/tla/">Bluestone</a></li>
+						<li><a href="../bluestone/">Super-Bluestone Beta</a></li>
 						<li><a href="../plots/">Plots</a></li>
 					</ul>
 					<ul id="sub-posters"> 
