@@ -427,3 +427,8 @@ a.group-title img {
 #save-plot-form {
 	display: inline;
 }
+
+.help-icon {
+	margin-top: 6px;
+	float: right;
+}

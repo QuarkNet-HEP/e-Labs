@@ -29,6 +29,8 @@
 			<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
 		    <script type="text/javascript" src="../analysis-calibration/plot-params.js"></script>
 			<div id="content">
+			
+<a class="help-icon" target="help" href="plot-params-help.jsp"><img src="../graphics/help.png" /></a>
 <h1>Plot selection - ${analysisName}</h1>
 <script>
 	initlog();

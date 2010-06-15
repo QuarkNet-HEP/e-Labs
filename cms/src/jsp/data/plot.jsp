@@ -51,6 +51,7 @@
 		    <script language="javascript" type="text/javascript" src="../include/jquery.flot.crosshair.js"></script>
 			<div id="content">
 				
+<a class="help-icon" target="help" href="plot-help.jsp"><img src="../graphics/help.png" /></a>
 <h1>Plot - ${param.analysisName}</h1>
 <script>
 	initlog();
