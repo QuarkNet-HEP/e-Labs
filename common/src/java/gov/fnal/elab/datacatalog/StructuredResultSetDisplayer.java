@@ -14,11 +14,13 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.TreeMap;
 
 import javax.servlet.jsp.JspWriter;
@@ -296,7 +298,7 @@ public class StructuredResultSetDisplayer {
             out.write("<img alt=\"Blessed data\" "
                     + "src=\"../graphics/star.gif\"/>");
         }
-        out.write("<br />" +file.getTotalEvents() + " events");
+        out.write("<br />" + formatNumber(file.getTotalEvents()) + " events");
     }
 
     public void displayFileFooter(JspWriter out, File file) throws IOException {
@@ -321,6 +323,12 @@ public class StructuredResultSetDisplayer {
     	}
     	
     	return h;
+    }
+    
+    protected static String formatNumber(long x) {
+    	DecimalFormat df = new DecimalFormat();
+    	DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
+    	return df.format(x);
     }
     
 }
