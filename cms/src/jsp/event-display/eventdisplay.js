@@ -125,6 +125,21 @@ function detectorModelLoaded(data) {
 	document.draw();
 	//startDownload("/RelValH130GGgluonfusion.ig:Events/Run_1/Event_1501", "Loading data...", eventDataLoaded);
 	//startDownload("/Dir1/RelValSingleMuPt1000.ig:Events/Run_1/Event_102", "Loading data...", eventDataLoaded);
+	//startDownload("/ISpy-RelValWM-CMSSW-3-6-1.ig:Events/Run_1/Event_1", "Loading data...", eventDataLoaded);
+	//startDownload("/ISpy-RelValZMM-CMSSW-3-6-1.ig:Events/Run_1/Event_2002", "Loading data...", eventDataLoaded);
+}
+
+function getField(data, name) {
+	if (!data.indices) {
+		var indices = {};
+		var ev = document.d_event;
+		var t = ev["Types"][data.key];
+		for (var i = 0; i < t.length; i++) {
+			indices[t[i][0]] = i;
+		}
+		data.indices = indices;
+	}
+	return data[data.indices[name]];
 }
 
 function initializeData() {
@@ -151,6 +166,9 @@ function initializeData() {
 		var vec = new Array();
 		data[key] = vec;
 		var desc = d_descr[key];
+		data.get = function(f) {
+			return getField(data, desc, f);
+		};
 		desc.key = key;
 		var fn = desc.fn;
 		var type = desc.type;

@@ -87,6 +87,10 @@ function makeCSCSD(data) {
 	return {p1: makePoint2(x - dx, y - dy, z), p2: makePoint2(x + dx, y + dy, z)};
 }
 
+function makeCSCSegments(data) {
+	return {p1: makePoint(data[1]), p2: makePoint(data[2])};
+}
+
 function makeQuad(f1, f2, f3, f4, b1, b2, b3, b4, fill, stroke) {
 	var s = new Pre3d.Shape();
     s.vertices = [
@@ -159,20 +163,29 @@ function makeTowers(data, rd, descr, front, back, energy) {
 	}
 }
 
-function makeRecHits(data, rd, descr) {
+function makeRecHits(data, rd, descr, cindex) {
+	//in V2 ["time", "double"] is added before detid.
 	//["energy", "double"],["eta", "double"],["phi", "double"],["detid", "int"],
 	//["front_1", "v3d"],["front_2", "v3d"],["front_3", "v3d"],["front_4", "v3d"],["back_1", "v3d"],["back_2", "v3d"],["back_3", "v3d"],["back_4", "v3d"]
 	var front = new Array();
 	var back = new Array();
-	front.push(makePoint(data[4]));
-	front.push(makePoint(data[5]));
-	front.push(makePoint(data[6]));
-	front.push(makePoint(data[7]));
-	back.push(makePoint(data[8]));
-	back.push(makePoint(data[9]));
-	back.push(makePoint(data[10]));
-	back.push(makePoint(data[11]));
+	front.push(makePoint(data[cindex + 0]));
+	front.push(makePoint(data[cindex + 1]));
+	front.push(makePoint(data[cindex + 2]));
+	front.push(makePoint(data[cindex + 3]));
+	back.push(makePoint(data[cindex + 4]));
+	back.push(makePoint(data[cindex + 5]));
+	back.push(makePoint(data[cindex + 6]));
+	back.push(makePoint(data[cindex + 7]));
 	return makeTowers(data, rd, descr, front, back, data[0]);
+}
+
+function makeRecHits_V1(data, rd, descr) {
+	return makeRecHits(data, rd, descr, 4);
+}
+
+function makeRecHits_V2(data, rd, descr) {
+	return makeRecHits(data, rd, descr, 5);
 }
 
 var cnt = 0;
@@ -221,33 +234,50 @@ function makeWireframe(data, rd, descr) {
 	return [w];
 }
 
-function makeSimpleRecHits(data, rd, descr) {
+function makeSimpleRecHits(data, rd, descr, findex) {
 	var s = new Pre3d.Shape();
-    s.vertices = [makePoint(data[4]), makePoint(data[5]), makePoint(data[6]), makePoint(data[7])];
+    s.vertices = [makePoint(data[findex + 0]), makePoint(data[findex + 1]), makePoint(data[findex + 2]), makePoint(data[findex + 3])];
     s.quads = [new Pre3d.QuadFace(0, 1, 2, 3)];
-    s.fillColor = makeColor(descr.fill, getRankValue(data, rd) * 0.8 + 0.2);
-    s.strokeColor = makeColor(descr.color, getRankValue(data, rd) * 0.8 + 0.2);
+    s.fillColor = makeColor(descr.fill, getRankValue(data, rd) * 0.5 + 0.5);
+    s.strokeColor = makeColor(descr.color, getRankValue(data, rd) * 0.5 + 0.5);
+    s.ambientLight = 1;
 
     Pre3d.ShapeUtils.rebuildMeta(s);
     return s;
 }
 
-function makeCaloTowers(data, rd, descr) {
+function makeSimpleRecHits_V1(data, rd, descr) {
+	return makeSimpleRecHits(data, rd, descr, 4);
+}
+
+function makeSimpleRecHits_V2(data, rd, descr) {
+	return makeSimpleRecHits(data, rd, descr, 5);
+}
+
+function makeCaloTowers(data, rd, descr, pindex) {
 	//["et", "double"],["eta", "double"],["phi", "double"],["iphi", "double"],["hadEnergy", "double"],["emEnergy", "double"],
 	//["pos", "v3d"],
 	//["front_1", "v3d"],["front_2", "v3d"],["front_3", "v3d"],["front_4", "v3d"],["back_1", "v3d"],["back_2", "v3d"],["back_3", "v3d"],["back_4", "v3d"]
 	var front = new Array();
 	var back = new Array();
-	front.push(makePoint(data[7]));
-	front.push(makePoint(data[8]));
-	front.push(makePoint(data[9]));
-	front.push(makePoint(data[10]));
-	back.push(makePoint(data[11]));
-	back.push(makePoint(data[12]));
-	back.push(makePoint(data[13]));
-	back.push(makePoint(data[14]));
+	front.push(makePoint(data[pindex + 0]));
+	front.push(makePoint(data[pindex + 1]));
+	front.push(makePoint(data[pindex + 2]));
+	front.push(makePoint(data[pindex + 3]));
+	back.push(makePoint(data[pindex + 4]));
+	back.push(makePoint(data[pindex + 5]));
+	back.push(makePoint(data[pindex + 6]));
+	back.push(makePoint(data[pindex + 7]));
 	
 	return makeTowers(data, rd, descr, front, back, data[4] + data[5]);
+}
+
+function makeCaloTowers_V1(data, rd, descr) {
+	return makeCaloTowers(data, rd, descr, 7);
+}
+
+function makeCaloTowers_V2(data, rd, descr) {
+	return makeCaloTowers(data, rd, descr, 11);
 }
 
 var MAX_JET_LENGTH = 4; 
@@ -320,6 +350,10 @@ function makeRPCRecHits(data) {
 	return [{p1: makePoint(data[0]), p2: makePoint(data[1])}, 
 	        {p1: makePoint(data[2]), p2: makePoint(data[3])}, 
 	        {p1: makePoint(data[4]), p2: makePoint(data[5])}];
+}
+
+function makeCSCRecHit2Ds_V2 (data) {
+	return makeRPCRecHits(data);
 }
 
 function firstPoint(assoc, data2) {
@@ -570,14 +604,13 @@ function makeTrackCurves2(data, rd, descr, data2, assoc) {
 					var ep1ep2 = subPoints(ep2, ep1);
 					var axis = cross(ep1ep2, p1p2);
 					if (mag(axis) > 0.00001) {
-						//otherwise no rotation needed
 						var magp1p2 = mag(p1p2);
 						var magep1ep2 = mag(ep1ep2);
 						var sinphi = mag(axis) / magp1p2 / magep1ep2;
 						var cosphi = dot(ep1ep2, p1p2) / magp1p2 / magep1ep2;
 						var phi = Math.atan2(sinphi, cosphi);
 						t.rotateAroundAxis(axis, phi);
-					}
+					} //otherwise no rotation needed
 					
 					//also rotate around the p1p2 axis such that
 					//t1 points in the same direction as helix.t1

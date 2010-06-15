@@ -221,7 +221,7 @@ function loadEventCB(text, data, error) {
 		updateProgress(100, "Done");
 	}
 	catch (e) {
-		log(e.stack);
+		log("<pre>" + e.stack + "</pre>");
 		window.alert("Data loading failed: ", e.stack);
 		$("#load-progress-window").hide();
 		throw e;
