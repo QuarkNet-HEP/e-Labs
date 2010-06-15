@@ -296,6 +296,7 @@ public class StructuredResultSetDisplayer {
             out.write("<img alt=\"Blessed data\" "
                     + "src=\"../graphics/star.gif\"/>");
         }
+        out.write("<br />" +file.getTotalEvents() + " events");
     }
 
     public void displayFileFooter(JspWriter out, File file) throws IOException {

@@ -308,6 +308,7 @@ public class StructuredResultSet {
         private final String lfn;
         private java.util.Date startDate, endDate;
         private int detector;
+        private long totalEvents; 
 
         public File(String lfn) {
             this.lfn = lfn;
@@ -373,6 +374,14 @@ public class StructuredResultSet {
 
 		public int getDetector() {
 			return detector;
+		}
+		
+		public long getTotalEvents() {
+			return totalEvents; 
+		}
+		
+		public void setTotalEvents(long totalEvents) {
+			this.totalEvents = totalEvents; 
 		}
     }
 }
