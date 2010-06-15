@@ -5,6 +5,7 @@ package gov.fnal.elab.analysis;
 
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
+import gov.fnal.elab.ElabProviderHandled;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -15,7 +16,7 @@ import java.util.Map;
  * Represents an abstract elab analysis
  * 
  */
-public interface ElabAnalysis extends Serializable {
+public interface ElabAnalysis extends Serializable, ElabProviderHandled {
     /**
      * 
      */
