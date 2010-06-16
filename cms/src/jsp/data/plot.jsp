@@ -206,7 +206,7 @@
 				<p>Need help with plotting? Try these links:</p>
 				<ul>
 					<li>
-						<e:popup href="http://screencast.com/t/MzZhZDZj" target="tryit" width="625" height="675">Screencast Demo</e:popup> - how to use the plotting tool
+						<e:popup href="../video/demos-calibration.html?video=plot" target="tryit" width="800" height="800">Screencast Demo</e:popup> - how to use the plotting tool
 					</li>
 					<li>
 						<a href="javascript:reference('cms analysis',450)">Milestone</a> associated with plotting.
