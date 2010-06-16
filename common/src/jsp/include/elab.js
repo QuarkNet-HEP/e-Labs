@@ -268,3 +268,13 @@ function pp(obj) {
 		return obj.toString();
 	}
 }
+
+function openHelp(event, id) {
+	$("#" + id).css("right", "10px");
+	$("#" + id).css("top", (event.clientY + 10) + "px");
+	$("#" + id).show();
+}
+
+function closeHelp(id) {
+	$("#" + id).hide();
+}
