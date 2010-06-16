@@ -8,7 +8,15 @@ body.white {
 }
 body.black {
 	background-color: black;
-	color: white;
+	color: #e0e0e0;
+}
+
+body.black a {
+	color: #8080ff;
+}
+
+body.black a:visited {
+	color: #9080af;
 }
 
 span.spaceyspan {
@@ -92,7 +100,7 @@ td {
 	font-weight: bold;
 }
 
-.button {
+body .button {
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
@@ -111,11 +119,16 @@ td {
  	cursor: pointer;
 }
 
-.white .button {
+body.black .button {
+	color: #e0e0e0;
+}
+
+body.white .button {
 	border: solid thin #d0d0d0;
 	background-image: url("../graphics/button-bg1.png");
 	background-color: #e0e0e0;
 	color: black;
+	cursor: pointer;
 }
 
 a.disabled {
@@ -150,8 +163,8 @@ a.disabled {
 }
 
 #toolbar td {
-	padding-left: 2px;
-	padding-right: 2px;
+	padding-left: 1px;
+	padding-right: 1px;
 }
 
 .dialog-window {
@@ -184,9 +197,12 @@ a.disabled {
 }
 
 .titlebar {
-	-moz-border-radius: 6px;
-	-webkit-border-radius: 6px;
-	border-radius: 6px;
+	-webkit-border-top-left-radius: 6px;
+	-webkit-border-top-right-radius: 6px;
+	-moz-border-radius-topleft: 6px;
+	-moz-border-radius-topright: 6px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
 	width: 100%;
 	background-color: #404040;
 }
@@ -206,4 +222,82 @@ a.disabled {
 
 .titlebar-button img:hover {
 	background-color: #404040;
+}
+
+body ul.menu {
+	top: -1000px; 
+	left: -1000px;
+	position: absolute;
+	z-index: 999; 
+	border-width: 0; 
+	float: none; 
+	background-color: black;
+	height: auto;
+	margin: 0;
+	padding: 2px; 
+	width: auto;	
+	border: solid 1px gray;
+}
+
+body.white ul.menu {
+	background-color: white;
+}
+
+body ul.menu li {
+	list-style: none none outside;
+	background-color: black;
+	height: auto;
+	margin: 0;
+	text-align: left; 
+	text-decoration: none; 
+	vertical-align: top;
+	overflow: hidden;
+	cursor: default; 
+	padding: 4px; 
+	color: #e0e0e0;
+}
+
+body.white ul.menu li {
+	background-color: white;
+	color: black;
+}
+
+body ul.menu li:hover {
+	background-color: #404040;
+}
+
+body.white ul.menu li:hover {
+	background-color: #e0e0e0;
+}
+
+body ul.menu li.separator {
+	background-color: black; 
+	margin: 4px; 
+	padding: 1px;
+	border-bottom: thin dotted gray; 
+}
+
+body.white ul.menu li.separator {
+	background-color: white;
+}
+
+body ul.menu a {
+	text-decoration: none;
+	color: #e0e0e0;
+}
+
+body ul.menu a:visited {
+	color: #e0e0e0;
+}
+
+body.white ul.menu a {
+	color: black;
+}
+
+#about {
+	width: 400px;
+}
+
+#about p {
+	padding: 8px;
 }
