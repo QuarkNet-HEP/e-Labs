@@ -142,10 +142,10 @@
  - how to select data.
 					</li>
 					<li>
-						<a href="javascript:reference('cms data selection',450)">milestone</a> associated with data selection.
+						<a href="javascript:reference('cms data selection',450)">Milestone</a> associated with data selection.
 					</li>
 					<li>
-						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">calibration studies background</e:popup>
+						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">Calibration Studies Background</e:popup>
 					</li>
 					<li>
 						CMS e-Lab <a href="../library/FAQ.jsp">FAQ</a>
