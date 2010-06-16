@@ -22,6 +22,7 @@
 				height: 0px;
 				-webkit-transform: rotate(-90deg); 
 				-moz-transform: rotate(-90deg);	
+				filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 			}
 			td#yAxisLabeltd {
 				width: 20px;
