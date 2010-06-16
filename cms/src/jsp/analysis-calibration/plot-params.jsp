@@ -173,7 +173,7 @@
 				<p>Need help with plot selection? Try these links:</p>
 				<ul>
 					<li>
-						<e:popup href="http://screencast.com/t/NGQzN2E1OW" target="tryit" width="625" height="675">Screencast Demo</e:popup>
+						<e:popup href="../video/demos-calibration.html?video=plot-selection" target="tryit" width="800" height="800">Screencast Demo</e:popup>
  - how to select plots.
 					</li>
 					<li>

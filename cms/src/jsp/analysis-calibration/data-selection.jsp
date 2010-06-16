@@ -138,7 +138,8 @@
 				<p>Need help with data selection? Try these links:</p>
 				<ul>
 					<li>
-						<a href="">Screencast</a> - data selection. 
+						<e:popup href="../video/demos-calibration.html?video=data-selection" target="tryit" width="800" height="800">Screencast Demo</e:popup>
+ - how to select data.
 					</li>
 					<li>
 						<a href="javascript:reference('cms data selection',450)">milestone</a> associated with data selection.
