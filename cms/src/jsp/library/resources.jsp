@@ -38,6 +38,44 @@
 					
 
 				<div class="tab" id="tab-online">
+					<span class="tab-title">e-Lab Resources</span>
+					<div class="tab-contents-sublevel">
+						<h2>Screencasts</h2>
+						<ul class="simple">
+							<li>
+								<e:popup href="http://screencast.com/t/NTA2ODBiZTI" target="tryit" width="625" height="675">Introduction: Single Event Display</e:popup> - how Z Boson decays are displayed in data.
+							</li>
+							<li>
+								<e:popup href="../video/demos-calibration.html?video=data-selection" target="tryit" width="800" height="800">Data Selection: Calibration Studies</e:popup>
+ - how to select data.
+							</li>
+							<li>
+								<e:popup href="../video/demos-calibration.html?video=plot-selection" target="tryit" width="800" height="800">Plot Selection: Calibration Studies</e:popup>
+ - how to select plots.
+							</li>
+							<li>
+								<e:popup href="../video/demos-calibration.html?video=plot" target="tryit" width="800" height="800">Plotting Tool: Calibration Studies</e:popup> - how to plot.
+							</li>
+						</ul>
+						<h2>Single Events</h2>
+						<ul class="simple">
+							<li>
+								<e:popup href="../event-display/" target="tryit" width="900" height="900">3D Event Display</e:popup> - Manipulate CMS events.
+							</li>
+							<li>
+								<e:popup href="http://ed.fnal.gov/work/i2u2/particle-id/cms_game.html" target="tryit" width="865" height="675">Identify CMS events</a></e:popup>- Test your skill.
+							</li>
+						</ul>
+					</div>
+				</div>
+				
+
+
+
+
+
+
+				<div class="tab" id="tab-online">
 					<span class="tab-title">Websites</span>
 					<div class="tab-contents-sublevel">
 						<h2>Student-Friendly Sites</h2>
@@ -72,9 +110,6 @@
 							</li>
 						</ul>
 
-						<h2>Professional Sites</h2>
-						<ul class="simple">
-						</ul>
 					</div>
 				</div>
 				
@@ -85,30 +120,23 @@
 						<ul  class="simple">
 
 <li>
-								<a href="http://news.bbc.co.uk/2/hi/science/nature/7543089.stm">Guide to the LHC</a> - from the BBC
+								<e:popup href="http://news.bbc.co.uk/2/hi/science/nature/7543089.stm" target="video" width="800" height="600">Guide to the LHC</e:popup></a> - from the BBC
 							</li>
 							<li>
-								<a href="http://www.youtube.com/watch?v=EaDRu9sV_zs">The LHC - how it works</a> 
+								<e:popup href="../video/lhc-how-it-works.html" target="video" width="515" height="415">The LHC - how it works</e:popup> - YouTube
 							</li>
 							<li>
-								<a href="http://www.youtube.com/user/SciTechUK">In Search of Giants</a>
-								- from SciTechUK 
+								<e:popup href="http://www.youtube.com/user/SciTechUK" target="youtube" width="675" height="550">In Search of Giants</e:popup>- The Science and Technology Facilities Council Channel, SciTechUK's Channel
 							</li>
 							<li>
-								<a href="http://www.youtube.com/watch?v=Kf3T4ZHnuvc&feature=related">First Images after Proton Beam Passes through LHC</a>
-								- from New Scientist
-							</li>							
-
+								<e:popup href="../video/lhc-first-images.html" target="video" width="515" height="415">First Images after Proton Beam Passes through LHC</e:popup> - from the New Scientist
+							</li>
 							<li>
-								<a href="http://www.youtube.com/watch?v=rgLdIly2Xtw&feature=related">LHC Accelerator at CERN</a>
-								- from CERN Multimedia Productions
-							</li>							
+								<e:popup href="../video/lhc-accelerator-CERN.html" target="video" width="515" height="415">LHC Accelerator at CERN</e:popup> - from CERN Multimedia Productions
+							</li>
 							<li>
-								<a href="http://www.youtube.com/user/CERNTV">CERN-TV</a>
-							</li>							
-
-							
-							
+								<e:popup href="http://www.youtube.com/user/CERNTV" target="video" width="700" height="750">CERN TV</e:popup> - YouTube
+							</li>
 							</ul>
 							</div>
 							</div>
