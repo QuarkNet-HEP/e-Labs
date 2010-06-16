@@ -30,7 +30,7 @@
 			</div>
 			<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
 			<div id="content">
-<a class="help-icon" target="help" href="data-selection-help.jsp"><img src="../graphics/help.png" /></a>
+<a class="help-icon" href="#" onclick="openHelp(event, 'help')"><img src="../graphics/help.png" /></a>
 <h1>Data Selection - Detector Calibration Study</h1>
 <script>
 	initlog();
@@ -128,6 +128,36 @@
 		</tr>
 	</table>
 </form>
+
+<div id="help" class="help">
+	<table>
+		<tr>
+			<td class="title">Data Selection Help<a href="#" onclick="closeHelp('help');"><img src="../graphics/close.png" /></a></td>
+		</tr>
+		<tr>
+			<td class="content">
+				<p>Need help with data selection? Try these links:</p>
+				<ul>
+					<li>
+						<a href="">Screencast</a> - data selection. 
+					</li>
+					<li>
+						<a href="javascript:reference('cms data selection',450)">milestone</a> associated with data selection.
+					</li>
+					<li>
+						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">calibration studies background</e:popup>
+					</li>
+					<li>
+						CMS Elab FAQ
+					</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td align="right"><button name="close" onclick="closeHelp('help');">Close</button></td>
+		</tr>
+	</table>
+</div>
 
 			</div>
 			<!-- end content -->	

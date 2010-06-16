@@ -30,7 +30,7 @@
 		    <script type="text/javascript" src="../analysis-calibration/plot-params.js"></script>
 			<div id="content">
 			
-<a class="help-icon" target="help" href="plot-params-help.jsp"><img src="../graphics/help.png" /></a>
+<a class="help-icon" href="#" onclick="openHelp(event, 'help');"><img src="../graphics/help.png" /></a>
 <h1>Plot selection - ${param.analysisName}</h1>
 <script>
 	initlog();
@@ -163,6 +163,36 @@
 		</td>
 	</tr>
 </table>
+
+<div id="help" class="help">
+	<table>
+		<tr>
+			<td class="title">Plot Selection Help<a href="#" onclick="closeHelp('help');"><img src="../graphics/close.png" /></a></td>
+		</tr>		
+		<tr>
+			<td class="content">
+				<p>Need help with plot selection? Try these links:</p>
+				<ul>
+					<li>
+						<a href="">Screencast</a> - how to select plots.
+					</li>
+					<li>
+						<a href="javascript:reference('cms analysis',450)">milestone</a> associated with plot selection.
+					</li>
+					<li>
+						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">calibration studies cackground</e:popup>
+					</li>
+					<li>
+						CMS Elab FAQ
+					</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td align="right"><button name="close" onclick="closeHelp('help');">Close</button></td>
+		</tr>
+	</table>
+</div>
 			<!-- end content -->	
 		
 			<div id="footer">

@@ -432,3 +432,35 @@ a.group-title img {
 	margin-top: 6px;
 	float: right;
 }
+
+.help {
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border: solid thin #d0d0d0;
+	background-color: #e0e0e0;
+	padding-top: 0px;
+	opacity: 0.9;
+	width: 320px;
+	position: fixed;
+	display: none;
+}
+
+.help table {
+	width: 100%;
+}
+
+.help .title {
+	background-color: #d0d0d0;
+	font-weight: bold;
+	text-align: center;
+}
+
+.help .title a {
+	padding: 2px;
+	float: right;
+}
+
+.help .content {
+	padding: 8px;
+}
