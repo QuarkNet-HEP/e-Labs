@@ -2,7 +2,7 @@ var data = [];
 var timeout = 30000; /* Some data takes awhile to load; 30sec should be enough?  */ 
 var dataPoints = 1200; 
 var dataServerUrl = "/elab/ligo/data/data-server-json.jsp";
-var plotViewerURL = "/elab/ligo/plots/view.jsp?";
+var plotViewerURL = "/elab/ligo/plots/view.jsp";
 var plot = null; 
 var placeholder = null; 
 
