@@ -215,7 +215,7 @@
 						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">Calibration Studies Background</e:popup>
 					</li>
 					<li>
-						CMS Elab <a href="../library/FAQ.jsp">FAQ</a>
+						CMS e-Lab <a href="../library/FAQ.jsp">FAQ</a>
 					</li>
 				</ul>
 			</td>
