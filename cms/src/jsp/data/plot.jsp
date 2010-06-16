@@ -207,16 +207,16 @@
 				<p>Need help with plotting? Try these links:</p>
 				<ul>
 					<li>
-						<a href="">Screencast</a> - how to use the plotting tool
+						<e:popup href="http://screencast.com/t/MzZhZDZj" target="tryit" width="625" height="675">Screencast Demo</e:popup> - how to use the plotting tool
 					</li>
 					<li>
-						<a href="javascript:reference('cms analysis',450)">milestone</a> associated with plotting.
+						<a href="javascript:reference('cms analysis',450)">Milestone</a> associated with plotting.
 					</li>
 					<li>
-						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">calibration studies cackground</e:popup>
+						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">Calibration Studies Background</e:popup>
 					</li>
 					<li>
-						CMS Elab FAQ
+						CMS e-Lab FAQ under the Library Menu
 					</li>
 				</ul>
 			</td>
