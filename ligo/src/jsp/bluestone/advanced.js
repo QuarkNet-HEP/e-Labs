@@ -169,7 +169,7 @@ function logTickFormatter(axis) {
 function addNewRow(index) {
 	var foo = $("#channel-list-advanced");
 	// Delete button
-	var deleteButton = $("<input></input>").attr("type", "button").attr("id", "removeRow_" + index).attr("value", "-").attr("class", "removeRow");
+	var deleteButton = $("<input></input>").attr("type", "button").attr("id", "removeRow_" + index).attr("value", "Remove This Row").attr("class", "removeRow");
 	
 	// Site Dropdown
 	var siteSelector = $("<select></select>").attr("name", "site").attr("id", "site_" + index).attr("class", "site");
@@ -343,7 +343,7 @@ $(document).ready(function() {
 		getDataAndPlotCB(); 
 	});
 	
-	$("#plotButton").bind('click', function() {
+	$(".plotButton").bind('click', function() {
 		getDataAndPlotCB(); 
 	});
 	

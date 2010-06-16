@@ -52,9 +52,9 @@
 				<br /><br />
 				Time<sub>start</sub>: <input readonly type="text" name="xmin" id="xmin" size="15" class="datepicker"></input>
 				Time<sub>end</sub>: <input readonly type="text" name="xmax" id="xmax" size="15" class="datepicker"></input>
-				<input id="plotButton" type="button" value="Plot"></input>
+				<button id="plotButtonTop" class="plotButton" value="Plot">Plot</button>
 				<img src="../graphics/spinner-small.gif" id="busySpinner" style="visibility: hidden"></img>
-				<button title="Zoom to selection" id="buttonZoom" disabled>Zoom to selection</button>
+				<%-- <button title="Zoom to selection" id="buttonZoom" disabled>Zoom to selection</button> --%>
 				<button title="Zoom all the way out" id="buttonZoomOut" disabled>Zoom all the way out</button>
 				<input type="checkbox" name="log" value="y-axis" id="logYcheckbox" class="logCheckbox" />Y-Axis Log Scale
 				
@@ -122,7 +122,7 @@
 						<tbody>
 							<tr id="row_0">
 								<td>
-									<input type="button" value="-" id="removeRow_0" class="removeRow"></input>
+									<input type="button" value="Remove This Row" id="removeRow_0" class="removeRow"></input>
 								</td>
 								<td>
 									<select name="site" id="site_0" class="site">
@@ -155,7 +155,9 @@
 					
 				</div>
 				
-				<input id="addNewRow" type="button" value="+"></input>
+				<input id="addNewRow" type="button" value="Add Data Row"></input>
+				<br />
+				<button id="plotButtonBottom" class="plotButton" value="Plot">Plot</button>
 				
 				<h2>Save This Plot</h2>
 				
