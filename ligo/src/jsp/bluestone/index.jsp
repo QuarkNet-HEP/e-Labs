@@ -41,26 +41,18 @@
 				<br /><br />
 				Time<sub>start</sub>: <input readonly type="text" name="xmin" id="xmin" size="15" class="datepicker"></input>
 				Time<sub>end</sub>: <input readonly type="text" name="xmax" id="xmax" size="15" class="datepicker"></input>
-				<button title="Zoom to selection" id="buttonZoom">Zoom to selection</button>
-				<button title="Zoom all the way out" id="buttonZoomOut">Zoom all the way out</button>
+				<input id="plotButton" type="button" value="Plot"></input>
+				<img src="../graphics/spinner-small.gif" id="busySpinner" style="visibility: hidden"></img>
+				<button title="Zoom to selection" id="buttonZoom" disabled>Zoom to selection</button>
+				<button title="Zoom all the way out" id="buttonZoomOut" disabled>Zoom all the way out</button>
 				<input type="checkbox" name="log" value="y-axis" id="logYcheckbox" class="logCheckbox" />Y-Axis Log Scale
-				<table>
-					<tr>
-						<td valign="top">
-							<img src="../graphics/busy2.gif" id="busySpinner" style="visibility: hidden"></img>
-						</td>
-						 
-						<td>
-							<div id="resizablecontainer" style="margin-bottom: 10px; margin-right: 10px;" >
-								<div id="chart" style="width:750px; height:250px; text-align: left;"></div>
-								<%-- Temporarily disabled while I figure out how to properly resize the bar - pxn
-								<div id="slider"></div>
-								--%>
-							</div>
-						</td>
-						
-					</tr>
-				</table>
+				
+				<div id="resizablecontainer" style="margin-bottom: 10px; margin-right: 10px;" >
+					<div id="chart" style="width:100%; height:250px; text-align: left;"></div>
+					<%-- Temporarily disabled while I figure out how to properly resize the bar - pxn
+					<div id="slider"></div>
+					--%>
+				</div>
 								
 				<br />
 				
@@ -93,13 +85,13 @@
 					<table id="channelTable">
 						<thead>
 							<tr>
-								<th>&nbsp;</th>
-								<td>Site</td>
-								<td>Subsystem</td>
-								<td>Station</td>
-								<td>Sensor</td>
-								<td>Sampling</td>
-								<td>&nbsp;</td>
+								<th>Add/Remove</th>
+								<th>Site</th>
+								<th>Subsystem</th>
+								<th>Station</th>
+								<th>Sensor</th>
+								<th>Sampling</th>
+								<th>Data Filename</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -139,13 +131,12 @@
 				</div>
 				
 				<input id="addNewRow" type="button" value="+"></input>
-				<input id="plotButton" type="button" value="Plot"></input>
 				
 				<h2>Save This Plot</h2>
 				
 				Title: <input id="userPlotTitle" name="title" type="text" maxlength="200" size="30"></input>
 				<input id="savePlotToDisk" type="button" value="Save" disabled></input>
-				<img src="../graphics/busySmall.gif" style="visibility: hidden;" id="busySpinnerSmall"></img>
+				<img src="../graphics/spinner-small.gif" style="visibility: hidden;" id="busySpinnerSmall"></img>
 				<a href="#" target="_new" id="savedPlotLink" style="display: none;">View saved plot (popup)</a> 
 			</div>
 			

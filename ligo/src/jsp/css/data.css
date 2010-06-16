@@ -85,6 +85,16 @@ ul#nav-tutorial li:first-child a {
 	border-left: none;
 }
 
+.plot-thumbnail-image {
+	width: 150px;
+	height: 150px;
+	vertical-align: middle;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
 #tutorial1 #nav-tutorial a[href="../data/tutorial1.jsp"],
 #tutorial2 #nav-tutorial a[href="../data/tutorial2.jsp"],
 #tutorial3 #nav-tutorial a[href="../data/tutorial3.jsp"],
