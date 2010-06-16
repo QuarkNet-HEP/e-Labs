@@ -491,6 +491,10 @@ Pre3d = (function() {
   // a and be should be greater, by 2 units, 1 in each direction.
   function pushPoints2dIP(a, b) {
     var vec = unitVector2d(subPoints2d(b, a));
+    if (isNaN(vec.x)) {
+    	//sometimes b and a coincide
+    	return;
+    }
     addPoints2dIP(b, b, vec);
     subPoints2dIP(a, a, vec);
   }
