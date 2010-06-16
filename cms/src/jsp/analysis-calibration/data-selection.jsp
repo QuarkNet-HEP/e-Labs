@@ -15,7 +15,6 @@
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/analysis.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<link href="../include/jeegoocontext/skins/cm_default/style.css" rel="Stylesheet" type="text/css" />
 		<link href="../include/jeegoocontext/skins/cm_blue/style.css" rel="Stylesheet" type="text/css" />
 	</head>
 	
@@ -148,7 +147,7 @@
 						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">calibration studies background</e:popup>
 					</li>
 					<li>
-						CMS Elab FAQ
+						CMS Elab <a href="../library/FAQ.jsp">FAQ</a>
 					</li>
 				</ul>
 			</td>
