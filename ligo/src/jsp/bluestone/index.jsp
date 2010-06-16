@@ -16,6 +16,10 @@
 			span.dataName {
 				font-size: x-small;
 			}
+			span.rotate-text-left {
+				-webkit-transform: rotate(-90deg); 
+				-moz-transform: rotate(-90deg);	
+			}
 		</style>
 	</head>
     
@@ -47,12 +51,26 @@
 				<button title="Zoom all the way out" id="buttonZoomOut" disabled>Zoom all the way out</button>
 				<input type="checkbox" name="log" value="y-axis" id="logYcheckbox" class="logCheckbox" />Y-Axis Log Scale
 				
-				<div id="resizablecontainer" style="margin-bottom: 10px; margin-right: 10px;" >
-					<div id="chart" style="width:100%; height:250px; text-align: left;"></div>
+				
+				<table>
+					<tr>
+						<td><span class="rotate-text-left" id="yAxisLabel">&nbsp;</span></td>
+						<td width="850">
+							<div id="resizablecontainer" style="margin-bottom: 10px; margin-right: 10px;" >
+								<div id="chart" style="width:100%; height:250px; text-align: left;"></div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td align="center"><span id="xAxisLabel">Date</span></td>
+					</tr>
+				</table>
+					
 					<%-- Temporarily disabled while I figure out how to properly resize the bar - pxn
 					<div id="slider"></div>
 					--%>
-				</div>
+				
 								
 				<br />
 				

@@ -262,6 +262,7 @@ function getDataAndPlotCB() {
 
 	function onChannelDataReceived(json) { 
 		data = json;
+		$("#yAxisLabel").text(data[0].unit); 
 		plot = $.plot(placeholder, data, options); 
 		logCheckboxCB();
 		plot = $.plot(placeholder, data, options);
