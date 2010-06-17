@@ -18,14 +18,14 @@ var testParams = {
 }
 
 function projectPoint(p) {
-	var v = testParams.camera.focal_length / -p.z;
-	var scale = testParams.scale_;
-	return {x: p.x * v * scale + testParams.xoff_,
-			y: p.y * v * -scale + scale};
+	if (p.z > 0) {
+		return null;
+	}
+	return {x: p.x / p.z, y: p.y / p.z};
 }
 
 function startTest() {
-	var refVT = 23289;
+	var refVT = 2330249;
 	var refFR = 653;
 	var stw = document.getElementById("speed-test-window");
 	var state = stw.state;
@@ -51,7 +51,7 @@ function startTest() {
 		if (state.step < 20) {
 			var t = new Pre3d.Transform();
 			t.rotateAroundAxis({x: 1, y: 1, z: 2}, 0.2);
-			for (var i = 0; i < 100; i++) {
+			for (var i = 0; i < 200000; i++) {
 				var p = {x: i, y: i + 1, z: i + 2};
 				var pp = t.transformPoint(p);
 				var ppp = projectPoint(pp);
