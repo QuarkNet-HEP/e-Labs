@@ -149,6 +149,12 @@
 		String groupName = user.getGroup().getName();
 		String plotDir = user.getDir("plots");
 		
+		// check if the directory exist, create otherwise
+		File file = new File(plotDir); 
+		if (!file.exists()) {
+			file.mkdirs(); 
+		}
+		
 		GregorianCalendar gc = new GregorianCalendar();
 	    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
 	    String date = sdf.format(gc.getTime());
