@@ -1,0 +1,610 @@
+<HTML>
+<HEAD>
+<TITLE>Z Decay Event Identification Game</TITLE>
+<link href="css/game.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+<script language="JavaScript">
+<!-- hide this script from non-javascript-enabled browsers
+eventPat=new Array(3);  // array of 3 patterns of #dimuon,#dielectron,#dinets,#ditaus
+for (i=0;i<3;i++)
+  {eventPat[i]=new Array(4);}
+ 
+//First Exercise:
+//7 Dimuon
+//4 dilectron
+//2 dijet event
+//0 ditauon 
+
+//Second Exercise
+//5 Dimuon
+//3 dilectron
+//2 dijet 
+//2 ditauon 
+
+//Available
+//20 Dimuon
+//10 dielecton
+//5 dijet
+//5 ditauon
+ 
+
+//  Game 1    6 Dimuon, 4 Dielectrons,2 Dijets, 4 Ditaus
+eventPat[0][0]=6;
+eventPat[0][1]=4;
+eventPat[0][2]=2;
+eventPat[0][3]=0;
+//  Game 2    5 Dimuon, 4 Dielectrons,3 Dijets, 0 Ditaus
+eventPat[1][0]=5;
+eventPat[1][1]=4;
+eventPat[1][2]=3;
+eventPat[1][3]=0;
+var debug=false;
+var gameNo=0;
+var noCorrect=0;
+var noEvents=0;
+pat = new Array(12); // contains the 12 values for event types for one game
+// (e.g., Dielectron, Ditau, Dijet, Dielectron, Ditau, Dielectron, Ditau, Dijet,Dimuon, Dijet)
+for (i=0;i<=11;i++)
+   {pat[i]="empty";}  // initialize
+var nDimuons=20;
+var nDielectrons=10;
+var nDijets=5;
+var nDitau=5;
+usedDimuons = new Array(nDimuons);
+usedDielectrons = new Array(nDielectrons);
+usedDijets = new Array(nDijets);
+usedDitau = new Array(nDitau);
+
+var timerID=null; // used with clearTimout function and set with setTimeout.
+var nTrials=-1;  // number of trials  played within a game  (it goes up to 12)
+var score=500; // start the score at 500 because you lose points on errors
+var wrong=25; // number of points deducted if wrong
+var skip=50; // number of points deducted if player times out before answering
+var waitForAns=false; // indicates waiting for an answer (Dielectron, J, etc.) 
+// buttons are active if true
+var doneGame=false; // logical to indicate game is done so it is o.k. to go onto next game.
+var eventType;  // current event type being processed.
+// Cache the status images
+ 
+statusMessages = new Array();
+
+  for (i=0; i<14; i++) 
+  {
+   statusMessages[i]= new Image();
+  }
+  statusMessages[0]="<p><p>Identify the candidate event!</p><p>Click the correct button below.</p>";
+  statusMessages[1]="<p>Game done.</p><p>To play again, click <b>New Game</b></p>";
+  statusMessages[2]="<img src='graphics/star.png'><p>It's a dimuon!</p>";
+  statusMessages[3]="<img src='graphics/star.png'><p>It's a dielectron!</p>";
+  statusMessages[4]="<img src='graphics/star.png'><p>It's a dijet!</p>";
+  statusMessages[5]="<img src='graphics/star.png'><p>It's a ditau!</p>";
+  statusMessages[6]="<p>No,it's a dimuon!</p><p>Notice the outer muon chambers lit up.</p>";
+  statusMessages[7]="<p>No,it's a dielectron!</p><p>Only the inner electromagnetic part of the detector shows as red bars.</p>";
+  statusMessages[8]="<p>No,it's a dijet!</p><p>See the yellow tracks and cones.</p>";
+  statusMessages[9]="<p>No,it's a ditau!</p><p>See all the red and blue bars.</p>";
+  statusMessages[10]="<p>Getting a new event ...</p>";
+  statusMessages[11]="<p>You're score is low.</p><p>Try clicking <b>Help</b> before starting a new game</p>";
+  statusMessages[12]="<p>Hurry, another event is coming!</p>";
+  statusMessages[13]="<p>Transmission slow.</p><p> Another event is coming...</p>";
+
+
+
+
+
+
+  // This array will store the names of the evntImages for the 12 events 
+ //per game.
+ evntImages= new Array();
+  for (i=0; i<=11; i++) 
+  {
+   evntImages[i]= new Image();
+  }
+
+//var wHelp=window.open("","help","location=no,status=no,directories=no,menubar=yes,scrollbars=yes,resizable=yes,copyhistory=no,width=400,height=350");
+//wHelp.location = "help_stub.html";
+//wHelp.close();
+ 
+
+
+// function that displays status bar message
+
+function dm(msgStr) {
+  document.returnValue = false;
+        	var object = document.getElementById("messages");
+            object.innerHTML = msgStr;
+}
+// functions that swap images
+
+
+// 
+function putType(t) 
+   {
+   var n;
+   n=Math.round(Math.random()*11);
+   while (!(pat[n]=="empty"))
+   {
+   n=Math.round(Math.random()*11);}
+   pat[n]=t;
+   return n;
+   }   
+   
+
+function getDielectron() {
+   var imageName;
+   var n;
+   var tries=0;
+   n=Math.round(Math.random()*(nDielectrons-1));
+   while (usedDielectrons[n])
+   {
+   n=Math.round(Math.random()*(nDielectrons-1));
+   tries=tries+1;
+   if (tries>100) //if you try 100 times to get a new Dielectron
+       //make all the Dielectrons available again, we have probably used them all.
+        {
+           for (i=0;i<nDielectrons;i++)
+           { usedDielectrons[i]=false;}
+         }
+}
+   usedDielectrons[n]=true;
+   imageName="graphics/Dielectrons/Zee"+(n+1)+".png"; 
+   return imageName;
+   }   
+
+
+function getDimuon() {
+   var imageName;
+   var n;
+   var tries=0;
+   n=Math.round(Math.random()*(nDimuons-1));
+   while (usedDimuons[n])
+   {
+   n=Math.round(Math.random()*(nDimuons-1));
+      tries=tries+1;
+     if (tries>100) //if you try 100 times to get a new Dimuon
+       //make all the Dimuons available again, we have probably used them all.
+        {
+           for (i=0;i<nDimuons;i++)
+           { usedDimuons[i]=false;}
+         }
+}
+   usedDimuons[n]=true;
+   imageName="graphics/Dimuons/Zmumu"+(n+1)+".png";// returns the file name.
+   return imageName;  // returns the file name.
+     }
+
+function getDijet() {
+   var imageName;
+   var n;
+   var tries=0;
+   n=Math.round(Math.random()*(nDijets-1));
+   while (usedDijets[n])
+   {
+     n=Math.round(Math.random()*(nDijets-1));
+     tries=tries+1;
+     if (tries>100) //if you try 100 times to get a new Dijet
+       //make all the Dijets available again, we have probably used them all.
+        {
+           for (i=0;i<nDijets;i++)
+           { usedDijets[i]=false;}
+         }
+   }
+   usedDijets[n]=true;
+   imageName="graphics/Dijets/Zqq"+(n+1)+".png"; 
+   return imageName;
+ }
+
+function getDitau() {
+   var imageName;
+   var tries=0;
+   var n;
+   n=Math.round(Math.random()*(nDitau-1));
+   while (usedDitau[n])
+   {
+   n=Math.round(Math.random()*(nDitau-1));
+   tries=tries+1;
+     if (tries>100) //if you try 100 times to get a new Ditau
+       // you have probably used them all. Make all the Dijets available again.
+       {
+          for (i=0;i<nDitau;i++)
+           { usedDitau[i]=false;}
+        }
+   
+   }
+   usedDitau[n]=true;
+   imageName="graphics/Ditaus/Ztautau"+(n+1)+".png"; 
+   return imageName;
+
+   }
+
+// waits 3 seconds so message shows before going to next event
+function myWait()
+   {
+   timerID=setTimeout("newEvent()",3*1000);  
+    }
+
+
+function makePat() {
+  var eventGif=" ";
+  var np;// the index into the pat array for that event
+  for (i=0;i<=11; i++)  //zero out the array
+      {pat[i]="empty";}
+    mess= " EventPat "+eventPat[gameNo][0]+" "+eventPat[gameNo][1]+" "+eventPat[gameNo][2]+" "+
+          eventPat[gameNo][3]+"\n";
+    //  alert(mess);
+  for (j=1;j<=eventPat[gameNo][0];j++)
+     {
+      np=putType("Dimuon");
+      eventGif=getDimuon();
+      evntImages[np].src=eventGif;
+     }
+ for (j=1;j<=eventPat[gameNo][1];j++)
+     {
+     np=putType("Dielectron");
+     eventGif=getDielectron();
+     evntImages[np].src=eventGif;
+     }
+for (j=1;j<=eventPat[gameNo][2];j++)
+     {
+     np=putType("Dijet");
+     eventGif=getDijet();
+     evntImages[np].src=eventGif;
+
+     }
+for (i=0;i<=11;i++)
+     {
+      if ( pat[i]=="empty")
+       {pat[i]="Ditau";
+       eventGif =getDitau();
+       evntImages[i].src=eventGif;
+       }
+      }
+	  if (debug)
+	  {
+		for (k=0;k<=11;k++)
+		{
+			mess = k+" "+evntImages[k].src+" "+ pat[k];
+			
+					alert(mess);
+		}
+
+	  }
+	  
+			
+   }
+
+function getMessInd()
+   {
+    var ind;
+    if (eventType=="Dimuon")
+        {ind=6;
+        return ind;}
+    if (eventType=="Dielectron")
+        {ind=7;
+        return ind;}
+    if (eventType=="Dijet")
+        { ind=8;
+        return ind;}
+    if (eventType=="Ditau")
+        { ind=9;
+        return ind;}
+    }
+
+function wrongAns()
+   {
+    score=score-wrong;
+    setScore();
+    i=getMessInd();
+    var object = document.getElementById("messages");
+    object.innerHTML = statusMessages[i];
+   }
+
+function checkDimuonanswer()
+   {
+    var i;
+    if (waitForAns)
+       {
+         clearTimeout(timerID);
+         waitForAns=false;
+        if (eventType=="Dimuon")
+        {
+         score=score+150;
+         noCorrect++;
+         setScore();
+         dm("<img src='graphics/star.png'><p>It's a dimuon!</p>");
+         }
+         else
+        {
+        wrongAns();
+         }
+         myWait();
+   }
+}
+
+function checkDielectronanswer()
+   {
+    var i;
+   if (waitForAns)
+       {
+        clearTimeout(timerID);
+        waitForAns=false;
+       if (eventType=="Dielectron")
+       {
+         dm("<img src='graphics/star.png'><p>It's a dielectron.</p>");
+     score=score+100;
+         noCorrect++;
+         setScore();
+    }
+    else
+    {
+    wrongAns();
+    }
+   myWait();
+   }
+}
+
+function checkDijetanswer()
+   {
+   var i;
+   if (waitForAns)
+       {
+         clearTimeout(timerID);
+        waitForAns=false;
+        if (eventType=="Dijet")
+          {
+            score=score+75;
+         noCorrect++;
+         setScore();
+         dm("<img src='graphics/star.png'><p>It's a dijet.</p>");
+          }
+          else
+         {
+          wrongAns();
+         }
+       myWait();
+   }
+}
+
+function checkDitauanswer()
+   {
+    var i;
+   if (waitForAns)
+       {
+         clearTimeout(timerID);
+         waitForAns=false;
+         if (eventType=="Ditau")
+         {
+         noCorrect++;
+     score=score+50;
+         setScore();
+         dm("<img src='graphics/star.png'><p>It's a ditau.</p>");
+    }
+    else
+    {
+    wrongAns();
+    }
+   myWait();
+   }
+}
+
+function tooSlow()  //tells them they took too much time.
+   {
+         waitForAns=false; // turn off accepting answers
+         score=score-skip;
+        // setScore();
+         newEvent();
+   }
+
+function hurry()  //get here on a timeout
+                  //warns them that another event will be coming soon and sets timeout again.
+   {
+         if (waitForAns)
+         { 
+             dm(statusMessages[12]);
+             timerID=setTimeout("tooSlow()",5*1000);
+         }
+}
+
+
+ function newEvent() {
+     nTrials=nTrials+1;
+     if (nTrials>11) 
+      {
+         if (score>400)
+            {
+             dm(statusMessages[1]);
+             }
+         else
+            {
+             dm(statusMessages[11]);
+             } 
+       }  
+      else  // more events
+       {
+          noEvents++;
+          eventType=pat[nTrials];
+		  dm(statusMessages[0]);
+		 // put the time,date and event number into eventInfo cell in form
+		  document.cmsGame.eventinfo.value="Event "+(nTrials+1) + 
+						  "  "+dateStuff();
+		  document.cmsGame.cdfEvent.src=evntImages[nTrials].src;
+         waitForAns=true;
+         if (nTrials==0)
+          {timerID=setTimeout("hurry()",40*1000); // allow a little more time on 
+                                           // 1st event because it takes longer to load.
+                                             }
+          else
+          {timerID=setTimeout("hurry()",20*1000); //was 10
+          }  
+        }   // more events test    
+ 
+  }
+
+
+
+function initMultipleGameCycle() {
+ for (i=0;i<nDimuons;i++)
+       { usedDimuons[i]=false;}
+ for (i=0;i<nDielectrons;i++)
+       { usedDielectrons[i]=false;}
+ for (i=0;i<nDijets;i++)
+       { usedDijets[i]=false;}
+ for (i=0;i<nDitau;i++)
+       { usedDitau[i]=false;}
+ 
+} 
+function initGame() {
+      makePat();
+	  t=5*1000;
+	  if (gameNo==0) {t=500}
+	  setTimeout("contInitGame()",t); //if not first game, force a 5 second wait to make sure all the images are loaded.
+      dm("Starting New Game.");
+      document.cmsGame.cdfEvent.src="graphics/eventstub.gif";
+      dm(statusMessages[10]); //loading Event
+      noCorrect=0;
+      noEvents=0;
+       }
+
+function contInitGame()
+{
+	
+      nTrials=-1;
+      score=500;
+      setScore();  //sets the value in score and also the form text         
+      newEvent();
+}
+
+
+  function newGame()   {
+   clearTimeout(timerID);
+   gameNo=gameNo+1;
+   if (gameNo==2) 
+      {
+       gameNo=0;
+       initMultipleGameCycle();
+       }
+     initGame();
+   
+   }
+   
+   function start()
+   {
+   initMultipleGameCycle();
+   initGame();
+   }
+
+function dateStuff()
+{
+var curDate= new Date();
+return curDate.toLocaleString();
+}
+
+function signal(mess) {
+   if (mess=="Error in Transfer") 
+	     {
+	     clearTimeout(timerID);
+         waitForAns=false;
+// Get new event file of same event type    
+        if (eventType=="Dimuon")
+            {evntImages[nTrials].src=getDimuon();}
+        if (eventType=="Dielectron")
+            {evntImages[nTrials].src=getW();}
+        if (eventType=="Dijet")
+             {evntImages[nTrials].src=getDijet();}
+        if (eventType=="Ditau")
+             {evntImages[nTrials].src=getDitau();}
+             curDate= new Date();
+             // document.cdfEvent.src=statusImages[13].src; // "transmission error"
+              document.cdfEvent.src=evntImages[nTrials].src;
+              document.cmsGame.eventinfo.value="Event "+(nTrials+1) + 
+                              "  "+dateStuff();
+  
+		 //alert("Error in data transmission of "+evntImages[nTrials].src+"  Wait for another event");
+         waitForAns=true;
+         timerID=setTimeout("hurry()",20*1000);
+		 
+	     }
+		   
+ }
+
+function help()
+{ 
+  var wHelp=window.open("","help","location=no,status=no,directories=no,menubar=yes,scrollbars=yes,resizable=yes,copyhistory=no,width=425,height=600");
+  wHelp.location = "help.html";
+  wHelp.focus()
+ }
+
+function closehelp()
+{ 
+  if (navigator.appVersion >="4")
+  { var wHelp=window.open("","help","location=no,status=no,directories=no,menubar=yes,scrollbars=yes,resizable=yes,copyhistory=no,width=425,height=550");
+   if (wHelp.closed==false) 
+    wHelp.close();}
+ }
+ 
+ 
+function setScore() {
+		var objectScore = document.getElementById("scoreBox");
+//        objectScore.innerHTML = "Score: " + score + " Points";
+       		if (noEvents == 0 )
+       		{objectScore.innerHTML = "";}
+       		else
+       		{objectScore.innerHTML = "You identified correctly<br>"+ noCorrect + " out of "+ noEvents + " events.";}
+		}
+
+
+
+//<BODY bgcolor="#1b127d" text="#FFFFFF" ALINK="#33FFFF" onload="start()" onUnload="closehelp()">
+
+// stop hiding -->
+</script>
+
+</HEAD>
+<BODY bgcolor="#000000" text="#FFFFFF" onload="start()">
+<P>
+<FORM name="cmsGame">
+<CENTER><TABLE bgcolor="#000000" border="0" cellspacing="0" cellpadding="0">
+
+<TR bgcolor="#000000" align=center>
+<TD colspan=2><FONT color="#FFFFFF" size="+3">
+Z Decay Event Identification</FONT></TD></TR>
+
+<TR><TD width=250 align="center">
+<div id="messages">What kind of event is on the right? Select Dielectron, Dimuon, Dijet or Ditau below.</div>
+<div align="center">
+
+<a href="javascript:checkDielectronanswer()"><input  onclick="javascript:checkDielectronanswer();" type="button" class="dynamic_button" value="Dielectron" /></a>
+<a href="javascript:checkDimuonanswer()"><input onclick="javascript:checkDimuonanswer();" type="button" class="dynamic_button" value="Dimuon" /></a>
+<a href="javascript:checkDijetanswer()"><input  onclick="javascript:checkDijetanswer();" type="button" class="dynamic_button" value="Dijet" /></a>
+<a href="javascript:newGame()"><input   onclick="javascript:newGame();" type="button" class="dynamic_button" value="New Game" /></a>
+<a href="javascript:help()"><input  onclick="javascript:help();" type="button" type="button" class="dynamic_button" value="Help" /></a>
+
+
+
+</div>
+<div id="scoreBox">  </div>
+
+</TD>
+
+<TD>
+<TABLE border="0" cellspacing="1" cellpadding="0"
+<TR></TR><TR>
+<TD  align=center valign=center><IMG SRC="graphics/eventstub.gif" 
+name="cdfEvent" width="639" height="614" border=0 onError="signal('Error in Transfer')"></TD></TR>
+<TR>
+<TD align=center valign=center height="30">
+<INPUT type="text" name="eventinfo" size=55 value="Event Info"></TD></TR>
+</TABLE>
+
+
+
+</TD>
+</TR>
+</TABLE></CENTER>
+
+
+</BODY>
+</HTML>
