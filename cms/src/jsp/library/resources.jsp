@@ -40,7 +40,7 @@
 				<div class="tab" id="tab-online">
 					<span class="tab-title">e-Lab Resources</span>
 					<div class="tab-contents-sublevel">
-						<h2>Screencasts</h2>
+						<h2>Screencast Demos</h2>
 						<ul class="simple">
 							<li>
 								<e:popup href="http://screencast.com/t/NTA2ODBiZTI" target="tryit" width="625" height="675">Introduction: Single Event Display</e:popup> - how Z Boson decays are displayed in data.
@@ -56,11 +56,14 @@
 							<li>
 								<e:popup href="../video/demos-calibration.html?video=plot" target="tryit" width="800" height="800">Plotting Tool: Calibration Studies</e:popup> - how to plot.
 							</li>
+							<li>
+								<e:popup href="../video/demo-3d.html?video=plot" target="tryit" width="1150" height="800">3-D Event Display</e:popup> - how to use the 3d Event Display tool.
+							</li>
 						</ul>
-						<h2>Single Events</h2>
+					<h2>Single Events</h2>
 						<ul class="simple">
 							<li>
-								<e:popup href="../event-display/" target="tryit" width="900" height="900">3D Event Display</e:popup> - Manipulate CMS events.
+								<e:popup href="../event-display/" target="tryit" width="900" height="900">3-D Event Display</e:popup> - Manipulate CMS events. See screencast demo above.
 							</li>
 							<li>
 								<e:popup href="http://ed.fnal.gov/work/i2u2/particle-id/cms_game.html" target="tryit" width="865" height="675">Identify CMS events</a></e:popup>- Test your skill.
