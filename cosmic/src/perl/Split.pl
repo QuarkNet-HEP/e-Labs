@@ -123,6 +123,7 @@ while(<IN>){
 	#*performance* using an RE is 30% faster than splitting by whitespace
 	if(/$reData/o){
 		@dataRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16);
+		next if $dataRow[10] eq "000000.000" && $dataRow[11] eq "000000"; #munged GPS clock
 		#$lastDay = substr($dataRow[11], 0, 2);
 		$day = substr($dataRow[11], 0, 2);
 		$month = substr($dataRow[11], 2, 2);
