@@ -5,6 +5,11 @@
 				<img src="../graphics/open.png" title="Open"/>
 			</a>
 		</td>
+		<td>
+			<a class="toolbar-button" onclick="saveCanvasData();">
+				<img src="../graphics/media-floppy.png" title="Open"/>
+			</a>
+		</td>
 		<td class="toolbar-separator">
 			&nbsp;
 		</td>
