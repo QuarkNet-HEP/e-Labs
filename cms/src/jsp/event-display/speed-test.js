@@ -18,10 +18,11 @@ var testParams = {
 }
 
 function projectPoint(p) {
-	if (p.z > 0) {
+	var z = p.z;
+	if (z > 0) {
 		return null;
 	}
-	return {x: p.x / p.z, y: p.y / p.z};
+	return {x: p.x / z, y: p.y / z};
 }
 
 function startTest() {

@@ -756,10 +756,11 @@ Pre3d = (function() {
    */
   Renderer.prototype.projectPointToCanvas = function projectPointToCanvas(p) {
     // We're looking down the z-axis in the negative direction...
-	if (p.z > 0) {
+	var z = p.z;
+	if (z > 0) {
 		return null;
 	}
-	return {x: p.x / p.z, y: p.y / p.z};
+	return {x: p.x / z, y: p.y / z};
   };
 
   /**
