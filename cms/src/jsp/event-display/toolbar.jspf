@@ -6,8 +6,8 @@
 			</a>
 		</td>
 		<td>
-			<a class="toolbar-button" onclick="saveCanvasData();">
-				<img src="../graphics/media-floppy.png" title="Open"/>
+			<a class="toolbar-button" onclick="renderCanvasData();">
+				<img src="../graphics/image-x-generic.png" title="Render Image in New Window"/>
 			</a>
 		</td>
 		<td class="toolbar-separator">
