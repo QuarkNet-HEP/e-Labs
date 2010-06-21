@@ -42,16 +42,13 @@
 	try { // Hardcoded surveys are default 
 		id = Integer.parseInt(request.getParameter("id"));
 	}
-	catch (Exception ex) {
+	catch (NumberFormatException nfe) {
 		try {
 			if (user.getNewSurveyId() != null) { // Check user-defined test 
 				id = user.getNewSurveyId().intValue();
 			}
-			else if (elab.getId().equals("1")) { // Default Cosmic Handler 
-				id = Integer.parseInt(elab.getProperties().getCosmicSurveyId());
-			}
-			else if (elab.getId().equals("2")) { // Default LIGO Handler 
-				id = Integer.parseInt(elab.getProperties().getLigoSurveyId());
+			else {
+				id = Integer.parseInt(elab.getProperty(elab.getName() + ".newsurvey"));
 			}
 		}
 		catch(Exception exn) {
@@ -64,41 +61,50 @@
 	}
 	ElabSurvey survey = elab.getSurveyProvider().getSurvey(id);
 	request.setAttribute("survey", survey);
+	
 %>
 			
-<h1>Answer the following questions and click <b>Record Answers</b> to take the ${survey.name}.</h1>
 
-<p>
-	<strong>Don't guess!!</strong> "Do not know" is a perfectly good answer. 
-	You will learn the answers to questions like these in your investigation.
-</p>
-
-<form name="test-form" method="post" action="record-answers.jsp">
-	<ol id="test">
-		<c:forEach items="${survey.questions}" var="question">
-			<li>
-				<strong>${question.text}</strong>
-				<ol type="a">
-					<c:forEach items="${question.answers}" var="answer">
-						<li>
-							<input type="radio" name="response${question.id}" value="${answer.id}"/>${answer.text}
-						</li>
-					</c:forEach>
-				</ol>
-			 </li>
-		</c:forEach>
-	</ol>
-	<c:if test="${param.studentid != null && param.studentid != '0'}">
-		<p align="center"> 
-			<input type="hidden" name="type" value="${param.type}"/>
-			<input type="hidden" name="testId" value="${param.id}" /> 
-			<input type="hidden" name="studentid" value="${param.studentid}"/>
-			<input type="hidden" name="count" value="${survey.questionCount}"/>
-    		<input type="submit" name="Submit" value="Record Answers"/>
-	    	<input type="reset" name="Reset" value="Reset Answers"/>
+<c:choose>
+	<c:when test="${survey != null && survey.getQuestionCount() > 0}">
+		<h1>Answer the following questions and click <b>Record Answers</b> to take the ${survey.name}.</h1>
+		<p>
+			<strong>Don't guess!!</strong> "Do not know" is a perfectly good answer. 
+			You will learn the answers to questions like these in your investigation.
 		</p>
-	</c:if>
-</form>
+		<form name="test-form" method="post" action="record-answers.jsp">
+			<ol id="test">
+				<c:forEach items="${survey.questions}" var="question">
+					<li>
+						<strong>${question.text}</strong>
+						<ol type="a">
+							<c:forEach items="${question.answers}" var="answer">
+								<li>
+									<input type="radio" name="response${question.id}" value="${answer.id}"/>${answer.text}
+								</li>
+							</c:forEach>
+						</ol>
+					 </li>
+				</c:forEach>
+			</ol>
+			<c:if test="${param.studentid != null && param.studentid != '0'}">
+				<p align="center"> 
+					<input type="hidden" name="type" value="${param.type}"/>
+					<input type="hidden" name="testId" value="${param.id}" /> 
+					<input type="hidden" name="studentid" value="${param.studentid}"/>
+					<input type="hidden" name="count" value="${survey.questionCount}"/>
+		    		<input type="submit" name="Submit" value="Record Answers"/>
+			    	<input type="reset" name="Reset" value="Reset Answers"/>
+				</p>
+			</c:if>
+		</form>
+	</c:when>
+	<c:otherwise>
+		No test found. 
+	</c:otherwise>
+</c:choose>
+
+
 			
 			</div>
 			<!-- end content -->
