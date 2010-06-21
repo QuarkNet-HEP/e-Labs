@@ -1,0 +1,38 @@
+<%@ page import="java.awt.image.BufferedImage" %>
+<%@ page import="java.io.*" %>
+<%@ page import="javax.imageio.ImageIO" %>
+
+<%@ page import="org.apache.commons.codec.binary.Base64" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.apache.commons.io.IOUtils" %>
+<%@ page import="org.apache.http.client.HttpResponseException" %>
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+    
+<%
+	try {
+		String payload = request.getParameter("base64image");
+		if (StringUtils.isBlank(payload) ) {
+			throw new HttpResponseException(HttpServletResponse.SC_BAD_REQUEST, "missing image payload");
+		}
+		
+		// we must validate our data. only accept what java can understand
+		InputStream is = new ByteArrayInputStream(Base64.decodeBase64(payload)); 
+		BufferedImage bi = ImageIO.read(is);
+		is.close();
+		
+		if (bi == null) {
+			throw new HttpResponseException(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, "image payload not understood");
+		}
+
+		// Punt it back to the user for saving [testing] 
+		response.addHeader("Content-Disposition", "attachment;filename=event.png");
+		response.setContentType("image/png");
+		ImageIO.write(bi, "png", response.getOutputStream());
+	}
+	catch(HttpResponseException hre) {
+		response.sendError(hre.getStatusCode(), hre.getMessage());  
+	}
+	
+%>    
