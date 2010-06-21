@@ -32,7 +32,7 @@
 			<div id="content">
 
 <%
-	int newSurveyId = -1; 
+	Integer newSurveyId = null; 
 	boolean teacherInStudy = "yes".equalsIgnoreCase(request.getParameter("eval"));
 
 	// Only for teachers in our study. 
@@ -49,8 +49,16 @@
 	
 	// New survey/test handler is active by default. 
 	if (user.getNewSurveyId() == null) { 
-		newSurveyId = Integer.parseInt(elab.getProperty(elab.getName() + ".newsurvey"));
-		user.setNewSurveyId(newSurveyId);
+		try {
+			newSurveyId = Integer.parseInt(elab.getProperty(elab.getName() + ".newsurvey"));
+		
+		}
+		catch(NumberFormatException nfe) {
+			newSurveyId = null; 
+		}
+		finally {
+			user.setNewSurveyId(newSurveyId);
+		}
 	}
 	else {
 		newSurveyId = user.getNewSurveyId().intValue();
@@ -140,12 +148,12 @@
 			        results.add(l);
 			    }
 			}
-			request.setAttribute("valid", Boolean.TRUE);
+			request.setAttribute("valid", true);
 			request.setAttribute("results", results);
 	    }
 	    catch (Exception e) {
 	   		e.printStackTrace();
-	        request.setAttribute("valid", Boolean.FALSE);
+	        request.setAttribute("valid", false);
 	        request.setAttribute("error", e.getMessage());
 	    }
 		
