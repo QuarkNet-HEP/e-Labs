@@ -52,6 +52,7 @@
 				<br /><br />
 				Time<sub>start</sub>: <input readonly type="text" name="xmin" id="xmin" size="15" class="datepicker"></input>
 				Time<sub>end</sub>: <input readonly type="text" name="xmax" id="xmax" size="15" class="datepicker"></input>
+
 				<button id="plotButtonTop" class="plotButton" value="Plot">Plot</button>
 				<img src="../graphics/spinner-small.gif" id="busySpinner" style="visibility: hidden"></img>
 				<%-- <button title="Zoom to selection" id="buttonZoom" disabled>Zoom to selection</button> --%>
@@ -77,7 +78,6 @@
 					<%-- Temporarily disabled while I figure out how to properly resize the bar - pxn
 					<div id="slider"></div>
 					--%>
-				
 								
 				<br />
 				
