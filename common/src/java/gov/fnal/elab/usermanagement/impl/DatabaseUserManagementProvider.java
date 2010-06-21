@@ -74,7 +74,7 @@ public class DatabaseUserManagementProvider implements
             throws SQLException, AuthenticationException {
         if (SWITCHING_ELABS.equals(password)) {            
             PreparedStatement ps = c.prepareStatement(
-            		"SELECT password FROM research_group WHERE name ILIKE ?;");
+            		"SELECT password FROM research_group WHERE name = ?;");
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
@@ -126,7 +126,7 @@ public class DatabaseUserManagementProvider implements
     			"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
     			"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
     			"LEFT OUTER JOIN \"newSurvey\".tests AS t ON (rgp.project_id = t.proj_id) " +
-    			"WHERE rg.name ILIKE ? AND rg.password = ?;");
+    			"WHERE rg.name = ? AND rg.password = ?;");
     	ps.setString(1, username);
     	ps.setString(2, password);
     	ResultSet rs = ps.executeQuery();
@@ -145,7 +145,7 @@ public class DatabaseUserManagementProvider implements
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
         		"LEFT OUTER JOIN \"newSurvey\".tests AS t ON (rgp.project_id = t.proj_id) " +
-        		"WHERE rg.name ILIKE ? ;");
+        		"WHERE rg.name = ? ;");
 		ps.setString(1, username);
 		ResultSet rs = ps.executeQuery();
 
@@ -248,7 +248,7 @@ public class DatabaseUserManagementProvider implements
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
         		"LEFT OUTER JOIN \"newSurvey\".tests AS t ON (rgp.project_id = t.proj_id) " +
-        		"WHERE rg.name ILIKE ?;");
+        		"WHERE rg.name = ?;");
         ps.setString(1, groupName);
         ResultSet rs = ps.executeQuery();
  
