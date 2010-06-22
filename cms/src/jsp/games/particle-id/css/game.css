@@ -1,0 +1,207 @@
+html
+{
+font-family: verdana, arial, helvetica, sans-serif;
+font-size: 12px;
+}
+
+body
+{
+margin: 5px 0px 10px 0px;
+text-align: center;
+/* background-color: #DDDDDD; */
+}
+
+
+DIV#container {
+background-color: #FFFFFF;
+margin: auto;
+padding: 20px;
+border-color: #999999; 
+border-width: 1px;
+border-style: solid;
+width: 700px;
+text-align: left;
+}
+
+DIV#footer {
+width: 700px;
+margin-left: auto;
+margin-right: auto;
+margin-top: 15px;
+font-size: 11px;
+text-align: left;
+
+}
+
+
+h1
+{
+font-size: 120%;
+font-weight: bold;
+padding-bottom: 4px;
+border-bottom: 1px solid #999999;
+color: #444444;
+}
+
+h2
+{
+font-size: 115%;
+font-weight: bold;
+color: #003399;
+}
+
+h3
+{
+font-size: 110%;
+font-weight: bold;
+color: #000000;
+}
+
+#messages {
+margin: auto;
+text-indent: 5px;
+padding: 18px;
+text-align: left;
+font-family: Arial, Helvetica, sans-serif;
+font-size: 20px;
+display: block;
+color: black;
+background: white;
+width: 200px;
+height:240px;
+min-height: 240px;
+_height: 240px;
+border: 4px solid grey;
+text-align: center;
+}
+div#messages p
+{
+margin: 10px 10px 10px 10px;
+}
+
+#scoreBox {
+margin: auto;
+text-indent: 10px;
+padding: 20px;
+text-align: center;
+font-family: Arial, Helvetica, sans-serif;
+font-size: 16px;
+display: block;
+color: black;
+background: white;
+width: 200px;
+height:28px;
+border: 4px solid grey;
+}
+div#scoreBox p
+{
+margin: 10px 10px 10px 10px;
+}
+
+
+#instructions {
+margin: auto;
+text-indent: 10px;
+border:black;
+text-align: left;
+font-family: Arial, Helvetica, sans-serif;
+font-size: 12px;
+display: block;
+color: white;
+background: darkblue;
+width: 600px;
+border: 1px solid #666;
+}
+div#instructions p
+{
+margin: 10px 10px 10px 10px;
+}
+#instructions ul {
+list-style: disc;
+margin: 5px 10px 5px 10px;
+}
+#programStuff
+{
+margin-left:3%;
+margin-right:3%;
+   display: block;
+   }
+
+.programList {
+color: #222;
+margin-top: 20px;
+margin-bottom: 10px;
+text-align: left;
+font-family: Arial, Helvetica, sans-serif;
+font-size: 12px;
+display: block;
+overflow: scroll;
+height: 250px;
+width: 650px;
+min-height: 150px;
+_height: 150px;
+border: 1px solid #666;
+background-color: #fff;
+padding: 8px;
+}
+
+a:link {color: #003399; text-decoration: none;}
+a:visited {color: #003399; text-decoration: none;}
+a:hover {color: #003399; text-decoration: underline;}
+a:active {color: #003399; text-decoration: none;}
+
+
+div.programList a {
+	text-decoration: none;
+	color: #003399;
+	background-color: #fff;
+    font-size: 12px;
+   }
+div.programList a:link {
+    font-size: 12px;
+    color: #003399;
+	background-color: #fff;
+}
+div.programList a:visited {
+    color: #003399;
+	background-color: #fff;
+    font-size: 12px;
+}
+div.programList a:hover {
+ 	text-decoration: underline;
+	background-color: #fff;
+    color: #000;
+    font-size: 12px;
+}
+
+table,tr,td
+{
+font-family: Arial, Helvetica, sans-serif;
+font-size: 12px;
+}
+
+*.dynamic_button {
+	font-size: 16px;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #bdf;
+	font-weight: bold;
+	background-color: #09f;
+	border: 2px solid;
+	border-color: #7bf #07c #07c #7bf;
+	padding: 1px 0px;
+	margin: 10px;
+	width: 100px;
+	}
+a:link *.dynamic_button, a:visited *.dynamic_button {
+	color: #bdf;
+	}
+a:active *.dynamic_button	{
+	color: #fff;
+	border-color: #07c #7bf #7bf #07c;
+	}
+a:hover *.dynamic_button	{
+	color: #fff;
+	}
+a:link, a:visited, a:active, a:hover {
+	text-decoration: none;
+	}

@@ -15,7 +15,6 @@
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/analysis.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<link href="../include/jeegoocontext/skins/cm_default/style.css" rel="Stylesheet" type="text/css" />
 		<link href="../include/jeegoocontext/skins/cm_blue/style.css" rel="Stylesheet" type="text/css" />
 	</head>
 	
@@ -30,7 +29,7 @@
 			</div>
 			<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
 			<div id="content">
-<a class="help-icon" target="help" href="data-selection-help.jsp"><img src="../graphics/help.png" /></a>
+<a class="help-icon" href="#" onclick="openHelp(event, 'help')"><img src="../graphics/help.png" /></a>
 <h1>Data Selection - Detector Calibration Study</h1>
 <script>
 	initlog();
@@ -128,6 +127,37 @@
 		</tr>
 	</table>
 </form>
+
+<div id="help" class="help">
+	<table>
+		<tr>
+			<td class="title">Data Selection Help<a href="#" onclick="closeHelp('help');"><img src="../graphics/close.png" /></a></td>
+		</tr>
+		<tr>
+			<td class="content">
+				<p>Need help with data selection? Try these links:</p>
+				<ul>
+					<li>
+						<e:popup href="../video/demos-calibration.html?video=data-selection" target="tryit" width="800" height="800">Screencast Demo</e:popup>
+ - how to select data.
+					</li>
+					<li>
+						<a href="javascript:reference('cms data selection',450)">Milestone</a> associated with data selection.
+					</li>
+					<li>
+						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">Calibration Studies Background</e:popup>
+					</li>
+					<li>
+						CMS e-Lab <a href="../library/FAQ.jsp">FAQ</a>
+					</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td align="right"><button name="close" onclick="closeHelp('help');">Close</button></td>
+		</tr>
+	</table>
+</div>
 
 			</div>
 			<!-- end content -->	

@@ -521,21 +521,25 @@ window.addEventListener('load', function() {
 		renderer.draw_overdraw = true;
 		
 		renderer.ctx.save();
-		renderer.ctx.translate(w / 2 - 50, h / 2 - 50);
-		renderer.stroke_rgba = null;
-		renderer.bufferShape(arrowX);
-		renderer.bufferShape(arrowY);
-		renderer.bufferShape(arrowZ);
-		var n = renderer.drawBuffer();
-		renderer.emptyBuffer();
-		renderer.ctx.setStrokeColor(1, 1, 0, 1);
-		renderer.ctx.setFillColor(1, 1, 0, 1);
-		renderer.ctx.font = "9pt Arial";
-		renderer.drawText({x: 1.1, y: 0, z: 0}, "x");
-		renderer.drawText({x: 0, y: 1.1, z: 0}, "y");
-		renderer.drawText({x: 0, y: 0, z: 1.1}, "z");
-		renderer.ctx.restore();
-		renderer.draw_overdraw = false;
+		try {
+			renderer.ctx.translate(w / 2 - 50, h / 2 - 50);
+			renderer.stroke_rgba = null;
+			renderer.bufferShape(arrowX);
+			renderer.bufferShape(arrowY);
+			renderer.bufferShape(arrowZ);
+			var n = renderer.drawBuffer();
+			renderer.emptyBuffer();
+			renderer.ctx.setStrokeColor(1, 1, 0, 1);
+			renderer.ctx.setFillColor(1, 1, 0, 1);
+			renderer.ctx.font = "9pt Arial";
+			renderer.drawText({x: 1.1, y: 0, z: 0}, "x");
+			renderer.drawText({x: 0, y: 1.1, z: 0}, "y");
+			renderer.drawText({x: 0, y: 0, z: 1.1}, "z");
+		}
+		finally {
+			renderer.ctx.restore();
+			renderer.draw_overdraw = false;
+		}
 	}
 
 	renderer.camera.focal_length = 2.5;

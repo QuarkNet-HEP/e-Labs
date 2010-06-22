@@ -97,6 +97,7 @@ Students use a data base and analysis tool on the website. The Online Graphical 
 								<li>Describe particles colliding in and emerging from collisions detected by CMS as predicted by the Standard Model.</li>
 								<li>List in order and describe the CMS subdetectors in terms of the properties of the particles they detect.</li>
 								<li>Explain the role that conservation of mass/energy, momentum, and charge play in analyzing events detected at CMS.</li>
+								<li>Analyze data plots in order to extract and describe the physical meaning of any apparent features.</li>
 								<li>Design, conduct and report on an investigation of a testable hypothesis for which evidence can be provided using CMS data.</li> 								
 							</ul>
 						</li>

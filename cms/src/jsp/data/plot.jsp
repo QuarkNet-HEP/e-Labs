@@ -30,7 +30,6 @@
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/analysis.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<link href="../include/jeegoocontext/skins/cm_default/style.css" rel="Stylesheet" type="text/css" />
 		<link href="../include/jeegoocontext/skins/cm_blue/style.css" rel="Stylesheet" type="text/css" />
 	</head>
 	
@@ -51,7 +50,7 @@
 		    <script language="javascript" type="text/javascript" src="../include/jquery.flot.crosshair.js"></script>
 			<div id="content">
 				
-<a class="help-icon" target="help" href="plot-help.jsp"><img src="../graphics/help.png" /></a>
+<a class="help-icon" href="#" onclick="openHelp(event, 'help');"><img src="../graphics/help.png" /></a>
 <h1>Plot - ${param.analysisName}</h1>
 <script>
 	initlog();
@@ -196,6 +195,36 @@
 	
 	getData("${param.dataset}", "${param.runs}", "${param.plots}", "${param.combine}");	
 </script>
+
+<div id="help" class="help">
+	<table>
+		<tr>
+			<td class="title">Plot Help<a href="#" onclick="closeHelp('help');"><img src="../graphics/close.png" /></a></td>
+		</tr>		
+		<tr>
+			<td class="content">
+				<p>Need help with plotting? Try these links:</p>
+				<ul>
+					<li>
+						<e:popup href="../video/demos-calibration.html?video=plot" target="tryit" width="800" height="800">Screencast Demo</e:popup> - how to use the plotting tool
+					</li>
+					<li>
+						<a href="javascript:reference('cms analysis',450)">Milestone</a> associated with plotting.
+					</li>
+					<li>
+						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">Calibration Studies Background</e:popup>
+					</li>
+					<li>
+						CMS e-Lab <a href="../library/FAQ.jsp">FAQ</a>
+					</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td align="right"><button name="close" onclick="closeHelp('help');">Close</button></td>
+		</tr>
+	</table>
+</div>
 
 			</div>
 			<!-- end content -->	

@@ -26,7 +26,7 @@
 <h1>Calibration Studies Notes</h1>   
  
 <e:transclude
- url="http://${elab.properties['elab.host']}/cms/library/body.php/Calibration_Study"
+ url="http://${elab.properties['elab.host']}/cms/library/body.php/E-Lab_Calibration_Studies"
      start="<!-- start content -->"
       end="<div class=\"printfooter\">"
 />

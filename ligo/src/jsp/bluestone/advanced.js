@@ -169,7 +169,7 @@ function logTickFormatter(axis) {
 function addNewRow(index) {
 	var foo = $("#channel-list-advanced");
 	// Delete button
-	var deleteButton = $("<input></input>").attr("type", "button").attr("id", "removeRow_" + index).attr("value", "-").attr("class", "removeRow");
+	var deleteButton = $("<input></input>").attr("type", "button").attr("id", "removeRow_" + index).attr("value", "Remove This Row").attr("class", "removeRow");
 	
 	// Site Dropdown
 	var siteSelector = $("<select></select>").attr("name", "site").attr("id", "site_" + index).attr("class", "site");
@@ -262,6 +262,7 @@ function getDataAndPlotCB() {
 
 	function onChannelDataReceived(json) { 
 		data = json;
+		$("#yAxisLabel").text(data[0].unit); 
 		plot = $.plot(placeholder, data, options); 
 		logCheckboxCB();
 		plot = $.plot(placeholder, data, options);
@@ -342,7 +343,7 @@ $(document).ready(function() {
 		getDataAndPlotCB(); 
 	});
 	
-	$("#plotButton").bind('click', function() {
+	$(".plotButton").bind('click', function() {
 		getDataAndPlotCB(); 
 	});
 	

@@ -527,15 +527,21 @@ function animationDecSpeed(index) {
 	}
 }
 
+function roundToBin(num, binwidth) {
+	return (Math.round(num / binwidth) * binwidth).toPrecision(3);
+}
+
 function bindButtons(index) {
 	var plot = "#plot" + index;
 	$(plot + " .placeholder").bind("plotselected", function (event, ranges) {
+		var binwidth = document.plotData[index][0]["binwidth"];
 		$(plot + " .selection").css("display", "block");
 		var scale = document.plots[index].getAxes().xaxis.scale;
 		var pos = ranges.xaxis.from;
 		var client = document.plots[index].getAxes().xaxis.p2c(pos);
-		$(plot + " .selection").html(ranges.xaxis.from.toFixed(1) + " - " + ranges.xaxis.to.toFixed(1) 
-				+ " " + document.plotData[index][0]["units"]);
+		var from = roundToBin(ranges.xaxis.from, binwidth);
+		var to = roundToBin(ranges.xaxis.to, binwidth);
+		$(plot + " .selection").html(from + " - " + to + " " + document.plotData[index][0]["units"]);
 		$(plot + " .selection").css("left", (client + 50) + "px");
 		$(plot + " .apply-selection").attr("disabled", false);
 	});
@@ -543,15 +549,17 @@ function bindButtons(index) {
 	$(plot + " .placeholder").bind("plotunselected", function() {plotUnselected(index);});
 	
 	$(plot + " .placeholder").bind("plothover", function(event, pos, item) {
+		var binwidth = document.plotData[index][0]["binwidth"];
 		$(plot + " .cursor").css("left", (pos.pageX + 6) + "px");
 		$(plot + " .cursor").css("top", (pos.pageY - 20) + "px");
-		$(plot + " .cursorValue").html(Math.round(pos.x * 10) / 10);
+		$(plot + " .cursorValue").html(roundToBin(pos.x, binwidth));
 	});
 
 	$(plot + " .apply-selection").bind("click", function() {
+		var binwidth = document.plotData[index][0]["binwidth"];
 		var r = document.plots[index].getSelection();
-		setAll(document.plotData[index], "minx", r.xaxis.from);
-		setAll(document.plotData[index], "maxx", r.xaxis.to);
+		setAll(document.plotData[index], "minx", roundToBin(r.xaxis.from, binwidth));
+		setAll(document.plotData[index], "maxx", roundToBin(r.xaxis.to, binwidth));
 		redrawPlot2(index, defaultPlotOptions);
     	plotUnselected(index);
 	});
@@ -617,6 +625,11 @@ function bindTextWithApply(index, textClass, applyClass, propName, defaultValue,
 			}
 		}, 20);
 	});
+	
+	var val = document.plotData[index][0][propName];
+	if (val != null) {
+		$(textSelector).attr("value", val);
+	}
 	
 	$(applySelector).bind("click", function() {
 		var value = $(textSelector).attr("value");

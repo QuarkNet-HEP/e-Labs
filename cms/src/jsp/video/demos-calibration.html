@@ -1,0 +1,67 @@
+<html>
+<head>
+<title>Screencast Demos: Calibration Studies</title>
+		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
+</head>
+<script type="text/javascript">
+var g = parseGetVars();
+var video=g["video"];
+if (video==null) {
+   video="data-selection";
+   }
+function parseGetVars() {
+var getVars = new Array();
+var qString = unescape(top.location.search.substring(1));
+var pairs = qString.split(/\&/);
+for (var i in pairs) {
+var nameVal = pairs[i].split(/\=/);
+getVars[nameVal[0]] = nameVal[1];
+}	
+return getVars;
+}
+function setDisplay(objectID,state) {
+	var object = document.getElementById(objectID);	
+	object.style.display = state;
+}
+
+function toggleDisplay(objectID) {
+	var object = document.getElementById(objectID);
+	state = object.style.display;
+	if (state == 'none')
+		object.style.display = 'block';
+	else if (state != 'none')
+		object.style.display = 'none'; 
+}
+
+
+function showVideo(v)
+{
+     
+     setDisplay("data-selection","none");
+     setDisplay("plot-selection","none");
+     setDisplay("plot","none");
+     setDisplay(v,"block");
+     }
+     
+</script>
+	<body id="resources" class="library" onload="showVideo(video)">
+		<div id="container">
+	<h4>Calibration Studies Screencast Demos: <a href="javascript:showVideo('data-selection')">Data Selection</a> - <a href="javascript:showVideo('plot-selection')">Plot Selection</a> - <a href="javascript:showVideo('plot')">Plotting Tool</a></h4>
+
+		<!-- entire page container -->
+<div id="data-selection">
+<object id="scPlayer" width="747" height="687"> <param name="movie" value="http://content.screencast.com/users/tloughran/folders/Jing/media/bddc0b04-64fe-4461-89a4-5533454686ef/jingh264player.swf"></param> <param name="quality" value="high"></param> <param name="bgcolor" value="#FFFFFF"></param> <param name="flashVars" value="thumb=http://content.screencast.com/users/tloughran/folders/Jing/media/bddc0b04-64fe-4461-89a4-5533454686ef/FirstFrame.jpg&containerwidth=747&containerheight=687&content=http://content.screencast.com/users/tloughran/folders/Jing/media/bddc0b04-64fe-4461-89a4-5533454686ef/00000050.mp4"></param> <param name="allowFullScreen" value="true"></param> <param name="scale" value="showall"></param> <param name="allowScriptAccess" value="always"></param> <param name="base" value="http://content.screencast.com/users/tloughran/folders/Jing/media/bddc0b04-64fe-4461-89a4-5533454686ef/"></param>Ê <embed src="http://content.screencast.com/users/tloughran/folders/Jing/media/bddc0b04-64fe-4461-89a4-5533454686ef/jingh264player.swf" quality="high" bgcolor="#FFFFFF" width="747" height="687" type="application/x-shockwave-flash" allowScriptAccess="always" flashVars="thumb=http://content.screencast.com/users/tloughran/folders/Jing/media/bddc0b04-64fe-4461-89a4-5533454686ef/FirstFrame.jpg&containerwidth=747&containerheight=687&content=http://content.screencast.com/users/tloughran/folders/Jing/media/bddc0b04-64fe-4461-89a4-5533454686ef/00000050.mp4" allowFullScreen="true" base="http://content.screencast.com/users/tloughran/folders/Jing/media/bddc0b04-64fe-4461-89a4-5533454686ef/" scale="showall"></embed> </object>
+</div>
+
+<div id="plot-selection">
+<object id="scPlayer" width="802" height="710"> <param name="movie" value="http://content.screencast.com/users/tloughran/folders/Jing/media/97eab96e-2ea6-4e2f-921a-4408a69b5713/jingh264player.swf"></param> <param name="quality" value="high"></param> <param name="bgcolor" value="#FFFFFF"></param> <param name="flashVars" value="thumb=http://content.screencast.com/users/tloughran/folders/Jing/media/97eab96e-2ea6-4e2f-921a-4408a69b5713/FirstFrame.jpg&containerwidth=802&containerheight=710&content=http://content.screencast.com/users/tloughran/folders/Jing/media/97eab96e-2ea6-4e2f-921a-4408a69b5713/00000045.mp4"></param> <param name="allowFullScreen" value="true"></param> <param name="scale" value="showall"></param> <param name="allowScriptAccess" value="always"></param> <param name="base" value="http://content.screencast.com/users/tloughran/folders/Jing/media/97eab96e-2ea6-4e2f-921a-4408a69b5713/"></param>Ê <embed src="http://content.screencast.com/users/tloughran/folders/Jing/media/97eab96e-2ea6-4e2f-921a-4408a69b5713/jingh264player.swf" quality="high" bgcolor="#FFFFFF" width="802" height="710" type="application/x-shockwave-flash" allowScriptAccess="always" flashVars="thumb=http://content.screencast.com/users/tloughran/folders/Jing/media/97eab96e-2ea6-4e2f-921a-4408a69b5713/FirstFrame.jpg&containerwidth=802&containerheight=710&content=http://content.screencast.com/users/tloughran/folders/Jing/media/97eab96e-2ea6-4e2f-921a-4408a69b5713/00000045.mp4" allowFullScreen="true" base="http://content.screencast.com/users/tloughran/folders/Jing/media/97eab96e-2ea6-4e2f-921a-4408a69b5713/" scale="showall"></embed> </object>
+</div>
+
+<div id="plot">
+<object id="scPlayer" width="816" height="602"> <param name="movie" value="http://content.screencast.com/users/tloughran/folders/Jing/media/cfb90bf4-d461-423e-bacb-a0e6aa6082e0/jingh264player.swf"></param> <param name="quality" value="high"></param> <param name="bgcolor" value="#FFFFFF"></param> <param name="flashVars" value="thumb=http://content.screencast.com/users/tloughran/folders/Jing/media/cfb90bf4-d461-423e-bacb-a0e6aa6082e0/FirstFrame.jpg&containerwidth=816&containerheight=602&content=http://content.screencast.com/users/tloughran/folders/Jing/media/cfb90bf4-d461-423e-bacb-a0e6aa6082e0/00000047.mp4"></param> <param name="allowFullScreen" value="true"></param> <param name="scale" value="showall"></param> <param name="allowScriptAccess" value="always"></param> <param name="base" value="http://content.screencast.com/users/tloughran/folders/Jing/media/cfb90bf4-d461-423e-bacb-a0e6aa6082e0/"></param>Ê <embed src="http://content.screencast.com/users/tloughran/folders/Jing/media/cfb90bf4-d461-423e-bacb-a0e6aa6082e0/jingh264player.swf" quality="high" bgcolor="#FFFFFF" width="816" height="602" type="application/x-shockwave-flash" allowScriptAccess="always" flashVars="thumb=http://content.screencast.com/users/tloughran/folders/Jing/media/cfb90bf4-d461-423e-bacb-a0e6aa6082e0/FirstFrame.jpg&containerwidth=816&containerheight=602&content=http://content.screencast.com/users/tloughran/folders/Jing/media/cfb90bf4-d461-423e-bacb-a0e6aa6082e0/00000047.mp4" allowFullScreen="true" base="http://content.screencast.com/users/tloughran/folders/Jing/media/cfb90bf4-d461-423e-bacb-a0e6aa6082e0/" scale="showall"></embed> </object>
+</div>
+
+</div>
+</body>
+</html>

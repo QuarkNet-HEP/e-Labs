@@ -491,6 +491,10 @@ Pre3d = (function() {
   // a and be should be greater, by 2 units, 1 in each direction.
   function pushPoints2dIP(a, b) {
     var vec = unitVector2d(subPoints2d(b, a));
+    if (isNaN(vec.x)) {
+    	//sometimes b and a coincide
+    	return;
+    }
     addPoints2dIP(b, b, vec);
     subPoints2dIP(a, a, vec);
   }
@@ -752,10 +756,11 @@ Pre3d = (function() {
    */
   Renderer.prototype.projectPointToCanvas = function projectPointToCanvas(p) {
     // We're looking down the z-axis in the negative direction...
-	if (p.z > 0) {
+	var z = p.z;
+	if (z > 0) {
 		return null;
 	}
-	return {x: p.x / p.z, y: p.y / p.z};
+	return {x: p.x / z, y: p.y / z};
   };
 
   /**

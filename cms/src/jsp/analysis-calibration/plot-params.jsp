@@ -13,7 +13,6 @@
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/analysis.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<link href="../include/jeegoocontext/skins/cm_default/style.css" rel="Stylesheet" type="text/css" />
 		<link href="../include/jeegoocontext/skins/cm_blue/style.css" rel="Stylesheet" type="text/css" />
 	</head>
 	
@@ -30,7 +29,7 @@
 		    <script type="text/javascript" src="../analysis-calibration/plot-params.js"></script>
 			<div id="content">
 			
-<a class="help-icon" target="help" href="plot-params-help.jsp"><img src="../graphics/help.png" /></a>
+<a class="help-icon" href="#" onclick="openHelp(event, 'help');"><img src="../graphics/help.png" /></a>
 <h1>Plot selection - ${param.analysisName}</h1>
 <script>
 	initlog();
@@ -163,6 +162,37 @@
 		</td>
 	</tr>
 </table>
+
+<div id="help" class="help">
+	<table>
+		<tr>
+			<td class="title">Plot Selection Help<a href="#" onclick="closeHelp('help');"><img src="../graphics/close.png" /></a></td>
+		</tr>		
+		<tr>
+			<td class="content">
+				<p>Need help with plot selection? Try these links:</p>
+				<ul>
+					<li>
+						<e:popup href="../video/demos-calibration.html?video=plot-selection" target="tryit" width="800" height="800">Screencast Demo</e:popup>
+ - how to select plots.
+					</li>
+					<li>
+						<a href="javascript:reference('cms analysis',450)">Milestone</a> associated with plot selection.
+					</li>
+					<li>
+						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">Calibration Studies Background</e:popup>
+					</li>
+					<li>
+						CMS e-Lab <a href="../library/FAQ.jsp">FAQ</a>
+					</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td align="right"><button name="close" onclick="closeHelp('help');">Close</button></td>
+		</tr>
+	</table>
+</div>
 			<!-- end content -->	
 		
 			<div id="footer">

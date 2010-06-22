@@ -16,6 +16,17 @@
 			span.dataName {
 				font-size: x-small;
 			}
+			span.rotate-text-left {
+				position: absolute;
+				width: 0px;
+				height: 0px;
+				-webkit-transform: rotate(-90deg); 
+				-moz-transform: rotate(-90deg);	
+				filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+			}
+			td#yAxisLabeltd {
+				width: 20px;
+			}
 		</style>
 	</head>
     
@@ -41,18 +52,31 @@
 				<br /><br />
 				Time<sub>start</sub>: <input readonly type="text" name="xmin" id="xmin" size="15" class="datepicker"></input>
 				Time<sub>end</sub>: <input readonly type="text" name="xmax" id="xmax" size="15" class="datepicker"></input>
-				<input id="plotButton" type="button" value="Plot"></input>
+				<button id="plotButtonTop" class="plotButton" value="Plot">Plot</button>
 				<img src="../graphics/spinner-small.gif" id="busySpinner" style="visibility: hidden"></img>
-				<button title="Zoom to selection" id="buttonZoom" disabled>Zoom to selection</button>
+				<%-- <button title="Zoom to selection" id="buttonZoom" disabled>Zoom to selection</button> --%>
 				<button title="Zoom all the way out" id="buttonZoomOut" disabled>Zoom all the way out</button>
 				<input type="checkbox" name="log" value="y-axis" id="logYcheckbox" class="logCheckbox" />Y-Axis Log Scale
 				
-				<div id="resizablecontainer" style="margin-bottom: 10px; margin-right: 10px;" >
-					<div id="chart" style="width:100%; height:250px; text-align: left;"></div>
+				
+				<table>
+					<tr>
+						<td id="yAxisLabeltd"><span class="rotate-text-left" id="yAxisLabel">&nbsp;</span></td>
+						<td width="850">
+							<div id="resizablecontainer" style="margin-bottom: 10px; margin-right: 10px;" >
+								<div id="chart" style="width:100%; height:250px; text-align: left;"></div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td align="center"><span id="xAxisLabel">Date</span></td>
+					</tr>
+				</table>
+					
 					<%-- Temporarily disabled while I figure out how to properly resize the bar - pxn
 					<div id="slider"></div>
 					--%>
-				</div>
 								
 				<br />
 				
@@ -97,7 +121,7 @@
 						<tbody>
 							<tr id="row_0">
 								<td>
-									<input type="button" value="-" id="removeRow_0" class="removeRow"></input>
+									<input type="button" value="Remove This Row" id="removeRow_0" class="removeRow"></input>
 								</td>
 								<td>
 									<select name="site" id="site_0" class="site">
@@ -130,7 +154,9 @@
 					
 				</div>
 				
-				<input id="addNewRow" type="button" value="+"></input>
+				<input id="addNewRow" type="button" value="Add Data Row"></input>
+				<br />
+				<button id="plotButtonBottom" class="plotButton" value="Plot">Plot</button>
 				
 				<h2>Save This Plot</h2>
 				
