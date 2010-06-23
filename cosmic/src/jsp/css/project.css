@@ -3,18 +3,23 @@ h1 {
 	color: white;
 }
 
-#nav li a {
-	width: 140px;
-	color: white;
-	border: 2px solid black;
+#nav ul li a {
+	width: 8em;
+}
+
+a#nav1 {
+    border-top: 1px solid #808080;
+    border-left: 1px solid #808080;
+    border-bottom: 1px solid #404040;
+    border-right: 1px solid #404040;
 	background-color: black;
 }
 
-#nav li a:hover {
-	color: black;
-	border-top: 2px solid #808080;
-	border-left: 2px solid #808080;
-	border-bottom: 2px solid #404040;
-	border-right: 2px solid #404040;
-	background-color: white;
+a#nav2 {	
+	color: white; 
+	background-color: #f67527;
+	border-top: #ffa76c 1px solid;
+	border-left: #ffa76c 1px solid;
+	border-bottom: #b54800 1px solid;
+	border-right: #b54800  1px solid;
 }
