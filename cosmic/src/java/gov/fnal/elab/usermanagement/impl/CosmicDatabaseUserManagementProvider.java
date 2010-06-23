@@ -53,14 +53,41 @@ CosmicElabUserManagementProvider {
 			throw new ElabException("Error retrieving the student's group from the database.");
 		}
 		int groupId = rs.getInt("id");
-		if ("cosmic".equals(elab.getName())) {
+		if ("cosmic".equals(elab.getName())) { // shouldn't this only be called for cosmic? 
 			// Connect the detector id from the teacher with the group
 			// if it exists.
-			ps = c.prepareStatement(
-					"INSERT INTO research_group_detectorid (research_group_id, detectorid) " +
-					"(SELECT ?, detectorid FROM research_group_detectorid WHERE research_group_id = ?);");
-			ps.setInt(1, groupId);
-			ps.setInt(2, et.getId());
+			
+			boolean ac = c.getAutoCommit();
+			Savepoint svpt = c.setSavepoint(); 
+			try {
+				c.setAutoCommit(false);
+				
+				ps = c.prepareStatement("SELECT detectorid FROM research_group_detectorid WHERE research_group_id = ?;");
+				ps.setInt(1, et.getId());
+				rs = ps.executeQuery(); 
+				ps = c.prepareStatement("INSERT INTO research_group_detectorid (research_group_id, detectorid) VALUES (?, ?); "); 
+				int d; 
+				while (rs.next()) { // eww cursors 
+					d = rs.getInt(1);  
+					ps.setInt(1, groupId); 
+					ps.setInt(2, d);
+					try {
+						ps.executeUpdate(); 
+					}
+					catch(SQLException se) {
+						if (!se.getSQLState().startsWith("23")) {
+							throw se; 
+						}
+					}
+				}
+				c.commit(); 
+			}
+			catch (SQLException se) {
+				 c.rollback(svpt); 
+			}
+			finally {
+				c.setAutoCommit(ac);
+			}
 		}
 		ps.close();
 		return pwd;
