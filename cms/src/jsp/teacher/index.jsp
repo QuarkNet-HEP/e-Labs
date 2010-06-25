@@ -55,7 +55,7 @@
 
 
 </p><p>
-Students use a data base and analysis tool on the website. The Online Graphical ROOT Environment (OGRE) is the analysis tool used to analyze the data they have chosen for their study. Tutorials are available to build basic scientific skills, to explain the how the detector works, to increase students' understanding of subatomic particles, to direct them in using the analysis tools and to explain how to use plots to analyze data. Students post the results of their studies as online posters, and then review the results of other studies online, comparing data and analyses. Using online tools, they can correspond with other research groups, post comments and questions, prepare summary reports and in general, participate in an aspect of scientific research that is often left out of classroom experiments.				</p>
+Students use a data base and analysis tool on the website.  Tutorials are available to build basic scientific skills, to explain the how the detector works, to increase students' understanding of subatomic particles, to direct them in using the analysis tools and to explain how to use plots to analyze data. Students post the results of their studies as online posters, and then review the results of other studies online, comparing data and analyses. Using online tools, they can correspond with other research groups, post comments and questions, prepare summary reports and in general, participate in an aspect of scientific research that is often left out of classroom experiments.				</p>
 				
 				<p>
 					Read about the <a href="web-guide.jsp">website features</a> that guide and support student research.
