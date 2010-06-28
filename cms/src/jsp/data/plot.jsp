@@ -162,6 +162,7 @@
 	</table>
 	<div class="cursor" style="position: absolute; z-index: 10; display: none;"><span class="cursorValue"></span> <span class="cursorUnit"></span></div>
 	<div class="frame" style="position: relative;">
+		<div class="plottitle" style="width: 758px; height: 16px;padding-left: 48px;"></div>
 		<div class="placeholder" style="width:758px;height:380px; margin-bottom: 26px; margin-left: 26px;"></div>
 		<div class="selection" style="position: absolute; top: 40px; z-index: 10;"></div>
 		<div class="xlabel" style="position: absolute; left: 400px; bottom: -24px;"></div>

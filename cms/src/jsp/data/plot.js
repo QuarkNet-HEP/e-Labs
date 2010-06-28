@@ -57,6 +57,7 @@ function updatePlot(index, stack) {
 	$(id + " .cursorUnit").html(stack[0]["units"]);
 	$(id + " .xlabel").html(stack[0]["labelx"] + " (" + stack[0]["units"] + ")");
 	$(id + " .ylabel").html(stack[0]["labely"]);
+	$(id + " .plottitle").html(makeTitle(stack));
 	var te = totalEvents(index);
 	setCurrentEvent(index, te);
 	$(id + " .totalevents").html(te);
@@ -76,6 +77,14 @@ function updatePlot(index, stack) {
 		$(id + " .logx").removeAttr("checked");
 	}
 	log("plot setup done");
+}
+
+function makeTitle(stack) {
+	var descriptions = [];
+	for (var sp = 0; sp < stack.length; sp++) {
+		descriptions.push(stack[sp].description);
+	}
+	return descriptions.join(", ") + ", runs " + stack[0].runs;
 }
 
 function updateInternalPlotString(index) {
@@ -301,12 +310,17 @@ function parseReply(text) {
 			case "description":
 			case "logx":
 			case "logy":
-			case "run":
 			case "minx":
 			case "maxx":
 			case "maxy":
 			case "binwidth":
 				crt[key] = value;
+				break;
+			case "run":
+				if (!crt["runs"]) {
+					crt["runs"] = [];
+				}
+				crt["runs"].push(value);
 				break;
 			default:
 				if (value == null) {
