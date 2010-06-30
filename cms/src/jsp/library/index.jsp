@@ -51,7 +51,7 @@
 							<a HREF="FAQ.jsp">FAQs</a> - Find answers for frequently asked questions. 
 							</li>
 							<li>
-							<a HREF="site-help.jsp">Site Tips</a> - Check out tips for using the website.
+							<a HREF="site-tips.jsp">Site Tips</a> - Check out tips for using the website.
 							</li>
 							<li>
 							<a HREF="milestones.jsp">Project Milestones (text)</a> - An alternate version.
