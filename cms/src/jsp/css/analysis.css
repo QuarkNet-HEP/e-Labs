@@ -470,3 +470,8 @@ a.group-title img {
 	font-weight: bold;
 	font-size: 14px;
 }
+
+option.separator {
+	height: 4px;
+	border-bottom: thin solid black;
+}

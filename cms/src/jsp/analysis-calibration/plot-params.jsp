@@ -53,9 +53,15 @@
 			<div id="simple-form">
 				<select id="simplified-plots">
 					<option value="none">Choose plot...</option>
+					<option class="separator" disabled="true">----------------</option>
 					<option value="recoCompositeCandidates_ZtoAMuonAMuon__PAT.obj.mass_">&mu;+&mu;+ mass</option>
 					<option value="recoCompositeCandidates_ZtoMuonMuon__PAT.obj.mass_">&mu;-&mu;- mass</option>
 					<option value="recoCompositeCandidates_ZtoMuonAMuon__PAT.obj.mass_">&mu;-&mu;+ mass</option>
+					<option class="separator" disabled="true">----------------</option>
+					<option value="recoCompositeCandidates_ZtoAEleAEle__PAT.obj.mass_">e+e+ mass</option>
+					<option value="recoCompositeCandidates_ZtoEleEle__PAT.obj.mass_">e-e- mass</option>
+					<option value="recoCompositeCandidates_ZtoAEleEle__PAT.obj.mass_">e-e+ mass</option>
+					<option class="separator" disabled="true">----------------</option>
 					<option id="advanced" value="advanced">Advanced</option>
 				</select>
 				<script>
