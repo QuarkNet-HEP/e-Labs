@@ -12,11 +12,6 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Test Results</title>
-		<%-- 
-		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
-		--%>
 	</head>
 
 	<body id="test-results">
@@ -97,7 +92,7 @@
 										<td>
 											<c:choose>
 												<c:when test="${i == question.givenAnswer.number}">
-													<a href="show-question.jsp?type=${param.type}&id=${question.id}&answer=${question.givenAnswer.id}">1</a>
+													&bull;
 												</c:when>
 												<c:otherwise>
 													&nbsp;
@@ -179,7 +174,7 @@
 										<td>
 											<c:choose>
 												<c:when test="${i == question.givenAnswer.number}">
-													1
+													&bull;
 												</c:when>
 												<c:otherwise>
 													&nbsp;

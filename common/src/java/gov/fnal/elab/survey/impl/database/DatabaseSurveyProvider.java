@@ -8,6 +8,7 @@ import java.sql.Savepoint;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -404,6 +405,17 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider {
 	}
 	
 	public Map<ElabGroup, Map<ElabStudent, List<ElabSurveyQuestion>>> getStudentResultsForTeacher(String type, ElabGroup group) throws ElabException {
+		GregorianCalendar startDateGc = new GregorianCalendar(2000, java.util.Calendar.JANUARY, 1);
+		Date now = new Date(); 
+		return getStudentResultsForTeacher(type, group, startDateGc.getTime(), now); 
+	}
+	
+	public Map<ElabGroup, Map<ElabStudent, List<ElabSurveyQuestion>>> getStudentResultsForTeacher(String type, ElabGroup group, Date startDate) throws ElabException {
+		Date now = new Date(); 
+		return getStudentResultsForTeacher(type, group, startDate, now); 
+	}
+	
+	public Map<ElabGroup, Map<ElabStudent, List<ElabSurveyQuestion>>> getStudentResultsForTeacher(String type, ElabGroup group, Date startDate, Date endDate) throws ElabException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		Map<ElabStudent, List<ElabSurveyQuestion>> thisGroup = null; 
@@ -418,7 +430,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider {
 					"LEFT OUTER JOIN \"newSurvey\".questions AS q ON (r.question_id = q.id) " +
 					"LEFT OUTER JOIN \"newSurvey\".completions AS c ON (c.id = a.completion_id) " +
 					"LEFT OUTER JOIN \"newSurvey\".map_questions_tests AS m on (q.id = m.question_id) " +
-					"WHERE c.student_id = ? AND c.type = ? AND q.id = ? ");
+					"WHERE c.student_id = ? AND c.type = ? AND q.id = ? AND c.date BETWEEN ? AND ?");
 			results = new TreeMap();
 			for (ElabGroup eg : group.getGroups()) {
 				if (eg.getNewSurveyId() == null) {
@@ -434,6 +446,8 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider {
 						ps.setInt(1, es.getId());
 						ps.setString(2, type);
 						ps.setInt(3, question.getId());
+						ps.setTimestamp(4, new Timestamp(startDate.getTime()));
+						ps.setTimestamp(5, new Timestamp(endDate.getTime()));
 						
 						ResultSet rs = ps.executeQuery(); 
 						if (rs.next()) {
@@ -460,7 +474,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider {
 		}
 	
 		return results; 
-	}
+	}	
 
 	public Map<Integer, String> getElabSurveyListForProject(int projectId) throws ElabException {
 		Connection con = null;
