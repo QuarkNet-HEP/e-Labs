@@ -32,7 +32,7 @@
 	<tr>
 		<td>
 			<div id="left">
-				<img src="../graphics/collision.gif"/>
+				<img src="../graphics/CMS-sidebar.jpg"/>
 			</div>
 		</td>
 		
