@@ -20,7 +20,7 @@
 <area shape="rect" alt="" coords="440,178,507,219" href="javascript:reference('cms_data_selection',420)" title="Choose appropriate data from the data sets.">
 <area shape="rect" alt="" coords="471,100,516,133" href="#" title="Are you satisfied with your results or do you need to analyze more data?">
 
-<area shape="rect" alt="" coords="376,79,438,118" href="javascript:reference('cms_design_study',450)"  title=Choose from among suggested studies, or design your own!">
+<area shape="rect" alt="" coords="376,79,438,118" href="javascript:reference('cms_design_study',450)"  title="Choose from among suggested studies, or design your own!">
 <area shape="rect" alt="" coords="260,181,325,219" href="javascript:reference('describe_particles',550)"  title="Become familiar with particles colliding and produced in the LHC.">
 <area shape="rect" alt="" coords="260,125,326,164" href="javascript:reference('detector_geom',550)"  title="Get to know the structure and function of CMS detector sub-detectors.">
 <area shape="rect" alt="" coords="372,123,451,164" href="javascript:reference('relate_emp',550)"  title="Apply conservation of energy, mass and momentum to CMS events.">
