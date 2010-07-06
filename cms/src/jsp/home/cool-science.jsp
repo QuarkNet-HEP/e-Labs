@@ -30,7 +30,7 @@
 <h1>Cool Science: Studying CMS data &mdash; solving scientific mysteries!</h1>
  	 <c:if test="${user != null}">
 	   <div id="links"><table align="center"><tr>
-	   <td width="150" align="center"><A href="index.jsp"><img src="../graphics/home-button.gif" border="0"><br>Project Map</a></td>
+	   <td width="150" align="center"><A href="index.jsp"><img src="../graphics/project-map-button.gif" border="0"><br>Project Map</a></td>
 <!-- 
 	   <td width="150" align="center"><A href="cool-science.jsp"><img src="../graphics/cool-science-button.gif" border="0"><br>Cool Science</a></td>
  -->

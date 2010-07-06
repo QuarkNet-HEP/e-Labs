@@ -27,7 +27,7 @@
 <h1>Welcome! Contribute to our scientific collaboration. Who are we?</h1>
  	 <c:if test="${user != null}">
 	   <div id="links"><table align="center"><tr>
-	   <td width="150" align="center"><A href="index.jsp"><img src="../graphics/home-button.gif" border="0"><br>Project Map</a></td>
+	   <td width="150" align="center"><A href="index.jsp"><img src="../graphics/project-map-button.gif" border="0"><br>Project Map</a></td>
 	   <td width="150" align="center"><A href="cool-science.jsp"><img src="../graphics/cool-science-button.gif" border="0"><br>Cool Science</a></td>
 	   <td width="150" align="center"><a href="../site-index/site-map-anno.jsp"><img src="../graphics/site-map-button.gif" border="0"><br>Explore!</a></td>
 <!-- 
