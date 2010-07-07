@@ -45,7 +45,7 @@
 							Tutorials help you analyze the data. Contacts connect you to experts and other student research groups.  Slideshows give more background. <i>Online Resources</i> broaden your understanding of particle physics, the detector and the collider. 
 							</li>
 							<li>
-							<a HREF="big-picture.jsp">Big Picture</a> - Read a project overview and view a sample poster. 
+							<a HREF="big-picture.jsp">Big Picture</a> - Read a project overview. 
 							</li>
 							<li>
 							<a HREF="FAQ.jsp">FAQs</a> - Find answers for frequently asked questions. 
