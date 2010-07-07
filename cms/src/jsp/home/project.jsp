@@ -53,6 +53,10 @@
                     "rediscover" previous measured results is an important part of the early scientific activity at
                     CMS. Later students will probe data where physicists expect to find answers to questions at
                     the heart of 21st century particle physics.</p>
+                    <p>
+                    Join our learning community. Go to the teacher pages to find learner objectives and assessment
+                    tools, standards, classroom notes and more. Your students begin the e-Lab at the Student Home
+                    and cannot access this page or teacher pages from the student pages.</p>
                     
 				<a href="/elab"><strong>Information common for all e-Labs</strong></a>
 			</div>
