@@ -159,43 +159,51 @@ if (fu.isMultipartContent(request)) {
 <html>
 <head>
 <title>Upload Image</title>
+		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/posters.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
+		<script type="text/javascript" src="../include/elab.js"></script>
     
-<!-- include css style file -->
-<%@ include file="include/style.css" %>
 
-<!-- header/navigation -->
-<%
-//be sure to set this before including the navbar
-String headerType = "Posters";
-%>
-<%@ include file="include/navbar_common.jsp" %>
 
-<body>
+	<body id="posters" class="posters">
+		<!-- entire page container -->
+		<div id="container">
+			<div id="top">
+				<div id="header">
+					<%@ include file="../include/header.jsp" %>
+					<%@ include file="../include/nav-rollover.jspf" %>
+				</div>
+			</div>
+			
+			<div id="content">
+
+<table border="0" id="main">
+	<tr>
+
+		<td>
+			<h1>Upload Image</h1>
 <center>
 <P>
 <!-- instruction table -->
 <TABLE BORDER=0 WIDTH=800 CELLPADDING=4>
     <TR>
-        <TD BGCOLOR="#408C66">
-            <FONT COLOR=000000 face=arial SIZE=+1>
-                <B>Upload images to use with Posters.</B>
-            </FONT>
+        <TD >
+           
+                <B>Instructions</B>
+            
         </TD>
     </TR>
     <tr>
         <td>
-            <font face="arial" size="-1">
                 <ul>
                     <li>Click <b>Choose File/Browse</b> to locate the data file on your computer.
                     <li>Give your file a <b>name to save as</b>.
                     <li>Click <b>Upload</b> to upload the file.
                 </ul>
-            </font>
         </td>
     </tr>
 </TABLE>
-
-<br>
 <HR>
 <%
 if(fu.isMultipartContent(request)){
@@ -253,5 +261,13 @@ else{
 }
 %>
 </center>
-</body>
+</td></tr>
+</table>
+
+			</div>
+			<!-- end content -->	
+		
+		</div>
+		<!-- end container -->
+	</body>
 </html>
