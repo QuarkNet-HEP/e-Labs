@@ -42,7 +42,7 @@
 				<td id="menu">
 					<ul>
 						<!-- unfortunately ie6 doesn't recognize :first-child -->
-						<li><a href="../home" id="nav-home">Home</a></li>
+						<li><a href="../home" id="nav-home">Project Map</a></li>
 						<li><a href="../library" id="nav-library">Library</a></li>
 						<li><a href="../data" id="nav-data">Data</a></li>
 						<li><a href="../posters" id="nav-posters">Posters</a></li>

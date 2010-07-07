@@ -138,14 +138,14 @@
 				<p>Need help with data selection? Try these links:</p>
 				<ul>
 					<li>
+						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">Calibration Studies Background</e:popup>
+					</li>
+					<li>
 						<e:popup href="../video/demos-calibration.html?video=data-selection" target="tryit" width="800" height="800">Screencast Demo</e:popup>
  - how to select data.
 					</li>
 					<li>
 						<a href="javascript:reference('cms data selection',450)">Milestone</a> associated with data selection.
-					</li>
-					<li>
-						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">Calibration Studies Background</e:popup>
 					</li>
 					<li>
 						CMS e-Lab <a href="../library/FAQ.jsp">FAQ</a>

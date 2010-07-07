@@ -162,6 +162,7 @@
 	</table>
 	<div class="cursor" style="position: absolute; z-index: 10; display: none;"><span class="cursorValue"></span> <span class="cursorUnit"></span></div>
 	<div class="frame" style="position: relative;">
+		<div class="plottitle" style="width: 758px; height: 16px;padding-left: 48px;"></div>
 		<div class="placeholder" style="width:758px;height:380px; margin-bottom: 26px; margin-left: 26px;"></div>
 		<div class="selection" style="position: absolute; top: 40px; z-index: 10;"></div>
 		<div class="xlabel" style="position: absolute; left: 400px; bottom: -24px;"></div>
@@ -206,13 +207,16 @@
 				<p>Need help with plotting? Try these links:</p>
 				<ul>
 					<li>
+						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">Calibration Studies Background</e:popup>
+					</li>
+					<li>
 						<e:popup href="../video/demos-calibration.html?video=plot" target="tryit" width="800" height="800">Screencast Demo</e:popup> - how to use the plotting tool
 					</li>
 					<li>
 						<a href="javascript:reference('cms analysis',450)">Milestone</a> associated with plotting.
 					</li>
 					<li>
-						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">Calibration Studies Background</e:popup>
+						Shodor's Interactivate <e:popup href="http://www.shodor.org/interactivate/activities/histogram/" target="tryit" width="800" height="800">Histogram</e:popup>
 					</li>
 					<li>
 						CMS e-Lab <a href="../library/FAQ.jsp">FAQ</a>

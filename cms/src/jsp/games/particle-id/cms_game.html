@@ -87,7 +87,7 @@ statusMessages = new Array();
   statusMessages[8]="<p>No,it's a dijet!</p><p>See the yellow tracks and cones.</p>";
   statusMessages[9]="<p>No,it's a ditau!</p><p>See all the red and blue bars.</p>";
   statusMessages[10]="<p>Getting a new event ...</p>";
-  statusMessages[11]="<p>You're score is low.</p><p>Try clicking <b>Help</b> before starting a new game</p>";
+  statusMessages[11]="<p>Game done. You're score is low.</p><p>Try clicking <b>Help</b> before starting a new game.</p>";
   statusMessages[12]="<p>Hurry, another event is coming!</p>";
   statusMessages[13]="<p>Transmission slow.</p><p> Another event is coming...</p>";
 
@@ -393,8 +393,8 @@ function checkDitauanswer()
 function tooSlow()  //tells them they took too much time.
    {
          waitForAns=false; // turn off accepting answers
-         score=score-skip;
-        // setScore();
+         //score=score-skip;
+         setScore();
          newEvent();
    }
 
@@ -413,7 +413,7 @@ function hurry()  //get here on a timeout
      nTrials=nTrials+1;
      if (nTrials>11) 
       {
-         if (score>400)
+         if (noCorrect>7)
             {
              dm(statusMessages[1]);
              }
@@ -552,7 +552,7 @@ function setScore() {
        		if (noEvents == 0 )
        		{objectScore.innerHTML = "";}
        		else
-       		{objectScore.innerHTML = "You identified correctly<br>"+ noCorrect + " out of "+ noEvents + " events.";}
+       		{objectScore.innerHTML = "You identified correctly<br>"+ noCorrect + " out of "+ (nTrials+1) + " events.";}
 		}
 
 
@@ -580,7 +580,7 @@ Z Decay Event Identification</FONT></TD></TR>
 <a href="javascript:checkDimuonanswer()"><input onclick="javascript:checkDimuonanswer();" type="button" class="dynamic_button" value="Dimuon" /></a>
 <a href="javascript:checkDijetanswer()"><input  onclick="javascript:checkDijetanswer();" type="button" class="dynamic_button" value="Dijet" /></a>
 <a href="javascript:newGame()"><input   onclick="javascript:newGame();" type="button" class="dynamic_button" value="New Game" /></a>
-<a href="javascript:help()"><input  onclick="javascript:help();" type="button" type="button" class="dynamic_button" value="Help" /></a>
+<a href="javascript:help()"><input  onclick="javascript:help();" type="button" type="button" class="dynamic_button_help" value="Help?" /></a>
 
 
 

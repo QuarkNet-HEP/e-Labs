@@ -464,3 +464,14 @@ a.group-title img {
 .help .content {
 	padding: 8px;
 }
+
+.plottitle {
+	text-align: center;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+option.separator {
+	height: 4px;
+	border-bottom: thin solid black;
+}

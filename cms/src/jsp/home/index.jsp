@@ -54,13 +54,13 @@
 								</tr>
 							</table>
 						</div>
-						<h3>Project Map: Your team may use the milestones below, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results.</h3>
+						<h3>Project Map: To navigate the CMS e-Lab, follow the path; complete the milestones. Hover over each hot spot to preview; click to open. Along the main line are milestone seminars, opportunities to check how your work is going. Project milestones are on the four branch lines.</h3>
 						<div style="text-align: center;">
 							<%@ include file="../library/milestones-map-student.jsp" %>
 							<br />
 							<a href="../library/milestones.jsp">Milestones (text version)</a>
 						</div>
-						<h4>Think of this map as a subway map with one main line and four branch lines.  Along the main line are stops, milestone seminars, opportunities to check how the work is going. Off each main stop are branch lines where each stop is a project milestone. Hover over each milestone or milestone seminar to preview; click milestones to open.</h4>
+						<h4>Your team may use the milestones above, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results.</h4>
 					</c:otherwise>
 				</c:choose>
 			</div>
