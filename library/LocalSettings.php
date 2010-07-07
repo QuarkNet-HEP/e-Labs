@@ -60,6 +60,9 @@ $wgAllowUserCss = true;
 
 $wgSitename         = "I2U2";
 
+# Category mashups 
+require_once("extensions/intersection/DynamicPageList.php");
+
 # Set the session name to match the BOINC forums 
 $wgSessionName      = "boinc_session"; //to match the BOINC project 
 
