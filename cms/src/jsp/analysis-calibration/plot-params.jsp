@@ -179,14 +179,14 @@
 				<p>Need help with plot selection? Try these links:</p>
 				<ul>
 					<li>
+						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">Calibration Studies Background</e:popup>
+					</li>
+					<li>
 						<e:popup href="../video/demos-calibration.html?video=plot-selection" target="tryit" width="800" height="800">Screencast Demo</e:popup>
  - how to select plots.
 					</li>
 					<li>
 						<a href="javascript:reference('cms analysis',450)">Milestone</a> associated with plot selection.
-					</li>
-					<li>
-						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">Calibration Studies Background</e:popup>
 					</li>
 					<li>
 						CMS e-Lab <a href="../library/FAQ.jsp">FAQ</a>
