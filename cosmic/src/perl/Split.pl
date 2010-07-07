@@ -20,6 +20,7 @@
 # hategan  changed 02-20-08: fixed CPLD frequency calculations
 # jordant  changed 09-06-09: added status line parsing
 # jordant  changed 04-01-10: created a flag (#5) for occurences of the date changing before midnight. We now discard the lines.
+# jordant changed 04-23-10: dropped a raw data line if the clock and GPS CPLD latch are both 0.
 
 if($#ARGV < 2){
 	die "usage: Split.pl [filename to parse] [output DIRECTORY] [board ID]\n";
@@ -40,7 +41,7 @@ unless ($return = do $commonsubs_loc) {
 $| = 1;		#print to STDOUT whenever it gets data...not simply when there's a new line
 
 #information for metadata (raw and split files)
-my ($start, $end, $split_start, $split_end, $today_date, $today_time);
+my ($start, $end, $split_start, $split_end, $today_date, $today_time, $blessFile);
 
 ($sec, $min, $hour, $day, $month, $year) = gmtime(time);
 $year += 1900;
@@ -94,7 +95,37 @@ $Nover2 = int($N/2);				#precalculated N/2
 $CONST_hex8F = hex('FFFFFFFF');
 $CONST_hex8A = hex('AAAAAAAA');
 $rollover_flag = 0;					#Control structure to determine rollover status of the two CPLD buffers: Trigger (word[0]) and Latch (word[9]).
+$statusFlag = 0;					#Control structure to determine the presence of status lines--these go into the FOO.bless file.
+#$blessFile = 0;						#filehandle to keep the blessfile in scope globally
+@dataRow = ();						#row of properly formatted raw data
+@stRow = ();						#status line
+@dsRow = ();						#row of scalars
+@thRow = ();						#row of threshold values
+#The next set of arrays hold information for the .bless file. I need to fill these as the original file gets parsed, determine if the the user did ST 2 or ST 3 do the subtraction (or not) based on that and then dump these arrays to the .bless file.
+@stTime = ();						#Number of seconds since Greenwhcih midnight
+@stCount0 = ();						#Counts in Channel zero
+@stErr0 = ();						#Error in the channel 0 counts. (Square Root of the count)
+@stCount1 = ();						#Counts in Channel one
+@stErr1 = ();						#Error in the channel 1 counts. (Square Root of the count)
+@stCount2 = ();						#Counts in Channel two
+@stErr2 = ();						#Error in the channel 2 counts. (Square Root of the count)
+@stCount3 = ();						#Counts in Channel three
+@stErr3 = ();						#Error in the channel 3 counts. (Square Root of the count)
+@stTrg = ();						#Number of triggers from the DS line
+@stTrgErr = ();						#Error in the trigger counts. (Square Root of the count)
+@stEvents = ();						#Running total of events in the file. A discontinuity here shows goofy GPS
+@stPressure = ();					#Atmospheric pressure (in mbar) as reported by ST
+@stTemp = ();						#Temperature (in deg C) as reported by ST
+@stVcc = ();						#Bus voltage as reported by ST
+@stGPSSats = ();					#Number of satellites as reported by ST
 
+
+$statusTime = 0;					#time stamp of the status line (in seconds since midnight.)
+$statusVersion = 0;					#flag for version of the ST command used to generate the ST lines. One version will zero the scalars after each read (a trip meter) the other version will not (an odometer). We need to know which one is the case here so that the .bless files get populated with the correct rates.
+#Removed the next line on 20 Feb 2010. I don't think we need it. 
+#$oldStatusTime = 0;				#control to notice advancing status time The ^@!@#! flag isn't working. Maybe this will
+$ConReg = 0;						#string to hold the contents of the control registers from the ST line
+$TMCReg = 0;						#string to hold the contents of the TMC registes from the ST line
 
 #convert MAC OS line breaks to UNIX
 #Mac OS only has \r for new lines, so Unix reads it as all one big line. We first need to replace
@@ -114,9 +145,13 @@ while(<IN>){
 	$reData="^([0-9A-F]{8}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{8}) (\\d{6}\\.\\d{3}) (\\d{6}) ([AV]) (\\d\\d) ([0-9A-F]) ([-+ ]\\d{4})\$";
 
 	#additional regExp to catch status lines
+	#ST 1032 +279 +000 3354 070251 301009 A 05 BD8F8E15 111 6477 00231F00 000A711F
+
 	$reStatus0="^([A-Z]{2}) ([0-9]{4}) ([-+ 0-9]{4}) ([-+ 0-9]{4}) ([0-9]{4}) ([0-9]{6}) ([0-9]{6}) ([AV]) ([0-9]{2}) ([0-9A-F]{8}) ([0-9]{3}) ([0-9]{4}) ([0-9A-F]{8}) ([0-9A-F]{8})\$";
-	$reStatus1="^([A-Z]{2}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8})\$";
-		
+	#$reStatus0="^ST ([0-9]{4}) ([-+ 0-9]{4}) ([-+ 0-9]{4}) ([0-9]{4}) ([0-9]{6}) ([0-9]{6}) ([AV]) ([0-9]{2}) ([0-9A-F]{8}) ([0-9]{3}) ([0-9]{4}) ([0-9A-F]{8}) ([0-9A-F]{8})\$";	
+	#$reStatus1="^([A-Z]{2}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8})\$";
+	$reStatus1="^DS ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8})\$";
+	
 	#regExp for the output of the TL command:
 	$reThreshold0="^TL L0=([0-9]+) L1=([0-9]+) L2=([0-9]+) L3=([0-9]+)\$";
 	
@@ -142,6 +177,7 @@ while(<IN>){
 	elsif(/$reStatus0/o){
 		@stRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14);
 		$stRow = @stRow; 
+		$stRowCount++;
 		#print "ST line going by Boss.", "\n";
 		push(@stTime, substr($stRow[5], 0, 2)*3600 + substr($stRow[5], 2, 2)*60 + substr($stRow[5], 4, 6));
 		#$stRow[1], "\t", $stRow[3]/10, "\t", $stRow[4]/1000, "\t", $stRow[8], "\n"
@@ -160,31 +196,24 @@ while(<IN>){
 	elsif(/$reStatus1/o){
 		@dsRow = ($1, $2, $3, $4, $5, $6);
 		#$totalEvents += hex($dsRow[5]);
-		#print "DS line going by Boss.", "\n";
 		push (@stCount0, hex($dsRow[1]));
 		push (@stCount1, hex($dsRow[2]));
 		push (@stCount2, hex($dsRow[3]));
 		push (@stCount3, hex($dsRow[4]));
 		push (@stEvents, hex($dsRow[5]));
-		#print "@STEvents", "\n"; 
-		#$statusFlag = 1;
-		#print $blessFile $statusTime, "\t", hex($dsRow[1]), "\t", sprintf("%.0f", sqrt(hex($dsRow[1]))), "\t", hex($dsRow[2]), "\t", sprintf("%.0f", sqrt(hex($dsRow[2]))), "\t", hex($dsRow[3]), "\t", sprintf("%.0f", sqrt(hex($dsRow[3]))), "\t", hex($dsRow[4]), "\t", sprintf("%.0f", sqrt(hex($dsRow[4]))), "\t", hex($dsRow[5]), "\t", sprintf("%.0f", sqrt(hex($dsRow[5]))), "\t", $stRow[1], "\t", $stRow[3]/10, "\t", $stRow[4]/1000, "\n";
 		next; #get the next line in the input file. All the lifting is done on this one.
 	}
 
 	elsif(/$reThreshold0/o){
 		@thRow = ($1, $2, $3, $4);
-		#print "TH line going by Boss.", "\n";
 		next; #get the next line in the input file. All the lifting is done on this one.
-		#print "LOOK, LOOK, LOOK,", @thRow, "\n"; 
 	}
 
 	elsif(&gps_check($_)){
         next;
 	}
 	else{
-        #print "WARNING! Junk on line $.. Ignoring line:\n $_";
-		$non_datalines++;
+        $non_datalines++;
 		next;
 	}
 
@@ -242,7 +271,6 @@ while(<IN>){
 	#}
 	
 	if ($rollover_flag == 5){
-		#print $rollover_flag, "\t", $_;
 		$rollover_flag = 0;
 		next;
 	}
@@ -351,6 +379,12 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 				print META "avglatitude string 0\n";
 				print META "avglongitude string 0\n";
 				print META "avgaltitude string 0\n";
+				#print the threshold for each channel
+				print META "DiscThresh0 int  $thRow[0]\n"; 
+				print META "DiscThresh1 int  $thRow[1]\n"; 
+				print META "DiscThresh2 int  $thRow[2]\n"; 
+				print META "DiscThresh3 int  $thRow[3]\n"; 
+				print META "DAQFirmware int $DAQFirmware\n";
 			}
 
 			# When we see new day, split file at the day boundary
@@ -360,12 +394,26 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 				if ($lastdate ne "") {
 					
 					# Write additional metadata annotation for most recent split file
-
 					print META "chan1 int $split_chan[1]\n";
 					print META "chan2 int $split_chan[2]\n";
 					print META "chan3 int $split_chan[3]\n";
 					print META "chan4 int $split_chan[4]\n";
 					print META "enddate date $lastdate $lasttime\n";
+					print META "ConReg0 string ", substr($ConReg,6,2),"\n";
+					print META "ConReg1 string ", substr($ConReg,4,2),"\n";
+					print META "ConReg2 string ", substr($ConReg,2,2),"\n";
+					print META "ConReg3 string ", substr($ConReg,0,2),"\n";
+					print META "TMCReg0 string ", substr($TMCReg,6,2), "\n";
+					print META "TMCReg1 string ", substr($TMCReg,4,2), "\n";
+					print META "TMCReg2 string ", substr($TMCReg,2,2), "\n";
+					print META "TMCReg3 string ", substr($TMCReg,0,2), "\n";
+					
+					print META "DiscThresh0 int  $thRow[0]\n"; 
+					print META "DiscThresh1 int  $thRow[1]\n"; 
+					print META "DiscThresh2 int  $thRow[2]\n"; 
+					print META "DiscThresh3 int  $thRow[3]\n"; 
+					print META "DAQFirmware int $DAQFirmware\n";
+
 				
 					calculate_cpld_frequency();
 
@@ -382,9 +430,27 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
                     
         	        print META "cpldfrequency float $cpld_real_freq\n";
 					close SPLIT;
+					#close $blessFile;
+					#write the .bless file for this file.					
+					for my $i  (1..$stRowCount){			
+						print $blessFile "$stTime[$i]","\t", "$stCount0[$i]", "\t", sprintf("%0.0f", sqrt($stCount0[$i])), "\t", "$stCount1[$i]", "\t", sprintf("%0.0f", sqrt($stCount1[$i])),"\t", "$stCount2[$i]", "\t", sprintf("%0.0f", sqrt($stCount2[$i])),"\t", "$stCount3[$i]", "\t", sprintf("%0.0f", sqrt($stCount3[$i])), "\t", "$stEvents[$i]", "\t", sprintf("%0.0f", sqrt($stEvents[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
+					}
+					close $blessFile;	
+					#Empty all of the status arrays so that they can start over with the new split file.
+					@stTime = ();
+					@stCount0 = ();
+					@stCount1 = ();
+					@stCount2 = ();
+					@stCount3 = ();
+					@stEvents = ();
+					@stPress = ();
+					@stTemp = ();
+					@StVcc = ();
+					@stGPSSats = ();
+					@stRow = ();
                 	@cpld_frequency1 = (); # reset the array for the new split file.
 	                @cpld_frequency2 = (); # reset the array for the new split file.
-                
+                	$stRowCount = 0;
 
 					#write the channel counts for the most recent split file
 					#Why is this here?
@@ -393,6 +459,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 
 					#clear out count for channel events
 					$split_chan[$_] = 0 for (1..4);
+					#Clear all the status arrays.
+					@STTime = ();
 				}
 
 				#open a NEW split file
@@ -403,12 +471,16 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					$index++;
 					$fn = "$ID.$year.$month$day.$index";
 				}
+				
+				#Need a status file as well with the same file naming scheme
+				$sfn = $fn.".bless";
+				
 				open(SPLIT,'>>', "$output_dir/$fn");
-
+				open($blessFile,'>>', "$output_dir/$sfn");
+				#print $blessFile $data_line, "\n";
 				#informational printout only (all metadata should be retrieved from the .meta file)
 				#Why is this here? TJ removed in Dec 2006
-				#print "$fn $output_dir/$fn ";
-
+				
 				$jd = jd($day, $month, $year, $hour, $min, $sec);	#GPS offset already taken into account from above
 
 				# Write initial metadata for lfn that was just opened
@@ -488,6 +560,20 @@ else{
 	print META "chan3 int $split_chan[3]\n";
 	print META "chan4 int $split_chan[4]\n";
 	print META "enddate date $date $time\n";
+	print META "ConReg0 string ", substr($ConReg,6,2),"\n";
+	print META "ConReg1 string ", substr($ConReg,4,2),"\n";
+	print META "ConReg2 string ", substr($ConReg,2,2),"\n";
+	print META "ConReg3 string ", substr($ConReg,0,2),"\n";
+	print META "TMCReg0 string ", substr($TMCReg,6,2), "\n";
+	print META "TMCReg1 string ", substr($TMCReg,4,2), "\n";
+	print META "TMCReg2 string ", substr($TMCReg,2,2), "\n";
+	print META "TMCReg3 string ", substr($TMCReg,0,2), "\n";
+	print META "DiscThresh0 int  $thRow[0]\n"; 
+	print META "DiscThresh1 int  $thRow[1]\n"; 
+	print META "DiscThresh2 int  $thRow[2]\n"; 
+	print META "DiscThresh3 int  $thRow[3]\n";
+	print META "DAQFirmware int $DAQFirmware\n";
+
 
 	calculate_cpld_frequency();
     
@@ -502,6 +588,29 @@ else{
     }
     $cpld_real_freq = $cpld_real_freq_tot/$cpld_real_count if $cpld_real_count !=0;
     print META "cpldfrequency float $cpld_real_freq\n";
+
+	#Write the .bless information for the last file.	
+	#First have to see if the statusVersion should be 0 or 1.
+	#for my $i  (1..$stRowCount){ #go through all of the arrays
+	#	$statusVersion = 1 if ($stCount0[$i] < $stCount0[$i-1]) || ($stCount1[$i] < $stCount1[$i-1]) || ($stCount2[$i] < $stCount2[$i-1]) || ($stCount3[$i] < $stCount3[$i-1]) || ($stEvents[$i] < $stEvents[$i-1]); #Must be using ST3 (trip meter) as ST2 (odometer) always increases (unless it rolls over.)
+		#last $i if $statusVersion == 1;
+	#}
+	#Use that index find the last stCountNUM value for comparison with the one going into the array
+	#Do the comparison for all five scalars: oldScalar <? new Scalar
+	#If that is ever true (for any of the scalars) set the flag to do the subtraction later.)
+	#print "@STEvents", "\n"; 
+	#$statusFlag = 1;
+	#print $blessFile $statusTime, "\t", hex($dsRow[1]), "\t", sprintf("%.0f", sqrt(hex($dsRow[1]))), "\t", hex($dsRow[2]), "\t", sprintf("%.0f", sqrt(hex($dsRow[2]))), "\t", hex($dsRow[3]), "\t", sprintf("%.0f", sqrt(hex($dsRow[3]))), "\t", hex($dsRow[4]), "\t", sprintf("%.0f", sqrt(hex($dsRow[4]))), "\t", hex($dsRow[5]), "\t", sprintf("%.0f", sqrt(hex($dsRow[5]))), "\t", $stRow[1], "\t", $stRow[3]/10, "\t", $stRow[4]/1000, "\n";
+	
+	
+	#$i=0;
+	for my $i  (1..$stRowCount){
+		#The columns here are: Time, Ch0, Err0, Ch1, Err1, Ch2, Err2, Ch3, Err3, Trg, ErrTrg, EventCount, Pressure, Temperature, Vcc, #Sats
+		print $i, "\n";
+		print $blessFile "$stTime[$i]","\t", "$stCount0[$i]", "\t", sprintf("%0.0f", sqrt($stCount0[$i])), "\t", "$stCount1[$i]", "\t", sprintf("%0.0f", sqrt($stCount1[$i])),"\t", "$stCount2[$i]", "\t", sprintf("%0.0f", sqrt($stCount2[$i])),"\t", "$stCount3[$i]", "\t", sprintf("%0.0f", sqrt($stCount3[$i])), "\t", "$stEvents[$i]", "\t", sprintf("%0.0f", sqrt($stEvents[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n";# if $statusVersion == 1; 	
+		#print $blessFile "$stTime[$i]","\t", "$stCount0[$i]", "\t", sprintf("%0.0f", sqrt($stCount0[$i])), "\t", "$stCount1[$i]", "\t", sprintf("%0.0f", sqrt($stCount1[$i])),"\t", "$stCount2[$i]", "\t", sprintf("%0.0f", sqrt($stCount2[$i])),"\t", "$stCount3[$i]", "\t", sprintf("%0.0f", sqrt($stCount3[$i])), "\t", "$stEvents[$i]", "\t", sprintf("%0.0f", sqrt($stEvents[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n" if $statusVersion == 1; 	
+		print $statusVersion, "\n" if $statusVersion == 0;
+	}
 	
 	#insert metadata which was made from analyzing the WHOLE raw data file
 	`/usr/bin/perl -i -p -e 's/^ThisFileNeverCompletedSplitting.*/enddate date $date $time/' "$raw_filename.meta"`;
@@ -615,7 +724,7 @@ sub calculate_cpld_frequency {
 			$cpld_freq = $fg2 if $ID > 5999;	#. . .  newer board
 			push @cpld_frequency, $cpld_freq;
 			$cpld_sigma = 0.0; 
-			print "Warning: Not enough data to calculate CPLD frequency. Your DAQ serial number is $ID so we are using $cpld_freq\n";
+			#print "Warning: Not enough data to calculate CPLD frequency. Your DAQ serial number is $ID so we are using $cpld_freq\n";
 			return;
 		}
 	}
