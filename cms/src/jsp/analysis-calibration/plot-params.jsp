@@ -29,7 +29,7 @@
 		    <script type="text/javascript" src="../analysis-calibration/plot-params.js"></script>
 			<div id="content">
 			
-<a class="help-icon" href="#" onclick="openHelp(event, 'help');"><img src="../graphics/help.png" /></a>
+<a class="help-icon" href="#" onclick="openHelp(event, 'help');">Help <img src="../graphics/help.png" /></a>
 <h1>Plot selection - ${param.analysisName}</h1>
 <script>
 	initlog();
@@ -54,13 +54,13 @@
 				<select id="simplified-plots">
 					<option value="none">Choose plot...</option>
 					<option class="separator" disabled="true">----------------</option>
+					<option value="recoCompositeCandidates_ZtoMuonAMuon__PAT.obj.mass_">&mu;-&mu;+ mass</option>
 					<option value="recoCompositeCandidates_ZtoAMuonAMuon__PAT.obj.mass_">&mu;+&mu;+ mass</option>
 					<option value="recoCompositeCandidates_ZtoMuonMuon__PAT.obj.mass_">&mu;-&mu;- mass</option>
-					<option value="recoCompositeCandidates_ZtoMuonAMuon__PAT.obj.mass_">&mu;-&mu;+ mass</option>
 					<option class="separator" disabled="true">----------------</option>
+					<option value="recoCompositeCandidates_ZtoAEleEle__PAT.obj.mass_">e-e+ mass</option>
 					<option value="recoCompositeCandidates_ZtoAEleAEle__PAT.obj.mass_">e+e+ mass</option>
 					<option value="recoCompositeCandidates_ZtoEleEle__PAT.obj.mass_">e-e- mass</option>
-					<option value="recoCompositeCandidates_ZtoAEleEle__PAT.obj.mass_">e-e+ mass</option>
 					<option class="separator" disabled="true">----------------</option>
 					<option id="advanced" value="advanced">Advanced</option>
 				</select>
