@@ -41,7 +41,7 @@
 	<tr>
 		<td>
 			<div id="left-column">
-				<img src="../graphics/final_animation_small.gif" alt="Collision"/>
+				<img src="../graphics/CE0159M.jpg" alt="Collision"/>
 			</div>
 		</td>
 		<td>
