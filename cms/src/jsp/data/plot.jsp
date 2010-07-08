@@ -50,7 +50,7 @@
 		    <script language="javascript" type="text/javascript" src="../include/jquery.flot.crosshair.js"></script>
 			<div id="content">
 				
-<a class="help-icon" href="#" onclick="openHelp(event, 'help');"><img src="../graphics/help.png" /></a>
+<a class="help-icon" href="#" onclick="openHelp(event, 'help');">Help <img src="../graphics/help.png" /></a>
 <h1>Plot - ${param.analysisName}</h1>
 <script>
 	initlog();

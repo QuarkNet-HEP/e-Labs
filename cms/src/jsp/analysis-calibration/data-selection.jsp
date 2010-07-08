@@ -29,7 +29,7 @@
 			</div>
 			<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
 			<div id="content">
-<a class="help-icon" href="#" onclick="openHelp(event, 'help')"><img src="../graphics/help.png" /></a>
+<a class="help-icon" href="#" onclick="openHelp(event, 'help')">Help <img src="../graphics/help.png" /></a>
 <h1>Data Selection - Detector Calibration Study</h1>
 <script>
 	initlog();
