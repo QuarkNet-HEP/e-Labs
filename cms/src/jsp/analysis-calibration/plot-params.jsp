@@ -133,6 +133,7 @@
 </td>
 </tr>
 </table>
+</form>
 
 <ul id="plot-list" class="jeegoocontext cm_blue">
 	<c:choose>
