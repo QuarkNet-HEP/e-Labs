@@ -27,6 +27,7 @@
 				<c:choose>
 					<c:when test="${user == null}"> <%-- User is not logged in --%>
 						<h1>Welcome: Join a national collaboration of high school students to study CMS data.</h1>
+						<h3>Bookmark This Page!</h3>
 						<table border="0" id="main">
 							<tr>
 					 	 		<td>
