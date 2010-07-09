@@ -8,7 +8,7 @@ function updatePlotList() {
 	var list = document.getElementById("plots-input");
 	var str = "";
 	var tbl = document.getElementById("plots");
-	for (var i = 1; i < tbl.rows.length - 1; i++) {
+	for (var i = 1; i < tbl.rows.length; i++) {
 		var cb = firstNonTextChild(tbl.rows[i].cells[0]);
 		if (!cb.checked) {
 			continue;
