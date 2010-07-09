@@ -1,1 +1,1 @@
-<img src="../graphics/CMS-sidebar.jpg" alt="Collision" border="1" />
+<img src="../graphics/CMS-sidebar.jpg" alt="Collision" border="1" /><br><div style="font-size: 11px; background-color:black;color: white; width: 102px; text-align:center">Simulated Event<br>Superimposed on Detector</div>
