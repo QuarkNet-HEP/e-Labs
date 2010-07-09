@@ -62,11 +62,14 @@
 	ElabSurvey survey = elab.getSurveyProvider().getSurvey(id);
 	request.setAttribute("survey", survey);
 	
+	boolean valid = survey != null && survey.getQuestionCount() > 0; 
+	request.setAttribute("valid", valid);
+	
 %>
 			
 
 <c:choose>
-	<c:when test="${survey != null && survey.getQuestionCount() > 0}">
+	<c:when test="${valid}">
 		<h1>Answer the following questions and click <b>Record Answers</b> to take the ${survey.name}.</h1>
 		<p>
 			<strong>Don't guess!!</strong> "Do not know" is a perfectly good answer. 
