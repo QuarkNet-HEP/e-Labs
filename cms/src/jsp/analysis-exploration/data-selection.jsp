@@ -40,12 +40,12 @@
 	log("<span class='red'>commbine: ${param.combine}</span>");
 </script>
 
-<form action="../analysis-calibration/plot-params.jsp">
+<form action="../analysis-exploration/plot-params.jsp">
 	<e:trinput type="hidden" name="dataset" id="dataset-input" default="${dataset}"/>
 	<e:trinput type="hidden" name="plots"/>
 	<e:trinput type="hidden" name="combine"/>
-	<e:trinput type="hidden" name="analysisName" default="Detector Calibration Study"/>
-	<e:trinput type="hidden" name="analysis" default="calibration"/>
+	<e:trinput type="hidden" name="analysisName" default="Detector Exploration Study"/>
+	<e:trinput type="hidden" name="analysis" default="exploration"/>
 	<table border="0" id="main">
 		<tr>
 			<td>
@@ -54,7 +54,8 @@
 						<option value="none">Choose event type...</option>
 						<option value="uu">Muons</option>
 						<option value="ee">Electrons</option>
-						<option value="uu or ee">Muons or Electrons</option>	
+						<option value="uu or ee">Muons or Electrons</option>
+						<option id="advanced" value="advanced">Advanced</option>	
 					</select>
 					<script>
 						function updateTriggers(obj) {
@@ -100,7 +101,7 @@
 					</tr>
 				</table>
 				
-				<e:vswitch id="selected-events-panel" title="Run Selection" titleclass="panel-title" revert="true">
+				<e:vswitch id="selected-events-panel" title="Run Selection" titleclass="panel-title">
 					<e:visible image="../graphics/plus.png">
 					</e:visible>
 					<e:hidden image="../graphics/minus.png">
@@ -116,11 +117,15 @@
 						</div>
 					</e:hidden>
 				</e:vswitch>
-				<div id="data-selection-panel" style="display: none">
-					<jsp:include page="../data/triggers.jsp">
-						<jsp:param name="dataset" value="${dataset}"/>
-					</jsp:include>
-				</div>
+				<e:vswitch id="data-selection-panel" title="Advanced Data Selection" titleclass="panel-title">
+					<e:visible image="../graphics/plus.png">
+					</e:visible>
+					<e:hidden image="../graphics/minus.png">
+						<jsp:include page="../data/triggers.jsp">
+							<jsp:param name="dataset" value="${dataset}"/>
+						</jsp:include>
+					</e:hidden>
+				</e:vswitch>
 				
 			</td>
 		</tr>

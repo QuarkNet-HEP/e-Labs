@@ -132,6 +132,9 @@ function mjoin(map, sep1, sep2) {
 }
 
 function initializeFromPlotParams() {
+	options['onSelect'] = addPlot;
+    $('#addplot').jeegoocontext('plot-list', options);
+	
 	buildPlotTypeMap();
 	var plots = document.getElementById("plots-input");
 	if (plots.value == null || plots.value == "") {
@@ -182,15 +185,13 @@ function setSimplifiedPlotsValue(v) {
 	}
 }
 
-$(function() {
-    options['onSelect'] = addPlot;
-    $('#addplot').jeegoocontext('plot-list', options);
-});
-
 function buildPlotTypeMap() {
 	// build map from plot types to labels
 	document.plotTypes = new Array();
 	var plots = document.getElementById("plot-list");
+	if (plots === null) {
+		return;
+	}
 	for (var i = 0; i < plots.childNodes.length; i++) {
 		var c1 = plots.childNodes[i];
 		if (c1.nodeName == "LI") {
