@@ -1,8 +1,8 @@
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="org.apache.commons.fileupload.*" %>
-<%@ include file="../login/login-required.jsp" %>
 <%@ include file="common.jsp" %>
+<%@ include file="../login/login-required.jsp" %>
 <%
 /***********************************************************************
  *  Form to allow users to upload images created outside of our analysis

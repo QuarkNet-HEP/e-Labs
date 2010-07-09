@@ -7,8 +7,8 @@
 <%@ page import="org.griphyn.vdl.annotation.*" %>
 <%@ page import="org.griphyn.common.util.Separator" %>
 <%@ page import="org.apache.regexp.*" %>
-<%@ include file="../login/login-required.jsp" %>
 <%@ include file="common.jsp" %>
+<%@ include file="../login/login-required.jsp" %>
 <html>
 <head>
 	<title>Poster Comments</title>

@@ -3,8 +3,8 @@
 <%@ page import="java.util.GregorianCalendar.*" %>
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <jsp:include page="../include/elab.jsp"/>
-<%@ include file="../login/teacher-login-required.jsp" %>
 <%@ include file="common.jsp" %>
+<%@ include file="../login/teacher-login-required.jsp" %>
 <html>
     <head>
         <title>Add Users</title>

@@ -1,7 +1,7 @@
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.regex.*" %>
-<%@ include file="../login/login-required.jsp" %>
 <%@ include file="common.jsp" %>
+<%@ include file="../login/login-required.jsp" %>
 <html>
     <head>
         <title>Show States and Abbreviations for Searching</title>
