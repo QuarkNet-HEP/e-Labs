@@ -41,7 +41,7 @@
 	<tr>
 		<td>
 			<div id="left-column">
-				<img src="../graphics/CE0159M.jpg" alt="Collision"/>
+				<br><img src="../graphics/CE0159M.jpg" alt="Collision"/><br><div align="center">Simulated<br>Higgs Event</div>
 			</div>
 		</td>
 		<td>
