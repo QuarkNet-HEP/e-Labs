@@ -40,6 +40,19 @@
 	log("<span class='red'>commbine: ${param.combine}</span>");
 </script>
 
+<p>
+How do particle physicists know what they know? An important part of  
+the early scientific activity at CMS is to calibrate the new detector.  
+Physicists use the detector to confirm measurements (such as mass) of  
+well-known particles. CMS collects data in runs that can span hours or  
+days. Do the events in these runs confirm the detector's ability to  
+make accurate measurements? Do the measurements drift over time? Let's  
+find out...
+</p> 
+<p>
+	Choose an event type, choose one or more plots and compare your results.
+</p>
+
 <form action="../analysis-calibration/plot-params.jsp">
 	<e:trinput type="hidden" name="dataset" id="dataset-input" default="${dataset}"/>
 	<e:trinput type="hidden" name="plots"/>
