@@ -67,10 +67,10 @@
 						poster. Using the analysis tools requires some guidance. Just follow the Project Map through some
 						basics of particle physics. Join the exploration of uncharted territory at the energy frontier
 						and party like a particle physicist!</p>
-						<table width="600"><tr><td align="center" style="font-size: 11px"><img src="../graphics/big-left.jpg" border="1"><br>Inner tracking barrel</td>
-						<td align="center" style="font-size: 11px"><img src="../graphics/big-center.jpg" border="1"><br>Splash of particles</td>
-						<td align="center" style="font-size: 11px"><img src="../graphics/big-center2.jpg" border="1"><br>Detector before closure 2008</td>
-						<td align="center" style="font-size: 11px"><img src="../graphics/big-right.jpg" border="1"><br>Simulation Higgs</td>
+						<table width="700"><tr><td  class="annotPict"><img src="../graphics/big-left.jpg" border="1"><br><div >Inner tracking barrel</div></td>
+						<td class="annotPict"><img src="../graphics/big-center.jpg" border="1"><br>Splash of particles</td>
+						<td class="annotPict"><img src="../graphics/big-center2.jpg" border="1"><br>Detector before closure 2008</td>
+						<td class="annotPict"><img src="../graphics/big-right.jpg" border="1"><br>Simulation Higgs</td>
 						</td></tr></table>
 							</div>
 						</td>
