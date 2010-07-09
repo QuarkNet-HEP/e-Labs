@@ -45,7 +45,7 @@
 							Determination of Z mass
 						</b> - 
 					<p>
-<IMG SRC="/elab/cms/graphics/single-event-tn.png" BORDER="1" ALIGN="left"> The Z boson, a neutral particle, is produced by the interaction of oppositely charged quarks (such as up and antiup.)  It is short-lived, and decays immeasurably close to the primary collision vertex into pairs of particles. "Rediscovery" of the Z boson mass is an early measurement goal of CMS scientists as they verify the proper operation of the detector. From candidate Z -> di-muon data, you can determine whether CMS is measuring Z rest mass accurately. 
+<IMG SRC="/elab/cms/graphics/single-event-tn.png" BORDER="1" ALIGN="left"> The Z boson (Z<sup>0</sup>), a neutral particle, is produced by the interaction of oppositely charged quarks (such as up and antiup.)  It is short-lived, and decays immeasurably close to the primary collision vertex into pairs of particles. "Rediscovery" of the Z boson mass is an early measurement goal of CMS scientists as they verify the proper operation of the detector. From candidate Z -> di-muon data, you can determine whether CMS is measuring Z rest mass accurately. On the left is a single event display of a Z boson decaying into two muons.
 
 					</p>
 <br />	
