@@ -498,3 +498,11 @@ a img {
 	width: 200px;
 	height: 100px;
 }
+
+.annotPict {
+	margin-left: auto;
+	margin-right: auto;
+	font-size:11px;
+	width: 175px;
+	text-align: center;
+}
