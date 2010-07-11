@@ -54,9 +54,9 @@
 Students can join a scientific collaboration in this series of studies of high-energy collisions from the Large Hadron Collider (LHC) at CERN. We are collaborating with the Compact Muon Solenoid (CMS) Experiment to produce a student-led, teacher-guided project. At the present we have both test beam and Monte Carlo (simulated) data for analysis; run data is expected by 2011. By using the web students are able to analyze and share these data   with fellow students and other researchers.
 
 </p>
-				<h2>Milestones on the Project Map :</h2>
+				<h2>Milestones on the Project Map:</h2>
 				<p>
-					Milestones on the Project Map provide opportunities for students to build basic scientific skills,  learn how the detector works,  understand subatomic particles, learn how to use the analysis tools and use plots explain results. Students post the results of their studies as online posters and then review the results of other studies online, comparing data and analyses. Using online tools, they can correspond with other research groups, post comments and questions, prepare summary reports and in general, participate in an aspect of scientific research that is often left out of classroom experiments.</p>
+					Milestones on the Project Map provide opportunities for students to build basic scientific skills,  learn how the detector works,  understand subatomic particles, learn how to use the analysis tools and use plots to explain results. Students post the results of their studies as online posters and then review the results of other studies online, comparing data and analyses. Using online tools, they can correspond with other research groups, post comments and questions, prepare summary reports and in general, participate in an aspect of scientific research that is often left out of classroom experiments.</p>
 					<p>Read about the <a href="web-guide.jsp">website features</a> that guide and support student research.
 				</p>
 					 
