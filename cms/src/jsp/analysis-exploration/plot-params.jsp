@@ -183,7 +183,7 @@
 						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">Calibration Studies Background</e:popup>
 					</li>
 					<li>
-						<e:popup href="../video/demos-calibration.html?video=plot-selection" target="tryit" width="800" height="800">Screencast Demo</e:popup>
+						<e:popup href="../video/demos-exploration.html?video=plot-selection" target="tryit" width="800" height="800">Screencast Demo</e:popup>
  - how to select plots.
 					</li>
 					<li>
