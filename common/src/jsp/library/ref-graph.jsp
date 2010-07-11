@@ -11,12 +11,12 @@
   
 
 
-<P><b>A Proper Plot:</b><p> What are the necessary characteristics of an understandable plot or graph? Let's look at the standard format of an X-Y plot.</p>
+<P><b>A Proper Plot:</b><p> What are the necessary characteristics of an understandable plot or graph? Let's look first at things needed for all plots.</p>
 
 <p><b>Title/Key:</B>
     <UL>
     <LI> Each plot must include a descriptive title making the plot stand alone.  Do not use simple scale names in the title; e.g., "Distance vs Time."
-    <LI> Provide a key connecting a description to the symbols and curves used in the plot.  Include any relevant variables and values that remain constant for the entire plot.
+    <LI> Provide a key connecting a description to the symbols, curves and colors used in the plot.  Include any relevant variables and values that remain constant for the entire plot.
     </UL>
     
  <b>Scales:</b>
@@ -28,7 +28,10 @@
     <LI> Write scale titles outside the scales and facing down for the "X" axis and toward the "Y" axis.  Include: name of the scale, symbol (which matches the report equations), units in parentheses; e.g., Distance, x, (m).
     <LI> Choose scale spacing and range to distribute data evenly over the grid.  Do not squeeze data to one side of the plot.
     </UL>
-<P STYLE="margin-left: 10px">
+
+<p>
+<b>Scatter or X-Y Plots:</b>
+<p>What else do we need to create a good scatter or x-y plot?</p>
 
 
 <P>
@@ -47,6 +50,21 @@ which represent continuous validity, unlike the separate measured data points.
     </UL>
     
     <A HREF="../library/ref-scientific-plot.jsp"><b>Scientific Plot</b></A> - Good example of scale spacing and titles; note actual data and theoretical data.
+
+<p>
+<b>Histograms:</b>
+<p>What else do we need to create a good histogram?</p>
+<P>
+<b>Actual (Measured) Data:</b>
+    <UL>
+    <LI> Data is represented by bars, but a histogram is different than a bar graph. Histograms show the number of things or events that match a certain variable range, not the number of things with a certain single characteristic.
+    <LI> Each bar in a histogram should be touching the bar on either side. Bars can be outlined or colored individually or may be drawn just where they're different from the bars on either side (showing the top outline of the whole graph).
+    <LI> Each bar in a histogram has the same width, called the bin width. This is the range of values on the x axis included in the event count for each bar.
+    <LI> Each bar in a histogram is as tall as the number of events in each bin range.
+    <li> You may see histrograms without the bars outlined on the sides.
+</UL>
+
+
     
 </TD></TR>
    <tr><td align="right"><HR><A HREF="javascript:window.close();">Close Window</A></td></tr></table>
