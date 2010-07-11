@@ -51,27 +51,25 @@
 			<div id="center">
 				<h2>Abstract:</h2>
 				<p>
-					Students can join a scientific collaboration in this series of studies of high-energy collisions from the Large Hadron Collider (LHC) at CERN. We are collaborating with the Compact Muon Solenoid (CMS) Experiment to produce a student-led, teacher-guided project. At the present we have both test beam and Monte Carlo (simulated) data for analysis. When the LHC comes fully online, run data will become available as well. By using the web and GRID computing technology students are able to analyze these data types, and a virtual data portal enables students to share this data and associated analysis code with fellow students and other researchers.
+Students can join a scientific collaboration in this series of studies of high-energy collisions from the Large Hadron Collider (LHC) at CERN. We are collaborating with the Compact Muon Solenoid (CMS) Experiment to produce a student-led, teacher-guided project. At the present we have both test beam and Monte Carlo (simulated) data for analysis; run data is expected by 2011. By using the web students are able to analyze and share these data   with fellow students and other researchers.
 
-
-</p><p>
-Students use a data base and analysis tool on the website.  Tutorials are available to build basic scientific skills, to explain the how the detector works, to increase students' understanding of subatomic particles, to direct them in using the analysis tools and to explain how to use plots to analyze data. Students post the results of their studies as online posters, and then review the results of other studies online, comparing data and analyses. Using online tools, they can correspond with other research groups, post comments and questions, prepare summary reports and in general, participate in an aspect of scientific research that is often left out of classroom experiments.				</p>
-				
+</p>
+				<h2>Milestones on the Project Map :</h2>
 				<p>
-					Read about the <a href="web-guide.jsp">website features</a> that guide and support student research.
+					Milestones on the Project Map provide opportunities for students to build basic scientific skills,  learn how the detector works,  understand subatomic particles, learn how to use the analysis tools and use plots explain results. Students post the results of their studies as online posters and then review the results of other studies online, comparing data and analyses. Using online tools, they can correspond with other research groups, post comments and questions, prepare summary reports and in general, participate in an aspect of scientific research that is often left out of classroom experiments.</p>
+					<p>Read about the <a href="web-guide.jsp">website features</a> that guide and support student research.
 				</p>
 					 
 				
 				
 				<h2>Introduction to Research:</h2>
 				<p>
-				The CMS Project explores the potential of using virtual data grid tools and techniques for secondary science education. Like the Cosmic ray e-Lab, this e-Lab provides an opportunity for:</p>
-				<ul>
-					<li>Students to do authentic research using exploratory virtual data tools to access, process and publish data, report and share their results as online posters, and have online discussions with one another about their work.</li>
+					The CMS e-Lab explores the potential of using the tools and techniques of research physicists for secondary science education. Like the Cosmic ray e-Lab, this e-Lab provides an opportunity for:<ul>
+					<li>	Students to do authentic research using exploratory data tools to access, process and publish data, report and share their results as online posters, and have online discussions with one another about their work.</li>
 					<li>Student researchers to experience membership in a scientific collaboration.</li>
 					<li>Student researchers to make contributions to the study of particle physics.</li>
 				</ul>
-					<p>Situated in the LHC, the CMS detector will be used to study proton-proton collisions, in search of the predicted Higgs boson that may be instrumental in explaining why particles have mass. Pions, muons, electrons, photons, neutrinos and other particles are produced in these collisions and subsequent decays. By exploring the various subdetectors arrayed to detect this myriad of collision products and by attending to the crucial roles played by conservation of mass, momentum and charge in event analysis, students are able to make sense of the same plots which particle physicists use in analyzing collision data. They can in turn produce their own plots and use these to set up and pursue questions they themselves put to the data.</p>
+					<p>Situated in the LHC, the CMS detector is studying proton-proton collisions in search of the predicted Higgs boson that may be instrumental in explaining why particles have mass and other crucial physics questions. Pions, muons, electrons, photons, neutrinos and other particles are produced in these collisions and subsequent decays. By exploring the various subdetectors arrayed to detect this myriad of collision products and by attending to the crucial roles played by conservation of mass, momentum and charge in event analysis, students are able to make sense of the same plots which particle physicists use in analyzing collision data. They can in turn produce their own plots and use these to set up and pursue questions they themselves put to the data.</p>
 					
 				<h2>Prior Knowledge and Skills:</h2>
 				<p>
@@ -85,7 +83,7 @@ Students use a data base and analysis tool on the website.  Tutorials are availa
 					</ul>
 
 					We provide refresher references for students who need to brush up on 
-					these skills. Students access these from "The Basics" section of the <a href="../home/index.jsp" target="show">Project Milestones</a>. 
+					these skills. Students access these from "The Basics" section of the <a href="../home/index.jsp" target="show">Project Map</a>. 
 				</p>
 				
 				<h2>Learner Outcomes and Assessment:</h2>
@@ -151,25 +149,10 @@ Students use a data base and analysis tool on the website.  Tutorials are availa
 
 				<h2>Research Question:</h2>
 				<p>
-					What kinds of particles are produced in the 
-					proton-proton collisions inside the CMS detector? What are the 
-					smallest known particles? Is there a Higgs boson? What causes 
-					objects to have mass? Students can pose a number of questions 
-					and then analyze the data for answers. Some answers are new to 
-					students but well answered by physicists. These include the 
-					smallest known particles, the kinds of particles that are 
-					produced in proton-proton collisions and how these produced 
-					particles interact with the detector. However, the cause of mass 
-					is an open question that the CMS Collaboration hopes to address. 
+					What kinds of particles are produced in the proton-proton collisions inside the CMS detector? What are the smallest known particles?  Students can pose a number of questions and then analyze the data for answers. Some answers are new to students but well answered by physicists. These include the smallest known particles, the kinds of particles that are produced in proton-proton collisions and how these produced particles interact with the detector. However, some questions like "Is there a Higgs boson?" or "What causes objects to have mass?" are open questions that the CMS Collaboration hopes to address. 
 				</p>
 				<p>
-					Students may be able to contribute insights to these efforts. 
-					Many experiments have been investigating the smallest particles. 
-					For example, the top quark was discovered at the accelerator at 
-					Fermi National Accelerator Laboratory by the CDF and D0 collaborations. Students will be able 
-					to see the results of other researchers in this field. 
-					
-					Students can explore simulated data, and once the LHC comes on line they can enter into the CMS research effort by analyzing run data, comparing it to simulated data, and sharing it with a collaboration of their peers.
+					Students may be able to contribute insights to these efforts. Many experiments have been investigating the smallest particles. For example, the top quark was discovered at the accelerator at Fermi National Accelerator Laboratory by the CDF and D0 collaborations. Students will be able to see the results of other researchers in this field. Students can explore simulated data, and once the LHC comes on line they can enter into the CMS research effort by analyzing run data, comparing it to simulated data, and sharing it with a collaboration of their peers.
 				</p>
   
 				
