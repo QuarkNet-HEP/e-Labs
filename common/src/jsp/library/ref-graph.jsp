@@ -49,7 +49,7 @@ which represent continuous validity, unlike the separate measured data points.
     
     </UL>
     
-    <A HREF="../library/ref-scientific-plot.jsp"><b>Scientific Plot</b></A> - Good example of scale spacing and titles; note actual data and theoretical data.
+    <A HREF="../library/ref-scientific-plot.jsp" target="graph"><b>Scientific Plot</b></A> - Good example of scale spacing and titles; note actual data and theoretical data.
 
 <p>
 <b>Histograms:</b>
@@ -64,7 +64,9 @@ which represent continuous validity, unlike the separate measured data points.
     <li> You may see histrograms without the bars outlined on the sides.
 </UL>
 
-
+ <a href=
+  "http://www.teacherschoice.com.au/images/histogram.gif" target="graph">Sample Histogram</a> - An example of a histogram.
+  with the number of items in each bin shown at the top of the bar.  Can you tell what the bin width is?
     
 </TD></TR>
    <tr><td align="right"><HR><A HREF="javascript:window.close();">Close Window</A></td></tr></table>
