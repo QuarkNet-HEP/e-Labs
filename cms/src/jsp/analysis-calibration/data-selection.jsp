@@ -65,8 +65,8 @@ Choose an event type, select the runs to analyze and then go to plot selection.
 				<div id="simple-form">
 					<select id="simplified-triggers">
 						<option value="none">Choose event type...</option>
-						<option value="uu">Muons</option>
-						<option value="ee">Electrons</option>
+						<option value="uu">Muons (&mu;)</option>
+						<option value="ee">Electrons (e)</option>
 						<option value="uu or ee">Muons or Electrons</option>	
 					</select>
 					<script>
