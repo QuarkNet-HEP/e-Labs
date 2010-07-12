@@ -41,7 +41,7 @@
 </script>
 
 <p>
-How do particle physicists know what they know? An important part of  
+An important part of  
 the early scientific activity at CMS is to calibrate the new detector.  
 Physicists use the detector to confirm measurements (such as mass) of  
 well-known particles. CMS collects data in runs that can span hours or  
@@ -50,7 +50,7 @@ make accurate measurements? Do the measurements drift over time? Let's
 find out...
 </p> 
 <p>
-	Choose an event type, choose one or more plots and compare your results.
+Choose an event type, select the runs to analyze and then go to plot selection.
 </p>
 
 <form action="../analysis-calibration/plot-params.jsp">
