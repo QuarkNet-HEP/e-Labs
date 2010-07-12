@@ -47,7 +47,7 @@ Physicists use the detector to confirm measurements (such as mass) of
 well-known particles. CMS collects data in runs that can span hours or  
 days. Do the events in these runs confirm the detector's ability to  
 make accurate measurements? Do the measurements drift over time? Let's  
-find out...
+find out.
 </p> 
 <p>
 Choose an event type, select the runs to analyze and then go to plot selection.
