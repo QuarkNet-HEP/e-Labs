@@ -27,7 +27,7 @@
 				<c:choose>
 					<c:when test="${user == null}"> <%-- User is not logged in --%>
 						<h1>Welcome: Join a national collaboration of high school students to study CMS data.</h1>
-						<h3>Bookmark This Page!</h3>
+						<h2 style="text-align: >Bookmark This Page!</h2>
 						<table border="0" id="main">
 							<tr>
 					 	 		<td>
@@ -55,7 +55,8 @@
 								</tr>
 							</table>
 						</div>
-						<h3>Project Map: To navigate the CMS e-Lab, follow the path; complete the milestones. Hover over each hot spot to preview; click to open. Along the main line are milestone seminars, opportunities to check how your work is going. Project milestones are on the four branch lines.</h3>
+						<h3>Project Map: To navigate the CMS e-Lab, follow the path; complete the milestones. Hover over each hot spot to preview; click to open. Along the main line are milestone seminars, opportunities to check how your work is going. Project milestones are on the four branch lines. 	<e:popup href="../video/CMSe-LabNavigation.html" target="tryit" width="655" height="500">Getting Around the e-Lab</e:popup>
+</h3>
 						<div style="text-align: center;">
 							<%@ include file="../library/milestones-map-student.jsp" %>
 							<br />
