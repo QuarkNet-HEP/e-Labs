@@ -5,21 +5,6 @@
 <%@ page import="gov.fnal.elab.usermanagement.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 
-<%
-	// Check if the teacher is in the study
-	ElabGroup user = (ElabGroup) request.getAttribute("user");
-	boolean newSurvey = false;  
-	
-	if (user != null) {
-		if (user.getRole().equalsIgnoreCase("teacher")) {
-			newSurvey = elab.getSurveyProvider().hasTeacherAssignedSurvey(user.getId());
-		}
-		request.setAttribute("userId", user.getId());
-	}
-	request.setAttribute("newSurvey", newSurvey);
-%>
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
