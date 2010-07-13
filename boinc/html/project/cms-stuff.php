@@ -11,8 +11,8 @@ function cms_masthead($title='',$right_stuff='&nbsp;'){
     echo "\n<!-- cms e-lab masthead -->
      <table class='masthead,noborder' width=100% bgcolor='black' ><tr>
        <td class='noborder' width=15% valign='top' align=left>
-              <a href='/' >
-               <img src='/img/cms_logo.png' border='0'
+              <a href='/elab/cms/' >
+               <img src='/elab/cms/graphics/cms_logo.png' border='0'
                    valign='top' align='left' alt='[cms logo]' 
                    title='return to the top level'></a>
        </TD>";
@@ -20,7 +20,7 @@ function cms_masthead($title='',$right_stuff='&nbsp;'){
     echo "
        <TD class='noborder' width='60%' align='LEFT' >
 	<div class='header-title'>
-		cms e-Lab
+		CMS e-Lab
 	</div>
 	<div class='header-subtitle'>
 	    $title
@@ -45,7 +45,7 @@ function cms_masthead($title='',$right_stuff='&nbsp;'){
 
     echo "<TR ><TD class='noborder' colspan='3'>
         <div class='third-header-title'>
-          &nbsp; Compact Muon Solenoid
+          <!-- &nbsp; Compact Muon Solenoid -->
         </div>
 	</TD></TR>\n";
 
