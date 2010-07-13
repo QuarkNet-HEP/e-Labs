@@ -130,10 +130,11 @@ Students can join a scientific collaboration in this series of studies of high-e
 						<li>
 							<b>Tests</b>: <a href="../survey/survey.jsp?type=pre&studentid=0&id=2">Pre</a>
 							- and <a href="../survey/survey.jsp?type=post&studentid=0&id=2">post</a>
-							- tests of content knowledge and student results for 
-							<a href="../test/results.jsp?type=presurvey">pre</a>
-							<c:if test="${newSurvey == true }">
-							- and <a href="../test/results.jsp?type=postsurvey">post</a>- tests.
+							- tests of content knowledge
+							<c:if test="${newSurvey == true }"> 
+							and student results for 
+							<a href="../test/results.jsp?type=presurvey">pre</a>- 
+							and <a href="../test/results.jsp?type=postsurvey">post</a>- tests.
 							</c:if>
 						</li>
 						
