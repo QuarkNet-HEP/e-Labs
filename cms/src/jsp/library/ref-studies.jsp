@@ -50,6 +50,7 @@
 
 					</p>
 <br />	
+<img src="../graphics/z0decay.jpg" border="1">
 					<p>
 <b>Z mass study design considerations:</b> -  Which data runs to choose?  How much data is sufficient for calibration purposes? Which dimuon pairings to select, and why? Which accepted value of the Z mass will you use, and how will you justify that choice?					
 					
