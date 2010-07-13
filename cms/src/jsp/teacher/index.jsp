@@ -1,4 +1,24 @@
 <%@ include file="../include/elab.jsp" %>
+<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="gov.fnal.elab.*" %>
+<%@ page import="gov.fnal.elab.usermanagement.*" %>
+<%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
+
+<%
+	// Check if the teacher is in the study
+	ElabGroup user = (ElabGroup) request.getAttribute("user");
+	boolean newSurvey = false;  
+	
+	if (user != null) {
+		if (user.getRole().equalsIgnoreCase("teacher")) {
+			newSurvey = elab.getSurveyProvider().hasTeacherAssignedSurvey(user.getId());
+		}
+		request.setAttribute("userId", user.getId());
+	}
+	request.setAttribute("newSurvey", newSurvey);
+%>
+
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -123,11 +143,13 @@ Students can join a scientific collaboration in this series of studies of high-e
 
 	
 						<li>
-							<b>Tests</b>: <a href="../test/test.jsp?type=presurvey&studentid=0">Pre</a>
-							- and <a href="../test/test.jsp?type=postsurvey&studentid=0">post</a>
+							<b>Tests</b>: <a href="../survey/survey.jsp?type=pre&studentid=0&id=2">Pre</a>
+							- and <a href="../survey/survey.jsp?type=post&studentid=0&id=2">post</a>
 							- tests of content knowledge and student results for 
 							<a href="../test/results.jsp?type=presurvey">pre</a>
+							<c:if test="${newSurvey == true }">
 							- and <a href="../test/results.jsp?type=postsurvey">post</a>- tests.
+							</c:if>
 						</li>
 						
 					
