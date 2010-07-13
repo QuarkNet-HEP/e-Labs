@@ -500,7 +500,7 @@ public class ElabGroup implements Comparable<ElabGroup> {
 
 	@Override
 	public int compareTo(ElabGroup eg) {
-		return (new NAME_ORDER()).compare(this, eg);
+		return this.getName().compareTo(eg.getName()); 
 	}
 	
 	public static class NAME_ORDER implements Comparator<ElabGroup> {
