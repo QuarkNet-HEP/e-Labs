@@ -107,17 +107,24 @@
 						<a href="../assessment/rubric-r.html">Process</a>, <a href="../assessment/rubric-t.html">Computing</a>,
 						<a href="../assessment/rubric-wla.html">Literacy</a> and <a href="../assessment/rubric-p.html">Poster</a>
 					</li>
-					
-					<e:restricted role="teacher">
-						<li>
-							<b>Tests</b>: <a href="../survey/survey.jsp?type=pre&studentid=0&id=2">Pre</a>
-							- and <a href="../survey/survey.jsp?type=post&studentid=0&id=2">post</a>
-							- tests of content knowledge
-							and student results for 
-							<a href="../survey/results.jsp?type=pre">pre</a>- 
-							and <a href="../survey/results.jsp?type=post">post</a>-tests.
-						</li>
-					</e:restricted>
+										
+					<c:choose>
+						<c:when test="${teacher == true }">
+							<li>
+								<b>Tests</b>: <a href="../survey/survey.jsp?type=pre&studentid=0&id=2">Pre</a>
+								- and <a href="../survey/survey.jsp?type=post&studentid=0&id=2">post</a>
+								- tests of content knowledge
+								and student results for 
+								<a href="../survey/results.jsp?type=pre">pre</a>- 
+								and <a href="../survey/results.jsp?type=post">post</a>-tests.
+							</li>
+						</c:when>
+						<c:otherwise>
+							<li>
+								<b>Tests</b>: Pre- and post-tests of content knowledge and reporting tools for student results. 
+							</li>
+						</c:otherwise>
+					</c:choose>
 						
 					<li>
 						<b>e-Logbooks:</b> Track progress and provide feedback on student work.<br />
