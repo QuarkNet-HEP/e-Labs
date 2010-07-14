@@ -1,5 +1,27 @@
 <%@ include file="../include/elab.jsp" %>
+<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="gov.fnal.elab.*" %>
+<%@ page import="gov.fnal.elab.usermanagement.*" %>
+<%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 
+<%
+	// Check if the teacher is in the study
+	ElabGroup user = (ElabGroup) request.getAttribute("user");
+	boolean newSurvey = false;  
+	boolean teacher   = false; 
+	
+	if (user != null) {
+		if (user.isTeacher()) {
+			teacher = true; 
+			newSurvey = elab.getSurveyProvider().hasTeacherAssignedSurvey(user.getId());
+		}
+		request.setAttribute("userId", user.getId());
+		
+	}
+	request.setAttribute("newSurvey", newSurvey);
+	request.setAttribute("teacher", teacher);
+%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -117,6 +139,26 @@
 						<A HREF="../assessment/rubric-r.html">Process</A>, <A HREF="../assessment/rubric-t.html">Computing</A>,
 						<A HREF="../assessment/rubric-wla.html">Literacy</A> and <A HREF="../assessment/rubric-p.html">Poster</A>
 					</li>
+					
+					<c:choose>
+						<c:when test="${teacher == true }">
+							<li>
+								<b>Tests</b>: <a href="../survey/survey.jsp?type=pre&studentid=0&id=1">Pre</a>
+								- and <a href="../survey/survey.jsp?type=post&studentid=0&id=1">post</a>
+								- tests of content knowledge
+								and student results for 
+								<a href="../survey/results.jsp?type=pre">pre</a>- 
+								and <a href="../survey/results.jsp?type=post">post</a>-tests.
+							</li>
+						</c:when>
+						<c:otherwise>
+							<li>
+								<b>Tests</b>: Pre- and post-tests of content knowledge and reporting tools for student results. 
+							</li>
+						</c:otherwise>
+					</c:choose>
+						
+					
 							<li>
 							<b>e-Logbooks:</b> Track progress and provide feedback on student work.<br>
 							Review students' evidence of what they know/understand and reflections on their research.<br> 

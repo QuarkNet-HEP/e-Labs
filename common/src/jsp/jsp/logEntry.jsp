@@ -1,7 +1,7 @@
 <%@ page import="java.util.*"%>
 <%@ page import="gov.fnal.elab.util.*"%>
-<%@ include file="../login/login-required.jsp"%>
 <%@ include file="common.jsp"%>
+<%@ include file="../login/login-required.jsp"%>
 <html>
 <head>
 <title>Enter Logbook</title>

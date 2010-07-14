@@ -1,0 +1,64 @@
+<html>
+<head>
+<title>Screencast Demos: Exploration Studies</title>
+		
+		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
+		
+         <script type="text/javascript" src="../include/jquery/js/jquery-1.4.2.min.js"></script>
+         <script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.2.custom.min.js"></script>
+         
+         <link rel="stylesheet" type="text/css" href="../include/jquery/css/blue/jquery-ui-1.7.2.custom.css" />
+<script type="text/javascript">
+
+function parseGetVars() {
+	var getVars = [];
+	var qString = unescape(top.location.search.substring(1));
+	var pairs = qString.split(/\&/);
+	for (var i=0; i < pairs.length; ++i) {
+		var nameVal = pairs[i].split(/\=/);
+		getVars[nameVal[0]] = nameVal[1];
+	}	
+	return getVars;
+} 
+     
+$(document).ready(function() {
+	$("#tabs").tabs(); 
+   
+	var g = parseGetVars();
+	var video=g["video"];
+	if (video == null) {
+		video = "data-selection";
+	}
+	
+	$("#tabs").tabs('select', "#" + video); 
+   
+});
+	</script>
+
+</head>
+	<body id="resources" class="library">
+		<div id="container">
+			<h3>Exploration Studies Screencast Demos</h3>
+
+			<div id="tabs">
+				<ul>
+					<li><a href="#data-selection">Data Selection</a></li>
+					<li><a href="#plot-selection">Plot Selection</a></li>
+					<li><a href="#plot">Plotting Tool</a></li>
+				</ul>
+				<div id="data-selection">	
+					<object id="scPlayer" class="embeddedObject" width="833" height="680" type="application/x-shockwave-flash" data="http://content.screencast.com/users/tloughran/folders/Jing/media/87df8cf9-d87e-47a8-b0c7-1ab4efb828f1/jingh264player.swf" ><param name="movie" value="http://content.screencast.com/users/tloughran/folders/Jing/media/87df8cf9-d87e-47a8-b0c7-1ab4efb828f1/jingh264player.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#FFFFFF" /><param name="flashVars" value="thumb=http://content.screencast.com/users/tloughran/folders/Jing/media/87df8cf9-d87e-47a8-b0c7-1ab4efb828f1/FirstFrame.jpg&containerwidth=833&containerheight=680&content=http://content.screencast.com/users/tloughran/folders/Jing/media/87df8cf9-d87e-47a8-b0c7-1ab4efb828f1/00000086.mp4&blurover=false" /><param name="allowFullScreen" value="true" /><param name="scale" value="showall" /><param name="allowScriptAccess" value="always" /><param name="base" value="http://content.screencast.com/users/tloughran/folders/Jing/media/87df8cf9-d87e-47a8-b0c7-1ab4efb828f1/" /><video width="833" height="680" controls="controls"><br /><source src="http://content.screencast.com/users/tloughran/folders/Jing/media/87df8cf9-d87e-47a8-b0c7-1ab4efb828f1/00000086.mp4" type="video/mp4;" /><br /><b>Your browser cannot play this video.<a href="http://www.screencast.com/handlers/redirect.ashx?target=viewingembededhelp">Learn how to fix this</a>.</b></video></object> 
+				</div>
+			
+				<div id="plot-selection">
+					<object id="scPlayer" class="embeddedObject" width="832" height="679" type="application/x-shockwave-flash" data="http://content.screencast.com/users/tloughran/folders/Jing/media/d2d07048-ceda-4638-87bb-b55a1405244a/jingh264player.swf" ><param name="movie" value="http://content.screencast.com/users/tloughran/folders/Jing/media/d2d07048-ceda-4638-87bb-b55a1405244a/jingh264player.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#FFFFFF" /><param name="flashVars" value="thumb=http://content.screencast.com/users/tloughran/folders/Jing/media/d2d07048-ceda-4638-87bb-b55a1405244a/FirstFrame.jpg&containerwidth=832&containerheight=679&content=http://content.screencast.com/users/tloughran/folders/Jing/media/d2d07048-ceda-4638-87bb-b55a1405244a/00000087.mp4&blurover=false" /><param name="allowFullScreen" value="true" /><param name="scale" value="showall" /><param name="allowScriptAccess" value="always" /><param name="base" value="http://content.screencast.com/users/tloughran/folders/Jing/media/d2d07048-ceda-4638-87bb-b55a1405244a/" /><video width="832" height="679" controls="controls"><br /><source src="http://content.screencast.com/users/tloughran/folders/Jing/media/d2d07048-ceda-4638-87bb-b55a1405244a/00000087.mp4" type="video/mp4;" /><br /><b>Your browser cannot play this video.<a href="http://www.screencast.com/handlers/redirect.ashx?target=viewingembededhelp">Learn how to fix this</a>.</b></video></object> 
+				</div>
+			
+				<div id="plot">
+					<object id="scPlayer" width="816" height="602"><param name="movie" value="http://content.screencast.com/users/tloughran/folders/Jing/media/cfb90bf4-d461-423e-bacb-a0e6aa6082e0/jingh264player.swf"/><param name="quality" value="high"/><param name="bgcolor" value="#FFFFFF"/><param name="flashVars" value="thumb=http://content.screencast.com/users/tloughran/folders/Jing/media/cfb90bf4-d461-423e-bacb-a0e6aa6082e0/FirstFrame.jpg&containerwidth=816&containerheight=602&content=http://content.screencast.com/users/tloughran/folders/Jing/media/cfb90bf4-d461-423e-bacb-a0e6aa6082e0/00000047.mp4"/><param name="allowFullScreen" value="true"/><param name="scale" value="showall"/><param name="allowScriptAccess" value="always"/><param name="base" value="http://content.screencast.com/users/tloughran/folders/Jing/media/cfb90bf4-d461-423e-bacb-a0e6aa6082e0/"/><embed src="http://content.screencast.com/users/tloughran/folders/Jing/media/cfb90bf4-d461-423e-bacb-a0e6aa6082e0/jingh264player.swf" quality="high" bgcolor="#FFFFFF" width="816" height="602" type="application/x-shockwave-flash" allowScriptAccess="always" flashVars="thumb=http://content.screencast.com/users/tloughran/folders/Jing/media/cfb90bf4-d461-423e-bacb-a0e6aa6082e0/FirstFrame.jpg&containerwidth=816&containerheight=602&content=http://content.screencast.com/users/tloughran/folders/Jing/media/cfb90bf4-d461-423e-bacb-a0e6aa6082e0/00000047.mp4" allowFullScreen="true" base="http://content.screencast.com/users/tloughran/folders/Jing/media/cfb90bf4-d461-423e-bacb-a0e6aa6082e0/" scale="showall"/></object>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

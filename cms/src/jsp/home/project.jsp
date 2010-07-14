@@ -32,7 +32,7 @@
 	<tr>
 		<td>
 			<div id="left">
-				<img src="../graphics/CMS-sidebar.jpg"/>
+				<img src="../graphics/CMS-sidebar.jpg"/><br><div style="font-size: 11px; color: white; width: 100px; text-align:center">Simulated Event<br>Superimposed on Detector</div>
 			</div>
 		</td>
 		
@@ -59,6 +59,12 @@
                     and cannot access this page or teacher pages from the student pages.</p>
                     
 				<a href="/elab"><strong>Information common for all e-Labs</strong></a>
+				<br/><br/><br/><br/><br/><br/><br/><br/>
+				<table width="700"><tr><td  class="annotPict"><img src="../graphics/big-left.jpg" border="1"><br><div >Inner tracking barrel</div></td>
+						<td class="annotPict"><img src="../graphics/big-center.jpg" border="1"><br>Splash of particles</td>
+						<td class="annotPict"><img src="../graphics/big-center2.jpg" border="1"><br>Detector before closure 2008</td>
+						<td class="annotPict"><img src="../graphics/big-right.jpg" border="1"><br>Simulation Higgs</td>
+						</td></tr></table>
 			</div>
 		</td>
 		

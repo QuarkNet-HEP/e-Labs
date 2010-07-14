@@ -29,7 +29,7 @@
 			</div>
 			<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
 			<div id="content">
-<a class="help-icon" href="#" onclick="openHelp(event, 'help')"><img src="../graphics/help.png" /></a>
+<a class="help-icon" href="#" onclick="openHelp(event, 'help')">Help <img src="../graphics/help.png" /></a>
 <h1>Data Selection - Detector Calibration Study</h1>
 <script>
 	initlog();
@@ -39,6 +39,19 @@
 	log("<span class='red'>plots: ${param.plots}</span>");
 	log("<span class='red'>commbine: ${param.combine}</span>");
 </script>
+
+<p>
+An important part of  
+the early scientific activity at CMS is to calibrate the new detector.  
+Physicists use the detector to confirm measurements (such as mass) of  
+well-known particles. CMS collects data in runs that can span hours or  
+days. Do the events in these runs confirm the detector's ability to  
+make accurate measurements? Do the measurements drift over time? Let's  
+find out.
+</p> 
+<p>
+Choose an event type, select the runs to analyze and then go to plot selection.
+</p>
 
 <form action="../analysis-calibration/plot-params.jsp">
 	<e:trinput type="hidden" name="dataset" id="dataset-input" default="${dataset}"/>
@@ -52,10 +65,9 @@
 				<div id="simple-form">
 					<select id="simplified-triggers">
 						<option value="none">Choose event type...</option>
-						<option value="uu">Muons</option>
-						<option value="ee">Electrons</option>
-						<option value="uu or ee">Muons or Electrons</option>
-						<option id="advanced" value="advanced">Advanced</option>	
+						<option value="uu">Muons (&mu;)</option>
+						<option value="ee">Electrons (e)</option>
+						<option value="uu or ee">Muons or Electrons</option>	
 					</select>
 					<script>
 						function updateTriggers(obj) {
@@ -80,6 +92,10 @@
 							$("#plot-params-button").removeAttr("disabled");
 							spinnerOff(".wait-on-runs");
 						}
+
+						exprInvalid = function() {
+							$("#plot-params-button").attr("disabled", true);
+						}
 						
 						$('#simplified-triggers').change(updateTriggers);
 					</script>
@@ -97,7 +113,7 @@
 					</tr>
 				</table>
 				
-				<e:vswitch id="selected-events-panel" title="Run Selection" titleclass="panel-title">
+				<e:vswitch id="selected-events-panel" title="Run Selection" titleclass="panel-title" revert="true">
 					<e:visible image="../graphics/plus.png">
 					</e:visible>
 					<e:hidden image="../graphics/minus.png">
@@ -113,15 +129,11 @@
 						</div>
 					</e:hidden>
 				</e:vswitch>
-				<e:vswitch id="data-selection-panel" title="Advanced Data Selection" titleclass="panel-title">
-					<e:visible image="../graphics/plus.png">
-					</e:visible>
-					<e:hidden image="../graphics/minus.png">
-						<jsp:include page="../data/triggers.jsp">
-							<jsp:param name="dataset" value="${dataset}"/>
-						</jsp:include>
-					</e:hidden>
-				</e:vswitch>
+				<div id="data-selection-panel" style="display: none">
+					<jsp:include page="../data/triggers.jsp">
+						<jsp:param name="dataset" value="${dataset}"/>
+					</jsp:include>
+				</div>
 				
 			</td>
 		</tr>

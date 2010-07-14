@@ -43,6 +43,9 @@
 						<h2>Screencast Demos</h2>
 						<ul class="simple">
 							<li>
+								<e:popup href="../video/CMSe-LabNavigation.html" target="tryit" width="655" height="500">Getting Around the e-Lab</e:popup> - a good introduction to navigating the e-Lab including the Project Map and logbook.
+							</li>
+							<li>
 								<e:popup href="http://screencast.com/t/NTA2ODBiZTI" target="tryit" width="625" height="675">Introduction: Single Event Display</e:popup> - how Z Boson decays are displayed in data.
 							</li>
 							<li>

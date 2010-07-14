@@ -500,13 +500,13 @@ public class ElabGroup implements Comparable<ElabGroup> {
 
 	@Override
 	public int compareTo(ElabGroup eg) {
-		return (new NAME_ORDER()).compare(this, eg);
+		return (new NAME_ORDER()).compare(this, eg);  
 	}
 	
 	public static class NAME_ORDER implements Comparator<ElabGroup> {
 		@Override
 		public int compare(ElabGroup o1, ElabGroup o2) {
-			return o1.compareTo(o2);
+			return o1.getName().compareTo(o2.getName());
 		}
 	}
 	

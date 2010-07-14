@@ -255,6 +255,11 @@ function initializeFromExpr() {
 		document.filterRuns = true;
 		updateFromExpr(exprel.value);
 	}
+	else {
+		if (exprInvalid) {
+			exprInvalid();
+		}
+	}
 }
 
 function updateFromExpr(expr) {

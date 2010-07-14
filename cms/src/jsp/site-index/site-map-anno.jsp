@@ -72,7 +72,7 @@ function hideAll()
 						<tr>
 							<td width="127" valign="top"   align="center">
 								<div id="sitehelp-home">
-									<a href="../home/index.jsp">Home</a><br />
+									<a href="../home/index.jsp">Project Map</a><br />
 									<a href="../library/milestones.jsp">Milestones (text)</a><br />
 									<a href="../home/cool-science.jsp">Cool Science</a><br />
 									<a href="../home/about-us.jsp">About Us</a><br />

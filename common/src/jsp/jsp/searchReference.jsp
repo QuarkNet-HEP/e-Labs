@@ -1,7 +1,7 @@
 <%@ page import="java.sql.Timestamp" %> 
 <%@ page buffer="1000kb" %>
-<%@ include file="../login/admin-login-required.jsp" %>
 <%@ include file="common.jsp" %>
+<%@ include file="../login/admin-login-required.jsp" %>
 <link rel="stylesheet"  href="include/styletut.css" type="text/css">
 
 

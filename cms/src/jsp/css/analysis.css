@@ -431,6 +431,13 @@ a.group-title img {
 .help-icon {
 	margin-top: 6px;
 	float: right;
+	text-decoration: none;
+	color: blue;
+	font-weight: bold;
+}
+
+.help-icon img {
+	vertical-align: middle;
 }
 
 .help {

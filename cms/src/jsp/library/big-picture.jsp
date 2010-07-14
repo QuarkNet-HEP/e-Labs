@@ -38,22 +38,40 @@
 			          </td>
 						<td>
 							<div id="center">
-				<h2>How small?</h2>
+							<p>This is the dawn of an exciting age of new discovery in the study of elementary particles
+							and their interactions. The current theoretical framework of the fundamental nature of matter,
+							known as the Standard Model, explains much, but leaves many unanswered questions. 
+							What is dark matter? What happened to antimatter? Are there extra dimensions of spacetime?
+							Are there new symmetries of nature? Are there new, as yet unobserved, forces? What is responsible for mass?
+							<b>The Large Hadron Collider</b> (LHC), a huge scientific instrument at CERN, will provide the highest-energy
+							particle collisions produced in a laboratory to the <b>Compact Muon Solenoid</b> (CMS) experiment that holds
+							the potential to answer these questions:</p>
 
-				<ul>
-					<li>How small is so small that we can get no smaller?</li>
-					<li>Why do objects have mass?</li>
-					<li>How do scientists "see" particles much smaller than an atom?</li>
-					<li>Understand how a 12,000 ton detector &quot;sees&quot; electrons, muons and other particles.</li>
-				</ul>
+							<ul>
+								<li>Are there undiscovered principles of nature?</li>
+								<li>How can we solve the mystery of dark energy?</li>
+								<li>Are there extra dimensions of space?</li>
+								<li>What is dark matter?</li>
+								<li>How did the universe come to be?</li>
+							</ul>
 
-								<p>Scientists analyze data
-        		from the <emph>Compact Muon Solenoid Collaboration,</emph> CMS, experiment at 
-        		CERN in Geneva, Switzerland to answer some of these questions. You, too, can analyze this data. 
-We provide analysis tools and even connect to the Grid, giving you access to computing resources for number crunching.
- The raw data, analysis tools and other features are collectively known as the <b>CMS e-Lab</b>. 
-The e-Lab also provides some necessary background in particle physics and some guidance for asking good research questions.
-								</p>
+							<p>Learn how a 12,000 ton detector "sees" electrons, muons and other particles to discover
+							new science. Begin by working along as CMS physicists calibrate the detector, "rediscovering"
+							previously measured results such as known particle masses.
+							These calibration studies are an important part of early scientific activity at CMS. Later
+							you will be able to analyze CMS data that may lead to answers to questions at the heart of
+							21st century particle physics.
+						</p>
+						<p>With CMS data, analysis tools and other features collectively known as the <b>CMS e-Lab</b>,
+						you can generate and interpret your own plots from CMS data and share your insights in a published
+						poster. Using the analysis tools requires some guidance. Just follow the Project Map through some
+						basics of particle physics. Join the exploration of uncharted territory at the energy frontier
+						and party like a particle physicist!</p>
+						<table width="700"><tr><td  class="annotPict"><img src="../graphics/big-left.jpg" border="1"><br><div >Inner tracking barrel</div></td>
+						<td class="annotPict"><img src="../graphics/big-center.jpg" border="1"><br>Splash of particles</td>
+						<td class="annotPict"><img src="../graphics/big-center2.jpg" border="1"><br>Detector before closure 2008</td>
+						<td class="annotPict"><img src="../graphics/big-right.jpg" border="1"><br>Simulation Higgs</td>
+						</td></tr></table>
 							</div>
 						</td>
 					</tr>

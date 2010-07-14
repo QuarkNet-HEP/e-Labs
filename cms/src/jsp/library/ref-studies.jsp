@@ -27,6 +27,7 @@
 					Time periods &mdash; which do you want to monitor?
 					Data quantity:  how much data do you need?
 					</p>
+					<P STYLE="margin-left: 10px"><A HREF="javascript:showRefLink('http://pdgLive.lbl.gov/listings1.brl?exp=Y',800,600)">PDG Live</a> - Measurements of the properties of the elementary particles from the Particle Data Group</p><p>
 
     	
  			   		<ul>
@@ -45,10 +46,11 @@
 							Determination of Z mass
 						</b> - 
 					<p>
-<IMG SRC="/elab/cms/graphics/single-event-tn.png" BORDER="1" ALIGN="left"> The Z boson, a neutral particle, is produced by the interaction of oppositely charged quarks (such as up and antiup.)  It is short-lived, and decays immeasurably close to the primary collision vertex into pairs of particles. "Rediscovery" of the Z boson mass is an early measurement goal of CMS scientists as they verify the proper operation of the detector. From candidate Z -> di-muon data, you can determine whether CMS is measuring Z rest mass accurately. 
+<IMG SRC="/elab/cms/graphics/single-event-tn.png" BORDER="1" ALIGN="left"> The Z boson (Z<sup>0</sup>), a neutral particle, is produced by the interaction of oppositely charged quarks (such as up and antiup.)  It is short-lived, and decays immeasurably close to the primary collision vertex into pairs of particles. "Rediscovery" of the Z boson mass is an early measurement goal of CMS scientists as they verify the proper operation of the detector. From candidate Z -> di-muon data, you can determine whether CMS is measuring Z rest mass accurately. On the left is a single event display of a Z boson decaying into two muons.
 
 					</p>
 <br />	
+<img src="../graphics/z0decay.jpg" border="1">
 					<p>
 <b>Z mass study design considerations:</b> -  Which data runs to choose?  How much data is sufficient for calibration purposes? Which dimuon pairings to select, and why? Which accepted value of the Z mass will you use, and how will you justify that choice?					
 					

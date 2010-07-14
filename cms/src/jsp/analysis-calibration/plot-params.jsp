@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
@@ -26,10 +28,11 @@
 				</div>
 			</div>
 			<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
+		    <script type="text/javascript" src="../analysis/plot-params.js"></script>
 		    <script type="text/javascript" src="../analysis-calibration/plot-params.js"></script>
 			<div id="content">
 			
-<a class="help-icon" href="#" onclick="openHelp(event, 'help');"><img src="../graphics/help.png" /></a>
+<a class="help-icon" href="#" onclick="openHelp(event, 'help');">Help <img src="../graphics/help.png" /></a>
 <h1>Plot selection - ${param.analysisName}</h1>
 <script>
 	initlog();
@@ -50,36 +53,70 @@
 <table border="0" id="main">
 	<tr>
 		<td>
-			<div id="simple-form">
-				<select id="simplified-plots">
-					<option value="none">Choose plot...</option>
-					<option class="separator" disabled="true">----------------</option>
-					<option value="recoCompositeCandidates_ZtoAMuonAMuon__PAT.obj.mass_">&mu;+&mu;+ mass</option>
-					<option value="recoCompositeCandidates_ZtoMuonMuon__PAT.obj.mass_">&mu;-&mu;- mass</option>
-					<option value="recoCompositeCandidates_ZtoMuonAMuon__PAT.obj.mass_">&mu;-&mu;+ mass</option>
-					<option class="separator" disabled="true">----------------</option>
-					<option value="recoCompositeCandidates_ZtoAEleAEle__PAT.obj.mass_">e+e+ mass</option>
-					<option value="recoCompositeCandidates_ZtoEleEle__PAT.obj.mass_">e-e- mass</option>
-					<option value="recoCompositeCandidates_ZtoAEleEle__PAT.obj.mass_">e-e+ mass</option>
-					<option class="separator" disabled="true">----------------</option>
-					<option id="advanced" value="advanced">Advanced</option>
-				</select>
+			<div id="simple-form" style="text-align: left">
+				<div class="panel-title">Plot Selection</div>
+				
+				<table id="controls">
+					<tr id="global-plot-options">
+						<td>
+							<e:trinput type="checkbox" name="combine" /> Stack plots
+						</td>
+					</tr>
+					<tr>
+						<td>
+						
+<table border="0" id="plots">
+	<tr>
+		<th width="20px"></th>
+		<th>Plot Content</th>
+		<th width="32px">Color</th>
+	</tr>
+	<c:if test="${fn:contains(param.expr, 'uu')}">
+		<tr>
+			<td><input class="plot" type="checkbox" value="recoCompositeCandidates_ZtoMuonAMuon__PAT.obj.mass_" /></td>
+			<td>&mu;<sup>-</sup>&mu;<sup>+</sup> mass</td>
+			<td class="color"><a class="tbutton colorbutton" href="#"><img value="Black" class="colorbox" src="../graphics/colorbox.png"></a></td>
+		</tr>
+		<tr>
+			<td><input class="plot" type="checkbox" value="recoCompositeCandidates_ZtoMuonMuon__PAT.obj.mass_" /></td>
+			<td>&mu;<sup>-</sup>&mu;<sup>-</sup> mass</td>
+			<td class="color"><a class="tbutton colorbutton" href="#"><img value="Red" class="colorbox" src="../graphics/colorbox.png"></a></td>
+		</tr>
+		<tr>
+			<td><input class="plot" type="checkbox" value="recoCompositeCandidates_ZtoAMuonAMuon__PAT.obj.mass_" /></td>
+			<td>&mu;<sup>+</sup>&mu;<sup>+</sup> mass</td>
+			<td class="color"><a class="tbutton colorbutton" href="#"><img value="Green" class="colorbox" src="../graphics/colorbox.png"></a></td>
+		</tr>
+	</c:if>
+	<c:if test="${fn:contains(param.expr, 'ee')}">
+		<tr>
+			<td><input class="plot" type="checkbox" value="recoCompositeCandidates_ZtoAEleEle__PAT.obj.mass_" /></td>
+			<td>e<sup>-</sup>e<sup>+</sup> mass</td>
+			<td class="color"><a class="tbutton colorbutton" href="#"><img value="Blue" class="colorbox" src="../graphics/colorbox.png"></a></td>
+		</tr>
+		<tr>
+			<td><input class="plot" type="checkbox" value="recoCompositeCandidates_ZtoEleEle__PAT.obj.mass_" /></td>
+			<td>e<sup>-</sup>e<sup>-</sup> mass</td>
+			<td class="color"><a class="tbutton colorbutton" href="#"><img value="Cyan" class="colorbox" src="../graphics/colorbox.png"></a></td>
+		</tr>
+		<tr>
+			<td><input class="plot" type="checkbox" value="recoCompositeCandidates_ZtoAEleAEle__PAT.obj.mass_" /></td>
+			<td>e<sup>+</sup>e<sup>+</sup> mass</td>
+			<td class="color"><a class="tbutton colorbutton" href="#"><img value="Magenta" class="colorbox" src="../graphics/colorbox.png"></a></td>
+		</tr>
+	</c:if>
+</table>
+						</td>
+					</tr>
+				</table>
 				<script>
 					function updatePlots(obj) {
-						var val = $('select option:selected').attr("value");
-						var label = $('select option:selected').html();
-						if (val == "advanced") {
-							vSwitchShow("advanced-plot-panel");	
-						}
-						else if (val == "none") {
-							clearPlots();
-						}
-						else {
-							updatePlotsFromValue(val, label);
-						}
+						updatePlotsFromValue(val, label);
 					}
 					
-					$('#simplified-plots').change(updatePlots);
+					$('.colorbutton img').each(function(i, e) {
+						$(this).css("background-color", $(this).attr('value'));
+					});
 				</script>
 			</div>
 			
@@ -94,80 +131,24 @@
 						<input id="plot-submit" type="submit" name="forward" value="Plot >" disabled="true" />
 					</td>
 				</tr>
-			</table>
-			
-	<e:vswitch id="advanced-plot-panel" title="Advanced Plot Selection" titleclass="panel-title">
-		<e:visible image="../graphics/plus.png">
-		</e:visible>
-		<e:hidden image="../graphics/minus.png">
-			<table id="controls">
-				<tr id="global-plot-options">
-					<td>
-						<e:trinput type="checkbox" name="combine" /> Combine plots that have the same units
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						
-<table border="0" id="plots">
-	<tr>
-		<th>#</th>
-		<th>Plot Content</th>
-		<th>Color</th>
-		<th>Remove</th>
-	</tr>
-	<tr>
-		<td id="addplotcell" colspan="3">
-			<div style="width: 24px;">
-				<a class="tbutton addplot" id="addplot" href="#"><img class="buttonicon" src="../graphics/plus.png"></a>
-			</div>
+			</table>			
+				
 		</td>
 	</tr>
 </table>
-					</td>
-				</tr>				
-	
-			</table>
-		</e:hidden>
-	</e:vswitch>				
-</td>
-</tr>
-</table>
-
-<ul id="plot-list" class="jeegoocontext cm_blue">
-	<c:choose>
-		<c:when test="${param.dataset == 'tb04'}">
-			<jsp:include page="../data/tb04/plots.jspf"/>
-		</c:when>
-		<c:when test="${param.dataset == 'mc09'}">
-			<jsp:include page="../data/mc09/plots.jspf"/>
-		</c:when>
-	</c:choose>
-</ul>
-
+</form>
 
 <ul id="color-list" class="jeegoocontext cm_blue">
 	<c:forEach var="color" items="Black,Red,Green,Blue,Cyan,Magenta,Orange">
-		<li value="${color}"><img style="background-color: ${color}" class="colorbox" src="../graphics/colorbox.png">${color}</li>
+		<li value="${color}"><img style="background-color: ${color}" class="colorbox" src="../graphics/colorbox.png" />${color}</li>
 	</c:forEach>
 </ul>
 
-<div id="param-template" class="template">
-	<a class="tbutton addparam" href="#" style="display: inline"><img class="buttonicon" src="../graphics/plus.png"></a>
-</div>
+<ul id="test2" class="jeegoocontext cm_blue">
+	<li value="one">one</li>
+	<li value="two">two</li>
+</ul>
 
-<table>
-	<tr id="plot-template" class="template">
-		<td class="plot-index">0</td>
-		<td class="active-label" width="100%"></td>
-		<td class="color">
-			<a class="tbutton colorbutton" href="#"><img class="colorbox" src="../graphics/colorbox.png"></a>
-		</td>
-		<td class="remove">
-			<a class="tbutton" href="#"><img src="../graphics/minus.png"></a>
-		</td>
-	</tr>
-</table>
 
 <div id="help" class="help">
 	<table>
@@ -199,6 +180,7 @@
 		</tr>
 	</table>
 </div>
+			</div>
 			<!-- end content -->	
 		
 			<div id="footer">

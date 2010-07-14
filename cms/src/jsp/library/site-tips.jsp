@@ -55,9 +55,16 @@
 							of terms in the glossary.
 						</p>
 						<p>
- 							<img src="../graphics/Tright.gif"> and <img src="../graphics/Tdown.gif"> 
+ 							<img src="../graphics/plus.png"> and <img src="../graphics/minus.png"> 
 							to show and hide information.
 						</p>
+						</p>
+						<p>
+ 							<img src="../graphics/data-help.gif"> 
+							to get help for data analysis.
+						</p>
+						
+						
 					</dd>
 					
 					<dt>Popup Windows:</dt>
