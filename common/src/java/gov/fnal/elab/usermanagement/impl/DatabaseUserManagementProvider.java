@@ -556,7 +556,7 @@ public class DatabaseUserManagementProvider implements
         	/* TODO: This really, really shouldn't be used. This is vulnerable to race conditions :( 
         	 * We should be inserting and checking for an exception
         	 */ 
-            //student.getGroup().setName(checkConflict(c, student.getGroup().getName()));
+            student.getGroup().setName(checkConflict(c, student.getGroup().getName()));
             
             File tua = new File(et.getUserArea());
             group.setUserArea(new File(tua.getParentFile(), group.getName())
@@ -795,6 +795,24 @@ public class DatabaseUserManagementProvider implements
         finally {
             DatabaseConnectionManager.close(conn, ps);
         }
+    }
+    
+    public void updateGroupPassword(ElabGroup group, String password) throws ElabException {
+    	Connection conn = null; 
+    	PreparedStatement ps = null;
+    	try {
+    		conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+    		ps = conn.prepareStatement("UPDATE research_group SET password = ? WHERE id = ?;");
+    		ps.setString(1, password);
+    		ps.setInt(2, group.getId());
+    		ps.executeUpdate(); 
+    	}
+    	catch(SQLException e) {
+    		throw new ElabException("Could not update password for research group \"" + group.getName() + "\".");
+    	}
+    	finally {
+    		DatabaseConnectionManager.close(conn, ps);
+    	}
     }
 
     public void updateGroup(ElabGroup group, String password)
