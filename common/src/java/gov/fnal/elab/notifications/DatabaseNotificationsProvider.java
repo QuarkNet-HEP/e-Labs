@@ -267,9 +267,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             throw new ElabException(e);
         }
         finally {
-            if (conn != null) {
-                DatabaseConnectionManager.close(conn, ps);
-            }
+            DatabaseConnectionManager.close(conn, ps);
         }
     }
 
@@ -315,9 +313,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             throw new ElabException(e);
         }
         finally {
-            if (conn != null) {
-                DatabaseConnectionManager.close(conn, ps);
-            }
+            DatabaseConnectionManager.close(conn, ps);
         }
     }
 
