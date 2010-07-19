@@ -53,7 +53,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             		"INSERT INTO notifications.state (message_id, research_group_id) " +
             		"VALUES (?, ?);");
             psProject = conn.prepareStatement(
-            		"INSERT INTO notifications.broadcast (message_id, project_id) " +
+            		"INSERT INTO notifications.project_broadcast (message_id, project_id) " +
             		"VALUES (?, ?);"); 
             try {
                 conn.setAutoCommit(false);
