@@ -337,7 +337,24 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
 	@Override
 	public void markAsRead(Notification notification) {
 		// TODO Auto-generated method stub
+		//notification.setRead(true);
 		
+		Connection conn = null;
+        PreparedStatement ps = null;
+        boolean read = notification.isRead();
+        try {
+        	conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+        	ps = conn.prepareStatement("UPDATE notifications.state SET read = TRUE WHERE message_id = ?;");
+        	ps.setInt(1, notification.getId());
+        	ps.executeUpdate();
+        	notification.setRead(true);
+        }
+        catch (SQLException e) {
+        	notification.setRead(read);
+        }
+        finally {
+        	DatabaseConnectionManager.close(conn, ps);
+        }
 	}
 
 	@Override
