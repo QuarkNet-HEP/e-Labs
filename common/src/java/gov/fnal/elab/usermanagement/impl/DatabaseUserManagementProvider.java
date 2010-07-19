@@ -640,6 +640,7 @@ public class DatabaseUserManagementProvider implements
         String studentNameAddOn = "";
         ps = c.prepareStatement("INSERT INTO student (name) VALUES (?) RETURNING id;");
         Savepoint beforeStudentInsert = c.setSavepoint("student_insert");
+        rs = null; 
         do {
         	try {
 	        	ps.setString(1, student.getName() + studentNameAddOn);
@@ -655,7 +656,7 @@ public class DatabaseUserManagementProvider implements
         			throw e;
         		}
         	}
-        } while ((rs == null) || !rs.next());
+        } while ((rs == null) || !rs.next() || rs.getInt(1) == 0);
         studentId = rs.getInt(1);
         
         ps = c.prepareStatement("INSERT INTO research_group_student(research_group_id, student_id) "
