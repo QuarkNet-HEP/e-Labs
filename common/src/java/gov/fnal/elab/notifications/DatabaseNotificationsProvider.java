@@ -251,7 +251,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 "SELECT COUNT(id) FROM notifications.message AS m " + 
                 "LEFT OUTER JOIN notifications.project_broadcast AS pb ON m.id = pb.message_id AND project_id = ? " + 
                 "LEFT OUTER JOIN notifications.state AS s ON m.id = s.message_id AND s.research_group_id = ? " +
-                "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL) OR (s.read = false)");
+                "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL AND s.read IS NOT TRUE);");
             ps.setInt(1, elab.getId());
             ps.setInt(2, group.getId());
             
