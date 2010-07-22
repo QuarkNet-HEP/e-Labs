@@ -275,7 +275,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             throws ElabException {
         Connection conn = null;
         PreparedStatement ps = null;
-        final String WHERE_UNREAD = "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL) or (s.read = false) ";
+        final String WHERE_UNREAD = "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL AND s.read IS NOT TRUE) ";
         final String WHERE_ALL  = "WHERE (pb.message_id IS NOT NULL AND s.message_id IS NULL) OR (pb.message_id IS NULL AND s.message_id IS NOT NULL) ";
         
         String sql = 
