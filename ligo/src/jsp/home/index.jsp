@@ -13,7 +13,22 @@
 		<script type="text/javascript" src="../include/elab.js"></script>
 		<script type="text/javascript" src="../include/elab-custom.js"></script>
 		<script src="insertMovie.js" language="JavaScript" type="text/javascript"></script>
-		<%@ include file="../include/quicktime-detect.jsp" %>
+		<script type="text/javascript" src="../include/swfobject.js"></script>
+		
+		<script type="text/javascript">
+		var flashvars = {
+			movie: "../home/gravity-waves.flv",
+			autoplay: true,
+			controls: "hide"
+		}; 
+		var params = {
+			allowfullscreen: false,
+			allscriptaccess: "always"
+		}; 
+		var attributes = {}; 
+		swfobject.embedSWF("../include/flayr.swf", "gravityMovie", "320", "240", "9.0.115.0", "../include/expressInstall.swf", flashvars, params, attributes);  
+		</script>
+
 </head>
 	
 	<body id="home" class="home">
@@ -53,17 +68,9 @@
 					<table> 
 						<tr>
 							<td style="text-align: center;">
-								<script type="text/javascript">
-									if (haveqt) {
-										QT_WriteOBJECT('gravity-waves.mov', '320', '240', '', 'AUTOPLAY', 'true', 'CONTROLLER', 'false', 'LOOP', 'true');
-									}
-									else {
-										document.write('<img src="gravity.jpg" />');
-									}
-								</script>
-								<noscript>
-									<img src="gravity.jpg" />
-								</noscript>
+								<div id="gravityMovie">
+									<p><img src="gravity.jpg" /></p>
+								</div>
 								<br />
 								
 								<div style="font-size:80%";margin-bottom:12px;>Orbiting Black Holes Creating Gravitational Waves<br>Credit: Henze, NASA</div>
