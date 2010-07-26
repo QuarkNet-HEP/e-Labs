@@ -59,14 +59,14 @@
 		<td>
 			<div id="center">
 				<h2>Abstract:</h2>
-				<p>Students can join a scientific collaboration in this series of studies of high-energy collisions from the Large Hadron Collider (LHC) at CERN. We are collaborating with the Compact Muon Solenoid (CMS) Experiment to produce a student-led, teacher-guided project. At the present we have both test beam and Monte Carlo (simulated) data for analysis; run data is expected by 2011. By using the web students are able to analyze and share these data   with fellow students and other researchers.</p>
+				<p>Students can join a scientific collaboration in this series of studies of high-energy collisions from the Large Hadron Collider (LHC) at CERN. We are collaborating with the Compact Muon Solenoid (CMS) experiment to produce a student-led, teacher-guided project. At the present, we have both test beam and Monte Carlo (simulated) data for analysis; run data is expected by 2011. By using the web, students are able to analyze and share these data   with fellow students and other researchers.</p>
 				
 				<h2>Milestones on the Project Map:</h2>
-				<p>Milestones on the Project Map provide opportunities for students to build basic scientific skills,  learn how the detector works,  understand subatomic particles, learn how to use the analysis tools and use plots to explain results. Students post the results of their studies as online posters and then review the results of other studies online, comparing data and analyses. Using online tools, they can correspond with other research groups, post comments and questions, prepare summary reports and in general, participate in an aspect of scientific research that is often left out of classroom experiments.</p>
+				<p>Milestones on the Project Map provide opportunities for students to build basic scientific skills,  learn how the detector works,  understand subatomic particles, learn how to use the analysis tools and use plots to explain results. Students post the results of their studies as online posters and then review the results of other studies online, comparing data and analyses. Using online tools, they can correspond with other research groups, post comments and questions, prepare summary reports and, in general, participate in an aspect of scientific research that is often left out of classroom experiments.</p>
 				<p>Read about the <a href="web-guide.jsp">website features</a> that guide and support student research.</p>
 				
 				<h2>Introduction to Research:</h2>
-				<p>The CMS e-Lab explores the potential of using the tools and techniques of research physicists for secondary science education. Like the Cosmic ray e-Lab, this e-Lab provides an opportunity for:</p>
+				<p>The CMS e-Lab explores the potential of using the tools and techniques of research physicists for secondary science education. Like the Cosmic Ray e-Lab, this e-Lab provides an opportunity for:</p>
 				<ul>
 					<li>Students to do authentic research using exploratory data tools to access, process and publish data, report and share their results as online posters, and have online discussions with one another about their work.</li>
 					<li>Student researchers to experience membership in a scientific collaboration.</li>
@@ -111,9 +111,7 @@
 					<c:choose>
 						<c:when test="${teacher == true }">
 							<li>
-								<b>Tests</b>: <a href="../survey/survey.jsp?type=pre&studentid=0&id=2">Pre</a>
-								- and <a href="../survey/survey.jsp?type=post&studentid=0&id=2">post</a>
-								- tests of content knowledge
+								<b>Tests</b>: <a href="../survey/survey.jsp?type=pre&studentid=0&id=2">Pre</a>- and <a href="../survey/survey.jsp?type=post&studentid=0&id=2">post</a>-tests of content knowledge
 								and student results for 
 								<a href="../survey/results.jsp?type=pre">pre</a>- 
 								and <a href="../survey/results.jsp?type=post">post</a>-tests.
@@ -139,7 +137,7 @@
 			
 				<h2>Research Question:</h2>
 				<p>What kinds of particles are produced in the proton-proton collisions inside the CMS detector? What are the smallest known particles?  Students can pose a number of questions and then analyze the data for answers. Some answers are new to students but well answered by physicists. These include the smallest known particles, the kinds of particles that are produced in proton-proton collisions and how these produced particles interact with the detector. However, some questions like "Is there a Higgs boson?" or "What causes objects to have mass?" are open questions that the CMS Collaboration hopes to address. </p>
-				<p>Students may be able to contribute insights to these efforts. Many experiments have been investigating the smallest particles. For example, the top quark was discovered at the accelerator at Fermi National Accelerator Laboratory by the CDF and D0 collaborations. Students will be able to see the results of other researchers in this field. Students can explore simulated data, and once the LHC comes on line they can enter into the CMS research effort by analyzing run data, comparing it to simulated data, and sharing it with a collaboration of their peers.</p>
+				<p>Students may be able to contribute insights to these efforts. Many experiments have been investigating the smallest particles. For example, the top quark was discovered at the accelerator at Fermi National Accelerator Laboratory by the CDF and D&Oslash; collaborations. Students will be able to see the results of other researchers in this field. Students can explore simulated data, and once the real data becomes available, they can enter into the CMS research effort by analyzing run data, comparing it to simulated data, and sharing it with a collaboration of their peers.</p>
  
 			</div>
 		</td>

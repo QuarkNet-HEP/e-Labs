@@ -27,7 +27,7 @@
 			<div id="content">
 
 
-<h1>Website features that guide and support student research.</h1>
+<h1>Website features that guide and support student research</h1>
 
 <h2>Getting Started</h2>
 	When students go to the website, an appealing graphic appears. If your students are taking the <b>pre- and post-test</b>, each member of a research group must complete the pre-test
@@ -38,7 +38,7 @@
 	The main navigation bar appears after logging in to the e-Lab.<br /> <img src="../graphics/navigation_bar.jpg"/> 
 </p>
 <p>
-	Most of the pages also have a sub menu to provide both an overview of what is 
+	Most of the pages also have a submenu to provide both an overview of what is 
 	available and  easy access. <img src="../graphics/subnav.jpg"/>
 </p>
 <h2>Quick Links</h2>
@@ -102,7 +102,7 @@
 	<P>Teachers also have a logbook in which they can make notes on 
 	teaching strategies, resources, etc. for the next year.
 	Access is through a link in upper right-hand corner on every page. 
-	<img src="../graphics/logbook_link.gif"/><br/>
+	<img src="../graphics/logbook_link.gif"/><br/><br/>
 	From their logbook, teachers can access entries:
 	<ul>
 		<li>
@@ -112,7 +112,7 @@
 		<li>
 			By student research group. <img src="../graphics/logbook_group.gif"/> 
 		</li>
-		<li>by what they have written about each research group in their private logbooks. 
+		<li>By what they have written about each research group in their private logbooks. 
 			<img src="../graphics/logbook_my.gif"/>
 		</li>
 	</ul>
