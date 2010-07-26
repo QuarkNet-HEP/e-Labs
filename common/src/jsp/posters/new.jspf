@@ -212,8 +212,9 @@
 		    CatalogEntry e = (CatalogEntry) i.next();
 		    String lfn = e.getLFN();
 		    String name = (String) e.getTupleValue("name");
-		    if (lfn.toLowerCase().endsWith(".gif") || lfn.toLowerCase().endsWith(".jpg") || lfn.toLowerCase().endsWith(".png") || lfn.toLowerCase().endsWith(".jpeg")) {	        
-		        images.put(name != null ? name : lfn, lfn);
+		    String type = (String) e.getTupleValue("type"); 
+		    if ("plot".equals(type)) {
+		    	images.put(StringUtils.isNotBlank(name) ? name : lfn, lfn); 
 		    }
 		}
 	}
