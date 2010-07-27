@@ -40,7 +40,7 @@
 	<img src="../graphics/nav.jpg"/> 
 </p>
 <p>
-	Most of the pages also have a sub menu to provide both an overview of what is 
+	Most of the pages also have a submenu to provide both an overview of what is 
 	available and  easy access. <img src="../graphics/subnav.jpg"/>
 </p>
 <h2>Quick Links</h2>
@@ -50,7 +50,7 @@
 
 <ul>
 		<li>
-			<strong>Cool Science</strong> -  Who Cares? An introduction to seismic data research.
+			<strong>Cool Science</strong> -  Who cares? An introduction to seismic data research.
 		</li>
 		<li>
 			<strong>Explore!</strong> -  Get comfortable!  Find out what's in the website with a graphical overview.
@@ -105,7 +105,7 @@
 	<P>Teachers also have a logbook in which they can make notes on 
 	teaching strategies, resources, etc. for the next year.
 	Access is through a link in upper right-hand corner on every page. 
-	<img src="../graphics/logbook_link.gif"/><br/>
+	<img src="../graphics/logbook_link.gif"/><br/><br/>
 	From their logbook,  teachers can access entries
 	<ul>
 		<li>

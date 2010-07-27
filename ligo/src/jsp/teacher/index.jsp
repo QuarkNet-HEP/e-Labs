@@ -143,9 +143,8 @@
 					<c:choose>
 						<c:when test="${teacher == true }">
 							<li>
-								<b>Tests</b>: <a href="../survey/survey.jsp?type=pre&studentid=0&id=1">Pre</a>
-								- and <a href="../survey/survey.jsp?type=post&studentid=0&id=1">post</a>
-								- tests of content knowledge
+								<b>Tests</b>: <a href="../survey/survey.jsp?type=pre&studentid=0&id=1">Pre</a>-
+								 and <a href="../survey/survey.jsp?type=post&studentid=0&id=1">post</a>-tests of content knowledge
 								and student results for 
 								<a href="../survey/results.jsp?type=pre">pre</a>- 
 								and <a href="../survey/results.jsp?type=post">post</a>-tests.
