@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Standards</title>
+		<title>Alignment to Standards</title>
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
@@ -65,7 +65,7 @@
 								</ul>
 							</li>
 							<li>
-								<b>B: Physical science</b> - Developing student understanding
+								<b>B: Physical Science</b> - Developing student understanding
 								<ul>
 									<li>Structure and properties of matter</li>
 									<li>Interactions of energy and matter</li>

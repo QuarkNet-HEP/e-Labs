@@ -48,7 +48,7 @@
 
 <ul>
 		<li>
-			<strong>Cool Science</strong> -  Who Cares? An introduction to cosmic ray research.
+			<strong>Cool Science</strong> -  Who cares? An introduction to cosmic ray research.
 		</li>
 		<li>
 			<strong>Explore!</strong> -  Get comfortable!  Find out what's in the website with a graphical overview.
