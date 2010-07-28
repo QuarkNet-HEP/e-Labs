@@ -104,7 +104,7 @@
 	<P>Teachers also have a logbook in which they can make notes on 
 	teaching strategies, resources, etc. for the next year.
 	Access is through a link in upper right-hand corner on every page. 
-	<img src="../graphics/logbook.png"/><br/><br/>
+	<img src="../graphics/logbook-blk-bg.png"/><br/><br/>
 	From their logbook, teachers can access entries:
 	<ul>
 		<li>
@@ -120,6 +120,14 @@
 		</li>
 	</ul>
 </p>
+<h2>Notifications</h2>
+					<p>
+						Students can click on the envelopes icon on the upper right hand corner of the banner to see notifications. <img src="../graphics/notification-icon.png"/>
+						<p>
+							Teachers can send notifications to students. he e-Lab will also notify the student when data analyses are done. A number in red will indicate the number of notifications available.  If it is missing, you have none. 
+						</p>
+						
+					</dd>
 <h2><a href="../library/resources.jsp"><strong>Resources</strong></a></h2>
 <p>
 	On the Library submenu is a link to references that include:
