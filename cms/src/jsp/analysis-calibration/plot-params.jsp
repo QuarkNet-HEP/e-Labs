@@ -170,7 +170,7 @@
 						<a href="javascript:reference('cms analysis',450)">Milestone</a> associated with plot selection.
 					</li>
 					<li>
-						CMS e-Lab <a href="../library/FAQ.jsp">FAQ</a>
+						<e:popup href="/library/kiwi.php/CMS_FAQ" target="faq" width="500" height="300">FAQs</e:popup>
 					</li>
 				</ul>
 			</td>
