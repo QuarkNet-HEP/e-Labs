@@ -45,7 +45,7 @@
 						</td>
 			<td class="library">
 			<ul>
-								<li><a href="/library/kiwi.php/CMS_Glossary" target="glossary"><b>Glossary</b></a></li>
+								<li><e:popup href="/library/kiwi.php/CMS_Glossary" target="glossary" width="500" height="300">Glossary</e:popup></li>
 								<li><a href="../library/resources.jsp"><b>Resources</b></a></li>
 								<li>
 									<ul>
@@ -83,7 +83,7 @@
 					<a href="../library/big-picture.jsp">Big Picture</a>
 				</li>
 				<li>
-					<a href="../library/FAQ.jsp">FAQ</a>
+					<e:popup href="/library/kiwi.php/CMS_FAQ" target="faq" width="500" height="300">FAQs</e:popup>
 				</li>
 				<li>
 					<a href="../library/site-tips.jsp">Site Tips</a>
