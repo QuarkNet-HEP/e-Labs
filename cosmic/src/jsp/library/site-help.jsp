@@ -79,7 +79,7 @@
                         <p>	<img src="../graphics/project-map.gif"/>
 
 						<p>
-							A <a href="milestones.jsp">text version</a> of the project milestones is available in the Library. To access pop-up references associated with milestones in the text version, click on <img src="../graphics/ref.gif">.
+							A <a href="milestones.jsp">text version</a> of the project milestones is available with a link below the Project Map. To access pop-up references associated with milestones in the text version, click on <img src="../graphics/ref.gif">.
 						</p>
 						
 						<p>
