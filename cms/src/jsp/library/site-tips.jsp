@@ -96,10 +96,11 @@
 
 					<dt>Log Book:</dt>
 					<dd>
-						Check the upper right hand corner to get to your logbook. Click on these.
+						Click on the pencil in the upper right hand corner of the banner to get to your logbook.<img src="../graphics/logbook-blk-bg.png"/>
 						<p>
+						Click on these:<br />
 							<img src="../graphics/logbook_pencil.gif"> and "<strong>Log it!</strong>"
-							to add notes to your log book related to the milestones
+							to add notes to your log book related to the milestones.
 						</p>
 						
 						<p>
