@@ -93,15 +93,24 @@
 
 					<dt>Log Book:</dt>
 					<dd>
-						Check the upper right hand corner to get to your logbook. Click on these.
+						Click on the pencil in the upper right hand corner of the banner to get to your logbook. <img src="../graphics/logbook-blk-bg.png"/>
 						<p>
 							<img src="../graphics/logbook_pencil.gif"> and "<strong>Log it!</strong>"
-							to add notes to your log book related to the milestones
+							to add notes to your log book related to the milestones.
 						</p>
 						
 						<p>
 							<img src="../graphics/logbook_view_comments_small.gif"> to access teacher comments in your logbook.
 						</p>
+					</dd>
+					<dt>Notifications:</dt>
+					<dd>
+						Click on the envelopes on the upper right hand corner of the banner to see your notifications. <img src="../graphics/notification-icon.png"/>
+						<p>
+							Your teacher can send you notifications and you will also get them if one
+							of your data analyses is completed. A number in red will indicate the number of notifications you have.  If it is missing, you have none. 
+						</p>
+						
 					</dd>
 				</dl>
 			</div>
