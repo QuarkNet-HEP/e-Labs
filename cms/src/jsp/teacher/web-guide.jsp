@@ -102,7 +102,7 @@
 	<P>Teachers also have a logbook in which they can make notes on 
 	teaching strategies, resources, etc. for the next year.
 	Access is through a link in upper right-hand corner on every page. 
-	<img src="../graphics/logbook.png"/><br/><br/>
+	<img src="../graphics/logbook-blk-bg.png"/><br/><br/>
 	From their logbook, teachers can access entries:
 	<ul>
 		<li>
