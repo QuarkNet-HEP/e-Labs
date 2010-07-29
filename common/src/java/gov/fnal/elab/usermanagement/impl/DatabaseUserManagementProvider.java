@@ -602,6 +602,7 @@ public class DatabaseUserManagementProvider implements
             while ((rs == null) || (!rs.next()));
             
         	researchGroupId = rs.getInt(1);
+        	group.setId(researchGroupId);
             
             ps = c.prepareStatement(
             		"INSERT INTO research_group_project (research_group_id, project_id) VALUES(?, ?);");
@@ -656,7 +657,7 @@ public class DatabaseUserManagementProvider implements
         			throw e;
         		}
         	}
-        } while ((rs == null) || !rs.next() || rs.getInt(1) == 0);
+        } while ((rs == null) || !rs.next());
         studentId = rs.getInt(1);
         
         ps = c.prepareStatement("INSERT INTO research_group_student(research_group_id, student_id) "
