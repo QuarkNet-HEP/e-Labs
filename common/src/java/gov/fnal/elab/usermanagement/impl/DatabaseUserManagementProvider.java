@@ -623,18 +623,14 @@ public class DatabaseUserManagementProvider implements
             et.addGroup(group);
         }
         else {
-            boolean found = false;
-            
-            for (ElabGroup eg : et.getGroups()) {
-            	if (eg.getName().equals(student.getGroup().getName())) {
-            		found = true;
-            		researchGroupId = eg.getId();
-            		break;
-            	}
+        	ElabGroup eg = et.getGroupMap().get(student.getGroup().getName());
+            if (eg != null) {
+            	researchGroupId = eg.getId(); 
             }
-            if (!found) {
-                throw new ElabException("The requested group (\""
-                        + student.getGroup().getName() + "\") does not exist");
+            else { 
+            	throw new ElabException("Cannot add student \"" + student.getName() + 
+            			"\" to nonexistant research group \"" +
+                		student.getGroup().getName() + "\".");
             }
         }
         

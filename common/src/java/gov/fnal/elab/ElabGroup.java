@@ -372,6 +372,10 @@ public class ElabGroup implements Comparable<ElabGroup> {
     public Collection<String> getGroupNames() {
         return groups.keySet();
     }
+    
+    public Map<String, ElabGroup> getGroupMap() {
+    	return groups; 
+    }
 
     public void addGroup(ElabGroup group) {
         groups.put(group.getName(), group);
