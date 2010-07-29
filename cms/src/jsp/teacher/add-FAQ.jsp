@@ -29,7 +29,7 @@
 <br>
 <div align="center"><a href="/library/index.php/Add_CMS_FAQ_Item">Add a FAQ Item</a>
 <hr>
-<h2>Current Glossary</h2>
+<h2>Current FAQ</h2>
 </div>
 <e:transclude
  url="http://${elab.properties['elab.host']}/library/body.php/CMS_FAQ"
