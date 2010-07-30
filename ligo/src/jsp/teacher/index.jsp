@@ -86,7 +86,9 @@
 					through an array of seismometers that are mounted at each Observatory. 
 					Students can use data from these seismometers to explore a wide vareity 
 					of seismic questions, many of which will have a connection to LIGO's 
-					science operations.
+					science operations. Make sure your students watch the video in
+					<a href="../home/cool-science.jsp">Cool Science</a> to understand
+					the context of their research.
 				</p>
 					
 				<h2>Prior Knowledge and Skills:</h2>
@@ -185,8 +187,10 @@
 					with cause-and-effect connections as the reserch plan unfolds. The LIGO 
 					e-Lab provides the opportunity for many good research questions based on 
 					earthquakes.  Students should look through the on-line discussion rooms
-					to gain ideas for research questions. 
+					to gain ideas for research questions.
 				</p>
+				<p>
+				Teachers should look for study ideas under the <b>Community</b> Menu item. Click on Classroom Activities and Notes .</p>
   
 				
 			</div>

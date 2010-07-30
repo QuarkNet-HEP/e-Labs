@@ -59,7 +59,7 @@
 							<a href="../assessment/rubric-r.html">Process</a>, <a href="../assessment/rubric-t.html">Computing</a>,
 							<a href="../assessment/rubric-wla.html">Literacy</a> and <a href="../assessment/rubric-p.html">Poster</a></li>
 					</ul>
-					<li><a href="community.jsp"><b>Community</b></a> - Library and Forum</li>
+					<li><a href="community.jsp"><b>Community</b></a> - <a href="classroom-activities.jsp">Classroom Activities</a>, <a href="notes-ligo.jsp">Classroom Notes</a>, Library and Forum</li>
 					<li><a href="standards.jsp"><b>Standards</b></a></li>
 					<li><a href="site-map.jsp"><b>Site Index</b></a></li>
 					<e:restricted role="teacher">
@@ -75,6 +75,12 @@
 					<e:restricted role="admin">
 						<li><a href="../test/show-teachers.jsp">Show Student Test Results for all Teachers</a></li>
 					</e:restricted>
+					<e:restricted role="teacher">
+					<li><a href="#" onclick="javascript:window.open('\/elab\/ligo\/teacher\/forum\/HelpDeskRequest.php', 'helpdesk', 'width=800,height=600, resizable=1, scrollbars=1');return false;">Helpdesk</a>
+					</e:restricted>
+					
+					
+					
 				</ul>
 				
 			</div>
