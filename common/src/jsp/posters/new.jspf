@@ -213,7 +213,7 @@
 		    String lfn = e.getLFN();
 		    String name = (String) e.getTupleValue("name");
 		    String type = (String) e.getTupleValue("type"); 
-		    if ("plot".equals(type)) {
+		    if ("plot".equals(type) || "uploadedimage".equals(type)) {
 		    	images.put(StringUtils.isNotBlank(name) ? name : lfn, lfn); 
 		    }
 		}
