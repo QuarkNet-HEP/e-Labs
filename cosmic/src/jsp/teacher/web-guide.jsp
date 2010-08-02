@@ -39,7 +39,7 @@
  <img src="../graphics/nav.jpg"/> 
 </p>
 
-<p>Most menu items have submenus. When you roll over the navigation bar, all the submenus show up. Here is how it looks when you roll over "Library."</p>
+<p>Most menu items have submenus. When you roll over the navigation bar, all the submenus show up. Here is how it looks when you roll over "Library" on the Project Map page.</p>
 <p>	<img src="../graphics/menu-rollover.gif"/>
 </p>
 <h2>Quick Links</h2>
