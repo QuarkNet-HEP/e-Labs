@@ -32,25 +32,25 @@
 <li value=".fCoordinates.fX">
 	<span class="label">X vertex</span>
 	<ul>
-		<li value="patElectrons_cleanPatElectrons__PAT.obj">electron</li>
-		<li value="patMuons_cleanPatMuons__PAT.obj">muon</li>
-		<li value="patPhotons_cleanPatPhotons__PAT.obj">photon</li>
+		<li value="patElectrons_cleanPatElectrons__PAT.obj.vertex_">electron</li>
+		<li value="patMuons_cleanPatMuons__PAT.vertex_.obj.vertex_">muon</li>
+		<li value="patPhotons_cleanPatPhotons__PAT.obj.vertex_">photon</li>
 	</ul>
 </li>
 <li value=".fCoordinates.fY">
 	<span class="label">Y vertex</span>
 	<ul>
-		<li value="patElectrons_cleanPatElectrons__PAT.obj">electron</li>
-		<li value="patMuons_cleanPatMuons__PAT.obj">muon</li>
-		<li value="patPhotons_cleanPatPhotons__PAT.obj">photon</li>
+		<li value="patElectrons_cleanPatElectrons__PAT.obj.vertex_">electron</li>
+		<li value="patMuons_cleanPatMuons__PAT.obj.vertex_">muon</li>
+		<li value="patPhotons_cleanPatPhotons__PAT.obj.vertex_">photon</li>
 	</ul>
 </li>
 <li value=".fCoordinates.fZ">
 	<span class="label">Z vertex</span>
 	<ul>
-		<li value="patElectrons_cleanPatElectrons__PAT.obj">electron</li>
-		<li value="patMuons_cleanPatMuons__PAT.obj">muon</li>
-		<li value="patPhotons_cleanPatPhotons__PAT.obj">photon</li>
+		<li value="patElectrons_cleanPatElectrons__PAT.obj.vertex_">electron</li>
+		<li value="patMuons_cleanPatMuons__PAT.obj.vertex_">muon</li>
+		<li value="patPhotons_cleanPatPhotons__PAT.obj.vertex_">photon</li>
 	</ul>
 </li>
 <li value=".mass_">
