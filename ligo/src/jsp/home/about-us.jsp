@@ -1,7 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ include file="../include/elab.jsp" %>
-<%@ include file="../login/login-required.jsp" %>
 <%@ page import="gov.fnal.elab.util.ElabUtil" %>
 
 
@@ -20,8 +19,8 @@
 		<div id="container">
 			<div id="top">
 				<div id="header">
-					<%@ include file="../include/header.jsp" %>
-					<%@ include file="../include/nav-rollover.jspf" %>
+						<%@ include file="../include/header.jsp" %>
+						<%@ include file="../include/nav-rollover.jspf" %>
 				</div>
 			</div>
 			
@@ -37,15 +36,6 @@
 			
 			<p />
 			
-			<span id="links">
-				<table align="center">
-					<tr>
-						<td style="width:150px; text-align:center;"><a href="/elab/ligo/home/" style="text-decoration: none;"><img src="../graphics/home-button.gif" border="0"><br>Project Map</a></td>
-					    <td style="width:150px; text-align:center;"><a href="cool-science.jsp" style="text-decoration: none;"><img src="../graphics/cool-science-button.gif" border="0"><br>Cool Science</a></td>
-						<td style="width:150px; text-align:center;"><a href="/elab/ligo/site-index/site-map-anno.jsp" style="text-decoration: none;"><img src="../graphics/site-map-button.gif" border="0"><br>Explore!</a></td>
-					</tr>
-				</table>
-			</span>
 			
 			<h3>Who are we?</h3>
 			<p>
