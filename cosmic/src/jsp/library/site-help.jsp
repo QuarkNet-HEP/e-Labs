@@ -46,6 +46,11 @@
 						If you have upload privileges, your navigation bar will look like this:<p>
 							<img src="../graphics/nav-home-upload.gif">
 						</p>
+
+						<p>Most menu items have submenus. When you roll over the navigation bar, 
+						all the submenus show up. Here is how it looks when you roll over "Library" on the Project Map page.</p>
+						<p>	<img src="../graphics/menu-rollover.gif"/>
+						</p>
 						<p>
 							<a target="map" href="../site-index/site-map-anno.jsp?display=static">Navigation Overview</a>
 						</p>
