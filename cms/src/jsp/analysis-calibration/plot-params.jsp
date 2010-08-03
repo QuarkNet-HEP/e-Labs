@@ -32,7 +32,7 @@
 		    <script type="text/javascript" src="../analysis-calibration/plot-params.js"></script>
 			<div id="content">
 			
-<a class="help-icon" href="#" onclick="openHelp(event, 'help');">Help <img src="../graphics/help.png" /></a>
+<a class="help-icon" href="#" onclick="openPopup(event, 'help');">Help <img src="../graphics/help.png" /></a>
 <h1>Plot selection - ${param.analysisName}</h1>
 <script>
 	initlog();
@@ -144,11 +144,6 @@
 	</c:forEach>
 </ul>
 
-<ul id="test2" class="jeegoocontext cm_blue">
-	<li value="one">one</li>
-	<li value="two">two</li>
-</ul>
-
 
 <div id="help" class="help">
 	<table>
@@ -176,7 +171,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td align="right"><button name="close" onclick="closeHelp('help');">Close</button></td>
+			<td align="right"><button name="close" onclick="closePopup('help');">Close</button></td>
 		</tr>
 	</table>
 </div>

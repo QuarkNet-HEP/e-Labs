@@ -135,17 +135,7 @@
 </table>
 </form>
 
-<ul id="plot-list" class="jeegoocontext cm_blue">
-	<c:choose>
-		<c:when test="${param.dataset == 'tb04'}">
-			<jsp:include page="../data/tb04/plots.jspf"/>
-		</c:when>
-		<c:when test="${param.dataset == 'mc09'}">
-			<jsp:include page="../data/mc09/plots.jspf"/>
-		</c:when>
-	</c:choose>
-</ul>
-
+<%@ include file="../data/plot-variables-menu.jspf" %>
 
 <ul id="color-list" class="jeegoocontext cm_blue">
 	<c:forEach var="color" items="Black,Red,Green,Blue,Cyan,Magenta,Orange">

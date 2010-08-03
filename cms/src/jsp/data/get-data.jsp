@@ -7,13 +7,16 @@
 	import="gov.fnal.elab.cms.dataset.*"
 %>
 <%@ include file="../include/elab.jsp" %>
+<%@ include file="../login/login-required.jsp" %>
 <%
 	// the dataset is validated by dataset-info
 	String pdataset = request.getParameter("dataset");
 	String runs = request.getParameter("runs");
 	String plots = request.getParameter("plots");
+	String cuts = request.getParameter("cuts");
 	
 	Dataset dataset = Datasets.getDataset(elab, session, pdataset);
+	RecentCuts rc = RecentCuts.getInstance(user, dataset);
 	
 	long st = System.currentTimeMillis();
 	
@@ -28,8 +31,43 @@
 	else {
 	    out.write("combine: true\n");
 	}
+	
+	Cuts c = new Cuts(cuts); 
+	if (cuts != null) {
+	    for (String path : c.getLeaves()) {
+		    for (String run : sruns) {
+				String file = dataset.getRunFiles().get(run);
+				if (file == null) {
+					throw new RuntimeException("Invalid run: " + run);	    
+				}
+				BufferedReader br = new BufferedReader(new FileReader(location + "/" + file + "/" + path));
+				try {
+					String line = br.readLine();
+					while (line != null) {
+					    if (!line.startsWith("#")) {
+					        String[] g = line.split("\\s+", 2);
+					        if (g.length == 2) {
+					            c.add(path, run, g[0], g[1].split("\\s+"));
+					        }
+					    }
+					    line = br.readLine();
+					}
+				}
+				finally {
+				    br.close();
+				}
+		    }
+	    }
+	}
+	
+	for (Cut cut : c.getCuts(dataset)) {
+	    rc.add(cut);
+	    out.write("cut: " + cut + "\n");
+	}
+	rc.commit();
 
 	for (String plot : splots) {
+	    System.out.println(plot);
 	    Map<String, String> pp = new HashMap<String, String>();
 		pp.put("logx", "false");
 		pp.put("logy", "false");
@@ -73,14 +111,18 @@
 			}
 			BufferedReader br = new BufferedReader(new FileReader(location + "/" + file + "/" + path));
 			out.write("run: " + run + "\n");
+			Cuts.Run runcut = c.getRun(run);
 			try {
 				String line = br.readLine();
 				while (line != null) {
 				    if (!line.startsWith("#")) {
 				        String[] g = line.split("\\s+", 2);
 				        if (g.length == 2) {
-				    		out.write(g[0] + ": " + g[1]);
-				    		out.write('\n');
+				            String values = runcut.filter(g[0], g[1]);
+				            if (values != null) {
+				    			out.write(g[0] + ": " + values);
+				    			out.write('\n');
+				            }
 				        }
 				    }
 				    line = br.readLine();

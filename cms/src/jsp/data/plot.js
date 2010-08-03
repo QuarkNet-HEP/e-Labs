@@ -16,6 +16,7 @@ function updatePlots(data) {
 	document.data = new Array();
 	document.animSpeed = new Array();
 	document.currentEvent = new Array();
+	updateCutsTable();
 	for (var i = 0; i < data.length; i++) {
 		createPlot(i);
 		updatePlot(i, data[i]);
@@ -24,11 +25,13 @@ function updatePlots(data) {
 
 function createPlot(index) {
 	var id = "#plot" + index;
-	$("#plot-container").append("<div class=\"plot\" id=\"plot" + index + "\"></div>");
-	$(id).html($("#plot-template").html().replace(/animation-panel/g, "animation-panel" + index));
+	if (!document.getElementById("plot" + index)) {
+		$("#plot-container").append("<div class=\"plot\" id=\"plot" + index + "\"></div>");
+		$(id).html($("#plot-template").html().replace(/animation-panel/g, "animation-panel" + index));
+		document.animSpeed[index] = 1;
+		bindButtons(index);
+	}
 	document.plots[index] = $.plot($(id + " .placeholder"), {data: []}, $.extend(defaultPlotOptions, {index: index}));
-	document.animSpeed[index] = 1;
-	bindButtons(index);
 }
 
 function bindEventsHook(plot, eventHolder) {
@@ -49,13 +52,15 @@ plotUnselected = function(index) {
 	$("#plot" + index + " .selection").css("display", "none");
 	$("#plot" + index + " .selection").text("none");
 	$("#plot" + index + " .apply-selection").attr("disabled", true);
+	$("#plot" + index + " .apply-cut").attr("disabled", true);
 };
 
 function updatePlot(index, stack) {
 	redrawPlot(index, stack);
 	var id = "#plot" + index;
-	$(id + " .cursorUnit").html(stack[0]["units"]);
-	$(id + " .xlabel").html(stack[0]["labelx"] + " (" + stack[0]["units"] + ")");
+	var units = stack[0]["units"];
+	$(id + " .cursorUnit").html(units == null ? "" : units);
+	$(id + " .xlabel").html(stack[0]["labelx"] + (units == null ? "" : " (" + stack[0]["units"] + ")"));
 	$(id + " .ylabel").html(stack[0]["labely"]);
 	$(id + " .plottitle").html(makeTitle(stack));
 	var te = totalEvents(index);
@@ -82,7 +87,7 @@ function updatePlot(index, stack) {
 function makeTitle(stack) {
 	var descriptions = [];
 	for (var sp = 0; sp < stack.length; sp++) {
-		descriptions.push(stack[sp].description);
+		descriptions.push(stack[sp].title);
 	}
 	return descriptions.join(", ") + ", runs " + stack[0].runs;
 }
@@ -258,15 +263,29 @@ function parseReply(text) {
 	var index = -1;
 	var lines = text.split('\n');
 	document.combinePlots = false;
+	var cuts = new Array();
+	document.cuts = cuts;
 	for (var i = 0; i < lines.length; i++) {
 		var line = jQuery.trim(lines[i]);
 		if (line == "") {
 			continue;
 		}
-		var kv = line.split(': ', 2);
+		var kv = line.split(": ", 2);
 		var key = kv[0];
 		var value = kv[1];
 		switch (key) {
+			case "cut":
+				var ce = value.split(":");
+				log("cut line: " + value);
+				log("cut array: " + ce[0] + ", " + ce[1] + ", " + ce[2] + ", " + ce[3] + ", " + ce[4]);
+				cuts.push({
+					min: parseFloat(ce[0]),
+					max: parseFloat(ce[1]),
+					leaf: ce[2],
+					units: ce[3],
+					label: ce[4]
+				});
+				break;
 			case "combine":
 				document.combinePlots = value == "true";
 				break;
@@ -351,7 +370,16 @@ function parseReply(text) {
 	return plots;
 }
 
-function getData(dataset, runs, plots, combine) {
+function setDataParams(dataset, runs, plots, combine, cuts) {
+	document.params = {dataset: dataset, runs: runs, plots: plots, combine: combine, cuts: cuts};
+}
+
+function updateData() {
+	var p = document.params;
+	getData(p.dataset, p.runs, p.plots, p.combine, p.cuts);
+}
+
+function getData(dataset, runs, plots, combine, cuts) {
     var ro;
     if(navigator.appName == "Microsoft Internet Explorer") {
 		ro = new ActiveXObject("Microsoft.XMLHTTP");
@@ -382,6 +410,9 @@ function getData(dataset, runs, plots, combine) {
     	updatingStarted();
     }
     var url = "../data/get-data.jsp?dataset=" + dataset + "&runs=" + runs + "&plots=" + plots + "&combine=" + combine;
+    if (cuts) {
+    	url += "&cuts=" + cuts.replace("+", "%2B");
+    }
     log("plot-data: <a href=\"" + url + "\">" + url + "</a>");
     ro.open("get", url);
     ro.onreadystatechange = cb;
@@ -558,6 +589,7 @@ function bindButtons(index) {
 		$(plot + " .selection").html(from + " - " + to + " " + document.plotData[index][0]["units"]);
 		$(plot + " .selection").css("left", (client + 50) + "px");
 		$(plot + " .apply-selection").attr("disabled", false);
+		$(plot + " .apply-cut").attr("disabled", false);
 	});
 	
 	$(plot + " .placeholder").bind("plotunselected", function() {plotUnselected(index);});
@@ -576,6 +608,24 @@ function bindButtons(index) {
 		setAll(document.plotData[index], "maxx", roundToBin(r.xaxis.to, binwidth));
 		redrawPlot2(index, defaultPlotOptions);
     	plotUnselected(index);
+	});
+	
+	$(plot + " .apply-cut").bind("click", function() {
+		if (!document.cuts) {
+			document.cuts = [];
+		}
+		var binwidth = document.plotData[index][0]["binwidth"];
+		var r = document.plots[index].getSelection();
+		document.cuts.push({
+			min: roundToBin(r.xaxis.from, binwidth),
+			max: roundToBin(r.xaxis.to, binwidth),
+			leaf: document.plotData[index][0]["path"],
+			units: document.plotData[index][0]["units"],
+			title: document.plotData[index][0]["title"]
+		});
+		plotUnselected(index);
+		updateCutsParam();
+		updateData();
 	});
 
 	$(plot + " .reset-selection").bind("click", function() {
@@ -737,7 +787,7 @@ function flotify() {
 			params[kv[0]] = kv[1];
 		}
 		$(this).replaceWith('<div id="plot-container" class="wait-on-data" style="width: 800px; height: 400px;"></div>');
-		getData(params["dataset"], params["runs"], params["plots"], "on");
+		getData(params["dataset"], params["runs"], params["plots"], "on", params["cuts"]);
 	});
 }
 
@@ -756,4 +806,53 @@ function switchPanel(obj) {
 			img.src = "../graphics/minus.png";
 		}
 	}
+}
+
+addCut = function(e, context) {
+	var val = $(this).context.getAttribute("value");
+	var ce = val.split(":");
+	document.cuts.push({
+		min: parseFloat(ce[0]),
+		max: parseFloat(ce[1]),
+		leaf: ce[2],
+		units: ce[3],
+		label: ce[4]
+	});
+	updateCutsParam();
+	updateData();
+}
+
+function clearCutsTable() {
+	var tbl = document.getElementById("cuts-table");
+	while (tbl.rows.length > 1) {
+		tbl.deleteRow(0);
+	}
+}
+
+function updateCutsTable() {
+	var cuts = document.cuts;
+	clearCutsTable();
+	var tbl = document.getElementById("cuts-table");
+	for (var i = 0; i < cuts.length; i++) {
+		var row = tbl.insertRow(tbl.rows.length - 1);
+		var td = row.insertCell(0);
+		td.innerHTML = cuts[i].min + " " + cuts[i].units + " < " + cuts[i].label + " < " + cuts[i].max + " " + cuts[i].units;
+		var rd = row.insertCell(1);
+		rd.innerHTML = "<a class=\"tbutton\" href=\"#\" onclick=\"removeCut(" + i + ")\"><img src=\"../graphics/minus.png\" /></a>";
+	}
+}
+
+function updateCutsParam() {
+	var cuts = document.cuts;
+	var s = "";
+	for (var i = 0; i < cuts.length; i++) {
+		s += cuts[i].leaf + ":" + cuts[i].min + ":" + cuts[i].max + " ";
+	}
+	document.params.cuts = s;
+}
+
+function removeCut(index) {
+	document.cuts.splice(index, 1);
+	updateCutsParam();
+	updateData();
 }

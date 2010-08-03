@@ -29,7 +29,7 @@
 			</div>
 			<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
 			<div id="content">
-<a class="help-icon" href="#" onclick="openHelp(event, 'help')">Help <img src="../graphics/help.png" /></a>
+<a class="help-icon" href="#" onclick="openPopup(event, 'help')">Help <img src="../graphics/help.png" /></a>
 <h1>Data Selection - Detector Calibration Study</h1>
 <script>
 	initlog();
@@ -166,7 +166,7 @@ Choose an event type, select the runs to analyze and then go to plot selection.
 			</td>
 		</tr>
 		<tr>
-			<td align="right"><button name="close" onclick="closeHelp('help');">Close</button></td>
+			<td align="right"><button name="close" onclick="closePopup('help');">Close</button></td>
 		</tr>
 	</table>
 </div>
