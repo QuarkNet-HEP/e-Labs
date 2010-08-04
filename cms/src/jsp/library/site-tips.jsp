@@ -82,7 +82,7 @@
                         <p>	<img src="../graphics/project-map.gif"/>
 
 						<p>
-							A <a href="milestones.jsp">text version</a> of the project milestones is available in the Library. To access pop-up references associated with milestones in the text version, click on <img src="../graphics/ref.gif">.
+							A <a href="milestones.jsp">text version</a> of the project milestones is available with a link below the Project Map. To access pop-up references associated with milestones in the text version, click on <img src="../graphics/ref.gif">.
 						</p>
 						
 						<p>
@@ -96,10 +96,11 @@
 
 					<dt>Log Book:</dt>
 					<dd>
-						Check the upper right hand corner to get to your logbook. Click on these.
+						Click on the pencil in the upper right hand corner of the banner to get to your logbook.<img src="../graphics/logbook-blk-bg.png"/>
 						<p>
+						Click on these:<br />
 							<img src="../graphics/logbook_pencil.gif"> and "<strong>Log it!</strong>"
-							to add notes to your log book related to the milestones
+							to add notes to your log book related to the milestones.
 						</p>
 						
 						<p>

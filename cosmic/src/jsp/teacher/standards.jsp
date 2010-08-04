@@ -96,7 +96,7 @@
 					        	
 					        	<ul>
 					        		<li>Understand the meaning of measurement data and categorical data, of univariate and bivariate data, and of the term variable.</li>
-					        		<li>Understand histograms, parallel box plots, and scatterplots and use them to display data.</li>
+					        		<li>Understand histograms, parallel box plots, and scatter plots and use them to display data.</li>
 					        	</ul>
 							</li>
 							<li>

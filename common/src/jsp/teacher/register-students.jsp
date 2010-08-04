@@ -204,8 +204,8 @@
 					you want to grant the new group upload permissions for your detectors.
 				</li>
 				<li>
-					Select &nbsp;<img src="../graphics/logbook_pencil.gif" valign="middle"/>&nbsp;&nbsp;&nbsp; 
-					if you want the new group to take the pretest.
+					Select &nbsp;<img src="../graphics/logbook_pencil.gif" valign="middle"/>&nbsp; 
+					if you want the new group to take the pre-test.
 				</li>
 			</ul>
 			<form name="register" method="post" 
@@ -228,7 +228,7 @@
 								"\" type=\"submit\" value=\"-\" onClick=\"this.form.first" + i + 
 								".value='First Name'; this.form.last" + i + 
 								".value='Last Name'; this.form.is_new" + i + 
-								".value='Make new group'; aLs('res_name_text" + i + 
+								".value='Make New Group'; aLs('res_name_text" + i + 
 								"').visibility = 'hidden'; aLs('res_name_text" + i + 
 								"').display = 'none'; aLs('res_name_chooser" + i + 
 								"').visibility = 'visible'; aLs('res_name_chooser" + i + 
@@ -256,8 +256,8 @@
 			<select id="res_name_chooser<%=i%>" style="visibility:visible; display:;" name="res_name_choose<%=i%>">
             	<%=optionList%>
 			</select>
-			<input type="submit" name="is_new<%=i%>" value="Make new group" 
-				onClick="HideShow('res_name_text<%=i%>'); HideShow('res_name_chooser<%=i%>');HideShow('is_upload_box<%=i%>');HideShow('is_survey_box<%=i%>'); if (this.form.is_new<%=i%>.value=='Make new group') { this.form.is_new<%=i%>.value='Choose group'; } else { this.form.is_new<%=i%>.value='Make new group'; } return false;"/>
+			<input type="submit" name="is_new<%=i%>" value="Make New Group" 
+				onClick="HideShow('res_name_text<%=i%>'); HideShow('res_name_chooser<%=i%>');HideShow('is_upload_box<%=i%>');HideShow('is_survey_box<%=i%>'); if (this.form.is_new<%=i%>.value=='Make New Group') { this.form.is_new<%=i%>.value='Choose group'; } else { this.form.is_new<%=i%>.value='Make New Group'; } return false;"/>
         </div>
     </td>
     <td align="left" valign="middle">

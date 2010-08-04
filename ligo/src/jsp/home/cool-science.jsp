@@ -9,16 +9,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Big Picture</title>
+		<title>Cool Science</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 	</head>
 	
 <script language="javascript">AC_FL_RunContent = 0;</script>
 <script src="AC_RunActiveContent.js" language="javascript"></script>
 		
-	<body id="big-picture" class="library">
+	<body id="big-picture" class="home">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
@@ -40,17 +40,8 @@
 			
 			<p />
 			
-			<span id="links">
-				<table align="center">
-					<tr>
-						<td style="width:150px; text-align:center;"><a href="/elab/ligo/home/" style="text-decoration: none;"><img src="../graphics/home-button.gif" border="0"><br>Project Map</a></td>
-						<td style="width:150px; text-align:center;"><a href="/elab/ligo/site-index/site-map-anno.jsp" style="text-decoration: none;"><img src="../graphics/site-map-button.gif" border="0"><br>Explore!</a></td>
-						<td style="width:150px; text-align:center;"><a href="/elab/ligo/home/about-us.jsp" style="text-decoration: none;"><img src="../graphics/about-us-button.gif" border="0"><br>About Us</a></td>
-					</tr>
-				</table>
-			</span>
-			<br />
 			<div id="movie" align="center">
+<br />Be sure to turn on your sound!<br />
 <script language="javascript">
 	if (AC_FL_RunContent == 0) {
 		alert("This page requires AC_RunActiveContent.js.");
@@ -87,9 +78,8 @@
 	</object>
 </noscript>
 
-<br />Be sure to turn on your sound!
 </div>
-
+<div style="text-align:center;margin-top: 12px"><a href="../library/big-picture.jsp">Read more</a></div>
 		</td>
 	</tr>
 </table>

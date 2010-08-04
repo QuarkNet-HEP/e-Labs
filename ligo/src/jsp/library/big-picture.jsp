@@ -51,6 +51,9 @@
 			<p>
 				LIGO is built on the ground, and the ground constantly vibrates at levels much greater than the effects of gravitational waves.  This background of seismic noise must be filtered to prevent it from contaminating LIGO's ultra-sensitive detectors. To better understand the noise, LIGO operates and monitors a network of seismometers and other instruments related to ground vibrations such as tiltmeters and weather stations. Using the LIGO e-Lab, you can play a role in LIGO's "noise diagnosis" process by studying seismic data from the LIGO Hanford facility.
 			</p>
+			<p>
+				Watch the <a href="../home/cool-science.jsp">Cool Science</a> video if you haven't yet.
+			</p>
 			
 			<blockquote>
 				Colliding Black Holes courtesy of Werner Benger, Zuse Institute 

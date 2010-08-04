@@ -29,7 +29,7 @@
      start="<!-- start content -->"
       end="<div class=\"printfooter\">"
 />
-<div align="center"><A href="http://${elab.properties['elab.host']}/elab/cms/teacher/forum/forum_thread.php?id=335">Workshop Deliverables Thread</A></div>
+<div align="center"><A href="http://${elab.properties['elab.host']}/elab/cms/teacher/forum/forum_thread.php?id=440">Workshop Deliverables Thread</A></div>
 <e:transclude
  url="http://${elab.properties['elab.host']}/cms/library/body.php/Implementation_Plan_Section"
      start="<!-- start content -->"

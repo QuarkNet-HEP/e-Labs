@@ -1,5 +1,6 @@
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="java.sql.Timestamp" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
@@ -60,6 +61,7 @@
 					meta.add("dataset string " + dataset);
 					meta.add("runs string " + runs);
 					meta.add("analysis string " + analysis);
+					meta.add("creationdate date " + (new Timestamp(System.currentTimeMillis())).toString());
 					
 					String[] plotsv = plots.split("\\s+");
 					for (int i = 0; i < plotsv.length; i++) {

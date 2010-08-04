@@ -46,7 +46,7 @@
 						<p>
 							<img src="../graphics/nav.jpg">
 						</p>
-						<p>Most of the pages also have a sub menu to provide both an overview of what is available and easy access. Here is the submenu for <b>Library</b>.<br>
+						<p>Most of the pages also have a submenu to provide both an overview of what is available and easy access. Here is the submenu for <b>Library</b> where  <b>Site Tips</b> has been selected.<br>
 							<img src="../graphics/subnav.jpg">
 						</p>
 						<p>

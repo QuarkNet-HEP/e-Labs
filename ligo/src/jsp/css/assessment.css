@@ -28,6 +28,12 @@ a#nav-assessment {
 	padding-left: 32px;
 }
 
+#assessment h1 {
+	margin-top: 10px;
+	background-color: #ffcc00;
+	color: #000000;
+	width: 790px;
+}
 /*
 	Italiciize corresponding subnav item 
 */
@@ -50,6 +56,7 @@ margin-left: 20px;
 }
 
 #assessmentRubric h1 {
+	margin-top: 10px;
 	background-color: #ffcc00;
 	color: #000000;
 	width: 650px;

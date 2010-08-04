@@ -1,3 +1,4 @@
+<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="org.griphyn.vdl.util.*" %>
@@ -7,11 +8,12 @@
 <%@ page import="org.griphyn.vdl.annotation.*" %>
 <%@ page import="org.griphyn.common.util.Separator" %>
 <%@ page import="org.apache.regexp.*" %>
+<%@ page import="gov.fnal.elab.util.*" %>
 <%@ include file="common.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <html>
 <head>
-	<title>Poster Comments</title>
+	<title>Poster/Plot Comments</title>
 		<title>${elab.properties.formalName} Poster Session</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/posters.css"/>
@@ -105,7 +107,22 @@ dateString="";
             %>
 		  <P><TABLE WIDTH=800 CELLPADDING=4>
 		  <TR><TD>
-		  <B>Comments for file <%=fileName%></B>
+		  <%
+		  if (fileType.equals("plot"))
+		  {
+		  	String urlPlotFile = "../plots/view.jsp?filename=" + fileName;
+		  %>
+		  <B>Comments for file <%=fileName%> - <e:popup href="<%=urlPlotFile%>" target="plot" width="900" height="900">View Plot</e:popup></B><br>
+		  <%
+		  }
+		  else
+		  { 
+		  	String urlPosterFile = "../posters/display.jsp?name=" + fileName;
+		  %>
+		  <B>Comments for file <%=fileName%> - <e:popup href="<%=urlPosterFile%>" target="poster" width="700" height="1000">View Poster</e:popup></B><br>
+		  <%
+		  }
+		  %>
 		   </TD></TR>
 		   <center>
            <tr><td>

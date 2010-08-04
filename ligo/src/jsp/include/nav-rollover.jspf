@@ -45,7 +45,7 @@
 			<tr>
 				<td id="menu">
 					<ul>
-						<li><a href="../home" id="nav-home">Home</a></li>
+						<li><a href="../home" id="nav-home">Project Map</a></li>
 						<li><a href="../library" id="nav-library">Library</a></li>
 						<li><a href="../data" id="nav-data">Data</a></li>
 						<li><a href="../posters" id="nav-posters">Posters</a></li>
@@ -57,8 +57,8 @@
 			<tr>
 				<td id="subnav">
 					<ul id="sub-home">
+						<li><a href="../library/milestones.jsp">Text Version</a></li>
 						<li><a href="../home/cool-science.jsp">Cool Science</a></li>
-						<li><a href="../site-index/site-map-anno.jsp">Explore!</a></li>
 						<li><a href="../home/about-us.jsp">About Us</a></li>
 					</ul>
 					<ul id="sub-library">

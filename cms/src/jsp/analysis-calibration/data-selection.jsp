@@ -29,7 +29,7 @@
 			</div>
 			<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
 			<div id="content">
-<a class="help-icon" href="#" onclick="openHelp(event, 'help')">Help <img src="../graphics/help.png" /></a>
+<a class="help-icon" href="#" onclick="openPopup(event, 'help')">Help <img src="../graphics/help.png" /></a>
 <h1>Data Selection - Detector Calibration Study</h1>
 <script>
 	initlog();
@@ -160,13 +160,13 @@ Choose an event type, select the runs to analyze and then go to plot selection.
 						<a href="javascript:reference('cms data selection',450)">Milestone</a> associated with data selection.
 					</li>
 					<li>
-						CMS e-Lab <a href="../library/FAQ.jsp">FAQ</a>
+						<e:popup href="/library/kiwi.php/CMS_FAQ" target="faq" width="500" height="300">FAQs</e:popup>
 					</li>
 				</ul>
 			</td>
 		</tr>
 		<tr>
-			<td align="right"><button name="close" onclick="closeHelp('help');">Close</button></td>
+			<td align="right"><button name="close" onclick="closePopup('help');">Close</button></td>
 		</tr>
 	</table>
 </div>

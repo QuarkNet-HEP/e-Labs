@@ -13,7 +13,22 @@
 		<script type="text/javascript" src="../include/elab.js"></script>
 		<script type="text/javascript" src="../include/elab-custom.js"></script>
 		<script src="insertMovie.js" language="JavaScript" type="text/javascript"></script>
-		<%@ include file="../include/quicktime-detect.jsp" %>
+		<script type="text/javascript" src="../include/swfobject.js"></script>
+		
+		<script type="text/javascript">
+		var flashvars = {
+			movie: "../home/gravity-waves.flv",
+			autoplay: true,
+			controls: "hide"
+		}; 
+		var params = {
+			allowfullscreen: false,
+			allscriptaccess: "always"
+		}; 
+		var attributes = {}; 
+		swfobject.embedSWF("../include/flayr.swf", "gravityMovie", "320", "240", "9.0.115.0", "../include/expressInstall.swf", flashvars, params, attributes);  
+		</script>
+
 </head>
 	
 	<body id="home" class="home">
@@ -53,17 +68,9 @@
 					<table> 
 						<tr>
 							<td style="text-align: center;">
-								<script type="text/javascript">
-									if (haveqt) {
-										QT_WriteOBJECT('gravity-waves.mov', '320', '240', '', 'AUTOPLAY', 'true', 'CONTROLLER', 'false', 'LOOP', 'true');
-									}
-									else {
-										document.write('<img src="gravity.jpg" />');
-									}
-								</script>
-								<noscript>
-									<img src="gravity.jpg" />
-								</noscript>
+								<div id="gravityMovie">
+									<p><img src="gravity.jpg" /></p>
+								</div>
 								<br />
 								
 								<div style="font-size:80%";margin-bottom:12px;>Orbiting Black Holes Creating Gravitational Waves<br>Credit: Henze, NASA</div>
@@ -71,6 +78,7 @@
 								<p style="font-size:90%">Scientists must distinguish gravitational waves  from "noise" caused by seismic waves passing through the ground underneath LIGO's detectors.</p>
 							</td>
 							<td class="float-right bordered">
+							<div align="center"><a href="about-us.jsp" style="text-decoration: none;"><img src="../graphics/about-us-button.gif" border="0"><br>About Us</a></div>
 								<jsp:include page="../login/login-control.jsp">
 									<jsp:param name="prevPage" value="../home/login-redir.jsp"/>
 								</jsp:include>
@@ -92,21 +100,12 @@
 					<h1>Join a national collaboration of students to study LIGO seismic data.</h1>
 					<br />
 					<br />
-					<span id="links">
-						<table align="center">
-							<tr>
-								<td style="width:150px; text-align:center;"><a href="cool-science.jsp" style="text-decoration: none; color="#ff9933"><img src="../graphics/cool-science-button.gif" border="0"><br><span style="color="#ff9933">Cool Science</span></a></td>
-								<td style="width:150px; text-align:center;"><a href="/elab/ligo/site-index/site-map-anno.jsp"style="text-decoration: none;"><img src="../graphics/site-map-button.gif" border="0"><br>Explore!</a></td>
-								<td style="width:150px; text-align:center;"><a href="about-us.jsp" style="text-decoration: none;"><img src="../graphics/about-us-button.gif" border="0"><br>About Us</a></td>
-							</tr>
-						</table>
-					</span>
-					<p>Project Map: Use the milestones below to guide you through the e-Lab. Make sure you know how to record your progress, keep your teacher apprised of your work and publish your results. </p>
+					<p>Project Map: To navigate the CMS e-Lab, follow the path; complete the milestones. Hover over each hot spot to preview; click to open. Along the main line are milestone seminars, opportunities to check how your work is going. Project milestones are on the four branch lines.</p>
 					<center>
 						<%@ include file="../library/milestones-map-student.jsp" %>
 						<p><a href="/elab/ligo/library/milestones.jsp">Milestones (text version)</a></p>
 					</center>
-					<p>Think of this map as a subway map with one main line and four branch lines.  Along the main line are stops, milestone seminars, opportunities to check how the work is going. Off each main stop are branch lines where each stop is a project milestone. Hover over each milestone or milestone seminar to preview; click milestones to open. </p>
+					<p>Your team may use the milestones above, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results. </p>
 					
 				</td>
 			</tr>

@@ -269,12 +269,24 @@ function pp(obj) {
 	}
 }
 
-function openHelp(event, id) {
-	$("#" + id).css("right", "10px");
-	$("#" + id).css("top", (event.clientY + 10) + "px");
-	$("#" + id).show();
+function centerElement(id) {
+	var el = $("#" + id);
+	el.css("left", ((window.innerWidth - el.width()) / 2) + "px");
+	el.css("top", ((window.innerHeight - el.height()) / 2) + "px");
 }
 
-function closeHelp(id) {
+function openPopup(event, id) {
+	if (event == "center") {
+		centerElement(id);
+		$("#" + id).show();
+	}
+	else {
+		$("#" + id).css("right", "10px");
+		$("#" + id).css("top", (event.clientY + 10) + "px");
+		$("#" + id).show();
+	}
+}
+
+function closePopup(id) {
 	$("#" + id).hide();
 }

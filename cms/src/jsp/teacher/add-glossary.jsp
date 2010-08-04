@@ -3,10 +3,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
-		<title> CMS e-Lab Teacher - Add Glossary Item</title>
-		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
+		<title> CMS e-Lab Add Glossary</title>
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	</head>
 

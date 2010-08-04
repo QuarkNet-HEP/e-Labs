@@ -556,7 +556,7 @@ public class DatabaseUserManagementProvider implements
         	/* TODO: This really, really shouldn't be used. This is vulnerable to race conditions :( 
         	 * We should be inserting and checking for an exception
         	 */ 
-            //student.getGroup().setName(checkConflict(c, student.getGroup().getName()));
+            student.getGroup().setName(checkConflict(c, student.getGroup().getName()));
             
             File tua = new File(et.getUserArea());
             group.setUserArea(new File(tua.getParentFile(), group.getName())
@@ -602,6 +602,7 @@ public class DatabaseUserManagementProvider implements
             while ((rs == null) || (!rs.next()));
             
         	researchGroupId = rs.getInt(1);
+        	group.setId(researchGroupId);
             
             ps = c.prepareStatement(
             		"INSERT INTO research_group_project (research_group_id, project_id) VALUES(?, ?);");
@@ -622,24 +623,21 @@ public class DatabaseUserManagementProvider implements
             et.addGroup(group);
         }
         else {
-            boolean found = false;
-            
-            for (ElabGroup eg : et.getGroups()) {
-            	if (eg.getName().equals(student.getGroup().getName())) {
-            		found = true;
-            		researchGroupId = eg.getId();
-            		break;
-            	}
+        	ElabGroup eg = et.getGroupMap().get(student.getGroup().getName());
+            if (eg != null) {
+            	researchGroupId = eg.getId(); 
             }
-            if (!found) {
-                throw new ElabException("The requested group (\""
-                        + student.getGroup().getName() + "\") does not exist");
+            else { 
+            	throw new ElabException("Cannot add student \"" + student.getName() + 
+            			"\" to nonexistant research group \"" +
+                		student.getGroup().getName() + "\".");
             }
         }
         
         String studentNameAddOn = "";
         ps = c.prepareStatement("INSERT INTO student (name) VALUES (?) RETURNING id;");
         Savepoint beforeStudentInsert = c.setSavepoint("student_insert");
+        rs = null; 
         do {
         	try {
 	        	ps.setString(1, student.getName() + studentNameAddOn);
@@ -794,6 +792,24 @@ public class DatabaseUserManagementProvider implements
         finally {
             DatabaseConnectionManager.close(conn, ps);
         }
+    }
+    
+    public void updateGroupPassword(ElabGroup group, String password) throws ElabException {
+    	Connection conn = null; 
+    	PreparedStatement ps = null;
+    	try {
+    		conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+    		ps = conn.prepareStatement("UPDATE research_group SET password = ? WHERE id = ?;");
+    		ps.setString(1, password);
+    		ps.setInt(2, group.getId());
+    		ps.executeUpdate(); 
+    	}
+    	catch(SQLException e) {
+    		throw new ElabException("Could not update password for research group \"" + group.getName() + "\".");
+    	}
+    	finally {
+    		DatabaseConnectionManager.close(conn, ps);
+    	}
     }
 
     public void updateGroup(ElabGroup group, String password)

@@ -39,7 +39,7 @@
  <img src="../graphics/nav.jpg"/> 
 </p>
 
-<p>Most menu items have submenus. When you roll over the navigation bar, all the submenus show up. Here is how it looks when you roll over "Library."</p>
+<p>Most menu items have submenus. When you roll over the navigation bar, all the submenus show up. Here is how it looks when you roll over "Library" on the Project Map page.</p>
 <p>	<img src="../graphics/menu-rollover.gif"/>
 </p>
 <h2>Quick Links</h2>
@@ -49,7 +49,7 @@
 
 <ul>
 		<li>
-			<strong>Cool Science</strong> -  Who Cares? An introduction to cosmic ray research.
+			<strong>Cool Science</strong> -  Who cares? An introduction to cosmic ray research.
 		</li>
 		<li>
 			<strong>Explore!</strong> -  Get comfortable!  Find out what's in the website with a graphical overview.
@@ -62,7 +62,7 @@
 <h2><strong>Project Map</strong></h2>
 	
 <p>	<img src="../graphics/project-map.gif"/>
-<p>	Think of this map as a subway map with one main line and four branch lines.  Along the main line are stops, milestone seminars, opportunities to check how the work is going. Off each main stop are branch lines where each stop is a project milestone. The branch lines include:</p> 
+<p>To navigate the e-Lab, students follow the path and complete the milestones. They can hover over each hot spot to preview; click to open. Along the main line are milestone seminars, opportunities to check how their work is going. Project milestones are on the four branch lines. The branch lines include:</p> 
 	<ul>
 		<li>
 			<strong>The Basics:</strong> Reviews basic research skills.
@@ -104,7 +104,7 @@
 	<P>Teachers also have a logbook in which they can make notes on 
 	teaching strategies, resources, etc. for the next year.
 	Access is through a link in upper right-hand corner on every page. 
-	<img src="../graphics/logbook_link.gif"/><br/>
+	<img src="../graphics/logbook-blk-bg.png"/><br/><br/>
 	From their logbook, teachers can access entries:
 	<ul>
 		<li>
@@ -120,6 +120,14 @@
 		</li>
 	</ul>
 </p>
+<h2>Notifications</h2>
+					<p>
+						Students can click on the envelopes icon on the upper right hand corner of the banner to see notifications. <img src="../graphics/notification-icon.png"/>
+						<p>
+							Teachers can send notifications to students. he e-Lab will also notify the student when data analyses are done. A number in red will indicate the number of notifications available.  If it is missing, you have none. 
+						</p>
+						
+					</dd>
 <h2><a href="../library/resources.jsp"><strong>Resources</strong></a></h2>
 <p>
 	On the Library submenu is a link to references that include:

@@ -39,12 +39,16 @@ set_debug_level(0);
 
 // List of addresses to send to (comma separated):
 //
-$Email_List = "help@i2u2.org, hategan@mcs.anl.gov"; /* , myers@fnal.gov"; */
+$Email_List = "help@i2u2.org"; /*hategan@mcs.anl.gov, myers@fnal.gov"; */
 
 
 // Return address for e-mail sent from this form:
 //
 $Email_From = "help@i2u2.org";
+
+// BCC the following people 
+//
+$Email_BCC = "phongn@fnal.gov"; 
 
 /********
  * Lists for input selectors:
@@ -583,7 +587,7 @@ function form_item($title, $description, $content, $class=''){
 
 function send_report_via_email($thread_id=0){
     global $logged_in_user, $my_url;
-    global $Email_List, $Email_From;
+    global $Email_List, $Email_From, $Email_BCC;
     global $subject, $problem, $error_msg;
     global $elab, $elab_list;
     global $user_name, $user_id, $user_role, $role_list, $return_address;
@@ -594,7 +598,7 @@ function send_report_via_email($thread_id=0){
 
     $headers  = "From: $Email_From \n";
     $headers .= "Client-IP: " .$_SERVER['REMOTE_ADDR']."\n";
-
+	$headers .= "BCC: " .$Email_BCC."\n";
 
     if( !empty($user_name) && $user_id > 0 ) {
         $body .= "User '$user_name' (id# $user_id)";

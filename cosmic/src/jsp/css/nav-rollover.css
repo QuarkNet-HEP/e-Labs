@@ -4,6 +4,25 @@
 
 #header #header-image img { height: 100%; }
 
+#subnav #sub-home {
+	margin-right: 265px;		
+}
+
+#subnav #sub-home li a {
+	width: 7.5em;
+	color: black;
+	background-color:  #ff6600;
+	border-top: #ffa76c 1px solid;
+	border-left: #ffa76c 1px solid;
+	border-bottom: #b54800 1px solid;
+	border-right: #b54800  1px solid;
+}
+
+#subnav #sub-home li a:hover {
+	color: white;
+}
+
+
 #subnav #sub-data li a {
 	color: black;
 	background-color: #4382bb;

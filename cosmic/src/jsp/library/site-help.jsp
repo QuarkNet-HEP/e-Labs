@@ -46,6 +46,11 @@
 						If you have upload privileges, your navigation bar will look like this:<p>
 							<img src="../graphics/nav-home-upload.gif">
 						</p>
+
+						<p>Most menu items have submenus. When you roll over the navigation bar, 
+						all the submenus show up. Here is how it looks when you roll over "Library" on the Project Map page.</p>
+						<p>	<img src="../graphics/menu-rollover.gif"/>
+						</p>
 						<p>
 							<a target="map" href="../site-index/site-map-anno.jsp?display=static">Navigation Overview</a>
 						</p>
@@ -79,7 +84,7 @@
                         <p>	<img src="../graphics/project-map.gif"/>
 
 						<p>
-							A <a href="milestones.jsp">text version</a> of the project milestones is available in the Library. To access pop-up references associated with milestones in the text version, click on <img src="../graphics/ref.gif">.
+							A <a href="milestones.jsp">text version</a> of the project milestones is available with a link below the Project Map. To access pop-up references associated with milestones in the text version, click on <img src="../graphics/ref.gif">.
 						</p>
 						
 						<p>
@@ -93,15 +98,24 @@
 
 					<dt>Log Book:</dt>
 					<dd>
-						Check the upper right hand corner to get to your logbook. Click on these.
+						Click on the pencil in the upper right hand corner of the banner to get to your logbook. <img src="../graphics/logbook-blk-bg.png"/>
 						<p>
 							<img src="../graphics/logbook_pencil.gif"> and "<strong>Log it!</strong>"
-							to add notes to your log book related to the milestones
+							to add notes to your log book related to the milestones.
 						</p>
 						
 						<p>
 							<img src="../graphics/logbook_view_comments_small.gif"> to access teacher comments in your logbook.
 						</p>
+					</dd>
+					<dt>Notifications:</dt>
+					<dd>
+						Click on the envelopes on the upper right hand corner of the banner to see your notifications. <img src="../graphics/notification-icon.png"/>
+						<p>
+							Your teacher can send you notifications and you will also get them if one
+							of your data analyses is completed. A number in red will indicate the number of notifications you have.  If it is missing, you have none. 
+						</p>
+						
 					</dd>
 				</dl>
 			</div>

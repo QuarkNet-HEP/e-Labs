@@ -116,6 +116,10 @@ ul.cm_blue li.title, ul.cm_blue li.title:hover {
 	background-color: #b0b0b0;
 }
 
+#plot-list {
+	width: 64px;
+}
+
 #inclexcl .ortable td {
 	text-align: center;	
 }
@@ -440,7 +444,7 @@ a.group-title img {
 	vertical-align: middle;
 }
 
-.help {
+.help, .popup {
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
@@ -453,22 +457,22 @@ a.group-title img {
 	display: none;
 }
 
-.help table {
+.help table, .popup table {
 	width: 100%;
 }
 
-.help .title {
+.help .title, .popup .title {
 	background-color: #d0d0d0;
 	font-weight: bold;
 	text-align: center;
 }
 
-.help .title a {
+.help .title a, .popup .title a {
 	padding: 2px;
 	float: right;
 }
 
-.help .content {
+.help .content, .popup .content {
 	padding: 8px;
 }
 
@@ -481,4 +485,25 @@ a.group-title img {
 option.separator {
 	height: 4px;
 	border-bottom: thin solid black;
+}
+
+#cuts {
+	width: 784px;
+	border: thin dashed gray;
+	margin-bottom: 8px;
+	margin-top: 16px;
+	text-align: left;
+	padding: 2px;
+	left: 0px;
+}
+
+#cuts table {
+	height: 24px;
+	width: 100%;
+}
+
+#cuts-table td {
+	background-color: #f0f0f0;
+	padding: 2px;
+	height: 16px;
 }

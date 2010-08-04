@@ -1,3 +1,4 @@
+ <h3>Watch the <a href="../home/cool-science.jsp">Cool Science</a> video about LIGO science.</h3>
 				<ol type="A">
 					<li>
 						Research Basics: <i>Use these milestones if you need background on:</i>

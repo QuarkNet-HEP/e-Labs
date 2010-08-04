@@ -108,3 +108,16 @@
 	float: right;
 	margin: 8px;
 }
+
+#nets ol {
+	font-size: 13px;
+	font-weight: bold;
+}
+
+
+#nets ol li ul {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-size: 13px;
+	font-weight: normal;
+}

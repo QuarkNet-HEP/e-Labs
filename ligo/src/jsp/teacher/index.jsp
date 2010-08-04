@@ -28,8 +28,8 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>LIGO Elab Teacher Information</title>
-		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
-		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
+		<link rel="stylesheet" type="text/css" href="/elab/cosmic/css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="/elab/cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 	</head>
 
@@ -86,7 +86,9 @@
 					through an array of seismometers that are mounted at each Observatory. 
 					Students can use data from these seismometers to explore a wide vareity 
 					of seismic questions, many of which will have a connection to LIGO's 
-					science operations.
+					science operations. Make sure your students watch the video in
+					<a href="../home/cool-science.jsp">Cool Science</a> to understand
+					the context of their research.
 				</p>
 					
 				<h2>Prior Knowledge and Skills:</h2>
@@ -143,9 +145,8 @@
 					<c:choose>
 						<c:when test="${teacher == true }">
 							<li>
-								<b>Tests</b>: <a href="../survey/survey.jsp?type=pre&studentid=0&id=1">Pre</a>
-								- and <a href="../survey/survey.jsp?type=post&studentid=0&id=1">post</a>
-								- tests of content knowledge
+								<b>Tests</b>: <a href="../survey/survey.jsp?type=pre&studentid=0&id=1">Pre</a>-
+								 and <a href="../survey/survey.jsp?type=post&studentid=0&id=1">post</a>-tests of content knowledge
 								and student results for 
 								<a href="../survey/results.jsp?type=pre">pre</a>- 
 								and <a href="../survey/results.jsp?type=post">post</a>-tests.
@@ -186,8 +187,10 @@
 					with cause-and-effect connections as the reserch plan unfolds. The LIGO 
 					e-Lab provides the opportunity for many good research questions based on 
 					earthquakes.  Students should look through the on-line discussion rooms
-					to gain ideas for research questions. 
+					to gain ideas for research questions.
 				</p>
+				<p>
+				Teachers should look for study ideas under the <b>Community</b> Menu item. Click on Classroom Activities and Notes .</p>
   
 				
 			</div>

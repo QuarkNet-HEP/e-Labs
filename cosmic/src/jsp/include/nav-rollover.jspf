@@ -14,8 +14,9 @@
 				delay: 100 
 		}; 
 			
-		$("#nav-home").bind("hover", hoverAttributes, function(){ // Home
+			$("#nav-home").bind("hover", hoverAttributes, function(){  // Home
 			$("#subnav").children().hide(); 
+			$("#sub-home").show();
 		});
 		$("#nav-library").bind("hover", hoverAttributes, function(){ // Library
 			$("#subnav").children().hide();
@@ -50,7 +51,7 @@
 				<td id="menu">
 					<ul>
 						<!-- unfortunately ie6 doesn't recognize :first-child -->
-						<li><a href="../home" id="nav-home">Home</a></li>
+						<li><a href="../home" id="nav-home">Project Map</a></li>
 						<li><a href="../library" id="nav-library">Library</a></li>
 						<c:if test="${user.upload}">
 							<li><a href="../data/upload.jsp" id="nav-upload">Upload</a></li>
@@ -64,6 +65,11 @@
 			</tr>
 			<tr>
 				<td id="subnav">
+					<ul id="sub-home">
+						<li><a href="../home/cool-science.jsp">Cool Science</a></li>
+						<li><a href="../site-index/site-map-anno.jsp">Explore!</a></li>
+						<li><a href="../home/about-us.jsp">About Us</a></li>
+					</ul>
 					<ul id="sub-data">
 						<li><a href="../data/search.jsp">View Data</a></li>
 						<li><a href="../analysis-performance">Performance</a></li>

@@ -1,4 +1,5 @@
 /* Navbar */ 
+#nav #subnav ul#sub-home { display:none; }
 #nav #subnav ul#sub-data { display:none }
 #nav #subnav ul#sub-library { display:none; }
 #nav #subnav ul#sub-posters { display:none; } 

@@ -53,7 +53,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             		"INSERT INTO notifications.state (message_id, research_group_id) " +
             		"VALUES (?, ?);");
             psProject = conn.prepareStatement(
-            		"INSERT INTO notifications.broadcast (message_id, project_id) " +
+            		"INSERT INTO notifications.project_broadcast (message_id, project_id) " +
             		"VALUES (?, ?);"); 
             try {
                 conn.setAutoCommit(false);
@@ -251,7 +251,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 "SELECT COUNT(id) FROM notifications.message AS m " + 
                 "LEFT OUTER JOIN notifications.project_broadcast AS pb ON m.id = pb.message_id AND project_id = ? " + 
                 "LEFT OUTER JOIN notifications.state AS s ON m.id = s.message_id AND s.research_group_id = ? " +
-                "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL) OR (s.read = false)");
+                "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL AND s.read IS NOT TRUE);");
             ps.setInt(1, elab.getId());
             ps.setInt(2, group.getId());
             
@@ -267,9 +267,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             throw new ElabException(e);
         }
         finally {
-            if (conn != null) {
-                DatabaseConnectionManager.close(conn, ps);
-            }
+            DatabaseConnectionManager.close(conn, ps);
         }
     }
 
@@ -277,7 +275,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             throws ElabException {
         Connection conn = null;
         PreparedStatement ps = null;
-        final String WHERE_UNREAD = "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL) or (s.read = false) ";
+        final String WHERE_UNREAD = "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL AND s.read IS NOT TRUE) ";
         final String WHERE_ALL  = "WHERE (pb.message_id IS NOT NULL AND s.message_id IS NULL) OR (pb.message_id IS NULL AND s.message_id IS NOT NULL) ";
         
         String sql = 
@@ -315,9 +313,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             throw new ElabException(e);
         }
         finally {
-            if (conn != null) {
-                DatabaseConnectionManager.close(conn, ps);
-            }
+            DatabaseConnectionManager.close(conn, ps);
         }
     }
 
@@ -341,7 +337,24 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
 	@Override
 	public void markAsRead(Notification notification) {
 		// TODO Auto-generated method stub
+		//notification.setRead(true);
 		
+		Connection conn = null;
+        PreparedStatement ps = null;
+        boolean read = notification.isRead();
+        try {
+        	conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+        	ps = conn.prepareStatement("UPDATE notifications.state SET read = TRUE WHERE message_id = ?;");
+        	ps.setInt(1, notification.getId());
+        	ps.executeUpdate();
+        	notification.setRead(true);
+        }
+        catch (SQLException e) {
+        	notification.setRead(read);
+        }
+        finally {
+        	DatabaseConnectionManager.close(conn, ps);
+        }
 	}
 
 	@Override

@@ -3,6 +3,9 @@
 <%@ include file="../login/login-required.jsp" %>
 <%
 	session.setAttribute("cms.datasets", null);
+	gov.fnal.elab.cms.dataset.Dataset dataset = 
+	    gov.fnal.elab.cms.dataset.Datasets.getDataset(elab, session, request.getParameter("dataset"));
+	session.setAttribute("recentCuts", gov.fnal.elab.cms.dataset.RecentCuts.getInstance(user, dataset)); 
 %>
 <c:if test="${!empty param.back}">
 	<jsp:forward page="../analysis-${param.analysis}/index.jsp">
@@ -50,7 +53,7 @@
 		    <script language="javascript" type="text/javascript" src="../include/jquery.flot.crosshair.js"></script>
 			<div id="content">
 				
-<a class="help-icon" href="#" onclick="openHelp(event, 'help');">Help <img src="../graphics/help.png" /></a>
+<a class="help-icon" href="#" onclick="openPopup(event, 'help');">Help <img src="../graphics/help.png" /></a>
 <h1>Plot - ${param.analysisName}</h1>
 <script>
 	initlog();
@@ -67,6 +70,7 @@
 	<e:trinput type="hidden" name="expr"/>
 	<e:trinput type="hidden" name="analysis"/>
 	<e:trinput type="hidden" name="analysisName"/>
+	<e:trinput type="hidden" name="cutsInput" id="cuts-input"/>
 	<table border="0" width="100%" id="step-buttons">
 		<tr>
 			<td>
@@ -80,6 +84,47 @@
 		</tr>
 	</table>
 </form>
+
+<div id="cuts">
+	<table>
+		<tr>
+			<td class="group-title" width="32px">Cuts</td>
+			<td>
+				<table id="cuts-table">
+					<tr>
+						<td></td>
+						<td width="42px">
+							<div style="width: 24px;">
+								<a class="tbutton addcuts" id="addcut" href="#"><img src="../graphics/plus.png" /></a>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<ul id="cut-list" class="jeegoocontext cm_blue">
+	<c:forEach var="cut" items="${recentCuts.cuts}">
+		<li value="${cut.min}:${cut.max}:${cut.leaf}:${cut.units}:${cut.label}">
+			<span class="label">${cut.min} ${cut.units} &lt; ${cut.label} &lt; ${cut.max} ${cut.units}</span>
+		</li>
+	</c:forEach>
+	<%-- <li class="separator"></li>
+	<li>
+		<span class="label">New Cut</span>
+		<%@ include file="../data/plot-variables-menu.jspf" %>
+	</li>
+	--%>
+</ul>
+
+<script>
+	popupOptions.onSelect = addCut;
+	$("#addcut").jeegoocontext("cut-list", popupOptions);
+</script>
 
 <div class="wait-on-data" style="width: 100%; height: 64px;">
 </div>
@@ -97,7 +142,8 @@
 							Selection
 						</td>
 						<td class="toolbox-group">
-							<input type="button" class="apply-selection" value="Apply" disabled="true" />
+							<input type="button" class="apply-selection" value="Zoom" disabled="true" />
+							<input type="button" class="apply-cut" value="Cut" disabled="true" />
 							<input type="button" class="reset-selection" value="Reset" />
 						</td>
 						<td class="group-title">
@@ -131,6 +177,7 @@
 									<e:trinput type="hidden" name="dataset"/>
 									<e:trinput type="hidden" name="runs"/>
 									<e:trinput type="hidden" name="expr"/>
+									<e:trinput type="hidden" name="cuts"/>
 									<e:trinput type="hidden" name="plots" class="plots-input"/>
 									<e:trinput type="hidden" name="analysis"/>
 									<input type="text" name="name" emptytext="plot name" class="plotname" size="10" />
@@ -179,6 +226,7 @@
 <script>
 	updatingStarted = function() {
 		log("Updating started");
+		$(".wait-on-data").css("display", "block");
 		spinnerOn(".wait-on-data");
 	}
 	
@@ -193,8 +241,9 @@
 		spinnerOff(".wait-on-data");
 		$(".wait-on-data").html(content);
 	}
-	
-	getData("${param.dataset}", "${param.runs}", "${param.plots}", "${param.combine}");	
+
+	setDataParams("${param.dataset}", "${param.runs}", "${param.plots}", "${param.combine}", "${param.cuts}");
+	updateData();	
 </script>
 
 <div id="help" class="help">
@@ -219,7 +268,7 @@
 						Shodor's Interactivate <e:popup href="http://www.shodor.org/interactivate/activities/histogram/" target="tryit" width="800" height="800">Histogram</e:popup>
 					</li>
 					<li>
-						CMS e-Lab <a href="../library/FAQ.jsp">FAQ</a>
+						<e:popup href="/library/kiwi.php/CMS_FAQ" target="faq" width="500" height="300">FAQs</e:popup>
 					</li>
 				</ul>
 			</td>
