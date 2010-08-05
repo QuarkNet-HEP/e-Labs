@@ -1,7 +1,7 @@
 <img src="../graphics/ligo_workflow.gif" width="717" height="233" border="0" alt="" usemap="#ligo_workflow_Map">
 <map name="ligo_workflow_Map">
-<area shape="rect" alt="" coords="455,7,530,62" href="#" title="Goal: Create data analysis plots.">
-<area shape="rect" alt="" coords="328,5,396,61" href="#" title="Goal: Plan your investigation.">
+<area shape="rect" alt="" coords="455,7,530,62" nohref title="Goal: Create data analysis plots.">
+<area shape="rect" alt="" coords="328,5,396,61" nohref title="Goal: Plan your investigation.">
 <area shape="rect" alt="" coords="658,7,709,57" href="../survey/show-students.jsp?type=post" title="Take the post-test. See what you learned.">
 <area shape="rect" alt="" coords="4,133,81,170" href="#" onclick="javascript:glossary('Milestone',250);return false;" title="Learn about milestones.">
 <area shape="rect" alt="" coords="5,95,82,132"  href="#" onclick="javascript:glossary('Milestone_Seminar',300);return false;" title="Learn about milestone seminars.">
@@ -22,9 +22,9 @@
 <area shape="rect" alt="" coords="361,130,437,168" href="javascript:reference('data patterns',400)" title="Look for similar patterns in data from LIGO seismometers.">
 <area shape="rect" alt="" coords="376,180,433,222" href="javascript:reference('wave frequencies',550)" title="Estimate wave frequencies.">
 <area shape="rect" alt="" coords="264,74,326,113" href="javascript:reference('ligo science goals',420)" title="What major questions are LIGO scientists researching?">
-<area shape="rect" alt="" coords="587,3,651,58" href="#" title="Goal: Make a poster and discuss results.">
+<area shape="rect" alt="" coords="587,3,651,58" nohref title="Goal: Make a poster and discuss results.">
 <area shape="rect" alt="" coords="4,12,60,55" href="../survey/show-students.jsp?type=pre" title="Take the pre-test. See what you already know.">
 <area shape="poly" alt="" coords="71,40, 98,36, 107,8, 129,7, 133,36, 148,39, 151,52, 135,57, 72,57, 70,42, 71,40" href="../home/cool-science.jsp" title="Watch video about the LIGO science.">
-<area shape="poly" alt="" coords="135,75, 258,78, 249,25, 163,21, 135,75" href="#" title="Goal: Review necessary skills for a study.">
+<area shape="poly" alt="" coords="135,75, 258,78, 249,25, 163,21, 135,75" nohref title="Goal: Review necessary skills for a study.">
 </map>
 
