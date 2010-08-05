@@ -27,7 +27,7 @@
 					<%@ include file="../include/nav-rollover.jspf" %>
 				</div>
 			</div>
-			<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
+			<script type="text/javascript" src="../include/jquery/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
 		    <script type="text/javascript" src="../analysis/plot-params.js"></script>
 		    <script type="text/javascript" src="../analysis-calibration/plot-params.js"></script>
 			<div id="content">

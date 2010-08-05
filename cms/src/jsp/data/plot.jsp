@@ -33,7 +33,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/analysis.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<link href="../include/jeegoocontext/skins/cm_blue/style.css" rel="Stylesheet" type="text/css" />
+		<link href="../include/jquery/jeegoocontext/skins/cm_blue/style.css" rel="Stylesheet" type="text/css" />
 	</head>
 	
 	<body id="plot-page" class="data">
@@ -45,12 +45,12 @@
 					<%@ include file="../include/nav-rollover.jspf" %>
 				</div>
 			</div>
-			<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>
+			<script type="text/javascript" src="../include/jquery/jeegoocontext/jquery.jeegoocontext.min.js"></script>
 			<script language="javascript" type="text/javascript" src="../data/plot.js"></script>	
 			<script language="javascript" type="text/javascript" src="../include/excanvas.min.js"></script>
-		    <script language="javascript" type="text/javascript" src="../include/jquery.flot.js"></script>
-		    <script language="javascript" type="text/javascript" src="../include/jquery.flot.selection.js"></script>
-		    <script language="javascript" type="text/javascript" src="../include/jquery.flot.crosshair.js"></script>
+		    <script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.min.js"></script>
+		    <script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.selection.min.js"></script>
+		    <script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.crosshair.min.js"></script>
 			<div id="content">
 				
 <a class="help-icon" href="#" onclick="openPopup(event, 'help');">Help <img src="../graphics/help.png" /></a>
