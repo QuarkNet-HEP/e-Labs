@@ -631,7 +631,7 @@ String submit =  request.getParameter("submit");
                                             return;
                                         }
                                         if(!isDirectory){
-                                            mkdir = newDir.mkdir();
+                                            mkdir = newDir.mkdirs();
                                             if(mkdir == false){
                                                 warn(out, "Directory: " + newDir + " couldn't be created! (when trying to add the directory: " + newDirsArray[i] + ")");
                                                 return;
@@ -661,7 +661,7 @@ String submit =  request.getParameter("submit");
                                             return;
                                         }
                                         if(!isDirectory){
-                                            mkdir = newDir.mkdir();
+                                            mkdir = newDir.mkdirs();
                                             if(mkdir == false){
                                                 warn(out, "Directory: " + newDir + " couldn't be created! (when trying to add the directory: " + newSubdirsArray[i] + ")");
                                                 return;
@@ -713,7 +713,7 @@ String submit =  request.getParameter("submit");
                                         i=0;
                                         for(int j=0; j<detectorIDs.length; j++){
                                             SQLstatement = "INSERT INTO research_group_detectorid (research_group_id, detectorid) " +
-                                                "VALUES ('" + detectorIDs[j] + "', '" + researchGroupId + "');";
+                                                "VALUES ('" + researchGroupId + "', '" + detectorIDs[j] + "');";
                                             i = s.executeUpdate(SQLstatement);
                                             if(i != 1){
                                                 warn(out, "Weren't able to add your info to the database! " + i + " rows updated.\n<br>Please alert the database admin with this information:\n<br>SQLstatement: " + SQLstatement);
