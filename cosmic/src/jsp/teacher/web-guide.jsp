@@ -101,11 +101,10 @@
 	 and into general notes. They can respond to teacher prompts to reflect on their progress. 
 	Teachers are able to access this work, 
 	track and assess student progress and provide feedback. 
-	<P>Teachers also have a logbook in which they can make notes on 
-	teaching strategies, resources, etc. for the next year.
-	Access is through a link in upper right-hand corner on every page. 
-	<img src="../graphics/logbook-blk-bg.png"/><br/><br/>
-	From their logbook, teachers can access entries:
+	<table style="margin-left: 20px"><tr><td>Teachers also have a logbook in which they can make notes on 
+	their students, teaching strategies, resources, etc. for the next year.
+	To access your logbook, click on the little pencil in upper right-hand corner on every page.</td><td><img src="../graphics/logbook-blk-bg.png"/></td></tr></table>
+	<p>From their logbook, teachers can access entries:
 	<ul>
 		<li>
 			By milestone for all their student research groups. 
