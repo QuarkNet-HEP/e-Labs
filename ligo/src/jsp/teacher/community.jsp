@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
-		<title> LIGO e-Lab Teacher Community</title>
+		<title>Share Ideas: LIGO e-Lab Teacher Community</title>
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
@@ -23,8 +23,7 @@
 			</div>
 
 			<div id="content">
-<h1>Community: Learn how to do studies using LIGO data in your classroom.</h1>   
-
+<h1>Share Ideas: Share teaching ideas with your colleagues.</h1>   
 <!-- transcluded from http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php/LIGO_e-Lab_Teaching_Community" -->
 <e:transclude
  url="http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php/LIGO_e-Lab_Teaching_Community"
