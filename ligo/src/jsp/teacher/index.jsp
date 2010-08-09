@@ -89,14 +89,14 @@
 		</td>
 		
 		<td><div id="expandHeading">
-				<P>Click on each topic or its arrow to expand the it. Click again to collapse it. Click on <b>Show All</b> or <b>Hide All</b> to expand or collapse all the content on the page.
-				<div id="all-v" style="text-align:center; visibility:visible; display:"><a href="#" onclick="HideShow('all-v');HideShow('all-h');showAll(1,8);return false;">Show All</a></div>
-				<div id="all-h" style="text-align:center; visibility:hidden; display: none"><a href="#" onclick="HideShow('all-v');HideShow('all-h');hideAll(1,8);return false;">Hide All</a></div>
+				<P>Click on each topic or its arrow to expand it. Click again to collapse it. Click on <b>Expand All Topics</b> or <b>Collapse All Topics</b> to expand or collapse all the content on the page.
+				<div id="all-v" style="text-align:center; visibility:visible; display:"><a href="#" onclick="HideShow('all-v');HideShow('all-h');showAll(1,8);return false;">Expand All Topics</a></div>
+				<div id="all-h" style="text-align:center; visibility:hidden; display: none"><a href="#" onclick="HideShow('all-v');HideShow('all-h');hideAll(1,8);return false;">Collapse All Topics</a></div>
 				
 				<div id="vsId1-v" style="visibility:visible; display:">
-				<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Abstract</H2></a>
+				<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
 								</div><div id="vsId1-h" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Abstract</H2></a>
+				<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
 						<p>
 						Students can collaboarate to analyze seismic data from  LIGO, 
 					the Laser Interferometer Gravitational-wave Observatory. From start to finish 
@@ -122,9 +122,9 @@
 					</div>
 					
 				<div id="vsId2-v" style="visibility:visible; display:">
-				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Introduction to Research</h2></a>
+				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Introduction to LIGO</h2></a>
 									</div><div id="vsId2-h" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Introduction to Research</h2></a>
+				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Introduction to LIGO</h2></a>
 						<p>
 				<p>
 					LIGO's huge laser interferometers in Washington State and in 
@@ -151,9 +151,9 @@
 					</div>
 				
 				<div id="vsId3-v" style="visibility:visible; display:">
-				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Research Question</h2></a>
+				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Good Research Questions</h2></a>
 									</div><div id="vsId3-h" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Research Question</h2></a>
+				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Good Research Questions</h2></a>
 				<p>
 					Developing a good research question is one of the most challenging 
 					parts of the e-Lab for many students. A good research question provides 
@@ -170,9 +170,9 @@
 
 					</div>
 						<div id="vsId4-v" style="visibility:visible; display:">
-						<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Prior Knowledge and Skills</h2></a>
+						<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
 								</div><div id="vsId4-h" style="visibility:hidden; display: none">
-						<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Prior Knowledge and Skills</h2></a>
+						<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
 						<p>
 					Before doing the LIGO e-Lab, students should be comfortable with these 
 					skills:</p>
