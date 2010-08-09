@@ -23,7 +23,7 @@
 			</div>
 
 			<div id="content">
-<h1>Share Ideas: Share teaching ideas with your colleagues.</h1>   
+<h1>Share teaching ideas with your colleagues.</h1>   
 <!-- transcluded from http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php/LIGO_e-Lab_Teaching_Community" -->
 <e:transclude
  url="http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php/LIGO_e-Lab_Teaching_Community"
