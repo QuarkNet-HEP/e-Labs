@@ -12,6 +12,8 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
+		<script type="text/javascript" src="../include/elab.js"></script>
+
 		<style type="text/css">
 			span.dataName {
 				font-size: x-small;
@@ -48,7 +50,7 @@
 			    <script src="general.js" type="text/javascript"></script> <%-- General common stuff --%>
 			    <script src="advanced.js" type="text/javascript"></script> <%-- Advanced Mode --%>
 				
-				<h1>Super Bluestone <span style="color: red">Public Beta 1</span></h1>
+				<h1>Bluestone <span style="color: red">2.0 Public Beta </span></h1>
 				<br /><br />
 				Time<sub>start</sub>: <input readonly type="text" name="xmin" id="xmin" size="15" class="datepicker"></input>
 				Time<sub>end</sub>: <input readonly type="text" name="xmax" id="xmax" size="15" class="datepicker"></input>
@@ -103,18 +105,19 @@
 				
 				<%-- Advanced Mode --%>
 				
-				<h2>Data Selection</h2>
+				<h2>Data Selection<e:popup href="/glossary/kiwi.php/Data_Channel" target="help" width="600" height="600" toolbar="true"><sup>?</sup></e:popup></h2>
 				
 				<div id="channel-list-advanced">
 					<table id="channelTable">
 						<thead>
 							<tr>
 								<th>Add/Remove</th>
-								<th>Site</th>
-								<th>Subsystem</th>
-								<th>Station</th>
-								<th>Sensor</th>
-								<th>Sampling</th>
+								<th>Site<e:popup href="/glossary/kiwi.php/Data_Channel_Source" target="help" width="400" height="500" toolbar="true"><sup>?</sup></e:popup>
+</th>
+								<th>Subsystem<e:popup href="/glossary/kiwi.php/Data_Channel_Subsystem" target="help" width="500" height="400" toolbar="true"><sup>?</sup></e:popup></th>
+								<th>Station<e:popup href="/glossary/kiwi.php/Data_Channel_Station" target="help" width="500" height="400" toolbar="true"><sup>?</sup></e:popup></th>
+								<th>Sensor<e:popup href="/glossary/kiwi.php/Data_Channel_Sensor" target="help" width="500" height="400" toolbar="true"><sup>?</sup></e:popup></th>
+								<th>Sampling<e:popup href="/glossary/kiwi.php/Data_Channel_Sampling" target="help" width="500" height="400" toolbar="true"><sup>?</sup></e:popup></th>
 								<th>Data Filename</th>
 							</tr>
 						</thead>
