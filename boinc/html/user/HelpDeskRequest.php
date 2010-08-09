@@ -171,10 +171,10 @@ $mailhide_private_key = trim(file_get_contents($mailhide_priv_key_file));
 if( empty($public_key) || empty($private_key) ){
     error_page("Server configuration error. Empty key.
         Please report this to the project administrators.");
- }
-
-
-//
+}
+ 
+// Used by the reCAPTCHA PHP API to enforce secure requests  
+$use_ssl = true; 
 /*******************************
  * Local functions:
  *   (some of these will move to ../include/util.php when finished)
@@ -1224,7 +1224,7 @@ if( !$logged_in_user ) {
                 that you are a human, not an automated web-bot."
               .error_text('noverify')
               .error_text('recaptcha'),
-              recaptcha_get_html($public_key));
+              recaptcha_get_html($public_key, NULL, $use_ssl));
  }
 
 form_item("Send the report:", "",
