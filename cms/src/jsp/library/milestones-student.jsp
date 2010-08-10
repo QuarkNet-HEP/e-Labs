@@ -7,6 +7,7 @@ Click on <img border="0" src="../graphics/ref.gif"> for
 		references to help you meet each <a href="javascript:glossary('milestone_text')">milestone</a>.</p></td>
 	</tr>
 </table>
+<h1 class="bottomheader">Watch the <a href="../home/cool-science.jsp">Cool Science</a> video about CMS science.</h1>
 <table border="0" id="main">
 	<tr>
 		<td>
