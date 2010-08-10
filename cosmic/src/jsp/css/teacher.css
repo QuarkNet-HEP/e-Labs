@@ -43,3 +43,6 @@
 #content ul {
 	margin-left: 10px;
 }
+#expandHeading a {
+	text-decoration: none;
+	}
