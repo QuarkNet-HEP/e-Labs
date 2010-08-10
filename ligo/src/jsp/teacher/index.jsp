@@ -293,7 +293,7 @@ Review students' evidence of what they know/understand and reflections on their 
 								</div><div id="vsId7-h" style="visibility:hidden; display: none">
 						<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Help Desk</h2></a>
 						<p>
-					     <table><tr><td>Use the <a href="http://www18.i2u2.org/elab/ligo/teacher/forum/HelpDeskRequest.php?elab=LIGO" class="external text" title="http://www.i2u2.org/elab/ligo/teacher/forum/HelpDeskRequest.php?elab=LIGO" rel="nofollow">Help Desk Form</a> to get technical assistance from I2U2 staff. Click on the lifesaver
+					     <table style="margin-left:20px"><tr><td>Use the <a href="/elab/ligo/teacher/forum/HelpDeskRequest.php?elab=LIGO" class="external text" title="http://www.i2u2.org/elab/ligo/teacher/forum/HelpDeskRequest.php?elab=LIGO" rel="nofollow">Help Desk Form</a> to get technical assistance from I2U2 staff. Click on the lifesaver
 					     icon in the upper right hand corner of the teacher pages when you are logged in.</td><td><img src="../graphics/Lifesaver.png"></td></tr></table>
 						</p>
 					</div>
