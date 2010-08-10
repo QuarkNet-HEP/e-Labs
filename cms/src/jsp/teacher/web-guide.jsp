@@ -31,7 +31,7 @@
 
 <h2>Getting Started</h2>
 	When students go to the website, an appealing graphic appears. If your students are taking the <b>pre- and post-test</b>, each member of a research group must complete the pre-test
-	before they can start using the website. Then when they log in, they see the navigation bar, three quick links and the project map. 
+	before they can start using the website. Then when they log in, they see the navigation bar and the project map. 
 
 <h2>Navigation Bar</h2>
 <p>
@@ -40,23 +40,6 @@
 <p>
 	Most of the pages also have a submenu to provide both an overview of what is 
 	available and  easy access. <img src="../graphics/subnav.jpg"/>
-</p>
-<h2>Quick Links</h2>
-<p>
- <img src="../graphics/quick-links.gif"/> 
-</p>
-
-<ul>
-		<li>
-			<strong>Cool Science</strong> -  Who cares? An introduction to cosmic ray research.
-		</li>
-		<li>
-			<strong>Explore!</strong> -  Get comfortable!  Find out what's in the website with a graphical overview.
-		</li>
-		<li>
-			<strong>About Us</strong> -  Who are we? An introduction to the collaboration.
-		</li>
-	</ul>
 </p>
 <h2><strong>Project Map</strong></h2>
 	
@@ -98,12 +81,11 @@
 	logbook where they can save their notes. They can enter notes for each milestone
 	 and into general notes. They can respond to teacher prompts to reflect on their progress. 
 	Teachers are able to access this work, 
-	track and assess student progress and provide feedback. 
-	<P>Teachers also have a logbook in which they can make notes on 
-	teaching strategies, resources, etc. for the next year.
-	Access is through a link in upper right-hand corner on every page. 
-	<img src="../graphics/logbook-blk-bg.png"/><br/><br/>
-	From their logbook, teachers can access entries:
+	track and assess student progress and provide feedback.</p>
+	<table style="margin-left: 20px"><tr><td>Teachers also have a logbook in which they can make notes on 
+	their students, teaching strategies, resources, etc. for the next year.
+	To access your logbook, click on the little pencil in upper right-hand corner on every page.</td><td><img src="../graphics/logbook-blk-bg.png"/></td></tr></table>
+	<p>From their logbook, teachers can access entries:
 	<ul>
 		<li>
 			By milestone for all their student research groups. 
