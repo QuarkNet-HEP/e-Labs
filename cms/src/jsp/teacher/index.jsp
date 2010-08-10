@@ -112,6 +112,8 @@
 				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Introduction to CMS</h2></a>
 				
 				<p>Situated in the LHC, the CMS detector is studying proton-proton collisions in search of the predicted Higgs boson that may be instrumental in explaining why particles have mass and other crucial physics questions. Pions, muons, electrons, photons, neutrinos and other particles are produced in these collisions and subsequent decays. By exploring the various subdetectors arrayed to detect this myriad of collision products and by attending to the crucial roles played by conservation of mass, momentum and charge in event analysis, students are able to make sense of the same plots which particle physicists use in analyzing collision data. They can in turn produce their own plots and use these to set up and pursue questions they themselves put to the data.</p>
+				
+				<p>Visit the <a href="http://cms.web.cern.ch/cms/index.html" target="cms">CMS</a> website to get more background.
 
 					</div>
 				<div id="vsId3-v" style="visibility:visible; display:">
@@ -236,7 +238,10 @@
 								</div><div id="vsId7-h" style="visibility:hidden; display: none">
 						<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Help Desk</h2></a>
 					<p>
-					Use the <a href="http://www18.i2u2.org/elab/LIGO/teacher/forum/HelpDeskRequest.php?elab=LIGO" class="external text" title="http://www18.i2u2.org/elab/ligo/teacher/forum/HelpDeskRequest.php?elab=LIGO" rel="nofollow">Help Desk Form</a> to get technical assistance from I2U2 staff.
+				<p>
+					      <table style="margin-left:20px"><tr><td>Use the <a href="/elab/cms/teacher/forum/HelpDeskRequest.php?elab=CMS" class="external text" title="/ elab/cms/teacher/forum/HelpDeskRequest.php?elab=CMS" rel="nofollow">Help Desk Form</a> to get technical assistance from I2U2 staff. Click on the lifesaver
+					     icon in the upper right hand corner of the teacher pages when you are logged in.</td><td><img src="../graphics/Lifesaver.png"></td></tr></table>
+				</p> 
 				</p> 
 				
 			
