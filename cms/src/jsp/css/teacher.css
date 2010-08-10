@@ -121,3 +121,7 @@
 	font-size: 13px;
 	font-weight: normal;
 }
+#expandHeading a {
+	text-decoration: none;
+	font-weight: normal;
+	}
