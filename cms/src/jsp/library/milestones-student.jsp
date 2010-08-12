@@ -18,20 +18,20 @@ Click on <img border="0" src="../graphics/ref.gif"> for
 						<h2>Use these milestones if you need background on:</h2>
 						<ul>
 							<li>
-								Simple Measurements.
-								<a href="javascript:reference('simple measurement',420)">
+								Measurement.
+								<a href="javascript:reference('measurement',420)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
-								Simple Calculations.
-								<a href="javascript:reference('simple calculations',550)">
+								Calculations.
+								<a href="javascript:reference('calculations',550)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
-								Simple Graphs (Check out Scatter Plots).
-								<a href="javascript:reference('simple graphs',550)">
+								Graphs (Check out Scatter Plots).
+								<a href="javascript:reference('graphs',550)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>

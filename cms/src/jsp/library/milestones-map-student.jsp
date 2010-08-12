@@ -8,9 +8,9 @@
 
 <area shape="rect" alt="" coords="196,90,249,130" href="javascript:reference('research plan')" title="Background on research proposals">
 <area shape="rect" alt="" coords="196,166,252,198" href="javascript:reference('research question',300)" title="Background on research questions">
-<area shape="poly" alt="" coords="150,188, 168,187, 176,207, 189,210, 191,230, 129,230, 132,216, 144,209, 150,188" href="javascript:reference('simple_graphs',600)"  title="Background on simple plots">
-<area shape="rect" alt="" coords="82,165,134,211" href="javascript:reference('simple calculations')" title="Background on simple calculations">
-<area shape="rect" alt="" coords="83,82,152,122" href="javascript:reference('simple measurement')" title="Background on simple measurements">
+<area shape="poly" alt="" coords="150,188, 168,187, 176,207, 189,210, 191,230, 129,230, 132,216, 144,209, 150,188" href="javascript:reference('graphs',600)"  title="Background on plots/graphs">
+<area shape="rect" alt="" coords="82,165,134,211" href="javascript:reference('calculations')" title="Background on calculations">
+<area shape="rect" alt="" coords="83,82,152,122" href="javascript:reference('measurement')" title="Background on measurement">
 <area shape="rect" alt="" coords="657,80,713,130" href="javascript:reference('discuss results',420)"title="Use the e-Lab to discuss your results. Exchange comments with other researchers - participate in scientific discourse.">
 <area shape="rect" alt="" coords="647,155,712,207" href="javascript:reference('publish results',280)" title="Use the e-Lab to publish your results. Create a poster.">
 <area shape="rect" alt="" coords="578,157,641,211" href="javascript:reference('assemble evidence',250)" title="Assemble evidence for your results. Select the best plots for your poster.">
