@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<img src="../graphics/workflow_map6B.gif" width="796" height="257" border="0" alt="" usemap="#workflow_map6B_Map" />
+<img src="../graphics/workflow_map.gif" width="796" height="257" border="0" alt="" usemap="#workflow_map6B_Map" />
 <map name="workflow_map6B_Map">
 	<area shape="rect" alt="" coords="1,144,83,183" href="javascript:glossary('milestone')" title="Learn about milestones.">
 	<area shape="rect" alt="" coords="2,103,84,142" href="javascript:glossary('milestone seminar')" title="Learn about milestone seminars.">
@@ -24,14 +24,14 @@
 			<area shape="rect" alt="" coords="0,19,58,63" href="../test/show-students.jsp?type=postsurvey" title="Take the pre-test. See what you already know.">
 		</c:when>
 	</c:choose>
-	<area shape="poly" alt="" coords="66,44, 98,40, 108,13, 134,13, 138,40, 156,43, 160,55, 140,60, 68,60, 66,46, 66,44" href="../library/big-picture.jsp" title="Read about the cool science.">
+	<area shape="poly" alt="" coords="66,44, 98,40, 108,13, 134,13, 138,40, 156,43, 160,55, 140,60, 68,60, 66,46, 66,44" href="cool-science.jsp" title="Read about the cool science.">
 	<area shape="rect" alt="" coords="204,105,286,132" href="javascript:reference('research plan')" title="Background on research proposals">
 	<area shape="rect" alt="" coords="200,176,283,215" href="javascript:reference('research question',300)" title="Background on research questions.">
-	<area shape="poly" alt="" coords="156,203, 176,202, 184,225, 200,228, 201,251, 132,251, 136,235, 150,227, 156,203" href="javascript:reference('simple graphs',600)" title="Background on simple plots">
-	<area shape="rect" alt="" coords="82,177,140,227" href="javascript:reference('simple calculations')" title="Background on simple calculations">
-	<area shape="rect" alt="" coords="82,91,152,135" href="javascript:reference('simple measurement')" title="Background on simple measurements">
-	<area shape="rect" alt="" coords="615,0,701,71" href="#" title="Goal: Make a poster and discuss results.">
-	<area shape="rect" alt="" coords="480,6,554,69" href="#" title="Goal: Create data analysis plots.">
-	<area shape="rect" alt="" coords="346,10,413,69" href="#" title="Goal: Write a proposal.">
-	<area shape="poly" alt="" coords="176,32, 263,33, 282,89, 145,85, 176,32" href="#" title="Goal: Review necessary skills for a study.">
+	<area shape="poly" alt="" coords="156,203, 176,202, 184,225, 200,228, 201,251, 132,251, 136,235, 150,227, 156,203" href="javascript:reference('graphs',600)" title="Background on plots">
+	<area shape="rect" alt="" coords="82,177,140,227" href="javascript:reference('calculations')" title="Background on calculations">
+	<area shape="rect" alt="" coords="82,91,152,135" href="javascript:reference('measurement')" title="Background on measurement">
+	<area shape="rect" alt="" coords="615,0,701,71" nohref title="Goal: Make a poster and discuss results.">
+	<area shape="rect" alt="" coords="480,6,554,69" nohref title="Goal: Create data analysis plots.">
+	<area shape="rect" alt="" coords="346,10,413,69" nohref title="Goal: Write a proposal.">
+	<area shape="poly" alt="" coords="176,32, 263,33, 282,89, 145,85, 176,32" nohref title="Goal: Review necessary skills for a study.">
 </map>
