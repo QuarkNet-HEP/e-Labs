@@ -1,6 +1,6 @@
 <html>
 <head>
-     <title>Simple Graph: background</title>
+     <title>Graph/Plot: background</title>
 </head>
 
 <link rel="stylesheet"  href="../include/styletut.css" type="text/css">
