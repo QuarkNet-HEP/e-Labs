@@ -11,3 +11,6 @@
 #second-header-title {
 	display: none;
 }
+#expandHeading a {
+	text-decoration: none;
+	}

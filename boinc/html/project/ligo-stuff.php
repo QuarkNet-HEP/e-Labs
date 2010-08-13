@@ -111,7 +111,7 @@ function ligo_teacher_menu_bar(){
 
     $x .= "
       <TD><a href='/elab/ligo/teacher/community.jsp'>
-            Community</a>
+            Share Ideas</a>
       </td>";
 
     $x .= "

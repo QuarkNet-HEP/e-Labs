@@ -40,6 +40,12 @@
 				<div class="tab" id="tab-online">
 					<span class="tab-title">e-Lab Resources</span>
 					<div class="tab-contents-sublevel">
+					<h2>Animations</h2>
+						<ul class="simple">
+							<li>
+								<e:popup href="../home/cool-science.jsp" target="tryit" width="800" height="600">Cool Science</e:popup> - Introduction to the Physics Questions CMS addresses.
+							</li>
+						</ul>
 						<h2>Screencast Demos</h2>
 						<ul class="simple">
 							<li>

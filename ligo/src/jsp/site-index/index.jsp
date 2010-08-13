@@ -39,7 +39,7 @@
 
 <table border="0" id="main">
 	<tr>
-		<th class="home"><a href="../home">Home</a></th>
+		<th class="home"><a href="../home">Project Map</a></th>
 		<th class="library"><a href="../library"  class="library">Library</a></th>
 		<th class="data"><a href="../data">Data</a></th>
 		<th class="posters"><a href="../posters">Posters</a></th>
@@ -48,6 +48,8 @@
 	<tr>
 		<td class="home">
 			<ul>
+				<li>
+			    Project Map - <a href="../library/milestones.jsp">text version</a></il>
 				<li><a href="../home/cool-science.jsp"><b>Cool Science</b></a></li>
 				<li><a href="../site-index/site-map-anno.jsp"><b>Explore!</b></a></li>
 				<li><a href="../home/about-us.jsp"><b>About Us</b></a></li>
@@ -72,9 +74,6 @@
                    <li><a href="../library/FAQ.jsp"><b>FAQs</b></a></li>
 <li><a href="../library/site-tips.jsp"><b>Site Tips</b></a></li>
 				</li>
-				<li>
-					
-					Milestones - <a href="../library/milestones.jsp">text version</a></il>
 
 						<li><a href="../references/showAll.jsp?t=reference">All References for Project Map</a></li>
 			</ul>

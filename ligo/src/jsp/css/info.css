@@ -1,3 +1,30 @@
+#sub-library {
+	display: block; 
+}
+
+#sub-data {
+	display: none; 
+}
+
+#sub-posters {
+	display: none; 
+}
+
+#sub-siteindex {
+	display: none; 
+}
+
+a#nav-library {
+	font-style: italic;
+}
+
+#sub-library {
+	display: block;
+}
+
+#sub-home {
+	display: none;
+}
 .info #center h2 {
 	display: inline;	
 	padding-bottom: 6px;

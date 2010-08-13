@@ -36,6 +36,7 @@
 				 	 			<td>
 									<div id="right">
 										<%@ include file="../include/newsbox.jsp" %>
+										<div align="center"><a href="about-us.jsp" style="text-decoration: none;"><img src="../graphics/about-us-button.gif" border="0"><br>About Us</a></div>
 										<jsp:include page="../login/login-control.jsp">
 											<jsp:param name="prevPage" value="../home/login-redir.jsp"/>
 										</jsp:include>
@@ -46,15 +47,6 @@
 					</c:when>
 					<c:otherwise> <%-- User is logged in --%>
 						<h1>Home: Join a national collaboration of high school students to study CMS data.</h1>
-						<div id="links">
-							<table align="center">
-								<tr>
-									<td width="150" align="center"><a href="cool-science.jsp"><img src="../graphics/cool-science-button.gif" border="0" /><br />Cool Science</a></td>
-									<td width="150" align="center"><a href="../site-index/site-map-anno.jsp"><img src="../graphics/site-map-button.gif" border="0" /><br />Explore!</a></td>
-									<td width="150" align="center"><a href="about-us.jsp"><img src="../graphics/about-us-button.gif" border="0" /><br />About Us</a></td>
-								</tr>
-							</table>
-						</div>
 						<h3>Project Map: To navigate the CMS e-Lab, follow the path; complete the milestones. Hover over each hot spot to preview; click to open. Along the main line are milestone seminars, opportunities to check how your work is going. Project milestones are on the four branch lines. 	<e:popup href="../video/CMSe-LabNavigation.html" target="tryit" width="655" height="500">Getting Around the e-Lab</e:popup>
 </h3>
 						<div style="text-align: center;">

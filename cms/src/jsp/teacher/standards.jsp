@@ -6,8 +6,8 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Alignment to Standards</title>
-		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
-		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
+		<link rel="stylesheet" type="text/css" href="/elab/cosmic/css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="/elab/cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 	</head>
 
@@ -44,8 +44,8 @@
 			<div id="center">
 			
 				<p>
-					This project demonstrates the following elements from 
-					the <a href="http://books.nap.edu/openbook.php?record_id=4962">National
+					Teachers can use project resources to provide opportunities for students to work toward the following standards
+					from the <a href="http://books.nap.edu/openbook.php?record_id=4962">National
 					Science Education Standards</a>: 
 				</p>
 				<ul>
@@ -85,8 +85,8 @@
 <a name="math"><h2>Alignment with Principles and Standards for School Mathematics</h2></a>
 
 				<p>
-					This project demonstrates some elements of the following from 
-					the <a href="http://standards.nctm.org/">Principles and Standards for School Mathematics</a> from the National Council of Teachers of Mathematics: 
+					Teachers can use project resources to provide opportunities for students to work toward the following standards
+					from the  <a href="http://standards.nctm.org/">Principles and Standards for School Mathematics</a> from the National Council of Teachers of Mathematics: 
 				</p>
 				<ul>
 					<li>
@@ -131,8 +131,8 @@
 <hr>				
 <a name="language"><h2>Alignment with NCTE/IRA Standards for the English Language Arts</h2></a>
 				<p>
-					This project demonstrates some elements of the following from the 
-					<a href="http://www.ncte.org/standards">NCTE/IRA Standards for the English Language Arts</a>:
+					Teachers can use project resources to provide opportunities for students to work toward the following standards
+					from the <a href="http://www.ncte.org/standards">NCTE/IRA Standards for the English Language Arts</a>:
 				</p>
 
 				<ol start="3">
@@ -157,8 +157,8 @@
 				
 <a name="technology"><h2>Alignment with National Educational Technology Standards from ISTE</h2></a>
 				<p>
-					This project demonstrates some elements of the following from the 
-					<a href="http://cnets.iste.org/">National Education Technology Standards</a>:
+					Teachers can use project resources to provide opportunities for students to work toward the following standards
+					from the <a href="http://cnets.iste.org/">National Education Technology Standards</a>:
 				</p>
 <div id="nets">
 				<ol>

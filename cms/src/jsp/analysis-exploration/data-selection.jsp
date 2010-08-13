@@ -9,7 +9,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Data Selection - Detector Calibration Study</title>
+		<title>Data Selection - Detector Exploration Studies</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
@@ -30,7 +30,7 @@
 			<script type="text/javascript" src="../include/jquery/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
 			<div id="content">
 <a class="help-icon" href="#" onclick="openHelp(event, 'help')">Help <img src="../graphics/help.png" /></a>
-<h1>Data Selection - Detector Calibration Study</h1>
+<h1>Data Selection - Detector Exploration Studies</h1>
 <script>
 	initlog();
 	log("<span class='red'>dataset: ${param.dataset}</span>");
@@ -44,7 +44,7 @@
 	<e:trinput type="hidden" name="dataset" id="dataset-input" default="${dataset}"/>
 	<e:trinput type="hidden" name="plots"/>
 	<e:trinput type="hidden" name="combine"/>
-	<e:trinput type="hidden" name="analysisName" default="Detector Exploration Study"/>
+	<e:trinput type="hidden" name="analysisName" default="Detector Exploration Studies"/>
 	<e:trinput type="hidden" name="analysis" default="exploration"/>
 	<table border="0" id="main">
 		<tr>

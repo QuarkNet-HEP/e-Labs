@@ -66,7 +66,9 @@
 						you can generate and interpret your own plots from CMS data and share your insights in a published
 						poster. Using the analysis tools requires some guidance. Just follow the Project Map through some
 						basics of particle physics. Join the exploration of uncharted territory at the energy frontier
-						and party like a particle physicist!</p>
+						and party like a particle physicist! Watch the <a href="../home/cool-science.jsp">Cool Science</a> video if you haven't yet.
+
+</p>
 						<table width="700"><tr><td  class="annotPict"><img src="../graphics/big-left.jpg" border="1"><br><div >Inner tracking barrel</div></td>
 						<td class="annotPict"><img src="../graphics/big-center.jpg" border="1"><br>Splash of particles</td>
 						<td class="annotPict"><img src="../graphics/big-center2.jpg" border="1"><br>Detector before closure 2008</td>
