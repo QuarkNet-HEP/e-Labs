@@ -70,8 +70,13 @@
 
 								<p>
 									The DAQ records this evidence in local computer files; detector owners can upload these files to our server, and you can investigate the data. We provide analysis tools and even connect to the Grid, giving you access to computing resources for number crunching. The raw data, analysis tools and other features are collectively known as the <b>Cosmic Ray e-Lab</b>. Using it requires some guidance for asking good research questions and understanding the entire research process.
+								</p>				
+								<p>
+								Watch the <a href="../home/cool-science.jsp">Cool Science</a> video if you haven't yet.
 								</p>
+
 							</div>
+							
 						</td>
 					</tr>
 				</table>
