@@ -126,9 +126,14 @@
 	while (it.hasNext()) {
 		String key = (String) it.next();
 		StringBuffer sb = new StringBuffer((String) tags.get(key));
-		if ("paper".equals(type) && key.startsWith("WORDS:CAPTION")) { 
+		// This code that adds Figure n is not compatible with the final replacement further down. For now,
+		// I have added code below to get rid of Figure n. for which there are no captions.
+		// 
+		if ("paper".equals(type) && key.startsWith("WORDS:CAPTION")) {
+		    String figureN = key.substring(key.length() - 1);
+		   if (key.length() > 14) { figureN = key.substring( (key.length() - 2),(key.length() ));}
 			template = template.replaceAll("%" + key + "%", Matcher.quoteReplacement("Figure " + 
-				key.substring(key.length() - 1) + ". " + sb.toString())); 
+				figureN + ". " + sb.toString())); 
 		}
 		template = template.replaceAll("%" + key + "%", Matcher.quoteReplacement(sb.toString()));
 	}
@@ -152,12 +157,33 @@
 		template = template.replaceAll("%WORDS:CAPTION3%", ""); 
 		template = template.replaceAll("%WORDS:CAPTION4%", ""); 
 		template = template.replaceAll("%WORDS:CAPTION5%", ""); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE1%", ""); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE2%", ""); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE3%", ""); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE4%", ""); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE5%", ""); 		
-		
+		template = template.replaceAll("%WORDS:CAPTION6%", ""); 
+		template = template.replaceAll("%WORDS:CAPTION7%", ""); 
+		template = template.replaceAll("%WORDS:CAPTION8%", ""); 
+		template = template.replaceAll("%WORDS:CAPTION9%", ""); 
+		template = template.replaceAll("%WORDS:CAPTION10%", ""); 
+		// The code above that adds the Figure n. in front of every Figure messed up the code to replace %WORDS:CAPTIONn%.
+		// As a temporary fix, I am going to get rid of any empty Figure n.  - LQ
+		template = template.replaceAll("Figure 1. <", "<"); 
+		template = template.replaceAll("Figure 2. <", "<"); 
+		template = template.replaceAll("Figure 3. <", "<"); 
+		template = template.replaceAll("Figure 4. <", "<"); 
+		template = template.replaceAll("Figure 5. <", "<"); 
+		template = template.replaceAll("Figure 6. <", "<"); 
+		template = template.replaceAll("Figure 7. <", "<"); 
+		template = template.replaceAll("Figure 8. <", "<"); 
+		template = template.replaceAll("Figure 9. <", "<"); 
+		template = template.replaceAll("Figure 10. <", "<"); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE1%", "../graphics/no-figure.gif"); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE2%", "../graphics/no-figure.gif"); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE3%", "../graphics/no-figure.gif"); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE4%", "../graphics/no-figure.gif"); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE5%", "../graphics/no-figure.gif"); 		
+		template = template.replaceAll(plotURL + "%FIG:FIGURE6%", "../graphics/no-figure.gif"); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE7%", "../graphics/no-figure.gif"); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE8%", "../graphics/no-figure.gif"); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE9%", "../graphics/no-figure.gif"); 
+		template = template.replaceAll(plotURL + "%FIG:FIGURE10%", "../graphics/no-figure.gif"); 
 	}
 
 	out.println(template);
