@@ -47,6 +47,16 @@
 				<p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION4%</font></strong></p>
 				<p><img name="IMGFIG5" src="%FIG:FIGURE5%" alt=""></p>
 				<p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION5%</font></strong></p>
+				<p><img name="IMGFIG6" src="%FIG:FIGURE6%" alt=""></p>
+				<p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION6%</font></strong></p>
+				<p><img name="IMGFIG7" src="%FIG:FIGURE7%" alt=""></p>
+				<p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION7%</font></strong></p>
+				<p><img name="IMGFIG8" src="%FIG:FIGURE8%" alt=""></p>
+				<p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION8%</font></strong></p>
+				<p><img name="IMGFIG9" src="%FIG:FIGURE9%" alt=""></p>
+				<p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION9%</font></strong></p>
+				<p><img name="IMGFIG9" src="%FIG:FIGURE10%" alt=""></p>
+				<p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION10%</font></strong></p>
 			</center>
 			
 			<h2>Discussion and Conclusions</h2>
