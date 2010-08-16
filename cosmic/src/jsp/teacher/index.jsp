@@ -108,10 +108,11 @@
 					reports and, in general, participate in the part of scientific 
 					research that is often left out of classroom experiments. 
 				</p>
-				<p> Two Posters, one that meets expectations - 
-				<a href="#" onclick="javascript:window.open('..\/posters\/display.jsp?name=effect_of_roof_on_muon_detector.data', 'poster', 'width=700,height=900, resizable=1, scrollbars=1');return false;">Effect of Roof on Muon Detector</a> (Shaffer)
-				- and one that excedes expectations - <a  href="#"  onclick="javascript:window.open('..\/posters\/display.jsp?name=callisto_poster.data', 'poster', 'width=700,height=900, resizable=1, scrollbars=1');return false;">Effect of Leonid Meteor Shower on Cosmic Ray Detection</a> (Gosling).</p>
-				
+				<p> Two sample posters are available:</p>
+				<ul>
+				<li><a href="#" onclick="javascript:window.open('..\/posters\/display.jsp?name=effect_of_roof_on_muon_detector.data', 'poster', 'width=700,height=900, resizable=1, scrollbars=1');return false;">Effect of Roof on Muon Detector</a> - meets expectations.</li>
+				<li><a  href="#"  onclick="javascript:window.open('..\/posters\/display.jsp?name=callisto_poster.data', 'poster', 'width=700,height=900, resizable=1, scrollbars=1');return false;">Effect of Leonid Meteor Shower on Cosmic Ray Detection</a> - exceeds expectations</li> 
+				</ul>
 					</div>
 					
 				<div id="vsId2-v" style="visibility:visible; display:">
@@ -135,11 +136,15 @@
 					surface can indirectly measure the energy of the primary by counting 
 					the number of particles in the detector array simultaneously. These 
 					observations can lead to a calculation of the part of the sky that 
-					the primary came from. Many experiments have measured cosmic array showers, including 
-					<a href="http://en.wikipedia.org/wiki/Chicago_Air_Shower_Array">CASA</a> 
-					(Chicago Air Shower Array), project <a href="http://www.nd.edu/~grand/index.html">G.R.A.N.D.</a>  
-					(Gamma Ray Astrophysics at Notre Dame) and the <a href="http://www.auger.org/">Pierre Auger 
-					Project</a> (an array in Argentina). 
+					the primary came from. Many experiments have measured cosmic array showers, including:
+					<ul>
+						<li><a href="http://en.wikipedia.org/wiki/Chicago_Air_Shower_Array">CASA</a> 
+						(Chicago Air Shower Array)</li>
+						<li>project <a href="http://www.nd.edu/~grand/index.html">G.R.A.N.D.</a>  
+						(Gamma Ray Astrophysics at Notre Dame)</li>
+						<li><a href="http://www.auger.org/">Pierre Auger 
+						Project</a> (an array in Argentina)</li>.
+					</ul>
 				</p>
 					</div>
 				
@@ -174,9 +179,9 @@
 					Before doing this project, students should know how to: 
 				</p>
 				<ul>
-					<li>Make simple measurements.</li>
-					<li>Make simple calculations.</li>
-					<li>Interpret simple graphs.</li>
+					<li>Make basic measurements.</li>
+					<li>Make basic calculations.</li>
+					<li>Interpret basic graphs.</li>
 					<li>Write a research question.</li>
 					<li>Make a research plan.</li>
 				</ul>
@@ -263,9 +268,19 @@
 				
 				<a name="Cosmic_Ray_Detector"></a><h4>Detectors Students Use</h4>
 				<p>The data for this e-Lab comes from detectors operated by high school students around the world. If you have a detector, you should become familiar with
-				how to set it up and take data.  Read this <a href="detector.jsp">Introduction to the QuarkNet cosmic ray detector</a>.  Pending funding, if you would like a detector and you are
-				a member of QuarkNet, contact <a href="mailto:rspete@fnal.gov">Bob Peterson</a> or if you are not a member of QuarkNet, contact <a href="mailto:jordant@fnal.gov">Tom Jordan</a> to purchase
-				a detector.  Fermilab gathers the requests, place orders for the parts in early spring and fills the orders throughout the summer.
+				how to set it up and take data.</p>  
+				<UL>
+				<li>Read this <a href="detector.jsp">Introduction to the QuarkNet cosmic ray detector</a>.</li>
+				</ul>
+				
+				<p>To obtain a detector, pending funding, contact:</p>
+				<ul>
+				<li><a href="mailto:rspete@fnal.gov">Bob Peterson</a> if you are
+				a member of QuarkNet.</li>
+				<li><a href="mailto:jordant@fnal.gov">Tom Jordan</a> if you are not a member of QuarkNet and want to purchase
+				a detector.</li>
+				</ul>
+				<p>Fermilab gathers the requests, place orders for the parts in early spring and fills the orders throughout the summer.
 				</p>
 
 				<a name="Experiments_Students_Can_Perform"></a><h4>Experiments Students Can Perform</h4>
