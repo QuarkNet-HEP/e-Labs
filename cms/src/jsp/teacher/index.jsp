@@ -102,7 +102,7 @@
 				students as they develop their investigations and report their results.</p>
 				<p>Students begin their investigation by watching a Cool Science video to understand the context of their project. They can perform one of several calibration studies AND TOM L. They can use the project milestones to guide their research and can record their work and reflect on their progress in their e-Logbook. Students post the results of their studies as online posters. The real scientific collaboration follows. Students can review the results of other studies online comparing data and analyses. Using online tools, they can correspond with other research groups, post comments and questions, prepare summary reports and, in general, participate in the part of scientific research that is often left out of classroom experiments.</p>
 
-				<p>Coming later this year: two posters, one that meets expectations and one that excedes expectations.</p>
+				<p>Coming later this year: two posters, one that meets expectations and one that exceeds expectations.</p>
 
 					</div>
 				
@@ -130,9 +130,9 @@
 						<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
 				<p>Before doing this project, students should know how to:</p> 
 				<ul>
-					<li>Make simple measurements.</li>
-					<li>Make simple calculations.</li>
-					<li>Interpret simple graphs.</li>
+					<li>Make basic measurements.</li>
+					<li>Make basic calculations.</li>
+					<li>Interpret basic graphs.</li>
 					<li>Write a research question.</li>
 					<li>Make a research plan.</li>
 				</ul>
