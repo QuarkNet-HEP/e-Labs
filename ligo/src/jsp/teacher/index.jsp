@@ -117,7 +117,7 @@
 				 correspond with other research groups, post comments and questions, prepare 
 				 summary reports and, in general, participate in the part of scientific research 
 				 that is often left out of classroom experiments.</p><p>
-				 Two posters, one that meets expectations and one that excedes expectations. LINKS
+				 Two posters, one that meets expectations and one that exceeds expectations. LINKS
 						</p>
 					</div>
 					
@@ -177,9 +177,9 @@
 					Before doing the LIGO e-Lab, students should be comfortable with these 
 					skills:</p>
 						<ul>
-							<li>Make simple measurements</li>   
-							<li>Make simple calculations</li>
-							<li>Interpret simple graphs</li>
+							<li>Make basic measurements</li>   
+							<li>Make basic calculations</li>
+							<li>Interpret basic graphs</li>
 							<li>Write a research question</li>
 							<li>Make a research plan</li>
 						</ul>
