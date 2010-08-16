@@ -81,7 +81,7 @@ function hideAll()
 							</td>
 							<td  width="127" valign="top"  align="center">
 								<div id="sitehelp-library">
-									<a href="<e:popup href="/library/kiwi.php/CMS_Glossary" target="glossary" width="500" height="300">Glossary</e:popup><br />
+									<e:popup href="/library/kiwi.php/CMS_Glossary" target="glossary" width="500" height="300">Glossary</e:popup><br />
 									<a href="../library/resources.jsp">Resources</a><br />
 									<a href="../library/big-picture.jsp">Big Picture</a><br />
 						            <e:popup href="/library/kiwi.php/CMS_FAQ" target="faq" width="500" height="300">FAQs</e:popup><br />
