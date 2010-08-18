@@ -11,8 +11,20 @@
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
 		<script type="text/javascript" src="../include/elab-custom.js"></script>
+<style type="text/css">
+.importantNote {
+	width:740px;
+	background-color: #dddddd;
+	color: #003399;
+	font-family:Arial;
+	font-size:0.9em;
+	border:1px solid navy;
+	padding:4pt;
+	margin: auto;
+	text-align:left;
+}
+</style>	
 	</head>
-	
 	<body id="home" class="home">
 		<!-- entire page container -->
 		<div id="container">
@@ -24,6 +36,7 @@
 			</div>
 			
 			<div id="content">
+				<%@ include file="../include/check-javascript.jsp" %>
 				<c:choose>
 					<c:when test="${user == null}"> <%-- User is not logged in --%>
 						<h1>Welcome: Join a national collaboration of high school students to study CMS data.</h1>
@@ -49,6 +62,7 @@
 						<h1>Home: Join a national collaboration of high school students to study CMS data.</h1>
 						<h3>Project Map: To navigate the CMS e-Lab, follow the path; complete the milestones. Hover over each hot spot to preview; click to open. Along the main line are milestone seminars, opportunities to check how your work is going. Project milestones are on the four branch lines. 	<e:popup href="../video/CMSe-LabNavigation.html" target="tryit" width="655" height="500">Getting Around the e-Lab</e:popup>
 </h3>
+
 						<div style="text-align: center;">
 							<%@ include file="../library/milestones-map-student.jsp" %>
 							<br />
