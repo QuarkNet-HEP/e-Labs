@@ -23,6 +23,7 @@
 			</div>
 			
 			<div id="content">
+				<%@ include file="../include/check-javascript.jsp" %>
 				<c:choose>
  					<c:when test="${user == null}"> <%-- User is not logged in --%>
 						<h1>Welcome: Join a national collaboration of high school students to study cosmic rays.</h1>
