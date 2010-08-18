@@ -66,7 +66,7 @@
 					<div class="tab-contents">
 						<h2>VIEW</h2>
 						<p> 
-							<a href="../plots/?submit=true&key=all&uploaded=true">Plots</a>
+							<a href="../plots/?submit=true&key=all&uploaded=true">Plots</a> -
 							Look at your and the plots of other research groups...
 						</p>
 						<h2>DELETE</h2>
