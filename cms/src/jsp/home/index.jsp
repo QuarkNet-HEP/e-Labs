@@ -11,19 +11,6 @@
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
 		<script type="text/javascript" src="../include/elab-custom.js"></script>
-<style type="text/css">
-.importantNote {
-	width:740px;
-	background-color: #dddddd;
-	color: #003399;
-	font-family:Arial;
-	font-size:0.9em;
-	border:1px solid navy;
-	padding:4pt;
-	margin: auto;
-	text-align:left;
-}
-</style>	
 	</head>
 	<body id="home" class="home">
 		<!-- entire page container -->
