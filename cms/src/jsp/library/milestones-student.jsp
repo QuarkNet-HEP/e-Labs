@@ -107,7 +107,7 @@ Click on <img border="0" src="../graphics/ref.gif"> for
 							</li>
 
 							<li>
-								Interpret data.
+								Interpret data as single event displays or plots of multiple events.
 								<a href="javascript:reference('interpret data',650,400)">
 									<img src="../graphics/ref.gif">
 								</a>
