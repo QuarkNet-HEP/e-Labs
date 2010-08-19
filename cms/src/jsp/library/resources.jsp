@@ -63,7 +63,15 @@
  - how to select plots.
 							</li>
 							<li>
-								<e:popup href="../video/demos-calibration.html?video=plot" target="tryit" width="800" height="800">Plotting Tool: Calibration Studies</e:popup> - how to plot.
+								<e:popup href="../video/demos-calibration.html?video=plot" target="tryit" width="800" height="800">Plotting Tool: Calibration Studies and Exploration</e:popup> - how to plot.
+							</li>
+							<li>
+								<e:popup href="../video/demos-exploration.html?video=data-selection" target="tryit" width="800" height="800">Data Selection: Exploration Studies</e:popup>
+ - how to select data.
+							</li>
+							<li>
+								<e:popup href="../video/demos-exploration.html?video=plot-selection" target="tryit" width="800" height="800">Plot Selection: Exploration Studies</e:popup>
+ - how to select plots.
 							</li>
 							<li>
 								<e:popup href="../video/demo-3d.html?video=plot" target="tryit" width="1150" height="800">3-D Event Display</e:popup> - how to use the 3d Event Display tool.
