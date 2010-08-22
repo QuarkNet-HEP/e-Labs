@@ -31,6 +31,7 @@
 				<img id="notifications-icon" title="Notifications" src="../notifications/icon.jsp?elab=${elab.name}" />
 			</a>
 			
+			<%-- Temporarily disable notifications while I work on this
 			<script type="text/javascript" src="../include/notifications.js"></script>
 			<div id="notifications-popup" style="display: none">
 				<h1>Notifications</h1>
@@ -53,6 +54,7 @@
 					</c:when>
 				</c:choose>
 			</div>
+			 --%>
 			<a id="username" href="../login/user-info.jsp"><span class="toolbar-text-link">${username}</span></a>
 			<a href="../login/logout.jsp"><span id="logout" class="toolbar-text-link">Log out</span></a>
 		</div>
