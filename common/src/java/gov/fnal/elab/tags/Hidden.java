@@ -34,7 +34,7 @@ public class Hidden extends TagSupport {
     public int doStartTag() throws JspException {
         try {
             JspWriter out = pageContext.getOut();
-            String id = (String) pageContext.getAttribute(VSwitch.ATTR_ID);
+            String id = "vsId-" + ((Integer) pageContext.getAttribute(VSwitch.ATTR_ID)).toString();
             String cls = (String) pageContext.getAttribute(VSwitch.ATTR_CLS);
             String title = (String) pageContext.getAttribute(VSwitch.ATTR_TITLE);
             String titleclass = (String) pageContext.getAttribute(VSwitch.ATTR_TITLE_CLS);

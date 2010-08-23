@@ -21,7 +21,8 @@ public class VSwitch extends TagSupport {
     public static final String ATTR_TITLE = "elab:vSwitch.title";
     public static final String ATTR_TITLE_CLS = "elab:vSwitch.titleclass";
     
-    private String cls, title, titleclass, id;
+    private String cls, title, titleclass;
+    Integer id; 
     private Boolean revert;
     
     public int doEndTag() throws JspException {
@@ -30,16 +31,14 @@ public class VSwitch extends TagSupport {
 
     public int doStartTag() throws JspException {
         try {
-            if (StringUtils.isBlank(id)) {
-                Integer oldid = parseId(pageContext.getAttribute(ATTR_ID));
-                int aid; 
+            if (id == null) {
+                Integer oldid = (Integer) pageContext.getAttribute(ATTR_ID);
                 if (oldid == null) {
-                    aid = 0;
+                    id = 0;
                 }
                 else {
-                    aid = oldid.intValue() + 1;
+                    id = oldid + 1;
                 }
-                id ="vsId-" + aid;
             }
             pageContext.setAttribute(ATTR_ID, id);
             pageContext.setAttribute(ATTR_CLS, cls);
@@ -88,30 +87,20 @@ public class VSwitch extends TagSupport {
     }
 
     public String getId() {
-        return id;
+        return this.id.toString();
     }
 
     public void setId(String id) {
-        this.id = id;
-    }
-    
-    private Integer parseId(Object id) {
-    	// pattern is vsId-NUM or NUM
-    	if (id.getClass() == Integer.class) {
-    		return (Integer) id; 
-    	}
-    	else if (id.getClass() == String.class) {
-    		String str = (String) id; 
-	    	int pos = str.lastIndexOf("-"); // if not found, returns -1. That's okay. Might only be a number string
-			try {
-				return Integer.parseInt(str.substring(pos + 1));
-			}
-			catch (NumberFormatException nfe) {
-				return null; 
-			}
+    	if (StringUtils.isBlank(id)) {
+    		this.id = null; 
     	}
     	else {
-    		return null; 
+    		try {
+    			this.id = Integer.parseInt(id);
+    		}
+    		catch (NumberFormatException nfe) {
+    			this.id = null; 
+    		}
     	}
     }
 }
