@@ -144,7 +144,7 @@
 	template = template.replaceAll("%PARA:RESULTS%", "Not entered"); 
 	template = template.replaceAll("%PARA:CONCLUSION%", "Not entered");
 	template = template.replaceAll("%PARA:BIBLIOGRAPHY%", "Not entered");
-	template = template.replaceAll("%PARA:INTRODUCTION%", "Not entered");
+	template = template.replaceAll("%PARA:INTRODUCTION%", "(The posters' introduction section was added to I2U2 on 21 August 2010; this poster predates that date.)");
 	template = template.replaceAll("%WORDS:AUTHORS%", "");
 	template = template.replaceAll("%WORDS:TITLE%", ""); 
 	template = template.replaceAll("%WORDS:SUBTITLE%", ""); 
