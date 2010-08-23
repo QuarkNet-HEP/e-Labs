@@ -16,29 +16,38 @@ import org.apache.commons.lang.StringUtils;
 
 public class VSwitch extends TagSupport {
     public static final String ATTR_ID = "elab:vSwitch.id";
+    public static final String ATTR_COUNTER = "elab:vSwitch.counter";
     public static final String ATTR_CLS = "elab:vSwitch.class";
     public static final String ATTR_REVERT = "elab:vSwitch.revert";
     public static final String ATTR_TITLE = "elab:vSwitch.title";
     public static final String ATTR_TITLE_CLS = "elab:vSwitch.titleclass";
     
-    private String cls, title, titleclass;
-    Integer id; 
+    private String cls, title, titleclass, id;
     private Boolean revert;
     
     public int doEndTag() throws JspException {
-        return EVAL_PAGE;
+    	// Flush bean state 
+    	id = null; 
+    	cls = null;
+    	title = null;
+    	titleclass = null; 
+    	revert = null; 
+    	return EVAL_PAGE;
     }
 
     public int doStartTag() throws JspException {
         try {
-            if (id == null) {
-                Integer oldid = (Integer) pageContext.getAttribute(ATTR_ID);
+            if (StringUtils.isBlank(id)) {
+                Integer oldid = (Integer) pageContext.getAttribute(ATTR_COUNTER);
+                int aid; 
                 if (oldid == null) {
-                    id = 0;
+                    aid = 0;
                 }
                 else {
-                    id = oldid + 1;
+                    aid = oldid + 1;
                 }
+                pageContext.setAttribute(ATTR_COUNTER, aid); 
+                id = "vsId-" + aid; 
             }
             pageContext.setAttribute(ATTR_ID, id);
             pageContext.setAttribute(ATTR_CLS, cls);
@@ -87,20 +96,10 @@ public class VSwitch extends TagSupport {
     }
 
     public String getId() {
-        return this.id.toString();
+        return this.id; 
     }
 
     public void setId(String id) {
-    	if (StringUtils.isBlank(id)) {
-    		this.id = null; 
-    	}
-    	else {
-    		try {
-    			this.id = Integer.parseInt(id);
-    		}
-    		catch (NumberFormatException nfe) {
-    			this.id = null; 
-    		}
-    	}
+    	this.id = id; 
     }
 }
