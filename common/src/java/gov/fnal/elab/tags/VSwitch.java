@@ -12,6 +12,8 @@ package gov.fnal.elab.tags;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
+import org.apache.commons.lang.StringUtils;
+
 public class VSwitch extends TagSupport {
     public static final String ATTR_ID = "elab:vSwitch.id";
     public static final String ATTR_CLS = "elab:vSwitch.class";
@@ -28,8 +30,8 @@ public class VSwitch extends TagSupport {
 
     public int doStartTag() throws JspException {
         try {
-            if (id == null) {
-                Integer oldid = (Integer) pageContext.getAttribute(ATTR_ID);
+            if (StringUtils.isBlank(id)) {
+                Integer oldid = parseId(pageContext.getAttribute(ATTR_ID));
                 int aid; 
                 if (oldid == null) {
                     aid = 0;
@@ -91,5 +93,25 @@ public class VSwitch extends TagSupport {
 
     public void setId(String id) {
         this.id = id;
+    }
+    
+    private Integer parseId(Object id) {
+    	// pattern is vsId-NUM or NUM
+    	if (id.getClass() == Integer.class) {
+    		return (Integer) id; 
+    	}
+    	else if (id.getClass() == String.class) {
+    		String str = (String) id; 
+	    	int pos = str.lastIndexOf("-"); // if not found, returns -1. That's okay. Might only be a number string
+			try {
+				return Integer.parseInt(str.substring(pos + 1));
+			}
+			catch (NumberFormatException nfe) {
+				return null; 
+			}
+    	}
+    	else {
+    		return null; 
+    	}
     }
 }
