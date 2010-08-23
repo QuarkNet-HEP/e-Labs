@@ -51,6 +51,7 @@
 			</div>
 			
 			<div id="content">
+				<%@ include file="../include/check-javascript.jsp" %>
 
 <!-- There is no way to do this without tables?  I DOUBT IT -EAM -->
 

@@ -32,7 +32,7 @@
 <p>
 	When students go to the website, an animation flashes sample research 
 	questions. If your students are taking the <b>pre- and post-test</b>, each member of a research group must complete the pre-test
-	before they can start using the website. Then when they log in, they see the navigation bar, three quick links and the project map. 
+	before they can start using the website. Then when they log in, they see the navigation bar and the project map. 
 
 <h2>Navigation Bar</h2>
 <p>
@@ -41,23 +41,6 @@
 
 <p>Most menu items have submenus. When you roll over the navigation bar, all the submenus show up. Here is how it looks when you roll over "Library" on the Project Map page.</p>
 <p>	<img src="../graphics/menu-rollover.gif"/>
-</p>
-<h2>Quick Links</h2>
-<p>
- <img src="../graphics/quick-links.gif"/> 
-</p>
-
-<ul>
-		<li>
-			<strong>Cool Science</strong> -  Who cares? An introduction to cosmic ray research.
-		</li>
-		<li>
-			<strong>Explore!</strong> -  Get comfortable!  Find out what's in the website with a graphical overview.
-		</li>
-		<li>
-			<strong>About Us</strong> -  Who are we? An introduction to the collaboration.
-		</li>
-	</ul>
 </p>
 <h2><strong>Project Map</strong></h2>
 	

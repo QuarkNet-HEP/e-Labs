@@ -66,8 +66,8 @@
 			<tr>
 				<td id="subnav">
 					<ul id="sub-home">
+						<li><a href="../library/milestones.jsp">Text Version</a></li>
 						<li><a href="../home/cool-science.jsp">Cool Science</a></li>
-						<li><a href="../site-index/site-map-anno.jsp">Explore!</a></li>
 						<li><a href="../home/about-us.jsp">About Us</a></li>
 					</ul>
 					<ul id="sub-data">

@@ -7,7 +7,7 @@ Click on <img border="0" src="../graphics/ref.gif"> for
 		references to help you meet each <a href="javascript:glossary('milestone_text')">milestone</a>.</p></td>
 	</tr>
 </table>
-<h1 class="bottomheader">Watch the <a href="../home/cool-science.jsp">Cool Science</a> video about CMS science.</h1>
+<h2>Watch the <a href="../home/cool-science.jsp">Cool Science</a> video about CMS science.</h2>
 <table border="0" id="main">
 	<tr>
 		<td>
@@ -107,8 +107,8 @@ Click on <img border="0" src="../graphics/ref.gif"> for
 							</li>
 
 							<li>
-								Interpret basic event displays.
-								<a href="javascript:reference('event displays',400)">
+								Interpret data as single event displays or plots of multiple events.
+								<a href="javascript:reference('interpret data',650,400)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>

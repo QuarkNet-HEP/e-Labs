@@ -21,7 +21,10 @@
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 	<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/elab.js"></script>
 
-	<script type="text/javascript">
+<script type="text/javascript">
+	window.onload=function(){
+	 hideAll(1,9);
+}
 	function showAll(start, finish)
 	{
 	for (var i = start; i < finish; i++) {
@@ -63,6 +66,7 @@
 			<div id="content">
 
 <h1>Teacher Home - Bookmark It!</h1>
+				<%@ include file="../include/check-javascript.jsp" %>
 
 <table border="0" id="main">
 	<tr>
@@ -72,13 +76,16 @@
 		</td>
 		
 		<td><div id="expandHeading">
-				<P>Click on each topic or its arrow to expand it. Click again to collapse it. Click on <b>Expand All Topics</b> or <b>Collapse All Topics</b> to expand or collapse all the content on the page.
-				<div id="all-v" style="text-align:center; visibility:visible; display:"><a href="#" onclick="HideShow('all-v');HideShow('all-h');showAll(1,8);return false;">Expand All Topics</a></div>
-				<div id="all-h" style="text-align:center; visibility:hidden; display: none"><a href="#" onclick="HideShow('all-v');HideShow('all-h');hideAll(1,8);return false;">Collapse All Topics</a></div>
+				<P>Click on each topic or its arrow to expand it. Click again to collapse it. Click on <b>Expand All Topics</b> or <b>Collapse All Topics</b> to expand or collapse all the content on the page. These
+				only work when you have Javascript enabled in your web browser.
+				<div id="all-v" style="text-align:center; visibility:visible; display:"><a href="#" onclick="HideShow('all-v');HideShow('all-h');showAll(1,9);return false;">Expand All Topics</a></div>
+				<div id="all-h" style="text-align:center; visibility:hidden; display: none"><a href="#" onclick="HideShow('all-v');HideShow('all-h');hideAll(1,9);return false;">Collapse All Topics</a></div>
 				
-				<div id="vsId1-v" style="visibility:visible; display:">
+
+
+				<div id="vsId1-v" style="visibility:hidden; display: none">
 				<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
-								</div><div id="vsId1-h" style="visibility:hidden; display: none">
+								</div><div id="vsId1-h" style="visibility:visible; display">
 				<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
 				<p>
 					Working in a research group, students experience the environment of scientific collaborations 
@@ -108,15 +115,16 @@
 					reports and, in general, participate in the part of scientific 
 					research that is often left out of classroom experiments. 
 				</p>
-				<p> Two Posters, one that meets expectations - 
-				<a href="#" onclick="javascript:window.open('..\/posters\/display.jsp?name=effect_of_roof_on_muon_detector.data', 'poster', 'width=700,height=900, resizable=1, scrollbars=1');return false;">Effect of Roof on Muon Detector</a> (Shaffer)
-				- and one that excedes expectations - <a  href="#"  onclick="javascript:window.open('..\/posters\/display.jsp?name=callisto_poster.data', 'poster', 'width=700,height=900, resizable=1, scrollbars=1');return false;">Effect of Leonid Meteor Shower on Cosmic Ray Detection</a> (Gosling).</p>
-				
+				<p> Two sample posters are available:</p>
+				<ul>
+				<li><a href="#" onclick="javascript:window.open('..\/posters\/display.jsp?name=effect_of_roof_on_muon_detector.data', 'poster', 'width=700,height=900, resizable=1, scrollbars=1');return false;">Effect of Roof on Muon Detector</a> - meets expectations.</li>
+				<li><a  href="#"  onclick="javascript:window.open('..\/posters\/display.jsp?name=callisto_poster.data', 'poster', 'width=700,height=900, resizable=1, scrollbars=1');return false;">Effect of Leonid Meteor Shower on Cosmic Ray Detection</a> - exceeds expectations</li> 
+				</ul>
 					</div>
 					
-				<div id="vsId2-v" style="visibility:visible; display:">
+				<div id="vsId2-v" style="visibility:hidden; display: none">
 				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Introduction to Cosmic Ray Research</h2></a>
-									</div><div id="vsId2-h" style="visibility:hidden; display: none">
+									</div><div id="vsId2-h" style="visibility:visible; display">
 				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Introduction to Cosmic Ray Research</h2></a>
 				<p>
 					Cosmic rays are typically protons, neutrons, gamma rays or other 
@@ -135,17 +143,21 @@
 					surface can indirectly measure the energy of the primary by counting 
 					the number of particles in the detector array simultaneously. These 
 					observations can lead to a calculation of the part of the sky that 
-					the primary came from. Many experiments have measured cosmic array showers, including 
-					<a href="http://en.wikipedia.org/wiki/Chicago_Air_Shower_Array">CASA</a> 
-					(Chicago Air Shower Array), project <a href="http://www.nd.edu/~grand/index.html">G.R.A.N.D.</a>  
-					(Gamma Ray Astrophysics at Notre Dame) and the <a href="http://www.auger.org/">Pierre Auger 
-					Project</a> (an array in Argentina). 
+					the primary came from. Many experiments have measured cosmic array showers, including:
+					<ul>
+						<li><a href="http://en.wikipedia.org/wiki/Chicago_Air_Shower_Array">CASA</a> 
+						(Chicago Air Shower Array)</li>
+						<li>project <a href="http://www.nd.edu/~grand/index.html">G.R.A.N.D.</a>  
+						(Gamma Ray Astrophysics at Notre Dame)</li>
+						<li><a href="http://www.auger.org/">Pierre Auger 
+						Project</a> (an array in Argentina)</li>.
+					</ul>
 				</p>
 					</div>
 				
-				<div id="vsId3-v" style="visibility:visible; display:">
+				<div id="vsId3-v" style="visibility:hidden; display: none">
 				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Good Research Questions</h2></a>
-									</div><div id="vsId3-h" style="visibility:hidden; display: none">
+									</div><div id="vsId3-h" style="visibility:visible; display">
 				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Good Research Questions</h2></a>
 				<p>
 					How much area can a cosmic ray shower cover? Where do cosmic 
@@ -166,17 +178,17 @@
 				</p>
 				
 				</div>
-				<div id="vsId4-v" style="visibility:visible; display:">
+				<div id="vsId4-v" style="visibility:hidden; display: none">
 				<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
-						</div><div id="vsId4-h" style="visibility:hidden; display: none">
+						</div><div id="vsId4-h" style="visibility:visible; display">
 				<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
 				<p>
 					Before doing this project, students should know how to: 
 				</p>
 				<ul>
-					<li>Make simple measurements.</li>
-					<li>Make simple calculations.</li>
-					<li>Interpret simple graphs.</li>
+					<li>Make basic measurements.</li>
+					<li>Make basic calculations.</li>
+					<li>Interpret basic graphs.</li>
 					<li>Write a research question.</li>
 					<li>Make a research plan.</li>
 				</ul>
@@ -186,9 +198,9 @@
 					</p>
 					</div>
 					
-					<div id="vsId5-v" style="visibility:visible; display:">
+					<div id="vsId5-v" style="visibility:hidden; display: none">
 					<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
-							</div><div id="vsId5-h" style="visibility:hidden; display: none">
+							</div><div id="vsId5-h" style="visibility:visible; display">
 					<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
 					<p>
 						Students will know and be able to: 
@@ -252,9 +264,9 @@
 					 
 					</div>
 				
-				<div id="vsId6-v" style="visibility:visible; display:">
+				<div id="vsId6-v" style="visibility:hidden; display: none">
 				<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
-						</div><div id="vsId6-h" style="visibility:hidden; display: none">
+						</div><div id="vsId6-h" style="visibility:visible; display">
 				<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
 				<div style="margin-left: 20px">
 				<p>A good way to begin cosmic ray studies is to invite the class to watch Cool Science together. Play the <a href="">Standalone Movie</a> and enlarge the window.
@@ -263,9 +275,19 @@
 				
 				<a name="Cosmic_Ray_Detector"></a><h4>Detectors Students Use</h4>
 				<p>The data for this e-Lab comes from detectors operated by high school students around the world. If you have a detector, you should become familiar with
-				how to set it up and take data.  Read this <a href="detector.jsp">Introduction to the QuarkNet cosmic ray detector</a>.  Pending funding, if you would like a detector and you are
-				a member of QuarkNet, contact <a href="mailto:rspete@fnal.gov">Bob Peterson</a> or if you are not a member of QuarkNet, contact <a href="mailto:jordant@fnal.gov">Tom Jordan</a> to purchase
-				a detector.  Fermilab gathers the requests, place orders for the parts in early spring and fills the orders throughout the summer.
+				how to set it up and take data.</p>  
+				<UL>
+				<li>Read this <a href="detector.jsp">Introduction to the QuarkNet cosmic ray detector</a>.</li>
+				</ul>
+				
+				<p>To obtain a detector, pending funding, contact:</p>
+				<ul>
+				<li><a href="mailto:rspete@fnal.gov">Bob Peterson</a> if you are
+				a member of QuarkNet.</li>
+				<li><a href="mailto:jordant@fnal.gov">Tom Jordan</a> if you are not a member of QuarkNet and want to purchase
+				a detector.</li>
+				</ul>
+				<p>Fermilab gathers the requests, place orders for the parts in early spring and fills the orders throughout the summer.
 				</p>
 
 				<a name="Experiments_Students_Can_Perform"></a><h4>Experiments Students Can Perform</h4>
@@ -339,9 +361,9 @@
 			
 					<H2>&nbsp;&nbsp;&nbsp;<a href="web-guide.jsp">Navigating Students Through the e-Lab</a></H2>
 
-						<div id="vsId7-v" style="visibility:visible; display:">
+						<div id="vsId7-v" style="visibility:hidden; display: none">
 						<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Help Desk</h2></a>
-								</div><div id="vsId7-h" style="visibility:hidden; display: none">
+								</div><div id="vsId7-h" style="visibility:visible; display">
 						<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Help Desk</h2></a>
 				<p>
 					      <table style="margin-left:20px"><tr><td>Use the <a href="/elab/cosmic/teacher/forum/HelpDeskRequest.php?elab=cosmic" class="external text" title="http://www.i2u2.org/elab/cosmic/teacher/forum/HelpDeskRequest.php?elab=Cosmic" rel="nofollow">Help Desk Form</a> to get technical assistance from I2U2 staff. Click on the lifesaver
@@ -355,6 +377,26 @@
  
 				
 			</div>
+			
+				<div id="vsId8-v" style="visibility:hidden; display: none">
+				<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
+								</div><div id="vsId8-h" style="visibility:visible; display:">
+				<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
+						<p>
+						Relax!  The e-Lab requires Javascript and Plug-ins enabled in your Web browser. Most browsers default to these settings.</p>  
+						<ul>
+						<li>If Javascript is not enabled, you will see a message on the student home page and at the top of this page.</li>
+						<li>If Plug-ins are not enabled, you won't see the Flash movie on the student home page.</li>
+						</ul>
+						<p>
+						 Ask your tech support person if you need help with browser settings. The Resources in the Library and the background material may include YouTube videos and java applets, but these are not critical for using the e-Lab.</p>  
+						</p>
+					</div>
+
+
+			
+			
+			
 		</td>
 		<td>
 			<div id="right">

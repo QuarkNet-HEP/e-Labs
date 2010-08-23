@@ -44,8 +44,13 @@
 							
 							<p><a href="../analysis-calibration">Determination of the Upsilon and J-Psi masses</a>
 							- Confirm that the detector is able to measure the Upsilon and J-Psi masses.</p>
+
+
+						<b>Exploration Studies:</b> Use CMS data to perform a variety of analyses.</p>
 							
-							<p><a href="../analysis-calibration">Energy - Momentum Equivalence.</a>
+						<p><i>Coming Soon:</i></p>
+
+							<p><a href="../analysis-exploration">Energy - Momentum Equivalence.</a>
 							- Use CMS data to confirm energy - momentum equivalence (for low-mass particles in high energy physics) .
 						</p>
 						
@@ -60,13 +65,9 @@
 					<span class="tab-title">Management</span>
 					<div class="tab-contents">
 						<h2>VIEW</h2>
-						<p>
-							<a href="../data/view.jsp">Data Files</a>
-							- See what data has been uploaded into the system.
-						</p>
 						<p> 
-							<a href="../plots/?submit=true&key=all&uploaded=true">Plots</a>
-							- Look at what you and other groups have uploaded! Coming soon - plots saved from OGRE...
+							<a href="../plots/?submit=true&key=all&uploaded=true">Plots</a> -
+							Look at your and the plots of other research groups...
 						</p>
 						<h2>DELETE</h2>
 						<p>

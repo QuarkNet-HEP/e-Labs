@@ -27,6 +27,8 @@
 					<e:popup href="../jsp/showLogbook.jsp" target="log" width="800" height="600"><img title="Logbook" src="../graphics/logbook.png" /></e:popup>
 				</c:otherwise>
 			</c:choose>
+			
+			<%-- Temporarily disable notifications while I work on this
 			<a href="#" onClick="javascript:displayNotifications();">
 				<img id="notifications-icon" title="Notifications" src="../notifications/icon.jsp?elab=${elab.name}" />
 			</a>
@@ -53,6 +55,7 @@
 					</c:when>
 				</c:choose>
 			</div>
+			 --%>
 			<a id="username" href="../login/user-info.jsp"><span class="toolbar-text-link">${username}</span></a>
 			<a href="../login/logout.jsp"><span id="logout" class="toolbar-text-link">Log out</span></a>
 		</div>

@@ -29,7 +29,7 @@
 		    <script type="text/javascript" src="../analysis/plot-params.js"></script>
 			<div id="content">
 			
-<a class="help-icon" href="#" onclick="openHelp(event, 'help');">Help <img src="../graphics/help.png" /></a>
+<a class="help-icon" href="#" onclick="openPopup(event, 'help');">Help <img src="../graphics/help.png" /></a>
 <h1>Plot selection - ${param.analysisName}</h1>
 <script>
 	initlog();
@@ -169,16 +169,20 @@
 			<td class="content">
 				<p>Need help with plot selection? Try these links:</p>
 				<ul>
+<%-- 
 					<li>
 						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">Calibration Studies Background</e:popup>
 					</li>
+--%>
 					<li>
 						<e:popup href="../video/demos-exploration.html?video=plot-selection" target="tryit" width="800" height="800">Screencast Demo</e:popup>
  - how to select plots.
 					</li>
+<%-- 
 					<li>
 						<a href="javascript:reference('cms analysis',450)">Milestone</a> associated with plot selection.
 					</li>
+--%>
 					<li>
 						<e:popup href="/library/kiwi.php/CMS_FAQ" target="faq" width="500" height="300">FAQs</e:popup>
 					</li>
@@ -186,7 +190,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td align="right"><button name="close" onclick="closeHelp('help');">Close</button></td>
+			<td align="right"><button name="close" onclick="closePopup('help');">Close</button></td>
 		</tr>
 	</table>
 </div>

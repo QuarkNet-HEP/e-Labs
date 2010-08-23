@@ -25,7 +25,7 @@
 <area shape="rect" alt="" coords="260,125,326,164" href="javascript:reference('detector_geom',550)"  title="Get to know the structure and function of CMS detector sub-detectors.">
 <area shape="rect" alt="" coords="372,123,451,164" href="javascript:reference('relate_emp',550)"  title="Apply conservation of energy, mass and momentum to CMS events.">
 <area shape="rect" alt="" coords="259,74,326,117" href="javascript:reference('physics_questions',420)"  title="Prepare to discuss the big physics questions driving CMS discovery science.">
-<area shape="rect" alt="" coords="358,180,418,223" href="javascript:reference('event_displays',550)" title="Make sense of event displays in 2- and 3-D.">
+<area shape="rect" alt="" coords="358,180,418,223" href="javascript:reference('interpret_data',550)" title="Interpret data as single event displays or plots of multiple events.">
 
 
 <area shape="rect" alt="" coords="587,3,651,58" nohref title="Goal: Make a poster and discuss results.">

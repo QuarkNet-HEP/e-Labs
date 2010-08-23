@@ -28,15 +28,6 @@
 			<div id="content">
 				
 <h1>Cool Science: Studying cosmic rays &mdash; solving scientific mysteries!</h1>
- 	 <c:if test="${user != null}">
-	   <div id="links"><table align="center"><tr>
-	   <td width="150" align="center"><A href="index.jsp"><img src="../graphics/home-button.gif" border="0"><br>Project Map</a></td>
-<!-- 
-	   <td width="150" align="center"><A href="cool-science.jsp"><img src="../graphics/cool-science-button.gif" border="0"><br>Cool Science</a></td>
- -->
-	   <td width="150" align="center"><a href="../site-index/site-map-anno.jsp"><img src="../graphics/site-map-button.gif" border="0"><br>Explore!</a></td>
-	   <td width="150"align="center"><a href="about-us.jsp"><img src="../graphics/about-us-button.gif" border="0"><br>About Us</a></td></tr></table></div>
-	  </c:if>  
 
 <!-- there is no way to do this without tables unfortunately -->
 			<div id="content">
@@ -92,6 +83,7 @@
 is a muon like the ones you can detect with your detector. Watch more of Drescher's <a href="http://th.physik.uni-frankfurt.de/~drescher/CASSIM/" target="cassim">simulations</a>.</P>
 </td></tr>
 </table>
+<div style="text-align:center;margin-top: 12px"><a href="../library/big-picture.jsp">Read more</a></div>
 			</div>
 			</div>
 			<!-- end content -->	
