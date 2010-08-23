@@ -28,6 +28,8 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.codec.digest.*; 
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -239,6 +241,7 @@ public class PlotTool {
 
     private static String getDigest(Dataset dataset, String runs, String plot)
             throws NoSuchAlgorithmException {
+    	String v1, v2; 
         MessageDigest md = MessageDigest.getInstance("md5");
         byte[] sum = md.digest((VERSION + dataset.getName() + runs + plot).getBytes());
         StringBuilder sb = new StringBuilder();
@@ -249,6 +252,12 @@ public class PlotTool {
             sb.append((char) (hn > 9 ? hn - 10 + 'a' : hn + '0'));
             sb.append((char) (ln > 9 ? ln - 10 + 'a' : ln + '0'));
         }
-        return sb.toString();
+        v1 = sb.toString();
+        
+        v2 = DigestUtils.md5Hex((VERSION + dataset.getName() + runs + plot).getBytes());
+        
+        assert(v1.equalsIgnoreCase(v2));
+        
+        return v2; 
     }
 }
