@@ -27,11 +27,12 @@
 					<e:popup href="../jsp/showLogbook.jsp" target="log" width="800" height="600"><img title="Logbook" src="../graphics/logbook.png" /></e:popup>
 				</c:otherwise>
 			</c:choose>
+			
+			<%-- Temporarily disable notifications while I work on this
 			<a href="#" onClick="javascript:displayNotifications();">
 				<img id="notifications-icon" title="Notifications" src="../notifications/icon.jsp?elab=${elab.name}" />
 			</a>
 			
-			<%-- Temporarily disable notifications while I work on this
 			<script type="text/javascript" src="../include/notifications.js"></script>
 			<div id="notifications-popup" style="display: none">
 				<h1>Notifications</h1>
