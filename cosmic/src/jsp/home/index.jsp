@@ -56,7 +56,7 @@
 						    <br />
 		   					<a href="../library/milestones.jsp">Milestones (text version)</a>
 				 		</div>
-				 		<h4>Your team may use the milestones above, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results.</h4>
+				 		<h4>Your team may use the milestones above, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher apprised of your work and publish your results.</h4>
 					</c:otherwise>
 				</c:choose>
 			</div>
