@@ -49,7 +49,7 @@
 					<c:otherwise> <%-- User is logged in --%>
 						<h1>Home: Join a national collaboration of high school students to study cosmic rays.</h1>
 						<%@ include file="../include/newsbox.jsp" %>
-						<h3>Project Map: To navigate the CMS e-Lab, follow the path; complete the milestones. Hover over each hot spot to preview; click to open. Along the main line are milestone seminars, opportunities to check how your work is going. Project milestones are on the four branch lines.
+						<h3>Project Map: To navigate the Cosmic Ray e-Lab, follow the path; complete the milestones. Hover over each hot spot to preview; click to open. Along the main line are milestone seminars, opportunities to check how your work is going. Project milestones are on the four branch lines.
 						</h3>
 						<div style="text-align: center;">
 						    <jsp:include page="../library/milestones-map-student.jsp" />
