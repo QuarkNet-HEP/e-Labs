@@ -106,7 +106,7 @@
 						<%@ include file="../library/milestones-map-student.jsp" %>
 						<p><a href="/elab/ligo/library/milestones.jsp">Milestones (text version)</a></p>
 					</center>
-					<p>Your team may use the milestones above, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results. </p>
+					<p>Your team may use the milestones above, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher apprised of your work and publish your results. </p>
 					
 				</td>
 			</tr>
