@@ -72,8 +72,7 @@
 						<%--
 						<li><a href="/ligo/tla/tutorial.php">Tutorial</a></li>
 						--%>
-						<li><a href="../bluestone/">Bluestone 2.0 Beta</a></li>
-						<li><a href="/ligo/tla/">Bluestone 1.0</a></li>
+						<li><a href="../bluestone/">Bluestone</a></li>
 						<li><a href="../plots/">Plots</a></li>
 					</ul>
 					<ul id="sub-posters"> 
