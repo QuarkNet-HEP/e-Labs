@@ -66,8 +66,8 @@
 								</a>
 							</li>
 							<li>
-								Look for patterns in LIGO seismic data. 
-								<a href="javascript:reference('data patterns',450)">
+								Examine and become familiar with LIGO seismic data. 
+								<a href="javascript:reference('examine data',450)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>

@@ -19,7 +19,7 @@
 <area shape="rect" alt="" coords="509,177,571,216" href="javascript:reference('ligo test answer',450)" title="Gain confidence that your data support your answer.">
 <area shape="rect" alt="" coords="434,178,506,228" href="javascript:reference('ligo analysis',420)" title="Find LIGO data. You may need to compare LIGO data with other data of interest.">
 <area shape="rect" alt="" coords="376,73,438,117" href="javascript:reference('plan data analysis',450)" title="Write a data analysis plan. What will you study?">
-<area shape="rect" alt="" coords="361,130,437,168" href="javascript:reference('data patterns',400)" title="Look for similar patterns in data from LIGO seismometers.">
+<area shape="rect" alt="" coords="361,130,437,168" href="javascript:reference('examine data',400)" title="Examine and become familiar with LIGO seismic data.">
 <area shape="rect" alt="" coords="376,180,433,222" href="javascript:reference('wave frequencies',550)" title="Estimate wave frequencies.">
 <area shape="rect" alt="" coords="264,74,326,113" href="javascript:reference('ligo science goals',420)" title="What major questions are LIGO scientists researching?">
 <area shape="rect" alt="" coords="587,3,651,58" nohref title="Goal: Make a poster and discuss results.">
