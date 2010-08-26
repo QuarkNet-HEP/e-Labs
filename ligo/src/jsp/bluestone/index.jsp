@@ -51,7 +51,7 @@
 			    <script src="advanced.js" type="text/javascript"></script> <%-- Advanced Mode --%>
 				
 				<h1>Bluestone <span style="color: red">2.0 Public Beta </span></h1>
-				<div style="text-align:right">Need help? Try the <e:popup href="../library/ref-analysis.jsp" target="help" width="450" height="500" toolbar="true">Practice Plots</e:popup>.</div>
+				<div style="text-align:right">Need help? Try the <e:popup href="../library/ref-analysis.jsp" target="help" width="450" height="600" toolbar="true">Practice Plots</e:popup>.</div>
 				<br />
 				Time<sub>start</sub>: <input readonly type="text" name="xmin" id="xmin" size="15" class="datepicker"></input>
 				Time<sub>end</sub>: <input readonly type="text" name="xmax" id="xmax" size="15" class="datepicker"></input>
