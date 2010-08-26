@@ -74,6 +74,7 @@
 						--%>
 						<li><a href="../bluestone/">Bluestone</a></li>
 						<li><a href="../plots/">Plots</a></li>
+						<li><a href="../info/related-data.jsp">Related Data</a></li>
 					</ul>
 					<ul id="sub-posters"> 
 						<li><a href="../posters/new.jsp">New Poster</a></li>

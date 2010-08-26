@@ -101,7 +101,7 @@
 					<h1>Join a national collaboration of students to study LIGO seismic data.</h1>
 					<br />
 					<br />
-					<p>Project Map: To navigate the LIGO e-Lab, follow the path; complete the milestones. Hover over each hot spot to preview; click to open. Along the main line are <a href="#" onclick="javascript:glossary('Milestone_Seminar',300);return false;"><b>milestone seminars</b></a>, opportunities to discuss how your work is going.<br>Project <a href="#" onclick="javascript:glossary('Milestone',300);return false;"><b>milestones</b></a> are on the four branch lines.</p>
+					<p>Project Map: To navigate the LIGO e-Lab, follow the path; complete the milestones. Hover over each colored dot to preview; click to open. Along the main line are <a href="#" onclick="javascript:glossary('Milestone_Seminar',300);return false;"><b>milestone seminars</b></a>, opportunities to discuss how your work is going. Project <a href="#" onclick="javascript:glossary('Milestone',300);return false;"><b>milestones</b></a> are on the four branch lines.</p>
 					<center>
 						<%@ include file="../library/milestones-map-student.jsp" %>
 						<p><a href="/elab/ligo/library/milestones.jsp">Milestones (text version)</a></p>
