@@ -38,10 +38,9 @@
 		<td id="center">
 			<h2>LIGO: A New Way to Explore the Universe.</h2>
 			
-			<p />
 			
 			<div id="movie" align="center">
-<br />Be sure to turn on your sound!<br />
+<p style="font-size: 1.2em;">Be sure to turn on your sound! <img src="../graphics/sound.gif" border="0"></p>
 <script language="javascript">
 	if (AC_FL_RunContent == 0) {
 		alert("This page requires AC_RunActiveContent.js.");
