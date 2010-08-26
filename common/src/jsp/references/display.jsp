@@ -89,6 +89,7 @@
 		</script>
 		<link rel="stylesheet"  href="../include/styletut.css" type="text/css">
 		<script type="text/javascript" src="../include/elab.js"></script>
+		<script type="text/javascript" src="../include/elab-custom.js"></script>
 	</head>
 	<body onLoad="resizeWinTo(400,'txt');" background="../graphics/Quadrille.gif">
 		<center>
