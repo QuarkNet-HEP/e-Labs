@@ -117,8 +117,6 @@ body {
 	color: white;  
 }
 
-
-
 #nav-footer {
 	height: 22px;
 	background-color: black;
@@ -129,9 +127,11 @@ body {
 }
 
 #nav {
-	/*position: absolute;
-	top: 50px;
-	left: 20px; */
+	bottom: 0;
+	display: block;
+	height: 48px;
+	position: absolute;
+	right: 0;
 }
 
 #nav ul, #nav-footer ul {
