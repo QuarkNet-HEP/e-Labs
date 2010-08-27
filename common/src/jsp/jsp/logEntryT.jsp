@@ -136,7 +136,7 @@
 	s.setInt(2, research_group_id);
 	s.setInt(3, ref_rg_id); 
 	s.setString(4, role); 
-	s.executeQuery();
+	rs = s.executeQuery();
 	
 	while (rs.next()) {
 		int curLogId = rs.getInt("cur_id");
