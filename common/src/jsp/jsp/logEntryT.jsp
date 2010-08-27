@@ -140,7 +140,7 @@
 	
 	while (rs.next()) {
 		int curLogId = rs.getInt("cur_id");
-		if (!(curLogId == log_id)) {
+		if ((log_id == null) || !(curLogId == log_id)) { 
 			String curDate = rs.getString("date_entered");
 			String curText = rs.getString("cur_text");
 			if (first) {
