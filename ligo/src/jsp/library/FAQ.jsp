@@ -32,7 +32,8 @@
 		<td id="center">
 
 <e:transclude
-url="http://${elab.properties['elab.host']}/library/body.php/LIGO_FAQ"     start="<!-- start content -->"
+url="http://${elab.properties['elab.host']}/library/body.php/LIGO_FAQ"
+	start="<!-- start content -->"
      end="<div class=\"printfooter\">"
 />
 
