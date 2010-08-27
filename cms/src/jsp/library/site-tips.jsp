@@ -73,10 +73,10 @@
 					<dt>Resources:</dt>
 					<dd>Explore tutorials, online resources, slideshows and contacts.</dd>
 					
-					<dt>Project Milestones:</dt>
+					<dt>Project Map with Milestones:</dt>
 					<dd>
 						<p>
-							Concepts you need to know. Skills you need to use. Tasks you need to accomplish. Use the Project Map on the home page to guide your research. </p><p>Think of this map as a subway map with one main line and four branch lines.  Along the main line are stops, milestone seminars, opportunities to check how the work is going. Off each main stop are branch lines where each stop is a project milestone. The branch lines include: <b>The Basics</b>, <b>Getting Started</b>, <b>Figure It Out</b> and <b>Tell others</b>.</p><p>For review, go through the milestones in <b>The Basics</b>. Work your way through the list of milestones in the Project Map. Click the milestones to see the references associated with each milestone.</p> 
+							Concepts you need to know. Skills you need to use. Tasks you need to accomplish. Use the Project Map on the home page to guide your research. </p><p>Along the main line are milestone seminars, opportunities to check with your teacher how your work is going. Project milestones are on the four branch lines. Be sure you watch the Cool Science video.  The branch lines include: <b>The Basics</b>, <b>Getting Started</b>, <b>Figure It Out</b> and <b>Tell others</b>.</p><p>For review, go through the milestones in <b>The Basics</b>. Work your way through the list of milestones in the Project Map. Click the milestones to see the references associated with each milestone.</p> 
 
 	
                         <p>	<img src="../graphics/project-map.gif"/>
