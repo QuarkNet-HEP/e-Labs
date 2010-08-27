@@ -58,7 +58,7 @@
 		</td>
 		<td class="library">
 			<ul>
-				<li><a href="/library/index.php/LIGO_Glossary"><b>Glossary</b></a></li>
+				<li><a href="/library/kiwi.php/Category:LIGOGLOSSARY" target="glossary"><b>Glossary</b></a></li>
 				<li><a href="../library/resources.jsp"><b>Resources</B></a></li>
 					<ul>
 						<li>
@@ -71,11 +71,8 @@
 						
 						
 					<li><a href="../library/big-picture.jsp"><b>The Big Picture</b></a></li>
-                   <li><a href="../library/FAQ.jsp"><b>FAQs</b></a></li>
-<li><a href="../library/site-tips.jsp"><b>Site Tips</b></a></li>
-				</li>
-
-						<li><a href="../references/showAll.jsp?t=reference">All References for Project Map</a></li>
+					<li><a href="<a href="#" onclick="javascript:window.open('\/library\/kiwi.php\/LIGO_FAQ', 'faq', 'width=500,height=300, resizable=1, scrollbars=1');return false;">FAQs</a></li>				</li>
+			<li><a href="../library/site-tips.jsp"><b>Site Tips</b></a></li>
 			</ul>
 		</td>
 		<td class="data">
