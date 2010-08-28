@@ -5,7 +5,7 @@
 <area shape="rect" alt="" coords="658,7,709,57" href="../survey/show-students.jsp?type=post" title="Take the post-test. See what you learned.">
 <area shape="rect" alt="" coords="4,133,81,170" href="#" onclick="javascript:glossary('Milestone',250);return false;" title="Learn about milestones.">
 <area shape="rect" alt="" coords="5,95,82,132"  href="#" onclick="javascript:glossary('Milestone_Seminar',300);return false;" title="Learn about milestone seminars.">
-<area shape="rect" alt="" coords="270,173,335,218" href="javascript:reference('environmental_monitoring',550)" title="Why do LIGO scientists keep track of ground vibrations?">
+<area shape="rect" alt="" coords="270,173,335,218" href="javascript:reference('seismic data importance',550)" title="Why do LIGO scientists keep track of ground vibrations?">
 <area shape="rect" alt="" coords="255,121,317,170" href="javascript:reference('wave properties',550)" title="Describe these basice wave properties: speed, wavelength, frequency, amplitude and arrival time.">
 <area shape="rect" alt="" coords="196,90,249,130" href="javascript:reference('research plan')" title="Background on research proposals">
 <area shape="rect" alt="" coords="196,166,252,198" href="javascript:reference('research question',300)" title="Background on research questions">
