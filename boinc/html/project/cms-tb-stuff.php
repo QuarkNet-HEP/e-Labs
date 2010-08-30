@@ -111,7 +111,7 @@ function cms_teacher_menu_bar(){
 
     $x .= "
       <TD><a href='/elab/cms-tb/teacher/community.jsp'>
-            Community</a>
+            Share Ideas</a>
       </td>";
 
     $x .= "
