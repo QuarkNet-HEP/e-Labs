@@ -230,8 +230,9 @@
      	            see the posters you have made, click <b>Edit Posters</b> above.
      	        </li>
      	  <li>
-			 Look at the <e:popup href="../../cosmic/library/ref-poster.jsp?" target="PosterInfo" width="600" height="600">characteristics of a good poster</e:popup> and
-			 a <e:popup href="display.jsp?name=callisto_poster.data" target="PosterInfo" width="700" height="900">excellent example</e:popup>.
+			<%@ include file="../posters/poster-example.jspf" %>
+
+
 			 </li>
 			 <li>Be sure to write a good <a href="javascript:glossary('abstract',300)">abstract</a>.
 		</li>
