@@ -74,7 +74,7 @@
 		    
 		    // Temporarily hardcode this for SPEED. Need fixing
 		    final double min = 730922400.0; 
-		    final double max = 949814519.0; 
+		    final double max = 967165200.0; 
 		    JsonObject jo = new JsonObject();
 		    jo.addProperty("minTime", min);
 		    jo.addProperty("maxTime", max);
