@@ -31,18 +31,8 @@
 			
 			<div id="content">
 				
-<%
-	if (user.isProfDev()) {
-		%>
-			<%@ include file="milestones-profdev.jsp" %>
-		<%
-	}
-	else {
-		%>
 			<%@ include file="milestones-student.jsp" %>
-		<%
-	}
-%>
+
 
 			</div>
 			<!-- end content -->	
