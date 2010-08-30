@@ -1,0 +1,3 @@
+ 			Look at the <e:popup href="../library/ref-poster.jsp?" target="PosterInfo" width="600" height="600">characteristics of a good poster</e:popup>
+ 			and
+			an <e:popup href="display.jsp?name=scott_andrew_peter.data" target="PosterInfo" width="700" height="900">example</e:popup>.
