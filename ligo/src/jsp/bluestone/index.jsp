@@ -21,7 +21,6 @@
 			span.rotate-text-left {
 				position: absolute;
 				width: 0px;
-				height: 0px;
 				-webkit-transform: rotate(-90deg); 
 				-moz-transform: rotate(-90deg);	
 				filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);

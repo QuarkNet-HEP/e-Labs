@@ -33,7 +33,7 @@ var calendarParam = {
 	showButtonPanel: true,
 	dateFormat: 'D M dd yy',
 	minDate: new Date(2003, 3-1, 5),
-	maxDate: new Date(2010, 8-1, 29),
+	maxDate: new Date(),
 	onSelect: datePickerSelected
 };
 

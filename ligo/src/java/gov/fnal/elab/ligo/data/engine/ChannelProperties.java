@@ -59,12 +59,4 @@ public class ChannelProperties {
     public String getUnits() {
         return units;
     }
-    
-    public void setUnits(String units) {
-    	this.units = units; 
-    }
-    
-    public void setSlope(double slope) {
-    	this.slope = slope; 
-    }
 }
