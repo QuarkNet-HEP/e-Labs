@@ -32,9 +32,7 @@
 			<div id="content">
 				
 <h1>Performance: Choose data for performance study.</h1>
-<div id="rationale">Science requires reliable measurement of variables. You must be able to trust your data in order to draw conclusions that make sense to you and others. Would you believe a bathroom scale that reads 487 pounds when a house cat steps on it? This analysis pathway allows you to check the consistency of the detector recording your data. Big changes in performance can mean two things: some interesting physics occurred or the detector has lost calibration. It's important to know which one happened.
-</div>
-<div id="rationale">Gain confidence by watching a <a href="#" onclick="javascript:window.open('../flash/performance-movie.html','_blank', 'width=920,height=760, resizable=1, scrollbars=1');return false;">performance analysis</a> done, then try yourself by searching for data from "Seaman High School" on "2/5/2009" and setting the bin width to "2.5" ns. If you need more detailed instructions, try the Step-by-Step on the right.</div>
+<jsp:include page="rationale.jspf" />
 <table border="0" id="main">
 <tr>
 		<td>
