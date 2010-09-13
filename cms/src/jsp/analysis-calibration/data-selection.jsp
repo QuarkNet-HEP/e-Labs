@@ -9,6 +9,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<title>Data Selection - Detector Calibration Studies</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
