@@ -16,7 +16,7 @@ var setColor = function(e, context) {
 }
 
 function clearPlots() {
-	var table = document.getElementById("plots");
+	var table = document.getElementById("plotlist");
 	while (table.rows.length > 2) {
 		table.deleteRow(1);
 	}
@@ -30,7 +30,7 @@ function updatePlotsFromValue(val, label) {
 }
 
 function addPlotRow(value, label) {
-	var tbl = document.getElementById("plots");
+	var tbl = document.getElementById("plotlist");
 	var row = tbl.insertRow(tbl.rows.length - 1);
 
 	$("#plot-template .plot-index").html(tbl.rows.length - 2);
@@ -65,7 +65,7 @@ function addPlotRow(value, label) {
 
 function removePlotRow(c) {
 	log("remove plot row: " + this.parentNode.parentNode.rowIndex);
-	var tbl = document.getElementById("plots");
+	var tbl = document.getElementById("plotlist");
 	tbl.deleteRow(this.parentNode.parentNode.rowIndex);
 	if (updatePlotList() == 1) {
 		var list = document.getElementById("plots-input");
@@ -91,7 +91,7 @@ var addPlot = function(e, context) {
 function updatePlotList() {
 	var list = document.getElementById("plots-input");
 	var str = "";
-	var tbl = document.getElementById("plots");
+	var tbl = document.getElementById("plotlist");
 	for (var i = 1; i < tbl.rows.length - 1; i++) {
 		var a = firstNonTextChild(tbl.rows[i].cells[2]);
 		var img = firstNonTextChild(a);
@@ -141,7 +141,7 @@ function initializeFromPlotParams() {
 		return;
 	}
 	document.getElementById("plot-submit").disabled = false;
-	var tbl = document.getElementById("plots");
+	var tbl = document.getElementById("plotlist");
 	var s = plots.value.split(" ");
 	var count = 0;
 	var single = null;

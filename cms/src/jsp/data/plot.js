@@ -139,7 +139,7 @@ function redrawPlot(index, stack) {
 			shadowSize: 0,
 			color: crt["color"],
 			label: crt["title"],
-			data: dd,
+			data: dd
 		};
 		pdata.push(d);
 	}

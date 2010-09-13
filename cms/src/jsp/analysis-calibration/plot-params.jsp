@@ -65,7 +65,7 @@
 					<tr>
 						<td>
 						
-<table border="0" id="plots">
+<table border="0" id="plotlist">
 	<tr>
 		<th width="20px"></th>
 		<th>Plot Content</th>

@@ -250,7 +250,7 @@
 <div id="help" class="help">
 	<table>
 		<tr>
-			<td class="title">Plot Help<a href="#" onclick="closeHelp('help');"><img src="../graphics/close.png" /></a></td>
+			<td class="title">Plot Help<a href="#" onclick="closePopup('help');"><img src="../graphics/close.png" /></a></td>
 		</tr>		
 		<tr>
 			<td class="content">
@@ -275,7 +275,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td align="right"><button name="close" onclick="closeHelp('help');">Close</button></td>
+			<td align="right"><button name="close" onclick="closePopup('help');">Close</button></td>
 		</tr>
 	</table>
 </div>

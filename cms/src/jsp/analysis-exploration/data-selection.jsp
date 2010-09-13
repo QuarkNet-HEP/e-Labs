@@ -65,6 +65,11 @@
 								vSwitchShow("selected-events-panel");
 								vSwitchShow("data-selection-panel");	
 							}
+							else if (expr == "none") {
+								clearRunList();
+								clearExpr();
+								$("#plot-params-button").attr("disabled", true);
+							}
 							else {
 								updateFromSimpleExpr(expr);
 							}
@@ -111,7 +116,7 @@
 								<input type="checkbox" id="select-all" checked="true" onchange="selectAll();"/>All
 								<e:trinput type="hidden" name="runs" id="runs-input" />
 							</div>
-							<div id="runs">
+							<div id="runlist">
 							</div>
 							<div id="totals">
 							</div>

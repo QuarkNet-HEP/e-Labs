@@ -77,6 +77,11 @@ Choose an event type, select the runs to analyze and then go to plot selection.
 								vSwitchShow("selected-events-panel");
 								vSwitchShow("data-selection-panel");	
 							}
+							else if (expr == "none") {
+								clearRunList();
+								clearExpr();
+								$("#plot-params-button").attr("disabled", true);
+							}
 							else {
 								updateFromSimpleExpr(expr);
 							}
@@ -120,10 +125,10 @@ Choose an event type, select the runs to analyze and then go to plot selection.
 					<e:hidden image="../graphics/minus.png">
 						<div class="wait-on-runs">
 							<div id="runs-header">
-								<input type="checkbox" id="select-all" checked="true" onchange="selectAll();"/>All
+								<input type="checkbox" id="select-all" checked="true" onclick="selectAll();"/>All
 								<e:trinput type="hidden" name="runs" id="runs-input" />
 							</div>
-							<div id="runs">
+							<div id="runlist">
 							</div>
 							<div id="totals">
 							</div>
