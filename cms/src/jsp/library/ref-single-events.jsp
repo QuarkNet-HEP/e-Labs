@@ -21,9 +21,9 @@
 </p>
 
 						Watch a <a href="
-						javascript:showRefLink('http://screencast.com/t/NTA2ODBiZTI',625,675)">screencast</a> of clean Z decays at lower energy from an earlier CERN experiment.</p>
+						javascript:showRefLink('http://screencast.com/t/NTA2ODBiZTI',625,675)">screencast</a> of relatively clean Z decays at lower energy from an earlier CERN experiment.</p>
 						
-						<p>With greater collision energies at the LHC, the Z decay will not be the only collision products in the event nor will the decay products seem to be back-to-back. </p>
+						<p>With greater collision energies at the LHC, the Z decay will typically not be the only collision products in the event nor will the decay products seem to be back-to-back. </p>
 						<p><a href="
 						javascript:showRefLink('http://ed.fnal.gov/work/i2u2/particle-id/cms_game.html',865,675)">2-D event display game</a> - Test your skill identifying CMS events!
 						
