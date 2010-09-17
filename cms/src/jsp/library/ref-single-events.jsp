@@ -17,7 +17,7 @@
 	    		<td>
    		    		<p>
 						<p>
-						<table><tr><td> <a href="javascript:showRefLink('../graphics/single-event.png',641,641)"><img src="../graphics/single-event-tn.png"></a></td><td><p> <b>2-D single event displays</b> tell the story of what happened in one collision. In this case a Z particle decays into two muons. Click on it to see a larger image.</td></tr></table>
+						<table><tr><td> <a href="javascript:showRefLink('../graphics/single-event.png',641,641)"><img src="../graphics/single-event-tn.png"></a></td><td><p> <b>2-D single event displays</b> tell the story of what happened in one collision. This is an example of what it looks like when a Z boson decays into two muons at CMS. Click on it to see a larger image.</td></tr></table>
 </p>
 
 						Watch a <a href="
