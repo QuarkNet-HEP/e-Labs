@@ -81,8 +81,8 @@
 					<strong>Analysis</strong>
 					<ul>
 						<li><a href="../data">Data</a></li>
-						<li><a href="/ligo/tla/tutorial.php">Tutorial</a></li>
-						<li><a href="/ligo/tla/">Bluestone</a></li>
+						<li><e:popup href="../video/intro-bluestone.html" target="tryit" width="800" height="659">Tutorial</e:popup></li>
+						<li><a href="../bluestone/">Bluestone</a></li>
 						<li><a href="../plots/">View Plots</a></li>
 						<li><a href="../analysis/list.jsp">Analyses</a></li>
 					</ul>
