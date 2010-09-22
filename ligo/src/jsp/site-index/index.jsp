@@ -53,6 +53,7 @@
 				<li><a href="../home/cool-science.jsp"><b>Cool Science</b></a></li>
 				<li><a href="../site-index/site-map-anno.jsp"><b>Explore!</b></a></li>
 				<li><a href="../home/about-us.jsp"><b>About Us</b></a></li>
+				<li>e-Lab Intro:<br /><e:popup href="../video/intro-interface.html" target="tryit" width="800" height="659">Screencast (with Sound)</e:popup></li> or <e:popup href="../library/intro-tutorial.jsp?slide=-1" target="tryit" width="900" height="659">Screenshots</e:popup></li>
 				
 			</ul>
 		</td>
@@ -81,7 +82,7 @@
 					<strong>Analysis</strong>
 					<ul>
 						<li><a href="../data">Data</a></li>
-						<li><e:popup href="../video/intro-bluestone.html" target="tryit" width="800" height="659">Tutorial</e:popup></li>
+						<li>Tutorials:<br /><e:popup href="../video/intro-bluestone.html" target="tryit" width="800" height="659">Screencast (with Sound)</e:popup></li> or <e:popup href="../bluestone/tutorial.jsp" target="tryit" width="900" height="659">Screenshots</e:popup></li>
 						<li><a href="../bluestone/">Bluestone</a></li>
 						<li><a href="../plots/">View Plots</a></li>
 						<li><a href="../analysis/list.jsp">Analyses</a></li>
