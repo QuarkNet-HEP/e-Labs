@@ -1,10 +1,10 @@
-function disableSelection(target){
-	if (typeof target.onselectstart!="undefined") {//IE route
+function disableSelection(target) {
+	if (typeof target.onselectstart != "undefined") {//IE route
 		target.onselectstart = function() {
 			return false
 		};
 	}
-	else if (typeof target.style.MozUserSelect!="undefined") {//Firefox route
+	else if (typeof target.style.MozUserSelect != "undefined") {//Firefox route
 		target.style.MozUserSelect = "none";
 	}
 	else {//All other route (ie: Opera)
@@ -47,7 +47,9 @@ var NOEVENT = {"Collections": {}};
 
 function addSwitchRows(d_event) {
 	for (var g = 0; g < d_groups.length; g++) {
-		addSwitchRow('<td colspan="2" class="group">' + d_groups[g] + '</td>');
+		addSwitchRow('<td colspan="2" class="group">' + d_groups[g] + 
+				'<a href="#" class="help-detsystem" onclick="openPopup(event, \'help-detsystem-' + 
+				g + '\', \'cursor\')"><img src="../graphics/help-small.png" /></a></td>');
 		for (var key in d_descr) {
 			if (d_descr[key].group != d_groups[g]) {
 				continue;
@@ -502,6 +504,7 @@ window.addEventListener('load', function() {
 			renderer.ctx.setFillColor(1, 1, 1, 1);
 			renderer.ctx.fillText("fps: " + Math.round(10000 / (end - start))/10, 10, 10);
 			renderer.ctx.fillText("deadline: " + (deadline - start), 10, 20);
+			renderer.ctx.fillText("start: " + start, 10, 30);
 		}
 	}
   

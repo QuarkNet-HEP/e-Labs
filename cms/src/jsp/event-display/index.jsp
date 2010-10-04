@@ -14,9 +14,6 @@
 		<link href="speed-test.css" rel="stylesheet" type="text/css" />
 		
 		<script src="../include/elab.js"></script>
-		<script>
-			initlog(false);
-		</script>
 		<script src="utils.js"></script>
 		<script src="../include/flexcroll.js"></script>
 		<script src="../include/jquery/js/jquery-1.4.min.js"></script>
@@ -31,7 +28,9 @@
 		<script src="save.js"></script>
 	</head>
 	<body class="black">
-
+	<script>
+		initlog(false);
+	</script>
 <table>
 	<tr height="24px">
 		<td class="bordered">
@@ -69,6 +68,7 @@
 <%@ include file="event-browser.jspf" %>
 <%@ include file="speed-test.jspf" %>
 <%@ include file="about.jspf" %>
+<%@ include file="detector-help.jspf" %>
 
 	</body>
 </html>

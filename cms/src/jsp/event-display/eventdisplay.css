@@ -174,18 +174,15 @@ a.disabled {
 	border-radius: 6px;
 	background-color: black;
 	z-index: 10;
-	border: thin solid #e0e0e0;
+	border: thin solid #808080;
 	display: none;
 	padding: 0px;
-}
-
-.white .dialog-window {
-	border: thin solid #202020;
+	opacity: 0.95;
 }
 
 .white .dialog-window {
 	background-color: white;
-	border: thin solid #202020;
+	opacity: 0.95;
 }
 
 .title {
@@ -300,4 +297,37 @@ body.white ul.menu a {
 
 #about p {
 	padding: 8px;
+}
+
+.help-icon {
+	margin-top: 6px;
+	float: right;
+	text-decoration: none;
+	color: blue;
+	font-weight: bold;
+}
+
+.help-icon img {
+	vertical-align: middle;
+}
+
+.white .help, .white .popup {
+	border: solid thin #d0d0d0;
+	background-color: #e0e0e0;
+}
+
+.help-detsystem {
+	float: right;
+}
+
+.help-detsystem img {
+	border: none;
+}
+
+dt {
+	font-weight: bold;
+}
+
+dd {
+	margin-bottom: 6px;
 }
