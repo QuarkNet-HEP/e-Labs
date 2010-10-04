@@ -14,6 +14,36 @@ function disableSelection(target) {
 	}
 }
 
+function enableNextPrev() {
+	if (document.selectedEventIndex > 0) {
+		$("#prev-event-button").removeClass("disabled");
+	}
+	if (document.currentEventList && (document.currentEventList.length > document.selectedEventIndex)) {
+		$("#next-event-button").removeClass("disabled");
+	}
+}
+
+function loadCurrentEvent() {
+	var file = document.currentFileList[document.selectedFileIndex];
+	var event = document.currentEventList[document.selectedEventIndex];
+	var size = event.size;
+	var path = document.settings.lastDir + "/" + file.name;
+	var ro = startDownload(path + ":" + event.name, "Loading " + path + ":" + event.name + "...", eventDataLoaded);
+}
+
+function nextEvent() {
+	if (document.currentEventList && (document.currentEventList.length > document.selectedEventIndex)) {
+		document.selectedEventIndex++;
+		loadCurrentEvent();
+	}
+}
+
+function prevEvent() {
+	if (document.selectedEventIndex > 0) {
+		document.selectedEventIndex--;
+		loadCurrentEvent();
+	}
+}
 
 function keys(o) {
 	s = "";
@@ -30,6 +60,12 @@ function toggle(key) {
 
 var disabled = new Array();
 var ranks = new Array();
+
+for (var key in d_descr) {
+	if (!d_descr[key].on) {
+		disabled[key] = true;
+	}
+}
 
 function addSwitchRow(html) {
 	var tbl = document.getElementById("switches");
@@ -57,11 +93,8 @@ function addSwitchRows(d_event) {
 			if (!d_event["Collections"][key]) {
 				continue;
 			}
-			var on = d_descr[key].on ? ' checked="true"' : "";
+			var on = !disabled[key] ? ' checked="true"' : "";
 			var count = d_event["Collections"][key].length;
-			if (!d_descr[key].on) {
-				disabled[key] = true;
-			}
 			var desc = d_descr[key].desc;
 			if (desc == null) {
 				desc = key;
@@ -116,6 +149,7 @@ function combineData(a) {
 
 function eventDataLoaded(data) {
 	document.eventData = data;
+	enableNextPrev();
 	initializeData();
 	document.draw();
 }
