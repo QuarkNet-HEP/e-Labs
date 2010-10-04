@@ -32,12 +32,14 @@
 		initlog(false);
 	</script>
 <table>
-	<tr height="24px">
-		<td class="bordered">
-			<%@ include file="toolbar.jspf" %>
-		</td>
-		<td class="bordered">
+	<tr>
+		<td colspan="2" class="titlebar-plain bordered">
 			<div id="title"></div>
+		</td>
+	</tr>
+	<tr height="24px">
+		<td colspan="2" class="bordered">
+			<%@ include file="toolbar.jspf" %>
 		</td>
 	</tr>
 	<tr>
