@@ -74,7 +74,7 @@
  - how to select plots.
 							</li>
 							<li>
-								<e:popup href="../video/demo-3d.html?video=plot" target="tryit" width="1150" height="800">3-D Event Display</e:popup> - how to use the 3d Event Display tool.
+								<e:popup href="http://screencast.com/t/X2WGL5ru8wMX" target="tryit" width="775" height="625">3-D Event Display</e:popup> - how to use the 3d Event Display tool.
 							</li>
 						</ul>
 					<h2>Single Events</h2>
