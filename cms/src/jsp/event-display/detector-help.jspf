@@ -25,7 +25,7 @@
 							<dd>Central electromagnetic calorimeter; measures energy of electrons and photons</dd>
 							
 							<dt>ECAL Endcap</dt>
-							<dd>Electromagnetic calorimeters at either end of CMS for measurements close the beam axis</dd>
+							<dd>Electromagnetic calorimeters at either end of CMS for measurements close to the beam axis</dd>
 							
 							<dt>ECAL Preshower</dt>
 							<dd>Provides an initial (before the EM shower) measurement helping to discriminate between photons and (neutral) pions</dd>
@@ -39,7 +39,7 @@
 							<dd>Central hadronic calorimeter; measures energy of hadrons</dd>
 							
 							<dt>HCAL Endcap</dt>
-							<dd>Hadronic calorimeters at either end of CMS for measurements close the beam axis</dd>
+							<dd>Hadronic calorimeters at either end of CMS for measurements close to the beam axis</dd>
 							
 							<dt>HCAL Outer</dt>
 							<dd>Final HCAL layer just outside the solenoid magnet</dd>
@@ -93,7 +93,7 @@
 					<dt>Tracks (reco.)</dt>
 					<dd>All reconstructed particle tracks in the tracker</dd>
 					
-					<dt>Tracks (GSF)</dt>
+					<dt>Electron Tracks (GSF)</dt>
 					<dd>Electron tracks in the tracker</dd>
 					
 					<dt>Clusters (Si Pixels)</dt>
