@@ -27,8 +27,9 @@
 						<p><a href="
 						javascript:showRefLink('http://ed.fnal.gov/work/i2u2/particle-id/cms_game.html',865,675)">2-D event display game</a> - Test your skill identifying CMS events!
 						
-						<p>Try a  <a href="javascript:showRefLink('../event-display/',1150,775)">3-D</a> view? (non-Internet Explorer browsers only)
-						<a href="javascript:showRefLink('http://screencast.com/t/X2WGL5ru8wMX',775,625)">Need help</a>?</p>
+						<p>Try a  <a href="javascript:showRefLink('../event-display/',1150,775)">3-D</a> view? (non-Internet Explorer browsers only) Need help?
+						<a href="javascript:showRefLink('http://screencast.com/t/X2WGL5ru8wMX',775,625)">Intro</a> - <a href="javascript:showRefLink('http://screencast.com/t/7wFGMWXVpdOM',775,625)">More Features</a></p>
+
 						
 						<p>The 3-D view is complex! Try rotating and turning parts of the detector and event off and on. You should become more familiar with the detector and the events. Pretty cool!</p>
 						<p>What can physicists learn when they combine lots of events? Read about taking a <a href="						javascript:showRefLink('ref-combined-events.jsp',641,641)">statistical approach</a>.</p>
