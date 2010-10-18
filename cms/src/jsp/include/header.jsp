@@ -4,7 +4,7 @@
 
 <script type="text/javascript" src="../include/jquery/js/jquery-1.4.3.min.js"></script>
 <script type="text/javascript" src="../include/json2.js"></script>
-<script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.2.custom.min.js"></script>
+<script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.3.custom.min.js"></script>
 <script type="text/javascript" src="../include/jquery/js/jquery.event.hover-1.0.js"></script>
 <script type="text/javascript" src="../include/jquery/js/css-gradients-via-canvas.js"></script>
 
