@@ -24,7 +24,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class Dataset {
-    private String name, descriptorLocation, dataLocation;
+    private String name, descriptorLocation, dataLocation, table;
     private List<Trigger> triggers;
     private List<Leaf> leaves;
     private Map<String, Leaf> leafMap;
@@ -46,6 +46,12 @@ public class Dataset {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
                     .parse(is);
             this.dataLocation = elab.getProperty("dataset.location." + name);
+            try {
+                this.table = doc.getElementsByTagName("database").item(0).getAttributes().getNamedItem("table").getNodeValue();
+            }
+            catch (Exception e) {
+            	throw new DatasetLoadException("Could not get run table name", e);
+            }
             populateTriggers(doc);
             populateLeaves(doc);
         }
@@ -170,12 +176,21 @@ public class Dataset {
         return runFiles;
     }
 
-    private String getTable() {
-        if ("tb04".equals(name)) {
-            return "rundb";
+    public String getTable() {
+        return table;
+    }
+    
+    public List<Leaf> getSimplePlots() {
+        return getPlotsForLevel(5);
+    }
+    
+    public List<Leaf> getPlotsForLevel(int level) {
+        List<Leaf> lst = new ArrayList<Leaf>();
+        for (Leaf l : leaves) {
+            if (l.getLevel() == level) {
+                lst.add(l);
+            }
         }
-        else {
-            return "mcdb";
-        }
+        return lst;
     }
 }
