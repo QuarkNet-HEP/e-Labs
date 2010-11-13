@@ -3,6 +3,8 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
+<%@ include file="../data/jump.jspf" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -39,6 +41,8 @@
 	log("<span class='red'>plots: ${param.plots}</span>");
 	log("<span class='red'>commbine: ${param.combine}</span>");
 </script>
+
+<%@ include file="../data/dataset.jsp" %>
  
 <form action="../data/plot.jsp">
 <e:trinput type="hidden" name="plots" id="plots-input" />
@@ -54,13 +58,9 @@
 				<select id="simplified-plots">
 					<option value="none">Choose plot...</option>
 					<option class="separator" disabled="true">----------------</option>
-					<option value="recoCompositeCandidates_ZtoMuonAMuon__PAT.obj.mass_">&mu;-&mu;+ mass</option>
-					<option value="recoCompositeCandidates_ZtoAMuonAMuon__PAT.obj.mass_">&mu;+&mu;+ mass</option>
-					<option value="recoCompositeCandidates_ZtoMuonMuon__PAT.obj.mass_">&mu;-&mu;- mass</option>
-					<option class="separator" disabled="true">----------------</option>
-					<option value="recoCompositeCandidates_ZtoAEleEle__PAT.obj.mass_">e-e+ mass</option>
-					<option value="recoCompositeCandidates_ZtoAEleAEle__PAT.obj.mass_">e+e+ mass</option>
-					<option value="recoCompositeCandidates_ZtoEleEle__PAT.obj.mass_">e-e- mass</option>
+					<c:forEach var="leaf" items="${dataset.simplePlots}">
+						<option value="${leaf.id}">${leaf.title}</option>
+					</c:forEach>
 					<option class="separator" disabled="true">----------------</option>
 					<option id="advanced" value="advanced">Advanced</option>
 				</select>
@@ -86,7 +86,10 @@
 			<table border="0" width="100%" id="step-buttons">
 				<tr>
 					<td>
-						<input type="submit" name="back" value="&lt; Data Selection" />
+						<input type="submit" name="goto1" value="&lt; Dataset Selection" />
+					</td>
+					<td>
+						<input type="submit" name="goto2" value="&lt; Data Selection" />
 					</td>
 					<td width="100%">
 					</td>
