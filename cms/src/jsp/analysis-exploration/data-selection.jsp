@@ -1,9 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
-<c:set var="dataset" scope="session" value="mc09"/>
+<%@ include file="../data/jump.jspf" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -19,7 +20,7 @@
 		<link href="../include/jeegoocontext/skins/cm_blue/style.css" rel="Stylesheet" type="text/css" />
 	</head>
 	
-	<body id="search_default" class="data" onload="initializeFromExpr();">
+	<body class="data" onload="initializeFromExpr();">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
@@ -42,7 +43,7 @@
 </script>
 
 <form action="../analysis-exploration/plot-params.jsp">
-	<e:trinput type="hidden" name="dataset" id="dataset-input" default="${dataset}"/>
+	<e:trinput type="hidden" name="dataset" id="dataset-input"/>
 	<e:trinput type="hidden" name="plots"/>
 	<e:trinput type="hidden" name="combine"/>
 	<e:trinput type="hidden" name="analysisName" default="Detector Exploration Studies"/>
@@ -128,7 +129,7 @@
 					</e:visible>
 					<e:hidden image="../graphics/minus.png">
 						<jsp:include page="../data/triggers.jsp">
-							<jsp:param name="dataset" value="${dataset}"/>
+							<jsp:param name="dataset" value="${param.dataset}"/>
 						</jsp:include>
 					</e:hidden>
 				</e:vswitch>
