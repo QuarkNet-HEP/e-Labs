@@ -9,6 +9,7 @@ import org.w3c.dom.Node;
 
 public class Leaf {
     private String id, title, labelx, labely, units, description;
+    private int level;
 
     public Leaf(String id, Node n) {
         this.id = id;
@@ -17,6 +18,7 @@ public class Leaf {
         this.labely = getAttr(n, "labely");
         this.units = getAttr(n, "units");
         this.description = getAttr(n, "description");
+        this.level = Integer.parseInt(getAttr(n, "level"));
     }
 
     private String getAttr(Node n, String name) {
@@ -46,5 +48,9 @@ public class Leaf {
 
     public String getDescription() {
         return description;
+    }
+
+    public int getLevel() {
+        return level;
     }
 }
