@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<root type="Monte Carlo Simulation">
+<root type="J-Psi Run">
 
-  <dataset name="mc09" location="/home/mike/work/i2u2/cms-data/mcdata">
-    <database table="mcdb">
+  <dataset name="jpsi10">
+    <database table="jpsidb">
       <field name="run" />
       <field name="nevents" />
       <field name="dataset" />
@@ -12,14 +12,8 @@
   </dataset>
 
   <triggers level="0">
-    <trigger name="signal" id="sig" description="Simulated Z Signal events"   level="0" group="0"/>
-    <trigger name="backgd" id="bkg" description="Simulated Background events" level="0" group="0"/>
-
-    <trigger name="ee"		displayname="ee"     				id="ee"   description="Di-electron events"  level="0" group="1"/>
     <trigger name="mumu"	displayname="&amp;mu;&amp;mu;"		id="uu"   description="Di-muon events"      level="0" group="1"/>
-    <trigger name="tautau"	displayname="&amp;tau;&amp;tau;"	id="tt"   description="Tau-Tau events"      level="0" group="1"/>
-    <trigger name="enu"		displayname="e&amp;nu;"				id="enu"  description="electron+MET events" level="0" group="1"/>
-    <trigger name="munu"	displayname="&amp;mu;&amp;nu;"		id="munu" description="muon+MET events"     level="0" group="1"/>
+    <trigger name="ee"		displayname="ee"     				id="ee"   description="Di-electron events"  level="0" group="1"/>
   </triggers>
 
   <tree id="1" name="Events" level="0">
@@ -124,59 +118,16 @@
             description="Calculate mass using anti-muons"/>
     </branch>
 
-    <!-- electron + e,p,m,am) two-particle mass -->
-    <branch id="5" name="recoCompositeCandidates_ZtoEleEle__PAT.obj" level="5">
-      <leaf id="30" name="mass_" title="e^- e^- Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c^2" level="5" description="Electron Electron Mass"/>
+    <!-- muon - -/++ (LS - like sign) and -+ (OS - opposite sign) two-particle mass -->
+    <branch id="5" name="recoCompositeCandidates_JPsiCandidatesLS__PAT.obj" level="5">
+      <leaf id="30" name="mass_" title="\mu  LS Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="Like Sign Muon Mass"/>
     </branch>
 
-    <branch id="6" name="recoCompositeCandidates_ZtoAEleEle__PAT.obj" level="5">
-      <leaf id="31" name="mass_" title="e^- e^+ Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c^2" level="5" description="Electron Positron Mass"/>
-    </branch>
-
-    <branch id="7" name="recoCompositeCandidates_ZtoEleMuon__PAT.obj" level="4">
-      <leaf id="32" name="mass_" title="e^- \mu ^- Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c^2" level="4" description="Electron Muon Mass"/>
-    </branch>
-
-    <branch id="8" name="recoCompositeCandidates_ZtoEleAMuon__PAT.obj" level="4">
-      <leaf id="33" name="mass_" title="e^- \mu ^+ Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c^2" level="4" description="Electron Antimuon Mass"/>
-    </branch>
-
-    <!-- positron + (p,m,am) two particle mass -->
-    <branch id="9" name="recoCompositeCandidates_ZtoAEleAEle__PAT.obj" level="5">
-      <leaf id="34" name="mass_" title="e^+ e^+ Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c^2" level="5" description="Positron Positron Mass"/>
-    </branch>
-
-    <branch id="10" name="recoCompositeCandidates_ZtoAEleMuon__PAT.obj" level="4">
-      <leaf id="35" name="mass_" title="e^+ \mu ^- Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c^2" level="4" description="Positron Muon Mass"/>
-    </branch>
-
-    <branch id="11" name="recoCompositeCandidates_ZtoAEleAMuon__PAT.obj" level="4">
-      <leaf id="36" name="mass_" title="e^+ \mu ^+ Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c^2" level="4" description="Positron Antimuon Mass"/>
-    </branch>
-
-    <!-- muon + (m,am) two particle mass -->
-    <branch id="12" name="recoCompositeCandidates_ZtoMuonMuon__PAT.obj" level="5">
-      <leaf id="37" name="mass_" title="\mu ^- \mu ^- Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c^2" level="5" description="Muon Muon Mass"/>
-    </branch>
-
-    <branch id="13" name="recoCompositeCandidates_ZtoMuonAMuon__PAT.obj" level="5">
-      <leaf id="38" name="mass_" title="\mu ^- \mu ^+ Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c^2" level="5" description="Muon Antimuon Mass"/>
-    </branch>
-
-    <!-- antimuon + antimuon two particle mass -->
-    <branch id="14" name="recoCompositeCandidates_ZtoAMuonAMuon__PAT.obj" level="5">
-      <leaf id="39" name="mass_" title="\mu ^+ \mu ^+ Mass" labely="Number of Events" labelx="Mass" 
-	    units="GeV/c^2" level="5" description="Antimuon Antimuon Mass"/>
-    </branch>
+    <branch id="6" name="recoCompositeCandidates_JPsiCandidatesOS__PAT.obj" level="5">
+      <leaf id="31" name="mass_" title="\mu  OS Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="Opposite Sign Muon Mass"/>
+    </branch>    
 
   </tree>
 </root>

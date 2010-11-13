@@ -9,7 +9,7 @@
           <type beam="pion" />
         </runs>
 
-        <database>
+        <database table="rundb">
           <field name="run" />
           <field name="nevents" />
           <field name="dataset" />
