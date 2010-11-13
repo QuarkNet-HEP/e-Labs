@@ -26,15 +26,13 @@ if (texpr == null) {
 String pdataset = request.getParameter("dataset"); 
 String table, columns;
 if ("tb04".equals(pdataset)) {
-    table = "rundb";
     columns = "run, nevents, energy, beam, eta, phi";
 }
 else {
-    table = "mcdb";
-    pdataset = "mc09";
     columns = "run, nevents, description";
 }
 Dataset dataset = Datasets.getDataset(elab, session, pdataset);
+table = dataset.getTable();
 Set<String> validTriggers = new HashSet<String>();
 
 List<Trigger> triggers = dataset.getTriggers();
