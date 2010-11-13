@@ -7,22 +7,7 @@
 	    gov.fnal.elab.cms.dataset.Datasets.getDataset(elab, session, request.getParameter("dataset"));
 	session.setAttribute("recentCuts", gov.fnal.elab.cms.dataset.RecentCuts.getInstance(user, dataset)); 
 %>
-<c:if test="${!empty param.back}">
-	<jsp:forward page="../analysis-${param.analysis}/index.jsp">
-		<jsp:param name="dataset" value="${param.dataset}"/>
-		<jsp:param name="runs" value="${param.runs}"/>
-		<jsp:param name="expr" value="${param.expr}"/>
-		<jsp:param name="plots" value="${param.plots}"/>
-	</jsp:forward>
-</c:if>
-<c:if test="${!empty param.backhalf}">
-	<jsp:forward page="../analysis-${param.analysis}/plot-params.jsp">
-		<jsp:param name="dataset" value="${param.dataset}"/>
-		<jsp:param name="runs" value="${param.runs}"/>
-		<jsp:param name="expr" value="${param.expr}"/>
-		<jsp:param name="plots" value="${param.plots}"/>
-	</jsp:forward>
-</c:if>
+<%@ include file="../data/jump.jspf" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -75,10 +60,13 @@
 	<table border="0" width="100%" id="step-buttons">
 		<tr>
 			<td>
-				<input type="submit" name="back" value="&lt; Data Selection" />
+				<input type="submit" name="goto1" value="&lt; Dataset Selection" />
 			</td>
 			<td>
-				<input type="submit" name="backhalf" value="&lt; Plot Selection" />
+				<input type="submit" name="goto2" value="&lt; Data Selection" />
+			</td>
+			<td>
+				<input type="submit" name="goto3" value="&lt; Plot Selection" />
 			</td>
 			<td width="100%">
 			</td>
