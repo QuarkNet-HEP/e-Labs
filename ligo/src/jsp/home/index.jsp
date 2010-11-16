@@ -101,12 +101,12 @@
 					<h1>Join a national collaboration of students to study LIGO seismic data.</h1>
 					<br />
 					<br />
-					<p>Project Map: To navigate the CMS e-Lab, follow the path; complete the milestones. Hover over each hot spot to preview; click to open. Along the main line are milestone seminars, opportunities to check how your work is going. Project milestones are on the four branch lines.</p>
+					<p>Project Map: To navigate the LIGO e-Lab, follow the path; complete the milestones. Hover over each colored dot to preview; click to open. Along the main line are <a href="#" onclick="javascript:glossary('Milestone_Seminar',300);return false;"><b>milestone seminars</b></a>, opportunities to discuss how your work is going. Project <a href="#" onclick="javascript:glossary('Milestone',300);return false;"><b>milestones</b></a> are on the four branch lines. <e:popup href="../video/intro-interface.html" target="tryit" width="800" height="590">e-Lab Intro Video</e:popup></p>
 					<center>
 						<%@ include file="../library/milestones-map-student.jsp" %>
 						<p><a href="/elab/ligo/library/milestones.jsp">Milestones (text version)</a></p>
 					</center>
-					<p>Your team may use the milestones above, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results. </p>
+					<p>Use the milestones in the Project Map above. Make sure you know how to use your e-Lab logbook. Later you'll need to know how to publish your results by making an e-Lab poster. </p>
 					
 				</td>
 			</tr>

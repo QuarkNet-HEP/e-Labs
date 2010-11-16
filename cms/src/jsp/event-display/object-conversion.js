@@ -42,6 +42,10 @@ function affineToStr(m) {
 	  		  "[" + m.e8 + ", " + m.e9 + ", " + m.e10 + ", " + m.e11 + "]]";
 }
 
+function makeMET(data) {
+	
+}
+
 function makeTrack(data) {
 	log("makeTrack(" + data + ")");
 	return {p1: makePoint(data[0]), p2: makePoint(add(data[0], data[1]))};

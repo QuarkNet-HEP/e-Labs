@@ -12,7 +12,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 public class GPSConvertingJSMillisDataSetSerializer extends DataSetSerializer {
-	private int shadowSize = 0; 
+	protected static int shadowSize = 0; 
 
 	@Override
 	public JsonElement serialize(DataSet src, Type typeOfSrc,

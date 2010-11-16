@@ -32,7 +32,7 @@
 		<link rel="stylesheet" type="text/css" href="/elab/cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 	<link type="text/css" href="http://www.i2u2.org/elab/cosmic/include/jquery/css/default/jquery-ui-1.7.custom.css" rel="Stylesheet" />	
-	<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/jquery/js/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/jquery/js/jquery-1.4.3.min.js"></script>
 	<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/jquery/js/jquery-ui-1.7.custom.min.js"></script>
 	<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/jquery/js/jquery.event.hover-1.0.js"></script>
 	<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/elab.js"></script>
@@ -125,7 +125,10 @@ function showAll(start, finish)
 				 correspond with other research groups, post comments and questions, prepare 
 				 summary reports and, in general, participate in the part of scientific research 
 				 that is often left out of classroom experiments.</p><p>
-				 Two posters, one that meets expectations and one that exceeds expectations. LINKS
+				<p> One sample poster is available. In the future, a poster that exceeds expectations will also be included.</p>
+				<ul>
+				<li><a href="#" onclick="javascript:window.open('..\/posters\/display.jsp?name=scott_andrew_peter.data', 'poster', 'width=700,height=900, resizable=1, scrollbars=1');return false;">Seismic Wave Travel Time</a> - meets expectations.</li>
+				</ul>
 						</p>
 					</div>
 					
@@ -272,24 +275,34 @@ Review students' evidence of what they know/understand and reflections on their 
 								</div><div id="vsId6-h" style="visibility:visible; display:">
 						<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
 						<p>
-						A good way to begin LIGO studies is to invited the class to watch Cool Science together. Play the <a href="../home/ligo.swf" target="movie">Standalone Movie</a> and enlarge the window.</p>
-						<P>Questions to ask students? How to motivate students. DALE</P>
-						<p>
-						Students should look through the posters
-							to gain ideas for research questions. </p>
+						A good way to begin LIGO studies is to invite the class to watch Cool Science together. Play the <a href="../home/ligo.swf" target="movie">Standalone Movie</a> and enlarge the window.</p>
+						<p>Teachers can help students get started in the e-Lab by asking broad questions in class discussion.  These are not research questions.  Their intent would be to motivate kids to start thinking about good research questions.  The following questions are general and would require no specific prior experience:</p>
 						<ul>
-							<li><strong>Earthquakes</strong>: A number of earthquake studies are possible with the e-Lab data. From what epicenter distance can LIGO
-							detect earthquake waves? How fast do earthquake waves travel? Are P and S waves distinguishable in the data? If so, what can
-							we learn about how these waves travel through the earth?
+						<li> Make a list of different types of events that could make the ground shake.  Which ones are the most interesting to you (the student)?
+						<li> Do all earthquakes seem to affect LIGO's gravitational wave detectors equally?
+						<li> If you observed an event on a graph of seismometer data, do you think you could determine if the event was caused by natural versus human activity?  How would you investigate this?
+						</ul>
+						<p>Other teacher questions might draw upon recent student learning.  For instance if students had completed an earth science unit, some motivational questions might be:</p>  
+						<ul>
+						<li> Do you think that you can see the difference between P and S earthquake waves in real seismometer data?
+						<li> Can you use seismometer data to analyze the speeds at which seismic waves travel in the ground?
+						<li> Do earthquakes of a certain magnitude tend to look the same in LIGO's seismometer data?
+						</ul>
+						<p>If students have covered wave behavior in a physics or physical science class, some starter questions could be:</p>
+						<ul>
+						<li> What can you learn by looking at a single seismic event in different frequencies?
+						<li> Does the power carried by seismic waves vary with their frequency?   
+						</ul>
+						<p>Remember that students can look through completed posters to gain ideas for research questions.</p>
+						<p>Here are some studies students can do:</p>
+						<ul>
+							<li><strong>Earthquakes</strong>: A number of earthquake studies are possible with the e-Lab data. From what epicenter distance can LIGO detect earthquake waves? How fast do earthquake waves travel? Are P and S waves distinguishable in the data? If so, what can we learn about how these waves travel through the earth? 
 							</li>
-							<li><strong>Frequency Band Studies</strong>: LIGO's Data Monitoring Tool data channels (DMT channels) are segregated by frequency ranges.
-							Students can study similar time periods and/or similar seismic events by looking at different frequencies of seismic vibrations.
+							<li><strong>Frequency Band Studies</strong>: LIGO's Data Monitoring Tool data channels (DMT channels) are segregated by frequency ranges. Students can study similar time periods and/or similar seismic events by looking at different frequencies of seismic vibrations. 
 							</li>
-							<li><strong>Microseismic Studies</strong>: Microseisms provide a constant low-frequency seismic signal in the ground that is related to
-							ocean wave activity. What environmental factors can cause microseisms to vary in strength?
+							<li><strong>Microseismic Studies</strong>: Microseisms provide a constant low-frequency seismic signal in the ground that is related to ocean wave activity. What environmental factors can cause microseisms to vary in strength? 
 							</li>
-							<li><strong>Studies of Human-induced Seismic Activity</strong>: Humans do things that make the ground shake.
-							What types of human activity can show up in LIGO data? What effect do these activities exert on LIGO's interferometers?</li>
+							<li><strong>Studies of Human-induced Seismic Activity</strong>: Humans do things that make the ground shake. What types of human activity can show up in LIGO data? What effect do these activities exert on LIGO's interferometers?</li>
 						</ul>
  
 					</div>

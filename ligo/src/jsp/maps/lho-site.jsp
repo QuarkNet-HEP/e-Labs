@@ -9,7 +9,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>LHO Site</title>
+		<title>LIGO Hanford Site</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/info.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
@@ -38,8 +38,8 @@
 			<%@ include file="../include/nav-maps.jsp" %>
 			
 			<p align="center">
-				<img src="../graphics/lhomap_3.jpg" alt="Bird's Eye View of LHO" 
-					width="564" height="423" />
+				<img src="../graphics/lho-site.jpg" alt="Bird's Eye View of LHO" 
+					width="600" height="439" border="1" />
 				<br />
 				LIGO Hanford's seismometers are located in the five buildings along the beam line plus the vault.
 			</p>

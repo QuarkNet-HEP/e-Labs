@@ -62,10 +62,17 @@ function selectAll() {
 	}
 }
 
+function clearRunList() {
+	var druns = document.getElementById("runlist");
+    while (druns.childNodes.length > 0) {
+    	druns.removeChild(druns.childNodes[0]);
+    }
+}
+
 function updateData(expr) {
 	var dataset = document.getElementById("dataset-input").value;
-    var druns = document.getElementById("runs");
-    druns.innerHTML = "";
+    var druns = document.getElementById("runlist");
+    clearRunList();
     var ro;
     if(navigator.appName == "Microsoft Internet Explorer") {
 		ro = new ActiveXObject("Microsoft.XMLHTTP");
@@ -106,7 +113,7 @@ function updateData(expr) {
     			var runFilter = document.getElementById("runs-input").value + " ";
     		}
     		
-    		var druns = document.getElementById("runs");
+    		var druns = document.getElementById("runlist");
     		var totalEvents = 0;
     		var someFilteredRuns = false;
     		log("runs: " + runs);
@@ -116,18 +123,20 @@ function updateData(expr) {
     			div.className = "run";
     			var sw = document.createElement("input");
     			sw.type = "checkbox";
-    			if (!document.filterRuns || runFilter.indexOf(run + " ") != -1) {
-    				sw.checked = true;
-    			}
-    			else {
-    				someFilteredRuns = true;
-    			}
     			sw.name = runs[i]["run"];
     			sw.setAttribute("nevents", runs[i]["nevents"]);
     			sw.onchange = updateTotals;
     			sw.className = "runsw";
     			sw.setAttribute("run", run);
     			div.appendChild(sw);
+    			// IE has problems if checked is set before the checkbox is added
+    			// to the DOM.
+    			if (!document.filterRuns || runFilter.indexOf(run + " ") != -1) {
+    				sw.checked = true;
+    			}
+    			else {
+    				someFilteredRuns = true;
+    			}
     			var rundata = "Run " + run + " (" + runs[i]["nevents"] + " events, ";
     			if (dataset == "tb04") {
     				rundata = rundata +

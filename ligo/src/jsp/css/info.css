@@ -48,16 +48,14 @@ a#nav-library {
 }
 
 ul.nav-info li {
-	display: inline; 
+	display: inline;
+	border: solid 1px #333399;
+	font-size: 90%;
+	margin: 3px;
+	padding: 3px;
 }
 
-ul.nav-info li:after {
-	content: " -" ; 
-}
 
-ul.nav-info li:last-child:after {
-	content: "" ; 
-}
 
 /*
 	Italicisize corresponding subnav item
@@ -78,3 +76,7 @@ ul.nav-info li:last-child:after {
 #nav #subnav ul li:first-child a {
 	border-left: none;
 }
+
+
+
+

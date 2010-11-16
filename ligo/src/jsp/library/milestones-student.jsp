@@ -55,7 +55,7 @@
 							</li>
 							<li>
 								Explain why LIGO monitors the environment at the observatories.
-								<a href="javascript:reference('environmental_monitoring',420)">
+								<a href="javascript:reference('seismic data importance',420)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
@@ -66,8 +66,8 @@
 								</a>
 							</li>
 							<li>
-								Look for patterns in LIGO seismic data. 
-								<a href="javascript:reference('data patterns',450)">
+								Examine and become familiar with LIGO seismic data. 
+								<a href="javascript:reference('examine data',450)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>

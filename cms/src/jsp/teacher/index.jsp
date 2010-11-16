@@ -203,8 +203,8 @@ function showAll(start, finish)
 								</div><div id="vsId6-h" style="visibility:visible; display:">
 						<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
 					<p>
-				A good way to begin CMS studies is to invited the class to watch Cool Science 
-				together. Play the Standalone Movie and enlarge the window.</p>
+				A good way to begin CMS studies is to invite the class to watch <b>Cool Science</b>
+				together. Play the <a href="../home/cms-animation-wobutton.swf">Standalone Movie</a> and enlarge the window.</p>
 				<P>Questions to ask students? How to motivate students. TOM</P>
 				<p>Milestones on the Project Map provide opportunities for students to build basic scientific skills,  learn how the detector works,  understand subatomic particles, learn how to use the analysis tools, use plots to explain results an post the results of their studies as online posters.
 				Students should look through the posters to gain ideas for research questions.</p> 

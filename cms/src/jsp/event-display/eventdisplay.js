@@ -1,10 +1,10 @@
-function disableSelection(target){
-	if (typeof target.onselectstart!="undefined") {//IE route
+function disableSelection(target) {
+	if (typeof target.onselectstart != "undefined") {//IE route
 		target.onselectstart = function() {
 			return false
 		};
 	}
-	else if (typeof target.style.MozUserSelect!="undefined") {//Firefox route
+	else if (typeof target.style.MozUserSelect != "undefined") {//Firefox route
 		target.style.MozUserSelect = "none";
 	}
 	else {//All other route (ie: Opera)
@@ -14,6 +14,36 @@ function disableSelection(target){
 	}
 }
 
+function enableNextPrev() {
+	if (document.selectedEventIndex > 0) {
+		$("#prev-event-button").removeClass("disabled");
+	}
+	if (document.currentEventList && (document.currentEventList.length > document.selectedEventIndex)) {
+		$("#next-event-button").removeClass("disabled");
+	}
+}
+
+function loadCurrentEvent() {
+	var file = document.currentFileList[document.selectedFileIndex];
+	var event = document.currentEventList[document.selectedEventIndex];
+	var size = event.size;
+	var path = document.settings.lastDir + "/" + file.name;
+	var ro = startDownload(path + ":" + event.name, "Loading " + path + ":" + event.name + "...", eventDataLoaded);
+}
+
+function nextEvent() {
+	if (document.currentEventList && (document.currentEventList.length > document.selectedEventIndex)) {
+		document.selectedEventIndex++;
+		loadCurrentEvent();
+	}
+}
+
+function prevEvent() {
+	if (document.selectedEventIndex > 0) {
+		document.selectedEventIndex--;
+		loadCurrentEvent();
+	}
+}
 
 function keys(o) {
 	s = "";
@@ -31,6 +61,12 @@ function toggle(key) {
 var disabled = new Array();
 var ranks = new Array();
 
+for (var key in d_descr) {
+	if (!d_descr[key].on) {
+		disabled[key] = true;
+	}
+}
+
 function addSwitchRow(html) {
 	var tbl = document.getElementById("switches");
 	tbl.insertRow(tbl.rows.length).innerHTML = html;
@@ -47,7 +83,9 @@ var NOEVENT = {"Collections": {}};
 
 function addSwitchRows(d_event) {
 	for (var g = 0; g < d_groups.length; g++) {
-		addSwitchRow('<td colspan="2" class="group">' + d_groups[g] + '</td>');
+		addSwitchRow('<td colspan="2" class="group">' + d_groups[g] + 
+				'<a href="#" class="help-detsystem" onclick="openPopup(event, \'help-detsystem-' + 
+				g + '\', \'cursor\')"><img src="../graphics/help-small.png" /></a></td>');
 		for (var key in d_descr) {
 			if (d_descr[key].group != d_groups[g]) {
 				continue;
@@ -55,11 +93,8 @@ function addSwitchRows(d_event) {
 			if (!d_event["Collections"][key]) {
 				continue;
 			}
-			var on = d_descr[key].on ? ' checked="true"' : "";
+			var on = !disabled[key] ? ' checked="true"' : "";
 			var count = d_event["Collections"][key].length;
-			if (!d_descr[key].on) {
-				disabled[key] = true;
-			}
 			var desc = d_descr[key].desc;
 			if (desc == null) {
 				desc = key;
@@ -114,6 +149,7 @@ function combineData(a) {
 
 function eventDataLoaded(data) {
 	document.eventData = data;
+	enableNextPrev();
 	initializeData();
 	document.draw();
 }
@@ -502,6 +538,7 @@ window.addEventListener('load', function() {
 			renderer.ctx.setFillColor(1, 1, 1, 1);
 			renderer.ctx.fillText("fps: " + Math.round(10000 / (end - start))/10, 10, 10);
 			renderer.ctx.fillText("deadline: " + (deadline - start), 10, 20);
+			renderer.ctx.fillText("start: " + start, 10, 30);
 		}
 	}
   

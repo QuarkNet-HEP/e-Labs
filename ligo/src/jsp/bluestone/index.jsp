@@ -21,7 +21,6 @@
 			span.rotate-text-left {
 				position: absolute;
 				width: 0px;
-				height: 0px;
 				-webkit-transform: rotate(-90deg); 
 				-moz-transform: rotate(-90deg);	
 				filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
@@ -51,7 +50,8 @@
 			    <script src="advanced.js" type="text/javascript"></script> <%-- Advanced Mode --%>
 				
 				<h1>Bluestone <span style="color: red">2.0 Public Beta </span></h1>
-				<br /><br />
+				<div style="text-align:right">Need help? Try the <e:popup href="../library/ref-analysis.jsp" target="help" width="450" height="600" toolbar="true">Practice Plots</e:popup> or watch a <e:popup href="../video/intro-bluestone.html" target="tryit" width="800" height="659">Video</e:popup>.</div>
+				<br />
 				Time<sub>start</sub>: <input readonly type="text" name="xmin" id="xmin" size="15" class="datepicker"></input>
 				Time<sub>end</sub>: <input readonly type="text" name="xmax" id="xmax" size="15" class="datepicker"></input>
 				<button id="plotButtonTop" class="plotButton" value="Plot">Plot</button>

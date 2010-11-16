@@ -4,22 +4,20 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.util.*" %>
 
-<script language='javascript'>
-<!--
+<script type="text/javascript">
 function Send(url, link)
 {
     var count = parseInt(opener.document.log.count.value);
     opener.document.log.log_text.value += "(--Image " + count + "--)";
     opener.document.log.count.value = (count + 1)+"";
-    opener.document.log.img_src.value += "<a href='" + link + "' target='_blank'>";
-    opener.document.log.img_src.value += "<IMG height='100' width='100' SRC='";
+    opener.document.log.img_src.value += "<a href=\"" + link + "\" target=\"_blank\">";
+    opener.document.log.img_src.value += "<img height=\"100\" width=\"100\" src=\"";
     opener.document.log.img_src.value += url;
-    opener.document.log.img_src.value += "' border=0></a>,";
+    opener.document.log.img_src.value += "\" border=\"0\"></a>,";
     self.close();
     opener.focus();
     return false;
 };
-// -->
 </script>   
 
 <%

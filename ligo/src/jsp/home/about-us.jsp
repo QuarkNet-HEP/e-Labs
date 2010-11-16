@@ -11,7 +11,7 @@
 		<title>About Us</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/two-column-home.css"/>
 	</head>
 		
 	<body id="big-picture" class="library">
@@ -28,12 +28,11 @@
 				
 <table border="0" id="main">
 	<tr>
-		<td id="left">
+		<td id="left-column">
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
-		<td id="center">
+		<td id="right-column">
 			<h1>Join a national collaboration of students to study LIGO seismic data. </h1>
-			
 			<p />
 			
 			
@@ -71,8 +70,17 @@
 					</ul>
 				</li>
 			</ul>
-			
+			</div>
 		</td>
+						<td class="float-right bordered">
+									<div style="width:205px; text-align:center;"><a href="/elab/ligo/home/" style="text-decoration: none;"><img src="../graphics/home-button.gif" border="0"><br>e-Lab Home</a></div>
+									<jsp:include page="../login/login-control.jsp">
+									<jsp:param name="prevPage" value="../home/login-redir.jsp"/>
+								</jsp:include>
+								</div>
+							</td>
+		</td>
+
 	</tr>
 </table>
 

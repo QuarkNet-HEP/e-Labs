@@ -7,7 +7,7 @@ function plotSelected() {
 function updatePlotList() {
 	var list = document.getElementById("plots-input");
 	var str = "";
-	var tbl = document.getElementById("plots");
+	var tbl = document.getElementById("plotlist");
 	for (var i = 1; i < tbl.rows.length; i++) {
 		var cb = firstNonTextChild(tbl.rows[i].cells[0]);
 		if (!cb.checked) {
@@ -31,14 +31,14 @@ function updatePlotList() {
 function initializeFromPlotParams() {
 	options["onSelect"] = setColor;
 	$(".colorbutton").jeegoocontext("color-list", options);
-	$("#plots .plot").bind("click", plotSelected);
+	$("#plotlist .plot").bind("click", plotSelected);
 		
 	var plots = document.getElementById("plots-input");
 	if (plots.value == null || plots.value == "") {
 		return;
 	}
 	document.getElementById("plot-submit").disabled = false;
-	var tbl = document.getElementById("plots");
+	var tbl = document.getElementById("plotlist");
 	var s = plots.value.split(" ");
 	var count = 0;
 	var single = null;

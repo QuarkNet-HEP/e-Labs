@@ -27,6 +27,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<title>Plot - ${param.analysisName}</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
@@ -249,7 +250,7 @@
 <div id="help" class="help">
 	<table>
 		<tr>
-			<td class="title">Plot Help<a href="#" onclick="closeHelp('help');"><img src="../graphics/close.png" /></a></td>
+			<td class="title">Plot Help<a href="#" onclick="closePopup('help');"><img src="../graphics/close.png" /></a></td>
 		</tr>		
 		<tr>
 			<td class="content">
@@ -274,7 +275,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td align="right"><button name="close" onclick="closeHelp('help');">Close</button></td>
+			<td align="right"><button name="close" onclick="closePopup('help');">Close</button></td>
 		</tr>
 	</table>
 </div>

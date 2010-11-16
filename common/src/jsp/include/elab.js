@@ -92,7 +92,7 @@ function showRefLink(url, W, H) {
 	if (!W) {
 		W = 500;
 	}
-	winPref = "width=" + W + ",height=" + H + ",scrollbars=yes,toolbar=no,menubar=no,status=yes,resizable=yes";
+	winPref = "width=" + W + ",height=" + H + ",scrollbars=yes,toolbar=yes,menubar=no,status=yes,resizable=yes";
 	window.open(url, "_blank", winPref);
 }
 

@@ -14,12 +14,9 @@
 		<link href="speed-test.css" rel="stylesheet" type="text/css" />
 		
 		<script src="../include/elab.js"></script>
-		<script>
-			initlog(false);
-		</script>
 		<script src="utils.js"></script>
 		<script src="../include/flexcroll.js"></script>
-		<script src="../include/jquery/js/jquery-1.4.min.js"></script>
+		<script src="../include/jquery/js/jquery-1.4.3.min.js"></script>
 		<script src="../include/pre3d.js"></script>
 		<script src="../include/pre3d_shape_utils.js"></script>
 		<script src="../include/base64.js"></script>
@@ -31,14 +28,18 @@
 		<script src="save.js"></script>
 	</head>
 	<body class="black">
-
+	<script>
+		initlog(false);
+	</script>
 <table>
-	<tr height="24px">
-		<td class="bordered">
-			<%@ include file="toolbar.jspf" %>
-		</td>
-		<td class="bordered">
+	<tr>
+		<td colspan="2" class="titlebar-plain bordered">
 			<div id="title"></div>
+		</td>
+	</tr>
+	<tr height="24px">
+		<td colspan="2" class="bordered">
+			<%@ include file="toolbar.jspf" %>
 		</td>
 	</tr>
 	<tr>
@@ -69,6 +70,7 @@
 <%@ include file="event-browser.jspf" %>
 <%@ include file="speed-test.jspf" %>
 <%@ include file="about.jspf" %>
+<%@ include file="detector-help.jspf" %>
 
 	</body>
 </html>

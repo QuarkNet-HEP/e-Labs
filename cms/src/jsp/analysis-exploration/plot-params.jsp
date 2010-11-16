@@ -109,7 +109,7 @@
 				<tr>
 					<td>
 						
-<table border="0" id="plots">
+<table border="0" id="plotlist">
 	<tr>
 		<th>#</th>
 		<th>Plot Content</th>

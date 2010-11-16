@@ -53,12 +53,13 @@
 				<li><a href="../home/cool-science.jsp"><b>Cool Science</b></a></li>
 				<li><a href="../site-index/site-map-anno.jsp"><b>Explore!</b></a></li>
 				<li><a href="../home/about-us.jsp"><b>About Us</b></a></li>
+				<li>e-Lab Intro:<br /><e:popup href="../video/intro-interface.html" target="tryit" width="800" height="659">Screencast (with Sound)</e:popup></li> or <e:popup href="../library/intro-tutorial.jsp?slide=-1" target="tryit" width="900" height="659">Screenshots</e:popup></li>
 				
 			</ul>
 		</td>
 		<td class="library">
 			<ul>
-				<li><a href="/library/index.php/LIGO_Glossary"><b>Glossary</b></a></li>
+				<li><a href="/library/kiwi.php/Category:LIGOGLOSSARY" target="glossary"><b>Glossary</b></a></li>
 				<li><a href="../library/resources.jsp"><b>Resources</B></a></li>
 					<ul>
 						<li>
@@ -71,11 +72,8 @@
 						
 						
 					<li><a href="../library/big-picture.jsp"><b>The Big Picture</b></a></li>
-                   <li><a href="../library/FAQ.jsp"><b>FAQs</b></a></li>
-<li><a href="../library/site-tips.jsp"><b>Site Tips</b></a></li>
-				</li>
-
-						<li><a href="../references/showAll.jsp?t=reference">All References for Project Map</a></li>
+					<li><a href="<a href="#" onclick="javascript:window.open('\/library\/kiwi.php\/LIGO_FAQ', 'faq', 'width=500,height=300, resizable=1, scrollbars=1');return false;">FAQs</a></li>				</li>
+			<li><a href="../library/site-tips.jsp"><b>Site Tips</b></a></li>
 			</ul>
 		</td>
 		<td class="data">
@@ -84,8 +82,8 @@
 					<strong>Analysis</strong>
 					<ul>
 						<li><a href="../data">Data</a></li>
-						<li><a href="/ligo/tla/tutorial.php">Tutorial</a></li>
-						<li><a href="/ligo/tla/">Bluestone</a></li>
+						<li>Tutorials:<br /><e:popup href="../video/intro-bluestone.html" target="tryit" width="800" height="659">Screencast (with Sound)</e:popup></li> or <e:popup href="../bluestone/tutorial.jsp" target="tryit" width="900" height="659">Screenshots</e:popup></li>
+						<li><a href="../bluestone/">Bluestone</a></li>
 						<li><a href="../plots/">View Plots</a></li>
 						<li><a href="../analysis/list.jsp">Analyses</a></li>
 					</ul>

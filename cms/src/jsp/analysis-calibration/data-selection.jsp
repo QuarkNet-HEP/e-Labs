@@ -9,6 +9,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<title>Data Selection - Detector Calibration Studies</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
@@ -76,6 +77,11 @@ Choose an event type, select the runs to analyze and then go to plot selection.
 								vSwitchShow("selected-events-panel");
 								vSwitchShow("data-selection-panel");	
 							}
+							else if (expr == "none") {
+								clearRunList();
+								clearExpr();
+								$("#plot-params-button").attr("disabled", true);
+							}
 							else {
 								updateFromSimpleExpr(expr);
 							}
@@ -119,10 +125,10 @@ Choose an event type, select the runs to analyze and then go to plot selection.
 					<e:hidden image="../graphics/minus.png">
 						<div class="wait-on-runs">
 							<div id="runs-header">
-								<input type="checkbox" id="select-all" checked="true" onchange="selectAll();"/>All
+								<input type="checkbox" id="select-all" checked="true" onclick="selectAll();"/>All
 								<e:trinput type="hidden" name="runs" id="runs-input" />
 							</div>
-							<div id="runs">
+							<div id="runlist">
 							</div>
 							<div id="totals">
 							</div>

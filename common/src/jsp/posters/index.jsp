@@ -54,11 +54,6 @@
 							Doubt results, challenge ideas, replicate investigations, propose and analyze 
 							alternative explanations. These are all part of doing science. 
 						</p>
-							<p>
-    	                   View these sample <a href="../posters/poster-sample.html" target="poster">posters</a> 
-		                   and <a href="../posters/paper-sample.html" target="paper">papers</a>.
-	                       </p>
-
 					</div>
 				</div>
 			</div>

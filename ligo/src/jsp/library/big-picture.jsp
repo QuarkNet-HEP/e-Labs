@@ -38,7 +38,7 @@
 			<p>
 				<img class="float-right" src="../graphics/colliding_blackholes.jpg" 
 					width="204" height="120" alt="[black_holes]" />
-				You can diagnose seismic noise at LIGO Hanford Observatory and join scientists in their efforts to understand how ground vibrations influence LIGO's detectors. 
+				You can diagnose seismic noise at LIGO and join scientists in their efforts to understand how ground vibrations influence LIGO's detectors. 
 			</p>
 			<p>
 				<img class="float-right" src="../graphics/3Dinspiral.gif" 
@@ -49,7 +49,7 @@
 				Using huge interferometers in Washington State and Louisiana, LIGO, the Laser Interferometer Gravitational Wave Observatory, measures movements that are smaller that a thousandth of the size of an atomic nucleus. This radical level of sensitivity creates the possibility that gravitational waves now can be directly detected.
 			</p>
 			<p>
-				LIGO is built on the ground, and the ground constantly vibrates at levels much greater than the effects of gravitational waves.  This background of seismic noise must be filtered to prevent it from contaminating LIGO's ultra-sensitive detectors. To better understand the noise, LIGO operates and monitors a network of seismometers and other instruments related to ground vibrations such as tiltmeters and weather stations. Using the LIGO e-Lab, you can play a role in LIGO's "noise diagnosis" process by studying seismic data from the LIGO Hanford facility.
+				LIGO's detectors are built on the ground, and the ground constantly vibrates at levels much greater than the effects of gravitational waves.  This background of seismic noise must be filtered to prevent it from contaminating LIGO's ultra-sensitive interferometers. To better understand the noise, LIGO operates and monitors a network of seismometers and other instruments related to ground vibrations such as tiltmeters and weather stations. Using the LIGO e-Lab, you can play a role in LIGO's "noise diagnosis" process by studying seismic data from the LIGO Hanford facility.
 			</p>
 			<p>
 				Watch the <a href="../home/cool-science.jsp">Cool Science</a> video if you haven't yet.

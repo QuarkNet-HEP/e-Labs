@@ -79,12 +79,12 @@
 							</td>
 							<td width="125" valign="bottom"  align="center">
 								<div id="sitehelp-library">
-									<a href="/library/index.php/Category:LIGO">Glossary</a><br />
+									<a href="/library/kiwi.php/Category:LIGOGLOSSARY" target="glossary"">Glossary</a><br />
 									<a href="../library/resources.jsp">Resources</a><br />
 									<a href="../library/big-picture.jsp">Big Picture</a><br />
-									<a href="../library/FAQ.jsp">FAQs</a><br />
+									<a href="#" onclick="javascript:window.open('\/library\/kiwi.php\/LIGO_FAQ', 'faq', 'width=500,height=300, resizable=1, scrollbars=1');return false;">FAQs</a><br />
 									<a href="../library/site-tips.jsp">Site Tips</a>
-								</div>
+										</div>
 							</td>
 							<td width="125" valign="bottom" align="center">
 								<div id="sitehelp-data">

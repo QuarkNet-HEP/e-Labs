@@ -3,8 +3,8 @@
 <c:if test="${user != null}">
 	<link type="text/css" href="../css/nav-rollover.css" rel="Stylesheet" />
 	<link type="text/css" href="../include/jquery/css/blue/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />	
-	<script type="text/javascript" src="../include/jquery/js/jquery-1.4.2.min.js"></script>
-	<script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.2.custom.min.js"></script>
+	<script type="text/javascript" src="../include/jquery/js/jquery-1.4.3.min.js"></script>
+	<script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.3.custom.min.js"></script>
 	<script type="text/javascript" src="../include/jquery/js/jquery.event.hover-1.0.js"></script>
 
 	<script type="text/javascript">
@@ -62,19 +62,18 @@
 						<li><a href="../home/about-us.jsp">About Us</a></li>
 					</ul>
 					<ul id="sub-library">
-						<li><a href="/library/kiwi.php/Category:LIGO">Glossary</a></li>
+						<li><a href="/library/kiwi.php/Category:LIGOGLOSSARY" target="glossary">Glossary</a></li>
 						<li><a href="../library/resources.jsp">Resources</a></li>
 						<li><a href="../library/big-picture.jsp">Big Picture</a></li>
-						<li><a href="../library/FAQ.jsp">FAQs</a></li>
-						<li><a href="../library/site-tips.jsp">Site Tips</a></li>
+						<li><a href="<a href="#" onclick="javascript:window.open('\/library\/kiwi.php\/LIGO_FAQ', 'faq', 'width=500,height=300, resizable=1, scrollbars=1');return false;">FAQs</a></li>						<li><a href="../library/site-tips.jsp">Site Tips</a></li>
 					</ul>
 					<ul id="sub-data">
 						<%--
 						<li><a href="/ligo/tla/tutorial.php">Tutorial</a></li>
 						--%>
-						<li><a href="../bluestone/">Bluestone 2.0 Beta</a></li>
-						<li><a href="/ligo/tla/">Bluestone 1.0</a></li>
+						<li><a href="../bluestone/">Bluestone</a></li>
 						<li><a href="../plots/">Plots</a></li>
+						<li><a href="../info/related-data.jsp">Related Data</a></li>
 					</ul>
 					<ul id="sub-posters"> 
 						<li><a href="../posters/new.jsp">New Poster</a></li>

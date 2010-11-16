@@ -1,1 +1,1 @@
-<%@ include file="../maps/state.jsp" %> 
+<%@ include file="../maps/ligo-diagram.jsp" %> 

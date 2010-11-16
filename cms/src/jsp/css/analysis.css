@@ -194,7 +194,7 @@ td.vopcell {
 	vertical-align: middle;
 }
 
-#runs {
+#runlist {
 	width: 597px;
 	height: 236px;
 	border: thin solid #e0e0e0;
@@ -239,22 +239,22 @@ table#main {
 	margin-right: 4px;
 }
 
-#plots {
+#plotlist {
 	width: 100%;
 	text-align: left;
 	border: thin solid #e0e0e0;
 }
 
-#plots th {
+#plotlist th {
 	background-color: #d0d0d0;
 }
 
-#plots td {
+#plotlist td {
 	background-color: #e0e0e0;
 	padding: 4px;
 }
 
-#plots #addplotcell {
+#plotlist #addplotcell {
 	background-color: white;
 }
 
@@ -263,25 +263,25 @@ table#main {
 	margin: 1px;
 }
 
-#plots .active-label {
+#plotlist .active-label {
 	text-align: left;
 }
 
-#plots th {
+#plotlist th {
 	padding: 4px;
 }
 
-#plots td {
+#plotlist td {
 	vertical-align: middle;
 	padding-left: 8px;
 	padding-right: 8px;
 }
 
-#plots .remove {
+#plotlist .remove {
 	text-align: center;
 }
 
-#plots .remove .tbutton {
+#plotlist .remove .tbutton {
 	width: 10px;
 	margin-left: auto;
 	margin-right: auto;
