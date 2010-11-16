@@ -1,0 +1,25 @@
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:if test="${param.goto1 != null && !fn:endsWith(request.requestURI, 'index.jsp')}">
+	<jsp:forward page="../analysis-${param.analysis}/index.jsp">
+		<jsp:param name="dataset" value="${param.dataset}"/>
+		<jsp:param name="runs" value="${param.runs}"/>
+		<jsp:param name="expr" value="${param.expr}"/>
+		<jsp:param name="plots" value="${param.plots}"/>
+	</jsp:forward>
+</c:if>
+<c:if test="${param.goto2 != null && !fn:endsWith(request.requestURI, 'data-selection.jsp')}">
+	<jsp:forward page="../analysis-${param.analysis}/data-selection.jsp">
+		<jsp:param name="dataset" value="${param.dataset}"/>
+		<jsp:param name="runs" value="${param.runs}"/>
+		<jsp:param name="expr" value="${param.expr}"/>
+		<jsp:param name="plots" value="${param.plots}"/>
+	</jsp:forward>
+</c:if>
+<c:if test="${param.goto3 != null && !fn:endsWith(request.requestURI, 'plot-params.jsp')}">
+	<jsp:forward page="../analysis-${param.analysis}/plot-params.jsp">
+		<jsp:param name="dataset" value="${param.dataset}"/>
+		<jsp:param name="runs" value="${param.runs}"/>
+		<jsp:param name="expr" value="${param.expr}"/>
+		<jsp:param name="plots" value="${param.plots}"/>
+	</jsp:forward>
+</c:if>

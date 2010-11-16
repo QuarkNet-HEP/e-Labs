@@ -7,5 +7,11 @@
 		<c:when test="${param.dataset == 'mc09'}">
 			<jsp:include page="../data/mc09/plots.jspf"/>
 		</c:when>
+		<c:when test="${param.dataset == 'jpsi10'}">
+			<jsp:include page="../data/jpsi10/plots.jspf"/>
+		</c:when>
+		<c:when test="${param.dataset == 'upsilon10'}">
+			<jsp:include page="../data/upsilon10/plots.jspf"/>
+		</c:when>
 	</c:choose>
 </ul>

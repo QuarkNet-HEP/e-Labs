@@ -146,9 +146,7 @@ function updateData(expr) {
     					")";
     			}
     			else {
-    				rundata = rundata + 
-    					"simulated " + runs[i]["description"] +
-    					")";
+    				rundata = rundata + runs[i]["description"] + ")";
     			}
     			var txt = document.createElement("span");
     			txt.innerHTML = rundata;

@@ -128,6 +128,14 @@ function showAll(start, finish)
 				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Good Research Questions</h2></a>
 				<p>What kinds of particles are produced in the proton-proton collisions inside the CMS detector? What are the smallest known particles?  Students can pose a number of questions and then analyze the data for answers. Some answers are new to students but well answered by physicists. These include the smallest known particles, the kinds of particles that are produced in proton-proton collisions and how these produced particles interact with the detector. However, some questions like "Is there a Higgs boson?" or "What causes objects to have mass?" are open questions that the CMS Collaboration hopes to address. </p>
 				<p>Students may be able to contribute insights to these efforts. Many experiments have been investigating the smallest particles. For example, the top quark was discovered at the accelerator at Fermi National Accelerator Laboratory by the CDF and D&Oslash; collaborations. Students will be able to see the results of other researchers in this field. Students can explore simulated data, and once the real data becomes available, they can enter into the CMS research effort by analyzing run data, comparing it to simulated data, and sharing it with a collaboration of their peers.</p>
+				<p>Examples of research questions correlated with the <a href="../assessment/rubric-p.html" target="poster">poster rubric</a> are:</p>
+<ul>
+<li><b>Exceeds Expectations</b>: Does the width of the distribution of the Z signature in the dimuon mass spectrum vary as a function of transverse momentum?
+
+<li><b>Meets Expectations</b> Do all portions of the detector report the same value for the mass of the Z boson?
+
+<li><b>Does not Meet Expectations</b>: Can mini black holes be found in CMS data?
+</ul>
  				</div>
 
 						<div id="vsId4-v" style="visibility:hidden; display: none">
