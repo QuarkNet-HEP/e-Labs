@@ -146,12 +146,17 @@ public class ImportData extends AbstractDataTool {
 
         loadProcessedFiles();
         int fileCount = 0;
+        LIGOFile f; 
 
-        for (LIGOFile f : files) {
-            fileCount++;
-            flen += f.file.length();
-
-            if (processedFiles.contains(f.file.getName())) {
+        /* Cannot use the foreach method since we need to remove the element after use for GC reasons */ 
+        Iterator<LIGOFile> it = files.iterator();
+        while (it.hasNext()) {
+        	f = it.next(); 
+        	
+        	fileCount++; 
+        	flen += f.file.length();
+        	
+        	if (processedFiles.contains(f.file.getName())) {
                 System.out.println("Skipping " + f.file.getName());
                 continue;
             }
@@ -160,6 +165,8 @@ public class ImportData extends AbstractDataTool {
             convertFile(f);
 
             printInfo(fileCount, files);
+            
+            it.remove(); 
         }
         log("# done");
     }
