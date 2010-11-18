@@ -146,6 +146,7 @@ public class ImportData extends AbstractDataTool {
 
         loadProcessedFiles();
         int fileCount = 0;
+        int totalFileCount = files.size(); 
         LIGOFile f; 
 
         /* Cannot use the foreach method since we need to remove the element after use for GC reasons */ 
@@ -164,7 +165,7 @@ public class ImportData extends AbstractDataTool {
             checkDuration(f.file, f.trend);
             convertFile(f);
 
-            printInfo(fileCount, files);
+            printInfo(fileCount, totalFileCount, files);
             
             it.remove(); 
         }
@@ -172,17 +173,17 @@ public class ImportData extends AbstractDataTool {
     }
 
     private LinkedList<Long> times = new LinkedList<Long>();
-
-    private void printInfo(int fileCount, SortedSet<LIGOFile> files) {
-        long now = System.currentTimeMillis();
+    
+    private void printInfo(int fileCount, int totalFileCount, SortedSet<LIGOFile> files) {
+    	long now = System.currentTimeMillis();
         times.addLast(now);
         long est;
         if (times.size() > ESTIMATION_RUNS) {
             times.removeFirst();
         }
         long start = times.getFirst();
-        est = (now - start) * (files.size() - fileCount) / times.size();
-        System.out.println(fileCount + "/" + files.size() + " (" + fileCount * 100 / files.size() + "%, "
+        est = (now - start) * (totalFileCount - fileCount) / times.size();
+        System.out.println(fileCount + "/" + totalFileCount + " (" + fileCount * 100 / totalFileCount + "%, "
                 + formatSize(flen) + ") done; estimated time left: " + formatTime(est));
     }
 
