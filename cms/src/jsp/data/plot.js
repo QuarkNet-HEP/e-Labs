@@ -228,9 +228,10 @@ function buildHistogram(crt) {
 	var histogram = [];
 	var histmin = 999999;
 	var histmax = 0;
-	for (var i in data) {
-		var va = data[i];
-		for (var j = 1; j < va.length; j++) {
+	for (var i = 0; i < data.length; i++) {
+		var kv = data[i];
+		var va = kv[1];
+		for (var j = 0; j < va.length; j++) {
 			var v = Math.floor(va[j] / binWidth);
 			while (histogram.length <= v) {
 				histogram.push(0);
@@ -346,7 +347,7 @@ function parseReply(text) {
 					break;
 				}
 				eventCount++;
-				var s = value.split("\s+");
+				var s = value.split(/\s+/);
 				var va = new Array(); 
 				data.push([key, va]);
 				for (var j = 0; j < s.length; j++) {
