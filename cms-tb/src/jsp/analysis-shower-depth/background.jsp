@@ -26,8 +26,8 @@
 			
 <h1>Shower Depth Study Background</h1>
 
-<!-- transcluded from http://${elab.properties['elab.host']}/library/body.php/Detector_Resolution_Background" -->
-<e:transclude url="http://${elab.properties['elab.host']}/library/body.php/Detector_Resolution_Background"
+<!-- transcluded from http://${elab.properties['elab.host']}/library/body.php?title=Detector_Resolution_Background" -->
+<e:transclude url="http://${elab.properties['elab.host']}/library/body.php?title=Detector_Resolution_Background"
      start="<!-- start content -->"
      end="<div class=\"printfooter\">"
 />

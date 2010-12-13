@@ -55,7 +55,7 @@ if( array_key_exists('HTTP_REFERER', $_SERVER) ){
 // Complete URL to the glossary wiki, such that a search term
 // can just be appended to it.  Uses 'kiwi' skin to remove controls.
 //
-define('GLOSSARY_URL', "http://".$local_server."/glossary/kiwi.php/") ;
+define('GLOSSARY_URL', "http://".$local_server."/glossary/kiwi.php?title=") ;
 
 
 // URL to the e-Lab server (Tomcat running JSP).   The actual e-lab

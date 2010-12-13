@@ -1,6 +1,6 @@
 <table cellpadding="0" cellspacing="0">
 	<tr>
-		<td><a href="/library/kiwi.php/Category:CMS">Glossary</a></td>
+		<td><a href="/library/kiwi.php?title=Category:CMS">Glossary</a></td>
 		<td><a href="../library/resources.jsp">Resources</a></td>
 		<td><a href="../library/big-picture.jsp">Big Picture</a></td>
 		<td><a href="../library/FAQ.jsp">FAQs</a></td>

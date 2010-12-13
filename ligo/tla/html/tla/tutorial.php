@@ -72,7 +72,7 @@ $body = preg_replace($pattern, 'href="tutorial.php?step=\\2"',  $body);
 
 $pattern='%<a href="/library/[A-Za-z0-9]+\.php(/|\?title=)([^"]+)"[^>]*>([^<]+)</a>%si';
 debug_msg(4,"Searching for pattern <code>$pattern</code>");
-$url="/library/kiwi.php/\\2";
+$url="/library/kiwi.php?title=\\2";
 $onclick = "onclick=\"javascript:window.open('$url', 'Glossary: \\2',"
 	      ." 'width=520,height=600, resizable=1, scrollbars=1'); "
 	      ." return false;\" " ;

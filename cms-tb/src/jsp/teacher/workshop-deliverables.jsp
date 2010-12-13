@@ -25,13 +25,13 @@
 			<div id="content">
 <h1>Workshop Deliverables: Required Elements for an Implementation Plan</h1> 
 <e:transclude
- url="http://${elab.properties['elab.host']}/cms/library/body.php/Workshop_Deliverables"
+ url="http://${elab.properties['elab.host']}/cms/library/body.php?title=Workshop_Deliverables"
      start="<!-- start content -->"
       end="<div class=\"printfooter\">"
 />
 <div align="center"><A href="http://${elab.properties['elab.host']}/elab/cms/teacher/forum/forum_thread.php?id=335">Workshop Deliverables Thread</A></div>
 <e:transclude
- url="http://${elab.properties['elab.host']}/cms/library/body.php/Implementation_Plan_Section"
+ url="http://${elab.properties['elab.host']}/cms/library/body.php?title=Implementation_Plan_Section"
      start="<!-- start content -->"
       end="<div class=\"printfooter\">"
 />

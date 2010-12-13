@@ -25,7 +25,7 @@
 			<div id="content">
  
 <e:transclude
- url="http://${elab.properties['elab.host']}/cosmic/library/body.php/Cosmic_Notes"
+ url="http://${elab.properties['elab.host']}/cosmic/library/body.php?title=Cosmic_Notes"
      start="<!-- start content -->"
       end="<div class=\"printfooter\">"
 />

@@ -32,7 +32,7 @@
 <h2>Current Glossary</h2>
 </div>
 <e:transclude
- url="http://${elab.properties['elab.host']}/library/body.php/CMS_Glossary"
+ url="http://${elab.properties['elab.host']}/library/body.php?title=CMS_Glossary"
      start="<!-- start content -->"
      end="<div class=\"printfooter\">"
 />

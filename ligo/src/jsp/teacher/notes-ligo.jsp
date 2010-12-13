@@ -26,7 +26,7 @@
 <h1>Classroom Notes: Learn studies you can do with LIGO data in your classroom.</h1>   
  
 <e:transclude
- url="http://${elab.properties['elab.host']}/cosmic/library/body.php/LIGO_Classroom_Notes"
+ url="http://${elab.properties['elab.host']}/cosmic/library/body.php?title=LIGO_Classroom_Notes"
      start="<!-- start content -->"
      end="<div class=\"printfooter\">"
 />

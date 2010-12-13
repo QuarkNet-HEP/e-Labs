@@ -76,7 +76,7 @@ class KiwiTemplate extends QuickTemplate {
         // This may break if links are external and happen to have a
         // similarly ($wgScriptPath/index.php/$title) constructed URL
         $bodytext = $this->data["bodytext"];
-        $bodytext = preg_replace("#$wgScriptPath/index.php/([_a-zA-Z0-9]*)\"#", "$wgScriptPath/kiwi.php/$1\"", $bodytext);
+        $bodytext = preg_replace("#$wgScriptPath/index.php/([_a-zA-Z0-9]*)\"#", "$wgScriptPath/kiwi.php?title=$1\"", $bodytext);
         $this->data["bodytext"] = $bodytext;		
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

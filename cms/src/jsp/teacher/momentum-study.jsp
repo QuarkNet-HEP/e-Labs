@@ -26,7 +26,7 @@
 <h1>CMS Momentum Energy Study Notes</h1>   
  
 <e:transclude
- url="http://${elab.properties['elab.host']}/cms/library/body.php/CMS_e-Lab_Momentum-Energy_Study"
+ url="http://${elab.properties['elab.host']}/cms/library/body.php?title=CMS_e-Lab_Momentum-Energy_Study"
      start="<!-- start content -->"
       end="<div class=\"printfooter\">"
 />
