@@ -38,7 +38,7 @@
 					<div class="tab-contents">
 						<ul class="simple">
 							<li>
-						     <e:popup href="/library/kiwi.php/CMS_Glossary" target="glossary" width="500" height="300">Glossary</e:popup> - Look up terms you don't know.
+						     <e:popup href="/library/kiwi.php?title=CMS_Glossary" target="glossary" width="500" height="300">Glossary</e:popup> - Look up terms you don't know.
 							</li>
 							<li>
 							<a HREF="resources.jsp">Resources</a> - Explore <i>Online Resources, Tutorials, Contacts</i> and <i>Slide Shows</i>.  
@@ -48,7 +48,7 @@
 							<a HREF="big-picture.jsp">Big Picture</a> - Read a project overview. 
 							</li>
 							<li>
-						     <e:popup href="/library/kiwi.php/CMS_FAQ" target="faq" width="500" height="300">FAQs</e:popup> - Find answers for frequently asked questions.
+						     <e:popup href="/library/kiwi.php?title=CMS_FAQ" target="faq" width="500" height="300">FAQs</e:popup> - Find answers for frequently asked questions.
 							</li>
 							<li>
 							<a HREF="site-tips.jsp">Site Tips</a> - Check out tips for using the website.

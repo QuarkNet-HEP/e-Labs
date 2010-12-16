@@ -24,9 +24,9 @@
 
 			<div id="content">
 <h1>Share teaching ideas with your colleagues.</h1>   
-<!-- transcluded from http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php/LIGO_e-Lab_Teaching_Community" -->
+<!-- transcluded from http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php?title=LIGO_e-Lab_Teaching_Community" -->
 <e:transclude
- url="http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php/LIGO_e-Lab_Teaching_Community"
+ url="http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php?title=LIGO_e-Lab_Teaching_Community"
      start="<!-- start content -->"
      end="<div class=\"printfooter\">"
 />

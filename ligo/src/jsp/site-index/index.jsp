@@ -59,7 +59,7 @@
 		</td>
 		<td class="library">
 			<ul>
-				<li><a href="/library/kiwi.php/Category:LIGOGLOSSARY" target="glossary"><b>Glossary</b></a></li>
+				<li><a href="/library/kiwi.php?title=Category:LIGOGLOSSARY" target="glossary"><b>Glossary</b></a></li>
 				<li><a href="../library/resources.jsp"><b>Resources</B></a></li>
 					<ul>
 						<li>

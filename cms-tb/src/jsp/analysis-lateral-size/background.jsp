@@ -26,8 +26,8 @@
 			
 <h1>Lateral Size Study Background</h1>
 
-<!-- transcluded from http://${elab.properties['elab.host']}/library/body.php/Lateral_Size_Background" -->
-<e:transclude url="http://${elab.properties['elab.host']}/library/body.php/Lateral_Size_Background"
+<!-- transcluded from http://${elab.properties['elab.host']}/library/body.php?title=Lateral_Size_Background" -->
+<e:transclude url="http://${elab.properties['elab.host']}/library/body.php?title=Lateral_Size_Background"
      start="<!-- start content -->"
      end="<div class=\"printfooter\">"
 />

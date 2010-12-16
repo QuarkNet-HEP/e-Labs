@@ -32,7 +32,7 @@
 		<td id="center">
 
 <e:transclude
-url="http://${elab.properties['elab.host']}/library/body.php/LIGO_FAQ"
+url="http://${elab.properties['elab.host']}/library/body.php?title=LIGO_FAQ"
 	start="<!-- start content -->"
      end="<div class=\"printfooter\">"
 />
@@ -47,7 +47,7 @@ Several resources are available to get answers to questions, or to ask for
 help from other LIGO e-Lab participants:
 
 <UL>
-<LI> Use <a href="/library/kiwi.php/Category:LIGO">the Glossary</a> to 
+<LI> Use <a href="/library/kiwi.php?title=Category:LIGO">the Glossary</a> to 
      look up technical terms or to read articles about LIGO components and
      systems.</LI>
 

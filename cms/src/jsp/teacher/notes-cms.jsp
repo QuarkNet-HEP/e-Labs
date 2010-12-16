@@ -26,7 +26,7 @@
 <h1>CMS e-Lab Notes</h1>
  
 <e:transclude
- url="http://${elab.properties['elab.host']}/elab/cms/teacher/library/body.php/CMS_e-Lab_Notes"
+ url="http://${elab.properties['elab.host']}/elab/cms/teacher/library/body.php?title=CMS_e-Lab_Notes"
      start="<!-- start content -->"
       end="<div class=\"printfooter\">"
 />

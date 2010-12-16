@@ -25,7 +25,7 @@
 			<div id="content">
 
 <e:transclude
- url="http://${elab.properties['elab.host']}/elab/cms-tb/teacher/library/body.php/CMSTB_Notes"
+ url="http://${elab.properties['elab.host']}/elab/cms-tb/teacher/library/body.php?title=CMSTB_Notes"
      start="<!-- start content -->"
       end="<div class=\"printfooter\">"
 />

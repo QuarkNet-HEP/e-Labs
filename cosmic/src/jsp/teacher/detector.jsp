@@ -25,7 +25,7 @@
 			<div id="content">
  
 <e:transclude
- url="http://${elab.properties['elab.host']}/cosmic/library/body.php/The_QuarkNet_Detector"
+ url="http://${elab.properties['elab.host']}/cosmic/library/body.php?title=The_QuarkNet_Detector"
      start="<!-- start content -->"
       end="<div class=\"printfooter\">"
 />

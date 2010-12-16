@@ -25,7 +25,7 @@
 			<div id="content">
 <h1>CMS Z -> ee Vertex Study</h1>
 <e:transclude
- url="http://${elab.properties['elab.host']}/cms/library/body.php/CMS_e-Lab_ee_Vertex_Study"
+ url="http://${elab.properties['elab.host']}/cms/library/body.php?title=CMS_e-Lab_ee_Vertex_Study"
      start="<!~~ start content ~~>"
       end="<div class=\"printfooter\">"
 />

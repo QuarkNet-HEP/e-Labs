@@ -45,7 +45,7 @@
 						</td>
 			<td class="library">
 			<ul>
-								<li><a href="/library/kiwi.php/CMS_Glossary" target="glossary"><b>Glossary</b></a></li>
+								<li><a href="/library/kiwi.php?title=CMS_Glossary" target="glossary"><b>Glossary</b></a></li>
 								<li><a href="../library/resources.jsp"><b>Resources</b></a></li>
 								<li>
 									<ul>

@@ -26,8 +26,8 @@
 			
 <h1>Beam Purity Study Background</h1>
 
-<!-- transcluded from http://${elab.properties['elab.host']}/library/body.php/Beam Purity_Background" -->
-<e:transclude url="http://${elab.properties['elab.host']}/library/body.php/Beam_Purity_Background"
+<!-- transcluded from http://${elab.properties['elab.host']}/library/body.php?title=Beam Purity_Background" -->
+<e:transclude url="http://${elab.properties['elab.host']}/library/body.php?title=Beam_Purity_Background"
      start="<!-- start content -->"
      end="<div class=\"printfooter\">"
 />

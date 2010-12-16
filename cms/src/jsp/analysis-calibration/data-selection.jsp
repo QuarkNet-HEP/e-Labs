@@ -166,7 +166,7 @@ Choose an event type, select the runs to analyze and then go to plot selection.
 						<a href="javascript:reference('cms data selection',450)">Milestone</a> associated with data selection.
 					</li>
 					<li>
-						<e:popup href="/library/kiwi.php/CMS_FAQ" target="faq" width="500" height="300">FAQs</e:popup>
+						<e:popup href="/library/kiwi.php?title=CMS_FAQ" target="faq" width="500" height="300">FAQs</e:popup>
 					</li>
 				</ul>
 			</td>

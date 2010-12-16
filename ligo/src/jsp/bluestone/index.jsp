@@ -105,19 +105,19 @@
 				
 				<%-- Advanced Mode --%>
 				
-				<h2>Data Selection<e:popup href="/glossary/kiwi.php/Data_Channel" target="help" width="600" height="600" toolbar="true"><sup>?</sup></e:popup></h2>
+				<h2>Data Selection<e:popup href="/glossary/kiwi.php?title=Data_Channel" target="help" width="600" height="600" toolbar="true"><sup>?</sup></e:popup></h2>
 				
 				<div id="channel-list-advanced">
 					<table id="channelTable">
 						<thead>
 							<tr>
 								<th>Add/Remove</th>
-								<th>Site<e:popup href="/glossary/kiwi.php/Data_Channel_Source" target="help" width="400" height="500" toolbar="true"><sup>?</sup></e:popup>
+								<th>Site<e:popup href="/glossary/kiwi.php?title=Data_Channel_Source" target="help" width="400" height="500" toolbar="true"><sup>?</sup></e:popup>
 </th>
-								<th>Subsystem<e:popup href="/glossary/kiwi.php/Data_Channel_Subsystem" target="help" width="500" height="400" toolbar="true"><sup>?</sup></e:popup></th>
-								<th>Station<e:popup href="/glossary/kiwi.php/Data_Channel_Station" target="help" width="500" height="400" toolbar="true"><sup>?</sup></e:popup></th>
-								<th>Sensor<e:popup href="/glossary/kiwi.php/Data_Channel_Sensor" target="help" width="500" height="400" toolbar="true"><sup>?</sup></e:popup></th>
-								<th>Sampling<e:popup href="/glossary/kiwi.php/Data_Channel_Sampling" target="help" width="500" height="400" toolbar="true"><sup>?</sup></e:popup></th>
+								<th>Subsystem<e:popup href="/glossary/kiwi.php?title=Data_Channel_Subsystem" target="help" width="500" height="400" toolbar="true"><sup>?</sup></e:popup></th>
+								<th>Station<e:popup href="/glossary/kiwi.php?title=Data_Channel_Station" target="help" width="500" height="400" toolbar="true"><sup>?</sup></e:popup></th>
+								<th>Sensor<e:popup href="/glossary/kiwi.php?title=Data_Channel_Sensor" target="help" width="500" height="400" toolbar="true"><sup>?</sup></e:popup></th>
+								<th>Sampling<e:popup href="/glossary/kiwi.php?title=Data_Channel_Sampling" target="help" width="500" height="400" toolbar="true"><sup>?</sup></e:popup></th>
 								<th>Data Filename</th>
 							</tr>
 						</thead>

@@ -25,9 +25,9 @@
 			<div id="content">
 <h1>Classroom Activities from Teachers and Staff</h1>   
 
-<!-- transcluded from http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php/LIGO_e-Lab_Teaching_Community" -->
+<!-- transcluded from http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php?title=LIGO_e-Lab_Teaching_Community" -->
 <e:transclude
- url="http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php/LIGO_Classroom_Activities"
+ url="http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php?title=LIGO_Classroom_Activities"
      start="<!-- start content -->"
      end="<div class=\"printfooter\">"
 />

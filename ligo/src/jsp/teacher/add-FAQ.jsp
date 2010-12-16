@@ -31,7 +31,7 @@
 <hr>
 <h2>Current FAQ</h2>
 </div>
-<e:transclude url="http://${elab.properties['elab.host']}/library/body.php/LIGO_FAQ"
+<e:transclude url="http://${elab.properties['elab.host']}/library/body.php?title=LIGO_FAQ"
      start="<!-- start content -->"
      end="<div class=\"printfooter\">"
 />

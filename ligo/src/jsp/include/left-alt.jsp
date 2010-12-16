@@ -6,7 +6,7 @@
 		<li><a href="../maps">LIGO Maps</a>
 		<li><a href="../sensors">LIGO Sensors</a>
 		<li><a href="../info/related-data.jsp">Related Data</a>
-		<li><a href="/library/kiwi.php/Category:LIGO">LIGO Glossary</a>
+		<li><a href="/library/kiwi.php?title=Category:LIGO">LIGO Glossary</a>
 		<li><a href="/ligo/tla/">Bluestone</a>
 		<li><a href="/ligo/tla/tutorial.php">Tutorial</a>
 	</ul>
