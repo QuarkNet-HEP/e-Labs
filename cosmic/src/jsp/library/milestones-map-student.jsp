@@ -16,12 +16,12 @@
 	<area shape="rect" alt="" coords="288,116,364,144" href="javascript:reference('cosmic rays',420)" title="Describe cosmic rays in simple terms. Some background reading will tell you what scientists know.">
 	<c:choose>
 		<c:when test="${user.newSurveyId != null}"> <%-- User is in the new survey code --%>
-			<area shape="rect" alt="" coords="715,19,773,63" href="../survey/show-students.jsp?type=pre" title="Take the post-test. See what you learned.">
-			<area shape="rect" alt="" coords="0,19,58,63" href="../survey/show-students.jsp?type=post" title="Take the pre-test. See what you already know.">
+			<area shape="rect" alt="" coords="715,19,773,63" href="../survey/show-students.jsp?type=post" title="Take the post-test. See what you learned.">
+			<area shape="rect" alt="" coords="0,19,58,63" href="../survey/show-students.jsp?type=pre" title="Take the pre-test. See what you already know.">
 		</c:when>
 		<c:when test="${user.study}"> <%-- User is in the old survey code --%>
-			<area shape="rect" alt="" coords="715,19,773,63" href="../test/show-students.jsp?type=presurvey" title="Take the post-test. See what you learned.">
-			<area shape="rect" alt="" coords="0,19,58,63" href="../test/show-students.jsp?type=postsurvey" title="Take the pre-test. See what you already know.">
+			<area shape="rect" alt="" coords="715,19,773,63" href="../test/show-students.jsp?type=postsurvey" title="Take the post-test. See what you learned.">
+			<area shape="rect" alt="" coords="0,19,58,63" href="../test/show-students.jsp?type=presurvey" title="Take the pre-test. See what you already know.">
 		</c:when>
 	</c:choose>
 	<area shape="poly" alt="" coords="66,44, 98,40, 108,13, 134,13, 138,40, 156,43, 160,55, 140,60, 68,60, 66,46, 66,44" href="cool-science.jsp" title="Read about the cool science.">
