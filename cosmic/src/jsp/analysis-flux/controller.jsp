@@ -75,7 +75,7 @@
 	     * predicate matters. Elements should be added in order of decreasing
 	     * set size 
 	     */ 
-	    In and = new In();
+	     MultiQueryElement and = new In();
 		
 	    and.add(new Equals("type", "split"));
 	    and.add(new Equals("project", elab.getName()));
