@@ -12,6 +12,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
 <%@ page import="com.mallardsoft.tuple.*" %>
+<%@page import="com.mallardsoft.tuple.Tuple"%>
 
 <%
 	/* This handles the POST-Redirect-GET design pattern */ 
@@ -55,7 +56,15 @@
 		
 		ResultSet searchResults = null;
 		StructuredResultSet searchResultsStructured = null;
-	    And and = new And();
+		
+		/* For performance reasons, order of insertion into this In 
+	     * predicate matters. Elements should be added in order of decreasing
+	     * set size 
+	     */ 
+	    In and = new In();
+		
+	    and.add(new Equals("type", "split"));
+	    and.add(new Equals("project", elab.getName()));
 		
 		// Allow use of asterisk wildcards, remove leading/trailing whitespace 
 		if (StringUtils.isNotBlank(value) && !key.equals("all")) {
@@ -99,7 +108,7 @@
 			catch (Exception ex) {
 				%> 
 				
-<%@page import="com.mallardsoft.tuple.Tuple"%><h3>At least one of the dates you typed in was not understood. Please re-check the dates you typed in.</h3>
+<h3>At least one of the dates you typed in was not understood. Please re-check the dates you typed in.</h3>
 				<%
 				return; 
 			}
@@ -118,9 +127,6 @@
 	    if ("no".equals(stacked)) {
 	    	and.add(new Equals("stacked", Boolean.FALSE));
 	    }
-	    
-	    and.add(new Equals("type", "split"));
-	    and.add(new Equals("project", elab.getName()));
 	    
 	    long startTime = System.currentTimeMillis();
 		searchResults = elab.getDataCatalogProvider().runQuery(and);
