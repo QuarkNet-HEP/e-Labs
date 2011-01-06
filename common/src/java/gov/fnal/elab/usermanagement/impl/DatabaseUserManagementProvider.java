@@ -834,7 +834,7 @@ public class DatabaseUserManagementProvider implements
     		
     		ps = conn.prepareStatement("UPDATE research_group SET hashedpassword = ? WHERE id = ?;");
     		ps.setString(1, hashedPassword);
-    		ps.setInt(3, group.getId());
+    		ps.setInt(2, group.getId());
     		ps.executeUpdate(); 
     	}
     	catch(SQLException e) {
