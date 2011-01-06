@@ -76,11 +76,20 @@ public class DatabaseUserManagementProvider implements
         }
     }
 
-    private String switchingElabs(Connection c, String username, String password)
+    /***
+     * 
+     * @param c Connection to the database 
+     * @param username User-supplied username 
+     * @param password User-supplied password
+     * @return returns the BCrypt-hashed password 
+     * @throws SQLException 
+     * @throws AuthenticationException
+     */
+    @Deprecated private String switchingElabs(Connection c, String username, String password)
             throws SQLException, AuthenticationException {
         if (SWITCHING_ELABS.equals(password)) {            
             PreparedStatement ps = c.prepareStatement(
-            		"SELECT password FROM research_group WHERE name = ?;");
+            		"SELECT hashedpassword FROM research_group WHERE name = ?;");
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
