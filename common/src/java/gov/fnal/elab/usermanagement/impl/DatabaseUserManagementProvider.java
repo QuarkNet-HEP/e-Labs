@@ -8,14 +8,19 @@ import gov.fnal.elab.ElabGroup;
 import gov.fnal.elab.ElabProviderHandled;
 import gov.fnal.elab.ElabStudent;
 import gov.fnal.elab.password.GeneratePassword;
+import gov.fnal.elab.password.HashedAuthentication;
 import gov.fnal.elab.usermanagement.AuthenticationException;
 import gov.fnal.elab.usermanagement.ElabUserManagementProvider;
 import gov.fnal.elab.util.DatabaseConnectionManager;
 import gov.fnal.elab.util.ElabException;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.codec.binary.Base64; 
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,6 +28,7 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
@@ -55,7 +61,7 @@ public class DatabaseUserManagementProvider implements
         try {
             conn = DatabaseConnectionManager
                     .getConnection(elab.getProperties());
-            password = switchingElabs(conn, username, password);
+            // password = switchingElabs(conn, username, password);
             ElabGroup user = createUser(conn, username, password, elab.getId());
             checkResearchGroup(conn, user, elab.getId());
             updateUsage(conn, user);
@@ -120,20 +126,42 @@ public class DatabaseUserManagementProvider implements
 
     private ElabGroup createUser(Connection c, String username, String password,
             int projectId) throws SQLException, AuthenticationException {
+    	byte[] hashedPassword; 
+    	byte[] salt; 
+    	byte[] candidateHash; 
+    	PreparedStatement psCredentials = c.prepareStatement(
+    			"SELECT hashedpassword, salt FROM research_group " +
+    			"WHERE name = ?"); 
+    	psCredentials.setString(1, username); 
+    	ResultSet rsCredentials = psCredentials.executeQuery(); 
+    	if (!rsCredentials.next()) {
+    		throw new AuthenticationException("Invalid username or password"); 
+    	}
+    	else {
+    		hashedPassword = Base64.decodeBase64(rsCredentials.getString("hashedpassword"));
+    		salt = Base64.decodeBase64(rsCredentials.getString("salt"));
+    	}
+    	
+    	try {
+			candidateHash = HashedAuthentication.getHash(password, salt);
+			if (!Arrays.equals(hashedPassword, candidateHash)) {
+				throw new AuthenticationException("Invalid username or password"); 
+			}
+		} catch (NoSuchAlgorithmException e) {
+			// ignore
+		} catch (UnsupportedEncodingException e) {
+			// ignore 
+		} 
+    	
     	PreparedStatement ps = c.prepareStatement(
-    			"SELECT rg.id, rg.name, rg.password, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+    			"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
     			"FROM research_group AS rg " +
     			"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
     			"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
     			"LEFT OUTER JOIN \"newSurvey\".tests AS t ON (rgp.project_id = t.proj_id) " +
-    			"WHERE rg.name = ? AND rg.password = ?;");
+    			"WHERE rg.name = ?;");
     	ps.setString(1, username);
-    	ps.setString(2, password);
     	ResultSet rs = ps.executeQuery();
-        if (!rs.next()) {
-            throw new AuthenticationException("Invalid username or password");
-        }
-
         return createUser(c, username, rs);
     }
 
@@ -799,9 +827,27 @@ public class DatabaseUserManagementProvider implements
     	PreparedStatement ps = null;
     	try {
     		conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-    		ps = conn.prepareStatement("UPDATE research_group SET password = ? WHERE id = ?;");
-    		ps.setString(1, password);
-    		ps.setInt(2, group.getId());
+    		
+    		SecureRandom sr = new SecureRandom(); 
+    		byte[] salt = new byte[32];
+    		byte[] hashedPassword = new byte[32]; 
+    		sr.nextBytes(salt);
+    		try {
+    			hashedPassword = HashedAuthentication.getHash(password, salt);
+    		}
+    		catch (java.security.NoSuchAlgorithmException nsae) {
+    			throw new ElabException("Could not update password for research group \"" + group.getName() + "\".");
+    		} 
+    		catch (UnsupportedEncodingException e) {
+    			throw new ElabException("Could not update password for research group \"" + group.getName() + "\".");
+			}
+    		String base64hashedpassword = Base64.encodeBase64String(hashedPassword);
+    		String base64salt = Base64.encodeBase64String(salt); 
+    		
+    		ps = conn.prepareStatement("UPDATE research_group SET hashedpassword = ?, salt = ? WHERE id = ?;");
+    		ps.setString(1, base64hashedpassword);
+    		ps.setString(2, base64salt); 
+    		ps.setInt(3, group.getId());
     		ps.executeUpdate(); 
     	}
     	catch(SQLException e) {
