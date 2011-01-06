@@ -8,14 +8,14 @@ import gov.fnal.elab.ElabGroup;
 import gov.fnal.elab.ElabProviderHandled;
 import gov.fnal.elab.ElabStudent;
 import gov.fnal.elab.password.GeneratePassword;
-import gov.fnal.elab.password.HashedAuthentication;
 import gov.fnal.elab.usermanagement.AuthenticationException;
 import gov.fnal.elab.usermanagement.ElabUserManagementProvider;
 import gov.fnal.elab.util.DatabaseConnectionManager;
 import gov.fnal.elab.util.ElabException;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.codec.binary.Base64; 
+
+import org.mindrot.BCrypt; 
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -126,32 +126,25 @@ public class DatabaseUserManagementProvider implements
 
     private ElabGroup createUser(Connection c, String username, String password,
             int projectId) throws SQLException, AuthenticationException {
-    	byte[] hashedPassword; 
-    	byte[] salt; 
-    	byte[] candidateHash; 
+    	String hashedPassword; 
     	PreparedStatement psCredentials = c.prepareStatement(
-    			"SELECT hashedpassword, salt FROM research_group " +
+    			"SELECT hashedpassword FROM research_group " +
     			"WHERE name = ?"); 
     	psCredentials.setString(1, username); 
     	ResultSet rsCredentials = psCredentials.executeQuery(); 
-    	if (!rsCredentials.next()) {
-    		throw new AuthenticationException("Invalid username or password"); 
-    	}
-    	else {
-    		hashedPassword = Base64.decodeBase64(rsCredentials.getString("hashedpassword"));
-    		salt = Base64.decodeBase64(rsCredentials.getString("salt"));
-    	}
     	
     	try {
-			candidateHash = HashedAuthentication.getHash(password, salt);
-			if (!Arrays.equals(hashedPassword, candidateHash)) {
-				throw new AuthenticationException("Invalid username or password"); 
-			}
-		} catch (NoSuchAlgorithmException e) {
-			// ignore
-		} catch (UnsupportedEncodingException e) {
-			// ignore 
-		} 
+    		if (!rsCredentials.next()) { throw new AuthenticationException(); }
+    		hashedPassword = rsCredentials.getString("hashedpassword");
+    		if (!BCrypt.checkpw(password, hashedPassword)) { throw new AuthenticationException(); } 
+    	}
+    	catch(AuthenticationException ae) {
+    		throw new AuthenticationException("Invalid username or password");
+    	}
+    	finally {
+    		rsCredentials.close(); 
+    		psCredentials.close(); 
+    	}
     	
     	PreparedStatement ps = c.prepareStatement(
     			"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
@@ -828,25 +821,10 @@ public class DatabaseUserManagementProvider implements
     	try {
     		conn = DatabaseConnectionManager.getConnection(elab.getProperties());
     		
-    		SecureRandom sr = new SecureRandom(); 
-    		byte[] salt = new byte[32];
-    		byte[] hashedPassword = new byte[32]; 
-    		sr.nextBytes(salt);
-    		try {
-    			hashedPassword = HashedAuthentication.getHash(password, salt);
-    		}
-    		catch (java.security.NoSuchAlgorithmException nsae) {
-    			throw new ElabException("Could not update password for research group \"" + group.getName() + "\".");
-    		} 
-    		catch (UnsupportedEncodingException e) {
-    			throw new ElabException("Could not update password for research group \"" + group.getName() + "\".");
-			}
-    		String base64hashedpassword = Base64.encodeBase64String(hashedPassword);
-    		String base64salt = Base64.encodeBase64String(salt); 
+    		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12)); 
     		
-    		ps = conn.prepareStatement("UPDATE research_group SET hashedpassword = ?, salt = ? WHERE id = ?;");
-    		ps.setString(1, base64hashedpassword);
-    		ps.setString(2, base64salt); 
+    		ps = conn.prepareStatement("UPDATE research_group SET hashedpassword = ? WHERE id = ?;");
+    		ps.setString(1, hashedPassword);
     		ps.setInt(3, group.getId());
     		ps.executeUpdate(); 
     	}
