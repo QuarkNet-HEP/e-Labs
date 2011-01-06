@@ -1,6 +1,10 @@
 <%@ page import="java.util.regex.*" %>
 <%@ page import="java.util.Calendar.*" %>
 <%@ page import="java.util.GregorianCalendar.*" %>
+<%@ page import="java.security.SecureRandom" %>
+<%@ page import="org.apache.commons.codec.binary.Base64" %>
+<%@ page import="gov.fnal.elab.password.HashedAuthentication" %>
+
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <jsp:include page="../include/elab.jsp"/>
 <%@ include file="common.jsp" %>
@@ -675,9 +679,28 @@ String submit =  request.getParameter("submit");
                                     //add the new registration information to research_group
                                     int i=0;
                                     int researchGroupId = -1;
-                                    String SQLstatement = "INSERT INTO research_group (name, password, teacher_id, role, userarea, ay, survey) SELECT " +
+                                    
+                                    // Generate hashed passwords 
+                                    SecureRandom sr = new SecureRandom(); 
+						    		byte[] salt = new byte[32];
+						    		byte[] hashedPassword = new byte[32]; 
+						    		sr.nextBytes(salt);
+						    		try {
+						    			hashedPassword = HashedAuthentication.getHash(passwd1, salt);
+						    		}
+						    		catch (java.security.NoSuchAlgorithmException nsae) {
+						    			throw new ElabException("Could not generate password for research group \"" + group + "\".");
+						    		} 
+						    		catch (UnsupportedEncodingException e) {
+						    			throw new ElabException("Could not generate password for research group \"" + group + "\".");
+									}
+						    		String base64hashedpassword = Base64.encodeBase64String(hashedPassword);
+						    		String base64salt = Base64.encodeBase64String(salt); 
+                                    
+                                    String SQLstatement = "INSERT INTO research_group (name, hashedpassword, salt, teacher_id, role, userarea, ay, survey) SELECT " +
                                                             "'" + group + "', " +
-                                                            "'" + passwd1 + "', " +
+                                                            "'" + base64hashedpassword + "', " +
+                                                            "'" + base64salt + "', " +
                                                             "id, " +
                                                             "'" + role + "', " +
                                                             "'" + newUserArea + "', " + 
