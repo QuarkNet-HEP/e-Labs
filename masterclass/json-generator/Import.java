@@ -30,6 +30,7 @@ class Import {
 			// write to file
 			byte[] buf = new byte[16384];
 		    int len = bis.read(buf);
+		    bos.write("(");
 		    while (len >= 0) {
 		        for (int i = 0; i < len; i++) {
 		        	byte c = buf[i];
