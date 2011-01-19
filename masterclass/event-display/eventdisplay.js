@@ -593,7 +593,6 @@ window.addEventListener('load', function() {
 	document.draw = redraw;
 	redraw();
 	
-	// startDownload("detector-model-geometry.js", "Loading detector model...", detectorModelLoaded);
 	detectorModelLoaded(detectorModel);
 }, false);
 
