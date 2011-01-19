@@ -14,6 +14,7 @@ function disableSelection(target) {
 	}
 }
 
+/* 
 function enableNextPrev() {
 	if (document.selectedEventIndex > 0) {
 		$("#prev-event-button").removeClass("disabled");
@@ -22,6 +23,7 @@ function enableNextPrev() {
 		$("#next-event-button").removeClass("disabled");
 	}
 }
+*/
 
 function loadCurrentEvent() {
 	var file = document.currentFileList[document.selectedFileIndex];
@@ -31,6 +33,7 @@ function loadCurrentEvent() {
 	var ro = startDownload(path + ":" + event.name, "Loading " + path + ":" + event.name + "...", eventDataLoaded);
 }
 
+/*
 function nextEvent() {
 	if (document.currentEventList && (document.currentEventList.length > document.selectedEventIndex)) {
 		document.selectedEventIndex++;
@@ -44,6 +47,7 @@ function prevEvent() {
 		loadCurrentEvent();
 	}
 }
+*/
 
 function keys(o) {
 	s = "";

@@ -1,15 +1,42 @@
+// Only tested on Firefox 3.6+
+// Requires HTML5 File API support 
+
 var fileList = null; 
+var fileListCurrentIndex; 
 
 function loadEvent() {
-	// Firefox 3.6+ only right now :(
-	
 	fileList = document.getElementById('file-selector').files; 
-	
-	var data = fileList[0].getAsText("utf8");
-	
-	var ed = eval(data);
+	fileListCurrentIndex = 0; 
+	loadEvent(fileListCurrentIndex);
+}
+
+function loadEvent(var i) {
+	var data = fileList[i].getAsText("utf8");
+	var ed   = eval(data);
 	
 	eventDataLoaded(ed); 
+	enableNextPrev();
 	
-	$("#title").html(files[0].name);
+	$("#title").html(fileList[i].name);
+}
+
+function enableNextPrev() {
+	if (fileListCurrentIndex > 0) {
+		$("#prev-event-button").removeClass("disabled");
+	}
+	if (fileList && fileList.length > fileListCurrentIndex) {
+		$("#next-event-button").removeClass("disabled");
+	
+function nextEvent() {
+	if (fileList && fileList.length > fileListCurrentIndex) {
+		fileListCurrentIndex++; 
+		loadEvent(fileListCurrentIndex); 
+	}
+}
+
+function prevEvent() {
+	if (fileList && fileListCurrentIndex > 0) {
+		fileListCurrentIndex--;
+		loadEvent(fileListCurrentIndex); 
+	}
 }
