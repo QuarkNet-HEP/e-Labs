@@ -594,6 +594,7 @@ window.addEventListener('load', function() {
 	redraw();
 	
 	// startDownload("detector-model-geometry.js", "Loading detector model...", detectorModelLoaded);
+	detectorModelLoaded(detectorModel);
 }, false);
 
 function toggleBackground() {
