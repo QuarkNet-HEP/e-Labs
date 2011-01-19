@@ -17,7 +17,7 @@ function loadEvent(i) {
 	eventDataLoaded(ed); 
 	enableNextPrev();
 	
-	$("#title").html(fileList[i].name);
+	$("#title").html("File " + (fileListCurrentIndex + 1) + " of " + fileList.length + ": " + fileList[i].name);
 }
 
 function enableNextPrev() {
