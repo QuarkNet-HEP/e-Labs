@@ -13,7 +13,6 @@
 		<link href="event-browser.css" rel="stylesheet" type="text/css" />
 		<link href="speed-test.css" rel="stylesheet" type="text/css" />
 		
-		<script src="save.js"></script>
 		<script type="text/javascript" src="jquery-1.4.3.min.js"></script>
 		<script type="text/javascript" src="jquery.jeegoocontext.min.js"></script>
 		<script type="text/javascript" src="pre3d.js"></script>
