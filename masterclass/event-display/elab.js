@@ -171,7 +171,7 @@ function log(text) {
 
 function initlog(defaultOn) {
 	document.write(
-		'<a onclick="toggleLog();" style="position: fixed; bottom: 4px; right: 20px; z-index: 1;"><img id="logtoggle" src="../graphics/plus.png" alt="Show Log" /></a>' +
+		'<a onclick="toggleLog();" style="position: fixed; bottom: 4px; right: 20px; z-index: 1;"><img id="logtoggle" src="graphics/plus.png" alt="Show Log" /></a>' +
 		'<div id="log" style="display: none; z-index: 0; height: 100px;">' + 
 		'</div>');
 	if (defaultOn) {
@@ -185,12 +185,12 @@ function toggleLog() {
 	if (l.style.display == "none") {
 		l.style.display = "block";
 		lt.alt = "Hide Log";
-		lt.src = "../graphics/minus.png"; 
+		lt.src = "graphics/minus.png"; 
 	}
 	else {
 		l.style.display = "none";
 		lt.alt = "Show Log";
-		lt.src = "../graphics/plus.png";
+		lt.src = "graphics/plus.png";
 	}
 }
 
@@ -239,7 +239,7 @@ function spinnerOn(selector) {
 			img = "spinner-small.gif";
 		}
 		$(this).append('<div class="spinner-background" style="position: absolute; width: 100%; height: 100%; left: 0px; top: 0px; "></div>');
-		$(this).append('<img class="spinner-image" style="position: absolute; left: ' + left + '; top: ' + top + ';" src="../graphics/' + img + '" />');
+		$(this).append('<img class="spinner-image" style="position: absolute; left: ' + left + '; top: ' + top + ';" src="graphics/' + img + '" />');
 	});
 }
 
