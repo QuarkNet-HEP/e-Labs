@@ -593,7 +593,7 @@ window.addEventListener('load', function() {
 	document.draw = redraw;
 	redraw();
 	
-	startDownload("/cms-geometry.ig:Geometry/detector-model-geometry.js", "Loading detector model...", detectorModelLoaded);
+	// startDownload("detector-model-geometry.js", "Loading detector model...", detectorModelLoaded);
 }, false);
 
 function toggleBackground() {
