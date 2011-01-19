@@ -13,19 +13,20 @@
 		<link href="event-browser.css" rel="stylesheet" type="text/css" />
 		<link href="speed-test.css" rel="stylesheet" type="text/css" />
 		
-		<script src="../include/elab.js"></script>
-		<script src="utils.js"></script>
-		<script src="../include/flexcroll.js"></script>
-		<script src="../include/jquery/js/jquery-1.4.3.min.js"></script>
-		<script src="../include/pre3d.js"></script>
-		<script src="../include/pre3d_shape_utils.js"></script>
-		<script src="../include/base64.js"></script>
-		<script src="../include/canvas2image.js"></script>
-		<script src="demo_utils.js"></script>
-		<script src="object-conversion.js"></script>
-		<script src="detector-model-gen.js"></script>
-		<script src="data-description.js"></script>
 		<script src="save.js"></script>
+		<script type="text/javascript" src="jquery-1.4.3.min.js"></script>
+		<script type="text/javascript" src="jquery.jeegoocontext.min.js"></script>
+		<script type="text/javascript" src="pre3d.js"></script>
+		<script type="text/javascript" src="pre3d_shape_utils.js"></script>
+		<script type="text/javascript" src="base64.js"></script>		
+		<script type="text/javascript" src="elab.js"></script>
+		<script type="text/javascript" src="utils.js"></script>
+		<script type="text/javascript" src="flexcroll.js"></script>
+		<script type="text/javascript" src="canvas2image.js"></script>
+		<script type="text/javascript" src="demo_utils.js"></script>
+		<script type="text/javascript" src="object-conversion.js"></script>
+		<script type="text/javascript" src="detector-model-gen.js"></script>
+		<script type="text/javascript" src="data-description.js"></script>
 	</head>
 	<body class="black">
 	<script>

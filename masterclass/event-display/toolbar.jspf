@@ -77,7 +77,6 @@
 		</td>
 	</tr>
 </table>
-<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>
 <ul id="help-menu" class="jeegoocontext menu">
 	<li id="help-contents"><a href="help/contents.html" target="edhelp">Help Contents</a></li>
 	<li class="separator"></li>
