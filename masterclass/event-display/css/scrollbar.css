@@ -64,7 +64,7 @@ on top of this. */
 
 .hscrollerbar {
 /* Main body of horizontal scrollbar */
-	background: #99CBCB url("graphics/horizontalbarbody_cornerjog.png") 0px -30px repeat-x;
+	background: #99CBCB url("../graphics/horizontalbarbody_cornerjog.png") 0px -30px repeat-x;
 }
 
 .vscrollerbar {
@@ -109,7 +109,7 @@ z-index: 2;
 
 .hscrollerbarbeg {
 /* Left image holder for horizontal scrollbar */
-background: url("graphics/basebarcaps_verticalbarbody.png") -60px -15px no-repeat;
+background: url("../graphics/basebarcaps_verticalbarbody.png") -60px -15px no-repeat;
 height: 15px;
 /* Width of this class is normally set by the script, to fit the scrollbar, but Webkit (Safari's rendering
 engine) currently has a bug on no-repeat for negatively positioned backgrounds, causing the top
@@ -120,14 +120,14 @@ width: 15px !important;
 
 .hscrollerbarend {
 /* Right image holder for horizontal scrollbar */
-background: url("graphics/basebarcaps_verticalbarbody.png") -30px -15px no-repeat;
+background: url("../graphics/basebarcaps_verticalbarbody.png") -30px -15px no-repeat;
 height: 15px;
 width: 15px;
 }
 
 .scrollerjogbox {
 /* Scroller jog (scroll-pan) image holder, only visible when both scrollbars are used */
-background: #4E727C url("graphics/horizontalbarbody_cornerjog.png") 0px 0px;
+background: #4E727C url("../graphics/horizontalbarbody_cornerjog.png") 0px 0px;
 width: 12px;
 height: 12px;
 top: auto; left: auto;
@@ -166,13 +166,13 @@ bottom: 0px; right: 0px;
 
 .hscrollerbase {
 /* Horziontal scrollbar's base body */ 
-background: #D7EBDF url("graphics/horizontalbarbody_cornerjog.png") 0px -15px repeat-x;
+background: #D7EBDF url("../graphics/horizontalbarbody_cornerjog.png") 0px -15px repeat-x;
 }
 
 .hscrollerbasebeg {
 /* Horizontal scrollbar's left-cap */
 /* This may be used for holding the left arrow */
-background: url("graphics/basebarcaps_verticalbarbody.png") -60px 0px no-repeat;
+background: url("../graphics/basebarcaps_verticalbarbody.png") -60px 0px no-repeat;
 height: 15px;
 /* width of this element is normally auto set by the script to fit the scrollbase, to cover the base... */
 width: 15px !important; /* Safari BG repeat fix */
@@ -183,11 +183,11 @@ width: 15px !important; /* Safari BG repeat fix */
 /* This may be used for holding the right arrow */
 height: 15px;
 width: 15px;
-background: url("graphics/basebarcaps_verticalbarbody.png") -30px 0px no-repeat;
+background: url("../graphics/basebarcaps_verticalbarbody.png") -30px 0px no-repeat;
 }
 
 .scrollerjogbox:hover {
-	background: #5E828C url("graphics/basebarcaps_verticalbarbody.png") -45px -15px;
+	background: #5E828C url("../graphics/basebarcaps_verticalbarbody.png") -45px -15px;
 }
 
 /* Scroll Bar Master Styling Ends Here */
