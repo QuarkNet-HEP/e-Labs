@@ -587,12 +587,14 @@ window.addEventListener('load', function() {
 	// Have the engine handle mouse / camera movement for us.
 	document.cameraState = DemoUtils.autoCamera(renderer, 0, 0, -30, 0.40, -1.06, 0, redraw);
 
+	/*
 	document.addEventListener('keydown', function(e) {
 		if (e.keyCode != 84)  // t
 			return;
 		
 		toggleBackground();
 	}, false);
+	*/
 	
 	document.draw = redraw;
 	redraw();
