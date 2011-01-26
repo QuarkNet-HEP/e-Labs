@@ -164,6 +164,9 @@ public class DatabaseUserManagementProvider implements
     			"WHERE rg.name = ?;");
     	ps.setString(1, username);
     	ResultSet rs = ps.executeQuery();
+        if (!rs.next()) { 
+        	throw new AuthenticationException("Invalid username or password"); 
+    	} 
         return createUser(c, username, rs);
     }
 
