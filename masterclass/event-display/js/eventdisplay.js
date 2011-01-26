@@ -291,7 +291,7 @@ function getIndex(rd, i) {
 
 var GLOBAL_RANK_THRESHOLD = 0.9;
 
-window.addEventListener('load', function() {
+function setupCanvasCB() {
 	document.d_event = NOEVENT;
 	document.perfWeights = [];
 	
@@ -600,7 +600,9 @@ window.addEventListener('load', function() {
 	redraw();
 	
 	detectorModelLoaded(detectorModel);
-}, false);
+}
+
+window.addEventListener('load', setupCanvasCB, false);
 
 function toggleBackground() {
 	if (document.settings.invertColors) {
