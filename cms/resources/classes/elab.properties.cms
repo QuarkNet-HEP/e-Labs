@@ -30,7 +30,7 @@ dataset.location.mc09=/disks/i2u2/cms/data/mcdata
 #dataset.location.jpsi10=/disks/i2u2/cms/data/jpsi-upsilon
 #dataset.location.upsilon10=/disks/i2u2/cms/data/jpsi-upsilon
 dataset.location.jpsi11=/disks/i2u2/cms/data/jpsi-250111
-dataset.location.jpsi11=/disks/i2u2/cms/data/zmumu11
+dataset.location.jpsi11=/disks/i2u2/cms/data/zmumu-250111
 
 plot.image.cache=/home/quarkcat/tmp/cms-image-cache
 
