@@ -57,8 +57,7 @@ Find out.</p>
 					<select id="dataset" name="dataset">
 						<option value="none" id="nothing-selected">Choose dataset...</option>
 						<option value="mc09">Monte Carlo Simulation</option>
-						<option value="jpsi10">J/Psi (J/&Psi;) Data (LHC 2010)</option>
-						<option value="upsilon10">Upsilon (&Upsilon;) Data (LHC 2010)</option>	
+						<option value="jpsi11">J/Psi (J/&Psi;) Data (LHC 2011)</option>
 					</select>
 					<script>
 						function datasetSelected(obj) {
