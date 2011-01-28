@@ -3,9 +3,9 @@
 # the common elab properties
 #
 
-provider.analysis = gov.fnal.elab.analysis.impl.vds.VDSAnalysis
+cms.vds.home = ${i2u2.home}/tomcat/webapps/elab/cms/output
 
-swift.workflow.dir = /home/mike/work/i2u2/cisvn/i2u2/trunk/cms/src/swift
+data.dir = /disks/i2u2/cms/data
 
 usedb = true
 dataset = tb04
@@ -14,13 +14,24 @@ xmldir = xml
 
 ogre = http://leptoquark.hep.nd.edu/~ogre
 
-ogredb.database=//localhost/ogredb
+ogredb.database=//data1.i2u2.org/ogredb
 ogredb.username=ogre
-ogredb.password=ogre
+ogredb.password=
 
 dataset.descriptor.tb04=tb04-data.xml
 dataset.descriptor.mc09=mc09-data.xml
-dataset.location.tb04=/disks/i2u2/cms/data/tbdata
-dataset.location.mc09=/home/mike/work/i2u2/cms-data/mcdata
+#dataset.descriptor.jpsi10=jpsi10-data.xml
+#dataset.descriptor.upsilon10=upsilon10-data.xml
+dataset.descriptor.jpsi11=jpsi10-data.xml
+dataset.descriptor.zmumu11=zmumu11-data.xml
 
-plot.image.cache=/home/mike/work/i2u2/cms-image-cache
+dataset.location.tb04=/disks/i2u2/cms/data/tbdata
+dataset.location.mc09=/disks/i2u2/cms/data/mcdata
+#dataset.location.jpsi10=/disks/i2u2/cms/data/jpsi-upsilon
+#dataset.location.upsilon10=/disks/i2u2/cms/data/jpsi-upsilon
+dataset.location.jpsi11=/disks/i2u2/cms/data/jpsi11
+dataset.location.jpsi11=/disks/i2u2/cms/data/zmumu11
+
+plot.image.cache=/home/quarkcat/tmp/cms-image-cache
+
+event.display.data.location=/disks/i2u2/cms/data/ig
