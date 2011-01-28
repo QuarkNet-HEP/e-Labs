@@ -38,6 +38,13 @@
 	log("<span class='red'>commbine: ${param.combine}</span>");
 </script>
 
+<p>You can use this tool to explore CMS data. Like CMS physicists, you can determine that the
+CMS detector is working properly by confirming measurements (such as mass) of  
+well-known particles. Start by confirming the masses of the J/Psi and Z particles using data with two muons (dimuons). Do the events in these runs confirm the detector's ability to  
+make accurate measurements? What kind of results do you get when you look at dimuons with the opposite signs (&mu;+&mu;-) and same sign (&mu;-&mu;- and/or &mu;+&mu;+)?</p>
+<p>What other studies can you do? Do the measurements drift over time?  
+Find out.</p>
+
 <form action="../analysis-exploration/data-selection.jsp">
 	<e:trinput type="hidden" name="plots"/>
 	<e:trinput type="hidden" name="combine"/>
