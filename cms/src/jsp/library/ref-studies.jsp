@@ -18,9 +18,9 @@
 		    	 		</b>
 		    	 		In order to believe in any science results, you must first believe that the instruments used are performing reliably over time. Calibrating the detector so that it enables "rediscovery" of previously measured results is an important part of the early scientific activity at CMS.  You can participate in this process. Whether it is the confirmation of a mass of a previously measured particle mass, the relation between energy and momentum, or some other parameter, you are invited to choose some pathway to explore calibration of the CMS detector.
     			 	</p>
-    			 	<p>For the time being, you should use Monte Carlo data to warm up for your calibration study.  This activity will show you how the plots will look when there is plenty of experimental data available for this study.</p>
+    			 	<p>Use simulated data to warm up for your calibration study.  This study will show you how the plots will look when there is plenty of experimental data available.</p>
 
-					<p>Then try your hand with some available experimental data under the Exploration tab. (The quanitity of experimental data available at this time is just enough to give you an idea of what the plots will look like when more data is available.</p>
+					<p>Then try your hand with experimental data under the Exploration tab. (The quanitity of experimental data available at this time is just enough to give you an idea of what the plots will look like when more data is available.</p>
 
     			 	<p>
     			 		<b>
@@ -29,7 +29,7 @@
     			 	
 					Which calibration parameter to begin with?
 					Time periods &mdash; which do you want to monitor?
-					Data quantity:  how much data do you need?
+					Data quantity &mdash; how much data do you need?
 					</p>
 					<P STYLE="margin-left: 10px"><A HREF="javascript:showRefLink('http://pdgLive.lbl.gov/listings1.brl?exp=Y',800,600)">PDG Live</a> - Measurements of the properties of the elementary particles from the Particle Data Group</p><p>
 
@@ -37,12 +37,12 @@
  			   		<ul>
  			   		<li><i>Available:</i>
  			   		<ul>
-						<li>Determination of Z mass in Monte Carlo data
-						<li>Determination of Z and J/Psi masses in experimental data
+						<li>Confirmation of Z mass with simulated data
+						<li>Confirmation of Z and J/Psi masses with experimental data
 					</ul>
 					<li><i>Coming Soon:</i>
 			   		<ul>
-						<li>Confirmation of Upsilon and J-Psi masses
+						<li>Confirmation of Upsilon mass
 						<li>Confirmation of energy &mdash; momentum equivalence (for low-mass particles in High Energy Physics)
 					</ul>
 					</ul>
