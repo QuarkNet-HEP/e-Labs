@@ -18,6 +18,10 @@
 		    	 		</b>
 		    	 		In order to believe in any science results, you must first believe that the instruments used are performing reliably over time. Calibrating the detector so that it enables "rediscovery" of previously measured results is an important part of the early scientific activity at CMS.  You can participate in this process. Whether it is the confirmation of a mass of a previously measured particle mass, the relation between energy and momentum, or some other parameter, you are invited to choose some pathway to explore calibration of the CMS detector.
     			 	</p>
+    			 	<p>For the time being, you should use Monte Carlo data to warm up for your calibration study.  This activity will show you how the plots will look when there is plenty of experimental data available for this study.</p>
+
+					<p>Then try your hand with some available experimental data under the Exploration tab. (The quanitity of experimental data available at this time is just enough to give you an idea of what the plots will look like when more data is available.</p>
+
     			 	<p>
     			 		<b>
     	 					General Study Design Considerations: 
@@ -33,7 +37,8 @@
  			   		<ul>
  			   		<li><i>Available:</i>
  			   		<ul>
-						<li>Determination of Z mass
+						<li>Determination of Z mass in Monte Carlo data
+						<li>Determination of Z and J/Psi masses in experimental data
 					</ul>
 					<li><i>Coming Soon:</i>
 			   		<ul>
