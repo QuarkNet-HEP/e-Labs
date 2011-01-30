@@ -1,0 +1,42 @@
+<li value=".pt_">
+	<span class="label">p<sub>t</sub></span>
+	<ul>
+		<li value="recoMuons_muons__RECO.obj">muon</li>
+		<li value="recoPhotons_photons__RECO.obj">photon</li>
+	</ul>
+</li>
+<li value=".eta_">
+	<span class="label">&eta;</span>
+	<ul>
+		<li value="recoMuons_muons__RECO.obj">muon</li>
+		<li value="recoPhotons_photons__RECO.obj">photon</li>
+	</ul>
+</li>
+<li value=".phi_">
+	<span class="label">&phi;</span>
+	<ul>
+		<li value="recoMuons_muons__RECO.obj">muon</li>
+		<li value="recoPhotons_photons__RECO.obj">photon</li>
+	</ul>
+</li>
+<li value=".vertex_.fCoordinates.fX">
+	<span class="label">X vertex</span>
+	<ul>
+		<li value="recoMuons_muons__RECO.obj">muon</li>
+		<li value="recoPhotons_photons__RECO.obj">photon</li>
+	</ul>
+</li>
+<li value=".vertex_.fCoordinates.fY">
+	<span class="label">Y vertex</span>
+	<ul>
+		<li value="recoMuons_muons__RECO.obj">muon</li>
+		<li value="recoPhotons_photons__RECO.obj">photon</li>
+	</ul>
+</li>
+<li value=".vertex_.fCoordinates.fZ">
+	<span class="label">Z vertex</span>
+	<ul>
+		<li value="recoMuons_muons__RECO.obj">muon</li>
+		<li value="recoPhotons_photons__RECO.obj">photon</li>
+	</ul>
+</li>
