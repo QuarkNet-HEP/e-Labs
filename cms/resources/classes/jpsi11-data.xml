@@ -3,7 +3,7 @@
 <root type="J-Psi Run">
 
   <dataset name="jpsi11">
-    <database table="jpsidb">
+    <database table="jpsidb11">
       <field name="run" />
       <field name="nevents" />
       <field name="dataset" />
