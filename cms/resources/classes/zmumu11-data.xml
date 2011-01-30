@@ -3,7 +3,7 @@
 <root type="J-Psi Run">
 
   <dataset name="zmumu11">
-    <database table="zmumudb">
+    <database table="zmumu11db">
       <field name="run" />
       <field name="nevents" />
       <field name="dataset" />
