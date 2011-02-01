@@ -31,6 +31,7 @@
 
 <!-- <table border="0" id="registration-links-table"> -->
 <table border="0"  cellspacing="10">
+	<%--
 	<tr>
 		<td valign="top" width="40%">
 			<a href="mass-registration.jsp">Register student research groups with a spreadsheet.</a>
@@ -44,8 +45,9 @@
 			next page will get you started.
 		</td>
 	</tr>
+	--%>
 	<tr>
-		<td  valign="top">
+		<td  valign="top" width="40%">
 			<a href="register-students.jsp">Register student research groups.</a>
 		</td>
 		<td valign="top">
