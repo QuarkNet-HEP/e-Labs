@@ -34,3 +34,11 @@
 		<li value="recoMuons_muons__RECO.obj">muon</li>
 	</ul>
 </li>
+<li value=".mass_">
+	<span class="label">mass</span>
+	<ul>
+		<li value="recoCompositeCandidates_JpsiCandidatesALL__PAT.obj">&mu;<sup>&plusmn;</sup>&mu;<sup>&plusmn;</sup></li>
+		<li value="recoCompositeCandidates_JPsiCandidatesLS__PAT.obj">&mu;<sup>+</sup>&mu;<sup>+</sup> / &mu;<sup>-</sup>&mu;<sup>-</sup></li>
+		<li value="recoCompositeCandidates_JPsiCandidatesOS__PAT.obj">&mu;<sup>+</sup>&mu;<sup>-</sup></li>
+	</ul>
+</li>
