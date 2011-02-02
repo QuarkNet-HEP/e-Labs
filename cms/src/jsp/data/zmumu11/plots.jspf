@@ -43,7 +43,6 @@
 <li value=".mass_">
 	<span class="label">mass</span>
 	<ul>
-		<!-- <li value="recoCompositeCandidates_ZCandidatesALL__PAT.obj">&mu;<sup>&plusmn;</sup>&mu;<sup>&plusmn;</sup></li>  -->
 		<li value="recoCompositeCandidates_ZCandidatesLS__PAT.obj">&mu;<sup>+</sup>&mu;<sup>+</sup> / &mu;<sup>-</sup>&mu;<sup>-</sup></li>
 		<li value="recoCompositeCandidates_ZCandidatesOS__PAT.obj">&mu;<sup>+</sup>&mu;<sup>-</sup></li>
 	</ul>

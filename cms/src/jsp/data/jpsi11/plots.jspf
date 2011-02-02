@@ -37,7 +37,6 @@
 <li value=".mass_">
 	<span class="label">mass</span>
 	<ul>
-		<!-- <li value="recoCompositeCandidates_JpsiCandidatesALL__PAT.obj">&mu;<sup>&plusmn;</sup>&mu;<sup>&plusmn;</sup></li>  -->
 		<li value="recoCompositeCandidates_JpsiCandidatesLS__PAT.obj">&mu;<sup>+</sup>&mu;<sup>+</sup> / &mu;<sup>-</sup>&mu;<sup>-</sup></li>
 		<li value="recoCompositeCandidates_JpsiCandidatesOS__PAT.obj">&mu;<sup>+</sup>&mu;<sup>-</sup></li>
 	</ul>
