@@ -13,6 +13,7 @@
 
   <triggers level="0">
     <trigger name="mumu"	displayname="&amp;mu;&amp;mu;"		id="uu"   description="Di-muon events"      level="0" group="1"/>
+    <trigger name="ee"		displayname="ee"     				id="ee"   description="Di-electron events"  level="0" group="1"/>
   </triggers>
 
   <tree id="1" name="Events" level="0">
