@@ -173,7 +173,7 @@ public class DatabaseUserManagementProvider implements
     private ElabGroup createUser(Connection c, String username, int projectId)
             throws SQLException, ElabException {
 		PreparedStatement ps = c.prepareStatement(
-        		"SELECT rg.id, rg.name, rg.password, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
         		"FROM research_group AS rg " +
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
@@ -193,7 +193,7 @@ public class DatabaseUserManagementProvider implements
             throws SQLException, ElabException {
     	String name = "";
         PreparedStatement ps = c.prepareStatement(
-        		"SELECT rg.id, rg.name, rg.password, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
         		"FROM research_group AS rg " +
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
@@ -276,7 +276,7 @@ public class DatabaseUserManagementProvider implements
     private ElabGroup createGroup(Connection c, String groupName,
             int projectId) throws SQLException {
         PreparedStatement ps = c.prepareStatement(
-        		"SELECT rg.id, rg.name, rg.password, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
         		"FROM research_group AS rg " +
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
@@ -599,11 +599,12 @@ public class DatabaseUserManagementProvider implements
             
             Savepoint beforeRGInsert = c.setSavepoint("beforerginsert");
             String groupNameAddon = "";
+            String hashedPassword = BCrypt.hashpw(pass, BCrypt.gensalt(12));
             ps = c.prepareStatement(
             		"INSERT INTO research_group " +
-            		"(name, password, teacher_id, role, userarea, ay, survey, new_survey, in_study) " +
+            		"(name, hashedpassword, teacher_id, role, userarea, ay, survey, new_survey, in_study) " +
             		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;");
-            ps.setString(2, pass);
+            ps.setString(2, hashedPassword);
             ps.setInt(3, et.getTeacherId());
             ps.setString(4, group.isUpload() ? "upload" : "user");
             ps.setString(5, group.getUserArea());
@@ -856,7 +857,7 @@ public class DatabaseUserManagementProvider implements
 	            boolean pass = false; 
 	            String sql = "UPDATE research_group SET ay = ?, role = ?, survey = ?, new_survey = ?";
 	            if (StringUtils.isNotBlank(password)) {
-	            	sql += ", password = ? ";
+	            	sql += ", hashedpassword = ? ";
 	            	pass = true;
 	            }
 	            sql += "WHERE id = ?;";
@@ -866,7 +867,8 @@ public class DatabaseUserManagementProvider implements
 	            ps.setBoolean(3, group.getSurvey());
 	            ps.setBoolean(4, group.isNewSurvey());
 	            if (pass) {
-	            	ps.setString(5, password);
+	            	String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12)); 
+	            	ps.setString(5, hashedPassword);
 	            	ps.setInt(6, group.getId());
 	            }
 	            else {
