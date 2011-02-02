@@ -631,6 +631,7 @@ public class DatabaseUserManagementProvider implements
             while ((rs == null) || (!rs.next()));
             
         	researchGroupId = rs.getInt(1);
+        	group.setName(group.getName() + groupNameAddon);
         	group.setId(researchGroupId);
             
             ps = c.prepareStatement(
