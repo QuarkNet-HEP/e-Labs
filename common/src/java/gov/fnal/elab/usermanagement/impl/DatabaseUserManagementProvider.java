@@ -586,11 +586,6 @@ public class DatabaseUserManagementProvider implements
         	rp = new GeneratePassword();
         	pass = rp.getPassword();
         	
-        	/* TODO: This really, really shouldn't be used. This is vulnerable to race conditions :( 
-        	 * We should be inserting and checking for an exception
-        	 */ 
-            student.getGroup().setName(checkConflict(c, student.getGroup().getName()));
-            
             File tua = new File(et.getUserArea());
             group.setUserArea(new File(tua.getParentFile(), group.getName())
                     .getPath());
