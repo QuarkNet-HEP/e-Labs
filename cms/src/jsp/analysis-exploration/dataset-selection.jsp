@@ -2,6 +2,8 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -134,7 +136,27 @@ Find out.</p>
 		</tr>
 		<tr>
 			<td class="content">
-				Write me!
+				<p>Need help with dataset selection? Try these links:</p>
+				<ul>
+<%-- 
+					<li>
+						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">Calibration Studies Background</e:popup>
+					</li>
+--%>
+
+<li>
+						<e:popup href="../video/demos-exploration.html?video=dataset-selection" target="tryit" width="800" height="800">Screencast Demo</e:popup>
+ - how to select datasets.
+					</li>
+<%-- 
+					<li>
+						<a href="javascript:reference('cms data selection',450)">Milestone</a> associated with data selection.
+					</li>
+--%>
+					<li>
+						<e:popup href="/library/kiwi.php?title=CMS_FAQ" target="faq" width="500" height="300">FAQs</e:popup>
+					</li>
+				</ul>
 			</td>
 		</tr>
 		<tr>
