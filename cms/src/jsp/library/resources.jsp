@@ -66,6 +66,10 @@
 								<e:popup href="../video/demos-calibration.html?video=plot" target="tryit" width="800" height="800">Plotting Tool: Calibration Studies and Exploration</e:popup> - how to plot.
 							</li>
 							<li>
+								<e:popup href="../video/demos-exploration.html?video=dataset-selection" target="tryit" width="800" height="800">Dataset Selection: Exploration Studies</e:popup>
+ - how to select datasets.
+							</li>
+							<li>
 								<e:popup href="../video/demos-exploration.html?video=data-selection" target="tryit" width="800" height="800">Data Selection: Exploration Studies</e:popup>
  - how to select data.
 							</li>
