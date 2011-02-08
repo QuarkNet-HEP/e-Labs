@@ -4,7 +4,7 @@
 		prevPage = elab.getProperties().getLoggedInHomePage();
 	}
 %>
-<form method="post" action="<%= elab.secure("login/login.jsp") %>">
+<form method="post" action="<%= elab.secure("login/admin-login.jsp") %>">
 	<table>
 		<tr>
 			<td class="form-label">

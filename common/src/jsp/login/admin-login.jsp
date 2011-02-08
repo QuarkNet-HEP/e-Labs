@@ -161,7 +161,7 @@
 					<span class="warning">${exception.message}</span>
 				</c:if>
 				<div id="login-form-contents">
-					<%@ include file="login-form.jsp" %>
+					<%@ include file="admin-login-form.jsp" %>
 				</div>
 				<div id="login-form-text">
 					<p>
