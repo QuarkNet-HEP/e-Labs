@@ -70,7 +70,15 @@
 		
 		ResultSet searchResults = null;
 		StructuredResultSet searchResultsStructured = null;
-	    And and = new And();
+	    
+		/* For performance reasons, order of insertion into this In 
+	     * predicate matters. Elements should be added in order of decreasing
+	     * set size 
+	     */ 
+	    MultiQueryElement and = new In();
+		
+	    and.add(new Equals("type", "split"));
+	    and.add(new Equals("project", elab.getName()));
 		
 		// Allow use of asterisk wildcards, remove leading/trailing whitespace 
 		if (StringUtils.isNotBlank(value) && !key.equals("all")) {
@@ -133,9 +141,7 @@
 	    	and.add(new Equals("stacked", Boolean.FALSE));
 	    }
 	    
-	    and.add(new Equals("type", "split"));
-	    and.add(new Equals("project", elab.getName()));
-	    
+
 	    long startTime = System.currentTimeMillis();
 		searchResults = elab.getDataCatalogProvider().runQuery(and);
 		long endDataSearch = System.currentTimeMillis();

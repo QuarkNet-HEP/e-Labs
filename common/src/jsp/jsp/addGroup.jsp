@@ -1,6 +1,8 @@
 <%@ page import="java.util.regex.*" %>
 <%@ page import="java.util.Calendar.*" %>
 <%@ page import="java.util.GregorianCalendar.*" %>
+<%@ page import="org.mindrot.BCrypt" %>
+
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <jsp:include page="../include/elab.jsp"/>
 <%@ include file="common.jsp" %>
@@ -675,9 +677,13 @@ String submit =  request.getParameter("submit");
                                     //add the new registration information to research_group
                                     int i=0;
                                     int researchGroupId = -1;
-                                    String SQLstatement = "INSERT INTO research_group (name, password, teacher_id, role, userarea, ay, survey) SELECT " +
+                                    
+                                    // Generate hashed passwords 
+                                    String hashedPassword = BCrypt.hashpw(passwd1, BCrypt.gensalt(12)); 
+                                    
+                                    String SQLstatement = "INSERT INTO research_group (name, hashedpassword, teacher_id, role, userarea, ay, survey) SELECT " +
                                                             "'" + group + "', " +
-                                                            "'" + passwd1 + "', " +
+                                                            "'" + hashedPassword + "', " +
                                                             "id, " +
                                                             "'" + role + "', " +
                                                             "'" + newUserArea + "', " + 

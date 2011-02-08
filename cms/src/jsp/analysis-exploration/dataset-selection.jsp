@@ -2,6 +2,8 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -38,6 +40,15 @@
 	log("<span class='red'>commbine: ${param.combine}</span>");
 </script>
 
+<p>You can use this tool to explore CMS data. Like CMS physicists, you can determine that the
+CMS detector is working properly by confirming measurements (such as mass) of  
+well-known particles. Start by confirming the masses of the J/Psi and Z particles using data with two muons (dimuons). Do the events in these runs confirm the detector's ability to  
+make accurate measurements? What kind of results do you get when you look at dimuons with the opposite signs (&mu;+&mu;-) and same sign (&mu;-&mu;- and/or &mu;+&mu;+)?</p>
+<%-- 
+<p>What other studies can you do? Do the measurements drift over time?  
+Find out.</p>
+ --%>
+
 <form action="../analysis-exploration/data-selection.jsp">
 	<e:trinput type="hidden" name="plots"/>
 	<e:trinput type="hidden" name="combine"/>
@@ -50,8 +61,8 @@
 					<select id="dataset" name="dataset">
 						<option value="none" id="nothing-selected">Choose dataset...</option>
 						<option value="mc09">Monte Carlo Simulation</option>
-						<option value="jpsi10">J/Psi (J/&Psi;) Data (LHC 2010)</option>
-						<option value="upsilon10">Upsilon (&Upsilon;) Data (LHC 2010)</option>	
+						<option value="jpsi11">J/Psi (J/&Psi;) Data (LHC 2010)</option>
+						<option value="zmumu11">Zmumu (Z&rarr;&mu;&mu;) Data (LHC 2010)</option>
 					</select>
 					<script>
 						function datasetSelected(obj) {
@@ -125,7 +136,27 @@
 		</tr>
 		<tr>
 			<td class="content">
-				Write me!
+				<p>Need help with dataset selection? Try these links:</p>
+				<ul>
+<%-- 
+					<li>
+						<e:popup href="../library/ref-studies.jsp" target="tryit" width="520" height="600">Calibration Studies Background</e:popup>
+					</li>
+--%>
+
+<li>
+						<e:popup href="../video/demos-exploration.html?video=dataset-selection" target="tryit" width="800" height="800">Screencast Demo</e:popup>
+ - how to select datasets.
+					</li>
+<%-- 
+					<li>
+						<a href="javascript:reference('cms data selection',450)">Milestone</a> associated with data selection.
+					</li>
+--%>
+					<li>
+						<e:popup href="/library/kiwi.php?title=CMS_FAQ" target="faq" width="500" height="300">FAQs</e:popup>
+					</li>
+				</ul>
 			</td>
 		</tr>
 		<tr>

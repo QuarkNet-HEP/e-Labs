@@ -71,10 +71,6 @@
 <c:choose>
 	<c:when test="${valid}">
 		<h1>Answer the following questions and click <b>Record Answers</b> to take the ${survey.name}.</h1>
-		<p>
-			<strong>Don't guess!!</strong> "Do not know" is a perfectly good answer. 
-			You will learn the answers to questions like these in your investigation.
-		</p>
 		<form name="test-form" method="post" action="record-answers.jsp">
 			<ol id="test">
 				<c:forEach items="${survey.questions}" var="question">

@@ -15,7 +15,12 @@ import gov.fnal.elab.util.ElabException;
 
 import org.apache.commons.lang.StringUtils;
 
+import org.mindrot.BCrypt; 
+
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,6 +28,7 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
@@ -48,6 +54,26 @@ public class DatabaseUserManagementProvider implements
     public void setElab(Elab elab) {
         this.elab = elab;
     }
+    
+    public ElabGroup adminAuthenticateAsOtherUser(String adminUsername, String adminPassword, String usergroup) 
+    	throws AuthenticationException {
+    	Connection conn = null; 
+    	try {
+    		conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+    		authenticateUserWithRole(conn, adminUsername, adminPassword, "admin");
+    		ElabGroup user = createUser(conn, usergroup, null, elab.getId()); 
+    		checkResearchGroup(conn, user, elab.getId());
+    		updateUsage(conn, user); 
+    		return user; 
+    	}
+    	catch (SQLException e) {
+            throw new AuthenticationException("Database error: "
+                    + e.getMessage(), e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn);
+        }
+    }
 
     public ElabGroup authenticate(String username, String password)
             throws AuthenticationException {
@@ -55,7 +81,7 @@ public class DatabaseUserManagementProvider implements
         try {
             conn = DatabaseConnectionManager
                     .getConnection(elab.getProperties());
-            password = switchingElabs(conn, username, password);
+            authenticateUser(conn, username, password); 
             ElabGroup user = createUser(conn, username, password, elab.getId());
             checkResearchGroup(conn, user, elab.getId());
             updateUsage(conn, user);
@@ -69,12 +95,52 @@ public class DatabaseUserManagementProvider implements
             DatabaseConnectionManager.close(conn);
         }
     }
+    
+    private void authenticateUserWithRole(Connection c, String username, String password, String role) throws SQLException, AuthenticationException {
+    	String hashedPassword;
+    	String sql = "SELECT hashedpassword FROM research_group WHERE name = ?"; 
+    	if (role != null) {
+    		sql += " AND role = ?"; 
+    	}
+    	PreparedStatement psCredentials = c.prepareStatement(sql); 
+    	psCredentials.setString(1, username); 
+    	if (role != null) {
+    		psCredentials.setString(2, role); 
+    	}
+    	ResultSet rsCredentials = psCredentials.executeQuery(); 
+    	
+    	try {
+    		if (!rsCredentials.next()) { throw new AuthenticationException(); }
+    		hashedPassword = rsCredentials.getString("hashedpassword");
+    		if (!BCrypt.checkpw(password, hashedPassword)) { throw new AuthenticationException(); } 
+    	}
+    	catch(AuthenticationException ae) {
+    		throw new AuthenticationException("Invalid username or password");
+    	}
+    	finally {
+    		rsCredentials.close(); 
+    		psCredentials.close(); 
+    	}
+    }
+    
+    private void authenticateUser(Connection c, String username, String password) throws SQLException, AuthenticationException {
+    	authenticateUserWithRole(c, username, password, null); 
+	}
 
-    private String switchingElabs(Connection c, String username, String password)
+    /***
+     * 
+     * @param c Connection to the database 
+     * @param username User-supplied username 
+     * @param password User-supplied password
+     * @return returns the BCrypt-hashed password 
+     * @throws SQLException 
+     * @throws AuthenticationException
+     */
+    @Deprecated private String switchingElabs(Connection c, String username, String password)
             throws SQLException, AuthenticationException {
         if (SWITCHING_ELABS.equals(password)) {            
             PreparedStatement ps = c.prepareStatement(
-            		"SELECT password FROM research_group WHERE name = ?;");
+            		"SELECT hashedpassword FROM research_group WHERE name = ?;");
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
@@ -121,26 +187,24 @@ public class DatabaseUserManagementProvider implements
     private ElabGroup createUser(Connection c, String username, String password,
             int projectId) throws SQLException, AuthenticationException {
     	PreparedStatement ps = c.prepareStatement(
-    			"SELECT rg.id, rg.name, rg.password, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+    			"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
     			"FROM research_group AS rg " +
     			"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
     			"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
     			"LEFT OUTER JOIN \"newSurvey\".tests AS t ON (rgp.project_id = t.proj_id) " +
-    			"WHERE rg.name = ? AND rg.password = ?;");
+    			"WHERE rg.name = ?;");
     	ps.setString(1, username);
-    	ps.setString(2, password);
     	ResultSet rs = ps.executeQuery();
-        if (!rs.next()) {
-            throw new AuthenticationException("Invalid username or password");
-        }
-
+        if (!rs.next()) { 
+        	throw new AuthenticationException("Invalid username or password"); 
+    	} 
         return createUser(c, username, rs);
     }
 
     private ElabGroup createUser(Connection c, String username, int projectId)
             throws SQLException, ElabException {
 		PreparedStatement ps = c.prepareStatement(
-        		"SELECT rg.id, rg.name, rg.password, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
         		"FROM research_group AS rg " +
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
@@ -160,7 +224,7 @@ public class DatabaseUserManagementProvider implements
             throws SQLException, ElabException {
     	String name = "";
         PreparedStatement ps = c.prepareStatement(
-        		"SELECT rg.id, rg.name, rg.password, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
         		"FROM research_group AS rg " +
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
@@ -243,7 +307,7 @@ public class DatabaseUserManagementProvider implements
     private ElabGroup createGroup(Connection c, String groupName,
             int projectId) throws SQLException {
         PreparedStatement ps = c.prepareStatement(
-        		"SELECT rg.id, rg.name, rg.password, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
         		"FROM research_group AS rg " +
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
@@ -553,11 +617,6 @@ public class DatabaseUserManagementProvider implements
         	rp = new GeneratePassword();
         	pass = rp.getPassword();
         	
-        	/* TODO: This really, really shouldn't be used. This is vulnerable to race conditions :( 
-        	 * We should be inserting and checking for an exception
-        	 */ 
-            student.getGroup().setName(checkConflict(c, student.getGroup().getName()));
-            
             File tua = new File(et.getUserArea());
             group.setUserArea(new File(tua.getParentFile(), group.getName())
                     .getPath());
@@ -571,11 +630,12 @@ public class DatabaseUserManagementProvider implements
             
             Savepoint beforeRGInsert = c.setSavepoint("beforerginsert");
             String groupNameAddon = "";
+            String hashedPassword = BCrypt.hashpw(pass, BCrypt.gensalt(12));
             ps = c.prepareStatement(
             		"INSERT INTO research_group " +
-            		"(name, password, teacher_id, role, userarea, ay, survey, new_survey, in_study) " +
+            		"(name, hashedpassword, teacher_id, role, userarea, ay, survey, new_survey, in_study) " +
             		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;");
-            ps.setString(2, pass);
+            ps.setString(2, hashedPassword);
             ps.setInt(3, et.getTeacherId());
             ps.setString(4, group.isUpload() ? "upload" : "user");
             ps.setString(5, group.getUserArea());
@@ -602,6 +662,7 @@ public class DatabaseUserManagementProvider implements
             while ((rs == null) || (!rs.next()));
             
         	researchGroupId = rs.getInt(1);
+        	group.setName(group.getName() + groupNameAddon);
         	group.setId(researchGroupId);
             
             ps = c.prepareStatement(
@@ -799,8 +860,11 @@ public class DatabaseUserManagementProvider implements
     	PreparedStatement ps = null;
     	try {
     		conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-    		ps = conn.prepareStatement("UPDATE research_group SET password = ? WHERE id = ?;");
-    		ps.setString(1, password);
+    		
+    		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12)); 
+    		
+    		ps = conn.prepareStatement("UPDATE research_group SET hashedpassword = ? WHERE id = ?;");
+    		ps.setString(1, hashedPassword);
     		ps.setInt(2, group.getId());
     		ps.executeUpdate(); 
     	}
@@ -825,7 +889,7 @@ public class DatabaseUserManagementProvider implements
 	            boolean pass = false; 
 	            String sql = "UPDATE research_group SET ay = ?, role = ?, survey = ?, new_survey = ?";
 	            if (StringUtils.isNotBlank(password)) {
-	            	sql += ", password = ? ";
+	            	sql += ", hashedpassword = ? ";
 	            	pass = true;
 	            }
 	            sql += "WHERE id = ?;";
@@ -835,7 +899,8 @@ public class DatabaseUserManagementProvider implements
 	            ps.setBoolean(3, group.getSurvey());
 	            ps.setBoolean(4, group.isNewSurvey());
 	            if (pass) {
-	            	ps.setString(5, password);
+	            	String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12)); 
+	            	ps.setString(5, hashedPassword);
 	            	ps.setInt(6, group.getId());
 	            }
 	            else {
