@@ -54,6 +54,26 @@ public class DatabaseUserManagementProvider implements
     public void setElab(Elab elab) {
         this.elab = elab;
     }
+    
+    public ElabGroup adminAuthenticateAsOtherUser(String adminUsername, String adminPassword, String usergroup) 
+    	throws AuthenticationException {
+    	Connection conn = null; 
+    	try {
+    		conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+    		authenticateUserWithRole(conn, adminUsername, adminPassword, "admin");
+    		ElabGroup user = createUser(conn, usergroup, null, elab.getId()); 
+    		checkResearchGroup(conn, user, elab.getId());
+    		updateUsage(conn, user); 
+    		return user; 
+    	}
+    	catch (SQLException e) {
+            throw new AuthenticationException("Database error: "
+                    + e.getMessage(), e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn);
+        }
+    }
 
     public ElabGroup authenticate(String username, String password)
             throws AuthenticationException {
@@ -61,7 +81,7 @@ public class DatabaseUserManagementProvider implements
         try {
             conn = DatabaseConnectionManager
                     .getConnection(elab.getProperties());
-            // password = switchingElabs(conn, username, password);
+            authenticateUser(conn, username, password); 
             ElabGroup user = createUser(conn, username, password, elab.getId());
             checkResearchGroup(conn, user, elab.getId());
             updateUsage(conn, user);
@@ -75,6 +95,37 @@ public class DatabaseUserManagementProvider implements
             DatabaseConnectionManager.close(conn);
         }
     }
+    
+    private void authenticateUserWithRole(Connection c, String username, String password, String role) throws SQLException, AuthenticationException {
+    	String hashedPassword;
+    	String sql = "SELECT hashedpassword FROM research_group WHERE name = ?"; 
+    	if (role != null) {
+    		sql += " AND role = ?"; 
+    	}
+    	PreparedStatement psCredentials = c.prepareStatement(sql); 
+    	psCredentials.setString(1, username); 
+    	if (role != null) {
+    		psCredentials.setString(2, role); 
+    	}
+    	ResultSet rsCredentials = psCredentials.executeQuery(); 
+    	
+    	try {
+    		if (!rsCredentials.next()) { throw new AuthenticationException(); }
+    		hashedPassword = rsCredentials.getString("hashedpassword");
+    		if (!BCrypt.checkpw(password, hashedPassword)) { throw new AuthenticationException(); } 
+    	}
+    	catch(AuthenticationException ae) {
+    		throw new AuthenticationException("Invalid username or password");
+    	}
+    	finally {
+    		rsCredentials.close(); 
+    		psCredentials.close(); 
+    	}
+    }
+    
+    private void authenticateUser(Connection c, String username, String password) throws SQLException, AuthenticationException {
+    	authenticateUserWithRole(c, username, password, null); 
+	}
 
     /***
      * 
@@ -135,26 +186,6 @@ public class DatabaseUserManagementProvider implements
 
     private ElabGroup createUser(Connection c, String username, String password,
             int projectId) throws SQLException, AuthenticationException {
-    	String hashedPassword; 
-    	PreparedStatement psCredentials = c.prepareStatement(
-    			"SELECT hashedpassword FROM research_group " +
-    			"WHERE name = ?"); 
-    	psCredentials.setString(1, username); 
-    	ResultSet rsCredentials = psCredentials.executeQuery(); 
-    	
-    	try {
-    		if (!rsCredentials.next()) { throw new AuthenticationException(); }
-    		hashedPassword = rsCredentials.getString("hashedpassword");
-    		if (!BCrypt.checkpw(password, hashedPassword)) { throw new AuthenticationException(); } 
-    	}
-    	catch(AuthenticationException ae) {
-    		throw new AuthenticationException("Invalid username or password");
-    	}
-    	finally {
-    		rsCredentials.close(); 
-    		psCredentials.close(); 
-    	}
-    	
     	PreparedStatement ps = c.prepareStatement(
     			"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
     			"FROM research_group AS rg " +
