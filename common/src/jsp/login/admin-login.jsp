@@ -6,7 +6,7 @@
 <%
 	String adminUsername = request.getParameter("adminuser"); 
 	String username = request.getParameter("user");
-	String password = request.getParameter("pass");
+	String password = request.getParameter("adminpass");
 	String message  = request.getParameter("message");
 	if (message == null) {
 		message = "Please log in to proceed";
@@ -162,11 +162,6 @@
 				</c:if>
 				<div id="login-form-contents">
 					<%@ include file="admin-login-form.jsp" %>
-				</div>
-				<div id="login-form-text">
-					<p>
-						<a href="<%= elab.getGuestLoginLink(request) %>">Login as guest</a>
-					</p>
 				</div>
 			</div>
 		</td>
