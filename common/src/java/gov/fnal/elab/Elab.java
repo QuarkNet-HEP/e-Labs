@@ -9,6 +9,7 @@ import gov.fnal.elab.survey.ElabSurveyProvider;
 import gov.fnal.elab.test.ElabTestProvider;
 import gov.fnal.elab.usermanagement.AuthenticationException;
 import gov.fnal.elab.usermanagement.ElabUserManagementProvider;
+import gov.fnal.elab.usermanagement.impl.DatabaseUserManagementProvider;
 import gov.fnal.elab.util.DatabaseConnectionManager;
 import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.util.URLEncoder;
@@ -316,6 +317,16 @@ public class Elab implements Serializable {
             user.setGuest(true);
         }
         return user;
+    }
+    
+    public ElabGroup adminAuthenticateAsOther(String adminUsername, String adminPassword, String usergroup) 
+    	throws AuthenticationException {
+    	DatabaseUserManagementProvider p = (DatabaseUserManagementProvider) ElabFactory.getUserManagementProvider(this); 
+    	ElabGroup user = p.adminAuthenticateAsOtherUser(adminUsername, adminPassword, usergroup); 
+    	if (usergroup != null && usergroup.equals(properties.getGuestUserName())) {
+    		user.setGuest(true);
+    	}
+    	return user;
     }
 
     /**
