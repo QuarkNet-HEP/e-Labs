@@ -1,0 +1,5 @@
+data.dir = /disks/i2u2/cosmic/data
+
+#override the default user management provider
+provider.usermanagement = gov.fnal.elab.usermanagement.impl.CosmicDatabaseUserManagementProvider
+analysis.runtime.estimator.set = gov.fnal.elab.cosmic.estimation.CosmicAnalysisRunTimeEstimatorSet
