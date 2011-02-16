@@ -825,7 +825,7 @@ addCut = function(e, context) {
 
 function clearCutsTable() {
 	var tbl = document.getElementById("cuts-table");
-	while (tbl.rows.length > 1) {
+	while (tbl != null && tbl.rows.length > 1) {
 		tbl.deleteRow(0);
 	}
 }
