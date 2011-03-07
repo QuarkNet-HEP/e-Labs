@@ -252,7 +252,7 @@ public class ThresholdTimes implements Runnable {
     }
 
     public static void main(String[] args) {
-        ThresholdTimes tt = new ThresholdTimes(new String[] { "TTs" }, new String[] { "TTso1" }, new String[] { "1" },
+        ThresholdTimes tt = new ThresholdTimes(new String[] { "/Users/phongn/Downloads/5535.2010.0912.0" }, new String[] { "/Users/phongn/5535.2010.0912.0.thresh.java" }, new String[] { "5535" },
             new double[] { 41666667 });
         try {
             tt.run();
