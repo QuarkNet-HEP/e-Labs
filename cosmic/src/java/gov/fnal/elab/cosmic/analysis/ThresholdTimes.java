@@ -3,7 +3,6 @@
  */
 package gov.fnal.elab.cosmic.analysis;
 
-import gov.fnal.elab.util.ElabUtil;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -241,6 +240,20 @@ public class ThresholdTimes implements Runnable {
         long secoffset = Math.round(sec + sign * Integer.parseInt(offset.substring(1)) / 1000.0);
 
         return hour * 3600 + min * 60 + secoffset;
+    }
+    /**
+     * arguments: day[1..31], month[1..12], year[..2004..], hour[0..23],
+     * min[0..59]
+     */
+    private static double gregorianToJulian(int year, int month, int day,
+            int hour, int minute, int second) {
+        if (month < 3) {
+            month = month + 12;
+            year = year - 1;
+        }
+        
+        return (2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60.0 + second/3600.0)/24;
+        
     }
 
     public static void main(String[] args) {
