@@ -3,7 +3,6 @@
  */
 package gov.fnal.elab.cosmic.analysis;
 
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -11,7 +10,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-
 
 /**
  * Sample Java implementation of ThresholdTimes. A bunch of times faster. Don't use though.
@@ -29,7 +27,11 @@ public class ThresholdTimes implements Runnable {
     private String lastSecString;
     private double lastEdgeTime;
     private double cpldFreq;
-
+    
+    public static final NumberFormat NF2F = new DecimalFormat("0.00");
+    public static final NumberFormat NF10F = new DecimalFormat("0.0000000000");
+    public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
+    
     public ThresholdTimes(String[] in, String[] out, String[] ids, double[] freqs) {
         this.in = in;
         this.out = out;
@@ -127,9 +129,6 @@ public class ThresholdTimes implements Runnable {
         return ((v & 0x20) != 0);
     }
 
-    public static final NumberFormat NF2F = new DecimalFormat("0.00");
-    public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
-
     private void printData(int channel, String[] parts, String detector, BufferedWriter wr) throws IOException {
         boolean computeJD = true;
 
@@ -171,24 +170,6 @@ public class ThresholdTimes implements Runnable {
         }
     }
 
-    private int currLineJD(double offset, String[] parts) {
-        int day = Integer.parseInt(parts[11].substring(0, 2));
-        int month = Integer.parseInt(parts[11].substring(2, 4));
-        int year = Integer.parseInt(parts[11].substring(4, 6)) + 2000;
-
-        int hour = Integer.parseInt(parts[10].substring(0, 2));
-        int min = Integer.parseInt(parts[10].substring(2, 4));
-        int sec = Integer.parseInt(parts[10].substring(4, 6));
-        int msec = Integer.parseInt(parts[10].substring(7, 10));
-
-        long secOffset = Math.round(sec + msec / 1000.0 + offset);
-        double jd = ElabUtil.gregorianToJulian(year, month, day, hour, min, (int) secOffset);
-        jd = Math.rint(jd * 86400);
-        return (int) Math.floor(jd / 86400);
-    }
-
-    public static final NumberFormat NF10F = new DecimalFormat("0.0000000000");
-    
     private double calctime(int channel, int edge, String[] parts) {
         int tmc = edge & 0x1f;
 
@@ -225,7 +206,7 @@ public class ThresholdTimes implements Runnable {
         return edgetime / 86400;
     }
 
-    private long currentPPSSeconds(String num, String offset) {
+    private static long currentPPSSeconds(String num, String offset) {
         int hour = (Integer.parseInt(num.substring(0, 2)) + 12) % 24;
         int min = Integer.parseInt(num.substring(2, 4));
         double sec = Double.parseDouble(num.substring(4));
@@ -238,6 +219,23 @@ public class ThresholdTimes implements Runnable {
 
         return hour * 3600 + min * 60 + secoffset;
     }
+    
+    private static int currLineJD(double offset, String[] parts) {
+        int day = Integer.parseInt(parts[11].substring(0, 2));
+        int month = Integer.parseInt(parts[11].substring(2, 4));
+        int year = Integer.parseInt(parts[11].substring(4, 6)) + 2000;
+
+        int hour = Integer.parseInt(parts[10].substring(0, 2));
+        int min = Integer.parseInt(parts[10].substring(2, 4));
+        int sec = Integer.parseInt(parts[10].substring(4, 6));
+        int msec = Integer.parseInt(parts[10].substring(7, 10));
+
+        long secOffset = Math.round(sec + msec / 1000.0 + offset);
+        double jd = gregorianToJulian(year, month, day, hour, min, (int) secOffset);
+        jd = Math.rint(jd * 86400);
+        return (int) Math.floor(jd / 86400);
+    }
+    
     /**
      * arguments: day[1..31], month[1..12], year[..2004..], hour[0..23],
      * min[0..59]
