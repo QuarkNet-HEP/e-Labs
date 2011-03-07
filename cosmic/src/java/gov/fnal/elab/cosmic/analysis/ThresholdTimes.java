@@ -15,9 +15,9 @@ import java.text.NumberFormat;
  * Sample Java implementation of ThresholdTimes. A bunch of times faster. Don't use though.
  **/
 
-public class ThresholdTimes implements Runnable {
     private String[] in, out, ids;
     private double[] freqs;
+public class ThresholdTimes implements Callable {
     private double[] retime, fetime;
     private long[] rePPSTime, rePPSCount, reDiff;
     private int[] reTMC;
@@ -37,16 +37,9 @@ public class ThresholdTimes implements Runnable {
         this.freqs = freqs;
     }
 
-    public void run() {
-        try {
-            run2();
-        }
-        catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
-    private void run2() throws Exception {
+    public Object call() throws IOException {
         lastSecString = "";
         retime = new double[4];
         fetime = new double[4];
@@ -77,6 +70,7 @@ public class ThresholdTimes implements Runnable {
             bw.close();
             br.close();
         }
+        return null; 
     }
 
     private void timeOverThreshold(String[] parts, int channel, String detector, BufferedWriter bw) throws IOException {
@@ -264,7 +258,7 @@ public class ThresholdTimes implements Runnable {
     	}
     	
         try {
-            tt.run();
+            tt.call();
         }
         catch (Exception e) {
             e.printStackTrace();
