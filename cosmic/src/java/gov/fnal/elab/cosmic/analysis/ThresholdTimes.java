@@ -68,12 +68,9 @@ public class ThresholdTimes implements Runnable {
             }
             String line = br.readLine();
             while (line != null) {
-                String[] parts = line.split("\\s");
-                if (parts.length == 16) {
-                    for (int j = 0; j < 4; j++) {
-                        timeOverThreshold(parts, j, ids[i], bw);
-                    }
-                    count4++;
+                String[] parts = line.split("\\s"); // line validated in split.pl 
+                for (int j = 0; j < 4; j++) {
+                    timeOverThreshold(parts, j, ids[i], bw);
                 }
                 line = br.readLine();
             }
