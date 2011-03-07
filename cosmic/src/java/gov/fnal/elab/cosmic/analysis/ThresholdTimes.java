@@ -10,14 +10,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.concurrent.Callable;
 
 /**
- * Sample Java implementation of ThresholdTimes. A bunch of times faster. Don't use though.
- **/
-
-    private String[] in, out, ids;
-    private double[] freqs;
+ * Calculates the absolute time of both the rising and falling edge of an event to a precision of 0.75ns. 
+ * 
+ * @author phongn, jordant, hategan 
+ *
+ */
 public class ThresholdTimes implements Callable {
+    private String[] inputFiles, outputFiles, detectorIDs;
+    private double[] cpldFrequencies;
     private double[] retime, fetime;
     private long[] rePPSTime, rePPSCount, reDiff;
     private int[] reTMC;
@@ -25,18 +28,40 @@ public class ThresholdTimes implements Callable {
     private int lastGPSDay, jd;
     private String lastSecString;
     private double lastEdgeTime;
-    private double cpldFreq;
+    private double cpldFrequency;
     
     public static final NumberFormat NF2F = new DecimalFormat("0.00");
     public static final NumberFormat NF15F = new DecimalFormat("0.000000000000000");
-        
-    public ThresholdTimes(String[] in, String[] out, String[] ids, double[] freqs) {
-        this.in = in;
-        this.out = out;
-        this.ids = ids;
-        this.freqs = freqs;
+    
+    /**
+     * Class constructor for a single input file. 
+     * 
+     * @param inputFile 
+     * @param outputFile
+     * @param detectorID
+     * @param cpldFrequency
+     */
+    public ThresholdTimes(String inputFile, String outputFile, String detectorID, double cpldFrequency) {
+    	this.inputFiles = new String[]{ inputFile }; 
+    	this.outputFiles = new String[]{ outputFile };
+    	this.detectorIDs = new String[]{ detectorID }; 
+    	this.cpldFrequencies = new double[] { cpldFrequency }; 
     }
-
+        
+    /**
+     * Class constructor for multiple input files; requires 1:1 correspondence for each element in inputFiles
+     * and the other array parameters. 
+     * 
+     * @param inputFiles
+     * @param outputFiles
+     * @param detectorIDs
+     * @param cpldFrequencies
+     */
+    public ThresholdTimes(String[] inputFiles, String[] outputFiles, String[] detectorIDs, double[] cpldFrequencies) {
+        this.inputFiles = inputFiles;
+        this.outputFiles = outputFiles;
+        this.detectorIDs = detectorIDs;
+        this.cpldFrequencies = cpldFrequencies;
     }
 
     public Object call() throws IOException {
@@ -47,23 +72,23 @@ public class ThresholdTimes implements Callable {
         rePPSCount = new long[4];
         reDiff = new long[4];
         reTMC = new int[4];
-        for (int i = 0; i < in.length; i++) {
-            BufferedReader br = new BufferedReader(new FileReader(in[i]));
-            BufferedWriter bw = new BufferedWriter(new FileWriter(out[i]));
+        for (int i = 0; i < inputFiles.length; i++) {
+            BufferedReader br = new BufferedReader(new FileReader(inputFiles[i]));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(outputFiles[i]));
 
             bw.write("#$md5\n");
             bw.write("#md5_hex(0)\n");
             bw.write("#ID.CHANNEL, Julian Day, RISING EDGE(sec), FALLING EDGE(sec), TIME OVER THRESHOLD (nanosec)\n");
 
-            cpldFreq = freqs[i];
-            if (cpldFreq == 0) {
-                cpldFreq = 41666667;
+            cpldFrequency = cpldFrequencies[i];
+            if (cpldFrequency == 0) {
+            	cpldFrequency = 41666667;
             }
             String line = br.readLine();
             while (line != null) {
                 String[] parts = line.split("\\s"); // line validated in split.pl 
                 for (int j = 0; j < 4; j++) {
-                    timeOverThreshold(parts, j, ids[i], bw);
+                    timeOverThreshold(parts, j, detectorIDs[i], bw);
                 }
                 line = br.readLine();
             }
@@ -108,6 +133,11 @@ public class ThresholdTimes implements Callable {
         }
     }
 
+    /**
+     * Clear channel state for a given channel. 
+     * 
+     * @param channel Channel to reset. 
+     */
     private void clearChannelState(int channel) {
         retime[channel] = 0;
         fetime[channel] = 0;
@@ -137,7 +167,7 @@ public class ThresholdTimes implements Callable {
         if (computeJD) {
             int sign = parts[15].charAt(0) == '-' ? -1 : 1;
             int msecOffset = sign * Integer.parseInt(parts[15].substring(1));
-            double offset = reDiff[channel] / cpldFreq + reTMC[channel] / (cpldFreq * 32) + msecOffset / 1000.0;
+            double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
             jd = currLineJD(offset, parts);
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
@@ -187,7 +217,7 @@ public class ThresholdTimes implements Callable {
             diff += 0xffffffffl;
         }
 
-        double edgetime = rePPSTime[channel] + diff / cpldFreq + tmc / (cpldFreq * 32);
+        double edgetime = rePPSTime[channel] + diff / cpldFrequency + tmc / (cpldFrequency * 32);
         if (edgetime > 86400) {
             edgetime -= 86400;
         }
@@ -242,6 +272,20 @@ public class ThresholdTimes implements Callable {
         
     }
 
+    /**
+     * Command-line interface calculating time-over-threshold for a given input file. 
+     * 
+     * @param args Input array representing 
+     * 
+     * @param args[0] Input file 
+     * 
+     * @param args[1] Output fold 
+     * 
+     * @param args[2] Detector serial number
+     * 
+     * @param args[3] Optional parameter defining CPLD frequency.  
+     * 
+     */
     public static void main(String[] args) {
     	ThresholdTimes tt; 
     	
@@ -260,8 +304,8 @@ public class ThresholdTimes implements Callable {
         try {
             tt.call();
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (IOException e) {
+            System.out.println("File I/O Error: " + e.getMessage()); 
         }
     }
     
