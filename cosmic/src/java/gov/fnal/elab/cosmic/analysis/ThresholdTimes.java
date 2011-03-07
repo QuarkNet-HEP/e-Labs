@@ -255,12 +255,12 @@ public class ThresholdTimes implements Runnable {
         ThresholdTimes tt = new ThresholdTimes(new String[] { "TTs" }, new String[] { "TTso1" }, new String[] { "1" },
             new double[] { 41666667 });
         try {
-            long st = System.currentTimeMillis();
             tt.run();
-            System.out.println((System.currentTimeMillis() - st) / 1000);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
     }
+    
+    
 }
