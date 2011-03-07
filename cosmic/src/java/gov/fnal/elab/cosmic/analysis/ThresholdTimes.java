@@ -22,7 +22,6 @@ public class ThresholdTimes implements Runnable {
     private long[] rePPSTime, rePPSCount, reDiff;
     private int[] reTMC;
     private long lastRePPSTime, lastRePPSCount;
-    private int count1, count11, count2, count22, count4;
     private int lastGPSDay, jd;
     private String lastSecString;
     private double lastEdgeTime;
@@ -134,7 +133,6 @@ public class ThresholdTimes implements Runnable {
 
         int currGPSDay = Integer.parseInt(parts[11]);
         double currEdgeTime = 0;
-        count2++;
 
         if (currGPSDay != lastGPSDay) {
             currEdgeTime = retime[channel];
@@ -150,7 +148,6 @@ public class ThresholdTimes implements Runnable {
             jd = currLineJD(offset, parts);
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
-            count22++;
         }
 
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
@@ -174,13 +171,11 @@ public class ThresholdTimes implements Runnable {
         int tmc = edge & 0x1f;
 
         if (rePPSTime[channel] == 0 || rePPSCount[channel] == 0) {
-            count1++;
             rePPSTime[channel] = lastRePPSTime;
             rePPSCount[channel] = lastRePPSCount;
 
             String currSecString = parts[10] + parts[15];
             if (!currSecString.equals(lastSecString)) {
-                count11++;
                 rePPSTime[channel] = currentPPSSeconds(parts[10], parts[15]);
                 rePPSCount[channel] = Long.parseLong(parts[9], 16);
                 lastRePPSTime = rePPSTime[channel];
