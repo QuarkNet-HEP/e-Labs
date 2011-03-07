@@ -28,9 +28,8 @@ public class ThresholdTimes implements Runnable {
     private double cpldFreq;
     
     public static final NumberFormat NF2F = new DecimalFormat("0.00");
-    public static final NumberFormat NF10F = new DecimalFormat("0.0000000000");
-    public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
-    
+    public static final NumberFormat NF15F = new DecimalFormat("0.000000000000000");
+        
     public ThresholdTimes(String[] in, String[] out, String[] ids, double[] freqs) {
         this.in = in;
         this.out = out;
@@ -158,9 +157,9 @@ public class ThresholdTimes implements Runnable {
             wr.write('\t');
             wr.write(String.valueOf(jd));
             wr.write('\t');
-            wr.write(NF16F.format(retime[channel]));
+            wr.write(NF15F.format(retime[channel]));
             wr.write('\t');
-            wr.write(NF16F.format(fetime[channel]));
+            wr.write(NF15F.format(fetime[channel]));
             wr.write('\t');
             wr.write(NF2F.format(nanodiff));
             wr.write('\n');
@@ -198,6 +197,7 @@ public class ThresholdTimes implements Runnable {
         if (edgetime > 86400) {
             edgetime -= 86400;
         }
+                
         return edgetime / 86400;
     }
 
@@ -211,8 +211,10 @@ public class ThresholdTimes implements Runnable {
         }
 
         long secoffset = Math.round(sec + sign * Integer.parseInt(offset.substring(1)) / 1000.0);
-
-        return hour * 3600 + min * 60 + secoffset;
+        
+        long daySeconds = hour * 3600 + min * 60 + secoffset; 
+        
+        return daySeconds;
     }
     
     private static int currLineJD(double offset, String[] parts) {
