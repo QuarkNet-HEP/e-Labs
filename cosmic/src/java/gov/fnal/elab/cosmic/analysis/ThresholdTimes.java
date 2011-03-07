@@ -249,8 +249,20 @@ public class ThresholdTimes implements Runnable {
     }
 
     public static void main(String[] args) {
-        ThresholdTimes tt = new ThresholdTimes(new String[] { "/Users/phongn/Downloads/5535.2010.0912.0" }, new String[] { "/Users/phongn/5535.2010.0912.0.thresh.java" }, new String[] { "5535" },
-            new double[] { 41666667 });
+    	ThresholdTimes tt; 
+    	
+    	switch(args.length) {
+    	case 3: 
+    		tt = new ThresholdTimes(new String[]{args[0]}, new String[]{args[1]}, new String[]{args[2]}, new double[] { 41666667 });
+    		break;
+    	case 4:
+    		tt = new ThresholdTimes(new String[]{args[0]}, new String[]{args[1]}, new String[]{args[2]}, new double[] { Double.parseDouble(args[3]) });
+    		break; 
+		default: 
+			System.out.println("Usage: ThresholdTimes input_file output_file serial_number [cpld_frequency]");
+			return; 
+    	}
+    	
         try {
             tt.run();
         }
