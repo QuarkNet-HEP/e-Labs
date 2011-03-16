@@ -96,11 +96,11 @@ public class Geometries implements Serializable {
         return changedGeometries;
     }
 
-    public void setGeometries(TreeMap h) {
+    public void setGeometries(TreeMap<Integer, Geometry> h) {
         geometries = h;
     }
 
-    public TreeMap getGeometries() {
+    public TreeMap<Integer, Geometry> getGeometries() {
         return geometries;
     }
 
@@ -133,11 +133,11 @@ public class Geometries implements Serializable {
         return geometries.get(detectorID).getGeoEntry(jd);
     }
 
-    public Iterator iterator() {
+    public Iterator<Geometry> iterator() {
         return geometries.values().iterator();
     }
 
-    public Collection getValues() {
+    public Collection<Geometry> getValues() {
         return geometries.values();
     }
 
