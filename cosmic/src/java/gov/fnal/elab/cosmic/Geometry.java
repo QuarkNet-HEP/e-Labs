@@ -43,7 +43,7 @@ import org.griphyn.vdl.util.ChimeraProperties;
  */
 public class Geometry {
 
-    private TreeMap orderedGeoEntries = null;
+    private TreeMap<String, GeoEntryBean> orderedGeoEntries = null;
     private String geoDir = null;
     private String geoFile = null;
     private String localGeoFile = null;
@@ -92,11 +92,11 @@ public class Geometry {
      * @return An iterator that steps through the geometry entries.
      * @see GeoEntry
      */
-    public Iterator getGeoEntries() {
+    public Iterator<GeoEntryBean> getGeoEntries() {
         return orderedGeoEntries.values().iterator();
     }
 
-    public SortedMap getGeoEntriesBefore(String julianDay) {
+    public SortedMap<String, GeoEntryBean> getGeoEntriesBefore(String julianDay) {
         return orderedGeoEntries.headMap(julianDay);
     }
 
@@ -107,7 +107,7 @@ public class Geometry {
      * @return An iterator that steps through the geometry entries.
      * @see GeoEntry
      */
-    public Iterator getDescendingGeoEntries() {
+    public Iterator<GeoEntryBean> getDescendingGeoEntries() {
         TreeMap tmp = new TreeMap(Collections.reverseOrder());
         tmp.putAll(orderedGeoEntries);
         return tmp.values().iterator();
@@ -340,13 +340,11 @@ public class Geometry {
             return;
 
         try {
-            Iterator it = orderedGeoEntries.values().iterator();
-            PrintWriter pw = new PrintWriter(new FileWriter(new File(geoFile)));
-            while (it.hasNext()) {
-                GeoEntryBean geb = (GeoEntryBean) it.next();
-                pw.println(geb.writeForFile());
-            }
-            pw.close();
+        	PrintWriter pw = new PrintWriter(new FileWriter(new File(geoFile)));
+        	for (GeoEntryBean geb : orderedGeoEntries.values()) {
+        		pw.println(geb.writeForFile());
+        	}
+        	pw.close(); 
         }
         catch (Exception e) {
             throw new ElabException(
@@ -371,14 +369,14 @@ public class Geometry {
 
         Date endDate = null;
 
-        Iterator j = getGeoEntries();
+        Iterator<GeoEntryBean> j = getGeoEntries();
         while (j.hasNext()) {
-            GeoEntryBean gb = (GeoEntryBean) j.next();
+            GeoEntryBean gb = j.next();
             if (geoEntry.getDate().equals(gb.getDate()) && j.hasNext()) {
-                endDate = ((GeoEntryBean) j.next()).getDate();
+                endDate = j.next().getDate();
             }
         }
-
+        
         // Update the stacked state of all files that use this geo entry
         DateFormat fmt = new SimpleDateFormat("MM/dd/yyyy HH:mm:SS");
 
@@ -390,9 +388,7 @@ public class Geometry {
                     fmt.format(endDate)));
         }
         else {
-            and
-                    .add(new GreaterThan("startdate", fmt.format(geoEntry
-                            .getDate())));
+            and.add(new GreaterThan("startdate", fmt.format(geoEntry.getDate())));
         }
 
         ResultSet rs = dcp.runQueryNoMetadata(and);
@@ -403,11 +399,9 @@ public class Geometry {
 
         ArrayList meta = new ArrayList();
         meta.add("stacked boolean " + stacked);
-
-        Iterator k = rs.iterator();
-        while (k.hasNext()) {
-            CatalogEntry e = (CatalogEntry) k.next();
-            dcp.insert(DataTools.buildCatalogEntry(e.getLFN(), meta));
+        
+        for (CatalogEntry e : rs) {
+        	dcp.insert(DataTools.buildCatalogEntry(e.getLFN(), meta));
         }
     }
 
