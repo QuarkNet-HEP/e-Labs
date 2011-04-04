@@ -307,7 +307,22 @@ function parseReply(text) {
 				crt["path"] = value;
 				data = new Array();
 				crt["data"] = data;
-				crt["binwidth"] = 1;
+				
+				if (index < 0) {
+					var textSelector = "#plot0 .binwidth";
+				}
+				else {
+					var textSelector = "#plot" + index + " .binwidth"; 
+				}
+				var value = $(textSelector).attr("value");
+				var textval = parseFloat(value);
+				if (!isNaN(textval) && textval > 0) {
+					crt["binwidth"] = textval; 
+				}
+				else {
+					crt["binwidth"] = 1;
+				}
+				
 				break;
 			case "units":
 				//this relies on logx logy info appearing in the stream before the units
