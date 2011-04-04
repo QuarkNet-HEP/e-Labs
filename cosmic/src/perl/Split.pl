@@ -6,6 +6,7 @@
 #
 # Paul Nepywoda, FNAL 1/2004
 # revised, Yong Zhao, Mike Wilde, U.Chicago/Argonne, 3/2004
+# revised, Tom Jordan, FNAL, numerous times
 #
 # Output: files split based on the beginning of a new Julian Day in the output directory, and named: id.yyyy.mmdd
 #
@@ -21,6 +22,8 @@
 # jordant  changed 09-06-09: added status line parsing
 # jordant  changed 04-01-10: created a flag (#5) for occurences of the date changing before midnight. We now discard the lines.
 # jordant changed 04-23-10: dropped a raw data line if the clock and GPS CPLD latch are both 0.
+# jordant changed 07-07-10: inserting lines to create additional files needed for blessing.
+# jordant changed 11-01-10: checking to see if user is doing ST2 or ST3 when writing raw data. Knowing which one is crucial to data blessing.
 
 if($#ARGV < 2){
 	die "usage: Split.pl [filename to parse] [output DIRECTORY] [board ID]\n";
@@ -28,6 +31,8 @@ if($#ARGV < 2){
 
 use Time::Local 'timegm_nocheck';
 use Math::BigInt;
+use List::MoreUtils qw'pairwise';
+
 $dirname=`dirname $0`;
 chomp($dirname);
 $commonsubs_loc=$dirname."/CommonSubs.pl";
@@ -96,7 +101,8 @@ $CONST_hex8F = hex('FFFFFFFF');
 $CONST_hex8A = hex('AAAAAAAA');
 $rollover_flag = 0;					#Control structure to determine rollover status of the two CPLD buffers: Trigger (word[0]) and Latch (word[9]).
 $statusFlag = 0;					#Control structure to determine the presence of status lines--these go into the FOO.bless file.
-#$blessFile = 0;						#filehandle to keep the blessfile in scope globally
+#$blessFile = 0;					#filehandle to keep the blessfile in scope globally
+
 @dataRow = ();						#row of properly formatted raw data
 @stRow = ();						#status line
 @dsRow = ();						#row of scalars
@@ -118,13 +124,15 @@ $statusFlag = 0;					#Control structure to determine the presence of status line
 @stTemp = ();						#Temperature (in deg C) as reported by ST
 @stVcc = ();						#Bus voltage as reported by ST
 @stGPSSats = ();					#Number of satellites as reported by ST
-
+@stCountTemp =();					#temporary array to hold the differences while "fixing" the scalars read by ST 2
 
 $statusTime = 0;					#time stamp of the status line (in seconds since midnight.)
-$statusVersion = 0;					#flag for version of the ST command used to generate the ST lines. One version will zero the scalars after each read (a trip meter) the other version will not (an odometer). We need to know which one is the case here so that the .bless files get populated with the correct rates.
+$stType = 0;						#flag for version of the ST command used to generate the ST lines. One version will zero the scalars after each read the other version will not. We need to know which one is the case here so that the .bless files get populated with the correct rates.
+$dsRowCount=0;
 #Removed the next line on 20 Feb 2010. I don't think we need it. 
 #$oldStatusTime = 0;				#control to notice advancing status time The ^@!@#! flag isn't working. Maybe this will
-$ConReg = 0;						#string to hold the contents of the control registers from the ST line
+$ConReg = 1;						#string to hold the contents of the control registers from the ST line
+$oldConReg = 1;						#erm . . . 
 $TMCReg = 0;						#string to hold the contents of the TMC registes from the ST line
 
 #convert MAC OS line breaks to UNIX
@@ -133,10 +141,10 @@ $TMCReg = 0;						#string to hold the contents of the TMC registes from the ST l
 $newline_fixing=1;
 while(<IN>){
 	$_ =~ s/\r\n?/\n/g;	#see http://www.westwind.com/reference/OS-X/commandline/text-files.html#text-formats
-    #if($newline_fixing){
-    #	$newline_fixing = 0;
-    #   redo;
-    #}
+    if($newline_fixing){
+    	$newline_fixing = 0;
+       redo;
+    }
 	
 	#Had to change the regExp in Dec 07. The newest version of the hardware had some firmware versions that did not add the +/- to word 1 when it was 0000. This was fixed in firmware version 1.06, but some cards made it into the wild with earlier firmware.
 	#$re="^([0-9A-F]{8}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{8}) (\\d{6}\\.\\d{3}) (\\d{6}) ([AV]) (\\d\\d) ([0-9A-F]) ([-+]\\d{4})\$";
@@ -145,15 +153,25 @@ while(<IN>){
 	$reData="^([0-9A-F]{8}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{8}) (\\d{6}\\.\\d{3}) (\\d{6}) ([AV]) (\\d\\d) ([0-9A-F]) ([-+ ]\\d{4})\$";
 
 	#additional regExp to catch status lines
-	#ST 1032 +279 +000 3354 070251 301009 A 05 BD8F8E15 111 6477 00231F00 000A711F
+	#hardware version < 5999 makes these ST lines:
+	# ST 0005 2350 0149 2677 170128 120110 A 07 027BC86B 34 0057 003C1E00 000A711F
+	$reStatus0="^([A-Z]{2}) ([0-9]{4}) ([0-9]{4}) ([0-9]{4}) ([0-9]{4}) ([0-9]{6}) ([0-9]{6}) ([AV]) ([0-9]{2}) ([0-9A-F]{8}) ([0-9]{2,3}) ([0-9]{4}) ([0-9A-F]{8}) ([0-9A-F]{8})\$";
+	
+	#hardware version > 5999 makes these ST lines:
+	# ST 1032 +279 +000 3354 070251 301009 A 05 BD8F8E15 111 6477 00231F00 000A711F
+	$reStatus1="^([A-Z]{2}) ([0-9]{4}) ([-+ 0-9]{4}) ([-+ 0-9]{4}) ([0-9]{4}) ([0-9]{6}) ([0-9]{6}) ([AV]) ([0-9]{2}) ([0-9A-F]{8}) ([0-9]{2,3}) ([0-9]{4}) ([0-9A-F]{8}) ([0-9A-F]{8})\$";
 
-	$reStatus0="^([A-Z]{2}) ([0-9]{4}) ([-+ 0-9]{4}) ([-+ 0-9]{4}) ([0-9]{4}) ([0-9]{6}) ([0-9]{6}) ([AV]) ([0-9]{2}) ([0-9A-F]{8}) ([0-9]{3}) ([0-9]{4}) ([0-9A-F]{8}) ([0-9A-F]{8})\$";
-	#$reStatus0="^ST ([0-9]{4}) ([-+ 0-9]{4}) ([-+ 0-9]{4}) ([0-9]{4}) ([0-9]{6}) ([0-9]{6}) ([AV]) ([0-9]{2}) ([0-9A-F]{8}) ([0-9]{3}) ([0-9]{4}) ([0-9A-F]{8}) ([0-9A-F]{8})\$";	
-	#$reStatus1="^([A-Z]{2}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8})\$";
-	$reStatus1="^DS ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8})\$";
+	#hardware version < 6000 makes these DS lines:
+	#DS 000021E7 00001F05 00001F97 000021D8 00000021 <--there is a space there!
+	$reDS0="^([A-Z]{2}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8})\\s+\$";
+	#There is probably a way to do this with chomp. But the above works for now.
+	
+	#hardware version > 5999 makes these DS lines:
+	#DS 00000B98 0000098A 00000E51 00001089 00000004
+	$reDS1="^([A-Z]{2}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8}) ([0-9A-F]{8})\$";
 	
 	#regExp for the output of the TL command:
-	$reThreshold0="^TL L0=([0-9]+) L1=([0-9]+) L2=([0-9]+) L3=([0-9]+)\$";
+	$reThreshold0="^([A-Z]{2}) L0=([0-9]+) L1=([0-9]+) L2=([0-9]+) L3=([0-9]+)\$";
 	
 	#*performance* using an RE is 30% faster than splitting by whitespace
 	if(/$reData/o){
@@ -172,30 +190,32 @@ while(<IN>){
 	}
 
 	#inserted by TJ to look for status update lines
-	#Need to fix the problem with ST2 and ST3. The former does not reset the counter, and may roll over. We have asked the users to use ST2, but cannot trust that. I'll write the ST values to an array, scan the entire file, do a comparison on the DS values to determine if the user did ST2 or ST3 and do the subtraction (or not).
 	
-	elsif(/$reStatus0/o){
+	elsif(/$reStatus0/o || /$reStatus1/o){
 		@stRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14);
 		$stRow = @stRow; 
 		$stRowCount++;
-		#print "ST line going by Boss.", "\n";
 		push(@stTime, substr($stRow[5], 0, 2)*3600 + substr($stRow[5], 2, 2)*60 + substr($stRow[5], 4, 6));
-		#$stRow[1], "\t", $stRow[3]/10, "\t", $stRow[4]/1000, "\t", $stRow[8], "\n"
 		push(@stPress, $stRow[1]);
 		push(@stTemp, $stRow[3]/10);
 		push(@stVcc, $stRow[4]/1000);
 		push(@stGPSSats, $stRow[8]);
-		#$statusTime = substr($stRow[5], 0, 2)*3600 + substr($stRow[5], 2, 2)*60 + substr($stRow[5], 4, 6);
 		#We could look at ConReg and TMCReg to see if they change. If they do, we need to start another split file.
+		$oldConReg = $ConReg;
 		$ConReg = $stRow[13];
+		$oldConReg = $ConReg if $oldConReg == 1; #Testing revealed a case where a data file _started_ with an ST line this changed $ConReg, but not $oldConReg. 
+		print $oldConReg, "\t", $ConReg, "\n";
+		#$oldTMCReg = $TMCReg; #Ths one is a bit more complicated. The word changes, but the difference between values doesn't. Fix this later. Very few users can do this.
 		$TMCReg = $stRow[12];
-		$DAQFirmware = $stRow[10];
+		$DAQFirmware = $stRow[10]/100 if $stRow[10] > 99; 	#The DAQ firmware writes the firmware as an INT (e.g., FW version 1.06 is reported in the ST line as 106)
+		$DAQFirmware = $stRow[10]/10 if $stRow[10] < 100;	#Some of the ints are less than 100. 
+		$DAQID = int($stRow[11]);
 		next; #we need a next here to get the second line present in the output of ST.
 	}
 	
-	elsif(/$reStatus1/o){
+	elsif(/$reDS1/o || /$reDS0/o){
 		@dsRow = ($1, $2, $3, $4, $5, $6);
-		#$totalEvents += hex($dsRow[5]);
+		$dsRowCount++;
 		push (@stCount0, hex($dsRow[1]));
 		push (@stCount1, hex($dsRow[2]));
 		push (@stCount2, hex($dsRow[3]));
@@ -226,6 +246,11 @@ while(<IN>){
 	#Actually it should check if bit 2 is 1. Otherwise it may accept invalid lines.
 	next if ($dataRow[14] & 0x04 != 0); 
 
+	#trying somethiing new with GPS time solutions. TJ wonders if the V and A flag really mean something about the timing solution. Thus far there is no evidence for it.
+	#next if ($dataRow[12] eq 'V');
+	#And now looking at number of satellites
+	#next if ($dataRow[13] < 2);
+
 	#There are four asynchronous cpld rollover errors that can appear in the data, we can trap those and be more clever about dropping data lines.
 
 	#first set the variables
@@ -236,6 +261,7 @@ while(<IN>){
 	$rollover_flag = 1 if ($cpld_trig <= $last_cpld_trig && $cpld_latch > $last_cpld_latch);
 	$rollover_flag = 2 if ($cpld_trig == $last_cpld_trig && $cpld_latch < $last_cpld_latch); #flag == 1 and flag == 2 can be dealt with in the same way.
 	$rollover_flag = 3 if ($cpld_trig == $last_cpld_trig && $cpld_latch > $last_cpld_latch);
+
 	#$rollover_flag = 4 if ($cpld_trig > $last_cpld_trig && $cpld_latch > $last_cpld_latch); #This should never, ever happen. Ever. Still. . . 
 	#In fact it does happen. On every trigger. Always. The previous line is a good way to drop the first line of each event.
 	#A new rollover case appeared in firmware 1.12 The GPS date could increment before the clock reached midnight.
@@ -258,7 +284,7 @@ while(<IN>){
 	if ($rollover_flag == 3){
 		$rollover_flag = 0; # reset the flag
 		#An old board or a "small difference" makes this line invalid
-		if ($ID <=5999 || $cpld_latch - $cpld_trig < $CONST_hex8A){	
+		if ($DAQID<=5999 || $cpld_latch - $cpld_trig < $CONST_hex8A){	
 			$non_datalines++;
 			next;		
 		}
@@ -283,9 +309,9 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
        		
        		$lastDay = $day; 
        		
-	        # hmm. there's an assumption there about the cpld frequency
-	        $CPLDdifference = (hex($dataRow[0])-hex($dataRow[9]))/41666667;
-	        $sec_offset = sprintf("%.0f", $sec + $msec/1000 + $offset/1000);
+			$CPLDdifference = (hex($dataRow[0])-hex($dataRow[9]))/41666667 if $DAQID < 6000;
+			$CPLDdifference = (hex($dataRow[0])-hex($dataRow[9]))/25000000 if $DAQID > 5999;
+			$sec_offset = sprintf("%.0f", $sec + $msec/1000 + $offset/1000);
 	        $sec = $sec_offset + $CPLDdifference;
 	        #this is here because we require lines to go in the absolute correct day (with offsets taken into consideration)
 	        #Note: most of the compute time of Split.pl is in these 2 calls
@@ -295,7 +321,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			$year = $year+1900;
 			$month = sprintf("%02d", $month+1);
 			$day = sprintf("%02d", $day);
-		}
+		} # end of if ($last_time ne $dataRow. . . 
+		
 		$last_time = $dataRow[0].$dataRow[9].$dataRow[10].$dataRow[15];
 
 		#This next line may not be necessary after the dataRow[14]==4 check implemented above.
@@ -306,49 +333,11 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 		$date = sprintf("%04d-%02d-%02d", $year, $month, $day);
 		$time = sprintf("%02d:%02d:%02d", $hour, $min, $sec);
 	
-		
-		#The stuff in the next for loop is really unneccessary with the data blessing scheme. I'm taking it out later.
-		#count how many events are in this file in each channel
-		for my $ch_num (1..4){
-			$RE = $ch_num*2 - 1;	#index of each RE in the line
-			$FE = $RE+1;
+		$total_events++ if hex($dataRow[1]) >= 128; # If the 7th bit is set, this is a new and valid event.
 
-			if(hex($dataRow[1]) & 0b10000000){
-				$chanRE[$ch_num] = 0;
-				$total_events++;
-			}
-
-			#if there's a vaild (6th bit in binary is 1) rising edge we need to match
-			if($chanRE[$ch_num] == 1 and (hex($dataRow[$FE]) & 0b100000)){
-				$split_chan[$ch_num]++;
-				$raw_chan[$ch_num]++;
-				$total_events++;
-				#clear array index since RE-FE match complete:
-				$chanRE[$ch_num] = 0;
-
-				#now, if there's rising edge data on the same line, it's the start of a new event (unrelated to the falling edge on this line)
-				if(hex($dataRow[$RE]) & 0b100000){
-					$chanRE[$ch_num] = 1;
-				}
-			}
-			#else, this rising edge is unmatched and is the start of a new event
-			elsif(hex($dataRow[$RE]) & 0b100000){
-				$chanRE[$ch_num] = 1;
-
-				#now, if there's a valid falling edge (on the same line)
-            	if(hex($dataRow[$FE]) & 0b100000){
-				    $split_chan[$ch_num]++;
-				    $raw_chan[$ch_num]++;
-				    $total_events++;
-				    #clear array index since RE-FE match complete:
-	                $chanRE[$ch_num] = 0;
-	            }
-			}
-		}
- 
-
-		#don't write any split files or metadata if there are no events
-		if($total_events > 0){
+		#don't write any split files, bless files or metadata if there are no events--or ST lines
+		if($total_events > 0 && $stRowCount > 0) {
+			die "The DAQ ID selected ($ID) does not match the DAQ ID stored in these data ($DAQID). We've cancelled your upload. Did you select the correct ID?" if $ID != $DAQID;
 			#only open the metadata file once
 			if($raw_meta_written == 0){
 				$raw_meta_written = 1;
@@ -366,7 +355,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 				chomp $fn;
 				print META "[RAW] $raw_filename\n";
 				print META "creationdate date $today_date $today_time\n";
-				print META "detectorid string $ID\n";
+				print META "detectorid string $DAQID\n";
 				print META "type string raw\n";
 				$earliest_start = $date . " " . $time;
 				print META "startdate date $earliest_start\n"; # Earliest start date in file
@@ -384,37 +373,128 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 				print META "DiscThresh1 int  $thRow[1]\n"; 
 				print META "DiscThresh2 int  $thRow[2]\n"; 
 				print META "DiscThresh3 int  $thRow[3]\n"; 
-				print META "DAQFirmware int $DAQFirmware\n";
+				print META "DAQFirmware string $DAQFirmware\n";
 			}
 
-			# When we see new day, split file at the day boundary
+			# When we see new day--or the control register changes, split file at the day boundary
 			# Mike suggested that we split at midnight, even though Julian Days begin at Noon
 
-			if($date ne $lastdate) {	#start of a new output file
+			if($date ne $lastdate || $oldConReg ne $ConReg) {	#start of a new output file 
 				if ($lastdate ne "") {
-					
-					# Write additional metadata annotation for most recent split file
-					print META "chan1 int $split_chan[1]\n";
-					print META "chan2 int $split_chan[2]\n";
-					print META "chan3 int $split_chan[3]\n";
-					print META "chan4 int $split_chan[4]\n";
-					print META "enddate date $lastdate $lasttime\n";
-					print META "ConReg0 string ", substr($ConReg,6,2),"\n";
-					print META "ConReg1 string ", substr($ConReg,4,2),"\n";
-					print META "ConReg2 string ", substr($ConReg,2,2),"\n";
-					print META "ConReg3 string ", substr($ConReg,0,2),"\n";
-					print META "TMCReg0 string ", substr($TMCReg,6,2), "\n";
-					print META "TMCReg1 string ", substr($TMCReg,4,2), "\n";
-					print META "TMCReg2 string ", substr($TMCReg,2,2), "\n";
-					print META "TMCReg3 string ", substr($TMCReg,0,2), "\n";
-					
-					print META "DiscThresh0 int  $thRow[0]\n"; 
-					print META "DiscThresh1 int  $thRow[1]\n"; 
-					print META "DiscThresh2 int  $thRow[2]\n"; 
-					print META "DiscThresh3 int  $thRow[3]\n"; 
-					print META "DAQFirmware int $DAQFirmware\n";
-
 				
+					# The file that we are splitting has hit a date boundary. We need to start writing a new SPLIT file and write the .bless file for the file that we are closing. 
+					# First, some housekeeping:
+					# 0. Close the existing file.
+					# 1. Determine if the DAQ was producing ST2 or ST3 lines
+					# 2. Use the ST Type to re-write (possibly) the @stCountN arrays (i.e., $stCount0[n] must be subtacted from $stCount0[n+1] if ST 2)
+					# 3. Determine the rate.
+					# 4. Sum up those arrays to determine meta for counts in channels 0-3 and triggers
+					# 5. Create and write metadata about the file that was just closed						
+					# 6. Write the .bless file for the file that was just closed.
+					#Do this again later on for the last file that we are splitting					
+					close SPLIT;
+					
+					# 1. Determine if the DAQ was producing ST2 or ST3 lines
+					# When ST 2, the DAQ does not clear the onboard registers (that we call stCountN or stEvents here) after printing the lines. So the count in any channel over the time interval is the previous (stCount0 or stEvent) subtracted from the current (stCount0 or stEvent)
+					# When ST3 these onboard registers are cleared after each printing, so there is no need to do the subtraction.
+					# We just need to see if these (stCountN and stEvents) keep growing over the life of the file. If they do, we need to subtract one from the next to get the scalar increment over the integration time.
+					
+					if ($dsRowCount > 0){
+						#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
+						#The channel is off if the scalar hasn't incremented. I hope that one ping is enough to tell.						
+						$goodChan = 0 if ($stCount0[0] != $stCount0[1]);
+						$goodChan = 1 if ($stCount1[0] != $stCount1[1]) && $goodChan == -1;
+						$goodChan = 2 if ($stCount2[0] != $stCount2[1]) && $goodChan == -1;
+						$goodChan = 3 if ($stCount3[0] != $stCount3[1]) && $goodChan == -1;
+						die "This detector has no working channels. We have stopped your upload." if $goodChan == -1;
+						
+						#now that we know what channel to look at, let's test for ST 2 or ST 3 by checking how often a scalar read is larger than the previous read.
+						for $j (1..$dsRowCount-1){
+							$n++ if $goodChan == 0 && $stCount0[$j] <= $stCount0[$j+1];
+							$n++ if $goodChan == 1 && $stCount1[$j] <= $stCount1[$j+1];
+							$n++ if $goodChan == 2 && $stCount2[$j] <= $stCount2[$j+1];
+							$n++ if $goodChan == 3 && $stCount3[$j] <= $stCount3[$j+1];
+						} # end of for (1..$stRowCount-2)
+						#The last loop tells us how many times the count advanced from one DS to the next. If this number (n) is close to the number of rows, this detector is likely to be running ST 2.
+						$j = 0;
+						$stType = 3 if $n/$dsRowCount < 0.7;
+						$stType = 2 if $n/$dsRowCount > 0.7;
+					}
+					
+					# 2. Use the ST Type to re-write (possibly) the @stCountN arrays (i.e., $stCount0[n] must be subtacted from $stCount0[n+1] if ST 2)
+					#We need to know how many times each channel (and the trigger) fired over the last interval. If this detector is running ST 2, the scalars aren't zero-ing after the last read. We need to subtract the value in row (i) from the value in row (i+1)
+						#Row(i):	DS 000021E7 00001F05 00001F97 000021D8 00000021 
+ 						#Row(i+1):	DS 000058F9 0000509C 000053C5 000058EB 00000054 
+ 						#Row(i+2):	DS 0000903B 00008295 0000874F 0000900B 00000087 
+
+					#These values now live in the arrays called stCount(0-3) and stEvents. What we need is the rate--not the counts. Also the counts need "fixing" if the detector is using ST 2
+					
+					#"fix" the arrays built with ST2.
+					if ($stType == 2){
+						for $j (1..$dsRowCount-1){
+							#Subtract one from the previous (and not the latter) so that we see the rate in the last integration period (and not the next)
+							push(@stCountTemp, $stCount0[$j] - $stCount0[$j-1]) if $stCount0[$j] > $stCount0[$j-1]; #the if is there so that we don't get diffs < 0
+						}
+						#swap the newly subtracted arrays with the stCountN $stEvents arrays
+						@stCount0=@stCountTemp;
+						#clear the array for use in the next for loop
+						@stCountTemp = ();
+						
+						#Once again with feeling for the other channels and the triggers:
+						for $j (1..$dsRowCount-1){
+							push(@stCountTemp, $stCount1[$j] - $stCount1[$j-1]) if $stCount1[$j] > $stCount1[$j-1];
+						}
+						
+						@stCount1=@stCountTemp;
+						@stCountTemp = ();
+						
+						for $j (1..$dsRowCount-1){
+							push(@stCountTemp, $stCount2[$j] - $stCount2[$j-1]) if $stCount2[$j] > $stCount2[$j-1];
+						}
+						
+						@stCount2=@stCountTemp;
+						@stCountTemp = ();
+						
+						for $j (1..$dsRowCount-1){
+							push(@stCountTemp, $stCount3[$j] - $stCount3[$j-1]) if $stCount3[$j] > $stCount3[$j-1];
+						}
+						
+						@stCount3=@stCountTemp;
+						@stCountTemp = ();
+						
+						for $j (1..$dsRowCount-1){
+							push(@stCountTemp, $stEvents[$j] - $stEvents[$j-1]) if $stEvents[$j] > $stEvents[$j-1];
+						} 
+						@stEvents=@stCountTemp;
+					} #end of if($stType = 2)
+					
+					
+					# 3. Determine the rate
+					#But those counts stored in the array are how many tiems the channel fired in the user-defined interval between the STs. Shouldn't it be a true rate?
+					#Yep. Just divide the count by the difference in time between two reads. BUT we have to do this after counting up the totals in each array. It can't be done before then.
+					
+					if (($stTime[2]-$stTime[1]) > 0){ # it should have been caught by now, but still. . . 
+						for $j (1..$dsRowCount-1){
+								$stRate0[$j] = sprintf("%0.0f", $stCount0[$j]/($stTime[$j] - $stTime[$j-1]));
+								$stRate1[$j] = sprintf("%0.0f", $stCount1[$j]/($stTime[$j] - $stTime[$j-1]));
+								$stRate2[$j] = sprintf("%0.0f", $stCount2[$j]/($stTime[$j] - $stTime[$j-1]));
+								$stRate3[$j] = sprintf("%0.0f", $stCount3[$j]/($stTime[$j] - $stTime[$j-1]));
+								#The rate may be very low here. . .  
+								$stEventRate[$j] = sprintf("%0.0f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stEvents[$j]/($stTime[$j] - $stTime[$j-1]) > 1;
+								$stEventRate[$j] = sprintf("%0.2f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stEvents[$j]/($stTime[$j] - $stTime[$j-1]) < 1; # we've already ruled out counts < 0
+						}
+					}
+					
+					# 4. Sum up those cout N arrays to determine meta for counts in channels 0-3 and triggers and write those to meta.
+					$chan0 += $_ for @stCount0;
+					$chan1 += $_ for @stCount1;
+					$chan2 += $_ for @stCount2;
+					$chan3 += $_ for @stCount3;
+					$events += $_ for @stEvents;
+			
+					
+					# 5. Create and write metadata about the file that was just closed						
+					#determine clock frequency
 					calculate_cpld_frequency();
 
         	        $cpld_low = $cpld_freq - $cpld_sigma;
@@ -426,80 +506,85 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
             	            $cpld_real_count++;
                 	    }
 	                }
-    	            $cpld_real_freq = $cpld_real_freq_tot/$cpld_real_count if $cpld_real_count !=0;
-                    
-        	        print META "cpldfrequency float $cpld_real_freq\n";
-					close SPLIT;
-					#close $blessFile;
-					#write the .bless file for this file.					
-					for my $i  (1..$stRowCount){			
-						print $blessFile "$stTime[$i]","\t", "$stCount0[$i]", "\t", sprintf("%0.0f", sqrt($stCount0[$i])), "\t", "$stCount1[$i]", "\t", sprintf("%0.0f", sqrt($stCount1[$i])),"\t", "$stCount2[$i]", "\t", sprintf("%0.0f", sqrt($stCount2[$i])),"\t", "$stCount3[$i]", "\t", sprintf("%0.0f", sqrt($stCount3[$i])), "\t", "$stEvents[$i]", "\t", sprintf("%0.0f", sqrt($stEvents[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
+    	            $cpld_real_freq = sprintf("%0.0f",$cpld_real_freq_tot/$cpld_real_count) if $cpld_real_count !=0;
+					
+					#Start writing meta and write metadata about the file that was just closed						
+					print META "enddate date $lastdate $lasttime\n";
+					print META "ConReg0 string ", substr($ConReg,6,2),"\n";
+					print META "ConReg1 string ", substr($ConReg,4,2),"\n";
+					print META "ConReg2 string ", substr($ConReg,2,2),"\n";
+					print META "ConReg3 string ", substr($ConReg,0,2),"\n";
+					print META "TMCReg0 string ", substr($TMCReg,6,2), "\n";
+					print META "TMCReg1 string ", substr($TMCReg,4,2), "\n";
+					print META "TMCReg2 string ", substr($TMCReg,2,2), "\n";
+					print META "TMCReg3 string ", substr($TMCReg,0,2), "\n";
+					print META "DiscThresh0 int  $thRow[0]\n"; 
+					print META "DiscThresh1 int  $thRow[1]\n"; 
+					print META "DiscThresh2 int  $thRow[2]\n"; 
+					print META "DiscThresh3 int  $thRow[3]\n"; 
+					print META "DAQFirmware string $DAQFirmware\n";
+					print META "chan1 int $chan0\n";
+					print META "chan2 int $chan1\n";
+					print META "chan3 int $chan2\n";
+					print META "chan4 int $chan3\n";
+					print META "triggers int $events\n";
+        	        print META "cpldfrequency int $cpld_real_freq\n";
+					
+					# 6. Write the .bless file for the file that was just closed.
+					#First the header
+					
+					print $blessFile "###Seconds (since Midnight UTC) \t Chan 0 rate \t Error in Chan0 \t Chan 1 rate \t Error in Chan1 \t Chan 2 rate \t Error in Chan2 \t Chan 3 rate \t Error in Chan3 \t Trigger rate\tError in Triggers \t Raw BA output \t Temp (DegC) \t Bus Voltage \t #GPS satellites in view \n";
+					
+					#Now the table
+					for my $i  (2..$dsRowCount-1){			
+						print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.0f", sqrt($stRate0[$i])), "\t", "$stRate1[$i]", "\t", sprintf("%0.0f", sqrt($stRate1[$i])),"\t", "$stRate2[$i]", "\t", sprintf("%0.0f", sqrt($stRate2[$i])),"\t", "$stRate3[$i]", "\t", sprintf("%0.0f", sqrt($stRate3[$i])), "\t", "$stEventRate[$i]", "\t", sprintf("%0.0f", sqrt($stEventRate[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
 					}
+
 					close $blessFile;	
+					
 					#Empty all of the status arrays so that they can start over with the new split file.
-					@stTime = ();
-					@stCount0 = ();
-					@stCount1 = ();
-					@stCount2 = ();
-					@stCount3 = ();
-					@stEvents = ();
-					@stPress = ();
-					@stTemp = ();
-					@StVcc = ();
-					@stGPSSats = ();
-					@stRow = ();
-                	@cpld_frequency1 = (); # reset the array for the new split file.
-	                @cpld_frequency2 = (); # reset the array for the new split file.
-                	$stRowCount = 0;
-
-					#write the channel counts for the most recent split file
-					#Why is this here?
-					#TJ took it out on 27 April
-					#print "$split_chan[1] $split_chan[2] $split_chan[3] $split_chan[4]\n";
-
-					#clear out count for channel events
-					$split_chan[$_] = 0 for (1..4);
-					#Clear all the status arrays.
-					@STTime = ();
-				}
-
-				#open a NEW split file
-				$index = 0;				#incremented if a split file of this name already exists
-				$fn = "$ID.$year.$month$day.$index";
-				#plagued the Quarknet group since Summer 2003, solved on 8-5-04 (by using metadata)
-				while(-e "$output_dir/$fn") {
-					$index++;
-					$fn = "$ID.$year.$month$day.$index";
-				}
+					@stTime = @StCoutTemp = @stCount0 = @stRate0 = @stCount1 = @stRate1 = @stCount2 = @stRate2 = @stCount3 = @stRate3 = @stEvents = @stRateEvents = @stType = @stPress = @stTemp = @StVcc = @stGPSSats = @stRow = @thRow =  @cpld_frequency1 = @cpld_frequency2 = @stCountTemp = ();
+					#reset any scalars in use
+					$chan3=$chan2=$chan1=$chan0=$n=$i=$j=$stRowCount=$stType=$dsRowCount=0;
+					$goodChan=-1;
 				
-				#Need a status file as well with the same file naming scheme
+				}#end if($lastdate ne "")
+			#}#end if($date ne $lastdate)
+
+			#open a NEW split file
+			$index = 0;				#incremented if a split file of this name already exists
+			$fn = "$DAQID.$year.$month$day.$index";
+			#Need a bless file as well with the same file naming scheme
+			$sfn = $fn.".bless";
+
+			#plagued the Quarknet group since Summer 2003, solved on 8-5-04 (by using metadata)
+			while(-e "$output_dir/$fn") {
+				$index++;
+				$fn = "$DAQID.$year.$month$day.$index";
 				$sfn = $fn.".bless";
+			} #end while(-e "$output...
 				
-				open(SPLIT,'>>', "$output_dir/$fn");
-				open($blessFile,'>>', "$output_dir/$sfn");
-				#print $blessFile $data_line, "\n";
-				#informational printout only (all metadata should be retrieved from the .meta file)
-				#Why is this here? TJ removed in Dec 2006
-				
-				$jd = jd($day, $month, $year, $hour, $min, $sec);	#GPS offset already taken into account from above
+			open(SPLIT,'>>', "$output_dir/$fn");
+			open($blessFile,'>>', "$output_dir/$sfn");
 
-				# Write initial metadata for lfn that was just opened
-				print META "[SPLIT] $output_dir/$fn\n";
-				print META "creationdate date $today_date $today_time\n";
-				print META "startdate date $date $time\n";
-	            print META "julianstartdate float $jd\n";   # Earliest start date in file in julian days
-				print META "source string $fn\n";
-				print META "detectorid string $ID\n";
-				print META "type string split\n";
-			}
+			$jd = jd($day, $month, $year, $hour, $min, $sec);	#GPS offset already taken into account from above
+
+			# Write initial metadata for lfn that was just opened
+			print META "[SPLIT] $output_dir/$fn\n";
+			print META "creationdate date $today_date $today_time\n";
+			print META "startdate date $date $time\n";
+	        print META "julianstartdate float $jd\n";   # Earliest start date in file in julian days
+			print META "source string $fn\n";
+			print META "detectorid string $DAQID\n";
+			print META "type string split\n";
+		} # end  if($total_events > 0 && $stRowCount > 0)
 			$lastdate = $date;
 			$lasttime = $time;
 
 			print SPLIT $_;
         
         	# Thanks to Nick Dettman for this code calculating actual CPLD frequency.
-	        #No need for that. We already have the split row.
-    	    #@cpld_line = split(/\s+/, $_);
+	        #@cpld_line = split(/\s+/, $_);
         
 	        # if servicing 1PPS interrupt, the GPS time may be funny
 		    $interrupt = (hex($dataRow[14]) & 0x01);
@@ -509,57 +594,152 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
         	$cpld_sec = substr($dataRow[10], 4, 6);
 	        $cpld_sec_offset = sprintf("%.0f", $cpld_sec + ($dataRow[15]/1000));
     	    $cpld_day_seconds = $cpld_hour*3600 + $cpld_min*60 + $cpld_sec_offset;
-        	if ($cpld_day_seconds == 86400){
-            	$cpld_day_seconds = 0;
-	        }
-    	    if (($cpld_hex eq $dataRow[9]) || ($cpld_seconds == $cpld_day_seconds) || ($interrupt != 0) || ($time == $split_line[10])){ 
-        		# both columns must advance to calculate the change
-            	next;
-	        }
-        
-        
+        	
+        	$cpld_day_seconds = 0 if $cpld_day_seconds == 86400;
+            
+	        next if $cpld_hex eq $dataRow[9] || $cpld_seconds == $cpld_day_seconds || $interrupt != 0 || $time == $split_line[10];
+	 
     	    if (defined($cpld_hex)){
         	    $cpld_ticks_new = hex($dataRow[9]);
             	$cpld_ticks_old = hex($cpld_hex);
-            
-	            $dc = ($cpld_ticks_new - $cpld_ticks_old) % $N;
+                $dc = ($cpld_ticks_new - $cpld_ticks_old) % $N;
    			    $dt = ($cpld_day_seconds - $cpld_seconds);
-   		    
-   			    #calculate CPLD frequency with first guess
+   		        #calculate CPLD frequency with first guess
         		$cpld_freq = $fg1 + (($dc - $fg1*$dt + $Nover2) % $N - $Nover2)/$dt;
-        	
-	        	$cpld_freq_tot1 += $cpld_freq;
+        		$cpld_freq_tot1 += $cpld_freq;
     	    	push @cpld_frequency1, $cpld_freq;
-        
         		#calculate CPLD frequency with second guess
             	$cpld_freq = $fg2 + (($dc - $fg2*$dt + $Nover2) % $N - $Nover2)/$dt;
-        	
-	        	$cpld_freq_tot2 += $cpld_freq;
+        	  	$cpld_freq_tot2 += $cpld_freq;
     	    	push @cpld_frequency2, $cpld_freq;
-            
-        	    $cpld_count++;
+              $cpld_count++;
         	}
+        	
         	# redefines variables for checking to see if the next line has the same data as this line
         	$cpld_time = $dataRow[10];
         	$cpld_hex = $dataRow[9];
         	$cpld_seconds = $cpld_day_seconds;
-		}	#end if total_events > 0
-	} #end of rollover_flag == 0;
+		}	#end 
+	} #end if rollover_flag == 0;
 }	#end of reading the raw file
+
+die "This file contains no ST lines. We now require these lines. We've cancelled your upload. Please consult the DAQ HE screen to implement this feature of the hardware." if $stRowCount == 0;
 
 if($total_events == 0){
 	die "No valid events found in your file ($raw_filename) of length $.\n";
 }
 else{
-	#write the channel counts for the last split file
-	print "$split_chan[1] $split_chan[2] $split_chan[3] $split_chan[4]\n";
+	#all of the next is for writing the bless file for the last SPLIT file
+	
+	# 1. Determine if the DAQ was producing ST2 or ST3 lines
+	#When ST 2, the DAQ does not clear the onboard registers (that we call stCountN or stEvents here) after printing the lines. So the count in any channel over the time interval is the previous (stCount0 or stEvent) subtracted from the current (stCount0 or stEvent)
+	#When ST3 these onboard registers are cleared after each printing, so there is no need to do the subtraction.
+	#We just need to see if these (stCountN and stEvents) keep growing over the life of the file. If they do, we need to subtract one from the next to get the scalar increment over the integration time.
+					
+	if ($dsRowCount > 0){
+		#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
+		#The channel is off if the scalar hasn't incremented in 10 pings.						
+		$goodChan = 0 if ($stCount0[0] != $stCount0[1]);
+		$goodChan = 1 if ($stCount1[0] != $stCount1[1]) && $goodChan == -1;
+		$goodChan = 2 if ($stCount2[0] != $stCount2[1]) && $goodChan == -1;
+		$goodChan = 3 if ($stCount3[0] != $stCount3[1]) && $goodChan == -1;
+		die "This detector has no working channels. We have stopped your upload." if $goodChan == -1;
+						
+		#now that we know what channel to look at, let's test for ST 2 or ST 3 by checking how often a scalar read is larger than the previous read.
+		for $j (1..$dsRowCount-1){
+			$n++ if $goodChan == 0 && $stCount0[$j] <= $stCount0[$j+1];
+			$n++ if $goodChan == 1 && $stCount1[$j] <= $stCount1[$j+1];
+			$n++ if $goodChan == 2 && $stCount2[$j] <= $stCount2[$j+1];
+			$n++ if $goodChan == 3 && $stCount3[$j] <= $stCount3[$j+1];
+		} # end of for (1..$stRowCount-2)
+		#The last loop tells us how many times the count advanced from one DS to the next. If this number (n) is close to the number of rows, this detector is likely to be running ST 2.
+		$j = 0;
+		$stType = 3 if $n/$dsRowCount < 0.7;
+		$stType = 2 if $n/$dsRowCount > 0.7;
+	}
+					
+	# 2. Use the ST Type to re-write (possibly) the @stCountN arrays (i.e., $stCount0[n] must be subtacted from $stCount0[n+1] if ST 2)
+	#We need to know how many times each channel (and the trigger) fired over the last interval. If this detector is running ST 2, the scalars aren't zero-ing after the last read. We need to subtract the value in row (i) from the value in row (i+1)
+	#Row(i):	DS 000021E7 00001F05 00001F97 000021D8 00000021 
+	#Row(i+1):	DS 000058F9 0000509C 000053C5 000058EB 00000054 
+	#Row(i+2):	DS 0000903B 00008295 0000874F 0000900B 00000087 
 
-	#additional metadata for the last split file
-	print META "chan1 int $split_chan[1]\n";
-	print META "chan2 int $split_chan[2]\n";
-	print META "chan3 int $split_chan[3]\n";
-	print META "chan4 int $split_chan[4]\n";
-	print META "enddate date $date $time\n";
+	#These values now live in the arrays called stCount(0-3) and stEvents. What we need is the rate--not the counts. Also the counts need "fixing" if the detector is using ST 2
+					
+	#"fix" the arrays built with ST2.
+	if ($stType == 2){
+		for $j (1..$dsRowCount-1){
+			#Subtract one from the previous (and not the latter) so that we see the rate in the last integration period (and not the next)
+			push(@stCountTemp, $stCount0[$j] - $stCount0[$j-1]) if $stCount0[$j] > $stCount0[$j-1]; #the if is there so that we don't get diffs < 0
+		}
+		#swap the newly subtracted arrays with the stCountN $stEvents arrays
+		@stCount0=@stCountTemp;
+		#clear the array for use in the next for loop
+		@stCountTemp = ();
+						
+		#Once again with feeling for the other channels and the triggers:
+		for $j (1..$dsRowCount-1){
+			push(@stCountTemp, $stCount1[$j] - $stCount1[$j-1]) if $stCount1[$j] > $stCount1[$j-1];
+		}
+		@stCount1=@stCountTemp;
+		@stCountTemp = ();
+						
+		for $j (1..$dsRowCount-1){
+			push(@stCountTemp, $stCount2[$j] - $stCount2[$j-1]) if $stCount2[$j] > $stCount2[$j-1];
+		}
+		@stCount2=@stCountTemp;
+		@stCountTemp = ();
+						
+		for $j (1..$dsRowCount-1){
+			push(@stCountTemp, $stCount3[$j] - $stCount3[$j-1]) if $stCount3[$j] > $stCount3[$j-1];
+		}
+		@stCount3=@stCountTemp;
+		@stCountTemp = ();
+						
+		for $j (1..$dsRowCount-1){
+			push(@stCountTemp, $stEvents[$j] - $stEvents[$j-1]) if $stEvents[$j] > $stEvents[$j-1];
+		} 
+		@stEvents=@stCountTemp;
+	} #end of if($stType = 2)
+					
+					
+	# 3. Determine the rate
+	if (($stTime[2]-$stTime[1]) > 0){ # it should have been caught by now, but still. . . 
+		for $j (1..$dsRowCount-1){
+			$stRate0[$j] = sprintf("%0.0f", $stCount0[$j]/($stTime[$j] - $stTime[$j-1]));
+			$stRate1[$j] = sprintf("%0.0f", $stCount1[$j]/($stTime[$j] - $stTime[$j-1]));
+			$stRate2[$j] = sprintf("%0.0f", $stCount2[$j]/($stTime[$j] - $stTime[$j-1]));
+			$stRate3[$j] = sprintf("%0.0f", $stCount3[$j]/($stTime[$j] - $stTime[$j-1]));
+			#The rate may be very low here. . .  
+			$stEventRate[$j] = sprintf("%0.0f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stEvents[$j]/($stTime[$j] - $stTime[$j-1]) > 1;
+			$stEventRate[$j] = sprintf("%0.2f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stEvents[$j]/($stTime[$j] - $stTime[$j-1]) < 1; # we've already ruled out counts < 0
+		}
+	}
+	
+	# 4. Sum up those arrays to determine meta for counts in channels 0-3 and triggers and write those to meta
+	$chan0 += $_ for @stCount0;
+	$chan1 += $_ for @stCount1;
+	$chan2 += $_ for @stCount2;
+	$chan3 += $_ for @stCount3;
+	$events += $_ for @stEvents;
+					
+	# 5. Create and write metadata about the file that was just closed						
+	# determine clock frequency
+	calculate_cpld_frequency();
+
+    $cpld_low = $cpld_freq - $cpld_sigma;
+    $cpld_high = $cpld_freq + $cpld_sigma;
+    # only calculates the "real" average frequency using data within one standard deviation of averaged_sigma;
+	foreach $i (@cpld_frequency){ 
+    	if ($i >= $cpld_low && $i <= $cpld_high){
+        	$cpld_real_freq_tot += $i;
+            $cpld_real_count++;
+        }
+	}
+    $cpld_real_freq = sprintf("%0.0f",$cpld_real_freq_tot/$cpld_real_count) if $cpld_real_count !=0;
+					
+	#Start writing meta and write metadata about the file that was just closed						
+	print META "enddate date $lastdate $lasttime\n";
 	print META "ConReg0 string ", substr($ConReg,6,2),"\n";
 	print META "ConReg1 string ", substr($ConReg,4,2),"\n";
 	print META "ConReg2 string ", substr($ConReg,2,2),"\n";
@@ -571,46 +751,29 @@ else{
 	print META "DiscThresh0 int  $thRow[0]\n"; 
 	print META "DiscThresh1 int  $thRow[1]\n"; 
 	print META "DiscThresh2 int  $thRow[2]\n"; 
-	print META "DiscThresh3 int  $thRow[3]\n";
-	print META "DAQFirmware int $DAQFirmware\n";
-
-
-	calculate_cpld_frequency();
-    
-    $cpld_low = $cpld_freq - $cpld_sigma;
-    $cpld_high = $cpld_freq + $cpld_sigma;
-    # only calculates the "real" average frequency using data within one standard deviation of averaged_sigma;
-    foreach $i (@cpld_frequency){ 
-        if ($i >= $cpld_low && $i <= $cpld_high){
-            $cpld_real_freq_tot += $i;
-            $cpld_real_count++;
-        }
-    }
-    $cpld_real_freq = $cpld_real_freq_tot/$cpld_real_count if $cpld_real_count !=0;
-    print META "cpldfrequency float $cpld_real_freq\n";
-
-	#Write the .bless information for the last file.	
-	#First have to see if the statusVersion should be 0 or 1.
-	#for my $i  (1..$stRowCount){ #go through all of the arrays
-	#	$statusVersion = 1 if ($stCount0[$i] < $stCount0[$i-1]) || ($stCount1[$i] < $stCount1[$i-1]) || ($stCount2[$i] < $stCount2[$i-1]) || ($stCount3[$i] < $stCount3[$i-1]) || ($stEvents[$i] < $stEvents[$i-1]); #Must be using ST3 (trip meter) as ST2 (odometer) always increases (unless it rolls over.)
-		#last $i if $statusVersion == 1;
-	#}
-	#Use that index find the last stCountNUM value for comparison with the one going into the array
-	#Do the comparison for all five scalars: oldScalar <? new Scalar
-	#If that is ever true (for any of the scalars) set the flag to do the subtraction later.)
-	#print "@STEvents", "\n"; 
-	#$statusFlag = 1;
-	#print $blessFile $statusTime, "\t", hex($dsRow[1]), "\t", sprintf("%.0f", sqrt(hex($dsRow[1]))), "\t", hex($dsRow[2]), "\t", sprintf("%.0f", sqrt(hex($dsRow[2]))), "\t", hex($dsRow[3]), "\t", sprintf("%.0f", sqrt(hex($dsRow[3]))), "\t", hex($dsRow[4]), "\t", sprintf("%.0f", sqrt(hex($dsRow[4]))), "\t", hex($dsRow[5]), "\t", sprintf("%.0f", sqrt(hex($dsRow[5]))), "\t", $stRow[1], "\t", $stRow[3]/10, "\t", $stRow[4]/1000, "\n";
+	print META "DiscThresh3 int  $thRow[3]\n"; 
+	print META "DAQFirmware string $DAQFirmware\n";
+	print META "chan1 int $chan0\n";
+	print META "chan2 int $chan1\n";
+	print META "chan3 int $chan2\n";
+	print META "chan4 int $chan3\n";
+	print META "triggers int $events\n";
+    print META "cpldfrequency int $cpld_real_freq\n";
+					
+	# 6. Write the .bless file for the file that was just closed.
+	#First the header
 	
+	print $blessFile "###Seconds (since Midnight UTC) \t Chan 0 rate \t Error in Chan0 \t Chan 1 rate \t Error in Chan1 \t Chan 2 rate \t Error in Chan2 \t Chan 3 rate \t Error in Chan3 \t Trigger rate\tError in Triggers \t Raw BA output \t Temp (DegC) \t Bus Voltage \t #GPS satellites in view \n";
 	
-	#$i=0;
-	for my $i  (1..$stRowCount){
-		#The columns here are: Time, Ch0, Err0, Ch1, Err1, Ch2, Err2, Ch3, Err3, Trg, ErrTrg, EventCount, Pressure, Temperature, Vcc, #Sats
-		print $i, "\n";
-		print $blessFile "$stTime[$i]","\t", "$stCount0[$i]", "\t", sprintf("%0.0f", sqrt($stCount0[$i])), "\t", "$stCount1[$i]", "\t", sprintf("%0.0f", sqrt($stCount1[$i])),"\t", "$stCount2[$i]", "\t", sprintf("%0.0f", sqrt($stCount2[$i])),"\t", "$stCount3[$i]", "\t", sprintf("%0.0f", sqrt($stCount3[$i])), "\t", "$stEvents[$i]", "\t", sprintf("%0.0f", sqrt($stEvents[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n";# if $statusVersion == 1; 	
-		#print $blessFile "$stTime[$i]","\t", "$stCount0[$i]", "\t", sprintf("%0.0f", sqrt($stCount0[$i])), "\t", "$stCount1[$i]", "\t", sprintf("%0.0f", sqrt($stCount1[$i])),"\t", "$stCount2[$i]", "\t", sprintf("%0.0f", sqrt($stCount2[$i])),"\t", "$stCount3[$i]", "\t", sprintf("%0.0f", sqrt($stCount3[$i])), "\t", "$stEvents[$i]", "\t", sprintf("%0.0f", sqrt($stEvents[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n" if $statusVersion == 1; 	
-		print $statusVersion, "\n" if $statusVersion == 0;
+	#Now the table
+	for my $i  (2..$dsRowCount-1){			
+		print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.0f", sqrt($stRate0[$i])), "\t", "$stRate1[$i]", "\t", sprintf("%0.0f", sqrt($stRate1[$i])),"\t", "$stRate2[$i]", "\t", sprintf("%0.0f", sqrt($stRate2[$i])),"\t", "$stRate3[$i]", "\t", sprintf("%0.0f", sqrt($stRate3[$i])), "\t", "$stEventRate[$i]", "\t", sprintf("%0.0f", sqrt($stEventRate[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
 	}
+					
+	close $blessFile;	
+	#write the channel counts for the last split file
+	#Why is this here? Do we print this on the line confiming the upload? If so, it's wrong--it only holds the counts for the _last_ file.
+	print "$chan0 $chan1 $chan2 $chan3\n";
 	
 	#insert metadata which was made from analyzing the WHOLE raw data file
 	`/usr/bin/perl -i -p -e 's/^ThisFileNeverCompletedSplitting.*/enddate date $date $time/' "$raw_filename.meta"`;
@@ -618,7 +781,7 @@ else{
 	`/usr/bin/perl -i -p -e 's/^nondatalines.*/nondatalines int $non_datalines/' "$raw_filename.meta"`;
 	warn "Bad/ignored lines: $non_datalines Accepted lines: $data_line\n" if($non_datalines > 0);
 	if($sum_lats == 0 or $sum_longs == 0 or $sum_alts == 0){
-		warn "There was no gps information with sufficient satellites for a position fix in this file. (the \"DG\" command on the board)\n";
+		warn "If you included DG commands in your file, there were fewer than six satellites in view when you did. We ignore reports with so few satellites; they provide an unreliable position.";
 	}
 	else{
 		my $avg_lat = $sum_lats/$lat_count;
@@ -711,17 +874,13 @@ sub stddev {
 sub calculate_cpld_frequency {
 	if ($cpld_count == 0) {
 		#one very tricky case this is
-		#we have no way of finding out the frequency from the data
-		#so either the frequency has been calculated on a previous
-		#day, or this is the first day in which case
-		#we may look at subsequent days, or just print a warning because 
-		#this is a borderline case
+		#we have no way of finding out the frequency from the data so either the frequency has been calculated on a previous day, or this is the first day in which case we may look at subsequent days, or just print a warning because this is a borderline case
 		if (defined $cpld_freq) {
 			return;
 		}
 		else {
-			$cpld_freq = $fg1 if $ID < 6000; 	#These data are from an older board--assuming the ID is correct!
-			$cpld_freq = $fg2 if $ID > 5999;	#. . .  newer board
+			$cpld_freq = $fg1 if $DAQID < 6000; 	#These data are from an older board--assuming the ID is correct!
+			$cpld_freq = $fg2 if $DAQID > 5999;	#. . .  newer board
 			push @cpld_frequency, $cpld_freq;
 			$cpld_sigma = 0.0; 
 			#print "Warning: Not enough data to calculate CPLD frequency. Your DAQ serial number is $ID so we are using $cpld_freq\n";
