@@ -204,7 +204,6 @@ while(<IN>){
 		$oldConReg = $ConReg;
 		$ConReg = $stRow[13];
 		$oldConReg = $ConReg if $oldConReg == 1; #Testing revealed a case where a data file _started_ with an ST line this changed $ConReg, but not $oldConReg. 
-		print $oldConReg, "\t", $ConReg, "\n";
 		#$oldTMCReg = $TMCReg; #Ths one is a bit more complicated. The word changes, but the difference between values doesn't. Fix this later. Very few users can do this.
 		$TMCReg = $stRow[12];
 		$DAQFirmware = $stRow[10]/100 if $stRow[10] > 99; 	#The DAQ firmware writes the firmware as an INT (e.g., FW version 1.06 is reported in the ST line as 106)
