@@ -25,7 +25,7 @@
 						
 						<p>With greater collision energies at the LHC, the Z decay will typically not be the only collision products in the event nor will the decay products seem to be back-to-back. </p>
 						<p><a href="
-						javascript:showRefLink('http://ed.fnal.gov/work/i2u2/particle-id/cms_game.html',865,675)">2-D event display game</a> - Test your skill identifying CMS events!
+						javascript:showRefLink('../games/particle-id/cms_game.html',865,675)">2-D event display game</a> - Test your skill identifying CMS events!
 						
 						<p>Try a  <a href="javascript:showRefLink('../event-display/',1150,775)">3-D</a> view? (non-Internet Explorer browsers only) Need help?
 						<a href="javascript:showRefLink('http://screencast.com/t/X2WGL5ru8wMX',775,625)">Intro</a> - <a href="javascript:showRefLink('http://screencast.com/t/7wFGMWXVpdOM',775,625)">More Features</a></p>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root type="J-Psi Run">
+
+  <dataset name="zee11">
+    <database table="zee11db">
+      <field name="run" />
+      <field name="nevents" />
+      <field name="dataset" />
+      <field name="filename" />
+    </database>
+  </dataset>
+
+  <triggers level="0">
+    <trigger name="mumu"	displayname="&amp;mu;&amp;mu;"		id="uu"   description="Di-muon events"      level="0" group="1"/>
+    <trigger name="ee"		displayname="ee"     				id="ee"   description="Di-electron events"  level="0" group="1"/>
+  </triggers>
+
+  <tree id="1" name="Events" level="0">
+    <branch id="1"  name="recoGsfElectrons_gsfElectrons__RECO.obj" level="0">
+      <leaf id="1"  name="pt_" 
+	    title="Electron P_t"   labely="Number of Events" labelx="Transversal Momentum" units="GeV/c" 
+            level="0" description="Transverse momentum of the electrons (GeV/c)"/>
+
+      <leaf id="2"  name="eta_"                      
+	    title="Electron \eta"   labely="Number of Events" labelx="Eta" units=""
+	    level="1" description="Psudeorapidity of the electrons. eta = -ln[tan(theta/2)] where theta is the pitch angle (angle between the momentum vector and the z-axis)"/>
+
+      <leaf id="3"  name="phi_"
+            title="Electron \phi"   labely="Number of Events" labelx="Phi" units="rad" 
+	    level="1" description="Phi (rotation angle in the X-Y plane) of the electrons (rad)"/>
+
+      <leaf id="4"  name="vertex_.fCoordinates.fX"   
+	    title="Electron Vtx X"   labely="Number of Events" labelx="x_V" units="cm" 
+	    level="2" description="X Position where the electrons appears to have originated (cm)" />
+
+      <leaf id="5"  name="vertex_.fCoordinates.fY"   
+	    title="Electron Vtx Y"   labely="Number of Events" labelx="y_V" units="cm" 
+	    level="2" description="Y Position where the electrons appears to have originated (cm)" />
+
+      <leaf id="6"  name="vertex_.fCoordinates.fZ"   
+	    title="Electron Vtx Z"   labely="Number of Events" labelx="z_V" units="cm" 
+	    level="2" description="Z Position where the electrons appears to have originated (cm)"/>
+    </branch>
+
+    <!-- electron - -/++ (LS - like sign) and -+ (OS - opposite sign) two-particle mass -->
+    <branch id="5" name="recoCompositeCandidates_ZCandidatesLS__ISPY.obj" level="5">
+      <leaf id="30" name="mass_" title="e ^+ e ^+  / e ^- e ^-  Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="Like Sign Electron Mass"/>
+    </branch>
+
+    <branch id="6" name="recoCompositeCandidates_ZCandidatesOS__ISPY.obj" level="5">
+      <leaf id="31" name="mass_" title="e ^+ e ^-  Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="Opposite Sign Electron Mass"/>
+    </branch>    
+  </tree>
+</root>

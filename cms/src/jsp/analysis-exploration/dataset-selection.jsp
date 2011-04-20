@@ -63,6 +63,7 @@ Find out.</p>
 						<option value="mc09">Monte Carlo Simulation</option>
 						<option value="jpsi11">J/psi (J/&psi;) Data (LHC 2010)</option>
 						<option value="zmumu11">Zmumu (Z&rarr;&mu;&mu;) Data (LHC 2010)</option>
+						<option value="zee11">Zee (Z&rarr;ee) Data (LHC 2010)</option>
 					</select>
 					<script>
 						function datasetSelected(obj) {
