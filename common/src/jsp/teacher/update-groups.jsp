@@ -221,7 +221,7 @@
 					<label for="passwd1">Password:</label>
 				</td>
 				<td>
-					<input type="password" name="passwd1" size="10" maxlength="10"/>
+					<input type="password" name="passwd1" size="16" maxlength="72"/>
 				</td>
 			</tr>
 			<tr>
@@ -229,7 +229,7 @@
 					<label for="passwd2">Verify Password:</label>
 				</td>
 				<td>
-					<input type="password" name="passwd2" size="10" maxlength="10"/>
+					<input type="password" name="passwd2" size="16" maxlength="72"/>
 				</td>
 			</tr>
 			<c:if test="${not empty group.students}">

@@ -566,8 +566,8 @@ String submit =  request.getParameter("submit");
                                     //out.write("<tr><td>Password</td><td>");
                                     if(passwd1 == null && passwd2 == null){
 %>
-                                        <tr><td>Password</td><td><input type="password" name="passwd1" size="10" maxlength="10"></td></tr>
-                                        <tr><td>Verify Password</td><td><input type="password" name="passwd2" size="10" maxlength="10"></td></tr>
+                                        <tr><td>Password</td><td><input type="password" name="passwd1" size="16" maxlength="72"></td></tr>
+                                        <tr><td>Verify Password</td><td><input type="password" name="passwd2" size="16" maxlength="72"></td></tr>
 <%
                                     }
                                     else{
@@ -580,8 +580,8 @@ String submit =  request.getParameter("submit");
                                         if(passwd1 != null && passwd1.equals("")){
                                             warn(out, "Please go back and enter a password");
  %>
-                                        <tr><td>Password</td><td><input type="password" name="passwd1" size="10" maxlength="10"></td></tr>
-                                        <tr><td>Verify Password</td><td><input type="password" name="passwd2" size="10" maxlength="10"></td></tr>
+                                        <tr><td>Password</td><td><input type="password" name="passwd1" size="16" maxlength="72"></td></tr>
+                                        <tr><td>Verify Password</td><td><input type="password" name="passwd2" size="16" maxlength="72"></td></tr>
 <%
                                            return;
                                         }
@@ -589,8 +589,8 @@ String submit =  request.getParameter("submit");
                                         if(passwd2 != null && passwd2.equals("")){
                                             warn(out, "Please go back and enter a password verification");
  %>
-                                        <tr><td>Password</td><td><input type="password" name="passwd1" size="10" maxlength="10"></td></tr>
-                                        <tr><td>Verify Password</td><td><input type="password" name="passwd2" size="10" maxlength="10"></td></tr>
+                                        <tr><td>Password</td><td><input type="password" name="passwd1" size="16" maxlength="72"></td></tr>
+                                        <tr><td>Verify Password</td><td><input type="password" name="passwd2" size="16" maxlength="72"></td></tr>
 <%
                                            return;
                                         }
