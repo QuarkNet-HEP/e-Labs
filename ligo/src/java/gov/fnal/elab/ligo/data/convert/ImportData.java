@@ -252,15 +252,21 @@ public class ImportData extends AbstractDataTool {
         }
 
         final Map<ChannelName, DataReader<?, ?>> s = new HashMap<ChannelName, DataReader<?, ?>>();
+        DataReader<?, ?> data = null;
         for (ChannelName channel : dumpedc) {
-            DataReader<?, ?> data = readChannelData(channel, tmpprefix, f, true);
+            try {
+            	data = readChannelData(channel, tmpprefix, f, true);
+            }
+            catch (RuntimeException re) {
+            	System.out.println(re.getMessage());
+            }
 
             if (data == null) {
                 System.out.println("Skipping channel " + channel);
-                continue;
             }
-
-            s.put(channel, data);
+            else {
+            	s.put(channel, data);
+            } 
         }
         if (!new File(tmpprefix).delete()) {
             throw new RuntimeException("Could not remove directory " + tmpprefix);
