@@ -257,8 +257,8 @@ public class ImportData extends AbstractDataTool {
             try {
             	data = readChannelData(channel, tmpprefix, f, true);
             }
-            catch (RuntimeException re) {
-            	System.out.println(re.getMessage());
+            catch (IllegalArgumentException iae) {
+            	System.out.println(iae.getMessage());
             }
 
             if (data == null) {

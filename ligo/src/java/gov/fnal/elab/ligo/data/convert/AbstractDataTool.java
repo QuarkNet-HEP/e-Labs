@@ -311,7 +311,7 @@ public abstract class AbstractDataTool {
     public static int getSamplingRateAdjust(ChannelName channel) {
         Integer i = SAMPLING_RATE_ADJUST.get(channel.getSubsystem());
         if (i == null) {
-            throw new RuntimeException("No sampling rate adjustment for subsystem " + channel.getSubsystem() + 
+            throw new IllegalArgumentException("No sampling rate adjustment for subsystem " + channel.getSubsystem() + 
             		" in channel " + channel.originalName);
         }
         return i;
