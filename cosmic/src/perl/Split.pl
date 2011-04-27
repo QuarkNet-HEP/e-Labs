@@ -25,15 +25,12 @@
 # jordant changed 07-07-10: inserting lines to create additional files needed for blessing.
 # jordant changed 11-01-10: checking to see if user is doing ST2 or ST3 when writing raw data. Knowing which one is crucial to data blessing.
 
-# test git change
-
 if($#ARGV < 2){
 	die "usage: Split.pl [filename to parse] [output DIRECTORY] [board ID]\n";
 }
 
 use Time::Local 'timegm_nocheck';
 use Math::BigInt;
-use List::MoreUtils qw'pairwise';
 
 $dirname=`dirname $0`;
 chomp($dirname);
@@ -160,6 +157,9 @@ while(<IN>){
 	$reStatus0="^([A-Z]{2}) ([0-9]{4}) ([0-9]{4}) ([0-9]{4}) ([0-9]{4}) ([0-9]{6}) ([0-9]{6}) ([AV]) ([0-9]{2}) ([0-9A-F]{8}) ([0-9]{2,3}) ([0-9]{4}) ([0-9A-F]{8}) ([0-9A-F]{8})\$";
 	
 	#hardware version > 5999 makes these ST lines:
+	# ST 1009 +2147483647 +050 3339 053155 180910 A 10 70CCD046 112 6626 00231F00 000A713F
+	# ST 1009 +2511 +064 3344 031123 180910 A 06 48D6AAD9 112 6600 00A8A000 0016710F
+	# ST 1009 +4134 +040 3344 031423 180910 A 05 550F37D9 112 6600 00847C00 0016710F
 	# ST 1032 +279 +000 3354 070251 301009 A 05 BD8F8E15 111 6477 00231F00 000A711F
 	$reStatus1="^([A-Z]{2}) ([0-9]{4}) ([-+ 0-9]{4}) ([-+ 0-9]{4}) ([0-9]{4}) ([0-9]{6}) ([0-9]{6}) ([AV]) ([0-9]{2}) ([0-9A-F]{8}) ([0-9]{2,3}) ([0-9]{4}) ([0-9A-F]{8}) ([0-9A-F]{8})\$";
 
@@ -476,13 +476,14 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					
 					if (($stTime[2]-$stTime[1]) > 0){ # it should have been caught by now, but still. . . 
 						for $j (1..$dsRowCount-1){
-								$stRate0[$j] = sprintf("%0.0f", $stCount0[$j]/($stTime[$j] - $stTime[$j-1]));
-								$stRate1[$j] = sprintf("%0.0f", $stCount1[$j]/($stTime[$j] - $stTime[$j-1]));
-								$stRate2[$j] = sprintf("%0.0f", $stCount2[$j]/($stTime[$j] - $stTime[$j-1]));
-								$stRate3[$j] = sprintf("%0.0f", $stCount3[$j]/($stTime[$j] - $stTime[$j-1]));
+								$stRate0[$j] = sprintf("%0.0f", $stCount0[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] != $stTime[$j-1];
+								#print $stTime[$j]," ", $stTime[$j-1], "\n";
+								$stRate1[$j] = sprintf("%0.0f", $stCount1[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] != $stTime[$j-1];
+								$stRate2[$j] = sprintf("%0.0f", $stCount2[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] != $stTime[$j-1];
+								$stRate3[$j] = sprintf("%0.0f", $stCount3[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] != $stTime[$j-1];
 								#The rate may be very low here. . .  
-								$stEventRate[$j] = sprintf("%0.0f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stEvents[$j]/($stTime[$j] - $stTime[$j-1]) > 1;
-								$stEventRate[$j] = sprintf("%0.2f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stEvents[$j]/($stTime[$j] - $stTime[$j-1]) < 1; # we've already ruled out counts < 0
+								$stEventRate[$j] = sprintf("%0.0f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] != $stTime[$j-1] && ($stEvents[$j]/($stTime[$j] - $stTime[$j-1]) > 1);
+								$stEventRate[$j] = sprintf("%0.2f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] != $stTime[$j-1] && ($stEvents[$j]/($stTime[$j] - $stTime[$j-1]) < 1); # we've already ruled out counts < 0
 						}
 					}
 					
