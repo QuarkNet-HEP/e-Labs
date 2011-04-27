@@ -25,6 +25,8 @@
 # jordant changed 07-07-10: inserting lines to create additional files needed for blessing.
 # jordant changed 11-01-10: checking to see if user is doing ST2 or ST3 when writing raw data. Knowing which one is crucial to data blessing.
 
+# test git change
+
 if($#ARGV < 2){
 	die "usage: Split.pl [filename to parse] [output DIRECTORY] [board ID]\n";
 }
