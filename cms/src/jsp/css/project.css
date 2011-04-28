@@ -28,7 +28,11 @@ a#nav1 {
 	background-color: black;
 }
 
-a#nav2 {	
+a#nav2 {
+	background-color: black;
+}
+
+a#nav3 {	
 	color: white; 
 	background-color: #f67527;
 	border-top: #ffa76c 1px solid;
