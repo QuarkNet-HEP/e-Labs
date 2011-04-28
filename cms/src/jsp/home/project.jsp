@@ -58,7 +58,7 @@
                     tools, standards, classroom notes and more. Your students begin the e-Lab at the Student Home
                     and cannot access this page or teacher pages from the student pages.</p>
                     
-				<a href="/elab"><strong>Information common for all e-Labs</strong></a>
+				<a href="/elab" target="common"><strong>Information common for all e-Labs</strong></a>
 				<br/><br/><br/><br/><br/><br/><br/><br/>
 				<table width="700"><tr><td  class="annotPict"><img src="../graphics/big-left.jpg" border="1"><br><div >Inner tracking barrel</div></td>
 						<td class="annotPict"><img src="../graphics/big-center.jpg" border="1"><br>Splash of particles</td>
