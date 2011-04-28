@@ -12,10 +12,19 @@ a#nav1 {
     border-left: 1px solid #808080;
     border-bottom: 1px solid #404040;
     border-right: 1px solid #404040;
+	background-color: blue;
+}
+
+a#nav2 {
+    border-top: 1px solid #808080;
+    border-left: 1px solid #808080;
+    border-bottom: 1px solid #404040;
+    border-right: 1px solid #404040;
 	background-color: black;
 }
 
-a#nav2 {	
+
+a#nav3 {	
 	color: white; 
 	background-color: #f67527;
 	border-top: #ffa76c 1px solid;
