@@ -7,4 +7,4 @@
 	<li><a href="/" id="nav6">I2U2 Home</a></li>
 	<li><a href="../home/project.jsp" id="nav7">Project Home</a></li>
 	<li><a href="../home" id="nav8">Student Home</a></li>
-/ul>
+</ul>
