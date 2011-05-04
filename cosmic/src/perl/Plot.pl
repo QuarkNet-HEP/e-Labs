@@ -331,6 +331,15 @@ sub ticLevels(){ # this is used for the flux study to find out where the tic mar
         $dayLow = 1;
         $monthLow = 0;
     }
+    else { # tic intervals set to one year 
+        $interval = 365*24*60*60;
+        $secondLow = 0; 
+        $minuteLow = 0;
+        $hourLow = 0; 
+        $dayLow = 1; 
+        $monthLow = 0; 
+    }
+    
     # stop here, since 10 tics at 6 months each is 5 years of data, and we don't need to worry about more data than that for a while
 
     # start at the designated time and iterate through all of the tic marks find the last tic mark before the data starts
