@@ -49,7 +49,7 @@
 				underneath LIGO's ultra-sensitive interferometers.</p>
           
 	
-				<a href="/elab"><strong>Information common for all e-Labs</strong></a>
+				<a href="/elab" target="common"><strong>Information common for all e-Labs</strong></a>
 				
 				
 				<p class="centered">

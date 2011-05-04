@@ -59,7 +59,7 @@
 					their results with this e-Lab.
 				</p>
 	
-				<a href="/elab"><strong>Information common for all e-Labs</strong></a>
+				<a href="/elab" target="common"><strong>Information common for all e-Labs</strong></a>
 			</div>
 		</td>
 		
