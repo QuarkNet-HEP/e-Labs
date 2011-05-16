@@ -100,23 +100,68 @@
 				</form>
 				<div id="help">
 				</div>
-				<div class="help-item" id="performance">
+				<div class="help-item" id="I2U2.Cosmic::PerformanceStudy">
 					Enables/disables performance analyses in the generated set
 				</div>
-				<div class="help-item" id="flux">
+				<div class="help-item" id="I2U2.Cosmic::FluxStudy">
 					Enables/disables flux analyses in the generated set
 				</div>
-				<div class="help-item" id="shower">
+				<div class="help-item" id="I2U2.Cosmic::ShowerStudy">
 					Enables/disables shower analyses in the generated set
 				</div>
-				<div class="help-item" id="lifetime">
+				<div class="help-item" id="I2U2.Cosmic::LifetimeStudy">
 					Enables/disables lifetime analyses in the generated set
+				</div>
+				<div class="help-item" id="count">
+					The total number of analyses to be included in the set
+				</div>
+				<div class="help-item" id="eventmin">
+					If priority is set to "Events", this will indicate the minimum total amount of events in selected
+					input files for each analysis. The actual amount of events will be chosen randomly between the minimum
+					and maximum.
+				</div>
+				<div class="help-item" id="eventmax">
+					If priority is set to "Events", this will indicate the maximum total amount of events in selected
+					input files for each analysis. The actual amount of events will be chosen randomly between the minimum
+					and maximum.
+				</div>
+				<div class="help-item" id="filemin">
+					If priority is set to "Files", this will indicate the minimum amount of files each analysis
+					The actual amount of files will be chosen randomly between the minimum and maximum.
+				</div>
+				<div class="help-item" id="filemax">
+					If priority is set to "Files", this will indicate the maximum amount of files each analysis
+					The actual amount of files will be chosen randomly between the minimum and maximum.
+				</div>
+				<div class="help-item" id="feprio">
+					Selects whether the input files are chose based on the number of events or simply by the
+					number of files
+				</div>
+				<div class="help-item" id="local">
+					Enables/disables local analysis run mode
+				</div>
+				<div class="help-item" id="i2u2">
+					Enables/disables i2u2 cluster analysis run mode
+				</div>
+				<div class="help-item" id="mixed">
+					Enables/disables automatic analysis run mode
+				</div>
+				<div class="help-item" id="ignore-constraints">
+					If enabled, then analysis time limits for local mode will be ignored
+				</div>
+				<div class="help-item" id="delay">
+					Indicates the mean delay (in seconds) between analyses start times. The actual start times
+					are generated randomly using a Poisson distribution with lambda = mean delay. 
+				</div>
+				<div class="help-item" id="seed">
+					Allows chosing a random seed for the random number generator used to generate the workload.
+					If set to 0, this feature is disabled.
 				</div>
 		 	</div>
 		</div>
 		<script>
 function getInputName(el) {
-	if (el.nodeName == "INPUT") {
+	if (el.nodeName == "INPUT" || el.nodeName == "SELECT") {
 		return el.name;
 	}
 	for (var i = 0; i < el.childNodes.length; i++) {
