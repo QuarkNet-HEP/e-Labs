@@ -112,7 +112,7 @@
 					} 
 				}
 		
-				if (crtev + fev > maxev && !crtev == 0) {
+				if (crtev + fev > maxev && !(crtev == 0)) {
 					// this might screw the distribution, but given that this
 					// is a knapsack problem, let's not care
 					break;
