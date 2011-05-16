@@ -112,13 +112,16 @@
 					} 
 				}
 		
-				if (crtev + fev > maxev) {
+				if (crtev + fev > maxev && !crtev == 0) {
 					// this might screw the distribution, but given that this
 					// is a knapsack problem, let's not care
 					break;
 				}
 				if (crtev + fev > eventGoal) {
 					if (eventGoal - crtev > crtev + fev - eventGoal) {
+						if (crtev == 0) {
+							continue;
+						}
 						//closer below
 						break;
 					}
