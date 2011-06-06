@@ -23,8 +23,8 @@
 			</div>
 
 			<div id="content">
-<h1>Community: Learn how to do cosmic rays studies in your classroom.</h1>   
-<p>These resources will help you teach using the Cosmic Ray e-Lab and allow you to collaborate and interact with other e-Lab teachers. Join us!</p>
+<h1>Share Ideas: Learn from each other how to do cosmic rays studies in your classroom.</h1>   
+<p>Collaborate and interact with other e-Lab teachers and staff using the Cosmic Ray e-Lab with the following:</p>
 
 <a name="Library"></a><h2>I2U2 WordPress Blog</h2>
 <p>The <a href="http://www18.i2u2.org/blog/" target="blog">I2U2 WordPress Blog</a> is a repository of posts and documents for teachers using the e-Labs. Use this blog to collaborate with other teachers; discuss your ideas, observations and experiences. If you are new to WordPress, you may want to read this article which gives  <a href="http://codex.wordpress.org/Writing_Posts" target="blog">help for posting in WordPress</a>. In order to post to this blog, you need to be invited.  Watch for an invitation in your email box.</p>
