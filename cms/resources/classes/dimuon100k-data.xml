@@ -23,7 +23,7 @@
 	    units="GeV/c^2" level="5" description="Like Sign Muon Mass"/>
     </branch>
 
-    <branch id="6" name="dimumon_OS.txt" level="5">
+    <branch id="6" name="dimuon_OS.txt" level="5">
       <leaf id="31" name="mass_" title="\mu ^+ \mu ^-  Mass" labely="Number of Events" labelx="Mass" 
 	    units="GeV/c^2" level="5" description="Opposite Sign Muon Mass"/>
     </branch>    
