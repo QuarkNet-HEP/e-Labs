@@ -40,7 +40,7 @@
 </ul>
 
 <a name="Facebook"></a><h2>Facebook Users Group</h2>
-<p>The <a href="https://www.facebook.com/home.php?sk=group_115695225182890&ap=1" target="facebook">I2U2 Users Facebook Group</a> is a place to communicate with fellow e-Lab users. It also supports uploading documents and chat sessions. Many of you already have Facebook accounts and like the idea of being able to go to one place to do your social networking. If you already have an account, ask to join the I2U2 group.  If you are not a member, consider signing up. </p>
+<p>The <a href="https://www.facebook.com/home.php?sk=group_115695225182890&ap=1" target="facebook">I2U2 Users Facebook Group</a> is a place to communicate with fellow e-Lab users. It also supports creating/sharing documents and chat sessions. Many of you already have Facebook accounts and like the idea of being able to go to one place to do your social networking. If you already have an account, ask to join the I2U2 group.  If you are not a member, consider signing up. </p>
 
 <a name="Helpdesk"></a><h2>HelpDesk</h2>
 <ul>
