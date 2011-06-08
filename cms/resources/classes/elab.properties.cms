@@ -25,6 +25,7 @@ dataset.descriptor.mc09=mc09-data.xml
 dataset.descriptor.jpsi11=jpsi11-data.xml
 dataset.descriptor.zmumu11=zmumu11-data.xml
 dataset.descriptor.zee11=zee11-data.xml
+dataset.descriptor.dimuon100k=dimuon100k-data.xml
 
 dataset.location.tb04=/disks/i2u2/cms/data/tbdata
 dataset.location.mc09=/disks/i2u2/cms/data/mcdata
@@ -33,6 +34,7 @@ dataset.location.mc09=/disks/i2u2/cms/data/mcdata
 dataset.location.jpsi11=/disks/i2u2/cms/data/jpsi-250111
 dataset.location.zmumu11=/disks/i2u2/cms/data/zmumu-250111
 dataset.location.zee11=/disks/i2u2/cms/data/zee-210311
+dataset.location.dimuon100k=/disks/i2u2/cms/data/dimuon100k-020611
 
 plot.image.cache=/home/quarkcat/tmp/cms-image-cache
 

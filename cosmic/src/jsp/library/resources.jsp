@@ -112,9 +112,11 @@
 							<li>
 								<a href="mailto:glass@fnal.gov">Henry Glass</a> - Fermilab/Auger
 							</li>
+<!-- 
 							<li>
 								<a href="mailto:barnett@lbl.gov">Michael Barnett</a> - Lawrence Berkeley National Laboratory
 							</li>
+ -->
 							<li>
 								<a href="mailto:jordant@fnal.gov">Tom Jordan</a> - University of Florida
 							</li>

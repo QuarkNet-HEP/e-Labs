@@ -43,7 +43,7 @@
 			surveyId = Integer.parseInt(request.getParameter("surveyId"));
 		}
 		else {
-			surveyId = user.getNewSurveyId().intValue(); 
+			surveyId = Integer.parseInt(elab.getProperty(elab.getName() + ".newsurvey"));  
 		}
 	}
 	catch (Exception e) {
