@@ -34,7 +34,7 @@ dataset.location.mc09=/disks/i2u2/cms/data/mcdata
 dataset.location.jpsi11=/disks/i2u2/cms/data/jpsi-250111
 dataset.location.zmumu11=/disks/i2u2/cms/data/zmumu-250111
 dataset.location.zee11=/disks/i2u2/cms/data/zee-210311
-dataset.location.dumuon100k=/disks/i2u2/cms/data/dimuon100k-020611
+dataset.location.dimuon100k=/disks/i2u2/cms/data/dimuon100k-020611
 
 plot.image.cache=/home/quarkcat/tmp/cms-image-cache
 

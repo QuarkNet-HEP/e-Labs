@@ -22,5 +22,8 @@
 		<c:when test="${param.dataset == 'zee11'}">
 			<jsp:include page="../data/zee11/plots.jspf"/>
 		</c:when>
+		<c:when test="${param.dataset == 'dimuon100k'}">
+			<jsp:include page="../data/dimuon100k/plots.jspf"/>
+		</c:when>
 	</c:choose>
 </ul>
