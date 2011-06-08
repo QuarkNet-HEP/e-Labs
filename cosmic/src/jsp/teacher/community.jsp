@@ -23,7 +23,7 @@
 			</div>
 
 			<div id="content">
-<h1>Share Ideas: Join a community of CMS e-Lab teachers and learn from each other.</h1>   
+<h1>Share Ideas: Join a community of e-Lab teachers and learn from each other.</h1>   
 <p>Collaborate and interact with other e-Lab teachers and staff using the Cosmic Ray e-Lab with the following:</p>
 
 <a name="Library"></a><h2>I2U2 WordPress Blog</h2>
