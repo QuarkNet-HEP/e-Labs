@@ -84,7 +84,7 @@
 						<td></td>
 						<td width="42px">
 							<div style="width: 24px;">
-								<a class="tbutton addcuts" id="addcut" href="#"><img src="../graphics/plus.png" /></a>
+								<%-- <a class="tbutton addcuts" id="addcut" href="#"><img src="../graphics/plus.png" /></a>  --%>
 							</div>
 						</td>
 					</tr>
