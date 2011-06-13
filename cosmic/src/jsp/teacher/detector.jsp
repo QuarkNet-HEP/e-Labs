@@ -77,7 +77,7 @@ User Manuals: <a href="http://www18.i2u2.org/cosmic/library/upload/b/ba/6000CRMD
 Assembly Instructions: <a href="http://www18.i2u2.org/cosmic/library/upload/6/60/6000CRMDAssemblyInstructions.pdf" title="6000CRMDAssemblyInstructions.pdf">Series "6000"</a> - <a href="http://www18.i2u2.org/cosmic/library/upload/b/bd/CRMDAssemblyInstructionsV1.3.pdf" title="CRMDAssemblyInstructionsV1.3.pdf">Series "5000"</a>
 </p>
 <p>
-Series "6000" CRMD Plateauing Instructions: <a href="http://www18.i2u2.org/cosmic/library/upload/3/3f/6000CRMD_How_to_Plateau.ppt" title="6000CRMD How to Plateau.ppt">PowerPoint HOWTO</a> - <a href=""http://www18.i2u2.org/cosmic/library/upload/1/1b/6000Plateau_Template.xls" title="6000Plateau Template.xls">Spreadsheet</a>
+Series "6000" CRMD Plateauing Instructions: <a href="http://www18.i2u2.org/cosmic/library/upload/3/3f/6000CRMD_How_to_Plateau.ppt" title="6000CRMD How to Plateau.ppt">PowerPoint HOWTO</a> - <a href="http://www18.i2u2.org/cosmic/library/upload/1/1b/6000Plateau_Template.xls" title="6000Plateau Template.xls">Spreadsheet</a>
 </p>
 </td></tr>
 </table>
