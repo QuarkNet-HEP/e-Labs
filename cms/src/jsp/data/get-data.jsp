@@ -7,7 +7,7 @@
 	import="gov.fnal.elab.cms.dataset.*"
 %>
 <%@ include file="../include/elab.jsp" %>
-<%@ include file="../login/login-required.jsp" %>
+<%-- <%@ include file="../login/login-required.jsp" %> --%> 
 <%
 	// the dataset is validated by dataset-info
 	String pdataset = request.getParameter("dataset");
@@ -16,7 +16,7 @@
 	String cuts = request.getParameter("cuts");
 	
 	Dataset dataset = Datasets.getDataset(elab, session, pdataset);
-	RecentCuts rc = RecentCuts.getInstance(user, dataset);
+	// RecentCuts rc = RecentCuts.getInstance(user, dataset);
 	
 	long st = System.currentTimeMillis();
 	
@@ -61,10 +61,10 @@
 	}
 	
 	for (Cut cut : c.getCuts(dataset)) {
-	    rc.add(cut);
+	    //rc.add(cut);
 	    out.write("cut: " + cut + "\n");
 	}
-	rc.commit();
+	//rc.commit();
 
 	for (String plot : splots) {
 	    System.out.println(plot);

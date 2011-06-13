@@ -2,6 +2,6 @@
 	<span class="label">mass</span>
 	<ul>
 		<li value="dimuon_LS.txt">&mu;<sup>+</sup>&mu;<sup>+</sup> / &mu;<sup>-</sup>&mu;<sup>-</sup></li>
-		<li value="dimumon_OS.txt">&mu;<sup>+</sup>&mu;<sup>-</sup></li>
+		<li value="dimuon_OS.txt">&mu;<sup>+</sup>&mu;<sup>-</sup></li>
 	</ul>
 </li>
