@@ -226,7 +226,7 @@ while(<IN>){
 	}
 
 	elsif(/$reThreshold0/o){
-		@thRow = ($1, $2, $3, $4);
+		@thRow = ($2, $3, $4, $5);
 		next; #get the next line in the input file. All the lifting is done on this one.
 	}
 
