@@ -531,6 +531,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					print META "chan4 int $chan3\n";
 					print META "triggers int $events\n";
         	        print META "cpldfrequency int $cpld_real_freq\n";
+        	        print META "blessedstatus string awaiting\n"; # File now awaiting blessing
 					
 					# 6. Write the .bless file for the file that was just closed.
 					#First the header
@@ -580,6 +581,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			print META "source string $fn\n";
 			print META "detectorid string $DAQID\n";
 			print META "type string split\n";
+			print META "blessfile string $sfn\n"; 
 		} # end  if($total_events > 0 && $stRowCount > 0)
 			$lastdate = $date;
 			$lasttime = $time;

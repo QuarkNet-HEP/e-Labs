@@ -1,3 +1,5 @@
+<%@ page import="gov.fnal.elab.cosmic.*" %>
+<%@ page import="gov.fnal.elab.cosmic.bless.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="java.util.*" %>
@@ -5,6 +7,65 @@
 <%
 	geometries.addGeoEntry(geoEntry.getDetectorID(), geoEntry);
 	geometries.commit();
+	
+	// do voodoo with existing blessed files here 
+	// unbless a bunch of files
+	
+
+	
+	// G1-----GF-----GN-----G2
+	// unbless [GN, G2)
+	
+	// G1-----GN-----GF-----G2
+	// unbless [G1, GN]
+	            
+	// scan for golden files
+	TreeMap<Integer, Geometry> gm = geometries.getGeometries();
+	List foo = new ArrayList(); 
+	foo.addAll(gm.keySet()); 
+	int index = foo.lastIndexOf(geoEntry.getJulianDay());
+	int priorJulianDay, nextJulianDay; 
+	
+	ListIterator<Integer> itr = foo.listIterator(index);
+	if (itr.hasPrevious()) {
+		priorJulianDay = itr.previous();
+		itr.next(); // reset position
+	}
+	if (itr.hasNext()) {
+		nextJulianDay = itr.next(); 
+	}
+	
+	// convert days
+	Date startDate = new Date(priorJulianDay); 
+	Date endDate = new Date(nextJulianDay); 
+	Date currentDate = new Date(geoEntry.getJulianDay());
+	
+	Date currentGoldenDate = Bless.getGoldenFileDate(elab, geoEntry.getDetectorID(), startDate, endDate);
+
+	if (currentGoldenDate != null) {
+		if (currentGoldenDate)
+		// case one
+		// G1-----GF-----GN-----G2
+		// unbless [GN, G2)
+		Bless.setBlessedStates(elab, geoEntry.getDetectorID(), currentGoldenDate, endDate, "unblessed");
+		
+		// G1-----GN-----GF-----G2
+		// unbless [G1, G2)
+		// force new selection of a golden file
+		Bless.setBlessedStates(elab, geoEntry.getDetectorID(), startDate, endDate, "unblessed");
+		// new or no golden for [G1, GN)
+		// new or no golden for [GN, G2)
+		
+	}
+	
+	// G1-----GN-----G2
+	// magic! do nothing
+	
+	// GN-----G1-----GF-----G2
+	// magic! do nothing
+	
+	// G1-----GF-----G2-----GN
+	// magic! do nothing
 	
 	DataCatalogProvider dcp = elab.getDataCatalogProvider();
 	geometries.updateMetadata(dcp, geoEntry);
