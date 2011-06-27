@@ -82,6 +82,12 @@ var addPlot = function(e, context) {
 	}
 	var pvalue = $(this).parent().parent().get()[0].getAttribute("value");
 	
+	// Ensure non-leaf elements do not add in nonsensical entries
+	// TODO: walk down the tree and add in child elements 
+	if (pvalue == null) {
+		return;  
+	}
+	
 	addPlotRow(value +  pvalue, label + " " + plabel);
 	
 	$('select #advanced').attr("selected", "true");
