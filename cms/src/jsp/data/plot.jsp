@@ -177,7 +177,7 @@
 							</div>
 						</td>
 						<td class="group-title">
-							<a href="#" id="animation-panel" class="group-title" onclick="switchPanel(this);">
+							<a href="#" id="animation-panel" class="group-title" onclick="switchPanel(this); return false;">
 								<img src="../graphics/plus.png" /> Animation
 							</a>
 						</td>
