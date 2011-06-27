@@ -21,5 +21,6 @@
 		<jsp:param name="runs" value="${param.runs}"/>
 		<jsp:param name="expr" value="${param.expr}"/>
 		<jsp:param name="plots" value="${param.plots}"/>
+		<jsp:param name="combine" value="${param.combine}"/>
 	</jsp:forward>
 </c:if>
