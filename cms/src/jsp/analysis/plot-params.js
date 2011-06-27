@@ -48,6 +48,9 @@ function addPlotRow(value, label) {
 		cell.innerHTML = tcell.innerHTML;
 		if (tcell.className) {
 			cell.className = tcell.className;
+			if (tcell.className == "remove") {
+				$(cell).find(".tbutton").click(removePlotRow); 
+			}
 		}
 		if (tcell.width) {
 			cell.width = tcell.width;
@@ -60,7 +63,6 @@ function addPlotRow(value, label) {
 	options["onSelect"] = setColor;
 	$(".colorbutton").jeegoocontext("color-list", options);
 	$("input.log").change(updatePlotList);
-	$(".remove .tbutton").click(removePlotRow);
 }
 
 function removePlotRow(c) {
@@ -81,6 +83,12 @@ var addPlot = function(e, context) {
 		value = label;
 	}
 	var pvalue = $(this).parent().parent().get()[0].getAttribute("value");
+	
+	// Ensure non-leaf elements do not add in nonsensical entries
+	// TODO: walk down the tree and add in child elements 
+	if (pvalue == null) {
+		return;  
+	}
 	
 	addPlotRow(value +  pvalue, label + " " + plabel);
 	

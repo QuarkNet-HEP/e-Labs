@@ -75,56 +75,53 @@
 			</div>
 		</td>
 		
-		<td><div id="expandHeading">
-				<P>Click on each topic or its arrow to expand it. Click again to collapse it. Click on <b>Expand All Topics</b> or <b>Collapse All Topics</b> to expand or collapse all the content on the page. These
-				only work when you have Javascript enabled in your web browser.
+		<td>
+			<div id="expandHeading">
+				<p>Click on each topic or its arrow to expand it. Click again to collapse it. Click on <b>Expand All Topics</b> or <b>Collapse All Topics</b> to expand or collapse all the content on the page. These
+				only work when you have Javascript enabled in your web browser.</p>
 				<div id="all-v" style="text-align:center; visibility:visible; display:"><a href="#" onclick="HideShow('all-v');HideShow('all-h');showAll(1,9);return false;">Expand All Topics</a></div>
 				<div id="all-h" style="text-align:center; visibility:hidden; display: none"><a href="#" onclick="HideShow('all-v');HideShow('all-h');hideAll(1,9);return false;">Collapse All Topics</a></div>
-				
-
 
 				<div id="vsId1-v" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
-								</div><div id="vsId1-h" style="visibility:visible; display">
-				<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
-				<p>
-					Working in a research group, students experience the environment of scientific collaborations 
-					in this series of investigations into high-energy cosmic rays. 
-					From start to finish this is a student-led, <b>teacher-guided</B> project. 
-					Schools with cosmic ray detectors can upload data to the web. 
-					A virtual data portal enables students to share these data and 
-					associated analysis code with students at other schools whether 
-					or not those schools have their own cosmic ray detectors. 
-				</p>
-<!-- 
+					<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
+				</div>
+				
+				<div id="vsId1-h" style="visibility:visible; display">
+					<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
 					<p>
-					Students start this e-lab with an animation that raises
-					questions researchers ask about cosmic rays.
-				</p>
- -->
-				<p>
-					Students begin their research by watching a Cool Science video to understand the context of they project. They check the performance of the detectors they 
-					have chosen for their study. Then they can perform one of three 
-					investigations: muon lifetime, muon flux or extended air showers. 
-					Students can use the project milestones to conduct their research and
-					can record their work and reflect on their progress in their e-Logbook. Students post the results of their studies as online posters. 
-					The real scientific collaboration follows. Students can 
-					review the results of other studies online comparing data and 
-					analyses. Using online tools, they can correspond with other 
-					research groups, post comments and questions, prepare summary 
-					reports and, in general, participate in the part of scientific 
-					research that is often left out of classroom experiments. 
-				</p>
-				<p> Two sample posters are available:</p>
-				<ul>
-				<li><a href="#" onclick="javascript:window.open('..\/posters\/display.jsp?name=effect_of_roof_on_muon_detector.data', 'poster', 'width=700,height=900, resizable=1, scrollbars=1');return false;">Effect of Roof on Muon Detector</a> - meets expectations.</li>
-				<li><a  href="#"  onclick="javascript:window.open('..\/posters\/display.jsp?name=callisto_poster.data', 'poster', 'width=700,height=900, resizable=1, scrollbars=1');return false;">Effect of Leonid Meteor Shower on Cosmic Ray Detection</a> - exceeds expectations</li> 
-				</ul>
-					</div>
+						Working in a research group, students experience the environment of scientific collaborations 
+						in this series of investigations into high-energy cosmic rays. 
+						From start to finish this is a student-led, <b>teacher-guided</B> project. 
+						Schools with cosmic ray detectors can upload data to the web. 
+						A virtual data portal enables students to share these data and 
+						associated analysis code with students at other schools whether 
+						or not those schools have their own cosmic ray detectors. 
+					</p>
+
+					<p>
+						Students begin their research by watching a Cool Science video to understand the context of they project. They check the performance of the detectors they 
+						have chosen for their study. Then they can perform one of three 
+						investigations: muon lifetime, muon flux or extended air showers. 
+						Students can use the project milestones to conduct their research and
+						can record their work and reflect on their progress in their e-Logbook. Students post the results of their studies as online posters. 
+						The real scientific collaboration follows. Students can 
+						review the results of other studies online comparing data and 
+						analyses. Using online tools, they can correspond with other 
+						research groups, post comments and questions, prepare summary 
+						reports and, in general, participate in the part of scientific 
+						research that is often left out of classroom experiments. 
+					</p>
+					<p> Two sample posters are available:</p>
+					<ul>
+						<li><a href="#" onclick="javascript:window.open('..\/posters\/display.jsp?name=effect_of_roof_on_muon_detector.data', 'poster', 'width=700,height=900, resizable=1, scrollbars=1');return false;">Effect of Roof on Muon Detector</a> - meets expectations.</li>
+						<li><a  href="#"  onclick="javascript:window.open('..\/posters\/display.jsp?name=callisto_poster.data', 'poster', 'width=700,height=900, resizable=1, scrollbars=1');return false;">Effect of Leonid Meteor Shower on Cosmic Ray Detection</a> - exceeds expectations</li> 
+					</ul>
+				</div>
 					
 				<div id="vsId2-v" style="visibility:hidden; display: none">
 				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Introduction to Cosmic Ray Research</h2></a>
-									</div><div id="vsId2-h" style="visibility:visible; display">
+									</div>
+				<div id="vsId2-h" style="visibility:visible; display">
 				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Introduction to Cosmic Ray Research</h2></a>
 				<p>
 					Cosmic rays are typically protons, neutrons, gamma rays or other 
@@ -157,7 +154,8 @@
 				
 				<div id="vsId3-v" style="visibility:hidden; display: none">
 				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Good Research Questions</h2></a>
-									</div><div id="vsId3-h" style="visibility:visible; display">
+									</div>
+				<div id="vsId3-h" style="visibility:visible; display">
 				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Good Research Questions</h2></a>
 				<p>
 					How much area can a cosmic ray shower cover? Where do cosmic 
@@ -180,7 +178,8 @@
 				</div>
 				<div id="vsId4-v" style="visibility:hidden; display: none">
 				<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
-						</div><div id="vsId4-h" style="visibility:visible; display">
+						</div>
+						<div id="vsId4-h" style="visibility:visible; display">
 				<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
 				<p>
 					Before doing this project, students should know how to: 
@@ -200,7 +199,8 @@
 					
 					<div id="vsId5-v" style="visibility:hidden; display: none">
 					<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
-							</div><div id="vsId5-h" style="visibility:visible; display">
+							</div>
+							<div id="vsId5-h" style="visibility:visible; display">
 					<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
 					<p>
 						Students will know and be able to: 
@@ -265,145 +265,138 @@
 					</div>
 				
 				<div id="vsId6-v" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
-						</div><div id="vsId6-h" style="visibility:visible; display">
-				<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
-				<div style="margin-left: 20px">
-				<p>A good way to begin cosmic ray studies is to invite the class to watch Cool Science together. Play the <a href="">Standalone Movie</a> and enlarge the window.
-				</p>
-				<p>Questions to ask students? How to motivate students. BOB</p>
+					<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
+				</div>
 				
-				<a name="Cosmic_Ray_Detector"></a><h4>Detectors Students Use</h4>
-				<p>The data for this e-Lab comes from detectors operated by high school students around the world. If you have a detector, you should become familiar with
-				how to set it up and take data.</p>  
-				<UL>
-				<li>Read this <a href="detector.jsp">Introduction to the QuarkNet cosmic ray detector</a>.</li>
-				</ul>
+				<div id="vsId6-h" style="visibility:visible; display">
+					<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
+					<div style="margin-left: 20px">
+						<p>A good way to begin cosmic ray studies is to invite the class to watch Cool Science together. Play the <a href="">Standalone Movie</a> and enlarge the window.</p>
+						<p>Questions to ask students? How to motivate students. BOB</p>
 				
-				<p>To obtain a detector, pending funding, contact:</p>
-				<ul>
-				<li><a href="mailto:rspete@fnal.gov">Bob Peterson</a> if you are
-				a member of QuarkNet.</li>
-				<li><a href="mailto:jordant@fnal.gov">Tom Jordan</a> if you are not a member of QuarkNet and want to purchase
-				a detector.</li>
-				</ul>
-				<p>Fermilab gathers the requests, place orders for the parts in early spring and fills the orders throughout the summer.
-				</p>
+						<a name="Cosmic_Ray_Detector"></a><h4>Detectors Students Use</h4>
+						<p>The data for this e-Lab comes from detectors operated by high school students around the world. If you have a detector, you should become familiar with
+							how to set it up and take data.</p>  
+						<ul>
+							<li>Read this <a href="detector.jsp">Introduction to the QuarkNet cosmic ray detector</a>.</li>
+						</ul>
+				
+						<p>To obtain a detector, pending funding, contact:</p>
+						<ul>
+							<li><a href="mailto:rspete@fnal.gov">Bob Peterson</a> if you area member of QuarkNet.</li>
+							<li><a href="mailto:jordant@fnal.gov">Tom Jordan</a> if you are not a member of QuarkNet and want to purchase a detector.</li>
+						</ul>
+						<p>Fermilab gathers the requests, place orders for the parts in early spring and fills the orders throughout the summer.</p>
 
-				<a name="Experiments_Students_Can_Perform"></a><h4>Experiments Students Can Perform</h4>
-				<p>
-					<b>Calibrations and performance studies</b> - Before students can "trust" the cosmic ray equipment, they 
-					should do some calibrations to study the response of the 
-					counters and the board. Calibration studies include 
-					plateauing the counters, threshold selection and barometer 
-					calibration. In addition, the QuarkNet online analysis 
-					tools include a "system performance" study for uploaded data.
-					</p>
-					<p>
-					<b>Flux Experiments</b> - Students can do a variety of flux experiments 
-					investigating such things as cosmic ray flux as a function of 
-					time of day, solar activity, angle from vertical, barometric 
-					pressure, altitude. The list goes on. This can be an exciting 
-					set of experiments as students study the factors that they 
-					want to test.</p>
+						<a name="Experiments_Students_Can_Perform"></a><h4>Experiments Students Can Perform</h4>
+						<p>
+							<b>Calibrations and performance studies</b> - Before students can "trust" the cosmic ray equipment, they 
+							should do some calibrations to study the response of the 
+							counters and the board. Calibration studies include 
+							plateauing the counters, threshold selection and barometer 
+							calibration. In addition, the QuarkNet online analysis 
+							tools include a "system performance" study for uploaded data.
+						</p>
+						<p>
+							<b>Flux Experiments</b> - Students can do a variety of flux experiments 
+							investigating such things as cosmic ray flux as a function of 
+							time of day, solar activity, angle from vertical, barometric 
+							pressure, altitude. The list goes on. This can be an exciting 
+							set of experiments as students study the factors that they 
+							want to test.
+						</p>
 					
-					<p>
-					<b>Muon Lifetime Experiments</b> - A classic modern physics experiment to verify time dilation 
-					is the measurement of the muon mean lifetime. Since nearly all 
-					of the cosmic ray muons are created in the upper part of the 
-					atmosphere (&gt;&gt;30 km above the earth's surface), the time of 
-					flight for these muons as they travel to earth should be at 
-					least 100 microseconds: <p>
-  <img class='tex' src="../graphics/tof_equation.gif" />
-</p>
-				<p>
-					This calculation assumes that muons are traveling at the speed 
-					of light - anything slower would require even more time. If a 
-					student can determine the muon lifetime and show that it is 
-					significantly less than this time, they are presented with the 
-					wonderful dilemma that the muon's time of flight is longer than 
-					its lifetime! 
-				</p>
-				<p>
-					This time dilation "proof" assumes that all muons are created in 
-					the upper atmosphere. Although this is actually a good 
-					approximation, students cannot test it. However, by using 
-					the mean lifetime value and by measuring flux rates at two 
-					significantly different elevations, one can develop experimental 
-					proof for time dilation. This experiment requires 
-					access to a mountain, an airplane, or collaboration with a team 
-					from another school that is at a significantly different altitude! 
-					Here is a wonderful opportunity for schools to work together 
-					proving time dilation. A very thorough explanation of this 
-					experiment is outlined in the 1962 classroom movie titled, "Time 
-					Dilation: An Experiment with Mu Mesons." (This 30 minute movie 
-					can be ordered on CD for $10 from www.physics2000.com/.)   This 
-					movie helps students understand how to verify time dilation using the muon 
-					lifetime measurement (along with flux measurements at two 
-					different altitudes).
-					</p>
-					<p>
-					<b>Shower Studies</b> - With the GPS device connected to the DAQ board, the absolute 
-					time stamp allows a network of detectors (at the same site or at 
-					different schools) to study cosmic ray showers. Students 
-					can look for small showers or collaborate with nearby schools to look for larger showers. 
-			
-					The QuarkNet online analysis tools allow students to not only 
-					look for showers but to calculate the direction from which the 
-					shower (and thus the primary cosmic ray) originated.</p>
+						<p>
+							<b>Muon Lifetime Experiments</b> - A classic modern physics experiment to verify time dilation 
+							is the measurement of the muon mean lifetime. Since nearly all 
+							of the cosmic ray muons are created in the upper part of the 
+							atmosphere (&gt;&gt;30 km above the earth's surface), the time of 
+							flight for these muons as they travel to earth should be at 
+							least 100 microseconds: 
+						</p>
+						
+  						<p><img class='tex' src="../graphics/tof_equation.gif" /></p>
+  						
+						<p>
+							This calculation assumes that muons are traveling at the speed 
+							of light - anything slower would require even more time. If a 
+							student can determine the muon lifetime and show that it is 
+							significantly less than this time, they are presented with the 
+							wonderful dilemma that the muon's time of flight is longer than 
+							its lifetime! 
+						</p>
+						<p>
+							This time dilation "proof" assumes that all muons are created in 
+							the upper atmosphere. Although this is actually a good 
+							approximation, students cannot test it. However, by using 
+							the mean lifetime value and by measuring flux rates at two 
+							significantly different elevations, one can develop experimental 
+							proof for time dilation. This experiment requires 
+							access to a mountain, an airplane, or collaboration with a team 
+							from another school that is at a significantly different altitude! 
+							Here is a wonderful opportunity for schools to work together 
+							proving time dilation. A very thorough explanation of this 
+							experiment is outlined in the 1962 classroom movie titled, "Time 
+							Dilation: An Experiment with Mu Mesons." (This 30 minute movie 
+							can be ordered on CD for $10 from www.physics2000.com/.)   This 
+							movie helps students understand how to verify time dilation using the muon 
+							lifetime measurement (along with flux measurements at two 
+							different altitudes).
+						</p>
+						<p>
+							<b>Shower Studies</b> - With the GPS device connected to the DAQ board, the absolute 
+							time stamp allows a network of detectors (at the same site or at 
+							different schools) to study cosmic ray showers. Students 
+							can look for small showers or collaborate with nearby schools to look for larger showers. 
 					
-					<p><b>Other Studies Devised by Students</b></p
+							The QuarkNet online analysis tools allow students to not only 
+							look for showers but to calculate the direction from which the 
+							shower (and thus the primary cosmic ray) originated.
+						</p>
+					
+					<p><b>Other Studies Devised by Students</b></p>
 					</div>
-				
-				
+				</div>
 			
-					</div>
-			
-					<H2>&nbsp;&nbsp;&nbsp;<a href="web-guide.jsp">Navigating Students Through the e-Lab</a></H2>
+				<h2>&nbsp;&nbsp;&nbsp;<a href="web-guide.jsp">Navigating Students Through the e-Lab</a></h2>
 
-						<div id="vsId7-v" style="visibility:hidden; display: none">
-						<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Help Desk & Sharing Ideas</h2></a>
-								</div><div id="vsId7-h" style="visibility:visible; display">
-						<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Help Desk & Sharing Ideas</h2></a>
-				<p>
-					      <table style="margin-left:20px"><tr><td>Use the <a href="/elab/cosmic/teacher/forum/HelpDeskRequest.php?elab=cosmic" class="external text" title="http://www.i2u2.org/elab/cosmic/teacher/forum/HelpDeskRequest.php?elab=Cosmic" rel="nofollow">Help Desk Form</a> to get technical assistance from I2U2 staff. Click on the lifesaver
-					     icon in the upper right hand corner of the teacher pages when you are logged in.</td><td><img src="../graphics/Lifesaver.png"></td></tr>
-					     
-					     <tr><td colspan="2">Be sure to click on <b>Share Ideas</b> to see what other teachers have shared in the I2U2 Blog and in Facebook. They may have the answers to your questions. You may have answers to theirs! Maybe you want to collaborate on a study.</td></tr>
-					     
-					     
-					     
+				<div id="vsId7-v" style="visibility:hidden; display: none">
+					<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Help Desk &amp; Sharing Ideas</h2></a>
+				</div>
+				<div id="vsId7-h" style="visibility:visible; display">
+					<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Help Desk &amp; Sharing Ideas</h2></a>
+					<p>
+						<table style="margin-left:20px">
+							<tr>
+								<td>Use the <a href="/elab/cosmic/teacher/forum/HelpDeskRequest.php?elab=cosmic" class="external text" title="http://www.i2u2.org/elab/cosmic/teacher/forum/HelpDeskRequest.php?elab=Cosmic" rel="nofollow">Help Desk Form</a> to get technical assistance from I2U2 staff. Click on the lifesaver
+					     			icon in the upper right hand corner of the teacher pages when you are logged in.
+					     		</td>
+					     		<td><img src="../graphics/Lifesaver.png" /></td>
+				     		</tr>
+					     	<tr>
+					     		<td colspan="2">Be sure to click on <b>Share Ideas</b> to see what other teachers have shared in the I2U2 Blog and in Facebook. They may have the answers to your questions. You may have answers to theirs! Maybe you want to collaborate on a study.</td>
+				     		</tr>
 					     
 					     </table>
-				</p> 
-				
-
- 
-				
-				
- 
-				
-			</div>
+					</p> 
+				</div>
 			
 				<div id="vsId8-v" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
-								</div><div id="vsId8-h" style="visibility:visible; display:">
-				<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
-						<p>
-						Relax!  The e-Lab requires Javascript and Plug-ins enabled in your Web browser. Most browsers default to these settings.</p>  
-						<ul>
+					<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
+				</div>
+				<div id="vsId8-h" style="visibility:visible; display:">
+					<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
+					<p>Relax!  The e-Lab requires Javascript and Plug-ins enabled in your Web browser. Most browsers default to these settings.</p>  
+					<ul>
 						<li>If Javascript is not enabled, you will see a message on the student home page and at the top of this page.</li>
 						<li>If Plug-ins are not enabled, you won't see the Flash movie on the student home page.</li>
-						</ul>
-						<p>
-						 Ask your tech support person if you need help with browser settings. The Resources in the Library and the background material may include YouTube videos and java applets, but these are not critical for using the e-Lab.</p>  
-						</p>
-					</div>
-
-
-			
-			
-			
+					</ul>
+					<p>
+					 Ask your tech support person if you need help with browser settings. The Resources in the Library and the background material may include YouTube videos and java applets, but these are not critical for using the e-Lab.  
+					</p>
+				</div>
+					
+				</div>
 		</td>
 		<td>
 			<div id="right">

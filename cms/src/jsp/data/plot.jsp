@@ -110,11 +110,13 @@
 	--%>
 </ul>
 
+<%-- Disable this for now - interfering with color popup and the cut list is disabled anyways
 <script>
 	popupOptions.onSelect = addCut;
 	$("#addcut").jeegoocontext("cut-list", popupOptions);
 </script>
-
+--%>
+ 
 <div class="wait-on-data" style="width: 100%; height: 64px;">
 </div>
 
@@ -175,7 +177,7 @@
 							</div>
 						</td>
 						<td class="group-title">
-							<a href="#" id="animation-panel" class="group-title" onclick="switchPanel(this);">
+							<a href="#" id="animation-panel" class="group-title" onclick="switchPanel(this); return false;">
 								<img src="../graphics/plus.png" /> Animation
 							</a>
 						</td>
