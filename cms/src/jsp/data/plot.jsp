@@ -110,11 +110,13 @@
 	--%>
 </ul>
 
+<%-- Disable this for now - interfering with color popup and the cut list is disabled anyways
 <script>
 	popupOptions.onSelect = addCut;
 	$("#addcut").jeegoocontext("cut-list", popupOptions);
 </script>
-
+--%>
+ 
 <div class="wait-on-data" style="width: 100%; height: 64px;">
 </div>
 
