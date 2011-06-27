@@ -68,6 +68,9 @@
 		<p>
 			No students need to take the test or there is no test for this e-Lab.
 		</p>
+		<p>
+			<a href="/../home/">Continue onto the e-Lab</a>
+		</p>
 	</c:otherwise>
 </c:choose>
 			
