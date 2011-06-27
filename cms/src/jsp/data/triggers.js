@@ -32,11 +32,14 @@ function getExpr(id) {
     return expr;
 }
 
+// Callback function to update totals; also fires on every 
+// individual run checkbox state change. 
 function updateTotals() {
 	var sw = document.getElementsByTagName("input");
 	var rinput = document.getElementById("runs-input");
 	var runs = 0, events = 0;
 	var runlist = "";
+	var allChecked = true; 
 	for (var i = 0; i < sw.length; i++) {
 		if (sw[i].className == "runsw") {
 			if (sw[i].checked) {
@@ -45,11 +48,30 @@ function updateTotals() {
 				runlist += sw[i].getAttribute("run");
 				runlist += " ";
 			}
+			else {
+				allChecked = false; 
+			}
 		}
 	}
+	
+	if (allChecked) {
+		$("#select-all").attr('checked', true);
+	}
+	else {
+		$("#select-all").attr('checked', false);
+	}
+	
 	var totals = document.getElementById("totals");
 	totals.innerHTML = "Total: " + runs + " runs, " + events + " events";
 	rinput.value = runlist;
+	
+	// If totals = zero, we can't do any analyses so disable that button!
+	if (events == 0) {
+		$("#plot-params-button").attr("disabled", true);
+	}
+	else {
+		$("#plot-params-button").removeAttr("disabled");
+	}
 }
 
 function selectAll() {
@@ -60,6 +82,7 @@ function selectAll() {
 			sw[i].checked = all.checked;
 		}
 	}
+	updateTotals(); 
 }
 
 function clearRunList() {
