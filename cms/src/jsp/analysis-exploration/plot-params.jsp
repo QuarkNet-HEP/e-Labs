@@ -94,7 +94,7 @@
 					<td width="100%">
 					</td>
 					<td>
-						<input id="plot-submit" type="submit" name="forward" value="Plot >" disabled="true" />
+						<input id="plot-submit" type="submit" name="forward" value="Plot &gt;" disabled />
 					</td>
 				</tr>
 			</table>
