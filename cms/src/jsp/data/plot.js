@@ -602,7 +602,13 @@ function bindButtons(index) {
 		var client = document.plots[index].getAxes().xaxis.p2c(pos);
 		var from = roundToBin(ranges.xaxis.from, binwidth);
 		var to = roundToBin(ranges.xaxis.to, binwidth);
-		$(plot + " .selection").html(from + " - " + to + " " + document.plotData[index][0]["units"]);
+		
+		var selectionText = from + " &ndash; " + to; 
+		if (document.plotData[index][0]["units"]) {
+			selectionText += " " + document.plotData[index][0]["units"]; 
+		}
+		
+		$(plot + " .selection").html(selectionText);
 		$(plot + " .selection").css("left", (client + 50) + "px");
 		$(plot + " .apply-selection").attr("disabled", false);
 		$(plot + " .apply-cut").attr("disabled", false);
