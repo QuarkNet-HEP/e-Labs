@@ -27,7 +27,7 @@ if (StringUtils.isBlank(file2)) {
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<script type="text/javascript" src="../include/jquery/js/jquery-1.4.3.min.js"></script>
+		<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>
 		<script type="text/javascript" src="../include/jquery/flot/jquery.flot.min.js"></script>
 		<script type="text/javascript" src="../include/jquery/flot/jquery.flot.errorbars.js"></script>
 		<script type="text/javascript">

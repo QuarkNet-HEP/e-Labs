@@ -228,7 +228,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<link type="text/css" href="../include/jquery/css/blue/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />	
-		<script type="text/javascript" src="../include/jquery/js/jquery-1.4.3.min.js"></script>
+		<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>
 		<script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.3.custom.min.js"></script>
 		<script type="text/javascript" src="../include/elab.js"></script>
 		<style>
