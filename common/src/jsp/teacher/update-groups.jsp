@@ -156,7 +156,7 @@
 					<label for="ay">Academic Year:</label>
 				</td>
 				<td>
-					<e:trselect name="ay" valueList="AY2004, AY2005, AY2006, AY2007, AY2008, AY2009, AY2010"
+					<e:trselect name="ay" valueList="AY2004, AY2005, AY2006, AY2007, AY2008, AY2009, AY2010, AY2011"
 						labelList="2004-2005, 2005-2006, 2006-2007, 2007-2008, 2008-2009, 2009-2010, 2010-2011, 2011-2012"
 						value="${group.year}"/>
 				</td>
