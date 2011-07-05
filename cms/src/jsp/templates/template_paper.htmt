@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<title>Paper</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<style>
+			<!--
+			body {
+				font: 14px arial, helvetica, sans-serif;
+				background-color: #FFFFFF;
+			}
+			-->
+		</style>
+		<script type="text/javascript">
+            function writeCode(linkText, fileName, caption) {
+                    iFigure = fileName.indexOf("%FIG:FIGURE");
+                    if (iFigure == -1) {
+                            var startHREF="<iframe src=\"../plots/view.jsp?menu=no&type=plot&get=data&filename="+fileName+"\" width=\"100%\" height=\"600\">"
+                            var endHREF="</iframe>";
+                            var code=startHREF+linkText+endHREF+"<br /> "+caption;
+                            document.write(code);
+                    }
+            }
+		</script>
+	</head>
+	<body>
+		<blockquote>
+			<h2 align="center"><font color="#0080FF" face="Arial, Helvetica, sans-serif">%WORDS:TITLE%</font></h2>
+			<p align="center"><font face="Arial, Helvetica, sans-serif" size="+1">%WORDS:SUBTITLE%</font></p>
+			
+			<div align="center">
+				%WORDS:AUTHORS%
+			</div>
+			
+			<p align="center">%WORDS:DATE%</p>
+			
+			<h2>Abstract</h2>
+			<p>%PARA:ABSTRACT%</p>
+			
+			<h2>Introduction</h2>
+			<p>%PARA:INTRODUCTION%</p>
+			
+			<h2>Procedures</h2>
+			<p>%PARA:PROCEDURE%</p>
+			
+			<h2>Results</h2>
+			<p>%PARA:RESULTS%</p>
+			
+			<h2>Figures</h2>
+			<center>
+			
+				<script language="JAVASCRIPT">writeCode("Figure 1","%FIG:FIGURE1%","%WORDS:CAPTION1%")</script>
+<script language="JAVASCRIPT">writeCode("Figure 2","%FIG:FIGURE2%","%WORDS:CAPTION2%")</script>
+<script language="JAVASCRIPT">writeCode("Figure 3","%FIG:FIGURE3%","%WORDS:CAPTION3%")</script>
+<script language="JAVASCRIPT">writeCode("Figure 4","%FIG:FIGURE4%","%WORDS:CAPTION4%")</script>
+<script language="JAVASCRIPT">writeCode("Figure 5","%FIG:FIGURE5%","%WORDS:CAPTION5%")</script>
+<script language="JAVASCRIPT">writeCode("Figure 6","%FIG:FIGURE6%","%WORDS:CAPTION6%")</script>
+<script language="JAVASCRIPT">writeCode("Figure 7","%FIG:FIGURE7%","%WORDS:CAPTION7%")</script>
+<script language="JAVASCRIPT">writeCode("Figure 8","%FIG:FIGURE8%","%WORDS:CAPTION8%")</script>
+<script language="JAVASCRIPT">writeCode("Figure 9","%FIG:FIGURE9%","%WORDS:CAPTION9%")</script>
+<script language="JAVASCRIPT">writeCode("Figure 10","%FIG:FIGURE10%","%WORDS:CAPTION10%")</script>
+			</center>
+			
+			<h2>Discussion and Conclusions</h2>
+			<p>%PARA:CONCLUSION%</p>
+			
+			<h2>Bibliography</h2>
+			<p>%PARA:BIBLIOGRAPHY%</p>
+			<p>&nbsp;</p>
+		</blockquote>
+	</body>
+</html>
