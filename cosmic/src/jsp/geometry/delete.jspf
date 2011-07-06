@@ -6,7 +6,7 @@
 			if (Boolean.TRUE.equals(request.getAttribute("geometryNotFound"))) {
 				throw new ElabJspException("No geometry entry found for detector " + id + " on date " + jd);
 			}
-			geometries.removeGeoEntry(id, geoEntry);
+			geometries.removeGeoEntry(Integer.parseInt(id), geoEntry);
 			geometries.commit();
 	
 			DataCatalogProvider dcp = elab.getDataCatalogProvider();
