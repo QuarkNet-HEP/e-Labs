@@ -84,7 +84,6 @@
 
 						updatingDone = function() {
 							log("Updating done");
-							$("#plot-params-button").removeAttr("disabled");
 							spinnerOff(".wait-on-runs");
 						}
 

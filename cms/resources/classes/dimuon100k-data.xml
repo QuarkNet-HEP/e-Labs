@@ -16,7 +16,21 @@
     <trigger name="ee"		displayname="ee"     				id="ee"   description="Di-electron events"  level="0" group="1"/>
   </triggers>
 
-  <tree id="1" name="Events" level="0">
+  <tree id="1" name="Events" level="0">	
+  	<branch id="1"  name="dimuon_ALL.txt" level="0">
+  		<leaf id="1"  name="pt_" 
+	    title="Muon P_t"   labely="Number of Events" labelx="Transversal Momentum" units="GeV/c" 
+            level="0" description="Transverse momentum of the muons (GeV/c)"/>
+
+      <leaf id="2"  name="eta_"                      
+	    title="Muon \eta"   labely="Number of Events" labelx="Eta" units=""
+	    level="1" description="Psudeorapidity of the muons. eta = -ln[tan(theta/2)] where theta is the pitch angle (angle between the momentum vector and the z-axis)"/>
+
+      <leaf id="3"  name="phi_"
+            title="Muon \phi"   labely="Number of Events" labelx="Phi" units="rad" 
+	    level="1" description="Phi (rotation angle in the X-Y plane) of the muons (rad)"/>
+    </branch>
+  
     <!-- muon - -/++ (LS - like sign) and -+ (OS - opposite sign) two-particle mass -->
     <branch id="5" name="dimuon_LS.txt" level="5">
       <leaf id="30" name="mass_" title="\mu ^+ \mu ^+  / \mu ^- \mu ^-  Mass" labely="Number of Events" labelx="Mass" 

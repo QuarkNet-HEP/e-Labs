@@ -602,7 +602,13 @@ function bindButtons(index) {
 		var client = document.plots[index].getAxes().xaxis.p2c(pos);
 		var from = roundToBin(ranges.xaxis.from, binwidth);
 		var to = roundToBin(ranges.xaxis.to, binwidth);
-		$(plot + " .selection").html(from + " - " + to + " " + document.plotData[index][0]["units"]);
+		
+		var selectionText = from + " &ndash; " + to; 
+		if (document.plotData[index][0]["units"]) {
+			selectionText += " " + document.plotData[index][0]["units"]; 
+		}
+		
+		$(plot + " .selection").html(selectionText);
 		$(plot + " .selection").css("left", (client + 50) + "px");
 		$(plot + " .apply-selection").attr("disabled", false);
 		$(plot + " .apply-cut").attr("disabled", false);
@@ -666,12 +672,12 @@ function bindButtons(index) {
 	bindTextWithApply(index, "maxy", "apply-maxy", "maxy", null, redrawPlot, function(x) {return !isNaN(x);});
 	bindTextWithApply(index, "binwidth", "apply-binwidth", "binwidth", 1, reBin, function(x) {return !isNaN(x) && x > 0;});
 
-	$(plot + " .anim-bskip").bind("click", function() {animationBSkip(index)});
-	$(plot + " .anim-playpause").bind("click", function() {animationPlayPause(index)});
-	$(plot + " .anim-fstep").bind("click", function() {animationFStep(index)});
-	$(plot + " .anim-fskip").bind("click", function() {animationFSkip(index)});
-	$(plot + " .anim-incspeed").bind("click", function() {animationIncSpeed(index)});
-	$(plot + " .anim-decspeed").bind("click", function() {animationDecSpeed(index)});
+	$(plot + " .anim-bskip").bind("click", function(e) {e.preventDefault(); animationBSkip(index);});
+	$(plot + " .anim-playpause").bind("click", function(e) {e.preventDefault(); animationPlayPause(index);});
+	$(plot + " .anim-fstep").bind("click", function(e) {e.preventDefault(); animationFStep(index);});
+	$(plot + " .anim-fskip").bind("click", function(e) {e.preventDefault(); animationFSkip(index);});
+	$(plot + " .anim-incspeed").bind("click", function(e) {e.preventDefault(); animationIncSpeed(index);});
+	$(plot + " .anim-decspeed").bind("click", function(e) {e.preventDefault(); animationDecSpeed(index);});
 }
 
 function bindTextWithApply(index, textClass, applyClass, propName, defaultValue, callback, isValid) {

@@ -47,7 +47,7 @@
 	log("<span class='red'>runs: ${param.runs}</span>");
 	log("<span class='red'>expr: ${param.expr}</span>");
 	log("<span class='red'>plots: ${param.plots}</span>");
-	log("<span class='red'>commbine: ${param.combine}</span>");
+	log("<span class='red'>combine: ${param.combine}</span>");
 </script>
 <form action="../data/plot.jsp">
 	<e:trinput type="hidden" name="plots" id="plots-input" />
