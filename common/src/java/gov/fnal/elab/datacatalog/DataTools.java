@@ -421,7 +421,15 @@ public class DataTools {
             String type = m.substring(n + 1, t);
             String value = m.substring(t + 1);
 
-            tuples.put(name, coerce(type, value, name));
+            try {
+            	tuples.put(name, coerce(type, value, name));
+            }
+            catch (IllegalArgumentException iae) {
+            	// empty non-string values get ignored, all others get thrown (VDS cannot handle empty non-string metadata) 
+            	if (!"string".equals(type) && StringUtils.isNotBlank(value)) {
+            		throw iae;
+            	}
+            }
         }
 
         return new CatalogEntry() {
