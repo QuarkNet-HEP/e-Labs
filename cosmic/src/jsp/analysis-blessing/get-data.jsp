@@ -12,8 +12,7 @@
 
 <%
 	String file = request.getParameter("file");
-	String pfn = RawDataFileResolver.getDefault().resolve(elab, file) + ".bless";
-
+	
 	if (StringUtils.isBlank(file)) {
 		response.sendError(HttpURLConnection.HTTP_BAD_REQUEST); 
 	}
@@ -22,7 +21,8 @@
 		response.setContentType("application/json");
 		
 		// add in proper path handling!
-		BlessData bd = new BlessData(new File(file));
+		String pfn = RawDataFileResolver.getDefault().resolve(elab, file) + ".bless";
+		BlessData bd = new BlessData(new File(pfn));
 		
 		GsonBuilder gb = new GsonBuilder();
 		gb.registerTypeAdapter(BlessData.class, new BlessDataJsonSerializer());
