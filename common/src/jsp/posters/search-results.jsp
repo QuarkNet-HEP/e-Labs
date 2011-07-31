@@ -4,7 +4,6 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.util.*" %>
 
-
 <c:if test="${!empty searchResults}">
 	You can sort the results by clicking on the header. 
 	
@@ -40,9 +39,15 @@
 		<tbody>
 			<c:forEach items="${searchResults}" var="poster">
 				<c:set var="tuples" value="${poster.tupleMap}"/>
+				<%
+					Map map = (Map) pageContext.getAttribute("tuples"); 
+					String filename = (String) map.get("name");
+					String encodedFilename = java.net.URLEncoder.encode(filename, "UTF-8"); 
+					pageContext.setAttribute("encodedLFN", encodedFilename);
+				%>
 				<tr>
 					<td>
-						<e:popup href="../posters/display.jsp?name=${tuples.name}" target="poster" width="700" height="900">${tuples.title}</e:popup>
+						<e:popup href="../posters/display.jsp?name=${encodedLFN}" target="poster" width="700" height="900">${tuples.title}</e:popup>
 					</td>
 					<td><e:format type="date" format="MMMM d, yyyy" value="${tuples.date}"/></td>
 					<td>${tuples.group}</td>
@@ -53,9 +58,9 @@
 					<td>${tuples.year}</td>
 					<td>
 						<ul>
-							<li><a href="../jsp/add-comments.jsp?t=poster&fileName=${tuples.name}">View or Add Comments</a></li>
-							<li><a href="../posters/display.jsp?type=paper&name=${tuples.name}">View as Paper</a></li>
-							<li><a href="../data/view-metadata.jsp?filename=${poster.LFN}">View Metadata</a></li>
+							<li><a href="../jsp/add-comments.jsp?t=poster&fileName=${encodedLFN}">View or Add Comments</a></li>
+							<li><a href="../posters/display.jsp?type=paper&name=${encodedLFN}">View as Paper</a></li>
+							<li><a href="../data/view-metadata.jsp?filename=${encodedLFN}">View Metadata</a></li>
 						</ul>
 					</td>
 				</tr>
