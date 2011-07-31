@@ -370,10 +370,10 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 				print META "avglongitude string 0\n";
 				print META "avgaltitude string 0\n";
 				#print the threshold for each channel
-				print META "DiscThresh0 int  $thRow[0]\n"; 
-				print META "DiscThresh1 int  $thRow[1]\n"; 
-				print META "DiscThresh2 int  $thRow[2]\n"; 
-				print META "DiscThresh3 int  $thRow[3]\n"; 
+				print META "DiscThresh0 int $thRow[0]\n"; 
+				print META "DiscThresh1 int $thRow[1]\n"; 
+				print META "DiscThresh2 int $thRow[2]\n"; 
+				print META "DiscThresh3 int $thRow[3]\n"; 
 				print META "DAQFirmware string $DAQFirmware\n";
 			}
 
@@ -520,10 +520,10 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					print META "TMCReg1 string ", substr($TMCReg,4,2), "\n";
 					print META "TMCReg2 string ", substr($TMCReg,2,2), "\n";
 					print META "TMCReg3 string ", substr($TMCReg,0,2), "\n";
-					print META "DiscThresh0 int  $thRow[0]\n"; 
-					print META "DiscThresh1 int  $thRow[1]\n"; 
-					print META "DiscThresh2 int  $thRow[2]\n"; 
-					print META "DiscThresh3 int  $thRow[3]\n"; 
+					print META "DiscThresh0 int $thRow[0]\n"; 
+					print META "DiscThresh1 int $thRow[1]\n"; 
+					print META "DiscThresh2 int $thRow[2]\n"; 
+					print META "DiscThresh3 int $thRow[3]\n"; 
 					print META "DAQFirmware string $DAQFirmware\n";
 					print META "chan1 int $chan0\n";
 					print META "chan2 int $chan1\n";
@@ -753,10 +753,10 @@ else{
 	print META "TMCReg1 string ", substr($TMCReg,4,2), "\n";
 	print META "TMCReg2 string ", substr($TMCReg,2,2), "\n";
 	print META "TMCReg3 string ", substr($TMCReg,0,2), "\n";
-	print META "DiscThresh0 int  $thRow[0]\n"; 
-	print META "DiscThresh1 int  $thRow[1]\n"; 
-	print META "DiscThresh2 int  $thRow[2]\n"; 
-	print META "DiscThresh3 int  $thRow[3]\n"; 
+	print META "DiscThresh0 int $thRow[0]\n"; 
+	print META "DiscThresh1 int $thRow[1]\n"; 
+	print META "DiscThresh2 int $thRow[2]\n"; 
+	print META "DiscThresh3 int $thRow[3]\n"; 
 	print META "DAQFirmware string $DAQFirmware\n";
 	print META "chan1 int $chan0\n";
 	print META "chan2 int $chan1\n";
