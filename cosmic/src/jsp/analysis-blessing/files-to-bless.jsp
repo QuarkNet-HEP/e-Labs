@@ -75,8 +75,8 @@ ResultSet searchResults = elab.getDataCatalogProvider().runQuery(and);
 			<tr>
 				<td><%= ce.getTupleValue("starttime").toString() %></td>
 				<td>(Pending)</td>
-				<%-- <td><a href="compare.jsp?file1=<%= goldenFileName %>&amp;file2="<%= ce.getLFN() %>">Examine This File</a></td>  --%>
-				<td><a href="compare.jsp?file1="<%= ce.getLFN() %>">Examine This File</a></td>
+				<%-- <td><a href="compare1.jsp?file1=<%= goldenFileName %>&amp;file2="<%= ce.getLFN() %>">Examine This File</a></td>  --%>
+				<td><a href="compare1.jsp?file="<%= ce.getLFN() %>">Examine This File</a></td>
 			</tr>
 			
 		</c:forEach>
