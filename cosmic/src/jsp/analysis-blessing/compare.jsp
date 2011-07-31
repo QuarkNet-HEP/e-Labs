@@ -5,15 +5,11 @@
 
     
 <%
-String file1 = request.getParameter("file1");
-String file2 = request.getParameter("file2");
+String file = request.getParameter("file1");
 
 // Debug override
-if (StringUtils.isBlank(file1)) {
-	file1 = "6148.2011.0309.0"; 
-}
-if (StringUtils.isBlank(file2)) {
-	file2 = "6148.2011.0310.0";
+if (StringUtils.isBlank(file)) {
+	file = "6148.2011.0309.0"; 
 }
 %>
     
@@ -59,40 +55,23 @@ if (StringUtils.isBlank(file2)) {
 		};
 		
 		function onDataLoad1(json) {	
-			$.plot($("#channelChart1"), [json.channel1, json.channel2, json.channel3, json.channel4, json.trigger ], options );
-			$.plot($("#satChart1"), [ json.satellites ], options);
-			$.plot($("#voltChart1"), [ json.voltage ], options);
-			$.plot($("#tempChart1"), [ json.temperature ], options);
-			$.plot($("#pressureChart1"), [ json.pressure ], options);
+			$.plot($("#channelChart"), [json.channel1, json.channel2, json.channel3, json.channel4, json.trigger ], options );
+			$.plot($("#satChart"), [ json.satellites ], options);
+			$.plot($("#voltChart"), [ json.voltage ], options);
+			$.plot($("#tempChart"), [ json.temperature ], options);
+			$.plot($("#pressureChart"), [ json.pressure ], options);
 		}
-		
-		function onDataLoad2(json) {	
-			$.plot($("#channelChart2"), [json.channel1, json.channel2, json.channel3, json.channel4, json.trigger ], options );
-			$.plot($("#satChart2"), [ json.satellites ], options);
-			$.plot($("#voltChart2"), [ json.voltage ], options);
-			$.plot($("#tempChart2"), [ json.temperature ], options);
-			$.plot($("#pressureChart2"), [ json.pressure ], options);
-		}
-		
 		
 		$(document).ready(function() {
 			$.ajax({
 				//url: "get-data.jsp?file=6148.2011.0309.0.bless",
-				url: "get-data.jsp?file=<%= file1 %>",
+				url: "get-data.jsp?file=<%= file %>",
 				processData: false,
 				dataType: "json",
 				type: "GET",
 				success: onDataLoad1
 			});
 			
-			$.ajax({
-				//url: "get-data.jsp?file=6148.2011.0310.0.bless",
-				url: "get-data.jsp?file=<%= file2 %>",
-				processData: false,
-				dataType: "json",
-				type: "GET",
-				success: onDataLoad2
-			});
 		}); 
 		
 		</script>
@@ -114,38 +93,22 @@ if (StringUtils.isBlank(file2)) {
 	
 	<table>
 		<tr>
-			<th>Golden File for range $DATE1-($DATE2)</th>
 			<th>Your uploaded file</th>
 		</tr>
 		<tr>
-			<div id="channelChart1" style="width:750px; height:250px; text-align: left;"></div>
-			<div id="channelChart2" style="width:750px; height:250px; text-align: left;"></div>
+			<td><div id="channelChart" style="width:750px; height:250px; text-align: left;"></div></td>
 		</tr>
 		<tr>
-			<td><div id="satChart1" style="width:400px; height:125px; text-align: left;"></div></td>
-			<td><div id="satChart2" style="width:400px; height:125px; text-align: left;"></div></td>
+			<td><div id="satChart" style="width:400px; height:125px; text-align: left;"></div></td>
 		</tr>
 		<tr>
-			<td><div id="voltChart1" style="width:400px; height:125px; text-align: left;"></div></td>
-			<td><div id="voltChart2" style="width:400px; height:125px; text-align: left;"></div></td>
+			<td><div id="voltChart" style="width:400px; height:125px; text-align: left;"></div></td>
 		</tr>
 		<tr>
-			<td><div id="tempChart1" style="width:400px; height:125px; text-align: left;"></div></td>
-			<td><div id="tempChart2" style="width:400px; height:125px; text-align: left;"></div></td>
+			<td><div id="tempChart" style="width:400px; height:125px; text-align: left;"></div></td>
 		</tr>
 		<tr>
-			<td><div id="pressureChart1" style="width:400px; height:125px; text-align: left;"></div></td>
-			<td><div id="pressureChart2" style="width:400px; height:125px; text-align: left;"></div></td>
-		</tr>
-		
-		<tr>
-			<td>&nbsp;</td>
-			<td>
-				<form method="post" action="golden-async.jsp" >
-					<input type="button" value="Bless This File" />
-					<input type="hidden" value="${file2}" />
-				</form>
-			</td>
+			<td><div id="pressureChart" style="width:400px; height:125px; text-align: left;"></div></td>
 		</tr>
 	</table>
 	

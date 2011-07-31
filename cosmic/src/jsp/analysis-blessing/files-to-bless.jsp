@@ -27,7 +27,6 @@ and.add(new Equals("group", user.getGroup().getName()));
 
 ResultSet searchResults = elab.getDataCatalogProvider().runQuery(and);
 
-
 %>
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -76,29 +75,11 @@ ResultSet searchResults = elab.getDataCatalogProvider().runQuery(and);
 			<tr>
 				<td><%= ce.getTupleValue("starttime").toString() %></td>
 				<td>(Pending)</td>
-				<td><a href="compare.jsp?file1=<%= goldenFileName %>&amp;file2="<%= ce.getLFN() %>">Examine This File</a></td>
+				<%-- <td><a href="compare.jsp?file1=<%= goldenFileName %>&amp;file2="<%= ce.getLFN() %>">Examine This File</a></td>  --%>
+				<td><a href="compare.jsp?file1="<%= ce.getLFN() %>">Examine This File</a></td>
 			</tr>
 			
 		</c:forEach>
-		
-		<!-- Quick demo test -->
-		<tr>
-			<td>14 May 2011 10:20 UTC</td>
-			<td><strong>No golden file for geometry configuration, please <a href="golden.jsp?file=FOO">choose one now</a></strong></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>13 June 2011 10:20 UTC</td>
-			<td><a href="chart.jsp?file=FOO">10 June 2011 10:20 UTC</a></td>
-			<td><a href="compare.jsp?file1=FOO&file2=BAR">Inspect</a></td>
-		</tr>
-		<tr>
-			<td>14 June 2011 10:20 UTC</td>
-			<td><a href="chart.jsp?file=FOO">10 June 2011 10:20 UTC</a></td>
-			<td><a href="compare.jsp?file1=FOO&file2=BAR">Inspect</a></td>
-		</tr>
-		
-		
 		
 	</table>
 
