@@ -8,6 +8,7 @@
 	geometries.addGeoEntry(geoEntry.getDetectorID(), geoEntry);
 	geometries.commit();
 	
+	/*
 	// do voodoo with existing blessed files here 
 	// unbless a bunch of files
 	
@@ -66,6 +67,7 @@
 	
 	// G1-----GF-----G2-----GN
 	// magic! do nothing
+	*/
 	
 	DataCatalogProvider dcp = elab.getDataCatalogProvider();
 	geometries.updateMetadata(dcp, geoEntry);
