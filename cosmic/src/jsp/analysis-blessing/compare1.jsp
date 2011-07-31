@@ -42,11 +42,11 @@ String file = request.getParameter("file");
 						radius: 0.5,
 						symbol: "circle"
 					}
-				},
+				}/*,
 				xaxis: {
 					min: 0,
 					max: 86400
-				}
+				}*/
 		};
 		
 		function onDataLoad1(json) {	
@@ -85,26 +85,20 @@ String file = request.getParameter("file");
 	
 	<h1>Data Blessing Test</h1>
 	
-	<table>
-		<tr>
-			<th>Your uploaded file</th>
-		</tr>
-		<tr>
-			<td><div id="channelChart" style="width:750px; height:250px; text-align: left;"></div></td>
-		</tr>
-		<tr>
-			<td><div id="satChart" style="width:400px; height:125px; text-align: left;"></div></td>
-		</tr>
-		<tr>
-			<td><div id="voltChart" style="width:400px; height:125px; text-align: left;"></div></td>
-		</tr>
-		<tr>
-			<td><div id="tempChart" style="width:400px; height:125px; text-align: left;"></div></td>
-		</tr>
-		<tr>
-			<td><div id="pressureChart" style="width:400px; height:125px; text-align: left;"></div></td>
-		</tr>
-	</table>
+	<h2>Rates</h2>
+	<div id="channelChart" style="width:750px; height:250px; text-align: left;"></div>
+	
+	<h2>Visible GPS Satellites</h2>
+	<div id="satChart" style="width:750px; height:250px; text-align: left;"></div>
+
+	<h2>Voltage</h2>
+	<div id="voltChart" style="width:750px; height:250px; text-align: left;"></div>
+
+	<h2>Temperature</h2>
+	<div id="tempChart" style="width:750px; height:250px; text-align: left;"></div>
+
+	<h2>Barometric Pressure</h2>
+	<div id="pressureChart" style="width:750px; height:250px; text-align: left;"></div>
 	
 		 	</div>
 		</div>
