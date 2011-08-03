@@ -108,66 +108,40 @@
 						<h2>Student-Friendly Sites</h2>
 						<ul class="simple">
 							<li>
-								<a href=" http://cms.web.cern.ch/cms/index.html">Welcome to CMS</a>
-								- From CMS at CERN.
+								<e:popup href="http://cms.web.cern.ch/cms/index.html" target="website" width="850" height="600">Welcome to CMS</e:popup> - From CMS at CERN
 							</li>
 							<li>
-<a href="http://public.web.cern.ch/public/en/LHC/CMS-en.html">CMS: Compact Muon Solenoid</a>
+<e:popup href="http://public.web.cern.ch/public/en/LHC/CMS-en.html" target="website" width="850" height="600">CMS: Compact Muon Solenoid</e:popup>
 								- From the CERN public website.
 							</li>
 
 							<li>
-								<a href="http://particleadventure.org/modern_detect.html">The Particle Adventure</a>
+								<e:popup href="http://particleadventure.org/modern_detect.html" target="website" width="875" height="600">The Particle Adventure</e:popup>
 								- Modern Detectors.
 							</li>
 
 							<li>
-								<a href="http://www.fnal.gov/pub/inquiring/matter/madeof/index.html">What is the world made of?</a>
+								<e:popup href="http://www.fnal.gov/pub/inquiring/matter/madeof/index.html" target="website" width="850" height="600">What is the world made of?</e:popup>
 								- From Inquiring Minds - Fermilab.
 							</li>
 
 							<li>
-								<a href="http://hands-on-cern.physto.se/hoc_v21en/index.html">Hands-on-CERN</a>
+								<e:popup href="http://hands-on-cern.physto.se/hoc_v21en/index.html" target="website" width="850" height="600">Hands-on-CERN</e:popup>
 							</li>
 							<li>
-								<a href="http://www.lhc.ac.uk/">The Large Hadron Collider</a> - from the Science and Technology Facilities Council, Great Britain
+								<e:popup href="http://www.lhc.ac.uk/" target="website" width="925" height="610">The Large Hadron Collider</e:popup> and the <e:popup href="http://www.lhc.ac.uk/The+Particle+Detectives/LHC_project.html" target="website" width="875" height="610">LHC Project Simulator</e:popup> - from the Science and Technology Facilities Council, Great Britain
 							</li>
 							<li>
-								<a href="http://atlas.ch/">The Atlas Detector</a> - Atlas website at CERN
+								<e:popup href="http://atlas.ch/" target="website" width="900" height="600">The Atlas Detector</e:popup> - Atlas website at CERN
+							</li>
+							<li>
+								<e:popup href="http://press.web.cern.ch/press/" target="website" width="900" height="600">CERN Press Office</e:popup> - Announcements from CERN
 							</li>
 						</ul>
 
 					</div>
 				</div>
 				
-				
-							<div class="tab" id="tab-video">
-					<span class="tab-title">Video</span>
-					<div class="tab-contents-sublevel">
-						<ul  class="simple">
-
-<li>
-								<e:popup href="http://news.bbc.co.uk/2/hi/science/nature/7543089.stm" target="video" width="800" height="600">Guide to the LHC</e:popup></a> - from the BBC
-							</li>
-							<li>
-								<e:popup href="../video/lhc-how-it-works.html" target="video" width="515" height="415">The LHC - how it works</e:popup> - YouTube
-							</li>
-							<li>
-								<e:popup href="http://www.youtube.com/user/SciTechUK" target="youtube" width="675" height="550">In Search of Giants</e:popup>- The Science and Technology Facilities Council Channel, SciTechUK's Channel
-							</li>
-							<li>
-								<e:popup href="../video/lhc-first-images.html" target="video" width="515" height="415">First Images after Proton Beam Passes through LHC</e:popup> - from the New Scientist
-							</li>
-							<li>
-								<e:popup href="../video/lhc-accelerator-CERN.html" target="video" width="515" height="415">LHC Accelerator at CERN</e:popup> - from CERN Multimedia Productions
-							</li>
-							<li>
-								<e:popup href="http://www.youtube.com/user/CERNTV" target="video" width="700" height="750">CERN TV</e:popup> - YouTube
-							</li>
-							</ul>
-							</div>
-							</div>
-							
 				
 				
 			</div>
@@ -188,6 +162,34 @@
 --%>
 				</div>
 				
+							<div class="tab" id="tab-video">
+					<span class="tab-title">Video</span>
+					<div class="tab-contents-sublevel">
+						<ul  class="simple">
+
+							<li>
+								<e:popup href="http://news.bbc.co.uk/2/hi/science/nature/7543089.stm" target="video" width="800" height="600">Guide to the LHC</e:popup> - from the BBC
+							</li>
+							<li>
+								<e:popup href="../video/lhc-how-it-works.html" target="video" width="515" height="415">The LHC - how it works</e:popup> - YouTube
+							</li>
+							<li>
+								<e:popup href="http://www.youtube.com/user/SciTechUK" target="youtube" width="675" height="550">In Search of Giants</e:popup>- Featuring Brian Cox from The Science and Technology Facilities Council Channel, SciTechUK's Channel
+							</li>
+							<li>
+								<e:popup href="../video/lhc-first-images.html" target="video" width="515" height="415">First Images after Proton Beam Passes through LHC</e:popup> - from the New Scientist
+							</li>
+							<li>
+								<e:popup href="../video/lhc-accelerator-CERN.html" target="video" width="515" height="415">LHC Accelerator at CERN</e:popup> - from CERN Multimedia Productions
+							</li>
+							<li>
+								<e:popup href="http://www.youtube.com/user/CERNTV" target="video" width="700" height="750">CERN TV</e:popup> - YouTube
+							</li>
+							</ul>
+							</div>
+							</div>
+							
+				
 				<div class="tab" id="tab-contacts">
 					<span class="tab-title">Contacts</span>	
 					<div class="tab-contents-sublevel">
@@ -197,10 +199,16 @@
 								<a href="mailto:karmgard.1@nd.edu">Dan Karmgard</a> - University of Notre Dame
 							</li>
 							<li>
-								<a href="mailto:pmooney@nd.edu">Patrick Mooney</a> - University of Notre Dame
+								<a href="mailto:lantonel@nd.edu">Jamie Antonelli</a> - University of Notre Dame
 							</li>
 							<li>
 								<a href="mailto:rruchti@nsf.gov">Randy Ruchti</a> - NSF and University of Notre Dame
+							</li>
+						</ul>
+						<h2>Staff</h2>
+						<ul class="simple">
+							<li>
+								<a href="mailto:loughran.8@nd.edu>">Thomas Loughran</a> - University of Notre Dame
 							</li>
 						</ul>
 						<h2><a href="../library/students.jsp">Student Research Groups</a></h2>
