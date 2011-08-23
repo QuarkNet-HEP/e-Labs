@@ -36,7 +36,7 @@
 		synchronized(session) {
 			de = (LIGOFileDataEngine) session.getAttribute("de");
 			if (de == null) {
-			    de = LIGOFileDataEngine.getEngine("/disks/i2u2-dev/ligo/data/streams", 
+			    de = LIGOFileDataEngine.getEngine("/disks/i2u2/ligo/data/streams", 
 			            ServiceLIGOFileReader.getFactory("http://data2:8100"));
 			    session.setAttribute("de", de);
 			}
