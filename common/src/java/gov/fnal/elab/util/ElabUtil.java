@@ -585,9 +585,9 @@ public class ElabUtil {
             year = year - 1;
         }
 
-        double r = (2 - Math.round(year / 100.0) + Math.round(year / 400.0) + day
-                + Math.round(365.25 * (year + 4716))
-                + Math.round(30.6001 * (month + 1)) - 1524.5);
+        double r = (2 - Math.floor(year / 100.0) + Math.floor(year / 400.0) + day
+                + Math.floor(365.25 * (year + 4716))
+                + Math.floor(30.6001 * (month + 1)) - 1524.5);
         return r + (hour + minute / 60.0 + second / 3600.0) / 24.0;
     }
 
