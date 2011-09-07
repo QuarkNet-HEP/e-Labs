@@ -179,11 +179,11 @@ public class AnalysisParameterTools {
             if (e == null) {
                 continue;
             }
-            Double freq = ((Number) e.getTupleValue("cpldfrequency")).doubleValue();
+        	Number freq = (Number) e.getTupleValue("cpldfrequency"); 
             if (freq == null) {
                 freq = DEFAULT_CPLD_FREQUENCY;
             }
-            freqs.add(freq);
+            freqs.add(freq.doubleValue());
         }
         return ElabUtil.join(freqs, " ");
     }
