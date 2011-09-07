@@ -179,7 +179,7 @@ public class AnalysisParameterTools {
             if (e == null) {
                 continue;
             }
-            Double freq = (Double) e.getTupleValue("cpldfrequency");
+            Double freq = ((Number) e.getTupleValue("cpldfrequency")).doubleValue();
             if (freq == null) {
                 freq = DEFAULT_CPLD_FREQUENCY;
             }
