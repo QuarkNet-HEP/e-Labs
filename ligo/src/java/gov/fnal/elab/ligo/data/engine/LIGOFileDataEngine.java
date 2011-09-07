@@ -13,6 +13,7 @@ import gov.fnal.elab.ligo.data.convert.ChannelName;
 import gov.fnal.elab.ligo.data.convert.ImportData;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.text.DecimalFormat;
@@ -80,7 +81,12 @@ public class LIGOFileDataEngine implements DataEngine, Modifiable {
     private void loadChannelIndexes() throws IOException {
         indexes = new HashMap<String, ChannelIndex>();
         for (String channel : channels.keySet()) {
-            indexes.put(channel, new ChannelIndex(new File(dir + File.separator + channel + ".index.bin")));
+        	try {
+        		indexes.put(channel, new ChannelIndex(new File(dir + File.separator + channel + ".index.bin")));
+        	}
+        	catch(FileNotFoundException fnfe) {
+        		System.out.println(channel + " is missing data:" + fnfe.getMessage());
+        	}
         }
     }
 

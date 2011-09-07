@@ -25,10 +25,10 @@
 			<div id="content">
 <h1>Share Ideas: Join a community of e-Lab teachers and learn from each other.</h1>   
 
-<p>Collaborate and interact with other e-Lab teachers and staff using the CMS e-Lab with the following:</p>
+<p>Collaborate and interact with other e-Lab teachers and staff using the CMS e-Lab with the following tools:</p>
 
 <a name="Blog"></a><h2>I2U2 WordPress Blog</h2>
-<p>The <a href="http://www18.i2u2.org/blog/" target="blog">I2U2 WordPress Blog</a> is a repository of posts and documents for teachers using the e-Labs. Use this blog to collaborate with other teachers; discuss your ideas, observations and experiences. If you are new to WordPress, you may want to read this article which gives  <a href="http://codex.wordpress.org/Writing_Posts" target="blog">help for posting in WordPress</a>. In order to post to this blog, you need to be invited.  Watch for an invitation in your email box.</p>
+<p>The <a href="http://www18.i2u2.org/blog/" target="blog">I2U2 WordPress Blog</a> is a repository of posts and documents for teachers using the e-Labs. Use this blog to collaborate with other teachers; discuss your ideas, observations and experiences. Read <a href="../content/Blog-Facebook-Notes.pdf">Getting Started with Sharing Ideas</a> to learn how to register and use the blog. You may also want to read this article which gives  <a href="http://codex.wordpress.org/Writing_Posts" target="blog">help for posting in WordPress</a>. </p>
 
 <ul><li> <a href="http://www18.i2u2.org/blog/category/cms-implementation-plan/" target="blog">CMS e-Lab Implementation Plans</a> -  Share implementation plans and comment on plans of others. As part of a CMS e-Lab workshop, teachers create an implementation plan for using the e-Lab with their students.  As a starting point to any posts, view the <a href="http://www18.i2u2.org/blog/posting-implementation-plans/"  target="blog">Posting Implementation Plans</a>. You can continue this discussion well after the initial workshop. You can also post your WordPress entries to Facebook and other social media sites.
 </li>
@@ -41,7 +41,7 @@
 </ul>
 
 <a name="Facebook"></a><h2>Facebook Users Group</h2>
-<p>The <a href="https://www.facebook.com/home.php?sk=group_115695225182890&ap=1" target="facebook">I2U2 Users Facebook Group</a> is a place to communicate with fellow e-Lab users. It also supports creating/sharing documents and chat sessions. Many of you already have Facebook accounts and like the idea of being able to go to one place to do your social networking. If you already have an account, ask to join the I2U2 group.  If you are not a member, consider signing up. </p>
+<p>The <a href="https://www.facebook.com/home.php?sk=group_115695225182890&ap=1" target="facebook">I2U2 Users Facebook Group</a> is a place to communicate with fellow e-Lab users. It also supports creating/sharing documents and chat sessions. Many of you already have Facebook accounts and like the idea of being able to go to one place to do your social networking. If you already have an account, ask to join the I2U2 group.  If you are not a member, consider signing up.  Read <a href="../content/Blog-Facebook-Notes.pdf">Getting Started with Sharing Ideas</a> to learn how to join Facebook and use the Facebook I2U2 group.</p>
 
 <a name="Helpdesk"></a><h2>HelpDesk</h2>
 <ul>
