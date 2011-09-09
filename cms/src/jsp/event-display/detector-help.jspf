@@ -92,10 +92,7 @@
 				<dl>
 					<dt>Tracks (reco.)</dt>
 					<dd>All reconstructed particle tracks in the tracker</dd>
-					
-					<dt>Electron Tracks (GSF)</dt>
-					<dd>Electron tracks in the tracker</dd>
-					
+						
 					<dt>Clusters (Si Pixels)</dt>
 					<dd>Recorded events in the innermost part of the tracker</dd>
 					
@@ -254,6 +251,7 @@
 	</table>
 </div>
 
+<!--
 <div id="help-detsystem-5" class="dialog-window">
 	<table class="titlebar">
 		<tr>
@@ -286,6 +284,7 @@
 		</tr>
 	</table>
 </div>
+-->
 
 <div id="help-detsystem-6" class="dialog-window">
 	<table class="titlebar">
@@ -311,6 +310,9 @@
 					<dt>Global Muons (Reco)</dt>
 					<dd>Reconstructed complete muon tracks</dd>
 					
+ 	                                <dt>Electron Tracks (GSF)</dt>
+					<dd>Electron tracks in the tracker</dd>
+
 					<dt>Calorimeter energy towers</dt>
 					<dd>Histogram "towers" to indicate energy deposits in calorimeters summed over the trajectories</dd>
 					

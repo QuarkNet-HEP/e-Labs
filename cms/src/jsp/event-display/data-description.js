@@ -123,6 +123,7 @@ var d_descr = {
 	"HORecHits_V2": { type: SHAPE, on: false, group: "HCAL", desc: "Outer Rec. Hits", rank: "energy",
 		fn: makeRecHits_V2, color: [0.2, 0.7, 1, 0.4], fill: [0.2, 0.7, 1, 0.2], lineWidth: 0.5 },
 		
+  /*
 	"GsfPFRecTracks_V1": { type: TRACK, on: false, group: "Particle Flow", desc: "GSF Tracks",
 		dataref: "PFTrajectoryPoints_V1", assoc: "GsfPFRecTrackTrajectoryPoints_V1", 
 		fn: makeTrackPoints, color: [0, 1, 1, 1], lineCaps: "+", lineWidth: 1},
@@ -133,6 +134,7 @@ var d_descr = {
 	"PFBrems_V1": { type: TRACK, on: false, group: "Particle Flow", desc: "Bremsstrahlung candidate tangents",
 		dataref: "PFTrajectoryPoints_V1", assoc: "PFBremTrajectoryPoints_V1", 
 		fn: makeTrackPoints, color: [0, 1, 0.2, 1], lineCaps: "+", lineWidth: 1},
+  */
 		
 	"TrackerMuons_V1": { type: TRACK, on: true, group: "Physics Objects", desc: "Tracker Muons (Reco)",
 		dataref: "Points_V1", assoc: "MuonTrackerPoints_V1", 
