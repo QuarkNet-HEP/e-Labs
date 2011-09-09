@@ -315,7 +315,10 @@
 					<dd>Histogram "towers" to indicate energy deposits in calorimeters summed over the trajectories</dd>
 					
 					<dt>Jets</dt>
-					<dd>Collimated groups of particles which come from strong force energy conversion to matter</dd> 
+					<dd>Collimated groups of particles which come from strong force energy conversion to matter</dd>
+
+                                        <dt>MET</dt>
+                                        <dd>Missing transverse energy</dd> 
 				</dl>
 			</td>
 		</tr>

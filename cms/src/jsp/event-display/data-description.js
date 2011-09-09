@@ -157,8 +157,9 @@ var d_descr = {
 		rankingFunction: function(data) {return data[4] + data[5];}},
 	"Jets_V1": { type: SHAPE, on: true, group: "Physics Objects", desc: "Jets", rank: "et",
 		fn: makeJet, color: [1, 1, 0, 1], fill: [1, 1, 0, 0.5] },
-	/*"METs_V1": { type: LINE, on: true, group: "Physics Objects", desc: "Missing Et (Reco)",
-		fn: makeMET, color: [1, 1, 0, 1], lineStyle: "dashed", lineWidth: 1}*/
+         "METs_V1": { type: SHAPE, on: true, group: "Physics Objects", desc: "Missing Et (Reco)", rank: "pt",
+		fn: makeMET, color: [1, 1, 0, 1], fill: [1, 1, 0, 0.5]}
+
 };
 
 var d_groups = ["Detector Model", "Tracking", "ECAL", "HCAL", "Muon", "Particle Flow", "Physics Objects"];

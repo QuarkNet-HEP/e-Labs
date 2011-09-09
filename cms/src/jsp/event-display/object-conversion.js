@@ -43,7 +43,21 @@ function affineToStr(m) {
 }
 
 function makeMET(data) {
-	
+    /*
+      "METs_V1": [["phi", "double"],
+                  ["pt", "double"],
+                  ["px", "double"],
+                  ["py", "double"],
+                  ["pz", "double"]]
+    */
+    var pt = data[1];
+    var px = data[2];
+    var py = data[3];
+
+    var arrow = Pre3d.ShapeUtils.makeSolidArrow(0, 0, 0, pt*px, pt*py, 0, 10);
+    arrow.fillColor = new Pre3d.RGBA(1, 1, 0, 1);
+    Pre3d.ShapeUtils.rebuildMeta(arrow);
+    return arrow;
 }
 
 function makeTrack(data) {
