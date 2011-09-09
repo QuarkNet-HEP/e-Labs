@@ -164,4 +164,4 @@ var d_descr = {
 
 };
 
-var d_groups = ["Detector Model", "Tracking", "ECAL", "HCAL", "Muon", "Particle Flow", "Physics Objects"];
+var d_groups = ["Detector Model", "Tracking", "ECAL", "HCAL", "Muon", "Physics Objects"];
