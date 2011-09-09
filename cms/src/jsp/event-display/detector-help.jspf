@@ -251,7 +251,7 @@
 	</table>
 </div>
 
-<!--
+<%--
 <div id="help-detsystem-5" class="dialog-window">
 	<table class="titlebar">
 		<tr>
@@ -284,7 +284,7 @@
 		</tr>
 	</table>
 </div>
--->
+--%>
 
 <div id="help-detsystem-6" class="dialog-window">
 	<table class="titlebar">
