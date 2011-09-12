@@ -8,7 +8,8 @@ document.defaultSettings = {
 	globalCaloEnergyCutEnabled: true,
 	globalCaloEnergyLowCut: 0.75,
 	lastDir: "",
-	orthographicProjection: true,
+	orthographicProjection: false,
+        showCollectionCount: false
 }
 
 document.settings = {
