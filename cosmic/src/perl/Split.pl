@@ -130,7 +130,9 @@ $stType = 0;						#flag for version of the ST command used to generate the ST li
 $dsRowCount=0;
 #Removed the next line on 20 Feb 2010. I don't think we need it. 
 #$oldStatusTime = 0;				#control to notice advancing status time The ^@!@#! flag isn't working. Maybe this will
-$ConReg = 1;						#string to hold the contents of the control registers from the ST line
+$stDate = 1;						#Raw date from the ST line	
+$oldSTDate = 1;						#checks to see if the date is changing in the ST line--useful for files with no triggers
+$ConReg = 0;						#string to hold the contents of the control registers from the ST line
 $oldConReg = 1;						#erm . . . 
 $TMCReg = 0;						#string to hold the contents of the TMC registes from the ST line
 
@@ -187,7 +189,7 @@ while(<IN>){
 	    $min = substr($dataRow[10], 2, 2);
 	    $sec = substr($dataRow[10], 4, 2);
 	    $msec = substr($dataRow[10], 7, 3);
-	    $offset = $dataRow[15];
+	    $offset = $dataRow[15] if $ID < 6000; # Fixes bug 459
 		$data_line ++;
 	}
 
@@ -199,10 +201,13 @@ while(<IN>){
 		$stRowCount++;
 		push(@stTime, substr($stRow[5], 0, 2)*3600 + substr($stRow[5], 2, 2)*60 + substr($stRow[5], 4, 6));
 		push(@stPress, $stRow[1]);
-		push(@stTemp, $stRow[3]/10);
+		push(@stTemp, $stRow[2]/10); #changing $stRow[3] to $stRow[2] fixes bug 453
 		push(@stVcc, $stRow[4]/1000);
 		push(@stGPSSats, $stRow[8]);
 		#We could look at ConReg and TMCReg to see if they change. If they do, we need to start another split file.
+		$oldSTDate = $stDate;
+		$stDate = $stRow[6];
+		$oldSTDate = $stDate if $oldSTDate eq 1;
 		$oldConReg = $ConReg;
 		$ConReg = $stRow[13];
 		$oldConReg = $ConReg if $oldConReg == 1; #Testing revealed a case where a data file _started_ with an ST line this changed $ConReg, but not $oldConReg. 
@@ -380,7 +385,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			# When we see new day--or the control register changes, split file at the day boundary
 			# Mike suggested that we split at midnight, even though Julian Days begin at Noon
 
-			if($date ne $lastdate || $oldConReg ne $ConReg) {	#start of a new output file 
+			if($date ne $lastdate || $oldConReg ne $ConReg || $oldSTDate ne $stDate) {	#start of a new output file 
 				if ($lastdate ne "") {
 				
 					# The file that we are splitting has hit a date boundary. We need to start writing a new SPLIT file and write the .bless file for the file that we are closing. 
@@ -399,6 +404,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					# When ST 2, the DAQ does not clear the onboard registers (that we call stCountN or stEvents here) after printing the lines. So the count in any channel over the time interval is the previous (stCount0 or stEvent) subtracted from the current (stCount0 or stEvent)
 					# When ST3 these onboard registers are cleared after each printing, so there is no need to do the subtraction.
 					# We just need to see if these (stCountN and stEvents) keep growing over the life of the file. If they do, we need to subtract one from the next to get the scalar increment over the integration time.
+					
+					die "These data do not contain any 'DS' lines. We have stopped your upload." if $dsRowCount == 0;
 					
 					if ($dsRowCount > 0){
 						#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
@@ -542,14 +549,13 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					for my $i  (2..$dsRowCount-1){			
 						print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.0f", sqrt($stRate0[$i])), "\t", "$stRate1[$i]", "\t", sprintf("%0.0f", sqrt($stRate1[$i])),"\t", "$stRate2[$i]", "\t", sprintf("%0.0f", sqrt($stRate2[$i])),"\t", "$stRate3[$i]", "\t", sprintf("%0.0f", sqrt($stRate3[$i])), "\t", "$stEventRate[$i]", "\t", sprintf("%0.0f", sqrt($stEventRate[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
 					}
-					
 
 					close $blessFile;	
 					
 					#Empty all of the status arrays so that they can start over with the new split file.
 					@stTime = @StCoutTemp = @stCount0 = @stRate0 = @stCount1 = @stRate1 = @stCount2 = @stRate2 = @stCount3 = @stRate3 = @stEvents = @stRateEvents = @stType = @stPress = @stTemp = @StVcc = @stGPSSats = @stRow = @thRow =  @cpld_frequency1 = @cpld_frequency2 = @stCountTemp = ();
 					#reset any scalars in use
-					$chan3=$chan2=$chan1=$chan0=$n=$i=$j=$stRowCount=$stType=$dsRowCount=0;
+					$chan3=$chan2=$chan1=$chan0=$n=$i=$j=$stRowCount=$stType=$dsRowCount=$events=0;
 					$goodChan=-1;
 				
 				}#end if($lastdate ne "")
@@ -578,7 +584,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			print META "creationdate date $today_date $today_time\n";
 			print META "startdate date $date $time\n";
 	        print META "julianstartdate float $jd\n";   # Earliest start date in file in julian days
-			print META "source string $fn\n";
+			#print META "source string $fn\n";
+			print META "source string $raw_filename\n"; #Fixes bug 457
 			print META "detectorid string $DAQID\n";
 			print META "type string split\n";
 			print META "blessfile string $sfn\n"; 
@@ -640,6 +647,8 @@ else{
 	#When ST 2, the DAQ does not clear the onboard registers (that we call stCountN or stEvents here) after printing the lines. So the count in any channel over the time interval is the previous (stCount0 or stEvent) subtracted from the current (stCount0 or stEvent)
 	#When ST3 these onboard registers are cleared after each printing, so there is no need to do the subtraction.
 	#We just need to see if these (stCountN and stEvents) keep growing over the life of the file. If they do, we need to subtract one from the next to get the scalar increment over the integration time.
+
+	die "These data do not contain any 'DS' lines. We have stopped your upload." if $dsRowCount == 0;
 					
 	if ($dsRowCount > 0){
 		#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
