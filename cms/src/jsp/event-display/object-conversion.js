@@ -142,7 +142,7 @@ function makeMET(data) {
     var px = data[2];
     var py = data[3];
 
-    var arrow = Pre3d.ShapeUtils.makeScaledArrow(0, 0, 0, pt*px, pt*py, 0, 10);
+    var arrow = makeScaledArrow(0, 0, 0, pt*px, pt*py, 0, 10);
     arrow.fillColor = new Pre3d.RGBA(1, 1, 0, 1);
     Pre3d.ShapeUtils.rebuildMeta(arrow);
     return arrow;
