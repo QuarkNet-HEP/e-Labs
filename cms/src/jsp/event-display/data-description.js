@@ -157,7 +157,7 @@ var d_descr = {
 	"CaloTowers_V2": { type: SHAPE, on: true, group: "Physics Objects", desc: "Calorimeter Energy Towers", rank: "et",
 		fn: makeCaloTowers_V2, color: [0, 1, 0, 1], fill: [0, 1, 0, 1], lineWidth: 0.5, 
 		rankingFunction: function(data) {return data[4] + data[5];}},
-	"Jets_V1": { type: SHAPE, on: true, group: "Physics Objects", desc: "Jets", rank: "et",
+	"Jets_V1": { type: SHAPE, on: false, group: "Physics Objects", desc: "Jets", rank: "et",
 		fn: makeJet, color: [1, 1, 0, 1], fill: [1, 1, 0, 0.5] },
          "METs_V1": { type: SHAPE, on: true, group: "Physics Objects", desc: "Missing Et (Reco)", rank: "pt",
 		fn: makeMET, color: [1, 1, 0, 1], fill: [1, 1, 0, 0.5]}
