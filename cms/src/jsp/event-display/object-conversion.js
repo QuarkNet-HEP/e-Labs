@@ -42,6 +42,94 @@ function affineToStr(m) {
 	  		  "[" + m.e8 + ", " + m.e9 + ", " + m.e10 + ", " + m.e11 + "]]";
 }
 
+function makeScaledArrow(x1, y1, z1, x2, y2, z2, slices) {
+  //tpm  In the pre3d makeSolidArrow method the length of the 
+  // arrow is hard-coded (despite what one gives as arguments).
+  // Therefore for now clone that method here with modifications.
+
+  var s = new Pre3d.Shape();
+  //just make an arrow in the X direction and then scale and rotate
+	  
+  var dx = x2 - x1;
+  var dy = y2 - y1;
+  var dz = z2 - z1;
+  
+  //tpm Scaling doesn't seem to work in pre3d makeSolidArrow method 
+  // No doubt that's why the length is hard-coded.
+  // Therefore here make the default 1.0 and add log10
+  // of the scale (therefore if it's a unit vector the arrow is 1.0;
+  // also it keeps the length from getting too long)
+  var scale = Math.sqrt(dx*dx+dy*dy+dz*dz);
+
+  var v = [];
+  var stemRadius = 0.03;
+  var stemLength = 1.0 + Math.log(scale);
+  var headRadius = 0.15;
+  var headLength = 0.25;
+  //origin
+  v.push({x: 0, y: 0, z: 0});
+  //stem
+  for (var i = 0; i < slices; i++) {
+    var angle = 2 * Math.PI / slices;
+    v.push({x: 0, y: stemRadius * Math.sin(i * angle), z: stemRadius * Math.cos(i * angle)});
+  }
+  //stem - other side
+  for (var i = 0; i < slices; i++) {
+    var angle = 2 * Math.PI / slices;
+    v.push({x: stemLength, y: stemRadius * Math.sin(i * angle), z: stemRadius * Math.cos(i * angle)});
+  }
+  // head - base
+  for (var i = 0; i < slices; i++) {
+    var angle = 2 * Math.PI / slices;
+    v.push({x: stemLength, y: headRadius * Math.sin(i * angle), z: headRadius * Math.cos(i * angle)});
+  }
+  // tip
+  v.push({x: stemLength + headLength, y: 0, z: 0});
+  
+  //scale and rotate vertices
+  var t = new Pre3d.Transform();
+	           
+  var phi = Math.atan2(dx, dy);
+  var theta = Math.atan2(dy, dz);
+  var rho = Math.atan2(dz, dx);
+	  
+  t.rotateX(phi);
+  t.rotateZ(theta);
+  t.rotateY(-rho);
+
+  s.vertices = [];
+  for (var i = 0; i < v.length; i++) {
+    s.vertices.push(t.transformPoint(v[i]));
+  }
+	  
+  var q = [];
+  //stem base
+  for (var i = 0; i < slices; i++) {
+    q.push(new Pre3d.QuadFace(0, i + 1, ((i + 1) % slices) + 1, null));
+  }
+  //stem side
+  for (var i = 0; i < slices; i++) {
+    var ip1 = (i + 1) % slices;
+    q.push(new Pre3d.QuadFace(i + slices + 1, ip1 + slices + 1, ip1 + 1, i + 1));
+  }
+  //head base
+  for (var i = 0; i < slices; i++) {
+    var ip1 = (i + 1) % slices;
+    q.push(new Pre3d.QuadFace(i + 2 * slices + 1, ip1 + 2 * slices + 1, ip1 + slices + 1, i + slices + 1));
+  }
+  //head side
+  var last = 1 + slices * 3;
+  for (var i = 0; i < slices; i++) {
+    var ip1 = (i + 1) % slices;
+    q.push(new Pre3d.QuadFace(last, ip1 + 2 * slices + 1, i + 2 * slices + 1, null));
+  }
+  s.quads = q;
+	  
+  Pre3d.ShapeUtils.rebuildMeta(s);
+  return s;
+}
+
+
 function makeMET(data) {
     /*
       "METs_V1": [["phi", "double"],
@@ -54,7 +142,7 @@ function makeMET(data) {
     var px = data[2];
     var py = data[3];
 
-    var arrow = Pre3d.ShapeUtils.makeSolidArrow(0, 0, 0, pt*px, pt*py, 0, 10);
+    var arrow = Pre3d.ShapeUtils.makeScaledArrow(0, 0, 0, pt*px, pt*py, 0, 10);
     arrow.fillColor = new Pre3d.RGBA(1, 1, 0, 1);
     Pre3d.ShapeUtils.rebuildMeta(arrow);
     return arrow;
