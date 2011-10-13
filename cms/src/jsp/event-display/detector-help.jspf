@@ -251,12 +251,11 @@
 	</table>
 </div>
 
-<%--
 <div id="help-detsystem-5" class="dialog-window">
 	<table class="titlebar">
 		<tr>
 			<td>
-				<div class="title">Particle Flow Help</div>
+				<div class="title">Physics Objects Help</div>
 			</td>
 			<td class="buttons">
 				<a class="titlebar-button" onclick="closePopup('help-detsystem-5');"><img src="../graphics/close.png" /></a>
@@ -266,41 +265,11 @@
 	<table>
 		<tr>
 			<td class="content">
-				<dl>
-				</dl>
-			</td>
-		</tr>
-		<tr>
-			<td align="right">
-				<table>
-					<tr>
-						<td></td>
-						<td>
-							<a class="button" onclick="closePopup('help-detsystem-5');">Close</a>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-</div>
---%>
+                     		<dl>
+                                
+                                        <dt>Electron Tracks (GSF)</dt>
+					<dd>Reconstrcuted electron tracks in the tracker</dd>
 
-<div id="help-detsystem-6" class="dialog-window">
-	<table class="titlebar">
-		<tr>
-			<td>
-				<div class="title">Physics Objects Help</div>
-			</td>
-			<td class="buttons">
-				<a class="titlebar-button" onclick="closePopup('help-detsystem-6');"><img src="../graphics/close.png" /></a>
-			</td>
-		</tr>
-	</table>
-	<table>
-		<tr>
-			<td class="content">
-				<dl>
 					<dt>Tracker Muons (Reco)</dt>
 					<dd>Reconstructed muon tracks in central Tracker</dd>
 					
@@ -310,9 +279,6 @@
 					<dt>Global Muons (Reco)</dt>
 					<dd>Reconstructed complete muon tracks</dd>
 					
- 	                                <dt>Electron Tracks (GSF)</dt>
-					<dd>Electron tracks in the tracker</dd>
-
 					<dt>Calorimeter energy towers</dt>
 					<dd>Histogram "towers" to indicate energy deposits in calorimeters summed over the trajectories</dd>
 					
@@ -330,7 +296,7 @@
 					<tr>
 						<td></td>
 						<td>
-							<a class="button" onclick="closePopup('help-detsystem-6');">Close</a>
+							<a class="button" onclick="closePopup('help-detsystem-5');">Close</a>
 						</td>
 					</tr>
 				</table>

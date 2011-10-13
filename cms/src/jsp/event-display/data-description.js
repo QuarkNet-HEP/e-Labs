@@ -126,19 +126,10 @@ var d_descr = {
 	"HORecHits_V2": { type: SHAPE, on: false, group: "HCAL", desc: "Outer Rec. Hits", rank: "energy",
 		fn: makeRecHits_V2, color: [0.2, 0.7, 1, 0.4], fill: [0.2, 0.7, 1, 0.2], lineWidth: 0.5 },
 		
-  /*
-	"GsfPFRecTracks_V1": { type: TRACK, on: false, group: "Particle Flow", desc: "GSF Tracks",
-		dataref: "PFTrajectoryPoints_V1", assoc: "GsfPFRecTrackTrajectoryPoints_V1", 
-		fn: makeTrackPoints, color: [0, 1, 1, 1], lineCaps: "+", lineWidth: 1},
-	"PFEBRecHits_V1": { type: SHAPE, on: false, group: "Particle Flow", desc: "ECAL Barrel Rec. Hits", rank: "energy",
-		fn: makeRecHits, color: [1, 0, 1, 1], fill: [1, 0, 1, 1], lineWidth: 0.5},
-	"PFEERecHits_V1": { type: SHAPE, on: false, group: "Particle Flow", desc: "ECAL Endcap Rec. Hits", rank: "energy",
-		fn: makeRecHits, color: [1, 0, 1, 1], fill: [1, 0, 1, 1], lineWidth: 0.5},
-	"PFBrems_V1": { type: TRACK, on: false, group: "Particle Flow", desc: "Bremsstrahlung candidate tangents",
-		dataref: "PFTrajectoryPoints_V1", assoc: "PFBremTrajectoryPoints_V1", 
-		fn: makeTrackPoints, color: [0, 1, 0.2, 1], lineCaps: "+", lineWidth: 1},
-  */
-		
+ 	
+        "GsfTracks_V1": { type: PATHS, on: true, group: "Physics Objects", desc: "Electron Tracks (GSF)",
+		dataref: "GsfExtras_V1", assoc: "GsfTrackExtras_V1", 
+		fn: makeTrackCurves2, color: [1, 0.9, 0, 0.9], lineCaps: "square", lineWidth: 1.5 },3
 	"TrackerMuons_V1": { type: TRACK, on: true, group: "Physics Objects", desc: "Tracker Muons (Reco)",
 		dataref: "Points_V1", assoc: "MuonTrackerPoints_V1", 
 		fn: makeTrackPoints, color: [1, 0, 0.2, 1], lineCaps: "-", lineWidth: 1.5},
@@ -151,9 +142,6 @@ var d_descr = {
 	"GlobalMuons_V1": { type: TRACK, on: true, group: "Physics Objects", desc: "Global Muons (Reco)",
 		dataref: "Points_V1", assoc: "MuonGlobalPoints_V1", 
 		fn: makeTrackPoints, color: [1, 0, 0.2, 1], lineCaps: "-", lineWidth: 1.5},
-        "GsfTracks_V1": { type: PATHS, on: true, group: "Physics Objects", desc: "Electron Tracks (GSF)",
-		dataref: "GsfExtras_V1", assoc: "GsfTrackExtras_V1", 
-		fn: makeTrackCurves2, color: [1, 0.9, 0, 0.9], lineCaps: "square", lineWidth: 1.5 },
 	"CaloTowers_V1": { type: SHAPE, on: true, group: "Physics Objects", desc: "Calorimeter Energy Towers", rank: "et",
 		fn: makeCaloTowers_V1, color: [0, 1, 0, 1], fill: [0, 1, 0, 1], lineWidth: 0.5, 
 		rankingFunction: function(data) {return data[4] + data[5];}},
