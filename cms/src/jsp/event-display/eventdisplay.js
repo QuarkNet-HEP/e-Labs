@@ -129,25 +129,8 @@ function isModel(ev) {
 }
 
 function combineData(a) {
-	var c = {};
-	for (var i = 0; i < a.length; i++) {
-		if (a[i] !== null) {
-			var d = a[i];
-			for (var k in d) {
-				if (c[k]) {
-					var sd = d[k];
-					for (var l in sd) {
-						c[k][l] = sd[l];
-					}
-				}
-				else {
-					c[k] = d[k];
-				}
-			}
-		}
-	}
-
-	return c;
+  var c = {};
+  return jQuery.extend(true, c, a[0], a[1]);
 }
 
 function eventDataLoaded(data) {
