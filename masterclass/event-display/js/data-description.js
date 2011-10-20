@@ -75,7 +75,6 @@ var d_descr = {
 		fn: makeSiStripDigis, color: [1, 0, 0, 1], shape: "square", lineWidth: 0.5 },
 	"TrackingRecHits_V1": { type: POINT, on: false, group: "Tracking", desc: "Rec. Hits (Tracking)", 
 		fn: makeHit, color: [1, 1, 0, 1], fill: [1, 1, 0, 1], shape: "disc", lineWidth: 1 },
-
 		
 	"DTDigis_V1": { type: LINE, on: false, group: "Muon", desc: "DT Digis",
 		fn: makeDTDigis, color: [0, 1, 0, 1], lineWidth: 1 },
@@ -93,7 +92,7 @@ var d_descr = {
 		fn: makeRPCRecHits, color: [0.8, 1, 0, 1], lineWidth: 3 },
 	"CSCRecHit2Ds_V2": { type: LINES, on: true, group: "Muon", desc: "CSC Rec. Hits (2D)",
 		fn: makeCSCRecHit2Ds_V2, color: [0.6, 1, 0.9, 1], lineWidth: 2 },
-  	"MuonChambers_V1": {type: WIREFRAME, on: true, group: "Muon", desc: "Matching muon chambers",
+  	"MuonChambers_V1": {type: LINES, on: true, group: "Muon", desc: "Matching muon chambers",
 		fn: makeChambers, color: [1, 0, 0, 0.5], lineWidth: 0.5},
 
 	"EBRecHits_V1": { type: SHAPE, on: true, group: "ECAL", desc: "Barrel Rec. Hits", rank: "energy",
