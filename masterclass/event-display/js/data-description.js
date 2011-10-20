@@ -59,10 +59,10 @@ var d_descr = {
 		fn: makeRPCs, color: [0.8, 1, 0, 0.4], lineWidth: 0.8},
 		
 		
-	"Tracks_V1": { type: PATHS, on: false, group: "Tracking", desc: "Tracks (reco.)",
+	"Tracks_V1": { type: PATHS, on: true, group: "Tracking", desc: "Tracks (reco.)",
 		dataref: "Extras_V1", assoc: "TrackExtras_V1",
 		fn: makeTrackCurves2, color: [1, 0.7, 0, 0.7], lineCaps: "square", lineWidth: 2 },
-	"Tracks_V2": { type: PATHS, on: false, group: "Tracking", desc: "Tracks (reco.)",
+	"Tracks_V2": { type: PATHS, on: true, group: "Tracking", desc: "Tracks (reco.)",
 		dataref: "Extras_V1", assoc: "TrackExtras_V1",
 		fn: makeTrackCurves2, color: [1, 0.7, 0, 0.7], lineCaps: "square", lineWidth: 2 },
 	"SiStripDigis_V1": { type: POINT, on: false, group: "Tracking", desc: "Digis (Si Strips)",
