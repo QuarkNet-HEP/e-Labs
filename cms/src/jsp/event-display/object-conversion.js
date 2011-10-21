@@ -232,49 +232,37 @@ function makeQuad(f1, f2, f3, f4, b1, b2, b3, b4, fill, stroke) {
     return s;
 }
 
-function makeChambers(data,rd,descr) {
-  //tpm Perhaps this can be used as a generic makeBox
-  // method. As far as I recall there isn't one currently.
-
-  /* 
-     ["detid", "int"],
-     ["front_1", "v3d"],["front_2", "v3d"],
-     ["front_3", "v3d"],["front_4", "v3d"],
-     ["back_1", "v3d"],["back_2", "v3d"], 
-     ["back_3", "v3d"],["back_4", "v3d"]
- */
- 
-  var lines = [];
-  var points = [];
-      
-  points.push(makePoint(data[1]));
-  points.push(makePoint(data[2]));
-  points.push(makePoint(data[3]));
-  points.push(makePoint(data[4]));
-  points.push(makePoint(data[5]));
-  points.push(makePoint(data[6]));
-  points.push(makePoint(data[7]));
-  points.push(makePoint(data[8]));
-
-  lines.push({p1: 1, p2: 2});
-  lines.push({p1: 0, p2: 3});
-  lines.push({p1: 5, p2: 6});
-  lines.push({p1: 4, p2: 7});
+function makeChambers(data) {
   
-  lines.push({p1: 1, p2: 5});
-  lines.push({p1: 0, p2: 4});
-  lines.push({p1: 2, p2: 6});
-  lines.push({p1: 3, p2: 7});
-	
-  lines.push({p1: 0, p2: 1});
-  lines.push({p1: 2, p2: 3});
-  lines.push({p1: 4, p2: 5});
-  lines.push({p1: 6, p2: 7});
-		
-  var w = new Pre3d.Wireframe();
-  w.points = points;
-  w.lines = lines;
-  return [w];
+  // ["detid", "int"],
+  // ["front_1", "v3d"],["front_2", "v3d"],["front_3", "v3d"],["front_4", "v3d"],
+  // ["back_1", "v3d"],["back_2", "v3d"],["back_3", "v3d"],["back_4", "v3d"]
+
+  //    5 -- 4
+  //   /|   /|     
+  //  1 -- 0 |      
+  //  | 6 -|-7     
+  //  |/   |/    
+  //  2 -- 3
+
+  // add +1 to indices since points don't start from 0
+
+  return [
+    {p1: makePoint(data[2]), p2: makePoint(data[3])}, 
+    {p1: makePoint(data[1]), p2: makePoint(data[4])}, 
+    {p1: makePoint(data[6]), p2: makePoint(data[7])},
+    {p1: makePoint(data[5]), p2: makePoint(data[8])},
+          
+    {p1: makePoint(data[2]), p2: makePoint(data[6])}, 
+    {p1: makePoint(data[1]), p2: makePoint(data[5])}, 
+    {p1: makePoint(data[3]), p2: makePoint(data[7])},
+    {p1: makePoint(data[4]), p2: makePoint(data[8])},
+
+    {p1: makePoint(data[1]), p2: makePoint(data[2])}, 
+    {p1: makePoint(data[3]), p2: makePoint(data[4])}, 
+    {p1: makePoint(data[5]), p2: makePoint(data[6])},
+    {p1: makePoint(data[7]), p2: makePoint(data[8])}
+  ];
 }
 
 function makeTowers(data, rd, descr, front, back, energy) {
