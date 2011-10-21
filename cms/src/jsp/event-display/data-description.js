@@ -92,7 +92,7 @@ var d_descr = {
 		fn: makeRPCRecHits, color: [0.8, 1, 0, 1], lineWidth: 3 },
 	"CSCRecHit2Ds_V2": { type: LINES, on: true, group: "Muon", desc: "CSC Rec. Hits (2D)",
 		fn: makeCSCRecHit2Ds_V2, color: [0.6, 1, 0.9, 1], lineWidth: 2 },
-  	"MuonChambers_V1": {type: WIREFRAME, on: true, group: "Muon", desc: "Matching muon chambers",
+  	"MuonChambers_V1": {type: LINES, on: true, group: "Muon", desc: "Matching muon chambers",
 		fn: makeChambers, color: [1, 0, 0, 0.5], lineWidth: 0.5},
 
 
