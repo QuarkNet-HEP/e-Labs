@@ -6,6 +6,8 @@
 <%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
+
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ page errorPage="../include/smallerrorpage.jsp" buffer="none" %>
@@ -81,12 +83,14 @@
 					    }
 					}
 					
-					String[] cutsv = cuts.split("\\s+");
-					for (int i = 0; i < cutsv.length; ++i) {
-						String[] p = cutsv[i].split(":");
-						meta.add("cutpath" + i + " string " + p[0]);
-						meta.add("cutmin"  + i + " float " + p[1]);
-						meta.add("cutmax"  + i + " float " + p[2]);
+					if (StringUtils.isNotBlank(cuts)) {
+						String[] cutsv = cuts.split("\\s+");
+						for (int i = 0; i < cutsv.length; ++i) {
+							String[] p = cutsv[i].split(":");
+							meta.add("cutpath" + i + " string " + p[0]);
+							meta.add("cutmin"  + i + " float " + p[1]);
+							meta.add("cutmax"  + i + " float " + p[2]);
+						}
 					}
 					
 					meta.add("_plots string " + plots);
