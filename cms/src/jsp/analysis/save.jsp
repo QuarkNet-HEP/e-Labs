@@ -25,8 +25,9 @@
 					String plots = request.getParameter("plots");
 					String expr = request.getParameter("expr");
 					String analysis = request.getParameter("analysis");
+					String cuts = request.getParameter("cuts");
 					
-					String base = "dataset=" + dataset + "&runs=" + runs + "&plots=" + plots;
+					String base = "dataset=" + dataset + "&runs=" + runs + "&plots=" + plots + "&cuts=" + cuts;
 					String plotURL = "../data/plot-image.jsp?" + base;
 					String thumbnailURL = plotURL + "&thumbnail=true";
 					
@@ -78,6 +79,14 @@
 								meta.add(p[0] + i + " string " + p[1]);	    
 							}
 					    }
+					}
+					
+					String[] cutsv = cuts.split("\\s+");
+					for (int i = 0; i < cutsv.length; ++i) {
+						String[] p = cutsv[i].split(":");
+						meta.add("cutpath" + i + " string " + p[0]);
+						meta.add("cutmin"  + i + " float " + p[1]);
+						meta.add("cutmax"  + i + " float " + p[2]);
 					}
 					
 					meta.add("_plots string " + plots);

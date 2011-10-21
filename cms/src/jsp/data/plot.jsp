@@ -168,7 +168,7 @@
 									<e:trinput type="hidden" name="dataset"/>
 									<e:trinput type="hidden" name="runs"/>
 									<e:trinput type="hidden" name="expr"/>
-									<e:trinput type="hidden" name="cuts"/>
+									<e:trinput type="hidden" name="cuts" class="plots-cuts"/>
 									<e:trinput type="hidden" name="plots" class="plots-input"/>
 									<e:trinput type="hidden" name="analysis"/>
 									<input type="text" name="name" emptytext="plot name" class="plotname" size="10" />

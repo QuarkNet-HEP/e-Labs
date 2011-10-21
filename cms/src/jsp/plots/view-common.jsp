@@ -20,9 +20,19 @@
 	
 	String type = (String) entry.getTupleValue("type");  
 	String name = (String) entry.getTupleValue("name"); 
+	
+	String cuts; 
+	int i = 0; 
+	while (StringUtils.isNotBlank((String) entry.getTupleValue("cutpath" + i))) {
+		cuts += (String) entry.getTupleValue("cutpath" + i) + 
+			(Double) entry.getTupleValue("cutmin" + i) +
+			(Double) entry.getTupleValue("cutmax" + i) +
+			" ";
+		++i; 
+	}
 
 	String params = "dataset=" + entry.getTupleValue("dataset") + "&runs=" + entry.getTupleValue("runs") + 
-		"&plots=" + entry.getTupleValue("_plots") + "&analysis=" + entry.getTupleValue("analysis");
+		"&plots=" + entry.getTupleValue("_plots") + "&analysis=" + entry.getTupleValue("analysis") + "&cuts=" + cuts;
 	
 	boolean isRasterImage = false; 
 	
