@@ -428,6 +428,7 @@ function getData(dataset, runs, plots, combine, cuts) {
     var url = "../data/get-data.jsp?dataset=" + dataset + "&runs=" + runs + "&plots=" + plots + "&combine=" + combine;
     if (cuts) {
     	url += "&cuts=" + cuts.replace("+", "%2B");
+    	$(".plots-cuts").val(cuts.replace("+", "%2B"));
     }
     log("plot-data: <a href=\"" + url + "\">" + url + "</a>");
     ro.open("get", url);
@@ -855,12 +856,14 @@ function updateCutsTable() {
 	var cuts = document.cuts;
 	clearCutsTable();
 	var tbl = document.getElementById("cuts-table");
-	for (var i = 0; i < cuts.length; i++) {
-		var row = tbl.insertRow(tbl.rows.length - 1);
-		var td = row.insertCell(0);
-		td.innerHTML = cuts[i].min + " " + cuts[i].units + " < " + cuts[i].label + " < " + cuts[i].max + " " + cuts[i].units;
-		var rd = row.insertCell(1);
-		rd.innerHTML = "<a class=\"tbutton\" href=\"#\" onclick=\"removeCut(" + i + ")\"><img src=\"../graphics/minus.png\" /></a>";
+	if (tbl != null) {
+		for (var i = 0; i < cuts.length; i++) {
+			var row = tbl.insertRow(tbl.rows.length - 1);
+			var td = row.insertCell(0);
+			td.innerHTML = cuts[i].min + " " + cuts[i].units + " < " + cuts[i].label + " < " + cuts[i].max + " " + cuts[i].units;
+			var rd = row.insertCell(1);
+			rd.innerHTML = "<a class=\"tbutton\" href=\"#\" onclick=\"removeCut(" + i + ")\"><img src=\"../graphics/minus.png\" /></a>";
+		}
 	}
 }
 
