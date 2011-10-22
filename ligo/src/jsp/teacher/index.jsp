@@ -308,16 +308,25 @@ Review students' evidence of what they know/understand and reflections on their 
 					</div>
 			
 					<H2>&nbsp;&nbsp;&nbsp;<a href="web-guide.jsp">Navigating Students Through the e-Lab</a></H2>
-
-						<div id="vsId7-v" style="visibility:hidden; display: none">
-						<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Help Desk</h2></a>
+					
+					
+					<div id="vsId7-v" style="visibility:hidden; display: none">
+						<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Help Desk & Sharing Ideas</h2></a>
 								</div><div id="vsId7-h" style="visibility:visible; display:">
-						<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Help Desk</h2></a>
-						<p>
-					     <table style="margin-left:20px"><tr><td>Use the <a href="/elab/ligo/teacher/forum/HelpDeskRequest.php?elab=LIGO" class="external text" title="http://www.i2u2.org/elab/ligo/teacher/forum/HelpDeskRequest.php?elab=LIGO" rel="nofollow">Help Desk Form</a> to get technical assistance from I2U2 staff. Click on the lifesaver
-					     icon in the upper right hand corner of the teacher pages when you are logged in.</td><td><img src="../graphics/Lifesaver.png"></td></tr></table>
+						<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Help Desk & Sharing Ideas</h2></a>
+					<p>
+				<p>
+					      <table style="margin-left:20px"><tr><td>Use the <a href="/elab/cms/teacher/forum/HelpDeskRequest.php?elab=CMS" class="external text" title="/elab/ligo/teacher/forum/HelpDeskRequest.php?elab=LIGO" rel="nofollow">Help Desk Form</a> to get technical assistance from I2U2 staff. Click on the lifesaver
+					     icon in the upper right hand corner of the teacher pages when you are logged in.</td><td><img src="../graphics/Lifesaver.png"></td></tr>
+					     <tr><td colspan="2">Be sure to click on <b>Share Ideas</b> in the menu above to see what other teachers have shared in the I2U2 Blog and in Facebook. They may have the answers to your questions. You may have answers to theirs! Maybe you want to collaborate on a study.</td></tr>
+					     </table>
 						</p>
 					</div>
+					
+					
+					
+					
+
 					
 					<div id="vsId8-v" style="visibility:hidden; display: none">
 				<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>

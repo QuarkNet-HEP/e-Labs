@@ -59,7 +59,7 @@
 							<a href="../assessment/rubric-r.html">Process</a>, <a href="../assessment/rubric-t.html">Computing</a>,
 							<a href="../assessment/rubric-wla.html">Literacy</a> and <a href="../assessment/rubric-p.html">Poster</a></li>
 					</ul>
-					<li><a href="community.jsp"><b>Community</b></a> - <a href="classroom-activities.jsp">Classroom Activities</a>, <a href="notes-ligo.jsp">Classroom Notes</a>, Library and Forum</li>
+					<li><a href="community.jsp"><b>Community</b></a> - Sharing Ideas: I2U2 Blog and Facebook Users Group
 					<li><a href="standards.jsp"><b>Standards</b></a></li>
 					<li><a href="site-map.jsp"><b>Site Index</b></a></li>
 					<e:restricted role="teacher">

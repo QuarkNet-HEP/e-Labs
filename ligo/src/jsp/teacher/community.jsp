@@ -23,13 +23,30 @@
 			</div>
 
 			<div id="content">
-<h1>Share teaching ideas with your colleagues.</h1>   
-<!-- transcluded from http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php?title=LIGO_e-Lab_Teaching_Community" -->
-<e:transclude
- url="http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php?title=LIGO_e-Lab_Teaching_Community"
-     start="<!-- start content -->"
-     end="<div class=\"printfooter\">"
-/>
+<h1>Share Ideas: Join a community of e-Lab teachers and learn from each other.</h1>   
+<p>Collaborate and interact with other e-Lab teachers and staff using the LIGO e-Lab with the following:</p>
+
+<a name="Library"></a><h2>I2U2 WordPress Blog</h2>
+<p>The <a href="http://www18.i2u2.org/blog/" target="blog">I2U2 WordPress Blog</a> is a repository of posts and documents for teachers using the e-Labs. Use this blog to collaborate with other teachers; discuss your ideas, observations and experiences. Read <a href="../content/Blog-Facebook-Notes.pdf">Getting Started with Sharing Ideas</a> to learn how to register and use the blog. You may also want to read this article which gives  <a href="http://codex.wordpress.org/Writing_Posts" target="blog">help for posting in WordPress</a>.</p>
+
+<ul><li> <a href="http://www18.i2u2.org/blog/category/ligo-implementation-plan/" target="blog">Ligo Implementation Plans</a> -  Share implementation plans and comment on plans of others. As part of a LIGO workshop, teachers create an implementation plan for using the e-Lab with their students.  As a starting point to any posts, view the <a href="http://www18.i2u2.org/blog/posting-implementation-plans/"  target="blog">Posting Implementation Plans</a>. You can continue this discussion well after the initial workshop. You can also post your WordPress entries to Facebook and other social media sites.
+</li>
+
+<li><a name="Classroom Activities"> </a><a href="http://www18.i2u2.org/blog/category/ligo-classroom-activities/" target="blog">LIGO Classroom Activities</a> - Post your ideas on how to incorporate the e-Lab into your classes and what activities work well. Your ideas may make it to the page of exemplary Classroom Activities.  When you post, be sure to assign a category of "LIGO Classroom Activity".  Click "LIGO Classroom Activity" in the Category list on the right to see all posts and comments.</li>
+
+<li><a href="http://www.i2u2.org/blog/" target="blog">General Blogging</a> - Join us for discussions about the LIGO Ray e-Lab.  Here you are free to post any questions, answers to questions others ask and comment on their posts. Make suggestions on how to improve the I2U2 Blog.
+</li>
+
+</ul>
+
+<a name="Facebook"></a><h2>Facebook Users Group</h2>
+<p>The <a href="https://www.facebook.com/home.php?sk=group_115695225182890&ap=1" target="facebook">I2U2 Users Facebook Group</a> is a place to communicate with fellow e-Lab users. It also supports creating/sharing documents and chat sessions. Many of you already have Facebook accounts and like the idea of being able to go to one place to do your social networking. If you already have an account, ask to join the I2U2 group.  If you are not a member, consider signing up. Read <a href="../content/Blog-Facebook-Notes.pdf">Getting Started with Sharing Ideas</a> to learn how to join Facebook and use the Facebook I2U2 group. </p>
+
+<a name="Helpdesk"></a><h2>HelpDesk</h2>
+<ul>
+<li> <a href="http://www18.i2u2.org/elab/ligo/teacher/forum/forum_forum.php?id=58" class="external text" target="help">Help Desk Forum</a> - Check the postings for answers to your questions on this list of all the Help Desk tickets. Not there? Use the <a href="http://www18.i2u2.org/elab/ligo/teacher/forum/HelpDeskRequest.php?elab=LIGO" target="help">Help Desk Request Form</a> to get technical assistance from I2U2 staff. You can access this form from any teacher page when logged in by clicking on the little lifesaver icon on the upper right hand corner of your window.
+</li></ul>
+
 			</div>
 			<!-- end content -->
 
@@ -38,6 +55,6 @@
 			</div>
 		
 		</div>
-		<!-- end page container -->
+		<!-- end container -->
 	</body>
 </html>
