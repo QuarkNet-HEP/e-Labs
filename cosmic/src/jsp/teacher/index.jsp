@@ -272,7 +272,7 @@
 					<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
 					<div style="margin-left: 20px">
 						<p>A good way to begin cosmic ray studies is to invite the class to watch Cool Science together. Play the <a href="/elab/cosmic/home/cool-science.jsp">Standalone Movie</a> and enlarge the window.</p>
-						<p>Questions to ask students? How to motivate students. BOB</p>
+						<%--<p>Questions to ask students? How to motivate students. BOB</p>--%>
 				
 						<a name="Cosmic_Ray_Detector"></a><h4>Detectors Students Use</h4>
 						<p>The data for this e-Lab comes from detectors operated by high school students around the world. If you have a detector, you should become familiar with
