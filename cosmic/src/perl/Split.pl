@@ -24,6 +24,7 @@
 # jordant changed 04-23-10: dropped a raw data line if the clock and GPS CPLD latch are both 0.
 # jordant changed 07-07-10: inserting lines to create additional files needed for blessing.
 # jordant changed 11-01-10: checking to see if user is doing ST2 or ST3 when writing raw data. Knowing which one is crucial to data blessing.
+# jordant changed 5 Oct 11: fixing bug 372
 
 if($#ARGV < 2){
 	die "usage: Split.pl [filename to parse] [output DIRECTORY] [board ID]\n";
@@ -130,11 +131,12 @@ $stType = 0;						#flag for version of the ST command used to generate the ST li
 $dsRowCount=0;
 #Removed the next line on 20 Feb 2010. I don't think we need it. 
 #$oldStatusTime = 0;				#control to notice advancing status time The ^@!@#! flag isn't working. Maybe this will
-$stDate = 1;						#Raw date from the ST line	
-$oldSTDate = 1;						#checks to see if the date is changing in the ST line--useful for files with no triggers
+$stDate = 0;						#Raw date from the ST line	
+$oldSTDate = 0;						#checks to see if the date is changing in the ST line--useful for files with no triggers
 $ConReg = 0;						#string to hold the contents of the control registers from the ST line
-$oldConReg = 1;						#erm . . . 
-$TMCReg = 0;						#string to hold the contents of the TMC registes from the ST line
+$oldConReg = 0;						#erm . . . 
+$TMCReg = 0;						#string to hold the contents of the TMC registers from the ST line
+#$DAQID = 0; 						#string to hold the DAQID read in from the ST line. Needs to be zero here as there is a check for its value later.
 
 #convert MAC OS line breaks to UNIX
 #Mac OS only has \r for new lines, so Unix reads it as all one big line. We first need to replace
@@ -144,9 +146,9 @@ while(<IN>){
 	$_ =~ s/\r\n?/\n/g;	#see http://www.westwind.com/reference/OS-X/commandline/text-files.html#text-formats
     if($newline_fixing){
     	$newline_fixing = 0;
-       redo;
+    	redo;
     }
-	
+
 	#Had to change the regExp in Dec 07. The newest version of the hardware had some firmware versions that did not add the +/- to word 1 when it was 0000. This was fixed in firmware version 1.06, but some cards made it into the wild with earlier firmware.
 	#$re="^([0-9A-F]{8}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{8}) (\\d{6}\\.\\d{3}) (\\d{6}) ([AV]) (\\d\\d) ([0-9A-F]) ([-+]\\d{4})\$";
 	
@@ -176,6 +178,19 @@ while(<IN>){
 	
 	#regExp for the output of the TL command:
 	$reThreshold0="^([A-Z]{2}) L0=([0-9]+) L1=([0-9]+) L2=([0-9]+) L3=([0-9]+)\$";
+
+	#inserted by TJ to look for data lines that appear when the user types HT--Bug 372
+	#that user command inserts the next four lines of data into the file as an example.
+	#these lines are fake data and shouldn't make it through split
+	#DE799F14 BB 00 00 00 00 00 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
+	#DE799F15 00 00 00 00 21 00 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
+	#DE799F15 00 35 00 00 00 00 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
+	#DE799F15 00 00 00 00 00 3C 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
+	
+	#next if ($12 == 111007 && $1 eq DE799F14 && $10 eq DE1C993A);
+	#next if ($12 == 111007 && $1 eq DE799F15 && $10 eq DE1C993A);
+	#next if ($12 == 111007 && $1 eq DE799F15 && $10 eq DE1C993A);
+	#next if ($12 == 111007 && $1 eq DE799F15 && $10 eq DE1C993A);
 	
 	#*performance* using an RE is 30% faster than splitting by whitespace
 	if(/$reData/o){
@@ -192,9 +207,8 @@ while(<IN>){
 	    $offset = $dataRow[15] if $ID < 6000; # Fixes bug 459
 		$data_line ++;
 	}
-
+		
 	#inserted by TJ to look for status update lines
-	
 	elsif(/$reStatus0/o || /$reStatus1/o){
 		@stRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14);
 		$stRow = @stRow; 
@@ -207,15 +221,16 @@ while(<IN>){
 		#We could look at ConReg and TMCReg to see if they change. If they do, we need to start another split file.
 		$oldSTDate = $stDate;
 		$stDate = $stRow[6];
-		$oldSTDate = $stDate if $oldSTDate eq 1;
+		$oldSTDate = $stDate if $oldSTDate == 0;
 		$oldConReg = $ConReg;
 		$ConReg = $stRow[13];
-		$oldConReg = $ConReg if $oldConReg == 1; #Testing revealed a case where a data file _started_ with an ST line this changed $ConReg, but not $oldConReg. 
+		$oldConReg = $ConReg if $oldConReg == 0; #Testing revealed a case where a data file _started_ with an ST line this changed $ConReg, but not $oldConReg. 
 		#$oldTMCReg = $TMCReg; #Ths one is a bit more complicated. The word changes, but the difference between values doesn't. Fix this later. Very few users can do this.
 		$TMCReg = $stRow[12];
 		$DAQFirmware = $stRow[10]/100 if $stRow[10] > 99; 	#The DAQ firmware writes the firmware as an INT (e.g., FW version 1.06 is reported in the ST line as 106)
 		$DAQFirmware = $stRow[10]/10 if $stRow[10] < 100;	#Some of the ints are less than 100. 
 		$DAQID = int($stRow[11]);
+		die "The DAQ ID selected ($ID) does not match the DAQ ID stored in these data ($DAQID). We've cancelled your upload. Did you select the correct ID?" if $DAQID != 0 && $ID != $DAQID;
 		next; #we need a next here to get the second line present in the output of ST.
 	}
 	
@@ -342,8 +357,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 		$total_events++ if hex($dataRow[1]) >= 128; # If the 7th bit is set, this is a new and valid event.
 
 		#don't write any split files, bless files or metadata if there are no events--or ST lines
-		if($total_events > 0 && $stRowCount > 0) {
-			die "The DAQ ID selected ($ID) does not match the DAQ ID stored in these data ($DAQID). We've cancelled your upload. Did you select the correct ID?" if $ID != $DAQID;
+		if($total_events > 0){# && $stRowCount > 0) {
+			
 			#only open the metadata file once
 			if($raw_meta_written == 0){
 				$raw_meta_written = 1;
@@ -380,12 +395,13 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 				print META "DiscThresh2 int $thRow[2]\n"; 
 				print META "DiscThresh3 int $thRow[3]\n"; 
 				print META "DAQFirmware string $DAQFirmware\n";
-			}
+			} #end of if ($raw_meta_written ==0)
 
 			# When we see new day--or the control register changes, split file at the day boundary
 			# Mike suggested that we split at midnight, even though Julian Days begin at Noon
 
 			if($date ne $lastdate || $oldConReg ne $ConReg || $oldSTDate ne $stDate) {	#start of a new output file 
+				print "$date \t $lastdate \t $oldConReg \t $ConReg \t $oldSTDate \t $stDate \n";
 				if ($lastdate ne "") {
 				
 					# The file that we are splitting has hit a date boundary. We need to start writing a new SPLIT file and write the .bless file for the file that we are closing. 
@@ -405,7 +421,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					# When ST3 these onboard registers are cleared after each printing, so there is no need to do the subtraction.
 					# We just need to see if these (stCountN and stEvents) keep growing over the life of the file. If they do, we need to subtract one from the next to get the scalar increment over the integration time.
 					
-					die "These data do not contain any 'DS' lines. We have stopped your upload." if $dsRowCount == 0;
+					die "These data do not contain any 'DS' lines. We have stopped your upload." if $dsRowCount == 0 && $DAQID > 0;
 					
 					if ($dsRowCount > 0){
 						#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
@@ -427,7 +443,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 						$j = 0;
 						$stType = 3 if $n/$dsRowCount < 0.7;
 						$stType = 2 if $n/$dsRowCount > 0.7;
-					}
+					} #end of if($dsRowCount > 0)
 					
 					# 2. Use the ST Type to re-write (possibly) the @stCountN arrays (i.e., $stCount0[n] must be subtacted from $stCount0[n+1] if ST 2)
 					#We need to know how many times each channel (and the trigger) fired over the last interval. If this detector is running ST 2, the scalars aren't zero-ing after the last read. We need to subtract the value in row (i) from the value in row (i+1)
@@ -442,7 +458,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 						for $j (1..$dsRowCount-1){
 							#Subtract one from the previous (and not the latter) so that we see the rate in the last integration period (and not the next)
 							push(@stCountTemp, $stCount0[$j] - $stCount0[$j-1]) if $stCount0[$j] > $stCount0[$j-1]; #the if is there so that we don't get diffs < 0
-						}
+						} #end of for $j
 						#swap the newly subtracted arrays with the stCountN $stEvents arrays
 						@stCount0=@stCountTemp;
 						#clear the array for use in the next for loop
@@ -451,7 +467,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 						#Once again with feeling for the other channels and the triggers:
 						for $j (1..$dsRowCount-1){
 							push(@stCountTemp, $stCount1[$j] - $stCount1[$j-1]) if $stCount1[$j] > $stCount1[$j-1];
-						}
+						} #end of for $j
 						
 						@stCount1=@stCountTemp;
 						@stCountTemp = ();
@@ -563,14 +579,14 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 
 			#open a NEW split file
 			$index = 0;				#incremented if a split file of this name already exists
-			$fn = "$DAQID.$year.$month$day.$index";
+			$fn = "$ID.$year.$month$day.$index";
 			#Need a bless file as well with the same file naming scheme
 			$sfn = $fn.".bless";
 
 			#plagued the Quarknet group since Summer 2003, solved on 8-5-04 (by using metadata)
 			while(-e "$output_dir/$fn") {
 				$index++;
-				$fn = "$DAQID.$year.$month$day.$index";
+				$fn = "$ID.$year.$month$day.$index";
 				$sfn = $fn.".bless";
 			} #end while(-e "$output...
 				
@@ -586,7 +602,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 	        print META "julianstartdate float $jd\n";   # Earliest start date in file in julian days
 			#print META "source string $fn\n";
 			print META "source string $raw_filename\n"; #Fixes bug 457
-			print META "detectorid string $DAQID\n";
+			print META "detectorid string $ID\n";
 			print META "type string split\n";
 			print META "blessfile string $sfn\n"; 
 		} # end  if($total_events > 0 && $stRowCount > 0)
@@ -594,7 +610,6 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			$lasttime = $time;
 
 			print SPLIT $_;
-        
         	# Thanks to Nick Dettman for this code calculating actual CPLD frequency.
 	        #@cpld_line = split(/\s+/, $_);
         
