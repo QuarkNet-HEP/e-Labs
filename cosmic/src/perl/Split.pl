@@ -187,10 +187,10 @@ while(<IN>){
 	#DE799F15 00 35 00 00 00 00 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
 	#DE799F15 00 00 00 00 00 3C 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
 	
-	#next if ($12 == 111007 && $1 eq DE799F14 && $10 eq DE1C993A);
-	#next if ($12 == 111007 && $1 eq DE799F15 && $10 eq DE1C993A);
-	#next if ($12 == 111007 && $1 eq DE799F15 && $10 eq DE1C993A);
-	#next if ($12 == 111007 && $1 eq DE799F15 && $10 eq DE1C993A);
+	next if ($12 == 111007 && $1 eq DE799F14 && $10 eq DE1C993A);
+	next if ($12 == 111007 && $1 eq DE799F15 && $10 eq DE1C993A);
+	next if ($12 == 111007 && $1 eq DE799F15 && $10 eq DE1C993A);
+	next if ($12 == 111007 && $1 eq DE799F15 && $10 eq DE1C993A);
 	
 	#*performance* using an RE is 30% faster than splitting by whitespace
 	if(/$reData/o){
