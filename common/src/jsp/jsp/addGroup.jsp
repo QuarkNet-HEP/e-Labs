@@ -163,11 +163,11 @@ String submit =  request.getParameter("submit");
                                  
                                  
                                     out.write("<tr><td>City</td><td>");
-                                    if(city == null && cityNew == null){
-                                        rs = s.executeQuery("SELECT city.name FROM city,state WHERE city.state_id=state.id AND state.id='" + state_id + "';");
-                                        out.write("<select name=\"city\">");
+                                    if(city_id == null && cityNew == null){
+                                        rs = s.executeQuery("SELECT city.name, city.id FROM city,state WHERE city.state_id=state.id AND state.id='" + state_id + "';");
+                                        out.write("<select name=\"city_id\">");
                                         while(rs.next()){
-                                            out.write("<option value=\"" + rs.getString(1) + "\">" + rs.getString(1) + "</option>\n");
+                                            out.write("<option value=\"" + rs.getString(2) + "\">" + rs.getString(1) + "</option>\n");
                                         }
                                         out.write("</select>\n");
 
@@ -221,12 +221,24 @@ String submit =  request.getParameter("submit");
                                     }
                                     out.write("</td></tr>");
                                 }
+                                
+                                if (city == null) // get city name if only have ID 
+                                {
+                                	PreparedStatement ps = s.getConnection().prepareStatement(
+                                			"SELECT name FROM city WHERE id = ?");
+                                	ps.setInt(1, Integer.parseInt(city_id));
+                                	rs = ps.executeQuery(); 
+                                	if (rs.next()) {
+                                		city = rs.getString(1);
+                                		out.write("<input type=\"hidden\" name=\"city\" value=\"" + city +"\">\n");
+                                	}
+                                }
                               
                                 
                                 
                                 
                                         
-                                if(city != null){
+                                if(city_id != null){
                                 
 
                                     out.write("<tr><td>School/Institution</td><td>");
@@ -235,11 +247,11 @@ String submit =  request.getParameter("submit");
                                     	   "SELECT school.name FROM school " +  
                                     	   "INNER JOIN city ON school.city_id = city.id " + 
                                     	   "INNER JOIN state ON city.state_id = state.id " + 
-                                    	   "WHERE state.abbreviation = ? AND city.name = ?"; 
+                                    	   "WHERE state.abbreviation = ? AND city.id = ?"; 
                                        
                                        PreparedStatement ps = s.getConnection().prepareStatement(schoolQuery);
                                        ps.setString(1, state);
-                                       ps.setString(2, city);
+                                       ps.setInt(2, Integer.parseInt(city_id));
                                        
                                        rs = ps.executeQuery(); 
                                         out.write("<select name=\"school\">");
@@ -331,7 +343,7 @@ String submit =  request.getParameter("submit");
                                             teacherNew = teacherNew.replaceAll("'", "\\\\'");
                                             //see if the teacher is already in the database
                                             String teacherQuery = "SELECT teacher.name, school.name, city.name, state.name FROM teacher, school, city, state WHERE Upper(teacher.name)=Upper('" + teacherNew + "')";
-                                            teacherQuery = teacherQuery + " AND school.name='" + school + "' AND city.name='" + city + "' AND state.abbreviation='" + state;
+                                            teacherQuery = teacherQuery + " AND school.name='" + school + "' AND city.id='" + city_id + "' AND state.abbreviation='" + state;
                                             teacherQuery=teacherQuery + "' and teacher.school_id=school.id and school.city_id=city.id and city.state_id=state.id;";
                                             
                                             rs = s.executeQuery(teacherQuery);
