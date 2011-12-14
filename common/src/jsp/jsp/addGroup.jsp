@@ -199,9 +199,20 @@ String submit =  request.getParameter("submit");
                                             }
                                             city = cityNew;
                                         }
-                                        if(city == null || city.equals("")){
+                                        if(city_id == null){
                                             warn(out, "Please enter a city");
                                             return;
+                                        }
+                                        if (city == null && city_id != null) // get city name if only have ID 
+                                        {
+                                        	PreparedStatement ps = s.getConnection().prepareStatement(
+                                        			"SELECT name FROM city WHERE id = ?");
+                                        	ps.setInt(1, Integer.parseInt(city_id));
+                                        	rs = ps.executeQuery(); 
+                                        	if (rs.next()) {
+                                        		city = rs.getString(1);
+                                        		out.write("<input type=\"hidden\" name=\"city\" value=\"" + city +"\">\n");
+                                        	}
                                         }
                                         out.write(city);
                                         out.write("<input type=\"hidden\" name=\"city\" value=\"" + city +"\">\n");
@@ -222,7 +233,7 @@ String submit =  request.getParameter("submit");
                                     out.write("</td></tr>");
                                 }
                                 
-                                if (city == null) // get city name if only have ID 
+                                if (city == null && city_id != null) // get city name if only have ID 
                                 {
                                 	PreparedStatement ps = s.getConnection().prepareStatement(
                                 			"SELECT name FROM city WHERE id = ?");
