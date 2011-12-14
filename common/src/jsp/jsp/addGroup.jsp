@@ -231,12 +231,17 @@ String submit =  request.getParameter("submit");
 
                                     out.write("<tr><td>School/Institution</td><td>");
                                     if(school == null && schoolNew == null){
-                                        // rs = s.executeQuery("SELECT school.name FROM school,city WHERE school.city_id=city.id AND city.name='" + city + "' AND state.abbreviation='" + state + "';");
-                                        String schoolQuery="select school.name from school where school.city_id =(select city.id  from city where city.name='" + city + "' AND city.id in ";
-                                        schoolQuery=schoolQuery+ "(select id from city where city.state_id= (select id from state where abbreviation='" + state + "')));";
-                                       // rs = s.executeQuery("select school.name from school where school.city_id =(select city.id  from city where city.name='" + city + "' 
-                                       // AND city.id in (select id from city where city.state_id= (select id from state where abbreviation='" + state + "')));");
-                                       rs = s.executeQuery(schoolQuery);
+                                       String schoolQuery = 
+                                    	   "SELECT school.name FROM school " +  
+                                    	   "INNER JOIN city ON school.city_id = city.id " + 
+                                    	   "INNER JOIN state ON city.state_id = state.id " + 
+                                    	   "WHERE state.abbreviation = ? AND city.name = ?"; 
+                                       
+                                       PreparedStatement ps = s.getConnection().prepareStatement(schoolQuery);
+                                       ps.setString(1, state);
+                                       ps.setString(2, city);
+                                       
+                                       rs = ps.executeQuery(); 
                                         out.write("<select name=\"school\">");
                                         while(rs.next()){
                                             out.write("<option value=\"" + rs.getString(1) + "\">" + rs.getString(1) + "</option>\n");
