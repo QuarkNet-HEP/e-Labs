@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE root SYSTEM "ogre.dtd">
+<!DOCTYPE root SYSTEM "file:/home/quarkcat/sw/tomcat/webapps/elab/cms/xml/ogre.dtd">
 
 <root type="HCAL Test Beam">
 
-  <dataset name="tb04" location="/home/ogre/tbdata" global_selection="beam==1">
+  <dataset name="tb04" location="/disks/i2u2-dev/cms/data" global_selection="beam==1">
         <runs>
           <type beam="muon" />
           <type beam="electron" />

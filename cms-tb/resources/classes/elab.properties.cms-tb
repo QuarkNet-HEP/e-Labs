@@ -5,7 +5,9 @@
 
 provider.analysis = gov.fnal.elab.analysis.impl.vds.VDSAnalysis
 
-swift.workflow.dir = /home/mike/work/i2u2/cisvn/i2u2/trunk/cms/src/swift
+swift.workflow.dir = /home/quarkcat/sw/i2u2svn/cms/src/swift
+
+data.dir = /disks/i2u2-dev/cms/data
 
 usedb = true
 dataset = tb04

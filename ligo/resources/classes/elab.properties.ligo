@@ -1,11 +1,9 @@
 #
-# These are properties specific to cosmic in addition to
-# the common elab properties
+# These are properties specific to the e-Lab,
+# in addition to the common properties
 #
-
-
-#cms.vds.home = /var/tmp/quarknet-m/tomcat/webapps/elab/cms/output
+elab.formal.name=LIGO
 provider.analysis = gov.fnal.elab.analysis.GenericAnalysis
 provider.analysisexecutor = gov.fnal.elab.analysis.impl.swift.SwiftAnalysisExecutor
-swift.workflow.dir = /home/mike/work/i2u2/cisvn/i2u2/trunk/ligo/src/swift
-data.dir = /home/mike/work/i2u2/ligo/data
+swift.workflow.dir = ${source}/ligo/src/swift
+data.dir = /disks1/myers/data/ligo/frames
