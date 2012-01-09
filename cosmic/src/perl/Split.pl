@@ -219,7 +219,7 @@ while(<IN>){
 		push(@stVcc, $stRow[4]/1000);
 		push(@stGPSSats, $stRow[8]);
 		#We could look at ConReg and TMCReg to see if they change. If they do, we need to start another split file.
-		$oldSTDate = $stDate;
+		#$oldSTDate = $stDate;
 		$stDate = $stRow[6];
 		$oldSTDate = $stDate if $oldSTDate == 0;
 		$oldConReg = $ConReg;
@@ -399,9 +399,12 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 
 			# When we see new day--or the control register changes, split file at the day boundary
 			# Mike suggested that we split at midnight, even though Julian Days begin at Noon
-
+			$oldSTDate = $stDate = $dataRow[11] if $date ne $lastdate; 
+			$oldSTDate = $stDate = $dataRow[11] if $dsRowCount == 0;
+			$oldSTDate = $stDate = $dataRow[11] + 10000 if $dsRowCount == 0 && $dataRow[10] > 235959;
 			if($date ne $lastdate || $oldConReg ne $ConReg || $oldSTDate ne $stDate) {	#start of a new output file 
-				print "$date \t $lastdate \t $oldConReg \t $ConReg \t $oldSTDate \t $stDate \n";
+				
+				#print "$date \t $lastdate \t $oldConReg \t $ConReg \t $oldSTDate \t $stDate \n";
 				if ($lastdate ne "") {
 				
 					# The file that we are splitting has hit a date boundary. We need to start writing a new SPLIT file and write the .bless file for the file that we are closing. 
@@ -650,7 +653,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 	} #end if rollover_flag == 0;
 }	#end of reading the raw file
 
-die "This file contains no ST lines. We now require these lines. We've cancelled your upload. Please consult the DAQ HE screen to implement this feature of the hardware." if $stRowCount == 0;
+#die "This file contains no ST lines. We now require these lines. We've cancelled your upload. Please consult the DAQ HE screen to implement this feature of the hardware." if $stRowCount == 0;
 
 if($total_events == 0){
 	die "No valid events found in your file ($raw_filename) of length $.\n";
