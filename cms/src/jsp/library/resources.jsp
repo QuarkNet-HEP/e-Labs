@@ -108,7 +108,7 @@
 						<h2>Student-Friendly Sites</h2>
 						<ul class="simple">
 							<li>
-								<e:popup href="http://cms.web.cern.ch/cms/index.html" target="website" width="850" height="600">Welcome to CMS</e:popup> - From CMS at CERN
+								<e:popup href="http://cms.web.cern.ch/" target="website" width="850" height="600">Welcome to CMS</e:popup> - From CMS at CERN
 							</li>
 							<li>
 <e:popup href="http://public.web.cern.ch/public/en/LHC/CMS-en.html" target="website" width="850" height="600">CMS: Compact Muon Solenoid</e:popup>
