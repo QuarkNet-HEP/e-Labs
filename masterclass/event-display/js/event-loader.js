@@ -14,6 +14,17 @@ function loadEvent0() {
 	loadEvent(fileListCurrentIndex);
 }
 
+
+function cleanupData(d) {
+    // rm non-standard json bits
+    // newer files will not have this problem
+    d = d.replace(/\(/g,'[')
+	.replace(/\)/g,']')
+	.replace(/\'/g, "\"")
+	.replace(/nan/g, "0");
+    return d;
+}
+
 function loadEvent(i) {
   var ua = $.browser;
   var version;
@@ -27,7 +38,7 @@ function loadEvent(i) {
 
   if ( version < 7 ) { 
     try {
-      var data = fileList[i].getAsText("utf8");
+	var data = cleanupData(fileList[i].getAsText("utf8"));
       var ed   = JSON.parse(data);
       enableNextPrev();
       eventDataLoaded(ed); 
@@ -43,7 +54,8 @@ function loadEvent(i) {
       var reader = new FileReader();
 
       reader.onload = function(e) {
-        var ed = JSON.parse(e.target.result);
+	var data = cleanupData(e.target.result);
+        var ed = JSON.parse(data);
         enableNextPrev();
         eventDataLoaded(ed); 
 	
