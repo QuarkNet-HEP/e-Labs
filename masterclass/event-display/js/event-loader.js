@@ -1,9 +1,12 @@
-// Only tested on Firefox 3.6+
+// Only tested on Firefox 7+
 // Requires HTML5 File API support 
 
-//tpm NOTE: File API has changed since Firefox 7+
+// tpm NOTE: File API has changed since Firefox 7+
 // getAsText as File method has been deprecated
 // FileReader is used instead. See loadEvent below.
+
+// pxn NOTE: FF9+ recommended due to JavaScript engine
+// improvements 
 
 var fileList = null; 
 var fileListCurrentIndex; 
@@ -32,13 +35,13 @@ function loadEvent(i) {
     version = ua.version.slice(0,1);
   }
   else {
-    alert("Sorry, but you need to use Firefox 3.6+ for this application");
+    alert("Firefox 7 or newer is required for this application.");
     return;
   }
 
   if ( version < 7 ) { 
     try {
-	var data = cleanupData(fileList[i].getAsText("utf8"));
+	var data = cleanupData(JXG.decompress(fileList[i].getAsText("utf8")));
       var ed   = JSON.parse(data);
       enableNextPrev();
       eventDataLoaded(ed); 
