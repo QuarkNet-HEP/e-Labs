@@ -67,7 +67,7 @@ function loadEvent(i) {
       alert(e);
     }
 
-      reader.readAsText(fileList[i]); // requires compressed binary blob
+      reader.readAsText(fileList[i]); // requires base64-encoded compressed binary blob
     } catch(e) {
       alert(e);
     }
