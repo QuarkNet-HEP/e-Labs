@@ -54,7 +54,9 @@ function loadEvent(i) {
       var reader = new FileReader();
 
       reader.onload = function(e) {
-	var data = cleanupData(e.target.result);
+    	var data = e.target.result; 
+		data = JXG.decompress(data); // inflate base64-encoded gzipped data
+    	data = cleanupData(data); // fix JSON if needed
         var ed = JSON.parse(data);
         enableNextPrev();
         eventDataLoaded(ed); 
@@ -65,7 +67,7 @@ function loadEvent(i) {
       alert(e);
     }
 
-      reader.readAsText(fileList[i]);
+      reader.readAsText(fileList[i]); // requires compressed binary blob
     } catch(e) {
       alert(e);
     }
