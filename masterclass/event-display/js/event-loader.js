@@ -41,7 +41,7 @@ function loadEvent(i) {
 
   if ( version < 7 ) { 
     try {
-	var data = cleanupData(JXG.decompress(fileList[i].getAsText("utf8")));
+	var data = cleanupData(JXG.decompress(fileList[i].getAsText("US-ASCII")));
       var ed   = JSON.parse(data);
       enableNextPrev();
       eventDataLoaded(ed); 
@@ -70,7 +70,7 @@ function loadEvent(i) {
       alert(e);
     }
 
-      reader.readAsText(fileList[i]); // requires base64-encoded compressed binary blob
+      reader.readAsText(fileList[i], "US-ASCII"); // requires base64-encoded compressed binary blob
     } catch(e) {
       alert(e);
     }
