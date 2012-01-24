@@ -24,6 +24,7 @@
 		<script src="demo_utils.js"></script>
 		<script src="object-conversion.js"></script>
 		<script src="detector-model-gen.js"></script>
+		<script src="detector-model-geometry.js"></script>
 		<script src="data-description.js"></script>
 		<script src="save.js"></script>
 	</head>
