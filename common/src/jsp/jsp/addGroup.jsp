@@ -258,7 +258,8 @@ String submit =  request.getParameter("submit");
                                     	   "SELECT school.name FROM school " +  
                                     	   "INNER JOIN city ON school.city_id = city.id " + 
                                     	   "INNER JOIN state ON city.state_id = state.id " + 
-                                    	   "WHERE state.abbreviation = ? AND city.id = ?"; 
+                                    	   "WHERE state.abbreviation = ? AND city.name IN " +
+                                    			   "(SELECT name FROM city WHERE id = ?)"; 
                                        
                                        PreparedStatement ps = s.getConnection().prepareStatement(schoolQuery);
                                        ps.setString(1, state);
@@ -283,7 +284,7 @@ String submit =  request.getParameter("submit");
                                                 return;
                                             }
                                             //see if the school is already in the database
-                                            String schoolQuery2 = "SELECT school.name, city.name FROM school,city,state WHERE Upper(school.name)=Upper('" + schoolNew + "') AND school.city_id='" + city_id;
+                                            String schoolQuery2 = "SELECT school.name, city.name FROM school,city,state WHERE school.name ILIKE '" + schoolNew + "' AND school.city_id='" + city_id;
                                             schoolQuery2=schoolQuery2+"' AND school.city_id=city.id and city.state_id=state.id;";
                                             
                                             
