@@ -138,9 +138,9 @@ var d_descr = {
 		fn: makeTrackPoints, color: [0, 1, 0.2, 1], lineCaps: "+", lineWidth: 1},
 	*/
 
-        "GsfTracks_V1": { type: PATHS, on: true, group: "Physics Objects", desc: "Electron Tracks (GSF)",
- 		dataref: "GsfExtras_V1", assoc: "GsfTrackExtras_V1", 
- 		fn: makeTrackCurves2, color: [1, 0.9, 0, 0.9], lineCaps: "square", lineWidth: 1.5 },
+	"GsfElectrons_V1": { type: PATHS, on: true, group: "Physics Objects", desc: "Electron Tracks (GSF)",
+		dataref: "Extras_V1", assoc: "GsfElectronExtras_V1", 
+		fn: makeTrackCurves2, color: [1, 0.9, 0, 0.9], lineCaps: "square", lineWidth: 1.5 },
 
 	"TrackerMuons_V1": { type: TRACK, on: true, group: "Physics Objects", desc: "Tracker Muons (Reco)",
 		dataref: "Points_V1", assoc: "MuonTrackerPoints_V1", 
