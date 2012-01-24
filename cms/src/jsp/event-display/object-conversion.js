@@ -129,15 +129,8 @@ function makeScaledArrow(x1, y1, z1, x2, y2, z2, slices) {
   return s;
 }
 
-
-function makeMET(data) {
-    /*
-      "METs_V1": [["phi", "double"],
-                  ["pt", "double"],
-                  ["px", "double"],
-                  ["py", "double"],
-                  ["pz", "double"]]
-    */
+function makeMET(data) {    
+    //"METs_V1": [["phi", "double"],["pt", "double"],["px", "double"],["py", "double"],["pz", "double"]]
     var pt = data[1];
     var px = data[2];
     var py = data[3];
@@ -233,7 +226,7 @@ function makeQuad(f1, f2, f3, f4, b1, b2, b3, b4, fill, stroke) {
 }
 
 function makeChambers(data) {
-  
+
   // ["detid", "int"],
   // ["front_1", "v3d"],["front_2", "v3d"],["front_3", "v3d"],["front_4", "v3d"],
   // ["back_1", "v3d"],["back_2", "v3d"],["back_3", "v3d"],["back_4", "v3d"]
@@ -245,7 +238,7 @@ function makeChambers(data) {
   //  |/   |/    
   //  2 -- 3
 
-  // add +1 to indices since points don't start from 0
+  // add +1 to indices since points dont' start from 0
 
   return [
     {p1: makePoint(data[2]), p2: makePoint(data[3])}, 
@@ -266,57 +259,67 @@ function makeChambers(data) {
 }
 
 function makeTowers(data, rd, descr, front, back, energy) {
-	var settings = document.settings;
-	if (settings.calorimeterTowers) {
-		 if (!energy) {
-			 energy = getRankValue(data, rd);
-		 }
-		 if (energy < 0) {
-			 return null; // Java and Javascript should have a WTF constant, with a different meaning than NaN.
-		 }
-		 var len;
-		 if (settings.calorimeterTowersLogScale) {
-			 len = Math.log(energy) * settings.calorimeterTowersLogFactor;
-		 }
-		 else {
-			 len = energy / rd.range * document.settings.calorimeterTowersMaxLength;
-		 }
-		 var superFront = new Array();
-		 for (var i = 0; i < 4; i++) {
-			 superFront.push(Pre3d.Math.linearInterpolatePoints3d(front[i], back[i], len));
-		 }
-		 back = superFront;
-		 var a = settings.calorimeterTowersWireSides ? 1.0 : 0.3;
-		 var shape = makeQuad(front[0], front[1], front[2], front[3],
-					back[0], back[1], back[2], back[3], 
-					makeColor(descr.fill, a),
-					makeColor(descr.color, a));
-		 shape.drawOverdraw = true;
-		 return shape;
+  var settings = document.settings;
+  
+  if (settings.calorimeterTowers) {
+    if (!energy) {
+      energy = getRankValue(data, rd);
+    }
+    if (energy < 0) {
+      return null; // Java and Javascript should have a WTF constant, with a different meaning than NaN.
+    }
+		
+    var len;
+    if (settings.calorimeterTowersLogScale) {
+      len = Math.log(energy) * settings.calorimeterTowersLogFactor;
+    }
+    else {
+      len = energy / rd.range * document.settings.calorimeterTowersMaxLength;
+    }
+		
+    var superFront = new Array();
+    
+    for (var i = 0; i < 4; i++) {
+      superFront.push(Pre3d.Math.linearInterpolatePoints3d(front[i], back[i], len));
+    }
+    
+    back = superFront;
+    var a = settings.calorimeterTowersWireSides ? 1.0 : 0.3;
+    var shape = makeQuad(front[0], front[1], front[2], front[3],
+      back[0], back[1], back[2], back[3], 
+      makeColor(descr.fill, a),
+      makeColor(descr.color, a));
+    shape.drawOverdraw = true;
+    return shape;
 	}
-	else {
-		return makeQuad(front[0], front[1], front[2], front[3],
-				back[0], back[1], back[2], back[3], 
-				makeColor(descr.fill, getRankValue(data, rd) * 0.8 + 0.2),
-				makeColor(descr.color, getRankValue(data, rd) * 0.8 + 0.2));
-	}
+  else {
+    return makeQuad(front[0], front[1], front[2], front[3],
+		    back[0], back[1], back[2], back[3], 
+		    makeColor(descr.fill, getRankValue(data, rd) * 0.8 + 0.2),
+		    makeColor(descr.color, getRankValue(data, rd) * 0.8 + 0.2));
+  }
 }
 
 function makeRecHits(data, rd, descr, cindex) {
-	//in V2 ["time", "double"] is added before detid.
-	//["energy", "double"],["eta", "double"],["phi", "double"],["detid", "int"],
-	//["front_1", "v3d"],["front_2", "v3d"],["front_3", "v3d"],["front_4", "v3d"],["back_1", "v3d"],["back_2", "v3d"],["back_3", "v3d"],["back_4", "v3d"]
-	var front = new Array();
-	var back = new Array();
-	front.push(makePoint(data[cindex + 0]));
-	front.push(makePoint(data[cindex + 1]));
-	front.push(makePoint(data[cindex + 2]));
-	front.push(makePoint(data[cindex + 3]));
-	back.push(makePoint(data[cindex + 4]));
-	back.push(makePoint(data[cindex + 5]));
-	back.push(makePoint(data[cindex + 6]));
-	back.push(makePoint(data[cindex + 7]));
-	return makeTowers(data, rd, descr, front, back, data[0]);
+  /*
+    in V2 ["time", "double"] is added before detid.
+          ["energy", "double"],["eta", "double"],["phi", "double"],["detid", "int"],
+          ["front_1", "v3d"],["front_2", "v3d"],["front_3", "v3d"],["front_4", "v3d"],["back_1", "v3d"],["back_2", "v3d"],["back_3", "v3d"],["back_4", "v3d"]
+  */
+
+  var front = new Array();
+  var back = new Array();
+  
+  front.push(makePoint(data[cindex + 0]));
+  front.push(makePoint(data[cindex + 1]));
+  front.push(makePoint(data[cindex + 2]));
+  front.push(makePoint(data[cindex + 3]));
+  back.push(makePoint(data[cindex + 4]));
+  back.push(makePoint(data[cindex + 5]));
+  back.push(makePoint(data[cindex + 6]));
+  back.push(makePoint(data[cindex + 7]));
+
+  return makeTowers(data, rd, descr, front, back, data[0]);
 }
 
 function makeRecHits_V1(data, rd, descr) {
@@ -504,6 +507,26 @@ function firstPoint(assoc, data2) {
 	}
 } 
 
+function makeGlobalMuons(data, rd, data2, assoc, data3) {
+  if (!assoc) {
+    throw "No association for " + descr.key;
+  }
+  var a = new Array();
+  for (var i = 0; i < data.length; i++) {
+    var last = null;
+    for (var j = 0; j < assoc.length; j++) {
+      if (assoc[j][0][1] == i) {
+	var p = makePoint(data2[assoc[j][1][1]][0]);
+	if (last !== null) {
+	  a.push({p1: last, p2: p});
+	}
+	last = p;
+      }
+    }
+  }
+  return a;
+} 
+
 function makeTrackPoints(data, rd, descr, data2, assoc) {
 	//"PFBrems_V1": [["deltaP", "double"],["sigmadeltaP", "double"]] (spec - tracks)
 	//"PFBremTrajectoryPoints_V1": [[[43, 0], [42, 25]], (assoc)
@@ -591,40 +614,41 @@ function makeTrackPoints2(data, rd, descr, data2, assoc) {
 }
 
 function makeTrackCurves(data, rd, descr, data2, assoc) {
-	if (!assoc) {
-		throw "No association for " + descr.key;
-	}
+  if (!assoc) {
+    throw "No association for " + descr.key;
+  }
 	
-	var paths = new Array();
+  var paths = new Array();
 	
-	for (var i = 0; i < data.length; i++) {
-		//var last = null;
-		var cnt = 0;
-		var path = new Pre3d.Path();
-		var points = new Array();
-		var curves = new Array();
-		for (var j = 0; j < assoc.length; j++) {
-			if (assoc[j][0][1] == i) {
-				var mapped = data2[assoc[j][1][1]];
-				var pos1 = makePoint(mapped[0]);
-				var dir1 = Pre3d.Math.normalize(makePoint(mapped[1]));
-				var pos2 = makePoint(mapped[2]);
-				var dir2 = Pre3d.Math.normalize(makePoint(mapped[3]));
-				log("pos1 = " + pointToStr(Pre3d.Math.normalize(subPoints(pos2, pos1))) + ", dir1 = " + pointToStr(dir1) + "pos2 = " + pointToStr(pos2) + ", dir2 = " + pointToStr(dir2));
-				points.push(pos1);
-				points.push(dir1);
-				points.push(pos2);
-				points.push(dir2);
-				curves.push(new Pre3d.Curve(cnt * 4 + 2, cnt * 4 + 1, cnt * 4 + 3)); 
-				cnt++;
-			}
-		}
-		path.points = points;
-		path.curves = curves;
-		path.starting_point = 0;
-		paths.push(path);
-	}
-	return paths;
+  for (var i = 0; i < data.length; i++) {
+    //var last = null;
+    var cnt = 0;
+    var path = new Pre3d.Path();
+    var points = new Array();
+    var curves = new Array();
+    
+    for (var j = 0; j < assoc.length; j++) {
+      if (assoc[j][0][1] == i) {
+	var mapped = data2[assoc[j][1][1]];
+	var pos1 = makePoint(mapped[0]);
+	var dir1 = Pre3d.Math.normalize(makePoint(mapped[1]));
+	var pos2 = makePoint(mapped[2]);
+	var dir2 = Pre3d.Math.normalize(makePoint(mapped[3]));
+	log("pos1 = " + pointToStr(Pre3d.Math.normalize(subPoints(pos2, pos1))) + ", dir1 = " + pointToStr(dir1) + "pos2 = " + pointToStr(pos2) + ", dir2 = " + pointToStr(dir2));
+	points.push(pos1);
+	points.push(dir1);
+	points.push(pos2);
+	points.push(dir2);
+	curves.push(new Pre3d.Curve(cnt * 4 + 2, cnt * 4 + 1, cnt * 4 + 3)); 
+	cnt++;
+      }
+    }
+    path.points = points;
+    path.curves = curves;
+    path.starting_point = 0;
+    paths.push(path);
+  }
+  return paths;
 }
 
 /**
@@ -666,133 +690,134 @@ function makeLinePath(p1, p2) {
 }
 
 function makeTrackCurves2(data, rd, descr, data2, assoc) {
-	if (!assoc) {
-		throw "No association for " + descr.key;
-	}
+  if (!assoc) {
+    throw "No association for " + descr.key;
+  }
 	
-	var l = new Array();
-	var dot = Pre3d.Math.dotProduct3d;
-	var cross = Pre3d.Math.crossProduct;
-	var addPoints = Pre3d.Math.addPoints3d;
-	var subPoints = Pre3d.Math.subPoints3d;
-	var mulPoint = Pre3d.Math.mulPoint3d;
-	var mag = Pre3d.Math.vecMag3d;
-	var normalize = Pre3d.Math.normalize;
-	var interpolate = Pre3d.Math.linearInterpolatePoints3d;
-	for (var i = 0; i < data.length; i++) {
-		for (var j = 0; j < assoc.length; j++) {
-			if (assoc[j][0][1] == i) {
-				var mapped = data2[assoc[j][1][1]];
-				var p1 = makePoint(mapped[0]);
-				var p2 = makePoint(mapped[2]);
-				var t1 = normalize(makePoint(mapped[1]));
-				var t2 = normalize(makePoint(mapped[3]));
+  var l = new Array();
+  var dot = Pre3d.Math.dotProduct3d;
+  var cross = Pre3d.Math.crossProduct;
+  var addPoints = Pre3d.Math.addPoints3d;
+  var subPoints = Pre3d.Math.subPoints3d;
+  var mulPoint = Pre3d.Math.mulPoint3d;
+  var mag = Pre3d.Math.vecMag3d;
+  var normalize = Pre3d.Math.normalize;
+  var interpolate = Pre3d.Math.linearInterpolatePoints3d;
+	
+  for (var i = 0; i < data.length; i++) {
+    for (var j = 0; j < assoc.length; j++) {
+      if (assoc[j][0][1] == i) {
+	var mapped = data2[assoc[j][1][1]];
+	var p1 = makePoint(mapped[0]);
+	var p2 = makePoint(mapped[2]);
+	var t1 = normalize(makePoint(mapped[1]));
+	var t2 = normalize(makePoint(mapped[3]));
 				
-				var rt1 = addPoints(p1, t1);
-				var rt2 = addPoints(p2, t2);
+	var rt1 = addPoints(p1, t1);
+	var rt2 = addPoints(p2, t2);
 				
-				//so we're dealing with a helix with endpoints in pos1 and pos2 and
-				//tangents in t1 and t2				
-				var p1p2 = subPoints(p2, p1);
+	//so we're dealing with a helix with endpoints in pos1 and pos2 and
+	//tangents in t1 and t2				
+	var p1p2 = subPoints(p2, p1);
 								
-				var dot1 = dot(p1p2, t1);
-				if (dot1 < 0.000001) { //ie t1 is parallel with p1p2: straight line
-					//though this assumes symmetry of the helix
-					var path = makeLinePath(p1, p2);
-					path.drawEndPoints = true;
-					l.push(path);
-				}
-				else {
-					//n is perpendicular to both lines
-					//and is the normal of the plane of the spiral (though this is a bit of an approximation
-					//since the tangent to the helix has, at any point, a z component)
-					//so I think this should be fixed to account for that
-					var n = cross(t1, t2);
-					//the height of the helix would then be the sum of
-					//the projections of the points on this normal
-					var height = dot(p1p2, n) / mag(n);
-					//now the arc of the spiral is the magnitude of the projection
-					//of p1p2 on the plane. But we know the distance between them and 
-					//the height, so...
-					var magp1p2 = mag(p1p2);
-					var arclen = Math.sqrt(magp1p2 * magp1p2 - height * height);
-					
-					//since t1 and t2 are normalized
-					//t1 . t2 = |t1||t2|cos t <=> t1 . t2 = cos t
-					//though this should probably be projected in the helix plane (which under the
-					//previous assumption is currently the same as the t1t2 plane).
-					var cost = dot(t1, t2);
-					var sint = mag(cross(t1, t2));
-					
-					//the angle between tangents is the arc angle
-					var a = Math.atan2(sint, cost);
-					
-					// arclen/2 is also the radius * sin (a / 2)
-					var radius = arclen / Math.sin(a / 2) / 2;
-
-					//make a unit spiral arc (rotating in the xy plane and translating in the z axis)
-					var helix = makeHelixArc(a);
-					
-					var t = new Pre3d.Transform();
-					t.scale(radius, radius, height);
-
-					//now that it's scaled we need to rotate it such
-					//that p1p2 is the same as the endpoints of the helix
-					var ep1 = t.transformPoint(helix.points[0]);
-					var ep2 = t.transformPoint(helix.points[helix.points.length - 1]);
-					var ep1ep2 = subPoints(ep2, ep1);
-					var axis = cross(ep1ep2, p1p2);
-					if (mag(axis) > 0.00001) {
-						var magp1p2 = mag(p1p2);
-						var magep1ep2 = mag(ep1ep2);
-						var sinphi = mag(axis) / magp1p2 / magep1ep2;
-						var cosphi = dot(ep1ep2, p1p2) / magp1p2 / magep1ep2;
-						var phi = Math.atan2(sinphi, cosphi);
-						t.rotateAroundAxis(axis, phi);
-					} //otherwise no rotation needed
-					
-					//also rotate around the p1p2 axis such that
-					//t1 points in the same direction as helix.t1
-					var helixt1 = normalize(t.transformPoint(helix.points[1]));
-					var np1p2 = normalize(p1p2);
-					
-					// c1 and c2 are the normals to the planes determined by p1p2 and
-					// (helix.t1, t1) respectively
-					// since we want these planes to coincide, the rotation angle
-					// is the angle between c1 and c2
-					var c1 = normalize(cross(helixt1, np1p2));
-					var c2 = normalize(cross(t1, np1p2));
-					var pc1 = addPoints(p1, c1);
-					var pc2 = addPoints(p1, c2);
-					
-					var axis2 = cross(c1, c2);
-					//basically this tests if the two lines are sufficiently parallel (a term which probably only
-					//exists in computer engineering) in which case no rotation is needed
-					if (mag(axis2) > 0.00001) {
-						var sinrho = mag(axis2);
-						var cosrho = dot(c1, c2);
-						var rho = Math.atan2(sinrho, cosrho);
-						
-						//rotate around axis2 instead of p1p2 because
-						//axis2 takes into acount direction of rotation between c1 and c2
-						t.rotateAroundAxis(axis2, rho);
-					}
-						
-					//now that p1p2 and the helix endpoints are parallel
-					//just translate by their difference
-					
-					var p1rep1 = subPoints(t.transformPoint(helix.points[0]), p1);
-					t.translate(-p1rep1.x, -p1rep1.y, -p1rep1.z);
-					
-					for (var k = 0; k < helix.points.length; k++) {
-						helix.points[k] = t.transformPoint(helix.points[k]);
-					}
-					// I might have done simpler things in my life
-					l.push(helix);
-				}				
-			}
-		}
+	var dot1 = dot(p1p2, t1);
+	if (dot1 < 0.000001) { //ie t1 is parallel with p1p2: straight line
+	  //though this assumes symmetry of the helix
+	  var path = makeLinePath(p1, p2);
+	  path.drawEndPoints = true;
+	  l.push(path);
 	}
+	else {
+	  //n is perpendicular to both lines
+	  //and is the normal of the plane of the spiral (though this is a bit of an approximation
+	  //since the tangent to the helix has, at any point, a z component)
+	  //so I think this should be fixed to account for that
+	  var n = cross(t1, t2);
+	  //the height of the helix would then be the sum of
+	  //the projections of the points on this normal
+	  var height = dot(p1p2, n) / mag(n);
+	  //now the arc of the spiral is the magnitude of the projection
+	  //of p1p2 on the plane. But we know the distance between them and 
+	  //the height, so...
+	  var magp1p2 = mag(p1p2);
+	  var arclen = Math.sqrt(magp1p2 * magp1p2 - height * height);
+					
+	  //since t1 and t2 are normalized
+	  //t1 . t2 = |t1||t2|cos t <=> t1 . t2 = cos t
+	  //though this should probably be projected in the helix plane (which under the
+	  //previous assumption is currently the same as the t1t2 plane).
+	  var cost = dot(t1, t2);
+	  var sint = mag(cross(t1, t2));
+					
+	  //the angle between tangents is the arc angle
+	  var a = Math.atan2(sint, cost);
+	  
+	  // arclen/2 is also the radius * sin (a / 2)
+	  var radius = arclen / Math.sin(a / 2) / 2;
+
+	  //make a unit spiral arc (rotating in the xy plane and translating in the z axis)
+	  var helix = makeHelixArc(a);
+					
+	  var t = new Pre3d.Transform();
+	  t.scale(radius, radius, height);
+
+	  //now that it's scaled we need to rotate it such
+	  //that p1p2 is the same as the endpoints of the helix
+	  var ep1 = t.transformPoint(helix.points[0]);
+	  var ep2 = t.transformPoint(helix.points[helix.points.length - 1]);
+	  var ep1ep2 = subPoints(ep2, ep1);
+	  var axis = cross(ep1ep2, p1p2);
+	  if (mag(axis) > 0.00001) {
+	    var magp1p2 = mag(p1p2);
+	    var magep1ep2 = mag(ep1ep2);
+	    var sinphi = mag(axis) / magp1p2 / magep1ep2;
+	    var cosphi = dot(ep1ep2, p1p2) / magp1p2 / magep1ep2;
+	    var phi = Math.atan2(sinphi, cosphi);
+	    t.rotateAroundAxis(axis, phi);
+	  } //otherwise no rotation needed
+					
+	  //also rotate around the p1p2 axis such that
+	  //t1 points in the same direction as helix.t1
+	  var helixt1 = normalize(t.transformPoint(helix.points[1]));
+	  var np1p2 = normalize(p1p2);
+					
+	  // c1 and c2 are the normals to the planes determined by p1p2 and
+	  // (helix.t1, t1) respectively
+	  // since we want these planes to coincide, the rotation angle
+	  // is the angle between c1 and c2
+	  var c1 = normalize(cross(helixt1, np1p2));
+	  var c2 = normalize(cross(t1, np1p2));
+	  var pc1 = addPoints(p1, c1);
+	  var pc2 = addPoints(p1, c2);
+					
+	  var axis2 = cross(c1, c2);
+	  //basically this tests if the two lines are sufficiently parallel (a term which probably only
+	  //exists in computer engineering) in which case no rotation is needed
+	  if (mag(axis2) > 0.00001) {
+	    var sinrho = mag(axis2);
+	    var cosrho = dot(c1, c2);
+	    var rho = Math.atan2(sinrho, cosrho);
+	    
+	    //rotate around axis2 instead of p1p2 because
+	    //axis2 takes into acount direction of rotation between c1 and c2
+	    t.rotateAroundAxis(axis2, rho);
+	  }
+						
+	  //now that p1p2 and the helix endpoints are parallel
+	  //just translate by their difference
+					
+	  var p1rep1 = subPoints(t.transformPoint(helix.points[0]), p1);
+	  t.translate(-p1rep1.x, -p1rep1.y, -p1rep1.z);
+	  
+	  for (var k = 0; k < helix.points.length; k++) {
+	    helix.points[k] = t.transformPoint(helix.points[k]);
+	  }
+	  // I might have done simpler things in my life
+	  l.push(helix);
+	}				
+      }
+    }
+  }
 	return l;
 }
 
