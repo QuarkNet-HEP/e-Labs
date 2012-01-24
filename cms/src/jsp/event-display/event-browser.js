@@ -240,9 +240,7 @@ function updateProgress(p, text) {
 function cleanupData(d) {
     // rm non-standard json bits
     // newer files will not have this problem
-    d = d.replace(/\(/g,'[')
-	.replace(/\)/g,']')
-	.replace(/\'/g, "\"")
+    d = d.replace(/\'/g, "\"")
 	.replace(/nan/g, "0");
     return d;
 }
