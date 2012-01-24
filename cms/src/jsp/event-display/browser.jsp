@@ -104,7 +104,6 @@
 	    	throw new RuntimeException("Event not found: " + ps[1]);
 	    }
 	    BufferedInputStream bis = new BufferedInputStream(zf.getInputStream(e));
-	    out.write("(");
 	    byte[] buf = new byte[16384];
 	    int len = bis.read(buf);
 	    while (len >= 0) {
@@ -122,7 +121,6 @@
 	        }
 	        len = bis.read(buf);
 	    }
-	    out.write(")");
 	}
 	else {
 	    throw new RuntimeException("Unrecognized operation: " + op);
