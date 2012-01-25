@@ -268,7 +268,7 @@
                      		<dl>
                                 
                                         <dt>Electron Tracks (GSF)</dt>
-					<dd>Reconstrcuted electron tracks in the tracker</dd>
+					<dd>Reconstructed electron tracks in the tracker</dd>
 
 					<dt>Tracker Muons (Reco)</dt>
 					<dd>Reconstructed muon tracks in central Tracker</dd>
