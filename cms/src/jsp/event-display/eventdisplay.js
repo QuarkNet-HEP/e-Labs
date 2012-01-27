@@ -78,7 +78,7 @@ function clearSwitchRows() {
 		tbl.deleteRow(0);
 	}
 }
-
+        
 var NOEVENT = {"Collections": {}};
 
 function addSwitchRows(d_event) {
@@ -87,7 +87,7 @@ function addSwitchRows(d_event) {
 				'<a href="#" class="help-detsystem" onclick="openPopup(event, \'help-detsystem-' + 
 				g + '\', \'cursor\')"><img src="../graphics/help-small.png" /></a></td>');
 		for (var key in d_descr) {
-			if (d_descr[key].group != d_groups[g]) {
+		  if (d_descr[key].group != d_groups[g]) {
 				continue;
 			}
 			if (!d_event["Collections"][key]) {
@@ -104,6 +104,9 @@ function addSwitchRows(d_event) {
 				//don't show count for the model; it doesn't make much sense
 				count = "";
 			}
+                        if (! document.settings.showCollectionCount ){
+                          var count = "";
+                        }
 			var html = '<td class="sw">' + desc + count + '</td><td><input type="checkbox" id="' + key + '"' + on + ' onchange="toggle(\''+ key + '\');">';
 			if (d_descr[key].rank) {
 				html += '</td><td><img src="../graphics/range-selector.png" class="range-selector-button" onclick="showRange(event, \'' + key + '\');" />';
@@ -118,33 +121,9 @@ function addSwitchRows(d_event) {
 	fleXenv.fleXcrollMain("switches-div");
 } 
 
-function isModel(ev) {
-	if (ev && ev["Collections"] && ev["Collections"]["Tracker3D_MODEL"]) {
-		return true;
-	}
-	return false;
-}
-
 function combineData(a) {
-	var c = {};
-	for (var i = 0; i < a.length; i++) {
-		if (a[i] !== null) {
-			var d = a[i];
-			for (var k in d) {
-				if (c[k]) {
-					var sd = d[k];
-					for (var l in sd) {
-						c[k][l] = sd[l];
-					}
-				}
-				else {
-					c[k] = d[k];
-				}
-			}
-		}
-	}
-
-	return c;
+  var c = {};
+  return jQuery.extend(true, c, a[0], a[1]);
 }
 
 function eventDataLoaded(data) {
@@ -159,10 +138,6 @@ function detectorModelLoaded(data) {
 	document.eventData = NOEVENT;
 	initializeData();
 	document.draw();
-	//startDownload("/RelValH130GGgluonfusion.ig:Events/Run_1/Event_1501", "Loading data...", eventDataLoaded);
-	//startDownload("/Dir1/RelValSingleMuPt1000.ig:Events/Run_1/Event_102", "Loading data...", eventDataLoaded);
-	//startDownload("/ISpy-RelValWM-CMSSW-3-6-1.ig:Events/Run_1/Event_1", "Loading data...", eventDataLoaded);
-	//startDownload("/ISpy-RelValZMM-CMSSW-3-6-1.ig:Events/Run_1/Event_2002", "Loading data...", eventDataLoaded);
 }
 
 function getField(data, name) {
@@ -180,81 +155,82 @@ function getField(data, name) {
 
 function initializeData() {
 	
-	clearSwitchRows();
+  clearSwitchRows();
+
+  document.d_event = NOEVENT;
+  document.d_event = combineData([document.detectorModel, document.eventData]);
+  var d_event = document.d_event;
+
+  addSwitchRows(d_event);
 	
-	document.d_event = combineData([document.detectorModel, document.eventData]);
-	var d_event = document.d_event;
+  document.perfWeights = buildPerformanceWeights(document.perfWeights);
 	
-	addSwitchRows(d_event);
-	
-	document.perfWeights = buildPerformanceWeights(document.perfWeights);
-	
-	var data = new Array();
+  var data = new Array();
 	  
-	for (var key in d_descr) {
-		var edata = d_event["Collections"][key];
-		if (!edata) {
-			continue;
-		}
-		if (edata.length == 0) {
-			continue;
-		}
-		var vec = new Array();
-		data[key] = vec;
-		var desc = d_descr[key];
-		data.get = function(f) {
-			return getField(data, desc, f);
-		};
-		desc.key = key;
-		var fn = desc.fn;
-		var type = desc.type;
-		var rd = getRankingData(d_event, desc, edata);
-		d_descr[key].rd = rd;
-		var dataref = null;
-		if (desc.dataref) {
-			dataref = d_event["Collections"][desc.dataref];
-		}
-		switch (type) {
-			case TRACK:
-			case CURVES:
-			case PATHS:
-				lines = fn(edata, rd, desc, dataref, d_event["Associations"][desc.assoc]);
-				for (var k = 0; k < lines.length; k++) {
-					vec.push(lines[k]);
-				}
-				break;
-			case LINES:
-			case RECTS:
-				for (var j = 0; j < edata.length; j++) {
-					lines = fn(edata[j], rd, desc);
-					if (lines !== null) {
-						for (var k = 0; k < lines.length; k++) {
-							vec.push(lines[k]);
-						}
-					}
-				}
-				break;
-			case WIREFRAME:
-				for (var j = 0; j < edata.length; j++) {
-					var obj = fn(edata[getIndex(rd, j)], rd, desc);
-					if (obj !== null) {
-						for (var k = 0; k < obj.length; k++) {
-							if (obj[k] !== null) {
-								vec.push(obj[k]);
-							}
-						}	
-					}
-				}
-				break;
-			default:
-				for (var j = 0; j < edata.length; j++) {
-					var obj = fn(edata[getIndex(rd, j)], rd, desc);
-					vec.push(obj);
-				}
-		}
+  for (var key in d_descr) {
+    var edata = d_event["Collections"][key];
+    if (!edata) {
+      continue;
+    }
+    if (edata.length == 0) {
+      continue;
+    }
+    var vec = new Array();
+    data[key] = vec;
+    var desc = d_descr[key];
+    data.get = function(f) {
+      return getField(data, desc, f);
+    };
+    desc.key = key;
+    var fn = desc.fn;
+    var type = desc.type;
+    var rd = getRankingData(d_event, desc, edata);
+    d_descr[key].rd = rd;
+    var dataref = null;
+    if (desc.dataref) {
+      dataref = d_event["Collections"][desc.dataref];
+    }
+    switch (type) {
+    case TRACK:
+    case CURVES:
+    case PATHS:
+      lines = fn(edata, rd, desc, dataref, d_event["Associations"][desc.assoc]);
+      for (var k = 0; k < lines.length; k++) {
+	vec.push(lines[k]);
+      }
+      break;
+    case LINES:
+    case RECTS:
+      for (var j = 0; j < edata.length; j++) {
+	lines = fn(edata[j], rd, desc);
+	if (lines !== null) {
+	  for (var k = 0; k < lines.length; k++) {
+	    vec.push(lines[k]);
+	  }
 	}
+      }
+      break;
+    case WIREFRAME:
+      for (var j = 0; j < edata.length; j++) {
+	var obj = fn(edata[getIndex(rd, j)], rd, desc);
+	if (obj !== null) {
+	  for (var k = 0; k < obj.length; k++) {
+	    if (obj[k] !== null) {
+	      vec.push(obj[k]);
+	    }
+	  }	
+	}
+      }
+      break;
+    default:
+      for (var j = 0; j < edata.length; j++) {
+	var obj = fn(edata[getIndex(rd, j)], rd, desc);
+	vec.push(obj);
+      }
+    }
+  }
 	
-	document.data = data;
+  document.data = data;
 }
 
 function buildPerformanceWeights() {
@@ -287,7 +263,7 @@ function getIndex(rd, i) {
 
 var GLOBAL_RANK_THRESHOLD = 0.9;
 
-window.addEventListener('load', function() {
+function setupCanvasCB() {
 	document.d_event = NOEVENT;
 	document.perfWeights = [];
 	
@@ -318,7 +294,7 @@ window.addEventListener('load', function() {
 	var TARGET_FPS = 20;
 	var NEVER = 100000000000000000;
 	var fastDraw = null;
-    var slowDraw = null;
+       var slowDraw = null;
     
     function setCamera() {
     	var camera_state = document.cameraState;
@@ -407,7 +383,7 @@ window.addEventListener('load', function() {
 		      }
 			renderer.ctx.setFillColor(0, 0, 0, 1);
 		}
-		
+	  
 		renderer.drawBackground();
     
 		for (var i = 0; i < perfWeights.length; i++) {
@@ -583,18 +559,22 @@ window.addEventListener('load', function() {
 	// Have the engine handle mouse / camera movement for us.
 	document.cameraState = DemoUtils.autoCamera(renderer, 0, 0, -30, 0.40, -1.06, 0, redraw);
 
+	/*
 	document.addEventListener('keydown', function(e) {
 		if (e.keyCode != 84)  // t
 			return;
 		
 		toggleBackground();
 	}, false);
+	*/
 	
 	document.draw = redraw;
 	redraw();
 	
-	startDownload("/cms-geometry.ig:Geometry/detector-model-geometry.js", "Loading detector model...", detectorModelLoaded);
-}, false);
+	detectorModelLoaded(detectorModel);
+}
+
+window.addEventListener('load', setupCanvasCB, false);
 
 function toggleBackground() {
 	if (document.settings.invertColors) {

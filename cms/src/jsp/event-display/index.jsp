@@ -16,7 +16,7 @@
 		<script src="../include/elab.js"></script>
 		<script src="utils.js"></script>
 		<script src="../include/flexcroll.js"></script>
-		<script src="../include/jquery/js/jquery-1.4.3.min.js"></script>
+		<script src="../include/jquery/js/jquery-1.6.1.min.js"></script>
 		<script src="../include/pre3d.js"></script>
 		<script src="../include/pre3d_shape_utils.js"></script>
 		<script src="../include/base64.js"></script>
@@ -24,6 +24,7 @@
 		<script src="demo_utils.js"></script>
 		<script src="object-conversion.js"></script>
 		<script src="detector-model-gen.js"></script>
+		<script src="detector-model-geometry.js"></script>
 		<script src="data-description.js"></script>
 		<script src="save.js"></script>
 	</head>

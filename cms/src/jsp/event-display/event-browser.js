@@ -215,7 +215,7 @@ function loadEventCB(text, data, error) {
 	updateProgress(91, "Parsing data");
 	var nan = Number.NaN;
 	try {
-		var ed = eval(text);
+		var ed = JSON.parse(cleanupData(text));
 		updateProgress(93, "Initializing objects");
 		callback(ed);
 		updateProgress(100, "Done");
@@ -235,4 +235,12 @@ function updateProgress(p, text) {
 	width = 576;
 	$("#event-load-progress-bar").css("width", Math.round(p / 100 * width) + "px");
 	$("#event-load-progress-text").html(text);
+}
+
+function cleanupData(d) {
+    // rm non-standard json bits
+    // newer files will not have this problem
+    d = d.replace(/\'/g, "\"")
+	.replace(/nan/g, "0");
+    return d;
 }

@@ -92,10 +92,7 @@
 				<dl>
 					<dt>Tracks (reco.)</dt>
 					<dd>All reconstructed particle tracks in the tracker</dd>
-					
-					<dt>Electron Tracks (GSF)</dt>
-					<dd>Electron tracks in the tracker</dd>
-					
+						
 					<dt>Clusters (Si Pixels)</dt>
 					<dd>Recorded events in the innermost part of the tracker</dd>
 					
@@ -258,7 +255,7 @@
 	<table class="titlebar">
 		<tr>
 			<td>
-				<div class="title">Particle Flow Help</div>
+				<div class="title">Physics Objects Help</div>
 			</td>
 			<td class="buttons">
 				<a class="titlebar-button" onclick="closePopup('help-detsystem-5');"><img src="../graphics/close.png" /></a>
@@ -268,40 +265,11 @@
 	<table>
 		<tr>
 			<td class="content">
-				<dl>
-				</dl>
-			</td>
-		</tr>
-		<tr>
-			<td align="right">
-				<table>
-					<tr>
-						<td></td>
-						<td>
-							<a class="button" onclick="closePopup('help-detsystem-5');">Close</a>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-</div>
+                     		<dl>
+                                
+                                        <dt>Electron Tracks (GSF)</dt>
+					<dd>Reconstrcuted electron tracks in the tracker</dd>
 
-<div id="help-detsystem-6" class="dialog-window">
-	<table class="titlebar">
-		<tr>
-			<td>
-				<div class="title">Physics Objects Help</div>
-			</td>
-			<td class="buttons">
-				<a class="titlebar-button" onclick="closePopup('help-detsystem-6');"><img src="../graphics/close.png" /></a>
-			</td>
-		</tr>
-	</table>
-	<table>
-		<tr>
-			<td class="content">
-				<dl>
 					<dt>Tracker Muons (Reco)</dt>
 					<dd>Reconstructed muon tracks in central Tracker</dd>
 					
@@ -315,7 +283,10 @@
 					<dd>Histogram "towers" to indicate energy deposits in calorimeters summed over the trajectories</dd>
 					
 					<dt>Jets</dt>
-					<dd>Collimated groups of particles which come from strong force energy conversion to matter</dd> 
+					<dd>Collimated groups of particles which come from strong force energy conversion to matter</dd>
+
+                                        <dt>MET</dt>
+                                        <dd>Missing transverse energy</dd> 
 				</dl>
 			</td>
 		</tr>
@@ -325,7 +296,7 @@
 					<tr>
 						<td></td>
 						<td>
-							<a class="button" onclick="closePopup('help-detsystem-6');">Close</a>
+							<a class="button" onclick="closePopup('help-detsystem-5');">Close</a>
 						</td>
 					</tr>
 				</table>
