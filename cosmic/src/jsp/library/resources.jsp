@@ -256,7 +256,11 @@
 								<a href="http://farweb.minos-soudan.org/events/LiveEvent.html" target="activity">MINOS</a>
 								- Physicists detect cosmic rays in their neutrino detectors.
 							</li>
-							<li>
+						  <li>
+								<a href="http://www.bartol.udel.edu/icetop/" target="activity">IceTop</a> and <a href="http://whyfiles.org/2012/chasing-neutrinos-at-the-south-pole/" target="activity">IceCube</a>
+								- Projects investigate neutrinos, but they also capture cosmic ray data.
+							</li>
+								<li>
 								<a href="http://www.symmetrymagazine.org/cms/?pid=1000688">Cosmic Weather Gauges</a>
 								- Cosmic rays and upper atmospheric temperatures from Symmetry Magazine
 							</li>
