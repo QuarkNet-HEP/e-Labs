@@ -211,6 +211,7 @@ while(<IN>){
 		
 	#inserted by TJ to look for status update lines
 	elsif(/$reStatus0/o || /$reStatus1/o){
+		$STLineNumber = $.; #needed to check if this ST line is followed by a DS line			
 		@stRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14);
 		$stRow = @stRow; 
 		$oldSTTime = $stTime;
@@ -220,11 +221,6 @@ while(<IN>){
 			next;
 		}	
 		$stRowCount++;
-		push(@stTime, $stTime);
-		push(@stPress, $stRow[1]);
-		push(@stTemp, $stRow[2]/10); #changing $stRow[3] to $stRow[2] fixes bug 453
-		push(@stVcc, $stRow[4]/1000);
-		push(@stGPSSats, $stRow[8]);
 		#We could look at ConReg and TMCReg to see if they change. If they do, we need to start another split file.
 		#$oldSTDate = $stDate;
 		$stDate = $stRow[6];
@@ -233,11 +229,13 @@ while(<IN>){
 		$ConReg = $stRow[13];
 		$oldConReg = $ConReg if $oldConReg == 0; #Testing revealed a case where a data file _started_ with an ST line this changed $ConReg, but not $oldConReg. 
 		#$oldTMCReg = $TMCReg; #Ths one is a bit more complicated. The word changes, but the difference between values doesn't. Fix this later. Very few users can do this.
-		$TMCReg = $stRow[12];
-		$DAQFirmware = $stRow[10]/100 if $stRow[10] > 99; 	#The DAQ firmware writes the firmware as an INT (e.g., FW version 1.06 is reported in the ST line as 106)
-		$DAQFirmware = $stRow[10]/10 if $stRow[10] < 100;	#Some of the ints are less than 100. 
-		$DAQID = int($stRow[11]);
-		die "The DAQ ID selected ($ID) does not match the DAQ ID stored in these data ($DAQID). We've cancelled your upload. Did you select the correct ID?" if $DAQID != 0 && $ID != $DAQID;
+		if ($stRowCount == 0) {
+			$TMCReg = $stRow[12];
+			$DAQFirmware = $stRow[10]/100 if $stRow[10] > 99; 	#The DAQ firmware writes the firmware as an INT (e.g., FW version 1.06 is reported in the ST line as 106)
+			$DAQFirmware = $stRow[10]/10 if $stRow[10] < 100;	#Some of the ints are less than 100. 
+			$DAQID = int($stRow[11]);
+			die "The DAQ ID selected ($ID) does not match the DAQ ID stored in these data ($DAQID). We've cancelled your upload. Did you select the correct ID?" if $DAQID != 0 && $ID != $DAQID;
+		}
 		next; #we need a next here to get the second line present in the output of ST.
 	}
 	
@@ -246,13 +244,21 @@ while(<IN>){
 			$stTimeGlitch = 0; #reset the flag
 			next; #ignore this DS update
 		}
+		$DSLineNumber = $.; #Needed to check if this DS line is preceded by an ST line
 		@dsRow = ($1, $2, $3, $4, $5, $6);
 		$dsRowCount++;
-		push (@stCount0, hex($dsRow[1]));
-		push (@stCount1, hex($dsRow[2]));
-		push (@stCount2, hex($dsRow[3]));
-		push (@stCount3, hex($dsRow[4]));
-		push (@stEvents, hex($dsRow[5]));
+		if ($DSLineNumber - $STLineNumber == 1){ #Only fill the blessing arrays if the DS line follows the ST line
+			push (@stCount0, hex($dsRow[1]));
+			push (@stCount1, hex($dsRow[2]));
+			push (@stCount2, hex($dsRow[3]));
+			push (@stCount3, hex($dsRow[4]));
+			push (@stEvents, hex($dsRow[5]));
+			push(@stTime, $stTime);
+			push(@stPress, $stRow[1]);
+			push(@stTemp, $stRow[2]/10); #changing $stRow[3] to $stRow[2] fixes bug 453
+			push(@stVcc, $stRow[4]/1000);
+			push(@stGPSSats, $stRow[8]);
+		}	
 		next; #get the next line in the input file. All the lifting is done on this one.
 	}
 
@@ -417,7 +423,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 				
 				#print "$date \t $lastdate \t $oldConReg \t $ConReg \t $oldSTDate \t $stDate \n";
 				if ($lastdate ne "") {
-					die "These data do not contain the same number of ST and DS lines; we have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount;
+					#die "These data do not contain the same number of ST and DS lines; we have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount;
 					# The file that we are splitting has hit a date boundary. We need to start writing a new SPLIT file and write the .bless file for the file that we are closing. 
 					# First, some housekeeping:
 					# 0. Close the existing file.
@@ -447,7 +453,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 						die "This detector has no working channels. We have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $goodChan == -1;
 						
 						#now that we know what channel to look at, let's test for ST 2 or ST 3 by checking how often a scalar read is larger than the previous read.
-						for $j (1..$dsRowCount-1){
+						for $j (0..$dsRowCount-1){
 							$n++ if $goodChan == 0 && $stCount0[$j] <= $stCount0[$j+1];
 							$n++ if $goodChan == 1 && $stCount1[$j] <= $stCount1[$j+1];
 							$n++ if $goodChan == 2 && $stCount2[$j] <= $stCount2[$j+1];
@@ -469,7 +475,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					
 					#"fix" the arrays built with ST2.
 					if ($stType == 2){
-						for $j (1..$dsRowCount-1){
+						for $j (1..$dsRowCount){
 							#Subtract one from the previous (and not the latter) so that we see the rate in the last integration period (and not the next)
 							push(@stCountTemp, $stCount0[$j] - $stCount0[$j-1]) if $stCount0[$j] > $stCount0[$j-1]; #the if is there so that we don't get diffs < 0
 						} #end of for $j
@@ -479,28 +485,28 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 						@stCountTemp = ();
 						
 						#Once again with feeling for the other channels and the triggers:
-						for $j (1..$dsRowCount-1){
+						for $j (1..$dsRowCount){
 							push(@stCountTemp, $stCount1[$j] - $stCount1[$j-1]) if $stCount1[$j] > $stCount1[$j-1];
 						} #end of for $j
 						
 						@stCount1=@stCountTemp;
 						@stCountTemp = ();
 						
-						for $j (1..$dsRowCount-1){
+						for $j (1..$dsRowCount){
 							push(@stCountTemp, $stCount2[$j] - $stCount2[$j-1]) if $stCount2[$j] > $stCount2[$j-1];
 						}
 						
 						@stCount2=@stCountTemp;
 						@stCountTemp = ();
 						
-						for $j (1..$dsRowCount-1){
+						for $j (1..$dsRowCount){
 							push(@stCountTemp, $stCount3[$j] - $stCount3[$j-1]) if $stCount3[$j] > $stCount3[$j-1];
 						}
 						
 						@stCount3=@stCountTemp;
 						@stCountTemp = ();
 						
-						for $j (1..$dsRowCount-1){
+						for $j (1..$dsRowCount){
 							push(@stCountTemp, $stEvents[$j] - $stEvents[$j-1]) if $stEvents[$j] > $stEvents[$j-1];
 						} 
 						@stEvents=@stCountTemp;
@@ -576,7 +582,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					print $blessFile "###Seconds (since Midnight UTC) \t Chan 0 rate \t Error in Chan0 \t Chan 1 rate \t Error in Chan1 \t Chan 2 rate \t Error in Chan2 \t Chan 3 rate \t Error in Chan3 \t Trigger rate\tError in Triggers \t Raw BA output \t Temp (DegC) \t Bus Voltage \t #GPS satellites in view \n";
 					
 					#Now the table
-					for my $i  (1..$dsRowCount-1){			
+					for my $i  (1..$dsRowCount-2){			
 						print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.0f", sqrt($stRate0[$i])), "\t", "$stRate1[$i]", "\t", sprintf("%0.0f", sqrt($stRate1[$i])),"\t", "$stRate2[$i]", "\t", sprintf("%0.0f", sqrt($stRate2[$i])),"\t", "$stRate3[$i]", "\t", sprintf("%0.0f", sqrt($stRate3[$i])), "\t", "$stEventRate[$i]", "\t", sprintf("%0.0f", sqrt($stEventRate[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
 					}
 
@@ -678,7 +684,7 @@ else{
 	#When ST3 these onboard registers are cleared after each printing, so there is no need to do the subtraction.
 	#We just need to see if these (stCountN and stEvents) keep growing over the life of the file. If they do, we need to subtract one from the next to get the scalar increment over the integration time.
 	
-	die "These data do not contain the same number of ST and DS lines; we have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount;
+	#die "These data do not contain the same number of ST and DS lines; we have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount;
 
 	die "These data do not contain any 'DS' lines. We have stopped your upload.  We created $numSplitFiles usable file(s) before this error." if $dsRowCount == 0;
 					
@@ -812,7 +818,7 @@ else{
 	print $blessFile "###Seconds (since Midnight UTC) \t Chan 0 rate \t Error in Chan0 \t Chan 1 rate \t Error in Chan1 \t Chan 2 rate \t Error in Chan2 \t Chan 3 rate \t Error in Chan3 \t Trigger rate\tError in Triggers \t Raw BA output \t Temp (DegC) \t Bus Voltage \t #GPS satellites in view \n";
 	
 	#Now the table
-	for my $i  (2..$dsRowCount-1){			
+	for my $i  (1..$dsRowCount-2){			
 		print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.0f", sqrt($stRate0[$i])), "\t", "$stRate1[$i]", "\t", sprintf("%0.0f", sqrt($stRate1[$i])),"\t", "$stRate2[$i]", "\t", sprintf("%0.0f", sqrt($stRate2[$i])),"\t", "$stRate3[$i]", "\t", sprintf("%0.0f", sqrt($stRate3[$i])), "\t", "$stEventRate[$i]", "\t", sprintf("%0.0f", sqrt($stEventRate[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
 	}
 					
