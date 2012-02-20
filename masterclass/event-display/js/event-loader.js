@@ -32,7 +32,8 @@ function loadEvent(i) {
   var ua = $.browser;
   var version;
   if ( ua.mozilla ) {
-    version = ua.version.slice(0,1);
+    version = ua.version.split(".");
+    version = version[0]
   }
   else {
     alert("Firefox 7 or newer is required for this application.");
