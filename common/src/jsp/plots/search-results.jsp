@@ -3,6 +3,7 @@
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="org.apache.commons.codec.net.URLCodec" %>
 
 <%
 	ResultSet rs = (ResultSet) request.getAttribute("searchResults");
@@ -23,7 +24,12 @@
 	            	}
 	            	catch (ElabException ex) {
 	            	}
-	            }  
+	            }
+	            
+	            URLCodec urlCodec = new URLCodec(); 
+	            
+	            String fileName = urlCodec.encode(e.getLFN()); 
+	            request.setAttribute("f", fileName);
 	            request.setAttribute("e", e);
 	            if (group != null) {
 	            	String plotURL = group.getDirURL("plots");
@@ -31,7 +37,7 @@
 	            }
 	            %>
 	            	<td class="plot-thumbnail">
-	            		<a href="view.jsp?filename=${e.LFN}">
+	            		<a href="view.jsp?filename=${f}">
 	            			<c:choose>
 	            				<c:when test="${!empty e.tupleMap.thumbnailURL}">
 		            				<img class="plot-thumbnail-image" src="${e.tupleMap.thumbnailURL}" alt="Thumbnail not found" /><br/>
@@ -44,7 +50,7 @@
 		            	${e.tupleMap.name}<br/>
 	            		Group: ${e.tupleMap.group}<br/>
 	            		Created: ${e.tupleMap.creationdate}<br/>
-	            		<a href="../jsp/add-comments.jsp?fileName=${e.LFN}&t=plot">View/Add Comments</a><br/>
+	            		<a href="../jsp/add-comments.jsp?fileName=${f}&t=plot">View/Add Comments</a><br/>
 	            	</td>
 	            <%
 	        }
