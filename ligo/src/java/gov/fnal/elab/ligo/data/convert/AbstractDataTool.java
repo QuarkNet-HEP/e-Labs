@@ -124,6 +124,7 @@ public abstract class AbstractDataTool {
     }
 
     protected void loadChannelInfo(String pathToData) throws IOException {
+        new File(pathToData).mkdirs();
         types = new HashMap<ChannelName, String>();
         File[] infos = new File(pathToData).listFiles(new FileFilter() {
             public boolean accept(File pathname) {
