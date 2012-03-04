@@ -227,7 +227,7 @@ for F in ImportData CheckData; do
 	step "Creating binary for $F"
 	cat <<END >$DIR/i2u2tools/bin/$F 2>>$LOG
 #!/bin/sh
-java -cp $DIR/i2u2tools/java gov.fnal.elab.ligo.data.convert.$F
+java -cp $DIR/i2u2tools/java gov.fnal.elab.ligo.data.convert.$F "\$@"
 END
 	chmod +x $DIR/i2u2tools/bin/$F >>$LOG 2>&1
 done
