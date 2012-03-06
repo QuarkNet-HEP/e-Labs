@@ -63,7 +63,7 @@ function makeScaledArrow(x1, y1, z1, x2, y2, z2, slices) {
 
   var v = [];
   var stemRadius = 0.03;
-  var stemLength = 1.0 + Math.log(scale);
+  var stemLength = 0.1*scale;
   var headRadius = 0.15;
   var headLength = 0.25;
   //origin
@@ -88,14 +88,15 @@ function makeScaledArrow(x1, y1, z1, x2, y2, z2, slices) {
   
   //scale and rotate vertices
   var t = new Pre3d.Transform();
+  //tpm this scale doesn't seem to work
+  //t.scale(10.0);
 	           
-  var phi = Math.atan2(dx, dy);
-  var theta = Math.atan2(dy, dz);
-  var rho = Math.atan2(dz, dx);
-	  
-  t.rotateX(phi);
-  t.rotateZ(theta);
-  t.rotateY(-rho);
+  //tpm By definition MET does not have a component in
+  // Z so we only care about phi. Of course, this isn't true 
+  // for other objects that may use this method so
+  // caveat emptor!
+  var phi = Math.atan2(dy, dx);	 
+  t.rotateZ(phi);
 
   s.vertices = [];
   for (var i = 0; i < v.length; i++) {
@@ -135,8 +136,11 @@ function makeMET(data) {
     var px = data[2];
     var py = data[3];
 
-    var arrow = makeScaledArrow(0, 0, 0, pt*px, pt*py, 0, 10);
-    arrow.fillColor = new Pre3d.RGBA(1, 1, 0, 1);
+    //var arrow = makeScaledArrow(0, 0, 0, pt*px, pt*py, 0, 10);
+    var arrow = makeScaledArrow(0,0,0,px,py,0,10);
+	//return {p1: makePoint(0,0,0), p2: makePoint(1.0,1.0,0.5)};
+	
+	arrow.fillColor = new Pre3d.RGBA(1, 1, 0, 1);
     Pre3d.ShapeUtils.rebuildMeta(arrow);
     return arrow;
 }

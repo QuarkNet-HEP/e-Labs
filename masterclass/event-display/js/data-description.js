@@ -138,9 +138,11 @@ var d_descr = {
 		fn: makeTrackPoints, color: [0, 1, 0.2, 1], lineCaps: "+", lineWidth: 1},
 	*/
 
+      
 	"GsfElectrons_V1": { type: PATHS, on: true, group: "Physics Objects", desc: "Electron Tracks (GSF)",
 		dataref: "Extras_V1", assoc: "GsfElectronExtras_V1", 
 		fn: makeTrackCurves2, color: [1, 0.9, 0, 0.9], lineCaps: "square", lineWidth: 1.5 },
+
 
 	"TrackerMuons_V1": { type: TRACK, on: true, group: "Physics Objects", desc: "Tracker Muons (Reco)",
 		dataref: "Points_V1", assoc: "MuonTrackerPoints_V1", 
@@ -162,7 +164,7 @@ var d_descr = {
 		rankingFunction: function(data) {return data[4] + data[5];}},
 	"Jets_V1": { type: SHAPE, on: false, group: "Physics Objects", desc: "Jets", rank: "et",
 		fn: makeJet, color: [1, 1, 0, 1], fill: [1, 1, 0, 0.5] },
-         "METs_V1": { type: SHAPE, on: false, group: "Physics Objects", desc: "Missing Et (Reco)", rank: "pt",
+     "METs_V1": { type: SHAPE, on: false, group: "Physics Objects", desc: "Missing Et (Reco)", rank: "pt",
 		fn: makeMET, color: [1, 1, 0, 1], fill: [1, 1, 0, 0.5]}
 };
 
