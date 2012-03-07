@@ -3,6 +3,7 @@
     
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 
+    
 <%
 String file = request.getParameter("file");
 %>
@@ -18,21 +19,13 @@ String file = request.getParameter("file");
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
 		<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>
-		<script type="text/javascript" src="../include/jquery/flot/jquery.flot.min.js"></script>
+		<script type="text/javascript" src="../include/jquery/flot/jquery.flot.js"></script>
 		<script type="text/javascript" src="../include/jquery/flot/jquery.flot.errorbars.js"></script>
 		<script type="text/javascript" src="../include/jquery/flot/jquery.flot.axislabels.js"></script>
 		<script type="text/javascript" src="../include/excanvas.min.js"></script>
 		<script type="text/javascript">
 
 		var channel1data, channel2data, channel3data, channel4data;
-		
-		function cross(ctx, x, y, radius, shadow) {
-		    var size = radius * Math.sqrt(Math.PI) / 2;
-		    ctx.moveTo(x - size, y - size);
-		    ctx.lineTo(x + size, y + size);
-		    ctx.moveTo(x - size, y + size);
-		    ctx.lineTo(x + size, y - size);
-		}
 		
 		var options = { 
 			series: {
@@ -41,9 +34,7 @@ String file = request.getParameter("file");
 				},
 				points: {
 					show: true,
-					lineWidth: 1,
-					radius: 0.5,
-					symbol: "circle",
+					radius: 0.5
 				}
 			},
 			xaxis: {
