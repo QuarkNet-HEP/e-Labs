@@ -2,5 +2,5 @@
 <table>
 <tr><td class="ctrl"><img src="../graphics/mouse.png" /></td><td>&rarr;</td><td>rotate</td></tr>
 <tr><td class="ctrl"><span class="key">Ctrl</span> + <img src="../graphics/mouse.png" /></td><td>&rarr;</td><td>pan x / y</td></tr>
-<tr><td class="ctrl"><span class="key">Shift</span> + <img src="../graphics/mouse.png" /></td><td>&rarr;</td><td>pan z</td></tr>
+<tr><td class="ctrl"><span class="key">Shift</span> + <img src="../graphics/mouse.png" /></td><td>&rarr;</td><td>zoom</td></tr>
 </table>
