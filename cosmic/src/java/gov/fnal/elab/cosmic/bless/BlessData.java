@@ -88,7 +88,7 @@ public class BlessData {
 			this.channel4Error = channel4Error;
 			
 			this.triggerRate = triggerRate;
-			this.triggerRate = triggerError; 
+			this.triggerError = triggerError; 
 			
 			this.pressure = pressure; 
 			this.temperature = temperature; 
