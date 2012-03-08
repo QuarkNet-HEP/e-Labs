@@ -85,7 +85,7 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 		yerr.addProperty("radius", 3);
 
 		JsonObject points = new JsonObject();
-		points.addProperty("errorbars", "n");
+		points.addProperty("errorbars", "y");
 		points.add("yerr", yerr);
 		
 		JsonObject channel1 = new JsonObject();
