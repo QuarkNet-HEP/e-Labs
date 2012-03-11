@@ -34,7 +34,7 @@
 	String logScaleParam = request.getParameter("logScale");
 	
 	/* Metadata title parameter */ 
-	String titleParam = request.getParameter("title"); 
+	String titleParam = request.getParameter("title");
 	
 	if (channelParam == null || startTimeParam == null || endTimeParam == null) {
 		response.sendError(HttpServletResponse.SC_BAD_REQUEST, "missing channels, startTime or endTime parameters");
@@ -96,8 +96,8 @@
 		synchronized(session) {
 			de = (LIGOFileDataEngine) session.getAttribute("de");
 			if (de == null) {
-			    de = LIGOFileDataEngine.getEngine("/disks/i2u2-dev/ligo/data/streams", 
-			            ServiceLIGOFileReader.getFactory("http://data2:8100"));
+				de = LIGOFileDataEngine.getEngine("/disks/i2u2-dev/ligo/data/streams",
+					ServiceLIGOFileReader.getFactory("http://data2:8100"));
 			    session.setAttribute("de", de);
 			}
 		}
@@ -134,7 +134,7 @@
 	    else { 
 	    	na = new NumberAxis(unit);
 	    }
-	    DateAxis da = new DateAxis("Date"); 
+	    DateAxis da = new DateAxis("Date", TimeZone.getTimeZone("UTC"), Locale.US); 
 	    
 	    da.setRange((startTime + GPSCONVERSION) * 1000, (endTime + GPSCONVERSION) * 1000);
 	    na.setAutoRangeIncludesZero(false);
