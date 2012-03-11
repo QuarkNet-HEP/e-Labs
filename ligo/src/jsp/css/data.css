@@ -109,3 +109,152 @@ ul#nav-tutorial li:first-child a {
 #tutorial12 #nav-tutorial a[href="../data/tutorial12.jsp"] {
 	font-style: italic;
 }
+
+.analysis {
+	font-size: 12px;
+}
+
+.steps {
+	padding-left: 32px;
+}
+
+.steps li {
+	list-style: none;
+	margin-left: 32px;
+	height: 32px;
+}
+
+.steps .current {
+	font-weight: bold;
+	list-style: url("../graphics/step-current.gif");
+}
+
+.steps .valid {
+	list-style: url("../graphics/step-valid.gif");
+}
+
+.steps .future {
+	color: #808080;	
+}
+
+#controls {
+	vertical-align: bottom;
+	width: 480px;
+	padding: 32px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #e0e0e0;
+}
+
+.radio {
+	padding-left: 8px;
+	margin-bottom: 16px;
+	margin-top: 16px;
+}
+
+#form-content {
+	height: 570px;
+}
+
+#wizard-buttons {
+	padding: 24px;
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#wizard-buttons input {
+	width: 92px;
+	text-align: center;
+	border: thin solid blue;
+}
+
+#button-previous {
+	float: left;
+}
+
+#button-next {
+	float: right;
+}
+
+#progress {
+	padding: 0px;
+	border: thin solid black;
+}
+
+#progress-indicator {
+	background: #8080ff;
+}
+
+#output {
+	margin-left: auto;
+	margin-right: auto;
+	width: 500px;
+}
+
+.toolbox {
+	width: 100%;
+	border: thin dashed gray;
+	background-color: #e8e8e8;
+	border-collapse: collapse;
+}
+
+tr.toolbox-row, .toolbox tr {
+	border-top: thin dashed gray;
+	padding: 1px;
+	margin: 1px;
+}
+
+.toolbox-heading, .toolbox th {
+	background-color: #e0e0e0;
+	padding-left: 8px;
+	vertical-align: bottom;
+	border: thin dashed gray;
+}
+
+.toolbox-content {
+	margin: 0px;
+	padding: 0px;
+	padding-left: 8px;
+	border: thin dashed gray;
+}
+
+.toolbox-separator {
+	border-left: thin dashed gray;
+	margin-left: 16px;
+	margin-right: 8px;
+	height: 100%;
+}
+
+#super-bluestone input[type="text"] {
+	border: thin solid gray;
+}
+
+#plot-table {
+	padding: 0px;
+	margin: 0px;
+	border-collapse: collapse;
+}
+
+#plot {
+	width: 100%;
+	border: thin dashed gray;
+	padding: 8px;
+	margin: 0px;
+}
+
+.filler {
+	width: 98%;
+}
+
+#channel-list-advanced td {
+	border: thin dashed gray;
+	padding-left: 2px;
+}
+
+#plot-table {
+	width: 100%;
+}
+.right-aligned {
+	text-align: right;
+}
