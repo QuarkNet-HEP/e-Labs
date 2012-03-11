@@ -23,7 +23,9 @@ var data = { };
 
 var rows = 0; 
 
-var logCheckedY = false; 
+var logCheckedY = false;
+
+var lastRangeChange = 0;
 
 function samplingCB(index) {
 	var ptr = null; 
@@ -146,6 +148,74 @@ function logCheckboxCB() {
 	$.extend(options, { yaxis: {transform: ty, inverseTransform: ity, ticks: tfy } });
 }
 
+function yAutoRangeCheckboxCB() {
+	yAutoRange = $("#yAutoRangeCheckbox:checked").val() != null;
+	
+	if (yAutoRange) {
+		$("#yRangeMin").attr("disabled", "true");
+		$("#yRangeMax").attr("disabled", "true");
+		$.extend(options, { yaxis: { min: null, max: null } });
+		replot();
+		updateAutoRange();
+	}
+	else {
+		$("#yRangeMin").removeAttr("disabled");
+		$("#yRangeMax").removeAttr("disabled");
+		commitYRangeChangeCB();
+	}
+}
+
+function isNumeric(v) {
+	return (v - 0) == v && v.length > 0;
+}
+
+function validateNumericInput(id) {
+	var val = $(id).val();
+	
+	if (isNumeric(val)) {
+		$(id).css("background-color", "white");
+		return parseInt(val);
+	}
+	else {
+		$(id).css("background-color", "red");
+		return null;
+	}
+}
+
+function replot() {
+	if (data.length > 0) {
+		plot = $.plot(placeholder, data, options);
+	}
+}
+
+function commitYRangeChangeCB() {
+	var now = new Date().getTime(); 
+	if (now - lastRangeChange < 600) {
+		return;
+	}
+	lastRangeChange = now;
+	var min = validateNumericInput("#yRangeMin");
+	var max = validateNumericInput("#yRangeMax");
+	if (min != null && max != null) {
+		$.extend(options, { yaxis: { min: min, max: max } });
+		replot();
+	}
+}
+
+function yRangeChangedCB() {
+	validateNumericInput("#yRangeMin");
+	validateNumericInput("#yRangeMax");
+	lastRangeChange = new Date().getTime();
+	window.setTimeout(commitYRangeChangeCB, 1000);
+}
+
+function updateAutoRange() {
+	if (plot != null) {
+		$("#yRangeMin").val(plot.getAxes().yaxis.min);
+		$("#yRangeMax").val(plot.getAxes().yaxis.max);
+	}
+}
+
 function getIndex(objName) {
 	var tokens = objName.split("_", 2);
 	return tokens[1];
@@ -169,7 +239,9 @@ function logTickFormatter(axis) {
 function addNewRow(index) {
 	var foo = $("#channel-list-advanced");
 	// Delete button
-	var deleteButton = $("<input></input>").attr("type", "button").attr("id", "removeRow_" + index).attr("value", "Remove This Row").attr("class", "removeRow");
+	var deleteButton = 
+		$("<button></button>").attr("id", "removeRow_" + index).attr("value", "Remove This Row").attr("class", "removeRow").
+			append($("<img></img>").attr("src", "../graphics/minus.png"));
 	
 	// Site Dropdown
 	var siteSelector = $("<select></select>").attr("name", "site").attr("id", "site_" + index).attr("class", "site");
@@ -187,7 +259,8 @@ function addNewRow(index) {
 	var samplingSelector = $("<select></select>").attr("name", "sampling").attr("id", "sampling_" + index).attr("class", "sampling");
 	var nameLabel = $("<span></span>").attr("id", "dataName_" + index).attr("class", "dataName");
 	
-	$("#channelTable > tbody:last").append(
+	$
+	$("#channelTable tr").last().before(
 		$("<tr></tr>").attr("id", "row_" + index).append(
 			$("<td></td>").append(deleteButton)).append(
 			$("<td></td>").append(siteSelector)).append(
@@ -203,6 +276,7 @@ function addNewRow(index) {
 	samplingCB(index);
 	displayFilename(index);
 	initBinding();
+	getDataAndPlotCB();
 }
 
 function initBinding() {
@@ -213,6 +287,7 @@ function initBinding() {
 		sensorChangeCB(index);
 		samplingCB(index);
 		displayFilename(index);
+		getDataAndPlotCB();
 	});
 
 	/* Change Sensor */ 
@@ -221,11 +296,13 @@ function initBinding() {
 		sensorChangeCB(index); 
 		samplingCB(index);
 		displayFilename(index);
+		getDataAndPlotCB();
 	}); 
 
 	$(".site, .sensor, .sampling").change(function() {
 		var index = getIndex($(this).attr('id'));
-		displayFilename(index); 
+		displayFilename(index);
+		getDataAndPlotCB();
 	});
 	
 	$(".removeRow").click(function() {
@@ -233,6 +310,7 @@ function initBinding() {
 		/* delete stuff - should probably switch to simply assigning each row element a class index rather
 		   than appending to ID. Oops. */
 		$("#row_" + index).empty().remove();
+		getDataAndPlotCB();
 	});
 }
 
@@ -246,6 +324,9 @@ function getDataAndPlotCB() {
 	if (c != "") {
 		c = c.substr(0, c.length - 1);
 	}
+	
+	$("#xmin").val((new Date(convertTimeGPSToUNIX(parseFloat(xminGPSTime)) * 1000.0)).toDateString()); 
+	$("#xmax").val((new Date(convertTimeGPSToUNIX(parseFloat(xmaxGPSTime)) * 1000.0)).toDateString());
 
 	var url = dataServerUrl + '?fn=getData&channels=' + c + '&startTime=' + xminGPSTime + '&endTime=' + xmaxGPSTime;
 
@@ -271,6 +352,7 @@ function getDataAndPlotCB() {
 		hasBeenPlotted = true; 
 		zoomButtonSet(); 
 		$("#savePlotToDisk").removeAttr("disabled");
+		updateAutoRange();
 	}
 }
 
@@ -283,10 +365,8 @@ $(document).ready(function() {
 	initBinding();
 	
 	$(".logCheckbox").bind('click', function() {
-		if (data.length > 0) {
-			logCheckboxCB();
-			plot = $.plot(placeholder, data, options);
-		}
+		logCheckboxCB();
+		replot();
 	}); 
 
 	$("#savePlotToDisk").bind('click', function() {
@@ -319,19 +399,21 @@ $(document).ready(function() {
 				$("#savedPlotLink").show();
 			}
 			else {
-				/* Display that something went wrong */ 
+				/* Display that something went wrong */
 			}
 			return;  
 		}
 		
 		function onPlotError(data) {
-			/* TODO: Implement parsing of error codes in case something goes wrong */ 
+			/* TODO: Implement parsing of error codes in case something goes wrong */
+			window.alert("Saving failed: " + data.statusText);
 			return; 
 		}
 	});
 
 
 	$("#buttonZoom").click(function() {
+		$("#buttonZoom").attr("disabled", "true");
 		getDataAndPlotCB();
 	});
 
@@ -352,5 +434,9 @@ $(document).ready(function() {
 		++rows;
 		addNewRow(rows);
 	});
-
+	
+	$("#yAutoRangeCheckbox").bind("click", yAutoRangeCheckboxCB);
+	
+	$("#yRangeMin").keyup(yRangeChangedCB);
+	$("#yRangeMax").keyup(yRangeChangedCB);
 });

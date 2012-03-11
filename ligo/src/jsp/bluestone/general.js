@@ -21,7 +21,8 @@ var options = {
 	legend: {show: true},
 	xaxis: { mode: 'time'},
 	selection: { mode: "x" },
-	shadowSize: 0
+	shadowSize: 0,
+	colors: ["#7192ca", "#e0964b", "#84ba5b", "#d25d5f", "#959798", "#cbc173", "#8862a5"]
 };
 
 var calendarParam = {
@@ -67,7 +68,6 @@ function convertTimeUNIXtoGPS(x) {
 
 function zoomButtonSet() {
 	if (hasBeenPlotted) {
-		$("#buttonZoom").removeAttr("disabled");
 		$("#buttonZoomOut").removeAttr("disabled");
 	}
 }
@@ -82,6 +82,7 @@ function datePickerSelected(dateText, inst) {
 	else if (inst.id == "xmax") {
 		xmaxGPSTime = convertTimeUNIXtoGPS(d.getTime() / 1000);
 	}
+	getDataAndPlotCB();
 }
 
 $(document).ready(function() {
@@ -117,7 +118,9 @@ $(document).ready(function() {
 		$("#xmax").val((new Date(convertTimeGPSToUNIX(parseFloat(xmaxGPSTime)) * 1000.0)).toDateString());
 		ligoMaxRange = ligoMaxTime - ligoMinTime; 
 
-		$("#slider").slider( { min: 0, max: 1200, value: 600} ); 
+		$("#slider").slider( { min: 0, max: 1200, value: 600} );
+		
+		getDataAndPlotCB();
 	}
 
 	function onTimeRangeCompleted() {
@@ -127,8 +130,11 @@ $(document).ready(function() {
 	placeholder.bind("plotselected", function(event, ranges) {
 		xminGPSTime = convertTimeUNIXtoGPS(ranges.xaxis.from / 1000.0); 
 		xmaxGPSTime = convertTimeUNIXtoGPS(ranges.xaxis.to / 1000.0); 
-		$("#xmin").val((new Date(ranges.xaxis.from)).toDateString()); 
-		$("#xmax").val((new Date(ranges.xaxis.to)).toDateString());
+		$("#buttonZoom").removeAttr("disabled");
+	});
+	
+	placeholder.bind("plotunselected", function(event) {
+		$("#buttonZoom").attr("disabled", "true");
 	});
 
 	$("#parseDropDown").click(function() {
@@ -162,7 +168,6 @@ $(document).ready(function() {
 			plot = $.plot(placeholder, data, options); 
 
 			updateSliderPositionCB(plot); 
-			
 		}
 	});
 
@@ -201,4 +206,5 @@ $(document).ready(function() {
 		// alter slider
 		$("#slider").slider("option", "value", currentViewPosition);
 	}
+	
 });
