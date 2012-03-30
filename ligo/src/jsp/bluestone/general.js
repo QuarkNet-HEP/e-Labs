@@ -85,6 +85,12 @@ function datePickerSelected(dateText, inst) {
 	getDataAndPlotCB();
 }
 
+function centerElement(id) {
+	var el = $("#" + id);
+	el.css("left", ((window.innerWidth - el.width()) / 2) + "px");
+	el.css("top", ((window.innerHeight - el.height()) / 2) + "px");
+}
+
 $(document).ready(function() {
 	$('.datepicker').datepicker(calendarParam);
 	$("#xmin").datepicker('option', 'buttonText', 'Choose start date.');
@@ -146,7 +152,7 @@ $(document).ready(function() {
 		var url = dataServerUrl + '?fn=getData&params=' + c + ',0,' + xminGPSTime + ',' + xmaxGPSTime;
 
 		// Get the data via AJAT call
-		$.ajax({ 
+		$.ajax({
 			url: url,
 			method: 'GET', 
 			dataType: 'text',

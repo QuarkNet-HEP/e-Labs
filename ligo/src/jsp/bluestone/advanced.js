@@ -314,7 +314,7 @@ function initBinding() {
 	});
 }
 
-function getDataAndPlotCB() {
+function getDataURL() {
 	var c = "";
 	
 	$(".dataName").each(function(i){
@@ -327,8 +327,12 @@ function getDataAndPlotCB() {
 	
 	$("#xmin").val((new Date(convertTimeGPSToUNIX(parseFloat(xminGPSTime)) * 1000.0)).toDateString()); 
 	$("#xmax").val((new Date(convertTimeGPSToUNIX(parseFloat(xmaxGPSTime)) * 1000.0)).toDateString());
+	
+	return dataServerUrl + '?fn=getData&channels=' + c + '&startTime=' + xminGPSTime + '&endTime=' + xmaxGPSTime;
+}
 
-	var url = dataServerUrl + '?fn=getData&channels=' + c + '&startTime=' + xminGPSTime + '&endTime=' + xmaxGPSTime;
+function getDataAndPlotCB() {
+	var url = getDataURL();
 
 	// Get the data via AJAJ call
 	$.ajax({ 
@@ -356,9 +360,33 @@ function getDataAndPlotCB() {
 	}
 }
 
+function openSaveDialog() {
+	centerElement("save-dialog");
+	$("#save-dialog").show();
+}
+
+function closeSaveDialog() {
+	$("#save-dialog").hide();
+}
+
+function userPlotTitleChangedCB() {
+	if ($("#userPlotTitle").val() != "") {
+		$("#savePlotToDiskCommit").removeAttr("disabled");
+	}
+	else {
+		$("#savePlotToDiskCommit").attr("disabled", "true");
+	}
+}
+
+function exportData() {	
+	var url = getDataURL() + "&format=text";
+
+	window.open(url);
+}
+
 $(document).ready(function() {
 	/* Initialize the initial dropdown list */ 
-	subsystemChangeCB(0); 
+	subsystemChangeCB(0);
 	sensorChangeCB(0);
 	samplingCB(0);
 	displayFilename(0);
@@ -367,9 +395,21 @@ $(document).ready(function() {
 	$(".logCheckbox").bind('click', function() {
 		logCheckboxCB();
 		replot();
-	}); 
-
+	});
+	
 	$("#savePlotToDisk").bind('click', function() {
+		openSaveDialog();
+	});
+	
+	$("#savePlotToDiskCancel").bind('click', function() {
+		closeSaveDialog();
+	});
+	
+	$("#exportData").bind("click", function() {
+		exportData();
+	});
+
+	$("#savePlotToDiskCommit").bind('click', function() {
 		// need start, end, channels, title 
 		var title = $("#userPlotTitle").val(); 
 		var channelArray = []; 
@@ -397,6 +437,7 @@ $(document).ready(function() {
 			if (json.success == true) {
 				$("#savedPlotLink").attr("href", plotViewerURL + "?filename=" + json.filename);
 				$("#savedPlotLink").show();
+				closeSaveDialog();
 			}
 			else {
 				/* Display that something went wrong */
@@ -439,4 +480,6 @@ $(document).ready(function() {
 	
 	$("#yRangeMin").keyup(yRangeChangedCB);
 	$("#yRangeMax").keyup(yRangeChangedCB);
+	
+	$("#userPlotTitle").keyup(userPlotTitleChangedCB);
 });

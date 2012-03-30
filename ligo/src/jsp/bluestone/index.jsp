@@ -197,18 +197,35 @@
 				
 				<%-- <button id="plotButtonBottom" class="plotButton" value="Plot">Plot</button> --%>
 				
-				<h2>Save This Plot</h2>
+				<h2>Data Export</h2>
 				
 				<table class="toolbox">
 					<tr>
 						<td class="toolbox-content">
-							Title: <input id="userPlotTitle" name="title" type="text" maxlength="200" size="30"></input>
-							<input id="savePlotToDisk" type="button" value="Save" disabled></input>
-							<img src="../graphics/spinner-small.gif" style="visibility: hidden;" id="busySpinnerSmall"></img>
+							<input id="savePlotToDisk" type="button" value="Save Plot"></input>
+							<input id="exportData" type="button" value="Export Data Points"></input>
+						</td>
+						<td class="toolbox-content">
 							<a href="#" target="_new" id="savedPlotLink" style="display: none;">View saved plot (popup)</a>
 						</td>
 					</tr>
-				</table> 
+				</table>
+				
+				<div id="save-dialog" class="dialog-window">
+					<div class="dialog-title">
+						Save Plot
+					</div>
+					<div class="dialog-contents">
+						<label for="userPlotTitle">Plot title:</label>
+						<input id="userPlotTitle" name="title" type="text" maxlength="200" size="30"></input>
+						<br/>
+						<img src="../graphics/spinner-small.gif" style="visibility: hidden;" id="busySpinnerSmall"></img>
+					</div>
+					<div class="dialog-buttons">
+						<input id="savePlotToDiskCancel" type="button" value="Cancel"></input>
+						<input id="savePlotToDiskCommit" type="button" value="Save" disabled="true"></input>
+					</div>
+				</div>
 			</div>
 			
 			<div id="footer">
