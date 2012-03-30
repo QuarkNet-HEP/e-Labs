@@ -258,3 +258,31 @@ tr.toolbox-row, .toolbox tr {
 .right-aligned {
 	text-align: right;
 }
+
+.dialog-window {
+	position: fixed;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	background-color: #e0e0e0;
+	z-index: 10;
+	border: thin solid #808080;
+	display: none;
+	padding: 0px;
+	opacity: 0.95;
+}
+
+.dialog-title {
+	padding-left: 4px;
+	font-weight: bold;
+	background-color: #c0c0c0;
+}
+
+.dialog-contents {
+	text-align: center;
+	padding: 4px;
+}
+
+.dialog-buttons {
+	text-align: right;
+}
