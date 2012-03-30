@@ -296,25 +296,29 @@ public class ImportData extends AbstractDataTool {
         }
         long starttime = fileGPSTime(f.file);
         int len = TREND_FILE_DURATION[f.trend];
-        if (!rangeCovered(starttime, len, channel)) {
-            data = readFrameDataDump(f.file, rmsbin, rmstxt, meanbin, meantxt, channel);
+        try {
+            if (!rangeCovered(starttime, len, channel)) {
+                data = readFrameDataDump(f.file, rmsbin, rmstxt, meanbin, meantxt, channel);
+            }
+            if (data != null) {
+                // the -0.000001 is there as an implementation of
+                // maxtime representing an open interval
+                // which is necessary because the data in the db represents
+                // an open interval
+                maxtime.put(channel, Math.max(starttime + len - 0.0000001, maxtime.get(channel)));
+            }
         }
-        if (data != null) {
-            // the -0.000001 is there as an implementation of
-            // maxtime representing an open interval
-            // which is necessary because the data in the db represents
-            // an open interval
-            maxtime.put(channel, Math.max(starttime + len - 0.0000001, maxtime.get(channel)));
-        }
-        if (delete) {
-            if (!rmsbin.delete())
-                throw new RuntimeException("Could not delete " + rmsbin);
-            if (!rmstxt.delete())
-                throw new RuntimeException("Could not delete " + rmstxt);
-            if (!meanbin.delete())
-                throw new RuntimeException("Could not delete " + meanbin);
-            if (!meantxt.delete())
-                throw new RuntimeException("Could not delete " + meantxt);
+        finally {
+            if (delete) {
+                if (!rmsbin.delete())
+                    throw new RuntimeException("Could not delete " + rmsbin);
+                if (!rmstxt.delete())
+                    throw new RuntimeException("Could not delete " + rmstxt);
+                if (!meanbin.delete())
+                    throw new RuntimeException("Could not delete " + meanbin);
+                if (!meantxt.delete())
+                    throw new RuntimeException("Could not delete " + meantxt);
+            }
         }
         return data;
     }

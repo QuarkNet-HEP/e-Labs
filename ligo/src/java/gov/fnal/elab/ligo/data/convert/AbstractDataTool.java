@@ -114,6 +114,8 @@ public abstract class AbstractDataTool {
             put("SEISX_10_30Hz", 1);
             put("SEISY_10_30Hz", 1);
             put("SEISZ_10_30Hz", 1);
+            
+            put("DQ", 1);
         }
     };
 
@@ -293,10 +295,11 @@ public abstract class AbstractDataTool {
         double lentime = Double.parseDouble(info[2]);
 
         DataReader<?, ?> dp = getReader(channel, types.get(channel), this);
+        dp.clear();
         readData(dp, rmsbin, meanbin);
 
         if (nsamples != dp.size()) {
-            throw new RuntimeException("Size mismatch. Expected " + nsamples + " words, but only " + dp.size()
+            throw new RuntimeException("Size mismatch. Expected " + nsamples + " words, but " + dp.size()
                     + " were found in the data file");
         }
 
