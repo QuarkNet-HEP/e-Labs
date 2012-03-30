@@ -116,6 +116,29 @@ function subsystemChangeCB(index) {
 	}); 
 }
 
+function parseChannel(name) {
+	// H0:DMT-BRMS_PEM_EX_SEISX_0.03_0.1Hz.rms
+	name = name.replace("DMT-BRMS_PEM_", "DMT-");
+	// H0:DMT_EX_SEISX_0.03_0.1Hz.rms
+	s = name.split(":");
+	site = s[0];
+	s = s[1].split("-");
+	subsystem = s[0];
+	s = s[1].split("_");
+	station = s[0];
+	rest = s.slice(1).join("_");
+	sensor = rest.substr(0, rest.lastIndexOf("."));
+	sampling = rest.substr(rest.lastIndexOf(".") + 1);
+	
+	return {
+		site: site,
+		subsystem: subsystem,
+		station: station,
+		sensor: sensor,
+		sampling: sampling
+	}
+}
+
 function generateFilename(index) { 
 	return $("#site_" + index + " :selected").val() + ":" + $("#subsystem_" + index + " :selected").val()  + 
 		$("#station_" + index + " :selected").val() + "_" + $("#sensor_" + index + " :selected").val() + "." +
@@ -331,6 +354,35 @@ function getDataURL() {
 	return dataServerUrl + '?fn=getData&channels=' + c + '&startTime=' + xminGPSTime + '&endTime=' + xmaxGPSTime;
 }
 
+function overrideYLabel(channel, unit) {
+	c = parseChannel(channel);
+	
+	switch (subsystem) {
+		case "DMT":
+			return "Velocity (microns/s)";
+		case "PEM":
+			switch (sensor) {
+				case "SEISX":
+				case "SEISY":
+				case "SEISZ":
+				case "TITLX":
+				case "TILTY":
+				case "TILTT":
+					return "Signal (volts)";
+				case "RAIN":
+					return "Uncalibrated (counts)";
+				case "WIND":
+					return "Speed (meters/s)";
+				case "WINDMPH":
+					return "Speed (mph)";
+				default:
+					return unit;
+			}
+		default:
+			return unit;
+	}
+}
+
 function getDataAndPlotCB() {
 	var url = getDataURL();
 
@@ -347,7 +399,7 @@ function getDataAndPlotCB() {
 
 	function onChannelDataReceived(json) { 
 		data = json;
-		$("#yAxisLabel").text(data[0].unit); 
+		$("#yAxisLabel").html(overrideYLabel(data[0].channel, data[0].unit).replace(" ", "&nbsp;")); 
 		plot = $.plot(placeholder, data, options); 
 		logCheckboxCB();
 		plot = $.plot(placeholder, data, options);

@@ -78,7 +78,7 @@
 								</tr>
 								<tr>
 									<td>&nbsp;</td>
-									<td align="center"><span id="xAxisLabel">Date</span></td>
+									<td align="center"><span id="xAxisLabel">Date/Time (GMT)</span></td>
 								</tr>
 							</table>
 						</td>
