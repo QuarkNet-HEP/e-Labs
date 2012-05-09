@@ -3,10 +3,7 @@
 #input [thresholdTimes files] [output files] [geometryDirectory]
 #Data offset by cable length amount
 #ndettman, FNAL 6/14/07 changed to use gps cable length as well as signal cable length.
-
-if($#ARGV !=2){
-    die "usage: WireDelay.pl [\"input-file1 input-file2 ...\"] [\"output-file1 output-file2 ... \"] [\"geometry file directory\"] You have ".($#ARGV+1)." arguments and they are \"@ARGV\"\n";
-}
+#tjordan, FNAL 29/02/12 added offset correction due to firmware > 1.11
 
 #Set the command line arguments
 @infile = split (/\s+/, $ARGV[0]);
@@ -14,7 +11,15 @@ if($#ARGV !=2){
 if($ARGV[2]){
     $geo_dir=$ARGV[2];
 } else { die "Error: Geometry file directory not specified\n"; }
-die "The number of inputs, and outputs must match!\n" if($#infile != $#ofile);
+@DAQID = split (/\s+/, $ARGV[3]);
+@firmware = split (/\s+/, $ARGV[4]);
+$firmwareOffset = 1/86400; # New firmware is off by exactly one second. This needs to be turned into a fraction of a day.
+
+$#firmware = $#DAQID = $#infile if $#ARGV = 3; #so that the "number of inputs" check works if firmware is absent.
+
+die "This requires 3 OR 5 inputs:", "\n", "3 inputs: [\"input-file1 input-file2 ...\"] [\"output-file1 output-file2 ... \"] [\"geometry file directory\"]", "\n", "5 inputs: [\"input-file1 input-file2 ...\"] [\"output-file1 output-file2 ... \"] [\"geometry file directory\"] [\"DAQID-file1 DAQID-file2 . . \"] [\"firmware-file1 firmware-file2 . . \"]", "\n", "You have ".($#ARGV)." arguments and they are \"@ARGV\"\n" if($#ARGV < 3 || $#ARGV == 4 || $#ARGV > 5); #we aren't getting the correct number of inputs;
+
+die "The number of inputs, outputs and DAQIDs and firmware versions must match!\n" if($#infile != $#ofile || $#infile != $#firmware || $#infile != $#DAQID);
 
 #open up the CommonSubs.pl
 $dirname=`dirname $0`;
@@ -31,6 +36,8 @@ $max=2**31;
 #While loop to go through all input files
 while($infile=shift(@infile)){
     $ofile=shift (@ofile);
+    $firmware=shift(@firmware);
+    $DAQID=shift(@DAQID);
     $lastId="";
 
     #Open input and output files
@@ -53,9 +60,18 @@ while($infile=shift(@infile)){
         
         #prepare output, resetting jd if necessary
         #caution sometimes rounding errors can occur by 1*10^(-16)
+        
+        #This block does the offset due to cable lengths recorded in the geo file.
         $reNewTime=$cableLenDelay+$inputRow[2];
         $feNewTime=$cableLenDelay+$inputRow[3];
         $outputJd=$inputRow[1];
+        
+        #This block does the correction for errors introduced by firmware
+        if($firmware > 1.11 && $DAQID > 5999){
+        	$reNewTime=$firmwareOffset + $inputRow[2];
+        	$feNewTime=$firmwareOffset + $inputRow[3];
+        }
+        
         if($reNewTime>=1.0){
             $outputJd=$inputRow[1]+int($reNewTime);
             $reNewTime-=int($reNewTime);
