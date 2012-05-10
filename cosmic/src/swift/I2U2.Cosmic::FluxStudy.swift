@@ -22,15 +22,15 @@ type AxisParams {
 //undocumented magic in @filename - it will make an absolute path relative
 //in other words it answers the question: if the parameter was a file,
 //what would have its path been on the remote site?
-(File wireDelayData) WireDelay(File thresholdData, string geoDir, File geoFile) {
+(File wireDelayData) WireDelay(File thresholdData, string geoDir, File geoFile, string detector, string firmware) {
 	app {
-		WireDelay @filename(thresholdData) @filename(wireDelayData) @filename(geoDir);
+		WireDelay @filename(thresholdData) @filename(wireDelayData) @filename(geoDir) detector firmware;
 	}
 }
 
 (File wireDelayData[]) WireDelayMultiple(File thresholdData[], string geoDir, File geoFiles[]) {
 	foreach td, i in thresholdData {
-		wireDelayData[i] = WireDelay(thresholdData[i], geoDir, geoFiles[i]);
+		wireDelayData[i] = WireDelay(thresholdData[i], geoDir, geoFiles[i], detectors[i], firmwares[i]);
 	}
 }
 

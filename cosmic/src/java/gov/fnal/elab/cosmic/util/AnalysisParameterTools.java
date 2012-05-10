@@ -173,5 +173,23 @@ public class AnalysisParameterTools {
         
         return ElabUtil.join(freqs, " ");
     }
+    
+    public static List<String> getFirmwareVersions(Elab elab, Collection<String> files) throws ElabException {
+    	ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
+    	List<String> l = new ArrayList<String>();
+    	
+    	for (CatalogEntry e : rs) {
+    		if (e == null) {
+    			continue;
+    		}
+    		String firmwareVersion = (String) e.getTupleValue("DAQFirmware");
+    		if (firmwareVersion == null) {
+    			firmwareVersion = "";
+    		}
+    		l.add(firmwareVersion); 
+    	}
+    	
+    	return l; 
+    }
 
 }
