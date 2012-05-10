@@ -140,7 +140,7 @@
 				figureN + ". " + sb.toString())); 
 		}
 		if (key.startsWith("FIG:FIGURE")) {
-			template = template.replaceAll("%" + key + "%", Matcher.quoteReplacement(urlCodec.encode(sb.toString)));
+			template = template.replaceAll("%" + key + "%", Matcher.quoteReplacement(urlCodec.encode(sb.toString())));
 		}
 		template = template.replaceAll("%" + key + "%", Matcher.quoteReplacement(sb.toString()));
 	}
