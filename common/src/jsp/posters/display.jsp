@@ -134,10 +134,11 @@
 		// I have added code below to get rid of Figure n. for which there are no captions.
 		// 
 		if ("paper".equals(type) && key.startsWith("WORDS:CAPTION")) {
-		    String figureN = key.substring(key.length() - 1);
-		   if (key.length() > 14) { figureN = key.substring( (key.length() - 2),(key.length() ));}
-			template = template.replaceAll("%" + key + "%", Matcher.quoteReplacement("Figure " + 
-				figureN + ". " + sb.toString())); 
+			String figureN = key.substring(key.length() - 1);
+			if (key.length() > 14) { 
+				figureN = key.substring( (key.length() - 2),(key.length() ));
+			}
+			template = template.replaceAll("%" + key + "%", Matcher.quoteReplacement("Figure " + figureN + ". " + sb.toString())); 
 		}
 		if (key.startsWith("FIG:FIGURE")) {
 			template = template.replaceAll("%" + key + "%", Matcher.quoteReplacement(urlCodec.encode(sb.toString())));
