@@ -3,6 +3,7 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -52,29 +53,61 @@
 				<h1>Bluestone <span style="color: red">2.0 Public Beta </span></h1>
 				<div style="text-align:right">Need help? Try the <e:popup href="../library/ref-analysis.jsp" target="help" width="450" height="600" toolbar="true">Practice Plots</e:popup> or watch a <e:popup href="../video/intro-bluestone.html" target="tryit" width="800" height="659">Video</e:popup>.</div>
 				<br />
-				Time<sub>start</sub>: <input readonly type="text" name="xmin" id="xmin" size="15" class="datepicker"></input>
-				Time<sub>end</sub>: <input readonly type="text" name="xmax" id="xmax" size="15" class="datepicker"></input>
-				<button id="plotButtonTop" class="plotButton" value="Plot">Plot</button>
-				<img src="../graphics/spinner-small.gif" id="busySpinner" style="visibility: hidden"></img>
-				<%-- <button title="Zoom to selection" id="buttonZoom" disabled>Zoom to selection</button> --%>
-				<button title="Zoom all the way out" id="buttonZoomOut" disabled>Zoom all the way out</button>
-				<input type="checkbox" name="log" value="y-axis" id="logYcheckbox" class="logCheckbox" />Y-Axis Log Scale
 				
-				
-				<table>
+				<table id="plot-table">
 					<tr>
-						<td id="yAxisLabeltd"><span class="rotate-text-left" id="yAxisLabel">&nbsp;</span></td>
-						<td width="850">
-							<div id="resizablecontainer" style="margin-bottom: 10px; margin-right: 10px;" >
-								<div id="chart" style="width:100%; height:250px; text-align: left;"></div>
-							</div>
+						<td>
+							Start Time<br/>
+							<input readonly type="text" name="xmin" id="xmin" size="15" class="datepicker"></input>
+						</td>
+						<td class="right-aligned">
+							End Time<br/>
+							<input readonly type="text" name="xmax" id="xmax" size="15" class="datepicker"></input>
 						</td>
 					</tr>
 					<tr>
-						<td>&nbsp;</td>
-						<td align="center"><span id="xAxisLabel">Date</span></td>
+						<td colspan="2">
+							<table id="plot">
+								<tr>
+									<td id="yAxisLabeltd"><span class="rotate-text-left" id="yAxisLabel">&nbsp;</span></td>
+									<td width="850">
+										<div id="resizablecontainer" style="margin-bottom: 10px; margin-right: 10px;" >
+											<div id="chart" style="width:100%; height:250px; text-align: left;"></div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td align="center"><span id="xAxisLabel">Date/Time (GMT)</span></td>
+								</tr>
+							</table>
+						</td>
 					</tr>
 				</table>
+				<%-- <button id="plotButtonTop" class="plotButton" value="Plot">Plot</button> --%>
+				<img src="../graphics/spinner-small.gif" id="busySpinner" style="visibility: hidden"></img>
+				<table class="toolbox">
+					<tr>
+						<th>X Axis</th>
+						<td class="toolbox-content">
+							<button title="Zoom to selection" id="buttonZoom" disabled>Zoom to selection</button>
+							<button title="Zoom all the way out" id="buttonZoomOut" disabled>Zoom all the way out</button>
+						</td>
+					</tr>
+					<tr>
+						<th>Y Axis</th>
+						<td class="toolbox-content">
+							<input type="checkbox" name="log" value="y-axis" id="logYcheckbox" class="logCheckbox" />Log Scale
+							<span class="toolbox-separator"></span>
+							<span class="toolbox-label">Range:</span>
+							<input type="text" size="10" id="yRangeMin" disabled="true"/> - <input type="text" size="10" id="yRangeMax" disabled="true"/> 
+							<input type="checkbox" name="yAutoRange" id="yAutoRangeCheckbox" checked="true"/>Auto
+						</td>
+					</tr>
+				</table>
+				
+				
+				
 					
 					<%-- Temporarily disabled while I figure out how to properly resize the bar - pxn
 					<div id="slider"></div>
@@ -108,9 +141,9 @@
 				<h2>Data Selection<e:popup href="/glossary/kiwi.php?title=Data_Channel" target="help" width="600" height="600" toolbar="true"><sup>?</sup></e:popup></h2>
 				
 				<div id="channel-list-advanced">
-					<table id="channelTable">
+					<table id="channelTable" class="toolbox">
 						<thead>
-							<tr>
+							<tr class="toolbox-row">
 								<th>Add/Remove</th>
 								<th>Site<e:popup href="/glossary/kiwi.php?title=Data_Channel_Source" target="help" width="400" height="500" toolbar="true"><sup>?</sup></e:popup>
 </th>
@@ -122,9 +155,9 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr id="row_0">
+							<tr id="row_0" class="toolbox-row">
 								<td>
-									<input type="button" value="Remove This Row" id="removeRow_0" class="removeRow"></input>
+									<button id="removeRow_0" class="removeRow"><img src="../graphics/minus.png"/></button>
 								</td>
 								<td>
 									<select name="site" id="site_0" class="site">
@@ -152,21 +185,47 @@
 									<span id="dataName_0" class="dataName"></span>
 								</td>
 							</tr>
+							<tr>
+								<td colspan="7">
+									<button id="addNewRow" value="Add Data Row"><img src="../graphics/plus.png"/></button>
+								</td>
+							</tr>
 						</tbody>
 					</table>
 					
 				</div>
 				
-				<input id="addNewRow" type="button" value="Add Data Row"></input>
-				<br />
-				<button id="plotButtonBottom" class="plotButton" value="Plot">Plot</button>
+				<%-- <button id="plotButtonBottom" class="plotButton" value="Plot">Plot</button> --%>
 				
-				<h2>Save This Plot</h2>
+				<h2>Data Export</h2>
 				
-				Title: <input id="userPlotTitle" name="title" type="text" maxlength="200" size="30"></input>
-				<input id="savePlotToDisk" type="button" value="Save" disabled></input>
-				<img src="../graphics/spinner-small.gif" style="visibility: hidden;" id="busySpinnerSmall"></img>
-				<a href="#" target="_new" id="savedPlotLink" style="display: none;">View saved plot (popup)</a> 
+				<table class="toolbox">
+					<tr>
+						<td class="toolbox-content">
+							<input id="savePlotToDisk" type="button" value="Save Plot"></input>
+							<input id="exportData" type="button" value="Export Data Points"></input>
+						</td>
+						<td class="toolbox-content">
+							<a href="#" target="_new" id="savedPlotLink" style="display: none;">View saved plot (popup)</a>
+						</td>
+					</tr>
+				</table>
+				
+				<div id="save-dialog" class="dialog-window">
+					<div class="dialog-title">
+						Save Plot
+					</div>
+					<div class="dialog-contents">
+						<label for="userPlotTitle">Plot title:</label>
+						<input id="userPlotTitle" name="title" type="text" maxlength="200" size="30"></input>
+						<br/>
+						<img src="../graphics/spinner-small.gif" style="visibility: hidden;" id="busySpinnerSmall"></img>
+					</div>
+					<div class="dialog-buttons">
+						<input id="savePlotToDiskCancel" type="button" value="Cancel"></input>
+						<input id="savePlotToDiskCommit" type="button" value="Save" disabled="true"></input>
+					</div>
+				</div>
 			</div>
 			
 			<div id="footer">

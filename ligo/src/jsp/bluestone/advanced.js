@@ -23,7 +23,9 @@ var data = { };
 
 var rows = 0; 
 
-var logCheckedY = false; 
+var logCheckedY = false;
+
+var lastRangeChange = 0;
 
 function samplingCB(index) {
 	var ptr = null; 
@@ -114,6 +116,29 @@ function subsystemChangeCB(index) {
 	}); 
 }
 
+function parseChannel(name) {
+	// H0:DMT-BRMS_PEM_EX_SEISX_0.03_0.1Hz.rms
+	name = name.replace("DMT-BRMS_PEM_", "DMT-");
+	// H0:DMT_EX_SEISX_0.03_0.1Hz.rms
+	s = name.split(":");
+	site = s[0];
+	s = s[1].split("-");
+	subsystem = s[0];
+	s = s[1].split("_");
+	station = s[0];
+	rest = s.slice(1).join("_");
+	sensor = rest.substr(0, rest.lastIndexOf("."));
+	sampling = rest.substr(rest.lastIndexOf(".") + 1);
+	
+	return {
+		site: site,
+		subsystem: subsystem,
+		station: station,
+		sensor: sensor,
+		sampling: sampling
+	}
+}
+
 function generateFilename(index) { 
 	return $("#site_" + index + " :selected").val() + ":" + $("#subsystem_" + index + " :selected").val()  + 
 		$("#station_" + index + " :selected").val() + "_" + $("#sensor_" + index + " :selected").val() + "." +
@@ -146,6 +171,74 @@ function logCheckboxCB() {
 	$.extend(options, { yaxis: {transform: ty, inverseTransform: ity, ticks: tfy } });
 }
 
+function yAutoRangeCheckboxCB() {
+	yAutoRange = $("#yAutoRangeCheckbox:checked").val() != null;
+	
+	if (yAutoRange) {
+		$("#yRangeMin").attr("disabled", "true");
+		$("#yRangeMax").attr("disabled", "true");
+		$.extend(options, { yaxis: { min: null, max: null } });
+		replot();
+		updateAutoRange();
+	}
+	else {
+		$("#yRangeMin").removeAttr("disabled");
+		$("#yRangeMax").removeAttr("disabled");
+		commitYRangeChangeCB();
+	}
+}
+
+function isNumeric(v) {
+	return (v - 0) == v && v.length > 0;
+}
+
+function validateNumericInput(id) {
+	var val = $(id).val();
+	
+	if (isNumeric(val)) {
+		$(id).css("background-color", "white");
+		return parseInt(val);
+	}
+	else {
+		$(id).css("background-color", "red");
+		return null;
+	}
+}
+
+function replot() {
+	if (data.length > 0) {
+		plot = $.plot(placeholder, data, options);
+	}
+}
+
+function commitYRangeChangeCB() {
+	var now = new Date().getTime(); 
+	if (now - lastRangeChange < 600) {
+		return;
+	}
+	lastRangeChange = now;
+	var min = validateNumericInput("#yRangeMin");
+	var max = validateNumericInput("#yRangeMax");
+	if (min != null && max != null) {
+		$.extend(options, { yaxis: { min: min, max: max } });
+		replot();
+	}
+}
+
+function yRangeChangedCB() {
+	validateNumericInput("#yRangeMin");
+	validateNumericInput("#yRangeMax");
+	lastRangeChange = new Date().getTime();
+	window.setTimeout(commitYRangeChangeCB, 1000);
+}
+
+function updateAutoRange() {
+	if (plot != null) {
+		$("#yRangeMin").val(plot.getAxes().yaxis.min);
+		$("#yRangeMax").val(plot.getAxes().yaxis.max);
+	}
+}
+
 function getIndex(objName) {
 	var tokens = objName.split("_", 2);
 	return tokens[1];
@@ -169,7 +262,9 @@ function logTickFormatter(axis) {
 function addNewRow(index) {
 	var foo = $("#channel-list-advanced");
 	// Delete button
-	var deleteButton = $("<input></input>").attr("type", "button").attr("id", "removeRow_" + index).attr("value", "Remove This Row").attr("class", "removeRow");
+	var deleteButton = 
+		$("<button></button>").attr("id", "removeRow_" + index).attr("value", "Remove This Row").attr("class", "removeRow").
+			append($("<img></img>").attr("src", "../graphics/minus.png"));
 	
 	// Site Dropdown
 	var siteSelector = $("<select></select>").attr("name", "site").attr("id", "site_" + index).attr("class", "site");
@@ -187,7 +282,8 @@ function addNewRow(index) {
 	var samplingSelector = $("<select></select>").attr("name", "sampling").attr("id", "sampling_" + index).attr("class", "sampling");
 	var nameLabel = $("<span></span>").attr("id", "dataName_" + index).attr("class", "dataName");
 	
-	$("#channelTable > tbody:last").append(
+	$
+	$("#channelTable tr").last().before(
 		$("<tr></tr>").attr("id", "row_" + index).append(
 			$("<td></td>").append(deleteButton)).append(
 			$("<td></td>").append(siteSelector)).append(
@@ -203,6 +299,7 @@ function addNewRow(index) {
 	samplingCB(index);
 	displayFilename(index);
 	initBinding();
+	getDataAndPlotCB();
 }
 
 function initBinding() {
@@ -213,6 +310,7 @@ function initBinding() {
 		sensorChangeCB(index);
 		samplingCB(index);
 		displayFilename(index);
+		getDataAndPlotCB();
 	});
 
 	/* Change Sensor */ 
@@ -221,11 +319,13 @@ function initBinding() {
 		sensorChangeCB(index); 
 		samplingCB(index);
 		displayFilename(index);
+		getDataAndPlotCB();
 	}); 
 
 	$(".site, .sensor, .sampling").change(function() {
 		var index = getIndex($(this).attr('id'));
-		displayFilename(index); 
+		displayFilename(index);
+		getDataAndPlotCB();
 	});
 	
 	$(".removeRow").click(function() {
@@ -233,10 +333,11 @@ function initBinding() {
 		/* delete stuff - should probably switch to simply assigning each row element a class index rather
 		   than appending to ID. Oops. */
 		$("#row_" + index).empty().remove();
+		getDataAndPlotCB();
 	});
 }
 
-function getDataAndPlotCB() {
+function getDataURL() {
 	var c = "";
 	
 	$(".dataName").each(function(i){
@@ -246,8 +347,44 @@ function getDataAndPlotCB() {
 	if (c != "") {
 		c = c.substr(0, c.length - 1);
 	}
+	
+	$("#xmin").val((new Date(convertTimeGPSToUNIX(parseFloat(xminGPSTime)) * 1000.0)).toDateString()); 
+	$("#xmax").val((new Date(convertTimeGPSToUNIX(parseFloat(xmaxGPSTime)) * 1000.0)).toDateString());
+	
+	return dataServerUrl + '?fn=getData&channels=' + c + '&startTime=' + xminGPSTime + '&endTime=' + xmaxGPSTime;
+}
 
-	var url = dataServerUrl + '?fn=getData&channels=' + c + '&startTime=' + xminGPSTime + '&endTime=' + xmaxGPSTime;
+function overrideYLabel(channel, unit) {
+	c = parseChannel(channel);
+	
+	switch (subsystem) {
+		case "DMT":
+			return "Velocity (microns/s)";
+		case "PEM":
+			switch (sensor) {
+				case "SEISX":
+				case "SEISY":
+				case "SEISZ":
+				case "TITLX":
+				case "TILTY":
+				case "TILTT":
+					return "Signal (volts)";
+				case "RAIN":
+					return "Uncalibrated (counts)";
+				case "WIND":
+					return "Speed (meters/s)";
+				case "WINDMPH":
+					return "Speed (mph)";
+				default:
+					return unit;
+			}
+		default:
+			return unit;
+	}
+}
+
+function getDataAndPlotCB() {
+	var url = getDataURL();
 
 	// Get the data via AJAJ call
 	$.ajax({ 
@@ -262,7 +399,7 @@ function getDataAndPlotCB() {
 
 	function onChannelDataReceived(json) { 
 		data = json;
-		$("#yAxisLabel").text(data[0].unit); 
+		$("#yAxisLabel").html(overrideYLabel(data[0].channel, data[0].unit).replace(" ", "&nbsp;")); 
 		plot = $.plot(placeholder, data, options); 
 		logCheckboxCB();
 		plot = $.plot(placeholder, data, options);
@@ -271,25 +408,60 @@ function getDataAndPlotCB() {
 		hasBeenPlotted = true; 
 		zoomButtonSet(); 
 		$("#savePlotToDisk").removeAttr("disabled");
+		updateAutoRange();
 	}
+}
+
+function openSaveDialog() {
+	centerElement("save-dialog");
+	$("#save-dialog").show();
+}
+
+function closeSaveDialog() {
+	$("#save-dialog").hide();
+}
+
+function userPlotTitleChangedCB() {
+	if ($("#userPlotTitle").val() != "") {
+		$("#savePlotToDiskCommit").removeAttr("disabled");
+	}
+	else {
+		$("#savePlotToDiskCommit").attr("disabled", "true");
+	}
+}
+
+function exportData() {	
+	var url = getDataURL() + "&format=text";
+
+	window.open(url);
 }
 
 $(document).ready(function() {
 	/* Initialize the initial dropdown list */ 
-	subsystemChangeCB(0); 
+	subsystemChangeCB(0);
 	sensorChangeCB(0);
 	samplingCB(0);
 	displayFilename(0);
 	initBinding();
 	
 	$(".logCheckbox").bind('click', function() {
-		if (data.length > 0) {
-			logCheckboxCB();
-			plot = $.plot(placeholder, data, options);
-		}
-	}); 
-
+		logCheckboxCB();
+		replot();
+	});
+	
 	$("#savePlotToDisk").bind('click', function() {
+		openSaveDialog();
+	});
+	
+	$("#savePlotToDiskCancel").bind('click', function() {
+		closeSaveDialog();
+	});
+	
+	$("#exportData").bind("click", function() {
+		exportData();
+	});
+
+	$("#savePlotToDiskCommit").bind('click', function() {
 		// need start, end, channels, title 
 		var title = $("#userPlotTitle").val(); 
 		var channelArray = []; 
@@ -317,21 +489,24 @@ $(document).ready(function() {
 			if (json.success == true) {
 				$("#savedPlotLink").attr("href", plotViewerURL + "?filename=" + json.filename);
 				$("#savedPlotLink").show();
+				closeSaveDialog();
 			}
 			else {
-				/* Display that something went wrong */ 
+				/* Display that something went wrong */
 			}
 			return;  
 		}
 		
 		function onPlotError(data) {
-			/* TODO: Implement parsing of error codes in case something goes wrong */ 
+			/* TODO: Implement parsing of error codes in case something goes wrong */
+			window.alert("Saving failed: " + data.statusText);
 			return; 
 		}
 	});
 
 
 	$("#buttonZoom").click(function() {
+		$("#buttonZoom").attr("disabled", "true");
 		getDataAndPlotCB();
 	});
 
@@ -352,5 +527,11 @@ $(document).ready(function() {
 		++rows;
 		addNewRow(rows);
 	});
-
+	
+	$("#yAutoRangeCheckbox").bind("click", yAutoRangeCheckboxCB);
+	
+	$("#yRangeMin").keyup(yRangeChangedCB);
+	$("#yRangeMax").keyup(yRangeChangedCB);
+	
+	$("#userPlotTitle").keyup(userPlotTitleChangedCB);
 });

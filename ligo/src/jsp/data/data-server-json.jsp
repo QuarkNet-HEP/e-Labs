@@ -1,16 +1,11 @@
-<%@ page import="java.util.*" %>
-<%@ page import="java.io.*" %>
-<%@ page import="java.text.*" %>
-<%@ page import="gov.fnal.elab.ligo.data.engine.*" %>
-<%@ page import="gov.fnal.elab.ligo.data.json.*"%>
-<%@ page import="gov.fnal.elab.expression.data.engine.*" %>
-<%@ page import="org.apache.commons.lang.*" %>
-<%@ page import="com.google.gson.*" %>
-
-<%@ include file="../include/elab.jsp" %>
-<%@ include file="../login/login-required.jsp" %>
-
-<%
+<%@ page import="java.util.*"
+         import="java.io.*"
+		 import="java.text.*"
+		 import="gov.fnal.elab.ligo.data.engine.*"
+		 import="gov.fnal.elab.ligo.data.json.*"
+		 import="gov.fnal.elab.expression.data.engine.*"
+		 import="org.apache.commons.lang.*"
+		 import="com.google.gson.*" %><%
 	if (user != null) { // require login to access data 
 		response.setContentType("application/json");
 	
@@ -103,9 +98,6 @@
 				double startTime = Double.parseDouble(request.getParameter("startTime"));
 				double endTime = Double.parseDouble(request.getParameter("endTime"));
 				
-				GsonBuilder gb = new GsonBuilder();
-				gb.registerTypeAdapter(NumberArrayDataSet.class, new GPSConvertingJSMillisDataSetSerializer());
-				Gson gson = gb.serializeNulls().create();
 				
 				Collection<DataSet> dataList = new ArrayList(); 
 				for(String channel : channels) {
@@ -118,7 +110,45 @@
 						exceptionList.add(channel + " doesn't exist");
 					}
 				}
-				out.write(gson.toJson(dataList).replaceAll("NaN", "null"));
+				
+				String format = request.getParameter("format");
+				
+				if (format == null || format.equals("")) {
+					format = "JSON";
+				}
+				
+				if (format.equals("JSON")) {
+					GsonBuilder gb = new GsonBuilder();
+					gb.registerTypeAdapter(NumberArrayDataSet.class, new GPSConvertingJSMillisDataSetSerializer());
+					Gson gson = gb.serializeNulls().create();
+					out.write(gson.toJson(dataList).replaceAll("NaN", "null"));
+				}
+				else if (format.equals("text")) {
+					for (DataSet ds : dataList) {
+	        			out.write("# label: ");out.write(ds.getLabel());out.write("\n");
+	        			out.write("# xlabel: ");out.write(ds.getXLabel());out.write("\n");
+	        			out.write("# ylabel: ");out.write(ds.getYLabel());out.write("\n");
+	        			out.write("# xunit: ");out.write(String.valueOf(ds.getXUnit()));out.write("\n");
+	        			out.write("# yunit: ");out.write(String.valueOf(ds.getYUnit()));out.write("\n");
+	        			out.write("# xrange: ");out.write(String.valueOf(ds.getXRange()));out.write("\n");
+	        			out.write("# yrange: ");out.write(String.valueOf(ds.getYRange()));out.write("\n");
+	        			out.write("# size: ");out.write(String.valueOf(ds.size()));out.write("\n");
+	        			out.write("#\n");
+	        			for (int i = 0; i < ds.size(); i++) {
+				            out.write(String.valueOf(ds.getX(i)));
+				            out.write("\t");
+				            Number n = ds.getY(i);
+				            if (!(n instanceof Double) || !Double.isNaN((Double) n)) {
+				            	out.write(String.valueOf(n));
+				            }
+				            out.write("\n");
+				        }
+				        out.write("\n\n");
+				    }
+				}
+				else {
+					out.write("Error: invalid format");
+				}
 			}
 		}
 		else if (fn.equals("convolve")) {
