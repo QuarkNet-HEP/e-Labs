@@ -94,7 +94,7 @@ Re: the upload progress stuff
     					detectorId = content;
     				}
     			}
-    			else if ("comment".equals(name)) {
+    			else if ("comments".equals(name)) {
     				if (StringUtils.isNotBlank(content)) {
     					comments = content; 
     				}
