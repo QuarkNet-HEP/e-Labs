@@ -1,11 +1,32 @@
+<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
+
+<%@ include file="../include/elab.jsp" %>
+<%@ include file="../login/login-required.jsp" %>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     
 <%@ page import="org.apache.commons.lang.StringUtils" %>
-
+<%@ page import="gov.fnal.elab.datacatalog.impl.vds.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.query.*" %>
+<%@ page import="gov.fnal.elab.*" %>
     
 <%
 String file = request.getParameter("file");
+
+if (StringUtils.isBlank(file)) {
+    throw new ElabJspException("Missing file name.");
+}
+VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(file);
+if (entry == null) {
+    throw new ElabJspException("No information about " + file + " found.");
+}
+entry.sort(); 
+request.setAttribute("e", entry);
 %>
     
     
@@ -18,57 +39,7 @@ String file = request.getParameter("file");
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>
-		<script type="text/javascript" src="../include/jquery/flot/jquery.flot.min.js"></script>
-		<script type="text/javascript" src="../include/jquery/flot/jquery.flot.errorbars.js"></script>
-		<script type="text/javascript">
-		
-		function cross(ctx, x, y, radius, shadow) {
-		    var size = radius * Math.sqrt(Math.PI) / 2;
-		    ctx.moveTo(x - size, y - size);
-		    ctx.lineTo(x + size, y + size);
-		    ctx.moveTo(x - size, y + size);
-		    ctx.lineTo(x + size, y - size);
-		}
-		
-		var options = { 
-				series: {
-					lines: {
-						show: false 
-					},
-					points: {
-						show: true,
-						lineWidth: 1,
-						radius: 0.5,
-						symbol: "circle"
-					}
-				}/*,
-				xaxis: {
-					min: 0,
-					max: 86400
-				}*/
-		};
-		
-		function onDataLoad1(json) {	
-			$.plot($("#channelChart"), [json.channel1, json.channel2, json.channel3, json.channel4, json.trigger ], options );
-			$.plot($("#satChart"), [ json.satellites ], options);
-			$.plot($("#voltChart"), [ json.voltage ], options);
-			$.plot($("#tempChart"), [ json.temperature ], options);
-			$.plot($("#pressureChart"), [ json.pressure ], options);
-		}
-		
-		$(document).ready(function() {
-			$.ajax({
-				url: "get-data.jsp?file=<%= file %>",
-				processData: false,
-				dataType: "json",
-				type: "GET",
-				success: onDataLoad1
-			});
-			
-		}); 
-		
-		</script>
+
 		<title>Data Blessing</title>
 	</head>
 	<body class="upload">
@@ -82,23 +53,53 @@ String file = request.getParameter("file");
 			</div>
 			
 			<div id="content">
-	
-	<h1>Data Blessing Test</h1>
-	
-	<h2>Rates</h2>
-	<div id="channelChart" style="width:750px; height:250px; text-align: left;"></div>
-	
-	<h2>Visible GPS Satellites</h2>
-	<div id="satChart" style="width:750px; height:250px; text-align: left;"></div>
 
-	<h2>Voltage</h2>
-	<div id="voltChart" style="width:750px; height:250px; text-align: left;"></div>
+				<script type="text/javascript" src="../include/jquery/flot/jquery.flot.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot/jquery.flot.errorbars.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot/jquery.flot.axislabels.js"></script>
+				<script type="text/javascript" src="../include/excanvas.min.js"></script>
+				<script type="text/javascript" src="blessing.js"></script>
 
-	<h2>Temperature</h2>
-	<div id="tempChart" style="width:750px; height:250px; text-align: left;"></div>
+				<script type="text/javascript">
+				$(document).ready(function() {
+					$.ajax({
+						url: "get-data.jsp?file=<%= file %>",
+						processData: false,
+						dataType: "json",
+						type: "GET",
+						success: onDataLoad1
+					});
 
-	<h2>Barometric Pressure</h2>
-	<div id="pressureChart" style="width:750px; height:250px; text-align: left;"></div>
+				}); 
+				</script>
+	
+				<h1>Data Blessing Test</h1>
+
+				<h2>Control Registers</h2>
+				CR0: <strong><%= entry.getTupleValue("ConReg0") != null? entry.getTupleValue("ConReg0") : "Unknown" %></strong>,
+				CR1: <strong><%= entry.getTupleValue("ConReg1") != null? entry.getTupleValue("ConReg1") : "Unknown" %></strong>,
+				CR2: <strong><%= entry.getTupleValue("ConReg2") != null? entry.getTupleValue("ConReg2") : "Unknown" %></strong>,
+				CR3: <strong><%= entry.getTupleValue("ConReg3") != null? entry.getTupleValue("ConReg3") : "Unknown" %></strong>
+	
+				<h2>Rates</h2>
+				<div id="channelChart" style="width:750px; height:250px; text-align: left;"></div>
+
+				<div id="channelChartLegend" style="width: 750px"></div>
+
+				<h2>Trigger Rate</h2>
+				<div id ="triggerChart" style="width:750px; height:250px; text-align: left;"></div>
+	
+				<h2>Visible GPS Satellites</h2>
+				<div id="satChart" style="width:750px; height:250px; text-align: left;"></div>
+
+				<h2>Voltage</h2>
+				<div id="voltChart" style="width:750px; height:250px; text-align: left;"></div>
+
+				<h2>Temperature</h2>
+				<div id="tempChart" style="width:750px; height:250px; text-align: left;"></div>
+
+				<h2>Barometric Pressure</h2>
+				<div id="pressureChart" style="width:750px; height:250px; text-align: left;"></div>
 	
 		 	</div>
 		</div>
