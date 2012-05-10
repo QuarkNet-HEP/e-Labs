@@ -28,65 +28,58 @@ public class AnalysisParameterTools {
         return getDetectorIds(Arrays.asList(rawData));
     }
     
-    public static String getDetectorIds(Collection rawData) {
+    public static String getDetectorIds(Collection<String> rawData) {
         StringBuffer db = new StringBuffer();
-        Iterator i = rawData.iterator();
-        while (i.hasNext()) {
-            String s = (String) i.next();
-            db.append(getDetectorId(s));
-            if (i.hasNext()) {
-                db.append(' ');
-            }
+        
+        for (String s : rawData) {
+        	db.append(getDetectorId(s) + ' ');
         }
-        return db.toString();
+        return db.toString(); 
     }
 
     public static String getDetectorId(String rawData) {
         return rawData.substring(0, rawData.indexOf("."));
     }
     
-    public static List getThresholdFiles(Elab elab, String[] rawData) {
-        return getThresholdFiles(elab, Arrays.asList(rawData));
+    public static List<String> getThresholdFiles(Elab elab, String[] rawData) {
+    	List<String> rawDataList = Arrays.asList(rawData); 
+        return getThresholdFiles(elab, rawDataList);
     }
 
-    public static List getThresholdFiles(Elab elab, Collection rawData) {
-        List l = new ArrayList(rawData.size());
-        Iterator i = rawData.iterator();
-        while (i.hasNext()) {
-            String n = (String) i.next();
-            if (n == null) {
-                throw new IllegalArgumentException("One of the raw data files is null");
-            }
-            String s = new File(n).getName();
-            String detectorID = s.substring(0, s.indexOf("."));
-            l.add(elab.getProperties().getDataDir() + File.separator
+    public static List<String> getThresholdFiles(Elab elab, Collection<String> rawData) {
+        List<String> l = new ArrayList<String>(rawData.size());
+        for (String n : rawData) {
+        	if (n == null) {
+        		throw new IllegalArgumentException("One of the raw data files is null");
+        	}
+        	String s = new File(n).getName();
+        	String detectorID = s.substring(0, s.indexOf("."));
+        	l.add(elab.getProperties().getDataDir() + File.separator
                     + detectorID + File.separator + s + ".thresh");
         }
         return l;
     }
     
-    public static List getGeometryFiles(Elab elab, Collection rawData) {
-        List l = new ArrayList(rawData.size());
-        Iterator i = rawData.iterator();
-        while (i.hasNext()) {
-            String s = new File((String) i.next()).getName();
-            String detectorID = s.substring(0, s.indexOf("."));
-            l.add(elab.getProperties().getDataDir() + File.separator
+    public static List<String> getGeometryFiles(Elab elab, Collection<String> rawData) {
+        List<String> l = new ArrayList<String>(rawData.size());
+        for (String i : rawData) {
+        	String s = new File(i).getName();
+        	String detectorID = s.substring(0, s.indexOf("."));
+        	l.add(elab.getProperties().getDataDir() + File.separator
                     + detectorID + File.separator + detectorID + ".geo");
         }
         return l;
     }
     
-    public static List getWireDelayFiles(Elab elab, Collection rawData) {
-        List l = new ArrayList(rawData.size());
-        Iterator i = rawData.iterator();
-        while (i.hasNext()) {
-            l.add(i.next() + ".wd");
+    public static List<String> getWireDelayFiles(Elab elab, Collection<String> rawData) {
+        List<String> l = new ArrayList<String>(rawData.size());
+        for (String i : rawData) {
+        	l.add(i + ".wd");
         }
         return l;
     }
     
-    public static final Map CHANNELS;
+    public static final Map<String, String> CHANNELS;
     static {
         CHANNELS = new HashMap();
         CHANNELS.put("chan1", "1");
@@ -95,13 +88,11 @@ public class AnalysisParameterTools {
         CHANNELS.put("chan4", "4");
     }
     
-    public static int getEventCount(Elab elab, Collection files) throws ElabException {
+    public static int getEventCount(Elab elab, Collection<String> files) throws ElabException {
         ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
-        Iterator i = rs.iterator();
         int sum = 0;
-        while (i.hasNext()) {
-            CatalogEntry e = (CatalogEntry) i.next();
-            sum += getEvents("chan1", e);
+        for (CatalogEntry e : rs) {
+        	sum += getEvents("chan1", e);
             sum += getEvents("chan2", e);
             sum += getEvents("chan3", e);
             sum += getEvents("chan4", e);
@@ -109,13 +100,11 @@ public class AnalysisParameterTools {
         return sum;
     }
     
-    public static int getEventCount(Elab elab, Collection files, int channel) throws ElabException {
+    public static int getEventCount(Elab elab, Collection<String> files, int channel) throws ElabException {
         ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
-        Iterator i = rs.iterator();
         int sum = 0;
-        while (i.hasNext()) {
-            CatalogEntry e = (CatalogEntry) i.next();
-            sum += getEvents("chan" + channel, e);
+        for (CatalogEntry e : rs) {
+        	sum += getEvents("chan" + channel, e);
         }
         return sum;
     }
@@ -144,48 +133,63 @@ public class AnalysisParameterTools {
      * @return A {@link List} containing used channels, each of each is
      *         guaranteed to appear at most once. The channels are sorted.
      */
-    public static List getValidChannels(Elab elab, Collection files)
+    public static List<String> getValidChannels(Elab elab, Collection<String> files)
             throws ElabException {
         ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
-        SortedSet channels = new TreeSet();
-        Iterator i = rs.iterator();
-        while (i.hasNext()) {
-            CatalogEntry e = (CatalogEntry) i.next();
-            if (e == null) {
-                continue;
-            }
-            Iterator j = CHANNELS.entrySet().iterator();
-            while (j.hasNext()) {
-                Map.Entry f = (Map.Entry) j.next();
-                String cname = (String) f.getKey();
-                Long l = (Long) e.getTupleValue(cname);
-                if (l != null && l.longValue() > 0) {
-                    channels.add(f.getValue());
-                }
-            }
+        SortedSet<String> channels = new TreeSet();
+        
+        for (CatalogEntry e : rs) {
+        	if (e == null) {
+        		continue;
+        	}
+        	for (Map.Entry<String, String> f : CHANNELS.entrySet()) {
+        		String cname = f.getKey();
+        		Number l = (Number) e.getTupleValue(cname); 
+        		if (l != null && l.longValue() > 0) {
+        			channels.add(f.getValue());
+        		}
+        	}
         }
-        return new ArrayList(channels);
+        return new ArrayList<String>(channels);
     }
     
     public static final Number DEFAULT_CPLD_FREQUENCY = new Long(41666667);
     
-    public static String getCpldFrequencies(Elab elab, Collection files)
+    public static String getCpldFrequencies(Elab elab, Collection<String> files)
             throws ElabException {
         ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
-        List freqs = new ArrayList();
-        Iterator i = rs.iterator();
-        while (i.hasNext()) {
-            CatalogEntry e = (CatalogEntry) i.next();
-            if (e == null) {
-                continue;
-            }
-            Number freq = (Number) e.getTupleValue("cpldfrequency");
+        List<Number> freqs = new ArrayList();
+        
+        for (CatalogEntry e : rs) {
+        	if (e == null) {
+        		continue;
+        	}
+        	Number freq = (Number) e.getTupleValue("cpldfrequency"); 
             if (freq == null) {
                 freq = DEFAULT_CPLD_FREQUENCY;
             }
             freqs.add(freq);
         }
+        
         return ElabUtil.join(freqs, " ");
+    }
+    
+    public static List<String> getFirmwareVersions(Elab elab, Collection<String> files) throws ElabException {
+    	ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
+    	List<String> l = new ArrayList<String>();
+    	
+    	for (CatalogEntry e : rs) {
+    		if (e == null) {
+    			continue;
+    		}
+    		String firmwareVersion = (String) e.getTupleValue("DAQFirmware");
+    		if (firmwareVersion == null) {
+    			firmwareVersion = "";
+    		}
+    		l.add(firmwareVersion); 
+    	}
+    	
+    	return l; 
     }
 
 }
