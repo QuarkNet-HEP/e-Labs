@@ -167,7 +167,7 @@ public class AnalysisParameterTools {
         return new ArrayList(channels);
     }
     
-    public static final Double DEFAULT_CPLD_FREQUENCY = new Double(41666667);
+    public static final Number DEFAULT_CPLD_FREQUENCY = new Long(41666667);
     
     public static String getCpldFrequencies(Elab elab, Collection files)
             throws ElabException {
@@ -179,7 +179,7 @@ public class AnalysisParameterTools {
             if (e == null) {
                 continue;
             }
-            Double freq = (Double) e.getTupleValue("cpldfrequency");
+            Number freq = (Number) e.getTupleValue("cpldfrequency");
             if (freq == null) {
                 freq = DEFAULT_CPLD_FREQUENCY;
             }
