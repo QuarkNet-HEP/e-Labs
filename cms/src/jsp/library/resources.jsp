@@ -174,8 +174,15 @@
 								<e:popup href="../video/lhc-how-it-works.html" target="video" width="515" height="415">The LHC - how it works</e:popup> - YouTube
 							</li>
 							<li>
-								<e:popup href="http://www.youtube.com/user/SciTechUK" target="youtube" width="675" height="550">In Search of Giants</e:popup>- Featuring Brian Cox from The Science and Technology Facilities Council Channel, SciTechUK's Channel
+								In Search of Giants <e:popup href="http://www.youtube.com/watch?v=HVxBdMxgVX0" target="youtube" width="675" height="550">(1)</e:popup> <e:popup href="http://www.youtube.com/watch?v=WGWlT8SqXLM" target="youtube" width="675" height="550">(2)</e:popup> - A Crash Course in Particle Physics Featuring Brian Cox from The Science and Technology Facilities Council Channel, SciTechUK's Channel
 							</li>
+						<li>
+								<e:popup href="http://www.phdcomics.com/comics/archive.php?comicid=1489" target="video" width="800" height="800">The Higgs Boson Explained</e:popup> - Animated Comic from PhDComics.
+							</li>
+
+
+
+
 							<li>
 								<e:popup href="../video/lhc-first-images.html" target="video" width="515" height="415">First Images after Proton Beam Passes through LHC</e:popup> - from the New Scientist
 							</li>
