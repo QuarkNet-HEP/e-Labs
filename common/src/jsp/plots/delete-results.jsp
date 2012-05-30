@@ -1,20 +1,23 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
+<%@ page import="gov.fnal.elab.*" %>
 <%@ page import="java.util.*" %>
 
 <%
 	ResultSet rs = (ResultSet) request.getAttribute("searchResults");
+
 	if (rs != null && !rs.isEmpty()) {
-            out.write("<form method=\"get\" action=\"../plots/delete.jsp\">\n"); 
+		out.write("<form method=\"get\" action=\"../plots/delete.jsp\">\n");
 	    out.write("<table id=\"plots\">\n");
-	    Map groups = new HashMap();
-	    Iterator i = rs.iterator();
+	    Map<String, ElabGroup> groups = new HashMap<String, ElabGroup>();
+	    Iterator<CatalogEntry> i = rs.iterator();
 	    while (i.hasNext()) {
 	        out.write("<tr>\n");
 	        for (int c = 0; c < 4 && i.hasNext(); c++) {
-	            CatalogEntry e = (CatalogEntry) i.next();
+	            CatalogEntry e = i.next();
 	            String groupName = (String) e.getTupleValue("group");
 	            ElabGroup group = (ElabGroup) groups.get(groupName);
 	            if (group == null) {
