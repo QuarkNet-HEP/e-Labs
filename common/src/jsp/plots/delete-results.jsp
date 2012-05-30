@@ -7,6 +7,7 @@
 <%
 	ResultSet rs = (ResultSet) request.getAttribute("searchResults");
 	if (rs != null && !rs.isEmpty()) {
+            out.write("<form method=\"get\" action=\"../plots/delete.jsp\">\n"); 
 	    out.write("<table id=\"plots\">\n");
 	    Map groups = new HashMap();
 	    Iterator i = rs.iterator();
