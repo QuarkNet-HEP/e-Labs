@@ -71,40 +71,37 @@
 		<th>Plot Content</th>
 		<th width="32px">Color</th>
 	</tr>
-	<c:if test="${fn:contains(param.expr, 'uu')}">
-		<tr>
-			<td><input class="plot" type="checkbox" value="recoCompositeCandidates_ZtoMuonAMuon__PAT.obj.mass_" /></td>
-			<td>&mu;<sup>-</sup>&mu;<sup>+</sup> mass</td>
-			<td class="color"><a class="tbutton colorbutton" href="#"><img value="Black" class="colorbox" src="../graphics/colorbox.png"></a></td>
-		</tr>
-		<tr>
-			<td><input class="plot" type="checkbox" value="recoCompositeCandidates_ZtoMuonMuon__PAT.obj.mass_" /></td>
-			<td>&mu;<sup>-</sup>&mu;<sup>-</sup> mass</td>
-			<td class="color"><a class="tbutton colorbutton" href="#"><img value="Red" class="colorbox" src="../graphics/colorbox.png"></a></td>
-		</tr>
-		<tr>
-			<td><input class="plot" type="checkbox" value="recoCompositeCandidates_ZtoAMuonAMuon__PAT.obj.mass_" /></td>
-			<td>&mu;<sup>+</sup>&mu;<sup>+</sup> mass</td>
-			<td class="color"><a class="tbutton colorbutton" href="#"><img value="Green" class="colorbox" src="../graphics/colorbox.png"></a></td>
-		</tr>
-	</c:if>
-	<c:if test="${fn:contains(param.expr, 'ee')}">
-		<tr>
-			<td><input class="plot" type="checkbox" value="recoCompositeCandidates_ZtoAEleEle__PAT.obj.mass_" /></td>
-			<td>e<sup>-</sup>e<sup>+</sup> mass</td>
-			<td class="color"><a class="tbutton colorbutton" href="#"><img value="Blue" class="colorbox" src="../graphics/colorbox.png"></a></td>
-		</tr>
-		<tr>
-			<td><input class="plot" type="checkbox" value="recoCompositeCandidates_ZtoEleEle__PAT.obj.mass_" /></td>
-			<td>e<sup>-</sup>e<sup>-</sup> mass</td>
-			<td class="color"><a class="tbutton colorbutton" href="#"><img value="Cyan" class="colorbox" src="../graphics/colorbox.png"></a></td>
-		</tr>
-		<tr>
-			<td><input class="plot" type="checkbox" value="recoCompositeCandidates_ZtoAEleAEle__PAT.obj.mass_" /></td>
-			<td>e<sup>+</sup>e<sup>+</sup> mass</td>
-			<td class="color"><a class="tbutton colorbutton" href="#"><img value="Magenta" class="colorbox" src="../graphics/colorbox.png"></a></td>
-		</tr>
-	</c:if>
+	<tr>
+		<td><input class="plot" type="checkbox" value="dimuon_OS.txt.gg.mass_" /></td>
+		<td>&mu;<sup>-</sup>&mu;<sup>+</sup> / two global muons mass</td>
+		<td class="color"><a class="tbutton colorbutton" href="#"><img value="Black" class="colorbox" src="../graphics/colorbox.png"></a></td>
+	</tr>
+	<tr>
+		<td><input class="plot" type="checkbox" value="dimuon_OS.txt.gt.mass_" /></td>
+		<td>&mu;<sup>-</sup>&mu;<sup>+</sup> / one global muon mass</td>
+		<td class="color"><a class="tbutton colorbutton" href="#"><img value="Red" class="colorbox" src="../graphics/colorbox.png"></a></td>
+	</tr>
+	<tr>
+		<td><input class="plot" type="checkbox" value="dimuon_OS.txt.tt.mass_" /></td>
+		<td>&mu;<sup>-</sup>&mu;<sup>+</sup> / no global muon mass</td>
+		<td class="color"><a class="tbutton colorbutton" href="#"><img value="Green" class="colorbox" src="../graphics/colorbox.png"></a></td>
+	</tr>
+	<tr>
+		<td><input class="plot" type="checkbox" value="dimuon_LS.txt.gg.mass_" /></td>
+		<td>&mu;<sup>+</sup>&mu;<sup>+</sup> / two global muons mass</td>
+		<td class="color"><a class="tbutton colorbutton" href="#"><img value="Black" class="colorbox" src="../graphics/colorbox.png"></a></td>
+	</tr>
+	<tr>
+		<td><input class="plot" type="checkbox" value="dimuon_LS.txt.gt.mass_" /></td>
+		<td>&mu;<sup>+</sup>&mu;<sup>+</sup> / one global muon mass</td>
+		<td class="color"><a class="tbutton colorbutton" href="#"><img value="Red" class="colorbox" src="../graphics/colorbox.png"></a></td>
+	</tr>
+	<tr>
+		<td><input class="plot" type="checkbox" value="dimuon_LS.txt.tt.mass_" /></td>
+		<td>&mu;<sup>+</sup>&mu;<sup>+</sup> / no global muon mass</td>
+		<td class="color"><a class="tbutton colorbutton" href="#"><img value="Green" class="colorbox" src="../graphics/colorbox.png"></a></td>
+	</tr>
+
 </table>
 						</td>
 					</tr>
