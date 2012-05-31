@@ -35,11 +35,23 @@
     <branch id="5" name="dimuon_LS.txt" level="5">
       <leaf id="30" name="mass_" title="\mu ^+ \mu ^+  / \mu ^- \mu ^-  Mass" labely="Number of Events" labelx="Mass" 
 	    units="GeV/c^2" level="5" description="Like Sign Muon Mass"/>
+	    <leaf id="31" name="gg.mass_" title="\mu ^+ \mu ^+  / \mu ^- \mu ^-  Two Global Muon Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="Like Sign 2-Global Muon Mass "/>
+	    <leaf id="32" name="gt.mass_" title="\mu ^+ \mu ^+  / \mu ^- \mu ^-  One Global Muon Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="Like Sign 1-Global Muon Mass"/>
+	    <leaf id="33" name="tt.mass_" title="\mu ^+ \mu ^+  / \mu ^- \mu ^-  No Global Muon Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="Like Sign 0-Global Muon Mass"/>
     </branch>
 
     <branch id="6" name="dimuon_OS.txt" level="5">
       <leaf id="31" name="mass_" title="\mu ^+ \mu ^-  Mass" labely="Number of Events" labelx="Mass" 
 	    units="GeV/c^2" level="5" description="Opposite Sign Muon Mass"/>
+	    <leaf id="41" name="gg.mass_" title="\mu ^+ \mu ^-  Two Global Muon Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="Opposite Sign 2-Global Muon Mass "/>
+	    <leaf id="42" name="gt.mass_" title="\mu ^+ \mu ^-  One Global Muon Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="Opposite Sign 1-Global Muon Mass"/>
+	    <leaf id="43" name="tt.mass_" title="\mu ^+ \mu ^-  No Global Muon Mass" labely="Number of Events" labelx="Mass" 
+	    units="GeV/c^2" level="5" description="Opposite Sign 0-Global Muon Mass"/>
     </branch>    
   </tree>
 </root>
