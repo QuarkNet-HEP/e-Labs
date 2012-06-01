@@ -1,3 +1,4 @@
+
 var detectorModel = {
   "Collections" : {
     "Tracker3D_MODEL" : [ true ],
