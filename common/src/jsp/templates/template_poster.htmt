@@ -12,7 +12,7 @@
 			function writeCode(linkText, fileName, caption) {
    				iFigure = fileName.indexOf("%FIG:FIGURE");
    				if (iFigure == -1) {
-   					startHREF="<LI><A HREF=\"javascript:showFigure('../plots/view.jsp?menu=no&type=plot&get=data&filename="+fileName+"')";
+   					startHREF="<LI><A HREF=\"javascript:showFigure('../plots/view.jsp?menu=no&type=plot&get=data&filename="+encodeURI(fileName)+"')";
    					endHREF="</A>";
    					quoteAngle="\">";
        				code=startHREF+quoteAngle+linkText+ endHREF+": "+caption;

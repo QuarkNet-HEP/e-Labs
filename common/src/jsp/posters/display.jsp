@@ -9,6 +9,7 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
+<%@ page import="org.apache.commons.codec.net.URLCodec" %>
 
 <%
 	String dfile = request.getParameter("name");
@@ -123,6 +124,9 @@
 	
 	Iterator it = tags.keySet().iterator();
 	String prevKey = null;
+	
+	URLCodec urlCodec = new URLCodec();
+	
 	while (it.hasNext()) {
 		String key = (String) it.next();
 		StringBuffer sb = new StringBuffer((String) tags.get(key));
@@ -130,10 +134,14 @@
 		// I have added code below to get rid of Figure n. for which there are no captions.
 		// 
 		if ("paper".equals(type) && key.startsWith("WORDS:CAPTION")) {
-		    String figureN = key.substring(key.length() - 1);
-		   if (key.length() > 14) { figureN = key.substring( (key.length() - 2),(key.length() ));}
-			template = template.replaceAll("%" + key + "%", Matcher.quoteReplacement("Figure " + 
-				figureN + ". " + sb.toString())); 
+			String figureN = key.substring(key.length() - 1);
+			if (key.length() > 14) { 
+				figureN = key.substring( (key.length() - 2),(key.length() ));
+			}
+			template = template.replaceAll("%" + key + "%", Matcher.quoteReplacement("Figure " + figureN + ". " + sb.toString())); 
+		}
+		if (key.startsWith("FIG:FIGURE")) {
+			template = template.replaceAll("%" + key + "%", Matcher.quoteReplacement(urlCodec.encode(sb.toString())));
 		}
 		template = template.replaceAll("%" + key + "%", Matcher.quoteReplacement(sb.toString()));
 	}

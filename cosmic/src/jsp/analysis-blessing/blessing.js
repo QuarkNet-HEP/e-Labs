@@ -44,8 +44,12 @@ var chanOptions = $.extend({}, options, showSeries, { legend: { noColumns: 4, la
 var defaultOptions = $.extend({}, options, showSeries); 
 
 function seriesLabelFormatter(label, series) {
-	var thisLabel = label.replace(" ", ""); 
+	var thisLabel = label.replace(" ", "");
+	
+	/* Temporarily disable checkboxes until I figure out why it fails 
 	return "<input id=\"" + thisLabel + "checkbox\" type=\"checkbox\" checked></input>" + label + "&nbsp;&nbsp;&nbsp;";
+	*/
+	return label + "&nbsp;&nbsp;&nbsp;";
 }
 
 function onDataLoad1(json) {	

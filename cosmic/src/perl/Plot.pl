@@ -34,7 +34,6 @@ $caption = $h{'caption'};
 $lowX = $h{'lowx'};
 $highX = $h{'highx'};
 $lowY = $h{'lowy'};
-$lowY = "0" if (!$lowY =~ m/.*/ && $plot_type == 1); # want to force a y min of 0 for flux plots
 $highY = $h{'highy'};
 if($plot_type == 2 or $plot_type == 6){
     $zlabel = $h{'zlabel'};

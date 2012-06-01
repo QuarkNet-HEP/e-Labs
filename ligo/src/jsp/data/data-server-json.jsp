@@ -5,7 +5,12 @@
 		 import="gov.fnal.elab.ligo.data.json.*"
 		 import="gov.fnal.elab.expression.data.engine.*"
 		 import="org.apache.commons.lang.*"
-		 import="com.google.gson.*" %><%
+		 import="com.google.gson.*" %>
+
+<%@ include file="../include/elab.jsp" %>
+<%@ include file="../login/login-required.jsp" %>
+
+<%
 	if (user != null) { // require login to access data 
 		response.setContentType("application/json");
 	

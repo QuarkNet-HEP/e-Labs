@@ -153,13 +153,12 @@ public class AnalysisParameterTools {
         return new ArrayList<String>(channels);
     }
     
-    public static final Double DEFAULT_CPLD_FREQUENCY = new Double(41666667);
+    public static final Number DEFAULT_CPLD_FREQUENCY = new Long(41666667);
     
     public static String getCpldFrequencies(Elab elab, Collection<String> files)
             throws ElabException {
         ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
-        List<Double> freqs = new ArrayList();
-        
+        List<Number> freqs = new ArrayList();
         for (CatalogEntry e : rs) {
         	if (e == null) {
         		continue;
