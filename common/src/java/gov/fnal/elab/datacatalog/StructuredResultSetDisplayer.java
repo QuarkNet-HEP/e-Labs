@@ -77,7 +77,7 @@ public class StructuredResultSetDisplayer {
     }
 
     public int display(JspWriter out) throws IOException {
-        Iterator i = results.getSchoolsSorted().iterator();
+        Iterator<School> i = results.getSchoolsSorted().iterator();
         /*
          * This is a lousy way of implementing paging.
          */
@@ -89,7 +89,7 @@ public class StructuredResultSetDisplayer {
             i.next();
         }
         for (int j = 0; j < PAGE_SIZE && i.hasNext(); j++) {
-            displaySchool(out, (School) i.next());
+            displaySchool(out, i.next());
         }
         if (i.hasNext()) {
             links |= NEXT_LINK;
@@ -149,9 +149,8 @@ public class StructuredResultSetDisplayer {
 
     public void displaySchoolContents(JspWriter out, School school)
             throws IOException {
-        Iterator i = school.getMonthsSorted().iterator();
-        while (i.hasNext()) {
-            displayMonth(out, (Month) i.next());
+        for (Month m : school.getMonthsSorted()) {
+        	displayMonth(out, m);
         }
     }
 
@@ -198,9 +197,8 @@ public class StructuredResultSetDisplayer {
 
     public void displayMonthContents(JspWriter out, Month month)
             throws IOException {
-    	for (Iterator i = month.getDetectors().keySet().iterator(); i.hasNext(); ) {
-    		Detector d = (Detector) month.getDetectors().get(i.next());
-    		displayDetector(out, d);
+    	for (int i : month.getDetectors().keySet()) {
+    		displayDetector(out, month.getDetectors().get(i));
     	}
     }
 
@@ -238,8 +236,7 @@ public class StructuredResultSetDisplayer {
     }
     
     public void displayDetectorContents(JspWriter out, Detector detector) throws IOException {
-    	for (Iterator i = detector.getFiles().iterator(); i.hasNext(); ) {
-    		File f = (File) i.next();
+    	for (File f : detector.getFiles()) {
     		displayFile(out, f);
     	}
     }
@@ -305,20 +302,18 @@ public class StructuredResultSetDisplayer {
         out.write("</td>\n");
     }
     
-    public TreeMap collateFilesByDetector(Collection files) {
-    	Iterator i = files.iterator();
-    	TreeMap h = new TreeMap();
+    public TreeMap<Integer, Collection<File>> collateFilesByDetector(Collection<File> files) {
+    	TreeMap<Integer, Collection<File>> h = new TreeMap<Integer, Collection<File>>();
     	
-    	while (i.hasNext()) {
-    		File f = (File) i.next();
-    		Integer currentID = Integer.valueOf(f.getDetector());
-    		if (h.containsKey(currentID)) {
-    			((Collection) h.get(currentID)).add(f);
+    	for (File f : files) { 
+    		int currentId = f.getDetector();
+    		if (h.containsKey(currentId)) {
+    			h.get(currentId).add(f);
     		}
     		else {
-    			Collection c = new ArrayList();
+    			Collection<File> c = new ArrayList<File>();
     			c.add(f);
-    			h.put(currentID, c);
+    			h.put(currentId, c);
     		}
     	}
     	

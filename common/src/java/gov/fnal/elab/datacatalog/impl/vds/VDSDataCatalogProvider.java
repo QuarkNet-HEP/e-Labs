@@ -36,6 +36,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.WeakHashMap;
 
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -61,10 +62,10 @@ import org.griphyn.vdl.directive.Connect;
 import org.griphyn.vdl.util.ChimeraProperties;
 
 public class VDSDataCatalogProvider implements DataCatalogProvider {
-    private WeakHashMap entryCache;
+    private WeakHashMap<String, VDSCatalogEntry> entryCache;
 
     public VDSDataCatalogProvider() {
-        entryCache = new WeakHashMap();
+        entryCache = new WeakHashMap<String, VDSCatalogEntry>();
     }
 
     protected DatabaseSchema openSchema() throws ElabException {
@@ -149,7 +150,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         long start = System.currentTimeMillis();
         try {
             AnnotationSchema annotationschema = null;
-            List lfns = ((AnnotationSchema) annotation).searchAnnotationSafe(Annotation.CLASS_FILENAME,
+            List<String> lfns = ((AnnotationSchema) annotation).searchAnnotationSafe(Annotation.CLASS_FILENAME,
                     null, tree);
             if (lfns == null || lfns.isEmpty()) {
                 return ResultSet.EMPTY_RESULT_SET;
@@ -157,10 +158,9 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
             else {
                 ResultSet rs = new ResultSet();
                 annotationschema = (AnnotationSchema) annotation;
-                for (Iterator i = lfns.iterator(); i.hasNext();) {
-                    String lfn = (String) i.next();
-                    VDSCatalogEntry e = getCachedEntry(annotationschema, lfn);
-                    rs.addEntry(e);
+                for (String lfn : lfns) {
+                	VDSCatalogEntry e = getCachedEntry(annotationschema, lfn);
+                	rs.add(e);
                 }
                 System.out.println("Entry cache size: " + entryCache.size());
                 return rs;
@@ -186,7 +186,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         long start = System.currentTimeMillis();
         try {
             AnnotationSchema annotationschema = null;
-            List lfns = ((AnnotationSchema) annotation).searchAnnotationSafe(Annotation.CLASS_FILENAME,
+            List<String> lfns = ((AnnotationSchema) annotation).searchAnnotationSafe(Annotation.CLASS_FILENAME,
                     null, tree);
             if (lfns == null || lfns.isEmpty()) {
                 return ResultSet.EMPTY_RESULT_SET;
@@ -194,8 +194,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
             else {
                 ResultSet rs = new ResultSet();
                 annotationschema = (AnnotationSchema) annotation;
-                for (Iterator i = lfns.iterator(); i.hasNext();) {
-                    String lfn = (String) i.next();
+                for (String lfn : lfns) {
                     VDSCatalogEntry e = new VDSCatalogEntry();
                     e.setLFN(lfn);
                     rs.addEntry(e);
@@ -219,9 +218,9 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
     private synchronized VDSCatalogEntry getCachedEntry(
             AnnotationSchema annotationschema, String lfn)
             throws IllegalArgumentException, SQLException {
-        VDSCatalogEntry e = (VDSCatalogEntry) entryCache.get(lfn);
+        VDSCatalogEntry e = entryCache.get(lfn);
         if (e == null) {
-            List metaTuples = annotationschema.loadAnnotation(lfn, null,
+            List<org.griphyn.vdl.annotation.Tuple> metaTuples = annotationschema.loadAnnotation(lfn, null,
                     Annotation.CLASS_FILENAME);
             e = new VDSCatalogEntry();
             e.setLFN(lfn);
@@ -260,7 +259,7 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         return getEntries(Arrays.asList(lfns));
     }
 
-    public ResultSet getEntries(Collection lfns) throws ElabException {
+    public ResultSet getEntries(Collection<String> lfns) throws ElabException {
         if (lfns == null) {
             return new ResultSet();
         }
@@ -274,9 +273,9 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
 
             ResultSet rs = new ResultSet();
             annotationschema = (AnnotationSchema) annotation;
-            Iterator i = lfns.iterator();
+            Iterator<String> i = lfns.iterator();
             while (i.hasNext()) {
-                String lfn = (String) i.next();
+                String lfn = i.next();
                 VDSCatalogEntry e = getCachedEntry(annotationschema, lfn);
                 rs.addEntry(e);
             }
@@ -301,14 +300,12 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         DatabaseSchema dbschema = openSchema();
         Annotation annotation = (Annotation) dbschema;
         try {
-            AnnotationSchema annotationschema = null;
-
-            annotationschema = (AnnotationSchema) annotation;
-            Iterator i = entry.getTupleMap().keySet().iterator();
-            while (i.hasNext()) {
-                annotationschema.deleteAnnotation(entry.getLFN(), null, kind,
-                        (String) i.next());
+            AnnotationSchema annotationschema = (AnnotationSchema) annotation;
+            
+            for (String s : entry.getTupleMap().keySet()) {
+            	annotationschema.deleteAnnotation(entry.getLFN(), null, kind, s);
             }
+            
             deleteCachedEntry(entry);
         }
         catch (Exception e) {
@@ -320,8 +317,8 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         }
     }
 
-    protected QueryTree buildQueryTree(Iterator i, QueryElement.TYPES type) {
-        QueryElement qe = (QueryElement) i.next();
+    protected QueryTree buildQueryTree(Iterator<QueryElement> i, QueryElement.TYPES type) {
+        QueryElement qe = i.next();
         if (i.hasNext()) {
             QueryTree qt = new QueryTree(new Predicate(getPredicateType(type)));
             qt.setLchild(buildQueryTree(qe));
@@ -346,13 +343,13 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
         QueryTree qt;
     	if (query instanceof MultiQueryElement) {
             MultiQueryElement meq = (MultiQueryElement) query;
-            Collection c = meq.getAll();
+            Collection<QueryElement> c = meq.getAll();
             if (c.size() < 1) {
                 throw new IllegalArgumentException(
                         "Non-leaf operator with zero elements");
             }
-            Iterator i = c.iterator();
-            QueryElement qe = (QueryElement) i.next();
+            Iterator<QueryElement> i = c.iterator();
+            QueryElement qe = i.next();
             if (i.hasNext()) {
                 qt = new QueryTree(new Predicate(getPredicateType(query
                         .getType())));
@@ -528,9 +525,9 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
 
         // Connect to the database.
         try {
-            Iterator i = entry.tupleIterator();
+            Iterator<Tuple> i = entry.tupleIterator();
             while (i.hasNext()) {
-                Tuple t = (Tuple) i.next();
+                Tuple t = i.next();
                 String key = t.getKey();
                 Object val = t.getValue();
                 org.griphyn.vdl.annotation.Tuple vt;
@@ -581,10 +578,10 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
                 analysis);
         et.storeDV();
         et.close();
-        List metadata = new ArrayList();
-        Iterator i = analysis.getAttributes().entrySet().iterator();
+        List<String> metadata = new ArrayList<String>();
+        Iterator<Entry<String, Object>> i = analysis.getAttributes().entrySet().iterator();
         while (i.hasNext()) {
-        	Map.Entry e = (Map.Entry) i.next();
+        	Entry<String, Object> e = i.next();
         	if (e.getValue() instanceof String) {
         		metadata.add(e.getKey() + " string " + e.getValue());
         	}
@@ -607,19 +604,17 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
             et.loadDV(lfn);
             Derivation dv = et.getDV();
 
-            List l = dv.getPassList();
-            Iterator i = l.iterator();
+            List<Pass> l = dv.getPassList();
+            Iterator<Pass> i = l.iterator();
             while (i.hasNext()) {
-                Pass p = (Pass) i.next();
+                Pass p = i.next();
                 Value v = p.getValue();
                 if (v.getContainerType() == Value.SCALAR) {
                     Scalar d = new Scalar();
                     Scalar s = (Scalar) v;
-                    ListIterator li = s.listIterateLeaf();
-                    while (li.hasNext()) {
-                        Leaf leaf = (Leaf) li.next();
-                        if (leaf instanceof Text) {
-                            String content = ((Text) leaf).getContent();
+                    for (Leaf leaf : (Iterable<Leaf>) s.listIterateLeaf()) {
+                    	if (leaf instanceof Text) {
+                    		String content = ((Text) leaf).getContent();
                             if (content != null) {
                                 d.addLeaf(new Text(content.replaceAll("\\\\n",
                                         "\n")));
@@ -628,24 +623,23 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
                                 d.addLeaf(new Text());
                             }
                         }
-                        else {
+                    	else {
                             d.addLeaf(leaf);
                         }
                     }
                     dv.setPass(new Pass(p.getBind(), d));
                 }
             }
+            
             VDSAnalysis analysis = new VDSAnalysis();
             analysis.setType(dv.getUsesspace() + "::" + dv.getUses(), et
                     .getDV());
             
             CatalogEntry e = getEntry(lfn);
             if (e != null) {
-                i = e.getTupleMap().entrySet().iterator();
-                while (i.hasNext()) {
-                    Map.Entry me = (Map.Entry) i.next();
-                    analysis.setAttribute(String.valueOf(me.getKey()), me.getValue());
-                }
+            	for (Entry<String, Object> me : e.getTupleMap().entrySet()) {
+            		analysis.setAttribute(me.getKey(), me.getValue());
+            	}
             }
             return analysis;
         }

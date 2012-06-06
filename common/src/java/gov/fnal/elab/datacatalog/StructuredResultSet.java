@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -20,6 +19,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import com.mallardsoft.tuple.*;
+
 import org.apache.axis.types.Day;
 
 /**
@@ -34,7 +34,7 @@ public class StructuredResultSet {
     private java.util.Date startDate, endDate;
 
     public StructuredResultSet() {
-    	schools = new TreeMap();
+    	schools = new TreeMap<Triple<String, String, String>, School>();
     }
 
     public School getSchool(String name, String city, String state) {
@@ -119,7 +119,7 @@ public class StructuredResultSet {
             this.name = name;
             this.city = city;
             this.state = state;
-            months = new HashMap();
+            months = new HashMap<String, Month>();
         }
 
         public String getName() {
@@ -163,7 +163,7 @@ public class StructuredResultSet {
         }
         
         public synchronized Collection<Month> getMonthsSorted() {
-            List<Month> monthsSorted = new ArrayList(months.values()); 
+            List<Month> monthsSorted = new ArrayList<Month>(months.values()); 
             Collections.sort(monthsSorted, new Month.DATE_ORDER()); 
             return monthsSorted; 
         }
@@ -221,7 +221,7 @@ public class StructuredResultSet {
         public Month(String month, Date date) {
             this.month = month;
             this.date = date;
-            detectors = new TreeMap();
+            detectors = new TreeMap<Integer, Detector>();
         }
 
         public String getMonth() {
@@ -243,7 +243,7 @@ public class StructuredResultSet {
             detectors.get(d).addFile(f);
         }
         
-        public SortedMap getDetectors() {
+        public SortedMap<Integer, Detector> getDetectors() {
         	return detectors;
         }
 
@@ -273,7 +273,7 @@ public class StructuredResultSet {
     	
     	public Detector(int detector) {
     		this.detectorID = Integer.valueOf(detector);
-    		files = new TreeSet(); 
+    		files = new TreeSet<File>(); 
     	}
 
 		public int compareTo(Detector d) {
@@ -292,7 +292,7 @@ public class StructuredResultSet {
 			files.add(f);
 		}
 		
-		public Collection getFiles() {
+		public Collection<File> getFiles() {
 			return files; 
 		}
 		

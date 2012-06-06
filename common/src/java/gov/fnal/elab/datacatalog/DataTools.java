@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -44,10 +45,10 @@ public class DataTools {
         return "?submit=true&key=" + key + "&value=" + value;
     }
 
-    private static final Map KEYS;
+    private static final Map<String, Integer> KEYS;
 
     static {
-        KEYS = new HashMap();
+        KEYS = new HashMap<String, Integer>();
         KEYS.put("school", 0);
         KEYS.put("startdate", 1);
         KEYS.put("blessed", 2);
@@ -95,7 +96,7 @@ public class DataTools {
             Object[] data = new Object[KEYS.size()];
             
             for (Tuple t : e) {
-                Integer index = (Integer) KEYS.get(t.getKey());
+                Integer index = KEYS.get(t.getKey());
                 if (index != null) {
                     data[index.intValue()] = t.getValue();
                 }
@@ -236,16 +237,16 @@ public class DataTools {
             return "";
         }
         StringBuffer data = new StringBuffer();
-        Set detectors = new HashSet();
+        Set<Object> detectors = new HashSet<Object>();
         
 
         ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
         data.append("Data: ");
         int dataCount = 0;
         
-        Iterator i = rs.iterator();
+        Iterator<CatalogEntry> i = rs.iterator();
         while (i.hasNext()) {
-            CatalogEntry e = (CatalogEntry) i.next();
+            CatalogEntry e = i.next();
             if (e == null) {
                 continue;
             }
@@ -302,7 +303,7 @@ public class DataTools {
      * @return A {@link Collection} of values
      * 
      */
-    public static Collection getUniqueValues(Elab elab, String[] files,
+    public static Collection<Object> getUniqueValues(Elab elab, String[] files,
             String key) throws ElabException {
         return getUniqueValues(elab, Arrays.asList(files),
                 key);
@@ -323,10 +324,10 @@ public class DataTools {
      * @return A {@link Collection} of values
      * 
      */
-    public static Collection getUniqueValues(Elab elab, Collection<String> files,
+    public static Collection<Object> getUniqueValues(Elab elab, Collection<String> files,
             String key) throws ElabException {
         ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
-        Set s = new HashSet();
+        Set<Object> s = new HashSet<Object>();
         for (CatalogEntry e : rs) {
         	if (e != null && e.getTupleValue(key) != null) {
         		s.add(e.getTupleValue(key));
@@ -409,7 +410,7 @@ public class DataTools {
      */
     public static CatalogEntry buildCatalogEntry(final String lfn,
             final Collection<String> metadata) {
-        final Map<String, Object> tuples = new HashMap();
+        final Map<String, Object> tuples = new HashMap<String, Object>();
         for (String m : metadata) {
             int n = m.indexOf(' ');
             int t = m.indexOf(' ', n + 1);
@@ -459,15 +460,15 @@ public class DataTools {
             }
 
             public Iterator<Tuple> tupleIterator() {
-                final Iterator i = tuples.entrySet().iterator();
+                final Iterator<Entry<String, Object>> i = tuples.entrySet().iterator();
 
-                return new Iterator() {
+                return new Iterator<Tuple>() {
                     public boolean hasNext() {
                         return i.hasNext();
                     }
 
-                    public Object next() {
-                        Map.Entry<String, Object> e = (Map.Entry) i.next();
+                    public Tuple next() {
+                        Entry<String, Object> e = i.next();
                         return new Tuple(e.getKey(), e.getValue());
                     }
 
