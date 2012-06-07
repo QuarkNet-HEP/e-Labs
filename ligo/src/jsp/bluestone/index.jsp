@@ -45,7 +45,7 @@
 			<div id="content">
 				<noscript><b>This page requires Javascript</b><br /><br /></noscript>
 				<%-- Scripts need to be loaded after nav-rollover since that is where the js pages live --%>
-				<script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.min.js"></script>
+				<script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.js"></script>
 			    <script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.selection.min.js"></script>
 			    <script src="general.js" type="text/javascript"></script> <%-- General common stuff --%>
 			    <script src="advanced.js" type="text/javascript"></script> <%-- Advanced Mode --%>
