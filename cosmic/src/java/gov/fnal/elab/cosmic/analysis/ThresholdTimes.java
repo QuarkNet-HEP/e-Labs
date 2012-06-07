@@ -31,7 +31,7 @@ public class ThresholdTimes implements Runnable {
     private double cpldFrequency;
     
     public static final NumberFormat NF2F = new DecimalFormat("0.00");
-    public static final NumberFormat NF15F = new DecimalFormat("0.000000000000000");
+    public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
     
     /**
      * Class constructor for a single input file. 
@@ -185,9 +185,9 @@ public class ThresholdTimes implements Runnable {
             wr.write('\t');
             wr.write(String.valueOf(jd));
             wr.write('\t');
-            wr.write(NF15F.format(retime[channel]));
+            wr.write(NF16F.format(retime[channel]));
             wr.write('\t');
-            wr.write(NF15F.format(fetime[channel]));
+            wr.write(NF16F.format(fetime[channel]));
             wr.write('\t');
             wr.write(NF2F.format(nanodiff));
             wr.write('\n');
