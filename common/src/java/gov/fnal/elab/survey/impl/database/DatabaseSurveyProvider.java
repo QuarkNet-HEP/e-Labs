@@ -419,13 +419,13 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider {
 					"LEFT OUTER JOIN \"newSurvey\".completions AS c ON (c.id = a.completion_id) " +
 					"LEFT OUTER JOIN \"newSurvey\".map_questions_tests AS m on (q.id = m.question_id) " +
 					"WHERE c.student_id = ? AND c.type = ? AND q.id = ? ");
-			results = new TreeMap();
+			results = new TreeMap<ElabGroup, Map<ElabStudent, List<ElabSurveyQuestion>>>();
 			for (ElabGroup eg : group.getGroups()) {
 				if (eg.getNewSurveyId() == null) {
 					continue; 
 				}
 				ElabSurvey survey = this.getSurvey(eg.getNewSurveyId().intValue());
-				thisGroup = new HashMap(); 
+				thisGroup = new HashMap<ElabStudent, List<ElabSurveyQuestion>>(); 
 				for (ElabStudent es : eg.getStudents()) { 
 					List<ElabSurveyQuestion> questions = new ArrayList<ElabSurveyQuestion>();
 					for (ElabSurveyQuestion q : survey.getQuestionsById()) {
@@ -465,7 +465,7 @@ public class DatabaseSurveyProvider implements ElabSurveyProvider {
 	public Map<Integer, String> getElabSurveyListForProject(int projectId) throws ElabException {
 		Connection con = null;
 		PreparedStatement ps = null;
-		Map<Integer, String> surveys = new java.util.TreeMap(); 
+		Map<Integer, String> surveys = new TreeMap<Integer, String>(); 
 		
 		try { 
 			con = DatabaseConnectionManager.getConnection(elab.getProperties());

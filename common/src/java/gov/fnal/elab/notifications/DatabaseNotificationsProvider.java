@@ -34,7 +34,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
     }
     
     public void addNotification(ElabGroup eg, Notification n) throws ElabException {
-    	List<ElabGroup> l = new ArrayList();
+    	List<ElabGroup> l = new ArrayList<ElabGroup>();
     	l.add(eg);
     	addNotification(l, EMPTY_PROJECT_LIST, n);
     }
