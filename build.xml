@@ -38,6 +38,12 @@ build-cosmic-vdl2:
 	
 deploy-cosmic-vdl2:
 	Deploys the VDL2 version of the Cosmic e-Lab
+			
+deploy-cosmic-analysis-perl:
+	Deploys the perl analysis code for cosmic
+			
+build-cosmic-analysis:
+	Builds the java analysis code for cosmic
 	
 build-all:
 	Builds all of them
