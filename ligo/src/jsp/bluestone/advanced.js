@@ -357,11 +357,11 @@ function getDataURL() {
 function overrideYLabel(channel, unit) {
 	c = parseChannel(channel);
 	
-	switch (subsystem) {
+	switch (c.subsystem) {
 		case "DMT":
 			return "Velocity (microns/s)";
 		case "PEM":
-			switch (sensor) {
+			switch (c.sensor) {
 				case "SEISX":
 				case "SEISY":
 				case "SEISZ":
