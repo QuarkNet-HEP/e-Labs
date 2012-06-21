@@ -63,11 +63,8 @@ An important part of
 the early scientific activity at CMS is to calibrate the new detector.  
 Physicists use the detector to confirm measurements (such as mass) of  
 well-known particles. They make mass plots with their data..</p> 
-<ol>
-<li style="margin-bottom: 10px;">Use this tool to become familiar with mass plots made from simulated data, also called Monte Carlo data. Compare the plots you get when you use opposite-sign dimuons 
+<p>Use this tool to make mass plots with real data. Compare the plots you get when you use opposite-sign dimuons 
  (&mu;+&mu;-) and like-sign dimuons (&mu;-&mu;- and/or &mu;+&mu;+)</li>
-<li><b>Use real data from the  <a href="../analysis-exploration">Exploration Studies</a>  for your study.</b></li>
-</ol>
 </p> 
 <p>
 Choose an event type, select the runs to analyze and then go to plot selection.
