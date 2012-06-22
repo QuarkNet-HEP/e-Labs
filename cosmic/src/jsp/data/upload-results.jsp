@@ -54,7 +54,7 @@
 	String detectorId = (String) results.getAnalysis().getParameter("detectorid");
 	String comments = (String) results.getAnalysis().getParameter("comments");
 	String dataDir = elab.getProperties().getDataDir();
-	int channels[] = new int[4];
+	long channels[] = new long[4];
 
 	List splits = new ArrayList();  //for both the split name and the channel validity information
 
@@ -157,7 +157,9 @@
 	    CatalogEntry s = elab.getDataCatalogProvider().getEntry((String) l.next());
 	    entries.add(s);
 	    for (int k = 0; k < 4; k++) {
-	        channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).intValue();
+	    	if (s.getTupleValue("chan" + (k+1)) != null) {
+	        	channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).longValue(); 
+	    	}
 	    }
 	}
 	request.setAttribute("channels", channels);
