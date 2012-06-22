@@ -1,2 +1,0 @@
-# m h  dom mon dow   command
-0 3 * * * find /home/quarkcat/tmp -maxdepth 1 -type d -mtime +14 -exec rm -rf {} \;
