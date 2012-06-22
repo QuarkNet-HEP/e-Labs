@@ -43,7 +43,7 @@ import org.griphyn.vdl.util.ChimeraProperties;
  */
 public class Geometry {
 
-    private TreeMap orderedGeoEntries = null;
+    private TreeMap<String, GeoEntryBean> orderedGeoEntries = null;
     private String geoDir = null;
     private String geoFile = null;
     private String localGeoFile = null;
@@ -58,7 +58,7 @@ public class Geometry {
      */
     public Geometry(String dataDirectory, int detectorID)
             throws ElabException {
-        orderedGeoEntries = new TreeMap();
+        orderedGeoEntries = new TreeMap<String, GeoEntryBean>();
         geoFile = dataDirectory + File.separator + detectorID + File.separator
                 + detectorID + ".geo";
         localGeoFile = detectorID + ".geo";
@@ -92,11 +92,11 @@ public class Geometry {
      * @return An iterator that steps through the geometry entries.
      * @see GeoEntry
      */
-    public Iterator getGeoEntries() {
+    public Iterator<GeoEntryBean> getGeoEntries() {
         return orderedGeoEntries.values().iterator();
     }
 
-    public SortedMap getGeoEntriesBefore(String julianDay) {
+    public SortedMap<String, GeoEntryBean> getGeoEntriesBefore(String julianDay) {
         return orderedGeoEntries.headMap(julianDay);
     }
 
@@ -107,8 +107,8 @@ public class Geometry {
      * @return An iterator that steps through the geometry entries.
      * @see GeoEntry
      */
-    public Iterator getDescendingGeoEntries() {
-        TreeMap tmp = new TreeMap(Collections.reverseOrder());
+    public Iterator<GeoEntryBean> getDescendingGeoEntries() {
+        TreeMap<String, GeoEntryBean> tmp = new TreeMap<String, GeoEntryBean>(Collections.reverseOrder());
         tmp.putAll(orderedGeoEntries);
         return tmp.values().iterator();
     }
@@ -340,11 +340,9 @@ public class Geometry {
             return;
 
         try {
-            Iterator it = orderedGeoEntries.values().iterator();
             PrintWriter pw = new PrintWriter(new FileWriter(new File(geoFile)));
-            while (it.hasNext()) {
-                GeoEntryBean geb = (GeoEntryBean) it.next();
-                pw.println(geb.writeForFile());
+            for (GeoEntryBean geb : orderedGeoEntries.values()) {
+            	pw.println(geb.writeForFile());
             }
             pw.close();
         }
@@ -371,11 +369,11 @@ public class Geometry {
 
         Date endDate = null;
 
-        Iterator j = getGeoEntries();
+        Iterator<GeoEntryBean> j = getGeoEntries();
         while (j.hasNext()) {
-            GeoEntryBean gb = (GeoEntryBean) j.next();
+            GeoEntryBean gb = j.next();
             if (geoEntry.getDate().equals(gb.getDate()) && j.hasNext()) {
-                endDate = ((GeoEntryBean) j.next()).getDate();
+                endDate = j.next().getDate();
             }
         }
 
@@ -401,13 +399,11 @@ public class Geometry {
 
         boolean updated = true;
 
-        ArrayList meta = new ArrayList();
+        ArrayList<String> meta = new ArrayList<String>();
         meta.add("stacked boolean " + stacked);
-
-        Iterator k = rs.iterator();
-        while (k.hasNext()) {
-            CatalogEntry e = (CatalogEntry) k.next();
-            dcp.insert(DataTools.buildCatalogEntry(e.getLFN(), meta));
+        
+        for (CatalogEntry ce : rs) {
+        	dcp.insert(DataTools.buildCatalogEntry(ce.getLFN(), meta));
         }
     }
 
