@@ -131,12 +131,14 @@ $oldSTTime = 0;						#time stamp from the LAST ST line (in seconds since midnigh
 $stTimeGlitch = 0;					#flag for a GPS error that causes the time in the ST lines to stick. We need to bail on this ST line and the next DS line if the ST time is stuck.
 $stType = 0;						#flag for version of the ST command used to generate the ST lines. One version will zero the scalars after each read the other version will not. We need to know which one is the case here so that the .bless files get populated with the correct rates.
 $dsRowCount=0;
+$stRowCount=0;
 $stDate = 0;						#Raw date from the ST line	
 $oldSTDate = 0;						#checks to see if the date is changing in the ST line--useful for files with no triggers
 $ConReg = 0;						#string to hold the contents of the control registers from the ST line
 $oldConReg = 0;						#erm . . . 
 $TMCReg = 0;						#string to hold the contents of the TMC registers from the ST line
 $numSplitFiles = 0;					#number of succesfully split files created.
+$chan3 = $chan2 = $chan1 = $chan0 = 0; 	#holds the incremented channel counts. fixes bug #485
 #$DAQID = 0; 						#string to hold the DAQID read in from the ST line. Needs to be zero here as there is a check for its value later.
 
 #convert MAC OS line breaks to UNIX
@@ -166,7 +168,8 @@ while(<IN>){
 	# ST 1009 +2511 +064 3344 031123 180910 A 06 48D6AAD9 112 6600 00A8A000 0016710F
 	# ST 1009 +4134 +040 3344 031423 180910 A 05 550F37D9 112 6600 00847C00 0016710F
 	# ST 1032 +279 +000 3354 070251 301009 A 05 BD8F8E15 111 6477 00231F00 000A711F
-	$reStatus1="^([A-Z]{2}) ([0-9]{4}) ([-+ 0-9]{4}) ([-+ 0-9]{4}) ([0-9]{4}) ([0-9]{6}) ([0-9]{6}) ([AV]) ([0-9]{2}) ([0-9A-F]{8}) ([0-9]{2,3}) ([0-9]{4}) ([0-9A-F]{8}) ([0-9A-F]{8})\$";
+	# added to the regex for word three to address bug 477--TJ
+	$reStatus1="^([A-Z]{2}) ([0-9]{4}) ([-+ 0-9]{4,11}) ([-+ 0-9]{4}) ([0-9]{4}) ([0-9]{6}) ([0-9]{6}) ([AV]) ([0-9]{2}) ([0-9A-F]{8}) ([0-9]{2,3}) ([0-9]{4}) ([0-9A-F]{8}) ([0-9A-F]{8})\$";
 
 	#hardware version < 6000 makes these DS lines:
 	#DS 000021E7 00001F05 00001F97 000021D8 00000021 <--there is a space there!
@@ -220,7 +223,7 @@ while(<IN>){
 			$stTimeGlitch = 1;
 			next;
 		}	
-		$stRowCount++;
+		
 		#We could look at ConReg and TMCReg to see if they change. If they do, we need to start another split file.
 		#$oldSTDate = $stDate;
 		$stDate = $stRow[6];
@@ -229,6 +232,7 @@ while(<IN>){
 		$ConReg = $stRow[13];
 		$oldConReg = $ConReg if $oldConReg == 0; #Testing revealed a case where a data file _started_ with an ST line this changed $ConReg, but not $oldConReg. 
 		#$oldTMCReg = $TMCReg; #Ths one is a bit more complicated. The word changes, but the difference between values doesn't. Fix this later. Very few users can do this.
+		#print "$stRowCount \n";
 		if ($stRowCount == 0) {
 			$TMCReg = $stRow[12];
 			$DAQFirmware = $stRow[10]/100 if $stRow[10] > 99; 	#The DAQ firmware writes the firmware as an INT (e.g., FW version 1.06 is reported in the ST line as 106)
@@ -236,6 +240,7 @@ while(<IN>){
 			$DAQID = int($stRow[11]);
 			die "The DAQ ID selected ($ID) does not match the DAQ ID stored in these data ($DAQID). We've cancelled your upload. Did you select the correct ID?" if $DAQID != 0 && $ID != $DAQID;
 		}
+		$stRowCount++;
 		next; #we need a next here to get the second line present in the output of ST.
 	}
 	
@@ -419,9 +424,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			$oldSTDate = $stDate = $dataRow[11] if $date ne $lastdate; 
 			$oldSTDate = $stDate = $dataRow[11] if $dsRowCount == 0;
 			$oldSTDate = $stDate = $dataRow[11] + 10000 if $dsRowCount == 0 && $dataRow[10] > 235959;
-			if($date ne $lastdate || $oldConReg ne $ConReg || $oldSTDate ne $stDate) {	#start of a new output file 
-				
-				#print "$date \t $lastdate \t $oldConReg \t $ConReg \t $oldSTDate \t $stDate \n";
+			if($date ne $lastdate || $oldSTDate ne $stDate) {	#start of a new output file ##removed the checking of the control registers. Fixes bug #487  
 				if ($lastdate ne "") {
 					#die "These data do not contain the same number of ST and DS lines; we have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount;
 					# The file that we are splitting has hit a date boundary. We need to start writing a new SPLIT file and write the .bless file for the file that we are closing. 
@@ -520,7 +523,6 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					if (($stTime[2]-$stTime[1]) > 0){ # it should have been caught by now, but still. . . 
 						for $j (1..$dsRowCount-1){
 								$stRate0[$j] = sprintf("%0.0f", $stCount0[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
-								#print $stTime[$j]," ", $stTime[$j-1], "\n";
 								$stRate1[$j] = sprintf("%0.0f", $stCount1[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
 								$stRate2[$j] = sprintf("%0.0f", $stCount2[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
 								$stRate3[$j] = sprintf("%0.0f", $stCount3[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
@@ -589,7 +591,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					close $blessFile;	
 					
 					#Empty all of the status arrays so that they can start over with the new split file.
-					@stTime = @StCoutTemp = @stCount0 = @stRate0 = @stCount1 = @stRate1 = @stCount2 = @stRate2 = @stCount3 = @stRate3 = @stEvents = @stRateEvents = @stType = @stPress = @stTemp = @StVcc = @stGPSSats = @stRow = @thRow =  @cpld_frequency1 = @cpld_frequency2 = @stCountTemp = ();
+					@stTime = @StCoutTemp = @stCount0 = @stRate0 = @stCount1 = @stRate1 = @stCount2 = @stRate2 = @stCount3 = @stRate3 = @stEvents = @stRateEvents = @stType = @stPress = @stTemp = @StVcc = @stGPSSats = @stRow =  @cpld_frequency1 = @cpld_frequency2 = @stCountTemp = ();
 					#reset any scalars in use
 					$chan3=$chan2=$chan1=$chan0=$n=$i=$j=$stRowCount=$stType=$dsRowCount=$events=0;
 					$goodChan=-1;
@@ -811,6 +813,7 @@ else{
 	print META "chan4 int $chan3\n";
 	print META "triggers int $events\n";
     print META "cpldfrequency int $cpld_real_freq\n";
+	print META "blessedstatus string awaiting\n"; # File now awaiting blessing
 					
 	# 6. Write the .bless file for the file that was just closed.
 	#First the header
@@ -833,7 +836,7 @@ else{
 	`/usr/bin/perl -i -p -e 's/^nondatalines.*/nondatalines int $non_datalines/' "$raw_filename.meta"`;
 	warn "Bad/ignored lines: $non_datalines Accepted lines: $data_line\n" if($non_datalines > 0);
 	if($sum_lats == 0 or $sum_longs == 0 or $sum_alts == 0){
-		warn "If you included DG commands in your file, there were fewer than six satellites in view when you did. We ignore reports with so few satellites; they provide an unreliable position.";
+		warn "If you included DG commands in your file, there were fewer than six satellites in view when you did. We have ignored these DG commands; they provide an unreliable position.";
 	}
 	else{
 		my $avg_lat = $sum_lats/$lat_count;
