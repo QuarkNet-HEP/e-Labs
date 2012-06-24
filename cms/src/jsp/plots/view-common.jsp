@@ -70,7 +70,7 @@
 	<c:otherwise>		
 		<a href="../data/view-metadata.jsp?filename=${param.filename}&menu=${param.menu}">Show details (metadata)</a>&nbsp;|&nbsp;
 		<a href="../data/plot.jsp?${params}&combine=on">Edit this plot</a>
-		<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>
+		<script type="text/javascript" src="../include/jquery/js/jquery-1.7.2.min.js"></script>
 		<script language="javascript" type="text/javascript" src="../include/excanvas.min.js"></script>
 		<script language="javascript" type="text/javascript" src="../data/plot.js"></script>
 		<script language="javascript" type="text/javascript" src="../include/jquery.flot.js"></script>
