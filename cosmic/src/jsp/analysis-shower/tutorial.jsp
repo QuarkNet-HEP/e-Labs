@@ -53,7 +53,7 @@
 	 						</td>
 	 					</tr><tr>
  			<td colspan=3>
- 				<a href="javascript:glossary('shower',350)">Showers</a>  can pepper an large area of Earth's surface 
+ 				<a href="javascript:glossary('shower',350)">Showers</a> can pepper a large area of Earth's surface 
  				in a very tiny window of time. They can be rare, especially 
  				if the area you are looking in is large.
 		
