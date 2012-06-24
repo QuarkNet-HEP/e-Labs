@@ -103,6 +103,9 @@ public class PlotTool {
         if (options.containsKey("maxy")) {
             maxy = Double.parseDouble(options.get("maxy"));
         }
+        if (options.containsKey("binwidth")) {
+        	binWidth = Double.parseDouble(options.get("binwidth"));
+        }
         
         boolean logx = "true".equals(options.get("logx"));
         boolean logy = "true".equals(options.get("logy"));
