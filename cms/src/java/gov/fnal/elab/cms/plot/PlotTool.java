@@ -104,7 +104,13 @@ public class PlotTool {
             maxy = Double.parseDouble(options.get("maxy"));
         }
         if (options.containsKey("binwidth")) {
-        	binWidth = Double.parseDouble(options.get("binwidth"));
+        	try {
+        		binWidth = Double.parseDouble(options.get("binwidth"));
+        	}
+        	catch (NumberFormatException nfe) {
+        		binWidth = 1;
+        	}
+        	System.out.println("binwidth: \"" + options.get("binwidth") + "\" = " + binWidth); 
         }
         
         boolean logx = "true".equals(options.get("logx"));
