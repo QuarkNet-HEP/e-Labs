@@ -129,12 +129,12 @@ First, a definition:  because almost all muons pass completely through the detec
 			<table border="0" width="100%" id="step-buttons">
 				<tr>
 					<td>
-						<input type="submit" name="back" value="&lt; Data Selection" />
+						<input type="submit" name="back" value="&larr; Data Selection" />
 					</td>
 					<td width="100%">
 					</td>
 					<td>
-						<input id="plot-submit" type="submit" name="forward" value="Plot >" disabled="true" />
+						<input id="plot-submit" type="submit" name="forward" value="Plot &rarr;" disabled="disabled" />
 					</td>
 				</tr>
 			</table>			

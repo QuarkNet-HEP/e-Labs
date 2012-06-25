@@ -121,7 +121,7 @@ Find out.</p>
 						</td>
 						<td>
 							<div>
-								<input id="data-selection-button" type="submit" value="Data Selection >" />
+								<input id="data-selection-button" type="submit" value="Data Selection &rarr;" />
 							</div>
 						</td>
 					</tr>

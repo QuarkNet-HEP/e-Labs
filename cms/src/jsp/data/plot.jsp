@@ -60,13 +60,13 @@
 	<table border="0" width="100%" id="step-buttons">
 		<tr>
 			<td>
-				<input type="submit" name="goto1" value="&lt; Dataset Selection" />
+				<input type="submit" name="goto1" value="&larr; Dataset Selection" />
 			</td>
 			<td>
-				<input type="submit" name="goto2" value="&lt; Data Selection" />
+				<input type="submit" name="goto2" value="&larr; Data Selection" />
 			</td>
 			<td>
-				<input type="submit" name="goto3" value="&lt; Plot Selection" />
+				<input type="submit" name="goto3" value="&larr; Plot Selection" />
 			</td>
 			<td width="100%">
 			</td>

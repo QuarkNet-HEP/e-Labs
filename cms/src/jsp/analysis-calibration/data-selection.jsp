@@ -129,7 +129,7 @@ Choose an event type, select the runs to analyze and then go to plot selection.
 						</td>
 						<td>
 							<div class="wait-on-runs">
-								<input id="plot-params-button" type="submit" value="Plot Selection >" />
+								<input id="plot-params-button" type="submit" value="Plot Selection &rarr;" />
 							</div>
 						</td>
 					</tr>
