@@ -33,7 +33,7 @@
 			<div id="content">
 			
 <a class="help-icon" href="#" onclick="openPopup(event, 'help');">Help <img src="../graphics/help.png" /></a>
-<h1>Plot selection - ${param.analysisName}</h1>
+<h1>Plot Selection - Calibration</h1>
 <script>
 	initlog();
 	log("<span class='red'>dataset: ${param.dataset}</span>");
