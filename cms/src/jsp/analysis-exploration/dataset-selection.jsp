@@ -60,7 +60,6 @@ Find out.</p>
 				<div id="simple-form">
 					<select id="dataset" name="dataset">
 						<option value="none" id="nothing-selected">Choose dataset...</option>
-						<option value="mc09">Monte Carlo Simulation</option>
 						<option value="jpsi11">J/psi (J/&psi;) Data (LHC 2010)</option>
 						<option value="zmumu11">Zmumu (Z&rarr;&mu;&mu;) Data (LHC 2010)</option>
 						<option value="zee11">Zee (Z&rarr;ee) Data (LHC 2010)</option>
