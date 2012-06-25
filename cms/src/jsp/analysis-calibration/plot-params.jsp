@@ -129,7 +129,7 @@ First, a definition:  because almost all muons pass completely through the detec
 			<table border="0" width="100%" id="step-buttons">
 				<tr>
 					<td>
-						<input type="submit" name="back" value="&larr; Data Selection" />
+						&nbsp;
 					</td>
 					<td width="100%">
 					</td>

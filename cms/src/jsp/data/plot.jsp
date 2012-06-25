@@ -59,12 +59,14 @@
 	<e:trinput type="hidden" name="cutsInput" id="cuts-input"/>
 	<table border="0" width="100%" id="step-buttons">
 		<tr>
+			<c:if test='${param.analysis != "calibration"}'>
 			<td>
 				<input type="submit" name="goto1" value="&larr; Dataset Selection" />
 			</td>
 			<td>
 				<input type="submit" name="goto2" value="&larr; Data Selection" />
 			</td>
+			</c:if>
 			<td>
 				<input type="submit" name="goto3" value="&larr; Plot Selection" />
 			</td>
