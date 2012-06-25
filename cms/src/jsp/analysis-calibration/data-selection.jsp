@@ -64,7 +64,7 @@ the early scientific activity at CMS is to calibrate the new detector.
 Physicists use the detector to confirm measurements (such as mass) of  
 well-known particles. They make mass plots with their data..</p> 
 <p>Use this tool to make mass plots with real data. Compare the plots you get when you use opposite-sign dimuons 
- (&mu;+&mu;-) and like-sign dimuons (&mu;-&mu;- and/or &mu;+&mu;+)</li>
+ (&mu;<sup>+</sup>&mu;<sup>-</sup>) and like-sign dimuons (&mu;<sup>-</sup>&mu;<sup>-</sup> and/or &mu;<sup>+</sup>&mu;<sup>+</sup>)
 </p> 
 <p>
 Choose an event type, select the runs to analyze and then go to plot selection.
