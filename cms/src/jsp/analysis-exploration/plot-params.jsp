@@ -86,7 +86,7 @@
 			<table border="0" width="100%" id="step-buttons">
 				<tr>
 					<td>
-						<input type="submit" name="goto1" value="&larr; Dataset Selection" />
+						<input type="submit" name="goto1" value="&lArr; Dataset Selection" />
 					</td>
 					<td>
 						<input type="submit" name="goto2" value="&larr; Data Selection" />
