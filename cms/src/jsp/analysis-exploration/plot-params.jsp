@@ -57,11 +57,11 @@
 			<div id="simple-form">
 				<select id="simplified-plots">
 					<option value="none">Choose plot...</option>
-					<option class="separator" disabled="true">----------------</option>
+					<option class="separator" disabled="disabled">----------------</option>
 					<c:forEach var="leaf" items="${dataset.simplePlots}">
 						<option value="${leaf.id}">${leaf.title}</option>
 					</c:forEach>
-					<option class="separator" disabled="true">----------------</option>
+					<option class="separator" disabled="disabled">----------------</option>
 					<option id="advanced" value="advanced">Advanced</option>
 				</select>
 				<script>

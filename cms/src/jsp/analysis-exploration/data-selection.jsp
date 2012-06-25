@@ -113,7 +113,7 @@
 					<e:hidden image="../graphics/minus.png">
 						<div class="wait-on-runs">
 							<div id="runs-header">
-								<input type="checkbox" id="select-all" checked="true" onchange="selectAll();"/>All
+								<input type="checkbox" id="select-all" checked="checked" onchange="selectAll();"/>All
 								<e:trinput type="hidden" name="runs" id="runs-input" />
 							</div>
 							<div id="runlist">
