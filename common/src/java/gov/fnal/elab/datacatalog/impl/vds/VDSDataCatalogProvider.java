@@ -612,7 +612,9 @@ public class VDSDataCatalogProvider implements DataCatalogProvider {
                 if (v.getContainerType() == Value.SCALAR) {
                     Scalar d = new Scalar();
                     Scalar s = (Scalar) v;
-                    for (Leaf leaf : (Iterable<Leaf>) s.listIterateLeaf()) {
+                    
+                    for (ListIterator<Leaf> li = s.listIterateLeaf(); li.hasNext(); ) {
+                    	Leaf leaf = li.next();
                     	if (leaf instanceof Text) {
                     		String content = ((Text) leaf).getContent();
                             if (content != null) {
