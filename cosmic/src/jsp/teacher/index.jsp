@@ -311,7 +311,7 @@
 							<b>Muon Lifetime Experiments</b> - A classic modern physics experiment to verify time dilation 
 							is the measurement of the muon mean lifetime. Since nearly all 
 							of the cosmic ray muons are created in the upper part of the 
-							atmosphere (&gt;&gt;30 km above the earth's surface), the time of 
+							atmosphere (&raquo; 30 km above the earth's surface), the time of 
 							flight for these muons as they travel to earth should be at 
 							least 100 microseconds: 
 						</p>
@@ -339,7 +339,7 @@
 							proving time dilation. A very thorough explanation of this 
 							experiment is outlined in the 1962 classroom movie titled, "Time 
 							Dilation: An Experiment with Mu Mesons." (This 30 minute movie 
-							can be ordered on CD for $10 from www.physics2000.com/.)   This 
+							can be ordered on CD for $10 from <a href="www.physics2000.com/">Physics2000</a>.)   This 
 							movie helps students understand how to verify time dilation using the muon 
 							lifetime measurement (along with flux measurements at two 
 							different altitudes).
