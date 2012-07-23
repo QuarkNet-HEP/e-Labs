@@ -316,7 +316,7 @@
 							least 100 microseconds: 
 						</p>
 						
-						<p>$$ t_{muon} = \frac{d}{v_{muon}} = \frac{30 \times 10^3 m}{3 \times 10^8 \frac{m}{s}} = 100 \mu s</p>
+						<p>$$ t_{muon} = \frac{d}{v_{muon}} = \frac{30 \times 10^3 m}{3 \times 10^8 \frac{m}{s}} = 100 \mu s$$</p>
   						
 						<p>
 							This calculation assumes that muons are traveling at the speed 
