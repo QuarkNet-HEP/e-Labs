@@ -339,7 +339,7 @@
 							proving time dilation. A very thorough explanation of this 
 							experiment is outlined in the 1962 classroom movie titled, "Time 
 							Dilation: An Experiment with Mu Mesons." (This 30 minute movie 
-							can be ordered on CD for $10 from <a href="www.physics2000.com/">Physics2000</a>.)   This 
+							can be ordered on CD for $10 from <a href="http://www.physics2000.com/">Physics2000</a>.)   This 
 							movie helps students understand how to verify time dilation using the muon 
 							lifetime measurement (along with flux measurements at two 
 							different altitudes).
