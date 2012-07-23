@@ -20,7 +20,8 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 	<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/elab.js"></script>
-
+	<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	
 <script type="text/javascript">
 	window.onload=function(){
 	 hideAll(1,9);
