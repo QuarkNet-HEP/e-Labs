@@ -10,6 +10,9 @@
    		throw new ElabJspException("Missing id parameter");
 	}
 	else {
+		// ugly, ugly hack while I figure out how the real cause of this problem. 
+		id = id.replace("?", "");
+		
 		results = AnalysisManager.getAnalysisRun(elab, user, id);
 		if (results == null) {
 		    throw new ElabJspException("Invalid analysis id: " + id);
