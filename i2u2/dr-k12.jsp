@@ -42,7 +42,7 @@
 				</p>
 			<h3 class="bluebar">Research Questions</h3>
 				<p><b>To assess the impact and effectiveness of e-Labs, and associated professional development.</b></p>
-				<p>Do students learn science practices—increase their skills in using technology as a tool for conducting science (skills that mirror real-world science), engage in scientific collaboration, and increase their knowledge of related science and grid concepts?</p><p>
+				<p>Do students learn science practices—increase their skills in using technology as a tool for conducting science (skills that mirror real-world science), engage in scientific collaboration, and increase their knowledge of related science and distributed computing  concepts?</p><p>
 				Do teachers have a virtual learning community to support their practice and development in order to enable their students to learn science practices with the I2U2 cyber-enabled tools?
 				</p>
 			<h3  class="bluebar">Research Design, Data Collection & Analysis Method, Evaluation Plan</h3>

@@ -23,14 +23,13 @@
 						<a href="/">I2U2 Home</a>
 					</li>
 					<li id="currentSubmenu"><a href="#">About Us</a></li>
-					<li><a href="dr-k12.jsp">DR K-12</a></li>
 				</ul>
 			</div>
 		</div>
 		<div id="content">
 			<div id="contentWithMargin">
 <h2>About Us: The I2U2 Organization Chart</h2>
-<img src="/graphics/org-chart.gif" border="0" align="center">
+<div align="center"><img src="/graphics/org-chart.gif" border="0" align="center"></div>
 <h3 style="text-align:center"><a href="mailto:mbardeen@fnal.gov">Project Contact</a></h3>
 			</div>
 		</div>
