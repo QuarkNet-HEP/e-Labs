@@ -274,8 +274,17 @@ Review students' evidence of what they know/understand and reflections on their 
 						<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
 								</div><div id="vsId6-h" style="visibility:visible; display:">
 						<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
-						<p>
-						A good way to begin LIGO studies is to invite the class to watch Cool Science together. Play the <a href="../home/ligo.swf" target="movie">Standalone Movie</a> and enlarge the window.</p>
+						<p>Are you teaching a course that involves seismology content?  Consider using the I2U2 seismology instructional unit as a means of addressing seismology learning objectives
+						while providing a natural way for students to engage in the LIGO e-Lab.  The standards-based instructional unit includes plans for approximately eight seismology lessons
+						followed by seven lessons that utilize the e-Lab.  Download the instructional unit as a 
+						<a href="#" onclick="javascript:window.open('SeismicUnit-web.pdf', 'unit', 'width=800,height=659, resizable=1, scrollbars=1');return false;">PDF File</a> 
+						or as a  <a href="#" onclick="javascript:window.open('SeismicUnit.doc', 'unit', 'width=800,height=659, resizable=1, scrollbars=1');return false;">Word Document</a>.</p>
+						<p>Some teachers will choose to use the seismology intructional unit and will introduce the
+						LIGO e-Lab in the context of the unit.  Other teachers, such as physics teachers, might
+						not utilize the instructional unit and will come to the LIGO e-Lab from a different
+						direction, such as a unit on wave behavior or on science inquiry skills.  In either
+						case, a good way to begin the LIGO e-Lab is to invite the class to watch Cool Science
+						together.  Play the <a href="../home/ligo.swf" target="movie">Standalone Movie</a> and enlarge the window.</p>
 						<p>Teachers can help students get started in the e-Lab by asking broad questions in class discussion.  These are not research questions.  Their intent would be to motivate kids to start thinking about good research questions.  The following questions are general and would require no specific prior experience:</p>
 						<ul>
 						<li> Make a list of different types of events that could make the ground shake.  Which ones are the most interesting to you (the student)?
