@@ -9,10 +9,9 @@
 
 <p>When running an analysis, you get to choose where the analysis is run.</p>
 
-<p> The analysis can run in three places:</p> <ul>
+<p> The analysis can run in two places:</p> <ul>
 <li> Local machine
 </li> <li> I2U2 cluster
-</li> <li> Grid (initially the Teraport cluster at the Computation Institute, University of Chicago)
 </li></ul> 
 <p />
 If you choose Automatic, the scheduler will decide the best place to run the analysis.
@@ -48,22 +47,13 @@ This table summarizes the features of the different choices you can make. The te
     <td width="69" valign="top">Half as fast as local</td>
     <td width="68" valign="top">Still in testing</td>
     <td width="118" valign="top">Larger analyses can be run without affecting local analyses.</td>
-    <td width="95" valign="top">Slower; still being tested     </td>
-    <td width="173" valign="top">Intermediate size jobs with medium data sets</td>
-  </tr>
-  <tr   bgcolor="#FFFF66">
-    <td width="69" valign="top">Grid<br />
-    (Cutting-edge tool in development)</td>
-    <td width="69" valign="top">Slow</td>
-    <td width="68" valign="top">Least reliable</td>
-    <td width="118" valign="top">Ability to run large CPU and data intensive jobs</td>
-    <td width="95" valign="top">Slowest and sometimes unreliable</td>
-    <td width="173" valign="top">CPU-intensive jobs with large datasets</td>
+    <td width="95" valign="top">Slower</td>
+    <td width="173" valign="top">Intermediate and large size jobs with large data sets</td>
   </tr>
 </table>
 <p />
 <p />
-<h2><a name="Screens_Encountered_After_Submit"></a> Screens Encountered after Submitting a Job to I2U2 Cluster or the Grid</h2>
+<h2><a name="Screens_Encountered_After_Submit"></a> Screens Encountered after Submitting a Job to I2U2 Cluster</h2>
 <p>You can watch the progress and queue an analysis so you can go work on something else.  You will see the following on your screen once you have started the analysis:</p>
 <p />
 <br />
