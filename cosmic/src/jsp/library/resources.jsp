@@ -311,6 +311,8 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 						<div class="tab" id="tab-online">
 					<span class="tab-title">Grid Computing</span>
 					<div class="tab-contents-sublevel">
+						<p>The e-Lab uses <a href="http://en.wikipedia.org/wiki/Distributed_computing">distributed computing</a> where multiple computers,networked
+						together, perform the analysis of the data.  Many scientists use the grid &mdash; one form of distributed computing.  Learn more about the grid.</p>
 						<ul  class="simple">
 							<li>
 								<a href="http://gridcafe.web.cern.ch/gridcafe/">The Grid Cafe</a>
