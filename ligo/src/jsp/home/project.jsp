@@ -47,6 +47,12 @@
 				designed and conducted by students, will connect to LIGO in exciting and authentic ways.
 				Students will learn about LIGO's quest to detect gravitational waves as they analyze the vibrations of the ground
 				underneath LIGO's ultra-sensitive interferometers.</p>
+
+					 <p>The I2U2 project offers a classroom instructional unit on seismology as a companion to the LIGO e-Lab.  
+				Teachers whose courses include Earth science and seismology content will find that the instructional unit offers a natural context for utilizing the LIGO e-Lab.  
+				Learn more about the seismology instructional unit by checking the LIGO e-Lab <a href="../teacher/index.jsp">Teacher Home</a> page under <i>Suggestions for Getting Started</i>.</p>
+
+
           
 	
 				<a href="/elab" target="common"><strong>Information common for all e-Labs</strong></a>
