@@ -43,26 +43,44 @@
 									</p>
 								<%
 							}
+							HTMLEscapingWriter wr = new HTMLEscapingWriter(out);
 						%>
 						
 						<br />
 						<e:vswitch>
 							<e:visible>
-								<strong>Analysis output</strong>
+								<strong>Analysis error output</strong>
+								<code style="font-size: small;">
+								<%
+									wr.write(run.getSTDERR());
+								%>
+								</code>
 							</e:visible>
 							<e:hidden>
-								<strong>Analysis output</strong><br />
-								<code style="font-size: small;">
-<%
-							HTMLEscapingWriter wr = new HTMLEscapingWriter(out);
-							wr.write(run.getSTDERR());
-							out.write("<hr />");
-							if (e != null) {
-								e.printStackTrace(new PrintWriter(wr));
-							}
-							out.write("<hr />");
-							wr.write(run.getDebuggingInfo());
-%>
+								<strong>Analysis error output (detailed)</strong>
+								<br />
+								<em>Analysis Code Output:</em>
+								<br />
+								<code>
+									<% wr.write(run.getSTDERR()); %>
+								</code>
+								<hr />
+								<%
+									if (e != null) {
+								%>
+								<em>Stack Trace</em>
+								<br />
+								<code>
+									<% e.printStackTrace(new PrintWriter(wr)); %>
+								</code>
+								<hr />
+								<%
+
+									}
+								%>
+								<em>Debugging Trace</em>
+								<code>
+									<% wr.write(run.getDebuggingInfo()); %>
 								</code>
 							</e:hidden>
 						</e:vswitch>
