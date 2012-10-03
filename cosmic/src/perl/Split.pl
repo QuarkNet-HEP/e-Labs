@@ -48,6 +48,7 @@ $| = 1;		#print to STDOUT whenever it gets data...not simply when there's a new 
 #information for metadata (raw and split files)
 my ($start, $end, $split_start, $split_end, $today_date, $today_time, $blessFile);
 
+#We use the date and time that this file was read as a piece of metadata.
 ($sec, $min, $hour, $day, $month, $year) = gmtime(time);
 $year += 1900;
 $today_date = sprintf("%04d-%02d-%02d", $year, $month+1, $day);
@@ -71,7 +72,7 @@ if ( ! ( -d $output_dir && -x _ && -w _ )) {
 # Create new metadata file in portal current directory
 
 $last_gm_time = Time::Local::timegm_nocheck(0,0,0,0,1,2000);
-$last_time = "";					#this is simply words 1, 10, 11 and 16 contacenated together
+$lastTime = "";						#this is the time from the last line
 $split_chan[$_] = 0 for (1..4);		#how many events are in each channel in a split file
 $chanRE[$_] = 0 for (1..4);			#initilization for valid channel REs
 $total_events = 0;					#total events in the raw file
@@ -191,32 +192,43 @@ while(<IN>){
 	#DE799F15 00 35 00 00 00 00 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
 	#DE799F15 00 00 00 00 00 3C 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
 	
-	next if ($12 == 111007 && $1 eq DE799F14 && $10 eq DE1C993A);
-	next if ($12 == 111007 && $1 eq DE799F15 && $10 eq DE1C993A);
-	next if ($12 == 111007 && $1 eq DE799F15 && $10 eq DE1C993A);
-	next if ($12 == 111007 && $1 eq DE799F15 && $10 eq DE1C993A);
-	
+	next if $11 == 111007 && $0 eq DE799F14 && $9 eq DE1C993A;
+	next if $11 == 111007 && $0 eq DE799F15 && $9 eq DE1C993A;
+	next if $11 == 111007 && $0 eq DE799F15 && $9 eq DE1C993A;
+	next if $11 == 111007 && $0 eq DE799F15 && $9 eq DE1C993A;
+		
 	#*performance* using an RE is 30% faster than splitting by whitespace
 	if(/$reData/o){
 		@dataRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16);
 		next if $dataRow[10] eq "000000.000" && $dataRow[11] eq "000000"; #munged GPS clock
-		#$lastDay = substr($dataRow[11], 0, 2);
-		$day = substr($dataRow[11], 0, 2);
-		$month = substr($dataRow[11], 2, 2);
-    	$year = substr($dataRow[11], 4, 2) + 2000;   # Assume no records before 2000
-    	$hour = substr($dataRow[10], 0, 2);
-	    $min = substr($dataRow[10], 2, 2);
-	    $sec = substr($dataRow[10], 4, 2);
-	    $msec = substr($dataRow[10], 7, 3);
-	    $offset = $dataRow[15] if $ID < 6000; # Fixes bug 459
+		#next if $dataRow[11] == 111007;
+		$lastTime = $time;
+		$time = $dataRow[10]; 
+		$last_cpld_latch = $cpld_latch;
+		$cpld_latch = hex($dataRow[9]);
+		$last_cpld_trig = $cpld_trig;
+		$cpld_trig = hex($dataRow[0]);
+		
+		if ($rollover_flag == 6){#stuck latch
+			#watch the latch until it changes, then reset the flag
+			next if ($last_cpld_latch == hex($dataRow[9]));
+			$rollover_flag = 0 if $last_cpld_latch != hex($dataRow[9]); # not stuck, reset the flag and move on
+		}
+		if ($rollover_flag == 7){#stuck clock
+			#watch the clock until it changes, then reset the flag
+			next if ($lastTime == $dataRow[10]);	
+			$rollover_flag = 0 if ($lastTime != $dataRow[10]);#clock has advanced
+		}
 		$data_line ++;
 	}
-		
+	
+	
 	#inserted by TJ to look for status update lines
 	elsif(/$reStatus0/o || /$reStatus1/o){
 		$STLineNumber = $.; #needed to check if this ST line is followed by a DS line			
 		@stRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14);
 		$stRow = @stRow; 
+		next if substr($stRow[5], 0, 2)*3600 + substr($stRow[5], 2, 2)*60 + substr($stRow[5], 4, 6) == 0;
 		$oldSTTime = $stTime;
 		$stTime = substr($stRow[5], 0, 2)*3600 + substr($stRow[5], 2, 2)*60 + substr($stRow[5], 4, 6);
 		if ($oldSTTime == $stTime){ #munged GPS time will stop the status line time from advancing. Writing repeating times into the status array will break the calculation of rate and other bits in the bless file
@@ -297,8 +309,8 @@ while(<IN>){
 	#There are four asynchronous cpld rollover errors that can appear in the data, we can trap those and be more clever about dropping data lines.
 
 	#first set the variables
-	$cpld_latch = hex($dataRow[9]);
-	$cpld_trig = hex($dataRow[0]);
+	#$cpld_latch = hex($dataRow[9]);
+	#$cpld_trig = hex($dataRow[0]);
 		
 	#Set the flag with a simple comparison of the buffers. Use the value of the flag as a control on further checks. Those checks can reset the flag to zero and go on or reset the flag to zero and discard the current line (rare).
 	$rollover_flag = 1 if ($cpld_trig <= $last_cpld_trig && $cpld_latch > $last_cpld_latch);
@@ -307,11 +319,18 @@ while(<IN>){
 
 	#$rollover_flag = 4 if ($cpld_trig > $last_cpld_trig && $cpld_latch > $last_cpld_latch); #This should never, ever happen. Ever. Still. . . 
 	#In fact it does happen. On every trigger. Always. The previous line is a good way to drop the first line of each event.
+	
 	#A new rollover case appeared in firmware 1.12 The GPS date could increment before the clock reached midnight.
-	$rollover_flag = 5 if ($day != $lastDay) && (substr($dataRow[10], 0, 2) == 23) && (substr($dataRow[10], 2, 2) > 55); 
+	$rollover_flag = 5 if ($date != $lastDate) && (substr($dataRow[10], 0, 2) == 23) && (substr($dataRow[10], 2, 2) > 55); 
+	# A new rollover flag if the GPS time advances before the cpld_latch does. Thsi could happen two ways:
+	# The clock advances but the latch doesn't ("stuck latch")
+	$rollover_flag = 6 if ($time != $lastTime) && ($cpld_latch == $last_cpld_latch);
+	# the latch increases but the clock doesn't ("stuck clock")
+	$rollover_flag = 7 if ($time == $lastTime) && ($cpld_latch != $last_cpld_latch);
+	# When 6 or 7 happen, they usually do so for several lines. The flag shouldn't be reset until the "stuck" item is no longer stuck
+	
 	#Set the current values of trig and latch for later comparison.
-	$last_cpld_trig = $cpld_trig;
-	$last_cpld_latch = $cpld_latch;
+	#$last_cpld_latch = $cpld_latch;
 
 	#Check the cause of the rollover flags, decide whether to accept this line, reset the flag
 	
@@ -339,42 +358,63 @@ while(<IN>){
 	#	next;
 	#}
 	
-	if ($rollover_flag == 5){
-		$rollover_flag = 0;
-		next;
-	}
+	next if ($rollover_flag == 5);
+
+	next if ($rollover_flag == 6);
 	
+	next if ($rollover_flag == 7);
+
 if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 	# get date/time of the current line
-		if($last_time ne $dataRow[0].$dataRow[9].$dataRow[10].$dataRow[15]){
+		$lastDate = $date;
+		$date = $dataRow[11];
+		$lastTime = $time;
+		$time = $dataRow[10];
+		next if $time < $lastTime && $lastTime < 230000;
+		$day = substr($dataRow[11], 0, 2);
+		$month = substr($dataRow[11], 2, 2);
+    	$year = substr($dataRow[11], 4, 2) + 2000;   # Assume no records before 2000
+    	$hour = substr($dataRow[10], 0, 2);
+	    $min = substr($dataRow[10], 2, 2);
+	    $sec = substr($dataRow[10], 4, 2);
+	    $msec = substr($dataRow[10], 7, 3);
+	    $offset = $dataRow[15] if $ID < 6000; # Fixes bug 459
+
+
+		#The following IF block sends the date and time fromt the current line to an external module to ask what the date and time are. 
+		#That's not necessary and really, really expensive in terms of run time. I'm taking it out.
+		#if($lastTime ne $dataRow[0].$dataRow[9].$dataRow[10].$dataRow[15]){
         	#*performance* NOT using a function call saves some compute time here
         	#($sec, $min, $hour, $day, $month, $year) = &curr_line_time_setup(@row);
+       		#$lastDay = $day; 
        		
-       		$lastDay = $day; 
-       		
-			$CPLDdifference = (hex($dataRow[0])-hex($dataRow[9]))/41666667 if $DAQID < 6000;
-			$CPLDdifference = (hex($dataRow[0])-hex($dataRow[9]))/25000000 if $DAQID > 5999;
-			$sec_offset = sprintf("%.0f", $sec + $msec/1000 + $offset/1000);
-	        $sec = $sec_offset + $CPLDdifference;
+			#$CPLDdifference = (hex($dataRow[0])-hex($dataRow[9]))/41666667 if $DAQID < 6000;
+			#$CPLDdifference = (hex($dataRow[0])-hex($dataRow[9]))/25000000 if $DAQID > 5999;
+			
+			#$sec_offset = sprintf("%.0f", $sec + $msec/1000 + $offset/1000);
+	        #$sec = $sec_offset;# + $CPLDdifference;
+			#$sec = $sec_offset + $CPLDdifference;
 	        #this is here because we require lines to go in the absolute correct day (with offsets taken into consideration)
 	        #Note: most of the compute time of Split.pl is in these 2 calls
-			$curr_gm_time = Time::Local::timegm_nocheck($sec, $min, $hour, $day, $month-1, $year);
-			($sec, $min, $hour, $day, $month, $year) = (gmtime($curr_gm_time))[0..5];
+			#$curr_gm_time = Time::Local::timegm_nocheck($sec, $min, $hour, $day, $month-1, $year);
+			#($sec, $min, $hour, $day, $month, $year) = (gmtime($curr_gm_time))[0..5];
 
-			$year = $year+1900;
-			$month = sprintf("%02d", $month+1);
-			$day = sprintf("%02d", $day);
-		} # end of if ($last_time ne $dataRow. . . 
+			#$year = $year+1900;
+			#$month = sprintf("%02d", $month+1);
+			#$day = sprintf("%02d", $day);
+			
+			#So the problem lies in here. . . We are re-defining $day. . .that changes date for no good reason. that can spawn a new split file for no good reason. Taking this out to test bug 495.
+		#} # end of if ($lastTime ne $dataRow. . . 
 		
-		$last_time = $dataRow[0].$dataRow[9].$dataRow[10].$dataRow[15];
+		#$last_time = $dataRow[0].$dataRow[9].$dataRow[10].$dataRow[15];
 
 		#This next line may not be necessary after the dataRow[14]==4 check implemented above.
-		next if($curr_gm_time < $last_gm_time);	#make sure that the GPS times are increasing
+		#next if($curr_gm_time < $last_gm_time);	#make sure that the GPS times are increasing
 	
-		$last_gm_time = $curr_gm_time;
+		#$last_gm_time = $curr_gm_time;
 
-		$date = sprintf("%04d-%02d-%02d", $year, $month, $day);
-		$time = sprintf("%02d:%02d:%02d", $hour, $min, $sec);
+		#$date = sprintf("%04d-%02d-%02d", $year, $month, $day);
+		#$time = sprintf("%02d:%02d:%02d", $hour, $min, $sec);
 	
 		$total_events++ if hex($dataRow[1]) >= 128; # If the 7th bit is set, this is a new and valid event.
 
@@ -421,11 +461,14 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 
 			# When we see new day--or the control register changes, split file at the day boundary
 			# Mike suggested that we split at midnight, even though Julian Days begin at Noon
-			$oldSTDate = $stDate = $dataRow[11] if $date ne $lastdate; 
+			$oldSTDate = $stDate = $dataRow[11] if $date ne $lastDate && $stRowCount == 0; 
 			$oldSTDate = $stDate = $dataRow[11] if $dsRowCount == 0;
 			$oldSTDate = $stDate = $dataRow[11] + 10000 if $dsRowCount == 0 && $dataRow[10] > 235959;
-			if($date ne $lastdate || $oldSTDate ne $stDate) {	#start of a new output file ##removed the checking of the control registers. Fixes bug #487  
-				if ($lastdate ne "") {
+			#print "$. $date $lastDate $oldSTDate $stDate $fn \n";
+			if($date ne $lastDate || $oldSTDate ne $stDate) {	#start of a new output file ##removed the checking of the control registers. Fixes bug #487  
+				#print "Dates don't match, Boss. $date $lastDate $stDate $oldSTDate \n";
+				
+				if ($lastDate ne "") {
 					#die "These data do not contain the same number of ST and DS lines; we have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount;
 					# The file that we are splitting has hit a date boundary. We need to start writing a new SPLIT file and write the .bless file for the file that we are closing. 
 					# First, some housekeeping:
@@ -556,7 +599,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
     	            $cpld_real_freq = sprintf("%0.0f",$cpld_real_freq_tot/$cpld_real_count) if $cpld_real_count !=0;
 					
 					#Start writing meta and write metadata about the file that was just closed						
-					print META "enddate date $lastdate $lasttime\n";
+					print META "enddate date $lastDate $lastTime\n";
 					print META "ConReg0 string ", substr($ConReg,6,2),"\n";
 					print META "ConReg1 string ", substr($ConReg,4,2),"\n";
 					print META "ConReg2 string ", substr($ConReg,2,2),"\n";
@@ -597,8 +640,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					$goodChan=-1;
 					$numSplitFiles++;
 				
-				}#end if($lastdate ne "")
-			#}#end if($date ne $lastdate)
+				}#end if($lastDate ne "")
+			#}#end if($date ne $lastDate)
 
 			#open a NEW split file
 			$index = 0;				#incremented if a split file of this name already exists
@@ -629,8 +672,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			print META "type string split\n";
 			print META "blessfile string $sfn\n"; 
 		} # end  if($total_events > 0 && $stRowCount > 0)
-			$lastdate = $date;
-			$lasttime = $time;
+			#$lastDate = $date;
+			#$lasttime = $time;
 
 			print SPLIT $_;
         	# Thanks to Nick Dettman for this code calculating actual CPLD frequency.
@@ -642,7 +685,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 	        $cpld_hour = substr($dataRow[10], 0, 2);
     	    $cpld_min = substr($dataRow[10], 2, 2);
         	$cpld_sec = substr($dataRow[10], 4, 6);
-	        $cpld_sec_offset = sprintf("%.0f", $cpld_sec + ($dataRow[15]/1000));
+	        $cpld_sec_offset = sprintf("%.0f", $cpld_sec + ($dataRow[15]/1000)) if $DAQID < 6000;
     	    $cpld_day_seconds = $cpld_hour*3600 + $cpld_min*60 + $cpld_sec_offset;
         	
         	$cpld_day_seconds = 0 if $cpld_day_seconds == 86400;
@@ -793,7 +836,7 @@ else{
     $cpld_real_freq = sprintf("%0.0f",$cpld_real_freq_tot/$cpld_real_count) if $cpld_real_count !=0;
 					
 	#Start writing meta and write metadata about the file that was just closed						
-	print META "enddate date $lastdate $lasttime\n";
+	print META "enddate date $lastDate $lastTime\n";
 	print META "ConReg0 string ", substr($ConReg,6,2),"\n";
 	print META "ConReg1 string ", substr($ConReg,4,2),"\n";
 	print META "ConReg2 string ", substr($ConReg,2,2),"\n";
