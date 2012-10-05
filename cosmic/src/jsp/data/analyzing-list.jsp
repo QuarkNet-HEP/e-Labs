@@ -87,7 +87,7 @@
 			
 			    if(e.getTuples().size() == 0){
 			        %> 
-			        	<tr><td><span class="error">(database problem) No file associated with: <%= lfn %></span></td></tr>
+			        	<tr><td><span class="error">Missing file: <%= lfn %></span></td></tr>
 			        <%
 			        continue;
 			    }
@@ -176,11 +176,13 @@
 				    </tr>
 				<%
 			}
-			request.setAttribute("startDate", sef.format(startdate));
-			if (enddate == null) {
-				enddate = startdate;
+			if (startdate != null) {
+				request.setAttribute("startDate", sef.format(startdate));
+				if (enddate == null) {
+					enddate = startdate;
+				}
+				request.setAttribute("endDate", sef.format(enddate));
 			}
-			request.setAttribute("endDate", sef.format(enddate));
 			//trim off extra ", " in Strings
 			rawDataString = rawDataString.substring(0, rawDataString.length()-2);
 			detectorIDString = detectorIDString.substring(0, detectorIDString.length() - 2);
