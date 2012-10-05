@@ -878,7 +878,7 @@ else{
 	#print "$chan0 $chan1 $chan2 $chan3\n";
 	
 	#insert metadata which was made from analyzing the WHOLE raw data file
-	$endDateMeta = 2000+substr($date,4,2). "-". substr($date,2,2). "-" . substr($date,0,2) . " " ;
+	$endDateMeta = 2000+substr($date,4,2). "-". substr($date,2,2). "-" . substr($date,0,2);
 	$endTimeMeta = substr($time,0,2). ":" .substr($time,2,2). ":" .substr($time,4,2);
 	`/usr/bin/perl -i -p -e 's/^ThisFileNeverCompletedSplitting.*/enddate date $endDateMeta $endTimeMeta/' "$raw_filename.meta"`;
 	`/usr/bin/perl -i -p -e 's/^totalevents.*/totalevents int $total_events/' "$raw_filename.meta"`;
