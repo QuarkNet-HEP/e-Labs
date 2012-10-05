@@ -440,7 +440,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 				print META "creationdate date $today_date $today_time\n";
 				print META "detectorid string $DAQID\n";
 				print META "type string raw\n";
-				$earliest_start = $date . " " . $time;
+				#need to format date to YYYY-MM-DD and Time to HH:MM:SS
+				$earliest_start = 2000+substr($date,4,2)."-". substr($date,2,2)."-". substr($date,0,2) . " " . substr($time,0,2).":". substr($time,2,2).":". substr($time,4,2);
 				print META "startdate date $earliest_start\n"; # Earliest start date in file
 				$jd = jd($day, $month, $year, $hour, $min, $sec);	#GPS offset already taken into account from above
 	            print META "julianstartdate float $jd\n";   # Earliest start date in file in julian days
@@ -599,7 +600,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
     	            $cpld_real_freq = sprintf("%0.0f",$cpld_real_freq_tot/$cpld_real_count) if $cpld_real_count !=0;
 					
 					#Start writing meta and write metadata about the file that was just closed						
-					print META "enddate date $lastDate $lastTime\n";
+					#print META "enddate date $lastDate $lastTime\n";
+					print META "enddate date ", 2000+substr($lastDate,4,2). "-". substr($lastDate,2,2). "-" . substr($lastDate,0,2) . " " .substr($lastTime,0,2). ":" .substr($lastTime,2,2). ":" .substr($lastTime,4,2),"\n";
 					print META "ConReg0 string ", substr($ConReg,6,2),"\n";
 					print META "ConReg1 string ", substr($ConReg,4,2),"\n";
 					print META "ConReg2 string ", substr($ConReg,2,2),"\n";
@@ -664,7 +666,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			# Write initial metadata for lfn that was just opened
 			print META "[SPLIT] $output_dir/$fn\n";
 			print META "creationdate date $today_date $today_time\n";
-			print META "startdate date $date $time\n";
+			print META "startdate date ", 2000+substr($date,4,2). "-". substr($date,2,2). "-" . substr($date,0,2) . " " .substr($time,0,2). ":" .substr($time,2,2). ":" .substr($time,4,2),"\n";
 	        print META "julianstartdate float $jd\n";   # Earliest start date in file in julian days
 			#print META "source string $fn\n";
 			print META "source string $raw_filename\n"; #Fixes bug 457
@@ -836,7 +838,9 @@ else{
     $cpld_real_freq = sprintf("%0.0f",$cpld_real_freq_tot/$cpld_real_count) if $cpld_real_count !=0;
 					
 	#Start writing meta and write metadata about the file that was just closed						
-	print META "enddate date $lastDate $lastTime\n";
+	#2000+substr($date,4,2). "-". substr($date,2,2). "-" . substr($date,0,2) . " " .substr($time,0,2). ":" .substr($time,2,2). ":" .substr($time,4,2),"\n"
+	#print META "enddate date $lastDate $lastTime\n";
+	print META "enddate date ", 2000+substr($lastDate,4,2). "-". substr($lastDate,2,2). "-" . substr($lastDate,0,2) . " " .substr($lastTime,0,2). ":" .substr($lastTime,2,2). ":" .substr($lastTime,4,2),"\n";
 	print META "ConReg0 string ", substr($ConReg,6,2),"\n";
 	print META "ConReg1 string ", substr($ConReg,4,2),"\n";
 	print META "ConReg2 string ", substr($ConReg,2,2),"\n";
@@ -874,7 +878,9 @@ else{
 	#print "$chan0 $chan1 $chan2 $chan3\n";
 	
 	#insert metadata which was made from analyzing the WHOLE raw data file
-	`/usr/bin/perl -i -p -e 's/^ThisFileNeverCompletedSplitting.*/enddate date $date $time/' "$raw_filename.meta"`;
+	$endDateMeta = 2000+substr($date,4,2). "-". substr($date,2,2). "-" . substr($date,0,2) . " " ;
+	$endTimeMeta = substr($time,0,2). ":" .substr($time,2,2). ":" .substr($time,4,2);
+	`/usr/bin/perl -i -p -e 's/^ThisFileNeverCompletedSplitting.*/enddate date $endDateMeta $endTimeMeta/' "$raw_filename.meta"`;
 	`/usr/bin/perl -i -p -e 's/^totalevents.*/totalevents int $total_events/' "$raw_filename.meta"`;
 	`/usr/bin/perl -i -p -e 's/^nondatalines.*/nondatalines int $non_datalines/' "$raw_filename.meta"`;
 	warn "Bad/ignored lines: $non_datalines Accepted lines: $data_line\n" if($non_datalines > 0);
