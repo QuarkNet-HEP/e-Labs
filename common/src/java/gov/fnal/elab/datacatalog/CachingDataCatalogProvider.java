@@ -49,13 +49,13 @@ public class CachingDataCatalogProvider implements DataCatalogProvider {
         return rs;
     }
     
-    private boolean equals(Collection c1, Collection c2) {
+    private boolean equals(Collection<?> c1, Collection<?> c2) {
         //here equals(null, null) == false
         if (c1 == null || c2 == null) {
             return false;
         }
         else {
-            return new HashSet(c1).containsAll(c2) && c1.size() == c2.size();
+            return new HashSet<Object>(c1).containsAll(c2) && c1.size() == c2.size();
         }
     }
     

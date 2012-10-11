@@ -57,23 +57,23 @@ public abstract class CatalogEntry implements Iterable<Tuple> {
     	return tupleIterator(); 
     }
 
-    public abstract Collection getTuples();
+    public abstract Collection<?> getTuples();
 
-    public Map getTupleMap() {
-        return new AbstractMap() {
-            public Set entrySet() {
-                return new AbstractSet() {
-                    public Iterator iterator() {
-                        final Iterator i = tupleIterator();
-                        return new Iterator() {
+    public Map<String, Object> getTupleMap() {
+        return new AbstractMap<String, Object>() {
+            public Set<Entry<String, Object>> entrySet() {
+                return new AbstractSet<Entry<String, Object>>() {
+                    public Iterator<Entry<String, Object>> iterator() {
+                        final Iterator<Tuple> i = tupleIterator();
+                        return new Iterator<Entry<String, Object>>() {
                             public boolean hasNext() {
                                 return i.hasNext();
                             }
 
-                            public Object next() {
-                                final Tuple t = (Tuple) i.next();
-                                return new Map.Entry() {
-                                    public Object getKey() {
+                            public Entry<String, Object> next() {
+                                final Tuple t = i.next();
+                                return new Entry<String, Object>() {
+                                    public String getKey() {
                                         return t.getKey();
                                     }
 
@@ -114,9 +114,9 @@ public abstract class CatalogEntry implements Iterable<Tuple> {
         StringBuffer sb = new StringBuffer();
         sb.append(lfn);
         sb.append('{');
-        Iterator i = tupleIterator();
+        Iterator<Tuple> i = tupleIterator();
         while (i.hasNext()) {
-            Tuple t = (Tuple) i.next();
+            Tuple t = i.next();
             sb.append(t.getKey());
             sb.append('=');
             sb.append(t.getValue());
@@ -149,7 +149,8 @@ public abstract class CatalogEntry implements Iterable<Tuple> {
         	this.descending = true; 
         }
 
-        public int compare(CatalogEntry e1, CatalogEntry e2) {
+		@SuppressWarnings("unchecked")
+		public int compare(CatalogEntry e1, CatalogEntry e2) {
             Object v1 = e1.getTupleValue(key);
             Object v2 = e2.getTupleValue(key);
             int c;
@@ -171,8 +172,8 @@ public abstract class CatalogEntry implements Iterable<Tuple> {
                         throw new RuntimeException("Tuple type error");
                     }
                     else {
-                        if (v1 instanceof Comparable) {
-                            c = ((Comparable) v1).compareTo(v2);
+                        if (v1 instanceof Comparable<?>) {
+                            c = ((Comparable<Object>) v1).compareTo(v2);
                         }
                         else {
                             c = System.identityHashCode(v2) - System.identityHashCode(v1);

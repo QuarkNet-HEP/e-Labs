@@ -59,8 +59,8 @@ public class VDSCatalogEntry extends CatalogEntry {
         public boolean isEmpty() {
             return tuples.isEmpty();
         }
-
-    	@Override
+    	
+		@Override
         public Iterator iterator() {
             return new It(tuples.iterator());
         }
@@ -72,9 +72,9 @@ public class VDSCatalogEntry extends CatalogEntry {
     }
     
     class It implements Iterator<gov.fnal.elab.datacatalog.Tuple> {
-        private java.util.Iterator<org.griphyn.vdl.annotation.Tuple> it;
+        private Iterator<org.griphyn.vdl.annotation.Tuple> it;
         
-        public It(Iterator it) {
+        public It(Iterator<org.griphyn.vdl.annotation.Tuple> it) {
             this.it = it;
         }
 
