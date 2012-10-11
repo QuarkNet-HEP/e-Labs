@@ -15,6 +15,7 @@ import gov.fnal.elab.analysis.ElabAnalysis;
 import gov.fnal.elab.analysis.GenericAnalysis;
 import gov.fnal.elab.analysis.InitializationException;
 import gov.fnal.elab.analysis.impl.vds.VDSAnalysis;
+import gov.fnal.elab.datacatalog.AnalysisCatalogProvider;
 import gov.fnal.elab.datacatalog.CachingDataCatalogProvider;
 import gov.fnal.elab.datacatalog.DataCatalogProvider;
 import gov.fnal.elab.notifications.ElabNotificationsProvider;
@@ -105,6 +106,23 @@ public class ElabFactory {
             set(elab, DATACATALOG, p);
         }
         return (DataCatalogProvider) p;
+    }
+    
+    private static final String ANALYSISCATALOG = "analysiscatalog";
+    
+    /**
+     * Returns an instance of an analysis catalog provider for the given elab. An analysis
+     * catalog provider implements the functionality
+     */
+    public static synchronized AnalysisCatalogProvider getAnalysisCatalogProvider(
+    		Elab elab) {
+    	ElabProvider p = get(elab, ANALYSISCATALOG);
+    	if (p == null) {
+    		setVDSHome(elab);
+    		p = (AnalysisCatalogProvider) newInstance(elab, ANALYSISCATALOG);
+    		set(elab, ANALYSISCATALOG, p);
+    	}
+    	return (AnalysisCatalogProvider) p;
     }
 
     private static final String TEST = "test";
