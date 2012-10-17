@@ -48,11 +48,13 @@ $| = 1;		#print to STDOUT whenever it gets data...not simply when there's a new 
 #information for metadata (raw and split files)
 my ($start, $end, $split_start, $split_end, $today_date, $today_time, $blessFile);
 
-#We use the date and time that this file was read as a piece of metadata.
-($sec, $min, $hour, $day, $month, $year) = gmtime(time);
+($sec, $min, $hour, $day, $month, $year) = gmtime(time); #these variables mean Right Now--the time that the file was read by the system
+
 $year += 1900;
 $today_date = sprintf("%04d-%02d-%02d", $year, $month+1, $day);
 $today_time = sprintf("%02d:%02d:%02d", $hour, $min, $sec);
+
+#now that we've written today_data and today_time, we can reuse these variables ($sec, $min, etc.) to represent values from the raw data.
 
 $raw_filename = $ARGV[0];
 $output_dir=$ARGV[1];
@@ -78,7 +80,7 @@ $chanRE[$_] = 0 for (1..4);			#initilization for valid channel REs
 $total_events = 0;					#total events in the raw file
 $non_datalines = 0;					#junk lines
 $raw_meta_written = 0;				#only open META file once
-$lastdate = "";						#split files by days
+$lastDate = "";						#split files by days
 $sum_lats = 0;						#sum of latitudes from "DG" lines in the raw datafile
 $sum_longs = 0;						#sum of longitudes from "DG" lines in the raw datafile
 $sum_alts = 0;						#sum of altitudes from "DG" lines in the raw datafile
@@ -184,24 +186,53 @@ while(<IN>){
 	#regExp for the output of the TL command:
 	$reThreshold0="^([A-Z]{2}) L0=([0-9]+) L1=([0-9]+) L2=([0-9]+) L3=([0-9]+)\$";
 
-	#inserted by TJ to look for data lines that appear when the user types HT--Bug 372
-	#that user command inserts the next four lines of data into the file as an example.
-	#these lines are fake data and shouldn't make it through split
-	#DE799F14 BB 00 00 00 00 00 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
-	#DE799F15 00 00 00 00 21 00 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
-	#DE799F15 00 35 00 00 00 00 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
-	#DE799F15 00 00 00 00 00 3C 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
-	
-	next if $11 == 111007 && $0 eq DE799F14 && $9 eq DE1C993A;
-	next if $11 == 111007 && $0 eq DE799F15 && $9 eq DE1C993A;
-	next if $11 == 111007 && $0 eq DE799F15 && $9 eq DE1C993A;
-	next if $11 == 111007 && $0 eq DE799F15 && $9 eq DE1C993A;
-		
 	#*performance* using an RE is 30% faster than splitting by whitespace
 	if(/$reData/o){
+		$non_datalines++;
 		@dataRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16);
-		next if $dataRow[10] eq "000000.000" && $dataRow[11] eq "000000"; #munged GPS clock
-		#next if $dataRow[11] == 111007;
+		#next if $dataRow[10] eq "000000.000" && $dataRow[11] eq "000000"; #munged GPS clock
+		if ($dataRow[10] eq "000000.000" && $dataRow[11] eq "000000"){ #munged GPS clock
+			$non_datalines ++;
+			next;
+		}
+
+		#inserted by TJ to look for data lines that appear when the user types HT--Bug 372
+		#that user command inserts the next four lines of data into the file as an example.
+		#these lines are fake data and shouldn't make it through split
+		#DE799F14 BB 00 00 00 00 00 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
+		#DE799F15 00 00 00 00 21 00 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
+		#DE799F15 00 35 00 00 00 00 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
+		#DE799F15 00 00 00 00 00 3C 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
+	
+		if ($dataRow[11] == 111007 && $dataRow[0] eq DE799F14 && $dataRow[9] eq DE1C993){
+			$non_datalines ++;
+			next;
+		}
+		if ($dataRow[11] == 111007 && $dataRow[0] eq DE799F15 && $dataRow[9] eq DE1C993A){
+			$non_datalines ++;
+			next
+		}
+		if ($dataRow[11] == 111007 && $dataRow[0] eq DE799F15 && $dataRow[9] eq DE1C993A){
+			$non_datalines ++;
+			next
+		}
+		if ($dataRow[11] == 111007 && $dataRow[0] eq DE799F15 && $dataRow[9] eq DE1C993A){
+			$non_datalines ++;
+			next
+		}
+
+		#there can be asynchronous clock and date rollovers: Bug 513
+		#D8BDBF27 00 00 00 28 00 00 00 00 D8621B39 235956.009 190912 A 08 0 +0051
+		#DD78EF15 AB 00 2E 00 2D 00 2C 00 DCDA83F9 235959.001 200912 A 06 0 +0059
+		#DD78EF15 00 38 00 3D 00 3A 00 3A DCDA83F9 235959.001 200912 A 06 0 +0059
+		#DF2C1263 B4 00 37 00 37 00 37 00 DE57FC39 000000.009 200912 A 08 0 +0051
+		if ($dataRow[10] > 235950 && $dataRow[11] != $date){ #munged GPS clock
+			$non_datalines ++;
+			next;
+		}
+		
+		$lastDate = $date;
+		$date = $dataRow[11];
 		$lastTime = $time;
 		$time = $dataRow[10]; 
 		$last_cpld_latch = $cpld_latch;
@@ -225,10 +256,12 @@ while(<IN>){
 	
 	#inserted by TJ to look for status update lines
 	elsif(/$reStatus0/o || /$reStatus1/o){
+		$non_datalines++;
 		$STLineNumber = $.; #needed to check if this ST line is followed by a DS line			
 		@stRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14);
 		$stRow = @stRow; 
-		next if substr($stRow[5], 0, 2)*3600 + substr($stRow[5], 2, 2)*60 + substr($stRow[5], 4, 6) == 0;
+		#next if substr($stRow[5], 0, 2)*3600 + substr($stRow[5], 2, 2)*60 + substr($stRow[5], 4, 6) == 0;
+		next if $stRow[5] == 0;
 		$oldSTTime = $stTime;
 		$stTime = substr($stRow[5], 0, 2)*3600 + substr($stRow[5], 2, 2)*60 + substr($stRow[5], 4, 6);
 		if ($oldSTTime == $stTime){ #munged GPS time will stop the status line time from advancing. Writing repeating times into the status array will break the calculation of rate and other bits in the bless file
@@ -257,6 +290,7 @@ while(<IN>){
 	}
 	
 	elsif(/$reDS1/o || /$reDS0/o){
+		$non_datalines++;
 		if ($stTimeGlitch == 1) { #bail on this DS line. The scalars are correct but a non-advancing time will break the bless file.
 			$stTimeGlitch = 0; #reset the flag
 			next; #ignore this DS update
@@ -281,6 +315,7 @@ while(<IN>){
 
 	elsif(/$reThreshold0/o){
 		@thRow = ($2, $3, $4, $5);
+		$non_datalines++;
 		next; #get the next line in the input file. All the lifting is done on this one.
 	}
 
@@ -320,15 +355,13 @@ while(<IN>){
 	#$rollover_flag = 4 if ($cpld_trig > $last_cpld_trig && $cpld_latch > $last_cpld_latch); #This should never, ever happen. Ever. Still. . . 
 	#In fact it does happen. On every trigger. Always. The previous line is a good way to drop the first line of each event.
 	
-	#A new rollover case appeared in firmware 1.12 The GPS date could increment before the clock reached midnight.
-	$rollover_flag = 5 if ($date != $lastDate) && (substr($dataRow[10], 0, 2) == 23) && (substr($dataRow[10], 2, 2) > 55); 
 	# A new rollover flag if the GPS time advances before the cpld_latch does. Thsi could happen two ways:
 	# The clock advances but the latch doesn't ("stuck latch")
 	$rollover_flag = 6 if ($time != $lastTime) && ($cpld_latch == $last_cpld_latch);
 	# the latch increases but the clock doesn't ("stuck clock")
 	$rollover_flag = 7 if ($time == $lastTime) && ($cpld_latch != $last_cpld_latch);
 	# When 6 or 7 happen, they usually do so for several lines. The flag shouldn't be reset until the "stuck" item is no longer stuck
-	
+		
 	#Set the current values of trig and latch for later comparison.
 	#$last_cpld_latch = $cpld_latch;
 
@@ -358,19 +391,19 @@ while(<IN>){
 	#	next;
 	#}
 	
-	next if ($rollover_flag == 5);
-
-	next if ($rollover_flag == 6);
+	next if ($rollover_flag == 6) || ($rollover_flag == 7);
 	
-	next if ($rollover_flag == 7);
-
 if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 	# get date/time of the current line
-		$lastDate = $date;
-		$date = $dataRow[11];
-		$lastTime = $time;
-		$time = $dataRow[10];
-		next if $time < $lastTime && $lastTime < 230000;
+		#$lastDate = $date;
+		#$date = $dataRow[11];
+		#$lastTime = $time;
+		#$time = $dataRow[10];
+		#next if $time < $lastTime && $lastTime < 230000;
+		if ($time < $lastTime && $lastTime < 230000){
+			$non_datalines;
+			next;	  
+		}
 		$day = substr($dataRow[11], 0, 2);
 		$month = substr($dataRow[11], 2, 2);
     	$year = substr($dataRow[11], 4, 2) + 2000;   # Assume no records before 2000
