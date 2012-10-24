@@ -12,13 +12,14 @@
 	<%
 		//these need to always be set-up
 		ElabAnalysis analysis = (ElabAnalysis) request.getAttribute("analysis");
-		Collection rawData = analysis.getParameterValues("rawData");
+		Collection<String> rawData = analysis.getParameterValues("rawData");
 		if(rawData != null) {
-			List thresholdData = AnalysisParameterTools.getThresholdFiles(elab, rawData);
+			List<String> thresholdData = AnalysisParameterTools.getThresholdFiles(elab, rawData);
 			String ids = AnalysisParameterTools.getDetectorIds(rawData);
-			List wd = AnalysisParameterTools.getWireDelayFiles(elab, rawData);
-			List geo = AnalysisParameterTools.getGeometryFiles(elab, rawData);
+			List<String> wd = AnalysisParameterTools.getWireDelayFiles(elab, rawData);
+			List<String> geo = AnalysisParameterTools.getGeometryFiles(elab, rawData);
 			String cpldfreqs = AnalysisParameterTools.getCpldFrequencies(elab, rawData);
+			List<String> firmwareVersions = AnalysisParameterTools.getFirmwareVersionsNullAsZero(elab, rawData);
 
 			%>
 	        <e:trdefault name="thresholdAll" value="<%= thresholdData %>"/>
@@ -27,6 +28,7 @@
 			<e:trdefault name="geoDir" value="${elab.properties['data.dir']}"/>
 			<e:trdefault name="geoFiles" value="<%= geo %>"/>
 			<e:trdefault name="cpldfreqs" value="<%= cpldfreqs %>"/>
+			<e:trdefault name="firmware" value="<%= firmwareVersions %>" />
 			<%
 		}
 	%>
