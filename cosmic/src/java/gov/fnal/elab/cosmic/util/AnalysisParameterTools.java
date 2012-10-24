@@ -81,7 +81,7 @@ public class AnalysisParameterTools {
     
     public static final Map<String, String> CHANNELS;
     static {
-        CHANNELS = new HashMap();
+        CHANNELS = new HashMap<String, String>();
         CHANNELS.put("chan1", "1");
         CHANNELS.put("chan2", "2");
         CHANNELS.put("chan3", "3");
@@ -136,7 +136,7 @@ public class AnalysisParameterTools {
     public static List<String> getValidChannels(Elab elab, Collection<String> files)
             throws ElabException {
         ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
-        SortedSet<String> channels = new TreeSet();
+        SortedSet<String> channels = new TreeSet<String>();
         
         for (CatalogEntry e : rs) {
         	if (e == null) {
@@ -158,7 +158,7 @@ public class AnalysisParameterTools {
     public static String getCpldFrequencies(Elab elab, Collection<String> files)
             throws ElabException {
         ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
-        List<Number> freqs = new ArrayList();
+        List<Number> freqs = new ArrayList<Number>();
         
         for (CatalogEntry e : rs) {
         	if (e == null) {
