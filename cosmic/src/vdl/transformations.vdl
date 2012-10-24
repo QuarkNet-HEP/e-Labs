@@ -69,6 +69,7 @@ TR I2U2.Cosmic::LifetimeStudy(
 	inout combineOut,
 	none detector,
 	none cpldfreqs,
+	none firmware,
 	none extraFun_alpha_guess,
 	none extraFun_alpha_variate,
 	none extraFun_constant_guess,
