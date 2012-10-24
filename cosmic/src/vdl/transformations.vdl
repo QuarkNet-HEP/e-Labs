@@ -63,6 +63,7 @@ TR I2U2.Cosmic::Lifetime(
   argument = " "${energyCheck};
   argument = " "${coincidence};
   argument = " "${geoDir};
+  argument = " "${firmware}; 
 }
 TR I2U2.Cosmic::LifetimeStudy(
 	inout combineOut,
