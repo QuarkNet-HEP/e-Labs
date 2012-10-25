@@ -2,6 +2,7 @@ package gov.fnal.elab.beans;
 
 import java.util.*;
 import org.griphyn.vdl.classes.*;       //Transformation, Derivation, Declare, List
+
 import gov.fnal.elab.util.ElabException;
 
 /**
@@ -47,7 +48,7 @@ public class ElabBean{
      * @param key the key
      * @param value the list of values
      */     
-    protected void addToDV(String key, java.util.List value) throws ElabException{
+    protected void addToDV(String key, java.util.List<String> value) throws ElabException{
         Declare dec;
         int link;
 
@@ -62,8 +63,8 @@ public class ElabBean{
         switch (link) {
             case LFN.NONE:
                 list = new org.griphyn.vdl.classes.List();
-                for (Iterator j=value.iterator(); j.hasNext();) {
-                    list.addScalar(new Scalar(new Text((String)j.next())));
+                for (String s : value) {
+                	list.addScalar(new Scalar(new Text(s)));
                 }
                 dv.addPass(new Pass(key, list));
                 break;
@@ -72,11 +73,14 @@ public class ElabBean{
             case LFN.OUTPUT:
                 list = new org.griphyn.vdl.classes.List();
                 if(value==null) throw new ElabException("value is null for key "+key);
-                for (Iterator j=value.iterator(); j.hasNext();) {
-                    String lfn = (String)j.next();
-                    if(lfn==null) throw new ElabException("lfn is null for key "+key);
-                    list.addScalar(new Scalar(new LFN(lfn, link)));
+                
+                for (String s : value) {
+                	if (s == null) {
+                		throw new ElabException("lfn is null for key " + key);
+                	}
+                	list.addScalar(new Scalar(new LFN(s, link)));
                 }
+                
                 dv.addPass(new Pass(key, list));
                 break;
         }
@@ -104,8 +108,8 @@ public class ElabBean{
             throw new ElabException("If you are expecting a List of values for this key, please use getDVValues()");
         }
 
-        Iterator i = ((Scalar)v).iterateLeaf();   //because I don't know where the array starts to use v.getLeaf(index)
-        Leaf leaf = (Leaf)i.next();
+        Iterator<Leaf> i = ((Scalar)v).iterateLeaf();   //because I don't know where the array starts to use v.getLeaf(index)
+        Leaf leaf = i.next();
         //TODO fix this to remove instanceof checking once they fix their superclass in VDL
         if(leaf instanceof LFN){
             return ((LFN)leaf).getFilename();
@@ -124,7 +128,7 @@ public class ElabBean{
      * @param decName Name of the <code>Leaf</code> to get the values of.
      * @return {@link List} of values for the <code>Leaf</code>.
      */
-    public java.util.List getDVValues(String decName) throws ElabException{
+    public java.util.List<String> getDVValues(String decName) throws ElabException{
         //check if dv has been created
         if(dv == null){
             throw new ElabException("You must first create a new Derivation before getting values from it.");
@@ -140,26 +144,26 @@ public class ElabBean{
             throw new ElabException("If you are expecting a Scalar value for this key, please use getDVValue()");
         }
 
-        java.util.List list = new java.util.ArrayList();
-        java.util.List scalarList = ((org.griphyn.vdl.classes.List)v).getScalarList();
-        for(Iterator i=scalarList.iterator(); i.hasNext(); ){
-            Value v2 = (Value)i.next();
-
-            Iterator i2 = ((Scalar)v2).iterateLeaf();   //because I don't know where the array starts to use v.getLeaf(index)
-            Leaf leaf = (Leaf)i2.next();
-            String value;
-            //TODO fix this to remove instanceof checking once they fix their superclass in VDL
-            if(leaf instanceof LFN){
-                value = ((LFN)leaf).getFilename();
-            }
-            else if(leaf instanceof Text){
-                value = ((Text)leaf).getContent();
-            }
-            else{
+        java.util.List<String> list = new java.util.ArrayList<String>();
+        java.util.List<Scalar> scalarList = ((org.griphyn.vdl.classes.List)v).getScalarList();
+        
+        String value; 
+        for (Scalar v2 : scalarList) {
+        	Iterator<Leaf> i2 = v2.iterateLeaf();
+        	Leaf leaf = i2.next();
+        	
+        	if (leaf instanceof LFN) {
+        		value = ((LFN) leaf).getFilename();
+        	}
+        	else if (leaf instanceof Text) {
+        		value = ((Text) leaf).getContent();
+        	}
+        	else{
                 throw new ElabException("Leaf instance must either be of type LFN or Text.");
             }
             list.add(value);
         }
+        
         return list;
     }
 }
