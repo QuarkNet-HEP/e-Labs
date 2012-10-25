@@ -407,6 +407,16 @@ public class Elab implements Serializable {
     public DataCatalogProvider getDataCatalogProvider() {
         return ElabFactory.getDataCatalogProvider(this);
     }
+    
+    /**
+     * Returns an instance of the <code>AnalysisCatalogProvider</code> that
+     * implements data catalog functionality for this elab.
+     * 
+     * @throws ElabInstantiationException
+     */
+    public DataCatalogProvider getAnalysisCatalogProvider() {
+        return ElabFactory.getAnalysisCatalogProvider(this);
+    }
 
     /**
      * Returns an instance of the <code>AnalysisExecutor</code> that

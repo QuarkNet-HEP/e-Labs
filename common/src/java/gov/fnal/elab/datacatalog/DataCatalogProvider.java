@@ -67,17 +67,5 @@ public interface DataCatalogProvider extends ElabProvider {
      * Inserts an entry in the catalog. If the entry already
      * exists, selectively update the metadata.
      */
-    void insert(CatalogEntry entry) throws ElabException;
-
-    // these should probably not be here
-    /**
-     * Inserts an analysis into the catalog
-     */
-    void insertAnalysis(String name, ElabAnalysis analysis)
-            throws ElabException;
-
-    /**
-     * Retrieves an analysis from the catalog.
-     */
-    ElabAnalysis getAnalysis(String lfn) throws ElabException;
+    void insert(CatalogEntry entry) throws ElabException;    
 }
