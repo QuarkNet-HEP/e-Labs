@@ -28,7 +28,7 @@
 			<e:trdefault name="geoDir" value="${elab.properties['data.dir']}"/>
 			<e:trdefault name="geoFiles" value="<%= geo %>"/>
 			<e:trdefault name="cpldfreqs" value="<%= cpldfreqs %>"/>
-			<e:trdefault name="firmware" value="<%= firmwareVersions %>" />
+			<%--  <e:trdefault name="firmware" value="<%= firmwareVersions %>" /> --%>
 			<%
 		}
 	%>
