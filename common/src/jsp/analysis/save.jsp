@@ -94,7 +94,7 @@
 					acp.insertAnalysis(newDVName, analysis);
 					
 					// *** Metadata section ***
-					ArrayList meta = new ArrayList();
+					List<String> meta = new ArrayList<String>();
 					ElabGroup group = user.getGroup();
 					
 					// Default metadata for all files saved
