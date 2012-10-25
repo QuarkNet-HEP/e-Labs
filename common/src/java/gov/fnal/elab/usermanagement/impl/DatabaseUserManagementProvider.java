@@ -439,7 +439,7 @@ public class DatabaseUserManagementProvider implements
             		"WHERE research_group_project.project_id = ? ORDER BY tname ASC;");
             ps.setInt(1, projectId);
             rs = ps.executeQuery();
-            List teachers = new ArrayList();
+            List<ElabGroup> teachers = new ArrayList<ElabGroup>();
             // the first one is a dummy, but it makes the code below less
             // cluttered
             ElabGroup t = new ElabGroup(elab, this);
@@ -513,7 +513,7 @@ public class DatabaseUserManagementProvider implements
         rs = ps.executeQuery();
 
         // Can't do another query while iterating over a result set
-        List<String> names = new LinkedList();
+        List<String> names = new LinkedList<String>();
         while (rs.next()) {
             names.add(rs.getString("name"));
         }
@@ -762,9 +762,9 @@ public class DatabaseUserManagementProvider implements
         return name + studentNameAddOn;
     }
 
-    public List addStudents(ElabGroup teacher, List<ElabStudent> students, List<Boolean> createGroups)
+    public List<String> addStudents(ElabGroup teacher, List<ElabStudent> students, List<Boolean> createGroups)
             throws ElabException {
-        List passwords = new ArrayList();
+        List<String> passwords = new ArrayList<String>();
         Connection conn = null;
         Savepoint svpt; 
         Boolean autoCommit; 
@@ -772,7 +772,7 @@ public class DatabaseUserManagementProvider implements
             throw new IllegalArgumentException(
                     "User list and createGroups list have different sizes");
         }
-        Map<String, ElabGroup> groups = new HashMap();
+        Map<String, ElabGroup> groups = new HashMap<String, ElabGroup>();
         
         for (ElabStudent student : students) {
         	ElabGroup group = student.getGroup();
@@ -941,8 +941,8 @@ public class DatabaseUserManagementProvider implements
         }
     }
 
-    public Collection getProjectNames() throws ElabException {
-        List names = new ArrayList();
+    public Collection<String> getProjectNames() throws ElabException {
+        List<String> names = new ArrayList<String>();
         Statement s = null;
         Connection conn = null;
 
@@ -964,7 +964,7 @@ public class DatabaseUserManagementProvider implements
         }
     }
 
-    public Collection getProjectNames(ElabGroup group) throws ElabException {
+    public Collection<String> getProjectNames(ElabGroup group) throws ElabException {
         Connection conn = null;
         try {
             conn = DatabaseConnectionManager
@@ -981,7 +981,7 @@ public class DatabaseUserManagementProvider implements
 
     private Collection<String> getProjectNames(Connection c, ElabGroup group)
             throws SQLException {
-        List<String> names = new ArrayList();
+        List<String> names = new ArrayList<String>();
         PreparedStatement ps = c.prepareStatement(
         		"SELECT p.name FROM research_group_project AS rgp " +
         		"LEFT OUTER JOIN project AS p ON p.id = rgp.project_id " +
@@ -1005,20 +1005,20 @@ public class DatabaseUserManagementProvider implements
             conn.setAutoCommit(false);
             conn.setSavepoint();
             try {
-                Map ids = new HashMap();
+                Map<String, Integer> ids = new HashMap<String, Integer>();
                 ps = conn.prepareStatement("SELECT id, name FROM project;");
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     ids.put(rs.getString("name"), rs.getInt("id"));
                 }
-                Collection current = getProjectNames(conn, group);
-                List updated = new ArrayList();
+                Collection<String> current = getProjectNames(conn, group);
+                List<String> updated = new ArrayList<String>();
                 for (String projectName : projectNames) {
                 	updated.add(projectName);
                 }
-                Set toRemove = new HashSet(current);
+                Set<String> toRemove = new HashSet<String>(current);
                 toRemove.removeAll(updated);
-                Set toAdd = new HashSet(updated);
+                Set<String> toAdd = new HashSet<String>(updated);
                 toAdd.removeAll(current);
                 Iterator i = toRemove.iterator();
                 ps = conn.prepareStatement(

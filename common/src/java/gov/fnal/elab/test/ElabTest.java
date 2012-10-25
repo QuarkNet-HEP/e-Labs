@@ -8,14 +8,14 @@ import java.util.List;
 
 public class ElabTest {
     private String type;
-    private List questions;
+    private List<ElabTestQuestion> questions;
     
     public ElabTest(String type) {
         this.type = type;
-        this.questions = new ArrayList();
+        this.questions = new ArrayList<ElabTestQuestion>();
     }
     
-    public List getQuestions() {
+    public List<ElabTestQuestion> getQuestions() {
         return questions;
     }
     
