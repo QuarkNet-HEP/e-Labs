@@ -1020,26 +1020,29 @@ public class DatabaseUserManagementProvider implements
                 toRemove.removeAll(updated);
                 Set<String> toAdd = new HashSet<String>(updated);
                 toAdd.removeAll(current);
-                Iterator i = toRemove.iterator();
+                
                 ps = conn.prepareStatement(
                 		"DELETE FROM research_group_project " + 
                 		"WHERE research_group_id = ? AND project_id = ?;");
-                while (i.hasNext()) {
-                    int id = (Integer) ids.get(i.next());
-                    ps.setInt(1, group.getId());
-                    ps.setInt(2, id);
-                    ps.executeUpdate();
+                for (String s : toRemove) {
+                	int id = ids.get(s);
+                	ps.setInt(1, group.getId());
+                	ps.setInt(2, id);
+                	ps.addBatch();
                 }
-                i = toAdd.iterator();
+                ps.executeBatch();
+                
                 ps = conn.prepareStatement(
                 		"INSERT INTO research_group_project (research_group_id, project_id) " +
                 		"VALUES (?, ?);");
-                while (i.hasNext()) {
-                    int id = (Integer) ids.get(i.next());
-                    ps.setInt(1, group.getId());
+                for (String s: toAdd) {
+                	int id = ids.get(s);
+                	ps.setInt(1, group.getId());
                     ps.setInt(2, id);
-                    ps.executeUpdate();
+                    ps.addBatch();
                 }
+                ps.executeBatch();
+                
                 conn.commit();
             }
             catch (SQLException e) {
