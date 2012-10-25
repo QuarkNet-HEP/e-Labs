@@ -16,7 +16,7 @@ import gov.fnal.elab.analysis.GenericAnalysis;
 import gov.fnal.elab.analysis.InitializationException;
 import gov.fnal.elab.analysis.impl.vds.VDSAnalysis;
 import gov.fnal.elab.datacatalog.AnalysisCatalogProvider;
-import gov.fnal.elab.datacatalog.CachingDataCatalogProvider;
+import gov.fnal.elab.datacatalog.CachingCatalogProvider;
 import gov.fnal.elab.datacatalog.DataCatalogProvider;
 import gov.fnal.elab.notifications.ElabNotificationsProvider;
 import gov.fnal.elab.survey.ElabSurveyProvider;
@@ -102,7 +102,7 @@ public class ElabFactory {
     	ElabProvider p = get(elab, DATACATALOG);
         if (p == null) {
             setVDSHome(elab);
-            p = new CachingDataCatalogProvider((DataCatalogProvider) newInstance(elab, DATACATALOG));
+            p = new CachingCatalogProvider((DataCatalogProvider) newInstance(elab, DATACATALOG), (AnalysisCatalogProvider) newInstance(elab, ANALYSISCATALOG));
             set(elab, DATACATALOG, p);
         }
         return (DataCatalogProvider) p;

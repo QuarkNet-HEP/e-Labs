@@ -4,6 +4,7 @@
 package gov.fnal.elab;
 
 import gov.fnal.elab.analysis.AnalysisExecutor;
+import gov.fnal.elab.datacatalog.AnalysisCatalogProvider;
 import gov.fnal.elab.datacatalog.DataCatalogProvider;
 import gov.fnal.elab.survey.ElabSurveyProvider;
 import gov.fnal.elab.test.ElabTestProvider;
@@ -414,7 +415,7 @@ public class Elab implements Serializable {
      * 
      * @throws ElabInstantiationException
      */
-    public DataCatalogProvider getAnalysisCatalogProvider() {
+    public AnalysisCatalogProvider getAnalysisCatalogProvider() {
         return ElabFactory.getAnalysisCatalogProvider(this);
     }
 

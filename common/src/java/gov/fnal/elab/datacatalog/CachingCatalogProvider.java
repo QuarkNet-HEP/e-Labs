@@ -18,8 +18,9 @@ import java.util.HashSet;
  * An implementation of a <code>DataCatalogProvider</code> which wraps another
  * provider and caches the last lookup.
  */
-public class CachingDataCatalogProvider implements DataCatalogProvider {
-    private DataCatalogProvider delegate;
+public class CachingCatalogProvider implements DataCatalogProvider, AnalysisCatalogProvider {
+    private DataCatalogProvider dataDelegate;
+    private AnalysisCatalogProvider analysisDelegate;
 
     private Collection<String> lastFiles;
     private ResultSet lastResultSet;
@@ -28,8 +29,9 @@ public class CachingDataCatalogProvider implements DataCatalogProvider {
     private long lastdate;
     public static final long INTERVAL = 1000*60;
 
-    public CachingDataCatalogProvider(DataCatalogProvider delegate) {
-        this.delegate = delegate;
+    public CachingCatalogProvider(DataCatalogProvider delegate, AnalysisCatalogProvider analysisDelegate) {
+        this.dataDelegate = delegate;
+        this.analysisDelegate = analysisDelegate; 
     }
 
     private ResultSet getCachedEntries(Collection<String> files) throws ElabException {
@@ -40,7 +42,7 @@ public class CachingDataCatalogProvider implements DataCatalogProvider {
                 return lastResultSet;
             }
         }
-        ResultSet rs = delegate.getEntries(files);
+        ResultSet rs = dataDelegate.getEntries(files);
         synchronized (this) {
             lastFiles = files;
             lastResultSet = rs;
@@ -84,19 +86,19 @@ public class CachingDataCatalogProvider implements DataCatalogProvider {
     }
     
     public ResultSet runQueryNoMetadata(QueryElement q) throws ElabException {
-        return delegate.runQueryNoMetadata(q);
+        return dataDelegate.runQueryNoMetadata(q);
     }
 
     public int getUniqueCategoryCount(String key) throws ElabException {
-        return delegate.getUniqueCategoryCount(key);
+        return dataDelegate.getUniqueCategoryCount(key);
     }
 
     public ResultSet runQuery(String query) throws ElabException {
-        return delegate.runQuery(query);
+        return dataDelegate.runQuery(query);
     }
 
     public ResultSet runQuery(QueryElement q) throws ElabException {
-        return delegate.runQuery(q);
+        return dataDelegate.runQuery(q);
     }
     
     private void startUpdate() {
@@ -119,28 +121,28 @@ public class CachingDataCatalogProvider implements DataCatalogProvider {
         //that the lower levels should enforce
         //we only disable caching during updates
         startUpdate();
-        delegate.insert(entry);
+        dataDelegate.insert(entry);
         endUpdate();
     }
     
     public void delete(CatalogEntry entry) throws ElabException {
         startUpdate();
-        delegate.delete(entry);
+        dataDelegate.delete(entry);
         endUpdate();
     }
     
     public void delete(String lfn) throws ElabException {
         startUpdate();
-        delegate.delete(lfn);
+        dataDelegate.delete(lfn);
         endUpdate();
     }
 
     public void insertAnalysis(String name, ElabAnalysis analysis)
             throws ElabException {
-        delegate.insertAnalysis(name, analysis);
+    	analysisDelegate.insertAnalysis(name, analysis);
     }
 
     public ElabAnalysis getAnalysis(String lfn) throws ElabException {
-        return delegate.getAnalysis(lfn);
+        return analysisDelegate.getAnalysis(lfn);
     }
 }
