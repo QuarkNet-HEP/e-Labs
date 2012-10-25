@@ -88,9 +88,10 @@
 					
 					//save Derivation used to create this plot
 					ElabAnalysis analysis = run.getAnalysis();
+					AnalysisCatalogProvider acp = elab.getAnalysisCatalogProvider();
 					DataCatalogProvider dcp = elab.getDataCatalogProvider();
 					//TODO have a namespace
-					dcp.insertAnalysis(newDVName, analysis);
+					acp.insertAnalysis(newDVName, analysis);
 					
 					// *** Metadata section ***
 					ArrayList meta = new ArrayList();
