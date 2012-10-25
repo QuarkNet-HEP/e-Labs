@@ -77,13 +77,13 @@ public class RawAnalyze extends VDSElabBean implements Serializable, VDSMappable
 
     //returns true is every key value is valid
     public boolean isValid(){
-        java.util.List badkeys = this.getInvalidKeys();
+        java.util.List<String> badkeys = this.getInvalidKeys();
         return badkeys.size() > 0 ? false : true;
     }
 
     //get a List of invalid keys
-    public java.util.List getInvalidKeys(){
-        java.util.List badkeys = new java.util.ArrayList();
+    public java.util.List<String> getInvalidKeys(){
+        java.util.List<String> badkeys = new java.util.ArrayList<String>();
         if(!isInFileValid()){
             badkeys.add("inFile");
         }

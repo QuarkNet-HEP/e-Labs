@@ -31,7 +31,7 @@ public class GeoEntryBean implements Serializable {
     private String latitude, longitude, altitude;
     private ChannelProperties[] channels;
     private String gpsCableLength;
-    private List errors, badfields;
+    private List<String> errors, badfields;
 
     /**
      * Constructor. It resets the bean to its initial state.
@@ -660,8 +660,8 @@ public class GeoEntryBean implements Serializable {
 
     // returns true if every key value is valid
     public boolean isValid() {
-        errors = new ArrayList();
-        badfields = new ArrayList();
+        errors = new ArrayList<String>();
+        badfields = new ArrayList<String>();
         checkFields();
         return errors.size() + badfields.size() == 0;
     }
@@ -670,11 +670,11 @@ public class GeoEntryBean implements Serializable {
         return isValid();
     }
 
-    public List getBadKeys() {
+    public List<String> getBadKeys() {
         return badfields;
     }
 
-    public List getErrors() {
+    public List<String> getErrors() {
         return errors;
     }
 

@@ -66,6 +66,7 @@ public class GeometryErrors {
 	public GeometryErrors() {
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public Map getKeys() {
 		return new AbstractMap() {
 			public Object get(Object key) {
@@ -83,6 +84,7 @@ public class GeometryErrors {
 		};
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public Map getErrors() {
 		return errors;
 	}
