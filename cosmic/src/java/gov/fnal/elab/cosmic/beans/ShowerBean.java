@@ -4,9 +4,10 @@ import java.io.*;                   //String
 import java.util.*;                 //List
 import gov.fnal.elab.util.*;        //ElabException
 import gov.fnal.elab.beans.*;       //MappableBean, ElabBean
+import gov.fnal.elab.beans.vds.*;
 import org.griphyn.vdl.classes.*;   //Derivation, Declare, LFN, List
 
-public class ShowerBean extends ElabBean implements Serializable, MappableBean{
+public class ShowerBean extends VDSElabBean implements Serializable, VDSMappableBean{
 
     //TR variables
     private String channelCoincidence;

@@ -10,6 +10,7 @@ import gov.fnal.elab.analysis.AnalysisParameterTransformer;
 import gov.fnal.elab.analysis.AnalysisTools;
 import gov.fnal.elab.analysis.ElabAnalysis;
 import gov.fnal.elab.beans.ElabBean;
+import gov.fnal.elab.beans.vds.VDSElabBean;
 import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.util.FQN;
 
@@ -43,7 +44,7 @@ import org.griphyn.vdl.util.ChimeraProperties;
  * generic <code>ElabBean</code> (which is only used for a few convenience
  * methods).
  */
-public class VDSAnalysis extends ElabBean implements ElabAnalysis {
+public class VDSAnalysis extends VDSElabBean implements ElabAnalysis {
     //grr. I want multiple inheritance. Or mixins.
     private String type;
     private DatabaseSchema dbschema;

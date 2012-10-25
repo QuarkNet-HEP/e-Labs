@@ -10,7 +10,7 @@ import gov.fnal.elab.analysis.AnalysisRun;
 import gov.fnal.elab.analysis.BeanWrapper;
 import gov.fnal.elab.analysis.ElabAnalysis;
 import gov.fnal.elab.analysis.ProgressTracker;
-import gov.fnal.elab.beans.MappableBean;
+import gov.fnal.elab.beans.vds.VDSMappableBean;
 import gov.fnal.elab.estimation.Estimator;
 import gov.fnal.elab.tags.AnalysisRunTimeEstimator;
 import gov.fnal.elab.util.ElabException;
@@ -58,8 +58,8 @@ public class VDSAnalysisExecutor implements AnalysisExecutor {
             et.setDVName(name);
         }
         if (analysis instanceof BeanWrapper
-                && ((BeanWrapper) analysis).getBean() instanceof MappableBean) {
-            et.createDV((MappableBean) ((BeanWrapper) analysis).getBean());
+                && ((BeanWrapper) analysis).getBean() instanceof VDSMappableBean) {
+            et.createDV((VDSMappableBean) ((BeanWrapper) analysis).getBean());
         }
         else {
             et.createDV(new HashMap(analysis.getParameters()));
