@@ -36,7 +36,7 @@ else{
 }
 
 # apparently the temp files for sort can balloon bigger than /tmp
-# hardcore in (for now) the scratch directory. Eventually we need 
+# hardcode in (for now) the scratch directory. Eventually we need 
 # to pass this as a proper argument
 if(-d "/scratch/tmp") {
 	$tmpdircmd = "-T /scratch/tmp";
