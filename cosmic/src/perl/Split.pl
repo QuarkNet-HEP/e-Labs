@@ -25,6 +25,7 @@
 # jordant changed 07-07-10: inserting lines to create additional files needed for blessing.
 # jordant changed 11-01-10: checking to see if user is doing ST2 or ST3 when writing raw data. Knowing which one is crucial to data blessing.
 # jordant changed 5 Oct 11: fixing bug 372
+# jordant changed 4 Jan 13: fixing bug 517
 
 if($#ARGV < 2){
 	die "usage: Split.pl [filename to parse] [output DIRECTORY] [board ID]\n";
@@ -103,6 +104,10 @@ $Nover2 = int($N/2);				#precalculated N/2
 $CONST_hex8F = hex('FFFFFFFF');
 $CONST_hex8A = hex('AAAAAAAA');
 $rollover_flag = 0;					#Control structure to determine rollover status of the two CPLD buffers: Trigger (word[0]) and Latch (word[9]).
+$flaggedLatch = 0;					#Current value of the latch to hold for later checking
+$flaggedTime = 0;					#Current value of the time to hold for later checking
+$recoveredFlag = 1;					#Flag used in the async rollovers
+$skipSomeLines = 0;					#Flag used in the asynch rollovers
 $statusFlag = 0;					#Control structure to determine the presence of status lines--these go into the FOO.bless file.
 #$blessFile = 0;					#filehandle to keep the blessfile in scope globally
 
@@ -190,12 +195,39 @@ while(<IN>){
 	if(/$reData/o){
 		$non_datalines++;
 		@dataRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16);
-		#next if $dataRow[10] eq "000000.000" && $dataRow[11] eq "000000"; #munged GPS clock
-		if ($dataRow[10] eq "000000.000" && $dataRow[11] eq "000000"){ #munged GPS clock
+		$lastTime = $time;
+		
+		if ($dataRow[10] eq "000000.000" || $dataRow[9] eq "00000000"){ #munged GPS clock
 			$non_datalines ++;
 			next;
 		}
+		
+		if ($rollover_flag == 5){ #this is a stuck GPS latch
+			next if $flaggedLatch == hex($dataRow[9]);#The latch hasn't advanced yet.
+			if ($flaggedLatch != hex($dataRow[9])){#the rollover has recovered
+				$rollover_flag = 0;#We need this to get into the block that starts if ($rollover_flag ==0)
+				$flaggedLatch = $flaggedDate = $flaggedTime = 0;
+			}
+			if ($flaggedDate != $dataRow[11]){#the date advanced
+				$rollover_flag = 0;#We need this to get into the block that starts if ($rollover_flag ==0)
+				$flaggedLatch = $flaggedDate = $flaggedTime = 0;
+			}
+		} 
 
+		if ($rollover_flag == 6){ #this is a stuck clock
+			next if $flaggedTime == $dataRow[10];#The clock hasn't advanced yet.
+			if ($flaggedTime != $dataRow[10]){ #The clock has advanced, do some clean up and move on
+				$rollover_flag = 0;
+				$flaggedLatch = $flaggedTime = 0;
+				$lastTime = $dataRow[10];
+				$cpld_latch = hex($dataRow[9]);
+			}
+			if ($flaggedDate != $dataRow[11]){#the date advanced
+				$rollover_flag = 0;#We need this to get into the block that starts if ($rollover_flag ==0)
+				$flaggedLatch = $flaggedDate = $flaggedTime = 0;
+			}
+		}
+		
 		#inserted by TJ to look for data lines that appear when the user types HT--Bug 372
 		#that user command inserts the next four lines of data into the file as an example.
 		#these lines are fake data and shouldn't make it through split
@@ -203,58 +235,142 @@ while(<IN>){
 		#DE799F15 00 00 00 00 21 00 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
 		#DE799F15 00 35 00 00 00 00 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
 		#DE799F15 00 00 00 00 00 3C 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
-	
-		if ($dataRow[11] == 111007 && $dataRow[0] eq DE799F14 && $dataRow[9] eq DE1C993){
+		
+		if ($dataRow[11] == 111007 && $dataRow[9] eq DE1C993){ #only need to check these two--this is really unlikely. Really. Checking them all is too expensive.
 			$non_datalines ++;
 			next;
-		}
-		if ($dataRow[11] == 111007 && $dataRow[0] eq DE799F15 && $dataRow[9] eq DE1C993A){
-			$non_datalines ++;
-			next
-		}
-		if ($dataRow[11] == 111007 && $dataRow[0] eq DE799F15 && $dataRow[9] eq DE1C993A){
-			$non_datalines ++;
-			next
-		}
-		if ($dataRow[11] == 111007 && $dataRow[0] eq DE799F15 && $dataRow[9] eq DE1C993A){
-			$non_datalines ++;
-			next
-		}
+		}	
 
 		#there can be asynchronous clock and date rollovers: Bug 513
 		#D8BDBF27 00 00 00 28 00 00 00 00 D8621B39 235956.009 190912 A 08 0 +0051
 		#DD78EF15 AB 00 2E 00 2D 00 2C 00 DCDA83F9 235959.001 200912 A 06 0 +0059
 		#DD78EF15 00 38 00 3D 00 3A 00 3A DCDA83F9 235959.001 200912 A 06 0 +0059
 		#DF2C1263 B4 00 37 00 37 00 37 00 DE57FC39 000000.009 200912 A 08 0 +0051
+		
 		if ($dataRow[10] > 235950 && $dataRow[11] != $date){ #munged GPS clock
 			$non_datalines ++;
 			next;
 		}
 		
-		$lastDate = $date;
-		$date = $dataRow[11];
-		$lastTime = $time;
-		$time = $dataRow[10]; 
 		$last_cpld_latch = $cpld_latch;
 		$cpld_latch = hex($dataRow[9]);
 		$last_cpld_trig = $cpld_trig;
 		$cpld_trig = hex($dataRow[0]);
+			
+		#The next section is devoted to cleaning up datalines before any more processing. 
+		#There are five possible errors that can pollute the caluclation of absolute time.
+	
+		#The first error is a GPS flag of 4. It _always_ makes our calculation of absolute time incorrect. 
+
+		#GPS flag = 4 in the raw data indicates that the GPS time in that line is suspect. Indeed, our calculation confirms this so we should ignore the lines with a GPS flag = 4. Now we do.
+		#Actually it should check if bit 2 is 1. Otherwise it may accept invalid lines.
+		next if ($dataRow[14] & 0x04 != 0); 
+
+		#trying somethiing new with GPS time solutions. TJ wonders if the V and A flag really mean something about the timing solution. Thus far there is no evidence for it.
+		#next if ($dataRow[12] eq 'V');
+		#And now looking at number of satellites
+		#next if ($dataRow[13] < 2);
+
+		#There are several asynchronous "register rollover errors" that can appear in the data, we can trap those and be more clever about dropping data lines.
+
+		#1. The trigger latch can roll over before the GPS latch does
+		#2. The trigger latch can "get stuck while the GPS rolls over
+		#3. The trigger latch can stay the same while the GPS latch rolls over (I doubt that this EVER happens
+		#4. We've deprecated this one
+		#5. The time stamp can advance before the GPS latch does
+		#6. The GPS latch can advance before the time stamp does.	
+	
+		#Set the flag with a simple comparison of the buffers. Use the value of the flag as a control on further checks. Those checks can reset the flag to zero and go on or reset the flag to zero and discard the current line (rare).
+		#we no longer do this "set the flag and then check the flag" thing. Now it's all in one step.
+	
+		#$rollover_flag = 1 if ($cpld_trig <= $last_cpld_trig && $cpld_latch > $last_cpld_latch);
+		if (hex($dataRow[0]) <= $last_cpld_trig && hex($dataRow[9]) > $last_cpld_latch){#we used to set $rollover_flag==1 here and then check the value of the flag a few lines later. Now we do it all here.
+			#$rollover_flag = 0; # reset the flag
+			#ThresholdTimes can deal with these rollovers if the difference between the buffers is "large". Toss out lines with "small" differences.
+			if (hex($dataRow[9]) - hex($dataRow[0]) < $CONST_hex8A && $cpld_trig < $cpld_latch){ 	#an arbitrarily large value.		
+				$non_datalines++;
+				next; #This gets us around the $rollover_flag==0 check down below.		
+			}
+		}
+	
+		#$rollover_flag = 2 if ($cpld_trig == $last_cpld_trig && $cpld_latch < $last_cpld_latch); #flag == 1 and flag == 2 can be dealt with in the same way.
+		if (hex($dataRow[0]) == $last_cpld_trig && hex($dataRow[9]) < $last_cpld_latch){#we used to set $rollover_flag==2 here and then check the value of the flag a few lines later. Now we do it all here.
+			#$rollover_flag = 0; # reset the flag
+			#ThresholdTimes can deal with these rollovers if the difference between the buffers is "large". Toss out lines with "small" differences.
+			if ($cpld_latch - $cpld_trig < $CONST_hex8A && $cpld_trig < $cpld_latch){ 	#an arbitrarily large value.		
+				$non_datalines++;
+				next;		
+			}
+		}
+	
+		#$rollover_flag = 3 if ($cpld_trig == $last_cpld_trig && $cpld_latch > $last_cpld_latch);
+		if (hex($dataRow[0]) == $last_cpld_trig && hex($dataRow[9]) > $last_cpld_latch){#we used to set $rollover_flag==3 here and then check the value of the flag a few lines later. Now we do it all here.
+			#$rollover_flag = 0; # reset the flag
+			#An old board or a "small difference" makes this line invalid
+			if ($DAQID<=5999 || $cpld_latch - $cpld_trig < $CONST_hex8A){	
+				$non_datalines++;
+				next; 		
+			}
+		}	
+	
+		#$rollover_flag = 4 if ($cpld_trig > $last_cpld_trig && $cpld_latch > $last_cpld_latch); #This should never, ever happen. Ever. Still. . . 
+		#In fact it does happen. On every trigger. Always. The previous line is a good way to drop the first line of each event.
+
+		#flag four has been removed
+
+		#$rollover_flag = 5 if ($time != $lastTime && $cpld_latch == $last_cpld_latch && $recoveredFlag == 1); #Clock advanced. GPS latch did not
 		
-		if ($rollover_flag == 6){#stuck latch
-			#watch the latch until it changes, then reset the flag
-			next if ($last_cpld_latch == hex($dataRow[9]));
-			$rollover_flag = 0 if $last_cpld_latch != hex($dataRow[9]); # not stuck, reset the flag and move on
+		if ($dataRow[10] != $lastTime && hex($dataRow[9]) == $last_cpld_latch) {#Clock advanced. GPS latch did not
+			$rollover_flag = 5; 
+			$flaggedLatch = hex($dataRow[9]);
+			$flaggedDate = $dataRow[11];
+			$non_datalines++;
+			next;
 		}
-		if ($rollover_flag == 7){#stuck clock
-			#watch the clock until it changes, then reset the flag
-			next if ($lastTime == $dataRow[10]);	
-			$rollover_flag = 0 if ($lastTime != $dataRow[10]);#clock has advanced
+	
+		#$rollover_flag = 6 if ($cpld_latch != $last_cpld_latch && $time == $lastTime && $recoveredFlag == 1); #GPS latch advanced. Clock did not.
+		if (hex($dataRow[9]) != $last_cpld_latch && $dataRow[10] == $lastTime) {#GPS latch advanced. Clock did not.
+			$rollover_flag = 6;
+			$flaggedTime = $dataRow[10];
+			$flaggedDate = $dataRow[11];
+			$non_datalines++;
+			next;
 		}
-		$data_line ++;
-	}
+	
+		#Check the cause of the rollover flags, decide whether to accept this line, reset the flag
+	
+		#if ($rollover_flag == 1 || $rollover_flag == 2){
+		#	$rollover_flag = 0; # reset the flag
+			#ThresholdTimes can deal with these rollovers if the difference between the buffers is "large". Toss out lines with "small" differences.
+		#	if ($cpld_latch - $cpld_trig < $CONST_hex8A && $cpld_trig < $cpld_latch){ 	#an arbitrarily large value.		
+		#		$non_datalines++;
+		#		next;		
+		#	}
+		#}
+
+		#if ($rollover_flag == 3){
+		#	$rollover_flag = 0; # reset the flag
+		#	#An old board or a "small difference" makes this line invalid
+		#	if ($DAQID<=5999 || $cpld_latch - $cpld_trig < $CONST_hex8A){	
+		#		$non_datalines++;
+		#		next;		
+		#	}
+		#}
 	
 	
-	#inserted by TJ to look for status update lines
+		#if ($rollover_flag == 5 || $rollover_flag == 6) { #latch or clock is stuck
+		#	next; # we can throw the current line away, but we have to carefully look at the next several lines.
+		#}
+
+		#if ($time == $lastTime && $cpld_latch != $last_cpld_latch){ # the latch increases but the clock doesn't ("stuck clock")
+		#	$rollover_flag = 7 if $rollover_flag == 0 && $flaggedLatch != 0 && $flaggedTime !=0; #this has the outcome of only CHANGING the flag, that's different than re-setting it. 
+		#}
+		$lastDate = $date;
+		$date = $dataRow[11];
+		$time = $dataRow[10]; 
+	}#end of if /$reData/o)
+
+	#the current line is not a data line or has passed the rollover tests. Proceed.
 	elsif(/$reStatus0/o || /$reStatus1/o){
 		$non_datalines++;
 		$STLineNumber = $.; #needed to check if this ST line is followed by a DS line			
@@ -287,8 +403,8 @@ while(<IN>){
 		}
 		$stRowCount++;
 		next; #we need a next here to get the second line present in the output of ST.
-	}
-	
+	} #end of elsif (/$reStatus0/o || /$reStatus1/o)
+
 	elsif(/$reDS1/o || /$reDS0/o){
 		$non_datalines++;
 		if ($stTimeGlitch == 1) { #bail on this DS line. The scalars are correct but a non-advancing time will break the bless file.
@@ -311,7 +427,7 @@ while(<IN>){
 			push(@stGPSSats, $stRow[8]);
 		}	
 		next; #get the next line in the input file. All the lifting is done on this one.
-	}
+	}#end of elsif(/$reDS!/o
 
 	elsif(/$reThreshold0/o){
 		@thRow = ($2, $3, $4, $5);
@@ -327,83 +443,14 @@ while(<IN>){
 		next;
 	}
 
-	#The next section is devoted to cleaning up datalines before any more processing. 
-	#There are five possible errors that can pollute the caluclation of $curr_gm_time.
-	
-	#The first error is a GPS flag of 4. It _always_ makes our calculation of $curr_gm_time incorrect. 
-
-	#GPS flag = 4 in the raw data indicates that the GPS time in that line is suspect. Indeed, our calculation confirms this so we should ignore the lines with a GPS flag = 4. Now we do.
-	#Actually it should check if bit 2 is 1. Otherwise it may accept invalid lines.
-	next if ($dataRow[14] & 0x04 != 0); 
-
-	#trying somethiing new with GPS time solutions. TJ wonders if the V and A flag really mean something about the timing solution. Thus far there is no evidence for it.
-	#next if ($dataRow[12] eq 'V');
-	#And now looking at number of satellites
-	#next if ($dataRow[13] < 2);
-
-	#There are four asynchronous cpld rollover errors that can appear in the data, we can trap those and be more clever about dropping data lines.
-
-	#first set the variables
-	#$cpld_latch = hex($dataRow[9]);
-	#$cpld_trig = hex($dataRow[0]);
-		
-	#Set the flag with a simple comparison of the buffers. Use the value of the flag as a control on further checks. Those checks can reset the flag to zero and go on or reset the flag to zero and discard the current line (rare).
-	$rollover_flag = 1 if ($cpld_trig <= $last_cpld_trig && $cpld_latch > $last_cpld_latch);
-	$rollover_flag = 2 if ($cpld_trig == $last_cpld_trig && $cpld_latch < $last_cpld_latch); #flag == 1 and flag == 2 can be dealt with in the same way.
-	$rollover_flag = 3 if ($cpld_trig == $last_cpld_trig && $cpld_latch > $last_cpld_latch);
-
-	#$rollover_flag = 4 if ($cpld_trig > $last_cpld_trig && $cpld_latch > $last_cpld_latch); #This should never, ever happen. Ever. Still. . . 
-	#In fact it does happen. On every trigger. Always. The previous line is a good way to drop the first line of each event.
-	
-	# A new rollover flag if the GPS time advances before the cpld_latch does. Thsi could happen two ways:
-	# The clock advances but the latch doesn't ("stuck latch")
-	$rollover_flag = 6 if ($time != $lastTime) && ($cpld_latch == $last_cpld_latch);
-	# the latch increases but the clock doesn't ("stuck clock")
-	$rollover_flag = 7 if ($time == $lastTime) && ($cpld_latch != $last_cpld_latch);
-	# When 6 or 7 happen, they usually do so for several lines. The flag shouldn't be reset until the "stuck" item is no longer stuck
-		
-	#Set the current values of trig and latch for later comparison.
-	#$last_cpld_latch = $cpld_latch;
-
-	#Check the cause of the rollover flags, decide whether to accept this line, reset the flag
-	
-	if ($rollover_flag == 1 || $rollover_flag == 2){
-		$rollover_flag = 0; # reset the flag
-		#ThresholdTimes can deal with these rollovers if the difference between the buffers is "large". Toss out lines with "small" differences.
-		if ($cpld_latch - $cpld_trig < $CONST_hex8A && $cpld_trig < $cpld_latch){ 	#an arbitrarily large value.		
-			$non_datalines++;
-			next;		
-		}
-	}
-
-	if ($rollover_flag == 3){
-		$rollover_flag = 0; # reset the flag
-		#An old board or a "small difference" makes this line invalid
-		if ($DAQID<=5999 || $cpld_latch - $cpld_trig < $CONST_hex8A){	
-			$non_datalines++;
-			next;		
-		}
-	}
-	
-	#if ($rollover_flag == 4){
-		#print $rollover_flag,"\t", $_;
-	#	$rollover_flag = 0;
-	#	next;
-	#}
-	
-	next if ($rollover_flag == 6) || ($rollover_flag == 7);
-	
 if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
-	# get date/time of the current line
-		#$lastDate = $date;
-		#$date = $dataRow[11];
-		#$lastTime = $time;
-		#$time = $dataRow[10];
-		#next if $time < $lastTime && $lastTime < 230000;
-		if ($time < $lastTime && $lastTime < 230000){
-			$non_datalines;
+
+		if ($dataRow[10] < $lastTime && $dataRow[10] < 230000 && $dataRow[11] == $lastDate){
+			$non_datalines ++;
 			next;	  
 		}
+		$data_line ++;
+
 		$day = substr($dataRow[11], 0, 2);
 		$month = substr($dataRow[11], 2, 2);
     	$year = substr($dataRow[11], 4, 2) + 2000;   # Assume no records before 2000
@@ -498,8 +545,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			$oldSTDate = $stDate = $dataRow[11] if $date ne $lastDate && $stRowCount == 0; 
 			$oldSTDate = $stDate = $dataRow[11] if $dsRowCount == 0;
 			$oldSTDate = $stDate = $dataRow[11] + 10000 if $dsRowCount == 0 && $dataRow[10] > 235959;
-			#print "$. $date $lastDate $oldSTDate $stDate $fn \n";
-			if($date ne $lastDate || $oldSTDate ne $stDate) {	#start of a new output file ##removed the checking of the control registers. Fixes bug #487  
+			if($dataRow[11] ne $lastDate || $oldSTDate ne $stDate) {	#start of a new output file ##removed the checking of the control registers. Fixes bug #487  
 				#print "Dates don't match, Boss. $date $lastDate $stDate $oldSTDate \n";
 				
 				if ($lastDate ne "") {
@@ -521,7 +567,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					# When ST3 these onboard registers are cleared after each printing, so there is no need to do the subtraction.
 					# We just need to see if these (stCountN and stEvents) keep growing over the life of the file. If they do, we need to subtract one from the next to get the scalar increment over the integration time.
 					
-					die "These data do not contain any 'DS' lines. We have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount == 0 && $DAQID > 0;
+					die "These data span at least one day that does not contain any 'DS' lines. We have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount == 0 && $DAQID > 0;
 					
 					if ($dsRowCount > 0){
 						#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
@@ -693,7 +739,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 				
 			open(SPLIT,'>>', "$output_dir/$fn");
 			open($blessFile,'>>', "$output_dir/$sfn");
-
+			
 			$jd = jd($day, $month, $year, $hour, $min, $sec);	#GPS offset already taken into account from above
 
 			# Write initial metadata for lfn that was just opened
@@ -766,7 +812,7 @@ else{
 	
 	#die "These data do not contain the same number of ST and DS lines; we have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount;
 
-	die "These data do not contain any 'DS' lines. We have stopped your upload.  We created $numSplitFiles usable file(s) before this error." if $dsRowCount == 0;
+	die "These data span at least one day that does not contain any 'DS' lines. We have stopped your upload.  We created $numSplitFiles usable file(s) before this error." if $dsRowCount == 0;
 					
 	if ($dsRowCount > 0){
 		#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
