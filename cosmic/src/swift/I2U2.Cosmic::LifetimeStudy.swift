@@ -19,7 +19,7 @@ type AxisParams {
 	}
 }
 
-(File wireDelayData) WireDelay(File thresholdData, string geoDir, File geoFile, string firmware) {
+(File wireDelayData) WireDelay(File thresholdData, string geoDir, File geoFile) {
 	app {
 		WireDelay @filename(thresholdData) @filename(wireDelayData) @filename(geoDir);
 	}
