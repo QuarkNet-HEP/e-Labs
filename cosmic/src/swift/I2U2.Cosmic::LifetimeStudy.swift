@@ -19,15 +19,15 @@ type AxisParams {
 	}
 }
 
-(File wireDelayData) WireDelay(File thresholdData, string geoDir, File geoFile) {
+(File wireDelayData) WireDelay(File thresholdData, string geoDir, File geoFile, string detector, string firmware) {
 	app {
-		WireDelay @filename(thresholdData) @filename(wireDelayData) @filename(geoDir);
+		WireDelay @filename(thresholdData) @filename(wireDelayData) @filename(geoDir) detector firmware;
 	}
 }
 
-(File wireDelayData[]) WireDelayMultiple(File thresholdData[], string geoDir, File geoFiles[]) {
+(File wireDelayData[]) WireDelayMultiple(File thresholdData[], string geoDir, File geoFiles[], string detectors[], string firmwares[]) {
 	foreach td, i in thresholdData {
-		wireDelayData[i] = WireDelay(thresholdData[i], geoDir, geoFiles[i]);
+		wireDelayData[i] = WireDelay(thresholdData[i], geoDir, geoFiles[i], detectors[i], firmwares[i]);
 	}
 }
 
@@ -111,6 +111,7 @@ File	wireDelayData[] <fixed_array_mapper;files=@arg("wireDelayData")>;
 
 string  detectors[] = @strsplit(@arg("detector"), "\\s");
 string  cpldfreqs[] = @strsplit(@arg("cpldfreqs"), "\\s");
+string  firmwares[] = @strsplit(@arg("firmwares"), "\\s");
 
 string	extraFun_alpha_guess = @arg("extraFun_alpha_guess");
 string	extraFun_alpha_variate = @arg("extraFun_alpha_variate");
@@ -168,7 +169,7 @@ string	sort_sortKey2 = @arg("sort_sortKey2");
 
 
 thresholdAll = ThresholdTimesMultiple(rawData, detectors, cpldfreqs);
-wireDelayData = WireDelayMultiple(thresholdAll, geoDir, geoFiles);
+wireDelayData = WireDelayMultiple(thresholdAll, geoDir, geoFiles, detectors, firmwares);
 combineOut = Combine(wireDelayData);
 sortOut = Sort(combineOut, sort_sortKey1, sort_sortKey2);
 lifetimeOut = Lifetime(sortOut, lifetime_coincidence, lifetime_energyCheck,
