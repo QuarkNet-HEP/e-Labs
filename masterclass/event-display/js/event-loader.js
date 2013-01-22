@@ -17,62 +17,72 @@ function loadEvent0() {
 	loadEvent(fileListCurrentIndex);
 }
 
-
 function cleanupData(d) {
-    // rm non-standard json bits
-    // newer files will not have this problem
-    d = d.replace(/\(/g,'[')
-	.replace(/\)/g,']')
-	.replace(/\'/g, "\"")
-	.replace(/nan/g, "0");
-    return d;
+  // rm non-standard json bits
+  // newer files will not have this problem
+  d = d.replace(/\(/g,'[')
+	     .replace(/\)/g,']')
+	     .replace(/\'/g, "\"")
+	     .replace(/nan/g, "0");
+  return d;
 }
 
 function loadEvent(i) {
-  var ua = $.browser;
-  var version;
-  if ( ua.mozilla ) {
-    version = ua.version.split(".");
-    version = version[0]
-  }
-  else {
-    alert("Firefox 7 or newer is required for this application.");
-    return;
-  }
+  // If there is no FileReader 
+  // then try old API, else out of luck
 
-  if ( version < 7 ) { 
-    try {
-	var data = cleanupData(JXG.decompress(fileList[i].getAsText("US-ASCII")));
-      var ed   = JSON.parse(data);
-      enableNextPrev();
-      eventDataLoaded(ed); 
-	
-      $("#title").html("File " + (fileListCurrentIndex + 1) + " of " + fileList.length + ": " + fileList[i].name);
-    } catch (e) {
-      alert(e);
+  $("#progress").show();
+
+  if ( ! window.FileReader ) {
+    
+    var ua = $.browser;
+
+    if ( ua.mozilla ) {
+      var version = ua.version;
+
+      if ( version < 3.6 ) { 
+        try {
+          var data = cleanupData(JXG.decompress(fileList[i].getAsText("US-ASCII")));
+          var ed   = JSON.parse(data);
+          enableNextPrev();
+          eventDataLoaded(ed); 
+          $("#progress").hide();
+          $("#title").html("File " + (fileListCurrentIndex + 1) + " of " + fileList.length + ": " + fileList[i].name);
+        } catch (e) {
+           alert(e);
+           alert("You seem to be using Firefox "+ version + ". Please update to at least version 7, with version 9+ recommended.");
+        }
+      }
     }
-  }
+
+    alert("Sorry. You seem to be using a browser that does not support the FileReader API. Please try with Chrome (6.0+), Firefox (3.6+), Safari (6.0+), or IE (10+).");
+    return;
+
+  } // No FileReader
 
   else {
     try {
       var reader = new FileReader();
 
       reader.onload = function(e) {
-    	var data = e.target.result; 
-		data = JXG.decompress(data); // inflate base64-encoded gzipped data
-    	data = cleanupData(data); // fix JSON if needed
+        var data = e.target.result; 
+        data = JXG.decompress(data); // inflate base64-encoded gzipped data
+        data = cleanupData(data); // fix JSON if needed
         var ed = JSON.parse(data);
         enableNextPrev();
         eventDataLoaded(ed); 
-	
+        $("#progress").hide();
         $("#title").html("File " + (fileListCurrentIndex + 1) + " of " + fileList.length + ": " + fileList[i].name);
       }
-    reader.onerror = function(e) {
-      alert(e);
-    }
+    
+      reader.onerror = function(e) {
+        alert(e);
+      }
 
       reader.readAsText(fileList[i], "US-ASCII"); // requires base64-encoded compressed binary blob
-    } catch(e) {
+    
+      } 
+    catch(e) {
       alert(e);
     }
   }

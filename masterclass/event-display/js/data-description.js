@@ -78,7 +78,7 @@ var d_descr = {
 		
 	"DTDigis_V1": { type: LINE, on: false, group: "Muon", desc: "DT Digis",
 		fn: makeDTDigis, color: [0, 1, 0, 1], lineWidth: 1 },
-	"DTRecHits_V1": { type: LINE, on: true, group: "Muon", desc: "DT Rec. Hits",
+	"DTRecHits_V1": { type: LINE, false: true, group: "Muon", desc: "DT Rec. Hits",
 		fn: makeDTRecHits, color: [0, 1, 0, 1], lineWidth: 2 },
 	"DTRecSegment4D_V1": { type: LINE, on: true, group: "Muon", desc: "DT Rec. Segments (4D)",
 		fn: makeDTRecSegments, color: [1, 1, 0, 1], lineWidth: 3 },
@@ -143,6 +143,9 @@ var d_descr = {
 		dataref: "Extras_V1", assoc: "GsfElectronExtras_V1", 
 		fn: makeTrackCurves2, color: [1, 0.9, 0, 0.9], lineCaps: "square", lineWidth: 2},
 
+	"Photons_V1": { type: LINE, on: false, group: "Physics Objects", desc: "Photons (Reco)",
+		 fn: makePhotons, color: [0.8, 0.8, 0, 1], lineWidth: 2},
+	
 
 	"TrackerMuons_V1": { type: TRACK, on: true, group: "Physics Objects", desc: "Tracker Muons (Reco)",
 		dataref: "Points_V1", assoc: "MuonTrackerPoints_V1", 

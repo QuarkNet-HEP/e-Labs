@@ -12,10 +12,25 @@
 		<link href="css/range-selection.css" rel="stylesheet" type="text/css" />
 		<link href="css/event-browser.css" rel="stylesheet" type="text/css" />
 		<link href="css/speed-test.css" rel="stylesheet" type="text/css" />
-		
+
+		<style type="text/css">
+		#progress {
+			color: white;
+			font-size: 18px;
+			font-weight: bold;
+			height: 80px;
+			left: 60px;
+			line-height: 80px;	
+			margin: 0 auto;
+			position: relative;
+			text-align: center;
+			top: 120px;
+			width: 200px;
+		}
+		</style>
+
 		<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 		<script type="text/javascript" src="js/jquery.jeegoocontext.min.js"></script>
-		<script type="text/javascript" src="js/jquery.ba-throttle-debounce.min.js"></script>
 		<script type="text/javascript" src="js/pre3d.js"></script>
 		<script type="text/javascript" src="js/pre3d_shape_utils.js"></script>
 		<script type="text/javascript" src="js/base64.js"></script>		
@@ -25,7 +40,6 @@
 		<script type="text/javascript" src="js/canvas2image.js"></script>
 		<script type="text/javascript" src="js/demo_utils.js"></script>
 		<script type="text/javascript" src="js/object-conversion.js"></script>
-		<script type="text/javascript" src="js/data/detector-model-geometry.js"></script>
 		<script type="text/javascript" src="js/detector-model-gen.js"></script>
 		<script type="text/javascript" src="js/data-description.js"></script>
 		<script type="text/javascript" src="js/about.js"></script>
@@ -39,9 +53,6 @@
 		
 	</head>
 	<body class="black">
-	<script>
-		initlog(false);
-	</script>
 <table>
 	<tr>
 		<td colspan="2" class="titlebar-plain bordered">
@@ -78,6 +89,26 @@
 					<td class="toolbar-separator">
 						&nbsp;
 					</td>
+
+					<td>
+						<a class="toolbar-button" onclick="setCameraHome();">
+							<img src="graphics/home.png" title="Return to Start View"/>
+						</a>
+					<td>
+						<a class="toolbar-button" onclick="zoom(1.0);">
+							<img src="graphics/zoom_in_24.png" title="Zoom In"/>
+						</a>
+					</td>
+					<td>
+						<a class="toolbar-button" onclick="zoom(-1);">
+							<img src="graphics/zoom_out_24.png" title="Zoom Out"/>
+						</a>
+					</td>
+
+					<td class="toolbar-separator">
+						&nbsp;
+					</td>
+
 					<td>
 						<a class="toolbar-button" onclick="setCameraRotation(0, 0, 0);">
 							<img src="graphics/z-plane.png" title="X-Y Plane"/>
@@ -156,6 +187,7 @@
 			</div>
 		</td>
 		<td class="bordered">
+			<div id="progress">Loading...</div>
 			<canvas id="canvas" height="600" width="700">
   				Sorry, this requires a web browser which supports HTML5 canvas.
 			</canvas>
@@ -723,14 +755,17 @@
 		<tr>
 			<td class="content">
 				<dl>
-                                        <dt>Electron Tracks (GSF)</dt>
+                    <dt>Electron Tracks (GSF)</dt>
 					<dd>Reconstructed electron tracks in the tracker</dd>
 
+					<dt>Photons (Reco)</dt>
+					<dd>Inferred photon trajectories</dd>
+
 					<dt>Tracker Muons (Reco)</dt>
-					<dd>Reconstructed muon tracks in central Tracker</dd>
+					<dd>Reconstructed muon tracks in the tracker</dd>
 					
 					<dt>Stand-alone Muons (Reco)</dt>
-					<dd>Reconstructed muon track segments in barrel</dd>
+					<dd>Reconstructed muon track segments in muon chambers</dd>
 					
 					<dt>Global Muons (Reco)</dt>
 					<dd>Reconstructed complete muon tracks</dd>
@@ -740,6 +775,9 @@
 					
 					<dt>Jets</dt>
 					<dd>Collimated groups of particles which come from strong force energy conversion to matter</dd> 
+
+					<dt>MET</dt>
+					<dd>Missing transverse energy</dd>
 				</dl>
 			</td>
 		</tr>
@@ -759,4 +797,7 @@
 	</table>
 </div>
 	</body>
+	<script type="text/javascript">
+	$("#progress").hide();
+	</script>
 </html>
