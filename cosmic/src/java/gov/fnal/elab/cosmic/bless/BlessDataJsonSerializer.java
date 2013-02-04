@@ -1,3 +1,8 @@
+/*
+ * This code builds the json object for the scatter plots
+ * 
+ * Edit Peronja: 01/23/2013 - Bug 472: code updates, see below
+ */
 package gov.fnal.elab.cosmic.bless;
 
 import java.lang.reflect.Type;
@@ -88,13 +93,31 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 		points.addProperty("errorbars", "n");
 		points.add("yerr", yerr);
 		
+		//EPeronja-01/18/2013: Bug472-Added a custom point to channel1 to be able to choose a symbol
+		JsonObject point1 = new JsonObject();
+		point1.addProperty("errorbars", "n");
+		point1.add("yerr", yerr);
+		point1.addProperty("symbol", "square");
+		point1.addProperty("show", 1);
+		point1.addProperty("radius", 1.5);
+		
 		JsonObject channel1 = new JsonObject();
 		channel1.addProperty("label", "Channel 1");
 		channel1.add("data", channel1Data);
 		channel1.addProperty("unit", "counts/min");
 		channel1.addProperty("shadowSize", 0);
 		channel1.addProperty("color", "red");
-		channel1.add("points", points);
+		//EPeronja-01/22/2013: Bug472-Added this property in order to be able to format the labels in blessing.js
+		channel1.addProperty("idx", 0);
+		channel1.add("points", point1);
+
+		//EPeronja-01/18/2013: Bug472-Added a custom point to channel2 to be able to choose a symbol
+		JsonObject point2 = new JsonObject();
+		point2.addProperty("errorbars", "n");
+		point2.add("yerr", yerr);
+		point2.addProperty("symbol", "diamond");
+		point2.addProperty("show", 1);
+		point2.addProperty("radius", 1.5);
 		
 		JsonObject channel2 = new JsonObject();
 		channel2.addProperty("label", "Channel 2");
@@ -102,7 +125,17 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 		channel2.addProperty("unit", "counts/min");
 		channel2.addProperty("shadowSize", 0);
 		channel2.addProperty("color", "green");
-		channel2.add("points", points);
+		//EPeronja-01/22/2013: Bug472-Added this property in order to be able to format the labels in blessing.js
+		channel2.addProperty("idx", 1);		
+		channel2.add("points", point2);
+
+		//EPeronja-01/18/2013: Bug472-Added a custom point to channel3 to be able to choose a symbol		
+		JsonObject point3 = new JsonObject();
+		point3.addProperty("errorbars", "n");
+		point3.add("yerr", yerr);
+		point3.addProperty("symbol", "triangle");
+		point3.addProperty("show", 1);
+		point3.addProperty("radius", 1.5);
 		
 		JsonObject channel3 = new JsonObject();
 		channel3.addProperty("label", "Channel 3");
@@ -110,7 +143,17 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 		channel3.addProperty("unit", "counts/min");
 		channel3.addProperty("shadowSize", 0);
 		channel3.addProperty("color", "blue");
-		channel3.add("points", points);
+		//EPeronja-01/22/2013: Bug472-Added this property in order to be able to format the labels in blessing.js		
+		channel3.addProperty("idx", 2);		
+		channel3.add("points", point3);
+
+		//EPeronja-01/18/2013: Bug472-Added a custom point to channel4 to be able to choose a symbol
+		JsonObject point4 = new JsonObject();
+		point4.addProperty("errorbars", "n");
+		point4.add("yerr", yerr);
+		point4.addProperty("symbol", "circle");
+		point4.addProperty("show", 1);
+		point4.addProperty("radius", 1.5);
 		
 		JsonObject channel4 = new JsonObject();
 		channel4.addProperty("label", "Channel 4");
@@ -118,12 +161,16 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 		channel4.addProperty("unit", "counts/min");
 		channel4.addProperty("shadowSize", 0);
 		channel4.addProperty("color", "cyan");
-		channel4.add("points", points);
+		//EPeronja-01/22/2013: Bug472-Added this property in order to be able to format the labels in blessing.js		
+		channel4.addProperty("idx", 3);
+		channel4.add("points", point4);
 		
 		JsonObject trigger = new JsonObject();
 		trigger.addProperty("label", "Trigger");
 		trigger.add("data", triggerData);
-		trigger.addProperty("unit", "counts/min");
+		//trigger.addProperty("unit", "counts/min");
+		trigger.addProperty("ylabel", "Trigger Rate");
+		trigger.addProperty("unit", "Hz");		
 		trigger.addProperty("shadowSize", 0);
 		trigger.addProperty("color", "magenta");
 		trigger.add("points", points);
@@ -131,14 +178,16 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 		JsonObject gpsSats = new JsonObject();
 		gpsSats.addProperty("label", "GPS Satellites");
 		gpsSats.add("data", satData);
-		gpsSats.addProperty("ylabel", "Satellites in view");
+		//EPeronja-01/23/2013: Bug472-Updated label below
+		gpsSats.addProperty("ylabel", "# Satellites in view");
 		gpsSats.addProperty("shadowSize", 0);
 		
 		JsonObject volts = new JsonObject();
 		volts.addProperty("label", "Volts");
 		volts.add("data", voltData);
 		volts.addProperty("ylabel", "Vcc");
-		volts.addProperty("unit", "volts");
+		//EPeronja-01/23/2013: Bug472-Updated label below		
+		volts.addProperty("unit", "Volts");
 		volts.addProperty("shadowSize", 0);
 		
 		JsonObject temperature = new JsonObject();

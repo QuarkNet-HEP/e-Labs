@@ -127,6 +127,7 @@ $(window).scroll(function(){
 		String date2 = request.getParameter("date2");
 		String stacked = request.getParameter("stacked");
 		String blessed = request.getParameter("blessed");
+		
 		boolean submit = StringUtils.isNotBlank(request.getParameter("submit"));
 		
 		if (StringUtils.isBlank(key)) key="all";
@@ -151,7 +152,6 @@ $(window).scroll(function(){
 		    
 		    and.add(new Equals("project", elab.getName()));
 		    and.add(new Equals("type", "split"));
-		    
 		    /* This parameter is never set 
 			   if ("within".equals(request.getParameter("searchIn"))) {
 				   and.add((QueryElement) session.getAttribute("previousSearch"));

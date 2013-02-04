@@ -67,5 +67,6 @@ public interface DataCatalogProvider extends ElabProvider {
      * Inserts an entry in the catalog. If the entry already
      * exists, selectively update the metadata.
      */
-    void insert(CatalogEntry entry) throws ElabException;    
+    void insert(CatalogEntry entry) throws ElabException; 
+    
 }

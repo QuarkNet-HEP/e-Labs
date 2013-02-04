@@ -114,7 +114,7 @@ public class CachingCatalogProvider implements DataCatalogProvider, AnalysisCata
             updating = false;
         }
     }
-
+    
     public void insert(CatalogEntry entry) throws ElabException {
         //there's a question of whether queries on a lfn should be allowed
         //while its metadata is being updated, but that's probably something

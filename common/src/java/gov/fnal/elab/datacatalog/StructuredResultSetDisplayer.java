@@ -291,9 +291,21 @@ public class StructuredResultSetDisplayer {
             }
             out.write("</a>");
         }
-        if (file.isBlessed()) {
-            out.write("<img alt=\"Blessed data\" "
-                    + "src=\"../graphics/star.gif\"/>");
+        if (file.getBlessFile() != null) {
+        	if (file.isBlessed()) {
+        		out.write("<a href=\"../analysis-blessing/compare1.jsp?file=");
+        		out.write(file.getLFN());
+        		out.write("\">");   
+        		out.write("<img alt=\"Blessed data\" "
+                    + "src=\"../graphics/star.gif\"/></a>");
+        	}
+        	else {
+        		out.write("<a href=\"../analysis-blessing/compare1.jsp?file=");
+        		out.write(file.getLFN());
+        		out.write("\">");   
+        		out.write("<img alt=\"Blessed data\" "
+                    + "src=\"../graphics/unblessed.gif\"/></a>");        	
+        	}
         }
         out.write("<br />" + formatNumber(file.getTotalEvents()) + " events");
     }

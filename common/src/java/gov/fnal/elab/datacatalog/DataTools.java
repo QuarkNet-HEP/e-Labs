@@ -61,6 +61,11 @@ public class DataTools {
         KEYS.put("state", 9);
         KEYS.put("enddate", 10);
         KEYS.put("detectorid", 11);
+        KEYS.put("blessfile", 12);
+        KEYS.put("ConReg0", 13);
+        KEYS.put("ConReg1", 14);
+        KEYS.put("ConReg2", 15);
+        KEYS.put("ConReg3", 16);       
     }
 
     public static final int SCHOOL = 0;
@@ -75,7 +80,12 @@ public class DataTools {
     public static final int STATE = 9;
     public static final int ENDDATE = 10;
     public static final int DETECTORID = 11; 
-
+    public static final int BLESSFILE = 12;
+    public static final int CONREG0 = 13;
+    public static final int CONREG1 = 14;
+    public static final int CONREG2 = 15;
+    public static final int CONREG3 = 16;
+    
     public static final String MONTH_FORMAT = "MMMM yyyy";
 
     /**
@@ -171,7 +181,38 @@ public class DataTools {
             	System.out.println("WARNING: File " + e.getLFN() + " has a malformed detector ID. Skipping.");
             	continue;
             }
-            	
+            
+            try {
+            	file.setBlessFile((String) data[BLESSFILE]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have a bless file. Skipping.");
+            	continue;
+            }
+            try {
+            	file.setBlessFile((String) data[CONREG0]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have register 0 conf. Skipping.");
+            	continue;
+            }
+            try {
+            	file.setBlessFile((String) data[CONREG1]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have register 1 conf. Skipping.");
+            	continue;
+            }
+            try {
+            	file.setBlessFile((String) data[CONREG2]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have register 2 conf. Skipping.");
+            	continue;
+            }
+            try {
+            	file.setBlessFile((String) data[CONREG3]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have register 3 conf. Skipping.");
+            	continue;
+            }
+
             if (file.getStartDate() == null) {
             	System.out.println("WARNING: File " + e.getLFN() + " is missing the start date. Skipping.");
             	continue;
