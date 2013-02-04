@@ -593,7 +593,7 @@ function toggleBackground() {
 	if (document.redrawRange) {
 		document.redrawRange();
 	}
-};
+}
 
 function setCameraRotation(rx, ry, rz) {
 	var ct = document.renderer.camera.transform;

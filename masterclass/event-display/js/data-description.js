@@ -17,8 +17,13 @@ var d_descr = {
 		fn: makeDetectorPiece, color: [0, 1, 1, 0.5], fill: [0, 1, 1, 0.5], lineWidth: 0.5},
 	"Tracker3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "Tracker",
 		fn: makeWireframe, color: [1, 1, 0, 0.5], lineWidth: 0.5},
-	"Tracker3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "Tracker",
-		fn: makeModelTracker, color: [1, 1, 0, 0.3], lineWidth: 0.5},
+
+	"TrackerBarrel3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "Tracker Barrels",
+		fn: makeModelTrackerBarrel, color: [1, 1, 0, 0.3], lineWidth: 1.0},
+
+	"TrackerEndcap3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "Tracker Endcaps",
+		fn: makeModelTrackerEndcap, color: [1, 1, 0, 0.3], lineWidth: 0.5},
+
 	"EcalBarrel3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "ECAL Barrel",
 		fn: makeWireframe, color: [0, 1, 1, 0.5], lineWidth: 0.5},
 	"EcalBarrel3D_MODEL": {type: WIREFRAME, on: true, group: "Detector Model", desc: "ECAL Barrel",
@@ -57,7 +62,6 @@ var d_descr = {
 		fn: makeWireframe, color: [0.2, 1, 0, 0.3], lineWidth: 0.8},
 	"RPC3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "Resistive Plate Chambers (muon)",
 		fn: makeRPCs, color: [0.8, 1, 0, 0.4], lineWidth: 0.8},
-		
 		
 	"Tracks_V1": { type: PATHS, on: true, group: "Tracking", desc: "Tracks (reco.)",
 		dataref: "Extras_V1", assoc: "TrackExtras_V1",
@@ -137,7 +141,6 @@ var d_descr = {
 		dataref: "PFTrajectoryPoints_V1", assoc: "PFBremTrajectoryPoints_V1", 
 		fn: makeTrackPoints, color: [0, 1, 0.2, 1], lineCaps: "+", lineWidth: 1},
 	*/
-
       
 	"GsfElectrons_V1": { type: PATHS, on: true, group: "Physics Objects", desc: "Electron Tracks (GSF)",
 		dataref: "Extras_V1", assoc: "GsfElectronExtras_V1", 
@@ -146,7 +149,6 @@ var d_descr = {
 	"Photons_V1": { type: LINE, on: false, group: "Physics Objects", desc: "Photons (Reco)",
 		 fn: makePhotons, color: [0.8, 0.8, 0, 1], lineWidth: 2},
 	
-
 	"TrackerMuons_V1": { type: TRACK, on: true, group: "Physics Objects", desc: "Tracker Muons (Reco)",
 		dataref: "Points_V1", assoc: "MuonTrackerPoints_V1", 
 		fn: makeTrackPoints, color: [1, 0, 0.2, 1], lineCaps: "-", lineWidth: 2},
