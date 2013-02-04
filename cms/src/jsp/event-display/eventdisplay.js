@@ -606,3 +606,40 @@ function setCameraRotation(rx, ry, rz) {
 	document.cameraState.rotate_z = rz;
 	document.draw();
 }
+
+function setCameraHome() {
+	var ct = document.renderer.camera.transform;
+	var x = 0;
+	var y = 0;
+	var z = -30;
+	var rx = 0.40;
+	var ry = -1.06;
+	var rz = 0;
+
+	ct.reset();
+	ct.rotateZ(rz);
+	ct.rotateY(ry);
+	ct.rotateX(rx);
+	ct.translate(x, y, z);
+	
+	document.cameraState.x = x;
+	document.cameraState.y = y;
+	document.cameraState.z = z;
+	document.cameraState.rotate_x = rx;
+	document.cameraState.rotate_y = ry;
+	document.cameraState.rotate_z = rz;
+	
+	document.draw();	
+}
+
+function zoom(step) {
+	var ct = document.renderer.camera.transform;
+    ct.reset();
+    ct.rotateZ(document.cameraState.rotate_z);
+    ct.rotateY(document.cameraState.rotate_y);
+    ct.rotateX(document.cameraState.rotate_x);
+    ct.translate(document.cameraState.x, document.cameraState.y, document.cameraState.z);
+
+	document.cameraState.z = document.cameraState.z + step;
+	document.draw();	
+}
