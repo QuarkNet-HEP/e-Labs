@@ -309,6 +309,8 @@ public class StructuredResultSet {
         private java.util.Date startDate, endDate;
         private int detector;
         private long totalEvents; 
+        private String blessfile;
+        private String conreg0, conreg1, conreg2, conreg3;
 
         public File(String lfn) {
             this.lfn = lfn;
@@ -334,6 +336,37 @@ public class StructuredResultSet {
             this.stacked = stacked;
         }
 
+        public void setBlessFile(String blessfile){
+        	this.blessfile = blessfile;
+        }
+        
+        public String getBlessFile() {
+        	return this.blessfile;
+        }
+        public void setConReg0(String conreg0){
+        	this.conreg0 = conreg0;
+        }
+        public String getConReg0() {
+        	return this.conreg0;
+        }
+        public void setConReg1(String conreg1){
+        	this.conreg1 = conreg1;
+        }
+        public String getConReg1() {
+        	return this.conreg1;
+        }
+        public void setConReg2(String conreg2){
+        	this.conreg2 = conreg2;
+        }
+        public String getConReg2() {
+        	return this.conreg2;
+        }
+        public void setConReg3(String conreg3){
+        	this.conreg3 = conreg3;
+        }
+        public String getConReg3() {
+        	return this.conreg3;
+        }
         public java.util.Date getDate() {
             return startDate;
         }
