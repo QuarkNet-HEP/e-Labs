@@ -21,7 +21,7 @@
 		<script src="../include/pre3d_shape_utils.js"></script>
 		<script src="../include/base64.js"></script>
 		<script src="../include/canvas2image.js"></script>
-		<script src="../include/jguery.touchSwipe.min.js"></script>
+		<script src="jguery.touchSwipe.min.js"></script>
 		<script src="demo_utils.js"></script>
 		<script src="object-conversion.js"></script>
 		<script src="detector-model-gen.js"></script>
