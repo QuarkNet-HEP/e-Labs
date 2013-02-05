@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>CMS 3D Event Display</title>
-		<meta content="width=device-width, initial-scale=1.0, user-scalable=yes" name="viewport">
+		<meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport">
 
 		<link href="scrollbar.css" rel="stylesheet" type="text/css" />
 		<link href="eventdisplay.css" rel="stylesheet" type="text/css" />
