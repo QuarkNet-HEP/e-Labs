@@ -20,7 +20,7 @@
 		<script src="../include/pre3d_shape_utils.js"></script>
 		<script src="../include/base64.js"></script>
 		<script src="../include/canvas2image.js"></script>
-		<script src="../include/jgestures.min.js"></script>
+		<script src="../include/jguery.touchSwipe.min.js"></script>
 		<script src="demo_utils.js"></script>
 		<script src="object-conversion.js"></script>
 		<script src="detector-model-gen.js"></script>
@@ -67,13 +67,14 @@
 <script src="eventdisplay.js"></script>
 
 <script type="text/javascript">
-$("#canvas").bind('pinchopen', function() {
-	alert('pinchopen');
-});
 
-$("#canvas").bind('pinchclose', function() {
-	alert('pinchclose');
-});
+$("#canvas").swipe( {
+        pinchStatus:function(event, phase, direction, distance , duration , fingerCount, pinchZoom) {
+          $(this).html("Pinch zoom " + pinchZoom + "  <br/>Distance pinched " + distance +" <br/>Direction " + direction);
+        },
+        fingers:2,  
+        threshold:0  
+      });
 </script>
 
 <%@ include file="settings.jspf" %>
