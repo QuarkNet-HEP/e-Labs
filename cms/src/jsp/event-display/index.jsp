@@ -62,6 +62,7 @@
 			<%@ include file="controls-help.jspf" %>
 		</td>
 		<td class="bordered">
+			<div id="touch-test"></div>
 		</td>
 	</tr>
 </table>
@@ -69,9 +70,9 @@
 
 <script type="text/javascript">
 
-$("#canvas").swipe( {
+$("#canvas").swipe({
         pinchStatus:function(event, phase, direction, distance , duration , fingerCount, pinchZoom) {
-          $(this).html("Pinch zoom " + pinchZoom + "  <br/>Distance pinched " + distance +" <br/>Direction " + direction);
+          $("#touch-test").html("Pinch zoom " + pinchZoom + "  <br/>Distance pinched " + distance +" <br/>Direction " + direction);
         },
         fingers:2,  
         threshold:0  
