@@ -596,17 +596,6 @@ function setupCanvasCB() {
 		}
 	});
 
-	document.addEventListener('pinchopen', function(e) {
-		e.preventDefault();
-		alert('pinchopen');
-	});
-
-	document.addEventListener('pinchclose', function(e){
-		e.preventDefault();
-		alert('pinchclose');
-	})
-	
-	
 	document.draw = redraw;
 	redraw();
 	

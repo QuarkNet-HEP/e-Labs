@@ -66,6 +66,16 @@
 </table>
 <script src="eventdisplay.js"></script>
 
+<script type="text/javascript">
+$("#canvas").bind('pinchopen', function() {
+	alert('pinchopen');
+});
+
+$("#canvas").bind('pinchclose', function() {
+	alert('pinchclose');
+});
+</script>
+
 <%@ include file="settings.jspf" %>
 <%@ include file="range-selection.jspf" %>
 <%@ include file="event-browser.jspf" %>
