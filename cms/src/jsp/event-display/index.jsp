@@ -70,7 +70,7 @@
 
 <script type="text/javascript">
 
-$("#canvas").swipe({
+$("#touch-test").swipe({
         pinchStatus:function(event, phase, direction, distance , duration , fingerCount, pinchZoom) {
           $("#touch-test").html("Pinch zoom " + pinchZoom + "  <br/>Distance pinched " + distance +" <br/>Direction " + direction);
         },
