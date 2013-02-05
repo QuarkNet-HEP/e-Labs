@@ -566,11 +566,11 @@ function setupCanvasCB() {
 		if ( e.shiftKey ) {
 			switch(e.which) {
 				case 38: // up
-				zoom(-1);
+				zoom(1);
 				break;
 
 				case 40: // down
-				zoom(1);
+				zoom(-1);
 				break;
 			}
 		} 
