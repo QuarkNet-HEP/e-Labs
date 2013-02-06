@@ -108,7 +108,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 				CR2: <strong><%= entry.getTupleValue("ConReg2") != null? entry.getTupleValue("ConReg2") : "Unknown" %></strong>,
 				CR3: <strong><%= entry.getTupleValue("ConReg3") != null? entry.getTupleValue("ConReg3") : "Unknown" %></strong><br />
 				CR0: <strong>${CR0}</strong><br /><br />
-				<p><strong>Owners of data files can bless data based on their interpretation of these charts</strong></p>
+				<div style="text-align: center;"><strong>Owners of data files can bless data based on their interpretation of these charts</strong></p></div>
 				<% if (owner) { %>							
 				<table witdh="100%"  style="border: 1px solid black;">
 					<tr><td style="text-align: center;">Look at these charts and bless your data if it is of high quality </td>
