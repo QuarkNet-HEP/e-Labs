@@ -25,8 +25,8 @@
 				</c:when>														
 			</c:choose>
 			Y axis scale: </td>
-			<td style="background-color: lightGray">Min Y: <input type="text" id="<%= request.getParameter("chartName")%>MinY" /><input type="button" value="Set" id="<%= request.getParameter("chartName")%>YMinButton" onclick='javascript:redrawMinPlotY(<%= request.getParameter("chartName")%>MinY.value, "<%= request.getParameter("chartName")%>");' /></td>
-			<td style="background-color: lightGray">Max Y: <input type="text" id="<%= request.getParameter("chartName")%>MaxY" /><input type="button" value="Set" id="<%= request.getParameter("chartName")%>YMaxButton" onclick='javascript:redrawMaxPlotY(<%= request.getParameter("chartName")%>MaxY.value, "<%= request.getParameter("chartName")%>");' /></td>
+			<td style="background-color: lightGray">Min Y: <input type="text" id="<%= request.getParameter("chartName")%>MinY" /><input type="button" value="Set" id="<%= request.getParameter("chartName")%>YMinButton" onclick='javascript:redrawPlotMinY(<%= request.getParameter("chartName")%>MinY.value, "<%= request.getParameter("chartName")%>");' /></td>
+			<td style="background-color: lightGray">Max Y: <input type="text" id="<%= request.getParameter("chartName")%>MaxY" /><input type="button" value="Set" id="<%= request.getParameter("chartName")%>YMaxButton" onclick='javascript:redrawPlotMaxY(<%= request.getParameter("chartName")%>MaxY.value, "<%= request.getParameter("chartName")%>");' /></td>
 		</tr>
 	</table>
 </div>		

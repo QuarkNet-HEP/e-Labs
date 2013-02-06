@@ -57,7 +57,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 
 		<title>Data Blessing</title>
 	</head>
-	<body class="upload">
+	<body class="upload" style="text-align: center;">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
@@ -97,7 +97,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 					<a href="../geometry/view.jsp?filename=${param.file}">Show Geometry</a> |
 				</c:if>
 				<a href="../data/download?filename=${param.file}&elab=${elab.name}&type=split">Download</a>
-				<p>Data blessing documentation <a href="../references/Reference_bless_data.jsp" target="_blank">here</a></p>
+				Data blessing documentation <a href="../references/Reference_bless_data.html" target="_blank">here</a>
 				<br/>
 				<br/>	
 				<h1>Data Blessing Test -
