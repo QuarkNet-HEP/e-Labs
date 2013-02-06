@@ -98,7 +98,7 @@ request.setAttribute("CR3", br3.getRegisterValue());
 				}
 				</script>
 	
-				<h1>DataBlessing Test -
+				<h1>Data Blessing Test -
 				<%= entry.getTupleValue("school") %>, <%= entry.getTupleValue("city") %> - <%= entry.getTupleValue("state") %>
 				</h1>
 				<!-- Need to check if user is related to this detector in order to be able to bless/unbless -->
