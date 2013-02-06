@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Data Blessing</title>
+</head>
+
+<body>
+	<table>
+		<tr><td><strong>Data can be blessed/unblessed based on the interpretation of the charts. Only the owners of the 
+				data files can bless/unbless the data.</strong></td></tr>
+		<tr><td><img src="bless-unbless.gif" id="bless-unbless" alt="bless-unbless"></img></td></tr>
+		<tr><td><strong>Control Registers</strong></td></tr>
+		<tr><td>CR0: <strong>1F</strong>, CR1: <strong>71</strong>, CR2: <strong>20</strong>, CR3: <strong>00</strong></td></tr>
+		<tr><td>The registers are numbered 0-3. Find more information in the User's Manual, Series "6000", pg: 33.</td></tr>
+		<tr><td><strong>Data Plots</strong></td></tr>
+		<tr><td>All plots share the same <strong>X-Axis</strong>: seconds since midnight UTC. A full, 24-h day has 86,400 
+				seconds (24*60*60). Files start at midnight of one day (or when data started writing) and end at midnight the
+				following day (or when data stopped writing).</td></tr>
+		<tr><td>X-Axes maximum scale can be customized by the user.</td></tr>
+		<tr><td><img src="xaxesmax.gif" id="xaxismax" alt="xaxixmax"></img></td></tr>
+		<tr><td><i>The data below all end near 64800 seconds after midnight, two-thirds of a day or 1600 UTC.</i></td></tr>
+		<tr><td><img src="rates.gif" id="rates" alt="rates"></img></td></tr>
+		<tr><td><i>“Singles rate” plotted as Channel Rate on the <strong>Y-Axis</strong> for each channel</i></td></tr>
+		<tr><td><i>All channels here are remarkably stable over the entire data run</i></td></tr>
+		<tr><td>Data come from a detector with four counters attached to four channels. Each counter fires independently. 
+				We count independent firings, calculate and plot the rate (#counts/second, Hz). Each channel can be toggled
+				on/off and Y axis scale max can be customized.</td></tr>
+		<tr><td><img src="trigger.gif" id="trigger" alt="trigger"></img></td></tr>
+		<tr><td><i>Number of “triggers” over time, Trigger Rate, also known as Coincidence Rate</i></td></tr>
+		<tr><td><i>This detector has a very low trigger rate; the counters must not be stacked atop each other.</i></td></tr>
+		<tr><td>A trigger occurs when the counters fire in a prescribed combination. This detector was set to so-called 
+				“two-fold” coincidence (CR0:1F). That means that the detector will only trigger when two or more counters 
+				fire within a short time window. This plot shows the rate (#counts/second, Hz) at which that happens 
+				throughout the day. The Y axis scale max can be customized.</td></tr> 
+		<tr><td><img src="satellites.gif" id="satellites" alt="satellites"></img></td></tr>
+		<tr><td><img src="voltage.gif" id="voltage" alt="voltage"></img></td></tr>
+		<tr><td><img src="temperature.gif" id="temperature" alt="temperature"></img></td></tr>
+		<tr><td><img src="pressure.gif" id="pressure" alt="pressure"></img></td></tr>
+		<tr><td>Four plots show one of four detector parameters over time
+				Visible GPS Satellites—the detector relies on timing information from GPS satellites. 
+				This plot shows the number in view. Voltage—the detector has a voltage regulator that might drift. 
+				We track the voltage in order to understand detector response. The drift here is nominal.
+				Barometric Pressure—the DAQ has a pressure sensor. When calibrated, it tells atmospheric pressure.
+				Temperature—the GPS unit has a temperature probe.</td></tr>
+
+	</table>
+</body>
