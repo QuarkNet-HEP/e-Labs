@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>CMS 3D Event Display</title>
-		<meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport">
+		<!--<meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport">-->
 
 		<link href="scrollbar.css" rel="stylesheet" type="text/css" />
 		<link href="eventdisplay.css" rel="stylesheet" type="text/css" />
@@ -21,7 +21,7 @@
 		<script src="../include/pre3d_shape_utils.js"></script>
 		<script src="../include/base64.js"></script>
 		<script src="../include/canvas2image.js"></script>
-		<script src="jguery.touchSwipe.min.js"></script>
+		<!--<script src="jguery.touchSwipe.min.js"></script>-->
 		<script src="demo_utils.js"></script>
 		<script src="object-conversion.js"></script>
 		<script src="detector-model-gen.js"></script>
@@ -67,17 +67,6 @@
 	</tr>
 </table>
 <script src="eventdisplay.js"></script>
-
-<script type="text/javascript">
-
-$("#touch-test").swipe({
-        pinchStatus:function(event, phase, direction, distance , duration , fingerCount, pinchZoom) {
-          $("#touch-test").html("Pinch zoom " + pinchZoom + "  <br/>Distance pinched " + distance +" <br/>Direction " + direction);
-        },
-        fingers:2,  
-        threshold:0  
-      });
-</script>
 
 <%@ include file="settings.jspf" %>
 <%@ include file="range-selection.jspf" %>
