@@ -91,33 +91,29 @@ request.setAttribute("CR0", br0.getRegisterValue());
 					window.location.reload();
 				}
 				</script>
-				<h2>${param.file}</h2><br/>
-				<a href="../data/view-metadata.jsp?filename=${param.file}">Show metadata</a> |
-				<c:if test="${e.tupleMap.detectorid != null}">
-					<a href="../geometry/view.jsp?filename=${param.file}">Show Geometry</a> |
-				</c:if>
-				<a href="../data/download?filename=${param.file}&elab=${elab.name}&type=split">Download</a>
-				Data blessing documentation <a href="../references/Reference_bless_data.html" target="_blank">here</a>
-				<br/>
-				<br/>	
-				<h1>Data Blessing Test -
+				<h1>Data Blessing Test for ${param.file}-
 				<%= entry.getTupleValue("school") %>, <%= entry.getTupleValue("city") %> - <%= entry.getTupleValue("state") %>
 				</h1>
+				<div style="text-align: center;">
+					<a href="../data/view-metadata.jsp?filename=${param.file}">Show metadata</a> |
+					<c:if test="${e.tupleMap.detectorid != null}">
+						<a href="../geometry/view.jsp?filename=${param.file}">Show Geometry</a> |
+					</c:if>
+					<a href="../data/download?filename=${param.file}&elab=${elab.name}&type=split">Download</a>
+					<a href="../references/Reference_bless_data.html" target="_blank">Data blessing documentation</a>
+				</div>
 				<h2>Control Registers</h2>
 				CR0: <strong><%= entry.getTupleValue("ConReg0") != null? entry.getTupleValue("ConReg0") : "Unknown" %></strong>,
 				CR1: <strong><%= entry.getTupleValue("ConReg1") != null? entry.getTupleValue("ConReg1") : "Unknown" %></strong>,
 				CR2: <strong><%= entry.getTupleValue("ConReg2") != null? entry.getTupleValue("ConReg2") : "Unknown" %></strong>,
 				CR3: <strong><%= entry.getTupleValue("ConReg3") != null? entry.getTupleValue("ConReg3") : "Unknown" %></strong><br />
 				CR0: <strong>${CR0}</strong><br />
-
-				<div id="xAxesControl">
-					<table id="xAxesControlTable">
-						<tr>
-							<td>Custom X-axes scale: </td>
-							<td style="background-color: lightGray">Max X: <input type="text" id="maxX" /><input type="button" value="Set" id="maxXButton" onclick='javascript:redrawPlotX(maxX.value);' /></td>
+				<table witdh="100%">
+					<tr><td style="text-align: center;">Owners of data files can bless data based on their interpretation of these charts </td>
+						<td>
 							<!-- Need to check if user is related to this detector in order to be able to bless/unbless -->
 							<% if (owner) { %>							
-							<td style="background-color: lightGray">
+							<td style="text-align: right;">
 							 	<form name="blessForm" action="blessdata.jsp" method="post" target="blessWindow" onsubmit="window.open('',this.target,'width=500,height=200,resizable=1');" align="center"> 
 									<input type="hidden" name="blessed" value="${e.tupleMap.blessed}"/>
 									<input type="hidden" name="filename" value="${e.tupleMap.source}"></input>
@@ -131,7 +127,15 @@ request.setAttribute("CR0", br0.getRegisterValue());
 									</c:choose>	
 								</form>
 							</td>
-							<% } %>
+							<% } %>						
+						</td>
+					</tr>
+				</table>
+				<div id="xAxesControl">
+					<table id="xAxesControlTable">
+						<tr>
+							<td>Custom X-axes scale: </td>
+							<td style="background-color: lightGray">Max X: <input type="text" id="maxX" /><input type="button" value="Set" id="maxXButton" onclick='javascript:redrawPlotX(maxX.value);' /></td>
 						</tr>
 					</table>
 				</div>
