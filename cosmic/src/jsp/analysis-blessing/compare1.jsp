@@ -107,7 +107,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 				CR1: <strong><%= entry.getTupleValue("ConReg1") != null? entry.getTupleValue("ConReg1") : "Unknown" %></strong>,
 				CR2: <strong><%= entry.getTupleValue("ConReg2") != null? entry.getTupleValue("ConReg2") : "Unknown" %></strong>,
 				CR3: <strong><%= entry.getTupleValue("ConReg3") != null? entry.getTupleValue("ConReg3") : "Unknown" %></strong><br />
-				CR0: <strong>${CR0}</strong><br />
+				CR0: <strong>${CR0}</strong><br /><br />
 				<table witdh="100%"  style="border: 1px solid black;">
 					<tr><td style="text-align: center;">Owners of data files can bless data based on their interpretation of these charts </td>
 						<td>
@@ -130,7 +130,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 							<% } %>						
 						</td>
 					</tr>
-				</table>
+				</table><br />
 				<div id="xAxesControl">
 					<table id="xAxesControlTable">
 						<tr>
