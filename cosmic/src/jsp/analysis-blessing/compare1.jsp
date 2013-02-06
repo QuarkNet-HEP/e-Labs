@@ -99,7 +99,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 					<c:if test="${e.tupleMap.detectorid != null}">
 						<a href="../geometry/view.jsp?filename=${param.file}">Show Geometry</a> |
 					</c:if>
-					<a href="../data/download?filename=${param.file}&elab=${elab.name}&type=split">Download</a>
+					<a href="../data/download?filename=${param.file}&elab=${elab.name}&type=split">Download</a> |
 					<a href="../references/Reference_bless_data.html" target="_blank">Data blessing documentation</a>
 				</div>
 				<h2>Control Registers</h2>
