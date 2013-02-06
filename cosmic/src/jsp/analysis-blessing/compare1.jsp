@@ -29,7 +29,7 @@ if (entry == null) {
 entry.sort(); 
 request.setAttribute("e", entry);
 
-//find out if the user has ownership over the detector
+//EPeronja-01/23/2013: Bug472- find out if the user has ownership over the detector to enable bless button
 ArrayList<String> detectors = (ArrayList<String>) user.getAttribute("cosmic:detectorIds");
 boolean owner = false;
 for (String s : detectors) {
@@ -39,7 +39,7 @@ for (String s : detectors) {
 }
 request.setAttribute("owner", owner);
 
-//format registers
+//EPeronja-02/04/2013: Bug472- format control register labels gov.fnal.elab.cosmic.bless.BlessRegister.java
 BlessRegister br0 = new BlessRegister((String) entry.getTupleValue("ConReg0"));
 BlessRegister br1 = new BlessRegister((String) entry.getTupleValue("ConReg1"));
 BlessRegister br2 = new BlessRegister((String) entry.getTupleValue("ConReg2"));
@@ -98,9 +98,28 @@ request.setAttribute("CR3", br3.getRegisterValue());
 				}
 				</script>
 	
-				<h1>Data Blessing Test -
+				<h1>DataBlessing Test -
 				<%= entry.getTupleValue("school") %>, <%= entry.getTupleValue("city") %> - <%= entry.getTupleValue("state") %>
 				</h1>
+				<!-- Need to check if user is related to this detector in order to be able to bless/unbless -->
+				<% if (owner) { %>							
+				<table width="100%" style="border: 1px solid black;">
+				<tr>
+					<td style="align:left;">Owners of data files can bless data based on their interpretation of these charts </td>
+					<td style="text-align: right;"><form name="blessForm" action="blessdata.jsp" method="post" target="blessWindow" onsubmit="window.open('',this.target,'width=300,height=70,left=700,top=300,resizable=1');" align="center"> 
+						<input type="hidden" name="blessed" value="${e.tupleMap.blessed}"/>
+						<input type="hidden" name="filename" value="${e.tupleMap.source}"></input>
+						<c:choose>
+						  	<c:when test="${e.tupleMap.blessed == true}">
+								<input type="submit" name="submitbless" id="submitbless" value="Unbless Data" />
+							</c:when>
+							<c:otherwise>
+								<input type="submit" name="submitbless" id="submitbless" value="Bless Data" />
+							</c:otherwise>
+						</c:choose>	
+						</form></td>
+				</tr></table>
+				<% } %>
 				<h2>Control Registers</h2>
 				CR0: <strong><%= entry.getTupleValue("ConReg0") != null? entry.getTupleValue("ConReg0") : "Unknown" %></strong>,
 				CR1: <strong><%= entry.getTupleValue("ConReg1") != null? entry.getTupleValue("ConReg1") : "Unknown" %></strong>,
@@ -109,29 +128,12 @@ request.setAttribute("CR3", br3.getRegisterValue());
 				CR0: <strong>${CR0}</strong><br />
 				CR1: <strong>${CR1}</strong><br />
 				CR2: <strong>${CR2}</strong><br />
-				CR3: <strong>${CR3}</strong><br />	
+				CR3: <strong>${CR3}</strong><br /><br />
 				<div id="xAxesControl">
 					<table id="xAxesControlTable">
 						<tr>
 							<td>Custom X-axes scale: </td>
 							<td style="background-color: lightGray">Max X: <input type="text" id="maxX" /><input type="button" value="Set" id="maxXButton" onclick='javascript:redrawPlotX(maxX.value);' /></td>
-							<!-- Need to check if user is related to this detector in order to be able to bless/unbless -->
-							<% if (owner) { %>							
-							<td style="background-color: lightGray">
-							 	<form name="blessForm" action="blessdata.jsp" method="post" target="blessWindow" onsubmit="window.open('',this.target,'width=500,height=200,resizable=1');" align="center"> 
-									<input type="hidden" name="blessed" value="${e.tupleMap.blessed}"/>
-									<input type="hidden" name="filename" value="${e.tupleMap.source}"></input>
-									<c:choose>
-									  	<c:when test="${e.tupleMap.blessed == true}">
-											<input type="submit" name="submitbless" id="submitbless" value="Unbless" />
-										</c:when>
-										<c:otherwise>
-											<input type="submit" name="submitbless" id="submitbless" value="Bless" />
-										</c:otherwise>
-									</c:choose>	
-								</form>
-							</td>
-							<% } %>
 						</tr>
 					</table>
 				</div>
