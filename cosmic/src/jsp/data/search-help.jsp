@@ -2,4 +2,5 @@
 	<h2>Help</h2>
 	<p>States include provinces and countries. Enter the 
 	<e:popup href="../jsp/showStates.jsp" target="states" width="400" height="700">abbreviation</e:popup></p>
+	<p>Data blessing documentation <a href="../references/Reference_bless_data.jsp" target="_blank">here</a></p>
 </div>

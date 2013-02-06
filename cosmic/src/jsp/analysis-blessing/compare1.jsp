@@ -41,13 +41,7 @@ request.setAttribute("owner", owner);
 
 //format registers
 BlessRegister br0 = new BlessRegister((String) entry.getTupleValue("ConReg0"));
-BlessRegister br1 = new BlessRegister((String) entry.getTupleValue("ConReg1"));
-BlessRegister br2 = new BlessRegister((String) entry.getTupleValue("ConReg2"));
-BlessRegister br3 = new BlessRegister((String) entry.getTupleValue("ConReg3"));
 request.setAttribute("CR0", br0.getRegisterValue());
-request.setAttribute("CR1", br1.getRegisterValue());
-request.setAttribute("CR2", br2.getRegisterValue());
-request.setAttribute("CR3", br3.getRegisterValue());
 
 %>
    
@@ -97,7 +91,15 @@ request.setAttribute("CR3", br3.getRegisterValue());
 					window.location.reload();
 				}
 				</script>
-	
+				<h2>${param.file}</h2><br/>
+				<a href="../data/view-metadata.jsp?filename=${param.file}">Show metadata</a> |
+				<c:if test="${e.tupleMap.detectorid != null}">
+					<a href="../geometry/view.jsp?filename=${param.file}">Show Geometry</a> |
+				</c:if>
+				<a href="../data/download?filename=${param.file}&elab=${elab.name}&type=split">Download</a>
+				<p>Data blessing documentation <a href="../references/Reference_bless_data.jsp" target="_blank">here</a></p>
+				<br/>
+				<br/>	
 				<h1>Data Blessing Test -
 				<%= entry.getTupleValue("school") %>, <%= entry.getTupleValue("city") %> - <%= entry.getTupleValue("state") %>
 				</h1>
@@ -107,9 +109,7 @@ request.setAttribute("CR3", br3.getRegisterValue());
 				CR2: <strong><%= entry.getTupleValue("ConReg2") != null? entry.getTupleValue("ConReg2") : "Unknown" %></strong>,
 				CR3: <strong><%= entry.getTupleValue("ConReg3") != null? entry.getTupleValue("ConReg3") : "Unknown" %></strong><br />
 				CR0: <strong>${CR0}</strong><br />
-				CR1: <strong>${CR1}</strong><br />
-				CR2: <strong>${CR2}</strong><br />
-				CR3: <strong>${CR3}</strong><br />	
+
 				<div id="xAxesControl">
 					<table id="xAxesControlTable">
 						<tr>

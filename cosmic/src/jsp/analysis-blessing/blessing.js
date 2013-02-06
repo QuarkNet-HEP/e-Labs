@@ -31,7 +31,37 @@ redrawPlotX = function(newmax)
 	$.plot($("#tempChart"), [temperaturedata],$.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: temperaturedata.ylabel + ' (' + temperaturedata.unit + ')'} ]}));
 	$.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: pressuredata.ylabel + ' (' + pressuredata.unit + ')'} ]}));		
 }
-redrawPlotY = function(newmax, chart)
+redrawPlotMinY = function(newmin, chart)
+{
+	var tempOps;
+	switch (chart) {
+		case ("channel"):
+			channelOptions.yaxis.min = newmin;
+			onOffPlot = $.plot($("#channelChart"), [channel1data, channel2data, channel3data, channel4data ], $.extend({}, chanOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel} ]}));
+	    	break;
+		case ("trigger"):
+			triggerOptions.yaxis.min = newmin;
+			$.plot($("#triggerChart"), [triggerdata],$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: triggerdata.ylabel + ' (' + triggerdata.unit + ')'} ]}));
+			break;
+		case ("satellite"):
+			satelliteOptions.yaxis.min = newmin;
+			$.plot($("#satChart"), [satellitedata],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: satellitedata.ylabel + ' (' + satellitedata.unit + ')'} ]}));
+		break;
+		case ("voltage"):
+			voltageOptions.yaxis.min = newmin;
+			$.plot($("#voltChart"), [voltagedata],$.extend({}, voltOptions, { yaxes: [ {position: 'left', axisLabel: voltagedata.ylabel + ' (' + voltagedata.unit + ')'} ]}));
+		break;
+		case ("temperature"):
+			temperatureOptions.yaxis.min = newmin;
+			$.plot($("#tempChart"), [temperaturedata],$.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: temperaturedata.ylabel + ' (' + temperaturedata.unit + ')'} ]}));
+		break;
+		case ("pressure"):
+			pressureOptions.yaxis.min = newmin;
+			$.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: pressuredata.ylabel + ' (' + pressuredata.unit + ')'} ]}));
+		break;		
+	}
+}
+redrawPlotMaxY = function(newmax, chart)
 {
 	var tempOps;
 	switch (chart) {
