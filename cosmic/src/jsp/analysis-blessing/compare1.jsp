@@ -91,7 +91,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 					window.location.reload();
 				}
 				</script>
-				<h1>Data Blessing Test for ${param.file}-
+				<h1>Data Blessing Test for ${param.file} -
 				<%= entry.getTupleValue("school") %>, <%= entry.getTupleValue("city") %> - <%= entry.getTupleValue("state") %>
 				</h1>
 				<div style="text-align: center;">
@@ -108,7 +108,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 				CR2: <strong><%= entry.getTupleValue("ConReg2") != null? entry.getTupleValue("ConReg2") : "Unknown" %></strong>,
 				CR3: <strong><%= entry.getTupleValue("ConReg3") != null? entry.getTupleValue("ConReg3") : "Unknown" %></strong><br />
 				CR0: <strong>${CR0}</strong><br />
-				<table witdh="100%">
+				<table witdh="100%"  border: 1px black solid;>
 					<tr><td style="text-align: center;">Owners of data files can bless data based on their interpretation of these charts </td>
 						<td>
 							<!-- Need to check if user is related to this detector in order to be able to bless/unbless -->
