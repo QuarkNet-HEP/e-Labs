@@ -1,3 +1,12 @@
+/* 
+ * This class will format the control register hex description
+ * based on the following description of the bit position:
+ * 7654 		3210
+ * (trigger)	(channels)
+ * CR0: 0F in bits --> 0000 1111
+ * 						 00: Singles
+ * 							1111: All channels are on
+ */
 package gov.fnal.elab.cosmic.bless;
 
 import java.util.NavigableMap;
@@ -22,9 +31,21 @@ public class BlessRegister {
 		}
 		trigger = new TreeMap<String, String>();
 		trigger.put("0","Singles");
-		trigger.put("1","Two-fold");
+		trigger.put("1","2-fold");
 		trigger.put("2","3-fold");
 		trigger.put("3","4-fold");
+		trigger.put("4","Singles");
+		trigger.put("5","2-fold");
+		trigger.put("6","3-fold");
+		trigger.put("7","4-fold");
+		trigger.put("8","Singles");
+		trigger.put("9","2-fold");
+		trigger.put("A","3-fold");
+		trigger.put("B","4-fold");
+		trigger.put("C","Singles");
+		trigger.put("D","2-fold");
+		trigger.put("E","3-fold");
+		trigger.put("F","4-fold");
 		channel = new TreeMap<String, String>();
 		channel.put("1", "0");
 		channel.put("2", "1");
