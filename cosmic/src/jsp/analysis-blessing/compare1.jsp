@@ -108,13 +108,13 @@ request.setAttribute("CR0", br0.getRegisterValue());
 				CR2: <strong><%= entry.getTupleValue("ConReg2") != null? entry.getTupleValue("ConReg2") : "Unknown" %></strong>,
 				CR3: <strong><%= entry.getTupleValue("ConReg3") != null? entry.getTupleValue("ConReg3") : "Unknown" %></strong><br />
 				CR0: <strong>${CR0}</strong><br />
-				<table witdh="100%"  border: 1px black solid;>
+				<table witdh="100%"  style="border: 1px solid black;">
 					<tr><td style="text-align: center;">Owners of data files can bless data based on their interpretation of these charts </td>
 						<td>
 							<!-- Need to check if user is related to this detector in order to be able to bless/unbless -->
 							<% if (owner) { %>							
 							<td style="text-align: right;">
-							 	<form name="blessForm" action="blessdata.jsp" method="post" target="blessWindow" onsubmit="window.open('',this.target,'width=500,height=200,resizable=1');" align="center"> 
+							 	<form name="blessForm" action="blessdata.jsp" method="post" target="blessWindow" onsubmit="window.open('',this.target,'width=300,height=100,top=200,right=500 resizable=1');" align="center"> 
 									<input type="hidden" name="blessed" value="${e.tupleMap.blessed}"/>
 									<input type="hidden" name="filename" value="${e.tupleMap.source}"></input>
 									<c:choose>
