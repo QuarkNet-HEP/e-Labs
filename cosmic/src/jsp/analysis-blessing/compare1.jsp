@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.io.*" %>
 <%@ page import="java.text.*" %>
@@ -15,6 +16,7 @@
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.cosmic.bless.*" %>   
+
 <%
 String file = request.getParameter("file");
 
@@ -49,7 +51,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Analysis List</title>
+		<title>Blessing Charts</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
@@ -92,7 +94,8 @@ request.setAttribute("CR0", br0.getRegisterValue());
 				}
 				</script>
 				<h1>Data Blessing Test for ${param.file} -
-				<%= entry.getTupleValue("school") %>, <%= entry.getTupleValue("city") %> - <%= entry.getTupleValue("state") %>
+				<%= entry.getTupleValue("school") %>, <%= entry.getTupleValue("city") %> - <%= entry.getTupleValue("state") %> -
+			    <fmt:formatDate value="${e.tupleMap.creationdate}" pattern="MM-dd-yyyy" />
 				</h1>
 				<div style="text-align: center;">
 					<a href="../data/view-metadata.jsp?filename=${param.file}">Show metadata</a> |
@@ -100,7 +103,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 						<a href="../geometry/view.jsp?filename=${param.file}">Show Geometry</a> |
 					</c:if>
 					<a href="../data/download?filename=${param.file}&elab=${elab.name}&type=split">Download</a> |
-					<a href="../references/Reference_bless_data.html" target="_blank">Data blessing documentation</a>
+					<e:popup href="../references/Reference_bless_data.html" target="Data Blessing" width="900" height="800">Data blessing documentation</e:popup>
 				</div>
 				<h2>Control Registers</h2>
 				CR0: <strong><%= entry.getTupleValue("ConReg0") != null? entry.getTupleValue("ConReg0") : "Unknown" %></strong>,

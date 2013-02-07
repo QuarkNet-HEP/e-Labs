@@ -9,29 +9,33 @@
 </head>
 
 <body>
-	<table style=""text-align: center;"  width="850px" >
-		<tr><td><strong>Data can be blessed/unblessed based on the interpretation of the charts. Only the owners of the 
-				data files can bless/unbless the data.</strong></td></tr>
-		<tr><td><img src="../graphics/bless-unbless.gif" id="bless-unbless" alt="bless-unbless"></img></td></tr>
+	<table style="text-align: left;"  width="700px" >
 		<tr><td><strong>Control Registers</strong></td></tr>
-		<tr><td>CR0: <strong>1F</strong>, CR1: <strong>71</strong>, CR2: <strong>20</strong>, CR3: <strong>00</strong></td></tr>
-		<tr><td>The registers are numbered 0-3. Find more information in the User's Manual, Series "6000", pg: 33.</td></tr>
+		<tr><td style="text-align: center;">CR0: <strong>1F</strong>, CR1: <strong>71</strong>, CR2: <strong>20</strong>, CR3: <strong>00</strong></td></tr>
+		<tr><td style="text-align: center;">The registers are numbered 0-3. Find more information in the <a href="http://localhost/cosmic/library/upload/b/ba/6000CRMDUserManual.pdf">User's Manual, Series "6000", pg: 33.</a></td></tr>
+		<tr><td>&nbsp;</td></tr>
+		<tr><td><strong>Data Blessing</strong></td></tr>
+		<tr><td>Data can be blessed/unblessed based on the interpretation of the charts. Only the owners of the 
+				data files can bless/unbless the data.</td></tr>
+		<tr><td style="text-align: center;"><img src="../graphics/bless-unbless.gif" id="bless-unbless" alt="bless-unbless"></img><br /></td></tr>
+		<tr><td>&nbsp;</td></tr>
 		<tr><td><strong>Data Plots</strong></td></tr>
 		<tr><td>All plots share the same <strong>X-Axis</strong>: seconds since midnight UTC. A full, 24-h day has 86,400 
 				seconds (24*60*60). Files start at midnight of one day (or when data started writing) and end at midnight the
 				following day (or when data stopped writing).</td></tr>
+		<tr><td>&nbsp;</td></tr>
 		<tr><td>X-Axes maximum scale can be customized by the user.</td></tr>
-		<tr><td><img src="../graphics/xaxesmax.gif" id="xaxismax" alt="xaxixmax"></img></td></tr>
-		<tr><td><i>The data below all end near 64800 seconds after midnight, two-thirds of a day or 1600 UTC.</i></td></tr>
+		<tr><td style="text-align: center;"><img src="../graphics/xaxesmax.gif" id="xaxismax" alt="xaxixmax"></img></td></tr>
+		<tr><td style="text-align: center;"><i>The data below all end near 64800 seconds after midnight, two-thirds of a day or 1600 UTC.</i></td></tr>
 		<tr><td><img src="../graphics/rates.gif" id="rates" alt="rates"></img></td></tr>
-		<tr><td><i>“Singles rate” plotted as Channel Rate on the <strong>Y-Axis</strong> for each channel</i></td></tr>
-		<tr><td><i>All channels here are remarkably stable over the entire data run</i></td></tr>
+		<tr><td style="text-align: center;"><i>“Singles rate” plotted as Channel Rate on the <strong>Y-Axis</strong> for each channel</i></td></tr>
+		<tr><td style="text-align: center;"><i>All channels here are remarkably stable over the entire data run</i></td></tr>
 		<tr><td>Data come from a detector with four counters attached to four channels. Each counter fires independently. 
 				We count independent firings, calculate and plot the rate (#counts/second, Hz). Each channel can be toggled
 				on/off and Y axis scale max can be customized.</td></tr>
 		<tr><td><img src="../graphics/trigger.gif" id="trigger" alt="trigger"></img></td></tr>
-		<tr><td><i>Number of “triggers” over time, Trigger Rate, also known as Coincidence Rate</i></td></tr>
-		<tr><td><i>This detector has a very low trigger rate; the counters must not be stacked atop each other.</i></td></tr>
+		<tr><td style="text-align: center;"><i>Number of “triggers” over time, Trigger Rate, also known as Coincidence Rate</i></td></tr>
+		<tr><td style="text-align: center;"><i>This detector has a very low trigger rate; the counters must not be stacked atop each other.</i></td></tr>
 		<tr><td>A trigger occurs when the counters fire in a prescribed combination. This detector was set to so-called 
 				“two-fold” coincidence (CR0:1F). That means that the detector will only trigger when two or more counters 
 				fire within a short time window. This plot shows the rate (#counts/second, Hz) at which that happens 
