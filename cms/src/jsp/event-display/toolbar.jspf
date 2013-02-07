@@ -34,17 +34,17 @@
 
 		<td>
 			<a class="toolbar-button" onclick="setCameraHome();">
-				<img src="graphics/home.png" title="Return to Start View"/>
+				<img src="../graphics/home.png" title="Return to Start View"/>
 			</a>
 		</td>
 		<td>
 			<a class="toolbar-button" onclick="zoom(1);">
-				<img src="graphics/zoom_in_24.png" title="Zoom In"/>
+				<img src="../graphics/zoom_in_24.png" title="Zoom In"/>
 			</a>
 		</td>
 		<td>
 			<a class="toolbar-button" onclick="zoom(-1);">
-				<img src="graphics/zoom_out_24.png" title="Zoom Out"/>
+				<img src="../graphics/zoom_out_24.png" title="Zoom Out"/>
 			</a>
 		</td>
 
