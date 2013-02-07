@@ -91,31 +91,10 @@
 			&nbsp;
 		</td>
 		<td>
-			<a class="toolbar-button" id="help">
-				<img src="../graphics/help2.png" title="Help"/>
+			<a class="toolbar-button" id="help" onclick="openAboutWindow();">
+				<img src="../graphics/help2.png" title="About"/>
 			</a>
 		</td>
 	</tr>
 </table>
-<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>
-<ul id="help-menu" class="jeegoocontext menu">
-	<li id="help-contents"><a href="help/contents.html" target="edhelp">Help Contents</a></li>
-	<li class="separator"></li>
-	<li id="help-about">About</li>
-</ul>
-<script>
-	function helpItemChosen(e, context) {
-		if ($(this).context.id == "help-about") {
-			openAboutWindow();
-		}
-	}
-	
-	$("#help").jeegoocontext("help-menu", {
-		widthOverflowOffset: 0,
-        heightOverflowOffset: 3,
-        submenuLeftOffset: -4,
-        submenuTopOffset: -5,
-        event: 'click',
-        onSelect: helpItemChosen,
-	});
-</script>
+
