@@ -31,6 +31,26 @@
 		<td class="toolbar-separator">
 			&nbsp;
 		</td>
+
+		<td>
+			<a class="toolbar-button" onclick="setCameraHome();">
+				<img src="../graphics/home.png" title="Return to Start View"/>
+			</a>
+		</td>
+		<td>
+			<a class="toolbar-button" onclick="zoom(1);">
+				<img src="../graphics/zoom_in_24.png" title="Zoom In"/>
+			</a>
+		</td>
+		<td>
+			<a class="toolbar-button" onclick="zoom(-1);">
+				<img src="../graphics/zoom_out_24.png" title="Zoom Out"/>
+			</a>
+		</td>
+
+		<td class="toolbar-separator">
+			&nbsp;
+		</td>
 		<td>
 			<a class="toolbar-button" onclick="setCameraRotation(0, 0, 0);">
 				<img src="../graphics/z-plane.png" title="X-Y Plane"/>
@@ -71,31 +91,10 @@
 			&nbsp;
 		</td>
 		<td>
-			<a class="toolbar-button" id="help">
-				<img src="../graphics/help2.png" title="Help"/>
+			<a class="toolbar-button" id="help" onclick="openAboutWindow();">
+				<img src="../graphics/help2.png" title="About"/>
 			</a>
 		</td>
 	</tr>
 </table>
-<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>
-<ul id="help-menu" class="jeegoocontext menu">
-	<li id="help-contents"><a href="help/contents.html" target="edhelp">Help Contents</a></li>
-	<li class="separator"></li>
-	<li id="help-about">About</li>
-</ul>
-<script>
-	function helpItemChosen(e, context) {
-		if ($(this).context.id == "help-about") {
-			openAboutWindow();
-		}
-	}
-	
-	$("#help").jeegoocontext("help-menu", {
-		widthOverflowOffset: 0,
-        heightOverflowOffset: 3,
-        submenuLeftOffset: -4,
-        submenuTopOffset: -5,
-        event: 'click',
-        onSelect: helpItemChosen,
-	});
-</script>
+

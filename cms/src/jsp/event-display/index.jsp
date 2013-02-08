@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-
 		<title>CMS 3D Event Display</title>
+		<!--<meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport">-->
 
 		<link href="scrollbar.css" rel="stylesheet" type="text/css" />
 		<link href="eventdisplay.css" rel="stylesheet" type="text/css" />
@@ -16,11 +16,12 @@
 		<script src="../include/elab.js"></script>
 		<script src="utils.js"></script>
 		<script src="../include/flexcroll.js"></script>
-		<script src="../include/jquery/js/jquery-1.4.3.min.js"></script>
+		<script src="../include/jquery/js/jquery-1.6.1.min.js"></script>
 		<script src="../include/pre3d.js"></script>
 		<script src="../include/pre3d_shape_utils.js"></script>
 		<script src="../include/base64.js"></script>
 		<script src="../include/canvas2image.js"></script>
+		<!--<script src="jguery.touchSwipe.min.js"></script>-->
 		<script src="demo_utils.js"></script>
 		<script src="object-conversion.js"></script>
 		<script src="detector-model-gen.js"></script>
@@ -61,6 +62,7 @@
 			<%@ include file="controls-help.jspf" %>
 		</td>
 		<td class="bordered">
+			<div id="touch-test"></div>
 		</td>
 	</tr>
 </table>

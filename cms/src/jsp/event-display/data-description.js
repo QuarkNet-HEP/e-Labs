@@ -17,8 +17,10 @@ var d_descr = {
 		fn: makeDetectorPiece, color: [0, 1, 1, 0.5], fill: [0, 1, 1, 0.5], lineWidth: 0.5},
 	"Tracker3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "Tracker",
 		fn: makeWireframe, color: [1, 1, 0, 0.5], lineWidth: 0.5},
-	"Tracker3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "Tracker",
-		fn: makeModelTracker, color: [1, 1, 0, 0.3], lineWidth: 0.5},
+	"TrackerBarrel3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "Tracker Barrels",
+		fn: makeModelTrackerBarrel, color: [1, 1, 0, 0.3], lineWidth: 1.0},
+	"TrackerEndcap3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "Tracker Endcaps",
+		fn: makeModelTrackerEndcap, color: [1, 1, 0, 0.3], lineWidth: 0.5},
 	"EcalBarrel3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "ECAL Barrel",
 		fn: makeWireframe, color: [0, 1, 1, 0.5], lineWidth: 0.5},
 	"EcalBarrel3D_MODEL": {type: WIREFRAME, on: true, group: "Detector Model", desc: "ECAL Barrel",
@@ -141,6 +143,9 @@ var d_descr = {
 	"GsfElectrons_V1": { type: PATHS, on: true, group: "Physics Objects", desc: "Electron Tracks (GSF)",
 		dataref: "Extras_V1", assoc: "GsfElectronExtras_V1", 
 		fn: makeTrackCurves2, color: [1, 0.9, 0, 0.9], lineCaps: "square", lineWidth: 2 },
+
+	"Photons_V1": { type: LINE, on: false, group: "Physics Objects", desc: "Photons (Reco)",
+		 fn: makePhotons, color: [0.8, 0.8, 0, 1], lineWidth: 2},
  		
 	"TrackerMuons_V1": { type: TRACK, on: true, group: "Physics Objects", desc: "Tracker Muons (Reco)",
 		dataref: "Points_V1", assoc: "MuonTrackerPoints_V1", 
