@@ -93,11 +93,12 @@ request.setAttribute("CR0", br0.getRegisterValue());
 					window.location.reload();
 				}
 				</script>
-				<h1>Data Blessing Test for ${param.file} -
-				<%= entry.getTupleValue("school") %>, <%= entry.getTupleValue("city") %> - <%= entry.getTupleValue("state") %> -
-			    <fmt:formatDate value="${e.tupleMap.creationdate}" pattern="MM-dd-yyyy" />
-				</h1>
+				<h1>Data Blessing: Want to use this data?  Look at these charts to determine data quality.</h1>
+				<div style="text-align: center; font-size: small;"><strong>Data Blessing Test for ${param.file} -
+				<%= entry.getTupleValue("school") %>, <%= entry.getTupleValue("city") %> - <%= entry.getTupleValue("state") %>
+				</strong></div><br />
 				<div style="text-align: center;">
+					<a href="../data/view.jsp?filename=${param.filename}">Show Data</a> |
 					<a href="../data/view-metadata.jsp?filename=${param.file}">Show metadata</a> |
 					<c:if test="${e.tupleMap.detectorid != null}">
 						<a href="../geometry/view.jsp?filename=${param.file}">Show Geometry</a> |
