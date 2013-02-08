@@ -265,19 +265,16 @@
 	<table>
 		<tr>
 			<td class="content">
-                    <dl>
+                     		<dl>
                                 
-                    <dt>Electron Tracks (GSF)</dt>
+                                        <dt>Electron Tracks (GSF)</dt>
 					<dd>Reconstructed electron tracks in the tracker</dd>
 
-					<dt>Photons (Reco)</dt>
-					<dd>Inferred photon trajectories</dd>
-
 					<dt>Tracker Muons (Reco)</dt>
-					<dd>Reconstructed muon tracks in tracker</dd>
+					<dd>Reconstructed muon tracks in central Tracker</dd>
 					
 					<dt>Stand-alone Muons (Reco)</dt>
-					<dd>Reconstructed muon track segments in muon chambers</dd>
+					<dd>Reconstructed muon track segments in barrel</dd>
 					
 					<dt>Global Muons (Reco)</dt>
 					<dd>Reconstructed complete muon tracks</dd>
@@ -288,9 +285,8 @@
 					<dt>Jets</dt>
 					<dd>Collimated groups of particles which come from strong force energy conversion to matter</dd>
 
-                    <dt>MET</dt>
-                    <dd>Missing transverse energy</dd> 
-
+                                        <dt>MET</dt>
+                                        <dd>Missing transverse energy</dd> 
 				</dl>
 			</td>
 		</tr>

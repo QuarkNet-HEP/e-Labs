@@ -14,7 +14,6 @@
 			<td class="dd">Blessed data<br />Click to view blessing charts</td>
 		</tr>
 		<tr>
-		    <!-- EPeronja-02/04/2013: Bug472- added unblessed img and comments -->
 			<td class="dt"><img src="../graphics/unblessed.gif" /></td>
 			<td class="dd">Unblessed data<br />Click to view blessing charts<br />Owners of data files can bless</td>
 		</tr>

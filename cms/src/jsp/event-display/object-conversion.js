@@ -563,43 +563,6 @@ function makeTrackPoints(data, rd, descr, data2, assoc) {
 	return a;
 }
 
-function makePhotons(data) {
-	// tpm: draw a line representing the inferred photon trajectory from the vertex (IP?) to the 
-	// extent of the ECAL
-	//"Photons_V1": [["energy", "double"],["et", "double"],["eta", "double"],["phi", "double"],["pos", "v3d"]
-
-	var lEB = 3.0;  // half-length of the EB (m)
-  	var rEB = 1.24; // inner radius of the EB (m)
-
-	var eta = data[2];
-	var phi = data[3];
-
-    var px = Math.cos(phi);
-    var py = Math.sin(phi);
-
-    // var pz = Math.sinh(eta);
-    var pz = (Math.pow(Math.E, eta) - Math.pow(Math.E, -eta))/2;
-
-    var pt1 = makePoint(data[4]);
-
-    var t = 0.0;
-
-    var x0 = pt1.x;
-    var y0 = pt1.y;
-    var z0 = pt1.z;
-
-    if ( Math.abs(eta) > 1.48 ) { // i.e. not in the EB, so propagate to ES
-      t = Math.abs((lEB - z0)/pz);
-    } else { // propagate to EB 
-      var a = px*px + py*py;
-      var b = 2*x0*px + 2*y0*py;
-      var c = x0*x0 + y0*y0 - rEB*rEB;
-      t = (-b+Math.sqrt(b*b-4*a*c))/2*a;
-    }
-
-	return {p1: pt1, p2: makePoint([x0+px*t, y0+py*t, z0+pz*t])};
-}
-
 /*
  * 
  * 

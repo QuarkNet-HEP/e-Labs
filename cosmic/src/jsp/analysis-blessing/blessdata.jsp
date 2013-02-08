@@ -4,7 +4,7 @@
 <%@ page import="gov.fnal.elab.*" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
-<!-- EPeronja-02/04/2013: Bug472- added to bless/unbless data  -->
+
 <script type="text/javascript">
 	window.onunload = function() {
 	    if (window.opener && !window.opener.closed) {
@@ -32,7 +32,7 @@
 			dcp.insert(entry);
 
 			%>
-			<tr><td>You have successfully <%= newvalue %> your data.</td></tr>
+			<TR><TD>You have successfully <%= newvalue %> your data.<TD></TR>
 		</table>			
 		<a href=# onclick="window.close();">Close</A>
 	</body>

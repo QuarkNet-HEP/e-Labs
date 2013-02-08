@@ -337,29 +337,15 @@ function makeModelEcalBarrel(data, rd, descr) {
 	return [wf];
 }
 
-function makeModelTrackerBarrel(data, rd, descr) {
-	var radii = [0.046, 0.07, 0.1, 
+function makeModelTracker(data, rd, descr) {
+	var radii = [
+	             0.046, 0.07, 0.1, 
 	             0.24, 0.27, 0.32, 0.37, 0.40, 0.43, 0.47, 0.51, 
 	             0.62, 0.70, 0.78, 0.88, 0.97, 1.08];
 	var lengths = [0.53, 0.53, 0.53, 
 	               1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 
-	               2.18, 2.18, 2.18, 2.18, 2.18, 2.18];
+	               2.18, 2.18, 2.18, 2.18, 1.90, 1.90];
 	
-	var slices = 24;
-	var wfs = new Array();
-	
-	for (var i = 0; i < radii.length; i++) {
-		var r = radii[i];
-		var l = lengths[i];
-		
-		wfs.push(makeCylinder(r, l, -l / 2, slices, 2));
-	}
-	
-	return wfs;
-
-}
-
-function makeModelTrackerEndcap(data, rd, descr) {
 	var ecradii =    [0.145, 0.145, 0.50, 0.47, 0.50, 0.47, 0.50, 0.47,
 	                  1.08, 1.06, 1.08, 1.06, 1.08, 1.06, 1.08, 1.06, 1.08, 1.06, 1.08, 1.06,
 	                  1.08, 1.06, 1.08, 1.06, 1.08, 1.06];
@@ -372,6 +358,13 @@ function makeModelTrackerEndcap(data, rd, descr) {
 
 	var slices = 24;
 	var wfs = new Array();
+	
+	for (var i = 0; i < radii.length; i++) {
+		var r = radii[i];
+		var l = lengths[i];
+		
+		wfs.push(makeCylinder(r, l, -l / 2, slices, 2));
+	}
 	
 	for (var i = 0; i < ecradii.length; i++) {
 		var ecro = ecradii[i];
