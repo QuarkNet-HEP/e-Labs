@@ -98,7 +98,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 				<%= entry.getTupleValue("school") %>, <%= entry.getTupleValue("city") %> - <%= entry.getTupleValue("state") %>
 				</strong></div><br />
 				<div style="text-align: center;">
-					<a href="../data/view.jsp?filename=${param.filename}">Show Data</a> |
+					<a href="../data/view.jsp?filename=${param.file}">Show Data</a> |
 					<a href="../data/view-metadata.jsp?filename=${param.file}">Show metadata</a> |
 					<c:if test="${e.tupleMap.detectorid != null}">
 						<a href="../geometry/view.jsp?filename=${param.file}">Show Geometry</a> |
