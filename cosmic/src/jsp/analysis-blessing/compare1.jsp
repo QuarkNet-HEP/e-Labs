@@ -1,6 +1,7 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.*" %>
@@ -95,7 +96,8 @@ request.setAttribute("CR0", br0.getRegisterValue());
 				</script>
 				<h1>Data Blessing: Want to use this data?  Look at these charts to determine data quality.</h1>
 				<div style="text-align: center; font-size: small;"><strong>Data Blessing Test for ${param.file} -
-				<%= entry.getTupleValue("school") %>, <%= entry.getTupleValue("city") %> - <%= entry.getTupleValue("state") %>
+				<%= entry.getTupleValue("school") %>, <%= entry.getTupleValue("city") %> - <%= entry.getTupleValue("state") %> -
+				<fmt:formatDate value="${e.tupleMap.creationdate}" pattern="MM/dd/yyyy"/>				
 				</strong></div><br />
 				<div style="text-align: center;">
 					<a href="../data/view.jsp?filename=${param.file}">Show Data</a> |
