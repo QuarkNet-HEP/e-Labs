@@ -16,12 +16,13 @@
 		<script src="../include/elab.js"></script>
 		<script src="utils.js"></script>
 		<script src="../include/flexcroll.js"></script>
-		<script src="../include/jquery/js/jquery-1.6.1.min.js"></script>
+		<script src="http://code.jquery.com/jquery-1.9.0.js"></script>
+        <script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+		<!--<script src="../include/jquery/js/jquery-1.6.1.min.js"></script> -->
 		<script src="../include/pre3d.js"></script>
 		<script src="../include/pre3d_shape_utils.js"></script>
 		<script src="../include/base64.js"></script>
 		<script src="../include/canvas2image.js"></script>
-		<!--<script src="jguery.touchSwipe.min.js"></script>-->
 		<script src="demo_utils.js"></script>
 		<script src="object-conversion.js"></script>
 		<script src="detector-model-gen.js"></script>
