@@ -31,7 +31,7 @@ function loadEvent(i) {
   // If there is no FileReader 
   // then try old API, else out of luck
 
-  $("#progress").show();
+  $("#title").html("Loading...please wait");
 
   if ( ! window.FileReader ) {
     
@@ -46,8 +46,9 @@ function loadEvent(i) {
           var ed   = JSON.parse(data);
           enableNextPrev();
           eventDataLoaded(ed); 
-          $("#progress").hide();
+          
           $("#title").html("File " + (fileListCurrentIndex + 1) + " of " + fileList.length + ": " + fileList[i].name);
+
         } catch (e) {
            alert(e);
            alert("You seem to be using Firefox "+ version + ". Please update to at least version 7, with version 9+ recommended.");
@@ -71,7 +72,7 @@ function loadEvent(i) {
         var ed = JSON.parse(data);
         enableNextPrev();
         eventDataLoaded(ed); 
-        $("#progress").hide();
+      
         $("#title").html("File " + (fileListCurrentIndex + 1) + " of " + fileList.length + ": " + fileList[i].name);
       }
     

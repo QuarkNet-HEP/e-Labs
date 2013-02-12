@@ -66,13 +66,15 @@
 			<table id="toolbar">
 				<tr>
 					<td>
-						<input type="file" id="file-selector" onchange="loadEvent0();" multiple /> &nbsp; 
+						<input type="file" title="Select one or multiple files to open" id="file-selector" onchange="loadEvent0();" multiple /> &nbsp; 
 					</td>
-					<!-- <td>
+					<!--
+					<td>
 						<a class="toolbar-button" onclick="loadEvent();">
 							<img src="graphics/open.png" title="Open"/>
 						</a>
-					</td> -->
+					</td> 
+					-->
 					<td class="toolbar-separator">
 						&nbsp;
 					</td>
@@ -150,12 +152,13 @@
 						&nbsp;
 					</td>
 					<td>
-						<a class="toolbar-button" id="help">
-							<img src="graphics/help2.png" title="Help"/>
+						<a class="toolbar-button" onclick="openAboutWindow();">
+							<img src="graphics/help2.png" title="About"/>
 						</a>
 					</td>
 				</tr>
 			</table>
+			<!-- tpm temporarily deprecate
 			<ul id="help-menu" class="jeegoocontext menu">
 				<li id="help-contents"><a href="help/contents.html" target="edhelp">Help Contents</a></li>
 				<li class="separator"></li>
@@ -177,7 +180,7 @@
 			        onSelect: helpItemChosen,
 				});
 			</script>
-						
+		    -->			
 		</td>
 	</tr>
 	<tr>
@@ -188,7 +191,6 @@
 			</div>
 		</td>
 		<td class="bordered">
-			<div id="progress">Loading...</div>
 			<canvas id="canvas" height="600" width="700">
   				Sorry, this requires a web browser which supports HTML5 canvas.
 			</canvas>
@@ -198,11 +200,27 @@
 		<td class="bordered">
 			<!-- controls-help.jspf -->
 			<div class="group">Controls:</div>
+
 			<table>
 			<tr><td class="ctrl"><img src="graphics/mouse.png" /></td><td>&rarr;</td><td>rotate</td></tr>
-			<tr><td class="ctrl"><span class="key">Ctrl</span> + <img src="graphics/mouse.png" /></td><td>&rarr;</td><td>pan x / y</td></tr>
-			<tr><td class="ctrl"><span class="key">Shift</span> + <img src="graphics/mouse.png" /></td><td>&rarr;</td><td>zoom</td></tr>
+			<tr><td class="ctrl"><span class="key">Ctrl</span> + <img src="graphics/mouse.png" /></td><td>&rarr;</td><td>pan x/y</td></tr>
+			<tr><td class="ctrl"><span class="key">Ctrl</span> + 
+				<span class="key">&#9650</span>
+				<span class="key">&#9660</span>
+				<span class="key">&#9664</span>
+				<span class="key">&#9654</span>
+				</td><td>&rarr;</td><td>pan x/y</td>
+			</tr>
+			<tr><td class="ctrl"><span class="key">Shift &#8679</span> + <img src="graphics/mouse.png" /></td>
+				<td>&rarr;</td><td>zoom</td>
+			</tr>
+			<tr><td class="ctrl"><span class="key">Shift &#8679</span> +
+				 <span class="key">&#9650</span>
+				<span class="key">&#9660</span>
+				<td>&rarr;</td><td>zoom</td>
+			</tr>
 			</table>
+
 		</td>
 		<td class="bordered">
 		</td>
@@ -244,6 +262,7 @@
 				</table>
 			</td>
 		</tr>
+		<!-- tpm deprecate until fixed
 		<tr>
 			<td>
 				<div class="group">Rendering</div>
@@ -278,6 +297,7 @@
 		<tr>
 			<td>&nbsp;</td>
 		</tr>
+	    -->
 		<tr>
 			<td align="right">
 				<table>
@@ -454,7 +474,7 @@
 	<table class="titlebar">
 		<tr>
 			<td>
-				<div class="title">About Event Display</div>
+				<div class="title">About</div>
 			</td>
 			<td class="buttons">
 				<a class="titlebar-button" onclick="closeAboutWindow();"><img src="graphics/close.png" /></a>
@@ -471,6 +491,12 @@
 				<p>
 					The <a target="edabout" href="http://deanm.github.com/pre3d/">3D library</a> was initially developed by Dean McNamee
 					and is published under a <a target="edabout" href="http://www.opensource.org/licenses/bsd-license.php">BSD license</a>.
+				</p>
+				<p>
+					Questions/comments: <a href="mailto:thomas.mccauley@cern.ch">Tom McCauley</a>
+				</p>
+				<p>
+					Reference: <a href="http://iopscience.iop.org/1742-6596/396/2/022022/">J.Phys.Conf.Ser. 396 (2012) 022022</a>
 				</p>
 			</td>
 		</tr>
@@ -798,7 +824,4 @@
 	</table>
 </div>
 	</body>
-	<script type="text/javascript">
-	$("#progress").hide();
-	</script>
 </html>
