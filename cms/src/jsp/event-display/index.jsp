@@ -2,12 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>CMS 3D Event Display</title>
-		<!--<meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport">-->
-
+	
 		<link href="scrollbar.css" rel="stylesheet" type="text/css" />
-		<link href="eventdisplay.css" rel="stylesheet" type="text/css" />
-		<link href="eventdisplay.css" rel="stylesheet" type="text/css" />
-		
+		<link href="eventdisplay.css" rel="stylesheet" type="text/css" />		
 		<link href="settings.css" rel="stylesheet" type="text/css" />
 		<link href="range-selection.css" rel="stylesheet" type="text/css" />
 		<link href="event-browser.css" rel="stylesheet" type="text/css" />
@@ -18,7 +15,6 @@
 		<script src="../include/flexcroll.js"></script>
 		<script src="http://code.jquery.com/jquery-1.9.0.js"></script>
         <script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>
-		<!--<script src="../include/jquery/js/jquery-1.6.1.min.js"></script> -->
 		<script src="../include/pre3d.js"></script>
 		<script src="../include/pre3d_shape_utils.js"></script>
 		<script src="../include/base64.js"></script>
@@ -63,7 +59,6 @@
 			<%@ include file="controls-help.jspf" %>
 		</td>
 		<td class="bordered">
-			<div id="touch-test"></div>
 		</td>
 	</tr>
 </table>
