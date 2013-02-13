@@ -32,7 +32,7 @@ if (entry == null) {
 entry.sort(); 
 request.setAttribute("e", entry);
 
-//find out if the user has ownership over the detector
+//EPeronja-01/24/2013: Bug472- find out if the user has ownership over the detector
 ArrayList<String> detectors = (ArrayList<String>) user.getAttribute("cosmic:detectorIds");
 boolean owner = false;
 for (String s : detectors) {
@@ -42,7 +42,7 @@ for (String s : detectors) {
 }
 request.setAttribute("owner", owner);
 
-//format registers
+//EPeronja-02/04/2013: Bug472- format registers
 BlessRegister br0 = new BlessRegister((String) entry.getTupleValue("ConReg0"));
 request.setAttribute("CR0", br0.getRegisterValue());
 
@@ -96,8 +96,8 @@ request.setAttribute("CR0", br0.getRegisterValue());
 				</script>
 				<h1>Data Blessing: Want to use this data?  Look at these charts to determine data quality.</h1>
 				<div style="text-align: center; font-size: small;"><strong>Data Blessing Test for ${param.file} -
-				<%= entry.getTupleValue("school") %>, <%= entry.getTupleValue("city") %> - <%= entry.getTupleValue("state") %> -
-				<fmt:formatDate value="${e.tupleMap.creationdate}" pattern="MM/dd/yyyy"/>				
+				<%= entry.getTupleValue("school") %>, <%= entry.getTupleValue("city") %>, <%= entry.getTupleValue("state") %> -
+				<fmt:formatDate value="${e.tupleMap.startdate}" pattern="dd MMM yyyy"/>				
 				</strong></div><br />
 				<div style="text-align: center;">
 					<a href="../data/view.jsp?filename=${param.file}">Show Data</a> |
@@ -108,12 +108,8 @@ request.setAttribute("CR0", br0.getRegisterValue());
 					<a href="../data/download?filename=${param.file}&elab=${elab.name}&type=split">Download</a> |
 					<e:popup href="../references/Reference_bless_data.html" target="Data Blessing" width="900" height="800">Data blessing documentation</e:popup>
 				</div>
-				<h2>Control Registers</h2>
-				CR0: <strong><%= entry.getTupleValue("ConReg0") != null? entry.getTupleValue("ConReg0") : "Unknown" %></strong>,
-				CR1: <strong><%= entry.getTupleValue("ConReg1") != null? entry.getTupleValue("ConReg1") : "Unknown" %></strong>,
-				CR2: <strong><%= entry.getTupleValue("ConReg2") != null? entry.getTupleValue("ConReg2") : "Unknown" %></strong>,
-				CR3: <strong><%= entry.getTupleValue("ConReg3") != null? entry.getTupleValue("ConReg3") : "Unknown" %></strong><br />
-				CR0: <strong>${CR0}</strong><br /><br />
+				<h2>Control Register</h2>
+				CR0: <strong><%= entry.getTupleValue("ConReg0") != null? entry.getTupleValue("ConReg0") : "Unknown" %> - ${CR0}</strong><br /><br />
 				<div style="text-align: center;"><strong>Owners of data files can bless data based on their interpretation of these charts</strong></p></div>
 				<% if (owner) { %>							
 				<table witdh="100%"  style="border: 1px solid black;">

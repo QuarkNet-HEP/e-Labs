@@ -70,7 +70,7 @@ public class BlessData {
 			}
 		}
 	}
-	
+    //EPeronja-02/12/2013: Bug472- added to check for null values which will break the plotting code
 	public int parseToInt(String split)
 	{
 		int result = 0;
@@ -82,6 +82,7 @@ public class BlessData {
 		return result;
 	}
 	
+    //EPeronja-02/12/2013: Bug472- added to check for null values which will break the plotting code	
 	public double parseToDouble(String split)
 	{
 		double result = 0;

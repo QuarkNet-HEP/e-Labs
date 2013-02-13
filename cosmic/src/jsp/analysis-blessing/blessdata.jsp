@@ -5,6 +5,7 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
+<!-- //EPeronja-02/02/2013: Bug472- pop up called by compare1.jsp to bless/unbless data -->
 <script type="text/javascript">
 	window.onunload = function() {
 	    if (window.opener && !window.opener.closed) {
