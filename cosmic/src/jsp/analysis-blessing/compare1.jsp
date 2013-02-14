@@ -119,7 +119,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 							<td style="text-align: right;">
 							 	<form name="blessForm" action="blessdata.jsp" method="post" target="blessWindow" onsubmit="window.open('',this.target,'width=300,height=100,top=200,left=500 resizable=1');" align="center"> 
 									<input type="hidden" name="blessed" value="${e.tupleMap.blessed}"/>
-									<input type="hidden" name="filename" value="${e.tupleMap.source}"></input>
+									<input type="hidden" name="filename" value="${param.file}"></input>
 									<c:choose>
 									  	<c:when test="${e.tupleMap.blessed == true}">
 											<input type="submit" name="submitbless" id="submitbless" value="Unbless" />
