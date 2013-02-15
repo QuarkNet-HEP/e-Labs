@@ -291,6 +291,7 @@ public class StructuredResultSetDisplayer {
             }
             out.write("</a>");
         }
+        //EPeronja-01/30/2013: Bug472- to add icons next to the data for data blessing access 
         /*
         if (file.getBlessFile() != null) {
         	if (file.isBlessed()) {
