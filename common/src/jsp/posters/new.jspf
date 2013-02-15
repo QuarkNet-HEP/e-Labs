@@ -10,6 +10,8 @@
 <%@ page import="org.owasp.validator.html.*" %>
 
 <script type="text/javascript" src="../include/tiny_mce/jquery.tinymce.js"></script>
+<script src="formchanges.js"></script>
+
 <script>
 	$().ready(function() {
 		$('textarea.tinymce').tinymce({
@@ -266,11 +268,11 @@
 		}
 	</script>
 
-	<form method="post">
+	<form id="posterForm" method="post">
            <table width="550">
                 <tr>
                 	<td valign="top" align="right">Poster File Name:<br>(e.g.,poster_lifetime)</td>
-                	<td valign="top" align="left"><e:trinput type="text" name="posterName"/></td>
+                	<td valign="top" align="left"><e:trinput type="text" name="posterName" id="posterName"/></td>
                 </tr>
       
 <%
@@ -310,12 +312,12 @@
                     		<c:choose>
                     			<c:when test="${type == 'PARA'}">
                     				<td align="left">
-                    					<textarea name="${type}:${name}" rows="6" cols="80" class="tinymce">${tvalue}</textarea>
+                    					<textarea name="${type}:${name}" id="${type}:${name}" rows="6" cols="80" class="tinymce">${tvalue}</textarea>
                     				</td>
                     			</c:when>
                     			<c:when test="${type == 'WORDS'}">
                     				<td align="left">
-                    					<input size="50" maxlength="1000" name="${type}:${name}"
+                    					<input size="50" maxlength="1000" name="${type}:${name}" id="${type}:${name}"
                     						value="${tvalue}"/>
                     				</td>
                     			</c:when>
@@ -324,7 +326,7 @@
                     					<c:if test="${name == 'FIGURE1'}">
                     						<div id="image-preview" style="display: none; position: fixed; left: 1%; bottom: 4%;">image-preview</div>
                     					</c:if>
-                    					<select name="${type}:${name}">
+                    					<select name="${type}:${name}" id="${type}:${name}">
                     						<option><%= selectDefault %></option>
                     						<c:forEach items="${images}" var="image">
                     							<c:choose>
@@ -351,7 +353,7 @@
 	   %>
 		<tr>
 			<td colspan="2" align="center">
-	            <input type="submit" name="button" value="${edit?'Save Changes':'Make Poster'}"/>
+	            <input type="submit" name="button" id="submitButton" value="${edit?'Save Changes':'Make Poster'}"/>
     	        <font size="-1">To see poster, don't block popups! Otherwise click <b>Display Poster</b> below.</font>
 			</td>
 		</tr>
@@ -401,3 +403,42 @@ if ("Make Poster".equals(reqType) || "Save Changes".equals(reqType)) {
 <%
 }
 %>
+<script>
+//var saving = false;
+var form = document.getElementById("posterForm");
+
+//form.onsubmit = function() { saving = true; };
+
+//window.onunload = function() {
+//	if(!saving) {
+//		var f = FormChanges(form);
+//		if (f.length > 0) alert("Your form updates have not been saved.");
+//	}
+//};
+
+function DetectChanges() {
+	var f = FormChanges(form);
+	console.debug(f);
+	if (f.length > 0) {
+		var posterName = document.getElementById("posterName").value;
+		var posterTitle = document.getElementById("WORDS:TITLE").value ;
+		if (posterName != '' && posterName != null) {
+			if (posterTitle != '' && posterTitle != null) {
+				console.debug("will trigger save -"+posterName + "-" + posterTitle);
+				document.getElementById('submitButton').click();
+			}
+		}
+	}		
+}
+
+var repeatTime = 60 * 1000; 
+
+function updatePoster(){
+ 	DetectChanges();
+ 	SetNotDirty();	
+ 	setTimeout(updatePoster, repeatTime); // start call over again
+}
+
+setTimeout(updatePoster, repeatTime);
+
+</script>
