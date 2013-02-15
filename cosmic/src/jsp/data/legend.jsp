@@ -9,6 +9,7 @@
 			<td class="dt"><img src="../graphics/stacked.gif" /></td>
 			<td class="dd">Stacked data</td>
 		</tr>
+		<!--
 		<tr>
 			<td class="dt"><img src="../graphics/star.gif" /></td>
 			<td class="dd">Blessed data<br />Click to view blessing charts</td>
@@ -17,6 +18,7 @@
 			<td class="dt"><img src="../graphics/unblessed.gif" /></td>
 			<td class="dd">Unblessed data<br />Click to view blessing charts<br />Owners of data files can bless</td>
 		</tr>
+		-->
 		<tr>
 			<td class="dt"><img src="../graphics/balloon_talk_gray.gif" /></td>
 			<td class="dd">Add/View comments</td>
