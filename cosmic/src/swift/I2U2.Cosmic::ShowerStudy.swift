@@ -19,21 +19,21 @@ type AxisParams {
 }
 
 //(File wireDelayData) WireDelay(File thresholdData, string geoDir, File geoFile, string detector, string firmware)
-//(File wireDelayData) WireDelay(File thresholdData, string geoDir, File geoFile, string detector)
-// {
-//	app {
+(File wireDelayData) WireDelay(File thresholdData, string geoDir, File geoFile, string detector)
+ {
+	app {
 //		WireDelay @filename(thresholdData) @filename(wireDelayData) @filename(geoDir) detector firmware;
-//		WireDelay @filename(thresholdData) @filename(wireDelayData) @filename(geoDir) detector;
-//	}
-//}
+		WireDelay @filename(thresholdData) @filename(wireDelayData) @filename(geoDir) detector;
+	}
+}
 
 //(File wireDelayData[]) WireDelayMultiple(File thresholdData[], string geoDir, File geoFiles[], string detectors[], string firmwares[]) {
-//(File wireDelayData[]) WireDelayMultiple(File thresholdData[], string geoDir, File geoFiles[], string detectors[]) {
-//	foreach td, i in thresholdData {
+(File wireDelayData[]) WireDelayMultiple(File thresholdData[], string geoDir, File geoFiles[], string detectors[]) {
+	foreach td, i in thresholdData {
 //		wireDelayData[i] = WireDelay(thresholdData[i], geoDir, geoFiles[i], detectors[i], firmwares[i]);
-//		wireDelayData[i] = WireDelay(thresholdData[i], geoDir, geoFiles[i], detectors[i]);
-//	}
-//}
+		wireDelayData[i] = WireDelay(thresholdData[i], geoDir, geoFiles[i], detectors[i]);
+	}
+}
 
 (File combined) Combine(File data[]) {
 	app {
