@@ -24,8 +24,10 @@ type AxisParams {
 	}
 }
 
+//(File wireDelayData[]) WireDelayMultiple(File thresholdData[], string geoDir, File geoFiles[], string detectors[], string firmwares[]) {
 (File wireDelayData[]) WireDelayMultiple(File thresholdData[], string geoDir, File geoFiles[], string detectors[], string firmwares[]) {
 	foreach td, i in thresholdData {
+//		wireDelayData[i] = WireDelay(thresholdData[i], geoDir, geoFiles[i], detectors[i], firmwares[i]);
 		wireDelayData[i] = WireDelay(thresholdData[i], geoDir, geoFiles[i], detectors[i], firmwares[i]);
 	}
 }
@@ -108,7 +110,7 @@ File wireDelayData[] <fixed_array_mapper;files=@arg("wireDelayData")>;
 
 string  detectors[] = @strsplit(@arg("detector"), "\\s");
 string  cpldfreqs[] = @strsplit(@arg("cpldfreqs"), "\\s");
-string  firmwares[] = @strsplit(@arg("firmwares"), "\\s");
+//string  firmwares[] = @strsplit(@arg("firmwares"), "\\s");
 
 File combineOut <single_file_mapper;file=@arg("combineOut")>;
 File sortOut <single_file_mapper;file=@arg("sortOut")>;
@@ -139,7 +141,9 @@ string sort_sortKey2 = @arg("sort_sortKey2");
 
 //the actual workflow
 thresholdAll = ThresholdTimesMultiple(rawData, detectors, cpldfreqs);
-wireDelayData = WireDelayMultiple(thresholdAll, geoDir, geoFiles, detectors, firmwares);
+//wireDelayData = WireDelayMultiple(thresholdAll, geoDir, geoFiles, detectors, firmwares);
+wireDelayData = WireDelayMultiple(thresholdAll, geoDir, geoFiles, detectors);
+
 combineOut = Combine(wireDelayData);
 sortOut = Sort(combineOut, sort_sortKey1, sort_sortKey2);
 eventCandidates = EventSearch(sortOut, gate, detectorCoincidence, channelCoincidence,

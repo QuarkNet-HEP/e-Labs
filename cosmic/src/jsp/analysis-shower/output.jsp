@@ -88,6 +88,27 @@
 	request.setAttribute("crtEventRow", ec.getCurrentRow());
 %>
 
+<script>
+function checkAll()
+{
+	var allCheckboxes = document.getElementByTagName("input");
+	for (var i = 0; i < allCheckboxes.length; i++)
+		{
+		if (allCheckboxes[i].type == 'checkbox')
+			{
+				if (allCheckboxes[i].checked)
+					{
+					allCheckboxes[i].checked = false;
+					}
+				else
+					{
+					allCheckboxes[i].checked = true;
+					}
+			}
+		}
+}
+</script>
+
 <h1>Shower study candidates (<%= rows.size() %>)</h1>
 
 <table id="shower-results">
@@ -96,7 +117,7 @@
 			<table id="shower-events">
 				<tr>
 				    <th width="1%">
-				    	<input type="checkbox" name="checkAll" id="checkAll"></input>
+				    	<input type="checkbox" name="checkAll" id="checkAll" onclick="checkAll(); return false;"></input>
 				    </th>
 					<th width="97%">
 						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }">Event Date</a>
