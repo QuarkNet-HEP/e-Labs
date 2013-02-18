@@ -23,7 +23,8 @@ public class BlessRegister {
 	public BlessRegister(String register) {
 		if (register != null) {
 			this.register = register;
-		} else {
+		} 
+		if (register == null || register == "") {
 			this.register = "Unknown";
 		}
 		trigger = new TreeMap<String, String>();

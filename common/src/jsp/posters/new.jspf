@@ -224,6 +224,7 @@
 	pageContext.setAttribute("images", images);
 %>
 	<!-- Show instructions -->
+	<div name="feedback" id="feedback" style="font-weight: bold;"> </div>
 	<ul>
 		<li>
 			Fill in all the fields including Poster File Name if it is missing.  
@@ -404,19 +405,14 @@ if ("Make Poster".equals(reqType) || "Save Changes".equals(reqType)) {
 }
 %>
 <script>
-//var saving = false;
+//EPeronja-02/15/2013: Bug499- Implement autosave for posters
+// 		   There is a timer firing a detect changes routine every minute
+//		   If there has been a change in the form, then it will proceed to autosave
+//		   These functions are in formchanges.js
 var form = document.getElementById("posterForm");
 
-//form.onsubmit = function() { saving = true; };
-
-//window.onunload = function() {
-//	if(!saving) {
-//		var f = FormChanges(form);
-//		if (f.length > 0) alert("Your form updates have not been saved.");
-//	}
-//};
-
 function DetectChanges() {
+	console.debug("detecting changes and trying to autosave...")
 	var f = FormChanges(form);
 	console.debug(f);
 	if (f.length > 0) {
@@ -424,7 +420,6 @@ function DetectChanges() {
 		var posterTitle = document.getElementById("WORDS:TITLE").value ;
 		if (posterName != '' && posterName != null) {
 			if (posterTitle != '' && posterTitle != null) {
-				console.debug("will trigger save -"+posterName + "-" + posterTitle);
 				document.getElementById('submitButton').click();
 			}
 		}
@@ -432,8 +427,8 @@ function DetectChanges() {
 }
 
 var repeatTime = 60 * 1000; 
-
 function updatePoster(){
+	document.getElementById("feedback").innerHTML = "Checking for changes to autosave...";
  	DetectChanges();
  	SetNotDirty();	
  	setTimeout(updatePoster, repeatTime); // start call over again
