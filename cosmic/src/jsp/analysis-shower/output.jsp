@@ -95,7 +95,10 @@
 		<td valign="top" width="70%">
 			<table id="shower-events">
 				<tr>
-					<th width="98%">
+				    <th width="1%">
+				    	<input type="checkbox" name="checkAll" id="checkAll"></input>
+				    </th>
+					<th width="97%">
 						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }">Event Date</a>
 					</th>
 					<th width="1%">
@@ -117,6 +120,9 @@
 				</c:choose>
 				<c:forEach items="${rows}" begin="${start}" end="${end}" var="row" varStatus="li">
 					<tr bgcolor="${row.eventNum == eventNum ? '#aaaafc' : (li.count % 2 == 0 ? '#e7eefc' : '#ffffff')}">
+						<td>
+							<input type="checkbox" name="check+${param.showerId}" id="check+${param.showerId}"></input>
+						</td>
 						<td>
 							<a href="../analysis-shower/event-choice.jsp?id=${param.showerId}&eventNum=${row.eventNum}&submit=true">${row.dateF}</a>
 						</td>
