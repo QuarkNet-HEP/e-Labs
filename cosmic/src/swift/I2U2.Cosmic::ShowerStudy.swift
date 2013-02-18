@@ -145,7 +145,7 @@ string sort_sortKey2 = @arg("sort_sortKey2");
 //the actual workflow
 thresholdAll = ThresholdTimesMultiple(rawData, detectors, cpldfreqs);
 //wireDelayData = WireDelayMultiple(thresholdAll, geoDir, geoFiles, detectors, firmwares);
-//wireDelayData = WireDelayMultiple(thresholdAll, geoDir, geoFiles, detectors);
+wireDelayData = WireDelayMultiple(thresholdAll, geoDir, geoFiles);
 
 combineOut = Combine(wireDelayData);
 sortOut = Sort(combineOut, sort_sortKey1, sort_sortKey2);
