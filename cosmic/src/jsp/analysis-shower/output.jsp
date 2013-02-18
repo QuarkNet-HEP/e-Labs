@@ -91,21 +91,14 @@
 <script>
 function checkAll()
 {
-	var allCheckboxes = document.getElementByTagName("input");
-	for (var i = 0; i < allCheckboxes.length; i++)
-		{
-		if (allCheckboxes[i].type == 'checkbox')
-			{
-				if (allCheckboxes[i].checked)
-					{
-					allCheckboxes[i].checked = false;
-					}
-				else
-					{
-					allCheckboxes[i].checked = true;
-					}
+	[].forEach.call(document.querySelectorAll('input[type="checkbox"]'), function(el){
+			if (el.checked){
+				el.checked = false;
+			} else {
+				el.checked = true
 			}
-		}
+	}		
+	);
 }
 </script>
 
