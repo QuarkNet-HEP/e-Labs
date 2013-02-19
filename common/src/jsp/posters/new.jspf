@@ -224,7 +224,6 @@
 	pageContext.setAttribute("images", images);
 %>
 	<!-- Show instructions -->
-	<div name="feedback" id="feedback" style="font-weight: bold;"> </div>
 	<ul>
 		<li>
 			Fill in all the fields including Poster File Name if it is missing.  
@@ -411,10 +410,29 @@ if ("Make Poster".equals(reqType) || "Save Changes".equals(reqType)) {
 //		   These functions are in formchanges.js
 var form = document.getElementById("posterForm");
 
+function DynamicDiv() {
+	var	dynDiv = document.createElement('div');
+	dynDiv.setAttribute('id', 'dynDiv');
+	dynDiv.style.position = "fixed";
+	dynDiv.style.height = "40px";
+	dynDiv.style.width = "150px";
+	dynDiv.style.top = "105px";
+	dynDiv.style.border = "1px solid #000";
+	dynDiv.style.background = 'yellow';
+	dynDiv.innerHTML = "Looking for changes to autosave...";
+	document.body.appendChild(dynDiv);
+}
+function RemoveDiv() {
+	var dynDiv = document.getElementById("dynDiv");
+	if (dynDiv) {
+		document.body.removeChild(dynDiv);
+	}
+}
+
 function DetectChanges() {
-	console.debug("detecting changes and trying to autosave...")
+	//console.debug("detecting changes and trying to autosave...")
 	var f = FormChanges(form);
-	console.debug(f);
+	//console.debug(f);
 	if (f.length > 0) {
 		var posterName = document.getElementById("posterName").value;
 		var posterTitle = document.getElementById("WORDS:TITLE").value ;
@@ -423,17 +441,19 @@ function DetectChanges() {
 				document.getElementById('submitButton').click();
 			}
 		}
-	}		
+	}
 }
 
 var repeatTime = 60 * 1000; 
-function updatePoster(){
-	document.getElementById("feedback").innerHTML = "Checking for changes to autosave...";
- 	DetectChanges();
+function UpdatePoster(){
+	DynamicDiv();
+	DetectChanges();
  	SetNotDirty();	
- 	setTimeout(updatePoster, repeatTime); // start call over again
+ 	setTimeout(UpdatePoster, repeatTime); // start call over again
+ 	setTimeout(RemoveDiv, repeatTime + 10000);
 }
 
-setTimeout(updatePoster, repeatTime);
+setTimeout(UpdatePoster, repeatTime);
+setTimeout(RemoveDiv, repeatTime + 10000);
 
 </script>

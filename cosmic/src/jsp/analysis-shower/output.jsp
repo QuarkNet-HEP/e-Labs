@@ -88,20 +88,6 @@
 	request.setAttribute("crtEventRow", ec.getCurrentRow());
 %>
 
-<script>
-function checkAll()
-{
-	[].forEach.call(document.querySelectorAll('input[type="checkbox"]'), function(el){
-			if (el.checked){
-				el.checked = false;
-			} else {
-				el.checked = true
-			}
-	}		
-	);
-}
-</script>
-
 <h1>Shower study candidates (<%= rows.size() %>)</h1>
 
 <table id="shower-results">
@@ -109,10 +95,7 @@ function checkAll()
 		<td valign="top" width="70%">
 			<table id="shower-events">
 				<tr>
-				    <th width="1%">
-				    	<input type="checkbox" name="checkAll" id="checkAll" onclick="checkAll(); return false;"></input>
-				    </th>
-					<th width="97%">
+					<th width="98%">
 						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }">Event Date</a>
 					</th>
 					<th width="1%">
@@ -134,9 +117,6 @@ function checkAll()
 				</c:choose>
 				<c:forEach items="${rows}" begin="${start}" end="${end}" var="row" varStatus="li">
 					<tr bgcolor="${row.eventNum == eventNum ? '#aaaafc' : (li.count % 2 == 0 ? '#e7eefc' : '#ffffff')}">
-						<td>
-							<input type="checkbox" name="check+${param.showerId}" id="check+${param.showerId}"></input>
-						</td>
 						<td>
 							<a href="../analysis-shower/event-choice.jsp?id=${param.showerId}&eventNum=${row.eventNum}&submit=true">${row.dateF}</a>
 						</td>
@@ -175,6 +155,12 @@ function checkAll()
 </table>
 <p>
 	Analysis run time: ${showerResults.formattedRunTime}; estimated: ${showerResults.formattedEstimatedRunTime}
+</p>
+<p>
+<form name="saveAllForm" action="save-all-events.jsp" method="post" target="saveAllWindow" onsubmit="window.open('',this.target,'width=300,height=100,top=200,left=500 resizable=1');" align="center"> 
+	<input type="hidden" name="showerResults" value="${rows}"/>
+	<input type="submit" name="saveAllEvents" id="saveAllEvents" value="Save All Events" />
+</form>
 </p>
 <p>
 	Show <e:popup href="../analysis/show-dir.jsp?id=${showerResults.id}" target="analysisdir" 
