@@ -60,15 +60,15 @@
 	}
 %> 
 		<h2>${param.filename}</h2><br/>
+<!--
 		<a href="../data/view-metadata.jsp?filename=${param.filename}">Show metadata</a> |
 		<c:if test="${e.tupleMap.detectorid != null}">
 			<a href="../geometry/view.jsp?filename=${param.filename}">Show Geometry</a> |
 		</c:if>
-		<!--
+-->
 		<c:if test="${e.tupleMap.blessfile != null}">
 			<a href="../analysis-blessing/compare1.jsp?file=${param.filename}">Show Blessing Charts</a> |
 		</c:if>
-		-->
 		<a href="../data/download?filename=${param.filename}&elab=${elab.name}&type=split">Download</a>
 		<br/>
 		<br/>

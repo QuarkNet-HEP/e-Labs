@@ -308,6 +308,7 @@ public class StructuredResultSetDisplayer {
         		out.write("<img alt=\"Blessed data\" "
                     + "src=\"../graphics/unblessed.gif\"/></a>");        	
         	}
+
         }*/
         out.write("<br />" + formatNumber(file.getTotalEvents()) + " events");
     }
