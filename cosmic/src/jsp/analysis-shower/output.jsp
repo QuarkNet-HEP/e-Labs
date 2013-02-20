@@ -159,6 +159,19 @@
 <p>
 <form name="saveAllForm" action="save-all-events.jsp" method="post" target="saveAllWindow" onsubmit="window.open('',this.target,'width=300,height=100,top=200,left=500 resizable=1');" align="center"> 
 	<input type="hidden" name="showerId" value="${showerResults.id}"/>
+	<input type="hidden" name="resultsId" value="${results.id}" />
+	<e:commonMetadataToSave rawData="${showerResults.analysis.parameters['rawData']}"/>
+	<e:creationDateMetadata/>
+	<input type="hidden" name="metadata" value="transformation string Quarknet.Cosmic::ShowerStudy"/>
+	<input type="hidden" name="metadata" value="study string shower"/>
+	<input type="hidden" name="metadata" value="type string plot"/>
+	<input type="hidden" name="metadata" value="detectorcoincidence int ${showerResults.analysis.parameters['detectorCoincidence']}"/>
+	<input type="hidden" name="metadata" value="eventcoincidence int ${showerResults.analysis.parameters['eventCoincidence']}"/>
+	<input type="hidden" name="metadata" value="eventnum int ${showerResults.analysis.parameters['eventNum']}"/>
+	<input type="hidden" name="metadata" value="gate int ${showerResults.analysis.parameters['gate']}"/>
+	<input type="hidden" name="metadata" value="radius int -1"/>
+	<input type="hidden" name="metadata" value="title string ${showerResults.analysis.parameters['plot_title']}"/>
+	<input type="hidden" name="metadata" value="caption string ${showerResults.analysis.parameters['plot_caption']}"/>
 	<input type="submit" name="saveAllEvents" id="saveAllEvents" value="Save All Events" />
 </form>
 </p>
