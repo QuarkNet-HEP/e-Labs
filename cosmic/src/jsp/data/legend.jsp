@@ -9,6 +9,7 @@
 			<td class="dt"><img src="../graphics/stacked.gif" /></td>
 			<td class="dd">Stacked data</td>
 		</tr>
+
 		<!--
 		<tr>
 			<td class="dt"><img src="../graphics/star.gif" /></td>
