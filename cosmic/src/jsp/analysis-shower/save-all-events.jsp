@@ -29,13 +29,7 @@
 	AnalysisRun showerResults = AnalysisManager.getAnalysisRun(elab, user, showerId);
 
 	
-	for (int i = 0; i < showerResults.length; i++)
-	{
-		String var = showerResults[i];
-		if (i < 3) {
-			System.out.println("row: " + Integer.toString(i) + var + "\n");
-		}
-	}
+
 %>
 
 		</div>
