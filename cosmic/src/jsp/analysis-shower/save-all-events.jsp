@@ -25,7 +25,9 @@
 		<!-- entire page container -->
 		<div id="container">
 <%
-	String showerResults[] = request.getParameterValues("showerResults");	
+	String showerId = request.getParameter("showerId");	
+	AnalysisRun showerResults = AnalysisManager.getAnalysisRun(elab, user, showerId);
+
 	
 	for (int i = 0; i < showerResults.length; i++)
 	{

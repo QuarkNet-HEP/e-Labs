@@ -158,7 +158,7 @@
 </p>
 <p>
 <form name="saveAllForm" action="save-all-events.jsp" method="post" target="saveAllWindow" onsubmit="window.open('',this.target,'width=300,height=100,top=200,left=500 resizable=1');" align="center"> 
-	<input type="hidden" name="showerResults" value="${rows}"/>
+	<input type="hidden" name="showerId" value="${showerResults.id}"/>
 	<input type="submit" name="saveAllEvents" id="saveAllEvents" value="Save All Events" />
 </form>
 </p>
