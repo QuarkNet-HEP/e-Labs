@@ -13,7 +13,6 @@ public class ShowerBean extends ElabBean implements Serializable, MappableBean{
     private String combineOut;
     private String detectorCoincidence;
     private String detector;
-    private String firmwares;   
     private String eventCandidates;
     private String eventCoincidence;
     private String eventFile;
@@ -120,13 +119,6 @@ public class ShowerBean extends ElabBean implements Serializable, MappableBean{
 
     public String getExtraFun_out(){
         return extraFun_out;
-    }
-    public void setFirmwares(String s){
-        firmwares = s;
-    }
-
-    public String getFirmwares(){
-        return firmwares;
     }
 
     public void setGate(String s){
@@ -353,10 +345,6 @@ public class ShowerBean extends ElabBean implements Serializable, MappableBean{
         return true;
     }
 
-    public boolean isFirmwaresValid(){
-        return true;
-    }
-
     public boolean isGateValid(){
         return true;
     }
@@ -494,9 +482,6 @@ public class ShowerBean extends ElabBean implements Serializable, MappableBean{
         if(!isExtraFun_outValid()){
             badkeys.add("extraFun_out");
         }
-        if(!isFirmwaresValid()){
-            badkeys.add("firmwares");
-        }
         if(!isGateValid()){
             badkeys.add("gate");
         }
@@ -601,7 +586,6 @@ public class ShowerBean extends ElabBean implements Serializable, MappableBean{
         addToDV("combineOut", combineOut);
         addToDV("detectorCoincidence", detectorCoincidence);
         addToDV("detector", detector);
-        addToDV("firmwares", "firmwares");
         addToDV("eventCandidates", eventCandidates);
         addToDV("eventCoincidence", eventCoincidence);
         addToDV("eventFile", eventFile);
@@ -650,7 +634,6 @@ public class ShowerBean extends ElabBean implements Serializable, MappableBean{
         eventFile = getDVValue("eventFile") == null ? "" : getDVValue("eventFile");
         eventNum = getDVValue("eventNum") == null ? "" : getDVValue("eventNum");
         extraFun_out = getDVValue("extraFun_out") == null ? "" : getDVValue("extraFun_out");
-        firmwares = getDVValue("firmwares") == null ? "" : getDVValue("firmwares");        
         gate = getDVValue("gate") == null ? "" : getDVValue("gate");
         geoDir = getDVValue("geoDir") == null ? "" : getDVValue("geoDir");
         plot_caption = getDVValue("plot_caption") == null ? "" : getDVValue("plot_caption");
@@ -687,7 +670,6 @@ public class ShowerBean extends ElabBean implements Serializable, MappableBean{
         eventFile = "eventFile";
         eventNum = "";
         extraFun_out = "";
-        firmwares = "";
         gate = "";
         geoDir = "";
         plot_caption = "";

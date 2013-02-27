@@ -68,7 +68,6 @@
 	String plotDirURL = user.getDirURL("plots");
 	request.setAttribute("plotDirURL", plotDirURL);
 	String templateDir = user.getDir("templates");
-	String showPoster = request.getParameter("showPoster");
 
 	if ("Make Poster".equals(reqType) || "View Poster".equals(reqType) || "Save Changes".equals(reqType)) {
 	    String val = "", name = ""; 
@@ -354,7 +353,6 @@
 	   %>
 		<tr>
 			<td colspan="2" align="center">
-				<input type="hidden" name="showPoster" id="showPoster" value="" />
 	            <input type="submit" name="button" id="submitButton" value="${edit?'Save Changes':'Make Poster'}"/>
     	        <font size="-1">To see poster, don't block popups! Otherwise click <b>Display Poster</b> below.</font>
 			</td>
@@ -386,13 +384,11 @@ if ("Make Poster".equals(reqType) || "Save Changes".equals(reqType)) {
             pw.println(template);
             pw.close();
             // Add metadata to LFN for data file
-			if (!showPoster.equals("NO"))
-			{
-            	String posterURL = "../posters/display.jsp?name=" + dfile;
-				%> 
-					<e:popup href="<%= posterURL %>" target="_blank" width="700" height="900" now="true"/>
-				<%
-			}
+
+            String posterURL = "../posters/display.jsp?name=" + dfile;
+			%> 
+				<e:popup href="<%= posterURL %>" target="_blank" width="700" height="900" now="true"/>
+			<%
         }
         catch (Exception e) { 
             out.println(e.getMessage()); 
@@ -434,7 +430,7 @@ function RemoveDiv() {
 }
 
 function DetectChanges() {
-	console.debug("detecting changes and trying to autosave...")
+	//console.debug("detecting changes and trying to autosave...")
 	var f = FormChanges(form);
 	//console.debug(f);
 	if (f.length > 0) {
@@ -442,8 +438,6 @@ function DetectChanges() {
 		var posterTitle = document.getElementById("WORDS:TITLE").value ;
 		if (posterName != '' && posterName != null) {
 			if (posterTitle != '' && posterTitle != null) {
-				var showPoster = document.getElementById('showPoster');
-				showPoster.value = "NO";
 				document.getElementById('submitButton').click();
 			}
 		}
