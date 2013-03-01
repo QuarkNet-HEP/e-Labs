@@ -456,7 +456,6 @@ var repeatTime =  10 * 1000;
 function UpdatePoster(){
 	DynamicDiv();
 	DetectChanges();
- 	SetNotDirty();	
  	setTimeout(UpdatePoster, repeatTime); // start call over again
  	setTimeout(RemoveDiv, repeatTime + 10000);
 }
