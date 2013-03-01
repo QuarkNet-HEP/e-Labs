@@ -452,11 +452,14 @@ function DetectChanges() {
 }
 
 //5 minutes
-var repeatTime =  300 * 1000; 
+var repeatTime =  10 * 1000; 
 function UpdatePoster(){
 	DynamicDiv();
+	alert("it passes dynamic div");
 	DetectChanges();
+	alert("it passes detect changes");
  	SetNotDirty();	
+ 	alert("it passes set no dirty");
  	setTimeout(UpdatePoster, repeatTime); // start call over again
  	setTimeout(RemoveDiv, repeatTime + 10000);
 }
