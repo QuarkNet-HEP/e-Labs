@@ -10,7 +10,7 @@
 <%@ page import="org.owasp.validator.html.*" %>
 
 <script type="text/javascript" src="../include/tiny_mce/jquery.tinymce.js"></script>
-<script src="formchanges.js"></script>
+<script type="text/javascript" src="formchanges.js"></script>
 
 <script>
 	$().ready(function() {
