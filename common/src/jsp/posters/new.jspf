@@ -439,10 +439,10 @@ function DetectChanges() {
 	var f = FormChanges(form);
 	//console.debug(f);
 	if (f.length > 0) {
-		var posterName = document.getElementById("posterName").value;
-		var posterTitle = document.getElementById("WORDS:TITLE").value ;
-		if (posterName != '' && posterName != null) {
-			if (posterTitle != '' && posterTitle != null) {
+		var posterNameVar = document.getElementById("posterName").value;
+		var posterTitleVar = document.getElementById("WORDS:TITLE").value ;
+		if (posterNameVar != '' && posterNameVar != null) {
+			if (posterTitleVar != '' && posterTitleVar != null) {
 				var showPosterVar = document.getElementById('showPoster');
 				showPosterVar.value = "NO";
 				document.getElementById('submitButton').click();
