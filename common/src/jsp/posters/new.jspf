@@ -439,7 +439,7 @@ function DetectChanges() {
 	var f = FormChanges(form);
 	//console.debug(f);
 	if (f.length > 0) {
-		var posterNameVar = document.getElementById("posterName").text;
+		var posterNameVar = document.getElementById("posterName").value;
 		var posterTitleVar = document.getElementById("WORDS:TITLE").value ;
 		if (posterNameVar != '' && posterNameVar != null) {
 			if (posterTitleVar != '' && posterTitleVar != null) {
