@@ -68,7 +68,7 @@
 	String plotDirURL = user.getDirURL("plots");
 	request.setAttribute("plotDirURL", plotDirURL);
 	String templateDir = user.getDir("templates");
-	String showPoster = request.getParameter("showPoster");
+	String showPosterVar = request.getParameter("showPoster");
 
 	if ("Make Poster".equals(reqType) || "View Poster".equals(reqType) || "Save Changes".equals(reqType)) {
 	    String val = "", name = ""; 
@@ -387,7 +387,7 @@ if ("Make Poster".equals(reqType) || "Save Changes".equals(reqType)) {
             pw.close();
             // Add metadata to LFN for data file
 
-            if (!showPoster.equals("NO"))
+            if (!showPosterVar.equals("NO"))
             {
             	String posterURL = "../posters/display.jsp?name=" + dfile;
 				%> 
@@ -443,8 +443,8 @@ function DetectChanges() {
 		var posterTitle = document.getElementById("WORDS:TITLE").value ;
 		if (posterName != '' && posterName != null) {
 			if (posterTitle != '' && posterTitle != null) {
-				var showPoster = document.getElementById('showPoster');
-				showPoster.value = "NO";
+				var showPosterVar = document.getElementById('showPoster');
+				showPosterVar.value = "NO";
 				document.getElementById('submitButton').click();
 			}
 		}

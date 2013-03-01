@@ -57,7 +57,7 @@ function SetNotDirty() {
 	if (!form || !form.nodeName || form.nodeName.toLowerCase() != "form") return null;
 	
 	for (var e = 0, el = form.elements.length; e < el; e++) {
-		n = form.elements[e];
+		var n = form.elements[e];
 		switch (n.nodeName.toLowerCase()) {
 			case "textarea":
 				var notDirty = tinyMCE.get(n.id).getContent();
