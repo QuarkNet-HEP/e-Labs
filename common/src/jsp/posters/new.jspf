@@ -10,8 +10,6 @@
 <%@ page import="org.owasp.validator.html.*" %>
 
 <script type="text/javascript" src="../include/tiny_mce/jquery.tinymce.js"></script>
-<script src="formchanges.js"></script>
-
 <script>
 	$().ready(function() {
 		$('textarea.tinymce').tinymce({
@@ -68,7 +66,6 @@
 	String plotDirURL = user.getDirURL("plots");
 	request.setAttribute("plotDirURL", plotDirURL);
 	String templateDir = user.getDir("templates");
-	String showPoster = request.getParameter("showPoster");
 
 	if ("Make Poster".equals(reqType) || "View Poster".equals(reqType) || "Save Changes".equals(reqType)) {
 	    String val = "", name = ""; 
@@ -269,11 +266,11 @@
 		}
 	</script>
 
-	<form id="posterForm" method="post">
+	<form method="post">
            <table width="550">
                 <tr>
                 	<td valign="top" align="right">Poster File Name:<br>(e.g.,poster_lifetime)</td>
-                	<td valign="top" align="left"><e:trinput type="text" name="posterName" id="posterName"/></td>
+                	<td valign="top" align="left"><e:trinput type="text" name="posterName"/></td>
                 </tr>
       
 <%
@@ -313,12 +310,12 @@
                     		<c:choose>
                     			<c:when test="${type == 'PARA'}">
                     				<td align="left">
-                    					<textarea name="${type}:${name}" id="${type}:${name}" rows="6" cols="80" class="tinymce">${tvalue}</textarea>
+                    					<textarea name="${type}:${name}" rows="6" cols="80" class="tinymce">${tvalue}</textarea>
                     				</td>
                     			</c:when>
                     			<c:when test="${type == 'WORDS'}">
                     				<td align="left">
-                    					<input size="50" maxlength="1000" name="${type}:${name}" id="${type}:${name}"
+                    					<input size="50" maxlength="1000" name="${type}:${name}"
                     						value="${tvalue}"/>
                     				</td>
                     			</c:when>
@@ -327,7 +324,7 @@
                     					<c:if test="${name == 'FIGURE1'}">
                     						<div id="image-preview" style="display: none; position: fixed; left: 1%; bottom: 4%;">image-preview</div>
                     					</c:if>
-                    					<select name="${type}:${name}" id="${type}:${name}">
+                    					<select name="${type}:${name}">
                     						<option><%= selectDefault %></option>
                     						<c:forEach items="${images}" var="image">
                     							<c:choose>
@@ -354,8 +351,7 @@
 	   %>
 		<tr>
 			<td colspan="2" align="center">
-			    <input type="hidden" name="showPoster" id="showPoster" value="" />
-	            <input type="submit" name="button" id="submitButton" value="${edit?'Save Changes':'Make Poster'}"/>
+	            <input type="submit" name="button" value="${edit?'Save Changes':'Make Poster'}"/>
     	        <font size="-1">To see poster, don't block popups! Otherwise click <b>Display Poster</b> below.</font>
 			</td>
 		</tr>
@@ -387,13 +383,10 @@ if ("Make Poster".equals(reqType) || "Save Changes".equals(reqType)) {
             pw.close();
             // Add metadata to LFN for data file
 
-            if (!showPoster.equals("NO"))
-            {
-            	String posterURL = "../posters/display.jsp?name=" + dfile;
-				%> 
-					<e:popup href="<%= posterURL %>" target="_blank" width="700" height="900" now="true"/>
-				<%
-            }
+            String posterURL = "../posters/display.jsp?name=" + dfile;
+			%> 
+				<e:popup href="<%= posterURL %>" target="_blank" width="700" height="900" now="true"/>
+			<%
         }
         catch (Exception e) { 
             out.println(e.getMessage()); 
@@ -408,60 +401,3 @@ if ("Make Poster".equals(reqType) || "Save Changes".equals(reqType)) {
 <%
 }
 %>
-<script>
-//EPeronja-02/15/2013: Bug499- Implement autosave for posters
-// 		   There is a timer firing a detect changes routine every minute
-//		   If there has been a change in the form, then it will proceed to autosave
-//		   These functions are in formchanges.js
-var form = document.getElementById("posterForm");
-
-function DynamicDiv() {
-	var	dynDiv = document.createElement('div');
-	dynDiv.setAttribute('id', 'dynDiv');
-	dynDiv.style.position = "fixed";
-	dynDiv.style.height = "40px";
-	dynDiv.style.width = "150px";
-	dynDiv.style.top = "105px";
-	dynDiv.style.border = "1px solid #000";
-	dynDiv.style.background = 'yellow';
-	dynDiv.innerHTML = "Looking for changes to autosave...";
-	document.body.appendChild(dynDiv);
-}
-function RemoveDiv() {
-	var dynDiv = document.getElementById("dynDiv");
-	if (dynDiv) {
-		document.body.removeChild(dynDiv);
-	}
-}
-
-function DetectChanges() {
-	//console.debug("detecting changes and trying to autosave...")
-	var f = FormChanges(form);
-	//console.debug(f);
-	if (f.length > 0) {
-		var posterName = document.getElementById("posterName").value;
-		var posterTitle = document.getElementById("WORDS:TITLE").value ;
-		if (posterName != '' && posterName != null) {
-			if (posterTitle != '' && posterTitle != null) {
-				var showPoster = document.getElementById('showPoster');
-				showPoster.value = "NO";
-				document.getElementById('submitButton').click();
-			}
-		}
-	}
-}
-
-//5 minutes
-var repeatTime =  300 * 1000; 
-function UpdatePoster(){
-	DynamicDiv();
-	DetectChanges();
- 	SetNotDirty();	
- 	setTimeout(UpdatePoster, repeatTime); // start call over again
- 	setTimeout(RemoveDiv, repeatTime + 10000);
-}
-
-setTimeout(UpdatePoster, repeatTime);
-setTimeout(RemoveDiv, repeatTime + 10000);
-
-</script>
