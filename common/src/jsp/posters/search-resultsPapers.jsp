@@ -8,7 +8,7 @@ Search Results
 <c:if test="${!empty searchResults}">
 	You can sort the results by clicking on the header. 
 	
-	<script type="text/javascript" src="../include/jquery/js/jquery-1.4.3.min.js"></script>
+	<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>
 	<script type="text/javascript" src="../include/jquery/js/jquery.tablesorter.min.js"></script>
 	<link type="text/css" rel="stylesheet" href="../include/jquery/css/blue/style.css" />
 	<script type="text/javascript">
