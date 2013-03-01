@@ -436,22 +436,15 @@ function RemoveDiv() {
 
 function DetectChanges() {
 	//console.debug("detecting changes and trying to autosave...")
-	alert("line 1");
 	var f = FormChanges(form);
-	alert("line 2" + f);
 	//console.debug(f);
 	if (f.length > 0) {
-		alert("line 3");
 		var posterNameVar = document.getElementById("posterName").text;
-		alert("line 4 " + posterNameVar);
 		var posterTitleVar = document.getElementById("WORDS:TITLE").value ;
-		alert("line 5 " + posterTitleVar);
 		if (posterNameVar != '' && posterNameVar != null) {
 			if (posterTitleVar != '' && posterTitleVar != null) {
 				var showPosterVar = document.getElementById('showPoster');
-				alert("line 6 " + showPosterVar);
 				showPosterVar.value = "NO";
-				alert("line 7 " + showPosterVar);
 				document.getElementById('submitButton').click();
 			}
 		}
@@ -462,7 +455,6 @@ function DetectChanges() {
 var repeatTime =  10 * 1000; 
 function UpdatePoster(){
 	DynamicDiv();
-	alert("it passes dynamic div");
 	DetectChanges();
  	SetNotDirty();	
  	setTimeout(UpdatePoster, repeatTime); // start call over again
