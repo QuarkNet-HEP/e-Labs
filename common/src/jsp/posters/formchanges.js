@@ -30,6 +30,15 @@ function FormChanges(form) {
 				if (changedFlag && !item.multiple) changedFlag = (def != item.selectedIndex);
 				break;
 			case "textarea":
+				alert("it gets here 1");
+				if (tinyMCE.get(item.id).getContent() == '') {
+					alert("it gets here 2");
+					changedFlag = false;
+				} else {
+					alert("it gets here 3");
+					changedFlag = tinyMCE.getInstanceById(item.id).isDirty;
+				}
+				break;				
 			case "input":
 				changedFlag = (item.value != item.defaultValue);
 			    break;
