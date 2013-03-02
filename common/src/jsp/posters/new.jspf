@@ -452,7 +452,7 @@ function DetectChanges() {
 }
 
 //5 minutes
-var repeatTime =  10 * 1000; 
+var repeatTime =  300 * 1000; 
 function UpdatePoster(){
 	DynamicDiv();
 	DetectChanges();
