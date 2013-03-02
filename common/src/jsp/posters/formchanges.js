@@ -6,8 +6,6 @@
  * An empty array indicates no changes have been made.
  * NULL indicates that the form does not exist.
  * 
- * SetNotDirty()
- * Resets dirty flag for tinyMCE textareas
  * 
  */
 function FormChanges(form) {
@@ -32,12 +30,15 @@ function FormChanges(form) {
 				if (changedFlag && !item.multiple) changedFlag = (def != item.selectedIndex);
 				break;
 			case "textarea":
-				if (tinyMCE.get(item.id).getContent().trim() == '') {
+				alert("it gets here 1");
+				if (tinyMCE.get(item.id).getContent() == '') {
+					alert("it gets here 2");
 					changedFlag = false;
 				} else {
+					alert("it gets here 3");
 					changedFlag = tinyMCE.getInstanceById(item.id).isDirty;
 				}
-				break;
+				break;				
 			case "input":
 				changedFlag = (item.value != item.defaultValue);
 			    break;
@@ -48,21 +49,4 @@ function FormChanges(form) {
 		if (changedFlag) changed.push(item);
 	}
 	return changed;
-}
-
-//EPeronja-02/15/2013: Bug499- tinyMCE textareas are different from regular textareas
-function SetNotDirty() {
-	// get form
-	if (typeof form == "string") form = document.getElementById(form);
-	if (!form || !form.nodeName || form.nodeName.toLowerCase() != "form") return null;
-	
-	for (var e = 0, el = form.elements.length; e < el; e++) {
-		n = form.elements[e];
-		switch (n.nodeName.toLowerCase()) {
-			case "textarea":
-				var notDirty = tinyMCE.get(n.id).getContent();
-				notDirty.isNotDirty = true;
-				break;
-		}
-	}
 }

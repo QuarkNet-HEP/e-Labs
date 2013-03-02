@@ -10,7 +10,7 @@
 <%@ page import="org.owasp.validator.html.*" %>
 
 <script type="text/javascript" src="../include/tiny_mce/jquery.tinymce.js"></script>
-<script src="formchanges.js"></script>
+<script type="text/javascript" src="formchanges.js"></script>
 
 <script>
 	$().ready(function() {
@@ -68,7 +68,7 @@
 	String plotDirURL = user.getDirURL("plots");
 	request.setAttribute("plotDirURL", plotDirURL);
 	String templateDir = user.getDir("templates");
-	String showPoster = request.getParameter("showPoster");
+	String showPosterVar = request.getParameter("showPoster");
 
 	if ("Make Poster".equals(reqType) || "View Poster".equals(reqType) || "Save Changes".equals(reqType)) {
 	    String val = "", name = ""; 
@@ -387,7 +387,7 @@ if ("Make Poster".equals(reqType) || "Save Changes".equals(reqType)) {
             pw.close();
             // Add metadata to LFN for data file
 
-            if (!showPoster.equals("NO"))
+            if (!showPosterVar.equals("NO"))
             {
             	String posterURL = "../posters/display.jsp?name=" + dfile;
 				%> 
@@ -439,12 +439,12 @@ function DetectChanges() {
 	var f = FormChanges(form);
 	//console.debug(f);
 	if (f.length > 0) {
-		var posterName = document.getElementById("posterName").value;
-		var posterTitle = document.getElementById("WORDS:TITLE").value ;
-		if (posterName != '' && posterName != null) {
-			if (posterTitle != '' && posterTitle != null) {
-				var showPoster = document.getElementById('showPoster');
-				showPoster.value = "NO";
+		var posterNameVar = document.getElementById("posterName").value;
+		var posterTitleVar = document.getElementById("WORDS:TITLE").value ;
+		if (posterNameVar != '' && posterNameVar != null) {
+			if (posterTitleVar != '' && posterTitleVar != null) {
+				var showPosterVar = document.getElementById('showPoster');
+				showPosterVar.value = "NO";
 				document.getElementById('submitButton').click();
 			}
 		}
@@ -456,7 +456,6 @@ var repeatTime =  300 * 1000;
 function UpdatePoster(){
 	DynamicDiv();
 	DetectChanges();
- 	SetNotDirty();	
  	setTimeout(UpdatePoster, repeatTime); // start call over again
  	setTimeout(RemoveDiv, repeatTime + 10000);
 }
