@@ -379,20 +379,23 @@ public class Geometry {
         
         // Update the stacked state of all files that use this geo entry
         DateFormat fmt = new SimpleDateFormat("MM/dd/yyyy HH:mm:SS");
-
+        
         And and = new And();
         and.add(new Equals("type", "split"));
-        and.add(new Equals("detectorid", geoEntry.getDetectorID()));
+        String detid = String.valueOf(geoEntry.getDetectorID());
+        and.add(new Equals("detectorid", detid));
+		Date startDate = geoEntry.getDate(); 
+		
         if (endDate != null) {
-            and.add(new Between("startdate", fmt.format(geoEntry.getDate()),
-                    fmt.format(endDate)));
+            and.add(new Between("startdate", startDate, endDate));
         }
         else {
-            and.add(new GreaterThan("startdate", fmt.format(geoEntry.getDate())));
+            and.add(new GreaterThan("startdate", startDate));
         }
-
+       
+        
         ResultSet rs = dcp.runQueryNoMetadata(and);
-
+        
         boolean stacked = geoEntry.getStackedState().equals("1");
 
         boolean updated = true;
