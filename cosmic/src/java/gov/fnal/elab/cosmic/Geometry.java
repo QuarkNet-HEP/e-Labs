@@ -378,14 +378,18 @@ public class Geometry {
         }
         
         // Update the stacked state of all files that use this geo entry
-        DateFormat fmt = new SimpleDateFormat("MM/dd/yyyy HH:mm:SS");
+        //DateFormat fmt = new SimpleDateFormat("MM/dd/yyyy HH:mm:SS");
         
         And and = new And();
         and.add(new Equals("type", "split"));
         String detid = String.valueOf(geoEntry.getDetectorID());
         and.add(new Equals("detectorid", detid));
 		Date startDate = geoEntry.getDate(); 
-		
+		//EPeronja - 03/04/2013: Bug364/383- Geometry changes
+		//				were not updating database.
+		//				Problem was that dates were sent as string parameters 
+		//				with DateFormat. They should be sent as 'dates' for the
+		//				query to work.
         if (endDate != null) {
             and.add(new Between("startdate", startDate, endDate));
         }
