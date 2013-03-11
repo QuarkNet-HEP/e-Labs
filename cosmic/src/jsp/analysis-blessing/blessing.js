@@ -104,7 +104,7 @@ redrawPlotY = function(newY, chart, type)
 			break;		
 	}
 }
-resetPlotY = function(objectIdYMin, objectIdYMax)
+resetPlotY = function(chart, objectIdYMin, objectIdYMax)
 {
 	var inputYMinObject = document.getElementById(objectIdYMin);
 	inputYMinObject.value = "";
