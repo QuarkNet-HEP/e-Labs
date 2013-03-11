@@ -56,7 +56,7 @@ public class BlessRegister {
 		if (tr.equals("Unknown") && ch.equals("Unknown")) {
 			value = register;
 		} else {
-		value = "Trigger: " + tr + "<br />Channel(s):" + ch;
+		value = "Trigger: " + tr + " - Channel(s):" + ch;
 		}
 		return value;
 	}

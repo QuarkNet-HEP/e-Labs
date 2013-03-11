@@ -83,8 +83,7 @@
 	File ecFile = new File((String) analysis.getParameter("eventCandidates"));
 	EventCandidates ec = EventCandidates.read(ecFile, csc, dir, eventStart, eventNum);
 	Collection rows = ec.getRows();
-	request.setAttribute("eventCandidates", (String) analysis.getParameter("eventCandidates"));
-	request.setAttribute("eventDir", dir);
+	request.setAttribute("eventCandidates", ec);
 	request.setAttribute("rows", rows);
 	request.setAttribute("eventNum", ec.getEventNum());
 	request.setAttribute("crtEventRow", ec.getCurrentRow());
