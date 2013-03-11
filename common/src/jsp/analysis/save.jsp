@@ -47,6 +47,10 @@
 					//file extension
 					String srcFileType = request.getParameter("srcFileType");
 					String outputDir = run2.getOutputDir();
+					//event candidates
+					String eventCandidates = request.getParameter("eventCandidates");
+					File ecFile = new File((String) eventCandidates);
+					String eventDir = request.getParameter("eventDir");
 					
 					if ( userFilename == null || userFilename.equals("") ) {
 					    throw new ElabJspException("You forgot to specify the name of your file. Please close this window and enter it.");
@@ -61,6 +65,7 @@
 				    String dstFile = "savedimage-" + groupName + "-" + date + "." + srcFileType;
 				    String dstThumb = "savedimage-" + groupName + "-" + date + "_thm." + srcFileType;
 				    String provenanceFile = "savedimage-" + groupName + "-" + date + "_provenance." + srcFileType;
+					String destEcFile = "savedfile-" + groupName + "-" + date;
 					
 				    File f = new File(plotDir, dstFile);
 				    if (f.exists()) {
@@ -71,7 +76,8 @@
 				
 					ElabUtil.copyFile(outputDir, srcFile, plotDir, dstFile);
 					ElabUtil.copyFile(outputDir, srcThumb, plotDir, dstThumb);
-					                
+				    ElabUtil.copyfile(eventDir, ecFile, plotDir, destEcFile);
+				    
 			        //copy the provenance image to the user's plot directory
 			        String provenanceDir = run.getOutputDir();
 					
@@ -109,6 +115,7 @@
 					meta.add("thumbnail string " + dstThumb);
 					
 					meta.add("dvname string " + newDVName);
+					meta.add("ecfile string " + destEcFile);
 					
 					//additional metadata should be passed in the metadata parameter (of course this can have multiple values)
 					String[] metadata = request.getParameterValues("metadata");

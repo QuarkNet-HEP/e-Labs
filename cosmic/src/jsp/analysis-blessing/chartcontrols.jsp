@@ -27,6 +27,7 @@
 			Y axis scale: </td>
 			<td style="background-color: lightGray">Min Y: <input type="text" id="<%= request.getParameter("chartName")%>MinY" /><input type="button" value="Set" id="<%= request.getParameter("chartName")%>YMinButton" onclick='javascript:redrawPlotY(<%= request.getParameter("chartName")%>MinY.value, "<%= request.getParameter("chartName")%>", "min");' /></td>
 			<td style="background-color: lightGray">Max Y: <input type="text" id="<%= request.getParameter("chartName")%>MaxY" /><input type="button" value="Set" id="<%= request.getParameter("chartName")%>YMaxButton" onclick='javascript:redrawPlotY(<%= request.getParameter("chartName")%>MaxY.value, "<%= request.getParameter("chartName")%>", "max");' /></td>
+			<td style="background-color: lightGray"><input type="button" value="Reset" id="<%= request.getParameter("chartName")%>ResetButton" onclick='javascript:resetPlotY("<%=request.getParameter("chartName")%>", "<%= request.getParameter("chartName")%>MinY", "<%= request.getParameter("chartName")%>MaxY");' /></td>
 		</tr>
 	</table>
 </div>		
