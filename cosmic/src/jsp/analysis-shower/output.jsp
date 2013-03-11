@@ -82,7 +82,8 @@
 	
 	File ecFile = new File((String) analysis.getParameter("eventCandidates"));
 	EventCandidates ec = EventCandidates.read(ecFile, csc, dir, eventStart, eventNum);
-	Collection rows = ec.getRows(); 
+	Collection rows = ec.getRows();
+	request.setAttribute("eventCandidates", ec);
 	request.setAttribute("rows", rows);
 	request.setAttribute("eventNum", ec.getEventNum());
 	request.setAttribute("crtEventRow", ec.getCurrentRow());
@@ -118,7 +119,7 @@
 				<c:forEach items="${rows}" begin="${start}" end="${end}" var="row" varStatus="li">
 					<tr bgcolor="${row.eventNum == eventNum ? '#aaaafc' : (li.count % 2 == 0 ? '#e7eefc' : '#ffffff')}">
 						<td>
-							<a href="../analysis-shower/event-choice.jsp?id=${param.showerId}&eventNum=${row.eventNum}&submit=true">${row.dateF}</a>
+							<a href="../analysis-shower/event-choice.jsp?id=${param.showerId}&eventNum=${row.eventNum}&eventCandidates=${eventCandidates}&submit=true">${row.dateF}</a>
 						</td>
 						<td>
 							${row.eventCoincidence}
@@ -140,7 +141,7 @@
 			<p>
 				Click on image for a larger view
 			</p>
-			<e:popup href="../analysis-shower/show-plot.jsp?showerId=${showerResults.id}&id=${results.id}" target="showerPopup" width="650" height="750">
+			<e:popup href="../analysis-shower/show-plot.jsp?showerId=${showerResults.id}&id=${results.id}&eventCandidates=${eventCandidates}" target="showerPopup" width="650" height="750">
 				<img src="${results.outputDirURL}/plot_thm.png"/>
 			</e:popup>
 			<p>
@@ -155,25 +156,6 @@
 </table>
 <p>
 	Analysis run time: ${showerResults.formattedRunTime}; estimated: ${showerResults.formattedEstimatedRunTime}
-</p>
-<p>
-<form name="saveAllForm" action="save-all-events.jsp" method="post" target="saveAllWindow" onsubmit="window.open('',this.target,'width=300,height=100,top=200,left=500 resizable=1');" align="center"> 
-	<input type="hidden" name="showerId" value="${showerResults.id}"/>
-	<input type="hidden" name="resultsId" value="${results.id}" />
-	<e:commonMetadataToSave rawData="${showerResults.analysis.parameters['rawData']}"/>
-	<e:creationDateMetadata/>
-	<input type="hidden" name="metadata" value="transformation string Quarknet.Cosmic::ShowerStudy"/>
-	<input type="hidden" name="metadata" value="study string shower"/>
-	<input type="hidden" name="metadata" value="type string plot"/>
-	<input type="hidden" name="metadata" value="detectorcoincidence int ${showerResults.analysis.parameters['detectorCoincidence']}"/>
-	<input type="hidden" name="metadata" value="eventcoincidence int ${showerResults.analysis.parameters['eventCoincidence']}"/>
-	<input type="hidden" name="metadata" value="eventnum int ${showerResults.analysis.parameters['eventNum']}"/>
-	<input type="hidden" name="metadata" value="gate int ${showerResults.analysis.parameters['gate']}"/>
-	<input type="hidden" name="metadata" value="radius int -1"/>
-	<input type="hidden" name="metadata" value="title string ${showerResults.analysis.parameters['plot_title']}"/>
-	<input type="hidden" name="metadata" value="caption string ${showerResults.analysis.parameters['plot_caption']}"/>
-	<input type="submit" name="saveAllEvents" id="saveAllEvents" value="Save All Events" />
-</form>
 </p>
 <p>
 	Show <e:popup href="../analysis/show-dir.jsp?id=${showerResults.id}" target="analysisdir" 

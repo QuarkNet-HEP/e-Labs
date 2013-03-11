@@ -19,6 +19,7 @@
 		<input type="hidden" name="srcFile" value="plot.png"/>
 		<input type="hidden" name="srcThumb" value="plot_thm.png"/>
 		<input type="hidden" name="srcFileType" value="png"/>
+		<input type="hidden" name="eventCandidates" values="${eventCandidates}" />
 		<input type="hidden" name="id" value="${showerResults.id}"/>
 		<input type="hidden" name="rundirid" value="${results.id}"/>
 		<input type="text" name="name"  size="20" maxlength="30"/>.png
