@@ -109,7 +109,10 @@ request.setAttribute("CR0", br0.getRegisterValue());
 					<e:popup href="../references/Reference_bless_data.html" target="Data Blessing" width="900" height="800">Data blessing documentation</e:popup>
 				</div>
 				<h2>Control Register</h2>
-				CR0: <strong><%= entry.getTupleValue("ConReg0") != null? entry.getTupleValue("ConReg0") : "Unknown" %> - ${CR0}</strong><br /><br />
+				<table width="100%">
+				    <tr><td width="20px">CR0: </td><td><strong><%= entry.getTupleValue("ConReg0") != null? entry.getTupleValue("ConReg0") : "Unknown" %></strong></td></tr>
+				    <tr><td width="20px"> </td><td><strong>${CR0}</strong></td></tr>
+				</table>
 				<div style="text-align: center;"><strong>Owners of data files can bless data based on their interpretation of these charts</strong></p></div>
 				<% if (owner) { %>							
 				<table witdh="100%"  style="border: 1px solid black;">
@@ -139,6 +142,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 						<tr>
 							<td>Custom X-axes scale: </td>
 							<td style="background-color: lightGray">Max X: <input type="text" id="maxX" /><input type="button" value="Set" id="maxXButton" onclick='javascript:redrawPlotX(maxX.value);' /></td>
+							<td style="background-color: lightGray"><input type="button" value="Reset" id="resetXButton" onclick='javascript:resetPlotX(maxX);' /></td>
 						</tr>
 					</table>
 				</div>

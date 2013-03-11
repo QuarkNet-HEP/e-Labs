@@ -10,6 +10,13 @@ var channel1data, channel2data, channel3data, channel4data;
 var triggerdata, satellitedata, voltagedata, temperaturedata, pressuredata
 var onOffPlot = null;
 var channelRateXLabel = 'Channel Rate (Hz)';
+var originalXMax;
+var originalChanYMin, originalChanYMax;
+var originalTrigYMin, originalTrigYMax;
+var originalSatYMin, originalSatYMax;
+var originalVoltYMin, originalVoltYMax;
+var originalTempYMin, originalTempYMax;
+var originalPressYMin, originalPressYMax;
 
 //EPeronja-01/22/2013: Bug472- function to actually turn series on/off, called from series 'href' -- see seriesLabelFormatter code below
 togglePlot = function(seriesIdx)
@@ -23,7 +30,19 @@ togglePlot = function(seriesIdx)
 //EPeronja-01/23/2013: Bug472- added next functions to redraw the axes based on user input, called from compare1.jsp
 redrawPlotX = function(newmax)
 {
-	channelOptions.xaxis.max = triggerOptions.xaxis.max = satelliteOptions.xaxis.max = voltageOptions.xaxis.max = temperatureOptions.xaxis.max = pressureOptions.xaxis.max = newmax;
+	chanOptions.xaxis.max = trigOptions.xaxis.max = satOptions.xaxis.max = voltOptions.xaxis.max = tempOptions.xaxis.max = pressOptions.xaxis.max = newmax;
+	onOffPlot = $.plot($("#channelChart"), [channel1data, channel2data, channel3data, channel4data ], $.extend({}, chanOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel} ]}));
+	$.plot($("#triggerChart"), [triggerdata],$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: triggerdata.ylabel + ' (' + triggerdata.unit + ')'} ]}));
+	$.plot($("#satChart"), [satellitedata],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: satellitedata.ylabel + ' (' + satellitedata.unit + ')'} ]}));
+	$.plot($("#voltChart"), [voltagedata],$.extend({}, voltOptions, { yaxes: [ {position: 'left', axisLabel: voltagedata.ylabel + ' (' + voltagedata.unit + ')'} ]}));
+	$.plot($("#tempChart"), [temperaturedata],$.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: temperaturedata.ylabel + ' (' + temperaturedata.unit + ')'} ]}));
+	$.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: pressuredata.ylabel + ' (' + pressuredata.unit + ')'} ]}));		
+}
+resetPlotX = function(objectIdXMax)
+{
+	var inputObject = document.getElementById(objectIdXMax);
+	inputObject.value = "";
+	chanOptions.xaxis.max = trigOptions.xaxis.max = satOptions.xaxis.max = voltOptions.xaxis.max = tempOptions.xaxis.max = pressOptions.xaxis.max = originalXMax;
 	onOffPlot = $.plot($("#channelChart"), [channel1data, channel2data, channel3data, channel4data ], $.extend({}, chanOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel} ]}));
 	$.plot($("#triggerChart"), [triggerdata],$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: triggerdata.ylabel + ' (' + triggerdata.unit + ')'} ]}));
 	$.plot($("#satChart"), [satellitedata],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: satellitedata.ylabel + ' (' + satellitedata.unit + ')'} ]}));
@@ -37,50 +56,90 @@ redrawPlotY = function(newY, chart, type)
 	switch (chart) {
 		case ("channel"):
 			if (type == "min") {
-				channelOptions.yaxis.min = newY;
+				chanOptions.yaxis.min = newY;
 			} else {
-				channelOptions.yaxis.max = newY;
+				chanOptions.yaxis.max = newY;
 			}
 			onOffPlot = $.plot($("#channelChart"), [channel1data, channel2data, channel3data, channel4data ], $.extend({}, chanOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel} ]}));
 	    	break;
 		case ("trigger"):
 			if (type == "min") {
-				triggerOptions.yaxis.min = newY;
+				trigOptions.yaxis.min = newY;
 			} else {
-				triggerOptions.yaxis.max = newY;
+				trigOptions.yaxis.max = newY;
 			}
 			$.plot($("#triggerChart"), [triggerdata],$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: triggerdata.ylabel + ' (' + triggerdata.unit + ')'} ]}));
 			break;
 		case ("satellite"):
 			if (type == "min") {
-				satelliteOptions.yaxis.min = newY;
+				satOptions.yaxis.min = newY;
 			} else {
-				satelliteOptions.yaxis.max = newY;
+				satOptions.yaxis.max = newY;
 			}
 			$.plot($("#satChart"), [satellitedata],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: satellitedata.ylabel + ' (' + satellitedata.unit + ')'} ]}));
-		break;
+			break;
 		case ("voltage"):
 			if (type == "min") {			
-				voltageOptions.yaxis.min = newY;
+				voltOptions.yaxis.min = newY;
 			} else {
-				voltageOptions.yaxis.max = newY;
+				voltOptions.yaxis.max = newY;
 			}
 			$.plot($("#voltChart"), [voltagedata],$.extend({}, voltOptions, { yaxes: [ {position: 'left', axisLabel: voltagedata.ylabel + ' (' + voltagedata.unit + ')'} ]}));
-		break;
+			break;
 		case ("temperature"):
 			if (type == "min") {			
-				temperatureOptions.yaxis.min = newY;
+				tempOptions.yaxis.min = newY;
 			} else {
-				temperatureOptions.yaxis.max = newY;
+				tempOptions.yaxis.max = newY;
 			}
 			$.plot($("#tempChart"), [temperaturedata],$.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: temperaturedata.ylabel + ' (' + temperaturedata.unit + ')'} ]}));
-		break;
+			break;
 		case ("pressure"):
 			if (type == "min") {
-				pressureOptions.yaxis.min = newY;
+				presOptions.yaxis.min = newY;
 			} else {
-				pressureOptions.yaxis.max = newY;
+				presOptions.yaxis.max = newY;
 			}
+			$.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: pressuredata.ylabel + ' (' + pressuredata.unit + ')'} ]}));
+			break;		
+	}
+}
+resetPlotY = function(objectIdYMin, objectIdYMax)
+{
+	var inputYMinObject = document.getElementById(objectIdYMin);
+	inputYMinObject.value = "";
+	var inputYMaxObject = document.getElementById(objectIdYMax);
+	inputYMaxObject.value = "";
+	
+	switch (chart) {
+		case ("channel"):
+			chanOptions.yaxis.min = originalChanYMin;
+			chanOptions.yaxis.max = originalChanYMax;
+			onOffPlot = $.plot($("#channelChart"), [channel1data, channel2data, channel3data, channel4data ], $.extend({}, chanOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel} ]}));
+	    	break;
+		case ("trigger"):
+			trigOptions.yaxis.min = originalTrigYMin;
+			trigOptions.yaxis.max = originalTrigYMax;
+			$.plot($("#triggerChart"), [triggerdata],$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: triggerdata.ylabel + ' (' + triggerdata.unit + ')'} ]}));
+			break;
+		case ("satellite"):
+			satOptions.yaxis.min = originalSatYMin;
+			satOptions.yaxis.max = originalSatYMax;
+			$.plot($("#satChart"), [satellitedata],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: satellitedata.ylabel + ' (' + satellitedata.unit + ')'} ]}));
+			break;
+		case ("voltage"):
+			voltOptions.yaxis.min = originalVoltYMin;
+			voltOptions.yaxis.max = originalVoltYMax;
+			$.plot($("#voltChart"), [voltagedata],$.extend({}, voltOptions, { yaxes: [ {position: 'left', axisLabel: voltagedata.ylabel + ' (' + voltagedata.unit + ')'} ]}));
+			break;
+		case ("temperature"):
+			tempOptions.yaxis.min = originalTempYMin;
+			tempOptions.yaxis.max = originalTempYMax;
+			$.plot($("#tempChart"), [temperaturedata],$.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: temperaturedata.ylabel + ' (' + temperaturedata.unit + ')'} ]}));
+			break;
+		case ("pressure"):
+			presOptions.yaxis.min = originalPressYMin;
+			presOptions.yaxis.max = originalPressYMax;
 			$.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: pressuredata.ylabel + ' (' + pressuredata.unit + ')'} ]}));
 		break;		
 	}
@@ -248,6 +307,19 @@ function onDataLoad1(json) {
 	voltagedata = json.voltage;
 	temperaturedata = json.temperature;
 	pressuredata = json.pressure;
+	originalXMax = chanOptions.xaxes.max;
+	originalChanYMin = chanOptions.yaxes.min;
+	originalChanYMax = chanOptions.yaxes.max;
+	originalTrigYMin = trigOptions.yaxes.min;
+	originalTrigYMax = trigOptions.yaxes.max;
+	originalSatYMin = satOptions.yaxes.min;
+	originalSatYMax = satOptions.yaxes.max;
+	originalVoltYMin = voltOptions.yaxes.min;
+	originalVoltYMax = voltOptions.yaxes.max;
+	originalTempYMin = tempOptions.yaxes.min;
+	originalTempYMax = tempOptions.yaxes.max;
+	originalPressYMin = pressOptions.yaxes.min;
+	originalPressYMax = pressOptions.yaxes.max;
 	
 	onOffPlot = $.plot($("#channelChart"), [channel1data, channel2data, channel3data, channel4data ], $.extend({}, chanOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel } ]}));
 	$.plot($("#triggerChart"), [json.trigger],$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: json.trigger.ylabel + ' (' + json.trigger.unit + ')'} ]}));
