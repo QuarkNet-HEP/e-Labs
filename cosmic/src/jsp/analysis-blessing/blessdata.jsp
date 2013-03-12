@@ -5,6 +5,7 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
+<!-- //EPeronja-02/02/2013: Bug472- pop up called by compare1.jsp to bless/unbless data -->
 <script type="text/javascript">
 	window.onunload = function() {
 	    if (window.opener && !window.opener.closed) {
@@ -18,7 +19,7 @@
 		<title>Blessing/Unblessing data...</title>
 		<meta http-equiv=Content-Type content="text/html; charset=iso-8859-1">
 	</head>
-	<body>
+	<body style="background-color: lightGray;">
 		<table width="100%" cellpadding="0" cellspacing="0" align="center">
 			<%	
 			String blessed = request.getParameter("blessed");
@@ -32,7 +33,7 @@
 			dcp.insert(entry);
 
 			%>
-			<TR><TD>You have successfully <%= newvalue %> your data.<TD></TR>
+			<tr><td>You have successfully <%= newvalue %> your data.</td></tr>
 		</table>			
 		<a href=# onclick="window.close();">Close</A>
 	</body>

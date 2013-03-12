@@ -61,6 +61,7 @@ public class DataTools {
         KEYS.put("state", 9);
         KEYS.put("enddate", 10);
         KEYS.put("detectorid", 11);
+        //EPeronja-02/04/2013: Bug472- added to retrieve new attributes 
         KEYS.put("blessfile", 12);
         KEYS.put("ConReg0", 13);
         KEYS.put("ConReg1", 14);
@@ -80,6 +81,7 @@ public class DataTools {
     public static final int STATE = 9;
     public static final int ENDDATE = 10;
     public static final int DETECTORID = 11; 
+    //EPeronja-02/04/2013: Bug472- added to retrieve new attributes 
     public static final int BLESSFILE = 12;
     public static final int CONREG0 = 13;
     public static final int CONREG1 = 14;
@@ -181,7 +183,7 @@ public class DataTools {
             	System.out.println("WARNING: File " + e.getLFN() + " has a malformed detector ID. Skipping.");
             	continue;
             }
-            
+            //EPeronja-02/04/2013: Bug472- added to set new attributes         
             try {
             	file.setBlessFile((String) data[BLESSFILE]);
             } catch (Exception ex) {
