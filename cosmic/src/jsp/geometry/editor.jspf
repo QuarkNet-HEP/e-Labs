@@ -83,14 +83,14 @@
             <table border="0" cellspacing="3">
                 <tr valign="top">
                     <td>
-                        Latitude: <e:trinput type="text" name="latitude" size="11" disabled="${ro}" />
+                        Latitude: <e:trinput type="text" name="latitude" size="15" disabled="${ro}" />
                         <br>
                         <c:if test="${!ro}">
                         	<span style="font-size: 90%">e.g., 47:39.2347 N</font>
                         </c:if>
                     </td>
                     <td>
-                        Longitude: <e:trinput type="text" name="longitude" size="11" disabled="${ro}" />
+                        Longitude: <e:trinput type="text" name="longitude" size="15" disabled="${ro}" />
                         <br>
                         <c:if test="${!ro}">
                         	<span style="font-size: 90%">e.g., 122:18.68 W</span>
