@@ -63,19 +63,22 @@ public class BlessRegister {
 	
 	private String getValue(int charposition, NavigableMap<String, String> map) {
 		String value = "";
-		if (register.equals("Unknown")) {
-			value = register;
-		} else {
-			String tr = String.valueOf(register.charAt(charposition));
-			for (NavigableMap.Entry<String, String> entry: map.entrySet())
-			{
-				String key = entry.getKey();
-				if (key.equals(tr)) {
-					value = (String) entry.getValue();
+		if (register != null) {
+			if (register.equals("Unknown")) {
+				value = register;
+			} else {
+				if (register.length() > 0) {
+					String tr = String.valueOf(register.charAt(charposition));
+					for (NavigableMap.Entry<String, String> entry: map.entrySet())
+					{
+						String key = entry.getKey();
+						if (key.equals(tr)) {
+							value = (String) entry.getValue();
+						}
+					}
 				}
 			}
 		}
-		
 		return value;
 	}	
 }
