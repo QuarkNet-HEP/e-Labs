@@ -31,6 +31,8 @@
 	request.setAttribute("study", study);
 	request.setAttribute("provenance", entry.getTupleValue("provenance"));
 	request.setAttribute("eventCandidates", entry.getTupleValue("eventCandidates"));
+	request.setAttribute("eventNum", entry.getTupleValue("eventNum"));
+	request.setAttribute("eventStart", entry.getTupleValue("eventStart"));
 	request.setAttribute("dvName", dvName);
 	request.setAttribute("url", url);
 	%> 

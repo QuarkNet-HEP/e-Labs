@@ -47,7 +47,9 @@
 					//file extension
 					String srcFileType = request.getParameter("srcFileType");
 					String outputDir = run2.getOutputDir();
-                    String srcEcFile = "eventCandidates";
+					String eventNum = request.getParameter("eventNum");
+					String eventStart = request.getParameter("eventStart");
+                    String srcEcFile = request.getParameter("eventCandidates");
                     String ecDir = request.getParameter("eventDir");
                     ecDir = ecDir.substring(0, ecDir.indexOf("eventCandidates"));
                     
@@ -114,6 +116,8 @@
 					meta.add("provenance string " + provenanceFile);
 					meta.add("thumbnail string " + dstThumb);
 					meta.add("eventCandidates string " + dstEcFile);
+					meta.add("eventNum string " + eventNum);
+					meta.add("eventStart int " + Integer.parseInt(eventStart));
 					meta.add("dvname string " + newDVName);
 					
 					//additional metadata should be passed in the metadata parameter (of course this can have multiple values)
