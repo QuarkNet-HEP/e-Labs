@@ -15,7 +15,7 @@
 	String pfn = plotUser.getDir("plots") + File.separator + filename;
 	String url = plotUser.getDirURL("plots") + '/' + filename;
 	
-	String title="", study = null, provenance = null, dvName = null, name = null;
+	String title="", study = null, provenance = null, dvName = null, name = null, eventCandidates = null;
 	if (entry != null) {
 	    study = (String) entry.getTupleValue("study");
 		Timestamp ts = (Timestamp) entry.getTupleValue("creationdate");
@@ -30,6 +30,7 @@
 	request.setAttribute("name", name);
 	request.setAttribute("study", study);
 	request.setAttribute("provenance", entry.getTupleValue("provenance"));
+	request.setAttribute("eventCandidates", entry.getTupleValue("eventCandidates"));
 	request.setAttribute("dvName", dvName);
 	request.setAttribute("url", url);
 	%> 
@@ -47,6 +48,9 @@
 		<a href="../data/view-metadata.jsp?filename=${param.filename}&menu=${param.menu}">Show details (metadata)</a><br/>
 		<c:if test="${provenance != null}">
 			<e:popup href="../plots/view-provenance.jsp?filename=${param.filename}" target="Provenance" width="800" height="850">Show provenance</e:popup><br/>
+		</c:if>
+		<c:if test="${eventCandidates != null }">
+			<e:popup href="../plots/view-events.jsp?filename=${param.filename}" target="Event Candidates" width="800" height="850">Show Event Candidates</e:popup><br/>
 		</c:if>
 		<c:if test="${dvName != null}">
 			<a href="../analysis/rerun.jsp?study=${study}&dvName=${dvName}">Run this study again</a><br/>
