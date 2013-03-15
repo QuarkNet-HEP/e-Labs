@@ -14,6 +14,11 @@
 <%@ page import="java.io.*" %>
 <%@ page import="java.sql.Timestamp" %>
 
+<!-- 
+	EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot
+			This page displays the events from the eventCandidates file saved with the plot
+ -->
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -39,24 +44,29 @@
 			
 			<div id="content">
 <%
+	//get plot saved
 	String filename = request.getParameter("filename");
-	CatalogEntry entry = elab.getDataCatalogProvider().getEntry(filename);
-	ElabGroup plotUser = elab.getUserManagementProvider().getGroup((String) entry.getTupleValue("group"));
-	String eventCandidates = null, eventNum = null, es = null, ecDir = null;
-	int eventStart = 1;
-	Collection rows;
-	if (entry != null) {
-        eventCandidates = (String) entry.getTupleValue("eventCandidates");
-        eventNum = (String) entry.getTupleValue("eventNum");
-        es = (String) entry.getTupleValue("eventStart");
-        eventStart = Integer.parseInt(es);
-        ecDir = (String) entry.getTupleValue("ecDir");
-        eventCandidates = ecDir + '/' + eventCandidates;
-        File ecFile = new File(eventCandidates);
-        EventCandidates ec = EventCandidates.read(ecFile, 1, -1, eventStart, eventNum);
-        rows = ec.getRows();
-        request.setAttribute("rows", rows);
-
+	if (filename != null) {
+		//get entries
+		CatalogEntry entry = elab.getDataCatalogProvider().getEntry(filename);
+		ElabGroup plotUser = elab.getUserManagementProvider().getGroup((String) entry.getTupleValue("group"));
+		String eventCandidates = null, eventNum = null, es = null, ecDir = null, ecUrl = null, ecFullPath = null;
+		int eventStart = 1;
+		Collection rows;
+		if (entry != null) {
+			//get attributes that we need to retrieve the event candidates
+        	eventCandidates = (String) entry.getTupleValue("eventCandidates");
+	        ecUrl = plotUser.getDirURL("plots") + '/' + eventCandidates;
+    	    eventNum = (String) entry.getTupleValue("eventNum");
+        	es = (String) entry.getTupleValue("eventStart");
+        	eventStart = Integer.parseInt(es);
+        	ecDir = (String) entry.getTupleValue("ecDir");
+        	ecFullPath = ecDir + '/' + eventCandidates;
+        	File ecFile = new File(ecFullPath);
+        	EventCandidates ec = EventCandidates.read(ecFile, 1, -1, eventStart, eventNum);
+        	rows = ec.getRows();
+        	request.setAttribute("rows", rows);
+        	request.setAttribute("ecUrl", ecUrl);
 
 %>
 			<h3>Shower study candidates (<%=rows.size()%>)</h3>
@@ -74,10 +84,10 @@
 					</tr>
 				</c:forEach>
 			</table>
-			<a href="${ecUrl}">Event Candidates File</a>
-			<div id="ecFile"></div>
+			<p><a href="${ecUrl}">Event Candidates File</a></p>
 <%
-        }
+        }//end of entry check
+	}//end of filename check
 %>
 
 			</div>

@@ -47,6 +47,7 @@
 					//file extension
 					String srcFileType = request.getParameter("srcFileType");
 					String outputDir = run2.getOutputDir();
+					//EPeronja-03/15/2013: Bug466- Retrieve parameters to save event candidates with plot
 					String eventNum = request.getParameter("eventNum");
 					String eventStart = request.getParameter("eventStart");
 					if (eventStart.equals("") || eventStart == null) {
@@ -80,6 +81,7 @@
 				
 					ElabUtil.copyFile(outputDir, srcFile, plotDir, dstFile);
 					ElabUtil.copyFile(outputDir, srcThumb, plotDir, dstThumb);
+					//EPeronja-03/15/2013: Bug466- Save Event Candidates files with plot
 					ElabUtil.copyFile(ecDir, srcEcFile, plotDir, dstEcFile);
 					
 			        //copy the provenance image to the user's plot directory
@@ -118,6 +120,7 @@
 					meta.add("year string " + group.getYear());
 					meta.add("provenance string " + provenanceFile);
 					meta.add("thumbnail string " + dstThumb);
+					//EPeronja-03/15/2013: Bug466- Add metadata
 					meta.add("eventCandidates string " + dstEcFile);
 					meta.add("eventNum string " + eventNum);
 					meta.add("eventStart string " + Integer.parseInt(eventStart));

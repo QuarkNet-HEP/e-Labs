@@ -19,6 +19,7 @@
 		<input type="hidden" name="srcFile" value="plot.png"/>
 		<input type="hidden" name="srcThumb" value="plot_thm.png"/>
 		<input type="hidden" name="srcFileType" value="png"/>
+		<!-- EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot -->
 		<input type="hidden" name="eventCandidates" value="eventCandidates" />
 		<input type="hidden" name="eventDir" value="${eventDir}" />
 		<input type="hidden" name="eventNum" value="${eventNum}" />

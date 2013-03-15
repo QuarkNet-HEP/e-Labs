@@ -30,6 +30,7 @@
 	request.setAttribute("name", name);
 	request.setAttribute("study", study);
 	request.setAttribute("provenance", entry.getTupleValue("provenance"));
+	//EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot
 	request.setAttribute("eventCandidates", entry.getTupleValue("eventCandidates"));
 	request.setAttribute("eventNum", entry.getTupleValue("eventNum"));
 	request.setAttribute("eventStart", entry.getTupleValue("eventStart"));
@@ -51,6 +52,7 @@
 		<c:if test="${provenance != null}">
 			<e:popup href="../plots/view-provenance.jsp?filename=${param.filename}" target="Provenance" width="800" height="850">Show provenance</e:popup><br/>
 		</c:if>
+		<!-- EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot -->
 		<c:if test="${eventCandidates != null }">
 			<a href="../plots/view-events.jsp?filename=${param.filename}">Show Event Candidates</a><br/>
 		</c:if>
