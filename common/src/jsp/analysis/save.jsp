@@ -49,6 +49,9 @@
 					String outputDir = run2.getOutputDir();
 					String eventNum = request.getParameter("eventNum");
 					String eventStart = request.getParameter("eventStart");
+					if (eventStart.equals("") || eventStart == null) {
+						eventStart = "1";
+					}
                     String srcEcFile = request.getParameter("eventCandidates");
                     String ecDir = request.getParameter("eventDir");
                     ecDir = ecDir.substring(0, ecDir.indexOf("eventCandidates"));
@@ -77,7 +80,7 @@
 				
 					ElabUtil.copyFile(outputDir, srcFile, plotDir, dstFile);
 					ElabUtil.copyFile(outputDir, srcThumb, plotDir, dstThumb);
-					ElabUtil.copyFile(outputDir, srcEcFile, plotDir, dstEcFile);
+					ElabUtil.copyFile(ecDir, srcEcFile, plotDir, dstEcFile);
 					
 			        //copy the provenance image to the user's plot directory
 			        String provenanceDir = run.getOutputDir();
@@ -117,7 +120,8 @@
 					meta.add("thumbnail string " + dstThumb);
 					meta.add("eventCandidates string " + dstEcFile);
 					meta.add("eventNum string " + eventNum);
-					meta.add("eventStart int " + Integer.parseInt(eventStart));
+					meta.add("eventStart string " + Integer.parseInt(eventStart));
+					meta.add("ecDir string " + plotDir);
 					meta.add("dvname string " + newDVName);
 					
 					//additional metadata should be passed in the metadata parameter (of course this can have multiple values)
