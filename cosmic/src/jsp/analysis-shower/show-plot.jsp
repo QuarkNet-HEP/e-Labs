@@ -34,11 +34,7 @@
 
     //EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot
 	String eventDir = request.getParameter("eventDir");
-	String eventNum = request.getParameter("eventNum");
-	String eventStart = request.getParameter("eventStart");
 	request.setAttribute("eventDir", eventDir);
-	request.setAttribute("eventNum", eventNum);
-	request.setAttribute("eventStart", eventStart);
 	
 %>
 
