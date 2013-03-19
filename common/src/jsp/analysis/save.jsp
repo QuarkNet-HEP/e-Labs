@@ -52,8 +52,8 @@
 					String eventStart = "1";
                     String srcEcFile = request.getParameter("eventCandidates");
                     String ecDir = request.getParameter("eventDir");
-                    if (!ecDir.equals("")) {
-                    	ecDir = ecDir.substring(0, ecDir.indexOf("eventCandidates"));
+                   	if (ecDir != null) {
+                    		ecDir = ecDir.substring(0, ecDir.indexOf("eventCandidates"));
                     }
 					if ( userFilename == null || userFilename.equals("") ) {
 					    throw new ElabJspException("You forgot to specify the name of your file. Please close this window and enter it.");
@@ -69,7 +69,7 @@
 				    String dstThumb = "savedimage-" + groupName + "-" + date + "_thm." + srcFileType;
 				    String provenanceFile = "savedimage-" + groupName + "-" + date + "_provenance." + srcFileType;
                     String dstEcFile = "";
-				    if (!ecDir.equals("")) {
+				    if (ecDir != null) {
 						dstEcFile = "savedevents-" + groupName + "-" + date;
                     }			    
 				    File f = new File(plotDir, dstFile);
@@ -82,7 +82,7 @@
 					ElabUtil.copyFile(outputDir, srcFile, plotDir, dstFile);
 					ElabUtil.copyFile(outputDir, srcThumb, plotDir, dstThumb);
 					//EPeronja-03/15/2013: Bug466- Save Event Candidates files with plot
-                    if (!ecDir.equals("")) {
+                    if (ecDir != null) {
 						ElabUtil.copyFile(ecDir, srcEcFile, plotDir, dstEcFile);
                     }				
 			        //copy the provenance image to the user's plot directory
@@ -122,7 +122,7 @@
 					meta.add("provenance string " + provenanceFile);
 					meta.add("thumbnail string " + dstThumb);
 					//EPeronja-03/15/2013: Bug466- Add metadata
-                    if (!ecDir.equals("")) {
+                    if (ecDir != null) {
 						meta.add("eventCandidates string " + dstEcFile);
 						meta.add("ecDir string " + plotDir);
                     }
