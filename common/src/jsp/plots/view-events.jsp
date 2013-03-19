@@ -57,9 +57,7 @@
 			//get attributes that we need to retrieve the event candidates
         	eventCandidates = (String) entry.getTupleValue("eventCandidates");
 	        ecUrl = plotUser.getDirURL("plots") + '/' + eventCandidates;
-    	    eventNum = (String) entry.getTupleValue("eventNum");
-        	es = (String) entry.getTupleValue("eventStart");
-        	eventStart = Integer.parseInt(es);
+    	    eventNum = (String) entry.getTupleValue("eventnum");
         	ecDir = (String) entry.getTupleValue("ecDir");
         	ecFullPath = ecDir + '/' + eventCandidates;
         	File ecFile = new File(ecFullPath);
