@@ -57,7 +57,8 @@
 			//get attributes that we need to retrieve the event candidates
         	eventCandidates = (String) entry.getTupleValue("eventCandidates");
 	        ecUrl = plotUser.getDirURL("plots") + '/' + eventCandidates;
-    	    eventNum = (String) entry.getTupleValue("eventnum");
+	        Long en = (Long) entry.getTupleValue("eventnum");
+    	    eventNum = Long.toString(en);
         	ecDir = (String) entry.getTupleValue("ecDir");
         	ecFullPath = ecDir + '/' + eventCandidates;
         	File ecFile = new File(ecFullPath);
@@ -68,6 +69,7 @@
 
 %>
 			<h3>Shower study candidates (<%=rows.size()%>)</h3>
+			<p><a href="${ecUrl}">Event Candidates File</a></p>
 			<table id="shower-events">
 				<tr>
 					<th width="98%">Event Date</th>
@@ -82,7 +84,6 @@
 					</tr>
 				</c:forEach>
 			</table>
-			<p><a href="${ecUrl}">Event Candidates File</a></p>
 <%
         }//end of entry check
 	}//end of filename check
