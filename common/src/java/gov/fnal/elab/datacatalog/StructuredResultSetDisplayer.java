@@ -34,6 +34,7 @@ public class StructuredResultSetDisplayer {
     private StructuredResultSet results;
     private int id, start, columns = DEFAULT_COLUMNS, crtCol, crtRow;
     private String controlName;
+    private String actionName;
 
     public StructuredResultSetDisplayer() {
         this(null);
@@ -76,6 +77,13 @@ public class StructuredResultSetDisplayer {
         this.controlName = controlName;
     }
 
+    public String getActionName() {
+    	return actionName;
+    }
+    public void setActionName(String actionName) {
+    	this.actionName = actionName;
+    }
+    
     public int display(JspWriter out) throws IOException {
         Iterator<School> i = results.getSchoolsSorted().iterator();
         /*

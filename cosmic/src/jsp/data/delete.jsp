@@ -51,7 +51,8 @@
 									class="gov.fnal.elab.datacatalog.MultiSelectStructuredResultSetDisplayer" 
 									id="searchResultsDisplayer"/>
 							<jsp:setProperty name="searchResultsDisplayer" property="controlName" value="file"/>
-								
+							<jsp:setProperty name="searchResultsDisplayer" property="actionName" value="delete" />
+							
 							<div class="search-results">
 								<jsp:include page="../data/search-results.jsp"/>
 							</div>
