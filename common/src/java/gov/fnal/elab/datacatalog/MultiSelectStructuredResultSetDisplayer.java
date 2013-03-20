@@ -40,8 +40,16 @@ public class MultiSelectStructuredResultSetDisplayer extends
 
     public void displayFileContents(JspWriter out, File file)
             throws IOException {
-        out.write("<input type=\"checkbox\" name=\"" + getControlName() + "\" id=\"cb" + count
-                + "\" value=\"" + file.getLFN() + "\"/>");
+    	//EPeronja- 03/20/2013: Bug 537: Do not allow for selecting data if it doesn't have 
+    	//						a geometry
+    	if (file.getStacked() != null) {
+    		out.write("<input type=\"checkbox\" name=\"" + getControlName() + "\" id=\"cb" + count
+    				+ "\" value=\"" + file.getLFN() + "\"/>");
+    	} else {
+    		//do not display a checkbox if it doesn't have a geo file (for analysis purposes 
+    		//this file is no good)
+    		out.write("");
+    	}
         count++;
         super.displayFileContents(out, file);
     }
