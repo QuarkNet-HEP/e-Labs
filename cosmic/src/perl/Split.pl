@@ -148,6 +148,8 @@ $TMCReg = 0;						#string to hold the contents of the TMC registers from the ST 
 $numSplitFiles = 0;					#number of succesfully split files created.
 $chan3 = $chan2 = $chan1 = $chan0 = 0; 	#holds the incremented channel counts. fixes bug #485
 #$DAQID = 0; 						#string to hold the DAQID read in from the ST line. Needs to be zero here as there is a check for its value later.
+$GPSSuspects = 0;					#int to hold the number of lines that we discard because the GPS date is suspect.
+
 
 #convert MAC OS line breaks to UNIX
 #Mac OS only has \r for new lines, so Unix reads it as all one big line. We first need to replace
@@ -162,6 +164,9 @@ while(<IN>){
 
 	#Had to change the regExp in Dec 07. The newest version of the hardware had some firmware versions that did not add the +/- to word 1 when it was 0000. This was fixed in firmware version 1.06, but some cards made it into the wild with earlier firmware.
 	#$re="^([0-9A-F]{8}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{8}) (\\d{6}\\.\\d{3}) (\\d{6}) ([AV]) (\\d\\d) ([0-9A-F]) ([-+]\\d{4})\$";
+	
+	#sample data line:
+	#43395535 BD 00 39 00 3D 00 3E 00 42CB61CE 012138.020 130506 V 07 0 +0053
 	
 	#OK the new regExp on the next line works. I did not add the + to the offset (word 16) but left it bare. The question is what does ThresholdTimes do with this? Do I need to add the + to make ThresholdTimes happy?
 	$reData="^([0-9A-F]{8}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{8}) (\\d{6}\\.\\d{3}) (\\d{6}) ([AV]) (\\d\\d) ([0-9A-F]) ([-+ ]\\d{4})\$";
@@ -193,8 +198,14 @@ while(<IN>){
 
 	#*performance* using an RE is 30% faster than splitting by whitespace
 	if(/$reData/o){
-		$non_datalines++;
+		#$non_datalines++;
 		@dataRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16);
+		if (substr($dataRow[10],0,2) == substr($lastTime,0,2) && $dataRow[11] != $date && $dataRow[12] eq "V"){
+			$GPSSuspects++;
+			#print "$GPSSuspects", "\t", "$data_line","\n";
+			#print $_;
+			next;
+		}
 		$lastTime = $time;
 		
 		if ($dataRow[10] eq "000000.000" || $dataRow[9] eq "00000000"){ #munged GPS clock
@@ -373,8 +384,9 @@ while(<IN>){
 	#the current line is not a data line or has passed the rollover tests. Proceed.
 	elsif(/$reStatus0/o || /$reStatus1/o){
 		$non_datalines++;
-		$STLineNumber = $.; #needed to check if this ST line is followed by a DS line			
 		@stRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14);
+		next if ($stRow[6] != $date); #here if a bad GPS date gets into the ST line--part of bug 535
+		$STLineNumber = $.; #needed to check if this ST line is followed by a DS line			
 		$stRow = @stRow; 
 		#next if substr($stRow[5], 0, 2)*3600 + substr($stRow[5], 2, 2)*60 + substr($stRow[5], 4, 6) == 0;
 		next if $stRow[5] == 0;
@@ -701,6 +713,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					print META "triggers int $events\n";
         	        print META "cpldfrequency int $cpld_real_freq\n";
         	        print META "blessedstatus string awaiting\n"; # File now awaiting blessing
+					print META "datalines int $data_line\n";
+					print META "GPSSuspects int $GPSSuspects\n";
 					
 					# 6. Write the .bless file for the file that was just closed.
 					#First the header
@@ -717,7 +731,9 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					#Empty all of the status arrays so that they can start over with the new split file.
 					@stTime = @StCoutTemp = @stCount0 = @stRate0 = @stCount1 = @stRate1 = @stCount2 = @stRate2 = @stCount3 = @stRate3 = @stEvents = @stRateEvents = @stType = @stPress = @stTemp = @StVcc = @stGPSSats = @stRow =  @cpld_frequency1 = @cpld_frequency2 = @stCountTemp = ();
 					#reset any scalars in use
-					$chan3=$chan2=$chan1=$chan0=$n=$i=$j=$stRowCount=$stType=$dsRowCount=$events=0;
+					$GPSSuspectsTot=$GPSSuspectsTot + $GPSSuspects;
+					$data_line_total=$data_line_total + $data_line;
+					$chan3=$chan2=$chan1=$chan0=$n=$i=$j=$stRowCount=$stType=$dsRowCount=$events=$GPSSuspects=$data_line=0;
 					$goodChan=-1;
 					$numSplitFiles++;
 				
@@ -940,6 +956,9 @@ else{
 	print META "triggers int $events\n";
     print META "cpldfrequency int $cpld_real_freq\n";
 	print META "blessedstatus string awaiting\n"; # File now awaiting blessing
+	print META "datalines int $data_line\n";
+	print META "GPSSuspects int $GPSSuspects\n";
+
 					
 	# 6. Write the .bless file for the file that was just closed.
 	#First the header
@@ -962,7 +981,7 @@ else{
 	`/usr/bin/perl -i -p -e 's/^ThisFileNeverCompletedSplitting.*/enddate date $endDateMeta $endTimeMeta/' "$raw_filename.meta"`;
 	`/usr/bin/perl -i -p -e 's/^totalevents.*/totalevents int $total_events/' "$raw_filename.meta"`;
 	`/usr/bin/perl -i -p -e 's/^nondatalines.*/nondatalines int $non_datalines/' "$raw_filename.meta"`;
-	warn "Bad/ignored lines: $non_datalines Accepted lines: $data_line\n" if($non_datalines > 0);
+	warn "Your uploaded data file contained $data_line_total accepted data lines. We ignored $GPSSuspectsTot line(s) due to a suspect GPS date.\n" if($non_datalines > 0);
 	if($sum_lats == 0 or $sum_longs == 0 or $sum_alts == 0){
 		warn "If you included DG commands in your file, there were fewer than six satellites in view when you did. We have ignored these DG commands; they provide an unreliable position.";
 	}
