@@ -383,7 +383,7 @@ while(<IN>){
 
 	#the current line is not a data line or has passed the rollover tests. Proceed.
 	elsif(/$reStatus0/o || /$reStatus1/o){
-		$non_datalines++;
+		
 		@stRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14);
 		next if ($stRow[6] != $date); #here if a bad GPS date gets into the ST line--part of bug 535
 		$STLineNumber = $.; #needed to check if this ST line is followed by a DS line			
@@ -579,7 +579,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					# When ST3 these onboard registers are cleared after each printing, so there is no need to do the subtraction.
 					# We just need to see if these (stCountN and stEvents) keep growing over the life of the file. If they do, we need to subtract one from the next to get the scalar increment over the integration time.
 					
-					die "These data span at least one day that does not contain any 'DS' lines. We have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount == 0 && $DAQID > 0;
+					die "These data span at least one day that does not contain any 'ST', 'DS' line pairs. We have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount && $DAQID > 0;
 					
 					if ($dsRowCount > 0){
 						#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
@@ -828,7 +828,7 @@ else{
 	
 	#die "These data do not contain the same number of ST and DS lines; we have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount;
 
-	die "These data span at least one day that does not contain any 'DS' lines. We have stopped your upload.  We created $numSplitFiles usable file(s) before this error." if $dsRowCount == 0;
+	die "These data span at least one day that does not contain any 'ST', 'DS' line pairs. We have stopped your upload.  We created $numSplitFiles usable file(s) before this error." if $dsRowCount == 0;
 					
 	if ($dsRowCount > 0){
 		#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
