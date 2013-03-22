@@ -196,7 +196,6 @@ while(<IN>){
 	#regExp for the output of the TL command:
 	$reThreshold0="^([A-Z]{2}) L0=([0-9]+) L1=([0-9]+) L2=([0-9]+) L3=([0-9]+)\$";
 
-	#print "Before Data RegEx $. $rollover_flag \n";
 	#*performance* using an RE is 30% faster than splitting by whitespace
 	if(/$reData/o){
 		#$non_datalines++;
@@ -384,9 +383,10 @@ while(<IN>){
 
 	#the current line is not a data line or has passed the rollover tests. Proceed.
 	elsif(/$reStatus0/o || /$reStatus1/o){
-		$non_datalines++;
-		$STLineNumber = $.; #needed to check if this ST line is followed by a DS line			
+		
 		@stRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14);
+		next if ($stRow[6] != $date); #here if a bad GPS date gets into the ST line--part of bug 535
+		$STLineNumber = $.; #needed to check if this ST line is followed by a DS line			
 		$stRow = @stRow; 
 		#next if substr($stRow[5], 0, 2)*3600 + substr($stRow[5], 2, 2)*60 + substr($stRow[5], 4, 6) == 0;
 		next if $stRow[5] == 0;
@@ -545,11 +545,13 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 				print META "avglongitude string 0\n";
 				print META "avgaltitude string 0\n";
 				#print the threshold for each channel
-				print META "DiscThresh0 int $thRow[0]\n"; 
-				print META "DiscThresh1 int $thRow[1]\n"; 
-				print META "DiscThresh2 int $thRow[2]\n"; 
-				print META "DiscThresh3 int $thRow[3]\n"; 
-				print META "DAQFirmware string $DAQFirmware\n";
+				print META "GPSSuspects int 0\n";
+				print META "totalDataLines int 0\n";	
+				#print META "DiscThresh0 int $thRow[0]\n"; 
+				#print META "DiscThresh1 int $thRow[1]\n"; 
+				#print META "DiscThresh2 int $thRow[2]\n"; 
+				#print META "DiscThresh3 int $thRow[3]\n"; 
+				#print META "DAQFirmware string $DAQFirmware\n";
 			} #end of if ($raw_meta_written ==0)
 
 			# When we see new day--or the control register changes, split file at the day boundary
@@ -579,7 +581,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					# When ST3 these onboard registers are cleared after each printing, so there is no need to do the subtraction.
 					# We just need to see if these (stCountN and stEvents) keep growing over the life of the file. If they do, we need to subtract one from the next to get the scalar increment over the integration time.
 					
-					die "These data span at least one day that does not contain any 'DS' lines. We have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount == 0 && $DAQID > 0;
+					die "These data span at least one day that does not contain any 'ST', 'DS' line pairs. We have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount && $DAQID > 0;
 					
 					if ($dsRowCount > 0){
 						#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
@@ -828,7 +830,7 @@ else{
 	
 	#die "These data do not contain the same number of ST and DS lines; we have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount;
 
-	die "These data span at least one day that does not contain any 'DS' lines. We have stopped your upload.  We created $numSplitFiles usable file(s) before this error." if $dsRowCount == 0;
+	die "These data span at least one day that does not contain any 'ST', 'DS' line pairs. We have stopped your upload.  We created $numSplitFiles usable file(s) before this error." if $dsRowCount == 0;
 					
 	if ($dsRowCount > 0){
 		#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
@@ -981,6 +983,10 @@ else{
 	`/usr/bin/perl -i -p -e 's/^ThisFileNeverCompletedSplitting.*/enddate date $endDateMeta $endTimeMeta/' "$raw_filename.meta"`;
 	`/usr/bin/perl -i -p -e 's/^totalevents.*/totalevents int $total_events/' "$raw_filename.meta"`;
 	`/usr/bin/perl -i -p -e 's/^nondatalines.*/nondatalines int $non_datalines/' "$raw_filename.meta"`;
+	#print META "GPSSuspects int 0\n";
+	#print META "totalDataLines int 0\n;"	
+	`/usr/bin/perl -i -p -e 's/^GPSSuspects.*/GPSSuspects int $GPSSuspectsTot/' "$raw_filename.meta"`;
+	`/usr/bin/perl -i -p -e 's/^totalDataLines.*/totalDataLines int $data_line_total/' "$raw_filename.meta"`;
 	warn "Your uploaded data file contained $data_line_total accepted data lines. We ignored $GPSSuspectsTot line(s) due to a suspect GPS date.\n" if($non_datalines > 0);
 	if($sum_lats == 0 or $sum_longs == 0 or $sum_alts == 0){
 		warn "If you included DG commands in your file, there were fewer than six satellites in view when you did. We have ignored these DG commands; they provide an unreliable position.";
