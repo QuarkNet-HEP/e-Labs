@@ -545,11 +545,13 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 				print META "avglongitude string 0\n";
 				print META "avgaltitude string 0\n";
 				#print the threshold for each channel
-				print META "DiscThresh0 int $thRow[0]\n"; 
-				print META "DiscThresh1 int $thRow[1]\n"; 
-				print META "DiscThresh2 int $thRow[2]\n"; 
-				print META "DiscThresh3 int $thRow[3]\n"; 
-				print META "DAQFirmware string $DAQFirmware\n";
+				print META "GPSSuspectsTotal int 0\n";
+				print META "totalDataLines int 0\n";	
+				#print META "DiscThresh0 int $thRow[0]\n"; 
+				#print META "DiscThresh1 int $thRow[1]\n"; 
+				#print META "DiscThresh2 int $thRow[2]\n"; 
+				#print META "DiscThresh3 int $thRow[3]\n"; 
+				#print META "DAQFirmware string $DAQFirmware\n";
 			} #end of if ($raw_meta_written ==0)
 
 			# When we see new day--or the control register changes, split file at the day boundary
@@ -981,6 +983,10 @@ else{
 	`/usr/bin/perl -i -p -e 's/^ThisFileNeverCompletedSplitting.*/enddate date $endDateMeta $endTimeMeta/' "$raw_filename.meta"`;
 	`/usr/bin/perl -i -p -e 's/^totalevents.*/totalevents int $total_events/' "$raw_filename.meta"`;
 	`/usr/bin/perl -i -p -e 's/^nondatalines.*/nondatalines int $non_datalines/' "$raw_filename.meta"`;
+	#print META "GPSSuspects int 0\n";
+	#print META "totalDataLines int 0\n;"	
+	`/usr/bin/perl -i -p -e 's/^GPSSuspectsTotal.*/GPSSuspects int $GPSSuspectsTot/' "$raw_filename.meta"`;
+	`/usr/bin/perl -i -p -e 's/^totalDataLines.*/totalDataLines int $data_line_total/' "$raw_filename.meta"`;
 	warn "Your uploaded data file contained $data_line_total accepted data lines. We ignored $GPSSuspectsTot line(s) due to a suspect GPS date.\n" if($non_datalines > 0);
 	if($sum_lats == 0 or $sum_longs == 0 or $sum_alts == 0){
 		warn "If you included DG commands in your file, there were fewer than six satellites in view when you did. We have ignored these DG commands; they provide an unreliable position.";

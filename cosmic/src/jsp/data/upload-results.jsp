@@ -195,7 +195,8 @@
     	<h2>File Summary:</h2>
     
     	Your data was split into ${lfnssz} ${lfnssz == 1 ? 'day' : 'days'} spanning from:<br/>
-    	${entry.tupleMap.startdate} to ${entry.tupleMap.enddate}
+    	${entry.tupleMap.startdate} to ${entry.tupleMap.enddate}<br/>
+    	The uploaded file contained ${entry.tupleMap.totalDataLines} accepted data lines. We ignored ${entry.tupleMap.GPSSuspects} line(s) due to a suspect GPS date.
     	
     	<table id="channels-table">
     		<tr>
@@ -217,8 +218,8 @@
 		<c:choose>
 			<c:when test="${entry.tupleMap.avglatitude == '0'}">
 				<%--if it were truly 0, it would be 0.0.0 in the metadata --%>
-				No valid GPS information found in your data.<br/>
-				Either the "DG" command was not run or the GPS did not see enough satellites.<br/><br/>
+				We found no reliable GPS location information in your data.<br/>
+				<br/>
 			</c:when>
 			<c:otherwise>
 				Average latitude: ${entry.tupleMap.avglatitude}<br/>
