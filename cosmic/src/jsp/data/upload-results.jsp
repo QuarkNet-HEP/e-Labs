@@ -193,7 +193,8 @@
     	<h2>File Summary:</h2>
     
     	Your data was split into ${lfnssz} ${lfnssz == 1 ? 'day' : 'days'} spanning from:<br/>
-    	${entry.tupleMap.startdate} to ${entry.tupleMap.enddate}
+    	${entry.tupleMap.startdate} to ${entry.tupleMap.enddate}<br/>
+    	The uploaded file contained ${entry.tupleMap.totalDataLines} accepted data lines. We ignored ${entry.tupleMap.GPSSuspects} line(s) due to a suspect GPS date.
     	
     	<table id="channels-table">
     		<tr>
