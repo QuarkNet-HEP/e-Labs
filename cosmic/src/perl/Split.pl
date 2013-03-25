@@ -733,8 +733,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					#Empty all of the status arrays so that they can start over with the new split file.
 					@stTime = @StCoutTemp = @stCount0 = @stRate0 = @stCount1 = @stRate1 = @stCount2 = @stRate2 = @stCount3 = @stRate3 = @stEvents = @stRateEvents = @stType = @stPress = @stTemp = @StVcc = @stGPSSats = @stRow =  @cpld_frequency1 = @cpld_frequency2 = @stCountTemp = ();
 					#reset any scalars in use
-					$GPSSuspectsTot=$GPSSuspectsTot + $GPSSuspects;
-					$data_line_total=$data_line_total + $data_line;
+					$GPSSuspectsTot += $GPSSuspects; #for the .raw file
+					$data_line_total += $data_line; #for the .raw file
 					$chan3=$chan2=$chan1=$chan0=$n=$i=$j=$stRowCount=$stType=$dsRowCount=$events=$GPSSuspects=$data_line=0;
 					$goodChan=-1;
 					$numSplitFiles++;
@@ -822,6 +822,10 @@ if($total_events == 0){
 }
 else{
 	#all of the next is for writing the bless file for the last SPLIT file
+	if ($numSplitFiles == 0){
+		$data_line_total = $data_line;
+		$GPSSuspectsTot = $GPSSuspects;
+	}
 	
 	# 1. Determine if the DAQ was producing ST2 or ST3 lines
 	#When ST 2, the DAQ does not clear the onboard registers (that we call stCountN or stEvents here) after printing the lines. So the count in any channel over the time interval is the previous (stCount0 or stEvent) subtracted from the current (stCount0 or stEvent)
@@ -985,7 +989,7 @@ else{
 	`/usr/bin/perl -i -p -e 's/^nondatalines.*/nondatalines int $non_datalines/' "$raw_filename.meta"`;
 	#print META "GPSSuspects int 0\n";
 	#print META "totalDataLines int 0\n;"	
-	`/usr/bin/perl -i -p -e 's/^GPSSuspectsTotal.*/GPSSuspects int $GPSSuspectsTot/' "$raw_filename.meta"`;
+	`/usr/bin/perl -i -p -e 's/^GPSSuspectsTotal.*/GPSSuspectsTotal int $GPSSuspectsTot/' "$raw_filename.meta"`;
 	`/usr/bin/perl -i -p -e 's/^totalDataLines.*/totalDataLines int $data_line_total/' "$raw_filename.meta"`;
 	warn "Your uploaded data file contained $data_line_total accepted data lines. We ignored $GPSSuspectsTot line(s) due to a suspect GPS date.\n" if($non_datalines > 0);
 	if($sum_lats == 0 or $sum_longs == 0 or $sum_alts == 0){
