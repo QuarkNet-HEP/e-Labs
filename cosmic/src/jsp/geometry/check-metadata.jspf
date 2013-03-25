@@ -1,0 +1,23 @@
+<%@ page import="gov.fnal.elab.cosmic.*" %>
+<%@ page import="gov.fnal.elab.cosmic.bless.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.query.*" %>
+<%@ page import="java.util.*" %>
+<%@ page import="java.text.*" %>
+<%
+	//EPeronja-03/21/2013: 445- Check if this geometry steps on data that already exists
+	DataCatalogProvider dcp0 = elab.getDataCatalogProvider();
+	geometries.addGeoEntry(geoEntry.getDetectorID(), geoEntry);
+	String message = null;
+	String command = request.getParameter("commit");
+	String commitCheck = null;
+	if ( request.getParameter("commitCheck") != null ) {
+		commitCheck = request.getParameter("commitCheck");
+	}
+	String msg = geometries.checkMetadata(dcp0, geoEntry);
+	if (msg != null && !msg.equals("") && command != null && commitCheck == null) {
+		message = msg;
+	}
+	request.setAttribute("message", message);
+%>
+

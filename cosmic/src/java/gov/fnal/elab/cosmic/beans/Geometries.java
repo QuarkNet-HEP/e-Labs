@@ -56,7 +56,7 @@ public class Geometries implements Serializable {
         addGeometry(new Geometry(elab.getProperties().getDataDir(), detectorID));
         readOnly = true;
     }
-
+    
     public Geometries(Elab elab, ElabGroup group) throws ElabException {
         this.reset();
         Connection conn = null;
@@ -114,6 +114,7 @@ public class Geometries implements Serializable {
         return geometries.get(detectorID);
     }
 
+    
     public void addGeoEntry(int detectorID, GeoEntryBean geb) throws ElabJspException {
         Geometry g = geometries.get(detectorID);
         if (g == null) {
@@ -157,6 +158,15 @@ public class Geometries implements Serializable {
         }
     }
 
+    public String checkMetadata(DataCatalogProvider dcp, GeoEntryBean geoEntry)
+    		throws ElabException {
+    	String message = "";
+    	for (Geometry g : changedGeometries) {
+    		message = g.checkMetadata(dcp, geoEntry);
+    	}
+    	return message;
+    }
+    
     public String dump() {
         StringBuilder sb = new StringBuilder();
         for (Geometry g : geometries.values()) {
