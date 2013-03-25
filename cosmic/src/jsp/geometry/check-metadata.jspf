@@ -6,17 +6,20 @@
 <%@ page import="java.text.*" %>
 <%
 	//EPeronja-03/21/2013: 445- Check if this geometry steps on data that already exists
-	DataCatalogProvider dcp0 = elab.getDataCatalogProvider();
-	geometries.addGeoEntry(geoEntry.getDetectorID(), geoEntry);
+	//test if this is an 'empty' geometry... then, there is nothing to check
 	String message = null;
-	String command = request.getParameter("commit");
-	String commitCheck = null;
-	if ( request.getParameter("commitCheck") != null ) {
-		commitCheck = request.getParameter("commitCheck");
-	}
-	String msg = geometries.checkMetadata(dcp0, geoEntry);
-	if (msg != null && !msg.equals("") && command != null && commitCheck == null) {
-		message = msg;
+	if (geoEntry.getJulianDay() != null) {
+		DataCatalogProvider dcp0 = elab.getDataCatalogProvider();
+		geometries.addGeoEntry(geoEntry.getDetectorID(), geoEntry);
+		String command = request.getParameter("commit");
+		String commitCheck = null;
+		if ( request.getParameter("commitCheck") != null ) {
+			commitCheck = request.getParameter("commitCheck");
+		}
+		String msg = geometries.checkMetadata(dcp0, geoEntry);
+		if (msg != null && !msg.equals("") && command != null && commitCheck == null) {
+			message = msg;
+		}
 	}
 	request.setAttribute("message", message);
 %>
