@@ -6,9 +6,25 @@
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.cosmic.util.*" %>
-	
+<%@ page import="gov.fnal.elab.datacatalog.impl.vds.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%
 	String file = (String) request.getParameter("filename");
+	//EPeronja-03/26/2013: Bug417- data file stats page: gatewidth
+	VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(file);
+	String gatewidth = "100";
+	if (entry != null) {
+		//EPeronja: according to page 33 of 6000DAQ manual, the gateway should be calculated
+		//by subtracting the decimal value in 3 minus the decimal value in 2 and then multiply
+		//the absolute value by 10 to come up with the nanoseconds.
+		int reg3 = Integer.parseInt((String) entry.getTupleValue("ConReg3"), 16);
+		int reg2 = Integer.parseInt((String) entry.getTupleValue("ConReg2"), 16);
+		int diff = reg3 - reg2;
+		int absDiff = (diff < 0) ? -diff : diff;
+		gatewidth = String.valueOf(absDiff * 10);
+	}
+	request.setAttribute("gatewidth", gatewidth);
 	String did = AnalysisParameterTools.getDetectorId(file);
 	File analyze = new File(new File(elab.getProperties().getDataDir(), did), file + ".analyze");
 	//should this happen at the exact same time that file is being created, the whole thing would break
@@ -29,7 +45,7 @@
 	<c:otherwise>
 		<e:paramAlias from="filename" to="inFile"/>
 		<e:analysis name="analysis" type="I2U2.Cosmic::RawAnalyzeStudy">
-			<e:trinput type="hidden" name="gatewidth" default="100"/>
+			<e:trinput type="hidden" name="gatewidth" value="<%=gatewidth%>"/>
 			<e:trinput type="hidden" name="inFile"/>
 			<e:trdefault name="outFile" value="${outFile}"/>
 			<e:ifAnalysisIsOk>

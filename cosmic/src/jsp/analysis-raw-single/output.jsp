@@ -47,8 +47,7 @@
 		meta.add("creationdate date " + timestamp.toString());
 		meta.add("source string " + results.getAnalysis().getParameter("inFile"));
 		meta.add("gatewidth int " + results.getAnalysis().getParameter("gatewidth"));
-		meta.add("name string " + new File(outf).getName());
-		
+		meta.add("name string " + new File(outf).getName());		
 		//path data
 		meta.add("city string " + user.getCity());
 		meta.add("group string " + user.getName());
