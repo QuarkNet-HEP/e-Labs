@@ -18,11 +18,13 @@
 		//EPeronja: according to page 33 of 6000DAQ manual, the gateway should be calculated
 		//by subtracting the decimal value in 3 minus the decimal value in 2 and then multiply
 		//the absolute value by 10 to come up with the nanoseconds.
-		int reg3 = Integer.parseInt((String) entry.getTupleValue("ConReg3"), 16);
-		int reg2 = Integer.parseInt((String) entry.getTupleValue("ConReg2"), 16);
-		int diff = reg3 - reg2;
-		int absDiff = (diff < 0) ? -diff : diff;
-		gatewidth = String.valueOf(absDiff * 10);
+		if (entry.getTupleValue("ConReg3") != null && entry.getTupleValue("ConReg2") != null) {
+			int reg3 = Integer.parseInt((String) entry.getTupleValue("ConReg3"), 16);
+			int reg2 = Integer.parseInt((String) entry.getTupleValue("ConReg2"), 16);
+			int diff = reg3 - reg2;
+			int absDiff = (diff < 0) ? -diff : diff;
+			gatewidth = String.valueOf(absDiff * 10);
+		}
 	}
 	request.setAttribute("gatewidth", gatewidth);
 	String did = AnalysisParameterTools.getDetectorId(file);
