@@ -13,7 +13,7 @@ function Send(url, link)
     opener.document.log.img_src.value += "<a href=\"" + link + "\" target=\"_blank\">";
     opener.document.log.img_src.value += "<img height=\"100\" width=\"100\" src=\"";
     opener.document.log.img_src.value += url;
-    opener.document.log.img_src.value += "\" border=\"0\"></a>|";
+    opener.document.log.img_src.value += "\" border=\"0\"></a>,";
     self.close();
     opener.focus();
     return false;
@@ -47,18 +47,16 @@ function Send(url, link)
 	            }
 	            %>
 	            	<td class="plot-thumbnail">
+	            		<a href="#" onClick="return Send('${plotURL}/${e.LFN}', '../plots/view.jsp?filename=${e.LFN}');">
 		            		<c:choose>
 	            				<c:when test="${!empty e.tupleMap.thumbnailURL}">
-	            					<a href="#" onClick="return Send('${e.tupleMap.thumbnailURL}', '../plots/view.jsp?filename=${e.LFN}');">
 		            				<img class="plot-thumbnail-image" src="${e.tupleMap.thumbnailURL}" alt="Thumbnail not found" /><br/>
-		            				</a>
 		            			</c:when>
 		            			<c:otherwise>
-		            				<a href="#" onClick="return Send('${plotURL}/${e.LFN}', '../plots/view.jsp?filename=${e.LFN}');">
 		            				<img class="plot-thumbnail-image" src="${plotURL}/${e.tupleMap.thumbnail}" alt="Thumbnail not found" /><br/>
-		            				</a>
 		            			</c:otherwise>
 		            		</c:choose>
+		            	</a>
 		            	${e.tupleMap.name}<br/>
 	            		Group: ${e.tupleMap.group}<br/>
 	            		Created: ${e.tupleMap.creationdate}<br/>
