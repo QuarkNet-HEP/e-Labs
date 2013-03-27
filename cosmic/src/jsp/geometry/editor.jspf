@@ -128,8 +128,10 @@
         <c:if test="${!ro}">
         	<center>
         	   <c:if test="${message != null}" >
-				<p><font style="color: red;">${message} data file(s) will be affected by this change.
-					Are you sure you want to commit? <input type="checkbox" name="commitCheck" id="commitCheck" /> </p>
+				<p><font class="invalid" style="font-size: 120%" >A previous GEOMETRY exists on this date for this DAQ#. Please carefully
+						check your starting date and review the GEOMETRY tutorial. If you commit, ${message} detector file(s) 
+						will be affected by this proposed change. POSTERS and saved PLOTS may also be affected.
+						Are you sure you want to commit? <input type="checkbox" name="commitCheck" id="commitCheck" /> </p>
 			   </c:if>
             	<input type="submit" name="commit" value="Commit Geometry">
 			</center>
