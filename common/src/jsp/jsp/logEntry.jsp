@@ -1,5 +1,6 @@
 <%@ page import="java.util.*"%>
 <%@ page import="gov.fnal.elab.util.*"%>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ include file="common.jsp"%>
 <%@ include file="../login/login-required.jsp"%>
 <html>
@@ -222,9 +223,10 @@ function insertImgSrc()
 
 		String parsed[] = img_src.split("|");
 		for (int i = 0; i < parsed.length; i++) {
-			log_enter = log_enter.replaceAll("\\(--Image " + i + "--\\)", parsed[i]);
+			if (StringUtils.isNotBlank(parsed[i])) {
+				log_enter = log_enter.replaceAll("\\(--Image " + i + "--\\)", parsed[i]);
+			}
 		}
-		log_enter = log_enter.replaceAll("'", "''");
 
 		if (log_id == null && log_text != "") {
 			//we have to insert a new row into table
@@ -307,7 +309,6 @@ your logbook.</font></h2>
 <%
 	}
 		buttonText = "Update Our Logbook Entry";
-		log_enter = log_enter.replaceAll("''", "'");
 %><table border="1">
 	<tr>
 		<td align='left'><%=log_enter%></td>
