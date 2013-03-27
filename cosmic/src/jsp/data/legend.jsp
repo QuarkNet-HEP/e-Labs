@@ -23,7 +23,7 @@
 		</tr>
 		<tr><td class="dt"> </td>
 			<td class="dd"><br />
-				You cannot select files with <i>No Geometry</i> for Flux, Shower or Lifetime Studies.
+				You cannot select files with <i>No Geo</i> for Flux, Shower or Lifetime Studies.
 			</td>
 		</tr>
 	</table>
