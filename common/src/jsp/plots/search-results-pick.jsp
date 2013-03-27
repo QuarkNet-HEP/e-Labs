@@ -13,7 +13,7 @@ function Send(url, link)
     opener.document.log.img_src.value += "<a href=\"" + link + "\" target=\"_blank\">";
     opener.document.log.img_src.value += "<img height=\"100\" width=\"100\" src=\"";
     opener.document.log.img_src.value += url;
-    opener.document.log.img_src.value += "\" border=\"0\"></a>,";
+    opener.document.log.img_src.value += "\" border=\"0\"></a>|";
     self.close();
     opener.focus();
     return false;

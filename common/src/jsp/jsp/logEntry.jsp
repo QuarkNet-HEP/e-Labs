@@ -10,7 +10,7 @@
 function insertImgSrc()
 {
     var raw = document.log.img_src.value;
-    var parsed = raw.split(",");
+    var parsed = raw.split("|");
     for (var i = 0; i < parsed.length; i++)
     {
         var txt = document.log.log_text.value;
@@ -220,10 +220,9 @@ function insertImgSrc()
 		String log_enter = "<div style=\"white-space:pre;font-family:'Comic Sans MS'\">"
 				+ log_text + "</div>";
 
-		String parsed[] = img_src.split(",");
+		String parsed[] = img_src.split("|");
 		for (int i = 0; i < parsed.length; i++) {
-			log_enter = log_enter.replaceAll("\\(--Image " + i
-					+ "--\\)", parsed[i]);
+			log_enter = log_enter.replaceAll("\\(--Image " + i + "--\\)", parsed[i]);
 		}
 		log_enter = log_enter.replaceAll("'", "''");
 
