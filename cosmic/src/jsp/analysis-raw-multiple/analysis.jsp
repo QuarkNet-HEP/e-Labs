@@ -26,7 +26,6 @@
 	    String did = AnalysisParameterTools.getDetectorId(lfn[i]);
 		File analyze = new File(new File(elab.getProperties().getDataDir(), did), lfn[i] + ".analyze");
 		CatalogEntry entry = elab.getDataCatalogProvider().getEntry(analyze.getName());
-		}
 	    if (!analyze.exists()) {
 			files.add(lfn[i]);
 			outfiles.add(analyze.getAbsolutePath());
