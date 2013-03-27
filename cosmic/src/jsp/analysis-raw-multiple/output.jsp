@@ -127,6 +127,12 @@ if (id != null) {
 								<%
 									String str;
 									while((str = br.readLine()) != null){
+										//EPeronja-03/26/2013: Bug417- data file stats page: gatewidth
+										//This is ugly but I do not want to mess with the metadata saving above
+										//Code saves gatewidth as int and but when 0, we want to display N/A
+										if (str.trim().equals("<gatewidth>0</gatewidth>")) {
+											str = "     <gatewidth>N/A</gatewidth>";
+										}
 										out.println(str);
 									}
 								%>
