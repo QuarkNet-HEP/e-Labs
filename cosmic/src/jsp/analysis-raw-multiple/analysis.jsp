@@ -20,6 +20,8 @@
 	}
 	List files = new ArrayList();
 	List outfiles = new ArrayList();
+	List gatewidths = new ArrayList();
+	
 	for (int i = 0; i < lfn.length; i++) {
 	    String did = AnalysisParameterTools.getDetectorId(lfn[i]);
 		File analyze = new File(new File(elab.getProperties().getDataDir(), did), lfn[i] + ".analyze");
@@ -28,6 +30,24 @@
 	    if (!analyze.exists()) {
 			files.add(lfn[i]);
 			outfiles.add(analyze.getAbsolutePath());
+			//EPeronja-03/26/2013: Bug417- data file stats page: gatewidth
+			VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(lfn[i]);
+			String gatewidth = "0";
+			if (e != null) {
+				//EPeronja: according to page 33 of 6000DAQ manual, the gateway should be calculated
+				//by subtracting the decimal value in 3 minus the decimal value in 2 and then multiply
+				//the absolute value by 10 to come up with the nanoseconds.
+				String ConReg3 = (String) e.getTupleValue("ConReg3");
+				String ConReg2 = (String) e.getTupleValue("ConReg2");
+				if ( ConReg3 != null && ConReg2 != null && !ConReg3.equals("") && !ConReg2.equals("")) {
+					int reg3 = Integer.parseInt(ConReg3, 16);
+					int reg2 = Integer.parseInt(ConReg2, 16);
+					int diff = reg3 - reg2;
+					int absDiff = (diff < 0) ? -diff : diff;
+					gatewidth = String.valueOf(absDiff * 10);
+				}
+			}
+			gatewidths.add(gatewidth);
 	    }
 	}
 		
@@ -39,6 +59,7 @@
 	}
 	request.setAttribute("files", files);
 	request.setAttribute("outFiles", outfiles);
+	request.setAttribute("gatewidths", gatewidths);
 %>
 
 <c:choose>
@@ -48,7 +69,7 @@
 	<c:otherwise>
 		<e:analysis name="analysis" type="I2U2.Cosmic::RawAnalyzeStudy">
 			<% ((ElabAnalysis) request.getAttribute("analysis")).setAttribute("f", lfn); %>
-			<e:trinput type="hidden" name="gatewidth" value="100"/>
+			<e:trinput type="hidden" name="gatewidths" value="${gatewidths}"/>
 			<e:trdefault name="inFile" value="${files}"/>
 			<e:trdefault name="outFile" value="${outFiles}"/>
 			<e:ifAnalysisIsOk>
