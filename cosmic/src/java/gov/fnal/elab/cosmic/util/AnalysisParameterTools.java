@@ -192,16 +192,5 @@ public class AnalysisParameterTools {
     	
     	return ElabUtil.join(l, " "); 
     }
-
-    /*  Swift expects space-delimited files, so we can't use null or space as a placeholder. 
-     *  Cosmic ray perl code can interpret "0" as null so this is our hacky fix.
-     */
-    public static List<String> getFirmwareVersionsNullAsZero(Elab elab, Collection<String> files) throws ElabException {
-    	List<String> l = getFirmwareVersions(elab, files);
-    	
-    	Collections.replaceAll(l, "", "0");
-    	
-    	return l; 
-    }
     
 }
