@@ -63,13 +63,12 @@ TR I2U2.Cosmic::Lifetime(
   argument = " "${energyCheck};
   argument = " "${coincidence};
   argument = " "${geoDir};
-  argument = " "${firmware}; 
 }
 TR I2U2.Cosmic::LifetimeStudy(
 	inout combineOut,
 	none detector,
 	none cpldfreqs,
-	none firmware,
+	none firmwares,
 	none extraFun_alpha_guess,
 	none extraFun_alpha_variate,
 	none extraFun_constant_guess,
@@ -363,6 +362,7 @@ TR I2U2.Cosmic::ShowerStudy(
 	none detectorCoincidence,
 	none detector,
 	none cpldfreqs,
+	none firmwares,
 	output eventCandidates,
 	none eventCoincidence,
 	inout eventFile,
@@ -534,6 +534,7 @@ TR I2U2.Cosmic::FluxStudy(
 	inout combineOut,
 	none detector,
 	none cpldfreqs,
+	none firmwares,
 	inout fluxOut,
 	none flux_binWidth,
 	none geoDir,
