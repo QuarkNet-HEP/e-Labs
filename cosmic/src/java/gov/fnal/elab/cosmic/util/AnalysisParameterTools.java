@@ -15,8 +15,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -175,7 +178,7 @@ public class AnalysisParameterTools {
         return ElabUtil.join(freqs, " ");
     }
     
-    public static String getFirmwareVersions(Elab elab, Collection<String> files) throws ElabException {
+    public static List<String> getFirmwareVersions(Elab elab, Collection<String> files) throws ElabException {
     	ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
     	List<String> l = new ArrayList<String>();
     	
@@ -185,12 +188,12 @@ public class AnalysisParameterTools {
     		}
     		String firmwareVersion = (String) e.getTupleValue("DAQFirmware");
     		if (firmwareVersion == null) {
-    			firmwareVersion = "0";
+    			firmwareVersion = "";
     		}
-    		l.add(firmwareVersion);
+    		l.add(firmwareVersion); 
     	}
     	
-    	return ElabUtil.join(l, " "); 
+    	return l; 
     }
 
     /*  Swift expects space-delimited files, so we can't use null or space as a placeholder. 

@@ -28,7 +28,7 @@ type AxisParams {
 	}
 }
 
-(File wireDelayData[]) WireDelayMultiple(File thresholdData[], string geoDir, File geoFiles[], string detectors[], string firmwares[]) {
+(File wireDelayData[]) WireDelayMultiple(File thresholdData[], string geoDir, File geoFiles[]) {
 	foreach td, i in thresholdData {
 		wireDelayData[i] = WireDelay(thresholdData[i], geoDir, geoFiles[i]);
 	}
@@ -99,7 +99,6 @@ File thresholdAll[] <structured_regexp_mapper;source=rawData,match=".*/(.*)",tra
 File wireDelayData[] <fixed_array_mapper;files=@arg("wireDelayData")>;
 string detectors[] = @strsplit(@arg("detector"), "\\s");
 string cpldfreqs[] = @strsplit(@arg("cpldfreqs"), "\\s");
-string firmwares[] = @strsplit(@arg("firmwares"), "\\s");
 File combineOut <"combine.out">;
 File fluxOut <"flux.out">;
 File singleChannelOut <single_file_mapper;file=@arg("singlechannelOut")>;
@@ -145,7 +144,7 @@ string sort_sortKey2 = @arg("sort_sortKey2");
 
 //the actual workflow
 thresholdAll = ThresholdTimesMultiple(rawData, detectors, cpldfreqs);
-wireDelayData = WireDelayMultiple(thresholdAll, geoDir, geoFiles, detectors, firmwares);
+wireDelayData = WireDelayMultiple(thresholdAll, geoDir, geoFiles);
 combineOut = Combine(wireDelayData);
 singleChannelOut = SingleChannel(combineOut, singlechannel_channel);
 //TODO the following must work:

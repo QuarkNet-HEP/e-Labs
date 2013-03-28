@@ -19,11 +19,7 @@
 			List<String> wd = AnalysisParameterTools.getWireDelayFiles(elab, rawData);
 			List<String> geo = AnalysisParameterTools.getGeometryFiles(elab, rawData);
 			String cpldfreqs = AnalysisParameterTools.getCpldFrequencies(elab, rawData);
-<<<<<<< HEAD
 			List<String> firmwareVersions = AnalysisParameterTools.getFirmwareVersionsNullAsZero(elab, rawData);
-=======
-			String firmwareVersions = AnalysisParameterTools.getFirmwareVersions(elab, rawData);
->>>>>>> 5f3723c... updated analyses to use firmware version parameters
 
 			%>
 	        <e:trdefault name="thresholdAll" value="<%= thresholdData %>"/>
@@ -32,11 +28,7 @@
 			<e:trdefault name="geoDir" value="${elab.properties['data.dir']}"/>
 			<e:trdefault name="geoFiles" value="<%= geo %>"/>
 			<e:trdefault name="cpldfreqs" value="<%= cpldfreqs %>"/>
-<<<<<<< HEAD
 			<%--  <e:trdefault name="firmware" value="<%= firmwareVersions %>" /> --%>
-=======
-			<e:trdefault name="firmwares" value="<%= firmwareVersions %>" />
->>>>>>> 5f3723c... updated analyses to use firmware version parameters
 			<%
 		}
 	%>

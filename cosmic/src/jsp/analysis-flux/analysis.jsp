@@ -20,10 +20,6 @@
 			List geo = AnalysisParameterTools.getGeometryFiles(elab, rawData);
 			String ids = AnalysisParameterTools.getDetectorIds(rawData);
 			String cpldfreqs = AnalysisParameterTools.getCpldFrequencies(elab, rawData);
-<<<<<<< HEAD
-=======
-			String firmwareVersions = AnalysisParameterTools.getFirmwareVersions(elab, rawData); 
->>>>>>> 5f3723c... updated analyses to use firmware version parameters
 			
 			request.setAttribute("channels", AnalysisParameterTools.getValidChannels(elab, rawData));
 			//<trdefault> is equivalent to analysis.setParameterDefault()
@@ -32,7 +28,7 @@
 			%>
 	        <e:trdefault name="thresholdAll" value="<%= thresholdData %>"/>
 	        <e:trdefault name="wireDelayData" value="<%= wd %>"/>
-			<e:trdefault name="detector" value="<%= ids %>"/>
+			<e:trdefault name="detector" value="<%= ids %>"/>	  
 			<e:trdefault name="singlechannelOut" value="singlechannelOut"/>
 			<e:trdefault name="geoDir" value="${elab.properties['data.dir']}"/>
 			<e:trdefault name="geoFiles" value="<%= geo %>"/>
