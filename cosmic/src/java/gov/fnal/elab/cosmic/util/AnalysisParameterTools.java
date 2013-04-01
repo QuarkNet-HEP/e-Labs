@@ -4,6 +4,7 @@
 package gov.fnal.elab.cosmic.util;
 
 import gov.fnal.elab.Elab;
+import gov.fnal.elab.RawDataFileResolver;
 import gov.fnal.elab.datacatalog.query.CatalogEntry;
 import gov.fnal.elab.datacatalog.query.ResultSet;
 import gov.fnal.elab.util.ElabException;
@@ -83,6 +84,22 @@ public class AnalysisParameterTools {
         CHANNELS.put("chan2", "2");
         CHANNELS.put("chan3", "3");
         CHANNELS.put("chan4", "4");
+    }
+    
+    public static long getCombinedFileSizes(Elab elab, Collection<String> files) throws ElabException {
+        ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
+        long sum = 0;
+        for (CatalogEntry e : rs) {
+            String pfn = RawDataFileResolver.getDefault().resolve(elab, e.getLFN());
+            File pf = new File(pfn);
+            if (pf.exists()) {
+                sum += pf.length();
+            }
+            else {
+                throw new ElabException("Data file not found: " + pfn);
+            }
+        }
+        return sum;
     }
     
     public static int getEventCount(Elab elab, Collection<String> files) throws ElabException {
