@@ -162,7 +162,7 @@
 		String log_enter = "<div style=\"white-space:pre;font-family:'Comic Sans MS'\">"
 				+ log_text + "</div>";
 
-		String parsed[] = img_src.split(",");
+		String parsed[] = img_src.split(";");
 		for (int i = 0; i < parsed.length; i++) {
 			log_enter = log_enter.replaceAll("\\(--Image " + i
 					+ "--\\)", parsed[i]);
@@ -294,7 +294,7 @@ your logbook.</font></h2>
 		</tr>
 	</tr>
 </table>
-<input type="hidden" name="img_src" value="<%=img_src%>"> <input
+<input type="hidden" name="img_src" value='<%=img_src%>'> <input
 	type="hidden" name="count" value="<%=count%>"></form>
 
 <br>

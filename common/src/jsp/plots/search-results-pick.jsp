@@ -13,19 +13,22 @@ function sendImage(url, link)
     opener.document.log.img_src.value += "<a href=\"" + link + "\" target=\"_blank\">";
     opener.document.log.img_src.value += "<img height=\"100\" width=\"100\" src=\"";
     opener.document.log.img_src.value += url;
-    opener.document.log.img_src.value += "\" border=\"0\"></a>,";
+    opener.document.log.img_src.value += "\" border=\"0\"></a>;";
     self.close();
     opener.focus();
     return false;
 };
-function sendLink(title, link)
+function sendLink(url, link)
 {
 	var count = parseInt(opener.document.log.count.value);
     opener.document.log.log_text.value += "(--Image " + count + "--)";
     opener.document.log.count.value = (count + 1)+"";
     opener.document.log.img_src.value += "<a href=\"" + link + "\" target=\"_blank\">";
-    opener.document.log.img_src.value += "View plot: " + title;
-    opener.document.log.img_src.value += "</a>,";
+    //opener.document.log.img_src.value += "View plot: " + title;
+    //opener.document.log.img_src.value += "</a>,";
+    opener.document.log.img_src.value += "<img height=\"100\" width=\"100\" src=\"";
+    opener.document.log.img_src.value += url;
+    opener.document.log.img_src.value += "\" border=\"0\"></a>;";
     self.close();
     opener.focus();
     return false;
@@ -62,7 +65,7 @@ function sendLink(title, link)
 	            		
 		            		<c:choose>
 	            				<c:when test="${!empty e.tupleMap.thumbnailURL}">
-	            					<a href="#" onClick="return sendLink('${e.tupleMap.name}', '../plots/view.jsp?filename=${e.LFN}');">
+	            					<a href="#" onClick="return sendLink('${e.tupleMap.thumbnailURL}', '../plots/view.jsp?filename=${e.LFN}');">
 		            					<img class="plot-thumbnail-image" src="${e.tupleMap.thumbnailURL}" alt="Thumbnail not found" /><br/>
 		            				</a>
 		            			</c:when>
