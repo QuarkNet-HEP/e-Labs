@@ -259,8 +259,9 @@
 					%>
 					<tr>
 						<td valign="top" width="175" align="right"><%=dateText%></td>
-						<td width="400" valign="top"><e:whitespaceAdjust
-							text="<%= log_text %>" /></td>
+						<!-- <td width="400" valign="top"><e:whitespaceAdjust
+							text='<%=log_text%>' /></td> -->
+						<td width="400" valign="top"><%=log_text%></td> 
 					</tr>
 					<%
 				}
