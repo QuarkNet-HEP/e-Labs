@@ -3,6 +3,7 @@
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="org.apache.commons.codec.net.URLCodec" %>
 
 <script type="text/javascript">
 function sendImage(url, link)
@@ -56,6 +57,10 @@ function sendLink(url, link)
 	            	}
 	            }  
 	            request.setAttribute("e", e);
+	            URLCodec urlCodec = new URLCodec();
+	            String fileName = urlCodec.encode(e.getLFN()); 
+	            request.setAttribute("fileName", fileName);
+	            
 	            if (group != null) {
 					String plotURL = group.getDirURL("plots");
 	            	request.setAttribute("plotURL", plotURL);
@@ -65,12 +70,12 @@ function sendLink(url, link)
 	            		
 		            		<c:choose>
 	            				<c:when test="${!empty e.tupleMap.thumbnailURL}">
-	            					<a href="#" onClick="return sendLink('${e.tupleMap.thumbnailURL}', '../plots/view.jsp?filename=${e.LFN}');">
+	            					<a href="#" onClick="return sendLink('${e.tupleMap.thumbnailURL}', '../plots/view.jsp?filename=<%=fileName%>');">
 		            					<img class="plot-thumbnail-image" src="${e.tupleMap.thumbnailURL}" alt="Thumbnail not found" /><br/>
 		            				</a>
 		            			</c:when>
 		            			<c:otherwise>
-		            				<a href="#" onClick="return sendImage('${plotURL}/${e.LFN}', '../plots/view.jsp?filename=${e.LFN}');">
+		            				<a href="#" onClick="return sendImage('${plotURL}/${e.LFN}', '../plots/view.jsp?filename=<%=fileName%>');">
 		            					<img class="plot-thumbnail-image" src="${plotURL}/${e.tupleMap.thumbnail}" alt="Thumbnail not found" /><br/>
 	            					</a>
 		            			</c:otherwise>
