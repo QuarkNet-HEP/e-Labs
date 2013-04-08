@@ -27,6 +27,7 @@ function sendLink(url, link)
     opener.document.log.img_src.value += "<a href=\"" + link + "\" target=\"_blank\">";
     //opener.document.log.img_src.value += "View plot: " + title;
     //opener.document.log.img_src.value += "</a>,";
+    //EPeronja-04/08/2013: Fixed bug with the logbook. This problem was showing only in CMS
     opener.document.log.img_src.value += "<img height=\"100\" width=\"100\" src=\"";
     opener.document.log.img_src.value += url;
     opener.document.log.img_src.value += "\" border=\"0\"></a>;";
@@ -57,6 +58,8 @@ function sendLink(url, link)
 	            	}
 	            }  
 	            request.setAttribute("e", e);
+	            //EPeronja-04/08/2013: Added the encoding the the fileName because the name got crippled
+	            //					   from showLogbookT.jsp to view-common.jsp.
 	            URLCodec urlCodec = new URLCodec();
 	            String fileName = urlCodec.encode(e.getLFN()); 
 	            request.setAttribute("fileName", fileName);

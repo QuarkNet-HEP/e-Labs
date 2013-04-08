@@ -220,6 +220,9 @@ function insertImgSrc()
 		String log_enter = "<div style=\"white-space:pre;font-family:'Comic Sans MS'\">"
 				+ log_text + "</div>";
 
+		//EPeronja-04/08/2013: Changed the split to look for a semicolon instead of a comma
+		//					   If this needs to be changed, please also change logEntryT.jsp and 
+		//					   search-results-pick.jsp
 		String parsed[] = img_src.split(";");
 		for (int i = 0; i < parsed.length; i++) {
 			log_enter = log_enter.replaceAll("\\(--Image " + i
@@ -365,6 +368,7 @@ your logbook.</font></h2>
 		</tr>
 	</tr>
 </table>
+<!-- //EPeronja-04/08/2013: replace " by ', string was not showing correctly -->
 <input type="hidden" name="img_src" value='<%=img_src%>'> <input
 	type="hidden" name="count" value="<%=count%>"></form>
 
