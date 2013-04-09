@@ -220,7 +220,7 @@ function insertImgSrc()
 		String log_enter = "<div style=\"white-space:pre;font-family:'Comic Sans MS'\">"
 				+ log_text + "</div>";
 
-		//EPeronja-04/08/2013: Changed the split to look for a newline instead of a comma
+		//EPeronja-04/08/2013: Changed the split to look for a tab char instead of a comma
 		//					   If this needs to be changed, please also change logEntryT.jsp and 
 		//					   search-results-pick.jsp
 		String parsed[] = img_src.split("\\t");
