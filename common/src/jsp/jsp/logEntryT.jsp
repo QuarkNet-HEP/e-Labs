@@ -161,10 +161,10 @@
 		// need to update or insert an entry yet
 		String log_enter = "<div style=\"white-space:pre;font-family:'Comic Sans MS'\">"
 				+ log_text + "</div>";
-		//EPeronja-04/08/2013: Changed the split to look for a semicolon instead of a comma
+		//EPeronja-04/08/2013: Changed the split to look for a newline instead of a comma
 		//					   If this needs to be changed, please also change logEntry.jsp and 
 		//					   search-results-pick.jsp
-		String parsed[] = img_src.split(";");
+		String parsed[] = img_src.split("\n");
 		for (int i = 0; i < parsed.length; i++) {
 			log_enter = log_enter.replaceAll("\\(--Image " + i
 					+ "--\\)", parsed[i]);
