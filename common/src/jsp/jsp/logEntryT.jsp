@@ -223,10 +223,10 @@ You can edit it and update it.<br>
 Click <font color="#1A8BC8">Show Logbook</font> to access all entries in
 your logbook.</font></h2>
 <%
-	} else if (!log_text.equals("")) {
+	} else if (!log_enter.equals("")) {
 			//we need to update row with id=log_id 
 			s = conn.prepareStatement("UPDATE log SET log_text = ? WHERE id = ?;");
-			s.setString(1, log_text);
+			s.setString(1, log_enter);
 			s.setInt(2, log_id); 
 			int k = 0;
 			try {

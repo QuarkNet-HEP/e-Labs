@@ -369,11 +369,8 @@
 						<td valign="top" width="150" align="right"><font
 							face="Comic Sans MS"><%=dateText%><%=comment_info%><font>
 						</font></font></td>
-						<!--EPeronja-04/08/2013: the tag was adding an extra space in the middle of the string
-   												 and it can break the path to the image-->
-						<!--<td width="450" valign="top"><font face="Comic Sans MS"><e:whitespaceAdjust
-							text="<%= log_text %>" /></font></td>-->
-						<td width="450" valign="top"><font face="Comic Sans MS"><%=log_text%></font></td> 
+						<td width="450" valign="top"><font face="Comic Sans MS"><e:whitespaceAdjust
+							text="<%= log_text %>" /></font></td>
 					</tr>
 					<%
           

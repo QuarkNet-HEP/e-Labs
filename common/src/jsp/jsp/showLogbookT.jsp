@@ -259,11 +259,8 @@
 					%>
 					<tr>
 						<td valign="top" width="175" align="right"><%=dateText%></td>
-						<!--EPeronja-04/08/2013: the tag was adding an extra space in the middle of the string
-						   						and it can break the path to the image-->
-						<!-- <td width="400" valign="top"><e:whitespaceAdjust
-							text='<%=log_text%>' /></td> -->
-						<td width="400" valign="top"><%=log_text%></td> 
+						<td width="400" valign="top"><e:whitespaceAdjust
+							text='<%=log_text%>' /></td> 
 					</tr>
 					<%
 				}
