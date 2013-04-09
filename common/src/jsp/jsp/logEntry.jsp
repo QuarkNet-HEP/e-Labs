@@ -223,7 +223,8 @@ function insertImgSrc()
 		//EPeronja-04/08/2013: Changed the split to look for a newline instead of a comma
 		//					   If this needs to be changed, please also change logEntryT.jsp and 
 		//					   search-results-pick.jsp
-		String parsed[] = img_src.split("\n");
+		String parsed[] = img_src.split("\\t");
+
 		for (int i = 0; i < parsed.length; i++) {
 			log_enter = log_enter.replaceAll("\\(--Image " + i
 					+ "--\\)", parsed[i]);
