@@ -284,6 +284,7 @@
 					String dateText=rs.getString("date_entered");
 					keyword_description=rs.getString("description");
 					String log_text=rs.getString("log_text");
+					log_text = log_text.replaceAll("''", "'");
 					String keyword_name=rs.getString("keyword_name");
 					String keyword_display=keyword_name.replaceAll("_"," ");
 					String section=rs.getString("section");

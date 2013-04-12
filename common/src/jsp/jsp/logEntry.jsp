@@ -212,7 +212,7 @@ function insertImgSrc()
 					+ "<tr><td colspan='4' align='center'><FONT  size='+1'>No comments on this item.</FONT></td></tr>";
 		}
 	} //while for log
-
+    currentEntries = currentEntries.replace("''","'");
 	// end of second version
 
 	if ((submit != null) && !(log_text.equals(""))) {

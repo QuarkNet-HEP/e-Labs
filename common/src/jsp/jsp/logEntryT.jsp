@@ -156,7 +156,7 @@
 					+ curText + "</FONT></td></tr>";
 		}
 	}
-
+    currentEntries = currentEntries.replace("''","'");
 	if (submit != null && !log_text.equals("")) {
 		// need to update or insert an entry yet
 		String log_enter = "<div style=\"white-space:pre;font-family:'Comic Sans MS'\">"

@@ -5,6 +5,16 @@
 <html>
 <head>
 <title>For Teachers: Show Logbooks of Student Research Group</title>
+<!-- //EPeronja-04/12/2013: replace truncated text by long text for the log
+							jsp used to be resubmitted for this!
+ -->
+<script>
+	function showFullLog(showDivId, fullDivId) {
+		var showDiv = document.getElementById(showDivId);
+		var fullDiv = document.getElementById(fullDivId);
+		showDiv.innerHTML = fullDiv.innerHTML;
+	}
+</script>
 </head>
 <body>
 
@@ -371,7 +381,7 @@
 							String dateText = rs.getString("date_entered");
 							keyword_description = rs.getString("description");
 							String log_text = rs.getString("log_text");
-
+							log_text = log_text.replaceAll("''", "'");
 							Integer log_id = (Integer) rs.getObject("log_id");
 							Boolean new_log = (Boolean) rs.getObject("new");
 							showFullLog = false;
@@ -437,17 +447,19 @@
 								}
 								// out.write("New comments="+comment_new);
 							}
-							if (!showFullLog) {
-								linkText = "<A HREF=\"showLogbookRGforT.jsp?research_group_name="
-										+ research_group_name
-										+ "&keyword="
-										+ keyword
-										+ "&log_id="
-										+ log_id
-										+ "#"
-										+ log_id
-										+ "\">Read more</A>";
-							}
+						 	//EPeronja-04/12/2013: this code is not used anymore
+						 	// 					   replaced this functionality with Javascript
+							//if (!showFullLog) {
+							//	linkText = "<A HREF=\"showLogbookRGforT.jsp?research_group_name="
+							//			+ research_group_name
+							//			+ "&keyword="
+							//			+ keyword
+							//			+ "&log_id="
+							//			+ log_id
+							//			+ "#"
+							//			+ log_id
+							//			+ "\">Read more</A>";
+							//}
 
 							itemCount++;
 							if (current_keyword_id == null || !(current_keyword_id.equals(data_keyword_id))) {
@@ -505,8 +517,11 @@
 						href="logCommentEntry.jsp?log_id=<%=log_id%>&amp;keyword=<%=keyword_name%>&amp;research_group_name=<%=research_group_name%>&amp;path=RG"><img
 						src="graphics/logbook_pencil.gif" border="0" align="top" alt=""></a>
 					<%=dateText%><%=comment_info%></td>
-					<td width="400" valign="top"><a name="<%=log_id%>"><e:whitespaceAdjust
-						text="<%=log_text_truncated%>" /></a><%=elipsis%><%=linkText%></td>
+					<td width="400" valign="top">
+					<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
+					<div id="fullLog<%=log_id %>" style="display:none;"><e:whitespaceAdjust text="<%=log_text%>"></e:whitespaceAdjust></div>
+					<div id="showLog<%=log_id%>"><e:whitespaceAdjust
+						text="<%=log_text_truncated%>" /><%=elipsis%><a href='javascript:showFullLog("showLog<%=log_id%>","fullLog<%=log_id%>");'>Read More</a></div></td>
 				</tr>
 				<%
 					if (showFullLog) {

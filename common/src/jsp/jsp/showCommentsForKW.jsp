@@ -157,7 +157,7 @@ logbook".</font></p>
 	<tr>
 		<td valign="top" width="100" align="right"><font
 			face="Comic Sans MS"><%=log_date%><font></font></font></td>
-		<td width="300" valign="top"><font face="Comic Sans MS"><%=log_text%></font></td>
+		<td width="300" valign="top"><font face="Comic Sans MS"><e:whitespaceAdjust text="<%=log_text%>"></e:whitespaceAdjust></font></td>
 		<td valign="top" width="100" align="right"><font
 			face="Comic Sans MS" color="<%=commentColor%>"><%=comment_date%><font></font></font></td>
 		<td width="300" valign="top"><font face="Comic Sans MS"
