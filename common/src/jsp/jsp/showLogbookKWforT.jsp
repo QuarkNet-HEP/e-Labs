@@ -5,6 +5,16 @@
 <html>
 <head>
 <title>For Teachers: All Logbook entries for one milestone.</title>
+<!-- //EPeronja-04/12/2013: replace truncated text by long text for the log
+							jsp used to be resubmitted for this!
+ -->
+<script>
+	function showFullLog(showDivId, fullDivId) {
+		var showDiv = document.getElementById(showDivId);
+		var fullDiv = document.getElementById(fullDivId);
+		showDiv.innerHTML = fullDiv.innerHTML;
+	}
+</script>
 </head>
 <body>
 <table width="800">
@@ -53,7 +63,6 @@
  	catch (NumberFormatException nfe) {
  		passed_log_id = null; 
  	}
- 	
  	s = conn.prepareStatement("SELECT id FROM project WHERE name = ?;");
  	s.setString(1, eLab);
  	rs = s.executeQuery();
@@ -70,7 +79,6 @@
 		keyword = "general";
 	} // default to showing entries for "general" if no keyword is passed.
 %>
-
 <table width="800" cellpadding="0" border="0" align="left">
 	<tr>
 		<td valign="top" align="150">
@@ -138,17 +146,13 @@
 						}
 						linksToEach = linksToEach
 								+ "<tr><td><A HREF='showLogbookKWforT.jsp?keyword="
-								+ keyword_loop + "'><FONT  " + keyColor + ">"
+								+ keyword_loop + "'>"
 								+ keyword_text + "</font></A></td></tr>";
 					}
 
 				}
 			%>
 			<%=linksToEach%>
-
-
-
-
 
 		</table>
 
@@ -270,11 +274,10 @@
 						}
 
 						String log_text_truncated;
-						if (showFullLog)
-							log_text_truncated = log_text;
-						else
-							log_text_truncated = log_text.replaceAll("\\<(.|\\n)*?\\>",
-									"");
+						//if (showFullLog)
+						//	log_text_truncated = log_text;
+						//else
+							log_text_truncated = log_text.replaceAll("\\<(.|\\n)*?\\>","");
 						int maxChars = log_text_truncated.length();
 						if (maxChars > 50 && !showFullLog) {
 							maxChars = 50;
@@ -320,14 +323,16 @@
 							}
 							// out.write("New comments="+comment_new);
 						}
-						if (!showFullLog) {
-							linkText = "<A HREF=\"showLogbookKWforT.jsp?research_group_name="
-									+ rg_name
-									+ "&keyword="
-									+ keyword
-									+ "&log_id="
-									+ log_id + "\">Read more</A>";
-						}
+					 	//EPeronja-04/12/2013: this code is not used anymore
+					 	// 					   replaced this functionality with Javascript
+						//if (!showFullLog) {
+						//	linkText = "<A HREF=\"showLogbookKWforT.jsp?research_group_name="
+						//			+ rg_name
+						//			+ "&keyword="
+						//			+ keyword
+						//			+ "&log_id="
+						//			+ log_id + "\">Read more</A>";
+						//}
 
 						itemCount++;
 						if (!(current_rg_name.equals(rg_name))) {
@@ -351,8 +356,12 @@
 						href="logCommentEntry.jsp?log_id=<%=log_id%>&amp;keyword=<%=keyword%>&amp;research_group_name=<%=rg_name%>&amp;path=KW"><img
 						src="graphics/logbook_pencil.gif" border="0" align="top" alt=""></a>
 					<%=dateText%><%=comment_info%></td>
-					<td width="400" valign="top"><e:whitespaceAdjust
-						text="<%=log_text_truncated%>" /><%=elipsis%><%=linkText%></td>
+					<td width="400" valign="top">
+					<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
+					<div id="fullLog<%=log_id %>" style="display:none;"><e:whitespaceAdjust text="<%=log_text%>"></e:whitespaceAdjust></div>
+					<div id="showLog<%=log_id%>"><e:whitespaceAdjust
+						text="<%=log_text_truncated%>" /><%=elipsis%><a href='javascript:showFullLog("showLog<%=log_id%>","fullLog<%=log_id%>");'>Read More</a></div></td>
+						
 				</tr>
 				<%
 					if (showFullLog) {

@@ -3,6 +3,7 @@
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="org.apache.commons.codec.net.URLCodec" %>
 
 <script type="text/javascript">
 function sendImage(url, link)
@@ -13,19 +14,23 @@ function sendImage(url, link)
     opener.document.log.img_src.value += "<a href=\"" + link + "\" target=\"_blank\">";
     opener.document.log.img_src.value += "<img height=\"100\" width=\"100\" src=\"";
     opener.document.log.img_src.value += url;
-    opener.document.log.img_src.value += "\" border=\"0\"></a>,";
+    opener.document.log.img_src.value += "\" border=\"0\"></a>\t";
     self.close();
     opener.focus();
     return false;
 };
-function sendLink(title, link)
+function sendLink(url, link)
 {
 	var count = parseInt(opener.document.log.count.value);
     opener.document.log.log_text.value += "(--Image " + count + "--)";
     opener.document.log.count.value = (count + 1)+"";
     opener.document.log.img_src.value += "<a href=\"" + link + "\" target=\"_blank\">";
-    opener.document.log.img_src.value += "View plot: " + title;
-    opener.document.log.img_src.value += "</a>,";
+    //opener.document.log.img_src.value += "View plot: " + title;
+    //opener.document.log.img_src.value += "</a>,";
+    //EPeronja-04/08/2013: Fixed bug with the logbook. This problem was showing only in CMS
+    opener.document.log.img_src.value += "<img height=\"100\" width=\"100\" src=\"";
+    opener.document.log.img_src.value += url;
+    opener.document.log.img_src.value += "\" border=\"0\"></a>\t";
     self.close();
     opener.focus();
     return false;
@@ -53,6 +58,12 @@ function sendLink(title, link)
 	            	}
 	            }  
 	            request.setAttribute("e", e);
+	            //EPeronja-04/08/2013: Added the encoding the the fileName because the name got crippled
+	            //					   from showLogbookT.jsp to view-common.jsp.
+	            URLCodec urlCodec = new URLCodec();
+	            String fileName = urlCodec.encode(e.getLFN()); 
+	            request.setAttribute("fileName", fileName);
+	            
 	            if (group != null) {
 					String plotURL = group.getDirURL("plots");
 	            	request.setAttribute("plotURL", plotURL);
@@ -62,12 +73,12 @@ function sendLink(title, link)
 	            		
 		            		<c:choose>
 	            				<c:when test="${!empty e.tupleMap.thumbnailURL}">
-	            					<a href="#" onClick="return sendLink('${e.tupleMap.name}', '../plots/view.jsp?filename=${e.LFN}');">
+	            					<a href="#" onClick="return sendLink('${e.tupleMap.thumbnailURL}', '../plots/view.jsp?filename=<%=fileName%>');">
 		            					<img class="plot-thumbnail-image" src="${e.tupleMap.thumbnailURL}" alt="Thumbnail not found" /><br/>
 		            				</a>
 		            			</c:when>
 		            			<c:otherwise>
-		            				<a href="#" onClick="return sendImage('${plotURL}/${e.LFN}', '../plots/view.jsp?filename=${e.LFN}');">
+		            				<a href="#" onClick="return sendImage('${plotURL}/${e.LFN}', '../plots/view.jsp?filename=<%=fileName%>');">
 		            					<img class="plot-thumbnail-image" src="${plotURL}/${e.tupleMap.thumbnail}" alt="Thumbnail not found" /><br/>
 	            					</a>
 		            			</c:otherwise>

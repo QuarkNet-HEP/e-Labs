@@ -225,6 +225,7 @@
 				while (rs.next()) {
 					String dateText = rs.getString("date_entered");
 					String log_text = rs.getString("log_text");
+					log_text = log_text.replaceAll("''", "'");
 					String log_id = rs.getString("log_id");
 					ref_rg_id = rs.getInt("ref_rg_id");
 					itemCount++;
@@ -260,7 +261,7 @@
 					<tr>
 						<td valign="top" width="175" align="right"><%=dateText%></td>
 						<td width="400" valign="top"><e:whitespaceAdjust
-							text="<%= log_text %>" /></td>
+							text='<%=log_text%>' /></td> 
 					</tr>
 					<%
 				}

@@ -156,13 +156,16 @@
 					+ curText + "</FONT></td></tr>";
 		}
 	}
-
+    currentEntries = currentEntries.replace("''","'");
 	if (submit != null && !log_text.equals("")) {
 		// need to update or insert an entry yet
 		String log_enter = "<div style=\"white-space:pre;font-family:'Comic Sans MS'\">"
 				+ log_text + "</div>";
+		//EPeronja-04/08/2013: Changed the split to look for a tab char instead of a comma
+		//					   If this needs to be changed, please also change logEntry.jsp and 
+		//					   search-results-pick.jsp
+		String parsed[] = img_src.split("\\t");
 
-		String parsed[] = img_src.split(",");
 		for (int i = 0; i < parsed.length; i++) {
 			log_enter = log_enter.replaceAll("\\(--Image " + i
 					+ "--\\)", parsed[i]);
@@ -220,10 +223,10 @@ You can edit it and update it.<br>
 Click <font color="#1A8BC8">Show Logbook</font> to access all entries in
 your logbook.</font></h2>
 <%
-	} else if (!log_text.equals("")) {
+	} else if (!log_enter.equals("")) {
 			//we need to update row with id=log_id 
 			s = conn.prepareStatement("UPDATE log SET log_text = ? WHERE id = ?;");
-			s.setString(1, log_text);
+			s.setString(1, log_enter);
 			s.setInt(2, log_id); 
 			int k = 0;
 			try {
@@ -294,8 +297,9 @@ your logbook.</font></h2>
 		</tr>
 	</tr>
 </table>
-<input type="hidden" name="img_src" value="<%=img_src%>"> <input
-	type="hidden" name="count" value="<%=count%>"></form>
+<!-- //EPeronja-04/08/2013: replace " by ', string was not showing correctly -->
+<input type="hidden" name="img_src" value='<%=img_src%>'> 
+<input type="hidden" name="count" value="<%=count%>"></form>
 
 <br>
 <table>

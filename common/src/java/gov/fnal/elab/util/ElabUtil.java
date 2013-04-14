@@ -644,10 +644,12 @@ public class ElabUtil {
                 lastSpace = i;
             }
             sb.append(c);
-            if (i - lastSpace > 40) {
-                sb.append(' ');
-                lastSpace = i;
-            }
+			//EPeronja-04/08/2013: this code adds an extra space in the middle of the string
+			//						and it can break the path to the plots
+            //if (i - lastSpace > 40) {
+            //    sb.append(' ');
+            //    lastSpace = i;
+            //}
         }
 
         return sb.toString();
