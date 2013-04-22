@@ -37,7 +37,7 @@
 			de = (LIGOFileDataEngine) session.getAttribute("de");
 			if (de == null) {
 			    de = LIGOFileDataEngine.getEngine("/disks/i2u2/ligo/data/streams", 
-			            ServiceLIGOFileReader.getFactory("http://data2:8100"));
+			            ServiceLIGOFileReader.getFactory("http://localhost:8100"));
 			    session.setAttribute("de", de);
 			}
 		}
@@ -74,7 +74,7 @@
 		    
 		    // Temporarily hardcode this for SPEED. Need fixing
 		    final double min = 730922400.0; 
-		    final double max = 967165200.0; 
+		    final double max = 1022544015.0;
 		    JsonObject jo = new JsonObject();
 		    jo.addProperty("minTime", min);
 		    jo.addProperty("maxTime", max);
@@ -102,8 +102,7 @@
 				String[] channels = request.getParameter("channels").split(",");
 				double startTime = Double.parseDouble(request.getParameter("startTime"));
 				double endTime = Double.parseDouble(request.getParameter("endTime"));
-				
-				
+
 				Collection<DataSet> dataList = new ArrayList(); 
 				for(String channel : channels) {
 					try {
@@ -111,6 +110,7 @@
 						dataList.add(nads);
 					}
 					catch(Exception e) {
+						String msg = e.toString();
 						// the data doesn't exist, don't add it. Flag user
 						exceptionList.add(channel + " doesn't exist");
 					}
