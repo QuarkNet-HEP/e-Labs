@@ -425,6 +425,7 @@ while(<IN>){
 		}
 		$DSLineNumber = $.; #Needed to check if this DS line is preceded by an ST line
 		@dsRow = ($1, $2, $3, $4, $5, $6);
+		next if $DSLineNumber - $STLineNumber != 1;
 		$dsRowCount++;
 		if ($DSLineNumber - $STLineNumber == 1){ #Only fill the blessing arrays if the DS line follows the ST line
 			push (@stCount0, hex($dsRow[1]));
@@ -559,6 +560,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			$oldSTDate = $stDate = $dataRow[11] if $date ne $lastDate && $stRowCount == 0; 
 			$oldSTDate = $stDate = $dataRow[11] if $dsRowCount == 0;
 			$oldSTDate = $stDate = $dataRow[11] + 10000 if $dsRowCount == 0 && $dataRow[10] > 235959;
+			#$lastDate = $stDate if $stDate != $lastDate && substr($dataRow[10],10,4) eq 0000; 
+			
 			if($dataRow[11] ne $lastDate || $oldSTDate ne $stDate) {	#start of a new output file ##removed the checking of the control registers. Fixes bug #487  
 				#print "Dates don't match, Boss. $date $lastDate $stDate $oldSTDate \n";
 				
@@ -738,6 +741,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					$chan3=$chan2=$chan1=$chan0=$n=$i=$j=$stRowCount=$stType=$dsRowCount=$events=$GPSSuspects=$data_line=0;
 					$goodChan=-1;
 					$numSplitFiles++;
+					#print "code never makes it here if datafile is < 1 day.\n";
 				
 				}#end if($lastDate ne "")
 			#}#end if($date ne $lastDate)
