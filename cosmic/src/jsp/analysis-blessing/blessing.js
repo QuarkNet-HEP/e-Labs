@@ -28,9 +28,13 @@ togglePlot = function(seriesIdx)
 }
 
 //EPeronja-01/23/2013: Bug472- added next functions to redraw the axes based on user input, called from compare1.jsp
-redrawPlotX = function(newmax)
-{
-	chanOptions.xaxis.max = trigOptions.xaxis.max = satOptions.xaxis.max = voltOptions.xaxis.max = tempOptions.xaxis.max = pressOptions.xaxis.max = newmax;
+redrawPlotX = function(newX, type)
+{   
+	if (type == "min") {
+		chanOptions.xaxis.min = trigOptions.xaxis.min = satOptions.xaxis.min = voltOptions.xaxis.min = tempOptions.xaxis.min = pressOptions.xaxis.min = newX;
+	} else {
+		chanOptions.xaxis.max = trigOptions.xaxis.max = satOptions.xaxis.max = voltOptions.xaxis.max = tempOptions.xaxis.max = pressOptions.xaxis.max = newX;
+	}
 	onOffPlot = $.plot($("#channelChart"), [channel1data, channel2data, channel3data, channel4data ], $.extend({}, chanOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel} ]}));
 	$.plot($("#triggerChart"), [triggerdata],$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: triggerdata.ylabel + ' (' + triggerdata.unit + ')'} ]}));
 	$.plot($("#satChart"), [satellitedata],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: satellitedata.ylabel + ' (' + satellitedata.unit + ')'} ]}));
@@ -38,11 +42,15 @@ redrawPlotX = function(newmax)
 	$.plot($("#tempChart"), [temperaturedata],$.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: temperaturedata.ylabel + ' (' + temperaturedata.unit + ')'} ]}));
 	$.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: pressuredata.ylabel + ' (' + pressuredata.unit + ')'} ]}));		
 }
-resetPlotX = function(objectIdXMax)
+
+resetPlotX = function(objectIdXMin, objectIdXMax)
 {
-	var inputObject = document.getElementById(objectIdXMax);
-	inputObject.value = "";
-	chanOptions.xaxis.max = trigOptions.xaxis.max = satOptions.xaxis.max = voltOptions.xaxis.max = tempOptions.xaxis.max = pressOptions.xaxis.max = originalXMax;
+	var inputObjectMin = document.getElementById(objectIdXMin);
+	inputObjectMin.value = "";
+	var inputObjectMax = document.getElementById(objectIdXMax);
+	inputObjectMax.value = "";
+	chanOptions.xaxis.min = trigOptions.xaxis.min = satOptions.xaxis.min = voltOptions.xaxis.min = tempOptions.xaxis.min = pressOptions.xaxis.min = 0;
+	chanOptions.xaxis.max = trigOptions.xaxis.max = satOptions.xaxis.max = voltOptions.xaxis.max = tempOptions.xaxis.max = pressOptions.xaxis.max = 86400;
 	onOffPlot = $.plot($("#channelChart"), [channel1data, channel2data, channel3data, channel4data ], $.extend({}, chanOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel} ]}));
 	$.plot($("#triggerChart"), [triggerdata],$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: triggerdata.ylabel + ' (' + triggerdata.unit + ')'} ]}));
 	$.plot($("#satChart"), [satellitedata],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: satellitedata.ylabel + ' (' + satellitedata.unit + ')'} ]}));
@@ -307,7 +315,6 @@ function onDataLoad1(json) {
 	voltagedata = json.voltage;
 	temperaturedata = json.temperature;
 	pressuredata = json.pressure;
-	originalXMax = chanOptions.xaxes.max;
 	originalChanYMin = chanOptions.yaxis.min;
 	originalChanYMax = chanOptions.yaxis.max;
 	originalTrigYMin = trigOptions.yaxis.min;
