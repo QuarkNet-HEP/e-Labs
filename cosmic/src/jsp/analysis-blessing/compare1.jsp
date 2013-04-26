@@ -141,8 +141,9 @@ request.setAttribute("CR0", br0.getRegisterValue());
 					<table id="xAxesControlTable">
 						<tr>
 							<td>Custom X-axes scale: </td>
-							<td style="background-color: lightGray">Max X: <input type="text" id="maxX" /><input type="button" value="Set" id="maxXButton" onclick='javascript:redrawPlotX(maxX.value);' /></td>
-							<td style="background-color: lightGray"><input type="button" value="Reset" id="resetXButton" onclick='javascript:resetPlotX("maxX");' /></td>
+							<td style="background-color: lightGray">Min X: <input type="text" id="minX" /><input type="button" value="Set" id="minXButton" onclick='javascript:redrawPlotX(minX.value, "min");' /></td>
+							<td style="background-color: lightGray">Max X: <input type="text" id="maxX" /><input type="button" value="Set" id="maxXButton" onclick='javascript:redrawPlotX(maxX.value, "max");' /></td>
+							<td style="background-color: lightGray"><input type="button" value="Reset" id="resetXButton" onclick='javascript:resetPlotX("minX","maxX");' /></td>
 						</tr>
 					</table>
 				</div>
