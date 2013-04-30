@@ -328,6 +328,7 @@ public class ImportData extends AbstractDataTool {
         if (mt == null) {
             mt = Double.valueOf(0);
         }
+        boolean answer = starttime <= mt;
         return starttime <= mt;
     }
 
