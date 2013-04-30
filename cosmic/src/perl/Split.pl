@@ -212,18 +212,15 @@ while(<IN>){
 			$non_datalines ++;
 			next;
 		}
-		print substr($dataRow[11],4,2), " ", substr($year,2,2), "\n";
 		#next if substr($dataRow[11],3,2) >> substr($year,2,2); #more GPS munging GPS date cannot be later than upload or earlier than 1999
 		if (substr($dataRow[11],4,2) > substr($year,2,2)){#more GPS munging
 			$GPSSuspects++;
-			print $., " Year in raw data line is bad, boss\n";
+			#print $., " Year in raw data line is bad, boss\n";
 			next;
 		} 
 		
-		
 		$lastTime = $time;
 				
-		
 		if ($rollover_flag == 5){ #this is a stuck GPS latch
 			next if $flaggedLatch == hex($dataRow[9]);#The latch hasn't advanced yet.
 			if ($flaggedLatch != hex($dataRow[9])){#the rollover has recovered
