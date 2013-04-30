@@ -37,8 +37,9 @@
 			de = (LIGOFileDataEngine) session.getAttribute("de");
 			if (de == null) {
 			    de = LIGOFileDataEngine.getEngine("/disks/i2u2/ligo/data/streams", 
-			            ServiceLIGOFileReader.getFactory("http://localhost:8100"));
-			    session.setAttribute("de", de);
+	    		ServiceLIGOFileReader.getFactory("http://data2:8100"));
+	            //ServiceLIGOFileReader.getFactory("http://localhost:8100"));
+	            session.setAttribute("de", de);
 			}
 		}
 		
