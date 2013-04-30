@@ -758,7 +758,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			#open a NEW split file
 			$index = 0;				#incremented if a split file of this name already exists
 			$fn = "$ID.$year.$month$day.$index";
-			print "$fn\n";
+			#print "$fn\n";
 			#Need a bless file as well with the same file naming scheme
 			$sfn = $fn.".bless";
 
@@ -770,9 +770,9 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			} #end while(-e "$output...
 				
 			open(SPLIT,'>>', "$output_dir/$fn");
-			print "$output_dir/$fn\n";
+			#print "$output_dir/$fn\n";
 			open($blessFile,'>>', "$output_dir/$sfn");
-			print "$output_dir/$sfn\n";
+			#print "$output_dir/$sfn\n";
 			$jd = jd($day, $month, $year, $hour, $min, $sec);	#GPS offset already taken into account from above
 
 			# Write initial metadata for lfn that was just opened
