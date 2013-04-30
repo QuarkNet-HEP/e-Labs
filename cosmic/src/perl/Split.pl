@@ -206,13 +206,20 @@ while(<IN>){
 			#print $_;
 			next;
 		}
-		$lastTime = $time;
 		
 		if ($dataRow[10] eq "000000.000" || $dataRow[9] eq "00000000"){ #munged GPS clock
 			$non_datalines ++;
 			next;
 		}
+		#next if substr($dataRow[11],3,2) >> substr($year,2,2); #more GPS munging GPS date cannot be later than upload or earlier than 1999
+		if (substr($dataRow[11],4,2) > substr($year,2,2)){#more GPS munging
+			$GPSSuspects++;
+			#print $., " Year in raw data line is bad, boss\n";
+			next;
+		} 
 		
+		$lastTime = $time;
+				
 		if ($rollover_flag == 5){ #this is a stuck GPS latch
 			next if $flaggedLatch == hex($dataRow[9]);#The latch hasn't advanced yet.
 			if ($flaggedLatch != hex($dataRow[9])){#the rollover has recovered
@@ -988,6 +995,7 @@ else{
 	#insert metadata which was made from analyzing the WHOLE raw data file
 	$endDateMeta = 2000+substr($date,4,2). "-". substr($date,2,2). "-" . substr($date,0,2);
 	$endTimeMeta = substr($time,0,2). ":" .substr($time,2,2). ":" .substr($time,4,2);
+	$GPSSuspectsTot += $GPSSuspects;
 	`/usr/bin/perl -i -p -e 's/^ThisFileNeverCompletedSplitting.*/enddate date $endDateMeta $endTimeMeta/' "$raw_filename.meta"`;
 	`/usr/bin/perl -i -p -e 's/^totalevents.*/totalevents int $total_events/' "$raw_filename.meta"`;
 	`/usr/bin/perl -i -p -e 's/^nondatalines.*/nondatalines int $non_datalines/' "$raw_filename.meta"`;
