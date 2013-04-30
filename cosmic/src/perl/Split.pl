@@ -200,18 +200,29 @@ while(<IN>){
 	if(/$reData/o){
 		#$non_datalines++;
 		@dataRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16);
+		#print "$. \t", substr($dataRow[10],0,2), "\t",substr($lastTime,0,2) ,"\t", $dataRow[11],"\t", $date,"\n";
 		if (substr($dataRow[10],0,2) == substr($lastTime,0,2) && $dataRow[11] != $date && $dataRow[12] eq "V"){
 			$GPSSuspects++;
 			#print "$GPSSuspects", "\t", "$data_line","\n";
 			#print $_;
 			next;
 		}
-		$lastTime = $time;
 		
 		if ($dataRow[10] eq "000000.000" || $dataRow[9] eq "00000000"){ #munged GPS clock
 			$non_datalines ++;
 			next;
 		}
+		print substr($dataRow[11],4,2), " ", substr($year,2,2), "\n";
+		#next if substr($dataRow[11],3,2) >> substr($year,2,2); #more GPS munging GPS date cannot be later than upload or earlier than 1999
+		if (substr($dataRow[11],4,2) > substr($year,2,2)){#more GPS munging
+			$GPSSuspects++;
+			print $., " Year in raw data line is bad, boss\n";
+			next;
+		} 
+		
+		
+		$lastTime = $time;
+				
 		
 		if ($rollover_flag == 5){ #this is a stuck GPS latch
 			next if $flaggedLatch == hex($dataRow[9]);#The latch hasn't advanced yet.
@@ -378,7 +389,8 @@ while(<IN>){
 		#}
 		$lastDate = $date;
 		$date = $dataRow[11];
-		$time = $dataRow[10]; 
+		$time = $dataRow[10];
+		#print "$. made it through all of the filters.\n"; 
 	}#end of if /$reData/o)
 
 	#the current line is not a data line or has passed the rollover tests. Proceed.
@@ -749,6 +761,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			#open a NEW split file
 			$index = 0;				#incremented if a split file of this name already exists
 			$fn = "$ID.$year.$month$day.$index";
+			print "$fn\n";
 			#Need a bless file as well with the same file naming scheme
 			$sfn = $fn.".bless";
 
@@ -760,8 +773,9 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			} #end while(-e "$output...
 				
 			open(SPLIT,'>>', "$output_dir/$fn");
+			print "$output_dir/$fn\n";
 			open($blessFile,'>>', "$output_dir/$sfn");
-			
+			print "$output_dir/$sfn\n";
 			$jd = jd($day, $month, $year, $hour, $min, $sec);	#GPS offset already taken into account from above
 
 			# Write initial metadata for lfn that was just opened
@@ -988,6 +1002,7 @@ else{
 	#insert metadata which was made from analyzing the WHOLE raw data file
 	$endDateMeta = 2000+substr($date,4,2). "-". substr($date,2,2). "-" . substr($date,0,2);
 	$endTimeMeta = substr($time,0,2). ":" .substr($time,2,2). ":" .substr($time,4,2);
+	$GPSSuspectsTot += $GPSSuspects;
 	`/usr/bin/perl -i -p -e 's/^ThisFileNeverCompletedSplitting.*/enddate date $endDateMeta $endTimeMeta/' "$raw_filename.meta"`;
 	`/usr/bin/perl -i -p -e 's/^totalevents.*/totalevents int $total_events/' "$raw_filename.meta"`;
 	`/usr/bin/perl -i -p -e 's/^nondatalines.*/nondatalines int $non_datalines/' "$raw_filename.meta"`;
