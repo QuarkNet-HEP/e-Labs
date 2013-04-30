@@ -1,19 +1,114 @@
-var DMTStations = [ "EX", "EY", "LVEA", "MX", "MY", "VAULT" ];
-var PEMStations = DMTStations.concat([ "BSC1", "BSC5", "BSC6", "BSC9", "BSC10", "COIL" ]);
-var GDSStations = [ "MONITOR" ];
+/*
+ * EPeronja-04/15/2013: Made a copy of the original advanced.js
+ * 						Need to make changes to work with the current data
+ */
+var PEMStations = [ "LVEA", "EY", "MX", "VAULT" ];
+var DMTStations = [ "LVEA", "EY", "MX", "VAULT" ];
 
-var PEMMagSensors = [ "MAGX", "MAGY", "MAGZ" ];
-var PEMMag1Sensors = [ "MAG1X", "MAG1Y", "MAG1Z "];
-var PEMArmSensors = [ "SEISX", "SEISY", "SEISZ", "TILTX", "TILTY", "TILTT", "RAIN", "WIND", "WINDMPH" ];
-var PEMVaultSensors = ["SEISX", "SEISY", "SEISZ"];
+var PEMSensors = ["SEISX", "SEISY", "SEISZ"];
+var DMTSensors =  ["SEISX_0.03_0.1Hz", "SEISY_0.03_0.1Hz", "SEISZ_0.03_0.1Hz",
+                   "SEISX_0.1_0.3Hz", "SEISY_0.1_0.3Hz", "SEISZ_0.1_0.3Hz",
+                   "SEISX_0.3_1Hz", "SEISY_0.3_1Hz", "SEISZ_0.3_1Hz",
+                   "SEISX_1_3Hz", "SEISY_1_3Hz", "SEISZ_1_3Hz",
+                   "SEISX_3_10Hz", "SEISY_3_10Hz", "SEISZ_3_10Hz",
+                   "SEISX_10_30Hz", "SEISY_10_30Hz", "SEISZ_10_30Hz"];
 
-var DMTSensors = [ 'SEISX_0.03_0.1Hz', 'SEISX_0.1_0.3Hz', 'SEISX_0.3_1Hz', 'SEISX_10_30Hz', 'SEISX_1_3Hz', 'SEISX_3_10Hz',
-                   'SEISY_0.03_0.1Hz', 'SEISY_0.1_0.3Hz', 'SEISY_0.3_1Hz', 'SEISY_10_30Hz', 'SEISY_1_3Hz', 'SEISY_3_10Hz',
-                   'SEISZ_0.03_0.1Hz', 'SEISZ_0.1_0.3Hz', 'SEISZ_0.3_1Hz', 'SEISZ_10_30Hz', 'SEISZ_1_3Hz', 'SEISZ_3_10Hz']; 
+var StationMapping = {
+		"LVEA": "CS_SEIS_LVEA",
+		"EY": "EY_SEIS_VEA",
+		"MX": "MX_SEIS_VEA",
+		"VAULT": "VAULT_SEIS_1030X195Y" 
+};
 
-var GDSSensors = [ 'EARTHQUAKE' ];
+var SensorMapping = {
+		"LVEA_SEISX": "VERTEX_X_DQ",
+		"LVEA_SEISY": "VERTEX_Y_DQ",
+		"LVEA_SEISZ": "VERTEX_Z_DQ",
+		"EY_SEISX": "FLOOR_X_DQ",
+		"EY_SEISY": "FLOOR_Y_DQ",
+		"EY_SEISZ": "FLOOR_Z_DQ",
+		"MX_SEISX": "FLOOR_X_DQ",
+		"MX_SEISY": "FLOOR_Y_DQ",
+		"MX_SEISZ": "FLOOR_Z_DQ",
+		"VAULT_SEISX": "STS2_X_DQ",
+		"VAULT_SEISY": "STS2_Y_DQ",
+		"VAULT_SEISZ": "STS2_Z_DQ",
+		"LVEA_SEISX_0.03_0.1Hz": "VERTEX_X_BLRMS_30MHZ100",
+		"LVEA_SEISY_0.03_0.1Hz": "VERTEX_Y_BLRMS_30MHZ100",
+		"LVEA_SEISZ_0.03_0.1Hz": "VERTEX_Z_BLRMS_30MHZ100",
+		"LVEA_SEISX_0.1_0.3Hz": "VERTEX_X_BLRMS_100MHZ300",
+		"LVEA_SEISY_0.1_0.3Hz": "VERTEX_Y_BLRMS_100MHZ300",
+		"LVEA_SEISZ_0.1_0.3Hz": "VERTEX_Z_BLRMS_100MHZ300",
+		"LVEA_SEISX_0.3_1Hz": "VERTEX_X_BLRMS_300MHZ10000",
+		"LVEA_SEISY_0.3_1Hz": "VERTEX_Y_BLRMS_300MHZ10000",
+		"LVEA_SEISZ_0.3_1Hz": "VERTEX_Z_BLRMS_300MHZ10000",
+		"LVEA_SEISX_1_3Hz": "VERTEX_X_BLRMS_1HZ3",		
+		"LVEA_SEISY_1_3Hz": "VERTEX_Y_BLRMS_1HZ3",		
+		"LVEA_SEISZ_1_3Hz": "VERTEX_Z_BLRMS_1HZ3",	
+		"LVEA_SEISX_3_10Hz": "VERTEX_X_BLRMS_3HZ10",			
+		"LVEA_SEISY_3_10Hz": "VERTEX_Y_BLRMS_3HZ10",			
+		"LVEA_SEISZ_3_10Hz": "VERTEX_Z_BLRMS_3HZ10",			
+		"LVEA_SEISX_10_30Hz": "VERTEX_X_BLRMS_10HZ30",
+		"LVEA_SEISY_10_30Hz": "VERTEX_Y_BLRMS_10HZ30",
+		"LVEA_SEISZ_10_30Hz": "VERTEX_Z_BLRMS_10HZ30",
 
-var DMTPrefix = "";
+		"EY_SEISX_0.03_0.1Hz": "FLOOR_X_BLRMS_30MHZ100",
+		"EY_SEISY_0.03_0.1Hz": "FLOOR_Y_BLRMS_30MHZ100",
+		"EY_SEISZ_0.03_0.1Hz": "FLOOR_Z_BLRMS_30MHZ100",
+		"EY_SEISX_0.1_0.3Hz": "FLOOR_X_BLRMS_100MHZ300",
+		"EY_SEISY_0.1_0.3Hz": "FLOOR_Y_BLRMS_100MHZ300",
+		"EY_SEISZ_0.1_0.3Hz": "FLOOR_Z_BLRMS_100MHZ300",
+		"EY_SEISX_0.3_1Hz": "FLOOR_X_BLRMS_300MHZ10000",
+		"EY_SEISY_0.3_1Hz": "FLOOR_Y_BLRMS_300MHZ10000",
+		"EY_SEISZ_0.3_1Hz": "FLOOR_Z_BLRMS_300MHZ10000",
+		"EY_SEISX_1_3Hz": "FLOOR_X_BLRMS_1HZ3",		
+		"EY_SEISY_1_3Hz": "FLOOR_Y_BLRMS_1HZ3",		
+		"EY_SEISZ_1_3Hz": "FLOOR_Z_BLRMS_1HZ3",	
+		"EY_SEISX_3_10Hz": "FLOOR_X_BLRMS_3HZ10",			
+		"EY_SEISY_3_10Hz": "FLOOR_Y_BLRMS_3HZ10",			
+		"EY_SEISZ_3_10Hz": "FLOOR_Z_BLRMS_3HZ10",			
+		"EY_SEISX_10_30Hz": "FLOOR_X_BLRMS_10HZ30",
+		"EY_SEISY_10_30Hz": "FLOOR_Y_BLRMS_10HZ30",
+		"EY_SEISZ_10_30Hz": "FLOOR_Z_BLRMS_10HZ30",
+
+		"MX_SEISX_0.03_0.1Hz": "FLOOR_X_BLRMS_30MHZ100",
+		"MX_SEISY_0.03_0.1Hz": "FLOOR_Y_BLRMS_30MHZ100",
+		"MX_SEISZ_0.03_0.1Hz": "FLOOR_Z_BLRMS_30MHZ100",
+		"MX_SEISX_0.1_0.3Hz": "FLOOR_X_BLRMS_100MHZ300",
+		"MX_SEISY_0.1_0.3Hz": "FLOOR_Y_BLRMS_100MHZ300",
+		"MX_SEISZ_0.1_0.3Hz": "FLOOR_Z_BLRMS_100MHZ300",
+		"MX_SEISX_0.3_1Hz": "FLOOR_X_BLRMS_300MHZ10000",
+		"MX_SEISY_0.3_1Hz": "FLOOR_Y_BLRMS_300MHZ10000",
+		"MX_SEISZ_0.3_1Hz": "FLOOR_Z_BLRMS_300MHZ10000",
+		"MX_SEISX_1_3Hz": "FLOOR_X_BLRMS_1HZ3",		
+		"MX_SEISY_1_3Hz": "FLOOR_Y_BLRMS_1HZ3",		
+		"MX_SEISZ_1_3Hz": "FLOOR_Z_BLRMS_1HZ3",	
+		"MX_SEISX_3_10Hz": "FLOOR_X_BLRMS_3HZ10",			
+		"MX_SEISY_3_10Hz": "FLOOR_Y_BLRMS_3HZ10",			
+		"MX_SEISZ_3_10Hz": "FLOOR_Z_BLRMS_3HZ10",			
+		"MX_SEISX_10_30Hz": "FLOOR_X_BLRMS_10HZ30",
+		"MX_SEISY_10_30Hz": "FLOOR_Y_BLRMS_10HZ30",
+		"MX_SEISZ_10_30Hz": "FLOOR_Z_BLRMS_10HZ30",
+		
+		"VAULT_SEISX_0.03_0.1Hz": "STS2_X_BLRMS_30MHZ100",
+		"VAULT_SEISY_0.03_0.1Hz": "STS2_Y_BLRMS_30MHZ100",
+		"VAULT_SEISZ_0.03_0.1Hz": "STS2_Z_BLRMS_30MHZ100",
+		"VAULT_SEISX_0.1_0.3Hz": "STS2_X_BLRMS_100MHZ300",
+		"VAULT_SEISY_0.1_0.3Hz": "STS2_Y_BLRMS_100MHZ300",
+		"VAULT_SEISZ_0.1_0.3Hz": "STS2_Z_BLRMS_100MHZ300",
+		"VAULT_SEISX_0.3_1Hz": "STS2_X_BLRMS_300MHZ10000",
+		"VAULT_SEISY_0.3_1Hz": "STS2_Y_BLRMS_300MHZ10000",
+		"VAULT_SEISZ_0.3_1Hz": "STS2_Z_BLRMS_300MHZ10000",
+		"VAULT_SEISX_1_3Hz": "STS2_X_BLRMS_1HZ3",		
+		"VAULT_SEISY_1_3Hz": "STS2_Y_BLRMS_1HZ3",		
+		"VAULT_SEISZ_1_3Hz": "STS2_Z_BLRMS_1HZ3",	
+		"VAULT_SEISX_3_10Hz": "STS2_X_BLRMS_3HZ10",			
+		"VAULT_SEISY_3_10Hz": "STS2_Y_BLRMS_3HZ10",			
+		"VAULT_SEISZ_3_10Hz": "STS2_Z_BLRMS_3HZ10",			
+		"VAULT_SEISX_10_30Hz": "STS2_X_BLRMS_10HZ30",
+		"VAULT_SEISY_10_30Hz": "STS2_Y_BLRMS_10HZ30",
+		"VAULT_SEISZ_10_30Hz": "STS2_Z_BLRMS_10HZ30"		
+};
 
 /* For filtered data, rms == mean */ 
 var DMTSampling = [ "rms"];
@@ -31,13 +126,11 @@ function samplingCB(index) {
 	var ptr = null; 
 	
 	switch($("#subsystem_" + index + " :selected").text()) {
-	case "DMT": 
-		ptr = DMTSampling;
-		break;
 	case "PEM":
-	case "GDS": 
 		ptr = Sampling;
 		break;
+	case "DMT":
+		ptr = Sampling;
 	default: 
 		return;
 	}
@@ -51,38 +144,30 @@ function sensorChangeCB(index) {
 	var ptr = null; 
 	
 	switch($("#subsystem_" + index + " :selected").text()) {
-	case "DMT":
-		ptr = DMTSensors;
-		break;
 	case "PEM":
 		switch($("#station_" + index + " :selected").val()) {
-		case "EX":
-		case "EY":
 		case "LVEA":
+		case "EY":
 		case "MX":
-		case "MY":
-			ptr = PEMArmSensors; 
-			break;
 		case "VAULT":
-			ptr = PEMVaultSensors;
-			break;
-		case "BSC5":
-		case "BSC6": 
-		case "BSC9":
-		case "BSC10":
-		case "COIL":
-			ptr = PEMMagSensors;
-			break;
-		case "BSC1":
-			ptr = PEMMag1Sensors;
+			ptr = PEMSensors; 
 			break;
 		default: 
 			return;
 		}	
 		break; 
-	case "GDS":
-		ptr = GDSSensors;
-		break;
+	case "DMT":
+		switch($("#station_" + index + " :selected").val()) {
+		case "LVEA":
+		case "EY":
+		case "MX":
+		case "VAULT":
+			ptr = DMTSensors; 
+			break;
+		default: 
+			return;
+		}	
+		break; 
 	default:
 		return; 
 	}
@@ -97,14 +182,11 @@ function subsystemChangeCB(index) {
 	var ptr = null; 
 	 
 	switch($("#subsystem_" + index + " :selected").text()) {
-	case "DMT": 
-		ptr = DMTStations; 
-		break;
 	case "PEM":
 		ptr = PEMStations; 
 		break;
-	case "GDS":
-		ptr = GDSStations; 
+	case "DMT":
+		ptr = DMTStations; 
 		break;
 	default: 
 		return; 	
@@ -118,8 +200,9 @@ function subsystemChangeCB(index) {
 
 function parseChannel(name) {
 	// H0:DMT-BRMS_PEM_EX_SEISX_0.03_0.1Hz.rms
-	name = name.replace("DMT-BRMS_PEM_", "DMT-");
+	name = name.replace("DMT-", "PEM-");
 	// H0:DMT_EX_SEISX_0.03_0.1Hz.rms
+	console.log(name);
 	s = name.split(":");
 	site = s[0];
 	s = s[1].split("-");
@@ -140,9 +223,19 @@ function parseChannel(name) {
 }
 
 function generateFilename(index) { 
-	return $("#site_" + index + " :selected").val() + ":" + $("#subsystem_" + index + " :selected").val()  + 
-		$("#station_" + index + " :selected").val() + "_" + $("#sensor_" + index + " :selected").val() + "." +
-		$("#sampling_" + index + " :selected").val(); 
+	var subsystem = $("#subsystem_" + index + " :selected").val();
+	var station = $("#station_" + index + " :selected").val();
+	var sensor = $("#sensor_" + index + " :selected").val();
+	
+	//get mappings
+	var mappedStation = StationMapping[station];
+    var mappedSensor = SensorMapping[station + "_" + sensor];
+    
+	subsystem = subsystem.replace("DMT-", "PEM-");	
+	
+	return $("#site_" + index + " :selected").val() + ":" + subsystem + 
+			mappedStation + "_" + mappedSensor + "." +
+			$("#sampling_" + index + " :selected").val(); 
 }
 
 function displayFilename(index) { 
@@ -268,14 +361,12 @@ function addNewRow(index) {
 	
 	// Site Dropdown
 	var siteSelector = $("<select></select>").attr("name", "site").attr("id", "site_" + index).attr("class", "site");
-	siteSelector.append($("<option></option>").attr("value", "H0").text("H0"));
-	siteSelector.append($("<option></option>").attr("value", "L0").text("L0"));
+	siteSelector.append($("<option></option>").attr("value", "H1").text("H0"));
+	siteSelector.append($("<option></option>").attr("value", "L1").text("L0"));
 	
 	// Subsystem Dropdown
 	var subsysSelector = $("<select></select>").attr("name", "subsystem").attr("id", "subsystem_" + index).attr("class", "subsystem");
-	subsysSelector.append($("<option></option>").attr("value", "DMT-BRMS_PEM_").text("DMT"));
 	subsysSelector.append($("<option></option>").attr("value", "PEM-").text("PEM"));
-	subsysSelector.append($("<option></option>").attr("value", "GDS-").text("GDS"));
 	
 	var stationSelector = $("<select></select>").attr("name", "station").attr("id", "station_" + index).attr("class", "station");
 	var sensorSelector = $("<select></select>").attr("name", "sensor").attr("id", "sensor_" + index).attr("class", "sensor");
@@ -299,7 +390,6 @@ function addNewRow(index) {
 	samplingCB(index);
 	displayFilename(index);
 	initBinding();
-	//getDataAndPlotCB();
 }
 
 function initBinding() {
@@ -310,7 +400,6 @@ function initBinding() {
 		sensorChangeCB(index);
 		samplingCB(index);
 		displayFilename(index);
-		//getDataAndPlotCB();
 	});
 
 	/* Change Sensor */ 
@@ -319,13 +408,11 @@ function initBinding() {
 		sensorChangeCB(index); 
 		samplingCB(index);
 		displayFilename(index);
-		//getDataAndPlotCB();
 	}); 
 
 	$(".site, .sensor, .sampling").change(function() {
 		var index = getIndex($(this).attr('id'));
 		displayFilename(index);
-		//getDataAndPlotCB();
 	});
 	
 	$(".removeRow").click(function() {
@@ -333,7 +420,6 @@ function initBinding() {
 		/* delete stuff - should probably switch to simply assigning each row element a class index rather
 		   than appending to ID. Oops. */
 		$("#row_" + index).empty().remove();
-		//getDataAndPlotCB();
 	});
 }
 
@@ -372,23 +458,12 @@ function overrideYLabel(channel, unit) {
 	c = parseChannel(channel);
 	
 	switch (subsystem) {
-		case "DMT":
-			return "Velocity (microns/s)";
 		case "PEM":
 			switch (sensor) {
 				case "SEISX":
 				case "SEISY":
 				case "SEISZ":
-				case "TITLX":
-				case "TILTY":
-				case "TILTT":
 					return "Signal (volts)";
-				case "RAIN":
-					return "Uncalibrated (counts)";
-				case "WIND":
-					return "Speed (meters/s)";
-				case "WINDMPH":
-					return "Speed (mph)";
 				default:
 					return unit;
 			}
@@ -399,7 +474,6 @@ function overrideYLabel(channel, unit) {
 
 function getDataAndPlotCB() {
 	var url = getDataURL();
-    console.log("DataAndPlotCB Url: " + url);
 	var messages = document.getElementById("messages");
 	messages.innerHTML = "";
 	// Get the data via AJAX call
@@ -536,7 +610,6 @@ $(document).ready(function() {
 
 	$("#buttonZoom").click(function() {
 		$("#buttonZoom").attr("disabled", "true");
-		//getDataAndPlotCB();
 	});
 
 	$("#buttonZoomOut").click(function() {
@@ -544,7 +617,6 @@ $(document).ready(function() {
 		xmaxGPSTime = ligoMaxTime;
 		$("#xmin").val((new Date(convertTimeGPSToUNIX(parseFloat(xminGPSTime)) * 1000.0)).toDateString()); 
 		$("#xmax").val((new Date(convertTimeGPSToUNIX(parseFloat(xmaxGPSTime)) * 1000.0)).toDateString());
-		//getDataAndPlotCB(); 
 	});
 	
 	$(".plotButton").bind('click', function() {
