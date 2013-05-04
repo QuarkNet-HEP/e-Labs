@@ -36,7 +36,8 @@ public abstract class AbstractDataTool {
     public static final int MINUTE_TREND = 1;
 
     public static final String[] SITES = new String[] { "LHO", "LLO" };
-    public static final String[] TRENDS = new String[] { "second-trend", "minute-trend" };
+    //public static final String[] TRENDS = new String[] { "second-trend", "minute-trend" };
+    public static final String[] TRENDS = new String[] {"minute-trend"};
     public static final int[] TREND_FILE_DURATION = new int[] { 60, 3600 };
     public static final String LIGO_FILE_EXTENSION = ".gwf";
 
@@ -114,6 +115,15 @@ public abstract class AbstractDataTool {
             put("SEISX_10_30Hz", 1);
             put("SEISY_10_30Hz", 1);
             put("SEISZ_10_30Hz", 1);
+
+            put("1HZ3",1);
+            put("3HZ10", 1);                    
+            put("0MHZ30",1);
+            put("10HZ30", 1);            
+            put("30HZ100", 1);               
+            put("30MHZ100", 1);     
+            put("100MHZ300", 1);     
+            put("300MHZ1000", 1);
             
             put("DQ", 1);
         }
