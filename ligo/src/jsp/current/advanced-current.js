@@ -142,7 +142,7 @@ function samplingCB(index) {
 
 function sensorChangeCB(index) {
 	var ptr = null; 
-	
+	console.log("sensor");	 	
 	switch($("#subsystem_" + index + " :selected").text()) {
 	case "PEM":
 		switch($("#station_" + index + " :selected").val()) {
@@ -180,7 +180,7 @@ function sensorChangeCB(index) {
 
 function subsystemChangeCB(index) { 
 	var ptr = null; 
-	 
+	console.log("subsystem");	 
 	switch($("#subsystem_" + index + " :selected").text()) {
 	case "PEM":
 		ptr = PEMStations; 
@@ -367,7 +367,6 @@ function addNewRow(index) {
 	// Subsystem Dropdown
 	var subsysSelector = $("<select></select>").attr("name", "subsystem").attr("id", "subsystem_" + index).attr("class", "subsystem");
 	subsysSelector.append($("<option></option>").attr("value", "PEM-").text("PEM"));
-	subsysSelector.append($("<option></option>").attr("value", "PEM-").text("DMT"));
 	
 	var stationSelector = $("<select></select>").attr("name", "station").attr("id", "station_" + index).attr("class", "station");
 	var sensorSelector = $("<select></select>").attr("name", "sensor").attr("id", "sensor_" + index).attr("class", "sensor");
@@ -385,7 +384,7 @@ function addNewRow(index) {
 			$("<td></td>").append(samplingSelector)).append(
 			$("<td></td>").append(nameLabel))
 	)
-				
+	console.log("addnewrow");
 	subsystemChangeCB(index); 
 	sensorChangeCB(index);
 	samplingCB(index);
@@ -397,6 +396,7 @@ function initBinding() {
 	/* Change Station */ 
 	$(".subsystem").change(function() {
 		var index = getIndex($(this).attr('id'));
+		console.log("initBinding " + index);
 		subsystemChangeCB(index); 
 		sensorChangeCB(index);
 		samplingCB(index);
@@ -537,6 +537,7 @@ function exportAllData() {
 }
 $(document).ready(function() {
 	/* Initialize the initial dropdown list */ 
+	console.log("readyfunction");
 	subsystemChangeCB(0);
 	sensorChangeCB(0);
 	samplingCB(0);

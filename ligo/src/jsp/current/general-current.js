@@ -129,8 +129,6 @@ $(document).ready(function() {
 		ligoMaxTime = series.maxTime;
 		$("#xmin").val((new Date(convertTimeGPSToUNIX(parseFloat(xminGPSTime)) * 1000.0)).toDateString()); 
 		$("#xmax").val((new Date(convertTimeGPSToUNIX(parseFloat(xmaxGPSTime)) * 1000.0)).toDateString());
-		console.log(document.getElementById("xmin").value);
-		console.log(document.getElementById("xmax").value);		
 		ligoMaxRange = ligoMaxTime - ligoMinTime; 
 
 		$("#slider").slider( { min: 0, max: 1200, value: 600} );
