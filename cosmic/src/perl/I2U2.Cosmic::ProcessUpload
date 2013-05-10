@@ -29,6 +29,8 @@ while [ "$1" != "" ]; do
 			DATADIR=${P#datadir=}
 		elif [ "${P#detectorid=}" != "$P" ]; then
 			DETECTOR=${P#detectorid=}
+		elif [ "${P#benchmark=}" != "$P" ]; then
+		    BENCHMARK=${P#benchmark=}	
 		fi
 		shift
 	else
@@ -39,10 +41,11 @@ done
 check "input file" $IN
 check "datadir" $DATADIR
 check "detectorid" $DETECTOR
+check "benchmark" @BENCHMARK
 
 ls -al $IN
 
-$APPDIR/Split.pl "$IN" $DATADIR/$DETECTOR $DETECTOR 2>&1
+$APPDIR/Split.pl "$IN" $DATADIR/$DETECTOR $DETECTOR @BENCHMARK 2>&1
 if [ "$?" != "0" ]; then 
 	error "Split failed" 
 fi

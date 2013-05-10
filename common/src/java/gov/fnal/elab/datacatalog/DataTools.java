@@ -66,7 +66,10 @@ public class DataTools {
         KEYS.put("ConReg0", 13);
         KEYS.put("ConReg1", 14);
         KEYS.put("ConReg2", 15);
-        KEYS.put("ConReg3", 16);       
+        KEYS.put("ConReg3", 16);      
+        //EPeronja-04/25/2013: Golden File attributes
+        KEYS.put("goldenfile", 17);
+        KEYS.put("goldendefault", 18);
     }
 
     public static final int SCHOOL = 0;
@@ -87,6 +90,9 @@ public class DataTools {
     public static final int CONREG1 = 14;
     public static final int CONREG2 = 15;
     public static final int CONREG3 = 16;
+    //EPeronja-04/25/2013: Golden File attributes
+    public static final int GOLDENFILE = 17;
+    public static final int GOLDENDEFAULT = 18;
     
     public static final String MONTH_FORMAT = "MMMM yyyy";
 
@@ -214,7 +220,19 @@ public class DataTools {
             	System.out.println("WARNING: File " + e.getLFN() + " does not have register 3 conf. Skipping.");
             	continue;
             }
-
+            //EPeronja-04/25/2013: Golden File attributes
+            try {
+            	file.setGoldenFile((Boolean) data[GOLDENFILE]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have golden file. Skipping.");
+            	continue;
+            }
+            try {
+            	file.setGoldenDefault((Boolean) data[GOLDENDEFAULT]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have default golden file. Skipping.");
+            	continue;
+            }  
             if (file.getStartDate() == null) {
             	System.out.println("WARNING: File " + e.getLFN() + " is missing the start date. Skipping.");
             	continue;

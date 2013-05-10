@@ -311,6 +311,8 @@ public class StructuredResultSet {
         private long totalEvents; 
         private String blessfile;
         private String conreg0, conreg1, conreg2, conreg3;
+        //EPeronja-04/25/2013: Golden File attributes
+        Boolean goldenfile, goldendefault;
 
         public File(String lfn) {
             this.lfn = lfn;
@@ -370,7 +372,19 @@ public class StructuredResultSet {
         public java.util.Date getDate() {
             return startDate;
         }
-
+        //EPeronja-04/25/2013: Golden File attributes
+        public void setGoldenFile(Boolean goldenfile){
+        	this.goldenfile = goldenfile;
+        }
+        public boolean getGoldenfile(){
+        	return this.goldenfile;
+        }
+        public void setGoldenDefault(Boolean goldendefault){
+        	this.goldendefault = goldendefault;
+        }
+        public boolean getGoldenDefault(){
+        	return this.goldendefault;
+        }
         public void setDate(java.util.Date date) {
             this.startDate = date;
         }

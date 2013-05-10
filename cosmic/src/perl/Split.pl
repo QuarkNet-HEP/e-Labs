@@ -2,7 +2,7 @@
 
 #Script for splitting user uploaded files according to the Julian Day of the first event
 #
-# usage: Split.pl [filename to parse] [output directory] [board ID]
+# usage: Split.pl [filename to parse] [output directory] [board ID] [benchmark]
 #
 # Paul Nepywoda, FNAL 1/2004
 # revised, Yong Zhao, Mike Wilde, U.Chicago/Argonne, 3/2004
@@ -26,9 +26,10 @@
 # jordant changed 11-01-10: checking to see if user is doing ST2 or ST3 when writing raw data. Knowing which one is crucial to data blessing.
 # jordant changed 5 Oct 11: fixing bug 372
 # jordant changed 4 Jan 13: fixing bug 517
+# EPeronja changed 9 Apr 13: adding the benchmark parameter
 
 if($#ARGV < 2){
-	die "usage: Split.pl [filename to parse] [output DIRECTORY] [board ID]\n";
+	die "usage: Split.pl [filename to parse] [output DIRECTORY] [board ID] [benchmark] \n";
 }
 
 use Time::Local 'timegm_nocheck';
@@ -60,6 +61,8 @@ $today_time = sprintf("%02d:%02d:%02d", $hour, $min, $sec);
 $raw_filename = $ARGV[0];
 $output_dir=$ARGV[1];
 $ID = $ARGV[2];
+$benchmark = $ARGV[3];
+
 open IN, $raw_filename;
 
 # Create and/or ensure output directory is writeable
@@ -741,6 +744,11 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					}
 
 					close $blessFile;	
+
+					#bless or curse based on blessfile and benchmark
+					#calculate length of file in seconds for the file that was just split
+					$enddate = 2000+substr($lastDate,4,2). "-". substr($lastDate,2,2). "-" . substr($lastDate,0,2) . " " .substr($lastTime,0,2). ":" .substr($lastTime,2,2). ":" .substr($lastTime,4,2);
+					compare_to_benchmark($enddate, $earliest_start, $benchmark, $chan0, $chan1, $chan2, $chan3, $events);
 					
 					#Empty all of the status arrays so that they can start over with the new split file.
 					@stTime = @StCoutTemp = @stCount0 = @stRate0 = @stCount1 = @stRate1 = @stCount2 = @stRate2 = @stCount3 = @stRate3 = @stEvents = @stRateEvents = @stType = @stPress = @stTemp = @StVcc = @stGPSSats = @stRow =  @cpld_frequency1 = @cpld_frequency2 = @stCountTemp = ();
@@ -992,6 +1000,12 @@ else{
 	}
 					
 	close $blessFile;	
+	
+	#bless or curse based on blessfile and benchmark
+	#calculate length of file in seconds for the file that was just split
+	$enddate = 2000+substr($lastDate,4,2). "-". substr($lastDate,2,2). "-" . substr($lastDate,0,2) . " " .substr($lastTime,0,2). ":" .substr($lastTime,2,2). ":" .substr($lastTime,4,2);
+	compare_to_benchmark($enddate, $earliest_start, $benchmark, $chan0, $chan1, $chan2, $chan3, $events);
+
 	#write the channel counts for the last split file
 	#Why is this here? Do we print this on the line confiming the upload? If so, it's wrong--it only holds the counts for the _last_ file.
 	#print "$chan0 $chan1 $chan2 $chan3\n";
@@ -1029,6 +1043,62 @@ else{
 	}
 }
 
+sub compare_to_benchmark {
+	#this will decide whether to bless/curse the split file based on the benchmark
+	($enddate, $earliest_start, $benchmark, $chan0, $chan1, $chan2, $chan3, $events) = @_;	
+	if ($benchmark) {
+		
+		#length of file in seconds
+		$duration = substr($enddate,11,2)*3600+substr($enddate,14,2)*60 + substr($enddate,17,2) - substr($earliest_start,11,2)*3600 - substr($earliest_start,14,2)*60 - substr($earliest_start,17,2); 
+		#add duration checking
+		$chan0Rate = $chan0/$duration;
+		$chan1Rate = $chan1/$duration;
+		$chan2Rate = $chan2/$duration;
+		$chan3Rate = $chan3/$duration;
+		$triggerRate = $events/$duration;
+		#open benchmark file
+		open(BM, '<', "$output_dir/$benchmark") || die "Cannot open";
+		$result = "pass";
+		#read lines from benchmark file and see if this split file passes or fails the check
+		while(<BM> && $result == "pass") {
+			@benchmarkrow = split /\s+/;
+			if ($benchmarkrow[0] eq "###Seconds") {
+				next;
+			}
+			if ($chan0Rate < $benchmarkrow[1] + $benchmarkrow[2] || $chan0Rate > $benchmarkrow[1] - $benchmarkrow[2] ) {
+				$result = "pass";
+			} else {
+				$result = "fail";
+			}
+			if ($chan1Rate < $benchmarkrow[3] + $benchmarkrow[4] || $chan1Rate > $benchmarkrow[3] - $benchmarkrow[4] ) {
+				$result = "pass";
+			} else {
+				$result = "fail";
+			}
+			if ($chan2Rate < $benchmarkrow[5] + $benchmarkrow[6] || $chan1Rate > $benchmarkrow[5] - $benchmarkrow[6] ) {
+				$result = "pass";
+			} else {
+				$result = "fail";
+			}
+			if ($chan3Rate < $benchmarkrow[7] + $benchmarkrow[8] || $chan1Rate > $benchmarkrow[7] - $benchmarkrow[8] ) {
+				$result = "pass";
+			} else {
+				$result = "fail";
+			}
+			if ($triggerRate < $benchmarkrow[9] + $benchmarkrow[10] || $triggerRate > $benchmarkrow[9] - $benchmarkrow[10] ) {
+				$result = "pass";
+			} else {
+				$result = "fail";
+			}
+		}#end while
+		#to bless or not to bless!
+		if ($result == "pass") {
+				print META "blessed boolean true\n";			
+		} else {
+				print META "blessed boolean false\n";						
+		}
+	}
+}#end of compare_to_benchmark
 
 sub gps_check{
     #thanks to Nick Dettman for his research into this

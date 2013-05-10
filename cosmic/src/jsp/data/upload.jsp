@@ -8,8 +8,10 @@
 <%@ page import="java.text.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.impl.vds.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
+<%@ page import="gov.fnal.elab.cosmic.bless.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="org.apache.commons.fileupload.*" %>
 <%@ page import="org.apache.commons.fileupload.disk.*" %>
@@ -21,7 +23,6 @@
 <%@ page import="gov.fnal.elab.cosmic.beans.Geometries" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
-
 
 <%--
 Re: the upload progress stuff
@@ -54,6 +55,35 @@ Re: the upload progress stuff
     }
     request.setAttribute("detectorIDs", ids);
 
+	//get detectors
+	TreeMap<Integer, Boolean> goldenFileUse = (TreeMap<Integer, Boolean>) cp.getDetectorBenchmarkFileUse(user);
+    
+	//retrieve existing golden files
+	ResultSet searchResults = null;
+	TreeMap<Integer, String> detectorDF = new TreeMap<Integer, String>();
+	TreeMap<String, VDSCatalogEntry> fileGF = new TreeMap<String, VDSCatalogEntry>();
+	for(Map.Entry<Integer,Boolean> entry : goldenFileUse.entrySet()) {
+		  Integer key = entry.getKey();
+		  Boolean value = entry.getValue();
+		  if (value) {
+	  		//retrieve golden files from database
+	  		searchResults = Benchmark.getBenchmarkFileName(elab, key);
+	  		String[] filenames = searchResults.getLfnArray();
+			for (int i = 0; i < filenames.length; i++){
+				VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filenames[i]);
+				if (entry != null) {
+					detectorDF.put(key, filenames[i]);
+					fileGF.put(filenames[i], e);
+				}				
+			}
+		  }
+		}
+	request.setAttribute("goldenFileUse", goldenFileUse);
+	request.setAttribute("detectorDF", detectorDF);
+	request.setAttribute("fileGF", fileGF);
+	
+    
+    
 	String lfn="";              //lfn on the USERS home computer
 	String fn = "";             //filename without slashes
 	String ds = "";
@@ -61,6 +91,8 @@ Re: the upload progress stuff
 	String comments = "";       //optional comments on raw data file
 	String dataDir = elab.getProperties().getDataDir();
 	request.setAttribute("datadir", dataDir);
+	String benchmark = "";
+	String usebenchmark = "";
 	int channels[] = new int[4];
 	
 	File tempRepo = new File(dataDir + "/temp"); 
@@ -92,6 +124,16 @@ Re: the upload progress stuff
     				}
     				else {
     					detectorId = content;
+    				}
+    			}
+    			else if (("usebenchmark_"+detectorId).equals(name)) {
+    				usebenchmark = content;
+    			}
+    			else if (("benchmark_"+detectorId).equals(name)) {
+    				benchmark = content;
+    				String extension = benchmark.substring(benchmark.length() - 6);
+    				if (!extension.equals(".bless")) {
+    					benchmark = "";
     				}
     			}
     			else if ("comments".equals(name)) {
@@ -131,10 +173,16 @@ Re: the upload progress stuff
                	else {
                		fi.getStoreLocation().renameTo(f);
                	}
+
+               	if (usebenchmark.equals("false")) {
+               		benchmark = "";
+               	}
+
        	        out.println("<!-- " + rawName + " added to Catalog -->");
        	        request.setAttribute("in", f.getAbsolutePath());
        	        request.setAttribute("detectorid", detectorId);
        	        request.setAttribute("comments", comments);
+       	        request.setAttribute("benchmark", benchmark);
 
 				%>
 					<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUpload" impl="generic">
@@ -142,6 +190,7 @@ Re: the upload progress stuff
 						<e:trdefault name="datadir" value="${datadir}"/>
 						<e:trdefault name="detectorid" value="${detectorid}"/>
 						<e:trdefault name="comments" value="${comments}"/>
+						<e:trdefault name="benchmark" value="${benchmark}"/>
 						
 						<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload">
 							<jsp:param name="provider" value="shell"/>
@@ -197,9 +246,50 @@ Re: the upload progress stuff
 </div>
 	<p>
 		<u>Choose <label for="detector">detector</label></u><br />	
-		<c:forEach items="${detectorIDs}" var="d">
-			<input type="radio" name="detector" value="${d}" />${d}
-		</c:forEach>
+		<table style="text-align: left; margin-left: 5%;" width="100%">
+		    <tr>
+		    	<td><strong>Detector</strong></td>
+		    	<td><strong>Use Benchmark?</strong></td>
+		    	<td><strong>Choose Benchmark File</strong></td>
+		    </tr>
+			<c:forEach items="${detectorIDs}" var="d">
+			  	<tr><td><input type="radio" name="detector" value="${d}"/>${d}</td>
+				<c:forEach items="${goldenFileUse}" var="goldenFileUse">
+				  <c:choose>
+				     <c:when test="${goldenFileUse.key == d}">
+								<td style="text-align: center;">${goldenFileUse.value}
+									<input type="hidden" name="usebenchmark_${d}" value="${goldenFileUse.value}"></input>
+								</td>
+							<c:choose>
+								<c:when test="${goldenFileUse.value == true}">
+									<c:forEach var="datafile" items="${detectorDF}">
+										<c:choose>
+											<c:when test="${datafile.key == d}">
+								    			<td><select name="benchmark_${d}">
+								    				<c:forEach items="${fileGF}" var="goldenFiles">
+								    					<c:choose>
+								    						<c:when test="${ goldenFiles.value.tupleMap.goldendefault == true }">
+								    							<option value="${goldenFiles.key}.bless" selected="selected">${goldenFiles.key} - ${goldenFiles.value.tupleMap.goldendefault}</option>
+								    						</c:when>
+								    						<c:otherwise>
+								    							<option value="${goldenFiles.key}.bless">${goldenFiles.key} - ${goldenFiles.value.tupleMap.goldendefault}</option>
+								    						</c:otherwise>
+								    					</c:choose>
+								    				</c:forEach>
+								    			</select></td></tr>
+								    		</c:when>
+											<c:otherwise>
+												<td>No Golden Files have been selected</td>
+											</c:otherwise>
+								    	</c:choose>
+								    </c:forEach>
+								</c:when>
+							</c:choose>
+					</c:when>
+				  </c:choose>
+				</c:forEach>
+			</c:forEach>
+		</table>
     </p>
 	<p>
 		<label for="ds">Raw Data File:</label>
