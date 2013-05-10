@@ -367,6 +367,7 @@ function addNewRow(index) {
 	// Subsystem Dropdown
 	var subsysSelector = $("<select></select>").attr("name", "subsystem").attr("id", "subsystem_" + index).attr("class", "subsystem");
 	subsysSelector.append($("<option></option>").attr("value", "PEM-").text("PEM"));
+	subsysSelector.append($("<option></option>").attr("value", "DMT-").text("DMT"));
 	
 	var stationSelector = $("<select></select>").attr("name", "station").attr("id", "station_" + index).attr("class", "station");
 	var sensorSelector = $("<select></select>").attr("name", "sensor").attr("id", "sensor_" + index).attr("class", "sensor");
