@@ -3,13 +3,12 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
-<!-- EPeronja-05/10/2013: Added a new index to display LIGO latest data.
-						  New sites, subsystems, stations and sensors drop downs -->
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>LIGO Current Data</title>
+		<title>Current Data</title>
 		<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../include/excanvas.min.js"></script><![endif]-->
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
@@ -46,7 +45,7 @@
 			<div id="content">
 				<noscript><b>This page requires Javascript</b><br /><br /></noscript>
 				<%-- Scripts need to be loaded after nav-rollover since that is where the js pages live --%>
-				<script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.js"></script>
+				<script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.min.js"></script>
 			    <script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.selection.min.js"></script>
 			    <script src="general-current.js" type="text/javascript"></script> <%-- General common stuff --%>
 			    <script src="advanced-current.js" type="text/javascript"></script> <%-- Advanced Mode --%>
@@ -178,6 +177,7 @@
 						<td class="toolbox-content">
 							<input id="savePlotToDisk" type="button" value="Save Plot"></input>
 							<input id="exportData" type="button" value="Export Data Points"></input>
+							<input id="exportAllData" type="button" value="Export All Data"</input>
 						</td>
 						<td class="toolbox-content">
 							<a href="#" target="_new" id="savedPlotLink" style="display: none;">View saved plot (popup)</a>

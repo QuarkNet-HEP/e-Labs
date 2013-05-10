@@ -22,11 +22,11 @@ public class ProcessTools {
         String err = getOutput(p.getErrorStream());
         
         p.getOutputStream().close(); // Need to flush stdin, too?  
-     
+
+        
         //if (ec != 0) {
         //    throw new ToolException(desc + " failed for " + f + ": " + err);
         //}
-        
         return out;
     }
 

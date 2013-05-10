@@ -71,7 +71,6 @@
 						<%--
 						<li><a href="/ligo/tla/tutorial.php">Tutorial</a></li>
 						--%>
-						<%-- EPeronja-05/10/2013: Added a link to LIGO latest data--%>
 						<li><a href="../current/">2013-Current</a></li>
 						<li><a href="../bluestone/">March 2003-June 2011</a></li>
 						<li><a href="../plots/">Plots</a></li>
