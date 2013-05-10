@@ -202,7 +202,7 @@ function parseChannel(name) {
 	// H0:DMT-BRMS_PEM_EX_SEISX_0.03_0.1Hz.rms
 	name = name.replace("DMT-", "PEM-");
 	// H0:DMT_EX_SEISX_0.03_0.1Hz.rms
-	console.log(name);
+
 	s = name.split(":");
 	site = s[0];
 	s = s[1].split("-");

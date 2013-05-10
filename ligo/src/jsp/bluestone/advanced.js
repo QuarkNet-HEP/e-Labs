@@ -399,7 +399,7 @@ function overrideYLabel(channel, unit) {
 
 function getDataAndPlotCB() {
 	var url = getDataURL();
-    console.log("DataAndPlotCB Url: " + url);
+
 	var messages = document.getElementById("messages");
 	messages.innerHTML = "";
 	// Get the data via AJAX call
