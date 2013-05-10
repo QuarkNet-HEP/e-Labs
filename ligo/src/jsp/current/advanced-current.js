@@ -2,8 +2,7 @@
  * EPeronja-04/15/2013: Made a copy of the original advanced.js
  * 						Need to make changes to work with the current data
  */
-var PEMStations = [ "LVEA", "EY", "MX", "VAULT" ];
-var DMTStations = [ "LVEA", "EY", "MX", "VAULT" ];
+var Stations = [ "LVEA", "EY", "MX", "VAULT" ];
 
 var PEMSensors = ["SEISX", "SEISY", "SEISZ"];
 var DMTSensors =  ["SEISX_0.03_0.1Hz", "SEISY_0.03_0.1Hz", "SEISZ_0.03_0.1Hz",
@@ -127,10 +126,9 @@ function samplingCB(index) {
 	
 	switch($("#subsystem_" + index + " :selected").text()) {
 	case "PEM":
-		ptr = Sampling;
-		break;
 	case "DMT":
 		ptr = Sampling;
+		break;
 	default: 
 		return;
 	}
@@ -142,7 +140,6 @@ function samplingCB(index) {
 
 function sensorChangeCB(index) {
 	var ptr = null; 
-	console.log("sensor");	 	
 	switch($("#subsystem_" + index + " :selected").text()) {
 	case "PEM":
 		switch($("#station_" + index + " :selected").val()) {
@@ -180,13 +177,10 @@ function sensorChangeCB(index) {
 
 function subsystemChangeCB(index) { 
 	var ptr = null; 
-	console.log("subsystem");	 
 	switch($("#subsystem_" + index + " :selected").text()) {
 	case "PEM":
-		ptr = PEMStations; 
-		break;
 	case "DMT":
-		ptr = DMTStations; 
+		ptr = Stations; 
 		break;
 	default: 
 		return; 	
@@ -202,7 +196,6 @@ function parseChannel(name) {
 	// H0:DMT-BRMS_PEM_EX_SEISX_0.03_0.1Hz.rms
 	name = name.replace("DMT-", "PEM-");
 	// H0:DMT_EX_SEISX_0.03_0.1Hz.rms
-	console.log(name);
 	s = name.split(":");
 	site = s[0];
 	s = s[1].split("-");
@@ -384,7 +377,6 @@ function addNewRow(index) {
 			$("<td></td>").append(samplingSelector)).append(
 			$("<td></td>").append(nameLabel))
 	)
-	console.log("addnewrow");
 	subsystemChangeCB(index); 
 	sensorChangeCB(index);
 	samplingCB(index);
@@ -396,7 +388,6 @@ function initBinding() {
 	/* Change Station */ 
 	$(".subsystem").change(function() {
 		var index = getIndex($(this).attr('id'));
-		console.log("initBinding " + index);
 		subsystemChangeCB(index); 
 		sensorChangeCB(index);
 		samplingCB(index);
@@ -531,13 +522,8 @@ function exportData() {
 	window.open(url);
 }
 
-function exportAllData() {
-	var url = getAllDataURL() + "&format=text";
-	window.open(url);
-}
 $(document).ready(function() {
 	/* Initialize the initial dropdown list */ 
-	console.log("readyfunction");
 	subsystemChangeCB(0);
 	sensorChangeCB(0);
 	samplingCB(0);
@@ -561,11 +547,6 @@ $(document).ready(function() {
 		exportData();
 	});
 	
-	//EPeronja-04/01/2013: Ligo request: to export all data rather than the plotted data
-	$("#exportAllData").bind("click", function() {
-		exportAllData();
-	});
-
 	$("#savePlotToDiskCommit").bind('click', function() {
 		// need start, end, channels, title 
 		var title = $("#userPlotTitle").val(); 
@@ -575,7 +556,7 @@ $(document).ready(function() {
 		});
 		var channels = channelArray.join(",");
 		$.ajax({
-			url: "savechart.jsp", 
+			url: "../bluestone/savechart.jsp", 
 			type: "GET",
 			dataType: "json",
 			data: { startTime: xminGPSTime, endTime: xmaxGPSTime, title: title, channels: channels, logScale: logCheckedY },

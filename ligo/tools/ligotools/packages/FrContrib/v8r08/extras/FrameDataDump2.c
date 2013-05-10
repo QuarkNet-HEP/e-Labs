@@ -7,6 +7,10 @@
 #include <math.h>
 #include <string.h>
 
+/* EPeronja-05/10/2013: Added more messages to be able to trace what the code was doing to make this 
+						work with LIGO latest data.
+*/
+
 /*Frames will be considered nonsequencial if the time between two frames is
   greater than this*/
 #define RESOLUTION 3.2e-3

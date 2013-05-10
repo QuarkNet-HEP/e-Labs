@@ -1,5 +1,7 @@
 /*
  * Created on Jan 28, 2010
+ * EPeronja-05/10/2013: Added new items to SAMPLING_RATE_ADJUST to work with LIGO latest data.
+ * 
  */
 package gov.fnal.elab.ligo.data.convert;
 
@@ -115,6 +117,7 @@ public abstract class AbstractDataTool {
             put("SEISY_10_30Hz", 1);
             put("SEISZ_10_30Hz", 1);
 
+            //EPeronja-05/10/2013: Added new sensors for latest data.
             put("1HZ3",1);
             put("3HZ10", 1);                    
             put("0MHZ30",1);

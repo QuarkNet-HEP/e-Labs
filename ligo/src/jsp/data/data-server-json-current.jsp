@@ -9,7 +9,8 @@
 
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
-
+<!-- EPeronja-05/10/2013: This jsp works with the latest LIGO data. Main difference with 
+						  data-server-json.jsp is the max date -->
 <%
 	if (user != null) { // require login to access data 
 		response.setContentType("application/json");
@@ -37,8 +38,8 @@
 			de = (LIGOFileDataEngine) session.getAttribute("de");
 			if (de == null) {
 			    de = LIGOFileDataEngine.getEngine("/disks/i2u2/ligo/data/streams", 
-	    			ServiceLIGOFileReader.getFactory("http://data2:8100"));
-	            //ServiceLIGOFileReader.getFactory("http://localhost:8100"));
+	    			//ServiceLIGOFileReader.getFactory("http://data2:8100"));
+	            ServiceLIGOFileReader.getFactory("http://localhost:8100"));
 	            session.setAttribute("de", de);
 			}
 		}
@@ -59,18 +60,6 @@
 		    final double min = 1050782460.0; 
 		    ConvertUnixToGPS cutg = new ConvertUnixToGPS();
 			final double max = cutg.convert(unixTime.doubleValue());
-		    //List<DataPath> paths = de.getPaths();
-		    //double max = Double.MIN_VALUE;
-		    //for (DataPath dp : paths) {
-		    	//try {
-			        //if (dp.getTotalRange().getEnd().doubleValue() > max) {
-			            //max = dp.getTotalRange().getEnd().doubleValue();
-			        //}
-		    	//}
-		    	//catch(NullPointerException nfe) {
-		    		// do nothing if the data is missing start/end data. 
-		    	//}
-		    //}
 		    JsonObject jo = new JsonObject();
 		    jo.addProperty("minTime", min);
 		    jo.addProperty("maxTime", max);

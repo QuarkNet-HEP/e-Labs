@@ -155,7 +155,6 @@ $(document).ready(function() {
 		if (c == "placeholder") {
 			return;
 		}
-		console.log("getdataparms: " + c);
 		var url = dataServerUrl + '?fn=getData&params=' + c + ',0,' + xminGPSTime + ',' + xmaxGPSTime;
 
 		// Get the data via AJAX call
@@ -170,7 +169,6 @@ $(document).ready(function() {
 		});
 
 		function onChannelDataReceived(series) { 
-			console.log("series: " + series);
 			var s = series.split(" ");
 			var a = new Array();
 			var num = s[0];
@@ -178,7 +176,6 @@ $(document).ready(function() {
 				a.push([convertTimeGPSToUNIX(parseFloat(s[i * 2 + 1])) * 1000.0, s[i * 2 + 2]]);
 			}
 			data = [{data: a, shadowSize: 0}];
-			console.log("data: " + data);
 			plot = $.plot(placeholder, data, options); 
 
 			updateSliderPositionCB(plot); 

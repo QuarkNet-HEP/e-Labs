@@ -456,10 +456,6 @@ function exportData() {
 	window.open(url);
 }
 
-function exportAllData() {
-	var url = getAllDataURL() + "&format=text";
-	window.open(url);
-}
 $(document).ready(function() {
 	/* Initialize the initial dropdown list */ 
 	subsystemChangeCB(0);
@@ -485,11 +481,6 @@ $(document).ready(function() {
 		exportData();
 	});
 	
-	//EPeronja-04/01/2013: Ligo request: to export all data rather than the plotted data
-	$("#exportAllData").bind("click", function() {
-		exportAllData();
-	});
-
 	$("#savePlotToDiskCommit").bind('click', function() {
 		// need start, end, channels, title 
 		var title = $("#userPlotTitle").val(); 

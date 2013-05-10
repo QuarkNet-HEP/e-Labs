@@ -207,7 +207,6 @@
 						<td class="toolbox-content">
 							<input id="savePlotToDisk" type="button" value="Save Plot"></input>
 							<input id="exportData" type="button" value="Export Data Points"></input>
-							<input id="exportAllData" type="button" value="Export All Data"</input>
 						</td>
 						<td class="toolbox-content">
 							<a href="#" target="_new" id="savedPlotLink" style="display: none;">View saved plot (popup)</a>

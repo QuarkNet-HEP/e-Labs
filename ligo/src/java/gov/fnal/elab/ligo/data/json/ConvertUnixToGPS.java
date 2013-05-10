@@ -1,3 +1,7 @@
+/*
+ * EPeronja-05/10/2013: Added this class to convert the current date to GPS Time
+ * 						This is called from data-server-json-current.jsp
+ */
 package gov.fnal.elab.ligo.data.json;
 
 public class ConvertUnixToGPS {
