@@ -457,10 +457,10 @@ function getAllDataURL() {
 
 function overrideYLabel(channel, unit) {
 	c = parseChannel(channel);
-	var subsystem = $("#subsystem_" + index + " :selected").val();	
-	switch (subsystem) {
+
+	switch (c.subsystem) {
 		case "PEM":
-			switch (sensor) {
+			switch (c.sensor) {
 				case "SEISX":
 				case "SEISY":
 				case "SEISZ":
