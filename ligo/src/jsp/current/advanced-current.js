@@ -50,7 +50,6 @@ var SensorMapping = {
 		"LVEA_SEISX_10_30Hz": "VERTEX_X_BLRMS_10HZ30",
 		"LVEA_SEISY_10_30Hz": "VERTEX_Y_BLRMS_10HZ30",
 		"LVEA_SEISZ_10_30Hz": "VERTEX_Z_BLRMS_10HZ30",
-
 		"EY_SEISX_0.03_0.1Hz": "FLOOR_X_BLRMS_30MHZ100",
 		"EY_SEISY_0.03_0.1Hz": "FLOOR_Y_BLRMS_30MHZ100",
 		"EY_SEISZ_0.03_0.1Hz": "FLOOR_Z_BLRMS_30MHZ100",
@@ -69,7 +68,6 @@ var SensorMapping = {
 		"EY_SEISX_10_30Hz": "FLOOR_X_BLRMS_10HZ30",
 		"EY_SEISY_10_30Hz": "FLOOR_Y_BLRMS_10HZ30",
 		"EY_SEISZ_10_30Hz": "FLOOR_Z_BLRMS_10HZ30",
-
 		"MX_SEISX_0.03_0.1Hz": "FLOOR_X_BLRMS_30MHZ100",
 		"MX_SEISY_0.03_0.1Hz": "FLOOR_Y_BLRMS_30MHZ100",
 		"MX_SEISZ_0.03_0.1Hz": "FLOOR_Z_BLRMS_30MHZ100",
@@ -88,7 +86,6 @@ var SensorMapping = {
 		"MX_SEISX_10_30Hz": "FLOOR_X_BLRMS_10HZ30",
 		"MX_SEISY_10_30Hz": "FLOOR_Y_BLRMS_10HZ30",
 		"MX_SEISZ_10_30Hz": "FLOOR_Z_BLRMS_10HZ30",
-		
 		"VAULT_SEISX_0.03_0.1Hz": "STS2_X_BLRMS_30MHZ100",
 		"VAULT_SEISY_0.03_0.1Hz": "STS2_Y_BLRMS_30MHZ100",
 		"VAULT_SEISZ_0.03_0.1Hz": "STS2_Z_BLRMS_30MHZ100",
@@ -360,6 +357,7 @@ function addNewRow(index) {
 	// Subsystem Dropdown
 	var subsysSelector = $("<select></select>").attr("name", "subsystem").attr("id", "subsystem_" + index).attr("class", "subsystem");
 	subsysSelector.append($("<option></option>").attr("value", "PEM-").text("PEM"));
+	subsysSelector.append($("<option></option>").attr("value", "DMT-").text("DMT"));
 	
 	var stationSelector = $("<select></select>").attr("name", "station").attr("id", "station_" + index).attr("class", "station");
 	var sensorSelector = $("<select></select>").attr("name", "sensor").attr("id", "sensor_" + index).attr("class", "sensor");
