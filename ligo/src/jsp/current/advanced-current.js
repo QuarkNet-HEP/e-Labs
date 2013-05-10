@@ -203,15 +203,15 @@ function parseChannel(name) {
 	name = name.replace("DMT-", "PEM-");
 	// H0:DMT_EX_SEISX_0.03_0.1Hz.rms
 
-	s = name.split(":");
-	site = s[0];
+	var s = name.split(":");
+	var site = s[0];
 	s = s[1].split("-");
-	subsystem = s[0];
+	var subsystem = s[0];
 	s = s[1].split("_");
-	station = s[0];
-	rest = s.slice(1).join("_");
-	sensor = rest.substr(0, rest.lastIndexOf("."));
-	sampling = rest.substr(rest.lastIndexOf(".") + 1);
+	var station = s[0];
+	var rest = s.slice(1).join("_");
+	var sensor = rest.substr(0, rest.lastIndexOf("."));
+	var sampling = rest.substr(rest.lastIndexOf(".") + 1);
 	
 	return {
 		site: site,
