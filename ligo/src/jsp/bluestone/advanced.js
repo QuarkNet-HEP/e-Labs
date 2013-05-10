@@ -370,7 +370,7 @@ function getAllDataURL() {
 
 function overrideYLabel(channel, unit) {
 	c = parseChannel(channel);
-	
+	var subsystem = $("#subsystem_" + index + " :selected").val();
 	switch (subsystem) {
 		case "DMT":
 			return "Velocity (microns/s)";
