@@ -474,7 +474,7 @@ function getDataAndPlotCB() {
 		timeout: timeout,
 		success: onChannelDataReceived,
 		beforeSend: spinnerOn,
-		complete: spinnerOff,
+		complete: spinnerOff
 	});
 
 	function onChannelDataReceived(json) { 
