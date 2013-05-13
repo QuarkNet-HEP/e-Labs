@@ -23,7 +23,7 @@ public class ProcessTools {
         
         p.getOutputStream().close(); // Need to flush stdin, too?  
 
-        
+        // EPeronja-05/10/2013: commented this out and everything worked!
         //if (ec != 0) {
         //    throw new ToolException(desc + " failed for " + f + ": " + err);
         //}

@@ -198,20 +198,12 @@ function subsystemChangeCB(index) {
 	}); 
 }
 
-function parseChannel(name) {
-	// H0:DMT-BRMS_PEM_EX_SEISX_0.03_0.1Hz.rms
-	name = name.replace("DMT-", "PEM-");
-	// H0:DMT_EX_SEISX_0.03_0.1Hz.rms
-
-	var s = name.split(":");
-	var site = s[0];
-	s = s[1].split("-");
-	var subsystem = s[0];
-	s = s[1].split("_");
-	var station = s[0];
-	var rest = s.slice(1).join("_");
-	var sensor = rest.substr(0, rest.lastIndexOf("."));
-	var sampling = rest.substr(rest.lastIndexOf(".") + 1);
+function parseChannel() {
+	var site = $("#site_0 :selected").text();
+	var subsystem = $("#subsystem_0 :selected").text();
+	var station = $("#station_0 :selected").text();
+	var sensor = $("#sensor_0 :selected").text();
+	var sampling = $("#sampling_0 :selected").text();
 	
 	return {
 		site: site,
@@ -456,20 +448,25 @@ function getAllDataURL() {
 }
 
 function overrideYLabel(channel, unit) {
-	c = parseChannel(channel);
-
+	c = parseChannel();
 	switch (c.subsystem) {
-		case "PEM":
-			switch (c.sensor) {
-				case "SEISX":
-				case "SEISY":
-				case "SEISZ":
-					return "Signal (volts)";
-				default:
-					return unit;
-			}
-		default:
-			return unit;
+	case "DMT":
+		return "Velocity (microns/s)";
+		break;
+	case "PEM":
+		switch (c.sensor) {
+			case "SEISX":
+			case "SEISY":
+			case "SEISZ":
+				return "Signal (volts)";
+				break;
+			default:
+				return unit;
+				break;
+		}
+	default:
+		return unit;
+		break;
 	}
 }
 

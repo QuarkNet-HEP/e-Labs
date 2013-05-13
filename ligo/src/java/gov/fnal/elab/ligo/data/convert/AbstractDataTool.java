@@ -1,5 +1,8 @@
 /*
  * Created on Jan 28, 2010
+ * 
+ * EPeronja-05/10/2013: Added new channels to the SAMPLING_RATE_ADJUST variable
+ * 					    for the latest sensors.
  */
 package gov.fnal.elab.ligo.data.convert;
 
