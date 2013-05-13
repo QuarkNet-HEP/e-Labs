@@ -3,6 +3,7 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
+<!-- EPeronja-05/13/2013: Adapted to latest LIGO data -->
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -177,7 +178,6 @@
 						<td class="toolbox-content">
 							<input id="savePlotToDisk" type="button" value="Save Plot"></input>
 							<input id="exportData" type="button" value="Export Data Points"></input>
-							<input id="exportAllData" type="button" value="Export All Data"</input>
 						</td>
 						<td class="toolbox-content">
 							<a href="#" target="_new" id="savedPlotLink" style="display: none;">View saved plot (popup)</a>
