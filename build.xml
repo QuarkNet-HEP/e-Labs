@@ -198,10 +198,10 @@ deploy-all-clean:
 			<fileset dir="common/lib" includes="**/*.jar"/>
 		</copy>
 		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
-			<fileset dir="common/resources" includes="**/*.*"/>
+			<fileset dir="common/resources" includes="**/*"/>
 		</copy>
 		<copy todir="${container.home}/${webapps}/elab/WEB-INF/classes">
-			<fileset dir="common/build" includes="**/*.*" excludes="elab.properties"/>
+			<fileset dir="common/build" includes="**/*" excludes="elab.properties"/>
 		</copy>
 		<concat destfile="${container.home}/${webapps}/elab/WEB-INF/elab.properties" force="no">
 			<fileset dir="common/build" includes="elab.properties*"/>
@@ -256,10 +256,10 @@ deploy-all-clean:
 		</copy>
 		<mkdir dir="${elab.name}/resources"/>
 		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
-			<fileset dir="${elab.name}/resources" includes="**/*.*"/>
+			<fileset dir="${elab.name}/resources" includes="**/*"/>
 		</copy>
 		<copy todir="${container.home}/${webapps}/elab/WEB-INF/classes">
-			<fileset dir="${elab.name}/build" includes="**/*.*"/>
+			<fileset dir="${elab.name}/build" includes="**/*"/>
 		</copy>
 		<copy todir="${container.home}/${webapps}/elab/${elab.name}" overwrite="true">
 			<fileset dir="${elab.name}/src/jsp" includes="**/*.*"/>
@@ -330,13 +330,13 @@ deploy-all-clean:
 		</copy>
 		<mkdir dir="${elab.name}/resources"/>
 		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
-			<fileset dir="${elab.name}/resources" includes="**/*.*"/>
+			<fileset dir="${elab.name}/resources" includes="**/*"/>
 		</copy>
 		<copy todir="${container.home}/${webapps}/elab/WEB-INF/classes">
 			<fileset dir="${elab.name}/build" includes="**/*.*"/>
 		</copy>
 		<copy todir="${container.home}/${webapps}/elab/${elab.name}" overwrite="true">
-			<fileset dir="${elab.name}/src/jsp" includes="**/*.*"/>
+			<fileset dir="${elab.name}/src/jsp" includes="**/*"/>
 		</copy>
 		<exec executable="ln" logError="true">
 			<arg value="-s"/>
@@ -397,13 +397,13 @@ deploy-all-clean:
 		</copy>
 		<mkdir dir="cms-vdl2/resources"/>
 		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
-			<fileset dir="cms-vdl2/resources" includes="**/*.*"/>
+			<fileset dir="cms-vdl2/resources" includes="**/*"/>
 		</copy>
 		<copy todir="${container.home}/${webapps}/elab/WEB-INF/classes" overwrite="true">
-			<fileset dir="cms-vdl2/build" includes="**/*.*"/>
+			<fileset dir="cms-vdl2/build" includes="**/*"/>
 		</copy>
 		<copy todir="${container.home}/${webapps}/elab/${elab.name}" overwrite="true">
-			<fileset dir="cms-vdl2/src/jsp" includes="**/*.*"/>
+			<fileset dir="cms-vdl2/src/jsp" includes="**/*"/>
 		</copy>
 	</target>
 
@@ -460,13 +460,13 @@ deploy-all-clean:
 		</copy>
 		<mkdir dir="cosmic/resources"/>
 		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
-			<fileset dir="cosmic/resources" includes="**/*.*"/>
+			<fileset dir="cosmic/resources" includes="**/*"/>
 		</copy>
 		<copy todir="${container.home}/${webapps}/elab/WEB-INF/classes">
-			<fileset dir="cosmic/build" includes="**/*.*"/>
+			<fileset dir="cosmic/build" includes="**/*"/>
 		</copy>
 		<copy todir="${container.home}/${webapps}/elab/${elab.name}" overwrite="true">
-			<fileset dir="cosmic/src/jsp" includes="**/*.*"/>
+			<fileset dir="cosmic/src/jsp" includes="**/*"/>
 		</copy>
 		<exec executable="ln" logError="true">
 			<arg value="-s"/>
@@ -518,10 +518,10 @@ deploy-all-clean:
 	
 		<mkdir dir="embedded/resources"/>
 		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
-			<fileset dir="embedded/resources" includes="**/*.*"/>
+			<fileset dir="embedded/resources" includes="**/*"/>
 		</copy>
 		<copy todir="${container.home}/${webapps}/elab/${elab.name}" overwrite="true">
-			<fileset dir="embedded/src/jsp" includes="**/*.*"/>
+			<fileset dir="embedded/src/jsp" includes="**/*"/>
 		</copy>
 		<delete dir="${container.home}/${webapps}/elab/embedded/jsp"/>
 		<delete dir="${container.home}/${webapps}/elab/embedded/posters"/>
@@ -576,13 +576,13 @@ deploy-all-clean:
 		</copy>
 		<mkdir dir="${elab.name}/resources"/>
 		<copy todir="${container.home}/${webapps}/elab/WEB-INF">
-			<fileset dir="${elab.name}/resources" includes="**/*.*"/>
+			<fileset dir="${elab.name}/resources" includes="**/*"/>
 		</copy>
 		<copy todir="${container.home}/${webapps}/elab/WEB-INF/classes">
-			<fileset dir="${elab.name}/build" includes="**/*.*"/>
+			<fileset dir="${elab.name}/build" includes="**/*"/>
 		</copy>
 		<copy todir="${container.home}/${webapps}/elab/${elab.name}" overwrite="true">
-			<fileset dir="${elab.name}/src/jsp" includes="**/*.*"/>
+			<fileset dir="${elab.name}/src/jsp" includes="**/*"/>
 		</copy>
 		<exec executable="ln" logError="true">
 			<arg value="-s"/>
