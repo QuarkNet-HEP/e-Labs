@@ -21,6 +21,15 @@
 	</set>
 	
 	<log level="info"><string>Using sites file: {sites}</string></log>
+	<if><not><file:exists name="{sites}"/>
+            </not>
+            <then>
+		<generateError>
+		<string>
+		Could not find sites file: {sites}
+		</string></generateError></then>
+	</if>
+
 	<log level="info"><string>Using tc.data: {tcfile}</string></log>
   
 	<scheduler type="vds-adaptive" shareID="vdl2:scheduler:{sites}">
@@ -36,8 +45,8 @@
 		<property name="maxFileOperations" value="{maxFileOperations}"/>
 		<property name="jobThrottle" value="{jobThrottle}"/>
 		
-		<task:availableHandlers type="execution"/>
-		<task:availableHandlers type="file"/>
+		<task:availableHandlers type="execution" includeAliases="true"/>
+		<task:availableHandlers type="file" includeAliases="true"/>
 		
 		<vdl:siteCatalog file="{sites}"/>
 	</scheduler>

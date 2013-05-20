@@ -10,23 +10,35 @@ namespace("vdl"
 	import("vdl-sc.k", export = true)
 	import("vdl-lib.xml", export = true)
 
-	import("vdl-int.k")
+	pstaging := configProperty("use.provider.staging")
+	wstaging := configProperty("use.wrapper.staging")
+	int := if (
+		pstaging == "true", "vdl-int-staging.k",
+		wstaging == "true", "vdl-int-wrapper-staging.k", 
+		"vdl-int.k"
+	)
+
+	import(int)
 	import("java.k")
 
 	once("vdl.k-print-version"
-		log("info",sys:file:read("{vds.home}/libexec/version.txt"))
-		echo(sys:file:read("{vds.home}/libexec/version.txt"))
-
-		log("info","RUNID id=tag:benc@ci.uchicago.edu,2007:swift:run:{VDL:RUNID}")
+		log("info",sys:file:read("{swift.home}/libexec/version.txt"))
+		echo(sys:file:read("{swift.home}/libexec/version.txt"))
+		log("info","RUNID id=run:{VDL:RUNID}")
 		echo("RunID: {VDL:RUNID}")
 	)
 
+	export("stagein", elementDef(classname="org.griphyn.vdl.karajan.lib.Stagein"))
+	export("stageout", elementDef(classname="org.griphyn.vdl.karajan.lib.Stageout"))
+
 	export(
 
-		element(parameterlog, [direction, variable, id],
-			log("info","PARAM thread={#thread} direction={direction} variable={variable} provenanceid={id}")
+		element(parameterlog, [direction, variable, id, thread],
+			if(
+				vdl:configProperty("provenance.log") == "true"
+				log("info","PARAM thread={thread} direction={direction} variable={variable} provenanceid={id}")
+			)
 		)
-
 		element(split, [var], each(str:split(vdl:getFieldValue(var), " ")))
 
 		element(quote, [var, optional(path)],
@@ -36,7 +48,7 @@ namespace("vdl"
 		element(types, [])
 
 		element(arguments, [...]
-			arguments=list(each(...))
+			arguments=expandArguments(each(...))
 		)
 
 		export(execute
@@ -52,73 +64,8 @@ namespace("vdl"
 			)
 		)
 
-		element(stagein, [var]
-			if(
-				vdl:isFileBound(var) try(
-					sequential(
-						fp := vdl:fringePaths(var)
-						try (
-							for(path, fp
-								vdl:waitFieldValue(path=path, var)
-							)
-// NOTE this string-based catch is messy, and needs to match with the string used in DataDependentException and VDLFunction
-							catch(".*errors in data dependencies.*"
-								log(LOG:DEBUG, exception)
-								deperror = true
-							)
-						)
-						channel:to(stagein,
-							for(path, fp
-								vdl:absFileName(vdl:getfield(var, path = path))
-							)
-						)
-					)
-					catch(".*not mapped.*"
-						log(LOG:DEBUG, exception)
-						mdeperror = true
-						deperror = true
-					)
-				)
-				else(
-					//we still wait until the primitive value is there
-					vdl:waitFieldValue(var)
-				)
-			)
-		)
-
-		element(stageout, [var]
-			try(
-				if(vdl:isFileBound(var) 
-					channel:to(stageout,
-						for(path, vdl:fringePaths(var)
-							list(path, var)
-						)
-					)
-				)
-				catch(".*not mapped.*"
-					log(LOG:DEBUG, exception)
-					mdeperror = true
-					deperror = true
-				)
-			)
-			try(
-				if(vdl:isRestartable(var) 
-					channel:to(restartout,
-						for(path, vdl:fringePaths(var)
-							list(path, var)
-						)
-					)
-				)
-				catch(".*not mapped.*"
-					log(LOG:DEBUG, exception)
-					mdeperror = true
-					deperror = true
-				)
-			)
-		)
-
 		element(mapping, [descriptor, ...]
-			mapping=map(map:entry("descriptor", descriptor), each(...))
+			mapping=map(map:entry("swift#descriptor", descriptor), each(...))
 		)
 
 		element(parameter, [name, value]
@@ -139,8 +86,11 @@ namespace("vdl"
 
 		element(tr, [name]
 			tr = name
-			print("PROGRESS_INIT")
 		)
+
+    element(attributes, [attrs]
+      attributes = attrs
+    )
 
 		element(mains, [channel(cleanup), channel(errors), channel(warnings)]
 			anyerrors := vdl:processBulkErrors("The following errors have occurred:", errors)
@@ -149,7 +99,9 @@ namespace("vdl"
 			if(
 				sys:not(anyerrors) then(
 					//hmm, you can append to channels!
+					log(LOG:DEBUG, "Starting cleanups")
 					append(warnings, from(warnings, cleanups(cleanup)))
+					log(LOG:DEBUG, "Ending cleanups")
 				)
 				else(
 					log(LOG:INFO, "Errors detected. Cleanup not done.")
@@ -166,7 +118,7 @@ namespace("vdl"
 		parallelElement(mainp, [channel(graph), channel(cleanup)]
 			parallel(
 				if(
-					vdl:configProperty("pgraph") != "false" 
+					vdl:configProperty("pgraph") != "false"
 						generateProvenanceGraph(graph)
 				)
 				to(cleanup, unique(for(c, cleanup, c)))

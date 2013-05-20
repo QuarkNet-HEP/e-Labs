@@ -1,0 +1,7 @@
+These are coaster libraries and should not be changed. 
+
+They are automatically downloaded  on a remote site when starting a
+coaster service. Security  requires that these be checksummed, which is
+a process done by the swift/cog build system, so simply replacing
+jar files in this directory will probably cause errors when 
+a coaster service is started.

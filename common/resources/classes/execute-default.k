@@ -1,7 +1,6 @@
-element([tr, optional(arguments, stdin, stdout, stderr, deperror, mdeperror), channel(stagein), channel(stageout), channel(restartout)]
+element([tr, optional(arguments, stdin, stdout, stderr, attributes, deperror, mdeperror), channel(stagein), channel(stageout), channel(restartout)]
 
 	vdl:initprogressstate()
-	vdl:setprogress("Initializing")
 
 	done := isDone(restartout)
 	derr := try(deperror, false)
@@ -11,28 +10,26 @@ element([tr, optional(arguments, stdin, stdout, stderr, deperror, mdeperror), ch
 		derr == false then(
 			if(
 				sys:not(done) try(
-					sequential(
-						log(LOG:INFO, "START thread={#thread} tr={tr}") 
+					throttled(
+						log(LOG:INFO, "START thread={#thread} tr={tr}")
 						vdl:setprogress("Selecting site")
 						restartOnError(".*", vdl:configProperty("execution.retries"),
 							replicationChannel := channel()
 							discard(append(replicationChannel, true)) //trigger the first job
 							replicationGroup := uid()
 							parallelFor(i, replicationChannel
-								try(
+								ignoreErrors(match = "^Abort$"
 									execute2(
-										tr, maybe(arguments=arguments), 
-										maybe(stdin=stdin), maybe(stdout=stdout), maybe(stderr=stderr), 
+										tr, maybe(arguments=unwrapClosedList(arguments)),
+										maybe(stdin=stdin), maybe(stdout=stdout), maybe(stderr=stderr),
+                    maybe(attributes=attributes),
 										stagein, stageout, restartout, replicationGroup, replicationChannel
 									)
-									catch("^Abort$")
 								)
 							)
 						)
 						mark(restartout, err=false, mapping=false)
-						graphStuff(tr, stagein, stageout, err=false, maybe(args=arguments))
 						log(LOG:INFO, "END_SUCCESS thread={#thread} tr={tr}")
-						print("PROGRESS_MARKER")
 						vdl:setprogress("Finished successfully")
 					)
 					catch(".*"
@@ -45,18 +42,22 @@ element([tr, optional(arguments, stdin, stdout, stderr, deperror, mdeperror), ch
 							else (
 								to(errors, exception)
 								log(LOG:INFO, exception)
+								echo(exception)
 								mark(restartout, err=true, mapping=false)
 								graphStuff(tr, stagein, stageout, err=true, maybe(args=arguments))
 							)
 						)
 					)
 				)
+				else (
+					vdl:setprogress("Finished in previous run")
+				)
 			)
 		)
 		else (
 			if(
 				merr == true then(
-					exception := exception(concat("VDL2: Application ", str:quote(tr), 
+					exception := exception(concat("VDL2: Application ", str:quote(tr),
 						" not executed due to errors in mapping dependencies"))
 					to(errors, exception)
 					log(LOG:INFO, exception)
