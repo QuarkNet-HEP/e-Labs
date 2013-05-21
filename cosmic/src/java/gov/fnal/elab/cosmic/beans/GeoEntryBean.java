@@ -649,7 +649,7 @@ public class GeoEntryBean implements Serializable {
     }
 
     public boolean isGpsCableLengthValid() {
-        if (!isPositiveFloat(gpsCableLength)) {
+        if (!isPositiveFloat(gpsCableLength) || Double.parseDouble(gpsCableLength) > 250.0 ) {
             addError(GeometryErrors.ERROR_GPS_CABLE_LENGTH);
             return false;
         }
