@@ -11,13 +11,13 @@
 			<c:choose>
 				<c:when test="${request.queryString != null}">
 					<jsp:include page="../login/login.jsp">
-						<jsp:param name="prevPage" value="http://${elab.properties['elab.host']}/${pageContext.servletContext.servletContextName}${request.servletPath}?${request.queryString}"/>
+						<jsp:param name="prevPage" value="${elab.properties['elab.url']}/${pageContext.servletContext.servletContextName}${request.servletPath}?${request.queryString}"/>
 						<jsp:param name="message" value="Access to this page is restricted to logged in users"/>
 					</jsp:include>
 				</c:when>
 				<c:otherwise>
 					<jsp:include page="../login/login.jsp">
-						<jsp:param name="prevPage" value="http://${elab.properties['elab.host']}/${pageContext.servletContext.servletContextName}${request.servletPath}"/>
+						<jsp:param name="prevPage" value="${elab.properties['elab.url']}/${pageContext.servletContext.servletContextName}${request.servletPath}"/>
 						<jsp:param name="message" value="Access to this page is restricted to logged in users"/>
 					</jsp:include>
 				</c:otherwise>
