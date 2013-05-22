@@ -86,6 +86,7 @@ namespace("vdl"
 
 		element(tr, [name]
 			tr = name
+			print("PROGRESS_INIT")
 		)
 
     element(attributes, [attrs]

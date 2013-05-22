@@ -30,6 +30,7 @@ element([tr, optional(arguments, stdin, stdout, stderr, attributes, deperror, md
 						)
 						mark(restartout, err=false, mapping=false)
 						log(LOG:INFO, "END_SUCCESS thread={#thread} tr={tr}")
+						print("PROGRESS_MARKER")
 						vdl:setprogress("Finished successfully")
 					)
 					catch(".*"
