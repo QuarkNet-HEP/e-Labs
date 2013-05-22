@@ -54,36 +54,7 @@ Re: the upload progress stuff
                 + "This is done when your group is first created.");
     }
     request.setAttribute("detectorIDs", ids);
-
-	//get detectors
-	TreeMap<Integer, Boolean> goldenFileUse = (TreeMap<Integer, Boolean>) cp.getDetectorBenchmarkFileUse(user);
-    
-	//retrieve existing golden files
-	ResultSet searchResults = null;
-	TreeMap<Integer, String> detectorDF = new TreeMap<Integer, String>();
-	TreeMap<String, VDSCatalogEntry> fileGF = new TreeMap<String, VDSCatalogEntry>();
-	for(Map.Entry<Integer,Boolean> entry : goldenFileUse.entrySet()) {
-		  Integer key = entry.getKey();
-		  Boolean value = entry.getValue();
-		  if (value) {
-	  		//retrieve golden files from database
-	  		searchResults = Benchmark.getBenchmarkFileName(elab, key);
-	  		String[] filenames = searchResults.getLfnArray();
-			for (int i = 0; i < filenames.length; i++){
-				VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filenames[i]);
-				if (entry != null) {
-					detectorDF.put(key, filenames[i]);
-					fileGF.put(filenames[i], e);
-				}				
-			}
-		  }
-		}
-	request.setAttribute("goldenFileUse", goldenFileUse);
-	request.setAttribute("detectorDF", detectorDF);
-	request.setAttribute("fileGF", fileGF);
-	
-    
-    
+ 
 	String lfn="";              //lfn on the USERS home computer
 	String fn = "";             //filename without slashes
 	String ds = "";
@@ -126,15 +97,8 @@ Re: the upload progress stuff
     					detectorId = content;
     				}
     			}
-    			else if (("usebenchmark_"+detectorId).equals(name)) {
-    				usebenchmark = content;
-    			}
     			else if (("benchmark_"+detectorId).equals(name)) {
     				benchmark = content;
-    				String extension = benchmark.substring(benchmark.length() - 6);
-    				if (!extension.equals(".bless")) {
-    					benchmark = "";
-    				}
     			}
     			else if ("comments".equals(name)) {
     				if (StringUtils.isNotBlank(content)) {
@@ -174,15 +138,11 @@ Re: the upload progress stuff
                		fi.getStoreLocation().renameTo(f);
                	}
 
-               	if (usebenchmark.equals("false")) {
-               		benchmark = "";
-               	}
-
        	        out.println("<!-- " + rawName + " added to Catalog -->");
        	        request.setAttribute("in", f.getAbsolutePath());
        	        request.setAttribute("detectorid", detectorId);
        	        request.setAttribute("comments", comments);
-       	        request.setAttribute("benchmark", benchmark);
+      	        request.setAttribute("benchmark", benchmark);
 
 				%>
 					<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUpload" impl="generic">
@@ -201,6 +161,33 @@ Re: the upload progress stuff
 		} //while through the file
 	} //end "if form has a file to upload"
 	else {
+		
+		//EPeronja-05/22/2013: get benchmark files
+		Iterator iterator = ids.iterator();
+		TreeMap<String, Integer> detectorBenchmark = new TreeMap<String, Integer>();
+		TreeMap<String, VDSCatalogEntry> benchmarkTuples = new TreeMap<String, VDSCatalogEntry>();
+		ResultSet searchResults = null;
+		
+		//loop through detectors
+		while (iterator.hasNext()) {
+			Integer key = Integer.parseInt((String) iterator.next());
+		  	//retrieve benchmark files from database
+				searchResults = Benchmark.getBenchmarkFileName(elab, key);
+		  	if (searchResults != null) {
+		 		String[] filenames = searchResults.getLfnArray();
+		 		for (int i = 0; i < filenames.length; i++){
+					VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filenames[i]);
+					if (e != null) {
+						benchmarkTuples.put(filenames[i], e);
+						detectorBenchmark.put(filenames[i], key);				}				
+				}//end for loop
+		  	}//end check searchResults
+		}//end looping through detectors
+		
+		request.setAttribute("detectorBenchmark", detectorBenchmark);
+		request.setAttribute("benchmarkTuples", benchmarkTuples);
+		
+		
 		%>
 		
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -211,10 +198,21 @@ Re: the upload progress stuff
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/upload.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
-		<script type="text/javascript" src="../include/upload.js"></script>
+		<link rel="stylesheet" type="text/css" href="../css/benchmark.css" />
+ 		<script type="text/javascript" src="../include/upload.js"></script>
+		<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>
         <script type="text/javascript" src="../../dwr/interface/UploadMonitor.js"></script>
         <script type="text/javascript" src="../../dwr/engine.js"></script>
         <script type="text/javascript" src="../../dwr/util.js"></script>
+        <script>
+    	$(document).ready(function() {
+				$('select').each(function(){
+				    if (!$(this).find('option').length){ 
+				        $(this).hide(); 
+				    }
+				});
+		});
+        </script>
 	</head>
 	
 	<body id="search_default" class="data">
@@ -246,48 +244,43 @@ Re: the upload progress stuff
 </div>
 	<p>
 		<u>Choose <label for="detector">detector</label></u><br />	
-		<table style="text-align: left; margin-left: 5%;" width="100%">
+		<table style="text-align: left; margin-left: 5%;" width="90%">
 		    <tr>
-		    	<td><strong>Detector</strong></td>
-		    	<td><strong>Use Benchmark?</strong></td>
-		    	<td><strong>Choose Benchmark File</strong></td>
+		    	<td class="benchmarkHeader">Detector</td>
+		    	<td class="benchmarkHeader">Benchmark File</td>
 		    </tr>
 			<c:forEach items="${detectorIDs}" var="d">
-			  	<tr><td><input type="radio" name="detector" value="${d}"/>${d}</td>
-				<c:forEach items="${goldenFileUse}" var="goldenFileUse">
-				  <c:choose>
-				     <c:when test="${goldenFileUse.key == d}">
-								<td style="text-align: center;">${goldenFileUse.value}
-									<input type="hidden" name="usebenchmark_${d}" value="${goldenFileUse.value}"></input>
-								</td>
-							<c:choose>
-								<c:when test="${goldenFileUse.value == true}">
-									<c:forEach var="datafile" items="${detectorDF}">
-										<c:choose>
-											<c:when test="${datafile.key == d}">
-								    			<td><select name="benchmark_${d}">
-								    				<c:forEach items="${fileGF}" var="goldenFiles">
-								    					<c:choose>
-								    						<c:when test="${ goldenFiles.value.tupleMap.goldendefault == true }">
-								    							<option value="${goldenFiles.key}.bless" selected="selected">${goldenFiles.key} - ${goldenFiles.value.tupleMap.goldendefault}</option>
-								    						</c:when>
-								    						<c:otherwise>
-								    							<option value="${goldenFiles.key}.bless">${goldenFiles.key} - ${goldenFiles.value.tupleMap.goldendefault}</option>
-								    						</c:otherwise>
-								    					</c:choose>
-								    				</c:forEach>
-								    			</select></td></tr>
-								    		</c:when>
-											<c:otherwise>
-												<td>No Golden Files have been selected</td>
-											</c:otherwise>
-								    	</c:choose>
-								    </c:forEach>
-								</c:when>
-							</c:choose>
-					</c:when>
-				  </c:choose>
-				</c:forEach>
+			  	<tr>
+			  		<td class="benchmarkSelection"><input type="radio" name="detector" value="${d}"/>${d}</td>
+			  		<td>
+						<table style="text-align: left;">
+						<tr><td>
+			    			<select name="benchmark_${d}">
+								<c:forEach var="detectorBenchmark" items="${detectorBenchmark}">
+									<c:choose>
+										<c:when test="${detectorBenchmark.value == d}">
+							    				<c:forEach items="${benchmarkTuples}" var="benchmarkTuples">
+							    					<c:choose>
+							    					   <c:when test="${benchmarkTuples.key == detectorBenchmark.key }">
+									    					<c:choose>
+									    						<c:when test="${ benchmarkTuples.value.tupleMap.benchmarkdefault == true }">
+									    							<option value="${benchmarkTuples.key}" selected="selected">${benchmarkTuples.value.tupleMap.benchmarklabel}</option>
+									    						</c:when>
+									    						<c:otherwise>
+									    							<option value="${benchmarkTuples.key}">${benchmarkTuples.value.tupleMap.benchmarklabel}</option>
+									    						</c:otherwise>
+									    					</c:choose>
+									    				</c:when>
+									    				</c:choose>
+							    				</c:forEach>
+										</c:when>
+									</c:choose>						
+								</c:forEach>
+			    			</select>
+						</td></tr>							
+						</table>
+			  		</td>
+			  	</tr>
 			</c:forEach>
 		</table>
     </p>
@@ -303,7 +296,7 @@ Re: the upload progress stuff
     </p>
     <div id="button-line">
     	<!-- grr. somebody fix css -->
-    	<table border="0">
+    	<table border="0" style="width: 450px; text-align: center;">
     		<tr>
     			<td>
 					<input name="load" type="submit" value="Upload" id="uploadbutton"/>

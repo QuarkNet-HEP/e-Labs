@@ -15,6 +15,7 @@
 <%@ page import="gov.fnal.elab.cosmic.beans.Geometries" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
+<%@ page import="gov.fnal.elab.cosmic.bless.BlessProcess" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -53,11 +54,13 @@
 	File f = new File((String) results.getAnalysis().getParameter("in"));
 	String detectorId = (String) results.getAnalysis().getParameter("detectorid");
 	String comments = (String) results.getAnalysis().getParameter("comments");
+	String benchmark = (String) results.getAnalysis().getParameter("benchmark");
+	ArrayList<String> benchmarkMessages = new ArrayList<String>();
 	String dataDir = elab.getProperties().getDataDir();
 	int channels[] = new int[4];
 
 	List splits = new ArrayList();  //for both the split name and the channel validity information
-
+			
 	boolean c = true;
 	String splitPFNs = "";
 	String cpldFrequency = "";
@@ -160,6 +163,15 @@
 	        channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).intValue();
 	    }
 	}
+	
+	//we might as well bless here
+	if (benchmark != null) {
+		BlessProcess bp = new BlessProcess();
+		for (int i = 0; i < splits.size(); i++) {
+			benchmarkMessages.add(bp.BlessDatafile(elab, detectorId, splits.get(i).toString(), benchmark)); 		
+		}
+	}
+	request.setAttribute("benchmarkMessages", benchmarkMessages);
 	request.setAttribute("channels", channels);
 	request.setAttribute("splitEntries", entries);
 	CatalogEntry e = elab.getDataCatalogProvider().getEntry(rawName);
@@ -224,7 +236,18 @@
 				Average longitude: ${entry.tupleMap.avglongitude}<br/>
 				Average altitude: ${entry.tupleMap.avgaltitude}<br/>
 			</c:otherwise>
-		</c:choose>		
+		</c:choose>	
+		<br />	
+		<c:choose>
+			<c:when test="${not empty benchmarkMessages}">
+			   <table>
+			   		<tr><th>Benchmark Results</th></tr>
+					<c:forEach items="${benchmarkMessages}" var="benchmarkMessages">
+						<tr><td>${benchmarkMessages}</td></tr>
+					</c:forEach>
+				</table>
+			</c:when>
+		</c:choose>
 
 			</div>
 			<!-- end content -->	

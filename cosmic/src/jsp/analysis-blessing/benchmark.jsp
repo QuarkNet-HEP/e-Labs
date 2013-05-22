@@ -1,6 +1,5 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/upload-login-required.jsp" %>
@@ -17,6 +16,9 @@
 <%@ page import="org.apache.commons.lang.time.DateUtils" %>
 
 <%
+	// EPeronja-05/21/2013: 472-Benchmark file maintenance
+	//						Add, remove and set default benchmark files per detector.
+	//	TODO: create a css file for benchmark
 	ElabUserManagementProvider p = elab.getUserManagementProvider();
 	CosmicElabUserManagementProvider cp = null;
 	if (p instanceof CosmicElabUserManagementProvider) {
@@ -29,83 +31,83 @@
 	SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 	DATEFORMAT.setLenient(false);
 	
-	//save changes
+	//save changes when submitting
 	String reqType = request.getParameter("submitButton");
 	if ("Save Changes".equals(reqType)){
-		//check if we are setting/unsetting default golden file
+		//check if we are changing default benchmark file
 		String filename = request.getParameter("filename");
-		String detectorId = request.getParameter("detectorId");
-		Integer detector = Integer.parseInt(detectorId);
-		DataCatalogProvider dcp = ElabFactory.getDataCatalogProvider(elab);
 		if (!filename.equals("")) {
-			//first make all prior golden files not default
-			ResultSet rsDefault = Benchmark.getBenchmarkFileName(elab, detector);
-            String[] defaultGolden = rsDefault.getLfnArray();
-		    for (int i = 0; i < defaultGolden.length; i++) {
-		    	CatalogEntry ce = dcp.getEntry(defaultGolden[i]);
-		    	ce.setTupleValue("goldendefault", false);
-		    	dcp.insert(ce);
-		    }			
-			String def = request.getParameter("defaultGolden");
-			boolean defaultIt = (def.equals("true") ? true: false);
-			CatalogEntry entry = dcp.getEntry(filename);
-			entry.setTupleValue("goldendefault", defaultIt);
-			dcp.insert(entry);			
-		}//end of setting/removing default golden file
-		
-		//check if detector is being opted in or out
-		String optInOut = request.getParameter("optInOut");
-		boolean inOut = optInOut.equals("true") ? true : false;
-		if (!detectorId.equals("") && !optInOut.equals("")) {
-			cp.setDetectorBenchmarkFileUse(user, detectorId, inOut);
-		}//end of opting in/out
-		
-		String removeGolden = request.getParameter("removeGolden");
-		//check if we are removing a golden file
-		if (!removeGolden.equals("")) {
-			//look for all the datafiles that have this file set as their golden
-			ResultSet rsBlessed = Benchmark.getBlessedDataFilesByBenchmark(elab, removeGolden);
-	  		String[] blessedFiles = rsBlessed.getLfnArray();
-		    for (int i = 0; i < blessedFiles.length; i++) {
-		    	CatalogEntry ce = dcp.getEntry(blessedFiles[i]);
-		    	ce.setTupleValue("goldenreference","");
+			//first check if there is a default and set it to false
+			String detectorId = request.getParameter("detectorId");
+			Integer detector = Integer.parseInt(detectorId);
+			String defaultBenchmark = Benchmark.getDefaultBenchmark(elab, detector);
+			DataCatalogProvider dcp = ElabFactory.getDataCatalogProvider(elab);
+			if (!defaultBenchmark.equals("")) {
+		    	CatalogEntry ce = dcp.getEntry(defaultBenchmark);
+		    	ce.setTupleValue("benchmarkdefault", false);
 		    	dcp.insert(ce);
 		    }
-		    //now let's deal with the golden file
-			CatalogEntry entry = dcp.getEntry(removeGolden);					
-			entry.setTupleValue("goldenfile", false);
-			entry.setTupleValue("goldendefault", false);
+			//now make the chosen one default
+			String def = request.getParameter("defaultBenchmark");
+			boolean defaultIt = (def.equals("true") ? true: false);
+			CatalogEntry entry = dcp.getEntry(filename);
+			entry.setTupleValue("benchmarkdefault", defaultIt);
 			dcp.insert(entry);			
-			
-		}//end of removing golden file		
+		}//end of setting/removing default benchmark file
+		
+		//check if we are removing a benchmark file			
+		String removeBenchmark = request.getParameter("removeBenchmark");
+		if (!removeBenchmark.equals("")) {
+			//look for all the datafiles that have this file set as their benchmark reference
+			ResultSet rsBlessed = Benchmark.getBlessedDataFilesByBenchmark(elab, removeBenchmark);
+	  		String[] blessedFiles = rsBlessed.getLfnArray();
+			DataCatalogProvider dcp = ElabFactory.getDataCatalogProvider(elab);
+			//remove the reference
+		    for (int i = 0; i < blessedFiles.length; i++) {
+		    	CatalogEntry ce = dcp.getEntry(blessedFiles[i]);
+		    	ce.setTupleValue("benchmarkreference","");
+		    	dcp.insert(ce);
+		    }
+		    //now let's deal with the benchmark file
+			CatalogEntry entry = dcp.getEntry(removeBenchmark);					
+			entry.setTupleValue("benchmarkfile", false);
+			entry.setTupleValue("benchmarkdefault", false);
+			dcp.insert(entry);			
+		}//end of removing benchmark file		
 	}
 	
-	//get detectors
-	TreeMap<Integer, Boolean> goldenFileUse = (TreeMap<Integer, Boolean>) cp.getDetectorBenchmarkFileUse(user);
-    
-	//retrieve existing golden files
+	//get detectors and benchmark files
+	Collection detectors = cp.getDetectorIds(user);
+	Iterator iterator = detectors.iterator();
+	TreeMap<String, Integer> detectorBenchmark = new TreeMap<String, Integer>();
+	TreeMap<String, VDSCatalogEntry> benchmarkTuples = new TreeMap<String, VDSCatalogEntry>();
 	ResultSet searchResults = null;
-	TreeMap<Integer, String> detectorDF = new TreeMap<Integer, String>();
-	TreeMap<String, VDSCatalogEntry> fileGF = new TreeMap<String, VDSCatalogEntry>();
-	for(Map.Entry<Integer,Boolean> entry : goldenFileUse.entrySet()) {
-		  Integer key = entry.getKey();
-		  Boolean value = entry.getValue();
-		  if (value) {
-	  		//retrieve golden files from database
-	  		searchResults = Benchmark.getBenchmarkFileName(elab, key);
-	  		String[] filenames = searchResults.getLfnArray();
-			for (int i = 0; i < filenames.length; i++){
+
+	//loop through detectors
+	while (iterator.hasNext()) {
+		Integer key = Integer.parseInt((String) iterator.next());
+	  	//retrieve benchmark files from database
+  		searchResults = Benchmark.getBenchmarkFileName(elab, key);
+	  	if (searchResults != null) {
+	 		String[] filenames = searchResults.getLfnArray();
+	 		for (int i = 0; i < filenames.length; i++){
 				VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filenames[i]);
-				if (entry != null) {
-					detectorDF.put(key, filenames[i]);
-					fileGF.put(filenames[i], e);
-				}				
-			}
-		  }
-		}
-	request.setAttribute("goldenFileUse", goldenFileUse);
-	request.setAttribute("detectorDF", detectorDF);
-	request.setAttribute("fileGF", fileGF);
+				if (e != null) {
+					benchmarkTuples.put(filenames[i], e);
+					detectorBenchmark.put(filenames[i], key);				}				
+			}//end for loop
+	  	}//end check searchResults
+	}//end looping through detectors
+
+	//set the calendar to a month prior by default 
+	//the criteria to retrieve datafiles will probably change but we need some type of range otherwise
+	//we will be retrieving all the files.
+	Calendar lastMonth = Calendar.getInstance();
+	lastMonth.add(Calendar.MONTH,-1);				
+	request.setAttribute("lastMonth", lastMonth);
+	request.setAttribute("detectors", detectors);
+	request.setAttribute("detectorBenchmark", detectorBenchmark);
+	request.setAttribute("benchmarkTuples", benchmarkTuples);
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -116,7 +118,7 @@
 		<link type="text/css" href="../css/nav-rollover.css" rel="Stylesheet" />		
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/upload.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/benchmark.css"/>
 		<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>		
 		<script type="text/javascript" src="../include/elab.js"></script>
 		<script>
@@ -135,64 +137,46 @@
 			$("#sinceDate").datepicker('option', 'buttonText', 'Choose start date for data files.');
 			$('img.ui-datepicker-trigger').css('vertical-align', 'text-bottom'); 			
 			});				
-		</script>		
+		</script>	
 		<script>
-			function showAddButton(checkedObject, formName, buttonObject, detector) {
-				var detectorId = document.getElementById("detectorId");
-				detectorId.value = detector;
-				var optInOut = document.getElementById("optInOut");
-				var button = document.getElementById(buttonObject);
-				var dateInput = document.getElementById("sinceDate"+detector);
-				if (checkedObject.checked) {
-					optInOut.value = "true";
-					button.style.visibility = "visible";
-					dateInput.style.visibility = "visible";
-					dateInput.className = "datepicker";
-				} else {
-					optInOut.value = "false";
-					button.style.visibility = "hidden";
-					dateInput.style.visibility = "hidden";
-					dateInput.className = "";
-				}
-				document.getElementById('submitButton').click();
-			}
 			function setDefault(checkedObject, detector, fileName) {
 				var filename = document.getElementById("filename");
 				filename.value = fileName;
 				var detectorId = document.getElementById("detectorId");
 				detectorId.value = detector;				
-				var def = document.getElementById("defaultGolden");
+				var def = document.getElementById("defaultBenchmark");
 				if (checkedObject.checked) {
 					def.value = "true";
 				} else {
 					def.value = "false";
 				}
 				document.getElementById('submitButton').click();
-			}
-			function removeGF(filename, defaultFlag) {
+			}	
+			function deleteBenchmark(filename, defaultFlag) {
 				if (defaultFlag) {
-					alert("Cannot remove a default golden file.");
+					var messages = document.getElementById("messages");
+					messages.innerHTML = "<i>* Cannot remove a default benchmark file</i>"
 					return false;
 				} else {
-					var removeGolden = document.getElementById("removeGolden");
-					removeGolden.value = filename;
+					var removeBenchmark = document.getElementById("removeBenchmark");
+					removeBenchmark.value = filename;
 					document.getElementById('submitButton').click();	
 				}
 			}
 			function addBenchmarkFiles(detector, dateObject) {
 				var date = document.getElementById(dateObject);
-				//location.href="add-benchmark.jsp?detector="+detector+"&sinceDate="+date.value;
-				var params = 'width=1000,height=700,top=50,left=150';
+				var params = 'width=1000,height=750,top=10,left=150';
 				var newwindow = window.open("add-benchmark.jsp?detector="+detector+"&sinceDate="+date.value, "addBenchmark", params);
 				if (window.focus) {newwindow.focus()}
 			}
+			
 			function popUpClosed() {
-				window.location.reload();
-			}
+					window.location.reload();
+			}			
 		</script>
 	</head>
 	
-	<body id="golden-file">
+	<body id="benchmark">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
@@ -205,72 +189,68 @@
 			<div id="content">
 
 <h1>Select benchmark files.</h1>
-
-<form id="goldenFileForm" method="post">
-<table border="0">
+<ul>
+	<li>Select date to retrieve benchmark candidates for a detector and add files.</li>
+	<li>Select a default benchmark file.</li>
+	<li>Remove benchmark files (this will also remove the references to this file in former blessed datafiles).</li>
+</ul>
+<form id="benchmarkFileForm" method="post">
+<table style="border: 1px solid black; width: 100%; padding: 20px;" >
     <tr style="vertical-align: top; text-align: center;">
-    	<td><strong>Detector</strong></td>
-    	<td><strong>Opt IN</strong></td>
-    	<td><strong>Add Files From Date</strong></td>
-    	<td><strong>Benchmark Files</strong></td>
+    	<td class="benchmarkHeader">Detector</td>
+    	<td class="benchmarkHeader">Add Files From Date</td>
+    	<td class="benchmarkHeader">Benchmark files and labels</td>
     </tr>
-	<c:forEach var="detector" items="${goldenFileUse}">
-  	  <c:choose>
-	  	  <c:when test="${detector.value}">
-		     <tr style="vertical-align: top; text-align: center;">
-		        <td><strong>${detector.key}</strong></td>
-				<td><input type="checkbox" name="use_golden_file" value="${detector.key}" checked onclick='javascript:showAddButton(this, "addGolden${detector.key}", "addGoldenFiles${detector.key}", "${detector.key}");'></input></td>	 	
-			 	<td><input readonly type="text" name="sinceDate${detector.key}" id="sinceDate${detector.key}" size="15" value="<%= DATEFORMAT.format(new Date()) %>" class="datepicker" ></input>
-					<input type="button" name="addGoldenFiles${detector.key}" id="addGoldenFiles${detector.key}" value="+" onclick='javascript:addBenchmarkFiles(${detector.key}, "sinceDate${detector.key}");'/>
-				</td>
-				<td>
-				<c:forEach var="datafile" items="${detectorDF}">
+	<c:forEach var="detector" items="${detectors}">
+	     <tr class="benchmarkRow">
+	     	<td><strong>${detector}</strong></td>
+		 	<td><input readonly type="text" name="sinceDate${detector}" id="sinceDate${detector}" size="15" value="<%=DATEFORMAT.format(lastMonth.getTime()) %>" class="datepicker" ></input>
+				<input type="button" name="addBenchmarkFiles${detector}" id="addBenchmarkFiles${detector}" value="+" onclick='javascript:addBenchmarkFiles(${detector}, "sinceDate${detector}");'/>
+			</td>
+			<td>
+				<table class="innerTable">
+				<c:forEach var="detectorBenchmark" items="${detectorBenchmark}">
 					<c:choose>
-						<c:when test="${datafile.key == detector.key}">
-							<c:forEach var="goldenfile" items="${fileGF}">
-									<table>
-										<tr>
-											<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-											<td style="vertical-align: bottom;">${goldenfile.key}</td>
-											<td style="vertical-align: bottom;">
-												<c:choose>
-													<c:when test="${goldenfile.value.tupleMap.goldendefault}">
-														<input type="checkbox" name="default${goldenfile.key}" id="default${goldenfile.key}" 
-																	value="${goldenfile.key}" checked onclick='javascript:setDefault(this, "${detector.key}", "${goldenfile.key}")'></input>
-													</c:when>
-													<c:otherwise>
-														<input type="checkbox" name="default${goldenfile.key}" id="default${goldenfile.key}" 
-																	value="${goldenfile.key}" onclick='javascript:setDefault(this, "${detector.key}", "${goldenfile.key}")'></input>
-													</c:otherwise>																	
-												</c:choose>
-											</td>
-											<td style="vertical-align: center;"><input type=button name="removeGoldenFile${goldenfile.key}" id="removeGoldenFile${goldenfile.key}" value="-" onclick='javascript:removeGF("${goldenfile.key}", ${goldenfile.value.tupleMap.goldendefault});'></input></td>
-										</tr>
-									</table>
-							</c:forEach>															
+						<c:when test="${detectorBenchmark.value == detector}">
+								<c:forEach var="benchmarkTuples" items="${benchmarkTuples}">
+									<tr>
+										<c:choose>
+											<c:when test="${benchmarkTuples.key == detectorBenchmark.key}">
+												<td style="vertical-align: bottom; width: 115px;">${benchmarkTuples.key}</td>
+												<td style="vertical-align: bottom; width: 20px;">
+													<c:choose>
+														<c:when test="${benchmarkTuples.value.tupleMap.benchmarkdefault}">
+															<input type="checkbox" name="default${benchmarkTuples.key}" id="default${benchmarkTuples.key}" 
+																		value="${benchmarkTuples.key}" checked onclick='javascript:setDefault(this, "${detector}", "${benchmarkTuples.key}")'></input>
+														</c:when>
+														<c:otherwise>
+															<input type="checkbox" name="default${benchmarkTuples.key}" id="default${benchmarkTuples.key}" 
+																		value="${benchmarkTuples.key}" onclick='javascript:setDefault(this, "${detector}", "${benchmarkTuples.key}")'></input>
+														</c:otherwise>																	
+													</c:choose>
+											    </td>													
+												<td style="vertical-align: center; width: 40px;"><input type=button name="removeBenchmarkFile${benchmarkTuples.key}" id="removeBenchmarkFile${benchmarkTuples.key}" value="-" onclick='javascript:deleteBenchmark("${benchmarkTuples.key}", ${benchmarkTuples.value.tupleMap.benchmarkdefault});'></input></td>
+												<td style="vertical-align: bottom;"><strong>${benchmarkTuples.value.tupleMap.benchmarklabel}</strong></td>
+											</c:when>
+										</c:choose>																							
+									</tr>
+								</c:forEach>															
 						</c:when>
 					</c:choose>						
-				</c:forEach></td>
-			  </tr>
-			</c:when>
-			<c:otherwise>
-	            <tr style="vertical-align: top; text-align: center;">
-		            <td><strong>${detector.key}</strong></td>
-		     		<td><input type="checkbox" name="use_golden_file" value="${detector.key}" onclick='javascript:showAddButton(this, "addGolden${detector.key}", "addGoldenFiles${detector.key}", "${detector.key}");'></input></td>
-					<td><input readonly type="text" name="sinceDate${detector.key}" id="sinceDate${detector.key}" size="15" value="<%= DATEFORMAT.format(new Date()) %>" class="" style="visibility: hidden;"></input>
-						<input type="button" name="addGoldenFiles${detector.key}" id="addGoldenFiles${detector.key}" value="+" style="visibility: hidden;" onclick='javascript:addBenchmarkFiles(${detector.key}, "sinceDate${detector.key}");'/>
-					</td>
-					<td></td>
-				</tr>
-			</c:otherwise>
-		</c:choose>
+				</c:forEach>							
+				</table>
+			</td>
+	  </tr>
 	</c:forEach>
+	<tr>
+		<td colspan="3" class="benchmarkFooter"><div id="messages"></div></td>
+	</tr>
 </table>
 <input type="hidden" name="filename" id="filename" value=""></input>
 <input type="hidden" name="optInOut" id="optInOut" value=""></input>
 <input type="hidden" name="detectorId" id="detectorId" value =""></input>
-<input type="hidden" name="defaultGolden" id="defaultGolden" value=""></input>
-<input type="hidden" name="removeGolden" id="removeGolden" value=""></input>
+<input type="hidden" name="defaultBenchmark" id="defaultBenchmark" value=""></input>
+<input type="hidden" name="removeBenchmark" id="removeBenchmark" value=""></input>
 <input type="submit" name="submitButton" id="submitButton" value="Save Changes" style="visibility: hidden;" />
 </form>
 			</div>

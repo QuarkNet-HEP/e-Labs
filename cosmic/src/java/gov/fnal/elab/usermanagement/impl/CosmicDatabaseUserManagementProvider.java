@@ -123,18 +123,19 @@ CosmicElabUserManagementProvider {
 		return ids;
 	}
 	
+	/*
 	public TreeMap<Integer, Boolean> getDetectorBenchmarkFileUse(ElabGroup group) throws ElabException {
 		Connection conn = null;
 		try {
 			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
 			try {
 				PreparedStatement ps = conn.prepareStatement(
-						"SELECT detectorid, coalesce(use_golden_file, false) as use_golden_file FROM research_group_detectorid WHERE research_group_id = ? order by detectorid;");
+						"SELECT detectorid, coalesce(use_benchmark, true) as use_benchmark FROM research_group_detectorid WHERE research_group_id = ? order by detectorid;");
 				ps.setInt(1, group.getId());
 				ResultSet rs = ps.executeQuery();
 				TreeMap<Integer, Boolean> tm = new TreeMap<Integer, Boolean>();
 				while (rs.next()) {
-					tm.put(rs.getInt("detectorid"), rs.getBoolean("use_golden_file"));
+					tm.put(rs.getInt("detectorid"), rs.getBoolean("use_benchmark"));
 				}
 				ps.close();
 				return tm;				
@@ -150,6 +151,7 @@ CosmicElabUserManagementProvider {
 			DatabaseConnectionManager.close(conn);
 		}
 	}
+	*/
 	
     public void setDetectorBenchmarkFileUse(ElabGroup group, String detectorId, boolean benchmark_file_use) throws ElabException {
 		Connection conn = null;
@@ -164,7 +166,7 @@ CosmicElabUserManagementProvider {
 			conn.setAutoCommit(false);
 			try {
 				ps = conn.prepareStatement(
-						"UPDATE research_group_detectorid set use_golden_file = ? WHERE detectorid = ?;");
+						"UPDATE research_group_detectorid set use_benchmark = ? WHERE detectorid = ?;");
 				ps.setBoolean(1, benchmark_file_use);
 				ps.setInt(2, thisId);
 				ps.executeUpdate();

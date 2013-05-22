@@ -16,7 +16,7 @@ public interface CosmicElabUserManagementProvider extends
     
     void setDetectorIds(ElabGroup group, Collection<String> detectorIds) throws ElabException;
  
-	TreeMap<Integer, Boolean> getDetectorBenchmarkFileUse(ElabGroup group) throws ElabException;
+	//TreeMap<Integer, Boolean> getDetectorBenchmarkFileUse(ElabGroup group) throws ElabException;
     
     void setDetectorBenchmarkFileUse(ElabGroup group, String detectorId, boolean benchmark_file_use) throws ElabException;
 }

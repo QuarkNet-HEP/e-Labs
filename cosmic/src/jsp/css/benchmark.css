@@ -1,0 +1,28 @@
+<style type="text/css">
+.outerTable {
+	border: 1px solid black;
+	width: 100%;
+	padding: 20px;
+}
+.benchmarkHeader {
+	border: 1px solid lightgray; 
+	padding: 10px;
+	font-weight: bold;
+}
+.benchmarkFooter {
+	border: 1px solid lightgray; 
+	padding: 5px;
+	text-align: center;
+}
+.benchmarkSelection {
+	padding-left: 10px;
+}
+.benchmarkRow {
+	vertical-align: top; 
+	text-align: center;
+}
+.innerTable {
+	padding: 10px; 
+	text-align: left;
+}
+</style>

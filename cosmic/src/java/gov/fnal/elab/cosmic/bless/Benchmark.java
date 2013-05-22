@@ -6,6 +6,7 @@ import gov.fnal.elab.datacatalog.query.Equals;
 import gov.fnal.elab.datacatalog.query.Like;
 import gov.fnal.elab.datacatalog.query.GreaterOrEqual;
 import gov.fnal.elab.datacatalog.query.In;
+import gov.fnal.elab.datacatalog.query.Not;
 import gov.fnal.elab.datacatalog.query.ResultSet;
 import gov.fnal.elab.util.ElabException;
 
@@ -17,29 +18,49 @@ public class Benchmark {
 		and.add(new Equals("project","cosmic"));
 		and.add(new Equals("type", "split"));
 		and.add(new Like("detectorid", Integer.toString(detectorid)));
-		and.add(new Equals("goldenfile", true));
-		
+		and.add(new Equals("benchmarkfile", true));
 		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
 		return rs;
 	}
-	
+	public static String getDefaultBenchmark(Elab elab, Integer detectorid) throws ElabException {
+		String benchmarkDefault = "";
+		In and = new In();
+		and.add(new Equals("project","cosmic"));
+		and.add(new Equals("type", "split"));
+		and.add(new Like("detectorid", Integer.toString(detectorid)));
+		and.add(new Equals("benchmarkfile", true));
+		and.add(new Equals("benchmarkdefault", true));
+		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
+		if (rs != null) {
+			benchmarkDefault = rs.getLfnArray()[0];
+		}
+		return benchmarkDefault;
+	}
 	public static ResultSet getBlessedDataFilesByBenchmark(Elab elab, String benchmarkfile) throws ElabException {
 		In and = new In();
 		and.add(new Equals("project","cosmic"));
 		and.add(new Equals("type", "split"));
-		and.add(new Equals("goldenreference", benchmarkfile));
-		
+		and.add(new Equals("benchmarkreference", benchmarkfile));
 		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
 		return rs;
 	}
-
 	public static ResultSet getBenchmarkCandidates(Elab elab, Integer detectorid, Date startDate) throws ElabException {
 		In and = new In();
 		and.add(new Equals("project","cosmic"));
 		and.add(new Equals("type", "split"));
 		and.add(new Like("detectorid", Integer.toString(detectorid)));
 		and.add(new GreaterOrEqual("startdate", startDate));
-		
+		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
+		rs.sort("creationdate", true);
+		return rs;
+	}
+	public static ResultSet getUnblessedFilesByDetector(Elab elab, Integer detectorid) throws ElabException {
+		In and = new In();
+		and.add(new Equals("project","cosmic"));
+		and.add(new Equals("type", "split"));
+		and.add(new Like("detectorid", Integer.toString(detectorid)));
+		and.add(new Equals("blessed", false));
+		and.add(new Like("blessfile", "%.bless%"));
 		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
 		rs.sort("creationdate", true);
 		return rs;
