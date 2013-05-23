@@ -19,6 +19,7 @@
 				font-size: x-small;
 			}
 			span.rotate-text-left {
+				vertical-align: top;
 				position: absolute;
 				width: 0px;
 				-webkit-transform: rotate(-90deg); 
