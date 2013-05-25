@@ -14,12 +14,11 @@ type AxisParams {
 
 
 (File image, File outfile_param) Plot(string ptype, string caption, AxisParams x, AxisParams y, 
-	AxisParams z, string title, File infile, File extraFun) {
+	AxisParams z, string title, File infile) {
 	
 	app {
 		Plot 
 			"-file" @filename(infile)
-			"-extra" @filename(extraFun)
 			"-param" @filename(outfile_param)
 			"-svg" @filename(image)
 			"-type" ptype
@@ -54,7 +53,6 @@ string geoDir = @arg("geoDir");
 File geoFiles[] <fixed_array_mapper;files=@arg("geoFiles")>;
 
 string plot_caption = @arg("plot_caption");
-File extraFun_out <single_file_mapper;file=@arg("extraFun_out")>;
 
 AxisParams x, y, z;
 
@@ -80,7 +78,7 @@ eventFile = EventChoice(eventCandidates, eventNum, zeroZeroZeroID, geoDir, geoFi
 
 File svg <"plot.svg">;
 (svg, plot_outfile_param) = Plot(plot_plot_type, plot_caption, x, y, z, plot_title,
-	eventFile, extraFun_out);
+	eventFile);
 
 File png <single_file_mapper;file=@arg("plot_outfile_image")>;
 
