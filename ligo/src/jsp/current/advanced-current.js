@@ -451,7 +451,7 @@ function overrideYLabel(channel, unit) {
 	c = parseChannel();
 	switch (c.subsystem) {
 	case "DMT":
-		return "Velocity (microns/s)";
+		return "Signal (volts)";
 		break;
 	case "PEM":
 		switch (c.sensor) {

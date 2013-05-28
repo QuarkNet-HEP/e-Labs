@@ -373,7 +373,7 @@ function overrideYLabel(channel, unit) {
 	
 	switch (c.subsystem) {
 		case "DMT":
-			return "Velocity (microns/s)";
+			return "Energy";
 		case "PEM":
 			switch (c.sensor) {
 				case "SEISX":
