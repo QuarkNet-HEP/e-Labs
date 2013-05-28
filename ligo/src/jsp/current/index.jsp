@@ -70,8 +70,7 @@
 							<table id="plot">
 								<!--[if IE]><!-->
 									<tr>
-									  <td id="yAxisLabeltd"><span id="yAxisLabel">&nbsp;</span></td>
-									  <td></td>
+									  <td id="yAxisLabeltd" colspan="2"><span id="yAxisLabel">&nbsp;</span></td>
 									</tr>
 								<!--<![endif]-->
 								<tr>
