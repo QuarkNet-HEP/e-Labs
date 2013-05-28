@@ -74,7 +74,6 @@
 									</tr>
 								<!--<![endif]-->
 								<tr>
-									<!--<![endif]-->
 									<!--[if !IE]><!-->        
     									<td id="yAxisLabeltd"><span class="rotate-text-left" id="yAxisLabel">&nbsp;</span></td>
 									<!--<![endif]-->
