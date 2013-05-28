@@ -307,7 +307,7 @@ public abstract class AbstractDataTool {
         double lentime = Double.parseDouble(info[2]);
 
         DataReader<?, ?> dp = getReader(channel, types.get(channel), this);
-        //dp.clear();
+        dp.clear();
         readData(dp, rmsbin, meanbin);
 
         if (nsamples != dp.size()) {
