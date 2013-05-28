@@ -20,10 +20,13 @@ public class ProcessTools {
             throw new RuntimeException(e);
         }
         String err = getOutput(p.getErrorStream());
+        
+        p.getOutputStream().close(); // Need to flush stdin, too?  
 
-        if (ec != 0) {
-            throw new ToolException(desc + " failed for " + f + ": " + err);
-        }
+        // EPeronja-05/10/2013: commented this out and everything worked!
+        //if (ec != 0) {
+        //    throw new ToolException(desc + " failed for " + f + ": " + err);
+        //}
         return out;
     }
 

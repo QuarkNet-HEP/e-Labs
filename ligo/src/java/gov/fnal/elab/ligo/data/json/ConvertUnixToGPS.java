@@ -1,3 +1,6 @@
+/*
+ * EPeronja-05/10/2013: Added this for today's gps time calculation.
+ */
 package gov.fnal.elab.ligo.data.json;
 
 public class ConvertUnixToGPS {
