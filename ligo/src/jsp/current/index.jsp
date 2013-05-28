@@ -68,15 +68,10 @@
 					<tr>
 						<td colspan="2">
 							<table id="plot">
-								<!--[if IE]><!-->
 									<tr>
-									  <td id="yAxisLabeltd" colspan="2"><span id="yAxisLabel">&nbsp;</span></td>
+									  <td id="yAxisLabeltd"><span id="yAxisLabel">&nbsp;</span></td>
 									</tr>
-								<!--<![endif]-->
 								<tr>
-									<!--[if !IE]><!-->        
-    									<td id="yAxisLabeltd"><span class="rotate-text-left" id="yAxisLabel">&nbsp;</span></td>
-									<!--<![endif]-->
 									<td width="850">
 										<div id="resizablecontainer" style="margin-bottom: 10px; margin-right: 10px;" >
 											<div id="chart" style="width:100%; height:250px; text-align: left;"></div>
@@ -84,7 +79,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td align="center" colspan="2"><span id="xAxisLabel">Date/Time (GMT)</span></td>
+									<td align="center"><span id="xAxisLabel">Date/Time (GMT)</span></td>
 								</tr>
 							</table>
 						</td>
