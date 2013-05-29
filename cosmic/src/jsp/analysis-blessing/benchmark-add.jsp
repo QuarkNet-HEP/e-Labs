@@ -56,6 +56,7 @@
 		    	dcp.insert(entry);
 				ArrayList meta = new ArrayList();
 				meta.add("benchmarkfile boolean true");
+				meta.add("benchmarkreference string none");
 				meta.add("benchmarkdefault boolean true");
 				meta.add("benchmarklabel string "+benchmarkLabel);
 				dcp.insert(DataTools.buildCatalogEntry(benchmark, meta));	
@@ -178,9 +179,9 @@
 			  <form name="addBenchmarkFileForm" method="post" >
 				<h1>Select benchmark files for detector: <%=detector%></h1>
 				<ul>
-					<li>Select data file to view rates before you choose a benchmark file.</li>
-					<li>Choose radio button of selected benchmark file.</li>
-					<li>Add a meaningful label to this benchmark file.</li>
+					<li>Select data file to <strong>view rates</strong> before you choose a benchmark file.</li>
+					<li>Select <strong>benchmark</strong> file.</li>
+					<li>Add a meaningful <strong>label</strong> to this benchmark file.</li>
 				</ul>
 				<input type="hidden" name="success" id="success" value="<%=success%>"></input>
 				<input type="hidden" name="detector" value="<%=detector%>" ></input>
@@ -195,7 +196,7 @@
         				<c:choose>
         				  <c:when test="${not empty filenames }">
 							<table>
-								<c:forEach items="${filenames}" var="filename" begin="0" end="9">
+								<c:forEach items="${filenames}" var="filename">
 									<tr>
 										<td class="benchmarkSelection"><input type="radio" name="benchmark" id="benchmark" value="${filename}"></input></td>
 										<td><a href="#charts" onclick='javascript:showCharts("${filename}");'>${filename}</a><label name="arrow" id="arrow${filename}" style="visibility: hidden;"><strong> >>> </strong></label></td>
@@ -213,8 +214,8 @@
 						  </c:otherwise>
 						</c:choose>
 					</td>
-					<td>
-						<div id="chartsDiv" style="visibility: hidden; text-align: center;">
+					<td style="vertical-align: top;">
+						<div id="chartsDiv" style="visibility: hidden;">
 							<h2 id="datafile"></h2>
 							<h2>Rates</h2>
 							<div id="channels" style="text-align: center; background-color:#FFFFFF;">

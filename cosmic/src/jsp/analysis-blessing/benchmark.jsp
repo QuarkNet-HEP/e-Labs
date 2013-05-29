@@ -166,7 +166,7 @@
 			function addBenchmarkFiles(detector, dateObject) {
 				var date = document.getElementById(dateObject);
 				var params = 'width=1000,height=750,top=10,left=150';
-				var newwindow = window.open("add-benchmark.jsp?detector="+detector+"&sinceDate="+date.value, "addBenchmark", params);
+				var newwindow = window.open("benchmark-add.jsp?detector="+detector+"&sinceDate="+date.value, "addBenchmark", params);
 				if (window.focus) {newwindow.focus()}
 			}
 			
@@ -190,8 +190,8 @@
 
 <h1>Select benchmark files.</h1>
 <ul>
-	<li>Select date to retrieve benchmark candidates for a detector and add files.</li>
-	<li>Select a default benchmark file.</li>
+	<li>Select <strong>date</strong> to retrieve benchmark candidates for a detector and add files.</li>
+	<li>Select a <strong>default benchmark</strong> file.</li>
 	<li>Remove benchmark files (this will also remove the references to this file in former blessed datafiles).</li>
 </ul>
 <form id="benchmarkFileForm" method="post">
@@ -243,7 +243,7 @@
 	  </tr>
 	</c:forEach>
 	<tr>
-		<td colspan="3" class="benchmarkFooter"><div id="messages"></div></td>
+		<td colspan="3" style="text-align: center;"><div id="messages"></div></td>
 	</tr>
 </table>
 <input type="hidden" name="filename" id="filename" value=""></input>

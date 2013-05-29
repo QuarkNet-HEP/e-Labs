@@ -35,6 +35,7 @@
 	if ("Bless Files".equals(reqType)){
 		selectedDetector = request.getParameter("selectedDetector");
 		benchmark = request.getParameter("benchmark");
+		
 		String[] filesToBless = request.getParameterValues("blessfiles");
 		if (filesToBless != null) {
 			BlessProcess bp = new BlessProcess();
@@ -42,38 +43,53 @@
 		}
 	}
 	request.setAttribute("results", results);
-
 	//get detectors and benchmark files
 	Collection detectors = cp.getDetectorIds(user);
 	//Iterator iterator = detectors.iterator();
 	TreeMap<String, Integer> unblessedForDetector = new TreeMap<String, Integer>();
 	TreeMap<String, VDSCatalogEntry> benchmarkTuples = new TreeMap<String, VDSCatalogEntry>();
 	ResultSet searchResults = null;
-
+	String selectedBenchmark = request.getParameter("selectedBenchmark");
+	String defaultBenchmark = "";
 	if (!selectedDetector.equals("")) {
 	  	//retrieve unblessed files for this detector
 	  	Integer key = Integer.parseInt(selectedDetector);
-  		searchResults = Benchmark.getUnblessedFilesByDetector(elab, key);
-	  	if (searchResults != null) {
-	 		String[] filenames = searchResults.getLfnArray();
-	  		for (int i=0; i < filenames.length; i++) {
-	  			unblessedForDetector.put(filenames[i], key);
-  		    }
-	  		//also retrieve benchmark files to use
-	  		//retrieve benchmark files from database
-	  		searchResults = Benchmark.getBenchmarkFileName(elab, key);
-	  		String[] benchmarks = searchResults.getLfnArray();
-			for (int i = 0; i < benchmarks.length; i++){
-				VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(benchmarks[i]);
-				if (e != null) {
-					benchmarkTuples.put(filenames[i], e);
-				}				
+		//get benchmark files so we can retrieve candidates for the selected detector
+	  	searchResults = Benchmark.getBenchmarkFileName(elab, key);
+  		String[] benchmarks = searchResults.getLfnArray();
+		defaultBenchmark = "";
+		for (int i = 0; i < benchmarks.length; i++){
+			VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(benchmarks[i]);
+  			benchmarkTuples.put(benchmarks[i], e);
+  		  	//if there is no selected benchmark, then we need to use the default		
+  			if (selectedBenchmark.equals("")) {
+	  			if (e != null) {
+					if (e.getTupleValue("benchmarkdefault").toString().equals("true")) {
+						defaultBenchmark = e.getLFN();					
+		  			}
+				}
+  			} else {
+  				defaultBenchmark = selectedBenchmark;
+  			}
+		}
+		if (defaultBenchmark != null && !defaultBenchmark.equals("")) {
+			searchResults = Benchmark.getUnblessedFilesByBenchmarkGeometry(elab, key, defaultBenchmark);
+			if (searchResults != null) {
+				String [] filenames = searchResults.getLfnArray();
+		  		for (int i=0; i < filenames.length; i++) {
+		  			unblessedForDetector.put(filenames[i], key);
+		  		}
 			}
-	  	}//end check searchResults	
+		}
 	}//end of checking if there was a detector selected
 	request.setAttribute("detectors", detectors);
-	request.setAttribute("unblessedForDetector", unblessedForDetector);
+	if (benchmarkTuples.isEmpty()) {
+		request.setAttribute("unblessedForDetector", "");		
+	} else {
+		request.setAttribute("unblessedForDetector", unblessedForDetector);		
+	}
 	request.setAttribute("benchmarkTuples", benchmarkTuples);
+	request.setAttribute("defaultBenchmark", defaultBenchmark);
 	request.setAttribute("selectedDetector", selectedDetector);
 
 %>
@@ -92,14 +108,21 @@
         	<script type="text/javascript" src="../../dwr/interface/UploadMonitor.js"></script>
         	<script type="text/javascript" src="../../dwr/engine.js"></script>
         	<script type="text/javascript" src="../../dwr/util.js"></script>
-			<script type="text/javascript" src="../include/benchmark.js"></script>
+
 			<script>
 			function showDetectorFiles(selectObject){
-				var detector = document.getElementById("selectedDetector");
-				if (selectedDetector.selectedIndex != -1) {
-					detector.value = selectObject.value;
+				var selectedDetector = document.getElementById("selectedDetector");
+				if (selectObject.selectedIndex != -1) {
+					selectedDetector.value = selectObject.value;
 					document.getElementById('submitButton').click();
 				}
+			}
+			function showCandidates(selectObject){
+				var benchmark = document.getElementById("selectedBenchmark");
+				if (benchmark.selectedIndex != -1) {
+					benchmark.value = selectObject.value;
+					document.getElementById('submitButton').click();
+				}				
 			}
 			function selectAll(checkAll) {
 				var inputs = document.getElementsByTagName("input");
@@ -130,12 +153,12 @@
 
 <h1>Bless uploaded datafiles.</h1>
 <ul>
-	<li>Select detector to display unblessed datafiles.</li>
-	<li>Select benchmark files.</li>
-	<li>Select files to bless.</li>
-	<li>Bless files.</li>
+	<li>Select <strong>detector</strong> to display unblessed datafiles.</li>
+	<li>Select <strong>benchmark</strong> files.</li>
+	<li>Select <strong>files to bless</strong> from datafiles uploaded with the same geometry as the selected benchmark.</li>
+	<li><strong>Bless</strong> files.</li>
 </ul>
-<form id="benchmarkProcessForm" method="post" onsubmit="startProgress();">
+<form id="benchmarkProcessForm" method="post" >
 	<table style="border: 1px solid black; width: 100%; padding: 20px;">
 	    <tr style="vertical-align: center; text-align: bottom;">
 	    	<td class="benchmarkHeader">Detector: 
@@ -156,11 +179,11 @@
    			<td class="benchmarkHeader">Benchmark
   			    <c:choose>
    			      <c:when test="${not empty benchmarkTuples}">
-		   				<select name="benchmark" id="benchmark">
+		   				<select name="benchmark" id="benchmark" onChange="javascript:showCandidates(this);">
 		   			    	<option>Choose benchmark</option>
 	   						<c:forEach items="${benchmarkTuples}" var="benchmarkTuples">
 	   				  			<c:choose>
-			   				  		<c:when test="${benchmarkTuples.value.tupleMap.benchmarkdefault == true}">
+			   				  		<c:when test="${benchmarkTuples.key == defaultBenchmark}">
 			 						      <option value="${benchmarkTuples.key}" selected="true">${benchmarkTuples.value.tupleMap.benchmarklabel}</option>
 			 						</c:when>
 			 						<c:otherwise>
@@ -170,6 +193,9 @@
 		   					</c:forEach>
 		   				</select>   
 		   			</c:when>
+		   			<c:otherwise>
+		   				<a href="../analysis-blessing/benchmark.jsp">Add</a>
+		   			</c:otherwise>
 				</c:choose>   			   			
    			</td>
    	    </tr>
@@ -179,6 +205,15 @@
 					<td class="benchmarkHeader" colspan="2"><input type="checkbox" name="checkAll" id="checkAll" onclick="javascript:selectAll(this);">Select All Unblessed Files</input></td>
 	    	 	</tr>
 	    	 </c:when>
+	    	 <c:otherwise>
+		    	 <c:choose>
+		    	 	<c:when test="<%= selectedDetector == null %>">
+			    		<tr>
+			    			<td>There are no benchmark files set for this detector. <a href="../analysis-blessing/benchmark.jsp">Add</a> file.</td>
+			    		</tr> 
+	 		   		</c:when>
+	    		</c:choose>
+	    	 </c:otherwise>
 	    </c:choose>
 		<tr><td class="benchmarkSelection" colspan="2">
 			<c:forEach items="${unblessedForDetector}" var="unblessedForDetector">
@@ -188,29 +223,9 @@
 		<tr>
    			<td class="benchmarkFooter" colspan="2"><input type="submit" name="submitButton" id="submitButton" value="Bless Files"></input>	</td>
 		</tr>
-	    <c:choose>
-		     <c:when test="${not empty unblessedForDetector}">
-				<tr>
-					<td class="benchmarkFooter" colspan="2">
-						<div id="progressBar" style="display: none">
-							<div id="theMeter">
-					
-								<div id="progressBarBox">
-									<div id="progressBarBoxContent"></div>
-									<div id="progressBarText"></div>
-								</div>
-							</div>
-							
-						</div>
-						<div id="uploadwarning" class="redborder">
-							<strong><em>Don't navigate away from this page</em></strong> until we've started blessing your file!
-						</div>			
-					</td>
-				</tr>
-			</c:when>
-		</c:choose>
 	</table>
 	<input type="hidden" name="selectedDetector" id="selectedDetector" value="${selectedDetector}"></input>
+	<input type="hidden" name="selectedBenchmark" id="selectedBenchmark" value="${selectedBenchmark}"></input>
 </form>
 <c:choose>
      <c:when test="${not empty results}">

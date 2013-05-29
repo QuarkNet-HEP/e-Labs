@@ -40,14 +40,15 @@ public class BlessProcess {
 		//get the catalog entry of the file to be blessed
 		try {
 			//Write to a log file for the time being so all this can be checked
+			String logfile = filename + "_blessing.txt";
 			File file = new File(elab.getProperties().getDataDir() + File.separator + detectorid +
-					File.separator + filename + "_blessing.txt");
+					File.separator + logfile);
 			if (!file.exists()) {
 				file.createNewFile();
 			}
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
-
+			
 			VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(benchmark);
 			if (entry != null) {
 				//get all the tuples needed for the blessing
@@ -199,10 +200,10 @@ public class BlessProcess {
 							bw.write("FailReason: "+ failReason + "\n");
 							dcp.insert(DataTools.buildCatalogEntry(filename, meta));
 							if (pass && lineNumber > 0) {
-								message = filename + " has been blessed.";
+								message = "<a href='benchmark-view.jsp?filename="+logfile+"'>"+filename + "</a> has been blessed.";
 								bw.write(filename + " has been blessed." + "\n");
 							} else {
-								message = filename + " has NOT been blessed. Fail reason: " + failReason;								
+								message = "<a href='benchmark-view.jsp?filename="+logfile+"'>"+filename + "</a> has NOT been blessed. Fail reason: " + failReason;								
 								bw.write(filename + " has NOT been blessed." + "\n");
 							}
 							bw.close();

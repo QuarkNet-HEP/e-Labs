@@ -233,6 +233,7 @@ Re: the upload progress stuff
 
 <ul>
 	<li>Select the <strong>detector</strong> associated with the data you are uploading.</li>
+	<li>Select <strong>benchmark</strong> file from dropdown. <a href="../analysis-blessing/benchmark.jsp">Add</a> file if no benchmark has been setup.</li>
 	<li>Click <strong>Choose File/Browse</strong> to locate the data file on your computer.</li>
 	<li>Click <strong>Upload</strong> to upload the file.</li>
 </ul>
@@ -243,7 +244,6 @@ Re: the upload progress stuff
 <strong>Please <em>do not</em> upload files larger than 2 GB in size. You'll have to split them up into smaller pieces. Questions? See the <a href="../library/FAQ.jsp">FAQ</a> </strong>
 </div>
 	<p>
-		<u>Choose <label for="detector">detector</label></u><br />	
 		<table style="text-align: left; margin-left: 5%;" width="90%">
 		    <tr>
 		    	<td class="benchmarkHeader">Detector</td>
