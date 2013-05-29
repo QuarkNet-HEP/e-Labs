@@ -215,7 +215,7 @@
 						</c:choose>
 					</td>
 					<td style="vertical-align: top;">
-						<div id="chartsDiv" style="visibility: hidden;">
+						<div id="chartsDiv" style="visibility: hidden; text-align: center;">
 							<h2 id="datafile"></h2>
 							<h2>Rates</h2>
 							<div id="channels" style="text-align: center; background-color:#FFFFFF;">
