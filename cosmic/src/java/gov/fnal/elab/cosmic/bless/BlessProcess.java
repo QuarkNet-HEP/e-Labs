@@ -209,15 +209,25 @@ public class BlessProcess {
 							bw.close();
 						}
 					} catch (Exception e) {
-						message = e.toString();
+						message = "Blessfile: " + blessFile + "\n";
+						message += "Dir: " + elab.getProperties().getDataDir() + "\n";
+						message += "Filename: "+ filename +"\n";
+						message += "Detector: "+ detectorid +"\n";
+						message += e.toString() + "\n";
 				}
 					
 				} catch (Exception e) {
-					message = e.toString();
+					message += "Dir: " + elab.getProperties().getDataDir() + "\n";
+					message += "Filename: "+ filename +"\n";
+					message += "Detector: "+ detectorid +"\n";
+					message += e.toString() + "\n";
 				}
 			}
 		} catch (ElabException e) {
-			message = e.toString();			
+			message += "Dir: " + elab.getProperties().getDataDir() + "\n";
+			message += "Filename: "+ filename +"\n";
+			message += "Detector: "+ detectorid +"\n";
+			message += e.toString() + "\n";
 		}
 		return message;
 	}//end of BlessDatafile
