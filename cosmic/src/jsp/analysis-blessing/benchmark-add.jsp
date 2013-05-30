@@ -109,7 +109,7 @@
 		<script type="text/javascript" src="../include/jquery/flot/jquery.flot.axislabels.js"></script>
 		<script type="text/javascript" src="../include/jquery/flot/jquery.flot.symbol.js"></script>
 		<script type="text/javascript" src="../include/excanvas.min.js"></script>
-		<script type="text/javascript" src="../analysis-blessing/blessing.js"></script>				
+		<script type="text/javascript" src="../analysis-blessing/blessing.js"></script>	
 		<script>
 		$(document).ready(function() {
 			if ("<%=firstDataFile%>" != null && "<%=firstDataFile%>" != "") {
@@ -137,6 +137,7 @@
 				if (arrow) {
 					arrow.style.visibility = "visible";
 				}
+			
 				datafile.innerHTML = "<strong>"+filename+"</strong>";
 				$.ajax({
 					url: "../analysis-blessing/get-data.jsp?file="+filename,
@@ -192,17 +193,19 @@
 				  	<td class="benchmarkHeader">Bless Charts</td>
 				  </tr>
 				  <tr style="cellpadding: 4px;">
-				    <td style="vertical-align: top;">
+				    <td style="vertical-align: top; width: 180px; overflow: auto;">
         				<c:choose>
         				  <c:when test="${not empty filenames }">
-							<table>
-								<c:forEach items="${filenames}" var="filename">
-									<tr>
-										<td class="benchmarkSelection"><input type="radio" name="benchmark" id="benchmark" value="${filename}"></input></td>
-										<td><a href="#charts" onclick='javascript:showCharts("${filename}");'>${filename}</a><label name="arrow" id="arrow${filename}" style="visibility: hidden;"><strong> >>> </strong></label></td>
-									</tr>
-								</c:forEach>					
-							</table>
+        				  	<div style="height: 600px; overflow: auto;">
+								<table>
+									<c:forEach items="${filenames}" var="filename">
+										<tr>
+											<td class="benchmarkSelection"><input type="radio" name="benchmark" id="benchmark" value="${filename}"></input></td>
+											<td><a href="#charts" onclick='javascript:showCharts("${filename}");'>${filename}</a><label name="arrow" id="arrow${filename}" style="visibility: hidden;"><strong> >>> </strong></label></td>
+										</tr>
+									</c:forEach>					
+								</table>
+							</div>
 						  </c:when>
 						  <c:otherwise>
 								<% if (success) { %>
@@ -215,16 +218,16 @@
 						</c:choose>
 					</td>
 					<td style="vertical-align: top;">
-						<div id="chartsDiv" style="visibility: hidden; text-align: center;">
-							<h2 id="datafile"></h2>
-							<h2>Rates</h2>
-							<div id="channels" style="text-align: center; background-color:#FFFFFF;">
-								<div id="channelChart" style="height:200px; width:550px"></div>
-								<div id="channelChartLegend" style="margin:auto; width:300px"></div>        
+							<div id="chartsDiv" style="visibility: hidden; text-align: center;">
+								<h2 id="datafile"></h2>
+								<h2>Rates</h2>
+								<div id="channels" style="text-align: center; background-color:#FFFFFF;">
+									<div id="channelChart" style="height:200px; width:550px"></div>
+									<div id="channelChartLegend" style="margin:auto; width:300px"></div>        
+								</div>
+								<h2>Trigger Rate</h2>
+								<div id ="triggerChart" style="width:550px; height:200px;"></div>
 							</div>
-							<h2>Trigger Rate</h2>
-							<div id ="triggerChart" style="width:550px; height:200px;"></div>
-						</div>
 					</td>
 				  </tr>
 				  <tr>
