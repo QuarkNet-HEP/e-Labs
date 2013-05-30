@@ -319,8 +319,6 @@ public class DatabaseTestProvider implements ElabTestProvider {
                         + " AND student_id = " + student.getId() + ";");
                 if (rs.next()) {
                     status.put(student, Boolean.valueOf(rs.getBoolean(1)));
-                } else {
-                	status.put(student, false);
                 }
             }
             return status;
@@ -333,6 +331,42 @@ public class DatabaseTestProvider implements ElabTestProvider {
         }
     }
 
+	//EPeronja-05/30/2013: Added this function to check the if the group exists in
+	//       the survey table to prevent adding new students to old groups.
+	//       If the user wants to reuse the group, he/she will need to delete the old students
+	public boolean getSurveyStudents(ElabGroup group) throws ElabException {
+		boolean exists = false;
+		Connection con = null; 
+		PreparedStatement ps = null;
+		try {
+			con = DatabaseConnectionManager.getConnection(elab.getProperties());		
+			ps = con.prepareStatement(
+					"SELECT count(*) " +
+					"  FROM survey s " +
+					" INNER JOIN research_group_student rgs " +
+					"    ON s.student_id = rgs.student_id " +
+					" WHERE rgs.research_group_id = ?; ");
+
+			ResultSet rs = null; 
+			ps.setInt(1, group.getId());
+			rs = ps.executeQuery();
+			int count = 0;
+			if (rs.next()) {
+				count = rs.getInt(1);
+			}
+			if (count > 0) {
+				exists = true;
+			}
+		}
+		catch (Exception e) {
+			throw new ElabException(e);
+		} finally {
+			DatabaseConnectionManager.close(con, ps);
+		}
+		
+		return exists;
+	}  //end of getSurveyStudents 
+    
     public Map getStudentResultsForTeacher(String type, ElabGroup group)
             throws ElabException {
         Statement s = null;
