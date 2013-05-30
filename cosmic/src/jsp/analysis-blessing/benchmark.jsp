@@ -165,7 +165,7 @@
 			}
 			function addBenchmarkFiles(detector, dateObject) {
 				var date = document.getElementById(dateObject);
-				var params = 'dialogWidth:1000px;dialogHeight:850px;dialogTop:10px;dialogLeft:150px';
+				var params = 'dialogWidth:1000px;dialogHeight:750px;dialogTop:10px;dialogLeft:150px';
 				var newwindow = window.showModalDialog("benchmark-add.jsp?detector="+detector+"&sinceDate="+date.value, "addBenchmark", params);
 				//if (window.focus) {newwindow.focus()}
 			}
