@@ -156,8 +156,8 @@
 					<label for="ay">Academic Year:</label>
 				</td>
 				<td>
-					<e:trselect name="ay" valueList="AY2004, AY2005, AY2006, AY2007, AY2008, AY2009, AY2010, AY2011"
-						labelList="2004-2005, 2005-2006, 2006-2007, 2007-2008, 2008-2009, 2009-2010, 2010-2011, 2011-2012"
+					<e:trselect name="ay" valueList="AY2004, AY2005, AY2006, AY2007, AY2008, AY2009, AY2010, AY2011, AY2012, AY2013"
+						labelList="2004-2005, 2005-2006, 2006-2007, 2007-2008, 2008-2009, 2009-2010, 2010-2011, 2011-2012, 2012-2013, 2013-2014"
 						value="${group.year}"/>
 				</td>
 			</tr>
@@ -232,12 +232,17 @@
 					<input type="password" name="passwd2" size="16" maxlength="72"/>
 				</td>
 			</tr>
+			<tr>
+				<td colspan="2"> </td>
+			</tr>
 			<c:if test="${not empty group.students}">
 				<tr>
-					<td>
-						<label for="deleteStudents">Students to delete from "${group.name}":</label>
+					<td colspan="2">
+						<label for="deleteStudents">Students to <strong>delete</strong> from "${group.name}" <i>(Students' test records will also be deleted)</i>:</label>
 					</td>
-					<td>
+				</tr>
+				<tr>
+					<td colspan="2">
 						<ul id="delete-students">
 							<c:forEach items="${group.students}" var="student">
 								<input type="checkbox" name="deleteStudents" value="${student.id}">${student.name}</input>

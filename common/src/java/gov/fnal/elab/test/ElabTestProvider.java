@@ -58,6 +58,12 @@ public interface ElabTestProvider extends ElabProviderHandled {
     Map getStudentTestStatus(String type, ElabGroup group) throws ElabException;
 
     /**
+     * Returns a boolean indicating whether the group id exists in the 
+     * survey table.
+     */   
+    public boolean getSurveyStudents(ElabGroup group) throws ElabException;
+    
+    /**
      * Returns a map containing test answers given by students in groups
      * belonging to the specified teacher for the specified test. The keys in
      * the map are {@link ElabStudent} objects, while the values are
