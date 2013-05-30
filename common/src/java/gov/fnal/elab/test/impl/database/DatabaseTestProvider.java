@@ -319,6 +319,8 @@ public class DatabaseTestProvider implements ElabTestProvider {
                         + " AND student_id = " + student.getId() + ";");
                 if (rs.next()) {
                     status.put(student, Boolean.valueOf(rs.getBoolean(1)));
+                } else {
+                	status.put(student, false);
                 }
             }
             return status;
