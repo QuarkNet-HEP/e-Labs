@@ -47,8 +47,8 @@
 		}
 	}
 	
-	// New survey/test handler is active by default. 
-	if (user.getNewSurveyId() == null) { 
+	// New survey/test handler is active by default. --> No, it is not! 
+	//if (user.getNewSurveyId() == null) { 
 		try {
 			newSurveyId = Integer.parseInt(elab.getProperty(elab.getName() + ".newsurvey"));
 		
@@ -59,10 +59,10 @@
 		finally {
 			user.setNewSurveyId(newSurveyId);
 		}
-	}
-	else {
-		newSurveyId = user.getNewSurveyId().intValue();
-	}
+//	}
+//	else {
+//		newSurveyId = user.getNewSurveyId().intValue();
+//	}
 		
 	String optionList = "<option value=\"discard\">Choose group</option>";
 	for (Iterator ite = user.getGroups().iterator(); ite.hasNext();) {
