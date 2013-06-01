@@ -67,9 +67,15 @@
 	String optionList = "<option value=\"discard\">Choose group</option>";
 	for (Iterator ite = user.getGroups().iterator(); ite.hasNext();) {
 		ElabGroup group = (ElabGroup) ite.next();
-		String name = group.getName();
-		if (!name.equals(user.getName())) {
-		    optionList += "<option value=\"" + name + "\">" + name + "</option>";
+		//EPeronja-05/30/2013-Added this check to prevent mixing/matching older groups
+		//         with new students. This was not well-thought and was breaking the code
+		//		   in show-students.jsp trying to show 'new' and 'old' students.
+		boolean existsInSurvey = elab.getTestProvider().getSurveyStudents(group);
+		if (!existsInSurvey) {
+			String name = group.getName();
+			if (!name.equals(user.getName())) {
+			    optionList += "<option value=\"" + name + "\">" + name + "</option>";
+			}
 		}
 	}
 
@@ -197,7 +203,10 @@
 					<strong>+</strong> &nbsp;button.<br /><br />
 				</li>
 				<li>
-					We will create new groups and their associated passwords for you.
+					We will create new groups and their associated passwords for you.<br /><br />
+				</li>
+				<li>
+					Groups created before Summer 2009 will not appear in the dropdown.<br /><br />
 				</li>
 				<li>
 					Select &nbsp;<img src="../graphics/upload_registration.gif" valign="middle"/>&nbsp; if 
