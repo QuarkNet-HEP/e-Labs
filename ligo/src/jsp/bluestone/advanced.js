@@ -120,7 +120,7 @@ function parseChannel(name) {
 	// H0:DMT-BRMS_PEM_EX_SEISX_0.03_0.1Hz.rms
 	name = name.replace("DMT-BRMS_PEM_", "DMT-");
 	// H0:DMT_EX_SEISX_0.03_0.1Hz.rms
-	s = name.split(":");
+	var s = name.split(":");
 	var site = s[0];
 	s = s[1].split("-");
 	var subsystem = s[0];
@@ -299,7 +299,7 @@ function addNewRow(index) {
 	samplingCB(index);
 	displayFilename(index);
 	initBinding();
-	getDataAndPlotCB();
+	//getDataAndPlotCB();
 }
 
 function initBinding() {
@@ -310,7 +310,7 @@ function initBinding() {
 		sensorChangeCB(index);
 		samplingCB(index);
 		displayFilename(index);
-		getDataAndPlotCB();
+		//getDataAndPlotCB();
 	});
 
 	/* Change Sensor */ 
@@ -319,13 +319,13 @@ function initBinding() {
 		sensorChangeCB(index); 
 		samplingCB(index);
 		displayFilename(index);
-		getDataAndPlotCB();
+		//getDataAndPlotCB();
 	}); 
 
 	$(".site, .sensor, .sampling").change(function() {
 		var index = getIndex($(this).attr('id'));
 		displayFilename(index);
-		getDataAndPlotCB();
+		//getDataAndPlotCB();
 	});
 	
 	$(".removeRow").click(function() {
@@ -333,7 +333,7 @@ function initBinding() {
 		/* delete stuff - should probably switch to simply assigning each row element a class index rather
 		   than appending to ID. Oops. */
 		$("#row_" + index).empty().remove();
-		getDataAndPlotCB();
+		//getDataAndPlotCB();
 	});
 }
 
@@ -350,8 +350,22 @@ function getDataURL() {
 	
 	$("#xmin").val((new Date(convertTimeGPSToUNIX(parseFloat(xminGPSTime)) * 1000.0)).toDateString()); 
 	$("#xmax").val((new Date(convertTimeGPSToUNIX(parseFloat(xmaxGPSTime)) * 1000.0)).toDateString());
-	
+
 	return dataServerUrl + '?fn=getData&channels=' + c + '&startTime=' + xminGPSTime + '&endTime=' + xmaxGPSTime;
+}
+
+function getAllDataURL() {
+	var c = "";
+	
+	$(".dataName").each(function(i){
+		c = c + $(this).text() + ","
+	});
+	
+	if (c != "") {
+		c = c.substr(0, c.length - 1);
+	}
+
+	return dataServerUrl + '?fn=getData&channels=' + c + '&startTime=730922400.0&endTime=967165200.0';
 }
 
 function overrideYLabel(channel, unit) {
@@ -359,7 +373,7 @@ function overrideYLabel(channel, unit) {
 	
 	switch (c.subsystem) {
 		case "DMT":
-			return "Velocity (microns/s)";
+			return "Energy";
 		case "PEM":
 			switch (c.sensor) {
 				case "SEISX":
@@ -386,7 +400,9 @@ function overrideYLabel(channel, unit) {
 function getDataAndPlotCB() {
 	var url = getDataURL();
 
-	// Get the data via AJAJ call
+	var messages = document.getElementById("messages");
+	messages.innerHTML = "";
+	// Get the data via AJAX call
 	$.ajax({ 
 		url: url,
 		method: 'GET', 
@@ -399,16 +415,21 @@ function getDataAndPlotCB() {
 
 	function onChannelDataReceived(json) { 
 		data = json;
-		$("#yAxisLabel").html(overrideYLabel(data[0].channel, data[0].unit).replace(" ", "&nbsp;")); 
-		plot = $.plot(placeholder, data, options); 
-		logCheckboxCB();
-		plot = $.plot(placeholder, data, options);
+		if (data[0]) {
+			$("#yAxisLabel").html(overrideYLabel(data[0].channel, data[0].unit).replace(" ", "&nbsp;")); 
+			plot = $.plot(placeholder, data, options); 
+			logCheckboxCB();
+			plot = $.plot(placeholder, data, options);
 		
-		// We have a plot, therefore let someone save it 
-		hasBeenPlotted = true; 
-		zoomButtonSet(); 
-		$("#savePlotToDisk").removeAttr("disabled");
-		updateAutoRange();
+			// We have a plot, therefore let someone save it 
+			hasBeenPlotted = true; 
+			zoomButtonSet(); 
+			$("#savePlotToDisk").removeAttr("disabled");
+			updateAutoRange();
+		} else {
+			var messages = document.getElementById("messages");
+			messages.innerHTML = " No data to plot";
+		}
 	}
 }
 
@@ -432,10 +453,13 @@ function userPlotTitleChangedCB() {
 
 function exportData() {	
 	var url = getDataURL() + "&format=text";
-
 	window.open(url);
 }
 
+function exportAllData() {
+	var url = getAllDataURL() + "&format=text";
+	window.open(url);
+}
 $(document).ready(function() {
 	/* Initialize the initial dropdown list */ 
 	subsystemChangeCB(0);
@@ -459,6 +483,11 @@ $(document).ready(function() {
 	
 	$("#exportData").bind("click", function() {
 		exportData();
+	});
+	
+	//EPeronja-04/01/2013: Ligo request: to export all data rather than the plotted data
+	$("#exportAllData").bind("click", function() {
+		exportAllData();
 	});
 
 	$("#savePlotToDiskCommit").bind('click', function() {
@@ -507,7 +536,7 @@ $(document).ready(function() {
 
 	$("#buttonZoom").click(function() {
 		$("#buttonZoom").attr("disabled", "true");
-		getDataAndPlotCB();
+		//getDataAndPlotCB();
 	});
 
 	$("#buttonZoomOut").click(function() {
@@ -515,7 +544,7 @@ $(document).ready(function() {
 		xmaxGPSTime = ligoMaxTime;
 		$("#xmin").val((new Date(convertTimeGPSToUNIX(parseFloat(xminGPSTime)) * 1000.0)).toDateString()); 
 		$("#xmax").val((new Date(convertTimeGPSToUNIX(parseFloat(xmaxGPSTime)) * 1000.0)).toDateString());
-		getDataAndPlotCB(); 
+		//getDataAndPlotCB(); 
 	});
 	
 	$(".plotButton").bind('click', function() {

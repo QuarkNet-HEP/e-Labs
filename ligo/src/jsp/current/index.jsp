@@ -3,7 +3,6 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -20,11 +19,12 @@
 				font-size: x-small;
 			}
 			span.rotate-text-left {
+				vertical-align: top;
 				position: absolute;
 				width: 0px;
 				-webkit-transform: rotate(-90deg); 
 				-moz-transform: rotate(-90deg);	
-				filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+				-ms-filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 			}
 			td#yAxisLabeltd {
 				width: 20px;
@@ -45,7 +45,6 @@
 			<div id="content">
 				<noscript><b>This page requires Javascript</b><br /><br /></noscript>
 				<%-- Scripts need to be loaded after nav-rollover since that is where the js pages live --%>
-				<script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.js"></script>
 				<script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.min.js"></script>
 			    <script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.selection.min.js"></script>
 			    <script src="general-current.js" type="text/javascript"></script> <%-- General common stuff --%>
@@ -178,7 +177,6 @@
 						<td class="toolbox-content">
 							<input id="savePlotToDisk" type="button" value="Save Plot"></input>
 							<input id="exportData" type="button" value="Export Data Points"></input>
-							<input id="exportAllData" type="button" value="Export All Data"</input>
 						</td>
 						<td class="toolbox-content">
 							<a href="#" target="_new" id="savedPlotLink" style="display: none;">View saved plot (popup)</a>

@@ -3,7 +3,7 @@
 <c:if test="${user != null}">
 	<link type="text/css" href="../css/nav-rollover.css" rel="Stylesheet" />
 	<link type="text/css" href="../include/jquery/css/blue/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />	
-	<script type="text/javascript" src="../include/jquery/js/jquery-1.4.3.min.js"></script>
+	<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>
 	<script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.3.custom.min.js"></script>
 	<script type="text/javascript" src="../include/jquery/js/jquery.event.hover-1.0.js"></script>
 
@@ -71,7 +71,9 @@
 						<%--
 						<li><a href="/ligo/tla/tutorial.php">Tutorial</a></li>
 						--%>
-						<li><a href="../bluestone/">Bluestone</a></li>
+						<%--  EPeronja-05/10/2013: Added this new page for LIGO latest data (channel names are different) --%>
+						<li><a href="../current/">2013-Current</a></li>
+						<li><a href="../bluestone/">March 2003-June 2011</a></li>
 						<li><a href="../plots/">Plots</a></li>
 						<li><a href="../info/related-data.jsp">Related Data</a></li>
 					</ul>

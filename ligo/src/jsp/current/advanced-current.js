@@ -142,7 +142,7 @@ function samplingCB(index) {
 
 function sensorChangeCB(index) {
 	var ptr = null; 
-	console.log("sensor");	 	
+	
 	switch($("#subsystem_" + index + " :selected").text()) {
 	case "PEM":
 		switch($("#station_" + index + " :selected").val()) {
@@ -180,7 +180,7 @@ function sensorChangeCB(index) {
 
 function subsystemChangeCB(index) { 
 	var ptr = null; 
-	console.log("subsystem");	 
+	 
 	switch($("#subsystem_" + index + " :selected").text()) {
 	case "PEM":
 		ptr = PEMStations; 
@@ -198,20 +198,12 @@ function subsystemChangeCB(index) {
 	}); 
 }
 
-function parseChannel(name) {
-	// H0:DMT-BRMS_PEM_EX_SEISX_0.03_0.1Hz.rms
-	name = name.replace("DMT-", "PEM-");
-	// H0:DMT_EX_SEISX_0.03_0.1Hz.rms
-	console.log(name);
-	s = name.split(":");
-	site = s[0];
-	s = s[1].split("-");
-	subsystem = s[0];
-	s = s[1].split("_");
-	station = s[0];
-	rest = s.slice(1).join("_");
-	sensor = rest.substr(0, rest.lastIndexOf("."));
-	sampling = rest.substr(rest.lastIndexOf(".") + 1);
+function parseChannel() {
+	var site = $("#site_0 :selected").text();
+	var subsystem = $("#subsystem_0 :selected").text();
+	var station = $("#station_0 :selected").text();
+	var sensor = $("#sensor_0 :selected").text();
+	var sampling = $("#sampling_0 :selected").text();
 	
 	return {
 		site: site,
@@ -367,6 +359,7 @@ function addNewRow(index) {
 	// Subsystem Dropdown
 	var subsysSelector = $("<select></select>").attr("name", "subsystem").attr("id", "subsystem_" + index).attr("class", "subsystem");
 	subsysSelector.append($("<option></option>").attr("value", "PEM-").text("PEM"));
+	subsysSelector.append($("<option></option>").attr("value", "DMT-").text("DMT"));
 	
 	var stationSelector = $("<select></select>").attr("name", "station").attr("id", "station_" + index).attr("class", "station");
 	var sensorSelector = $("<select></select>").attr("name", "sensor").attr("id", "sensor_" + index).attr("class", "sensor");
@@ -384,7 +377,7 @@ function addNewRow(index) {
 			$("<td></td>").append(samplingSelector)).append(
 			$("<td></td>").append(nameLabel))
 	)
-	console.log("addnewrow");
+				
 	subsystemChangeCB(index); 
 	sensorChangeCB(index);
 	samplingCB(index);
@@ -396,7 +389,6 @@ function initBinding() {
 	/* Change Station */ 
 	$(".subsystem").change(function() {
 		var index = getIndex($(this).attr('id'));
-		console.log("initBinding " + index);
 		subsystemChangeCB(index); 
 		sensorChangeCB(index);
 		samplingCB(index);
@@ -456,20 +448,25 @@ function getAllDataURL() {
 }
 
 function overrideYLabel(channel, unit) {
-	c = parseChannel(channel);
-	
-	switch (subsystem) {
-		case "PEM":
-			switch (sensor) {
-				case "SEISX":
-				case "SEISY":
-				case "SEISZ":
-					return "Signal (volts)";
-				default:
-					return unit;
-			}
-		default:
-			return unit;
+	c = parseChannel();
+	switch (c.subsystem) {
+	case "DMT":
+		return "Signal (volts)";
+		break;
+	case "PEM":
+		switch (c.sensor) {
+			case "SEISX":
+			case "SEISY":
+			case "SEISZ":
+				return "Signal (volts)";
+				break;
+			default:
+				return unit;
+				break;
+		}
+	default:
+		return unit;
+		break;
 	}
 }
 
@@ -485,7 +482,7 @@ function getDataAndPlotCB() {
 		timeout: timeout,
 		success: onChannelDataReceived,
 		beforeSend: spinnerOn,
-		complete: spinnerOff,
+		complete: spinnerOff
 	});
 
 	function onChannelDataReceived(json) { 
@@ -537,7 +534,6 @@ function exportAllData() {
 }
 $(document).ready(function() {
 	/* Initialize the initial dropdown list */ 
-	console.log("readyfunction");
 	subsystemChangeCB(0);
 	sensorChangeCB(0);
 	samplingCB(0);

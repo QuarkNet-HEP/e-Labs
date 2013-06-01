@@ -146,12 +146,18 @@ public class ImportData extends AbstractDataTool {
 
         loadProcessedFiles();
         int fileCount = 0;
+        int totalFileCount = files.size(); 
+        LIGOFile f; 
 
-        for (LIGOFile f : files) {
-            fileCount++;
-            flen += f.file.length();
-
-            if (processedFiles.contains(f.file.getName())) {
+        /* Cannot use the foreach method since we need to remove the element after use for GC reasons */ 
+        Iterator<LIGOFile> it = files.iterator();
+        while (it.hasNext()) {
+        	f = it.next(); 
+        	
+        	fileCount++; 
+        	flen += f.file.length();
+        	
+        	if (processedFiles.contains(f.file.getName())) {
                 System.out.println("Skipping " + f.file.getName());
                 continue;
             }
@@ -159,23 +165,25 @@ public class ImportData extends AbstractDataTool {
             checkDuration(f.file, f.trend);
             convertFile(f);
 
-            printInfo(fileCount, files);
+            printInfo(fileCount, totalFileCount, files);
+            
+            it.remove(); 
         }
         log("# done");
     }
 
     private LinkedList<Long> times = new LinkedList<Long>();
-
-    private void printInfo(int fileCount, SortedSet<LIGOFile> files) {
-        long now = System.currentTimeMillis();
+    
+    private void printInfo(int fileCount, int totalFileCount, SortedSet<LIGOFile> files) {
+    	long now = System.currentTimeMillis();
         times.addLast(now);
         long est;
         if (times.size() > ESTIMATION_RUNS) {
             times.removeFirst();
         }
         long start = times.getFirst();
-        est = (now - start) * (files.size() - fileCount) / times.size();
-        System.out.println(fileCount + "/" + files.size() + " (" + fileCount * 100 / files.size() + "%, "
+        est = (now - start) * (totalFileCount - fileCount) / times.size();
+        System.out.println(fileCount + "/" + totalFileCount + " (" + fileCount * 100 / totalFileCount + "%, "
                 + formatSize(flen) + ") done; estimated time left: " + formatTime(est));
     }
 
@@ -244,15 +252,21 @@ public class ImportData extends AbstractDataTool {
         }
 
         final Map<ChannelName, DataReader<?, ?>> s = new HashMap<ChannelName, DataReader<?, ?>>();
+        DataReader<?, ?> data = null;
         for (ChannelName channel : dumpedc) {
-            DataReader<?, ?> data = readChannelData(channel, tmpprefix, f, true);
+            try {
+            	data = readChannelData(channel, tmpprefix, f, true);
+            }
+            catch (IllegalArgumentException iae) {
+            	System.out.println(iae.getMessage());
+            }
 
             if (data == null) {
                 System.out.println("Skipping channel " + channel);
-                continue;
             }
-
-            s.put(channel, data);
+            else {
+            	s.put(channel, data);
+            } 
         }
         if (!new File(tmpprefix).delete()) {
             throw new RuntimeException("Could not remove directory " + tmpprefix);
@@ -282,25 +296,29 @@ public class ImportData extends AbstractDataTool {
         }
         long starttime = fileGPSTime(f.file);
         int len = TREND_FILE_DURATION[f.trend];
-        if (!rangeCovered(starttime, len, channel)) {
-            data = readFrameDataDump(f.file, rmsbin, rmstxt, meanbin, meantxt, channel);
+        try {
+            if (!rangeCovered(starttime, len, channel)) {
+                data = readFrameDataDump(f.file, rmsbin, rmstxt, meanbin, meantxt, channel);
+            }
+            if (data != null) {
+                // the -0.000001 is there as an implementation of
+                // maxtime representing an open interval
+                // which is necessary because the data in the db represents
+                // an open interval
+                maxtime.put(channel, Math.max(starttime + len - 0.0000001, maxtime.get(channel)));
+            }
         }
-        if (data != null) {
-            // the -0.000001 is there as an implementation of
-            // maxtime representing an open interval
-            // which is necessary because the data in the db represents
-            // an open interval
-            maxtime.put(channel, Math.max(starttime + len - 0.0000001, maxtime.get(channel)));
-        }
-        if (delete) {
-            if (!rmsbin.delete())
-                throw new RuntimeException("Could not delete " + rmsbin);
-            if (!rmstxt.delete())
-                throw new RuntimeException("Could not delete " + rmstxt);
-            if (!meanbin.delete())
-                throw new RuntimeException("Could not delete " + meanbin);
-            if (!meantxt.delete())
-                throw new RuntimeException("Could not delete " + meantxt);
+        finally {
+            if (delete) {
+                if (!rmsbin.delete())
+                    throw new RuntimeException("Could not delete " + rmsbin);
+                if (!rmstxt.delete())
+                    throw new RuntimeException("Could not delete " + rmstxt);
+                if (!meanbin.delete())
+                    throw new RuntimeException("Could not delete " + meanbin);
+                if (!meantxt.delete())
+                    throw new RuntimeException("Could not delete " + meantxt);
+            }
         }
         return data;
     }
@@ -310,6 +328,7 @@ public class ImportData extends AbstractDataTool {
         if (mt == null) {
             mt = Double.valueOf(0);
         }
+        boolean answer = starttime <= mt;
         return starttime <= mt;
     }
 
