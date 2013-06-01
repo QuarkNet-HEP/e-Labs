@@ -19,6 +19,10 @@
 		<input type="hidden" name="srcFile" value="plot.png"/>
 		<input type="hidden" name="srcThumb" value="plot_thm.png"/>
 		<input type="hidden" name="srcFileType" value="png"/>
+		<!-- EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot -->
+		<input type="hidden" name="eventCandidates" value="eventCandidates" />
+		<input type="hidden" name="eventDir" value="${eventDir}" />
+		<input type="hidden" name="eventNum" value="${showerResults.analysis.parameters['eventNum']}" />
 		<input type="hidden" name="id" value="${showerResults.id}"/>
 		<input type="hidden" name="rundirid" value="${results.id}"/>
 		<input type="text" name="name"  size="20" maxlength="30"/>.png

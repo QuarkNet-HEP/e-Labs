@@ -31,6 +31,11 @@
 	String showerId = request.getParameter("showerId");
 	AnalysisRun showerResults = AnalysisManager.getAnalysisRun(elab, user, showerId);
 	request.setAttribute("showerResults", showerResults);
+
+    //EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot
+	String eventDir = request.getParameter("eventDir");
+	request.setAttribute("eventDir", eventDir);
+	
 %>
 
 <img src="${results.outputDirURL}/plot.png" />
