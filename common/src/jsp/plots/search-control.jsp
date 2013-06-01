@@ -89,15 +89,17 @@ $(function() {
 			if (submit) {
 			    And and = new And();
 			    and.add(new Equals("project", elab.getName()));
-			    if ("true".equals(request.getParameter("uploaded"))) {
+			    // EPeronja-05/13/2013: Bug 273 Need tool to delete/manage images
+			    //  					Commented the if code out
+			    //if ("true".equals(request.getParameter("uploaded"))) {
 			        Or or = new Or();
 			        or.add(new Equals("type", "plot"));
 			        or.add(new Equals("type", "uploadedimage"));
 			        and.add(or);
-			    }
-			    else {
-				    and.add(new Equals("type", "plot"));
-			    }
+			    //}
+			    //else {
+				//    and.add(new Equals("type", "plot"));
+			    //}
 			    if (value.isEmpty()) {
 			    	// do nothing
 			    }
