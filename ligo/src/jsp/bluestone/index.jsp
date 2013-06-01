@@ -74,9 +74,6 @@
 									</tr>
 								<!--<![endif]-->
 								<tr>
-									<!--[if IE]><!-->        
-										<td></td>
-									<!--<![endif]-->
 									<!--[if !IE]><!-->        
     									<td id="yAxisLabeltd"><span class="rotate-text-left" id="yAxisLabel">&nbsp;</span></td>
 									<!--<![endif]-->
@@ -87,8 +84,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td>&nbsp;</td>
-									<td align="center"><span id="xAxisLabel">Date/Time (GMT)</span></td>
+									<td align="center" colspan="2"><span id="xAxisLabel">Date/Time (GMT)</span></td>
 								</tr>
 							</table>
 						</td>
