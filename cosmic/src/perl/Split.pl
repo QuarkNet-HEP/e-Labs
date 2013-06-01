@@ -781,7 +781,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			$jd = jd($day, $month, $year, $hour, $min, $sec);	#GPS offset already taken into account from above
 
 			# Write initial metadata for lfn that was just opened
-			print META "[SPLIT] $output_dir$fn\n";
+			print META "[SPLIT] $output_dir/$fn\n";
 			print META "creationdate date $today_date $today_time\n";
 			print META "startdate date ", 2000+substr($date,4,2). "-". substr($date,2,2). "-" . substr($date,0,2) . " " .substr($time,0,2). ":" .substr($time,2,2). ":" .substr($time,4,2),"\n";
 	        print META "julianstartdate float $jd\n";   # Earliest start date in file in julian days
