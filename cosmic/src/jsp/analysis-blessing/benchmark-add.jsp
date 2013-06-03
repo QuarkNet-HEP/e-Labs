@@ -78,7 +78,16 @@
 				for (int i=0; i < results.length; i++ ) {
 					VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(results[i]);
 					if (entry.getTupleValue("blessfile") != null) {
-						filenames.add(results[i]);
+						//check if file has already been selected as benchmark, the only way to add it to
+						//this list again is if the benchmarkfile flag has been set to false.
+						if (entry.getTupleValue("benchmarkfile") != null) {
+							Boolean benchmarkFile = (Boolean) entry.getTupleValue("benchmarkfile");
+							if (benchmarkFile == false) {
+								filenames.add(results[i]);
+							}
+						} else {
+							filenames.add(results[i]);
+						}
 					}
 				}
 				//set the files we are displaying
