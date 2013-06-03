@@ -25,4 +25,10 @@
 	padding: 10px; 
 	text-align: left;
 }
+div.unblessedDiv {
+	position: relative; 
+	float: left; 
+	width: 130px; 
+	padding: 2px;"
+}
 </style>

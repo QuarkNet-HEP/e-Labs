@@ -259,6 +259,7 @@ Re: the upload progress stuff
 								<c:forEach var="detectorBenchmark" items="${detectorBenchmark}">
 									<c:choose>
 										<c:when test="${detectorBenchmark.value == d}">
+										    <option>No benchmark</option>
 							    				<c:forEach items="${benchmarkTuples}" var="benchmarkTuples">
 							    					<c:choose>
 							    					   <c:when test="${benchmarkTuples.key == detectorBenchmark.key }">

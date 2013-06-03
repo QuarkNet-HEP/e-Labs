@@ -180,7 +180,6 @@
   			    <c:choose>
    			      <c:when test="${not empty benchmarkTuples}">
 		   				<select name="benchmark" id="benchmark" onChange="javascript:showCandidates(this);">
-		   			    	<option>Choose benchmark</option>
 	   						<c:forEach items="${benchmarkTuples}" var="benchmarkTuples">
 	   				  			<c:choose>
 			   				  		<c:when test="${benchmarkTuples.key == defaultBenchmark}">
@@ -217,7 +216,7 @@
 	    </c:choose>
 		<tr><td class="benchmarkSelection" colspan="2">
 			<c:forEach items="${unblessedForDetector}" var="unblessedForDetector">
-				<div style="position: relative; float: left;"><input type="checkbox" name="blessfiles" id="checkbox_${unblessedForDetector.key}" value="${unblessedForDetector.key}"></input> ${unblessedForDetector.key} </div>
+				<div class="unblessedDiv"><input type="checkbox" name="blessfiles" id="checkbox_${unblessedForDetector.key}" value="${unblessedForDetector.key}"></input> ${unblessedForDetector.key} </div>
 			</c:forEach>
 		</td></tr>
 		<tr>
