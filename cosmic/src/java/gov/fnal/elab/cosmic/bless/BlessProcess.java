@@ -88,7 +88,7 @@ public class BlessProcess {
 						String line = "";
 						String[] split; 
 						boolean pass = true;
-						String failReason = "";
+						String failReason = "If this message is not overwritten the blessfile is empty";
 						while ((line = in.readLine()) != null && pass) {
 							if (line.startsWith("#")) {
 								continue; // comment line
@@ -96,6 +96,7 @@ public class BlessProcess {
 							else {
 								split = line.split("\t"); 
 								if (split.length != 15) {
+									failReason = blessFile + " has malformed data. ";
 									throw new IOException(blessFile + " has malformed data. "); 
 								}
 								//compare channel 1 and see if file can be blessed
@@ -180,6 +181,7 @@ public class BlessProcess {
 						if (e != null) {
 							if (e.getTupleValue("blessed") != null) {				
 								if (pass && lineNumber > 0) {
+									failReason = "";
 									e.setTupleValue("blessed", true);
 									e.setTupleValue("blessedstatus", "blessed");
 								} else {
