@@ -76,7 +76,6 @@
 					</td>
 				</tr>
 			</c:forEach>
-			<tr><td colspan="2"><a href="../home/">Continue onto the e-Lab</a></td></tr>
 		</table>
 	</c:when>
 	<c:otherwise>
