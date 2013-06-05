@@ -27,7 +27,7 @@
 	 ElabAnalysis analysis;
 	 String dvName = request.getParameter("dvName");
 	 if (dvName != null) {
-	 	analysis = elab.getDataCatalogProvider().getAnalysis(dvName);
+	 	analysis = elab.getAnalysisCatalogProvider().getAnalysis(dvName);
 	 	if (analysis == null) {
 	 		throw new ElabJspException("The specified analysis (" + dvName + ") was not found in the database");
 	 	}
