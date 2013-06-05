@@ -47,6 +47,7 @@
 <table colspace="4" border="0" width="100%">
 	<tbody>
 		<tr>
+		    <td align="center">DAQ#</td>
 			<td align="center">You're analyzing...</td>
 			<td align="center">Chan1 events</td>
 			<td align="center">Chan2 events</td>
@@ -166,6 +167,7 @@
 			
 				%>
 				    <tr class="<%=r_class%>">
+				    	<td align-"center"><%= detector %></td>
 				        <td align="center">
 				            <%= school %>&nbsp;<%= filedate %>&nbsp;UTC
 				        </td>
@@ -204,6 +206,7 @@
 		</tbody>
 		<tbody>
 		<tr>
+			<td></td>
 		    <td colspan="1" align="center">
 			    <a href="#" id="tog1" onclick="toggle('tog1', 'tog2', '...show more files', 'show fewer files...')">...show more files</a></td>
 		    <td colspan="8"></td>
@@ -212,6 +215,7 @@
 			}
 				%>
 		<tr>
+			<td></td>
 		    <td align="center">
 		        <font color="grey">Total (<%=num_files%> files <%=allChanTotal%> events)</font>
 		    </td>
