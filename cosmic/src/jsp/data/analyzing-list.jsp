@@ -10,6 +10,10 @@
 <%
 	ElabAnalysis analysis = (ElabAnalysis) request.getAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS);
 	Collection f = analysis.getParameterValues("rawData");
+    //EPeronja-06/05/2013: Bug 316-Removing datafiles from analyses reset the bin width to the default
+    //                     Not anymore.
+	Collection bin_width = analysis.getParameterValues("flux_binWidth");
+	
 	if (request.getParameter("remove") != null) {
 		String[] r = request.getParameterValues("remfile");
 		request.setAttribute("remfiles", r);
@@ -27,6 +31,8 @@
 		ElabAnalysis newAnalysis = ElabFactory.newElabAnalysis(elab, null, null);
 		newAnalysis.setType(analysis.getType());
 		newAnalysis.setParameter("rawData", f);
+		//EPeronja-06/05/2013: Bug 316-Keeping the bin width from the study
+		newAnalysis.setParameter("flux_binWidth", bin_width);
 		request.setAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS, newAnalysis);
 		request.setAttribute("analysis", newAnalysis);
 	}
@@ -87,7 +93,7 @@
 			
 			    if(e.getTuples().size() == 0){
 			        %> 
-			        	<tr><td><span class="error">(database problem) No file associated with: <%= lfn %></span></td></tr>
+			        	<tr><td><span class="error">Missing file: <%= lfn %></span></td></tr>
 			        <%
 			        continue;
 			    }
@@ -176,11 +182,13 @@
 				    </tr>
 				<%
 			}
-			request.setAttribute("startDate", sef.format(startdate));
-			if (enddate == null) {
-				enddate = startdate;
+			if (startdate != null) {
+				request.setAttribute("startDate", sef.format(startdate));
+				if (enddate == null) {
+					enddate = startdate;
+				}
+				request.setAttribute("endDate", sef.format(enddate));
 			}
-			request.setAttribute("endDate", sef.format(enddate));
 			//trim off extra ", " in Strings
 			rawDataString = rawDataString.substring(0, rawDataString.length()-2);
 			detectorIDString = detectorIDString.substring(0, detectorIDString.length() - 2);
