@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>${elab.properties.formalName} e-Lab Home test</title>
+		<title>${elab.properties.formalName} e-Lab Home testing merge</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column-home.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
