@@ -49,7 +49,7 @@ $(window).scroll(function(){
 	<e:select name="key" id="selectOptions" valueList="city, group, school, state, teacher, detectorid"
 		        labelList="City, Group, School, State, Teacher, Detector ID"
 		        default="${param.key}"/>
-	<input name="value" id="name" size="40" maxlength="40" value="${param.value}" onChange="javascript:return validateState('selectOptions', 'name');" />
+	<input name="value" id="name" size="40" maxlength="40" value="${param.value}" onChange="javascript:return validateState('selectOptions', 'name', 'msg');" />
 	<input type="submit" name="submit" value="Search Data" />
 
 	<e:vswitch>

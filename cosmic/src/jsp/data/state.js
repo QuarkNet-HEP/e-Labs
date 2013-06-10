@@ -1,3 +1,6 @@
+/*
+ * EPeronja-06/10/2013: 63-Data search by state requires 2-letter state abbreviation
+ */
 var StateAbbreviations =
 {
   "alabama": "AL",
@@ -104,10 +107,10 @@ var StateAbbreviations =
   "wy": "WY",
 };
 
-function validateState(selectId, inputId) {
+function validateState(selectId, inputId, msgId) {
 	var selection = document.getElementById(selectId);
 	var input = document.getElementById(inputId);
-	var msg = document.getElementById("msg");
+	var msg = document.getElementById(msgId);
 	var returnValue = true;
 	if (selection.value == "state") {
 		var validAbbr = StateAbbreviations[input.value.toLowerCase()];
