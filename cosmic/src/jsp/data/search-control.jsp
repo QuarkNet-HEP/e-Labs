@@ -14,7 +14,7 @@
 SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false);
 %>
-
+<script type="text/javascript" src="state.js"></script>
 <script type="text/javascript">
 $(function() {
 	var calendarParam = {
@@ -35,8 +35,9 @@ $(function() {
 $(window).scroll(function(){
 	$('#right').animate({top:$(window).scrollTop()+"px" },{queue: false, duration: 0});
 });
-</script>
 
+</script>
+		
 <div class="search-quick-links">Quick Searches: 
 	<e:quicksearch key="school" value="${user.group.school}"/>
 	<e:quicksearch key="city" value="${user.group.city}"/>
@@ -45,19 +46,12 @@ $(window).scroll(function(){
 </div>
 
 <form name="search" method="get">
-	<e:select name="key" onChange="javascript:if (this.form.aname1.options[this.form.aname1.selectedIndex].value == 'blessed' || 
-		    this.form.aname1.options[this.form.aname1.selectedIndex].value == 'stacked') {
-		    this.form.input1.value = 'yes';
-		} else {
-		    if (this.form.input1.value == 'yes') {
-		        this.form.input1.value = '';
-		    }
-		}" valueList="city, group, school, state, teacher, detectorid"
+	<e:select name="key" id="selectOptions" valueList="city, group, school, state, teacher, detectorid"
 		        labelList="City, Group, School, State, Teacher, Detector ID"
 		        default="${param.key}"/>
-	<input name="value" id="name" size="40" maxlength="40" value="${param.value}" />
+	<input name="value" id="name" size="40" maxlength="40" value="${param.value}" onChange="javascript:return validateState('selectOptions', 'name');" />
 	<input type="submit" name="submit" value="Search Data" />
-	
+
 	<e:vswitch>
 		<e:visible image="../graphics/Tright.gif">
 			Advanced Search 
@@ -118,7 +112,8 @@ $(window).scroll(function(){
 			</table>
 		</e:hidden>
 	</e:vswitch>
-	
+	<br />
+	<div id="msg" name="msg"> </div>	
 	<%
 		//variables used in metadata searches:
 		String key = request.getParameter("key");
