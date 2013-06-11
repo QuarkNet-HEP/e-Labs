@@ -14,21 +14,25 @@ public class GeometryErrors {
 	public static final String ERROR_DATE_EXISTING = "date-existing";
 	public static final String ERROR_CHANNEL_1_CABLE_LENGTH = "channel1-cable-length";
 	public static final String ERROR_CHANNEL_1_AREA = "channel1-area";
+	public static final String ERROR_CHANNEL_1_AREA_ZERO = "channel1-area-zero";
 	public static final String ERROR_CHANNEL_1_EW = "channel1-ew";
 	public static final String ERROR_CHANNEL_1_NS = "channel1-ns";
 	public static final String ERROR_CHANNEL_1_UD = "channel1-ud";
 	public static final String ERROR_CHANNEL_2_CABLE_LENGTH = "channel2-cable-length";
+	public static final String ERROR_CHANNEL_2_AREA_ZERO = "channel2-area-zero";
 	public static final String ERROR_CHANNEL_2_AREA = "channel2-area";
 	public static final String ERROR_CHANNEL_2_EW = "channel2-ew";
 	public static final String ERROR_CHANNEL_2_NS = "channel2-ns";
 	public static final String ERROR_CHANNEL_2_UD = "channel2-ud";
 	public static final String ERROR_CHANNEL_3_CABLE_LENGTH = "channel3-cable-length";
 	public static final String ERROR_CHANNEL_3_AREA = "channel3-area";
+	public static final String ERROR_CHANNEL_3_AREA_ZERO = "channel3-area-zero";
 	public static final String ERROR_CHANNEL_3_EW = "channel3-ew";
 	public static final String ERROR_CHANNEL_3_NS = "channel3-ns";
 	public static final String ERROR_CHANNEL_3_UD = "channel3-ud";
 	public static final String ERROR_CHANNEL_4_CABLE_LENGTH = "channel4-cable-length";
 	public static final String ERROR_CHANNEL_4_AREA = "channel4-area";
+	public static final String ERROR_CHANNEL_4_AREA_ZERO = "channel4-area-zero";
 	public static final String ERROR_CHANNEL_4_EW = "channel4-ew";
 	public static final String ERROR_CHANNEL_4_NS = "channel4-ns";
 	public static final String ERROR_CHANNEL_4_UD = "channel4-ud";
@@ -50,6 +54,7 @@ public class GeometryErrors {
 		for (int i = 1; i <= 4; i++) {
 			errors.put("channel" + i + "-cable-length", "Please check that your channel " + i + " Cable Length value is correct.");
 			errors.put("channel" + i + "-area", "Please check that your channel " + i + " Area value is correct.");
+			errors.put("channel" + i + "-area-zero", "Please check that your channel " + i + " Area value is greater than zero.");
 			errors.put("channel" + i + "-ew", "Please check that your channel " + i + " E-W value is correct.");
 			errors.put("channel" + i + "-ns", "Please check that your channel " + i + " N-S value is correct.");
 			errors.put("channel" + i + "-ud", "Please check that your channel " + i + " Up-Dn value is correct.");
@@ -66,7 +71,6 @@ public class GeometryErrors {
 	public GeometryErrors() {
 	}
 	
-	@SuppressWarnings("rawtypes")
 	public Map getKeys() {
 		return new AbstractMap() {
 			public Object get(Object key) {
@@ -84,7 +88,6 @@ public class GeometryErrors {
 		};
 	}
 	
-	@SuppressWarnings("rawtypes")
 	public Map getErrors() {
 		return errors;
 	}
