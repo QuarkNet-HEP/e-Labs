@@ -9,13 +9,14 @@
  */
 package gov.fnal.elab.datacatalog;
 
+import gov.fnal.elab.Elab;
 import gov.fnal.elab.datacatalog.StructuredResultSet.File;
 import gov.fnal.elab.datacatalog.StructuredResultSet.Month;
 import gov.fnal.elab.datacatalog.StructuredResultSet.School;
-import gov.fnal.elab.datacatalog.query.Between;
 import gov.fnal.elab.datacatalog.query.CatalogEntry;
-import gov.fnal.elab.datacatalog.query.Equals;
+import gov.fnal.elab.datacatalog.query.ResultSet;
 import gov.fnal.elab.datacatalog.query.In;
+import gov.fnal.elab.datacatalog.query.Equals;
 import gov.fnal.elab.datacatalog.query.Like;
 import gov.fnal.elab.datacatalog.query.And;
 import gov.fnal.elab.datacatalog.query.ResultSet;
@@ -29,6 +30,13 @@ import org.apache.commons.codec.net.URLCodec;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.AbstractCollection;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -37,7 +45,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+ 
 /**
  * A few convenience functions for dealing with QuarkNet data
  * 
