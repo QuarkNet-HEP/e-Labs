@@ -631,6 +631,7 @@ public class ElabUtil {
     
     @Deprecated public static String whitespaceAdjust(String text) {
     	String result = "";
+    	//EPeronja-06/11/2013: check for null!!!
     	if (text != null) {
 	    	text = text.replaceAll("\n", "<br />");
 	        // this should be changed to only allow <a> and <img> tags
