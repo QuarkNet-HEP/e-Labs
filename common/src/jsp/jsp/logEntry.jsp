@@ -150,7 +150,8 @@ function insertImgSrc()
 	while (rs.next()) {
 		int cur_log_id = rs.getInt("cur_id");
 		String log_date = rs.getString("date_entered");
-		String cur_log_text = ElabUtil.whitespaceAdjust(rs.getString("cur_text"));
+		//String cur_log_text = ElabUtil.whitespaceAdjust(rs.getString("cur_text"));
+		String cur_log_text = rs.getString("cur_text");
 		String log_date_show = log_date;
 		String log_text_show = cur_log_text;
 		itemCount++;
