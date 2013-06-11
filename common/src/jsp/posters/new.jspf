@@ -120,6 +120,18 @@
 			meta.add("name string " + dfile);
 			meta.add("plotURL string " + plotDirURL);
 			
+			//EPeronja-06/11/2013: Add the plot names to metadata so 'delete plots' 
+			//					   can check whether the plots are part of a poster or not.
+			RE figures = new RE("(FIG:([A-Z0-9]))");
+		    for (Map.Entry<String, String[]> entry : fieldMap.entrySet()) {
+		    	String entryValue = entry.getValue()[0].trim(); 
+		    	String entryName = entry.getKey();
+		    	if (figures.match(entryName)) {  
+		    		entryValue = as.scan(entryValue, policy).getCleanHTML();
+		    		meta.add(entryName + " string " + entryValue);
+		    	}
+		    }			
+			
 			DataCatalogProvider dcp = elab.getDataCatalogProvider();
 			if(meta != null && dfile != null) {
 			    dcp.insert(DataTools.buildCatalogEntry(dfile, meta));
