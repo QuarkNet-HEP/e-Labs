@@ -45,7 +45,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
- 
+
 /**
  * A few convenience functions for dealing with QuarkNet data
  * 
