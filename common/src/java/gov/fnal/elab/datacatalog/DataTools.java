@@ -9,31 +9,34 @@
  */
 package gov.fnal.elab.datacatalog;
 
-import gov.fnal.elab.Elab;
 import gov.fnal.elab.datacatalog.StructuredResultSet.File;
 import gov.fnal.elab.datacatalog.StructuredResultSet.Month;
 import gov.fnal.elab.datacatalog.StructuredResultSet.School;
+import gov.fnal.elab.datacatalog.query.Between;
 import gov.fnal.elab.datacatalog.query.CatalogEntry;
+import gov.fnal.elab.datacatalog.query.Equals;
+import gov.fnal.elab.datacatalog.query.In;
+import gov.fnal.elab.datacatalog.query.Like;
+import gov.fnal.elab.datacatalog.query.And;
 import gov.fnal.elab.datacatalog.query.ResultSet;
+import gov.fnal.elab.util.DatabaseConnectionManager;
 import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.util.ElabUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.codec.net.URLCodec;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.AbstractCollection;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * A few convenience functions for dealing with QuarkNet data
@@ -303,6 +306,50 @@ public class DataTools {
         TZ_DATE_TIME_FORMAT = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
     }
 
+    //EPeronja-06/11/2013: 254-When deleting files, be sure there are not dependent files
+    //                       This function will check plots in the logbook and posters
+    public static int checkPlotDependency(Elab elab, String plotName, int figureNumber) throws ElabException {
+        int count = 0;
+        Connection con = null;
+        PreparedStatement ps = null;
+        //check logbook first
+        try {
+            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            
+            ps = con.prepareStatement(
+                    "SELECT count(*) as COUNT " +
+                    "  FROM log " +
+                    "WHERE log_text like ?;");
+            URLCodec urlCodec = new URLCodec();
+            String fileName = plotName;
+            try {
+                fileName = urlCodec.encode(plotName);
+            } catch (Exception e) {
+                throw new ElabException("Problem with encoding the name in DataTools.checkPlotDependency().");
+            }
+            ps.setString(1, "%"+fileName+"%");            
+            java.sql.ResultSet rs = ps.executeQuery(); 
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        }
+        catch (SQLException e) {
+            throw new ElabException("In DataTools.checkPlotDependency(): " + e.getMessage());
+        }
+        finally {
+            DatabaseConnectionManager.close(con, ps);
+        }        
+        
+        In and = new In();
+        and.add(new Like("type","poster"));
+        and.add(new Like("FIG:FIGURE" + String.valueOf(figureNumber), plotName));
+        ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
+        if (rs.size() > 0) {
+            count = count + rs.size();
+        }        
+        return count;
+    }//end of checkPlotDependency()        
+    
     /**
      * Builds a figure caption from a set of data files. This is Cosmic specific
      * and should be moved there. The caption is composed of the list of data
