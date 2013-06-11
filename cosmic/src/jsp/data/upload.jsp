@@ -8,8 +8,10 @@
 <%@ page import="java.text.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.impl.vds.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
+<%@ page import="gov.fnal.elab.cosmic.bless.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="org.apache.commons.fileupload.*" %>
 <%@ page import="org.apache.commons.fileupload.disk.*" %>
@@ -21,7 +23,6 @@
 <%@ page import="gov.fnal.elab.cosmic.beans.Geometries" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
-
 
 <%--
 Re: the upload progress stuff
@@ -53,7 +54,7 @@ Re: the upload progress stuff
                 + "This is done when your group is first created.");
     }
     request.setAttribute("detectorIDs", ids);
-
+ 
 	String lfn="";              //lfn on the USERS home computer
 	String fn = "";             //filename without slashes
 	String ds = "";
@@ -61,6 +62,8 @@ Re: the upload progress stuff
 	String comments = "";       //optional comments on raw data file
 	String dataDir = elab.getProperties().getDataDir();
 	request.setAttribute("datadir", dataDir);
+	String benchmark = "";
+	String usebenchmark = "";
 	int channels[] = new int[4];
 	
 	File tempRepo = new File(dataDir + "/temp"); 
@@ -93,6 +96,9 @@ Re: the upload progress stuff
     				else {
     					detectorId = content;
     				}
+    			}
+    			else if (("benchmark_"+detectorId).equals(name)) {
+    				benchmark = content;
     			}
     			else if ("comments".equals(name)) {
     				if (StringUtils.isNotBlank(content)) {
@@ -131,10 +137,12 @@ Re: the upload progress stuff
                	else {
                		fi.getStoreLocation().renameTo(f);
                	}
+
        	        out.println("<!-- " + rawName + " added to Catalog -->");
        	        request.setAttribute("in", f.getAbsolutePath());
        	        request.setAttribute("detectorid", detectorId);
        	        request.setAttribute("comments", comments);
+      	        request.setAttribute("benchmark", benchmark);
 
 				%>
 					<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUpload" impl="generic">
@@ -142,6 +150,7 @@ Re: the upload progress stuff
 						<e:trdefault name="datadir" value="${datadir}"/>
 						<e:trdefault name="detectorid" value="${detectorid}"/>
 						<e:trdefault name="comments" value="${comments}"/>
+						<e:trdefault name="benchmark" value="${benchmark}"/>
 						
 						<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload">
 							<jsp:param name="provider" value="shell"/>
@@ -152,6 +161,33 @@ Re: the upload progress stuff
 		} //while through the file
 	} //end "if form has a file to upload"
 	else {
+		
+		//EPeronja-05/22/2013: get benchmark files
+		Iterator iterator = ids.iterator();
+		TreeMap<String, Integer> detectorBenchmark = new TreeMap<String, Integer>();
+		TreeMap<String, VDSCatalogEntry> benchmarkTuples = new TreeMap<String, VDSCatalogEntry>();
+		ResultSet searchResults = null;
+		
+		//loop through detectors
+		while (iterator.hasNext()) {
+			Integer key = Integer.parseInt((String) iterator.next());
+		  	//retrieve benchmark files from database
+				searchResults = Benchmark.getBenchmarkFileName(elab, key);
+		  	if (searchResults != null) {
+		 		String[] filenames = searchResults.getLfnArray();
+		 		for (int i = 0; i < filenames.length; i++){
+					VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filenames[i]);
+					if (e != null) {
+						benchmarkTuples.put(filenames[i], e);
+						detectorBenchmark.put(filenames[i], key);				}				
+				}//end for loop
+		  	}//end check searchResults
+		}//end looping through detectors
+		
+		request.setAttribute("detectorBenchmark", detectorBenchmark);
+		request.setAttribute("benchmarkTuples", benchmarkTuples);
+		
+		
 		%>
 		
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -162,10 +198,21 @@ Re: the upload progress stuff
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/upload.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
-		<script type="text/javascript" src="../include/upload.js"></script>
+		<link rel="stylesheet" type="text/css" href="../css/benchmark.css" />
+ 		<script type="text/javascript" src="../include/upload.js"></script>
+		<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>
         <script type="text/javascript" src="../../dwr/interface/UploadMonitor.js"></script>
         <script type="text/javascript" src="../../dwr/engine.js"></script>
         <script type="text/javascript" src="../../dwr/util.js"></script>
+        <script>
+    	$(document).ready(function() {
+				$('select').each(function(){
+				    if (!$(this).find('option').length){ 
+				        $(this).hide(); 
+				    }
+				});
+		});
+        </script>
 	</head>
 	
 	<body id="search_default" class="data">
@@ -186,6 +233,7 @@ Re: the upload progress stuff
 
 <ul>
 	<li>Select the <strong>detector</strong> associated with the data you are uploading.</li>
+	<li>Select <strong>benchmark</strong> file from dropdown. <a href="../analysis-blessing/benchmark.jsp">Add</a> file if no benchmark has been setup.</li>
 	<li>Click <strong>Choose File/Browse</strong> to locate the data file on your computer.</li>
 	<li>Click <strong>Upload</strong> to upload the file.</li>
 </ul>
@@ -196,10 +244,46 @@ Re: the upload progress stuff
 <strong>Please <em>do not</em> upload files larger than 2 GB in size. You'll have to split them up into smaller pieces. Questions? See the <a href="../library/FAQ.jsp">FAQ</a> </strong>
 </div>
 	<p>
-		<u>Choose <label for="detector">detector</label></u><br />	
-		<c:forEach items="${detectorIDs}" var="d">
-			<input type="radio" name="detector" value="${d}" />${d}
-		</c:forEach>
+		<table style="text-align: left; margin-left: 5%;" width="90%">
+		    <tr>
+		    	<td class="benchmarkHeader">Detector</td>
+		    	<td class="benchmarkHeader">Benchmark File</td>
+		    </tr>
+			<c:forEach items="${detectorIDs}" var="d">
+			  	<tr>
+			  		<td class="benchmarkSelection"><input type="radio" name="detector" value="${d}"/>${d}</td>
+			  		<td>
+						<table style="text-align: left;">
+						<tr><td>
+			    			<select name="benchmark_${d}">
+								<c:forEach var="detectorBenchmark" items="${detectorBenchmark}">
+									<c:choose>
+										<c:when test="${detectorBenchmark.value == d}">
+										    <option>No benchmark</option>
+							    				<c:forEach items="${benchmarkTuples}" var="benchmarkTuples">
+							    					<c:choose>
+							    					   <c:when test="${benchmarkTuples.key == detectorBenchmark.key }">
+									    					<c:choose>
+									    						<c:when test="${ benchmarkTuples.value.tupleMap.benchmarkdefault == true }">
+									    							<option value="${benchmarkTuples.key}" selected="selected">${benchmarkTuples.value.tupleMap.benchmarklabel}</option>
+									    						</c:when>
+									    						<c:otherwise>
+									    							<option value="${benchmarkTuples.key}">${benchmarkTuples.value.tupleMap.benchmarklabel}</option>
+									    						</c:otherwise>
+									    					</c:choose>
+									    				</c:when>
+									    				</c:choose>
+							    				</c:forEach>
+										</c:when>
+									</c:choose>						
+								</c:forEach>
+			    			</select>
+						</td></tr>							
+						</table>
+			  		</td>
+			  	</tr>
+			</c:forEach>
+		</table>
     </p>
 	<p>
 		<label for="ds">Raw Data File:</label>
@@ -213,7 +297,7 @@ Re: the upload progress stuff
     </p>
     <div id="button-line">
     	<!-- grr. somebody fix css -->
-    	<table border="0">
+    	<table border="0" style="width: 450px; text-align: center;">
     		<tr>
     			<td>
 					<input name="load" type="submit" value="Upload" id="uploadbutton"/>

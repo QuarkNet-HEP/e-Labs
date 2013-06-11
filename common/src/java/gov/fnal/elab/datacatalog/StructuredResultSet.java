@@ -311,7 +311,10 @@ public class StructuredResultSet {
         private long totalEvents; 
         private String blessfile;
         private String conreg0, conreg1, conreg2, conreg3;
-
+        //EPeronja-04/25/2013: Benchmark File attributes
+        private Boolean benchmarkfile, benchmarkdefault;
+        private String benchmarklabel, benchmarkreference, benchmarkfail;
+        
         public File(String lfn) {
             this.lfn = lfn;
         }
@@ -370,7 +373,37 @@ public class StructuredResultSet {
         public java.util.Date getDate() {
             return startDate;
         }
-
+        //EPeronja-04/25/2013: Benchmark File attributes
+        public void setBenchmarkFile(Boolean benchmarkfile){
+        	this.benchmarkfile = benchmarkfile;
+        }
+        public boolean getBenchmarkFile(){
+        	return this.benchmarkfile;
+        }
+        public void setBenchmarkDefault(Boolean benchmarkdefault){
+        	this.benchmarkdefault = benchmarkdefault;
+        }
+        public boolean getBenchmarkDefault(){
+        	return this.benchmarkdefault;
+        }
+        public void setBenchmarkLabel(String benchmarklabel) {
+        	this.benchmarklabel = benchmarklabel;
+        }
+        public String getBenchmarkLabel() {
+        	return this.benchmarklabel;
+        }
+        public void setBenchmarkReference(String benchmarkreference) {
+        	this.benchmarkreference = benchmarkreference;
+        }
+        public String getBenchmarkReference() {
+        	return this.benchmarkreference;
+        }
+        public void setBenchmarkFail(String benchmarkfail) {
+        	this.benchmarkfail = benchmarkfail;
+        }
+        public String getBenchmarkFail() {
+        	return this.benchmarkfail;
+        }
         public void setDate(java.util.Date date) {
             this.startDate = date;
         }

@@ -15,6 +15,7 @@
 <%@ page import="gov.fnal.elab.cosmic.beans.Geometries" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
+<%@ page import="gov.fnal.elab.cosmic.bless.BlessProcess" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -53,11 +54,13 @@
 	File f = new File((String) results.getAnalysis().getParameter("in"));
 	String detectorId = (String) results.getAnalysis().getParameter("detectorid");
 	String comments = (String) results.getAnalysis().getParameter("comments");
+	String benchmark = (String) results.getAnalysis().getParameter("benchmark");
+	ArrayList<String> benchmarkMessages = new ArrayList<String>();
 	String dataDir = elab.getProperties().getDataDir();
-	long channels[] = new long[4];
+	int channels[] = new int[4];
 
-	List<String> splits = new ArrayList<String>();  //for both the split name and the channel validity information
-
+	List splits = new ArrayList();  //for both the split name and the channel validity information
+			
 	boolean c = true;
 	String splitPFNs = "";
 	String cpldFrequency = "";
@@ -65,7 +68,7 @@
 	CatalogEntry entry;
 	
 	//get metadata which contains the lfns of the raw filename AND the split files
-	ArrayList<String> meta = null;
+	ArrayList meta = null;
 	boolean metaSuccess = false;
 	boolean totalSuccess = true;        //false if there are any rc.data or meta errors
 	File fmeta = new File(f.getAbsolutePath() + ".meta");     //depends on Split.pl writing the meta to rawName.meta
@@ -91,7 +94,7 @@
                 }
 
                 //start a new metadata array
-                meta = new ArrayList<String>();
+                meta = new ArrayList();
                 currPFN = temp[1];
 	            currLFN = temp[1].substring(temp[1].lastIndexOf('/') + 1);
     	        if(temp[0].equals("[RAW]")) {
@@ -126,9 +129,9 @@
                 else if (tmp[0].equals("julianstartdate")) {
                 	Geometry geometry = new Geometry(elab.getProperties().getDataDir(), Integer.parseInt(detectorId));
 					if (geometry != null && !geometry.isEmpty()) {
-						SortedMap<String, GeoEntryBean> geos = geometry.getGeoEntriesBefore(tmp[2]);
+						SortedMap geos = geometry.getGeoEntriesBefore(tmp[2]);
 						if (!geos.isEmpty()) {
-							GeoEntryBean g = geos.get(geos.lastKey());
+							GeoEntryBean g = (GeoEntryBean) geos.get(geos.lastKey());
 							meta.add("stacked boolean " + ("0".equals(g.getStackedState()) ? "false" : "true"));	
 						}
                 	}
@@ -150,18 +153,25 @@
     else {
         throw new ElabJspException("Error reading metadata file: " + f.getAbsolutePath() + ".meta");
     }
-	
-	List<CatalogEntry> entries = new ArrayList<CatalogEntry>();
-	for (String s : splits) {
-		CatalogEntry ce = elab.getDataCatalogProvider().getEntry(s);
-		entries.add(ce);
-		for (int k = 0; k < 4; k++) {
-	    	if (ce.getTupleValue("chan" + (k+1)) != null) {
-	        	channels[k] += ((Long) ce.getTupleValue("chan" + (k + 1))).longValue(); 
-	    	}
+
+	Iterator l = splits.iterator();
+	List entries = new ArrayList();
+	while (l.hasNext()) {
+	    CatalogEntry s = elab.getDataCatalogProvider().getEntry((String) l.next());
+	    entries.add(s);
+	    for (int k = 0; k < 4; k++) {
+	        channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).intValue();
 	    }
 	}
 	
+	//we might as well bless here
+	if (benchmark != null) {
+		BlessProcess bp = new BlessProcess();
+		for (int i = 0; i < splits.size(); i++) {
+			benchmarkMessages.add(bp.BlessDatafile(elab, detectorId, splits.get(i).toString(), benchmark)); 		
+		}
+	}
+	request.setAttribute("benchmarkMessages", benchmarkMessages);
 	request.setAttribute("channels", channels);
 	request.setAttribute("splitEntries", entries);
 	CatalogEntry e = elab.getDataCatalogProvider().getEntry(rawName);
@@ -196,7 +206,7 @@
     
     	Your data was split into ${lfnssz} ${lfnssz == 1 ? 'day' : 'days'} spanning from:<br/>
     	${entry.tupleMap.startdate} to ${entry.tupleMap.enddate}<br/>
-    	The uploaded file contained ${entry.tupleMap.totalDataLines} accepted data lines. We ignored ${entry.tupleMap.GPSSuspectsTotal} line(s) due to a suspect GPS date.
+    	The uploaded file contained ${entry.tupleMap.totalDataLines} accepted data lines. We ignored ${entry.tupleMap.GPSSuspects} line(s) due to a suspect GPS date.
     	
     	<table id="channels-table">
     		<tr>
@@ -218,15 +228,26 @@
 		<c:choose>
 			<c:when test="${entry.tupleMap.avglatitude == '0'}">
 				<%--if it were truly 0, it would be 0.0.0 in the metadata --%>
-				We found no reliable GPS location information in your data.<br/>
-				<br/>
+				No valid GPS information found in your data.<br/>
+				Either the "DG" command was not run or the GPS did not see enough satellites.<br/><br/>
 			</c:when>
 			<c:otherwise>
 				Average latitude: ${entry.tupleMap.avglatitude}<br/>
 				Average longitude: ${entry.tupleMap.avglongitude}<br/>
 				Average altitude: ${entry.tupleMap.avgaltitude}<br/>
 			</c:otherwise>
-		</c:choose>		
+		</c:choose>	
+		<br />	
+		<c:choose>
+			<c:when test="${not empty benchmarkMessages}">
+			   <table>
+			   		<tr><th>Benchmark Results</th></tr>
+					<c:forEach items="${benchmarkMessages}" var="benchmarkMessages">
+						<tr><td>${benchmarkMessages}</td></tr>
+					</c:forEach>
+				</table>
+			</c:when>
+		</c:choose>
 
 			</div>
 			<!-- end content -->	

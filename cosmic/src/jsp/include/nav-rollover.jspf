@@ -3,7 +3,7 @@
 <c:if test="${user != null}">
 	<link type="text/css" href="../css/nav-rollover.css" rel="Stylesheet" />
 	<link type="text/css" href="../include/jquery/css/blue/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />	
-	<script type="text/javascript" src="../include/jquery/js/jquery-1.4.3.min.js"></script>
+	<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>
 	<script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.3.custom.min.js"></script>
 	<script type="text/javascript" src="../include/jquery/js/jquery.event.hover-1.0.js"></script>
 	
@@ -107,12 +107,13 @@
 					<ul id="sub-siteindex">
 						<li><a href="../site-index">Site Index</a></li>
 						<li><a href="../site-index/site-map-anno.jsp">Explore!</a></li>
-					</ul>
-					
+					</ul>		
 					<c:if test="${user.upload}">
 						<ul id="sub-upload">
-							<li><a href="../data/upload.jsp">Data</a></li>
+							<li><a href="../data/upload.jsp">Upload</a></li>
 							<li><a href="../geometry">Geometry</a></li>
+							<li><a href="../analysis-blessing/benchmark.jsp">Benchmark</a></li>
+							<li><a href="../analysis-blessing/benchmark-process.jsp">Blessing</a></li>	
 						</ul>
 					</c:if>
 				</td>
