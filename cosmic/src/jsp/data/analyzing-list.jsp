@@ -12,7 +12,10 @@
 	Collection f = analysis.getParameterValues("rawData");
     //EPeronja-06/05/2013: Bug 316-Removing datafiles from analyses reset the bin width to the default
     //                     Not anymore.
-	Collection bin_width = analysis.getParameterValues("flux_binWidth");
+    Collection bin_width = Collections.EMPTY_SET;
+    if (analysis.getType().equals("I2U2.Cosmic::FluxStudy")) {
+		bin_width = analysis.getParameterValues("flux_binWidth");
+    }
 	
 	if (request.getParameter("remove") != null) {
 		String[] r = request.getParameterValues("remfile");
@@ -32,7 +35,9 @@
 		newAnalysis.setType(analysis.getType());
 		newAnalysis.setParameter("rawData", f);
 		//EPeronja-06/05/2013: Bug 316-Keeping the bin width from the study
-		newAnalysis.setParameter("flux_binWidth", bin_width);
+		if (analysis.getType().equals("I2U2.Cosmic::FluxStudy")) {
+			newAnalysis.setParameter("flux_binWidth", bin_width);
+		}
 		request.setAttribute(gov.fnal.elab.tags.Analysis.ATTR_ANALYSIS, newAnalysis);
 		request.setAttribute("analysis", newAnalysis);
 	}
