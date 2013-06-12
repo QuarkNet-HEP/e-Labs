@@ -13,10 +13,10 @@ import gov.fnal.elab.Elab;
 import gov.fnal.elab.datacatalog.StructuredResultSet.File;
 import gov.fnal.elab.datacatalog.StructuredResultSet.Month;
 import gov.fnal.elab.datacatalog.StructuredResultSet.School;
-import gov.fnal.elab.datacatalog.query.Between;
 import gov.fnal.elab.datacatalog.query.CatalogEntry;
-import gov.fnal.elab.datacatalog.query.Equals;
+import gov.fnal.elab.datacatalog.query.ResultSet;
 import gov.fnal.elab.datacatalog.query.In;
+import gov.fnal.elab.datacatalog.query.Equals;
 import gov.fnal.elab.datacatalog.query.Like;
 import gov.fnal.elab.datacatalog.query.And;
 import gov.fnal.elab.datacatalog.query.ResultSet;
@@ -77,7 +77,13 @@ public class DataTools {
         KEYS.put("ConReg0", 13);
         KEYS.put("ConReg1", 14);
         KEYS.put("ConReg2", 15);
-        KEYS.put("ConReg3", 16);       
+        KEYS.put("ConReg3", 16);      
+        //EPeronja-04/25/2013: Benchmark File attributes
+        KEYS.put("benchmarkfile", 17);
+        KEYS.put("benchmarkdefault", 18);
+        KEYS.put("benchmarklabel", 19);
+        KEYS.put("benchmarkreference", 20);
+        KEYS.put("benchmarkfail", 21);
     }
 
     public static final int SCHOOL = 0;
@@ -98,6 +104,12 @@ public class DataTools {
     public static final int CONREG1 = 14;
     public static final int CONREG2 = 15;
     public static final int CONREG3 = 16;
+    //EPeronja-04/25/2013: Benchmark File attributes
+    public static final int BENCHMARKFILE = 17;
+    public static final int BENCHMARKDEFAULT = 18;
+    public static final int BENCHMARKLABEL = 19;
+    public static final int BENCHMARKREFERENCE = 20;
+    public static final int BENCHMARKFAIL = 21;
     
     public static final String MONTH_FORMAT = "MMMM yyyy";
 
@@ -225,7 +237,37 @@ public class DataTools {
             	System.out.println("WARNING: File " + e.getLFN() + " does not have register 3 conf. Skipping.");
             	continue;
             }
-
+            //EPeronja-04/25/2013: Golden File attributes
+            try {
+            	file.setBenchmarkFile((Boolean) data[BENCHMARKFILE]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have a benchmark file. Skipping.");
+            	continue;
+            }
+            try {
+            	file.setBenchmarkDefault((Boolean) data[BENCHMARKDEFAULT]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have a benchmark file. Skipping.");
+            	continue;
+            }  
+            try {
+            	file.setBenchmarkLabel((String) data[BENCHMARKLABEL]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have a benchmark label. Skipping.");
+            	continue;
+            }  
+            try {
+            	file.setBenchmarkReference((String) data[BENCHMARKREFERENCE]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have a benchmark reference. Skipping.");
+            	continue;
+            }  
+            try {
+            	file.setBenchmarkFail((String) data[BENCHMARKFAIL]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have a benchmark failure. Skipping.");
+            	continue;
+            }  
             if (file.getStartDate() == null) {
             	System.out.println("WARNING: File " + e.getLFN() + " is missing the start date. Skipping.");
             	continue;
@@ -265,56 +307,57 @@ public class DataTools {
         srs.setEndDate(endDate);
         return srs;
     }
-    //EPeronja-06/11/2013: 254-When deleting files, be sure there are not dependent files
-    //					   This function will check plots in the logbook and posters
-    public static int checkPlotDependency(Elab elab, String plotName, int figureNumber) throws ElabException {
-    	int count = 0;
-		Connection con = null;
-		PreparedStatement ps = null;
-		//check logbook first
-		try {
-			con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
-			
-			ps = con.prepareStatement(
-					"SELECT count(*) as COUNT " +
-				    "  FROM log " +
-					"WHERE log_text like ?;");
-            URLCodec urlCodec = new URLCodec();
-            String fileName = plotName;
-            try {
-            	fileName = urlCodec.encode(plotName);
-            } catch (Exception e) {
-            	throw new ElabException("Problem with encoding the name in DataTools.checkPlotDependency().");
-            }
-            ps.setString(1, "%"+fileName+"%");			
-			java.sql.ResultSet rs = ps.executeQuery(); 
-			if (rs.next()) {
-				count = rs.getInt(1);
-			}
-		}
-		catch (SQLException e) {
-        	throw new ElabException("In DataTools.checkPlotDependency(): " + e.getMessage());
-		}
-		finally {
-			DatabaseConnectionManager.close(con, ps);
-		}		
-		
-		In and = new In();
-		and.add(new Like("type","poster"));
-		and.add(new Like("FIG:FIGURE" + String.valueOf(figureNumber), plotName));
-		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
-		if (rs.size() > 0) {
-			count = count + rs.size();
-		}		
-    	return count;
-    }//end of checkPlotDependency()    
-    
+
     public static final DateFormat TZ_DATE_TIME_FORMAT;
 
     static {
         TZ_DATE_TIME_FORMAT = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
     }
 
+    //EPeronja-06/11/2013: 254-When deleting files, be sure there are not dependent files
+    //                       This function will check plots in the logbook and posters
+    public static int checkPlotDependency(Elab elab, String plotName, int figureNumber) throws ElabException {
+        int count = 0;
+        Connection con = null;
+        PreparedStatement ps = null;
+        //check logbook first
+        try {
+            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            
+            ps = con.prepareStatement(
+                    "SELECT count(*) as COUNT " +
+                    "  FROM log " +
+                    "WHERE log_text like ?;");
+            URLCodec urlCodec = new URLCodec();
+            String fileName = plotName;
+            try {
+                fileName = urlCodec.encode(plotName);
+            } catch (Exception e) {
+                throw new ElabException("Problem with encoding the name in DataTools.checkPlotDependency().");
+            }
+            ps.setString(1, "%"+fileName+"%");            
+            java.sql.ResultSet rs = ps.executeQuery(); 
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        }
+        catch (SQLException e) {
+            throw new ElabException("In DataTools.checkPlotDependency(): " + e.getMessage());
+        }
+        finally {
+            DatabaseConnectionManager.close(con, ps);
+        }        
+        
+        In and = new In();
+        and.add(new Like("type","poster"));
+        and.add(new Like("FIG:FIGURE" + String.valueOf(figureNumber), plotName));
+        ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
+        if (rs.size() > 0) {
+            count = count + rs.size();
+        }        
+        return count;
+    }//end of checkPlotDependency()        
+    
     /**
      * Builds a figure caption from a set of data files. This is Cosmic specific
      * and should be moved there. The caption is composed of the list of data
