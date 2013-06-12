@@ -8,6 +8,10 @@
 
 <%
 	ResultSet rs = (ResultSet) request.getAttribute("searchResults");
+    String message = (String) request.getAttribute("msg");
+    if (message == null) {
+    	message = "";
+    }
 
 	if (rs != null && !rs.isEmpty()) {
 		out.write("<form method=\"get\" action=\"../plots/delete.jsp\">\n");
@@ -59,6 +63,6 @@
    	    out.write("</form>\n");
 	}
 	else {
-	    out.write("<h3>No results found</h3>");
+	    out.write("<h3>No results found</h3> " + message);
 	}
 %>
