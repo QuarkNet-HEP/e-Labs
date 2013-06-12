@@ -11,6 +11,7 @@
 <%
 	StructuredResultSetDisplayer srsd = (StructuredResultSetDisplayer) request.getAttribute("searchResultsDisplayer");
 	StructuredResultSet srs = (StructuredResultSet) session.getAttribute("srs");
+	String msg = (String) request.getAttribute("msg");
 	if (srs != null && !srs.isEmpty()) {
     	int start, pageNo;
 		try {
@@ -79,10 +80,10 @@
 		<%
 	}
 	else if (srs == null || srs.isEmpty()) {
-		%> <h3>No results</h3> <%
+		%><h3>No results</h3> ${msg}<%
 	}
 	else if (request.getParameter("submit") != null) {
-	    %> <h3>No results</h3> <%
+	    %><h3>No results</h3> ${msg}<%
 	}
 	else if (request.getParameter("submit") == null) {
 		// Pass to controller
