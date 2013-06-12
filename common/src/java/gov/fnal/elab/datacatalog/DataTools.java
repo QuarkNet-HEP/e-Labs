@@ -358,6 +358,37 @@ public class DataTools {
         return count;
     }//end of checkPlotDependency()        
     
+    //EPeronja-06/12/2013: 63: Data search by state requires 2-letter state abbreviation
+    public static String checkStateSearch(Elab elab, String userInput) throws ElabException {
+    	String abbreviation = "";
+        Connection con = null;
+        PreparedStatement ps = null;
+        //check state
+        try {
+            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            ps = con.prepareStatement(
+                    "SELECT abbreviation " +
+                    "  FROM state " +
+                    " WHERE lower(name) = ?" +
+                    "    OR lower(abbreviation) = ?" +
+                    " LIMIT 1;");
+            ps.setString(1, userInput.toLowerCase());
+            ps.setString(2, userInput.toLowerCase());
+            java.sql.ResultSet rs = ps.executeQuery(); 
+            if (rs.next()) {
+                abbreviation = rs.getString(1);
+            }
+        }
+        catch (SQLException e) {
+            throw new ElabException("In DataTools.checkStateSearch(): " + e.getMessage());
+        }
+        finally {
+            DatabaseConnectionManager.close(con, ps);
+        }        
+
+    	return abbreviation;
+    }//end of checkStateSearch
+    
     /**
      * Builds a figure caption from a set of data files. This is Cosmic specific
      * and should be moved there. The caption is composed of the list of data
