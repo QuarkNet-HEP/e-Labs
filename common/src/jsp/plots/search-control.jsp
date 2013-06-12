@@ -173,7 +173,6 @@ $(function() {
 			searchResults = elab.getDataCatalogProvider().runQuery(and);
 			request.setAttribute("searchResults", searchResults);
 			request.setAttribute("msg", msg);			
-				
 			}
 			
 		%>

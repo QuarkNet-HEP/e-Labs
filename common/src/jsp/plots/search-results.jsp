@@ -60,6 +60,9 @@
 	    out.write("</table>\n");
 	}
 	else {
+		if (message == null) {
+			message ="";
+		}
 	    out.write("<h3>No results found</h3> " + message);
 	}
 %>
