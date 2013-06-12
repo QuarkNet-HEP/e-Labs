@@ -39,6 +39,7 @@ function sendLink(url, link)
 
 <%
 	ResultSet rs = (ResultSet) request.getAttribute("searchResults");
+    String message = (String) request.getAttribute("msg");
 	if (rs != null && !rs.isEmpty()) {
 	    out.write("<table id=\"plots\">\n");
 	    Map groups = new HashMap();
@@ -96,6 +97,6 @@ function sendLink(url, link)
 	    out.write("</table>\n");
 	}
 	else {
-	    out.write("<h3>No results found</h3>");
+	    out.write("<h3>No results found</h3> " + message);
 	}
 %>

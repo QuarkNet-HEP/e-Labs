@@ -11,7 +11,7 @@
 <%
 	StructuredResultSetDisplayer srsd = (StructuredResultSetDisplayer) request.getAttribute("searchResultsDisplayer");
 	StructuredResultSet srs = (StructuredResultSet) session.getAttribute("srs");
-	String msg = (String) request.getAttribute("msg");
+	String msg = (String) session.getAttribute("msg");
 	if (srs != null && !srs.isEmpty()) {
     	int start, pageNo;
 		try {
