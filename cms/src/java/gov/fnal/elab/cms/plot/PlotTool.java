@@ -116,20 +116,23 @@ public class PlotTool {
             List<Integer> l = new ArrayList<Integer>(h.keySet());
             Collections.sort(l);
             int lasty = 0;
-            for (int bin = l.get(0); bin <= l.get(l.size() - 1); bin++) {
-                double x = bin * binWidth;
-                if (x < minx || x > maxx) {
-                    continue;
-                }
-                Integer y = h.get(bin);
-                if (y == null) {
-                    continue;
-                }
-                s.add(x - 0.0001, lasty);
-                s.add(x, y);
-                s.add(x + binWidth - 0.0001, y);
-                lasty = y;
-            }
+            //EPeronja-06/11/2013: Plot Thumbnail problem: do not assume l's size is greater than zero!!!!
+            if (l.size() > 0) {
+	            for (int bin = l.get(0); bin <= l.get(l.size() - 1); bin++) {
+	                double x = bin * binWidth;
+	                if (x < minx || x > maxx) {
+	                    continue;
+	                }
+	                Integer y = h.get(bin);
+	                if (y == null) {
+	                    continue;
+	                }
+	                s.add(x - 0.0001, lasty);
+	                s.add(x, y);
+	                s.add(x + binWidth - 0.0001, y);
+	                lasty = y;
+	            }
+            }//end of checking l.size()
             col.addSeries(s);
         }
         JFreeChart chart = ChartFactory.createXYLineChart("", "", "", col,
