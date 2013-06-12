@@ -11,6 +11,7 @@ SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false);
 %>
 
+<script type="text/javascript" src="../data/state.js"></script>
 <script type="text/javascript">
 $(function() {
 	var calendarParam = {
@@ -42,10 +43,10 @@ $(function() {
 	</div>
 	
 	<form name="search" method="get">
-	<e:select name="key" valueList="name, title, group, teacher, school, city, state, year"
+	<e:select name="key" id="selectOptions" valueList="name, title, group, teacher, school, city, state, year"
 		labelList="Filename, Title, Group, Teacher, School, City, State, Academic Year"
 		default="${param.key}" />
-	<input name="value" id="name" size="40" maxlength="40" value="${param.value}" />
+	<input name="value" id="name" size="40" maxlength="40" value="${param.value}" onChange="javascript:return validateState('selectOptions', 'name', 'msg');" />
 	<input type="submit" name="submit" value="Search Data" />
 		<e:vswitch>
 			<e:visible image="../graphics/Tright.gif">
@@ -66,6 +67,7 @@ $(function() {
 				</table>
 			</e:hidden>
 		</e:vswitch>
+		<div id="msg" name="msg"> </div>	
 		<p>
 			States include provinces and foreign countries. Use the 
 			<e:popup href="../jsp/showStates.jsp" target="states" width="400" height="700">abbreviation</e:popup>
