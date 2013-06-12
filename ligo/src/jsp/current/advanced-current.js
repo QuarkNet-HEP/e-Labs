@@ -571,7 +571,7 @@ $(document).ready(function() {
 		});
 		var channels = channelArray.join(",");
 		$.ajax({
-			url: "savechart.jsp", 
+			url: "../bluestone/savechart.jsp", 
 			type: "GET",
 			dataType: "json",
 			data: { startTime: xminGPSTime, endTime: xmaxGPSTime, title: title, channels: channels, logScale: logCheckedY },
