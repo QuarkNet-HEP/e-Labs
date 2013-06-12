@@ -20,7 +20,7 @@
 	/* Globals */ 
 	SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 	DATEFORMAT.setLenient(false);
-	
+	String msg = (String) request.getParameter("msg");
 	String action = request.getParameter("action");
 	
 	/* Handle checkbox submissions */
@@ -64,7 +64,17 @@
 		String date2 = request.getParameter("date2");
 		String stacked = request.getParameter("stacked");
 		String blessed = request.getParameter("blessed");
-		
+
+		//EPeronja-06/12/2013: 63: Data search by state requires 2-letter state abbreviation
+		String abbreviation = "";
+		if (key.equals("state")) {
+			abbreviation = DataTools.checkStateSearch(elab, value);
+			if (!abbreviation.equals("")) {
+				value = abbreviation;
+			} else {
+				msg = "<i>*"+value+" does not exist. Please enter a valid state abbreviation (ie: Florida, FLORIDA, fl, FL)</i>";
+			}
+		}			
 		// New search, so purge old data
 		session.setAttribute("rawDataMap", null);
 		
@@ -159,7 +169,7 @@
 		
 		// Stuff our results in our session.
 		session.setAttribute("srs", searchResultsStructured);
-		
+		session.setAttribute("msg", msg);
 		// Send it back home to display 
 		response.setStatus(java.net.HttpURLConnection.HTTP_SEE_OTHER);
 		response.setHeader("Location", "results.jsp");
