@@ -65,7 +65,7 @@ public class GeoEntryBean implements Serializable {
                 NanoDate nd = Geometry.jdToGregorian(Double
                         .parseDouble(julianDay));
                 calendar = new GregorianCalendar();
-                calendar.setTimeZone(UTC);
+                //calendar.setTimeZone(UTC);
                 calendar.setTime(nd);
                 // round seconds to nearest minute
                 int minRounded = Math.round((float) (nd.getTime() % (60 * 1000)) / 60 / 1000); 
@@ -817,12 +817,17 @@ public class GeoEntryBean implements Serializable {
         updateCalendar(Calendar.MONTH, Integer.parseInt(v) - 1);
     }
 
+	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
+    public int getFormattedUTC(String datestring) {
+    	Date dateUTC = StringDateToDate(GetUTCdatetimeAsString());
+        SimpleDateFormat format = new SimpleDateFormat(datestring);
+        int dateint = Integer.parseInt(format.format(dateUTC));
+    	return dateint;
+    }
     public String getMonth() {
         //return String.valueOf(getCalendar().get(Calendar.MONTH) + 1);
-    	Date dateUTC = StringDateToDate(GetUTCdatetimeAsString());
-        SimpleDateFormat format = new SimpleDateFormat("MM");
-        int month = Integer.parseInt(format.format(dateUTC));
-        return String.valueOf(month);   	
+       	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
+    	return String.valueOf(getFormattedUTC("MM"));   	
     }
 
     public void setDay(String v) {
@@ -832,10 +837,7 @@ public class GeoEntryBean implements Serializable {
     public String getDay() {
     	//return String.valueOf(getCalendar().get(Calendar.DAY_OF_MONTH));
     	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
-    	Date dateUTC = StringDateToDate(GetUTCdatetimeAsString());
-        SimpleDateFormat format = new SimpleDateFormat("dd");
-        int day = Integer.parseInt(format.format(dateUTC));
-        return String.valueOf(day);
+        return String.valueOf(getFormattedUTC("dd"));   	
     }
 
     public void setYear(String v) {
@@ -844,10 +846,8 @@ public class GeoEntryBean implements Serializable {
 
     public String getYear() {
         //return String.valueOf(getCalendar().get(Calendar.YEAR));
-    	Date dateUTC = StringDateToDate(GetUTCdatetimeAsString());
-        SimpleDateFormat format = new SimpleDateFormat("yyyy");
-        int year = Integer.parseInt(format.format(dateUTC));
-        return String.valueOf(year);    	
+    	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
+        return String.valueOf(getFormattedUTC("yyyy"));   	    	
    }
 
     public void setHour(String v) {
@@ -856,10 +856,8 @@ public class GeoEntryBean implements Serializable {
 
     public String getHour() {
         //return String.valueOf(getCalendar().get(Calendar.HOUR_OF_DAY));
-    	Date dateUTC = StringDateToDate(GetUTCdatetimeAsString());
-        SimpleDateFormat format = new SimpleDateFormat("HH");
-        int hour = Integer.parseInt(format.format(dateUTC));
-        return String.valueOf(hour);
+    	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
+        return String.valueOf(getFormattedUTC("HH"));   	
     }
 
     public void setMinute(String v) {
@@ -869,10 +867,11 @@ public class GeoEntryBean implements Serializable {
     public String getMinute() {
         //return String.valueOf(getCalendar().get(Calendar.MINUTE));
     	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
-    	Date dateUTC = StringDateToDate(GetUTCdatetimeAsString());
-        SimpleDateFormat format = new SimpleDateFormat("mm");
-        int minute = Integer.parseInt(format.format(dateUTC));
-        return String.valueOf(minute);
+    	//Date dateUTC = StringDateToDate(GetUTCdatetimeAsString());
+        //SimpleDateFormat format = new SimpleDateFormat("mm");
+        //int minute = Integer.parseInt(format.format(dateUTC));
+        //return String.valueOf(minute);
+        return String.valueOf(getFormattedUTC("mm"));   	    	
     }
 
     public boolean equals(Object obj) {
