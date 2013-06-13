@@ -22,7 +22,7 @@ import java.util.SimpleTimeZone;
 //made with: ./bean_skeleton.pl --scalar "stackedState latitude longitude altitude chan1X chan1Y chan1Z chan1Area chan1CableLength chan2X chan2Y chan2Z chan2Area chan2CableLength chan3X chan3Y chan3Z chan3Area chan3CableLength chan4X chan4Y chan4Z chan4Area chan4CableLength gpsCableLength" --list "" GeoEntryBean
 
 public class GeoEntryBean implements Serializable {
-    public static final String DATE_FORMAT = "MM/dd/yyyy HH:mm:ss";
+    public static final String DATE_FORMAT = "MM/dd/yyyy'T'HH:mm:ss'Z'";
     public static final TimeZone UTC = TimeZone.getTimeZone("UTC");
 
     private String julianDay;
@@ -97,23 +97,20 @@ public class GeoEntryBean implements Serializable {
     }
 
     public Date getDate() {
-        //return getCalendar().getTime();
-    	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
-    	Date dateUTC = StringDateToDate(GetUTCdatetimeAsString());
-    	return dateUTC;
+        return getCalendar().getTime();
     }
-    
+ 
 	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
-    public static String GetUTCdatetimeAsString()
+    public String GetUTCdatetimeAsString()
     {
         final SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        final String utcTime = sdf.format(new Date());
+        final String utcTime = sdf.format(getCalendar().getTime());
         return utcTime;
     }
 
 	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
-    public static Date StringDateToDate(String StrDate)
+    public Date StringDateToDate(String StrDate)
     {
         Date dateToReturn = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
@@ -425,7 +422,7 @@ public class GeoEntryBean implements Serializable {
             addError(GeometryErrors.ERROR_DATE_FIELD_NOT_SET);
             return false;
         }
-        if (calendar.getTime().after(new Date())) {
+        if (calendar.getTime().after(getDate())) {
             addError(GeometryErrors.ERROR_DATE_IN_THE_FUTURE);
             return false;
         }
@@ -788,14 +785,12 @@ public class GeoEntryBean implements Serializable {
     }
 
     private GregorianCalendar getCalendar() {
-        //if (calendar == null) {
-        //   calendar = new GregorianCalendar();
-        //    calendar.setTimeZone(UTC);
-        //    calendar.set(Calendar.SECOND, 0);
-        //    calendar.set(Calendar.MILLISECOND, 0);
-        //}
-    	calendar = new GregorianCalendar();
-    	calendar.setTime(getDate());
+        if (calendar == null) {
+            calendar = new GregorianCalendar();
+            //calendar.setTimeZone(UTC);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+        }
     	return calendar;
     }
 
@@ -823,7 +818,11 @@ public class GeoEntryBean implements Serializable {
     }
 
     public String getMonth() {
-        return String.valueOf(getCalendar().get(Calendar.MONTH) + 1);
+        //return String.valueOf(getCalendar().get(Calendar.MONTH) + 1);
+    	Date dateUTC = StringDateToDate(GetUTCdatetimeAsString());
+        SimpleDateFormat format = new SimpleDateFormat("MM");
+        int month = Integer.parseInt(format.format(dateUTC));
+        return String.valueOf(month);   	
     }
 
     public void setDay(String v) {
@@ -831,7 +830,12 @@ public class GeoEntryBean implements Serializable {
     }
 
     public String getDay() {
-        return String.valueOf(getCalendar().get(Calendar.DAY_OF_MONTH));
+    	//return String.valueOf(getCalendar().get(Calendar.DAY_OF_MONTH));
+    	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
+    	Date dateUTC = StringDateToDate(GetUTCdatetimeAsString());
+        SimpleDateFormat format = new SimpleDateFormat("dd");
+        int day = Integer.parseInt(format.format(dateUTC));
+        return String.valueOf(day);
     }
 
     public void setYear(String v) {
@@ -839,7 +843,11 @@ public class GeoEntryBean implements Serializable {
     }
 
     public String getYear() {
-        return String.valueOf(getCalendar().get(Calendar.YEAR));
+        //return String.valueOf(getCalendar().get(Calendar.YEAR));
+    	Date dateUTC = StringDateToDate(GetUTCdatetimeAsString());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy");
+        int year = Integer.parseInt(format.format(dateUTC));
+        return String.valueOf(year);    	
    }
 
     public void setHour(String v) {
@@ -847,7 +855,11 @@ public class GeoEntryBean implements Serializable {
     }
 
     public String getHour() {
-        return String.valueOf(getCalendar().get(Calendar.HOUR_OF_DAY));
+        //return String.valueOf(getCalendar().get(Calendar.HOUR_OF_DAY));
+    	Date dateUTC = StringDateToDate(GetUTCdatetimeAsString());
+        SimpleDateFormat format = new SimpleDateFormat("HH");
+        int hour = Integer.parseInt(format.format(dateUTC));
+        return String.valueOf(hour);
     }
 
     public void setMinute(String v) {
@@ -855,7 +867,12 @@ public class GeoEntryBean implements Serializable {
     }
 
     public String getMinute() {
-        return String.valueOf(getCalendar().get(Calendar.MINUTE));
+        //return String.valueOf(getCalendar().get(Calendar.MINUTE));
+    	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
+    	Date dateUTC = StringDateToDate(GetUTCdatetimeAsString());
+        SimpleDateFormat format = new SimpleDateFormat("mm");
+        int minute = Integer.parseInt(format.format(dateUTC));
+        return String.valueOf(minute);
     }
 
     public boolean equals(Object obj) {
