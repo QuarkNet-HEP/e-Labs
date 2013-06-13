@@ -32,28 +32,66 @@ public class BlessData {
 					throw new IOException(file.getName() + " has malformed data. "); 
 				}
 				thisLineData = new valueData(
-						Integer.parseInt(split[1]),
-						Integer.parseInt(split[2]),
-						Integer.parseInt(split[3]),
-						Integer.parseInt(split[4]),
-						Integer.parseInt(split[5]),
-						Integer.parseInt(split[6]),
-						Integer.parseInt(split[7]),
-						Integer.parseInt(split[8]),
-						Double.parseDouble(split[9]),
-						Integer.parseInt(split[10]),
-						Integer.parseInt(split[11]),
-						Double.parseDouble(split[12]),
-						Double.parseDouble(split[13]),
-						Integer.parseInt(split[14])
+						//Integer.parseInt(split[1]),
+						//Integer.parseInt(split[2]),
+						//Integer.parseInt(split[3]),
+						//Integer.parseInt(split[4]),
+						//Integer.parseInt(split[5]),
+						//Integer.parseInt(split[6]),
+						//Integer.parseInt(split[7]),
+						//Integer.parseInt(split[8]),
+						//Double.parseDouble(split[9]),
+						//Integer.parseInt(split[10]),
+						//Integer.parseInt(split[11]),
+						//Double.parseDouble(split[12]),
+						//Double.parseDouble(split[13]),
+						//Integer.parseInt(split[14])						
+						parseToInt(split[1]),
+						parseToInt(split[2]),
+						parseToInt(split[3]),
+						parseToInt(split[4]),
+						parseToInt(split[5]),
+						parseToInt(split[6]),
+						parseToInt(split[7]),
+						parseToInt(split[8]),
+						parseToDouble(split[9]),
+						parseToInt(split[10]),
+						parseToInt(split[11]),
+						parseToDouble(split[12]),
+						parseToDouble(split[13]),
+						parseToInt(split[14])				
 				);
 					
-				ts = Integer.parseInt(split[0]);
+				ts = parseToInt(split[0]);
+				//ts = Integer.parseInt(split[0]);
 				
 				timeValueData.put(ts, thisLineData);
 				
 			}
 		}
+	}
+    //EPeronja-02/12/2013: Bug472- added to check for null values which will break the plotting code
+	public int parseToInt(String split)
+	{
+		int result = 0;
+		try{
+			result = Integer.parseInt(split);
+		} catch (NumberFormatException e) {
+			result = 0;
+		}
+		return result;
+	}
+	
+    //EPeronja-02/12/2013: Bug472- added to check for null values which will break the plotting code	
+	public double parseToDouble(String split)
+	{
+		double result = 0;
+		try {
+			result = Double.parseDouble(split);
+		} catch (NumberFormatException e) {
+			result = 0;
+		}
+		return result;
 	}
 	
 	public TreeMap<Integer, valueData> getTimeValueData() {
