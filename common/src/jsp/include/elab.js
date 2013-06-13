@@ -46,12 +46,14 @@ function show(id) {
 function selectAll(start, finish, direction) {
 	for (var i = start; i < finish; i++) {
 		fldObj = document.getElementById("cb" + i);
-		if (fldObj.type == 'checkbox') {
-			fldObj.checked = direction; 
+		if (fldObj != null) {
+			if (fldObj.type == 'checkbox') {
+				fldObj.checked = direction; 
+			}
 		}
 	}
 }
-    
+
 function reference(name, W, H) {
 	if (!H) {
 		H = 250;
