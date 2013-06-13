@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.SimpleTimeZone;
 
 //made with: ./bean_skeleton.pl --scalar "stackedState latitude longitude altitude chan1X chan1Y chan1Z chan1Area chan1CableLength chan2X chan2Y chan2Z chan2Area chan2CableLength chan3X chan3Y chan3Z chan3Area chan3CableLength chan4X chan4Y chan4Z chan4Area chan4CableLength gpsCableLength" --list "" GeoEntryBean
 
@@ -787,13 +788,15 @@ public class GeoEntryBean implements Serializable {
     }
 
     private GregorianCalendar getCalendar() {
-        if (calendar == null) {
-            calendar = new GregorianCalendar();
-            calendar.setTimeZone(UTC);
-            calendar.set(Calendar.SECOND, 0);
-            calendar.set(Calendar.MILLISECOND, 0);
-        }
-        return calendar;
+        //if (calendar == null) {
+        //   calendar = new GregorianCalendar();
+        //    calendar.setTimeZone(UTC);
+        //    calendar.set(Calendar.SECOND, 0);
+        //    calendar.set(Calendar.MILLISECOND, 0);
+        //}
+    	calendar = new GregorianCalendar();
+    	calendar.setTime(getDate());
+    	return calendar;
     }
 
     // you need about 4 decimals to get minute resolution
@@ -828,8 +831,7 @@ public class GeoEntryBean implements Serializable {
     }
 
     public String getDay() {
-        //return String.valueOf(getCalendar().get(Calendar.DAY_OF_MONTH));
-        return String.valueOf(calendar.DAY_OF_MONTH);
+        return String.valueOf(getCalendar().get(Calendar.DAY_OF_MONTH));
     }
 
     public void setYear(String v) {
@@ -837,17 +839,15 @@ public class GeoEntryBean implements Serializable {
     }
 
     public String getYear() {
-        //return String.valueOf(getCalendar().get(Calendar.YEAR));
-        return String.valueOf(calendar.YEAR);
-    }
+        return String.valueOf(getCalendar().get(Calendar.YEAR));
+   }
 
     public void setHour(String v) {
         updateCalendar(Calendar.HOUR_OF_DAY, Integer.parseInt(v));
     }
 
     public String getHour() {
-        //return String.valueOf(getCalendar().get(Calendar.HOUR_OF_DAY));
-    	return String.valueOf(calendar.HOUR_OF_DAY);
+        return String.valueOf(getCalendar().get(Calendar.HOUR_OF_DAY));
     }
 
     public void setMinute(String v) {
@@ -855,8 +855,7 @@ public class GeoEntryBean implements Serializable {
     }
 
     public String getMinute() {
-        //return String.valueOf(getCalendar().get(Calendar.MINUTE));
-    	return String.valueOf(calendar.MINUTE);
+        return String.valueOf(getCalendar().get(Calendar.MINUTE));
     }
 
     public boolean equals(Object obj) {
