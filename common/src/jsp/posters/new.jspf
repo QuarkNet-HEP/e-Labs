@@ -330,7 +330,8 @@
                     			</c:when>
                     			<c:when test="${type == 'WORDS'}">
                     				<td align="left">
-                    					<input size="50" maxlength="1000" name="${type}:${name}" id="${type}:${name}"
+                    					<!-- EPeronja-06/17/2013 Bug 507: limited the length of the caption (larger string made javascript choke) -->
+                    					<input size="50" maxlength="70" name="${type}:${name}" id="${type}:${name}"
                     						value="${tvalue}"/>
                     				</td>
                     			</c:when>
