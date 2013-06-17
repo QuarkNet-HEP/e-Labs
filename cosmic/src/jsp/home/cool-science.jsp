@@ -79,7 +79,7 @@
 </table>
 <table width="648" style="padding: 10px;">
 <tr><td>
-<p>Physicist, Hans-Joachim Drescher, of Frankfurt University in Germany, created the simulation that provides the background  for this animation of what happens when a cosmic ray, a proton, hits an air molecule and creates a shower of particles.  Among these particles
+<p>Physicist, Hans-Joachim Drescher, of Frankfurt University in Germany, created the simulation that provides the background  for this animation of what happens when a cosmic ray, a proton, hits a gas molecule in the atmosphere and creates a shower of particles.  Among these particles
 is a muon like the ones you can detect with your detector. Watch more of Drescher's <a href="http://th.physik.uni-frankfurt.de/~drescher/CASSIM/" target="cassim">simulations</a>.</P>
 </td></tr>
 </table>

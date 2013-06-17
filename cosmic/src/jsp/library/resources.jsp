@@ -72,9 +72,12 @@
 							
 							<li>
 								Advanced details on how to use the CRMD<br />
+								<a href="https://quarknet.i2u2.org/sites/default/files/6000crmdusermanualjan2010.pdf">Series "6000" CRMD Users Manual</a>
+								<!-- 	
 								<a href="http://${elab.properties['elab.host']}/cosmic/library/upload/b/ba/6000CRMDUserManual.pdf">
 								Series "6000" CRMD Users Manual 
 								</a>
+								-->
 								<br />
 								<a href="http://quarknet.fnal.gov/toolkits/ati/det-user.pdf">
 								Series "200" &amp; "5000" CRMD Users Manual
@@ -265,8 +268,9 @@
 								- Cosmic rays and upper atmospheric temperatures from Symmetry Magazine
 							</li>
 							<li><a href="http://ed.fnal.gov/pdf/leo.pdf">Leo's Logbook</a> - Tips for keeping a logbook</il>
-						
-							
+						    <li><a href="http://www.space.dtu.dk/English/Research/Research_divisions/Sun_Climate/Experiments_SC/SKY.aspx">The SKY experiment</a>, from Denmark.</li>
+							<li><a href="http://www.space.dtu.dk/English/Research/Research_divisions/Sun_Climate/Experiments_SC/CLOUD.aspx">The CLOUD experiment</a> - The role of cosmic rays in CLOUD function, an atmospheric research at CERN.</li>
+							<li><a href="http://www.space.dtu.dk/English/Research/Research_divisions/Sun_Climate.aspx">Center for Sun-Climate Research</a> - Investigation of the connection between solar activity and climatic changes on Earth.</li>
 						</ul>
 						<h2>Cosmic Ray Simulations (need
   QuickTime plugin)</h2>
