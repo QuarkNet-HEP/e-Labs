@@ -692,6 +692,19 @@ public class GeoEntryBean implements Serializable {
         }
     }
 
+    public boolean isAnyChannelActive() {
+    	boolean active = false;
+        for (int i = 1; i <= 4; i++) {
+            if (getChannel(i).isActive()) {
+            	active = true;
+            }
+        }  	
+        if (active == false) {
+            addError(GeometryErrors.ERROR_NO_CHANNEL_SET);
+        }
+        return active;
+    }
+    
     // returns true if every key value is valid
     public boolean isValid() {
         errors = new ArrayList();
@@ -746,6 +759,7 @@ public class GeoEntryBean implements Serializable {
         check(isChan4AreaValid(), "chan4Area");
         check(isChan4CableLengthValid(), "chan4CableLength");
         check(isGpsCableLengthValid(), "gpsCableLength");
+    	check(isAnyChannelActive(), "noActiveChannels");
     }
 
     /*
