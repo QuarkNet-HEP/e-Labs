@@ -9,6 +9,7 @@ import java.util.Properties;
 import java.util.Set;
 
 public class GeometryErrors {
+	public static final String ERROR_NO_CHANNEL_SET = "no-channel-set";
 	public static final String ERROR_DATE_FIELD_NOT_SET = "date-field-not-set";
 	public static final String ERROR_DATE_IN_THE_FUTURE = "date-in-the-future";
 	public static final String ERROR_DATE_EXISTING = "date-existing";
@@ -48,6 +49,7 @@ public class GeometryErrors {
 	
 	static {
 		errors = new Properties();
+		errors.put(ERROR_NO_CHANNEL_SET, "Please activate channels.<br />Non-zero values are required for cable length and counter area.");
 		errors.put(ERROR_DATE_FIELD_NOT_SET, "Please check that your Date/Time values are all selected.");
 		errors.put(ERROR_DATE_IN_THE_FUTURE, "Date cannot exceed current date.");
 		errors.put(ERROR_DATE_EXISTING, "Date exactly matches that of an existing geometry entry.");
