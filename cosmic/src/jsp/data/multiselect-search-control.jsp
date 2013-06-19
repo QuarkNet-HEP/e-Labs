@@ -11,8 +11,9 @@
 <%@ page import="java.text.*" %>
 
 <%SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
-DATEFORMAT.setLenient(false); %>
-
+DATEFORMAT.setLenient(false); 
+String msg = (String) request.getParameter("msg");
+%>
 <script type="text/javascript">
 $(function() {
 	var calendarParam = {
@@ -62,17 +63,10 @@ $(window).scroll(function(){
 </div>
 
 <form action="controller.jsp" name="search" method="post">
-	<e:select name="key" onChange="javascript:if (this.form.aname1.options[this.form.aname1.selectedIndex].value == 'blessed' || 
-		    this.form.aname1.options[this.form.aname1.selectedIndex].value == 'stacked') {
-		    this.form.input1.value = 'yes';
-		} else {
-		    if (this.form.input1.value == 'yes') {
-		        this.form.input1.value = '';
-		    }
-		}" valueList="city, group, school, state, teacher, detectorid"
+	<e:select name="key" id="selectOptions" valueList="city, group, school, state, teacher, detectorid"
 		        labelList="City, Group, School, State, Teacher, Detector ID"
 		        default="${param.key}"/>
-	<input name="value" id="name" size="40" maxlength="40" value="${param.value}" />
+	<input name="value" id="name" size="40" maxlength="40" value="${param.value}"  />
 	<input type="submit" name="action" value="Search Data" />
 	
 	<e:vswitch>

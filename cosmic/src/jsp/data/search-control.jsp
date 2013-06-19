@@ -13,8 +13,8 @@
 <% 
 SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false);
+String msg = (String) request.getAttribute("msg");
 %>
-
 <script type="text/javascript">
 $(function() {
 	var calendarParam = {
@@ -35,8 +35,9 @@ $(function() {
 $(window).scroll(function(){
 	$('#right').animate({top:$(window).scrollTop()+"px" },{queue: false, duration: 0});
 });
-</script>
 
+</script>
+		
 <div class="search-quick-links">Quick Searches: 
 	<e:quicksearch key="school" value="${user.group.school}"/>
 	<e:quicksearch key="city" value="${user.group.city}"/>
@@ -45,19 +46,12 @@ $(window).scroll(function(){
 </div>
 
 <form name="search" method="get">
-	<e:select name="key" onChange="javascript:if (this.form.aname1.options[this.form.aname1.selectedIndex].value == 'blessed' || 
-		    this.form.aname1.options[this.form.aname1.selectedIndex].value == 'stacked') {
-		    this.form.input1.value = 'yes';
-		} else {
-		    if (this.form.input1.value == 'yes') {
-		        this.form.input1.value = '';
-		    }
-		}" valueList="city, group, school, state, teacher, detectorid"
+	<e:select name="key" id="selectOptions" valueList="city, group, school, state, teacher, detectorid"
 		        labelList="City, Group, School, State, Teacher, Detector ID"
 		        default="${param.key}"/>
 	<input name="value" id="name" size="40" maxlength="40" value="${param.value}" />
 	<input type="submit" name="submit" value="Search Data" />
-	
+
 	<e:vswitch>
 		<e:visible image="../graphics/Tright.gif">
 			Advanced Search 
@@ -118,7 +112,8 @@ $(window).scroll(function(){
 			</table>
 		</e:hidden>
 	</e:vswitch>
-	
+	<div id="msg" name="msg">${msg}</div>	
+	<br />
 	<%
 		//variables used in metadata searches:
 		String key = request.getParameter("key");
@@ -142,6 +137,17 @@ $(window).scroll(function(){
 		ResultSet searchResults = null;
 		StructuredResultSet searchResultsStructured = null;
 		if (submit) {
+			
+			//EPeronja-06/12/2013: 63: Data search by state requires 2-letter state abbreviation
+			String abbreviation = "";
+			if (key.equals("state")) {
+				abbreviation = DataTools.checkStateSearch(elab, value);
+				if (!abbreviation.equals("")) {
+					value = abbreviation;
+				} else {
+					msg = "<i>*"+value+" does not exist. Please enter a valid state abbreviation (ie: Florida, FLORIDA, fl, FL)</i>";
+				}
+			}
 		    long start = System.currentTimeMillis();
 		    
 		    /* For performance reasons, order of insertion into this In 
@@ -220,7 +226,6 @@ $(window).scroll(function(){
 			}
 		    
 			searchResults = elab.getDataCatalogProvider().runQuery(and);
-			
 			searchResultsStructured = DataTools.organizeSearchResults(searchResults);
 			searchResultsStructured.setKey(key);
 			searchResultsStructured.setValue(value);
@@ -230,7 +235,7 @@ $(window).scroll(function(){
 			
 		}
 		else {
-		    session.setAttribute("previousSearch", null);
+			session.setAttribute("previousSearch", null);
 		    DataCatalogProvider dcp = elab.getDataCatalogProvider();
 			int fileCount = dcp.getUniqueCategoryCount("split");
 			int schoolCount = dcp.getUniqueCategoryCount("school");
@@ -242,6 +247,7 @@ $(window).scroll(function(){
 			</p>
 			<%
 		}
+		request.setAttribute("msg", msg);			
 		request.setAttribute("searchResults", searchResults);
 		request.setAttribute("searchResultsStructured", searchResultsStructured);
 	%>

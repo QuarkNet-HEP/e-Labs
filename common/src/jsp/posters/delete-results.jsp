@@ -4,7 +4,6 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.util.*" %>
 
-
 <c:if test="${!empty searchResults}">
 	You can sort the results by clicking on the header.
 	

@@ -9,6 +9,7 @@
 <% 
 SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false);
+String msg = (String) request.getAttribute("msg");
 %>
 
 <script type="text/javascript">
@@ -87,7 +88,18 @@ $(function() {
 				
 			ResultSet searchResults = null;
 			if (submit) {
-			    And and = new And();
+				//EPeronja-06/12/2013: 63: Data search by state requires 2-letter state abbreviation
+				String abbreviation = "";
+				if (key.equals("state")) {
+					abbreviation = DataTools.checkStateSearch(elab, value);
+					if (!abbreviation.equals("")) {
+						value = abbreviation;
+					} else {
+						msg = "<i>*"+value+" does not exist. Please enter a valid state abbreviation (ie: Florida, FLORIDA, fl, FL)</i>";
+					}
+				}
+				
+				And and = new And();
 			    and.add(new Equals("project", elab.getName()));
 			    and.add(new Equals("type", "poster"));
 			    if (value.isEmpty()) {
@@ -151,9 +163,10 @@ $(function() {
 	
 			searchResults = elab.getDataCatalogProvider().runQuery(and);
 			request.setAttribute("searchResults", searchResults);
-				
+			request.setAttribute("msg", msg);	
 			}
 			
 		%>
 	</form>
+	<div>${msg}</div>
 </div>
