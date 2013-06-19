@@ -34,6 +34,7 @@ public class StructuredResultSetDisplayer {
     private StructuredResultSet results;
     private int id, start, columns = DEFAULT_COLUMNS, crtCol, crtRow;
     private String controlName;
+    private String actionName;
 
     public StructuredResultSetDisplayer() {
         this(null);
@@ -76,6 +77,13 @@ public class StructuredResultSetDisplayer {
         this.controlName = controlName;
     }
 
+    public String getActionName() {
+    	return actionName;
+    }
+    public void setActionName(String actionName) {
+    	this.actionName = actionName;
+    }
+    
     public int display(JspWriter out) throws IOException {
         Iterator<School> i = results.getSchoolsSorted().iterator();
         /*
@@ -292,7 +300,7 @@ public class StructuredResultSetDisplayer {
             out.write("</a>");
         } else {
         	//EPeronja-03/05/2013: Bug 364: add legend when there is no geometry
-        	out.write("<i>No Geometry</i>");
+        	out.write("<i>No Geo</i>");
         }
         //EPeronja-01/30/2013: Bug472- to add icons next to the data for data blessing access 
         if (file.getBlessFile() != null) {

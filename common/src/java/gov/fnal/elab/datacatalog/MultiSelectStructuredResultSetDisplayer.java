@@ -40,9 +40,31 @@ public class MultiSelectStructuredResultSetDisplayer extends
 
     public void displayFileContents(JspWriter out, File file)
             throws IOException {
-        out.write("<input type=\"checkbox\" name=\"" + getControlName() + "\" id=\"cb" + count
-                + "\" value=\"" + file.getLFN() + "\"/>");
-        count++;
+    	//EPeronja- 03/20/2013: Bug 537: Do not allow for selecting data if it doesn't have 
+    	//						a geometry
+    	//This actionName property will only be fed by the delete.jsp page because we need to be
+    	//able to delete data file regardless of whether they have geometry or not.
+    	//The action name property is set in StructuredResultSetDisplayer.java
+    	
+    	String actionName = getActionName();
+    	if (actionName != null) {
+    		if (actionName.equals("delete")) {
+    			//show the checkboxes
+    	   		out.write("<input type=\"checkbox\" name=\"" + getControlName() + "\" id=\"cb" + count
+        				+ "\" value=\"" + file.getLFN() + "\"/>");
+        		}
+    	} else {
+    		//we are working with all the other multiple selection searches
+    		if (file.getStacked() != null) {
+	    		out.write("<input type=\"checkbox\" name=\"" + getControlName() + "\" id=\"cb" + count
+	    				+ "\" value=\"" + file.getLFN() + "\"/>");
+	    	} else {
+	    		//do not display a checkbox if it doesn't have a geo file (for analysis purposes 
+	    		//this file is no good)
+	    		out.write("");
+	    	}
+    	}
+	    count++;
         super.displayFileContents(out, file);
     }
     

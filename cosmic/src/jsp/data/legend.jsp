@@ -21,5 +21,10 @@
 			<td class="dt"><img src="../graphics/balloon_talk_gray.gif" /></td>
 			<td class="dd">Add/View comments</td>
 		</tr>
+		<tr><td class="dt"> </td>
+			<td class="dd"><br />
+				You cannot select files with <i>No Geo</i> for Flux, Shower or Lifetime Studies.
+			</td>
+		</tr>
 	</table>
 </div>
