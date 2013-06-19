@@ -15,8 +15,6 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<script type="text/javascript" src="../include/util-functions.js"></script>
-		<script type="text/javascript" src="../include/clear-default-text.js"></script>
 	</head>
 	
 	<body id="register-students" class="teacher">
@@ -261,9 +259,9 @@
 <tr>
 	<td align="left">
 		<div id="group_line<%=i%>" style="<%=visibility%> border-left:3px solid #AAAAAA; padding-left:5px; padding-bottom:5px; padding-top:5px;">
-        	<input type="text" name="first<%=i%>" size="14" maxlength="30" value="First Name" class="cleardefault" />
-			<input type="text" name="last<%=i%>" size="14" maxlength="30" value="Last Name" class="cleardefault" />
-			<input id="res_name_text<%=i%>" type="text" name="res_name<%=i%>" size="14" maxlength="30" value="Group Name" style="visibility:hidden; display:none;" class="cleardefault" onChange="<%=textChange%>">
+        	<input type="text" name="first<%=i%>" size="14" maxlength="30" value="First Name"/>
+			<input type="text" name="last<%=i%>" size="14" maxlength="30" value="Last Name"/>
+			<input id="res_name_text<%=i%>" type="text" name="res_name<%=i%>" size="14" maxlength="30" value="Group Name" style="visibility:hidden; display:none;" onChange="<%=textChange%>">
 			<select id="res_name_chooser<%=i%>" style="visibility:visible; display:;" name="res_name_choose<%=i%>">
             	<%=optionList%>
 			</select>
