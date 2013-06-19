@@ -72,12 +72,9 @@
 							
 							<li>
 								Advanced details on how to use the CRMD<br />
-								<a href="https://quarknet.i2u2.org/sites/default/files/6000crmdusermanualjan2010.pdf">Series "6000" CRMD Users Manual</a>
-								<!-- 	
 								<a href="http://${elab.properties['elab.host']}/cosmic/library/upload/b/ba/6000CRMDUserManual.pdf">
 								Series "6000" CRMD Users Manual 
 								</a>
-								-->
 								<br />
 								<a href="http://quarknet.fnal.gov/toolkits/ati/det-user.pdf">
 								Series "200" &amp; "5000" CRMD Users Manual
