@@ -17,11 +17,12 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.SimpleTimeZone;
 
 //made with: ./bean_skeleton.pl --scalar "stackedState latitude longitude altitude chan1X chan1Y chan1Z chan1Area chan1CableLength chan2X chan2Y chan2Z chan2Area chan2CableLength chan3X chan3Y chan3Z chan3Area chan3CableLength chan4X chan4Y chan4Z chan4Area chan4CableLength gpsCableLength" --list "" GeoEntryBean
 
 public class GeoEntryBean implements Serializable {
-    public static final String DATE_FORMAT = "MM/dd/yyyy hh:mm zzz";
+    public static final String DATE_FORMAT = "MM/dd/yyyy'T'HH:mm:ss'Z'";
     public static final TimeZone UTC = TimeZone.getTimeZone("UTC");
 
     private String julianDay;
@@ -64,7 +65,7 @@ public class GeoEntryBean implements Serializable {
                 NanoDate nd = Geometry.jdToGregorian(Double
                         .parseDouble(julianDay));
                 calendar = new GregorianCalendar();
-                calendar.setTimeZone(UTC);
+                //calendar.setTimeZone(UTC);
                 calendar.setTime(nd);
                 // round seconds to nearest minute
                 int minRounded = Math.round((float) (nd.getTime() % (60 * 1000)) / 60 / 1000); 
@@ -98,7 +99,32 @@ public class GeoEntryBean implements Serializable {
     public Date getDate() {
         return getCalendar().getTime();
     }
+ 
+	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
+    public String GetUTCdatetimeAsString()
+    {
+        final SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        final String utcTime = sdf.format(getCalendar().getTime());
+        return utcTime;
+    }
 
+	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
+    public Date StringDateToDate(String StrDate)
+    {
+        Date dateToReturn = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        try
+        {
+            dateToReturn = (Date)dateFormat.parse(StrDate);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return dateToReturn;
+    }
+    
     public void setDetectorID(int detectorID) {
         this.detectorID = detectorID;
     }
@@ -396,7 +422,7 @@ public class GeoEntryBean implements Serializable {
             addError(GeometryErrors.ERROR_DATE_FIELD_NOT_SET);
             return false;
         }
-        if (calendar.getTime().after(new Date())) {
+        if (calendar.getTime().after(getDate())) {
             addError(GeometryErrors.ERROR_DATE_IN_THE_FUTURE);
             return false;
         }
@@ -565,7 +591,15 @@ public class GeoEntryBean implements Serializable {
             addError("channel" + channel + "-area");
             return false;
         }
-        else {
+        else { 
+        	boolean needCheck = getChannel(channel).needToCheckArea();
+        	if (needCheck) {
+        		//EPeronja-06/06/2013:Bug 378 GEO: default area value
+        		if(getChannel(channel).getArea().equals("0.0")) {
+        			addError("channel"+channel+"-area-zero");
+        			return false;
+        		}
+        	}
             return true;
         }
     }
@@ -658,6 +692,19 @@ public class GeoEntryBean implements Serializable {
         }
     }
 
+    public boolean isAnyChannelActive() {
+    	boolean active = false;
+        for (int i = 1; i <= 4; i++) {
+            if (getChannel(i).isActive()) {
+            	active = true;
+            }
+        }  	
+        if (active == false) {
+            addError(GeometryErrors.ERROR_NO_CHANNEL_SET);
+        }
+        return active;
+    }
+    
     // returns true if every key value is valid
     public boolean isValid() {
         errors = new ArrayList();
@@ -712,6 +759,7 @@ public class GeoEntryBean implements Serializable {
         check(isChan4AreaValid(), "chan4Area");
         check(isChan4CableLengthValid(), "chan4CableLength");
         check(isGpsCableLengthValid(), "gpsCableLength");
+    	check(isAnyChannelActive(), "noActiveChannels");
     }
 
     /*
@@ -737,7 +785,7 @@ public class GeoEntryBean implements Serializable {
         for (int i = 0; i < 4; i++) {
             channels[i] = new ChannelProperties();
         }
-        gpsCableLength = "0";
+        gpsCableLength = "0.0";
     }
 
     public String writeForFile() {
@@ -753,11 +801,11 @@ public class GeoEntryBean implements Serializable {
     private GregorianCalendar getCalendar() {
         if (calendar == null) {
             calendar = new GregorianCalendar();
-            calendar.setTimeZone(UTC);
+            //calendar.setTimeZone(UTC);
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
         }
-        return calendar;
+    	return calendar;
     }
 
     // you need about 4 decimals to get minute resolution
@@ -783,8 +831,17 @@ public class GeoEntryBean implements Serializable {
         updateCalendar(Calendar.MONTH, Integer.parseInt(v) - 1);
     }
 
+	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
+    public int getFormattedUTC(String datestring) {
+    	Date dateUTC = StringDateToDate(GetUTCdatetimeAsString());
+        SimpleDateFormat format = new SimpleDateFormat(datestring);
+        int dateint = Integer.parseInt(format.format(dateUTC));
+    	return dateint;
+    }
     public String getMonth() {
-        return String.valueOf(getCalendar().get(Calendar.MONTH) + 1);
+        //return String.valueOf(getCalendar().get(Calendar.MONTH) + 1);
+       	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
+    	return String.valueOf(getFormattedUTC("MM"));   	
     }
 
     public void setDay(String v) {
@@ -792,7 +849,9 @@ public class GeoEntryBean implements Serializable {
     }
 
     public String getDay() {
-        return String.valueOf(getCalendar().get(Calendar.DAY_OF_MONTH));
+    	//return String.valueOf(getCalendar().get(Calendar.DAY_OF_MONTH));
+    	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
+        return String.valueOf(getFormattedUTC("dd"));   	
     }
 
     public void setYear(String v) {
@@ -800,15 +859,19 @@ public class GeoEntryBean implements Serializable {
     }
 
     public String getYear() {
-        return String.valueOf(getCalendar().get(Calendar.YEAR));
-    }
+        //return String.valueOf(getCalendar().get(Calendar.YEAR));
+    	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
+        return String.valueOf(getFormattedUTC("yyyy"));   	    	
+   }
 
     public void setHour(String v) {
         updateCalendar(Calendar.HOUR_OF_DAY, Integer.parseInt(v));
     }
 
     public String getHour() {
-        return String.valueOf(getCalendar().get(Calendar.HOUR_OF_DAY));
+        //return String.valueOf(getCalendar().get(Calendar.HOUR_OF_DAY));
+    	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
+        return String.valueOf(getFormattedUTC("HH"));   	
     }
 
     public void setMinute(String v) {
@@ -816,7 +879,13 @@ public class GeoEntryBean implements Serializable {
     }
 
     public String getMinute() {
-        return String.valueOf(getCalendar().get(Calendar.MINUTE));
+        //return String.valueOf(getCalendar().get(Calendar.MINUTE));
+    	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
+    	//Date dateUTC = StringDateToDate(GetUTCdatetimeAsString());
+        //SimpleDateFormat format = new SimpleDateFormat("mm");
+        //int minute = Integer.parseInt(format.format(dateUTC));
+        //return String.valueOf(minute);
+        return String.valueOf(getFormattedUTC("mm"));   	    	
     }
 
     public boolean equals(Object obj) {
@@ -841,7 +910,7 @@ public class GeoEntryBean implements Serializable {
             y = "0";
             z = "0";
             area = "0.0";
-            cableLength = "0";
+            cableLength = "0.0";
         }
 
         public ChannelProperties(String length, String area, String x,
@@ -898,6 +967,12 @@ public class GeoEntryBean implements Serializable {
                     || !"0.0".equals(area) || !"0.0".equals(cableLength);
         }
 
+		//EPeronja-06/06/2013:Bug 378 GEO: default area value
+        public boolean needToCheckArea() {
+        	//only check when the others are not zeros
+            return !"0".equals(x) || !"0".equals(y) || !"0".equals(z) || !"0.0".equals(cableLength);
+        }
+       
         public String toString() {
             double a = Double.parseDouble(area);
             a = a / 100 / 100;
