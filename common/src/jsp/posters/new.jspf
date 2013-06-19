@@ -20,7 +20,7 @@
 			plugins : 'tabfocus',
 
 			theme_advanced_buttons1 : "bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,outdent,indent,|,sub,sup,|,cleanup,code",
-			theme_advanced_buttons2 : "",
+			theme_advanced_buttons2 : "forecolor,backcolor,fontselect,fontsizeselect",
 			theme_advanced_buttons3 : "", 
 			theme_advanced_toolbar_location : "top",
 			theme_advanced_toolbar_align : "left"
@@ -119,6 +119,18 @@
 			meta.add("date date " + dateString);
 			meta.add("name string " + dfile);
 			meta.add("plotURL string " + plotDirURL);
+			
+			//EPeronja-06/11/2013: Add the plot names to metadata so 'delete plots' 
+			//					   can check whether the plots are part of a poster or not.
+			RE figures = new RE("(FIG:([A-Z0-9]))");
+		    for (Map.Entry<String, String[]> entry : fieldMap.entrySet()) {
+		    	String entryValue = entry.getValue()[0].trim(); 
+		    	String entryName = entry.getKey();
+		    	if (figures.match(entryName)) {  
+		    		entryValue = as.scan(entryValue, policy).getCleanHTML();
+		    		meta.add(entryName + " string " + entryValue);
+		    	}
+		    }			
 			
 			DataCatalogProvider dcp = elab.getDataCatalogProvider();
 			if(meta != null && dfile != null) {
@@ -318,7 +330,8 @@
                     			</c:when>
                     			<c:when test="${type == 'WORDS'}">
                     				<td align="left">
-                    					<input size="50" maxlength="1000" name="${type}:${name}" id="${type}:${name}"
+                    					<!-- EPeronja-06/17/2013 Bug 507: limited the length of the caption (larger string made javascript choke) -->
+                    					<input size="50" maxlength="70" name="${type}:${name}" id="${type}:${name}"
                     						value="${tvalue}"/>
                     				</td>
                     			</c:when>
