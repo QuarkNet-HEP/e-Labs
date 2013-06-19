@@ -9,8 +9,8 @@
 <% 
 SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false);
+String msg = (String) request.getParameter("msg");
 %>
-
 <script type="text/javascript">
 $(function() {
 	var calendarParam = {
@@ -42,10 +42,10 @@ $(function() {
 	</div>
 	
 	<form name="search" method="get">
-	<e:select name="key" valueList="name, title, group, teacher, school, city, state, year"
+	<e:select name="key" id="selectOptions" valueList="name, title, group, teacher, school, city, state, year"
 		labelList="Filename, Title, Group, Teacher, School, City, State, Academic Year"
 		default="${param.key}" />
-	<input name="value" id="name" size="40" maxlength="40" value="${param.value}" />
+	<input name="value" id="name" size="40" maxlength="40" value="${param.value}"  />
 	<input type="submit" name="submit" value="Search Data" />
 		<e:vswitch>
 			<e:visible image="../graphics/Tright.gif">
@@ -87,6 +87,17 @@ $(function() {
 				
 			ResultSet searchResults = null;
 			if (submit) {
+				//EPeronja-06/12/2013: 63: Data search by state requires 2-letter state abbreviation
+				String abbreviation = "";
+				if (key.equals("state")) {
+					abbreviation = DataTools.checkStateSearch(elab, value);
+					if (!abbreviation.equals("")) {
+						value = abbreviation;
+					} else {
+						msg = "<i>*"+value+" does not exist. Please enter a valid state abbreviation (ie: Florida, FLORIDA, fl, FL)</i>";
+					}
+				}
+				
 			    And and = new And();
 			    and.add(new Equals("project", elab.getName()));
 			    // EPeronja-05/13/2013: Bug 273 Need tool to delete/manage images
@@ -161,7 +172,7 @@ $(function() {
 	
 			searchResults = elab.getDataCatalogProvider().runQuery(and);
 			request.setAttribute("searchResults", searchResults);
-				
+			request.setAttribute("msg", msg);			
 			}
 			
 		%>
