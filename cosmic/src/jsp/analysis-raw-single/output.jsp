@@ -47,8 +47,7 @@
 		meta.add("creationdate date " + timestamp.toString());
 		meta.add("source string " + results.getAnalysis().getParameter("inFile"));
 		meta.add("gatewidth int " + results.getAnalysis().getParameter("gatewidth"));
-		meta.add("name string " + new File(outf).getName());
-		
+		meta.add("name string " + new File(outf).getName());		
 		//path data
 		meta.add("city string " + user.getCity());
 		meta.add("group string " + user.getName());
@@ -74,6 +73,12 @@
 		BufferedReader br = new BufferedReader(new FileReader(f));
 		String str;
 		while((str = br.readLine()) != null){
+			//EPeronja-03/26/2013: Bug417- data file stats page: gatewidth
+			//This is ugly but I do not want to mess with the metadata saving above
+			//Code saves gatewidth as int and but when 0, we want to display N/A
+			if (str.trim().equals("<gatewidth>0</gatewidth>")) {
+				str = "     <gatewidth>N/A</gatewidth>";
+			}
 		    out.println(str);
 		}
 	%>

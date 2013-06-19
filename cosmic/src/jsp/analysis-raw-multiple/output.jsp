@@ -23,8 +23,9 @@ if (id != null) {
 	}
 	request.setAttribute("results", results);
     List outfs = (List) results.getAnalysis().getParameter("outFile");
-    
     Iterator i = outfs.iterator();
+ 	List gatewidths = (List) request.getAttribute("gatewidths");
+ 	Iterator g = gatewidths.iterator();
     while (i.hasNext()) {
         String outf = (String) i.next();
         
@@ -34,9 +35,12 @@ if (id != null) {
 		meta.add("transformation string Quarknet.Cosmic::RawAnalyzeStudy");
 		meta.add("creationdate date " + timestamp.toString());
 		meta.add("source string " + results.getAnalysis().getParameter("inFile"));
-		meta.add("gatewidth int " + results.getAnalysis().getParameter("gatewidth"));
-		meta.add("name string " + new File(outf).getName());
-		
+		//meta.add("gatewidth int " + results.getAnalysis().getParameter("gatewidth"));
+		if (g.hasNext()) {
+			meta.add("gatewidth int " + (String) g.next());
+		} else {
+			meta.add("gatewidth int 0");
+		}
 		//path data
 		meta.add("city string " + user.getCity());
 		meta.add("group string " + user.getName());
@@ -123,6 +127,12 @@ if (id != null) {
 								<%
 									String str;
 									while((str = br.readLine()) != null){
+										//EPeronja-03/26/2013: Bug417- data file stats page: gatewidth
+										//This is ugly but I do not want to mess with the metadata saving above
+										//Code saves gatewidth as int and but when 0, we want to display N/A
+										if (str.trim().equals("<gatewidth>0</gatewidth>")) {
+											str = "     <gatewidth>N/A</gatewidth>";
+										}
 										out.println(str);
 									}
 								%>
