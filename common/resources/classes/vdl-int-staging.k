@@ -22,7 +22,7 @@ global(PROVENANCE_GRAPH_ENABLED, vdl:configProperty("pgraph") != "false")
 namespace("vdl"
 	export(
 		element(initDDir, []
-			ddir := "{VDL:SCRIPTNAME}-{VDL:RUNID}.d"
+			ddir := "{CWD}/{VDL:SCRIPTNAME}-{VDL:RUNID}.d"
 			once(ddir
 				if(sys:not(file:exists(ddir))
 					task:dir:make(ddir)
