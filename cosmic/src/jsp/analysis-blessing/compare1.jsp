@@ -32,11 +32,11 @@ if (entry == null) {
 entry.sort(); 
 request.setAttribute("e", entry);
 
-//EPeronja-01/24/2013: Bug472- find out if the user has ownership over the detector
-ArrayList<String> detectors = (ArrayList<String>) user.getAttribute("cosmic:detectorIds");
+//EPeronja-01/24/2013: Bug472- find out if the user has ownership over the data
 boolean owner = false;
-for (String s : detectors) {
-	if (s.equals(entry.getTupleValue("detectorid"))) {
+String group = (String) entry.getTupleValue("group");
+if (group != null) {
+	if (group.equals(user.getName())) {
 		owner = true;
 	}
 }
