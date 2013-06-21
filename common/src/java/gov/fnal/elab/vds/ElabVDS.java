@@ -536,5 +536,32 @@ public class ElabVDS {
 
         return status;
     }
+    
+    //EPeronja-06/21/2013: 222-Allow Admin user to delete data files but check dependencies
+    public static int checkFileDependency(String filename) throws ElabException{
+    	int count = 0;
+        /*
+         * Connect to the database
+         */
+        dbConnect();
 
+        /*
+         * Query the database
+         */
+        try{
+            annotationschema = (AnnotationSchema)dbschema;
+            java.sql.ResultSet rs = annotationschema.backdoor("SELECT COUNT(*) FROM anno_lfn_i WHERE name = '"+filename+"'");
+            if (rs.next()) {
+            	count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            throw new ElabException("Error searching metadata..." + e.getMessage());
+        } finally {
+            dbDisconnect();
+        }
+
+        return count;
+    }
+    
+    
 }
