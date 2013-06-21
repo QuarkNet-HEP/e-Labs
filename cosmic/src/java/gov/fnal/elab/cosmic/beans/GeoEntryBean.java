@@ -22,7 +22,7 @@ import java.util.SimpleTimeZone;
 //made with: ./bean_skeleton.pl --scalar "stackedState latitude longitude altitude chan1X chan1Y chan1Z chan1Area chan1CableLength chan2X chan2Y chan2Z chan2Area chan2CableLength chan3X chan3Y chan3Z chan3Area chan3CableLength chan4X chan4Y chan4Z chan4Area chan4CableLength gpsCableLength" --list "" GeoEntryBean
 
 public class GeoEntryBean implements Serializable {
-    public static final String DATE_FORMAT = "MM/dd/yyyy'T'HH:mm:ss'Z'";
+    public static final String DATE_FORMAT = "MM/dd/yyyy HH:mm:ss";
     public static final TimeZone UTC = TimeZone.getTimeZone("UTC");
 
     private String julianDay;
