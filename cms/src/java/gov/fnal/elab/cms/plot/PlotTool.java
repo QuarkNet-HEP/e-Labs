@@ -104,6 +104,12 @@ public class PlotTool {
             maxy = Double.parseDouble(options.get("maxy"));
         }
         
+        /* Parse binWidth; temporarily disable since it seems to not be working :(
+        if (options.containsKey("binwidth")) {
+        	binWidth = Double.parseDouble(options.get("binwidth"));
+        }
+        */ 
+        
         boolean logx = "true".equals(options.get("logx"));
         boolean logy = "true".equals(options.get("logy"));
 
@@ -116,7 +122,7 @@ public class PlotTool {
             List<Integer> l = new ArrayList<Integer>(h.keySet());
             Collections.sort(l);
             int lasty = 0;
-            //EPeronja-06/11/2013: Plot Thumbnail problem: do not assume l's size is greater than zero!!!!
+            //EPeronja-06/11/2013: View thumbnail: do no assume that l.size() > 0!!!!!
             if (l.size() > 0) {
 	            for (int bin = l.get(0); bin <= l.get(l.size() - 1); bin++) {
 	                double x = bin * binWidth;
