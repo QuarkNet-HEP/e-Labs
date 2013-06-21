@@ -12,7 +12,7 @@
 
 <%SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false); 
-String msg = (String) request.getParameter("msg");
+
 %>
 <script type="text/javascript">
 $(function() {
