@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*" %>
+<%@ page import="gov.fnal.elab.vds.*" %>
 
 <%
 	if (!"Cancel".equals(request.getParameter("confirm"))) {
@@ -18,11 +19,21 @@
 					//EPeronja-06/11/2013: 254 When deleting files, be sure there are not dependent files
 					int figureCount = 10;
 					if (entry != null) {
-						for (int x = 0; x < figureCount; x++ ) {
-							int figNo = x + 1;
-							int count = DataTools.checkPlotDependency(elab, name, figNo);
+						//check the type
+						if (entry.getTupleValue("type").equals("plot")) {
+							for (int x = 0; x < figureCount; x++ ) {
+								int figNo = x + 1;
+								int count = DataTools.checkPlotDependency(elab, name, figNo);
+								if (count > 0) {
+								    throw new ElabJspException(" is being used either in a poster or logbook. Cannot be deleted.");								
+								}
+							}
+						}
+					    //EPeronja-06/21/2013: 222-Allow Admin user to delete any poster or plot
+						if (entry.getTupleValue("type").equals("split")) {
+							int count = ElabVDS.checkFileDependency(name);
 							if (count > 0) {
-							    throw new ElabJspException(" is being used either in a poster or logbook. Cannot be deleted.");								
+							    throw new ElabJspException(" is being used in a plot/analysis. Cannot be deleted.");								
 							}
 						}
 					}//end of checking dependencies
@@ -40,7 +51,11 @@
 						ok.add(entry);
 					}
 				catch (Exception e) {
-					notOk.add(fileName +"("+name+")"+ " error: " + e.getMessage());
+					if (fileName != null) {
+						notOk.add(fileName +"("+name+")"+ " error: " + e.getMessage());
+					} else {
+						notOk.add(name+ " error: " + e.getMessage());						
+					}
 				}
 			}
 			if ("Delete".equals(request.getParameter("confirm"))) {
