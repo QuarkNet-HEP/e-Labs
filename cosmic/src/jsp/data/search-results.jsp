@@ -49,6 +49,6 @@
 		<%
 	}
 	else if (request.getParameter("submit") != null) {
-	    %> <h3>No results</h3> <%
+	    %> <h3>No results</h3> ${msg}<%
 	}
 %>
