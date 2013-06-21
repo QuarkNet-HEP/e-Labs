@@ -630,28 +630,33 @@ public class ElabUtil {
 
     
     @Deprecated public static String whitespaceAdjust(String text) {
-        text = text.replaceAll("\n", "<br />");
-        // this should be changed to only allow <a> and <img> tags
-        text = text.replaceAll("(?i)</?\\s*script[^>]*>", "");
-        text = text.replaceAll("(?i)</?\\s*pre[^>]*>", "");
-        text = text.replaceAll("(?i)</?\\s*div[^>]*>", "");
-        StringBuffer sb = new StringBuffer();
-        int lastSpace = 0;
-        for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
-            if (Character.isWhitespace(c) || c == '/' || c == '<' || c == '>'
-                    || c == '.') {
-                lastSpace = i;
-            }
-            sb.append(c);
-			//EPeronja-04/08/2013: this code adds an extra space in the middle of the string
-			//						and it can break the path to the plots
-            //if (i - lastSpace > 40) {
-            //    sb.append(' ');
-            //    lastSpace = i;
-            //}
-        }
-
-        return sb.toString();
+    	String result = "";
+    	//EPeronja-06/11/2013: check for null!!!
+    	if (text != null) {
+	    	text = text.replaceAll("\n", "<br />");
+	        // this should be changed to only allow <a> and <img> tags
+	        text = text.replaceAll("(?i)</?\\s*script[^>]*>", "");
+	        text = text.replaceAll("(?i)</?\\s*pre[^>]*>", "");
+	        text = text.replaceAll("(?i)</?\\s*div[^>]*>", "");
+	        StringBuffer sb = new StringBuffer();
+	        int lastSpace = 0;
+	        for (int i = 0; i < text.length(); i++) {
+	            char c = text.charAt(i);
+	            if (Character.isWhitespace(c) || c == '/' || c == '<' || c == '>'
+	                    || c == '.') {
+	                lastSpace = i;
+	            }
+	            sb.append(c);
+				//EPeronja-04/08/2013: this code adds an extra space in the middle of the string
+				//						and it can break the path to the plots
+	            //if (i - lastSpace > 40) {
+	            //    sb.append(' ');
+	            //    lastSpace = i;
+	            //}
+	        }
+	
+	        result = sb.toString();
+    	} 
+    	return result;
     }
 }
