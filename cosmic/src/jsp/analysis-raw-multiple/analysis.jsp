@@ -58,7 +58,7 @@
 	}
 	request.setAttribute("files", files);
 	request.setAttribute("outFiles", outfiles);
-	request.setAttribute("gatewidths", gatewidths);
+	request.setAttribute("gatewidth", gatewidths.get(0));
 %>
 
 <c:choose>
@@ -68,7 +68,7 @@
 	<c:otherwise>
 		<e:analysis name="analysis" type="I2U2.Cosmic::RawAnalyzeStudy">
 			<% ((ElabAnalysis) request.getAttribute("analysis")).setAttribute("f", lfn); %>
-			<e:trinput type="hidden" name="gatewidth" value="${gatewidths}"/>
+			<e:trinput type="hidden" name="gatewidth" value="${gatewidth}"/>
 			<e:trdefault name="inFile" value="${files}"/>
 			<e:trdefault name="outFile" value="${outFiles}"/>
 			<e:ifAnalysisIsOk>
