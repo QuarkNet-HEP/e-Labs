@@ -15,16 +15,21 @@
 
 	File[] imgs = PlotTool.getOrCreatePlot(elab, dataset, runs, plot);
 	
-	out.clear();
-	response.setContentType("image/png");
-	OutputStream os = response.getOutputStream();
-	InputStream is = new FileInputStream(imgs[index]);
-	byte[] buf = new byte[16394];
-	int len = is.read(buf);
-	while (len != -1) {
-		os.write(buf, 0, len);
-		len = is.read(buf);
+	if (imgs != null) {
+		out.clear();
+		response.setContentType("image/png");
+		OutputStream os = response.getOutputStream();
+		
+		InputStream is = new FileInputStream(imgs[index]);
+		byte[] buf = new byte[16394];
+		int len = is.read(buf);
+		while (len != -1) {
+			os.write(buf, 0, len);
+			len = is.read(buf);
+		}
+		is.close();
+		os.close();
+	} else {
+	  out.write("Image not found");
 	}
-	is.close();
-	os.close();
 %>
