@@ -68,6 +68,7 @@
 	<c:otherwise>
 		<e:analysis name="analysis" type="I2U2.Cosmic::RawAnalyzeStudy">
 			<% ((ElabAnalysis) request.getAttribute("analysis")).setAttribute("f", lfn); %>
+			<e:trinput type="hidden" name="gatewidth" value="100" />
 			<e:trinput type="hidden" name="gatewidths" value="${gatewidths}"/>
 			<e:trdefault name="inFile" value="${files}"/>
 			<e:trdefault name="outFile" value="${outFiles}"/>
