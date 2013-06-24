@@ -5,7 +5,7 @@ app (File out) RawAnalyze(File inf, string gatewidth) {
 }
 
 //string gatewidth = @arg("gatewidth");
-string gatewidth[] = @strsplit(@arg("gatewidth"), "\\s");
+string gatewidth[] = @strsplit(@arg("gatewidth"), ",");
 File inFile[] <fixed_array_mapper;files=@arg("inFile")>;
 File outFile[] <fixed_array_mapper;files=@arg("outFile")>;
 
