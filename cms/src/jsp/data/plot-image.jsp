@@ -13,26 +13,30 @@
 	Dataset dataset = Datasets.getDataset(elab, session, pdataset);
 	int index = "true".equals(thumbnail) ? 1 : 0;
 
-	File[] imgs = PlotTool.getOrCreatePlot(elab, dataset, runs, plot);
-	
-	out.clear();
-	response.setContentType("image/png");
-	OutputStream os = response.getOutputStream();
 	try {
-		InputStream is = new FileInputStream(imgs[index]);
-		byte[] buf = new byte[16394];
-		int len = is.read(buf);
-		while (len != -1) {
-			os.write(buf, 0, len);
-			len = is.read(buf);
+		File[] imgs = PlotTool.getOrCreatePlot(elab, dataset, runs, plot);
+		
+		out.clear();
+		response.setContentType("image/png");
+		OutputStream os = response.getOutputStream();
+		try {
+			InputStream is = new FileInputStream(imgs[index]);
+			byte[] buf = new byte[16394];
+			int len = is.read(buf);
+			while (len != -1) {
+				os.write(buf, 0, len);
+				len = is.read(buf);
+			}
+			is.close();
+		} catch (Exception e) {
+			response.setContentType("text/html");
+			PrintWriter pw = response.getWriter();
+			pw.write(e.getMessage());
+			pw.close();
+		} finally {
+			os.close();
 		}
-		is.close();
 	} catch (Exception e) {
-		response.setContentType("text/html");
-		PrintWriter pw = response.getWriter();
-		pw.write(e.getMessage());
-		pw.close();
-	} finally {
-		os.close();
+		
 	}
 %>
