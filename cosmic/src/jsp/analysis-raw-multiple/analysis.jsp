@@ -31,7 +31,7 @@
 			outfiles.add(analyze.getAbsolutePath());
 			//EPeronja-03/26/2013: Bug417- data file stats page: gatewidth
 			VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(lfn[i]);
-			String gatewidth = "0";
+			String gatewidth = "100";
 			if (e != null) {
 				//EPeronja: according to page 33 of 6000DAQ manual, the gateway should be calculated
 				//by subtracting the decimal value in 3 minus the decimal value in 2 and then multiply
@@ -68,7 +68,7 @@
 	<c:otherwise>
 		<e:analysis name="analysis" type="I2U2.Cosmic::RawAnalyzeStudy">
 			<% ((ElabAnalysis) request.getAttribute("analysis")).setAttribute("f", lfn); %>
-			<e:trinput type="hidden" name="gatewidth" value="<%= gatewidth %>" />
+			<e:trinput type="hidden" name="gatewidth" value="${gatewidth}" />
 			<e:trdefault name="inFile" value="${files}"/>
 			<e:trdefault name="outFile" value="${outFiles}"/>
 			<e:ifAnalysisIsOk>
