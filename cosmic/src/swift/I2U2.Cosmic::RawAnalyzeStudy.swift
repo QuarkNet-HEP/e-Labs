@@ -5,10 +5,9 @@ app (File out) RawAnalyze(File inf, string gatewidth) {
 }
 
 string gatewidth = @arg("gatewidth");
-string[] gw = gatewidth.split(",");
 File inFile[] <fixed_array_mapper;files=@arg("inFile")>;
 File outFile[] <fixed_array_mapper;files=@arg("outFile")>;
 
 foreach v, i in inFile {
-	outFile[i] = RawAnalyze(inFile[i], gw[i]);
+	outFile[i] = RawAnalyze(inFile[i], gatewidth);
 }
