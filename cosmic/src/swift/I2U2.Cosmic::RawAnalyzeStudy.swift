@@ -1,6 +1,6 @@
 type File {}
 
-app (File out) RawAnalyze(File inf, string[] gatewidth) {
+app (File out) RawAnalyze(File inf, string gatewidth) {
 	RawAnalyze @filename(inf) @filename(out) gatewidth;
 }
 
