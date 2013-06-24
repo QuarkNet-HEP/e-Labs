@@ -14,6 +14,7 @@
 	//EPeronja-03/26/2013: Bug417- data file stats page: gatewidth
 	VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(file);
 	String gatewidth = "0";
+	List gatewidths = new ArrayList();
 	if (entry != null) {
 		//EPeronja: according to page 33 of 6000DAQ manual, the gateway should be calculated
 		//by subtracting the decimal value in 3 minus the decimal value in 2 and then multiply
@@ -26,9 +27,10 @@
 			int diff = reg3 - reg2;
 			int absDiff = (diff < 0) ? -diff : diff;
 			gatewidth = String.valueOf(absDiff * 10);
+			gatewidths.add(gatewidth);
 		}
 	}
-	request.setAttribute("gatewidth", gatewidth);
+	request.setAttribute("gatewidth", gatewidths);
 	String did = AnalysisParameterTools.getDetectorId(file);
 	File analyze = new File(new File(elab.getProperties().getDataDir(), did), file + ".analyze");
 	//should this happen at the exact same time that file is being created, the whole thing would break
