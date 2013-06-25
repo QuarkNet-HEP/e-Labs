@@ -151,36 +151,39 @@ public class PlotTool {
         }
         chart.getPlot().setBackgroundPaint(Color.WHITE);
         chart.getPlot().setOutlineStroke(new BasicStroke(1.5f));
-        if (logy) {
-            LogarithmicAxis l = new LogarithmicAxis("");
-            l.setStrictValuesFlag(false);
-            chart.getXYPlot().setRangeAxis(l);
+        try {
+	        if (logy) {
+	            LogarithmicAxis l = new LogarithmicAxis("");
+	            l.setStrictValuesFlag(false);
+	            chart.getXYPlot().setRangeAxis(l);
+	        }
+	        //EPeronja-06/24/2013: if logy was false, then it bombed out and did not plot anything
+	        if (logx && logy) {
+	            chart.getXYPlot().setDomainAxis(new LogarithmicAxis(""));
+	        }
+	        if (maxy != null) {
+	            if (logy) {
+	                chart.getXYPlot().getRangeAxis().setRange(1, maxy);
+	            }
+	            else {
+	                chart.getXYPlot().getRangeAxis().setRange(0, maxy);
+	            }
+	        }
+	        ChartUtilities.saveChartAsPNG(fplot, chart, 769, 380);
+	        BufferedImage src = ImageIO.read(fplot);
+	        int thmh = 100;
+	        int thml = 200;
+	        BufferedImage thm = new BufferedImage(thml, thmh, BufferedImage.TYPE_INT_RGB);
+	        Graphics2D g = thm.createGraphics();
+	        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+	                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+	        g
+	                .drawRenderedImage(src, AffineTransform.getScaleInstance(thml / 769.0,
+	                        thmh / 380.0));
+	        ImageIO.write(thm, "PNG", fthm);
+        } catch (Exception e) {
+        	throw new IOException(e.getMessage());
         }
-        //EPeronja-06/24/2013: if logy was false, then it bombed out and did not plot anything
-        if (logx && logy) {
-            chart.getXYPlot().setDomainAxis(new LogarithmicAxis(""));
-        }
-        if (maxy != null) {
-            if (logy) {
-                chart.getXYPlot().getRangeAxis().setRange(1, maxy);
-            }
-            else {
-                chart.getXYPlot().getRangeAxis().setRange(0, maxy);
-            }
-        }
-        
-        ChartUtilities.saveChartAsPNG(fplot, chart, 769, 380);
-        BufferedImage src = ImageIO.read(fplot);
-        int thmh = 100;
-        int thml = 200;
-        BufferedImage thm = new BufferedImage(thml, thmh, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = thm.createGraphics();
-        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-        g
-                .drawRenderedImage(src, AffineTransform.getScaleInstance(thml / 769.0,
-                        thmh / 380.0));
-        ImageIO.write(thm, "PNG", fthm);
     }
 
     public static final Map<String, Color> COLORS;

@@ -31,12 +31,17 @@
 		} catch (Exception e) {
 			response.setContentType("text/html");
 			PrintWriter pw = response.getWriter();
-			pw.write(e.getMessage());
+			pw.write("<p><strong>Thumbnail not available</strong></p>");
+			//pw.write(e.getMessage());
 			pw.close();
 		} finally {
 			os.close();
 		}
 	} catch (Exception e) {
-		
+		response.setContentType("text/html");
+		PrintWriter pw = response.getWriter();
+		pw.write("<p><strong>Thumbnail not available</strong></p>");
+		//pw.write(e.getMessage());
+		pw.close();		
 	}
 %>
