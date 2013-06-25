@@ -24,7 +24,7 @@ if (id != null) {
 	request.setAttribute("results", results);
     List outfs = (List) results.getAnalysis().getParameter("outFile");
     Iterator i = outfs.iterator();
- 	List gatewidths = (List) request.getAttribute("gatewidths");
+ 	List gatewidths = (List) request.getAttribute("gatewidth");
  	Iterator g = gatewidths.iterator();
     while (i.hasNext()) {
         String outf = (String) i.next();
