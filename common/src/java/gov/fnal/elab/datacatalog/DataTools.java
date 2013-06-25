@@ -84,6 +84,9 @@ public class DataTools {
         KEYS.put("benchmarklabel", 19);
         KEYS.put("benchmarkreference", 20);
         KEYS.put("benchmarkfail", 21);
+        //EPeronja-06/25/2013: 289- Lost functionality on data search
+        KEYS.put("group", 22);
+        KEYS.put("creationdate",23);
     }
 
     public static final int SCHOOL = 0;
@@ -110,6 +113,9 @@ public class DataTools {
     public static final int BENCHMARKLABEL = 19;
     public static final int BENCHMARKREFERENCE = 20;
     public static final int BENCHMARKFAIL = 21;
+    //EPeronja-06/25/2013: 289- Lost functionality on data search
+    public static final int GROUP = 22;
+    public static final int CREATIONDATE = 23;
     
     public static final String MONTH_FORMAT = "MMMM yyyy";
 
@@ -268,6 +274,44 @@ public class DataTools {
             	System.out.println("WARNING: File " + e.getLFN() + " does not have a benchmark failure. Skipping.");
             	continue;
             }  
+            //EPeronja-06/25/2013: 289- Lost functionality on data search
+            try {
+            	file.setGroup((String) data[GROUP]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have a group failure. Skipping.");
+            	continue;
+            }  
+            try {
+            	file.setCreationDate((java.util.Date) data[CREATIONDATE]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have a creation date failure. Skipping.");
+            	continue;
+            }  
+            try {
+            	file.setChannel1((Long) data[CHAN1]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have channel failure. Skipping.");
+            	continue;
+            }  
+            try {
+            	file.setChannel2((Long) data[CHAN2]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have channel failure. Skipping.");
+            	continue;
+            }  
+            try {
+            	file.setChannel3((Long) data[CHAN3]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have channel failure. Skipping.");
+            	continue;
+            }  
+            try {
+            	file.setChannel4((Long) data[CHAN4]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have channel failure. Skipping.");
+            	continue;
+            }  
+
             if (file.getStartDate() == null) {
             	System.out.println("WARNING: File " + e.getLFN() + " is missing the start date. Skipping.");
             	continue;
