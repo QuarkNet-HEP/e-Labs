@@ -51,7 +51,8 @@ public class PlotTool {
             File fplot = new File(path, digest + ".png");
             File fthm = new File(path, digest + "-thm.png");
             synchronized (PlotTool.class) {
-                if (!fplot.exists()) {
+            	//EPeronja-06/24/2013: png exists but thumbnail doesn't and the code was ignoring that
+                if (!fplot.exists() || !fthm.exists()) {
                     createPlot(fplot, fthm, elab, dataset, runs, plot);
                 }
             }
@@ -155,7 +156,8 @@ public class PlotTool {
             l.setStrictValuesFlag(false);
             chart.getXYPlot().setRangeAxis(l);
         }
-        if (logx) {
+        //EPeronja-06/24/2013: if logy was false, then it bombed out and did not plot anything
+        if (logx && logy) {
             chart.getXYPlot().setDomainAxis(new LogarithmicAxis(""));
         }
         if (maxy != null) {
