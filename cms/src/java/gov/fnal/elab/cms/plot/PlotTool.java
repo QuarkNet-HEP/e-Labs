@@ -156,7 +156,8 @@ public class PlotTool {
             l.setStrictValuesFlag(false);
             chart.getXYPlot().setRangeAxis(l);
         }
-        if (logx) {
+        //EPeronja-06/24/2013: if logy was false, then it bombed out and did not plot anything
+        if (logx && logy) {
             chart.getXYPlot().setDomainAxis(new LogarithmicAxis(""));
         }
         if (maxy != null) {
