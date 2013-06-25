@@ -34,9 +34,9 @@ request.setAttribute("e", entry);
 
 //EPeronja-01/24/2013: Bug472- find out if the user has ownership over the data
 boolean owner = false;
-String group = (String) entry.getTupleValue("group");
-if (group != null) {
-	if (group.equals(user.getName())) {
+String groupOwner = (String) entry.getTupleValue("group");
+if (groupOwner != null) {
+	if (groupOwner.equals(user.getName())) {
 		owner = true;
 	}
 }
