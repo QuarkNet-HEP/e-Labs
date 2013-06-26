@@ -202,10 +202,10 @@ public class BlessProcess {
 							bw.write("FailReason: "+ failReason + "\n");
 							dcp.insert(DataTools.buildCatalogEntry(filename, meta));
 							if (pass && lineNumber > 0) {
-								message = "<a href='benchmark-view.jsp?filename="+logfile+"'>"+filename + "</a> has been blessed.";
+								message = "<a href='../analysis-blessing/benchmark-view.jsp?filename="+logfile+"'>"+filename + "</a> has been blessed.";
 								bw.write(filename + " has been blessed." + "\n");
 							} else {
-								message = "<a href='benchmark-view.jsp?filename="+logfile+"'>"+filename + "</a> has NOT been blessed. Fail reason: " + failReason;								
+								message = "<a href='../analysis-blessing/benchmark-view.jsp?filename="+logfile+"'>"+filename + "</a> has NOT been blessed. Fail reason: " + failReason;								
 								bw.write(filename + " has NOT been blessed." + "\n");
 							}
 							bw.close();
