@@ -5,6 +5,8 @@
  * by Ross Shannon, http://www.yourhtmlsource.com/
  */
 
+
+//EPeronja-06/26/2013 Somehow the js vanished...
 addEvent(window, 'load', init, false);
 
 function init() {

@@ -1,6 +1,9 @@
 /* 
  * Cross-browser event handling, by Scott Andrew
  */
+
+//EPeronja-06/26/2013 Somehow the js vanished...
+
 function addEvent(element, eventType, lamdaFunction, useCapture) {
     if (element.addEventListener) {
         element.addEventListener(eventType, lamdaFunction, useCapture);
