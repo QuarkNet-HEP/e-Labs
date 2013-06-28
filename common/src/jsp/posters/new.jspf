@@ -8,7 +8,7 @@
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="org.owasp.validator.html.*" %>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <script type="text/javascript" src="../include/tiny_mce/jquery.tinymce.js"></script>
 <script type="text/javascript" src="formchanges.js"></script>
 
@@ -20,8 +20,8 @@
 			plugins : 'tabfocus',
 
 			theme_advanced_buttons1 : "bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,outdent,indent,|,sub,sup,|,cleanup,code",
-			theme_advanced_buttons2 : "forecolor,backcolor,fontselect,fontsizeselect",
-			theme_advanced_buttons3 : "", 
+			//theme_advanced_buttons2 : "forecolor,backcolor,fontselect,fontsizeselect",
+			//theme_advanced_buttons3 : "", 
 			theme_advanced_toolbar_location : "top",
 			theme_advanced_toolbar_align : "left"
 		});
@@ -32,7 +32,7 @@
 <%
 	Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
 	AntiSamy as = new AntiSamy(); 
-
+	
 	String title = "Make/Edit Poster";
 	Date now = new Date();
 	DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -53,8 +53,19 @@
         posterName = posterName.replace('/', '_');
    	    posterName = posterName.toLowerCase();
        	dfile = posterName + ".data";
+	} else {
+		//EPeronja-06/28/2013 Find other posters by this user so we do not overwrite existing ones
+		And q = new And();
+		q.add(new Equals("type", "poster"));
+		q.add(new Equals("project", elab.getName()));
+		q.add(new Equals("group", user.getGroup().getName()));
+	
+		ResultSet rset = elab.getDataCatalogProvider().runQuery(q);
+		request.setAttribute("existingposters", rset);	
 	}
+	
 	request.setAttribute("edit", posterNameEntered);
+	request.setAttribute("posterName", posterName);
 
 	String posterTitle = request.getParameter("WORDS:TITLE");
 	if ((posterTitle != null) && (posterTitle.length() == 0)) {
@@ -71,7 +82,7 @@
 	String showPosterVar = request.getParameter("showPoster");
 
 	if ("Make Poster".equals(reqType) || "View Poster".equals(reqType) || "Save Changes".equals(reqType)) {
-	    String val = "", name = ""; 
+		String val = "", name = ""; 
 	    RE re = new RE("(PARA|WORDS|FIG):([A-Z0-9]+)");
 	    Map<String, String[]> fieldMap = request.getParameterMap();
 	    for (Map.Entry<String, String[]> entry : fieldMap.entrySet()) {
@@ -228,8 +239,15 @@
 		    String lfn = e.getLFN();
 		    String name = (String) e.getTupleValue("name");
 		    String type = (String) e.getTupleValue("type"); 
-		    if ("plot".equals(type) || "uploadedimage".equals(type)) {
-		    	images.put(StringUtils.isNotBlank(name) ? name : lfn, lfn); 
+		    if (elab.getName().equals("ligo")) {
+			    String ligoName = (String) e.getTupleValue("title");
+			    if (ligoName != null) {
+			    	images.put(ligoName, lfn);
+			    }
+		    } else {
+			    if ("plot".equals(type) || "uploadedimage".equals(type)) {
+			    	images.put(StringUtils.isNotBlank(name) ? name : lfn, lfn); 
+			    }
 		    }
 		}
 	}
@@ -279,13 +297,45 @@
 			div.style.display = "none";
 			div.style.visibility = "";
 		}
+		//EPeronja-06/27/2013 -Bug 185:Weird characters in name of poster cause problems.
+		//					   Also check if the name already exists so we do not overwrite
+		function validatePosterName(object) {
+			var divMsg = document.getElementById("errorMsg");
+			var message = "";
+			$("input[name=existingposters]").each(function() {
+				var newName = object.value;
+				var existingName = this.value;
+				if (newName == existingName) {
+					message = "<i>* The name you selected already exists. Choose a different name.</i>";
+				}
+			});
+			if (message != "") {
+				divMsg.innerHTML = message;
+				return false;
+			}
+			if (! /^[a-zA-Z0-9_-]+$/.test(object.value)) {
+				divMsg.innerHTML = "<i>* Poster File Name contains invalid characters. Use any alphanumeric combination, spaces, dashes or underscores.</i>";
+			    return false;
+			}
+			divMsg.innerHTML = "";
+			return true;
+		}	
 	</script>
 
 	<form id="posterForm" method="post">
            <table width="550">
                 <tr>
                 	<td valign="top" align="right">Poster File Name:<br>(e.g.,poster_lifetime)</td>
-                	<td valign="top" align="left"><e:trinput type="text" name="posterName" id="posterName"/></td>
+                	<c:choose>
+                		<c:when test="${edit == true}" >
+                        	<td valign="top" align="left"><input type="text" name="posterName" id="posterName" onChange="return validatePosterName(this);" value="${posterName}"  readonly/>
+                								  <div id="errorMsg"></div></td>
+                		</c:when>
+                		<c:otherwise>
+		                	<td valign="top" align="left"><input type="text" name="posterName" id="posterName" onChange="return validatePosterName(this);" value="${posterName}" />
+                								  <div id="errorMsg"></div></td>
+                		</c:otherwise>
+                	</c:choose>
                 </tr>
       
 <%
@@ -340,7 +390,7 @@
                     					<c:if test="${name == 'FIGURE1'}">
                     						<div id="image-preview" style="display: none; position: fixed; left: 1%; bottom: 4%;">image-preview</div>
                     					</c:if>
-                    					<select name="${type}:${name}" id="${type}:${name}">
+                    					<select name="${type}:${name}" id="${type}:${name}" >
                     						<option><%= selectDefault %></option>
                     						<c:forEach items="${images}" var="image">
                     							<c:choose>
@@ -358,8 +408,8 @@
                     						</c:forEach>
                     					</select>
                     				</td>
-                    			</c:when>
-                    		</c:choose>
+   		              			</c:when>
+	  						</c:choose>                
 	                    </tr>
 	                <%
 	                p = re.getParenEnd(0);
@@ -372,6 +422,17 @@
     	        <font size="-1">To see poster, don't block popups! Otherwise click <b>Display Poster</b> below.</font>
 			</td>
 		</tr>
+		<c:choose>
+			<c:when test="${not empty existingposters}">
+				<c:forEach items="${existingposters}" var="existingposter" varStatus="counter">
+					<tr>
+						<td>
+							<input type="hidden" name="existingposters" id="existingposters${counter.count}" value="${fn:substringBefore(existingposter.tupleMap.name, ".data")}" />
+						</td>
+					</tr>
+				</c:forEach>
+			</c:when>		
+		</c:choose>
 	</form>
 </table>
 </span></center>
@@ -464,8 +525,9 @@ function DetectChanges() {
 	}
 }
 
-//5 minutes
-var repeatTime =  300 * 1000; 
+//a second: 1000
+//25 minutes
+var repeatTime =  25 * 60 * 1000; 
 function UpdatePoster(){
 	DynamicDiv();
 	DetectChanges();
