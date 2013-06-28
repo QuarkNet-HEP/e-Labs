@@ -299,11 +299,12 @@
 		}
 		//EPeronja-06/27/2013 -Bug 185:Weird characters in name of poster cause problems.
 		//					   Also check if the name already exists so we do not overwrite
-		function validatePosterName(object) {
+		function validatePosterName(objectId) {
+			var posterName = document.getElementById(objectId);
 			var divMsg = document.getElementById("errorMsg");
 			var message = "";
 			$("input[name=existingposters]").each(function() {
-				var newName = object.value;
+				var newName = posterName.value;
 				var existingName = this.value;
 				if (newName == existingName) {
 					message = "<i>* The name you selected already exists. Choose a different name.</i>";
@@ -313,7 +314,7 @@
 				divMsg.innerHTML = message;
 				return false;
 			}
-			if (! /^[a-zA-Z0-9_-]+$/.test(object.value)) {
+			if (! /^[a-zA-Z0-9_-]+$/.test(posterName.value)) {
 				divMsg.innerHTML = "<i>* Poster File Name contains invalid characters. Use any alphanumeric combination, spaces, dashes or underscores.</i>";
 			    return false;
 			}
@@ -328,11 +329,11 @@
                 	<td valign="top" align="right">Poster File Name:<br>(e.g.,poster_lifetime)</td>
                 	<c:choose>
                 		<c:when test="${edit == true}" >
-                        	<td valign="top" align="left"><input type="text" name="posterName" id="posterName" onChange="return validatePosterName(this);" value="${posterName}"  readonly/>
+                        	<td valign="top" align="left"><input type="text" name="posterName" id="posterName" onChange='return validatePosterName("posterName");' value="${posterName}"  readonly/>                    	
                 								  <div id="errorMsg"></div></td>
                 		</c:when>
                 		<c:otherwise>
-		                	<td valign="top" align="left"><input type="text" name="posterName" id="posterName" onChange="return validatePosterName(this);" value="${posterName}" />
+		                	<td valign="top" align="left"><input type="text" name="posterName" id="posterName" onChange='return validatePosterName("posterName");' value="${posterName}" />
                 								  <div id="errorMsg"></div></td>
                 		</c:otherwise>
                 	</c:choose>
@@ -418,7 +419,7 @@
 		<tr>
 			<td colspan="2" align="center">
 			    <input type="hidden" name="showPoster" id="showPoster" value="" />
-	            <input type="submit" name="button" id="submitButton" value="${edit?'Save Changes':'Make Poster'}"/>
+	            <input type="submit" name="button" id="submitButton" value="${edit?'Save Changes':'Make Poster'}" onclick='return validatePosterName("posterName");' />
     	        <font size="-1">To see poster, don't block popups! Otherwise click <b>Display Poster</b> below.</font>
 			</td>
 		</tr>
