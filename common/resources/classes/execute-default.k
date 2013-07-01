@@ -29,6 +29,7 @@ element([tr, optional(arguments, stdin, stdout, stderr, attributes, deperror, md
 							)
 						)
 						mark(restartout, err=false, mapping=false)
+						graphStuff(tr, stagein, stageout, err=false, maybe(args=arguments))
 						log(LOG:INFO, "END_SUCCESS thread={#thread} tr={tr}")
 						print("PROGRESS_MARKER")
 						vdl:setprogress("Finished successfully")
