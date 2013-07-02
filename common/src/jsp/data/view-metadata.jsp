@@ -51,9 +51,13 @@
 	            String project = (String) entry.getTupleValue("project");
 	            //EPeronja-06/18/2013: Bug 481: hide the whole path to the source
 	            String source = (String) entry.getTupleValue("source");
-	            if (project.equals("cosmic")) {
-	            	int lastSlashPos = source.lastIndexOf("/");
-	            	source = source.substring(lastSlashPos + 1, source.length());
+	            if (source != null) {
+		            if (project.equals("cosmic")) {
+		            	int lastSlashPos = source.lastIndexOf("/");
+		            	if (lastSlashPos != -1) {
+			            	source = source.substring(lastSlashPos + 1, source.length());
+		            	}
+		            }
 	            }
 	            //EPeronja-07/2/2013: Bug 320: view.jsp and view-metadata.jsp display internal file name
 	            String objectName = filename;
