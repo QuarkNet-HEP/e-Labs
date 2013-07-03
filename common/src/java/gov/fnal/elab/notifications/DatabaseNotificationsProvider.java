@@ -40,15 +40,18 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
     }
 
     public void addNotification(List<ElabGroup> groupList, List<Integer> projectList, Notification n) throws ElabException {
-        Connection conn = null;
+        //EPeronja-07/03/2013:commenting this out until it gets implemented properly
+    	//non-existing table fields cause lots of exceptions
+    	/*
+    	Connection conn = null;
         PreparedStatement psMessage = null, psState = null, psProject = null; 
         try {
             // TODO proper handling of time zones
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             boolean ac = conn.getAutoCommit();
-//            psMessage = conn.prepareStatement(
-//            		"INSERT INTO notifications.message (time, expiration, message, type, creator_research_group_id) " +
-//                    "VALUES (?, ?, ?, ?, ?) RETURNING id;"); 
+            psMessage = conn.prepareStatement(
+            		"INSERT INTO notifications.message (time, expiration, message, type, creator_research_group_id) " +
+                    "VALUES (?, ?, ?, ?, ?) RETURNING id;"); 
             psMessage = conn.prepareStatement(
             		"INSERT INTO notifications.message (time, expires, message, type) " +
                     "VALUES (?, ?, ?, ?) RETURNING id;"); 
@@ -65,7 +68,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 psMessage.setTimestamp(2, new Timestamp(n.getExpirationDate())); 
                 psMessage.setString(3, n.getMessage());
                 psMessage.setInt(4, n.getType().getDBCode());
-                //psMessage.setInt(5, n.getCreatorGroupId());
+                psMessage.setInt(5, n.getCreatorGroupId());
                 
                 ResultSet rs = psMessage.executeQuery(); 
                 if (rs.next()) {
@@ -76,7 +79,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 }
                 
                 if (n.isBroadcast()) {
-                	/* For messages that broadcast to all groups associated with a project */
+                	//For messages that broadcast to all groups associated with a project
                 	for (int projectId : projectList) {
                 		psProject.setInt(1, projectId);
                 		psProject.setInt(2, n.getId());
@@ -86,7 +89,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 }
                 
                 else {
-                	/* For messages that are specific to a user */ 
+                	//For messages that are specific to a user 
                 	for (ElabGroup eg : groupList) {
                 		psState.setInt(1, n.getId());
                 		psState.setInt(2, eg.getId());
@@ -113,6 +116,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 DatabaseConnectionManager.close(conn, psMessage, psState);
             }
         }
+        */
     }
     
     public void removeNotification(ElabGroup admin, int id) throws ElabException {
