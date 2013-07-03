@@ -40,9 +40,6 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
     }
 
     public void addNotification(List<ElabGroup> groupList, List<Integer> projectList, Notification n) throws ElabException {
-        //EPeronja-07/03/2013:commenting this out until it gets implemented properly
-    	//non-existing table fields cause lots of exceptions
-    	/*
     	Connection conn = null;
         PreparedStatement psMessage = null, psState = null, psProject = null; 
         try {
@@ -50,10 +47,13 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             boolean ac = conn.getAutoCommit();
             psMessage = conn.prepareStatement(
-            		"INSERT INTO notifications.message (time, expiration, message, type, creator_research_group_id) " +
-                    "VALUES (?, ?, ?, ?, ?) RETURNING id;"); 
+//            		"INSERT INTO notifications.message (time, expiration, message, type, creator_research_group_id) " +
+//                    "VALUES (?, ?, ?, ?, ?) RETURNING id;"); 
+            		"INSERT INTO notifications.message (time, expiration, type, creator_research_group_id) " +
+                    "VALUES (?, ?, ?, ?) RETURNING id;"); 
+            		
             psMessage = conn.prepareStatement(
-            		"INSERT INTO notifications.message (time, expires, message, type) " +
+            		"INSERT INTO notifications.message (time, expiration, message, type) " +
                     "VALUES (?, ?, ?, ?) RETURNING id;"); 
             psState = conn.prepareStatement(
             		"INSERT INTO notifications.state (message_id, research_group_id) " +
@@ -68,7 +68,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 psMessage.setTimestamp(2, new Timestamp(n.getExpirationDate())); 
                 psMessage.setString(3, n.getMessage());
                 psMessage.setInt(4, n.getType().getDBCode());
-                psMessage.setInt(5, n.getCreatorGroupId());
+                //psMessage.setInt(5, n.getCreatorGroupId());
                 
                 ResultSet rs = psMessage.executeQuery(); 
                 if (rs.next()) {
