@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://www.griphyn.org/chimera/GVDS-PoolConfig" 
+xsi:schemaLocation="http://www.griphyn.org/chimera/GVDS  http://www.griphyn.org/chimera/gvds-poolcfg-1.5.xsd" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.5">
+
+
+  <pool handle="localhost" sysinfo="INTEL32::LINUX">
+    <execution provider="local" url="localhost"/>
+    <workdirectory>/scratch/i2u2</workdirectory>
+    <profile namespace="SWIFT" key="storagesize">40000000000</profile>
+    <profile namespace="swift" key="stagingMethod">file</profile>
+  </pool>
+
+</config>
