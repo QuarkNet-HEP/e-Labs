@@ -12,8 +12,8 @@ element(pool, [handle, optional(gridlaunch), sysinfo, optional(lrc), ..., option
 element(lrc, [url]
 )
 
-element(servicelist, [type, provider, url]
-	list(type, provider, url, service(type, provider=provider, jobManager="fork", url=removeJM(url)))
+element(servicelist, [type, provider, url, optional(jm)]
+	list(type, provider, url, service(type, provider=provider, maybe(jobManager=jm), url=removeJM(url)))
 )
 				
 element(gridftp, [url, storage, major, minor, patch]
@@ -35,8 +35,8 @@ element(jobmanager, [url, major, optional(universe), optional(minor), optional(p
 	servicelist(type="execution", provider=provider, url=url)
 )
 			
-element(execution, [provider, url]
-	servicelist(type="execution", provider=provider, url=url)
+element(execution, [provider, url, optional(jobmanager)]
+	servicelist(type="execution", provider=provider, url=url, maybe(jm = jobmanager))
 )
 			
 element(filesystem, [provider, url, optional(storage)]
