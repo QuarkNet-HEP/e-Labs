@@ -46,12 +46,10 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             // TODO proper handling of time zones
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             boolean ac = conn.getAutoCommit();
-            psMessage = conn.prepareStatement(
+//            psMessage = conn.prepareStatement(
 //            		"INSERT INTO notifications.message (time, expiration, message, type, creator_research_group_id) " +
 //                    "VALUES (?, ?, ?, ?, ?) RETURNING id;"); 
-            		"INSERT INTO notifications.message (time, expiration, type, creator_research_group_id) " +
-                    "VALUES (?, ?, ?, ?) RETURNING id;"); 
-            		
+             		
             psMessage = conn.prepareStatement(
             		"INSERT INTO notifications.message (time, expiration, message, type) " +
                     "VALUES (?, ?, ?, ?) RETURNING id;"); 
