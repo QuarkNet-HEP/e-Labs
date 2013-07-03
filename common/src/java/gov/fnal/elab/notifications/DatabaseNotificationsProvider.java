@@ -114,7 +114,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 DatabaseConnectionManager.close(conn, psMessage, psState);
             }
         }
-        */
+        
     }
     
     public void removeNotification(ElabGroup admin, int id) throws ElabException {
