@@ -8,6 +8,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.5">
 		<jobmanager universe="vanilla" url="local://localhost" major="1" minor="0" patch="0" />
 		<workdirectory>/scratch/i2u2</workdirectory>
 		<profile namespace="SWIFT" key="storagesize">40000000000</profile>
+		<profile namespace="swift" key="stagingMethod">file</profile>
 	</pool>
 
         <!-- www10 not yet transitioned
@@ -19,9 +20,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.5">
         -->
 
 	<pool handle="node1" sysinfo="INTEL32::LINUX">
-    	<filesystem url="node1.i2u2.org" provider="ssh"/>
-		<execution url="node1.i2u2.org" provider="ssh"/>
+		<execution url="node1.i2u2.org" provider="coaster" jobmanager="ssh-cl:local"/>
 		<workdirectory>/home/quarkcat/tmp</workdirectory>
+		<profile namespace="swift" key="stagingMethod">proxy</profile>
 	</pool>
 
         <!-- www12 not yet transitioned 
@@ -31,7 +32,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.5">
                 <workdirectory>/home/quarkcat/tmp</workdirectory>
         </pool>
         -->
- 
+
         <!-- www13 not yet transitioned
         <pool handle="node3" sysinfo="INTEL32::LINUX">
         <filesystem url="node3.i2u2.org" provider="ssh"/>
@@ -39,29 +40,28 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.5">
                 <workdirectory>/home/quarkcat/tmp</workdirectory>
         </pool>
         -->
-	
 	<pool handle="node4" sysinfo="INTEL32::LINUX">
-    	<filesystem url="node4.i2u2.org" provider="ssh"/>
-		<execution url="node4.i2u2.org" provider="ssh"/>
+		<execution url="node4.i2u2.org" provider="coaster" jobmanager="ssh-cl:local"/>
 		<workdirectory>/home/quarkcat/tmp</workdirectory>
+		<profile namespace="swift" key="stagingMethod">proxy</profile>
 	</pool>
 	
 	<pool handle="node5" sysinfo="INTEL32::LINUX">
-    	<filesystem url="node5.i2u2.org" provider="ssh"/>
-		<execution url="node5.i2u2.org" provider="ssh"/>
+		<execution url="node5.i2u2.org" provider="coaster" jobmanager="ssh-cl:local"/>
 		<workdirectory>/home/quarkcat/tmp</workdirectory>
+		<profile namespace="swift" key="stagingMethod">proxy</profile>
 	</pool>
 	
 	<pool handle="node6" sysinfo="INTEL32::LINUX">
-    	<filesystem url="node6.i2u2.org" provider="ssh"/>
-		<execution url="node6.i2u2.org" provider="ssh"/>
+		<execution url="node6.i2u2.org" provider="coaster" jobmanager="ssh-cl:local"/>
 		<workdirectory>/home/quarkcat/tmp</workdirectory>
+		<profile namespace="swift" key="stagingMethod">proxy</profile>
 	</pool>
 	
 	<pool handle="node7" sysinfo="INTEL32::LINUX">
-    	<filesystem url="node7.i2u2.org" provider="ssh"/>
-		<execution url="node7.i2u2.org" provider="ssh"/>
+		<execution url="node7.i2u2.org" provider="coaster" jobmanager="ssh-cl:local"/>
 		<workdirectory>/home/quarkcat/tmp</workdirectory>
+		<profile namespace="swift" key="stagingMethod">proxy</profile>
 	</pool>
 	
 </config>

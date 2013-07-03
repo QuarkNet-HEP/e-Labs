@@ -5,10 +5,10 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.5">
 
 
   <pool handle="localhost" sysinfo="INTEL32::LINUX">
-    <gridftp  url="local://localhost" storage="/var/tmp" major="1" minor="0" patch="0" />
-    <jobmanager universe="vanilla" url="local://localhost" major="1" minor="0" patch="0" />
+    <execution provider="local" url="localhost"/>
     <workdirectory>/scratch/i2u2</workdirectory>
     <profile namespace="SWIFT" key="storagesize">40000000000</profile>
+    <profile namespace="swift" key="stagingMethod">file</profile>
   </pool>
 
 </config>
