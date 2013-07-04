@@ -395,8 +395,8 @@ body {
 					<tr valign="bottom">
 						<td align="center" width="86px">
 							<c:choose>
-								<c:when test="${site.value.fstype}">${site.value.fstype}</c:when>
-								<c:otherwise>N/A<c:otherwise>
+								<c:when test="${not empty site.value.fstype}">${site.value.fstype}</c:when>
+								<c:otherwise>N/A</c:otherwise>
 							</c:choose>
 						</td>
 					</tr>
@@ -404,7 +404,7 @@ body {
 						<td align="center">
 							<div class="label">
 								<c:choose>
-									<c:when test="${site.value.fstest}">
+									<c:when test="${not empty site.value.fstest}">
 										<object type="image/svg+xml" data="onoff.jsp?value=${site.value.fstest}" width="50" height="70">SVG not supported</object>
 									</c:when>
 									<c:otherwise>
