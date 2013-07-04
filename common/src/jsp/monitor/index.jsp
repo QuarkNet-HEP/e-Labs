@@ -409,7 +409,7 @@ body {
 									</c:when>
 									<c:otherwise>
 										<object type="image/svg+xml" data="onoff.jsp?disabled=true" width="50" height="70">SVG not supported</object>
-									<c:otherwise>
+									</c:otherwise>
 								</c:choose>
 							</div>
 						</td>
