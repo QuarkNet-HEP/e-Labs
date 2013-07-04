@@ -394,13 +394,23 @@ body {
 				<table cellspacing="1" cellpadding="1">
 					<tr valign="bottom">
 						<td align="center" width="86px">
-							<div class="label">${site.value.fstype}</div>
+							<c:choose>
+								<c:when test="${site.value.fstype}">${site.value.fstype}</c:when>
+								<c:otherwise>N/A<c:otherwise>
+							</c:choose>
 						</td>
 					</tr>
 					<tr>
 						<td align="center">
 							<div class="label">
-								<object type="image/svg+xml" data="onoff.jsp?value=${site.value.fstest}" width="50" height="70">SVG not supported</object>
+								<c:choose>
+									<c:when test="${site.value.fstest}">
+										<object type="image/svg+xml" data="onoff.jsp?value=${site.value.fstest}" width="50" height="70">SVG not supported</object>
+									</c:when>
+									<c:otherwise>
+										<object type="image/svg+xml" data="onoff.jsp?disabled=true" width="50" height="70">SVG not supported</object>
+									<c:otherwise>
+								</c:choose>
 							</div>
 						</td>
 					</tr>
