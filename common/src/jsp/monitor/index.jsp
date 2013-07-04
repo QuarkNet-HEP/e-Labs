@@ -395,8 +395,8 @@ body {
 					<tr valign="bottom">
 						<td align="center" width="86px">
 							<c:choose>
-								<c:when test="${not empty site.value.fstype}">${site.value.fstype}</c:when>
-								<c:otherwise>N/A</c:otherwise>
+								<c:when test="${not empty site.value.fstype}"><div class="label">${site.value.fstype}</div></c:when>
+								<c:otherwise><div class="label">N/A</div></c:otherwise>
 							</c:choose>
 						</td>
 					</tr>
