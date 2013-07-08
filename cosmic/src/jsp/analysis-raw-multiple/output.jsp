@@ -24,6 +24,8 @@ if (id != null) {
 	request.setAttribute("results", results);
     List outfs = (List) results.getAnalysis().getParameter("outFile");
     Iterator i = outfs.iterator();
+    List gatewidth = (List) results.getAnalysis().getParameter("gatewidth");
+    Iterator gw = gatewidth.iterator();
     while (i.hasNext()) {
         String outf = (String) i.next();
         
@@ -33,10 +35,11 @@ if (id != null) {
 		meta.add("transformation string Quarknet.Cosmic::RawAnalyzeStudy");
 		meta.add("creationdate date " + timestamp.toString());
 		meta.add("source string " + results.getAnalysis().getParameter("inFile"));
-		String gw = (String) results.getAnalysis().getParameter("gatewidth");
-		gw = gw.replace("[","");
-		gw = gw.replace("]","");
-		meta.add("gatewidth int " + Integer.parseInt(gw));
+		if (gw.hasNext()) {
+			meta.add("gatewidth int " + gw.hasNext());
+		} else {
+			meta.add("gatewidth int 0");			
+		}
 		//path data
 		meta.add("city string " + user.getCity());
 		meta.add("group string " + user.getName());
