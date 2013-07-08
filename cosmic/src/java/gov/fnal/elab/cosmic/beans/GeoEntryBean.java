@@ -851,7 +851,7 @@ public class GeoEntryBean implements Serializable {
     public String getDay() {
     	//return String.valueOf(getCalendar().get(Calendar.DAY_OF_MONTH));
     	//EPeronja-06/06/2013:Bug 349 GEO time defaults selects wrong zone
-        return String.valueOf(getFormattedUTC("dd"));   	
+        return String.format("%02d", getFormattedUTC("dd"));   	
     }
 
     public void setYear(String v) {
