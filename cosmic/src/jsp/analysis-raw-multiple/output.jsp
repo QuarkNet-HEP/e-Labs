@@ -33,7 +33,10 @@ if (id != null) {
 		meta.add("transformation string Quarknet.Cosmic::RawAnalyzeStudy");
 		meta.add("creationdate date " + timestamp.toString());
 		meta.add("source string " + results.getAnalysis().getParameter("inFile"));
-		meta.add("gatewidth int " + results.getAnalysis().getParameter("gatewidth"));
+		String gw = (String) results.getAnalysis().getParameter("gatewidth");
+		gw = gw.replace("[","");
+		gw = gw.replace("]","");
+		meta.add("gatewidth int " + Integer.parseInt(gw));
 		//path data
 		meta.add("city string " + user.getCity());
 		meta.add("group string " + user.getName());
