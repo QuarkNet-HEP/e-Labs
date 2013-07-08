@@ -38,13 +38,20 @@
 	if (id == null) {
 		throw new ElabJspException("Missing group id for teacher");
 	}
-	ElabGroup teacher = elab.getUserManagementProvider().getGroupById(id);
+	int integerId = 0;
+	if (id != null) {
+		integerId = Integer.parseInt(id);
+	}
+	ElabGroup teacher = elab.getUserManagementProvider().getGroupById(integerId);
+	String teacherName = (String) teacher.getTeacher();
 	Map results = elab.getTestProvider().getStudentResultsForTeacher(type, teacher);
 	request.setAttribute("results", results);
 	request.setAttribute("teacher", teacher);
+	//EPeronja-07/08/2013 225: Teacher name is not displayed with results
+	request.setAttribute("teacherName", teacherName);
 %>
 
-<h1>Results for ${param.type} for students of ${teacher.name}</h1>
+<h1>Results for ${param.type} for students of ${teacherName} (${teacher.name})</h1>
 
 <p>
 	Students' answers are listed under each question. Click on the answer to see the 
