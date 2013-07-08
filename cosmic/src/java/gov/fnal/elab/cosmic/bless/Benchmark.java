@@ -43,7 +43,7 @@ public class Benchmark {
 		and.add(new Equals("benchmarkfile", true));
 		and.add(new Equals("benchmarkdefault", true));
 		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
-		if (rs != null) {
+		if (rs != null && rs.size() > 0) {
 			benchmarkDefault = rs.getLfnArray()[0];
 		}
 		return benchmarkDefault;
