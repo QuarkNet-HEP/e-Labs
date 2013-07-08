@@ -36,7 +36,7 @@ if (id != null) {
 		meta.add("creationdate date " + timestamp.toString());
 		meta.add("source string " + results.getAnalysis().getParameter("inFile"));
 		if (gw.hasNext()) {
-			meta.add("gatewidth int " + gw.hasNext());
+			meta.add("gatewidth int " + (String) gw.next());
 		} else {
 			meta.add("gatewidth int 0");			
 		}
