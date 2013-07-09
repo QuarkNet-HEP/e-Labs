@@ -256,7 +256,11 @@ Re: the upload progress stuff
 						<table style="text-align: left;">
 						<tr><td>
 			    			<select name="benchmark_${d}">
-							    <option>No benchmark</option>
+			    				<c:choose>
+			    					<c:when test="${not empty detectorBenchmark}">
+									    <option>No benchmark</option>
+			    					</c:when>
+			    				</c:choose>
 								<c:forEach var="detectorBenchmark" items="${detectorBenchmark}">
 									<c:choose>
 										<c:when test="${detectorBenchmark.value == d}">
