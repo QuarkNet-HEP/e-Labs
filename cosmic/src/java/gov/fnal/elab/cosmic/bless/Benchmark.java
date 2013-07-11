@@ -83,28 +83,31 @@ public class Benchmark {
 		Geometries geometries = new Geometries(elab, detectorid);
 		Geometry g = geometries.getGeometry(detectorid);
 		SortedMap geos = g.getGeoEntriesBefore(julianDate);
-		GeoEntryBean geoEntry = (GeoEntryBean) geos.get(geos.lastKey()); 
-		
-        Iterator<GeoEntryBean> j = g.getGeoEntries();
-        
-        Date endDate = new Date();
-        while (j.hasNext()) {
-            GeoEntryBean gb = j.next();
-            if (geoEntry.getDate().equals(gb.getDate()) && j.hasNext()) {
-                endDate = j.next().getDate();
-            }
-        }
-        
-		Date startDate = geoEntry.getDate(); 
-		In and = new In();
-		and.add(new Equals("project","cosmic"));
-		and.add(new Equals("type", "split"));
-		and.add(new Like("detectorid", Integer.toString(detectorid)));
-		and.add(new Equals("blessed", false));
-		and.add(new Like("blessfile", "%.bless%"));
-        and.add(new Between("startdate", startDate, endDate));
-        ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
-		rs.sort("creationdate", true);
+		ResultSet rs = null;
+		if (!geos.isEmpty()) {
+			GeoEntryBean geoEntry = (GeoEntryBean) geos.get(geos.lastKey()); 
+			
+	        Iterator<GeoEntryBean> j = g.getGeoEntries();
+	        
+	        Date endDate = new Date();
+	        while (j.hasNext()) {
+	            GeoEntryBean gb = j.next();
+	            if (geoEntry.getDate().equals(gb.getDate()) && j.hasNext()) {
+	                endDate = j.next().getDate();
+	            }
+	        }
+	        
+			Date startDate = geoEntry.getDate(); 
+			In and = new In();
+			and.add(new Equals("project","cosmic"));
+			and.add(new Equals("type", "split"));
+			and.add(new Like("detectorid", Integer.toString(detectorid)));
+			and.add(new Equals("blessed", false));
+			and.add(new Like("blessfile", "%.bless%"));
+	        and.add(new Between("startdate", startDate, endDate));
+	        rs = elab.getDataCatalogProvider().runQuery(and);
+			rs.sort("creationdate", true);
+		}
 		return rs;
 	}          
  }

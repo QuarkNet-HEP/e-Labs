@@ -257,7 +257,7 @@ Re: the upload progress stuff
 						<tr><td>
 			    			<select name="benchmark_${d}">
 			    				<c:choose>
-			    					<c:when test="${not empty detectorBenchmark and detectorBenchmark.value == d}">
+			    					<c:when test="${not empty detectorBenchmark and detectorBenchmark.key == d}">
 									    <option>No benchmark</option>
 			    					</c:when>
 			    				</c:choose>
