@@ -1,0 +1,10 @@
+<div id="chartsDiv" style="text-align: center; visibility: hidden;">
+	<h2 id="datafile"></h2>
+	<h3>Rates</h3>
+	<div id="channels" style="text-align: center; background-color:#FFFFFF;">
+		<div id="channelChart" style="width:550px; height:200px;"></div>
+		<div id="channelChartLegend" style="margin:auto; width:300px;"></div>        
+	</div>
+	<h3>Trigger Rate</h3>
+		<div id ="triggerChart" style="width:550px; height:200px;"></div>
+</div>

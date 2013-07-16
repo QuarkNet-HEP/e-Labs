@@ -12,13 +12,13 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.text.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="java.util.Map.Entry" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.lang.time.DateUtils" %>
 
 <%
 	// EPeronja-05/21/2013: 472-Benchmark file maintenance
 	//						Add, remove and set default benchmark files per detector.
-	//	TODO: create a css file for benchmark
 	ElabUserManagementProvider p = elab.getUserManagementProvider();
 	CosmicElabUserManagementProvider cp = null;
 	if (p instanceof CosmicElabUserManagementProvider) {
@@ -66,6 +66,7 @@
 		    for (int i = 0; i < blessedFiles.length; i++) {
 		    	CatalogEntry ce = dcp.getEntry(blessedFiles[i]);
 		    	ce.setTupleValue("benchmarkreference","");
+		    	ce.setTupleValue("blessed", false);
 		    	dcp.insert(ce);
 		    }
 		    //now let's deal with the benchmark file
@@ -82,22 +83,45 @@
 	TreeMap<String, Integer> detectorBenchmark = new TreeMap<String, Integer>();
 	TreeMap<String, VDSCatalogEntry> benchmarkTuples = new TreeMap<String, VDSCatalogEntry>();
 	ResultSet searchResults = null;
-
-	//loop through detectors
-	while (iterator.hasNext()) {
-		Integer key = Integer.parseInt((String) iterator.next());
-	  	//retrieve benchmark files from database
-  		searchResults = Benchmark.getBenchmarkFileName(elab, key);
-	  	if (searchResults != null) {
-	 		String[] filenames = searchResults.getLfnArray();
-	 		for (int i = 0; i < filenames.length; i++){
-				VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filenames[i]);
-				if (e != null) {
-					benchmarkTuples.put(filenames[i], e);
-					detectorBenchmark.put(filenames[i], key);				}				
-			}//end for loop
-	  	}//end check searchResults
-	}//end looping through detectors
+	//retrieve all the files blessed by these benchmarks
+	TreeMap<String, String> blessedByBenchmark = new TreeMap<String,String>();
+	
+	String selectedDetector = request.getParameter("detector");
+	String firstDataFile ="";
+	if (selectedDetector != null) {
+		//loop through detectors
+		while (iterator.hasNext()) {
+			String d = (String) iterator.next();
+			if (d.equals(selectedDetector)) {
+				Integer key = Integer.parseInt(d);
+			  	//retrieve benchmark files from database
+		  		searchResults = Benchmark.getBenchmarkFileName(elab, key);
+			  	if (searchResults != null) {
+			 		String[] filenames = searchResults.getLfnArray();
+			 		for (int i = 0; i < filenames.length; i++){
+						VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filenames[i]);
+						if (e != null) {
+							benchmarkTuples.put(filenames[i], e);
+							detectorBenchmark.put(filenames[i], key);				
+						}
+						//retrieve all blessed files by these benchmarks
+						ResultSet rs = Benchmark.getBlessedDataFilesByBenchmark(elab, filenames[i]);
+						if (rs != null) {
+							String[] blessed = rs.getLfnArray();
+							for (int x = 0; x < blessed.length; x++) {
+								blessedByBenchmark.put(blessed[x], filenames[i]);
+							}
+						}
+					}//end for loop
+					if (detectorBenchmark.size() > 0) {
+						Entry<String,Integer> firstEntry = detectorBenchmark.firstEntry();
+						firstDataFile = firstEntry.getKey();
+					}
+					request.setAttribute("firstDataFile", firstDataFile);
+			  	}//end check searchResults
+			}//end of checking if key is the same as selected detectors
+		}//end looping through detectors
+	}//check for selectedDetector
 
 	//set the calendar to a month prior by default 
 	//the criteria to retrieve datafiles will probably change but we need some type of range otherwise
@@ -106,8 +130,10 @@
 	lastMonth.add(Calendar.MONTH,-1);				
 	request.setAttribute("lastMonth", lastMonth);
 	request.setAttribute("detectors", detectors);
+	request.setAttribute("detector", selectedDetector);
 	request.setAttribute("detectorBenchmark", detectorBenchmark);
 	request.setAttribute("benchmarkTuples", benchmarkTuples);
+	request.setAttribute("blessedByBenchmark", blessedByBenchmark);
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -134,44 +160,15 @@
 						maxDate: new Date() // Should not look later than today
 				}
 			$('.datepicker').datepicker(calendarParam);
-			$("#sinceDate").datepicker('option', 'buttonText', 'Choose start date for data files.');
+			$("#fromDate").datepicker('option', 'buttonText', 'Choose start date for data files.');
+			$("#toDate").datepicker('option', 'buttonText', 'Choose start date for data files.');
 			$('img.ui-datepicker-trigger').css('vertical-align', 'text-bottom'); 			
 			});				
-		</script>	
+		</script>
 		<script>
-			function setDefault(checkedObject, detector, fileName) {
-				var filename = document.getElementById("filename");
-				filename.value = fileName;
-				var detectorId = document.getElementById("detectorId");
-				detectorId.value = detector;				
-				var def = document.getElementById("defaultBenchmark");
-				if (checkedObject.checked) {
-					def.value = "true";
-				} else {
-					def.value = "false";
-				}
-				document.getElementById('submitButton').click();
-			}	
-			function deleteBenchmark(filename, defaultFlag) {
-				if (defaultFlag) {
-					var messages = document.getElementById("messages");
-					messages.innerHTML = "<i>* Cannot remove a default benchmark file</i>"
-					return false;
-				} else {
-					var removeBenchmark = document.getElementById("removeBenchmark");
-					removeBenchmark.value = filename;
-					document.getElementById('submitButton').click();	
-				}
-			}
-			function addBenchmarkFiles(detector, dateObject) {
-				var date = document.getElementById(dateObject);
-				var params = 'dialogWidth:1000px;dialogHeight:750px;dialogTop:10px;dialogLeft:150px';
-				var newwindow = window.showModalDialog("benchmark-add.jsp?detector="+detector+"&sinceDate="+date.value, "addBenchmark", params);
-				//if (window.focus) {newwindow.focus()}
-			}
-			
 			function popUpClosed() {
-					window.location.reload();
+				document.getElementById('submitButton').click();
+					//window.location.reload();
 			}			
 		</script>
 	</head>
@@ -187,37 +184,73 @@
 			</div>
 			
 			<div id="content">
-
+		<script type="text/javascript" src="../include/jquery/flot/jquery.flot.js"></script>
+		<script type="text/javascript" src="../include/jquery/flot/jquery.flot.errorbars.js"></script>
+		<script type="text/javascript" src="../include/jquery/flot/jquery.flot.axislabels.js"></script>
+		<script type="text/javascript" src="../include/jquery/flot/jquery.flot.symbol.js"></script>
+		<script type="text/javascript" src="../include/excanvas.min.js"></script>
+		<script type="text/javascript" src="blessing.js"></script>
+		<script type="text/javascript" src="benchmark.js"></script>			
+		<script>
+			$(document).ready(function() {
+				if ("<%=firstDataFile%>" != null && "<%=firstDataFile%>" != "") {
+					showCharts("<%=firstDataFile%>", "get-data.jsp?file=");
+				}
+			});		
+		</script>	
 <h1>Select benchmark files.</h1>
 <ul>
-	<li>Select <strong>date</strong> to retrieve benchmark candidates for a detector and add files.</li>
-	<li>Select a <strong>default benchmark</strong> file.</li>
-	<li>Remove benchmark files (this will also remove the references to this file in former blessed datafiles).</li>
+	<li>Choose a <strong>detector</strong> from the drop-down.</li>
+	<li>Select <strong>a date range</strong> to choose a benchmark file.</li>
+	<li>Click <strong>Add Benchmark</strong> to retrieve benchmark candidates.</li>
+	<li>Select/Unselect a <strong>default benchmark</strong> file.</li>
+	<li>Remove benchmark files (this will also <strong>remove the references</strong> to this file in former blessed datafiles and <strong>unbless</strong> them).</li>
 </ul>
 <form id="benchmarkFileForm" method="post">
-<table style="border: 1px solid black; width: 100%; padding: 20px;" >
-    <tr style="vertical-align: top; text-align: center;">
-    	<td class="benchmarkHeader">Detector</td>
-    	<td class="benchmarkHeader">Add Files From Date</td>
-    	<td class="benchmarkHeader">Benchmark files and labels</td>
-    </tr>
-	<c:forEach var="detector" items="${detectors}">
-	     <tr class="benchmarkRow">
-	     	<td><strong>${detector}</strong></td>
-		 	<td><input readonly type="text" name="sinceDate${detector}" id="sinceDate${detector}" size="15" value="<%=DATEFORMAT.format(lastMonth.getTime()) %>" class="datepicker" ></input>
-				<input type="button" name="addBenchmarkFiles${detector}" id="addBenchmarkFiles${detector}" value="+" onclick='javascript:addBenchmarkFiles(${detector}, "sinceDate${detector}");'/>
-			</td>
-			<td>
-				<table class="innerTable">
-				<c:forEach var="detectorBenchmark" items="${detectorBenchmark}">
-					<c:choose>
-						<c:when test="${detectorBenchmark.value == detector}">
-								<c:forEach var="benchmarkTuples" items="${benchmarkTuples}">
-									<tr>
-										<c:choose>
-											<c:when test="${benchmarkTuples.key == detectorBenchmark.key}">
-												<td style="vertical-align: bottom; width: 115px;">${benchmarkTuples.key}</td>
-												<td style="vertical-align: bottom; width: 20px;">
+<table style="border: 1px solid black; width: 100%; padding: 10px;" >
+    <tr class="benchmarkRow">
+     	<td style="vertical-align: center;" class="benchmarkHeader">Detector<br />
+    		<select name="detectorId" id="detectorId" onChange="javascript:showAllFiles(this);">
+		    	<option value="none">Choose detector</option>
+				<c:forEach items="${detectors}" var="detectors">
+		  			<c:choose>
+ 				  		<c:when test="${detectors == detector}">
+						      <option value="${detectors}" selected="true">${detectors}</option>
+						</c:when>
+						<c:otherwise>
+				      		  <option value="${detectors}">${detectors}</option> 						
+						</c:otherwise>
+		   			</c:choose>
+				</c:forEach>
+			</select>	  	     	
+     	</td>
+	 	<td class="benchmarkHeader" nowrap style="vertical-align: center;">Date Range<br /> 
+	 	    <input readonly type="text" name="fromDate" id="fromDate" size="12" value="<%=DATEFORMAT.format(lastMonth.getTime()) %>" class="datepicker" ></input>
+	 	    to <input readonly type="text" name="toDate" id="toDate" size="12" value="<%=DATEFORMAT.format(Calendar.getInstance().getTime()) %>" class="datepicker" ></input>	
+		</td>
+		<td class="benchmarkHeader" style="vertical-align: bottom;">
+			<input type="button" name="add" id="add" value="Add Benchmark" onclick='javascript:addBenchmarkFiles("${detector}", "fromDate", "toDate");'/>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3"><div id="messages" class="messages"></div></td>
+	</tr>
+    <tr>
+    	<td class="detectorList">
+    		<c:choose>
+    			<c:when test="${not empty detectorBenchmark}">
+		    	  <div class="detectorTable" id="tableWrapper">
+					<c:forEach var="detectorBenchmark" items="${detectorBenchmark}">
+						<c:choose>
+							<c:when test="${detectorBenchmark.value == detector}">
+								<c:forEach var="benchmarkTuples" items="${benchmarkTuples}" varStatus="counter">
+									<c:choose>
+										<c:when test="${benchmarkTuples.key == detectorBenchmark.key}">
+			  							  <div id="${detectorBenchmark.key}">
+											<table width="198px"  id="table${benchmarkTuples.key}" class="highlight">
+												<tr>
+													<td width="180px"><a href="#charts" onclick='javascript:showCharts("${benchmarkTuples.key}", "get-data.jsp?file=");'>${benchmarkTuples.value.tupleMap.benchmarklabel}</a></td>
+													<td width="8px">
 													<c:choose>
 														<c:when test="${benchmarkTuples.value.tupleMap.benchmarkdefault}">
 															<input type="checkbox" name="default${benchmarkTuples.key}" id="default${benchmarkTuples.key}" 
@@ -228,30 +261,40 @@
 																		value="${benchmarkTuples.key}" onclick='javascript:setDefault(this, "${detector}", "${benchmarkTuples.key}")'></input>
 														</c:otherwise>																	
 													</c:choose>
-											    </td>													
-												<td style="vertical-align: center; width: 40px;"><input type=button name="removeBenchmarkFile${benchmarkTuples.key}" id="removeBenchmarkFile${benchmarkTuples.key}" value="-" onclick='javascript:deleteBenchmark("${benchmarkTuples.key}", ${benchmarkTuples.value.tupleMap.benchmarkdefault});'></input></td>
-												<td style="vertical-align: bottom;"><strong>${benchmarkTuples.value.tupleMap.benchmarklabel}</strong></td>
-											</c:when>
-										</c:choose>																							
-									</tr>
-								</c:forEach>															
-						</c:when>
-					</c:choose>						
-				</c:forEach>							
-				</table>
-			</td>
-	  </tr>
-	</c:forEach>
-	<tr>
-		<td colspan="3" style="text-align: center;"><div id="messages"></div></td>
-	</tr>
+													</td>
+													<td width="10px"><input type=button name="removeBenchmarkFile${benchmarkTuples.key}" id="removeBenchmarkFile${benchmarkTuples.key}" value="-" onclick='javascript:deleteBenchmark("${benchmarkTuples.key}", ${benchmarkTuples.value.tupleMap.benchmarkdefault});'></input></td>													
+												</tr>
+											</table>
+										  </div>																							
+										</c:when>
+									</c:choose>	
+ 								</c:forEach>															
+							</c:when>
+						</c:choose>						
+					</c:forEach>	
+				  </div>						
+    			</c:when>
+    		</c:choose>
+    	</td>
+		<td style="vertical-align: top;" colspan="2">
+			<%@ include file="benchmark-charts.jspf" %>
+		</td>
+    </tr>
 </table>
+<input type="hidden" name="detector" id="detector" value="${detector}"></input>
+<input type="hidden" name="selectedBenchmark" id="selectedBenchmark" value="${selectedBenchmark}"></input>
 <input type="hidden" name="filename" id="filename" value=""></input>
-<input type="hidden" name="optInOut" id="optInOut" value=""></input>
 <input type="hidden" name="detectorId" id="detectorId" value =""></input>
 <input type="hidden" name="defaultBenchmark" id="defaultBenchmark" value=""></input>
 <input type="hidden" name="removeBenchmark" id="removeBenchmark" value=""></input>
 <input type="submit" name="submitButton" id="submitButton" value="Save Changes" style="visibility: hidden;" />
+<c:choose>
+	<c:when test="${not empty blessedByBenchmark}">
+		<c:forEach var="blessedByBenchmark" items="${blessedByBenchmark}">
+			<input type="hidden" name="${blessedByBenchmark.key}" class="${blessedByBenchmark.value}" value="${blessedByBenchmark.key}"></input>
+		</c:forEach>
+	</c:when>
+</c:choose>
 </form>
 			</div>
 			<!-- end content -->	

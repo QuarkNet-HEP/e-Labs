@@ -2,11 +2,11 @@
 .outerTable {
 	border: 1px solid black;
 	width: 100%;
-	padding: 20px;
+	padding: 10px;
 }
 .benchmarkHeader {
 	border: 1px solid lightgray; 
-	padding: 10px;
+	padding: 5px;
 	font-weight: bold;
 }
 .benchmarkFooter {
@@ -15,20 +15,34 @@
 	text-align: center;
 }
 .benchmarkSelection {
-	padding-left: 10px;
+	padding-left: 5px;
 }
 .benchmarkRow {
-	vertical-align: top; 
+	vertical-align: center; 
 	text-align: center;
 }
 .innerTable {
-	padding: 10px; 
+	padding: 5px; 
 	text-align: left;
 }
+.detectorList {
+	vertical-align: top; 
+	width: 230px; 
+}
+.detectorTable {
+	height: 550px; 
+	overflow: auto;
+}
+
 div.unblessedDiv {
 	position: relative; 
 	float: left; 
 	width: 130px; 
 	padding: 2px;"
+}
+div.messages {
+	text-align: center;
+	font-weight: bold;
+	color: red;
 }
 </style>

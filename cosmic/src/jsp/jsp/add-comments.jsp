@@ -93,6 +93,9 @@ dateString="";
                   }
             %>
 		  <P><TABLE WIDTH=800 CELLPADDING=4>
+		  <tr>
+		  	<td><a href="javascript:history.back();">Go Back</a></td>
+		  </tr>
 		  <TR><TD class="<%=barStyle%>">
 		  <FONT FACE=ARIAL COLOR=000000><B>Comments for file <%=fileName%></B></FONT>
 		   </TD></TR>

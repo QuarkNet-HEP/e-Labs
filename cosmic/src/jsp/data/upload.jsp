@@ -186,8 +186,6 @@ Re: the upload progress stuff
 		
 		request.setAttribute("detectorBenchmark", detectorBenchmark);
 		request.setAttribute("benchmarkTuples", benchmarkTuples);
-		
-		
 		%>
 		
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -254,35 +252,31 @@ Re: the upload progress stuff
 			  		<td class="benchmarkSelection"><input type="radio" name="detector" value="${d}"/>${d}</td>
 			  		<td>
 						<table style="text-align: left;">
-						<tr><td>
+						  <tr><td>
 			    			<select name="benchmark_${d}">
-			    				<c:choose>
-			    					<c:when test="${not empty detectorBenchmark and detectorBenchmark.key == d}">
-									    <option>No benchmark</option>
-			    					</c:when>
-			    				</c:choose>
-								<c:forEach var="detectorBenchmark" items="${detectorBenchmark}">
+								<c:forEach var="detectorBenchmark" items="${detectorBenchmark}" >
 									<c:choose>
 										<c:when test="${detectorBenchmark.value == d}">
-							    				<c:forEach items="${benchmarkTuples}" var="benchmarkTuples">
-							    					<c:choose>
-							    					   <c:when test="${benchmarkTuples.key == detectorBenchmark.key }">
-									    					<c:choose>
-									    						<c:when test="${ benchmarkTuples.value.tupleMap.benchmarkdefault == true }">
-									    							<option value="${benchmarkTuples.key}" selected="selected">${benchmarkTuples.value.tupleMap.benchmarklabel}</option>
-									    						</c:when>
-									    						<c:otherwise>
-									    							<option value="${benchmarkTuples.key}">${benchmarkTuples.value.tupleMap.benchmarklabel}</option>
-									    						</c:otherwise>
-									    					</c:choose>
-									    				</c:when>
-									    				</c:choose>
-							    				</c:forEach>
+						    				<c:forEach items="${benchmarkTuples}" var="benchmarkTuples">
+						    					<c:choose>
+						    					   <c:when test="${benchmarkTuples.key == detectorBenchmark.key }">
+								    					<c:choose>
+								    						<c:when test="${ benchmarkTuples.value.tupleMap.benchmarkdefault == true }">
+								    							<option>No benchmark</option>
+								    							<option value="${benchmarkTuples.key}" selected="selected">${benchmarkTuples.value.tupleMap.benchmarklabel}</option>
+								    						</c:when>
+								    						<c:otherwise>
+								    							<option value="${benchmarkTuples.key}">${benchmarkTuples.value.tupleMap.benchmarklabel}</option>
+								    						</c:otherwise>
+								    					</c:choose>
+								    				</c:when>
+								    				</c:choose>
+						    				</c:forEach>
 										</c:when>
 									</c:choose>						
 								</c:forEach>
 			    			</select>
-						</td></tr>							
+						  </td></tr>							
 						</table>
 			  		</td>
 			  	</tr>

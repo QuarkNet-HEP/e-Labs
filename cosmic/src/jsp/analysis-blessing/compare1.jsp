@@ -71,7 +71,6 @@ request.setAttribute("CR0", br0.getRegisterValue());
 			</div>
 			
 			<div id="content">
-
 				<script type="text/javascript" src="../include/jquery/flot/jquery.flot.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot/jquery.flot.errorbars.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot/jquery.flot.axislabels.js"></script>
