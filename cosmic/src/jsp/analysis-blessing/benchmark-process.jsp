@@ -153,7 +153,7 @@
 			</script>			
 <h1>Bless uploaded datafiles.</h1>
 <ul>
-	<li>Select <strong>detector</strong> to display unblessed datafiles. Select <strong>checkbox</strong> if you want to re-bless files.</li>
+	<li>Select <strong>detector</strong> to display unblessed datafiles. Select <strong>'Retrieve All' checkbox</strong> if you want to re-bless files.</li>
 	<li>Select <strong>benchmark</strong> file from drowpdown.</li>
 	<li>Select <strong>files to bless</strong> from datafiles uploaded with the same geometry as the selected benchmark.</li>
 	<li><strong>Bless</strong> files.</li>
@@ -199,14 +199,7 @@
 				</c:choose>   			   			
    			</td>
    			<td class="benchmarkHeader">
-				<c:choose>
-      				<c:when test="${not empty unblessedForDetector }"> 	
-   						<input type="submit" name="submitButton" id="submitButton" value="Bless Files" onclick='return checkSelection("YES");'></input>
-   					</c:when>
-   					<c:otherwise>
-   						<input type="submit" name="submitButton" id="submitButton" value="Bless Files" onclick='return checkSelection("NO");'></input>
-   					</c:otherwise>
-   				</c:choose>
+				<input type="submit" name="submitButton" id="submitButton" value="Bless Files" ></input>
    			</td>
    	    </tr>
 	    <c:choose>
@@ -248,7 +241,11 @@
 			</c:choose>
 		</td>
 		<td style="vertical-align: top;" colspan="2">
-			<%@ include file="benchmark-charts.jspf" %>
+    		<c:choose>
+    		  <c:when test="${not empty unblessedForDetector }"> 				  
+				<%@ include file="benchmark-charts.jspf" %>
+			  </c:when>
+		 	</c:choose>
 		</td>
       </tr>
   	  <c:if test="${empty unblessedForDetector}">

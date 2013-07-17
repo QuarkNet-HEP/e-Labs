@@ -198,9 +198,13 @@
 						  </c:otherwise>
 						</c:choose>
 					</td>
-					<td style="vertical-align: top;">
-						<%@ include file="benchmark-charts.jspf" %>
-					</td>
+						<td style="vertical-align: top;">
+	        				<c:choose>
+	        				  <c:when test="${not empty filenames }"> 				  
+									<%@ include file="benchmark-charts.jspf" %>
+							  </c:when>
+							</c:choose>
+						</td>
 				  </tr>
 				</table>
 			  </form>
