@@ -209,6 +209,9 @@ Re: the upload progress stuff
 				        $(this).hide(); 
 				    }
 				});
+				$('select option').each(function() {
+					  $(this).prevAll('option[value="' + this.value + '"]').remove();
+				});
 		});
         </script>
 	</head>
@@ -257,12 +260,12 @@ Re: the upload progress stuff
 								<c:forEach var="detectorBenchmark" items="${detectorBenchmark}" >
 									<c:choose>
 										<c:when test="${detectorBenchmark.value == d}">
+			    							<option>No benchmark</option>
 						    				<c:forEach items="${benchmarkTuples}" var="benchmarkTuples">
 						    					<c:choose>
 						    					   <c:when test="${benchmarkTuples.key == detectorBenchmark.key }">
 								    					<c:choose>
 								    						<c:when test="${ benchmarkTuples.value.tupleMap.benchmarkdefault == true }">
-								    							<option>No benchmark</option>
 								    							<option value="${benchmarkTuples.key}" selected="selected">${benchmarkTuples.value.tupleMap.benchmarklabel}</option>
 								    						</c:when>
 								    						<c:otherwise>

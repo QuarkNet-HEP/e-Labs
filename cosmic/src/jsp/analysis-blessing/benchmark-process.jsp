@@ -36,10 +36,12 @@
 	ArrayList<String> results = new ArrayList<String>();
 
 	//save changes if we get all parameters to do so
-	if ("Bless Files".equals(reqType)){
+	if ("Check Selected Files".equals(reqType)){
 		selectedDetector = request.getParameter("detector");
-		benchmark = request.getParameter("benchmark");
-		
+		if (selectedDetector.equals("Choose detector")) {
+			selectedDetector = "0";
+		}
+		benchmark = request.getParameter("benchmark");			
 		String[] filesToBless = request.getParameterValues("blessfiles");
 		if (filesToBless != null) {
 			BlessProcess bp = new BlessProcess();
@@ -71,11 +73,15 @@
 	  			if (e != null) {
 					if (e.getTupleValue("benchmarkdefault").toString().equals("true")) {
 						defaultBenchmark = e.getLFN();					
-		  			}
+		  			} 
 				}
   			} else {
-  				defaultBenchmark = selectedBenchmark;
+  				defaultBenchmark = selectedBenchmark;  					
   			}
+		}
+		//if there is no default and/or not selected then pick the first if there is any benchmark
+		if (defaultBenchmark.equals("") && benchmarks.length > 0) {
+			defaultBenchmark = benchmarks[0];
 		}
 		if (defaultBenchmark != null && !defaultBenchmark.equals("")) {
 			if (includeBlessed.equals("YES")) {
@@ -143,11 +149,11 @@
 			<script type="text/javascript" src="../include/jquery/flot/jquery.flot.symbol.js"></script>
 			<script type="text/javascript" src="../include/excanvas.min.js"></script>
 			<script type="text/javascript" src="blessing.js"></script>	
-			<script type="text/javascript" src="benchmark.js"></script>      
+			<script type="text/javascript" src="benchmark-process.js"></script>      
 			<script>
 			$(document).ready(function() {
 				if ("<%=firstDataFile%>" != null && "<%=firstDataFile%>" != "") {
-					showCharts("<%=firstDataFile%>", "get-data.jsp?file=");
+					showChartsWithBenchmark("<%=firstDataFile%>", "<%= defaultBenchmark %>", "benchmark-get-data.jsp");
 				}
 			});		
 			</script>			
@@ -199,7 +205,7 @@
 				</c:choose>   			   			
    			</td>
    			<td class="benchmarkHeader">
-				<input type="submit" name="submitButton" id="submitButton" value="Bless Files" ></input>
+				<input type="submit" name="submitButton" id="submitButton" value="Check Selected Files" ></input>
    			</td>
    	    </tr>
 	    <c:choose>
@@ -231,7 +237,7 @@
      					<table id="table${filename.value}" class="highlight">
 							<tr>
 								<td class="benchmarkSelection"><input type="checkbox" name="blessfiles" id="checkbox_${filename.value}" value="${filename.value}"></input></td>
-								<td><a href="#charts" onclick='javascript:showCharts("${filename.value}", "get-data.jsp?file=");'>${filename.value}</a> ${filename.key}</td>
+								<td><a href="#charts" onclick='javascript:showChartsWithBenchmark("${filename.value}", "${defaultBenchmark}", "benchmark-get-data.jsp");'>${filename.value}</a> ${filename.key}</td>
 							</tr>
 						</table>
 					  </div>
@@ -243,7 +249,7 @@
 		<td style="vertical-align: top;" colspan="2">
     		<c:choose>
     		  <c:when test="${not empty unblessedForDetector }"> 				  
-				<%@ include file="benchmark-charts.jspf" %>
+				<%@ include file="benchmark-charts-process.jspf" %>
 			  </c:when>
 		 	</c:choose>
 		</td>

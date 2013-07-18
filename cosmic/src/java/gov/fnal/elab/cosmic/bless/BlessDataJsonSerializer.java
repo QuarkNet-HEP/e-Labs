@@ -27,6 +27,21 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 		JsonArray tempData = new JsonArray(); 
 		JsonArray voltData = new JsonArray();
 		JsonArray satData  = new JsonArray();
+		JsonArray benchmarkChannel1Data  = new JsonArray();
+		JsonArray benchmarkChannel2Data  = new JsonArray();
+		JsonArray benchmarkChannel3Data  = new JsonArray();
+		JsonArray benchmarkChannel4Data  = new JsonArray();
+		JsonArray benchmarkTriggerData  = new JsonArray();
+		JsonArray channel1UpperError  = new JsonArray();
+		JsonArray channel2UpperError = new JsonArray();
+		JsonArray channel3UpperError  = new JsonArray();
+		JsonArray channel4UpperError  = new JsonArray();		
+		JsonArray channel1LowerError  = new JsonArray();
+		JsonArray channel2LowerError = new JsonArray();
+		JsonArray channel3LowerError  = new JsonArray();
+		JsonArray channel4LowerError  = new JsonArray();		
+		JsonArray triggerUpperError  = new JsonArray();
+		JsonArray triggerLowerError  = new JsonArray();
 		
 		JsonArray tmp; 
 		for (int i : tm.keySet()) {
@@ -35,32 +50,82 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 			tmp = new JsonArray();
 			tmp.add(new JsonPrimitive(i));
 			tmp.add(new JsonPrimitive(vd.getChannel1Rate()));
-			tmp.add(new JsonPrimitive((double) vd.getChannel1Error() / 2.0));
+			tmp.add(new JsonPrimitive((double) vd.getChannel1Error()));
 			channel1Data.add(tmp); 
+
+			tmp = new JsonArray();
+			tmp.add(new JsonPrimitive(i));
+			tmp.add(new JsonPrimitive((double) vd.getChannel1Rate() + (double) vd.getChannel1Error()));
+			channel1UpperError.add(tmp); 			
+
+			tmp = new JsonArray();
+			tmp.add(new JsonPrimitive(i));
+			tmp.add(new JsonPrimitive((double) vd.getChannel1Rate() - (double) vd.getChannel1Error()));
+			channel1LowerError.add(tmp); 			
 			
 			tmp = new JsonArray();
 			tmp.add(new JsonPrimitive(i));
 			tmp.add(new JsonPrimitive(vd.getChannel2Rate()));
-			tmp.add(new JsonPrimitive((double) vd.getChannel2Error() / 2.0));
+			tmp.add(new JsonPrimitive((double) vd.getChannel2Error()));
 			channel2Data.add(tmp);
-			
+
+			tmp = new JsonArray();
+			tmp.add(new JsonPrimitive(i));
+			tmp.add(new JsonPrimitive((double) vd.getChannel2Rate() + (double) vd.getChannel2Error()));
+			channel2UpperError.add(tmp); 			
+
+			tmp = new JsonArray();
+			tmp.add(new JsonPrimitive(i));
+			tmp.add(new JsonPrimitive((double) vd.getChannel2Rate() - (double) vd.getChannel2Error()));
+			channel2LowerError.add(tmp); 			
+					
 			tmp = new JsonArray();
 			tmp.add(new JsonPrimitive(i));
 			tmp.add(new JsonPrimitive(vd.getChannel3Rate()));
-			tmp.add(new JsonPrimitive((double) vd.getChannel3Error() / 2.0));
+			tmp.add(new JsonPrimitive((double) vd.getChannel3Error()));
 			channel3Data.add(tmp);
-			
+
+			tmp = new JsonArray();
+			tmp.add(new JsonPrimitive(i));
+			tmp.add(new JsonPrimitive((double) vd.getChannel3Rate() + (double) vd.getChannel3Error()));
+			channel3UpperError.add(tmp); 			
+
+			tmp = new JsonArray();
+			tmp.add(new JsonPrimitive(i));
+			tmp.add(new JsonPrimitive((double) vd.getChannel3Rate() - (double) vd.getChannel3Error()));
+			channel3LowerError.add(tmp); 			
+							
 			tmp = new JsonArray();
 			tmp.add(new JsonPrimitive(i));
 			tmp.add(new JsonPrimitive(vd.getChannel4Rate()));
-			tmp.add(new JsonPrimitive((double) vd.getChannel4Error() / 2.0));
+			tmp.add(new JsonPrimitive((double) vd.getChannel4Error()));
 			channel4Data.add(tmp);
+
+			tmp = new JsonArray();
+			tmp.add(new JsonPrimitive(i));
+			tmp.add(new JsonPrimitive((double) vd.getChannel4Rate() + (double) vd.getChannel4Error()));
+			channel4UpperError.add(tmp); 			
+
+			tmp = new JsonArray();
+			tmp.add(new JsonPrimitive(i));
+			tmp.add(new JsonPrimitive((double) vd.getChannel4Rate() - (double) vd.getChannel4Error()));
+			channel4LowerError.add(tmp); 			
 			
 			tmp = new JsonArray();
 			tmp.add(new JsonPrimitive(i));
 			tmp.add(new JsonPrimitive(vd.getTriggerRate()));
-			tmp.add(new JsonPrimitive((double) vd.getTriggerError() / 2.0));
+			tmp.add(new JsonPrimitive((double) vd.getTriggerError()));
 			triggerData.add(tmp);
+
+			tmp = new JsonArray();
+			tmp.add(new JsonPrimitive(i));
+			tmp.add(new JsonPrimitive((double) vd.getTriggerRate() + (double) vd.getTriggerError()));
+			triggerUpperError.add(tmp); 			
+
+			tmp = new JsonArray();
+			tmp.add(new JsonPrimitive(i));
+			tmp.add(new JsonPrimitive((double) vd.getTriggerRate() - (double) vd.getTriggerError()));
+			triggerLowerError.add(tmp); 			
 			
 			tmp = new JsonArray();
 			tmp.add(new JsonPrimitive(i));
@@ -81,13 +146,39 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 			tmp.add(new JsonPrimitive(i));
 			tmp.add(new JsonPrimitive(vd.getPressure())); 
 			pressureData.add(tmp);
+
+			tmp = new JsonArray();
+			tmp.add(new JsonPrimitive(i));
+			tmp.add(new JsonPrimitive((double) vd.getBenchmarkChannel1Rate()));
+			benchmarkChannel1Data.add(tmp); 			
+
+			tmp = new JsonArray();
+			tmp.add(new JsonPrimitive(i));
+			tmp.add(new JsonPrimitive((double) vd.getBenchmarkChannel2Rate()));
+			benchmarkChannel2Data.add(tmp); 
+			
+			tmp = new JsonArray();
+			tmp.add(new JsonPrimitive(i));
+			tmp.add(new JsonPrimitive((double) vd.getBenchmarkChannel3Rate()));
+			benchmarkChannel3Data.add(tmp); 
+
+			tmp = new JsonArray();
+			tmp.add(new JsonPrimitive(i));
+			tmp.add(new JsonPrimitive((double) vd.getBenchmarkChannel4Rate()));
+			benchmarkChannel4Data.add(tmp); 
+			
+			tmp = new JsonArray();
+			tmp.add(new JsonPrimitive(i));
+			tmp.add(new JsonPrimitive((double) vd.getBenchmarkTriggerRate()));
+			benchmarkTriggerData.add(tmp); 			
 		}
 		
 		JsonObject yerr = new JsonObject();
 		yerr.addProperty("show", true);
 		yerr.addProperty("upperCap", "-");
 		yerr.addProperty("lowerCap", "-");
-		yerr.addProperty("radius", 3);
+		yerr.addProperty("radius", 1);
+		yerr.addProperty("color", "#a8a8a8");
 
 		JsonObject points = new JsonObject();
 		points.addProperty("errorbars", "n");
@@ -111,6 +202,24 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 		channel1.addProperty("idx", 0);
 		channel1.add("points", point1);
 
+		JsonObject benchmarkChannel1 = new JsonObject();
+		benchmarkChannel1.add("data", benchmarkChannel1Data);
+		benchmarkChannel1.addProperty("color", "black");
+        benchmarkChannel1.addProperty("idx", 4);
+        benchmarkChannel1.addProperty("radius", 0.25);
+                
+		JsonObject channel1DataLowerError = new JsonObject();
+		channel1DataLowerError.add("data", channel1LowerError);
+		channel1DataLowerError.addProperty("color", "#e77471");
+		channel1DataLowerError.addProperty("idx", 4);
+		channel1DataLowerError.addProperty("radius", 0.25);
+
+		JsonObject channel1DataUpperError = new JsonObject();
+		channel1DataUpperError.add("data", channel1UpperError);
+		channel1DataUpperError.addProperty("color", "#e77471");
+		channel1DataUpperError.addProperty("idx", 4);
+		channel1DataUpperError.addProperty("radius", 0.25);		
+		
 		//EPeronja-01/18/2013: Bug472-Added a custom point to channel2 to be able to choose a symbol
 		JsonObject point2 = new JsonObject();
 		point2.addProperty("errorbars", "n");
@@ -129,6 +238,24 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 		channel2.addProperty("idx", 1);		
 		channel2.add("points", point2);
 
+		JsonObject benchmarkChannel2 = new JsonObject();
+		benchmarkChannel2.add("data", benchmarkChannel2Data);
+		benchmarkChannel2.addProperty("color", "black");
+        benchmarkChannel2.addProperty("idx", 5);
+        benchmarkChannel2.addProperty("radius", 0.25);
+ 
+		JsonObject channel2DataLowerError = new JsonObject();
+		channel2DataLowerError.add("data", channel2LowerError);
+		channel2DataLowerError.addProperty("color", "#b5eaaa");
+		channel2DataLowerError.addProperty("idx", 4);
+		channel2DataLowerError.addProperty("radius", 0.25);
+
+		JsonObject channel2DataUpperError = new JsonObject();
+		channel2DataUpperError.add("data", channel2UpperError);
+		channel2DataUpperError.addProperty("color", "#b5eaaa");
+		channel2DataUpperError.addProperty("idx", 4);
+		channel2DataUpperError.addProperty("radius", 0.25);		        
+        
 		//EPeronja-01/18/2013: Bug472-Added a custom point to channel3 to be able to choose a symbol		
 		JsonObject point3 = new JsonObject();
 		point3.addProperty("errorbars", "n");
@@ -142,11 +269,29 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 		channel3.add("data", channel3Data);
 		channel3.addProperty("unit", "counts/min");
 		channel3.addProperty("shadowSize", 0);
-		channel3.addProperty("color", "blue");
+		channel3.addProperty("color", "#2b65ec");
 		//EPeronja-01/22/2013: Bug472-Added this property in order to be able to format the labels in blessing.js		
 		channel3.addProperty("idx", 2);		
 		channel3.add("points", point3);
+		
+		JsonObject benchmarkChannel3 = new JsonObject();
+		benchmarkChannel3.add("data", benchmarkChannel3Data);
+		benchmarkChannel3.addProperty("color", "black");
+        benchmarkChannel3.addProperty("idx", 5);
+        benchmarkChannel3.addProperty("radius", 0.25);
 
+		JsonObject channel3DataLowerError = new JsonObject();
+		channel3DataLowerError.add("data", channel3LowerError);
+		channel3DataLowerError.addProperty("color", "#82cafa");
+		channel3DataLowerError.addProperty("idx", 4);
+		channel3DataLowerError.addProperty("radius", 0.25);
+
+		JsonObject channel3DataUpperError = new JsonObject();
+		channel3DataUpperError.add("data", channel3UpperError);
+		channel3DataUpperError.addProperty("color", "#82cafa");
+		channel3DataUpperError.addProperty("idx", 4);
+		channel3DataUpperError.addProperty("radius", 0.25);	        
+        
 		//EPeronja-01/18/2013: Bug472-Added a custom point to channel4 to be able to choose a symbol
 		JsonObject point4 = new JsonObject();
 		point4.addProperty("errorbars", "n");
@@ -165,6 +310,24 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 		channel4.addProperty("idx", 3);
 		channel4.add("points", point4);
 		
+		JsonObject benchmarkChannel4 = new JsonObject();
+		benchmarkChannel4.add("data", benchmarkChannel4Data);
+		benchmarkChannel4.addProperty("color", "black");
+        benchmarkChannel4.addProperty("idx", 5);
+        benchmarkChannel4.addProperty("radius", 0.25);
+
+		JsonObject channel4DataLowerError = new JsonObject();
+		channel4DataLowerError.add("data", channel4LowerError);
+		channel4DataLowerError.addProperty("color", "#9afeff");
+		channel4DataLowerError.addProperty("idx", 4);
+		channel4DataLowerError.addProperty("radius", 0.25);
+
+		JsonObject channel4DataUpperError = new JsonObject();
+		channel4DataUpperError.add("data", channel4UpperError);
+		channel4DataUpperError.addProperty("color", "#9afeff");
+		channel4DataUpperError.addProperty("idx", 4);
+		channel4DataUpperError.addProperty("radius", 0.25);	        
+        
 		JsonObject trigger = new JsonObject();
 		trigger.addProperty("label", "Trigger");
 		trigger.add("data", triggerData);
@@ -174,6 +337,24 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 		trigger.addProperty("shadowSize", 0);
 		trigger.addProperty("color", "magenta");
 		trigger.add("points", points);
+
+		JsonObject benchmarkTrigger = new JsonObject();
+		benchmarkTrigger.add("data", benchmarkTriggerData);
+		benchmarkTrigger.addProperty("color", "black");
+		benchmarkTrigger.addProperty("idx", 1);
+		benchmarkTrigger.addProperty("radius", 0.25);		
+
+		JsonObject triggerDataLowerError = new JsonObject();
+		triggerDataLowerError.add("data", triggerLowerError);
+		triggerDataLowerError.addProperty("color", "#f9b7ff");
+		triggerDataLowerError.addProperty("idx", 4);
+		triggerDataLowerError.addProperty("radius", 0.25);
+
+		JsonObject triggerDataUpperError = new JsonObject();
+		triggerDataUpperError.add("data", triggerUpperError);
+		triggerDataUpperError.addProperty("color", "#f9b7ff");
+		triggerDataUpperError.addProperty("idx", 4);
+		triggerDataUpperError.addProperty("radius", 0.25);	 		
 		
 		JsonObject gpsSats = new JsonObject();
 		gpsSats.addProperty("label", "GPS Satellites");
@@ -209,6 +390,21 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 		complete.add("channel2", channel2);
 		complete.add("channel3", channel3);
 		complete.add("channel4", channel4);
+		complete.add("channel1LowerError", channel1DataLowerError);
+		complete.add("channel1UpperError", channel1DataUpperError);
+		complete.add("channel2LowerError", channel2DataLowerError);
+		complete.add("channel2UpperError", channel2DataUpperError);
+		complete.add("channel3LowerError", channel3DataLowerError);
+		complete.add("channel3UpperError", channel3DataUpperError);
+		complete.add("channel4LowerError", channel4DataLowerError);
+		complete.add("channel4UpperError", channel4DataUpperError);
+		complete.add("triggerLowerError", triggerDataLowerError);
+		complete.add("triggerUpperError", triggerDataUpperError);		
+		complete.add("benchmarkChannel1", benchmarkChannel1);
+		complete.add("benchmarkChannel2", benchmarkChannel2);
+		complete.add("benchmarkChannel3", benchmarkChannel3);
+		complete.add("benchmarkChannel4", benchmarkChannel4);
+		complete.add("benchmarkTrigger", benchmarkTrigger);
 		complete.add("trigger", trigger);
 		complete.add("satellites", gpsSats);
 		complete.add("temperature", temperature);

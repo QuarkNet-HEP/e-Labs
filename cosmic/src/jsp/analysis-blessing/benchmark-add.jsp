@@ -53,6 +53,26 @@
 			    }
 			    //set new benchmark and make it default
 				CatalogEntry entry = dcp.getEntry(benchmark);
+				//get all the tuples needed for the blessing
+				Long chan1 = (Long) entry.getTupleValue("chan1");
+				Long chan2 = (Long) entry.getTupleValue("chan2");
+				Long chan3 = (Long) entry.getTupleValue("chan3");
+				Long chan4 = (Long) entry.getTupleValue("chan4");
+				Long triggers = (Long) entry.getTupleValue("triggers");
+				Date startdate = (Date) entry.getTupleValue("startdate");
+				Date enddate = (Date) entry.getTupleValue("enddate");
+			    Long duration = 0L;
+				double chan1Rate, chan2Rate, chan3Rate, chan4Rate, triggerRate;
+				try {
+					duration = (Long) (enddate.getTime() - startdate.getTime()) / 1000;
+					chan1Rate = chan1.doubleValue()/ duration;
+					chan2Rate = chan2.doubleValue() / duration;
+					chan3Rate = chan3.doubleValue() / duration;
+					chan4Rate = chan4.doubleValue() / duration;
+					triggerRate = triggers.doubleValue() / duration;	
+				} catch (Exception e) {
+					chan1Rate = chan2Rate = chan3Rate = chan4Rate = triggerRate = 0;				
+				}			    
 		    	entry.setTupleValue("blessed", true);
 		    	dcp.insert(entry);
 				ArrayList meta = new ArrayList();
@@ -60,6 +80,12 @@
 				meta.add("benchmarkreference string none");
 				meta.add("benchmarkdefault boolean true");
 				meta.add("benchmarklabel string "+benchmarkLabel);
+				meta.add("duration int " + String.valueOf(duration));
+				meta.add("chan1Rate float " + String.valueOf(chan1Rate));
+				meta.add("chan2Rate float " + String.valueOf(chan2Rate));
+				meta.add("chan3Rate float " + String.valueOf(chan3Rate));
+				meta.add("chan4Rate float " + String.valueOf(chan4Rate));
+				meta.add("triggerRate float " + String.valueOf(triggerRate));				
 				dcp.insert(DataTools.buildCatalogEntry(benchmark, meta));	
 				success = true;
 			}//end of setting/removing default benchmark file

@@ -57,7 +57,14 @@
 		
 		//check if we are removing a benchmark file			
 		String removeBenchmark = request.getParameter("removeBenchmark");
+		//get all the files that have been blessed by this benchmark
+		String[] blessed = request.getParameterValues(removeBenchmark);
+		String confirmDelete = request.getParameter("confirmDelete");
 		if (!removeBenchmark.equals("")) {
+			request.setAttribute("removeBenchmark", removeBenchmark);
+			request.setAttribute("blessed", blessed);
+		}
+		if (!removeBenchmark.equals("") && confirmDelete.equals("YES")) {
 			//look for all the datafiles that have this file set as their benchmark reference
 			ResultSet rsBlessed = Benchmark.getBlessedDataFilesByBenchmark(elab, removeBenchmark);
 	  		String[] blessedFiles = rsBlessed.getLfnArray();
@@ -74,6 +81,7 @@
 			entry.setTupleValue("benchmarkfile", false);
 			entry.setTupleValue("benchmarkdefault", false);
 			dcp.insert(entry);			
+			request.setAttribute("blessed", null);
 		}//end of removing benchmark file		
 	}
 	
@@ -207,6 +215,31 @@
 	<li>Remove benchmark files (this will also <strong>remove the references</strong> to this file in former blessed datafiles and <strong>unbless</strong> them).</li>
 </ul>
 <form id="benchmarkFileForm" method="post">
+<c:if test="${not empty blessed }">
+	<table style="border: 1px solid black; width: 100%; padding: 10px;" >
+		<tr>
+			<c:forEach items="${blessed}" var="blessed" varStatus="counter">
+				<c:if test="${counter.count <= 25}">
+					<td>${blessed}</td>
+				</c:if>
+				<c:if test="${counter.count == 25}" >
+				    <td><a href="javascript:showAllRows();" id="moreRowsLink">more...</a></td>				    
+				</c:if>
+				<c:if test="${counter.count > 25}" >
+					<td style="visibility: hidden;" class="moreRows">${blessed}</td>				    
+				</c:if>
+				<c:if test="${counter.count % 5 == 0}">
+					</tr><tr>
+				</c:if>
+			</c:forEach>
+		</tr>
+		<tr><td colspan="5" style="text-align: center;">All these files will be unblessed. Do you want to continue?</td></tr>
+		<tr><td colspan="5" style="text-align: center;">
+			<input type="button" name="cancel" value="Cancel" onclick="javascript:cancelDelete();"></input>
+			<input type="button" name="unbless" value="Delete & Unbless" onclick="javascript:deleteUnbless();"></input>
+		</td></tr>
+	</table>
+</c:if>
 <table style="border: 1px solid black; width: 100%; padding: 10px;" >
     <tr class="benchmarkRow">
      	<td style="vertical-align: center;" class="benchmarkHeader">Detector<br />
@@ -239,14 +272,14 @@
     	<td class="detectorList">
     		<c:choose>
     			<c:when test="${not empty detectorBenchmark}">
-		    	  <div class="detectorTable" id="tableWrapper">
+		    	  <div class="detectorTable" id="tableWrapper"><strong>Current benchmark files for ${detector}</strong><br />
 					<c:forEach var="detectorBenchmark" items="${detectorBenchmark}">
 						<c:choose>
 							<c:when test="${detectorBenchmark.value == detector}">
 								<c:forEach var="benchmarkTuples" items="${benchmarkTuples}" varStatus="counter">
 									<c:choose>
 										<c:when test="${benchmarkTuples.key == detectorBenchmark.key}">
-			  							  <div id="${detectorBenchmark.key}">
+			  							  <div id="${detectorBenchmark.key}" onclick='javascript:showCharts("${benchmarkTuples.key}", "benchmark-get-data.jsp?file=");'>
 											<table width="198px"  id="table${benchmarkTuples.key}" class="highlight">
 												<tr>
 													<td width="180px"><a href="#charts" onclick='javascript:showCharts("${benchmarkTuples.key}", "get-data.jsp?file=");'>${benchmarkTuples.value.tupleMap.benchmarklabel}</a></td>
@@ -286,12 +319,13 @@
 <input type="hidden" name="filename" id="filename" value=""></input>
 <input type="hidden" name="detectorId" id="detectorId" value =""></input>
 <input type="hidden" name="defaultBenchmark" id="defaultBenchmark" value=""></input>
-<input type="hidden" name="removeBenchmark" id="removeBenchmark" value=""></input>
+<input type="hidden" name="removeBenchmark" id="removeBenchmark" value="${removeBenchmark}"></input>
+<input type="hidden" name="confirmDelete" id="confirmDelete" value=""></input>
 <input type="submit" name="submitButton" id="submitButton" value="Save Changes" style="visibility: hidden;" />
 <c:choose>
 	<c:when test="${not empty blessedByBenchmark}">
 		<c:forEach var="blessedByBenchmark" items="${blessedByBenchmark}">
-			<input type="hidden" name="${blessedByBenchmark.key}" class="${blessedByBenchmark.value}" value="${blessedByBenchmark.key}"></input>
+			<input type="hidden" id="${blessedByBenchmark.key}" name="${blessedByBenchmark.value}" class="${blessedByBenchmark.value}" value="${blessedByBenchmark.key}"></input>
 		</c:forEach>
 	</c:when>
 </c:choose>

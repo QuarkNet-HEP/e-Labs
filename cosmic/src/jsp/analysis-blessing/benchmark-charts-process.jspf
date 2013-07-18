@@ -1,0 +1,52 @@
+<div id="chartsDiv" style="text-align: center; visibility: hidden;">
+	<table>
+		<tr>
+		  <td><h2 id="datafile"></h2></td>
+		</tr>
+		<tr>
+		  <td>
+			<div id="channels" style="text-align: center; background-color:#FFFFFF;">
+				<table>
+				    <tr><td colspan="2"><h3>Rates</h3></td></tr>
+				    <tr>
+				    	<td><strong>Channel 1</strong></td>
+				    	<td><strong>Channel 2</strong></td>
+				    </tr>
+					<tr>
+						<td><div id="channel1Chart" style="width:280px; height:130px;"></div></td>
+						<td><div id="channel2Chart" style="width:280px; height:130px;"></div></td>
+					</tr>
+				    <tr>
+				    	<td><strong>Channel 3</strong></td>
+				    	<td><strong>Channel 4</strong></td>
+				    </tr>
+					<tr>
+						<td><div id="channel3Chart" style="width:280px; height:130px;"></div></td>
+						<td><div id="channel4Chart" style="width:280px; height:130px;"></div></td>
+					</tr>
+				</table>
+			</div>
+		   </td>
+		 </tr>
+		 <tr>
+		  	<td>
+		  		<table>
+		  			<tr>
+					 	<td><h3>Trigger Rate</h3></td>
+					 	<td><strong>Help</strong></td>
+					</tr>
+				    <tr>
+					 	<td><div id ="triggerChart" style="width:280px; height:130px;"></div></td>
+					 	<td style="text-align: left; vertical-align: top;">
+					 		<ul>
+					 			<li><strong>Black line:</strong> benchmark</li>
+					 			<li><strong>Dark dots:</strong> channel & trigger rates</li>
+					 			<li><strong>Light dots:</strong> channel & trigger errors</li>
+					 		</ul>
+					 		
+					 	</td>
+					</tr>
+				</table>
+			</td>
+	</table>
+</div>

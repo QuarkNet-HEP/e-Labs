@@ -9,7 +9,7 @@
  */
 var $currentDiv = $("#tableWrapper").children().first();
 
-function showCharts(filename, path){
+function showChartsWithBenchmark(filename, benchmark, path){
 	$currentDiv = $("#tableWrapper").children("."+filename);
 	var messages = document.getElementById("messages");
 	messages.innerHTML = "";
@@ -25,11 +25,11 @@ function showCharts(filename, path){
 	//showArrow(arrows, filename);
 	$.ajax({
 		//url: "../analysis-blessing/get-data.jsp?file="+filename,
-		url: path+filename,
+		url: path+"?file="+filename+"&benchmark="+benchmark,
 		processData: false,
 		dataType: "json",
 		type: "GET",
-		success: onDataLoad1,
+		success: onDataLoadWithBenchmark,
 		error: clearPlots
 	});				
 }//end of showCharts
@@ -87,65 +87,10 @@ function showAllFiles(selectObject){
 	}
 }//end of showAllFiles
 
-function addBenchmarkFiles(detector, fromDateObject, toDateObject) {
-	if (detector != "") {
-		var fromDate = document.getElementById(fromDateObject);
-		var toDate = document.getElementById(toDateObject);
-		var params = 'dialogWidth:1000px;dialogHeight:750px;dialogTop:10px;dialogLeft:150px';
-		var newwindow = window.showModalDialog("benchmark-add.jsp?detector="+detector+"&fromDate="+fromDate.value+"&toDate="+toDate.value, "addBenchmark", params);		
-	} else {
-		var messages = document.getElementById("messages");
-		messages.innerHTML = "<i>* Choose a detector first.</i>"		
-	}
-}//end of addBenchMarkFiles
-
-function setDefault(checkedObject, detector, fileName) {
-	var filename = document.getElementById("filename");
-	filename.value = fileName;
-	var detectorId = document.getElementById("detectorId");
-	detectorId.value = detector;				
-	var def = document.getElementById("defaultBenchmark");
-	if (checkedObject.checked) {
-		def.value = "true";
-	} else {
-		def.value = "false";
-	}
-	document.getElementById('submitButton').click();
-}//end of setDefault	
-
-function deleteBenchmark(filename, defaultFlag) {
-	if (defaultFlag) {
-		var messages = document.getElementById("messages");
-		messages.innerHTML = "<i>* Cannot remove a default benchmark file</i>"
-		return false;
-	} else {
-		var confirmDelete = document.getElementById("confirmDelete");
-		var blessed = document.getElementsByClassName(filename);
-		if (blessed.length > 0) {
-			confirmDelete.value = "NO";			
-		} else {
-			confirmDelete.value = "YES";
-		}
-		removeBenchmark.value = filename;
-		document.getElementById('submitButton').click();							
-	}
-}//end of deleteBenchmark
-
-function cancelDelete() {
-	var removeBenchmark = document.getElementById("removeBenchmark");
-	removeBenchmark.value = "";
-	document.getElementById('submitButton').click();	
-}//end of cancelDelete
-
-function deleteUnbless() {
-	var confirmDelete = document.getElementById("confirmDelete");
-	confirmDelete.value = "YES";
-	document.getElementById('submitButton').click();		
-}//end of deleteUnbless
-
 $("html").keyup( function(keyEvent) {
 	//tab = 9, keydown= 40
     if (keyEvent.keyCode == 40) {
+    	var benchmark = document.getElementById("benchmark");
         var $nextDiv;
         if ($currentDiv.next().size() == 0) {
             $nextDiv = $("#tableWrapper").children().first();
@@ -154,7 +99,7 @@ $("html").keyup( function(keyEvent) {
             $nextDiv = $currentDiv.next();
         }
         for (var i = 0; i < $nextDiv.length; i++) {
-        	showCharts($nextDiv[i].id, "get-data.jsp?file=");
+        	showChartsWithBenchmark($nextDiv[i].id, benchmark.value, "benchmark-get-data.jsp");
         	$nextDiv[i].scrollIntoView(true);
         }
 
@@ -162,6 +107,7 @@ $("html").keyup( function(keyEvent) {
     }
 	//tab back= shiftKey, keyup= 38
     else if (keyEvent.keyCode == 38) {
+    	var benchmark = document.getElementById("benchmark");
         var $previousDiv;
         if ($currentDiv.prev().size() == 0) {
             $previousDiv = $("#tableWrapper").children().last();
@@ -170,46 +116,65 @@ $("html").keyup( function(keyEvent) {
             $previousDiv = $currentDiv.prev();
         }
         for (var i = 0; i < $previousDiv.length; i++) {
-        	showCharts($previousDiv[i].id, "get-data.jsp?file=");
+        	showChartsWithBenchmark($previousDiv[i].id, benchmark.value, "benchmark-get-data.jsp");
         	$previousDiv[i].scrollIntoView(true);
           }
         $currentDiv = $previousDiv;
     }
 });
 
-function checkLabel(){
-	var benchmarkLabel = document.getElementById("benchmarkLabel");
-	var radios = document.getElementsByName("benchmark");
-	var message = document.getElementById("messages");
-	var keepGoing = false;
-	for (i = 0; i < radios.length; i++) {
-		if (radios[i].checked) {
-			keepGoing = true;
+function retrieveAll() {
+	var includeBlessed = document.getElementById("includeBlessed");
+	if (includeBlessed.selectedIndex != -1) {
+		includeBlessed.value = "YES";
+		var selectedDetector = document.getElementById("detector");
+		if (selectedDetector.value != "") {
+			document.getElementById('submitButton').click();
+		}
+	}				
+}//end of retrieveAll
+
+function selectAll(checkAll) {
+	var inputs = document.getElementsByTagName("input");
+	for (var i = 0; i < inputs.length; i++) {
+		if (inputs[i].type == "checkbox" && inputs[i].name != "blessAll") {
+			if (checkAll.checked) {
+				inputs[i].checked = true;
+			} else {
+				inputs[i].checked = false;
+			}
 		}
 	}
-	if (keepGoing) {
-		if (benchmarkLabel.value == "" || benchmarkLabel.value == null) {
-			message.innerHTML = "<i>* Please enter a label for this file.</i>";
-			benchmarkLabel.focus();
-			return false;
-		} else {
-			return true;
-		}
+}//end of selectAll
+
+function showCandidates(selectObject){
+	var includeBlessed = document.getElementById("includeBlessed");
+	if (includeBlessed.selectedIndex != -1) {
+		includeBlessed.value = "YES";
+	}
+	var benchmark = document.getElementById("selectedBenchmark");
+	if (benchmark.selectedIndex != -1) {
+		benchmark.value = selectObject.value;
+		document.getElementById('submitButton').click();
+	}				
+}//end of showCandidates
+
+function checkSelection(flag) {
+	if (flag == "NO") {
+		return true;
 	} else {
-		message.innerHTML = "<i>* Please select a benchmark file.</i>";
+		var inputs = document.getElementsByTagName("input");
+		for (var i = 0; i < inputs.length; i++) {
+			if (inputs[i].type == "checkbox" && inputs[i].name != "checkAll") {
+				if (inputs[i].checked == true) {
+					return true;
+				}
+			}
+		}		
+		var messages = document.getElementById("messages");
+		messages.innerHTML = "<i>* Select files(s) to bless.</i>"
 		return false;
 	}
-}//end of checkLabel
+}//end of checkSelection
 
-function showAllRows() {
-	var rows = document.getElementsByClassName("moreRows");
-	var link = document.getElementById("moreRowsLink");
-	if (link) {
-		link.style.visibility = "hidden";
-	}
-	if (rows) {
-		for (var i = 0; i < rows.length; i++) {
-			rows[i].style.visibility = "visible";
-		}
-	}
-}//end of showAllRows
+
