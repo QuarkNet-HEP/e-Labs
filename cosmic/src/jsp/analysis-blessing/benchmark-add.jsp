@@ -118,6 +118,7 @@
 								filenameDisplay.put(display, results[i]);
 							}
 						} else {
+							filenames.add(results[i]);
 							filenameDisplay.put(display, results[i]);
 						}
 					}
