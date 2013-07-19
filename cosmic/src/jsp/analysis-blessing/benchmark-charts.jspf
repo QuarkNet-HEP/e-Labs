@@ -1,4 +1,4 @@
-<div id="chartsDiv" style="text-align: center; visibility: hidden;">
+<div id="benchmarkChartsDiv" style="text-align: center; visibility: hidden;">
 	<h2 id="datafile"></h2>
 	<h3>Rates</h3>
 	<div id="channels" style="text-align: center; background-color:#FFFFFF;">

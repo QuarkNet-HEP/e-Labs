@@ -13,7 +13,7 @@ function showCharts(filename, path){
 	$currentDiv = $("#tableWrapper").children("."+filename);
 	var messages = document.getElementById("messages");
 	messages.innerHTML = "";
-	var chartDiv = document.getElementById("chartsDiv");
+	var chartDiv = document.getElementById("benchmarkChartsDiv");
 	chartDiv.style.visibility = 'visible';
 	var datafile = document.getElementById("datafile");
 	datafile.innerHTML = "<strong>"+filename+"</strong>";
@@ -73,7 +73,7 @@ function showArrow(arrows, filename){
 }//end of showArrow
 
 function clearPlots() {
-	var chartDiv = document.getElementById("chartsDiv");
+	var chartDiv = document.getElementById("benchmarkChartsDiv");
 	chartDiv.style.visibility = 'hidden';
 	var messages = document.getElementById("messages");
 	messages.innerHTML = "<i>* Bless file cannot be rendered.</i>"

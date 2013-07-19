@@ -1,4 +1,4 @@
-<div id="chartsDiv" style="text-align: center; visibility: hidden;">
+<div id="benchmarkProcessChartsDiv" style="text-align: center; visibility: hidden;">
 	<table>
 		<tr>
 		  <td><h2 id="datafile"></h2></td>
