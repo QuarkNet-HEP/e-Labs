@@ -13,16 +13,16 @@
 				    	<td><strong>Channel 2</strong></td>
 				    </tr>
 					<tr>
-						<td><div id="channel1Chart" style="width:280px; height:130px;"></div></td>
-						<td><div id="channel2Chart" style="width:280px; height:130px;"></div></td>
+						<td><div id="benchmarkChannel1Chart" style="width:280px; height:130px;"></div></td>
+						<td><div id="benchmarkChannel2Chart" style="width:280px; height:130px;"></div></td>
 					</tr>
 				    <tr>
 				    	<td><strong>Channel 3</strong></td>
 				    	<td><strong>Channel 4</strong></td>
 				    </tr>
 					<tr>
-						<td><div id="channel3Chart" style="width:280px; height:130px;"></div></td>
-						<td><div id="channel4Chart" style="width:280px; height:130px;"></div></td>
+						<td><div id="benchmarkChannel3Chart" style="width:280px; height:130px;"></div></td>
+						<td><div id="benchmarkChannel4Chart" style="width:280px; height:130px;"></div></td>
 					</tr>
 				</table>
 			</div>
@@ -36,7 +36,7 @@
 					 	<td><strong>Help</strong></td>
 					</tr>
 				    <tr>
-					 	<td><div id ="triggerChart" style="width:280px; height:130px;"></div></td>
+					 	<td><div id ="benchmarkTriggerChart1" style="width:280px; height:130px;"></div></td>
 					 	<td style="text-align: left; vertical-align: top;">
 					 		<ul>
 					 			<li><strong>Black line:</strong> benchmark</li>

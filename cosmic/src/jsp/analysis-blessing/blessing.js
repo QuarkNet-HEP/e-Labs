@@ -214,15 +214,13 @@ var channelOptions = {
 		colors: ["#000000"]
 	};
 
-
-var benchmarkOptions = { 
+var triggerOptions = { 
 		xaxis: {
 			min: 0,
 			max: 86400,
-			tickSize: 21600 // 6 hours 
+			tickSize: 7200 // 2 hours 
 		},
 		yaxis: {
-			min: 0,
 			labelWidth: 40,
 			reserveSpace: true,
 		},
@@ -232,13 +230,14 @@ var benchmarkOptions = {
 		colors: ["#000000"]
 	};
 
-var triggerOptions = { 
+var benchmarkOptions = { 
 		xaxis: {
 			min: 0,
 			max: 86400,
-			tickSize: 7200 // 2 hours 
+			tickSize: 21600 // 6 hours 
 		},
 		yaxis: {
+			min: 0,
 			labelWidth: 40,
 			reserveSpace: true,
 		},
@@ -265,7 +264,6 @@ var benchmarkTriggerOptions = {
 		colors: ["#000000"]
 	};
 
-
 var satelliteOptions = { 
 		xaxis: {
 			min: 0,
@@ -281,6 +279,7 @@ var satelliteOptions = {
 		],
 		colors: ["#000000"]
 	};
+
 var voltageOptions = { 
 		xaxis: {
 			min: 0,
@@ -332,9 +331,9 @@ var pressureOptions = {
 var chanOptions = $.extend({}, channelOptions, { legend: { noColumns: 4, labelFormatter: seriesLabelFormatter, container: "#channelChartLegend" } });
 //var defaultOptions = $.extend({}, options, showSeries); 
 var trigOptions = $.extend({}, triggerOptions, showSeries);
-var benchmarkTrigOptions = $.extend({}, benchmarkTriggerOptions, showSeries);
+var benchmarkChanOptions = $.extend({}, channelOptions, { legend: { noColumns: 4, labelFormatter: seriesLabelFormatter, container: "#benchmarkChannelChartLegend" } });
 var benchmarkOptions = $.extend({}, benchmarkOptions, { legend: {show:false}});
-var benchmarkTrigOptions = $.extend({}, benchmarkTrigOptions, { legend: {show:false}});
+var benchmarkTrigOptions = $.extend({}, benchmarkTriggerOptions, { legend: {show:false}});
 var satOptions = $.extend({}, satelliteOptions, showSeries);
 var voltOptions = $.extend({}, voltageOptions, showSeries);
 var tempOptions = $.extend({}, temperatureOptions, showSeries);
@@ -383,6 +382,18 @@ function onDataLoad1(json) {
 	$.plot($("#pressureChart"), [ json.pressure ], $.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: json.pressure.ylabel + ' (' + json.pressure.unit + ')' } ]}));
 }
 
+function onDataLoad2(json) {	
+	// we need channel data to be selectable, so do not discard it 
+	channel1data = json.channel1;
+	channel2data = json.channel2;
+	channel3data = json.channel3;
+	channel4data = json.channel4;
+	triggerdata = json.trigger;
+	
+	onOffPlot = $.plot($("#benchmarkChannelChart"), [channel1data, channel2data, channel3data, channel4data ], $.extend({}, benchmarkChanOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel } ]}));
+	$.plot($("#benchmarkTriggerChart"), [json.trigger],$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: json.trigger.ylabel + ' (' + json.trigger.unit + ')'} ]}));
+}
+
 function onDataLoadWithBenchmark(json) {	
 	// we need channel data to be selectable, so do not discard it 
 	channel1data = json.channel1;
@@ -406,9 +417,9 @@ function onDataLoadWithBenchmark(json) {
 	benchmarkChannel4data = json.benchmarkChannel4;
 	benchmarkTriggerdata = json.benchmarkTrigger;
 	
-	$.plot($("#channel1Chart"), [channel1LowerError, channel1UpperError, channel1data, benchmarkChannel1data ], $.extend({}, benchmarkOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel } ]}));
-	$.plot($("#channel2Chart"), [channel2LowerError, channel2UpperError, channel2data, benchmarkChannel2data ], $.extend({}, benchmarkOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel } ]}));
-	$.plot($("#channel3Chart"), [channel3LowerError, channel3UpperError, channel3data, benchmarkChannel3data ], $.extend({}, benchmarkOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel } ]}));
-	$.plot($("#channel4Chart"), [channel4LowerError, channel4UpperError, channel4data, benchmarkChannel4data ], $.extend({}, benchmarkOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel } ]}));
-	$.plot($("#triggerChart"), [triggerLowerError, triggerUpperError, json.trigger, benchmarkTriggerdata],$.extend({}, benchmarkTrigOptions, { yaxes: [ {position: 'left', axisLabel: json.trigger.ylabel + ' (' + json.trigger.unit + ')'} ]}));
+	$.plot($("#benchmarkChannel1Chart"), [channel1LowerError, channel1UpperError, channel1data, benchmarkChannel1data ], $.extend({}, benchmarkOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel } ]}));
+	$.plot($("#benchmarkChannel2Chart"), [channel2LowerError, channel2UpperError, channel2data, benchmarkChannel2data ], $.extend({}, benchmarkOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel } ]}));
+	$.plot($("#benchmarkChannel3Chart"), [channel3LowerError, channel3UpperError, channel3data, benchmarkChannel3data ], $.extend({}, benchmarkOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel } ]}));
+	$.plot($("#benchmarkChannel4Chart"), [channel4LowerError, channel4UpperError, channel4data, benchmarkChannel4data ], $.extend({}, benchmarkOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel } ]}));
+	$.plot($("#benchmarkTriggerChart1"), [triggerLowerError, triggerUpperError, json.trigger, benchmarkTriggerdata],$.extend({}, benchmarkTrigOptions, { yaxes: [ {position: 'left', axisLabel: json.trigger.ylabel + ' (' + json.trigger.unit + ')'} ]}));
 }

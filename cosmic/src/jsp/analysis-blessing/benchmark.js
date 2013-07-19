@@ -29,7 +29,7 @@ function showCharts(filename, path){
 		processData: false,
 		dataType: "json",
 		type: "GET",
-		success: onDataLoad1,
+		success: onDataLoad2,
 		error: clearPlots
 	});				
 }//end of showCharts

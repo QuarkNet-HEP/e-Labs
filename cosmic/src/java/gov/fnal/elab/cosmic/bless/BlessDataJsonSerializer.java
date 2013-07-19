@@ -247,13 +247,13 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 		JsonObject channel2DataLowerError = new JsonObject();
 		channel2DataLowerError.add("data", channel2LowerError);
 		channel2DataLowerError.addProperty("color", "#b5eaaa");
-		channel2DataLowerError.addProperty("idx", 4);
+		channel2DataLowerError.addProperty("idx", 5);
 		channel2DataLowerError.addProperty("radius", 0.25);
 
 		JsonObject channel2DataUpperError = new JsonObject();
 		channel2DataUpperError.add("data", channel2UpperError);
 		channel2DataUpperError.addProperty("color", "#b5eaaa");
-		channel2DataUpperError.addProperty("idx", 4);
+		channel2DataUpperError.addProperty("idx", 5);
 		channel2DataUpperError.addProperty("radius", 0.25);		        
         
 		//EPeronja-01/18/2013: Bug472-Added a custom point to channel3 to be able to choose a symbol		
@@ -277,19 +277,19 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 		JsonObject benchmarkChannel3 = new JsonObject();
 		benchmarkChannel3.add("data", benchmarkChannel3Data);
 		benchmarkChannel3.addProperty("color", "black");
-        benchmarkChannel3.addProperty("idx", 5);
+        benchmarkChannel3.addProperty("idx", 6);
         benchmarkChannel3.addProperty("radius", 0.25);
 
 		JsonObject channel3DataLowerError = new JsonObject();
 		channel3DataLowerError.add("data", channel3LowerError);
 		channel3DataLowerError.addProperty("color", "#82cafa");
-		channel3DataLowerError.addProperty("idx", 4);
+		channel3DataLowerError.addProperty("idx", 6);
 		channel3DataLowerError.addProperty("radius", 0.25);
 
 		JsonObject channel3DataUpperError = new JsonObject();
 		channel3DataUpperError.add("data", channel3UpperError);
 		channel3DataUpperError.addProperty("color", "#82cafa");
-		channel3DataUpperError.addProperty("idx", 4);
+		channel3DataUpperError.addProperty("idx", 6);
 		channel3DataUpperError.addProperty("radius", 0.25);	        
         
 		//EPeronja-01/18/2013: Bug472-Added a custom point to channel4 to be able to choose a symbol
@@ -313,19 +313,19 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 		JsonObject benchmarkChannel4 = new JsonObject();
 		benchmarkChannel4.add("data", benchmarkChannel4Data);
 		benchmarkChannel4.addProperty("color", "black");
-        benchmarkChannel4.addProperty("idx", 5);
+        benchmarkChannel4.addProperty("idx", 7);
         benchmarkChannel4.addProperty("radius", 0.25);
 
 		JsonObject channel4DataLowerError = new JsonObject();
 		channel4DataLowerError.add("data", channel4LowerError);
 		channel4DataLowerError.addProperty("color", "#9afeff");
-		channel4DataLowerError.addProperty("idx", 4);
+		channel4DataLowerError.addProperty("idx", 7);
 		channel4DataLowerError.addProperty("radius", 0.25);
 
 		JsonObject channel4DataUpperError = new JsonObject();
 		channel4DataUpperError.add("data", channel4UpperError);
 		channel4DataUpperError.addProperty("color", "#9afeff");
-		channel4DataUpperError.addProperty("idx", 4);
+		channel4DataUpperError.addProperty("idx", 7);
 		channel4DataUpperError.addProperty("radius", 0.25);	        
         
 		JsonObject trigger = new JsonObject();
