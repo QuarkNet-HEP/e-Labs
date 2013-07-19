@@ -13,8 +13,8 @@ function showChartsWithBenchmark(filename, benchmark, path){
 	$currentDiv = $("#tableWrapper").children("."+filename);
 	var messages = document.getElementById("messages");
 	messages.innerHTML = "";
-	var chartDiv = document.getElementById("benchmarkProcessChartsDiv");
-	chartDiv.style.visibility = 'visible';
+	var chartsDiv = document.getElementById("benchmarkProcessChartsDiv");
+	chartsDiv.style.visibility = 'visible';
 	var datafile = document.getElementById("datafile");
 	datafile.innerHTML = "<strong>"+filename+"</strong>";
 	var ts = document.getElementsByClassName("highlight");
@@ -73,8 +73,8 @@ function showArrow(arrows, filename){
 }//end of showArrow
 
 function clearPlots() {
-	var chartDiv = document.getElementById("benchmarkProcessChartsDiv");
-	chartDiv.style.visibility = 'hidden';
+	var chartsDiv = document.getElementById("benchmarkProcessChartsDiv");
+	chartsDiv.style.visibility = 'hidden';
 	var messages = document.getElementById("messages");
 	messages.innerHTML = "<i>* Bless file cannot be rendered.</i>"
 }//end of clearPlots
