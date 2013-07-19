@@ -30,6 +30,7 @@
 	Date startDate = null; 
 	Date endDate = null; 
 	String firstDataFile = "";
+    Long duration = 0L;
 	TreeMap<String, String> filenameDisplay = new TreeMap<String, String>();
 	
 	//saving a selected benchmark?
@@ -61,33 +62,40 @@
 				Long triggers = (Long) entry.getTupleValue("triggers");
 				Date startdate = (Date) entry.getTupleValue("startdate");
 				Date enddate = (Date) entry.getTupleValue("enddate");
-			    Long duration = 0L;
 				double chan1Rate, chan2Rate, chan3Rate, chan4Rate, triggerRate;
 				try {
 					duration = (Long) (enddate.getTime() - startdate.getTime()) / 1000;
-					chan1Rate = chan1.doubleValue()/ duration;
-					chan2Rate = chan2.doubleValue() / duration;
-					chan3Rate = chan3.doubleValue() / duration;
-					chan4Rate = chan4.doubleValue() / duration;
-					triggerRate = triggers.doubleValue() / duration;	
+					if (duration > 0) {
+						chan1Rate = chan1.doubleValue()/ duration;
+						chan2Rate = chan2.doubleValue() / duration;
+						chan3Rate = chan3.doubleValue() / duration;
+						chan4Rate = chan4.doubleValue() / duration;
+						triggerRate = triggers.doubleValue() / duration;	
+					} else {
+						chan1Rate = chan2Rate = chan3Rate = chan4Rate = triggerRate = 0;				
+					}
 				} catch (Exception e) {
 					chan1Rate = chan2Rate = chan3Rate = chan4Rate = triggerRate = 0;				
-				}			    
-		    	entry.setTupleValue("blessed", true);
-		    	dcp.insert(entry);
-				ArrayList meta = new ArrayList();
-				meta.add("benchmarkfile boolean true");
-				meta.add("benchmarkreference string none");
-				meta.add("benchmarkdefault boolean true");
-				meta.add("benchmarklabel string "+benchmarkLabel);
-				meta.add("duration int " + String.valueOf(duration));
-				meta.add("chan1Rate float " + String.valueOf(chan1Rate));
-				meta.add("chan2Rate float " + String.valueOf(chan2Rate));
-				meta.add("chan3Rate float " + String.valueOf(chan3Rate));
-				meta.add("chan4Rate float " + String.valueOf(chan4Rate));
-				meta.add("triggerRate float " + String.valueOf(triggerRate));				
-				dcp.insert(DataTools.buildCatalogEntry(benchmark, meta));	
-				success = true;
+				}
+				if (duration > 0) {
+					entry.setTupleValue("blessed", true);
+			    	dcp.insert(entry);
+					ArrayList meta = new ArrayList();
+					meta.add("benchmarkfile boolean true");
+					meta.add("benchmarkreference string none");
+					meta.add("benchmarkdefault boolean true");
+					meta.add("benchmarklabel string "+benchmarkLabel);
+					meta.add("duration int " + String.valueOf(duration));
+					meta.add("chan1Rate float " + String.valueOf(chan1Rate));
+					meta.add("chan2Rate float " + String.valueOf(chan2Rate));
+					meta.add("chan3Rate float " + String.valueOf(chan3Rate));
+					meta.add("chan4Rate float " + String.valueOf(chan4Rate));
+					meta.add("triggerRate float " + String.valueOf(triggerRate));				
+					dcp.insert(DataTools.buildCatalogEntry(benchmark, meta));	
+					success = true;
+				} else {
+					success = false;
+				}
 			}//end of setting/removing default benchmark file
 		}
 	} else {
@@ -138,6 +146,7 @@
 	request.setAttribute("detector", detector);
 	request.setAttribute("fromDate", fromDate);
 	request.setAttribute("toDate", toDate);	
+	request.setAttribute("duration", duration);	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -220,7 +229,7 @@
 									<strong>Benchmark file has been successfully added.</strong><br />
 			  						<a href="#" onclick="window.close();">Close</a>
 			  					<% } else { %>
-						     		<strong>There are no .bless files for this detector from ${fromDate} to ${toDate}.</strong> 
+						     		<strong>There are no .bless files for this detector from ${fromDate} to ${toDate} or there was a problem with the duration of this file ${duration}.</strong> 
 								<% } %>
 						  </c:otherwise>
 						</c:choose>
