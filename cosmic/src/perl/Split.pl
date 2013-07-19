@@ -254,7 +254,7 @@ while(<IN>){
 		#DE799F15 00 35 00 00 00 00 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
 		#DE799F15 00 00 00 00 00 3C 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
 		
-		if ($dataRow[11] == 111007 && $dataRow[9] eq DE1C993){ #only need to check these two--this is really unlikely. Really. Checking them all is too expensive.
+		if ($dataRow[11] == 111007 && $dataRow[9] eq DE1C993A){ #only need to check these two--this is really unlikely. Really. Checking them all is too expensive.
 			$non_datalines ++;
 			next;
 		}	

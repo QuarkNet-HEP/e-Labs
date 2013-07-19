@@ -14,7 +14,9 @@ function showCharts(filename, path){
 	var messages = document.getElementById("messages");
 	messages.innerHTML = "";
 	var chartDiv = document.getElementById("benchmarkChartsDiv");
+	console.log("in showCharts");
 	chartDiv.style.visibility = 'visible';
+	console.log(document);
 	var datafile = document.getElementById("datafile");
 	datafile.innerHTML = "<strong>"+filename+"</strong>";
 	var ts = document.getElementsByClassName("highlight");
@@ -93,6 +95,7 @@ function addBenchmarkFiles(detector, fromDateObject, toDateObject) {
 		var toDate = document.getElementById(toDateObject);
 		var params = 'dialogWidth:1000px;dialogHeight:750px;dialogTop:10px;dialogLeft:150px';
 		var newwindow = window.showModalDialog("benchmark-add.jsp?detector="+detector+"&fromDate="+fromDate.value+"&toDate="+toDate.value, "addBenchmark", params);		
+        //window.location.href = "benchmark-add.jsp?detector="+detector+"&fromDate="+fromDate.value+"&toDate="+toDate.value;
 	} else {
 		var messages = document.getElementById("messages");
 		messages.innerHTML = "<i>* Choose a detector first.</i>"		

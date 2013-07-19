@@ -154,8 +154,8 @@
 		<script type="text/javascript" src="../include/jquery/flot/jquery.flot.axislabels.js"></script>
 		<script type="text/javascript" src="../include/jquery/flot/jquery.flot.symbol.js"></script>
 		<script type="text/javascript" src="../include/excanvas.min.js"></script>
-		<script type="text/javascript" src="../analysis-blessing/blessing.js"></script>	
-		<script type="text/javascript" src="../analysis-blessing/benchmark.js"></script>
+		<script type="text/javascript" src="blessing.js"></script>	
+		<script type="text/javascript" src="benchmark.js"></script>
 		<script>
 		$(document).ready(function() {
 			if ("<%=firstDataFile%>" != null && "<%=firstDataFile%>" != "") {

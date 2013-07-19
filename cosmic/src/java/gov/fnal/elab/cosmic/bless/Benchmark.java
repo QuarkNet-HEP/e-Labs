@@ -65,7 +65,7 @@ public class Benchmark {
 		and.add(new GreaterOrEqual("startdate", startDate));
 		and.add(new LessOrEqual("enddate", endDate));
 		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
-		rs.sort("benchmarkdefault", false);
+		//rs.sort("benchmarkdefault", false);
 		return rs;
 	}
 	//public static ResultSet getUnblessedFilesByDetector(Elab elab, Integer detectorid) throws ElabException {
