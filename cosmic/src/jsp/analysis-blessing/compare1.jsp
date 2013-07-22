@@ -29,6 +29,16 @@ VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry
 if (entry == null) {
     throw new ElabJspException("No information about " + file + " found.");
 }
+String comments = (String) entry.getTupleValue("comments");
+String commentsLink = "";
+if (comments != null && !comments.equals("")) {
+    commentsLink = "<a href=\"../jsp/comments-add.jsp?fileName="+entry.getLFN() +
+    			   "\"><img src=\"../graphics/balloon_talk_blue.gif\"/></a>";
+} else {
+	comments = "No comments";
+    commentsLink = "<a href=\"../jsp/comments-add.jsp?fileName="+entry.getLFN() +
+			   "\"><img src=\"../graphics/balloon_talk_empty.gif\"/></a>";
+}
 entry.sort(); 
 request.setAttribute("e", entry);
 
@@ -104,13 +114,14 @@ request.setAttribute("CR0", br0.getRegisterValue());
 					<c:if test="${e.tupleMap.detectorid != null}">
 						<a href="../geometry/view.jsp?filename=${param.file}">Show Geometry</a> |
 					</c:if>
-					<a href="../data/download?filename=${param.file}&elab=${elab.name}&type=split">Download</a> |
+					<a href="../data/download?filename=${param.file}.bless&elab=${elab.name}&type=split">Download Bless File</a> |
 					<e:popup href="../references/Reference_bless_data.html" target="DataBlessing" width="900" height="800">Data blessing documentation</e:popup>
 				</div>
 				<h2>Control Register</h2>
 				<table width="100%">
-				    <tr><td width="20px">CR0: </td><td><strong><%= entry.getTupleValue("ConReg0") != null? entry.getTupleValue("ConReg0") : "Unknown" %></strong></td></tr>
-				    <tr><td width="20px"> </td><td><strong>${CR0}</strong></td></tr>
+				    <tr><td width="20px">CR0: </td><td width="100px"><strong><%= entry.getTupleValue("ConReg0") != null? entry.getTupleValue("ConReg0") : "Unknown" %></strong></td>
+				    	<td rowspan="2" ><%= commentsLink %> <%= entry.getTupleValue("comments") %></td></tr>
+				    <tr><td width="20px"> </td><td width="100px"><strong>${CR0}</strong></td></tr>
 				</table>
 				<div style="text-align: center;"><strong>Owners of data files can bless data based on their interpretation of these charts</strong></p></div>
 				<% if (owner) { %>							
