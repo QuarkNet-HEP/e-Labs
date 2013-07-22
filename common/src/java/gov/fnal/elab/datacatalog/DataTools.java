@@ -349,8 +349,11 @@ public class DataTools {
             	file.setTriggers(0L);
             	System.out.println("WARNING: File " + e.getLFN() + " does not have triggers. Skipping.");
             }  
-            
-			Long duration = (Long) (file.getEndDate().getTime() - file.getStartDate().getTime()) / 1000;
+            Long endtime = (Long) file.getEndDate().getTime();
+            if (endtime == 0) {
+            	endtime = 86400000L;
+            }
+			Long duration = (Long) (endtime - file.getStartDate().getTime()) / 1000;
 			file.setFileDuration(duration);
 			
             if (Boolean.TRUE.equals(data[BLESSED])) {
