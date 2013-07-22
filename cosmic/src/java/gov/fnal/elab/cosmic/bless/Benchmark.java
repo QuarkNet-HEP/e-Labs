@@ -148,8 +148,14 @@ public class Benchmark {
 	public static String getIcons(VDSCatalogEntry entry) throws ElabException {
 		StringBuilder sb = new StringBuilder();
 		String filename = entry.getLFN();
-        sb.append("<a href=\"../jsp/add-comments.jsp?fileName="+filename);
-        sb.append("\"><img src=\"../graphics/balloon_talk_gray.gif\"/></a>");
+        sb.append("<a href=\"../jsp/comments-add.jsp?fileName="+filename);
+        String comments = (String) entry.getTupleValue("comments");
+        if (comments != null && !comments.equals("")) {
+        	sb.append("\"><img src=\"../graphics/balloon_talk_blue.gif\"/></a>");
+        } else {
+        	sb.append("\"><img src=\"../graphics/balloon_talk_empty.gif\"/></a>");        	
+        }	
+        
         if (entry.getTupleValue("stacked") != null) {
         	Boolean stacked = (Boolean) entry.getTupleValue("stacked");
         	if (stacked) {

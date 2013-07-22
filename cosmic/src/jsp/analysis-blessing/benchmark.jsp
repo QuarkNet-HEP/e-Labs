@@ -177,11 +177,12 @@
 			function popUpClosed() {
 				document.getElementById('submitButton').click();
 					//window.location.reload();
-			}			
+			}
+
 		</script>
 	</head>
 	
-	<body id="benchmark">
+	<body id="benchmark"  >
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">

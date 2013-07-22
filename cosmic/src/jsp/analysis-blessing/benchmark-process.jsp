@@ -133,7 +133,7 @@
         	<script type="text/javascript" src="../../dwr/util.js"></script>
 		</head>
 		
-		<body id="benchmark-process">
+		<body id="benchmark-process" >
 			<!-- entire page container -->
 			<div id="container">
 				<div id="top">
