@@ -29,6 +29,7 @@ VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry
 if (entry == null) {
     throw new ElabJspException("No information about " + file + " found.");
 }
+//EPeronja-07/22/2013 558: Cosmic Bless Charts - Requests from fellows workshop 10 July 2013
 String comments = (String) entry.getTupleValue("comments");
 String commentsLink = "";
 if (comments != null && !comments.equals("")) {
