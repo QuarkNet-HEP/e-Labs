@@ -344,7 +344,7 @@ public class StructuredResultSetDisplayer {
                     + "src=\"../graphics/unblessed.gif\"/></a>");        	
         	}
         }
-        if (file.getTriggers() != null) {
+        if (file.getTriggers() > 0) {
         	out.write("<br />" + formatNumber(file.getTriggers()) + " events");
         } else {
         	out.write("<br />No trigger data");        	

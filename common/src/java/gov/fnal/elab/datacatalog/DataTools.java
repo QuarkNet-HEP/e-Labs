@@ -346,8 +346,8 @@ public class DataTools {
             try {
             	file.setTriggers((Long) data[TRIGGERS]);
             } catch (Exception ex) {
+            	file.setTriggers(0L);
             	System.out.println("WARNING: File " + e.getLFN() + " does not have triggers. Skipping.");
-            	continue;
             }  
             
 			Long duration = (Long) (file.getEndDate().getTime() - file.getStartDate().getTime()) / 1000;
@@ -370,7 +370,10 @@ public class DataTools {
             }
             //EPeronja-07/22/2013: 556- Cosmic data search: requests from fellows 07/10/2013 (now total events == triggers)
             //school.incEvents(events);
-            long triggers = (Long) data[TRIGGERS];
+            int triggers = 0;
+            if (data[TRIGGERS] != null) {
+            	triggers = ((Long) data[TRIGGERS]).intValue();
+            }
             school.incEvents((int) triggers);
             school.incDataFiles();
             month.addFile(file);
