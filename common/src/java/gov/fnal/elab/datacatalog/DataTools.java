@@ -45,6 +45,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
 
 /**
  * A few convenience functions for dealing with QuarkNet data
@@ -349,13 +350,12 @@ public class DataTools {
             	file.setTriggers(0L);
             	System.out.println("WARNING: File " + e.getLFN() + " does not have triggers. Skipping.");
             }  
-            Long endtime = (Long) file.getEndDate().getTime();
-            if (endtime == 0) {
-            	endtime = 86400000L;
-            }
-			Long duration = (Long) (endtime - file.getStartDate().getTime()) / 1000;
-			file.setFileDuration(duration);
-			
+			Long duration = (Long) (file.getEndDate().getTime() - file.getStartDate().getTime()) / 1000;
+			if (duration > 0) {
+				file.setFileDuration(duration);
+			} else {
+				file.setFileDuration(0L);
+			}
             if (Boolean.TRUE.equals(data[BLESSED])) {
                 file.setBlessed(true);
                 school.incBlessed();
