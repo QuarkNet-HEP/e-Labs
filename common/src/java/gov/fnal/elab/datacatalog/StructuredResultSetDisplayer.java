@@ -287,7 +287,9 @@ public class StructuredResultSetDisplayer {
         sb.append("Group: " + file.getGroup() +"\n");
         sb.append("StartTime: " + dateFormat.format(file.getStartDate())+"\n");
         sb.append("UploadDate: " + dateFormat.format(file.getCreationDate())+"\n");
-        sb.append("Duration: " + file.getFileDurationComponents()[0] + ":" + file.getFileDurationComponents()[1] + ":" + file.getFileDurationComponents()[2] + "\n");
+        if (file.getFileDuration() > 0L) {
+        	sb.append("Duration: " + file.getFileDurationComponents()[0] + ":" + file.getFileDurationComponents()[1] + ":" + file.getFileDurationComponents()[2] + "\n");
+        } 
         sb.append("Channel1: " + file.getChannel1()+" events\n");
         sb.append("Channel2: " + file.getChannel2()+" events\n");
         sb.append("Channel3: " + file.getChannel3()+" events\n");
