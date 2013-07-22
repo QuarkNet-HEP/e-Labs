@@ -109,7 +109,7 @@ $flaggedTime = 0;					#Current value of the time to hold for later checking
 $recoveredFlag = 1;					#Flag used in the async rollovers
 $skipSomeLines = 0;					#Flag used in the asynch rollovers
 $statusFlag = 0;					#Control structure to determine the presence of status lines--these go into the FOO.bless file.
-#$blessFile = 0;					#filehandle to keep the blessfile in scope globally
+$blessFile = 0;						#filehandle to keep the blessfile in scope globally
 
 @dataRow = ();						#row of properly formatted raw data
 @stRow = ();						#status line
