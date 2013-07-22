@@ -279,6 +279,7 @@ public class StructuredResultSetDisplayer {
     }
     
     //EPeronja-06/25/2013: 289- Lost functionality on data search
+    //		  -07/22/2013: 556- Cosmic data search: requests from fellows 07/10/2013 (added duration)
     public String buildMetadata(File file){
         String DATEFORMAT = "MMM dd yyyy";
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATEFORMAT);
@@ -286,6 +287,7 @@ public class StructuredResultSetDisplayer {
         sb.append("Group: " + file.getGroup() +"\n");
         sb.append("StartTime: " + dateFormat.format(file.getStartDate())+"\n");
         sb.append("UploadDate: " + dateFormat.format(file.getCreationDate())+"\n");
+        sb.append("Duration: " + file.getFileDurationComponents()[0] + ":" + file.getFileDurationComponents()[1] + ":" + file.getFileDurationComponents()[2] + "\n");
         sb.append("Channel1: " + file.getChannel1()+" events\n");
         sb.append("Channel2: " + file.getChannel2()+" events\n");
         sb.append("Channel3: " + file.getChannel3()+" events\n");
@@ -302,9 +304,14 @@ public class StructuredResultSetDisplayer {
         out.write("\">");
         out.write(DateFormatUtils.format(file.getDate(), DAY_FORMAT));
         out.write("</a>");
-        out.write("<a href=\"../jsp/add-comments.jsp?fileName=");
+        //EPeronja-07/22/2013: 556- Cosmic data search: requests from fellows 07/10/2013 (changed icons for comments)
+        out.write("<a href=\"../jsp/comments-add.jsp?fileName=");
         out.write(file.getLFN());
-        out.write("\"><img src=\"../graphics/balloon_talk_gray.gif\"/></a>");
+        if (file.getComments() != null && !file.getComments().equals("")) {
+        	out.write("\"><img src=\"../graphics/balloon_talk_blue.gif\"/></a>");
+        } else {
+        	out.write("\"><img src=\"../graphics/balloon_talk_empty.gif\"/></a>");        	
+        }
         if (file.getStacked() != null) {
             out.write("<a href=\"javascript:glossary('geometry', 200)\">");
             if (file.getStacked().booleanValue()) {
@@ -337,7 +344,11 @@ public class StructuredResultSetDisplayer {
                     + "src=\"../graphics/unblessed.gif\"/></a>");        	
         	}
         }
-        out.write("<br />" + formatNumber(file.getTotalEvents()) + " events");
+        if (file.getTriggers() != null) {
+        	out.write("<br />" + formatNumber(file.getTriggers()) + " events");
+        } else {
+        	out.write("<br />No trigger data");        	
+        }
     }
 
     public void displayFileFooter(JspWriter out, File file) throws IOException {

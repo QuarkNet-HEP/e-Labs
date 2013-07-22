@@ -310,6 +310,9 @@ public class StructuredResultSet {
         private int detector;
         private long totalEvents;
         private long channel1, channel2, channel3, channel4;
+        //EPeronja-07/22/2013: 556- Cosmic data search: requests from fellows 07/10/2013 (added duration and triggers)
+        private long triggers;
+        private long fileDuration = 0L;
         private String blessfile;
         private String conreg0, conreg1, conreg2, conreg3;
         //EPeronja-04/25/2013: Benchmark File attributes
@@ -317,11 +320,20 @@ public class StructuredResultSet {
         private String benchmarklabel, benchmarkreference, benchmarkfail;
         //EPeronja-06/25/2013: 289- Lost functionality on data search
         private String group;
+        private String comments;
         
         public File(String lfn) {
             this.lfn = lfn;
         }
 
+        public String getComments() {
+        	return this.comments;
+        }
+        
+        public void setComments(String comments) {
+        	this.comments = comments;
+        }
+        
         public boolean isBlessed() {
             return blessed;
         }
@@ -481,6 +493,31 @@ public class StructuredResultSet {
 
 		public int getDetector() {
 			return detector;
+		}
+		
+        //EPeronja-07/22/2013: 556- Cosmic data search: requests from fellows 07/10/2013 (added duration and triggers)
+		public void setTriggers(Long triggers) {
+			this.triggers = triggers;
+		}
+
+		public Long getTriggers() {
+			return triggers;
+		}
+
+		public void setFileDuration(Long fileDuration) {
+			this.fileDuration = fileDuration;
+		}
+
+		public Long getFileDuration() {
+			return fileDuration;
+		}
+		public int[] getFileDurationComponents() {
+		    int hours = (int) fileDuration / 3600;
+			int remainder = (int) fileDuration - hours * 3600;
+			int mins = remainder / 60;
+			int secs = remainder - mins * 60;
+			int[] timeComponents = {hours, mins, secs};
+			return timeComponents;
 		}
 		
 		public long getTotalEvents() {

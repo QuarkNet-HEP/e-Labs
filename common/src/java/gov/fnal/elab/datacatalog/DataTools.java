@@ -87,6 +87,9 @@ public class DataTools {
         //EPeronja-06/25/2013: 289- Lost functionality on data search
         KEYS.put("group", 22);
         KEYS.put("creationdate",23);
+        KEYS.put("comments", 24);
+        KEYS.put("fileduration", 25);
+        KEYS.put("triggers", 26);
     }
 
     public static final int SCHOOL = 0;
@@ -116,6 +119,10 @@ public class DataTools {
     //EPeronja-06/25/2013: 289- Lost functionality on data search
     public static final int GROUP = 22;
     public static final int CREATIONDATE = 23;
+    public static final int COMMENTS = 24;
+    public static final int FILEDURATION = 25;
+    public static final int TRIGGERS = 26;
+    
     
     public static final String MONTH_FORMAT = "MMMM yyyy";
 
@@ -282,6 +289,12 @@ public class DataTools {
             	continue;
             }  
             try {
+            	file.setComments((String) data[COMMENTS]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have a comments. Skipping.");
+            	continue;
+            }  
+            try {
             	file.setCreationDate((java.util.Date) data[CREATIONDATE]);
             } catch (Exception ex) {
             	System.out.println("WARNING: File " + e.getLFN() + " does not have a creation date failure. Skipping.");
@@ -328,11 +341,23 @@ public class DataTools {
             if (endDate == null || endDate.before(file.getEndDate())) {
                 endDate = file.getEndDate();
             }
-
+            
+            //EPeronja-07/22/2013: 556- Cosmic data search: requests from fellows 07/10/2013 (added duration and triggers)
+            try {
+            	file.setTriggers((Long) data[TRIGGERS]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have triggers. Skipping.");
+            	continue;
+            }  
+            
+			Long duration = (Long) (file.getEndDate().getTime() - file.getStartDate().getTime()) / 1000;
+			file.setFileDuration(duration);
+			
             if (Boolean.TRUE.equals(data[BLESSED])) {
                 file.setBlessed(true);
                 school.incBlessed();
             }
+            
             file.setStacked((Boolean) data[STACKED]);
             if (Boolean.TRUE.equals(data[STACKED])) {
                 school.incStacked();
@@ -343,7 +368,10 @@ public class DataTools {
                     events += ((Long) data[k]).intValue();
                 }
             }
-            school.incEvents(events);
+            //EPeronja-07/22/2013: 556- Cosmic data search: requests from fellows 07/10/2013 (now total events == triggers)
+            //school.incEvents(events);
+            long triggers = (Long) data[TRIGGERS];
+            school.incEvents((int) triggers);
             school.incDataFiles();
             month.addFile(file);
         }

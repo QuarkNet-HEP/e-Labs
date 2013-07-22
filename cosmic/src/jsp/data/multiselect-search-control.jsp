@@ -94,7 +94,7 @@ $(window).scroll(function(){
 
 <form action="controller.jsp" name="search" method="post">
 	<e:select name="key" id="selectOptions" valueList="city, group, school, state, teacher, detectorid"
-		        labelList="City, Group, School, State, Teacher, Detector ID"
+		        labelList="City, Group, School, State/Country, Teacher, Detector ID"
 		        default="${param.key}"/>
 	<input name="value" id="name" size="40" maxlength="40" value="${param.value}"  />
 	<input type="submit" name="action" value="Search Data" />
