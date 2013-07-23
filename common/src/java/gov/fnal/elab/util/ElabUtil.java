@@ -494,8 +494,9 @@ public class ElabUtil {
 		} catch (Exception e) {
 			throw new ElabJspException(e.toString());
 		}    	
-    }// end of deletePosterFiles        
+    }// end of deletePosterFiles
     
+    //EPeronja-07/23/2013 483: delete the physical files
     public static void deletePhysicalFiles(Elab elab, String lfn, VDSCatalogEntry entry, ElabGroup user) throws ElabJspException {
     	//find all associated files with lfn
     	String type = (String) entry.getTupleValue("type");

@@ -67,7 +67,7 @@
 					VDSCatalogEntry entry = (VDSCatalogEntry) i.next();
 					try {
 						elab.getDataCatalogProvider().delete(entry);
-						//delete the physical files
+						//EPeronja-07/23/2013 483: delete the physical files
 						ElabUtil.deletePhysicalFiles(elab, entry.getLFN(), entry, user);
 						
 					}
