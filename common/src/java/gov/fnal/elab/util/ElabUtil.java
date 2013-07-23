@@ -431,7 +431,7 @@ public class ElabUtil {
     }// end of deleteSplitFiles
     
     protected static void deletePlotFiles(Elab elab, String dvname, ElabGroup user) throws ElabJspException {
-    	String plotDir = user.getDirURL("plot");
+    	String plotDir = user.getDirURL("plots");
 		String plotFile = plotDir + File.separator + "savedimage-"+dvname+".png";
 		File pf = new File(plotFile);
 		String provenanceFile = plotDir + File.separator +  "savedimage-"+dvname+"_provenance.png";
@@ -463,7 +463,7 @@ public class ElabUtil {
     }// end of deletePlotFiles
 
     protected static void deleteUploadedImageFiles(Elab elab, String lfn, VDSCatalogEntry entry, ElabGroup user) throws ElabJspException {
-    	String plotDir = user.getDirURL("plot");
+    	String plotDir = user.getDirURL("plots");
 		String imageFile = plotDir + File.separator + lfn;
 		File imgf = new File(imageFile);
 		String thumbnail = (String) entry.getTupleValue("thumbnail");
