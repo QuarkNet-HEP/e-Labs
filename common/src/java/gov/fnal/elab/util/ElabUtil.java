@@ -440,12 +440,8 @@ public class ElabUtil {
 		File tf = new File(thumbFile);
 		String eventsFile = plotDir + File.separator + "savedevents-"+dvname;
 		File ef = new File(eventsFile);
-		System.out.println("Deleting:" + plotFile +"\n");
-		System.out.println("Deleting:" + provenanceFile+"\n");
-		System.out.println("Deleting:" + thumbFile+"\n");
 		try {
 			if (pf.exists()) {
-				System.out.println("plot deleted\n");
 				pf.delete();
 			}
 			if (pvf.exists()) {
