@@ -1,6 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.vds.*" %>
+<%@ page import="gov.fnal.elab.util.ElabUtil" %>
+<%@ page import="gov.fnal.elab.datacatalog.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.impl.vds.*" %>
 
 <%
 	if (!"Cancel".equals(request.getParameter("confirm"))) {
@@ -14,7 +17,7 @@
 				String name = files[i];
 				String fileName = name;
 				try {
-					CatalogEntry entry = elab.getDataCatalogProvider().getEntry(name);
+					VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(fileName);
 					fileName = (String) entry.getTupleValue("name");
 					//EPeronja-06/11/2013: 254 When deleting files, be sure there are not dependent files
 					int figureCount = 10;
@@ -61,9 +64,12 @@
 			if ("Delete".equals(request.getParameter("confirm"))) {
 				Iterator i = ok.iterator();
 				while (i.hasNext()) {
-					CatalogEntry entry = (CatalogEntry) i.next();
+					VDSCatalogEntry entry = (VDSCatalogEntry) i.next();
 					try {
 						elab.getDataCatalogProvider().delete(entry);
+						//delete the physical files
+						ElabUtil.deletePhysicalFiles(elab, entry.getLFN(), entry, user);
+						
 					}
 					catch (Exception e) {
 						notOk.add("Could not delete " + entry.getLFN() + ": " + e.getMessage());
