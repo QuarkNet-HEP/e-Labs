@@ -3,6 +3,10 @@
  */
 package gov.fnal.elab.util;
 
+import gov.fnal.elab.*;
+import gov.fnal.elab.datacatalog.*;
+import gov.fnal.elab.datacatalog.impl.*;
+import gov.fnal.elab.datacatalog.impl.vds.*;
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabJspException;
 
@@ -17,6 +21,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.io.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -43,6 +48,11 @@ import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.griphyn.vdl.annotation.Tuple;
+import org.griphyn.vdl.classes.Definition;
+import org.griphyn.vdl.dbschema.Annotation;
+import org.griphyn.vdl.dbschema.AnnotationSchema;
+import org.griphyn.vdl.directive.Delete;
 
 public class ElabUtil {
 
@@ -398,6 +408,129 @@ public class ElabUtil {
         return sb.toString();
     }
 
+    protected static void deleteSplitFiles(Elab elab, String lfn) throws ElabJspException {
+		String blessFile = RawDataFileResolver.getDefault().resolve(elab, lfn+".bless");
+		File bf = new File(blessFile);
+		String analyzeFile = RawDataFileResolver.getDefault().resolve(elab, lfn+".analyze");
+   		File af = new File(analyzeFile);
+		String dataFile = RawDataFileResolver.getDefault().resolve(elab, lfn);
+		File df = new File(dataFile);
+		try {
+			if (bf.exists()) {
+				bf.delete();
+			}
+			if (af.exists()) {
+				af.delete();
+			}
+			if (df.exists()) {
+				df.delete();
+			}
+		} catch (Exception e) {
+			throw new ElabJspException(e.toString());
+		}    	
+    }// end of deleteSplitFiles
+    
+    protected static void deletePlotFiles(Elab elab, String dvname, ElabGroup user) throws ElabJspException {
+    	String plotDir = user.getDir("plots");
+		String plotFile = plotDir + File.separator + "savedimage-"+dvname+".png";
+		File pf = new File(plotFile);
+		String provenanceFile = plotDir + File.separator +  "savedimage-"+dvname+"_provenance.png";
+   		File pvf = new File(provenanceFile);
+		String thumbFile = plotDir + File.separator +  "savedimage-"+dvname+"_thm.png";
+		File tf = new File(thumbFile);
+		String eventsFile = plotDir + File.separator + "savedevents-"+dvname;
+		File ef = new File(eventsFile);
+		try {
+			if (pf.exists()) {
+				pf.delete();
+			}
+			if (pvf.exists()) {
+				pvf.delete();
+			}
+			if (tf.exists()) {
+				tf.delete();
+			}
+			if (ef.exists()) {
+				ef.delete();
+			}
+		} catch (Exception e) {
+			throw new ElabJspException(e.toString());
+		}    	
+    }// end of deletePlotFiles
+
+    protected static void deleteUploadedImageFiles(Elab elab, String lfn, VDSCatalogEntry entry, ElabGroup user) throws ElabJspException {
+    	String plotDir = user.getDir("plots");
+		String imageFile = plotDir + File.separator + lfn;
+		File imgf = new File(imageFile);
+		String thumbnail = (String) entry.getTupleValue("thumbnail");
+		String thumbFile = plotDir + File.separator + thumbnail;
+   		File tf = new File(thumbFile);
+		try {
+			if (imgf.exists()) {
+				imgf.delete();
+			}
+			if (tf.exists()) {
+				tf.delete();
+			}
+		} catch (Exception e) {
+			throw new ElabJspException(e.toString());
+		}    	
+    }// end of deleteUploadedImageFiles    
+ 
+    protected static void deletePosterFiles(Elab elab, String lfn, ElabGroup user) throws ElabJspException {
+    	String plotDir = user.getDir("posters");
+		String dataFile = plotDir + File.separator +lfn;
+		File df = new File(dataFile);
+		String html = lfn.replaceFirst(".data", ".html");
+		String htmlFile = plotDir + File.separator + html;
+   		File hf = new File(htmlFile);
+		try {
+			if (df.exists()) {
+				df.delete();
+			}
+			if (hf.exists()) {
+				hf.delete();
+			}
+		} catch (Exception e) {
+			throw new ElabJspException(e.toString());
+		}    	
+    }// end of deletePosterFiles
+    
+    //EPeronja-07/23/2013 483: delete the physical files
+    public static void deletePhysicalFiles(Elab elab, String lfn, VDSCatalogEntry entry, ElabGroup user) throws ElabJspException {
+    	//find all associated files with lfn
+    	String type = (String) entry.getTupleValue("type");
+    	if (type.equals("split")) {
+    		try {
+    			deleteSplitFiles(elab, lfn);
+    		} catch (Exception e) {
+    			throw new ElabJspException(e.toString());
+    		}
+    	}
+    	if (type.equals("plot")) {
+    		try {
+    	    	String dvname = (String) entry.getTupleValue("dvname");
+    			deletePlotFiles(elab, dvname, user);
+    		} catch (Exception e) {
+    			throw new ElabJspException(e.toString());
+    		}
+    	}
+    	if (type.equals("uploadedimage")) {
+    		try {
+    			deleteUploadedImageFiles(elab, lfn, entry, user);
+    		} catch (Exception e) {
+    			throw new ElabJspException(e.toString());
+    		} 
+    	}
+    	if (type.equals("poster")) {
+    		try {
+    			deletePosterFiles(elab, lfn, user);
+    		} catch (Exception e) {
+    			throw new ElabJspException(e.toString());
+    		} 
+    	}
+    }//end of deletePhysicalFiles
+
     public static void copyFile(String srcdir, String srcfile, String destdir,
             String destfile) throws ElabJspException {
         File src = new File(srcdir, srcfile);
@@ -630,28 +763,33 @@ public class ElabUtil {
 
     
     @Deprecated public static String whitespaceAdjust(String text) {
-        text = text.replaceAll("\n", "<br />");
-        // this should be changed to only allow <a> and <img> tags
-        text = text.replaceAll("(?i)</?\\s*script[^>]*>", "");
-        text = text.replaceAll("(?i)</?\\s*pre[^>]*>", "");
-        text = text.replaceAll("(?i)</?\\s*div[^>]*>", "");
-        StringBuffer sb = new StringBuffer();
-        int lastSpace = 0;
-        for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
-            if (Character.isWhitespace(c) || c == '/' || c == '<' || c == '>'
-                    || c == '.') {
-                lastSpace = i;
-            }
-            sb.append(c);
-			//EPeronja-04/08/2013: this code adds an extra space in the middle of the string
-			//						and it can break the path to the plots
-            //if (i - lastSpace > 40) {
-            //    sb.append(' ');
-            //    lastSpace = i;
-            //}
-        }
-
-        return sb.toString();
+    	String result = "";
+    	//EPeronja-06/11/2013: check for null!!!
+    	if (text != null) {
+	    	text = text.replaceAll("\n", "<br />");
+	        // this should be changed to only allow <a> and <img> tags
+	        text = text.replaceAll("(?i)</?\\s*script[^>]*>", "");
+	        text = text.replaceAll("(?i)</?\\s*pre[^>]*>", "");
+	        text = text.replaceAll("(?i)</?\\s*div[^>]*>", "");
+	        StringBuffer sb = new StringBuffer();
+	        int lastSpace = 0;
+	        for (int i = 0; i < text.length(); i++) {
+	            char c = text.charAt(i);
+	            if (Character.isWhitespace(c) || c == '/' || c == '<' || c == '>'
+	                    || c == '.') {
+	                lastSpace = i;
+	            }
+	            sb.append(c);
+				//EPeronja-04/08/2013: this code adds an extra space in the middle of the string
+				//						and it can break the path to the plots
+	            //if (i - lastSpace > 40) {
+	            //    sb.append(' ');
+	            //    lastSpace = i;
+	            //}
+	        }
+	
+	        result = sb.toString();
+    	} 
+    	return result;
     }
 }
