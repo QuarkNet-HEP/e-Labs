@@ -523,7 +523,7 @@ public class ElabUtil {
     	}
     	if (type.equals("poster")) {
     		try {
-    			deletePosterFiles(elab, lfn);
+    			deletePosterFiles(elab, lfn, user);
     		} catch (Exception e) {
     			throw new ElabJspException(e.toString());
     		} 
