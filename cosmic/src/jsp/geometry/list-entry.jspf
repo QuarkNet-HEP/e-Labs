@@ -28,4 +28,9 @@
         	<img border="0" src="../graphics/delete_x.gif" />
         </a>
     </td> 
+    <td>
+        <a href="saveas.jsp?detectorID=${e.detectorID}&jd=${e.julianDay}&action=saveas" title="Save As">
+        	<img border="0" src="../graphics/saveas.gif" />
+        </a>
+    </td>    
 </tr>

@@ -43,6 +43,42 @@ public class GeoEntryBean implements Serializable {
         this.reset();
     }
 
+    public GeoEntryBean(GeoEntryBean geoEntry) {
+        this.channels = new ChannelProperties[4];
+        this.reset();
+		this.setDetectorID(geoEntry.getDetectorID());
+		this.setStackedState(geoEntry.getStackedState());
+		this.setAltitude(geoEntry.getAltitude());
+		this.setLatitude(geoEntry.getLatitude());
+		this.setLongitude(geoEntry.getLongitude());
+		this.setChan1IsActive(geoEntry.getChan1IsActive());
+		this.setChan2IsActive(geoEntry.getChan2IsActive());
+		this.setChan3IsActive(geoEntry.getChan3IsActive());
+		this.setChan4IsActive(geoEntry.getChan4IsActive());
+		this.setChan1CableLength(geoEntry.getChan1CableLength());
+		this.setChan2CableLength(geoEntry.getChan2CableLength());
+		this.setChan3CableLength(geoEntry.getChan3CableLength());
+		this.setChan4CableLength(geoEntry.getChan4CableLength());
+		this.setChan1Area(geoEntry.getChan1Area());
+		this.setChan2Area(geoEntry.getChan2Area());
+		this.setChan3Area(geoEntry.getChan3Area());
+		this.setChan4Area(geoEntry.getChan4Area());
+		this.setChan1X(geoEntry.getChan1X());
+		this.setChan2X(geoEntry.getChan2X());
+		this.setChan3X(geoEntry.getChan3X());
+		this.setChan4X(geoEntry.getChan4X());
+		this.setChan1Y(geoEntry.getChan1Y());
+		this.setChan2Y(geoEntry.getChan2Y());
+		this.setChan3Y(geoEntry.getChan3Y());
+		this.setChan4Y(geoEntry.getChan4Y());
+		this.setChan1Z(geoEntry.getChan1Z());
+		this.setChan2Z(geoEntry.getChan2Z());
+		this.setChan3Z(geoEntry.getChan3Z());
+		this.setChan4Z(geoEntry.getChan4Z());
+		this.setGpsCableLength(geoEntry.getGpsCableLength());			
+		this.setJulianDay("");    	
+    }
+    
     private void addError(String err) {
         if (errors != null && !errors.contains(err)) {
             errors.add(err);
