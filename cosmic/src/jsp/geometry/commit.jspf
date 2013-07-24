@@ -3,10 +3,11 @@
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
 <%
+	//EPeronja-03/21/2013: 445- Check if this geometry steps on data that already exists
+    DataCatalogProvider dcp = elab.getDataCatalogProvider();
 	geometries.addGeoEntry(geoEntry.getDetectorID(), geoEntry);
 	geometries.commit();
 	
-	DataCatalogProvider dcp = elab.getDataCatalogProvider();
 	geometries.updateMetadata(dcp, geoEntry);
 %>
 
