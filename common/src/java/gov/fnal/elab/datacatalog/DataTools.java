@@ -84,11 +84,11 @@ public class DataTools {
         KEYS.put("ConReg2", 15);
         KEYS.put("ConReg3", 16);      
         //EPeronja-04/25/2013: Benchmark File attributes
-        //KEYS.put("benchmarkfile", 17);
-        //KEYS.put("benchmarkdefault", 18);
-        //KEYS.put("benchmarklabel", 19);
-        //KEYS.put("benchmarkreference", 20);
-        //KEYS.put("benchmarkfail", 21);
+        KEYS.put("benchmarkfile", 17);
+        KEYS.put("benchmarkdefault", 18);
+        KEYS.put("benchmarklabel", 19);
+        KEYS.put("benchmarkreference", 20);
+        KEYS.put("benchmarkfail", 21);
         //EPeronja-06/25/2013: 289- Lost functionality on data search
         KEYS.put("group", 22);
         KEYS.put("creationdate",23);
@@ -113,14 +113,15 @@ public class DataTools {
     public static final int CONREG2 = 15;
     public static final int CONREG3 = 16;
     //EPeronja-04/25/2013: Benchmark File attributes
-    //public static final int BENCHMARKFILE = 17;
-    //public static final int BENCHMARKDEFAULT = 18;
-    //public static final int BENCHMARKLABEL = 19;
-    //public static final int BENCHMARKREFERENCE = 20;
-    //public static final int BENCHMARKFAIL = 21;
+    public static final int BENCHMARKFILE = 17;
+    public static final int BENCHMARKDEFAULT = 18;
+    public static final int BENCHMARKLABEL = 19;
+    public static final int BENCHMARKREFERENCE = 20;
+    public static final int BENCHMARKFAIL = 21;
     //EPeronja-06/25/2013: 289- Lost functionality on data search
     public static final int GROUP = 22;
     public static final int CREATIONDATE = 23;
+    
 
     public static final String MONTH_FORMAT = "MMMM yyyy";
 
@@ -248,7 +249,6 @@ public class DataTools {
             	System.out.println("WARNING: File " + e.getLFN() + " does not have register 3 conf. Skipping.");
             	continue;
             }
-
             //EPeronja-06/25/2013: 289- Lost functionality on data search
             try {
             	file.setGroup((String) data[GROUP]);
@@ -280,6 +280,7 @@ public class DataTools {
             	System.out.println("WARNING: File " + e.getLFN() + " does not have channel failure. Skipping.");
             	continue;
             }  
+
             try {
             	file.setChannel4((Long) data[CHAN4]);
             } catch (Exception ex) {

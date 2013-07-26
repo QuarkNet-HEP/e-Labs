@@ -415,7 +415,6 @@ public class StructuredResultSet {
         public void setChannel4(Long channel) {
         	this.channel4 = channel;
         }
-
         public void setDate(java.util.Date date) {
             this.startDate = date;
         }
