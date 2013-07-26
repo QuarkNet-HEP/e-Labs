@@ -62,8 +62,11 @@
 	            //EPeronja-07/2/2013: Bug 320: view.jsp and view-metadata.jsp display internal file name
 	            String objectName = filename;
 	            if (entry != null) {
+	            	objectName = (String) entry.getTupleValue("name");
 	            	if (project.equals("ligo")) {
-	            		objectName = (String) entry.getTupleValue("title");
+	            		if (objectName == null || objectName.equals("")) {
+		            		objectName = (String) entry.getTupleValue("title");
+	            		}
 	            	}
 	            }
 				request.setAttribute("e", entry);
