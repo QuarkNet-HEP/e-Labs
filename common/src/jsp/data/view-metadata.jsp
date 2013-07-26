@@ -68,6 +68,9 @@
 		            		objectName = (String) entry.getTupleValue("title");
 	            		}
 	            	}
+	            	if (objectName == null || objectName.equals("")) {
+	            		objectName = filename;
+	            	}
 	            }
 				request.setAttribute("e", entry);
 				request.setAttribute("project", project);
