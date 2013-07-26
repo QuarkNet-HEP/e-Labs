@@ -54,11 +54,7 @@
 						ok.add(entry);
 					}
 				catch (Exception e) {
-					if (fileName != null) {
-						notOk.add(fileName +"("+name+")"+ " error: " + e.getMessage());
-					} else {
-						notOk.add(name+ " error: " + e.getMessage());						
-					}
+					notOk.add(fileName +"("+name+")"+ " error: " + e.getMessage());
 				}
 			}
 			if ("Delete".equals(request.getParameter("confirm"))) {
