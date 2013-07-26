@@ -24,6 +24,7 @@
 					if (entry != null) {
 						//check the type
 						if (entry.getTupleValue("type").equals("plot") || entry.getTupleValue("type").equals("uploadedimage")) {
+
 							for (int x = 0; x < figureCount; x++ ) {
 								int figNo = x + 1;
 								int count = DataTools.checkPlotDependency(elab, name, figNo);
@@ -54,7 +55,7 @@
 						ok.add(entry);
 					}
 				catch (Exception e) {
-					if (fileName != null) {
+					if (filename != null) {
 						notOk.add(fileName +"("+name+")"+ " error: " + e.getMessage());
 					} else {
 						notOk.add(name+ " error: " + e.getMessage());						
