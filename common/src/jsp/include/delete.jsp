@@ -55,7 +55,7 @@
 						ok.add(entry);
 					}
 				catch (Exception e) {
-					if (filename != null) {
+					if (fileName != null) {
 						notOk.add(fileName +"("+name+")"+ " error: " + e.getMessage());
 					} else {
 						notOk.add(name+ " error: " + e.getMessage());						
