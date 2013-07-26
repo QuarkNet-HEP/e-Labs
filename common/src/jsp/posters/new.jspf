@@ -268,11 +268,12 @@
 		    }
 		}
 	}
-/*	
-	ResultSet rsTags = DataTools.retrieveTags(elab);
-	String[] availablePosterTags = rsTags.getLfnArray();
+	
+	//ResultSet rsTags = DataTools.retrieveTags(elab);
+	//String[] availablePosterTags = rsTags.getLfnArray();
 	//build map with selected
 	TreeMap<String, String> posterTags = new TreeMap<String, String>();
+	/*
 	for (int i = 0; i < availablePosterTags.length; i++) {
 		boolean selectedTag = false;
 		for (int x = 0; x < posterTag.length; x++) {
