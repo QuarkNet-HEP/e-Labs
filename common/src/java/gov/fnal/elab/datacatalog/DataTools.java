@@ -23,6 +23,7 @@ import gov.fnal.elab.datacatalog.query.ResultSet;
 import gov.fnal.elab.util.DatabaseConnectionManager;
 import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.util.ElabUtil;
+import gov.fnal.elab.ElabFactory;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -45,7 +46,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Calendar;
+import java.util.*;
 
 /**
  * A few convenience functions for dealing with QuarkNet data
@@ -392,6 +393,53 @@ public class DataTools {
         TZ_DATE_TIME_FORMAT = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
     }
 
+    //EPeronja-07/25/2013: Poster Tags
+    public static void removePosterTags(Elab elab, String[] removeTags) throws ElabException {
+    	for (int i = 0; i < removeTags.length; i++) {
+			DataCatalogProvider dcp = ElabFactory.getDataCatalogProvider(elab);
+	    	And and = new And();
+		    and.add(new Equals("type", "poster"));
+		    and.add(new Equals("postertag", removeTags[i]));
+			ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
+			if (rs != null && rs.size() > 0) {
+		  		String[] taggedFiles = rs.getLfnArray();
+				//remove the reference
+			    for (int x = 0; x < taggedFiles.length; x++) {
+			    	CatalogEntry ce = dcp.getEntry(taggedFiles[x]);
+			    	ce.setTupleValue("postertag","");
+			    	dcp.insert(ce);
+			    }			
+			}	    
+	    	CatalogEntry tag = dcp.getEntry(removeTags[i]);			
+			dcp.delete(tag);
+    	}
+    }//end of removePosterTags
+
+    public static void insertTags(Elab elab, String[] newTags) {
+		DataCatalogProvider dcp = ElabFactory.getDataCatalogProvider(elab);
+    	for (int i = 0; i < newTags.length; i++) {
+			//insert new tags
+			if (!newTags[i].equals("")) {
+				ArrayList meta = new ArrayList();
+				newTags[i] = newTags[i].replace(" ", "_");
+				meta.add("type string postertag");
+				try {
+					dcp.insert(buildCatalogEntry(newTags[i], meta));
+				} catch (ElabException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}		   	
+    }//end of insertTags
+    
+	public static ResultSet retrieveTags(Elab elab) throws ElabException {
+		In and = new In();
+		and.add(new Equals("type", "postertag"));
+		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
+		return rs;
+	}    
+    
     //EPeronja-06/11/2013: 254-When deleting files, be sure there are not dependent files
     //                       This function will check plots in the logbook and posters
     public static int checkPlotDependency(Elab elab, String plotName, int figureNumber) throws ElabException {

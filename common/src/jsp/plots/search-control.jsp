@@ -42,8 +42,8 @@ $(function() {
 	</div>
 	
 	<form name="search" method="get">
-	<e:select name="key" id="selectOptions" valueList="name, title, group, teacher, school, city, state, year"
-		labelList="Filename, Title, Group, Teacher, School, City, State, Academic Year"
+	<e:select name="key" id="selectOptions" valueList="name, title, group, teacher, school, city, state, year, study"
+		labelList="Filename, Title, Group, Teacher, School, City, State, Academic Year, Study"
 		default="${param.key}" />
 	<input name="value" id="name" size="40" maxlength="40" value="${param.value}"  />
 	<input type="submit" name="submit" value="Search Data" />

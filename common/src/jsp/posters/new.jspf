@@ -47,7 +47,7 @@
 	String pdata = ""; // data written to the poster.data file.
 
 	String posterName = request.getParameter("posterName");
-	//String[] posterTag = request.getParameterValues("posterTag");
+	String[] posterTag = request.getParameterValues("posterTag");
 	
 	if (StringUtils.isNotBlank(posterName)) {
    	    posterNameEntered = true;
@@ -132,15 +132,15 @@
 			meta.add("date date " + dateString);
 			meta.add("name string " + dfile);
 			meta.add("plotURL string " + plotDirURL);
-			//StringBuilder sb = new StringBuilder();
-			//for (int i = 0; i < posterTag.length; i++) {
-			//	if (i == posterTag.length - 1) {
-			//		sb.append(posterTag[i]);					
-			//	} else {
-			//		sb.append(posterTag[i] + ",");					
-			//	}
-			//}
-			//meta.add("postertag string " + sb.toString());
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < posterTag.length; i++) {
+				if (i == posterTag.length - 1) {
+					sb.append(posterTag[i]);					
+				} else {
+					sb.append(posterTag[i] + ",");					
+				}
+			}
+			meta.add("postertag string " + sb.toString());
 			//EPeronja-06/11/2013: Add the plot names to metadata so 'delete plots' 
 			//					   can check whether the plots are part of a poster or not.
 			RE figures = new RE("(FIG:([A-Z0-9]))");
@@ -227,15 +227,15 @@
 	        }
 	        tags.put(tagtype+":"+tagname, tagval);
 	    }
-	    //retrieve the tag
+	    //retrieve the tags
 	    DataCatalogProvider dcp = elab.getDataCatalogProvider();
     	CatalogEntry e = dcp.getEntry(posterName + ".data");	 
-    	//if (e != null) {
-    	//	String pt = (String) e.getTupleValue("postertag");
-    	//	if (pt != null) {
-	    //		posterTag = pt.split(",");
-    	//	}
-    	//}
+    	if (e != null) {
+    		String pt = (String) e.getTupleValue("postertag");
+    		if (pt != null) {
+	    		posterTag = pt.split(",");
+    		}
+    	}
 	}
 
 	// Find files posted to plot directory
@@ -273,11 +273,11 @@
 		}
 	}
 	
-	//ResultSet rsTags = DataTools.retrieveTags(elab);
-	//String[] availablePosterTags = rsTags.getLfnArray();
+	ResultSet rsTags = DataTools.retrieveTags(elab);
+	String[] availablePosterTags = rsTags.getLfnArray();
 	//build map with selected
 	TreeMap<String, String> posterTags = new TreeMap<String, String>();
-	/*
+	
 	for (int i = 0; i < availablePosterTags.length; i++) {
 		boolean selectedTag = false;
 		for (int x = 0; x < posterTag.length; x++) {
@@ -290,7 +290,7 @@
 			posterTags.put(availablePosterTags[i], "");			
 		}
 	}
-	*/
+	
 	request.setAttribute("posterTags", posterTags);
 	pageContext.setAttribute("images", images);
 %>
@@ -378,7 +378,7 @@
                 		</c:otherwise>
                 	</c:choose>
                 </tr>
-                <!-- 
+                 
                 <c:if test="${not empty posterTags}">
                  <tr>
                 	<td valign="top" align="right"><strong>Poster Tag</strong></td>
@@ -397,7 +397,7 @@
                 		</select>
                 	</td>
  				  </tr>
- 				</c:if> -->
+ 				</c:if> 
                 <tr> 
      
 <%
