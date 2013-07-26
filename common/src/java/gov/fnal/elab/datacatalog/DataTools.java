@@ -13,7 +13,12 @@ import gov.fnal.elab.Elab;
 import gov.fnal.elab.datacatalog.StructuredResultSet.File;
 import gov.fnal.elab.datacatalog.StructuredResultSet.Month;
 import gov.fnal.elab.datacatalog.StructuredResultSet.School;
+import gov.fnal.elab.datacatalog.query.Between;
 import gov.fnal.elab.datacatalog.query.CatalogEntry;
+import gov.fnal.elab.datacatalog.query.Equals;
+import gov.fnal.elab.datacatalog.query.In;
+import gov.fnal.elab.datacatalog.query.Like;
+import gov.fnal.elab.datacatalog.query.And;
 import gov.fnal.elab.datacatalog.query.ResultSet;
 import gov.fnal.elab.datacatalog.query.In;
 import gov.fnal.elab.datacatalog.query.Equals;
@@ -309,7 +314,7 @@ public class DataTools {
         srs.setEndDate(endDate);
         return srs;
     }
-
+   
     public static final DateFormat TZ_DATE_TIME_FORMAT;
 
     static {
