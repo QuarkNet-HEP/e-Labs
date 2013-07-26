@@ -38,6 +38,7 @@
 							if (count > 0) {
 							    throw new ElabJspException(" is being used in a plot/analysis. Cannot be deleted.");								
 					CatalogEntry entry = elab.getDataCatalogProvider().getEntry(name);
+					fileName = (String) entry.getTupleValue("name");
 					//EPeronja-06/11/2013: 254 When deleting files, be sure there are not dependent files
 					int figureCount = 10;
 					if (entry != null) {
@@ -45,7 +46,7 @@
 							int figNo = x + 1;
 							int count = DataTools.checkPlotDependency(elab, name, figNo);
 							if (count > 0) {
-							    throw new ElabJspException(name + " is being used either in a poster or logbook. Cannot be deleted.");								
+							    throw new ElabJspException(" is being used either in a poster or logbook. Cannot be deleted.");								
 							}
 						}
 					}//end of checking dependencies
@@ -63,11 +64,7 @@
 						ok.add(entry);
 					}
 				catch (Exception e) {
-					if (fileName != null) {
-						notOk.add(fileName +"("+name+")"+ " error: " + e.getMessage());
-					} else {
-						notOk.add(name+ " error: " + e.getMessage());						
-					}
+					notOk.add(fileName +"("+name+")"+ " error: " + e.getMessage());
 				}
 			}
 			if ("Delete".equals(request.getParameter("confirm"))) {
