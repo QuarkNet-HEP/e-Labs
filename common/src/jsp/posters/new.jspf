@@ -262,6 +262,8 @@
 				    if (ligoName != null) {
 				    	images.put(ligoName, lfn);
 				    }
+		    	} else {
+			    images.put(name, lfn);
 		    	}
 		    } else {
 			    if ("plot".equals(type) || "uploadedimage".equals(type)) {
