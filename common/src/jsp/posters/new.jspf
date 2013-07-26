@@ -47,6 +47,8 @@
 	String pdata = ""; // data written to the poster.data file.
 
 	String posterName = request.getParameter("posterName");
+	String[] posterTag = request.getParameterValues("posterTag");
+	
 	if (StringUtils.isNotBlank(posterName)) {
    	    posterNameEntered = true;
        	posterName = posterName.replace(' ', '_');
@@ -130,7 +132,15 @@
 			meta.add("date date " + dateString);
 			meta.add("name string " + dfile);
 			meta.add("plotURL string " + plotDirURL);
-			
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < posterTag.length; i++) {
+				if (i == posterTag.length - 1) {
+					sb.append(posterTag[i]);					
+				} else {
+					sb.append(posterTag[i] + ",");					
+				}
+			}
+			meta.add("postertag string " + sb.toString());
 			//EPeronja-06/11/2013: Add the plot names to metadata so 'delete plots' 
 			//					   can check whether the plots are part of a poster or not.
 			RE figures = new RE("(FIG:([A-Z0-9]))");
@@ -206,8 +216,8 @@
 	        String tagtype = re.getParen(1);
 	        String tagname = re.getParen(2);
 	        String tagval = re.getParen(3).trim();
-	        
 	        tagval = ElabUtil.unescapePoster(tagval);
+	        tagval = tagval.replace("\n", " ");
 	        
 	        p = re.getParenEnd(0);
 	        //          if (tagtype.equals("FIG")) tagval = tagval.trim();
@@ -217,10 +227,16 @@
 	        }
 	        tags.put(tagtype+":"+tagname, tagval);
 	    }
+	    //retrieve the tag
+	    DataCatalogProvider dcp = elab.getDataCatalogProvider();
+    	CatalogEntry e = dcp.getEntry(posterName + ".data");	 
+    	if (e != null) {
+    		String pt = (String) e.getTupleValue("postertag");
+    		posterTag = pt.split(",");
+    	}
 	}
 
 	// Find files posted to plot directory
-	
 	Map<String, String> images = new TreeMap();
 	And q = new And();
 	Or or = new Or();
@@ -231,19 +247,20 @@
 	q.add(new Equals("group", user.getGroup().getName()));
 	
 	ResultSet rs = elab.getDataCatalogProvider().runQuery(q);
-	
 	if (rs != null) {
 		Iterator i = rs.iterator();
 		while (i.hasNext()) {
 		    CatalogEntry e = (CatalogEntry) i.next();
 		    String lfn = e.getLFN();
 		    String name = (String) e.getTupleValue("name");
-		    String type = (String) e.getTupleValue("type"); 
+		    String type = (String) e.getTupleValue("type");
 		    if (elab.getName().equals("ligo")) {
-			    String ligoName = (String) e.getTupleValue("title");
-			    if (ligoName != null) {
-			    	images.put(ligoName, lfn);
-			    }
+		    	if (name == null || name.equals("")) {
+				    String ligoName = (String) e.getTupleValue("title");
+				    if (ligoName != null) {
+				    	images.put(ligoName, lfn);
+				    }
+		    	}
 		    } else {
 			    if ("plot".equals(type) || "uploadedimage".equals(type)) {
 			    	images.put(StringUtils.isNotBlank(name) ? name : lfn, lfn); 
@@ -251,7 +268,25 @@
 		    }
 		}
 	}
-	
+/*	
+	ResultSet rsTags = DataTools.retrieveTags(elab);
+	String[] availablePosterTags = rsTags.getLfnArray();
+	//build map with selected
+	TreeMap<String, String> posterTags = new TreeMap<String, String>();
+	for (int i = 0; i < availablePosterTags.length; i++) {
+		boolean selectedTag = false;
+		for (int x = 0; x < posterTag.length; x++) {
+			if (availablePosterTags[i].equals(posterTag[x])) {
+				posterTags.put(availablePosterTags[i], "selected");
+				selectedTag = true;
+			} 
+		}
+		if (!selectedTag) {
+			posterTags.put(availablePosterTags[i], "");			
+		}
+	}
+	*/
+	request.setAttribute("posterTags", posterTags);
 	pageContext.setAttribute("images", images);
 %>
 	<!-- Show instructions -->
@@ -338,6 +373,26 @@
                 		</c:otherwise>
                 	</c:choose>
                 </tr>
+                <c:if test="${not empty posterTags}">
+                 <tr>
+                	<td valign="top" align="right"><strong>Poster Tag</strong></td>
+                	<td><select name="posterTag" size=4 multiple>
+                			<option></option>
+               				<c:forEach items="${posterTags}" var="posterTags">
+               					<c:choose>
+                					<c:when test="${posterTags.value == 'selected'}">
+	                					<option name="${posterTags.key}" value="${posterTags.key}" selected="selected">${posterTags.key}</option>
+    	            				</c:when>
+        	        				<c:otherwise>
+            	    					<option name="${posterTags.key}" value="${posterTags.key}">${posterTags.key}</option>
+                					</c:otherwise>
+                				</c:choose>
+                			</c:forEach>
+                		</select>
+                	</td>
+ 				  </tr>
+ 				</c:if>
+                <tr> 
       
 <%
                 RE re = new RE("%(PARA|FIG|WORDS):([A-Z0-9]+)%");
@@ -381,8 +436,7 @@
                     			</c:when>
                     			<c:when test="${type == 'WORDS'}">
                     				<td align="left">
-                    					<!-- EPeronja-06/17/2013 Bug 507: limited the length of the caption (larger string made javascript choke) -->
-                    					<input size="50" maxlength="70" name="${type}:${name}" id="${type}:${name}"
+                    					<input size="50" name="${type}:${name}" id="${type}:${name}"
                     						value="${tvalue}"/>
                     				</td>
                     			</c:when>
