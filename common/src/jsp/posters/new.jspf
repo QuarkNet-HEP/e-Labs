@@ -8,7 +8,7 @@
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="org.owasp.validator.html.*" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <script type="text/javascript" src="../include/tiny_mce/jquery.tinymce.js"></script>
 <script type="text/javascript" src="formchanges.js"></script>
 
@@ -32,7 +32,7 @@
 <%
 	Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
 	AntiSamy as = new AntiSamy(); 
-	
+
 	String title = "Make/Edit Poster";
 	Date now = new Date();
 	DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -47,27 +47,14 @@
 	String pdata = ""; // data written to the poster.data file.
 
 	String posterName = request.getParameter("posterName");
-	String[] posterTag = request.getParameterValues("posterTag");
-	
 	if (StringUtils.isNotBlank(posterName)) {
    	    posterNameEntered = true;
        	posterName = posterName.replace(' ', '_');
         posterName = posterName.replace('/', '_');
    	    posterName = posterName.toLowerCase();
        	dfile = posterName + ".data";
-	} else {
-		//EPeronja-06/28/2013 Find other posters by this user so we do not overwrite existing ones
-		And q = new And();
-		q.add(new Equals("type", "poster"));
-		q.add(new Equals("project", elab.getName()));
-		q.add(new Equals("group", user.getGroup().getName()));
-	
-		ResultSet rset = elab.getDataCatalogProvider().runQuery(q);
-		request.setAttribute("existingposters", rset);	
 	}
-	
 	request.setAttribute("edit", posterNameEntered);
-	request.setAttribute("posterName", posterName);
 
 	String posterTitle = request.getParameter("WORDS:TITLE");
 	if ((posterTitle != null) && (posterTitle.length() == 0)) {
@@ -84,7 +71,7 @@
 	String showPosterVar = request.getParameter("showPoster");
 
 	if ("Make Poster".equals(reqType) || "View Poster".equals(reqType) || "Save Changes".equals(reqType)) {
-		String val = "", name = ""; 
+	    String val = "", name = ""; 
 	    RE re = new RE("(PARA|WORDS|FIG):([A-Z0-9]+)");
 	    Map<String, String[]> fieldMap = request.getParameterMap();
 	    for (Map.Entry<String, String[]> entry : fieldMap.entrySet()) {
@@ -132,17 +119,7 @@
 			meta.add("date date " + dateString);
 			meta.add("name string " + dfile);
 			meta.add("plotURL string " + plotDirURL);
-			/*
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < posterTag.length; i++) {
-				if (i == posterTag.length - 1) {
-					sb.append(posterTag[i]);					
-				} else {
-					sb.append(posterTag[i] + ",");					
-				}
-			}
-			meta.add("postertag string " + sb.toString());
-			*/
+			
 			//EPeronja-06/11/2013: Add the plot names to metadata so 'delete plots' 
 			//					   can check whether the plots are part of a poster or not.
 			RE figures = new RE("(FIG:([A-Z0-9]))");
@@ -218,8 +195,8 @@
 	        String tagtype = re.getParen(1);
 	        String tagname = re.getParen(2);
 	        String tagval = re.getParen(3).trim();
+	        
 	        tagval = ElabUtil.unescapePoster(tagval);
-	        tagval = tagval.replace("\n", " ");
 	        
 	        p = re.getParenEnd(0);
 	        //          if (tagtype.equals("FIG")) tagval = tagval.trim();
@@ -229,19 +206,10 @@
 	        }
 	        tags.put(tagtype+":"+tagname, tagval);
 	    }
-	    //retrieve the tags
-	    /*
-	    DataCatalogProvider dcp = elab.getDataCatalogProvider();
-    	CatalogEntry e = dcp.getEntry(posterName + ".data");	 
-    	if (e != null) {
-    		String pt = (String) e.getTupleValue("postertag");
-    		if (pt != null) {
-	    		posterTag = pt.split(",");
-    		}
-    	}*/
 	}
 
 	// Find files posted to plot directory
+	
 	Map<String, String> images = new TreeMap();
 	And q = new And();
 	Or or = new Or();
@@ -252,49 +220,20 @@
 	q.add(new Equals("group", user.getGroup().getName()));
 	
 	ResultSet rs = elab.getDataCatalogProvider().runQuery(q);
+	
 	if (rs != null) {
 		Iterator i = rs.iterator();
 		while (i.hasNext()) {
 		    CatalogEntry e = (CatalogEntry) i.next();
 		    String lfn = e.getLFN();
 		    String name = (String) e.getTupleValue("name");
-		    String type = (String) e.getTupleValue("type");
-		    if (elab.getName().equals("ligo")) {
-		    	if (name == null || name.equals("")) {
-				    String ligoName = (String) e.getTupleValue("title");
-				    if (ligoName != null) {
-				    	images.put(ligoName, lfn);
-				    }
-		    	} else {
-			    images.put(name, lfn);
-		    	}
-		    } else {
-			    if ("plot".equals(type) || "uploadedimage".equals(type)) {
-			    	images.put(StringUtils.isNotBlank(name) ? name : lfn, lfn); 
-			    }
+		    String type = (String) e.getTupleValue("type"); 
+		    if ("plot".equals(type) || "uploadedimage".equals(type)) {
+		    	images.put(StringUtils.isNotBlank(name) ? name : lfn, lfn); 
 		    }
 		}
 	}
 	
-	//ResultSet rsTags = DataTools.retrieveTags(elab);
-	//String[] availablePosterTags = rsTags.getLfnArray();
-	//build map with selected
-	TreeMap<String, String> posterTags = new TreeMap<String, String>();
-	/*
-	for (int i = 0; i < availablePosterTags.length; i++) {
-		boolean selectedTag = false;
-		for (int x = 0; x < posterTag.length; x++) {
-			if (availablePosterTags[i].equals(posterTag[x])) {
-				posterTags.put(availablePosterTags[i], "selected");
-				selectedTag = true;
-			} 
-		}
-		if (!selectedTag) {
-			posterTags.put(availablePosterTags[i], "");			
-		}
-	}
-	*/
-	request.setAttribute("posterTags", posterTags);
 	pageContext.setAttribute("images", images);
 %>
 	<!-- Show instructions -->
@@ -340,69 +279,15 @@
 			div.style.display = "none";
 			div.style.visibility = "";
 		}
-		//EPeronja-06/27/2013 -Bug 185:Weird characters in name of poster cause problems.
-		//					   Also check if the name already exists so we do not overwrite
-		function validatePosterName(objectId) {
-			var posterName = document.getElementById(objectId);
-			var divMsg = document.getElementById("errorMsg");
-			var message = "";
-			$("input[name=existingposters]").each(function() {
-				var newName = posterName.value;
-				var existingName = this.value;
-				if (newName == existingName) {
-					message = "<i>* The name you selected already exists. Choose a different name.</i>";
-				}
-			});
-			if (message != "") {
-				divMsg.innerHTML = message;
-				return false;
-			}
-			if (! /^[a-zA-Z0-9_-]+$/.test(posterName.value)) {
-				divMsg.innerHTML = "<i>* Poster File Name contains invalid characters. Use any alphanumeric combination, dashes or underscores.</i>";
-			    return false;
-			}
-			divMsg.innerHTML = "";
-			return true;
-		}	
 	</script>
 
 	<form id="posterForm" method="post">
            <table width="550">
                 <tr>
                 	<td valign="top" align="right">Poster File Name:<br>(e.g.,poster_lifetime)</td>
-                	<c:choose>
-                		<c:when test="${edit == true}" >
-                        	<td valign="top" align="left"><input type="text" name="posterName" id="posterName" onChange='return validatePosterName("posterName");' value="${posterName}"  readonly/>                    	
-                								  <div id="errorMsg"></div></td>
-                		</c:when>
-                		<c:otherwise>
-		                	<td valign="top" align="left"><input type="text" name="posterName" id="posterName" onChange='return validatePosterName("posterName");' value="${posterName}" />
-                								  <div id="errorMsg"></div></td>
-                		</c:otherwise>
-                	</c:choose>
+                	<td valign="top" align="left"><e:trinput type="text" name="posterName" id="posterName"/></td>
                 </tr>
-                 
-                <c:if test="${not empty posterTags}">
-                 <tr>
-                	<td valign="top" align="right"><strong>Poster Tag</strong></td>
-                	<td><select name="posterTag" size=4 multiple>
-                			<option></option>
-               				<c:forEach items="${posterTags}" var="posterTags">
-               					<c:choose>
-                					<c:when test="${posterTags.value == 'selected'}">
-	                					<option name="${posterTags.key}" value="${posterTags.key}" selected="selected">${posterTags.key}</option>
-    	            				</c:when>
-        	        				<c:otherwise>
-            	    					<option name="${posterTags.key}" value="${posterTags.key}">${posterTags.key}</option>
-                					</c:otherwise>
-                				</c:choose>
-                			</c:forEach>
-                		</select>
-                	</td>
- 				  </tr>
- 				</c:if> 
-                <tr> 
-     
+      
 <%
                 RE re = new RE("%(PARA|FIG|WORDS):([A-Z0-9]+)%");
                 int p = 0; // search pointer
@@ -445,7 +330,8 @@
                     			</c:when>
                     			<c:when test="${type == 'WORDS'}">
                     				<td align="left">
-                    					<input size="50" name="${type}:${name}" id="${type}:${name}"
+                    					<!-- EPeronja-06/17/2013 Bug 507: limited the length of the caption (larger string made javascript choke) -->
+                    					<input size="50" maxlength="70" name="${type}:${name}" id="${type}:${name}"
                     						value="${tvalue}"/>
                     				</td>
                     			</c:when>
@@ -454,7 +340,7 @@
                     					<c:if test="${name == 'FIGURE1'}">
                     						<div id="image-preview" style="display: none; position: fixed; left: 1%; bottom: 4%;">image-preview</div>
                     					</c:if>
-                    					<select name="${type}:${name}" id="${type}:${name}" >
+                    					<select name="${type}:${name}" id="${type}:${name}">
                     						<option><%= selectDefault %></option>
                     						<c:forEach items="${images}" var="image">
                     							<c:choose>
@@ -472,8 +358,8 @@
                     						</c:forEach>
                     					</select>
                     				</td>
-   		              			</c:when>
-	  						</c:choose>                
+                    			</c:when>
+                    		</c:choose>
 	                    </tr>
 	                <%
 	                p = re.getParenEnd(0);
@@ -482,21 +368,10 @@
 		<tr>
 			<td colspan="2" align="center">
 			    <input type="hidden" name="showPoster" id="showPoster" value="" />
-	            <input type="submit" name="button" id="submitButton" value="${edit?'Save Changes':'Make Poster'}" onclick='return validatePosterName("posterName");' />
+	            <input type="submit" name="button" id="submitButton" value="${edit?'Save Changes':'Make Poster'}"/>
     	        <font size="-1">To see poster, don't block popups! Otherwise click <b>Display Poster</b> below.</font>
 			</td>
 		</tr>
-		<c:choose>
-			<c:when test="${not empty existingposters}">
-				<c:forEach items="${existingposters}" var="existingposter" varStatus="counter">
-					<tr>
-						<td>
-							<input type="hidden" name="existingposters" id="existingposters${counter.count}" value="${fn:substringBefore(existingposter.tupleMap.name, ".data")}" />
-						</td>
-					</tr>
-				</c:forEach>
-			</c:when>		
-		</c:choose>
 	</form>
 </table>
 </span></center>
@@ -589,9 +464,8 @@ function DetectChanges() {
 	}
 }
 
-//a second: 1000
-//25 minutes
-var repeatTime =  25 * 60 * 1000; 
+//5 minutes
+var repeatTime =  300 * 1000; 
 function UpdatePoster(){
 	DynamicDiv();
 	DetectChanges();
