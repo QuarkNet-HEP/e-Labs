@@ -48,7 +48,17 @@
 				if (entry == null) {
 				    throw new ElabJspException("No metadata about " + filename + " found.");
 				}
+	            String project = (String) entry.getTupleValue("project");
+	            //EPeronja-06/18/2013: Bug 481: hide the whole path to the source
+	            String source = (String) entry.getTupleValue("source");
+	            if (project.equals("cosmic")) {
+	            	int lastSlashPos = source.lastIndexOf("/");
+	            	source = source.substring(lastSlashPos + 1, source.length());
+	            }
 				request.setAttribute("e", entry);
+				request.setAttribute("project", project);
+				request.setAttribute("source", source);
+				
 			%>
 			
 			<c:if test="${e.tupleMap.type == 'plot'}">
@@ -84,7 +94,14 @@
 									</c:when>
 									<c:when test="${tuple.key == 'source'}">
 										<c:forEach items="${fn:split(tuple.value, ' ')}" var="f">
-											<a href="../data/view.jsp?filename=${f}">${f}</a>
+										    <c:choose>
+											    <c:when test="${project == 'cosmic' }">
+													${source}
+											    </c:when>
+											    <c:otherwise>
+													<a href="../data/view.jsp?filename=${f}">${f}</a>
+												</c:otherwise>
+											</c:choose>
 										</c:forEach>
 									</c:when>
 									<c:otherwise>
