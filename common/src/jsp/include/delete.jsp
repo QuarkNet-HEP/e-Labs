@@ -23,7 +23,7 @@
 					int figureCount = 10;
 					if (entry != null) {
 						//check the type
-						if (entry.getTupleValue("type").equals("plot")) {
+						if (entry.getTupleValue("type").equals("plot") || entry.getTupleValue("type").equals("uploadedimage")) {
 							for (int x = 0; x < figureCount; x++ ) {
 								int figNo = x + 1;
 								int count = DataTools.checkPlotDependency(elab, name, figNo);
