@@ -306,12 +306,19 @@ public class StructuredResultSet {
         private boolean blessed;
         private Boolean stacked;
         private final String lfn;
-        private java.util.Date startDate, endDate;
+        private java.util.Date startDate, endDate, creationDate;
         private int detector;
-        private long totalEvents; 
+        private long totalEvents;
+        private long channel1, channel2, channel3, channel4;
         private String blessfile;
         private String conreg0, conreg1, conreg2, conreg3;
 
+        //EPeronja-04/25/2013: Benchmark File attributes
+        private Boolean benchmarkfile, benchmarkdefault;
+        private String benchmarklabel, benchmarkreference, benchmarkfail;
+        //EPeronja-06/25/2013: 289- Lost functionality on data search
+        private String group;
+        
         public File(String lfn) {
             this.lfn = lfn;
         }
@@ -369,6 +376,44 @@ public class StructuredResultSet {
         }
         public java.util.Date getDate() {
             return startDate;
+        }
+
+        //EPeronja-06/25/2013: 289- Lost functionality on data search
+        public String getGroup() {
+        	return this.group;
+        }
+        public void setGroup(String group) {
+        	this.group = group;
+        }
+        public java.util.Date getCreationDate() {
+        	return this.creationDate;
+        }
+        public void setCreationDate(java.util.Date date) {
+        	this.creationDate = date;
+        }
+        public Long getChannel1() {
+        	return this.channel1;
+        }
+        public void setChannel1(Long channel) {
+        	this.channel1 = channel;
+        }
+        public Long getChannel2() {
+        	return this.channel2;
+        }
+        public void setChannel2(Long channel) {
+        	this.channel2 = channel;
+        }
+        public Long getChannel3() {
+        	return this.channel3;
+        }
+        public void setChannel3(Long channel) {
+        	this.channel3 = channel;
+        }
+        public Long getChannel4() {
+        	return this.channel4;
+        }
+        public void setChannel4(Long channel) {
+        	this.channel4 = channel;
         }
 
         public void setDate(java.util.Date date) {
