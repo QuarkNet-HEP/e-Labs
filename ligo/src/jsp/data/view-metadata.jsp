@@ -53,6 +53,9 @@
 	            String objectName = filename;
 	            if (entry != null) {
 	            	objectName = (String) entry.getTupleValue("title");
+	            	if (objectName == null || objectName.equals("")) {
+	            		objectName = (String) entry.getTupleValue("name");
+	            	}
 	            }	
 				request.setAttribute("name", objectName);
 			%>
