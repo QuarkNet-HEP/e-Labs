@@ -37,7 +37,7 @@
 							//int count = ElabVDS.checkFileDependency(name);
 							int count = DataTools.checkFileDependency(elab, name);
 							if (count > 0) {
-								String[] plots = DataTools.getFileDependency(elab, name):
+								String[] plots = DataTools.getFileDependency(elab, name);
 								StringBuilder sb = new StringBuilder();
 									if (plots != null) {
 										sb.append("Files:");
