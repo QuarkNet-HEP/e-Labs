@@ -132,6 +132,7 @@
 			meta.add("date date " + dateString);
 			meta.add("name string " + dfile);
 			meta.add("plotURL string " + plotDirURL);
+			/*
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < posterTag.length; i++) {
 				if (i == posterTag.length - 1) {
@@ -141,6 +142,7 @@
 				}
 			}
 			meta.add("postertag string " + sb.toString());
+			*/
 			//EPeronja-06/11/2013: Add the plot names to metadata so 'delete plots' 
 			//					   can check whether the plots are part of a poster or not.
 			RE figures = new RE("(FIG:([A-Z0-9]))");
@@ -228,6 +230,7 @@
 	        tags.put(tagtype+":"+tagname, tagval);
 	    }
 	    //retrieve the tags
+	    /*
 	    DataCatalogProvider dcp = elab.getDataCatalogProvider();
     	CatalogEntry e = dcp.getEntry(posterName + ".data");	 
     	if (e != null) {
@@ -235,7 +238,7 @@
     		if (pt != null) {
 	    		posterTag = pt.split(",");
     		}
-    	}
+    	}*/
 	}
 
 	// Find files posted to plot directory
@@ -273,11 +276,11 @@
 		}
 	}
 	
-	ResultSet rsTags = DataTools.retrieveTags(elab);
-	String[] availablePosterTags = rsTags.getLfnArray();
+	//ResultSet rsTags = DataTools.retrieveTags(elab);
+	//String[] availablePosterTags = rsTags.getLfnArray();
 	//build map with selected
 	TreeMap<String, String> posterTags = new TreeMap<String, String>();
-	
+	/*
 	for (int i = 0; i < availablePosterTags.length; i++) {
 		boolean selectedTag = false;
 		for (int x = 0; x < posterTag.length; x++) {
@@ -290,7 +293,7 @@
 			posterTags.put(availablePosterTags[i], "");			
 		}
 	}
-	
+	*/
 	request.setAttribute("posterTags", posterTags);
 	pageContext.setAttribute("images", images);
 %>
