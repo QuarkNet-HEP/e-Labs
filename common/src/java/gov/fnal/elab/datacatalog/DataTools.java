@@ -28,6 +28,7 @@ import gov.fnal.elab.ElabFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.codec.net.URLCodec;
+import org.griphyn.vdl.dbschema.AnnotationSchema;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -439,7 +440,20 @@ public class DataTools {
 		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
 		return rs;
 	}    
-    
+
+    //EPeronja-06/21/2013: 222-Allow Admin user to delete data files but check dependencies
+    public static int checkFileDependency(Elab elab, String filename) throws ElabException{
+    	int count = 0;
+		In and = new In();
+		and.add(new Equals("type", "plot"));
+		and.add(new Like("source", "%"+filename+"%"));
+		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
+		if (rs != null && rs.size() > 0) {
+	  		count = rs.size();
+		}
+        return count;
+    }	
+	
     //EPeronja-06/11/2013: 254-When deleting files, be sure there are not dependent files
     //                       This function will check plots in the logbook and posters
     public static int checkPlotDependency(Elab elab, String plotName, int figureNumber) throws ElabException {

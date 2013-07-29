@@ -34,7 +34,8 @@
 						}
 					    //EPeronja-06/21/2013: 222-Allow Admin user to delete any poster or plot
 						if (entry.getTupleValue("type").equals("split")) {
-							int count = ElabVDS.checkFileDependency(name);
+							//int count = ElabVDS.checkFileDependency(name);
+							int count = DataTools.checkFileDependency(elab, name);
 							if (count > 0) {
 							    throw new ElabJspException(" is being used in a plot/analysis. Cannot be deleted.");								
 							}
