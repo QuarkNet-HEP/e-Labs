@@ -254,6 +254,7 @@ public class DataTools {
             	continue;
             }
             //EPeronja-04/25/2013: Golden File attributes
+            /*
             try {
             	file.setBenchmarkFile((Boolean) data[BENCHMARKFILE]);
             } catch (Exception ex) {
@@ -284,6 +285,7 @@ public class DataTools {
             	System.out.println("WARNING: File " + e.getLFN() + " does not have a benchmark failure. Skipping.");
             	continue;
             }  
+            */
             //EPeronja-06/25/2013: 289- Lost functionality on data search
             try {
             	file.setGroup((String) data[GROUP]);
