@@ -45,7 +45,6 @@
 											sb.append("-"+plots[y]);
 										}
 									}
-								}
 							    throw new ElabJspException(" is being used in a plot/analysis. Cannot be deleted." + sb.toString());								
 							}
 						}
