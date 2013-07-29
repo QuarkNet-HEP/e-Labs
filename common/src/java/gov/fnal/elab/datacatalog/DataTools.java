@@ -292,7 +292,7 @@ public class DataTools {
             } catch (Exception ex) {
             	System.out.println("WARNING: File " + e.getLFN() + " does not have a group failure. Skipping.");
             	continue;
-            }
+            }  
             /*
             try {
             	file.setComments((String) data[COMMENTS]);
@@ -386,8 +386,9 @@ public class DataTools {
             if (data[TRIGGERS] != null) {
             	triggers = ((Long) data[TRIGGERS]).intValue();
             }
-            */
+            
             school.incEvents((int) triggers);
+            */
             school.incDataFiles();
             month.addFile(file);
         }
@@ -461,7 +462,19 @@ public class DataTools {
 		}
         return count;
     }	
-	
+
+    public static String[] getFileDependency(Elab elab, String filename) throws ElabException{
+    	String[] plots = null; 
+		In and = new In();
+		and.add(new Equals("type", "plot"));
+		and.add(new Like("source", "%"+filename+"%"));
+		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
+		if (rs != null && rs.size() > 0) {
+	  		plots = rs.getLfnArray();
+		}
+        return plots;
+    }	
+    
     //EPeronja-06/11/2013: 254-When deleting files, be sure there are not dependent files
     //                       This function will check plots in the logbook and posters
     public static int checkPlotDependency(Elab elab, String plotName, int figureNumber) throws ElabException {
