@@ -292,13 +292,15 @@ public class DataTools {
             } catch (Exception ex) {
             	System.out.println("WARNING: File " + e.getLFN() + " does not have a group failure. Skipping.");
             	continue;
-            }  
+            }
+            /*
             try {
             	file.setComments((String) data[COMMENTS]);
             } catch (Exception ex) {
             	System.out.println("WARNING: File " + e.getLFN() + " does not have a comments. Skipping.");
             	continue;
-            }  
+            } 
+            */ 
             try {
             	file.setCreationDate((java.util.Date) data[CREATIONDATE]);
             } catch (Exception ex) {
