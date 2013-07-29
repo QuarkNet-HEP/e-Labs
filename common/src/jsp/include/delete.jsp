@@ -37,7 +37,16 @@
 							//int count = ElabVDS.checkFileDependency(name);
 							int count = DataTools.checkFileDependency(elab, name);
 							if (count > 0) {
-							    throw new ElabJspException(" is being used in a plot/analysis. Cannot be deleted.");								
+								String[] plots = DataTools.getFileDependency(elab, name):
+								StringBuilder sb = new StringBuilder();
+									if (plots != null) {
+										sb.append("Files:");
+										for(int y = 0; y < plots.length; y++) {
+											sb.append("-"+plots[y]);
+										}
+									}
+								}
+							    throw new ElabJspException(" is being used in a plot/analysis. Cannot be deleted." + sb.toString());								
 							}
 						}
 					}//end of checking dependencies
