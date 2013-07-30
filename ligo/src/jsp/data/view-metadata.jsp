@@ -49,6 +49,15 @@
 				    throw new ElabJspException("No metadata about " + filename + " found.");
 				}
 				request.setAttribute("e", entry);
+	            //EPeronja-07/2/2013: Bug 320: view.jsp and view-metadata.jsp display internal file name
+	            String objectName = filename;
+	            if (entry != null) {
+	            	objectName = (String) entry.getTupleValue("title");
+	            	if (objectName == null || objectName.equals("")) {
+	            		objectName = (String) entry.getTupleValue("name");
+	            	}
+	            }	
+				request.setAttribute("name", objectName);
 			%>
 			
 			<c:if test="${e.tupleMap.type == 'plot'}">
@@ -63,7 +72,7 @@
 			<c:if test="${e.tupleMap.type == 'split'}">
 				<a href="../data/download?filename=${param.filename}&elab=${elab.name}&type=${e.tupleMap.type}">Download</a>
 			</c:if>
-			<h2>Details (<a href="javascript:glossary('metadata')">Metadata</a>) for ${param.filename}</h2>
+			<h2>Details (<a href="javascript:glossary('metadata')">Metadata</a>) for ${name}</h2>
 			<table border="0">
 				<c:forEach items="${e.tupleIterator}" var="tuple">
 					<tr>
