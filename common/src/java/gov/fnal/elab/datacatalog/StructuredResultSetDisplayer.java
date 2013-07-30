@@ -10,6 +10,7 @@ import gov.fnal.elab.datacatalog.StructuredResultSet.School;
 import gov.fnal.elab.util.ElabUtil;
 
 import org.apache.commons.lang.time.DateFormatUtils;
+import gov.fnal.elab.util.URLEncoder;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -276,11 +277,28 @@ public class StructuredResultSetDisplayer {
         crtCol++;
         out.write("<td class=\"data-file\">");
     }
-
+    
+    //EPeronja-06/25/2013: 289- Lost functionality on data search
+    public String buildMetadata(File file){
+        String DATEFORMAT = "MMM dd yyyy";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATEFORMAT);
+        StringBuilder sb = new StringBuilder();
+        sb.append("Group: " + file.getGroup() +"\n");
+        sb.append("StartTime: " + dateFormat.format(file.getStartDate())+"\n");
+        sb.append("UploadDate: " + dateFormat.format(file.getCreationDate())+"\n");
+        sb.append("Channel1: " + file.getChannel1()+" events\n");
+        sb.append("Channel2: " + file.getChannel2()+" events\n");
+        sb.append("Channel3: " + file.getChannel3()+" events\n");
+        sb.append("Channel4: " + file.getChannel4()+" events");
+    	return sb.toString();
+    }
+    
     public void displayFileContents(JspWriter out, File file)
             throws IOException {
         out.write("<a class=\"file-link\" href=\"../data/view.jsp?filename=");
         out.write(file.getLFN());
+        out.write("\"");
+        out.write(" title=\""+ buildMetadata(file));
         out.write("\">");
         out.write(DateFormatUtils.format(file.getDate(), DAY_FORMAT));
         out.write("</a>");
