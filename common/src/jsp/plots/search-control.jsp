@@ -1,4 +1,5 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="gov.fnal.elab.util.ElabUtil" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
@@ -10,6 +11,9 @@
 SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false);
 String msg = (String) request.getParameter("msg");
+String project = elab.getName();
+request.setAttribute("project", project);
+
 %>
 <script type="text/javascript">
 $(function() {
@@ -29,6 +33,23 @@ $(function() {
 	$('img.ui-datepicker-trigger').css('vertical-align', 'text-bottom'); 
 });
 </script>
+<script>
+	function getStudyType(object) {
+		if (object.value == "study") {
+			$("#name")
+		    .replaceWith('<select id="name" name="value">' +
+		          	'<option></option>' +
+					'<option name="flux" value="flux">Flux</option>' +
+					'<option name="lifetime" value="lifetime">Lifetime</option>' +
+					'<option name="performance" value="performance">Performance</option>' +					
+					'<option name="shower" value="shower">Shower</option>' +
+		          	'</select>');
+		} else {
+			$("#name")
+		    .replaceWith('<input name="value" id="name" size="40" maxlength="40" value="${param.value}">');			
+		}
+	}
+</script>
 
 <div class="plot-search-control"> 
 	<div class="search-quick-links">
@@ -42,9 +63,18 @@ $(function() {
 	</div>
 	
 	<form name="search" method="get">
-	<e:select name="key" id="selectOptions" valueList="name, title, group, teacher, school, city, state, year, study"
-		labelList="Filename, Title, Group, Teacher, School, City, State, Academic Year, Study"
-		default="${param.key}" />
+	<c:choose>
+		<c:when test='${project == "cosmic"}'>
+			<e:select name="key" id="selectOptions" valueList="name, title, group, teacher, school, city, state, year, study"
+				labelList="Filename, Title, Group, Teacher, School, City, State, Academic Year, Study"
+				default="${param.key}" onChange="getStudyType(this);" />
+		</c:when>
+		<c:otherwise>
+			<e:select name="key" id="selectOptions" valueList="name, title, group, teacher, school, city, state, year"
+				labelList="Filename, Title, Group, Teacher, School, City, State, Academic Year"
+				default="${param.key}" />
+		</c:otherwise>
+	</c:choose>
 	<input name="value" id="name" size="40" maxlength="40" value="${param.value}"  />
 	<input type="submit" name="submit" value="Search Data" />
 		<e:vswitch>
