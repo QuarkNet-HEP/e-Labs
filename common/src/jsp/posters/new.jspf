@@ -283,17 +283,20 @@
 	
 	for (int i = 0; i < availablePosterTags.length; i++) {
 		boolean selectedTag = false;
-		for (int x = 0; x < posterTag.length; x++) {
-			if (availablePosterTags[i].equals(posterTag[x])) {
-				posterTags.put(availablePosterTags[i], "selected");
-				selectedTag = true;
-			} 
+		if (posterTag != null) { 
+			for (int x = 0; x < posterTag.length; x++) {
+				if (availablePosterTags[i].equals(posterTag[x])) {
+					posterTags.put(availablePosterTags[i], "selected");
+					selectedTag = true;
+				} 
+			}
 		}
 		if (!selectedTag) {
 			posterTags.put(availablePosterTags[i], "");			
 		}
 	}
-	
+	request.setAttribute("rsTags", rsTags);
+	request.setAttribute("availablePosterTags", availablePosterTags);
 	request.setAttribute("posterTags", posterTags);
 	pageContext.setAttribute("images", images);
 %>
