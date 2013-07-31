@@ -4,12 +4,16 @@ document.defaultSettings = {
 	calorimeterTowers: true,
 	calorimeterTowersLogScale: false,
 	calorimeterTowersMaxLength: 1,
-	calorimeterTowersWireSides: true,
+	calorimeterTowersWireSides: false,
 	globalCaloEnergyCutEnabled: true,
-	globalCaloEnergyLowCut: 0.75,
+	globalCaloEnergyLowCut: 0.25,
+	ecalHitsMaxSize: 10,
+	ecalHitsWireSides: false,
+	hcalHitsMaxSize: 1,
+	hcalHitsWireSides: false,
 	lastDir: "",
 	orthographicProjection: true,
-        showCollectionCount: false
+    showCollectionCount: false
 }
 
 document.settings = {
