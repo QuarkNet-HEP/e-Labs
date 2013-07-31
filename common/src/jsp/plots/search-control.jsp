@@ -43,6 +43,7 @@ $(function() {
 					'<option name="lifetime" value="lifetime">Lifetime</option>' +
 					'<option name="performance" value="performance">Performance</option>' +					
 					'<option name="shower" value="shower">Shower</option>' +
+					'<option name="blesschart" value="blesschart">Bless Charts</option>' +
 		          	'</select>');
 		} else {
 			$("#name")

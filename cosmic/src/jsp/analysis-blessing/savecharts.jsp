@@ -10,13 +10,12 @@
 <%@ page import="org.apache.commons.codec.binary.Base64" %>
 
 <%
+	//EPeronja-07/31/2013 570-Bless Charts: add option to save them as plots
 	//get parameters
 	String filename = request.getParameter("filename");
 	String imagedata = request.getParameter("imagedata");
-	String imagethumbnail = request.getParameter("imagethumbnail");
 	byte[] imageDataBytes = Base64.decodeBase64(imagedata);
-	byte[] thumbnailDataBytes = Base64.decodeBase64(imagethumbnail);
-	
+
 	//save the chart
 	ElabGroup group = user.getGroup();
 	String groupName = user.getGroup().getName();
@@ -39,8 +38,7 @@
 		//write a image byte array into file system
 		FileOutputStream imageOutFile = new FileOutputStream(plotDir+"/"+dstFile);
 		imageOutFile.write(imageDataBytes);
-		FileOutputStream thumbnailOutFile = new FileOutputStream(plotDir+"/"+dstThumb);
-		thumbnailOutFile.write(thumbnailDataBytes);
+
 		
 		DataCatalogProvider dcp = elab.getDataCatalogProvider();
 		List<String> meta = new ArrayList();
@@ -53,20 +51,22 @@
 		meta.add("state string " + group.getState());
 		meta.add("teacher string " + group.getTeacher());
 		meta.add("year string " + group.getYear());
-		meta.add("thumbnail string " + dstThumb);
+		meta.add("thumbnail string " + dstFile);
 		meta.add("filename string " + dstFile);
+		meta.add("study string blesschart");
 		meta.add("type string plot"); 
 		meta.add("creationdate date " + (new Timestamp(System.currentTimeMillis())).toString()); 
 	
 		dcp.insert(DataTools.buildCatalogEntry(dstFile, meta));
 	
 		imageOutFile.close();
-		thumbnailOutFile.close();
+
     } catch (Exception e) {
     	success = e.toString();
     }
-	request.setAttribute("filename", filename);
-	request.setAttribute("success", success);
+    
+	String url = group.getDirURL("plots") + '/' + dstFile;    
+	response.getWriter().print(url);
 %>
 
 	

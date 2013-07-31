@@ -19,8 +19,8 @@
 <%@ page import="gov.fnal.elab.cosmic.bless.*" %>   
 
 <%
-String file = request.getParameter("file");
 
+String file = request.getParameter("file");
 if (StringUtils.isBlank(file)) {
     throw new ElabJspException("Missing file name.");
 }
@@ -167,11 +167,11 @@ request.setAttribute("CR0", br0.getRegisterValue());
 
 				<div id="channels" style="background-color:#FFFFFF">
 					<div id="channelChart" style="width:750px; height:250px; text-align: left;"></div>
-					<div id="channelChartThm" style="width:150px; height:50px; visibility: hidden;"></div>
 					<div id="channelChartLegend" style="width: 750px"></div>
 				</div>
+				<!-- EPeronja-07/31/2013 570-Bless Charts: add option to save them as plots -->
 				<div style="text-align:center; width: 100%;">
-					Filename <input type="text" name="channelChartName" id="channelChartName" value=""></input><input type="button" name="save" onclick='return saveChart(onOffPlot, onOffPlotThm, "channelChartName", "channelMsg");' value="Save Channel Chart"></input>     
+					Filename <input type="text" name="channelChartName" id="channelChartName" value=""></input><input type="button" name="save" onclick='return saveChart(onOffPlot, "channelChartName", "channelMsg");' value="Save Channel Chart"></input>     
 					<div id="channelMsg"></div>   
 				</div>
 									
@@ -181,9 +181,8 @@ request.setAttribute("CR0", br0.getRegisterValue());
 					<jsp:param name="chartName" value="trigger" />
 				</jsp:include>				
 				<div id ="triggerChart" style="width:750px; height:250px; text-align: left;"></div>
-				<div id ="trigChartThm" style="width:150px; height:50px; visibility: hidden;"></div>
 				<div style="text-align:center; width: 100%;">
-					Filename <input type="text" name="triggerChartName" id="triggerChartName" value=""></input><input type="button" name="save" onclick='return saveChart(trigPlot, trigPlotThm, "triggerChartName", "triggerMsg");' value="Save Trigger Chart"></input>     
+					Filename <input type="text" name="triggerChartName" id="triggerChartName" value=""></input><input type="button" name="save" onclick='return saveChart(trigPlot, "triggerChartName", "triggerMsg");' value="Save Trigger Chart"></input>     
 					<div id="triggerMsg"></div>   
 				</div>
 	
@@ -193,9 +192,8 @@ request.setAttribute("CR0", br0.getRegisterValue());
 					<jsp:param name="chartName" value="satellite" />
 				</jsp:include>				
 				<div id="satChart" style="width:750px; height:250px; text-align: left;"></div>
-				<div id ="satChartThm" style="width:150px; height:50px; visibility: hidden;"></div>
 				<div style="text-align:center; width: 100%;">
-					Filename <input type="text" name="satChartName" id="satChartName" value=""></input><input type="button" name="save" onclick='return saveChart(satPlot, satPlotThm, "satChartName", "satMsg");' value="Save Satellite Chart"></input>     
+					Filename <input type="text" name="satChartName" id="satChartName" value=""></input><input type="button" name="save" onclick='return saveChart(satPlot, "satChartName", "satMsg");' value="Save Satellite Chart"></input>     
 					<div id="satMsg"></div>   
 				</div>
 
@@ -204,9 +202,8 @@ request.setAttribute("CR0", br0.getRegisterValue());
 					<jsp:param name="chartName" value="voltage" />
 				</jsp:include>			
 				<div id="voltChart" style="width:750px; height:250px; text-align: left;"></div>
-				<div id ="voltChartThm" style="width:150px; height:50px; visibility: hidden;"></div>
 				<div style="text-align:center; width: 100%;">
-					Filename <input type="text" name="voltChartName" id="voltChartName" value=""></input><input type="button" name="save" onclick='return saveChart(voltPlot, voltPlotThm, "voltChartName", "voltMsg");' value="Save Voltage Chart"></input>     
+					Filename <input type="text" name="voltChartName" id="voltChartName" value=""></input><input type="button" name="save" onclick='return saveChart(voltPlot, "voltChartName", "voltMsg");' value="Save Voltage Chart"></input>     
 					<div id="voltMsg"></div>   
 				</div>
 
@@ -216,9 +213,8 @@ request.setAttribute("CR0", br0.getRegisterValue());
 					<jsp:param name="chartName" value="temperature" />
 				</jsp:include>					
 				<div id="tempChart" style="width:750px; height:250px; text-align: left;"></div>
-				<div id ="tempChartThm" style="width:150px; height:50px; visibility: hidden;"></div>
 				<div style="text-align:center; width: 100%;">
-					Filename <input type="text" name="tempChartName" id="tempChartName" value=""></input><input type="button" name="save" onclick='return saveChart(tempPlot, tempPlotThm, "tempChartName", "tempMsg");' value="Save Temperature Chart"></input>     
+					Filename <input type="text" name="tempChartName" id="tempChartName" value=""></input><input type="button" name="save" onclick='return saveChart(tempPlot, "tempChartName", "tempMsg");' value="Save Temperature Chart"></input>     
 					<div id="tempMsg"></div>   
 				</div>
 				
@@ -228,12 +224,10 @@ request.setAttribute("CR0", br0.getRegisterValue());
 					<jsp:param name="chartName" value="pressure" />
 				</jsp:include>				
 				<div id="pressureChart" style="width:750px; height:250px; text-align: left;"></div>
-				<div id ="pressChartThm" style="width:150px; height:50px; visibility: hidden;"></div>
 				<div style="text-align:center; width: 100%;">
-					Filename <input type="text" name="pressChartName" id="pressChartName" value=""></input><input type="button" name="save" onclick='return saveChart(pressPlot, pressPlotThm, "pressChartName", "pressMsg");' value="Save Pressure Chart"></input>     
+					Filename <input type="text" name="pressChartName" id="pressChartName" value=""></input><input type="button" name="save" onclick='return saveChart(pressPlot, "pressChartName", "pressMsg");' value="Save Pressure Chart"></input>     
 					<div id="pressMsg"></div>   
-				</div>
-					
+				</div>				
 		 	</div>
 		</div>
 	</body>

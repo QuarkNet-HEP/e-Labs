@@ -20,12 +20,6 @@ var satPlot = null;
 var voltPlot = null;
 var tempPlot = null;
 var pressPlot = null;
-var onOffPlotThm = null;
-var trigPlotThm = null;
-var satPlotThm = null;
-var voltPlotThm = null;
-var tempPlotThm = null;
-var pressPlotThm = null;
 var channelRateXLabel = 'Channel Rate (Hz)';
 var originalXMax;
 var originalChanYMin, originalChanYMax;
@@ -185,22 +179,6 @@ var options = {
 	],
 	colors: ["#000000"]
 };
-
-var optionsThm = { 
-		xaxis: {
-			min: 0,
-			max: 86400,
-			tickSize: 43200 // 12 hours 
-		},
-		yaxis: {
-			labelWidth: 40,
-			reserveSpace: false,
-		},
-		xaxes: [ 
-			{ position: 'bottom', axisLabel: '' }
-		],
-		colors: ["#000000"]
-	};
 
 var showSeries = { 
 	series: {
@@ -407,15 +385,10 @@ function onDataLoad1(json) {
 	voltPlot = $.plot($("#voltChart"), [ json.voltage ], $.extend({}, voltOptions, { yaxes: [ {position: 'left', axisLabel: json.voltage.ylabel + ' (' + json.voltage.unit + ')' } ]}));
 	tempPlot = $.plot($("#tempChart"), [ json.temperature], $.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel                         : json.temperature.ylabel + ' (' + json.temperature.unit + ')' } ]}));
 	pressPlot = $.plot($("#pressureChart"), [ json.pressure ], $.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: json.pressure.ylabel + ' (' + json.pressure.unit + ')' } ]}));
-	onOffPlotThm = $.plot($("#channelChartThm"), [channel1data, channel2data, channel3data, channel4data ], optionsThm);
-	trigPlotThm = $.plot($("#triggerChartThm"), [json.trigger], optionsThm);
-	satPlotThm = $.plot($("#satChartThm"), [ json.satellites ], optionsThm);
-	voltPlotThm = $.plot($("#voltChartThm"), [ json.voltage ],  optionsThm);
-	tempPlotThm = $.plot($("#tempChartThm"), [ json.temperature],  optionsThm);
-	pressPlotThm = $.plot($("#pressureChartThm"), [ json.pressure ], optionsThm);
 }
 
-function saveChart(plot_to_save, thumb_to_save, name_id, div_id) {
+//EPeronja-07/31/2013 570-Bless Charts: add option to save them as plots
+function saveChart(plot_to_save, name_id, div_id) {
 	var filename = document.getElementById(name_id);
 	var rc = true;
 	if (filename != null) {
@@ -423,16 +396,17 @@ function saveChart(plot_to_save, thumb_to_save, name_id, div_id) {
 			var canvas = plot_to_save.getCanvas();
 			var image = canvas.toDataURL("image/png");
 			image = image.replace('data:image/png;base64,', '');
-			
-			var thumbnailCanvas = thumb_to_save.getCanvas();	 
-			var thumbnail = thumbnailCanvas.toDataURL("image/png");
-		    thumbnail = thumbnail.replace('data:image/png;base64,', '');
 		    
 			$.ajax({
 				url: "savecharts.jsp",
 				type: 'POST',
-				data: { imagedata: image, imagethumbnail: thumbnail, filename: filename.value },
-				success: displayMessage(div_id, filename)
+				data: { imagedata: image, filename: filename.value },
+				success: function (response) {
+					var msgDiv = document.getElementById(div_id);
+					if (msgDiv != null) {
+						msgDiv.innerHTML = '<a href="'+response+'">' +filename.value +'</a> file created successfully.';
+					}
+				}
 			});	
 		
 		} else {
@@ -450,13 +424,6 @@ function saveChart(plot_to_save, thumb_to_save, name_id, div_id) {
     }
     return rc;
 }	
-
-function displayMessage(div_id, filename){
-	var msgDiv = document.getElementById(div_id);
-	if (msgDiv != null) {
-		msgDiv.innerHTML = "<i>"+filename +" file created successfully</i>";
-	}			
-}
 
 function onDataLoad2(json) {	
 	// we need channel data to be selectable, so do not discard it 
