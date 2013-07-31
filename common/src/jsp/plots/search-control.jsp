@@ -67,7 +67,7 @@ $(function() {
 	<c:choose>
 		<c:when test='${project == "cosmic"}'>
 			<e:select name="key" id="selectOptions" valueList="name, title, group, teacher, school, city, state, year, study"
-				labelList="Filename, Title, Group, Teacher, School, City, State, Academic Year, Study"
+				labelList="Filename, Title, Group, Teacher, School, City, State/Country, Academic Year, Study"
 				default="${param.key}" onChange="getStudyType(this);" />
 		</c:when>
 		<c:otherwise>

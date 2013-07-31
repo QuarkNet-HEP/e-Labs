@@ -63,7 +63,7 @@ $(function() {
 	
 	<form name="search" method="get">
 	<e:select name="key" valueList="title, group, teacher, school, city, state, year, postertag"
-		labelList="Title, Group, Teacher, School, City, State, Academic Year, Poster Tags"
+		labelList="Title, Group, Teacher, School, City, State/Country, Academic Year, Poster Tags"
 		default="${param.key}" onChange="checkNeedPosterTags(this); "/>
 	<input name="value" id="name" size="40" maxlength="40" value="${param.value}" />
 	<input type="submit" name="submit" value="Search Data" />
