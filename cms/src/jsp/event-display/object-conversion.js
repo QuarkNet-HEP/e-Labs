@@ -563,6 +563,7 @@ function makeTrackPoints(data, rd, descr, data2, assoc) {
 	if (!assoc) {
 		throw "No association for " + descr.key;
 	}
+
 	var a = new Array();
 	for (var i = 0; i < data.length; i++) {
 		var last = null;
@@ -876,6 +877,7 @@ function makeTrackCurves2(data, rd, descr, data2, assoc) {
       }
     }
   }
+
 	return l;
 }
 

@@ -72,6 +72,7 @@ var d_descr = {
 	"Tracks_V3": { type: PATHS, on: true, group: "Tracking", desc: "Tracks (reco.)",
 		dataref: "Extras_V1", assoc: "TrackExtras_V1",
 		fn: makeTrackCurves2, color: [1, 0.7, 0, 0.7], lineCaps: "square", lineWidth: 2 },
+
 	"SiStripDigis_V1": { type: POINT, on: false, group: "Tracking", desc: "Digis (Si Strips)",
 		fn: makeSiStripDigis, color: [1, 0.5, 0, 0.6], shape: "+", lineWidth: 0.5 },
 	"SiPixelClusters_V1": { type: POINT, on: false, group: "Tracking", desc: "Clusters (Si Pixels)",
@@ -85,7 +86,7 @@ var d_descr = {
 		
 	"DTDigis_V1": { type: LINE, on: false, group: "Muon", desc: "DT Digis",
 		fn: makeDTDigis, color: [0, 1, 0, 1], lineWidth: 1 },
-	"DTRecHits_V1": { type: LINE, on: true, group: "Muon", desc: "DT Rec. Hits",
+	"DTRecHits_V1": { type: LINE, on: false, group: "Muon", desc: "DT Rec. Hits",
 		fn: makeDTRecHits, color: [0, 1, 0, 1], lineWidth: 2 },
 	"DTRecSegment4D_V1": { type: LINE, on: true, group: "Muon", desc: "DT Rec. Segments (4D)",
 		fn: makeDTRecSegments, color: [1, 1, 0, 1], lineWidth: 3 },
@@ -95,9 +96,9 @@ var d_descr = {
 		fn: makeCSCWD, color: [0.8, 0, 0.8, 1], lineWidth: 0.5 },
 	"CSCStripDigis_V1": { type: LINE, on: false, group: "Muon", desc: "CSC Strip Digis",
 		fn: makeCSCSD, color: [0.8, 0, 0.8, 1], lineWidth: 0.5 },
-	"RPCRecHits_V1": { type: LINES, on: true, group: "Muon", desc: "RPC Rec. Hits",
+	"RPCRecHits_V1": { type: LINES, on: false, group: "Muon", desc: "RPC Rec. Hits",
 		fn: makeRPCRecHits, color: [0.8, 1, 0, 1], lineWidth: 3 },
-	"CSCRecHit2Ds_V2": { type: LINES, on: true, group: "Muon", desc: "CSC Rec. Hits (2D)",
+	"CSCRecHit2Ds_V2": { type: LINES, on: false, group: "Muon", desc: "CSC Rec. Hits (2D)",
 		fn: makeCSCRecHit2Ds_V2, color: [0.6, 1, 0.9, 1], lineWidth: 2 },
   	"MuonChambers_V1": {type: LINES, on: true, group: "Muon", desc: "Matching muon chambers",
 		fn: makeChambers, color: [1, 0, 0, 0.5], lineWidth: 0.5},
@@ -123,9 +124,9 @@ var d_descr = {
 		fn: makeRecHits_V1, color: [0.2, 0.7, 1, 1], fill: [0.2, 0.7, 1, 1], lineWidth: 0.5 },
 	"HERecHits_V2": { type: SHAPE, on: true, group: "HCAL", desc: "Endcap Rec. Hits", rank: "energy",
 		fn: makeRecHits_V2, color: [0.2, 0.7, 1, 1], fill: [0.2, 0.7, 1, 1], lineWidth: 0.5 },
-	"HFRecHits_V1": { type: SHAPE, on: false, group: "HCAL", desc: "Forward Rec. Hits", rank: "energy",
+	"HFRecHits_V1": { type: SHAPE, on: true, group: "HCAL", desc: "Forward Rec. Hits", rank: "energy",
 		fn: makeRecHits_V1, color: [0.6, 1, 1, 1], fill: [0.6, 1, 1, 1], lineWidth: 0.5 },
-	"HFRecHits_V2": { type: SHAPE, on: false, group: "HCAL", desc: "Forward Rec. Hits", rank: "energy",
+	"HFRecHits_V2": { type: SHAPE, on: true, group: "HCAL", desc: "Forward Rec. Hits", rank: "energy",
 		fn: makeRecHits_V2, color: [0.6, 1, 1, 1], fill: [0.6, 1, 1, 1], lineWidth: 0.5 },
 	"HORecHits_V1": { type: SHAPE, on: false, group: "HCAL", desc: "Outer Rec. Hits", rank: "energy",
 		fn: makeRecHits_V1, color: [0.2, 0.7, 1, 0.4], fill: [0.2, 0.7, 1, 0.2], lineWidth: 0.5 },
@@ -157,9 +158,9 @@ var d_descr = {
 		fn: makeTrackPoints, color: [1, 0, 0.2, 1], lineCaps: "-", lineWidth: 2},
 	
 	"TrackerMuons_V2": {type: PATHS, on: false, group: "Physics Objects", desc: "Tracker Muons (Reco)",
-		dataref: "Extras_V1", assoc: "MuonTrackExtras_V1", 
+		dataref: "Extras_V1", assoc: "MuonTrackerExtras_V1", 
 		fn: makeTrackCurves2, color: [1, 0, 0.2, 1], lineCaps: "-", lineWidth: 2},
-	
+
 	"StandaloneMuons_V1": { type: TRACK, on: false, group: "Physics Objects", desc: "Stand-alone Muons (Reco)",
 		dataref: "Points_V1", assoc: "MuonStandalonePoints_V1", 
 		fn: makeTrackPoints, color: [1, 0, 0.2, 1], lineCaps: "square", lineWidth: 2},
@@ -167,10 +168,11 @@ var d_descr = {
 	"StandaloneMuons_V2": { type: PATHS, on: false, group: "Physics Objects", desc: "Stand-alone Muons (Reco)",
 		dataref: "Extras_V1", assoc: "MuonTrackExtras_V1", 
 		fn: makeTrackCurves2, color: [1, 0, 0.2, 1], lineCaps: "square", lineWidth: 2},
-	
+
 	"GlobalMuons_V1": { type: TRACK, on: false, group: "Physics Objects", desc: "Global Muons (Reco)",
 		dataref: "Points_V1", assoc: "MuonGlobalPoints_V1", 
 		fn: makeTrackPoints, color: [1, 0, 0.2, 1], lineCaps: "-", lineWidth: 2},
+
 	"CaloTowers_V1": { type: SHAPE, on: false, group: "Physics Objects", desc: "Calorimeter Energy Towers", rank: "et",
 		fn: makeCaloTowers_V1, color: [0, 1, 0, 1], fill: [0, 1, 0, 1], lineWidth: 0.5, 
 		rankingFunction: function(data) {return data[4] + data[5];}},
