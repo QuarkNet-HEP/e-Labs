@@ -134,15 +134,16 @@
 			meta.add("plotURL string " + plotDirURL);
 			
 			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < posterTag.length; i++) {
-				if (i == posterTag.length - 1) {
-					sb.append(posterTag[i]);					
-				} else {
-					sb.append(posterTag[i] + ",");					
+			if (posterTag != null) {
+				for (int i = 0; i < posterTag.length; i++) {
+					if (i == posterTag.length - 1) {
+						sb.append(posterTag[i]);					
+					} else {
+						sb.append(posterTag[i] + ",");					
+					}
 				}
-			}
-			meta.add("postertag string " + sb.toString());
-			
+				meta.add("postertag string " + sb.toString());
+			}			
 			//EPeronja-06/11/2013: Add the plot names to metadata so 'delete plots' 
 			//					   can check whether the plots are part of a poster or not.
 			RE figures = new RE("(FIG:([A-Z0-9]))");
