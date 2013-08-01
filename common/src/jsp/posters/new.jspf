@@ -54,6 +54,11 @@
        	posterName = posterName.replace(' ', '_');
         posterName = posterName.replace('/', '_');
    	    posterName = posterName.toLowerCase();
+		//let's make a unique title! It turned out that this code generated lots of orphans ;)
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
+    	String titleDate = sdf.format(now.getTime());
+		posterName = posterName + "-" + elab.getName() + "-" + user.getGroup().getName() + "-" + titleDate;
+		meta.add("title string "+ newTitle);
        	dfile = posterName + ".data";
 	} else {
 		//EPeronja-06/28/2013 Find other posters by this user so we do not overwrite existing ones
@@ -127,12 +132,7 @@
 			meta.add("project string " + elab.getName());
 			meta.add("group string " + user.getGroup().getName());
 			meta.add("type string " + "poster");
-			//let's make a unique title! It turned out that this code generated lots of orphans ;)
-			//meta.add("title string "+ request.getParameter("WORDS:TITLE") );
-			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
-        	String titleDate = sdf.format(now.getTime());
-			String newTitle = request.getParameter("WORDS:TITLE") + "-" + elab.getName() + "-" + user.getGroup().getName() + "-" + titleDate;
-			meta.add("title string "+ newTitle);
+			meta.add("title string "+ request.getParameter("WORDS:TITLE") );
 			meta.add("author string "+ author);
 			meta.add("date date " + dateString);
 			meta.add("name string " + dfile);
