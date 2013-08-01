@@ -130,7 +130,7 @@
 			//let's make a unique title! It turned out that this code generated lots of orphans ;)
 			//meta.add("title string "+ request.getParameter("WORDS:TITLE") );
 			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
-        	String titleDate = sdf.format(gc.getTime());
+        	String titleDate = sdf.format(now.getTime());
 			String newTitle = request.getParameter("WORDS:TITLE") + "-" + elab.getName() + "-" + user.getGroup().getName() + "-" + titleDate;
 			meta.add("title string "+ newTitle);
 			meta.add("author string "+ author);
