@@ -39,15 +39,17 @@ $(window).scroll(function(){
 </script>
 		
 <div class="search-quick-links">Quick Searches: 
-	<e:quicksearch key="school" value="${user.group.school}"/>
-	<e:quicksearch key="city" value="${user.group.city}"/>
-	<e:quicksearch key="state" value="${user.group.state}"/>
+	<e:quicksearch key="group" value="${user.name}"  />,
+	<e:quicksearch key="teacher" value="<%= user.getTeacher() %>"  />,
+	<e:quicksearch key="school" value="${user.group.school}"/>,
+	<e:quicksearch key="city" value="${user.group.city}"/>,
+	<e:quicksearch key="state" value="${user.group.state}"/>,
 	<e:quicksearch key="all" value="" label="All"/>
 </div>
 
 <form name="search" method="get">
 	<e:select name="key" id="selectOptions" valueList="city, group, school, state, teacher, detectorid"
-		        labelList="City, Group, School, State, Teacher, Detector ID"
+		        labelList="City, Group, School, State/Country, Teacher, Detector ID"
 		        default="${param.key}"/>
 	<input name="value" id="name" size="40" maxlength="40" value="${param.value}" />
 	<input type="submit" name="submit" value="Search Data" />

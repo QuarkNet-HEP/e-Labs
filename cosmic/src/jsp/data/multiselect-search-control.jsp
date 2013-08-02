@@ -38,33 +38,63 @@ $(window).scroll(function(){
 
 <div class="search-quick-links">Quick Searches: 
 	<form action="controller.jsp" name="search" method="post" style="display: inline;">
+		<input type="hidden" name="key" value="group" />
+		<input type="hidden" name="value" value="${user.name}" />
+		<input type="hidden" name="action" value="Search Data" />
+		<!-- 
+		<input type="submit" value="${user.name}" />
+		-->
+		<a href="#" onclick='$(this).closest("form").submit()'>${user.name}</a>,
+	</form>
+	<form action="controller.jsp" name="search" method="post" style="display: inline;">
+		<input type="hidden" name="key" value="teacher" />
+		<input type="hidden" name="value" value="<%= user.getTeacher() %>" />
+		<input type="hidden" name="action" value="Search Data" />
+		<!-- 
+		<input type="submit" value="<%= user.getTeacher() %>" />
+		-->
+		<a href="#" onclick='$(this).closest("form").submit()'><%= user.getTeacher() %></a>,
+	</form>
+	<form action="controller.jsp" name="search" method="post" style="display: inline;">
 		<input type="hidden" name="key" value="school" />
 		<input type="hidden" name="value" value="${user.group.school}" />
 		<input type="hidden" name="action" value="Search Data" />
+		<!-- 
 		<input type="submit" value="${user.group.school}" />
+		-->
+		<a href="#" onclick='$(this).closest("form").submit()'>${user.group.school}</a>,
 	</form>
 	<form action="controller.jsp" name="search" method="post" style="display: inline;">
 		<input type="hidden" name="key" value="city" />
 		<input type="hidden" name="value" value="${user.group.city}" />
 		<input type="hidden" name="action" value="Search Data" />
+		<!-- 
 		<input type="submit" value="${user.group.city}" />
+		-->
+		<a href="#" onclick='$(this).closest("form").submit()'>${user.group.city}</a>,
 	</form>
 	<form action="controller.jsp" name="search" method="post" style="display: inline;">
 		<input type="hidden" name="key" value="state" />
 		<input type="hidden" name="value" value="${user.group.state}" />
 		<input type="hidden" name="action" value="Search Data" />
+		<!-- 
 		<input type="submit" value="${user.group.state}" />
+		-->
+		<a href="#" onclick='$(this).closest("form").submit()'>${user.group.state}</a>,
 	</form>
 	<form action="controller.jsp" name="search" method="post" style="display: inline;">
 		<input type="hidden" name="key" value="all" />
 		<input type="hidden" name="action" value="Search Data" />
+		<!-- 
 		<input type="submit" value="All" />
+		-->
+		<a href="#" onclick='$(this).closest("form").submit()'>All</a>
 	</form>
 </div>
 
 <form action="controller.jsp" name="search" method="post">
 	<e:select name="key" id="selectOptions" valueList="city, group, school, state, teacher, detectorid"
-		        labelList="City, Group, School, State, Teacher, Detector ID"
+		        labelList="City, Group, School, State/Country, Teacher, Detector ID"
 		        default="${param.key}"/>
 	<input name="value" id="name" size="40" maxlength="40" value="${param.value}"  />
 	<input type="submit" name="action" value="Search Data" />
