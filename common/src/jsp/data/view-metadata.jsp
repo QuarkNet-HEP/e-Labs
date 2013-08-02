@@ -99,9 +99,6 @@
 							<td align="right">${tuple.key}:&nbsp;</td>
 							<td align="left">
 								<c:choose>
-									<c:when test="${fn:endsWith(tuple.key, 'URL')}">
-										<e:popup href="${tuple.value}" target="ViewURL" width="800" height="850">view</e:popup>
-									</c:when>
 									<c:when test="${tuple.key == 'provenance'}">
 										<e:popup href="../plots/view-provenance.jsp?filename=${param.filename}" target="Provenance" width="800" height="850">${tuple.value}</e:popup>
 									</c:when>

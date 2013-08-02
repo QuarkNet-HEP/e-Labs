@@ -377,13 +377,14 @@
 	<form id="posterForm" method="post">
            <table width="550">
                 <tr>
-                	<td valign="top" align="right">Poster File Name:<br>(e.g.,poster_lifetime)</td>
                 	<c:choose>
                 		<c:when test="${edit == true}" >
-                        	<td valign="top" align="left"><input type="text" name="posterName" id="posterName" onChange='return validatePosterName("posterName");' value="${posterName}"  readonly/>                    	
+                			<td></td>
+                        	<td valign="top" align="left"><input type="text" name="posterName" id="posterName" value="${posterName}"  style="visibility: hidden;" />                    	
                 								  <div id="errorMsg"></div></td>
                 		</c:when>
                 		<c:otherwise>
+		                	<td valign="top" align="right">Poster File Name:<br>(e.g.,poster_lifetime)</td>
 		                	<td valign="top" align="left"><input type="text" name="posterName" id="posterName" onChange='return validatePosterName("posterName");' value="${posterName}" />
                 								  <div id="errorMsg"></div></td>
                 		</c:otherwise>
