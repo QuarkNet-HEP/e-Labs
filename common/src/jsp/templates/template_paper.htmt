@@ -9,6 +9,18 @@
 				font: 14px arial, helvetica, sans-serif;
 				background-color: #FFFFFF;
 			}
+			img.Image { max-width: 100%; }
+			div#img1 { width: 600px; }
+			div#img2 { width: 600px; }
+			div#img3 { width: 600px; }
+			div#img4 { width: 600px; }
+			div#img5 { width: 600px; }
+			div#img6 { width: 600px; }
+			div#img7 { width: 600px; }
+			div#img8 { width: 600px; }
+			div#img9 { width: 600px; }
+			div#img10 { width: 600px; }
+			
 			-->
 		</style>
 	</head>
@@ -37,25 +49,25 @@
 			
 			<h2>Figures</h2>
 			<center>
-				<p><img name="IMGFIG1" src="%FIG:FIGURE1%" alt=""></p>
+				<div id="img1"><img name="IMGFIG1" src="%FIG:FIGURE1%" alt="" class="Image"></div>
 				<p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION1%</font></strong></p>
-				<p><img name="IMGFIG2" src="%FIG:FIGURE2%" alt=""></p>
+				<div id="img2"><img name="IMGFIG2" src="%FIG:FIGURE2%" alt="" class="Image"></div>
 				<p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION2%</font></strong></p>
-				<p><img name="IMGFIG3" src="%FIG:FIGURE3%" alt=""></p>
+				<div id="img3"><img name="IMGFIG3" src="%FIG:FIGURE3%" alt="" class="Image"></div>
 				<p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION3%</font></strong></p>
-				<p><img name="IMGFIG4" src="%FIG:FIGURE4%" alt=""></p>
+				<div id="img4"><img name="IMGFIG4" src="%FIG:FIGURE4%" alt="" class="Image"></div>
 				<p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION4%</font></strong></p>
-				<p><img name="IMGFIG5" src="%FIG:FIGURE5%" alt=""></p>
+				<div id="img5"><img name="IMGFIG5" src="%FIG:FIGURE5%" alt="" class="Image"></div>
 				<p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION5%</font></strong></p>
-				<p><img name="IMGFIG6" src="%FIG:FIGURE6%" alt=""></p>
+				<div id="img6"><img name="IMGFIG6" src="%FIG:FIGURE6%" alt="" class="Image"></div>
 				<p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION6%</font></strong></p>
-				<p><img name="IMGFIG7" src="%FIG:FIGURE7%" alt=""></p>
+				<div id="img7"><img name="IMGFIG7" src="%FIG:FIGURE7%" alt="" class="Image"></div>
 				<p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION7%</font></strong></p>
-				<p><img name="IMGFIG8" src="%FIG:FIGURE8%" alt=""></p>
+				<div id="img8"><img name="IMGFIG8" src="%FIG:FIGURE8%" alt="" class="Image"></div>
 				<p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION8%</font></strong></p>
-				<p><img name="IMGFIG9" src="%FIG:FIGURE9%" alt=""></p>
+				<div id="img9"><img name="IMGFIG9" src="%FIG:FIGURE9%" alt="" class="Image"></div>
 				<p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION9%</font></strong></p>
-				<p><img name="IMGFIG9" src="%FIG:FIGURE10%" alt=""></p>
+				<div id="img10"><img name="IMGFIG10" src="%FIG:FIGURE10%" alt="" class="Image"></div>
 				<p><strong><font size="2" face="Arial, Helvetica, sans-serif">%WORDS:CAPTION10%</font></strong></p>
 			</center>
 			
