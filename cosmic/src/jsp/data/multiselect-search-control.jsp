@@ -125,7 +125,7 @@ $(window).scroll(function(){
 						<e:trinput name="date2" id="date2" size="10" maxlength="15" class="datepicker" />
 					</td>
 				</tr>
-				<!-- Sort field and search-within-data don't work. 
+				<!-- 
 				<tr>
 					<td align="right">
 						<e:select name="sortDirection" valueList="sortAsc, sortDesc" labelList="Sort Ascending, Sort Descending"/>
@@ -136,6 +136,7 @@ $(window).scroll(function(){
 							labelList="City, State, Geometry, Blessed, Group, Academic Year, Detector ID, Upload Date, Channel 1 events, Channel 2 events, Channel 3 events, Channel 4 events"/>
 					</td>
 				</tr>
+				-->
 				<tr>
 					<td align="right" valign="middle">
 					    Search:
@@ -145,7 +146,6 @@ $(window).scroll(function(){
 					    <input type="radio" name="searchIn" value="within"/ >Within results
 					</td>
 				</tr>
-				-->
 				<tr>
 					<td>
 						Stacked:
