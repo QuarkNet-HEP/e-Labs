@@ -2,6 +2,10 @@
 	<h2>Legend</h2>
 	<table>
 		<tr>
+			<td class="dt"><img src="../graphics/view_data.gif" /></td>
+			<td class="dd">View data</td>
+		</tr>
+		<tr>
 			<td class="dt"><img src="../graphics/unstacked.gif" /></td>
 			<td class="dd">Unstacked data</td>
 		</tr>
