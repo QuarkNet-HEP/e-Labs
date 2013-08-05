@@ -150,6 +150,10 @@ var d_descr = {
 		dataref: "Extras_V1", assoc: "GsfElectronExtras_V1", 
 		fn: makeTrackCurves2, color: [1, 0.9, 0, 0.9], lineCaps: "square", lineWidth: 2},
 
+	"GsfElectrons_V2": { type: PATHS, on: false, group: "Physics Objects", desc: "Electron Tracks (GSF)",
+		dataref: "Extras_V1", assoc: "GsfElectronExtras_V1", 
+		fn: makeTrackCurves2, color: [1, 0.9, 0, 0.9], lineCaps: "square", lineWidth: 2},
+
 	"Photons_V1": { type: LINE, on: false, group: "Physics Objects", desc: "Photons (Reco)",
 		 fn: makePhotons, color: [0.8, 0.8, 0, 1], lineWidth: 2},
 	
