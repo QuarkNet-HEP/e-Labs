@@ -10,6 +10,9 @@
 SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false);
 String msg = (String) request.getAttribute("msg");
+ResultSet rsTags = DataTools.retrieveTags(elab);
+String[] availablePosterTags = rsTags.getLfnArray();
+request.setAttribute("availablePosterTags", availablePosterTags);
 %>
 
 <script type="text/javascript">
@@ -30,6 +33,22 @@ $(function() {
 	$('img.ui-datepicker-trigger').css('vertical-align', 'text-bottom'); 
 });
 </script>
+<script>
+	function checkNeedPosterTags(object) {
+		if (object.value == "postertag") {
+			$("#name")
+		    .replaceWith('<select id="name" name="value">' +
+		          	'<option></option>' +
+					'<c:forEach items="${availablePosterTags}" var="availablePosterTags">' +
+					'	<option name="${availablePosterTags}" value="${availablePosterTags}">${availablePosterTags}</option>' +
+					'</c:forEach>' +			
+		          	'</select>');
+		} else {
+			$("#name")
+		    .replaceWith('<input name="value" id="name" size="40" maxlength="40" value="${param.value}">');			
+		}
+	}
+</script>
 
 <div class="poster-search-control"> 
 	<div class="search-quick-links">
@@ -43,9 +62,9 @@ $(function() {
 	</div>
 	
 	<form name="search" method="get">
-	<e:select name="key" valueList="title, group, teacher, school, city, state, year"
-		labelList="Title, Group, Teacher, School, City, State, Academic Year"
-		default="${param.key}" />
+	<e:select name="key" valueList="title, group, teacher, school, city, state, year, postertag"
+		labelList="Title, Group, Teacher, School, City, State/Country, Academic Year, Poster Tags"
+		default="${param.key}" onChange="checkNeedPosterTags(this); "/>
 	<input name="value" id="name" size="40" maxlength="40" value="${param.value}" />
 	<input type="submit" name="submit" value="Search Data" />
 		<e:vswitch>

@@ -254,7 +254,6 @@ public class DataTools {
             	continue;
             }
             //EPeronja-04/25/2013: Golden File attributes
-            /*
             try {
             	file.setBenchmarkFile((Boolean) data[BENCHMARKFILE]);
             } catch (Exception ex) {
@@ -285,7 +284,6 @@ public class DataTools {
             	System.out.println("WARNING: File " + e.getLFN() + " does not have a benchmark failure. Skipping.");
             	continue;
             }  
-            */
             //EPeronja-06/25/2013: 289- Lost functionality on data search
             try {
             	file.setGroup((String) data[GROUP]);
@@ -293,14 +291,14 @@ public class DataTools {
             	System.out.println("WARNING: File " + e.getLFN() + " does not have a group failure. Skipping.");
             	continue;
             }  
-            /*
+
             try {
             	file.setComments((String) data[COMMENTS]);
             } catch (Exception ex) {
             	System.out.println("WARNING: File " + e.getLFN() + " does not have a comments. Skipping.");
             	continue;
             } 
-            */ 
+
             try {
             	file.setCreationDate((java.util.Date) data[CREATIONDATE]);
             } catch (Exception ex) {
@@ -350,7 +348,6 @@ public class DataTools {
             }
             
             //EPeronja-07/22/2013: 556- Cosmic data search: requests from fellows 07/10/2013 (added duration and triggers)
-            /*
             try {
             	file.setTriggers((Long) data[TRIGGERS]);
             } catch (Exception ex) {
@@ -363,7 +360,7 @@ public class DataTools {
 			} else {
 				file.setFileDuration(0L);
 			}
-			*/
+
             if (Boolean.TRUE.equals(data[BLESSED])) {
                 file.setBlessed(true);
                 school.incBlessed();
@@ -380,15 +377,15 @@ public class DataTools {
                 }
             }
             //EPeronja-07/22/2013: 556- Cosmic data search: requests from fellows 07/10/2013 (now total events == triggers)
-            school.incEvents(events);
-            /*
+            //school.incEvents(events);
+
             int triggers = 0;
             if (data[TRIGGERS] != null) {
             	triggers = ((Long) data[TRIGGERS]).intValue();
             }
             
             school.incEvents((int) triggers);
-            */
+
             school.incDataFiles();
             month.addFile(file);
         }
@@ -402,7 +399,7 @@ public class DataTools {
     static {
         TZ_DATE_TIME_FORMAT = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
     }
-/*
+
     //EPeronja-07/25/2013: Poster Tags
     public static void removePosterTags(Elab elab, String[] removeTags) throws ElabException {
     	for (int i = 0; i < removeTags.length; i++) {
@@ -433,6 +430,7 @@ public class DataTools {
 				ArrayList meta = new ArrayList();
 				newTags[i] = newTags[i].replace(" ", "_");
 				meta.add("type string postertag");
+				meta.add("project string " + elab.getName());
 				try {
 					dcp.insert(buildCatalogEntry(newTags[i], meta));
 				} catch (ElabException e) {
@@ -446,10 +444,11 @@ public class DataTools {
 	public static ResultSet retrieveTags(Elab elab) throws ElabException {
 		In and = new In();
 		and.add(new Equals("type", "postertag"));
+		and.add(new Equals("project", elab.getName()));
 		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
 		return rs;
 	}    
-*/
+
     //EPeronja-06/21/2013: 222-Allow Admin user to delete data files but check dependencies
     public static int checkFileDependency(Elab elab, String filename) throws ElabException{
     	int count = 0;

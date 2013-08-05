@@ -113,6 +113,7 @@
 		String tagtype = re.getParen(1);
 		String tagname = re.getParen(2);
 		String tagval = re.getParen(3).trim();
+		tagval = tagval.replace("\n"," ");
 		p = re.getParenEnd(0);
 		tags.put(tagtype + ":" + tagname, tagval);
 	}
