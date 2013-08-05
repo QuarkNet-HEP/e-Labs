@@ -18,14 +18,14 @@
 		<table id="poster-list">
 			<tr>
 				<th>Poster Title to Edit</th>
-				<th>Poster File Name</th>
+				<th style="visibility: hidden;">Poster File Name</th>
 			</tr>
 			<c:forEach items="${posters}" var="poster">
 				<tr>
 					<td>
 						<a href="../posters/new.jsp?posterName=${fn:substringBefore(poster.tupleMap.name, ".data")}">${poster.tupleMap.title}</a>
 					</td>
-					<td>
+					<td style="visibility:hidden;">
 						${fn:substringBefore(poster.tupleMap.name, ".data")}
 					</td>
 				</tr>
