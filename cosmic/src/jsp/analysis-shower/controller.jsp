@@ -178,6 +178,12 @@
 		searchResultsStructured.setTime(totalTime);
 		
 		// Stuff our results in our session.
+		session.setAttribute("key", key);
+		session.setAttribute("value", value);
+		session.setAttribute("date1", date1);
+		session.setAttribute("date2", date2);
+		session.setAttribute("stacked", stacked);
+		session.setAttribute("blessed", blessed);
 		session.setAttribute("previousSearch", and);
 		session.setAttribute("srs", searchResultsStructured);
 		session.setAttribute("msg", msg);

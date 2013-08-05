@@ -64,6 +64,7 @@
 		String date2 = request.getParameter("date2");
 		String stacked = request.getParameter("stacked");
 		String blessed = request.getParameter("blessed");
+
 		//EPeronja-06/12/2013: 63: Data search by state requires 2-letter state abbreviation
 		String abbreviation = "";
 		if (key.equals("state")) {
@@ -176,6 +177,12 @@
 		searchResultsStructured.setTime(totalTime);
 		
 		// Stuff our results in our session.
+		session.setAttribute("key", key);
+		session.setAttribute("value", value);
+		session.setAttribute("date1", date1);
+		session.setAttribute("date2", date2);
+		session.setAttribute("stacked", stacked);
+		session.setAttribute("blessed", blessed);
 		session.setAttribute("previousSearch", and);
 		session.setAttribute("srs", searchResultsStructured);
 		session.setAttribute("msg", msg);
