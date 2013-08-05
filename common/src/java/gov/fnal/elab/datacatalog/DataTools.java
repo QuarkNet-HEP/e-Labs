@@ -430,6 +430,7 @@ public class DataTools {
 				ArrayList meta = new ArrayList();
 				newTags[i] = newTags[i].replace(" ", "_");
 				meta.add("type string postertag");
+				meta.add("project string " + elab.getName());
 				try {
 					dcp.insert(buildCatalogEntry(newTags[i], meta));
 				} catch (ElabException e) {
@@ -443,6 +444,7 @@ public class DataTools {
 	public static ResultSet retrieveTags(Elab elab) throws ElabException {
 		In and = new In();
 		and.add(new Equals("type", "postertag"));
+		and.add(new Equals("project", elab.getName()));
 		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
 		return rs;
 	}    
