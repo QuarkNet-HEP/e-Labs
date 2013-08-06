@@ -55,9 +55,9 @@
         posterName = posterName.replace('/', '_');
    	    posterName = posterName.toLowerCase();
 		//let's make a unique title! It turned out that this code generated lots of orphans ;)
-		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
-    	String titleDate = sdf.format(now.getTime());
-		posterName = posterName + "-" + elab.getName() + "-" + user.getGroup().getName() + "-" + titleDate;
+		//java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
+    	//String titleDate = sdf.format(now.getTime());
+		//posterName = posterName + "-" + elab.getName() + "-" + user.getGroup().getName() + "-" + titleDate;
        	dfile = posterName + ".data";
 	} else {
 		//EPeronja-06/28/2013 Find other posters by this user so we do not overwrite existing ones
