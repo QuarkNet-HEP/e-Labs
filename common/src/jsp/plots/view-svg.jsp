@@ -8,7 +8,9 @@
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="java.io.*" %>
 <%@ page import="java.sql.Timestamp" %>
-
+<script>
+	div#img  { width:500px;}
+</script>
 
 <%
 	String filename = request.getParameter("filename");
@@ -34,7 +36,9 @@
 	%> 
 		<c:choose>
 			<c:when test="${svg != null}">
-				<img src="${svg}" alt="svg"/>
+                <div id="img">
+                    <object height="80%" width="80%" data="${svg}" type="image/svg+xml"></object>
+                </div>
 			</c:when>
 			<c:otherwise>
 				<e:error message="No svg available for ${param.filename}"/>
