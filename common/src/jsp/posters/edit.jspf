@@ -23,7 +23,7 @@
 			<c:forEach items="${posters}" var="poster">
 				<tr>
 					<td>
-						<a href="../posters/new.jsp?posterName=${fn:substringBefore(poster.tupleMap.name, ".data")}">${poster.tupleMap.title}</a>
+						<a href="../posters/new.jsp?action=edit&posterName=${fn:substringBefore(poster.tupleMap.name, ".data")}">${poster.tupleMap.title}</a>
 					</td>
 					<td style="visibility:hidden;">
 						${fn:substringBefore(poster.tupleMap.name, ".data")}
