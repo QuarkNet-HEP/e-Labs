@@ -61,8 +61,11 @@ for my $i (\$lowX, \$highX, \$lowY, \$highY, \$lowZ, \$highZ){
 #zlabel ' ' 4 means to move the text 4 chars to the right
 #label 2 center refers to previous label set as number 2
 #nokey - don't display names of datasets on graph
-@options = ("set terminal svg size 700 700 dynamic fname \"Helvetica\" fsize 14 enhanced",
-#@options = ("set terminal png",
+#added for compatibility with latest version
+@options = "";
+if ($gnuplotVersion eq "4.6") {
+	@options = ("set terminal svg size 700 700 dynamic fname \"Helvetica\" fsize 14 enhanced mouse jsdir \"/elab/cosmic/svg_mouse/\" ",
+	#@options = ("set terminal png",
 	"set output '$outfile_png'",
 	"set size 1,1", #size of the picture
 	"set nokey",
@@ -72,7 +75,21 @@ for my $i (\$lowX, \$highX, \$lowY, \$highY, \$lowZ, \$highZ){
 	"set xlabel \"$xlabel\"",
 	"set xrange [$lowX:$highX]",
 	"set yrange [$lowY:$highY]");
-		
+} 
+else {
+	@options = ("set terminal svg size 700 700 dynamic fname \"Helvetica\" fsize 14 enhanced",	
+	#@options = ("set terminal png",
+	"set output '$outfile_png'",
+	"set size 1,1", #size of the picture
+	"set nokey",
+	"set ticslevel 0",
+	"set title \"$title\" font \"Helvetica-Bold,26\"",
+	"set ylabel \"$ylabel\"",
+	"set xlabel \"$xlabel\"",
+	"set xrange [$lowX:$highX]",
+	"set yrange [$lowY:$highY]");
+}
+	
 #print "Lowx is $lowX, and HighX is $highX\n";
 #see http://t16web.lanl.gov/Kawano/gnuplot/intro/style-e.html for information on plot types
 if($plot_type == 0){	#Histogram
@@ -153,7 +170,13 @@ elsif($plot_type == 7){ # Hist w/ color (used for performance study)
     push @options, $plot;
     @label = split(/\\n/, $caption);
     $y = .95 - (($#label + 1)*.035); # sets the key placement to be dynamic based on how many lines the caption is
-    splice(@options, 3, 1, "set key graph .88,$y");
+    #added for compatibility with latest version
+    if ($gnuplotVersion eq "4.6") {
+    	splice(@options, 3, 1, "set key at .88,$y");
+    } 
+    else {
+    	splice(@options, 3, 1, "set key graph .88,$y");    	
+    }
 }
 else{
 	die "Must choose a plot type (0, 1, 2, 3, 4, 5, 6, or 7)\n";
