@@ -37,6 +37,7 @@
 	request.setAttribute("name", name);
 	request.setAttribute("study", study);
 	request.setAttribute("provenance", entry.getTupleValue("provenance"));
+	request.setAttribute("svg", entry.getTupleValue("svg"));
 	//EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot
 	request.setAttribute("eventCandidates", entry.getTupleValue("eventCandidates"));
 	request.setAttribute("eventNum", entry.getTupleValue("eventNum"));
@@ -62,6 +63,9 @@
 		<!-- EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot -->
 		<c:if test="${eventCandidates != null }">
 			<a href="../plots/view-events.jsp?filename=${param.filename}">Show Event Candidates</a><br/>
+		</c:if>
+		<c:if test="${svg != null }">
+			<a href="../plots/view-svg.jsp?filename=${param.filename}">Show SVG Plot</a><br/>
 		</c:if>
 		<c:if test="${dvName != null}">
 			<a href="../analysis/rerun.jsp?study=${study}&dvName=${dvName}">Run this study again</a><br/>

@@ -60,6 +60,7 @@
 
 		<input type="hidden" name="srcFile" value="plot.png"/>
 		<input type="hidden" name="srcThumb" value="plot_thm.png"/>
+		<input type="hidden" name="srcSvg" value="plot.svg"/>
 		<input type="hidden" name="srcFileType" value="png"/>
 		<input type="hidden" name="id" value="${results.id}"/>
 		<input type="text" name="name"  size="20" maxlength="30"/>.png

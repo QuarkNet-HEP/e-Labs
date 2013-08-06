@@ -42,6 +42,8 @@
 					String srcFile = new File(request.getParameter("srcFile")).getName();
 					//original thumbnail file to copy
 					String srcThumb  = new File(request.getParameter("srcThumb")).getName();
+					//original svg file to copy
+					String srcSvg = new File(request.getParameter("srcSvg")).getName();
 					//filename from user input
 					String userFilename = request.getParameter("name");
 					//file extension
@@ -68,6 +70,8 @@
 				    String dstFile = "savedimage-" + groupName + "-" + date + "." + srcFileType;
 				    String dstThumb = "savedimage-" + groupName + "-" + date + "_thm." + srcFileType;
 				    String provenanceFile = "savedimage-" + groupName + "-" + date + "_provenance." + srcFileType;
+				    String dstSvg = "savedimage-"  + groupName + "-" + date + ".svg";
+				    
                     String dstEcFile = "";
 				    if (ecDir != null) {
 						dstEcFile = "savedevents-" + groupName + "-" + date;
@@ -81,6 +85,8 @@
 				
 					ElabUtil.copyFile(outputDir, srcFile, plotDir, dstFile);
 					ElabUtil.copyFile(outputDir, srcThumb, plotDir, dstThumb);
+					ElabUtil.copyFile(outputDir, srcSvg, plotDir, dstSvg);
+					
 					//EPeronja-03/15/2013: Bug466- Save Event Candidates files with plot
                     if (ecDir != null) {
 						ElabUtil.copyFile(ecDir, srcEcFile, plotDir, dstEcFile);
@@ -121,6 +127,7 @@
 					meta.add("year string " + group.getYear());
 					meta.add("provenance string " + provenanceFile);
 					meta.add("thumbnail string " + dstThumb);
+					meta.add("svg string " + dstSvg);
 					//EPeronja-03/15/2013: Bug466- Add metadata
                     if (ecDir != null) {
 						meta.add("eventCandidates string " + dstEcFile);
