@@ -440,6 +440,8 @@ public class ElabUtil {
 		File tf = new File(thumbFile);
 		String eventsFile = plotDir + File.separator + "savedevents-"+dvname;
 		File ef = new File(eventsFile);
+		String svgFile = plotDir + File.separator + "savedevents-"+dvname+".svg";
+		File sf = new File(svgFile);
 		try {
 			if (pf.exists()) {
 				pf.delete();
@@ -452,6 +454,9 @@ public class ElabUtil {
 			}
 			if (ef.exists()) {
 				ef.delete();
+			}
+			if (sf.exists()) {
+				sf.delete();
 			}
 		} catch (Exception e) {
 			throw new ElabJspException(e.toString());
