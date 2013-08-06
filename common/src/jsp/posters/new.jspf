@@ -368,7 +368,7 @@
 				divMsg.innerHTML = message;
 				return false;
 			}
-			if (! /^[a-zA-Z0-9_-]+$/.test(posterName.value)) {
+			if (! /^[a-zA-Z0-9_-.]+$/.test(posterName.value)) {
 				divMsg.innerHTML = "<i>* Poster File Name contains invalid characters. Use any alphanumeric combination, dashes or underscores.</i>";
 			    return false;
 			}
