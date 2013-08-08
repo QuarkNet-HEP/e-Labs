@@ -62,7 +62,7 @@
 	catch (FileNotFoundException ex) {
 		throw new ElabJspException("Could not find file: " + filename);
 	}
-	request.setParameter("filename", filename);
+	request.setAttribute("filename", filename);
 %> 
 		<h2>${filename}</h2><br/>
 		<a href="../data/view-metadata.jsp?filename=${filename}">Show metadata</a> |
