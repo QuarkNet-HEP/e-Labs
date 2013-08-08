@@ -2,12 +2,16 @@
 <xsl:stylesheet version="1.0" 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="/">
- <table border="1">
+<style type="text/css">
+   table {  border: 1px solid black; cell-padding: 5px; }
+   td { border: 1px solid black; cell-padding: 10px; }
+</style>
+ <table>
   <tr>
    <td colspan="3" align="center">
-    <b>
-     <xsl:value-of select="/file/filename"/>
-    </b>
+   	<strong>
+    	 <xsl:value-of select="/file/filename"/>
+   	</strong>
    </td>
   </tr>
   <tr>
@@ -40,7 +44,11 @@
   </tr>
  </table>
  <br/>
-Average hits per Event: <xsl:value-of select="/file/average"/>
+ <table>
+ 	<tr><td>
+		Average hits per Event: <xsl:value-of select="/file/average"/>
+	</td></tr>
+ </table>
  <br/>
  <br/>
  <table border="1">
