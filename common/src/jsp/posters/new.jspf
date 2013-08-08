@@ -59,6 +59,7 @@
 			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
     		String titleDate = sdf.format(now.getTime());
 			posterName = posterName + "-" + elab.getName() + "-" + user.getGroup().getName() + "-" + titleDate;
+	       	posterName = posterName.replace(' ', '_');
    	    }
    	    posterName = posterName.toLowerCase();   	    
        	dfile = posterName + ".data";
