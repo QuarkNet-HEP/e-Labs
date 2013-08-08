@@ -140,10 +140,9 @@
     </td>
     <td class="center">
      <a>
-      <xsl:attribute name="href">
-       ../data/view.jsp?filename=<xsl:value-of select="/file/filename"/>&amp;type&#61;data&#38;menu&#61;yes&#38;get&#61;data&#38;highlight&#61;yes&#38;line&#61;<xsl:value-of select="line"/>
-      </xsl:attribute>
-      <xsl:value-of select="count"/>
+		<xsl:attribute name="href">view.jsp?filename=<xsl:value-of select="/file/filename"/><xsl:value-of select="/file/params" /><xsl:value-of select="line"/>
+      	</xsl:attribute>
+      	<xsl:value-of select="count"/>
      </a>
     </td>
    </tr>
@@ -185,9 +184,8 @@
    <td class="left"><a href="#no_CPLD_update">No CPLD update</a></td>
    <td class="center" colspan="2">
      <a>
-      <xsl:attribute name="href">
-       ../data/view.jsp?filename=<xsl:value-of select="/file/filename"/>&#38;type&#61;data&#38;menu&#61;yes&#38;get&#61;data&#38;highlight&#61;yes&#38;line&#61;<xsl:value-of select="file/gps/noupdate/line"/>
-      </xsl:attribute>
+		<xsl:attribute name="href">view.jsp?filename=<xsl:value-of select="/file/filename"/><xsl:value-of select="/file/params" /><xsl:value-of select="file/gps/noupdate/line"/>
+      	</xsl:attribute>
     <xsl:value-of select="/file/gps/noupdate/count"/></a> - 
     <xsl:value-of select="/file/gps/noupdate/percent"/>%
    </td>
