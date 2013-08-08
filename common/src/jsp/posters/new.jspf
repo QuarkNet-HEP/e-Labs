@@ -383,8 +383,7 @@
                 	<c:choose>
                 		<c:when test="${edit == true}" >
                 			<td></td>
-                        	<td valign="top" align="left"><input type="text" name="posterName" id="posterName" value="${posterName}"  style="visibility: hidden;" />                    	
-                								  <div id="errorMsg"></div></td>
+                        	<td valign="top" align="left"><input type="text" name="posterName" id="posterName" value="${posterName}"  style="visibility: hidden;" /></td>
                 		</c:when>
                 		<c:otherwise>
 		                	<td valign="top" align="right">Poster File Name:<br>(e.g.,poster_lifetime)</td>
@@ -429,7 +428,7 @@
                         if (name.equals("DATE")) {
                             val = dateString;
                         }
-                        else {
+                    else {
                             val = "";
                         }
                     }
