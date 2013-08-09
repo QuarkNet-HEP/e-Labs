@@ -107,9 +107,9 @@ var d_descr = {
 		fn: makeRecHits_V1, color: [0.1, 1, 0.1, 1], fill: [0.1, 1, 0.1, 1], lineWidth: 1 },
 	"EBRecHits_V2": { type: SHAPE, on: true, group: "ECAL", desc: "Barrel Rec. Hits", rank: "energy",
 		fn: makeRecHits_V2, color: [0.1, 1, 0.1, 1], fill: [0.1, 1, 0.1, 1], lineWidth: 1 },
-	"EERecHits_V1": { type: SHAPE, on: true, group: "ECAL", desc: "Endcap Rec. Hits", rank: "energy",
+	"EERecHits_V1": { type: SHAPE, on: false, group: "ECAL", desc: "Endcap Rec. Hits", rank: "energy",
 		fn: makeRecHits_V1, color: [0.1, 1, 0.1, 1], fill: [0.1, 1, 0.1, 1], lineWidth: 1 },
-	"EERecHits_V2": { type: SHAPE, on: true, group: "ECAL", desc: "Endcap Rec. Hits", rank: "energy",
+	"EERecHits_V2": { type: SHAPE, on: false, group: "ECAL", desc: "Endcap Rec. Hits", rank: "energy",
 		fn: makeRecHits_V2, color: [0.1, 1, 0.1, 1], fill: [0.1, 1, 0.1, 1], lineWidth: 1 },
 	"ESRecHits_V1": { type: SHAPE, on: false, group: "ECAL", desc: "Preshower Rec. Hits", rank: "energy",
 		fn: makeSimpleRecHits_V1, color: [1, 0.2, 0, 1], fill: [1, 0.2, 0.2, 1], lineWidth: 1 },
@@ -146,34 +146,36 @@ var d_descr = {
 		fn: makeTrackPoints, color: [0, 1, 0.2, 1], lineCaps: "+", lineWidth: 1},
 	*/
       
-	"GsfElectrons_V1": { type: PATHS, on: false, group: "Physics Objects", desc: "Electron Tracks (GSF)",
+	"GsfElectrons_V1": { type: PATHS, on: true, group: "Physics Objects", desc: "Electron Tracks (GSF)",
 		dataref: "Extras_V1", assoc: "GsfElectronExtras_V1", 
 		fn: makeTrackCurves2, color: [1, 0.9, 0, 0.9], lineCaps: "square", lineWidth: 2},
 
-	"GsfElectrons_V2": { type: PATHS, on: false, group: "Physics Objects", desc: "Electron Tracks (GSF)",
+	"GsfElectrons_V2": { type: PATHS, on: true, group: "Physics Objects", desc: "Electron Tracks (GSF)",
 		dataref: "Extras_V1", assoc: "GsfElectronExtras_V1", 
 		fn: makeTrackCurves2, color: [1, 0.9, 0, 0.9], lineCaps: "square", lineWidth: 2},
 
+	/*
 	"Photons_V1": { type: LINE, on: false, group: "Physics Objects", desc: "Photons (Reco)",
 		 fn: makePhotons, color: [0.8, 0.8, 0, 1], lineWidth: 2},
-	
-	"TrackerMuons_V1": { type: TRACK, on: false, group: "Physics Objects", desc: "Tracker Muons (Reco)",
+	*/
+
+	"TrackerMuons_V1": { type: TRACK, on: true, group: "Physics Objects", desc: "Tracker Muons (Reco)",
 		dataref: "Points_V1", assoc: "MuonTrackerPoints_V1", 
 		fn: makeTrackPoints, color: [1, 0, 0.2, 1], lineCaps: "-", lineWidth: 2},
 	
-	"TrackerMuons_V2": {type: PATHS, on: false, group: "Physics Objects", desc: "Tracker Muons (Reco)",
+	"TrackerMuons_V2": {type: PATHS, on: true, group: "Physics Objects", desc: "Tracker Muons (Reco)",
 		dataref: "Extras_V1", assoc: "MuonTrackerExtras_V1", 
 		fn: makeTrackCurves2, color: [1, 0, 0.2, 1], lineCaps: "-", lineWidth: 2},
 
-	"StandaloneMuons_V1": { type: TRACK, on: false, group: "Physics Objects", desc: "Stand-alone Muons (Reco)",
+	"StandaloneMuons_V1": { type: TRACK, on: true, group: "Physics Objects", desc: "Stand-alone Muons (Reco)",
 		dataref: "Points_V1", assoc: "MuonStandalonePoints_V1", 
 		fn: makeTrackPoints, color: [1, 0, 0.2, 1], lineCaps: "square", lineWidth: 2},
 	
-	"StandaloneMuons_V2": { type: PATHS, on: false, group: "Physics Objects", desc: "Stand-alone Muons (Reco)",
+	"StandaloneMuons_V2": { type: PATHS, on: true, group: "Physics Objects", desc: "Stand-alone Muons (Reco)",
 		dataref: "Extras_V1", assoc: "MuonTrackExtras_V1", 
 		fn: makeTrackCurves2, color: [1, 0, 0.2, 1], lineCaps: "square", lineWidth: 2},
 
-	"GlobalMuons_V1": { type: TRACK, on: false, group: "Physics Objects", desc: "Global Muons (Reco)",
+	"GlobalMuons_V1": { type: TRACK, on: true, group: "Physics Objects", desc: "Global Muons (Reco)",
 		dataref: "Points_V1", assoc: "MuonGlobalPoints_V1", 
 		fn: makeTrackPoints, color: [1, 0, 0.2, 1], lineCaps: "-", lineWidth: 2},
 
