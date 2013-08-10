@@ -54,13 +54,20 @@
    	    posterNameEntered = true;
        	posterName = posterName.replace(' ', '_');
         posterName = posterName.replace('/', '_');
-   	    posterName = posterName.toLowerCase();
    	    if (action == null || action.equals("")) {
 			//let's make a unique title! It turned out that this code generated lots of orphans ;)
-			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
+			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd");
     		String titleDate = sdf.format(now.getTime());
-			posterName = posterName + "-" + elab.getName() + "-" + user.getGroup().getName() + "-" + titleDate;
+    		String suffix = "-" + elab.getName() + "-" + user.getGroup().getName() + 
+    						"-" + user.getGroup().getTeacher() + "-" + user.getGroup().getSchool() +
+    						"-" + user.getGroup().getCity() + "-" + user.getGroup().getState() +"-";
+    		suffix = suffix.replace(' ', '_');
+    		suffix = suffix.toLowerCase();
+    		if (!posterName.contains(suffix)) {
+				posterName = posterName + suffix + titleDate;
+    		}
    	    }
+   	    posterName = posterName.toLowerCase();   	    
        	dfile = posterName + ".data";
 	} else {
 		//EPeronja-06/28/2013 Find other posters by this user so we do not overwrite existing ones
@@ -368,8 +375,10 @@
 				divMsg.innerHTML = message;
 				return false;
 			}
-			if (! /^[a-zA-Z0-9_-.]+$/.test(posterName.value)) {
-				divMsg.innerHTML = "<i>* Poster File Name contains invalid characters. Use any alphanumeric combination, dashes or underscores.</i>";
+			if (! /^[a-zA-Z0-9_-]+$/.test(posterName.value)) {
+				var message = "Poster File Name contains invalid characters. Use any alphanumeric combination, dashes or underscores.";
+				divMsg.innerHTML = "<i>* "+message+"</i>";
+				alert(message);
 			    return false;
 			}
 			divMsg.innerHTML = "";
@@ -383,8 +392,7 @@
                 	<c:choose>
                 		<c:when test="${edit == true}" >
                 			<td></td>
-                        	<td valign="top" align="left"><input type="text" name="posterName" id="posterName" value="${posterName}"  style="visibility: hidden;" />                    	
-                								  <div id="errorMsg"></div></td>
+                        	<td valign="top" align="left"><input type="text" name="posterName" id="posterName" value="${posterName}"  style="visibility: hidden;" /></td>
                 		</c:when>
                 		<c:otherwise>
 		                	<td valign="top" align="right">Poster File Name:<br>(e.g.,poster_lifetime)</td>
@@ -429,7 +437,7 @@
                         if (name.equals("DATE")) {
                             val = dateString;
                         }
-                        else {
+                    else {
                             val = "";
                         }
                     }
