@@ -56,10 +56,16 @@
         posterName = posterName.replace('/', '_');
    	    if (action == null || action.equals("")) {
 			//let's make a unique title! It turned out that this code generated lots of orphans ;)
-			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd.HHmmss.SSSS");
+			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MMdd");
     		String titleDate = sdf.format(now.getTime());
-			posterName = posterName + "-" + elab.getName() + "-" + user.getGroup().getName() + "-" + titleDate;
-	       	posterName = posterName.replace(' ', '_');
+    		String suffix = "-" + elab.getName() + "-" + user.getGroup().getName() + 
+    						"-" + user.getGroup().getTeacher() + "-" + user.getGroup().getSchool() +
+    						"-" + user.getGroup().getCity() + "-" + user.getGroup().getState() +"-";
+    		suffix = suffix.replace(' ', '_');
+    		suffix = suffix.toLowerCase();
+    		if (!posterName.contains(suffix)) {
+				posterName = posterName + suffix + titleDate;
+    		}
    	    }
    	    posterName = posterName.toLowerCase();   	    
        	dfile = posterName + ".data";
@@ -370,7 +376,9 @@
 				return false;
 			}
 			if (! /^[a-zA-Z0-9_-]+$/.test(posterName.value)) {
-				divMsg.innerHTML = "<i>* Poster File Name contains invalid characters. Use any alphanumeric combination, dashes or underscores.</i>";
+				var message = "Poster File Name contains invalid characters. Use any alphanumeric combination, dashes or underscores.";
+				divMsg.innerHTML = "<i>* "+message+"</i>";
+				alert(message);
 			    return false;
 			}
 			divMsg.innerHTML = "";

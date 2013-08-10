@@ -25,6 +25,8 @@
 					<td>
 						<a href="../posters/new.jsp?action=edit&posterName=${fn:substringBefore(poster.tupleMap.name, ".data")}">${poster.tupleMap.title}</a>
 					</td>
+				</tr>
+				<tr>	
 					<td style="visibility:hidden;">
 						${fn:substringBefore(poster.tupleMap.name, ".data")}
 					</td>
