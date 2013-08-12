@@ -28,6 +28,7 @@
 	if (user != null) {
 		//login successful
 		ElabGroup.setUser(session, user);
+		session.setAttribute("user", user);
 		String prevPage = request.getParameter("prevPage");
 		String redirect = prevPage; 
 		if(prevPage == null) {
