@@ -35,15 +35,15 @@
 		<div id="container">		
 			<div id="content">
 				<h1>Users Logged In</h1>
-	    	   <table>
+	    	   <table style="border: 1px solid black; cell-padding: 5px;">
 	    	   		<tr>
 	    	   			<th>Session Id</th>
 	    	   			<th>Group Name</th>
 	    	   		</tr>
 	    	   		<c:forEach items="${activeUsers}" var="activeUsers">
 	    	   			<tr>
-	    	   				<td>${activeUsers.key }</td>
-	    	   				<td>${activeUsers.value}</td>
+	    	   				<td style="vertical-align: top;">${activeUsers.key }</td>
+	    	   				<td style="vertical-align: top;">${activeUsers.value}</td>
 	    	   			</tr>
 	    	   		</c:forEach>
 	    	   </table>
