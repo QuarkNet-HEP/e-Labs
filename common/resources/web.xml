@@ -98,10 +98,4 @@
     	<servlet-name>downloader</servlet-name>
     	<url-pattern>/ligo/data/download</url-pattern>
     </servlet-mapping>
-    <listener>
-    <description>sessionListener</description>
-    <listener-class>
-        gov.fnal.elab.SessionListener
-    </listener-class>
-	</listener>
 </web-app>
