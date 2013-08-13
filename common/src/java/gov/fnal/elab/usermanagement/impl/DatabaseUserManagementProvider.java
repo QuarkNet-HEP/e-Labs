@@ -79,12 +79,18 @@ public class DatabaseUserManagementProvider implements
             throws AuthenticationException {
         Connection conn = null;
         try {
+            System.out.println("try databaseusermanagementprovider in authenticate\n");
             conn = DatabaseConnectionManager
                     .getConnection(elab.getProperties());
+            System.out.println("got the connection\n");
             authenticateUser(conn, username, password); 
+            System.out.println("authenticate user\n");
             ElabGroup user = createUser(conn, username, password, elab.getId());
+            System.out.println("create user object\n");
             checkResearchGroup(conn, user, elab.getId());
+            System.out.println("checking elab id\n");
             updateUsage(conn, user);
+            System.out.println("about to return the user\n");
             return user;
         }
         catch (SQLException e) {
