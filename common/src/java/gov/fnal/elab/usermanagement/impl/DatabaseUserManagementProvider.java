@@ -89,7 +89,7 @@ public class DatabaseUserManagementProvider implements
             System.out.println("create user object " + user.toString());
             checkResearchGroup(conn, user, elab.getId());
             System.out.println("checking elab id " + String.valueOf(elab.getId()));
-            updateUsage(conn, user);
+            //updateUsage(conn, user);
             System.out.println("about to return the user\n");
             return user;
         }
@@ -182,18 +182,14 @@ public class DatabaseUserManagementProvider implements
     	PreparedStatement ps = c.prepareStatement("INSERT INTO usage (research_group_id) VALUES (?);");
     	ps.setInt(1, user.getGroup().getId());
     	System.out.println("guest:"+String.valueOf(user.getGroup().getId()));
-    	try {
-    		int rows = ps.executeUpdate();
-    		System.out.println("rows: "+String.valueOf(rows));
-    		if (rows != 1) {
-    			// logging?
-    			System.out.println("Weren't able to add statistics info "
-    					+ "to the database! " + rows + " rows updated. GroupID: "
-    					+ user.getGroup().getId() + "\n");
-    		}
-    	} catch (Exception e) {
-    		ps.close();
-    	}
+    	int rows = ps.executeUpdate();
+    	System.out.println("rows: "+String.valueOf(rows));
+        if (rows != 1) {
+            // logging?
+            System.out.println("Weren't able to add statistics info "
+                    + "to the database! " + rows + " rows updated. GroupID: "
+                    + user.getGroup().getId() + "\n");
+        }
         ps.close();
     }
 
