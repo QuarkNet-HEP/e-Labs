@@ -319,7 +319,7 @@ public class Elab implements Serializable {
         if (username != null && username.equals(properties.getGuestUserName())) {
             user.setGuest(true);
         }
-        Ssytem.out.println("before returning\n");
+        System.out.println("before returning\n");
         return user;
     }
     
