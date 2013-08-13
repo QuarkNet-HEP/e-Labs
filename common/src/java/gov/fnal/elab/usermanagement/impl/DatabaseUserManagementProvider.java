@@ -182,14 +182,18 @@ public class DatabaseUserManagementProvider implements
     	PreparedStatement ps = c.prepareStatement("INSERT INTO usage (research_group_id) VALUES (?);");
     	ps.setInt(1, user.getGroup().getId());
     	System.out.println("guest:"+String.valueOf(user.getGroup().getId()));
-    	int rows = ps.executeUpdate();
-    	System.out.println("rows: "+String.valueOf(rows));
-        if (rows != 1) {
-            // logging?
-            System.out.println("Weren't able to add statistics info "
-                    + "to the database! " + rows + " rows updated. GroupID: "
-                    + user.getGroup().getId() + "\n");
-        }
+    	try {
+    		int rows = ps.executeUpdate();
+    		System.out.println("rows: "+String.valueOf(rows));
+    		if (rows != 1) {
+    			// logging?
+    			System.out.println("Weren't able to add statistics info "
+    					+ "to the database! " + rows + " rows updated. GroupID: "
+    					+ user.getGroup().getId() + "\n");
+    		}
+    	} catch (Exception e) {
+    		ps.close();
+    	}
         ps.close();
     }
 
