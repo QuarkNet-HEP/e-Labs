@@ -178,9 +178,11 @@ public class DatabaseUserManagementProvider implements
     }
 
     private void updateUsage(Connection c, ElabGroup user) throws SQLException {
+    	System.out.println("in usage\n");
     	PreparedStatement ps = c.prepareStatement("INSERT INTO usage (research_group_id) VALUES (?);");
     	ps.setInt(1, user.getGroup().getId());
     	int rows = ps.executeUpdate();
+    	System.out.println("rows: "+String.valueOf(rows));
         if (rows != 1) {
             // logging?
             System.out.println("Weren't able to add statistics info "
