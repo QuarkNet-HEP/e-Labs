@@ -502,6 +502,11 @@
 		<tr>
 			<td colspan="2" align="center">
 			    <input type="hidden" name="showPoster" id="showPoster" value="" />
+			    <c:choose>
+			    	<c:when test="${edit}">
+			    		 <input type="hidden" name="action" id="action" value="edit" />
+			    	</c:when>
+			    </c:choose>
 	            <input type="submit" name="button" id="submitButton" value="${edit?'Save Changes':'Make Poster'}" onclick='return validatePosterName("posterName");' />
     	        <font size="-1">To see poster, don't block popups! Otherwise click <b>Display Poster</b> below.</font>
 			</td>
