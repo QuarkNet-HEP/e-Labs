@@ -313,7 +313,7 @@ public class Elab implements Serializable {
             throws AuthenticationException {
         ElabUserManagementProvider p = ElabFactory
                 .getUserManagementProvider(this);
-        System.out.println("in authenticate\n");
+        System.out.println("in authenticate" + p.toString());
         ElabGroup user = p.authenticate(username, password);
         System.out.println("after I got the user\n");
         if (username != null && username.equals(properties.getGuestUserName())) {
