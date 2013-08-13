@@ -163,9 +163,7 @@ public class DatabaseUserManagementProvider implements
     			"WHERE project_id = ? AND research_group_id = ?;");
     	ps.setInt(1, projectID);
     	ps.setInt(2, user.getGroup().getId());
-    	System.out.println("in check group");
         ResultSet rs = ps.executeQuery();
-        System.out.println("rs " + rs.toString());
         if (!rs.next() && !user.isTeacher() && !user.isAdmin() && !user.isGuest()) {
             throw new AuthenticationException(
                     "Your group isn't registered in this project, please tell your teacher" );
@@ -176,18 +174,14 @@ public class DatabaseUserManagementProvider implements
     private void updateUsage(Connection c, ElabGroup user) throws SQLException {
     	PreparedStatement ps = c.prepareStatement("INSERT INTO usage (research_group_id) VALUES (?);");
     	ps.setInt(1, user.getGroup().getId());
-    	try {
-	    	int rows = ps.executeUpdate();
-	        if (rows != 1) {
-	            // logging?
-	            System.out.println("Weren't able to add statistics info "
-	                    + "to the database! " + rows + " rows updated. GroupID: "
-	                    + user.getGroup().getId() + "\n");
-	        }
-	        ps.close();
-    	} catch (Exception e) {
-    		System.out.println(e.getMessage());
-    	}
+     	int rows = ps.executeUpdate();
+        if (rows != 1) {
+            // logging?
+            System.out.println("Weren't able to add statistics info "
+                    + "to the database! " + rows + " rows updated. GroupID: "
+                    + user.getGroup().getId() + "\n");
+        }
+        ps.close();
     }
 
     private ElabGroup createUser(Connection c, String username, String password,
