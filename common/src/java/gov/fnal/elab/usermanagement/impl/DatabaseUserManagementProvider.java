@@ -89,7 +89,7 @@ public class DatabaseUserManagementProvider implements
             System.out.println("create user object " + user.toString());
             checkResearchGroup(conn, user, elab.getId());
             System.out.println("checking elab id " + String.valueOf(elab.getId()));
-            updateUsage(conn, user);
+            //updateUsage(conn, user);
             System.out.println("about to return the user\n");
             return user;
         }
