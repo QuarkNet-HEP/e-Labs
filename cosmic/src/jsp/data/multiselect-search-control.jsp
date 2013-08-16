@@ -12,7 +12,6 @@
 
 <%SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false); 
-
 %>
 <script type="text/javascript">
 $(function() {
@@ -95,8 +94,8 @@ $(window).scroll(function(){
 <form action="controller.jsp" name="search" method="post">
 	<e:select name="key" id="selectOptions" valueList="city, group, school, state, teacher, detectorid"
 		        labelList="City, Group, School, State/Country, Teacher, Detector ID"
-		        default="${param.key}"/>
-	<input name="value" id="name" size="40" maxlength="40" value="${param.value}"  />
+		        default="${key}"/>
+	<input name="value" id="name" size="40" maxlength="40" value="${value}"  />
 	<input type="submit" name="action" value="Search Data" />
 	
 	<e:vswitch>
@@ -120,12 +119,12 @@ $(window).scroll(function(){
 						</select>
 					</td>
 					<td>
-						<e:trinput name="date1" id="date1" size="10" maxlength="15" class="datepicker" />
+						<e:trinput name="date1" id="date1" size="10" maxlength="15" class="datepicker" value="${date1}"/>
 						to
-						<e:trinput name="date2" id="date2" size="10" maxlength="15" class="datepicker" />
+						<e:trinput name="date2" id="date2" size="10" maxlength="15" class="datepicker" value="${date2}"/>
 					</td>
 				</tr>
-				<!-- Sort field and search-within-data don't work. 
+				<!-- 
 				<tr>
 					<td align="right">
 						<e:select name="sortDirection" valueList="sortAsc, sortDesc" labelList="Sort Ascending, Sort Descending"/>
@@ -136,24 +135,24 @@ $(window).scroll(function(){
 							labelList="City, State, Geometry, Blessed, Group, Academic Year, Detector ID, Upload Date, Channel 1 events, Channel 2 events, Channel 3 events, Channel 4 events"/>
 					</td>
 				</tr>
+				-->
 				<tr>
 					<td align="right" valign="middle">
 					    Search:
 					</td>
 					<td>
 				    	<input type="radio" name="searchIn" value="all" checked="true" />All data
-					    <input type="radio" name="searchIn" value="within"/ >Within results
+					    <input type="radio" name="searchIn" value="within"/ >Refine results with extra parameters
 					</td>
 				</tr>
-				-->
 				<tr>
 					<td>
 						Stacked:
-						<e:select name="stacked" valueList="all, yes, no" labelList="All, Yes, No"/>
+						<e:select name="stacked" valueList="all, yes, no" selected="${stacked}" labelList="All, Yes, No"/>
 					</td>
 					<td>
 						Blessed:
-						<e:select name="blessed" valueList="all, yes, no" labelList="All, Yes, No"/>
+						<e:select name="blessed" valueList="all, yes, no" labelList="All, Yes, No" selected="${blessed}"/>
 					</td>
 				</tr>
 			</table>

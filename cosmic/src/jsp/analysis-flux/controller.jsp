@@ -64,6 +64,7 @@
 		String date2 = request.getParameter("date2");
 		String stacked = request.getParameter("stacked");
 		String blessed = request.getParameter("blessed");
+
 		//EPeronja-06/12/2013: 63: Data search by state requires 2-letter state abbreviation
 		String abbreviation = "";
 		if (key.equals("state")) {
@@ -88,7 +89,16 @@
 		
 	    and.add(new Equals("type", "split"));
 	    and.add(new Equals("project", elab.getName()));
-		
+	    //EPeronja-08/05/2013 284: Data search within results don't have any hooks --> fixed
+		if ("within".equals(request.getParameter("searchIn"))) {
+			MultiQueryElement ql = (MultiQueryElement) session.getAttribute("previousSearch");
+			Collection elements =  ql.getAll();
+			Iterator iterator = elements.iterator();
+			while (iterator.hasNext()) {
+				and.add((QueryElement) iterator.next());
+			}
+		}		
+	    
 		// Allow use of asterisk wildcards, remove leading/trailing whitespace 
 		if (StringUtils.isNotBlank(value) && !key.equals("all")) {
 			value = value.replace('*', '%').trim();
@@ -167,6 +177,13 @@
 		searchResultsStructured.setTime(totalTime);
 		
 		// Stuff our results in our session.
+		session.setAttribute("key", key);
+		session.setAttribute("value", value);
+		session.setAttribute("date1", date1);
+		session.setAttribute("date2", date2);
+		session.setAttribute("stacked", stacked);
+		session.setAttribute("blessed", blessed);
+		session.setAttribute("previousSearch", and);
 		session.setAttribute("srs", searchResultsStructured);
 		session.setAttribute("msg", msg);
 		// Send it back home to display 
