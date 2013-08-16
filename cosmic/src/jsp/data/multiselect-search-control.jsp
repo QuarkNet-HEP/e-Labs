@@ -142,7 +142,7 @@ $(window).scroll(function(){
 					</td>
 					<td>
 				    	<input type="radio" name="searchIn" value="all" checked="true" />All data
-					    <input type="radio" name="searchIn" value="within"/ >Within results
+					    <input type="radio" name="searchIn" value="within"/ >Refine results with extra parameters
 					</td>
 				</tr>
 				<tr>
