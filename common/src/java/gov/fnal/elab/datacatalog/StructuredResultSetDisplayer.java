@@ -275,7 +275,7 @@ public class StructuredResultSetDisplayer {
             crtRow++;
         }
         crtCol++;
-        out.write("<td class=\"data-file\">");
+        out.write("<td class=\"data-file\" style=\"vertical-align: bottom;\" >");
     }
     
     //EPeronja-06/25/2013: 289- Lost functionality on data search
@@ -299,12 +299,13 @@ public class StructuredResultSetDisplayer {
     
     public void displayFileContents(JspWriter out, File file)
             throws IOException {
+        out.write("<strong>"+DateFormatUtils.format(file.getDate(), DAY_FORMAT)+"</strong>");
         out.write("<a class=\"file-link\" href=\"../data/view.jsp?filename=");
         out.write(file.getLFN());
         out.write("\"");
         out.write(" title=\""+ buildMetadata(file));
         out.write("\">");
-        out.write(DateFormatUtils.format(file.getDate(), DAY_FORMAT));
+        out.write("<img src=\"../graphics/view_data.gif\"/>");
         out.write("</a>");
         //EPeronja-07/22/2013: 556- Cosmic data search: requests from fellows 07/10/2013 (changed icons for comments)
         out.write("<a href=\"../jsp/comments-add.jsp?fileName=");
