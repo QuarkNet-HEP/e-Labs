@@ -57,8 +57,10 @@
 						    throw new ElabJspException("no user associated with the file");
 						}
 						ElabGroup posterUser = elab.getUserManagementProvider().getGroup(posterUserName);
-						if (!user.getName().equals(posterUser.getName())) {
-						    throw new ElabJspException("you are not the owner of the file");
+						if (!user.getName().equals("admin")) {
+							if (!user.getName().equals(posterUser.getName())) {
+							    throw new ElabJspException("you are not the owner of the file");
+							}
 						}
 						ok.add(entry);
 					}
