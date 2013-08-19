@@ -8,7 +8,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Current Data</title>
-		<!--[if IE]><script language="javascript" type="text/javascript" src="../include/excanvas.min.js"></script><![endif]-->
+		<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../include/excanvas.min.js"></script><![endif]-->
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
