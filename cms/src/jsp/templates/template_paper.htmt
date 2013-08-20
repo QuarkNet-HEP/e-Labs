@@ -9,17 +9,6 @@
 				font: 14px arial, helvetica, sans-serif;
 				background-color: #FFFFFF;
 			}
-			img.Image { max-width: 100%; }
-			div#img1 { width: 600px; }
-			div#img2 { width: 600px; }
-			div#img3 { width: 600px; }
-			div#img4 { width: 600px; }
-			div#img5 { width: 600px; }
-			div#img6 { width: 600px; }
-			div#img7 { width: 600px; }
-			div#img8 { width: 600px; }
-			div#img9 { width: 600px; }
-			div#img10 { width: 600px; }
 			-->
 		</style>
 		<script type="text/javascript">
@@ -59,16 +48,16 @@
 			
 			<h2>Figures</h2>
 			<center>
-			<div id="img1"><script language="JAVASCRIPT">writeCode("Figure 1","%FIG:FIGURE1%","%WORDS:CAPTION1%")</script></div>
-			<div id="img2"><script language="JAVASCRIPT">writeCode("Figure 2","%FIG:FIGURE2%","%WORDS:CAPTION2%")</script></div>
-			<div id="img3"><script language="JAVASCRIPT">writeCode("Figure 3","%FIG:FIGURE3%","%WORDS:CAPTION3%")</script></div>
-			<div id="img4"><script language="JAVASCRIPT">writeCode("Figure 4","%FIG:FIGURE4%","%WORDS:CAPTION4%")</script></div>
-			<div id="img5"><script language="JAVASCRIPT">writeCode("Figure 5","%FIG:FIGURE5%","%WORDS:CAPTION5%")</script></div>
-			<div id="img6"><script language="JAVASCRIPT">writeCode("Figure 6","%FIG:FIGURE6%","%WORDS:CAPTION6%")</script></div>
-			<div id="img7"><script language="JAVASCRIPT">writeCode("Figure 7","%FIG:FIGURE7%","%WORDS:CAPTION7%")</script></div>
-			<div id="img8"><script language="JAVASCRIPT">writeCode("Figure 8","%FIG:FIGURE8%","%WORDS:CAPTION8%")</script></div>
-			<div id="img9"><script language="JAVASCRIPT">writeCode("Figure 9","%FIG:FIGURE9%","%WORDS:CAPTION9%")</script></div>
-			<div id="img10"><script language="JAVASCRIPT">writeCode("Figure 10","%FIG:FIGURE10%","%WORDS:CAPTION10%")</script></div>
+			<script language="JAVASCRIPT">writeCode("Figure 1","%FIG:FIGURE1%","%WORDS:CAPTION1%")</script>
+			<script language="JAVASCRIPT">writeCode("Figure 2","%FIG:FIGURE2%","%WORDS:CAPTION2%")</script>
+			<script language="JAVASCRIPT">writeCode("Figure 3","%FIG:FIGURE3%","%WORDS:CAPTION3%")</script>
+			<script language="JAVASCRIPT">writeCode("Figure 4","%FIG:FIGURE4%","%WORDS:CAPTION4%")</script>
+			<script language="JAVASCRIPT">writeCode("Figure 5","%FIG:FIGURE5%","%WORDS:CAPTION5%")</script>
+			<script language="JAVASCRIPT">writeCode("Figure 6","%FIG:FIGURE6%","%WORDS:CAPTION6%")</script>
+			<script language="JAVASCRIPT">writeCode("Figure 7","%FIG:FIGURE7%","%WORDS:CAPTION7%")</script>
+			<script language="JAVASCRIPT">writeCode("Figure 8","%FIG:FIGURE8%","%WORDS:CAPTION8%")</script>
+			<script language="JAVASCRIPT">writeCode("Figure 9","%FIG:FIGURE9%","%WORDS:CAPTION9%")</script>
+			<script language="JAVASCRIPT">writeCode("Figure 10","%FIG:FIGURE10%","%WORDS:CAPTION10%")</script>
 			</center>
 			
 			<h2>Discussion and Conclusions</h2>
