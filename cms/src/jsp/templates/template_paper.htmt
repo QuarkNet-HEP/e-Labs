@@ -10,7 +10,6 @@
 				background-color: #FFFFFF;
 			}
 			-->
-		</style>
 		<script type="text/javascript">
             function writeCode(linkText, fileName, caption) {
                     iFigure = fileName.indexOf("%FIG:FIGURE");
