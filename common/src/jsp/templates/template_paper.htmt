@@ -9,6 +9,17 @@
 				font: 14px arial, helvetica, sans-serif;
 				background-color: #FFFFFF;
 			}
+			img.Image { max-width: 100%; }
+			div#img1 { width: 600px; }
+			div#img2 { width: 600px; }
+			div#img3 { width: 600px; }
+			div#img4 { width: 600px; }
+			div#img5 { width: 600px; }
+			div#img6 { width: 600px; }
+			div#img7 { width: 600px; }
+			div#img8 { width: 600px; }
+			div#img9 { width: 600px; }
+			div#img10 { width: 600px; }
 			-->
 		</style>
 	</head>
