@@ -83,7 +83,7 @@
 		<img class="flotifiable" src="../data/plot-image.jsp?${params}" />
 		<div id="plot-template" style="display: none">
 			<div class="frame" style="position: relative;">
-				<div class="placeholder" style="width:768px;height:380px; margin-bottom: 16px; margin-left: 16px;"></div>
+				<div class="placeholder" style="width:700px;height:380px; margin-bottom: 16px; margin-left: 16px;"></div>
 				<div class="xlabel" style="position: absolute; left: 400px; bottom: -24px;"></div>
 				<div class="ylabel" style="position: absolute; left: -60px; top: 200px;writing-mode: tb-rl; filter: flipV flipH; -webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);"></div>
 			</div>
