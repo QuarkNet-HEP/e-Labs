@@ -3,10 +3,11 @@
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.util.*" %>
-
+<%
+request.setAttribute("project", elab.getName());
+%>
 <c:if test="${!empty searchResults}">
 	You can sort the results by clicking on the header. 
-	
 	<script type="text/javascript" src="../include/jquery/js/jquery-1.4.3.min.js"></script>
 	<script type="text/javascript" src="../include/jquery/js/jquery.tablesorter.min.js"></script>
 	<link type="text/css" rel="stylesheet" href="../include/jquery/css/blue/style.css" />
@@ -33,7 +34,14 @@
 				<th>City</th>
 				<th>State</th>
 				<th>Year</th>
-				<th>&nbsp;</th>
+				<c:choose>
+					<c:when test='${project == "cms" }'>
+						<th>Printing papers? Select landscape in your printer options.</th>
+					</c:when>
+					<c:otherwise>
+						<th>&nbsp;</th>
+					</c:otherwise>
+				</c:choose>
 			</tr>
 		</thead>
 		<tbody>

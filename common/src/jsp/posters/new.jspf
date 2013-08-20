@@ -510,7 +510,7 @@
 			    	</c:when>
 			    </c:choose>
 	            <input type="submit" name="button" id="submitButton" value="${edit?'Save Changes':'Make Poster'}" onclick='return validatePosterName("posterName");' />
-    	        <font size="-1">To see poster, don't block popups! Otherwise click <b>Display Poster</b> below.</font>
+    	        To see poster, don't block popups! Otherwise click <b>Display Poster</b> below.
 			</td>
 		</tr>
 		<c:choose>
