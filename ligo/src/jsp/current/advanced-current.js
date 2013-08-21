@@ -247,7 +247,8 @@ function logCheckboxCB() {
 	if (logCheckedY == true) {
 		ty = ln;
 		ity = exp; 
-		if (plot != null && plot.getAxes().yaxis.max - plot.getAxes().yaxis.min > 5) {
+		//if (plot != null && plot.getAxes().yaxis.max - plot.getAxes().yaxis.min > 5) {
+		if (plot != null) {
 			// heuristic so that my log algorithm doesn't crunch small numbers.
 			tfy = logTickFormatter;
 		}
@@ -279,10 +280,10 @@ function isNumeric(v) {
 
 function validateNumericInput(id) {
 	var val = $(id).val();
-	
 	if (isNumeric(val)) {
 		$(id).css("background-color", "white");
-		return parseInt(val);
+		//return parseInt(val);
+		return val;
 	}
 	else {
 		$(id).css("background-color", "red");
