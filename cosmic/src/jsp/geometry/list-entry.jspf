@@ -29,7 +29,7 @@
         </a>
     </td> 
     <td>
-        <a href="saveas.jsp?detectorID=${e.detectorID}&jd=${e.julianDay}&action=saveas" title="Save As">
+        <a href="saveas.jsp?detectorID=${e.detectorID}&jd=${e.julianDay}&action=saveas" title="Duplicate">
         	<img border="0" src="../graphics/saveas.gif" />
         </a>
     </td>    
