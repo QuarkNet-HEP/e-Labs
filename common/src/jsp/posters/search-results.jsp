@@ -24,6 +24,17 @@ request.setAttribute("project", elab.getName());
 	</script>
 
 	<table id="search-results" class="tablesorter">
+	   	<colgroup>
+       		<col span="1" style="width: 25%;">
+       		<col span="1" style="width: 10%;">
+       		<col span="1" style="width: 10%;">
+       		<col span="1" style="width: 10%;">
+       		<col span="1" style="width: 10%;">
+       		<col span="1" style="width: 10%;">
+       		<col span="1" style="width: 5%;">
+       		<col span="1" style="width: 5%;">
+       		<col span="1" style="width: 15%;">
+    	</colgroup>
 		<thead>
 			<tr>
 				<th>Title</th>
