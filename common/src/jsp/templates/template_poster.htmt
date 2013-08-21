@@ -60,7 +60,7 @@
 						<table class="poster_detail_head" width="302">
 							<a name="abstract"></a>
 							<tr>
-								<td align="left" class="poster_detail_body">
+								<td class="poster_detail_body">
 									<p class="poster_detail_subhead">Introduction</p>
 									<p>
 										%PARA:INTRODUCTION%
