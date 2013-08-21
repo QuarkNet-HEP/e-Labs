@@ -66,9 +66,6 @@
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	
@@ -99,7 +96,8 @@
 				$("#status-results").tablesorter({ sortList: [[0,0]] },{ headers: {4:{sorter:false} }} );
 			}
 		}); 
-		</script>				
+		</script>		
+			
 			<h1>Publish Posters</h1>
 			<c:choose>
 					<c:when test="${empty posters}">
@@ -122,7 +120,14 @@
 								<c:forEach items="${posters}" var="posters">
 									<tr>
 										<td>
-											<input type="hidden" value="${posters.value.tupleMap.status }"></input>
+											<c:choose>
+												<c:when test="${not empty posters.value.tupleMap.status}">
+													<input type="hidden" value="${posters.value.tupleMap.status }"></input>
+												</c:when>
+												<c:otherwise>
+													<input type="hidden" value="none"></input>												
+												</c:otherwise>
+											</c:choose>
 							    			<select id="select_${posters.key}" name="setStatus" >
 							    				<option value="none"></option>
 							    				<c:choose>
