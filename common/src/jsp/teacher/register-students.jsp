@@ -17,6 +17,13 @@
 		<script type="text/javascript" src="../include/elab.js"></script>
         <script type="text/javascript" src="../include/util-functions.js"></script>
         <script type="text/javascript" src="../include/clear-default-text.js"></script>
+        <script>
+        	function checkEnteredData() {
+        		var allOK = true;
+        		
+        		return allOK;
+        	}
+        </script>
 	</head>
 	
 	<body id="register-students" class="teacher">
@@ -302,7 +309,7 @@
 					<tr>
 						<td>&nbsp;</td>
 						<td align="right" colspan="4">
-							<input type="submit" name="submit" value="I'm done"/>
+							<input type="submit" name="submit" value="I'm done" onclick="return checkEnteredData();"/>
 						</td>
 					</tr>
 				</table>
