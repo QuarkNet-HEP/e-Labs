@@ -28,7 +28,6 @@
 			<div id="content">
 
 <h1>e-Lab Registration</h1>
-
 <table border="0" id="registration-links-table">
 	<%--
 	<tr>
@@ -45,12 +44,24 @@
 		</td>
 	</tr>
 	 --%>
+	 <tr>
+	 	<td colspan="2"><i>No longer at the same school? Contact <a href="<%= mailURL %>">e-labs@fnal.gov</a> for a new account.</i></td>
+	 </tr>
+	 <tr><td colspan="2"> </td></tr>
+	<tr>
+		<td  valign="top" width="40%">
+			<a href="email-update.jsp">Change your e-mail address.</a>
+		</td>
+		<td valign="top">
+			Use this link to update your e-mail address.
+		</td>
+	</tr>
 	<tr>
 		<td  valign="top" width="40%">
 			<a href="register-students.jsp">Register student research groups.</a>
 		</td>
 		<td valign="top">
-			Use this page to register less than ten students. You can link new students to existing 
+			Use this link to register less than ten students. You can link new students to existing 
 			research groups or you can create new research groups for students.
 		</td>
 	</tr>
