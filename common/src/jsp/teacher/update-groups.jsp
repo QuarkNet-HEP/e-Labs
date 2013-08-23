@@ -47,6 +47,23 @@
 	String submit = request.getParameter("submit");
 	String prevPage = request.getParameter("prevPage");
 	String[] studentsToDelete = request.getParameterValues("deleteStudents");
+	ArrayList<String> academicYearValues = new ArrayList<String>();
+	ArrayList<String> academicYearLabels = new ArrayList<String>();
+	int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+	int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+	for (int i = 2004; i <= currentYear+1; i++){
+		academicYearValues.add("AY"+String.valueOf(i));
+		academicYearLabels.add(String.valueOf(i)+"-"+String.valueOf(i + 1));
+	}
+	//take into account that year changes in July
+	int defaultYear = currentYear;
+	if (currentMonth > 6) {
+		defaultYear = currentYear + 1;
+	}
+	
+	request.setAttribute("academicYearValues", academicYearValues);
+	request.setAttribute("academicYearLabels", academicYearLabels);
+	request.setAttribute("defaultYear", defaultYear);
 	
 	if ("Update Group Information".equals(submit)) {
 		if (groupName != null && ay != null && survey != null) {
@@ -156,8 +173,8 @@
 					<label for="ay">Academic Year:</label>
 				</td>
 				<td>
-					<e:trselect name="ay" valueList="AY2004, AY2005, AY2006, AY2007, AY2008, AY2009, AY2010, AY2011, AY2012"
-						labelList="2004-2005, 2005-2006, 2006-2007, 2007-2008, 2008-2009, 2009-2010, 2010-2011, 2011-2012, 2012-2013"
+					<e:trselect name="ay" valueList="${academicYearValues}"
+						labelList="${academicYearLabels}"
 						value="${group.year}"/>
 				</td>
 			</tr>
