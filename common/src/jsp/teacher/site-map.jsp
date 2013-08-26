@@ -60,7 +60,7 @@
 					</e:restricted>
 					<li><a href="registration.jsp">General Registration</a></li>
 					<li><a href="register-students.jsp">Student Research Group Registration</a></li>
-                    <li><a href="mass-registration.jsp">Mass Registration (Spreadsheet)</a></li>
+                    <!-- <li><a href="mass-registration.jsp">Mass Registration (Spreadsheet)</a></li>-->
                     <li><a href="update-groups.jsp">Update Student Research Groups</a></li>
                     <li><a href="update-group-projects.jsp">Update e-Lab Assignments for Groups</a></li>
 					<li><a href="site-map.jsp">Site Map</a></li>
