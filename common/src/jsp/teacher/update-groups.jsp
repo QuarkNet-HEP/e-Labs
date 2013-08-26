@@ -44,6 +44,7 @@
 	String detectorString = request.getParameter("detectorString");
 	String passwd1 = request.getParameter("passwd1");
 	String passwd2 = request.getParameter("passwd2");
+	String active = request.getParameter("active");
 	String submit = request.getParameter("submit");
 	String prevPage = request.getParameter("prevPage");
 	String[] studentsToDelete = request.getParameterValues("deleteStudents");
@@ -124,7 +125,14 @@
 					group.setSurvey(false);
 					group.setNewSurvey(false);
 				}
-				
+				//check whether we need to set this group as inactive
+				if (active != null) {
+					if (active.equals("on")) {
+						group.setActive(true);
+					}
+				} else {
+					group.setActive(false);
+				}				
 				elab.getUserManagementProvider().updateGroup(group, passwd1);
 				if (studentsToDelete != null) {
 					for (String s : studentsToDelete) {
@@ -132,6 +140,7 @@
 						elab.getUserManagementProvider().deleteStudent(group, studentToDelete);
 					}
 				}
+					
 				out.write("<div class=\"results\">" + groupName + "'s information was successfully updated. ");
 				if (StringUtils.isNotBlank(prevPage) && !prevPage.endsWith("null")) {
 					out.write("<a href=\"" + java.net.URLDecoder.decode(prevPage) + "\">Click here to continue onto the e-lab</a>");
@@ -247,6 +256,19 @@
 				</td>
 				<td>
 					<input type="password" name="passwd2" size="16" maxlength="72"/>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="active">Active:</label></td>
+				<td>
+					<c:choose>
+						<c:when test="${group.active == true}">
+							<input type="checkbox" name="active" checked></input>
+						</c:when>
+						<c:otherwise>
+							<input type="checkbox" name="active"></input>
+						</c:otherwise>
+					</c:choose>									
 				</td>
 			</tr>
 			<c:if test="${not empty group.students}">

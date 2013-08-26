@@ -20,8 +20,80 @@
         <script>
         	function checkEnteredData() {
         		var allOK = true;
+    			var messages = document.getElementById("messages");
+    			messages.innerHTML = "";
+        		var existingGroup = document.getElementsByClassName("existingGroups");
+				for (var i = 0; i < 10; i++) {
+					var newGroup = document.getElementById("res_name_text"+i);
+					allOK = checkGroupName(newGroup);
+					if (newGroup != null && newGroup.value != "Group Name") {
+	        			for (var j = 0; j < existingGroup.length; j++) {
+	        				if (newGroup.value == existingGroup[j].name) {
+	        					allOK = false;
+	        	    			if (existingGroup[j].value < 4) {
+	    	    	    			messages.innerHTML = "<i>* Cannot Save. "+newGroup.value+" already exists, add your student to the group instead of trying to create a new one.</i>";
+	        	    			} else {
+	        	    				messages.innerHTML = "<i>* Cannot Save. "+newGroup.value+" exists and already has the maximum number of students allowed per group. Please make a new group.</i>";
+	        	    			}        					
+	        				}
+	        			}
+        			}
+        		}	
+        		var chosenGroups = document.getElementsByClassName("chosenGroups");
+        		for (var i = 0; i < chosenGroups.length; i++) {
+        			for (var j = 0; j < existingGroup.length; j++) {
+        				if (chosenGroups[i].value == existingGroup[j].name) {
+            				alert(chosenGroups[i].value + "-" + existingGroup[j].name);
+        	    			if (existingGroup[j].value == 4) {
+            					allOK = false;
+        	    				messages.innerHTML = "<i>* Cannot Save. "+chosenGroups[i].value+" exists and already has the maximum number of students allowed per group. Please make a new group.</i>";
+        	    			}        					
+        				}
+        			}
+        		}
         		
         		return allOK;
+        	}
+        	function checkNewGroup(object) {
+        		checkExists(object);
+        		checkGroupName(object);
+        	}
+        	function checkExists(object) {
+    			var messages = document.getElementById("messages");
+    			messages.innerHTML = "";
+        		var existingGroup = document.getElementsByClassName("existingGroups");
+        		for (var i = 0; i < existingGroup.length; i++) {
+    	    		if (object.value == existingGroup[i].name) {
+    	    			if (existingGroup[i].value < 4) {
+	    	    			messages.innerHTML = "<i>* "+object.value+" already exists, add your student to the group instead of trying to create a new one.</i>";
+    	    			} else {
+    	    				messages.innerHTML = "<i>* "+object.value+" exists and already has the maximum number of students allowed per group. Please make a new group.</i>";
+    	    			}
+    	    		}
+        		}
+        	}
+        	function checkGroupName(object) {
+        		if (object != null) {
+        			var messages = document.getElementById("messages");
+	    			if (! /^[a-zA-Z0-9_-]+$/.test(object.value)) {
+	    				var message = "Group Name contains invalid characters. Use any alphanumeric combination, dashes or underscores.";
+	    				messages.innerHTML = "<i>* "+message+"</i>";
+	    				return false;
+	    			}
+	        	}
+        		return true;
+        	}
+        	function checkMaxNumber(object) {
+    			var messages = document.getElementById("messages");
+    			messages.innerHTML = "";
+        		var existingGroup = document.getElementsByClassName("existingGroups");
+        		for (var i = 0; i < existingGroup.length; i++) {
+    	    		if (object.value == existingGroup[i].name) {
+    	    			if (existingGroup[i].value == 4) {
+    	    				messages.innerHTML = "<i>* "+object.value+" exists and already has the maximum number of students allowed per group. Please make a new group.</i>";
+    	    			}
+    	    		}
+        		}       		
         	}
         </script>
 	</head>
@@ -43,7 +115,8 @@
 <%
 	Integer newSurveyId = null; 
 	boolean teacherInStudy = "yes".equalsIgnoreCase(request.getParameter("eval"));
-
+	TreeMap<String, Integer> teacherGroups = new TreeMap<String, Integer>();
+	
 	// Only for teachers in our study. 
 	if (teacherInStudy) {
 		%> <i>You have agreed to enter our study</i><% 
@@ -83,11 +156,15 @@
 		if (!existsInSurvey) {
 			String name = group.getName();
 			if (!name.equals(user.getName())) {
+				if (group.getActive()) {
 			    optionList += "<option value=\"" + name + "\">" + name + "</option>";
+			    teacherGroups.put(name, group.getStudents().size());
+				}
 			}
 		}
 	}
-
+	request.setAttribute("teacherGroups", teacherGroups);
+	
 	String submit = request.getParameter("submit");
 	if (submit != null) {
 	    try {
@@ -110,6 +187,8 @@
 				if (resName == null || resName.equals("Group Name")) {
 					resName = resNameChoose;
 					isNewGroup = false;
+				} else {
+					resName = resName.replaceAll(" ", "_");
 				}
 				
 				if (last == null || first == null || resName == null ||
@@ -270,8 +349,8 @@
 		<div id="group_line<%=i%>" style="<%=visibility%> border-left:3px solid #AAAAAA; padding-left:5px; padding-bottom:5px; padding-top:5px;">
         	<input type="text" name="first<%=i%>" size="14" maxlength="30" value="First Name" class="cleardefault"/>
 			<input type="text" name="last<%=i%>" size="14" maxlength="30" value="Last Name" class="cleardefault"/>
-			<input id="res_name_text<%=i%>" type="text" name="res_name<%=i%>" size="14" maxlength="30" value="Group Name" style="visibility:hidden; display:none;" onChange="<%=textChange%>" class="cleardefault">
-			<select id="res_name_chooser<%=i%>" style="visibility:visible; display:;" name="res_name_choose<%=i%>">
+			<input id="res_name_text<%=i%>" type="text" name="res_name<%=i%>" size="14" maxlength="30" value="Group Name" style="visibility:hidden; display:none;" onChange="checkNewGroup(this);<%=textChange%>" class="cleardefault">
+			<select id="res_name_chooser<%=i%>" class="chosenGroups" style="visibility:visible; display:;" name="res_name_choose<%=i%>" onChange="checkMaxNumber(this);">
             	<%=optionList%>
 			</select>
 			<input type="submit" name="is_new<%=i%>" value="Make New Group" 
@@ -307,12 +386,22 @@
 						}//for i = 0..9
 					%>
 					<tr>
+						<td colspan="2"><div id="messages"></div></td>
+					</tr>
+					<tr>
 						<td>&nbsp;</td>
 						<td align="right" colspan="4">
 							<input type="submit" name="submit" value="I'm done" onclick="return checkEnteredData();"/>
 						</td>
 					</tr>
 				</table>
+				<c:choose>
+					<c:when test="${not empty teacherGroups}">
+					 	<c:forEach items="${teacherGroups}" var="teacherGroups">
+					 		<input type="hidden" name="${teacherGroups.key}" id="tg_${teacherGroups.key}" class="existingGroups" value="${teacherGroups.value}"></input>
+					 	</c:forEach>
+					</c:when>
+				</c:choose>
 			</form>
 		<%
 	}//some else up there

@@ -29,7 +29,7 @@ public class ElabGroup implements Comparable<ElabGroup> {
 
     private String role, userArea, userDirURL, userDir, name,
             webapp, email;
-    private boolean firstTime, guest, survey;
+    private boolean firstTime, guest, survey, active;
     private Elab elab;
     private String year, city, state, school, teacher;
     private String namelc;
@@ -118,6 +118,14 @@ public class ElabGroup implements Comparable<ElabGroup> {
         this.survey = survey;
     }
 
+    public boolean getActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+    
     /**
      * Returns the ID of the teacher that this user belongs to
      */
@@ -446,6 +454,9 @@ public class ElabGroup implements Comparable<ElabGroup> {
         sb.append(", ");
         sb.append("survey=");
         sb.append(survey);
+        sb.append(", ");
+        sb.append("active=");
+        sb.append(active);
         sb.append(", ");
         sb.append("newsurvey=");
         sb.append(newSurveyId);

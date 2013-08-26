@@ -187,7 +187,7 @@ public class DatabaseUserManagementProvider implements
     private ElabGroup createUser(Connection c, String username, String password,
             int projectId) throws SQLException, AuthenticationException {
     	PreparedStatement ps = c.prepareStatement(
-    			"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+    			"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id, rg.active " +
     			"FROM research_group AS rg " +
     			"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
     			"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
@@ -204,7 +204,7 @@ public class DatabaseUserManagementProvider implements
     private ElabGroup createUser(Connection c, String username, int projectId)
             throws SQLException, ElabException {
 		PreparedStatement ps = c.prepareStatement(
-        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id, rg.active " +
         		"FROM research_group AS rg " +
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
@@ -224,7 +224,7 @@ public class DatabaseUserManagementProvider implements
             throws SQLException, ElabException {
     	String name = "";
         PreparedStatement ps = c.prepareStatement(
-        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id, rg.active " +
         		"FROM research_group AS rg " +
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
@@ -251,6 +251,7 @@ public class DatabaseUserManagementProvider implements
         user.setTeacherId(rs.getInt("teacher_id"));
         user.setRole(rs.getString("role"));
         user.setSurvey(rs.getBoolean("survey"));
+        user.setActive(rs.getBoolean("active"));
         user.setUserArea(rs.getString("userarea"));
         user.setStudy(rs.getBoolean("in_study"));
         user.setNewSurvey(rs.getBoolean("new_survey"));
@@ -307,7 +308,7 @@ public class DatabaseUserManagementProvider implements
     private ElabGroup createGroup(Connection c, String groupName,
             int projectId) throws SQLException {
         PreparedStatement ps = c.prepareStatement(
-        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id, rg.active " +
         		"FROM research_group AS rg " +
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
@@ -330,6 +331,7 @@ public class DatabaseUserManagementProvider implements
         user.setFirstTime(rs.getBoolean("first_time"));
         user.setStudy(rs.getBoolean("in_study"));
         user.setNewSurvey(rs.getBoolean("new_survey"));
+        user.setActive(rs.getBoolean("active"));
         user.setNewSurveyId((Integer) rs.getObject("test_id")); 
         setMiscGroupData(user, rs.getString("ay"), user.getUserArea());
         
@@ -633,7 +635,7 @@ public class DatabaseUserManagementProvider implements
             String hashedPassword = BCrypt.hashpw(pass, BCrypt.gensalt(12));
             ps = c.prepareStatement(
             		"INSERT INTO research_group " +
-            		"(name, hashedpassword, teacher_id, role, userarea, ay, survey, new_survey, in_study) " +
+            		"(name, hashedpassword, teacher_id, role, userarea, ay, survey, new_survey, in_study, active) " +
             		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;");
             ps.setString(2, hashedPassword);
             ps.setInt(3, et.getTeacherId());
@@ -643,6 +645,7 @@ public class DatabaseUserManagementProvider implements
             ps.setBoolean(7, group.getSurvey());
             ps.setBoolean(8, group.isNewSurvey());
             ps.setBoolean(9, group.isStudy());
+            ps.setBoolean(10, true);
             
             do {
             	try {
@@ -887,7 +890,7 @@ public class DatabaseUserManagementProvider implements
 	            conn.setAutoCommit(false);
 	            svpt = conn.setSavepoint();
 	            boolean pass = false; 
-	            String sql = "UPDATE research_group SET ay = ?, role = ?, survey = ?, new_survey = ?";
+	            String sql = "UPDATE research_group SET ay = ?, role = ?, survey = ?, new_survey = ?, active = ?";
 	            if (StringUtils.isNotBlank(password)) {
 	            	sql += ", hashedpassword = ? ";
 	            	pass = true;
@@ -898,13 +901,14 @@ public class DatabaseUserManagementProvider implements
 	            ps.setString(2, group.getRole());
 	            ps.setBoolean(3, group.getSurvey());
 	            ps.setBoolean(4, group.isNewSurvey());
+	            ps.setBoolean(5, group.getActive());
 	            if (pass) {
 	            	String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12)); 
-	            	ps.setString(5, hashedPassword);
-	            	ps.setInt(6, group.getId());
+	            	ps.setString(6, hashedPassword);
+	            	ps.setInt(7, group.getId());
 	            }
 	            else {
-	            	ps.setInt(5, group.getId());
+	            	ps.setInt(6, group.getId());
 	            }
 	            
 	            ps.executeUpdate();
