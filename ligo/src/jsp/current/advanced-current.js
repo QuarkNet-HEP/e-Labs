@@ -246,7 +246,9 @@ function logCheckboxCB() {
 	
 	if (logCheckedY == true) {
 		ty = ln;
+		console.log(ln);
 		ity = exp; 
+		console.log(ity);
 		//if (plot != null && plot.getAxes().yaxis.max - plot.getAxes().yaxis.min > 5) {
 		if (plot != null) {
 			// heuristic so that my log algorithm doesn't crunch small numbers.
@@ -254,7 +256,11 @@ function logCheckboxCB() {
 		}
 	}
 	
-	$.extend(options, { yaxis: {transform: ty, inverseTransform: ity, ticks: tfy } });
+	if (plot.getAxes().yaxis.min < 1) {
+		$.extend(options, { yaxis: {ticks: tfy } });		
+	} else {
+		$.extend(options, { yaxis: {transform: ty, inverseTransform: ity, ticks: tfy } });
+	}
 }
 
 function yAutoRangeCheckboxCB() {
@@ -334,10 +340,8 @@ function logTickFormatter(axis) {
 	var axisValues = [];
 	// Heuristic from the flot source code
 	// var numTicks = 0.3 * Math.sqrt(plot.height()); 
-	
-	var min = Math.pow(10, Math.floor(Math.log(axis.min == 0 ? 1 : axis.min) / Math.LN10)); 
+	var min = Math.pow(10, Math.floor(Math.log(axis.min == 0 ? 0.00001 : axis.min) / Math.LN10)); 
 	var max = Math.pow(10, Math.ceil(Math.log(axis.max) / Math.LN10));
-	 
 	for (var i = min ; i <= max; i = i * 10) {
 		axisValues.push(i);
 	}
