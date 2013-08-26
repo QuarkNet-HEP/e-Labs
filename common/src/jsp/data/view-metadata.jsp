@@ -95,7 +95,7 @@
 			<table border="0">
 				<c:forEach items="${e.tupleIterator}" var="tuple">
 					<tr>
-						<c:if test="${!fn:startsWith(tuple.key, '_')}">
+						<c:if test="${!fn:startsWith(tuple.key, '_') and !fn:startsWith(tuple.key, 'FIG')}">
 							<td align="right">${tuple.key}:&nbsp;</td>
 							<td align="left">
 								<c:choose>
