@@ -636,7 +636,7 @@ public class DatabaseUserManagementProvider implements
             ps = c.prepareStatement(
             		"INSERT INTO research_group " +
             		"(name, hashedpassword, teacher_id, role, userarea, ay, survey, new_survey, in_study, active) " +
-            		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;");
+            		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;");
             ps.setString(2, hashedPassword);
             ps.setInt(3, et.getTeacherId());
             ps.setString(4, group.isUpload() ? "upload" : "user");
@@ -645,7 +645,7 @@ public class DatabaseUserManagementProvider implements
             ps.setBoolean(7, group.getSurvey());
             ps.setBoolean(8, group.isNewSurvey());
             ps.setBoolean(9, group.isStudy());
-            ps.setBoolean(10, true);
+            ps.setBoolean(10, group.getActive());
             
             do {
             	try {

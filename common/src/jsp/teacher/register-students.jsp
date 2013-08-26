@@ -75,11 +75,13 @@
         	function checkGroupName(object) {
         		if (object != null) {
         			var messages = document.getElementById("messages");
-	    			if (! /^[a-zA-Z0-9_-]+$/.test(object.value)) {
-	    				var message = "Group Name contains invalid characters. Use any alphanumeric combination, dashes or underscores.";
-	    				messages.innerHTML = "<i>* "+message+"</i>";
-	    				return false;
-	    			}
+        			if (object.value != "Group Name") {
+		    			if (! /^[a-zA-Z0-9_-]+$/.test(object.value)) {
+		    				var message = "Group Name contains invalid characters. Use any alphanumeric combination, dashes or underscores.";
+		    				messages.innerHTML = "<i>* "+message+"</i>";
+		    				return false;
+		    			}
+        			}
 	        	}
         		return true;
         	}
@@ -218,6 +220,7 @@
 				ElabGroup group = new ElabGroup(elab);
 				newUser.setGroup(group);
 				group.setName(resName);
+				group.setActive(true);
 				if ("yes".equalsIgnoreCase(upload) || "true".equalsIgnoreCase(upload)) {
 				    group.setRole(ElabUser.ROLE_UPLOAD);
 				}
