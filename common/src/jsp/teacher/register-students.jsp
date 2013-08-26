@@ -86,10 +86,20 @@
         	function checkMaxNumber(object) {
     			var messages = document.getElementById("messages");
     			messages.innerHTML = "";
+    			var newGroupCounter = 0;
+    			for (var j = 0; j < 10; j++) {
+    				var newGroup = document.getElementById("res_name_chooser"+j);
+    				if (newGroup != null) {
+    					if (newGroup.value == object.value) {
+    						newGroupCounter++;
+    					}
+    				}
+    			}
         		var existingGroup = document.getElementsByClassName("existingGroups");
         		for (var i = 0; i < existingGroup.length; i++) {
     	    		if (object.value == existingGroup[i].name) {
-    	    			if (existingGroup[i].value == 4) {
+    	        		var total_items = parseInt(existingGroup[i].value) + parseInt(newGroupCounter);
+    	    			if ( total_items > 4) {
     	    				messages.innerHTML = "<i>* "+object.value+" exists and already has the maximum number of students allowed per group. Please make a new group.</i>";
     	    			}
     	    		}
