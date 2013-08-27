@@ -2,21 +2,7 @@
 <%@ include file="../login/teacher-login-required.jsp" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.ElabGroup" %>
-<%
 
-//save changes when submitting
-String reqType = request.getParameter("submitButton");
-if ("Save Changes".equals(reqType)){
-	String newEmail = request.getParameter("newEmail");
-	if (newEmail != null && !newEmail.equals("")) {
-		user.setEmail(newEmail);
-	}
-}
-
-String email = user.getEmail();
-request.setAttribute("email", email);
-
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>

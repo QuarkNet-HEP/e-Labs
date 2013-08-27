@@ -19,97 +19,7 @@
 		<script type="text/javascript" src="../include/elab.js"></script>
         <script type="text/javascript" src="../include/util-functions.js"></script>
         <script type="text/javascript" src="../include/clear-default-text.js"></script>
-        <script>
-        	function checkEnteredData() {
-        		var allOK = true;
-    			var messages = document.getElementById("messages");
-    			messages.innerHTML = "";
-        		var existingGroup = document.getElementsByClassName("existingGroups");
-				for (var i = 0; i < 10; i++) {
-					var newGroup = document.getElementById("res_name_text"+i);
-					allOK = checkGroupName(newGroup);
-					if (newGroup != null && newGroup.value != "Group Name") {
-	        			for (var j = 0; j < existingGroup.length; j++) {
-	        				if (newGroup.value == existingGroup[j].name) {
-	        					allOK = false;
-	        	    			if (existingGroup[j].value < 4) {
-	    	    	    			messages.innerHTML = "<i>* Cannot Save. "+newGroup.value+" already exists, add your student to the group instead of trying to create a new one.</i>";
-	        	    			} else {
-	        	    				messages.innerHTML = "<i>* Cannot Save. "+newGroup.value+" exists and already has the maximum number of students allowed per group. Please make a new group.</i>";
-	        	    			}        					
-	        				}
-	        			}
-        			}
-        		}	
-        		var chosenGroups = document.getElementsByClassName("chosenGroups");
-        		for (var i = 0; i < chosenGroups.length; i++) {
-        			for (var j = 0; j < existingGroup.length; j++) {
-        				if (chosenGroups[i].value == existingGroup[j].name) {
-            				alert(chosenGroups[i].value + "-" + existingGroup[j].name);
-        	    			if (existingGroup[j].value == 4) {
-            					allOK = false;
-        	    				messages.innerHTML = "<i>* Cannot Save. "+chosenGroups[i].value+" exists and already has the maximum number of students allowed per group. Please make a new group.</i>";
-        	    			}        					
-        				}
-        			}
-        		}
-        		
-        		return allOK;
-        	}
-        	function checkNewGroup(object) {
-        		checkExists(object);
-        		checkGroupName(object);
-        	}
-        	function checkExists(object) {
-    			var messages = document.getElementById("messages");
-    			messages.innerHTML = "";
-        		var existingGroup = document.getElementsByClassName("existingGroups");
-        		for (var i = 0; i < existingGroup.length; i++) {
-    	    		if (object.value == existingGroup[i].name) {
-    	    			if (existingGroup[i].value < 4) {
-	    	    			messages.innerHTML = "<i>* "+object.value+" already exists, add your student to the group instead of trying to create a new one.</i>";
-    	    			} else {
-    	    				messages.innerHTML = "<i>* "+object.value+" exists and already has the maximum number of students allowed per group. Please make a new group.</i>";
-    	    			}
-    	    		}
-        		}
-        	}
-        	function checkGroupName(object) {
-        		if (object != null) {
-        			var messages = document.getElementById("messages");
-        			if (object.value != "Group Name") {
-		    			if (! /^[a-zA-Z0-9_-]+$/.test(object.value)) {
-		    				var message = "Group Name contains invalid characters. Use any alphanumeric combination, dashes or underscores.";
-		    				messages.innerHTML = "<i>* "+message+"</i>";
-		    				return false;
-		    			}
-        			}
-	        	}
-        		return true;
-        	}
-        	function checkMaxNumber(object) {
-    			var messages = document.getElementById("messages");
-    			messages.innerHTML = "";
-    			var newGroupCounter = 0;
-    			for (var j = 0; j < 10; j++) {
-    				var newGroup = document.getElementById("res_name_chooser"+j);
-    				if (newGroup != null) {
-    					if (newGroup.value == object.value) {
-    						newGroupCounter++;
-    					}
-    				}
-    			}
-        		var existingGroup = document.getElementsByClassName("existingGroups");
-        		for (var i = 0; i < existingGroup.length; i++) {
-    	    		if (object.value == existingGroup[i].name) {
-    	        		var total_items = parseInt(existingGroup[i].value) + parseInt(newGroupCounter);
-    	    			if ( total_items > 4) {
-    	    				messages.innerHTML = "<i>* "+object.value+" exists and already has the maximum number of students allowed per group. Please make a new group.</i>";
-    	    			}
-    	    		}
-        		}       		
-        	}
-        </script>
+		<script type="text/javascript" src="../include/register-students.js"></script>
 	</head>
 	
 	<body id="register-students" class="teacher">
@@ -169,9 +79,14 @@
 		boolean existsInSurvey = elab.getTestProvider().getSurveyStudents(group);
 		if (!existsInSurvey) {
 			String name = group.getName();
+			boolean insurvey = group.getSurvey();
 			if (!name.equals(user.getName())) {
 				if (group.getActive()) {
-			    	optionList += "<option value=\"" + name + "\">" + name + "</option>";
+					if (insurvey) {
+				    	optionList += "<option value=\"" + name + "\">" + name +"(in survey)</option>";
+					} else {
+				    	optionList += "<option value=\"" + name + "\">" + name +"</option>";						
+					}
 			    	teacherGroups.put(name, group.getStudents().size());
 				}
 			}
@@ -369,10 +284,11 @@
 		<div id="group_line<%=i%>" style="<%=visibility%> border-left:3px solid #AAAAAA; padding-left:5px; padding-bottom:5px; padding-top:5px;">
         	<input type="text" name="first<%=i%>" size="14" maxlength="30" value="First Name" class="cleardefault"/>
 			<input type="text" name="last<%=i%>" size="14" maxlength="30" value="Last Name" class="cleardefault"/>
-			<input id="res_name_text<%=i%>" type="text" name="res_name<%=i%>" size="14" maxlength="30" value="Group Name" style="visibility:hidden; display:none;" onChange="checkNewGroup(this);<%=textChange%>" class="cleardefault">
-			<select id="res_name_chooser<%=i%>" class="chosenGroups" style="visibility:visible; display:;" name="res_name_choose<%=i%>" onChange="checkMaxNumber(this);">
+			<input id="res_name_text<%=i%>" type="text" name="res_name<%=i%>" size="14" maxlength="30" value="Group Name" style="visibility:hidden; display:none;" onChange="checkNewGroup(this, <%=i%>);<%=textChange%>" class="cleardefault">
+			<select id="res_name_chooser<%=i%>" class="chosenGroups" style="visibility:visible; display:;" name="res_name_choose<%=i%>" onChange="checkExistingGroup(this, <%=i%>);">
             	<%=optionList%>
 			</select>
+			<input type="hidden" name="name_option<%=i%>" id="name_option<%=i%>" value=""></input>
 			<input type="submit" name="is_new<%=i%>" value="Make New Group" 
 				onClick="HideShow('res_name_text<%=i%>'); HideShow('res_name_chooser<%=i%>');HideShow('is_upload_box<%=i%>');HideShow('is_survey_box<%=i%>'); if (this.form.is_new<%=i%>.value=='Make New Group') { this.form.is_new<%=i%>.value='Choose group'; } else { this.form.is_new<%=i%>.value='Make New Group'; } return false;"/>
         </div>

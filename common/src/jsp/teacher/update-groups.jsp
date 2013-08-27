@@ -132,14 +132,14 @@
 					}
 				} else {
 					//if the teacher is inactive, then all the usergroups for these teacher become inactive
-					if (group.getRole().equals("teacher")) {
-						Iterator i = user.getGroups().iterator();
-						while (i.hasNext()) {
-							ElabGroup tg = (ElabGroup) i.next();
-							tg.setActive(false);
-							elab.getUserManagementProvider().updateGroup(tg, "");
-						}
-					} 
+					//if (group.getRole().equals("teacher")) {
+					//	Iterator i = user.getGroups().iterator();
+					//	while (i.hasNext()) {
+					//		ElabGroup tg = (ElabGroup) i.next();
+					//		tg.setActive(false);
+					//		elab.getUserManagementProvider().updateGroup(tg, "");
+					//	}
+					//} 
 					group.setActive(false);
 				}				
 				elab.getUserManagementProvider().updateGroup(group, passwd1);

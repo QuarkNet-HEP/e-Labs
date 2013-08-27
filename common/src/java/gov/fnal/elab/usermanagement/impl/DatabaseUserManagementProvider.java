@@ -434,7 +434,7 @@ public class DatabaseUserManagementProvider implements
                     .getConnection(elab.getProperties());
             int projectId = elab.getId();
             ps = conn.prepareStatement(
-            		"SELECT DISTINCT teacher.name AS tname, teacher.email AS temail, teacher.id AS teacherid, research_group.id AS id, research_group.name AS rgname, research_group.userarea AS rguserarea " +
+            		"SELECT DISTINCT teacher.name AS tname, teacher.email AS temail, teacher.id AS teacherid, research_group.id AS id, research_group.name AS rgname, research_group.userarea AS rguserarea, research_group.active AS rgactive " +
             		"FROM research_group_project " + 
             		"LEFT OUTER JOIN research_group ON research_group.id = research_group_project.research_group_id " + 
             		"INNER JOIN teacher ON research_group.teacher_id = teacher.id " +  
@@ -473,6 +473,7 @@ public class DatabaseUserManagementProvider implements
                     teachers.add(t);
                 }
                 g.setName(rs.getString("rgname"));
+                g.setActive(rs.getBoolean("rgactive"));
                 t.addGroup(g);
             }
             return teachers;

@@ -67,7 +67,9 @@
 						<td>${teacher.group.state}</td>
 						<td>
 							<c:forEach items="${teacher.groups}" var="group">
-								${group.name}<br/>
+								<c:if test="${group.active}">
+									${group.name}<br/>
+								</c:if>
 							</c:forEach>
 						</td>
 					</tr>
