@@ -12,6 +12,8 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Register Students</title>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
@@ -176,6 +178,7 @@
 		}
 	}
 	request.setAttribute("teacherGroups", teacherGroups);
+	request.setAttribute("project", elab.getName());
 	
 	String submit = request.getParameter("submit");
 	if (submit != null) {
@@ -290,7 +293,7 @@
 					</table>
 				</c:when>
 				<c:otherwise>
-					<p class="error">A problem occured while registering with your students:</p>
+					<p class="error">A problem occurred while registering with your students:</p>
 					<p class="error">${error}</p>
 				</c:otherwise>
 			</c:choose>
@@ -309,10 +312,14 @@
 				<li>
 					Groups created before Summer 2009 will not appear in the dropdown.<br /><br />
 				</li>
-				<li>
-					Select &nbsp;<img src="../graphics/upload_registration.gif" valign="middle"/>&nbsp; if 
-					you want to grant the new group upload permissions for your detectors.
-				</li>
+	        	<c:choose>
+	        		<c:when test='${project == "cosmic"}'>
+						<li>
+							Select &nbsp;<img src="../graphics/upload_registration.gif" valign="middle"/>&nbsp; if 
+							you want to grant the new group upload permissions for your detectors.
+						</li>
+					</c:when>
+				</c:choose>
 				<li>
 					Select &nbsp;<img src="../graphics/logbook_pencil.gif" valign="middle"/>&nbsp; 
 					if you want the new group to take the pre-test.
@@ -372,8 +379,12 @@
     </td>
     <td align="left" valign="middle">
         <div id="is_upload_box<%=i%>" style="visibility:hidden; display:none;">
-            <input type="checkbox" name="is_upload<%=i%>" value="yes"/>
-            <img src="../graphics/upload_registration.gif" valign="middle"/>
+        	<c:choose>
+        		<c:when test='${project == "cosmic"}'>
+		            <input type="checkbox" name="is_upload<%=i%>" value="yes"/>
+		            <img src="../graphics/upload_registration.gif" valign="middle"/>
+		        </c:when>
+		     </c:choose>
         </div>
     </td>
     <td align="left" valign="middle">
