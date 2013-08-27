@@ -17,7 +17,98 @@
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
         <script type="text/javascript" src="../include/util-functions.js"></script>
-        <script type="text/javascript" src="../include/clear-default-text.js"></script>		
+        <script type="text/javascript" src="../include/clear-default-text.js"></script>	
+        <script>
+        	function checkEnteredData() {
+        		var allOK = true;
+    			var messages = document.getElementById("messages");
+    			messages.innerHTML = "";
+        		var existingGroup = document.getElementsByClassName("existingGroups");
+				for (var i = 0; i < 10; i++) {
+					var newGroup = document.getElementById("res_name_text"+i);
+					allOK = checkGroupName(newGroup);
+					if (newGroup != null && newGroup.value != "Group Name") {
+	        			for (var j = 0; j < existingGroup.length; j++) {
+	        				if (newGroup.value == existingGroup[j].name) {
+	        					allOK = false;
+	        	    			if (existingGroup[j].value < 4) {
+	    	    	    			messages.innerHTML = "<i>* Cannot Save. "+newGroup.value+" already exists, add your student to the group instead of trying to create a new one.</i>";
+	        	    			} else {
+	        	    				messages.innerHTML = "<i>* Cannot Save. "+newGroup.value+" exists and already has the maximum number of students allowed per group. Please make a new group.</i>";
+	        	    			}        					
+	        				}
+	        			}
+        			}
+        		}	
+        		var chosenGroups = document.getElementsByClassName("chosenGroups");
+        		for (var i = 0; i < chosenGroups.length; i++) {
+        			for (var j = 0; j < existingGroup.length; j++) {
+        				if (chosenGroups[i].value == existingGroup[j].name) {
+            				alert(chosenGroups[i].value + "-" + existingGroup[j].name);
+        	    			if (existingGroup[j].value == 4) {
+            					allOK = false;
+        	    				messages.innerHTML = "<i>* Cannot Save. "+chosenGroups[i].value+" exists and already has the maximum number of students allowed per group. Please make a new group.</i>";
+        	    			}        					
+        				}
+        			}
+        		}
+        		
+        		return allOK;
+        	}
+        	function checkNewGroup(object) {
+        		checkExists(object);
+        		checkGroupName(object);
+        	}
+        	function checkExists(object) {
+    			var messages = document.getElementById("messages");
+    			messages.innerHTML = "";
+        		var existingGroup = document.getElementsByClassName("existingGroups");
+        		for (var i = 0; i < existingGroup.length; i++) {
+    	    		if (object.value == existingGroup[i].name) {
+    	    			if (existingGroup[i].value < 4) {
+	    	    			messages.innerHTML = "<i>* "+object.value+" already exists, add your student to the group instead of trying to create a new one.</i>";
+    	    			} else {
+    	    				messages.innerHTML = "<i>* "+object.value+" exists and already has the maximum number of students allowed per group. Please make a new group.</i>";
+    	    			}
+    	    		}
+        		}
+        	}
+        	function checkGroupName(object) {
+        		if (object != null) {
+        			var messages = document.getElementById("messages");
+        			if (object.value != "Group Name") {
+		    			if (! /^[a-zA-Z0-9_-]+$/.test(object.value)) {
+		    				var message = "Group Name contains invalid characters. Use any alphanumeric combination, dashes or underscores.";
+		    				messages.innerHTML = "<i>* "+message+"</i>";
+		    				return false;
+		    			}
+        			}
+	        	}
+        		return true;
+        	}
+        	function checkMaxNumber(object) {
+    			var messages = document.getElementById("messages");
+    			messages.innerHTML = "";
+    			var newGroupCounter = 0;
+    			for (var j = 0; j < 10; j++) {
+    				var newGroup = document.getElementById("res_name_chooser"+j);
+    				if (newGroup != null) {
+    					if (newGroup.value == object.value) {
+    						newGroupCounter++;
+    					}
+    				}
+    			}
+        		var existingGroup = document.getElementsByClassName("existingGroups");
+        		for (var i = 0; i < existingGroup.length; i++) {
+    	    		if (object.value == existingGroup[i].name) {
+    	        		var total_items = parseInt(existingGroup[i].value) + parseInt(newGroupCounter);
+    	    			if ( total_items > 4) {
+    	    				messages.innerHTML = "<i>* "+object.value+" exists and already has the maximum number of students allowed per group. Please make a new group.</i>";
+    	    			}
+    	    		}
+        		}       		
+        	}
+        </script>	
 	</head>
 	
 	<body id="register-students" class="teacher">
@@ -37,6 +128,7 @@
 <%
 int newSurveyId = -1; 
 boolean teacherInStudy = "yes".equalsIgnoreCase(request.getParameter("eval"));
+TreeMap<String, Integer> teacherGroups = new TreeMap<String, Integer>();
 
 // Only for teachers in our study. 
 if (teacherInStudy) {
@@ -51,7 +143,7 @@ if (teacherInStudy) {
 }
 
 // New survey/test handler is active by default. 
-if (user.getNewSurveyId() == null) { 
+//if (user.getNewSurveyId() == null) { 
 	if (StringUtils.equalsIgnoreCase(elab.getName(), "cosmic")) {
 		newSurveyId = Integer.parseInt(elab.getProperty("cosmic.newsurvey"));
 		user.setNewSurveyId(newSurveyId);
@@ -61,19 +153,29 @@ if (user.getNewSurveyId() == null) {
 		user.setNewSurveyId(newSurveyId);
 	}
 	// set handlers for everything else. 
-}
-else {
-	newSurveyId = user.getNewSurveyId().intValue();
-}
+//}
+//else {
+//	newSurveyId = user.getNewSurveyId().intValue();
+//}
 	
 String optionList = "<option value=\"discard\">Choose group</option>";
 for (Iterator ite = user.getGroups().iterator(); ite.hasNext();) {
 	ElabGroup group = (ElabGroup) ite.next();
-	String name = group.getName();
-	if (!name.equals(user.getName())) {
-	    optionList += "<option value=\"" + name + "\">" + name + "</option>";
+	//EPeronja-05/30/2013-Added this check to prevent mixing/matching older groups
+	//         with new students. This was not well-thought and was breaking the code
+	//		   in show-students.jsp trying to show 'new' and 'old' students.
+	boolean existsInSurvey = elab.getTestProvider().getSurveyStudents(group);
+	if (!existsInSurvey) {	
+		String name = group.getName();
+		if (!name.equals(user.getName())) {
+			if (group.getActive()) {
+		    	optionList += "<option value=\"" + name + "\">" + name + "</option>";
+			    teacherGroups.put(name, group.getStudents().size());
+			}
+		}
 	}
 }
+request.setAttribute("teacherGroups", teacherGroups);
 
 String submit = request.getParameter("submit");
 if (submit != null) {
@@ -250,8 +352,8 @@ if (submit != null) {
 		<div id="group_line<%=i%>" style="<%=visibility%> border-left:3px solid #AAAAAA; padding-left:5px; padding-bottom:5px; padding-top:5px;">
         	<input type="text" name="first<%=i%>" size="14" maxlength="30" value="First Name" class="cleardefault"/>
 			<input type="text" name="last<%=i%>" size="14" maxlength="30" value="Last Name" class="cleardefault"/>
-			<input id="res_name_text<%=i%>" type="text" name="res_name<%=i%>" size="14" maxlength="30" value="Group Name" style="visibility:hidden; display:none;" onChange="<%=textChange%>" class="cleardefault">
-			<select id="res_name_chooser<%=i%>" style="visibility:visible; display:;" name="res_name_choose<%=i%>">
+			<input id="res_name_text<%=i%>" type="text" name="res_name<%=i%>" size="14" maxlength="30" value="Group Name" style="visibility:hidden; display:none;" onChange="checkNewGroup(this);<%=textChange%>" class="cleardefault">
+			<select id="res_name_chooser<%=i%>" class="chosenGroups" style="visibility:visible; display:;" name="res_name_choose<%=i%>" onChange="checkMaxNumber(this);">
             	<%=optionList%>
 			</select>
 			<input type="submit" name="is_new<%=i%>" value="Make new group" 
@@ -289,12 +391,22 @@ if (submit != null) {
 						}//for i = 0..9
 					%>
 					<tr>
+						<td colspan="2"><div id="messages"></div></td>
+					</tr>
+					<tr>
 						<td>&nbsp;</td>
 						<td align="right" colspan="4">
-							<input type="submit" name="submit" value="I'm done"/>
+							<input type="submit" name="submit" value="I'm done" onclick="return checkEnteredData();"/>
 						</td>
 					</tr>
 				</table>
+				<c:choose>
+					<c:when test="${not empty teacherGroups}">
+					 	<c:forEach items="${teacherGroups}" var="teacherGroups">
+					 		<input type="hidden" name="${teacherGroups.key}" id="tg_${teacherGroups.key}" class="existingGroups" value="${teacherGroups.value}"></input>
+					 	</c:forEach>
+					</c:when>
+				</c:choose>					
 			</form>
 		<%
 	}//some else up there

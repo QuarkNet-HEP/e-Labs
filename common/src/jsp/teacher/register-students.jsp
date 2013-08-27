@@ -169,8 +169,8 @@
 			String name = group.getName();
 			if (!name.equals(user.getName())) {
 				if (group.getActive()) {
-			    optionList += "<option value=\"" + name + "\">" + name + "</option>";
-			    teacherGroups.put(name, group.getStudents().size());
+			    	optionList += "<option value=\"" + name + "\">" + name + "</option>";
+			    	teacherGroups.put(name, group.getStudents().size());
 				}
 			}
 		}
