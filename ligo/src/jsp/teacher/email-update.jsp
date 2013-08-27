@@ -2,27 +2,14 @@
 <%@ include file="../login/teacher-login-required.jsp" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.ElabGroup" %>
-<%
 
-//save changes when submitting
-String reqType = request.getParameter("submitButton");
-if ("Save Changes".equals(reqType)){
-	String newEmail = request.getParameter("newEmail");
-	if (newEmail != null && !newEmail.equals("")) {
-		user.setEmail(newEmail);
-	}
-}
-
-String email = user.getEmail();
-request.setAttribute("email", email);
-
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Teacher e-mail</title>
-		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
