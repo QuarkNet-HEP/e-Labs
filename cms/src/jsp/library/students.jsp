@@ -50,6 +50,8 @@
 							email = email.replaceAll("@", " <-at-> ").replaceAll("\\.", "  d.o.t  ");
 						}
 						pageContext.setAttribute("email", email);
+						if (teacher.getActive()) {
+						
 					%>
 					<tr>
 						<td>
@@ -73,6 +75,7 @@
 							</c:forEach>
 						</td>
 					</tr>
+					<% } %>
 				</c:forEach>
 			</table>
 
