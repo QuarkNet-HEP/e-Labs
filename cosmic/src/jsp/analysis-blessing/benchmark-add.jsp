@@ -216,7 +216,7 @@
 									<div id="${filename.value}">
 	       							<table id="table${filename.value}" class="highlight">
 										<tr>
-											<td class="benchmarkSelection"><input type="radio" name="benchmark" id="benchmark${filename.value}" value="${filename.value}" class="selectBenchmark"></input></td>
+											<td class="benchmarkSelection"><input type="radio" name="benchmark" id="benchmark${filename.value}" value="${filename.value}" class="selectBenchmark" onclick='javascript:showCharts("${filename.value}", "get-data.jsp?file=");'></input></td>
 											<td><a href="#charts" onclick='javascript:showCharts("${filename.value}", "get-data.jsp?file=");'>${filename.value}</a> ${filename.key}</td>
 										</tr>
 									</table>
