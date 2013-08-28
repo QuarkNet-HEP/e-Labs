@@ -56,6 +56,9 @@
 		}); 
 		</script>				
 			<h1>Publish Posters</h1>
+			<strong>Rubrics:</strong> <a href="../assessment/rubric-ci.html">Content & Investigation</a>,
+			<a href="../assessment/rubric-r.html">Process</a>, <a href="../assessment/rubric-t.html">Computing</a>,
+			<a href="../assessment/rubric-wla.html">Literacy</a> and <a href="../assessment/rubric-p.html">Poster</a>
 			<c:choose>
 					<c:when test="${empty posters}">
 						<h2>No posters found</h2>
@@ -69,7 +72,7 @@
 									<th>Title</th>
 									<th>Date</th>
 									<th>Group</th>
-									<th> </th>
+									<th></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -82,10 +85,10 @@
 							    				<option value="none"></option>
 							    				<c:choose>
 								    				<c:when test='${posters.value.tupleMap.status == "reviewed" }'>
-									    				<option value="reviewed" selected="true">Reviewed</option>
+									    				<option value="unpublished" selected="true">Unpublished</option>
 								    				</c:when>
 								    				<c:otherwise>
-									    				<option value="reviewed">Reviewed</option>
+									    				<option value="unpublished">Unpublished</option>
 								    				</c:otherwise>
 												</c:choose>
 												<c:choose>
