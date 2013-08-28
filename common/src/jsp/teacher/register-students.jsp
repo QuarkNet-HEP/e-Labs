@@ -106,6 +106,7 @@
 				String first = request.getParameter("first" + formNum);
 				String resName = request.getParameter("res_name" + formNum);
 				String resNameChoose = request.getParameter("res_name_choose" + formNum);
+				String nameOption = request.getParameter("name_option" + formNum);
 				String upload = request.getParameter("is_upload" + formNum);
 				String survey = request.getParameter("is_survey" + formNum);
 				
@@ -114,7 +115,7 @@
 				boolean groupInSurvey = (StringUtils.containsIgnoreCase(survey, "yes") || 
 						StringUtils.containsIgnoreCase(survey, "true"));
 				
-				if (resName == null || resName.equals("Group Name")) {
+				if (resName == null || resName.equals("Group Name") || nameOption.equals("existing")) {
 					resName = resNameChoose;
 					isNewGroup = false;
 				} else {
