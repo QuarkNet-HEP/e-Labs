@@ -464,7 +464,7 @@ function overrideYLabel(channel, unit) {
 			case "SEISX":
 			case "SEISY":
 			case "SEISZ":
-				return "Signal (volts)";
+				return "Signal (volts * 10e5)";
 				break;
 			default:
 				return unit;

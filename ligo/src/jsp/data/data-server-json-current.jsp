@@ -102,7 +102,7 @@
 				Collection<DataSet> dataList = new ArrayList(); 
 				for(String channel : channels) {
 					try {
-						NumberArrayDataSet nads = (NumberArrayDataSet) de.get(new DataPath(channel), new Range(startTime, endTime), new Options().setSamples(SAMPLES_PER_REQUEST));
+						NumberArrayDataSet nads = (NumberArrayDataSet) de.getNewData(new DataPath(channel), new Range(startTime, endTime), new Options().setSamples(SAMPLES_PER_REQUEST), 100000);
 						dataList.add(nads);
 					}
 					catch(Exception e) {
