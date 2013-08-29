@@ -339,7 +339,7 @@ function logTickFormatter(axis) {
 	var axisValues = [];
 	// Heuristic from the flot source code
 	// var numTicks = 0.3 * Math.sqrt(plot.height()); 
-	var newMin = (axis.min == 0 ? 0.00001 : axis.min);
+	var newMin = (axis.min == 0 ? 1 : axis.min);
 	var newMax = axis.max;
 	var min = Math.pow(10, Math.floor(Math.log(newMin) / Math.LN10)); 
 	var max = Math.pow(10, Math.ceil(Math.log(newMax) / Math.LN10));
