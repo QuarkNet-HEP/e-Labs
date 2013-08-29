@@ -35,7 +35,7 @@
 			ed.addCommand('fMathAddFormula', function() {
 				fmath_currentElement = fmath_selectedElement;
 				ed.windowManager.open({
-					file : url + '/dialog.htm',
+					file : url + '/dialog.html',
 					width : 920,
 					height : 550
 				}, {
