@@ -116,8 +116,7 @@ public class BlessProcess {
 									pass = true;
 								} else {
 									pass = false;
-									failReason = "Time: " + String.valueOf(split[0]) + " - channel 1: "+ String.valueOf(chan1Rate) +
-												 " - events: " + split[1] + " - error: " + split[2];
+									failReason = formatFailReason(split[0], "channel 1", String.valueOf(chan1Rate), split[1], split[2]);
 								}
 								//compare channel 2 and see if file can be blessed
 								if (chan2Rate < (parseToDouble(split[3]) + parseToDouble(split[4])) && chan2Rate > (parseToDouble(split[3]) - parseToDouble(split[4]))) {
@@ -130,8 +129,7 @@ public class BlessProcess {
 									pass = true;
 								} else {
 									pass = false;
-									failReason = "Time: " + String.valueOf(split[0]) + " - channel 2: "+ String.valueOf(chan2Rate) +
-											 " - events: " + split[3] + " - error: " + split[4];
+									failReason = formatFailReason(split[0], "channel 2", String.valueOf(chan2Rate), split[3], split[4]);
 								}
 								//compare channel 3 and see if file can be blessed
 								if (chan3Rate < (parseToDouble(split[5]) + parseToDouble(split[6])) && chan3Rate > (parseToDouble(split[5]) - parseToDouble(split[6]))) {
@@ -144,8 +142,7 @@ public class BlessProcess {
 									pass = true;
 								} else {
 									pass = false;
-									failReason = "Time: " + String.valueOf(split[0]) + " - channel 3: "+ String.valueOf(chan3Rate) +
-											 " - events: " + split[5] + " - error: " + split[6];
+									failReason = formatFailReason(split[0], "channel 3", String.valueOf(chan3Rate), split[5], split[6]);
 									
 								}
 								//compare channel 4 and see if file can be blessed
@@ -159,8 +156,8 @@ public class BlessProcess {
 									pass = true;
 								} else {
 									pass = false;
-									failReason = "Time: " + String.valueOf(split[0]) + " - channel 4: "+ String.valueOf(chan4Rate) +
-											 " - events: " + split[7] + " - error: " + split[8];
+									failReason = formatFailReason(split[0], "channel 4", String.valueOf(chan4Rate), split[7], split[8]);
+
 								}
 								//compare triggers and see if file can be blessed
 								if (triggerRate < (parseToDouble(split[9]) + parseToDouble(split[10])) && triggerRate > (parseToDouble(split[9]) - parseToDouble(split[10]))) {
@@ -173,9 +170,7 @@ public class BlessProcess {
 									pass = true;
 								} else {
 									pass = false;
-									failReason = "Time: " + String.valueOf(split[0]) + " - triggers: "+ String.valueOf(triggerRate) +
-											 " - events: " + split[9] + " - error: " + split[10];
-									
+									failReason = formatFailReason(split[0], "trigger", String.valueOf(triggerRate), split[9], split[10]);
 								}
 							}
 							lineNumber++;
@@ -260,6 +255,27 @@ public class BlessProcess {
 			result = 0;
 		}
 		return result;
+	}
+	
+	public String convertToHMS(String time) {
+		String hms = "";
+		int secs = Integer.parseInt(time);
+		int hours = secs/3600;
+	    int minutes = hours/60;
+	    int seconds = minutes%60;
+	    hms = String.valueOf(hours)+ ":"+ String.valueOf(minutes)+ ":"+ String.valueOf(seconds);
+		return hms;
+	}
+	
+	public String formatFailReason(String seconds, String label, String benchmarkRate, String column1, String column2) {
+	String failReason = "";
+	failReason = "This file failed at: " + seconds + "(" + convertToHMS(seconds) + ")"+
+			 " because the benchmark "+label+" rate: "+ benchmarkRate +
+			 " was not between the ranges of comparison set by " + column1 +
+			 " and " + String.valueOf(column2) +
+			 "(" + String.valueOf(parseToDouble(column1) - parseToDouble(column2)) +
+			 " and " + String.valueOf(parseToDouble(column1) + parseToDouble(column2))+")";									
+	return failReason;
 	}
 
 }//end of BlessProcess
