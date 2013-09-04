@@ -1,4 +1,7 @@
-<%@ page import="java.io.*"%><%
+<%@ page import="java.io.*"%>
+<%@ include file="../include/elab.jsp" %>
+<%@ include file="../login/login-required.jsp" %>
+<%
 	String image = request.getParameter("image");
 	
 	// size protection 
@@ -12,7 +15,9 @@
 	String type = request.getParameter("type");
 	if(save!=null && name!=null && ("JPG".equalsIgnoreCase(type) || "PNG".equalsIgnoreCase(type) )){
 		String webappRoot = getServletContext().getRealPath("/");
-		File folder = new File(webappRoot + "/capture/img/");
+		String userPath = user.getDir("posters");
+		System.out.println("equation tool path:" + userPath);
+		File folder = new File(userPath);
 		File fileName = new File(folder, name + "." + type);
 		FileOutputStream fos = new FileOutputStream(fileName);
 		fos.write(bytes);
