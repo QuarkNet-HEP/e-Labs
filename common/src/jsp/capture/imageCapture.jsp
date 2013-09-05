@@ -1,6 +1,9 @@
-/<%@ page import="java.io.*"%><%
+<%@ page import="java.io.*"%>
+<%@ page import="gov.fnal.elab.ElabGroup" %>
+<%
 	String image = request.getParameter("image");
-	
+    ElabGroup user = (ElabGroup) session.getAttribute("user");
+    
 	// size protection 
 	if(image==null || image.length()>100000) return;
 	
@@ -13,7 +16,9 @@
 	if(save!=null && name!=null && ("JPG".equalsIgnoreCase(type) || "PNG".equalsIgnoreCase(type) )){
 		String webappRoot = getServletContext().getRealPath("/");
 		//File folder = new File(webappRoot + "/capture/img/");
-		File folder = new File("/tmp/");
+		String posterDir = user.getDir("posters");
+		System.out.println("new dir: " + posterDir);
+		File folder = new File(posterDir);
 		File fileName = new File(folder, name + "." + type);
 		FileOutputStream fos = new FileOutputStream(fileName);
 		fos.write(bytes);

@@ -4,6 +4,7 @@
 
 <%
 if (!ElabGroup.isUserLoggedIn(session)) {
+	String guestlogin = elab.getGuestLoginLink(request);
 %>
 	<!-- not logged in -->
 	<div id="login-form">
