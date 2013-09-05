@@ -66,6 +66,31 @@
 			   }
 			else { inhere.appendChild(formfield); }
 		}
+		function validateTagName(objectId) {
+			var tagName = document.getElementById(objectId);
+			var divMsg = document.getElementById("errorMsg");
+			var message = "";
+			if (! /^[a-zA-Z0-9_-]+$/.test(tagName.value)) {
+				var message = "Tag Name contains invalid characters. Use any alphanumeric combination, dashes or underscores.";
+				divMsg.innerHTML = "<i>* "+message+"</i>";
+				alert(message);
+			    return false;
+			}
+			divMsg.innerHTML = "";
+			return true;
+		}
+		function validateAllTags() {
+			var allTags = document.getElementsByName("newTag");
+			if (allTags != null) {
+				for (var i = 0; i < allTags.length; i++) {
+					alert(allTags[i].id);
+					if (!validateTagName(allTags[i].id)) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
 	</script>
     <body>	
     		<!-- entire page container -->
@@ -79,6 +104,9 @@
 			
 			<div id="content">
 				<h1>Poster Tags: Maintenance</h1>
+				<ul>
+					<li>Poster tags could be any alphanumeric combination, dashes and/or underscores. No spaces or special characters.</li>
+				</ul>
 		    	<form name="poster-tags" id="poster-tags" method="post">
 		    	   <table>
 		    	   		<tr>
@@ -89,7 +117,7 @@
 						<c:forEach items="${posterTags}" var="posterTags">
 							<tr>
 								<td style="text-align:center;"><input type="checkbox" name="removeTag" id="${posterTags}" value="${posterTags }"></input></td>
-								<td><input type="text" name="existingTag" id="${posterTags}" value="${posterTags}"></input></td>
+								<td><input type="text" name="existingTag" id="${posterTags}" value="${posterTags}" onChange='return validateTagName("${posterTags}");'></input></td>
 								<td></td>
 							</tr>
 						</c:forEach>
@@ -99,9 +127,10 @@
 								</div></td>
 		    	   		</tr>
 		    	   		<tr>
-		    	   			<td colspan="3" style="text-align: center;"><input type="submit" name="submitButton" id="submitButton" value="Save Changes"></input></td>
+		    	   			<td colspan="3" style="text-align: center;"><input type="submit" name="submitButton" id="submitButton" value="Save Changes" onclick='return validateAllTags();'></input></td>
 		    	   		</tr>
 		    	   </table>
+		    	   <div id="errorMsg"></div>
 				</form>
 			</div>
 		</div>
