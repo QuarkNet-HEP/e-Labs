@@ -249,17 +249,13 @@ function logCheckboxCB() {
 		console.log(ln);
 		ity = exp; 
 		console.log(ity);
-		//if (plot != null && plot.getAxes().yaxis.max - plot.getAxes().yaxis.min > 5) {
-		if (plot != null) {
+		if (plot != null && plot.getAxes().yaxis.max - plot.getAxes().yaxis.min > 5) {
 			// heuristic so that my log algorithm doesn't crunch small numbers.
 			tfy = logTickFormatter;
 		}
 	}
-	if (plot.getAxes().yaxis.min < 1) {
-		$.extend(options, { yaxis: {transform: ty, ticks: tfy } });		
-	} else {
-		$.extend(options, { yaxis: {transform: ty, inverseTransform: ity, ticks: tfy } });
-	}
+
+	$.extend(options, { yaxis: {transform: ty, inverseTransform: ity, ticks: tfy } });
 }
 
 function yAutoRangeCheckboxCB() {
@@ -457,7 +453,7 @@ function overrideYLabel(channel, unit) {
 	c = parseChannel();
 	switch (c.subsystem) {
 	case "DMT":
-		return "Signal (volts)";
+		return "Signal (volts * 10e5)";
 		break;
 	case "PEM":
 		switch (c.sensor) {
