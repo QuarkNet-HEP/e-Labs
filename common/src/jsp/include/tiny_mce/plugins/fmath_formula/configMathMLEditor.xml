@@ -7,12 +7,12 @@
 		<property id="disableOpen">true</property>
 		<property id="enableClose">true</property>
 		<property id="defaultFont">fraktur</property>		
-		<property id="defaultFontSize">30</property>		
+	
 		<property id="defaultBold">true</property>		
 		<property id="defaultItalic">true</property>		
 		<property id="defaultForegroundColor">#ff0000</property>		
 		<property id="fontList">fraktur,script</property-->
-		
+		<property id="defaultFontSize">12</property>	
 		<property id="urlGenerateImage">/elab/embedded/capture/imageCapture.jsp</property>
 		<property id="defaultImageType">JPG</property>
 		<property id="defaultImageCompression">100</property>
