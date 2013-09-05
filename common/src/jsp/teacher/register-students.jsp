@@ -87,9 +87,9 @@
 					} else {
 				    	optionList += "<option value=\"" + name + "\">" + name +"</option>";						
 					}
-			    	teacherGroups.put(name, group.getStudents().size());
 				}
-			}
+		    	teacherGroups.put(name, group.getStudents().size());
+		    }
 		}
 	}
 	request.setAttribute("teacherGroups", teacherGroups);
@@ -191,8 +191,8 @@
 						The groups we created for you (and their associated passwords) are listed below.
 					</p>
 					<p>
-					    If one of the groups you requested already existed in our project, your group name was altered
-					    slightly to ensure uniqueness.  You may now use the File...Save feature in your browser to save
+					    <!-- If one of the groups you requested already existed in our project, your group name was altered
+					    slightly to ensure uniqueness. --> You may now use the File...Save feature in your browser to save
 					    the information below.
 					</p>
 					<table border="0" id="registration-results">
