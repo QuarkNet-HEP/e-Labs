@@ -806,7 +806,7 @@ public class DatabaseUserManagementProvider implements
                 }        		
         	}
         }
- /*       
+ /* EPeronja: the next piece of code doesn't work at all when you have mixed lists!       
         for (ElabStudent student : students) {
         	ElabGroup group = student.getGroup();
         	for (Boolean createGroup : createGroups) {
