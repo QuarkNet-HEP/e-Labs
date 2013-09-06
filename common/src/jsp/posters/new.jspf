@@ -18,9 +18,12 @@
 			script_url : '../include/tiny_mce/tiny_mce.js',
 			theme : 'advanced',
 			plugins : 'tabfocus',
-
-			theme_advanced_buttons1 : "bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,outdent,indent,|,sub,sup,|,cleanup,code",
-			theme_advanced_buttons2 : "forecolor,backcolor,fontselect,fontsizeselect",
+			relative_urls: false,
+			remove_script_host: false,
+			convert_urls: false,
+			
+			theme_advanced_buttons1 : ",italic,underline,|,bullist,numlist,|,sub,sup,|,cleanup,code",
+			theme_advanced_buttons2 : "",
 			theme_advanced_buttons3 : "", 
 			theme_advanced_toolbar_location : "top",
 			theme_advanced_toolbar_align : "left"
@@ -325,9 +328,7 @@
      	        </li>
      	  <li>
 			<%@ include file="../posters/poster-example.jspf" %>
-
-
-			 </li>
+		 </li>
 			 <li>Be sure to write a good <a href="javascript:glossary('abstract',300)">abstract</a>.
 		</li>
 
@@ -336,6 +337,10 @@
 			in your poster, click <b>View Plots</b> in the navigation bar. 
 			You can fill in fields for up to five figures. You don't have to 
 			fill them all in.
+		</li>
+		<li>
+			Composing your text in <strong>Microsoft Word</strong>?. Set the
+			font to <strong>Arial 12</strong>.
 		</li>
 		<li>
 			Click <b>${edit?'Save Changes':'Make Poster'}</b> to save the data for the poster and display your poster. If you have "pop-ups" blocked, you will need to click on </b>Display Poster</b> below.
@@ -508,7 +513,7 @@
 			    	</c:when>
 			    </c:choose>
 	            <input type="submit" name="button" id="submitButton" value="${edit?'Save Changes':'Make Poster'}" onclick='return validatePosterName("posterName");' />
-    	        <font size="-1">To see poster, don't block popups! Otherwise click <b>Display Poster</b> below.</font>
+    	        To see poster, don't block popups! Otherwise click <b>Display Poster</b> below.
 			</td>
 		</tr>
 		<c:choose>
