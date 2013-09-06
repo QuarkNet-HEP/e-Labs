@@ -2,7 +2,13 @@
 	<head>
 		<title>Poster</title>
 		<link rel="stylesheet" type="text/css" href="../css/poster.css" />
-
+		<style>
+		.poster_detail_body span {
+			text-align:left !important;
+			font-family: arial, helvetica, sans-serif !important;
+			font-size: 12pt !important;
+		}
+		</style>
 		<script language="JavaScript">
 			self.name="Poster_main";
 			function showFigure(url) {
@@ -60,7 +66,7 @@
 						<table class="poster_detail_head" width="302">
 							<a name="abstract"></a>
 							<tr>
-								<td align="left" class="poster_detail_body">
+								<td class="poster_detail_body">
 									<p class="poster_detail_subhead">Introduction</p>
 									<p>
 										%PARA:INTRODUCTION%

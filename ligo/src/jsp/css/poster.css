@@ -37,7 +37,6 @@
 
 .poster_detail_frame {
 	background-color: #66CC99;
-	text-align: center;
 }
 
 .poster_detail_head {
@@ -56,6 +55,7 @@
 
 .poster_detail_subhead { 
 	font-weight: bold; 
+	text-align: center;
 }
 
 .poster_figure_name {
