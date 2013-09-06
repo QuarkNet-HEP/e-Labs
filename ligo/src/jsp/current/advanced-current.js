@@ -246,16 +246,13 @@ function logCheckboxCB() {
 	
 	if (logCheckedY == true) {
 		ty = ln;
-		console.log(ln);
 		ity = exp; 
-		console.log(ity);
-		if (plot != null && plot.getAxes().yaxis.max - plot.getAxes().yaxis.min > 5) {
+		if (plot != null && plot.getAxes().yaxis.max - plot.getAxes().yaxis.min > 0) {
 			// heuristic so that my log algorithm doesn't crunch small numbers.
 			tfy = logTickFormatter;
 		}
 	}
-
-	$.extend(options, { yaxis: {transform: ty, inverseTransform: ity, ticks: tfy } });
+	$.extend(options, { yaxis: {transform: ty, inverseTransform: ity, ticks: tfy, tickSize: tfy } });
 }
 
 function yAutoRangeCheckboxCB() {
@@ -283,8 +280,7 @@ function validateNumericInput(id) {
 	var val = $(id).val();
 	if (isNumeric(val)) {
 		$(id).css("background-color", "white");
-		//return parseInt(val);
-		return val;
+		return parseInt(val);
 	}
 	else {
 		$(id).css("background-color", "red");
@@ -340,9 +336,9 @@ function logTickFormatter(axis) {
 	var min = Math.pow(10, Math.floor(Math.log(newMin) / Math.LN10)); 
 	var max = Math.pow(10, Math.ceil(Math.log(newMax) / Math.LN10));
 	for (var i = min ; i <= max; i = i * 10) {
-		axisValues.push(i);
+			axisValues.push(i);
+			console.log(i);
 	}
-	
 	return axisValues; 
 }
 
@@ -453,14 +449,14 @@ function overrideYLabel(channel, unit) {
 	c = parseChannel();
 	switch (c.subsystem) {
 	case "DMT":
-		return "Signal (volts * 10e5)";
+		return "Signal (volts * 10e6)";
 		break;
 	case "PEM":
 		switch (c.sensor) {
 			case "SEISX":
 			case "SEISY":
 			case "SEISZ":
-				return "Signal (volts * 10e5)";
+				return "Signal (volts * 10e6)";
 				break;
 			default:
 				return unit;
