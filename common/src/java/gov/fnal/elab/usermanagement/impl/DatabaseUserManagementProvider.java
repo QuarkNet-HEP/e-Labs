@@ -777,7 +777,36 @@ public class DatabaseUserManagementProvider implements
                     "User list and createGroups list have different sizes");
         }
         Map<String, ElabGroup> groups = new HashMap<String, ElabGroup>();
+        Iterator studentIterator = students.iterator();
+        Iterator createGroupIterator = createGroups.iterator();
         
+        while (studentIterator.hasNext() && createGroupIterator.hasNext()) {
+        	ElabStudent student = (ElabStudent) studentIterator.next();
+        	ElabGroup group = student.getGroup();
+        	Boolean createGroup = (Boolean) createGroupIterator.next();
+        	if (createGroup) {
+    			ElabGroup existing = groups.get(group.getName());
+    			if (existing == null) {
+                    groups.put(group.getName(), group);
+                }
+    			else {
+                    if (group.isUpload()) {
+                        existing.setRole(ElabGroup.ROLE_UPLOAD);
+                    }
+                    if (group.isNewSurvey()) {
+                    	existing.setNewSurvey(true);
+                    }
+                    else if (group.getSurvey()) {
+                        existing.setSurvey(true);
+                    }
+                    else {
+                    	existing.setSurvey(false);
+                    	existing.setNewSurvey(false);
+                    }
+                }        		
+        	}
+        }
+ /*       
         for (ElabStudent student : students) {
         	ElabGroup group = student.getGroup();
         	for (Boolean createGroup : createGroups) {
@@ -804,7 +833,7 @@ public class DatabaseUserManagementProvider implements
         		}
         	}
         }
-        
+*/        
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             autoCommit = conn.getAutoCommit();
