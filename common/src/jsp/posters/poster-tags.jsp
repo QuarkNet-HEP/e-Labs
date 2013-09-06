@@ -92,6 +92,20 @@
 			}
 			return true;
 		}
+		function saveAndAdd() {
+			var checked = true;
+			checked = validateAllTags();
+			if (checked) {
+				document.getElementById('submitButton').click();
+			}
+			return checked;
+		}
+	</script>
+	<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>		
+	<script>
+		$(document).ready(function() {
+			addTag("newTags", "text", "", "", "div");
+		});	
 	</script>
     <body>	
     		<!-- entire page container -->
@@ -113,7 +127,7 @@
 		    	   		<tr>
 		    	   			<td style="text-align:center;"><strong> Delete? </strong></td>
 		    	   			<td><strong>Tag Name</strong></td>
-		    	   			<td><input type="button" name="add" id="add" value="+" onclick='javascript:addTag("newTags", "text", "", "", "div");'></input>
+		    	   			<td><input type="button" name="add" id="add" value="+" onclick='saveAndAdd();'></input>
 		    	   			</td>
 		    	   		</tr>
 						<c:forEach items="${posterTags}" var="posterTags">
