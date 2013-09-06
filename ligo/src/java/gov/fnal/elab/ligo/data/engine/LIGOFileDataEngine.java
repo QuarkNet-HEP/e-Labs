@@ -174,7 +174,7 @@ public class LIGOFileDataEngine implements DataEngine, Modifiable {
 
                     lastvalue = values[i];
 
-                    values[i] = values[i].doubleValue() * props.getSlope() + props.getBias();
+                    values[i] = (values[i].doubleValue() * props.getSlope() + props.getBias());
                     if (values[i] > max) {
                         max = values[i];
                     }
@@ -193,6 +193,89 @@ public class LIGOFileDataEngine implements DataEngine, Modifiable {
         }
     }
 
+    public DataSet getNewData(DataPath path, Range range, Options options, int multiplier) throws DataBackendException {
+        lock.readLock().lock();
+        try {
+            int ip = path.getName().lastIndexOf('.');
+            String channel = path.getName().substring(0, ip);
+            String type = path.getName().substring(ip + 1);
+            ChannelIndex index = indexes.get(channel);
+            if (index == null) {
+                throw new DataBackendException("Invalid data path: " + path);
+            }
+            ChannelProperties props = channels.get(channel);
+            Double[] values = new Double[options.getSamples()];
+            double min = Double.MAX_VALUE;
+            double max = Double.MIN_VALUE;
+
+            long[] indices = new long[options.getSamples() + 1];
+            indices[0] = index.getRecordIndex(range.getStart().doubleValue()) - 1;
+            for (int i = 0; i < options.getSamples(); i++) {
+                double time = range.getStart().doubleValue() + i * range.getRange().doubleValue()
+                        / options.getSamples();
+                indices[i + 1] = index.getRecordIndex(time);
+            }
+
+            try {
+                LIGOFileReader rf = lfrFactory.newReader(getName(channel), props, type);
+                Record[] records = rf.readRecords(indices);
+                Record last = records[0];
+                boolean lastInvalid = false;
+                if (last == null) {
+                    last = new Record(false, 0, 0);
+                    lastInvalid = true;
+                }
+                double lastvalue = 0;
+
+                for (int i = 0; i < options.getSamples(); i++) {
+                    Record rec = records[i + 1];
+                    if (rec == null) {
+                        values[i] = Double.NaN;
+                        continue;
+                    }
+
+                    if (rec.time == last.time) {
+                        // I'm not sure this is strictly correct
+                        values[i] = lastvalue;
+                    }
+                    else {
+                        values[i] = rf.value(last, rec);
+                    }
+                    if (lastInvalid) {
+                        values[i] = Double.NaN;
+                        lastInvalid = false;
+                    }
+                    if (!rec.valid) {
+                        values[i] = Double.NaN;
+                        lastInvalid = true;
+                    }
+                    else {
+                        // last should be the last valid record
+                        last = rec;
+                    }
+
+                    lastvalue = values[i];
+                    //EPeronja: multiply by 100000 as per Dale's request to make value much larger with the newest data.
+                    values[i] = (values[i].doubleValue() * props.getSlope() + props.getBias()) * multiplier;
+                    if (values[i] > max) {
+                        max = values[i];
+                    }
+                    if (values[i] < min) {
+                        min = values[i];
+                    }
+                }
+                return new NumberArrayDataSet(path, range, new Range(min, max), values, props.getUnits());
+            }
+            catch (IOException e) {
+                throw new DataBackendException(e);
+            }
+        }
+        finally {
+            lock.readLock().unlock();
+        }
+    }
+    
+    
     private ChannelName getName(String channel) {
         return names.get(channel);
     }
