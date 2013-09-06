@@ -56,9 +56,7 @@
 		}); 
 		</script>				
 			<h1>Publish Posters</h1>
-			<strong>Rubrics:</strong> <a href="../assessment/rubric-ci.html">Content & Investigation</a>,
-			<a href="../assessment/rubric-r.html">Process</a>, <a href="../assessment/rubric-t.html">Computing</a>,
-			<a href="../assessment/rubric-wla.html">Literacy</a> and <a href="../assessment/rubric-p.html">Poster</a>
+			<li><ul><a href="../assessment/rubric-p.html">Poster</a> Rubrics.</ul></li>
 			<c:choose>
 					<c:when test="${empty posters}">
 						<h2>No posters found</h2>
