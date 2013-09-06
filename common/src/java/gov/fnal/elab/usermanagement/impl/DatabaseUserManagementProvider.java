@@ -174,7 +174,7 @@ public class DatabaseUserManagementProvider implements
     private void updateUsage(Connection c, ElabGroup user) throws SQLException {
     	PreparedStatement ps = c.prepareStatement("INSERT INTO usage (research_group_id) VALUES (?);");
     	ps.setInt(1, user.getGroup().getId());
-    	int rows = ps.executeUpdate();
+     	int rows = ps.executeUpdate();
         if (rows != 1) {
             // logging?
             System.out.println("Weren't able to add statistics info "
@@ -187,7 +187,7 @@ public class DatabaseUserManagementProvider implements
     private ElabGroup createUser(Connection c, String username, String password,
             int projectId) throws SQLException, AuthenticationException {
     	PreparedStatement ps = c.prepareStatement(
-    			"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+    			"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id, rg.active " +
     			"FROM research_group AS rg " +
     			"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
     			"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
@@ -204,7 +204,7 @@ public class DatabaseUserManagementProvider implements
     private ElabGroup createUser(Connection c, String username, int projectId)
             throws SQLException, ElabException {
 		PreparedStatement ps = c.prepareStatement(
-        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id, rg.active " +
         		"FROM research_group AS rg " +
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
@@ -224,7 +224,7 @@ public class DatabaseUserManagementProvider implements
             throws SQLException, ElabException {
     	String name = "";
         PreparedStatement ps = c.prepareStatement(
-        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id, rg.active " +
         		"FROM research_group AS rg " +
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
@@ -251,6 +251,7 @@ public class DatabaseUserManagementProvider implements
         user.setTeacherId(rs.getInt("teacher_id"));
         user.setRole(rs.getString("role"));
         user.setSurvey(rs.getBoolean("survey"));
+        user.setActive(rs.getBoolean("active"));
         user.setUserArea(rs.getString("userarea"));
         user.setStudy(rs.getBoolean("in_study"));
         user.setNewSurvey(rs.getBoolean("new_survey"));
@@ -307,7 +308,7 @@ public class DatabaseUserManagementProvider implements
     private ElabGroup createGroup(Connection c, String groupName,
             int projectId) throws SQLException {
         PreparedStatement ps = c.prepareStatement(
-        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id, rg.active " +
         		"FROM research_group AS rg " +
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
@@ -330,6 +331,7 @@ public class DatabaseUserManagementProvider implements
         user.setFirstTime(rs.getBoolean("first_time"));
         user.setStudy(rs.getBoolean("in_study"));
         user.setNewSurvey(rs.getBoolean("new_survey"));
+        user.setActive(rs.getBoolean("active"));
         user.setNewSurveyId((Integer) rs.getObject("test_id")); 
         setMiscGroupData(user, rs.getString("ay"), user.getUserArea());
         
@@ -432,7 +434,7 @@ public class DatabaseUserManagementProvider implements
                     .getConnection(elab.getProperties());
             int projectId = elab.getId();
             ps = conn.prepareStatement(
-            		"SELECT DISTINCT teacher.name AS tname, teacher.email AS temail, teacher.id AS teacherid, research_group.id AS id, research_group.name AS rgname, research_group.userarea AS rguserarea " +
+            		"SELECT DISTINCT teacher.name AS tname, teacher.email AS temail, teacher.id AS teacherid, research_group.id AS id, research_group.name AS rgname, research_group.userarea AS rguserarea, research_group.active AS rgactive " +
             		"FROM research_group_project " + 
             		"LEFT OUTER JOIN research_group ON research_group.id = research_group_project.research_group_id " + 
             		"INNER JOIN teacher ON research_group.teacher_id = teacher.id " +  
@@ -471,6 +473,7 @@ public class DatabaseUserManagementProvider implements
                     teachers.add(t);
                 }
                 g.setName(rs.getString("rgname"));
+                g.setActive(rs.getBoolean("rgactive"));
                 t.addGroup(g);
             }
             return teachers;
@@ -633,8 +636,8 @@ public class DatabaseUserManagementProvider implements
             String hashedPassword = BCrypt.hashpw(pass, BCrypt.gensalt(12));
             ps = c.prepareStatement(
             		"INSERT INTO research_group " +
-            		"(name, hashedpassword, teacher_id, role, userarea, ay, survey, new_survey, in_study) " +
-            		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;");
+            		"(name, hashedpassword, teacher_id, role, userarea, ay, survey, new_survey, in_study, active) " +
+            		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;");
             ps.setString(2, hashedPassword);
             ps.setInt(3, et.getTeacherId());
             ps.setString(4, group.isUpload() ? "upload" : "user");
@@ -643,6 +646,7 @@ public class DatabaseUserManagementProvider implements
             ps.setBoolean(7, group.getSurvey());
             ps.setBoolean(8, group.isNewSurvey());
             ps.setBoolean(9, group.isStudy());
+            ps.setBoolean(10, group.getActive());
             
             do {
             	try {
@@ -773,7 +777,36 @@ public class DatabaseUserManagementProvider implements
                     "User list and createGroups list have different sizes");
         }
         Map<String, ElabGroup> groups = new HashMap<String, ElabGroup>();
+        Iterator studentIterator = students.iterator();
+        Iterator createGroupIterator = createGroups.iterator();
         
+        while (studentIterator.hasNext() && createGroupIterator.hasNext()) {
+        	ElabStudent student = (ElabStudent) studentIterator.next();
+        	ElabGroup group = student.getGroup();
+        	Boolean createGroup = (Boolean) createGroupIterator.next();
+        	if (createGroup) {
+    			ElabGroup existing = groups.get(group.getName());
+    			if (existing == null) {
+                    groups.put(group.getName(), group);
+                }
+    			else {
+                    if (group.isUpload()) {
+                        existing.setRole(ElabGroup.ROLE_UPLOAD);
+                    }
+                    if (group.isNewSurvey()) {
+                    	existing.setNewSurvey(true);
+                    }
+                    else if (group.getSurvey()) {
+                        existing.setSurvey(true);
+                    }
+                    else {
+                    	existing.setSurvey(false);
+                    	existing.setNewSurvey(false);
+                    }
+                }        		
+        	}
+        }
+ /* EPeronja: the next piece of code doesn't work at all when you have mixed lists!       
         for (ElabStudent student : students) {
         	ElabGroup group = student.getGroup();
         	for (Boolean createGroup : createGroups) {
@@ -800,7 +833,7 @@ public class DatabaseUserManagementProvider implements
         		}
         	}
         }
-        
+*/        
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             autoCommit = conn.getAutoCommit();
@@ -887,7 +920,7 @@ public class DatabaseUserManagementProvider implements
 	            conn.setAutoCommit(false);
 	            svpt = conn.setSavepoint();
 	            boolean pass = false; 
-	            String sql = "UPDATE research_group SET ay = ?, role = ?, survey = ?, new_survey = ?";
+	            String sql = "UPDATE research_group SET ay = ?, role = ?, survey = ?, new_survey = ?, active = ?";
 	            if (StringUtils.isNotBlank(password)) {
 	            	sql += ", hashedpassword = ? ";
 	            	pass = true;
@@ -898,13 +931,14 @@ public class DatabaseUserManagementProvider implements
 	            ps.setString(2, group.getRole());
 	            ps.setBoolean(3, group.getSurvey());
 	            ps.setBoolean(4, group.isNewSurvey());
+	            ps.setBoolean(5, group.getActive());
 	            if (pass) {
 	            	String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12)); 
-	            	ps.setString(5, hashedPassword);
-	            	ps.setInt(6, group.getId());
+	            	ps.setString(6, hashedPassword);
+	            	ps.setInt(7, group.getId());
 	            }
 	            else {
-	            	ps.setInt(5, group.getId());
+	            	ps.setInt(6, group.getId());
 	            }
 	            
 	            ps.executeUpdate();

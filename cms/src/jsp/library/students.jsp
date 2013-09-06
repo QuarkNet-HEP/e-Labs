@@ -50,6 +50,8 @@
 							email = email.replaceAll("@", " <-at-> ").replaceAll("\\.", "  d.o.t  ");
 						}
 						pageContext.setAttribute("email", email);
+						if (teacher.getActive()) {
+						
 					%>
 					<tr>
 						<td>
@@ -67,10 +69,13 @@
 						<td>${teacher.group.state}</td>
 						<td>
 							<c:forEach items="${teacher.groups}" var="group">
-								${group.name}<br/>
+								<c:if test="${group.active}">
+									${group.name}<br/>
+								</c:if>
 							</c:forEach>
 						</td>
 					</tr>
+					<% } %>
 				</c:forEach>
 			</table>
 

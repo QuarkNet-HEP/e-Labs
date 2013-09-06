@@ -44,9 +44,27 @@
 	String detectorString = request.getParameter("detectorString");
 	String passwd1 = request.getParameter("passwd1");
 	String passwd2 = request.getParameter("passwd2");
+	String active = request.getParameter("active");
 	String submit = request.getParameter("submit");
 	String prevPage = request.getParameter("prevPage");
 	String[] studentsToDelete = request.getParameterValues("deleteStudents");
+	ArrayList<String> academicYearValues = new ArrayList<String>();
+	ArrayList<String> academicYearLabels = new ArrayList<String>();
+	int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+	int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+	for (int i = 2004; i <= currentYear+1; i++){
+		academicYearValues.add("AY"+String.valueOf(i));
+		academicYearLabels.add(String.valueOf(i)+"-"+String.valueOf(i + 1));
+	}
+	//take into account that year changes in July
+	int defaultYear = currentYear;
+	if (currentMonth > 6) {
+		defaultYear = currentYear + 1;
+	}
+	
+	request.setAttribute("academicYearValues", academicYearValues);
+	request.setAttribute("academicYearLabels", academicYearLabels);
+	request.setAttribute("defaultYear", defaultYear);
 	
 	if ("Update Group Information".equals(submit)) {
 		if (groupName != null && ay != null && survey != null) {
@@ -107,7 +125,23 @@
 					group.setSurvey(false);
 					group.setNewSurvey(false);
 				}
-				
+				//check whether we need to set this group as inactive
+				if (active != null) {
+					if (active.equals("on")) {
+						group.setActive(true);
+					}
+				} else {
+					//if the teacher is inactive, then all the usergroups for these teacher become inactive
+					//if (group.getRole().equals("teacher")) {
+					//	Iterator i = user.getGroups().iterator();
+					//	while (i.hasNext()) {
+					//		ElabGroup tg = (ElabGroup) i.next();
+					//		tg.setActive(false);
+					//		elab.getUserManagementProvider().updateGroup(tg, "");
+					//	}
+					//} 
+					group.setActive(false);
+				}				
 				elab.getUserManagementProvider().updateGroup(group, passwd1);
 				if (studentsToDelete != null) {
 					for (String s : studentsToDelete) {
@@ -115,6 +149,7 @@
 						elab.getUserManagementProvider().deleteStudent(group, studentToDelete);
 					}
 				}
+					
 				out.write("<div class=\"results\">" + groupName + "'s information was successfully updated. ");
 				if (StringUtils.isNotBlank(prevPage) && !prevPage.endsWith("null")) {
 					out.write("<a href=\"" + java.net.URLDecoder.decode(prevPage) + "\">Click here to continue onto the e-lab</a>");
@@ -156,8 +191,8 @@
 					<label for="ay">Academic Year:</label>
 				</td>
 				<td>
-					<e:trselect name="ay" valueList="AY2004, AY2005, AY2006, AY2007, AY2008, AY2009, AY2010, AY2011, AY2012"
-						labelList="2004-2005, 2005-2006, 2006-2007, 2007-2008, 2008-2009, 2009-2010, 2010-2011, 2011-2012, 2012-2013"
+					<e:trselect name="ay" valueList="${academicYearValues}"
+						labelList="${academicYearLabels}"
 						value="${group.year}"/>
 				</td>
 			</tr>
@@ -230,6 +265,19 @@
 				</td>
 				<td>
 					<input type="password" name="passwd2" size="16" maxlength="72"/>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="active">Active:</label></td>
+				<td>
+					<c:choose>
+						<c:when test="${group.active == true}">
+							<input type="checkbox" name="active" checked></input>
+						</c:when>
+						<c:otherwise>
+							<input type="checkbox" name="active"></input>
+						</c:otherwise>
+					</c:choose>									
 				</td>
 			</tr>
 			<c:if test="${not empty group.students}">
