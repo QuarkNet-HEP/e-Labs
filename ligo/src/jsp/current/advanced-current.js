@@ -337,7 +337,7 @@ function logTickFormatter(axis) {
 	var max = Math.pow(10, Math.ceil(Math.log(newMax) / Math.LN10));
 	for (var i = min ; i <= max; i = i * 10) {
 			axisValues.push(i);
-			console.log(i);
+			//console.log(i);
 	}
 	return axisValues; 
 }
