@@ -67,7 +67,7 @@ request.setAttribute("groups", groups);
 				<td style="border: 1px solid lightgray;">${group.key}</td>
 				<td style="border: 1px solid lightgray;">
 					<c:forEach items="${group.value}" var="student">
-					  ${student.name} 
+					  ${student.name} &nbsp; 
 					</c:forEach>
 				</td>
 			</tr>
