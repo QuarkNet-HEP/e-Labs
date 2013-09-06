@@ -54,6 +54,7 @@
 		throw new ElabJspException("An error was encountered while accessing user " + posterUserName + ". " + e.getMessage()); 
 	}
 	String plotURL = posterUser.getDirURL("plots") + '/';
+
 	File pfn = new File(posterUser.getDir("posters"), dfile);
 
 	HashMap tags = new HashMap();
@@ -142,7 +143,7 @@
 			template = template.replaceAll("%" + key + "%", Matcher.quoteReplacement("Figure " + figureN + ". " + sb.toString())); 
 		}
 		if (key.startsWith("FIG:FIGURE")) {
-			template = template.replaceAll("%" + key + "%", Matcher.quoteReplacement(urlCodec.encode(sb.toString())));
+			template = template.replaceAll("%" + key + "%", Matcher.quoteReplacement(urlCodec.encode(sb.toString()).replace("+", "%20")));
 		}
 		template = template.replaceAll("%" + key + "%", Matcher.quoteReplacement(sb.toString()));
 	}
@@ -160,7 +161,8 @@
 	
 	if ("paper".equals(type)) {
 		// replace src=" with src="+ path to plots (in user area).
-		template = template.replaceAll("src=\"","src=\"" + plotURL); //really only matters for paper
+		String plotURLwithoutSpaces = plotURL.replaceAll(" ", "%20");
+		template = template.replaceAll("src=\"","src=\"" + plotURLwithoutSpaces); //really only matters for paper
 		template = template.replaceAll("%WORDS:CAPTION1%", ""); 
 		template = template.replaceAll("%WORDS:CAPTION2%", ""); 
 		template = template.replaceAll("%WORDS:CAPTION3%", ""); 
@@ -183,16 +185,16 @@
 		template = template.replaceAll("Figure 8. <", "<"); 
 		template = template.replaceAll("Figure 9. <", "<"); 
 		template = template.replaceAll("Figure 10. <", "<"); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE1%", "../graphics/no-figure.gif"); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE2%", "../graphics/no-figure.gif"); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE3%", "../graphics/no-figure.gif"); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE4%", "../graphics/no-figure.gif"); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE5%", "../graphics/no-figure.gif"); 		
-		template = template.replaceAll(plotURL + "%FIG:FIGURE6%", "../graphics/no-figure.gif"); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE7%", "../graphics/no-figure.gif"); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE8%", "../graphics/no-figure.gif"); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE9%", "../graphics/no-figure.gif"); 
-		template = template.replaceAll(plotURL + "%FIG:FIGURE10%", "../graphics/no-figure.gif"); 
+		template = template.replaceAll(plotURLwithoutSpaces + "%FIG:FIGURE1%", "../graphics/no-figure.gif"); 
+		template = template.replaceAll(plotURLwithoutSpaces + "%FIG:FIGURE2%", "../graphics/no-figure.gif"); 
+		template = template.replaceAll(plotURLwithoutSpaces + "%FIG:FIGURE3%", "../graphics/no-figure.gif"); 
+		template = template.replaceAll(plotURLwithoutSpaces + "%FIG:FIGURE4%", "../graphics/no-figure.gif"); 
+		template = template.replaceAll(plotURLwithoutSpaces + "%FIG:FIGURE5%", "../graphics/no-figure.gif"); 		
+		template = template.replaceAll(plotURLwithoutSpaces + "%FIG:FIGURE6%", "../graphics/no-figure.gif"); 
+		template = template.replaceAll(plotURLwithoutSpaces + "%FIG:FIGURE7%", "../graphics/no-figure.gif"); 
+		template = template.replaceAll(plotURLwithoutSpaces + "%FIG:FIGURE8%", "../graphics/no-figure.gif"); 
+		template = template.replaceAll(plotURLwithoutSpaces + "%FIG:FIGURE9%", "../graphics/no-figure.gif"); 
+		template = template.replaceAll(plotURLwithoutSpaces + "%FIG:FIGURE10%", "../graphics/no-figure.gif"); 
 	}
 
 	out.println(template);
