@@ -79,6 +79,14 @@ String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
 	</tr>
 	<tr>
 		<td  valign="top">
+			<a href="list-groups.jsp">View research groups.</a>
+		</td>
+		<td valign="top">
+			View a list of all active groups and student members.
+		</td>
+	</tr>	
+	<tr>
+		<td  valign="top">
 			<a href="update-groups.jsp">Update your previously created groups.</a>
 		</td>
 		<td valign="top">
