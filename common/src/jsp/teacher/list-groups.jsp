@@ -38,7 +38,8 @@
 			<div id="content">
 <h1>Groups</h1>
 <ul>
-	<li>Back to <a href="update-groups.jsp">update</a> groups.</li>
+	<li><a href="register-students.jsp">Register</a> student groups.</li>
+	<li><a href="update-groups.jsp">Update</a> existing groups.</li>
 </ul>
 	
 <%

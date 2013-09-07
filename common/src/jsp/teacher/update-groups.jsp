@@ -38,7 +38,7 @@
 <h1>Update your groups</h1>
 <ul>
 	<li><strong>Select</strong> a group from the dropdown and click 'Show Group Info'.</li>
-	<li><strong>Make your changes</strong> and click <strong>'Update Group Information'</strong> to save.</li>
+	<li><strong>Make your changes</strong> and click 'Update Group Information' to <strong>save</strong>.</li>
 	<li>You can also view a <a href="list-groups.jsp">list</a> of all active groups and student members.</li>
 </ul>
 

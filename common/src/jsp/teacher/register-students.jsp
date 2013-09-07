@@ -187,26 +187,28 @@
 			<c:choose>
 				<c:when test="${valid}">
 					<p class="success">Your student registration completed succesfully.</p>
-					<p>
-						The groups we created for you (and their associated passwords) are listed below.
-					</p>
-					<p>
-					    <!-- If one of the groups you requested already existed in our project, your group name was altered
-					    slightly to ensure uniqueness. --> You may now use the File...Save feature in your browser to save
-					    the information below.
-					</p>
-					<table border="0" id="registration-results">
-						<tr>
-							<th>Group Name</th>
-							<th>Password</th>
-						</tr>
-						<c:forEach items="${results}" var="result">
+					<c:if test="${not empty results}" >
+						<p>
+							The new groups we created for you (and their associated passwords) are listed below.
+						</p>
+						<p>
+						    <!-- If one of the groups you requested already existed in our project, your group name was altered
+						    slightly to ensure uniqueness. --> You may now use the File...Save feature in your browser to save
+						    the information below.
+						</p>
+						<table border="0" id="registration-results">
 							<tr>
-								<td>${result[0]}</td>
-								<td>${result[1]}</td>
+								<th>Group Name</th>
+								<th>Password</th>
 							</tr>
-						</c:forEach>
-					</table>
+							<c:forEach items="${results}" var="result">
+								<tr>
+									<td>${result[0]}</td>
+									<td>${result[1]}</td>
+								</tr>
+							</c:forEach>
+						</table>
+					</c:if>
 				</c:when>
 				<c:otherwise>
 					<p class="error">A problem occurred while registering with your students:</p>
