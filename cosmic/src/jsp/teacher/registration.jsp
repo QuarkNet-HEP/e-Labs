@@ -40,7 +40,7 @@ String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
 			<div id="content">
 
 <h1>e-Lab Registration</h1>
-<table border="0" id="registration-links-table">
+<table border="0" id="registration-links-table" cellpadding="15">
 	<%--
 	<tr>
 		<td valign="top" width="40%">
@@ -74,6 +74,14 @@ String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
 		<td valign="top">
 			Use this link to register less than ten students. You can link new students to existing 
 			research groups or you can create new research groups for students.
+		</td>
+	</tr>
+	<tr>
+		<td  valign="top">
+			<a href="list-groups.jsp">View research groups.</a>
+		</td>
+		<td valign="top">
+			View a list of all active groups and student members.
 		</td>
 	</tr>
 	<tr>
