@@ -172,7 +172,7 @@ function logCheckboxCB() {
 }
 
 function yAutoRangeCheckboxCB() {
-	yAutoRange = $("#yAutoRangeCheckbox:checked").val() != null;
+	var yAutoRange = $("#yAutoRangeCheckbox:checked").val() != null;
 	
 	if (yAutoRange) {
 		$("#yRangeMin").attr("disabled", "true");
