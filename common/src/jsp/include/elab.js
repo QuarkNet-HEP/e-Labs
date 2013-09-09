@@ -23,19 +23,6 @@ function HideShow(ID) {
 	}
 }
 
-function HideShowReset(ID, label) {
-	if ((aLs(ID).visibility == "hidden")) {
-		aLs(ID).value = label;
-		aLs(ID).visibility = "visible";
-		aLs(ID).display = "";
-	}
-	else if (aLs(ID).visibility == "visible") {
-		aLs(ID).value = label;
-		aLs(ID).visibility = "hidden";
-		aLs(ID).display = "none";
-	}
-}
-
 function vSwitchShow(id) {
 	show(id + "-h");
 	hide(id + "-v");

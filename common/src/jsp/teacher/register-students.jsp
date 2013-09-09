@@ -293,7 +293,7 @@
 			</select>
 			<input type="hidden" name="name_option<%=i%>" id="name_option<%=i%>" value=""></input>
 			<input type="submit" name="is_new<%=i%>" value="Make New Group" 
-				onClick="HideShowReset('res_name_text<%=i%>','Group Name'); HideShowReset('res_name_chooser<%=i%>','Make New Group');HideShow('is_upload_box<%=i%>');HideShow('is_survey_box<%=i%>'); if (this.form.is_new<%=i%>.value=='Make New Group') { this.form.is_new<%=i%>.value='Choose group'; } else { this.form.is_new<%=i%>.value='Make New Group'; } return false;"/>
+				onClick="HideShow('res_name_text<%=i%>'); HideShow('res_name_chooser<%=i%>');HideShow('is_upload_box<%=i%>');HideShow('is_survey_box<%=i%>'); if (this.form.is_new<%=i%>.value=='Make New Group') {this.form.res_name_chooser<%=i%>.options[0].selected=true; this.form.is_new<%=i%>.value='Choose group'; } else { this.form.res_name_text<%=i%>.value='Group Name'; this.form.is_new<%=i%>.value='Make New Group'; } return false;"/>
         </div>
     </td>
     <td align="left" valign="middle">
