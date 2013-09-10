@@ -1,9 +1,7 @@
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0" 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output method="html"/>
 <xsl:template match="/">
-<<<<<<< Updated upstream
  <table border="1">
   <tr>
    <td colspan="3" align="center">
@@ -11,20 +9,23 @@
      <xsl:value-of select="/file/filename"/>
     </b>
    </td>
-=======
-<style>
-	.center { border: 1px solid black; text-align: center;}	
-	.left { border: 1px solid black; text-align: left;}	
-</style>
-<table class="center">
-  <tr>
-   <th colspan="3" class="center" ><xsl:value-of select="/file/filename"/></th>
->>>>>>> Stashed changes
   </tr>
   <tr>
-   <td><a href="#total_events">Total Events</a></td>
-   <td><a href="#total_lines">Total Lines</a></td>
-   <td><a href="#gatewidth">Gatewidth</a></td>
+   <td align="center">
+    <a href="#total_events">
+     total events
+    </a>
+   </td>
+   <td align="center">
+    <a href="#total_lines">
+     total lines
+    </a>
+   </td>
+   <td align="center">
+    <a href="#gatewidth">
+     gatewidth
+    </a>
+   </td>
   </tr>
   <tr>
    <td align="center">
@@ -37,60 +38,77 @@
     <xsl:value-of select="/file/gatewidth"/> ns
    </td>
   </tr>
-</table>
- <br/>
-<<<<<<< Updated upstream
-Average hits per Event: <xsl:value-of select="/file/average"/>
-=======
-<table class="center">
- 	<tr><td>Average hits per Event: <xsl:value-of select="/file/average"/></td></tr>
  </table>
->>>>>>> Stashed changes
+ <br/>
+Average hits per Event: <xsl:value-of select="/file/average"/>
  <br/>
  <br/>
- <table class="center">
+ <table border="1">
   <tr>
-  	<th></th>
-   	<th colspan="4" class="center">Channels</th>
+   <td>
+   </td>
+   <td colspan="5" align="center">
+    Channel
+   </td>
   </tr>
   <tr>
-   <td></td>
-   	<xsl:for-each select="/file/channel">
-    	<td class="center"><xsl:value-of select="num"/></td>
-   	</xsl:for-each>
-  </tr>
-  <tr>
-   	<td class="left">Total Hits</td>
-	   <xsl:for-each select="/file/channel">
-    	<td class="center">
-     		<xsl:value-of select="hits/count"/>
-    	</td>
-   	</xsl:for-each>
-  </tr>
-  <tr>
-   <td class="left"><a href="#REorphan">Rising Orphans</a></td>
+   <td> 
+   </td>
    <xsl:for-each select="/file/channel">
-    <td class="center">
-     	<a>
-      	<xsl:attribute name="href">../data/view.jsp?filename=<xsl:value-of select="/file/filename"/></xsl:attribute>
-      	<xsl:value-of select="orphan/rising/count"/></a> - <xsl:value-of select="orphan/rising/percent"/>%
+    <td align="center">
+     <xsl:value-of select="num"/>
     </td>
    </xsl:for-each>
   </tr>
   <tr>
-   <td class="left"><a href="#FEorphan">Falling Orphans</a></td>
+   <td>
+    Total Hits
+   </td>
    <xsl:for-each select="/file/channel">
-    <td class="center">
+    <td align="center">
+     <xsl:value-of select="hits/count"/>
+    </td>
+   </xsl:for-each>
+  </tr>
+  <tr>
+   <td>
+    <a href="#REorphan">
+     Rising Orphans
+    </a>
+   </td>
+   <xsl:for-each select="/file/channel">
+    <td align="center">
      <a>
-      <xsl:attribute name="href">../data/view.jsp?filename=<xsl:value-of select="/file/filename"/><xsl:text disable-output-escaping="yes">&#38;type&#61;data&#38;menu&#61;yes&#38;get&#61;data&#38;highlight&#61;yes&#38;line&#61;</xsl:text><xsl:value-of select="orphan/falling/line"/>
+      <xsl:attribute name="href">
+       ../data/view.jsp?filename=<xsl:value-of select="/file/filename"/>&#38;type&#61;data&#38;menu&#61;yes&#38;get&#61;data&#38;highlight&#61;yes&#38;line&#61;<xsl:value-of select="orphan/rising/line"/>
+      </xsl:attribute>
+      <xsl:value-of select="orphan/rising/count"/></a> - <xsl:value-of select="orphan/rising/percent"/>%
+    </td>
+   </xsl:for-each>
+  </tr>
+  <tr>
+   <td>
+    <a href="#FEorphan">
+     Falling Orphans
+    </a>
+   </td>
+   <xsl:for-each select="/file/channel">
+    <td align="center">
+     <a>
+      <xsl:attribute name="href">
+       ../data/view.jsp?filename=<xsl:value-of select="/file/filename"/>&#38;type&#61;data&#38;menu&#61;yes&#38;get&#61;data&#38;highlight&#61;yes&#38;line&#61;<xsl:value-of select="orphan/falling/line"/>
       </xsl:attribute>
       <xsl:value-of select="orphan/falling/count"/></a> - <xsl:value-of select="orphan/falling/percent"/>%    </td>
    </xsl:for-each>
   </tr>
   <tr>
-   <td class="left"><a href="#FEbeforeRE">Falling before Rising edge</a></td>
+   <td>
+    <a href="#FEbeforeRE">
+     Falling before Rising edge
+    </a>
+   </td>
    <xsl:for-each select="/file/channel">
-    <td class="center">
+    <td align="center">
      <a>
       <xsl:attribute name="href">
        ../data/view.jsp?filename=<xsl:value-of select="/file/filename"/>&#38;type&#61;data&#38;menu&#61;yes&#38;get&#61;data&#38;highlight&#61;yes&#38;line&#61;<xsl:value-of select="FBR/line"/>
@@ -100,9 +118,13 @@ Average hits per Event: <xsl:value-of select="/file/average"/>
    </xsl:for-each>
   </tr>
   <tr>
-   <td class="left"><a href="#chan_coincidences">Coincidences within a single channel</a></td>
+   <td>
+    <a href="#chan_coincidences">
+     Coincidences within a single channel
+    </a>
+   </td>
    <xsl:for-each select="/file/channel">
-    <td class="center">
+    <td align="center">
      <xsl:for-each select="fold">
       <xsl:value-of select="num"/>: <xsl:value-of select="count"/><br/>
      </xsl:for-each>
@@ -113,18 +135,26 @@ Average hits per Event: <xsl:value-of select="/file/average"/>
  <br/>
  <table border="1">
   <tr>
-   	<th colspan="2" class="center"><a href="#event_chan_coincidences">Strings of coincidences</a></th>
+   <td colspan="3">
+    <a href="#event_chan_coincidences">
+     Strings of coincidences
+    </a>
+   </td>
   </tr>
   <tr>
-   <td class="center">String</td>
-   <td class="center">Total Number</td>
+   <td>
+    String
+   </td>
+   <td>
+    Total Number
+   </td>
   </tr>
   <xsl:for-each select="/file/coincidence/multichan/sequence">
    <tr>
-    <td class="center">
+    <td>
      <xsl:value-of select="string"/>
     </td>
-    <td class="center">
+    <td>
      <xsl:variable name="id" select="count/@id"/>
      <font>
       <xsl:if test="$id = 'max'">
@@ -139,23 +169,31 @@ Average hits per Event: <xsl:value-of select="/file/average"/>
   </xsl:for-each>
  </table>
  <br/>
- <table class="center">
+ <table border="1">
   <tr>
-   <th colspan="2" class="center"><a href="#event_coincidences">Total Coincidences</a></th>
+   <td colspan="2">
+    <a href="#event_coincidences">
+     Total Coincidences
+    </a>
+   </td>
   </tr>
   <tr>
-   <td class="center">Coincidence</td>
-   <td class="center">Total Number</td>
+   <td>
+    Coincidence
+   </td>
+   <td>
+    Total Number
+   </td>
   </tr>
   <xsl:for-each select="/file/coincidence/fold">
    <tr>
-    <td class="center">
+    <td>
      <xsl:value-of select="num"/>
     </td>
-    <td class="center">
+    <td>
      <a>
       <xsl:attribute name="href">
-       ../data/view.jsp?filename=<xsl:value-of select="/file/filename"/>&amp;type&#61;data&#38;menu&#61;yes&#38;get&#61;data&#38;highlight&#61;yes&#38;line&#61;<xsl:value-of select="line"/>
+       ../data/view.jsp?filename=<xsl:value-of select="/file/filename"/>&#38;type&#61;data&#38;menu&#61;yes&#38;get&#61;data&#38;highlight&#61;yes&#38;line&#61;<xsl:value-of select="line"/>
       </xsl:attribute>
       <xsl:value-of select="count"/>
      </a>
@@ -164,40 +202,57 @@ Average hits per Event: <xsl:value-of select="/file/average"/>
   </xsl:for-each>
  </table>
  <br/>
- <table class="center">
+ <table border="1">
   <tr>
-   <th colspan="3" class="center"><a href="#gps">GPS information</a></th>
+   <td colspan="3" align="center">
+    <a href="#gps">
+     GPS information
+    </a>
+   </td>
   </tr>
   <tr>
-   <td></td>
-   <td class="center">Valid GPS</td>
-   <td class="center">Invalid GPS</td>
+   <td>
+   </td>
+   <td>
+    Valid GPS
+   </td>
+   <td>
+    Invalid GPS
+   </td>
   </tr>
   <tr>
-   <td class="left">Datalines</td>
-   <td class="center">
+   <td>
+    Datalines
+   </td>
+   <td>
     <xsl:value-of select="/file/gps/good/byline/count"/> - 
     <xsl:value-of select="/file/gps/good/byline/percent"/>%
    </td>
-   <td class="center">
+   <td>
     <xsl:value-of select="/file/gps/bad/byline/count"/> - 
     <xsl:value-of select="/file/gps/bad/byline/percent"/>%
    </td>
   </tr>
   <tr>
-   <td class="left">Events</td>
-   <td class="center">
+   <td>
+    Events
+   </td>
+   <td>
     <xsl:value-of select="/file/gps/good/byevent/count"/> - 
     <xsl:value-of select="/file/gps/good/byevent/percent"/>%
    </td>
-   <td class="center">
+   <td>
     <xsl:value-of select="/file/gps/bad/byevent/count"/> - 
     <xsl:value-of select="/file/gps/bad/byevent/percent"/>%
    </td>
   </tr>
   <tr>
-   <td class="left"><a href="#no_CPLD_update">No CPLD update</a></td>
-   <td class="center" colspan="2">
+   <td>
+    <a href="#no_CPLD_update">
+     No CPLD update
+    </a>
+   </td>
+   <td colspan="2" align="center">
      <a>
       <xsl:attribute name="href">
        ../data/view.jsp?filename=<xsl:value-of select="/file/filename"/>&#38;type&#61;data&#38;menu&#61;yes&#38;get&#61;data&#38;highlight&#61;yes&#38;line&#61;<xsl:value-of select="file/gps/noupdate/line"/>

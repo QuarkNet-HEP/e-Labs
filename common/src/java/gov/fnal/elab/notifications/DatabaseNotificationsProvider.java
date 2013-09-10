@@ -46,17 +46,17 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             // TODO proper handling of time zones
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             boolean ac = conn.getAutoCommit();
+//            psMessage = conn.prepareStatement(
+//            		"INSERT INTO notifications.message (time, expiration, message, type, creator_research_group_id) " +
+//                    "VALUES (?, ?, ?, ?, ?) RETURNING id;"); 
             psMessage = conn.prepareStatement(
-            		"INSERT INTO notifications (time, expires, message, type, creator_research_group_id) " +
-                    "VALUES (?, ?, ?, ?, ?) RETURNING id;"); 
-            //psMessage = conn.prepareStatement(
-            //		"INSERT INTO notifications (time, expires, message, type) " +
-            //       "VALUES (?, ?, ?, ?) RETURNING id;"); 
+            		"INSERT INTO notifications.message (time, expires, message, type) " +
+                    "VALUES (?, ?, ?, ?) RETURNING id;"); 
             psState = conn.prepareStatement(
-            		"INSERT INTO notifications_state (research_group_id, message_id) " +
+            		"INSERT INTO notifications.state (message_id, research_group_id) " +
             		"VALUES (?, ?);");
             psProject = conn.prepareStatement(
-            		"INSERT INTO notifications_project (message_id, project_id) " +
+            		"INSERT INTO notifications.project_broadcast (message_id, project_id) " +
             		"VALUES (?, ?);"); 
             try {
                 conn.setAutoCommit(false);
@@ -65,7 +65,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 psMessage.setTimestamp(2, new Timestamp(n.getExpirationDate())); 
                 psMessage.setString(3, n.getMessage());
                 psMessage.setInt(4, n.getType().getDBCode());
-                psMessage.setInt(5, n.getCreatorGroupId());
+                //psMessage.setInt(5, n.getCreatorGroupId());
                 
                 ResultSet rs = psMessage.executeQuery(); 
                 if (rs.next()) {
@@ -360,42 +360,6 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         }
 	}
 
-	@Override
-	public List<Notification> getSystemNotifications() throws ElabException {
-        Connection conn = null;
-        PreparedStatement ps = null;
-       
-        String sql = 
-            "SELECT * FROM notifications AS n " + 
-            "LEFT OUTER JOIN notifications_project AS np ON n.id = np.message_id AND project_id = ? " + 
-            "LEFT OUTER JOIN notifications_state AS s ON n.id = s.notification_id " +
-        	"WHERE n.type = 1 ";
-        try {
-            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            
-            ps = conn.prepareStatement(sql); 
-            ps.setInt(1, elab.getId());
-            ResultSet rs = ps.executeQuery();
-            
-            List<Notification> l = new ArrayList<Notification>();
-            while (rs.next()) {
-            	Notification n = new Notification(rs.getInt("id"), rs.getString("message"), rs.getInt("creator_research_group_id"), 
-            			rs.getTimestamp("time").getTime(), rs.getTimestamp("expires").getTime(),
-            			rs.getInt("type"), false, false); 
-            	l.add(n);
-            }
-            return l;
-            
-        }
-        catch (SQLException e) {
-            throw new ElabException(e);
-        }
-        finally {
-            DatabaseConnectionManager.close(conn, ps);
-        }	
-
-	}	
-	
 	@Override
 	public List<Notification> getSystemNotifications(int count) throws ElabException {
 		final List<Notification> toBeImplemented = Collections.emptyList();  

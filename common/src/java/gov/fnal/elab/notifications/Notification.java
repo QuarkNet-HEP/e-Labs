@@ -104,14 +104,6 @@ public class Notification {
         this.read = read;
     }
 
-    public boolean getBroadcast() {
-        return broadcast;
-    }
-
-    public void setBroadcast(boolean broadcast) {
-        this.broadcast = broadcast;
-    } 
-    
     public MessageType getType() {
         return type;
     }

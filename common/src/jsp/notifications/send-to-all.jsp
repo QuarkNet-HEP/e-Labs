@@ -12,7 +12,7 @@
 <%
 	String send = request.getParameter("send");
 	if ("Send".equals(send)) {
-		String[] recipients = request.getParameterValues("destination"); 
+		String[] recipients = request.getParameterValues("recipients"); 
 	    boolean all = StringUtils.isNotBlank(request.getParameter("allelabs")); 
 	    if ((recipients == null || recipients.length == 0) && !all) {
 	        throw new ElabJspException("Please select at least one eLab");
@@ -74,7 +74,6 @@
         Notification n = new Notification();
         n.setCreatorGroupId(user.getId());
         n.setMessage(message);
-        n.setBroadcast(true);
         if (expirestoggle) {
             n.setExpirationDate(System.currentTimeMillis() + 1000 * 3600 * expval * ("day".equals(expiresunit) ? 1 : 24));
         }
