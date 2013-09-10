@@ -13,6 +13,7 @@
 
 # Cosmic
 
+<<<<<<< Updated upstream
 localhost	ThresholdTimes	/home/quarkcat/sw/i2u2svn/cosmic/src/perl/ThresholdTimes.pl	INSTALLED       INTEL64::LINUX null
 localhost	WireDelay		/home/quarkcat/sw/i2u2svn/cosmic/src/perl/WireDelay.pl		INSTALLED       INTEL64::LINUX null
 localhost	Combine			/home/quarkcat/sw/i2u2svn/cosmic/src/perl/Combine.pl		INSTALLED       INTEL64::LINUX null
@@ -42,6 +43,37 @@ teraport	EventSearch		/home/hategan/i2u2/apps/EventSearch.pl	INSTALLED       INT
 teraport	EventChoice		/home/hategan/i2u2/apps/EventChoice.pl	INSTALLED       INTEL32::LINUX null
 
 aux			SVG2PNG			/usr/bin/rsvg							INSTALLED		INTEL32::LINUX null
+=======
+localhost	ThresholdTimes	/Users/edit/source/i2u2/cosmic/src/perl/ThresholdTimes.pl					INSTALLED       INTEL32::LINUX null
+localhost	WireDelay		/Users/edit/source/i2u2/cosmic/src/perl/WireDelay.pl						INSTALLED       INTEL32::LINUX null
+localhost	Combine			/Users/edit/source/i2u2/cosmic/src/perl/Combine.pl						INSTALLED       INTEL32::LINUX null
+localhost	SingleChannel	/Users/edit/source/i2u2/cosmic/src/perl/SingleChannel.pl					INSTALLED       INTEL32::LINUX null
+localhost	Sort			/Users/edit/source/i2u2/cosmic/src/perl/Sort.pl							INSTALLED       INTEL32::LINUX null
+localhost	Flux			/Users/edit/source/i2u2/cosmic/src/perl/Flux.pl							INSTALLED       INTEL32::LINUX null
+localhost	Plot			/Users/edit/source/i2u2/cosmic/src/perl/Plot.pl							INSTALLED       INTEL32::LINUX null
+localhost	Lifetime		/Users/edit/source/i2u2/cosmic/src/perl/Lifetime.pl						INSTALLED       INTEL32::LINUX null
+localhost	Frequency		/Users/edit/source/i2u2/cosmic/src/perl/Frequency.pl						INSTALLED       INTEL32::LINUX null
+localhost	ExtraFunctions	/Users/edit/source/i2u2/cosmic/src/perl/ExtraFunctions.pl					INSTALLED       INTEL32::LINUX null
+localhost	EventSearch		/Users/edit/source/i2u2/cosmic/src/perl/EventSearch.pl					INSTALLED       INTEL32::LINUX null
+localhost	EventChoice		/Users/edit/source/i2u2/cosmic/src/perl/EventChoice.pl					INSTALLED       INTEL32::LINUX null
+localhost	RawAnalyze		/Users/edit/source/i2u2/cosmic/src/perl/RawAnalyze.pl						INSTALLED       INTEL32::LINUX null
+localhost	SVG2PNG			/usr/bin/rsvg												INSTALLED       INTEL32::LINUX null
+
+aux			SVG2PNG			/usr/bin/rsvg												INSTALLED       INTEL32::LINUX null
+
+teraport	ThresholdTimes	/home/mike/work/i2u2/apps/ThresholdTimes.pl					INSTALLED       INTEL32::LINUX null
+teraport	WireDelay		/home/mike/work/i2u2/apps/WireDelay.pl						INSTALLED       INTEL32::LINUX null
+teraport	Combine			/home/mike/work/i2u2/apps/Combine.pl						INSTALLED       INTEL32::LINUX null
+teraport	SingleChannel	/home/mike/work/i2u2/apps/SingleChannel.pl					INSTALLED       INTEL32::LINUX null
+teraport	Sort			/home/mike/work/i2u2/apps/Sort.pl							INSTALLED       INTEL32::LINUX null
+teraport	Flux			/home/mike/work/i2u2/apps/Flux.pl							INSTALLED       INTEL32::LINUX null
+teraport	Plot			/home/mike/work/i2u2/apps/Plot.pl							INSTALLED       INTEL32::LINUX null
+teraport	Lifetime		/home/mike/work/i2u2/apps/Lifetime.pl						INSTALLED       INTEL32::LINUX null
+teraport	Frequency		/home/mike/work/i2u2/apps/Frequency.pl						INSTALLED       INTEL32::LINUX null
+teraport	ExtraFunctions	/home/mike/work/i2u2/apps/ExtraFunctions.pl					INSTALLED       INTEL32::LINUX null
+teraport	EventSearch		/home/mike/work/i2u2/apps/EventSearch.pl					INSTALLED       INTEL32::LINUX null
+teraport	EventChoice		/home/mike/work/i2u2/apps/EventChoice.pl					INSTALLED       INTEL32::LINUX null
+>>>>>>> Stashed changes
 
 # LIGO
 
