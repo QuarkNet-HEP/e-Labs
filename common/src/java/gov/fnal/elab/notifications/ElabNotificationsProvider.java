@@ -24,6 +24,8 @@ public interface ElabNotificationsProvider extends ElabProviderHandled {
     
     void addNotification(ElabGroup eg, Notification n) throws ElabException; 
     
+    void addNotification(ElabGroup eg, Integer elabId, Notification n) throws ElabException; 
+    
     void addNotification(List<ElabGroup> groupList, List<Integer> projectList, Notification n) throws ElabException;
     
     public void addUserNotification(List<ElabGroup> groupList, Notification n) throws ElabException;

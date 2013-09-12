@@ -29,7 +29,7 @@ public class DefaultAnalysisNotifier implements AnalysisRunListener, AnalysisNot
             String s = failed ? "failed" : "completed";
             n.setMessage("<a href=\"../analysis/status.jsp?id=" + run.getId() + "\">" + run.getAnalysis().getName() + "</a> " + s);
             try {
-                np.addNotification(run.getAnalysis().getUser(), n);
+                np.addNotification(run.getAnalysis().getUser(), elab.getId(), n);
                 run.setAttribute("notification-id", n.getId());
             }
             catch (ElabException e) {

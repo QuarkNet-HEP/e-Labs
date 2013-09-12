@@ -18,10 +18,8 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>${elab.properties.formalName} e-Lab Home</title>
-		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
-		<script type="text/javascript" src="../include/elab.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>		
 	</head>
 	
 	<body id="manage-notifications" class="home">
@@ -30,7 +28,9 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
-					<%@ include file="../include/nav-rollover.jspf" %>
+					<div id="nav">
+						<%@ include file="../include/nav-teacher.jsp" %>
+					</div>
 				</div>
 			</div>
 			

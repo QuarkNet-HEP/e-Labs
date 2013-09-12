@@ -22,6 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -255,7 +256,7 @@ public class Elab implements Serializable {
             rs = s.executeQuery("SELECT name from project;");
             while (rs.next()) {
                 String name = rs.getString(1);
-                elabs.add(getElab(null, name));
+               	elabs.add(getElab(null, name));
             }
         }
         catch (Exception e) {
@@ -313,13 +314,10 @@ public class Elab implements Serializable {
             throws AuthenticationException {
         ElabUserManagementProvider p = ElabFactory
                 .getUserManagementProvider(this);
-        System.out.println("in authenticate" + p.toString());
         ElabGroup user = p.authenticate(username, password);
-        System.out.println("after I got the user\n");
         if (username != null && username.equals(properties.getGuestUserName())) {
             user.setGuest(true);
         }
-        System.out.println("before returning\n");
         return user;
     }
     

@@ -38,7 +38,15 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
     	l.add(eg);
     	addNotification(l, EMPTY_PROJECT_LIST, n);
     }
-
+    //EPeronja-09/12/2013: so we can add the notification to a specific elab
+    public void addNotification(ElabGroup eg, Integer elabId, Notification n) throws ElabException {
+    	List<ElabGroup> l = new ArrayList();
+    	l.add(eg);
+    	List<Integer> e = new ArrayList();
+    	e.add(elabId);
+    	addNotification(l, e, n);
+    }
+    
     public void addNotification(List<ElabGroup> groupList, List<Integer> projectList, Notification n) throws ElabException {
         Connection conn = null;
         PreparedStatement psMessage = null, psState = null, psProject = null; 
@@ -47,16 +55,16 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             boolean ac = conn.getAutoCommit();
             psMessage = conn.prepareStatement(
-            		"INSERT INTO notifications (time, expires, message, type, creator_research_group_id) " +
+            		"INSERT INTO notifications.message (time, expiration, message, type, creator_research_group_id) " +
                     "VALUES (?, ?, ?, ?, ?) RETURNING id;"); 
             //psMessage = conn.prepareStatement(
             //		"INSERT INTO notifications (time, expires, message, type) " +
             //       "VALUES (?, ?, ?, ?) RETURNING id;"); 
             psState = conn.prepareStatement(
-            		"INSERT INTO notifications_state (research_group_id, message_id) " +
+            		"INSERT INTO notifications.state (research_group_id, message_id) " +
             		"VALUES (?, ?);");
             psProject = conn.prepareStatement(
-            		"INSERT INTO notifications_project (message_id, project_id) " +
+            		"INSERT INTO notifications.project_broadcast (project_id, message_id) " +
             		"VALUES (?, ?);"); 
             try {
                 conn.setAutoCommit(false);
@@ -80,9 +88,10 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 	for (int projectId : projectList) {
                 		psProject.setInt(1, projectId);
                 		psProject.setInt(2, n.getId());
-                		psProject.addBatch();
+                		psProject.execute();
+                		//psProject.addBatch();
                 	}
-                	psProject.executeBatch(); 
+                	//psProject.executeBatch(); 
                 }
                 
                 else {
@@ -283,7 +292,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         
         String sql = 
             "SELECT * FROM notifications.message AS m " + 
-            "LEFT OUTER JOIN notifications.project_broadcast AS pb ON m.id = pb.message_id AND project_id = ? " + 
+            "INNER JOIN notifications.project_broadcast AS pb ON m.id = pb.message_id AND project_id = ? " + 
             "LEFT OUTER JOIN notifications.state AS s ON m.id = s.message_id AND s.research_group_id = ? ";
         if (includeRead) {
         	sql += WHERE_ALL;
@@ -366,9 +375,9 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         PreparedStatement ps = null;
        
         String sql = 
-            "SELECT * FROM notifications AS n " + 
-            "LEFT OUTER JOIN notifications_project AS np ON n.id = np.message_id AND project_id = ? " + 
-            "LEFT OUTER JOIN notifications_state AS s ON n.id = s.notification_id " +
+            "SELECT * FROM notifications.message AS n " + 
+            "LEFT OUTER JOIN notifications.project_broadcast AS np ON n.id = np.message_id AND project_id = ? " + 
+            "LEFT OUTER JOIN notifications.state AS s ON n.id = s.message_id " +
         	"WHERE n.type = 1 ";
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
@@ -380,7 +389,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             List<Notification> l = new ArrayList<Notification>();
             while (rs.next()) {
             	Notification n = new Notification(rs.getInt("id"), rs.getString("message"), rs.getInt("creator_research_group_id"), 
-            			rs.getTimestamp("time").getTime(), rs.getTimestamp("expires").getTime(),
+            			rs.getTimestamp("time").getTime(), rs.getTimestamp("expiration").getTime(),
             			rs.getInt("type"), false, false); 
             	l.add(n);
             }

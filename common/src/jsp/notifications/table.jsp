@@ -1,15 +1,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.notifications.*" %>
+<%@ page import="java.util.*" %>
 
 <%
 	if (ElabGroup.isUserLoggedIn(session) && session.getAttribute("elab") != null) {
 	    ElabGroup group = ElabGroup.getUser(session);
 	    request.setAttribute("username", group.getName());
 	    ElabNotificationsProvider np = ElabFactory.getNotificationsProvider((Elab) session.getAttribute("elab"));
-	    request.setAttribute("notifications", np.getNotifications(group, 10, "true".equals(request.getParameter("unread"))));
+	    List<Notification> n = np.getNotifications(group, 10, "true".equals(request.getParameter("unread")));
+	    request.setAttribute("notifications", n);
 	}
 %>
+	
 <table border="0" id="notifications-table">
 	<c:forEach var="n" items="${notifications}">
 		<tr id="not${n.id}">

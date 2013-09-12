@@ -28,7 +28,6 @@
 				</c:otherwise>
 			</c:choose>
 			
-			<%-- Temporarily disable notifications while I work on this
 			<a href="#" onClick="javascript:displayNotifications();">
 				<img id="notifications-icon" title="Notifications" src="../notifications/icon.jsp?elab=${elab.name}" />
 			</a>
@@ -55,14 +54,12 @@
 					</c:when>
 				</c:choose>
 			</div>
-			 --%>
 			<a id="username" href="../login/user-info.jsp"><span class="toolbar-text-link">${username}</span></a>
 			<a href="../login/logout.jsp"><span id="logout" class="toolbar-text-link">Log out</span></a>
 		</div>
 		<span id="toolbar-error-text"></span>
 		<c:set var="headerIncluded" value="true" scope="request"/>
-		<% out.flush(); %>
-		
+		<% out.flush(); %>	
 		<%@ include file="../analysis/async-update.jsp" %>
 		<script language="JavaScript" type="text/javascript">
 			registerUpdate("../include/toolbar-async.jsp", 

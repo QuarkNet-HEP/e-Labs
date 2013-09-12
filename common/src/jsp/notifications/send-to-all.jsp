@@ -85,6 +85,7 @@
         }
         n.setType(Notification.MessageType.fromCode(priority)); 
         np.addProjectNotification(projectIds, n);
+        request.setAttribute("notification", n);
 	}
 %>
 
@@ -93,10 +94,8 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>${elab.properties.formalName} e-Lab Home</title>
-		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
-		<script type="text/javascript" src="../include/elab.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>		
 	</head>
 	
 	<body id="send-to-all" class="home send-notifications">
@@ -105,10 +104,11 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
-					<%@ include file="../include/nav-rollover.jspf" %>
+					<div id="nav">
+						<%@ include file="../include/nav-teacher.jsp" %>
+					</div>
 				</div>
 			</div>
-			
 			<div id="content">
 <script type="text/javascript" src="../include/tiny_mce/jquery.tinymce.js"></script>
 <script>
@@ -136,6 +136,9 @@
 		}
 	}	
 </script>
+<c:if test="${notification != null }">
+	<p>Notification "${notification.message}" was added successfully.</p>
+</c:if>
 <form action="../notifications/send-to-all.jsp" method="post">
 	<table border="0" id="form-table">
 		<tr>
