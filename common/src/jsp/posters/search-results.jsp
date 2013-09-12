@@ -1,5 +1,6 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.util.*" %>
@@ -11,27 +12,29 @@ request.setAttribute("project", elab.getName());
 	<script type="text/javascript" src="../include/jquery/js/jquery.tablesorter.min.js"></script>
 	<link type="text/css" rel="stylesheet" href="../include/jquery/css/blue/style.css" />
 	<script type="text/javascript">
+
 	$(document).ready(function() { 
 		$.tablesorter.addParser({
-			id: "MMMM dd yyyy", 
+			id: "posterDate", 
 			is: function(s) { return false; },
-			format: function(s) { return $.tablesorter.formatFloat(new Date(s + " 00:00").getTime()); },
+			format: function(s) { 
+				return $.tablesorter.formatFloat(new Date(s + " 00:00").getTime()); 
+			    },
 			type: "numeric"
 		});
-		$("#search-results").tablesorter({sortList: [[1,0]]}, {headers: {2:{sorter:'MMMM dd yyyy'}, 9:{sorter:false}}});
+		$("#search-results").tablesorter({sortList: [[1,0]]}, {headers: {2:{sorter:'posterDate'}, 8:{sorter:false}}});
 	}); 
 	</script>
 
 	<table id="search-results" class="tablesorter">
 	   	<colgroup>
-       		<col span="1" style="width: 20%;">
+       		<col span="1" style="width: 28%;">
        		<col span="1" style="width: 5%;">       		
+       		<col span="1" style="width: 8%;">
        		<col span="1" style="width: 10%;">
        		<col span="1" style="width: 10%;">
        		<col span="1" style="width: 10%;">
        		<col span="1" style="width: 10%;">
-       		<col span="1" style="width: 10%;">
-       		<col span="1" style="width: 5%;">
        		<col span="1" style="width: 5%;">
        		<col span="1" style="width: 15%;">
     	</colgroup>
@@ -45,7 +48,6 @@ request.setAttribute("project", elab.getName());
 				<th>School</th>
 				<th>City</th>
 				<th>State</th>
-				<th>Year</th>
 				<c:choose>
 					<c:when test='${project == "cms" }'>
 						<th>Printing papers? Select landscape in your printer options.</th>
@@ -68,6 +70,7 @@ request.setAttribute("project", elab.getName());
 				<tr>
 					<td>
 						<e:popup href="../posters/display.jsp?name=${encodedLFN}" target="poster" width="700" height="900">${tuples.title}</e:popup>
+						<br /><e:format type="date" format="MMMM dd, yyyy" value="${tuples.date}"/>
 					</td>
 					<td>
 						<c:choose>
@@ -79,13 +82,12 @@ request.setAttribute("project", elab.getName());
 							</c:otherwise>
 						</c:choose>
 					</td>
-					<td><e:format type="date" format="MMMM d, yyyy" value="${tuples.date}"/></td>
+					<td><fmt:formatDate pattern="yyyy-MM-dd" value="${tuples.date}" /></td>
 					<td>${tuples.group}</td>
 					<td>${tuples.teacher}</td>
 					<td>${tuples.school}</td>
 					<td>${tuples.city}</td>
 					<td>${tuples.state}</td>
-					<td>${tuples.year}</td>
 					<td>
 						<ul>
 							<li><a href="../jsp/add-comments.jsp?t=poster&fileName=${encodedLFN}">View or Add Comments</a></li>
