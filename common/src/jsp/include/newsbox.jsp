@@ -8,30 +8,18 @@
 <%@ page import="java.text.ParseException" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 
-<%--
+<%
     ElabNotificationsProvider np = ElabFactory.getNotificationsProvider((Elab) session.getAttribute("elab"));
     List<Notification> l = np.getSystemNotifications();
     List<Notification> nl = new ArrayList<Notification>();
     for (Notification n : l) {
-        if (n.getPriority() == Notification.PRIORITY_SYSTEM_MESSAGE) {
+    //    if (n.getPriority() == Notification.PRIORITY_SYSTEM_MESSAGE) {
             nl.add(n);
-        }
+    //    }
     }
     request.setAttribute("notifications", nl);
 
-<c:if test="${!empty notifications}">
-	<div id="news-box">
-		<c:forEach var="n" items="${notifications}">
-			<div id="news-box-header">News Alert</div>
-			<div id="news-box-contents">${n.message}</div>
-			<div id="news-box-footer">${n.timeAsDate}</div>
-		</c:forEach>
-	</div>
-</c:if>
---%>
-
-<%-- Temporarily enable old newsbox --%>
-<%
+    //old newsbox until I get notifications to work
 	CatalogEntry e = elab.getDataCatalogProvider().getEntry("News_" + elab.getName() + "_status");
 	if (e != null) {
 		request.setAttribute("e", e.getTupleMap());
@@ -45,7 +33,17 @@
 			request.setAttribute("end", sdf.parse((String) e.getTupleValue("expire")));
 		}
 	}
+
 %>
+<c:if test="${!empty notifications}">
+	<div id="news-box">
+		<div id="news-box-header">News Alert</div>
+		<c:forEach var="n" items="${notifications}">
+			<div id="news-box-contents">${n.message}</div>
+			<div id="news-box-footer">${n.timeAsDate}</div>
+		</c:forEach>
+	</div>
+</c:if>
 
 <c:if test="${(now > start) && (now < end)}">
 	<div id="news-box">
@@ -60,4 +58,3 @@
 		</div>
 	</div>
 </c:if>
-	
