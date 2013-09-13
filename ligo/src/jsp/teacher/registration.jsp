@@ -41,7 +41,7 @@ String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
 
 <h1>e-Lab Registration</h1>
 
-<table border="0" id="registration-links-table">
+<table border="0" id="registration-links-table"  cellspacing="10" cellpadding="15">
 	<%--
 	<tr>
 		<td valign="top" width="40%">
