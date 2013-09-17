@@ -16,16 +16,14 @@
 	if ("Reset".equals(submit)) {
 	    try {
 			String userEmail = elab.getUserManagementProvider().getEmail(username);
+			//EPeronja: this is code is for testing purposes. Should the code stay, it needs to be moved to a class.
 			if (userEmail != null && !userEmail.equals("")) {
-				//String newPassword = elab.getUserManagementProvider().resetPassword(username);
-				String newPassword ="it works";
+				String newPassword = elab.getUserManagementProvider().resetPassword(username);
 			   	//Recipient's email
 			   	String to = userEmail;
 				//Sender's email ID 
-			   	//String from = "e-labs@fnal.gov";
-				final String from = "edit.peronja@gmail.com";
-				final String password = "0693edit";
-				String host = "localhost";
+				final String from = "elabs.pswd@gmail.com";
+				final String password = "i2u2passwordreset";
 			    //Get system properties object
 			    Properties properties = System.getProperties();
 			    //Setup mail server
@@ -53,11 +51,14 @@
 			       // Now set the actual message
 			       String emailBody = "Temporary password for user: " +username + " " +
 			       					  "is: "+newPassword+".\n"+
-			    		   			  "Please, login and set a new password.\n";
+			    		   			  "Please, login and set a new password.\n\n" +
+			       					  "Please do not reply to this message. Replies to this message go to an unmonitored mailbox.\n" +
+			    		   		      "If you have any questions, send an e-mail to e-labs@fnal.gov.";
 			       msg.setText(emailBody);
 			       //Send message
 			       Transport.send(msg);
-			       message = "Temporary password has been sent to: " + userEmail;
+			       message = "Temporary password has been sent to: " + userEmail + ".\n" +
+			       			 "If you are no longer using that e-mail address, please contact e-labs@fnal.gov.";
 			   }catch (MessagingException mex) {
 			      mex.printStackTrace();
 			      message = "Error: unable to send message. " + mex.toString();
