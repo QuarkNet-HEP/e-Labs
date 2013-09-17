@@ -17,7 +17,8 @@
 	    try {
 			String userEmail = elab.getUserManagementProvider().getEmail(username);
 			if (userEmail != null && !userEmail.equals("")) {
-				String newPassword = elab.getUserManagementProvider().resetPassword(username);
+				//String newPassword = elab.getUserManagementProvider().resetPassword(username);
+				String newPassword ="it works";
 			   	//Recipient's email
 			   	String to = userEmail;
 				//Sender's email ID 
