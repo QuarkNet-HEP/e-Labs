@@ -975,6 +975,76 @@ public class DatabaseUserManagementProvider implements
         }
     }
 
+    public String resetPassword(String groupname)
+            throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps = null, ps2 = null; 
+        Savepoint svpt = null; 
+        try {
+            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+            try {
+	            conn.setAutoCommit(false);
+	            svpt = conn.setSavepoint();
+	            GeneratePassword rp;  
+	        	rp = new GeneratePassword();
+	        	String password = rp.getPassword();
+	            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
+	            
+	            String sql = "UPDATE research_group SET hashedpassword = ? ";
+	            sql += "WHERE name = ?;";
+	            ps = conn.prepareStatement(sql);
+            	ps.setString(1, hashedPassword);
+	            ps.setString(2, groupname);
+
+	            ps.executeUpdate();
+	            conn.commit();
+	            return password;
+            }
+            catch (SQLException e) {
+            	conn.rollback(svpt);
+            	throw e; 
+            }
+            finally {
+            	conn.setAutoCommit(true);
+            }
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, ps, ps2);
+        }
+    }
+
+    public String getEmail(String groupname) throws ElabException {
+    	String email = "";
+    	PreparedStatement ps = null;
+        Connection conn = null;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            String sql = "SELECT email " +
+            			 "FROM teacher t " +
+            			 "INNER JOIN research_group rg " +
+            			 "ON t.id = rg.teacher_id " +
+            			 "WHERE rg.name = ? ";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, groupname);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                email = rs.getString("email");
+            }
+            return email;
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, ps);
+        }
+    }
+    
     public Collection<String> getProjectNames() throws ElabException {
         List<String> names = new ArrayList<String>();
         Statement s = null;
