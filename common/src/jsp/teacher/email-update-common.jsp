@@ -5,6 +5,7 @@ if ("Save Changes".equals(reqType)){
 	String newEmail = request.getParameter("newEmail");
 	if (newEmail != null && !newEmail.equals("")) {
 		user.setEmail(newEmail);
+  	    elab.getUserManagementProvider().updateEmail(user.getName(), newEmail);
 	}
 }
 

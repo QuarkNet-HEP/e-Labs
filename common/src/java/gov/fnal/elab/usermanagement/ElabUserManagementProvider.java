@@ -56,7 +56,8 @@ public interface ElabUserManagementProvider extends ElabProvider {
      * the group 
      */
     void updateGroup(ElabGroup group, String password) throws ElabException;
-    
+
+    void updateEmail(String username, String newemail) throws ElabException;
     /**
      * Returns the teacher associated with the specified group
      */

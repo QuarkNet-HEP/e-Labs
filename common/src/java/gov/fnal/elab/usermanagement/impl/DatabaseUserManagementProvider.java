@@ -975,6 +975,46 @@ public class DatabaseUserManagementProvider implements
         }
     }
 
+    public void updateEmail(String username, String newemail) throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        Savepoint svpt = null; 
+        try {
+            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+            try {
+                conn.setAutoCommit(false);
+                svpt = conn.setSavepoint();
+                boolean pass = false; 
+                String sql = "UPDATE teacher SET email = ? " +
+                              "  FROM teacher t " +
+                              " INNER JOIN research_group rg " +
+                              "    ON t.id = rg.teacher_id " +
+                              " WHERE rg.name = ?;";
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, newemail);
+                ps.setString(2, username);
+                
+                ps.executeUpdate();
+          
+                conn.commit();
+            }
+            catch (SQLException e) {
+                conn.rollback(svpt);
+                throw e; 
+            }
+            finally {
+                conn.setAutoCommit(true);
+            }
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, ps);
+        }
+    }
+   
+    
     public Collection<String> getProjectNames() throws ElabException {
         List<String> names = new ArrayList<String>();
         Statement s = null;
