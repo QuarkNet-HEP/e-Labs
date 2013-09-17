@@ -2,13 +2,15 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.notifications.*" %>
+<%@ page import="java.util.*" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/admin-login-required.jsp" %>
 
 <%
 	{
 		ElabNotificationsProvider np = ElabFactory.getNotificationsProvider((Elab) session.getAttribute("elab"));
-		request.setAttribute("notifications2", np.getSystemNotifications(ElabNotificationsProvider.MAX_COUNT));
+		List<Notification> n = np.getSystemNotifications(ElabNotificationsProvider.MAX_COUNT);
+		request.setAttribute("notifications2", n);
 	}
 %>
 
@@ -41,31 +43,18 @@
 		<c:choose>
 			<c:when test="${!empty notifications2}">
 				<tr>
-					<th>Time</th><th>Expires</th><th>Group</th><th>Elab</th><th>Priority</th><th>Message</th><th></th>
+					<th>Time</th><th>Expires</th><th>Group</th><th>Priority</th><th>Message</th><th></th>
 				</tr>
-				<c:forEach var="n" items="${notifications2}">
-					<tr id="next${n.id}">
-						<td width="24%">
-							<fmt:formatDate type="both" value="${n.timeAsDate}"/>
-						</td>
-						<td>
-							<fmt:formatDate type="both" value="${n.expiresAsDate}"/>
-						</td>
-						<td>
-							${n.groupId}
-						</td>
-						<%--<td>
-							${n.projectId}
-						</td>  --%>
-						<td>
-							${type}
-						</td>
-						<td>
-							${n.message}
-						</td>
+				<c:forEach var="notifications" items="${notifications2}">
+					<tr>
+						<td><fmt:formatDate type="both" value="${notifications.timeAsDate}"/></td>
+						<td><fmt:formatDate type="both" value="${notifications.expirationAsDate}"/></td>
+						<td>${notifications.creatorGroupId}</td>
+						<td>${notifications.type}</td>
+						<td>${notifications.message}</td>
 						<td width="2%">
-							<a href="javascript:removeNotification('next', ${n.id}, '${elab.name}', true)"><img src="../graphics/notification-remove.png" /></a>
-						</td>
+							<a href="javascript:removeNotification('next', ${notifications.id}, '${elab.name}', true)"><img src="../graphics/notification-remove.png" /></a>
+						</td>						
 					</tr>
 				</c:forEach>
 			</c:when>
