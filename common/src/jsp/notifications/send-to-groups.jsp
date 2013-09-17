@@ -7,9 +7,19 @@
 <%@ include file="../login/teacher-login-required.jsp" %>
 <%@ page import="org.owasp.validator.html.*" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
-
+<%@ page import="gov.fnal.elab.usermanagement.*" %>
+<%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 <%
 	String send = request.getParameter("send");
+	List<ElabGroup> researchGroups = new ArrayList<ElabGroup>();
+	for (Iterator ite = user.getGroups().iterator(); ite.hasNext();) {
+		ElabGroup group = (ElabGroup) ite.next();
+		if (group.getActive()) {
+			researchGroups.add(group);
+		}
+	}
+	request.setAttribute("researchGroups", researchGroups);
+	
 	if ("Send".equals(send)) {
 	    String[] recipients = request.getParameterValues("destination");
 	    boolean all = StringUtils.isNotBlank(request.getParameter("allgroups")); 
@@ -19,7 +29,9 @@
 	    List<ElabGroup> groupsToNotify = new ArrayList();
 	    if (all) {
 	        for (ElabGroup eg : user.getGroups()) {
-	        	groupsToNotify.add(eg);
+	        	if (eg.getActive()) {
+		        	groupsToNotify.add(eg);
+	        	}
 	        }
 	    }
 	    else {
@@ -38,7 +50,7 @@
 	        throw new ElabJspException("Message is empty");
 	    }
 	    message = message.trim();
-	    message = message.substring("<p>".length(), message.length() - "</p>".length());
+	    //message = message.substring("<p>".length(), message.length() - "</p>".length());
 	    Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
 		AntiSamy as = new AntiSamy();
 		message = as.scan(message, policy).getCleanHTML();
@@ -75,6 +87,7 @@
         	n.setExpirationDate(gc.getTimeInMillis());
         }
         np.addUserNotification(groupsToNotify, n);
+        request.setAttribute("notification", n);
 	}
 %>
 
@@ -128,6 +141,9 @@
 	}	
 </script>
 <form action="../notifications/send-to-groups.jsp" method="post">
+<c:if test="${notification != null }">
+	<p>Notification "${notification.message}" was added successfully.</p>
+</c:if>
 	<table border="0" id="form-table">
 		<tr>
 			<td class="label">
@@ -135,7 +151,7 @@
 			</td>
 			<td>
 				<select name="destination" multiple="true" id="destination" size="8">
-					<c:forEach var="group" items="${user.groups}">
+					<c:forEach var="group" items="${researchGroups}">
 						<option value="${group.name}">${group.name}</option>
 					</c:forEach>
 				</select>

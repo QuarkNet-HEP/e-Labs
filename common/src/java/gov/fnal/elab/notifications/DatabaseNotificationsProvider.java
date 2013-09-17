@@ -97,11 +97,12 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 else {
                 	/* For messages that are specific to a user */ 
                 	for (ElabGroup eg : groupList) {
-                		psState.setInt(1, n.getId());
-                		psState.setInt(2, eg.getId());
-                		psState.addBatch();
+                		psState.setInt(1, eg.getId());
+                		psState.setInt(2, n.getId());
+                		psState.execute();
+                		//psState.addBatch();
                 	}
-                	psState.executeBatch();
+                	//psState.executeBatch();
                 }
                 
                 conn.commit();
@@ -263,7 +264,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 "SELECT COUNT(id) FROM notifications.message AS m " + 
                 "LEFT OUTER JOIN notifications.project_broadcast AS pb ON m.id = pb.message_id AND project_id = ? " + 
                 "LEFT OUTER JOIN notifications.state AS s ON m.id = s.message_id AND s.research_group_id = ? " +
-                "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL AND s.read IS NOT TRUE);");
+                "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL AND s.read IS NOT TRUE) AND  m.expiration > now();");
             ps.setInt(1, elab.getId());
             ps.setInt(2, group.getId());
             
@@ -300,6 +301,8 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         else { 
         	sql += WHERE_UNREAD; 
         }
+
+    	sql += "AND  m.expiration > now() ";
         
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
@@ -378,7 +381,8 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             "SELECT * FROM notifications.message AS n " + 
             "LEFT OUTER JOIN notifications.project_broadcast AS np ON n.id = np.message_id AND project_id = ? " + 
             "LEFT OUTER JOIN notifications.state AS s ON n.id = s.message_id " +
-        	"WHERE n.type = 1 ";
+        	"WHERE n.type = 1 " +
+        	"AND n.expiration > now() ";
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             
@@ -407,8 +411,43 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
 	
 	@Override
 	public List<Notification> getSystemNotifications(int count) throws ElabException {
-		final List<Notification> toBeImplemented = Collections.emptyList();  
-		return toBeImplemented;
+        Connection conn = null;
+        PreparedStatement ps = null;
+       
+        String sql = 
+            "SELECT * FROM notifications.message AS n " + 
+            "LEFT OUTER JOIN notifications.project_broadcast AS np ON n.id = np.message_id AND project_id = ? " + 
+            "LEFT OUTER JOIN notifications.state AS s ON n.id = s.message_id " +
+        	"WHERE n.type = 1 " +
+            "ORDER BY n.time DESC ";
+        	if (count > -1) {
+        		sql += "LIMIT " + String.valueOf(count);
+        	} else {
+        		sql += "LIMIT 50";
+        	}
+        try {
+            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+            
+            ps = conn.prepareStatement(sql); 
+            ps.setInt(1, elab.getId());
+            ResultSet rs = ps.executeQuery();
+            
+            List<Notification> l = new ArrayList<Notification>();
+            while (rs.next()) {
+            	Notification n = new Notification(rs.getInt("id"), rs.getString("message"), rs.getInt("creator_research_group_id"), 
+            			rs.getTimestamp("time").getTime(), rs.getTimestamp("expiration").getTime(),
+            			rs.getInt("type"), false, false); 
+            	l.add(n);
+            }
+            return l;
+            
+        }
+        catch (SQLException e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, ps);
+        }	
 	}
 
 

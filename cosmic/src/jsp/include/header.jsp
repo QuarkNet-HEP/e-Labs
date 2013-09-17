@@ -62,10 +62,12 @@
 		<% out.flush(); %>	
 		<%@ include file="../analysis/async-update.jsp" %>
 		<script language="JavaScript" type="text/javascript">
+			//5 minutes
+		    var checkUpdate = 5 * 60 * 1000
 			registerUpdate("../include/toolbar-async.jsp", 
 					function(data, error) {
 						updateHeader(data, error, '${elab.name}');
-					}, 5000, 5000);
+					}, checkUpdate, checkUpdate);
 		</script>
 	</c:when>
 </c:choose>
