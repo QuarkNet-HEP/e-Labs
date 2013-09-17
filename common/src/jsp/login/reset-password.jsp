@@ -22,15 +22,25 @@
 			   	//Recipient's email
 			   	String to = userEmail;
 				//Sender's email ID 
-			   	String from = "e-labs@fnal.gov";
-			    String host = "localhost";
+			   	//String from = "e-labs@fnal.gov";
+				final String from = "edit.peronja@gmail.com";
+				final String password = "0693edit";
+				String host = "localhost";
 			    //Get system properties object
 			    Properties properties = System.getProperties();
 			    //Setup mail server
-			    properties.setProperty("mail.smtp.host", host);
+			    properties.put("mail.smtp.host", "smtp.gmail.com");
+			    properties.put("mail.smtp.port", "587");
+			    properties.put("mail.smtp.auth", "true");
+			    properties.put("mail.smtp.starttls.enable", "true");			    
 			    //Get the default Session object.
-			    Session mailSession = Session.getDefaultInstance(properties);
-			   	try{
+			    //Session mailSession = Session.getDefaultInstance(properties);
+			   	Session mailSession = Session.getInstance(properties, new javax.mail.Authenticator() {
+			   		protected PasswordAuthentication getPasswordAuthentication() {
+			   			return new PasswordAuthentication(from, password );
+			   		}
+			   	});
+			    try{
 			       //Create a default MimeMessage object.
 			       MimeMessage msg = new MimeMessage(mailSession);
 			       //Set From: header field of the header.
