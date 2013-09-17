@@ -6,6 +6,7 @@
 	String username = request.getParameter("user");
 	String password = request.getParameter("pass");
 	String message  = request.getParameter("message");
+	request.setAttribute("username", username);
 	if (message == null) {
 		message = "Please log in to proceed";
 	}
@@ -161,6 +162,7 @@
 				<div id="login-form-contents">
 					<%@ include file="login-form.jsp" %>
 				</div>
+				<div><a href="reset-password.jsp?username=${username}">Want to reset your password?</a></div>
 				<div id="login-form-text">
 					<p>
 						<a href="<%= elab.getGuestLoginLink(request) %>">Login as guest</a>
