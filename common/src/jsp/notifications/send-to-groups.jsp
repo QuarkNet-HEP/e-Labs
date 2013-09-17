@@ -50,7 +50,7 @@
 	        throw new ElabJspException("Message is empty");
 	    }
 	    message = message.trim();
-	    //message = message.substring("<p>".length(), message.length() - "</p>".length());
+	    message = message.substring("<p>".length(), message.length() - "</p>".length());
 	    Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
 		AntiSamy as = new AntiSamy();
 		message = as.scan(message, policy).getCleanHTML();
