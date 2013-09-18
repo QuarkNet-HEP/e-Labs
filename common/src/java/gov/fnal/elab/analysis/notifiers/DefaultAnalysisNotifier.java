@@ -3,6 +3,7 @@
  */
 package gov.fnal.elab.analysis.notifiers;
 
+import gov.fnal.elab.*;
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabFactory;
 import gov.fnal.elab.analysis.AnalysisNotifier;
@@ -12,6 +13,8 @@ import gov.fnal.elab.notifications.ElabNotificationsProvider;
 import gov.fnal.elab.notifications.Notification;
 import gov.fnal.elab.util.ElabException;
 import java.util.*;
+import gov.fnal.elab.usermanagement.*;
+import gov.fnal.elab.usermanagement.impl.*;
 
 public class DefaultAnalysisNotifier implements AnalysisRunListener, AnalysisNotifier {
     private AnalysisRun run;
@@ -34,7 +37,11 @@ public class DefaultAnalysisNotifier implements AnalysisRunListener, AnalysisNot
         	gc.add(Calendar.DAY_OF_MONTH, 2);
         	n.setExpirationDate(gc.getTimeInMillis());
             try {
-                np.addNotification(run.getAnalysis().getUser(), elab.getId(), n);
+        	    List<ElabGroup> groupsToNotify = new ArrayList();
+        	    groupsToNotify.add(run.getAnalysis().getUser());
+                List<Integer> projectIds = new ArrayList<Integer>();
+                projectIds.add(elab.getId());
+                np.addNotification(groupsToNotify, projectIds, n);
                 run.setAttribute("notification-id", n.getId());
             }
             catch (ElabException e) {
