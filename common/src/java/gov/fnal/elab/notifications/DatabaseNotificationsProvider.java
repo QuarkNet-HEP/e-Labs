@@ -32,19 +32,12 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
     public void addProjectNotification(List<Integer> projectList, Notification n) throws ElabException {
     	addNotification(EMPTY_GROUP_LIST, projectList, n);
     }
-    
+
+
     public void addNotification(ElabGroup eg, Notification n) throws ElabException {
     	List<ElabGroup> l = new ArrayList();
     	l.add(eg);
     	addNotification(l, EMPTY_PROJECT_LIST, n);
-    }
-    //EPeronja-09/12/2013: so we can add the notification to a specific elab
-    public void addNotification(ElabGroup eg, Integer elabId, Notification n) throws ElabException {
-    	List<ElabGroup> l = new ArrayList();
-    	l.add(eg);
-    	List<Integer> e = new ArrayList();
-    	e.add(elabId);
-    	addNotification(l, e, n);
     }
     
     public void addNotification(List<ElabGroup> groupList, List<Integer> projectList, Notification n) throws ElabException {
@@ -290,7 +283,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         PreparedStatement ps = null;
         final String WHERE_UNREAD = "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL AND s.read IS NOT TRUE) ";
         final String WHERE_ALL  = "WHERE (pb.message_id IS NOT NULL AND s.message_id IS NULL) OR (pb.message_id IS NULL AND s.message_id IS NOT NULL) ";
-        
+        //SQL for notification that have been broadcast
         String sql = 
             "SELECT * FROM notifications.message AS m " + 
             "INNER JOIN notifications.project_broadcast AS pb ON m.id = pb.message_id AND project_id = ? " + 
@@ -303,7 +296,22 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         }
 
     	sql += "AND  m.expiration > now() ";
-        
+
+    	final String WHEREUNREAD = "WHERE (s.read IS NOT TRUE) ";
+        final String WHEREALL  = "WHERE (s.message_id IS NULL) ";        
+    	//SQL for notifications that are just for this group
+        String sqlGroup = 
+                "SELECT * FROM notifications.message AS m " + 
+                "INNER JOIN notifications.state AS s ON m.id = s.message_id AND s.research_group_id = ? ";
+            if (includeRead) {
+            	sqlGroup += WHEREALL;
+            }
+            else { 
+            	sqlGroup += WHEREUNREAD; 
+            }
+
+            sqlGroup += "AND  m.expiration > now() ";
+            
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             
@@ -321,6 +329,18 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             			rs.getInt("type"), read, deleted); 
             	l.add(n);
             }
+            
+            ps = conn.prepareStatement(sqlGroup); 
+            ps.setInt(1, groupId);
+            ResultSet rsGroup = ps.executeQuery();
+            while (rsGroup.next()) {
+                boolean read = rsGroup.getObject("read") == null ? false : (Boolean) rsGroup.getObject("read");
+                boolean deleted = rsGroup.getObject("deleted") == null ? false : (Boolean) rsGroup.getObject("deleted");
+            	Notification n = new Notification(rsGroup.getInt("id"), rsGroup.getString("message"), groupId, 
+            			rsGroup.getTimestamp("time").getTime(), rsGroup.getTimestamp("expiration").getTime(),
+            			rsGroup.getInt("type"), read, deleted); 
+            	l.add(n);
+            }           
             return l;
             
         }
@@ -379,7 +399,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
        
         String sql = 
             "SELECT * FROM notifications.message AS n " + 
-            "LEFT OUTER JOIN notifications.project_broadcast AS np ON n.id = np.message_id AND project_id = ? " + 
+            "INNER JOIN notifications.project_broadcast AS np ON n.id = np.message_id AND project_id = ? " + 
             "LEFT OUTER JOIN notifications.state AS s ON n.id = s.message_id " +
         	"WHERE n.type = 1 " +
         	"AND n.expiration > now() ";

@@ -27,7 +27,7 @@ function updateHeader(data, error, elab) {
 function displayNotifications() {
 	var icon = document.getElementById("notifications-icon");
 	var popup = document.getElementById("notifications-popup");
-	console.log("display: "+popup.style.display);
+
 	if (popup.style.display == "" || popup.style.display == "none") {
 		popup.style.top = icon.offsetTop + icon.height + "px";
 		popup.style.right = "0px";

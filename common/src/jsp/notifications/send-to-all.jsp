@@ -38,6 +38,9 @@
 	        throw new ElabJspException("Please write a message");
 	    }
 	    message = message.trim();
+		message = message.replaceAll("<p>", "");
+		message = message.replaceAll("</p>", "");
+
 	    //message = message.substring("<p>".length(), message.length() - "</p>".length());
 	    Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
 		AntiSamy as = new AntiSamy();

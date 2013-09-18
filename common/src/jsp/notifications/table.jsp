@@ -12,7 +12,6 @@
 	    request.setAttribute("notifications", n);
 	}
 %>
-	
 <table border="0" id="notifications-table">
 	<c:forEach var="n" items="${notifications}">
 		<tr id="not${n.id}">

@@ -50,7 +50,10 @@
 	        throw new ElabJspException("Message is empty");
 	    }
 	    message = message.trim();
-	    message = message.substring("<p>".length(), message.length() - "</p>".length());
+		message = message.replaceAll("<p>", "");
+		message = message.replaceAll("</p>", "");
+	
+	    //message = message.substring("<p>".length(), message.length() - "</p>".length());
 	    Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
 		AntiSamy as = new AntiSamy();
 		message = as.scan(message, policy).getCleanHTML();
@@ -86,7 +89,10 @@
         	gc.add(Calendar.YEAR, 1);
         	n.setExpirationDate(gc.getTimeInMillis());
         }
-        np.addUserNotification(groupsToNotify, n);
+        List<Integer> projectIds = new ArrayList<Integer>();
+        projectIds.add(elab.getId());
+        np.addNotification(groupsToNotify, projectIds, n);
+
         request.setAttribute("notification", n);
 	}
 %>
