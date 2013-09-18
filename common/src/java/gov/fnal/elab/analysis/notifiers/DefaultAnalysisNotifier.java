@@ -32,6 +32,7 @@ public class DefaultAnalysisNotifier implements AnalysisRunListener, AnalysisNot
             n.setCreatorGroupId(run.getAnalysis().getUser().getId());
             String s = failed ? "failed" : "completed";
             n.setMessage("<a href=\"../analysis/status.jsp?id=" + run.getId() + "\">" + run.getAnalysis().getName() + "</a> " + s);
+            n.setRead(false);
         	GregorianCalendar gc = new GregorianCalendar();
         	//EPeronja-have to check how long we want this to stay until it expires
         	gc.add(Calendar.DAY_OF_MONTH, 2);
