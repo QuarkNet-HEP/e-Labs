@@ -14,9 +14,7 @@ function showCharts(filename, path){
 	var messages = document.getElementById("messages");
 	messages.innerHTML = "";
 	var chartDiv = document.getElementById("benchmarkChartsDiv");
-	console.log("in showCharts");
 	chartDiv.style.visibility = 'visible';
-	console.log(document);
 	var datafile = document.getElementById("datafile");
 	datafile.innerHTML = "<strong>"+filename+"</strong>";
 	var ts = document.getElementsByClassName("highlight");
