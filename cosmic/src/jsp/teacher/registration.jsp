@@ -59,6 +59,7 @@ String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
 	 <tr>
 	 	<td colspan="2"><i>No longer at the same school? Contact <a href="<%= mailURL %>">e-labs@fnal.gov</a> for a new account.</i><br /><br /><br /></td>
 	 </tr>
+	<%--
 	<tr>
 		<td  valign="top" width="40%">
 			<a href="email-update.jsp">Change your e-mail address.</a>
@@ -67,6 +68,7 @@ String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
 			Use this link to update your e-mail address.
 		</td>
 	</tr>
+	--%>
 	<tr>
 		<td  valign="top" width="40%">
 			<a href="register-students.jsp">Register student research groups.</a>
