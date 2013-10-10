@@ -985,11 +985,13 @@ public class DatabaseUserManagementProvider implements
 	            conn.setAutoCommit(false);
 	            svpt = conn.setSavepoint();
 	            boolean pass = false; 
-	            String sql = "UPDATE teacher SET email = ? " +
-	            		 	 "  FROM teacher t " +
+	            String sql = "UPDATE teacher " +
+	            			 "   SET email = ? " +
+	            			 "  FROM teacher t " +
 	            		 	 " INNER JOIN research_group rg " +
 	            		 	 "    ON t.id = rg.teacher_id " +
-	            		 	 " WHERE rg.name = ?;";
+	            		 	 " WHERE rg.name = ? " +
+	            		 	 "   AND teacher.id = t.id;";
 	            ps = conn.prepareStatement(sql);
 	            ps.setString(1, newemail);
 	            ps.setString(2, username);
