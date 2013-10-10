@@ -460,6 +460,7 @@ public class DatabaseUserManagementProvider implements
                     t.setEmail(rs.getString("temail"));
                     t.setId(rs.getInt("id"));
                     t.setTeacherId(rs.getInt("teacherid"));
+                    t.setActive(rs.getBoolean("rgactive"));
                     g = new ElabGroup(elab, this);
                     if (StringUtils.isNotBlank(rs.getString("rguserarea"))) {
                         String[] brokenSchema = rs.getString("rguserarea")
