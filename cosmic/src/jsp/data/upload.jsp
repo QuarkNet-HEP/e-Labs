@@ -64,6 +64,7 @@ Re: the upload progress stuff
 	request.setAttribute("datadir", dataDir);
 	String benchmark = "";
 	String usebenchmark = "";
+	String makeThreshold = "";
 	int channels[] = new int[4];
 	
 	File tempRepo = new File(dataDir + "/temp"); 
@@ -105,6 +106,11 @@ Re: the upload progress stuff
     					comments = content; 
     				}
     			}
+    			else if ("makeThreshold".equals(name)) {
+    				if (StringUtils.isNotBlank(content)) {
+    					makeThreshold = content; 
+    				}
+    			}
     		}
     	}
 		
@@ -143,7 +149,7 @@ Re: the upload progress stuff
        	        request.setAttribute("detectorid", detectorId);
        	        request.setAttribute("comments", comments);
       	        request.setAttribute("benchmark", benchmark);
-
+      	        request.setAttribute("makeThreshold", makeThreshold);
 				%>
 					<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUpload" impl="generic">
 						<e:trdefault name="in" value="${in}"/>
@@ -151,7 +157,8 @@ Re: the upload progress stuff
 						<e:trdefault name="detectorid" value="${detectorid}"/>
 						<e:trdefault name="comments" value="${comments}"/>
 						<e:trdefault name="benchmark" value="${benchmark}"/>
-						
+						<e:trdefault name="makeThreshold" value="${makeThreshold}"/>	
+											
 						<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload">
 							<jsp:param name="provider" value="shell"/>
 						</jsp:include>
@@ -285,6 +292,9 @@ Re: the upload progress stuff
 			  	</tr>
 			</c:forEach>
 		</table>
+    </p>
+    <p> 
+    	<input type="checkbox" name="makeThreshold" id="makeThreshold" value="yes">Make threshold times file at upload time.</input>
     </p>
 	<p>
 		<label for="ds">Raw Data File:</label>
