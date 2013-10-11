@@ -1,3 +1,4 @@
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
 	//publish posters when submitting
 	String reqType = request.getParameter("submitButton");
@@ -39,7 +40,7 @@
 				posters.put(filenames[i], e);
 		}
 	}	
-
+	
 	request.setAttribute("posters", posters);
 %>
 		<script type="text/javascript" src="../include/jquery/js/jquery-1.4.3.min.js"></script>
@@ -49,12 +50,14 @@
 		$(document).ready(function() { 
 			if ($("#status-results").find("tbody").find("tr").size() > 0) {
 				$.tablesorter.addParser({
-					id: "MMMM dd yyyy", 
+					id: "posterDate", 
 					is: function(s) { return false; },
-					format: function(s) { return $.tablesorter.formatFloat(new Date(s + " 00:00").getTime()); },
+					format: function(s) { 
+						return $.tablesorter.formatFloat(new Date(s + " 00:00").getTime()); 
+					    },
 					type: "numeric"
 				});
-				$("#status-results").tablesorter({ sortList: [[0,0]] },{ headers: {4:{sorter:false} }} );
+				$("#status-results").tablesorter({ sortList: [[0,0]] },{ headers: {2:{sorter:'posterDate'}, 4:{sorter:false} }} );
 			}
 		}); 
 		</script>				
@@ -105,19 +108,17 @@
 										<td style="text-align: left;">
 											<e:popup href="../posters/display.jsp?name=${posters.key}" target="poster" width="700" height="900">${posters.value.tupleMap.title }</e:popup>
 											(<a href="../posters/display.jsp?type=paper&name=${posters.key}">View as Paper</a>)
+											<br /><e:format type="date" format="MMMM d, yyyy" value="${posters.value.tupleMap.date}"/>
 										</td>
-										<td><e:format type="date" format="MMMM d, yyyy" value="${posters.value.tupleMap.date}"/></td>
+										<td><fmt:formatDate pattern="yyyy-MM-dd" value="${posters.value.tupleMap.date}" /></td>
 										<td>${posters.value.tupleMap.group}</td>
 										<td><a href="../data/view-metadata.jsp?filename=${posters.key}">View Metadata</a>
 										<input type="hidden" name="posterName" id="hidden_${posters.key}" value="${posters.key}"></input></td>
 									</tr>
 								</c:forEach>
-								<tr>
-									<td colspan="6"><input type="submit" name="submitButton" id="submitButton" value="Save Status" /></td>
-								</tr>
 								</tbody>
 							</table>	
-
+							<input type="submit" name="submitButton" id="submitButton" value="Save Status" />
 						</form>
 					</c:otherwise>
 				</c:choose>
