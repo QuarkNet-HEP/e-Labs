@@ -83,6 +83,13 @@ $(function() {
 					<e:trinput name="date2" id="date2" size="10" maxlength="15" class="datepicker" />
 					
 					</td></tr>
+					<tr>
+						<td>
+							<input type="radio" name="status" value="all" checked="true" />All
+					    	<input type="radio" name="status" value="published" />Published
+					    	<input type="radio" name="status" value="unpublished" />Unpublished
+						</td>
+					</tr>
 				</table>
 			</e:hidden>
 		</e:vswitch>
@@ -179,7 +186,12 @@ $(function() {
 					errors += "At least one of the dates you typed in was not understood. Please re-check the dates you typed in.";
 				}
 			}
-	
+		    //EPeronja-10/11/2013: Allow to search posters by status
+		    String statusSearch = request.getParameter("status");
+			if (!statusSearch.equals("all")) {
+				and.add(new Equals("status", statusSearch));
+			}
+			
 			searchResults = elab.getDataCatalogProvider().runQuery(and);
 			request.setAttribute("searchResults", searchResults);
 			request.setAttribute("msg", msg);	

@@ -85,7 +85,7 @@
 							    			<select id="select_${posters.key}" name="setStatus" >
 							    				<option value="none"></option>
 							    				<c:choose>
-								    				<c:when test='${posters.value.tupleMap.status == "reviewed" }'>
+								    				<c:when test='${posters.value.tupleMap.status == "unpublished" }'>
 									    				<option value="unpublished" selected="true">Unpublished</option>
 								    				</c:when>
 								    				<c:otherwise>
