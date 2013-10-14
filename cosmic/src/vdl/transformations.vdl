@@ -659,3 +659,73 @@ TR I2U2.Cosmic::Thumbnail(input in, output out, none height) {
 	argument = in;
 	argument = out;
 }
+
+TR I2U2.Cosmic::PerformanceStudyTT(
+	none detector, 
+	none cpldfreqs,
+	none freq_binType, 
+	none freq_binValue, 
+	none freq_col, 
+	none plot_caption, 
+	inout extraFun_out,
+	none plot_highX, 
+	none plot_highY, 
+	none plot_highZ,
+	none plot_lowX,	
+	none plot_lowY,	
+	none plot_lowZ,
+	none plot_size,
+	output plot_outfile_param, 
+	output plot_outfile_image,
+	none plot_thumbnail_height, 
+	output plot_outfile_image_thumbnail,
+	none plot_plot_type, 
+	none plot_title,
+	none plot_xlabel, 
+	none plot_ylabel,	
+	none plot_zlabel,
+	input rawData[],
+	inout singlechannelOut,
+	inout freqOut,
+	none singlechannel_channel,
+	input thresholdAll[] )
+{
+  inout svg=@{inout:"plot.svg"};
+  inout combineOut=@{inout:"combineOut"};
+  
+  call I2U2.Cosmic::Combine(
+	combineIn=${input:thresholdAll},
+	combineOut=${output:combineOut} );
+  call I2U2.Cosmic::SingleChannel(
+	channel=${none:singlechannel_channel},
+	singleChannelIn=${input:combineOut},
+	singleChannelOut=${output:singlechannelOut} );
+  call I2U2.Cosmic::Frequency(
+	binType=${freq_binType},
+	binValue=${freq_binValue},
+	col=${freq_col},
+	freqIn=${input:singlechannelOut},
+	freqOut=${output:freqOut} );
+  call I2U2.Cosmic::Plot(
+	plot_caption=${plot_caption},
+	plot_extraFunctions=${extraFun_out},
+	plot_highX=${plot_highX},
+	plot_highY=${plot_highY},
+	plot_highZ=${plot_highZ},
+	plot_infile=${input:freqOut},
+	plot_lowX=${plot_lowX},
+	plot_lowY=${plot_lowY},
+	plot_lowZ=${plot_lowZ},
+	plot_outfile_param=${output:plot_outfile_param},
+	plot_outfile_image=${output:svg},
+	plot_plot_type=${plot_plot_type},
+	plot_title=${plot_title},
+	plot_xlabel=${plot_xlabel},
+	plot_ylabel=${plot_ylabel},
+	plot_zlabel=${plot_zlabel});
+  call I2U2.Cosmic::SVG2PNG(
+  	svg=${input:svg},
+	png=${output:plot_outfile_image},
+	height=${plot_size}
+  );
+}

@@ -150,7 +150,23 @@ Re: the upload progress stuff
        	        request.setAttribute("comments", comments);
       	        request.setAttribute("benchmark", benchmark);
       	        request.setAttribute("makeThreshold", makeThreshold);
+      	        if (makeThreshold.equals("perl")) {
 				%>
+					<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUploadTT" impl="generic">
+						<e:trdefault name="in" value="${in}"/>
+						<e:trdefault name="datadir" value="${datadir}"/>
+						<e:trdefault name="detectorid" value="${detectorid}"/>
+						<e:trdefault name="comments" value="${comments}"/>
+						<e:trdefault name="benchmark" value="${benchmark}"/>
+						<e:trdefault name="makeThreshold" value="${makeThreshold}"/>	
+											
+						<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload">
+							<jsp:param name="provider" value="shell"/>
+						</jsp:include>
+					</e:analysis>
+				<%
+      	        } else {
+   				%>
 					<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUpload" impl="generic">
 						<e:trdefault name="in" value="${in}"/>
 						<e:trdefault name="datadir" value="${datadir}"/>
@@ -164,6 +180,8 @@ Re: the upload progress stuff
 						</jsp:include>
 					</e:analysis>
 				<%
+
+      	        }
 			} //'twas a file
 		} //while through the file
 	} //end "if form has a file to upload"
@@ -294,7 +312,9 @@ Re: the upload progress stuff
 		</table>
     </p>
     <p> 
-    	<input type="checkbox" name="makeThreshold" id="makeThreshold" value="yes">Make threshold times file at upload time.</input>
+	   	<input type="radio" name="makeThreshold" value="none" checked="true">Do not make Threshold Times file.</input><br />
+    	<input type="radio" name="makeThreshold" value="java">Make threshold times file with JAVA.</input><br />
+    	<input type="radio" name="makeThreshold" value="perl">Make threshold times file with PERL.</input>
     </p>
 	<p>
 		<label for="ds">Raw Data File:</label>

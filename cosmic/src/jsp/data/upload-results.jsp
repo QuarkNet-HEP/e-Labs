@@ -167,7 +167,7 @@
 	    }
 	}
 	//create the threshold files here
-	if (makeThreshold.equals("yes")) {
+	if (makeThreshold.equals("java")) {
 		String[] inputFiles = new String[splits.size()];
 		for (int i = 0; i < splits.size(); i++) {
 			inputFiles[i] = splits.get(i).toString();			
