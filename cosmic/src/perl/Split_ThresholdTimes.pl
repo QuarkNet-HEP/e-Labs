@@ -763,7 +763,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			push(@ARGV, $ttoutput);
 			push(@ARGV, $DAQID);
 			push(@ARGV, $cpld_real_freq);
-			do '/Users/edit/quarkcat/sw/i2u2svn/cosmic/src/perl/ThresholdTimes.pl' ;
+			do '/home/quarkcat/sw/i2u2svn/cosmic/src/perl/ThresholdTimes.pl' ;
     				
 			#open a NEW split file
 			$index = 0;				#incremented if a split file of this name already exists
@@ -1047,7 +1047,7 @@ else{
 	push(@ARGV, $ttoutput);
 	push(@ARGV, $DAQID);
 	push(@ARGV, $cpld_real_freq);
-    do '/Users/edit/quarkcat/sw/i2u2svn/cosmic/src/perl/ThresholdTimes.pl' ;
+    do '/home/quarkcat/sw/i2u2svn/cosmic/src/perl/ThresholdTimes.pl' ;
     
 }
 
