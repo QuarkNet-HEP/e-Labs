@@ -149,7 +149,11 @@ $numSplitFiles = 0;					#number of succesfully split files created.
 $chan3 = $chan2 = $chan1 = $chan0 = 0; 	#holds the incremented channel counts. fixes bug #485
 #$DAQID = 0; 						#string to hold the DAQID read in from the ST line. Needs to be zero here as there is a check for its value later.
 $GPSSuspects = 0;					#int to hold the number of lines that we discard because the GPS date is suspect.
-
+#Create for later call to thresholdtimes
+@ttinput = @_;
+@ttoutput = @_;
+@ttdaq = @_;
+@ttfreq = @_;
 
 #convert MAC OS line breaks to UNIX
 #Mac OS only has \r for new lines, so Unix reads it as all one big line. We first need to replace
@@ -740,6 +744,15 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 
 					close $blessFile;	
 					
+					#Now save for thresholdtimes
+					$ttinput= "$output_dir/$fn";
+					$tfn = $fn.".thresh";
+					$ttoutput= "$output_dir/$tfn";
+					push(@ttinput, $ttinput);
+					push(@ttoutput, $ttoutput);
+					push(@ttdaq, $DAQID);
+					push(@ttfreq, $cpld_real_freq);
+										
 					#Empty all of the status arrays so that they can start over with the new split file.
 					@stTime = @StCoutTemp = @stCount0 = @stRate0 = @stCount1 = @stRate1 = @stCount2 = @stRate2 = @stCount3 = @stRate3 = @stEvents = @stRateEvents = @stType = @stPress = @stTemp = @StVcc = @stGPSSats = @stRow =  @cpld_frequency1 = @cpld_frequency2 = @stCountTemp = ();
 					#reset any scalars in use
@@ -752,19 +765,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 				
 				}#end if($lastDate ne "")
 			#}#end if($date ne $lastDate)
-
-			#Now create ThresholdTimes
-			$ttinput= "$output_dir/$fn";
-			$tfn = $fn.".thresh";
-			$ttoutput= "$output_dir/$tfn";
-			
-			local @ARGV = @_;
-			push(@ARGV, $ttinput);
-			push(@ARGV, $ttoutput);
-			push(@ARGV, $DAQID);
-			push(@ARGV, $cpld_real_freq);
-			do '/home/quarkcat/sw/i2u2svn/cosmic/src/perl/ThresholdTimes.pl' ;
-    				
+  				
 			#open a NEW split file
 			$index = 0;				#incremented if a split file of this name already exists
 			$fn = "$ID.$year.$month$day.$index";
@@ -1000,7 +1001,16 @@ else{
 	}
 					
 	close $blessFile;	
-				
+	
+	#Now save for ThresholdTimes
+	$ttinput= "$output_dir/$fn";
+	$tfn = $fn.".thresh";
+	$ttoutput= "$output_dir/$tfn";		
+	push(@ttinput, $ttinput);
+	push(@ttoutput, $ttoutput);
+	push(@ttdaq, $DAQID);
+	push(@ttfreq, $cpld_real_freq);
+    	
 	#write the channel counts for the last split file
 	#Why is this here? Do we print this on the line confiming the upload? If so, it's wrong--it only holds the counts for the _last_ file.
 	#print "$chan0 $chan1 $chan2 $chan3\n";
@@ -1037,17 +1047,13 @@ else{
 		print META "Average altitude: $avg_alt\n";
 	}
 
-	#Now create ThresholdTimes
-	$ttinput= "$output_dir/$fn";
-	$tfn = $fn.".thresh";
-	$ttoutput= "$output_dir/$tfn";		
-				
 	local @ARGV = @_;
-	push(@ARGV, $ttinput);
-	push(@ARGV, $ttoutput);
-	push(@ARGV, $DAQID);
-	push(@ARGV, $cpld_real_freq);
-    do '/home/quarkcat/sw/i2u2svn/cosmic/src/perl/ThresholdTimes.pl' ;
+	push(@ARGV, join(" ", @ttinput));
+	push(@ARGV, join(" ", @ttoutput));
+	push(@ARGV, join(" ", @ttdaq));
+	push(@ARGV, join(" ", @ttfreq));
+    do '/home/quarkcat/sw/i2u2svn/cosmic/src/perl/ThresholdTimes.pl' ;			
+    #do 'Users/edit/quarkcat/sw/i2u2svn/cosmic/src/perl/ThresholdTimes.pl' ;			
     
 }
 

@@ -77,7 +77,7 @@ public class Threshold {
     	this.detectorIDs = new String[inputFiles.length];
     	this.cpldFrequencies = new double[inputFiles.length];
     	for (int i = 0; i < inputFiles.length; i++) {
-    		outputFiles[i] = inputFiles[i] + ".thresh";
+    		outputFiles[i] = inputFiles[i] + ".thresh_java";
     		detectorIDs[i] = detectorId;
     		try {
 				VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(inputFiles[i]);
