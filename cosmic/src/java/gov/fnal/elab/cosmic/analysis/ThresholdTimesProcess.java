@@ -37,7 +37,7 @@ public class ThresholdTimesProcess implements Runnable {
     		inputFiles[i] = inputFile.get(i).toString();
     		outputFiles[i] = outputFile.get(i).toString();
     		detectorIDs[i] = detector.get(i).toString();
-    		cpldFrequencies[i] = Long.valueOf(cpldFrequency.get(i).toString()).doubleValue();
+    		cpldFrequencies[i] = Double.valueOf(cpldFrequency.get(i).toString()).doubleValue();
     	} 	
     }
     
@@ -49,9 +49,9 @@ public class ThresholdTimesProcess implements Runnable {
         rePPSCount = new long[4];
         reDiff = new long[4];
         reTMC = new int[4];
-        try {
-		    for (int i = 0; i < inputFiles.length; i++) {
-		        BufferedReader br = new BufferedReader(new FileReader(inputFiles[i]));
+	    for (int i = 0; i < inputFiles.length; i++) {
+	    	try {
+		    	BufferedReader br = new BufferedReader(new FileReader(inputFiles[i]));
 		        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFiles[i]));
 		
 		        bw.write("#$md5\n");
@@ -72,12 +72,10 @@ public class ThresholdTimesProcess implements Runnable {
 		        }
 		        bw.close();
 		        br.close();
-		    }
-        }
-        catch (IOException ioe) {
-        	// abort?
-        }
-    	
+	    	} catch (IOException ioe) {
+	    		System.out.println("File not found: " + inputFiles[i] + "\n");
+	    	}
+	    }
     }
 
     private void timeOverThreshold(String[] parts, int channel, String detector, BufferedWriter bw) throws IOException {
