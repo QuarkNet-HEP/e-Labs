@@ -1,8 +1,5 @@
 package gov.fnal.elab.cosmic.analysis;
 
-import gov.fnal.elab.Elab;
-import gov.fnal.elab.datacatalog.impl.vds.VDSCatalogEntry;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -30,33 +27,18 @@ public class ThresholdTimesProcess implements Runnable {
     public static final NumberFormat NF2F = new DecimalFormat("0.00");
     public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
     
-    public ThresholdTimesProcess(Elab elab, TreeMap splits) {
-    	this.inputFiles = new String[splits.size()];
-    	this.outputFiles = new String[splits.size()];
-    	this.detectorIDs = new String[splits.size()];
-    	this.cpldFrequencies = new double[splits.size()];
-    	
-    	int i = 0;
-    	Iterator it = splits.entrySet().iterator();
-    	while(it.hasNext()) {
-            Map.Entry e = (Map.Entry) it.next();
-            String path = elab.getProperties().getDataDir() + File.separator + e.getValue().toString() + File.separator;
-    		inputFiles[i] = path + e.getKey().toString();
-    		outputFiles[i] = path + e.getKey().toString() + ".thresh";
-    		detectorIDs[i] = e.getValue().toString();
-    		try {
-    			VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(e.getKey().toString());
-    			if (entry != null) {
-    				Long cpldf = (Long) entry.getTupleValue("cpldfrequency");
-    				cpldFrequencies[i] = cpldf.doubleValue();
-    			} else {
-    				cpldFrequencies[i] = 0;
-    			}
-    		} catch (Exception ex) {
-    			cpldFrequencies[i] = 0;
-    		}
-    		i++;
-    	}
+    public ThresholdTimesProcess(List inputFile, List outputFile, List detector, List cpldFrequency) {
+    	this.inputFiles = new String[inputFile.size()];
+    	this.outputFiles = new String[inputFile.size()];
+    	this.detectorIDs = new String[inputFile.size()];
+    	this.cpldFrequencies = new double[inputFile.size()];
+
+    	for (int i = 0; i < inputFile.size(); i++) {
+    		inputFiles[i] = inputFile.get(i).toString();
+    		outputFiles[i] = outputFile.get(i).toString();
+    		detectorIDs[i] = detector.get(i).toString();
+    		cpldFrequencies[i] = Long.valueOf(cpldFrequency.get(i).toString()).doubleValue();
+    	} 	
     }
     
     public void run() {
@@ -274,17 +256,29 @@ public class ThresholdTimesProcess implements Runnable {
     
     public static void main(String[] args) {
     	ThresholdTimesProcess ttp;
-    	Elab elab = Elab.getElab(null, "cosmic");
-		TreeMap<String, String> splits = new TreeMap<String,String>();
-
+    	List inputFile = new ArrayList();
+    	List outputFile = new ArrayList();
+    	List detector = new ArrayList();
+    	List cpldFrequency = new ArrayList();
+    	
     	if (args.length == 1) {
     		String iFile = args[0];
     		try {
     			BufferedReader br = new BufferedReader(new FileReader(iFile));			
 		        String line = br.readLine();
 		        while (line != null) {
-		            String detector = line.substring(0, line.indexOf('.'));
-		            splits.put(line, detector);
+			        String[] splitLine = line.split(","); 
+			        if (splitLine.length == 4) {
+			        	String filename = splitLine[1];
+			        	String threshfile = splitLine[2];
+			        	String detectorId = filename.substring(0, filename.indexOf('.'));
+			        	String path = splitLine[0] + File.separator + detectorId + File.separator;
+			        	String cpldf = splitLine[3];
+			        	inputFile.add(path+filename);
+			        	outputFile.add(path+threshfile);
+			        	detector.add(detectorId);
+			        	cpldFrequency.add(cpldf);
+			        }
 		            line = br.readLine();
 		        }
 		        
@@ -294,7 +288,7 @@ public class ThresholdTimesProcess implements Runnable {
         		System.out.println("Could not open the file");    			
     		}
 
-    		ttp = new ThresholdTimesProcess(elab, splits);      
+    		ttp = new ThresholdTimesProcess(inputFile, outputFile, detector, cpldFrequency);      
     		ttp.run();
     	} else {
     		System.out.println("Usage: ThresholdTimesProcess input_file");
