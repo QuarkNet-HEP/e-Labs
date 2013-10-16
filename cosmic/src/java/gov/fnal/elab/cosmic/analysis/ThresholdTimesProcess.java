@@ -72,6 +72,7 @@ public class ThresholdTimesProcess implements Runnable {
 		        }
 		        bw.close();
 		        br.close();
+	    		System.out.println("Processed file: " + inputFiles[i] + "\n");
 	    	} catch (IOException ioe) {
 	    		System.out.println("File not found: " + inputFiles[i] + "\n");
 	    	}
