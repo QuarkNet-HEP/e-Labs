@@ -106,6 +106,7 @@ Re: the upload progress stuff
     					comments = content; 
     				}
     			}
+    			//EPeronja-10/17/2013: THRESHOLD TEST
     			else if ("makeThreshold".equals(name)) {
     				if (StringUtils.isNotBlank(content)) {
     					makeThreshold = content; 
@@ -149,7 +150,9 @@ Re: the upload progress stuff
        	        request.setAttribute("detectorid", detectorId);
        	        request.setAttribute("comments", comments);
       	        request.setAttribute("benchmark", benchmark);
+    			//EPeronja-10/17/2013: THRESHOLD TEST
       	        request.setAttribute("makeThreshold", makeThreshold);
+      	    	//EPeronja-10/17/2013: THRESHOLD TEST -- Split.pl will call ThresholdTimes.pl
       	        if (makeThreshold.equals("perl")) {
 				%>
 					<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUploadTT" impl="generic">
@@ -312,6 +315,7 @@ Re: the upload progress stuff
 		</table>
     </p>
     <p> 
+    	<!--//EPeronja-10/17/2013: THRESHOLD TEST-->
 	   	<input type="radio" name="makeThreshold" value="none" checked="true">Do not make Threshold Times file.</input><br />
     	<input type="radio" name="makeThreshold" value="java">Make threshold times file with JAVA.</input><br />
     	<input type="radio" name="makeThreshold" value="perl">Make threshold times file with PERL.</input>

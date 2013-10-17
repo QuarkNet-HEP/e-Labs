@@ -57,6 +57,7 @@
 	String detectorId = (String) results.getAnalysis().getParameter("detectorid");
 	String comments = (String) results.getAnalysis().getParameter("comments");
 	String benchmark = (String) results.getAnalysis().getParameter("benchmark");
+	//EPeronja-10/17/2013: THRESHOLD TEST
 	String makeThreshold = (String) results.getAnalysis().getParameter("makeThreshold");
 	ArrayList<String> benchmarkMessages = new ArrayList<String>();
 	String dataDir = elab.getProperties().getDataDir();
@@ -166,7 +167,8 @@
 	        channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).intValue();
 	    }
 	}
-	//create the threshold files here
+	//EPeronja-10/17/2013: THRESHOLD TEST
+	//create the threshold files here if the option is java
 	if (makeThreshold.equals("java")) {
 		String[] inputFiles = new String[splits.size()];
 		for (int i = 0; i < splits.size(); i++) {

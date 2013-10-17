@@ -8,7 +8,7 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="gov.fnal.elab.cosmic.util.*" %>
 <%
-
+//EPeronja-10/17/2013: THRESHOLD TEST
 String thresholdfile = request.getParameter("thresholdfile");
 if (thresholdfile == null || thresholdfile.equals("")) {
 	thresholdfile = "none";

@@ -1,9 +1,8 @@
 /*
  * Created on October 11 2013 (based on ThresholdTimes.java)
+ * EPeronja-10/17/2013: THRESHOLD TEST
  */
 package gov.fnal.elab.cosmic.analysis;
-
-import gov.fnal.elab.Elab;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -23,7 +22,6 @@ import gov.fnal.elab.util.ElabException;
 
 /**
  * Calculates the absolute time of both the rising and falling edge of an event to a precision of 0.75ns. 
- *
  */
 public class Threshold {
     private String[] inputFiles, outputFiles, detectorIDs;

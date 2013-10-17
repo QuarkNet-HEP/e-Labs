@@ -1,3 +1,7 @@
+/*
+ * Created on October 11 2013 (based on ThresholdTimes.java)
+ * EPeronja-10/17/2013: THRESHOLD TEST
+ */
 package gov.fnal.elab.cosmic.analysis;
 
 import java.io.BufferedReader;
@@ -73,6 +77,7 @@ public class ThresholdTimesProcess implements Runnable {
 		        bw.close();
 		        br.close();
 	    		System.out.println("Processed file: " + inputFiles[i] + "\n");
+	    		System.out.println(""+ String.valueOf(i) + " files out of " + String.valueOf(inputFiles.length));
 	    	} catch (IOException ioe) {
 	    		System.out.println("File not found: " + inputFiles[i] + "\n");
 	    	}
@@ -252,7 +257,31 @@ public class ThresholdTimesProcess implements Runnable {
         return (2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60.0 + second/3600.0)/24;
         
     }
-    
+    //main receives a txt file created from a query to the database
+    //the file should have 4 columns separated by commas
+    //1-data path (eg. /disks/i2u2-dev/cosmic/data
+    //2-input file name (eg. 6119.2013.0522.1)
+    //3-output file name (eg. 6119.2013.0522.1.thresh)
+    //4-cpld frequency for that file (eg. 25000000)
+    //to create the input file, you can run something like:
+    /*
+     * 		   select  '/disks/i2u2-dev/cosmic/data' as path,
+						al.name, 
+						al.name || '.thresh' as threshfile,
+						ai.value
+		  		 from 	anno_lfn al
+		   inner join 	anno_text at
+		    	   on 	al.id = at.id
+	  full outer join 	anno_lfn al1
+		    	   on 	al.name = al1.name
+	  full outer join 	anno_int ai
+		    	   on 	al1.id = ai.id
+		 	    where 	at.value = 'split'
+		   		  and 	al.name like '6119%'
+		   		  and 	al1.mkey = 'cpldfrequency'
+		   	 order by 	al.name
+   	 *
+     */
     public static void main(String[] args) {
     	ThresholdTimesProcess ttp;
     	List inputFile = new ArrayList();

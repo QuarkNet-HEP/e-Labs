@@ -26,6 +26,7 @@
 # jordant changed 11-01-10: checking to see if user is doing ST2 or ST3 when writing raw data. Knowing which one is crucial to data blessing.
 # jordant changed 5 Oct 11: fixing bug 372
 # jordant changed 4 Jan 13: fixing bug 517
+# EPeronja-10/17/2013: THRESHOLD TEST, added a call to ThresholdTimes.pl to create the thresh files
 
 if($#ARGV < 2){
 	die "usage: Split.pl [filename to parse] [output DIRECTORY] [board ID]\n";
@@ -1052,7 +1053,9 @@ else{
 	push(@ARGV, join(" ", @ttoutput));
 	push(@ARGV, join(" ", @ttdaq));
 	push(@ARGV, join(" ", @ttfreq));
-    do '/home/quarkcat/sw/i2u2svn/cosmic/src/perl/ThresholdTimes.pl' ;			
+	
+	do $dirname."/ThresholdTimes.pl";
+    #do '/home/quarkcat/sw/i2u2svn/cosmic/src/perl/ThresholdTimes.pl' ;			
     #do 'Users/edit/quarkcat/sw/i2u2svn/cosmic/src/perl/ThresholdTimes.pl' ;			
     
 }
