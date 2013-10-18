@@ -782,6 +782,7 @@ TR I2U2.Cosmic::LifetimeStudyTT(
 	input thresholdAll[] )
 {
   inout svg=@{inout:"plot.svg"};
+  
   call I2U2.Cosmic::WireDelay(
 	geoDir=${geoDir},
 	geoFiles=${input:geoFiles},
@@ -890,8 +891,8 @@ TR I2U2.Cosmic::ShowerStudyTT(
 	none sort_sortKey1,
 	none sort_sortKey2,
 	inout sortOut,
-	inout thresholdAll[],
-	input wireDelayData[],
+	input thresholdAll[],
+	inout wireDelayData[],
 	none zeroZeroZeroID )
 {
   call I2U2.Cosmic::WireDelay(
