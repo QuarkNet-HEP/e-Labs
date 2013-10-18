@@ -140,7 +140,7 @@ if (thresholdfile.equals("none")) {
 	</e:ifAnalysisIsNotOk>
 </e:analysis>
 <% } else { %>
-<e:analysis name="analysis" type="I2U2.Cosmic::ShowerStudy">
+<e:analysis name="analysis" type="I2U2.Cosmic::ShowerStudyTT">
 	<%
 		ElabAnalysis analysis = (ElabAnalysis) request.getAttribute("analysis");
 		Collection rawData = analysis.getParameterValues("rawData");
