@@ -99,14 +99,30 @@
 			
 			    if(e.getTuples().size() == 0){
 			        %> 
-			        	<tr><td><span class="error">Missing file: <%= lfn %></span></td></tr>
+			        	<tr><td colspan="6"><span class="error">Missing file: <%= lfn %></span></td></tr>
 			        <%
 			        continue;
 			    }
 			
 			    //create a string of the date for the file and find start and end date
 			    Date fileStartDate = (Date) e.getTupleValue("startdate");
+			    //EPeronja-10/23/2013:Bug 427-FLUX analysis --> DAQ 6421
+			    //					  Code assumes that fileStartDate is never null: wrong
+			    if(fileStartDate == null){
+			        %> 
+			        	<tr><td colspan="6"><span class="error">Missing Start Date: <%= lfn %></span></td></tr>
+			        <%
+			        continue;
+			    }
 			    Date fileEndDate = (Date) e.getTupleValue("enddate");
+			    //EPeronja-10/23/2013:Bug 427-FLUX analysis --> DAQ 6421
+			    //					  Code assumes that fileEndDate is never null: wrong			    
+			    if(fileEndDate == null){
+			        %> 
+			        	<tr><td colspan="6"><span class="error">Missing End Date: <%= lfn %></span></td></tr>
+			        <%
+			        continue;
+			    }
 			    String filedate = sdf.format(fileStartDate);
 			    filedate = filedate.replaceAll(" ", "&nbsp;");
 			    
