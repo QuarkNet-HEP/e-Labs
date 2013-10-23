@@ -8,7 +8,8 @@
 	    ElabGroup group = ElabGroup.getUser(session);
 	    request.setAttribute("username", group.getName());
 	    ElabNotificationsProvider np = ElabFactory.getNotificationsProvider((Elab) session.getAttribute("elab"));
-	    List<Notification> n = np.getNotifications(group, 10, "true".equals(request.getParameter("unread")));
+	    //added library path to avoid conflicts
+	    java.util.List<Notification> n = np.getNotifications(group, 10, "true".equals(request.getParameter("unread")));
 	    request.setAttribute("notifications", n);
 	}
 %>
