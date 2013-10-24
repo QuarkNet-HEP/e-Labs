@@ -131,8 +131,27 @@ if (thresholdfile.equals("none")) {
 				            </c:forEach>
 				        </ul>
 				    </c:if>
-				    
-				    <%@ include file="controls.jsp" %>
+				    <%
+					//EPeronja-10/24/2013: Bug 511: unable to rerun study.
+					//					This was caused by not finding the metadata for a certain data file.
+					//					It seems the metadata was deleted while there existed plots referencing it.
+					//					If the total number files available to rerun a study is zero, then do not invoke controls, estimator, etc. 
+					//					The code will break in an ugly fashion.
+				    String num_files = request.getParameter("num_files");
+				    Integer file_count = 0;
+				    if (num_files != null) {
+					    file_count = Integer.valueOf(num_files);
+				    }
+				    if (file_count > 0) {
+					%>
+					    <%@ include file="controls.jsp" %>
+					<%
+				    } else {
+				    %>
+				    	<p>There are no files available to run this analysis</p>
+				    <%
+				    }
+					%>
 				</td>
 			</tr>
 		</table>
@@ -280,8 +299,27 @@ if (thresholdfile.equals("none")) {
 				            </c:forEach>
 				        </ul>
 				    </c:if>
-				    
-				    <%@ include file="controls.jsp" %>
+				    <%
+					//EPeronja-10/24/2013: Bug 511: unable to rerun study.
+					//					This was caused by not finding the metadata for a certain data file.
+					//					It seems the metadata was deleted while there existed plots referencing it.
+					//					If the total number files available to rerun a study is zero, then do not invoke controls, estimator, etc. 
+					//					The code will break in an ugly fashion.
+				    String num_files = request.getParameter("num_files");
+				    Integer file_count = 0;
+				    if (num_files != null) {
+					    file_count = Integer.valueOf(num_files);
+				    }
+				    if (file_count > 0) {
+					%>
+					    <%@ include file="controls.jsp" %>
+					<%
+				    } else {
+				    %>
+				    	<p>There are no files available to run this analysis</p>
+				    <%
+				    }
+					%>
 				</td>
 			</tr>
 		</table>

@@ -205,6 +205,13 @@
 				    </tr>
 				<%
 			}
+			//EPeronja-10/24/2013: Bug 511: unable to rerun study.
+			//					This was caused by not finding the metadata for a certain data file.
+			//					It seems the metadata was deleted while there existed plots referencing it.
+			//					If the total number files available to rerun a study is zero, then do not invoke controls, estimator, etc. 
+			//					The code will break in an ugly fashion.
+			request.setAttribute("num_files", num_files);
+			
 			if (startdate != null) {
 				request.setAttribute("startDate", sef.format(startdate));
 				if (enddate == null) {
@@ -220,7 +227,7 @@
 				queryFilenames = queryFilenames.substring(0, queryFilenames.length() - 1);
 			}
 			//get total events in all chans
-			
+
 			//only show "show more files" link if there's more files to show...
 			if(num_files > 10){
 				%>
