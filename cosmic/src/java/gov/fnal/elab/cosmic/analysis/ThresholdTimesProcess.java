@@ -30,6 +30,7 @@ public class ThresholdTimesProcess implements Runnable {
     
     public static final NumberFormat NF2F = new DecimalFormat("0.00");
     public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
+    BufferedWriter bwprocess;
     
     public ThresholdTimesProcess(List inputFile, List outputFile, List detector, List cpldFrequency) {
     	this.inputFiles = new String[inputFile.size()];
@@ -42,7 +43,12 @@ public class ThresholdTimesProcess implements Runnable {
     		outputFiles[i] = outputFile.get(i).toString();
     		detectorIDs[i] = detector.get(i).toString();
     		cpldFrequencies[i] = Double.valueOf(cpldFrequency.get(i).toString()).doubleValue();
-    	} 	
+    	}
+    	try {
+    	BufferedWriter bwprocess = new BufferedWriter(new FileWriter("/Users/edit/documents/ThresholdOutput.txt"));
+    	} catch (Exception e) {
+    		System.out.println("Couldnt open file for output");
+    	}
     }
     
     public void run() {
@@ -68,19 +74,27 @@ public class ThresholdTimesProcess implements Runnable {
 		        }
 		        String line = br.readLine();
 		        while (line != null) {
-		            String[] parts = line.split("\\s"); // line validated in split.pl 
+		            String[] parts = line.split("\\s"); // line validated in split.pl
+		            bwprocess.write(line+"\n");
 		            for (int j = 0; j < 4; j++) {
+		            	bwprocess.write("Calling timeOverTreshold function...\n");
 		                timeOverThreshold(parts, j, detectorIDs[i], bw);
 		            }
 		            line = br.readLine();
 		        }
 		        bw.close();
 		        br.close();
+
 	    		System.out.println("Processed file: " + inputFiles[i] + "\n");
 	    		System.out.println(""+ String.valueOf(i) + " files out of " + String.valueOf(inputFiles.length));
 	    	} catch (IOException ioe) {
 	    		System.out.println("File not found: " + inputFiles[i] + "\n");
 	    	}
+	    }//end of for loop
+	    try {
+	    	bwprocess.close();
+	    } catch (Exception e) {
+	    	System.out.println("Couldnt close output file");
 	    }
     }
 
@@ -96,24 +110,45 @@ public class ThresholdTimesProcess implements Runnable {
         int decFE = Integer.parseInt(parts[indexFE], 16);
         int decRE = Integer.parseInt(parts[indexRE], 16);
 
+        bwprocess.write("channel: "+String.valueOf(channel)+"\n");
+        bwprocess.write("indexRE: "+String.valueOf(indexRE)+"\n");
+        bwprocess.write("indexFE: "+String.valueOf(indexFE)+"\n");
+        bwprocess.write("type: "+String.valueOf(type)+"\n");
+        bwprocess.write("decFE: "+String.valueOf(decFE)+"\n");
+        bwprocess.write("decRE: "+String.valueOf(decRE)+"\n");
+        bwprocess.write("Evaluating retime[channel] and isEdge(decFE)...\n");
+        bwprocess.write("retime[channel]: "+String.valueOf(retime[channel])+"\n");
+        bwprocess.write("isEdge(decFE): "+String.valueOf(isEdge(decFE))+"\n");
         if (retime[channel] != 0 && isEdge(decFE)) {
-            fetime[channel] = calctime(channel, decFE, parts);
+            bwprocess.write("Calling calctime to get fetime[channel] after retime[channel] != 0 && isEdge(decFE)\n");
+        	fetime[channel] = calctime(channel, decFE, parts);
+            bwprocess.write("fetime[channel]: "+String.valueOf(fetime[channel])+"\n");
             if (fetime[channel] != 0) {
-                printData(channel, parts, detector, bw);
+                bwprocess.write("Printing data after fetime[channel] != 0\n");
+            	printData(channel, parts, detector, bw);
+                bwprocess.write("Clearing channels now...\n");
                 clearChannelState(channel);
             }
 
             if (isEdge(decRE)) {
+                bwprocess.write("Calling calctime to get retime[channel] after isEdge(decRE)\n");            	
                 retime[channel] = calctime(channel, decRE, parts);
+                bwprocess.write("retime[channel]: "+String.valueOf(retime[channel])+"\n");
             }
         }
         else if (isEdge(decRE)) {
+            bwprocess.write("Calling calctime to get retime[channel] after isEdge(decRE)\n");
             retime[channel] = calctime(channel, decRE, parts);
+            bwprocess.write("retime[channel]: "+String.valueOf(retime[channel])+"\n");
             if (retime[channel] != 0 && isEdge(decFE)) {
+                bwprocess.write("Calling calctime to get fetime[channel] after retime[channel] != 0 && isEdge(decFE)\n");
                 fetime[channel] = calctime(channel, decFE, parts);
+                bwprocess.write("fetime[channel]: "+String.valueOf(fetime[channel])+"\n");
             }
             if (retime[channel] != 0 && fetime[channel] != 0) {
+                bwprocess.write("Printing data after retime[channel] != 0 && fetime[channel] != 0\n");
                 printData(channel, parts, detector, bw);
+                bwprocess.write("Clearing channels now...\n");
                 clearChannelState(channel);
             }
         }
@@ -179,7 +214,7 @@ public class ThresholdTimesProcess implements Runnable {
     private double calctime(int channel, int edge, String[] parts) {
         int tmc = edge & 0x1f;
 
-        if (rePPSTime[channel] == 0 || rePPSCount[channel] == 0) {
+	    if (rePPSTime[channel] == 0 || rePPSCount[channel] == 0) {
             rePPSTime[channel] = lastRePPSTime;
             rePPSCount[channel] = lastRePPSCount;
 
@@ -207,7 +242,22 @@ public class ThresholdTimesProcess implements Runnable {
         if (edgetime > 86400) {
             edgetime -= 86400;
         }
-                
+        try {
+	        bwprocess.write("edge: "+String.valueOf(edge)+"\n");
+	        bwprocess.write("tmc: "+String.valueOf(tmc)+"\n");
+	        bwprocess.write("rePPSTime[channel]: "+String.valueOf(rePPSTime[channel])+"\n");
+	        bwprocess.write("rePPSCount[channel]: "+String.valueOf(rePPSCount[channel])+"\n");
+	        bwprocess.write("currSecString: "+String.valueOf(lastSecString)+"\n");
+	        bwprocess.write("reTMC[channel]: "+String.valueOf(reTMC[channel])+"\n");
+	        bwprocess.write("reDiff[channel]: "+String.valueOf(reDiff[channel])+"\n");
+	        bwprocess.write("diff: "+String.valueOf(diff)+"\n");
+	        bwprocess.write("cpldFrequency: "+String.valueOf(cpldFrequency)+"\n");
+	        bwprocess.write("edgetime = rePPSTime[channel] + diff / cpldFrequency + tmc / (cpldFrequency * 32): "+String.valueOf(rePPSTime[channel] + diff / cpldFrequency + tmc / (cpldFrequency * 32))+"\n");
+	        bwprocess.write("edgetime: "+String.valueOf(edgetime)+"\n");
+	        bwprocess.write("edgetime/86400: "+String.valueOf(edgetime / 86400)+"\n");       
+        } catch (Exception e) {
+        	System.out.println(e.toString());
+        }                
         return edgetime / 86400;
     }
 
