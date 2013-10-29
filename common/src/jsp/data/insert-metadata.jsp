@@ -24,11 +24,16 @@
 	String filename = request.getParameter("filename");
 	String message = "";
 	String submitButton = request.getParameter("submitMetadata");
+	String project = elab.getName();
+	
 	//then look for the filename handle to insert metadata
 	if (filename != null && submitButton.equals("Search")) {
 		VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filename);
 		if (entry == null) {
 		    message = "No metadata about " + filename + " found.";
+		}
+		if (!entry.getTupleValue("project").toString().equals(project)) {
+			message = "This entry does not belong to this project.";
 		}
 		request.setAttribute("entry", entry);
 	} 
@@ -44,7 +49,7 @@
 				try {
 					entry.setTupleValue(metadatalabel, metadatalabel);
 			    	dcp.insert(entry);
-					message = "Metadata updated.";
+					message = "Metadata updated successfully.";
 					VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filename);
 					request.setAttribute("entry", e);			    	
 				} catch (Exception e) {
@@ -127,6 +132,9 @@
 							</tr>
 							<tr>
 								<td colspan="3">${message}</td>
+							</tr>
+							<tr>
+								<td colspan="3"><a href="insert-metadata.jsp?filename=&submitMetadata=">Search for another file.</a></td>
 							</tr>
 						</table>
 					</c:otherwise>
