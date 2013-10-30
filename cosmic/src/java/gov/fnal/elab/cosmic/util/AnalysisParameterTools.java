@@ -99,9 +99,9 @@ public class AnalysisParameterTools {
             if (pf.exists()) {
                 sum += pf.length();
             }
-            else {
-                throw new ElabException("Data file not found: " + pfn);
-            }
+            //else {
+            //    throw new ElabException("Data file not found: " + pfn);
+            //}
         }
         return sum;
     }
