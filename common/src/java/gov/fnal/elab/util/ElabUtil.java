@@ -411,16 +411,26 @@ public class ElabUtil {
     protected static void deleteSplitFiles(Elab elab, String lfn) throws ElabJspException {
 		String blessFile = RawDataFileResolver.getDefault().resolve(elab, lfn+".bless");
 		File bf = new File(blessFile);
+		String blessTextFile = RawDataFileResolver.getDefault().resolve(elab, lfn+"_blessing.txt");
+		File btf = new File(blessTextFile);
 		String analyzeFile = RawDataFileResolver.getDefault().resolve(elab, lfn+".analyze");
    		File af = new File(analyzeFile);
+		String threshFile = RawDataFileResolver.getDefault().resolve(elab, lfn+".thresh");
+		File tf = new File(threshFile);
 		String dataFile = RawDataFileResolver.getDefault().resolve(elab, lfn);
 		File df = new File(dataFile);
 		try {
 			if (bf.exists()) {
 				bf.delete();
 			}
+			if (btf.exists()) {
+				btf.delete();
+			}
 			if (af.exists()) {
 				af.delete();
+			}
+			if (tf.exists()) {
+				tf.delete();
 			}
 			if (df.exists()) {
 				df.delete();
@@ -536,6 +546,12 @@ public class ElabUtil {
     	}
     }//end of deletePhysicalFiles
 
+    public static boolean fileExists(Elab elab, String lfn) throws ElabJspException{
+    	String dataFile = RawDataFileResolver.getDefault().resolve(elab, lfn);
+		File df = new File(dataFile);
+    	return df.exists();
+    }//end of fileExists
+    
     public static void copyFile(String srcdir, String srcfile, String destdir,
             String destfile) throws ElabJspException {
         File src = new File(srcdir, srcfile);

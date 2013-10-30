@@ -4,6 +4,7 @@
 <%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
+<%@ page import="gov.fnal.elab.util.ElabUtil" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
 
@@ -103,7 +104,13 @@
 			        <%
 			        continue;
 			    }
-			
+				//check also for physical file, otherwise do not count it
+				if (!ElabUtil.fileExists(elab, lfn)) {
+			        %> 
+		        	<tr><td colspan="6"><span class="error">Missing physical file: <%= lfn %></span></td></tr>
+		        	<%
+		        	continue;	
+				}
 			    //create a string of the date for the file and find start and end date
 			    Date fileStartDate = (Date) e.getTupleValue("startdate");
 			    //EPeronja-10/23/2013:Bug 427-FLUX analysis --> DAQ 6421
@@ -210,8 +217,7 @@
 			//					It seems the metadata was deleted while there existed plots referencing it.
 			//					If the total number files available to rerun a study is zero, then do not invoke controls, estimator, etc. 
 			//					The code will break in an ugly fashion.
-			request.setAttribute("num_files", num_files);
-			
+			session.setAttribute("num_files", num_files);
 			if (startdate != null) {
 				request.setAttribute("startDate", sef.format(startdate));
 				if (enddate == null) {
