@@ -80,7 +80,7 @@ if ("Retrieve Username".equals(submit)) {
 	   try {
  			String user = elab.getUserManagementProvider().getUsernameFromEmail(email);
 			//EPeronja: this is code is for testing purposes. Should the code stay, it needs to be moved to a class.
-			if (user != null && !user.equals("") && !user.equals("Multiple Results")) {
+			if (user != null && !user.equals("") && !user.equals("Multiple results")) {
 				String newPassword = elab.getUserManagementProvider().resetPassword(user);
 			   	//Recipient's email
 			   	String to = email;
