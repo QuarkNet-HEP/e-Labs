@@ -115,7 +115,7 @@ if (thresholdfile.equals("none")) {
 					//					It seems the metadata was deleted while there existed plots referencing it.
 					//					If the total number files available to rerun a study is zero, then do not invoke controls, estimator, etc. 
 					//					The code will break in an ugly fashion.
-				    Integer num_files = (Integer) session.getAttribute("num_files");
+				    String num_files = request.getParameter("num_files");
 				    Integer file_count = 0;
 				    if (num_files != null) {
 					    file_count = Integer.valueOf(num_files);
@@ -261,7 +261,7 @@ if (thresholdfile.equals("none")) {
 					//					It seems the metadata was deleted while there existed plots referencing it.
 					//					If the total number files available to rerun a study is zero, then do not invoke controls, estimator, etc. 
 					//					The code will break in an ugly fashion.
-				    Integer num_files = (Integer) session.getAttribute("num_files");
+				    String num_files = request.getParameter("num_files");
 				    Integer file_count = 0;
 				    if (num_files != null) {
 					    file_count = Integer.valueOf(num_files);

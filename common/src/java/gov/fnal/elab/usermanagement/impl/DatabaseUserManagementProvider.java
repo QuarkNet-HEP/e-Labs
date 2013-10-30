@@ -1059,7 +1059,7 @@ public class DatabaseUserManagementProvider implements
             DatabaseConnectionManager.close(conn, ps, ps2);
         }
     }
-    //EPeronja: allow users to reset the passwords
+
     public String getEmail(String groupname) throws ElabException {
     	String email = "";
     	PreparedStatement ps = null;
@@ -1087,43 +1087,7 @@ public class DatabaseUserManagementProvider implements
         finally {
             DatabaseConnectionManager.close(conn, ps);
         }
-    }//end of getEmail (from groupname)
-    
-    //EPeronja: allow users to reset the passwords    
-    public String getUsernameFromEmail(String email) throws ElabException {
-    	String username = "";
-    	PreparedStatement ps = null;
-        Connection conn = null;
-        try {
-            conn = DatabaseConnectionManager
-                    .getConnection(elab.getProperties());
-            String sql = "SELECT rg.name " +
-            			 "FROM teacher t " +
-            			 "INNER JOIN research_group rg " +
-            			 "ON t.id = rg.teacher_id " +
-            			 "WHERE t.email = ? " +
-            			 "AND rg.role = 'teacher' ";
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, email);
-            
-            ResultSet rs = ps.executeQuery();
-            int count = 0;
-            while (rs.next()) {
-            	username = rs.getString("name");
-                count++;
-            }
-            if (count > 1) {
-            	username = "Multiple results";
-            }
-            return username;
-        }
-        catch (Exception e) {
-            throw new ElabException(e);
-        }
-        finally {
-            DatabaseConnectionManager.close(conn, ps);
-        }   	
-    }//end of get username from email address
+    }
     
     public Collection<String> getProjectNames() throws ElabException {
         List<String> names = new ArrayList<String>();

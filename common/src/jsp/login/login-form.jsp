@@ -32,9 +32,6 @@
 				<input class="login-button" type="submit" name="login" value="Login" tabindex="3" />
 			</td>
 		</tr>
-		<tr>
-			<td colspan="2"><a href="../login/retrieve-username-password.jsp">Forgot username/password?</a></div>
-		</tr>
 	</table>
 	<input type="hidden" name="project" value="${elab.name}" />
 	<input type="hidden" name="prevPage" value="<%= prevPage %>" />
