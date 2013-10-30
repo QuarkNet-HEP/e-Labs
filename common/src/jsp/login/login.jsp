@@ -162,7 +162,7 @@
 				<div id="login-form-contents">
 					<%@ include file="login-form.jsp" %>
 				</div>
-				<div><a href="reset-password.jsp?username=${username}">Want to reset your password?</a></div>
+
 				<div id="login-form-text">
 					<p>
 						<a href="<%= elab.getGuestLoginLink(request) %>">Login as guest</a>
