@@ -39,6 +39,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.io.*;
+import java.util.*;
+import javax.mail.*;
+import javax.mail.internet.*;
+import javax.activation.*;
+import javax.servlet.http.*;
+import javax.servlet.*;
 
 public class DatabaseUserManagementProvider implements
         ElabUserManagementProvider, ElabProviderHandled {
@@ -1124,6 +1131,46 @@ public class DatabaseUserManagementProvider implements
             DatabaseConnectionManager.close(conn, ps);
         }   	
     }//end of get username from email address
+
+    //EPeronja: send e-mail to users
+    public String sendEmail(String to, String subject, String message) throws ElabException {
+    	String result = "";
+		//Sender's email ID 
+		final String from = "elabs.pswd@gmail.com";
+		final String password = "i2u2passwordreset";
+	    //Get system properties object
+	    Properties properties = System.getProperties();
+	    //Setup mail server
+	    properties.put("mail.smtp.host", "smtp.gmail.com");
+	    properties.put("mail.smtp.port", "587");
+	    properties.put("mail.smtp.auth", "true");
+	    properties.put("mail.smtp.starttls.enable", "true");			    
+	    //Get the default Session object.
+	    //Session mailSession = Session.getDefaultInstance(properties);
+	   	Session mailSession = Session.getInstance(properties, new javax.mail.Authenticator() {
+	   		protected PasswordAuthentication getPasswordAuthentication() {
+	   			return new PasswordAuthentication(from, password );
+	   		}
+	   	});
+	    try{
+	       //Create a default MimeMessage object.
+	       MimeMessage msg = new MimeMessage(mailSession);
+	       //Set From: header field of the header.
+	       msg.setFrom(new InternetAddress(from));
+	       //Set To: header field of the header.
+	       msg.addRecipient(Message.RecipientType.TO,
+	                               new InternetAddress(to));
+	       // Set Subject: header field
+	       msg.setSubject(subject);
+	       msg.setText(message);
+	       //Send message
+	       Transport.send(msg); 
+		} catch (MessagingException mex) {
+		      mex.printStackTrace();
+		      result = "Error: unable to send message. " + mex.toString();
+		}	
+	    return result;
+    }//end of sendEmail
     
     public Collection<String> getProjectNames() throws ElabException {
         List<String> names = new ArrayList<String>();
