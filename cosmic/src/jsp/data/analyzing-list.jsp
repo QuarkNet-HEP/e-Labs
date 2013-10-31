@@ -100,20 +100,16 @@
 			
 			    if(e.getTuples().size() == 0){
 			        %> 
-			        	<tr><td colspan="6"><span class="error">Missing file: <%= lfn %></span></td></tr>
-				        <c:if test="${count > 1}">
-				            <td align=center><input name="remfile" type="checkbox" value="<%=lfn%>"></td>
-				        </c:if>
+			        <tr><td colspan="8"><span class="error">Missing file: <%= lfn %></span>
+					</td></tr>
 			        <%
 			        continue;
 			    }
 				//check also for physical file, otherwise do not count it
 				if (!ElabUtil.fileExists(elab, lfn)) {
 			        %> 
-		        	<tr><td colspan="6"><span class="error">Missing physical file: <%= lfn %></span></td></tr>
-		        	<c:if test="${count > 1}">
-				        <td align=center><input name="remfile" type="checkbox" value="<%=lfn%>"></td>
-				    </c:if>
+		        	<tr><td colspan="8"><span class="error">Missing physical file: <%= lfn %></span>
+					</td></tr>
 		        	<%
 		        	continue;	
 				}
@@ -123,10 +119,8 @@
 			    //					  Code assumes that fileStartDate is never null: wrong
 			    if(fileStartDate == null){
 			        %> 
-			        <tr><td colspan="6"><span class="error">Missing Start Date: <%= lfn %></span></td></tr>
-		        	<c:if test="${count > 1}">
-				        <td align=center><input name="remfile" type="checkbox" value="<%=lfn%>"></td>
-				    </c:if>
+			        <tr><td colspan="8"><span class="error">Missing Start Date: <%= lfn %></span>
+					</td></tr>
 			        <%
 			        continue;
 			    }
@@ -135,10 +129,8 @@
 			    //					  Code assumes that fileEndDate is never null: wrong			    
 			    if(fileEndDate == null){
 			        %> 
-			        <tr><td colspan="6"><span class="error">Missing End Date: <%= lfn %></span></td></tr>
-		        	<c:if test="${count > 1}">
-				        <td align=center><input name="remfile" type="checkbox" value="<%=lfn%>"></td>
-				    </c:if>
+			        <tr><td colspan="8"><span class="error">Missing End Date: <%= lfn %></span>
+					</td></tr>
 			        <%
 			        continue;
 			    }
