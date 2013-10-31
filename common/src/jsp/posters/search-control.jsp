@@ -65,7 +65,26 @@ $(function() {
 	<e:select name="key" valueList="title, group, teacher, school, city, state, year, postertag"
 		labelList="Title, Group, Teacher, School, City, State/Country, Academic Year, Poster Tags"
 		default="${param.key}" onChange="checkNeedPosterTags(this); "/>
-	<input name="value" id="name" size="40" maxlength="40" value="${param.value}" />
+	<c:choose>
+		<c:when test='${param.key == "postertag" }'>
+			<select id="name" name="value">
+	          	<option></option>
+				<c:forEach items="${availablePosterTags}" var="availablePosterTag">
+					<c:choose>
+						<c:when test="${availablePosterTag == param.value}">
+							<option name="${availablePosterTag}" value="${availablePosterTag}" selected>${availablePosterTag}</option>
+						</c:when>
+						<c:otherwise>
+							<option name="${availablePosterTag}" value="${availablePosterTag}">${availablePosterTag}</option>				
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>				
+			</select>
+		</c:when>
+		<c:otherwise>
+			<input name="value" id="name" size="40" maxlength="40" value="${param.value}" />
+		</c:otherwise>
+	</c:choose>			
 	<input type="submit" name="submit" value="Search Data" />
 		<e:vswitch>
 			<e:visible image="../graphics/Tright.gif">
