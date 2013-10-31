@@ -7,22 +7,22 @@
 <%@ page import="java.net.URLEncoder"%>
 
 <%
-String username = request.getParameter("username");
+String userid = request.getParameter("userid");
 String email = request.getParameter("email");
-request.setAttribute("username", username);
 String message = "", to = "", subject = "", user_name = "", temp_password = "";
 String submit = request.getParameter("submitButton");
 boolean sendEmail = false;
 
 if ("Reset Password".equals(submit)) {
-	if (username != null && !username.equals("")) {
-		String userEmail = elab.getUserManagementProvider().getEmail(username);
+	if (userid != null && !userid.equals("")) {
+		String userEmail = elab.getUserManagementProvider().getEmail(userid);
 		//EPeronja: this is code is for testing purposes. Should the code stay, it needs to be moved to a class.
 		if (userEmail != null && !userEmail.equals("")) {
-			temp_password = elab.getUserManagementProvider().resetPassword(username);
-		   	user_name = username;
+			temp_password = elab.getUserManagementProvider().resetPassword(userid);
+		   	user_name = userid;
 			to = userEmail;
 			subject = "Your password has been reset";
+			sendEmail = true;
 		} else {
 			message = "There is no e-mail associated with this account. Please contact e-labs@fnal.gov to change your password.";
 		}
@@ -39,6 +39,14 @@ if ("Retrieve Username".equals(submit)) {
 			user_name = user;
 		    to = email;
 			subject = "Your username and temporary password";
+			sendEmail = true;
+		} else {
+			if (user.equals("Multiple results")) {
+				message = "There are multiple teacher names associated with this e-mail address. Please contact e-labs@fnal.gov to retrieve your credentials.";
+			} else {
+				message = "There is no message associated with this e-mail address.";
+			}
+		}
     } else {
     	message = "Email address is blank.";
     }
@@ -52,7 +60,7 @@ if (sendEmail) {
 	   		   "If you have any questions, send an e-mail to e-labs@fnal.gov.";
    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
 	if (result != null && result.equals("")) {
-	   	message = "Temporary password has been sent to: " + userEmail + ".\n" +
+	   	message = "Temporary password has been sent to: " + to + ".\n" +
 	       			 "If you are no longer using that e-mail address, please contact e-labs@fnal.gov.";
 	} else {
 		message = "Error: unable to send message. " + result;
@@ -85,17 +93,17 @@ request.setAttribute("message", message);
 		<div id="content">
 <c:choose>
 <c:when test='${message == "" }'>
-	<form id="retrieve-username-password-form" method="post">			
-		<table border="0" id="retrieve">
-			<tr><td><strong>Please fill out the username to reset your password or the email address to retrieve your username.</strong></td></tr>
+	<form id="retrieve-username-password-form" method="post">	
+	<h1>Please fill out the username to reset your password or the email address to retrieve your username.</h1>		
+		<table border="0" id="main">
 			<tr>
-				<td>Username: <input type="text" name="username" id="username"></input> <input type="submit" name="submitButton" value="Reset Password" /></td>
+				<td>E-mail address: <input type="text" name="email" id="email"></input> <input type="submit" name="submitButton" value="Retrieve Username" /></td>
 			</tr>
 			<tr>
 				<td>OR</td>
 			</tr>
 			<tr>
-				<td>E-mail address: <input type="text" name="email" id="email"></input> <input type="submit" name="submitButton" value="Retrieve Username" /></td>
+				<td>Username: <input type="text" name="userid" id="userid"></input> <input type="submit" name="submitButton" value="Reset Password" /></td>
 			</tr>
 		</table>
 	</form>
