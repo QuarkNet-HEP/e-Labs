@@ -1136,13 +1136,13 @@ public class DatabaseUserManagementProvider implements
     public String sendEmail(String to, String subject, String message) throws ElabException {
     	String result = "";
 		//Sender's email ID 
-		final String from = "elabs.pswd@gmail.com";
-		final String password = "i2u2passwordreset";
+		final String from = "elabs@i2u2.org";
+		final String password = "";
 	    //Get system properties object
 	    Properties properties = System.getProperties();
 	    //Setup mail server
-	    properties.put("mail.smtp.host", "smtp.gmail.com");
-	    properties.put("mail.smtp.port", "587");
+	    properties.put("mail.smtp.host", "smtp.mcs.anl.gov");
+	    properties.put("mail.smtp.port", "25");
 	    properties.put("mail.smtp.auth", "true");
 	    properties.put("mail.smtp.starttls.enable", "true");			    
 	    //Get the default Session object.
