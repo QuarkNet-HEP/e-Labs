@@ -117,13 +117,22 @@
 			    Date fileStartDate = (Date) e.getTupleValue("startdate");
 			    //EPeronja-10/23/2013:Bug 427-FLUX analysis --> DAQ 6421
 			    //					  Code assumes that fileStartDate is never null: wrong
+			    String filedate = "";
 			    if(fileStartDate == null){
 			        %> 
 			        <tr><td colspan="8"><span class="error">Missing Start Date: <%= lfn %></span>
 					</td></tr>
 			        <%
 			        continue;
+			    } else {
+				    filedate = sdf.format(fileStartDate);
+				    filedate = filedate.replaceAll(" ", "&nbsp;");
+				    
+				    if(startdate == null || startdate.after(fileStartDate)){
+				        startdate = fileStartDate;
+				    }
 			    }
+
 			    Date fileEndDate = (Date) e.getTupleValue("enddate");
 			    //EPeronja-10/23/2013:Bug 427-FLUX analysis --> DAQ 6421
 			    //					  Code assumes that fileEndDate is never null: wrong			    
@@ -132,16 +141,11 @@
 			        <tr><td colspan="8"><span class="error">Missing End Date: <%= lfn %></span>
 					</td></tr>
 			        <%
-			        continue;
-			    }
-			    String filedate = sdf.format(fileStartDate);
-			    filedate = filedate.replaceAll(" ", "&nbsp;");
-			    
-			    if(startdate == null || startdate.after(fileStartDate)){
-			        startdate = fileStartDate;
-			    }
-			    if(enddate == null || enddate.before(fileEndDate)){
-			        enddate = fileEndDate;
+			        //continue;
+			    } else {
+				    if(enddate == null || enddate.before(fileEndDate)){
+				        enddate = fileEndDate;
+				    }			    	
 			    }
 			
 			    //create a string of filenames to send to rawanalyzeMultiple for comparison
