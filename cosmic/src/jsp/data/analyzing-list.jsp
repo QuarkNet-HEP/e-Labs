@@ -141,7 +141,7 @@
 			        <tr><td colspan="8"><span class="error">Missing End Date: <%= lfn %></span>
 					</td></tr>
 			        <%
-			        //continue;
+					continue;
 			    } else {
 				    if(enddate == null || enddate.before(fileEndDate)){
 				        enddate = fileEndDate;
