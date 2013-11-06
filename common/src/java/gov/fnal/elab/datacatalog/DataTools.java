@@ -10,6 +10,7 @@
 package gov.fnal.elab.datacatalog;
 
 import gov.fnal.elab.Elab;
+import gov.fnal.elab.RawDataFileResolver;
 import gov.fnal.elab.datacatalog.StructuredResultSet.File;
 import gov.fnal.elab.datacatalog.StructuredResultSet.Month;
 import gov.fnal.elab.datacatalog.StructuredResultSet.School;
@@ -48,6 +49,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
+
 
 /**
  * A few convenience functions for dealing with QuarkNet data
@@ -581,6 +583,16 @@ public class DataTools {
             if (e == null) {
                 continue;
             }
+            //EPeronja: do not add to caption if file does not exists
+    		String dataFile = RawDataFileResolver.getDefault().resolve(elab, e.getLFN());
+    		java.io.File df = new java.io.File(dataFile);
+    		try {
+    			if (!df.exists()) {
+    				continue;
+    			}
+    		} catch (Exception ex) {
+    			data.append(ex.toString()+"\n");
+    		}
             detectors.add(e.getTupleValue("detectorid"));
             if (dataCount < 8) {
                 data.append(e.getTupleValue("school"));
