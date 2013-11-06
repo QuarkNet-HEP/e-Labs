@@ -66,7 +66,7 @@ public interface ElabUserManagementProvider extends ElabProvider {
      */
     String resetPassword(String groupname) throws ElabException;   
     String getEmail(String groupname) throws ElabException; 
-    String getUsernameFromEmail(String email) throws ElabException;
+    String[] getUsernameFromEmail(String email) throws ElabException;
     String sendEmail(String to, String subject, String message) throws ElabException;
     void updateEmail(String username, String newemail) throws ElabException;
     /**

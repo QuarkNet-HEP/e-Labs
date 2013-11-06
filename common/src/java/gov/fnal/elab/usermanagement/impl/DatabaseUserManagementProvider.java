@@ -1096,9 +1096,9 @@ public class DatabaseUserManagementProvider implements
         }
     }//end of getEmail (from groupname)
     
-    //EPeronja: allow users to reset the passwords    
-    public String getUsernameFromEmail(String email) throws ElabException {
-    	String username = "";
+    //EPeronja: retrieve usernames    
+    public String[] getUsernameFromEmail(String email) throws ElabException {
+    	String[] username;
     	PreparedStatement ps = null;
         Connection conn = null;
         try {
@@ -1115,14 +1115,17 @@ public class DatabaseUserManagementProvider implements
             
             ResultSet rs = ps.executeQuery();
             int count = 0;
-            while (rs.next()) {
-            	username = rs.getString("name");
-                count++;
-            }
             if (count > 1) {
-            	username = "Multiple results";
+            	username = new String[count];
+	            int i = 0;
+	            while (rs.next()) {
+	            	username[i] = rs.getString("name");
+	            	i++;
+	            }
+	            return username;
+            } else {
+            	return null;
             }
-            return username;
         }
         catch (Exception e) {
             throw new ElabException(e);
