@@ -18,11 +18,13 @@ String emailBody = "";
 String submit = request.getParameter("submitButton");
 boolean sendEmail = false;
 boolean continueRequest = false;
+String recaptcha_public_key = elab.getProperty("recaptcha_public_key");
+String recaptcha_private_key = elab.getProperty("recaptcha_private_key");
 
 if ("Reset Password".equals(submit)) {
 	String remoteAddr = request.getRemoteAddr();
 	ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
-	reCaptcha.setPrivateKey("6LfS1ekSAAAAAJ_s-KZyAxD3jmXWZwFFEajv-ILM");
+	reCaptcha.setPrivateKey(recaptcha_private_key);
 	String challenge = request.getParameter("recaptcha_challenge_field");
 	String uresponse = request.getParameter("recaptcha_response_field");
 	try {
@@ -117,6 +119,8 @@ if (sendEmail) {
 }
 
 request.setAttribute("message", message);
+request.setAttribute("recaptcha_public_key", recaptcha_public_key);
+request.setAttribute("recaptcha_private_key", recaptcha_private_key);
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -156,7 +160,7 @@ request.setAttribute("message", message);
 			</tr>
 		 	<tr><td><div id="recaptcha" align="center">
 			<%
-				ReCaptcha c = ReCaptchaFactory.newReCaptcha("6LfS1ekSAAAAAKAy0DN9VfaBiHRkyAz8GQo-2-1l", "6LfS1ekSAAAAAJ_s-KZyAxD3jmXWZwFFEajv-ILM", false);
+				ReCaptcha c = ReCaptchaFactory.newReCaptcha(recaptcha_public_key, recaptcha_private_key, false);
 				out.println(c.createRecaptchaHtml(null, null));			
 			%>
 			</div>
