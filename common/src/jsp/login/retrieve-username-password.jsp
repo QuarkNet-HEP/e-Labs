@@ -55,8 +55,8 @@ if ("Reset Password".equals(submit)) {
 			   		   "Please, login and set a new password.\n\n" +
 					   "Once you login:\n"+
 			   		   "-Go to the Registration page\n"+
-					   "-Select \'Update your previously created groups\' \n"+
-			   		   "-Choose your username from the drowpdown and show info \n"+
+					   "-Select \'Update your research groups including passwords\' \n"+
+			   		   "-Choose your username from the dropdown and show info \n"+
 					   "-Enter your new password and save \n"+
 					   "Please do not reply to this message. Replies to this message go to an unmonitored mailbox.\n" +
 			   		   "If you have any questions, send an e-mail to e-labs@fnal.gov.";
