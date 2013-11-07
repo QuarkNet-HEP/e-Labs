@@ -22,16 +22,23 @@ boolean continueRequest = false;
 if ("Reset Password".equals(submit)) {
 	String remoteAddr = request.getRemoteAddr();
 	ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
+	reCaptcha.setPrivateKey("6LfS1ekSAAAAAJ_s-KZyAxD3jmXWZwFFEajv-ILM");
 	String challenge = request.getParameter("recaptcha_challenge_field");
 	String uresponse = request.getParameter("recaptcha_response_field");
-	ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
+	try {
+		ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
+		if (reCaptchaResponse.isValid()) {
+			  continueRequest = true;
+			} else {
+			  continueRequest = false;
+			  message = "The reCaptcha you entered is not right. Please go back and try again.";
+			}
 
-	if (reCaptchaResponse.isValid()) {
-	  continueRequest = true;
-	} else {
-	  continueRequest = false;
-	  message = "The reCaptcha you entered is not right. Please go back and try again.";
+	} catch (Exception ex) {
+	  	continueRequest = false;
+		message = ex.toString();
 	}
+
 	if (userid != null && !userid.equals("") && continueRequest) {
 		String userEmail = elab.getUserManagementProvider().getEmail(userid);
 		//EPeronja: this is code is for testing purposes. Should the code stay, it needs to be moved to a class.
@@ -50,24 +57,32 @@ if ("Reset Password".equals(submit)) {
 			message = "There is no e-mail associated with this account. <br />Please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> to change your password.";
 		}
 	} else {
-		message = "Username is blank.";
+		if (userid != null && !userid.equals("")) {
+			message = "Username is blank.";
+		}
 	}
 }//end of checking password reset
 
 if ("Retrieve Username".equals(submit)) {
 	String remoteAddr = request.getRemoteAddr();
 	ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
+	reCaptcha.setPrivateKey("6LfS1ekSAAAAAJ_s-KZyAxD3jmXWZwFFEajv-ILM");
 	String challenge = request.getParameter("recaptcha_challenge_field");
 	String uresponse = request.getParameter("recaptcha_response_field");
-	ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
+	try {
+		ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
+		if (reCaptchaResponse.isValid()) {
+			  continueRequest = true;
+			} else {
+			  continueRequest = false;
+			  message = "The reCaptcha you entered is not right. Please try again.";
+			}
 
-	if (reCaptchaResponse.isValid()) {
-	  continueRequest = true;
-	} else {
-	  continueRequest = false;
-	  message = "The reCaptcha you entered is not right. Please go back and try again.";
+	} catch (Exception ex) {
+	  	continueRequest = false;
+		message = ex.toString();
 	}
-	
+		
    	if (email != null && !email.equals("") && continueRequest) {
    		String[] user = elab.getUserManagementProvider().getUsernameFromEmail(email);
 		if (user != null) {
@@ -85,7 +100,9 @@ if ("Retrieve Username".equals(submit)) {
 			message = "There are no usernames associated with this e-mail address.<br />Please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> to change your password.";
 		}
     } else {
-    	message = "Email address is blank.";
+    	if (email != null && !email.equals("")) {
+	    	message = "Email address is blank.";
+    	}
     }
 }//end of checking retrieve username
 	
@@ -109,9 +126,14 @@ request.setAttribute("message", message);
 	<title>Login to ${elab.properties.formalName}</title>
 	<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 	<link rel="stylesheet" type="text/css" href="../css/login.css"/>
+	<script>
+	 	window.onload = function() {
+			$("retrieve-username-password-form").Show();
+		}
+	</script>
 </head>
 
-<body id="retrieve-username-password">
+<body id="retrieve-username-password" >
 	<!-- entire page container -->
 	<div id="container">
 		<div id="top">
@@ -124,17 +146,17 @@ request.setAttribute("message", message);
 		</div>
 		
 		<div id="content">
-<c:choose>
-<c:when test='${message == "" }'>
+	<p>${message}</p>
+	
 	<form id="retrieve-username-password-form" method="post">	
 	<h1>Please fill out the username to reset your password or the email address to retrieve your username.</h1>		
 		<table border="0" id="main">
 			<tr>
 				<td>Prove you are not a robot first: </td>
 			</tr>
-		 	<tr><td><div align="center">
+		 	<tr><td><div id="recaptcha" align="center">
 			<%
-				ReCaptcha c = ReCaptchaFactory.newReCaptcha("6Lei0-kSAAAAAA8tPtGbdH96a36cn5QnnK4HdJlM", "6Lei0-kSAAAAAK-ghLY0vJO9cRfjiBjCiSXhYuql", false);
+				ReCaptcha c = ReCaptchaFactory.newReCaptcha("6LfS1ekSAAAAAKAy0DN9VfaBiHRkyAz8GQo-2-1l", "6LfS1ekSAAAAAJ_s-KZyAxD3jmXWZwFFEajv-ILM", false);
 				out.println(c.createRecaptchaHtml(null, null));			
 			%>
 			</div>
@@ -150,11 +172,7 @@ request.setAttribute("message", message);
 			</tr>
 		</table>
 	</form>
-</c:when>
-<c:otherwise>
-	<p>${message}</p>
-</c:otherwise>
-</c:choose>
+
 			</div>
 			<!-- end content -->	
 		
