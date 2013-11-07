@@ -10,6 +10,7 @@
 	request.setAttribute("geometries", geometries);
 	String id = request.getParameter("detectorID");
 	String jd = request.getParameter("jd");
+	String action = request.getParameter("action");
 	String filename = request.getParameter("filename");
 	GeoEntryBean geoEntry = null;
 	
@@ -59,5 +60,13 @@
 		geoEntry = new GeoEntryBean();
 		request.setAttribute("geometryNotFound", Boolean.TRUE);
 	}
+
+	if (action != null) {
+		if (action.equals("saveas")) {
+			GeoEntryBean newGeoEntry = new GeoEntryBean(geoEntry);
+			geoEntry = newGeoEntry;
+		}
+	} 
+	request.setAttribute("action", action);
 	request.setAttribute("geoEntry", geoEntry);
 %>
