@@ -1115,9 +1115,14 @@ public class DatabaseUserManagementProvider implements
             
             ResultSet rs = ps.executeQuery();
             int count = 0;
-            if (count > 1) {
+            while (rs.next()) {
+            	count++;
+            }
+            
+            if (count > 0) {
             	username = new String[count];
 	            int i = 0;
+	            rs = ps.executeQuery();
 	            while (rs.next()) {
 	            	username[i] = rs.getString("name");
 	            	i++;

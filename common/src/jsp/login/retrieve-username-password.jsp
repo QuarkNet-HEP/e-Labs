@@ -56,7 +56,9 @@ if ("Reset Password".equals(submit)) {
 			   		   "If you have any questions, send an e-mail to e-labs@fnal.gov.";
 			sendEmail = true;
 		} else {
-			message = "There is no e-mail associated with this account. <br />Please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> to change your password.";
+			message = "There is no e-mail associated with the username you entered.<br /> "+
+					  "We cannot reset the password at the moment.<br />" +
+					  "Please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> to inquiry about your account.";
 		}
 	} else {
 		if (userid != null && !userid.equals("")) {
@@ -68,7 +70,7 @@ if ("Reset Password".equals(submit)) {
 if ("Retrieve Username".equals(submit)) {
 	String remoteAddr = request.getRemoteAddr();
 	ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
-	reCaptcha.setPrivateKey("6LfS1ekSAAAAAJ_s-KZyAxD3jmXWZwFFEajv-ILM");
+	reCaptcha.setPrivateKey(recaptcha_private_key);
 	String challenge = request.getParameter("recaptcha_challenge_field");
 	String uresponse = request.getParameter("recaptcha_response_field");
 	try {
@@ -166,14 +168,14 @@ request.setAttribute("recaptcha_private_key", recaptcha_private_key);
 			</div>
 			</td></tr>
 			<tr>
+				<td><br />Username: <input type="text" name="userid" id="userid"></input> <input type="submit" name="submitButton" value="Reset Password" /></td>
+			</tr>
+			<tr>
+				<td><br />OR</td>
+			</tr>			
+			<tr>
 				<td><br />E-mail address: <input type="text" name="email" id="email"></input> <input type="submit" name="submitButton" value="Retrieve Username" /></td>
-			</tr>
-			<tr>
-				<td>OR</td>
-			</tr>
-			<tr>
-				<td>Username: <input type="text" name="userid" id="userid"></input> <input type="submit" name="submitButton" value="Reset Password" /></td>
-			</tr>
+			</tr>		
 		</table>
 	</form>
 
