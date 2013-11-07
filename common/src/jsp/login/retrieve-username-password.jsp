@@ -139,6 +139,9 @@ request.setAttribute("recaptcha_private_key", recaptcha_private_key);
 	 	window.onload = function() {
 			$("retrieve-username-password-form").Show();
 		}
+	 	var RecaptchaOptions = {
+	 		    theme : 'blackglass'
+	 	};
 	</script>
 </head>
 
