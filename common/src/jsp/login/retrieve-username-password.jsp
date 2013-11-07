@@ -16,6 +16,7 @@ String email = request.getParameter("email");
 String message = "", to = "", subject = "", user_name = "", temp_password = "";
 String emailBody = "";
 String submit = request.getParameter("submitButton");
+String mainMessage = "";
 boolean sendEmail = false;
 boolean continueRequest = false;
 String recaptcha_public_key = elab.getProperty("recaptcha_public_key");
@@ -54,6 +55,7 @@ if ("Reset Password".equals(submit)) {
 			   		   "Please, login and set a new password.\n\n" +
 					   "Please do not reply to this message. Replies to this message go to an unmonitored mailbox.\n" +
 			   		   "If you have any questions, send an e-mail to e-labs@fnal.gov.";
+			mainMessage = "Temporary password has been sent to: " + to + ".<br />";
 			sendEmail = true;
 		} else {
 			message = "There is no e-mail associated with the username you entered.<br /> "+
@@ -99,6 +101,7 @@ if ("Retrieve Username".equals(submit)) {
 		    emailBody = "Username(s) associated with your e-mail address: " +user_name + " " +
 					   "Please do not reply to this message. Replies to this message go to an unmonitored mailbox.\n" +
 			   		   "If you have any questions, send an e-mail to e-labs@fnal.gov.";
+			mainMessage = "Your information has been sent to: " + to + ".<br />"; 
 			sendEmail = true;
 		} else {
 			message = "There are no usernames associated with this e-mail address.<br />Please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> to change your password.";
@@ -113,8 +116,8 @@ if ("Retrieve Username".equals(submit)) {
 if (sendEmail) {
    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
 	if (result != null && result.equals("")) {
-	   	message = "Temporary password has been sent to: " + to + ".\n" +
-	       			 "If you are no longer using that e-mail address <br />please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> to change your password.";
+	   	message = mainMessage +
+	       		  "If you are no longer using that e-mail address <br />please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a>.";
 	} else {
 		message = "Error: unable to send message. " + result;
 	}	
