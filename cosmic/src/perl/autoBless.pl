@@ -58,7 +58,8 @@ RELOAD: #necessary for the go to at the end. I hate to do it, but can't nest the
 @arguments = ($splitFile[$i], $blessFile[$i], $chan0Rate[$i], $chan1Rate[$i], $chan2Rate[$i], $chan3Rate[$i], $triggerRate[$i]);
 
 #step 2.3 above
-open (IN1, "$pathToBlessFiles"."$arguments[1]")  || die "Cannot open ", $pathToBlessFiles.$arguments[1], " for input ";
+#open (IN1, "$pathToBlessFiles"."$arguments[1]")  || die "Cannot open ", $pathToBlessFiles.$arguments[1], " for input ";
+open (IN1, "$arguments[1]")  || die "Cannot open ", $arguments[1], " for input ";
 $i++; #increment this in order to get to the next set of values in the arrays.
 
 while (<IN1>){#open a new .bless file for inspection
