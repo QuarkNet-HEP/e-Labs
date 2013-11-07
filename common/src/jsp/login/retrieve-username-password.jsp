@@ -53,12 +53,17 @@ if ("Reset Password".equals(submit)) {
 		    emailBody = "Temporary password for user: " +user_name + " " +
 					   "is: "+temp_password+".\n"+
 			   		   "Please, login and set a new password.\n\n" +
+					   "Once you login:\n"+
+			   		   "-Go to the Registration page,\n"+
+					   "-Select \'Update your previously created groups\' \n"+
+			   		   "-Choose your usename from the drowpdown and show info \n"+
+					   "-Enter your new password and save \n"+
 					   "Please do not reply to this message. Replies to this message go to an unmonitored mailbox.\n" +
 			   		   "If you have any questions, send an e-mail to e-labs@fnal.gov.";
 			mainMessage = "Temporary password has been sent to: " + to + ".<br />";
 			sendEmail = true;
 		} else {
-			message = "There is no e-mail associated with the username you entered.<br /> "+
+			message = "Either there is no e-mail associated with the username you entered or the username does not have the role of \'teacher\'.<br /> "+
 					  "We cannot reset the password at the moment.<br />" +
 					  "Please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> to inquiry about your account.";
 		}
@@ -117,7 +122,8 @@ if (sendEmail) {
    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
 	if (result != null && result.equals("")) {
 	   	message = mainMessage +
-	       		  "If you are no longer using that e-mail address <br />please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a>.";
+	       		  "If you are no longer using that e-mail address please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a>.<br />" +
+	   			  "<a href=\'../login/login.jsp\'>Log in</a>";
 	} else {
 		message = "Error: unable to send message. " + result;
 	}	
@@ -162,6 +168,10 @@ request.setAttribute("recaptcha_private_key", recaptcha_private_key);
 	
 	<form id="retrieve-username-password-form" method="post">	
 	<h1>Please fill out the username to reset your password or the email address to retrieve your username.</h1>		
+	<ul>
+		<li>This tool is for resetting the passwords of teachers.</li>
+		<li>To change or reset the passwords associated with student research groups, log in and go to the Registration page.</li>
+	</ul>
 		<table border="0" id="main">
 			<tr>
 				<td>Prove you are not a robot first: </td>

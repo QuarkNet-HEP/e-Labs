@@ -1078,7 +1078,8 @@ public class DatabaseUserManagementProvider implements
             			 "FROM teacher t " +
             			 "INNER JOIN research_group rg " +
             			 "ON t.id = rg.teacher_id " +
-            			 "WHERE rg.name = ? ";
+            			 "WHERE rg.name = ? " +
+            			 "AND rg.role = 'teacher' ";
             ps = conn.prepareStatement(sql);
             ps.setString(1, groupname);
             
