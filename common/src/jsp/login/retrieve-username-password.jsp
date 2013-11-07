@@ -54,9 +54,9 @@ if ("Reset Password".equals(submit)) {
 					   "is: "+temp_password+".\n"+
 			   		   "Please, login and set a new password.\n\n" +
 					   "Once you login:\n"+
-			   		   "-Go to the Registration page,\n"+
+			   		   "-Go to the Registration page\n"+
 					   "-Select \'Update your previously created groups\' \n"+
-			   		   "-Choose your usename from the drowpdown and show info \n"+
+			   		   "-Choose your username from the drowpdown and show info \n"+
 					   "-Enter your new password and save \n"+
 					   "Please do not reply to this message. Replies to this message go to an unmonitored mailbox.\n" +
 			   		   "If you have any questions, send an e-mail to e-labs@fnal.gov.";
@@ -123,7 +123,7 @@ if (sendEmail) {
 	if (result != null && result.equals("")) {
 	   	message = mainMessage +
 	       		  "If you are no longer using that e-mail address please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a>.<br />" +
-	   			  "<a href=\'../login/login.jsp\'>Log in</a>";
+	   			  "<a href=\'../teacher/index.jsp\'>Log in</a>";
 	} else {
 		message = "Error: unable to send message. " + result;
 	}	
