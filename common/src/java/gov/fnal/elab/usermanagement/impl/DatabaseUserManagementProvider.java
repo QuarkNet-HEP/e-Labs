@@ -1066,7 +1066,7 @@ public class DatabaseUserManagementProvider implements
             DatabaseConnectionManager.close(conn, ps, ps2);
         }
     }
-    //EPeronja: allow users to reset the passwords
+    //EPeronja: get email address
     public String getEmail(String groupname) throws ElabException {
     	String email = "";
     	PreparedStatement ps = null;
@@ -1078,8 +1078,7 @@ public class DatabaseUserManagementProvider implements
             			 "FROM teacher t " +
             			 "INNER JOIN research_group rg " +
             			 "ON t.id = rg.teacher_id " +
-            			 "WHERE rg.name = ? " +
-            			 "AND rg.role = 'teacher' ";
+            			 "WHERE rg.name = ? " ;
             ps = conn.prepareStatement(sql);
             ps.setString(1, groupname);
             
@@ -1096,6 +1095,34 @@ public class DatabaseUserManagementProvider implements
             DatabaseConnectionManager.close(conn, ps);
         }
     }//end of getEmail (from groupname)
+    
+    //EPeronja: get user role
+    public String getUserRole(String groupname) throws ElabException {
+    	String role = "";
+    	PreparedStatement ps = null;
+        Connection conn = null;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            String sql = "SELECT rg.role " +
+            			 "FROM research_group rg " +
+            			 "WHERE rg.name = ? " ;
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, groupname);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+            	role = rs.getString("role");
+            }
+            return role;
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, ps);
+        }    	
+    }//end of getUserRole
     
     //EPeronja: retrieve usernames    
     public String[] getUsernameFromEmail(String email) throws ElabException {

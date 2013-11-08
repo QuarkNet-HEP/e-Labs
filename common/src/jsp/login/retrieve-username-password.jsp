@@ -43,24 +43,42 @@ if ("Reset Password".equals(submit)) {
 	}
 
 	if (userid != null && !userid.equals("") && continueRequest) {
+		//test if the username entered is a teacher...
+		String userRole = elab.getUserManagementProvider().getUserRole(userid);
 		String userEmail = elab.getUserManagementProvider().getEmail(userid);
-		//EPeronja: this is code is for testing purposes. Should the code stay, it needs to be moved to a class.
 		if (userEmail != null && !userEmail.equals("")) {
-			temp_password = elab.getUserManagementProvider().resetPassword(userid);
-		   	user_name = userid;
-			to = userEmail;
-			subject = "Your password has been reset";
-		    emailBody = "Temporary password for user: " +user_name + " " +
-					   "is: "+temp_password+".\n"+
-			   		   "Please, login and set a new password.\n\n" +
-					   "Once you login:\n"+
-			   		   "-Go to the Registration page\n"+
-					   "-Select \'Update your research groups including passwords\' \n"+
-			   		   "-Choose your username from the dropdown and show info \n"+
-					   "-Enter your new password and save \n"+
-					   "Please do not reply to this message. Replies to this message go to an unmonitored mailbox.\n" +
-			   		   "If you have any questions, send an e-mail to e-labs@fnal.gov.";
-			mainMessage = "Temporary password has been sent to: " + to + ".<br />";
+			if (userRole.equals("teacher")) {
+				temp_password = elab.getUserManagementProvider().resetPassword(userid);
+			   	user_name = userid;
+				to = userEmail;
+				subject = "Your password has been reset";
+			    emailBody = "Temporary password for user: " +user_name + " " +
+						   "is: "+temp_password+".\n"+
+				   		   "Please, login and set a new password.\n\n" +
+						   "Once you login:\n"+
+				   		   "-Go to the Registration page\n"+
+						   "-Select \'Update your research groups including passwords\' \n"+
+				   		   "-Choose your username from the dropdown and show info \n"+
+						   "-Enter your new password and save \n"+
+						   "Please do not reply to this message. Replies to this message go to an unmonitored mailbox.\n" +
+				   		   "If you have any questions, send an e-mail to e-labs@fnal.gov.";
+				mainMessage = "Temporary password has been sent to: " + to + ".<br />";
+			} else {
+			   	user_name = userid;
+				to = userEmail;
+				subject = "Reset password attempt";
+			    emailBody = "User: " +user_name + " has attempted to change his/her password.\n"+
+				   		   "We were unable to do this because the role is: "+userRole+".\n\n" +
+						   "You can reset the password of this user. After you log in:\n"+
+				   		   "-Go to the Registration page\n"+
+						   "-Select \'Update your research groups including passwords\' \n"+
+				   		   "-Choose the username from the dropdown and show info \n"+
+						   "-Enter the new password and save \n"+
+						   "Please do not reply to this message. Replies to this message go to an unmonitored mailbox.\n" +
+				   		   "If you have any questions, send an e-mail to e-labs@fnal.gov.";
+				mainMessage = "We sent an email to: " + to + " regarding your attempt to reset your password.<br />";
+				
+			}
 			sendEmail = true;
 		} else {
 			message = "Either there is no e-mail associated with the username you entered or the username does not have the role of \'teacher\'.<br /> "+
