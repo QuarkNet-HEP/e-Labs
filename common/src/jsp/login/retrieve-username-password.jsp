@@ -16,83 +16,14 @@ String email = request.getParameter("email");
 String message = "", to = "", subject = "", user_name = "", temp_password = "";
 String emailBody = "";
 String submit = request.getParameter("submitButton");
-String mainMessage = "";
+String pageMessage = "";
 boolean sendEmail = false;
 boolean continueRequest = false;
 String recaptcha_public_key = elab.getProperty("recaptcha_public_key");
 String recaptcha_private_key = elab.getProperty("recaptcha_private_key");
 
-if ("Reset Password".equals(submit)) {
-	String remoteAddr = request.getRemoteAddr();
-	ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
-	reCaptcha.setPrivateKey(recaptcha_private_key);
-	String challenge = request.getParameter("recaptcha_challenge_field");
-	String uresponse = request.getParameter("recaptcha_response_field");
-	try {
-		ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
-		if (reCaptchaResponse.isValid()) {
-			  continueRequest = true;
-			} else {
-			  continueRequest = false;
-			  message = "The reCaptcha you entered is not right. Please go back and try again.";
-			}
-
-	} catch (Exception ex) {
-	  	continueRequest = false;
-		message = ex.toString();
-	}
-
-	if (userid != null && !userid.equals("") && continueRequest) {
-		//test if the username entered is a teacher...
-		String userRole = elab.getUserManagementProvider().getUserRole(userid);
-		String userEmail = elab.getUserManagementProvider().getEmail(userid);
-		if (userEmail != null && !userEmail.equals("")) {
-			if (userRole.equals("teacher")) {
-				temp_password = elab.getUserManagementProvider().resetPassword(userid);
-			   	user_name = userid;
-				to = userEmail;
-				subject = "Your password has been reset";
-			    emailBody = "Temporary password for user: " +user_name + " " +
-						   "is: "+temp_password+".\n"+
-				   		   "Please, login and set a new password.\n\n" +
-						   "Once you login:\n"+
-				   		   "-Go to the Registration page\n"+
-						   "-Select \'Update your research groups including passwords\' \n"+
-				   		   "-Choose your username from the dropdown and show info \n"+
-						   "-Enter your new password and save \n"+
-						   "Please do not reply to this message. Replies to this message go to an unmonitored mailbox.\n" +
-				   		   "If you have any questions, send an e-mail to e-labs@fnal.gov.";
-				mainMessage = "Temporary password has been sent to: " + to + ".<br />";
-			} else {
-			   	user_name = userid;
-				to = userEmail;
-				subject = "Reset password attempt";
-			    emailBody = "User: " +user_name + " has attempted to change his/her password.\n"+
-				   		   "We were unable to do this because the role is: "+userRole+".\n\n" +
-						   "You can reset the password of this user. After you log in:\n"+
-				   		   "-Go to the Registration page\n"+
-						   "-Select \'Update your research groups including passwords\' \n"+
-				   		   "-Choose the username from the dropdown and show info \n"+
-						   "-Enter the new password and save \n"+
-						   "Please do not reply to this message. Replies to this message go to an unmonitored mailbox.\n" +
-				   		   "If you have any questions, send an e-mail to e-labs@fnal.gov.";
-				mainMessage = "We sent an email to: " + to + " regarding your attempt to reset your password.<br />";
-				
-			}
-			sendEmail = true;
-		} else {
-			message = "Either there is no e-mail associated with the username you entered or the username does not have the role of \'teacher\'.<br /> "+
-					  "We cannot reset the password at the moment.<br />" +
-					  "Please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> to inquiry about your account.";
-		}
-	} else {
-		if (userid != null && !userid.equals("")) {
-			message = "Username is blank.";
-		}
-	}
-}//end of checking password reset
-
-if ("Retrieve Username".equals(submit)) {
+//if this is a submit we want to check the reCaptcha
+if (submit != null && !submit.equals("")) {
 	String remoteAddr = request.getRemoteAddr();
 	ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
 	reCaptcha.setPrivateKey(recaptcha_private_key);
@@ -110,9 +41,61 @@ if ("Retrieve Username".equals(submit)) {
 	} catch (Exception ex) {
 	  	continueRequest = false;
 		message = ex.toString();
+	}	
+}
+//if they want to reset password
+if ("Reset Password".equals(submit) && continueRequest) {
+	if (userid != null && !userid.equals("")) {
+		//test if the username entered is a teacher...
+		String userRole = elab.getUserManagementProvider().getUserRole(userid);
+		String userEmail = elab.getUserManagementProvider().getEmail(userid);
+		//if the entered email address exists
+		if (userEmail != null && !userEmail.equals("")) {
+			String common_message = "Once you login:\n"+
+			   		   				"-Go to the Registration page\n"+
+					   				"-Select \'Update your research groups including passwords\' \n"+
+			   		   				"-Choose your username from the dropdown and show info \n"+
+					   				"-Enter your new password and save \n"+
+					   				"Please do not reply to this message. Replies to this message go to an unmonitored mailbox.\n" +
+			   		   				"If you have any questions, send an e-mail to e-labs@fnal.gov.";
+			//check user role
+			if (userRole.equals("teacher")) {
+				//go ahead and reset password
+				temp_password = elab.getUserManagementProvider().resetPassword(userid);
+			   	user_name = userid;
+				to = userEmail;
+				subject = "Your password has been reset";
+			    emailBody = "Temporary password for user: " +user_name + " " + "is: "+temp_password+".\n"+
+				   		    "Please, login and set a new password.\n\n" +
+			    			common_message;
+				pageMessage = "A temporary password has been sent to the e-mail address associated with this account.<br />";
+			} else {
+			   	user_name = userid;
+				to = userEmail;
+				subject = "Reset password attempt";
+			    emailBody = "User: " +user_name + " has attempted to change his/her password.\n"+
+				   		   "We were unable to do this because the role is: "+userRole+".\n\n" +
+						   "You can reset the password of this user.\n"+
+						   common_message;
+				pageMessage = "We sent an email to your teacher regarding your attempt to reset your password.<br />";
+				
+			}
+			sendEmail = true;
+		} else {
+			message = "Either there is no e-mail associated with the username you entered or the username does not have the role of \'teacher\'.<br /> "+
+					  "We cannot reset the password at the moment.<br />" +
+					  "Please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> to inquiry about your account.";
+		}
+	} else {
+		if (userid != null && !userid.equals("")) {
+			message = "Username is blank.";
+		}
 	}
-		
-   	if (email != null && !email.equals("") && continueRequest) {
+}//end of checking password reset
+
+//if they just want to retrieve username
+if ("Retrieve Username".equals(submit) && continueRequest) {
+   	if (email != null && !email.equals("")) {
    		String[] user = elab.getUserManagementProvider().getUsernameFromEmail(email);
 		if (user != null) {
 			user_name = "\n";
@@ -124,7 +107,7 @@ if ("Retrieve Username".equals(submit)) {
 		    emailBody = "Username(s) associated with your e-mail address: " +user_name + " " +
 					   "Please do not reply to this message. Replies to this message go to an unmonitored mailbox.\n" +
 			   		   "If you have any questions, send an e-mail to e-labs@fnal.gov.";
-			mainMessage = "Your information has been sent to: " + to + ".<br />"; 
+			pageMessage = "Your information has been sent to the e-mail you provided.<br />"; 
 			sendEmail = true;
 		} else {
 			message = "There are no usernames associated with this e-mail address.<br />Please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> to change your password.";
