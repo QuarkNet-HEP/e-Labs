@@ -172,8 +172,9 @@
 									<e:trtextarea name="plot_caption" rows="5" cols="30"><e:default>
 <%= DataTools.getFigureCaption(elab, ((ElabAnalysis) request.getAttribute("analysis")).getParameterValues("rawData")) %>
 <e:analysisParamLabel name="zeroZeroZeroID"/>
-<e:analysisParamLabel name="eventCoincidence"/>
 <e:analysisParamLabel name="detectorCoincidence"/>
+<e:analysisParamLabel name="channelCoincidence" />
+<e:analysisParamLabel name="eventCoincidence"/>
 <e:analysisParamLabel name="gate"/>
 									</e:default></e:trtextarea>
 								</td>
