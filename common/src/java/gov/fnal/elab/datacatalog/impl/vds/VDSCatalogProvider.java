@@ -291,6 +291,7 @@ public abstract class VDSCatalogProvider {
                 String key = t.getKey();
                 Object val = t.getValue();
                 org.griphyn.vdl.annotation.Tuple vt;
+                System.out.println("Trying to update metadata- key: " + key + " value: " + val.toString() + "\n");
                 if (val instanceof String) {
                     vt = new TupleString(key, (String) val);
                 }
