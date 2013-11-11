@@ -122,7 +122,7 @@ if ("Retrieve Username".equals(submit) && continueRequest) {
 if (sendEmail) {
    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
 	if (result != null && result.equals("")) {
-	   	message = mainMessage +
+	   	message = pageMessage +
 	       		  "If you are no longer using that e-mail address please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a>.<br />" +
 	   			  "<a href=\'../teacher/index.jsp\'>Log in</a>";
 	} else {
