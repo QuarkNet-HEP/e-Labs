@@ -12,7 +12,7 @@
 		<script type="text/javascript" src="../include/elab.js"></script>
 		<script type="text/javascript" src="../include/elab-custom.js"></script>
 	</head>
-	<body id="home" class="home">
+	<body id="prototype" class="data">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
