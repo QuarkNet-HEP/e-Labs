@@ -35,12 +35,12 @@ if (submit != null && !submit.equals("")) {
 			  continueRequest = true;
 			} else {
 			  continueRequest = false;
-			  message = "The reCaptcha you entered is not right. Please try again.";
+			  message = "The reCaptcha you entered is not right. Please try again.<br />";
 			}
 
 	} catch (Exception ex) {
 	  	continueRequest = false;
-		message = ex.toString();
+		message = ex.toString() + "<br />";
 	}	
 }
 //if they want to reset password
@@ -83,12 +83,11 @@ if ("Reset Password".equals(submit) && continueRequest) {
 			sendEmail = true;
 		} else {
 			message = "Either there is no e-mail associated with the username you entered or the username does not have the role of \'teacher\'.<br /> "+
-					  "We cannot reset the password at the moment.<br />" +
-					  "Please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> to inquiry about your account.";
+					  "We cannot reset the password at the moment.<br />";
 		}
 	} else {
 		if (userid != null && !userid.equals("")) {
-			message = "Username is blank.";
+			message = "Username is blank.<br />";
 		}
 	}
 }//end of checking password reset
@@ -110,11 +109,11 @@ if ("Retrieve Username".equals(submit) && continueRequest) {
 			pageMessage = "Your information has been sent to the e-mail you provided.<br />"; 
 			sendEmail = true;
 		} else {
-			message = "There are no usernames associated with this e-mail address.<br />Please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> to change your password.";
+			message = "There are no usernames associated with this e-mail address.<br />";
 		}
     } else {
     	if (email != null && !email.equals("")) {
-	    	message = "Email address is blank.";
+	    	message = "Email address is blank.<br />";
     	}
     }
 }//end of checking retrieve username
@@ -122,14 +121,14 @@ if ("Retrieve Username".equals(submit) && continueRequest) {
 if (sendEmail) {
    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
 	if (result != null && result.equals("")) {
-	   	message = pageMessage +
-	       		  "If you are no longer using that e-mail address please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a>.<br />" +
-	   			  "<a href=\'../teacher/index.jsp\'>Log in</a>";
+	   	message = pageMessage;
 	} else {
-		message = "Error: unable to send message. " + result;
+		message = "Error: unable to send message. " + result + "<br />";
 	}	
 }
-
+message = message + 
+	  "Questions? Please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a>.<br />" +
+	  "<a href=\'../teacher/index.jsp\'>Log in</a>";
 request.setAttribute("message", message);
 request.setAttribute("recaptcha_public_key", recaptcha_public_key);
 request.setAttribute("recaptcha_private_key", recaptcha_private_key);
