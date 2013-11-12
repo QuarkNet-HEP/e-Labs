@@ -329,6 +329,7 @@ public abstract class VDSCatalogProvider {
             throw e;
         }
         catch (Exception e) {
+        	//EPeronja-585: Sql Errors when uploading data, add more meaningful message
             throw new ElabException(e.toString() + " setting metadata for key: " + exceptionKey + " value: " + exceptionVal.toString(), e);
         }
         finally {

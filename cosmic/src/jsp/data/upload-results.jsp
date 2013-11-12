@@ -95,7 +95,9 @@
         	            elab.getDataCatalogProvider().insert(entry);
                 	} 
         	        catch (ElabException e) {
-                	    throw new ElabJspException("Error setting metadata: " + e.getMessage(), e);
+        				//EPeronja-585: Sql Errors when uploading data, give meaningful message
+        	        	sqlErrors += "Error setting metadata for "+currLFN+":" + e.getMessage()+ "<br />";
+                	    //throw new ElabJspException("Error setting metadata: " + e.getMessage(), e);
                     }
                 }
 
@@ -152,13 +154,16 @@
 				elab.getDataCatalogProvider().insert(entry);
 			}
 			catch (ElabException e) {
-				sqlErrors += "Error setting metadata: " + e.getMessage()+ "<br />";
+				//EPeronja-585: Sql Errors when uploading data, give meaningful message
+	        	sqlErrors += "Error setting metadata for "+currLFN+":" + e.getMessage()+ "<br />";
 				//throw new ElabJspException("Error setting metadata: " + e.getMessage(), e);
             }
         }
 	}
     else {
-        throw new ElabJspException("Error reading metadata file: " + f.getAbsolutePath() + ".meta");
+		//EPeronja-585: Sql Errors when uploading data, give meaningful message
+    	sqlErrors += "Error reading metadata file: " + f.getAbsolutePath() + ".meta.<br />";
+        //throw new ElabJspException("Error reading metadata file: " + f.getAbsolutePath() + ".meta");
     }
 
 	Iterator l = splits.iterator();
