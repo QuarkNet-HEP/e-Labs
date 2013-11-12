@@ -152,7 +152,7 @@
 				elab.getDataCatalogProvider().insert(entry);
 			}
 			catch (ElabException e) {
-				sqlErrors = "Error setting metadata: " + e.getMessage();
+				sqlErrors += "Error setting metadata: " + e.getMessage()+ "<br />";
 				//throw new ElabJspException("Error setting metadata: " + e.getMessage(), e);
             }
         }
@@ -265,10 +265,12 @@
 				</table>
 			</c:when>
 		</c:choose>
-		<c:if test="${not empty sqlErrors}">
-			<p>There was an error updating metadata, please send the error below to <a href="mailto:e-labs@fnal.gov">e-labs@fnal.gov</a></p>
-			<p>${sqlErrors}</p>
-		</c:if>
+		<c:choose>		
+			<c:when test="${not empty sqlErrors}">
+				<p>Error(s) updating metadata, please send the message below to <a href="mailto:e-labs@fnal.gov">e-labs@fnal.gov</a></p>
+				<p>${sqlErrors}</p>
+			</c:when>
+		</c:choose>
 			</div>
 			<!-- end content -->	
 		
