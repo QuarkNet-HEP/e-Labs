@@ -77,16 +77,6 @@
 				while (i.hasNext()) {
 					VDSCatalogEntry entry = (VDSCatalogEntry) i.next();
 					try {
-						//EPeronja-585: Sql Errors when uploading data, check if it is a split file, we need to delete the raw entry!!!
-						if (entry.getTupleValue("type").equals("split")) {
-							String source = (String) entry.getTupleValue("source");
-							if (source != null && !source.equals("")) {
-								VDSCatalogEntry sourceEntry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(source);
-								if (sourceEntry != null) {
-									elab.getDataCatalogProvider().delete(sourceEntry);
-								}
-							}
-						}
 						elab.getDataCatalogProvider().delete(entry);
 						//EPeronja-07/23/2013 483: delete the physical files
 						ElabUtil.deletePhysicalFiles(elab, entry.getLFN(), entry, user);
