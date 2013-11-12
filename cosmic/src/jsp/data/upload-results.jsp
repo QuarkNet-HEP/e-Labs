@@ -76,6 +76,8 @@
 	boolean metaSuccess = false;
 	boolean totalSuccess = true;        //false if there are any rc.data or meta errors
 	File fmeta = new File(f.getAbsolutePath() + ".meta");     //depends on Split.pl writing the meta to rawName.meta
+	String sqlErrors = "";
+	
 	if (fmeta.canRead()) {
     	BufferedReader br = new BufferedReader(new FileReader(fmeta));
         String line = null;
@@ -150,7 +152,8 @@
 				elab.getDataCatalogProvider().insert(entry);
 			}
 			catch (ElabException e) {
-				throw new ElabJspException("Error setting metadata: " + e.getMessage(), e);
+				sqlErrors = "Error setting metadata: " + e.getMessage();
+				//throw new ElabJspException("Error setting metadata: " + e.getMessage(), e);
             }
         }
 	}
@@ -184,6 +187,7 @@
 			benchmarkMessages.add(bp.BlessDatafile(elab, detectorId, splits.get(i).toString(), benchmark)); 		
 		}
 	}
+	request.setAttribute("sqlErrors", sqlErrors);
 	request.setAttribute("benchmarkMessages", benchmarkMessages);
 	request.setAttribute("channels", channels);
 	request.setAttribute("splitEntries", entries);
@@ -261,7 +265,10 @@
 				</table>
 			</c:when>
 		</c:choose>
-
+		<c:if test="${not empty sqlErrors}">
+			<p>There was an error updating metadata, please send the error below to <a href="mailto:e-labs@fnal.gov">e-labs@fnal.gov</a></p>
+			<p>${sqlErrors}</p>
+		</c:if>
 			</div>
 			<!-- end content -->	
 		

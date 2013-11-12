@@ -282,7 +282,8 @@ public abstract class VDSCatalogProvider {
         deleteCachedEntry(entry);
         DatabaseSchema dbschema = openSchema();
         AnnotationSchema annotationschema = (AnnotationSchema) dbschema;
-
+        String exceptionKey = "";
+        Object exceptionVal = "";
         // Connect to the database.
         try {
             Iterator<Tuple> i = entry.tupleIterator();
@@ -290,8 +291,9 @@ public abstract class VDSCatalogProvider {
                 Tuple t = i.next();
                 String key = t.getKey();
                 Object val = t.getValue();
+                exceptionKey = key;
+                exceptionVal = val;
                 org.griphyn.vdl.annotation.Tuple vt;
-                System.out.println("Trying to update metadata- key: " + key + " value: " + val.toString() + "\n");
                 if (val instanceof String) {
                     vt = new TupleString(key, (String) val);
                 }
@@ -323,10 +325,11 @@ public abstract class VDSCatalogProvider {
             }
         }
         catch (ElabException e) {
+            System.out.println("Exception: Trying to update metadata- key: " + exceptionKey + " value: " + exceptionVal.toString() + "\n");
             throw e;
         }
         catch (Exception e) {
-            throw new ElabException(e.toString() + " setting metadata", e);
+            throw new ElabException(e.toString() + " setting metadata for key: " + exceptionKey + " value: " + exceptionVal.toString(), e);
         }
         finally {
             closeSchema(dbschema);
