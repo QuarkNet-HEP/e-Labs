@@ -160,17 +160,22 @@ public class BlessProcess {
 
 								}
 								//compare triggers and see if file can be blessed
-								if (triggerRate < (parseToDouble(split[9]) + parseToDouble(split[10])) && triggerRate > (parseToDouble(split[9]) - parseToDouble(split[10]))) {
-									bw.write(String.valueOf(split[0]) + ": triggerRate : "+String.valueOf(triggerRate)+"\n");
-									bw.write(String.valueOf(split[0]) + ": col9-blessfile : "+split[9]+"\n");
-									bw.write(String.valueOf(split[0]) + ": col10-blessfile : "+split[10]+"\n");
-									bw.write(String.valueOf(split[0]) + ": " + String.valueOf(triggerRate) + " < " + String.valueOf(parseToDouble(split[9]) + 
-											parseToDouble(split[10])) + " && " + String.valueOf(triggerRate) + " > " + 
-											String.valueOf(parseToDouble(split[9]) - parseToDouble(split[10])) + "\n" );
-									pass = true;
-								} else {
-									pass = false;
-									failReason = formatFailReason(split[0], "trigger", String.valueOf(triggerRate), split[9], split[10]);
+								//if the trigger + triggerError < 2, we are not going to bother comparing
+								//this was decided on the Nov 13 2013 telecon
+								//low trigger rates alone shouldn't fail a file
+								if ((parseToDouble(split[9]) + parseToDouble(split[10])) >= 2) {
+									if (triggerRate < (parseToDouble(split[9]) + parseToDouble(split[10])) && triggerRate > (parseToDouble(split[9]) - parseToDouble(split[10]))) {
+										bw.write(String.valueOf(split[0]) + ": triggerRate : "+String.valueOf(triggerRate)+"\n");
+										bw.write(String.valueOf(split[0]) + ": col9-blessfile : "+split[9]+"\n");
+										bw.write(String.valueOf(split[0]) + ": col10-blessfile : "+split[10]+"\n");
+										bw.write(String.valueOf(split[0]) + ": " + String.valueOf(triggerRate) + " < " + String.valueOf(parseToDouble(split[9]) + 
+												parseToDouble(split[10])) + " && " + String.valueOf(triggerRate) + " > " + 
+												String.valueOf(parseToDouble(split[9]) - parseToDouble(split[10])) + "\n" );
+										pass = true;
+									} else {
+										pass = false;
+										failReason = formatFailReason(split[0], "trigger", String.valueOf(triggerRate), split[9], split[10]);
+									}
 								}
 							}
 							lineNumber++;
