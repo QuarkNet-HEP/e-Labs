@@ -27,7 +27,7 @@ String reCaptchaError = "The reCaptcha you entered is not right. Please try agai
 //password reset request (teacher)
 String rptSubject = "Your password has been reset";
 String rptBodyBegin = "Someone used the webform at "+
-					  "\'http://www.i2u2.org/elab/cosmic/login/retrieve-username-password.jsp\' to reset"+
+					  "\'http://www.i2u2.org/elab/cosmic/login/retrieve-username-password.jsp\' to reset "+
 					  "the e-Lab password for the account: replaceAccount.\n\n" + 
 					  "The temporary password is: replacePassword.\n\n";
 String rptUIMsg = "We have sent a temporary password to: replaceEmail.<br />Please check that account for a message from elabs@i2u2.org";
@@ -37,14 +37,14 @@ String rptInstructions = "You must login in and create a new password using the 
 String rpoSubject = "Reset password attempt";
 String rpoBodyBegin = "One of your e-Lab groups: replaceGroup sent a request to reset their password." +
 					   " Only the teacher that created the account can do that. Here\'s how:\n\n";
-String rpoInstructions = "1. Login to the teacher account that set up the replaceGroup account";
+String rpoInstructions = "1. Login to the teacher account that set up the replaceGroup account\n";
 String rpoUIMsg = "We have sent an e-mail to replaceEmail with directions on how to change this password for you.<br />" +
 				   "Please check that account for a message from elabs@i2u2.org.<br />";
 String instructions =   "2. Go to the registration page\n"+
 						"3. Select \'Update your research groups including passwords\'\n"+
 						"4. Choose your username from the dropdown and click on the \'Show Info\' button\n"+
 						"5. Enter your new password and click \'Save\'\n\n";
-String instructionsEnd = "Please send any questions to e-labs@fnal.gov.";
+String instructionsEnd = "\nPlease send any questions to e-labs@fnal.gov.";
 String rpoError = "There is no e-mail associated with the username you entered.<br /> "+
 		  		  "We cannot reset the password at the moment.<br />";
 //retrieve username request
@@ -158,8 +158,9 @@ if (sendEmail) {
 		message = "Error: unable to send message. " + result + "<br />";
 	}	
 }
-message = message + 
-		  footerMessage;
+if (!message.equals("")) {
+	message = message + footerMessage;	
+}
 request.setAttribute("message", message);
 request.setAttribute("recaptcha_public_key", recaptcha_public_key);
 request.setAttribute("recaptcha_private_key", recaptcha_private_key);
