@@ -139,7 +139,7 @@ if ("Retrieve Username".equals(submit) && continueRequest) {
 		    			user_name +
 		    			instructionsEnd;
 		    runUIMsg = runUIMsg.replace("replaceEmail", to);
-			pageMessage = runUIMsg1; 
+			pageMessage = runUIMsg; 
 			sendEmail = true;
 		} else {
 			message = runError + email;
