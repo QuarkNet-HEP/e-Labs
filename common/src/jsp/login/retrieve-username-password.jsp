@@ -11,6 +11,7 @@
 <%@ page import="net.tanesha.recaptcha.ReCaptchaResponse" %>
 
 <%
+//EPeronja-577:Allow teachers to reset their passwords and/or retrieve usernames by providing an e-mail address.
 String userid = request.getParameter("userid");
 String email = request.getParameter("email");
 String message = "", to = "", subject = "", user_name = "", temp_password = "";
@@ -21,7 +22,39 @@ boolean sendEmail = false;
 boolean continueRequest = false;
 String recaptcha_public_key = elab.getProperty("recaptcha_public_key");
 String recaptcha_private_key = elab.getProperty("recaptcha_private_key");
-
+//predefine some messages
+String reCaptchaError = "The reCaptcha you entered is not right. Please try again.<br />";
+//password reset request (teacher)
+String rptSubject = "Your password has been reset";
+String rptBodyBegin = "Someone used the webform at "+
+					  "\'http://www.i2u2.org/elab/cosmic/login/retrieve-username-password.jsp\' to reset"+
+					  "the e-Lab password for the account: replaceAccount.\n\n" + 
+					  "The temporary password is: replacePassword.\n\n";
+String rptUIMsg = "We have sent a temporary password to: replaceEmail.<br />Please check that account for a message from elabs@i2u2.org";
+String rptInstructions = "You must login in and create a new password using the following steps:\n"+
+	  					 "1. Login\n"; 
+//password reset request (not a teacher)
+String rpoSubject = "Reset password attempt";
+String rpoBodyBegin = "One of your e-Lab groups: replaceGroup sent a request to reset their password." +
+					   " Only the teacher that created the account can do that. Here\'s how:\n\n";
+String rpoInstructions = "1. Login to the teacher account that set up the replaceGroup account";
+String rpoUIMsg = "We have sent an e-mail to replaceEmail with directions on how to change this password for you.<br />" +
+				   "Please check that account for a message from elabs@i2u2.org.<br />";
+String instructions =   "2. Go to the registration page\n"+
+						"3. Select \'Update your research groups including passwords\'\n"+
+						"4. Choose your username from the dropdown and click on the \'Show Info\' button\n"+
+						"5. Enter your new password and click \'Save\'\n\n";
+String instructionsEnd = "Please send any questions to e-labs@fnal.gov.";
+String rpoError = "There is no e-mail associated with the username you entered.<br /> "+
+		  		  "We cannot reset the password at the moment.<br />";
+//retrieve username request
+String runSubject = "Your username";
+String runBodyBegin = "We have found the following username(s) associated with the e-mail address: replaceEmail\n\n";
+String runUIMsg = "We have sent a list of e-Lab logins associated with: replaceEmail."+
+				  "<br />Please check that account for a message from elabs@i2u2.org.<br />";
+String runError = "There are no usernames associated with the e-mail address: ";
+String footerMessage = "Questions? Please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a>.<br />" +
+		  "<a href=\'../teacher/index.jsp\'>Log in</a>";		
 //if this is a submit we want to check the reCaptcha
 if (submit != null && !submit.equals("")) {
 	String remoteAddr = request.getRemoteAddr();
@@ -35,14 +68,14 @@ if (submit != null && !submit.equals("")) {
 			  continueRequest = true;
 			} else {
 			  continueRequest = false;
-			  message = "The reCaptcha you entered is not right. Please try again.<br />";
+			  message = reCaptchaError;
 			}
-
 	} catch (Exception ex) {
 	  	continueRequest = false;
 		message = ex.toString() + "<br />";
 	}
-}
+}//end of checking reCaptcha.
+
 //if they want to reset password
 if ("Reset Password".equals(submit) && continueRequest) {
 	if (userid != null && !userid.equals("")) {
@@ -51,39 +84,37 @@ if ("Reset Password".equals(submit) && continueRequest) {
 		String userEmail = elab.getUserManagementProvider().getEmail(userid);
 		//if the entered email address exists
 		if (userEmail != null && !userEmail.equals("")) {
-			String common_message = "Once you login:\n"+
-			   		   				"-Go to the Registration page\n"+
-					   				"-Select \'Update your research groups including passwords\' \n"+
-			   		   				"-Choose your username from the dropdown and show info \n"+
-					   				"-Enter your new password and save \n"+
-					   				"Please do not reply to this message. Replies to this message go to an unmonitored mailbox.\n" +
-			   		   				"If you have any questions, send an e-mail to e-labs@fnal.gov.";
 			//check user role
 			if (userRole.equals("teacher")) {
 				//go ahead and reset password
 				temp_password = elab.getUserManagementProvider().resetPassword(userid);
 			   	user_name = userid;
 				to = userEmail;
-				subject = "Your password has been reset";
-			    emailBody = "Temporary password for user: " +user_name + " " + "is: "+temp_password+".\n"+
-				   		    "Please, login and set a new password.\n\n" +
-			    			common_message;
-				pageMessage = "A temporary password has been sent to the e-mail address associated with this account.<br />";
+				subject = rptSubject;
+				rptBodyBegin = rptBodyBegin.replace("replaceAccount", user_name);
+				rptBodyBegin = rptBodyBegin.replace("replacePassword", temp_password);
+			    emailBody = rptBodyBegin +
+			    			rptInstructions +
+				   		    instructions +
+				   		    instructionsEnd;
+			    rptUIMsg = rptUIMsg.replace("replaceEmail", to);
+				pageMessage = rptUIMsg;
 			} else {
 			   	user_name = userid;
 				to = userEmail;
-				subject = "Reset password attempt";
-			    emailBody = "User: " +user_name + " has attempted to change his/her password.\n"+
-				   		   "We were unable to do this because the role is: "+userRole+".\n\n" +
-						   "You can reset the password of this user.\n"+
-						   common_message;
-				pageMessage = "We sent an email to your teacher regarding your attempt to reset your password.<br />";
-				
+				subject = rpoSubject;
+				rpoBodyBegin = rpoBodyBegin.replace("replaceGroup", user_name);
+				rpoInstructions = rpoInstructions.replace("replaceGroup", user_name);
+			    emailBody = rpoBodyBegin +
+			    		   rpoInstructions + 
+						   instructions +
+						   instructionsEnd;
+			    rpoUIMsg = rpoUIMsg.replace("replaceEmail", to);
+				pageMessage = rpoUIMsg;				
 			}
 			sendEmail = true;
 		} else {
-			message = "There is no e-mail associated with the username you entered.<br /> "+
-					  "We cannot reset the password at the moment.<br />";
+			message = rpoError;
 		}
 	} else {
 		if (userid != null && !userid.equals("")) {
@@ -102,22 +133,23 @@ if ("Retrieve Username".equals(submit) && continueRequest) {
 				user_name = user[i] + "\n";				
 			}
 		    to = email;
-			subject = "Your username";
-		    emailBody = "Username(s) associated with your e-mail address: " +user_name + " " +
-					   "Please do not reply to this message. Replies to this message go to an unmonitored mailbox.\n" +
-			   		   "If you have any questions, send an e-mail to e-labs@fnal.gov.";
-			pageMessage = "Your information has been sent to the e-mail you provided.<br />"; 
+			subject = runSubject;
+			runBodyBegin = runBodyBegin.replace("replaceEmail",to);
+		    emailBody = runBodyBegin + 
+		    			user_name +
+		    			instructionsEnd;
+		    runUIMsg = runUIMsg.replace("replaceEmail", to);
+			pageMessage = runUIMsg1; 
 			sendEmail = true;
 		} else {
-			message = "There are no usernames associated with this e-mail address.<br />";
+			message = runError + email;
 		}
     } else {
     	if (email != null && !email.equals("")) {
 	    	message = "Email address is blank.<br />";
     	}
     }
-}//end of checking retrieve username
-	
+}//end of checking retrieve username	
 if (sendEmail) {
    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
 	if (result != null && result.equals("")) {
@@ -127,12 +159,10 @@ if (sendEmail) {
 	}	
 }
 message = message + 
-	  "Questions? Please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a>.<br />" +
-	  "<a href=\'../teacher/index.jsp\'>Log in</a>";
+		  footerMessage;
 request.setAttribute("message", message);
 request.setAttribute("recaptcha_public_key", recaptcha_public_key);
 request.setAttribute("recaptcha_private_key", recaptcha_private_key);
-
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
