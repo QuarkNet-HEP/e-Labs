@@ -30,7 +30,7 @@ String rptBodyBegin = "Someone used the webform at "+
 					  "\'http://www.i2u2.org/elab/cosmic/login/retrieve-username-password.jsp\' to reset "+
 					  "the e-Lab password for the account: replaceAccount.\n\n" + 
 					  "The temporary password is: replacePassword.\n\n";
-String rptUIMsg = "We have sent a temporary password to: replaceEmail.<br />Please check that account for a message from elabs@i2u2.org";
+String rptUIMsg = "We have sent a temporary password to the e-mail associated with this account.<br />Please check that account for a message from elabs@i2u2.org";
 String rptInstructions = "You must login in and create a new password using the following steps:\n"+
 	  					 "1. Login\n"; 
 //password reset request (not a teacher)
@@ -38,7 +38,7 @@ String rpoSubject = "Reset password attempt";
 String rpoBodyBegin = "One of your e-Lab groups: replaceGroup sent a request to reset their password." +
 					   " Only the teacher that created the account can do that. Here\'s how:\n\n";
 String rpoInstructions = "1. Login to the teacher account that set up the replaceGroup account\n";
-String rpoUIMsg = "We have sent an e-mail to replaceEmail with directions on how to change this password for you.<br />" +
+String rpoUIMsg = "We have sent an e-mail with directions on how to change this password for you.<br />" +
 				   "Please check that account for a message from elabs@i2u2.org.<br />";
 String instructions =   "2. Go to the registration page\n"+
 						"3. Select \'Update your research groups including passwords\'\n"+
@@ -50,7 +50,7 @@ String rpoError = "There is no e-mail associated with the username you entered.<
 //retrieve username request
 String runSubject = "Your username";
 String runBodyBegin = "We have found the following username(s) associated with the e-mail address: replaceEmail\n\n";
-String runUIMsg = "We have sent a list of e-Lab logins associated with: replaceEmail."+
+String runUIMsg = "We have sent a list of e-Lab logins associated with your e-mail address."+
 				  "<br />Please check that account for a message from elabs@i2u2.org.<br />";
 String runError = "There are no usernames associated with the e-mail address: ";
 String footerMessage = "Questions? Please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a>.<br />" +
