@@ -41,7 +41,7 @@ if (submit != null && !submit.equals("")) {
 	} catch (Exception ex) {
 	  	continueRequest = false;
 		message = ex.toString() + "<br />";
-	}	
+	}
 }
 //if they want to reset password
 if ("Reset Password".equals(submit) && continueRequest) {
@@ -82,7 +82,7 @@ if ("Reset Password".equals(submit) && continueRequest) {
 			}
 			sendEmail = true;
 		} else {
-			message = "Either there is no e-mail associated with the username you entered or the username does not have the role of \'teacher\'.<br /> "+
+			message = "There is no e-mail associated with the username you entered.<br /> "+
 					  "We cannot reset the password at the moment.<br />";
 		}
 	} else {
