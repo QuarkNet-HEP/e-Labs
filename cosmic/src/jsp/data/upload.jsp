@@ -69,151 +69,159 @@ Re: the upload progress stuff
 	
 	File tempRepo = new File(dataDir + "/temp"); 
 	int sizeThreshold = 0; 
-
+	String exceptionMessage = "";
 	List splits = new ArrayList();  //for both the split name and the channel validity information
 
 	if (ServletFileUpload.isMultipartContent(request)) {
-	    //BEGIN upload_progress_stuff
-	    UploadListener listener = new UploadListener(request, 0);
+		try {
+		    //BEGIN upload_progress_stuff
+		    UploadListener listener = new UploadListener(request, 0);
+	
+		    // Create a factory for disk-based file items
+		    FileItemFactory factory = new NewLineConvertingMonitoredDiskFileItemFactory(
+		    		sizeThreshold, tempRepo, listener); 
+	
+	    	// Create a new file upload handler
+		    ServletFileUpload upload = new ServletFileUpload(factory);
+	    	//END upload_progress_stuff
+	    	
+			List<DiskFileItem> fileItems = upload.parseRequest(request); 
+	    	
+	    	for (DiskFileItem fi : fileItems) { 
+	    		if (fi.isFormField()) {
+	    			String name = fi.getFieldName();
+	    			String content = fi.getString();
+	    			if ("detector".equals(name)) {
+	    				if (StringUtils.isBlank(content)) {
+	    					throw new ElabJspException("You must enter a detector number for this data.");
+	    				}
+	    				else {
+	    					detectorId = content;
+	    				}
+	    			}
+	    			else if (("benchmark_"+detectorId).equals(name)) {
+	    				benchmark = content;
+	    			}
+	    			else if ("comments".equals(name)) {
+	    				if (StringUtils.isNotBlank(content)) {
+	    					comments = content; 
+	    				}
+	    			}
+	    			//EPeronja-10/17/2013: THRESHOLD TEST
+	    			else if ("makeThreshold".equals(name)) {
+	    				if (StringUtils.isNotBlank(content)) {
+	    					makeThreshold = content; 
+	    				}
+	    			}
+	    		}
+	    	}
+			
+			for (DiskFileItem fi : fileItems) {
+				if (!fi.isFormField()) {
+					lfn = fi.getName();
+					if (StringUtils.isBlank(lfn)) {
+	                	throw new ElabJspException("Missing file.");
+	    	        }
+		            //fn is the filename without slashes (which lfn has)    	       
+		            fn = FilenameUtils.getName(lfn);
+					if (fi.getSize() == 0) {
+					    throw new ElabJspException("Your file is zero-length. You must upload a file which has some data.");
+					}
+	                //new algorithm for filenaming:
+	   	            //name the raw file id.yyyy.mmdd.index.raw and save the original name in metadata
+	       	        //index starts at 0 and increments when there are collisions with other filenames
+	                Date now = new Date();
+	                DateFormat df = new SimpleDateFormat("yyyy.MMdd");
+	                String fnow = df.format(now);
+					//even newer algorithm: use File.createTempFile!
+					File f = File.createTempFile(detectorId + "." + fnow + ".", ".raw", 
+					        new File(dataDir));
+	               	String rawName = f.getName();
+	
+	               	// write the file from memory or relocate it on disk.
+	               	if (fi.isInMemory()) {
+	               		fi.write(f);
+	               	}
+	               	else {
+	               		fi.getStoreLocation().renameTo(f);
+	               	}
+	
+	       	        out.println("<!-- " + rawName + " added to Catalog -->");
+	       	        request.setAttribute("in", f.getAbsolutePath());
+	       	        request.setAttribute("detectorid", detectorId);
+	       	        request.setAttribute("comments", comments);
+	      	        request.setAttribute("benchmark", benchmark);
+	    			//EPeronja-10/17/2013: THRESHOLD TEST
+	      	        request.setAttribute("makeThreshold", makeThreshold);
+	      	    	//EPeronja-10/17/2013: THRESHOLD TEST -- Split.pl will call ThresholdTimes.pl
+	      	        if (makeThreshold.equals("perl")) {
+					%>
+						<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUploadTT" impl="generic">
+							<e:trdefault name="in" value="${in}"/>
+							<e:trdefault name="datadir" value="${datadir}"/>
+							<e:trdefault name="detectorid" value="${detectorid}"/>
+							<e:trdefault name="comments" value="${comments}"/>
+							<e:trdefault name="benchmark" value="${benchmark}"/>
+							<e:trdefault name="makeThreshold" value="${makeThreshold}"/>	
+												
+							<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload">
+								<jsp:param name="provider" value="shell"/>
+							</jsp:include>
+						</e:analysis>
+					<%
+	      	        } else {
+	   				%>
+						<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUpload" impl="generic">
+							<e:trdefault name="in" value="${in}"/>
+							<e:trdefault name="datadir" value="${datadir}"/>
+							<e:trdefault name="detectorid" value="${detectorid}"/>
+							<e:trdefault name="comments" value="${comments}"/>
+							<e:trdefault name="benchmark" value="${benchmark}"/>
+							<e:trdefault name="makeThreshold" value="${makeThreshold}"/>	
+												
+							<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload">
+								<jsp:param name="provider" value="shell"/>
+							</jsp:include>
+						</e:analysis>
+					<%
+	
+	      	        }
+				} //'twas a file
+			} //while through the file
+		} catch (Exception e) {
+			exceptionMessage = "A problem occurred while uploading your file.<br />" + 
+							   "Please send an e-mail to <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> with the following error: <br />" +
+								e.toString();
+		}
 
-	    // Create a factory for disk-based file items
-	    FileItemFactory factory = new NewLineConvertingMonitoredDiskFileItemFactory(
-	    		sizeThreshold, tempRepo, listener); 
-
-    	// Create a new file upload handler
-	    ServletFileUpload upload = new ServletFileUpload(factory);
-    	//END upload_progress_stuff
-    	
-		List<DiskFileItem> fileItems = upload.parseRequest(request); 
-    	
-    	for (DiskFileItem fi : fileItems) { 
-    		if (fi.isFormField()) {
-    			String name = fi.getFieldName();
-    			String content = fi.getString();
-    			if ("detector".equals(name)) {
-    				if (StringUtils.isBlank(content)) {
-    					throw new ElabJspException("You must enter a detector number for this data.");
-    				}
-    				else {
-    					detectorId = content;
-    				}
-    			}
-    			else if (("benchmark_"+detectorId).equals(name)) {
-    				benchmark = content;
-    			}
-    			else if ("comments".equals(name)) {
-    				if (StringUtils.isNotBlank(content)) {
-    					comments = content; 
-    				}
-    			}
-    			//EPeronja-10/17/2013: THRESHOLD TEST
-    			else if ("makeThreshold".equals(name)) {
-    				if (StringUtils.isNotBlank(content)) {
-    					makeThreshold = content; 
-    				}
-    			}
-    		}
-    	}
-		
-		for (DiskFileItem fi : fileItems) {
-			if (!fi.isFormField()) {
-				lfn = fi.getName();
-				if (StringUtils.isBlank(lfn)) {
-                	throw new ElabJspException("Missing file.");
-    	        }
-	            //fn is the filename without slashes (which lfn has)    	       
-	            fn = FilenameUtils.getName(lfn);
-				if (fi.getSize() == 0) {
-				    throw new ElabJspException("Your file is zero-length. You must upload a file which has some data.");
-				}
-                //new algorithm for filenaming:
-   	            //name the raw file id.yyyy.mmdd.index.raw and save the original name in metadata
-       	        //index starts at 0 and increments when there are collisions with other filenames
-                Date now = new Date();
-                DateFormat df = new SimpleDateFormat("yyyy.MMdd");
-                String fnow = df.format(now);
-				//even newer algorithm: use File.createTempFile!
-				File f = File.createTempFile(detectorId + "." + fnow + ".", ".raw", 
-				        new File(dataDir));
-               	String rawName = f.getName();
-
-               	// write the file from memory or relocate it on disk.
-               	if (fi.isInMemory()) {
-               		fi.write(f);
-               	}
-               	else {
-               		fi.getStoreLocation().renameTo(f);
-               	}
-
-       	        out.println("<!-- " + rawName + " added to Catalog -->");
-       	        request.setAttribute("in", f.getAbsolutePath());
-       	        request.setAttribute("detectorid", detectorId);
-       	        request.setAttribute("comments", comments);
-      	        request.setAttribute("benchmark", benchmark);
-    			//EPeronja-10/17/2013: THRESHOLD TEST
-      	        request.setAttribute("makeThreshold", makeThreshold);
-      	    	//EPeronja-10/17/2013: THRESHOLD TEST -- Split.pl will call ThresholdTimes.pl
-      	        if (makeThreshold.equals("perl")) {
-				%>
-					<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUploadTT" impl="generic">
-						<e:trdefault name="in" value="${in}"/>
-						<e:trdefault name="datadir" value="${datadir}"/>
-						<e:trdefault name="detectorid" value="${detectorid}"/>
-						<e:trdefault name="comments" value="${comments}"/>
-						<e:trdefault name="benchmark" value="${benchmark}"/>
-						<e:trdefault name="makeThreshold" value="${makeThreshold}"/>	
-											
-						<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload">
-							<jsp:param name="provider" value="shell"/>
-						</jsp:include>
-					</e:analysis>
-				<%
-      	        } else {
-   				%>
-					<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUpload" impl="generic">
-						<e:trdefault name="in" value="${in}"/>
-						<e:trdefault name="datadir" value="${datadir}"/>
-						<e:trdefault name="detectorid" value="${detectorid}"/>
-						<e:trdefault name="comments" value="${comments}"/>
-						<e:trdefault name="benchmark" value="${benchmark}"/>
-						<e:trdefault name="makeThreshold" value="${makeThreshold}"/>	
-											
-						<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload">
-							<jsp:param name="provider" value="shell"/>
-						</jsp:include>
-					</e:analysis>
-				<%
-
-      	        }
-			} //'twas a file
-		} //while through the file
 	} //end "if form has a file to upload"
-	else {
-		
-		//EPeronja-05/22/2013: get benchmark files
-		Iterator iterator = ids.iterator();
-		TreeMap<String, Integer> detectorBenchmark = new TreeMap<String, Integer>();
-		TreeMap<String, VDSCatalogEntry> benchmarkTuples = new TreeMap<String, VDSCatalogEntry>();
-		ResultSet searchResults = null;
-		
-		//loop through detectors
-		while (iterator.hasNext()) {
-			Integer key = Integer.parseInt((String) iterator.next());
-		  	//retrieve benchmark files from database
-				searchResults = Benchmark.getBenchmarkFileName(elab, key);
-		  	if (searchResults != null) {
-		 		String[] filenames = searchResults.getLfnArray();
-		 		for (int i = 0; i < filenames.length; i++){
-					VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filenames[i]);
-					if (e != null) {
-						benchmarkTuples.put(filenames[i], e);
-						detectorBenchmark.put(filenames[i], key);				}				
-				}//end for loop
-		  	}//end check searchResults
-		}//end looping through detectors
-		
+		else {
+			
+			//EPeronja-05/22/2013: get benchmark files
+			Iterator iterator = ids.iterator();
+			TreeMap<String, Integer> detectorBenchmark = new TreeMap<String, Integer>();
+			TreeMap<String, VDSCatalogEntry> benchmarkTuples = new TreeMap<String, VDSCatalogEntry>();
+			ResultSet searchResults = null;
+			
+			//loop through detectors
+			while (iterator.hasNext()) {
+				Integer key = Integer.parseInt((String) iterator.next());
+			  	//retrieve benchmark files from database
+					searchResults = Benchmark.getBenchmarkFileName(elab, key);
+			  	if (searchResults != null) {
+			 		String[] filenames = searchResults.getLfnArray();
+			 		for (int i = 0; i < filenames.length; i++){
+						VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filenames[i]);
+						if (e != null) {
+							benchmarkTuples.put(filenames[i], e);
+							detectorBenchmark.put(filenames[i], key);				
+							}				
+					}//end for loop
+			  	}//end check searchResults
+			}//end looping through detectors
 		request.setAttribute("detectorBenchmark", detectorBenchmark);
 		request.setAttribute("benchmarkTuples", benchmarkTuples);
+		request.setAttribute("exceptionMessage", exceptionMessage);
 		%>
 		
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
