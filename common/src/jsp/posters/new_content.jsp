@@ -474,13 +474,13 @@
                     		<c:choose>
                     			<c:when test="${type == 'PARA'}">
                     				<td align="left">
-                    					<textarea name="${type}:${name}" id="${type}:${name}" rows="6" cols="80" class="tinymce"><c:out value="${tvalue}"></c:out></textarea>
+                    					<textarea name="${type}:${name}" id="${type}:${name}" rows="6" cols="80" class="tinymce">${tvalue}</textarea>
                     				</td>
                     			</c:when>
                     			<c:when test="${type == 'WORDS'}">
                     				<td align="left">
                     					<input size="50" name="${type}:${name}" id="${type}:${name}"
-                    						value='<c:out value="${tvalue}"></c:out>'/>
+                    						value='${value}'/>
                     				</td>
                     			</c:when>
                     			<c:when test="${type == 'FIG'}">
