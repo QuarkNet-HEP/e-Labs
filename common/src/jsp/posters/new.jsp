@@ -39,7 +39,7 @@
 
 <h1>New Poster: Make or edit your poster</h1>
 
-<%@ include file="new_content.jsp" %>
+<%@ include file="new-content.jsp" %>
 
 			</div>
 			<!-- end content -->	
