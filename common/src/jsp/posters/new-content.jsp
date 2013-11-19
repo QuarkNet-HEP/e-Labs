@@ -18,7 +18,7 @@
 <script>
 	$().ready(function() {
 		$('textarea.tinymce').tinymce({
-			entity_encoding = 'raw',
+			entity_encoding: 'raw',
 			script_url : '../include/tiny_mce/tiny_mce.js',
 			theme : 'advanced',
 			plugins : 'tabfocus',
