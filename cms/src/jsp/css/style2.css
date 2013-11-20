@@ -510,7 +510,7 @@ a img {
 
 #notifications-popup {
 	display: none;
-	width: 256px;
+	width: 350px;
 	position: absolute;
 	background-color: white;
 	border: thin solid black;
