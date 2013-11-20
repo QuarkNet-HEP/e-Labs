@@ -10,7 +10,7 @@ import gov.fnal.elab.util.ElabException;
 import java.util.List;
 
 public interface ElabNotificationsProvider extends ElabProviderHandled {
-	public static final int MAX_COUNT = -1;
+	public static final int MAX_COUNT = 100;
 	
     long getUnreadNotificationsCount(ElabGroup group) throws ElabException;
     
@@ -31,10 +31,14 @@ public interface ElabNotificationsProvider extends ElabProviderHandled {
     public void addProjectNotification(List<Integer> projectList, Notification n) throws ElabException;
     
     void markAsRead(Notification notification);
+    public void markAsRead(String notificationId);
     
     void markAsRead(ElabGroup user, int id) throws ElabException;
     
     void markAsDeleted(ElabGroup user, int id) throws ElabException;
     
     void removeNotification(ElabGroup admin, int id) throws ElabException;
+    public Notification getNotificationById(int id);
+    public String getSender(int creatorId);
+    
 }

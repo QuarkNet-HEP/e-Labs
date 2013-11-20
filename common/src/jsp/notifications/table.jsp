@@ -14,11 +14,12 @@
 	}
 %>
 <table border="0" id="notifications-table">
+	<th></th><th>Read?</th>
 	<c:forEach var="n" items="${notifications}">
 		<tr id="not${n.id}">
 			<td>${n.message}</td>
-			<td class="remove">
-				<a href="javascript:markAsDeleted('not', ${n.id}, '${elab.name}')"><img src="../graphics/notification-remove.png" /></a>
+			<td class="remove" style="text-align: center;">
+				<a href="javascript:markAsDeleted('not', ${n.id}, '${elab.name}')"> &#10004;</a>
 			</td>
 		</tr>
 	</c:forEach>

@@ -107,7 +107,7 @@
 		<script type="text/javascript" src="../include/notifications.js"></script>
 	</head>
 	
-	<body id="send-to-groups" class="home send-notifications">
+	<body id="send-to-groups" class="home-send-notifications">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">

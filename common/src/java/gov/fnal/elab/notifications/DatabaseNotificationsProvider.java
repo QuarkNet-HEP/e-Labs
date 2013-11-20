@@ -50,9 +50,6 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             psMessage = conn.prepareStatement(
             		"INSERT INTO notifications.message (time, expiration, message, type, creator_research_group_id) " +
                     "VALUES (?, ?, ?, ?, ?) RETURNING id;"); 
-            //psMessage = conn.prepareStatement(
-            //		"INSERT INTO notifications (time, expires, message, type) " +
-            //       "VALUES (?, ?, ?, ?) RETURNING id;"); 
             psState = conn.prepareStatement(
             		"INSERT INTO notifications.state (research_group_id, message_id) " +
             		"VALUES (?, ?);");
@@ -281,12 +278,12 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             throws ElabException {
         Connection conn = null;
         PreparedStatement ps = null;
-        final String WHERE_UNREAD = "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL AND s.read IS NOT TRUE) ";
+        final String WHERE_UNREAD = "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL) ";
         final String WHERE_ALL  = "WHERE (pb.message_id IS NOT NULL AND s.message_id IS NULL) OR (pb.message_id IS NULL AND s.message_id IS NOT NULL) ";
         //SQL for notification that have been broadcast
         String sql = 
             "SELECT * FROM notifications.message AS m " + 
-            "INNER JOIN notifications.project_broadcast AS pb ON m.id = pb.message_id AND project_id = ? " + 
+            "LEFT OUTER JOIN notifications.project_broadcast AS pb ON m.id = pb.message_id AND project_id = ? " + 
             "LEFT OUTER JOIN notifications.state AS s ON m.id = s.message_id AND s.research_group_id = ? ";
         if (includeRead) {
         	sql += WHERE_ALL;
@@ -302,7 +299,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
     	//SQL for notifications that are just for this group
         String sqlGroup = 
                 "SELECT * FROM notifications.message AS m " + 
-                "INNER JOIN notifications.state AS s ON m.id = s.message_id AND s.research_group_id = ? ";
+                "LEFT OUTER JOIN notifications.state AS s ON m.id = s.message_id AND s.research_group_id = ? ";
             if (includeRead) {
             	sqlGroup += WHEREALL;
             }
@@ -310,7 +307,8 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             	sqlGroup += WHEREUNREAD; 
             }
 
-            sqlGroup += "AND  m.expiration > now() ";
+            sqlGroup += "AND  m.expiration > now() " +
+            			"ORDER BY m.time DESC ";
             
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
@@ -324,10 +322,16 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             while (rs.next()) {
                 boolean read = rs.getObject("read") == null ? false : (Boolean) rs.getObject("read");
                 boolean deleted = rs.getObject("deleted") == null ? false : (Boolean) rs.getObject("deleted");
+                int creatorGroupId = rs.getInt("creator_research_group_id");
             	Notification n = new Notification(rs.getInt("id"), rs.getString("message"), groupId, 
             			rs.getTimestamp("time").getTime(), rs.getTimestamp("expiration").getTime(),
             			rs.getInt("type"), read, deleted); 
-            	l.add(n);
+            	if (creatorGroupId > 0) {
+            		n.setSender(getSender(creatorGroupId));
+            	}
+            	if (!exists(l,n)) {
+            		l.add(n);
+            	}
             }
             
             ps = conn.prepareStatement(sqlGroup); 
@@ -336,10 +340,16 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             while (rsGroup.next()) {
                 boolean read = rsGroup.getObject("read") == null ? false : (Boolean) rsGroup.getObject("read");
                 boolean deleted = rsGroup.getObject("deleted") == null ? false : (Boolean) rsGroup.getObject("deleted");
+                int creatorGroupId = rsGroup.getInt("creator_research_group_id");
             	Notification n = new Notification(rsGroup.getInt("id"), rsGroup.getString("message"), groupId, 
             			rsGroup.getTimestamp("time").getTime(), rsGroup.getTimestamp("expiration").getTime(),
             			rsGroup.getInt("type"), read, deleted); 
-            	l.add(n);
+            	if (creatorGroupId > 0) {
+            		n.setSender(getSender(creatorGroupId));
+            	}
+            	if (!exists(l,n)) {
+            		l.add(n);
+            	}
             }           
             return l;
             
@@ -352,6 +362,16 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         }
     }
 
+    protected boolean exists(List<Notification> nList, Notification n) {
+    	boolean exists = false;
+    	for (Notification notification: nList) {
+    		if (notification.getId() == n.getId()) {
+    			exists = true;
+    		}
+    	}
+    	return exists;
+    }
+    
     @Override
     public void setElab(Elab elab) {
         this.elab = elab;
@@ -393,6 +413,69 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
 	}
 
 	@Override
+	public void markAsRead(String notificationId) {
+		// TODO Auto-generated method stub
+		//notification.setRead(true);
+		
+		Connection conn = null;
+        PreparedStatement ps = null;
+        Notification n = getNotificationById(Integer.valueOf(notificationId));
+        boolean read = n.isRead();
+        try {
+        	conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+        	ps = conn.prepareStatement("UPDATE notifications.state SET read = TRUE WHERE message_id = ?;");
+        	ps.setInt(1, Integer.valueOf(notificationId));
+        	ps.executeUpdate();
+        	n.setRead(true);
+        }
+        catch (SQLException e) {
+        	n.setRead(read);
+        }
+        finally {
+        	DatabaseConnectionManager.close(conn, ps);
+        }
+	}
+	
+	@Override
+	public Notification getNotificationById(int id) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        Notification l = new Notification();
+        
+        String sql = 
+            "SELECT * FROM notifications.message "+
+        	"WHERE message.id = ? ;" ;
+        try {
+            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+            
+            ps = conn.prepareStatement(sql); 
+        	ps.setInt(1, Integer.valueOf(id));
+            ResultSet rs = ps.executeQuery();
+            
+
+            while (rs.next()) {
+                int creatorGroupId = rs.getInt("creator_research_group_id");
+            	Notification n = new Notification(rs.getInt("id"), rs.getString("message"), rs.getInt("creator_research_group_id"), 
+            			rs.getTimestamp("time").getTime(), rs.getTimestamp("expiration").getTime(),
+            			rs.getInt("type"), false, false);
+            	if (creatorGroupId > 0) {
+            		n.setSender(getSender(creatorGroupId));
+            	}
+            	l = n;
+            }
+            
+        }
+        catch (SQLException e) {
+            String message = e.toString();
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, ps);
+        }	
+        return l;
+		
+	}
+	
+	@Override
 	public List<Notification> getSystemNotifications() throws ElabException {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -412,10 +495,16 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             
             List<Notification> l = new ArrayList<Notification>();
             while (rs.next()) {
-            	Notification n = new Notification(rs.getInt("id"), rs.getString("message"), rs.getInt("creator_research_group_id"), 
+                int creatorGroupId = rs.getInt("creator_research_group_id");
+            	Notification n = new Notification(rs.getInt("id"), rs.getString("message"), creatorGroupId, 
             			rs.getTimestamp("time").getTime(), rs.getTimestamp("expiration").getTime(),
             			rs.getInt("type"), false, false); 
-            	l.add(n);
+            	if (creatorGroupId > 0) {
+            		n.setSender(getSender(creatorGroupId));
+            	}
+            	if (!exists(l,n)) {
+            		l.add(n);
+            	}
             }
             return l;
             
@@ -428,6 +517,8 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         }	
 
 	}	
+	
+
 	
 	@Override
 	public List<Notification> getSystemNotifications(int count) throws ElabException {
@@ -454,10 +545,16 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             
             List<Notification> l = new ArrayList<Notification>();
             while (rs.next()) {
-            	Notification n = new Notification(rs.getInt("id"), rs.getString("message"), rs.getInt("creator_research_group_id"), 
+                int creatorGroupId = rs.getInt("creator_research_group_id");
+            	Notification n = new Notification(rs.getInt("id"), rs.getString("message"), creatorGroupId, 
             			rs.getTimestamp("time").getTime(), rs.getTimestamp("expiration").getTime(),
             			rs.getInt("type"), false, false); 
-            	l.add(n);
+            	if (creatorGroupId > 0) {
+            		n.setSender(getSender(creatorGroupId));
+            	}
+            	if (!exists(l,n)) {
+            		l.add(n);
+            	}
             }
             return l;
             
@@ -470,5 +567,35 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         }	
 	}
 
+	@Override
+    public String getSender(int creatorId) {
+		String creatorName = "";
+        Connection conn = null;
+        PreparedStatement ps = null;
+       
+        String sql = "SELECT name " +
+        			"   FROM research_group " +
+        			"  WHERE id = ? ";
+        try {
+            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+            ps = conn.prepareStatement(sql); 
+            ps.setInt(1, creatorId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+            	creatorName = rs.getString("name");
+            }
+            
+        }
+        catch (SQLException e) {
+            String message = e.toString();
+            System.out.println("Exception in getSender(): "+message);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, ps);
+        }	
+		
+		return creatorName;
+	}
 
 }

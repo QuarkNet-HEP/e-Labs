@@ -86,6 +86,18 @@ function removeNotification0(idprefix, id, elab, hard) {
 	ro.send(null);
 }
 
+function markAsRead(idprefix, id) {
+	var ro = newRequestObject();
+	ro.open('get', "../notifications/mark.jsp?id=" + id);
+	ro.onreadystatechange = function() {
+		if (ro.readyState == 4 && ro.status == 200) {
+			var div = document.getElementById(idprefix + id);
+			div.innerHTML = "Read";
+		}
+	};
+	ro.send(null);
+}
+
 function updateInnerHTML(id, url) {
 	var ro = newRequestObject();
 	ro.open('get', url);

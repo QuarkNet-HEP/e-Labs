@@ -143,7 +143,7 @@
 	<p>Notification "${notification.message}" was added successfully.</p>
 </c:if>
 <form action="../notifications/send-to-all.jsp" method="post">
-	<table border="0" id="form-table">
+	<table border="0" id="form-table" width="100%">
 		<tr>
 			<td class="label">
 				Send to:
