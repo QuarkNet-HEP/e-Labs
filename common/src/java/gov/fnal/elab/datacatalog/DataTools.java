@@ -144,7 +144,8 @@ public class DataTools {
         Date startDate = null, endDate = null;
 
         StructuredResultSet srs = new StructuredResultSet();
-        srs.setDataFileCount(rs.size());
+        //srs.setDataFileCount(rs.size());
+        int new_count = 0;
         for (CatalogEntry e : rs) {
         	//EPeronja-11/21/2013: added checks for not displaying unblessed data by default
         	if (benchmarksearch.equals("default")) {
@@ -167,6 +168,7 @@ public class DataTools {
         			}
         		}
         	}
+        	new_count++;
             Object[] data = new Object[KEYS.size()];
             
             for (Tuple t : e) {
@@ -414,6 +416,7 @@ public class DataTools {
         }
         srs.setStartDate(startDate);
         srs.setEndDate(endDate);
+        srs.setDataFileCount(new_count);
         return srs;
     }
 
