@@ -5,8 +5,6 @@
  */
 package gov.fnal.elab.cosmic.analysis;
 
-import gov.fnal.elab.RawDataFileResolver;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
