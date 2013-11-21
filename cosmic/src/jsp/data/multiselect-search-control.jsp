@@ -152,7 +152,7 @@ $(window).scroll(function(){
 					</td>
 					<td>
 						Blessed:
-						<e:select name="blessed" valueList="yes, no, all" labelList="Yes, No, All" selected="${blessed}"/>
+						<e:select name="blessed" valueList="default, all, yes, no" labelList="Default, All, Yes, No" selected="${blessed}"/>
 					</td>
 				</tr>
 			</table>
