@@ -79,6 +79,7 @@
 				}
 				if (duration > 0) {
 					entry.setTupleValue("blessed", true);
+					entry.setTupleValue("blessedstatus", "blessed");
 			    	dcp.insert(entry);
 					ArrayList meta = new ArrayList();
 					meta.add("benchmarkfile boolean true");
