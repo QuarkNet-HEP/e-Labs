@@ -1,5 +1,6 @@
 <%@ taglib prefix="elab" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ include file="../include/elab.jsp" %>
+<%@ include file="../login/login-required.jsp" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.StructuredResultSet.*" %>
 <%@ page import="java.io.IOException" %>
@@ -146,12 +147,12 @@
 			}
 		}
 				    
-	    if ("yes".equals(blessed)) {
-	    	and.add(new Equals("blessed", Boolean.TRUE));
-	    }
-	    if ("no".equals(blessed)) {
-	    	and.add(new Equals("blessed", Boolean.FALSE));
-	    }
+	    //if ("yes".equals(blessed)) {
+	    //	and.add(new Equals("blessed", Boolean.TRUE));
+	    //}
+	    //if ("no".equals(blessed)) {
+	    //	and.add(new Equals("blessed", Boolean.FALSE));
+	    //}
 	    
 	    if ("yes".equals(stacked)) {
 	    	and.add(new Equals("stacked", Boolean.TRUE));
@@ -160,13 +161,24 @@
 	    	and.add(new Equals("stacked", Boolean.FALSE));
 	    }
 	    
-
 	    long startTime = System.currentTimeMillis();
 		searchResults = elab.getDataCatalogProvider().runQuery(and);
 		long endDataSearch = System.currentTimeMillis();
 		long startOrganizing = endDataSearch; 
-		
-		searchResultsStructured = DataTools.organizeSearchResults(searchResults);
+	    //EPeronja-21/11/2013: Benchmark, default search retrieves all owner's data + others' blessed data
+		String benchmarksearch = "default";		    
+	    if ("yes".equals(blessed)) {
+	    	and.add(new Equals("blessed", Boolean.TRUE));
+			benchmarksearch = "";
+	    }
+	    if ("no".equals(blessed)) {
+	    	and.add(new Equals("blessed", Boolean.FALSE));
+			benchmarksearch = "";
+	    }
+		if ("all".equals(blessed)) {
+			benchmarksearch = "";
+		}			
+		searchResultsStructured = DataTools.organizeSearchResults(searchResults,benchmarksearch,user.getName());
 		searchResultsStructured.setKey(key);
 		searchResultsStructured.setValue(value);
 		
