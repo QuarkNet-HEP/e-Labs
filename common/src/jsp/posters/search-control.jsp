@@ -207,7 +207,7 @@ $(function() {
 			}
 		    //EPeronja-10/11/2013: Allow to search posters by status
 		    String statusSearch = request.getParameter("status");
-			if (!statusSearch.equals("all")) {
+			if (statusSearch != null && !statusSearch.equals("all")) {
 				and.add(new Equals("status", statusSearch));
 			}
 			
