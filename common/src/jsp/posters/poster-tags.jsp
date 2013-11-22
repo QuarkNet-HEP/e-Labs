@@ -39,8 +39,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>${elab.properties.formalName} Poster Tags</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/posters.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	<script type="text/javascript">
@@ -113,7 +112,9 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
-					<%@ include file="../include/nav-rollover.jspf" %>
+					<div id="nav">
+						<%@ include file="../include/nav-teacher.jsp" %>
+					</div>
 				</div>
 			</div>
 			
