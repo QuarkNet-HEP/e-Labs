@@ -270,9 +270,9 @@ public class LIGOFileDataEngine implements DataEngine, Modifiable {
             	System.out.println("Ligo: "+e.toString());
                 throw new DataBackendException(e);
             }
-            catch (Exception e) {
-            	System.out.println("Ligo: "+e.toString());
-            }
+        }
+        catch (Exception e) {
+        	System.out.println("Ligo: "+e.toString());
         }
         finally {
             lock.readLock().unlock();
