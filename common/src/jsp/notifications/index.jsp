@@ -9,6 +9,7 @@
 	{
 		ElabNotificationsProvider np = ElabFactory.getNotificationsProvider((Elab) session.getAttribute("elab"));
 		List<Notification> n = np.getNotifications(user, ElabNotificationsProvider.MAX_COUNT, true);
+		request.setAttribute("isAdmin", user.isAdmin());
 		request.setAttribute("notification", n);
 	}
 %>
@@ -68,8 +69,8 @@
 						<tr id="next${n.id}">
 								<td><div id="status${n.id}">
 									<c:choose>
-										<c:when test='${n.type == "SYSTEM" }'>
-											System
+										<c:when test="${n.deleted == true}">
+											-Deleted by addressee
 										</c:when>
 										<c:otherwise>
 											<c:choose>
@@ -88,7 +89,7 @@
 												</c:otherwise>
 											</c:choose>
 										</c:otherwise>
-									</c:choose>
+									</c:choose>								
 								</div>
 							</td>
 							<td width="22%"><fmt:formatDate type="both" value="${n.timeAsDate}"/></td>
@@ -96,8 +97,16 @@
 							<td>${n.sender}</td>
 							<td>${n.message}</td>
 							<td style="text-align: center;">
-								<a href="javascript:markAsDeleted('status', ${n.id}, '${elab.name}')"><img src="../graphics/notification-remove.png" /></a>
+								<c:choose>
+									<c:when test="${isAdmin == true}">
+										<a href="javascript:removeNotification('next', ${n.id}, '${elab.name}')"><img src="../graphics/notification-remove.png" /></a>
+									</c:when>  
+									<c:otherwise>
+										<a href="javascript:markAsDeleted('next', ${n.id}, '${elab.name}')"><img src="../graphics/notification-remove.png" /></a>
+									</c:otherwise>
+								</c:choose>
 							</td>
+						
 						</tr>
 					</c:forEach>
 				</c:when>

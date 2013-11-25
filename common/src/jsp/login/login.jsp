@@ -31,6 +31,9 @@
 		ElabGroup.setUser(session, user);
 		session.setAttribute("user", user);
 		String prevPage = request.getParameter("prevPage");
+		if (username.equals("admin")) {
+			prevPage = "../admin/index.jsp";
+		}
 		String redirect = prevPage; 
 		if(prevPage == null) {
     		prevPage = elab.getProperties().getLoggedInHomePage();

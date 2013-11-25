@@ -254,7 +254,8 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 "SELECT COUNT(id) FROM notifications.message AS m " + 
                 "LEFT OUTER JOIN notifications.project_broadcast AS pb ON m.id = pb.message_id AND project_id = ? " + 
                 "LEFT OUTER JOIN notifications.state AS s ON m.id = s.message_id AND s.research_group_id = ? " +
-                "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL AND s.read IS NOT TRUE) AND  m.expiration > now();");
+                //"WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL AND s.read IS NOT TRUE) AND  m.expiration > now();");
+        		"WHERE s.read IS NOT TRUE AND  m.expiration > now();");
             ps.setInt(1, elab.getId());
             ps.setInt(2, group.getId());
             
@@ -278,33 +279,52 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             throws ElabException {
         Connection conn = null;
         PreparedStatement ps = null;
-        final String WHERE_UNREAD = "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL) ";
-        final String WHERE_ALL  = "WHERE (pb.message_id IS NOT NULL AND s.message_id IS NULL) OR (pb.message_id IS NULL AND s.message_id IS NOT NULL) ";
+        final String WHERE_UNREAD = "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL and s.read IS NOT TRUE and s.deleted is not TRUE) ";
+        final String WHERE_ALL  = "WHERE (pb.message_id IS NOT NULL AND s.message_id IS NULL) OR (pb.message_id IS NULL AND s.message_id IS NOT NULL and s.deleted is not TRUE) ";
+        String WHERE_UNREAD_ADMIN = "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL and s.read IS NOT TRUE) ";
+        String WHERE_ALL_ADMIN = "WHERE (pb.message_id IS NOT NULL AND s.message_id IS NULL) OR (pb.message_id IS NULL AND s.message_id IS NOT NULL) ";
         //SQL for notification that have been broadcast
-        String sql = 
-            "SELECT * FROM notifications.message AS m " + 
-            "LEFT OUTER JOIN notifications.project_broadcast AS pb ON m.id = pb.message_id AND project_id = ? " + 
-            "LEFT OUTER JOIN notifications.state AS s ON m.id = s.message_id AND s.research_group_id = ? ";
+        String sql = "";
+        sql = "SELECT * FROM notifications.message AS m " + 
+              "LEFT OUTER JOIN notifications.project_broadcast AS pb ON m.id = pb.message_id AND project_id = ? " + 
+              "LEFT OUTER JOIN notifications.state AS s ON m.id = s.message_id AND s.research_group_id = ? ";
         if (includeRead) {
-        	sql += WHERE_ALL;
+        	if (groupId == 23) {
+        		sql += WHERE_ALL_ADMIN;
+        	} else {
+        		sql += WHERE_ALL;
+        	}
         }
-        else { 
-        	sql += WHERE_UNREAD; 
+        else {
+        	if (groupId == 23) {
+        		sql += WHERE_UNREAD_ADMIN; 
+        	} else {
+        		sql += WHERE_UNREAD;
+        	}
         }
 
     	sql += "AND  m.expiration > now() ";
 
-    	final String WHEREUNREAD = "WHERE (s.read IS NOT TRUE) ";
-        final String WHEREALL  = "WHERE (s.message_id IS NULL) ";        
-    	//SQL for notifications that are just for this group
-        String sqlGroup = 
-                "SELECT * FROM notifications.message AS m " + 
-                "LEFT OUTER JOIN notifications.state AS s ON m.id = s.message_id AND s.research_group_id = ? ";
-            if (includeRead) {
-            	sqlGroup += WHEREALL;
+    	final String WHEREUNREAD = "WHERE (s.read IS NOT TRUE and s.deleted is not TRUE) ";
+        final String WHEREALL  = "WHERE (s.message_id IS NULL and s.deleted is not TRUE) ";        
+        String WHEREUNREAD_ADMIN = "WHERE (s.read IS NOT TRUE) ";
+        String WHEREALL_ADMIN  = "WHERE (s.message_id IS NULL) ";     	//SQL for notifications that are just for this group
+        String sqlGroup = "";
+        sqlGroup = "SELECT * FROM notifications.message AS m " + 
+        		   "LEFT OUTER JOIN notifications.state AS s ON m.id = s.message_id AND s.research_group_id = ? ";
+        	if (includeRead) {
+        		if (groupId == 23) {
+        			sqlGroup += WHEREALL_ADMIN;
+        		} else {
+        			sqlGroup += WHEREALL;
+        		}
             }
             else { 
-            	sqlGroup += WHEREUNREAD; 
+            	if (groupId == 23) {
+            		sqlGroup += WHEREUNREAD_ADMIN; 
+            	} else {
+            		sqlGroup += WHEREUNREAD;
+            	}
             }
 
             sqlGroup += "AND  m.expiration > now() " +

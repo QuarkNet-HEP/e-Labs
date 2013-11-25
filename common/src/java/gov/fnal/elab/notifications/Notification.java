@@ -62,6 +62,7 @@ public class Notification {
         this.type = MessageType.fromCode(type);
         this.creation = creation; 
         this.expiration = expiration; 
+        this.deleted = deleted;
         this.sender = "";
     }
     
@@ -147,6 +148,14 @@ public class Notification {
     
     public Date getExpirationAsDate() {
     	return new Date(expiration);
+    }
+    
+    public boolean getDeleted() {
+    	return deleted;
+    }
+    
+    public void setDeleted(boolean deleted) {
+    	this.deleted = deleted;
     }
     
 }
