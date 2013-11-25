@@ -267,7 +267,11 @@ public class LIGOFileDataEngine implements DataEngine, Modifiable {
                 return new NumberArrayDataSet(path, range, new Range(min, max), values, props.getUnits());
             }
             catch (IOException e) {
+            	System.out.println("Ligo: "+e.toString());
                 throw new DataBackendException(e);
+            }
+            catch (Exception e) {
+            	System.out.println("Ligo: "+e.toString());
             }
         }
         finally {
