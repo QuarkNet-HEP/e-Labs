@@ -49,6 +49,10 @@
 							<td>&#8226; <a href="../analysis/list-all.jsp">All Analyses</a></td>
 							<td>List of analyses by all users.</td>
 						</tr>
+						<tr>
+							<td>&#8226; <a href="data-access-permission.jsp">Allow users to view all data</a></td>
+							<td>Give rights to teachers to be able to access all cosmic data (blessed and unblessed).</td>						
+						</tr>
 					</c:if>				
 				</table>
 			</div>

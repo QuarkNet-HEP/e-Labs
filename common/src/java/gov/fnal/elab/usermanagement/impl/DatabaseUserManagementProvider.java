@@ -441,7 +441,9 @@ public class DatabaseUserManagementProvider implements
                     .getConnection(elab.getProperties());
             int projectId = elab.getId();
             ps = conn.prepareStatement(
-            		"SELECT DISTINCT teacher.name AS tname, teacher.email AS temail, teacher.id AS teacherid, research_group.id AS id, research_group.name AS rgname, research_group.userarea AS rguserarea, research_group.active AS rgactive " +
+            		"SELECT DISTINCT teacher.name AS tname, teacher.email AS temail, teacher.id AS teacherid, " +
+            				"research_group.id AS id, research_group.name AS rgname, research_group.userarea AS rguserarea, " +
+            				" research_group.active AS rgactive, teacher.cosmic_all_data_access as cosmic_all_data_access " +
             		"FROM research_group_project " + 
             		"LEFT OUTER JOIN research_group ON research_group.id = research_group_project.research_group_id " + 
             		"INNER JOIN teacher ON research_group.teacher_id = teacher.id " +  
@@ -468,6 +470,7 @@ public class DatabaseUserManagementProvider implements
                     t.setId(rs.getInt("id"));
                     t.setTeacherId(rs.getInt("teacherid"));
                     t.setActive(rs.getBoolean("rgactive"));
+                    t.setCosmicAllDataAccess(rs.getBoolean("cosmic_all_data_access"));
                     g = new ElabGroup(elab, this);
                     if (StringUtils.isNotBlank(rs.getString("rguserarea"))) {
                         String[] brokenSchema = rs.getString("rguserarea")
@@ -482,6 +485,7 @@ public class DatabaseUserManagementProvider implements
                 }
                 g.setName(rs.getString("rgname"));
                 g.setActive(rs.getBoolean("rgactive"));
+                g.setCosmicAllDataAccess(rs.getBoolean("cosmic_all_data_access"));                
                 t.addGroup(g);
             }
             return teachers;
@@ -1207,6 +1211,69 @@ public class DatabaseUserManagementProvider implements
 		}	
 	    return result;
     }//end of sendEmail
+    
+    //EPeronja: give permission to see all data (blessed and unblessed)
+    public void updateCosmicDataAccess(Collection teachers, String[] allowIds) throws ElabException {
+    	//first set them all to false
+    	Connection conn = null; 
+    	PreparedStatement ps = null;
+    	try {
+    		//first set them all to false
+    		conn = DatabaseConnectionManager.getConnection(elab.getProperties());      		
+    		ps = conn.prepareStatement("UPDATE teacher SET cosmic_all_data_access = false;");
+    		ps.executeUpdate(); 
+    		
+			//now update the permissions
+			for (Iterator i = teachers.iterator(); i.hasNext();) {
+				ElabGroup t = (ElabGroup) i.next();
+				t.setCosmicAllDataAccess(false);
+				for (int j = 0; j < allowIds.length; j++) {
+					if (t.getId() == Integer.parseInt(allowIds[j])){
+			    		ps = conn.prepareStatement("UPDATE teacher SET cosmic_all_data_access = true " +
+			    								   "WHERE id = ?;");
+			    		ps.setInt(1, t.getId());
+			    		ps.executeUpdate(); 
+						t.setCosmicAllDataAccess(true);
+					}
+				}
+			}
+    	}
+    	catch(SQLException e) {
+    		throw new ElabException("Could not update the teacher table.");
+    	}
+    	finally {
+    		DatabaseConnectionManager.close(conn, ps);
+    	}
+ 		  		
+    }//end of updateCosmicDataAccess
+
+    //EPeronja: check if user's teacher has permission
+    public boolean getDataAccessPermission(String teacherName) throws ElabException {
+    	boolean gotAccess = false;
+    	PreparedStatement ps = null;
+        Connection conn = null;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            String sql = "SELECT cosmic_all_data_access " +
+            			 "FROM teacher " +
+            			 "WHERE name = ? ";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, teacherName);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+            	gotAccess = rs.getBoolean("cosmic_all_data_access");
+            }
+        	return gotAccess;            
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, ps);
+        }   	    	
+    }//end of getDataAccessPermission
+
     
     public Collection<String> getProjectNames() throws ElabException {
         List<String> names = new ArrayList<String>();

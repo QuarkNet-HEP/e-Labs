@@ -12,6 +12,9 @@
 
 <%SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false); 
+String userTeacher = user.getTeacher();
+boolean allowAllDataAccess = elab.getUserManagementProvider().getDataAccessPermission(userTeacher);
+request.setAttribute("allowAllDataAccess", allowAllDataAccess);
 %>
 <script type="text/javascript">
 $(function() {
@@ -151,8 +154,12 @@ $(window).scroll(function(){
 						<e:select name="stacked" valueList="all, yes, no" selected="${stacked}" labelList="All, Yes, No"/>
 					</td>
 					<td>
-						Blessed:
-						<e:select name="blessed" valueList="default, all, yes, no" labelList="Default, All, Yes, No" selected="${blessed}"/>
+						<c:choose>
+							<c:when test="${allowAllDataAccess == true}">					
+								Blessed:
+								<e:select name="blessed" valueList="default, all, yes, no" labelList="Default, All, Yes, No" selected="${blessed}"/>
+							</c:when>
+						</c:choose>
 					</td>
 				</tr>
 			</table>
