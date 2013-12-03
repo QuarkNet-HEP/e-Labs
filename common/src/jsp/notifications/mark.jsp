@@ -6,5 +6,5 @@
 <%
 	String id = request.getParameter("id");
 	ElabNotificationsProvider np = ElabFactory.getNotificationsProvider(elab);
-	np.markAsDeleted(user, Integer.parseInt(id));
+	np.markAsRead(user, Integer.parseInt(id));
 %>

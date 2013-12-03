@@ -19,7 +19,7 @@
 		<tr id="not${n.id}">
 			<td>${n.message}</td>
 			<td class="remove" style="text-align: center;">
-				<a href="javascript:markAsDeleted('not', ${n.id}, '${elab.name}')"> &#10004;</a>
+				<a href="javascript:markAsRead('not', ${n.id})"> &#10004;</a>
 			</td>
 		</tr>
 	</c:forEach>

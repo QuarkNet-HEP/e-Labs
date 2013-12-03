@@ -288,33 +288,11 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
     	long notificationCount = 0;
         Connection conn = null;
         PreparedStatement ps = null;
-        final String WHERE_UNREAD = "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL and s.read IS NOT TRUE and s.deleted is not TRUE) ";
-        String WHERE_UNREAD_ADMIN = "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL and s.read IS NOT TRUE) ";
         //SQL for notification that have been broadcast
-        String sql = "";
-        sql = "SELECT count(id) FROM notifications.message AS m " + 
-              "LEFT OUTER JOIN notifications.project_broadcast AS pb ON m.id = pb.message_id AND project_id = ? " + 
-              "LEFT OUTER JOIN notifications.state AS s ON m.id = s.message_id AND s.research_group_id = ? ";
-    	if (group.getId() == 23) {
-    		sql += WHERE_UNREAD_ADMIN; 
-    	} else {
-    		sql += WHERE_UNREAD;
-    	}
+        String sql = getNotificationSQL(group.getId(), false);
 
-    	sql += "AND  m.expiration > now() ";
-
-    	final String WHEREUNREAD = "WHERE (s.read IS NOT TRUE and s.deleted is not TRUE AND s.research_group_id = ?) ";
-        String WHEREUNREAD_ADMIN = "WHERE (s.read IS NOT TRUE) ";
-        String sqlGroup = "";
-        sqlGroup = "SELECT count(id) FROM notifications.message AS m " + 
-        		   "LEFT OUTER JOIN notifications.state AS s ON m.id = s.message_id  ";
-    	if (group.getId() == 23) {
-    		sqlGroup += WHEREUNREAD_ADMIN; 
-    	} else {
-    		sqlGroup += WHEREUNREAD;
-    	}
-
-            sqlGroup += "AND  m.expiration > now() " ;
+        //SQL for notifications that are just for this group
+        String sqlGroup = getNotificationSQLGroup(group.getId(), false);
             
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
@@ -326,16 +304,14 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             
             List<Notification> l = new ArrayList<Notification>();
             while (rs.next()) {
-            	notificationCount += rs.getLong(1);
+            	notificationCount++;
             }
             
             ps = conn.prepareStatement(sqlGroup); 
-            if (group.getId() != 23) {
-            	ps.setInt(1, group.getId());
-            }
+           	ps.setInt(1, group.getId());
             ResultSet rsGroup = ps.executeQuery();
             while (rsGroup.next()) {
-            	notificationCount += rsGroup.getLong(1);
+            	notificationCount++;
             }           
             return notificationCount;
             
@@ -354,57 +330,12 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             throws ElabException {
         Connection conn = null;
         PreparedStatement ps = null;
-        final String WHERE_UNREAD = "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL and s.read IS NOT TRUE and s.deleted is not TRUE) ";
-        final String WHERE_ALL  = "WHERE (pb.message_id IS NOT NULL AND s.message_id IS NULL) OR (pb.message_id IS NULL AND s.message_id IS NOT NULL and s.deleted is not TRUE) ";
-        String WHERE_UNREAD_ADMIN = "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL and s.read IS NOT TRUE) ";
-        String WHERE_ALL_ADMIN = "WHERE (pb.message_id IS NOT NULL AND s.message_id IS NULL) OR (pb.message_id IS NULL AND s.message_id IS NOT NULL) ";
         //SQL for notification that have been broadcast
-        String sql = "";
-        sql = "SELECT * FROM notifications.message AS m " + 
-              "LEFT OUTER JOIN notifications.project_broadcast AS pb ON m.id = pb.message_id AND project_id = ? " + 
-              "LEFT OUTER JOIN notifications.state AS s ON m.id = s.message_id AND s.research_group_id = ? ";
-        if (includeRead) {
-        	if (groupId == 23) {
-        		sql += WHERE_ALL_ADMIN;
-        	} else {
-        		sql += WHERE_ALL;
-        	}
-        }
-        else {
-        	if (groupId == 23) {
-        		sql += WHERE_UNREAD_ADMIN; 
-        	} else {
-        		sql += WHERE_UNREAD;
-        	}
-        }
+        String sql = getNotificationSQL(groupId, includeRead);
 
-    	sql += "AND  m.expiration > now() ";
-
-    	final String WHEREUNREAD = "WHERE (s.read IS NOT TRUE and s.deleted is not TRUE AND s.research_group_id = ?) ";
-        final String WHEREALL  = "WHERE (s.message_id IS NULL and s.deleted is not TRUE AND s.research_group_id = ?) ";        
-        String WHEREUNREAD_ADMIN = "WHERE (s.read IS NOT TRUE) ";
-        String WHEREALL_ADMIN  = "WHERE (s.message_id IS NOT NULL) ";     	//SQL for notifications that are just for this group
-        String sqlGroup = "";
-        sqlGroup = "SELECT * FROM notifications.message AS m " + 
-        		   "LEFT OUTER JOIN notifications.state AS s ON m.id = s.message_id  ";
-        	if (includeRead) {
-        		if (groupId == 23) {
-        			sqlGroup += WHEREALL_ADMIN;
-        		} else {
-        			sqlGroup += WHEREALL;
-        		}
-            }
-            else { 
-            	if (groupId == 23) {
-            		sqlGroup += WHEREUNREAD_ADMIN; 
-            	} else {
-            		sqlGroup += WHEREUNREAD;
-            	}
-            }
-
-            sqlGroup += "AND  m.expiration > now() " +
-            			"ORDER BY m.time DESC ";
-            
+        //SQL for notifications that are just for this group
+        String sqlGroup = getNotificationSQLGroup(groupId, includeRead);
+        
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             
@@ -430,9 +361,8 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             }
             
             ps = conn.prepareStatement(sqlGroup); 
-            if (groupId != 23) {
-            	ps.setInt(1, groupId);
-            }
+           	ps.setInt(1, groupId);
+
             ResultSet rsGroup = ps.executeQuery();
             while (rsGroup.next()) {
                 boolean read = rsGroup.getObject("read") == null ? false : (Boolean) rsGroup.getObject("read");
@@ -459,6 +389,65 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         }
     }
 
+    private String getNotificationSQL(int groupId, boolean includeRead) {
+        final String WHERE_UNREAD = "WHERE m.type = 0 and (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL and s.read IS NOT TRUE and s.deleted is not TRUE) ";
+        final String WHERE_ALL  = "WHERE m.type = 0 and (pb.message_id IS NOT NULL AND s.message_id IS NULL) OR (pb.message_id IS NULL AND s.message_id IS NOT NULL and s.deleted is not TRUE) ";
+        String WHERE_UNREAD_ADMIN = "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL and s.read IS NOT TRUE) ";
+        String WHERE_ALL_ADMIN = "WHERE (pb.message_id IS NOT NULL AND s.message_id IS NULL) OR (pb.message_id IS NULL AND s.message_id IS NOT NULL) ";
+        //SQL for notification that have been broadcast
+        String sql = "";
+        sql = "SELECT * FROM notifications.message AS m " + 
+              "LEFT OUTER JOIN notifications.project_broadcast AS pb ON m.id = pb.message_id AND project_id = ? " + 
+              "LEFT OUTER JOIN notifications.state AS s ON m.id = s.message_id AND s.research_group_id = ? ";
+        if (includeRead) {
+        	if (groupId == 23) {
+        		sql += WHERE_ALL_ADMIN;
+        	} else {
+        		sql += WHERE_ALL;
+        	}
+        }
+        else {
+        	if (groupId == 23) {
+        		sql += WHERE_UNREAD_ADMIN; 
+        	} else {
+        		sql += WHERE_UNREAD;
+        	}
+        }
+
+    	sql += "AND  m.expiration > now() ";
+    	return sql;
+    }// end of getNotificationSQL
+    
+    private String getNotificationSQLGroup(int groupId, boolean includeRead) {
+    	
+    	final String WHEREUNREAD = "WHERE m.type = 0 and (s.read IS NOT TRUE and s.deleted is not TRUE AND s.research_group_id = ? ) ";
+        final String WHEREALL  = "WHERE m.type = 0 and (s.message_id IS NULL and s.deleted is not TRUE AND s.research_group_id = ?) ";        
+        String WHEREUNREAD_ADMIN = "WHERE (s.read IS NOT TRUE AND s.research_group_id = ?) ";
+        String WHEREALL_ADMIN  = "WHERE (s.message_id IS NOT NULL AND s.research_group_id = ?) ";     	
+        //SQL for notifications that are just for this group
+        String sqlGroup = "";
+        sqlGroup = "SELECT * FROM notifications.message AS m " + 
+        		   "LEFT OUTER JOIN notifications.state AS s ON m.id = s.message_id  ";
+        	if (includeRead) {
+        		if (groupId == 23) {
+        			sqlGroup += WHEREALL_ADMIN;
+        		} else {
+        			sqlGroup += WHEREALL;
+        		}
+            }
+            else { 
+            	if (groupId == 23) {
+            		sqlGroup += WHEREUNREAD_ADMIN; 
+            	} else {
+            		sqlGroup += WHEREUNREAD;
+            	}
+            }
+
+            sqlGroup += "AND  m.expiration > now() " +
+            			"ORDER BY m.time DESC ";
+            return sqlGroup;
+    }//end of getNotificationSQLGroup
+    
     protected boolean exists(List<Notification> nList, Notification n) {
     	boolean exists = false;
     	for (Notification notification: nList) {
