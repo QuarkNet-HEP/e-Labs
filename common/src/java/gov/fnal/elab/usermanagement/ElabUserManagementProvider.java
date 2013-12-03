@@ -71,7 +71,7 @@ public interface ElabUserManagementProvider extends ElabProvider {
     String sendEmail(String to, String subject, String message) throws ElabException;
     void updateEmail(String username, String newemail) throws ElabException;
     void updateCosmicDataAccess(Collection teachers, String[] allowIds) throws ElabException;
-    boolean getDataAccessPermission(String teacherName) throws ElabException;
+    boolean getDataAccessPermission(int teacherId) throws ElabException;
     
 
     /**

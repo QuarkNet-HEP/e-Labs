@@ -75,7 +75,7 @@
 					</c:forEach>
 				</table>
 	
-				<input type="submit" name="submit" value="Update Permissions"/>	
+				<div style="width: 100%; text-align:center;"><input type="submit" name="submit" value="Update Permissions"/></div>
 			</form>
 			</div>
 			<!-- end content -->	

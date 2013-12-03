@@ -14,8 +14,8 @@
 SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false);
 String msg = (String) request.getAttribute("msg");
-String userTeacher = user.getTeacher();
-boolean allowAllDataAccess = elab.getUserManagementProvider().getDataAccessPermission(userTeacher);
+int teacherId = user.getTeacherId();
+boolean allowAllDataAccess = elab.getUserManagementProvider().getDataAccessPermission(teacherId);
 request.setAttribute("allowAllDataAccess", allowAllDataAccess);
 %>
 <script type="text/javascript">

@@ -1212,31 +1212,35 @@ public class DatabaseUserManagementProvider implements
 	    return result;
     }//end of sendEmail
     
-    //EPeronja: give permission to see all data (blessed and unblessed)
+    //EPeronja: give/remove permission to see all data (blessed and unblessed)
     public void updateCosmicDataAccess(Collection teachers, String[] allowIds) throws ElabException {
     	//first set them all to false
     	Connection conn = null; 
     	PreparedStatement ps = null;
+    	Object[] teacher = teachers.toArray();
     	try {
     		//first set them all to false
     		conn = DatabaseConnectionManager.getConnection(elab.getProperties());      		
     		ps = conn.prepareStatement("UPDATE teacher SET cosmic_all_data_access = false;");
     		ps.executeUpdate(); 
-    		
+    		for (int i = 0; i < teacher.length; i++) {
+    			ElabGroup t = (ElabGroup) teacher[i];
+    			t.setCosmicAllDataAccess(false);
+    		}
 			//now update the permissions
-			for (Iterator i = teachers.iterator(); i.hasNext();) {
-				ElabGroup t = (ElabGroup) i.next();
-				t.setCosmicAllDataAccess(false);
-				for (int j = 0; j < allowIds.length; j++) {
-					if (t.getId() == Integer.parseInt(allowIds[j])){
-			    		ps = conn.prepareStatement("UPDATE teacher SET cosmic_all_data_access = true " +
-			    								   "WHERE id = ?;");
-			    		ps.setInt(1, t.getId());
-			    		ps.executeUpdate(); 
-						t.setCosmicAllDataAccess(true);
+			for (int j = 0; j < allowIds.length; j++) {
+	    		for (int i = 0; i < teacher.length; i++) {
+	    			ElabGroup t = (ElabGroup) teacher[i]; 
+	    			if (t.getTeacherId() == Integer.parseInt(allowIds[j])){
+				    		ps = conn.prepareStatement("UPDATE teacher SET cosmic_all_data_access = true " +
+				    								   "WHERE id = ?;");
+				    		ps.setInt(1, t.getTeacherId());
+				    		ps.executeUpdate(); 
+							t.setCosmicAllDataAccess(true);
 					}
 				}
 			}
+			conn.commit();
     	}
     	catch(SQLException e) {
     		throw new ElabException("Could not update the teacher table.");
@@ -1244,11 +1248,10 @@ public class DatabaseUserManagementProvider implements
     	finally {
     		DatabaseConnectionManager.close(conn, ps);
     	}
- 		  		
     }//end of updateCosmicDataAccess
 
     //EPeronja: check if user's teacher has permission
-    public boolean getDataAccessPermission(String teacherName) throws ElabException {
+    public boolean getDataAccessPermission(int teacherId) throws ElabException {
     	boolean gotAccess = false;
     	PreparedStatement ps = null;
         Connection conn = null;
@@ -1257,9 +1260,9 @@ public class DatabaseUserManagementProvider implements
                     .getConnection(elab.getProperties());
             String sql = "SELECT cosmic_all_data_access " +
             			 "FROM teacher " +
-            			 "WHERE name = ? ";
+            			 "WHERE id = ? ";
             ps = conn.prepareStatement(sql);
-            ps.setString(1, teacherName);
+            ps.setInt(1, teacherId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
             	gotAccess = rs.getBoolean("cosmic_all_data_access");
