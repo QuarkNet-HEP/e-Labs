@@ -47,7 +47,7 @@ public class Notification {
     private long creation = System.currentTimeMillis(), expiration; 
     private boolean read = false, deleted = false, broadcast = false;
     private MessageType type = MessageType.NORMAL;
-    private int creatorGroupId; 
+    private int creatorGroupId;
     private String sender;
     
     public Notification() {

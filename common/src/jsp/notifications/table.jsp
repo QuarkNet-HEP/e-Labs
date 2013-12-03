@@ -14,7 +14,6 @@
 	}
 %>
 <table border="0" id="notifications-table">
-	<th></th><th>Read?</th>
 	<c:forEach var="n" items="${notifications}">
 		<tr id="not${n.id}">
 			<td>${n.message}</td>

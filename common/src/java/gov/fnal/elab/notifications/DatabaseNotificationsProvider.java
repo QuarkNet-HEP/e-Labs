@@ -289,10 +289,10 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         Connection conn = null;
         PreparedStatement ps = null;
         //SQL for notification that have been broadcast
-        String sql = getNotificationSQL(group.getId(), false);
+        String sql = getNotificationSQL(group.getId(), false, true);
 
         //SQL for notifications that are just for this group
-        String sqlGroup = getNotificationSQLGroup(group.getId(), false);
+        String sqlGroup = getNotificationSQLGroup(group.getId(), false, true);
             
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
@@ -300,6 +300,9 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             ps = conn.prepareStatement(sql); 
             ps.setInt(1, elab.getId());
             ps.setInt(2, group.getId());
+            if (group.getId() == 23) {
+            	ps.setInt(3, group.getId());
+            }
             ResultSet rs = ps.executeQuery();
             
             List<Notification> l = new ArrayList<Notification>();
@@ -314,7 +317,6 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             	notificationCount++;
             }           
             return notificationCount;
-            
         }
         catch (SQLException e) {
             throw new ElabException(e);
@@ -322,8 +324,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         finally {
             DatabaseConnectionManager.close(conn, ps);
         }
-   	
-    	
+
     }
 
     private List<Notification> getNotifications(int groupId, int count, int elabId, boolean includeRead)
@@ -331,14 +332,12 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         Connection conn = null;
         PreparedStatement ps = null;
         //SQL for notification that have been broadcast
-        String sql = getNotificationSQL(groupId, includeRead);
-
+        String sql = getNotificationSQL(groupId, includeRead, false);
         //SQL for notifications that are just for this group
-        String sqlGroup = getNotificationSQLGroup(groupId, includeRead);
+        String sqlGroup = getNotificationSQLGroup(groupId, includeRead, false);
         
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            
             ps = conn.prepareStatement(sql); 
             ps.setInt(1, elab.getId());
             ps.setInt(2, groupId);
@@ -349,26 +348,27 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
                 boolean read = rs.getObject("read") == null ? false : (Boolean) rs.getObject("read");
                 boolean deleted = rs.getObject("deleted") == null ? false : (Boolean) rs.getObject("deleted");
                 int creatorGroupId = rs.getInt("creator_research_group_id");
+                int addresseeId = rs.getInt("research_group_id");
             	Notification n = new Notification(rs.getInt("id"), rs.getString("message"), groupId, 
             			rs.getTimestamp("time").getTime(), rs.getTimestamp("expiration").getTime(),
             			rs.getInt("type"), read, deleted); 
             	if (creatorGroupId > 0) {
             		n.setSender(getSender(creatorGroupId));
             	}
-            	if (!exists(l,n)) {
-            		l.add(n);
-            	}
+           		l.add(n);
             }
             
             ps = conn.prepareStatement(sqlGroup); 
-           	ps.setInt(1, groupId);
-
+            if (groupId != 23) {
+            	ps.setInt(1, groupId);
+            }
             ResultSet rsGroup = ps.executeQuery();
             while (rsGroup.next()) {
                 boolean read = rsGroup.getObject("read") == null ? false : (Boolean) rsGroup.getObject("read");
                 boolean deleted = rsGroup.getObject("deleted") == null ? false : (Boolean) rsGroup.getObject("deleted");
                 int creatorGroupId = rsGroup.getInt("creator_research_group_id");
-            	Notification n = new Notification(rsGroup.getInt("id"), rsGroup.getString("message"), groupId, 
+                int addresseeId = rsGroup.getInt("research_group_id");
+                Notification n = new Notification(rsGroup.getInt("id"), rsGroup.getString("message"), groupId, 
             			rsGroup.getTimestamp("time").getTime(), rsGroup.getTimestamp("expiration").getTime(),
             			rsGroup.getInt("type"), read, deleted); 
             	if (creatorGroupId > 0) {
@@ -388,12 +388,25 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             DatabaseConnectionManager.close(conn, ps);
         }
     }
-
-    private String getNotificationSQL(int groupId, boolean includeRead) {
+   
+    protected boolean exists(List<Notification> nList, Notification n) {
+    	boolean exists = false;
+    	for (Notification notification: nList) {
+    		if (notification.getId() == n.getId()) {
+    			exists = true;
+    		}
+    	}
+    	return exists;
+    }//end of exists
+    
+    private String getNotificationSQL(int groupId, boolean includeRead, boolean forCount) {
         final String WHERE_UNREAD = "WHERE m.type = 0 and (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL and s.read IS NOT TRUE and s.deleted is not TRUE) ";
         final String WHERE_ALL  = "WHERE m.type = 0 and (pb.message_id IS NOT NULL AND s.message_id IS NULL) OR (pb.message_id IS NULL AND s.message_id IS NOT NULL and s.deleted is not TRUE) ";
         String WHERE_UNREAD_ADMIN = "WHERE (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL and s.read IS NOT TRUE) ";
         String WHERE_ALL_ADMIN = "WHERE (pb.message_id IS NOT NULL AND s.message_id IS NULL) OR (pb.message_id IS NULL AND s.message_id IS NOT NULL) ";
+        if (forCount) {
+        	WHERE_UNREAD_ADMIN += "AND s.research_group_id = ? ";
+        }
         //SQL for notification that have been broadcast
         String sql = "";
         sql = "SELECT * FROM notifications.message AS m " + 
@@ -418,12 +431,14 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
     	return sql;
     }// end of getNotificationSQL
     
-    private String getNotificationSQLGroup(int groupId, boolean includeRead) {
-    	
+    private String getNotificationSQLGroup(int groupId, boolean includeRead, boolean forCount) {   	
     	final String WHEREUNREAD = "WHERE m.type = 0 and (s.read IS NOT TRUE and s.deleted is not TRUE AND s.research_group_id = ? ) ";
         final String WHEREALL  = "WHERE m.type = 0 and (s.message_id IS NULL and s.deleted is not TRUE AND s.research_group_id = ?) ";        
-        String WHEREUNREAD_ADMIN = "WHERE (s.read IS NOT TRUE AND s.research_group_id = ?) ";
-        String WHEREALL_ADMIN  = "WHERE (s.message_id IS NOT NULL AND s.research_group_id = ?) ";     	
+        String WHEREUNREAD_ADMIN = "WHERE (s.read IS NOT TRUE ) ";
+        String WHEREALL_ADMIN  = "WHERE (s.message_id IS NOT NULL ) ";     	
+        if (forCount) {
+        	WHEREUNREAD_ADMIN += "AND s.research_group_id = ? ";
+        }
         //SQL for notifications that are just for this group
         String sqlGroup = "";
         sqlGroup = "SELECT * FROM notifications.message AS m " + 
@@ -442,21 +457,11 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             		sqlGroup += WHEREUNREAD;
             	}
             }
-
             sqlGroup += "AND  m.expiration > now() " +
             			"ORDER BY m.time DESC ";
             return sqlGroup;
     }//end of getNotificationSQLGroup
-    
-    protected boolean exists(List<Notification> nList, Notification n) {
-    	boolean exists = false;
-    	for (Notification notification: nList) {
-    		if (notification.getId() == n.getId()) {
-    			exists = true;
-    		}
-    	}
-    	return exists;
-    }
+
     
     @Override
     public void setElab(Elab elab) {
