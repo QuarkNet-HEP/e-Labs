@@ -47,6 +47,7 @@ while (<IN0>){
 	push (@path, $row[0]);
 	push (@splitFile, $row[1]);
 	push (@blessFile, $row[2]);
+	push (@duration, $duration);
 	push (@chan0Rate, sprintf("%.0f",$row[3]/$duration));
 	push (@chan1Rate, sprintf("%.0f",$row[4]/$duration));
 	push (@chan2Rate, sprintf("%.0f",$row[5]/$duration));
@@ -58,7 +59,7 @@ my $elements = @splitFile; #Number of entries in any of the above arrays.
 
 RELOAD: #necessary for the go to at the end. I hate to do it, but can't nest the two whiles{} otherwise needed to do this.
 #The @arguments array holds all of the information from line $i in the input file. We can cycle from $i = 0 to $elements to pass these values to the checking done in step 2.4
-@arguments = ($path[$i], $splitFile[$i], $blessFile[$i], $chan0Rate[$i], $chan1Rate[$i], $chan2Rate[$i], $chan3Rate[$i], $triggerRate[$i]);
+@arguments = ($path[$i], $splitFile[$i], $blessFile[$i], $chan0Rate[$i], $chan1Rate[$i], $chan2Rate[$i], $chan3Rate[$i], $triggerRate[$i], $duration[$i]);
 
 #step 2.3 above
 #open (IN1, "$pathToBlessFiles"."$arguments[1]")  || die "Cannot open ", $pathToBlessFiles.$arguments[1], " for input ";
@@ -70,34 +71,34 @@ while (<IN1>){#open a new .bless file for inspection
 	my @row = split /\s+/;
 	next if ($. == 1); #skip the header in the .bless file
 	 #begin step 2.4 above
-	if ($arguments[2] > $row[1] + $row[2] || $arguments[2] < $row[1]-$row[2]){ #Channel zero within one SD?
+	if ($arguments[3] > $row[1] + $row[2] || $arguments[3] < $row[1]-$row[2]){ #Channel zero within one SD?
 		$blessedState = "unblessed";
-		print OUT0 "$candidate\tunblessed at $row[0] due to Chan0 \n";
+		print OUT0 "$candidate\tunblessed at $row[0] due to Chan0 \t", $arguments[3]/$arguments[8],"\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[2]. . . 
 
-	if ($arguments[3] > $row[3] + $row[4] || $arguments[3] < $row[3]-$row[4]){ #Channel one within one SD?
+	if ($arguments[4] > $row[3] + $row[4] || $arguments[4] < $row[3]-$row[4]){ #Channel one within one SD?
 		$blessedState = "unblessed";
-		print OUT0 "$candidate\tunblessed at $row[0] due to Chan1 \n";
+		print OUT0 "$candidate\tunblessed at $row[0] due to Chan1 \t", $arguments[4]/$arguments[8],"\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[3]. . . 
 
-	if ($arguments[4] > $row[5] + $row[6] || $arguments[4] < $row[5]-$row[6]){ #Channel two within one SD?
+	if ($arguments[5] > $row[5] + $row[6] || $arguments[5] < $row[5]-$row[6]){ #Channel two within one SD?
 		$blessedState = "unblessed";
-		print OUT0 "$candidate\tunblessed at $row[0] due to Chan2 \n";
+		print OUT0 "$candidate\tunblessed at $row[0] due to Chan2 \t", $arguments[5]/$arguments[8],"\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[4]. . . 
 
-	if ($arguments[5] > $row[7] + $row[8] || $arguments[5] < $row[7]-$row[8]){ #Channel three within one SD?
+	if ($arguments[6] > $row[7] + $row[8] || $arguments[6] < $row[7]-$row[8]){ #Channel three within one SD?
 		$blessedState = "unblessed";
-		print OUT0 "$candidate\tunblessed at $row[0] due to Chan3 \n";
+		print OUT0 "$candidate\tunblessed at $row[0] due to Chan3 \t", $arguments[6]/$arguments[8],"\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[5]. . . 
 
-	if ($arguments[6] > $row[9] + $row[10] || $arguments[6] < $row[9]-$row[10]){ #triggers within one SD?
+	if ($arguments[7] > $row[9] + $row[10] || $arguments[7] < $row[9]-$row[10]){ #triggers within one SD?
 		next if $row[9] + $row[10] < 2; #low trigger rates alone shouldn't fail a file.
 		$blessedState = "unblessed";
-		print OUT0 "$candidate\tunblessed at $row[0] due to triggers \n";
+		print OUT0 "$candidate\tunblessed at $row[0] due to triggers \t", $arguments[7]/$arguments[8],"\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[6]. . .
 	 #end step 2.4 above
