@@ -39,6 +39,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.io.*;
+import java.util.*;
+import javax.mail.*;
+import javax.mail.internet.*;
+import javax.activation.*;
+import javax.servlet.http.*;
+import javax.servlet.*;
 
 public class DatabaseUserManagementProvider implements
         ElabUserManagementProvider, ElabProviderHandled {
@@ -434,7 +441,9 @@ public class DatabaseUserManagementProvider implements
                     .getConnection(elab.getProperties());
             int projectId = elab.getId();
             ps = conn.prepareStatement(
-            		"SELECT DISTINCT teacher.name AS tname, teacher.email AS temail, teacher.id AS teacherid, research_group.id AS id, research_group.name AS rgname, research_group.userarea AS rguserarea, research_group.active AS rgactive " +
+            		"SELECT DISTINCT teacher.name AS tname, teacher.email AS temail, teacher.id AS teacherid, " +
+            				"research_group.id AS id, research_group.name AS rgname, research_group.userarea AS rguserarea, " +
+            				" research_group.active AS rgactive, teacher.cosmic_all_data_access as cosmic_all_data_access " +
             		"FROM research_group_project " + 
             		"LEFT OUTER JOIN research_group ON research_group.id = research_group_project.research_group_id " + 
             		"INNER JOIN teacher ON research_group.teacher_id = teacher.id " +  
@@ -461,6 +470,7 @@ public class DatabaseUserManagementProvider implements
                     t.setId(rs.getInt("id"));
                     t.setTeacherId(rs.getInt("teacherid"));
                     t.setActive(rs.getBoolean("rgactive"));
+                    t.setCosmicAllDataAccess(rs.getBoolean("cosmic_all_data_access"));
                     g = new ElabGroup(elab, this);
                     if (StringUtils.isNotBlank(rs.getString("rguserarea"))) {
                         String[] brokenSchema = rs.getString("rguserarea")
@@ -475,6 +485,7 @@ public class DatabaseUserManagementProvider implements
                 }
                 g.setName(rs.getString("rgname"));
                 g.setActive(rs.getBoolean("rgactive"));
+                g.setCosmicAllDataAccess(rs.getBoolean("cosmic_all_data_access"));                
                 t.addGroup(g);
             }
             return teachers;
@@ -1059,7 +1070,7 @@ public class DatabaseUserManagementProvider implements
             DatabaseConnectionManager.close(conn, ps, ps2);
         }
     }
-
+    //EPeronja: get email address
     public String getEmail(String groupname) throws ElabException {
     	String email = "";
     	PreparedStatement ps = null;
@@ -1071,7 +1082,7 @@ public class DatabaseUserManagementProvider implements
             			 "FROM teacher t " +
             			 "INNER JOIN research_group rg " +
             			 "ON t.id = rg.teacher_id " +
-            			 "WHERE rg.name = ? ";
+            			 "WHERE rg.name = ? " ;
             ps = conn.prepareStatement(sql);
             ps.setString(1, groupname);
             
@@ -1087,7 +1098,185 @@ public class DatabaseUserManagementProvider implements
         finally {
             DatabaseConnectionManager.close(conn, ps);
         }
-    }
+    }//end of getEmail (from groupname)
+    
+    //EPeronja: get user role
+    public String getUserRole(String groupname) throws ElabException {
+    	String role = "";
+    	PreparedStatement ps = null;
+        Connection conn = null;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            String sql = "SELECT rg.role " +
+            			 "FROM research_group rg " +
+            			 "WHERE rg.name = ? " ;
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, groupname);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+            	role = rs.getString("role");
+            }
+            return role;
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, ps);
+        }    	
+    }//end of getUserRole
+    
+    //EPeronja: retrieve usernames    
+    public String[] getUsernameFromEmail(String email) throws ElabException {
+    	String[] username;
+    	PreparedStatement ps = null;
+        Connection conn = null;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            String sql = "SELECT rg.name " +
+            			 "FROM teacher t " +
+            			 "INNER JOIN research_group rg " +
+            			 "ON t.id = rg.teacher_id " +
+            			 "WHERE t.email = ? " +
+            			 "AND rg.role = 'teacher' ";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            
+            ResultSet rs = ps.executeQuery();
+            int count = 0;
+            while (rs.next()) {
+            	count++;
+            }
+            
+            if (count > 0) {
+            	username = new String[count];
+	            int i = 0;
+	            rs = ps.executeQuery();
+	            while (rs.next()) {
+	            	username[i] = rs.getString("name");
+	            	i++;
+	            }
+	            return username;
+            } else {
+            	return null;
+            }
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, ps);
+        }   	
+    }//end of get username from email address
+
+    //EPeronja: send e-mail to users
+    public String sendEmail(String to, String subject, String message) throws ElabException {
+    	String result = "";
+		//Sender's email ID 
+		final String from = "elabs@i2u2.org";
+		final String password = "";
+	    //Get system properties object
+	    Properties properties = System.getProperties();
+	    //Setup mail server
+	    properties.put("mail.smtp.host", "smtp.mcs.anl.gov");
+	    properties.put("mail.smtp.port", "25");
+	    properties.put("mail.smtp.auth", "true");
+	    properties.put("mail.smtp.starttls.enable", "true");			    
+	    //Get the default Session object.
+	    //Session mailSession = Session.getDefaultInstance(properties);
+	   	Session mailSession = Session.getInstance(properties, new javax.mail.Authenticator() {
+	   		protected PasswordAuthentication getPasswordAuthentication() {
+	   			return new PasswordAuthentication(from, password );
+	   		}
+	   	});
+	    try{
+	       //Create a default MimeMessage object.
+	       MimeMessage msg = new MimeMessage(mailSession);
+	       //Set From: header field of the header.
+	       msg.setFrom(new InternetAddress(from));
+	       //Set To: header field of the header.
+	       msg.addRecipient(Message.RecipientType.TO,
+	                               new InternetAddress(to));
+	       // Set Subject: header field
+	       msg.setSubject(subject);
+	       msg.setText(message);
+	       //Send message
+	       Transport.send(msg); 
+		} catch (MessagingException mex) {
+		      mex.printStackTrace();
+		      result = "Error: unable to send message. " + mex.toString();
+		}	
+	    return result;
+    }//end of sendEmail
+    
+    //EPeronja: give/remove permission to see all data (blessed and unblessed)
+    public void updateCosmicDataAccess(Collection teachers, String[] allowIds) throws ElabException {
+    	//first set them all to false
+    	Connection conn = null; 
+    	PreparedStatement ps = null;
+    	Object[] teacher = teachers.toArray();
+    	try {
+    		//first set them all to false
+    		conn = DatabaseConnectionManager.getConnection(elab.getProperties());      		
+    		ps = conn.prepareStatement("UPDATE teacher SET cosmic_all_data_access = false;");
+    		ps.executeUpdate(); 
+    		for (int i = 0; i < teacher.length; i++) {
+    			ElabGroup t = (ElabGroup) teacher[i];
+    			t.setCosmicAllDataAccess(false);
+    		}
+			//now update the permissions
+			for (int j = 0; j < allowIds.length; j++) {
+	    		for (int i = 0; i < teacher.length; i++) {
+	    			ElabGroup t = (ElabGroup) teacher[i]; 
+	    			if (t.getTeacherId() == Integer.parseInt(allowIds[j])){
+				    		ps = conn.prepareStatement("UPDATE teacher SET cosmic_all_data_access = true " +
+				    								   "WHERE id = ?;");
+				    		ps.setInt(1, t.getTeacherId());
+				    		ps.executeUpdate(); 
+							t.setCosmicAllDataAccess(true);
+					}
+				}
+			}
+			conn.commit();
+    	}
+    	catch(SQLException e) {
+    		throw new ElabException("Could not update the teacher table.");
+    	}
+    	finally {
+    		DatabaseConnectionManager.close(conn, ps);
+    	}
+    }//end of updateCosmicDataAccess
+
+    //EPeronja: check if user's teacher has permission
+    public boolean getDataAccessPermission(int teacherId) throws ElabException {
+    	boolean gotAccess = false;
+    	PreparedStatement ps = null;
+        Connection conn = null;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            String sql = "SELECT cosmic_all_data_access " +
+            			 "FROM teacher " +
+            			 "WHERE id = ? ";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, teacherId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+            	gotAccess = rs.getBoolean("cosmic_all_data_access");
+            }
+        	return gotAccess;            
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, ps);
+        }   	    	
+    }//end of getDataAccessPermission
+
     
     public Collection<String> getProjectNames() throws ElabException {
         List<String> names = new ArrayList<String>();

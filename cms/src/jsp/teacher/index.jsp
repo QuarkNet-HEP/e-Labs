@@ -288,7 +288,9 @@ function showAll(start, finish)
 		<td>
 			<div id="right">
 				<%@ include file="../include/newsbox.jsp" %>
-				<jsp:include page="../login/login-control.jsp"/>
+				<jsp:include page="../login/login-control.jsp">
+					<jsp:param name="login_as" value="teacher" />
+				</jsp:include>
 			</div>
 		</td>
 	</tr>

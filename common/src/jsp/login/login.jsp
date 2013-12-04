@@ -6,6 +6,7 @@
 	String username = request.getParameter("user");
 	String password = request.getParameter("pass");
 	String message  = request.getParameter("message");
+	request.setAttribute("username", username);
 	if (message == null) {
 		message = "Please log in to proceed";
 	}
@@ -28,7 +29,11 @@
 	if (user != null) {
 		//login successful
 		ElabGroup.setUser(session, user);
+		session.setAttribute("user", user);
 		String prevPage = request.getParameter("prevPage");
+		if (username.equals("admin")) {
+			prevPage = "../admin/index.jsp";
+		}
 		String redirect = prevPage; 
 		if(prevPage == null) {
     		prevPage = elab.getProperties().getLoggedInHomePage();
@@ -160,6 +165,7 @@
 				<div id="login-form-contents">
 					<%@ include file="login-form.jsp" %>
 				</div>
+
 				<div id="login-form-text">
 					<p>
 						<a href="<%= elab.getGuestLoginLink(request) %>">Login as guest</a>

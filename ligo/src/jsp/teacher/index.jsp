@@ -31,9 +31,9 @@
 		<link rel="stylesheet" type="text/css" href="/elab/cosmic/css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="/elab/cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
-	<link type="text/css" href="http://www.i2u2.org/elab/cosmic/include/jquery/css/default/jquery-ui-1.7.custom.css" rel="Stylesheet" />	
+	<link type="text/css" href="http://www.i2u2.org/elab/cosmic/include/jquery/css/ui-lightness/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />	
 	<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/jquery/js/jquery-1.4.3.min.js"></script>
-	<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/jquery/js/jquery-ui-1.7.custom.min.js"></script>
+	<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/jquery/js/jquery-ui-1.7.3.custom.min.js"></script>
 	<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/jquery/js/jquery.event.hover-1.0.js"></script>
 	<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/elab.js"></script>
 
@@ -360,7 +360,9 @@ Review students' evidence of what they know/understand and reflections on their 
 		<td>
 			<div id="right">
 				<%@ include file="../include/newsbox.jsp" %>
-				<jsp:include page="../login/login-control.jsp"/>
+				<jsp:include page="../login/login-control.jsp">
+					<jsp:param name="login_as" value="teacher" />
+				</jsp:include>
 			</div>
 		</td>
 	</tr>
