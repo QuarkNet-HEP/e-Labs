@@ -449,6 +449,7 @@ String submit =  request.getParameter("submit");
                                         <option value="AY2010">2010-2011</option>
                                         <option value="AY2011">2011-2012</option>
                                         <option value="AY2012">2012-2013</option>
+                                        <option value="AY2013">2013-2014</option>
                                     </select>
                                     <%
 
@@ -466,6 +467,7 @@ String submit =  request.getParameter("submit");
                                         <option value="AY2010">2010-2011</option>
                                         <option value="AY2011">2011-2012</option>
                                         <option value="AY2012">2012-2013</option>
+                                        <option value="AY2013">2013-2014</option>
                                     </select>
                                     <%
 
@@ -685,13 +687,14 @@ String submit =  request.getParameter("submit");
                                     // Generate hashed passwords 
                                     String hashedPassword = BCrypt.hashpw(passwd1, BCrypt.gensalt(12)); 
                                     
-                                    String SQLstatement = "INSERT INTO research_group (name, hashedpassword, teacher_id, role, userarea, ay, survey) SELECT " +
+                                    String SQLstatement = "INSERT INTO research_group (name, hashedpassword, teacher_id, role, userarea, ay, active, survey) SELECT " +
                                                             "'" + group + "', " +
                                                             "'" + hashedPassword + "', " +
                                                             "id, " +
                                                             "'" + role + "', " +
                                                             "'" + newUserArea + "', " + 
                                                             "'" + ay + "', " +
+                                                            "true, " +
                                                             "'" + survey + "'" +
                                                             "FROM teacher WHERE teacher.id ='" + teacherId + "' RETURNING research_group.id;";
                                     try{
