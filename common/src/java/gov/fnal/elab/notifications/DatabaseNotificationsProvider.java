@@ -285,6 +285,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             DatabaseConnectionManager.close(conn, ps);
         }
         */
+    	/*
     	long notificationCount = 0;
         Connection conn = null;
         PreparedStatement ps = null;
@@ -317,8 +318,6 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             while (rs.next()) {
             	notificationCount++;
             }
-            
-            
             return notificationCount;
         }
         catch (SQLException e) {
@@ -327,7 +326,11 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         finally {
             DatabaseConnectionManager.close(conn, ps);
         }
-
+        */
+		List<Notification> n = getNotifications(group.getId(), ElabNotificationsProvider.MAX_COUNT, elab.getId(), false);
+    	long notificationCount = 0;
+    	notificationCount = Long.parseLong(String.valueOf(n.size()));
+    	return notificationCount;
     }
 
     private List<Notification> getNotifications(int groupId, int count, int elabId, boolean includeRead)
