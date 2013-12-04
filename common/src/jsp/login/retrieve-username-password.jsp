@@ -53,7 +53,7 @@ String runBodyBegin = "We have found the following username(s) associated with t
 String runUIMsg = "We have sent a list of e-Lab logins associated with the e-mail address you provided."+
 				  "<br />Please check that account for a message from elabs@i2u2.org.<br />";
 String runError = "There are no usernames associated with the e-mail address: ";
-String footerMessage = "Questions? Please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a>.<br />" +
+String footerMessage = "<br />Questions? Please contact <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a>.<br />" +
 		  "<a href=\'../teacher/index.jsp\'>Log in</a>";		
 //if this is a submit we want to check the reCaptcha
 if (submit != null && !submit.equals("")) {
