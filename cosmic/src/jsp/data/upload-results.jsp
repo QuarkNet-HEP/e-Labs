@@ -12,9 +12,11 @@
 <%@ page import="gov.fnal.elab.usermanagement.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
+<%@ page import="gov.fnal.elab.cosmic.util.*" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.Geometries" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
+
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -54,10 +56,10 @@
 	String detectorId = (String) results.getAnalysis().getParameter("detectorid");
 	String comments = (String) results.getAnalysis().getParameter("comments");
 	String dataDir = elab.getProperties().getDataDir();
-	long channels[] = new long[4];
+	int channels[] = new int[4];
 
-	List<String> splits = new ArrayList<String>();  //for both the split name and the channel validity information
-
+	List splits = new ArrayList();  //for both the split name and the channel validity information
+			
 	boolean c = true;
 	String splitPFNs = "";
 	String cpldFrequency = "";
@@ -65,10 +67,12 @@
 	CatalogEntry entry;
 	
 	//get metadata which contains the lfns of the raw filename AND the split files
-	ArrayList<String> meta = null;
+	ArrayList meta = null;
 	boolean metaSuccess = false;
 	boolean totalSuccess = true;        //false if there are any rc.data or meta errors
 	File fmeta = new File(f.getAbsolutePath() + ".meta");     //depends on Split.pl writing the meta to rawName.meta
+	String sqlErrors = "";
+	
 	if (fmeta.canRead()) {
     	BufferedReader br = new BufferedReader(new FileReader(fmeta));
         String line = null;
@@ -86,12 +90,14 @@
         	            elab.getDataCatalogProvider().insert(entry);
                 	} 
         	        catch (ElabException e) {
-                	    throw new ElabJspException("Error setting metadata: " + e.getMessage(), e);
+        				//EPeronja-585: Sql Errors when uploading data, give meaningful message
+        	        	sqlErrors += "Error setting metadata for "+currLFN+":" + e.getMessage()+ "<br />";
+                	    //throw new ElabJspException("Error setting metadata: " + e.getMessage(), e);
                     }
                 }
 
                 //start a new metadata array
-                meta = new ArrayList<String>();
+                meta = new ArrayList();
                 currPFN = temp[1];
 	            currLFN = temp[1].substring(temp[1].lastIndexOf('/') + 1);
     	        if(temp[0].equals("[RAW]")) {
@@ -126,9 +132,9 @@
                 else if (tmp[0].equals("julianstartdate")) {
                 	Geometry geometry = new Geometry(elab.getProperties().getDataDir(), Integer.parseInt(detectorId));
 					if (geometry != null && !geometry.isEmpty()) {
-						SortedMap<String, GeoEntryBean> geos = geometry.getGeoEntriesBefore(tmp[2]);
+						SortedMap geos = geometry.getGeoEntriesBefore(tmp[2]);
 						if (!geos.isEmpty()) {
-							GeoEntryBean g = geos.get(geos.lastKey());
+							GeoEntryBean g = (GeoEntryBean) geos.get(geos.lastKey());
 							meta.add("stacked boolean " + ("0".equals(g.getStackedState()) ? "false" : "true"));	
 						}
                 	}
@@ -143,25 +149,28 @@
 				elab.getDataCatalogProvider().insert(entry);
 			}
 			catch (ElabException e) {
-				throw new ElabJspException("Error setting metadata: " + e.getMessage(), e);
+				//EPeronja-585: Sql Errors when uploading data, give meaningful message
+	        	sqlErrors += "Error setting metadata for "+currLFN+":" + e.getMessage()+ "<br />";
+				//throw new ElabJspException("Error setting metadata: " + e.getMessage(), e);
             }
         }
 	}
     else {
-        throw new ElabJspException("Error reading metadata file: " + f.getAbsolutePath() + ".meta");
+		//EPeronja-585: Sql Errors when uploading data, give meaningful message
+    	sqlErrors += "Error reading metadata file: " + f.getAbsolutePath() + ".meta.<br />";
+        //throw new ElabJspException("Error reading metadata file: " + f.getAbsolutePath() + ".meta");
     }
-	
-	List<CatalogEntry> entries = new ArrayList<CatalogEntry>();
-	for (String s : splits) {
-		CatalogEntry ce = elab.getDataCatalogProvider().getEntry(s);
-		entries.add(ce);
-		for (int k = 0; k < 4; k++) {
-	    	if (ce.getTupleValue("chan" + (k+1)) != null) {
-	        	channels[k] += ((Long) ce.getTupleValue("chan" + (k + 1))).longValue(); 
-	    	}
+
+	Iterator l = splits.iterator();
+	List entries = new ArrayList();
+	while (l.hasNext()) {
+	    CatalogEntry s = elab.getDataCatalogProvider().getEntry((String) l.next());
+	    entries.add(s);
+	    for (int k = 0; k < 4; k++) {
+	        channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).intValue();
 	    }
 	}
-	
+	request.setAttribute("sqlErrors", sqlErrors);
 	request.setAttribute("channels", channels);
 	request.setAttribute("splitEntries", entries);
 	CatalogEntry e = elab.getDataCatalogProvider().getEntry(rawName);
@@ -196,7 +205,7 @@
     
     	Your data was split into ${lfnssz} ${lfnssz == 1 ? 'day' : 'days'} spanning from:<br/>
     	${entry.tupleMap.startdate} to ${entry.tupleMap.enddate}<br/>
-    	The uploaded file contained ${entry.tupleMap.totalDataLines} accepted data lines. We ignored ${entry.tupleMap.GPSSuspectsTotal} line(s) due to a suspect GPS date.
+    	The uploaded file contained ${entry.tupleMap.totalDataLines} accepted data lines. We ignored ${entry.tupleMap.GPSSuspects} line(s) due to a suspect GPS date.
     	
     	<table id="channels-table">
     		<tr>
@@ -218,16 +227,22 @@
 		<c:choose>
 			<c:when test="${entry.tupleMap.avglatitude == '0'}">
 				<%--if it were truly 0, it would be 0.0.0 in the metadata --%>
-				We found no reliable GPS location information in your data.<br/>
-				<br/>
+				No valid GPS information found in your data.<br/>
+				Either the "DG" command was not run or the GPS did not see enough satellites.<br/><br/>
 			</c:when>
 			<c:otherwise>
 				Average latitude: ${entry.tupleMap.avglatitude}<br/>
 				Average longitude: ${entry.tupleMap.avglongitude}<br/>
 				Average altitude: ${entry.tupleMap.avgaltitude}<br/>
 			</c:otherwise>
-		</c:choose>		
-
+		</c:choose>	
+		<br />	
+		<c:choose>		
+			<c:when test="${not empty sqlErrors}">
+				<p>Error(s) updating metadata, please send the message below to <a href="mailto:e-labs@fnal.gov">e-labs@fnal.gov</a></p>
+				<p>${sqlErrors}</p>
+			</c:when>
+		</c:choose>
 			</div>
 			<!-- end content -->	
 		
