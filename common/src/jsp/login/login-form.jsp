@@ -3,6 +3,8 @@
 	if (prevPage == null) {
 		prevPage = elab.getProperties().getLoggedInHomePage();
 	}
+	String login_as = request.getParameter("login_as");
+	request.setAttribute("login_as", login_as);
 %>
 <form method="post" action="<%= elab.secure("login/login.jsp") %>">
 	<table>
@@ -32,6 +34,11 @@
 				<input class="login-button" type="submit" name="login" value="Login" tabindex="3" />
 			</td>
 		</tr>
+		<% if (login_as != null && login_as.equals("teacher")) { %>
+			<tr>
+				<td colspan="2"><a href="../login/retrieve-username-password.jsp">Forgot username/password?</a></div>
+			</tr>
+		<% } %>
 	</table>
 	<input type="hidden" name="project" value="${elab.name}" />
 	<input type="hidden" name="prevPage" value="<%= prevPage %>" />
