@@ -12,8 +12,11 @@
 
 <%SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false); 
-int teacherId = user.getTeacherId();
-boolean allowAllDataAccess = elab.getUserManagementProvider().getDataAccessPermission(teacherId);
+boolean allowAllDataAccess = false;
+if (!user.getName().equals("guest")) {
+	int teacherId = user.getTeacherId();
+	allowAllDataAccess = elab.getUserManagementProvider().getDataAccessPermission(teacherId);
+}
 request.setAttribute("allowAllDataAccess", allowAllDataAccess);
 %>
 <script type="text/javascript">
