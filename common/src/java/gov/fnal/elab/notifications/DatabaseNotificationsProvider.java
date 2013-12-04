@@ -296,7 +296,16 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+            List<Notification> l = new ArrayList<Notification>();
+                       
             
+            ps = conn.prepareStatement(sqlGroup); 
+           	ps.setInt(1, group.getId());
+            ResultSet rsGroup = ps.executeQuery();
+            while (rsGroup.next()) {
+            	notificationCount++;
+            }           
+
             ps = conn.prepareStatement(sql); 
             ps.setInt(1, elab.getId());
             ps.setInt(2, group.getId());
@@ -305,17 +314,11 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             }
             ResultSet rs = ps.executeQuery();
             
-            List<Notification> l = new ArrayList<Notification>();
             while (rs.next()) {
             	notificationCount++;
             }
             
-            ps = conn.prepareStatement(sqlGroup); 
-           	ps.setInt(1, group.getId());
-            ResultSet rsGroup = ps.executeQuery();
-            while (rsGroup.next()) {
-            	notificationCount++;
-            }           
+            
             return notificationCount;
         }
         catch (SQLException e) {
@@ -338,31 +341,17 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = conn.prepareStatement(sql); 
-            ps.setInt(1, elab.getId());
-            ps.setInt(2, groupId);
-            ResultSet rs = ps.executeQuery();
-            
-            List<Notification> l = new ArrayList<Notification>();
-            while (rs.next()) {
-                boolean read = rs.getObject("read") == null ? false : (Boolean) rs.getObject("read");
-                boolean deleted = rs.getObject("deleted") == null ? false : (Boolean) rs.getObject("deleted");
-                int creatorGroupId = rs.getInt("creator_research_group_id");
-                int addresseeId = rs.getInt("research_group_id");
-            	Notification n = new Notification(rs.getInt("id"), rs.getString("message"), groupId, 
-            			rs.getTimestamp("time").getTime(), rs.getTimestamp("expiration").getTime(),
-            			rs.getInt("type"), read, deleted); 
-            	if (creatorGroupId > 0) {
-            		n.setSender(getSender(creatorGroupId));
-            	}
-           		l.add(n);
-            }
-            
+//            ps = conn.prepareStatement(sql); 
+//            ps.setInt(1, elab.getId());
+//            ps.setInt(2, groupId);
+//            ResultSet rs = ps.executeQuery();
             ps = conn.prepareStatement(sqlGroup); 
             if (groupId != 23) {
             	ps.setInt(1, groupId);
             }
             ResultSet rsGroup = ps.executeQuery();
+            
+            List<Notification> l = new ArrayList<Notification>();
             while (rsGroup.next()) {
                 boolean read = rsGroup.getObject("read") == null ? false : (Boolean) rsGroup.getObject("read");
                 boolean deleted = rsGroup.getObject("deleted") == null ? false : (Boolean) rsGroup.getObject("deleted");
@@ -378,6 +367,66 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             		l.add(n);
             	}
             }           
+
+            
+            /*
+            while (rs.next()) {
+                boolean read = rs.getObject("read") == null ? false : (Boolean) rs.getObject("read");
+                boolean deleted = rs.getObject("deleted") == null ? false : (Boolean) rs.getObject("deleted");
+                int creatorGroupId = rs.getInt("creator_research_group_id");
+                int addresseeId = rs.getInt("research_group_id");
+            	Notification n = new Notification(rs.getInt("id"), rs.getString("message"), groupId, 
+            			rs.getTimestamp("time").getTime(), rs.getTimestamp("expiration").getTime(),
+            			rs.getInt("type"), read, deleted); 
+            	if (creatorGroupId > 0) {
+            		n.setSender(getSender(creatorGroupId));
+            	}
+           		l.add(n);
+            }
+*/  
+            ps = conn.prepareStatement(sql); 
+            ps.setInt(1, elab.getId());
+            ps.setInt(2, groupId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                boolean read = rs.getObject("read") == null ? false : (Boolean) rs.getObject("read");
+                boolean deleted = rs.getObject("deleted") == null ? false : (Boolean) rs.getObject("deleted");
+                int creatorGroupId = rs.getInt("creator_research_group_id");
+                int addresseeId = rs.getInt("research_group_id");
+            	Notification n = new Notification(rs.getInt("id"), rs.getString("message"), groupId, 
+            			rs.getTimestamp("time").getTime(), rs.getTimestamp("expiration").getTime(),
+            			rs.getInt("type"), read, deleted); 
+            	if (creatorGroupId > 0) {
+            		n.setSender(getSender(creatorGroupId));
+            	}
+            	if (!exists(l,n)) {
+            		l.add(n);
+            	}
+            }
+            
+//            ps = conn.prepareStatement(sqlGroup); 
+//            if (groupId != 23) {
+//            	ps.setInt(1, groupId);
+//            }
+//            ResultSet rsGroup = ps.executeQuery();
+
+/*            
+            while (rsGroup.next()) {
+                boolean read = rsGroup.getObject("read") == null ? false : (Boolean) rsGroup.getObject("read");
+                boolean deleted = rsGroup.getObject("deleted") == null ? false : (Boolean) rsGroup.getObject("deleted");
+                int creatorGroupId = rsGroup.getInt("creator_research_group_id");
+                int addresseeId = rsGroup.getInt("research_group_id");
+                Notification n = new Notification(rsGroup.getInt("id"), rsGroup.getString("message"), groupId, 
+            			rsGroup.getTimestamp("time").getTime(), rsGroup.getTimestamp("expiration").getTime(),
+            			rsGroup.getInt("type"), read, deleted); 
+            	if (creatorGroupId > 0) {
+            		n.setSender(getSender(creatorGroupId));
+            	}
+            	if (!exists(l,n)) {
+            		l.add(n);
+            	}
+            }           
+*/
             return l;
             
         }
