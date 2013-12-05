@@ -36,6 +36,7 @@ while (<IN0>){
 	my @row = split /\,/;
 	#step 2.1 above 
 	my $duration = substr($row[9],11,2)*3600+substr($row[9],14,2)*60 + substr($row[9],17,2) - substr($row[8],11,2)*3600 - substr($row[8],14,2)*60 - substr($row[8],17,2); #length of file in seconds
+	$files++; #keeps track of the number of checked files
 	if ($duration <= 0){ #some files have fouled startDate, endDate metadata. A bad duration will yield a bad rate--these automatically fail.
 		$unblessed++;
 		print OUT0 "$row[1]\tunblessed\tDuration <= 0s\n";
@@ -54,7 +55,6 @@ while (<IN0>){
 	push (@chan2Rate, sprintf("%.0f",$row[5]/$duration));
 	push (@chan3Rate, sprintf("%.0f",$row[6]/$duration));
 	push (@triggerRate, sprintf("%.6f",$row[7]/$duration));
-	$files++;
 }#end while IN0
 close IN0;
 my $elements = @splitFile; #Number of entries in any of the above arrays.
@@ -75,28 +75,28 @@ while (<IN1>){#open a new .bless file for inspection
 	 #begin step 2.4 above
 	if ($arguments[3] > $row[1] + $row[2] || $arguments[3] < $row[1]-$row[2]){ #Channel zero within one SD?
 		$blessedState = "unblessed";
-		$unblessed++;
+		$unblessed++; #keeps track of the number of failed files
 		print OUT0 "$candidate\tunblessed at $row[0] due to Chan0 \t", $arguments[3]/$arguments[8],"\t$row[1]\t$row[2]\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[2]. . . 
 
 	if ($arguments[4] > $row[3] + $row[4] || $arguments[4] < $row[3]-$row[4]){ #Channel one within one SD?
 		$blessedState = "unblessed";
-		$unblessed++;
+		$unblessed++; #keeps track of the number of failed files
 		print OUT0 "$candidate\tunblessed at $row[0] due to Chan1 \t", $arguments[4]/$arguments[8],"\t$row[3]\t$row[4]\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[3]. . . 
 
 	if ($arguments[5] > $row[5] + $row[6] || $arguments[5] < $row[5]-$row[6]){ #Channel two within one SD?
 		$blessedState = "unblessed";
-		$unblessed++;
+		$unblessed++; #keeps track of the number of failed files
 		print OUT0 "$candidate\tunblessed at $row[0] due to Chan2 \t", $arguments[5]/$arguments[8],"\t$row[5]\t$row[6]\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[4]. . . 
 
 	if ($arguments[6] > $row[7] + $row[8] || $arguments[6] < $row[7]-$row[8]){ #Channel three within one SD?
 		$blessedState = "unblessed";
-		$unblessed++;
+		$unblessed++; #keeps track of the number of failed files
 		print OUT0 "$candidate\tunblessed at $row[0] due to Chan3 \t", $arguments[6]/$arguments[8],"\t$row[7]\t$row[8]\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[5]. . . 
@@ -104,7 +104,7 @@ while (<IN1>){#open a new .bless file for inspection
 	if ($arguments[7] > $row[9] + $row[10] || $arguments[7] < $row[9]-$row[10]){ #triggers within one SD?
 		next if $row[9] + $row[10] < 2; #low trigger rates alone shouldn't fail a file.
 		$blessedState = "unblessed";
-		$unblessed++;
+		$unblessed++; #keeps track of the number of failed files
 		print OUT0 "$candidate\tunblessed at $row[0] due to triggers \t", $arguments[7]/$arguments[8],"\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[6]. . .
@@ -112,7 +112,7 @@ while (<IN1>){#open a new .bless file for inspection
 }#end of while <IN1>
 #step 2.4.3 above
 print OUT0 "$candidate\t", $blessedState, "\n" if $blessedState eq "blessed";# if a file gets to here, it passed all checks.
-$blessed++ if $blessedState eq "blessed";
+$blessed++ if $blessedState eq "blessed"; #keeps track of the number of passed files
 $blessedState = "blessed"; #reset this for the next file.
 #close the current .bless file
 close IN1;
