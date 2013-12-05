@@ -44,6 +44,10 @@
 						<td>&#8226; <a href="../references/control.jsp">References</a></td>
 						<td></td>					
 					</tr>
+					<tr>
+						<td>&#8226; <a href="clean-guest.jsp">Clear guest user data</a></td>
+						<td>Delete all files created by the guest user.</td>					
+					</tr>
 					<c:if test='${elab.name == "cosmic" }'>
 						<tr>
 							<td>&#8226; <a href="../analysis/list-all.jsp">All Analyses</a></td>
