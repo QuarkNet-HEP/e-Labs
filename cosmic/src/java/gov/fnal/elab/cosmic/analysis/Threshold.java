@@ -92,15 +92,15 @@ public class Threshold {
     }
     
     public void createThresholdFiles(Elab elab)  {
-        lastSecString = "";
-        retime = new double[4];
-        fetime = new double[4];
-        rePPSTime = new long[4];
-        rePPSCount = new long[4];
-        reDiff = new long[4];
-        reTMC = new int[4];
         try {
 		    for (int i = 0; i < inputFiles.length; i++) {
+		        lastSecString = "";
+		        retime = new double[4];
+		        fetime = new double[4];
+		        rePPSTime = new long[4];
+		        rePPSCount = new long[4];
+		        reDiff = new long[4];
+		        reTMC = new int[4];
 				String inputFile = elab.getProperties().getDataDir() + File.separator + detectorIDs[i] +File.separator + inputFiles[i];
 				String outputFile = elab.getProperties().getDataDir() + File.separator + detectorIDs[i] +File.separator + outputFiles[i];
 		        BufferedReader br = new BufferedReader(new FileReader(inputFile));
