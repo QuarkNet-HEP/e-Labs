@@ -66,7 +66,8 @@
 	request.setAttribute("e", entry);
 	
 	String highlight = request.getParameter("highlight");
-
+	String threshfile = filename + ".thresh";
+	request.setAttribute("threshfile", threshfile);
 	String pfn = RawDataFileResolver.getDefault().resolve(elab, filename);
 	BufferedReader br; 
 	
@@ -86,6 +87,7 @@
 			<a href="../analysis-blessing/compare1.jsp?file=${param.filename}">Show Blessing Charts</a> |
 		</c:if>
 		<a href="../data/download?filename=${param.filename}&elab=${elab.name}&type=split">Download</a>
+		<a href="../data/download?filename=${threshfile}&elab=${elab.name}&type=split">Download Threshold File</a>
 		<br/>
 		<br/>
 		<form method="get" action="../data/view.jsp">
