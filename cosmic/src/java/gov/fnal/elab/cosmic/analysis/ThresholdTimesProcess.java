@@ -30,7 +30,7 @@ public class ThresholdTimesProcess {
     private double lastEdgeTime;
     private double cpldFrequency;
     private long starttime, endtime;
-    private int fileCount;
+    private static int lineCount;
     
     public static final NumberFormat NF2F = new DecimalFormat("0.00");
     public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
@@ -68,7 +68,7 @@ public class ThresholdTimesProcess {
         reDiff = new long[4];
         reTMC = new int[4];
         starttime = System.currentTimeMillis();
-        fileCount = 0;
+        lineCount = 0;
 	    for (int i = 0; i < inputFiles.length; i++) {
 	    	try {
 	    		//check if the .thresh exists, if so, do not overwrite it
@@ -99,7 +99,7 @@ public class ThresholdTimesProcess {
 		        }
 		        bw.close();
 		        br.close();
-		        fileCount++;
+		        lineCount++;
 	    		System.out.println("Processed file: " + inputFiles[i] + "\n");
 	    		System.out.println(""+ String.valueOf(i) + " files out of " + String.valueOf(inputFiles.length));
 	    	} catch (IOException ioe) {
@@ -108,7 +108,7 @@ public class ThresholdTimesProcess {
 	    }//end of for loop
 	    //record how long it took
         endtime = System.currentTimeMillis();
-        System.out.println("The Threshold Time process took: " + formatTime(endtime - starttime) + " for " + String.valueOf(fileCount) + " files\n");
+        System.out.println("The Threshold Time process took: " + formatTime(endtime - starttime) + " for " + String.valueOf(lineCount) + " files\n");
     }
     public String formatTime(long time) {
         return TIME_FORMAT.format((double) time / 1000);
@@ -185,7 +185,13 @@ public class ThresholdTimesProcess {
             int sign = parts[15].charAt(0) == '-' ? -1 : 1;
             int msecOffset = sign * Integer.parseInt(parts[15].substring(1));
             double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
+            if (lineCount  < 10) {
+            	System.out.println("In print data- offset: " + String.valueOf(offset) + "\n");
+            }
             jd = currLineJD(offset, parts);
+            if (lineCount  < 10) {
+            	System.out.println("In print data- jd: " + String.valueOf(jd) + "\n");
+            }
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
         }
@@ -307,32 +313,47 @@ public class ThresholdTimesProcess {
         int day = Integer.parseInt(parts[11].substring(0, 2));
         int month = Integer.parseInt(parts[11].substring(2, 4));
         int year = Integer.parseInt(parts[11].substring(4, 6)) + 2000;
+        if (lineCount < 10) {
+        	System.out.println("In currLineJD - offset: " + String.valueOf(offset) + "\n");
+        	System.out.println("In currLineJD - day,month,year: " + String.valueOf(day) + ", "+ String.valueOf(month) + ", " + String.valueOf(year)+  "\n");
+        }
 
         int hour = Integer.parseInt(parts[10].substring(0, 2));
         int min = Integer.parseInt(parts[10].substring(2, 4));
         int sec = Integer.parseInt(parts[10].substring(4, 6));
         int msec = Integer.parseInt(parts[10].substring(7, 10));
-
+        if (lineCount < 10) {
+        	System.out.println("In currLineJD - hour,min,sec,msec: " + String.valueOf(hour) + ", "+ String.valueOf(min) + ", " + String.valueOf(sec)+ ", " + String.valueOf(msec) + "\n");
+        }
         long secOffset = Math.round(sec + msec / 1000.0 + offset);
+        if (lineCount < 10) {
+        	System.out.println("In currLineJD - secoffset: " + String.valueOf(secOffset) + "\n");
+        }
         double jd = gregorianToJulian(year, month, day, hour, min, (int) secOffset);
         jd = Math.rint(jd * 86400);
+        if (lineCount < 10) {
+        	System.out.println("In currLineJD - jd: " + String.valueOf(jd) + "\n");
+        }       
         return (int) Math.floor(jd / 86400);
     }
-    
+ 
     /**
      * arguments: day[1..31], month[1..12], year[..2004..], hour[0..23],
      * min[0..59]
      */
+
     private static double gregorianToJulian(int year, int month, int day,
             int hour, int minute, int second) {
         if (month < 3) {
             month = month + 12;
             year = year - 1;
-        }
-        
+        }  
+        if (lineCount < 10) {
+        	System.out.println("In gregorianToJulian - returns: " + String.valueOf((2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60.0 + second/3600.0)/24) + "\n");
+        }    
         return (2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60.0 + second/3600.0)/24;
-        
     }
+    
     //main receives a txt file created from a query to the database
     //the file should have 4 columns separated by commas
     //1-data path (eg. /disks/i2u2-dev/cosmic/data
