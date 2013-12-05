@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.concurrent.Callable;
@@ -34,6 +35,7 @@ public class Threshold {
     private String lastSecString;
     private double lastEdgeTime;
     private double cpldFrequency;
+
     
     public static final NumberFormat NF2F = new DecimalFormat("0.00");
     public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
@@ -51,6 +53,7 @@ public class Threshold {
     	this.outputFiles = new String[]{ outputFile };
     	this.detectorIDs = new String[]{ detectorID }; 
     	this.cpldFrequencies = new double[] { cpldFrequency }; 
+
     }
         
     /**
@@ -67,6 +70,7 @@ public class Threshold {
         this.outputFiles = outputFiles;
         this.detectorIDs = detectorIDs;
         this.cpldFrequencies = cpldFrequencies;
+
     }
 
     public Threshold(Elab elab, String[] inputFiles, String detectorId) {
@@ -138,6 +142,7 @@ public class Threshold {
         int type = Integer.parseInt(parts[1], 16);
         if ((type & 0x80) != 0) {
             retime[channel] = 0;
+            clearChannelState(channel);
         }
 
         int decFE = Integer.parseInt(parts[indexFE], 16);
@@ -208,7 +213,17 @@ public class Threshold {
 
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
         String id = detector + "." + (channel + 1);
-
+        /*
+    	NF16F2.setRoundingMode(RoundingMode.HALF_UP);
+    	NF16F3.setRoundingMode(RoundingMode.CEILING);
+    	NF16F4.setRoundingMode(RoundingMode.FLOOR);
+    	NF16F5.setRoundingMode(RoundingMode.DOWN);
+    	NF16F6.setRoundingMode(RoundingMode.HALF_DOWN);
+         */
+    	double x = retime[channel];
+        String normalround = NF16F.format(retime[channel]);
+        String ilikeit ="yes";
+        
         if (nanodiff >= 0 && nanodiff < 10000) {
             wr.write(id);
             wr.write('\t');
