@@ -122,7 +122,7 @@
 		}
 	}//end of submit
 
-	if (messages.equals("")) {
+	if (totalFileCount == 0) {
 		messages = "All files for the guest user have been removed<br />";
 	}
 	request.setAttribute("messages", messages);
