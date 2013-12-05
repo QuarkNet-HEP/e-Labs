@@ -76,28 +76,28 @@ while (<IN1>){#open a new .bless file for inspection
 	if ($arguments[3] > $row[1] + $row[2] || $arguments[3] < $row[1]-$row[2]){ #Channel zero within one SD?
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
-		print OUT0 "$candidate\tunblessed at $row[0] due to Chan0 \t", $arguments[3]/$arguments[8],"\t$row[1]\t$row[2]\n";
+		print OUT0 "$candidate\tunblessed at $row[0] due to Chan0 \t$arguments[3]\t$row[1]\t$row[2]\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[2]. . . 
 
 	if ($arguments[4] > $row[3] + $row[4] || $arguments[4] < $row[3]-$row[4]){ #Channel one within one SD?
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
-		print OUT0 "$candidate\tunblessed at $row[0] due to Chan1 \t", $arguments[4]/$arguments[8],"\t$row[3]\t$row[4]\n";
+		print OUT0 "$candidate\tunblessed at $row[0] due to Chan1 \t$arguments[4]\t$row[3]\t$row[4]\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[3]. . . 
 
 	if ($arguments[5] > $row[5] + $row[6] || $arguments[5] < $row[5]-$row[6]){ #Channel two within one SD?
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
-		print OUT0 "$candidate\tunblessed at $row[0] due to Chan2 \t", $arguments[5]/$arguments[8],"\t$row[5]\t$row[6]\n";
+		print OUT0 "$candidate\tunblessed at $row[0] due to Chan2 \t$arguments[5]\t$row[5]\t$row[6]\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[4]. . . 
 
 	if ($arguments[6] > $row[7] + $row[8] || $arguments[6] < $row[7]-$row[8]){ #Channel three within one SD?
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
-		print OUT0 "$candidate\tunblessed at $row[0] due to Chan3 \t", $arguments[6]/$arguments[8],"\t$row[7]\t$row[8]\n";
+		print OUT0 "$candidate\tunblessed at $row[0] due to Chan3 \t$arguments[6]\t$row[7]\t$row[8]\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[5]. . . 
 
@@ -105,7 +105,7 @@ while (<IN1>){#open a new .bless file for inspection
 		next if $row[9] + $row[10] < 2; #low trigger rates alone shouldn't fail a file.
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
-		print OUT0 "$candidate\tunblessed at $row[0] due to triggers \t", $arguments[7]/$arguments[8],"\n";
+		print OUT0 "$candidate\tunblessed at $row[0] due to triggers \t$arguments[7]"\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[6]. . .
 	 #end step 2.4 above
