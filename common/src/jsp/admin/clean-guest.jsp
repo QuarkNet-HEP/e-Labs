@@ -15,10 +15,14 @@
 	String submit = request.getParameter("submit");
 	String messages = "";
 	In and = new In();
-
+	int totalFileCount = 0;
+	
 	and.add(new Equals("type", "split"));
 	and.add(new Equals("group", "guest"));
 	ResultSet rsSplits = elab.getDataCatalogProvider().runQuery(and);
+	if (rsSplits != null) {
+		totalFileCount += rsSplits.size();
+	}
 	request.setAttribute("splits", rsSplits.size());
 
 	and = null;
@@ -26,6 +30,9 @@
 	and.add(new Equals("type", "plot"));
 	and.add(new Equals("group", "guest"));
 	ResultSet rsPlots = elab.getDataCatalogProvider().runQuery(and);
+	if (rsPlots != null) {
+		totalFileCount += rsPlots.size();
+	}
 	request.setAttribute("plots", rsPlots.size());
 
 	and = null;
@@ -33,6 +40,9 @@
 	and.add(new Equals("type", "poster"));
 	and.add(new Equals("group", "guest"));
 	ResultSet rsPosters = elab.getDataCatalogProvider().runQuery(and);
+	if (rsPosters != null) {
+		totalFileCount += rsPosters.size();
+	}
 	request.setAttribute("posters", rsPosters.size());
 
 	and = null;
@@ -40,9 +50,12 @@
 	and.add(new Equals("type", "uploadedimage"));
 	and.add(new Equals("group", "guest"));
 	ResultSet rsUploadedImages = elab.getDataCatalogProvider().runQuery(and);
+	if (rsUploadedImages != null) {
+		totalFileCount += rsUploadedImages.size();
+	}
 	request.setAttribute("uploadedimages", rsUploadedImages.size());	
 	
-	if (rsSplits.size() + rsPlots.size() + rsPosters.size() + rsUploadedImages.size() == 0 ) {
+	if (totalFileCount == 0 ) {
 		messages = "There are no files to be deleted at this time.<br />";
 	}
 	if ("Remove All".equals(submit)) {
