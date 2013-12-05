@@ -1212,13 +1212,39 @@ public class DatabaseUserManagementProvider implements
 	    return result;
     }//end of sendEmail
     
+    //EPeronja: update active/inactive status 
+    public void updateGroupStatus(String[] activeIds) throws ElabException {
+       	Connection conn = null; 
+    	PreparedStatement ps = null;
+    	StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < activeIds.length; i++) {
+			sb.append(activeIds[i]);
+			if (i < activeIds.length - 1) {
+				sb.append(",");
+			}
+		}
+		try {
+    		conn = DatabaseConnectionManager.getConnection(elab.getProperties());      		
+    		ps = conn.prepareStatement("UPDATE research_group " +
+    									  "SET active = false " +
+    									"WHERE teacher_id not in ("+sb.toString()+") ");
+    		ps.executeUpdate(); 
+			conn.commit();
+    	}
+    	catch(SQLException e) {
+    		throw new ElabException("Could not update the research_group table.");
+    	}
+    	finally {
+    		DatabaseConnectionManager.close(conn, ps);
+    	}		
+    }//end of updateGroupStatus
+    
     //EPeronja: give/remove permission to see all data (blessed and unblessed)
     public void updateCosmicDataAccess(Collection teachers, String[] allowIds) throws ElabException {
-    	//first set them all to false
     	Connection conn = null; 
     	PreparedStatement ps = null;
     	Object[] teacher = teachers.toArray();
-    	try {
+		try {
     		//first set them all to false
     		conn = DatabaseConnectionManager.getConnection(elab.getProperties());      		
     		ps = conn.prepareStatement("UPDATE teacher SET cosmic_all_data_access = false;");

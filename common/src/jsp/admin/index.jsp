@@ -33,8 +33,12 @@
 				<table id="main" cellpadding="10" cellspacing="10">
 					<tr><th colspan="2" >Admin Links</th><th></th></tr>
 					<tr>
-						<td>&#8226; <a href="../statistics">e-Lab Statistics</a></td>
-						<td>View ${elab.name} e-Lab statistics.</td>
+						<td>&#8226; <a href="../jsp/addGroup.jsp?role=teacher">Add Users</a></td>
+						<td>Add e-Lab users.</td>
+					</tr>
+					<tr>
+						<td>&#8226; <a href="clean-guest.jsp">Delete guest user data</a></td>
+						<td>Delete all files created by the guest user.</td>					
 					</tr>
 					<tr>
 						<td>&#8226; <a href="../posters/poster-tags.jsp">Poster Tags</a></td>
@@ -42,20 +46,25 @@
 					</tr>
 					<tr>
 						<td>&#8226; <a href="../references/control.jsp">References</a></td>
-						<td></td>					
+						<td>Add, update References/Glossary/FAQ/News items.</td>					
+					</tr>					
+					<tr>
+						<td>&#8226; <a href="mark-teacher-status.jsp">Set group status</a></td>
+						<td>Set teachers and their research groups to active/inactive.</td>					
 					</tr>
 					<tr>
-						<td>&#8226; <a href="clean-guest.jsp">Clear guest user data</a></td>
-						<td>Delete all files created by the guest user.</td>					
-					</tr>
+						<td>&#8226; <a href="../statistics">View e-Lab Statistics</a></td>
+						<td>View ${elab.name} e-Lab statistics.</td>
+					</tr>					
 					<c:if test='${elab.name == "cosmic" }'>
-						<tr>
-							<td>&#8226; <a href="../analysis/list-all.jsp">All Analyses</a></td>
-							<td>List of analyses by all users.</td>
-						</tr>
+						<tr><th colspan="2" >Cosmic Admin Links</th><th></th></tr>
 						<tr>
 							<td>&#8226; <a href="data-access-permission.jsp">Allow users to view all data</a></td>
 							<td>Give rights to teachers to be able to access all cosmic data (blessed and unblessed).</td>						
+						</tr>
+						<tr>
+							<td>&#8226; <a href="../analysis/list-all.jsp">View all analyses</a></td>
+							<td>List of analyses by all users.</td>
 						</tr>
 					</c:if>				
 				</table>

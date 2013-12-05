@@ -72,7 +72,7 @@ public interface ElabUserManagementProvider extends ElabProvider {
     void updateEmail(String username, String newemail) throws ElabException;
     void updateCosmicDataAccess(Collection teachers, String[] allowIds) throws ElabException;
     boolean getDataAccessPermission(int teacherId) throws ElabException;
-    
+    void updateGroupStatus(String[] activeIds) throws ElabException;
 
     /**
      * Returns the teacher associated with the specified group
