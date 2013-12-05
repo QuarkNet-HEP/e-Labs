@@ -105,7 +105,7 @@ while (<IN1>){#open a new .bless file for inspection
 		next if $row[9] + $row[10] < 2; #low trigger rates alone shouldn't fail a file.
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
-		print OUT0 "$candidate\tunblessed at $row[0] due to triggers \t$arguments[7]"\n";
+		print OUT0 "$candidate\tunblessed at $row[0] due to triggers \t$arguments[7]\t$row[9]\t$row[10]\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[6]. . .
 	 #end step 2.4 above
