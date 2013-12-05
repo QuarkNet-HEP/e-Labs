@@ -37,6 +37,7 @@ while (<IN0>){
 	#step 2.1 above 
 	my $duration = substr($row[9],11,2)*3600+substr($row[9],14,2)*60 + substr($row[9],17,2) - substr($row[8],11,2)*3600 - substr($row[8],14,2)*60 - substr($row[8],17,2); #length of file in seconds
 	if ($duration <= 0){ #some files have fouled startDate, endDate metadata. A bad duration will yield a bad rate--these automatically fail.
+		$unblessed++;
 		print OUT0 "$row[1]\tunblessed\tDuration <= 0s\n";
 		next
 	}#end if duration = 0
