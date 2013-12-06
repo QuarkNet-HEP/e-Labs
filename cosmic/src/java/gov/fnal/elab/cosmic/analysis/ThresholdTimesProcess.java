@@ -17,7 +17,6 @@ import java.text.NumberFormat;
 import java.util.concurrent.Callable;
 import java.util.*;
 
-
 public class ThresholdTimesProcess {
     private String[] inputFiles, outputFiles, detectorIDs;
     private double[] cpldFrequencies;
@@ -31,15 +30,10 @@ public class ThresholdTimesProcess {
     private double cpldFrequency;
     private long starttime, endtime;
     private static int lineCount;
+    BufferedWriter bwprocess;
     
     public static final NumberFormat NF2F = new DecimalFormat("0.00");
     public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
-    public static final NumberFormat TIME_FORMAT;
-    static {
-        TIME_FORMAT = NumberFormat.getNumberInstance();
-        TIME_FORMAT.setMaximumFractionDigits(3);
-        TIME_FORMAT.setMinimumFractionDigits(3);
-    }
     
     public ThresholdTimesProcess(List inputFile, List outputFile, List detector, List cpldFrequency) {
     	this.inputFiles = new String[inputFile.size()];
@@ -54,27 +48,36 @@ public class ThresholdTimesProcess {
     		cpldFrequencies[i] = Double.valueOf(cpldFrequency.get(i).toString()).doubleValue();
     	}
     	try {
+            bwprocess = new BufferedWriter(new FileWriter("/tmp/ThresholdTimesProcess.log"));  
     	} catch (Exception e) {
     		System.out.println("Couldnt open file for output");
-    	}
+    	}    		
     }
     
     public void createTTFiles() {
         starttime = System.currentTimeMillis();
         lineCount = 0;
 	    for (int i = 0; i < inputFiles.length; i++) {
+	    	//clean up variables
 	        lastSecString = "";
 	        retime = new double[4];
 	        fetime = new double[4];
 	        rePPSTime = new long[4];
 	        rePPSCount = new long[4];
 	        reDiff = new long[4];
-	        reTMC = new int[4];	    	
+	        reTMC = new int[4];	    
+	        lastGPSDay = 0;
+	        lastEdgeTime = 0;
+	        cpldFrequency = 0;	  
+	        jd = 0; 
+	        lastRePPSTime = 0;
+	        lastRePPSCount = 0;
+
 	    	try {
 	    		//check if the .thresh exists, if so, do not overwrite it
 	    		File tf = new File(outputFiles[i]);
 	    		if (tf.exists()) {
-	    			System.out.println("File exists: "+outputFiles[i]+" - not overwriting it");
+	    			bwprocess.write("File exists: "+outputFiles[i]+" - not overwriting it");
 	    			continue;
 	    		}
 	    		
@@ -82,7 +85,7 @@ public class ThresholdTimesProcess {
 		        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFiles[i]));
 		        
 		        bw.write("#$md5\n");
-		        bw.write("#md5_hex(0)\n");
+		        bw.write("#md5_hex("+inputFiles[i] +" "+outputFiles[i]+" " + detectorIDs[i] +" )\n");
 		        bw.write("#ID.CHANNEL, Julian Day, RISING EDGE(sec), FALLING EDGE(sec), TIME OVER THRESHOLD (nanosec)\n");
 		
 		        cpldFrequency = cpldFrequencies[i];
@@ -93,25 +96,27 @@ public class ThresholdTimesProcess {
 		        while (line != null) {
 		            String[] parts = line.split("\\s"); // line validated in split.pl
 		            for (int j = 0; j < 4; j++) {
-		                timeOverThreshold(parts, j, detectorIDs[i], bw);
+		            	try {
+		            		timeOverThreshold(parts, j, detectorIDs[i], bw);
+		            	} catch (Exception e) {
+		            		bwprocess.write("Exception for file: "+inputFiles[i]+" at line: "+String.valueOf(lineCount)+ " " +line+" - " + e.toString() + "\n");
+		            		continue;
+		            	}
 		            }
 		            line = br.readLine();
 		        }
 		        bw.close();
 		        br.close();
 		        lineCount++;
-	    		System.out.println("Processed file: " + inputFiles[i] + "\n");
-	    		System.out.println(""+ String.valueOf(i) + " files out of " + String.valueOf(inputFiles.length));
+		        bwprocess.write("Processed file: " + inputFiles[i] + "\n");
+		        bwprocess.write(""+ String.valueOf(i) + " files out of " + String.valueOf(inputFiles.length));
 	    	} catch (IOException ioe) {
 	    		System.out.println("File not found: " + inputFiles[i] + "\n");
 	    	}
 	    }//end of for loop
 	    //record how long it took
         endtime = System.currentTimeMillis();
-        System.out.println("The Threshold Time process took: " + formatTime(endtime - starttime) + " for " + String.valueOf(lineCount) + " files\n");
-    }
-    public String formatTime(long time) {
-        return TIME_FORMAT.format((double) time / 1000);
+        System.out.println("The Threshold Time process took: " + String.valueOf(endtime - starttime) + " millisecs for " + String.valueOf(lineCount) + " files\n");
     }
     
     private void timeOverThreshold(String[] parts, int channel, String detector, BufferedWriter bw) throws IOException {
@@ -185,13 +190,7 @@ public class ThresholdTimesProcess {
             int sign = parts[15].charAt(0) == '-' ? -1 : 1;
             int msecOffset = sign * Integer.parseInt(parts[15].substring(1));
             double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
-//            if (lineCount  < 10) {
-//            	System.out.println("In print data- offset: " + String.valueOf(offset) + "\n");
-//            }
             jd = currLineJD(offset, parts);
-//            if (lineCount  < 10) {
-//            	System.out.println("In print data- jd: " + String.valueOf(jd) + "\n");
-//            }
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
         }
@@ -249,49 +248,6 @@ public class ThresholdTimesProcess {
         return edgetime / 86400;
     }
     
-    public double truncateDouble(double number, int numDigits) {
-        double result = number;
-        String arg = "" + number;
-        int idx = arg.indexOf('.');
-        if (idx!=-1) {
-            if (arg.length() > idx+numDigits) {
-                arg = arg.substring(0,idx+numDigits+1);
-                result  = Double.parseDouble(arg);
-            }
-        }
-        return result ;
-    }
-    
-    public static double roundToNumberOfSignificantDigits(double num, int n) {
-
-        final double maxPowerOfTen = Math.floor(Math.log10(Double.MAX_VALUE));
-
-        if(num == 0) {
-            return 0;
-        }
-
-        final double d = Math.ceil(Math.log10(num < 0 ? -num: num));
-        final int power = n - (int) d;
-
-        double firstMagnitudeFactor = 1.0;
-        double secondMagnitudeFactor = 1.0;
-        if (power > maxPowerOfTen) {
-            firstMagnitudeFactor = Math.pow(10.0, maxPowerOfTen);
-            secondMagnitudeFactor = Math.pow(10.0, (double) power - maxPowerOfTen);
-        } else {
-            firstMagnitudeFactor = Math.pow(10.0, (double) power);
-        }
-
-        double toBeRounded = num * firstMagnitudeFactor;
-        toBeRounded *= secondMagnitudeFactor;
-
-        final long shifted = Math.round(toBeRounded);
-     
-        double rounded = ((double) shifted) / firstMagnitudeFactor;
-        rounded /= secondMagnitudeFactor;
-        return rounded;
-    }   
-    
     private static long currentPPSSeconds(String num, String offset) {
         int hour = (Integer.parseInt(num.substring(0, 2)) + 12) % 24;
         int min = Integer.parseInt(num.substring(2, 4));
@@ -313,27 +269,13 @@ public class ThresholdTimesProcess {
         int day = Integer.parseInt(parts[11].substring(0, 2));
         int month = Integer.parseInt(parts[11].substring(2, 4));
         int year = Integer.parseInt(parts[11].substring(4, 6)) + 2000;
-//        if (lineCount < 10) {
-//        	System.out.println("In currLineJD - offset: " + String.valueOf(offset) + "\n");
-//        	System.out.println("In currLineJD - day,month,year: " + String.valueOf(day) + ", "+ String.valueOf(month) + ", " + String.valueOf(year)+  "\n");
-//        }
-
         int hour = Integer.parseInt(parts[10].substring(0, 2));
         int min = Integer.parseInt(parts[10].substring(2, 4));
         int sec = Integer.parseInt(parts[10].substring(4, 6));
         int msec = Integer.parseInt(parts[10].substring(7, 10));
-//        if (lineCount < 10) {
-//        	System.out.println("In currLineJD - hour,min,sec,msec: " + String.valueOf(hour) + ", "+ String.valueOf(min) + ", " + String.valueOf(sec)+ ", " + String.valueOf(msec) + "\n");
-//        }
         long secOffset = Math.round(sec + msec / 1000.0 + offset);
-//        if (lineCount < 10) {
-//        	System.out.println("In currLineJD - secoffset: " + String.valueOf(secOffset) + "\n");
-//        }
         double jd = gregorianToJulian(year, month, day, hour, min, (int) secOffset);
-        jd = Math.rint(jd * 86400);
-//        if (lineCount < 10) {
-//        	System.out.println("In currLineJD - jd: " + String.valueOf(jd) + "\n");
-//        }       
+        jd = Math.rint(jd * 86400);     
         return (int) Math.floor(jd / 86400);
     }
  
@@ -347,10 +289,7 @@ public class ThresholdTimesProcess {
         if (month < 3) {
             month = month + 12;
             year = year - 1;
-        }  
-//        if (lineCount < 10) {
-//       	System.out.println("In gregorianToJulian - returns: " + String.valueOf((2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60.0 + second/3600.0)/24) + "\n");
-//        }    
+        }    
         return (2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60.0 + second/3600.0)/24;
     }
     
@@ -362,23 +301,41 @@ public class ThresholdTimesProcess {
     //4-cpld frequency for that file (eg. 25000000)
     //to create the input file, you can run something like:
     /*
-     * 		   select  '/disks/i2u2-dev/cosmic/data' as path,
-						al.name, 
-						al.name || '.thresh' as threshfile,
-						ai.value
-		  		 from 	anno_lfn al
-		   inner join 	anno_text at
-		    	   on 	al.id = at.id
-	  full outer join 	anno_lfn al1
-		    	   on 	al.name = al1.name
-	  full outer join 	anno_int ai
-		    	   on 	al1.id = ai.id
-		 	    where 	at.value = 'split'
-		   		  and 	al.name like '6119%'
-		   		  and 	al1.mkey = 'cpldfrequency'
-		   	 order by 	al.name
-   	 *
+	drop table ep_create_thresh_file
+
+	select  '/disks/data4/i2u2-dev/cosmic/data' as path,
+		al.name, 
+		al.name || '.thresh' as threshfile,
+		al1.id as recordid,
+		af.value
+	  into ep_create_thresh_file
+	  from anno_lfn al
+	 inner join anno_text at
+	    on al.id = at.id
+	 full outer join anno_lfn al1
+	    on al.name = al1.name
+	 full outer join anno_float af
+	    on al1.id = af.id
+	 where at.value = 'split'
+	   --and al.name like '6148%'
+	   and al1.mkey = 'cpldfrequency'
+	   order by al.name
+	
+	select * 
+	 from ep_create_thresh_file
+	
+	update ep_create_thresh_file
+	   set value = anno_int.value
+	  from anno_int 
+	where anno_int.id = ep_create_thresh_file.recordid  
+	
+	drop table ep_create_thresh_file_complete
+	
+	select path, name, threshfile, value
+	 into ep_create_thresh_file_complete 
+	 from ep_create_thresh_file 
      */
+    
     public static void main(String[] args) {
     	ThresholdTimesProcess ttp;
     	List inputFile = new ArrayList();

@@ -35,7 +35,8 @@ public class Threshold {
     private String lastSecString;
     private double lastEdgeTime;
     private double cpldFrequency;
-
+    public static int lineCount;
+    BufferedWriter bwprocess;
     
     public static final NumberFormat NF2F = new DecimalFormat("0.00");
     public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
@@ -53,7 +54,11 @@ public class Threshold {
     	this.outputFiles = new String[]{ outputFile };
     	this.detectorIDs = new String[]{ detectorID }; 
     	this.cpldFrequencies = new double[] { cpldFrequency }; 
-
+    	try {
+            bwprocess = new BufferedWriter(new FileWriter("/tmp/ThresholdTimesProcess.log"));  
+    	} catch (Exception e) {
+    		System.out.println("Couldnt open file for output");
+    	}    
     }
         
     /**
@@ -70,7 +75,11 @@ public class Threshold {
         this.outputFiles = outputFiles;
         this.detectorIDs = detectorIDs;
         this.cpldFrequencies = cpldFrequencies;
-
+    	try {
+            bwprocess = new BufferedWriter(new FileWriter("/tmp/ThresholdTimesProcess.log"));  
+    	} catch (Exception e) {
+    		System.out.println("Couldnt open file for output");
+    	}    	
     }
 
     public Threshold(Elab elab, String[] inputFiles, String detectorId) {
@@ -93,25 +102,38 @@ public class Threshold {
     			cpldFrequencies[i] = 0;
     		}
     	}
+    	try {
+            bwprocess = new BufferedWriter(new FileWriter("/tmp/ThresholdTimesProcess.log"));  
+    	} catch (Exception e) {
+    		System.out.println("Couldnt open file for output");
+    	}    	    	
     }
     
     public void createThresholdFiles(Elab elab)  {
         try {
 		    for (int i = 0; i < inputFiles.length; i++) {
+		    	//clean up variables
 		        lastSecString = "";
 		        retime = new double[4];
 		        fetime = new double[4];
 		        rePPSTime = new long[4];
 		        rePPSCount = new long[4];
 		        reDiff = new long[4];
-		        reTMC = new int[4];
+		        reTMC = new int[4];	    
+		        lastGPSDay = 0;
+		        lastEdgeTime = 0;
+		        cpldFrequency = 0;	       
+		        jd = 0; 
+		        lastRePPSTime = 0;
+		        lastRePPSCount = 0;
+		        
 				String inputFile = elab.getProperties().getDataDir() + File.separator + detectorIDs[i] +File.separator + inputFiles[i];
 				String outputFile = elab.getProperties().getDataDir() + File.separator + detectorIDs[i] +File.separator + outputFiles[i];
 		        BufferedReader br = new BufferedReader(new FileReader(inputFile));
 		        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile));
 		
 		        bw.write("#$md5\n");
-		        bw.write("#md5_hex(0)\n");
+		        bw.write("#md5_hex("+inputFiles[i] +" "+outputFiles[i]+" " + detectorIDs[i] +" )\n");
 		        bw.write("#ID.CHANNEL, Julian Day, RISING EDGE(sec), FALLING EDGE(sec), TIME OVER THRESHOLD (nanosec)\n");
 		
 		        cpldFrequency = cpldFrequencies[i];
@@ -122,16 +144,22 @@ public class Threshold {
 		        while (line != null) {
 		            String[] parts = line.split("\\s"); // line validated in split.pl 
 		            for (int j = 0; j < 4; j++) {
-		                timeOverThreshold(parts, j, detectorIDs[i], bw);
+		            	try {
+		            		timeOverThreshold(parts, j, detectorIDs[i], bw);
+		            	} catch (Exception e) {
+		            		bwprocess.write("Exception for file: "+inputFiles[i]+" at line: "+String.valueOf(lineCount)+ " " +line+" - " + e.toString() + "\n");
+		            		continue;
+		            	}
 		            }
+		            lineCount++;
 		            line = br.readLine();
 		        }
 		        bw.close();
 		        br.close();
 		    }
         }
-        catch (IOException ioe) {
-        	// abort?
+        catch (Exception e) {
+        	System.out.println("There was a problem while creating Threshold Times file: " + e.toString());
         }
     }
 
