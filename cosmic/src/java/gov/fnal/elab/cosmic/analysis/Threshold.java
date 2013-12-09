@@ -147,7 +147,10 @@ public class Threshold {
 		            	try {
 		            		timeOverThreshold(parts, j, detectorIDs[i], bw);
 		            	} catch (Exception e) {
-		            		bwprocess.write("Exception for file: "+inputFiles[i]+" at line: "+String.valueOf(lineCount)+ " " +line+" - " + e.toString() + "\n");
+		            		String message = "Exception for file: "+inputFiles[i]+" at line: "+String.valueOf(lineCount)+ " " +line+" - " + e.toString() + "\n";
+		            		bw.write(message);
+		    		        bw.close();
+		            		bwprocess.write(message);
 		            		continue;
 		            	}
 		            }

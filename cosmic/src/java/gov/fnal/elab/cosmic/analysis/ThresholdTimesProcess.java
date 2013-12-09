@@ -30,7 +30,6 @@ public class ThresholdTimesProcess {
     private double cpldFrequency;
     private long starttime, endtime;
     private static int lineCount;
-    BufferedWriter bwprocess;
     
     public static final NumberFormat NF2F = new DecimalFormat("0.00");
     public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
@@ -47,11 +46,7 @@ public class ThresholdTimesProcess {
     		detectorIDs[i] = detector.get(i).toString();
     		cpldFrequencies[i] = Double.valueOf(cpldFrequency.get(i).toString()).doubleValue();
     	}
-    	try {
-            bwprocess = new BufferedWriter(new FileWriter("/tmp/ThresholdTimesProcess.log"));  
-    	} catch (Exception e) {
-    		System.out.println("Couldnt open file for output");
-    	}    		
+
     }
     
     public void createTTFiles() {
@@ -77,7 +72,7 @@ public class ThresholdTimesProcess {
 	    		//check if the .thresh exists, if so, do not overwrite it
 	    		File tf = new File(outputFiles[i]);
 	    		if (tf.exists()) {
-	    			bwprocess.write("File exists: "+outputFiles[i]+" - not overwriting it");
+	    			System.out.println("File exists: "+outputFiles[i]+" - not overwriting it");
 	    			continue;
 	    		}
 	    		
@@ -99,7 +94,10 @@ public class ThresholdTimesProcess {
 		            	try {
 		            		timeOverThreshold(parts, j, detectorIDs[i], bw);
 		            	} catch (Exception e) {
-		            		bwprocess.write("Exception for file: "+inputFiles[i]+" at line: "+String.valueOf(lineCount)+ " " +line+" - " + e.toString() + "\n");
+		            		String message = "Exception for file: "+inputFiles[i]+" at line: "+String.valueOf(lineCount)+ " " +line+" - " + e.toString() + "\n";
+		            		bw.write(message);
+		    		        bw.close();
+		    		        System.out.println(message);
 		            		continue;
 		            	}
 		            }
@@ -108,8 +106,8 @@ public class ThresholdTimesProcess {
 		        bw.close();
 		        br.close();
 		        lineCount++;
-		        bwprocess.write("\nProcessed file: " + inputFiles[i] + "\n");
-		        bwprocess.write(""+ String.valueOf(i) + " files out of " + String.valueOf(inputFiles.length));
+		        System.out.println("\nProcessed file: " + inputFiles[i] + "\n");
+		        System.out.println(""+ String.valueOf(i) + " files out of " + String.valueOf(inputFiles.length));
 	    	} catch (IOException ioe) {
 	    		System.out.println("File not found: " + inputFiles[i] + "\n");
 	    	}
