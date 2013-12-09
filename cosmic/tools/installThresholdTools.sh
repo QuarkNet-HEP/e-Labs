@@ -66,13 +66,17 @@ $DIR/cosmic/src/java >>$LOG 2>&1
 step "Compiling I2U2 java code"
 javac $DIR/cosmic/src/java/gov/fnal/elab/cosmic/analysis/ThresholdTimesProcess.java -d $DIR/bin/ >>$LOG 2>&1
 
-step " "
+step "Done"
+ls
 
 #1-sudo as quarkcat
 #2-run this script in your user folder where the cosmic data is
 #3-this script creates a ThresholdTimes folder and two folders inside /bin and /java
 #4-once the script ran successfully, inside bin run the following command:
 #java gov.fnal.elab.cosmic.analysis.ThresholdTimesProcess /path/to/input/file/input_file_created_from_the_database.txt
+#if you ran them as root, then you need to do 
+#cd path to data files/find ./ -name "*.thresh" -exec chown -R quarkcat:quarknet {} \;
+
 #NOTE: input file needs the following columns separated by commas:
 #    //1-data path (eg. /disks/i2u2-dev/cosmic/data
 #    //2-input file name (eg. 6119.2013.0522.1)

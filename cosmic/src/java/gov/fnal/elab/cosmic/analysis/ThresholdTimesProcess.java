@@ -108,7 +108,7 @@ public class ThresholdTimesProcess {
 		        bw.close();
 		        br.close();
 		        lineCount++;
-		        bwprocess.write("Processed file: " + inputFiles[i] + "\n");
+		        bwprocess.write("\nProcessed file: " + inputFiles[i] + "\n");
 		        bwprocess.write(""+ String.valueOf(i) + " files out of " + String.valueOf(inputFiles.length));
 	    	} catch (IOException ioe) {
 	    		System.out.println("File not found: " + inputFiles[i] + "\n");
