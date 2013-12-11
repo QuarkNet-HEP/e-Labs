@@ -35,7 +35,7 @@
 				    },
 				type: "numeric"
 			});
-			$("#notifications-table-detailed").tablesorter({sortList: [[0,0]]}, {headers: {1:{sorter:'notDate'}, 4:{sorter:false}}});
+			$("#notifications-table-detailed").tablesorter({sortList: [[4,0]]}, {headers: {0:{sorter:'notDate'}, 5:{sorter:false}}});
 		}); 
 		</script>
 
@@ -59,7 +59,7 @@
 	<table border="0" cellspacing="2" id="notifications-table-detailed">
 		<thead>
 			<tr>
-				<th>Status</th><th>Time</th><th>Expires</th><th>Sender</th><th>Message</th><th>Remove</th>
+				<th>Time</th><th>Expires</th><th>Sender</th><th>Message</th><th>Status</th><th>Remove</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -67,10 +67,14 @@
 				<c:when test="${!empty notification}">
 					<c:forEach var="n" items="${notification}">
 						<tr id="next${n.id}">
-								<td><div id="status${n.id}">
+							<td width="22%"><fmt:formatDate type="both" value="${n.timeAsDate}"/></td>
+							<td width="22%"><fmt:formatDate type="both" value="${n.expirationAsDate}"/></td>
+							<td>${n.sender}</td>
+							<td>${n.message}</td>
+															<td><div id="status${n.id}">
 									<c:choose>
 										<c:when test="${n.deleted == true}">
-											-Deleted by addressee
+											Deleted
 										</c:when>
 										<c:otherwise>
 											<c:choose>
@@ -80,7 +84,7 @@
 												<c:otherwise>
 													<c:choose>
 														<c:when test="${n.read == false }">
-															<a href="javascript:markAsRead('status', ${n.id})">New</a>
+															<a href="javascript:markAsRead('status', ${n.id})">Mark as Read</a>
 														</c:when>
 														<c:otherwise>
 															N/A
@@ -92,10 +96,6 @@
 									</c:choose>								
 								</div>
 							</td>
-							<td width="22%"><fmt:formatDate type="both" value="${n.timeAsDate}"/></td>
-							<td width="22%"><fmt:formatDate type="both" value="${n.expirationAsDate}"/></td>
-							<td>${n.sender}</td>
-							<td>${n.message}</td>
 							<td style="text-align: center;">
 								<c:choose>
 									<c:when test="${isAdmin == true}">

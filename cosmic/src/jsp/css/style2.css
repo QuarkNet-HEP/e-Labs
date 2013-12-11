@@ -451,11 +451,14 @@ a img {
 
 #notifications-table {
 	margin: 2px;
-	width: 100%;
+	width: 98%;
+	height: 150px;
+	display: block;
+	overflow-y: auto;
 }
 
 #notifications-table td {
-	border-bottom: thin dotted #e0e0e0;
+	border-bottom: thin dashed gray;
 	text-align: left;
 }
 
