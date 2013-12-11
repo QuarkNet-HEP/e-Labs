@@ -412,7 +412,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
     
     private String getNotificationSQL(int groupId, boolean includeRead, boolean forCount) {
         final String WHERE_UNREAD = "WHERE m.type != 1 and (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL and s.read IS NOT TRUE and s.deleted is not TRUE) ";
-        final String WHERE_ALL  = "WHERE  != 1 and (pb.message_id IS NOT NULL AND s.message_id IS NULL) OR (pb.message_id IS NULL AND s.message_id IS NOT NULL and s.deleted is not TRUE) ";
+        final String WHERE_ALL  = "WHERE m.type != 1 and (pb.message_id IS NOT NULL AND s.message_id IS NULL) OR (pb.message_id IS NULL AND s.message_id IS NOT NULL and s.deleted is not TRUE) ";
         String WHERE_UNREAD_ADMIN = "WHERE m.type != 1 and (pb.message_id IS NOT NULL AND pb.project_id IS NOT NULL and s.read IS NOT TRUE) ";
         String WHERE_ALL_ADMIN = "WHERE m.type != 1 and (pb.message_id IS NOT NULL AND s.message_id IS NULL) OR (pb.message_id IS NULL AND s.message_id IS NOT NULL) ";
         if (forCount) {
