@@ -1224,7 +1224,10 @@ public class DatabaseUserManagementProvider implements
 			}
 		}
 		try {
-    		conn = DatabaseConnectionManager.getConnection(elab.getProperties());      		
+    		conn = DatabaseConnectionManager.getConnection(elab.getProperties());      	
+    		ps = conn.prepareStatement("UPDATE research_group " +
+					  "SET active = true " );
+    		ps.executeUpdate(); 
     		ps = conn.prepareStatement("UPDATE research_group " +
     									  "SET active = false " +
     									"WHERE teacher_id not in ("+sb.toString()+") ");
