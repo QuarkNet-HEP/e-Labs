@@ -14,7 +14,7 @@
 	List<ElabGroup> researchGroups = new ArrayList<ElabGroup>();
 	for (Iterator ite = user.getGroups().iterator(); ite.hasNext();) {
 		ElabGroup group = (ElabGroup) ite.next();
-		if (group.getActive()) {
+		if (group.getActive() && !group.getName().equals(user.getName())) {
 			researchGroups.add(group);
 		}
 	}
@@ -30,7 +30,7 @@
 	    if (all) {
 	        for (ElabGroup eg : user.getGroups()) {
 	        	if (eg.getActive()) {
-		        	groupsToNotify.add(eg);
+	        		groupsToNotify.add(eg);
 	        	}
 	        }
 	    }
