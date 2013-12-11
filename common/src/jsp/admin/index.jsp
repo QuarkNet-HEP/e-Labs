@@ -45,7 +45,7 @@
 						<td>Add, delete, update poster tags per e-Lab.</td>
 					</tr>
 					<tr>
-						<td>&#8226; <a href="../references/control.jsp">References</a></td>
+						<td>&#8226; <a href="../references/control.jsp">References/Glossary/FAQ/News</a></td>
 						<td>Add, update References/Glossary/FAQ/News items.</td>					
 					</tr>					
 					<tr>
