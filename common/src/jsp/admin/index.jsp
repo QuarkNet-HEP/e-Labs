@@ -45,7 +45,7 @@
 						<td>Add, delete, update poster tags per e-Lab.</td>
 					</tr>
 					<tr>
-						<td>&#8226; <a href="../references/control.jsp">References</a></td>
+						<td>&#8226; <a href="../references/control.jsp">References/Glossary/FAQ/News</a></td>
 						<td>Add, update References/Glossary/FAQ/News items.</td>					
 					</tr>					
 					<tr>
@@ -58,10 +58,6 @@
 					</tr>					
 					<c:if test='${elab.name == "cosmic" }'>
 						<tr><th colspan="2" >Cosmic Admin Links</th><th></th></tr>
-						<tr>
-							<td>&#8226; <a href="data-access-permission.jsp">Allow users to view all data</a></td>
-							<td>Give rights to teachers to be able to access all cosmic data (blessed and unblessed).</td>						
-						</tr>
 						<tr>
 							<td>&#8226; <a href="../analysis/list-all.jsp">View all analyses</a></td>
 							<td>List of analyses by all users.</td>
