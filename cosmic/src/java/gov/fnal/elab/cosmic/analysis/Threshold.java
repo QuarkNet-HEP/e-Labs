@@ -112,7 +112,11 @@ public class Threshold {
 		
 		        cpldFrequency = cpldFrequencies[i];
 		        if (cpldFrequency == 0) {
-		        	cpldFrequency = 41666667;
+		        	if (Integer.parseInt(detectorIDs[i]) < 6000) {
+		        		cpldFrequency = 41666667;
+		        	} else {
+		        		cpldFrequency = 25000000;
+		        	}
 		        }
 		        String line = br.readLine();
 		        while (line != null) {
