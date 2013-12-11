@@ -470,6 +470,7 @@ public class DatabaseUserManagementProvider implements
                     t.setId(rs.getInt("id"));
                     t.setTeacherId(rs.getInt("teacherid"));
                     t.setActive(rs.getBoolean("rgactive"));
+                    t.setCosmicAllDataAccess(rs.getBoolean("cosmic_all_data_access"));
                     g = new ElabGroup(elab, this);
                     if (StringUtils.isNotBlank(rs.getString("rguserarea"))) {
                         String[] brokenSchema = rs.getString("rguserarea")
@@ -483,7 +484,8 @@ public class DatabaseUserManagementProvider implements
                     teachers.add(t);
                 }
                 g.setName(rs.getString("rgname"));
-                g.setActive(rs.getBoolean("rgactive"));        
+                g.setActive(rs.getBoolean("rgactive"));
+                g.setCosmicAllDataAccess(rs.getBoolean("cosmic_all_data_access"));                
                 t.addGroup(g);
             }
             return teachers;
@@ -1222,7 +1224,10 @@ public class DatabaseUserManagementProvider implements
 			}
 		}
 		try {
-    		conn = DatabaseConnectionManager.getConnection(elab.getProperties());      		
+    		conn = DatabaseConnectionManager.getConnection(elab.getProperties());      	
+    		ps = conn.prepareStatement("UPDATE research_group " +
+					  "SET active = true " );
+    		ps.executeUpdate(); 
     		ps = conn.prepareStatement("UPDATE research_group " +
     									  "SET active = false " +
     									"WHERE teacher_id not in ("+sb.toString()+") ");
@@ -1249,6 +1254,7 @@ public class DatabaseUserManagementProvider implements
     		ps.executeUpdate(); 
     		for (int i = 0; i < teacher.length; i++) {
     			ElabGroup t = (ElabGroup) teacher[i];
+    			t.setCosmicAllDataAccess(false);
     		}
 			//now update the permissions
 			for (int j = 0; j < allowIds.length; j++) {
@@ -1259,6 +1265,7 @@ public class DatabaseUserManagementProvider implements
 				    								   "WHERE id = ?;");
 				    		ps.setInt(1, t.getTeacherId());
 				    		ps.executeUpdate(); 
+							t.setCosmicAllDataAccess(true);
 					}
 				}
 			}
