@@ -64,6 +64,7 @@ Re: the upload progress stuff
 	request.setAttribute("datadir", dataDir);
 	String benchmark = "";
 	String usebenchmark = "";
+	String makeThreshold = "";
 	int channels[] = new int[4];
 	
 	File tempRepo = new File(dataDir + "/temp"); 
@@ -106,6 +107,12 @@ Re: the upload progress stuff
 	    					comments = content; 
 	    				}
 	    			}
+	    			//EPeronja-10/17/2013: THRESHOLD TEST
+	    			else if ("makeThreshold".equals(name)) {
+	    				if (StringUtils.isNotBlank(content)) {
+	    					makeThreshold = content; 
+	    				}
+	    			}
 	    		}
 	    	}
 			
@@ -144,7 +151,25 @@ Re: the upload progress stuff
 	       	        request.setAttribute("detectorid", detectorId);
 	       	        request.setAttribute("comments", comments);
 	      	        request.setAttribute("benchmark", benchmark);
-
+	    			//EPeronja-10/17/2013: THRESHOLD TEST
+	      	        request.setAttribute("makeThreshold", makeThreshold);
+	      	    	//EPeronja-10/17/2013: THRESHOLD TEST -- Split.pl will call ThresholdTimes.pl
+	      	        if (makeThreshold.equals("perl")) {
+					%>
+						<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUploadTT" impl="generic">
+							<e:trdefault name="in" value="${in}"/>
+							<e:trdefault name="datadir" value="${datadir}"/>
+							<e:trdefault name="detectorid" value="${detectorid}"/>
+							<e:trdefault name="comments" value="${comments}"/>
+							<e:trdefault name="benchmark" value="${benchmark}"/>
+							<e:trdefault name="makeThreshold" value="${makeThreshold}"/>	
+												
+							<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload">
+								<jsp:param name="provider" value="shell"/>
+							</jsp:include>
+						</e:analysis>
+					<%
+	      	        } else {
 	   				%>
 						<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUpload" impl="generic">
 							<e:trdefault name="in" value="${in}"/>
@@ -152,6 +177,7 @@ Re: the upload progress stuff
 							<e:trdefault name="detectorid" value="${detectorid}"/>
 							<e:trdefault name="comments" value="${comments}"/>
 							<e:trdefault name="benchmark" value="${benchmark}"/>
+							<e:trdefault name="makeThreshold" value="${makeThreshold}"/>	
 												
 							<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload">
 								<jsp:param name="provider" value="shell"/>
@@ -295,6 +321,12 @@ Re: the upload progress stuff
 			  	</tr>
 			</c:forEach>
 		</table>
+    </p>
+    <p> 
+    	<!--//EPeronja-10/17/2013: THRESHOLD TEST-->
+	   	<input type="radio" name="makeThreshold" value="none" checked="true">Do not make Threshold Times file.</input><br />
+    	<input type="radio" name="makeThreshold" value="java">Make threshold times file with JAVA.</input><br />
+    	<input type="radio" name="makeThreshold" value="perl">Make threshold times file with PERL.</input>
     </p>
 	<p>
 		<label for="ds">Raw Data File:</label>

@@ -86,7 +86,7 @@
 		<c:if test="${e.tupleMap.blessfile != null}">
 			<a href="../analysis-blessing/compare1.jsp?file=${param.filename}">Show Blessing Charts</a> |
 		</c:if>
-		<a href="../data/download?filename=${param.filename}&elab=${elab.name}&type=split">Download</a> |
+		<a href="../data/download?filename=${param.filename}&elab=${elab.name}&type=split">Download</a>
 		<a href="../data/download?filename=${threshfile}&elab=${elab.name}&type=split">Download Threshold File</a>
 		<br/>
 		<br/>

@@ -183,6 +183,12 @@
 					</e:hidden>
 				</e:vswitch>
 			</e:tr>
+		</p>
+		<p>
+			<!-- EPeronja-10/17/2013: THRESHOLD TEST -->
+			<input type="radio" name="thresholdfile" value="none" checked="true">Recreate TT file.<br />
+			<input type="radio" name="thresholdfile" value="static">Use Static TT file.<br />
+			
 		</p>	
 		<%@ include file="../analysis/controls.jsp" %>
 		<p>

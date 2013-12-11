@@ -6,6 +6,12 @@ type AxisParams {
 	string label;
 }
 
+(File thresholdData) ThresholdTimes(File rawData, string detector, string cpldfreq) {
+	app {
+		ThresholdTimes @filename(rawData) @filename(thresholdData) detector cpldfreq;
+	}
+}
+
 (File thresholdData[]) ThresholdTimesMultiple(File rawData[], string detectors[], string cpldfreqs[]) {
 	foreach data, i in rawData {
 		thresholdData[i] = ThresholdTimes(rawData[i], detectors[i], cpldfreqs[i]);
@@ -61,15 +67,16 @@ type AxisParams {
 
 (File png) SVG2PNG(File svg, string height) {
 	app {
-		SVG2PNG "-h" height "-w" height @filename(svg) "-o" @filename(png);
+		SVG2PNG "-h" height "-w" height @filename(svg) @filename(png);
 	}
 }
 
 
 File rawData[] <fixed_array_mapper;files=@arg("rawData")>;
-File thresholdAll[] <fixed_array_mapper;files=@arg("thresholdAll")>;
+//File thresholdAll[] <fixed_array_mapper;files=@arg("thresholdAll")>;
 //This is done to avoid corruption of threshold files when created
 //concurrently by multiple runs
+File thresholdAll[] <structured_regexp_mapper;source=rawData,match=".*/(.*)",transform="\\1.thresh">;
 File combineOut <"combine.out">;
 
 string detectors[] = @strsplit(@arg("detector"), "\\s");
@@ -108,6 +115,7 @@ string singlechannel_channel = @arg("singlechannel_channel");
 
 
 //the actual workflow
+thresholdAll = ThresholdTimesMultiple(rawData, detectors, cpldfreqs);
 combineOut = Combine(thresholdAll);
 singleChannelOut = SingleChannel(combineOut, singlechannel_channel);
 freqOut = FrequencyMultiple(singleChannelOut, freq_binType, freq_binValue, freq_col);
