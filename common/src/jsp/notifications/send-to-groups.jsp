@@ -29,7 +29,7 @@
 	    List<ElabGroup> groupsToNotify = new ArrayList();
 	    if (all) {
 	        for (ElabGroup eg : user.getGroups()) {
-	        	if (eg.getActive()) {
+	        	if (eg.getActive() && !eg.getName().equals(user.getName())) {
 	        		groupsToNotify.add(eg);
 	        	}
 	        }
