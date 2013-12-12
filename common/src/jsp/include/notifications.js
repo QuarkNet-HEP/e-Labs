@@ -78,7 +78,7 @@ function markAllAsDeleted(ids, elab) {
 	}
 }
 
-function removeAllNotication(ids, elab) {
+function removeAllNotification(ids, elab) {
 	for (i = 0; i < ids.length; i++) {
 		removeNotification0("next", ids[i], elab, true);
 	}
