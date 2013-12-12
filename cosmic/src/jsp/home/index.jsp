@@ -10,6 +10,18 @@
 		<link rel="stylesheet" type="text/css" href="../css/two-column-home.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
+		<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/elab.js"></script>		
+		<script type="text/javascript">
+		window.onload=function(){
+			hideObj = document.getElementById("newsbox-h").style;
+			showObj = document.getElementById("newsbox-v").style;
+			hideObj.visibility = "hidden";
+			hideObj.display = "none";
+			showObj.visibility = "visible";
+			showObj.display = "";
+		}
+	
+	</script>
 	</head>
 	
 	<body id="home" class="home">
@@ -48,7 +60,14 @@
 					
 					<c:otherwise> <%-- User is logged in --%>
 						<h1>Home: Join a national collaboration of high school students to study cosmic rays.</h1>
-						<%@ include file="../include/newsbox.jsp" %>
+						<div id="newsbox-v" style="visibility:hidden; display: none">
+							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2></a>
+						</div>
+						
+						<div id="newsbox-h" style="visibility:visible; display">
+							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> View News Alert</H2></a>
+							<%@ include file="../include/newsbox.jsp" %>
+						</div>
 						<h3>Project Map: To navigate the Cosmic Ray e-Lab, follow the path; complete the milestones. Hover over each hot spot to preview; click to open. Along the main line are milestone seminars, opportunities to check how your work is going. Project milestones are on the four branch lines.
 						</h3>
 						<div style="text-align: center;">
