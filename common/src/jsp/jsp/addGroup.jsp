@@ -6,7 +6,7 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <jsp:include page="../include/elab.jsp"/>
 <%@ include file="common.jsp" %>
-<%@ include file="../login/teacher-login-required.jsp" %>
+<%@ include file="../login/admin-login-required.jsp" %>
 <html>
     <head>
         <title>Add Users</title>
