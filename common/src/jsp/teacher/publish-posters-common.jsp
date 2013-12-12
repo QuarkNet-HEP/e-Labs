@@ -30,7 +30,7 @@
 	q.add(new Equals("project", elab.getName()));
 	String tt = (String) user.getGroup().getTeacher();
 	if (tt != null) {
-		q.add(new Equals("teacher", tt);
+		q.add(new Equals("teacher", tt));
 	}
 	request.setAttribute("tt", tt);
 	//q.add(new Equals("group", user.getGroup().getName()));
