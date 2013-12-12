@@ -9,7 +9,17 @@
 	{
 		ElabNotificationsProvider np = ElabFactory.getNotificationsProvider((Elab) session.getAttribute("elab"));
 		List<Notification> n = np.getNotifications(user, ElabNotificationsProvider.MAX_COUNT, true);
+		List<Integer> unreadIds = new ArrayList<Integer>();
+		List<Integer> allIds = new ArrayList<Integer>();
+		for (Notification x: n) {
+			allIds.add(x.getId());
+			if (!x.isRead()) {
+				unreadIds.add(x.getId());
+			}
+		}
 		request.setAttribute("isAdmin", user.isAdmin());
+		request.setAttribute("allIds", allIds);
+		request.setAttribute("newNotifications", unreadIds);
 		request.setAttribute("notification", n);
 	}
 %>
@@ -56,10 +66,41 @@
 			<div id="content">
 <h1>Notifications</h1>
 <fmt:timeZone value="UTC">
+<div style="width: 100%; text-align: right;">
+	<c:choose>
+		<c:when test="${not empty newNotifications }">
+		<a href="javascript:markAllAsRead(${newNotifications})" style="text-decoration:none;">Mark All as Read</a>
+		<br />
+		</c:when>
+	</c:choose>
+	<c:choose>
+		<c:when test="${not empty allIds}">
+			<c:choose>
+				<c:when test="${isAdmin == true}">
+					<a href="javascript:removeAllNotification(${allIds}, '${elab.name}')" style="text-decoration:none;">Delete All</a>
+				</c:when>  
+				<c:otherwise>
+					<a href="javascript:markAllAsDeleted(${allIds}, '${elab.name}')" style="text-decoration:none;">Delete All</a>
+				</c:otherwise>
+			</c:choose>
+		</c:when>
+	</c:choose>
+</div>
+
 	<table border="0" cellspacing="2" id="notifications-table-detailed">
 		<thead>
 			<tr>
-				<th>Time</th><th>Expires</th><th>Sender</th><th>Message</th><th>Status</th><th>Remove</th>
+				<th>Time</th>
+				<th>Expires</th>
+				<th>Sender</th>
+				<c:choose>
+					<c:when test="${isAdmin == true}">	
+						<th>To</th>
+					</c:when>
+				</c:choose>			
+				<th>Message</th>
+				<th>Status</th>
+				<th>Remove</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -70,8 +111,14 @@
 							<td width="22%"><fmt:formatDate type="both" value="${n.timeAsDate}"/></td>
 							<td width="22%"><fmt:formatDate type="both" value="${n.expirationAsDate}"/></td>
 							<td>${n.sender}</td>
+							<c:choose>
+								<c:when test="${isAdmin == true}">	
+									<td>${n.addressee}</td>
+								</c:when>
+							</c:choose>
 							<td>${n.message}</td>
-															<td><div id="status${n.id}">
+							<td style="text-align: center;">
+								<div id="status${n.id}" >
 									<c:choose>
 										<c:when test="${n.deleted == true}">
 											Deleted
@@ -84,7 +131,7 @@
 												<c:otherwise>
 													<c:choose>
 														<c:when test="${n.read == false }">
-															<a href="javascript:markAsRead('status', ${n.id})">Mark as Read</a>
+															<a href="javascript:markAsRead('status', ${n.id})" style="text-decoration:none;">New</a>
 														</c:when>
 														<c:otherwise>
 															N/A

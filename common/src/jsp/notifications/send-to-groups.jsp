@@ -107,7 +107,7 @@
 		<script type="text/javascript" src="../include/notifications.js"></script>
 	</head>
 	
-	<body id="send-to-groups" class="home-send-notifications">
+	<body id="send-to-groups" class="home send-notifications">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
@@ -150,7 +150,7 @@
 <c:if test="${notification != null }">
 	<p>Notification "${notification.message}" was added successfully.</p>
 </c:if>
-	<table border="0" id="form-table">
+	<table border="0" id="form-table" width="100%">
 		<tr>
 			<td class="label">
 				Send to:

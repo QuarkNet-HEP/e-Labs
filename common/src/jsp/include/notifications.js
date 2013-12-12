@@ -72,6 +72,18 @@ function removeNotification(idprefix, id, elab) {
 	removeNotification0(idprefix, id, elab, true);
 }
 
+function markAllAsDeleted(ids, elab) {
+	for (i = 0; i < ids.length; i++) {
+		markAsDeleted("next", ids[i], elab);
+	}
+}
+
+function removeAllNotication(ids, elab) {
+	for (i = 0; i < ids.length; i++) {
+		removeNotification("next", ids[i], elab);
+	}
+}
+
 function removeNotification0(idprefix, id, elab, hard) {
 	var ro = newRequestObject();
 	ro.open('get', "../notifications/remove.jsp?id=" + id + "&hard=" + hard);
@@ -96,6 +108,12 @@ function markAsRead(idprefix, id) {
 		}
 	};
 	ro.send(null);
+}
+
+function markAllAsRead(ids) {
+	for (i = 0; i < ids.length; i ++) {
+		markAsRead("status", ids[i]);
+	}
 }
 
 function updateInnerHTML(id, url) {

@@ -550,9 +550,6 @@ a img {
 #notifications-table {
 	margin: 2px;
 	width: 98%;
-	height: 150px;
-	display: block;
-	overflow-y: auto;
 }
 
 #notifications-table td {

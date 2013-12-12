@@ -24,7 +24,6 @@ try {
 	if (user != null) {
 		ElabNotificationsProvider np = ElabFactory.getNotificationsProvider(Elab.getElab(pageContext, elab));
 		long count = np.getUnreadNotificationsCount(user);
-		//long count = np.getNewNotificationsCount(user);
 		if (count > 0L) {
 			String str = String.valueOf(count);
 			Font font = new Font("sans", Font.BOLD, 9); 

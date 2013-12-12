@@ -48,7 +48,7 @@ public class Notification {
     private boolean read = false, deleted = false, broadcast = false;
     private MessageType type = MessageType.NORMAL;
     private int creatorGroupId;
-    private String sender;
+    private String sender, addressee;
     
     public Notification() {
     }
@@ -64,6 +64,7 @@ public class Notification {
         this.expiration = expiration; 
         this.deleted = deleted;
         this.sender = "";
+        this.addressee = "";
     }
     
     public int getId() {
@@ -88,6 +89,14 @@ public class Notification {
 
     public void setSender(String sender) {
         this.sender = sender;
+    }    
+ 
+    public String getAddressee() {
+        return addressee;
+    }
+
+    public void setAddressee(String addressee) {
+        this.addressee = addressee;
     }    
     
     public int getCreatorGroupId() {

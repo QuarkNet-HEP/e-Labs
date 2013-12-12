@@ -13,15 +13,15 @@
 	    request.setAttribute("notifications", n);
 	}
 %>
-<table border="0" id="notifications-table">
-	<c:forEach var="n" items="${notifications}">
-			<tr id="not${n.id}">
-				<td>${n.message}</td>
-				<!--
-				<td class="remove" style="text-align: center;">
-					<a href="javascript:markAsRead('not', ${n.id})"> &#10004;</a>
-				</td>
-				-->
-			</tr>
-	</c:forEach>
-</table>
+<div id="notification-wrapper" style="height: 200px; overflow: auto;">
+	<table border="0" id="notifications-table">
+		<c:forEach var="n" items="${notifications}">
+				<tr id="not${n.id}">
+					<td>${n.message}</td>
+					<td class="remove" style="text-align: center;">
+						<a href="javascript:markAsRead('not', ${n.id})">New</a>
+					</td>
+				</tr>
+		</c:forEach>
+	</table>
+</div>

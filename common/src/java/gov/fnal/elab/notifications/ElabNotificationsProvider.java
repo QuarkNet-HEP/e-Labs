@@ -39,6 +39,6 @@ public interface ElabNotificationsProvider extends ElabProviderHandled {
     
     void removeNotification(ElabGroup admin, int id) throws ElabException;
     public Notification getNotificationById(int id);
-    public String getSender(int creatorId);
+    public String getGroupName(int groupId);
     
 }

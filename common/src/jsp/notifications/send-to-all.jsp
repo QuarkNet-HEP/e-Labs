@@ -7,8 +7,6 @@
 <%@ include file="../login/admin-login-required.jsp" %>
 <%@ page import="org.owasp.validator.html.*" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
-
-
 <%
 	String send = request.getParameter("send");
 	if ("Send".equals(send)) {
@@ -139,10 +137,10 @@
 		}
 	}	
 </script>
+<form action="../notifications/send-to-all.jsp" method="post">
 <c:if test="${notification != null }">
 	<p>Notification "${notification.message}" was added successfully.</p>
 </c:if>
-<form action="../notifications/send-to-all.jsp" method="post">
 	<table border="0" id="form-table" width="100%">
 		<tr>
 			<td class="label">
