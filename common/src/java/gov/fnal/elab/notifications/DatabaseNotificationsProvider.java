@@ -632,7 +632,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             "SELECT * FROM notifications.message AS n " + 
             "INNER JOIN notifications.project_broadcast AS np ON n.id = np.message_id AND project_id = ? " + 
             "LEFT OUTER JOIN notifications.state AS s ON n.id = s.message_id " +
-        	"WHERE n.type IN (1,2) " +
+        	"WHERE n.type = 1 " +
         	"AND n.expiration > now() ";
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
@@ -681,7 +681,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             "SELECT * FROM notifications.message AS n " + 
             "LEFT OUTER JOIN notifications.project_broadcast AS np ON n.id = np.message_id AND project_id = ? " + 
             "LEFT OUTER JOIN notifications.state AS s ON n.id = s.message_id " +
-        	"WHERE n.type IN (1,2) " +
+        	"WHERE n.type = 1 " +
             "ORDER BY n.time DESC ";
         	if (count > -1) {
         		sql += "LIMIT " + String.valueOf(count);
