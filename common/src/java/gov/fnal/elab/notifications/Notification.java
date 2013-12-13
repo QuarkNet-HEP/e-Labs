@@ -3,12 +3,14 @@
  */
 package gov.fnal.elab.notifications;
 
+import edu.emory.mathcs.backport.java.util.Collections;
 import gov.fnal.elab.ElabGroup;
+import gov.fnal.elab.datacatalog.StructuredResultSet.Month;
 
 import java.sql.Timestamp;
 import java.util.*;
 
-public class Notification {
+public class Notification implements Comparable<Notification>{
 	public static enum MessageType {
 		NORMAL(0),
 		SYSTEM(1),
@@ -65,6 +67,10 @@ public class Notification {
         this.deleted = deleted;
         this.sender = "";
         this.addressee = "";
+    }
+        
+    public int compareTo(Notification n) {
+    	return n.getTimeAsDate().compareTo(this.getTimeAsDate());
     }
     
     public int getId() {

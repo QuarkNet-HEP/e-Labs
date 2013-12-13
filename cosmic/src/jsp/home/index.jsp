@@ -13,12 +13,14 @@
 		<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/elab.js"></script>		
 		<script type="text/javascript">
 		window.onload=function(){
-			hideObj = document.getElementById("newsbox-h").style;
-			showObj = document.getElementById("newsbox-v").style;
-			hideObj.visibility = "hidden";
-			hideObj.display = "none";
-			showObj.visibility = "visible";
-			showObj.display = "";
+			if (document.getElementById("newsbox-h") != null  && document.getElementById("newsbox-v") != null) {
+				hideObj = document.getElementById("newsbox-h").style;
+				showObj = document.getElementById("newsbox-v").style;
+				hideObj.visibility = "hidden";
+				hideObj.display = "none";
+				showObj.visibility = "visible";
+				showObj.display = "";
+			}
 		}
 	
 	</script>

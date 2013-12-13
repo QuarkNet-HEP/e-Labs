@@ -375,7 +375,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             		l.add(n);
             	}
             }
-            
+            Collections.sort(l);
             return l;
             
         }

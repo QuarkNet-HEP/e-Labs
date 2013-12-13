@@ -34,21 +34,6 @@
 		<script type="text/javascript" src="../include/jquery/js/jquery-1.4.3.min.js"></script>	
 		<script type="text/javascript" src="../include/jquery/js/jquery.tablesorter.min.js"></script>
 		<link type="text/css" rel="stylesheet" href="../include/jquery/css/blue/style.css" />
-		<script type="text/javascript">
-	
-		$(document).ready(function() { 
-			$.tablesorter.addParser({
-				id: "notDate", 
-				is: function(s) { return false; },
-				format: function(s) { 
-					return $.tablesorter.formatFloat(new Date(s + " 00:00").getTime()); 
-				    },
-				type: "numeric"
-			});
-			$("#notifications-table-detailed").tablesorter({sortList: [[4,0]]}, {headers: {0:{sorter:'notDate'}, 5:{sorter:false}}});
-		}); 
-		</script>
-
 	</head>
 	
 	<body id="notifications" class="home">
@@ -65,6 +50,9 @@
 			
 			<div id="content">
 <h1>Notifications</h1>
+<ul>
+	<li>Click New to indicate you have read the message</li>
+</ul>
 <fmt:timeZone value="UTC">
 <div style="width: 100%; text-align: right;">
 	<c:choose>

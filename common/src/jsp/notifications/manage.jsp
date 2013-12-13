@@ -24,21 +24,7 @@
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>	
 		<script type="text/javascript" src="../include/jquery/js/jquery-1.4.3.min.js"></script>	
 		<script type="text/javascript" src="../include/jquery/js/jquery.tablesorter.min.js"></script>
-		<link type="text/css" rel="stylesheet" href="../include/jquery/css/blue/style.css" />
-		<script type="text/javascript">
-	
-		$(document).ready(function() { 
-			$.tablesorter.addParser({
-				id: "notDate", 
-				is: function(s) { return false; },
-				format: function(s) { 
-					return $.tablesorter.formatFloat(new Date(s + " 00:00").getTime()); 
-				    },
-				type: "numeric"
-			});
-			$("#notifications-table-detailed").tablesorter({sortList: [[0,0]]}, {headers: {1:{sorter:'notDate'}, :{sorter:false}}});
-		}); 
-		</script>			
+		<link type="text/css" rel="stylesheet" href="../include/jquery/css/blue/style.css" />			
 	</head>
 	
 	<body id="manage-notifications" class="home">
