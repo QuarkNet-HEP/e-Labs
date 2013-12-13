@@ -41,7 +41,7 @@
 			
 			<div id="content">
 <h1>Notifications</h1>
-<fmt:timeZone value="UTC">
+
 	<table border="0" cellspacing="2" id="notifications-table-detailed">
 		<c:choose>
 			<c:when test="${!empty notifications2}">
@@ -56,17 +56,10 @@
 							<td><div id="status${notifications.id}">
 									<c:choose>
 										<c:when test='${notifications.type == "SYSTEM" }'>
-											System
+											Newsbox
 										</c:when>
 										<c:otherwise>
-											<c:choose>
-												<c:when test="${notifications.read == true }">
-													Read
-												</c:when>
-												<c:otherwise>
-													<a href="javascript:markAsRead('status', ${notifications.id})">New</a>
-												</c:otherwise>
-											</c:choose>
+											Normal	
 										</c:otherwise>
 									</c:choose>
 								</div>
@@ -88,7 +81,7 @@
 			</c:otherwise>
 		</c:choose>
 	</table>
-</fmt:timeZone>
+
 
 			</div>
 			<!-- end content -->	

@@ -26,11 +26,14 @@ public interface ElabNotificationsProvider extends ElabProviderHandled {
     
     void addNotification(List<ElabGroup> groupList, List<Integer> projectList, Notification n) throws ElabException;
     
+    public void addTeacherNotification(List<ElabGroup> groupList, Notification n) throws ElabException;
+
     public void addUserNotification(List<ElabGroup> groupList, Notification n) throws ElabException;
     
     public void addProjectNotification(List<Integer> projectList, Notification n) throws ElabException;
     
     void markAsRead(Notification notification);
+    
     public void markAsRead(String notificationId);
     
     void markAsRead(ElabGroup user, int id) throws ElabException;
@@ -38,7 +41,8 @@ public interface ElabNotificationsProvider extends ElabProviderHandled {
     void markAsDeleted(ElabGroup user, int id) throws ElabException;
     
     void removeNotification(ElabGroup admin, int id) throws ElabException;
-    public Notification getNotificationById(int id);
-    public String getGroupName(int groupId);
     
+    public Notification getNotificationById(int id);
+
+    public String getGroupName(int groupId);
 }

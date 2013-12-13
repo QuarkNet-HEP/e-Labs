@@ -14,7 +14,7 @@ public class Notification implements Comparable<Notification>{
 	public static enum MessageType {
 		NORMAL(0),
 		SYSTEM(1),
-		STAFF(2);
+		SYSTEM_NORMAL(2);
 		
 		private static final Map<Integer, MessageType> reverse; 
 		

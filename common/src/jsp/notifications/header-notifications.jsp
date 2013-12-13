@@ -15,7 +15,11 @@
 			<div class="hr"></div>
 			<a href="../notifications/send-to-all.jsp">Send notifications</a>
 			<br />
-			<a href="../notifications/manage.jsp">Manage system notifications</a>
+			<div class="hr"></div>
+			<a href="../notifications/send-to-teachers.jsp">Send notifications to teachers only</a>
+			<br />
+			<div class="hr"></div>
+			<a href="../notifications/manage.jsp">Manage NEWSBOX notifications</a>
 		</c:when>
 		<c:when test="${user.teacher}">
 			<div class="hr"></div>

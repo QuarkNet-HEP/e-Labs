@@ -53,7 +53,7 @@
 <ul>
 	<li>Click New to indicate you have read the message</li>
 </ul>
-<fmt:timeZone value="UTC">
+
 <div style="width: 100%; text-align: right;">
 	<c:choose>
 		<c:when test="${not empty newNotifications }">
@@ -151,7 +151,7 @@
 			</c:choose>
 		</tbody>
 	</table>
-</fmt:timeZone>
+
 
 			</div>
 			<!-- end content -->	

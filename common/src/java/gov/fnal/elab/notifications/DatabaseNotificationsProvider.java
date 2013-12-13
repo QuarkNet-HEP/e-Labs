@@ -24,7 +24,43 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
     private static final List<ElabGroup> EMPTY_GROUP_LIST = Collections.emptyList();
     
     private Elab elab; 
-    
+
+    public void addTeacherNotification(List<ElabGroup> groupList, Notification n) throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+    	StringBuilder sb = new StringBuilder();
+    	String separator = "";
+		for (ElabGroup e: groupList) {
+			sb.append(separator);
+			sb.append(e.getTeacherId());
+			separator = ",";
+		}
+        String sql = 
+            "SELECT id " +
+            "  FROM research_group " + 
+            " WHERE role = 'teacher' " +
+        	"   AND teacher_id in ("+sb.toString()+")";
+        try {
+            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+            
+            ps = conn.prepareStatement(sql); 
+            ResultSet rs = ps.executeQuery();
+            
+            List<ElabGroup> egs  = new ArrayList<ElabGroup>();
+            while (rs.next()) {
+            	ElabGroup rg = elab.getUserManagementProvider().getGroupById(rs.getInt("id"));
+            	egs.add(rg);
+            }
+        	addUserNotification(egs, n);   
+        }
+        catch (SQLException e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, ps);
+        }	    	        
+    }
+        
     public void addUserNotification(List<ElabGroup> groupList, Notification n) throws ElabException {
     	addNotification(groupList, EMPTY_PROJECT_LIST, n);
     }
@@ -32,7 +68,6 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
     public void addProjectNotification(List<Integer> projectList, Notification n) throws ElabException {
     	addNotification(EMPTY_GROUP_LIST, projectList, n);
     }
-
 
     public void addNotification(ElabGroup eg, Notification n) throws ElabException {
     	List<ElabGroup> l = new ArrayList();
@@ -597,7 +632,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             "SELECT * FROM notifications.message AS n " + 
             "INNER JOIN notifications.project_broadcast AS np ON n.id = np.message_id AND project_id = ? " + 
             "LEFT OUTER JOIN notifications.state AS s ON n.id = s.message_id " +
-        	"WHERE n.type = 1 " +
+        	"WHERE n.type IN (1,2) " +
         	"AND n.expiration > now() ";
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
@@ -646,7 +681,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             "SELECT * FROM notifications.message AS n " + 
             "LEFT OUTER JOIN notifications.project_broadcast AS np ON n.id = np.message_id AND project_id = ? " + 
             "LEFT OUTER JOIN notifications.state AS s ON n.id = s.message_id " +
-        	"WHERE n.type = 1 " +
+        	"WHERE n.type IN (1,2) " +
             "ORDER BY n.time DESC ";
         	if (count > -1) {
         		sql += "LIMIT " + String.valueOf(count);
