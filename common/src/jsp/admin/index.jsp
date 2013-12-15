@@ -37,13 +37,21 @@
 						<td>Add e-Lab users.</td>
 					</tr>
 					<tr>
+						<td>&#8226; <a href="clean-guest.jsp">Delete guest user data</a></td>
+						<td>Delete all files created by the guest user.</td>					
+					</tr>
+					<tr>
 						<td>&#8226; <a href="../posters/poster-tags.jsp">Poster Tags</a></td>
 						<td>Add, delete, update poster tags per e-Lab.</td>
 					</tr>
 					<tr>
-						<td>&#8226; <a href="../references/control.jsp">References</a></td>
+						<td>&#8226; <a href="../references/control.jsp">References/Glossary/FAQ/News</a></td>
 						<td>Add, update References/Glossary/FAQ/News items.</td>					
 					</tr>					
+					<tr>
+						<td>&#8226; <a href="mark-teacher-status.jsp">Set group status</a></td>
+						<td>Set teachers and their research groups to active/inactive.</td>					
+					</tr>
 					<tr>
 						<td>&#8226; <a href="../statistics">View e-Lab Statistics</a></td>
 						<td>View ${elab.name} e-Lab statistics.</td>
