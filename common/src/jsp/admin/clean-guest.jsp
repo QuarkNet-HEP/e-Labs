@@ -69,6 +69,7 @@
 			}
 			catch (Exception e) {
 				messages += "Could not delete " + entry.getLFN() + ": " + e.getMessage() + "<br />";
+				continue;
 			}
 		}
 		//delete plots
@@ -81,6 +82,7 @@
 			}
 			catch (Exception e) {
 				messages += "Could not delete " + entry.getLFN() + ": " + e.getMessage() + "<br />";
+				continue;
 			}
 		}
 		//delete uploadedimages
@@ -93,6 +95,7 @@
 			}
 			catch (Exception e) {
 				messages += "Could not delete " + entry.getLFN() + ": " + e.getMessage() + "<br />";
+				continue;
 			}
 		}
 		//delete all cosmic data files
@@ -118,6 +121,7 @@
 			}
 			catch (Exception e) {
 				messages += "Could not delete " + entry.getLFN() + ": " + e.getMessage() + "<br />";
+				continue;
 			}
 		}
 	}//end of submit
