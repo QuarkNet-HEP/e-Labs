@@ -28,8 +28,10 @@
 	And q = new And();
 	q.add(new Equals("type", "poster"));
 	q.add(new Equals("project", elab.getName()));
-	q.add(new Equals("teacher", user.getGroup().getTeacher()));
 	String tt = (String) user.getGroup().getTeacher();
+	if (tt != null) {
+		q.add(new Equals("teacher", tt));
+	}
 	request.setAttribute("tt", tt);
 	//q.add(new Equals("group", user.getGroup().getName()));
 	ResultSet rs = elab.getDataCatalogProvider().runQuery(q);
