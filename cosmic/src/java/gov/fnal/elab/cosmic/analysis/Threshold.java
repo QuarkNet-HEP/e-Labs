@@ -122,7 +122,12 @@ public class Threshold {
 		        while (line != null) {
 		            String[] parts = line.split("\\s"); // line validated in split.pl 
 		            for (int j = 0; j < 4; j++) {
-		                timeOverThreshold(parts, j, detectorIDs[i], bw);
+		            	try {
+		            		timeOverThreshold(parts, j, detectorIDs[i], bw);
+		            	} catch (Exception e) {
+		            		System.out.println("Exception for file: "+inputFiles[i]+" at line: "+String.valueOf(lineCount)+ " " +line+" - " + e.toString() + "\n");
+		            		continue;
+		            	}
 		            }
 		            line = br.readLine();
 		        }
