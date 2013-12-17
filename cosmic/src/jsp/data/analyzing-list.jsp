@@ -113,6 +113,15 @@
 		        	<%
 		        	continue;	
 				}
+				//EPeronja: check if there is a .thresh file associated with this lfn
+				if (!ElabUtil.fileExists(elab, lfn+".thresh")) {
+			        %> 
+		        	<tr><td colspan="8"><span class="error">Missing .thresh file: <%= lfn %></span>
+					</td></tr>
+		        	<%
+		        	continue;	
+				}
+				
 			    //create a string of the date for the file and find start and end date
 			    Date fileStartDate = (Date) e.getTupleValue("startdate");
 			    //EPeronja-10/23/2013:Bug 427-FLUX analysis --> DAQ 6421
