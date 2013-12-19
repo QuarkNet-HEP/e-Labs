@@ -3,16 +3,18 @@
  */
 package gov.fnal.elab.notifications;
 
+import edu.emory.mathcs.backport.java.util.Collections;
 import gov.fnal.elab.ElabGroup;
+import gov.fnal.elab.datacatalog.StructuredResultSet.Month;
 
 import java.sql.Timestamp;
 import java.util.*;
 
-public class Notification {
+public class Notification implements Comparable<Notification>{
 	public static enum MessageType {
 		NORMAL(0),
 		SYSTEM(1),
-		STAFF(2);
+		SYSTEM_NORMAL(2);
 		
 		private static final Map<Integer, MessageType> reverse; 
 		
@@ -47,8 +49,8 @@ public class Notification {
     private long creation = System.currentTimeMillis(), expiration; 
     private boolean read = false, deleted = false, broadcast = false;
     private MessageType type = MessageType.NORMAL;
-    
-    private int creatorGroupId;  
+    private int creatorGroupId;
+    private String sender, addressee;
     
     public Notification() {
     }
@@ -62,8 +64,15 @@ public class Notification {
         this.type = MessageType.fromCode(type);
         this.creation = creation; 
         this.expiration = expiration; 
+        this.deleted = deleted;
+        this.sender = "";
+        this.addressee = "";
     }
-
+        
+    public int compareTo(Notification n) {
+    	return n.getTimeAsDate().compareTo(this.getTimeAsDate());
+    }
+    
     public int getId() {
         return id;
     }
@@ -80,6 +89,22 @@ public class Notification {
         this.message = message;
     }
 
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }    
+ 
+    public String getAddressee() {
+        return addressee;
+    }
+
+    public void setAddressee(String addressee) {
+        this.addressee = addressee;
+    }    
+    
     public int getCreatorGroupId() {
         return creatorGroupId;
     }
@@ -104,6 +129,14 @@ public class Notification {
         this.read = read;
     }
 
+    public boolean getBroadcast() {
+        return broadcast;
+    }
+
+    public void setBroadcast(boolean broadcast) {
+        this.broadcast = broadcast;
+    } 
+    
     public MessageType getType() {
         return type;
     }
@@ -126,6 +159,18 @@ public class Notification {
     
     public Date getTimeAsDate() {
     	return new Date(creation);
+    }
+    
+    public Date getExpirationAsDate() {
+    	return new Date(expiration);
+    }
+    
+    public boolean getDeleted() {
+    	return deleted;
+    }
+    
+    public void setDeleted(boolean deleted) {
+    	this.deleted = deleted;
     }
     
 }
