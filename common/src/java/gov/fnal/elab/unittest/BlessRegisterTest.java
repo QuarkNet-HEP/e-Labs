@@ -2,7 +2,7 @@ package gov.fnal.elab.unittest;
 
 import org.junit.*;
 import static org.junit.Assert.*;
-import gov.fnal.elab.cosmic.bless.*;
+//import gov.fnal.elab.cosmic.bless.*;
 
 public class BlessRegisterTest {
 /*

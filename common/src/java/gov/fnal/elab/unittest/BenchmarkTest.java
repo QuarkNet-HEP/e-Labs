@@ -2,11 +2,11 @@ package gov.fnal.elab.unittest;
 
 import org.junit.*;
 import static org.junit.Assert.*;
-import gov.fnal.elab.cosmic.bless.*;
-import gov.fnal.elab.*;
-import gov.fnal.elab.datacatalog.impl.vds.*;
-import gov.fnal.elab.datacatalog.DataCatalogProvider;
-import gov.fnal.elab.datacatalog.query.ResultSet;
+//import gov.fnal.elab.cosmic.bless.*;
+//import gov.fnal.elab.*;
+//import gov.fnal.elab.datacatalog.impl.vds.*;
+//import gov.fnal.elab.datacatalog.DataCatalogProvider;
+//import gov.fnal.elab.datacatalog.query.ResultSet;
 import java.text.*;
 import java.util.Date;
 
