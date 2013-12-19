@@ -7,11 +7,12 @@ import gov.fnal.elab.cosmic.bless.*;
 import java.util.*;
 
 public class BenchmarkProcessTest {
+	/*
 	public Elab elab = Elab.getElab(null, "cosmic");
 	
 	@Test
 	public void test_BlessDataFiles () {
-		/*
+
 		String answer = "";
 		try {
 			String detector = "6148";
@@ -23,13 +24,12 @@ public class BenchmarkProcessTest {
 		} catch (Exception e) {
 			answer = "There was an exception";
 		}
-		*/
+
 	}
 	
 	@Test
 	public void test_convertToHMS() {
 		String answer = "";
-		/*
 		try {
 			BlessProcess bp = new BlessProcess();
 			String formattedTime = bp.convertToHMS("60592");
@@ -44,6 +44,6 @@ public class BenchmarkProcessTest {
 		} catch (Exception e) {
 			answer = "There was an exception";
 		}
-		*/	
 	}
+	*/
 }
