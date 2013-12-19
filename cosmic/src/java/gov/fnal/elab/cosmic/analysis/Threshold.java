@@ -125,7 +125,7 @@ public class Threshold {
 		            	try {
 		            		timeOverThreshold(parts, j, detectorIDs[i], bw);
 		            	} catch (Exception e) {
-		            		System.out.println("Exception for file: "+inputFiles[i]+" at line: "+String.valueOf(lineCount)+ " " +line+" - " + e.toString() + "\n");
+		            		System.out.println("Exception for file: "+inputFiles[i]+" at line: " +line+" - " + e.toString() + "\n");
 		            		continue;
 		            	}
 		            }
