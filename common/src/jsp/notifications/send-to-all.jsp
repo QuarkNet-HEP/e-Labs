@@ -164,7 +164,7 @@
 			<td>
 				<select name="priority">
 					<option value="1">Newsbox</option>
-					<option value="2">General</option>
+					<option value="0">General</option>
 				</select>
 			</td>
 		</tr>
