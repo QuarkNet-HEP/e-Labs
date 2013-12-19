@@ -45,4 +45,6 @@ public interface ElabNotificationsProvider extends ElabProviderHandled {
     public Notification getNotificationById(int id);
 
     public String getGroupName(int groupId);
+
+    public List<Notification> getExpiredNotifications() throws ElabException; 
 }

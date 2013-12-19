@@ -37,6 +37,11 @@
 						<td>Add e-Lab users.</td>
 					</tr>
 					<tr>
+						<td>&#8226; <a href="remove-expired-notifications.jsp">Remove expired notifications</a></td>
+						<td>Delete notifications with expiration dates older than 30 days ago.</td>					
+					</tr>
+
+					<tr>
 						<td>&#8226; <a href="clean-guest.jsp">Delete guest user data</a></td>
 						<td>Delete all files created by the guest user.</td>					
 					</tr>
