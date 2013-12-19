@@ -1,6 +1,7 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="gov.fnal.elab.*" %>
+<%@ page import="gov.fnal.elab.notifications.*" %>
 <script type="text/javascript" src="../include/jquery/js/jquery-1.4.3.min.js"></script>
 <script type="text/javascript" src="../include/json2.js"></script>
 <script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.3.custom.min.js"></script>
@@ -32,11 +33,21 @@
 					<e:popup href="../jsp/showLogbook.jsp" target="log" width="800" height="600"><img title="Logbook" src="../graphics/logbook.png" /></e:popup>
 				</c:otherwise>
 			</c:choose>
+			<c:if test='${user.name != "guest" }'>					
+				<%@ include file="../notifications/header-notifications.jsp" %>		
+			</c:if>
 			<a id="username" href="../login/user-info.jsp"><span class="toolbar-text-link">${username}</span></a>
 			<a href="../login/logout.jsp"><span id="logout" class="toolbar-text-link">Log out</span></a>
 		</div>
 		<span id="toolbar-error-text"></span>
 		<c:set var="headerIncluded" value="true" scope="request"/>
 		<% out.flush(); %>
+		<%@ include file="../analysis/async-update.jsp" %>
+		<script language="JavaScript" type="text/javascript">
+			registerUpdate("../include/toolbar-async.jsp", 
+					function(data, error) {
+						updateHeader(data, error, '${elab.name}');
+					}, 5000, 5000);
+		</script>
 	</c:when>
 </c:choose>
