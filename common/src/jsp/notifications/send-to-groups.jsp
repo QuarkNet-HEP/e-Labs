@@ -7,9 +7,19 @@
 <%@ include file="../login/teacher-login-required.jsp" %>
 <%@ page import="org.owasp.validator.html.*" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
-
+<%@ page import="gov.fnal.elab.usermanagement.*" %>
+<%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 <%
 	String send = request.getParameter("send");
+	List<ElabGroup> researchGroups = new ArrayList<ElabGroup>();
+	for (Iterator ite = user.getGroups().iterator(); ite.hasNext();) {
+		ElabGroup group = (ElabGroup) ite.next();
+		if (group.getActive() && !group.getName().equals(user.getName())) {
+			researchGroups.add(group);
+		}
+	}
+	request.setAttribute("researchGroups", researchGroups);
+	
 	if ("Send".equals(send)) {
 	    String[] recipients = request.getParameterValues("destination");
 	    boolean all = StringUtils.isNotBlank(request.getParameter("allgroups")); 
@@ -19,7 +29,9 @@
 	    List<ElabGroup> groupsToNotify = new ArrayList();
 	    if (all) {
 	        for (ElabGroup eg : user.getGroups()) {
-	        	groupsToNotify.add(eg);
+	        	if (eg.getActive() && !eg.getName().equals(user.getName())) {
+	        		groupsToNotify.add(eg);
+	        	}
 	        }
 	    }
 	    else {
@@ -38,7 +50,10 @@
 	        throw new ElabJspException("Message is empty");
 	    }
 	    message = message.trim();
-	    message = message.substring("<p>".length(), message.length() - "</p>".length());
+		message = message.replaceAll("<p>", "");
+		message = message.replaceAll("</p>", "");
+	
+	    //message = message.substring("<p>".length(), message.length() - "</p>".length());
 	    Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
 		AntiSamy as = new AntiSamy();
 		message = as.scan(message, policy).getCleanHTML();
@@ -74,7 +89,11 @@
         	gc.add(Calendar.YEAR, 1);
         	n.setExpirationDate(gc.getTimeInMillis());
         }
-        np.addUserNotification(groupsToNotify, n);
+        List<Integer> projectIds = new ArrayList<Integer>();
+        projectIds.add(elab.getId());
+        np.addNotification(groupsToNotify, projectIds, n);
+
+        request.setAttribute("notification", n);
 	}
 %>
 
@@ -83,10 +102,9 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>${elab.properties.formalName} e-Lab Home</title>
-		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
-		<script type="text/javascript" src="../include/elab.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
+		<script type="text/javascript" src="../include/notifications.js"></script>
 	</head>
 	
 	<body id="send-to-groups" class="home send-notifications">
@@ -95,10 +113,12 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
-					<%@ include file="../include/nav-rollover.jspf" %>
+					<div id="nav">
+						<%@ include file="../include/nav-teacher.jsp" %>
+					</div>
 				</div>
 			</div>
-			
+		
 			<div id="content">
 <script type="text/javascript" src="../include/tiny_mce/jquery.tinymce.js"></script>
 <script>
@@ -127,14 +147,21 @@
 	}	
 </script>
 <form action="../notifications/send-to-groups.jsp" method="post">
-	<table border="0" id="form-table">
+<c:if test="${notification != null }">
+	<p>Notification "${notification.message}" was added successfully.</p>
+</c:if>
+<ul>
+	<li>SYSTEM messages are messages that go into the newsbox, either for all or individual e-Labs.</li>
+	<li>NORMAL messages are messages that go to all research groups in all e-Labs or individual e-Labs (these do not show in the newsbox).</li>
+</ul>
+	<table border="0" id="form-table" width="100%">
 		<tr>
 			<td class="label">
 				Send to:
 			</td>
 			<td>
 				<select name="destination" multiple="true" id="destination" size="8">
-					<c:forEach var="group" items="${user.groups}">
+					<c:forEach var="group" items="${researchGroups}">
 						<option value="${group.name}">${group.name}</option>
 					</c:forEach>
 				</select>
