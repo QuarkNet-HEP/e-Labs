@@ -44,57 +44,22 @@
 		DataCatalogProvider dcp = ElabFactory.getDataCatalogProvider(elab);
 		if (benchmark != null) {
 			if (!benchmark.equals("")) {
-				//first make all prior benchmark files not default
+				//first make all prior benchmark files not default since we are making the newly
+				//added benchmark the default one for this detector
 				ResultSet rsDefault = Benchmark.getBenchmarkFileName(elab, Integer.parseInt(detector));
-	            String[] defaultBenchmark = rsDefault.getLfnArray();
-			    for (int i = 0; i < defaultBenchmark.length; i++) {
-			    	CatalogEntry ce = dcp.getEntry(defaultBenchmark[i]);
-			    	ce.setTupleValue("benchmarkdefault", false);
-			    	dcp.insert(ce);
-			    }
-			    //set new benchmark and make it default
-				CatalogEntry entry = dcp.getEntry(benchmark);
-				//get all the tuples needed for the blessing
-				Long chan1 = (Long) entry.getTupleValue("chan1");
-				Long chan2 = (Long) entry.getTupleValue("chan2");
-				Long chan3 = (Long) entry.getTupleValue("chan3");
-				Long chan4 = (Long) entry.getTupleValue("chan4");
-				Long triggers = (Long) entry.getTupleValue("triggers");
-				Date startdate = (Date) entry.getTupleValue("startdate");
-				Date enddate = (Date) entry.getTupleValue("enddate");
-				double chan1Rate, chan2Rate, chan3Rate, chan4Rate, triggerRate;
-				try {
-					duration = (Long) (enddate.getTime() - startdate.getTime()) / 1000;
-					if (duration > 0) {
-						chan1Rate = chan1.doubleValue()/ duration;
-						chan2Rate = chan2.doubleValue() / duration;
-						chan3Rate = chan3.doubleValue() / duration;
-						chan4Rate = chan4.doubleValue() / duration;
-						triggerRate = triggers.doubleValue() / duration;	
-					} else {
-						chan1Rate = chan2Rate = chan3Rate = chan4Rate = triggerRate = 0;				
-					}
-				} catch (Exception e) {
-					chan1Rate = chan2Rate = chan3Rate = chan4Rate = triggerRate = 0;				
+				if (rsDefault != null) {
+		            String[] defaultBenchmark = rsDefault.getLfnArray();
+				    for (int i = 0; i < defaultBenchmark.length; i++) {
+				    	CatalogEntry ce = dcp.getEntry(defaultBenchmark[i]);
+				    	ce.setTupleValue("benchmarkdefault", false);
+				    	dcp.insert(ce);
+				    }
 				}
-				if (duration > 0) {
-					entry.setTupleValue("blessed", true);
-					entry.setTupleValue("blessedstatus", "blessed");
-			    	dcp.insert(entry);
-					ArrayList meta = new ArrayList();
-					meta.add("benchmarkfile boolean true");
-					meta.add("benchmarkreference string none");
-					meta.add("benchmarkdefault boolean true");
-					meta.add("benchmarklabel string "+benchmarkLabel);
-					meta.add("duration int " + String.valueOf(duration));
-					meta.add("chan1Rate float " + String.valueOf(chan1Rate));
-					meta.add("chan2Rate float " + String.valueOf(chan2Rate));
-					meta.add("chan3Rate float " + String.valueOf(chan3Rate));
-					meta.add("chan4Rate float " + String.valueOf(chan4Rate));
-					meta.add("triggerRate float " + String.valueOf(triggerRate));				
-					dcp.insert(DataTools.buildCatalogEntry(benchmark, meta));	
+				//set the selected file as a benchmark file
+				try {
+					duration = Benchmark.setFileAsBenchmark(dcp, benchmark, benchmarkLabel);
 					success = true;
-				} else {
+				} catch (Exception e) {
 					success = false;
 				}
 			}//end of setting/removing default benchmark file
@@ -116,6 +81,7 @@
 				//check if these files have a .bless associated with them
 				for (int i=0; i < results.length; i++ ) {
 					VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(results[i]);
+					//get the icons on the right of the benchmark candidates
 					String display = Benchmark.getIcons(entry);
 					if (entry.getTupleValue("blessfile") != null) {
 						//check if file has already been selected as benchmark, the only way to add it to

@@ -10,7 +10,7 @@
 String submit = request.getParameter("submit");
 String message = "OK";
 
-Result result = JUnitCore.runClasses(BlessRegisterTest.class, BenchmarkTest.class);
+Result result = JUnitCore.runClasses(BlessRegisterTest.class, BenchmarkTest.class, BenchmarkProcessTest.class);
 for (Failure failure : result.getFailures())
 {
     message += failure.toString() + "<br />";

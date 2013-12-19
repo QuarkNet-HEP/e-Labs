@@ -43,7 +43,7 @@
 		}
 		benchmark = request.getParameter("benchmark");			
 		String[] filesToBless = request.getParameterValues("blessfiles");
-		if (filesToBless != null) {
+		if (filesToBless != null && benchmark != null) {
 			BlessProcess bp = new BlessProcess();
 			results = bp.BlessDatafiles(elab, selectedDetector, filesToBless, benchmark);
 		}

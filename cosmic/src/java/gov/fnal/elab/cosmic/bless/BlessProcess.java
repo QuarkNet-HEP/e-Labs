@@ -1,6 +1,3 @@
-/*
- * EPeronja-05/17/2013: Tools to bless files based on a benchmark file
- */
 package gov.fnal.elab.cosmic.bless;
 
 import java.util.*;
@@ -19,14 +16,18 @@ import gov.fnal.elab.datacatalog.query.*;
 import gov.fnal.elab.datacatalog.impl.vds.*;
 import gov.fnal.elab.util.ElabException;
 
-public class BlessProcess {
+/*
+ * EPeronja-05/17/2013: Tools to bless files based on a benchmark file
+ */
 
+public class BlessProcess {
+	//constructor
 	public BlessProcess() {
 	}
 	
 	public ArrayList<String> BlessDatafiles(Elab elab, String detectorid, String[] filenames, String benchmark) throws IOException {
         ArrayList<String> blessResults = new ArrayList<String>();
-		if (filenames != null) {
+		if (elab != null && filenames != null && detectorid != null && benchmark != null) {
 			for (int i = 0; i < filenames.length; i++) {
 				blessResults.add(BlessDatafile(elab, detectorid, filenames[i], benchmark));
 			}
@@ -35,20 +36,9 @@ public class BlessProcess {
 	}//end of BlessDataFiles
 	
 	public String BlessDatafile(Elab elab, String detectorid, String filename, String benchmark) throws IOException {
-		String message = "";
-		
+		String message = "";		
 		//get the catalog entry of the file to be blessed
 		try {
-			//Write to a log file for the time being so all this can be checked
-			String logfile = filename + "_blessing.txt";
-			File file = new File(elab.getProperties().getDataDir() + File.separator + detectorid +
-					File.separator + logfile);
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-			FileWriter fw = new FileWriter(file.getAbsoluteFile());
-			BufferedWriter bw = new BufferedWriter(fw);
-			
 			VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(benchmark);
 			if (entry != null) {
 				//get all the tuples needed for the blessing
@@ -59,31 +49,14 @@ public class BlessProcess {
 				Long triggers = (Long) entry.getTupleValue("triggers");
 				Date startdate = (Date) entry.getTupleValue("startdate");
 				Date enddate = (Date) entry.getTupleValue("enddate");
-				//SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Long duration = 0L;
 				try {
-					//duration = (int) (enddate.getTime() - startdate.getTime()) / 1000;
-					//double chan1Rate = chan1.doubleValue()/ duration;
-					//double chan2Rate = chan2.doubleValue() / duration;
-					//double chan3Rate = chan3.doubleValue() / duration;
-					//double chan4Rate = chan4.doubleValue() / duration;
-					//double triggerRate = triggers.doubleValue() / duration;
 					duration = (Long) entry.getTupleValue("duration");
 					Double chan1Rate = (Double) entry.getTupleValue("chan1Rate");
 					Double chan2Rate = (Double) entry.getTupleValue("chan2Rate");
 					Double chan3Rate = (Double) entry.getTupleValue("chan3Rate");
 					Double chan4Rate = (Double) entry.getTupleValue("chan4Rate");
 					Double triggerRate = (Double) entry.getTupleValue("triggerRate");
-					
-					bw.write(filename + " blessing using benchmark: "+ benchmark+"\n");
-					bw.write("enddate : "+enddate.toString()+"\n");
-					bw.write("startdate : "+startdate.toString()+"\n");
-					bw.write("duration : "+String.valueOf(duration)+"\n");
-					bw.write("channel1 : "+chan1+"\n");
-					bw.write("channel2 : "+chan2+"\n");
-					bw.write("channel3 : "+chan3+"\n");
-					bw.write("channel4 : "+chan4+"\n");
-					bw.write("triggers : "+triggers+"\n");
 					
 					//get datafile *.bless file
 					String blessFile = elab.getProperties().getDataDir() + File.separator + detectorid +
@@ -107,12 +80,6 @@ public class BlessProcess {
 								}
 								//compare channel 1 and see if file can be blessed
 								if (chan1Rate < (parseToDouble(split[1]) + parseToDouble(split[2])) && chan1Rate > (parseToDouble(split[1]) - parseToDouble(split[2]))) {
-									bw.write(String.valueOf(split[0]) + ": chan1Rate : "+String.valueOf(chan1Rate)+"\n");
-									bw.write(String.valueOf(split[0]) + ": col1-blessfile : "+split[1]+"\n");
-									bw.write(String.valueOf(split[0]) + ": col2-blessfile : "+split[2]+"\n");
-									bw.write(String.valueOf(split[0]) + ": " + String.valueOf(chan1Rate) + " < " + String.valueOf(parseToDouble(split[1]) + 
-											parseToDouble(split[2])) + " && " + String.valueOf(chan1Rate) + " > " + 
-											String.valueOf(parseToDouble(split[1]) - parseToDouble(split[2]))  + "\n");
 									pass = true;
 								} else {
 									pass = false;
@@ -120,12 +87,6 @@ public class BlessProcess {
 								}
 								//compare channel 2 and see if file can be blessed
 								if (chan2Rate < (parseToDouble(split[3]) + parseToDouble(split[4])) && chan2Rate > (parseToDouble(split[3]) - parseToDouble(split[4]))) {
-									bw.write(String.valueOf(split[0]) + ": chan2Rate : "+String.valueOf(chan2Rate)+"\n");
-									bw.write(String.valueOf(split[0]) + ": col3-blessfile : "+split[3]+"\n");
-									bw.write(String.valueOf(split[0]) + ": col4-blessfile : "+split[4]+"\n");
-									bw.write(String.valueOf(split[0]) + ": " + String.valueOf(chan2Rate) + " < " + String.valueOf(parseToDouble(split[3]) + 
-											parseToDouble(split[4])) + " && " + String.valueOf(chan2Rate) + " > " + 
-											String.valueOf(parseToDouble(split[3]) - parseToDouble(split[4]))  + "\n");
 									pass = true;
 								} else {
 									pass = false;
@@ -133,12 +94,6 @@ public class BlessProcess {
 								}
 								//compare channel 3 and see if file can be blessed
 								if (chan3Rate < (parseToDouble(split[5]) + parseToDouble(split[6])) && chan3Rate > (parseToDouble(split[5]) - parseToDouble(split[6]))) {
-									bw.write(String.valueOf(split[0]) + ": chan3Rate : "+String.valueOf(chan3Rate)+"\n");
-									bw.write(String.valueOf(split[0]) + ": col5-blessfile : "+split[5]+"\n");
-									bw.write(String.valueOf(split[0]) + ": col6-blessfile : "+split[6]+"\n");
-									bw.write(String.valueOf(split[0]) + ": " + String.valueOf(chan3Rate) + " < " + String.valueOf(parseToDouble(split[5]) + 
-											parseToDouble(split[6])) + " && " + String.valueOf(chan3Rate) + " > " + 
-											String.valueOf(parseToDouble(split[5]) - parseToDouble(split[6]))  + "\n");
 									pass = true;
 								} else {
 									pass = false;
@@ -147,17 +102,10 @@ public class BlessProcess {
 								}
 								//compare channel 4 and see if file can be blessed
 								if (chan4Rate < (parseToDouble(split[7]) + parseToDouble(split[8])) && chan4Rate > (parseToDouble(split[7]) - parseToDouble(split[8]))) {
-									bw.write(String.valueOf(split[0]) + ": chan4Rate : "+String.valueOf(chan4Rate)+"\n");
-									bw.write(String.valueOf(split[0]) + ": col7-blessfile : "+split[7]+"\n");
-									bw.write(String.valueOf(split[0]) + ": col8-blessfile : "+split[8]+"\n");
-									bw.write(String.valueOf(split[0]) + ": " + String.valueOf(chan4Rate) + " < " + String.valueOf(parseToDouble(split[7]) + 
-											parseToDouble(split[8])) + " && " + String.valueOf(chan4Rate) + " > " + 
-											String.valueOf(parseToDouble(split[7]) - parseToDouble(split[8]))  + "\n");
 									pass = true;
 								} else {
 									pass = false;
 									failReason = formatFailReason(split[0], "channel 4", String.valueOf(chan4Rate), split[7], split[8]);
-
 								}
 								//compare triggers and see if file can be blessed
 								//if the trigger + triggerError < 2, we are not going to bother comparing
@@ -165,12 +113,6 @@ public class BlessProcess {
 								//low trigger rates alone shouldn't fail a file
 								if ((parseToDouble(split[9]) + parseToDouble(split[10])) >= 2) {
 									if (triggerRate < (parseToDouble(split[9]) + parseToDouble(split[10])) && triggerRate > (parseToDouble(split[9]) - parseToDouble(split[10]))) {
-										bw.write(String.valueOf(split[0]) + ": triggerRate : "+String.valueOf(triggerRate)+"\n");
-										bw.write(String.valueOf(split[0]) + ": col9-blessfile : "+split[9]+"\n");
-										bw.write(String.valueOf(split[0]) + ": col10-blessfile : "+split[10]+"\n");
-										bw.write(String.valueOf(split[0]) + ": " + String.valueOf(triggerRate) + " < " + String.valueOf(parseToDouble(split[9]) + 
-												parseToDouble(split[10])) + " && " + String.valueOf(triggerRate) + " > " + 
-												String.valueOf(parseToDouble(split[9]) - parseToDouble(split[10])) + "\n" );
 										pass = true;
 									} else {
 										pass = false;
@@ -205,16 +147,12 @@ public class BlessProcess {
 							}
 							meta.add("benchmarkreference string "+ benchmark);
 							meta.add("benchmarkfail string "+ failReason);
-							bw.write("FailReason: "+ failReason + "\n");
 							dcp.insert(DataTools.buildCatalogEntry(filename, meta));
 							if (pass && lineNumber > 0) {
-								message = "<a href='../analysis-blessing/benchmark-view.jsp?filename="+logfile+"'>"+filename + "</a> has been blessed.";
-								bw.write(filename + " has been blessed." + "\n");
+								message = "<strong>"+filename + "</strong> has been blessed.";
 							} else {
-								message = "<a href='../analysis-blessing/benchmark-view.jsp?filename="+logfile+"'>"+filename + "</a> has NOT been blessed. Fail reason: " + failReason;								
-								bw.write(filename + " has NOT been blessed." + "\n");
+								message = "<strong>"+filename + "</strong> has NOT been blessed. Fail reason: " + failReason;								
 							}
-							bw.close();
 						}
 					} catch (Exception e) {
 						message = "Blessfile: " + blessFile + "\n";
@@ -249,7 +187,7 @@ public class BlessProcess {
 			result = 0;
 		}
 		return result;
-	}
+	}//end of parseToInt
 	
 	public double parseToDouble(String split)
 	{
@@ -260,28 +198,35 @@ public class BlessProcess {
 			result = 0;
 		}
 		return result;
-	}
+	}//end of parseToDouble
 	
+	//EPeronja: convert the time in seconds to H:M:S
 	public String convertToHMS(String time) {
 		String hms = "";
-		int secs = Integer.parseInt(time);
-		int hours = secs/3600;
-	    int minutes = hours/60;
-	    int seconds = minutes%60;
-	    hms = String.valueOf(hours)+ ":"+ String.valueOf(minutes)+ ":"+ String.valueOf(seconds);
+		if (time != null) {
+			int secs = Integer.parseInt(time);
+			int hours = secs/3600;
+			int remainder = secs - hours * 3600;
+		    int minutes = remainder / 60;
+		    remainder = remainder - minutes * 60;
+		    int seconds = remainder;
+		    hms = String.valueOf(hours)+ ":"+ String.valueOf(minutes)+ ":"+ String.valueOf(seconds);
+		}
 		return hms;
-	}
+	}//end of convertToHMS
 	
 	public String formatFailReason(String seconds, String label, String benchmarkRate, String column1, String column2) {
-	String failReason = "";
-	failReason = "This file failed at: " + seconds + "(" + convertToHMS(seconds) + ")"+
-			 " because the benchmark "+label+" rate: "+ benchmarkRate +
-			 " (metadata value) was not between the ranges of comparison set by " + column1 +
-			 " and " + String.valueOf(column2) +
-			 "(" + String.valueOf(parseToDouble(column1) - parseToDouble(column2)) +
-			 " and " + String.valueOf(parseToDouble(column1) + parseToDouble(column2))+")" +
-			 " - for these last values, look at the .bless file of the just split file.";									
-	return failReason;
-	}
+		String failReason = "";
+		if (seconds != null && label != null && benchmarkRate != null && column1 != null && column2 != null) {
+			failReason = "This file failed at: " + seconds + "(" + convertToHMS(seconds) + ")"+
+					 " because the benchmark "+label+" rate: "+ benchmarkRate +
+					 " (metadata value) was not between the ranges of comparison set by " + column1 +
+					 " and " + String.valueOf(column2) +
+					 "(" + String.valueOf(parseToDouble(column1) - parseToDouble(column2)) +
+					 " and " + String.valueOf(parseToDouble(column1) + parseToDouble(column2))+")" +
+					 " - for these last values, look at the .bless file of the just split file.";									
+		}
+		return failReason;
+	}//end of formatFailReason
 
 }//end of BlessProcess
