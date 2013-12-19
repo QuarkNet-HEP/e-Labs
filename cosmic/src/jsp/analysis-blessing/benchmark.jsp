@@ -34,12 +34,14 @@
 	//save changes when submitting
 	String reqType = request.getParameter("submitButton");
 	if ("Save Changes".equals(reqType)){
-		//check if we are changing default benchmark file
+		//check if we are changing default benchmark file: the new default benchmark value 
+		//comes in the 'filename' parameter (set by javascript function setDefault())
 		String filename = request.getParameter("filename");
 		if (!filename.equals("")) {
 			//first check if there is a default and set it to false
 			String detectorId = request.getParameter("detectorId");
 			Integer detector = Integer.parseInt(detectorId);
+			//get current default benchmark and set it to false
 			String defaultBenchmark = Benchmark.getDefaultBenchmark(elab, detector);
 			DataCatalogProvider dcp = ElabFactory.getDataCatalogProvider(elab);
 			if (!defaultBenchmark.equals("")) {
@@ -67,15 +69,17 @@
 		if (!removeBenchmark.equals("") && confirmDelete.equals("YES")) {
 			//look for all the datafiles that have this file set as their benchmark reference
 			ResultSet rsBlessed = Benchmark.getBlessedDataFilesByBenchmark(elab, removeBenchmark);
-	  		String[] blessedFiles = rsBlessed.getLfnArray();
 			DataCatalogProvider dcp = ElabFactory.getDataCatalogProvider(elab);
-			//remove the reference
-		    for (int i = 0; i < blessedFiles.length; i++) {
-		    	CatalogEntry ce = dcp.getEntry(blessedFiles[i]);
-		    	ce.setTupleValue("benchmarkreference","");
-		    	ce.setTupleValue("blessed", false);
-		    	dcp.insert(ce);
-		    }
+			if (rsBlessed != null) {
+		  		String[] blessedFiles = rsBlessed.getLfnArray();
+				//remove the reference
+			    for (int i = 0; i < blessedFiles.length; i++) {
+			    	CatalogEntry ce = dcp.getEntry(blessedFiles[i]);
+			    	ce.setTupleValue("benchmarkreference","");
+			    	ce.setTupleValue("blessed", false);
+			    	dcp.insert(ce);
+			    }
+			}
 		    //now let's deal with the benchmark file
 			CatalogEntry entry = dcp.getEntry(removeBenchmark);					
 			entry.setTupleValue("benchmarkfile", false);

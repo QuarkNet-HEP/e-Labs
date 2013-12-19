@@ -26,35 +26,46 @@ import java.util.*;
 import java.lang.*;
 
 public class Benchmark {
+	//EPeronja: get the benchmark files for the given detector
 	public static ResultSet getBenchmarkFileName(Elab elab, Integer detectorid) throws ElabException {
-		In and = new In();
-		and.add(new Equals("project","cosmic"));
-		and.add(new Equals("type", "split"));
-		and.add(new Like("detectorid", Integer.toString(detectorid)));
-		and.add(new Equals("benchmarkfile", true));
-		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
+		ResultSet rs = null;
+		if (elab != null && detectorid != null) {
+			In and = new In();
+			and.add(new Equals("project","cosmic"));
+			and.add(new Equals("type", "split"));
+			and.add(new Like("detectorid", Integer.toString(detectorid)));
+			and.add(new Equals("benchmarkfile", true));
+			rs = elab.getDataCatalogProvider().runQuery(and);
+		}
 		return rs;
 	}
+	//EPeronja: get the default benchmark file for a given detector
 	public static String getDefaultBenchmark(Elab elab, Integer detectorid) throws ElabException {
 		String benchmarkDefault = "";
-		In and = new In();
-		and.add(new Equals("project","cosmic"));
-		and.add(new Equals("type", "split"));
-		and.add(new Like("detectorid", Integer.toString(detectorid)));
-		and.add(new Equals("benchmarkfile", true));
-		and.add(new Equals("benchmarkdefault", true));
-		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
-		if (rs != null && rs.size() > 0) {
-			benchmarkDefault = rs.getLfnArray()[0];
+		if (detectorid != null && elab != null) {
+			In and = new In();
+			and.add(new Equals("project","cosmic"));
+			and.add(new Equals("type", "split"));
+			and.add(new Like("detectorid", Integer.toString(detectorid)));
+			and.add(new Equals("benchmarkfile", true));
+			and.add(new Equals("benchmarkdefault", true));
+			ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
+			if (rs != null && rs.size() > 0) {
+				benchmarkDefault = rs.getLfnArray()[0];
+			}
 		}
 		return benchmarkDefault;
 	}
+	//EPeronja: retrieve all split files blessed by the benchmark in the argument
 	public static ResultSet getBlessedDataFilesByBenchmark(Elab elab, String benchmarkfile) throws ElabException {
-		In and = new In();
-		and.add(new Equals("project","cosmic"));
-		and.add(new Equals("type", "split"));
-		and.add(new Equals("benchmarkreference", benchmarkfile));
-		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
+		ResultSet rs = null;
+		if (benchmarkfile != null && elab != null) {
+			In and = new In();
+			and.add(new Equals("project","cosmic"));
+			and.add(new Equals("type", "split"));
+			and.add(new Equals("benchmarkreference", benchmarkfile));
+			rs = elab.getDataCatalogProvider().runQuery(and);
+		}
 		return rs;
 	}
 	public static ResultSet getBenchmarkCandidates(Elab elab, Integer detectorid, Date startDate, Date endDate) throws ElabException {
@@ -68,17 +79,6 @@ public class Benchmark {
 		//rs.sort("benchmarkdefault", false);
 		return rs;
 	}
-	//public static ResultSet getUnblessedFilesByDetector(Elab elab, Integer detectorid) throws ElabException {
-	//	In and = new In();
-	//	and.add(new Equals("project","cosmic"));
-	//	and.add(new Equals("type", "split"));
-	//	and.add(new Like("detectorid", Integer.toString(detectorid)));
-	//	and.add(new Equals("blessed", false));
-	//	and.add(new Like("blessfile", "%.bless%"));
-	//	ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
-	//	rs.sort("creationdate", true);
-	//	return rs;
-	//}
 	public static ResultSet getAllFilesByBenchmarkGeometry(Elab elab, Integer detectorid, String benchmark) throws ElabException {
 		VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(benchmark);
 		String julianDate = e.getTupleValue("julianstartdate").toString();
