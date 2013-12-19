@@ -1,4 +1,4 @@
-<a href="#" onClick="javascript:displayNotifications();">
+<a href="#" id="notifications-link" onClick="javascript:displayNotifications();">
 	<img id="notifications-icon" title="Notifications" src="../notifications/icon.jsp?elab=${elab.name}" />
 </a>
 <script type="text/javascript" src="../include/notifications.js"></script>

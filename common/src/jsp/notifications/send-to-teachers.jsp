@@ -176,7 +176,7 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<input type="submit" name="send" value="Send" onClick="javascript: validate()"/>
+				<input type="submit" name="send" value="Send" />
 			</td>
 		</tr>
 	</table>
