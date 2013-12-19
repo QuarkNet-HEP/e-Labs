@@ -506,3 +506,97 @@ a img {
 	width: 175px;
 	text-align: center;
 }
+
+
+#notifications-popup {
+	display: none;
+	width: 350px;
+	position: absolute;
+	background-color: white;
+	border: thin solid black;
+	border-top: 2px solid #70df40;
+	border-bottom: 2px solid black;
+	z-index: 10;
+	top: 24px;
+	color: black;
+	font-size: small;
+}
+
+#header #notifications-popup a {
+	font-weight: normal;
+}
+
+#notifications-popup a {
+	color: blue;
+}
+
+#notifications-popup a:hover {
+	color: #8080ff;
+}
+
+#notifications-popup h1 {
+	font-size: small;
+	font-weight: bold;
+	background-color: white;
+}
+
+#notifications-popup .hr {
+	border-bottom: thin dotted gray;
+	border-top: none;
+	color: white;
+	background-color: white;
+}
+
+#notifications-table {
+	margin: 2px;
+	width: 98%;
+}
+
+#notifications-table td {
+	border-bottom: thin dashed gray;
+	text-align: left;
+}
+
+#notifications-table td.remove {
+	width: 12px;
+	vertical-align: top;
+}
+
+#notifications-table-detailed {
+	margin-top: 16px;
+	background-color: #ffffff;
+	width: 100%;
+	border: 
+}
+
+#notifications-table-detailed td {
+	background-color: #e7e7e7;
+	padding: 4px;
+}
+
+.send-notifications #form-table {
+	background-color: white;	
+}
+
+.send-notifications #form-table td {
+	padding: 8px;
+	background-color: #e7e7e7;
+	vertical-align: top;
+}
+
+.send-notifications .label {
+	padding-right: 16px;
+	width: 30%;
+	text-align: right;
+}
+
+.send-notifications #destination {
+	width: 100%;
+}
+#notifications-count {
+	padding-left: 1px;
+	padding-right: 1px;
+	background-color: red;
+	color: white;
+	font-weight: bold;
+}
