@@ -37,6 +37,11 @@
 						<td>Add e-Lab users.</td>
 					</tr>
 					<tr>
+						<td>&#8226; <a href="remove-expired-notifications.jsp">Remove expired notifications</a></td>
+						<td>Delete notifications with expiration dates older than 30 days ago.</td>					
+					</tr>
+
+					<tr>
 						<td>&#8226; <a href="clean-guest.jsp">Delete guest user data</a></td>
 						<td>Delete all files created by the guest user.</td>					
 					</tr>
@@ -58,6 +63,10 @@
 					</tr>					
 					<c:if test='${elab.name == "cosmic" }'>
 						<tr><th colspan="2" >Cosmic Admin Links</th><th></th></tr>
+						<tr>
+							<td>&#8226; <a href="data-access-permission.jsp">Allow users to view all data</a></td>
+							<td>Give rights to teachers to be able to access all cosmic data (blessed and unblessed).</td>						
+						</tr>
 						<tr>
 							<td>&#8226; <a href="../analysis/list-all.jsp">View all analyses</a></td>
 							<td>List of analyses by all users.</td>
