@@ -356,6 +356,8 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
 	            	}
 	            	if (addresseeId > 0) {
 	            		n.setAddressee(getGroupName(addresseeId));
+	            	} else {
+	            		n.setAddressee("Broadcast");
 	            	}
 	            	if (!exists(l,n)) {
 	            		l.add(n);
