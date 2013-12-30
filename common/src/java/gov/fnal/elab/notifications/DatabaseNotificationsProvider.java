@@ -784,5 +784,39 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         finally {
             DatabaseConnectionManager.close(conn, ps);
         }	
-	}//end of getExpiredNotifications	
+	}//end of getExpiredNotifications
+	
+    public List<Notification> getAutomatedTestNotifications() throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+       
+        String sql = 
+            "SELECT * FROM notifications.message AS n " + 
+        	"WHERE n.message like 'Automated Testing%' ";
+        try {
+            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+            
+            ps = conn.prepareStatement(sql); 
+            ResultSet rs = ps.executeQuery();
+            
+            List<Notification> l = new ArrayList<Notification>();
+            while (rs.next()) {
+                int creatorGroupId = rs.getInt("creator_research_group_id");
+            	Notification n = new Notification(rs.getInt("id"), rs.getString("message"), creatorGroupId, 
+            			rs.getTimestamp("time").getTime(), rs.getTimestamp("expiration").getTime(),
+            			rs.getInt("type"), false, false); 
+            	if (!exists(l,n)) {
+            		l.add(n);
+            	}
+            }
+            return l;
+        }
+        catch (SQLException e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, ps);
+        }	    
+    }// end of getAutomatedTestNotifications()
+  
 }
