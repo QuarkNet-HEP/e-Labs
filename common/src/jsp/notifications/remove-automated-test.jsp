@@ -20,7 +20,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>${elab.properties.formalName} e-Lab Home</title>
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
-		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
 	</head>
 	
 	<body id="notifications" class="home">
