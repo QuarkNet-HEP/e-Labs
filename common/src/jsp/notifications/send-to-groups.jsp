@@ -19,6 +19,7 @@
 		}
 	}
 	request.setAttribute("researchGroups", researchGroups);
+	request.setAttribute("isAdmin", user.isAdmin());
 	
 	if ("Send".equals(send)) {
 	    String[] recipients = request.getParameterValues("destination");
@@ -150,7 +151,7 @@
 <c:if test="${notification != null }">
 	<p>Notification "${notification.message}" was added successfully.</p>
 </c:if>
-<c:if test="${user.isAdmin}">
+<c:if test="${isAdmin}">
 	<ul>
 		<li>SYSTEM messages are messages that go into the newsbox, either for all or individual e-Labs.</li>
 		<li>NORMAL messages are messages that go to all research groups in all e-Labs or individual e-Labs (these do not show in the newsbox).</li>
