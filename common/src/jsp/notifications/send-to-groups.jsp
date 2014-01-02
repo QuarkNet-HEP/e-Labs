@@ -150,10 +150,12 @@
 <c:if test="${notification != null }">
 	<p>Notification "${notification.message}" was added successfully.</p>
 </c:if>
-<ul>
-	<li>SYSTEM messages are messages that go into the newsbox, either for all or individual e-Labs.</li>
-	<li>NORMAL messages are messages that go to all research groups in all e-Labs or individual e-Labs (these do not show in the newsbox).</li>
-</ul>
+<c:if test="${user.isAdmin}">
+	<ul>
+		<li>SYSTEM messages are messages that go into the newsbox, either for all or individual e-Labs.</li>
+		<li>NORMAL messages are messages that go to all research groups in all e-Labs or individual e-Labs (these do not show in the newsbox).</li>
+	</ul>
+</c:if>
 	<table border="0" id="form-table" width="100%">
 		<tr>
 			<td class="label">
