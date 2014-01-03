@@ -234,7 +234,8 @@ Re: the upload progress stuff
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/benchmark.css" />
  		<script type="text/javascript" src="../include/upload.js"></script>
-		<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>
+ 		<script type="text/javascript" src="../include/elab.js"></script>
+ 		<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>
         <script type="text/javascript" src="../../dwr/interface/UploadMonitor.js"></script>
         <script type="text/javascript" src="../../dwr/engine.js"></script>
         <script type="text/javascript" src="../../dwr/util.js"></script>
@@ -270,7 +271,8 @@ Re: the upload progress stuff
 
 <ul>
 	<li>Select the <strong>detector</strong> associated with the data you are uploading.</li>
-	<li>Select <strong>benchmark</strong> file from dropdown. <a href="../analysis-blessing/benchmark.jsp">Add</a> file if no benchmark has been setup.</li>
+	<li>Select <strong>benchmark</strong> <a href="javascript:showRefLink('../library/ref-benchmark-upload.jsp',820,700)"><img src="../graphics/question.gif"></a>
+		file from dropdown. <a href="../analysis-blessing/benchmark.jsp">Add</a> file if no benchmark has been setup.</li>
 	<li>Click <strong>Choose File/Browse</strong> to locate the data file on your computer.</li>
 	<li>Click <strong>Upload</strong> to upload the file.</li>
 </ul>

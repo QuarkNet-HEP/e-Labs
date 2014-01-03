@@ -85,8 +85,10 @@
 		}
 		if (defaultBenchmark != null && !defaultBenchmark.equals("")) {
 			if (includeBlessed.equals("YES")) {
+				//if user wants to re-bless as well
 				searchResults = Benchmark.getAllFilesByBenchmarkGeometry(elab, key, defaultBenchmark);
 			} else {
+				//just retrieve unblessed files
 				searchResults = Benchmark.getUnblessedFilesByBenchmarkGeometry(elab, key, defaultBenchmark);
 			}
 			if (searchResults != null) {
@@ -148,8 +150,9 @@
 			<script type="text/javascript" src="../include/jquery/flot/jquery.flot.axislabels.js"></script>
 			<script type="text/javascript" src="../include/jquery/flot/jquery.flot.symbol.js"></script>
 			<script type="text/javascript" src="../include/excanvas.min.js"></script>
+			<script type="text/javascript" src="../include/elab.js"></script>      
 			<script type="text/javascript" src="blessing.js"></script>	
-			<script type="text/javascript" src="benchmark-process.js"></script>      
+			<script type="text/javascript" src="benchmark-process.js"></script>
 			<script>
 			$(document).ready(function() {
 				if ("<%=firstDataFile%>" != null && "<%=firstDataFile%>" != "") {
@@ -162,7 +165,7 @@
 	<li>Select <strong>detector</strong> to display unblessed datafiles. Select <strong>'Retrieve All' checkbox</strong> if you want to re-bless files.</li>
 	<li>Select <strong>benchmark</strong> file from drowpdown.</li>
 	<li>Select <strong>files to bless</strong> from datafiles uploaded with the same geometry as the selected benchmark.</li>
-	<li><strong>Bless</strong> files.</li>
+	<li>Click <strong>Check Selected Files</strong> to submit them to the blessing process.</li>
 </ul>
 <form id="benchmarkProcessForm" method="post" >
 	<table style="border: 1px solid black; width: 100%; padding: 10px;">
