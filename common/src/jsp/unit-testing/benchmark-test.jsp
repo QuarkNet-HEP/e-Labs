@@ -4,6 +4,7 @@
 <%@ page import="org.junit.runner.Result" %>
 <%@ page import="org.junit.runner.notification.Failure" %>
 <%@ page import="gov.fnal.elab.unittest.*" %>
+<%@ page import="gov.fnal.elab.cosmic.unittest.*" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/admin-login-required.jsp" %>
 <%
