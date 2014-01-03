@@ -27,48 +27,23 @@
 					<e:popup href="../jsp/showLogbook.jsp" target="log" width="800" height="600"><img title="Logbook" src="../graphics/logbook.png" /></e:popup>
 				</c:otherwise>
 			</c:choose>
-			
-			<%-- Temporarily disable notifications while I work on this
-			<a href="#" onClick="javascript:displayNotifications();">
-				<img id="notifications-icon" title="Notifications" src="../notifications/icon.jsp?elab=${elab.name}" />
-			</a>
-			
-			<script type="text/javascript" src="../include/notifications.js"></script>
-			<div id="notifications-popup" style="display: none">
-				<h1>Notifications</h1>
-				<div class="hr"></div>
-				<div id="notifications-table-container">
-					<%@ include file="../notifications/table.jsp" %>
-				</div>
-				<div class="hr"></div>
-				<a href="../notifications/index.jsp">See all notifications</a>
-				<c:choose>
-					<c:when test="${user.admin}">
-						<div class="hr"></div>
-						<a href="../notifications/send-to-all.jsp">Send system notifications</a>
-						<br />
-						<a href="../notifications/manage.jsp">Manage system notifications</a>
-					</c:when>
-					<c:when test="${user.teacher}">
-						<div class="hr"></div>
-						<a href="../notifications/send-to-groups.jsp">Send notifications to your groups</a>
-					</c:when>
-				</c:choose>
-			</div>
-			 --%>
+			<c:if test='${user.name != "guest" }'>					
+				<%@ include file="../notifications/header-notifications.jsp" %>
+			</c:if>
 			<a id="username" href="../login/user-info.jsp"><span class="toolbar-text-link">${username}</span></a>
 			<a href="../login/logout.jsp"><span id="logout" class="toolbar-text-link">Log out</span></a>
 		</div>
 		<span id="toolbar-error-text"></span>
 		<c:set var="headerIncluded" value="true" scope="request"/>
-		<% out.flush(); %>
-		
+		<% out.flush(); %>	
 		<%@ include file="../analysis/async-update.jsp" %>
 		<script language="JavaScript" type="text/javascript">
+			//5 minutes
+		    var checkUpdate = 5 * 1000
 			registerUpdate("../include/toolbar-async.jsp", 
 					function(data, error) {
 						updateHeader(data, error, '${elab.name}');
-					}, 5000, 5000);
+					}, checkUpdate, checkUpdate);
 		</script>
 	</c:when>
 </c:choose>

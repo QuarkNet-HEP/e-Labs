@@ -6,9 +6,9 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>${elab.properties.formalName} e-Lab Home</title>
-		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column-home.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
 		<script type="text/javascript" src="../include/elab-custom.js"></script>
 	</head>

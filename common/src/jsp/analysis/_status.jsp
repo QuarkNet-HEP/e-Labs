@@ -42,7 +42,7 @@
 			    Integer nid = (Integer) run.getAttribute("notification-id");
 				if (nid != null) {
 				    ElabNotificationsProvider np = ElabFactory.getNotificationsProvider(elab);
-				    np.markAsRead(user, nid);
+				    //np.markAsRead(user, nid);
 				}
 			}
 			if (status == AnalysisRun.STATUS_COMPLETED && showStatus == null) {
