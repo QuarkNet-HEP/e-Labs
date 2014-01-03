@@ -34,7 +34,7 @@ public class UploadNotifier implements AnalysisRunListener, AnalysisNotifier {
             String s = failed ? " failed" : " completed";
             String cont = (String) (failed ? run.getAttribute("onError") : run.getAttribute("continuation"));            
             String fn = String.valueOf(run.getAnalysis().getParameter("in"));
-            n.setMessage("<a href=\"" + cont + "\">Upload</a> of " + new File(fn).getName() + s);
+            n.setMessage("Upload of " + new File(fn).getName() + s);
         	GregorianCalendar gc = new GregorianCalendar();
         	//EPeronja-have to check how long we want this to stay until it expires
         	gc.add(Calendar.DAY_OF_MONTH, 2);
