@@ -214,7 +214,7 @@
 <h1>Select benchmark files.</h1>
 <ul>
 	<li>Choose a <strong>detector</strong> from the drop-down.</li>
-	<li>If your detector is not on the list, have your enter the DAQ# under registration. Only your teacher can do this.</li>
+	<li>If your detector is not on the list, have your teacher enter the DAQ# under registration. Only your teacher can do this.</li>
 	<li>Select <strong>a date range</strong> to choose a benchmark file.</li>
 	<li>Click <strong>Add Benchmark</strong> to retrieve benchmark candidates.</li>
 	<li>Select/Unselect a <strong>default benchmark</strong> file.</li>
