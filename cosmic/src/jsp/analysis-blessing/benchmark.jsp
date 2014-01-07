@@ -214,10 +214,12 @@
 <h1>Select benchmark files.</h1>
 <ul>
 	<li>Choose a <strong>detector</strong> from the drop-down.</li>
+	<li>If your detector is not on the list, have your enter the DAQ# under registration. Only your teacher can do this.</li>
 	<li>Select <strong>a date range</strong> to choose a benchmark file.</li>
 	<li>Click <strong>Add Benchmark</strong> to retrieve benchmark candidates.</li>
 	<li>Select/Unselect a <strong>default benchmark</strong> file.</li>
 	<li>Remove benchmark files (this will also <strong>remove the references</strong> to this file in former blessed datafiles and <strong>unbless</strong> them).</li>
+	<li><a href="benchmark-tutorial.jsp">Tutorial on Benchmark</a></li>
 </ul>
 <form id="benchmarkFileForm" method="post">
 <c:if test="${not empty blessed }">

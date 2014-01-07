@@ -271,8 +271,7 @@ Re: the upload progress stuff
 
 <ul>
 	<li>Select the <strong>detector</strong> associated with the data you are uploading.</li>
-	<li>Select <strong>benchmark</strong> <a href="javascript:showRefLink('../library/ref-benchmark-upload.jsp',820,700)"><img src="../graphics/question.gif"></a>
-		file from dropdown. <a href="../analysis-blessing/benchmark.jsp">Add</a> file if no benchmark has been setup.</li>
+	<li>Select <strong>benchmark</strong> file from dropdown. <a href="../analysis-blessing/benchmark.jsp">Add</a> file if no benchmark has been setup.</li>
 	<li>Click <strong>Choose File/Browse</strong> to locate the data file on your computer.</li>
 	<li>Click <strong>Upload</strong> to upload the file.</li>
 </ul>
@@ -286,7 +285,7 @@ Re: the upload progress stuff
 		<table style="text-align: left; margin-left: 5%;" width="90%">
 		    <tr>
 		    	<td class="benchmarkHeader">Detector</td>
-		    	<td class="benchmarkHeader">Benchmark File</td>
+		    	<td class="benchmarkHeader">Benchmark File <a href="javascript:showRefLink('../library/ref-benchmark-upload.jsp',520,300)"><img src="../graphics/question.gif"></a></td>
 		    </tr>
 			<c:forEach items="${detectorIDs}" var="d">
 			  	<tr>
