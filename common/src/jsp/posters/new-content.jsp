@@ -21,12 +21,12 @@
 			entity_encoding: 'raw',
 			script_url : '../include/tiny_mce/tiny_mce.js',
 			theme : 'advanced',
-			plugins : 'tabfocus',
+			plugins : 'tabfocus, fmath_formula',
 			relative_urls: false,
 			remove_script_host: false,
 			convert_urls: false,
 			
-			theme_advanced_buttons1 : ",italic,underline,|,bullist,numlist,|,sub,sup,|,cleanup,code",
+			theme_advanced_buttons1 : ",italic,underline,|,bullist,numlist,|,sub,sup,|,cleanup,code,|,fmath_formula,",
 			theme_advanced_buttons2 : "",
 			theme_advanced_buttons3 : "", 
 			theme_advanced_toolbar_location : "top",
@@ -119,7 +119,14 @@
 			    	val = ElabUtil.escapePoster(val); 
 			    	pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
 		    	} else {
-				    throw new ElabJspException("There is a problem with this string: " + val + ". Bailing out.");		    		
+		    		//make an exception for equation tool
+		    		if (val.contains("<img src")) {
+		    	    	val = ElabUtil.escapePoster(val); 
+				    	pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
+	    			
+		    		} else {
+					    throw new ElabJspException("There is a problem with this string: " + val + ". Bailing out.");		    	
+		    		}
 		    	}
 	    	}
 	    }
@@ -574,7 +581,7 @@ if ("Make Poster".equals(reqType) || "Save Changes".equals(reqType)) {
             {
             	String posterURL = "../posters/display.jsp?name=" + dfile;
 				%> 
-					<e:popup href="<%= posterURL %>" target="_blank" width="700" height="900" now="true"/>
+					<e:popup href="<%= posterURL %>" target="_blank" width="700" height="900" now="true" />
 				<%
             }
         }

@@ -1,13 +1,12 @@
-<%@ page import="java.io.*"%>
-<%
+<%@ page import="java.io.*"%><%
 	String image = request.getParameter("image");
 	
 	// size protection 
-	if(image.length()>100000) return;
-
+	if(image==null || image.length()>100000) return;
+	
 	byte[] bytes = org.apache.commons.codec.binary.Base64.decodeBase64(image);
 	if(bytes==null) return;
-
+		
 	String save = request.getParameter("save");
 	String name = request.getParameter("name");
 	String type = request.getParameter("type");
@@ -20,13 +19,13 @@
 		fos.close();
 		/*
 		 the path can be:
-			http://your_server/.../img/..
+		 	http://your_server/.../img/..
 		 or
-			/capture/img/...
+		 	/capture/img/...
 		 or relative
-			img/...
+		 	img/...
 		*/
-
+		
 		%>img/<%=name%>.<%=type%><%
 	}else{
 		response.setContentType("image/jpeg");
@@ -37,4 +36,5 @@
 		os.flush();
 		os.close();
 	}
+		
 %>
