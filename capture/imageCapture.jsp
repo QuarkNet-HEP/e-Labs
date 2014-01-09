@@ -10,6 +10,7 @@
 	String save = request.getParameter("save");
 	String name = request.getParameter("name");
 	String type = request.getParameter("type");
+
 	if(save!=null && name!=null && ("JPG".equalsIgnoreCase(type) || "PNG".equalsIgnoreCase(type) )){
 		String webappRoot = getServletContext().getRealPath("/");
 		File folder = new File(webappRoot + "/capture/img/");

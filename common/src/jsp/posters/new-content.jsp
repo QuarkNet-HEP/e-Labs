@@ -120,7 +120,7 @@
 			    	pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
 		    	} else {
 		    		//make an exception for equation tool
-		    		if (val.contains("<img src")) {
+		    		if (val.contains("/elab/capture/img/")) {
 		    	    	val = ElabUtil.escapePoster(val); 
 				    	pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
 	    			
