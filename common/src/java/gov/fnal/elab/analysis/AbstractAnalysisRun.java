@@ -222,4 +222,8 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
     public AnalysisRunListener getListener() {
         return listener;
     }
+    
+    public void setInitialStatus(int status) {
+    	this.status = status;
+    }
 }

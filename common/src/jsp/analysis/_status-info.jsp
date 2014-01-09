@@ -3,7 +3,7 @@
 <%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.io.*" %>
-
+<%@ page import="gov.fnal.elab.analysis.queue.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -194,6 +194,11 @@
 						</e:hidden>
 					</e:vswitch>
 				<%
+				}
+				else if (status == AnalysisRun.STATUS_QUEUED) {
+					%> <H1>The study was queued</H1> 
+					   <p>Check the <a href="../analysis/list.jsp">analysis list</a>. Look for id: <%= run.getId() %></p>
+					<%
 				}
 				else if (status == AnalysisRun.STATUS_CANCELED) {
 					%> <h1>The study was canceled</h1> <%

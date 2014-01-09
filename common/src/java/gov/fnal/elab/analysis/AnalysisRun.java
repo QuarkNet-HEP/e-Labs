@@ -37,7 +37,13 @@ public interface AnalysisRun {
      * Indicates a user-cancelled run
      */
     public static final int STATUS_CANCELED = 4;
+    
+    /**
+     * Indicates an analysis that has been queued
+     */
 
+    public static final int STATUS_QUEUED = 5;
+    
     /**
      * Starts this run.
      */
@@ -149,5 +155,7 @@ public interface AnalysisRun {
     
     String getFormattedEstimatedRunTime();
 
-    void setListener(AnalysisRunListener l); 
+    void setListener(AnalysisRunListener l);
+    
+    void setInitialStatus(int status);
 }

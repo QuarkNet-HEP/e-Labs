@@ -75,6 +75,10 @@
 							<td>&#8226; <a href="../analysis/list-all.jsp">View all analyses</a></td>
 							<td>List of analyses by all users.</td>
 						</tr>
+						<tr>
+							<td>&#8226; <a href="../analysis/analysis-queue.jsp">View analysis queue</a></td>
+							<td>View queued analyses and their statuses.</td>
+						</tr>
 					</c:if>				
 				</table>
 			</div>
