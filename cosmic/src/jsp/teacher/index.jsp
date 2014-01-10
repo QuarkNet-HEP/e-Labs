@@ -375,7 +375,7 @@
 					     		<td><img src="../graphics/Lifesaver.png" /></td>
 				     		</tr>
 					     	<tr>
-					     		<td colspan="2">Be sure to click on <b>Share Ideas</b> to see what other teachers have shared in the I2U2 Blog and in Facebook. They may have the answers to your questions. You may have answers to theirs! Maybe you want to collaborate on a study.</td>
+					     		<td colspan="2">Be sure to click on <b>Share Ideas</b> to see what other teachers have shared in Facebook. They may have the answers to your questions. You may have answers to theirs! Maybe you want to collaborate on a study.</td>
 				     		</tr>
 					     
 					     </table>
