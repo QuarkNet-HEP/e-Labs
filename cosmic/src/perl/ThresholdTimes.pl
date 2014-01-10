@@ -50,6 +50,12 @@ $last_sec_string = "";
 $CONST_hex8A = hex('AAAAAAAA');
 $CONST_hex8F = hex('FFFFFFFF');
 
+#Had to change the regExp in Dec 07. The newest version of the hardware had some firmware versions that did not add the +/- to word 1 when it was 0000. This was fixed in firmware version 1.06, but some cards made it into the wild with earlier firmware.
+#$re="^([0-9A-F]{8}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{8}) (\\d{6}\\.\\d{3}) (\\d{6}) ([AV]) (\\d\\d) ([0-9A-F]) ([-+]\\d{4})\$";
+#Define this RegEx before the loop that reads through the input file. There's no need to re-define it on each new line of the input.
+#OK the new regExp on the next line works. I did not add the + to the offset (word 16) but left it bare. 
+$re="^([0-9A-F]{8}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{8}) (\\d{6}\\.\\d{3}) (\\d{6}) ([AV]) (\\d\\d) ([0-9A-F]) ([-+ ]\\d{4})\$";
+
 #Set the command line arguments
 @infile = split (/\s+/, $ARGV[0]);
 @ofile = split (/\s+/, $ARGV[1]);
@@ -61,37 +67,39 @@ $CONST_hex8F = hex('FFFFFFFF');
 $max=2**31;
 die "The number of inputs, outputs, and serial numbers must match! (args: @ARGV)\n" if($#infile != $#ofile or $#infile != $#serialNumber);
 
-use Digest::MD5 qw(md5_hex);
+#use Digest::MD5 qw(md5_hex); we stopped the idea of file caching when VDS couldn't find the files.
 
 #While there are more files to parse, go through each line of the raw data file, performing the transformation
 while($infile=shift(@infile)){
 	$ofile=shift (@ofile);
 	$serialNumber=shift (@serialNumber);
     $cpld_frequency = shift(@cpld_frequency);
-    if($cpld_frequency eq ""){
-        $cpld_frequency = 41666667;
-    }
+	
+	$cpld_frequency = 41666667 if $cpld_frequency eq "" && $serialNumber < 6000;
+	$cpld_frequency = 25000000 if $cpld_frequency eq "" && $serialNumber >= 6000;
+    
+    $cpldResFreq = $cpld_frequency*32;	#cpld resolution frequency is 32 times the clock freq
 
-    $cpldResFreq = $cpld_frequency*32;  #cpld resolution frequency is 32 times the clock freq (Hz)
 	die "The detector's serial number ($serialNumber) must be positive.\n" if($serialNumber <=0);
 
+	# we stopped the idea of file caching when VDS couldn't find the files.
     #md5 input/output file comparison
-    my $str = join " ", @ARGV[0..$#ARGV];
-    my $mtime1 = (stat($0))[9];         #this script's timestamp
-    my $mtime2 = (stat($infile))[9];    #input file's timestamp
-    my $mtime3 = (stat("$geo_dir/$serialNumber/$serialNumber.geo"))[9];
-    $str = "$mtime1 $mtime2 $str $mtime3";
-    my $md5 = md5_hex($str);
-    if(-e $ofile){
-        $outmd5 = `head -n 1 $ofile`;
-        $outmd5 = substr($outmd5, 1);
-        chomp $outmd5;
-        print "md5s COMPUTED:$md5 FROMFILE:$outmd5\n";
-        if($md5 eq $outmd5){
-            print "input argument md5's match, not re-calculating output file: $ofile\n";
-            next;
-        }
-    }
+    #my $str = join " ", @ARGV[0..$#ARGV];
+    #my $mtime1 = (stat($0))[9];         #this script's timestamp
+    #my $mtime2 = (stat($infile))[9];    #input file's timestamp
+    #my $mtime3 = (stat("$geo_dir/$serialNumber/$serialNumber.geo"))[9];
+    #$str = "$mtime1 $mtime2 $str $mtime3";
+    #my $md5 = md5_hex($str);
+    #if(-e $ofile){
+    #    $outmd5 = `head -n 1 $ofile`;
+    #    $outmd5 = substr($outmd5, 1);
+    #    chomp $outmd5;
+    #    print "md5s COMPUTED:$md5 FROMFILE:$outmd5\n";
+    #    if($md5 eq $outmd5){
+    #        print "input argument md5's match, not re-calculating output file: $ofile\n";
+    #        next;
+    #    }
+    #}
 	
 	#Open input and output files
 	open(IN, "$infile")  || die "Cannot open $infile for input";
@@ -100,8 +108,6 @@ while($infile=shift(@infile)){
 	#@REorphan = (0,0,0,0,0);	#for 'info_output'
 
 	#print the header
-    print OUT1 ("#$md5\n");
-    print OUT1 ("#md5_hex($str)\n");
 	print OUT1 ("#ID.CHANNEL, Julian Day, RISING EDGE(sec), FALLING EDGE(sec), TIME OVER THRESHOLD (nanosec)\n");
 
 	#convert MAC OS line breaks to UNIX
@@ -110,28 +116,24 @@ while($infile=shift(@infile)){
 	$newline_fixing=1;
 	while(<IN>){
 		
-		$_ =~ s/\r\n?/\n/g;	#see http://www.westwind.com/reference/OS-X/commandline/text-files.html#text-formats
-		if($newline_fixing){
-			$newline_fixing = 0;
-			redo;
-		}
+		#$_ =~ s/\r\n?/\n/g;	#see http://www.westwind.com/reference/OS-X/commandline/text-files.html#text-formats
+		#if($newline_fixing){
+		#	$newline_fixing = 0;
+		#	redo;
+		#}
 
         #next if /^\s*#/;
-		#Had to change the regExp in Dec 07. The newest version of the hardware had some firmware versions that did not add the +/- to word 1 when it was 0000. This was fixed in firmware version 1.06, but some cards made it into the wild with earlier firmware.
-	#$re="^([0-9A-F]{8}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{8}) (\\d{6}\\.\\d{3}) (\\d{6}) ([AV]) (\\d\\d) ([0-9A-F]) ([-+]\\d{4})\$";
 	
-	#OK the new regExp on the next line works. I did not add the + to the offset (word 16) but left it bare. 
-	$re="^([0-9A-F]{8}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{2}) ([0-9A-F]{8}) (\\d{6}\\.\\d{3}) (\\d{6}) ([AV]) (\\d\\d) ([0-9A-F]) ([-+ ]\\d{4})\$";
-
-        #@row=split(/ /, $_);	#parse 1 line of the raw data into an array called @row
+        @row=split(/ /, $_);	#parse 1 line of the raw data into an array called @row
         #*performance* using an RE is 30% faster than split
-        if(/$re/o){
-            @row = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16);
-        }
-        else{
+        #erm . . . no, it's not.
+        #if(/$re/o){
+        #    @row = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16);
+        #}
+        #else{
 			#print "WARNING! Junk on line $.. Ignoring line:\n $_";		#printing too much to STDOUT makes java/jsp hang (on 8-10-04)
-            next;
-        }
+        #    next;
+        #}
         #print OUT1 @row;
 		#calculate timeoverthreshold for all 4 channels
         for my $i (1..4) {
@@ -173,33 +175,50 @@ sub timeoverthresh {
     }
 
 	#if there's a valid (6th bit in binary is 1) rising edge we need to match
-	if(exists($chan[$ch_num]{retime}) and (($decFE=hex($row[$FE])) & 0b100000)){
-        $chan[$ch_num]{fetime} = &calctime(\%{$chan[$ch_num]}, $decFE, @row);
+	if(exists($chan[$ch_num]{retimeFLOAT}) and (($decFE=hex($row[$FE])) & 0b100000)){
+        #$chan[$ch_num]{fetime} = &calctime(\%{$chan[$ch_num]}, $decFE, @row);
+		$edgetimeSeconds = &calctime(\%{$chan[$ch_num]}, $decFE, @row); #This is the start of the pulse written in number of seconds since midnight.
+        $chan[$ch_num]{fetimeFLOAT} = $edgetimeSeconds/86400; #End of the pulse in Fractional Julian Day
+        $chan[$ch_num]{fetimeINT} = sprintf("%.0f", ($edgetimeSeconds*1e11)); #End of the pulse in number of 100 ns since midnight. I know--it's a weird unit, but it gives us the needed precision and is INT.
+
 		#print data if there's an event
-		if(exists($chan[$ch_num]{retime}) and exists($chan[$ch_num]{fetime})){
+		if(exists($chan[$ch_num]{retimeINT}) and exists($chan[$ch_num]{fetimeINT})){
+			#print "Gets to line 188!\n"; 
 			&print_data();
             $chan[$ch_num] = ();	#clear the hash since the RE-FE match is complete
 		}
 
 		#now, if there's rising edge data on the same line, it's the start of a new event (unrelated to the falling edge on this line)
 		if(($decRE=hex($row[$RE])) & 0b100000){
-            $chan[$ch_num]{retime} = &calctime(\%{$chan[$ch_num]}, $decRE, @row);
+            #$chan[$ch_num]{retime} = &calctime(\%{$chan[$ch_num]}, $decRE, @row);
+            $edgetimeSeconds = &calctime(\%{$chan[$ch_num]}, $decRE, @row); #This is the start of the pulse written in number of seconds since midnight.
+            $chan[$ch_num]{retimeFLOAT} = $edgetimeSeconds/86400; #Start of the pulse in Fractional Julian Day
+        	$chan[$ch_num]{retimeINT} = sprintf("%.0f", ($edgetimeSeconds*1e11)); #Start of the pulse in number of 100 ns since midnight. I know--it's a weird unit, but it gives us the needed precision and is INT.
 		}
 	}
 	#else, this rising edge is unmatched and is the start of a new event
 	elsif(($decRE=hex($row[$RE])) & 0b100000){
-        $chan[$ch_num]{retime}=calctime(\%{$chan[$ch_num]}, $decRE, @row);
+        #$chan[$ch_num]{retime}=calctime(\%{$chan[$ch_num]}, $decRE, @row);
+		$edgetimeSeconds = &calctime(\%{$chan[$ch_num]}, $decRE, @row); #This is the start of the pulse written in number of seconds since midnight.
+        $chan[$ch_num]{retimeFLOAT} = $edgetimeSeconds/86400; #Start of the pulse in Fractional Julian Day
+        $chan[$ch_num]{retimeINT} = sprintf("%.0f", ($edgetimeSeconds*1e11)); #Start of the pulse in number of 100 ns since midnight. I know--it's a weird unit, but it gives us the needed precision and is INT.
+
 		
 		#now, if there's rising edge data (on the same line) and a valid falling edge
-		if(exists($chan[$ch_num]{retime}) and (($decFE=hex($row[$FE])) & 0b100000)){
-            $chan[$ch_num]{fetime}=calctime(\%{$chan[$ch_num]}, $decFE, @row);
+		if(exists($chan[$ch_num]{retimeFLOAT}) and (($decFE=hex($row[$FE])) & 0b100000)){
+            #$chan[$ch_num]{fetime}=calctime(\%{$chan[$ch_num]}, $decFE, @row);
+            $edgetimeSeconds = &calctime(\%{$chan[$ch_num]}, $decFE, @row); #This is the start of the pulse written in number of seconds since midnight.
+            $chan[$ch_num]{fetimeFLOAT} = $edgetimeSeconds/86400; #Start of the pulse in Fractional Julian Day
+        	$chan[$ch_num]{fetimeINT} = sprintf("%.0f", ($edgetimeSeconds*1e11)); #Start of the pulse in number of 100 ns since midnight. I know--it's a weird unit, but it gives us the needed precision and is INT.
+
 		}
 
 		#print data if there's an event
-		if(exists($chan[$ch_num]{retime}) and exists($chan[$ch_num]{fetime})){
+		if(exists($chan[$ch_num]{retimeINT}) and exists($chan[$ch_num]{fetimeINT})){
+			#print "Gets to line 223!\n";
 			&print_data;
             $chan[$ch_num] = ();	#clear the hash since the RE-FE match is complete
-		}
+        }
 	}
 }
 
@@ -221,7 +240,12 @@ sub calctime {
         $count1++;
         $chandata->{rePpsTime} = $last_rePpsTime;
         $chandata->{rePpsCount} = $last_rePpsCount;
-        $curr_sec_string = $row[10].$row[15];
+        if ($serialNumber > 5999){
+			$curr_sec_string = $row[10];
+        }
+        	else{
+		        $curr_sec_string = $row[10].$row[15];			
+        }
         if($curr_sec_string ne $last_sec_string){
         $count11++;
             $chandata->{rePpsTime} = &currentPpsSeconds($row[10], $row[15]);
@@ -263,12 +287,13 @@ sub calctime {
 
 
 	#the absolute rising/falling edge time = UTC-of-RE_CPLDp + (CPLDe-CPLDp)/CPLDe_frequency + TMC/CPLDe_frequency*32
-	$edgetime = $chandata->{rePpsTime} + ($difference)/$cpld_frequency + ($TMC)/$cpldResFreq;
-
+	$edgetime = $chandata->{rePpsTime} + ($difference)/$cpld_frequency + ($TMC)/$cpldResFreq; #edgetime is in seconds
+	#$edgetimeINT = int($edgetime * 1e11);
+	#print $edgetimeINT, "\t", $edgetime/86400, "\n";
 	#if the second is over 86400, subtract 86400 from it
 	$edgetime -= 86400 if($edgetime >= 86400);
-
-	return $edgetime/86400;		#divide seconds by 86400 to get the fraction of a day
+	#return $edgetime/86400;		#divide seconds by 86400 to get the fraction of a day
+	return $edgetime;				#don't make this a float yet.
 }
 
 #currentPpsSeconds
@@ -276,14 +301,14 @@ sub calctime {
 sub currentPpsSeconds {
 	my $number = $_[0];
 	my $offset = $_[1];
-
+	$offset = 0 if $serialNumber > 5999; #Bug 459 ignore the $row[15] offset on newer cards
+	print $offset, "\n";
     #*performance* substr is over 1000% faster than splitting and concatenating
     my $hour = (substr($number, 0, 2) + 12)%24; #add 12 hours because JDs start at 12:00pm
     my $min = substr($number, 2, 2);
     my $sec = substr($number, 4, 6);
 
     my $sec_offset = sprintf("%.0f", $sec + ($offset/1000));   #round with GPS offset in word 16
-
 	my $day_seconds = $hour*3600 + $min*60 + $sec_offset; #seconds since beginning of the current JD
 
 	return $day_seconds;
@@ -295,32 +320,34 @@ sub print_data {
     $curr_gps_day = $row[11];
     $count2++;
     if($curr_gps_day eq $last_gps_day){
-        $curr_edge_time = $chan[$ch_num]{retime};
+        $curr_edge_time = ($chan[$ch_num]{retimeFLOAT})/86400;
         if($curr_edge_time >= $last_edge_time or $curr_edge_time < 0){
             $compute_jd = 0;
         }
     }
     #only compute the current jd if different from the last (*performance*)
     if($compute_jd==1){
-		my $msec_offset = $row[15];
+		my $msec_offset = $row[15] if $serialNumber < 6000; #Bug 459--newer cards don't use the offset
 		my $offset = $chandata->{reDiff}/$cpld_frequency + $chandata->{reTMC}/$cpldResFreq + $msec_offset/1000;
 	    $jd = &curr_line_jd($offset, @row);
         $last_gps_day = $curr_gps_day;
-        $last_edge_time = $chan[$ch_num]{retime};
+        $last_edge_time = ($chan[$ch_num]{retimeFLOAT})/86400;
         $count22++;
     }
-
-	my $nanodifference = ($chan[$ch_num]{fetime}-$chan[$ch_num]{retime})*1e9*86400;
+	#print "Falling ", $chan[$ch_num]{fetimeFLOAT}, " Rising ", $chan[$ch_num]{retimeFLOAT};
+	my $nanodifference = ($chan[$ch_num]{fetimeINT}-$chan[$ch_num]{retimeINT})/100;
+	#print " nano ", $nanodifference,"\n";
 	my $id= $serialNumber . "." . $ch_num;
 
     #print OUT1 "$. ";	#for debugging
-    $nanodifference = sprintf "%.2f", $nanodifference;
+    $nanodifference = sprintf("%.1f", $nanodifference);
     #Here is the error that FIT caught. I assumed pulses <100ns!
-    if($nanodifference > 10000 or $nanodifference < 0){  #physically impossible to have a time over threshold > 100ns or < 0ns
+    if($nanodifference > 100000000 || $nanodifference < 0){  #physically impossible to have a time over threshold > 100ns or < 0ns
         #print "Ignoring event on line: $. channel $ch_num with ToT: $nanodifference\n";
     }
     else{
         #see header comments for the reasons behind this printf statement:
-        printf OUT1 ("%s\t%d\t%.16f\t%.16f\t%.2f\n", $id, $jd, $chan[$ch_num]{retime}, $chan[$ch_num]{fetime}, $nanodifference);
+        #printf OUT1 ("%s\t%d\t%.16f\t%.16f\t%.2f\n", $id, $jd, $chan[$ch_num]{retime}, $chan[$ch_num]{fetime}, $nanodifference);
+        printf OUT1 ("%s\t%d\t%.16f\t%.16f\t%.2f\t%.0f\t%.0f\n", $id, $jd,$chan[$ch_num]{retimeFLOAT}, $chan[$ch_num]{fetimeFLOAT}, $nanodifference, $chan[$ch_num]{retimeINT}, $chan[$ch_num]{fetimeINT});
     }
 }
