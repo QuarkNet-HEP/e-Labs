@@ -22,6 +22,7 @@ public class ThresholdTimesProcess {
     private String[] inputFiles, outputFiles, detectorIDs;
     private double[] cpldFrequencies;
     private double[] retime, fetime;
+    private double[] retimeINT, fetimeINT;  
     private long[] rePPSTime, rePPSCount, reDiff;
     private int[] reTMC;
     private long lastRePPSTime, lastRePPSCount;
@@ -32,6 +33,7 @@ public class ThresholdTimesProcess {
     private long starttime, endtime;
     private static int lineCount;
     
+    public static final NumberFormat NF0F = new DecimalFormat("0");
     public static final NumberFormat NF2F = new DecimalFormat("0.00");
     public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
     public static final NumberFormat TIME_FORMAT;
@@ -66,6 +68,8 @@ public class ThresholdTimesProcess {
 	        lastSecString = "";
 	        retime = new double[4];
 	        fetime = new double[4];
+	        retimeINT = new double[4];
+	        fetimeINT = new double[4];
 	        rePPSTime = new long[4];
 	        rePPSCount = new long[4];
 	        reDiff = new long[4];
@@ -83,7 +87,7 @@ public class ThresholdTimesProcess {
 		        
 		        bw.write("#$md5\n");
 		        bw.write("#md5_hex(0)\n");
-		        bw.write("#ID.CHANNEL, Julian Day, RISING EDGE(sec), FALLING EDGE(sec), TIME OVER THRESHOLD (nanosec)\n");
+		        bw.write("#ID.CHANNEL, Julian Day, RISING EDGE(sec), FALLING EDGE(sec), TIME OVER THRESHOLD (nanosec), RISING EDGE(INT), FALLING EDGE(INT)\n");
 		
 		        cpldFrequency = cpldFrequencies[i];
 		        if (cpldFrequency == 0) {
@@ -124,35 +128,47 @@ public class ThresholdTimesProcess {
     }
     
     private void timeOverThreshold(String[] parts, int channel, String detector, BufferedWriter bw) throws IOException {
-        int indexRE = channel * 2 + 1;
+    	double edgetimeSeconds = 0;
+    	long exp = Double.valueOf("1.0E+11").longValue();
+    	int indexRE = channel * 2 + 1;
         int indexFE = indexRE + 1;
 
         int type = Integer.parseInt(parts[1], 16);
         if ((type & 0x80) != 0) {
             retime[channel] = 0;
+            retimeINT[channel] = 0;
             clearChannelState(channel);
         }
 
         int decFE = Integer.parseInt(parts[indexFE], 16);
         int decRE = Integer.parseInt(parts[indexRE], 16);
 
-        if (retime[channel] != 0 && isEdge(decFE)) {
-        	fetime[channel] = calctime(channel, decFE, parts);
-            if (fetime[channel] != 0) {
+        if (retime[channel] != 0 && retimeINT[channel] != 0 && isEdge(decFE)) {
+        	edgetimeSeconds = calctime(channel, decFE, parts);
+        	fetime[channel] = edgetimeSeconds/86400;
+        	fetimeINT[channel] = edgetimeSeconds * exp;
+        	
+            if (fetime[channel] != 0 && fetimeINT[channel] != 0) {
             	printData(channel, parts, detector, bw);
                 clearChannelState(channel);
             }
 
             if (isEdge(decRE)) {
-                retime[channel] = calctime(channel, decRE, parts);
+            	edgetimeSeconds = calctime(channel, decRE, parts);
+                retime[channel] = edgetimeSeconds/86400;
+                retimeINT[channel] = edgetimeSeconds * exp;
             }
         }
         else if (isEdge(decRE)) {
-            retime[channel] = calctime(channel, decRE, parts);
-            if (retime[channel] != 0 && isEdge(decFE)) {
-                fetime[channel] = calctime(channel, decFE, parts);
+        	edgetimeSeconds = calctime(channel, decRE, parts);
+            retime[channel] = edgetimeSeconds/86400;
+            retimeINT[channel] = edgetimeSeconds * exp;
+            if (retime[channel] != 0 && retimeINT[channel] != 0 && isEdge(decFE)) {
+            	edgetimeSeconds = calctime(channel, decFE, parts);
+                fetime[channel] = edgetimeSeconds/86400;
+                fetimeINT[channel] = edgetimeSeconds * exp;
             }
-            if (retime[channel] != 0 && fetime[channel] != 0) {
+            if (retime[channel] != 0 && retimeINT[channel] != 0 && fetime[channel] != 0) {
                 printData(channel, parts, detector, bw);
                 clearChannelState(channel);
             }
@@ -167,6 +183,8 @@ public class ThresholdTimesProcess {
     private void clearChannelState(int channel) {
         retime[channel] = 0;
         fetime[channel] = 0;
+        retimeINT[channel] = 0;
+        fetimeINT[channel] = 0;
         rePPSTime[channel] = 0;
         rePPSCount[channel] = 0;
         reDiff[channel] = 0;
@@ -194,13 +212,7 @@ public class ThresholdTimesProcess {
             int sign = parts[15].charAt(0) == '-' ? -1 : 1;
             int msecOffset = sign * Integer.parseInt(parts[15].substring(1));
             double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
-//            if (lineCount  < 10) {
-//            	System.out.println("In print data- offset: " + String.valueOf(offset) + "\n");
-//            }
             jd = currLineJD(offset, parts);
-//            if (lineCount  < 10) {
-//            	System.out.println("In print data- jd: " + String.valueOf(jd) + "\n");
-//            }
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
         }
@@ -218,6 +230,10 @@ public class ThresholdTimesProcess {
             wr.write(NF16F.format(fetime[channel]));
             wr.write('\t');
             wr.write(NF2F.format(nanodiff));
+            wr.write('\t');
+            wr.write(NF0F.format(retimeINT[channel]));
+            wr.write('\t');
+            wr.write(NF0F.format(fetimeINT[channel]));
             wr.write('\n');
         }
     }
@@ -255,7 +271,8 @@ public class ThresholdTimesProcess {
         if (edgetime > 86400) {
             edgetime -= 86400;
         }
-        return edgetime / 86400;
+        //return edgetime / 86400;
+        return edgetime;
     }
     
     public double truncateDouble(double number, int numDigits) {
@@ -322,27 +339,13 @@ public class ThresholdTimesProcess {
         int day = Integer.parseInt(parts[11].substring(0, 2));
         int month = Integer.parseInt(parts[11].substring(2, 4));
         int year = Integer.parseInt(parts[11].substring(4, 6)) + 2000;
-//        if (lineCount < 10) {
-//        	System.out.println("In currLineJD - offset: " + String.valueOf(offset) + "\n");
-//        	System.out.println("In currLineJD - day,month,year: " + String.valueOf(day) + ", "+ String.valueOf(month) + ", " + String.valueOf(year)+  "\n");
-//        }
-
         int hour = Integer.parseInt(parts[10].substring(0, 2));
         int min = Integer.parseInt(parts[10].substring(2, 4));
         int sec = Integer.parseInt(parts[10].substring(4, 6));
         int msec = Integer.parseInt(parts[10].substring(7, 10));
-//        if (lineCount < 10) {
-//        	System.out.println("In currLineJD - hour,min,sec,msec: " + String.valueOf(hour) + ", "+ String.valueOf(min) + ", " + String.valueOf(sec)+ ", " + String.valueOf(msec) + "\n");
-//        }
         long secOffset = Math.round(sec + msec / 1000.0 + offset);
-//        if (lineCount < 10) {
-//        	System.out.println("In currLineJD - secoffset: " + String.valueOf(secOffset) + "\n");
-//        }
         double jd = gregorianToJulian(year, month, day, hour, min, (int) secOffset);
         jd = Math.rint(jd * 86400);
-//        if (lineCount < 10) {
-//        	System.out.println("In currLineJD - jd: " + String.valueOf(jd) + "\n");
-//        }       
         return (int) Math.floor(jd / 86400);
     }
  
@@ -356,10 +359,7 @@ public class ThresholdTimesProcess {
         if (month < 3) {
             month = month + 12;
             year = year - 1;
-        }  
-//        if (lineCount < 10) {
-//       	System.out.println("In gregorianToJulian - returns: " + String.valueOf((2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60.0 + second/3600.0)/24) + "\n");
-//        }    
+        }      
         return (2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60.0 + second/3600.0)/24;
     }
     

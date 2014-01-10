@@ -27,6 +27,7 @@ public class Threshold {
     private String[] inputFiles, outputFiles, detectorIDs;
     private double[] cpldFrequencies;
     private double[] retime, fetime;
+    private double[] retimeINT, fetimeINT;  
     private long[] rePPSTime, rePPSCount, reDiff;
     private int[] reTMC;
     private long lastRePPSTime, lastRePPSCount;
@@ -35,6 +36,7 @@ public class Threshold {
     private double lastEdgeTime;
     private double cpldFrequency;
     
+    public static final NumberFormat NF0F = new DecimalFormat("0");
     public static final NumberFormat NF2F = new DecimalFormat("0.00");
     public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
     
@@ -97,6 +99,8 @@ public class Threshold {
 		        lastSecString = "";
 		        retime = new double[4];
 		        fetime = new double[4];
+		        retimeINT = new double[4];
+		        fetimeINT = new double[4];		        
 		        rePPSTime = new long[4];
 		        rePPSCount = new long[4];
 		        reDiff = new long[4];
@@ -108,7 +112,7 @@ public class Threshold {
 		
 		        bw.write("#$md5\n");
 		        bw.write("#md5_hex(0)\n");
-		        bw.write("#ID.CHANNEL, Julian Day, RISING EDGE(sec), FALLING EDGE(sec), TIME OVER THRESHOLD (nanosec)\n");
+		        bw.write("#ID.CHANNEL, Julian Day, RISING EDGE(sec), FALLING EDGE(sec), TIME OVER THRESHOLD (nanosec), RISING EDGE(INT), FALLING EDGE(INT)\n");
 		
 		        cpldFrequency = cpldFrequencies[i];
 		        if (cpldFrequency == 0) {
@@ -141,34 +145,46 @@ public class Threshold {
     }
 
     private void timeOverThreshold(String[] parts, int channel, String detector, BufferedWriter bw) throws IOException {
+    	double edgetimeSeconds = 0;
+    	long exp = Double.valueOf("1.0E+11").longValue();   	
         int indexRE = channel * 2 + 1;
         int indexFE = indexRE + 1;
 
         int type = Integer.parseInt(parts[1], 16);
         if ((type & 0x80) != 0) {
             retime[channel] = 0;
+            retimeINT[channel] = 0;            
         }
 
         int decFE = Integer.parseInt(parts[indexFE], 16);
         int decRE = Integer.parseInt(parts[indexRE], 16);
 
-        if (retime[channel] != 0 && isEdge(decFE)) {
-            fetime[channel] = calctime(channel, decFE, parts);
-            if (fetime[channel] != 0) {
-                printData(channel, parts, detector, bw);
+        if (retime[channel] != 0 && retimeINT[channel] != 0 && isEdge(decFE)) {
+        	edgetimeSeconds = calctime(channel, decFE, parts);
+        	fetime[channel] = edgetimeSeconds/86400;
+        	fetimeINT[channel] = edgetimeSeconds * exp;
+        	
+            if (fetime[channel] != 0 && fetimeINT[channel] != 0) {
+            	printData(channel, parts, detector, bw);
                 clearChannelState(channel);
             }
 
             if (isEdge(decRE)) {
-                retime[channel] = calctime(channel, decRE, parts);
+            	edgetimeSeconds = calctime(channel, decRE, parts);
+                retime[channel] = edgetimeSeconds/86400;
+                retimeINT[channel] = edgetimeSeconds * exp;
             }
         }
         else if (isEdge(decRE)) {
-            retime[channel] = calctime(channel, decRE, parts);
-            if (retime[channel] != 0 && isEdge(decFE)) {
-                fetime[channel] = calctime(channel, decFE, parts);
+        	edgetimeSeconds = calctime(channel, decRE, parts);
+            retime[channel] = edgetimeSeconds/86400;
+            retimeINT[channel] = edgetimeSeconds * exp;
+            if (retime[channel] != 0 && retimeINT[channel] != 0 && isEdge(decFE)) {
+            	edgetimeSeconds = calctime(channel, decFE, parts);
+                fetime[channel] = edgetimeSeconds/86400;
+                fetimeINT[channel] = edgetimeSeconds * exp;
             }
-            if (retime[channel] != 0 && fetime[channel] != 0) {
+            if (retime[channel] != 0 && retimeINT[channel] != 0 && fetime[channel] != 0) {
                 printData(channel, parts, detector, bw);
                 clearChannelState(channel);
             }
@@ -183,6 +199,8 @@ public class Threshold {
     private void clearChannelState(int channel) {
         retime[channel] = 0;
         fetime[channel] = 0;
+        retimeINT[channel] = 0;
+        fetimeINT[channel] = 0;        
         rePPSTime[channel] = 0;
         rePPSCount[channel] = 0;
         reDiff[channel] = 0;
@@ -228,6 +246,10 @@ public class Threshold {
             wr.write(NF16F.format(fetime[channel]));
             wr.write('\t');
             wr.write(NF2F.format(nanodiff));
+            wr.write('\t');
+            wr.write(NF0F.format(retimeINT[channel]));
+            wr.write('\t');
+            wr.write(NF0F.format(fetimeINT[channel]));            
             wr.write('\n');
         }
     }
@@ -264,7 +286,8 @@ public class Threshold {
             edgetime -= 86400;
         }
                 
-        return edgetime / 86400;
+        //return edgetime / 86400;
+        return edgetime;
     }
 
     private static long currentPPSSeconds(String num, String offset) {
