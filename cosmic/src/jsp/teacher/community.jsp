@@ -26,8 +26,8 @@
 <h1>Share Ideas: Join a community of e-Lab teachers and learn from each other.</h1>   
 <p>Collaborate and interact with other e-Lab teachers and staff using the Cosmic Ray e-Lab with the following:</p>
 
-<a name="Library"></a><h2>I2U2 WordPress Blog (will be removed Feb 1st 2014)</h2>
-<p><strong>-Please save anything that might be important to you-</strong></p>
+<a name="Library"></a><h2>I2U2 WordPress Blog (Going away Feb 1, 2014 for lack of use)</h2>
+<p><strong>-Please save any posts that might be important to you-</strong></p></h2>
 <p>The <a href="http://www18.i2u2.org/blog/" target="blog">I2U2 WordPress Blog</a> is a repository of posts and documents for teachers using the e-Labs. Use this blog to collaborate with other teachers; discuss your ideas, observations and experiences. Read <a href="../content/Blog-Facebook-Notes.pdf">Getting Started with Sharing Ideas</a> to learn how to register and use the blog. You may also want to read this article which gives  <a href="http://codex.wordpress.org/Writing_Posts" target="blog">help for posting in WordPress</a>.</p>
 
 <ul><li> <a href="http://www18.i2u2.org/blog/category/cosmic-implementation-plan/" target="blog">Cosmic Implementation Plans</a> -  Share implementation plans and comment on plans of others. As part of a Cosmic workshop, teachers create an implementation plan for using the e-Lab with their students.  As a starting point to any posts, view the <a href="http://www18.i2u2.org/blog/posting-implementation-plans/"  target="blog">Posting Implementation Plans</a>. You can continue this discussion well after the initial workshop. You can also post your WordPress entries to Facebook and other social media sites.
