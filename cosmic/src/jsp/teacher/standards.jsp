@@ -28,9 +28,9 @@
 <h1>Alignment with National Standards</h1>
 
 <div align="center"><a href="#science">Science</a> - <a href="#math">Mathematics</a> - <a href="#language">Language Arts</a> - <a href="#technology">Technology</a></div>
-<hr>
 
-<a name="science"><h2>Alignment with National Science Education Standards</h2></a>
+
+
 <table border="0" id="main">
 	<tr>
 		<td>
@@ -39,6 +39,22 @@
 		</td>
 		
 		<td>
+<hr>
+<a name="nextgeneration"><h2>Alignment with Next Generation Science and Engineering Practices</h2></a>
+				<ul style="list-style-type: none;">
+						<li>1. Asking questions (for science) defining problems (for engineering)</li>
+						<li>2. Developing and using models</li>
+						<li>3. Planning and carrying out investigations</li>
+						<li>4. Analyzing and interpreting data</li>
+						<li>5. Using mathematics and computational thinking</li>
+						<li>6. Constructing explanations (for science) and designing solutions (for engineering)</li>
+						<li>7. Engaging in argument from evidence</li>
+						<li>8. Obtaining, evaluating and communicating information</li>
+					</ul>
+				</div>
+
+<hr>
+<a name="science"><h2>Alignment with National Science Education Standards</h2></a>
 			<div id="center">
 			
 				<p>
