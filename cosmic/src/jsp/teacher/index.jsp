@@ -24,7 +24,7 @@
 	
 <script type="text/javascript">
 	window.onload=function(){
-	 hideAll(1,9);
+	 hideAll(0,9);
 }
 	function showAll(start, finish)
 	{
@@ -78,10 +78,27 @@
 		
 		<td>
 			<div id="expandHeading">
+			    <p>Getting ready for the Next Generation Science Standards? This e-Lab meets ALL NGSS science and engineering practices. See Standards link for listing.</p>
 				<p>Click on each topic or its arrow to expand it. Click again to collapse it. Click on <b>Expand All Topics</b> or <b>Collapse All Topics</b> to expand or collapse all the content on the page. These
 				only work when you have Javascript enabled in your web browser.</p>
-				<div id="all-v" style="text-align:center; visibility:visible; display:"><a href="#" onclick="HideShow('all-v');HideShow('all-h');showAll(1,9);return false;">Expand All Topics</a></div>
-				<div id="all-h" style="text-align:center; visibility:hidden; display: none"><a href="#" onclick="HideShow('all-v');HideShow('all-h');hideAll(1,9);return false;">Collapse All Topics</a></div>
+				<div id="all-v" style="text-align:center; visibility:visible; display:"><a href="#" onclick="HideShow('all-v');HideShow('all-h');showAll(0,9);return false;">Expand All Topics</a></div>
+				<div id="all-h" style="text-align:center; visibility:hidden; display: none"><a href="#" onclick="HideShow('all-v');HideShow('all-h');hideAll(0,9);return false;">Collapse All Topics</a></div>
+
+				<div id="vsId0-v" style="visibility:hidden; display: none">
+				<a href="#" onclick="HideShow('vsId0-v');HideShow('vsId0-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Alignment with Next Generation Science and Engineering Practices</H2></a>
+								</div><div id="vsId0-h" style="visibility:visible; display:">
+				<a href="#" onclick="HideShow('vsId0-v');HideShow('vsId0-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Alignment with Next Generation Science and Engineering Practices</H2></a>
+					<ul style="list-style-type: none;">
+						<li>1. Asking questions (for science) defining problems (for engineering)</li>
+						<li>2. Developing and using models</li>
+						<li>3. Planning and carrying out investigations</li>
+						<li>4. Analyzing and interpreting data</li>
+						<li>5. Using mathematics and computational thinking</li>
+						<li>6. Constructing explanations (for science) and designing solutions (for engineering)</li>
+						<li>7. Engaging in argument from evidence</li>
+						<li>8. Obtaining, evaluating and communicating information</li>
+					</ul>
+				</div>
 
 				<div id="vsId1-v" style="visibility:hidden; display: none">
 					<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
