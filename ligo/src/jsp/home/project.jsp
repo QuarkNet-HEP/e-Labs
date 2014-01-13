@@ -46,7 +46,7 @@
 					 <p>Seismic processes influence the behavior of LIGO's gravitational wave detectors. Inquiry-based e-lab investigations, 
 				designed and conducted by students, will connect to LIGO in exciting and authentic ways.
 				Students will learn about LIGO's quest to detect gravitational waves as they analyze the vibrations of the ground
-				underneath LIGO's ultra-sensitive interferometers.</p>
+				underneath LIGO's ultra-sensitive interferometers. The LIGO e-Lab addresses ALL science practices in the Next Generation Science Standards.</p>
 
 					 <p>The I2U2 project offers a classroom instructional unit on seismology as a companion to the LIGO e-Lab.  
 				Teachers whose courses include Earth science and seismology content will find that the instructional unit offers a natural context for utilizing the LIGO e-Lab.  
