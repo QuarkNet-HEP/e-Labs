@@ -113,14 +113,9 @@ TR I2U2.Cosmic::LifetimeStudy(
 	none sort_sortKey2,
 	inout sortOut,
 	inout wireDelayData[],
-	inout thresholdAll[] )
+	input thresholdAll[] )
 {
   inout svg=@{inout:"plot.svg"};
-  call I2U2.Cosmic::ThresholdTimes(
-	detector=${none:detector},
-	cpldfreqs=${cpldfreqs},
-    rawData=${input:rawData},
-	thresholdAll=${output:thresholdAll} );
   call I2U2.Cosmic::WireDelay(
 	geoDir=${geoDir},
 	geoFiles=${input:geoFiles},
@@ -221,16 +216,11 @@ TR I2U2.Cosmic::PerformanceStudy(
 	inout singlechannelOut,
 	inout freqOut,
 	none singlechannel_channel,
-	inout thresholdAll[] )
+	input thresholdAll[] )
 {
   inout svg=@{inout:"plot.svg"};
   inout combineOut=@{inout:"combineOut"};
   
-  call I2U2.Cosmic::ThresholdTimes(
-	detector=${none:detector},
-	cpldfreqs=${cpldfreqs},
-	rawData=${input:rawData},
-	thresholdAll=${output:thresholdAll} );
   call I2U2.Cosmic::Combine(
 	combineIn=${input:thresholdAll},
 	combineOut=${output:combineOut} );
@@ -332,17 +322,6 @@ TR I2U2.Cosmic::Sort(
     argument = " "${key2};
 }
 
-TR I2U2.Cosmic::ThresholdTimes(
-    input rawData[],
-    output thresholdAll[],
-    none detector[],
-    none cpldfreqs )
-{	
-    argument = "'" ${rawData} "'";
-    argument = " '" ${thresholdAll} "'";
-    argument = " '" ${detector} "'";
-    argument = " '" ${cpldfreqs} "'";
-}
 
 TR I2U2.Cosmic::WireDelay(
     input threshData[],
@@ -392,15 +371,11 @@ TR I2U2.Cosmic::ShowerStudy(
 	none sort_sortKey1,
 	none sort_sortKey2,
 	inout sortOut,
-	inout thresholdAll[],
+	input thresholdAll[],
 	inout wireDelayData[],
 	none zeroZeroZeroID )
 {
-  call I2U2.Cosmic::ThresholdTimes(
-	detector=${none:detector},
-	cpldfreqs=${cpldfreqs},
-	rawData=${input:rawData},
-	thresholdAll=${output:thresholdAll} );
+
   call I2U2.Cosmic::WireDelay(
 	geoDir=${geoDir},
 	geoFiles=${input:geoFiles},
@@ -564,14 +539,10 @@ TR I2U2.Cosmic::FluxStudy(
 	none sort_sortKey1,
 	none sort_sortKey2,
 	inout wireDelayData[],
-	inout thresholdAll[] )
+	input thresholdAll[] )
 {
   inout svg=@{inout:"plot.svg"};
-  call I2U2.Cosmic::ThresholdTimes(
-	detector=${none:detector},
-	cpldfreqs=${cpldfreqs},
-	rawData=${input:rawData},
-	thresholdAll=${output:thresholdAll} );
+
   call I2U2.Cosmic::WireDelay(
 	geoDir=${geoDir},
 	geoFiles=${input:geoFiles},
