@@ -16,7 +16,8 @@
 <%@ page import="gov.fnal.elab.cosmic.beans.Geometries" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
-
+<%@ page import="gov.fnal.elab.cosmic.bless.BlessProcess" %>
+<%@ page import="gov.fnal.elab.cosmic.analysis.Threshold" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -55,6 +56,10 @@
 	File f = new File((String) results.getAnalysis().getParameter("in"));
 	String detectorId = (String) results.getAnalysis().getParameter("detectorid");
 	String comments = (String) results.getAnalysis().getParameter("comments");
+	String benchmark = (String) results.getAnalysis().getParameter("benchmark");
+	//EPeronja-10/17/2013: THRESHOLD TEST
+	String makeThreshold = (String) results.getAnalysis().getParameter("makeThreshold");
+	ArrayList<String> benchmarkMessages = new ArrayList<String>();
 	String dataDir = elab.getProperties().getDataDir();
 	int channels[] = new int[4];
 
@@ -170,7 +175,25 @@
 	        channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).intValue();
 	    }
 	}
+	//EPeronja-10/17/2013: THRESHOLD TEST
+	//create the threshold files here if the option is java
+	if (makeThreshold.equals("java")) {
+		String[] inputFiles = new String[splits.size()];
+		for (int i = 0; i < splits.size(); i++) {
+			inputFiles[i] = splits.get(i).toString();			
+		}
+		Threshold t = new Threshold(elab, inputFiles, detectorId);
+		t.createThresholdFiles(elab);
+	}
+	//we might as well bless here
+	if (benchmark != null) {
+		BlessProcess bp = new BlessProcess();
+		for (int i = 0; i < splits.size(); i++) {
+			benchmarkMessages.add(bp.BlessDatafile(elab, detectorId, splits.get(i).toString(), benchmark)); 		
+		}
+	}
 	request.setAttribute("sqlErrors", sqlErrors);
+	request.setAttribute("benchmarkMessages", benchmarkMessages);
 	request.setAttribute("channels", channels);
 	request.setAttribute("splitEntries", entries);
 	CatalogEntry e = elab.getDataCatalogProvider().getEntry(rawName);
@@ -237,6 +260,16 @@
 			</c:otherwise>
 		</c:choose>	
 		<br />	
+		<c:choose>
+			<c:when test="${not empty benchmarkMessages}">
+			   <table>
+			   		<tr><th>Benchmark Results</th></tr>
+					<c:forEach items="${benchmarkMessages}" var="benchmarkMessages">
+						<tr><td>${benchmarkMessages}</td></tr>
+					</c:forEach>
+				</table>
+			</c:when>
+		</c:choose>
 		<c:choose>		
 			<c:when test="${not empty sqlErrors}">
 				<p>Error(s) updating metadata, please send the message below to <a href="mailto:e-labs@fnal.gov">e-labs@fnal.gov</a></p>
