@@ -56,7 +56,8 @@
 					of research projects are looking at this question. Students will have a chance to 
 					gain their own understanding of cosmic rays and may be fortunate enough to capture 
 					a rare highly-energetic cosmic ray shower on their classroom detector and analyze 
-					their results with this e-Lab.
+					their results with this e-Lab. The Cosmic Ray e-Lab addresses ALL science and engineering 
+					practices in the Next Generation Science Standards.
 				</p>
 	
 				<a href="/elab" target="common"><strong>Information common for all e-Labs</strong></a>

@@ -93,6 +93,7 @@ function showAll(start, finish)
 		</td>
 		
 		<td><div id="expandHeading">
+				<p>Getting ready for the Next Generation Science Standards? This e-Lab meets ALL NGSS science practices. See Standards link in the menu for listing.</p>
 				<P>Click on each topic or its arrow to expand it. Click again to collapse it. Click on <b>Expand All Topics</b> or <b>Collapse All Topics</b> to expand or collapse all the content on the page. These
 				only work when you have Javascript enabled in your web browser.
 				<div id="all-v" style="text-align:center; visibility:visible; display:"><a href="#" onclick="HideShow('all-v');HideShow('all-h');showAll(1,9);return false;">Expand All Topics</a></div>
