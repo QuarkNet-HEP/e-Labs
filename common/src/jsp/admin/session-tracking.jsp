@@ -1,7 +1,10 @@
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/admin-login-required.jsp" %>
 <%@ page import="gov.fnal.elab.SessionListener" %>
+<%@ page import="gov.fnal.elab.*" %>
+<%@ page import="gov.fnal.elab.notifications.*" %>
 <%@ page import="javax.servlet.http.HttpSession" %>
 <%@ page import="java.util.*"%>
 <%

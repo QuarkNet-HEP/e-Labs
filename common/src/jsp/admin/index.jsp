@@ -54,6 +54,10 @@
 						<td>Add, update References/Glossary/FAQ/News items.</td>					
 					</tr>					
 					<tr>
+						<td>&#8226; <a href="session-tracking.jsp">Session Tracking</a></td>
+						<td>See the users whose sessions are still active.</td>					
+					</tr>
+					<tr>
 						<td>&#8226; <a href="mark-teacher-status.jsp">Set group status</a></td>
 						<td>Set teachers and their research groups to active/inactive.</td>					
 					</tr>
