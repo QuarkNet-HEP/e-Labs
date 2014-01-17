@@ -72,6 +72,10 @@
 					<c:if test='${elab.name == "cosmic" }'>
 						<tr><th colspan="2" >Cosmic Admin Links</th><th></th></tr>
 						<tr>
+							<td>&#8226; <a href="../data/download?filename=CosmicRayDetector.zip&elab=${elab.name}&type=zip">Download Purdue-Java</a></td>
+							<td>Download zip with all files to run the Purdue-Java Cosmic Ray Detector Code.</td>
+						</tr>
+						<tr>
 							<td>&#8226; <a href="data-access-permission.jsp">Allow users to view all data</a></td>
 							<td>Give rights to teachers to be able to access all cosmic data (blessed and unblessed).</td>						
 						</tr>
