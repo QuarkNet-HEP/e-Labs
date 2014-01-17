@@ -8,18 +8,27 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/admin-login-required.jsp" %>
 <%
+String submit = request.getParameter("submit");
+String message = "OK";
+
+Result result = JUnitCore.runClasses(SessionListenerTest.class);
+for (Failure failure : result.getFailures())
+{
+    message += failure.toString() + "<br />";
+}
+request.setAttribute("message", message);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Unit Testing</title>
+		<title>Session Tests</title>
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 	</head>
 	
-	<body id="unit-testing" class="teacher">
+	<body id="unit-testing-session" class="teacher">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
@@ -30,19 +39,9 @@
 					</div>
 				</div>
 			</div>
+			
 			<div id="content">
-				<table>
-					<tr>
-						<td><a href="benchmark-test.jsp">Benchmark Tests</a></td>
-					</tr>
-					<tr>
-						<td><a href="notifications-test.jsp">Notifications Tests</a></td>
-					</tr>
-					<tr>
-						<td><a href="session-test.jsp">Session Tests</a></td>
-					</tr>
-										
-				</table>
+				<div id="msg">${message}</div>
 			</div>
 			<!-- end content -->	
 		

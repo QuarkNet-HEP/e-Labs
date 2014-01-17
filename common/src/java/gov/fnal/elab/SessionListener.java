@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSessionListener;
 public class SessionListener implements HttpSessionListener {
     private static int sessionCount;
     private static TreeMap<String, List<Pair>> sessions = new TreeMap<String, List<Pair>>();
-	DateFormat df = new SimpleDateFormat("MMM dd yyyy HH:MM:SS");
+    DateFormat df = new SimpleDateFormat("MMM dd yyyy HH:MM:SS");
 	
     public static int getTotalActiveSession() {
     	return sessionCount;
@@ -38,5 +38,12 @@ public class SessionListener implements HttpSessionListener {
         }
     }		
     
- 
+    public static void invalidateSession(String sessionId) {
+    	List<Pair> x = sessions.remove(sessionId);
+    	Pair y = x.get(0);
+    	if (y.getLeft().equals("session")) {
+    		HttpSession s = (HttpSession) y.getRight();
+    		s.invalidate();
+    	}
+    }	
 }
