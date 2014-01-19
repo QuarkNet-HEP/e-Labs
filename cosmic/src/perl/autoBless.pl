@@ -76,28 +76,32 @@ while (<IN1>){#open a new .bless file for inspection
 	if ($arguments[3] > $row[1] + $row[2] || $arguments[3] < $row[1]-$row[2]){ #Channel zero within one SD?
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
-		print OUT0 "$candidate\tunblessed at $row[0] due to Chan0 \t$arguments[3]\t$row[1]\t$row[2]\n";
+		print OUT0 $arguments[1],"$arguments[2]\tunblessed at $row[0] due to Chan0 \t$arguments[3]\t$row[1]\t$row[2]\n";
+		$blessedState = "blessed"; #reset this for the next file.
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[2]. . . 
 
 	if ($arguments[4] > $row[3] + $row[4] || $arguments[4] < $row[3]-$row[4]){ #Channel one within one SD?
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
-		print OUT0 "$candidate\tunblessed at $row[0] due to Chan1 \t$arguments[4]\t$row[3]\t$row[4]\n";
+		print OUT0 "$arguments[2]\tunblessed at $row[0] due to Chan1 \t$arguments[4]\t$row[3]\t$row[4]\n";
+		$blessedState = "blessed"; #reset this for the next file.
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[3]. . . 
 
 	if ($arguments[5] > $row[5] + $row[6] || $arguments[5] < $row[5]-$row[6]){ #Channel two within one SD?
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
-		print OUT0 "$candidate\tunblessed at $row[0] due to Chan2 \t$arguments[5]\t$row[5]\t$row[6]\n";
+		print OUT0 "$arguments[2]\tunblessed at $row[0] due to Chan2 \t$arguments[5]\t$row[5]\t$row[6]\n";
+		$blessedState = "blessed"; #reset this for the next file.
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[4]. . . 
 
 	if ($arguments[6] > $row[7] + $row[8] || $arguments[6] < $row[7]-$row[8]){ #Channel three within one SD?
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
-		print OUT0 "$candidate\tunblessed at $row[0] due to Chan3 \t$arguments[6]\t$row[7]\t$row[8]\n";
+		print OUT0 "$arguments[2]\tunblessed at $row[0] due to Chan3 \t$arguments[6]\t$row[7]\t$row[8]\n";
+		$blessedState = "blessed"; #reset this for the next file.
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[5]. . . 
 
@@ -105,17 +109,19 @@ while (<IN1>){#open a new .bless file for inspection
 		next if $row[9] + $row[10] < 2; #low trigger rates alone shouldn't fail a file.
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
-		print OUT0 "$candidate\tunblessed at $row[0] due to triggers \t$arguments[7]\t$row[9]\t$row[10]\n";
+		print OUT0 "$arguments[2]\tunblessed at $row[0] due to triggers \t$arguments[7]\t$row[9]\t$row[10]\n";
+		$blessedState = "blessed"; #reset this for the next file.
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[6]. . .
 	 #end step 2.4 above
 }#end of while <IN1>
 #step 2.4.3 above
-print OUT0 "$candidate\t", $blessedState, "\n" if $blessedState eq "blessed";# if a file gets to here, it passed all checks.
-$blessed++ if $blessedState eq "blessed"; #keeps track of the number of passed files
-$blessedState = "blessed"; #reset this for the next file.
+if ($blessedState eq "blessed"){
+	print OUT0 "$arguments[2]\t", $blessedState, "\n" ;# if a file gets to here, it passed all checks.
+	$blessed++; #keeps track of the number of passed files
+}
 #close the current .bless file
 close IN1;
 #step 3 above
 goto RELOAD if $i < $elements;  #I know, a go to. Shoot me. 
-print OUT0 "Checked: $files. \n $blessed Blessed \n $unblessed Unblessed";  
+print OUT0 "Checked: $files. \n $blessed Blessed \n $unblessed Unblessed";  s
