@@ -98,14 +98,18 @@ public class ThresholdTimesProcess {
 		        	}
 		        }
 		        String line = br.readLine();
+		        boolean printoneexception = true;
 		        while (line != null) {
 		            String[] parts = line.split("\\s"); // line validated in split.pl
 		            for (int j = 0; j < 4; j++) {
 		            	try {
 		            		timeOverThreshold(parts, j, detectorIDs[i], bw);
 		            	} catch (Exception e) {
-		            		System.out.println("Exception for file: "+inputFiles[i]+" at line: "+String.valueOf(lineCount)+ " " +line+" - " + e.toString() + "\n");
-		            		continue;
+		            		if (printoneexception) {
+		            			printoneexception = false;
+			            		System.out.println("Exception for file: "+inputFiles[i]+" at line: "+String.valueOf(lineCount)+ " " +line+" - " + e.toString() + "\n");
+			            		continue;
+		            		}
 		            	}
 		            }
 		            line = br.readLine();
