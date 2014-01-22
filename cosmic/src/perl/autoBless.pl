@@ -117,7 +117,7 @@ while (<IN1>){#open a new .bless file for inspection
 }#end of while <IN1>
 #step 2.4.3 above
 if ($blessedState eq "blessed"){
-	print OUT0 "$arguments[2]\t", $blessedState, "\n" ;# if a file gets to here, it passed all checks.
+	print OUT0 "$arguments[1]\t", $blessedState, "\n" ;# if a file gets to here, it passed all checks.
 	$blessed++; #keeps track of the number of passed files
 }
 #close the current .bless file
