@@ -35,6 +35,7 @@ public class Threshold {
     private String lastSecString;
     private double lastEdgeTime;
     private double cpldFrequency;
+    private int currentDetector;
     
     public static final NumberFormat NF0F = new DecimalFormat("0");
     public static final NumberFormat NF2F = new DecimalFormat("0.00");
@@ -115,8 +116,9 @@ public class Threshold {
 		        bw.write("#ID.CHANNEL, Julian Day, RISING EDGE(sec), FALLING EDGE(sec), TIME OVER THRESHOLD (nanosec), RISING EDGE(INT), FALLING EDGE(INT)\n");
 		
 		        cpldFrequency = cpldFrequencies[i];
+		        currentDetector = Integer.parseInt(detectorIDs[i]);
 		        if (cpldFrequency == 0) {
-		        	if (Integer.parseInt(detectorIDs[i]) < 6000) {
+		        	if (currentDetector < 6000) {
 		        		cpldFrequency = 41666667;
 		        	} else {
 		        		cpldFrequency = 25000000;
@@ -129,7 +131,7 @@ public class Threshold {
 		            	try {
 		            		timeOverThreshold(parts, j, detectorIDs[i], bw);
 		            	} catch (Exception e) {
-		            		System.out.println("Exception for file: "+inputFiles[i]+" at line: " +line+" - " + e.toString() + "\n");
+		            		System.out.println("Exception for file: "+inputFiles[i]+": " + e.toString());
 		            		continue;
 		            	}
 		            }
@@ -226,7 +228,11 @@ public class Threshold {
 
         if (computeJD) {
             int sign = parts[15].charAt(0) == '-' ? -1 : 1;
-            int msecOffset = sign * Integer.parseInt(parts[15].substring(1));
+            int msecOffset = 0;
+            //459: newer cards don;t use the offset
+            if (currentDetector < 6000) {
+                msecOffset = sign * Integer.parseInt(parts[15].substring(1));            	
+            }
             double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
             jd = currLineJD(offset, parts);
             lastGPSDay = currGPSDay;
@@ -262,13 +268,16 @@ public class Threshold {
             rePPSCount[channel] = lastRePPSCount;
 
             String currSecString = parts[10] + parts[15];
+        	if (currentDetector > 5999) {
+        		currSecString = parts[10];
+        	}    
             if (!currSecString.equals(lastSecString)) {
                 rePPSTime[channel] = currentPPSSeconds(parts[10], parts[15]);
                 rePPSCount[channel] = Long.parseLong(parts[9], 16);
                 lastRePPSTime = rePPSTime[channel];
                 lastRePPSCount = rePPSCount[channel];
 
-                lastSecString = currSecString;
+                lastSecString = currSecString;               
             }
 
             reTMC[channel] = tmc;
