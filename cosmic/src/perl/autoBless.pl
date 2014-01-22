@@ -77,7 +77,6 @@ while (<IN1>){#open a new .bless file for inspection
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
 		print OUT0 "$arguments[1]\tunblessed at $row[0] due to Chan0 \t$arguments[3]\t$row[1]\t$row[2]\n";
-		$blessedState = "blessed"; #reset this for the next file.
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[2]. . . 
 
@@ -85,7 +84,6 @@ while (<IN1>){#open a new .bless file for inspection
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
 		print OUT0 "$arguments[1]\tunblessed at $row[0] due to Chan1 \t$arguments[4]\t$row[3]\t$row[4]\n";
-		$blessedState = "blessed"; #reset this for the next file.
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[3]. . . 
 
@@ -93,7 +91,6 @@ while (<IN1>){#open a new .bless file for inspection
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
 		print OUT0 "$arguments[1]\tunblessed at $row[0] due to Chan2 \t$arguments[5]\t$row[5]\t$row[6]\n";
-		$blessedState = "blessed"; #reset this for the next file.
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[4]. . . 
 
@@ -101,7 +98,6 @@ while (<IN1>){#open a new .bless file for inspection
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
 		print OUT0 "$arguments[1]\tunblessed at $row[0] due to Chan3 \t$arguments[6]\t$row[7]\t$row[8]\n";
-		$blessedState = "blessed"; #reset this for the next file.
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[5]. . . 
 
@@ -110,7 +106,6 @@ while (<IN1>){#open a new .bless file for inspection
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
 		print OUT0 "$arguments[1]\tunblessed at $row[0] due to triggers \t$arguments[7]\t$row[9]\t$row[10]\n";
-		$blessedState = "blessed"; #reset this for the next file.
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[6]. . .
 	 #end step 2.4 above
@@ -120,6 +115,8 @@ if ($blessedState eq "blessed"){
 	print OUT0 "$arguments[1]\t", $blessedState, "\n" ;# if a file gets to here, it passed all checks.
 	$blessed++; #keeps track of the number of passed files
 }
+$blessedState = "blessed" if $blessedState = "unblessed" ; #reset this for the next file.
+
 #close the current .bless file
 close IN1;
 #step 3 above
