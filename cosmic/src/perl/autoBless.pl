@@ -76,7 +76,7 @@ while (<IN1>){#open a new .bless file for inspection
 	if ($arguments[3] > $row[1] + $row[2] || $arguments[3] < $row[1]-$row[2]){ #Channel zero within one SD?
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
-		print OUT0 $arguments[1],"$arguments[1]\tunblessed at $row[0] due to Chan0 \t$arguments[3]\t$row[1]\t$row[2]\n";
+		print OUT0 "$arguments[1]\tunblessed at $row[0] due to Chan0 \t$arguments[3]\t$row[1]\t$row[2]\n";
 		$blessedState = "blessed"; #reset this for the next file.
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[2]. . . 
