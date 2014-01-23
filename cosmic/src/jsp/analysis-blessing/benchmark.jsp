@@ -265,11 +265,11 @@
 			</select>	  	     	
      	</td>
 	 	<td class="benchmarkHeader" nowrap style="vertical-align: center;">Date Range<br /> 
-	 	    <input readonly type="text" name="fromDate" id="fromDate" size="12" value="<%=DATEFORMAT.format(lastMonth.getTime()) %>" class="datepicker" ></input>
-	 	    to <input readonly type="text" name="toDate" id="toDate" size="12" value="<%=DATEFORMAT.format(Calendar.getInstance().getTime()) %>" class="datepicker" ></input>	
+	 	    <input type="text" name="fromDate" id="fromDate" size="12" value="<%=DATEFORMAT.format(lastMonth.getTime()) %>" class="datepicker" ></input>
+	 	    to <input type="text" name="toDate" id="toDate" size="12" value="<%=DATEFORMAT.format(Calendar.getInstance().getTime()) %>" class="datepicker" ></input>	
 		</td>
 		<td class="benchmarkHeader" style="vertical-align: bottom;">
-			<input type="button" name="add" id="add" value="Add Benchmark" onclick='javascript:addBenchmarkFiles("${detector}", "fromDate", "toDate");'/>
+			<input type="button" name="add" id="add" value="Select Benchmark" onclick='javascript:addBenchmarkFiles("${detector}", "fromDate", "toDate");'/>
 		</td>
 	</tr>
 	<tr>
