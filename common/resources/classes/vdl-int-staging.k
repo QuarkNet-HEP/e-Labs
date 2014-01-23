@@ -155,12 +155,9 @@ namespace("vdl"
 
 							stageOut("wrapper.log", "{stagingMethod}://localhost/{ddir}/{jobid}.info", 
 								mode = WRAPPER_TRANSFER_MODE)
-							stageOut("{stdout}", "{stagingMethod}://localhost/{ddir}/{stdout}",
-								mode = STAGING_MODE:IF_PRESENT)
-							stageOut("{stderr}", "{stagingMethod}://localhost/{ddir}/{stderr}",
-								mode = STAGING_MODE:IF_PRESENT)
-							stageOut("wrapper.error", "{stagingMethod}://localhost/{ddir}/{jobid}.error", 
-								mode = STAGING_MODE:IF_PRESENT)
+							stageOut("{stdout}", "{stagingMethod}://localhost/{ddir}/{stdout}", mode = 2)
+							stageOut("{stderr}", "{stagingMethod}://localhost/{ddir}/{stderr}", mode = 2)
+							stageOut("wrapper.error", "{stagingMethod}://localhost/{ddir}/{jobid}.error", mode = 2)
 							appStageouts(jobid, stageout, stagingMethod)
 
 							task:cleanUp(".") //the whole job directory
