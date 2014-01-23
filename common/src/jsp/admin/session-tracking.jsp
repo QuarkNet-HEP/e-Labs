@@ -20,22 +20,21 @@
 		List<Pair> value = (List<Pair>) entry.getValue();
 		List<Pair> details = new ArrayList<Pair>();
 		for (Pair p: value) {
-			details.add(p);			
 			if (p.getLeft().equals("session")) {
 				HttpSession s = (HttpSession) p.getRight();
 				ElabGroup eu = (ElabGroup) s.getAttribute("elab.user");
 				Elab e = (Elab) s.getAttribute("elab");
 				if (eu != null && e != null) {
+					details.add(p);			
 					details.add(new Pair("Username", eu.getName()));
 					details.add(new Pair("Location", eu.getSchool() + ", " + eu.getCity() + " - " + eu.getState()));
 					details.add(new Pair("Role", eu.getRole()));
 					details.add(new Pair("Logged in to", e.getName()));
 					userCount++;
-					//only add the sessions that have user details
-					sessionDetails.put(key, details);
 				}
 			}
 		}
+		sessionDetails.put(key, details);
 	}
 
 	request.setAttribute("sessionCount",sessionCount);
