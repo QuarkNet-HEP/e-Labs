@@ -24,8 +24,8 @@ public class SessionListener implements HttpSessionListener {
         	sessionCount++;
             List<Pair> sessionDetails = new ArrayList<Pair>();
         	HttpSession s = event.getSession();
-        	sessionDetails.add(new Pair("session", s));
-        	sessionDetails.add(new Pair("starttime", df.format(new Date())));
+        	sessionDetails.add(new Pair("Session", s));
+        	sessionDetails.add(new Pair("Start Time", df.format(new Date())));
         	sessions.put(s.getId(), sessionDetails);
         }
     }
