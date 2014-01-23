@@ -11,8 +11,8 @@
 		<p><strong>How do you judge a "Benchmark File"?</strong><br />
 			<ul>
 				<li>Steady singles & trigger rates.</li>
-				<li>Sufficient rates to assure adequate S/N.</li>
 			</ul>
+			Sufficient rates to assure adequate S/N.<br />
 			Note: for the "6000" series QuarkNet counters, the singles rate is usually between 12 to 35 Hz.<br />
 			Other style counters will be different and is best determined by plateauing counters (see CR e-Lab&#8594;LIBRARY&#8594;Resources&#8594;Tutorials for plateauing instructions).
 		</p>

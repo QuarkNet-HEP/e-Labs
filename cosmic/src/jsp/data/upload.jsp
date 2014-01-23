@@ -285,7 +285,7 @@ Re: the upload progress stuff
 		<table style="text-align: left; margin-left: 5%;" width="90%">
 		    <tr>
 		    	<td class="benchmarkHeader">Detector</td>
-		    	<td class="benchmarkHeader">Benchmark File <a href="javascript:showRefLink('../library/ref-benchmark-upload.jsp',520,300)"><img src="../graphics/question.gif"></a></td>
+		    	<td class="benchmarkHeader">Benchmark File <a href="javascript:showRefLink('../library/ref-benchmark-upload.jsp',520,400)"><img src="../graphics/question.gif"></a></td>
 		    </tr>
 			<c:forEach items="${detectorIDs}" var="d">
 			  	<tr>
