@@ -172,8 +172,8 @@ namespace("vdl"
 
 							stageOut("wrapper.log", "{stagingMethod}://localhost/{ddir}/{jobid}.info", 
 								mode = WRAPPER_TRANSFER_MODE)
-							stageOut("{stdout}", "{stagingMethod}://localhost/{ddir}/{stdout}", mode = 2)
-							stageOut("{stderr}", "{stagingMethod}://localhost/{ddir}/{stderr}", mode = 2)
+							stageOut("{stdout}", "{stagingMethod}://localhost/{ddir}/{stdout}", mode = 4)
+							stageOut("{stderr}", "{stagingMethod}://localhost/{ddir}/{stderr}", mode = 4)
 							stageOut("wrapper.error", "{stagingMethod}://localhost/{ddir}/{jobid}.error", mode = 2)
 							appStageouts(jobid, stageout, stagingMethod)
 
