@@ -32,7 +32,10 @@
 				<tr>
 					<td style="text-align: left;">
 						Go to: "Cosmic Ray e-Lab&#8594;Upload &#8594;Benchmark"<br />
-						<img src="../graphics/benchmark_menu.png" name="Benchmark Menu" alt="Benchmark Menu"></img>						
+						<div style="width: 100%; text-align: center;">
+							<img src="../graphics/benchmark_menu.png" name="Benchmark Menu" alt="Benchmark Menu"></img>
+						</div>
+						<br />					
 						This is where a detector owner will select a <strong>best standard</strong> data file for 
 						comparison to other files in order to bless the other. <br />
 						The file owner needs to review the blessing plots and use judgement to select one standard file.<br />
@@ -55,7 +58,7 @@
 						Now, when you go back to "Upload" &#8594; "Upload" the chosen benchmark will appear on the pull-down list next to the DAQ#.<br />					
 						Later, if the detector configuration changes (coincidence, geometry) then a new benchmark file
 	 					needs to be selected. <br /><br />
-	 					(Examples go here)	 <br /><br />
+
 						When selecting files for analysis, review the blessing plots by clicking on the "star". 
 						See if you agree with the owner assessment for quality data.
 					</td>
