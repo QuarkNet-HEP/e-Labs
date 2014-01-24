@@ -21,7 +21,7 @@
 		List<Pair> details = new ArrayList<Pair>();
 		for (Pair p: value) {
 			details.add(p);	
-			if (p.getLeft().equals("session")) {
+			if (p.getLeft().equals("Session")) {
 				HttpSession s = (HttpSession) p.getRight();
 				ElabGroup eu = (ElabGroup) s.getAttribute("elab.user");
 				Elab e = (Elab) s.getAttribute("elab");
