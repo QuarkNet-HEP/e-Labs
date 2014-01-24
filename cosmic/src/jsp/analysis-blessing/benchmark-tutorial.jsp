@@ -24,15 +24,15 @@
 				</div>
 			</div>
 			
-			<div id="content" style="margin-left:auto; margin-right:auto; width:70%;">
-			<table width="100%" cellpadding ="8">
+			<div id="content" style="margin-left:auto; margin-right:auto; width:60%;">
+			<table width="80%" cellpadding ="8">
 				<tr>
 					<td style="text-align: center;"><font color="#0a5ca6" size="+3">Benchmark Tutorial</font></td>
 				</tr>
 				<tr>
 					<td style="text-align: left;">
 						Go to: "Cosmic Ray e-Lab&#8594;Upload &#8594;Benchmark"<br /><br />
-						<div style="width: 90%; text-align: center;">
+						<div style="text-align: center;">
 							<img src="../graphics/benchmark_menu.png" name="Benchmark Menu" alt="Benchmark Menu"></img>
 						</div>
 						<br />					
@@ -40,26 +40,26 @@
 						comparison to other files in order to bless the other. <br />
 						The file owner needs to review the blessing plots and use judgement to select one standard file.<br />
 						So, first pull down the DAQ list to see your DAQ#s, <br />
-						<div style="width: 90%; text-align: center;">
+						<div style="text-align: center;">
 							<img src="../graphics/detector_pull_down.png" name="Detector pull down" alt="Detector Pull down"></img>
 						</div><br />
 						and select your appropriate DAQ#. <br />
 						Now, set the date range to include one CRMD configuration (coincidence and geometry).<br />
 						Click "Select Benchmark". This will present a list of candidates for selection. <br/><br />
-						<div style="width: 90%; text-align: center;">						
-							<img src="../graphics/select_benchmark.png" name="Select Benchmark" alt="Select Benchmark"></img>
+						<div style="text-align: center;">						
+							<img src="../graphics/select_benchmark.png" name="Select Benchmark" alt="Select Benchmark" width="700px"></img>
 						</div><br /><br />
 						Review the list of candidates by clicking on the file number (such as "6119.2013.1012.0") and looking
 						at the Singles Rates and Trigger Rate. <br />
 						Use your judgment to decide if this file is representative of all the data for your particular CRMD configuration. A
 						high quality file will have steady Singles & Trigger Rates, plus Singles will fall between 12 to 35 Hz for 
 						the standard QuarkNet counters. Here is an example of good blessing plot: <br /><br />
-						<div style="width: 90%; text-align: center;">							
-							<img src="../graphics/good_blessing_plot.png" name="Good Example" alt="Good Example"></img>
+						<div style="text-align: center;">							
+							<img src="../graphics/good_blessing_plot.png" name="Good Example" alt="Good Example" width="700px"></img>
 						</div><br /><br />
 						and this shows a bad blessing plot: <br />
-						<div style="width: 90%; text-align: center;">							
-							<img src="../graphics/bad_blessing_plot.png" name="Bad Example" alt="Bad Example"></img>
+						<div style="text-align: center;">							
+							<img src="../graphics/bad_blessing_plot.png" name="Bad Example" alt="Bad Example" width="700px"></img>
 						</div><br /><br />
 						Notice how one of the channels wanders around indicating irregular rates.<br />
 						After you have selected a representative file, type a helpful name that you will recognize later and click "Save".<br />
