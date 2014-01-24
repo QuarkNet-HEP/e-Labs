@@ -20,14 +20,17 @@
 		List<Pair> value = (List<Pair>) entry.getValue();
 		List<Pair> details = new ArrayList<Pair>();
 		for (Pair p: value) {
+			details.add(p);	
 			if (p.getLeft().equals("session")) {
 				HttpSession s = (HttpSession) p.getRight();
 				ElabGroup eu = (ElabGroup) s.getAttribute("elab.user");
 				Elab e = (Elab) s.getAttribute("elab");
-				if (eu != null && e != null) {
-					details.add(p);			
+				if (eu != null && e != null) {		
 					details.add(new Pair("Username", eu.getName()));
-					details.add(new Pair("Location", eu.getSchool() + ", " + eu.getCity() + " - " + eu.getState()));
+					String school = eu.getSchool() != null ? eu.getSchool() : "";
+					String city = eu.getCity() != null ? eu.getCity() : "";
+					String state = eu.getState() != null ? eu.getState() : "";
+					details.add(new Pair("Location", school + ", " + city + " - " + state));
 					details.add(new Pair("Role", eu.getRole()));
 					details.add(new Pair("Logged in to", e.getName()));
 					userCount++;
