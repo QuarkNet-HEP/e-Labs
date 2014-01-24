@@ -111,8 +111,8 @@ public class ThresholdTimesProcess {
 		            		if (printoneexception) {
 		            			printoneexception = false;
 			            		System.out.println("Exception for file: "+inputFiles[i]+": " + e.toString());
-			            		continue;
 		            		}
+		            		continue;
 		            	}
 		            }
 		            line = br.readLine();
@@ -259,7 +259,7 @@ public class ThresholdTimesProcess {
         	}           
             if (!currSecString.equals(lastSecString)) {
             	if (currentDetector > 5999) {
-            		rePPSTime[channel] = currentPPSSeconds(parts[10], "0");
+            		rePPSTime[channel] = currentPPSSeconds(parts[10], "+0");
             	} else {
             		rePPSTime[channel] = currentPPSSeconds(parts[10], parts[15]);            		
             	}
@@ -343,6 +343,8 @@ public class ThresholdTimesProcess {
             sign = -1;
         }
 
+        int x = Integer.parseInt(offset.substring(1));
+        double y = Integer.parseInt(offset.substring(1)) / 1000.0;
         long secoffset = Math.round(sec + sign * Integer.parseInt(offset.substring(1)) / 1000.0);
         //String edit = offset.substring(1);
         

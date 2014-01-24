@@ -229,7 +229,7 @@ public class Threshold {
         if (computeJD) {
             int sign = parts[15].charAt(0) == '-' ? -1 : 1;
             int msecOffset = 0;
-            //459: newer cards don;t use the offset
+            //459: newer cards dont use the offset
             if (currentDetector < 6000) {
                 msecOffset = sign * Integer.parseInt(parts[15].substring(1));            	
             }
@@ -272,7 +272,13 @@ public class Threshold {
         		currSecString = parts[10];
         	}    
             if (!currSecString.equals(lastSecString)) {
-                rePPSTime[channel] = currentPPSSeconds(parts[10], parts[15]);
+            	//for bug 459
+            	if (currentDetector > 5999) {
+            		rePPSTime[channel] = currentPPSSeconds(parts[10], "+0");
+            	} else {
+            		rePPSTime[channel] = currentPPSSeconds(parts[10], parts[15]);            		
+            	}
+            	
                 rePPSCount[channel] = Long.parseLong(parts[9], 16);
                 lastRePPSTime = rePPSTime[channel];
                 lastRePPSCount = rePPSCount[channel];
