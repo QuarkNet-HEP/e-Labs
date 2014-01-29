@@ -61,9 +61,11 @@
 						<div style="text-align: center;">							
 							<img src="../graphics/bad_blessing_plot.png" name="Bad Example" alt="Bad Example" width="700px"></img>
 						</div><br /><br />
-						Notice how one of the channels wanders around indicating irregular rates.<br />
+						Notice how one of the channels wanders around indicating irregular rates.<br /><br />
 						After you have selected a representative file, type a helpful name that you will recognize later and click "Save".<br />
-						Now, when you go back to "Upload" &#8594; "Upload" the chosen benchmark will appear on the pull-down list next to the DAQ#.<br />					
+						Now, when you go back to "Upload" &#8594; "Upload" the chosen benchmark will appear on the pull-down list next to the DAQ#.<br /><br />
+						For the DAQ# for which you are uploading data, select a benchmark file from the pull-down list.  
+						This benchmark file will now be compared to the uploaded data to measure its quality.<br /><br />					
 						Later, if the detector configuration changes (coincidence, geometry) then a new benchmark file
 	 					needs to be selected. <br /><br />
 
