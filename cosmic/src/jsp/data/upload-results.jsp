@@ -175,16 +175,14 @@
 	        channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).intValue();
 	    }
 	}
-	//EPeronja-10/17/2013: THRESHOLD TEST
-	//create the threshold files here if the option is java
-	if (makeThreshold.equals("java")) {
-		String[] inputFiles = new String[splits.size()];
-		for (int i = 0; i < splits.size(); i++) {
-			inputFiles[i] = splits.get(i).toString();			
-		}
-		Threshold t = new Threshold(elab, inputFiles, detectorId);
-		t.createThresholdFiles(elab);
+
+	String[] inputFiles = new String[splits.size()];
+	for (int i = 0; i < splits.size(); i++) {
+		inputFiles[i] = splits.get(i).toString();			
 	}
+	Threshold t = new Threshold(elab, inputFiles, detectorId);
+	t.createThresholdFiles(elab);
+
 	//we might as well bless here
 	if (benchmark != null) {
 		BlessProcess bp = new BlessProcess();
