@@ -64,7 +64,6 @@ Re: the upload progress stuff
 	request.setAttribute("datadir", dataDir);
 	String benchmark = "";
 	String usebenchmark = "";
-	String makeThreshold = "";
 	int channels[] = new int[4];
 	
 	File tempRepo = new File(dataDir + "/temp"); 
@@ -105,12 +104,6 @@ Re: the upload progress stuff
 	    			else if ("comments".equals(name)) {
 	    				if (StringUtils.isNotBlank(content)) {
 	    					comments = content; 
-	    				}
-	    			}
-	    			//EPeronja-10/17/2013: THRESHOLD TEST
-	    			else if ("makeThreshold".equals(name)) {
-	    				if (StringUtils.isNotBlank(content)) {
-	    					makeThreshold = content; 
 	    				}
 	    			}
 	    		}
@@ -157,8 +150,7 @@ Re: the upload progress stuff
 							<e:trdefault name="datadir" value="${datadir}"/>
 							<e:trdefault name="detectorid" value="${detectorid}"/>
 							<e:trdefault name="comments" value="${comments}"/>
-							<e:trdefault name="benchmark" value="${benchmark}"/>
-							<e:trdefault name="makeThreshold" value="${makeThreshold}"/>	
+							<e:trdefault name="benchmark" value="${benchmark}"/>	
 												
 							<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload">
 								<jsp:param name="provider" value="shell"/>
