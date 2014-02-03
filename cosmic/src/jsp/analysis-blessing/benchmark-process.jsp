@@ -184,7 +184,7 @@
 		 						</c:otherwise>
 		 				   	</c:choose>
 	   					</c:forEach>
-   				</select>
+   				</select><br />
    				<input type="checkbox" id="blessAll" name="blessAll" onclick="javascript:retrieveAll();">Retrieve all</input>
    			</td>
    			<td class="benchmarkHeader">Benchmark<br />
