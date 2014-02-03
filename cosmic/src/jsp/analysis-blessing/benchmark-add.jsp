@@ -164,6 +164,8 @@
 				<input type="hidden" name="toDate" value="<%=toDate%>" ></input>
 				<input type="hidden" name="firstDataFile" id="firstDataFile" value="<%=firstDataFile%>"></input>
 				<table style="border: 1px solid black; width: 100%; padding: 5px;">
+				<c:choose>
+        		  <c:when test="${not empty filenames }"> 
 				  <tr class="benchmarkRow">
 				  	<td class="benchmarkHeader">Benchmark Candidates</td>
 				  	<td class="benchmarkHeader">
@@ -171,6 +173,8 @@
 				  		<input type="submit" name="submitBenchmark" id="submitBenchmark" value="Save" onclick="return checkLabel();"></input>				  	
 				  	</td>
 				  </tr>
+				  </c:when>
+				</c:choose>
 				  <tr>
 				  	<td colspan="2"><div name="messages" id="messages" class="messages"></div></td>
 				  </tr>

@@ -270,6 +270,7 @@
 		</td>
 		<td class="benchmarkHeader" style="vertical-align: bottom;">
 			<input type="button" name="add" id="add" value="Select Benchmark" onclick='javascript:addBenchmarkFiles("${detector}", "fromDate", "toDate");'/>
+			<a href="javascript:showRefLink('../library/ref-benchmark-upload.jsp',520,400)"><img src="../graphics/question.gif"></a>
 		</td>
 	</tr>
 	<tr>

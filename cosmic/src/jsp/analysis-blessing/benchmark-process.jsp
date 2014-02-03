@@ -163,9 +163,10 @@
 <h1>Bless uploaded datafiles.</h1>
 <ul>
 	<li>Select <strong>detector</strong> to display unblessed datafiles. Select <strong>'Retrieve All' checkbox</strong> if you want to re-bless files.</li>
-	<li>Select <strong>benchmark</strong> file from drowpdown.</li>
+	<li>Select <strong>benchmark</strong> file from dropdown.</li>
 	<li>Select <strong>files to bless</strong> from datafiles uploaded with the same geometry as the selected benchmark.</li>
 	<li>Click <strong>Check Selected Files</strong> to submit them to the blessing process.</li>
+	<li><a href="benchmark-process-tutorial.jsp">Tutorial on Blessing</a></li>
 </ul>
 <form id="benchmarkProcessForm" method="post" >
 	<table style="border: 1px solid black; width: 100%; padding: 10px;">
