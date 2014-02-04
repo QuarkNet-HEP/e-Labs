@@ -16,7 +16,7 @@
 <%@ page import="gov.fnal.elab.cosmic.beans.Geometries" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
-<%@ page import="gov.fnal.elab.cosmic.analysis.Threshold" %>
+
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -55,8 +55,6 @@
 	File f = new File((String) results.getAnalysis().getParameter("in"));
 	String detectorId = (String) results.getAnalysis().getParameter("detectorid");
 	String comments = (String) results.getAnalysis().getParameter("comments");
-
-	ArrayList<String> benchmarkMessages = new ArrayList<String>();
 	String dataDir = elab.getProperties().getDataDir();
 	int channels[] = new int[4];
 
@@ -172,14 +170,6 @@
 	        channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).intValue();
 	    }
 	}
-	//EPeronja-10/17/2013: create threshold file with java
-	String[] inputFiles = new String[splits.size()];
-	for (int i = 0; i < splits.size(); i++) {
-		inputFiles[i] = splits.get(i).toString();			
-	}
-	Threshold t = new Threshold(elab, inputFiles, detectorId);
-	t.createThresholdFiles(elab);
-
 	request.setAttribute("sqlErrors", sqlErrors);
 	request.setAttribute("channels", channels);
 	request.setAttribute("splitEntries", entries);
