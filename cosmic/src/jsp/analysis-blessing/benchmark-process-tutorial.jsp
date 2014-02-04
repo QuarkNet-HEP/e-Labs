@@ -39,7 +39,7 @@
 						To display the list of potential files to be "blessed", click the Retrieve all box. The list will then appear though
 						it may take a moment to generate the list; please be patient.<br /><br />
 						From the candidates list, you can select individual files or "Bless all files" will attempt to verify the entire
-						list. Shown are two files selected. The singles and trigger rate plots for the boxed file are displayed.<br /><br />
+						list. Shown are two files selected. The singles and trigger rate plots for the highlighted file are displayed.<br /><br />
 						<div style="text-align: center;">							
 							<img src="../graphics/files_to_bless.png" name="Good Example" alt="Good Example" width="700px"></img>
 						</div><br /><br />
