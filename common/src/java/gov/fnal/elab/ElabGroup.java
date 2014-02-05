@@ -29,7 +29,7 @@ public class ElabGroup implements Comparable<ElabGroup> {
 
     private String role, userArea, userDirURL, userDir, name,
             webapp, email;
-    private boolean firstTime, guest, survey, active;
+    private boolean firstTime, guest, survey, active, cosmic_all_data_access;
     private Elab elab;
     private String year, city, state, school, teacher;
     private String namelc;
@@ -126,6 +126,13 @@ public class ElabGroup implements Comparable<ElabGroup> {
         this.active = active;
     }
     
+    public boolean getCosmicAllDataAccess() {
+    	return cosmic_all_data_access;
+    }
+    
+    public void setCosmicAllDataAccess(boolean cosmic_all_data_access) {
+    	this.cosmic_all_data_access = cosmic_all_data_access;
+    }
     /**
      * Returns the ID of the teacher that this user belongs to
      */
@@ -454,6 +461,9 @@ public class ElabGroup implements Comparable<ElabGroup> {
         sb.append(", ");
         sb.append("survey=");
         sb.append(survey);
+        sb.append(", ");
+        sb.append("cosmic_all_data_access=");
+        sb.append(cosmic_all_data_access);
         sb.append(", ");
         sb.append("active=");
         sb.append(active);
