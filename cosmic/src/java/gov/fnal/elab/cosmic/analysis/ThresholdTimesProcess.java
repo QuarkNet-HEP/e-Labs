@@ -74,14 +74,19 @@ public class ThresholdTimesProcess {
 	        rePPSTime = new long[4];
 	        rePPSCount = new long[4];
 	        reDiff = new long[4];
-	        reTMC = new int[4];	    	
+	        reTMC = new int[4];	 
+	        jd = 0;
+	        lastGPSDay = 0;
+	        lastEdgeTime = 0;
+	        lastRePPSTime = 0;
+	        lastRePPSCount = 0;
 	    	try {
 	    		//check if the .thresh exists, if so, do not overwrite it
 	    		File tf = new File(outputFiles[i]);
-	    		if (tf.exists()) {
-	    			System.out.println("File exists: "+outputFiles[i]+" - not overwriting it");
-	    			continue;
-	    		}
+	    		//if (tf.exists()) {
+	    		//	System.out.println("File exists: "+outputFiles[i]+" - not overwriting it");
+	    		//	continue;
+	    		//}
 	    		
 		    	BufferedReader br = new BufferedReader(new FileReader(inputFiles[i]));
 		        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFiles[i]));
@@ -254,6 +259,8 @@ public class ThresholdTimesProcess {
             rePPSTime[channel] = lastRePPSTime;
             rePPSCount[channel] = lastRePPSCount;
             String currSecString = parts[10] + parts[15];
+            boolean answer = currentDetector > 5999;
+            
         	if (currentDetector > 5999) {
         		currSecString = parts[10];
         	}           
@@ -352,7 +359,7 @@ public class ThresholdTimesProcess {
         
         return daySeconds;
     }
-    
+       
     private static int currLineJD(double offset, String[] parts) {
         int day = Integer.parseInt(parts[11].substring(0, 2));
         int month = Integer.parseInt(parts[11].substring(2, 4));

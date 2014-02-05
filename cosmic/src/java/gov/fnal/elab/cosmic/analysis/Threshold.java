@@ -105,7 +105,13 @@ public class Threshold {
 		        rePPSTime = new long[4];
 		        rePPSCount = new long[4];
 		        reDiff = new long[4];
-		        reTMC = new int[4];
+		        reTMC = new int[4];	   
+		        jd = 0;
+		        lastGPSDay = 0;
+		        lastEdgeTime = 0;
+		        lastRePPSTime = 0;
+		        lastRePPSCount = 0;
+		        
 				String inputFile = elab.getProperties().getDataDir() + File.separator + detectorIDs[i] +File.separator + inputFiles[i];
 				String outputFile = elab.getProperties().getDataDir() + File.separator + detectorIDs[i] +File.separator + outputFiles[i];
 		        BufferedReader br = new BufferedReader(new FileReader(inputFile));
