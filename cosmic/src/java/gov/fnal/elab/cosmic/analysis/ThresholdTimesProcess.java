@@ -83,10 +83,10 @@ public class ThresholdTimesProcess {
 	    	try {
 	    		//check if the .thresh exists, if so, do not overwrite it
 	    		File tf = new File(outputFiles[i]);
-	    		if (tf.exists()) {
-	    			System.out.println("File exists: "+outputFiles[i]+" - not overwriting it");
-	    			continue;
-	    		}
+	    		//if (tf.exists()) {
+	    		//	System.out.println("File exists: "+outputFiles[i]+" - not overwriting it");
+	    		//	continue;
+	    		//}
 	    		
 		    	BufferedReader br = new BufferedReader(new FileReader(inputFiles[i]));
 		        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFiles[i]));
