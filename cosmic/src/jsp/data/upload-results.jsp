@@ -16,7 +16,8 @@
 <%@ page import="gov.fnal.elab.cosmic.beans.Geometries" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
-<%@ page import="gov.fnal.elab.cosmic.analysis.Threshold" %>
+<%@ page import="gov.fnal.elab.cosmic.bless.BlessProcess" %>
+<%@ page import="gov.fnal.elab.cosmic.analysis.ThresholdTimes" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -48,20 +49,19 @@
 
 
 <%
-
 	String lfn="";              //lfn on the USERS home computer
 	String fn = "";             //filename without slashes
 	String ds = "";
 	File f = new File((String) results.getAnalysis().getParameter("in"));
 	String detectorId = (String) results.getAnalysis().getParameter("detectorid");
 	String comments = (String) results.getAnalysis().getParameter("comments");
-
+	String benchmark = (String) results.getAnalysis().getParameter("benchmark");
 	ArrayList<String> benchmarkMessages = new ArrayList<String>();
 	String dataDir = elab.getProperties().getDataDir();
 	int channels[] = new int[4];
 
 	List splits = new ArrayList();  //for both the split name and the channel validity information
-			
+	
 	boolean c = true;
 	String splitPFNs = "";
 	String cpldFrequency = "";
@@ -133,12 +133,12 @@
                 }
                 else if (tmp[0].equals("julianstartdate")) {
                 	Geometry geometry = new Geometry(elab.getProperties().getDataDir(), Integer.parseInt(detectorId));
-					if (geometry != null && !geometry.isEmpty()) {
-						SortedMap geos = geometry.getGeoEntriesBefore(tmp[2]);
-						if (!geos.isEmpty()) {
-							GeoEntryBean g = (GeoEntryBean) geos.get(geos.lastKey());
-							meta.add("stacked boolean " + ("0".equals(g.getStackedState()) ? "false" : "true"));	
-						}
+			if (geometry != null && !geometry.isEmpty()) {
+				SortedMap geos = geometry.getGeoEntriesBefore(tmp[2]);
+				if (!geos.isEmpty()) {
+					GeoEntryBean g = (GeoEntryBean) geos.get(geos.lastKey());
+					meta.add("stacked boolean " + ("0".equals(g.getStackedState()) ? "false" : "true"));	
+				}
                 	}
                 }
             }
@@ -148,12 +148,12 @@
         if (meta != null && currLFN != null) {
             try {
                 entry = DataTools.buildCatalogEntry(currLFN, meta);
-				elab.getDataCatalogProvider().insert(entry);
-			}
-			catch (ElabException e) {
-				//EPeronja-585: Sql Errors when uploading data, give meaningful message
+		elab.getDataCatalogProvider().insert(entry);
+	}
+	catch (ElabException e) {
+		//EPeronja-585: Sql Errors when uploading data, give meaningful message
 	        	sqlErrors += "Error setting metadata for "+currLFN+":" + e.getMessage()+ "<br />";
-				//throw new ElabJspException("Error setting metadata: " + e.getMessage(), e);
+		//throw new ElabJspException("Error setting metadata: " + e.getMessage(), e);
             }
         }
 	}
@@ -172,15 +172,23 @@
 	        channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).intValue();
 	    }
 	}
-	//EPeronja-10/17/2013: create threshold file with java
+
 	String[] inputFiles = new String[splits.size()];
 	for (int i = 0; i < splits.size(); i++) {
 		inputFiles[i] = splits.get(i).toString();			
 	}
-	Threshold t = new Threshold(elab, inputFiles, detectorId);
-	t.createThresholdFiles(elab);
-
+	ThresholdTimes t = new ThresholdTimes(elab, inputFiles, detectorId);
+	new Thread(t).start();
+	
+	//we might as well bless here
+	if (benchmark != null) {
+		BlessProcess bp = new BlessProcess();
+		for (int i = 0; i < splits.size(); i++) {
+		benchmarkMessages.add(bp.BlessDatafile(elab, detectorId, splits.get(i).toString(), benchmark)); 		
+		}
+	}
 	request.setAttribute("sqlErrors", sqlErrors);
+	request.setAttribute("benchmarkMessages", benchmarkMessages);
 	request.setAttribute("channels", channels);
 	request.setAttribute("splitEntries", entries);
 	CatalogEntry e = elab.getDataCatalogProvider().getEntry(rawName);
@@ -194,7 +202,7 @@
 	else {
 	    request.setAttribute("geoFileExists", Boolean.FALSE);
 	}
-	%>
+%>
     	
     	<c:choose>
     		<c:when test="${geoFileExists}">
@@ -247,6 +255,16 @@
 			</c:otherwise>
 		</c:choose>	
 		<br />	
+		<c:choose>
+			<c:when test="${not empty benchmarkMessages}">
+			   <table>
+			   		<tr><th>Benchmark Results</th></tr>
+					<c:forEach items="${benchmarkMessages}" var="benchmarkMessages">
+						<tr><td>${benchmarkMessages}</td></tr>
+					</c:forEach>
+				</table>
+			</c:when>
+		</c:choose>
 		<c:choose>		
 			<c:when test="${not empty sqlErrors}">
 				<p>Error(s) updating metadata, please send the message below to <a href="mailto:e-labs@fnal.gov">e-labs@fnal.gov</a></p>
