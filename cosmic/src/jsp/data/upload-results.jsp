@@ -17,7 +17,7 @@
 <%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
 <%@ page import="gov.fnal.elab.cosmic.bless.BlessProcess" %>
-<%@ page import="gov.fnal.elab.cosmic.analysis.Threshold" %>
+<%@ page import="gov.fnal.elab.cosmic.analysis.ThresholdTimes" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -49,7 +49,6 @@
 
 
 <%
-
 	String lfn="";              //lfn on the USERS home computer
 	String fn = "";             //filename without slashes
 	String ds = "";
@@ -62,7 +61,7 @@
 	int channels[] = new int[4];
 
 	List splits = new ArrayList();  //for both the split name and the channel validity information
-			
+	
 	boolean c = true;
 	String splitPFNs = "";
 	String cpldFrequency = "";
@@ -134,12 +133,12 @@
                 }
                 else if (tmp[0].equals("julianstartdate")) {
                 	Geometry geometry = new Geometry(elab.getProperties().getDataDir(), Integer.parseInt(detectorId));
-					if (geometry != null && !geometry.isEmpty()) {
-						SortedMap geos = geometry.getGeoEntriesBefore(tmp[2]);
-						if (!geos.isEmpty()) {
-							GeoEntryBean g = (GeoEntryBean) geos.get(geos.lastKey());
-							meta.add("stacked boolean " + ("0".equals(g.getStackedState()) ? "false" : "true"));	
-						}
+			if (geometry != null && !geometry.isEmpty()) {
+				SortedMap geos = geometry.getGeoEntriesBefore(tmp[2]);
+				if (!geos.isEmpty()) {
+					GeoEntryBean g = (GeoEntryBean) geos.get(geos.lastKey());
+					meta.add("stacked boolean " + ("0".equals(g.getStackedState()) ? "false" : "true"));	
+				}
                 	}
                 }
             }
@@ -149,12 +148,12 @@
         if (meta != null && currLFN != null) {
             try {
                 entry = DataTools.buildCatalogEntry(currLFN, meta);
-				elab.getDataCatalogProvider().insert(entry);
-			}
-			catch (ElabException e) {
-				//EPeronja-585: Sql Errors when uploading data, give meaningful message
+		elab.getDataCatalogProvider().insert(entry);
+	}
+	catch (ElabException e) {
+		//EPeronja-585: Sql Errors when uploading data, give meaningful message
 	        	sqlErrors += "Error setting metadata for "+currLFN+":" + e.getMessage()+ "<br />";
-				//throw new ElabJspException("Error setting metadata: " + e.getMessage(), e);
+		//throw new ElabJspException("Error setting metadata: " + e.getMessage(), e);
             }
         }
 	}
@@ -178,14 +177,14 @@
 	for (int i = 0; i < splits.size(); i++) {
 		inputFiles[i] = splits.get(i).toString();			
 	}
-	Threshold t = new Threshold(elab, inputFiles, detectorId);
-	t.createThresholdFiles(elab);
-
+	ThresholdTimes t = new ThresholdTimes(elab, inputFiles, detectorId);
+	new Thread(t).start();
+	
 	//we might as well bless here
 	if (benchmark != null) {
 		BlessProcess bp = new BlessProcess();
 		for (int i = 0; i < splits.size(); i++) {
-			benchmarkMessages.add(bp.BlessDatafile(elab, detectorId, splits.get(i).toString(), benchmark)); 		
+		benchmarkMessages.add(bp.BlessDatafile(elab, detectorId, splits.get(i).toString(), benchmark)); 		
 		}
 	}
 	request.setAttribute("sqlErrors", sqlErrors);
@@ -203,7 +202,7 @@
 	else {
 	    request.setAttribute("geoFileExists", Boolean.FALSE);
 	}
-	%>
+%>
     	
     	<c:choose>
     		<c:when test="${geoFileExists}">
