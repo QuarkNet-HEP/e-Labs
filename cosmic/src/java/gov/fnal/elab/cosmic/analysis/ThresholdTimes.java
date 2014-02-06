@@ -1,27 +1,33 @@
 /*
- * Created on Feb 24, 2010
+ * Created on October 11 2013 (based on ThresholdTimes.java - trunk)
+ * EPeronja-10/17/2013: THRESHOLD TEST
  */
 package gov.fnal.elab.cosmic.analysis;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.concurrent.Callable;
+import gov.fnal.elab.Elab;
+import gov.fnal.elab.datacatalog.*;
+import gov.fnal.elab.datacatalog.query.*;
+import gov.fnal.elab.datacatalog.impl.vds.*;
+import gov.fnal.elab.util.ElabException;
+
 
 /**
  * Calculates the absolute time of both the rising and falling edge of an event to a precision of 0.75ns. 
- * 
- * @author phongn, jordant, hategan 
- *
  */
-public class ThresholdTimes implements Runnable {
+public class ThresholdTimes implements Runnable{
     private String[] inputFiles, outputFiles, detectorIDs;
     private double[] cpldFrequencies;
     private double[] retime, fetime;
+    private double[] retimeINT, fetimeINT;  
     private long[] rePPSTime, rePPSCount, reDiff;
     private int[] reTMC;
     private long lastRePPSTime, lastRePPSCount;
@@ -29,67 +35,85 @@ public class ThresholdTimes implements Runnable {
     private String lastSecString;
     private double lastEdgeTime;
     private double cpldFrequency;
+    private int currentDetector;
+    Elab elabReference;
     
+    public static final NumberFormat NF0F = new DecimalFormat("0");
     public static final NumberFormat NF2F = new DecimalFormat("0.00");
     public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
-    
-    /**
-     * Class constructor for a single input file. 
-     * 
-     * @param inputFile 
-     * @param outputFile
-     * @param detectorID
-     * @param cpldFrequency
-     */
-    public ThresholdTimes(String inputFile, String outputFile, String detectorID, double cpldFrequency) {
-    	this.inputFiles = new String[]{ inputFile }; 
-    	this.outputFiles = new String[]{ outputFile };
-    	this.detectorIDs = new String[]{ detectorID }; 
-    	this.cpldFrequencies = new double[] { cpldFrequency }; 
-    }
-        
-    /**
-     * Class constructor for multiple input files; requires 1:1 correspondence for each element in inputFiles
-     * and the other array parameters. 
-     * 
-     * @param inputFiles
-     * @param outputFiles
-     * @param detectorIDs
-     * @param cpldFrequencies
-     */
-    public ThresholdTimes(String[] inputFiles, String[] outputFiles, String[] detectorIDs, double[] cpldFrequencies) {
-        this.inputFiles = inputFiles;
-        this.outputFiles = outputFiles;
-        this.detectorIDs = detectorIDs;
-        this.cpldFrequencies = cpldFrequencies;
-    }
 
-    public void run()  {
-        lastSecString = "";
-        retime = new double[4];
-        fetime = new double[4];
-        rePPSTime = new long[4];
-        rePPSCount = new long[4];
-        reDiff = new long[4];
-        reTMC = new int[4];
-        try {
+    /**
+     * Constructor arguments: Elab elab, String[] inputFiles, String detectorId
+     */   
+    public ThresholdTimes(Elab elab, String[] inputFiles, String detectorId) {
+    	this.inputFiles = inputFiles;
+    	this.outputFiles = new String[inputFiles.length];
+    	this.detectorIDs = new String[inputFiles.length];
+    	this.cpldFrequencies = new double[inputFiles.length];
+    	this.elabReference = elab;
+    	for (int i = 0; i < inputFiles.length; i++) {
+    		outputFiles[i] = inputFiles[i] + ".thresh";
+    		detectorIDs[i] = detectorId;
+    		try {
+				VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(inputFiles[i]);
+				if (entry != null) {
+					Long cpldf = (Long) entry.getTupleValue("cpldfrequency");
+					cpldFrequencies[i] = cpldf.doubleValue();
+				} else {
+					cpldFrequencies[i] = 0;
+				}
+    		} catch (Exception e) {
+    			cpldFrequencies[i] = 0;
+    		}
+    	}
+    }
+    
+    public void run() {
+    	try {
 		    for (int i = 0; i < inputFiles.length; i++) {
-		        BufferedReader br = new BufferedReader(new FileReader(inputFiles[i]));
-		        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFiles[i]));
+		        lastSecString = "";
+		        retime = new double[4];
+		        fetime = new double[4];
+		        retimeINT = new double[4];
+		        fetimeINT = new double[4];		        
+		        rePPSTime = new long[4];
+		        rePPSCount = new long[4];
+		        reDiff = new long[4];
+		        reTMC = new int[4];	   
+		        jd = 0;
+		        lastGPSDay = 0;
+		        lastEdgeTime = 0;
+		        lastRePPSTime = 0;
+		        lastRePPSCount = 0;
+		        
+				String inputFile = elabReference.getProperties().getDataDir() + File.separator + detectorIDs[i] +File.separator + inputFiles[i];
+				String outputFile = elabReference.getProperties().getDataDir() + File.separator + detectorIDs[i] +File.separator + outputFiles[i];
+		        BufferedReader br = new BufferedReader(new FileReader(inputFile));
+		        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile));
 		
 		        bw.write("#$md5\n");
 		        bw.write("#md5_hex(0)\n");
-		        bw.write("#ID.CHANNEL, Julian Day, RISING EDGE(sec), FALLING EDGE(sec), TIME OVER THRESHOLD (nanosec)\n");
+		        bw.write("#ID.CHANNEL, Julian Day, RISING EDGE(sec), FALLING EDGE(sec), TIME OVER THRESHOLD (nanosec), RISING EDGE(INT), FALLING EDGE(INT)\n");
 		
 		        cpldFrequency = cpldFrequencies[i];
+		        currentDetector = Integer.parseInt(detectorIDs[i]);
 		        if (cpldFrequency == 0) {
-		        	cpldFrequency = 41666667;
+		        	if (currentDetector < 6000) {
+		        		cpldFrequency = 41666667;
+		        	} else {
+		        		cpldFrequency = 25000000;
+		        	}
 		        }
 		        String line = br.readLine();
 		        while (line != null) {
 		            String[] parts = line.split("\\s"); // line validated in split.pl 
 		            for (int j = 0; j < 4; j++) {
-		                timeOverThreshold(parts, j, detectorIDs[i], bw);
+		            	try {
+		            		timeOverThreshold(parts, j, detectorIDs[i], bw);
+		            	} catch (Exception e) {
+		            		System.out.println("Exception for file: "+inputFiles[i]+": " + e.toString());
+		            		continue;
+		            	}
 		            }
 		            line = br.readLine();
 		        }
@@ -103,34 +127,46 @@ public class ThresholdTimes implements Runnable {
     }
 
     private void timeOverThreshold(String[] parts, int channel, String detector, BufferedWriter bw) throws IOException {
+    	double edgetimeSeconds = 0;
+    	long exp = Double.valueOf("1.0E+11").longValue();   	
         int indexRE = channel * 2 + 1;
         int indexFE = indexRE + 1;
 
         int type = Integer.parseInt(parts[1], 16);
         if ((type & 0x80) != 0) {
             retime[channel] = 0;
+            retimeINT[channel] = 0;            
         }
 
         int decFE = Integer.parseInt(parts[indexFE], 16);
         int decRE = Integer.parseInt(parts[indexRE], 16);
 
-        if (retime[channel] != 0 && isEdge(decFE)) {
-            fetime[channel] = calctime(channel, decFE, parts);
-            if (fetime[channel] != 0) {
-                printData(channel, parts, detector, bw);
+        if (retime[channel] != 0 && retimeINT[channel] != 0 && isEdge(decFE)) {
+        	edgetimeSeconds = calctime(channel, decFE, parts);
+        	fetime[channel] = edgetimeSeconds/86400;
+        	fetimeINT[channel] = edgetimeSeconds * exp;
+        	
+            if (fetime[channel] != 0 && fetimeINT[channel] != 0) {
+            	printData(channel, parts, detector, bw);
                 clearChannelState(channel);
             }
 
             if (isEdge(decRE)) {
-                retime[channel] = calctime(channel, decRE, parts);
+            	edgetimeSeconds = calctime(channel, decRE, parts);
+                retime[channel] = edgetimeSeconds/86400;
+                retimeINT[channel] = edgetimeSeconds * exp;
             }
         }
         else if (isEdge(decRE)) {
-            retime[channel] = calctime(channel, decRE, parts);
-            if (retime[channel] != 0 && isEdge(decFE)) {
-                fetime[channel] = calctime(channel, decFE, parts);
+        	edgetimeSeconds = calctime(channel, decRE, parts);
+            retime[channel] = edgetimeSeconds/86400;
+            retimeINT[channel] = edgetimeSeconds * exp;
+            if (retime[channel] != 0 && retimeINT[channel] != 0 && isEdge(decFE)) {
+            	edgetimeSeconds = calctime(channel, decFE, parts);
+                fetime[channel] = edgetimeSeconds/86400;
+                fetimeINT[channel] = edgetimeSeconds * exp;
             }
-            if (retime[channel] != 0 && fetime[channel] != 0) {
+            if (retime[channel] != 0 && retimeINT[channel] != 0 && fetime[channel] != 0) {
                 printData(channel, parts, detector, bw);
                 clearChannelState(channel);
             }
@@ -145,6 +181,8 @@ public class ThresholdTimes implements Runnable {
     private void clearChannelState(int channel) {
         retime[channel] = 0;
         fetime[channel] = 0;
+        retimeINT[channel] = 0;
+        fetimeINT[channel] = 0;        
         rePPSTime[channel] = 0;
         rePPSCount[channel] = 0;
         reDiff[channel] = 0;
@@ -170,7 +208,11 @@ public class ThresholdTimes implements Runnable {
 
         if (computeJD) {
             int sign = parts[15].charAt(0) == '-' ? -1 : 1;
-            int msecOffset = sign * Integer.parseInt(parts[15].substring(1));
+            int msecOffset = 0;
+            //459: newer cards dont use the offset
+            if (currentDetector < 6000) {
+                msecOffset = sign * Integer.parseInt(parts[15].substring(1));            	
+            }
             double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
             jd = currLineJD(offset, parts);
             lastGPSDay = currGPSDay;
@@ -190,6 +232,10 @@ public class ThresholdTimes implements Runnable {
             wr.write(NF16F.format(fetime[channel]));
             wr.write('\t');
             wr.write(NF2F.format(nanodiff));
+            wr.write('\t');
+            wr.write(NF0F.format(retimeINT[channel]));
+            wr.write('\t');
+            wr.write(NF0F.format(fetimeINT[channel]));            
             wr.write('\n');
         }
     }
@@ -202,13 +248,22 @@ public class ThresholdTimes implements Runnable {
             rePPSCount[channel] = lastRePPSCount;
 
             String currSecString = parts[10] + parts[15];
+        	if (currentDetector > 5999) {
+        		currSecString = parts[10];
+        	}    
             if (!currSecString.equals(lastSecString)) {
-                rePPSTime[channel] = currentPPSSeconds(parts[10], parts[15]);
+            	//for bug 459
+            	if (currentDetector > 5999) {
+            		rePPSTime[channel] = currentPPSSeconds(parts[10], "+0");
+            	} else {
+            		rePPSTime[channel] = currentPPSSeconds(parts[10], parts[15]);            		
+            	}
+            	
                 rePPSCount[channel] = Long.parseLong(parts[9], 16);
                 lastRePPSTime = rePPSTime[channel];
                 lastRePPSCount = rePPSCount[channel];
 
-                lastSecString = currSecString;
+                lastSecString = currSecString;               
             }
 
             reTMC[channel] = tmc;
@@ -226,7 +281,8 @@ public class ThresholdTimes implements Runnable {
             edgetime -= 86400;
         }
                 
-        return edgetime / 86400;
+        //return edgetime / 86400;
+        return edgetime;
     }
 
     private static long currentPPSSeconds(String num, String offset) {
@@ -275,40 +331,5 @@ public class ThresholdTimes implements Runnable {
         return (2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60.0 + second/3600.0)/24;
         
     }
-
-    /**
-     * Command-line interface calculating time-over-threshold for a given input file. 
-     * 
-     * @param args Input array representing 
-     * 
-     * @param args[0] Input file 
-     * 
-     * @param args[1] Output fold 
-     * 
-     * @param args[2] Detector serial number
-     * 
-     * @param args[3] Optional parameter defining CPLD frequency.  
-     * 
-     */
-    public static void main(String[] args) {
-    	ThresholdTimes tt; 
-    	
-    	switch(args.length) {
-    	case 3: 
-    		tt = new ThresholdTimes(new String[]{args[0]}, new String[]{args[1]}, new String[]{args[2]}, new double[] { 41666667 });
-    		break;
-    	case 4:
-    		tt = new ThresholdTimes(new String[]{args[0]}, new String[]{args[1]}, new String[]{args[2]}, new double[] { Double.parseDouble(args[3]) });
-    		break; 
-		default: 
-			System.out.println("Usage: ThresholdTimes input_file output_file serial_number [cpld_frequency]");
-			return; 
-    	}
-    	
-        
-        tt.run();
-
-    }
-    
     
 }
