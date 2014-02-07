@@ -18,7 +18,9 @@ import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.TreeMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -110,7 +112,7 @@ CosmicElabUserManagementProvider {
 	private Collection getDetectorIds(Connection c, ElabGroup group)
 	throws SQLException {
 		PreparedStatement ps = c.prepareStatement(
-				"SELECT detectorid FROM research_group_detectorid WHERE research_group_id = ?;");
+				"SELECT detectorid FROM research_group_detectorid WHERE research_group_id = ? order by detectorid;");
 		ps.setInt(1, group.getId());
 		ResultSet rs = ps.executeQuery();
 		List ids = new ArrayList();
@@ -120,7 +122,70 @@ CosmicElabUserManagementProvider {
 		ps.close();
 		return ids;
 	}
-
+	
+	/*
+	public TreeMap<Integer, Boolean> getDetectorBenchmarkFileUse(ElabGroup group) throws ElabException {
+		Connection conn = null;
+		try {
+			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+			try {
+				PreparedStatement ps = conn.prepareStatement(
+						"SELECT detectorid, coalesce(use_benchmark, true) as use_benchmark FROM research_group_detectorid WHERE research_group_id = ? order by detectorid;");
+				ps.setInt(1, group.getId());
+				ResultSet rs = ps.executeQuery();
+				TreeMap<Integer, Boolean> tm = new TreeMap<Integer, Boolean>();
+				while (rs.next()) {
+					tm.put(rs.getInt("detectorid"), rs.getBoolean("use_benchmark"));
+				}
+				ps.close();
+				return tm;				
+			}
+			catch (SQLException sqle) {
+				throw new ElabException(sqle);				
+			}
+		}
+		catch (Exception e) {
+			throw new ElabException(e);
+		}
+		finally {
+			DatabaseConnectionManager.close(conn);
+		}
+	}
+	*/
+	
+    public void setDetectorBenchmarkFileUse(ElabGroup group, String detectorId, boolean benchmark_file_use) throws ElabException {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		int groupId = group.getId();
+		StringBuilder message = new StringBuilder(); 
+		int thisId = Integer.parseInt(detectorId);
+		try {
+			conn = DatabaseConnectionManager
+			.getConnection(elab.getProperties());       
+			boolean ac = conn.getAutoCommit();
+			conn.setAutoCommit(false);
+			try {
+				ps = conn.prepareStatement(
+						"UPDATE research_group_detectorid set use_benchmark = ? WHERE detectorid = ?;");
+				ps.setBoolean(1, benchmark_file_use);
+				ps.setInt(2, thisId);
+				ps.executeUpdate();
+				conn.commit();
+			}
+			catch(SQLException e) {
+				throw new ElabException(e);
+			}
+			finally {
+				conn.setAutoCommit(ac);
+			}
+		}
+		catch (Exception e) {
+		}
+		finally {
+			DatabaseConnectionManager.close(conn, ps);
+		}    	
+    }//end of setDetectorBenchmarkFileUse
+    
 	public void setDetectorIds(ElabGroup group, Collection<String> detectorIds) throws ElabException {
 		// maybe when I grow up I'll know how to do this better
 		// we have grown up now :) -pxn

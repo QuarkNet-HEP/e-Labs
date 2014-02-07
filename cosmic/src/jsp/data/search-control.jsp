@@ -14,6 +14,12 @@
 SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false);
 String msg = (String) request.getAttribute("msg");
+boolean allowAllDataAccess = false;
+if (!user.getName().equals("guest")) {
+	int teacherId = user.getTeacherId();
+	allowAllDataAccess = elab.getUserManagementProvider().getDataAccessPermission(teacherId);
+}
+request.setAttribute("allowAllDataAccess", allowAllDataAccess);
 %>
 <script type="text/javascript">
 $(function() {
@@ -107,8 +113,12 @@ $(window).scroll(function(){
 						<e:select name="stacked" valueList="all, yes, no" labelList="All, Yes, No"/>
 					</td>
 					<td>
-						Blessed:
-						<e:select name="blessed" valueList="all, yes, no" labelList="All, Yes, No"/>
+						<c:choose>
+							<c:when test="${allowAllDataAccess == true}">
+								Blessed:
+								<e:select name="blessed" valueList="default, all, yes, no" labelList="Default, All, Yes, No"/>
+							</c:when>
+						</c:choose>
 					</td>
 				</tr>
 			</table>
@@ -156,6 +166,7 @@ $(window).scroll(function(){
 		     * predicate matters. Elements should be added in order of decreasing
 		     * set size 
 		     */ 
+		     
 		    In and = new In();
 		    
 		    and.add(new Equals("project", elab.getName()));
@@ -176,14 +187,7 @@ $(window).scroll(function(){
 		    if ("no".equals(stacked)) {
 		    	and.add(new Equals("stacked", Boolean.FALSE));
 		    }
-					    
-		    if ("yes".equals(blessed)) {
-		    	and.add(new Equals("blessed", Boolean.TRUE));
-		    }
-		    if ("no".equals(blessed)) {
-		    	and.add(new Equals("blessed", Boolean.FALSE));
-		    }
-		    
+					    		    
 		 	// Date bounds are only needed if specified   
 		    String datetype = request.getParameter("datetype");
 			if (StringUtils.isNotBlank(date1) || StringUtils.isNotBlank(date2)) {
@@ -230,10 +234,22 @@ $(window).scroll(function(){
 				value = value.replace('*', '%').trim();
 				and.add(new Like(key, value)); 
 			}
-		    
+		    //EPeronja-21/11/2013: Benchmark, default search retrieves all owner's data + others' blessed data
+			String benchmarksearch = "default";		    
+		    if ("yes".equals(blessed)) {
+		    	and.add(new Equals("blessed", Boolean.TRUE));
+				benchmarksearch = "";
+		    }
+		    if ("no".equals(blessed)) {
+		    	and.add(new Equals("blessed", Boolean.FALSE));
+				benchmarksearch = "";
+		    }
+			if ("all".equals(blessed)) {
+				benchmarksearch = "";
+			}		 	
 			searchResults = elab.getDataCatalogProvider().runQuery(and);
 			session.setAttribute("previousSearch", and);
-			searchResultsStructured = DataTools.organizeSearchResults(searchResults);
+			searchResultsStructured = DataTools.organizeSearchResults(searchResults, benchmarksearch, user.getName());
 			searchResultsStructured.setKey(key);
 			searchResultsStructured.setValue(value);
 			long end = System.currentTimeMillis();

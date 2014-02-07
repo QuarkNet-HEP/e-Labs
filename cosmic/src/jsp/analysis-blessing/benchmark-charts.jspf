@@ -1,0 +1,10 @@
+<div id="benchmarkChartsDiv" style="text-align: center; visibility: hidden;">
+	<h2 id="datafile"></h2>
+	<h3>Singles Rates</h3>
+	<div id="channels" style="text-align: center; background-color:#FFFFFF;">
+		<div id="benchmarkChannelChart" style="width:550px; height:200px;"></div>
+		<div id="benchmarkChannelChartLegend" style="margin:auto; width:300px;"></div>        
+	</div>
+	<h3>Trigger Rate</h3>
+		<div id ="benchmarkTriggerChart" style="width:550px; height:200px;"></div>
+</div>
