@@ -56,9 +56,6 @@
 	String detectorId = (String) results.getAnalysis().getParameter("detectorid");
 	String comments = (String) results.getAnalysis().getParameter("comments");
 	String benchmark = (String) results.getAnalysis().getParameter("benchmark");
-	if (benchmark == null || benchmark.equals("")) {
-		benchmark = "No Benchmark";
-	}
 	ArrayList<String> benchmarkMessages = new ArrayList<String>();
 	String dataDir = elab.getProperties().getDataDir();
 	int channels[] = new int[4];
@@ -184,7 +181,7 @@
 	new Thread(t).start();
 	
 	//we might as well bless here
-	if (benchmark != null) {
+	if (benchmark != null && !benchmark.equals("")) {
 		BlessProcess bp = new BlessProcess();
 		for (int i = 0; i < splits.size(); i++) {
 		benchmarkMessages.add(bp.BlessDatafile(elab, detectorId, splits.get(i).toString(), benchmark)); 		
