@@ -48,6 +48,21 @@
 							    throw new ElabJspException(" is being used in a plot/analysis. Cannot be deleted." + sb.toString());								
 							}
 						}
+						//EPeronja-02/08/2014: Check benchmark dependency
+						if (entry.getTupleValue("type").equals("split")) {
+							int count = DataTools.checkBenchmarkDependency(elab, name);
+							if (count > 0) {
+								String[] plots = DataTools.getBenchmarkDependency(elab, name);
+								StringBuilder sb = new StringBuilder();
+									if (plots != null) {
+										sb.append("Files:");
+										for(int y = 0; y < plots.length; y++) {
+											sb.append("-"+plots[y]);
+										}
+									}
+							    throw new ElabJspException(" is being used as a benchmark file. Cannot be deleted." + sb.toString());								
+							}
+						}
 					}//end of checking dependencies
 					if (entry == null) {
 					    throw new ElabJspException("not found in the catalog");

@@ -499,7 +499,31 @@ public class DataTools {
 		}
         return plots;
     }	
-    
+  
+    //check benchmark dependency
+    public static int checkBenchmarkDependency(Elab elab, String filename) throws ElabException{
+    	int count = 0;
+		In and = new In();
+		and.add(new Equals("type", "split"));
+		and.add(new Equals("benchmarkreference", filename));
+		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
+		if (rs != null && rs.size() > 0) {
+	  		count = rs.size();
+		}
+        return count;
+    }	
+
+    public static String[] getBenchmarkDependency(Elab elab, String filename) throws ElabException{
+    	String[] blessedFiles = null; 
+		In and = new In();
+		and.add(new Equals("type", "split"));
+		and.add(new Equals("benchmarkreference", filename));
+		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
+		if (rs != null && rs.size() > 0) {
+			blessedFiles = rs.getLfnArray();
+		}
+        return blessedFiles;
+    }    
     //EPeronja-06/11/2013: 254-When deleting files, be sure there are not dependent files
     //                       This function will check plots in the logbook and posters
     public static int checkPlotDependency(Elab elab, String plotName, int figureNumber) throws ElabException {
