@@ -8,6 +8,11 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.TreeMap;
+import gov.fnal.elab.Elab;
+import gov.fnal.elab.datacatalog.*;
+import gov.fnal.elab.datacatalog.query.*;
+import gov.fnal.elab.datacatalog.impl.vds.*;
+import gov.fnal.elab.util.ElabException;
 
 public class BlessData {
 
@@ -31,21 +36,7 @@ public class BlessData {
 				if (split.length != 15) {
 					throw new IOException(file.getName() + " has malformed data. "); 
 				}
-				thisLineData = new valueData(
-						//Integer.parseInt(split[1]),
-						//Integer.parseInt(split[2]),
-						//Integer.parseInt(split[3]),
-						//Integer.parseInt(split[4]),
-						//Integer.parseInt(split[5]),
-						//Integer.parseInt(split[6]),
-						//Integer.parseInt(split[7]),
-						//Integer.parseInt(split[8]),
-						//Double.parseDouble(split[9]),
-						//Integer.parseInt(split[10]),
-						//Integer.parseInt(split[11]),
-						//Double.parseDouble(split[12]),
-						//Double.parseDouble(split[13]),
-						//Integer.parseInt(split[14])						
+				thisLineData = new valueData(	
 						parseToInt(split[1]),
 						parseToInt(split[2]),
 						parseToInt(split[3]),
@@ -59,7 +50,75 @@ public class BlessData {
 						parseToInt(split[11]),
 						parseToDouble(split[12]),
 						parseToDouble(split[13]),
-						parseToInt(split[14])				
+						parseToInt(split[14]),
+						0.0,
+						0.0,
+						0.0,
+						0.0,
+						0.0
+				);
+					
+				ts = parseToInt(split[0]);
+				timeValueData.put(ts, thisLineData);				
+			}
+		}
+	}
+
+	public BlessData(File file, String benchmark, Elab elab) throws IOException {
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		timeValueData = new TreeMap<Integer, valueData>(); 
+		
+		String line;
+		String[] split; 
+		valueData thisLineData = null;
+		int ts;
+		Double bChannel1Rate = 0.0;
+		Double bChannel2Rate = 0.0;
+		Double bChannel3Rate = 0.0;
+		Double bChannel4Rate = 0.0;
+		Double bTriggerRate = 0.0;
+		try {
+			VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(benchmark);
+			if (e != null) {
+				bChannel1Rate = (Double) e.getTupleValue("chan1Rate");
+				bChannel2Rate = (Double) e.getTupleValue("chan2Rate");
+				bChannel3Rate = (Double) e.getTupleValue("chan3Rate");
+				bChannel4Rate = (Double) e.getTupleValue("chan4Rate");
+				bTriggerRate = (Double) e.getTupleValue("triggerRate");		
+			}
+		} catch (Exception e) {	
+			String message = e.toString();
+		}
+		
+		while ((line = br.readLine()) != null) {
+			if (line.startsWith("#")) {
+				continue; // comment line
+			}
+			else {
+				split = line.split("\t"); 
+				if (split.length != 15) {
+					throw new IOException(file.getName() + " has malformed data. "); 
+				}
+				thisLineData = new valueData(
+						parseToInt(split[1]),
+						parseToInt(split[2]),
+						parseToInt(split[3]),
+						parseToInt(split[4]),
+						parseToInt(split[5]),
+						parseToInt(split[6]),
+						parseToInt(split[7]),
+						parseToInt(split[8]),
+						parseToDouble(split[9]),
+						parseToInt(split[10]),
+						parseToInt(split[11]),
+						parseToDouble(split[12]),
+						parseToDouble(split[13]),
+						parseToInt(split[14]),
+						(double) bChannel1Rate,
+						(double) bChannel2Rate,
+						(double) bChannel3Rate,
+						(double) bChannel4Rate,
+						(double) bTriggerRate
 				);
 					
 				ts = parseToInt(split[0]);
@@ -70,7 +129,10 @@ public class BlessData {
 			}
 		}
 	}
-    //EPeronja-02/12/2013: Bug472- added to check for null values which will break the plotting code
+	
+	
+	
+	//EPeronja-02/12/2013: Bug472- added to check for null values which will break the plotting code
 	public int parseToInt(String split)
 	{
 		int result = 0;
@@ -107,6 +169,8 @@ public class BlessData {
 		private double temperature; 
 		private double voltage; 
 		private int gpsSatellitesVisible; 
+		private double benchmarkChannel1Rate, benchmarkChannel2Rate, benchmarkChannel3Rate, benchmarkChannel4Rate;
+		private double benchmarkTriggerRate;
 		
 		private valueData(
 				int channel1Rate, int channel1Error,
@@ -114,7 +178,12 @@ public class BlessData {
 				int channel3Rate, int channel3Error,
 				int channel4Rate, int channel4Error,
 				double triggerRate, int triggerError, 
-				int pressure, double temperature, double voltage,  int gpsSatellitesVisible) {
+				int pressure, double temperature, double voltage,  int gpsSatellitesVisible,
+				double benchmarkChannel1Rate,
+				double benchmarkChannel2Rate,
+				double benchmarkChannel3Rate,
+				double benchmarkChannel4Rate,
+				double benchmarkTriggerRate) {
 			this.channel1Rate = channel1Rate; 
 			this.channel2Rate = channel2Rate; 
 			this.channel3Rate = channel3Rate; 
@@ -132,8 +201,34 @@ public class BlessData {
 			this.temperature = temperature; 
 			this.voltage = voltage; 
 			this.gpsSatellitesVisible = gpsSatellitesVisible; 
+
+			this.benchmarkChannel1Rate = benchmarkChannel1Rate;
+			this.benchmarkChannel2Rate = benchmarkChannel2Rate;
+			this.benchmarkChannel3Rate = benchmarkChannel3Rate;
+			this.benchmarkChannel4Rate = benchmarkChannel4Rate;
+			this.benchmarkTriggerRate = benchmarkTriggerRate;		
 		}
-		
+
+		public double getBenchmarkChannel1Rate() {
+			return benchmarkChannel1Rate; 
+		}
+
+		public double getBenchmarkChannel2Rate() {
+			return benchmarkChannel2Rate; 
+		}
+
+		public double getBenchmarkChannel3Rate() {
+			return benchmarkChannel3Rate; 
+		}
+
+		public double getBenchmarkChannel4Rate() {
+			return benchmarkChannel4Rate; 
+		}
+
+		public double getBenchmarkTriggerRate() {
+			return benchmarkTriggerRate; 
+		}
+
 		public int getChannel1Rate() {
 			return channel1Rate; 
 		}
