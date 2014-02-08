@@ -9,7 +9,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Benchmark tutorial</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/upload.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column-wide.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
