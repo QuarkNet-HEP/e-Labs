@@ -128,11 +128,7 @@
 			<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 			<link rel="stylesheet" type="text/css" href="../css/upload.css"/>
 			<link rel="stylesheet" type="text/css" href="../css/benchmark.css"/>
-			<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>		
 			<script type="text/javascript" src="../include/elab.js"></script>
-        	<script type="text/javascript" src="../../dwr/interface/UploadMonitor.js"></script>
-        	<script type="text/javascript" src="../../dwr/engine.js"></script>
-        	<script type="text/javascript" src="../../dwr/util.js"></script>
 		</head>
 		
 		<body id="benchmark-process" >
@@ -145,6 +141,7 @@
 					</div>
 				</div>
 				<div id="content">
+			<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>		
 			<script type="text/javascript" src="../include/jquery/flot/jquery.flot.js"></script>
 			<script type="text/javascript" src="../include/jquery/flot/jquery.flot.errorbars.js"></script>
 			<script type="text/javascript" src="../include/jquery/flot/jquery.flot.axislabels.js"></script>
