@@ -56,6 +56,9 @@
 	String detectorId = (String) results.getAnalysis().getParameter("detectorid");
 	String comments = (String) results.getAnalysis().getParameter("comments");
 	String benchmark = (String) results.getAnalysis().getParameter("benchmark");
+	if (benchmark == null || benchmark.equals("")) {
+		benchmark = "No Benchmark";
+	}
 	ArrayList<String> benchmarkMessages = new ArrayList<String>();
 	String dataDir = elab.getProperties().getDataDir();
 	int channels[] = new int[4];
