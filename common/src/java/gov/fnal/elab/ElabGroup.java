@@ -156,9 +156,13 @@ public class ElabGroup implements Comparable<ElabGroup> {
 
     public void setUserArea(String userArea) {
         this.userArea = userArea;
+        System.out.println("userarea: "+this.userArea);
+        System.out.println("elab: "+elab.toString());
         if (elab != null) {
             this.userDirURL = elab.getProperties().getUsersDir() + '/'
                     + userArea + '/' + elab.getName();
+            System.out.println("elab props:" + elab.getProperties().getUsersDir());
+            System.out.println("elab name:" + elab.getName());
             if (elab.getServletContext() != null) {
                 this.userDir = elab.getServletContext().getRealPath(userDirURL);
             }
