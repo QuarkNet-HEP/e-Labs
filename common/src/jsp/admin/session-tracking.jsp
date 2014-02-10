@@ -34,10 +34,10 @@
 					details.add(new Pair("Role", eu.getRole()));
 					details.add(new Pair("Logged in to", e.getName()));
 					userCount++;
+					sessionDetails.put(key, details);
 				}
 			}
 		}
-		sessionDetails.put(key, details);
 	}
 
 	request.setAttribute("sessionCount",sessionCount);
@@ -69,7 +69,7 @@
 			
 			<div id="content">
 				<h1>Session Tracking</h1>
-				<h2>Total Active Sessions: ${sessionCount}</h2>
+				<!-- <h2>Total Active Sessions: ${sessionCount}</h2> -->
 				<h2>Total Active User Sessions: ${userCount}</h2>
 	    	   <table style="border: 1px solid black; cell-padding: 15px;">
 	    	   		<tr>
