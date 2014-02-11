@@ -140,7 +140,7 @@ public class DataTools {
      * @return A {@link StructuredResultSet} with the organized data.
      * 
      */
-    public static StructuredResultSet organizeSearchResults(ResultSet rs, String benchmarksearch, String username) {
+    public static StructuredResultSet organizeSearchResults(ResultSet rs, String benchmarksearch, String username, String teacher) {
         Date startDate = null, endDate = null;
 
         StructuredResultSet srs = new StructuredResultSet();
@@ -149,10 +149,10 @@ public class DataTools {
         for (CatalogEntry e : rs) {
         	//EPeronja-11/21/2013: added checks for not displaying unblessed data by default
         	if (benchmarksearch.equals("default")) {
-        		String data_owner = "";
-        		if (e.getTupleValue("group") != null) {
-        			data_owner = (String) e.getTupleValue("group");
-        		}
+        		//String data_owner = "";
+        		//if (e.getTupleValue("group") != null) {
+        		//	data_owner = (String) e.getTupleValue("group");
+        		//}
         		Boolean data_blessed = false;
         		if (e.getTupleValue("blessed") != null) {
         			data_blessed = (Boolean) e.getTupleValue("blessed");
@@ -162,7 +162,8 @@ public class DataTools {
         			data_blessfile = (String) e.getTupleValue("blessfile");
         		}
         		//if user doesn't own the data we have to look further
-        		if (!data_owner.equals(username)) {
+        		String groupteacher = (String) e.getTupleValue("teacher");
+        		if (!groupteacher.equals(teacher)) {
         			if (!data_blessed || data_blessfile.equals("")) {
         				continue;
         			}
