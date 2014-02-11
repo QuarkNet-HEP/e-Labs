@@ -249,7 +249,7 @@ $(window).scroll(function(){
 			}		 	
 			searchResults = elab.getDataCatalogProvider().runQuery(and);
 			session.setAttribute("previousSearch", and);
-			searchResultsStructured = DataTools.organizeSearchResults(searchResults, benchmarksearch, user.getName());
+			searchResultsStructured = DataTools.organizeSearchResults(searchResults, benchmarksearch, user.getName(), user.getGroup().getTeacher());
 			searchResultsStructured.setKey(key);
 			searchResultsStructured.setValue(value);
 			long end = System.currentTimeMillis();
