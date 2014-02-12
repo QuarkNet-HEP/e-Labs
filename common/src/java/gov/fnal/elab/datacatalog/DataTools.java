@@ -162,8 +162,11 @@ public class DataTools {
         			data_blessfile = (String) e.getTupleValue("blessfile");
         		}
         		//if user doesn't own the data we have to look further
-        		String groupteacher = (String) e.getTupleValue("teacher");
-        		if (!groupteacher.equals(teacher)) {
+        		String groupteacher = "";
+        		if (e.getTupleValue("teacher") != null) {
+        			groupteacher = (String) e.getTupleValue("teacher");
+        		}
+        		if (!groupteacher.equals(teacher) || groupteacher.equals("")) {
         			if (!data_blessed || data_blessfile.equals("")) {
         				continue;
         			}
