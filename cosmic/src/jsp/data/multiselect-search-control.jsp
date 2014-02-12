@@ -16,6 +16,9 @@ boolean allowAllDataAccess = false;
 if (!user.getName().equals("guest")) {
 	int teacherId = user.getTeacherId();
 	allowAllDataAccess = elab.getUserManagementProvider().getDataAccessPermission(teacherId);
+	if (user.isAdmin()) {
+		allowAllDataAccess = true;
+	}
 }
 request.setAttribute("allowAllDataAccess", allowAllDataAccess);
 %>
