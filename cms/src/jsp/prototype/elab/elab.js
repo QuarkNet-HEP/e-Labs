@@ -4,7 +4,7 @@ Elab.jpsi_dataset.set({
     image: "../img/Jpsimumu.png",
     svg: "../svg/Jpsimumu.svg",
     description: "2000 di-muon events around the J/&#0968",
-    url: "http://localhost:8000/data/dimuon_2-5GeV.json",
+    url: "http://www13.i2u2.org/elab/cms/prototype/data/dimuon_2-5GeV.json",
     content: "The J/&#0968 is made up of two charm quarks. It is unstable, and decays to two muons around 6% of the time."
 });
 
@@ -14,7 +14,7 @@ Elab.zmumu_dataset.set({
     image: "../img/Zmumu.png",
     svg: "../svg/Zmumu.svg",
     description: "500 di-muon events around the Z boson",
-    url: "http://localhost:8000/data/Zmumu.json",
+    url: "http://www13.i2u2.org/elab/cms/prototype/data/Zmumu.json",
     content: "The Z is a neutral gauge boson and is one of the carriers of the weak force. It is unstable, and decays to either two muons or two electrons around 3% of the time."
 });
 
@@ -24,7 +24,7 @@ Elab.zee_dataset.set({
     image: "../img/Zee.png",
     svg: "../svg/Zee.svg",
     description: "500 di-electron events around the Z boson",
-    url: "http://localhost:8000/data/Zee.json",
+    url: "http://www13.i2u2.org/elab/cms/prototype/data/Zee.json",
     content: "The Z is a neutral gauge boson and is one of the carriers of the weak force. It is unstable, and decays to either two muons or two electrons around 3% of the time."
 });
 
@@ -34,7 +34,7 @@ Elab.wenu_dataset.set({
     image: "../img/Wenu.png",
     svg: "../svg/Wenu.svg",
     description: "500 events of W to e&#0957",
-    url: "http://localhost:8000/data/Wenu.json",
+    url: "http://www13.i2u2.org/elab/cms/prototype/data/Wenu.json",
     content: "The W is a charged gauge boson and is one of the carriers of the weak force. It is unstable, and decays into either a muon and a muon neutrino or an electron and an electron neutrino around 11% of the time.",
 });
 
@@ -44,7 +44,7 @@ Elab.wmunu_dataset.set({
     image: "../img/Wmunu.png",
     svg: "../svg/Wmunu.svg",
     description: "500 events of W to &#0956&#0957",
-    url: "http://localhost:8000/data/Wmunu.json",
+    url: "http://www13.i2u2.org/elab/cms/prototype/data/Wmunu.json",
     content: "The W is a charged gauge boson and is one of the carriers of the weak force. It is unstable, and decays into either a muon and a muon neutrino or an electron and an electron neutrino around 11% of the time.",
 });
 
@@ -54,7 +54,7 @@ Elab.dimuon_dataset.set({
     image: "../img/dimuon.png",
     svg: "../svg/dimuon.svg",
     description: "100,000 di-muon events in the invariant mass range 2-110 GeV",
-    url: "http://localhost:8000/data/dimuon100k.json",
+    url: "http://www13.i2u2.org/elab/cms/prototype/data/dimuon100k.json",
     content: "Two protons colliding will produce all sorts of particles. Some of these particles can then produce two muons."
 });
 
@@ -64,7 +64,7 @@ Elab.dielectron_dataset.set({
     image: "../img/dielectron.png",
     svg: "../svg/dielectron.svg",
     description: "100,000 di-electron events in the invariant mass range 2-100 GeV",
-    url: "http://localhost:8000/data/dielectron100k.json",
+    url: "http://www13.i2u2.org/elab/cms/prototype/data/dielectron100k.json",
     content: "Two protons colliding will produce all sorts of particles. Some of these particles can then produce two electrons."
 });
 
@@ -82,7 +82,7 @@ Elab.hgammagamma_dataset.set({
     image: "../img/HtoGammaGamma.png",
     svg: "../svg/HtoGammaGamma.svg",
     description: "10 events in the mass range 120-130 GeV, where a Higgs candidate decays into two photons.",
-    url: "http://localhost:8000/data/diphoton.json"
+    url: "http://www13.i2u2.org/elab/cms/prototype/data/diphoton.json"
 });
 
 Elab.datasets = new Elab.Datasets();
@@ -95,49 +95,49 @@ Elab.jpsi_primary = new Elab.ParentParticle({id:"jpsi"});
 Elab.jpsi_primary.set({
     name: "jpsi",
     description: "J/&#0968",
-    urls: ["http://localhost:8000/data/dimuon_2-5GeV.json"]
+    urls: ["http://www13.i2u2.org/elab/cms/prototype/data/dimuon_2-5GeV.json"]
 });
 
 Elab.Z_primary = new Elab.ParentParticle({id:"Z"});
 Elab.Z_primary.set({
     name: "Z",
     description: "Z",
-    urls: ["http://localhost:8000/data/Zmumu.json", "http://localhost:8000/data/Zee.json"]
+    urls: ["http://www13.i2u2.org/elab/cms/prototype/data/Zmumu.json", "http://www13.i2u2.org/elab/cms/prototype/data/Zee.json"]
 });
 
 Elab.W_primary = new Elab.ParentParticle({id:"W"});
 Elab.W_primary.set({
     name: "W",
     description: "W",
-    urls: ["http://localhost:8000/data/Wenu.json", "http://localhost:8000/data/Wmunu.json"]
+    urls: ["http://www13.i2u2.org/elab/cms/prototype/data/Wenu.json", "http://www13.i2u2.org/elab/cms/prototype/data/Wmunu.json"]
 });
 
 Elab.dimuon_product = new Elab.DecayProduct({id:"dimuon"});
 Elab.dimuon_product.set({
     name: "dimuon",
     description: "dimuon",
-    urls: ["http://localhost:8000/data/dimuon_2-5GeV.json", "http://localhost:8000/data/Zmumu.json", "http://localhost:8000/data/dimuon100k.json"]
+    urls: ["http://www13.i2u2.org/elab/cms/prototype/data/dimuon_2-5GeV.json", "http://www13.i2u2.org/elab/cms/prototype/data/Zmumu.json", "http://www13.i2u2.org/elab/cms/prototype/data/dimuon100k.json"]
 });
 
 Elab.dielectron_product = new Elab.DecayProduct({id:"dielectron"});
 Elab.dielectron_product.set({
     name: "dielectron",
     description: "dielectron",
-    urls: ["http://localhost:8000/data/Zee.json", "http://localhost:8000/data/dielectron100k.json"]
+    urls: ["http://www13.i2u2.org/elab/cms/prototype/data/Zee.json", "http://www13.i2u2.org/elab/cms/prototype/data/dielectron100k.json"]
 });
 
 Elab.enu_product = new Elab.DecayProduct({id:"enu"});
 Elab.enu_product.set({
     name: "enu",
     description: "enu",
-    urls: ["http://localhost:8000/data/Wenu.json"]
+    urls: ["http://www13.i2u2.org/elab/cms/prototype/data/Wenu.json"]
 });
 
 Elab.munu_product = new Elab.DecayProduct({id:"munu"});
 Elab.munu_product.set({
     name: "munu",
     description: "munu",
-    urls: ["http://localhost:8000/data/Wmunu.json"]
+    urls: ["http://www13.i2u2.org/elab/cms/prototype/data/Wmunu.json"]
 });
 
 // We could parse the data files to fetch the parameters but there
