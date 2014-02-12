@@ -72,6 +72,7 @@
 						<li><a href="${elab.properties['ogre']}" target="ogre">OGRE</a></li>
  -->
 						<li><a href="../plots">View Plots</a></li>
+						<li><a href="../prototype/index.jsp">Prototype</a></li>
 					</ul>
 					
 					<ul id="sub-library">
