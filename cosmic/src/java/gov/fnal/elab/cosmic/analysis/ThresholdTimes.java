@@ -41,7 +41,8 @@ public class ThresholdTimes implements Runnable{
     public static final NumberFormat NF0F = new DecimalFormat("0");
     public static final NumberFormat NF2F = new DecimalFormat("0.00");
     public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
-
+    public final int detectorSeriesChange = 6000;
+    
     /**
      * Constructor arguments: Elab elab, String[] inputFiles, String detectorId
      */   
@@ -98,7 +99,7 @@ public class ThresholdTimes implements Runnable{
 		        cpldFrequency = cpldFrequencies[i];
 		        currentDetector = Integer.parseInt(detectorIDs[i]);
 		        if (cpldFrequency == 0) {
-		        	if (currentDetector < 6000) {
+		        	if (currentDetector < detectorSeriesChange) {
 		        		cpldFrequency = 41666667;
 		        	} else {
 		        		cpldFrequency = 25000000;
@@ -210,7 +211,7 @@ public class ThresholdTimes implements Runnable{
             int sign = parts[15].charAt(0) == '-' ? -1 : 1;
             int msecOffset = 0;
             //459: newer cards dont use the offset
-            if (currentDetector < 6000) {
+            if (currentDetector < detectorSeriesChange) {
                 msecOffset = sign * Integer.parseInt(parts[15].substring(1));            	
             }
             double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
@@ -248,12 +249,12 @@ public class ThresholdTimes implements Runnable{
             rePPSCount[channel] = lastRePPSCount;
 
             String currSecString = parts[10] + parts[15];
-        	if (currentDetector > 5999) {
+        	if (currentDetector >= detectorSeriesChange) {
         		currSecString = parts[10];
         	}    
             if (!currSecString.equals(lastSecString)) {
             	//for bug 459
-            	if (currentDetector > 5999) {
+            	if (currentDetector >= detectorSeriesChange) {
             		rePPSTime[channel] = currentPPSSeconds(parts[10], "+0");
             	} else {
             		rePPSTime[channel] = currentPPSSeconds(parts[10], parts[15]);            		
