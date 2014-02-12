@@ -178,7 +178,7 @@
 		if ("all".equals(blessed)) {
 			benchmarksearch = "";
 		}			
-		searchResultsStructured = DataTools.organizeSearchResults(searchResults,benchmarksearch,user.getName());
+		searchResultsStructured = DataTools.organizeSearchResults(searchResults,benchmarksearch,user.getName(), user.getGroup().getTeacher());
 		searchResultsStructured.setKey(key);
 		searchResultsStructured.setValue(value);
 		

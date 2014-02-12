@@ -18,6 +18,9 @@ boolean allowAllDataAccess = false;
 if (!user.getName().equals("guest")) {
 	int teacherId = user.getTeacherId();
 	allowAllDataAccess = elab.getUserManagementProvider().getDataAccessPermission(teacherId);
+	if (user.isAdmin()) {
+		allowAllDataAccess = true;
+	}
 }
 request.setAttribute("allowAllDataAccess", allowAllDataAccess);
 %>
@@ -249,7 +252,7 @@ $(window).scroll(function(){
 			}		 	
 			searchResults = elab.getDataCatalogProvider().runQuery(and);
 			session.setAttribute("previousSearch", and);
-			searchResultsStructured = DataTools.organizeSearchResults(searchResults, benchmarksearch, user.getName());
+			searchResultsStructured = DataTools.organizeSearchResults(searchResults, benchmarksearch, user.getName(), user.getGroup().getTeacher());
 			searchResultsStructured.setKey(key);
 			searchResultsStructured.setValue(value);
 			long end = System.currentTimeMillis();
