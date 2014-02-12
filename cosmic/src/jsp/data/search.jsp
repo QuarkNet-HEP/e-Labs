@@ -36,7 +36,7 @@
 	<div id="rationale">We have completed the process of testing and installing automatic blessing of data to ensure 
 		that you have quality data to use in the <br />
 		e-Lab. Thus, from this point, only blessed data is visible to the e-Lab user community. 
-		Data uploaded in your own account will remain visible to you, blessed or not.  
+		Data associated with your teacher will remain visible to you, blessed or not.  
 	</div>
 </ul>
 <table border="0" id="main">
