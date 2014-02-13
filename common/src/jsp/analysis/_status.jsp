@@ -15,7 +15,11 @@
 		%><jsp:forward page="../analysis/list.jsp"/><%
 	}
 	else {
+		
 	    String userParam = (String) request.getParameter("user");
+	    if (userParam == null) {
+	    	userParam = (String) session.getAttribute("userParam");
+	    }
 	    session.setAttribute("userParam", userParam);
 	    ElabGroup auser = user;
 	    if (userParam != null) {
@@ -29,7 +33,6 @@
 	    }
 	    
 		AnalysisRun run = AnalysisManager.getAnalysisRun(elab, auser, id);
-		
 		if (run == null) {
 			System.err.println("Invalid analysis id " + id);
 			%> 
