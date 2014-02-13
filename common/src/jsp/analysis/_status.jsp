@@ -17,6 +17,9 @@
 	else {
 		
 	    String userParam = (String) request.getParameter("user");
+	    if (userParam == null) {
+	    	userParam = (String) session.getAttribute("userParam");
+	    }
 	    session.setAttribute("userParam", userParam);
 	    ElabGroup auser = user;
 	    if (userParam != null) {
