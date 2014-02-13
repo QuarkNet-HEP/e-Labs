@@ -44,6 +44,15 @@ public class Statistics {
     private Elab elab;
     private String role;
     private String type;
+    private Boolean blessed;
+    
+    public Boolean getBlessed() {
+    	return blessed;
+    }
+    
+    public void setBlessed(Boolean blessed) {
+    	this.blessed = blessed;
+    }
 
     public String getType() {
         return type;
@@ -369,6 +378,22 @@ public class Statistics {
         return rs.size();
     }
 
+    public int getBenchmarkCount() throws ElabException {
+        And and = new And();
+        Calendar end = Calendar.getInstance();
+        Calendar start = Calendar.getInstance();
+        start.add(Calendar.DAY_OF_YEAR, -span);
+        and.add(new Between(type.equals("poster") ? "date" : "creationdate",
+                start.getTime(), end.getTime()));
+        and.add(new Equals("type", type));
+        and.add(new Equals("blessed", blessed));
+        and.add(new Equals("project", elab.getName()));
+
+        gov.fnal.elab.datacatalog.query.ResultSet rs = elab
+                .getDataCatalogProvider().runQueryNoMetadata(and);
+        return rs.size();
+    }
+    
     public List getYearlyDataCounts() throws ElabException, ParseException {
         return getDataCounts("yyyy");
     }
