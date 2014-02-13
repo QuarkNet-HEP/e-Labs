@@ -17,6 +17,7 @@
 	else {
 		
 	    String userParam = (String) request.getParameter("user");
+	    session.setAttribute("userParam", userParam);
 	    ElabGroup auser = user;
 	    if (userParam != null) {
 	        if (!user.isAdmin()) {
