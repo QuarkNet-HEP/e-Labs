@@ -191,7 +191,7 @@
 	new Thread(t).start();
 	String no_benchmark_message = "You uploaded data without using a benchmark.<br />"+
 			 "Your data is NOT blessed by default so it is not available to the general public.<br />"+
-			 "Contact <e:popup href=\"/elab/cosmic/teacher/forum/HelpDeskRequest.php\" target=\"helpdesk\" width=\"800\" height=\"600\">Helpdesk</a></e:popup> if you would like to know more about data blessing.";
+			 "Contact <a href=\"/elab/cosmic/teacher/forum/HelpDeskRequest.php\">Helpdesk</a> if you would like to know more about data blessing.";
 			 
 	//we might as well bless here
 	if (benchmark != null && !benchmark.equals("") && !benchmark.equals("No benchmark")) {
@@ -211,7 +211,7 @@
         gc.add(Calendar.DAY_OF_MONTH, 2);
         n.setExpirationDate(gc.getTimeInMillis());
         try {
-        	np.addNotification(user, n);
+        	np.addNotification(auser, n);
         }
         catch (ElabException e) {
                 System.err.println("Failed to send notification: " + e.getMessage());
