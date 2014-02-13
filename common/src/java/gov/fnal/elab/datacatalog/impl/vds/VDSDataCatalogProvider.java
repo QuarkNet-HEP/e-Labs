@@ -26,6 +26,7 @@ import gov.fnal.elab.util.ElabUtil;
 import gov.fnal.elab.vds.ElabTransformation;
 
 import java.io.StringReader;
+import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -213,24 +214,37 @@ public class VDSDataCatalogProvider extends VDSCatalogProvider implements DataCa
             java.sql.ResultSet rs;
             
             String query;
+            //EP-02/12/2014: The second query was incredibly slow as the database is bigger now
+            //   			 This is an attempt to speed things up.
             if (key == null || key.equals("split")) {
-                query = "SELECT COUNT(*) FROM anno_text WHERE value = 'split'";
+                //query = "SELECT COUNT(*) FROM anno_text WHERE value = 'split'";
+                query = "SELECT id FROM anno_text WHERE value = 'split'";
             }
             else {
-                query = "select count(distinct value) from anno_text where id in (select id from anno_lfn where mkey='"
-                    + ElabUtil.fixQuotes(key) + "')";
+                //query = "select count(distinct value) from anno_text where id in (select id from anno_lfn where mkey='"
+                //    + ElabUtil.fixQuotes(key) + "')";
+            	query = "select distinct at.value "+
+            			"	from anno_text at "+
+            			"	inner join anno_lfn al "+
+            			"	on at.id = al.id "+
+            			"	where al.mkey = '"+ ElabUtil.fixQuotes(key) +"'";
             }
             System.out.println(query);
             rs = annotationschema.backdoor(query);
 
             if (rs.next()) {
-                String r = rs.getString(1);
+                //String r = rs.getString(1);
                 try {
-                    return Integer.parseInt(r);
+                    //return Integer.parseInt(r);
+                	int size = 0;
+                	while(rs.next()) {
+                		size++;
+                	}
+                	return size;
                 }
                 catch (NumberFormatException e) {
                     throw new ElabException(
-                            "Invalid category count returned by the VDC: " + r);
+                            "Invalid category count returned by the VDC: " + key);
                 }
             }
             else {
