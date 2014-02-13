@@ -181,11 +181,29 @@
 	new Thread(t).start();
 	
 	//we might as well bless here
-	if (benchmark != null && !benchmark.equals("")) {
+	if (benchmark != null && !benchmark.equals("") && !benchmark.equals("No benchmark")) {
 		BlessProcess bp = new BlessProcess();
 		for (int i = 0; i < splits.size(); i++) {
 		benchmarkMessages.add(bp.BlessDatafile(elab, detectorId, splits.get(i).toString(), benchmark)); 		
 		}
+	} else {
+		//send notification about uploading without benchmark
+        ElabNotificationsProvider np = ElabFactory.getNotificationsProvider(elab);
+        Notification n = new Notification();
+        ElabGroup notif_admin = elab.getUserManagementProvider().getGroup("admin"); 
+        n.setCreatorGroupId(notif_admin.getId());
+        n.setMessage("You uploaded data without using a benchmark.<br />"+
+        			 "Your data is NOT blessed by default so it is not available to the general public.<br />"+
+        			 "Contact help at e-labs@fnal.gov if you would like to know more about data blessing.");
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.add(Calendar.DAY_OF_MONTH, 2);
+        n.setExpirationDate(gc.getTimeInMillis());
+        try {
+        	np.addNotification(user, n);
+        }
+        catch (ElabException e) {
+                System.err.println("Failed to send notification: " + e.getMessage());
+        }		
 	}
 	request.setAttribute("sqlErrors", sqlErrors);
 	request.setAttribute("benchmarkMessages", benchmarkMessages);
