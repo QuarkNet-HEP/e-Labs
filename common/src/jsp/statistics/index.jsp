@@ -119,6 +119,30 @@
 	</tr>
 	<% out.flush(); %>
 	<tr>
+		<th>-Blessed</th>
+		<jsp:setProperty name="stats" property="type" value="split"/>
+		<jsp:setProperty name="stats" property="blessed" value="true"/>
+		<jsp:setProperty name="stats" property="span" value="999999"/>
+		<td>${stats.benchmarkCount}</td>
+		<jsp:setProperty name="stats" property="span" value="365"/>
+		<td>${stats.benchmarkCount}</td>
+		<jsp:setProperty name="stats" property="span" value="31"/>
+		<td>${stats.benchmarkCount}</td>
+	</tr>
+	<% out.flush(); %>
+	<tr>
+		<th>-Unblessed</th>
+		<jsp:setProperty name="stats" property="type" value="split"/>
+		<jsp:setProperty name="stats" property="blessed" value="false"/>
+		<jsp:setProperty name="stats" property="span" value="999999"/>
+		<td>${stats.benchmarkCount}</td>
+		<jsp:setProperty name="stats" property="span" value="365"/>
+		<td>${stats.benchmarkCount}</td>
+		<jsp:setProperty name="stats" property="span" value="31"/>
+		<td>${stats.benchmarkCount}</td>
+	</tr>
+	<% out.flush(); %>
+	<tr>
 		<th><a href="data-charts.jsp?type=poster">Posters created</a></th>
 		<jsp:setProperty name="stats" property="type" value="poster"/>
 		<jsp:setProperty name="stats" property="span" value="999999"/>
