@@ -79,6 +79,7 @@ public class AnalysisStats {
         if (f.exists()) {
             BufferedReader br = new BufferedReader(new FileReader(f));
             String line = br.readLine();
+            System.out.println("Stats: " + line);
             while (line != null) {
                 String[] e = line.split("\\s");
                 Date d;
@@ -123,6 +124,7 @@ public class AnalysisStats {
             timestamp = f.lastModified();
         }
         calculateCummulativeData(m);
+        System.out.println("map :" + m.toString());
         return m;
     }
 
