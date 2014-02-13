@@ -189,11 +189,16 @@ deploy-all-clean:
 		
 	<target name="do-deploy-common" depends="build-common, clean-jars">
 		<mkdir dir="${container.home}/${webapps}/elab"/>
+        <mkdir dir="${container.home}/${webapps}/elab/capture" />
+        <mkdir dir="${container.home}/${webapps}/elab/capture/img" />
 		<mkdir dir="${container.home}/${webapps}/elab/WEB-INF"/>
 		<mkdir dir="${container.home}/${webapps}/elab/WEB-INF/classes"/>
 		<mkdir dir="${container.home}/${webapps}/elab/WEB-INF/lib"/>
 		<mkdir dir="${container.home}/${webapps}/elab/${elab.name}"/>
-		
+
+        <copy todir="${container.home}/${webapps}/elab/capture">
+            <fileset dir="capture" includes="**/*" />
+        </copy>		
 		<copy todir="${container.home}/${webapps}/elab/WEB-INF/lib">
 			<fileset dir="common/lib" includes="**/*.jar"/>
 		</copy>

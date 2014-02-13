@@ -162,16 +162,7 @@
 	if ("paper".equals(type)) {
 		// replace src=" with src="+ path to plots (in user area).
 		String plotURLwithoutSpaces = plotURL.replaceAll(" ", "%20");
-		template = template.replaceAll("img name=\"IMGFIG1\" src=\"","img name=\"IMGFIG1\" src=\"" + plotURLwithoutSpaces); //really only matters for paper
-		template = template.replaceAll("img name=\"IMGFIG2\" src=\"","img name=\"IMGFIG2\" src=\"" + plotURLwithoutSpaces); //really only matters for paper
-		template = template.replaceAll("img name=\"IMGFIG3\" src=\"","img name=\"IMGFIG3\" src=\"" + plotURLwithoutSpaces); //really only matters for paper
-		template = template.replaceAll("img name=\"IMGFIG4\" src=\"","img name=\"IMGFIG4\" src=\"" + plotURLwithoutSpaces); //really only matters for paper
-		template = template.replaceAll("img name=\"IMGFIG5\" src=\"","img name=\"IMGFIG5\" src=\"" + plotURLwithoutSpaces); //really only matters for paper
-		template = template.replaceAll("img name=\"IMGFIG6\" src=\"","img name=\"IMGFIG6\" src=\"" + plotURLwithoutSpaces); //really only matters for paper
-		template = template.replaceAll("img name=\"IMGFIG7\" src=\"","img name=\"IMGFIG7\" src=\"" + plotURLwithoutSpaces); //really only matters for paper
-		template = template.replaceAll("img name=\"IMGFIG8\" src=\"","img name=\"IMGFIG8\" src=\"" + plotURLwithoutSpaces); //really only matters for paper
-		template = template.replaceAll("img name=\"IMGFIG9\" src=\"","img name=\"IMGFIG9\" src=\"" + plotURLwithoutSpaces); //really only matters for paper
-		template = template.replaceAll("img name=\"IMGFIG10\" src=\"","img name=\"IMGFIG10\" src=\"" + plotURLwithoutSpaces); //really only matters for paper
+		template = template.replaceAll("src=\"","src=\"" + plotURLwithoutSpaces); //really only matters for paper
 		template = template.replaceAll("%WORDS:CAPTION1%", ""); 
 		template = template.replaceAll("%WORDS:CAPTION2%", ""); 
 		template = template.replaceAll("%WORDS:CAPTION3%", ""); 
