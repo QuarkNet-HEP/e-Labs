@@ -27,8 +27,14 @@
 			<div id="content" style="margin-left:auto; margin-right:auto; width:60%;">
 			<table width="80%" cellpadding ="8">
 				<tr>
-					<td style="text-align: center;"><font color="#0a5ca6" size="+3">Benchmark Tutorial</font></td>
+					<td style="text-align: center;"><font color="#ad499d" size="+3">Benchmark Tutorial</font></td>
 				</tr>
+				<tr>
+					<td>Other Blessing tutorials: 
+						<a href="../analysis-blessing/benchmark-overview-tutorial.jsp">Overview</a> |
+						<a href="../analysis-blessing/benchmark-process-tutorial.jsp">Blessing</a><br /><br />
+					</td>
+				</tr>				
 				<tr>
 					<td style="text-align: left;">
 						Go to: "Cosmic Ray e-Lab&#8594;Upload &#8594;Benchmark"<br /><br />
