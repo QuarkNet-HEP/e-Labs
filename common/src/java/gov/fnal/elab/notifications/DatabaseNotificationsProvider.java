@@ -193,18 +193,23 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
 
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
-                	ps = conn.prepareStatement("UPDATE notifications.state SET deleted = TRUE, read = TRUE WHERE message_id = ? AND research_group_id = ?;");
-        			ps.setInt(1, id);
-        			ps.setInt(2, user.getId());
-        			int rows = ps.executeUpdate();
-        			if (rows == 0) {
-        				ps = conn.prepareStatement("INSERT into notifications.state (message_id, research_group_id, read, deleted) VALUES (?, ?, ?, ?);");
-		            	ps.setInt(1, id);
-		            	ps.setInt(2, user.getId());
-		            	ps.setBoolean(3, true);
-		            	ps.setBoolean(4, true);
-		            	ps.executeUpdate();
-        			}
+                	ps = conn.prepareStatement("SELECT * FROM notifications.message where id = ?");
+                	ps.setInt(1, id);
+                	ResultSet rs1 = ps.executeQuery();
+                	if (rs1.next()) {                	
+	                	ps = conn.prepareStatement("UPDATE notifications.state SET deleted = TRUE, read = TRUE WHERE message_id = ? AND research_group_id = ?;");
+	        			ps.setInt(1, id);
+	        			ps.setInt(2, user.getId());
+	        			int rows = ps.executeUpdate();
+	        			if (rows == 0) {
+	        				ps = conn.prepareStatement("INSERT into notifications.state (message_id, research_group_id, read, deleted) VALUES (?, ?, ?, ?);");
+			            	ps.setInt(1, id);
+			            	ps.setInt(2, user.getId());
+			            	ps.setBoolean(3, true);
+			            	ps.setBoolean(4, true);
+			            	ps.executeUpdate();
+	        			}
+                	}
                 }
                 else {
                     throw new ElabException("No such notification id \"" + id + "\" + for user " + user.getName());
@@ -248,17 +253,22 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
 
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
-                	ps = conn.prepareStatement("UPDATE notifications.state SET read = TRUE WHERE message_id = ? AND research_group_id = ?;");
-        			ps.setInt(1, id);
-        			ps.setInt(2, user.getId());
-        			int rows = ps.executeUpdate();
-        			if (rows == 0) {
-        				ps = conn.prepareStatement("INSERT into notifications.state (message_id, research_group_id, read) VALUES (?, ?, ?);");
-		            	ps.setInt(1, id);
-		            	ps.setInt(2, user.getId());
-		            	ps.setBoolean(3, true);
-		            	ps.executeUpdate();
-        			}
+                	ps = conn.prepareStatement("SELECT * FROM notifications.message where id = ?");
+                	ps.setInt(1, id);
+                	ResultSet rs1 = ps.executeQuery();
+                	if (rs1.next()) {
+	                	ps = conn.prepareStatement("UPDATE notifications.state SET read = TRUE WHERE message_id = ? AND research_group_id = ?;");
+	        			ps.setInt(1, id);
+	        			ps.setInt(2, user.getId());
+	        			int rows = ps.executeUpdate();
+	        			if (rows == 0) {
+	        				ps = conn.prepareStatement("INSERT into notifications.state (message_id, research_group_id, read) VALUES (?, ?, ?);");
+			            	ps.setInt(1, id);
+			            	ps.setInt(2, user.getId());
+			            	ps.setBoolean(3, true);
+			            	ps.executeUpdate();
+	        			}
+                	}
                 }
                 else {
                     throw new ElabException("No such notification id \"" + id + "\" + for user " + user.getName());
