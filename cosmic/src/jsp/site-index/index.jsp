@@ -120,7 +120,10 @@
 								<ul>
 									<li><a href="../data/upload.jsp"><b>Upload Data</b></a></li>
 									<li><a href="../geometry/"><b>Upload Geometry</b></a></li>
-									
+									<strong>Data Blessing Tutorials</strong>
+									<ul>
+										<li><a href="../analysis-blessing/benchmark-overview-tutorial.jsp">Data Blessing</a></li>
+									</ul>
 								</ul>
 							</td>
 						</c:if>

@@ -68,6 +68,12 @@
 									<a href="../geometry/tutorial.jsp">Updating Geometry Tutorial</a>
 									 - Learn how to properly input the layout of your detector.
 								</li>
+								<li>
+									Data Blessing Tutorials<br />
+									<a href="../analysis-blessing/benchmark-overview-tutorial.jsp">Overview</a><br />
+									<a href="../analysis-blessing/benchmark-tutorial.jsp">Benchmark</a><br />
+									<a href="../analysis-blessing/benchmark-process-tutorial.jsp">Blessing</a><br />
+								</li>
 							</c:if>
 							
 							<li>
