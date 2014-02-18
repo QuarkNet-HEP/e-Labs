@@ -30,7 +30,7 @@
 					<td style="text-align: center;"><font color="#ad499d" size="+3">Tutorial for manual blessing of data files</font></td>
 				</tr>
 				<tr>
-					<td>Other Blessing tutorials: 
+					<td>Other Blessing Tutorials: 
 						<a href="../analysis-blessing/benchmark-overview-tutorial.jsp">Overview</a> |
 						<a href="../analysis-blessing/benchmark-tutorial.jsp">Benchmark</a><br /><br />
 					</td>
