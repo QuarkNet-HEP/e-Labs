@@ -48,9 +48,9 @@
 					<div style="vertical-align: top;"><img border="0" src="../graphics/saveas.gif" />Duplicate</div>	
 				</div>				
 				<br /><br /><br /><br /><br /><br /><br /><br />
-                <span style="font-size:75%">
+				<div id="tutorial" style="float: left;">
 	                    Confused? Seeing errors? Please consult the <a href="tutorial.jsp">tutorial</a>.
-                </span>
+	            </div>
             </div>
         </td>
 	</tr>

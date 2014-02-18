@@ -94,6 +94,7 @@ function hideAll()
 								<div id="sitehelp-upload">
 									<a href="../data/upload.jsp">Upload Data</a><br />
 									<a href="../geometry">Geometry</a><br />
+									<a href="../geometry/tutorial.jsp">Geometry Tutorial</a>
 									<a href="../analysis-blessing/benchmark-overview-tutorial.jsp">Blessing Tutorial</a>
 								</div>
 							</td> <%}%>
