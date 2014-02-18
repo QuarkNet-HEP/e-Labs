@@ -27,7 +27,7 @@
 			<div id="content" style="margin-left:auto; margin-right:auto; width:60%;">
 			<table width="80%" cellpadding ="8">
 				<tr>
-					<td style="text-align: center;"><font color="#ad499d" size="+3">Tutorial for manual blessing of data files</font></td>
+					<td style="text-align: center;"><font color="#ad499d" size="+3">Tutorial for Manual Blessing of Data Files</font></td>
 				</tr>
 				<tr>
 					<td>Other Blessing Tutorials: 
