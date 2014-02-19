@@ -79,48 +79,32 @@ public class BlessProcess {
 									throw new IOException(blessFile + " has malformed data. "); 
 								}
 								//compare channel 1 and see if file can be blessed
-								if (chan1Rate < (parseToDouble(split[1]) + parseToDouble(split[2])) && chan1Rate > (parseToDouble(split[1]) - parseToDouble(split[2]))) {
+								if (chan1Rate <= (parseToDouble(split[1]) + parseToDouble(split[2])) && chan1Rate >= (parseToDouble(split[1]) - parseToDouble(split[2]))) {
 									pass = true;
 								} else {
-									if (chan1Rate == 0 && (parseToDouble(split[1]) + parseToDouble(split[2])) == 0) {
-										pass = true;
-									} else {
-										pass = false;
-										failReason = formatFailReason(split[0], "channel 1", String.valueOf(chan1Rate), split[1], split[2]);
-									}
+									pass = false;
+									failReason = formatFailReason(split[0], "channel 1", String.valueOf(chan1Rate), split[1], split[2]);
 								}
 								//compare channel 2 and see if file can be blessed
-								if (chan2Rate < (parseToDouble(split[3]) + parseToDouble(split[4])) && chan2Rate > (parseToDouble(split[3]) - parseToDouble(split[4]))) {
+								if (chan2Rate <= (parseToDouble(split[3]) + parseToDouble(split[4])) && chan2Rate >= (parseToDouble(split[3]) - parseToDouble(split[4]))) {
 									pass = true;
 								} else {
-									if (chan2Rate == 0 && (parseToDouble(split[3]) + parseToDouble(split[4])) == 0) {
-										pass = true;
-									} else {
-										pass = false;
-										failReason = formatFailReason(split[0], "channel 2", String.valueOf(chan2Rate), split[3], split[4]);
-									}
+									pass = false;
+									failReason = formatFailReason(split[0], "channel 2", String.valueOf(chan2Rate), split[3], split[4]);
 								}
 								//compare channel 3 and see if file can be blessed
-								if (chan3Rate < (parseToDouble(split[5]) + parseToDouble(split[6])) && chan3Rate > (parseToDouble(split[5]) - parseToDouble(split[6]))) {
+								if (chan3Rate <= (parseToDouble(split[5]) + parseToDouble(split[6])) && chan3Rate >= (parseToDouble(split[5]) - parseToDouble(split[6]))) {
 									pass = true;
 								} else {
-									if (chan3Rate == 0 && (parseToDouble(split[5]) + parseToDouble(split[6])) == 0) {
-										pass = true;
-									} else {
-										pass = false;
-										failReason = formatFailReason(split[0], "channel 3", String.valueOf(chan3Rate), split[5], split[6]);
-									}
+									pass = false;
+									failReason = formatFailReason(split[0], "channel 3", String.valueOf(chan3Rate), split[5], split[6]);
 								}
 								//compare channel 4 and see if file can be blessed
-								if (chan4Rate < (parseToDouble(split[7]) + parseToDouble(split[8])) && chan4Rate > (parseToDouble(split[7]) - parseToDouble(split[8]))) {
+								if (chan4Rate <= (parseToDouble(split[7]) + parseToDouble(split[8])) && chan4Rate >= (parseToDouble(split[7]) - parseToDouble(split[8]))) {
 									pass = true;
 								} else {
-									if (chan4Rate == 0 && (parseToDouble(split[7]) + parseToDouble(split[8])) == 0) {
-										pass = true;
-									} else {
-										pass = false;
-										failReason = formatFailReason(split[0], "channel 4", String.valueOf(chan4Rate), split[7], split[8]);
-									}
+									pass = false;
+									failReason = formatFailReason(split[0], "channel 4", String.valueOf(chan4Rate), split[7], split[8]);
 								}
 								//compare triggers and see if file can be blessed
 								//if the trigger + triggerError < 2, we are not going to bother comparing
