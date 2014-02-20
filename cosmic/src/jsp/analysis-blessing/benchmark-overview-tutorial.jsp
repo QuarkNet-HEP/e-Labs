@@ -53,12 +53,12 @@
 								(Used in stage 2 as shown in the workflow above).</li>
 						</ul><br /><br />
 						<strong>Choosing a Benchmark</strong><br /><br />
-						To select a benchmark file, click on the Benchmark menu item and inspect the blessing plots for several existing uploads.
-						After you inspect the plots, choose an appropriate file to label as benchmark. Read this 
-						<a href="../analysis-blessing/benchmark-tutorial.jsp">tutorial</a> for more information.<br />
 						<div style="text-align: center;">
 							<img src="../graphics/benchmark-menu.jpg" name="Benchmark Menu" alt="Benchmark Menu"></img>
 						</div><br />						
+						To select a benchmark file, click on the Benchmark menu item and inspect the blessing plots for several existing uploads.
+						After you inspect the plots, choose an appropriate file to label as benchmark. Read this 
+						<a href="../analysis-blessing/benchmark-tutorial.jsp">tutorial</a> for more information.<br />
 						You MUST change the benchmark file when you change the configuration (coincidence or geometry) of your detector.
 						You can use the same benchmark over and over if you never change the coincidence or geometry of your detector.<br /><br />
 						<strong>Manual Blessing</strong><br /><br />
@@ -72,7 +72,7 @@
 						<strong>Automatic Blessing</strong><br /><br />
 						This method involves these menu items.
 						<div style="text-align: center;">
-							<img src="../graphics/automatic.jpg" name="Automatic" alt="Automatic"></img>
+							<img src="../graphics/upload-menu.jpg" name="Automatic" alt="Automatic"></img>
 						</div><br />
 						On each data upload you will select a "benchmark" file to compare your data with. You
 						define the benchmark files; they have consistent data rates and similar geometry and triggers
