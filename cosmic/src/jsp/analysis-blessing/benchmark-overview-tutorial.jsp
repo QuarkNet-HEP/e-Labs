@@ -37,17 +37,30 @@
 				</tr>
 				<tr>
 					<td style="text-align: left;">
-						We now only show data that are "blessed"; these files have passed a simple quality screen.
-						Only groups that share a teacher with the uploader can see files that do not pass this quality screening.<br /><br />
-						Data Blessing checks the rates in each channel and the trigger rate for consistency. We have 
-						introduced two methods for you to "bless" your data and make it available to e-Lab users.
+						We now only show data that are "blessed"; these files have passed a simple quality test.
+						Data associated with your teacher will remain visible to you, blessed or not.<br /><br />
+						Data Blessing checks the rates in each channel and the trigger rate for consistency. Blessing involves
+						two stages in your workflow depending on whether you are uploading data with a new configuration or 
+						with the same configuration.<br /><br /> 
+						<div style="text-align: center;">
+							<img src="../graphics/blessing-workflow.png" name="Workflow" alt="Workflow"></img>
+						</div><br /><br />	
+						These two stages use two methods for you to "bless" your data and make it available to e-Lab users.<br /><br />					
 						<ul>
-							<li>In automatic blessing, we compare your upload to a benchmark file you identify.</li>
-							<li>In manual blessing, you have an opportunity to bless files that did not have a benchmark
-							    when you uploaded them.</li>
-						</ul>
-						We say more about each step below.<br /><br />
-						<strong>Method 1 (automatic)</strong><br />
+							<li><strong>Manual blessing:</strong> In manual blessing, you have an opportunity to bless files that did not have a benchmark
+							    when you uploaded them (Used in stage 1 as shown in the workflow above).</li><br />
+							<li><strong>Automatic blessing:</strong> In automatic blessing, we compare your upload to a benchmark file you identify 
+								(Used in stage 2 as shown in the workflow above).</li>
+						</ul><br /><br />
+						<strong>Manual Blessing</strong><br /><br />
+						<div style="text-align: center;">
+							<img src="../graphics/manual.jpg" name="Manual" alt="Manual"></img>
+						</div><br />						
+						You can use this method to bless files that you uploaded without automatic blessing. This method still 
+						requires you to select a benchmark file or gives you an opportunity to bless data that had been compared to the 
+						wrong benchmark at upload time.<br />
+						Read the tutorial on <a href="../analysis-blessing/benchmark-process-tutorial.jsp">manual blessing</a><br /><br />
+						<strong>Automatic Blessing</strong><br /><br />
 						This method involves these menu items.
 						<div style="text-align: center;">
 							<img src="../graphics/automatic.jpg" name="Automatic" alt="Automatic"></img>
@@ -60,14 +73,7 @@
 						<a href="../analysis-blessing/benchmark-tutorial.jsp">tutorial</a> for more information.<br /><br />
 						You MUST change the benchmark file when you change the configuration (coincidence or geometry) of your detector.
 						You can use the same benchmark over and over if you never change the coincidence or geometry of your detector.<br /><br />
-						<strong>Method 2 (manual)</strong><br />
-						<div style="text-align: center;">
-							<img src="../graphics/manual.jpg" name="Manual" alt="Manual"></img>
-						</div><br />						
-						You can use this method to bless files that you elected to upload without automatic blessing. This method still 
-						requires you to select a benchmark file or gives you an opportunity to bless data that had been compared to the 
-						wrong benchmark at upload time.<br />
-						Read the tutorial on <a href="../analysis-blessing/benchmark-process-tutorial.jsp">manual blessing</a><br />
+
 					</td>
 	 			</tr>
 			</table>

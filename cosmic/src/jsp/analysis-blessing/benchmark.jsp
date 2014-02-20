@@ -212,6 +212,13 @@
 			});		
 		</script>	
 <h1>Select benchmark files.</h1>
+
+<p>Blessing Tutorials: 
+	<a href="../analysis-blessing/benchmark-overview-tutorial.jsp">Overview</a> |
+	<a href="../analysis-blessing/benchmark-tutorial.jsp">Benchmark</a> |
+	<a href="../analysis-blessing/benchmark-process-tutorial.jsp">Blessing</a><br /><br />
+</p>
+
 <strong>To add a benchmark:</strong>
 <ul>
 	<li>Choose a <strong>detector</strong> from the drop-down.</li>
@@ -224,7 +231,6 @@
 <strong>To remove a benchmark:</strong>
 <ul>
 	<li>Remove benchmark files (this will also <strong>remove the references</strong> to this file in former blessed datafiles and <strong>unbless</strong> them).</li>
-	<li><a href="benchmark-tutorial.jsp">Tutorial on Benchmark</a></li>
 </ul>
 <form id="benchmarkFileForm" method="post">
 <c:if test="${not empty blessed }">

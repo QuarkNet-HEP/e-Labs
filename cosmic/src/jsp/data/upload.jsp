@@ -239,7 +239,11 @@ Re: the upload progress stuff
 
 <h1>Upload raw data collected by your cosmic ray detector.</h1>
 
-
+<p>Blessing Tutorials: 
+	<a href="../analysis-blessing/benchmark-overview-tutorial.jsp">Overview</a> |
+	<a href="../analysis-blessing/benchmark-tutorial.jsp">Benchmark</a> |
+	<a href="../analysis-blessing/benchmark-process-tutorial.jsp">Blessing</a><br /><br />
+</p>
 
 <ul>
 	<li>Select the <strong>detector</strong> associated with the data you are uploading.</li>
