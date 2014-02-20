@@ -45,7 +45,7 @@
 						<div style="text-align: center;">
 							<img src="../graphics/blessing-workflow.png" name="Workflow" alt="Workflow"></img>
 						</div><br /><br />	
-						These two stages use two methods for you to "bless" your data and make it available to e-Lab users.<br /><br />					
+						These two stages use two methods for you to "bless" your data and make it available to e-Lab users. Each requires a benchmark file.<br /><br />					
 						<ul>
 							<li><strong>Manual blessing:</strong> In manual blessing, you have an opportunity to bless files that did not have a benchmark
 							    when you uploaded them (Used in stage 1 as shown in the workflow above).</li><br />
