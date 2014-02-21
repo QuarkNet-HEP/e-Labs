@@ -45,15 +45,14 @@ public class Statistics {
     private String role;
     private String type;
     private Boolean blessed;
-    
+
+    public void setBlessed(Boolean blessed) {
+    	this.blessed = blessed;
+    }
     public Boolean getBlessed() {
     	return blessed;
     }
     
-    public void setBlessed(Boolean blessed) {
-    	this.blessed = blessed;
-    }
-
     public String getType() {
         return type;
     }
