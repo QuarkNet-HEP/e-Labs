@@ -70,7 +70,6 @@
 						wrong benchmark at upload time.<br />
 						Read the tutorial on <a href="../analysis-blessing/benchmark-process-tutorial.jsp">manual blessing</a><br /><br />
 						<strong>Automatic Blessing</strong><br /><br />
-						This method involves these menu items.
 						<div style="text-align: center;">
 							<img src="../graphics/upload-menu.jpg" name="Automatic" alt="Automatic"></img>
 						</div><br />
