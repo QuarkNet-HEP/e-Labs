@@ -24,7 +24,7 @@
 				</div>
 			</div>
 			
-			<div id="content" style="margin-left:auto; margin-right:auto; width:60%;">
+			<div id="content" style="margin-left:auto; margin-right:auto; width:80%;">
 			<table width="80%" cellpadding ="8">
 				<tr>
 					<td style="text-align: center;"><font color="#ad499d" size="+3">Overview of Data Blessing</font></td>
