@@ -74,7 +74,17 @@
 	boolean totalSuccess = true;        //false if there are any rc.data or meta errors
 	File fmeta = new File(f.getAbsolutePath() + ".meta");     //depends on Split.pl writing the meta to rawName.meta
 	String sqlErrors = "";
-	
+	//EPeronja-added the following code for admin to be able to access the upload results
+    String userParam = (String) request.getParameter("user");
+    if (userParam == null) {
+    	userParam = (String) session.getAttribute("userParam");
+    }
+    session.setAttribute("userParam", userParam);
+    ElabGroup auser = user;
+    if (userParam != null) {
+       auser = elab.getUserManagementProvider().getGroup(userParam);
+    }
+    	
 	if (fmeta.canRead()) {
     	BufferedReader br = new BufferedReader(new FileReader(fmeta));
         String line = null;
@@ -115,12 +125,12 @@
                 //metadata for both RAW and SPLIT files
                 meta.add("origname string " + lfn); //add in the original name from the users computer to metadata
                 meta.add("blessed boolean false");
-	            meta.add("group string " + user.getName());
-    	        meta.add("teacher string " + elab.getUserManagementProvider().getTeacher(user).getName());
-        	    meta.add("school string " + user.getSchool());
-            	meta.add("city string " + user.getCity());
-                meta.add("state string " + user.getState());
-                meta.add("year string " + user.getYear());
+	            meta.add("group string " + auser.getName());
+    	        meta.add("teacher string " + elab.getUserManagementProvider().getTeacher(auser).getName());
+        	    meta.add("school string " + auser.getSchool());
+            	meta.add("city string " + auser.getCity());
+                meta.add("state string " + auser.getState());
+                meta.add("year string " + auser.getYear());
                 meta.add("project string " + elab.getName());
 	            comments = comments.replaceAll("\r\n?", "\\\\n");   //replace new lines from text box with "\n"
                 meta.add("comments string " + comments);
@@ -179,13 +189,33 @@
 	}
 	ThresholdTimes t = new ThresholdTimes(elab, inputFiles, detectorId);
 	new Thread(t).start();
-	
+	String no_benchmark_message = "You uploaded data without using a benchmark.<br />"+
+			 "Your data is NOT blessed by default so it is not available to the general public.<br />"+
+			 "Contact <a href=\"/elab/cosmic/teacher/forum/HelpDeskRequest.php\">Helpdesk</a> if you would like to know more about data blessing.";
+			 
 	//we might as well bless here
-	if (benchmark != null && !benchmark.equals("")) {
+	if (benchmark != null && !benchmark.equals("") && !benchmark.equals("No benchmark")) {
 		BlessProcess bp = new BlessProcess();
 		for (int i = 0; i < splits.size(); i++) {
 		benchmarkMessages.add(bp.BlessDatafile(elab, detectorId, splits.get(i).toString(), benchmark)); 		
 		}
+	} else {
+		benchmarkMessages.add(no_benchmark_message + "<br />Also check <a href=\"../analysis-blessing/benchmark-tutorial.jsp\">Tutorial on Benchmark</a>");
+		//send notification about uploading without benchmark
+        ElabNotificationsProvider np = ElabFactory.getNotificationsProvider(elab);
+        Notification n = new Notification();
+        ElabGroup notif_admin = elab.getUserManagementProvider().getGroup("admin"); 
+        n.setCreatorGroupId(notif_admin.getId());
+        n.setMessage(no_benchmark_message);
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.add(Calendar.DAY_OF_MONTH, 2);
+        n.setExpirationDate(gc.getTimeInMillis());
+        try {
+        	np.addNotification(auser, n);
+        }
+        catch (ElabException e) {
+                System.err.println("Failed to send notification: " + e.getMessage());
+        }		
 	}
 	request.setAttribute("sqlErrors", sqlErrors);
 	request.setAttribute("benchmarkMessages", benchmarkMessages);

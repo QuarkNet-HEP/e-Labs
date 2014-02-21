@@ -125,12 +125,14 @@ request.setAttribute("CR0", br0.getRegisterValue());
 				    	<td rowspan="2" ><%= commentsLink %> <%= entry.getTupleValue("comments") %></td></tr>
 				    <tr><td width="20px"> </td><td width="100px"><strong>${CR0}</strong></td></tr>
 				</table>
+				<!-- This is removed due to the Benchmark rollout
 				<div style="text-align: center;"><strong>Owners of data files can bless data based on their interpretation of these charts</strong></p></div>
-				<% if (owner) { %>							
+				<% //if (owner) { %>							
 				<table witdh="100%"  style="border: 1px solid black;">
 					<tr><td style="text-align: center;">Look at these charts and bless your data if it is of high quality </td>
-						<td>
+						<td> -->
 							<!-- Need to check if user is related to this detector in order to be able to bless/unbless -->
+							<!-- 
 							<td style="text-align: right;">
 							 	<form name="blessForm" action="blessdata.jsp" method="post" target="blessWindow" onsubmit="window.open('',this.target,'width=300,height=100,top=200,left=500 resizable=1');" align="center"> 
 									<input type="hidden" name="blessed" value="${e.tupleMap.blessed}"/>
@@ -147,8 +149,8 @@ request.setAttribute("CR0", br0.getRegisterValue());
 							</td>
 						</td>
 					</tr>
-				</table><br />
-				<% } %>						
+				</table><br /> -->
+				<% //} %>						
 				<div id="xAxesControl">
 					<table id="xAxesControlTable">
 						<tr>

@@ -24,11 +24,17 @@
 				</div>
 			</div>
 			
-			<div id="content" style="margin-left:auto; margin-right:auto; width:60%;">
+			<div id="content" style="margin-left:auto; margin-right:auto; width:80%;">
 			<table width="80%" cellpadding ="8">
 				<tr>
-					<td style="text-align: center;"><font color="#0a5ca6" size="+3">Tutorial for manual blessing of data files</font></td>
+					<td style="text-align: center;"><font color="#ad499d" size="+3">Tutorial for Manual Blessing of Data Files</font></td>
 				</tr>
+				<tr>
+					<td>Other Blessing Tutorials: 
+						<a href="../analysis-blessing/benchmark-overview-tutorial.jsp">Overview</a> |
+						<a href="../analysis-blessing/benchmark-tutorial.jsp">Benchmark</a><br /><br />
+					</td>
+				</tr>				
 				<tr>
 					<td style="text-align: left;">
 						To manually "bless" a data file or a set of files, first select the DAQ# from the pull-down list:<br /><br />
