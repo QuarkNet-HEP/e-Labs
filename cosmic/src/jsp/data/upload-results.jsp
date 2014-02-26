@@ -56,6 +56,10 @@
 	String detectorId = (String) results.getAnalysis().getParameter("detectorid");
 	String comments = (String) results.getAnalysis().getParameter("comments");
 	String benchmark = (String) results.getAnalysis().getParameter("benchmark");
+	String action = (String) session.getAttribute("uploadAction");
+	if (action == null) {
+		action = "";
+	}
 	ArrayList<String> benchmarkMessages = new ArrayList<String>();
 	String dataDir = elab.getProperties().getDataDir();
 	int channels[] = new int[4];
@@ -182,22 +186,26 @@
 	        channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).intValue();
 	    }
 	}
+  	if (action.equals("")  && fmeta.canRead()) {
+		String[] inputFiles = new String[splits.size()];
+		for (int i = 0; i < splits.size(); i++) {
+			inputFiles[i] = splits.get(i).toString();			
+		}
+		ThresholdTimes t = new ThresholdTimes(elab, inputFiles, detectorId);
+		new Thread(t).start();
+  	}
 
-	String[] inputFiles = new String[splits.size()];
-	for (int i = 0; i < splits.size(); i++) {
-		inputFiles[i] = splits.get(i).toString();			
-	}
-	ThresholdTimes t = new ThresholdTimes(elab, inputFiles, detectorId);
-	new Thread(t).start();
-	String no_benchmark_message = "You uploaded data without using a benchmark.<br />"+
+  	String no_benchmark_message = "You uploaded data without using a benchmark.<br />"+
 			 "Your data is NOT blessed by default so it is not available to the general public.<br />"+
 			 "Contact <a href=\"/elab/cosmic/teacher/forum/HelpDeskRequest.php\">Helpdesk</a> if you would like to know more about data blessing.";
-			 
+  	
 	//we might as well bless here
 	if (benchmark != null && !benchmark.equals("") && !benchmark.equals("No benchmark")) {
-		BlessProcess bp = new BlessProcess();
-		for (int i = 0; i < splits.size(); i++) {
-		benchmarkMessages.add(bp.BlessDatafile(elab, detectorId, splits.get(i).toString(), benchmark)); 		
+		if (action.equals("") && fmeta.canRead()) {
+			BlessProcess bp = new BlessProcess();
+			for (int i = 0; i < splits.size(); i++) {
+			benchmarkMessages.add(bp.BlessDatafile(elab, detectorId, splits.get(i).toString(), benchmark)); 		
+			}
 		}
 	} else {
 		benchmarkMessages.add(no_benchmark_message + "<br />Also check <a href=\"../analysis-blessing/benchmark-tutorial.jsp\">Tutorial on Benchmark</a>");
