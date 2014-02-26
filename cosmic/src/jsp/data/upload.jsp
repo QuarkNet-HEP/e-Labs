@@ -194,6 +194,7 @@ Re: the upload progress stuff
 		request.setAttribute("detectorBenchmark", detectorBenchmark);
 		request.setAttribute("benchmarkTuples", benchmarkTuples);
 		request.setAttribute("exceptionMessage", exceptionMessage);
+		session.setAttribute("uploadAction", "");
 		%>
 		
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
