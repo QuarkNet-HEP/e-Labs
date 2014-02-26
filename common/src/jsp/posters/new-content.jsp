@@ -125,7 +125,11 @@
 				    	pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
 	    			
 		    		} else {
-					    throw new ElabJspException("There is a problem with this string: " + val + ". Bailing out.");		    	
+		    			//clean up
+		    			val = as.scan(val, policy).getCleanHTML();
+				    	val = ElabUtil.escapePoster(val); 
+				    	pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
+				    	//throw new ElabJspException("There is a problem with this string: " + val + ". Bailing out.");		    	
 		    		}
 		    	}
 	    	}
