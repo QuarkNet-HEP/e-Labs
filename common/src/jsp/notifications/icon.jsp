@@ -46,7 +46,7 @@ catch(Exception e) {
 	g2.setColor(Color.WHITE);
 	g2.drawString(str, 24 - radius * 2, 13);
 }
-
+g2.dispose();
 response.setContentType("image/png");
 OutputStream os = response.getOutputStream();
 ImageIO.write(buffer, "png", os);
