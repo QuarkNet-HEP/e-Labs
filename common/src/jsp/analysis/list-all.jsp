@@ -31,7 +31,7 @@
 
 <%
 	request.setAttribute("users", AnalysisManager.getAnalysisRuns(elab));
-	session.setAttribute("uploadAction", "viewResults");
+
 %>
 
 <table id="analysis-table">

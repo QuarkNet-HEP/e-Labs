@@ -56,10 +56,9 @@
 	String detectorId = (String) results.getAnalysis().getParameter("detectorid");
 	String comments = (String) results.getAnalysis().getParameter("comments");
 	String benchmark = (String) results.getAnalysis().getParameter("benchmark");
-	String action = (String) session.getAttribute("uploadAction");
-	if (action == null) {
-		action = "";
-	}
+	List threshold_done = (List) session.getAttribute("threshold_done");
+	List benchmark_done = (List) session.getAttribute("benchmark_done");
+	
 	ArrayList<String> benchmarkMessages = new ArrayList<String>();
 	String dataDir = elab.getProperties().getDataDir();
 	int channels[] = new int[4];
@@ -186,11 +185,12 @@
 	        channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).intValue();
 	    }
 	}
-  	if (action.equals("")  && fmeta.canRead()) {
+  	if (fmeta.canRead() && !splits.equals(threshold_done)) {
 		String[] inputFiles = new String[splits.size()];
 		for (int i = 0; i < splits.size(); i++) {
 			inputFiles[i] = splits.get(i).toString();			
 		}
+		session.setAttribute("threshold_done", splits);
 		ThresholdTimes t = new ThresholdTimes(elab, inputFiles, detectorId);
 		new Thread(t).start();
   	}
@@ -201,10 +201,12 @@
   	
 	//we might as well bless here
 	if (benchmark != null && !benchmark.equals("") && !benchmark.equals("No benchmark")) {
-		if (action.equals("") && fmeta.canRead()) {
+		if (fmeta.canRead() && !splits.equals("benchmark_done")) {
+			session.setAttribute("benchmark_done", splits);
 			BlessProcess bp = new BlessProcess();
 			for (int i = 0; i < splits.size(); i++) {
 			benchmarkMessages.add(bp.BlessDatafile(elab, detectorId, splits.get(i).toString(), benchmark)); 		
+
 			}
 		}
 	} else {
