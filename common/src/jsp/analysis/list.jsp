@@ -38,7 +38,7 @@ you are satisfied with it.  You can always run the analysis again and change the
 <div style="color: red">Be sure to save your plots permanently!</div><p>
 <%
 	request.setAttribute("runs", AnalysisManager.getAnalysisRuns(elab, user));
-	session.setAttribute("uploadAction", "viewResults");
+
 %>
 <form action="../analysis/remove.jsp">
 	<table id="analysis-table">
