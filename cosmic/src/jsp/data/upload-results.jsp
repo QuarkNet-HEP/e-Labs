@@ -191,8 +191,11 @@
 			inputFiles[i] = splits.get(i).toString();			
 		}
 		session.setAttribute("threshold_done", splits);
-		ThresholdTimes t = new ThresholdTimes(elab, inputFiles, detectorId);
-		new Thread(t).start();
+		if (inputFiles.length > 0) {
+			ThresholdTimes t = new ThresholdTimes(elab, inputFiles, detectorId);
+			//new Thread(t).start();
+			t.createThresholdFiles();
+		}
   	}
 
   	String no_benchmark_message = "You uploaded data without using a benchmark.<br />"+
@@ -205,8 +208,7 @@
 			session.setAttribute("benchmark_done", splits);
 			BlessProcess bp = new BlessProcess();
 			for (int i = 0; i < splits.size(); i++) {
-			benchmarkMessages.add(bp.BlessDatafile(elab, detectorId, splits.get(i).toString(), benchmark)); 		
-
+				benchmarkMessages.add(bp.BlessDatafile(elab, detectorId, splits.get(i).toString(), benchmark)); 		
 			}
 		}
 	} else {

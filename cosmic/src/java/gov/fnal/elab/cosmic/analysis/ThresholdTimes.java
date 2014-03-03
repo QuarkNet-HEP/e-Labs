@@ -23,7 +23,7 @@ import gov.fnal.elab.util.ElabException;
 /**
  * Calculates the absolute time of both the rising and falling edge of an event to a precision of 0.75ns. 
  */
-public class ThresholdTimes implements Runnable{
+public class ThresholdTimes {
     private String[] inputFiles, outputFiles, detectorIDs;
     private double[] cpldFrequencies;
     private double[] retime, fetime;
@@ -69,7 +69,7 @@ public class ThresholdTimes implements Runnable{
     	}
     }
     
-    public void run() {
+    public void createThresholdFiles() {
     	try {
 		    for (int i = 0; i < inputFiles.length; i++) {
 		        lastSecString = "";
