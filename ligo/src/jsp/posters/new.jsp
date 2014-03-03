@@ -45,7 +45,7 @@
 		<td id="center">
 			<h1>Make or edit your poster</h1>
 			
-<%@ include file="new.jspf" %>
+<%@ include file="new-content.jsp" %>
 
 				<hr />
 		</td>
