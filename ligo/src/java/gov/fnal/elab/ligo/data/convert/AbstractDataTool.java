@@ -185,9 +185,9 @@ public abstract class AbstractDataTool {
         if (!file.getName().endsWith("-" + TREND_FILE_DURATION[trend] + ".gwf")) {
         	//EP-patch added to test the transition from 60 to 600 in the second duration
         	if (trend == 0) {
-        		if (!file.getName().endsWith("-600.gwf")) {
+        		//if (!file.getName().endsWith("-600.gwf")) {
     	            throw new RuntimeException("File duration does not match expected 600 for " + file + ". Bailing out.");        			
-        		}
+        		//}
         	} else {
 	            throw new RuntimeException("File duration does not match expected (" + TREND_FILE_DURATION[trend]
 	                    + ") for " + file + ". Bailing out.");
