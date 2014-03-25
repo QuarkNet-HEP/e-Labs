@@ -39,19 +39,19 @@ public class BlessProcess {
 		String message = "";
 		boolean goBless = true;
 		//check if this split has been already blessed/unblessed by this benchmark, then do not do it again.
-		try {
-			VDSCatalogEntry eCheck = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filename);
-			if (eCheck != null) {
-				String benchmarkRef = (String) eCheck.getTupleValue("benchmarkreference");
-				if (benchmarkRef != null) {
-					if (benchmarkRef.equals(benchmark)) {
-						goBless = false;
-					}
-				}
-			}
-		} catch (Exception e) {
-			System.out.println("BlessDatafile exception: " + e.getMessage());
-		}
+		//try {
+		//	VDSCatalogEntry eCheck = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filename);
+		//	if (eCheck != null) {
+		//		String benchmarkRef = (String) eCheck.getTupleValue("benchmarkreference");
+		//		if (benchmarkRef != null) {
+		//			if (benchmarkRef.equals(benchmark)) {
+		//				goBless = false;
+		//			}
+		//		}
+		//	}
+		//} catch (Exception e) {
+		//	System.out.println("BlessDatafile exception: " + e.getMessage());
+		//}
 		//get the catalog entry of the file to be blessed
 		if (goBless) {
 			try {
