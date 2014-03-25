@@ -22,8 +22,12 @@ import gov.fnal.elab.cosmic.beans.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.LineNumberReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.lang.*;
+
+import org.apache.commons.lang.time.DateFormatUtils;
 
 /**
  * Benchmark contains tools to
@@ -38,6 +42,21 @@ import java.lang.*;
  */
 
 public class Benchmark {
+	//EPeronja: get all the benchmark info for splits given a period of time
+	public static ResultSet getSplitBenchmarkInfoByInterval(Elab elab, Date startDate, Date endDate) throws ElabException {
+		ResultSet rs = null;
+		if (elab != null && startDate != null && endDate != null) {
+			In and = new In();
+			and.add(new Equals("project","cosmic"));
+			and.add(new Equals("type", "split"));
+			and.add(new GreaterOrEqual("creationdate", startDate));
+			and.add(new LessOrEqual("creationdate", endDate));
+			rs = elab.getDataCatalogProvider().runQuery(and);
+		}		
+		rs.sort("name", true);
+		return rs;
+	}//end of getSplitBenchmarkInfoByInterval
+	
 	//EPeronja: get the benchmark files for the given detector
 	public static ResultSet getBenchmarkFileName(Elab elab, Integer detectorid) throws ElabException {
 		ResultSet rs = null;
@@ -225,6 +244,20 @@ public class Benchmark {
 		}
 		return rs;
 	}//end of getUnblessedFilesByBenchmarkGeometry
+
+	//EPeronja: get the string to display the split files
+	public static String getSplitBlessLink(VDSCatalogEntry entry) throws ElabException {
+		StringBuilder sb = new StringBuilder("");
+		if (entry != null) {
+			String filename = entry.getLFN();
+	        sb.append("<a class=\"file-link\" href=\"../analysis-blessing/compare1.jsp?file=");
+	        sb.append(filename);
+	        sb.append("\">");
+	        sb.append(filename);
+	        sb.append("</a>");
+		}
+		return sb.toString();
+	}//end of getSplitDetails	
 	
 	//EPeronja: get the string to display the split files plus the blessed, unblessed, comments, stacked, unstacked icons.
 	public static String getIcons(VDSCatalogEntry entry) throws ElabException {
