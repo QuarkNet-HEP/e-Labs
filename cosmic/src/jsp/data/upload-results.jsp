@@ -18,6 +18,7 @@
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
 <%@ page import="gov.fnal.elab.cosmic.bless.BlessProcess" %>
 <%@ page import="gov.fnal.elab.cosmic.analysis.ThresholdTimes" %>
+<%@ page import="gov.fnal.elab.debug.WriteLogFile" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -56,8 +57,8 @@
 	String detectorId = (String) results.getAnalysis().getParameter("detectorid");
 	String comments = (String) results.getAnalysis().getParameter("comments");
 	String benchmark = (String) results.getAnalysis().getParameter("benchmark");
-	List threshold_done = (List) session.getAttribute("threshold_done");
-	List benchmark_done = (List) session.getAttribute("benchmark_done");
+	//List threshold_done = (List) session.getAttribute("threshold_done");
+	//List benchmark_done = (List) session.getAttribute("benchmark_done");
 	
 	ArrayList<String> benchmarkMessages = new ArrayList<String>();
 	String dataDir = elab.getProperties().getDataDir();
@@ -87,18 +88,26 @@
     if (userParam != null) {
        auser = elab.getUserManagementProvider().getGroup(userParam);
     }
-    	
-	if (fmeta.canRead()) {
+    WriteLogFile uploadLog = new WriteLogFile(elab, rawName, "upload-log");  
+    if (fmeta.canRead()) {
+    	if (uploadLog.canAppend()) {
+    		uploadLog.appendLines("About to insert in the datacatalog\n");
+    	}
     	BufferedReader br = new BufferedReader(new FileReader(fmeta));
         String line = null;
         String currLFN = null;
         String currPFN = null;
+    	if (uploadLog.canAppend()) {
+    		uploadLog.appendLines("Reading meta file");
+    	}
         while ((line = br.readLine()) != null) {
             String[] temp = line.split("\\s", 3);
 
             //if this is a new lfn to add...
             if(temp[0].equals("[SPLIT]") || temp[0].equals("[RAW]")){
-	            //add metadata if we have all the information for a previous LFN
+            	if (uploadLog.canAppend()) {
+            		uploadLog.appendLines("Working with:"+line+"\n");
+            	}	            //add metadata if we have all the information for a previous LFN
     	        if(meta != null && currLFN != null) {
         	        try {
         	            entry = DataTools.buildCatalogEntry(currLFN, meta);
@@ -112,6 +121,9 @@
                 }
 
                 //start a new metadata array
+		    	if (uploadLog.canAppend()) {
+		    		uploadLog.appendLines("Starting metadata array\n");
+		    	}
                 meta = new ArrayList();
                 currPFN = temp[1];
 	            currLFN = temp[1].substring(temp[1].lastIndexOf('/') + 1);
@@ -185,12 +197,17 @@
 	        channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).intValue();
 	    }
 	}
-  	if (fmeta.canRead() && !splits.equals(threshold_done)) {
-		String[] inputFiles = new String[splits.size()];
+  	//if (fmeta.canRead() && !splits.equals(threshold_done)) {
+  	if (fmeta.canRead()) {
+    	if (uploadLog.canAppend()) {
+    		uploadLog.appendLines("Creating threshold times\n");
+    	}
+
+  		String[] inputFiles = new String[splits.size()];
 		for (int i = 0; i < splits.size(); i++) {
 			inputFiles[i] = splits.get(i).toString();			
 		}
-		session.setAttribute("threshold_done", splits);
+		//session.setAttribute("threshold_done", splits);
 		if (inputFiles.length > 0) {
 			ThresholdTimes t = new ThresholdTimes(elab, inputFiles, detectorId);
 			//new Thread(t).start();
@@ -204,8 +221,12 @@
   	
 	//we might as well bless here
 	if (benchmark != null && !benchmark.equals("") && !benchmark.equals("No benchmark")) {
-		if (fmeta.canRead() && !splits.equals("benchmark_done")) {
-			session.setAttribute("benchmark_done", splits);
+		//if (fmeta.canRead() && !splits.equals("benchmark_done")) {
+		if (fmeta.canRead()) {
+	    	if (uploadLog.canAppend()) {
+	    		uploadLog.appendLines("Blessing..\n");
+	    	}
+			//session.setAttribute("benchmark_done", splits);
 			BlessProcess bp = new BlessProcess();
 			for (int i = 0; i < splits.size(); i++) {
 				benchmarkMessages.add(bp.BlessDatafile(elab, detectorId, splits.get(i).toString(), benchmark)); 		
@@ -228,6 +249,10 @@
         catch (ElabException e) {
                 System.err.println("Failed to send notification: " + e.getMessage());
         }		
+	}
+	if (uploadLog.canAppend()) {
+		uploadLog.appendLines("Done.\n");
+		uploadLog.cleanup();
 	}
 	request.setAttribute("sqlErrors", sqlErrors);
 	request.setAttribute("benchmarkMessages", benchmarkMessages);

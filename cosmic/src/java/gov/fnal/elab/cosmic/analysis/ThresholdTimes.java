@@ -89,6 +89,12 @@ public class ThresholdTimes {
 		        
 				String inputFile = elabReference.getProperties().getDataDir() + File.separator + detectorIDs[i] +File.separator + inputFiles[i];
 				String outputFile = elabReference.getProperties().getDataDir() + File.separator + detectorIDs[i] +File.separator + outputFiles[i];
+	    		//check if the .thresh exists, if so, do not overwrite it
+	    		File tf = new File(outputFile);
+	    		if (tf.exists()) {
+	    			System.out.println("File exists: "+outputFiles[i]+" - not overwriting it");
+	    			continue;
+	    		}
 		        BufferedReader br = new BufferedReader(new FileReader(inputFile));
 		        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile));
 		
