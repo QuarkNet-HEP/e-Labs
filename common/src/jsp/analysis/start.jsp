@@ -11,6 +11,7 @@
 <%@ page import="gov.fnal.elab.analysis.impl.vds.*" %>
 <%@ page import="gov.fnal.elab.analysis.impl.swift.*" %>
 <%@ page import="gov.fnal.elab.analysis.impl.shell.*" %>
+<%@ page import="gov.fnal.elab.analysis.queue.*" %>
 
 <%
 	ElabAnalysis analysis = (ElabAnalysis) request.getAttribute("elab:analysis");
@@ -22,19 +23,19 @@
 		AnalysisExecutor ex;
 		
 		if ("vds".equals(runWith)) {
-			ex = new VDSAnalysisExecutor();
+	ex = new VDSAnalysisExecutor();
 		}
 		else if ("swift".equals(runWith)) {
-			ex = new SwiftAnalysisExecutor();
+	ex = new SwiftAnalysisExecutor();
 		}
 		else if ("shell".equals(runWith)) {
-			ex = new ShellAnalysisExecutor();
+	ex = new ShellAnalysisExecutor();
 		}
 		else {
-			ex = elab.getAnalysisExecutor();
+	ex = elab.getAnalysisExecutor();
 		}
 		
-		DateFormat df = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.SSS.");
+		DateFormat df = new SimpleDateFormat("MMM dd yyyy HH:mm:ss:SSS.");
 		String outputBase = user.getDir("scratch");
 		new File(outputBase).mkdirs();
        	File tmp = File.createTempFile(df.format(new Date()), "", new File(outputBase));
@@ -62,11 +63,20 @@
 	    }
 	    run.setAttribute("continuation", cont);
 	    run.setAttribute("onError", err);
-	    
+	    run.setAttribute("type", analysis.getName());
+	    run.setAttribute("owner", user.getName());
+	    run.setAttribute("queuedAt", df.format(new Date()));
+	    String detectorid = request.getParameter("detectorid");
+	    if (detectorid == null) {
+			detectorid = "";
+	    }
+    	run.setAttribute("detectorid", detectorid);
+    	analysis.setAttribute("detectorid", detectorid);	  
+    	
 	    String workflowRunMode = request.getParameter("runMode");
 		if (workflowRunMode != null) {
-			run.setAttribute("runMode", workflowRunMode);
-			analysis.setAttribute("runMode", workflowRunMode);
+	run.setAttribute("runMode", workflowRunMode);
+	analysis.setAttribute("runMode", workflowRunMode);
 		}
 		
 		String notifier = request.getParameter("notifier");
@@ -78,12 +88,24 @@
 	    AnalysisNotifier n = AnalysisNotifierFactory.newNotifier(notifier);
 	    n.setRun(run);
 	    run.setListener(n);
-	    
-	    run.start();
-	    %>
+	    //remember to set this up in elab.properties as cosmic.analysis = queue
+	    String runType = elab.getProperty(elab.getName() + ".analysis");
+	    //if (runType != null && runType.equals("queue")) {		
+	    //	AnalysisPriorityBlockingQueue aq = AnalysisPriorityBlockingQueue.getInstance();
+		//    if (run.getAttribute("type").equals("EventPlot")) {
+		//    	run.start();
+		//    } else {
+		//	    aq.put(run);
+		//	    aq.run();
+		//    }
+	   // } else {
+	    	run.start();
+	   // }
+
+%>
 	    	<jsp:include page="status.jsp">
 	    		<jsp:param name="id" value="<%= run.getId() %>"/>
-	    	</jsp:include> 
+	    	</jsp:include>
 	    <%
 	}
 %>
