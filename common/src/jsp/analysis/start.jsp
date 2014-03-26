@@ -66,7 +66,13 @@
 	    run.setAttribute("type", analysis.getName());
 	    run.setAttribute("owner", user.getName());
 	    run.setAttribute("queuedAt", df.format(new Date()));
-	    
+	    String detectorid = request.getParameter("detectorid");
+	    if (detectorid == null) {
+			detectorid = "";
+	    }
+    	run.setAttribute("detectorid", detectorid);
+    	analysis.setAttribute("detectorid", detectorid);	  
+    	
 	    String workflowRunMode = request.getParameter("runMode");
 		if (workflowRunMode != null) {
 	run.setAttribute("runMode", workflowRunMode);
@@ -84,19 +90,17 @@
 	    run.setListener(n);
 	    //remember to set this up in elab.properties as cosmic.analysis = queue
 	    String runType = elab.getProperty(elab.getName() + ".analysis");
-	    if (runType != null && runType.equals("queue")) {		
-		    AnalysisQueue aq = AnalysisQueue.getInstance();
-		    if (run.getAttribute("type").equals("EventPlot")) {
-		    	run.start();
-		    } else {
-			    aq.enqueue(run);
-			    if (!aq.isAlive()) {
-				    aq.run();
-			    }
-		    }
-	    } else {
+	    //if (runType != null && runType.equals("queue")) {		
+	    //	AnalysisPriorityBlockingQueue aq = AnalysisPriorityBlockingQueue.getInstance();
+		//    if (run.getAttribute("type").equals("EventPlot")) {
+		//    	run.start();
+		//    } else {
+		//	    aq.put(run);
+		//	    aq.run();
+		//    }
+	   // } else {
 	    	run.start();
-	    }
+	   // }
 
 %>
 	    	<jsp:include page="status.jsp">
