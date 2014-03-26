@@ -172,9 +172,24 @@
 								<td style="text-align: left;"><strong>Uploaded Date: </strong>${filename.value.tupleMap.creationdate}<br />
 									<strong>Location: </strong>${filename.value.tupleMap.school}, ${filename.value.tupleMap.city} - ${filename.value.tupleMap.state}<br />
 									<strong>Group: </strong>${filename.value.tupleMap.group}<br />
-									<strong>Benchmark Reference: </strong>	${filename.value.tupleMap.benchmarkreference }<br />
-									<strong>Benchmark Label: </strong>	${filename.value.tupleMap.benchmarklabel }<br />
-									<strong>Fail Reason: </strong>	${filename.value.tupleMap.benchmarkfail }<br />
+									<choose>
+										<c:when test="${not empty filename.value.tupleMap.benchmarkreference}">
+											<strong>Benchmark Reference: </strong>	${filename.value.tupleMap.benchmarkreference }<br />
+										</c:when>
+										<c:otherwise>
+											<strong>Benchmark: </strong> This file does not have a benchmark reference.
+										</c:otherwise>
+									</choose>
+									<choose>
+										<c:when test="${not empty filename.value.tupleMap.benchmarklabel}">
+											<strong>This file is a benchmark: </strong>	${filename.value.tupleMap.benchmarkreference }<br />
+										</c:when>
+									</choose>
+									<choose>
+										<c:when test="${not empty filename.value.tupleMap.benchmarkfail}">
+											<strong>Fail Reason: </strong>	${filename.value.tupleMap.benchmarkreference }<br />
+										</c:when>
+									</choose>
 									<strong>Source: </strong>	${filename.value.tupleMap.source }<br />
 								</td>
 							</tr>
