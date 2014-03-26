@@ -232,7 +232,10 @@ public class BlessProcess {
 		for (int i = 1; i <= 4; i++) {
 			Long splitChannel = (Long) split.getTupleValue("chan"+String.valueOf(i));
 			Long benchmarkChannel = (Long) benchmark.getTupleValue("chan"+String.valueOf(i));
-			if (splitChannel == 0L || benchmarkChannel == 0L) {
+			if (splitChannel == 0L && benchmarkChannel == 0L) {
+				continue;
+			}
+			if ((splitChannel == 0L && benchmarkChannel != 0L) || (benchmarkChannel == 0L && splitChannel != 0L)) {
 				return "There is a mismatch in channel: "+String.valueOf(i)+" between split: "+
 						split.getLFN() + " with value: "+String.valueOf(splitChannel)+" and benchmark: "+
 						benchmark.getLFN() + " with value: "+String.valueOf(benchmarkChannel);
