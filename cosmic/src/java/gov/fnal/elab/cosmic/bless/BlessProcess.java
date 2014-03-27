@@ -39,19 +39,19 @@ public class BlessProcess {
 		String message = "";
 		boolean goBless = true;
 		//check if this split has been already blessed/unblessed by this benchmark, then do not do it again.
-		try {
-			VDSCatalogEntry eCheck = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filename);
-			if (eCheck != null) {
-				String benchmarkRef = (String) eCheck.getTupleValue("benchmarkreference");
-				if (benchmarkRef != null) {
-					if (benchmarkRef.equals(benchmark)) {
-						goBless = false;
-					}
-				}
-			}
-		} catch (Exception e) {
-			System.out.println("BlessDatafile exception: " + e.getMessage());
-		}
+		//try {
+		//	VDSCatalogEntry eCheck = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filename);
+		//	if (eCheck != null) {
+		//		String benchmarkRef = (String) eCheck.getTupleValue("benchmarkreference");
+		//		if (benchmarkRef != null) {
+		//			if (benchmarkRef.equals(benchmark)) {
+		//				goBless = false;
+		//			}
+		//		}
+		//	}
+		//} catch (Exception e) {
+		//	System.out.println("BlessDatafile exception: " + e.getMessage());
+		//}
 		//get the catalog entry of the file to be blessed
 		if (goBless) {
 			try {
@@ -84,6 +84,17 @@ public class BlessProcess {
 							String[] split; 
 							boolean pass = true;
 							String failReason = "If this message is not overwritten the blessfile is empty";
+							try {
+								VDSCatalogEntry splitFile = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filename);
+								VDSCatalogEntry benchmarkFile = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(benchmark);
+								failReason = checkChannelMismatch(splitFile, benchmarkFile);
+								if (!failReason.equals("")) {
+									pass = false;
+								}
+							} catch (Exception e) {
+								pass = false;
+								failReason = "Exception comparing the channels in both files";
+							}
 							while ((line = in.readLine()) != null && pass) {
 								if (line.startsWith("#")) {
 									continue; // comment line
@@ -102,36 +113,44 @@ public class BlessProcess {
 										failReason = formatFailReason(split[0], "channel 1", String.valueOf(chan1Rate), split[1], split[2]);
 									}
 									//compare channel 2 and see if file can be blessed
-									if (chan2Rate <= (parseToDouble(split[3]) + parseToDouble(split[4])) && chan2Rate >= (parseToDouble(split[3]) - parseToDouble(split[4]))) {
-										pass = true;
-									} else {
-										pass = false;
-										failReason = formatFailReason(split[0], "channel 2", String.valueOf(chan2Rate), split[3], split[4]);
+									if (pass) {
+										if (chan2Rate <= (parseToDouble(split[3]) + parseToDouble(split[4])) && chan2Rate >= (parseToDouble(split[3]) - parseToDouble(split[4]))) {
+											pass = true;
+										} else {
+											pass = false;
+											failReason = formatFailReason(split[0], "channel 2", String.valueOf(chan2Rate), split[3], split[4]);
+										}
 									}
 									//compare channel 3 and see if file can be blessed
-									if (chan3Rate <= (parseToDouble(split[5]) + parseToDouble(split[6])) && chan3Rate >= (parseToDouble(split[5]) - parseToDouble(split[6]))) {
-										pass = true;
-									} else {
-										pass = false;
-										failReason = formatFailReason(split[0], "channel 3", String.valueOf(chan3Rate), split[5], split[6]);
+									if (pass) {
+										if (chan3Rate <= (parseToDouble(split[5]) + parseToDouble(split[6])) && chan3Rate >= (parseToDouble(split[5]) - parseToDouble(split[6]))) {
+											pass = true;
+										} else {
+											pass = false;
+											failReason = formatFailReason(split[0], "channel 3", String.valueOf(chan3Rate), split[5], split[6]);
+										}
 									}
 									//compare channel 4 and see if file can be blessed
-									if (chan4Rate <= (parseToDouble(split[7]) + parseToDouble(split[8])) && chan4Rate >= (parseToDouble(split[7]) - parseToDouble(split[8]))) {
-										pass = true;
-									} else {
-										pass = false;
-										failReason = formatFailReason(split[0], "channel 4", String.valueOf(chan4Rate), split[7], split[8]);
+									if (pass) {
+										if (chan4Rate <= (parseToDouble(split[7]) + parseToDouble(split[8])) && chan4Rate >= (parseToDouble(split[7]) - parseToDouble(split[8]))) {
+											pass = true;
+										} else {
+											pass = false;
+											failReason = formatFailReason(split[0], "channel 4", String.valueOf(chan4Rate), split[7], split[8]);
+										}
 									}
 									//compare triggers and see if file can be blessed
 									//if the trigger + triggerError < 2, we are not going to bother comparing
 									//this was decided on the Nov 13 2013 telecon
 									//low trigger rates alone shouldn't fail a file
-									if ((parseToDouble(split[9]) + parseToDouble(split[10])) >= 2) {
-										if (triggerRate < (parseToDouble(split[9]) + parseToDouble(split[10])) && triggerRate > (parseToDouble(split[9]) - parseToDouble(split[10]))) {
-											pass = true;
-										} else {
-											pass = false;
-											failReason = formatFailReason(split[0], "trigger", String.valueOf(triggerRate), split[9], split[10]);
+									if (pass) {
+										if ((parseToDouble(split[9]) + parseToDouble(split[10])) >= 2) {
+											if (triggerRate < (parseToDouble(split[9]) + parseToDouble(split[10])) && triggerRate > (parseToDouble(split[9]) - parseToDouble(split[10])) ) {
+												pass = true;
+											} else {
+												pass = false;
+												failReason = formatFailReason(split[0], "trigger", String.valueOf(triggerRate), split[9], split[10]);
+											}
 										}
 									}
 								}
@@ -215,6 +234,23 @@ public class BlessProcess {
 		}
 		return result;
 	}//end of parseToDouble
+	
+	public String checkChannelMismatch(VDSCatalogEntry split, VDSCatalogEntry benchmark) {
+		String failReason = "";
+		for (int i = 1; i <= 4; i++) {
+			Long splitChannel = (Long) split.getTupleValue("chan"+String.valueOf(i));
+			Long benchmarkChannel = (Long) benchmark.getTupleValue("chan"+String.valueOf(i));
+			if (splitChannel == 0L && benchmarkChannel == 0L) {
+				continue;
+			}
+			if ((splitChannel == 0L && benchmarkChannel != 0L) || (benchmarkChannel == 0L && splitChannel != 0L)) {
+				return "There is a mismatch in channel: "+String.valueOf(i)+" between split: "+
+						split.getLFN() + " with value: "+String.valueOf(splitChannel)+" and benchmark: "+
+						benchmark.getLFN() + " with value: "+String.valueOf(benchmarkChannel);
+			}
+		}
+		return failReason;
+	}//checkChannelMismatch
 	
 	//EPeronja: convert the time in seconds to H:M:S
 	public String convertToHMS(String time) {
