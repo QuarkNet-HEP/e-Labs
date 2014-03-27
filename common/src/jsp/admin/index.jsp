@@ -72,6 +72,10 @@
 					<c:if test='${elab.name == "cosmic" }'>
 						<tr><th colspan="2" >Cosmic Admin Links</th><th></th></tr>
 						<tr>
+							<td>&#8226; <a href="../data/create-threshold.jsp">Create Threshold Times files</a></td>
+							<td>Create individual threshold times files if they failed to be created at upload time.</td>
+						</tr>
+						<tr>
 							<td>&#8226; <a href="../data/download?filename=CosmicRayDetector.zip&elab=${elab.name}&type=split">Download Purdue-Java</a></td>
 							<td>Download zip with all files to run the Purdue-Java Cosmic Ray Detector Code.</td>
 						</tr>
