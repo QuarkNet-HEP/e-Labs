@@ -64,7 +64,7 @@
 						<td>${run.id}</td>
 						<td>
 							<a href="status.jsp?id=${run.id}&user=${uentry.key}">${run.analysis.name}</a>
-							<c:if test="${run.attributes.detectorid != null }">
+							<c:if test='${run.attributes.detectorid > "" }'>
 								: ${run.attributes.detectorid}
 							</c:if>
 							

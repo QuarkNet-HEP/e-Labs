@@ -46,13 +46,13 @@
 						<td>Delete all files created by the guest user.</td>					
 					</tr>
 					<tr>
+						<td>&#8226; <a href="../references/control.jsp"> FAQs Add, update FAQs</a></td>
+						<td>Add, update FAQ items.</td>					
+					</tr>					
+					<tr>
 						<td>&#8226; <a href="../posters/poster-tags.jsp">Poster Tags</a></td>
 						<td>Add, delete, update poster tags per e-Lab.</td>
 					</tr>
-					<tr>
-						<td>&#8226; <a href="../references/control.jsp">References/Glossary/FAQ/News</a></td>
-						<td>Add, update References/Glossary/FAQ/News items.</td>					
-					</tr>					
 					<tr>
 						<td>&#8226; <a href="session-tracking.jsp">Session Tracking</a></td>
 						<td>See the users whose sessions are still active.</td>					
@@ -72,16 +72,16 @@
 					<c:if test='${elab.name == "cosmic" }'>
 						<tr><th colspan="2" >Cosmic Admin Links</th><th></th></tr>
 						<tr>
+							<td>&#8226; <a href="data-access-permission.jsp">Allow users to view all data</a></td>
+							<td>Give rights to teachers to be able to access all cosmic data (blessed and unblessed).</td>						
+						</tr>
+						<tr>
 							<td>&#8226; <a href="../data/create-threshold.jsp">Create Threshold Times files</a></td>
 							<td>Create individual threshold times files if they failed to be created at upload time.</td>
 						</tr>
 						<tr>
 							<td>&#8226; <a href="../data/download?filename=CosmicRayDetector.zip&elab=${elab.name}&type=split">Download Purdue-Java</a></td>
 							<td>Download zip with all files to run the Purdue-Java Cosmic Ray Detector Code.</td>
-						</tr>
-						<tr>
-							<td>&#8226; <a href="data-access-permission.jsp">Allow users to view all data</a></td>
-							<td>Give rights to teachers to be able to access all cosmic data (blessed and unblessed).</td>						
 						</tr>
 						<tr>
 							<td>&#8226; <a href="../analysis/list-all.jsp">View all analyses</a></td>
