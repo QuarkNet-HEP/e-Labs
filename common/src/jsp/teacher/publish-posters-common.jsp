@@ -82,7 +82,6 @@
 								</tr>
 							</thead>
 							<tbody>
-								</tr>
 								<c:forEach items="${posters}" var="posters">
 									<tr>
 										<td>
