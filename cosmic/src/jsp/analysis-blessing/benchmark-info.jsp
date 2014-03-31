@@ -49,7 +49,7 @@
 					totalUnblessed++;
 				}
 				try {
-					String display = Benchmark.getSplitBlessLink(entry);
+					String display = entry.getLFN();
 					filenameDisplay.put(display, entry);
 				}
 				catch (Exception e) {
@@ -167,17 +167,17 @@
 							<tbody>
 						<c:forEach items="${filenameDisplay}" var="filename">
 							<tr>
-								<td>${filename.key}</td>
+								<td><a href="../analysis-blessing/compare1.jsp?file=${filename.key}" target="_blank" width="700" height="900" now="true">${filename.key}</a></td>
 								<td>${filename.value.tupleMap.blessed}</td>
 								<td style="text-align: left;"><strong>Uploaded Date: </strong>${filename.value.tupleMap.creationdate}<br />
 									<strong>Location: </strong>${filename.value.tupleMap.school}, ${filename.value.tupleMap.city} - ${filename.value.tupleMap.state}<br />
 									<strong>Group: </strong>${filename.value.tupleMap.group}<br />
 									<c:choose>
 										<c:when test="${filename.value.tupleMap.benchmarkreference > ''}">
-											<strong>Benchmark Reference: </strong>	${filename.value.tupleMap.benchmarkreference }<br />
+											<strong>Benchmark Reference: </strong><a href="../analysis-blessing/compare1.jsp?file=${filename.value.tupleMap.benchmarkreference }" target="_blank" width="700" height="900" now="true">${filename.value.tupleMap.benchmarkreference }</a>	<br />
 										</c:when>
 										<c:otherwise>
-											<strong>This file was uploaded without a benchmark reference.</strong>
+											<strong>This file was uploaded without a benchmark reference.</strong><br />
 										</c:otherwise>
 									</c:choose>
 									<c:choose>
