@@ -254,6 +254,7 @@
 		uploadLog.appendLines("Done.\n");
 		uploadLog.cleanup();
 	}
+	request.setAttribute("detectorId", detectorId);
 	request.setAttribute("sqlErrors", sqlErrors);
 	request.setAttribute("benchmarkMessages", benchmarkMessages);
 	request.setAttribute("channels", channels);
@@ -286,7 +287,7 @@
     		</c:otherwise>
     	</c:choose>
     	<hr/>
-    	<h2>File Summary:</h2>
+    	<h2>File Summary for DAQ: <%=detectorId %></h2>
     
     	Your data was split into ${lfnssz} ${lfnssz == 1 ? 'day' : 'days'} spanning from:<br/>
     	${entry.tupleMap.startdate} to ${entry.tupleMap.enddate}<br/>
