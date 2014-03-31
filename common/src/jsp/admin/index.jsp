@@ -69,6 +69,10 @@
 						<td>&#8226; <a href="../statistics">View e-Lab Statistics</a></td>
 						<td>View ${elab.name} e-Lab statistics.</td>
 					</tr>					
+					<tr>
+						<td>&#8226; <a href="../monitor">View Server Monitors</a></td>
+						<td>View ${elab.name} file system, execution, load average and disk utilization.</td>
+					</tr>					
 					<c:if test='${elab.name == "cosmic" }'>
 						<tr><th colspan="2" >Cosmic Admin Links</th><th></th></tr>
 						<tr>
