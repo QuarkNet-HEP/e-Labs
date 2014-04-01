@@ -35,8 +35,8 @@ public abstract class AbstractDataTool {
     public static final int SITE_LHO = 0;
     public static final int SITE_LLO = 1;
     
-    public static final int SECOND_TREND = 0;
-    public static final int MINUTE_TREND = 1;
+    public static final int SECOND_TREND = 0; 
+    public static final int MINUTE_TREND = 1; 
 
     public static final String[] SITES = new String[] { "LHO", "LLO" };
     public static final String[] TRENDS = new String[] { "second-trend", "minute-trend" };
@@ -183,8 +183,15 @@ public abstract class AbstractDataTool {
 
     protected void checkDuration(File file, int trend) {
         if (!file.getName().endsWith("-" + TREND_FILE_DURATION[trend] + ".gwf")) {
-            throw new RuntimeException("File duration does not match expected (" + TREND_FILE_DURATION[trend]
-                    + ") for " + file + ". Bailing out.");
+        	//EP-patch added to test the transition from 60 to 600 in the second duration
+        	if (trend == 0) {
+        		//if (!file.getName().endsWith("-600.gwf")) {
+    	            throw new RuntimeException("File duration does not match expected 600 for " + file + ". Bailing out.");        			
+        		//}
+        	} else {
+	            throw new RuntimeException("File duration does not match expected (" + TREND_FILE_DURATION[trend]
+	                    + ") for " + file + ". Bailing out.");
+        	}
         }
     }
 
