@@ -18,11 +18,14 @@
 		VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(splitfilename);
 		String[] inputfile = {splitfilename};
 		if (entry != null) {	
-			String detectorid = splitfilename.substring(0, splitfilename.indexOf("."));
-		    ThresholdTimes tt = new ThresholdTimes(elab, inputfile, detectorid);
-			tt.createThresholdFiles();
-			messages = "Request for file: "+splitfilename+" processed.\n";
-			
+			if (splitfilename.indexOf(".") > -1) {
+				String detectorid = splitfilename.substring(0, splitfilename.indexOf("."));
+			    ThresholdTimes tt = new ThresholdTimes(elab, inputfile, detectorid);
+				tt.createThresholdFiles();
+				messages = "Request for file: "+splitfilename+" processed.\n";
+			} else {
+				messages = splitfilename + " is not a valid split file name\n";
+			}
 		} else {
 			messages = "Could not find file: "+splitfilename+" in the datacatalog.\n";
 		}
