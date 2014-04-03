@@ -1,0 +1,52 @@
+I tested the tool from home and it works. I recall running it from Fermilab weeks ago and it used to work but I believe I was using the wireless connection vs this week that I was connected to the network using the wire (?). Anyway, try it and let me know.
+
+Instructions:
+--all the files in these folder should be compressed and named i2u2-automated-test.zip--
+1-unzip the compressed file in your machine
+2-check the path because you will need to modify “runtest.sh”.
+
+For example: I download this zip to my /users/edit and unzip it. All the files are now in /users/edit/i2u2-automated-test/*
+cd to that path and edit the runtest.sh where you find these lines:
+
+export JUNIT_HOME=/users/edit/i2u2-automated-test/junit
+export JUNIT_LIBS=/users/edit/i2u2-automated-test/lib
+
+The paths need to reflect the paths in your machine. Save.
+
+3-Then, within the folder run:
+
+source runtest.sh 
+
+If you see output like the following, it means it worked and all the tests you see output for were successful. If it doesn’t, send me an email with your output.
+
+source runtest.sh
+:/users/edit/i2u2-automated-test/junit/*:.:/users/edit/i2u2-automated-test/lib/*:.
+TestRunner.java:16: warning: [unchecked] unchecked conversion
+found   : java.util.ArrayList
+required: java.util.List<java.lang.Class>
+List<Class> testCases = new ArrayList();
+                        ^
+1 warning
+Running automated tests: total of 1
+1-Running test for class: LoginAllElabs
+Testing login for cosmic
+Testing poster links for cosmic
+Testing plot links for cosmic
+Testing logbook links for cosmic
+Testing login for cms
+Testing poster links for cms
+Testing plot links for cms
+Testing logbook links for cms
+Testing login for ligo
+Testing poster links for ligo
+Testing plot links for ligo
+Testing logbook links for ligo
+Testing cosmic data
+Testing ligo data
+Testing cms data
+Tested OK: []
+
+Questions?
+Edit Peronja
+peronja@fnal.gov
+edit.peronja@gmail.com 

@@ -1,0 +1,16 @@
+To check if there are split files without .thresh:
+
+For production, run:
+   python thresh_check_18.py
+
+This generates an output file that will list all the files at 
+   /disks/i2u2/cosmic/data/etc
+that do not have a .thresh file
+
+For development, run:
+   python thresh_check_13.py
+
+Questions?
+Edit Peronja
+peronja@fnal.gov
+edit.peronja@gmail.com 

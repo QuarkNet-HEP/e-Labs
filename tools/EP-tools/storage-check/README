@@ -1,0 +1,13 @@
+This tool keeps track of how much we are storing in the /disks folder.
+I added it to the cronjob so it runs daily:
+
+# Run python code to get size of /disks daily so we can find out growth rate
+ 0 0 * * * python /home/quarkcat/tools/storage-check/calculate_data_growth.py > /tmp/data-growth.log 2>&1
+
+the output should be in a file in the same folder:
+data_growth.txt
+
+Questions?
+Edit Peronja
+peronja@fnal.gov
+edit.peronja@gmail.com 
