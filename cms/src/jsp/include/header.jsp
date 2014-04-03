@@ -20,7 +20,7 @@
 <div id="header-image">
 	<img src="../graphics/cms_logo.png" alt="CMS Logo" />
 </div>
-<div id="header-title">CMS e-Lab</div>
+<div id="header-title">CMS e-Lab${elab.properties.environment}</div>
 <c:choose>
 	<c:when test="${loggedin}">
 		<div id="header-toolbar">
