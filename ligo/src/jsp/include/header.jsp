@@ -20,7 +20,7 @@
 <div id="header-image">
 	<img src="../graphics/ligo_logo.gif" alt="LIGO Logo" />
 </div>
-<div id="header-title">LIGO e-Lab</div>
+<div id="header-title">LIGO e-Lab${elab.properties.environment}</div>
 <c:choose>
 	<c:when test="${loggedin}">
 		<div id="header-toolbar">
