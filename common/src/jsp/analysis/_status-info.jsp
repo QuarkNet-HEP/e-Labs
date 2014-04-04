@@ -196,12 +196,11 @@
 					</e:vswitch>
 				<%
 				}
-				//else if (status == AnalysisRun.STATUS_QUEUED) {
-					%> <!--  <H1>The study was queued</H1> 
+				else if (status == AnalysisRun.STATUS_QUEUED) {
+					%> <H1>The study was queued</H1> 
 					   <p>Check the <a href="../analysis/list.jsp">analysis list</a>. Look for id: <%= run.getId() %></p>
-					   -->
 					<%
-				//}
+				}
 				else if (status == AnalysisRun.STATUS_CANCELED) {
 					%> <h1>The study was canceled</h1> <%
 				}
