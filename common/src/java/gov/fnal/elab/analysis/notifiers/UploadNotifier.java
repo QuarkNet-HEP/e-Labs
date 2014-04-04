@@ -13,8 +13,6 @@ import gov.fnal.elab.notifications.Notification;
 import gov.fnal.elab.util.ElabException;
 
 import java.io.File;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.*;
 
 public class UploadNotifier implements AnalysisRunListener, AnalysisNotifier {
@@ -28,6 +26,21 @@ public class UploadNotifier implements AnalysisRunListener, AnalysisNotifier {
         if (status == AnalysisRun.STATUS_FAILED || status == AnalysisRun.STATUS_COMPLETED) {
             boolean failed = AnalysisRun.STATUS_FAILED == status;
             Elab elab = run.getAnalysis().getElab();
+		    //EP-send an email when an analysis fails
+            if (AnalysisRun.STATUS_FAILED == status) {
+            	Throwable e = run.getException();
+            	String to = elab.getProperty(elab.getName() + ".notifyAnalysisFailure");
+			    String emailmessage = "", subject = "Job Id: " + run.getId()+" - Cosmic Analysis failed to complete properly";
+			    String emailBody = "ERROR: "+run.getSTDERR() +"\n" +
+			    				   "STACK TRACE: "+e.getStackTrace() + "\n" +
+			    				   "DEBUGGING INFO: "+run.getDebuggingInfo() + "\n";
+			    try {
+			    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
+			    } catch (Exception ex) {
+	                System.err.println("Failed to send email");
+	                ex.printStackTrace();
+			    }
+            }
             ElabNotificationsProvider np = ElabFactory.getNotificationsProvider(elab);
             Notification n = new Notification();
             n.setCreatorGroupId(run.getAnalysis().getUser().getId());
