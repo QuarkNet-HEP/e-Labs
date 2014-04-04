@@ -30,7 +30,8 @@ public class DefaultAnalysisNotifier implements AnalysisRunListener, AnalysisNot
             	Throwable e = run.getException();
             	String to = elab.getProperty(elab.getName() + ".notifyAnalysisFailure");
 			    String emailmessage = "", subject = "Job Id: " + run.getId()+" - Cosmic Analysis failed to complete properly";
-			    String emailBody = "ERROR: "+run.getSTDERR() +"\n" +
+			    String emailBody = "MESSAGE: "+e.getMessage()+"\n" +
+			    				   "ERROR: "+run.getSTDERR() +"\n" +
 			    				   "STACK TRACE: "+e.getStackTrace().toString() + "\n" +
 			    				   "DEBUGGING INFO: "+run.getDebuggingInfo() + "\n";
 			    try {
