@@ -12,6 +12,7 @@ import gov.fnal.elab.analysis.AnalysisRun;
 import gov.fnal.elab.analysis.ElabAnalysis;
 import gov.fnal.elab.analysis.NullAnalysisParameterTransformer;
 import gov.fnal.elab.analysis.ProgressTracker;
+import gov.fnal.elab.analysis.impl.shell.PostUploadTasks;
 
 import java.io.CharArrayWriter;
 import java.io.File;
@@ -214,6 +215,16 @@ public class ShellAnalysisExecutor implements AnalysisExecutor {
                     setStatus(STATUS_FAILED);
                     break;
                 case Status.COMPLETED:
+                	ElabAnalysis ea = getAnalysis();
+                	String type = ea.getType();
+                    if (type.equals("I2U2.Cosmic::ProcessUpload")) {
+                		PostUploadTasks put = new PostUploadTasks(ea);
+                		String message = put.createMetadata();
+                		ArrayList<String> feedback = put.runBenchmark();
+                		put.createThresholdTimes();
+                		ea.setParameter("message", message);
+                		ea.setParameter("feedback", feedback);
+                	}
                 	setEndTime(new Date());
                     setStatus(STATUS_COMPLETED);
                     break;
