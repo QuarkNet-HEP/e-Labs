@@ -1,5 +1,6 @@
-package gov.fnal.elab.analysis.impl.shell;
+package gov.fnal.elab.cosmic;
 
+import gov.fnal.elab.analysis.*;
 import gov.fnal.elab.*;
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.util.*;
@@ -15,7 +16,7 @@ import gov.fnal.elab.notifications.*;
 import java.io.*;
 import java.util.*;
 
-public class PostUploadTasks {
+public class CosmicPostUploadTasks implements PostUploadTasks {
 	ElabAnalysis ea;
 	File f;
 	File fmeta;
@@ -28,7 +29,10 @@ public class PostUploadTasks {
 	ArrayList<String> benchmarkMessages = new ArrayList<String>();
     ElabGroup auser;
 	
-	public PostUploadTasks(ElabAnalysis ea) {
+    public CosmicPostUploadTasks() {
+    }//constructor
+    
+	public void setUpload(ElabAnalysis ea) {
 		this.ea = ea;
 		this.elab = ea.getElab();
 		this.f = new File((String) ea.getParameter("in"));
@@ -162,7 +166,7 @@ public class PostUploadTasks {
 		    	//	uploadLog.appendLines("Blessing..\n");
 		    	//}
 				//session.setAttribute("benchmark_done", splits);
-				gov.fnal.elab.cosmic.bless.BlessProcess bp = new gov.fnal.elab.cosmic.bless.BlessProcess();
+				BlessProcess bp = new BlessProcess();
 				for (int i = 0; i < splits.size(); i++) {
 					try {
 						benchmarkMessages.add(bp.BlessDatafile(elab, detectorId, splits.get(i).toString(), benchmark)); 		
@@ -205,12 +209,12 @@ public class PostUploadTasks {
 				inputFiles[i] = splits.get(i).toString();			
 			}
 			if (inputFiles.length > 0) {
-				gov.fnal.elab.cosmic.analysis.ThresholdTimes t = new gov.fnal.elab.cosmic.analysis.ThresholdTimes(elab, inputFiles, detectorId);
+				ThresholdTimes t = new ThresholdTimes(elab, inputFiles, detectorId);
 				t.createThresholdFiles();
 			}
 	  	}
 		return message;
 	}//end of createThresholdTimes
 	
-}//end of PostUploadTasks
+}//end of CosmicPostUploadTasks
 
