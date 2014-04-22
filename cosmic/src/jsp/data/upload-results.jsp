@@ -232,7 +232,7 @@
 		request.setAttribute("detectorId", detectorId);
 		sqlErrors = (String) results.getAnalysis().getParameter("message");
 		request.setAttribute("sqlErrors", sqlErrors);
-		ArrayList<String> benchmarkMessages = (ArrayList<String>) results.getAnalysis().getParameter("feedback");
+		ArrayList<String> benchmarkMessages = (ArrayList<String>) results.getAnalysis().getParameter("benchmarkMessages");
 		request.setAttribute("benchmarkMessages", benchmarkMessages);
 		request.setAttribute("channels", channels);
 		request.setAttribute("splitEntries", entries);

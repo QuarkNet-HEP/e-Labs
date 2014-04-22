@@ -2,7 +2,6 @@ package gov.fnal.elab.cosmic;
 
 import gov.fnal.elab.analysis.*;
 import gov.fnal.elab.*;
-import gov.fnal.elab.Elab;
 import gov.fnal.elab.util.*;
 import gov.fnal.elab.analysis.ElabAnalysis;
 import gov.fnal.elab.datacatalog.*;
@@ -16,24 +15,24 @@ import gov.fnal.elab.notifications.*;
 import java.io.*;
 import java.util.*;
 
-public class CosmicPostUploadTasks implements PostUploadTasks {
+public class CosmicPostUploadTasks {
 	ElabAnalysis ea;
+	String message;
+	ArrayList<String> benchmarkMessages;
 	File f;
 	File fmeta;
 	String detectorId;
 	String comments;
 	String benchmark;
-	String lfn="";
 	Elab elab;
-	List splits = new ArrayList();  //for both the split name and the channel validity information
-	ArrayList<String> benchmarkMessages = new ArrayList<String>();
     ElabGroup auser;
-	
-    public CosmicPostUploadTasks() {
-    }//constructor
-    
-	public void setUpload(ElabAnalysis ea) {
+	String lfn="";
+	List splits = new ArrayList();  //for both the split name and the channel validity information
+
+    public CosmicPostUploadTasks(ElabAnalysis ea) {
 		this.ea = ea;
+		benchmarkMessages = new ArrayList<String>();
+		message = "";
 		this.elab = ea.getElab();
 		this.f = new File((String) ea.getParameter("in"));
 		this.fmeta = new File(f.getAbsolutePath() + ".meta");
@@ -41,14 +40,15 @@ public class CosmicPostUploadTasks implements PostUploadTasks {
 		this.comments = (String) ea.getParameter("comments");
 		this.benchmark = (String) ea.getParameter("benchmark");
 		this.auser = (ElabGroup) ea.getUser();
-	}
-	public String createMetadata() {
-		String message = "";
+    }
+
+	public void createMetadata() {
 		//get metadata which contains the lfns of the raw filename AND the split files
 		ArrayList meta = null;	
 		CatalogEntry entry;
 		String rawName = f.getName();
 		String cpldFrequency = "";
+		String message = "";
     	try {
 		    if (fmeta.canRead()) {
 		    	BufferedReader br = new BufferedReader(new FileReader(fmeta));
@@ -151,10 +151,10 @@ public class CosmicPostUploadTasks implements PostUploadTasks {
     	} catch (Exception ex) {
     		message += "Error setting metadata " + ex.getMessage() + "<br />";
     	}
-		return message;
+
 	}//end of createMetadata
     	
-	public ArrayList<String> runBenchmark() {
+	public void runBenchmark() {
 	  	String no_benchmark_message = "You uploaded data without using a benchmark.<br />"+
 				 "Your data is NOT blessed by default so it is not available to the general public.<br />"+
 				 "Contact <a href=\"/elab/cosmic/teacher/forum/HelpDeskRequest.php\">Helpdesk</a> if you would like to know more about data blessing.";
@@ -197,12 +197,9 @@ public class CosmicPostUploadTasks implements PostUploadTasks {
 	        	 System.err.println("Failed to send notification: " + ex.getMessage());
 	        }
 		}
-		
-		return benchmarkMessages;
 	}//end of runBenchmark
 	
-	public String createThresholdTimes() {
-		String message = "";
+	public void createThresholdTimes() {
 	  	if (fmeta.canRead() && splits.size() > 0) {
 	  		String[] inputFiles = new String[splits.size()];
 			for (int i = 0; i < splits.size(); i++) {
@@ -213,8 +210,14 @@ public class CosmicPostUploadTasks implements PostUploadTasks {
 				t.createThresholdFiles();
 			}
 	  	}
-		return message;
 	}//end of createThresholdTimes
 	
+	public String getMessage() {
+		return this.message;
+	}
+	
+	public ArrayList<String> getBenchmarkMessages() {
+		return this.benchmarkMessages;
+	}
 }//end of CosmicPostUploadTasks
 
