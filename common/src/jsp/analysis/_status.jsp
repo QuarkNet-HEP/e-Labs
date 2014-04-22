@@ -1,12 +1,13 @@
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ page import="gov.fnal.elab.notifications.*" %>
+<%@ page import="gov.fnal.elab.cosmic.CosmicPostUploadTasks" %>
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
-<%@ page import="gov.fnal.elab.debug.WriteLogFile" %>
 
 <%
 	String id = request.getParameter("id");
 	String showStatus = request.getParameter("showStatus");
+
 	
 	if (id == null) {
 		id = (String) request.getAttribute("foregroundAnalysisID");
@@ -42,10 +43,7 @@
 		else {
 			request.setAttribute("run", run);
 			int status = run.getStatus();
-		    WriteLogFile uploadLog = new WriteLogFile(elab, id+"-"+user.getName()+"-"+String.valueOf(status)+".log", "upload-log");  
-	    	if (uploadLog.canAppend()) {
-	    		uploadLog.appendLines("Status:"+String.valueOf(status)+"\n");
-	    	}
+
 		    if (status == AnalysisRun.STATUS_COMPLETED || status == AnalysisRun.STATUS_FAILED) {
 			    Integer nid = (Integer) run.getAttribute("notification-id");
 			    if (nid != null) {
@@ -54,20 +52,22 @@
 				}
 			}
 			if (status == AnalysisRun.STATUS_COMPLETED && showStatus == null) {
+				ElabAnalysis ea = run.getAnalysis();
+				if (ea != null && ea.getType().equals("I2U2.Cosmic::UploadProcess")) {
+					CosmicPostUploadTasks cput = new CosmicPostUploadTasks(ea);
+					cput.createMetadata();
+					cput.getBenchmarkMessages();
+					cput.createThresholdTimes();
+			        ea.setParameter("message", cput.getMessage());
+			        ea.setParameter("benchmarkMessages", cput.getBenchmarkMessages());
+				}//checking if it is an upload
 				String cont = (String) run.getAttribute("continuation");
 				System.out.println("Initial continuation: " + cont);
-		    	if (uploadLog.canAppend()) {
-		    		uploadLog.appendLines("User:"+user.getName()+" Id:"+id+" Status:"+String.valueOf(status)+" Continuation:"+cont+".\n");
-		    		uploadLog.cleanup();
-		    	}
+
 				if (cont != null) {
 					response.sendRedirect(cont);
 				}
 				else {
-			    	if (uploadLog.canAppend()) {
-			    		uploadLog.appendLines("User:"+user.getName()+" Id:"+id+" Status:"+String.valueOf(status)+" No Continuation.\n");
-			    		uploadLog.cleanup();
-			    	}
 					throw new RuntimeException("No continuation");
 				}
 			}
