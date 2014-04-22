@@ -11,6 +11,7 @@
 <%@ page import="gov.fnal.elab.analysis.impl.vds.*" %>
 <%@ page import="gov.fnal.elab.analysis.impl.swift.*" %>
 <%@ page import="gov.fnal.elab.analysis.impl.shell.*" %>
+<%@ page import="gov.fnal.elab.cosmic.CosmicPostUploadTasks" %>
 <%@ page import="gov.fnal.elab.analysis.queue.*" %>
 
 <%
@@ -72,11 +73,10 @@
 	    }
     	run.setAttribute("detectorid", detectorid);
     	analysis.setAttribute("detectorid", detectorid);	  
-    	
 	    String workflowRunMode = request.getParameter("runMode");
 		if (workflowRunMode != null) {
-	run.setAttribute("runMode", workflowRunMode);
-	analysis.setAttribute("runMode", workflowRunMode);
+			run.setAttribute("runMode", workflowRunMode);
+			analysis.setAttribute("runMode", workflowRunMode);
 		}
 		
 		String notifier = request.getParameter("notifier");

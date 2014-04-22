@@ -7,12 +7,14 @@
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
+<%@ page import="gov.fnal.elab.analysis.ElabAnalysis" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="gov.fnal.elab.cosmic.util.*" %>
+<%@ page import="gov.fnal.elab.cosmic.CosmicPostUploadTasks" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.Geometries" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
@@ -85,6 +87,17 @@
        auser = elab.getUserManagementProvider().getGroup(userParam);
     }
     if (fmeta.canRead()) {
+    	ElabAnalysis ea = (ElabAnalysis) results.getAnalysis();
+    	String uploadFinished = (String) ea.getParameter("uploadFinished");
+    	if (uploadFinished == null || !uploadFinished.equals("yes")) {
+			CosmicPostUploadTasks cput = new CosmicPostUploadTasks(ea);
+			cput.createMetadata();
+			cput.runBenchmark();
+			cput.createThresholdTimes();
+	        ea.setParameter("message", cput.getMessage());
+	        ea.setParameter("benchmarkMessages", cput.getBenchmarkMessages());
+			ea.setParameter("uploadFinished", "yes");
+    	}
     	BufferedReader br = new BufferedReader(new FileReader(fmeta));
         String line = null;
         String currLFN = null;
