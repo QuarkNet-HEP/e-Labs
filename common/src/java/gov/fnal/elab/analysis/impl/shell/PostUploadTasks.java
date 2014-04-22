@@ -162,7 +162,7 @@ public class PostUploadTasks {
 		    	//	uploadLog.appendLines("Blessing..\n");
 		    	//}
 				//session.setAttribute("benchmark_done", splits);
-				BlessProcess bp = new BlessProcess();
+				gov.fnal.elab.cosmic.bless.BlessProcess bp = new gov.fnal.elab.cosmic.bless.BlessProcess();
 				for (int i = 0; i < splits.size(); i++) {
 					try {
 						benchmarkMessages.add(bp.BlessDatafile(elab, detectorId, splits.get(i).toString(), benchmark)); 		
@@ -205,7 +205,7 @@ public class PostUploadTasks {
 				inputFiles[i] = splits.get(i).toString();			
 			}
 			if (inputFiles.length > 0) {
-				ThresholdTimes t = new ThresholdTimes(elab, inputFiles, detectorId);
+				gov.fnal.elab.cosmic.analysis.ThresholdTimes t = new gov.fnal.elab.cosmic.analysis.ThresholdTimes(elab, inputFiles, detectorId);
 				t.createThresholdFiles();
 			}
 	  	}
