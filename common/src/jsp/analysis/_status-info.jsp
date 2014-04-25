@@ -4,6 +4,7 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.io.*" %>
 <%@ page import="gov.fnal.elab.analysis.queue.*" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -87,8 +88,8 @@
 						</e:vswitch>
 					<%
 				}
-				else if (status == AnalysisRun.STATUS_RUNNING) {
-					%>
+				else if (status == AnalysisRun.STATUS_RUNNING || status == AnalysisRun.STATUS_DELAYED) {
+					%>					
 					<center>
 						<h1>Running ${run.analysis.name}...</h1>
 						<img src="../graphics/busy2.gif" alt="Image suggesting something is happening" /><br /><br /><br />
@@ -150,7 +151,7 @@
 								}
 							}
 						</script>
-			
+		
 					<br /><br />
 					<form action="../analysis/action.jsp">
 						<input type="hidden" name="id" value="${run.id}" />
@@ -194,6 +195,19 @@
 							</code>
 						</e:hidden>
 					</e:vswitch>
+				<%
+				}
+				else if (status == AnalysisRun.STATUS_QUEUED) {
+			    	AnalysisPriorityBlockingQueue aq = AnalysisPriorityBlockingQueue.getInstance();
+					int queued = 0;
+			    	if (aq != null) {
+						queued = aq.getQueue().size();
+					}
+				%>
+					<H1>The study was queued</H1> 
+					<p>We added your analysis to a queue. Check the <a href="../analysis/list.jsp">analysis list</a>. Look for id: <%= run.getId() %></p>
+					<p>At the moment, <%=queued %> analyses are waiting.</p>
+					<p></p>
 				<%
 				}
 				else if (status == AnalysisRun.STATUS_CANCELED) {
