@@ -56,10 +56,10 @@ public class AnalysisPriorityBlockingQueue implements Runnable{
 	}//end of isAlive
 	
 	public void start() {
-	      if (t == null) {
-	    	  t = new Thread(instance, "Analysis Queue");
-		      t.start();
-	      }    	  
+		if (t == null) {
+			t = new Thread(instance, "Analysis Queue");
+			t.start();
+		}
 	}//end of start
 	
 	public PriorityBlockingQueue getQueue() {
@@ -67,7 +67,7 @@ public class AnalysisPriorityBlockingQueue implements Runnable{
 	}//end of getQueue
 	
 	public void run() {
-		while(!isEmpty()) {
+		while(true) {
 			if (current == null || current.isFinished()) {
 				try {
 					current = get();
