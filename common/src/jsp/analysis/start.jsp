@@ -104,8 +104,19 @@
 				}
 			});
 	    }
-	    run.start();
-
+	    //remember to set this up in elab.properties as cosmic.analysis = queue
+	    String runType = elab.getProperty(elab.getName() + ".analysis");
+	    if (runType != null && runType.equals("queue")) {		
+		    if (run.getAttribute("type").equals("EventPlot") || run.getAttribute("type").equals("ProcessUpload")) {
+		    	run.start();
+		    } else {
+		    	AnalysisPriorityBlockingQueue aq = AnalysisPriorityBlockingQueue.getInstance();
+			    aq.put(run);
+			    aq.start();
+		    }
+	    } else {
+	    	run.start();
+	    }
 %>
 	    	<jsp:include page="status.jsp">
 	    		<jsp:param name="id" value="<%= run.getId() %>"/>
