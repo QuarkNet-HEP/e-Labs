@@ -112,6 +112,7 @@
 		    } else {
 		    	AnalysisPriorityBlockingQueue aq = AnalysisPriorityBlockingQueue.getInstance();
 			    aq.put(run);
+			    aq.start();
 		    }
 	    } else {
 	    	run.start();
