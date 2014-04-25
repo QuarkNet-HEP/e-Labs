@@ -20,6 +20,7 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
     private Map attributes;
     private Date startTime, endTime;
     private AnalysisRunListener listener;
+    private boolean delayedCompletion;
     
     public AbstractAnalysisRun() {
     }
@@ -30,6 +31,7 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
         this.elab = elab;
         this.outputDir = outputDir;
         this.status = STATUS_NONE;
+        this.delayedCompletion = false;
         synchronized (AnalysisRun.class) {
             this.id = String.valueOf(sid++);
         }
@@ -77,6 +79,9 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
     }
 
     public boolean isFinished() {
+    	if (status == STATUS_COMPLETED && getDelayedCompletion()) {
+    		return false;
+    	}
         return status == STATUS_FAILED || status == STATUS_COMPLETED;
     }
 
@@ -225,5 +230,13 @@ public abstract class AbstractAnalysisRun implements AnalysisRun {
     
     public void setInitialStatus(int status) {
     	this.status = status;
+    }
+    
+    public void setDelayedCompletion(boolean delayedCompletion) {
+    	this.delayedCompletion = delayedCompletion;
+    }
+    
+    public boolean getDelayedCompletion() {
+    	return this.delayedCompletion;
     }
 }

@@ -87,8 +87,8 @@
 						</e:vswitch>
 					<%
 				}
-				else if (status == AnalysisRun.STATUS_RUNNING) {
-					%>
+				else if (status == AnalysisRun.STATUS_RUNNING || status == AnalysisRun.STATUS_DELAYED) {
+					%>					
 					<center>
 						<h1>Running ${run.analysis.name}...</h1>
 						<img src="../graphics/busy2.gif" alt="Image suggesting something is happening" /><br /><br /><br />
@@ -150,7 +150,7 @@
 								}
 							}
 						</script>
-			
+		
 					<br /><br />
 					<form action="../analysis/action.jsp">
 						<input type="hidden" name="id" value="${run.id}" />
@@ -197,9 +197,11 @@
 				<%
 				}
 				else if (status == AnalysisRun.STATUS_QUEUED) {
-					%> <H1>The study was queued</H1> 
-					   <p>Check the <a href="../analysis/list.jsp">analysis list</a>. Look for id: <%= run.getId() %></p>
-					<%
+				%>
+					<H1>The study was queued</H1> 
+					<p>We added your analysis to a queue. Check the <a href="../analysis/list.jsp">analysis list</a>. Look for id: <%= run.getId() %></p>
+					<p></p>
+				<%
 				}
 				else if (status == AnalysisRun.STATUS_CANCELED) {
 					%> <h1>The study was canceled</h1> <%

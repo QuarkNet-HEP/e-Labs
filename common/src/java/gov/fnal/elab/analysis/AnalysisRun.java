@@ -45,6 +45,12 @@ public interface AnalysisRun {
     public static final int STATUS_QUEUED = 5;
     
     /**
+     * Indicates the upload is still working after the Split.pl
+     */
+
+    public static final int STATUS_DELAYED = 6;
+
+    /**
      * Starts this run.
      */
     void start();
@@ -158,4 +164,10 @@ public interface AnalysisRun {
     void setListener(AnalysisRunListener l);
     
     void setInitialStatus(int status);
+    
+    void setStatus(int status);
+    
+    void setDelayedCompletion(boolean delayedCompletion);
+    
+    boolean getDelayedCompletion();
 }
