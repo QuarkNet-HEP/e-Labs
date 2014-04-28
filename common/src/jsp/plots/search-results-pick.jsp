@@ -88,7 +88,7 @@ function sendLink(url, link)
 		            	${e.tupleMap.name}<br/>
 	            		Group: ${e.tupleMap.group}<br/>
 	            		Created: ${e.tupleMap.creationdate}<br/>
-	            		<a href="../jsp/add-comments.jsp?fileName=${e.LFN}&t=plot">View/Add Comments</a><br/>
+	            		<a href="../jsp/comments-add.jsp?fileName=${e.LFN}&t=plot">View/Add Comments</a><br/>
 	            	</td>
 	            <%
 	        }

@@ -23,7 +23,7 @@
 <%@ page import="gov.fnal.elab.cosmic.beans.Geometries" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
-
+<%@ page import="org.owasp.validator.html.*" %>
 <%--
 Re: the upload progress stuff
 
@@ -70,6 +70,8 @@ Re: the upload progress stuff
 	int sizeThreshold = 0; 
 	String exceptionMessage = "";
 	List splits = new ArrayList();  //for both the split name and the channel validity information
+	Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
+	AntiSamy as = new AntiSamy();
 
 	if (ServletFileUpload.isMultipartContent(request)) {
 		try {
@@ -82,6 +84,7 @@ Re: the upload progress stuff
 	
 	    	// Create a new file upload handler
 		    ServletFileUpload upload = new ServletFileUpload(factory);
+		    //ServletFileUpload upload = new ServletFileUpload();		
 	    	//END upload_progress_stuff
 	    	
 			List<DiskFileItem> fileItems = upload.parseRequest(request); 
@@ -138,7 +141,33 @@ Re: the upload progress stuff
 	               	else {
 	               		fi.getStoreLocation().renameTo(f);
 	               	}
-	
+		          	//EPeronja-04/28/2014: do some sanitization
+		          	ArrayList checkDirtyInput = as.scan(comments,policy).getErrorMessages();
+		          	if (!checkDirtyInput.isEmpty()) {
+		    			String userInput = comments;
+		    			int errors = as.scan(userInput, policy).getNumberOfErrors();
+		    			ArrayList actualErrors = as.scan(userInput, policy).getErrorMessages();
+		    			Iterator iterator = actualErrors.iterator();
+		    			String errorMessages = "";
+		    			while (iterator.hasNext()) {
+		    				errorMessages = (String) iterator.next() + ",";
+		    			}
+		    			comments = as.scan(comments, policy).getCleanHTML();
+				    	//send email with warning
+				    	String to = elab.getProperty("notifyDirtyInput");
+			    		String emailmessage = "", subject = "Cosmic Upload: user sent dirty input";
+			    		String emailBody =  "User input: "+userInput+"\n" +
+	    						   			"Number of errors: "+String.valueOf(errors)+"\n" +
+	    				   					"Error messages: "+ errorMessages + "\n" +
+	    				   					"Validated input: "+comments + "\n";
+					    try {
+					    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
+					    } catch (Exception ex) {
+			                System.err.println("Failed to send email");
+			                ex.printStackTrace();
+					    }		    		
+				  	}//end of sanitization
+					
 	       	        out.println("<!-- " + rawName + " added to Catalog -->");
 	       	        request.setAttribute("in", f.getAbsolutePath());
 	       	        request.setAttribute("detectorid", detectorId);

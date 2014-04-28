@@ -42,8 +42,35 @@
 	    //message = message.substring("<p>".length(), message.length() - "</p>".length());
 	    Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
 		AntiSamy as = new AntiSamy();
-		message = as.scan(message, policy).getCleanHTML();
-	    boolean expirestoggle = request.getParameter("expirestoggle") != null 
+		//message = as.scan(message, policy).getCleanHTML();
+	    //EPeronja-04/28/2014: Add string sanitization
+        ArrayList checkDirtyInput = as.scan(message,policy).getErrorMessages();
+        if (!checkDirtyInput.isEmpty()) {
+   			String userInput = message;
+   			int errors = as.scan(userInput, policy).getNumberOfErrors();
+   			ArrayList actualErrors = as.scan(userInput, policy).getErrorMessages();
+   			Iterator iterator = actualErrors.iterator();
+   			String errorMessages = "";
+   			while (iterator.hasNext()) {
+   				errorMessages = (String) iterator.next() + ",";
+   			}
+   			message = as.scan(message, policy).getCleanHTML();
+	    	//send email with warning
+	    	String to = elab.getProperty("notifyDirtyInput");
+    		String emailmessage = "", subject = "Notifications: user sent dirty input";
+    		String emailBody =  "User input: "+userInput+"\n" +
+  						   			"Number of errors: "+String.valueOf(errors)+"\n" +
+  				   					"Error messages: "+ errorMessages + "\n" +
+  				   					"Validated input: "+message + "\n";
+		    try {
+		    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
+		    } catch (Exception ex) {
+                System.err.println("Failed to send email");
+                ex.printStackTrace();
+		    }		    		
+	  	}//end of sanitization	
+		
+		boolean expirestoggle = request.getParameter("expirestoggle") != null 
 	    	&& request.getParameter("expirestoggle").length() > 0;
 	    String expiresvalue = request.getParameter("expiresvalue");
 	    String expiresunit = request.getParameter("expiresunit");
