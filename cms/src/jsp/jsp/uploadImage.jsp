@@ -3,7 +3,7 @@
 <%@ page import="org.apache.commons.fileupload.*" %>
 <%@ include file="common.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
-
+<%@ page import="org.owasp.validator.html.*" %>
 <%
 String name = "";           //user-input name of file, stored in metadata
 String filename = "";       //unique name to be generated and saved in rc.data
@@ -13,6 +13,8 @@ String ret = "";            //string which is returned to the user after an atte
 boolean valid = true;       //false if there's any errors
 String comments = "";       //optional comments on file
 DiskFileUpload fu = new DiskFileUpload();
+Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
+AntiSamy as = new AntiSamy();
 
 if (fu.isMultipartContent(request)) {
     fu.setSizeMax(10 * 1024 * 1024);    //10MB max
@@ -140,6 +142,33 @@ if (fu.isMultipartContent(request)) {
             meta.add("thumbnail string " + filename);
             
             comments = comments.replaceAll("\r\n?", "\\\\n");   //replace new lines from text box with "\n"
+          	//EPeronja-04/28/2014: do some sanitization
+          	ArrayList checkDirtyInput = as.scan(comments,policy).getErrorMessages();
+          	if (!checkDirtyInput.isEmpty()) {
+    			String userInput = comments;
+    			int errors = as.scan(userInput, policy).getNumberOfErrors();
+    			ArrayList actualErrors = as.scan(userInput, policy).getErrorMessages();
+    			Iterator iterator = actualErrors.iterator();
+    			String errorMessages = "";
+    			while (iterator.hasNext()) {
+    				errorMessages = (String) iterator.next() + ",";
+    			}
+    			comments = as.scan(comments, policy).getCleanHTML();
+		    	//send email with warning
+		    	String to = elab.getProperty("notifyDirtyInput");
+	    		String emailmessage = "", subject = "Add comments: user sent dirty input";
+	    		String emailBody =  "User input: "+userInput+"\n" +
+ 						   			"Number of errors: "+String.valueOf(errors)+"\n" +
+ 				   					"Error messages: "+ errorMessages + "\n" +
+ 				   					"Validated input: "+comments + "\n";
+			    try {
+			    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
+			    } catch (Exception ex) {
+	                System.err.println("Failed to send email");
+	                ex.printStackTrace();
+			    }		    		
+		  	}//end of sanitization
+            
             meta.add("comments string " + comments);
             Date now = new Date();
             long millisecondsSince1970 = now.getTime();
