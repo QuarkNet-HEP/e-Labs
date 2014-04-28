@@ -68,7 +68,7 @@ public class AnalysisPriorityBlockingQueue implements Runnable{
 	
 	public void run() {
 		while(true) {
-			if (current == null || current.isFinished()) {
+			if (current == null || current.getStatus() == AnalysisRun.STATUS_CANCELED || current.isFinished() ) {
 				try {
 					current = get();
 					current.start();
