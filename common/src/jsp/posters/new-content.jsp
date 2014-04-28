@@ -125,10 +125,31 @@
 				    	pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
 	    			
 		    		} else {
-		    			//clean up
+		    			//clean up and send email with notification
+		    			String userInput = val;
+		    			int errors = as.scan(userInput, policy).getNumberOfErrors();
+		    			ArrayList actualErrors = as.scan(userInput, policy).getErrorMessages();
+		    			Iterator iterator = actualErrors.iterator();
+		    			String errorMessages = "";
+		    			while (iterator.hasNext()) {
+		    				errorMessages = (String) iterator.next() + ",";
+		    			}
 		    			val = as.scan(val, policy).getCleanHTML();
 				    	val = ElabUtil.escapePoster(val); 
 				    	pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
+				    	//send email with warning
+				    	String to = elab.getProperty("notifyDirtyInput");
+			    		String emailmessage = "", subject = "Make Posters: user sent dirty input";
+			    		String emailBody =  "User input: "+userInput+"\n" +
+	    						   			"Number of errors: "+String.valueOf(errors)+"\n" +
+	    				   					"Error messages: "+ errorMessages + "\n" +
+	    				   					"Validated input: "+val + "\n";
+					    try {
+					    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
+					    } catch (Exception ex) {
+			                System.err.println("Failed to send email");
+			                ex.printStackTrace();
+					    }
 				    	//throw new ElabJspException("There is a problem with this string: " + val + ". Bailing out.");		    	
 		    		}
 		    	}

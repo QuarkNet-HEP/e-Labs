@@ -51,7 +51,7 @@
 		            	${e.tupleMap.name}<br/>
 	            		Group: ${e.tupleMap.group}<br/>
 	            		Created: ${e.tupleMap.creationdate}<br/>
-	            		<a href="../jsp/add-comments.jsp?fileName=${f}&t=plot">View/Add Comments</a><br/>
+	            		<a href="../jsp/comments-add.jsp?fileName=${f}&t=plot">View/Add Comments</a><br/>
 	            	</td>
 	            <%
 	        }
