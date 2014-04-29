@@ -86,7 +86,7 @@
                         Latitude: <e:trinput type="text" name="latitude" size="15" disabled="${ro}" />
                         <br>
                         <c:if test="${!ro}">
-                        	<span style="font-size: 90%">e.g., 47:39.2347 N</font>
+                        	<span style="font-size: 90%">e.g., 47:39.234736 N</font>
                         </c:if>
                     </td>
                     <td>
@@ -102,7 +102,7 @@
                         Altitude (m): <e:trinput type="text" name="altitude" size="3" disabled="${ro}" />
                     </td>
                     <td>
-                        GPS Cable Length (m): <e:trinput type="text" name="gpsCableLength" size="4" disabled="${ro}" />
+                        GPS Cable Length (m): <e:trinput type="text" name="gpsCableLength" size="6" disabled="${ro}" />
                     </td>
                 </tr>
             </table>
