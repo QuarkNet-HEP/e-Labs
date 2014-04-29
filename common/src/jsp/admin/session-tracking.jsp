@@ -67,7 +67,7 @@
 						            {
 						                String click = clickstreamIt.next().toString();
 						                if (re.match(click)) {
-							                details.add(new Pair("Click # " +String.valueOf(x), click));
+							                details.add(new Pair("Visited # " +String.valueOf(x), click));
 						                	x++;
 						                }
 								    }
