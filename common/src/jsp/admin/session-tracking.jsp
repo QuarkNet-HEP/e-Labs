@@ -7,14 +7,25 @@
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.notifications.*" %>
 <%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="java.util.regex.*" %>
 <%@ page import="java.util.*"%>
+<%@ page import="org.apache.regexp.*" %>
+
+<%@ page import="com.opensymphony.clickstream.Clickstream" %>
 <%
 	int sessionCount = SessionListener.getTotalActiveSession();
 	int userCount = 0;
 	TreeMap<String, List<Pair>> activeSessions = SessionListener.getTotalSessionUsers();
 	//now create the local TreeMap
 	TreeMap<String, List<Pair>> sessionDetails = new TreeMap<String, List<Pair>>();
-	
+    final Map clickstreams = (Map) application.getAttribute("clickstreams");
+	RE re = new RE("(analysis|posters|plots|uploadImage|data|library|site-index|assessment|teacher)");
+    String showbots = "false";
+    if ("true".equalsIgnoreCase(request.getParameter("showbots")))
+        showbots = "true";
+    else if ("both".equalsIgnoreCase(request.getParameter("showbots")))
+        showbots = "both";
+        	
 	for (Map.Entry<String, List<Pair>> entry : activeSessions.entrySet()) {
 		String key = entry.getKey();
 		List<Pair> value = (List<Pair>) entry.getValue();
@@ -33,13 +44,44 @@
 					details.add(new Pair("Location", school + ", " + city + " - " + state));
 					details.add(new Pair("Role", eu.getRole()));
 					details.add(new Pair("Logged in to", e.getName()));
+		            synchronized(clickstreams) {
+		                Iterator it = clickstreams.keySet().iterator();
+		                while (it.hasNext())
+		                {
+		                    String streamkey = (String)it.next();
+		                    if (streamkey.equals(key)) {
+			                    Clickstream stream = (Clickstream)clickstreams.get(key);
+			                    details.add(new Pair("Last Request", stream.getLastRequest()));
+			                    long streamLength = stream.getLastRequest().getTime() - stream.getStart().getTime();
+			                    details.add(new Pair("Session Length", (streamLength > 3600000 ?
+						        		" " + (streamLength / 3600000) + " hours" : "") +
+						        	(streamLength > 60000 ?
+						        		" " + ((streamLength / 60000) % 60) + " minutes" : "") +
+						        	(streamLength > 1000 ?
+						        		" " + ((streamLength / 1000) % 60) + " seconds" : "")));
+							    details.add(new Pair("# of Requests", stream.getStream().size()));
+							    synchronized(stream) {
+						            Iterator clickstreamIt = stream.getStream().iterator();						
+						            int x = 1;
+						            while (clickstreamIt.hasNext())
+						            {
+						                String click = clickstreamIt.next().toString();
+						                if (re.match(click)) {
+							                details.add(new Pair("Click # " +String.valueOf(x), click));
+						                	x++;
+						                }
+								    }
+								 }
+							}
+						}
+					}//end of first synchronized							            		
 					userCount++;
 					sessionDetails.put(key, details);
 				}
 			}
 		}
 	}
-
+                    
 	request.setAttribute("sessionCount",sessionCount);
 	request.setAttribute("userCount",userCount);
 	request.setAttribute("sessionDetails",sessionDetails);	
@@ -81,7 +123,7 @@
 	    	   				<td style="vertical-align: top; border: 1px dotted gray;">${sessionDetails.key }</td>
 	    	   				<td style="vertical-align: top; border: 1px dotted gray;">
 	    	   					<c:forEach items="${sessionDetails.value}" var="pair">
-	    	   						<strong>${pair.left} : </strong>${pair.right } <br />
+	    		   						<strong>${pair.left} : </strong>${pair.right} <br />
 	    	   					</c:forEach>
 	    	   				</td>
 	    	   			</tr>
