@@ -27,7 +27,7 @@ String reCaptchaError = "The reCaptcha you entered is not right. Please try agai
 //password reset request (teacher)
 String rptSubject = "Your password has been reset";
 String rptBodyBegin = "Someone used the webform at "+
-					  "\'http://www.i2u2.org/elab/cosmic/login/retrieve-username-password.jsp\' to reset "+
+					  "\'https://www.i2u2.org/elab/cosmic/login/retrieve-username-password.jsp\' to reset "+
 					  "the e-Lab password for the account: replaceAccount.\n\n" + 
 					  "The temporary password is: replacePassword.\n\n";
 String rptUIMsg = "We have sent a temporary password to the e-mail associated with this account.<br />Please check that account for a message from elabs@i2u2.org";
