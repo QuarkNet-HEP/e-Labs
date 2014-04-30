@@ -213,9 +213,13 @@ public class ShellAnalysisExecutor implements AnalysisExecutor {
                     setException(ex);
                     setStatus(STATUS_FAILED);
                     break;
-                case Status.COMPLETED:
-                	setEndTime(new Date());
-                    setStatus(STATUS_COMPLETED);
+                case Status.COMPLETED:  
+                	if (isFinished()) {
+	                    setEndTime(new Date());
+	                    setStatus(STATUS_COMPLETED);                    
+                	} else {
+                		setStatus(STATUS_DELAYED);
+                	}
                     break;
                 default:
             }

@@ -11,8 +11,7 @@
 <%@ page import="gov.fnal.elab.analysis.impl.vds.*" %>
 <%@ page import="gov.fnal.elab.analysis.impl.swift.*" %>
 <%@ page import="gov.fnal.elab.analysis.impl.shell.*" %>
-<%@ page import="gov.fnal.elab.analysis.queue.*" %>
-
+<%@ page import="gov.fnal.elab.cosmic.*" %>
 <%
 	ElabAnalysis analysis = (ElabAnalysis) request.getAttribute("elab:analysis");
 	if (analysis == null) {
@@ -71,12 +70,12 @@
 			detectorid = "";
 	    }
     	run.setAttribute("detectorid", detectorid);
-    	analysis.setAttribute("detectorid", detectorid);	  
-    	
+    	analysis.setAttribute("detectorid", detectorid);
+    	analysis.setAttribute("id", run.getId());
 	    String workflowRunMode = request.getParameter("runMode");
 		if (workflowRunMode != null) {
-	run.setAttribute("runMode", workflowRunMode);
-	analysis.setAttribute("runMode", workflowRunMode);
+			run.setAttribute("runMode", workflowRunMode);
+			analysis.setAttribute("runMode", workflowRunMode);
 		}
 		
 		String notifier = request.getParameter("notifier");
@@ -88,20 +87,25 @@
 	    AnalysisNotifier n = AnalysisNotifierFactory.newNotifier(notifier);
 	    n.setRun(run);
 	    run.setListener(n);
+	    //EPeronja-04/25/2014: Added this code to complete the upload process after the split is done.
+	    if (run.getAttribute("type").equals("ProcessUpload")) {
+	    	final ElabAnalysis ea = analysis;
+	    	final AnalysisRun ar = run;
+	    	ar.setDelayedCompletion(true);
+			run.setListener(new AnalysisRunListener() {
+				public void runStatusChanged(int status) {
+					if (status == AnalysisRun.STATUS_DELAYED) {
+						CosmicPostUploadTasks cput = new CosmicPostUploadTasks(ea);
+						cput.runTasks();
+						ar.setDelayedCompletion(false);
+						ar.setStatus(AnalysisRun.STATUS_COMPLETED);
+					}
+				}
+			});
+	    }
 	    //remember to set this up in elab.properties as cosmic.analysis = queue
 	    String runType = elab.getProperty(elab.getName() + ".analysis");
-	    //if (runType != null && runType.equals("queue")) {		
-	    //	AnalysisPriorityBlockingQueue aq = AnalysisPriorityBlockingQueue.getInstance();
-		//    if (run.getAttribute("type").equals("EventPlot")) {
-		//    	run.start();
-		//    } else {
-		//	    aq.put(run);
-		//	    aq.run();
-		//    }
-	   // } else {
-	    	run.start();
-	   // }
-
+    	run.start();
 %>
 	    	<jsp:include page="status.jsp">
 	    		<jsp:param name="id" value="<%= run.getId() %>"/>

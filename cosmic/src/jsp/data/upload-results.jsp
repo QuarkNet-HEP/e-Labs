@@ -7,18 +7,19 @@
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
+<%@ page import="gov.fnal.elab.analysis.ElabAnalysis" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="gov.fnal.elab.cosmic.util.*" %>
+<%@ page import="gov.fnal.elab.cosmic.CosmicPostUploadTasks" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.Geometries" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
 <%@ page import="gov.fnal.elab.cosmic.bless.BlessProcess" %>
 <%@ page import="gov.fnal.elab.cosmic.analysis.ThresholdTimes" %>
-<%@ page import="gov.fnal.elab.debug.WriteLogFile" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -50,32 +51,29 @@
 
 
 <%
-	String lfn="";              //lfn on the USERS home computer
-	String fn = "";             //filename without slashes
-	String ds = "";
+	//String lfn="";              //lfn on the USERS home computer
+	//String fn = "";             //filename without slashes
+	//String ds = "";
 	File f = new File((String) results.getAnalysis().getParameter("in"));
 	String detectorId = (String) results.getAnalysis().getParameter("detectorid");
-	String comments = (String) results.getAnalysis().getParameter("comments");
-	String benchmark = (String) results.getAnalysis().getParameter("benchmark");
-	//List threshold_done = (List) session.getAttribute("threshold_done");
-	//List benchmark_done = (List) session.getAttribute("benchmark_done");
+	//String comments = (String) results.getAnalysis().getParameter("comments");
+	//String benchmark = (String) results.getAnalysis().getParameter("benchmark");
 	
-	ArrayList<String> benchmarkMessages = new ArrayList<String>();
 	String dataDir = elab.getProperties().getDataDir();
 	int channels[] = new int[4];
 
 	List splits = new ArrayList();  //for both the split name and the channel validity information
 	
-	boolean c = true;
-	String splitPFNs = "";
-	String cpldFrequency = "";
+	//boolean c = true;
+	//String splitPFNs = "";
+	//String cpldFrequency = "";
 	String rawName = f.getName();
 	CatalogEntry entry;
 	
 	//get metadata which contains the lfns of the raw filename AND the split files
 	ArrayList meta = null;
-	boolean metaSuccess = false;
-	boolean totalSuccess = true;        //false if there are any rc.data or meta errors
+	//boolean metaSuccess = false;
+	//boolean totalSuccess = true;        //false if there are any rc.data or meta errors
 	File fmeta = new File(f.getAbsolutePath() + ".meta");     //depends on Split.pl writing the meta to rawName.meta
 	String sqlErrors = "";
 	//EPeronja-added the following code for admin to be able to access the upload results
@@ -88,43 +86,16 @@
     if (userParam != null) {
        auser = elab.getUserManagementProvider().getGroup(userParam);
     }
-    WriteLogFile uploadLog = new WriteLogFile(elab, rawName, "upload-log");  
     if (fmeta.canRead()) {
-    	if (uploadLog.canAppend()) {
-    		uploadLog.appendLines("About to insert in the datacatalog\n");
-    	}
     	BufferedReader br = new BufferedReader(new FileReader(fmeta));
         String line = null;
         String currLFN = null;
         String currPFN = null;
-    	if (uploadLog.canAppend()) {
-    		uploadLog.appendLines("Reading meta file");
-    	}
         while ((line = br.readLine()) != null) {
             String[] temp = line.split("\\s", 3);
 
-            //if this is a new lfn to add...
+            //read from .meta to display results
             if(temp[0].equals("[SPLIT]") || temp[0].equals("[RAW]")){
-            	if (uploadLog.canAppend()) {
-            		uploadLog.appendLines("Working with:"+line+"\n");
-            	}	            //add metadata if we have all the information for a previous LFN
-    	        if(meta != null && currLFN != null) {
-        	        try {
-        	            entry = DataTools.buildCatalogEntry(currLFN, meta);
-        	            elab.getDataCatalogProvider().insert(entry);
-                	} 
-        	        catch (ElabException e) {
-        				//EPeronja-585: Sql Errors when uploading data, give meaningful message
-        	        	sqlErrors += "Error setting metadata for "+currLFN+":" + e.getMessage()+ "<br />";
-                	    //throw new ElabJspException("Error setting metadata: " + e.getMessage(), e);
-                    }
-                }
-
-                //start a new metadata array
-		    	if (uploadLog.canAppend()) {
-		    		uploadLog.appendLines("Starting metadata array\n");
-		    	}
-                meta = new ArrayList();
                 currPFN = temp[1];
 	            currLFN = temp[1].substring(temp[1].lastIndexOf('/') + 1);
     	        if(temp[0].equals("[RAW]")) {
@@ -132,143 +103,41 @@
         	        rawName = currLFN;
                 }
                 else if(temp[0].equals("[SPLIT]")) {
-                    // Add split physical file name to array list used by ThresholdTimes.
-	                // we actually don't use that any more
 	                splits.add(currLFN);
-                }
-
-                //metadata for both RAW and SPLIT files
-                meta.add("origname string " + lfn); //add in the original name from the users computer to metadata
-                meta.add("blessed boolean false");
-	            meta.add("group string " + auser.getName());
-    	        meta.add("teacher string " + elab.getUserManagementProvider().getTeacher(auser).getName());
-        	    meta.add("school string " + auser.getSchool());
-            	meta.add("city string " + auser.getCity());
-                meta.add("state string " + auser.getState());
-                meta.add("year string " + auser.getYear());
-                meta.add("project string " + elab.getName());
-	            comments = comments.replaceAll("\r\n?", "\\\\n");   //replace new lines from text box with "\n"
-                meta.add("comments string " + comments);
-            }
-            else {
-                meta.add(line);
-                String[] tmp = line.split("\\s", 3);
-                if (tmp[0].equals("cpldfrequency")) {
-	                cpldFrequency += tmp[2] + " ";
-                }
-                else if (tmp[0].equals("julianstartdate")) {
-                	Geometry geometry = new Geometry(elab.getProperties().getDataDir(), Integer.parseInt(detectorId));
-			if (geometry != null && !geometry.isEmpty()) {
-				SortedMap geos = geometry.getGeoEntriesBefore(tmp[2]);
-				if (!geos.isEmpty()) {
-					GeoEntryBean g = (GeoEntryBean) geos.get(geos.lastKey());
-					meta.add("stacked boolean " + ("0".equals(g.getStackedState()) ? "false" : "true"));	
-				}
-                	}
                 }
             }
         }   //done reading file
 
-        //do one last add at the end of reading the temp metadata file
-        if (meta != null && currLFN != null) {
-            try {
-                entry = DataTools.buildCatalogEntry(currLFN, meta);
-		elab.getDataCatalogProvider().insert(entry);
-	}
-	catch (ElabException e) {
-		//EPeronja-585: Sql Errors when uploading data, give meaningful message
-	        	sqlErrors += "Error setting metadata for "+currLFN+":" + e.getMessage()+ "<br />";
-		//throw new ElabJspException("Error setting metadata: " + e.getMessage(), e);
-            }
-        }
-	}
-    else {
-		//EPeronja-585: Sql Errors when uploading data, give meaningful message
-    	sqlErrors += "Error reading metadata file: " + f.getAbsolutePath() + ".meta.<br />";
-        //throw new ElabJspException("Error reading metadata file: " + f.getAbsolutePath() + ".meta");
-    }
-
-	Iterator l = splits.iterator();
-	List entries = new ArrayList();
-	while (l.hasNext()) {
-	    CatalogEntry s = elab.getDataCatalogProvider().getEntry((String) l.next());
-	    entries.add(s);
-	    for (int k = 0; k < 4; k++) {
-	        channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).intValue();
-	    }
-	}
-  	//if (fmeta.canRead() && !splits.equals(threshold_done)) {
-  	if (fmeta.canRead()) {
-    	if (uploadLog.canAppend()) {
-    		uploadLog.appendLines("Creating threshold times\n");
-    	}
-
-  		String[] inputFiles = new String[splits.size()];
-		for (int i = 0; i < splits.size(); i++) {
-			inputFiles[i] = splits.get(i).toString();			
+		//to display channels
+        Iterator l = splits.iterator();
+		List entries = new ArrayList();
+		while (l.hasNext()) {
+		    CatalogEntry s = elab.getDataCatalogProvider().getEntry((String) l.next());
+		    entries.add(s);
+		    for (int k = 0; k < 4; k++) {
+		        channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).intValue();
+		    }
 		}
-		//session.setAttribute("threshold_done", splits);
-		if (inputFiles.length > 0) {
-			ThresholdTimes t = new ThresholdTimes(elab, inputFiles, detectorId);
-			//new Thread(t).start();
-			t.createThresholdFiles();
-		}
-  	}
+		
 
-  	String no_benchmark_message = "You uploaded data without using a benchmark.<br />"+
-			 "Your data is NOT blessed by default so it is not available to the general public.<br />"+
-			 "Contact <a href=\"/elab/cosmic/teacher/forum/HelpDeskRequest.php\">Helpdesk</a> if you would like to know more about data blessing.";
-  	
-	//we might as well bless here
-	if (benchmark != null && !benchmark.equals("") && !benchmark.equals("No benchmark")) {
-		//if (fmeta.canRead() && !splits.equals("benchmark_done")) {
-		if (fmeta.canRead()) {
-	    	if (uploadLog.canAppend()) {
-	    		uploadLog.appendLines("Blessing..\n");
-	    	}
-			//session.setAttribute("benchmark_done", splits);
-			BlessProcess bp = new BlessProcess();
-			for (int i = 0; i < splits.size(); i++) {
-				benchmarkMessages.add(bp.BlessDatafile(elab, detectorId, splits.get(i).toString(), benchmark)); 		
-			}
+		request.setAttribute("detectorId", detectorId);
+		sqlErrors = (String) results.getAnalysis().getParameter("message");
+		request.setAttribute("sqlErrors", sqlErrors);
+		ArrayList<String> benchmarkMessages = (ArrayList<String>) results.getAnalysis().getParameter("benchmarkMessages");
+		request.setAttribute("benchmarkMessages", benchmarkMessages);
+		request.setAttribute("channels", channels);
+		request.setAttribute("splitEntries", entries);
+		CatalogEntry e = elab.getDataCatalogProvider().getEntry(rawName);
+		request.setAttribute("entry", e);
+		request.setAttribute("id", detectorId);
+		request.setAttribute("lfnssz", new Integer(entries.size()));
+		File geoFile = new File(new File(dataDir, detectorId), detectorId + ".geo");
+		if (geoFile.exists() && geoFile.isFile() && geoFile.canRead()) {
+		    request.setAttribute("geoFileExists", Boolean.TRUE);
 		}
-	} else {
-		benchmarkMessages.add(no_benchmark_message + "<br />Also check <a href=\"../analysis-blessing/benchmark-tutorial.jsp\">Tutorial on Benchmark</a>");
-		//send notification about uploading without benchmark
-        ElabNotificationsProvider np = ElabFactory.getNotificationsProvider(elab);
-        Notification n = new Notification();
-        ElabGroup notif_admin = elab.getUserManagementProvider().getGroup("admin"); 
-        n.setCreatorGroupId(notif_admin.getId());
-        n.setMessage(no_benchmark_message);
-        GregorianCalendar gc = new GregorianCalendar();
-        gc.add(Calendar.DAY_OF_MONTH, 2);
-        n.setExpirationDate(gc.getTimeInMillis());
-        try {
-        	np.addNotification(auser, n);
-        }
-        catch (ElabException e) {
-                System.err.println("Failed to send notification: " + e.getMessage());
-        }		
-	}
-	if (uploadLog.canAppend()) {
-		uploadLog.appendLines("Done.\n");
-		uploadLog.cleanup();
-	}
-	request.setAttribute("detectorId", detectorId);
-	request.setAttribute("sqlErrors", sqlErrors);
-	request.setAttribute("benchmarkMessages", benchmarkMessages);
-	request.setAttribute("channels", channels);
-	request.setAttribute("splitEntries", entries);
-	CatalogEntry e = elab.getDataCatalogProvider().getEntry(rawName);
-	request.setAttribute("entry", e);
-	request.setAttribute("id", detectorId);
-	request.setAttribute("lfnssz", new Integer(entries.size()));
-	File geoFile = new File(new File(dataDir, detectorId), detectorId + ".geo");
-	if (geoFile.exists() && geoFile.isFile() && geoFile.canRead()) {
-	    request.setAttribute("geoFileExists", Boolean.TRUE);
-	}
-	else {
-	    request.setAttribute("geoFileExists", Boolean.FALSE);
+		else {
+		    request.setAttribute("geoFileExists", Boolean.FALSE);
+		}
 	}
 %>
     	
