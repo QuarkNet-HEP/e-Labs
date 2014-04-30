@@ -10,7 +10,6 @@
 		<link rel="stylesheet" type="text/css" href="../css/two-column-home.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/elab.js"></script>		
 		<script type="text/javascript">
 		window.onload=function(){
 			if (document.getElementById("newsbox-h") != null  && document.getElementById("newsbox-v") != null) {
