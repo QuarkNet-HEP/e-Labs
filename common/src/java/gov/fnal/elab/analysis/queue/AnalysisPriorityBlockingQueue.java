@@ -96,7 +96,10 @@ public class AnalysisPriorityBlockingQueue implements Runnable{
 	
 	public void run() {
 		while(true) {
-			if (currentLocal == null || currentLocal.getStatus() == AnalysisRun.STATUS_CANCELED || currentLocal.isFinished() ) {
+			if (currentLocal == null || 
+				currentLocal.getStatus() == AnalysisRun.STATUS_CANCELED || 
+				currentLocal.isFailed() ||
+				currentLocal.isFinished() ) {
 				try {
 					currentLocal = get("local");
 					currentLocal.start();
@@ -104,7 +107,10 @@ public class AnalysisPriorityBlockingQueue implements Runnable{
 					System.out.println("Exception in queue-run method (local): " + e.getMessage());
 				}
 			}//end of test for current local
-			if (currentNodes == null || currentNodes.getStatus() == AnalysisRun.STATUS_CANCELED || currentNodes.isFinished() ) {
+			if (currentNodes == null || 
+				currentNodes.getStatus() == AnalysisRun.STATUS_CANCELED || 
+				currentNodes.isFailed() ||
+				currentNodes.isFinished() ) {
 				try {
 					currentNodes = get("i2u2");
 					currentNodes.start();
@@ -112,7 +118,10 @@ public class AnalysisPriorityBlockingQueue implements Runnable{
 					System.out.println("Exception in queue-run method (i2u2): " + e.getMessage());
 				}
 			}//end of test for current nodes
-			if (currentMixed == null || currentMixed.getStatus() == AnalysisRun.STATUS_CANCELED || currentMixed.isFinished() ) {
+			if (currentMixed == null || 
+				currentMixed.getStatus() == AnalysisRun.STATUS_CANCELED || 
+				currentMixed.isFailed() ||
+				currentMixed.isFinished() ) {
 				try {
 					currentMixed = get("mixed");
 					currentMixed.start();

@@ -216,7 +216,6 @@
 					<H1>The study was queued</H1> 
 					<p>We added your analysis to a queue. Check the <a href="../analysis/list.jsp">analysis list</a>. Look for id: <%= run.getId() %></p>
 					<p>At the moment, <%=queued %> analyses are waiting for the execution mode you chose.</p>
-					<p></p>
 				<%
 				}
 				else if (status == AnalysisRun.STATUS_CANCELED) {
