@@ -60,7 +60,7 @@
 				            while (clickstreamIt.hasNext())
 				            {
 				                String click = clickstreamIt.next().toString();
-				                if (re.match(click)) {
+				                if (re.match(click) && !click.contains("status-async.jsp")) {
 				                	sb.append("<strong>Visited # "+String.valueOf(x)+":</strong> "+String.valueOf(click)+ "<br />");
 				                	x++;
 				                }
