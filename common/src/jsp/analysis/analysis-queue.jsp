@@ -1,5 +1,6 @@
 <%@ page import="java.util.*" %>
 <%@ page import="java.io.*" %>
+<%@ page import="java.util.concurrent.*" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/admin-login-required.jsp" %>
@@ -13,8 +14,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 			
 <%
-List<AnalysisRun> ar = AnalysisQueue.getInstance().getQueue();
-request.setAttribute("ar", ar);
+PriorityBlockingQueue<AnalysisRun> arLocal = AnalysisPriorityBlockingQueue.getInstance().getQueueLocal();
+PriorityBlockingQueue<AnalysisRun> arNodes = AnalysisPriorityBlockingQueue.getInstance().getQueueNodes();
+PriorityBlockingQueue<AnalysisRun> arMixed = AnalysisPriorityBlockingQueue.getInstance().getQueueMixed();
+request.setAttribute("arLocal", arLocal);
+request.setAttribute("arNodes", arNodes);
+request.setAttribute("arMixed", arMixed);
 %>			
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -37,23 +42,59 @@ request.setAttribute("ar", ar);
 			</div>
 	
 			<div id="content">
-			<h1>List of analyses waiting in the queue</h1>
-			<c:if test="${ar != null }">
+			<h1>List of analyses waiting in the queue (local)</h1>
+			<c:if test="${arLocal != null }">
 				<table id="analysis-table">
 					<tr>
 						<th>Id</th>
 						<th>Owner</th>
 						<th>Type</th>
-						<th>RunMode</th>
 						<th>Time Queued</th>
 					</tr>
-					<c:forEach items="${ar}" var="ar">
+					<c:forEach items="${arLocal}" var="arLocal">
 						<tr>
-							<td>${ar.id }</td>
-							<td>${ar.attributes.owner }</td>
-							<td>${ar.attributes.type }</td>
-							<td>${ar.attributes.runMode }</td>
-							<td>${ar.attributes.queuedAt }</td>
+							<td>${arLocal.id }</td>
+							<td>${arLocal.attributes.owner }</td>
+							<td>${arLocal.attributes.type }</td>
+							<td>${arLocal.attributes.queuedAt }</td>
+						</tr>
+					</c:forEach>
+				</table>
+			</c:if>					
+			<h1>List of analyses waiting in the queue (i2u2)</h1>
+			<c:if test="${arNodes != null }">
+				<table id="analysis-table">
+					<tr>
+						<th>Id</th>
+						<th>Owner</th>
+						<th>Type</th>
+						<th>Time Queued</th>
+					</tr>
+					<c:forEach items="${arNodes}" var="arNodes">
+						<tr>
+							<td>${arNodes.id }</td>
+							<td>${arNodes.attributes.owner }</td>
+							<td>${arNodes.attributes.type }</td>
+							<td>${arNodes.attributes.queuedAt }</td>
+						</tr>
+					</c:forEach>
+				</table>
+			</c:if>					
+			<h1>List of analyses waiting in the queue (mixed)</h1>
+			<c:if test="${arMixed != null }">
+				<table id="analysis-table">
+					<tr>
+						<th>Id</th>
+						<th>Owner</th>
+						<th>Type</th>
+						<th>Time Queued</th>
+					</tr>
+					<c:forEach items="${arMixed}" var="arMixed">
+						<tr>
+							<td>${arMixed.id }</td>
+							<td>${arMixed.attributes.owner }</td>
+							<td>${arMixed.attributes.type }</td>
+							<td>${arMixed.attributes.queuedAt }</td>
 						</tr>
 					</c:forEach>
 				</table>

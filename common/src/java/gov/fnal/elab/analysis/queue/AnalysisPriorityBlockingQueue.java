@@ -9,8 +9,13 @@ import java.util.concurrent.atomic.*;
 public class AnalysisPriorityBlockingQueue implements Runnable{
 
 	private static final int QUEUE_INITIAL_CAPACITY  = 1000;
-	private PriorityBlockingQueue<AnalysisRun> analysisQueue;
-	private AnalysisRun current;
+	//runMode:local
+	private PriorityBlockingQueue<AnalysisRun> analysisQueueLocal;
+	//runMode:i2u2
+	private PriorityBlockingQueue<AnalysisRun> analysisQueueNodes;
+	//runMode:mixed
+	private PriorityBlockingQueue<AnalysisRun> analysisQueueMixed;
+	private AnalysisRun currentLocal, currentNodes, currentMixed;
 	
 	private volatile static AnalysisPriorityBlockingQueue instance = new AnalysisPriorityBlockingQueue();
 	static Thread t;
@@ -33,49 +38,88 @@ public class AnalysisPriorityBlockingQueue implements Runnable{
 				}
 			}
 		};
-		analysisQueue = new PriorityBlockingQueue<AnalysisRun>(QUEUE_INITIAL_CAPACITY, comp);
+		analysisQueueLocal = new PriorityBlockingQueue<AnalysisRun>(QUEUE_INITIAL_CAPACITY, comp);
+		analysisQueueNodes = new PriorityBlockingQueue<AnalysisRun>(QUEUE_INITIAL_CAPACITY, comp);
+		analysisQueueMixed = new PriorityBlockingQueue<AnalysisRun>(QUEUE_INITIAL_CAPACITY, comp);
 	}//end of constructor
 	
 	public void put(AnalysisRun ar) throws InterruptedException {
 		if (ar != null) {
 			ar.setInitialStatus(AnalysisRun.STATUS_QUEUED);
-			analysisQueue.put(ar);
+			String runMode = (String) ar.getAttribute("runMode");
+			if (runMode.equals("local")) {
+				analysisQueueLocal.put(ar);
+			} else {
+				if (runMode.equals("i2u2")) {
+					analysisQueueNodes.put(ar);
+				} else {
+					if (runMode.equals("mixed")) {
+						analysisQueueMixed.put(ar);
+					}
+				}
+			}
 		}
 	}//end of put
 	
-	public AnalysisRun get() throws InterruptedException {
-		return analysisQueue.take();
+	public AnalysisRun get(String runMode) throws InterruptedException {
+		AnalysisRun a = null;
+		if (runMode.equals("local")) {
+			a = analysisQueueLocal.take();
+		}
+		if (runMode.equals("i2u2")) {
+			a = analysisQueueNodes.take();
+		}
+		if (runMode.equals("mixed")) {
+			a = analysisQueueMixed.take();
+		}
+		return a;
 	}//end of get
-	
-	public boolean isEmpty() {
-		return (analysisQueue.size() == 0);
-	}//end of isEmpty
-
-	public boolean isAlive() {
-		return t.isAlive();
-	}//end of isAlive
 	
 	public void start() {
 		if (t == null) {
-			t = new Thread(instance, "Analysis Queue");
+			t = new Thread(instance, "Analysis Queue - Local, i2u2 and/or Mixed");
 			t.start();
 		}
 	}//end of start
 	
-	public PriorityBlockingQueue getQueue() {
-		return analysisQueue;
+	public PriorityBlockingQueue<AnalysisRun> getQueueLocal() {
+		return analysisQueueLocal;
+	}//end of getQueueLocal
+	
+	public PriorityBlockingQueue<AnalysisRun> getQueueNodes() {
+		return analysisQueueNodes;
+	}//end of getQueue
+	
+	public PriorityBlockingQueue<AnalysisRun> getQueueMixed() {
+		return analysisQueueMixed;
 	}//end of getQueue
 	
 	public void run() {
 		while(true) {
-			if (current == null || current.getStatus() == AnalysisRun.STATUS_CANCELED || current.isFinished() ) {
+			if (currentLocal == null || currentLocal.getStatus() == AnalysisRun.STATUS_CANCELED || currentLocal.isFinished() ) {
 				try {
-					current = get();
-					current.start();
+					currentLocal = get("local");
+					currentLocal.start();
 				} catch (Exception e) {
-					System.out.println("Exception in queue-run method: " + e.getMessage());
+					System.out.println("Exception in queue-run method (local): " + e.getMessage());
 				}
-			}
+			}//end of test for current local
+			if (currentNodes == null || currentNodes.getStatus() == AnalysisRun.STATUS_CANCELED || currentNodes.isFinished() ) {
+				try {
+					currentNodes = get("i2u2");
+					currentNodes.start();
+				} catch (Exception e) {
+					System.out.println("Exception in queue-run method (i2u2): " + e.getMessage());
+				}
+			}//end of test for current nodes
+			if (currentMixed == null || currentMixed.getStatus() == AnalysisRun.STATUS_CANCELED || currentMixed.isFinished() ) {
+				try {
+					currentMixed = get("mixed");
+					currentMixed.start();
+				} catch (Exception e) {
+					System.out.println("Exception in queue-run method (mixed): " + e.getMessage());
+				}
+			}//end of test for current mixed
 		}
 	}//end of run	
 }
