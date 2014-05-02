@@ -13,8 +13,8 @@
 		<script src="../include/elab.js"></script>
 		<script src="utils.js"></script>
 		<script src="../include/flexcroll.js"></script>
-		<script src="http://code.jquery.com/jquery-1.9.0.js"></script>
-        <script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+		<script src="https://code.jquery.com/jquery-1.9.0.js"></script>
+        <script src="https://code.jquery.com/jquery-migrate-1.0.0.js"></script>
 		<script src="../include/pre3d.js"></script>
 		<script src="../include/pre3d_shape_utils.js"></script>
 		<script src="../include/base64.js"></script>
