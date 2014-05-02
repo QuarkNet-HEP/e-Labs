@@ -70,7 +70,6 @@
 						<jsp:useBean scope="request" 
 							class="gov.fnal.elab.datacatalog.MultiSelectStructuredResultSetDisplayer" 
 							id="searchResultsDisplayer"/>
-						<center><div id="msg" style="color: red;"></div></center>							
 						<div class="search-results">
 							<jsp:include page="../data/multiselect-search-results.jsp"/>
 						</div>
@@ -79,6 +78,7 @@
 						<div id="analyze" class="study-right">
 							<h2>Analyze</h2>
 							<input type="submit" name="action" value="Run shower study"/>
+							<center><div id="msg" style="color: red;"></div></center>							
 						</div>
 						<%@ include file="help.jsp" %>
 						<%@ include file="../data/legend.jsp" %>
