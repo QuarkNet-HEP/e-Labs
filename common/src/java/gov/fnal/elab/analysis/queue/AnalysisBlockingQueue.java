@@ -6,49 +6,36 @@ import gov.fnal.elab.analysis.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
 
-public class AnalysisPriorityBlockingQueue implements Runnable {
+public class AnalysisBlockingQueue implements Runnable {
 
 	private static final int QUEUE_INITIAL_CAPACITY  = 1000;
 	//runMode:local
-	private PriorityBlockingQueue<AnalysisRun> analysisQueueLocal;
+	private BlockingQueue<AnalysisRun> analysisQueueLocal;
 	//runMode:i2u2
-	private PriorityBlockingQueue<AnalysisRun> analysisQueueNodes;
+	private BlockingQueue<AnalysisRun> analysisQueueNodes;
 	//runMode:mixed
-	private PriorityBlockingQueue<AnalysisRun> analysisQueueMixed;
+	private BlockingQueue<AnalysisRun> analysisQueueMixed;
 	
 	private AnalysisRun currentLocal, currentNodes, currentMixed;
 	private boolean keepLooping = true;
 	private StringBuilder sb = new StringBuilder();
 	
-	private volatile static AnalysisPriorityBlockingQueue instance;
+	private volatile static AnalysisBlockingQueue instance;
 	static Thread tc;
 	static { 
-		instance = new AnalysisPriorityBlockingQueue();
+		instance = new AnalysisBlockingQueue();
 		Thread t = new Thread(instance, "Analysis Queue - Local, i2u2 and/or Mixed");
 		tc = t;
 		t.start();
 	}
-	public static AnalysisPriorityBlockingQueue getInstance() {
+	public static AnalysisBlockingQueue getInstance() {
 		return instance;
 	}//end of getInstance
 	
-	public AnalysisPriorityBlockingQueue() {
-		Comparator<AnalysisRun> comp = new Comparator<AnalysisRun>() {
-			public int compare(AnalysisRun ar1, AnalysisRun ar2) {
-				int rank = getRank(ar1) - getRank(ar2);
-				return rank;
-			}
-			private int getRank(AnalysisRun run) {
-				if ("PerformanceStudy".equals(run.getAttribute("type"))) {
-					return 0;
-				} else {
-					return 1;
-				}
-			}
-		};
-		analysisQueueLocal = new PriorityBlockingQueue<AnalysisRun>(QUEUE_INITIAL_CAPACITY, comp);
-		analysisQueueNodes = new PriorityBlockingQueue<AnalysisRun>(QUEUE_INITIAL_CAPACITY, comp);
-		analysisQueueMixed = new PriorityBlockingQueue<AnalysisRun>(QUEUE_INITIAL_CAPACITY, comp);
+	public AnalysisBlockingQueue() {
+		analysisQueueLocal = new ArrayBlockingQueue<AnalysisRun>(QUEUE_INITIAL_CAPACITY);
+		analysisQueueNodes = new ArrayBlockingQueue<AnalysisRun>(QUEUE_INITIAL_CAPACITY);
+		analysisQueueMixed = new ArrayBlockingQueue<AnalysisRun>(QUEUE_INITIAL_CAPACITY);
 	}//end of constructor
 	
 	public void put(AnalysisRun ar) throws InterruptedException {
@@ -101,15 +88,15 @@ public class AnalysisPriorityBlockingQueue implements Runnable {
 		return tc;
 	}//end of getThreadStatus
 	
-	public PriorityBlockingQueue<AnalysisRun> getQueueLocal() {
+	public BlockingQueue<AnalysisRun> getQueueLocal() {
 		return analysisQueueLocal;
 	}//end of getQueueLocal
 	
-	public PriorityBlockingQueue<AnalysisRun> getQueueNodes() {
+	public BlockingQueue<AnalysisRun> getQueueNodes() {
 		return analysisQueueNodes;
 	}//end of getQueueNodes
 	
-	public PriorityBlockingQueue<AnalysisRun> getQueueMixed() {
+	public BlockingQueue<AnalysisRun> getQueueMixed() {
 		return analysisQueueMixed;
 	}//end of getQueueMixed
 	

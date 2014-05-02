@@ -14,7 +14,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 			
 <%
-Thread queueThread = AnalysisPriorityBlockingQueue.getInstance().getThread();
+Thread queueThread = AnalysisBlockingQueue.getInstance().getThread();
 StringBuilder sb = new StringBuilder();
 Map<Thread, StackTraceElement[]> st = queueThread.getAllStackTraces();
 
@@ -24,18 +24,18 @@ if (queueThread != null) {
 	sb.append("Thread Alive: " + String.valueOf(queueThread.isAlive()) + "<br />");
 	sb.append("Thread Interrupted: " + String.valueOf(queueThread.isInterrupted()) + "<br />");
 	sb.append("Thread Priority: " + String.valueOf(queueThread.getPriority()) + "<br />");
-	sb.append("Switch: " + String.valueOf(AnalysisPriorityBlockingQueue.getInstance().getSwitch()) + "<br />");
-	sb.append("Exceptions: " + AnalysisPriorityBlockingQueue.getInstance().getExceptions() + "<br />");
+	sb.append("Switch: " + String.valueOf(AnalysisBlockingQueue.getInstance().getSwitch()) + "<br />");
+	sb.append("Exceptions: " + AnalysisBlockingQueue.getInstance().getExceptions() + "<br />");
 
 }
 
-AnalysisRun local = AnalysisPriorityBlockingQueue.getInstance().getCurrent("local");
-AnalysisRun nodes = AnalysisPriorityBlockingQueue.getInstance().getCurrent("nodes");
-AnalysisRun mixed = AnalysisPriorityBlockingQueue.getInstance().getCurrent("mixed");
+AnalysisRun local = AnalysisBlockingQueue.getInstance().getCurrent("local");
+AnalysisRun nodes = AnalysisBlockingQueue.getInstance().getCurrent("nodes");
+AnalysisRun mixed = AnalysisBlockingQueue.getInstance().getCurrent("mixed");
 
-PriorityBlockingQueue<AnalysisRun> arLocal = AnalysisPriorityBlockingQueue.getInstance().getQueueLocal();
-PriorityBlockingQueue<AnalysisRun> arNodes = AnalysisPriorityBlockingQueue.getInstance().getQueueNodes();
-PriorityBlockingQueue<AnalysisRun> arMixed = AnalysisPriorityBlockingQueue.getInstance().getQueueMixed();
+BlockingQueue<AnalysisRun> arLocal = AnalysisBlockingQueue.getInstance().getQueueLocal();
+BlockingQueue<AnalysisRun> arNodes = AnalysisBlockingQueue.getInstance().getQueueNodes();
+BlockingQueue<AnalysisRun> arMixed = AnalysisBlockingQueue.getInstance().getQueueMixed();
 request.setAttribute("local", local);
 request.setAttribute("nodes", nodes);
 request.setAttribute("mixed", mixed);
@@ -66,7 +66,7 @@ request.setAttribute("threadDetails", sb.toString());
 			</div>
 	
 			<div id="content">
-			<h1>Analysis Queue Information</h1>
+			<h1>Analysis Queue Information for Flux, Shower and Lifetime (Performance is never queued)</h1>
 			<h2>Analysis Queue Thread Details</h2>
 			<p>${threadDetails }</p>
 			<h2>List of analyses waiting in the queue (local)</h2>

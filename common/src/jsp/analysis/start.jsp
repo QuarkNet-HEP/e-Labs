@@ -106,13 +106,14 @@
 	    }
 	    //remember to set this up in elab.properties as cosmic.analysis = queue
 	    String runType = elab.getProperty(elab.getName() + ".analysis");
-	    if (runType != null && runType.equals("queue")) {		
-		    if (run.getAttribute("type").equals("EventPlot") || run.getAttribute("type").equals("ProcessUpload")) {
+	    if (runType != null && runType.equals("queue")) {
+	    	String type = (String) run.getAttribute("type");
+	    	if (type.equals("EventPlot") || type.equals("ProcessUpload") || type.equals("PerformanceStudy")) { 
+	    		//start these right away
 		    	run.start();
 		    } else {
-		    	AnalysisPriorityBlockingQueue aq = AnalysisPriorityBlockingQueue.getInstance();
+		    	AnalysisBlockingQueue aq = AnalysisBlockingQueue.getInstance();
 			    aq.put(run);
-			    //aq.start();
 		    }
 	    } else {
 	    	run.start();
