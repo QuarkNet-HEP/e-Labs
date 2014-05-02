@@ -14,12 +14,36 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 			
 <%
+Thread queueThread = AnalysisPriorityBlockingQueue.getInstance().getThread();
+StringBuilder sb = new StringBuilder();
+Map<Thread, StackTraceElement[]> st = queueThread.getAllStackTraces();
+
+if (queueThread != null) {
+	sb.append("Thread Name: " + queueThread.getName() + "<br />");
+	sb.append("Thread State: " + queueThread.getState().toString() + "<br />");
+	sb.append("Thread Alive: " + String.valueOf(queueThread.isAlive()) + "<br />");
+	sb.append("Thread Interrupted: " + String.valueOf(queueThread.isInterrupted()) + "<br />");
+	sb.append("Thread Priority: " + String.valueOf(queueThread.getPriority()) + "<br />");
+	sb.append("Switch: " + String.valueOf(AnalysisPriorityBlockingQueue.getInstance().getSwitch()) + "<br />");
+	sb.append("Exceptions: " + AnalysisPriorityBlockingQueue.getInstance().getExceptions() + "<br />");
+
+}
+
+AnalysisRun local = AnalysisPriorityBlockingQueue.getInstance().getCurrent("local");
+AnalysisRun nodes = AnalysisPriorityBlockingQueue.getInstance().getCurrent("nodes");
+AnalysisRun mixed = AnalysisPriorityBlockingQueue.getInstance().getCurrent("mixed");
+
 PriorityBlockingQueue<AnalysisRun> arLocal = AnalysisPriorityBlockingQueue.getInstance().getQueueLocal();
 PriorityBlockingQueue<AnalysisRun> arNodes = AnalysisPriorityBlockingQueue.getInstance().getQueueNodes();
 PriorityBlockingQueue<AnalysisRun> arMixed = AnalysisPriorityBlockingQueue.getInstance().getQueueMixed();
+request.setAttribute("local", local);
+request.setAttribute("nodes", nodes);
+request.setAttribute("mixed", mixed);
+
 request.setAttribute("arLocal", arLocal);
 request.setAttribute("arNodes", arNodes);
 request.setAttribute("arMixed", arMixed);
+request.setAttribute("threadDetails", sb.toString());
 %>			
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -42,7 +66,10 @@ request.setAttribute("arMixed", arMixed);
 			</div>
 	
 			<div id="content">
-			<h1>List of analyses waiting in the queue (local)</h1>
+			<h1>Analysis Queue Information</h1>
+			<h2>Analysis Queue Thread Details</h2>
+			<p>${threadDetails }</p>
+			<h2>List of analyses waiting in the queue (local)</h2>
 			<c:if test="${arLocal != null }">
 				<table id="analysis-table">
 					<tr>
@@ -61,7 +88,7 @@ request.setAttribute("arMixed", arMixed);
 					</c:forEach>
 				</table>
 			</c:if>					
-			<h1>List of analyses waiting in the queue (i2u2)</h1>
+			<h2>List of analyses waiting in the queue (i2u2)</h2>
 			<c:if test="${arNodes != null }">
 				<table id="analysis-table">
 					<tr>
@@ -80,7 +107,7 @@ request.setAttribute("arMixed", arMixed);
 					</c:forEach>
 				</table>
 			</c:if>					
-			<h1>List of analyses waiting in the queue (mixed)</h1>
+			<h2>List of analyses waiting in the queue (mixed)</h2>
 			<c:if test="${arMixed != null }">
 				<table id="analysis-table">
 					<tr>
