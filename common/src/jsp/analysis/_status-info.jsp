@@ -198,7 +198,7 @@
 				<%
 				}
 				else if (status == AnalysisRun.STATUS_QUEUED) {
-			    	AnalysisPriorityBlockingQueue aq = AnalysisPriorityBlockingQueue.getInstance();
+			    	AnalysisBlockingQueue aq = AnalysisBlockingQueue.getInstance();
 					int queued = 0;
 			    	if (aq != null) {
 			    		String runMode = (String) run.getAttribute("runMode");					    
