@@ -70,7 +70,6 @@
 									id="searchResultsDisplayer"/>
 							<jsp:setProperty name="searchResultsDisplayer" property="controlName" value="file"/>
 							<jsp:setProperty name="searchResultsDisplayer" property="actionName" value="delete" />
-							<center><div id="msg" style="color: red;"></div></center>							
 							<div class="search-results">
 								<jsp:include page="../data/search-results.jsp"/>
 							</div>
@@ -80,6 +79,7 @@
 							<div id="analyze" class="study-right">
 								<h2>Analyze</h2>
 								<input type="submit" value="Delete selected data"/>
+								<center><div id="msg" style="color: red;"></div></center>							
 							</div>
 							<%@ include file="../data/legend.jsp" %>
 						</div>
