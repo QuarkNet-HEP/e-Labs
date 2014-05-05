@@ -15,6 +15,7 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="org.apache.commons.fileupload.*" %>
 <%@ page import="org.apache.commons.fileupload.disk.*" %>
+<%@ page import="org.apache.commons.fileupload.util.*" %>
 <%@ page import="org.apache.commons.fileupload.servlet.*" %>
 <%@ page import="org.apache.commons.lang.*" %>
 <%@ page import="org.apache.commons.io.*" %>
@@ -83,16 +84,18 @@ Re: the upload progress stuff
 		    		sizeThreshold, tempRepo, listener); 
 	
 	    	// Create a new file upload handler
-		    ServletFileUpload upload = new ServletFileUpload(factory);
-		    //ServletFileUpload upload = new ServletFileUpload();		
-	    	//END upload_progress_stuff
+		    ServletFileUpload upload = new ServletFileUpload();		
+	    	FileItemIterator iter = upload.getItemIterator(request);
 	    	
-			List<DiskFileItem> fileItems = upload.parseRequest(request); 
-	    	
-	    	for (DiskFileItem fi : fileItems) { 
-	    		if (fi.isFormField()) {
-	    			String name = fi.getFieldName();
-	    			String content = fi.getString();
+	    	FileItemStream item = null;
+	    	String name = "";
+	    	InputStream stream = null;
+	    	while (iter.hasNext()) {
+				item = iter.next();
+	    		if (item.isFormField()) {
+	    			name = item.getFieldName();
+	    			stream = item.openStream();
+	    			String content = Streams.asString(stream);
 	    			if ("detector".equals(name)) {
 	    				if (StringUtils.isBlank(content)) {
 	    					throw new ElabJspException("You must enter a detector number for this data.");
@@ -107,69 +110,49 @@ Re: the upload progress stuff
 	    			else if ("comments".equals(name)) {
 	    				if (StringUtils.isNotBlank(content)) {
 	    					comments = content; 
+	    		          	//EPeronja-04/28/2014: do some sanitization
+	    		          	ArrayList checkDirtyInput = as.scan(comments,policy).getErrorMessages();
+	    		          	if (!checkDirtyInput.isEmpty()) {
+	    		    			String userInput = comments;
+	    		    			int errors = as.scan(userInput, policy).getNumberOfErrors();
+	    		    			ArrayList actualErrors = as.scan(userInput, policy).getErrorMessages();
+	    		    			Iterator iterator = actualErrors.iterator();
+	    		    			String errorMessages = "";
+	    		    			while (iterator.hasNext()) {
+	    		    				errorMessages = (String) iterator.next() + ",";
+	    		    			}
+	    		    			comments = as.scan(comments, policy).getCleanHTML();
+	    				    	//send email with warning
+	    				    	String to = elab.getProperty("notifyDirtyInput");
+	    			    		String emailmessage = "", subject = "Cosmic Upload: user sent dirty input";
+	    			    		String emailBody =  "User input: "+userInput+"\n" +
+	    	    						   			"Number of errors: "+String.valueOf(errors)+"\n" +
+	    	    				   					"Error messages: "+ errorMessages + "\n" +
+	    	    				   					"Validated input: "+comments + "\n";
+	    					    try {
+	    					    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
+	    					    } catch (Exception ex) {
+	    			                System.err.println("Failed to send email");
+	    			                ex.printStackTrace();
+	    					    }		    		
+	    				  	}//end of sanitization
 	    				}
 	    			}
-	    		}
-	    	}
-			
-			for (DiskFileItem fi : fileItems) {
-				if (!fi.isFormField()) {
-					lfn = fi.getName();
-					if (StringUtils.isBlank(lfn)) {
-	                	throw new ElabJspException("Missing file.");
-	    	        }
-		            //fn is the filename without slashes (which lfn has)    	       
+	    		} else {
+					lfn = item.getName();
 		            fn = FilenameUtils.getName(lfn);
-					if (fi.getSize() == 0) {
-					    throw new ElabJspException("Your file is zero-length. You must upload a file which has some data.");
-					}
-	                //new algorithm for filenaming:
-	   	            //name the raw file id.yyyy.mmdd.index.raw and save the original name in metadata
-	       	        //index starts at 0 and increments when there are collisions with other filenames
 	                Date now = new Date();
 	                DateFormat df = new SimpleDateFormat("yyyy.MMdd");
 	                String fnow = df.format(now);
-					//even newer algorithm: use File.createTempFile!
 					File f = File.createTempFile(detectorId + "." + fnow + ".", ".raw", 
 					        new File(dataDir));
+	                FileOutputStream fos = new FileOutputStream(f);
+	    			stream = item.openStream();
+	                long fileSize = Streams.copy(stream,fos,true);
 	               	String rawName = f.getName();
-	
-	               	// write the file from memory or relocate it on disk.
-	               	if (fi.isInMemory()) {
-	               		fi.write(f);
-	               	}
-	               	else {
-	               		fi.getStoreLocation().renameTo(f);
-	               	}
-		          	//EPeronja-04/28/2014: do some sanitization
-		          	ArrayList checkDirtyInput = as.scan(comments,policy).getErrorMessages();
-		          	if (!checkDirtyInput.isEmpty()) {
-		    			String userInput = comments;
-		    			int errors = as.scan(userInput, policy).getNumberOfErrors();
-		    			ArrayList actualErrors = as.scan(userInput, policy).getErrorMessages();
-		    			Iterator iterator = actualErrors.iterator();
-		    			String errorMessages = "";
-		    			while (iterator.hasNext()) {
-		    				errorMessages = (String) iterator.next() + ",";
-		    			}
-		    			comments = as.scan(comments, policy).getCleanHTML();
-				    	//send email with warning
-				    	String to = elab.getProperty("notifyDirtyInput");
-			    		String emailmessage = "", subject = "Cosmic Upload: user sent dirty input";
-			    		String emailBody =  "User input: "+userInput+"\n" +
-	    						   			"Number of errors: "+String.valueOf(errors)+"\n" +
-	    				   					"Error messages: "+ errorMessages + "\n" +
-	    				   					"Validated input: "+comments + "\n";
-					    try {
-					    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
-					    } catch (Exception ex) {
-			                System.err.println("Failed to send email");
-			                ex.printStackTrace();
-					    }		    		
-				  	}//end of sanitization
-					
+	               		               	
 	       	        out.println("<!-- " + rawName + " added to Catalog -->");
-	       	        request.setAttribute("in", f.getAbsolutePath());
+	       	        request.setAttribute("in", f.getPath());
 	       	        request.setAttribute("detectorid", detectorId);
 	       	        request.setAttribute("comments", comments);
 	      	        request.setAttribute("benchmark", benchmark);
@@ -187,8 +170,9 @@ Re: the upload progress stuff
 						</e:analysis>
 					<%
 	
-				} //'twas a file
-			} //while through the file
+	    			
+	    		}
+	    	}
 		} catch (Exception e) {
 			exceptionMessage = "A problem occurred while uploading your file.<br />" + 
 							   "Please send an e-mail to <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> with the following error: <br />" +
