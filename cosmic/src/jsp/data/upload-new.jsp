@@ -15,6 +15,7 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="org.apache.commons.fileupload.*" %>
 <%@ page import="org.apache.commons.fileupload.disk.*" %>
+<%@ page import="org.apache.commons.fileupload.util.*" %>
 <%@ page import="org.apache.commons.fileupload.servlet.*" %>
 <%@ page import="org.apache.commons.lang.*" %>
 <%@ page import="org.apache.commons.io.*" %>
@@ -84,16 +85,18 @@ Re: the upload progress stuff
 		    		sizeThreshold, tempRepo, listener); 
 	
 	    	// Create a new file upload handler
-		    ServletFileUpload upload = new ServletFileUpload(factory);
-		    //ServletFileUpload upload = new ServletFileUpload();		
-	    	//END upload_progress_stuff
+		    ServletFileUpload upload = new ServletFileUpload();		
+	    	FileItemIterator iter = upload.getItemIterator(request);
 	    	
-			List<DiskFileItem> fileItems = upload.parseRequest(request); 
-	    	
-	    	for (DiskFileItem fi : fileItems) { 
-	    		if (fi.isFormField()) {
-	    			String name = fi.getFieldName();
-	    			String content = fi.getString();
+	    	FileItemStream item = null;
+	    	String name = "";
+	    	InputStream stream = null;
+	    	while (iter.hasNext()) {
+				item = iter.next();
+	    		if (item.isFormField()) {
+	    			name = item.getFieldName();
+	    			stream = item.openStream();
+	    			String content = Streams.asString(stream);
 	    			if ("detector".equals(name)) {
 	    				if (StringUtils.isBlank(content)) {
 	    					throw new ElabJspException("You must enter a detector number for this data.");
@@ -110,40 +113,20 @@ Re: the upload progress stuff
 	    					comments = content; 
 	    				}
 	    			}
-	    		}
-	    	}
-			
-			for (DiskFileItem fi : fileItems) {
-				if (!fi.isFormField()) {
-					lfn = fi.getName();
-					if (StringUtils.isBlank(lfn)) {
-	                	throw new ElabJspException("Missing file.");
-	    	        }
-		            //fn is the filename without slashes (which lfn has)    	       
+	    		} else {
+					lfn = item.getName();
 		            fn = FilenameUtils.getName(lfn);
-					if (fi.getSize() == 0) {
-					    throw new ElabJspException("Your file is zero-length. You must upload a file which has some data.");
-					}
-	                //new algorithm for filenaming:
-	   	            //name the raw file id.yyyy.mmdd.index.raw and save the original name in metadata
-	       	        //index starts at 0 and increments when there are collisions with other filenames
 	                Date now = new Date();
 	                DateFormat df = new SimpleDateFormat("yyyy.MMdd");
 	                String fnow = df.format(now);
-					//even newer algorithm: use File.createTempFile!
 					File f = File.createTempFile(detectorId + "." + fnow + ".", ".raw", 
 					        new File(dataDir));
+	                FileOutputStream fos = new FileOutputStream(f);
+	    			stream = item.openStream();
+	                long fileSize = Streams.copy(stream,fos,true);
 	               	String rawName = f.getName();
-	
-	               	// write the file from memory or relocate it on disk.
-	               	if (fi.isInMemory()) {
-	               		fi.write(f);
-	               	}
-	               	else {
-	               		fi.getStoreLocation().renameTo(f);
-	               	}
-
-	               	//EPeronja-04/28/2014: do some sanitization before passing the comments
+	               		               	
+		          	//EPeronja-04/28/2014: do some sanitization before sending the comments
 		          	ArrayList checkDirtyInput = as.scan(comments,policy).getErrorMessages();
 		          	if (!checkDirtyInput.isEmpty()) {
 		    			String userInput = comments;
@@ -169,9 +152,9 @@ Re: the upload progress stuff
 			                ex.printStackTrace();
 					    }		    		
 				  	}//end of sanitization
-					
-	       	        out.println("<!-- " + rawName + " added to Catalog -->");
-	       	        request.setAttribute("in", f.getAbsolutePath());
+
+	               	out.println("<!-- " + rawName + " added to Catalog -->");
+	       	        request.setAttribute("in", f.getPath());
 	       	        request.setAttribute("detectorid", detectorId);
 	       	        request.setAttribute("comments", comments);
 	      	        request.setAttribute("benchmark", benchmark);
@@ -189,16 +172,16 @@ Re: the upload progress stuff
 						</e:analysis>
 					<%
 	
-				} //'twas a file
-			} //while through the file
+	    			
+	    		}
+	    	}
 		} catch (Exception e) {
 			exceptionMessage = "A problem occurred while uploading your file.<br />" + 
 							   "Please send an e-mail to <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> with the following error: <br />" +
 								e.toString();
 		}
 		long lEndTime = new Date().getTime();
-		session.setAttribute("uploadtime", "Upload with traditional API took: " +String.valueOf(lEndTime - lStartTime)+ " milliseconds");
-
+		session.setAttribute("uploadtime", "Upload with streaming API took: " +String.valueOf(lEndTime - lStartTime)+ " milliseconds");
 	} //end "if form has a file to upload"
 		else {
 			
