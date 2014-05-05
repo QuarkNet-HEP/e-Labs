@@ -196,20 +196,6 @@
 						</e:hidden>
 					</e:vswitch>
 				<%
-				}
-				else if (status == AnalysisRun.STATUS_QUEUED) {
-			    	AnalysisPriorityBlockingQueue aq = AnalysisPriorityBlockingQueue.getInstance();
-					int queued = 0;
-			    	if (aq != null) {
-						queued = aq.getQueue().size();
-					}
-				%>
-					<H1>The study was queued</H1> 
-					<p>We added your analysis to a queue. Check the <a href="../analysis/list.jsp">analysis list</a>. Look for id: <%= run.getId() %></p>
-					<p>At the moment, <%=queued %> analyses are waiting.</p>
-					<p></p>
-				<%
-				}
 				else if (status == AnalysisRun.STATUS_CANCELED) {
 					%> <h1>The study was canceled</h1> <%
 				}
