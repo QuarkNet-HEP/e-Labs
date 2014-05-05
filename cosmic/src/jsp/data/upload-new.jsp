@@ -181,7 +181,7 @@ Re: the upload progress stuff
 								e.toString();
 		}
 		long lEndTime = new Date().getTime();
-		session.setAttribute("uploadtime", "Upload with streaming API took: " +String.valueOf(lEndTime - lStartTime)+ " milliseconds");
+		session.setAttribute("uploadtimestreaming", "Upload with upload-new.jsp took: " +String.valueOf(lEndTime - lStartTime)+ " milliseconds");
 	} //end "if form has a file to upload"
 		else {
 			
