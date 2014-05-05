@@ -19,7 +19,7 @@
 		<title>Cosmic Teacher Page</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
-	<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/elab.js"></script>
+	<script type="text/javascript" src="../include/elab.js"></script>
 	<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 	
 <script type="text/javascript">
@@ -85,11 +85,11 @@
 				<div id="all-h" style="text-align:center; visibility:hidden; display: none"><a href="#" onclick="HideShow('all-v');HideShow('all-h');hideAll(1,9);return false;">Collapse All Topics</a></div>
 
 				<div id="vsId1-v" style="visibility:hidden; display: none">
-					<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
+					<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
 				</div>
 				
 				<div id="vsId1-h" style="visibility:visible; display">
-					<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
+					<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
 					<p>
 						Working in a research group, students experience the environment of scientific collaborations 
 						in this series of investigations into high-energy cosmic rays. 
@@ -121,10 +121,10 @@
 				</div>
 					
 				<div id="vsId2-v" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Introduction to Cosmic Ray Research</h2></a>
+				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="../graphics/Tright.gif" alt=" " border="0" /> Introduction to Cosmic Ray Research</h2></a>
 									</div>
 				<div id="vsId2-h" style="visibility:visible; display">
-				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Introduction to Cosmic Ray Research</h2></a>
+				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="../graphics/Tdown.gif" alt=" " border="0" /> Introduction to Cosmic Ray Research</h2></a>
 				<p>
 					Cosmic rays are typically protons, neutrons, gamma rays or other 
 					particles that originate in any number of astronomical objects. 
@@ -155,10 +155,10 @@
 					</div>
 				
 				<div id="vsId3-v" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Good Research Questions</h2></a>
+				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="../graphics/Tright.gif" alt=" " border="0" /> Good Research Questions</h2></a>
 									</div>
 				<div id="vsId3-h" style="visibility:visible; display">
-				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Good Research Questions</h2></a>
+				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="../graphics/Tdown.gif" alt=" " border="0" /> Good Research Questions</h2></a>
 				<p>
 					How much area can a cosmic ray shower cover? Where do cosmic 
 					rays come from? Students can pose a number of questions and 
@@ -179,10 +179,10 @@
 				
 				</div>
 				<div id="vsId4-v" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
+				<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="../graphics/Tright.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
 						</div>
 						<div id="vsId4-h" style="visibility:visible; display">
-				<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
+				<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="../graphics/Tdown.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
 				<p>
 					Before doing this project, students should know how to: 
 				</p>
@@ -200,10 +200,10 @@
 					</div>
 					
 					<div id="vsId5-v" style="visibility:hidden; display: none">
-					<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
+					<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="../graphics/Tright.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
 							</div>
 							<div id="vsId5-h" style="visibility:visible; display">
-					<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
+					<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="../graphics/Tdown.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
 					<p>
 						Students will know and be able to: 
 					</p>
@@ -267,11 +267,11 @@
 					</div>
 				
 				<div id="vsId6-v" style="visibility:hidden; display: none">
-					<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
+					<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="../graphics/Tright.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
 				</div>
 				
 				<div id="vsId6-h" style="visibility:visible; display">
-					<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
+					<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="../graphics/Tdown.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
 					<div style="margin-left: 20px">
 						<p>A good way to begin cosmic ray studies is to invite the class to watch Cool Science together. Play the <a href="/elab/cosmic/home/cool-science.jsp">Standalone Movie</a> and enlarge the window.</p>
 						<%--<p>Questions to ask students? How to motivate students. BOB</p>--%>
@@ -363,14 +363,14 @@
 				<h2>&nbsp;&nbsp;&nbsp;<a href="web-guide.jsp">Navigating Students Through the e-Lab</a></h2>
 
 				<div id="vsId7-v" style="visibility:hidden; display: none">
-					<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Help Desk &amp; Sharing Ideas</h2></a>
+					<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="../graphics/Tright.gif" alt=" " border="0" /> Help Desk &amp; Sharing Ideas</h2></a>
 				</div>
 				<div id="vsId7-h" style="visibility:visible; display">
-					<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Help Desk &amp; Sharing Ideas</h2></a>
+					<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="../graphics/Tdown.gif" alt=" " border="0" /> Help Desk &amp; Sharing Ideas</h2></a>
 					<p>
 						<table style="margin-left:20px">
 							<tr>
-								<td>Use the <a href="/elab/cosmic/teacher/forum/HelpDeskRequest.php?elab=cosmic" class="external text" title="http://www.i2u2.org/elab/cosmic/teacher/forum/HelpDeskRequest.php?elab=Cosmic" rel="nofollow">Help Desk Form</a> to get technical assistance from I2U2 staff. Click on the lifesaver
+								<td>Use the <a href="/elab/cosmic/teacher/forum/HelpDeskRequest.php?elab=cosmic" class="external text" title="/elab/cosmic/teacher/forum/HelpDeskRequest.php?elab=Cosmic" rel="nofollow">Help Desk Form</a> to get technical assistance from I2U2 staff. Click on the lifesaver
 					     			icon in the upper right hand corner of the teacher pages when you are logged in.
 					     		</td>
 					     		<td><img src="../graphics/Lifesaver.png" /></td>
@@ -384,10 +384,10 @@
 				</div>
 			
 				<div id="vsId8-v" style="visibility:hidden; display: none">
-					<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
+					<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
 				</div>
 				<div id="vsId8-h" style="visibility:visible; display:">
-					<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
+					<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="../graphics/Tdown.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
 					<p>Relax!  The e-Lab requires Javascript and Plug-ins enabled in your Web browser. Most browsers default to these settings.</p>  
 					<ul>
 						<li>If Javascript is not enabled, you will see a message on the student home page and at the top of this page.</li>
