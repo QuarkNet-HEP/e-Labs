@@ -138,6 +138,7 @@
 		else {
 		    request.setAttribute("geoFileExists", Boolean.FALSE);
 		}
+	}
 %>
     	
     	<c:choose>
@@ -155,7 +156,7 @@
     		</c:otherwise>
     	</c:choose>
     	<hr/>
-    	<h2>File Summary:</h2>
+    	<h2>File Summary for DAQ: <%=detectorId %></h2>
     
     	Your data was split into ${lfnssz} ${lfnssz == 1 ? 'day' : 'days'} spanning from:<br/>
     	${entry.tupleMap.startdate} to ${entry.tupleMap.enddate}<br/>
