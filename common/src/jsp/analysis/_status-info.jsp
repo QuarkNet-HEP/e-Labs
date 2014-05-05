@@ -31,7 +31,6 @@
 				if (status == AnalysisRun.STATUS_FAILED || showStatus != null) {
 				    Throwable e = run.getException();
 				    String message = e == null ? "Unknown error. See output for details." : e.getMessage();
-					String uploadtime = (String) session.getAttribute("uploadtime");
 				    %>
 						<%
 							if (showStatus == null) {
@@ -101,7 +100,6 @@
 								<td>&nbsp;</td>
 							</tr>
 						</table>
-						${uploadtime} <br />
 						Elapsed time: <span id="elapsed-time">${run.formattedRunTime}</span>; 
 						estimated: ${run.formattedEstimatedRunTime}
 						<div id="error-text" style="background: #ffaf70"></div>
