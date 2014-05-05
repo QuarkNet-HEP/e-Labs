@@ -41,32 +41,36 @@
                 Iterator it = clickstreams.keySet().iterator();
                 while (it.hasNext())
                 {
-                    String streamkey = (String)it.next();
-                    if (streamkey.equals(s.getId())) {
-	                    Clickstream stream = (Clickstream)clickstreams.get(s.getId());
-	                    sb.append("<strong>Time Started:</strong> "+String.valueOf(stream.getStart())+ "<br />");
-	                    sb.append("<strong>Last Request:</strong> "+String.valueOf(stream.getLastRequest())+ "<br />");
-	                    long streamLength = stream.getLastRequest().getTime() - stream.getStart().getTime();
-	                    sb.append("<strong>Session Length:</strong> "+String.valueOf((streamLength > 3600000 ?
-				        		" " + (streamLength / 3600000) + " hours" : "") +
-				        	(streamLength > 60000 ?
-				        		" " + ((streamLength / 60000) % 60) + " minutes" : "") +
-				        	(streamLength > 1000 ?
-				        		" " + ((streamLength / 1000) % 60) + " seconds" : ""))+ "<br />");
-					   sb.append("<strong># of Requests:</strong> "+String.valueOf(stream.getStream().size())+ "<br />");
-					    synchronized(stream) {
-				            Iterator clickstreamIt = stream.getStream().iterator();						
-				            int x = 1;
-				            while (clickstreamIt.hasNext())
-				            {
-				                String click = clickstreamIt.next().toString();
-				                if (re.match(click) && !click.contains("status-async.jsp")) {
-				                	sb.append("<strong>Visited # "+String.valueOf(x)+":</strong> "+String.valueOf(click)+ "<br />");
-				                	x++;
-				                }
-						    }
-						 }
-					}
+                	try {
+	                    String streamkey = (String)it.next();
+	                    if (streamkey.equals(s.getId())) {
+		                    Clickstream stream = (Clickstream)clickstreams.get(s.getId());
+		                    sb.append("<strong>Time Started:</strong> "+String.valueOf(stream.getStart())+ "<br />");
+		                    sb.append("<strong>Last Request:</strong> "+String.valueOf(stream.getLastRequest())+ "<br />");
+		                    long streamLength = stream.getLastRequest().getTime() - stream.getStart().getTime();
+		                    sb.append("<strong>Session Length:</strong> "+String.valueOf((streamLength > 3600000 ?
+					        		" " + (streamLength / 3600000) + " hours" : "") +
+					        	(streamLength > 60000 ?
+					        		" " + ((streamLength / 60000) % 60) + " minutes" : "") +
+					        	(streamLength > 1000 ?
+					        		" " + ((streamLength / 1000) % 60) + " seconds" : ""))+ "<br />");
+						   sb.append("<strong># of Requests:</strong> "+String.valueOf(stream.getStream().size())+ "<br />");
+						    synchronized(stream) {
+					            Iterator clickstreamIt = stream.getStream().iterator();						
+								String lastLink = "";
+					            while (clickstreamIt.hasNext())
+					            {
+						            String click = clickstreamIt.next().toString();
+					                if (re.match(click) && !click.contains("status-async.jsp")) {
+					                	lastLink = click;
+					                }
+							    }
+				                sb.append("<strong>Last Link Visited:</strong> "+lastLink+ "<br />");
+							 }//end of second synchronized stream
+						}
+                	} catch (Exception ex) {
+                		System.out.println("Exception in session-tracking.jsp: " + ex.getMessage());
+                	}
 				}
 			}//end of first synchronized							            		
 		}	    
