@@ -74,6 +74,10 @@ public class AnalysisTools {
                 return "Failed";
             case AnalysisRun.STATUS_COMPLETED:
                 return "Completed";
+            case AnalysisRun.STATUS_QUEUED:
+            	return "Queued";
+            case AnalysisRun.STATUS_DELAYED:
+                return "Running";
             default:
                 return "Unknown";
         }
@@ -91,6 +95,10 @@ public class AnalysisTools {
                 return 0.0;
             case AnalysisRun.STATUS_NONE:
                 return 0.0;
+            case AnalysisRun.STATUS_QUEUED:
+            	return 0.0;
+            case AnalysisRun.STATUS_DELAYED:
+                return 0.9;
             default:
                 return 0.0;
         }
