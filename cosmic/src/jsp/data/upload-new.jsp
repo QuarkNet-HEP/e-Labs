@@ -80,10 +80,6 @@ Re: the upload progress stuff
 		    //BEGIN upload_progress_stuff
 		    UploadListener listener = new UploadListener(request, 0);
 	
-		    // Create a factory for disk-based file items
-		    FileItemFactory factory = new NewLineConvertingMonitoredDiskFileItemFactory(
-		    		sizeThreshold, tempRepo, listener); 
-	
 	    	// Create a new file upload handler
 		    ServletFileUpload upload = new ServletFileUpload();		
 	    	FileItemIterator iter = upload.getItemIterator(request);
@@ -115,6 +111,9 @@ Re: the upload progress stuff
 	    			}
 	    		} else {
 					lfn = item.getName();
+					if (StringUtils.isBlank(lfn)) {
+	                	throw new ElabJspException("Missing file.");
+	    	        }
 		            fn = FilenameUtils.getName(lfn);
 	                Date now = new Date();
 	                DateFormat df = new SimpleDateFormat("yyyy.MMdd");
@@ -124,6 +123,9 @@ Re: the upload progress stuff
 	                FileOutputStream fos = new FileOutputStream(f);
 	    			stream = item.openStream();
 	                long fileSize = Streams.copy(stream,fos,true);
+	                if (fileSize == 0) {
+					    throw new ElabJspException("Your file is zero-length. You must upload a file which has some data.");
+	                }
 	               	String rawName = f.getName();
 	               		               	
 		          	//EPeronja-04/28/2014: do some sanitization before sending the comments
@@ -181,7 +183,12 @@ Re: the upload progress stuff
 								e.toString();
 		}
 		long lEndTime = new Date().getTime();
-		session.setAttribute("uploadtimestreaming", "Upload with upload-new.jsp took: " +String.valueOf(lEndTime - lStartTime)+ " milliseconds");
+		ArrayList<String> streaming = (ArrayList<String>) session.getAttribute("uploadstreaming");
+		if (streaming == null) {
+			streaming = new ArrayList<String>();
+		}
+		streaming.add("Upload with upload-new.jsp took: " +String.valueOf(lEndTime - lStartTime)+ " milliseconds");
+		session.setAttribute("uploadstreaming", streaming);
 	} //end "if form has a file to upload"
 		else {
 			

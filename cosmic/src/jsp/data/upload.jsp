@@ -197,7 +197,12 @@ Re: the upload progress stuff
 								e.toString();
 		}
 		long lEndTime = new Date().getTime();
-		session.setAttribute("uploadtimetraditional", "Upload with upload.jsp took: " +String.valueOf(lEndTime - lStartTime)+ " milliseconds");
+		ArrayList<String> traditional = (ArrayList<String>) session.getAttribute("uploadtraditional");
+		if (traditional == null) {
+			traditional = new ArrayList<String>();
+		}
+		traditional.add("Upload with upload.jsp took: " +String.valueOf(lEndTime - lStartTime)+ " milliseconds");
+		session.setAttribute("uploadtraditional", traditional);
 
 	} //end "if form has a file to upload"
 		else {
