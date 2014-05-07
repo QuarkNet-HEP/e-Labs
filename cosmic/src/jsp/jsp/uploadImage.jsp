@@ -1,9 +1,12 @@
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="org.apache.commons.fileupload.*" %>
+<%@ page import="gov.fnal.elab.*" %>
+<%@ page import="gov.fnal.elab.util.*" %>
 <%@ include file="common.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
-<%@ page import="org.owasp.validator.html.*" %>
+<%@ include file="../include/elab.jsp" %>
+
 <%
 String name = "";           //user-input name of file, stored in metadata
 String filename = "";       //unique name to be generated and saved in rc.data
@@ -13,8 +16,8 @@ String ret = "";            //string which is returned to the user after an atte
 boolean valid = true;       //false if there's any errors
 String comments = "";       //optional comments on file
 DiskFileUpload fu = new DiskFileUpload();
-Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
-AntiSamy as = new AntiSamy();
+//Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
+//AntiSamy as = new AntiSamy();
 
 if (fu.isMultipartContent(request)) {
     fu.setSizeMax(10 * 1024 * 1024);    //10MB max
@@ -143,6 +146,8 @@ if (fu.isMultipartContent(request)) {
             
             comments = comments.replaceAll("\r\n?", "\\\\n");   //replace new lines from text box with "\n"
           	//EPeronja-04/28/2014: do some sanitization
+          	comments=ElabUtil.stringSanitization(comments, elab, "Upload Images");
+          	/*
           	ArrayList checkDirtyInput = as.scan(comments,policy).getErrorMessages();
           	if (!checkDirtyInput.isEmpty()) {
     			String userInput = comments;
@@ -168,7 +173,7 @@ if (fu.isMultipartContent(request)) {
 	                ex.printStackTrace();
 			    }		    		
 		  	}//end of sanitization
-            
+            */
             meta.add("comments string " + comments);
             Date now = new Date();
             long millisecondsSince1970 = now.getTime();

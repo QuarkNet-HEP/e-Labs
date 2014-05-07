@@ -23,7 +23,7 @@
 <%@ page import="gov.fnal.elab.cosmic.beans.Geometries" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
-<%@ page import="org.owasp.validator.html.*" %>
+
 <%--
 Re: the upload progress stuff
 
@@ -70,8 +70,8 @@ Re: the upload progress stuff
 	int sizeThreshold = 0; 
 	String exceptionMessage = "";
 	List splits = new ArrayList();  //for both the split name and the channel validity information
-	Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
-	AntiSamy as = new AntiSamy();
+	//Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
+	//AntiSamy as = new AntiSamy();
 
 	if (ServletFileUpload.isMultipartContent(request)) {
 		long lStartTime = new Date().getTime();
@@ -142,7 +142,8 @@ Re: the upload progress stuff
 	               	else {
 	               		fi.getStoreLocation().renameTo(f);
 	               	}
-
+					comments = ElabUtil.stringSanitization(comments, elab, "Cosmic Upload");
+					/*
 	               	//EPeronja-04/28/2014: do some sanitization before passing the comments
 		          	ArrayList checkDirtyInput = as.scan(comments,policy).getErrorMessages();
 		          	if (!checkDirtyInput.isEmpty()) {
@@ -169,7 +170,7 @@ Re: the upload progress stuff
 			                ex.printStackTrace();
 					    }		    		
 				  	}//end of sanitization
-					
+					*/
 	       	        out.println("<!-- " + rawName + " added to Catalog -->");
 	       	        request.setAttribute("in", f.getAbsolutePath());
 	       	        request.setAttribute("detectorid", detectorId);
