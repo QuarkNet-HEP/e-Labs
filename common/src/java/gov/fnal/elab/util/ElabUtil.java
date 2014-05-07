@@ -53,6 +53,7 @@ import org.griphyn.vdl.classes.Definition;
 import org.griphyn.vdl.dbschema.Annotation;
 import org.griphyn.vdl.dbschema.AnnotationSchema;
 import org.griphyn.vdl.directive.Delete;
+import org.owasp.validator.html.*;
 
 public class ElabUtil {
 
@@ -766,6 +767,56 @@ public class ElabUtil {
         }
         return sb.toString();
     }
+    private static Policy policy;
+
+    static {
+    	try {
+    		policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
+    	} catch (Exception ex) {
+            System.err.println("Failed to instantiate antisamy policy in ElabUtil");
+            ex.printStackTrace();    		   		
+    	}
+    }   
+    
+    public static String stringSanitization(String userInput, Elab elab, String where) {
+    	String cleanInput = "";
+    	try {
+	    	AntiSamy as = new AntiSamy(); 
+	    	//EPeronja-04/28/2014: do some sanitization
+			cleanInput = userInput;
+			if (policy != null) {
+		    	ArrayList checkDirtyInput = as.scan(userInput,policy).getErrorMessages();
+		    	if (!checkDirtyInput.isEmpty()) {
+	    			int errors = as.scan(userInput, policy).getNumberOfErrors();
+	    			ArrayList actualErrors = as.scan(userInput, policy).getErrorMessages();
+	    			Iterator iterator = actualErrors.iterator();
+	    			String errorMessages = "";
+	    			while (iterator.hasNext()) {
+	    				errorMessages = (String) iterator.next() + ",";
+	    			}
+	    			cleanInput = as.scan(cleanInput, policy).getCleanHTML();
+			    	//send email with warning
+			    	String to = elab.getProperty("notifyDirtyInput");
+			    	if (to == null) {
+			    		to = "help@i2u2.org";
+			    	}
+		    		String emailmessage = "", subject = where + " Add comments: user sent dirty input";
+		    		String emailBody =  "User input: "+userInput+"\n" +
+						   			"Number of errors: "+String.valueOf(errors)+"\n" +
+				   					"Error messages: "+ errorMessages + "\n" +
+				   					"Validated input: "+cleanInput + "\n";
+				    try {
+				    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
+				    } catch (Exception ex) {
+		                System.err.println("Failed to send email");
+		                ex.printStackTrace();
+				    }		    		
+		    	}//end of checking dirty input
+		   }//end of checking policy for null
+    	} catch (Exception e) {
+    	}
+    	return cleanInput;
+    }//end of stringSanitization
     
     @Deprecated public static String escapePoster(String unescaped) {
     	String escaped = unescaped.replaceAll(Pattern.quote("\'"), "&#39;");
