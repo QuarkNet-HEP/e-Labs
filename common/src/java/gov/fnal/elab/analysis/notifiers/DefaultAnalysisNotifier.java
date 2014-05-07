@@ -28,7 +28,12 @@ public class DefaultAnalysisNotifier implements AnalysisRunListener, AnalysisNot
 		    //EP-send an email when an analysis fails
             if (AnalysisRun.STATUS_FAILED == status) {
             	Throwable e = run.getException();
-            	String to = elab.getProperty(elab.getName() + ".notifyAnalysisFailure");
+            	String to = elab.getProperty(elab.getName() + ".notifyAnalysisFailureTO");
+            	if (to == null) {
+            		to="help@i2u2.org";
+            	}
+            	String cc = elab.getProperty(elab.getName() + ".notifyAnalysisFailureCC");
+
 			    String emailmessage = "", subject = "Job Id: " + run.getId()+" - Cosmic Analysis failed to complete properly";
 			    String emailBody = "MESSAGE: "+e.getMessage()+"\n" +
 			    				   "ERROR: "+run.getSTDERR() +"\n" +
@@ -36,6 +41,9 @@ public class DefaultAnalysisNotifier implements AnalysisRunListener, AnalysisNot
 			    				   "DEBUGGING INFO: "+run.getDebuggingInfo() + "\n";
 			    try {
 			    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
+	            	if (cc != null) {
+	            		result = elab.getUserManagementProvider().sendEmail(cc, subject, emailBody);
+	            	}
 			    } catch (Exception ex) {
 	                System.err.println("Failed to send email");
 	                ex.printStackTrace();
