@@ -2,10 +2,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.*" %>
+<%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="gov.fnal.elab.notifications.*" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/teacher-login-required.jsp" %>
-<%@ page import="org.owasp.validator.html.*" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="gov.fnal.elab.usermanagement.*" %>
 <%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
@@ -55,10 +55,12 @@
 		message = message.replaceAll("</p>", "");
 	
 	    //message = message.substring("<p>".length(), message.length() - "</p>".length());
-	    Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
-		AntiSamy as = new AntiSamy();
+	    //Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
+		//AntiSamy as = new AntiSamy();
 		//message = as.scan(message, policy).getCleanHTML();
 	    //EPeronja-04/28/2014: Add string sanitization
+	    message=ElabUtil.stringSanitization(message, elab, "Notifications");
+		/*
         ArrayList checkDirtyInput = as.scan(message,policy).getErrorMessages();
         if (!checkDirtyInput.isEmpty()) {
    			String userInput = message;
@@ -83,7 +85,8 @@
                 System.err.println("Failed to send email");
                 ex.printStackTrace();
 		    }		    		
-	  	}//end of sanitization			
+	  	}//end of sanitization
+	  	*/
 	    boolean expirestoggle = request.getParameter("expirestoggle") != null 
 	    	&& request.getParameter("expirestoggle").length() > 0;
 	    String expiresvalue = request.getParameter("expiresvalue");

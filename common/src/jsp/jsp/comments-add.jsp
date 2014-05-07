@@ -11,9 +11,9 @@
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="gov.fnal.elab.*" %>
+<%@ page import="gov.fnal.elab.util.*" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
-<%@ page import="org.owasp.validator.html.*" %>
 
 <!-- EPeronja-07/22/2013: 556- Cosmic data search: requests from fellows 07/10/2013 replaced add-comments.jsp, lots of spaghetti code -->
 <html>
@@ -31,8 +31,8 @@
 </head>
 <body>
 <%
-		Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
-		AntiSamy as = new AntiSamy();
+		//Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
+		//AntiSamy as = new AntiSamy();
 
 		String fileType=request.getParameter("t");
 		String referer = request.getParameter("referer");
@@ -112,6 +112,8 @@
    		          if (comments.length() > 0) {breakString="<BR>";}
 		          String commenter=request.getParameter("commenter");
 		          commentsNew=request.getParameter("commentsNew");
+				  commentsNew=ElabUtil.stringSanitization(commentsNew, elab, headerType);
+		          /*
 		          //EPeronja-04/28/2014: do some sanitization
 		          ArrayList checkDirtyInput = as.scan(commentsNew,policy).getErrorMessages();
 		          if (!checkDirtyInput.isEmpty()) {
@@ -138,7 +140,7 @@
 			                ex.printStackTrace();
 					    }		    		
 				  }//end of sanitization
-				  
+*/				  
   		          // add combined new and old comments to metadata if new comments
 	              if (commentsNew.length()>1)
                   {

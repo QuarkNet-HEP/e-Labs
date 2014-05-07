@@ -7,7 +7,6 @@
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
-<%@ page import="org.owasp.validator.html.*" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="org.apache.commons.codec.net.URLCodec" %>
@@ -37,8 +36,8 @@
 
 
 <%
-	Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
-	AntiSamy as = new AntiSamy(); 
+	//Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
+	//AntiSamy as = new AntiSamy(); 
 	
 	String title = "Make/Edit Poster";
 	Date now = new Date();
@@ -112,7 +111,13 @@
 	    	val = entry.getValue()[0].trim(); 
 	    	name = entry.getKey();
 	    	if (!val.equals(selectDefault) && re.match(name)) {  
-		    	//var = as.scan(val, policy).getCleanHTML();
+	    		if (val.contains("/elab/capture/img/")) {
+	    	    	val = ElabUtil.escapePoster(val); 
+	    		} else {
+			    	val = ElabUtil.stringSanitization(val, elab, "Posters");
+	    		}
+		    	pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
+		    	/*
 		    	ArrayList checkDirtyInput = as.scan(val, policy).getErrorMessages();
 		    	//there wasn't any dirty input
 		    	if (checkDirtyInput.isEmpty()) {
@@ -153,6 +158,7 @@
 				    	//throw new ElabJspException("There is a problem with this string: " + val + ". Bailing out.");		    	
 		    		}
 		    	}
+*/
 	    	}
 	    }
 	    
