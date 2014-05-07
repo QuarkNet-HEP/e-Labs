@@ -202,9 +202,9 @@ public class GeoEntryBean implements Serializable {
     }
 
     public String getFormattedLatitude() {
-        if (latitude.matches("-?\\d{1,3}:\\d{1,3}\\.\\d{1,4}"))
+        if (latitude.matches("-?\\d{1,3}:\\d{1,3}\\.\\d{1,6}"))
             return latitude;
-        else if (latitude.matches("\\d{1,3}:\\d{1,3}\\.\\d{1,4} (N|S)")) {
+        else if (latitude.matches("\\d{1,3}:\\d{1,3}\\.\\d{1,6} (N|S)")) {
             char direction = latitude.charAt(latitude.length() - 1);
             String tmp = latitude.substring(0, latitude.length() - 2);
             if (direction == 'N')
@@ -228,9 +228,9 @@ public class GeoEntryBean implements Serializable {
     }
 
     public String getFormattedLongitude() {
-        if (longitude.matches("-?\\d{1,3}:\\d{1,3}\\.\\d{1,4}"))
+        if (longitude.matches("-?\\d{1,3}:\\d{1,3}\\.\\d{1,6}"))
             return longitude;
-        else if (longitude.matches("\\d{1,3}:\\d{1,3}\\.\\d{1,4} (E|W)")) {
+        else if (longitude.matches("\\d{1,3}:\\d{1,3}\\.\\d{1,6} (E|W)")) {
             char direction = longitude.charAt(longitude.length() - 1);
             String tmp = longitude.substring(0, longitude.length() - 2);
             if (direction == 'E')
@@ -475,7 +475,7 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isLatitudeValid() {
         if (latitude == null
-                || !latitude.matches("\\d{1,3}:\\d{1,3}\\.\\d{1,4} (N|S)")) {
+                || !latitude.matches("\\d{1,3}:\\d{1,3}\\.\\d{1,6} (N|S)")) {
             addError(GeometryErrors.ERROR_LATITUDE);
             return false;
         }
@@ -486,7 +486,7 @@ public class GeoEntryBean implements Serializable {
 
     public boolean isLongitudeValid() {
         if (longitude == null
-                || !longitude.matches("\\d{1,3}:\\d{1,3}\\.\\d{1,4} (E|W)")) {
+                || !longitude.matches("\\d{1,3}:\\d{1,3}\\.\\d{1,6} (E|W)")) {
             addError(GeometryErrors.ERROR_LONGITUDE);
             return false;
         }

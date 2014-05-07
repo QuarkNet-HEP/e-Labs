@@ -1,8 +1,8 @@
 <jsp:useBean id="errs" scope="request" class="gov.fnal.elab.cosmic.beans.GeometryErrors" />
 <e:useBean bean="${geoEntry}">
+    <%@ include file="check-metadata.jspf" %>
 	<c:choose>
-		<c:when test="${param.commit == null || !geoEntry.valid}">
-		
+		<c:when test="${param.commit == null || !geoEntry.valid || message != null }" >
 	<form method="post">
 		<e:trinput type="hidden" name="detectorID"/>
 	
@@ -86,7 +86,7 @@
                         Latitude: <e:trinput type="text" name="latitude" size="15" disabled="${ro}" />
                         <br>
                         <c:if test="${!ro}">
-                        	<span style="font-size: 90%">e.g., 47:39.2347 N</font>
+                        	<span style="font-size: 90%">e.g., 47:39.234736 N</font>
                         </c:if>
                     </td>
                     <td>
@@ -102,7 +102,7 @@
                         Altitude (m): <e:trinput type="text" name="altitude" size="3" disabled="${ro}" />
                     </td>
                     <td>
-                        GPS Cable Length (m): <e:trinput type="text" name="gpsCableLength" size="4" disabled="${ro}" />
+                        GPS Cable Length (m): <e:trinput type="text" name="gpsCableLength" size="6" disabled="${ro}" />
                     </td>
                 </tr>
             </table>
@@ -128,6 +128,10 @@
         </c:if>
         <c:if test="${!ro}">
         	<center>
+               <c:if test="${message != null}" >
+                <p><font style="color: red;">${message} data file(s) will be affected by this change.
+                    Are you sure you want to commit? <input type="checkbox" name="commitCheck" id="commitCheck" /> </p>
+               </c:if>        	
             	<input type="submit" name="commit" value="Commit Geometry">
 			</center>
 		</c:if>
