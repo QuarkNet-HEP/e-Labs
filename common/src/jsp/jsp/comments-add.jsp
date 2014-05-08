@@ -30,7 +30,7 @@
 	</script>
 </head>
 <body>
-<%
+<% 
 		//Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
 		//AntiSamy as = new AntiSamy();
 
@@ -170,12 +170,15 @@
 		  	<td><a href="javascript:goBackAndRefresh();">Go Back</a></td>
 		  </tr>
 		  <tr><td class="<%=barStyle%>"><font FACE=ARIAL COLOR=000000><strong>Comments for file <%=fileName%></strong></font></td></tr>
+		  <% if (!user.isGuest()) { %>
+		  
           <tr><td>
 			  <ul>
 				   <li> Add your comments in the New Comments field.
 		 		   <li> Click <b>Add Comments</b>.
 			  </ul> 
-	      </td></tr>	
+	      </td></tr>
+	      <% } %>	
 	</table>
     <form method=get name="commentAdd">
         <table cellspacing="2" cellpadding="2" border=1>
@@ -184,9 +187,12 @@
        		  <input type="hidden" name="title" value="<%=fileTitle%>">Title:</td><td><%=fileTitle%></td></tr>
 			  <input type="hidden" name="referer" id="referer" value="${referer}" >
         	<tr><td align="right" valign="top">Current Comments:</td><td width="500"><%=comments%></td></tr>
+        	<% if (!user.isGuest()) { %>
+        	
     	   	<tr><td valign="top" align="right">Your Group:</td><td><%=groupName%><input type="hidden" name="commenter" value="<%=groupName%>" size="40"> </td></tr>
 	       	<tr><td valign="top" align="right">Add Your Comments:</td><td><textarea name="commentsNew" cols="80" rows="10"> </textarea></td></tr>
     	   	<tr><td colspan="2" align="center"><INPUT type="submit" name="button" value="Add Comments" onClick="javascript:checkBlank()"></td></tr>
+			<% } %>
        </table>
    </form>
   </c:when>
@@ -194,5 +200,6 @@
   	<p>${errorMessage}</p>
   </c:otherwise>
 </c:choose>
+
 </body>
 </html>

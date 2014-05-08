@@ -37,6 +37,7 @@
 			<div class="indented">${results.formattedRunTime} (actual)</div>
 	</div> 
 	<hr />
+<% if (!user.isGuest()) { %>
 	<form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit="window.open('',this.target,'width=500,height=200,resizable=1');" align="center" class="framed">
 		<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
 		<e:creationDateMetadata/>
@@ -49,6 +50,7 @@
 
 		<input type="hidden" name="srcFile" value="plot.png"/>
 		<input type="hidden" name="srcThumb" value="plot_thm.png"/>
+		<input type="hidden" name="srcSvg" value="plot.svg"/>
 		<input type="hidden" name="srcFileType" value="png"/>
 		<input type="hidden" name="id" value="${results.id}"/>
 		<input type="text" name="name" size="20" maxlength="30" placeholder="Type plot name here" 
@@ -56,6 +58,7 @@
 		<a class="button" href="javascript: document.SaveForm.submit()">Save Plot</a>
 	</form>
 	<hr />
+<% } %>
 	<e:rerun type="flux" id="${results.id}" label="Change parameters" cclass="button"/>
 	<e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysisdir" 
 		width="800" height="600" toolbar="true" cclass="button">Analysis directory...</e:popup>

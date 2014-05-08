@@ -42,6 +42,7 @@
 <p>
 	<e:rerun type="performance" id="${results.id}" label="Change"/> your parameters	
 </p>
+<% if (!user.isGuest()) { %>
 <p><b>OR</b></p>
 <p>To save this plot permanently, enter the new name you want.</p>
 <p>Then click <b>Save Plot</b>.</p>
@@ -60,13 +61,14 @@
 
 		<input type="hidden" name="srcFile" value="plot.png"/>
 		<input type="hidden" name="srcThumb" value="plot_thm.png"/>
+		<input type="hidden" name="srcSvg" value="plot.svg"/>
 		<input type="hidden" name="srcFileType" value="png"/>
 		<input type="hidden" name="id" value="${results.id}"/>
 		<input type="text" name="name"  size="20" maxlength="30"/>.png
 		<input type="submit" name="submit" value="Save Plot"/>
 	</form>
 </p>
-
+<% } %>
 
 
 			</div>

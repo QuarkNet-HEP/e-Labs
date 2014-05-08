@@ -38,9 +38,13 @@
 			<div id="content">
 
 <h1>New Poster: Make or edit your poster</h1>
-
-<%@ include file="new-content.jsp" %>
-
+<% 
+//EPeronja-05/07/2014: guest user is restricted :)
+if (user.isGuest())  { %>
+	<%@ include file="guest-poster-message.jsp" %>
+<% } else { %>
+	<%@ include file="new-content.jsp" %>
+<% } %>
 			</div>
 			<!-- end content -->	
 		
