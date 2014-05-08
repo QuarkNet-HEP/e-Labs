@@ -160,13 +160,17 @@ Re: the upload progress stuff
 	       	        request.setAttribute("detectorid", detectorId);
 	       	        request.setAttribute("comments", comments);
 	      	        request.setAttribute("benchmark", benchmark);
-	   				%>
+	      			long lEndTime = new Date().getTime();
+	      			String uploadtime = "upload-new.jsp: " +String.valueOf(lEndTime - lStartTime)+ " ms";
+	      	        request.setAttribute("uploadtime", uploadtime);
+	      	        %>
 						<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUpload" impl="generic">
 							<e:trdefault name="in" value="${in}"/>
 							<e:trdefault name="datadir" value="${datadir}"/>
 							<e:trdefault name="detectorid" value="${detectorid}"/>
 							<e:trdefault name="comments" value="${comments}"/>
 							<e:trdefault name="benchmark" value="${benchmark}"/>	
+							<e:trdefault name="uploadtime" value="${uploadtime}"/>	
 												
 							<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload&detectorid=${detectorid}">
 								<jsp:param name="provider" value="shell"/>
@@ -182,13 +186,6 @@ Re: the upload progress stuff
 							   "Please send an e-mail to <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> with the following error: <br />" +
 								e.toString();
 		}
-		long lEndTime = new Date().getTime();
-		ArrayList<String> streaming = (ArrayList<String>) session.getAttribute("uploadstreaming");
-		if (streaming == null) {
-			streaming = new ArrayList<String>();
-		}
-		streaming.add("Upload with upload-new.jsp took: " +String.valueOf(lEndTime - lStartTime)+ " milliseconds");
-		session.setAttribute("uploadstreaming", streaming);
 	} //end "if form has a file to upload"
 		else {
 			

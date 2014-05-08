@@ -90,6 +90,8 @@
 	    run.setListener(n);
 	    //EPeronja-04/25/2014: Added this code to complete the upload process after the split is done.
 	    if (run.getAttribute("type").equals("ProcessUpload")) {
+	    	run.setAttribute("uploadtime", analysis.getParameter("uploadtime"));
+	    	run.setAttribute("runMode", "local");
 	    	final ElabAnalysis ea = analysis;
 	    	final AnalysisRun ar = run;
 	    	ar.setDelayedCompletion(true);
@@ -99,6 +101,7 @@
 						CosmicPostUploadTasks cput = new CosmicPostUploadTasks(ea);
 						cput.runTasks();
 						ar.setDelayedCompletion(false);
+					    ar.setEndTime(new Date());
 						ar.setStatus(AnalysisRun.STATUS_COMPLETED);
 					}
 				}

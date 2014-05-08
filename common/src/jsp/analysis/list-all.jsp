@@ -44,6 +44,7 @@
 		<th>End Time</th>
 		<th>Time (Actual/Est.)</th>
 		<th>Status</th>
+		<th>UploadTime</th>
 	</tr>
 	<c:choose>
 		<c:when test="${empty users}">
@@ -114,6 +115,9 @@
 									</c:if>
 								</tr>
 							</table>
+						</td>
+						<td>
+							${run.attributes.uploadtime}
 						</td>
 					</tr>
 				</c:forEach>

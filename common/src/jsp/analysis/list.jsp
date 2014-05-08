@@ -38,9 +38,6 @@ you are satisfied with it.  You can always run the analysis again and change the
 <div style="color: red">Be sure to save your plots permanently!</div><p>
 <%
 	request.setAttribute("runs", AnalysisManager.getAnalysisRuns(elab, user));
-	ArrayList<String> traditional = (ArrayList<String>) session.getAttribute("uploadtraditional");
-	ArrayList<String> streaming = (ArrayList<String>) session.getAttribute("uploadstreaming");
-
 %>
 <form action="../analysis/remove.jsp">
 	<table id="analysis-table">
@@ -127,16 +124,6 @@ you are satisfied with it.  You can always run the analysis again and change the
 			</c:otherwise>
 		</c:choose>
 	</table>
-	<c:if test="${not empty uploadtraditional}">
-		<c:forEach items="${uploadtraditional}" var="uploadtraditional">
-		${uploadtraditional }<br />
-		</c:forEach>
-	</c:if>
-	<c:if test="${not empty uploadstreaming}">
-		<c:forEach items="${uploadstreaming}" var="uploadstreaming">
-		${uploadstreaming }<br />
-		</c:forEach>
-	</c:if>
 	
 	<input type="submit" name="remove" value="Remove Selected" />
 </form>
