@@ -167,6 +167,8 @@ public interface AnalysisRun {
     
     void setStatus(int status);
     
+    void setEndTime(Date endTime);
+    
     void setDelayedCompletion(boolean delayedCompletion);
     
     boolean getDelayedCompletion();
