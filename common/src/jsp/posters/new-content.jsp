@@ -216,14 +216,7 @@
 		    	String entryValue = entry.getValue()[0].trim(); 
 		    	String entryName = entry.getKey();
 		    	if (figures.match(entryName)) {  
-		    		//entryValue = as.scan(entryValue, policy).getCleanHTML();
-				    ArrayList checkDirtyInput = as.scan(entryName, policy).getErrorMessages();
-			    	//there wasn't any dirty input
-			    	if (checkDirtyInput.isEmpty()) {
-			    		meta.add(entryName + " string " + entryName);
-			    	} else {
-					    throw new ElabJspException("There is a problem with this string: " + entryName + ". Bailing out.");		    		
-			    	}
+		    		meta.add(entryName + " string " + entryName);
 		    	}
 		    }			
 			
