@@ -372,19 +372,16 @@ int main(int argc, char *argv[])
 		{
 			int nWritten;
 			frameNum++;
-		    printf("\nEP- frame name %s\n", frame->name);
 /*Marks the beginning of this frame in seconds*/
 			timeStamp = (double)(frame->GTimeS)+1.e-9*(double)(frame->GTimeN);
-			printf("\nEP- timeStamp %g\n", timeStamp);
-			printf("\nEP- rawdata name %s\n", frame->rawData->name);
 			if (frame->rawData) {
 				int seqWarn = 0;
-				printf("\nEP- outPath %s\n", outPath);
 				printf("\nEP- rawdata name adc name %s\n", frame->rawData->firstAdc->name);
 							
 				for (adc = frame->rawData->firstAdc; adc != NULL; adc = adc->next) {
 			   
 					if (strstr(adc->name, ".mean") || strstr(adc->name, ".rms")) {
+						printf("\nEP-we are reading %g\n", adc->name);
 						channel = adc->name;
 						strcpy(outPath2, outPath);
 						strcat(outPath2, adc->name);
@@ -399,7 +396,6 @@ int main(int argc, char *argv[])
 
 						/*We also need the sampleing rate, but we only need to get it once
 						  We don't want a time gap error if there is no previous frame*/
-						printf("\nEP- finding suitable structure\n");
 						if(fileNum == 1 && frameNum == 1) {
 							/*Find a suitable structure from which to get sampling rate*/
 							adc = FrAdcDataFind(frame, channel);
@@ -524,23 +520,19 @@ int main(int argc, char *argv[])
 						if(frvect == NULL) {
 							fprintf(stderr, "Channel '%s' was not found in file %s\n %s", channel, curFile, FrErrorGetHistory());
 							if(displayFlag == 0) {
-								printf("\nEP- gets here 1\n");
 								fprintf(outInfo, "Channel '%s' was not found in file %s\n %s", channel, curFile, FrErrorGetHistory());
 								fprintf(outInfo, "Abnormal Termination\n");
 								fclose(outFile);
 								fclose(outInfo);
 							}
-							printf("\nEP- gets here 2\n");
 							fclose(list);remove(tmpName);
 							FrameFree(frame);
 							FrFileIEnd(iFile);
 							exit(1);
 						}
-						printf("\nEP- gets here 3\n");
 						strcpy(outPath2, outPath);
 						strcat(outPath2, adc->name);
 						strcat(outPath2, ".bin");
-						printf("\nEP- outpath2 %s\n", outPath2);
 						if((outFile = fopen(outPath2, "wb")) == NULL) {
 							fprintf(stderr, "Unable to open output file. %s\n", outPath);
 							fclose(list);remove(tmpName);
@@ -552,7 +544,6 @@ int main(int argc, char *argv[])
 						type  = frvect->type;
 
 						/*Skip points if there are points to be skipped*/
-						printf("\nEP- outpath2 %s\n", outPath2);
 						if(sPointCount >= nData) {
 							sPointCount -= nData;
 							if(ASCIIflag == 0)
@@ -594,7 +585,6 @@ int main(int argc, char *argv[])
 								}
 							}
 							printf("\nEP- gets here nWritten %d\n", nWritten);
-							fprintf(outFile, "EP\n");
 							if(nWritten == -1) {
 								if(displayFlag == 0) {
 									fprintf(outInfo, "Could not allocate memory to convert data type", channel, curFile, FrErrorGetHistory());
