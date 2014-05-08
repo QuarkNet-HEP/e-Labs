@@ -26,16 +26,16 @@
 <c:choose>
 	<c:when test="${loggedin}">
 		<div id="header-toolbar">
-			<c:choose>
-				<c:when test="${user.teacher}">
-					<e:popup href="/elab/cms/teacher/forum/HelpDeskRequest.php" target="helpdesk" width="800" height="600"><img title="Helpdesk" src="../graphics/helpdesk.png" /></e:popup>
-					<e:popup href="../jsp/showLogbookT.jsp" target="log" width="800" height="600"><img title="Logbook" src="../graphics/logbook.png" /></e:popup>
-				</c:when>
-				<c:otherwise>
-					<e:popup href="../jsp/showLogbook.jsp" target="log" width="800" height="600"><img title="Logbook" src="../graphics/logbook.png" /></e:popup>
-				</c:otherwise>
-			</c:choose>
 			<c:if test='${user.name != "guest" }'>			
+				<c:choose>
+					<c:when test="${user.teacher}">
+						<e:popup href="/elab/cms/teacher/forum/HelpDeskRequest.php" target="helpdesk" width="800" height="600"><img title="Helpdesk" src="../graphics/helpdesk.png" /></e:popup>
+						<e:popup href="../jsp/showLogbookT.jsp" target="log" width="800" height="600"><img title="Logbook" src="../graphics/logbook.png" /></e:popup>
+					</c:when>
+					<c:otherwise>
+						<e:popup href="../jsp/showLogbook.jsp" target="log" width="800" height="600"><img title="Logbook" src="../graphics/logbook.png" /></e:popup>
+					</c:otherwise>
+				</c:choose>
 				<%@ include file="../notifications/header-notifications.jsp" %>		
 			</c:if>
 			<a id="username" href="../login/user-info.jsp"><span class="toolbar-text-link">${username}</span></a>

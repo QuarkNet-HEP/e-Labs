@@ -37,6 +37,7 @@
 			<div class="indented">${results.formattedRunTime} (actual)</div>
 	</div> 
 	<hr />
+<% if (!user.isGuest()) { %>
 	<form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit="window.open('',this.target,'width=500,height=200,resizable=1');" align="center" class="framed">
 		<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
 		<e:creationDateMetadata/>
@@ -57,6 +58,7 @@
 		<a class="button" href="javascript: document.SaveForm.submit()">Save Plot</a>
 	</form>
 	<hr />
+<% } %>
 	<e:rerun type="flux" id="${results.id}" label="Change parameters" cclass="button"/>
 	<e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysisdir" 
 		width="800" height="600" toolbar="true" cclass="button">Analysis directory...</e:popup>
