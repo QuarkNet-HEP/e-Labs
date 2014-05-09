@@ -194,12 +194,12 @@ if (fu.isMultipartContent(request)) {
 <% } else { %>
 <table border="0" id="main">
 	<tr>
+	    <% if (elab.getName().equals("ligo")) { %>
 		<td id="left">
-		    <% if (elab.getName().equals("ligo")) { %>
 			<%@ include file="../include/left-alt.jsp" %>
-			<% } %>
 		</td>
 		<td id="center">
+		<% } %>
 			<h1>Upload Image: Upload Images to use with Posters.</h1>
 	        <br /><strong>Instructions</strong><br />
               <ul>
@@ -229,10 +229,10 @@ if (fu.isMultipartContent(request)) {
 	        </form>
 	    </span>
 	<% } %>
-	</center>
+    <% if (elab.getName().equals("ligo")) { %>
 	</td></tr>
 	</table>
-<% } %>	
+<% }} %>	
 			</div>
 			<!-- end content -->	
 		
