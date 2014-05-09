@@ -111,12 +111,13 @@
 	    String runType = elab.getProperty(elab.getName() + ".analysis");
 	    if (runType != null && runType.equals("queue")) {
 	    	String type = (String) run.getAttribute("type");
-	    	if (type.equals("EventPlot") || type.equals("ProcessUpload") || type.equals("PerformanceStudy") || type.equals("PerformanceStudyTT")) { 
-	    		//start these right away
-		    	run.start();
-		    } else {
+	    	if (type.equals("ShowerStudy") || type.equals("LifetimeStudy") || type.equals("FluxStudy") || 
+	    			type.equals("ShowerStudyTT") || type.equals("LifetimeStudyTT") || type.equals("FluxStudyTT")	) { 
 		    	AnalysisBlockingQueue aq = AnalysisBlockingQueue.getInstance();
 			    aq.put(run);
+		    } else {
+	    		//start these right away
+		    	run.start();
 		    }
 	    } else {
 	    	run.start();
