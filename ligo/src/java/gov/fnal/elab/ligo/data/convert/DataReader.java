@@ -180,11 +180,11 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
 
     public void write(DataFileWriter wr, DataFileWriter index) throws IOException {
     	if (index.getFile().getName().contains("H1:PEM-CS_SEIS_LVEA_VERTEX_X_DQ")) {
-	        File f = new File("/users/edit/LIGO/"+index.getFile().getName()+".txt");
-	        File f2 = new File("/users/edit" +"/LIGO/"+wr.getFile().getName()+".txt");
+	        //File f = new File("/users/edit/LIGO/"+index.getFile().getName()+".txt");
+	        //File f2 = new File("/users/edit" +"/LIGO/"+wr.getFile().getName()+".txt");
     	
-	        //File f = new File("/home/eperonja/LIGO/"+index.getFile().getName()+".txt");
-	        //File f2 = new File("/home/eperonja/LIGO/"+wr.getFile().getName()+".txt");
+	        File f = new File("/home/eperonja/LIGO/"+index.getFile().getName()+".txt");
+	        File f2 = new File("/home/eperonja/LIGO/"+wr.getFile().getName()+".txt");
 	        BufferedWriter bw = new BufferedWriter(new FileWriter(f, true));
 	        BufferedWriter bw2 = new BufferedWriter(new FileWriter(f2, true));
 	        for (DataReaderEntry<ValueType, SumType> e : data) {
