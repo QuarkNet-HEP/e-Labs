@@ -188,9 +188,10 @@ request.setAttribute("eLab", eLab);
 <% if (user.isGuest()) { %>
 <table border="0" id="main">
 	<tr>
-	    <% if (elab.getName().equals("ligo")) { %>
 		<td id="left">
-			<%@ include file="../include/left-alt.jsp" %>
+			<c:if test='${eLab == "ligo" }'>
+				<%@ include file="../include/left-alt.jsp" %>
+			</c:if>
 		</td>
 		<td id="center">
 
