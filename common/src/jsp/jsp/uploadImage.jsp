@@ -164,7 +164,7 @@ if (fu.isMultipartContent(request)) {
         }
     }
 }
-
+request.setAttribute("eLab", eLab);
 %>
 <html>
 <head>
@@ -194,12 +194,12 @@ if (fu.isMultipartContent(request)) {
 <% } else { %>
 <table border="0" id="main">
 	<tr>
-	    <% if (elab.getName().equals("ligo")) { %>
 		<td id="left">
-			<%@ include file="../include/left-alt.jsp" %>
+			<c:if test='${eLab == "ligo" }'>
+				<%@ include file="../include/left-alt.jsp" %>
+			</c:if>
 		</td>
 		<td id="center">
-		<% } %>
 			<h1>Upload Image: Upload Images to use with Posters.</h1>
 	        <br /><strong>Instructions</strong><br />
               <ul>
@@ -229,10 +229,9 @@ if (fu.isMultipartContent(request)) {
 	        </form>
 	    </span>
 	<% } %>
-    <% if (elab.getName().equals("ligo")) { %>
-	</td></tr>
-	</table>
-<% }} %>	
+</td></tr></table>
+
+<% } %>	
 			</div>
 			<!-- end content -->	
 		
