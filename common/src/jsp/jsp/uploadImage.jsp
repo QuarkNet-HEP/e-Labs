@@ -5,7 +5,7 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ include file="common.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
-<%@ include file="../include/elab.jsp" %>
+
 <% if (user.isGuest()) { %>
 <html>
 <head>
