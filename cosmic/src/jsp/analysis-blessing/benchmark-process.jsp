@@ -172,9 +172,9 @@
 	<li>Click <strong>Check Selected Files</strong> to submit them to the blessing process.</li>
 </ul>
 <form id="benchmarkProcessForm" method="post" >
-	<table style="border: 1px solid black; width: 100%; padding: 10px;">
+	<table style="border: 1px solid black; width: 110%; padding: 5px;">
 	    <tr class="benchmarkRow">
-	    	<td class="benchmarkHeader">Detector<br />
+	    	<td class="benchmarkHeader" >Detector<br />
 	    		<select name="detectorId" id="detectorId" onChange="javascript:showAllFiles(this);">
    			    	<option>Choose detector</option>
    						<c:forEach items="${detectors}" var="detectors">
