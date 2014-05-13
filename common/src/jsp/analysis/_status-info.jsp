@@ -197,27 +197,6 @@
 					</e:vswitch>
 				<%
 				}
-				else if (status == AnalysisRun.STATUS_QUEUED) {
-			    	AnalysisBlockingQueue aq = AnalysisBlockingQueue.getInstance();
-					int queued = 0;
-			    	if (aq != null) {
-			    		String runMode = (String) run.getAttribute("runMode");					    
-			    		if (runMode.equals("local")) {
-							queued = aq.getQueueLocal().size();
-			    		}
-			    		if (runMode.equals("i2u2")) {
-			    			queued = aq.getQueueNodes().size();
-			    		}
-			    		if (runMode.equals("mixed")) {
-			    			queued = aq.getQueueMixed().size();
-			    		}
-					}
-				%>
-					<H1>The study was queued</H1> 
-					<p>We added your analysis to a queue. Check the <a href="../analysis/list.jsp">analysis list</a>. Look for id: <%= run.getId() %></p>
-					<p>At the moment, <%=queued %> analyses are waiting for the execution mode you chose.</p>
-				<%
-				}
 				else if (status == AnalysisRun.STATUS_CANCELED) {
 					%> <h1>The study was canceled</h1> <%
 				}
