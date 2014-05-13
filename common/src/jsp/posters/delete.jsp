@@ -36,7 +36,7 @@ if (user.isGuest())  { %>
 	<%@ include file="guest-poster-message.jsp" %>
 <% } else { %>
 	<%@ include file="../include/delete.jsp" %>
-<% } %>
+
 
 
 <c:if test="${!inhibitPage}">
@@ -49,7 +49,7 @@ if (user.isGuest())  { %>
 		</tr>
 	</table>
 </c:if>
-
+<% } %>
 
 			</div>
 			<!-- end content -->	
