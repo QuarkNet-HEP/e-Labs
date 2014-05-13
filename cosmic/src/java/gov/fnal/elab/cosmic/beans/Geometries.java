@@ -157,6 +157,15 @@ public class Geometries implements Serializable {
         }
     }
 
+    public String checkMetadata(DataCatalogProvider dcp, GeoEntryBean geoEntry)
+               throws ElabException {
+        String message = "";
+        for (Geometry g : changedGeometries) {
+              message = g.checkMetadata(dcp, geoEntry);
+        }
+        return message;
+    }//end of checkMetadata
+    
     public String dump() {
         StringBuilder sb = new StringBuilder();
         for (Geometry g : geometries.values()) {
