@@ -134,6 +134,17 @@ function retrieveAll() {
 	}				
 }//end of retrieveAll
 
+function retrieveUnblessedOnly() {
+	var includeBlessed = document.getElementById("includeBlessed");
+	if (includeBlessed.selectedIndex != -1) {
+		includeBlessed.value = "NO";
+		var selectedDetector = document.getElementById("detector");
+		if (selectedDetector.value != "") {
+			document.getElementById('submitButton').click();
+		}
+	}	
+}//end of retrieveUnblessedOnly()
+
 function selectAll(checkAll) {
 	var inputs = document.getElementsByTagName("input");
 	for (var i = 0; i < inputs.length; i++) {
@@ -149,9 +160,9 @@ function selectAll(checkAll) {
 
 function showCandidates(selectObject){
 	var includeBlessed = document.getElementById("includeBlessed");
-	if (includeBlessed.selectedIndex != -1) {
-		includeBlessed.value = "YES";
-	}
+	//if (includeBlessed.selectedIndex != -1) {
+	//	includeBlessed.value = "YES";
+	//}
 	var benchmark = document.getElementById("selectedBenchmark");
 	if (benchmark.selectedIndex != -1) {
 		benchmark.value = selectObject.value;
