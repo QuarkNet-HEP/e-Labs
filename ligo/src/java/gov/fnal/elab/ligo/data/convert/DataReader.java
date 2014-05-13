@@ -179,6 +179,7 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
     protected double samplingInterval = -1;
 
     public void write(DataFileWriter wr, DataFileWriter index) throws IOException {
+    	/*
     	if (index.getFile().getName().contains("H1:PEM-CS_SEIS_LVEA_VERTEX_X_DQ")) {
 	        //File f = new File("/users/edit/LIGO/"+index.getFile().getName()+".txt");
 	        //File f2 = new File("/users/edit" +"/LIGO/"+wr.getFile().getName()+".txt");
@@ -212,6 +213,7 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
 	        mean.clear();
 	        rms.clear();
     	} else {
+    	*/
 	        for (DataReaderEntry<ValueType, SumType> e : data) {
 	            if (!sameSamplingInterval(e.gpstime)) {
 	                index.writeDouble(lastWrittenTime);
@@ -227,7 +229,7 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
 	        data.clear();
 	        mean.clear();
 	        rms.clear();    		
-    	}
+    	//}
     }
 
     public void readLastSums(File f) throws IOException {
