@@ -37,6 +37,14 @@
 		</td>
 		<td id="center">
 			<h1>Search for and delete posters.</h1>
+			<% 
+//EPeronja-05/07/2014: guest user is restricted :)
+if (user.isGuest())  { %>
+    <center>
+	<div style="text-align: left; width: 95%;">
+		<%@ include file="guest-poster-message.jsp" %>
+	</div></center>
+<% } else { %>
 			<p />
 			<%@ include file="../include/delete.jsp" %>
 			<%@ include file="search-control.jsp" %>
@@ -44,6 +52,7 @@
 		</td>
 	</tr>
 </table>
+<% } %>
 
 
 			</div>
