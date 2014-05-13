@@ -10,7 +10,8 @@
 	    ElabGroup group = ElabGroup.getUser(session);
 	    request.setAttribute("username", group.getName());
 	}
-	String environment = elab.getProperty("environment");
+
+	String environment = (String) session.getAttribute("environment");	
 	request.setAttribute("environment", environment);
 %>
 <div id="header-image">
