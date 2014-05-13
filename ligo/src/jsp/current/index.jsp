@@ -172,6 +172,8 @@
 						<td><div id="messages" name="messages"></div></td>
 					</tr>
 				</table>
+				<% if (!user.isGuest())  { %>
+
 				<h2>Data Export</h2>
 				
 				<table class="toolbox">
@@ -201,6 +203,7 @@
 						<input id="savePlotToDiskCommit" type="button" value="Save" disabled="true"></input>
 					</div>
 				</div>
+				<% } %>
 			</div>
 			<div id="footer">
 				<%@ include file="../include/nav-footer.jsp" %>

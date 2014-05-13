@@ -157,6 +157,7 @@
 				</table>
 			</td>
 		</tr>
+		<% if (!user.isGuest())  { %>		
 		<tr>
 			<td class="toolbox-row">
 				<table class="toolbox">
@@ -199,6 +200,7 @@
 				</table>
 			</td>
 		</tr>
+	<% } %>
 	</table>
 	<div class="cursor" style="position: absolute; z-index: 10; display: none;"><span class="cursorValue"></span> <span class="cursorUnit"></span></div>
 	<div class="frame" style="position: relative;">
