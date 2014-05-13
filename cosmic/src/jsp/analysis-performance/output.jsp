@@ -42,6 +42,7 @@
 <p>
 	<e:rerun type="performance" id="${results.id}" label="Change"/> your parameters	
 </p>
+<% if (!user.isGuest()) { %>
 <p><b>OR</b></p>
 <p>To save this plot permanently, enter the new name you want.</p>
 <p>Then click <b>Save Plot</b>.</p>
@@ -66,7 +67,7 @@
 		<input type="submit" name="submit" value="Save Plot"/>
 	</form>
 </p>
-
+<% } %>
 
 
 			</div>
