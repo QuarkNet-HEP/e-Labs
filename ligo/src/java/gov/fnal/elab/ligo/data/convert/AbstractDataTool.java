@@ -127,7 +127,7 @@ public abstract class AbstractDataTool {
             put("100MHZ300", 1);     
             put("300MHZ1000", 1);
             
-            put("DQ", 1);
+            put("DQ", 256);
         }
     };
 
