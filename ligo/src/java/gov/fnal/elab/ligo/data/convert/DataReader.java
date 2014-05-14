@@ -180,39 +180,39 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
 
     public void write(DataFileWriter wr, DataFileWriter index) throws IOException {
     	
-    	if (index.getFile().getName().contains("H1:PEM-CS_SEIS_LVEA_VERTEX_X_DQ")) {
+    	//if (index.getFile().getName().contains("H1:PEM-CS_SEIS_LVEA_VERTEX_X_DQ")) {
 	        //File f = new File("/users/edit/LIGO/"+index.getFile().getName()+".txt");
 	        //File f2 = new File("/users/edit" +"/LIGO/"+wr.getFile().getName()+".txt");
     	
-	        File f = new File("/home/eperonja/LIGO/"+index.getFile().getName()+".txt");
-	        File f2 = new File("/home/eperonja/LIGO/"+wr.getFile().getName()+".txt");
-	        BufferedWriter bw = new BufferedWriter(new FileWriter(f, true));
-	        BufferedWriter bw2 = new BufferedWriter(new FileWriter(f2, true));
+	        //File f = new File("/home/eperonja/LIGO/"+index.getFile().getName()+".txt");
+	        //File f2 = new File("/home/eperonja/LIGO/"+wr.getFile().getName()+".txt");
+	        //BufferedWriter bw = new BufferedWriter(new FileWriter(f, true));
+	        //BufferedWriter bw2 = new BufferedWriter(new FileWriter(f2, true));
 	        for (DataReaderEntry<ValueType, SumType> e : data) {
 	            if (!sameSamplingInterval(e.gpstime)) {
 	                index.writeDouble(lastWrittenTime);
 	                samplingInterval = e.gpstime - lastWrittenTime;
 	                index.writeDouble(samplingInterval);
-	                bw.append("e.gpstime:"+String.valueOf(e.gpstime)+"\n");
-	                bw.append("lastWrittenTime:"+String.valueOf(lastWrittenTime)+"\n");
-	                bw.append("samplingInterval:"+String.valueOf(samplingInterval)+"\n");
+	          //      bw.append("e.gpstime:"+String.valueOf(e.gpstime)+"\n");
+	          //      bw.append("lastWrittenTime:"+String.valueOf(lastWrittenTime)+"\n");
+	          //      bw.append("samplingInterval:"+String.valueOf(samplingInterval)+"\n");
 	            }
 	            lastWrittenTime = e.gpstime;
 	            wr.writeBoolean(e.valid);
 	            wr.writeDouble(e.gpstime);
-	            bw2.append(String.valueOf("valid:"+e.valid)+"\n");
-	            bw2.append(String.valueOf("e.gpstime:"+e.gpstime)+"\n");
+	          //  bw2.append(String.valueOf("valid:"+e.valid)+"\n");
+	          //  bw2.append(String.valueOf("e.gpstime:"+e.gpstime)+"\n");
 	            writeSum(wr, e.sum);
 	            writeSum(wr, e.ssq);
-	            bw2.append(String.valueOf("e.sum:"+e.sum)+"\n");
-	            bw2.append(String.valueOf("e.ssq:"+e.ssq)+"\n");
+	          //  bw2.append(String.valueOf("e.sum:"+e.sum)+"\n");
+	          //  bw2.append(String.valueOf("e.ssq:"+e.ssq)+"\n");
 	        }
-	        bw.close();
-	        bw2.close();
+	        //bw.close();
+	        //bw2.close();
 	        data.clear();
 	        mean.clear();
 	        rms.clear();
-    	} 
+    	//} 
     }
 
     public void readLastSums(File f) throws IOException {
