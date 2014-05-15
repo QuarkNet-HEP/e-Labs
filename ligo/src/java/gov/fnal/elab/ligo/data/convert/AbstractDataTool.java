@@ -93,40 +93,40 @@ public abstract class AbstractDataTool {
             put("SEIS2_Y", 256);
             put("SEIS2_Z", 256);
             
-            put("SEISX_0.03_0.1Hz", 256);
-            put("SEISY_0.03_0.1Hz", 256);
-            put("SEISZ_0.03_0.1Hz", 256);
+            put("SEISX_0.03_0.1Hz", 1);
+            put("SEISY_0.03_0.1Hz", 1);
+            put("SEISZ_0.03_0.1Hz", 1);
             
-            put("SEISX_0.1_0.3Hz", 256);
-            put("SEISY_0.1_0.3Hz", 256);
-            put("SEISZ_0.1_0.3Hz", 256);
+            put("SEISX_0.1_0.3Hz", 1);
+            put("SEISY_0.1_0.3Hz", 1);
+            put("SEISZ_0.1_0.3Hz", 1);
             
-            put("SEISX_0.3_1Hz", 256);
-            put("SEISY_0.3_1Hz", 256);
-            put("SEISZ_0.3_1Hz", 256);
+            put("SEISX_0.3_1Hz", 1);
+            put("SEISY_0.3_1Hz", 1);
+            put("SEISZ_0.3_1Hz", 1);
             
-            put("SEISX_1_3Hz", 256);
-            put("SEISY_1_3Hz", 256);
-            put("SEISZ_1_3Hz", 256);
+            put("SEISX_1_3Hz", 1);
+            put("SEISY_1_3Hz", 1);
+            put("SEISZ_1_3Hz", 1);
             
-            put("SEISX_3_10Hz", 256);
-            put("SEISY_3_10Hz", 256);
-            put("SEISZ_3_10Hz", 256);
+            put("SEISX_3_10Hz", 1);
+            put("SEISY_3_10Hz", 1);
+            put("SEISZ_3_10Hz", 1);
             
-            put("SEISX_10_30Hz", 256);
-            put("SEISY_10_30Hz", 256);
-            put("SEISZ_10_30Hz", 256);
+            put("SEISX_10_30Hz", 1);
+            put("SEISY_10_30Hz", 1);
+            put("SEISZ_10_30Hz", 1);
 
-            put("1HZ3", 256);
-            put("3HZ10", 256);                    
-            put("0MHZ30", 256);
-            put("10HZ30", 256);            
-            put("30HZ100", 256);               
-            put("30MHZ100", 256);     
-            put("100MHZ300", 256);     
-            put("300MHZ1000", 256);
+            put("1HZ3", 1);
+            put("3HZ10", 1);                    
+            put("0MHZ30", 1);
+            put("10HZ30", 1);            
+            put("30HZ100", 1);               
+            put("30MHZ100", 1);     
+            put("100MHZ300", 1);     
+            put("300MHZ1000", 1);
             
-            put("DQ", 256);
+            put("DQ", 1);
         }
     };
 
