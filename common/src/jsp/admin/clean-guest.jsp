@@ -124,6 +124,7 @@
 				continue;
 			}
 		}
+		totalFileCount = 0;
 	}//end of submit
 
 	if (totalFileCount == 0) {
