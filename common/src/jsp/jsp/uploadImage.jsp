@@ -188,11 +188,13 @@ request.setAttribute("eLab", eLab);
 <% if (user.isGuest()) { %>
 <table border="0" id="main">
 	<tr>
-		<td id="left">
-			<c:if test='${eLab == "ligo" }'>
-				<%@ include file="../include/left-alt.jsp" %>
-			</c:if>
-		</td>
+		<c:choose>
+			<c:when test='${eLab == "ligo" }'>
+				<td id="left">
+					<%@ include file="../include/left-alt.jsp" %>
+				</td>
+			</c:when>
+		</c:choose>
 		<td id="center">
 
 	<h2>Guest User Message:</h2>
@@ -206,11 +208,13 @@ request.setAttribute("eLab", eLab);
 <% } else { %>
 <table border="0" id="main">
 	<tr>
-		<td id="left">
-			<c:if test='${eLab == "ligo" }'>
-				<%@ include file="../include/left-alt.jsp" %>
-			</c:if>
-		</td>
+		<c:choose>
+			<c:when test='${eLab == "ligo" }'>
+				<td id="left">
+					<%@ include file="../include/left-alt.jsp" %>
+				</td>
+			</c:when>
+		</c:choose>
 		<td id="center">
 			<h1>Upload Image: Upload Images to use with Posters.</h1>
 	        <br /><strong>Instructions</strong><br />
