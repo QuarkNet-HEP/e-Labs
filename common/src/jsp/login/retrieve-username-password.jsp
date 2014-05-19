@@ -209,7 +209,8 @@ request.setAttribute("recaptcha_private_key", recaptcha_private_key);
 			</tr>
 		 	<tr><td><div id="recaptcha" align="center">
 			<%
-				ReCaptcha c = ReCaptchaFactory.newReCaptcha(recaptcha_public_key, recaptcha_private_key, false);
+				ReCaptcha c = ReCaptchaFactory.newSecureReCaptcha(recaptcha_public_key, recaptcha_private_key, false);
+				((ReCaptchaImpl) c).setRecaptchaServer("https://www.google.com/recaptcha/api");
 				out.println(c.createRecaptchaHtml(null, null));			
 			%>
 			</div>
