@@ -24,6 +24,7 @@
 		for (Notification rm: en) {
 			nprovider.removeNotification(user.getGroup(), rm.getId());
 		}
+	    en = nprovider.getExpiredNotifications();
 	}//end of submit
 	
 	if (totalExpiredNotifications == 0) {
