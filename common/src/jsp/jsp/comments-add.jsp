@@ -112,35 +112,7 @@
    		          if (comments.length() > 0) {breakString="<BR>";}
 		          String commenter=request.getParameter("commenter");
 		          commentsNew=request.getParameter("commentsNew");
-				  commentsNew=ElabUtil.stringSanitization(commentsNew, elab, headerType);
-		          /*
-		          //EPeronja-04/28/2014: do some sanitization
-		          ArrayList checkDirtyInput = as.scan(commentsNew,policy).getErrorMessages();
-		          if (!checkDirtyInput.isEmpty()) {
-		    			String userInput = commentsNew;
-		    			int errors = as.scan(userInput, policy).getNumberOfErrors();
-		    			ArrayList actualErrors = as.scan(userInput, policy).getErrorMessages();
-		    			Iterator iterator = actualErrors.iterator();
-		    			String errorMessages = "";
-		    			while (iterator.hasNext()) {
-		    				errorMessages = (String) iterator.next() + ",";
-		    			}
-		    			commentsNew = as.scan(commentsNew, policy).getCleanHTML();
-				    	//send email with warning
-				    	String to = elab.getProperty("notifyDirtyInput");
-			    		String emailmessage = "", subject = headerType + " Add comments: user sent dirty input";
-			    		String emailBody =  "User input: "+userInput+"\n" +
-	    						   			"Number of errors: "+String.valueOf(errors)+"\n" +
-	    				   					"Error messages: "+ errorMessages + "\n" +
-	    				   					"Validated input: "+commentsNew + "\n";
-					    try {
-					    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
-					    } catch (Exception ex) {
-			                System.err.println("Failed to send email");
-			                ex.printStackTrace();
-					    }		    		
-				  }//end of sanitization
-*/				  
+				  commentsNew=ElabUtil.stringSanitization(commentsNew, elab, headerType + "-" + fileTitle);
   		          // add combined new and old comments to metadata if new comments
 	              if (commentsNew.length()>1)
                   {
