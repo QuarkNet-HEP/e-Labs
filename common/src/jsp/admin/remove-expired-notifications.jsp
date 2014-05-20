@@ -25,6 +25,11 @@
 			nprovider.removeNotification(user.getGroup(), rm.getId());
 		}
 	    en = nprovider.getExpiredNotifications();
+		if (en != null) {
+			totalExpiredNotifications = en.size();
+		} else {
+			totalExpiredNotifications = 0;
+		}
 	}//end of submit
 	
 	if (totalExpiredNotifications == 0) {
