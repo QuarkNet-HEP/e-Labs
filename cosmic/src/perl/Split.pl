@@ -216,8 +216,18 @@ while(<IN>){
 			$GPSSuspects++;
 			#print $., " Year in raw data line is bad, boss\n";
 			next;
-		} 
-		
+		}
+	
+		#bug 535 re-opened date slipped back six years during a data-run
+		if (defined $date && substr($dataRow[11],4,2) != substr($date,4,2) && substr($dataRow[11],0,2) ne 01 && substr($dataRow[11],4,2) ne 01){ #just checking current value against $date will fail if $date is not def. Also, the year can change if it is 01 Jan. 
+			$GPSSuspects++;
+			#print "$. Line 228 \n";
+			next; #don't allow $time or $date to be set to the values in the current line--those are goofy
+		}
+		#print "$. $total_events \n";
+		$total_events++ if hex($dataRow[1]) >= 128; # If the 7th bit is set, this is a new and valid event.
+		next if $total_events == 0; #A data file can have a munged first line in the event. This breaks the logic that sets the filenames. 
+
 		$lastTime = $time;
 				
 		if ($rollover_flag == 5){ #this is a stuck GPS latch
@@ -282,7 +292,8 @@ while(<IN>){
 
 		#GPS flag = 4 in the raw data indicates that the GPS time in that line is suspect. Indeed, our calculation confirms this so we should ignore the lines with a GPS flag = 4. Now we do.
 		#Actually it should check if bit 2 is 1. Otherwise it may accept invalid lines.
-		next if ($dataRow[14] & 0x04 != 0); 
+		next if ($dataRow[14] >> 3); 
+		#next if ($dataRow[14] & 0x04 != 0); 
 
 		#trying somethiing new with GPS time solutions. TJ wonders if the V and A flag really mean something about the timing solution. Thus far there is no evidence for it.
 		#next if ($dataRow[12] eq 'V');
@@ -392,7 +403,12 @@ while(<IN>){
 	elsif(/$reStatus0/o || /$reStatus1/o){
 		
 		@stRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14);
-		next if ($stRow[6] != $date); #here if a bad GPS date gets into the ST line--part of bug 535
+		#next if ($stRow[6] != $date) && (substr($date,0,2) != 12) && (substr($date,2,2) != 31); #there if a bad GPS date gets into the ST line. Also, check to see if the date rolled because of a new year--part of bug 535
+		if (($stRow[6] != $date) && (substr($date,0,2) != 12) && (substr($date,2,2) != 31)){#; #there if a bad GPS date gets into the ST line. Also, check to see if the date rolled because of a new year--part of bug 535
+			#print "$. Line 427 \n";
+			$stTimeGlitch = 1;
+			next;
+		}
 		$STLineNumber = $.; #needed to check if this ST line is followed by a DS line			
 		$stRow = @stRow; 
 		#next if substr($stRow[5], 0, 2)*3600 + substr($stRow[5], 2, 2)*60 + substr($stRow[5], 4, 6) == 0;
@@ -430,10 +446,12 @@ while(<IN>){
 			$stTimeGlitch = 0; #reset the flag
 			next; #ignore this DS update
 		}
+		
 		$DSLineNumber = $.; #Needed to check if this DS line is preceded by an ST line
-		@dsRow = ($1, $2, $3, $4, $5, $6);
+		
 		next if $DSLineNumber - $STLineNumber != 1;
-		$dsRowCount++;
+		@dsRow = ($1, $2, $3, $4, $5, $6);
+
 		if ($DSLineNumber - $STLineNumber == 1){ #Only fill the blessing arrays if the DS line follows the ST line
 			push (@stCount0, hex($dsRow[1]));
 			push (@stCount1, hex($dsRow[2]));
@@ -445,6 +463,7 @@ while(<IN>){
 			push(@stTemp, $stRow[2]/10); #changing $stRow[3] to $stRow[2] fixes bug 453
 			push(@stVcc, $stRow[4]/1000);
 			push(@stGPSSats, $stRow[8]);
+			$dsRowCount++;
 		}	
 		next; #get the next line in the input file. All the lifting is done on this one.
 	}#end of elsif(/$reDS!/o
@@ -591,7 +610,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					# When ST3 these onboard registers are cleared after each printing, so there is no need to do the subtraction.
 					# We just need to see if these (stCountN and stEvents) keep growing over the life of the file. If they do, we need to subtract one from the next to get the scalar increment over the integration time.
 					
-					die "These data span at least one day that does not contain any 'ST', 'DS' line pairs. We have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount && $DAQID > 0;
+					die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged. We have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount && $DAQID > 0;
 					
 					if ($dsRowCount > 0){
 						#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
@@ -628,7 +647,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 						for $j (1..$dsRowCount){
 							#Subtract one from the previous (and not the latter) so that we see the rate in the last integration period (and not the next)
 							push(@stCountTemp, $stCount0[$j] - $stCount0[$j-1]) if $stCount0[$j] > $stCount0[$j-1]; #the if is there so that we don't get diffs < 0
-						} #end of for $j
+						} #end for $j (1..$dsRowC . . .
 						#swap the newly subtracted arrays with the stCountN $stEvents arrays
 						@stCount0=@stCountTemp;
 						#clear the array for use in the next for loop
@@ -637,28 +656,28 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 						#Once again with feeling for the other channels and the triggers:
 						for $j (1..$dsRowCount){
 							push(@stCountTemp, $stCount1[$j] - $stCount1[$j-1]) if $stCount1[$j] > $stCount1[$j-1];
-						} #end of for $j
+						} #end for $j (1..$dsRow
 						
 						@stCount1=@stCountTemp;
 						@stCountTemp = ();
 						
 						for $j (1..$dsRowCount){
 							push(@stCountTemp, $stCount2[$j] - $stCount2[$j-1]) if $stCount2[$j] > $stCount2[$j-1];
-						}
+						}#end for $j (1..$dsRow. . . 
 						
 						@stCount2=@stCountTemp;
 						@stCountTemp = ();
 						
 						for $j (1..$dsRowCount){
 							push(@stCountTemp, $stCount3[$j] - $stCount3[$j-1]) if $stCount3[$j] > $stCount3[$j-1];
-						}
+						}#end for $j (1..$dsRow. . . 
 						
 						@stCount3=@stCountTemp;
 						@stCountTemp = ();
 						
 						for $j (1..$dsRowCount){
 							push(@stCountTemp, $stEvents[$j] - $stEvents[$j-1]) if $stEvents[$j] > $stEvents[$j-1];
-						} 
+						} #end for $j (1..$ds . . .
 						@stEvents=@stCountTemp;
 					} #end of if($stType = 2)
 					
@@ -676,8 +695,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 								#The rate may be very low here. . .  
 								$stEventRate[$j] = sprintf("%0.0f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && ($stEvents[$j]/($stTime[$j] - $stTime[$j-1]) > 1);
 								$stEventRate[$j] = sprintf("%0.2f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && ($stEvents[$j]/($stTime[$j] - $stTime[$j-1]) < 1); # we've already ruled out counts < 0
-						}
-					}
+						}#end for $j (1..$d . . 
+					}#end if (($stTime[2] . . .
 					
 					# 4. Sum up those cout N arrays to determine meta for counts in channels 0-3 and triggers and write those to meta.
 					$chan0 += $_ for @stCount0;
@@ -698,8 +717,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
     	                if ($i >= $cpld_low && $i <= $cpld_high){
         	                $cpld_real_freq_tot += $i;
             	            $cpld_real_count++;
-                	    }
-	                }
+                	    }#end if ($i >=$cpld_low
+	                }#end foreach
     	            $cpld_real_freq = sprintf("%0.0f",$cpld_real_freq_tot/$cpld_real_count) if $cpld_real_count !=0;
 					
 					#Start writing meta and write metadata about the file that was just closed						
@@ -816,7 +835,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
         	  	$cpld_freq_tot2 += $cpld_freq;
     	    	push @cpld_frequency2, $cpld_freq;
               $cpld_count++;
-        	}
+        	} #end of if (defined($cpld_hex)
         	
         	# redefines variables for checking to see if the next line has the same data as this line
         	$cpld_time = $dataRow[10];
@@ -845,7 +864,7 @@ else{
 	
 	#die "These data do not contain the same number of ST and DS lines; we have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount;
 
-	die "These data span at least one day that does not contain any 'ST', 'DS' line pairs. We have stopped your upload.  We created $numSplitFiles usable file(s) before this error." if $dsRowCount == 0;
+	die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged.  We have stopped your upload.  We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount; #$dsRowCount == 0;
 					
 	if ($dsRowCount > 0){
 		#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
@@ -991,6 +1010,10 @@ else{
 	#write the channel counts for the last split file
 	#Why is this here? Do we print this on the line confiming the upload? If so, it's wrong--it only holds the counts for the _last_ file.
 	#print "$chan0 $chan1 $chan2 $chan3\n";
+
+	if ($data_line_total==0){
+		die "There are no valid events in this file. There may be trigger data; if so, the timing solution is unreliable. Please file a helpdesk ticket.";
+	}
 	
 	#insert metadata which was made from analyzing the WHOLE raw data file
 	$endDateMeta = 2000+substr($date,4,2). "-". substr($date,2,2). "-" . substr($date,0,2);
@@ -1003,7 +1026,7 @@ else{
 	#print META "totalDataLines int 0\n;"	
 	`/usr/bin/perl -i -p -e 's/^GPSSuspectsTotal.*/GPSSuspectsTotal int $GPSSuspectsTot/' "$raw_filename.meta"`;
 	`/usr/bin/perl -i -p -e 's/^totalDataLines.*/totalDataLines int $data_line_total/' "$raw_filename.meta"`;
-	warn "Your uploaded data file contained $data_line_total accepted data lines. We ignored $GPSSuspectsTot line(s) due to a suspect GPS date.\n" if($non_datalines > 0);
+	warn "Your uploaded data file contained $data_line_total accepted data lines. We ignored $GPSSuspectsTot line(s) due to a suspect GPS date.\n" if($data_line_total > 0);
 	if($sum_lats == 0 or $sum_longs == 0 or $sum_alts == 0){
 		warn "If you included DG commands in your file, there were fewer than six satellites in view when you did. We have ignored these DG commands; they provide an unreliable position.";
 	}
