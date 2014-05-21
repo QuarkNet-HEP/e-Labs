@@ -1010,6 +1010,10 @@ else{
 	#write the channel counts for the last split file
 	#Why is this here? Do we print this on the line confiming the upload? If so, it's wrong--it only holds the counts for the _last_ file.
 	#print "$chan0 $chan1 $chan2 $chan3\n";
+
+	if ($data_line_total==0){
+		die "There no valid events in this file. There may be trigger data; if so, the timing solution is unreliable. Please file a helpdesk ticket.";
+	}
 	
 	#insert metadata which was made from analyzing the WHOLE raw data file
 	$endDateMeta = 2000+substr($date,4,2). "-". substr($date,2,2). "-" . substr($date,0,2);
@@ -1022,7 +1026,7 @@ else{
 	#print META "totalDataLines int 0\n;"	
 	`/usr/bin/perl -i -p -e 's/^GPSSuspectsTotal.*/GPSSuspectsTotal int $GPSSuspectsTot/' "$raw_filename.meta"`;
 	`/usr/bin/perl -i -p -e 's/^totalDataLines.*/totalDataLines int $data_line_total/' "$raw_filename.meta"`;
-	warn "Your uploaded data file contained $data_line_total accepted data lines. We ignored $GPSSuspectsTot line(s) due to a suspect GPS date.\n" if($non_datalines > 0);
+	warn "Your uploaded data file contained $data_line_total accepted data lines. We ignored $GPSSuspectsTot line(s) due to a suspect GPS date.\n" if($data_line_total > 0);
 	if($sum_lats == 0 or $sum_longs == 0 or $sum_alts == 0){
 		warn "If you included DG commands in your file, there were fewer than six satellites in view when you did. We have ignored these DG commands; they provide an unreliable position.";
 	}
