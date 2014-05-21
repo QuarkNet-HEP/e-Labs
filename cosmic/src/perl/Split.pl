@@ -1012,7 +1012,7 @@ else{
 	#print "$chan0 $chan1 $chan2 $chan3\n";
 
 	if ($data_line_total==0){
-		die "There no valid events in this file. There may be trigger data; if so, the timing solution is unreliable. Please file a helpdesk ticket.";
+		die "There are no valid events in this file. There may be trigger data; if so, the timing solution is unreliable. Please file a helpdesk ticket.";
 	}
 	
 	#insert metadata which was made from analyzing the WHOLE raw data file
