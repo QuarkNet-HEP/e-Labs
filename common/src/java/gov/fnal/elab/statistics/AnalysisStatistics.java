@@ -43,16 +43,11 @@ import java.util.TreeMap;
 public class AnalysisStatistics {
     public static final int RAW_DATA = 0;
     public static final int SWIFT_START = 1;
-    public static final int SWIFT_SUCCESS = 2;
-    public static final int SWIFT_FAILURE = 3;
-    public static final int SITE = 4;
-    public static final int TYPE = 5;
-    public static final int JOB_HOST = 6;
-    public static final int JOB_SUCCESS = 7;
-    public static final int JOB_FAILURE = 8;
-    public static final int VDS_START = 9;
-    public static final int VDS_COMPLETION = 10;
-    public static final int VDS_FAILURE = 11;
+    public static final int SITE = 2;
+    public static final int TYPE = 3;
+    public static final int JOB_HOST = 4;
+    public static final int JOB_SUCCESS = 5;
+    public static final int JOB_FAILURE = 6;
 
     private static final DateFormat PFMT = new SimpleDateFormat("MM/dd/yyyy");
     private Date pstart, pend;
@@ -62,7 +57,8 @@ public class AnalysisStatistics {
     private long timestamp;
 
     private static Map eventKeys;
-
+    private SortedMap[] m;
+    
     private static void addEventKey(String key, int value) {
         eventKeys.put(key, Integer.valueOf(value));
     }
@@ -71,19 +67,16 @@ public class AnalysisStatistics {
         eventKeys = new HashMap();
         addEventKey("rawData", RAW_DATA);
         addEventKey("swiftStart", SWIFT_START);
-        addEventKey("swiftSuccess", SWIFT_SUCCESS);
-        addEventKey("swiftFailure", SWIFT_FAILURE);
         addEventKey("site", SITE);
         addEventKey("type", TYPE);
         addEventKey("jobHost", JOB_HOST);
         addEventKey("jobSuccess", JOB_SUCCESS);
         addEventKey("jobFailure", JOB_FAILURE);
-        addEventKey("vdsStart", VDS_START);
-        addEventKey("vdsCompletion", VDS_COMPLETION);
-        addEventKey("vdsFailure", VDS_FAILURE);
     }
 
     private static final DateFormat DF = new SimpleDateFormat("yyyyMMdd-hhmm");
+    private static final DateFormat DFNEW = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
     private static WeakReference stats;
     public Elab getElab() {
         return elab;
@@ -93,40 +86,61 @@ public class AnalysisStatistics {
         this.elab = elab;
     }
     public SortedMap[] load() throws IOException, SQLException {
-        SortedMap[] m = initializeMaps();
-        Connection con = null;
-        PreparedStatement ps = null; 
-        try {
-        	con = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = con.prepareStatement("SELECT date_started, " + 
-            						  "       rawdata, " +
-            						  "       study_runmode, " +
-            						  "       study_type, " +
-            						  "       study_result " +
-            						  "  FROM analysis_stats ");   
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-            	Date d = (Date) rs.getDate(0);
-                m[RAW_DATA].put(d, new Entry(rs.getString(1)));
-                m[SITE].put(d, new Entry(rs.getString(2)));
-                m[TYPE].put(d, new Entry(rs.getString(3)));
-                String result = rs.getString(4);
-                if (result.equals("2")) {
-                	m[JOB_SUCCESS].put(d, new Entry("jobSuccess"));                	
-                } else if (result.equals("3")) {
-                	m[JOB_FAILURE].put(d, new Entry("jobFailure"));                	
-                } 
-            }
+        if (m == null) {
+	    	m = initializeMaps();
+	        Connection con = null;
+	        PreparedStatement ps = null; 
+	        try {
+	        	con = DatabaseConnectionManager.getConnection(elab.getProperties());
+	            ps = con.prepareStatement("SELECT date_started, " + 
+	            						  "       rawdata, " +
+	            						  "       study_runmode, " +
+	            						  "       study_type, " +
+	            						  "       study_result " +
+	            						  "  FROM analysis_results ");   
+	            ResultSet rs = ps.executeQuery();
+	            while (rs.next()) {
+	            	Date rawdate = (Date) rs.getDate(1);
+	            	String formatted = DFNEW.format(rawdate);
+	            	Date d = DF.parse(formatted);
+	            	m[SWIFT_START].put(d, new Entry("swift"));
+	            	String rawdata = "";
+	            	if (rs.getString(2) != null) {
+	            		rawdata = rs.getString(2);
+	            	}
+	            	String site = "";
+	            	if (rs.getString(3) != null) {
+	            		site = rs.getString(3);
+	            	}
+	            	String type = "";
+	            	if (rs.getString(4) != null) {
+	            		type = rs.getString(4);
+	            	}
+	                m[RAW_DATA].put(d, new Entry(rawdata));
+	                m[SITE].put(d, new Entry(site));
+	                m[TYPE].put(d, new Entry(type));
+	                String result = rs.getString(5);
+	                if (result != null) {
+		                if (result.equals("2")) {
+		                	m[JOB_SUCCESS].put(d, new Entry("jobSuccess"));                	
+		                } else if (result.equals("3")) {
+		                	m[JOB_FAILURE].put(d, new Entry("jobFailure"));                	
+		                } 
+	                }
+	            }
+	        } catch (Exception e) {
+	        	String msg = e.getMessage();
+	        }
+	        finally {
+	            DatabaseConnectionManager.close(con, ps);
+	        }
+	        calculateCummulativeData(m);
         }
-        finally {
-            DatabaseConnectionManager.close(con, ps);
-        }
-        calculateCummulativeData(m);
         return m;
     }
 
     private SortedMap[] initializeMaps() {
-        SortedMap[] m = new SortedMap[12];
+        SortedMap[] m = new SortedMap[7];
         for (int i = 0; i < m.length; i++) {
             m[i] = new TreeMap();
         }
@@ -151,7 +165,7 @@ public class AnalysisStatistics {
 
     public int getRuns(Date start, Date end) throws IOException, SQLException {
         SortedMap[] m = getStats();
-        return getCount(m[VDS_START], start, end) + getCount(m[SWIFT_START], start, end);
+        return getCount(m[SWIFT_START], start, end);
     }
 
     private int getCount(SortedMap m, Date start, Date end) {
@@ -160,17 +174,15 @@ public class AnalysisStatistics {
             return 0;
         }
         else {
-            return ((Entry) m.get(m.lastKey())).count - ((Entry) m.get(m.firstKey())).count;
+            //return ((Entry) m.get(m.lastKey())).count - ((Entry) m.get(m.firstKey())).count;
+        	return m.size();
         }
     }
 
     private SortedMap[] getStats() throws IOException, SQLException {
         SortedMap[] m;
-//        File f = new File(LOG);
-//        if (stats == null || (m = (SortedMap[]) stats.get()) == null || f.lastModified() > timestamp) {
-            m = load();
-//            stats = new WeakReference(m);
-//        }
+        m = load();
+        stats = new WeakReference(m);
         return m;
     }
 
@@ -251,7 +263,8 @@ public class AnalysisStatistics {
         Calendar end = Calendar.getInstance();
         Calendar start = Calendar.getInstance();
         start.add(Calendar.DAY_OF_YEAR, -span);
-        return getRuns(start.getTime(), end.getTime());
+        int runs = getRuns(start.getTime(), end.getTime());
+        return runs;
     }
 
     public List getYearlyAnalysisCounts() throws IOException, ParseException, SQLException  {
@@ -266,7 +279,7 @@ public class AnalysisStatistics {
         int v;
         List l = new ArrayList();
         SortedMap[] m = getStats();
-        v = getCount(m[VDS_START], pstart, pend);
+        v = getCount(m[SWIFT_START], pstart, pend);
         l.add(new BarChartEntry("VDS-local", v));
         Map sm = categorize(m[SITE].subMap(pstart, pend));
         Iterator i = sm.entrySet().iterator();
@@ -328,26 +341,6 @@ public class AnalysisStatistics {
     }
 
     private static final NumberFormat NF = new DecimalFormat("###.##");
-
-    public String getVDSFailures() throws IOException, SQLException  {
-        SortedMap[] m = getStats();
-        int total = getCount(m[VDS_COMPLETION], pstart, pend);
-        int failed = getCount(m[VDS_FAILURE], pstart, pend);
-        if (total == 0) {
-            return "-";
-        }
-        return failed + "/" + total + " (" + NF.format((double) failed / total * 100) + "%)";
-    }
-
-    public String getSwiftFailures() throws IOException, SQLException  {
-        SortedMap[] m = getStats();
-        int success = getCount(m[SWIFT_SUCCESS], pstart, pend);
-        int failed = getCount(m[SWIFT_FAILURE], pstart, pend);
-        if (success + failed == 0) {
-            return "-";
-        }
-        return failed + "/" + (success + failed) + " (" + NF.format((double) failed / (success + failed) * 100) + "%)";
-    }
 
     public List getRawDataDistribution() throws IOException, SQLException  {
         SortedMap[] m = getStats();

@@ -439,7 +439,7 @@ public class DataTools {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             boolean ac = conn.getAutoCommit();
             psAnalysisResult = conn.prepareStatement(
-            				"INSERT INTO analysis_stats (job_id, date_started, date_finished, study_type, study_runmode, rawdata, study_result, research_group) " +
+            				"INSERT INTO analysis_results (job_id, date_started, date_finished, study_type, study_runmode, rawdata, study_result, research_group) " +
                     		"VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;"); 
             try {
                 conn.setAutoCommit(false);

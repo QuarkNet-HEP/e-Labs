@@ -43,9 +43,10 @@
 </c:set>
 <c:set var="end" value="${param.end != null ? param.end : now}"/>
 
-<jsp:useBean id="stats" class="gov.fnal.elab.statistics.AnalysisStats"/>
+<jsp:useBean id="stats" class="gov.fnal.elab.statistics.AnalysisStatistics"/>
 <jsp:setProperty name="stats" property="start" value="${start}"/>
 <jsp:setProperty name="stats" property="end" value="${end}"/> 
+<jsp:setProperty name="stats" property="elab" value="${elab}"/>
 
 <h1>Analysis runs for ${elab.name} elab from ${start} to ${end}</h1>
 
@@ -103,7 +104,7 @@
 <h2>Run methods</h2>
 
 <c:set var="rm" value="${stats.runMethods}"/>
-<c:set var="c" value="${fn:split('ffc080, ff80c0, eff0c0, a0a0ff, 99f0a0', ', ')}"/>
+<c:set var="c" value="${fn:split('ffc080, ff80c0, eff0c0, a0a0ff, 99f0a0, 00ccff, 996600, ffff00', ', ')}"/>
 
 <%{
 		StringBuffer sb = new StringBuffer();
@@ -170,18 +171,6 @@
 			<td style="vertical-align: bottom;"><fmt:formatNumber pattern="###.##" value="${e.relativeSize}"/></td>
 		</tr>
 	</c:forEach>
-</table>
-
-<h2>Failures</h2>
-<table border="0" id="active" class="lefty small">
-	<tr>
-		<th>VDS</th>
-		<td>${stats.VDSFailures}</td>
-	</tr>
-	<tr>
-		<th>Swift</th>
-		<td>${stats.swiftFailures}</td>
-	</tr>
 </table>
 		
 		</td>

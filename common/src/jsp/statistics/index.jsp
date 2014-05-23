@@ -36,7 +36,7 @@
 <jsp:useBean id="stats" class="gov.fnal.elab.statistics.Statistics"/>
 <jsp:setProperty name="stats" property="elab" value="${elab}"/>
 <jsp:useBean id="astats" class="gov.fnal.elab.statistics.AnalysisStatistics"/>
-
+<jsp:setProperty name="astats" property="elab" value="${elab}"/>
 			
 <h1>User statistics</h1>
 
