@@ -10,6 +10,7 @@
 package gov.fnal.elab.datacatalog;
 
 import gov.fnal.elab.Elab;
+import gov.fnal.elab.ElabGroup;
 import gov.fnal.elab.RawDataFileResolver;
 import gov.fnal.elab.datacatalog.StructuredResultSet.File;
 import gov.fnal.elab.datacatalog.StructuredResultSet.Month;
@@ -25,7 +26,7 @@ import gov.fnal.elab.util.DatabaseConnectionManager;
 import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.util.ElabUtil;
 import gov.fnal.elab.ElabFactory;
-
+import gov.fnal.elab.analysis.AnalysisRun;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.codec.net.URLCodec;
@@ -430,6 +431,53 @@ public class DataTools {
         TZ_DATE_TIME_FORMAT = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
     }
 
+    //EPeronja-05/20/2014: Insert Analysis results for statistics
+    public static void insertAnalsysResults(AnalysisRun ar, Elab elab) throws ElabException {
+        Connection conn = null;
+        PreparedStatement psAnalysisResult; 
+        try {
+            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+            boolean ac = conn.getAutoCommit();
+            psAnalysisResult = conn.prepareStatement(
+            				"INSERT INTO analysis_stats (job_id, date_started, date_finished, study_type, study_runmode, rawdata, study_result, research_group) " +
+                    		"VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;"); 
+            try {
+                conn.setAutoCommit(false);
+                
+                psAnalysisResult.setString(1, ar.getId()); 
+                Long startmillis = ar.getStartTime().getTime();
+                java.sql.Timestamp startDate = new java.sql.Timestamp(startmillis);
+                psAnalysisResult.setTimestamp(2, startDate);
+                Long endmillis = ar.getStartTime().getTime();
+                java.sql.Timestamp endDate = new java.sql.Timestamp(endmillis);                
+                psAnalysisResult.setTimestamp(3, endDate);
+                psAnalysisResult.setString(4, (String) ar.getAttribute("type"));
+                psAnalysisResult.setString(5, (String) ar.getAttribute("runMode"));
+                Collection rawdata = (Collection) ar.getAttribute("rawdata");
+                psAnalysisResult.setString(6, Arrays.toString(rawdata.toArray()));
+                psAnalysisResult.setString(7, String.valueOf(ar.getStatus()));
+                psAnalysisResult.setString(8, (String) ar.getAttribute("owner"));
+                java.sql.ResultSet rs = psAnalysisResult.executeQuery(); 
+                conn.commit();
+            }
+            catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
+            finally {
+                conn.setAutoCommit(ac);
+            }
+        }
+        catch (SQLException e) {
+            throw new ElabException(e);
+        }
+        finally {
+            if (conn != null) {
+                DatabaseConnectionManager.close(conn);
+            }
+        }    	
+    }//end of insertAnalysisResults
+    
     //EPeronja-07/25/2013: Poster Tags
     public static void removePosterTags(Elab elab, String[] removeTags) throws ElabException {
     	for (int i = 0; i < removeTags.length; i++) {

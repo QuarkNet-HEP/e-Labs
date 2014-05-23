@@ -66,6 +66,7 @@
 	    run.setAttribute("type", analysis.getName());
 	    run.setAttribute("owner", user.getName());
 	    run.setAttribute("queuedAt", df.format(new Date()));
+	    run.setAttribute("rawdata", analysis.getParameterValues("rawData"));
 	    String detectorid = request.getParameter("detectorid");
 	    if (detectorid == null) {
 			detectorid = "";

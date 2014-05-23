@@ -7,6 +7,7 @@ import gov.fnal.elab.*;
 import gov.fnal.elab.analysis.AnalysisNotifier;
 import gov.fnal.elab.analysis.AnalysisRun;
 import gov.fnal.elab.analysis.AnalysisRunListener;
+import gov.fnal.elab.datacatalog.DataTools;
 import gov.fnal.elab.notifications.ElabNotificationsProvider;
 import gov.fnal.elab.notifications.Notification;
 import gov.fnal.elab.util.ElabException;
@@ -25,6 +26,13 @@ public class DefaultAnalysisNotifier implements AnalysisRunListener, AnalysisNot
         if (status == AnalysisRun.STATUS_FAILED || status == AnalysisRun.STATUS_COMPLETED) {
             boolean failed = AnalysisRun.STATUS_FAILED == status;
             Elab elab = run.getAnalysis().getElab();
+            //EP-login analysis for statistics
+            try {
+            	DataTools.insertAnalsysResults(run, elab);
+            } catch (Exception ex) {
+                System.err.println("Failed to log analysis for stats");
+                ex.printStackTrace();            	
+            }
 		    //EP-send an email when an analysis fails
             if (AnalysisRun.STATUS_FAILED == status) {
             	Throwable e = run.getException();
