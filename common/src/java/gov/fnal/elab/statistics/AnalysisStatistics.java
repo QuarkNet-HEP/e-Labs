@@ -175,7 +175,6 @@ public class AnalysisStatistics {
     }
 
     private int getCount(SortedMap m, Date start, Date end) {
-    	m.s
         m = m.subMap(start, end);
         if (m.isEmpty()) {
             return 0;
