@@ -118,6 +118,8 @@
 	request.setAttribute("defaultBenchmark", defaultBenchmark);
 	request.setAttribute("detector", selectedDetector);
 	request.setAttribute("filenameDisplay", filenameDisplay);
+	request.setAttribute("includeBlessed", includeBlessed);
+
 %>
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 	<html xmlns="http://www.w3.org/1999/xhtml">
@@ -172,9 +174,9 @@
 	<li>Click <strong>Check Selected Files</strong> to submit them to the blessing process.</li>
 </ul>
 <form id="benchmarkProcessForm" method="post" >
-	<table style="border: 1px solid black; width: 100%; padding: 10px;">
+	<table style="border: 1px solid black; width: 110%; padding: 5px;">
 	    <tr class="benchmarkRow">
-	    	<td class="benchmarkHeader">Detector<br />
+	    	<td class="benchmarkHeader" >Detector<br />
 	    		<select name="detectorId" id="detectorId" onChange="javascript:showAllFiles(this);">
    			    	<option>Choose detector</option>
    						<c:forEach items="${detectors}" var="detectors">
@@ -188,7 +190,14 @@
 		 				   	</c:choose>
 	   					</c:forEach>
    				</select><br />
-   				<input type="checkbox" id="blessAll" name="blessAll" onclick="javascript:retrieveAll();">Retrieve all</input>
+   				<c:choose>
+   					<c:when test='${includeBlessed != null && includeBlessed == "YES"}'>
+	   					<input type="checkbox" id="blessAll" name="blessAll" checked onclick="javascript:retrieveUnblessedOnly();">Retrieve all</input>
+	   				</c:when>
+	   				<c:otherwise>
+	   					<input type="checkbox" id="blessAll" name="blessAll" onclick="javascript:retrieveAll();">Retrieve all</input>
+	   				</c:otherwise>
+	   			</c:choose>
    			</td>
    			<td class="benchmarkHeader">Benchmark<br />
   			    <c:choose>
@@ -271,7 +280,7 @@
 	</table>
 	<input type="hidden" name="detector" id="detector" value="${detector}"></input>
 	<input type="hidden" name="selectedBenchmark" id="selectedBenchmark" value="${selectedBenchmark}"></input>
-	<input type="hidden" name="includeBlessed" id="includeBlessed" value="NO"></input>
+	<input type="hidden" name="includeBlessed" id="includeBlessed" value="${includeBlessed}"></input>
 </form>
 <c:choose>
      <c:when test="${not empty results}">
