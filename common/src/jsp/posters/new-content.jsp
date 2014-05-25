@@ -7,7 +7,6 @@
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
-<%@ page import="org.owasp.validator.html.*" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="org.apache.commons.codec.net.URLCodec" %>
@@ -37,8 +36,8 @@
 
 
 <%
-	Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
-	AntiSamy as = new AntiSamy(); 
+	//Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
+	//AntiSamy as = new AntiSamy(); 
 	
 	String title = "Make/Edit Poster";
 	Date now = new Date();
@@ -112,7 +111,13 @@
 	    	val = entry.getValue()[0].trim(); 
 	    	name = entry.getKey();
 	    	if (!val.equals(selectDefault) && re.match(name)) {  
-		    	//var = as.scan(val, policy).getCleanHTML();
+	    		if (val.contains("/elab/capture/img/")) {
+	    	    	val = ElabUtil.escapePoster(val); 
+	    		} else {
+			    	val = ElabUtil.stringSanitization(val, elab, "Posters");
+	    		}
+		    	pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
+		    	/*
 		    	ArrayList checkDirtyInput = as.scan(val, policy).getErrorMessages();
 		    	//there wasn't any dirty input
 		    	if (checkDirtyInput.isEmpty()) {
@@ -125,13 +130,35 @@
 				    	pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
 	    			
 		    		} else {
-		    			//clean up
+		    			//clean up and send email with notification
+		    			String userInput = val;
+		    			int errors = as.scan(userInput, policy).getNumberOfErrors();
+		    			ArrayList actualErrors = as.scan(userInput, policy).getErrorMessages();
+		    			Iterator iterator = actualErrors.iterator();
+		    			String errorMessages = "";
+		    			while (iterator.hasNext()) {
+		    				errorMessages = (String) iterator.next() + ",";
+		    			}
 		    			val = as.scan(val, policy).getCleanHTML();
 				    	val = ElabUtil.escapePoster(val); 
 				    	pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
+				    	//send email with warning
+				    	String to = elab.getProperty("notifyDirtyInput");
+			    		String emailmessage = "", subject = "Make Posters: user sent dirty input";
+			    		String emailBody =  "User input: "+userInput+"\n" +
+	    						   			"Number of errors: "+String.valueOf(errors)+"\n" +
+	    				   					"Error messages: "+ errorMessages + "\n" +
+	    				   					"Validated input: "+val + "\n";
+					    try {
+					    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
+					    } catch (Exception ex) {
+			                System.err.println("Failed to send email");
+			                ex.printStackTrace();
+					    }
 				    	//throw new ElabJspException("There is a problem with this string: " + val + ". Bailing out.");		    	
 		    		}
 		    	}
+*/
 	    	}
 	    }
 	    
@@ -189,14 +216,7 @@
 		    	String entryValue = entry.getValue()[0].trim(); 
 		    	String entryName = entry.getKey();
 		    	if (figures.match(entryName)) {  
-		    		//entryValue = as.scan(entryValue, policy).getCleanHTML();
-				    ArrayList checkDirtyInput = as.scan(entryName, policy).getErrorMessages();
-			    	//there wasn't any dirty input
-			    	if (checkDirtyInput.isEmpty()) {
-			    		meta.add(entryName + " string " + entryName);
-			    	} else {
-					    throw new ElabJspException("There is a problem with this string: " + entryName + ". Bailing out.");		    		
-			    	}
+		    		meta.add(entryName + " string " + entryName);
 		    	}
 		    }			
 			

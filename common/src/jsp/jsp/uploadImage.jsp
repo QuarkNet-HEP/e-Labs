@@ -1,8 +1,11 @@
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="org.apache.commons.fileupload.*" %>
+<%@ page import="gov.fnal.elab.*" %>
+<%@ page import="gov.fnal.elab.util.*" %>
 <%@ include file="common.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
+
 <%
 /***********************************************************************
  *  Form to allow users to upload images created outside of our analysis
@@ -23,9 +26,7 @@ String comments = "";       //optional comments on file
 String upload_type = "uploadedimage";   // uploaded (external) or saved (internal)?
 
 DiskFileUpload fu = new DiskFileUpload();
-
 ArrayList meta = new ArrayList();
-
 if (fu.isMultipartContent(request)) {
     fu.setSizeMax(10 * 1024 * 1024);    //10MB max
 
@@ -127,42 +128,11 @@ if (fu.isMultipartContent(request)) {
             File f = new File(pdir, filename);
             uploadedImage.write(f);
 
-            /*
-             * FIXME NoClassDefFoundError when trying to use ImageInfo
-            //create & write thumbnail image
-            try{
-            ImageInfo info = new ImageInfo(plotDir + filename);
-            MagickImage image = new MagickImage(info);
-            MagickImage thumbImage = image.scaleImage(150, 150);
-            thumbImage.setFileName(plotDir + thumbFilename);
-            thumbImage.writeImage(info);
-            } catch(Exception e){
-                e.printStackTrace();
-                out.write("except: " + e + " " + e.getMessage());
-            }
-            */
-            //FIXME this is a big hack to get around the above error...
-            /*
-             * except I can't for the life of me get it to work from the web....only the terminal
-            String[] cmd = new String[]{"bash", "-c", "'cd " + home + "/cosmic; " + 
-                "env CLASSPATH=.:/usr/local/quarknet-dev/jakarta-tomcat-5.0.18/webapps/elab/WEB-INF/lib/jmagick.jar LD_LIBRARY_PATH=/home/nepywoda/JM/lib " + 
-                    "java magickmake " + 
-                    plotDir+filename + " " + plotDir+thumbFilename + "'"};
-            Process p = Runtime.getRuntime().exec(cmd);
-            int ret_val = p.waitFor();
-            if(ret_val != 0) {
-                out.write("wasn't able to create the thumbnail with: " + cmd[0] + cmd[1] + cmd[2]);
-            }
-            */
-
-
-	    // Basic metadata (in addition to POSTed stuff above)
-
             meta.add("origname string " + origName);
 	    //TODO: allow 'savedimage' as synonym for 'plot'
             //      I consider this a workaround -EAM 20Apr2009
 	    if( upload_type.equals("savedimage") ) upload_type = "plot";
-	    meta.add("type string "+ upload_type);
+	    	meta.add("type string "+ upload_type);
             meta.add("name string " + name);
             meta.add("group string " + groupName);
             meta.add("teacher string " + groupTeacher);
@@ -178,7 +148,9 @@ if (fu.isMultipartContent(request)) {
             meta.add("thumbnail string " + filename);
             
             comments = comments.replaceAll("\r\n?", "\\\\n");   //replace new lines from text box with "\n"
-            meta.add("comments string " + comments);
+          	//EPeronja-04/28/2014: do some sanitization
+          	comments =ElabUtil.stringSanitization(comments, elab, "Upload Images");
+            meta.add("comments string " + comments);       
             Date now = new Date();
             long millisecondsSince1970 = now.getTime();
             java.sql.Timestamp timestamp = new java.sql.Timestamp(millisecondsSince1970);
@@ -192,8 +164,7 @@ if (fu.isMultipartContent(request)) {
         }
     }
 }
-
-
+request.setAttribute("eLab", eLab);
 %>
 <html>
 <head>
@@ -203,8 +174,6 @@ if (fu.isMultipartContent(request)) {
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
     
-
-
 	<body id="posters" class="posters">
 		<!-- entire page container -->
 		<div id="container">
@@ -216,95 +185,69 @@ if (fu.isMultipartContent(request)) {
 			</div>
 			
 			<div id="content">
-
+<% if (user.isGuest()) { %>
 <table border="0" id="main">
 	<tr>
-		<td id="left">
-			<%@ include file="../include/left-alt.jsp" %>
-		</td>
+		<c:choose>
+			<c:when test='${eLab == "ligo" }'>
+				<td id="left">
+					<%@ include file="../include/left-alt.jsp" %>
+				</td>
+			</c:when>
+		</c:choose>
 		<td id="center">
-			<h1>Upload Image</h1>
-<center>
-<P>
-<!-- instruction table -->
-<TABLE BORDER=0 WIDTH=800 CELLPADDING=4>
-    <TR>
-        <TD >
-           
-                <B>Instructions</B>
-            
-        </TD>
-    </TR>
-    <tr>
-        <td>
-                <ul>
-                    <li>Click <b>Choose File/Browse</b> to locate the data file on your computer.
-                    <li>Give your file a <b>name to save as</b>.
-                    <li>Click <b>Upload</b> to upload the file.
-                </ul>
-        </td>
-    </tr>
-</TABLE>
-<HR>
-<%
-if(fu.isMultipartContent(request)){
-    if(valid == false){
-%>
-        <font color="red"><%=ret%></font>
-<%
-    }
-    else{
-%>
-        You've successfully uploaded your image <i>
-        <a href="../plots/view.jsp?filename=<%=filename%>&get=data"><%=name%></a></i>
-<%
-    }
-}
-else{
-%>
-    <span class="displayArial">
-        <FORM name="uploadform" method="post" enctype="multipart/form-data">
-        <TABLE BORDER=0 WIDTH=500 CELLPADDING=4>
-            <TR>
-                <TD align=center>
-                <%=ret%>
-                </TD>
-            </TR>
-            <tr>
-                <td align="center">
-                    Image File: <input name="image" type="file" size="40">
-                </td>
-            </tr>
-            <tr>
-                <td align="center">
-                    Name to save as: <input name="name" type="text" size="20" maxlength="30">
-                </td>
-            </tr>
-            <tr>
-                <td align="center">
-                    Optional comments on image:
-                </td>
-            </tr>
-            <tr>
-                <td align="center">
-                    <textarea name="comments" rows="8" cols="50"></textarea>
-                </td>
-            </tr>
-            <tr>
-                <td align="right">
-                    <input name="load" type="submit" value="Upload">
-                </td>
-            </tr>
-        </TABLE>
-        </FORM>
-    </span>
-<%
-}
-%>
-</center>
-</td></tr>
-</table>
 
+	<h2>Guest User Message:</h2>
+	<p>The 'guest' user account allows a tour of the e-labs and simple functions.</p>
+	<p>If you are interested in full functionality, please request an account by filling
+	   out this <a href="mailto:e-labs@fnal.gov?Subject=Please%20register%20me%20as%20an%20e-Labs%20teacher.&Body=Please%20complete%20each%20of%20the%20fields%20below%20and%20send%20this%20email%20to%20be%20registered%20as%20an%20e-Labs%20teacher.%20You%20will%20receive%20a%20response%20from%20the%20e-Labs%20team%20by%20the%20end%20of%20the%20business%20day.%0D%0DFirst%20Name:%0D%0DLast%20Name:%0D%0DCity:%0D%0DState:%0D%0DSchool:%0D%0De-Lab Name(s):%0D%0DDAQ%20board%20ID%20numbers%20(leave%20blank%20if%20not%20applicable;):%0D%0D">Email Form</a>. 
+	</p>
+		</td>
+		</tr>
+	</table>
+<% } else { %>
+<table border="0" id="main">
+	<tr>
+		<c:choose>
+			<c:when test='${eLab == "ligo" }'>
+				<td id="left">
+					<%@ include file="../include/left-alt.jsp" %>
+				</td>
+			</c:when>
+		</c:choose>
+		<td id="center">
+			<h1>Upload Image: Upload Images to use with Posters.</h1>
+	        <br /><strong>Instructions</strong><br />
+              <ul>
+                  <li>Click <b>Choose File/Browse</b> to locate the data file on your computer.
+                  <li>Give your file a <b>name to save as</b>.
+                  <li>Click <b>Upload</b> to upload the file.
+              </ul>
+	        
+	<hr>
+	<% if(fu.isMultipartContent(request)) {
+	   		 if(valid == false) { %>
+				<font color="red"><%=ret%></font>
+			<% } else { %>
+	        You've successfully uploaded your image <i>
+	        <a href="../plots/view.jsp?filename=<%=filename%>&get=data"><%=name%></a></i>
+	<% } } else { %>
+	    <span class="displayArial">
+	        <form name="uploadform" method="post" enctype="multipart/form-data">
+	        <table BORDER=0 WIDTH=500 CELLPADDING=4>
+	            <tr><td align=center><%=ret%></td></tr>
+	            <tr><td align="center">Image File: <input name="image" type="file" size="40"></td></tr>
+	            <tr><td align="center">Name to save as: <input name="name" type="text" size="20" maxlength="30"></td></tr>
+	            <tr><td align="center">Optional comments on image:</td></tr>
+	            <tr><td align="center"><textarea name="comments" rows="8" cols="50"></textarea></td></tr>
+	            <tr><td align="right"><input name="load" type="submit" value="Upload"></td></tr>
+	        </table>
+	        </form>
+	    </span>
+	<% } %>
+</td></tr></table>
+
+<% } %>	
 			</div>
 			<!-- end content -->	
 		

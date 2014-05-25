@@ -90,7 +90,9 @@ request.setAttribute("project", elab.getName());
 					<td>${tuples.state}</td>
 					<td>
 						<ul>
-							<li><a href="../jsp/add-comments.jsp?t=poster&fileName=${encodedLFN}">View or Add Comments</a></li>
+							<% if (!user.isGuest()) { %>
+								<li><a href="../jsp/comments-add.jsp?t=poster&fileName=${encodedLFN}">View or Add Comments</a></li>
+							<% } %>
 							<li><a href="../posters/display.jsp?type=paper&name=${encodedLFN}">View as Paper</a></li>
 							<li><a href="../data/view-metadata.jsp?filename=${encodedLFN}">View Metadata</a></li>
 						</ul>

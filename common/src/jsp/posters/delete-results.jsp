@@ -66,7 +66,7 @@
 						<td>${tuples.state}</td>
 						<td>
 							<ul>
-								<li><a href="../jsp/add-comments.jsp?t=poster&fileName=${tuples.name}">View or Add Comments</a></li>
+								<li><a href="../jsp/comments-add.jsp?t=poster&fileName=${tuples.name}">View or Add Comments</a></li>
 								<li><a href="../posters/display.jsp?type=paper&name=${tuples.name}">View as Paper</a></li>
 								<li><a href="../data/view-metadata.jsp?filename=${poster.LFN}">View Metadata</a></li>
 							</ul>
