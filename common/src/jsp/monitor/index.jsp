@@ -140,10 +140,16 @@
 	}
 	
 	public static synchronized Monitor getMonitor(ServletContext c, String script) {
-		Monitor monitor = (Monitor) c.getAttribute("i2u2.site.monitor");
-		if (monitor == null) {
+		Monitor monitor;
+		try {
+			monitor = (Monitor) c.getAttribute("i2u2.site.monitor");
+			if (monitor == null) {
+				monitor = new Monitor(script);
+				c.setAttribute("i2u2.site.monitor", monitor);
+			}
+		} catch (Exception e) {
 			monitor = new Monitor(script);
-			c.setAttribute("i2u2.site.monitor", monitor);
+			c.setAttribute("i2u2.site.monitor", monitor);			
 		}
 		return monitor;
 	}
@@ -394,23 +400,13 @@ body {
 				<table cellspacing="1" cellpadding="1">
 					<tr valign="bottom">
 						<td align="center" width="86px">
-							<c:choose>
-								<c:when test="${not empty site.value.fstype}"><div class="label">${site.value.fstype}</div></c:when>
-								<c:otherwise><div class="label">N/A</div></c:otherwise>
-							</c:choose>
+							<div class="label">${site.value.fstype}</div>
 						</td>
 					</tr>
 					<tr>
 						<td align="center">
 							<div class="label">
-								<c:choose>
-									<c:when test="${not empty site.value.fstest}">
-										<object type="image/svg+xml" data="onoff.jsp?value=${site.value.fstest}" width="50" height="70">SVG not supported</object>
-									</c:when>
-									<c:otherwise>
-										<object type="image/svg+xml" data="onoff.jsp?disabled=true" width="50" height="70">SVG not supported</object>
-									</c:otherwise>
-								</c:choose>
+								<object type="image/svg+xml" data="onoff.jsp?value=${site.value.fstest}" width="50" height="70">SVG not supported</object>
 							</div>
 						</td>
 					</tr>
