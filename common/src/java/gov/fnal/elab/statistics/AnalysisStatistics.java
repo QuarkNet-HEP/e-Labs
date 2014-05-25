@@ -86,6 +86,7 @@ public class AnalysisStatistics {
         this.elab = elab;
     }
     public SortedMap[] load() throws IOException, SQLException {
+        int counter = 0;
         if (m == null) {
 	    	m = initializeMaps();
 	        Connection con = null;
@@ -97,22 +98,23 @@ public class AnalysisStatistics {
 	            						  "       study_runmode, " +
 	            						  "       study_type, " +
 	            						  "       study_result " +
-	            						  "  FROM analysis_results ");   
+	            						  "  FROM analysis_results "+
+	            						  " ORDER BY date_started ");   
 	            ResultSet rs = ps.executeQuery();
 	            while (rs.next()) {
 	            	Date rawdate = (Date) rs.getDate(1);
 	            	String formatted = DFNEW.format(rawdate);
 	            	Date d = DF.parse(formatted);
 	            	m[SWIFT_START].put(d, new Entry("swift"));
-	            	String rawdata = "";
+	            	String rawdata = "unknown";
 	            	if (rs.getString(2) != null) {
 	            		rawdata = rs.getString(2);
 	            	}
-	            	String site = "";
+	            	String site = "unknown";
 	            	if (rs.getString(3) != null) {
 	            		site = rs.getString(3);
 	            	}
-	            	String type = "";
+	            	String type = "unknown";
 	            	if (rs.getString(4) != null) {
 	            		type = rs.getString(4);
 	            	}
@@ -125,8 +127,11 @@ public class AnalysisStatistics {
 		                	m[JOB_SUCCESS].put(d, new Entry("jobSuccess"));                	
 		                } else if (result.equals("3")) {
 		                	m[JOB_FAILURE].put(d, new Entry("jobFailure"));                	
-		                } 
+		                } else {
+		                	m[JOB_FAILURE].put(d, new Entry("unknown"));
+		                }
 	                }
+	                counter++;
 	            }
 	        } catch (Exception e) {
 	        	String msg = e.getMessage();
@@ -136,6 +141,7 @@ public class AnalysisStatistics {
 	        }
 	        calculateCummulativeData(m);
         }
+        System.out.println("counter:"+String.valueOf(counter));
         return m;
     }
 
@@ -169,6 +175,7 @@ public class AnalysisStatistics {
     }
 
     private int getCount(SortedMap m, Date start, Date end) {
+    	m.s
         m = m.subMap(start, end);
         if (m.isEmpty()) {
             return 0;
