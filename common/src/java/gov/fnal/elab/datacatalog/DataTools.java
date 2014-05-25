@@ -451,12 +451,28 @@ public class DataTools {
                 Long endmillis = ar.getStartTime().getTime();
                 java.sql.Timestamp endDate = new java.sql.Timestamp(endmillis);                
                 psAnalysisResult.setTimestamp(3, endDate);
-                psAnalysisResult.setString(4, (String) ar.getAttribute("type"));
-                psAnalysisResult.setString(5, (String) ar.getAttribute("runMode"));
+                String type = (String) ar.getAttribute("type");
+                if (type == null || type.equals("")) {
+                	type = "unknown";
+                }
+                psAnalysisResult.setString(4, type);
+                String runmode = (String) ar.getAttribute("runMode");
+                if (runmode == null || runmode.equals("")) {
+                	runmode = "local";
+                }
+                psAnalysisResult.setString(5, runmode);
                 Collection rawdata = (Collection) ar.getAttribute("rawdata");
-                psAnalysisResult.setString(6, Arrays.toString(rawdata.toArray()));
+                if (rawdata != null) {
+                	psAnalysisResult.setString(6, Arrays.toString(rawdata.toArray()));
+                } else {
+                	psAnalysisResult.setString(6, "unknown");                	
+                }
                 psAnalysisResult.setString(7, String.valueOf(ar.getStatus()));
-                psAnalysisResult.setString(8, (String) ar.getAttribute("owner"));
+                String owner = (String) ar.getAttribute("owner");
+                if (owner == null || owner.equals("")) {
+                	owner = "unknown";
+                }                
+                psAnalysisResult.setString(8, owner);
                 java.sql.ResultSet rs = psAnalysisResult.executeQuery(); 
                 conn.commit();
             }
