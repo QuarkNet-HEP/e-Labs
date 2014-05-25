@@ -31,7 +31,7 @@
 				if (status == AnalysisRun.STATUS_FAILED || showStatus != null) {
 				    Throwable e = run.getException();
 				    String message = e == null ? "Unknown error. See output for details." : e.getMessage();
-					%>
+				    %>
 						<%
 							if (showStatus == null) {
 								%> 
@@ -196,6 +196,7 @@
 						</e:hidden>
 					</e:vswitch>
 				<%
+				}
 				else if (status == AnalysisRun.STATUS_CANCELED) {
 					%> <h1>The study was canceled</h1> <%
 				}
