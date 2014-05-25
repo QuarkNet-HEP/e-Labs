@@ -56,8 +56,12 @@ public class AnalysisParameterTools {
         	}
         	String s = new File(n).getName();
         	String detectorID = s.substring(0, s.indexOf("."));
-        	l.add(elab.getProperties().getDataDir() + File.separator
+    		File df = new File(elab.getProperties().getDataDir() + File.separator
                     + detectorID + File.separator + s + ".thresh");
+        	if (df.exists()) {	
+	        	l.add(elab.getProperties().getDataDir() + File.separator
+	                    + detectorID + File.separator + s + ".thresh");
+        	}
         }
         return l;
     }

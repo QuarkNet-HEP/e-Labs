@@ -11,6 +11,7 @@
 <%@ page import="gov.fnal.elab.analysis.impl.vds.*" %>
 <%@ page import="gov.fnal.elab.analysis.impl.swift.*" %>
 <%@ page import="gov.fnal.elab.analysis.impl.shell.*" %>
+<%@ page import="gov.fnal.elab.analysis.queue.*" %>
 <%@ page import="gov.fnal.elab.cosmic.*" %>
 <%
 	ElabAnalysis analysis = (ElabAnalysis) request.getAttribute("elab:analysis");
@@ -65,6 +66,7 @@
 	    run.setAttribute("type", analysis.getName());
 	    run.setAttribute("owner", user.getName());
 	    run.setAttribute("queuedAt", df.format(new Date()));
+	    run.setAttribute("rawdata", analysis.getParameterValues("rawData"));
 	    String detectorid = request.getParameter("detectorid");
 	    if (detectorid == null) {
 			detectorid = "";
@@ -89,6 +91,8 @@
 	    run.setListener(n);
 	    //EPeronja-04/25/2014: Added this code to complete the upload process after the split is done.
 	    if (run.getAttribute("type").equals("ProcessUpload")) {
+	    	run.setAttribute("uploadtime", analysis.getParameter("uploadtime"));
+	    	run.setAttribute("runMode", "local");
 	    	final ElabAnalysis ea = analysis;
 	    	final AnalysisRun ar = run;
 	    	ar.setDelayedCompletion(true);
@@ -98,6 +102,7 @@
 						CosmicPostUploadTasks cput = new CosmicPostUploadTasks(ea);
 						cput.runTasks();
 						ar.setDelayedCompletion(false);
+					    ar.setEndTime(new Date());
 						ar.setStatus(AnalysisRun.STATUS_COMPLETED);
 					}
 				}
@@ -105,7 +110,19 @@
 	    }
 	    //remember to set this up in elab.properties as cosmic.analysis = queue
 	    String runType = elab.getProperty(elab.getName() + ".analysis");
-    	run.start();
+	    if (runType != null && runType.equals("queue")) {
+	    	String type = (String) run.getAttribute("type");
+	    	if (type.equals("ShowerStudy") || type.equals("LifetimeStudy") || type.equals("FluxStudy") || 
+	    			type.equals("ShowerStudyTT") || type.equals("LifetimeStudyTT") || type.equals("FluxStudyTT")	) { 
+		    	AnalysisBlockingQueue aq = AnalysisBlockingQueue.getInstance();
+			    aq.put(run);
+		    } else {
+	    		//start these right away
+		    	run.start();
+		    }
+	    } else {
+	    	run.start();
+	    }
 %>
 	    	<jsp:include page="status.jsp">
 	    		<jsp:param name="id" value="<%= run.getId() %>"/>
