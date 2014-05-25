@@ -30,8 +30,16 @@
 			<div id="content">
 				
 <h1>Delete Posters: Search for and delete posters.</h1>
+<% 
+//EPeronja-05/07/2014: guest user is restricted :)
+if (user.isGuest())  { %>
+    <center>
+	<div style="text-align: left; width: 95%;">
+		<%@ include file="guest-poster-message.jsp" %>
+	</div></center>
+<% } else { %>
+	<%@ include file="../include/delete.jsp" %>
 
-<%@ include file="../include/delete.jsp" %>
 
 <c:if test="${!inhibitPage}">
 	<table border="0" id="main">
@@ -43,7 +51,7 @@
 		</tr>
 	</table>
 </c:if>
-
+<% } %>
 
 			</div>
 			<!-- end content -->	

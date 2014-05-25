@@ -30,8 +30,13 @@
 			<div id="content">
 
 <h1>Edit Posters: Click on a poster to edit it.</h1>
-
-<%@ include file="edit.jspf" %>
+<% 
+//EPeronja-05/07/2014: guest user is restricted :)
+if (user.isGuest())  { %>
+	<%@ include file="guest-poster-message.jsp" %>
+<% } else { %>
+	<%@ include file="edit.jspf" %>
+<% } %>
 
 			</div>
 			<!-- end content -->	

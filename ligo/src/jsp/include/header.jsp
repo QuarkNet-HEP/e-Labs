@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.notifications.*" %>
+
 <script type="text/javascript" src="../include/jquery/js/jquery-1.4.3.min.js"></script>
 <script type="text/javascript" src="../include/json2.js"></script>
 <script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.3.custom.min.js"></script>
@@ -15,7 +16,7 @@
 	    ElabGroup group = ElabGroup.getUser(session);
 	    request.setAttribute("username", group.getName());
 	}
-	String environment = elab.getProperty("environment");
+	String environment = (String) session.getAttribute("environment");	
 	request.setAttribute("environment", environment);
 %>
 
@@ -26,16 +27,16 @@
 <c:choose>
 	<c:when test="${loggedin}">
 		<div id="header-toolbar">
-			<c:choose>
-				<c:when test="${user.teacher}">
-					<e:popup href="/elab/ligo/teacher/forum/HelpDeskRequest.php" target="helpdesk" width="800" height="600"><img title="Helpdesk" src="../graphics/helpdesk.png" /></e:popup>
-					<e:popup href="../jsp/showLogbookT.jsp" target="log" width="800" height="600"><img title="Logbook" src="../graphics/logbook.png" /></e:popup>
-				</c:when>
-				<c:otherwise>
-					<e:popup href="../jsp/showLogbook.jsp" target="log" width="800" height="600"><img title="Logbook" src="../graphics/logbook.png" /></e:popup>
-				</c:otherwise>
-			</c:choose>
 			<c:if test='${user.name != "guest" }'>					
+				<c:choose>
+					<c:when test="${user.teacher}">
+						<e:popup href="/elab/ligo/teacher/forum/HelpDeskRequest.php" target="helpdesk" width="800" height="600"><img title="Helpdesk" src="../graphics/helpdesk.png" /></e:popup>
+						<e:popup href="../jsp/showLogbookT.jsp" target="log" width="800" height="600"><img title="Logbook" src="../graphics/logbook.png" /></e:popup>
+					</c:when>
+					<c:otherwise>
+						<e:popup href="../jsp/showLogbook.jsp" target="log" width="800" height="600"><img title="Logbook" src="../graphics/logbook.png" /></e:popup>
+					</c:otherwise>
+				</c:choose>
 				<%@ include file="../notifications/header-notifications.jsp" %>		
 			</c:if>
 			<a id="username" href="../login/user-info.jsp"><span class="toolbar-text-link">${username}</span></a>
