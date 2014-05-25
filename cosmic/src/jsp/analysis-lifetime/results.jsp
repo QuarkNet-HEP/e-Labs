@@ -20,6 +20,25 @@
 		<link rel="stylesheet" type="text/css" href="../css/one-column-wide.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/ltbr.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
+		<script>
+			function countDataChecked(form) {
+				var index, element;
+				var checked = 0;
+				for (index = 0; index < form.elements.length; index++) {
+					element = form.elements[index];
+					if (element.type.toUpperCase() == "CHECKBOX" && element.checked) {
+						checked++;
+					}
+				}
+				if (checked > 180) {
+					var divMsg = document.getElementById("msg");
+					divMsg.innerHTML = "<i>*Please limit your data selection to less than 180 days</i>";
+					return false;
+				}
+				return true;
+			}
+		</script>
+
 	</head>
 	
 	<body id="lifetime" class="data">
@@ -47,7 +66,7 @@
 						<jsp:param name="type" value="split"/>
 					</jsp:include>
 				</div>
-				<form action="controller.jsp" method="post" id="results-form">
+				<form action="controller.jsp" method="post" id="results-form" onsubmit="return countDataChecked(this);">
 					<div id="bottom-left">
 						<jsp:useBean scope="request" 
 							class="gov.fnal.elab.datacatalog.MultiSelectStructuredResultSetDisplayer" 
@@ -61,6 +80,7 @@
 						<div id="analyze" class="study-right">
 							<h2>Analyze</h2>
 							<input type="submit" name="action" value="Run lifetime study"/>
+							<center><div id="msg" style="color: red;"></div></center>
 						</div>
 						<%@ include file="help.jsp" %>
 						<%@ include file="../data/legend.jsp" %>
