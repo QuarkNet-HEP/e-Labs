@@ -113,7 +113,8 @@
 	    if (runType != null && runType.equals("queue")) {
 		    if (run.getAttribute("type").equals("ProcessUpload") ||
 		    	run.getAttribute("type").equals("EventPlot") ||
-		    	run.getAttribute("type").equals("RawAnalyzeStudy")) {
+		    	run.getAttribute("type").equals("RawAnalyzeStudy") ||
+		    	run.getAttribute("type").equals("PerformanceStudy")) {
 		    	run.start();
 		    } else {
 		    	AnalysisQueues.getQueue((String) run.getAttribute("runMode")).add(run);
