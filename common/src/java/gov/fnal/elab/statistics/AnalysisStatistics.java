@@ -8,6 +8,7 @@ import gov.fnal.elab.datacatalog.query.Equals;
 import gov.fnal.elab.util.DatabaseConnectionManager;
 import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.statistics.Statistics.BarChartEntry;
+import gov.fnal.elab.debug.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,6 +51,7 @@ public class AnalysisStatistics {
     public static final int JOB_FAILURE = 6;
 
     private static final DateFormat PFMT = new SimpleDateFormat("MM/dd/yyyy");
+
     private Date pstart, pend;
     private String start, end;
     private int span;
@@ -75,7 +77,7 @@ public class AnalysisStatistics {
     }
 
     private static final DateFormat DF = new SimpleDateFormat("yyyyMMdd-hhmm");
-    private static final DateFormat DFNEW = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private static final DateFormat DFNEW = new SimpleDateFormat("yyyyMMdd-kkmmssSSS");
 
     private static WeakReference stats;
     public Elab getElab() {
@@ -86,14 +88,15 @@ public class AnalysisStatistics {
         this.elab = elab;
     }
     public SortedMap[] load() throws IOException, SQLException {
-        int counter = 0;
+        //int counter = 0;
         if (m == null) {
+        	WriteLogFile lf = new WriteLogFile(elab, "stats.txt", "");
 	    	m = initializeMaps();
 	        Connection con = null;
 	        PreparedStatement ps = null; 
 	        try {
 	        	con = DatabaseConnectionManager.getConnection(elab.getProperties());
-	            ps = con.prepareStatement("SELECT date_started, " + 
+	            ps = con.prepareStatement("SELECT distinct to_char(date_started, 'YYYYMMDD-HH24MISSMS') as date_started, " + 
 	            						  "       rawdata, " +
 	            						  "       study_runmode, " +
 	            						  "       study_type, " +
@@ -102,9 +105,8 @@ public class AnalysisStatistics {
 	            						  " ORDER BY date_started ");   
 	            ResultSet rs = ps.executeQuery();
 	            while (rs.next()) {
-	            	Date rawdate = (Date) rs.getDate(1);
-	            	String formatted = DFNEW.format(rawdate);
-	            	Date d = DF.parse(formatted);
+	            	String date = (String) rs.getString(1);
+	            	Date d = DFNEW.parse(date);
 	            	m[SWIFT_START].put(d, new Entry("swift"));
 	            	String rawdata = "unknown";
 	            	if (rs.getString(2) != null) {
@@ -131,20 +133,22 @@ public class AnalysisStatistics {
 		                	m[JOB_FAILURE].put(d, new Entry("unknown"));
 		                }
 	                }
-	                counter++;
+	                //counter++;
 	            }
 	        } catch (Exception e) {
 	        	String msg = e.getMessage();
+	        	System.out.println("Exception:"+msg);
 	        }
 	        finally {
+	            lf.cleanup();
 	            DatabaseConnectionManager.close(con, ps);
 	        }
 	        calculateCummulativeData(m);
         }
-        System.out.println("counter:"+String.valueOf(counter));
+        //System.out.println("counter:"+String.valueOf(counter));
         return m;
     }
-
+  
     private SortedMap[] initializeMaps() {
         SortedMap[] m = new SortedMap[7];
         for (int i = 0; i < m.length; i++) {
@@ -257,7 +261,6 @@ public class AnalysisStatistics {
         s.set(Calendar.MINUTE, 0);
         s.set(Calendar.SECOND, 0);
         if (f == Calendar.YEAR) {
-            s.set(Calendar.MONTH, 1);
             s.add(Calendar.YEAR, 1);
         }
         else {

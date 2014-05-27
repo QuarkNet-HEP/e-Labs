@@ -47,7 +47,7 @@
 
 <table border="0" cellspacing="10" class="lefty">
 	<tr>
-		<th width="160px">Teacher accounts</th>
+		<th width="260px">Teacher accounts</th>
 		<jsp:setProperty name="stats" property="role" value="teacher"/>
 		<td>${stats.groupCount}</td>
 	</tr>
@@ -83,7 +83,7 @@
 <h2>Periodic</h2>
 <table border="0" cellspacing="10" class="lefty">
 	<tr>
-		<th width="160px"></th>
+		<th width="260px"></th>
 		<th width="100px">Ever</th>
 		<th width="100px">Last 365 days</th>
 		<th width="100px">Last 31 days</th>
@@ -98,7 +98,7 @@
 		<td>${stats.logIns}</td>
 	</tr>
 	<tr>
-		<th><a href="analysis-charts.jsp">Analysis runs</a></th>
+		<th><a href="analysis-charts.jsp">Analysis runs</a> (since Jan 2014)</th>
 		<jsp:setProperty name="astats" property="span" value="999999"/>
 		<td>${astats.analysisRuns}</td>
 		<jsp:setProperty name="astats" property="span" value="365"/>
