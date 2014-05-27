@@ -36,7 +36,7 @@
 			
 			<div id="content">
 
-<c:set var="start" value="${param.start != null ? param.start : '02/01/2005'}"/>
+<c:set var="start" value="${param.start != null ? param.start : '01/01/2004'}"/>
 <jsp:useBean id="nowd" class="java.util.Date"/>
 <c:set var="now">
 	<fmt:formatDate pattern="MM/dd/yyyy" value="${nowd}"/>
