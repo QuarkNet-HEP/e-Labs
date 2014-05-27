@@ -11,7 +11,7 @@
 <%@ page import="gov.fnal.elab.analysis.impl.vds.*" %>
 <%@ page import="gov.fnal.elab.analysis.impl.swift.*" %>
 <%@ page import="gov.fnal.elab.analysis.impl.shell.*" %>
-<%@ page import="gov.fnal.elab.analysis.queue.*" %>
+<%@ page import="gov.fnal.elab.analysis.pqueue.*" %>
 <%@ page import="gov.fnal.elab.cosmic.*" %>
 <%
 	ElabAnalysis analysis = (ElabAnalysis) request.getAttribute("elab:analysis");
@@ -111,14 +111,12 @@
 	    //remember to set this up in elab.properties as cosmic.analysis = queue
 	    String runType = elab.getProperty(elab.getName() + ".analysis");
 	    if (runType != null && runType.equals("queue")) {
-	    	String type = (String) run.getAttribute("type");
-	    	if (type.equals("ShowerStudy") || type.equals("LifetimeStudy") || type.equals("FluxStudy") || 
-	    			type.equals("ShowerStudyTT") || type.equals("LifetimeStudyTT") || type.equals("FluxStudyTT")	) { 
-		    	AnalysisBlockingQueue aq = AnalysisBlockingQueue.getInstance();
-			    aq.put(run);
-		    } else {
-	    		//start these right away
+		    if (run.getAttribute("type").equals("ProcessUpload") ||
+		    	run.getAttribute("type").equals("EventPlot") ||
+		    	run.getAttribute("type").equals("RawAnalyzeStudy")) {
 		    	run.start();
+		    } else {
+		    	AnalysisQueues.getQueue((String) run.getAttribute("runMode")).add(run);
 		    }
 	    } else {
 	    	run.start();

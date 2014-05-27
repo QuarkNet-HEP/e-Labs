@@ -62,6 +62,10 @@
 						<td>Set teachers and their research groups to active/inactive.</td>					
 					</tr>
 					<tr>
+						<td>&#8226; <a href="../unit-testing/index.jsp">Unit Testing</a></td>
+						<td>Run automated tests for written code grouped by functionality.</td>					
+					</tr>
+					<tr>
 						<td>&#8226; <a href="../statistics">View e-Lab Statistics</a></td>
 						<td>View ${elab.name} e-Lab statistics.</td>
 					</tr>					
@@ -87,10 +91,12 @@
 							<td>&#8226; <a href="../analysis/list-all.jsp">View all analyses</a></td>
 							<td>List of analyses by all users.</td>
 						</tr>
+						<!--  
 						<tr>
-							<td>&#8226; <a href="../analysis/analysis-queue.jsp">View analysis queues</a></td>
-							<td>List of all analysis queues and jobs.</td>
-						</tr>						
+							<td>&#8226; <a href="../analysis/analysis-queue.jsp">View analysis queue</a></td>
+							<td>View queued analyses and their statuses.</td>
+						</tr>
+						-->
 						<tr>
 							<td>&#8226; <a href="../analysis-blessing/benchmark-info.jsp">View upload plus benchmark information</a></td>
 							<td>View split files and their blessed/unblessed status details.</td>
