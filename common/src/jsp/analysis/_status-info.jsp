@@ -36,7 +36,8 @@
 							if (showStatus == null) {
 								%> 
 									<h1>The study failed to run properly</h1>
-									<h2>We sent an email to helpdesk with these details. We will examine the error message and get back to you.</h2>
+									<h2>The e-Lab HelpDesk examines these error messages.  Please review the details and make adjustments to your CRMD or analysis parameters.  
+										If you need further help, please file a HelpDesk ticket.</h2>
 									<h3><%= message %></h3>
 									<p>
 										Try running the 
