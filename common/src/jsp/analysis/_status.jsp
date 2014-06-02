@@ -6,6 +6,7 @@
 <%
 	String id = request.getParameter("id");
 	String showStatus = request.getParameter("showStatus");
+
 	
 	if (id == null) {
 		id = (String) request.getAttribute("foregroundAnalysisID");
@@ -41,6 +42,7 @@
 		else {
 			request.setAttribute("run", run);
 			int status = run.getStatus();
+
 		    if (status == AnalysisRun.STATUS_COMPLETED || status == AnalysisRun.STATUS_FAILED) {
 			    Integer nid = (Integer) run.getAttribute("notification-id");
 			    if (nid != null) {
@@ -51,6 +53,7 @@
 			if (status == AnalysisRun.STATUS_COMPLETED && showStatus == null) {
 				String cont = (String) run.getAttribute("continuation");
 				System.out.println("Initial continuation: " + cont);
+
 				if (cont != null) {
 					response.sendRedirect(cont);
 				}
