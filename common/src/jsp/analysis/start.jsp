@@ -65,7 +65,7 @@
 	    run.setAttribute("type", analysis.getName());
 	    run.setAttribute("owner", user.getName());
 	    run.setAttribute("queuedAt", df.format(new Date()));
-	    run.setAttribute("rawdata", analysis.getParameterValues("rawData"));
+	    run.setAttribute("inputfiles", analysis.getParameterValues("rawData"));
 	    String detectorid = request.getParameter("detectorid");
 	    if (detectorid == null) {
 			detectorid = "";
@@ -107,9 +107,7 @@
 				}
 			});
 	    }
-
-	    run.start();
-
+    	run.start();
 %>
 	    	<jsp:include page="status.jsp">
 	    		<jsp:param name="id" value="<%= run.getId() %>"/>
