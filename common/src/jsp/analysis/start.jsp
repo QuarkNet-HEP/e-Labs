@@ -65,6 +65,7 @@
 	    run.setAttribute("type", analysis.getName());
 	    run.setAttribute("owner", user.getName());
 	    run.setAttribute("queuedAt", df.format(new Date()));
+	    run.setAttribute("inputfiles", analysis.getParameterValues("rawData"));
 	    String detectorid = request.getParameter("detectorid");
 	    if (detectorid == null) {
 			detectorid = "";
@@ -89,6 +90,8 @@
 	    run.setListener(n);
 	    //EPeronja-04/25/2014: Added this code to complete the upload process after the split is done.
 	    if (run.getAttribute("type").equals("ProcessUpload")) {
+	    	run.setAttribute("uploadtime", analysis.getParameter("uploadtime"));
+	    	run.setAttribute("runMode", "local");
 	    	final ElabAnalysis ea = analysis;
 	    	final AnalysisRun ar = run;
 	    	ar.setDelayedCompletion(true);
@@ -98,13 +101,12 @@
 						CosmicPostUploadTasks cput = new CosmicPostUploadTasks(ea);
 						cput.runTasks();
 						ar.setDelayedCompletion(false);
+					    ar.setEndTime(new Date());
 						ar.setStatus(AnalysisRun.STATUS_COMPLETED);
 					}
 				}
 			});
 	    }
-	    //remember to set this up in elab.properties as cosmic.analysis = queue
-	    String runType = elab.getProperty(elab.getName() + ".analysis");
     	run.start();
 %>
 	    	<jsp:include page="status.jsp">
