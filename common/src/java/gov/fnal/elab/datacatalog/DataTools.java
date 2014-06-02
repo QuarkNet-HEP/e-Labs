@@ -461,7 +461,7 @@ public class DataTools {
                 	runmode = "local";
                 }
                 psAnalysisResult.setString(5, runmode);
-                Collection rawdata = (Collection) ar.getAttribute("rawdata");
+                Collection rawdata = (Collection) ar.getAttribute("inputfiles");
                 if (rawdata != null) {
                 	psAnalysisResult.setString(6, Arrays.toString(rawdata.toArray()));
                 } else {

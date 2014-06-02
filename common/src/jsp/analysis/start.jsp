@@ -66,7 +66,7 @@
 	    run.setAttribute("type", analysis.getName());
 	    run.setAttribute("owner", user.getName());
 	    run.setAttribute("queuedAt", df.format(new Date()));
-	    run.setAttribute("rawdata", analysis.getParameterValues("rawData"));
+	    run.setAttribute("inputfiles", analysis.getParameterValues("rawData"));
 	    String detectorid = request.getParameter("detectorid");
 	    if (detectorid == null) {
 			detectorid = "";
@@ -113,7 +113,8 @@
 	    if (runType != null && runType.equals("queue")) {
 		    if (run.getAttribute("type").equals("ProcessUpload") ||
 		    	run.getAttribute("type").equals("EventPlot") ||
-		    	run.getAttribute("type").equals("RawAnalyzeStudy")) {
+		    	run.getAttribute("type").equals("RawAnalyzeStudy") ||
+		    	run.getAttribute("type").equals("PerformanceStudy")) {
 		    	run.start();
 		    } else {
 		    	AnalysisQueues.getQueue((String) run.getAttribute("runMode")).add(run);
