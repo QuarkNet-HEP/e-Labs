@@ -3,7 +3,6 @@
 <%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.io.*" %>
-<%@ page import="gov.fnal.elab.analysis.queue.*" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -36,7 +35,8 @@
 							if (showStatus == null) {
 								%> 
 									<h1>The study failed to run properly</h1>
-									<h2>We sent an email to helpdesk with these details. We will examine the error message and get back to you.</h2>
+									<h2>The e-Lab HelpDesk examines these error messages.  Please review the details and make adjustments to your CRMD or analysis parameters.  
+										If you need further help, please file a HelpDesk ticket.</h2>
 									<h3><%= message %></h3>
 									<p>
 										Try running the 
