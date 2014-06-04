@@ -66,7 +66,13 @@
 	    run.setAttribute("type", analysis.getName());
 	    run.setAttribute("owner", user.getName());
 	    run.setAttribute("queuedAt", df.format(new Date()));
-	    run.setAttribute("inputfiles", analysis.getParameterValues("rawData"));
+	    boolean skip = false;
+	    if (run.getAttribute("type").equals("ProcessUpload") ||	run.getAttribute("type").equals("EventPlot") || run.getAttribute("type").equals("RawAnalyzeStudy")) {
+	    	skip = true;
+	    }
+	    if (!skip) {
+		    run.setAttribute("inputfiles", analysis.getParameterValues("rawData"));
+	    }	    
 	    String detectorid = request.getParameter("detectorid");
 	    if (detectorid == null) {
 			detectorid = "";
