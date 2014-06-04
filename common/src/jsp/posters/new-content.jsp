@@ -31,9 +31,9 @@
 			theme_advanced_toolbar_align : "left",
 		    setup: function(ed) {
 		        ed.onClick.add(function(ed, e) {
-		        	if (ed.getContent() == "<p><span style=\"color: gray;\"><strong>Evidence</strong><br />And how do you know what you claim:<br /><em>My data show on this plot or observation that...</em></span></p>" ||
-		        		ed.getContent() == "<p><span style=\"color: gray;\"><strong>Reasoning</strong><br />Why do your data act as evidence through scientific principles to support your claim:<br /><em>My data changes in this way when...</em></span></p>" ||
-		        		ed.getContent() == "<p><span style=\"color: gray;\"><strong>Claim</strong><br />Say what you know:<br /><em>I claim that the flux of cosmic rays on this date...</em></span></p>" ) {
+		    		if (ed.getContent() == "<p><span style=\"color: gray;\"><strong>Claim</strong><br />Say what you know:<br /><em>I claim that the data on this date...</em></span></p>"  ||
+		    			ed.getContent() == "<p><span style=\"color: gray;\"><strong>Evidence</strong><br />What you see in your data plots that support your claim:<br /><em>My data show on this plot or observation that...</em></span></p>" ||
+		        		ed.getContent() == "<p><span style=\"color: gray;\"><strong>Reasoning</strong><br />Why the evidence supports the claim:<br /><em>My data plot explains the evidence for these reasons...</em></span></p>" ) {
 			        	ed.setContent("");
 		        	}
 		        });
@@ -473,9 +473,9 @@
 					//EPeronja-06/04/2014: Placeholders for the tinymce textarea. If you make a change in any of the three following strings, please make the same changes in the 
 					//					   javascript for the tinymce on top of this page, otherwise they will not clear when user clicks on the textarea.
                     String extraAnnotation="";
- 					if (fixedName.equals("Results")) {extraAnnotation="<p><span style=\"color: gray;\"><strong>Evidence</strong><br />And how do you know what you claim:<br /><em>My data show on this plot or observation that...</em></span></p>";}
-                    if (fixedName.equals("Conclusion")) {extraAnnotation="<p><span style=\"color: gray;\"><strong>Reasoning</strong><br />Why do your data act as evidence through scientific principles to support your claim:<br /><em>My data changes in this way when...</em></span></p>";}
-                    if (fixedName.equals("Introduction")) {extraAnnotation="<p><span style=\"color: gray;\"><strong>Claim</strong><br />Say what you know:<br /><em>I claim that the flux of cosmic rays on this date...</em></span></p>";}
+                    if (fixedName.equals("Introduction")) {extraAnnotation="<p><span style=\"color: gray;\"><strong>Claim</strong><br />Say what you know:<br /><em>I claim that the data on this date...</em></span></p>";}
+ 					if (fixedName.equals("Results")) {extraAnnotation="<p><span style=\"color: gray;\"><strong>Evidence</strong><br />What you see in your data plots that support your claim:<br /><em>My data show on this plot or observation that...</em></span></p>";}
+                    if (fixedName.equals("Conclusion")) {extraAnnotation="<p><span style=\"color: gray;\"><strong>Reasoning</strong><br />Why the evidence supports the claim:<br /><em>My data plot explains the evidence for these reasons...</em></span></p>";}
                     pageContext.setAttribute("extraAnnotation", extraAnnotation);
  					
                      %>
