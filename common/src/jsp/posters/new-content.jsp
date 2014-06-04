@@ -13,7 +13,6 @@
 
 <script type="text/javascript" src="../include/tiny_mce/jquery.tinymce.js"></script>
 <script type="text/javascript" src="formchanges.js"></script>
-
 <script>
 	$().ready(function() {
 		$('textarea.tinymce').tinymce({
@@ -29,7 +28,16 @@
 			theme_advanced_buttons2 : "",
 			theme_advanced_buttons3 : "", 
 			theme_advanced_toolbar_location : "top",
-			theme_advanced_toolbar_align : "left"
+			theme_advanced_toolbar_align : "left",
+		    setup: function(ed) {
+		        ed.onClick.add(function(ed, e) {
+		        	if (ed.getContent() == "<p><span style=\"color: gray;\"><strong>Evidence</strong><br />And how do you know what you claim:<br /><em>My data show on this plot or observation that...</em></span></p>" ||
+		        		ed.getContent() == "<p><span style=\"color: gray;\"><strong>Reasoning</strong><br />Why do your data act as evidence through scientific principles to support your claim:<br /><em>My data changes in this way when...</em></span></p>" ||
+		        		ed.getContent() == "<p><span style=\"color: gray;\"><strong>Claim</strong><br />Say what you know:<br /><em>I claim that the flux of cosmic rays on this date...</em></span></p>" ) {
+			        	ed.setContent("");
+		        	}
+		        });
+		    },
 		});
 	});
 </script>
@@ -117,48 +125,6 @@
 			    	val = ElabUtil.stringSanitization(val, elab, "Posters");
 	    		}
 		    	pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
-		    	/*
-		    	ArrayList checkDirtyInput = as.scan(val, policy).getErrorMessages();
-		    	//there wasn't any dirty input
-		    	if (checkDirtyInput.isEmpty()) {
-			    	val = ElabUtil.escapePoster(val); 
-			    	pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
-		    	} else {
-		    		//make an exception for equation tool
-		    		if (val.contains("/elab/capture/img/")) {
-		    	    	val = ElabUtil.escapePoster(val); 
-				    	pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
-	    			
-		    		} else {
-		    			//clean up and send email with notification
-		    			String userInput = val;
-		    			int errors = as.scan(userInput, policy).getNumberOfErrors();
-		    			ArrayList actualErrors = as.scan(userInput, policy).getErrorMessages();
-		    			Iterator iterator = actualErrors.iterator();
-		    			String errorMessages = "";
-		    			while (iterator.hasNext()) {
-		    				errorMessages = (String) iterator.next() + ",";
-		    			}
-		    			val = as.scan(val, policy).getCleanHTML();
-				    	val = ElabUtil.escapePoster(val); 
-				    	pdata += "%" + name + "%\n" + val + "\n" + "%END%\n";
-				    	//send email with warning
-				    	String to = elab.getProperty("notifyDirtyInput");
-			    		String emailmessage = "", subject = "Make Posters: user sent dirty input";
-			    		String emailBody =  "User input: "+userInput+"\n" +
-	    						   			"Number of errors: "+String.valueOf(errors)+"\n" +
-	    				   					"Error messages: "+ errorMessages + "\n" +
-	    				   					"Validated input: "+val + "\n";
-					    try {
-					    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
-					    } catch (Exception ex) {
-			                System.err.println("Failed to send email");
-			                ex.printStackTrace();
-					    }
-				    	//throw new ElabJspException("There is a problem with this string: " + val + ". Bailing out.");		    	
-		    		}
-		    	}
-*/
 	    	}
 	    }
 	    
@@ -439,7 +405,7 @@
 	</script>
 
 	<form id="posterForm" method="post">
-           <table width="550">
+           <table width="800">
                 <tr>
                 	<c:choose>
                 		<c:when test="${edit == true}" >
@@ -504,14 +470,28 @@
                      if (fixedName.equals("Results")) {nameAnnotation="<br>(Support claims with data)";}
                      if (fixedName.equals("Conclusion")) {nameAnnotation="<br>(Interpret results, suggest further study)";}
                      if (fixedName.equals("Introduction")) {nameAnnotation="<br>(Background and researchable question)";}
- 
+					//EPeronja-06/04/2014: Placeholders for the tinymce textarea. If you make a change in any of the three following strings, please make the same changes in the 
+					//					   javascript for the tinymce on top of this page, otherwise they will not clear when user clicks on the textarea.
+                    String extraAnnotation="";
+ 					if (fixedName.equals("Results")) {extraAnnotation="<p><span style=\"color: gray;\"><strong>Evidence</strong><br />And how do you know what you claim:<br /><em>My data show on this plot or observation that...</em></span></p>";}
+                    if (fixedName.equals("Conclusion")) {extraAnnotation="<p><span style=\"color: gray;\"><strong>Reasoning</strong><br />Why do your data act as evidence through scientific principles to support your claim:<br /><em>My data changes in this way when...</em></span></p>";}
+                    if (fixedName.equals("Introduction")) {extraAnnotation="<p><span style=\"color: gray;\"><strong>Claim</strong><br />Say what you know:<br /><em>I claim that the flux of cosmic rays on this date...</em></span></p>";}
+                    pageContext.setAttribute("extraAnnotation", extraAnnotation);
+ 					
                      %>
                     	<tr>
                     		<td align="right" valign="top"><b><%= fixedName %></b>:<%= nameAnnotation %></td>
                     		<c:choose>
                     			<c:when test="${type == 'PARA'}">
                     				<td align="left">
-                    					<textarea name="${type}:${name}" id="${type}:${name}" rows="6" cols="80" class="tinymce">${tvalue}</textarea>
+                    					<c:choose>
+                    						<c:when test='${tvalue > ""}'>
+		                    					<textarea name="${type}:${name}" id="${type}:${name}" rows="6" cols="80" class="tinymce">${tvalue}</textarea>
+		                    				</c:when>
+		                    				<c:otherwise>
+		                    					<textarea name="${type}:${name}" id="${type}:${name}" rows="6" cols="80" class="tinymce">${extraAnnotation}</textarea>		                    				
+		                    				</c:otherwise>
+		                    			</c:choose>
                     				</td>
                     			</c:when>
                     			<c:when test="${type == 'WORDS'}">
@@ -561,6 +541,8 @@
 	            <input type="submit" name="button" id="submitButton" value="${edit?'Save Changes':'Make Poster'}" onclick='return validatePosterName("posterName");' />
     	        To see poster, don't block popups! Otherwise click <b>Display Poster</b> below.
 			</td>
+           	<td valign="left" align="right"></td>
+
 		</tr>
 		<c:choose>
 			<c:when test="${not empty existingposters}">
