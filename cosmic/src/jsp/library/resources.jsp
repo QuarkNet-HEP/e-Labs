@@ -109,7 +109,16 @@
 						</ul>
 					</div>
 				</div>
-			
+				<div class="tab" id="tab-equip">
+					<span class="tab-title" style="width: 200px;">CMRD Data Collection</span>	
+					<div class="tab-contents-sublevel">
+						<ul class="simple">
+							<li>
+								"6000" Series DAQ data collection software: <a href="../data/equip.jsp">EQUIP java interface</a>
+							</li>
+						</ul>					
+					</div>
+				</div>			
 				<div class="tab" id="tab-contacts">
 					<span class="tab-title">Contacts</span>	
 					<div class="tab-contents-sublevel">
