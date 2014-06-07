@@ -8,10 +8,10 @@ import gov.fnal.elab.analysis.AnalysisRunListener;
 
 public class ChainingQueueListener implements AnalysisRunListener {
     private final AnalysisRunListener previous;
-    private final DefaultAnalysisQueue queue;
+    private final SimpleParallelAnalysisQueue queue;
     private final AnalysisRun run;
     
-    public ChainingQueueListener(DefaultAnalysisQueue queue, AnalysisRunListener previous, AnalysisRun run) {
+    public ChainingQueueListener(SimpleParallelAnalysisQueue queue, AnalysisRunListener previous, AnalysisRun run) {
         this.queue = queue;
         this.previous = previous;
         this.run = run;

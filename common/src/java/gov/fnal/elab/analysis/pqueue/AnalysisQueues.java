@@ -25,8 +25,8 @@ public class AnalysisQueues {
     static {
         queues = new HashMap<String, AnalysisQueue>();
         
-        queues.put("local", new DefaultAnalysisQueue(1));
-        queues.put("i2u2", new DefaultAnalysisQueue(6));
-        queues.put("grid", new DefaultAnalysisQueue(Integer.MAX_VALUE));
+        queues.put("local", new PriorityParallelAnalysisQueue(1));
+        queues.put("i2u2", new SimpleParallelAnalysisQueue(6));
+        queues.put("grid", new SimpleParallelAnalysisQueue(Integer.MAX_VALUE));
     }
 }
