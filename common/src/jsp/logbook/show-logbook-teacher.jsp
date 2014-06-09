@@ -8,27 +8,25 @@
 <%@ include file="../login/teacher-login-required.jsp"%>
 <%
 	String messages = "";
-	String linksToEachGroup = "";
-	java.util.List<String> rgNames = new java.util.ArrayList<String>();
-	java.util.List<Integer> rgIds = new java.util.ArrayList<Integer>(); 
-
 	String ref_rg_name = request.getParameter("ref_rg_name"); // this is the name we are referring to in the logbook
 	Integer project_id = elab.getId();
 	Integer research_group_id = user.getGroup().getId();
     String teacher_name = user.getTeacher();
 
+	//get all research groups and build links
 	Collection<ElabGroup> rgTeacherGroups = user.getGroups();
 	Iterator i = rgTeacherGroups.iterator();
-
+	String linksToEachGroup = "";
 	while (i.hasNext()){
 		ElabGroup eg = (ElabGroup) i.next();
-		linksToEachGroup = linksToEachGroup
-				+ "<tr><td><A HREF='showLogbookT.jsp?ref_rg_name="+ eg.getName() + "'>" + eg.getName()+ "</A></td></tr>";
-		rgNames.add(eg.getName());
-		rgIds.add(eg.getId());
-	}
-	rgIds.add(research_group_id);
-	rgNames.add("general");
+		if (eg.getRole().equals("user") || eg.getRole().equals("upload")) {
+			//EPeronja-only display active research groups
+			if (eg.getActive()) {
+				linksToEachGroup = linksToEachGroup
+						+ "<tr><td><A HREF='show-logbook-teacher.jsp?ref_rg_name="+ eg.getName() + "'>" + eg.getName()+ "</A></td></tr>";
+			}
+		}
+	}//end while loop
 
 	Integer ref_rg_id = null;
 	if (!(ref_rg_name == null) && (!ref_rg_name.equals("general"))) {
@@ -50,10 +48,12 @@
 	ResultSet rs = null;
 
 	String subtitle = "Display header";
+	//check whether to retrieve for all groups or for a specific group
 	if (ref_rg_name.equals("")) {
 		subtitle = "For all groups for teacher " + teacher_name;
 		try {
-			rs = LogbookTools.getAllGroupEntries(elab, project_id, research_group_id);
+			//false at the end indicates only active research groups
+			rs = LogbookTools.getLogbookEntriesForAllGroups(elab, project_id, research_group_id, false);
 		} catch (Exception e) {
 			messages += e.getMessage();
 		}
@@ -64,7 +64,7 @@
 			subtitle = "For group " + ref_rg_name + " for teacher "+ teacher_name;
 		}
 		try {
-			rs = LogbookTools.getGroupEntries(elab, project_id, research_group_id, ref_rg_id);
+			rs = LogbookTools.getLogbookEntriesForGroup(elab, project_id, research_group_id, ref_rg_id);
 		} catch (Exception e) {
 			messages += e.getMessage();
 		}
@@ -72,7 +72,17 @@
 
 	//retrieve logbook details
 	TreeMap<String, ArrayList> ids = new TreeMap<String, ArrayList>();
-	TreeMap<String, ArrayList> logbookResults = new TreeMap<String, ArrayList>();
+	TreeMap<String, ArrayList> logbookResults = new TreeMap<String, ArrayList>(){
+		public int compare(String s1, String s2) {
+			int rank = getRank(s1) - getRank(s2);
+			return rank;
+		}
+		private int getRank(String s) {
+			String innerRank = s.substring(s.indexOf("-")+1, s.length());
+			return Integer.parseInt(innerRank);
+		}
+	};
+	//build logbook results
 	if (rs != null) {
 		while (rs.next()) {
 			ArrayList logbookDetails = new ArrayList();
@@ -86,26 +96,30 @@
 			logbookDetails.add(log_text);
 			logbookDetails.add(log_id);
 			logbookResults.put(String.valueOf(ref_rg_id)+"-"+String.valueOf(itemCount), logbookDetails);
+			String gn = LogbookTools.getGroupNameFromId(ref_rg_id, elab);
 			ArrayList userDetails = new ArrayList();
-			userDetails.add(LogbookTools.getGroupNameFromId(ref_rg_id, elab));
+			userDetails.add(gn);
 			userDetails.add(String.valueOf(research_group_id));
 			ids.put(String.valueOf(ref_rg_id), userDetails);			
 		}//end looping through resultset
 	}//end of checking rs for null
 	
+	request.setAttribute("messages", messages);
+	request.setAttribute("linksToEachGroup", linksToEachGroup);
 	request.setAttribute("subtitle", subtitle);
+    request.setAttribute("research_group_id", research_group_id);
+    request.setAttribute("ref_rg_id", ref_rg_id);    
 	request.setAttribute("ids", ids);
 	request.setAttribute("logbookResults", logbookResults);
-	request.setAttribute("messages", messages);
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>Show Research Group Logbook for Teacher</title>
-		<link rel="stylesheet" href="styletutT.css" type="text/css">
+		<link rel="stylesheet" href="styletut-teacher.css" type="text/css">
 	</head>
-	<body id="showlogbookT">
+	<body id="show-logbook-teacher">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="content">		
@@ -131,17 +145,18 @@
 											<td valign="center" align="left"><b>Student Logbooks</b></td>
 										</tr>
 										<tr>
-											<td valign="center" align="left"><a href="../logbook/showLogbookKWforT.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt=""><font color="#1A8BC8">By Milestone</font></a></td>
+											<td valign="center" align="left"><a href="../logbook/show-logbook-keyword-teacher.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt=""><font color="#1A8BC8">By Milestone</font></a></td>
 										</tr>
 										<tr>
-											<td valign="center" align="left"><a	href="../logbook/showLogbookRGforT.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt=""><font color="#1A8BC8">By Group</font></a></td>
+											<td valign="center" align="left"><a	href="../logbook/show-logbook-group-teacher.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt=""><font color="#1A8BC8">By Group</font></a></td>
 										</tr>
 										<tr>
 											<td><b>Your Logbook:<br />
-											<a href="showLogbookT.jsp?ref_rg_name=general">general</a><br /><br />Select a Research Group</b></td>
-										</tr><%=linksToEachGroup%>
+												<a href="show-logbook-teacher.jsp?ref_rg_name=general">general</a><br /><br />Select a Research Group</b></td>
+										</tr>
+										${linksToEachGroup}
 										<tr>
-											<td valign="center" align="left"><a href="showLogbookT.jsp">All Groups</a></td>
+											<td valign="center" align="left"><a href="show-logbook-teacher.jsp">All Groups</a></td>
 										</tr>
 									</table>
 								</td>
@@ -165,9 +180,9 @@
 										<c:when test="${not empty ids }">
 											<c:forEach items="${ids }" var="ids">
 												<tr align="center">
-													<td colspan="2"><font size="+1">${ids.value[0] }</font><a
-														href="../logbook/logEntryT.jsp?research_group_id=${ids.value[1]}&amp;ref_rg_id=${ids.key}"><img
-														src="../graphics/logbook_pencil.gif" border="0" align="top" alt=""></a>
+													<td colspan="2"><font size="+1">${ids.value[0] }</font>
+														<a href="../logbook/log-entry-teacher.jsp?research_group_id=${ids.value[1]}&amp;ref_rg_id=${ids.key}">
+														<img src="../graphics/logbook_pencil.gif" border="0" align="top" alt=""></a>
 													</td>
 												</tr>
 												<c:choose>
@@ -182,17 +197,14 @@
 															</c:if>		
 														</c:forEach>
 													</c:when>
-													<c:otherwise>
-														<tr><td>
-															<a href="../logbook/logEntryT.jsp?research_group_id=${ids.value[1]}&amp;ref_rg_id=${ids.key}"><img src="../graphics/logbook_pencil.gif" border="0" align="top" alt=""></a> 
-														</td></tr>
-													</c:otherwise>
 												</c:choose>
 											</c:forEach>
 										</c:when>
-										<c:otherwise>
-											<tr align="center"> <td colspan="2"><font size="+1">No entries.</font><br /> <font size="+1">Select a research group on the left.</font>
-										</c:otherwise>
+											<c:otherwise>
+												<tr><td colspan="2"><font size="+1">No entries.</font>
+													<a href="../logbook/log-entry-teacher.jsp?research_group_id=${research_group_id}&amp;ref_rg_id=${ref_rg_id}"><img src="../graphics/logbook_pencil.gif" border="0" align="top" alt=""></a> 
+												</td></tr>
+											</c:otherwise>										
 									</c:choose>
 								</table>
 								</td>

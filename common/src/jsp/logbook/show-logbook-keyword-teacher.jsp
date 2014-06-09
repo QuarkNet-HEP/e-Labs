@@ -9,14 +9,9 @@
 	String messages = "";
 	String role = user.getRole();
 	// it will display all logs entries for one keyword for all research groups associated with the teacher logged in.
-
-	// Sample query - select research_group.name,to_char(log.date_entered,'MM/DD/YYY HH12:MI'), log.log_text
-	//                from log,research_group where log.keyword_id=17 and research_group.id=log.research_group_id 
-	//                where research_group.id in ( select id from research_group where teacher_id=2 and (role='user' or role='upload')   ) order by research_group_id,log.id;
 	// If the keyword is not passed, then it will default to keyword "general".
 	String keyword_description = "";
 	String keyword_text = "";
-	String linksToEach = "";
 	String linksToEachGroup = "";
 	String keyword_loop = "";
 	Integer keyword_id = null;
@@ -33,54 +28,49 @@
 	}
 	int project_id = elab.getId();	
 
-	ResultSet rs = LogbookTools.getLogbookItems(project_id, "", elab);
-	String current_section = "";
-	while (rs.next()) {
-		keyword_id = (Integer) rs.getObject("id");
-		keyword_loop = rs.getString("keyword");
-		keyword_text = keyword_loop.replaceAll("_", " ");
-		keyword_description = rs.getString("description");
-		String this_section = (String) (rs.getString("section"));
-		if (!keyword_loop.equals("general")) {
-			if (!this_section.equals(current_section)) {
-				String section_text = "";
-				char this_section_char = this_section.charAt(0);
-				switch (this_section_char) {
-				case 'A':
-					section_text = "Research Basics";
-					break;
-				case 'B':
-					section_text = "A: Get Started";
-					break;
-				case 'C':
-					section_text = "B: Figure it Out";
-					break;
-				case 'D':
-					section_text = "C: Tell Others";
-					break;
+	//build links to each keyword/milestone
+	ResultSet rs = null;
+	String linksToEach = "";
+	try {
+		rs = LogbookTools.getLogbookKeywordItems(project_id, "", elab);
+		String current_section = "";
+		while (rs.next()) {
+			keyword_id = (Integer) rs.getObject("id");
+			keyword_loop = rs.getString("keyword");
+			keyword_text = keyword_loop.replaceAll("_", " ");
+			keyword_description = rs.getString("description");
+			String this_section = (String) (rs.getString("section"));
+			if (!keyword_loop.equals("general")) {
+				if (!this_section.equals(current_section)) {
+					try {
+						String section_text = LogbookTools.getSectionText(this_section);
+						linksToEach = linksToEach
+								+ "<tr><td>&nbsp;</td></tr><tr><td>"
+								+ section_text + "</td></tr>";
+						current_section = this_section;
+					} catch (Exception e) {
+						messages += e.getMessage();
+					}
+				}
+				keyColor = "";
+				if (keyword.equals(keyword_loop)) {
+					keyColor = "color=\"#AA3366\"";
 				}
 				linksToEach = linksToEach
-						+ "<tr><td>&nbsp;</td></tr><tr><td>"
-						+ section_text + "</td></tr>";
-				current_section = this_section;
+						+ "<tr><td><A HREF='show-logbook-keyword-teacher.jsp?keyword="
+						+ keyword_loop + "'>"
+						+ keyword_text + "</font></A></td></tr>";
 			}
-
-			keyColor = "";
-			if (keyword.equals(keyword_loop)) {
-				keyColor = "color=\"#AA3366\"";
-			}
-			linksToEach = linksToEach
-					+ "<tr><td><A HREF='showLogbookKWforT.jsp?keyword="
-					+ keyword_loop + "'>"
-					+ keyword_text + "</font></A></td></tr>";
 		}
+	} catch (Exception e) {
+		messages += e.getMessage();
 	}
+
 	// Always pass keyword, not id so we can pick off the description
-	//   String keyword_description="";
 	keyword_id = null;
 	// first make sure a keyword was passed in the call
 	try {
-		rs = LogbookTools.getEntriesByKeyword(project_id, keyword, elab);
+		rs = LogbookTools.getKeywordDetailsByProject(project_id, keyword, elab);
 		if (rs.next()) {
 			keyword_id = (Integer) rs.getObject("id");
 			keyword_description = rs.getString("description");
@@ -97,98 +87,88 @@
 	String current_rg_name = "";
 	String elipsis = "";
 	String linkText = "";
-	rs = LogbookTools.getLogbookEntriesByGroup(keyword_id, teacher_id, elab);
 	ArrayList groupInfo = new ArrayList();
-	TreeMap<String, ArrayList> commentInfo = new TreeMap<String, ArrayList>();
-	
-	while (rs.next()) {
-		String dateText = rs.getString("date_entered");
-		String log_text = rs.getString("log_text");
-		int log_id = rs.getInt("log_id");
-		showFullLog = false;
-		if (log_id == passed_log_id) {
-			showFullLog = true;
-			elipsis = "";
-			linkText = "";
-		} else {
-			elipsis = " . . .";
+	TreeMap<String, ArrayList> commentInfo = new TreeMap<String, ArrayList>(){
+		public int compare(String s1, String s2) {
+			int rank = getRank(s1) - getRank(s2);
+			return rank;
 		}
+		private int getRank(String s) {
+			String innerRank = s.substring(s.indexOf("-")+1, s.length());
+			return Integer.parseInt(innerRank);
+		}
+	};
 
-		String log_text_truncated;
-		//if (showFullLog)
-		//	log_text_truncated = log_text;
-		//else
-			log_text_truncated = log_text.replaceAll("\\<(.|\\n)*?\\>","");
-		int maxChars = log_text_truncated.length();
-		if (maxChars > 50 && !showFullLog) {
-			maxChars = 50;
-		}
-		log_text_truncated = log_text_truncated.substring(0, maxChars);
-		String rg_name = rs.getString("rg_name");
-		String new_log = rs.getString("new");
-		Long comment_count = null;
-		Long comment_new = null;
-		String comment_info = "";
-		//sInner = conn.prepareStatement("SELECT COUNT(id) AS comment_count FROM comment WHERE log_id = ?;");
-		//sInner.setInt(1, log_id);
-		//  Do a query for this log entry to see if there are any unread comments on it and if it has comments on it.
-		//innerRs = sInner.executeQuery();
-		//if (innerRs.next()) {
-			comment_count = (Long) LogbookTools.getCommentCount(log_id, elab);
-		//}
-		//sInner = conn.prepareStatement("SELECT COUNT(comment.id) AS comment_new FROM comment WHERE comment.new_comment = 't' AND log_id = ?;");
-		//sInner.setInt(1, log_id);
-		//  out.write(innerQuery);
-		//innerRs = sInner.executeQuery();
-		
-		//if (innerRs.next()) {
-			comment_new = (Long) LogbookTools.getCommentCountNew(log_id, elab);
-		//}
-		if (new_log != null && new_log.equals("t") && !showFullLog) {
-			comment_info = comment_info
-					+ "<BR><IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font>";
-		}
-		if (comment_count == null || comment_count == 0L) {
-			if (comment_new == 0L) {
-				comment_info = comment_info
-						+ "<BR><FONT size=-2>comments: "
-						+ comment_count + "</font>";
+	try {
+		rs = LogbookTools.getLogbookEntriesKeyword(keyword_id, teacher_id, false, elab);
+		while (rs.next()) {
+			String dateText = rs.getString("date_entered");
+			String log_text = rs.getString("log_text");
+			int log_id = rs.getInt("log_id");
+			showFullLog = false;
+			if (log_id == passed_log_id) {
+				showFullLog = true;
+				elipsis = "";
+				linkText = "";
 			} else {
-				if (comment_count == null) {
-					comment_count = 0L;
-				}
-				comment_info = comment_info
-						+ "<BR><FONT size=-2 >comments: "
-						+ comment_count + " (<FONT color=\"#AA3366\">"
-						+ comment_new + "</FONT>) " + "</font>";
+				elipsis = " . . .";
 			}
-			// out.write("New comments="+comment_new);
+	
+			String log_text_truncated;
+			log_text_truncated = log_text.replaceAll("\\<(.|\\n)*?\\>","");
+			int maxChars = log_text_truncated.length();
+			if (maxChars > 50 && !showFullLog) {
+				maxChars = 50;
+			}
+			log_text_truncated = log_text_truncated.substring(0, maxChars);
+			String rg_name = rs.getString("rg_name");
+			String new_log = rs.getString("new");
+			Long comment_count = null;
+			Long comment_new = null;
+			String comment_info = "";
+			comment_count = (Long) LogbookTools.getCommentCount(log_id, elab);
+			comment_new = (Long) LogbookTools.getCommentCountNew(log_id, elab);
+			if (new_log != null && new_log.equals("t") && !showFullLog) {
+				comment_info = comment_info
+						+ "<BR><IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font>";
+			}
+			if (comment_count == null || comment_count == 0L) {
+				if (comment_new == 0L) {
+					comment_info = comment_info
+							+ "<BR><FONT size=-2>comments: "
+							+ comment_count + "</font>";
+				} else {
+					if (comment_count == null) {
+						comment_count = 0L;
+					}
+					comment_info = comment_info
+							+ "<BR><FONT size=-2 >comments: "
+							+ comment_count + " (<FONT color=\"#AA3366\">"
+							+ comment_new + "</FONT>) " + "</font>";
+				}
+			}
+	
+			itemCount++;
+			ArrayList details = new ArrayList();
+			details.add(log_id);
+			details.add(keyword);
+			details.add(dateText);
+			details.add(comment_info);
+			details.add(log_text);
+			details.add(log_text_truncated);
+			details.add(elipsis);
+			if (!groupInfo.contains(rg_name)) {
+				groupInfo.add(rg_name);
+			}
+			commentInfo.put(rg_name+"-"+String.valueOf(itemCount), details);
 		}
-	 	//EPeronja-04/12/2013: this code is not used anymore
-	 	// 					   replaced this functionality with Javascript
-		//if (!showFullLog) {
-		//	linkText = "<A HREF=\"showLogbookKWforT.jsp?research_group_name="
-		//			+ rg_name
-		//			+ "&keyword="
-		//			+ keyword
-		//			+ "&log_id="
-		//			+ log_id + "\">Read more</A>";
-		//}
-
-		itemCount++;
-		ArrayList details = new ArrayList();
-		details.add(log_id);
-		details.add(keyword);
-		details.add(dateText);
-		details.add(comment_info);
-		details.add(log_text);
-		details.add(log_text_truncated);
-		details.add(elipsis);
-		if (!groupInfo.contains(rg_name)) {
-			groupInfo.add(rg_name);
-		}
-		commentInfo.put(rg_name+"-"+String.valueOf(itemCount), details);
+	} catch (Exception e) {
+		messages += e.getMessage();
 	}
+	request.setAttribute("messages", messages);
+	request.setAttribute("linksToEach", linksToEach);
+	request.setAttribute("keyword_description", keyword_description);
+	request.setAttribute("messages", messages);
 	request.setAttribute("messages", messages);
 	request.setAttribute("groupInfo", groupInfo);
 	request.setAttribute("commentInfo", commentInfo);	
@@ -209,7 +189,7 @@
 		</script>
 		<link rel="stylesheet" href="styletut.css" type="text/css">
 	</head>
-	<body id="showlogbookKWforT">
+	<body id="show-logbook-keyword-teacher">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="content">		
@@ -231,18 +211,18 @@
 							<td valign="top" align="150">
 							<table width="140">
 								<tr>
-									<td><a href="showLogbookRGforT.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">By Group</a></td>
+									<td><a href="show-logbook-group-teacher.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">By Group</a></td>
 								</tr>
 								<tr>
-									<td valign="center" align="left"><a href="showLogbookT.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">My Logbook</a></td>
+									<td valign="center" align="left"><a href="show-logbook-teacher.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">My Logbook</a></td>
 								</tr>
 								<tr>
-									<td><a href="showLogbookKWforT.jsp?keyword=general">general</a></td>
+									<td><a href="show-logbook-keyword-teacher.jsp?keyword=general">general</a></td>
 								</tr>
 								<tr>
 									<td><b>Select a Milestone:</b></td>
 								</tr>
-								<%=linksToEach%>
+								${linksToEach }
 
 							</table>
 							</td>
@@ -273,7 +253,7 @@
 									</tr>
 								</table>
 								<p>
-								<h2>All logbook entries for your research groups<br> for "<%=keyword_description%>"</h2>
+								<h2>All logbook entries for your research groups<br> for "${keyword_description }"</h2>
 
 								<table cellpadding="5">
 									<c:choose>
@@ -288,7 +268,7 @@
 															<c:if test='${groupInfo == fn:substring(commentInfo.key, 0, fn:indexOf(commentInfo.key,  "-"))}'>														
 																<tr>
 																	<td valign="top" width="175" align="right">
-																		<a href="logCommentEntry.jsp?log_id=${commentInfo.value[0]}&amp;keyword=${commentInfo.value[1]}&amp;research_group_name=${groupInfo}&amp;path=KW"><img src="../graphics/logbook_pencil.gif" border="0" align="top" alt=""></a>${commentInfo.value[2]}${commentInfo.value[3] }
+																		<a href="log-comment.jsp?log_id=${commentInfo.value[0]}&amp;keyword=${commentInfo.value[1]}&amp;research_group_name=${groupInfo}&amp;path=KW"><img src="../graphics/logbook_pencil.gif" border="0" align="top" alt=""></a>${commentInfo.value[2]}${commentInfo.value[3] }
 																	</td>
 																	<td width="400" valign="top">
 																		<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->

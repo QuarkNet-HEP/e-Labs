@@ -6,8 +6,7 @@
 <%
 
 	String messages = "";
-
-	// called from showLogbookT.jsp where research_group_id is group id of teacher
+	// called from show-logbook-teacher.jsp where research_group_id is group id of teacher
 	//  ref_rg_id is id of student research group for which teacher is adding log entry.
 	String submit = request.getParameter("button");
 	String log_text = request.getParameter("log_text");
@@ -16,7 +15,7 @@
 	String buttonText = "Add Your Logbook Entry";
 	
 	Integer keyword_id = 0;
-	int count = -1;
+	int count = 0;
 	if (request.getParameter("count") != null) {
 		count = Integer.parseInt(request.getParameter("count")); 
 	}
@@ -31,9 +30,12 @@
 	
 	if (img_src == null)
 		img_src = "";
-	String groupName = user.getName();
+	try {
+		ref_rg_name = LogbookTools.getGroupNameFromId(ref_rg_id, elab);
+	} catch (Exception e) {
+		messages += e.getMessage();
+	}
 	// get name of student research group
-	//groupName defined in common.jsp
 	if (ref_rg_id == research_group_id) {
 		ref_rg_name = "General Notes";
 	} 
@@ -80,10 +82,10 @@
 					+ "--\\)", parsed[i]);
 		}
 		log_enter = log_enter.replaceAll("'", "''");
-		if (log_enter.equals("")) {
+		if (log_id == -1) {
 			try {
-				LogbookTools.insertLogbookEntry(project_id, research_group_id, keyword_id, role, log_enter, elab);
-				log_id = LogbookTools.getLogId(research_group_id, project_id, keyword_id, elab);
+				LogbookTools.insertLogbookEntryTeacher(project_id, research_group_id, ref_rg_id, log_enter, role, elab);
+				log_id = LogbookTools.getLogIdTeacher(research_group_id, project_id, ref_rg_id, role, elab);
 				display = "<h2><font face=\"arial MS\">Your log was successfully entered. You can edit it and update it.<br> "+
 						  " Click <font color=\"#1A8BC8\">Show Logbook</font> to access all entries in your logbook.</font></h2>";
 			} catch (Exception e) {
@@ -109,16 +111,39 @@
 	request.setAttribute("messages", messages);
 	request.setAttribute("currentEntries", currentEntries);
 	request.setAttribute("display", display);
+	request.setAttribute("ref_rg_name", ref_rg_name);
+	request.setAttribute("log_enter", log_enter);
+	request.setAttribute("log_text", log_text);
+	request.setAttribute("buttonText", buttonText);
+	request.setAttribute("log_id", log_id);
+	request.setAttribute("project_id", project_id);
+	request.setAttribute("research_group_id", research_group_id);
+	request.setAttribute("ref_rg_id", ref_rg_id);
+	request.setAttribute("role", role);
+	request.setAttribute("img_src", img_src);
+	request.setAttribute("count", count);
 	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>Enter Logbook</title>
-		<link rel="stylesheet" href="styletutT.css" type="text/css">
+		<script language='javascript' type="text/javascript">
+			function insertImgSrc() {
+			    var raw = document.log.img_src.value;
+			    var parsed = raw.split(",");
+			    for (var i = 0; i < parsed.length; i++)
+			    {
+			        var txt = document.log.log_text.value;
+			        txt = txt.replace("(--Image "+i+"--)", parsed[i]);
+			        document.log.log_text.value = txt;
+			    }
+			};
+		</script>
+		<link rel="stylesheet" href="styletut-teacher.css" type="text/css">
 	</head>
 
-	<body id="logentry">
+	<body id="log-entry-teacher">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="content">		
@@ -133,7 +158,7 @@
 								<tr>
 									<td align="right"><img src="../graphics/logbook_large.gif"
 										align="middle" border="0" alt=""></td>
-									<td><font size="+2" face="arial MS" align="left">Your <b>Private</b> logbook entries for "<%=ref_rg_name%>"</font></td>
+									<td><font size="+2" face="arial MS" align="left">Your <b>Private</b> logbook entries for "${ref_rg_name }"</font></td>
 								</tr>
 							</table>
 							<c:choose>
@@ -141,7 +166,7 @@
 									${display}<br />
 									<table border="1">
 										<tr>
-											<td align="left"><%=log_enter%></td>
+											<td align="left">${log_enter }</td>
 										</tr>
 									</table>
 								</c:when>
@@ -154,31 +179,32 @@
 										<th></th>
 									</tr>
 									<tr>
-										<td colspan="2"><textarea name="log_text" cols="80" rows="10"><%=log_text%></textarea></td>
+										<td colspan="2"><textarea name="log_text" cols="80" rows="10">${log_text}</textarea></td>
 									</tr>
 									<tr>
 										<td align='left'><input type='button' name="plot"
 											onclick="window.open('../plots/pick.jsp','win2', 'scrollbars=1,resizeable=true');if(childWindow.opener==null)childWindow.opener=self;"
 											value="Insert a plot"></td>
-										<td align="right"><input type="submit" name="button" value="<%=buttonText%>"></td>
-									</tr>
+										<td align="right"><input type="submit" name="button" value="${buttonText }"></td>
 									</tr>
 								</table>
-								<input type="hidden" name="log_id"value="<%=log_id%>"> 
-								<input type="hidden" name="project_id" value="<%=project_id%>"> 
-								<input type="hidden" name="research_group_id" value="<%=research_group_id%>"> 
-								<input type="hidden" name="ref_rg_id" value="<%=ref_rg_id%>"> 
-								<input type="hidden" name="role" value="<%=role%>"> 
+								<input type="hidden" name="log_id"value="${log_id }"> 
+								<input type="hidden" name="project_id" value="${project_id }"> 
+								<input type="hidden" name="research_group_id" value="${research_group_id }"> 
+								<input type="hidden" name="ref_rg_id" value="${ref_rg_id }"> 
+								<input type="hidden" name="role" value="${role }"> 
 								<!-- //EPeronja-04/08/2013: replace " by ', string was not showing correctly -->
-								<input type="hidden" name="img_src" value='<%=img_src%>'> 
-								<input type="hidden" name="count" value="<%=count%>">
+								<input type="hidden" name="img_src" value='${img_src }'> 
+								<input type="hidden" name="count" value="${count }">
 							</form>						
 							<br>
 							<table>
 								<tr>
-									<td valign="center" align="center"><a href="showLogbookT.jsp"><font
-										face="arial MS" size="+1"><img src="graphics/logbook_view.gif"
-										border="0" align="middle" alt=""> Show Logbook</font></a></td>
+									<td valign="center" align="center">
+										<a href="show-logbook-teacher.jsp"><font face="arial MS" size="+1">
+											<img src="../graphics/logbook_view.gif" border="0" align="middle" alt=""> Show Logbook</font>
+										</a>
+									</td>
 								</tr>
 							</table>
 							<p>
