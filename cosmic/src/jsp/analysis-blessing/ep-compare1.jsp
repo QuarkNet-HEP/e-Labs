@@ -117,7 +117,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 						<a href="../geometry/view.jsp?filename=${param.file}">Show Geometry</a> |
 					</c:if>
 					<a href="../data/download?filename=${param.file}.bless&elab=${elab.name}&type=split">Download Bless File</a> |
-					<e:popup href="../references/Reference_bless_data.html" target="DataBlessing" width="900" height="800">Data blessing documentation</e:popup>
+					<e:popup href="../references/Reference_bless_data.html" target="DataBlessing" width="900" height="800">Interpreting the blessing plots</e:popup>
 				</div>
 				<h2>Control Register</h2>
 				<table width="100%">
