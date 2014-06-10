@@ -141,7 +141,7 @@
 					if (comment_count == null) {
 						comment_count = 0L;
 					}
-					comment_info=comment_info+"<BR><IMG SRC=\'graphics/new_flag.gif\' border=0 align=\'middle\'> <FONT size=-2 >comments: " + comment_count + " (<FONT color=\"#AA3366\">"+comment_new+"</FONT>) " +"</font>";
+					comment_info=comment_info+"<BR><IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'middle\'> <FONT size=-2 >comments: " + comment_count + " (<FONT color=\"#AA3366\">"+comment_new+"</FONT>) " +"</font>";
 				}
 			}
 			logbookDetails.add(comment_info);

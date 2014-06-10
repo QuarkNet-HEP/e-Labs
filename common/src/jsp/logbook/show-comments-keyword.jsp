@@ -58,10 +58,10 @@
 				}
 			}
 			String commentColor = "black";
-			if (new_comment != null && new_comment.equals("t")) {
+			if (new_comment != null && new_comment) {
 				commentColor = "red";
 			}
-			if (new_comment != null && new_comment.equals("t")) {
+			if (new_comment != null && new_comment) {
 				//reset  new_comment to false
 				try {
 					int k = LogbookTools.updateResetComment(comment_id, elab);
@@ -129,7 +129,7 @@
 							<th align="right" valign="top"><font face="Comic Sans MS">Log Date</font></th>
 							<th align="left" valign="top"><font face="Comic Sans MS">Log Entry</font></th>
 							<th align="right" valign="top"><font face="Comic Sans MS">Date</font></th>
-							<th align="left" valign="top"><font face="Comic Sans MS">Your Teacher's Comments</font> <a href="log-entry.jsp?keyword=${keyword }"><img src="../graphics/logbook_pencil.gif" border="0" align="middle" alt=""></a></th>
+							<th align="left" valign="top"><font face="Comic Sans MS">Your Teacher's Comments</font> <a href="log-entry.jsp?keyword=${keyword }"><img src="../graphics/logbook_pencil.gif" border="0" align="top" alt=""></a></th>
 						</tr>
 						<c:choose>
 							<c:when test="${not empty commentInfo }">
