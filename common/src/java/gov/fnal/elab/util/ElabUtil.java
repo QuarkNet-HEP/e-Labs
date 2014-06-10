@@ -800,7 +800,7 @@ public class ElabUtil {
 			    	if (to == null) {
 			    		to = "help@i2u2.org";
 			    	}
-		    		String emailmessage = "", subject = where + " Add comments: user sent dirty input";
+		    		String emailmessage = "", subject = where + ": user sent dirty input";
 		    		String emailBody =  "User input: "+userInput+"\n" +
 						   			"Number of errors: "+String.valueOf(errors)+"\n" +
 				   					"Error messages: "+ errorMessages + "\n" +

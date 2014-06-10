@@ -1,6 +1,7 @@
 <%@ page import="java.util.*"%>
 <%@ page import="java.sql.*" %>
 <%@ page import="gov.fnal.elab.logbook.*" %>
+<%@ page import="gov.fnal.elab.util.*" %>
 <%@ include file="../login/teacher-login-required.jsp"%>
 <%@ include file="../include/elab.jsp"%>
 <%
@@ -82,6 +83,8 @@
 					+ "--\\)", parsed[i]);
 		}
 		log_enter = log_enter.replaceAll("'", "''");
+  		log_enter = ElabUtil.stringSanitization(log_enter, elab, "Logbook user: "+user.getName());
+
 		if (log_id == -1) {
 			try {
 				LogbookTools.insertLogbookEntryTeacher(project_id, research_group_id, ref_rg_id, log_enter, role, elab);

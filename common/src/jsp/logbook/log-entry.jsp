@@ -74,6 +74,7 @@
 					+ "--\\)", parsed[i]);
 		}
 		log_enter = log_enter.replaceAll("'", "''");
+		log_enter = ElabUtil.stringSanitization(log_enter, elab, "Logbook user: "+user.getName());
 
 		if (log_text != "") {
 			try {
