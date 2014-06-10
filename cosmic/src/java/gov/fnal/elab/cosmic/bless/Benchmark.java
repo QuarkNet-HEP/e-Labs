@@ -111,6 +111,10 @@ public class Benchmark {
 			and.add(new Equals("type", "split"));
 			and.add(new Like("detectorid", Integer.toString(detectorid)));
 			and.add(new GreaterOrEqual("startdate", startDate));
+			Calendar c = Calendar.getInstance(); 
+			c.setTime(endDate); 
+			c.add(Calendar.DATE, 1);
+		    endDate = c.getTime();
 			and.add(new LessOrEqual("enddate", endDate));
 			rs = elab.getDataCatalogProvider().runQuery(and);
 		}
