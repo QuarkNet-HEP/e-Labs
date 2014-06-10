@@ -62,6 +62,7 @@
  	if (submit != null && !(comment_text.equals(""))) {
   		// need to update or insert an entry yet
   		String comment_enter = comment_text.replaceAll("'", "''");
+  		comment_enter = ElabUtil.stringSanitization(comment_enter, elab, "Logbook user: "+user.getName());
   		if (comment_id == -1) {
   			//we have to insert a new row into table
   			try {
