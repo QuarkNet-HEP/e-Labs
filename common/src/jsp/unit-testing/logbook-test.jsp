@@ -11,8 +11,8 @@
 	String submit = request.getParameter("submit");
 	StringBuilder sb = new StringBuilder();
 	
-	Result result = JUnitCore.runClasses(NotificationsTest.class);
-	sb.append("<strong>Testing Notifications:</strong><br />");
+	Result result = JUnitCore.runClasses(LogbookToolsTest.class);
+	sb.append("<strong>Testing Logbook Tools:</strong><br />");
 	sb.append("RunCount: " + result.getRunCount() + "<br />");
 	sb.append("RunTime: " + result.getRunTime() + "ms <br />");
 	sb.append("FailureCount: " + result.getFailureCount() + "<br />");
@@ -26,7 +26,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Notifications Tests</title>
+		<title>Logbook Tools Tests</title>
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>

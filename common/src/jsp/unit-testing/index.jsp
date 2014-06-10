@@ -41,6 +41,9 @@
 					<tr>
 						<td><a href="session-test.jsp">Session Tests</a></td>
 					</tr>
+					<tr>
+						<td><a href="logbook-test.jsp">Logbook Tests</a></td>
+					</tr>
 										
 				</table>
 			</div>

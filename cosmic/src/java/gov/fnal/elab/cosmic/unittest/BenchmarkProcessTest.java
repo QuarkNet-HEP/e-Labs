@@ -21,7 +21,7 @@ public class BenchmarkProcessTest {
 			ArrayList<String> results = new ArrayList<String>();
 			results = bp.BlessDatafiles(elab, detector, filesToBless, benchmark);
 		} catch (Exception e) {
-			answer = "There was an exception";
+			answer = "There was an exception " + e.getMessage();
 		}
 
 	}
@@ -34,14 +34,14 @@ public class BenchmarkProcessTest {
 			String formattedTime = bp.convertToHMS("60592");
 			assertTrue(formattedTime.equals("16:49:52"));
 		} catch (Exception e) {
-			answer = "There was an exception";
+			answer = "There was an exception " + e.getMessage();
 		}		
 		try {
 			BlessProcess bp = new BlessProcess();
 			String formattedTime = bp.convertToHMS(null);
 			assertTrue(formattedTime.equals(""));
 		} catch (Exception e) {
-			answer = "There was an exception";
+			answer = "There was an exception " + e.getMessage();
 		}
 	}
 }

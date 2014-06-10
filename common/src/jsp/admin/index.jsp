@@ -40,11 +40,6 @@
 						<td>&#8226; <a href="remove-expired-notifications.jsp">Delete expired notifications</a></td>
 						<td>Delete notifications with expiration dates older than 30 days ago.</td>					
 					</tr>
-
-					<tr>
-						<td>&#8226; <a href="clean-guest.jsp">Delete guest user data</a></td>
-						<td>Delete all files created by the guest user.</td>					
-					</tr>
 					<tr>
 						<td>&#8226; <a href="../references/control.jsp"> FAQs Add, update FAQs</a></td>
 						<td>Add, update FAQ items.</td>					
@@ -82,10 +77,6 @@
 						<tr>
 							<td>&#8226; <a href="../data/create-threshold.jsp">Create Threshold Times files</a></td>
 							<td>Create individual threshold times files if they failed to be created at upload time.</td>
-						</tr>
-						<tr>
-							<td>&#8226; <a href="../data/download?filename=CosmicRayDetector.zip&elab=${elab.name}&type=split">Download Purdue-Java</a></td>
-							<td>Download zip with all files to run the Purdue-Java Cosmic Ray Detector Code.</td>
 						</tr>
 						<tr>
 							<td>&#8226; <a href="../analysis/list-all.jsp">View all analyses</a></td>

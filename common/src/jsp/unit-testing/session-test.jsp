@@ -8,15 +8,21 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/admin-login-required.jsp" %>
 <%
-String submit = request.getParameter("submit");
-String message = "OK";
+	String submit = request.getParameter("submit");
+	StringBuilder sb = new StringBuilder();
+	
+	Result result = JUnitCore.runClasses(SessionListenerTest.class);
+	sb.append("<strong>Testing SessionListener:</strong><br />");
+	sb.append("RunCount: " + result.getRunCount() + "<br />");
+	sb.append("RunTime: " + result.getRunTime() + "ms <br />");
+	sb.append("FailureCount: " + result.getFailureCount() + "<br />");
+	for (Failure failure : result.getFailures()) {
+		sb.append(failure.toString() + "<br />");
+	}
+	sb.append("IgnoreCount: " + result.getIgnoreCount() + "<br />");
 
-Result result = JUnitCore.runClasses(SessionListenerTest.class);
-for (Failure failure : result.getFailures())
-{
-    message += failure.toString() + "<br />";
-}
-request.setAttribute("message", message);
+	request.setAttribute("message", sb.toString());
+
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
 <html xmlns="http://www.w3.org/1999/xhtml">
