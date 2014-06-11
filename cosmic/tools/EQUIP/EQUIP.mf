@@ -1,0 +1,2 @@
+Main-Class: EQUIP
+Class-Path: ./ jcommon-1.0.17.jar jfreechart-1.0.14.jar junit.jar freehep-jminuit-1.0.jar RXTXcomm.jar

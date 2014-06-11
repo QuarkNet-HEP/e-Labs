@@ -1,0 +1,56 @@
+1 - You already extracted all the files from EQUIP.zip
+
+2 - Use this folder or move somewhere else in your computer. You need to check that all these files have been extracted:
+
+	EQUIP.jar
+	freehep-jminuit-1.0.jar
+	jcommon-1.0.17.jar
+	jfreechart-1.0.14.jar
+	junit.jar
+	librxtxSerial.jnilib (only needed for Windows)
+	RXTXcomm.jar
+	rxtxSerial.dll (only needed for Windows)
+	You might need to download the 32 bit version (depending on your machine)
+	http://jlog.org/rxtx-win.html
+	
+	README
+	
+3 - Install driver from Silabs. A restart might be needed and connect the detector.
+	(Download from: http://www.silabs.com/products/mcu/Pages/USBtoUARTBridgeVCPDrivers.aspx)
+	
+4 - If you are using a MAC:
+	Open a terminal window
+	Type 'cd /var'
+	Type 'sudo mkdir lock' (This will ask you for sudo password)
+	Type 'chown -R [user]:wheel /var/lock' (where [user] is your username)
+
+5 - To test if the install is successful (either a MAC or PC): 
+	Open a terminal window (MAC) or cmd window (PC)
+	type 'cd /path/to/folder/EQUIP'
+	type 'java -jar EQUIP.jar'
+	
+	If everything is OK you will see output (in the terminal or cmd window) like the following and a java application called CosmicRayDetector will open up:
+	*******************************************
+	Experimental:  JNI_OnLoad called.
+	Stable Library
+	=========================================
+	Native lib Version = RXTX-2.1-7
+	Java lib Version   = RXTX-2.1-7
+    *******************************************
+    
+    If you get any other output, please copy/paste it in an email to help@i2u2.org.
+     
+
+6 - You need at least Java 6 in your machine for this to work.
+	To test, open a terminal window (MAC) or a cmd window (PC) and: 
+	type 'java -version'
+	You should expect some output like:
+   	*******************************************
+	java version "1.6.0_65" --> the first 6 indicates the version.
+	Java(TM) SE Runtime Environment (build 1.6.0_65-b14-462-11M4609)
+	Java HotSpot(TM) 64-Bit Server VM (build 20.65-b04-462, mixed mode)
+	*******************************************
+
+	If Java is not installed, then you need to download it from: 
+	https://www.java.com/en/download/
+	And install it in your machine. You might need admin rights to do this.
