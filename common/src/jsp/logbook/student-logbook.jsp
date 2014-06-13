@@ -21,6 +21,17 @@
 		keyword = "";
 	} // note - display all entries
 
+	//check if we are marking entries as read
+	String mark_as_read = request.getParameter("mark_as_read");
+	if (mark_as_read != null && mark_as_read.equals("yes")) {
+		Integer logMark = Integer.parseInt(request.getParameter("log_id"));
+		try {
+			LogbookTools.updateResetCommentsforLogbookEntry(logMark, elab);
+		} catch (Exception e) {
+			messages += e.getMessage();
+		}
+	}
+
 	//start building left hand side menu
 	String groupName = user.getName();
 	int projectId = elab.getId();
@@ -168,7 +179,11 @@
 			Long comment_new = LogbookTools.getCommentCountNew(log_id, elab);
 			String comment_info="";
 			if (comment_new != 0L) {
-				comment_info="<IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'middle\'> <FONT size=-2 >comments: " + comment_count + " (<FONT color=\"#AA3366\">"+comment_new+"</FONT>) " +"</font><br />";
+				//comment_info="<IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'middle\'> <FONT size=-2 >comments: " + comment_count + " (<FONT color=\"#AA3366\">"+comment_new+"</FONT>) " +"</font><br />";
+				comment_info="<IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> "+
+						     "<FONT color=\"#AA3366\" size=\"-2\"><b>comments: " + comment_count + 
+						     " (<FONT color=\"#AA3366\">"+comment_new+"</FONT>) </b></font> "+
+						     "<a href=\"student-logbook.jsp?mark_as_read=yes&log_id="+String.valueOf(log_id)+"&keyword="+keyword+"\" style=\"text-decoration: none;\"><FONT size=\"-2\"><strong>x</strong></font></a><br />";
 			}
 			logbookDetails.add(comment_info); //10
 			//get the actual comments
@@ -208,14 +223,14 @@
 	} catch (Exception e) {
 		messages += e.getMessage();
 	}//end of building all entries
-	
+	String keyword_display=keywordName.replaceAll("_"," ");	
 	request.setAttribute("messages", messages);
 	request.setAttribute("yesNo", yesNo);
 	request.setAttribute("count", count);
 	request.setAttribute("linksToEach", linksToEach);
 	request.setAttribute("groupName", groupName);
 	request.setAttribute("keyword", keyword);
-	request.setAttribute("keywordName", keywordName);
+	request.setAttribute("keywordName", keyword_display);
 	request.setAttribute("keywordDescription", keywordDescription);
 	request.setAttribute("logbookSectionOrder", logbookSectionOrder);
 	request.setAttribute("logbookSections", logbookSections);
@@ -328,7 +343,17 @@
 												</td>
 											</tr>
 											<tr>
-												<td><font size="-2"><ul><li>Select a milestone to enter logbook entries.</li></ul></font></td>
+												<td><font size="-2">
+													<ul>
+														<li>
+															Select a milestone to enter logbook entries.
+														</li>
+														<li>
+															<font size="-2">Click <b>x</b> to "mark as read" status.</font>
+														</li>												
+													</ul>
+													</font>
+												</td>
 											</tr>												
 										</table>
 									</div>

@@ -1111,6 +1111,28 @@ public class LogbookTools {
 	}//end of updateResetComment	
 	
 	/*
+	 * Reset new comments for a logbook entry to false
+	 */
+	public static int updateResetCommentsforLogbookEntry(int log_id, Elab elab) throws ElabException {
+        Connection conn = null; 
+        PreparedStatement ps = null;
+        int i = 0;
+        try {
+			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+			ps = conn.prepareStatement("UPDATE comment SET new_comment = 'f' WHERE log_id = ?;");
+			ps.setInt(1, log_id); 
+			i = ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new ElabException(e);
+        } finally {
+            if (conn != null) {
+                DatabaseConnectionManager.close(conn);
+            }
+        }    
+        return i;
+	}//end of updateResetCommentsforLogbookEntry	
+
+	/*
 	 * Retrieve count of comments
 	 */
 	public static Long getCommentCount(int log_id, Elab elab) throws ElabException {
