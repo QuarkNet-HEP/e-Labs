@@ -77,7 +77,7 @@
 <IMG border="0" SRC="graphics/ref_dot.gif"> Choose and apply appropriate analysis tools. <A HREF="javascript:reference('cms_analysis',420)"><IMG border="0" SRC="graphics/ref.gif"></A><br>
 <IMG border="0" SRC="graphics/ref_dot.gif"> Review, explain and assess your results. <A HREF="javascript:reference('cms_assessment',450)"><IMG border="0" SRC="graphics/ref.gif"></A><br>
 <IMG border="0" SRC="graphics/ref_dot.gif"> Participate in a <b>milestone seminar</b>.<BR>
-<IMG border="0" SRC="graphics/ref_dot.gif"> Reflect on teaching and learning.<A HREF="javascript:showRefLink('logEntry.jsp?keyword=classroom_insights',700,600)"><b>Log it!</b><IMG SRC="graphics/milestone_pencil.gif" border="0"  align="middle"></A><BR>
+<IMG border="0" SRC="graphics/ref_dot.gif"> Reflect on teaching and learning.<A HREF="javascript:showRefLink('../logbook/student-logbook.jsp?keyword=classroom_insights',700,600)"><b>Log it!</b><IMG SRC="graphics/milestone_pencil.gif" border="0"  align="middle"></A><BR>
 			<div id="showsublist2" style="visibility:visible; display:"><P STYLE="margin-left: 30px">
                             <a href="javascript:void(0);" onclick="HideShow('sublist2');HideShow('showsublist2');HideShow('hidesublist2')">
                                 <img src="graphics/Tright.gif" alt="" border="0"></a> Details

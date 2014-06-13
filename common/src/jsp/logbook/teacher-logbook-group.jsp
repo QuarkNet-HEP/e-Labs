@@ -1,12 +1,13 @@
 <%@ page import="java.util.*"%>
 <%@ page import="java.sql.*" %>
 <%@ page import="gov.fnal.elab.logbook.*" %>
+<%@ page import="gov.fnal.elab.util.*" %>
 <%@ include file="../include/elab.jsp"%>
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="../login/teacher-login-required.jsp"%>
 <%
-	String messages = "";
+	String messages = ""; //to collect exception/feedback messages
 	// invoked with optional research_group_name and keyword
 	// if no research_group_name is passed, 
 	String role = user.getRole();
@@ -15,23 +16,24 @@
 	// Each of these will link to this page with research_group_name passed without a keyword.
 	String keyword_description = "";
 	String keyword_text = "";
-	String linksToEachGroup = "";
 	String keyword_loop = "";
 	String research_group_name = request.getParameter("research_group_name");
 	String keyword = request.getParameter("keyword");
-
 	String current_section = "";
 	String keyColor = "";
-	String typeConstraint = "AND keyword.type IN ('SW','S') ";
-	
-	if (!(research_group_name == null)) {
-		if (research_group_name.startsWith("pd_")
-				|| research_group_name.startsWith("PD_")) {
-			typeConstraint = "AND keyword.type IN ('SW','W') ";
+
+	//check if we are marking entries as read
+	String mark_as_read = request.getParameter("mark_as_read");
+	if (mark_as_read != null && mark_as_read.equals("yes")) {
+		Integer logMark = Integer.parseInt(request.getParameter("log_id"));
+		try {
+			LogbookTools.updateResetLogbookEntry(logMark, elab);
+		} catch (Exception e) {
+			messages += e.getMessage();
 		}
 	}
 	if (keyword == null) {
-		keyword = "";
+		keyword =  "";
 	} // note - display all entries
 	String keyword_name = keyword;
 	
@@ -41,22 +43,61 @@
 	}
 	
 	int project_id = elab.getId();
-	Collection<String> groups = user.getGroupNames();
-	Iterator it = groups.iterator();
-	while(it.hasNext()) {
-		String rg_name = it.next().toString();
-		ElabGroup eg = user.getGroup(rg_name);
-		if (eg.getRole().equals("user") || eg.getRole().equals("upload")) {
-			//EPeronja: only display active research groups
-			if (eg.getActive()) {
-				linksToEachGroup = linksToEachGroup
-						+ "<tr><td><A HREF='show-logbook-group-teacher.jsp?research_group_name="
-						+ rg_name + "'>" + rg_name + "</A></td></tr>";
-			}
-		}		
-	}
+	String linksToEachGroup = LogbookTools.buildGroupLinks(user, "teacher-logbook-group.jsp?research_group_name=");
+
+	//check if we are entering new comments
+	String submit = request.getParameter("submit");
+	String[] log_id = request.getParameterValues("log_id");
+	String[] comment_text = request.getParameterValues("comment_text");
+ 	if (submit != null && comment_text != null) {
+ 		//loop through all the comments
+ 		for (int j=0; j < comment_text.length; j++) {
+			if (!comment_text[j].equals("")) {
+	 			// need to update or insert an entry yet
+		  		String comment_enter = comment_text[j].replaceAll("'", "''");
+		  		comment_enter = ElabUtil.stringSanitization(comment_enter, elab, "Logbook user: "+user.getName());
+	  			//we have to insert a new row into table
+	  			try {
+		  			LogbookTools.insertComment(Integer.parseInt(log_id[j]), comment_enter, elab);
+	  			} catch (Exception e) {
+	  				messages += e.getMessage();
+	  			}
+			}//end of if check
+ 		}//end for loop
+ 	}//end of submit
+
+	Integer keyword_id = null;	
+	String linksToEach = "";
+	//build all links
 	String yesNo = "No";
-	
+	if (!(research_group_name == null)) {
+		yesNo = LogbookTools.getYesNoGeneral(research_group_name, project_id, elab);
+		HashMap keywordTracker = new HashMap();
+		ResultSet rs = null;
+		rs = LogbookTools.getKeywordTracker(research_group_name, project_id, elab);
+		while (rs.next()){
+			if (rs.getObject("keyword_id") != null) {
+				keyword_id= (Integer) rs.getObject("keyword_id");
+				keywordTracker.put(keyword_id.intValue(), true);
+			} else { 
+				keyword_id = null;
+			}
+		}
+		//provide access to all possible items to make logs on.
+		try {
+			rs = LogbookTools.getLogbookKeywordItems(project_id, research_group_name, elab);
+		} catch (Exception e) {
+			messages += e.getMessage();
+		}
+		
+		try {
+			linksToEach = LogbookTools.buildGroupLinksToKeywords(rs, keywordTracker, keyword, research_group_name);
+		} catch (Exception e) {
+			messages += e.getMessage();
+		}
+	}
+
+    //build logbook entries and comments
 	int sectionOrder=1;
 	//Keep the same section order as with the links on the left
 	TreeMap<Integer, String> logbookSectionOrder = new TreeMap<Integer, String>();
@@ -75,40 +116,8 @@
 			return Integer.parseInt(innerRank);
 		}
 	};
-		
-	Integer keyword_id = null;	
-	String linksToEach = "";
-	//build all links
-	if (!(research_group_name == null)) {
-		yesNo = LogbookTools.getYesNoGeneral(research_group_name, project_id, elab);
-		HashMap keywordTracker = new HashMap();
-		ResultSet rs = null;
-		rs = LogbookTools.getKeywordTracker(research_group_name, project_id, elab);
-		while (rs.next()){
-			if (rs.getObject("keyword_id") != null) {
-				keyword_id= (Integer) rs.getObject("keyword_id");
-				keywordTracker.put(keyword_id.intValue(), true);
-			} else { 
-				keyword_id = null;
-			}
-		}
-		//provide access to all possible items to make logs on.
-		try {
-			rs = LogbookTools.getLogbookKeywordItems(project_id, typeConstraint, elab);
-		} catch (Exception e) {
-			messages += e.getMessage();
-		}
-		
-		try {
-			linksToEach = LogbookTools.buildGroupLinksToKeywords(rs, keywordTracker, keyword, research_group_name);
-		} catch (Exception e) {
-			messages += e.getMessage();
-		}
-	}
-
 	int research_group_id = -1;
-	String display = "";
-
+	String subtitle = "";
 	if (!(research_group_name == null)) {
 		ElabGroup eg = user.getGroup(research_group_name);
 		if (eg != null) {
@@ -124,15 +133,13 @@
 		}
 
 		if (keyword_id == null) {
-		    display = "<h2>All logbook entries for group "+research_group_name+"</h2>";
+		    subtitle = "<h2>All logbook entries for group "+research_group_name+"</h2>";
 		} 
 		else {
-			display = "<h2>Logbook entry for group "+research_group_name+"</h2>";
+			subtitle = "<h2>Logbook entry for group "+research_group_name+"</h2>";
 		}
 		ResultSet innerRs = null;
 		int itemCount = 0;
-		boolean showFullLog = false;
-		String elipsis = "";
 		String linkText = "";
 		Integer current_keyword_id = null;
 		String sectionText = "";
@@ -145,29 +152,16 @@
 			keyword_description = rs.getString("description");
 			String log_text = rs.getString("log_text");
 			log_text = log_text.replaceAll("''", "'");
-			Integer log_id = (Integer) rs.getObject("log_id");
+			Integer logid = (Integer) rs.getObject("log_id");
 			Boolean new_log = (Boolean) rs.getObject("new");
-			showFullLog = false;
-			if (log_id.equals(passed_log_id)) {
-				showFullLog = true;
-				elipsis = "";
-				linkText = "";
-			} else {
-				elipsis = " . . .";
-			}
 			String log_text_truncated;
-
-			if (showFullLog)
-				log_text_truncated = log_text;
-			else
-				log_text_truncated = log_text.replaceAll(
+			log_text_truncated = log_text.replaceAll(
 						"\\<(.|\\n)*?\\>", "");
-			int maxChars = log_text_truncated.length();
-			if (maxChars > 50 && !showFullLog) {
-				maxChars = 50;
+			if (log_text_truncated.length() > 50) {
+				log_text_truncated = log_text_truncated.substring(0, 50);
+			} else {
+				log_text_truncated = log_text;
 			}
-			log_text_truncated = log_text_truncated.substring(0,
-					maxChars);
 			keyword_name = rs.getString("keyword_name");
 			String keyword_display = keyword_name.replaceAll("_", " ");
 			String section = rs.getString("section");
@@ -175,40 +169,33 @@
 			Long comment_count = null;
 			Long comment_new = null;
 			String comment_info = "";
-			comment_count = (Long) LogbookTools.getCommentCount(log_id, elab);
-			comment_new = (Long) LogbookTools.getCommentCountNew(log_id, elab);
+			comment_count = (Long) LogbookTools.getCommentCount(logid, elab);
+			comment_new = (Long) LogbookTools.getCommentCountNew(logid, elab);
 
-			if (new_log != null && new_log == true && !showFullLog) {
-				comment_info = comment_info
-						+ "<BR><IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font>";
+			if (new_log != null && new_log == true) {
+				comment_info = "<IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font> <a href=\"teacher-logbook-group.jsp?mark_as_read=yes&log_id="+String.valueOf(logid)+"&research_group_name="+research_group_name+"\" style=\"text-decoration: none;\"><FONT size=\"-2\"><strong>x</strong></font></a><br />";
 			}
-			if (comment_count == null || comment_count == 0L) {
-				if (comment_new == 0L) {
-					comment_info = comment_info
-							+ "<BR><FONT size=-2>comments: "
-							+ comment_count + "</font>";
-				} else {
-					if (comment_count == null) {
-						comment_count = 0L;
-					}
-					comment_info = comment_info
-							+ "<BR><FONT size=-2 >comments: "
-							+ comment_count
-							+ " (<FONT color=\"#AA3366\">"
-							+ comment_new + "</FONT>)" + " </font>";
+			String comment_header = "";
+			if (comment_new == 0L) {
+				comment_header = "<strong>comments: " + comment_count + "</strong>";
+			} else {
+				if (comment_count == null) {
+					comment_count = 0L;
 				}
-				// out.write("New comments="+comment_new);
+				comment_header =  "<strong>comments: " + comment_count + " (<FONT color=\"#AA3366\">" + comment_new + "</FONT>) " + "</strong>";
 			}
+
+			ArrayList commentDetails = LogbookTools.buildCommentDetails(logid, comment_header, elab);																							
 			itemCount++;
 			ArrayList logbookSubsectionDetails = new ArrayList();
 			ArrayList logbookDetails = new ArrayList();
-			logbookDetails.add(log_id);
+			logbookDetails.add(logid); //0
 			logbookDetails.add(keyword_name);
 			logbookDetails.add(dateText);
-			logbookDetails.add(comment_info);
+			logbookDetails.add(comment_info);//3
 			logbookDetails.add(log_text);
 			logbookDetails.add(log_text_truncated);
-			logbookDetails.add(elipsis);
+			logbookDetails.add(commentDetails); //6
 			logbookSubsectionDetails.add(keyword_description);
 			logbookSubsectionDetails.add(keyword_display);
 
@@ -234,7 +221,7 @@
 	}
 		
 	request.setAttribute("messages", messages);
-	request.setAttribute("display", display);
+	request.setAttribute("subtitle", subtitle);
 	request.setAttribute("yesNo", yesNo);
 	request.setAttribute("keyword_id", keyword_id);
 	request.setAttribute("keyword_name", keyword_name);
@@ -262,10 +249,15 @@
 				var fullDiv = document.getElementById(fullDivId);
 				showDiv.innerHTML = fullDiv.innerHTML;
 			}
+			function showFullComment(showDivId, fullDivId) {
+				var showDiv = document.getElementById(showDivId);
+				var fullDiv = document.getElementById(fullDivId);
+				showDiv.innerHTML = fullDiv.innerHTML;
+			}			
 		</script>
 		<link rel="stylesheet" href="styletut.css" type="text/css">
 	</head>
-	<body id="show-logbook-group-teacher">
+	<body id="teacher-logbook-group">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="content">		
@@ -282,40 +274,51 @@
 							</tr>
 						</table>
 						<center>
+						<form method="get" name="log" action="">
+
 						<table width="800" cellpadding="0" border="0" align="left">
 							<tr>
 								<td valign="top" align="150">
 									<table width="140">
 										<tr>
-											<td valign="center" align="left"><a href="show-logbook-keyword-teacher.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">By Milestone</a></td>
+											<td valign="center" align="left"><a href="teacher-logbook-keyword.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">By Milestone</a></td>
 										</tr>
 										<tr>
-											<td valign="center" align="left"><a href="show-logbook-teacher.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">My Logbook</a></td>
+											<td valign="center" align="left"><a href="teacher-logbook.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">My Logbook</a></td>
 										</tr>
-										<tr>
-											<td><b>Select a Research Group</b></td>
-										</tr>${linksToEachGroup }
-										<c:if test="${not empty research_group_name }">
-											<tr>
-												<td><br>
-												<b>Entries for ${research_group_name }</b></td>
-											</tr>
-	
-											<tr>
-												<td valign="center" align="left"><a href="show-logbook-group-teacher.jsp?research_group_name=${research_group_name }"><img src="../graphics/logbook_view.gif" border="0" " align="middle" alt="">All Entries</a></td>
-											</tr>
-											<tr>
-												<td align="center"><img src="../graphics/log_entry_yes.gif" border="0" alt=""><font face="Comic Sans MS"> if entry exists</font></td>
-											</tr>
-											<tr>
-												<td><img src="../graphics/log_entry_${yesNo}.gif" border="0" align="center" alt=""><a href="show-logbook-group-teacher.jsp?research_group_name=${research_group_name }&amp;keyword=general">general</a></td>
-											</tr>
-											<tr>
-												<td><br>
-												<b>Select a Milestone:</b></td>
-											</tr>
-											${linksToEach}
-										</c:if>
+										<c:choose>
+											<c:when test='${research_group_name != null }'>	
+												<tr>
+													<td valign="center" align="left"><a	href="../logbook/teacher-logbook-group.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt=""><font color="#1A8BC8">By Group</font></a></td>
+												</tr>
+												<tr>
+													<td><br>
+													<b>Entries for ${research_group_name }</b>
+													<input type="hidden" name="research_group_name" value="${research_group_name }"></input>										
+													</td>
+												</tr>
+		
+												<tr>
+													<td valign="center" align="left"><a href="teacher-logbook-group.jsp?research_group_name=${research_group_name }"><img src="../graphics/logbook_view.gif" border="0" " align="middle" alt="">All Entries</a></td>
+												</tr>
+												<tr>
+													<td align="center"><img src="../graphics/log_entry_yes.gif" border="0" alt=""><font face="Comic Sans MS"> if entry exists</font></td>
+												</tr>
+												<tr>
+													<td><img src="../graphics/log_entry_${yesNo}.gif" border="0" align="center" alt=""><a href="teacher-logbook-group.jsp?research_group_name=${research_group_name }&amp;keyword=general">general</a></td>
+												</tr>											
+												<tr>
+													<td><br>
+													<b>Select a Milestone:</b></td>
+												</tr>
+												${linksToEach}
+											</c:when>
+											<c:otherwise>																															
+												<tr>
+													<td><b>Select a Research Group</b></td>
+												</tr>${linksToEachGroup }
+											</c:otherwise>
+										</c:choose>
 									</table>
 								</td>
 								<td align="left" width="20" valign="top"><img src="../graphics/blue_square.gif" border="0" width="2" height="650" alt=""></td>
@@ -323,31 +326,30 @@
 									<div style="border-style: dotted; border-width: 1px;">
 										<table width="600">
 											<tr>
-												<td align="left" colspan="4"><font size="+1"
+												<td align="left"><font size="+1"
 													face="Comic Sans MS">Instructions</font></td>
-											</tr>
+											</tr>						
 											<tr>
-												<td align="right">&nbsp;</td>
-												<td align="left">Click <b>Read more</b> to read full log entry and reset "new log" status.</td>
-											</tr>
-											<tr>
-												<td align="right"><img src="../graphics/logbook_pencil.gif" align="middle" border="0" alt=""></td>
-												<td align="left">Button to add and view comments on a logbook entry.</td>
-											</tr>
-											<tr>
-												<td colspan="2">&nbsp;</td>
-											</tr>
-											<tr>
-												<td align="right" colspan="2"><font size="-2">Log Status: New log entries are marked as <img
-													src="../graphics/new_flag.gif" border="0" align="center" alt="">
-												<font color="#AA3366">New log entry</font>. Number of your comments
-												(<font color="#AA3366"> number unread by students. </font>)</font><font></font>
+												<td>
+													<ul>
+														<li>
+															<font size="-2">Select a group on the right to display the logbook entries.</font>
+														</li>
+														<li>
+															<font size="-2">Log Status: New log entries are marked as <img src="../graphics/new_flag.gif" border="0" align="center" alt="">
+															<font color="#AA3366">New log entry</font>. Number of your comments (<font color="#AA3366"> number unread by students. </font>)</font>
+														</li>
+														<li>
+															<font size="-2">Click <b>x</b> to "mark as read" status.</font>
+														</li>
+													</ul>
 												</td>
-											</tr>							
+											</tr>
 										</table>
+										</div>
 										<c:choose>
-											<c:when test="${not empty display }">
-												${display }
+											<c:when test="${not empty subtitle }">
+												${subtitle }
 													<table>		
 														<c:choose>
 															<c:when test="${not empty logbookSectionOrder }">
@@ -381,16 +383,50 @@
 																											<c:when test='${ logbookSectionKeywords.key == fn:substring(logbookEntries.key, 0, fn:indexOf(logbookEntries.key,  "-")) }' >
 																												<tr>
 																														<td valign="top" width="175" align="right">
-																															<a href="log-comment.jsp?log_id=${logbookEntries.value[0]}&amp;keyword=${logbookEntries.value[1]}&amp;research_group_name=<%=research_group_name%>&amp;path=RG"><img src="../graphics/logbook_pencil.gif" border="0" align="top" alt=""></a>${logbookEntries.value[2]}${logbookEntries.value[3] }
+																															${logbookEntries.value[2]}
 																														</td>
 																														<td width="400" valign="top">
 																															<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
-																															<div id="fullLog${logbookEntries.value[0]}" style="display:none;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
-																															<div id="showLog${logbookEntries.value[0]}"><e:whitespaceAdjust text="${logbookEntries.value[5]}" />${logbookEntries.value[6]}<a href='javascript:showFullLog("showLog${logbookEntries.value[0]}","fullLog${logbookEntries.value[0]}");'>Read More</a></div>
+																															<c:choose>
+																																<c:when test="${logbookEntries.value[4] != logbookEntries.value[5]}">
+																																	<div id="fullLog${logbookEntries.value[0]}" style="display:none;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
+																																	<div id="showLog${logbookEntries.value[0]}"><e:whitespaceAdjust text="${logbookEntries.value[5]}" /> . . .<a href='javascript:showFullLog("showLog${logbookEntries.value[0]}","fullLog${logbookEntries.value[0]}");'>Read More</a></div>
+																															    </c:when>
+																															    <c:otherwise>
+																																    <e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust>
+																															    </c:otherwise>
+																															 </c:choose>	
 																														</td>
-													
 																													</tr>
-								
+																													<tr>
+																														<td width="100"> </td>
+																														<td width="450" valign="middle">
+																												           <font face="Comic Sans MS">${logbookEntries.value[3]}</font>
+																															<font face="Comic Sans MS" size=-2>
+																																<c:if test="${not empty logbookEntries.value[6] }">
+																																	<c:forEach items="${logbookEntries.value[6] }" var="comments">
+																																		${comments }<br />
+																																	</c:forEach>
+																																</c:if>
+																															</font>
+																														</td>																										    
+																												    </tr>																													
+																													<tr>
+																														<td colspan="2">
+																															<table width="400">
+																																<tr>
+																																	<th>Your new comment:</th>
+																																</tr>
+																																<tr>
+																																	<td><textarea name="comment_text" id="comment_text_${logbookEntries.value[0]}" cols="60" rows="5"></textarea></td>
+																																</tr>
+																																<tr>
+																																	<td align="center"><input type="submit" name="submit" id="submit_${logbookEntries.value[0] }" value="Submit Comment"></td>
+																																</tr>
+																															</table>
+																															<input type="hidden" name="log_id" id="log_id_${logbookEntries.value[0] }" value="${logbookEntries.value[0]}">
+																														</td>																												
+																													</tr>
 																											</c:when>
 																										</c:choose>
 																									</c:forEach>
@@ -424,10 +460,10 @@
 													</table>												
 											</c:when>											
 										</c:choose>
-									</div>
 								</td>
 							</tr>
 						</table>
+						</form>
 					</c:otherwise>
 				</c:choose>
 				</center>

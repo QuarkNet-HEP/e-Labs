@@ -31,10 +31,10 @@
 				<c:choose>
 					<c:when test="${user.teacher}">
 						<e:popup href="/elab/cms/teacher/forum/HelpDeskRequest.php" target="helpdesk" width="800" height="600"><img title="Helpdesk" src="../graphics/helpdesk.png" /></e:popup>
-						<e:popup href="../logbook/show-logbook-teacher.jsp" target="log" width="800" height="600"><img id="logbook-icon" title="Logbook" src="../graphics/logbook.png" /></e:popup>
+						<e:popup href="../logbook/teacher-logbook.jsp" target="log" width="800" height="800"><img id="logbook-icon" title="Logbook" src="../graphics/logbook.png" /></e:popup>
 					</c:when>
 					<c:otherwise>
-						<e:popup href="../logbook/show-logbook.jsp" target="log" width="800" height="600"><img id="logbook-icon" title="Logbook" src="../graphics/logbook.png" /></e:popup>
+						<e:popup href="../logbook/student-logbook.jsp" target="log" width="1200" height="800"><img id="logbook-icon" title="Logbook" src="../graphics/logbook.png" /></e:popup>
 					</c:otherwise>
 				</c:choose>
 				<%@ include file="../notifications/header-notifications.jsp" %>		

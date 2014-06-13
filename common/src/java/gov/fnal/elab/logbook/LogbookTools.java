@@ -38,8 +38,11 @@ public class LogbookTools {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             ps = conn.prepareStatement("SELECT DISTINCT keyword_id "+
             						   "  FROM log, research_group, keyword " +
-            						   " WHERE keyword.keyword = 'general' AND keyword.id = log.keyword_id and research_group.name ILIKE ? "+
-            						   "   AND research_group.id = log.research_group_id AND log.project_id = ?;");
+            						   " WHERE keyword.keyword = 'general' "+
+            						   "   AND keyword.id = log.keyword_id " +
+            						   "   AND research_group.name ILIKE ? "+
+            						   "   AND research_group.id = log.research_group_id "+
+            						   "   AND log.project_id = ?;");
 
             try {              
             	ps.setString(1, groupName); 
@@ -91,13 +94,19 @@ public class LogbookTools {
         }    	
         return rs;
 	}//end of getKeywordTracker
+	
 	/*
 	 * Retrieve all possible keyword items to make logs on based on the type constraint
 	 */
-	public static ResultSet getLogbookKeywordItems(int project_id, String typeConstraint, Elab elab) throws ElabException {
+	public static ResultSet getLogbookKeywordItems(int project_id, String groupName, Elab elab) throws ElabException {
         Connection conn = null;
         PreparedStatement ps; 
         ResultSet rs;
+    	String typeConstraint = " AND keyword.type IN ('SW','S') ";
+    	if (groupName.startsWith("pd_") || groupName.startsWith("PD_")) {
+    		typeConstraint = " AND keyword.type IN ('SW','W') ";
+    	}
+   	
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             ps = conn.prepareStatement("SELECT id, keyword, description, section, section_id " + 
@@ -119,11 +128,76 @@ public class LogbookTools {
         }    	
         return rs;
 	}//end of getLogbookItems	
+
+	/*
+	 * Build links to each group
+	 */
+	public static String buildGroupLinks(ElabGroup user, String page_name) throws ElabException {
+		String linksToEachGroup= "";
+		//get all research groups and build links
+		Collection<ElabGroup> rgTeacherGroups = user.getGroups();
+		Iterator it = rgTeacherGroups.iterator();
+		while (it.hasNext()){
+			ElabGroup eg = (ElabGroup) it.next();
+			if (eg.getRole().equals("user") || eg.getRole().equals("upload")) {
+				//EPeronja-only display active research groups
+				if (eg.getActive()) {
+					linksToEachGroup = linksToEachGroup
+							+ "<tr><td><A HREF='"+page_name + eg.getName() + "'>" + eg.getName()+ "</A></td></tr>";
+				}
+			}
+		}//end while loop
+		return linksToEachGroup;
+	}//end of buildLogbookLinkstoKeywords	
+
+	/*
+	 * Build links to each keyword
+	 */
+	public static String buildTeacherKeywordLinks(int project_id, String keyword, Elab elab) throws ElabException {
+		String linksToEach= "";
+		int keyword_id;
+		String keyword_loop, keyword_description, keyword_text, keyColor;
+		try {
+			ResultSet rs = LogbookTools.getLogbookKeywordItems(project_id, "", elab);
+			String current_section = "";
+			while (rs.next()) {
+				keyword_id = (Integer) rs.getObject("id");
+				keyword_loop = rs.getString("keyword");
+				keyword_text = keyword_loop.replaceAll("_", " ");
+				keyword_description = rs.getString("description");
+				String this_section = (String) (rs.getString("section"));
+				if (!keyword_loop.equals("general")) {
+					if (!this_section.equals(current_section)) {
+						try {
+							String section_text = LogbookTools.getSectionText(this_section);
+							linksToEach = linksToEach
+									+ "<tr><td>&nbsp;</td></tr><tr><td>"
+									+ section_text + "</td></tr>";
+							current_section = this_section;
+						} catch (Exception e) {
+							throw new ElabException(e);
+						}
+					}
+					keyColor = "";
+					if (keyword.equals(keyword_loop)) {
+						keyColor = "color=\"#AA3366\"";
+					}
+					linksToEach = linksToEach
+							+ "<tr><td><A HREF='teacher-logbook-keyword.jsp?keyword="
+							+ keyword_loop + "'>"
+							+ keyword_text + "</font></A></td></tr>";
+				}
+			}
+		} catch (Exception e) {
+			throw new ElabException(e);
+		}
+		return linksToEach;
+	}//end of buildLogbookLinkstoKeywords	
 	
 	/*
 	 * Build keyword links
 	 */
-	public static String buildLogbookLinksToKeywords(ResultSet rs, HashMap keywordTracker, String keyword) throws ElabException {
+	public static String buildStudentKeywordLinks(ResultSet rs, HashMap keywordTracker, String keyword) throws ElabException {
 		String linksToEach = "";
 		String current_section = "";
 		try {
@@ -147,7 +221,7 @@ public class LogbookTools {
 					if (keyword.equals(keyword_loop)) { 
 						keyColor="color=\"#AA3366\"";
 					}
-					linksToEach=linksToEach + "<tr><td><img src=\"../graphics/log_entry_" + yesNo + ".gif\" border=0 align=center><a href='show-logbook.jsp?keyword="+keyword_loop+"'><font face='Comic Sans MS'"+keyColor+">"+keyword_text+"</face></a></td></tr>";		
+					linksToEach=linksToEach + "<tr><td><img src=\"../graphics/log_entry_" + yesNo + ".gif\" border=0 align=center><a href='student-logbook.jsp?keyword="+keyword_loop+"'><font face='Comic Sans MS'"+keyColor+">"+keyword_text+"</face></a></td></tr>";		
 				}
 			}
 		} catch (Exception e) {
@@ -186,7 +260,7 @@ public class LogbookTools {
 					linksToEach=linksToEach
 							+ "<tr><td><img src=\"../graphics/log_entry_"
 							+ yesNo
-							+ ".gif\" border=0 align=center><A HREF='show-logbook-group-teacher.jsp?research_group_name="
+							+ ".gif\" border=0 align=center><A HREF='teacher-logbook-group.jsp?research_group_name="
 							+ research_group_name + "&keyword="
 							+ keyword_loop + "'><FONT  " + keyColor + ">"
 							+ keyword_text + "</font></A></td></tr>";				
@@ -197,6 +271,41 @@ public class LogbookTools {
 		}
 		return linksToEach;
 	}//end of buildGroupLinksToKeywords
+
+	/*
+	 * Build build comment details
+	 */
+	public static ArrayList buildCommentDetails(int log_id, String comment_info, Elab elab) throws ElabException {
+		ArrayList commentDetails = new ArrayList();								
+		commentDetails.add(comment_info);
+		try {
+			ResultSet commentRs = LogbookTools.getCommentDetails(log_id, elab);
+			String comment_date = "";
+			String comment_text = "";
+			String commentEntry = "";	
+			int commentCnt = 0;
+			while (commentRs.next()) {
+				comment_date = commentRs.getString("comment_date");
+				comment_text = comment_date + ": " + commentRs.getString("comment");
+				commentEntry = "";
+				String comment_truncated;
+				comment_truncated = comment_text.replaceAll(
+							"\\<(.|\\n)*?\\>", "");
+				if (comment_truncated.length() > 45) {
+					comment_truncated = comment_truncated.substring(0, 45);
+					commentEntry += "<div id=\"fullLog"+String.valueOf(commentCnt)+"\" style=\"display:none;\">"+ElabUtil.whitespaceAdjust(comment_text)+"</div>"+
+									"<div id=\"showLog"+String.valueOf(commentCnt)+"\">"+ElabUtil.whitespaceAdjust(comment_truncated)+" . . .<a href=\'javascript:showFullComment(\"showLog"+String.valueOf(commentCnt)+"\",\"fullLog"+String.valueOf(commentCnt)+"\");\'>Read More</a></div>";
+				} else {
+					commentEntry += ElabUtil.whitespaceAdjust(comment_text);
+				}
+				commentDetails.add(commentEntry);
+				commentCnt++;
+			} //while for comments
+		} catch (Exception e) {
+			throw new ElabException(e);
+		}
+		return commentDetails;
+	}//end of buildCommentDetails
 	
 	/*
 	 * Retrieve keyword details by project
@@ -586,6 +695,28 @@ public class LogbookTools {
         return i;
 	}//end of updateLogbookEntry
 
+	/*
+	 * Reset new logbook entry to false
+	 */
+	public static int updateResetLogbookEntry(int log_id, Elab elab) throws ElabException {
+        Connection conn = null; 
+        PreparedStatement ps = null;
+        int i = 0;
+        try {
+			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+			ps = conn.prepareStatement("UPDATE log SET new_log = 'f' WHERE id = ?");
+			ps.setInt(1, log_id); 
+			i = ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new ElabException(e);
+        } finally {
+            if (conn != null) {
+                DatabaseConnectionManager.close(conn);
+            }
+        }    
+        return i;
+	}//end of updateResetComment	
+	
 	/*
 	 *  Get id from entered data
 	 */
@@ -1078,7 +1209,7 @@ public class LogbookTools {
         ResultSet rs;
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = conn.prepareStatement("SELECT to_char(comment.date_entered,'MM/DD/YYYY HH24:MI') AS comment_date, comment.comment AS comment " +
+            ps = conn.prepareStatement("SELECT to_char(comment.date_entered,'MM/DD/YYYY HH24:MI AM') AS comment_date, comment.comment AS comment " +
             						   "  FROM comment " + 
             						   " WHERE log_id = ?;");
     		ps.setInt(1, cur_log_id);
