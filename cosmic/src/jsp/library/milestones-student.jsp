@@ -31,19 +31,19 @@
 						<ul>
 							<li>
 								Measurement.
-								<a href="javascript:reference('measurement',420)">
+								<a href="javascript:studentLogbook('measurements',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Calculations.
-								<a href="javascript:reference('calculations',550)">
+								<a href="javascript:studentLogbook('calculations',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Graphs.
-								<a href="javascript:reference('graphs',550)">
+								<a href="javascript:studentLogbook('graphs',550)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
@@ -55,7 +55,7 @@
 							</li>
 							<li>
 								Research Plans.
-								<a href="javascript:reference('research plan',220)">
+								<a href="javascript:studentLogbook('research_plan',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
@@ -70,19 +70,19 @@
 						<ul>
 							<li>
 								Know how to collect data and upload files to our server (teams with detectors). 
-								<a href="javascript:reference('collect upload data',450)">
+								<a href="javascript:studentLogbook('collect_upload_data',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Know how to use your analysis tools and how to search for data of interest. 
-								<a href="javascript:reference('analysis tools',450)">
+								<a href="javascript:studentLogbook('analysis_tools',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Know how to correct for background and errors when appropriate. 
-								<a href="javascript:reference('data errors',400)">
+								<a href="javascript:studentLogbook('data_error',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
@@ -100,25 +100,25 @@
 						<ul>
 							<li>
 								Describe cosmic rays in simple terms.
-								<a href="javascript:reference('cosmic rays',420)">
+								<a href="javascript:studentLogbook('cosmic_rays',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Determine what you can study about cosmic rays.
-								<a href="javascript:reference('cosmic ray study',550)">
+								<a href="javascript:studentLogbook('cosmic_ray_study',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Describe what the detector can do.
-								<a href="javascript:reference('detector',400)">
+								<a href="javascript:studentLogbook('detector',400)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Write a research question and proposal.
-								<a href="javascript:reference('research proposal',220)">
+								<a href="javascript:studentLogbook('research_proposal',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
@@ -133,13 +133,13 @@
 						<ul>
 							<li>
 								Assemble evidence for your results. 
-								<a href="javascript:reference('assemble evidence',250)">
+								<a href="javascript:studentLogbook('assemble_evidence',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Use the e-Lab to publish your results. 
-								<a href="javascript:reference('publish results',280)">
+								<a href="javascript:studentLogbook('publish_results',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
@@ -148,7 +148,7 @@
 						<ul>
 							<li>
 								Use the e-Lab to discuss results with your peers. 
-								<a href="javascript:reference('discuss results',420)">
+								<a href="javascript:studentLogbook('discuss_results',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>

@@ -66,6 +66,15 @@ function reference(name, W, H) {
 	window.open(url, "_blank", winPref);
 }
 
+function studentLogbook(name, W, H) {
+	if (!H) {
+		H = 800;
+	}
+	var url="../logbook/student-logbook.jsp?keyword=" + name;
+	var winPref = "width=1000,height=" + H + ",scrollbars=yes,toolbar=no,menubar=no,status=no,resizable=yes,title=yes";
+	window.open(url, "_blank", winPref);
+}
+
 function glossary(name, H) {
 	if (!H) {
 		H = 250;

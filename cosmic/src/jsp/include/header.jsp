@@ -28,7 +28,7 @@
 						<e:popup href="../logbook/teacher-logbook.jsp" target="log" width="800" height="800"><img id="logbook-icon" title="Logbook" src="../graphics/logbook.png"/></e:popup>
 					</c:when>
 					<c:otherwise>
-						<e:popup href="../logbook/student-logbook.jsp" target="log" width="1200" height="800"><img id="logbook-icon" title="Logbook" src="../graphics/logbook.png" /></e:popup>
+						<e:popup href="../logbook/student-logbook.jsp" target="log" width="1000" height="800"><img id="logbook-icon" title="Logbook" src="../graphics/logbook.png" /></e:popup>
 					</c:otherwise>
 				</c:choose>
 				<%@ include file="../notifications/header-notifications.jsp" %>

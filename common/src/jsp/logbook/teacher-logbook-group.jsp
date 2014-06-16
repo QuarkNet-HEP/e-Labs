@@ -173,7 +173,7 @@
 			comment_new = (Long) LogbookTools.getCommentCountNew(logid, elab);
 
 			if (new_log != null && new_log == true) {
-				comment_info = "<IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font> <a href=\"teacher-logbook-group.jsp?mark_as_read=yes&log_id="+String.valueOf(logid)+"&research_group_name="+research_group_name+"\" style=\"text-decoration: none;\"><FONT size=\"-2\"><strong>x</strong></font></a><br />";
+				comment_info = "<IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font> <a href=\"teacher-logbook-group.jsp?mark_as_read=yes&log_id="+String.valueOf(logid)+"&research_group_name="+research_group_name+"\" style=\"text-decoration: none;\"><FONT size=\"-2\"><strong>Mark as Read</strong></font></a><br />";
 			}
 			String comment_header = "";
 			if (comment_new == 0L) {
@@ -340,7 +340,7 @@
 															<font color="#AA3366">New log entry</font>. Number of your comments (<font color="#AA3366"> number unread by students. </font>)</font>
 														</li>
 														<li>
-															<font size="-2">Click <b>x</b> to "mark as read" status.</font>
+															<font size="-2">Click <b>Mark as Read</b> once you read the new entries.</font>
 														</li>
 													</ul>
 												</td>
@@ -418,7 +418,7 @@
 																																	<th>Your new comment:</th>
 																																</tr>
 																																<tr>
-																																	<td><textarea name="comment_text" id="comment_text_${logbookEntries.value[0]}" cols="60" rows="5"></textarea></td>
+																																	<td><textarea name="comment_text" id="comment_text_${logbookEntries.value[0]}" cols="70" rows="5"></textarea></td>
 																																</tr>
 																																<tr>
 																																	<td align="center"><input type="submit" name="submit" id="submit_${logbookEntries.value[0] }" value="Submit Comment"></td>
