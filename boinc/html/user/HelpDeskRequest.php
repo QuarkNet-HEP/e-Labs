@@ -75,7 +75,7 @@ $severity_list = array( "Undetermined", "Trivial", "Minor", "Normal",
 $platform_list = array('Windows', 'MacOS X', 'Linux', 'Solaris', 'HP',
                        'Other', 'All/Any', 'None');
 
-$browser_list= array('Internet Explorer', 'Firefox', 'Safari', 
+$browser_list= array('Chrome', 'Internet Explorer', 'Firefox', 'Safari', 
                      'Opera', 'Seamonkey', 'Other', 'All/Any', 'None');
 
 // What choices does the user have to identify their position or role
