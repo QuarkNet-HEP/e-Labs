@@ -71,7 +71,7 @@ function studentLogbook(name, W, H) {
 		H = 800;
 	}
 	var url="../logbook/student-logbook.jsp?keyword=" + name;
-	var winPref = "width=1000,height=" + H + ",scrollbars=yes,toolbar=no,menubar=no,status=no,resizable=yes,title=yes";
+	var winPref = "width=1100,height=" + H + ",scrollbars=yes,toolbar=no,menubar=no,status=no,resizable=yes,title=yes";
 	window.open(url, "_blank", winPref);
 }
 

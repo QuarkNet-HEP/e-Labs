@@ -43,13 +43,13 @@
 							</li>
 							<li>
 								Graphs.
-								<a href="javascript:studentLogbook('graphs',550)">
+								<a href="javascript:studentLogbook('graphs',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Research Questions.
-								<a href="javascript:reference('research question',400)">
+								<a href="javascript:studentLogbook('research_question',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>

@@ -237,7 +237,9 @@
 	request.setAttribute("logbookSectionKeywords", logbookSectionKeywords);
 	request.setAttribute("logbookEntries", logbookEntries);
 	String references = "../references/Reference_"+keyword+".html";
-	if (keyword.equals("") || keyword.equals("general")) {
+	if (keyword.equals("")) {
+		references = "../references/Reference_all_entries.html";
+	} else if (keyword.equals("general")) {
 		references = "../references/Reference_general.html";
 	} 
 	request.setAttribute("references", references);
