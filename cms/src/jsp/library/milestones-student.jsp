@@ -19,7 +19,7 @@ Click on <img border="0" src="../graphics/ref.gif"> for
 						<ul>
 							<li>
 								Measurement.
-								<a href="javascript:studentLogbook('measurement',800)">
+								<a href="javascript:studentLogbook('measurements',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
