@@ -37,16 +37,11 @@
 						<td>Add e-Lab users.</td>
 					</tr>
 					<tr>
-						<td>&#8226; <a href="remove-expired-notifications.jsp">Delete expired notifications</a></td>
+						<td>&#8226; <a href="remove-expired-notifications.jsp">Delete Expired Notifications</a></td>
 						<td>Delete notifications with expiration dates older than 30 days ago.</td>					
 					</tr>
-
 					<tr>
-						<td>&#8226; <a href="clean-guest.jsp">Delete guest user data</a></td>
-						<td>Delete all files created by the guest user.</td>					
-					</tr>
-					<tr>
-						<td>&#8226; <a href="../references/control.jsp"> FAQs Add, update FAQs</a></td>
+						<td>&#8226; <a href="../references/control.jsp"> FAQs Add, Update FAQs</a></td>
 						<td>Add, update FAQ items.</td>					
 					</tr>					
 					<tr>
@@ -58,7 +53,7 @@
 						<td>See the users whose sessions are still active.</td>					
 					</tr>
 					<tr>
-						<td>&#8226; <a href="mark-teacher-status.jsp">Set group status</a></td>
+						<td>&#8226; <a href="mark-teacher-status.jsp">Set Group Status</a></td>
 						<td>Set teachers and their research groups to active/inactive.</td>					
 					</tr>
 					<tr>
@@ -72,23 +67,19 @@
 					<c:if test='${elab.name == "cosmic" }'>
 						<tr><th colspan="2" >Cosmic Admin Links</th><th></th></tr>
 						<tr>
-							<td>&#8226; <a href="data-access-permission.jsp">Allow users to view all data</a></td>
+							<td>&#8226; <a href="data-access-permission.jsp">Allow Users to View All Data</a></td>
 							<td>Give rights to teachers to be able to access all cosmic data (blessed and unblessed).</td>						
 						</tr>
 						<tr>
-							<td>&#8226; <a href="../data/create-threshold.jsp">Create Threshold Times files</a></td>
+							<td>&#8226; <a href="../data/create-threshold.jsp">Create Threshold Times Files</a></td>
 							<td>Create individual threshold times files if they failed to be created at upload time.</td>
 						</tr>
 						<tr>
-							<td>&#8226; <a href="../data/download?filename=CosmicRayDetector.zip&elab=${elab.name}&type=split">Download Purdue-Java</a></td>
-							<td>Download zip with all files to run the Purdue-Java Cosmic Ray Detector Code.</td>
-						</tr>
-						<tr>
-							<td>&#8226; <a href="../analysis/list-all.jsp">View all analyses</a></td>
+							<td>&#8226; <a href="../analysis/list-all.jsp">View All Analyses</a></td>
 							<td>List of analyses by all users.</td>
 						</tr>
 						<tr>
-							<td>&#8226; <a href="../analysis-blessing/benchmark-info.jsp">View upload plus benchmark information</a></td>
+							<td>&#8226; <a href="../analysis-blessing/benchmark-info.jsp">View Upload Plus Benchmark Information</a></td>
 							<td>View split files and their blessed/unblessed status details.</td>
 						</tr>
 					</c:if>				
