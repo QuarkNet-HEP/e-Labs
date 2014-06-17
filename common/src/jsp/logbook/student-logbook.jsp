@@ -330,7 +330,7 @@
 									<img src="../graphics/blue_square.gif" border="0" width="2" height="700" alt="">
 								</td>
 								<td valign="top" align="center">		
-									<table width="500">
+									<table width="480">
 										<tr>
 											<td align="right">
 												<img src="../graphics/logbook_large.gif" align="middle" border="0" alt="">
@@ -341,7 +341,7 @@
 										</tr>
 									</table>
 									<div style="border-style: dotted; border-width: 1px;">
-										<table width="500">
+										<table width="480">
 											<tr>
 												<td align="left">
 													<font size="+1" face="Comic Sans MS">Instructions</font>
@@ -367,7 +367,7 @@
 											<td align="center" height="20">&nbsp;</td>
 										</tr>
 									</table>
-								<table width="500" cellspacing="5">
+								<table width="480" cellspacing="5">
 									<c:choose>
 										<c:when test="${not empty logbookSectionOrder }">
 											<c:forEach items="${logbookSectionOrder }" var="logbookSectionOrder"> 
@@ -397,7 +397,7 @@
 																			</tr>
 																			<tr>
 																				<td colspan="2">
-																					<textarea name="log_text" cols="70" rows="5"></textarea>
+																					<textarea name="log_text" cols="65" rows="5"></textarea>
 																					<!-- //EPeronja-04/08/2013: replace " by ', string was not showing correctly -->
 																					<input type="hidden" name="img_src" value='${img_src}'> 
 																					<input type="hidden" name="count" value="${count }">
@@ -469,7 +469,7 @@
 											</tr>
 											<tr>
 												<td colspan="2">
-													<textarea name="log_text" cols="70" rows="5"></textarea>
+													<textarea name="log_text" cols="65" rows="5"></textarea>
 													<!-- //EPeronja-04/08/2013: replace " by ', string was not showing correctly -->
 													<input type="hidden" name="img_src" value='${img_src}'> 
 													<input type="hidden" name="count" value="${count }">
