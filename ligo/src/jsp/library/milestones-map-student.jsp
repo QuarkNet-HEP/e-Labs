@@ -9,7 +9,7 @@
 <area shape="rect" alt="" coords="255,121,317,170" href="javascript:studentLogbook('wave_properties',800)" title="Describe these basice wave properties: speed, wavelength, frequency, amplitude and arrival time.">
 <area shape="rect" alt="" coords="196,90,249,130" href="javascript:studentLogbook('research_plan')" title="Background on research proposals">
 <area shape="rect" alt="" coords="196,166,252,198" href="javascript:studentLogbook('research_question',800)" title="Background on research questions">
-<area shape="poly" alt="" coords="150,188, 168,187, 176,207, 189,210, 191,230, 129,230, 132,216, 144,209, 150,188" href="javascript:sutdentLogbook('simple_graphs')" title="Background on simple plots. Look at Scatter Plots.">
+<area shape="poly" alt="" coords="150,188, 168,187, 176,207, 189,210, 191,230, 129,230, 132,216, 144,209, 150,188" href="javascript:studentLogbook('simple_graphs')" title="Background on simple plots. Look at Scatter Plots.">
 <area shape="rect" alt="" coords="82,165,134,211" href="javascript:studentLogbook('simple_calculations')" title="Background on simple calculations">
 <area shape="rect" alt="" coords="83,82,152,122" href="javascript:studentLogbook('simple_measurement')" title="Background on simple measurements">
 <area shape="rect" alt="" coords="657,80,713,130" href="javascript:studentLogbook('discuss_results',800)"title="Use the e-Lab to discuss your results. Exchange comments with other researchers - participate in scientific discourse.">
