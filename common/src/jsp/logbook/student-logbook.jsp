@@ -183,7 +183,7 @@
 				comment_info="<IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> "+
 						     "<FONT color=\"#AA3366\" size=\"-2\"><b>comments: " + comment_count + 
 						     " (<FONT color=\"#AA3366\">"+comment_new+"</FONT>) </b></font> "+
-						     "<a href=\"student-logbook.jsp?mark_as_read=yes&log_id="+String.valueOf(log_id)+"&keyword="+keyword+"\" style=\"text-decoration: none;\"><FONT size=\"-2\"><strong>x</strong></font></a><br />";
+						     "<a href=\"student-logbook.jsp?mark_as_read=yes&log_id="+String.valueOf(log_id)+"&keyword="+keyword+"\" style=\"text-decoration: none;\"><FONT size=\"-2\"><strong> Mark as Read</strong></font></a><br />";
 			}
 			logbookDetails.add(comment_info); //10
 			//get the actual comments
@@ -236,7 +236,11 @@
 	request.setAttribute("logbookSections", logbookSections);
 	request.setAttribute("logbookSectionKeywords", logbookSectionKeywords);
 	request.setAttribute("logbookEntries", logbookEntries);
-	request.setAttribute("references", "../references/Reference_"+keyword+".html");
+	String references = "../references/Reference_"+keyword+".html";
+	if (keyword.equals("") || keyword.equals("general")) {
+		references = "../references/Reference_general.html";
+	} 
+	request.setAttribute("references", references);
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -265,7 +269,8 @@
 				var fullDiv = document.getElementById(fullDivId);
 				showDiv.innerHTML = fullDiv.innerHTML;
 			}
-		</script>		
+		</script>	
+  	<script type="text/javascript" src="../include/elab.js"></script>	
 	</head>
 	
 	<body id="student-logbook" onload='self.focus();'>
@@ -279,7 +284,7 @@
 					</c:when>
 					<c:otherwise>
 						<form method="post" name="log" action="">
-						<table width="800" cellpadding="0" border="0" align="left">
+						<table width="940" cellpadding="0" border="0" align="left">
 							<tr>
 								<td valign="top" align="150">
 									<table width="140">
@@ -309,10 +314,10 @@
 									</table>
 								</td>
 								<td align="left" width="20" valign="top">
-									<img src="../graphics/blue_square.gif" border="0" width="2" height="800" alt="">
+									<img src="../graphics/blue_square.gif" border="0" width="2" height="700" alt="">
 								</td>
 								<td valign="top">
-									<div style="width: 360px;">									
+									<div style="width: 300px;">									
 										<c:catch var="e">
 											<c:import url="${references}" />
 										</c:catch>
@@ -322,10 +327,10 @@
 									</div>
 								</td>
 								<td align="left" width="20" valign="top">
-									<img src="../graphics/blue_square.gif" border="0" width="2" height="800" alt="">
+									<img src="../graphics/blue_square.gif" border="0" width="2" height="700" alt="">
 								</td>
 								<td valign="top" align="center">		
-									<table width="600">
+									<table width="500">
 										<tr>
 											<td align="right">
 												<img src="../graphics/logbook_large.gif" align="middle" border="0" alt="">
@@ -336,7 +341,7 @@
 										</tr>
 									</table>
 									<div style="border-style: dotted; border-width: 1px;">
-										<table width="600">
+										<table width="500">
 											<tr>
 												<td align="left">
 													<font size="+1" face="Comic Sans MS">Instructions</font>
@@ -349,7 +354,7 @@
 															Select a milestone to enter logbook entries.
 														</li>
 														<li>
-															<font size="-2">Click <b>x</b> to "mark as read" status.</font>
+															<font size="-2">Click <b>Mark as Read</b> once you read the new comments.</font>
 														</li>												
 													</ul>
 													</font>
@@ -362,7 +367,7 @@
 											<td align="center" height="20">&nbsp;</td>
 										</tr>
 									</table>
-								<table width="600" cellspacing="5">
+								<table width="500" cellspacing="5">
 									<c:choose>
 										<c:when test="${not empty logbookSectionOrder }">
 											<c:forEach items="${logbookSectionOrder }" var="logbookSectionOrder"> 
@@ -392,7 +397,7 @@
 																			</tr>
 																			<tr>
 																				<td colspan="2">
-																					<textarea name="log_text" cols="80" rows="5"></textarea>
+																					<textarea name="log_text" cols="70" rows="5"></textarea>
 																					<!-- //EPeronja-04/08/2013: replace " by ', string was not showing correctly -->
 																					<input type="hidden" name="img_src" value='${img_src}'> 
 																					<input type="hidden" name="count" value="${count }">
@@ -410,8 +415,8 @@
 																			<c:choose>
 																				<c:when test='${ logbookSectionKeywords.key == fn:substring(logbookEntries.key, 0, fn:indexOf(logbookEntries.key,  "-")) }' >
 																					<tr>
-																						<td valign="top" width="150" align="right"><font face="Comic Sans MS">${logbookEntries.value[3] }<font></font></font></td>
-																						<td width="450" valign="top"><font face="Comic Sans MS">
+																						<td valign="top" width="160" align="right"><font face="Comic Sans MS">${logbookEntries.value[3] }</font></td>
+																						<td width="340" valign="top"><font face="Comic Sans MS">
 
 																						<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
 																						<c:choose>
@@ -426,8 +431,8 @@
 																						</font></td>
 																					</tr>
 																				    <tr>
-																						<td width="100"> </td>
-																						<td width="450">
+																						<td width="160"> </td>
+																						<td width="340">
 																							<font face="Comic Sans MS">${logbookEntries.value[10]}</font>
 																							<font face="Comic Sans MS" size=-2>
 																								<c:if test="${not empty logbookEntries.value[11] }">
@@ -437,6 +442,9 @@
 																								</c:if>
 																							</font>
 																						</td>																				    
+																				    </tr>
+																				    <tr>
+																				    	<td colspan="2" style="border-bottom: dotted 1px gray;"> </td>
 																				    </tr>
 																				</c:when>
 																			</c:choose>
@@ -461,7 +469,7 @@
 											</tr>
 											<tr>
 												<td colspan="2">
-													<textarea name="log_text" cols="80" rows="5"></textarea>
+													<textarea name="log_text" cols="70" rows="5"></textarea>
 													<!-- //EPeronja-04/08/2013: replace " by ', string was not showing correctly -->
 													<input type="hidden" name="img_src" value='${img_src}'> 
 													<input type="hidden" name="count" value="${count }">

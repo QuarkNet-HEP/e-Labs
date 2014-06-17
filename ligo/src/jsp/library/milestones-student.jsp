@@ -5,31 +5,31 @@
 						<ul>
 							<li>
 								Simple Measurements.
-								<a href="javascript:reference('simple measurement',420)">
+								<a href="javascript:studentLogbook('simple_measurement')">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Simple Calculations.
-								<a href="javascript:reference('simple calculations',550)">
+								<a href="javascript:studentLogbook('simple_calculations')">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Simple Graphs.
-								<a href="javascript:reference('simple graphs',550)">
+								<a href="javascript:studentLogbook('simple_graphs')">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Research Questions.
-								<a href="javascript:reference('research question',400)">
+								<a href="javascript:studentLogbook('research_question')">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Research Plans.
-								<a href="javascript:reference('research plan',220)">
+								<a href="javascript:studentLogbook('research_plan',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
@@ -43,37 +43,37 @@
 						<ul>
 							<li>
 								Describe the science goals of LIGO.
-								<a href="javascript:reference('ligo science goals',420)">
+								<a href="javascript:studentLogbook('ligo_science_goals')">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Describe basic wave properties.
-								<a href="javascript:reference('wave properties',420)">
+								<a href="javascript:studentLogbook('wave_properties')">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Explain why LIGO monitors the environment at the observatories.
-								<a href="javascript:reference('seismic data importance',420)">
+								<a href="javascript:studentLogbook('seismic_data_importance')">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Learn how to estimate wave frequencies.
-								<a href="javascript:reference('wave frequencies',400)">
+								<a href="javascript:studentLogbook('wave_frequencies')">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Examine and become familiar with LIGO seismic data. 
-								<a href="javascript:reference('examine data',450)">
+								<a href="javascript:studentLogbook('examine_data')">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Make a data analysis plan. What will you study?
-								<a href="javascript:reference('plan data analysis',400)">
+								<a href="javascript:studentLogbook('plan_data_analysis')">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
@@ -87,19 +87,19 @@
 						<ul>
 							<li>
 								Analyze data to answer your research question. 
-								<a href="javascript:reference('ligo analysis',450)">
+								<a href="javascript:studentLogbook('ligo_analysis')">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Test your answer. 
-								<a href="javascript:reference('ligo test answer',420)">
+								<a href="javascript:studentLogbook('ligo_test_answer')">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Ask other questions. 
-								<a href="javascript:reference('ligo improve answer',450)">
+								<a href="javascript:studentLogbook('ligo_improve_answer')">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
@@ -113,13 +113,13 @@
 						<ul>
 							<li>
 								Assemble evidence for your results. 
-								<a href="javascript:reference('assemble evidence',250)">
+								<a href="javascript:studentLogbook('assemble_evidence',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Use the e-Lab to publish your results. 
-								<a href="javascript:reference('publish results',280)">
+								<a href="javascript:studentLogbook('publish_results')">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
@@ -128,7 +128,7 @@
 							</li>
 							<li>
 								Use the e-Lab to discuss results with your peers. 
-								<a href="javascript:reference('discuss results',420)">
+								<a href="javascript:studentLogbook('discuss_results')">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>

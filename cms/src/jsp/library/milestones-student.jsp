@@ -19,31 +19,31 @@ Click on <img border="0" src="../graphics/ref.gif"> for
 						<ul>
 							<li>
 								Measurement.
-								<a href="javascript:reference('measurement',420)">
+								<a href="javascript:studentLogbook('measurement',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Calculations.
-								<a href="javascript:reference('calculations',550)">
+								<a href="javascript:studentLogbook('calculations',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Graphs (Check out Scatter Plots).
-								<a href="javascript:reference('graphs',550)">
+								<a href="javascript:studentLogbook('graphs',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Research Questions.
-								<a href="javascript:reference('research question',400)">
+								<a href="javascript:studentLogbook('research_question',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Research Plans.
-								<a href="javascript:reference('research plan',220)">
+								<a href="javascript:studentLogbook('research_plan',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
@@ -59,19 +59,19 @@ Click on <img border="0" src="../graphics/ref.gif"> for
 						<ul>
 							<li>
 								Select appropriate data from the available data set. 
-								<a href="javascript:reference('cms data selection',450)">
+								<a href="javascript:studentLogbook('cms_data_selection',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Apply appropriate analysis tool. 
-								<a href="javascript:reference('cms analysis',420)">
+								<a href="javascript:studentLogbook('cms_analysis',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Review, explain and assess your results. 
-								<a href="javascript:reference('cms assessment',450)">
+								<a href="javascript:studentLogbook('cms_assessment',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
@@ -89,38 +89,38 @@ Click on <img border="0" src="../graphics/ref.gif"> for
 						<ul>
 							<li>
 								Describe physics questions that CMS is designed to address.
-								<a href="javascript:reference('physics questions',420)">
+								<a href="javascript:studentLogbook('physics_questions',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Describe the structure and function of CMS detector.
-								<a href="javascript:reference('detector geom',420)">
+								<a href="javascript:studentLogbook('detector_geom',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 							Describe the particles interacting in the CMS detector.
-							<a href="javascript:reference('describe particles',420)">
+							<a href="javascript:studentLogbook('describe_particles',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 
 							<li>
 								Interpret data as single event displays or plots of multiple events.
-								<a href="javascript:reference('interpret data',650,400)">
+								<a href="javascript:studentLogbook('interpret_data',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Relate energy, mass and momentum and explain the role of conservation of mass/energy, momentum and charge in analyzing CMS events.
-								<a href="javascript:reference('relate emp',400)">
+								<a href="javascript:studentLogbook('relate_emp',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Choose a study (or design your own!).
-								<a href="javascript:reference('cms design study',400)">
+								<a href="javascript:studentLogbook('cms_design_study',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
@@ -135,13 +135,13 @@ Click on <img border="0" src="../graphics/ref.gif"> for
 						<ul>
 							<li>
 								Assemble evidence for your results. 
-								<a href="javascript:reference('assemble evidence',250)">
+								<a href="javascript:studentLogbook('assemble_evidence',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
 							<li>
 								Use the e-Lab to publish your results. 
-								<a href="javascript:reference('publish results',280)">
+								<a href="javascript:studentLogbook('publish_results',800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>
@@ -150,7 +150,7 @@ Click on <img border="0" src="../graphics/ref.gif"> for
 						<ul>
 							<li>
 								Use the e-Lab to discuss results with your peers. 
-								<a href="javascript:reference('discuss results',420)">
+								<a href="javascript:studentLogbook('discuss_results', 800)">
 									<img src="../graphics/ref.gif">
 								</a>
 							</li>

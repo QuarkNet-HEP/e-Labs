@@ -249,7 +249,7 @@
 																		<th colspan="2"><font face="arial MS">Your New Log Book Entry</font></th>
 																	</tr>
 																	<tr>
-																		<td colspan="2"><textarea name="log_text" cols="80" rows="5"></textarea></td>
+																		<td colspan="2"><textarea name="log_text" cols="70" rows="5"></textarea></td>
 																	</tr>
 																	<tr>
 																		<td align='left'>
@@ -300,7 +300,7 @@
 																<th colspan="2"><font face="arial MS">Your New Log Book Entry</font></th>
 															</tr>
 															<tr>
-																<td colspan="2"><textarea name="log_text" cols="80" rows="5"></textarea></td>
+																<td colspan="2"><textarea name="log_text" cols="70" rows="5"></textarea></td>
 															</tr>
 															<tr>
 																<td align='left'>
