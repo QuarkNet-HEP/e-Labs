@@ -151,8 +151,7 @@
 	request.setAttribute("messages", messages);
 	request.setAttribute("linksToEach", linksToEach);
 	request.setAttribute("keyword_description", keyword_description);
-	request.setAttribute("messages", messages);
-	request.setAttribute("messages", messages);
+	request.setAttribute("keyword", keyword);
 	request.setAttribute("groupInfo", groupInfo);
 	request.setAttribute("commentInfo", commentInfo);	
 %>
@@ -297,6 +296,8 @@
 																					</tr>
 																				</table>
 																				<input type="hidden" name="log_id" id="log_id_${commentInfo.value[0] }" value="${commentInfo.value[0]}">
+																				<input type="hidden" name="keyword" id="keyword_${commentInfo.value[0] }" value="${keyword}">
+																				
 																			</td>
 																		</tr>
 																	</c:if>
