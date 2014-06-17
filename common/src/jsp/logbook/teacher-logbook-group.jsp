@@ -223,6 +223,7 @@
 	request.setAttribute("messages", messages);
 	request.setAttribute("subtitle", subtitle);
 	request.setAttribute("yesNo", yesNo);
+	request.setAttribute("keyword", keyword);
 	request.setAttribute("keyword_id", keyword_id);
 	request.setAttribute("keyword_name", keyword_name);
 	request.setAttribute("keyword_display", keyword_name.replaceAll("_", " "));
@@ -425,6 +426,7 @@
 																																</tr>
 																															</table>
 																															<input type="hidden" name="log_id" id="log_id_${logbookEntries.value[0] }" value="${logbookEntries.value[0]}">
+																															<input type="hidden" name="keyword" id="keyword_${logbookEntries.value[0] }" value="${keyword}">
 																														</td>																												
 																													</tr>
 																											</c:when>

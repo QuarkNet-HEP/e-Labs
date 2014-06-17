@@ -370,7 +370,7 @@ public class LogbookTools {
         Connection conn = null;
         PreparedStatement ps; 
         ResultSet rs;
-        String select = "SELECT log.id AS log_id, to_char(log.date_entered,'MM/DD/YYYY HH12:MI AM') AS date_entered, " +
+        String select = "SELECT log.id AS log_id, to_char(log.date_entered,'DD Mon YYYY HH12:MI AM') AS date_entered, " +
 				   "	   log_text, log.ref_rg_id AS ref_rg_id, research_group.name as groupname "+
 				   "  FROM log, research_group " +
 				   " WHERE log.project_id = ? "+
@@ -412,7 +412,7 @@ public class LogbookTools {
         ResultSet rs;
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = conn.prepareStatement("SELECT log.id AS log_id, to_char(log.date_entered,'MM/DD/YYYY HH12:MI AM') AS date_entered, " +
+            ps = conn.prepareStatement("SELECT log.id AS log_id, to_char(log.date_entered,'DD Mon YYYY HH12:MI AM') AS date_entered, " +
             						   "	   log_text, log.ref_rg_id AS ref_rg_id, research_group.name as groupname "+
             						   "  FROM log, research_group " +
             						   " WHERE log.project_id = ? "+
@@ -449,7 +449,7 @@ public class LogbookTools {
         Connection conn = null;
         PreparedStatement ps; 
         ResultSet rs;
-	    String select = "SELECT research_group.name AS rg_name, to_char(log.date_entered,'MM/DD/YYYY HH12:MI AM') AS date_entered, "+
+	    String select = "SELECT research_group.name AS rg_name, to_char(log.date_entered,'DD Mon YYYY HH12:MI AM') AS date_entered, "+
 				"       log.log_text AS log_text,log.id AS log_id,log.new_log AS new "+
 					"  FROM log, research_group " +
 					" WHERE log.keyword_id = ? "+
@@ -491,7 +491,7 @@ public class LogbookTools {
 	
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = conn.prepareStatement( " SELECT log.id AS cur_id, to_char(log.date_entered,'MM/DD/YYYY HH12:MI AM') AS date_entered, log.log_text AS cur_text "+
+            ps = conn.prepareStatement( " SELECT log.id AS cur_id, to_char(log.date_entered,'DD Mon YYYY HH12:MI AM') AS date_entered, log.log_text AS cur_text "+
             							"   FROM log " + 
         								"  WHERE project_id = ? AND keyword_id = ? AND research_group_id = ? AND role = 'user' " +
         								"  ORDER BY cur_id DESC;");
@@ -528,13 +528,13 @@ public class LogbookTools {
     		queryWhere = " WHERE log.project_id = ? and keyword.project_id  in (0, ?) and research_group_id = ? and log.keyword_id = keyword.id and keyword_id = ? and role='user' ";	
     	}
 
-        String queryItems="SELECT log.id AS log_id, to_char(log.date_entered,'MM/DD/YYYY HH12:MI AM') AS date_entered, log_text, " +
+        String queryItems="SELECT log.id AS log_id, to_char(log.date_entered,'DD Mon YYYY HH12:MI AM') AS date_entered, log_text, " +
         				  " keyword.description AS description, keyword.id AS data_keyword_id, keyword.keyword AS keyword_name, keyword.section AS section, "+ 
         				  " keyword.section_id AS section_id, log.new_log AS new FROM log, keyword ";
         String querySort="ORDER BY keyword.section, keyword.section_id, log_id DESC;";
 
 		querySort =  "ORDER BY keyword.section, keyword.section_id, log.id DESC;";
-		queryItems = "SELECT log.id AS log_id, to_char(log.date_entered,'MM/DD/YYYY HH12:MI AM') AS date_entered, log_text, keyword.description AS description, keyword.id AS data_keyword_id, keyword.keyword AS keyword_name, keyword.section AS section, keyword.section_id AS section_id, log.new_log AS new FROM log, keyword ";
+		queryItems = "SELECT log.id AS log_id, to_char(log.date_entered,'DD Mon YYYY HH12:MI AM') AS date_entered, log_text, keyword.description AS description, keyword.id AS data_keyword_id, keyword.keyword AS keyword_name, keyword.section AS section, keyword.section_id AS section_id, log.new_log AS new FROM log, keyword ";
         
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
@@ -575,7 +575,7 @@ public class LogbookTools {
 	
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = conn.prepareStatement( "SELECT id AS cur_id, to_char(date_entered,'MM/DD/YYYY HH12:MI AM') AS date_entered, log_text AS cur_text " +
+            ps = conn.prepareStatement( "SELECT id AS cur_id, to_char(date_entered,'DD Mon YYYY HH12:MI AM') AS date_entered, log_text AS cur_text " +
             							"  FROM log " + 
             							" WHERE project_id = ? AND research_group_id = ? AND ref_rg_id = ? AND role = ? " +
             							" ORDER BY cur_id;");            
@@ -881,7 +881,7 @@ public class LogbookTools {
         ResultSet rs;
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = conn.prepareStatement("SELECT log.id AS log_id, to_char(log.date_entered,'MM/DD/YYYY HH12:MI AM') AS log_date, log.log_text AS log_text "+
+            ps = conn.prepareStatement("SELECT log.id AS log_id, to_char(log.date_entered,'DD Mon YYYY HH12:MI AM') AS log_date, log.log_text AS log_text "+
             						   "  FROM log, keyword "+
             						   " WHERE log.keyword_id = keyword.id "+
             						   "   AND keyword.id = ? "+
@@ -912,7 +912,7 @@ public class LogbookTools {
         ResultSet rs;
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = conn.prepareStatement("SELECT log.id AS log_id, to_char(log.date_entered,'MM/DD/YYYY HH12:MI AM') AS log_date, log.log_text AS log_text, to_char(comment.date_entered,'MM/DD/YYYY HH12:MI') AS comment_date, comment.id AS comment_id, comment.comment AS comment, comment.new_comment AS new_comment "+ 
+            ps = conn.prepareStatement("SELECT log.id AS log_id, to_char(log.date_entered,'DD Mon YYYY HH12:MI AM') AS log_date, log.log_text AS log_text, to_char(comment.date_entered,'MM/DD/YYYY HH12:MI') AS comment_date, comment.id AS comment_id, comment.comment AS comment, comment.new_comment AS new_comment "+ 
             						   "  FROM comment, log, keyword " +
             						   " WHERE log.id = comment.log_id "+
             						   "   AND log.keyword_id = keyword.id "+
@@ -947,7 +947,7 @@ public class LogbookTools {
 	
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = conn.prepareStatement( "SELECT log.id AS log_id,to_char(log.date_entered,'MM/DD/YYYY HH12:MI AM') AS log_date, log.log_text AS cur_log_text "+
+            ps = conn.prepareStatement( "SELECT log.id AS log_id,to_char(log.date_entered,'DD Mon YYYY HH12:MI AM') AS log_date, log.log_text AS cur_log_text "+
             							"  FROM log "+
             							" WHERE log.id = ?;");
             
@@ -1231,7 +1231,7 @@ public class LogbookTools {
         ResultSet rs;
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = conn.prepareStatement("SELECT to_char(comment.date_entered,'MM/DD/YYYY HH24:MI AM') AS comment_date, comment.comment AS comment " +
+            ps = conn.prepareStatement("SELECT to_char(comment.date_entered,'DD Mon YYYY HH24:MI AM') AS comment_date, comment.comment AS comment " +
             						   "  FROM comment " + 
             						   " WHERE log_id = ?;");
     		ps.setInt(1, cur_log_id);
