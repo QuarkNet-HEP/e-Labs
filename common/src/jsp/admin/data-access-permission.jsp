@@ -55,8 +55,8 @@
 					</tr>
 					<c:forEach items="${elab.userManagementProvider.teachers}" var="teacher">
 						<%
-							ElabGroup teacher = (ElabGroup) pageContext.getAttribute("teacher");
-							if (teacher.getActive()) {
+							//ElabGroup teacher = (ElabGroup) pageContext.getAttribute("teacher");
+							//if (teacher.getActive()) {
 						%>
 						<tr>
 							<td>${teacher.name}</td>
@@ -71,7 +71,7 @@
 								</c:choose>
 							</td>
 						</tr>
-						<% } %>
+						<% //} %>
 					</c:forEach>
 				</table>
 	
