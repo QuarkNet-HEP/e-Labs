@@ -51,7 +51,16 @@
 </h3>
 
 						<div style="text-align: center;">
-							<%@ include file="../library/milestones-map-student.jsp" %>
+							<c:choose>
+							 	<c:when test='${user.role == "teacher" }'>
+								    <jsp:include page="../library/milestones-map-teacher.jsp" />
+								    <br />
+								</c:when>
+								<c:otherwise>
+								    <jsp:include page="../library/milestones-map-student.jsp" />
+								    <br />
+								</c:otherwise>
+							</c:choose>
 							<br />
 							<a href="../library/milestones.jsp">Milestones (text version)</a>
 						</div>

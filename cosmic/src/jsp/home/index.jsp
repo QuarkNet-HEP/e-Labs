@@ -72,9 +72,17 @@
 						<h3>Project Map: To navigate the Cosmic Ray e-Lab, follow the path; complete the milestones. Hover over each hot spot to preview; click to open. Along the main line are milestone seminars, opportunities to check how your work is going. Project milestones are on the four branch lines.
 						</h3>
 						<div style="text-align: center;">
-						    <jsp:include page="../library/milestones-map-student.jsp" />
-						    <br />
-		   					<a href="../library/milestones.jsp">Milestones (text version)</a>
+						<c:choose>
+						 	<c:when test='${user.role == "teacher" }'>
+							    <jsp:include page="../library/milestones-map-teacher.jsp" />
+							    <br />
+							</c:when>
+							<c:otherwise>
+							    <jsp:include page="../library/milestones-map-student.jsp" />
+							    <br />
+							</c:otherwise>
+						</c:choose>
+	   					<a href="../library/milestones.jsp">Milestones (text version)</a>
 				 		</div>
 				 		<h4>Your team may use the milestones above, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher apprised of your work and publish your results.</h4>
 					</c:otherwise>
