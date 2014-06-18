@@ -102,7 +102,17 @@
 					<br />
 					<p>Project Map: To navigate the LIGO e-Lab, follow the path; complete the milestones. Hover over each colored dot to preview; click to open. Along the main line are <a href="#" onclick="javascript:glossary('Milestone_Seminar',300);return false;"><b>milestone seminars</b></a>, opportunities to discuss how your work is going. Project <a href="#" onclick="javascript:glossary('Milestone',300);return false;"><b>milestones</b></a> are on the four branch lines. <e:popup href="../video/intro-interface.html" target="tryit" width="800" height="590">e-Lab Intro Video</e:popup></p>
 					<center>
-						<%@ include file="../library/milestones-map-student.jsp" %>
+						<c:choose>
+						 	<c:when test='${user.role == "teacher" }'>
+							    <jsp:include page="../library/milestones-map-teacher.jsp" />
+							    <br />
+							</c:when>
+							<c:otherwise>
+							    <jsp:include page="../library/milestones-map-student.jsp" />
+							    <br />
+							</c:otherwise>
+						</c:choose>
+
 						<p><a href="/elab/ligo/library/milestones.jsp">Milestones (text version)</a></p>
 					</center>
 					<p>Use the milestones in the Project Map above. Make sure you know how to use your e-Lab logbook. Later you'll need to know how to publish your results by making an e-Lab poster. </p>
