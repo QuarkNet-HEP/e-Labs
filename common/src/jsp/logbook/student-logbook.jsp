@@ -154,8 +154,8 @@
 			String dateText=rs.getString("date_entered");
 			keywordDescription=rs.getString("description");
 			String logText=rs.getString("log_text");
-			if (log_text == null) {
-				log_text = "";
+			if (logText == null) {
+				logText = "";
 			}			
 			logText = logText.replaceAll("''", "'");
 			keywordName=rs.getString("keyword_name");
@@ -328,8 +328,8 @@
 						<form method="post" name="log" action="">
 						<table width="900" cellpadding="0" border="0" align="left">
 							<tr>
-								<td valign="top" width="140" nowrap>
-									<div style="height:650px; width:150px; position: fixed; overflow:auto;">
+								<td valign="top" width="160" nowrap>
+									<div style="height:700px; width:150px; position: fixed; overflow:auto;">
 									<table width="140">
 										<tr>
 											<td valign="center" align="left">
@@ -378,7 +378,7 @@
 									</div>
 								</td>
 								<td valign="top" align="center">		
-									<table width="400">
+									<table width="360">
 										<tr>
 											<td align="right">
 												<img src="../graphics/logbook_large.gif" align="middle" border="0" alt="">
@@ -389,7 +389,7 @@
 										</tr>
 									</table>
 									<div style="border-style: dotted; border-width: 1px;">
-										<table width="400">
+										<table width="360">
 											<tr>
 												<td align="left">
 													<font size="+1" face="Comic Sans MS">Instructions</font>
@@ -413,7 +413,7 @@
 											<td align="center" height="20"><FONT color="#AA3366" face="Comic Sans MS"><strong>${thereAreNewComments }</strong></FONT></td>
 										</tr>
 									</table>
-								<table width="400">
+								<table width="360">
 									<c:choose>
 										<c:when test="${not empty logbookSectionOrder }">
 											<c:forEach items="${logbookSectionOrder }" var="logbookSectionOrder"> 
@@ -443,7 +443,7 @@
 																			</tr>
 																			<tr>
 																				<td colspan="2">
-																					<textarea name="log_text" cols="60" rows="5"></textarea>
+																					<textarea name="log_text" cols="50" rows="5"></textarea>
 																					<!-- //EPeronja-04/08/2013: replace " by ', string was not showing correctly -->
 																					<input type="hidden" name="img_src" value='${img_src}'> 
 																					<input type="hidden" name="count" value="${count }">
@@ -462,7 +462,7 @@
 																				<c:when test='${ logbookSectionKeywords.key == fn:substring(logbookEntries.key, 0, fn:indexOf(logbookEntries.key,  "-")) }' >
 																					<tr>
 																						<td valign="top" width="150" align="right"><font face="Comic Sans MS">${logbookEntries.value[3] }</font></td>
-																						<td width="250" valign="top"><font face="Comic Sans MS">
+																						<td width="210" valign="top"><font face="Comic Sans MS">
 
 																						<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
 																						<c:choose>
@@ -478,7 +478,7 @@
 																					</tr>
 																				    <tr>
 																						<td width="150"> </td>
-																						<td width="250">
+																						<td width="210">
 																							<font face="Comic Sans MS">${logbookEntries.value[10]}</font>
 																							<font face="Comic Sans MS" size=-2>
 																								<c:if test="${not empty logbookEntries.value[11] }">
@@ -515,7 +515,7 @@
 											</tr>
 											<tr>
 												<td colspan="2">
-													<textarea name="log_text" cols="60" rows="5"></textarea>
+													<textarea name="log_text" cols="50" rows="5"></textarea>
 													<!-- //EPeronja-04/08/2013: replace " by ', string was not showing correctly -->
 													<input type="hidden" name="img_src" value='${img_src}'> 
 													<input type="hidden" name="count" value="${count }">
