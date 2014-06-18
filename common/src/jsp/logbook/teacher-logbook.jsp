@@ -112,15 +112,17 @@
 			ArrayList logbookDetails = new ArrayList();
 			String dateText = rs.getString("date_entered");
 			String logText = rs.getString("log_text");
-			logText = logText.replaceAll("''", "'");
+			if (logText == null) {
+				logText = "";
+			}
 			String log_id = rs.getString("log_id");
 			ref_rg_id = rs.getInt("ref_rg_id");
 			itemCount++;
 			String log_text_truncated;
 			log_text_truncated = logText.replaceAll(
 						"\\<(.|\\n)*?\\>", "");
-			if (log_text_truncated.length() > 50) {
-				log_text_truncated = log_text_truncated.substring(0, 50);
+			if (log_text_truncated.length() > 40) {
+				log_text_truncated = log_text_truncated.substring(0, 25);
 			} else {
 				log_text_truncated = logText;
 			}
@@ -196,7 +198,8 @@
 						<form method="get" name="log" action="">
 						<table width="800" cellpadding="0" border="0" align="left">
 							<tr>
-								<td valign="top" align="150">
+								<td valign="top" width="150" nowrap>
+									<div style="height:650px; width:150px; position: fixed; overflow:auto;">
 									<table width="140">
 										<tr>
 											<td valign="center" align="left"><b>Student Logbooks</b></td>
@@ -216,11 +219,16 @@
 											<td valign="center" align="left"><a href="teacher-logbook.jsp">All Groups</a></td>
 										</tr>
 									</table>
+									</div>
 								</td>
-								<td align="left" width="20" valign="top"><img src="../graphics/red_square.gif" border="0" width="2" height="475" alt=""></td>								
+								<td align="left" width="20" valign="top">
+									<div style="overflow:auto; width:20px; position: fixed;">
+										<img src="../graphics/red_square.gif" border="0" width="2" height="650" alt="">
+									</div>
+								</td>								
 								<td valign="top" align="center">
-									<div style="border-style: dotted; border-width: 1px;">
-										<table width="600">
+									<div style="border-style: dotted; border-width: 1px; width: 550px"">
+										<table width="550">
 											<tr>
 												<td align="left" colspan="4">
 													<font size="+1" face="Comic Sans MS">Instructions</font>

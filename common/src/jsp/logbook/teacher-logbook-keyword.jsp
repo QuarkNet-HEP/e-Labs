@@ -96,16 +96,24 @@
 		}
 	};
     String thereAreNewEntries = "";
+	//check if we are viewing only new entries
+	String view_only_new = request.getParameter("view_only_new");
+	if (view_only_new == null || view_only_new.equals("")) {
+		view_only_new = "no";
+	}
 	try {
 		rs = LogbookTools.getLogbookEntriesKeyword(keyword_id, teacher_id, false, elab);
 		while (rs.next()) {
 			String dateText = rs.getString("date_entered");
 			String log_text = rs.getString("log_text");
+			if (log_text == null) {
+				log_text = "";
+			}
 			int logId = rs.getInt("log_id");
 			String log_text_truncated;
 			log_text_truncated = log_text.replaceAll("\\<(.|\\n)*?\\>", "");
-			if (log_text_truncated.length() > 50) {
-				log_text_truncated = log_text_truncated.substring(0, 50);
+			if (log_text_truncated.length() > 40) {
+				log_text_truncated = log_text_truncated.substring(0, 25);
 			} else {
 				log_text_truncated = log_text;
 			}
@@ -117,7 +125,7 @@
 			comment_count = (Long) LogbookTools.getCommentCount(logId, elab);
 			comment_new = (Long) LogbookTools.getCommentCountNew(logId, elab);
 			if (new_log != null && new_log.equals("t")) {
-				thereAreNewEntries = "There are new entries";
+				thereAreNewEntries = "<a href=\"teacher-logbook-keyword.jsp?view_only_new=yes&keyword="+keyword+"&research_group_name="+research_group_name+"\">View only new entries.</a>";
 				comment_info = comment_info
 						+ "<IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font> <a href=\"teacher-logbook-keyword.jsp?mark_as_read=yes&log_id="+String.valueOf(logId)+"&keyword="+keyword+"\" style=\"text-decoration: none;\"><FONT size=\"-2\"><strong>Mark as Read</strong></font></a><br />";
 			}
@@ -144,7 +152,13 @@
 			if (!groupInfo.contains(rg_name)) {
 				groupInfo.add(rg_name);
 			}
-			commentInfo.put(rg_name+"-"+String.valueOf(itemCount), details);
+			if (view_only_new.equals("yes")) {
+				if (new_log != null && new_log.equals("t")) {
+					commentInfo.put(rg_name+"-"+String.valueOf(itemCount), details);
+				}
+			} else {
+				commentInfo.put(rg_name+"-"+String.valueOf(itemCount), details);				
+			}
 		}
 	} catch (Exception e) {
 		messages += e.getMessage();
@@ -198,27 +212,33 @@
 							<center>
 							<table width="800" cellpadding="0" border="0" align="left">
 								<tr>
-									<td valign="top" align="150">
-									<table width="140">
-										<tr>
-											<td><a href="teacher-logbook-group.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">By Group</a></td>
-										</tr>
-										<tr>
-											<td valign="center" align="left"><a href="teacher-logbook.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">My Logbook</a></td>
-										</tr>
-										<tr>
-											<td><a href="teacher-logbook-keyword.jsp?keyword=general">general</a></td>
-										</tr>
-										<tr>
-											<td><b>Select a Milestone:</b></td>
-										</tr>
-										${linksToEach }
-									</table>
+									<td valign="top" width="150">
+										<div style="height:650px; width:150px; position: fixed; overflow:auto;">
+											<table width="140">
+												<tr>
+													<td><a href="teacher-logbook-group.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">By Group</a></td>
+												</tr>
+												<tr>
+													<td valign="center" align="left"><a href="teacher-logbook.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">My Logbook</a></td>
+												</tr>
+												<tr>
+													<td><a href="teacher-logbook-keyword.jsp?keyword=general">general</a></td>
+												</tr>
+												<tr>
+													<td><b>Select a Milestone:</b></td>
+												</tr>
+												${linksToEach }
+											</table>
+										</div>
 									</td>
-									<td align="left" width="20" valign="top"><img src="../graphics/blue_square.gif" border="0" width="2" height="475" alt=""></td>
+									<td align="left" width="20" valign="top">
+										<div style="overflow:auto; width:20px; position: fixed;">
+											<img src="../graphics/blue_square.gif" border="0" width="2" height="650" alt=""></img>
+										</div>
+									</td>
 									<td valign="top" align="center">
-										<div style="border-style: dotted; border-width: 1px;">
-										<table width="600">
+										<div style="border-style: dotted; border-width: 1px; width: 550px;">
+										<table width="550">
 											<tr>
 												<td align="left"><font size="+1" face="Comic Sans MS">Instructions</font></td>
 											</tr>						
@@ -242,11 +262,20 @@
 											</tr>
 										</table>										
 										<p>
-										<h2>All logbook entries for your research groups<br> for "${keyword_description }"</h2>
-		
-										<table cellpadding="5">
+										<h2>All logbook entries for your research groups<br> for "${keyword_description }"</h2>		
+										<table>
 											<c:choose>
 												<c:when test="${not empty groupInfo }">
+													<table width="550">
+														<tr>
+															<td width="550" align="right">
+									 							<div style="position: fixed; width: 550px;">
+																	<input type="submit" name="submit" id="submitButton" value="Submit All">
+																</div>													
+															</td>
+														</tr>
+													</table>
+
 													<c:forEach items="${groupInfo }" var="groupInfo">
 														<tr align="center">
 															<td colspan="2"><font size="+1">Group: ${groupInfo }</font></td>
@@ -286,15 +315,12 @@
 																	    </tr>
 																		<tr>
 																			<td colspan="2">																	
-																				<table width="400">
+																				<table width="550">
 																					<tr>
 																						<th>Your new comment:</th>
 																					</tr>
 																					<tr>
-																						<td><textarea name="comment_text" id="comment_text_${commentInfo.value[0]}" cols="70" rows="3"></textarea></td>
-																					</tr>
-																					<tr>
-																						<td align="center"><input type="submit" name="submit" id="submit_${commentInfo.value[0] }" value="Submit Comment"></td>
+																						<td><textarea name="comment_text" id="comment_text_${commentInfo.value[0]}" cols="65" rows="5"></textarea></td>
 																					</tr>
 																				</table>
 																				<input type="hidden" name="log_id" id="log_id_${commentInfo.value[0] }" value="${commentInfo.value[0]}">
