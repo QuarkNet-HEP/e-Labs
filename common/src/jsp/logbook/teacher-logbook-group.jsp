@@ -99,6 +99,7 @@
 
     //build logbook entries and comments
 	int sectionOrder=1;
+    String thereAreNewEntries = "";
 	//Keep the same section order as with the links on the left
 	TreeMap<Integer, String> logbookSectionOrder = new TreeMap<Integer, String>();
 	//Save the section text for each section
@@ -173,6 +174,7 @@
 			comment_new = (Long) LogbookTools.getCommentCountNew(logid, elab);
 
 			if (new_log != null && new_log == true) {
+				thereAreNewEntries = "There are new entries";
 				comment_info = "<IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font> <a href=\"teacher-logbook-group.jsp?mark_as_read=yes&log_id="+String.valueOf(logid)+"&research_group_name="+research_group_name+"\" style=\"text-decoration: none;\"><FONT size=\"-2\"><strong>Mark as Read</strong></font></a><br />";
 			}
 			String comment_header = "";
@@ -221,6 +223,7 @@
 	}
 		
 	request.setAttribute("messages", messages);
+	request.setAttribute("thereAreNewEntries", thereAreNewEntries);
 	request.setAttribute("subtitle", subtitle);
 	request.setAttribute("yesNo", yesNo);
 	request.setAttribute("keyword", keyword);
@@ -327,27 +330,29 @@
 									<div style="border-style: dotted; border-width: 1px;">
 										<table width="600">
 											<tr>
-												<td align="left"><font size="+1"
-													face="Comic Sans MS">Instructions</font></td>
+												<td align="left"><font size="+1" face="Comic Sans MS">Instructions</font></td>
 											</tr>						
 											<tr>
-												<td>
+												<td><font size="-1" face="Comic Sans MS">
 													<ul>
-														<li>
-															<font size="-2">Select a group on the right to display the logbook entries.</font>
+														<li>Select a group on the left to display the logbook entries.</li>
+														<li>New log entries are marked as <img src="../graphics/new_flag.gif" border="0" align="center" alt="">
+															<font color="#AA3366">New log entry</font>. 
+															Number of your comments (<font color="#AA3366"> number unread by students. </font>)
 														</li>
-														<li>
-															<font size="-2">Log Status: New log entries are marked as <img src="../graphics/new_flag.gif" border="0" align="center" alt="">
-															<font color="#AA3366">New log entry</font>. Number of your comments (<font color="#AA3366"> number unread by students. </font>)</font>
-														</li>
-														<li>
-															<font size="-2">Click <b>Mark as Read</b> once you read the new entries.</font>
-														</li>
+														<li>Click <b>Mark as Read</b> once you read the new entries.</li>
+														<li>Click on a milestone to limit your view to entries for that milestone.</li>
+														<li>Enter comments in the textbox below the student's logbook entry.</li>
 													</ul>
-												</td>
+												</font></td>
 											</tr>
 										</table>
 										</div>
+									<table>
+										<tr>
+											<td align="center" height="20"><FONT color="#AA3366" face="Comic Sans MS"><strong>${thereAreNewEntries }</strong></FONT></td>
+										</tr>
+									</table>										
 										<c:choose>
 											<c:when test="${not empty subtitle }">
 												${subtitle }

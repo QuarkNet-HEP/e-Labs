@@ -226,7 +226,13 @@
 													<font size="+1" face="Comic Sans MS">Instructions</font>
 												</td>
 											<tr>
-												<td><font size="-2"><ul><li>Select a group to enter logbook entries.</li></ul></font></td>
+												<td><font size="-1" face="Comic Sans MS">
+													<ul>
+														<li>Select a group on the left to make an entry in your private logbook.</li>
+														<li>Click "By Milestone" to see all logbook entries of your groups for a particular milestone.</li>
+														<li>Click "By Group" to see the logbook entries of an individual group.</li>
+													</ul>
+												</font></td>
 											</tr>												
 
 											</tr>

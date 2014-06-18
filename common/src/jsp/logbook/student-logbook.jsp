@@ -121,6 +121,7 @@
 	int sectionOrder=1;
 	String keywordName = keyword;	
 	String keyColor = "";
+	String thereAreNewComments = "";
 	int researchGroupId = user.getId();	
 	//Keep the same section order as with the links on the left
 	TreeMap<Integer, String> logbookSectionOrder = new TreeMap<Integer, String>();
@@ -194,6 +195,7 @@
 				if (comment_count == null) {
 					comment_count = 0L;
 				}
+				thereAreNewComments = "You have new comments";
 				comment_header =  "<strong>comments: " + comment_count + " (<FONT color=\"#AA3366\">" + comment_new + "</FONT>) " + "</strong>";
 			}
 
@@ -225,6 +227,7 @@
 	}//end of building all entries
 	String keyword_display=keywordName.replaceAll("_"," ");	
 	request.setAttribute("messages", messages);
+	request.setAttribute("thereAreNewComments", thereAreNewComments);
 	request.setAttribute("yesNo", yesNo);
 	request.setAttribute("count", count);
 	request.setAttribute("linksToEach", linksToEach);
@@ -286,9 +289,9 @@
 					</c:when>
 					<c:otherwise>
 						<form method="post" name="log" action="">
-						<table width="940" cellpadding="0" border="0" align="left">
+						<table width="900" cellpadding="0" border="0" align="left">
 							<tr>
-								<td valign="top" align="150">
+								<td valign="top" align="140">
 									<table width="140">
 										<tr>
 											<td valign="center" align="left">
@@ -315,7 +318,7 @@
 										${linksToEach}
 									</table>
 								</td>
-								<td align="left" width="20" valign="top">
+								<td align="left" width="5" valign="top">
 									<img src="../graphics/blue_square.gif" border="0" width="2" height="700" alt="">
 								</td>
 								<td valign="top">
@@ -328,11 +331,11 @@
 										</c:if>
 									</div>
 								</td>
-								<td align="left" width="20" valign="top">
+								<td align="left" width="5" valign="top">
 									<img src="../graphics/blue_square.gif" border="0" width="2" height="700" alt="">
 								</td>
 								<td valign="top" align="center">		
-									<table width="480">
+									<table width="450">
 										<tr>
 											<td align="right">
 												<img src="../graphics/logbook_large.gif" align="middle" border="0" alt="">
@@ -343,21 +346,19 @@
 										</tr>
 									</table>
 									<div style="border-style: dotted; border-width: 1px;">
-										<table width="480">
+										<table width="450">
 											<tr>
 												<td align="left">
 													<font size="+1" face="Comic Sans MS">Instructions</font>
 												</td>
 											</tr>
 											<tr>
-												<td><font size="-2">
+												<td><font size="-1" face="Comic Sans MS">
 													<ul>
-														<li>
-															Select a milestone to enter logbook entries.
-														</li>
-														<li>
-															<font size="-2">Click <b>Mark as Read</b> once you read the new comments.</font>
-														</li>												
+														<li>Select a milestone on the left to make a logbook entry associated with it.</li>
+														<li>Use the text box for your new entry.</li>
+														<li>Look for flags <img src="../graphics/new_flag.gif" alt=""></img>indicating new comments by your teacher.</li>
+														<li>Click <b>Mark as Read</b> once you read the new comments.</li>												
 													</ul>
 													</font>
 												</td>
@@ -366,10 +367,10 @@
 									</div>
 									<table>
 										<tr>
-											<td align="center" height="20">&nbsp;</td>
+											<td align="center" height="20"><FONT color="#AA3366" face="Comic Sans MS"><strong>${thereAreNewComments }</strong></FONT></td>
 										</tr>
 									</table>
-								<table width="480" cellspacing="5">
+								<table width="450" cellspacing="5">
 									<c:choose>
 										<c:when test="${not empty logbookSectionOrder }">
 											<c:forEach items="${logbookSectionOrder }" var="logbookSectionOrder"> 
@@ -417,8 +418,8 @@
 																			<c:choose>
 																				<c:when test='${ logbookSectionKeywords.key == fn:substring(logbookEntries.key, 0, fn:indexOf(logbookEntries.key,  "-")) }' >
 																					<tr>
-																						<td valign="top" width="160" align="right"><font face="Comic Sans MS">${logbookEntries.value[3] }</font></td>
-																						<td width="340" valign="top"><font face="Comic Sans MS">
+																						<td valign="top" width="130" align="right"><font face="Comic Sans MS">${logbookEntries.value[3] }</font></td>
+																						<td width="320" valign="top"><font face="Comic Sans MS">
 
 																						<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
 																						<c:choose>
@@ -433,8 +434,8 @@
 																						</font></td>
 																					</tr>
 																				    <tr>
-																						<td width="160"> </td>
-																						<td width="340">
+																						<td width="130"> </td>
+																						<td width="320">
 																							<font face="Comic Sans MS">${logbookEntries.value[10]}</font>
 																							<font face="Comic Sans MS" size=-2>
 																								<c:if test="${not empty logbookEntries.value[11] }">
