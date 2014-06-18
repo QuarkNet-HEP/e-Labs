@@ -286,7 +286,13 @@ public class LogbookTools {
 			int commentCnt = 0;
 			while (commentRs.next()) {
 				comment_date = commentRs.getString("comment_date");
+				if (comment_date == null) {
+					comment_date = "";
+				}
 				comment_text = comment_date + ": " + commentRs.getString("comment");
+				if (comment_text == null) {
+					comment_text = "";
+				}
 				commentEntry = "";
 				String comment_truncated;
 				comment_truncated = comment_text.replaceAll(
