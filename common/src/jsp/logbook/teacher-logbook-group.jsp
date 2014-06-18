@@ -119,6 +119,11 @@
 	};
 	int research_group_id = -1;
 	String subtitle = "";
+	//check if we are viewing only new entries
+	String view_only_new = request.getParameter("view_only_new");
+	if (view_only_new == null || view_only_new.equals("")) {
+		view_only_new = "no";
+	}
 	if (!(research_group_name == null)) {
 		ElabGroup eg = user.getGroup(research_group_name);
 		if (eg != null) {
@@ -152,14 +157,17 @@
 			String dateText = rs.getString("date_entered");
 			keyword_description = rs.getString("description");
 			String log_text = rs.getString("log_text");
+			if (log_text == null) {
+				log_text = "";
+			}
 			log_text = log_text.replaceAll("''", "'");
 			Integer logid = (Integer) rs.getObject("log_id");
 			Boolean new_log = (Boolean) rs.getObject("new");
 			String log_text_truncated;
 			log_text_truncated = log_text.replaceAll(
 						"\\<(.|\\n)*?\\>", "");
-			if (log_text_truncated.length() > 50) {
-				log_text_truncated = log_text_truncated.substring(0, 50);
+			if (log_text_truncated.length() > 40) {
+				log_text_truncated = log_text_truncated.substring(0, 25);
 			} else {
 				log_text_truncated = log_text;
 			}
@@ -174,7 +182,7 @@
 			comment_new = (Long) LogbookTools.getCommentCountNew(logid, elab);
 
 			if (new_log != null && new_log == true) {
-				thereAreNewEntries = "There are new entries";
+				thereAreNewEntries = "<a href=\"teacher-logbook-group.jsp?view_only_new=yes&keyword="+keyword+"&research_group_name="+research_group_name+"\">View only new entries.</a>";
 				comment_info = "<IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font> <a href=\"teacher-logbook-group.jsp?mark_as_read=yes&log_id="+String.valueOf(logid)+"&research_group_name="+research_group_name+"\" style=\"text-decoration: none;\"><FONT size=\"-2\"><strong>Mark as Read</strong></font></a><br />";
 			}
 			String comment_header = "";
@@ -203,22 +211,50 @@
 
 			if (keyword_name.equals("general")) {
 				if (!logbookSectionOrder.containsValue("general")) {
-					logbookSectionOrder.put(sectionOrder, "general");
-					sectionOrder++;
+					if (view_only_new.equals("yes")) {
+						if (new_log != null && new_log) {
+							logbookSectionOrder.put(sectionOrder, "general");
+							sectionOrder++;
+							logbookSections.put(keyword_name, "general");
+						}
+					} else {
+						logbookSectionOrder.put(sectionOrder, "general");
+						sectionOrder++;
+						logbookSections.put(keyword_name, "general");
+					}
 				}
-				logbookSections.put(keyword_name, "general");
 			} 
 			if (!logbookSections.containsKey(keyword_name) && !keyword_name.equals("general")) {
 				if (!logbookSectionOrder.containsValue(sectionText)) {
-					logbookSectionOrder.put(sectionOrder, sectionText);
-					sectionOrder++;
+					if (view_only_new.equals("yes")) {
+						if (new_log != null && new_log) {
+							logbookSectionOrder.put(sectionOrder, sectionText);
+							sectionOrder++;
+							logbookSections.put(keyword_name, sectionText);
+						}
+					} else {
+						logbookSectionOrder.put(sectionOrder, sectionText);
+						sectionOrder++;
+						logbookSections.put(keyword_name, sectionText);
+					}
 				}
-				logbookSections.put(keyword_name, sectionText);
 			}
 			if (!logbookSectionKeywords.containsKey(keyword_name)) {
-				logbookSectionKeywords.put(String.valueOf(keyword_name), logbookSubsectionDetails);			
+				if (view_only_new.equals("yes")) {
+					if (new_log != null && new_log) {
+						logbookSectionKeywords.put(String.valueOf(keyword_name), logbookSubsectionDetails);			
+					}
+				} else {
+					logbookSectionKeywords.put(String.valueOf(keyword_name), logbookSubsectionDetails);								
+				}
 			}
-			logbookEntries.put(String.valueOf(keyword_name)+"-"+String.valueOf(itemCount), logbookDetails);
+			if (view_only_new.equals("yes")) {
+				if (new_log != null && new_log) {
+					logbookEntries.put(String.valueOf(keyword_name)+"-"+String.valueOf(itemCount), logbookDetails);
+				}
+			} else {
+				logbookEntries.put(String.valueOf(keyword_name)+"-"+String.valueOf(itemCount), logbookDetails);				
+			}
 		}
 	}
 		
@@ -282,7 +318,8 @@
 
 						<table width="800" cellpadding="0" border="0" align="left">
 							<tr>
-								<td valign="top" align="150">
+								<td valign="top" width="150" nowrap>
+									<div style="height:650px; width:150px; position: fixed; overflow:auto;">
 									<table width="140">
 										<tr>
 											<td valign="center" align="left"><a href="teacher-logbook-keyword.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">By Milestone</a></td>
@@ -324,11 +361,16 @@
 											</c:otherwise>
 										</c:choose>
 									</table>
+									</div>
 								</td>
-								<td align="left" width="20" valign="top"><img src="../graphics/blue_square.gif" border="0" width="2" height="650" alt=""></td>
+								<td align="left" width="20" valign="top">
+									<div style="overflow:auto; width:20px; position: fixed;">
+										<img src="../graphics/blue_square.gif" border="0" width="2" height="650" alt="">
+									</div>
+								</td>
 								<td valign="top" align="center">
-									<div style="border-style: dotted; border-width: 1px;">
-										<table width="600">
+									<div style="border-style: dotted; border-width: 1px; width: 550px;">
+										<table width="550">
 											<tr>
 												<td align="left"><font size="+1" face="Comic Sans MS">Instructions</font></td>
 											</tr>						
@@ -348,125 +390,136 @@
 											</tr>
 										</table>
 										</div>
-									<table>
-										<tr>
-											<td align="center" height="20"><FONT color="#AA3366" face="Comic Sans MS"><strong>${thereAreNewEntries }</strong></FONT></td>
-										</tr>
-									</table>										
+										<table width="500">
+											<tr>
+												<td align="center" height="20"><FONT color="#AA3366" face="Comic Sans MS"><strong>${thereAreNewEntries }</strong></FONT></td>
+											</tr>
+										</table>										
 										<c:choose>
 											<c:when test="${not empty subtitle }">
-												${subtitle }
-													<table>		
-														<c:choose>
-															<c:when test="${not empty logbookSectionOrder }">
-																<c:forEach items="${logbookSectionOrder }" var="logbookSectionOrder"> 
+												${subtitle }<br />
+												<table>		
+													<c:choose>
+														<c:when test="${not empty logbookSectionOrder }">
+															<table width="500">
+																<tr>
+																	<td width="500" align="right">
+											 							<div style="position: fixed; width: 500px;">
+																			<input type="submit" name="submit" id="submitButton" value="Submit All">
+																		</div>													
+																	</td>
+																</tr>
+															</table>
+															<c:forEach items="${logbookSectionOrder }" var="logbookSectionOrder"> 
 																	<c:choose>
 																		<c:when test='${logbookSectionOrder.value == "general" }'>
-																			<tr align="left"><td colspan="2"><font face="Comic Sans MS" size="+2"></font></td></tr>
+																			<tr align="left">
+																				<td colspan="2"><font face="Comic Sans MS" size="+2"></font></td>
+																			</tr>
 																		</c:when>
 																		<c:otherwise>
-																			<tr align="left"><td colspan="2"><font face="Comic Sans MS" size="+2">${logbookSectionOrder.value }</font></td></tr>	
+																			<tr align="left">
+																				<td colspan="2"><font face="Comic Sans MS" size="+2">${logbookSectionOrder.value }</font></td>
+																			</tr>
 																		</c:otherwise>
 																	</c:choose>	
+																	</td>
+																<c:choose>
+																<c:when test="${not empty logbookSections }">
+																<c:forEach items="${logbookSections }" var="logbookSections">
 																	<c:choose>
-																	<c:when test="${not empty logbookSections }">
-																	<c:forEach items="${logbookSections }" var="logbookSections">
-																		<c:choose>
-																			<c:when test="${logbookSectionOrder.value == logbookSections.value }">
-																				<c:forEach items="${logbookSectionKeywords }" var="logbookSectionKeywords">
-																					<c:choose>
-																						<c:when test='${logbookSections.key == fn:substring(logbookSectionKeywords.key, 0, fn:indexOf(logbookSectionKeywords.key,  "-")) }'>
-																							<tr align="left">
-																								<td colspan="2">
-																									<font face="Comic Sans MS" size="+1" color="#AA3366">${logbookSectionKeywords.value[1] }</font> - 
-																									<font face="Comic Sans MS">${logbookSectionKeywords.value[0]}</font> 
-																								</td>
-																							</tr>
-																							<c:choose>			
-																								<c:when test="${not empty logbookEntries }">			
-																									<c:forEach items="${logbookEntries}" var="logbookEntries">
-																										<c:choose>
-																											<c:when test='${ logbookSectionKeywords.key == fn:substring(logbookEntries.key, 0, fn:indexOf(logbookEntries.key,  "-")) }' >
+																		<c:when test="${logbookSectionOrder.value == logbookSections.value }">
+																			<c:forEach items="${logbookSectionKeywords }" var="logbookSectionKeywords">
+																				<c:choose>
+																					<c:when test='${logbookSections.key == fn:substring(logbookSectionKeywords.key, 0, fn:indexOf(logbookSectionKeywords.key,  "-")) }'>
+																						<tr align="left">
+																							<td colspan="2">
+																								<font face="Comic Sans MS" size="+1" color="#AA3366">${logbookSectionKeywords.value[1] }</font> - 
+																								<font face="Comic Sans MS">${logbookSectionKeywords.value[0]}</font> 
+																							</td>
+																						</tr>
+																						<c:choose>			
+																							<c:when test="${not empty logbookEntries }">			
+																								<c:forEach items="${logbookEntries}" var="logbookEntries">
+																									<c:choose>
+																										<c:when test='${ logbookSectionKeywords.key == fn:substring(logbookEntries.key, 0, fn:indexOf(logbookEntries.key,  "-")) }' >
+																											<tr>
+																													<td valign="top" width="175" align="right">
+																														${logbookEntries.value[2]}
+																													</td>
+																													<td width="400" valign="top">
+																														<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
+																														<c:choose>
+																															<c:when test="${logbookEntries.value[4] != logbookEntries.value[5]}">
+																																<div id="fullLog${logbookEntries.value[0]}" style="display:none;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
+																																<div id="showLog${logbookEntries.value[0]}"><e:whitespaceAdjust text="${logbookEntries.value[5]}" /> . . .<a href='javascript:showFullLog("showLog${logbookEntries.value[0]}","fullLog${logbookEntries.value[0]}");'>Read More</a></div>
+																														    </c:when>
+																														    <c:otherwise>
+																															    <e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust>
+																														    </c:otherwise>
+																														 </c:choose>	
+																													</td>
+																												</tr>
 																												<tr>
-																														<td valign="top" width="175" align="right">
-																															${logbookEntries.value[2]}
-																														</td>
-																														<td width="400" valign="top">
-																															<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
-																															<c:choose>
-																																<c:when test="${logbookEntries.value[4] != logbookEntries.value[5]}">
-																																	<div id="fullLog${logbookEntries.value[0]}" style="display:none;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
-																																	<div id="showLog${logbookEntries.value[0]}"><e:whitespaceAdjust text="${logbookEntries.value[5]}" /> . . .<a href='javascript:showFullLog("showLog${logbookEntries.value[0]}","fullLog${logbookEntries.value[0]}");'>Read More</a></div>
-																															    </c:when>
-																															    <c:otherwise>
-																																    <e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust>
-																															    </c:otherwise>
-																															 </c:choose>	
-																														</td>
-																													</tr>
-																													<tr>
-																														<td width="100"> </td>
-																														<td width="450" valign="middle">
-																												           <font face="Comic Sans MS">${logbookEntries.value[3]}</font>
-																															<font face="Comic Sans MS" size=-2>
-																																<c:if test="${not empty logbookEntries.value[6] }">
-																																	<c:forEach items="${logbookEntries.value[6] }" var="comments">
-																																		${comments }<br />
-																																	</c:forEach>
-																																</c:if>
-																															</font>
-																														</td>																										    
-																												    </tr>																													
-																													<tr>
-																														<td colspan="2">
-																															<table width="400">
-																																<tr>
-																																	<th>Your new comment:</th>
-																																</tr>
-																																<tr>
-																																	<td><textarea name="comment_text" id="comment_text_${logbookEntries.value[0]}" cols="70" rows="5"></textarea></td>
-																																</tr>
-																																<tr>
-																																	<td align="center"><input type="submit" name="submit" id="submit_${logbookEntries.value[0] }" value="Submit Comment"></td>
-																																</tr>
-																															</table>
-																															<input type="hidden" name="log_id" id="log_id_${logbookEntries.value[0] }" value="${logbookEntries.value[0]}">
-																															<input type="hidden" name="keyword" id="keyword_${logbookEntries.value[0] }" value="${keyword}">
-																														</td>																												
-																													</tr>
-																											</c:when>
-																										</c:choose>
-																									</c:forEach>
-																								</c:when>
-																							</c:choose>	
-																						</c:when>
-																					</c:choose>
-																				</c:forEach>
-																			</c:when>
-																		</c:choose>
-																	</c:forEach>
-																	</c:when>																	
+																													<td width="100"> </td>
+																													<td width="450" valign="middle">
+																											           <font face="Comic Sans MS">${logbookEntries.value[3]}</font>
+																														<font face="Comic Sans MS" size=-2>
+																															<c:if test="${not empty logbookEntries.value[6] }">
+																																<c:forEach items="${logbookEntries.value[6] }" var="comments">
+																																	${comments }<br />
+																																</c:forEach>
+																															</c:if>
+																														</font>
+																													</td>																										    
+																											    </tr>																													
+																												<tr>
+																													<td colspan="2">
+																														<table width="550">
+																															<tr>
+																																<th>Your new comment:</th>
+																															</tr>
+																															<tr>
+																																<td><textarea name="comment_text" id="comment_text_${logbookEntries.value[0]}" cols="65" rows="5"></textarea></td>
+																															</tr>
+																														</table>
+																														<input type="hidden" name="log_id" id="log_id_${logbookEntries.value[0] }" value="${logbookEntries.value[0]}">
+																														<input type="hidden" name="keyword" id="keyword_${logbookEntries.value[0] }" value="${keyword}">
+																													</td>																												
+																												</tr>
+																										</c:when>
+																									</c:choose>
+																								</c:forEach>
+																							</c:when>
+																						</c:choose>	
+																					</c:when>
+																				</c:choose>
+																			</c:forEach>
+																		</c:when>
 																	</c:choose>
 																</c:forEach>
-															</c:when>
-															<c:otherwise>
-															<tr align="center">
-																<td colspan="2">
-																<c:choose>
-																	<c:when test="${not empty keyword_name }">
-																		<font face="Comic Sans MS" size="+1">No entries for<br> "${keyword_display}: ${keyword_description}"</font></a>
-																	</c:when>
-																	<c:otherwise>
-																		<font face="Comic Sans MS" size="+1">No entries.</font></a>													
-																	</c:otherwise>
-																	</c:choose>
-																</td>
-															</tr>																		
-															</c:otherwise>
-														</c:choose>
-													</table>												
-											</c:when>											
-										</c:choose>
+																</c:when>																	
+																</c:choose>
+															</c:forEach>
+														</c:when>
+														<c:otherwise>
+														<tr align="center">
+															<td colspan="2">
+															<c:choose>
+																<c:when test="${not empty keyword_name }">
+																	<font face="Comic Sans MS" size="+1">No entries for<br> "${keyword_display}: ${keyword_description}"</font></a>
+																</c:when>
+																<c:otherwise>
+																	<font face="Comic Sans MS" size="+1">No entries.</font></a>													
+																</c:otherwise>
+																</c:choose>
+															</td>
+														</tr>																		
+														</c:otherwise>
+													</c:choose>
+												</table>												
+										</c:when>											
+									</c:choose>
 								</td>
 							</tr>
 						</table>

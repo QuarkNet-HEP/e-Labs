@@ -31,18 +31,18 @@
 			
 			<div id="content">
 				
-<%
-	if (user.isProfDev()) {
-		%>
-			<%@ include file="milestones-profdev.jsp" %>
-		<%
-	}
-	else {
-		%>
-			<%@ include file="milestones-student.jsp" %>
-		<%
-	}
-%>
+				<%
+					if (user.getRole().equals("teacher")) {
+						%>
+							<%@ include file="milestones-teacher.jsp" %>
+						<%
+					}
+					else {
+						%>
+							<%@ include file="milestones-student.jsp" %>
+						<%
+					}
+				%>
 
 			</div>
 			<!-- end content -->	

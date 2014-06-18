@@ -291,8 +291,8 @@ public class LogbookTools {
 				String comment_truncated;
 				comment_truncated = comment_text.replaceAll(
 							"\\<(.|\\n)*?\\>", "");
-				if (comment_truncated.length() > 45) {
-					comment_truncated = comment_truncated.substring(0, 45);
+				if (comment_truncated.length() > 40) {
+					comment_truncated = comment_truncated.substring(0, 25);
 					commentEntry += "<div id=\"fullLog"+String.valueOf(commentCnt)+"\" style=\"display:none;\">"+ElabUtil.whitespaceAdjust(comment_text)+"</div>"+
 									"<div id=\"showLog"+String.valueOf(commentCnt)+"\">"+ElabUtil.whitespaceAdjust(comment_truncated)+" . . .<a href=\'javascript:showFullComment(\"showLog"+String.valueOf(commentCnt)+"\",\"fullLog"+String.valueOf(commentCnt)+"\");\'>Read More</a></div>";
 				} else {

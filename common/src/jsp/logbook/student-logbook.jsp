@@ -140,6 +140,11 @@
 			return Integer.parseInt(innerRank);
 		}
 	};
+	//check if we are viewing only new entries
+	String view_only_new = request.getParameter("view_only_new");
+	if (view_only_new == null || view_only_new.equals("")) {
+		view_only_new = "no";
+	}
 	try {
 		rs = LogbookTools.getLogbookEntries(keywordId, elab, projectId, researchGroupId);
 		while (rs.next()) {
@@ -149,14 +154,17 @@
 			String dateText=rs.getString("date_entered");
 			keywordDescription=rs.getString("description");
 			String logText=rs.getString("log_text");
+			if (log_text == null) {
+				log_text = "";
+			}			
 			logText = logText.replaceAll("''", "'");
 			keywordName=rs.getString("keyword_name");
 			String keyword_display=keywordName.replaceAll("_"," ");
 			String section=rs.getString("section");
 			String log_text_truncated;
 			log_text_truncated = logText.replaceAll("\\<(.|\\n)*?\\>", "");
-			if (log_text_truncated.length() > 50) {
-				log_text_truncated = log_text_truncated.substring(0, 50);
+			if (log_text_truncated.length() > 40) {
+				log_text_truncated = log_text_truncated.substring(0, 25);
 			} else {
 				log_text_truncated = logText;
 			}
@@ -189,13 +197,13 @@
 			logbookDetails.add(comment_info); //10
 			//get the actual comments
 			String comment_header = "";
+			if (comment_count == null) {
+				comment_count = 0L;
+			}
 			if (comment_new == 0L) {
 				comment_header = "<strong>comments: " + comment_count + "</strong>";
 			} else {
-				if (comment_count == null) {
-					comment_count = 0L;
-				}
-				thereAreNewComments = "You have new comments";
+				thereAreNewComments = "<a href=\"student-logbook.jsp?view_only_new=yes&keyword="+keyword+"\">View only entries with new comments</a>";
 				comment_header =  "<strong>comments: " + comment_count + " (<FONT color=\"#AA3366\">" + comment_new + "</FONT>) " + "</strong>";
 			}
 
@@ -205,26 +213,55 @@
 			String sectionText = LogbookTools.getSectionText(section);
 			if (keywordName.equals("general")) {
 				if (!logbookSectionOrder.containsValue("general")) {
-					logbookSectionOrder.put(sectionOrder, "general");
-					sectionOrder++;
+					if (view_only_new.equals("yes")) {
+						if (comment_new > 0L) {
+							logbookSectionOrder.put(sectionOrder, "general");
+							sectionOrder++;
+							logbookSections.put(keywordName, "general");
+						}
+					} else {
+						logbookSectionOrder.put(sectionOrder, "general");
+						sectionOrder++;
+						logbookSections.put(keywordName, "general");
+					}
 				}
-				logbookSections.put(keywordName, "general");
 			} 
 			if (!logbookSections.containsKey(keywordName) && !keywordName.equals("general")) {
 				if (!logbookSectionOrder.containsValue(sectionText)) {
-					logbookSectionOrder.put(sectionOrder, sectionText);
-					sectionOrder++;
+					if (view_only_new.equals("yes")) {
+						if (comment_new > 0L) {
+							logbookSectionOrder.put(sectionOrder, sectionText);
+							sectionOrder++;							
+							logbookSections.put(keywordName, sectionText);
+						}
+					} else {
+						logbookSectionOrder.put(sectionOrder, sectionText);
+						sectionOrder++;
+						logbookSections.put(keywordName, sectionText);
+					}
 				}
-				logbookSections.put(keywordName, sectionText);
 			}
 			if (!logbookSectionKeywords.containsKey(keywordName)) {
-				logbookSectionKeywords.put(String.valueOf(keywordName), logbookSubsectionDetails);			
+				if (view_only_new.equals("yes")) {
+					if (comment_new > 0L) {
+						logbookSectionKeywords.put(String.valueOf(keywordName), logbookSubsectionDetails);			
+					}
+				} else {
+					logbookSectionKeywords.put(String.valueOf(keywordName), logbookSubsectionDetails);								
+				}
 			}
-			logbookEntries.put(String.valueOf(keywordName)+"-"+String.valueOf(itemCount), logbookDetails);
+			if (view_only_new.equals("yes")) {
+				if (comment_new > 0L) {
+					logbookEntries.put(String.valueOf(keywordName)+"-"+String.valueOf(itemCount), logbookDetails);				
+				}
+			} else {
+				logbookEntries.put(String.valueOf(keywordName)+"-"+String.valueOf(itemCount), logbookDetails);
+			}
 		}
 	} catch (Exception e) {
 		messages += e.getMessage();
 	}//end of building all entries
+
 	String keyword_display=keywordName.replaceAll("_"," ");	
 	request.setAttribute("messages", messages);
 	request.setAttribute("thereAreNewComments", thereAreNewComments);
@@ -291,7 +328,8 @@
 						<form method="post" name="log" action="">
 						<table width="900" cellpadding="0" border="0" align="left">
 							<tr>
-								<td valign="top" align="140">
+								<td valign="top" width="140" nowrap>
+									<div style="height:650px; width:150px; position: fixed; overflow:auto;">
 									<table width="140">
 										<tr>
 											<td valign="center" align="left">
@@ -317,12 +355,15 @@
 										</tr>
 										${linksToEach}
 									</table>
+									</div>
 								</td>
-								<td align="left" width="5" valign="top">
-									<img src="../graphics/blue_square.gif" border="0" width="2" height="700" alt="">
+								<td align="left" width="5" valign="top" nowrap>
+									<div style="width:5px; position: fixed;">
+										<img src="../graphics/blue_square.gif" border="0" width="2" height="700" alt="">
+									</div>
 								</td>
-								<td valign="top">
-									<div style="width: 300px;">									
+								<td valign="top" width="350">
+									<div style="width: 290px; position:fixed;">									
 										<c:catch var="e">
 											<c:import url="${references}" />
 										</c:catch>
@@ -331,11 +372,13 @@
 										</c:if>
 									</div>
 								</td>
-								<td align="left" width="5" valign="top">
-									<img src="../graphics/blue_square.gif" border="0" width="2" height="700" alt="">
+								<td align="right" width="5" valign="top" nowrap>
+									<div style="width:5px; position: fixed;">								
+										<img src="../graphics/blue_square.gif" border="0" width="2" height="700" alt="">
+									</div>
 								</td>
 								<td valign="top" align="center">		
-									<table width="450">
+									<table width="400">
 										<tr>
 											<td align="right">
 												<img src="../graphics/logbook_large.gif" align="middle" border="0" alt="">
@@ -346,7 +389,7 @@
 										</tr>
 									</table>
 									<div style="border-style: dotted; border-width: 1px;">
-										<table width="450">
+										<table width="400">
 											<tr>
 												<td align="left">
 													<font size="+1" face="Comic Sans MS">Instructions</font>
@@ -358,9 +401,9 @@
 														<li>Select a milestone on the left to make a logbook entry associated with it.</li>
 														<li>Use the text box for your new entry.</li>
 														<li>Look for flags <img src="../graphics/new_flag.gif" alt=""></img>indicating new comments by your teacher.</li>
-														<li>Click <b>Mark as Read</b> once you read the new comments.</li>												
+														<li>Click <b>Mark as Read</b> once you read the new comments.</li>		
 													</ul>
-													</font>
+													</font>							
 												</td>
 											</tr>												
 										</table>
@@ -370,7 +413,7 @@
 											<td align="center" height="20"><FONT color="#AA3366" face="Comic Sans MS"><strong>${thereAreNewComments }</strong></FONT></td>
 										</tr>
 									</table>
-								<table width="450" cellspacing="5">
+								<table width="400">
 									<c:choose>
 										<c:when test="${not empty logbookSectionOrder }">
 											<c:forEach items="${logbookSectionOrder }" var="logbookSectionOrder"> 
@@ -400,7 +443,7 @@
 																			</tr>
 																			<tr>
 																				<td colspan="2">
-																					<textarea name="log_text" cols="65" rows="5"></textarea>
+																					<textarea name="log_text" cols="60" rows="5"></textarea>
 																					<!-- //EPeronja-04/08/2013: replace " by ', string was not showing correctly -->
 																					<input type="hidden" name="img_src" value='${img_src}'> 
 																					<input type="hidden" name="count" value="${count }">
@@ -418,8 +461,8 @@
 																			<c:choose>
 																				<c:when test='${ logbookSectionKeywords.key == fn:substring(logbookEntries.key, 0, fn:indexOf(logbookEntries.key,  "-")) }' >
 																					<tr>
-																						<td valign="top" width="130" align="right"><font face="Comic Sans MS">${logbookEntries.value[3] }</font></td>
-																						<td width="320" valign="top"><font face="Comic Sans MS">
+																						<td valign="top" width="150" align="right"><font face="Comic Sans MS">${logbookEntries.value[3] }</font></td>
+																						<td width="250" valign="top"><font face="Comic Sans MS">
 
 																						<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
 																						<c:choose>
@@ -434,8 +477,8 @@
 																						</font></td>
 																					</tr>
 																				    <tr>
-																						<td width="130"> </td>
-																						<td width="320">
+																						<td width="150"> </td>
+																						<td width="250">
 																							<font face="Comic Sans MS">${logbookEntries.value[10]}</font>
 																							<font face="Comic Sans MS" size=-2>
 																								<c:if test="${not empty logbookEntries.value[11] }">
@@ -472,7 +515,7 @@
 											</tr>
 											<tr>
 												<td colspan="2">
-													<textarea name="log_text" cols="65" rows="5"></textarea>
+													<textarea name="log_text" cols="60" rows="5"></textarea>
 													<!-- //EPeronja-04/08/2013: replace " by ', string was not showing correctly -->
 													<input type="hidden" name="img_src" value='${img_src}'> 
 													<input type="hidden" name="count" value="${count }">
@@ -481,7 +524,7 @@
 											<tr>
 												<td align='left'>
 													<input type='button' name="plot" onclick="window.open('../plots/pick.jsp','win2', 'scrollbars=1,resizeable=true');if(childWindow.opener==null)childWindow.opener=self;" value="Insert a plot"></td>
-												<td align='right'><input type="submit" name="button" id="button_${logbookSections.key}" value="Add Your Logbook Entry"></td>
+												<td align='right'><input type="submit" name="button" id="button_${logbookSections.key}" value="Submit Entry"></td>
 											</tr>																		
 																								
 										</c:otherwise>
