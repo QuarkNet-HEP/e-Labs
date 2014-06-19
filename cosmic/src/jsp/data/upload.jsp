@@ -260,6 +260,33 @@ Re: the upload progress stuff
 					  $(this).prevAll('option[value="' + this.value + '"]').remove();
 				});
 		});
+    	function checkFields() {
+			var goAhead = false;	
+    		var radios = document.getElementsByTagName('input');
+       		for (var i = 0; i < radios.length; i++) {
+       		    if (radios[i].type == 'radio' && radios[i].checked) {
+       		      goAhead = true;
+       		    } 
+       		}
+    		if (!goAhead) {
+    			var msg = document.getElementById("msg");
+    			msg.innerHTML ='<font color="red">Please select a detector</font>';
+    			return false;
+    		}
+    		var upload = document.getElementById("uf2");
+    		var uploadFile = upload.value;
+    		if (uploadFile == "") {
+    			goAhead = false;
+    		} else {
+    			goAhead = true;
+    		}
+    		if (!goAhead) {
+    			var msg = document.getElementById("msg");
+    			msg.innerHTML ='<font color="red">Please choose a file to upload</font>';
+				return false;
+    		}
+    		return goAhead;
+    	}
         </script>
 	</head>
 	
@@ -350,9 +377,12 @@ Re: the upload progress stuff
     <div id="button-line">
     	<!-- grr. somebody fix css -->
     	<table border="0" style="width: 450px; text-align: center;">
+			<tr>
+				<td><div id="msg" name="msg"></div></td>
+			</tr>
     		<tr>
     			<td>
-					<input name="load" type="submit" value="Upload" id="uploadbutton"/>
+					<input name="load" type="submit" value="Upload" id="uploadbutton" onclick="return checkFields();"/>
 				</td>
 				<td>
 					<div id="progressBar" style="display: none">
