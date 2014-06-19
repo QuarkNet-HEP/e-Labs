@@ -319,7 +319,7 @@
 						<table width="800" cellpadding="0" border="0" align="left">
 							<tr>
 								<td valign="top" width="150" nowrap>
-									<div style="height:500px; width:150px; position: fixed; overflow:auto;">
+									<div style="height:700px; width:150px; position: fixed; overflow:auto;">
 									<table width="145">
 										<tr>
 											<td valign="center" align="left"><a href="teacher-logbook-keyword.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">By Milestone</a></td>
