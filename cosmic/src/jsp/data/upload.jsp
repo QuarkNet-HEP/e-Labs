@@ -176,13 +176,18 @@ Re: the upload progress stuff
 	       	        request.setAttribute("detectorid", detectorId);
 	       	        request.setAttribute("comments", comments);
 	      	        request.setAttribute("benchmark", benchmark);
-	   				%>
+	      			long lEndTime = new Date().getTime();
+	      			String uploadtime = "upload.jsp: " +String.valueOf(lEndTime - lStartTime)+ " ms";
+	      	        request.setAttribute("uploadtime", uploadtime);
+
+	      	        %>
 						<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUpload" impl="generic">
 							<e:trdefault name="in" value="${in}"/>
 							<e:trdefault name="datadir" value="${datadir}"/>
 							<e:trdefault name="detectorid" value="${detectorid}"/>
 							<e:trdefault name="comments" value="${comments}"/>
 							<e:trdefault name="benchmark" value="${benchmark}"/>	
+							<e:trdefault name="uploadtime" value="${uploadtime}"/>	
 												
 							<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload&detectorid=${detectorid}">
 								<jsp:param name="provider" value="shell"/>
@@ -197,13 +202,6 @@ Re: the upload progress stuff
 							   "Please send an e-mail to <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> with the following error: <br />" +
 								e.toString();
 		}
-		long lEndTime = new Date().getTime();
-		ArrayList<String> traditional = (ArrayList<String>) session.getAttribute("uploadtraditional");
-		if (traditional == null) {
-			traditional = new ArrayList<String>();
-		}
-		traditional.add("Upload with upload.jsp took: " +String.valueOf(lEndTime - lStartTime)+ " milliseconds");
-		session.setAttribute("uploadtraditional", traditional);
 
 	} //end "if form has a file to upload"
 		else {
@@ -262,6 +260,33 @@ Re: the upload progress stuff
 					  $(this).prevAll('option[value="' + this.value + '"]').remove();
 				});
 		});
+    	function checkFields() {
+			var goAhead = false;	
+    		var radios = document.getElementsByTagName('input');
+       		for (var i = 0; i < radios.length; i++) {
+       		    if (radios[i].type == 'radio' && radios[i].checked) {
+       		      goAhead = true;
+       		    } 
+       		}
+    		if (!goAhead) {
+    			var msg = document.getElementById("msg");
+    			msg.innerHTML ='<font color="red">Please select a detector</font>';
+    			return false;
+    		}
+    		var upload = document.getElementById("uf2");
+    		var uploadFile = upload.value;
+    		if (uploadFile == "") {
+    			goAhead = false;
+    		} else {
+    			goAhead = true;
+    		}
+    		if (!goAhead) {
+    			var msg = document.getElementById("msg");
+    			msg.innerHTML ='<font color="red">Please choose a file to upload</font>';
+				return false;
+    		}
+    		return goAhead;
+    	}
         </script>
 	</head>
 	
@@ -352,9 +377,12 @@ Re: the upload progress stuff
     <div id="button-line">
     	<!-- grr. somebody fix css -->
     	<table border="0" style="width: 450px; text-align: center;">
+			<tr>
+				<td><div id="msg" name="msg"></div></td>
+			</tr>
     		<tr>
     			<td>
-					<input name="load" type="submit" value="Upload" id="uploadbutton"/>
+					<input name="load" type="submit" value="Upload" id="uploadbutton" onclick="return checkFields();"/>
 				</td>
 				<td>
 					<div id="progressBar" style="display: none">
