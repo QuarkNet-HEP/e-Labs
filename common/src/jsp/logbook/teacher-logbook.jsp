@@ -199,8 +199,8 @@
 						<table width="800" cellpadding="0" border="0" align="left">
 							<tr>
 								<td valign="top" width="150" nowrap>
-									<div style="height:650px; width:150px; position: fixed; overflow:auto;">
-									<table width="140">
+									<div style="height:500px; width:150px; position: fixed; overflow:auto;">
+									<table width="145">
 										<tr>
 											<td valign="center" align="left"><b>Student Logbooks</b></td>
 										</tr>

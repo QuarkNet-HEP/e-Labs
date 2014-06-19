@@ -319,8 +319,8 @@
 						<table width="800" cellpadding="0" border="0" align="left">
 							<tr>
 								<td valign="top" width="150" nowrap>
-									<div style="height:650px; width:150px; position: fixed; overflow:auto;">
-									<table width="140">
+									<div style="height:500px; width:150px; position: fixed; overflow:auto;">
+									<table width="145">
 										<tr>
 											<td valign="center" align="left"><a href="teacher-logbook-keyword.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">By Milestone</a></td>
 										</tr>
@@ -369,6 +369,7 @@
 									</div>
 								</td>
 								<td valign="top" align="center">
+									<div style="width: 630px;">				
 									<div style="border-style: dotted; border-width: 1px; width: 550px;">
 										<table width="550">
 											<tr>
@@ -398,18 +399,20 @@
 										<c:choose>
 											<c:when test="${not empty subtitle }">
 												${subtitle }<br />
-												<table>		
+												<table width="630">		
 													<c:choose>
 														<c:when test="${not empty logbookSectionOrder }">
-															<table width="500">
-																<tr>
-																	<td width="500" align="right">
-											 							<div style="position: fixed; width: 500px;">
-																			<input type="submit" name="submit" id="submitButton" value="Submit All">
-																		</div>													
-																	</td>
-																</tr>
-															</table>
+															<tr><td colspan="2">
+																<table width="630">
+																	<tr>
+																		<td width="630" align="right">
+											 								<div style="position: fixed; width: 600px;">
+																				<input type="submit" name="submit" id="submitButton" value="Submit All">
+																			</div>													
+																		</td>
+																	</tr>
+																</table>
+															</td></tr>
 															<c:forEach items="${logbookSectionOrder }" var="logbookSectionOrder"> 
 																	<c:choose>
 																		<c:when test='${logbookSectionOrder.value == "general" }'>
@@ -423,83 +426,82 @@
 																			</tr>
 																		</c:otherwise>
 																	</c:choose>	
-																	</td>
-																<c:choose>
-																<c:when test="${not empty logbookSections }">
-																<c:forEach items="${logbookSections }" var="logbookSections">
 																	<c:choose>
-																		<c:when test="${logbookSectionOrder.value == logbookSections.value }">
-																			<c:forEach items="${logbookSectionKeywords }" var="logbookSectionKeywords">
+																		<c:when test="${not empty logbookSections }">
+																			<c:forEach items="${logbookSections }" var="logbookSections">
 																				<c:choose>
-																					<c:when test='${logbookSections.key == fn:substring(logbookSectionKeywords.key, 0, fn:indexOf(logbookSectionKeywords.key,  "-")) }'>
-																						<tr align="left">
-																							<td colspan="2">
-																								<font face="Comic Sans MS" size="+1" color="#AA3366">${logbookSectionKeywords.value[1] }</font> - 
-																								<font face="Comic Sans MS">${logbookSectionKeywords.value[0]}</font> 
-																							</td>
-																						</tr>
-																						<c:choose>			
-																							<c:when test="${not empty logbookEntries }">			
-																								<c:forEach items="${logbookEntries}" var="logbookEntries">
-																									<c:choose>
-																										<c:when test='${ logbookSectionKeywords.key == fn:substring(logbookEntries.key, 0, fn:indexOf(logbookEntries.key,  "-")) }' >
-																											<tr>
-																													<td valign="top" width="175" align="right">
-																														${logbookEntries.value[2]}
-																													</td>
-																													<td width="400" valign="top">
-																														<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
-																														<c:choose>
-																															<c:when test="${logbookEntries.value[4] != logbookEntries.value[5]}">
-																																<div id="fullLog${logbookEntries.value[0]}" style="display:none;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
-																																<div id="showLog${logbookEntries.value[0]}"><e:whitespaceAdjust text="${logbookEntries.value[5]}" /> . . .<a href='javascript:showFullLog("showLog${logbookEntries.value[0]}","fullLog${logbookEntries.value[0]}");'>Read More</a></div>
-																														    </c:when>
-																														    <c:otherwise>
-																															    <e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust>
-																														    </c:otherwise>
-																														 </c:choose>	
-																													</td>
-																												</tr>
-																												<tr>
-																													<td width="100"> </td>
-																													<td width="450" valign="middle">
-																											           <font face="Comic Sans MS">${logbookEntries.value[3]}</font>
-																														<font face="Comic Sans MS" size=-2>
-																															<c:if test="${not empty logbookEntries.value[6] }">
-																																<c:forEach items="${logbookEntries.value[6] }" var="comments">
-																																	${comments }<br />
-																																</c:forEach>
-																															</c:if>
-																														</font>
-																													</td>																										    
-																											    </tr>																													
-																												<tr>
-																													<td colspan="2">
-																														<table width="550">
-																															<tr>
-																																<th>Your new comment:</th>
+																					<c:when test="${logbookSectionOrder.value == logbookSections.value }">
+																						<c:forEach items="${logbookSectionKeywords }" var="logbookSectionKeywords">
+																							<c:choose>
+																								<c:when test='${logbookSections.key == fn:substring(logbookSectionKeywords.key, 0, fn:indexOf(logbookSectionKeywords.key,  "-")) }'>
+																									<tr align="left">
+																										<td colspan="2">
+																											<font face="Comic Sans MS" size="+1" color="#AA3366">${logbookSectionKeywords.value[1] }</font> - 
+																											<font face="Comic Sans MS">${logbookSectionKeywords.value[0]}</font> 
+																										</td>
+																									</tr>
+																									<c:choose>			
+																										<c:when test="${not empty logbookEntries }">			
+																											<c:forEach items="${logbookEntries}" var="logbookEntries">
+																												<c:choose>
+																													<c:when test='${ logbookSectionKeywords.key == fn:substring(logbookEntries.key, 0, fn:indexOf(logbookEntries.key,  "-")) }' >
+																														<tr>
+																																<td valign="top" width="175" align="right">
+																																	${logbookEntries.value[2]}
+																																</td>
+																																<td width="400" valign="top">
+																																	<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
+																																	<c:choose>
+																																		<c:when test="${logbookEntries.value[4] != logbookEntries.value[5]}">
+																																			<div id="fullLog${logbookEntries.value[0]}" style="display:none;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
+																																			<div id="showLog${logbookEntries.value[0]}"><e:whitespaceAdjust text="${logbookEntries.value[5]}" /> . . .<a href='javascript:showFullLog("showLog${logbookEntries.value[0]}","fullLog${logbookEntries.value[0]}");'>Read More</a></div>
+																																	    </c:when>
+																																	    <c:otherwise>
+																																		    <e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust>
+																																	    </c:otherwise>
+																																	 </c:choose>	
+																																</td>
 																															</tr>
 																															<tr>
-																																<td><textarea name="comment_text" id="comment_text_${logbookEntries.value[0]}" cols="65" rows="5"></textarea></td>
+																																<td width="100"> </td>
+																																<td width="450" valign="middle">
+																														           <font face="Comic Sans MS">${logbookEntries.value[3]}</font>
+																																	<font face="Comic Sans MS" size=-2>
+																																		<c:if test="${not empty logbookEntries.value[6] }">
+																																			<c:forEach items="${logbookEntries.value[6] }" var="comments">
+																																				${comments }<br />
+																																			</c:forEach>
+																																		</c:if>
+																																	</font>
+																																</td>																										    
+																														    </tr>																													
+																															<tr>
+																																<td colspan="2">
+																																	<table width="550">
+																																		<tr>
+																																			<th>Your new comment:</th>
+																																		</tr>
+																																		<tr>
+																																			<td><textarea name="comment_text" id="comment_text_${logbookEntries.value[0]}" cols="65" rows="5"></textarea></td>
+																																		</tr>
+																																	</table>
+																																	<input type="hidden" name="log_id" id="log_id_${logbookEntries.value[0] }" value="${logbookEntries.value[0]}">
+																																	<input type="hidden" name="keyword" id="keyword_${logbookEntries.value[0] }" value="${keyword}">
+																																</td>																												
 																															</tr>
-																														</table>
-																														<input type="hidden" name="log_id" id="log_id_${logbookEntries.value[0] }" value="${logbookEntries.value[0]}">
-																														<input type="hidden" name="keyword" id="keyword_${logbookEntries.value[0] }" value="${keyword}">
-																													</td>																												
-																												</tr>
+																													</c:when>
+																												</c:choose>
+																											</c:forEach>
 																										</c:when>
-																									</c:choose>
-																								</c:forEach>
-																							</c:when>
-																						</c:choose>	
+																									</c:choose>						
+																								</c:when>
+																							</c:choose>			
+																						</c:forEach>
 																					</c:when>
 																				</c:choose>
 																			</c:forEach>
-																		</c:when>
+																		</c:when>																	
 																	</c:choose>
-																</c:forEach>
-																</c:when>																	
-																</c:choose>
 															</c:forEach>
 														</c:when>
 														<c:otherwise>
@@ -515,11 +517,12 @@
 																</c:choose>
 															</td>
 														</tr>																		
-														</c:otherwise>
+														</c:otherwise>														
 													</c:choose>
 												</table>												
-										</c:when>											
-									</c:choose>
+											</c:when>											
+										</c:choose>
+									</div>
 								</td>
 							</tr>
 						</table>
