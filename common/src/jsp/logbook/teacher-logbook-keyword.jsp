@@ -213,7 +213,7 @@
 							<table width="800" cellpadding="0" border="0" align="left">
 								<tr>
 									<td valign="top" width="150" nowrap>
-										<div style="height:500px; width:150px; position: fixed; overflow:auto;">
+										<div style="height:700px; width:150px; position: fixed; overflow:auto;">
 											<table width="145">
 												<tr>
 													<td><a href="teacher-logbook-group.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">By Group</a></td>
@@ -305,7 +305,7 @@
 																		<tr>
 																			<td width="100"> </td>
 																			<td valign="top"><font face="Comic Sans MS">${commentInfo.value[3]}</font><br />
-																				<font face="Comic Sans MS" size"-2">
+																				<font face="Comic Sans MS" size="-2">
 																					<c:if test="${not empty commentInfo.value[6] }">
 																						<c:forEach items="${commentInfo.value[6] }" var="comments">
 																							${comments }<br />
