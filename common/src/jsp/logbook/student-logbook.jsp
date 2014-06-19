@@ -264,6 +264,9 @@
 
 	String keyword_display=keywordName.replaceAll("_"," ");	
 	request.setAttribute("messages", messages);
+	if (view_only_new.equals("yes")) {
+		thereAreNewComments = "<a href=\"student-logbook.jsp?view_only_new=no&keyword="+keyword+"\">View all entries</a>";
+	}
 	request.setAttribute("thereAreNewComments", thereAreNewComments);
 	request.setAttribute("yesNo", yesNo);
 	request.setAttribute("count", count);
@@ -402,7 +405,8 @@
 														<li>Select a milestone on the left to make a logbook entry associated with it.</li>
 														<li>Use the text box for your new entry.</li>
 														<li>Look for flags <img src="../graphics/new_flag.gif" alt=""></img>indicating new comments by your teacher.</li>
-														<li>Click <b>Mark as Read</b> once you read the new comments.</li>		
+														<li>Click <strong>Mark as Read</strong> once you read the new comments.</li>		
+														<li>Toggle between <strong>'View only entries with new comments'/'View all entries'</strong> to filter the results.</li>
 													</ul>
 													</font>							
 												</td>

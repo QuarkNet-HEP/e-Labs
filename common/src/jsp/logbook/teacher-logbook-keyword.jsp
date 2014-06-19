@@ -125,7 +125,8 @@
 			comment_count = (Long) LogbookTools.getCommentCount(logId, elab);
 			comment_new = (Long) LogbookTools.getCommentCountNew(logId, elab);
 			if (new_log != null && new_log.equals("t")) {
-				thereAreNewEntries = "<a href=\"teacher-logbook-keyword.jsp?view_only_new=yes&keyword="+keyword+"&research_group_name="+research_group_name+"\">View only new entries.</a>";
+				thereAreNewEntries = "<a href=\"teacher-logbook-keyword.jsp?view_only_new=yes&keyword="+keyword+
+						"&research_group_name="+research_group_name+"\">View only new entries</a>";
 				comment_info = comment_info
 						+ "<IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font> <a href=\"teacher-logbook-keyword.jsp?mark_as_read=yes&log_id="+String.valueOf(logId)+"&keyword="+keyword+"\" style=\"text-decoration: none;\"><FONT size=\"-2\"><strong>Mark as Read</strong></font></a><br />";
 			}
@@ -164,6 +165,10 @@
 		messages += e.getMessage();
 	}
 	request.setAttribute("messages", messages);
+	if (view_only_new.equals("yes")) {
+		thereAreNewEntries = "<a href=\"teacher-logbook-keyword.jsp?view_only_new=no&keyword="+keyword+
+				"&research_group_name="+research_group_name+"\">View all entries</a>";
+	}
 	request.setAttribute("thereAreNewEntries", thereAreNewEntries);
 	request.setAttribute("linksToEach", linksToEach);
 	request.setAttribute("keyword_description", keyword_description);
@@ -237,13 +242,14 @@
 										</div>
 									</td>
 									<td valign="top" align="center">
+										<div witdh="630">
 										<div style="border-style: dotted; border-width: 1px; width: 550px;">
 										<table width="550">
 											<tr>
-												<td align="left"><font size="+1" face="Comic Sans MS">Instructions</font></td>
+												<td align="left"><font size="+1">Instructions</font></td>
 											</tr>						
 											<tr>
-												<td><font size="-1" face="Comic Sans MS">
+												<td><font size="-1">
 													<ul>
 														<li>Select a milestone on the left to look at logbook entries of all your groups for a particular milestone.</li>
 														<li>New log entries are marked as <img src="../graphics/new_flag.gif" border="0" align="center" alt="">
@@ -251,6 +257,8 @@
 												        </li>
 														<li>Click <b>Mark as Read</b> once you read the new entries.</li>
 														<li>Enter comments in the textbox below the student's logbook entry.</li>
+														<li>Toggle between <strong>'View only new entries'/'View all entries'</strong> to filter the results.</li>
+														<li>Click <strong>Submit All</strong> to save your comments.</li>														
 													</ul>
 												</font></td>
 											</tr>
@@ -258,18 +266,17 @@
 										</div>
 										<table>
 											<tr>
-												<td align="center" height="20"><FONT color="#AA3366" face="Comic Sans MS"><strong>${thereAreNewEntries }</strong></FONT></td>
+												<td align="center" height="20"><FONT color="#AA3366"><strong>${thereAreNewEntries }</strong></FONT></td>
 											</tr>
 										</table>										
-										<p>
 										<h2>All logbook entries for your research groups<br> for "${keyword_description }"</h2>		
 										<table width="600">
 											<c:choose>
 												<c:when test="${not empty groupInfo }">
 												<tr><td colspan="2">
-													<table width="600">
+													<table width="630">
 														<tr>
-															<td width="600" align="right">
+															<td width="630" align="right">
 									 							<div style="position: fixed; width: 600px;">
 																	<input type="submit" name="submit" id="submitButton" value="Submit All">
 																</div>													
@@ -304,8 +311,8 @@
 																		</tr>
 																		<tr>
 																			<td width="100"> </td>
-																			<td valign="top"><font face="Comic Sans MS">${commentInfo.value[3]}</font><br />
-																				<font face="Comic Sans MS" size="-2">
+																			<td valign="top"><font>${commentInfo.value[3]}</font><br />
+																				<font size="-2">
 																					<c:if test="${not empty commentInfo.value[6] }">
 																						<c:forEach items="${commentInfo.value[6] }" var="comments">
 																							${comments }<br />
@@ -342,6 +349,7 @@
 												</c:otherwise>
 											</c:choose>	
 										</table>
+									 </div>
 									</td>
 								</tr>
 							</table>

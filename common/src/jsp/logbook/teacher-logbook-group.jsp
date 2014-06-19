@@ -182,7 +182,8 @@
 			comment_new = (Long) LogbookTools.getCommentCountNew(logid, elab);
 
 			if (new_log != null && new_log == true) {
-				thereAreNewEntries = "<a href=\"teacher-logbook-group.jsp?view_only_new=yes&keyword="+keyword+"&research_group_name="+research_group_name+"\">View only new entries.</a>";
+				thereAreNewEntries = "<a href=\"teacher-logbook-group.jsp?view_only_new=yes&keyword="+keyword+"&research_group_name="+
+									 research_group_name+"\">View only new entries</a>";
 				comment_info = "<IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font> <a href=\"teacher-logbook-group.jsp?mark_as_read=yes&log_id="+String.valueOf(logid)+"&research_group_name="+research_group_name+"\" style=\"text-decoration: none;\"><FONT size=\"-2\"><strong>Mark as Read</strong></font></a><br />";
 			}
 			String comment_header = "";
@@ -259,6 +260,10 @@
 	}
 		
 	request.setAttribute("messages", messages);
+	if (view_only_new.equals("yes")) {
+		thereAreNewEntries = "<a href=\"teacher-logbook-group.jsp?view_only_new=no&keyword="+keyword+"&research_group_name="+
+				 research_group_name+"\">View all entries</a>";
+	}
 	request.setAttribute("thereAreNewEntries", thereAreNewEntries);
 	request.setAttribute("subtitle", subtitle);
 	request.setAttribute("yesNo", yesNo);
@@ -373,10 +378,10 @@
 									<div style="border-style: dotted; border-width: 1px; width: 550px;">
 										<table width="550">
 											<tr>
-												<td align="left"><font size="+1" face="Comic Sans MS">Instructions</font></td>
+												<td align="left"><font size="+1">Instructions</font></td>
 											</tr>						
 											<tr>
-												<td><font size="-1" face="Comic Sans MS">
+												<td><font size="-1">
 													<ul>
 														<li>Select a group on the left to display the logbook entries.</li>
 														<li>New log entries are marked as <img src="../graphics/new_flag.gif" border="0" align="center" alt="">
@@ -386,6 +391,8 @@
 														<li>Click <b>Mark as Read</b> once you read the new entries.</li>
 														<li>Click on a milestone to limit your view to entries for that milestone.</li>
 														<li>Enter comments in the textbox below the student's logbook entry.</li>
+														<li>Toggle between <strong>'View only new entries'/'View all entries'</strong> to filter the results.</li>
+														<li>Click <strong>Submit All</strong> to save your comments.</li>
 													</ul>
 												</font></td>
 											</tr>
@@ -393,7 +400,7 @@
 										</div>
 										<table width="500">
 											<tr>
-												<td align="center" height="20"><FONT color="#AA3366" face="Comic Sans MS"><strong>${thereAreNewEntries }</strong></FONT></td>
+												<td align="center" height="20"><FONT color="#AA3366"><strong>${thereAreNewEntries }</strong></FONT></td>
 											</tr>
 										</table>										
 										<c:choose>
@@ -417,12 +424,12 @@
 																	<c:choose>
 																		<c:when test='${logbookSectionOrder.value == "general" }'>
 																			<tr align="left">
-																				<td colspan="2"><font face="Comic Sans MS" size="+2"></font></td>
+																				<td colspan="2"><font size="+2"></font></td>
 																			</tr>
 																		</c:when>
 																		<c:otherwise>
 																			<tr align="left">
-																				<td colspan="2"><font face="Comic Sans MS" size="+2">${logbookSectionOrder.value }</font></td>
+																				<td colspan="2"><font size="+2">${logbookSectionOrder.value }</font></td>
 																			</tr>
 																		</c:otherwise>
 																	</c:choose>	
@@ -436,8 +443,8 @@
 																								<c:when test='${logbookSections.key == fn:substring(logbookSectionKeywords.key, 0, fn:indexOf(logbookSectionKeywords.key,  "-")) }'>
 																									<tr align="left">
 																										<td colspan="2">
-																											<font face="Comic Sans MS" size="+1" color="#AA3366">${logbookSectionKeywords.value[1] }</font> - 
-																											<font face="Comic Sans MS">${logbookSectionKeywords.value[0]}</font> 
+																											<font size="+1" color="#AA3366">${logbookSectionKeywords.value[1] }</font> - 
+																											<font>${logbookSectionKeywords.value[0]}</font> 
 																										</td>
 																									</tr>
 																									<c:choose>			
@@ -465,8 +472,8 @@
 																															<tr>
 																																<td width="100"> </td>
 																																<td width="450" valign="middle">
-																														           <font face="Comic Sans MS">${logbookEntries.value[3]}</font>
-																																	<font face="Comic Sans MS" size=-2>
+																														           <font>${logbookEntries.value[3]}</font>
+																																	<font size=-2>
 																																		<c:if test="${not empty logbookEntries.value[6] }">
 																																			<c:forEach items="${logbookEntries.value[6] }" var="comments">
 																																				${comments }<br />
@@ -509,10 +516,10 @@
 															<td colspan="2">
 															<c:choose>
 																<c:when test="${not empty keyword_name }">
-																	<font face="Comic Sans MS" size="+1">No entries for<br> "${keyword_display}: ${keyword_description}"</font></a>
+																	<font size="+1">No entries for<br> "${keyword_display}: ${keyword_description}"</font></a>
 																</c:when>
 																<c:otherwise>
-																	<font face="Comic Sans MS" size="+1">No entries.</font></a>													
+																	<font size="+1">No entries.</font></a>													
 																</c:otherwise>
 																</c:choose>
 															</td>

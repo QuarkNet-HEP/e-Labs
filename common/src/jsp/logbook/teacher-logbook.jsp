@@ -231,10 +231,10 @@
 										<table width="550">
 											<tr>
 												<td align="left" colspan="4">
-													<font size="+1" face="Comic Sans MS">Instructions</font>
+													<font size="+1">Instructions</font>
 												</td>
 											<tr>
-												<td><font size="-1" face="Comic Sans MS">
+												<td><font size="-1">
 													<ul>
 														<li>Select a group on the left to make an entry in your private logbook.</li>
 														<li>Click "By Milestone" to see all logbook entries of your groups for a particular milestone.</li>
