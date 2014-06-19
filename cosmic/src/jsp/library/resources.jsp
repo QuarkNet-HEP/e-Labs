@@ -110,7 +110,7 @@
 					</div>
 				</div>
 				<div class="tab" id="tab-equip">
-					<span class="tab-title" style="width: 200px;">CMRD Data Collection</span>	
+					<span class="tab-title" style="width: 200px;">CRMD Data Collection</span>	
 					<div class="tab-contents-sublevel">
 						<ul class="simple">
 							<li>
