@@ -328,9 +328,9 @@
 						<form method="post" name="log" action="">
 						<table width="900" cellpadding="0" border="0" align="left">
 							<tr>
-								<td valign="top" width="160" nowrap>
+								<td valign="top" width="150" nowrap>
 									<div style="height:700px; width:150px; position: fixed; overflow:auto;">
-									<table width="140">
+									<table width="145">
 										<tr>
 											<td valign="center" align="left">
 												<a href="student-logbook.jsp"><font face="Comic Sans MS">
@@ -362,8 +362,8 @@
 										<img src="../graphics/blue_square.gif" border="0" width="2" height="700" alt="">
 									</div>
 								</td>
-								<td valign="top" width="350">
-									<div style="width: 290px; position:fixed;">									
+								<td valign="top" width="300">
+									<div style="width:295px; height: 700px; position:fixed; overflow-y: auto;">									
 										<c:catch var="e">
 											<c:import url="${references}" />
 										</c:catch>
@@ -377,8 +377,9 @@
 										<img src="../graphics/blue_square.gif" border="0" width="2" height="700" alt="">
 									</div>
 								</td>
-								<td valign="top" align="center">		
-									<table width="360">
+								<td valign="top" align="center">	
+								    <div style="width: 440px;">	
+									<table width="440">
 										<tr>
 											<td align="right">
 												<img src="../graphics/logbook_large.gif" align="middle" border="0" alt="">
@@ -389,7 +390,7 @@
 										</tr>
 									</table>
 									<div style="border-style: dotted; border-width: 1px;">
-										<table width="360">
+										<table width="440">
 											<tr>
 												<td align="left">
 													<font size="+1" face="Comic Sans MS">Instructions</font>
@@ -413,7 +414,7 @@
 											<td align="center" height="20"><FONT color="#AA3366" face="Comic Sans MS"><strong>${thereAreNewComments }</strong></FONT></td>
 										</tr>
 									</table>
-								<table width="360">
+								<table width="440">
 									<c:choose>
 										<c:when test="${not empty logbookSectionOrder }">
 											<c:forEach items="${logbookSectionOrder }" var="logbookSectionOrder"> 
@@ -443,7 +444,7 @@
 																			</tr>
 																			<tr>
 																				<td colspan="2">
-																					<textarea name="log_text" cols="50" rows="5"></textarea>
+																					<textarea name="log_text" cols="55" rows="5"></textarea>
 																					<!-- //EPeronja-04/08/2013: replace " by ', string was not showing correctly -->
 																					<input type="hidden" name="img_src" value='${img_src}'> 
 																					<input type="hidden" name="count" value="${count }">
@@ -515,7 +516,7 @@
 											</tr>
 											<tr>
 												<td colspan="2">
-													<textarea name="log_text" cols="50" rows="5"></textarea>
+													<textarea name="log_text" cols="55" rows="5"></textarea>
 													<!-- //EPeronja-04/08/2013: replace " by ', string was not showing correctly -->
 													<input type="hidden" name="img_src" value='${img_src}'> 
 													<input type="hidden" name="count" value="${count }">
@@ -529,7 +530,8 @@
 																								
 										</c:otherwise>
 									</c:choose>
-								</table>				
+								</table>
+								</div>				
 								</td>
 							</tr>
 						</table>
