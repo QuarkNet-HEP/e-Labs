@@ -213,8 +213,8 @@
 							<table width="800" cellpadding="0" border="0" align="left">
 								<tr>
 									<td valign="top" width="150">
-										<div style="height:650px; width:150px; position: fixed; overflow:auto;">
-											<table width="140">
+										<div style="height:500px; width:150px; position: fixed; overflow:auto;">
+											<table width="145">
 												<tr>
 													<td><a href="teacher-logbook-group.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">By Group</a></td>
 												</tr>
@@ -263,19 +263,20 @@
 										</table>										
 										<p>
 										<h2>All logbook entries for your research groups<br> for "${keyword_description }"</h2>		
-										<table>
+										<table width="630">
 											<c:choose>
 												<c:when test="${not empty groupInfo }">
-													<table width="550">
+												<tr><td colspan="2">
+													<table width="630">
 														<tr>
-															<td width="550" align="right">
-									 							<div style="position: fixed; width: 550px;">
+															<td width="630" align="right">
+									 							<div style="position: fixed; width: 610px;">
 																	<input type="submit" name="submit" id="submitButton" value="Submit All">
 																</div>													
 															</td>
 														</tr>
 													</table>
-
+												</td></tr>
 													<c:forEach items="${groupInfo }" var="groupInfo">
 														<tr align="center">
 															<td colspan="2"><font size="+1">Group: ${groupInfo }</font></td>
