@@ -212,7 +212,7 @@
 							<center>
 							<table width="800" cellpadding="0" border="0" align="left">
 								<tr>
-									<td valign="top" width="150">
+									<td valign="top" width="150" nowrap>
 										<div style="height:500px; width:150px; position: fixed; overflow:auto;">
 											<table width="145">
 												<tr>
@@ -263,14 +263,14 @@
 										</table>										
 										<p>
 										<h2>All logbook entries for your research groups<br> for "${keyword_description }"</h2>		
-										<table width="630">
+										<table width="600">
 											<c:choose>
 												<c:when test="${not empty groupInfo }">
 												<tr><td colspan="2">
-													<table width="630">
+													<table width="600">
 														<tr>
-															<td width="630" align="right">
-									 							<div style="position: fixed; width: 610px;">
+															<td width="600" align="right">
+									 							<div style="position: fixed; width: 600px;">
 																	<input type="submit" name="submit" id="submitButton" value="Submit All">
 																</div>													
 															</td>
