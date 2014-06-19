@@ -28,7 +28,7 @@ public class DefaultAnalysisNotifier implements AnalysisRunListener, AnalysisNot
             Elab elab = run.getAnalysis().getElab();
             //EP-login analysis for statistics
             try {
-            	DataTools.insertAnalsysResults(run, elab);
+            	DataTools.insertAnalysisResults(run, elab);
             } catch (Exception ex) {
                 System.err.println("Failed to log analysis for stats");
                 ex.printStackTrace();            	

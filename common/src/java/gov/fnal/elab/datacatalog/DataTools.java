@@ -424,7 +424,7 @@ public class DataTools {
         srs.setDataFileCount(new_count);
         return srs;
     }
-
+    
     public static final DateFormat TZ_DATE_TIME_FORMAT;
 
     static {
@@ -432,7 +432,7 @@ public class DataTools {
     }
 
     //EPeronja-05/20/2014: Insert Analysis results for statistics
-    public static void insertAnalsysResults(AnalysisRun ar, Elab elab) throws ElabException {
+    public static void insertAnalysisResults(AnalysisRun ar, Elab elab) throws ElabException {
         Connection conn = null;
         PreparedStatement psAnalysisResult; 
         try {
