@@ -163,7 +163,6 @@
 						<td width="550"><font size="+2">Teachers: View Your <b>Private</b> Logbook<br /> on Student Research Groups.</font></td>
 					</tr>
 				</table>
-				<center>
 				
 				<c:choose>
 					<c:when test="${not empty messages }">
@@ -265,8 +264,8 @@
 																		<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
 																		<c:choose>
 																			<c:when test="${logbookResults.value[1] != logbookResults.value[3]}">
-																				<div id="fullLog${logbookResults.value[2]}" style="display:none;"><e:whitespaceAdjust text="${logbookResults.value[1]}"></e:whitespaceAdjust></div>
-																				<div id="showLog${logbookResults.value[2]}"><e:whitespaceAdjust text="${logbookResults.value[3]}" /> . . .<a href='javascript:showFullLog("showLog${logbookResults.value[2]}","fullLog${logbookResults.value[2]}");'>Read More</a></div>
+																				<div id="fullLog${logbookResults.value[2]}" style="display:none; width: 300px; height: 100%;"><e:whitespaceAdjust text="${logbookResults.value[1]}"></e:whitespaceAdjust></div>
+																				<div id="showLog${logbookResults.value[2]}" style="width: 300px; height: 100%;"><e:whitespaceAdjust text="${logbookResults.value[3]}" /> . . .<a href='javascript:showFullLog("showLog${logbookResults.value[2]}","fullLog${logbookResults.value[2]}");'>Read More</a></div>
 																		    </c:when>
 																		    <c:otherwise>
 																			    <e:whitespaceAdjust text="${logbookResults.value[1]}"></e:whitespaceAdjust>
@@ -314,7 +313,6 @@
 						</form>						
 					</c:otherwise>
 				</c:choose>
-				</center>
 			</div>
 			<!-- end content -->	
 		

@@ -1029,8 +1029,8 @@ public class LogbookTools {
 							"\\<(.|\\n)*?\\>", "");
 				if (comment_truncated.length() > 40) {
 					comment_truncated = comment_truncated.substring(0, 40);
-					commentEntry += "<div id=\"fullComment"+String.valueOf(localCnt)+"\" style=\"display:none;\">"+ElabUtil.whitespaceAdjust(comment_text)+"</div>"+
-									"<div id=\"showComment"+String.valueOf(localCnt)+"\">"+ElabUtil.whitespaceAdjust(comment_truncated)+
+					commentEntry += "<div id=\"fullComment"+String.valueOf(localCnt)+"\" style=\"display:none; width: 100px; height: 100%;\">"+ElabUtil.whitespaceAdjust(comment_text)+"</div>"+
+									"<div id=\"showComment"+String.valueOf(localCnt)+"\" style=\"width: 100px; height: 100%;\">"+ElabUtil.whitespaceAdjust(comment_truncated)+
 									" . . .<a href=\'javascript:showFullComment(\"showComment"+String.valueOf(localCnt)+"\",\"fullComment"+String.valueOf(localCnt)+"\");\'>Read More</a></div>";
 				} else {
 					commentEntry += ElabUtil.whitespaceAdjust(comment_text);
