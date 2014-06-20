@@ -145,7 +145,24 @@ public class LogbookToolsTest {
 	    assertTrue(comment_new == 1);		
 	    assertTrue(message.equals(""));			
 	}//end of test_getCommentCountNew
-	//continue here
-	//ArrayList commentDetails = LogbookTools.buildCommentDetails(log_id, comment_header, elab);													
+	
+	@Test
+	public void test_buildCommentDetails() {
+		ArrayList commentDetails = null;
+		String message = "";
+		try {
+			//140: undergrads
+			commentDetails = LogbookTools.buildCommentDetails(newLogId, "Unit Testing: comment header", 1, cosmicElab);
+		} catch (Exception e) {
+			message = e.getMessage();
+		}		
+	    assertTrue(commentDetails != null);		
+	    assertTrue(message.equals(""));					
+	}//end of test_buildCommentDetails
+
+	@Test
+	public void test_updateResetCommentForLogbookEntry() {
+		
+	}//end of test_updateResetCommentForLogbookEntry
 	//LogbookTools.updateResetCommentsforLogbookEntry(logMark, elab);
 }//end of LogbookToolsTest class

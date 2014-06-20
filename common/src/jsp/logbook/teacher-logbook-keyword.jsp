@@ -72,6 +72,7 @@
 
 	// look for any previous log entries for this keyword and all research groups
 	int itemCount = 0;
+	int commentCnt = 0;
 	String current_rg_name = "";
 	String linkText = "";
 	ArrayList groupInfo = new ArrayList();
@@ -125,7 +126,9 @@
 				comment_header =  "<strong>comments: " + comment_count + " (<FONT color=\"#AA3366\">" + comment_new + "</FONT>) " + "</strong>";
 			}
 
-			ArrayList commentDetails = LogbookTools.buildCommentDetails(logId, comment_header, elab);			
+			ArrayList commentDetails = LogbookTools.buildCommentDetails(logId, comment_header, commentCnt, elab);		
+			commentCnt = commentCnt + Integer.parseInt(String.valueOf(comment_count)) + 1;
+
 			itemCount++;
 			ArrayList details = new ArrayList();
 			details.add(logId);//0
