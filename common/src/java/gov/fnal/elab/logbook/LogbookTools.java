@@ -128,190 +128,6 @@ public class LogbookTools {
         }    	
         return rs;
 	}//end of getLogbookItems	
-
-	/*
-	 * Build links to each group
-	 */
-	public static String buildGroupLinks(ElabGroup user, String page_name) throws ElabException {
-		String linksToEachGroup= "";
-		//get all research groups and build links
-		Collection<ElabGroup> rgTeacherGroups = user.getGroups();
-		Iterator it = rgTeacherGroups.iterator();
-		while (it.hasNext()){
-			ElabGroup eg = (ElabGroup) it.next();
-			if (eg.getRole().equals("user") || eg.getRole().equals("upload")) {
-				//EPeronja-only display active research groups
-				if (eg.getActive()) {
-					linksToEachGroup = linksToEachGroup
-							+ "<tr><td><A HREF='"+page_name + eg.getName() + "'>" + eg.getName()+ "</A></td></tr>";
-				}
-			}
-		}//end while loop
-		return linksToEachGroup;
-	}//end of buildLogbookLinkstoKeywords	
-
-	/*
-	 * Build links to each keyword
-	 */
-	public static String buildTeacherKeywordLinks(int project_id, String keyword, Elab elab) throws ElabException {
-		String linksToEach= "";
-		int keyword_id;
-		String keyword_loop, keyword_description, keyword_text, keyColor;
-		try {
-			ResultSet rs = LogbookTools.getLogbookKeywordItems(project_id, "", elab);
-			String current_section = "";
-			while (rs.next()) {
-				keyword_id = (Integer) rs.getObject("id");
-				keyword_loop = rs.getString("keyword");
-				keyword_text = keyword_loop.replaceAll("_", " ");
-				keyword_description = rs.getString("description");
-				String this_section = (String) (rs.getString("section"));
-				if (!keyword_loop.equals("general")) {
-					if (!this_section.equals(current_section)) {
-						try {
-							String section_text = LogbookTools.getSectionText(this_section);
-							linksToEach = linksToEach
-									+ "<tr><td>&nbsp;</td></tr><tr><td>"
-									+ section_text + "</td></tr>";
-							current_section = this_section;
-						} catch (Exception e) {
-							throw new ElabException(e);
-						}
-					}
-					keyColor = "";
-					if (keyword.equals(keyword_loop)) {
-						keyColor = "color=\"#AA3366\"";
-					}
-					linksToEach = linksToEach
-							+ "<tr><td><A HREF='teacher-logbook-keyword.jsp?keyword="
-							+ keyword_loop + "'>"
-							+ keyword_text + "</font></A></td></tr>";
-				}
-			}
-		} catch (Exception e) {
-			throw new ElabException(e);
-		}
-		return linksToEach;
-	}//end of buildLogbookLinkstoKeywords	
-	
-	/*
-	 * Build keyword links
-	 */
-	public static String buildStudentKeywordLinks(ResultSet rs, HashMap keywordTracker, String keyword) throws ElabException {
-		String linksToEach = "";
-		String current_section = "";
-		try {
-			while (rs.next()) {
-				Integer keyword_id = (Integer) rs.getObject("id");
-				String keyword_loop = rs.getString("keyword");
-				String keyword_text = keyword_loop.replaceAll("_"," ");
-				String keyword_description = rs.getString("description");
-				String this_section = (String)(rs.getString("section"));
-				String yesNo = "no";
-				if (!keyword_loop.equals("general")) {
-					if (!this_section.equals(current_section)) {
-						String section_text = LogbookTools.getSectionText(this_section);
-						linksToEach=linksToEach + "<tr><td>&nbsp;</td></tr><tr><td><font face='Comic Sans MS'>"+section_text+"</font></td></tr>";
-						current_section = this_section;
-					}
-					if (keywordTracker.containsKey(keyword_id.intValue())) {
-						yesNo="yes";
-					}
-					String keyColor="";
-					if (keyword.equals(keyword_loop)) { 
-						keyColor="color=\"#AA3366\"";
-					}
-					linksToEach=linksToEach + "<tr><td><img src=\"../graphics/log_entry_" + yesNo + ".gif\" border=0 align=center><a href='student-logbook.jsp?keyword="+keyword_loop+"'><font face='Comic Sans MS'"+keyColor+">"+keyword_text+"</face></a></td></tr>";		
-				}
-			}
-		} catch (Exception e) {
-	      throw new ElabException(e);
-		}
-		return linksToEach;
-	}//end of buildLogbookLinkstoKeywords
-
-	/*
-	 * Build keyword links
-	 */
-	public static String buildGroupLinksToKeywords(ResultSet rs, HashMap keywordTracker, String keyword, String research_group_name) throws ElabException {
-		String linksToEach = "";
-		String current_section = "";
-		try {
-			while (rs.next()) {
-				Integer keyword_id = (Integer) rs.getObject("id");
-				String keyword_loop = rs.getString("keyword");
-				String keyword_text = keyword_loop.replaceAll("_"," ");
-				String keyword_description = rs.getString("description");
-				String this_section = (String)(rs.getString("section"));
-				String yesNo = "no";
-				if (!keyword_loop.equals("general")) {
-					if (!this_section.equals(current_section)) {
-						String section_text = LogbookTools.getSectionText(this_section);
-						linksToEach=linksToEach + "<tr><td>&nbsp;</td></tr><tr><td><font face='Comic Sans MS'>"+section_text+"</font></td></tr>";
-						current_section = this_section;
-					}
-					if (keywordTracker.containsKey(keyword_id.intValue())) {
-						yesNo="yes";
-					}
-					String keyColor="";
-					if (keyword.equals(keyword_loop)) { 
-						keyColor="color=\"#AA3366\"";
-					}
-					linksToEach=linksToEach
-							+ "<tr><td><img src=\"../graphics/log_entry_"
-							+ yesNo
-							+ ".gif\" border=0 align=center><A HREF='teacher-logbook-group.jsp?research_group_name="
-							+ research_group_name + "&keyword="
-							+ keyword_loop + "'><FONT  " + keyColor + ">"
-							+ keyword_text + "</font></A></td></tr>";				
-				}
-			}
-		} catch (Exception e) {
-	      throw new ElabException(e);
-		}
-		return linksToEach;
-	}//end of buildGroupLinksToKeywords
-
-	/*
-	 * Build build comment details
-	 */
-	public static ArrayList buildCommentDetails(int log_id, String comment_info, Elab elab) throws ElabException {
-		ArrayList commentDetails = new ArrayList();								
-		commentDetails.add(comment_info);
-		try {
-			ResultSet commentRs = LogbookTools.getCommentDetails(log_id, elab);
-			String comment_date = "";
-			String comment_text = "";
-			String commentEntry = "";	
-			int commentCnt = 0;
-			while (commentRs.next()) {
-				comment_date = commentRs.getString("comment_date");
-				if (comment_date == null) {
-					comment_date = "";
-				}
-				comment_text = comment_date + ": " + commentRs.getString("comment");
-				if (comment_text == null) {
-					comment_text = "";
-				}
-				commentEntry = "";
-				String comment_truncated;
-				comment_truncated = comment_text.replaceAll(
-							"\\<(.|\\n)*?\\>", "");
-				if (comment_truncated.length() > 40) {
-					comment_truncated = comment_truncated.substring(0, 25);
-					commentEntry += "<div id=\"fullLog"+String.valueOf(commentCnt)+"\" style=\"display:none;\">"+ElabUtil.whitespaceAdjust(comment_text)+"</div>"+
-									"<div id=\"showLog"+String.valueOf(commentCnt)+"\">"+ElabUtil.whitespaceAdjust(comment_truncated)+" . . .<a href=\'javascript:showFullComment(\"showLog"+String.valueOf(commentCnt)+"\",\"fullLog"+String.valueOf(commentCnt)+"\");\'>Read More</a></div>";
-				} else {
-					commentEntry += ElabUtil.whitespaceAdjust(comment_text);
-				}
-				commentDetails.add(commentEntry);
-				commentCnt++;
-			} //while for comments
-		} catch (Exception e) {
-			throw new ElabException(e);
-		}
-		return commentDetails;
-	}//end of buildCommentDetails
 	
 	/*
 	 * Retrieve keyword details by project
@@ -538,9 +354,6 @@ public class LogbookTools {
         				  " keyword.description AS description, keyword.id AS data_keyword_id, keyword.keyword AS keyword_name, keyword.section AS section, "+ 
         				  " keyword.section_id AS section_id, log.new_log AS new FROM log, keyword ";
         String querySort="ORDER BY keyword.section, keyword.section_id, log_id DESC;";
-
-		querySort =  "ORDER BY keyword.section, keyword.section_id, log.id DESC;";
-		queryItems = "SELECT log.id AS log_id, to_char(log.date_entered,'DD Mon YYYY HH12:MI AM') AS date_entered, log_text, keyword.description AS description, keyword.id AS data_keyword_id, keyword.keyword AS keyword_name, keyword.section AS section, keyword.section_id AS section_id, log.new_log AS new FROM log, keyword ";
         
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
@@ -571,6 +384,23 @@ public class LogbookTools {
         return rs;			
 	}//end of getLogbookEntries
 
+	public static TreeMap<String, ArrayList> entriesSorted(TreeMap<String, ArrayList> tm) {
+		TreeMap<String, ArrayList> sortedEntries = new TreeMap<String, ArrayList>()
+			{
+				public int compare(String s1, String s2) {
+					int rank = getRank(s1) - getRank(s2);
+					return rank;
+				}
+				private int getRank(String s) {
+					String innerRank = s.substring(s.indexOf("-")+1, s.length());
+					return Integer.parseInt(innerRank);
+				}
+			};
+		for (Map.Entry<String, ArrayList> e: tm.entrySet()) {
+			sortedEntries.put(e.getKey(), e.getValue());
+		}
+		return sortedEntries;
+	}
 	/*
 	 * Retrieve logbook entries by teacher
 	 */
@@ -629,12 +459,15 @@ public class LogbookTools {
 	}//end of getSectionText
 
 	/*
-	 * Insert entry user
+	 * Insert entry for student
 	 */
-	public static void insertLogbookEntry(int project_id, int research_group_id, int keyword_id, String log_enter, String role, Elab elab) throws ElabException {
-        Connection conn = null; 
+	public static int insertLogbookEntry(int project_id, int research_group_id, int keyword_id, String log_enter, String role, Elab elab) throws ElabException {
+        int id = -1;
+        ResultSet rs;
+		Connection conn = null; 
         PreparedStatement ps = null; 		
-        String insert = "INSERT INTO log (project_id, research_group_id, keyword_id, role, log_text, new_log) VALUES (?, ?, ?, ?, ?, 't');";        	
+        String insert = " INSERT INTO log (project_id, research_group_id, keyword_id, role, log_text, new_log) "+
+        				" VALUES (?, ?, ?, ?, ?, 't') RETURNING id;";        	
         try {
 			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
 			ps = conn.prepareStatement(insert);
@@ -643,7 +476,10 @@ public class LogbookTools {
 			ps.setInt(3, keyword_id);
 			ps.setString(4, role);
 			ps.setString(5, log_enter);
-			int i = ps.executeUpdate();
+		    rs = ps.executeQuery();
+		    while (rs.next()) {
+		    	id = rs.getInt("id");
+		    }
         } catch (SQLException e) {
             throw new ElabException(e);
         } finally {
@@ -651,6 +487,7 @@ public class LogbookTools {
                 DatabaseConnectionManager.close(conn);
             }
         }    	
+        return id;
 	}//end of insertLogbookEntry
 
 	/*
@@ -659,7 +496,8 @@ public class LogbookTools {
 	public static void insertLogbookEntryTeacher(int project_id, int research_group_id, int ref_rg_id, String log_enter, String role, Elab elab) throws ElabException {
         Connection conn = null; 
         PreparedStatement ps = null; 		
-        String insert = "INSERT INTO log (project_id, research_group_id, ref_rg_id, role, log_text, new_log) VALUES (?, ?, ?, ?, ?, 't');";
+        String insert = " INSERT INTO log (project_id, research_group_id, ref_rg_id, role, log_text, new_log) "+
+        				" VALUES (?, ?, ?, ?, ?, 't') RETURNING id;";
         try {
 			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
 			ps = conn.prepareStatement(insert);
@@ -677,30 +515,7 @@ public class LogbookTools {
             }
         }    	
 	}//end of insertLogbookEntryTeacher
-
-	/*
-	 * Update entry
-	 */
-	public static int updateLogbookEntry(String log_enter, int log_id, Elab elab) throws ElabException {
-        Connection conn = null; 
-        PreparedStatement ps = null;
-        int i = 0;
-        try {
-			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-			ps = conn.prepareStatement("UPDATE log SET log_text = ? WHERE  id = ?;");
-			ps.setString(1, log_enter);
-			ps.setInt(2, log_id);
-			i = ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new ElabException(e);
-        } finally {
-            if (conn != null) {
-                DatabaseConnectionManager.close(conn);
-            }
-        }    
-        return i;
-	}//end of updateLogbookEntry
-
+	
 	/*
 	 * Reset new logbook entry to false
 	 */
@@ -722,160 +537,6 @@ public class LogbookTools {
         }    
         return i;
 	}//end of updateResetComment	
-	
-	/*
-	 *  Get id from entered data
-	 */
-	public static int getLogId(int research_group_id, int project_id, int keyword_id, String role, Elab elab) throws ElabException {
-        Connection conn = null;
-        PreparedStatement ps; 
-        ResultSet rs;
-        String select = "SELECT id "+
-        				"  FROM log " + 
-						" WHERE research_group_id = ? "+
-        				"   AND project_id = ? "+
-        				"   AND role = ? " + 
-						"   AND keyword_id = ? "+
-						" ORDER BY id DESC;";
-
-        int log_id = -1;
-        try {
-            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = conn.prepareStatement(select);
-    		ps.setInt(1, research_group_id);
-    		ps.setInt(2, project_id);
-    		ps.setString(3, role);
-    		ps.setInt(4, keyword_id);
-            rs = ps.executeQuery(); 
-    		if (rs.next()) {
-    			log_id = (Integer) rs.getObject("id");
-    		}
-                
-        } catch (SQLException e) {
-            throw new ElabException(e);
-        } finally {
-            if (conn != null) {
-                DatabaseConnectionManager.close(conn);
-            }
-        }    	
-        return log_id;		
-	}//end of getLogId
-
-
-	/*
-	 *  Get id from entered data teacher
-	 */
-	public static int getLogIdTeacher(int research_group_id, int project_id, int ref_rg_id, String role, Elab elab) throws ElabException {
-        Connection conn = null;
-        PreparedStatement ps; 
-        ResultSet rs;
-        String select = "SELECT id "+
-        				"  FROM log " + 
-						" WHERE research_group_id = ? "+
-        				"   AND project_id = ? "+
-        				"   AND role = ? " + 
-						"   AND ref_rg_id = ? "+
-						" ORDER BY id DESC;";
-
-        int log_id = -1;
-        try {
-            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = conn.prepareStatement(select);
-    		ps.setInt(1, research_group_id);
-    		ps.setInt(2, project_id);
-    		ps.setString(3, role);
-    		ps.setInt(4, ref_rg_id);
-            rs = ps.executeQuery(); 
-    		if (rs.next()) {
-    			log_id = (Integer) rs.getObject("id");
-    		}
-                
-        } catch (SQLException e) {
-            throw new ElabException(e);
-        } finally {
-            if (conn != null) {
-                DatabaseConnectionManager.close(conn);
-            }
-        }    	
-        return log_id;		
-	}//end of getLogIdTeacher
-
-	/*
-	 * Called from log-entry.jsp
-	 */
-	public static String buildLogbookEntriesPlusComments(int project_id, int keyword_id, int research_group_id, String groupName, Elab elab) throws ElabException {
-		String currentEntries = "";
-		int itemCount = 0;
-		String hrHtml = "";
-		ResultSet rs = null;
-		ResultSet innerRs = null;
-		try {
-			rs = LogbookTools.getLogbookEntriesTool(project_id, keyword_id, research_group_id, elab);
-			while (rs.next()) {
-				int cur_log_id = rs.getInt("cur_id");
-				String log_date = rs.getString("date_entered");
-				String cur_log_text = ElabUtil.whitespaceAdjust(rs.getString("cur_text"));
-				String log_date_show = log_date;
-				String log_text_show = cur_log_text;
-				itemCount++;
-				currentEntries = currentEntries + hrHtml;
-				if (itemCount == 1) {
-					currentEntries = currentEntries
-							+ "<tr><th valign='center' align='right'><IMG SRC='../graphics/logbook.gif' align='middle'></th><th valign='center' align='left'>"
-							+ groupName
-							+ "\'s log entries</th><th><IMG SRC='../graphics/blue_square.gif' width='1' height='20' align='top'></th><th valign='center' align='right'><IMG SRC='../graphics/logbook_comments.gif' align='middle'></th><th valign='center' align='left'>teacher\'s comments</th></tr><tr><td colspan='5'><HR  color='#1A8BC8'></td></tr>";
-				} //itemCount
-	
-				innerRs = LogbookTools.getCommentDetails(cur_log_id, elab);
-				int commentCount = 0;
-				String comment_date = "";
-				String comment_existing = "";
-				while (innerRs.next()) {
-					comment_date = innerRs.getString("comment_date");
-					comment_existing = innerRs.getString("comment");
-					commentCount++;
-					if (commentCount > 1) {
-						log_text_show = " ";
-						log_date_show = " ";
-						hrHtml = "";
-					} else {
-						hrHtml = "<tr><td colspan='5'><HR color='#1A8BC8'></td></tr>";
-					}
-	
-					currentEntries = currentEntries
-							+ "<tr><td valign='top' width='100' align='right'>"
-							+ log_date_show
-							+ "</td><td width='300'  valign='top'>"
-							+ log_text_show + "</td>";
-					currentEntries = currentEntries
-							+ "<td><IMG SRC='../graphics/blue_square.gif' width='1' height='20' align='top'><td valign='top' width='100' align='right'>"
-							+ comment_date
-							+ "</td><td width='300'  valign='top'>"
-							+ comment_existing + "</td></tr>";
-	
-				} //while for comments
-				if (commentCount == 0) {
-					currentEntries = currentEntries
-							+ "<tr><td valign='top' width='100' align='right'>"
-							+ log_date
-							+ "</td><td width='300'  valign='top'>"
-							+ cur_log_text
-							+ "</td><td><IMG SRC='../graphics/blue_square.gif' width='1' height='20' align='top'><td valign='top' width='100' align='right'>&nbsp;</td><td width='300'  valign='top'>No comments.</td></tr>";
-				}
-	
-				if (itemCount == 0) {
-					currentEntries = currentEntries
-							+ "<tr><td colspan='4' align='center'><FONT  size='+1'>No comments on this item.</FONT></td></tr>";
-				}
-			} //while for log
-		} catch (Exception e) {
-			throw new ElabException(e);
-		}
-	    currentEntries = currentEntries.replace("''","'");
-
-		
-		return currentEntries;
-	}//buildLogbookEntriesPlusComments
 	
 	///////COMMENTS TOOLS////////
 	/*
@@ -975,93 +636,23 @@ public class LogbookTools {
 	}//end of getCommentEntryById
 	
 	/*
-	 * Build existing comments for log-comments.jsp 
+	 * Insert new comment
 	 */
-	public static String buildExistingComments(Integer keyword_id, int research_group_id, int project_id, String research_group_name, Elab elab) throws ElabException {
-		String currentEntries = "";
-	  	int itemCount = 0;
-	  	String hrHtml = "";
-	  	ResultSet sInner = null;
-	  	try {
-		  	// look for any previous log entries for this keyword
-		  	ResultSet rs = LogbookTools.getCommentEntries(keyword_id, research_group_id, project_id, elab);
-		  	while (rs.next()) {
-		  		int log_id = rs.getInt("log_id");
-		  		String log_date = rs.getString("log_date");
-		  		String log_text = ElabUtil.whitespaceAdjust(rs.getString("log_text"));
-		  		String log_date_show = log_date;
-		  		String log_text_show = log_text;
-		  		itemCount++;
-		  		currentEntries = currentEntries + hrHtml;
-		  		if (itemCount == 1) {
-		  			currentEntries = currentEntries
-		  					+ "<tr><th valign='center' align='right'><IMG SRC='../graphics/logbook.gif' align='middle'></th><th valign='center' align='left'>"
-		  					+ research_group_name
-		  					+ "\'s log entries</th><th><IMG SRC='../graphics/blue_square.gif' width='1' height='20' align='top'></th><th valign='center' align='right'><IMG SRC='../graphics/logbook_comments.gif' align='middle'></th><th valign='center' align='left'>teacher\'s comments</th></tr><tr><td colspan='5'><HR  color='#1A8BC8'></td></tr>";
-		  		} //itemCount
-
-		  		// look for comments associated with this log item
-		  		sInner = LogbookTools.getCommentDetails(log_id, elab);
-		  		int commentCount = 0;
-		  		String comment_date = ""; // this makes baby dieties cry 
-		  		String comment_existing = "";
-		  		while (sInner.next()) {
-		  			comment_date = sInner.getString("comment_date");
-		  			comment_existing = ElabUtil.whitespaceAdjust(sInner.getString("comment"));
-		  			commentCount++;
-		  			if (commentCount > 1) {
-		  				log_text_show = " ";
-		  				log_date_show = " ";
-		  				hrHtml = "";
-		  			} else {
-		  				hrHtml = "<tr><td colspan='5'><HR color='#1A8BC8'></td></tr>";
-		  			}
-
-		  			currentEntries = currentEntries
-		  					+ "<tr><td valign='top' width='100' align='right'>"
-		  					+ log_date_show
-		  					+ "</td><td width='300'  valign='top'>"
-		  					+ log_text_show + "</td>";
-		  			currentEntries = currentEntries
-		  					+ "<td><IMG SRC='graphics/blue_square.gif' width='1' height='20' align='top'><td valign='top' width='100' align='right'>"
-		  					+ comment_date
-		  					+ "</td><td width='300'  valign='top'>"
-		  					+ comment_existing + "</td></tr>";
-
-		  		} //while for comments
-		  		if (commentCount == 0) {
-		  			currentEntries = currentEntries
-		  					+ "<tr><td valign='top' width='100' align='right'>"
-		  					+ log_date
-		  					+ "</td><td width='300'  valign='top'>"
-		  					+ log_text
-		  					+ "</td><td><IMG SRC='graphics/blue_square.gif' width='1' height='20' align='top'><td valign='top' width='100' align='right'>&nbsp;</td><td width='300'  valign='top'>No comments.</td></tr>";
-		  		}
-
-		  		if (itemCount == 0) {
-		  			currentEntries = currentEntries
-		  					+ "<tr><td colspan='4' align='center'><FONT  size='+1'>No comments on this item.</FONT></td></tr>";
-		  		}
-		  	} //while for log
-
-	  	} catch (Exception e) {
-            throw new ElabException(e);
-        }
-		
-		return currentEntries;
-	}//end of buildExistingComments
-	/*
-	 * Insert new comments
-	 */
-	public static void insertComment(int log_id_param, String comment_enter, Elab elab) throws ElabException {
+	public static int insertComment(int log_id_param, String comment_enter, Elab elab) throws ElabException {
         Connection conn = null; 
-        PreparedStatement ps = null; 		
+        PreparedStatement ps = null; 
+        ResultSet rs;
+        int comment_id = -1;
         try {
 			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-			ps = conn.prepareStatement("INSERT INTO comment (log_id, comment, new_comment) VALUES (?, ?, 't');");
+			ps = conn.prepareStatement(" INSERT INTO comment (log_id, comment, new_comment) "+
+									   " VALUES (?, ?, 't') returning id;");
 			ps.setInt(1, log_id_param);
   			ps.setString(2, comment_enter); 
-			int i = ps.executeUpdate();
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				comment_id = rs.getInt("id");
+			}
         } catch (SQLException e) {
             throw new ElabException(e);
         } finally {
@@ -1069,30 +660,8 @@ public class LogbookTools {
                 DatabaseConnectionManager.close(conn);
             }
         }    	
+        return comment_id;
 	}//end of insertComment
-	
-	/*
-	 * Update existing comment
-	 */
-	public static int updateComment(int comment_id, String comment_enter, Elab elab) throws ElabException {
-        Connection conn = null; 
-        PreparedStatement ps = null;
-        int i = 0;
-        try {
-			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-			ps = conn.prepareStatement("UPDATE comment SET comment = ? WHERE id = ?; ");
-			ps.setString(1, comment_enter);
-			ps.setInt(2, comment_id);
-			i = ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new ElabException(e);
-        } finally {
-            if (conn != null) {
-                DatabaseConnectionManager.close(conn);
-            }
-        }    
-        return i;
-	}//end of updateComment
 	
 	/*
 	 * Reset new comment to false
@@ -1289,4 +858,344 @@ public class LogbookTools {
 	return groupName;
 	}//end of getGroupNameFromId	
 
+	//////BUILD LINKS TO DISPLAY ON THE PAGES/////
+	/*
+	 * Build links to each group
+	 */
+	public static String buildGroupLinks(ElabGroup user, String page_name) throws ElabException {
+		String linksToEachGroup= "";
+		//get all research groups and build links
+		Collection<ElabGroup> rgTeacherGroups = user.getGroups();
+		Iterator it = rgTeacherGroups.iterator();
+		while (it.hasNext()){
+			ElabGroup eg = (ElabGroup) it.next();
+			if (eg.getRole().equals("user") || eg.getRole().equals("upload")) {
+				//EPeronja-only display active research groups
+				if (eg.getActive()) {
+					linksToEachGroup = linksToEachGroup
+							+ "<tr><td><A HREF='"+page_name + eg.getName() + "'>" + eg.getName()+ "</A></td></tr>";
+				}
+			}
+		}//end while loop
+		return linksToEachGroup;
+	}//end of buildLogbookLinkstoKeywords	
+
+	/*
+	 * Build links to each keyword
+	 */
+	public static String buildTeacherKeywordLinks(int project_id, String keyword, Elab elab) throws ElabException {
+		String linksToEach= "";
+		int keyword_id;
+		String keyword_loop, keyword_description, keyword_text, keyColor;
+		try {
+			ResultSet rs = LogbookTools.getLogbookKeywordItems(project_id, "", elab);
+			String current_section = "";
+			while (rs.next()) {
+				keyword_id = (Integer) rs.getObject("id");
+				keyword_loop = rs.getString("keyword");
+				keyword_text = keyword_loop.replaceAll("_", " ");
+				keyword_description = rs.getString("description");
+				String this_section = (String) (rs.getString("section"));
+				if (!keyword_loop.equals("general")) {
+					if (!this_section.equals(current_section)) {
+						try {
+							String section_text = LogbookTools.getSectionText(this_section);
+							linksToEach = linksToEach
+									+ "<tr><td>&nbsp;</td></tr><tr><td>"
+									+ section_text + "</td></tr>";
+							current_section = this_section;
+						} catch (Exception e) {
+							throw new ElabException(e);
+						}
+					}
+					keyColor = "";
+					if (keyword.equals(keyword_loop)) {
+						keyColor = "color=\"#AA3366\"";
+					}
+					linksToEach = linksToEach
+							+ "<tr><td><A HREF='teacher-logbook-keyword.jsp?keyword="
+							+ keyword_loop + "'>"
+							+ keyword_text + "</font></A></td></tr>";
+				}
+			}
+		} catch (Exception e) {
+			throw new ElabException(e);
+		}
+		return linksToEach;
+	}//end of buildLogbookLinkstoKeywords	
+	
+	/*
+	 * Build keyword links
+	 */
+	public static String buildStudentKeywordLinks(ResultSet rs, HashMap keywordTracker, String keyword) throws ElabException {
+		String linksToEach = "";
+		String current_section = "";
+		try {
+			while (rs.next()) {
+				Integer keyword_id = (Integer) rs.getObject("id");
+				String keyword_loop = rs.getString("keyword");
+				String keyword_text = keyword_loop.replaceAll("_"," ");
+				String keyword_description = rs.getString("description");
+				String this_section = (String)(rs.getString("section"));
+				String yesNo = "no";
+				if (!keyword_loop.equals("general")) {
+					if (!this_section.equals(current_section)) {
+						String section_text = LogbookTools.getSectionText(this_section);
+						linksToEach=linksToEach + "<tr><td>&nbsp;</td></tr><tr><td><font face='Comic Sans MS'>"+section_text+"</font></td></tr>";
+						current_section = this_section;
+					}
+					if (keywordTracker.containsKey(keyword_id.intValue())) {
+						yesNo="yes";
+					}
+					String keyColor="";
+					if (keyword.equals(keyword_loop)) { 
+						keyColor="color=\"#AA3366\"";
+					}
+					linksToEach=linksToEach + "<tr><td><img src=\"../graphics/log_entry_" + yesNo + ".gif\" border=0 align=center><a href='student-logbook.jsp?keyword="+keyword_loop+"'><font face='Comic Sans MS'"+keyColor+">"+keyword_text+"</face></a></td></tr>";		
+				}
+			}
+		} catch (Exception e) {
+	      throw new ElabException(e);
+		}
+		return linksToEach;
+	}//end of buildLogbookLinkstoKeywords
+
+	/*
+	 * Build keyword links
+	 */
+	public static String buildGroupLinksToKeywords(ResultSet rs, HashMap keywordTracker, String keyword, String research_group_name) throws ElabException {
+		String linksToEach = "";
+		String current_section = "";
+		try {
+			while (rs.next()) {
+				Integer keyword_id = (Integer) rs.getObject("id");
+				String keyword_loop = rs.getString("keyword");
+				String keyword_text = keyword_loop.replaceAll("_"," ");
+				String keyword_description = rs.getString("description");
+				String this_section = (String)(rs.getString("section"));
+				String yesNo = "no";
+				if (!keyword_loop.equals("general")) {
+					if (!this_section.equals(current_section)) {
+						String section_text = LogbookTools.getSectionText(this_section);
+						linksToEach=linksToEach + "<tr><td>&nbsp;</td></tr><tr><td><font face='Comic Sans MS'>"+section_text+"</font></td></tr>";
+						current_section = this_section;
+					}
+					if (keywordTracker.containsKey(keyword_id.intValue())) {
+						yesNo="yes";
+					}
+					String keyColor="";
+					if (keyword.equals(keyword_loop)) { 
+						keyColor="color=\"#AA3366\"";
+					}
+					linksToEach=linksToEach
+							+ "<tr><td><img src=\"../graphics/log_entry_"
+							+ yesNo
+							+ ".gif\" border=0 align=center><A HREF='teacher-logbook-group.jsp?research_group_name="
+							+ research_group_name + "&keyword="
+							+ keyword_loop + "'><FONT  " + keyColor + ">"
+							+ keyword_text + "</font></A></td></tr>";				
+				}
+			}
+		} catch (Exception e) {
+	      throw new ElabException(e);
+		}
+		return linksToEach;
+	}//end of buildGroupLinksToKeywords
+
+	/*
+	 * Build build comment details
+	 */
+	public static ArrayList buildCommentDetails(int log_id, String comment_info, Elab elab) throws ElabException {
+		ArrayList commentDetails = new ArrayList();								
+		commentDetails.add(comment_info);
+		try {
+			ResultSet commentRs = LogbookTools.getCommentDetails(log_id, elab);
+			String comment_date = "";
+			String comment_text = "";
+			String commentEntry = "";	
+			int commentCnt = 0;
+			while (commentRs.next()) {
+				comment_date = commentRs.getString("comment_date");
+				if (comment_date == null) {
+					comment_date = "";
+				}
+				comment_text = comment_date + ": " + commentRs.getString("comment");
+				if (comment_text == null) {
+					comment_text = "";
+				}
+				commentEntry = "";
+				String comment_truncated;
+				comment_truncated = comment_text.replaceAll(
+							"\\<(.|\\n)*?\\>", "");
+				if (comment_truncated.length() > 40) {
+					comment_truncated = comment_truncated.substring(0, 25);
+					commentEntry += "<div id=\"fullLog"+String.valueOf(commentCnt)+"\" style=\"display:none;\">"+ElabUtil.whitespaceAdjust(comment_text)+"</div>"+
+									"<div id=\"showLog"+String.valueOf(commentCnt)+"\">"+ElabUtil.whitespaceAdjust(comment_truncated)+" . . .<a href=\'javascript:showFullComment(\"showLog"+String.valueOf(commentCnt)+"\",\"fullLog"+String.valueOf(commentCnt)+"\");\'>Read More</a></div>";
+				} else {
+					commentEntry += ElabUtil.whitespaceAdjust(comment_text);
+				}
+				commentDetails.add(commentEntry);
+				commentCnt++;
+			} //while for comments
+		} catch (Exception e) {
+			throw new ElabException(e);
+		}
+		return commentDetails;
+	}//end of buildCommentDetails
+	
+	/*
+	 * Called from log-entry.jsp
+	 */
+	public static String buildLogbookEntriesPlusComments(int project_id, int keyword_id, int research_group_id, String groupName, Elab elab) throws ElabException {
+		String currentEntries = "";
+		int itemCount = 0;
+		String hrHtml = "";
+		ResultSet rs = null;
+		ResultSet innerRs = null;
+		try {
+			rs = LogbookTools.getLogbookEntriesTool(project_id, keyword_id, research_group_id, elab);
+			while (rs.next()) {
+				int cur_log_id = rs.getInt("cur_id");
+				String log_date = rs.getString("date_entered");
+				String cur_log_text = ElabUtil.whitespaceAdjust(rs.getString("cur_text"));
+				String log_date_show = log_date;
+				String log_text_show = cur_log_text;
+				itemCount++;
+				currentEntries = currentEntries + hrHtml;
+				if (itemCount == 1) {
+					currentEntries = currentEntries
+							+ "<tr><th valign='center' align='right'><IMG SRC='../graphics/logbook.gif' align='middle'></th><th valign='center' align='left'>"
+							+ groupName
+							+ "\'s log entries</th><th><IMG SRC='../graphics/blue_square.gif' width='1' height='20' align='top'></th><th valign='center' align='right'><IMG SRC='../graphics/logbook_comments.gif' align='middle'></th><th valign='center' align='left'>teacher\'s comments</th></tr><tr><td colspan='5'><HR  color='#1A8BC8'></td></tr>";
+				} //itemCount
+	
+				innerRs = LogbookTools.getCommentDetails(cur_log_id, elab);
+				int commentCount = 0;
+				String comment_date = "";
+				String comment_existing = "";
+				while (innerRs.next()) {
+					comment_date = innerRs.getString("comment_date");
+					comment_existing = innerRs.getString("comment");
+					commentCount++;
+					if (commentCount > 1) {
+						log_text_show = " ";
+						log_date_show = " ";
+						hrHtml = "";
+					} else {
+						hrHtml = "<tr><td colspan='5'><HR color='#1A8BC8'></td></tr>";
+					}
+	
+					currentEntries = currentEntries
+							+ "<tr><td valign='top' width='100' align='right'>"
+							+ log_date_show
+							+ "</td><td width='300'  valign='top'>"
+							+ log_text_show + "</td>";
+					currentEntries = currentEntries
+							+ "<td><IMG SRC='../graphics/blue_square.gif' width='1' height='20' align='top'><td valign='top' width='100' align='right'>"
+							+ comment_date
+							+ "</td><td width='300'  valign='top'>"
+							+ comment_existing + "</td></tr>";
+	
+				} //while for comments
+				if (commentCount == 0) {
+					currentEntries = currentEntries
+							+ "<tr><td valign='top' width='100' align='right'>"
+							+ log_date
+							+ "</td><td width='300'  valign='top'>"
+							+ cur_log_text
+							+ "</td><td><IMG SRC='../graphics/blue_square.gif' width='1' height='20' align='top'><td valign='top' width='100' align='right'>&nbsp;</td><td width='300'  valign='top'>No comments.</td></tr>";
+				}
+	
+				if (itemCount == 0) {
+					currentEntries = currentEntries
+							+ "<tr><td colspan='4' align='center'><FONT  size='+1'>No comments on this item.</FONT></td></tr>";
+				}
+			} //while for log
+		} catch (Exception e) {
+			throw new ElabException(e);
+		}
+	    currentEntries = currentEntries.replace("''","'");
+
+		
+		return currentEntries;
+	}//buildLogbookEntriesPlusComments
+
+	/*
+	 * Build existing comments for log-comments.jsp 
+	 */
+	public static String buildExistingComments(Integer keyword_id, int research_group_id, int project_id, String research_group_name, Elab elab) throws ElabException {
+		String currentEntries = "";
+	  	int itemCount = 0;
+	  	String hrHtml = "";
+	  	ResultSet sInner = null;
+	  	try {
+		  	// look for any previous log entries for this keyword
+		  	ResultSet rs = LogbookTools.getCommentEntries(keyword_id, research_group_id, project_id, elab);
+		  	while (rs.next()) {
+		  		int log_id = rs.getInt("log_id");
+		  		String log_date = rs.getString("log_date");
+		  		String log_text = ElabUtil.whitespaceAdjust(rs.getString("log_text"));
+		  		String log_date_show = log_date;
+		  		String log_text_show = log_text;
+		  		itemCount++;
+		  		currentEntries = currentEntries + hrHtml;
+		  		if (itemCount == 1) {
+		  			currentEntries = currentEntries
+		  					+ "<tr><th valign='center' align='right'><IMG SRC='../graphics/logbook.gif' align='middle'></th><th valign='center' align='left'>"
+		  					+ research_group_name
+		  					+ "\'s log entries</th><th><IMG SRC='../graphics/blue_square.gif' width='1' height='20' align='top'></th><th valign='center' align='right'><IMG SRC='../graphics/logbook_comments.gif' align='middle'></th><th valign='center' align='left'>teacher\'s comments</th></tr><tr><td colspan='5'><HR  color='#1A8BC8'></td></tr>";
+		  		} //itemCount
+
+		  		// look for comments associated with this log item
+		  		sInner = LogbookTools.getCommentDetails(log_id, elab);
+		  		int commentCount = 0;
+		  		String comment_date = ""; // this makes baby dieties cry 
+		  		String comment_existing = "";
+		  		while (sInner.next()) {
+		  			comment_date = sInner.getString("comment_date");
+		  			comment_existing = ElabUtil.whitespaceAdjust(sInner.getString("comment"));
+		  			commentCount++;
+		  			if (commentCount > 1) {
+		  				log_text_show = " ";
+		  				log_date_show = " ";
+		  				hrHtml = "";
+		  			} else {
+		  				hrHtml = "<tr><td colspan='5'><HR color='#1A8BC8'></td></tr>";
+		  			}
+
+		  			currentEntries = currentEntries
+		  					+ "<tr><td valign='top' width='100' align='right'>"
+		  					+ log_date_show
+		  					+ "</td><td width='300'  valign='top'>"
+		  					+ log_text_show + "</td>";
+		  			currentEntries = currentEntries
+		  					+ "<td><IMG SRC='graphics/blue_square.gif' width='1' height='20' align='top'><td valign='top' width='100' align='right'>"
+		  					+ comment_date
+		  					+ "</td><td width='300'  valign='top'>"
+		  					+ comment_existing + "</td></tr>";
+
+		  		} //while for comments
+		  		if (commentCount == 0) {
+		  			currentEntries = currentEntries
+		  					+ "<tr><td valign='top' width='100' align='right'>"
+		  					+ log_date
+		  					+ "</td><td width='300'  valign='top'>"
+		  					+ log_text
+		  					+ "</td><td><IMG SRC='graphics/blue_square.gif' width='1' height='20' align='top'><td valign='top' width='100' align='right'>&nbsp;</td><td width='300'  valign='top'>No comments.</td></tr>";
+		  		}
+
+		  		if (itemCount == 0) {
+		  			currentEntries = currentEntries
+		  					+ "<tr><td colspan='4' align='center'><FONT  size='+1'>No comments on this item.</FONT></td></tr>";
+		  		}
+		  	} //while for log
+
+	  	} catch (Exception e) {
+            throw new ElabException(e);
+        }
+		
+		return currentEntries;
+	}//end of buildExistingComments
+
+	
 }//end of LogbookTools

@@ -96,16 +96,8 @@
 
 	//retrieve logbook details
 	TreeMap<String, ArrayList> ids = new TreeMap<String, ArrayList>();
-	TreeMap<String, ArrayList> logbookResults = new TreeMap<String, ArrayList>(){
-		public int compare(String s1, String s2) {
-			int rank = getRank(s1) - getRank(s2);
-			return rank;
-		}
-		private int getRank(String s) {
-			String innerRank = s.substring(s.indexOf("-")+1, s.length());
-			return Integer.parseInt(innerRank);
-		}
-	};
+	TreeMap<Integer, ArrayList> logbookResults = new TreeMap<Integer, ArrayList>();
+	
 	//build logbook results
 	if (rs != null) {
 		while (rs.next()) {
@@ -130,7 +122,8 @@
 			logbookDetails.add(logText);
 			logbookDetails.add(log_id);
 			logbookDetails.add(log_text_truncated); //3
-			logbookResults.put(String.valueOf(ref_rg_id)+"-"+String.valueOf(itemCount), logbookDetails);
+			logbookDetails.add(ref_rg_id);//4
+			logbookResults.put(itemCount, logbookDetails);
 			String gn = LogbookTools.getGroupNameFromId(ref_rg_id, elab);
 			ArrayList userDetails = new ArrayList();
 			userDetails.add(gn);
@@ -157,25 +150,7 @@
 	<head>
 		<title>Show Research Group Logbook for Teacher</title>
 		<link rel="stylesheet" href="styletut-teacher.css" type="text/css">
-		<script language='javascript' type="text/javascript">
-			function insertImgSrc() {
-			    var raw = document.log.img_src.value;
-			    var parsed = raw.split(",");
-			    for (var i = 0; i < parsed.length; i++)
-			    {
-			        var txt = document.log.log_text.value;
-			        txt = txt.replace("(--Image "+i+"--)", parsed[i]);
-			        document.log.log_text.value = txt;
-			    }
-			};
-		</script>
-		<script>
-			function showFullLog(showDivId, fullDivId) {
-				var showDiv = document.getElementById(showDivId);
-				var fullDiv = document.getElementById(fullDivId);
-				showDiv.innerHTML = fullDiv.innerHTML;
-			}
-		</script>
+        <script type="text/javascript" src="logbook.js"></script>
 	</head>
 	<body id="teacher-logbook">
 		<!-- entire page container -->
@@ -283,28 +258,29 @@
 													<c:choose>
 														<c:when test="${not empty logbookResults }">
 															<c:forEach items="${logbookResults }" var="logbookResults">
-																<c:if test='${ids.key == fn:substring(logbookResults.key, 0, fn:indexOf(logbookResults.key,  "-"))}'>
+																<c:if test='${ids.key == logbookResults.value[4]}'>
 																	<tr>
 																		<td valign="top" width="175" align="right">${logbookResults.value[0] }</td>
-																		<td width="400" valign="top">
-																			
-																						<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
-																						<c:choose>
-																							<c:when test="${logbookResults.value[1] != logbookResults.value[3]}">
-																								<div id="fullLog${logbookResults.value[2]}" style="display:none;"><e:whitespaceAdjust text="${logbookResults.value[1]}"></e:whitespaceAdjust></div>
-																								<div id="showLog${logbookResults.value[2]}"><e:whitespaceAdjust text="${logbookResults.value[3]}" /> . . .<a href='javascript:showFullLog("showLog${logbookResults.value[2]}","fullLog${logbookResults.value[2]}");'>Read More</a></div>
-																						    </c:when>
-																						    <c:otherwise>
-																							    <e:whitespaceAdjust text="${logbookResults.value[1]}"></e:whitespaceAdjust>
-																						    </c:otherwise>
-																						 </c:choose>	
-																			
-																			</td> 
+																		<td width="400" valign="top">																			
+																		<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
+																		<c:choose>
+																			<c:when test="${logbookResults.value[1] != logbookResults.value[3]}">
+																				<div id="fullLog${logbookResults.value[2]}" style="display:none;"><e:whitespaceAdjust text="${logbookResults.value[1]}"></e:whitespaceAdjust></div>
+																				<div id="showLog${logbookResults.value[2]}"><e:whitespaceAdjust text="${logbookResults.value[3]}" /> . . .<a href='javascript:showFullLog("showLog${logbookResults.value[2]}","fullLog${logbookResults.value[2]}");'>Read More</a></div>
+																		    </c:when>
+																		    <c:otherwise>
+																			    <e:whitespaceAdjust text="${logbookResults.value[1]}"></e:whitespaceAdjust>
+																		    </c:otherwise>
+																		 </c:choose>	
+																		</td> 
 																	</tr>
 																</c:if>		
 															</c:forEach>
 														</c:when>
 													</c:choose>
+												    <tr>
+												    	<td colspan="2" style="border-bottom: dotted 1px gray;"> </td>
+												    </tr>													
 												</c:forEach>
 											</c:when>
 											<c:otherwise>

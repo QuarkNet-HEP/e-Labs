@@ -21,17 +21,6 @@
 		keyword = "";
 	} // note - display all entries
 
-	//check if we are marking entries as read
-	String mark_as_read = request.getParameter("mark_as_read");
-	if (mark_as_read != null && mark_as_read.equals("yes")) {
-		Integer logMark = Integer.parseInt(request.getParameter("log_id"));
-		try {
-			LogbookTools.updateResetCommentsforLogbookEntry(logMark, elab);
-		} catch (Exception e) {
-			messages += e.getMessage();
-		}
-	}
-
 	//start building left hand side menu
 	String groupName = user.getName();
 	int projectId = elab.getId();
@@ -108,7 +97,7 @@
 			logEnter = logEnter.replaceAll("'", "''");
 			if (log_text != "") {
 				try {
-					LogbookTools.insertLogbookEntry(projectId, user.getId(), keywordId, logEnter, "user", elab);
+					int logid = LogbookTools.insertLogbookEntry(projectId, user.getId(), keywordId, logEnter, "user", elab);
 				} catch (Exception e) {
 					messages += e.getMessage();
 				}
@@ -130,16 +119,7 @@
 	//Save all keywords with comments for each section
 	TreeMap<String, ArrayList> logbookSectionKeywords = new TreeMap<String, ArrayList>();
 	//Save all the entries to display
-	TreeMap<String, ArrayList> logbookEntries = new TreeMap<String, ArrayList>() {
-		public int compare(String s1, String s2) {
-			int rank = getRank(s1) - getRank(s2);
-			return rank;
-		}
-		private int getRank(String s) {
-			String innerRank = s.substring(s.indexOf("-")+1, s.length());
-			return Integer.parseInt(innerRank);
-		}
-	};
+	TreeMap<Integer, ArrayList> logbookEntries = new TreeMap<Integer, ArrayList>();
 	//check if we are viewing only new entries
 	String view_only_new = request.getParameter("view_only_new");
 	if (view_only_new == null || view_only_new.equals("")) {
@@ -176,7 +156,7 @@
 			logbookDetails.add(section_id); 
 			logbookDetails.add(dateText); 
 			logbookDetails.add(logText); //4
-			logbookDetails.add(keywordName);
+			logbookDetails.add(keywordName);//5
 			logbookDetails.add(section);
 			logbookDetails.add(keywordDescription);
 			logbookDetails.add(keyword_display); 
@@ -189,10 +169,12 @@
 			String comment_info="";
 			if (comment_new != 0L) {
 				//comment_info="<IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'middle\'> <FONT size=-2 >comments: " + comment_count + " (<FONT color=\"#AA3366\">"+comment_new+"</FONT>) " +"</font><br />";
-				comment_info="<IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> "+
+				comment_info="<div id=\"new_"+String.valueOf(log_id)+"\"><IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> "+
 						     "<FONT color=\"#AA3366\" size=\"-2\"><b>comments: " + comment_count + 
 						     " (<FONT color=\"#AA3366\">"+comment_new+"</FONT>) </b></font> "+
-						     "<a href=\"student-logbook.jsp?mark_as_read=yes&log_id="+String.valueOf(log_id)+"&keyword="+keyword+"\" style=\"text-decoration: none;\"><FONT size=\"-2\"><strong> Mark as Read</strong></font></a><br />";
+							 "<a href=\"javascript:markAsRead('new_"+String.valueOf(log_id)+"', 'mark-as-read.jsp?mark_as_read=yes&log_id="+String.valueOf(log_id)+"&markWhat=comments&keyword="+keyword+"')\" style=\"text-decoration: none;\"><FONT size=\"-2\"> <strong>Mark as Read</strong></font></a><br /></div>";
+
+
 			}
 			logbookDetails.add(comment_info); //10
 			//get the actual comments
@@ -252,10 +234,10 @@
 			}
 			if (view_only_new.equals("yes")) {
 				if (comment_new > 0L) {
-					logbookEntries.put(String.valueOf(keywordName)+"-"+String.valueOf(itemCount), logbookDetails);				
+					logbookEntries.put(itemCount, logbookDetails);				
 				}
 			} else {
-				logbookEntries.put(String.valueOf(keywordName)+"-"+String.valueOf(itemCount), logbookDetails);
+				logbookEntries.put(itemCount, logbookDetails);
 			}
 		}
 	} catch (Exception e) {
@@ -293,28 +275,7 @@
 	<head>
 		<title>Enter Logbook</title>
 		<link rel="stylesheet" href="styletut.css" type="text/css">
-		<script>
-			function insertImgSrc() {
-			    var raw = document.log.img_src.value;
-			    var parsed = raw.split(",");
-			    for (var i = 0; i < parsed.length; i++)
-			    {
-			        var txt = document.log.log_text.value;
-			        txt = txt.replace("(--Image "+i+"--)", parsed[i]);
-			        document.log.log_text.value = txt;
-			    }
-			};
-			function showFullLog(showDivId, fullDivId) {
-				var showDiv = document.getElementById(showDivId);
-				var fullDiv = document.getElementById(fullDivId);
-				showDiv.innerHTML = fullDiv.innerHTML;
-			}
-			function showFullComment(showDivId, fullDivId) {
-				var showDiv = document.getElementById(showDivId);
-				var fullDiv = document.getElementById(fullDivId);
-				showDiv.innerHTML = fullDiv.innerHTML;
-			}
-		</script>	
+	<script type="text/javascript" src="logbook.js"></script>
   	<script type="text/javascript" src="../include/elab.js"></script>	
 	</head>
 	
@@ -406,7 +367,10 @@
 														<li>Use the text box for your new entry.</li>
 														<li>Look for flags <img src="../graphics/new_flag.gif" alt=""></img>indicating new comments by your teacher.</li>
 														<li>Click <strong>Mark as Read</strong> once you read the new comments.</li>		
-														<li>Toggle between <strong>'View only entries with new comments'/'View all entries'</strong> to filter the results.</li>
+														<br />
+														<c:if test="${not empty thereAreNewComments }">
+															<li><i>Toggle between <strong>'View only entries with new comments'/'View all entries'</strong> to filter the results.</i></li>
+														</c:if>
 													</ul>
 													</font>							
 												</td>
@@ -464,7 +428,7 @@
 																		</c:if>
 																		<c:forEach items="${logbookEntries}" var="logbookEntries">
 																			<c:choose>
-																				<c:when test='${ logbookSectionKeywords.key == fn:substring(logbookEntries.key, 0, fn:indexOf(logbookEntries.key,  "-")) }' >
+																				<c:when test='${ logbookSectionKeywords.key == logbookEntries.value[5]}' >
 																					<tr>
 																						<td valign="top" width="150" align="right"><font face="Comic Sans MS">${logbookEntries.value[3] }</font></td>
 																						<td width="210" valign="top"><font face="Comic Sans MS">
