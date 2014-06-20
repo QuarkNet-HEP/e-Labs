@@ -450,6 +450,7 @@ String submit =  request.getParameter("submit");
                                         <option value="AY2011">2011-2012</option>
                                         <option value="AY2012">2012-2013</option>
                                         <option value="AY2013">2013-2014</option>
+                                        <option value="AY2014">2014-2015</option>
                                     </select>
                                     <%
 
@@ -468,6 +469,7 @@ String submit =  request.getParameter("submit");
                                         <option value="AY2011">2011-2012</option>
                                         <option value="AY2012">2012-2013</option>
                                         <option value="AY2013">2013-2014</option>
+                                        <option value="AY2014">2014-2015</option>
                                     </select>
                                     <%
 
