@@ -16,16 +16,6 @@
 	String groupName = user.getName();
 	String research_group_name = groupName; 
 	String keyword = request.getParameter("keyword");
-	//check if we are marking entries as read
-	String mark_as_read = request.getParameter("mark_as_read");
-	if (mark_as_read != null && mark_as_read.equals("yes")) {
-		Integer logMark = Integer.parseInt(request.getParameter("log_id"));
-		try {
-			LogbookTools.updateResetLogbookEntry(logMark, elab);
-		} catch (Exception e) {
-			messages += e.getMessage();
-		}
-	}
 
 	if (keyword == null) {
 		keyword = "general";
@@ -49,7 +39,7 @@
 		  		comment_enter = ElabUtil.stringSanitization(comment_enter, elab, "Logbook user: "+user.getName());
 	  			//we have to insert a new row into table
 	  			try {
-		  			LogbookTools.insertComment(Integer.parseInt(log_id[j]), comment_enter, elab);
+		  			int comment_id = LogbookTools.insertComment(Integer.parseInt(log_id[j]), comment_enter, elab);
 	  			} catch (Exception e) {
 	  				messages += e.getMessage();
 	  			}
@@ -85,16 +75,7 @@
 	String current_rg_name = "";
 	String linkText = "";
 	ArrayList groupInfo = new ArrayList();
-	TreeMap<String, ArrayList> commentInfo = new TreeMap<String, ArrayList>(){
-		public int compare(String s1, String s2) {
-			int rank = getRank(s1) - getRank(s2);
-			return rank;
-		}
-		private int getRank(String s) {
-			String innerRank = s.substring(s.indexOf("-")+1, s.length());
-			return Integer.parseInt(innerRank);
-		}
-	};
+	TreeMap<Integer, ArrayList> commentInfo = new TreeMap<Integer, ArrayList>();
     String thereAreNewEntries = "";
 	//check if we are viewing only new entries
 	String view_only_new = request.getParameter("view_only_new");
@@ -127,8 +108,12 @@
 			if (new_log != null && new_log.equals("t")) {
 				thereAreNewEntries = "<a href=\"teacher-logbook-keyword.jsp?view_only_new=yes&keyword="+keyword+
 						"&research_group_name="+research_group_name+"\">View only new entries</a>";
-				comment_info = comment_info
-						+ "<IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font> <a href=\"teacher-logbook-keyword.jsp?mark_as_read=yes&log_id="+String.valueOf(logId)+"&keyword="+keyword+"\" style=\"text-decoration: none;\"><FONT size=\"-2\"><strong>Mark as Read</strong></font></a><br />";
+				//comment_info = comment_info
+				//		+ "<IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font> <a href=\"teacher-logbook-keyword.jsp?mark_as_read=yes&log_id="+String.valueOf(logId)+"&keyword="+keyword+"\" style=\"text-decoration: none;\"><FONT size=\"-2\"><strong>Mark as Read</strong></font></a><br />";
+
+				comment_info = comment_info + "<div id=\"new_"+String.valueOf(logId)+"\"><IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font>"+
+						   "<a href=\"javascript:markAsRead('new_"+String.valueOf(logId)+"', 'mark-as-read.jsp?mark_as_read=yes&log_id="+String.valueOf(logId)+"&markWhat=logentry&keyword="+keyword+"')\" style=\"text-decoration: none;\"><FONT size=\"-2\"> <strong>Mark as Read</strong></font></a><br /></div>";
+
 			}
 			String comment_header = "";
 			if (comment_new == 0L) {
@@ -149,16 +134,17 @@
 			details.add(comment_info);//3
 			details.add(log_text);
 			details.add(log_text_truncated);
-			details.add(commentDetails);//7
+			details.add(commentDetails);//6
+			details.add(rg_name);//7
 			if (!groupInfo.contains(rg_name)) {
 				groupInfo.add(rg_name);
 			}
 			if (view_only_new.equals("yes")) {
 				if (new_log != null && new_log.equals("t")) {
-					commentInfo.put(rg_name+"-"+String.valueOf(itemCount), details);
+					commentInfo.put(itemCount, details);
 				}
 			} else {
-				commentInfo.put(rg_name+"-"+String.valueOf(itemCount), details);				
+				commentInfo.put(itemCount, details);				
 			}
 		}
 	} catch (Exception e) {
@@ -180,21 +166,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>For Teachers: All Logbook entries for one milestone.</title>
-		<!-- //EPeronja-04/12/2013: replace truncated text by long text for the log
-									jsp used to be resubmitted for this!
-		 -->
-		<script>
-			function showFullLog(showDivId, fullDivId) {
-				var showDiv = document.getElementById(showDivId);
-				var fullDiv = document.getElementById(fullDivId);
-				showDiv.innerHTML = fullDiv.innerHTML;
-			}
-			function showFullComment(showDivId, fullDivId) {
-				var showDiv = document.getElementById(showDivId);
-				var fullDiv = document.getElementById(fullDivId);
-				showDiv.innerHTML = fullDiv.innerHTML;
-			}			
-		</script>
+        <script type="text/javascript" src="logbook.js"></script>
 		<link rel="stylesheet" href="styletut.css" type="text/css">
 	</head>
 	<body id="teacher-logbook-keyword">
@@ -257,8 +229,11 @@
 												        </li>
 														<li>Click <b>Mark as Read</b> once you read the new entries.</li>
 														<li>Enter comments in the textbox below the student's logbook entry.</li>
-														<li>Toggle between <strong>'View only new entries'/'View all entries'</strong> to filter the results.</li>
-														<li>Click <strong>Submit All</strong> to save your comments.</li>														
+														<li>Click <strong>Submit All</strong> to save your comments.</li>
+														<br />														
+														<c:if test="${not empty thereAreNewEntries }">
+															<li><i>Toggle between <strong>'View only new entries'/'View all entries'</strong> to filter the results.</i></li>
+														</c:if>
 													</ul>
 												</font></td>
 											</tr>
@@ -291,7 +266,7 @@
 														<c:choose>
 															<c:when test="${not empty commentInfo }">
 																<c:forEach items="${commentInfo }" var="commentInfo">
-																	<c:if test='${groupInfo == fn:substring(commentInfo.key, 0, fn:indexOf(commentInfo.key,  "-"))}'>														
+																	<c:if test='${groupInfo == commentInfo.value[7]}'>														
 																		<tr>
 																			<td valign="top" width="175" align="right">
 																				${commentInfo.value[2]}
@@ -336,6 +311,9 @@
 																				
 																			</td>
 																		</tr>
+																	    <tr>
+																	    	<td colspan="2" style="border-bottom: dotted 1px gray;"> </td>
+																	    </tr>
 																	</c:if>
 																</c:forEach>
 															</c:when>

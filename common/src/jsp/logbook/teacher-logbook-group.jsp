@@ -22,16 +22,6 @@
 	String current_section = "";
 	String keyColor = "";
 
-	//check if we are marking entries as read
-	String mark_as_read = request.getParameter("mark_as_read");
-	if (mark_as_read != null && mark_as_read.equals("yes")) {
-		Integer logMark = Integer.parseInt(request.getParameter("log_id"));
-		try {
-			LogbookTools.updateResetLogbookEntry(logMark, elab);
-		} catch (Exception e) {
-			messages += e.getMessage();
-		}
-	}
 	if (keyword == null) {
 		keyword =  "";
 	} // note - display all entries
@@ -58,7 +48,7 @@
 		  		comment_enter = ElabUtil.stringSanitization(comment_enter, elab, "Logbook user: "+user.getName());
 	  			//we have to insert a new row into table
 	  			try {
-		  			LogbookTools.insertComment(Integer.parseInt(log_id[j]), comment_enter, elab);
+		  			int comment_id = LogbookTools.insertComment(Integer.parseInt(log_id[j]), comment_enter, elab);
 	  			} catch (Exception e) {
 	  				messages += e.getMessage();
 	  			}
@@ -107,16 +97,8 @@
 	//Save all keywords with comments for each section
 	TreeMap<String, ArrayList> logbookSectionKeywords = new TreeMap<String, ArrayList>();
 	//Save all the entries to display
-	TreeMap<String, ArrayList> logbookEntries = new TreeMap<String, ArrayList>(){
-		public int compare(String s1, String s2) {
-			int rank = getRank(s1) - getRank(s2);
-			return rank;
-		}
-		private int getRank(String s) {
-			String innerRank = s.substring(s.indexOf("-")+1, s.length());
-			return Integer.parseInt(innerRank);
-		}
-	};
+	TreeMap<Integer, ArrayList> logbookEntries = new TreeMap<Integer, ArrayList>();
+
 	int research_group_id = -1;
 	String subtitle = "";
 	//check if we are viewing only new entries
@@ -184,7 +166,8 @@
 			if (new_log != null && new_log == true) {
 				thereAreNewEntries = "<a href=\"teacher-logbook-group.jsp?view_only_new=yes&keyword="+keyword+"&research_group_name="+
 									 research_group_name+"\">View only new entries</a>";
-				comment_info = "<IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font> <a href=\"teacher-logbook-group.jsp?mark_as_read=yes&log_id="+String.valueOf(logid)+"&research_group_name="+research_group_name+"\" style=\"text-decoration: none;\"><FONT size=\"-2\"><strong>Mark as Read</strong></font></a><br />";
+				comment_info = "<div id=\"new_"+String.valueOf(logid)+"\"><IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font>"+
+							   "<a href=\"javascript:markAsRead('new_"+String.valueOf(logid)+"', 'mark-as-read.jsp?mark_as_read=yes&log_id="+String.valueOf(logid)+"&markWhat=logentry&research_group_name="+research_group_name+"')\" style=\"text-decoration: none;\"><FONT size=\"-2\"> <strong>Mark as Read</strong></font></a><br /></div>";
 			}
 			String comment_header = "";
 			if (comment_new == 0L) {
@@ -209,7 +192,7 @@
 			logbookDetails.add(commentDetails); //6
 			logbookSubsectionDetails.add(keyword_description);
 			logbookSubsectionDetails.add(keyword_display);
-
+			sectionText = LogbookTools.getSectionText(section);
 			if (keyword_name.equals("general")) {
 				if (!logbookSectionOrder.containsValue("general")) {
 					if (view_only_new.equals("yes")) {
@@ -251,10 +234,10 @@
 			}
 			if (view_only_new.equals("yes")) {
 				if (new_log != null && new_log) {
-					logbookEntries.put(String.valueOf(keyword_name)+"-"+String.valueOf(itemCount), logbookDetails);
+					logbookEntries.put(itemCount, logbookDetails);
 				}
 			} else {
-				logbookEntries.put(String.valueOf(keyword_name)+"-"+String.valueOf(itemCount), logbookDetails);				
+				logbookEntries.put(itemCount, logbookDetails);				
 			}
 		}
 	}
@@ -285,21 +268,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>For Teachers: Show Logbooks of Student Research Group</title>
-		<!-- //EPeronja-04/12/2013: replace truncated text by long text for the log
-									jsp used to be resubmitted for this!
-		 -->
-		<script>
-			function showFullLog(showDivId, fullDivId) {
-				var showDiv = document.getElementById(showDivId);
-				var fullDiv = document.getElementById(fullDivId);
-				showDiv.innerHTML = fullDiv.innerHTML;
-			}
-			function showFullComment(showDivId, fullDivId) {
-				var showDiv = document.getElementById(showDivId);
-				var fullDiv = document.getElementById(fullDivId);
-				showDiv.innerHTML = fullDiv.innerHTML;
-			}			
-		</script>
+        <script type="text/javascript" src="logbook.js"></script>
 		<link rel="stylesheet" href="styletut.css" type="text/css">
 	</head>
 	<body id="teacher-logbook-group">
@@ -391,8 +360,11 @@
 														<li>Click <b>Mark as Read</b> once you read the new entries.</li>
 														<li>Click on a milestone to limit your view to entries for that milestone.</li>
 														<li>Enter comments in the textbox below the student's logbook entry.</li>
-														<li>Toggle between <strong>'View only new entries'/'View all entries'</strong> to filter the results.</li>
 														<li>Click <strong>Submit All</strong> to save your comments.</li>
+														<br />
+														<c:if test="${not empty thereAreNewEntries }">
+															<li><i>Toggle between <strong>'View only new entries'/'View all entries'</strong> to filter the results.</i></li>
+														</c:if>
 													</ul>
 												</font></td>
 											</tr>
@@ -451,7 +423,7 @@
 																										<c:when test="${not empty logbookEntries }">			
 																											<c:forEach items="${logbookEntries}" var="logbookEntries">
 																												<c:choose>
-																													<c:when test='${ logbookSectionKeywords.key == fn:substring(logbookEntries.key, 0, fn:indexOf(logbookEntries.key,  "-")) }' >
+																													<c:when test='${ logbookSectionKeywords.key == logbookEntries.value[1] }' >
 																														<tr>
 																																<td valign="top" width="175" align="right">
 																																	${logbookEntries.value[2]}
@@ -496,6 +468,9 @@
 																																	<input type="hidden" name="keyword" id="keyword_${logbookEntries.value[0] }" value="${keyword}">
 																																</td>																												
 																															</tr>
+																														    <tr>
+																														    	<td colspan="2" style="border-bottom: dotted 1px gray;"> </td>
+																														    </tr>																															
 																													</c:when>
 																												</c:choose>
 																											</c:forEach>

@@ -25,7 +25,7 @@
 				<c:choose>
 					<c:when test="${user.teacher}">
 						<e:popup href="/elab/cosmic/teacher/forum/HelpDeskRequest.php" target="helpdesk" width="800" height="600"><img title="Helpdesk" src="../graphics/helpdesk.png" /></e:popup>
-						<e:popup href="../logbook/teacher-logbook.jsp" target="log" width="800" height="800"><img id="logbook-icon" title="Logbook" src="../graphics/logbook.png"/></e:popup>
+						<e:popup href="../logbook/teacher-logbook.jsp" target="log" width="900" height="800"><img id="logbook-icon" title="Logbook" src="../graphics/logbook.png"/></e:popup>
 					</c:when>
 					<c:otherwise>
 						<e:popup href="../logbook/student-logbook.jsp" target="log" width="1000" height="800"><img id="logbook-icon" title="Logbook" src="../graphics/logbook.png" /></e:popup>
