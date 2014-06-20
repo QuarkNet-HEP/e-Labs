@@ -94,7 +94,7 @@
 			String log_text_truncated;
 			log_text_truncated = log_text.replaceAll("\\<(.|\\n)*?\\>", "");
 			if (log_text_truncated.length() > 40) {
-				log_text_truncated = log_text_truncated.substring(0, 25);
+				log_text_truncated = log_text_truncated.substring(0, 40);
 			} else {
 				log_text_truncated = log_text;
 			}
@@ -186,7 +186,6 @@
 									<td width="550"><font size="+2">Teachers: View and Comment on<br>Logbooks of Student Research Groups</font></td>
 								</tr>
 							</table>
-							<center>
 							<table width="800" cellpadding="0" border="0" align="left">
 								<tr>
 									<td valign="top" width="150" nowrap>
@@ -331,11 +330,9 @@
 									</td>
 								</tr>
 							</table>
-							</center>
 						</form>
 					</c:otherwise>
 				</c:choose>
-				</center>
 			</div>
 			<!-- end content -->	
 			<div id="footer">

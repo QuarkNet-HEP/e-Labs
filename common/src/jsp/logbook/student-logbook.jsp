@@ -144,7 +144,7 @@
 			String log_text_truncated;
 			log_text_truncated = logText.replaceAll("\\<(.|\\n)*?\\>", "");
 			if (log_text_truncated.length() > 40) {
-				log_text_truncated = log_text_truncated.substring(0, 25);
+				log_text_truncated = log_text_truncated.substring(0, 40);
 			} else {
 				log_text_truncated = logText;
 			}
@@ -283,7 +283,6 @@
 		<!-- entire page container -->
 		<div id="container">	
 			<div id="content">
-				<center>
 				<c:choose>
 					<c:when test="${not empty messages }">
 						${messages }
@@ -506,7 +505,6 @@
 						</form>
 					</c:otherwise>
 				</c:choose>
-				</center>
 			</div>
 			<!-- end content -->	
 			<div id="footer">

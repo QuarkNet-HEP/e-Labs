@@ -107,138 +107,142 @@
 		view_only_new = "no";
 	}
 	if (!(research_group_name == null)) {
-		ElabGroup eg = user.getGroup(research_group_name);
-		if (eg != null) {
-			research_group_id = eg.getId();
-		}
-		keyword_id = null;
-		if (!keyword.equals("")) {
-			ResultSet rs = LogbookTools.getKeywordDetailsByProject(project_id, keyword, elab);
-			if (rs.next()) {
-				keyword_id = (Integer) rs.getObject("id");
-				keyword_description = rs.getString("description");
+		try {
+			ElabGroup eg = user.getGroup(research_group_name);
+			if (eg != null) {
+				research_group_id = eg.getId();
 			}
-		}
-
-		if (keyword_id == null) {
-		    subtitle = "<h2>All logbook entries for group "+research_group_name+"</h2>";
-		} 
-		else {
-			subtitle = "<h2>Logbook entry for group "+research_group_name+"</h2>";
-		}
-		ResultSet innerRs = null;
-		int itemCount = 0;
-		String linkText = "";
-		Integer current_keyword_id = null;
-		String sectionText = "";
-		current_section = "";
-		ResultSet rs = LogbookTools.getLogbookEntries(keyword_id, elab, project_id, research_group_id);
-
-		while (rs.next()) {
-			Integer data_keyword_id = (Integer) rs.getObject("data_keyword_id");
-			String dateText = rs.getString("date_entered");
-			keyword_description = rs.getString("description");
-			String log_text = rs.getString("log_text");
-			if (log_text == null) {
-				log_text = "";
-			}
-			log_text = log_text.replaceAll("''", "'");
-			Integer logid = (Integer) rs.getObject("log_id");
-			Boolean new_log = (Boolean) rs.getObject("new");
-			String log_text_truncated;
-			log_text_truncated = log_text.replaceAll(
-						"\\<(.|\\n)*?\\>", "");
-			if (log_text_truncated.length() > 40) {
-				log_text_truncated = log_text_truncated.substring(0, 25);
-			} else {
-				log_text_truncated = log_text;
-			}
-			keyword_name = rs.getString("keyword_name");
-			String keyword_display = keyword_name.replaceAll("_", " ");
-			String section = rs.getString("section");
-			Integer section_id = (Integer) rs.getObject("section_id");
-			Long comment_count = null;
-			Long comment_new = null;
-			String comment_info = "";
-			comment_count = (Long) LogbookTools.getCommentCount(logid, elab);
-			comment_new = (Long) LogbookTools.getCommentCountNew(logid, elab);
-
-			if (new_log != null && new_log == true) {
-				thereAreNewEntries = "<a href=\"teacher-logbook-group.jsp?view_only_new=yes&keyword="+keyword+"&research_group_name="+
-									 research_group_name+"\">View only new entries</a>";
-				comment_info = "<div id=\"new_"+String.valueOf(logid)+"\"><IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font>"+
-							   "<a href=\"javascript:markAsRead('new_"+String.valueOf(logid)+"', 'mark-as-read.jsp?mark_as_read=yes&log_id="+String.valueOf(logid)+"&markWhat=logentry&research_group_name="+research_group_name+"')\" style=\"text-decoration: none;\"><FONT size=\"-2\"> <strong>Mark as Read</strong></font></a><br /></div>";
-			}
-			String comment_header = "";
-			if (comment_new == 0L) {
-				comment_header = "<strong>comments: " + comment_count + "</strong>";
-			} else {
-				if (comment_count == null) {
-					comment_count = 0L;
+			keyword_id = null;
+			if (!keyword.equals("")) {
+				ResultSet rs = LogbookTools.getKeywordDetailsByProject(project_id, keyword, elab);
+				if (rs.next()) {
+					keyword_id = (Integer) rs.getObject("id");
+					keyword_description = rs.getString("description");
 				}
-				comment_header =  "<strong>comments: " + comment_count + " (<FONT color=\"#AA3366\">" + comment_new + "</FONT>) " + "</strong>";
 			}
-
-			ArrayList commentDetails = LogbookTools.buildCommentDetails(logid, comment_header, elab);																							
-			itemCount++;
-			ArrayList logbookSubsectionDetails = new ArrayList();
-			ArrayList logbookDetails = new ArrayList();
-			logbookDetails.add(logid); //0
-			logbookDetails.add(keyword_name);
-			logbookDetails.add(dateText);
-			logbookDetails.add(comment_info);//3
-			logbookDetails.add(log_text);
-			logbookDetails.add(log_text_truncated);
-			logbookDetails.add(commentDetails); //6
-			logbookSubsectionDetails.add(keyword_description);
-			logbookSubsectionDetails.add(keyword_display);
-			sectionText = LogbookTools.getSectionText(section);
-			if (keyword_name.equals("general")) {
-				if (!logbookSectionOrder.containsValue("general")) {
-					if (view_only_new.equals("yes")) {
-						if (new_log != null && new_log) {
+	
+			if (keyword_id == null) {
+			    subtitle = "<h2>All logbook entries for group "+research_group_name+"</h2>";
+			} 
+			else {
+				subtitle = "<h2>Logbook entry for group "+research_group_name+"</h2>";
+			}
+			ResultSet innerRs = null;
+			int itemCount = 0;
+			String linkText = "";
+			Integer current_keyword_id = null;
+			String sectionText = "";
+			current_section = "";
+			ResultSet rs = LogbookTools.getLogbookEntries(keyword_id, elab, project_id, research_group_id);
+	
+			while (rs.next()) {
+				Integer data_keyword_id = (Integer) rs.getObject("data_keyword_id");
+				String dateText = rs.getString("date_entered");
+				keyword_description = rs.getString("description");
+				String log_text = rs.getString("log_text");
+				if (log_text == null) {
+					log_text = "";
+				}
+				log_text = log_text.replaceAll("''", "'");
+				Integer logid = (Integer) rs.getObject("log_id");
+				Boolean new_log = (Boolean) rs.getObject("new");
+				String log_text_truncated;
+				log_text_truncated = log_text.replaceAll(
+							"\\<(.|\\n)*?\\>", "");
+				if (log_text_truncated.length() > 40) {
+					log_text_truncated = log_text_truncated.substring(0, 40);
+				} else {
+					log_text_truncated = log_text;
+				}
+				keyword_name = rs.getString("keyword_name");
+				String keyword_display = keyword_name.replaceAll("_", " ");
+				String section = rs.getString("section");
+				Integer section_id = (Integer) rs.getObject("section_id");
+				Long comment_count = null;
+				Long comment_new = null;
+				String comment_info = "";
+				comment_count = (Long) LogbookTools.getCommentCount(logid, elab);
+				comment_new = (Long) LogbookTools.getCommentCountNew(logid, elab);
+	
+				if (new_log != null && new_log == true) {
+					thereAreNewEntries = "<a href=\"teacher-logbook-group.jsp?view_only_new=yes&keyword="+keyword+"&research_group_name="+
+										 research_group_name+"\">View only new entries</a>";
+					comment_info = "<div id=\"new_"+String.valueOf(logid)+"\"><IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font>"+
+								   "<a href=\"javascript:markAsRead('new_"+String.valueOf(logid)+"', 'mark-as-read.jsp?mark_as_read=yes&log_id="+String.valueOf(logid)+"&markWhat=logentry&research_group_name="+research_group_name+"')\" style=\"text-decoration: none;\"><FONT size=\"-2\"> <strong>Mark as Read</strong></font></a><br /></div>";
+				}
+				String comment_header = "";
+				if (comment_new == 0L) {
+					comment_header = "<strong>comments: " + comment_count + "</strong>";
+				} else {
+					if (comment_count == null) {
+						comment_count = 0L;
+					}
+					comment_header =  "<strong>comments: " + comment_count + " (<FONT color=\"#AA3366\">" + comment_new + "</FONT>) " + "</strong>";
+				}
+	
+				ArrayList commentDetails = LogbookTools.buildCommentDetails(logid, comment_header, elab);																							
+				itemCount++;
+				ArrayList logbookSubsectionDetails = new ArrayList();
+				ArrayList logbookDetails = new ArrayList();
+				logbookDetails.add(logid); //0
+				logbookDetails.add(keyword_name);
+				logbookDetails.add(dateText);
+				logbookDetails.add(comment_info);//3
+				logbookDetails.add(log_text);
+				logbookDetails.add(log_text_truncated);
+				logbookDetails.add(commentDetails); //6
+				logbookSubsectionDetails.add(keyword_description);
+				logbookSubsectionDetails.add(keyword_display);
+				sectionText = LogbookTools.getSectionText(section);
+				if (keyword_name.equals("general")) {
+					if (!logbookSectionOrder.containsValue("general")) {
+						if (view_only_new.equals("yes")) {
+							if (new_log != null && new_log) {
+								logbookSectionOrder.put(sectionOrder, "general");
+								sectionOrder++;
+								logbookSections.put(keyword_name, "general");
+							}
+						} else {
 							logbookSectionOrder.put(sectionOrder, "general");
 							sectionOrder++;
 							logbookSections.put(keyword_name, "general");
 						}
-					} else {
-						logbookSectionOrder.put(sectionOrder, "general");
-						sectionOrder++;
-						logbookSections.put(keyword_name, "general");
 					}
-				}
-			} 
-			if (!logbookSections.containsKey(keyword_name) && !keyword_name.equals("general")) {
-				if (!logbookSectionOrder.containsValue(sectionText)) {
-					if (view_only_new.equals("yes")) {
-						if (new_log != null && new_log) {
+				} 
+				if (!logbookSections.containsKey(keyword_name) && !keyword_name.equals("general")) {
+					if (!logbookSectionOrder.containsValue(sectionText)) {
+						if (view_only_new.equals("yes")) {
+							if (new_log != null && new_log) {
+								logbookSectionOrder.put(sectionOrder, sectionText);
+								sectionOrder++;
+								logbookSections.put(keyword_name, sectionText);
+							}
+						} else {
 							logbookSectionOrder.put(sectionOrder, sectionText);
 							sectionOrder++;
 							logbookSections.put(keyword_name, sectionText);
 						}
-					} else {
-						logbookSectionOrder.put(sectionOrder, sectionText);
-						sectionOrder++;
-						logbookSections.put(keyword_name, sectionText);
 					}
 				}
-			}
-			if (!logbookSectionKeywords.containsKey(keyword_name)) {
+				if (!logbookSectionKeywords.containsKey(keyword_name)) {
+					if (view_only_new.equals("yes")) {
+						if (new_log != null && new_log) {
+							logbookSectionKeywords.put(String.valueOf(keyword_name), logbookSubsectionDetails);			
+						}
+					} else {
+						logbookSectionKeywords.put(String.valueOf(keyword_name), logbookSubsectionDetails);								
+					}
+				}
 				if (view_only_new.equals("yes")) {
 					if (new_log != null && new_log) {
-						logbookSectionKeywords.put(String.valueOf(keyword_name), logbookSubsectionDetails);			
+						logbookEntries.put(itemCount, logbookDetails);
 					}
 				} else {
-					logbookSectionKeywords.put(String.valueOf(keyword_name), logbookSubsectionDetails);								
+					logbookEntries.put(itemCount, logbookDetails);				
 				}
 			}
-			if (view_only_new.equals("yes")) {
-				if (new_log != null && new_log) {
-					logbookEntries.put(itemCount, logbookDetails);
-				}
-			} else {
-				logbookEntries.put(itemCount, logbookDetails);				
-			}
+		} catch (Exception e) {
+			messages += e.getMessage();
 		}
 	}
 		
@@ -287,7 +291,6 @@
 								<td width="550"><font size="+2">Teachers: View and Comment on<br>Logbooks of Student Research Groups</font></td>
 							</tr>
 						</table>
-						<center>
 						<form method="get" name="log" action="">
 
 						<table width="800" cellpadding="0" border="0" align="left">
@@ -511,7 +514,6 @@
 						</form>
 					</c:otherwise>
 				</c:choose>
-				</center>
 			</div>
 			<!-- end content -->	
 		
