@@ -434,12 +434,12 @@
 																																<td valign="top" width="175" align="right">
 																																	${logbookEntries.value[2]}
 																																</td>
-																																<td width="400" valign="top">
+																																<td width="300" valign="top">
 																																	<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
 																																	<c:choose>
 																																		<c:when test="${logbookEntries.value[4] != logbookEntries.value[5]}">
-																																			<div id="fullLog${logbookEntries.value[0]}" style="display:none;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
-																																			<div id="showLog${logbookEntries.value[0]}"><e:whitespaceAdjust text="${logbookEntries.value[5]}" /> . . .<a href='javascript:showFullLog("showLog${logbookEntries.value[0]}","fullLog${logbookEntries.value[0]}");'>Read More</a></div>
+																																			<div id="fullLog${logbookEntries.value[0]}" style="display:none; width: 300px; height: 100%;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
+																																			<div id="showLog${logbookEntries.value[0]}" style="width: 300px; height: 100%;"><e:whitespaceAdjust text="${logbookEntries.value[5]}" /> . . .<a href='javascript:showFullLog("showLog${logbookEntries.value[0]}","fullLog${logbookEntries.value[0]}");'>Read More</a></div>
 																																	    </c:when>
 																																	    <c:otherwise>
 																																		    <e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust>

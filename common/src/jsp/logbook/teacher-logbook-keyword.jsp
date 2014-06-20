@@ -277,8 +277,8 @@
 																				<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
 																				<c:choose>
 																					<c:when test="${commentInfo.value[4] != commentInfo.value[5]}">
-																						<div id="fullLog${commentInfo.value[0]}" style="display:none;"><e:whitespaceAdjust text="${commentInfo.value[4]}"></e:whitespaceAdjust></div>
-																						<div id="showLog${commentInfo.value[0]}"><e:whitespaceAdjust text="${commentInfo.value[5]}" /> . . .<a href='javascript:showFullLog("showLog${commentInfo.value[0]}","fullLog${commentInfo.value[0]}");'>Read More</a></div>
+																						<div id="fullLog${commentInfo.value[0]}" style="display:none; width: 300px; height: 100%;"><e:whitespaceAdjust text="${commentInfo.value[4]}"></e:whitespaceAdjust></div>
+																						<div id="showLog${commentInfo.value[0]}" style="width: 300px; height: 100%;"><e:whitespaceAdjust text="${commentInfo.value[5]}" /> . . .<a href='javascript:showFullLog("showLog${commentInfo.value[0]}","fullLog${commentInfo.value[0]}");'>Read More</a></div>
 																				    </c:when>
 																				    <c:otherwise>
 																					    <e:whitespaceAdjust text="${commentInfo.value[4]}"></e:whitespaceAdjust>
