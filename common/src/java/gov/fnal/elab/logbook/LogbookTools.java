@@ -1005,15 +1005,15 @@ public class LogbookTools {
 	/*
 	 * Build build comment details
 	 */
-	public static ArrayList buildCommentDetails(int log_id, String comment_info, Elab elab) throws ElabException {
+	public static ArrayList buildCommentDetails(int log_id, String comment_info, int commentCnt, Elab elab) throws ElabException {
 		ArrayList commentDetails = new ArrayList();								
 		commentDetails.add(comment_info);
+		int localCnt = commentCnt;
 		try {
 			ResultSet commentRs = LogbookTools.getCommentDetails(log_id, elab);
 			String comment_date = "";
 			String comment_text = "";
 			String commentEntry = "";	
-			int commentCnt = 0;
 			while (commentRs.next()) {
 				comment_date = commentRs.getString("comment_date");
 				if (comment_date == null) {
@@ -1029,13 +1029,14 @@ public class LogbookTools {
 							"\\<(.|\\n)*?\\>", "");
 				if (comment_truncated.length() > 40) {
 					comment_truncated = comment_truncated.substring(0, 40);
-					commentEntry += "<div id=\"fullComment"+String.valueOf(commentCnt)+"\" style=\"display:none;\">"+ElabUtil.whitespaceAdjust(comment_text)+"</div>"+
-									"<div id=\"showComment"+String.valueOf(commentCnt)+"\">"+ElabUtil.whitespaceAdjust(comment_truncated)+" . . .<a href=\'javascript:showFullComment(\"showComment"+String.valueOf(commentCnt)+"\",\"fullComment"+String.valueOf(commentCnt)+"\");\'>Read More</a></div>";
+					commentEntry += "<div id=\"fullComment"+String.valueOf(localCnt)+"\" style=\"display:none;\">"+ElabUtil.whitespaceAdjust(comment_text)+"</div>"+
+									"<div id=\"showComment"+String.valueOf(localCnt)+"\">"+ElabUtil.whitespaceAdjust(comment_truncated)+
+									" . . .<a href=\'javascript:showFullComment(\"showComment"+String.valueOf(localCnt)+"\",\"fullComment"+String.valueOf(localCnt)+"\");\'>Read More</a></div>";
 				} else {
 					commentEntry += ElabUtil.whitespaceAdjust(comment_text);
 				}
 				commentDetails.add(commentEntry);
-				commentCnt++;
+				localCnt++;
 			} //while for comments
 		} catch (Exception e) {
 			throw new ElabException(e);

@@ -129,6 +129,7 @@
 			}
 			ResultSet innerRs = null;
 			int itemCount = 0;
+			int commentCnt = 0;
 			String linkText = "";
 			Integer current_keyword_id = null;
 			String sectionText = "";
@@ -180,7 +181,9 @@
 					comment_header =  "<strong>comments: " + comment_count + " (<FONT color=\"#AA3366\">" + comment_new + "</FONT>) " + "</strong>";
 				}
 	
-				ArrayList commentDetails = LogbookTools.buildCommentDetails(logid, comment_header, elab);																							
+				ArrayList commentDetails = LogbookTools.buildCommentDetails(logid, comment_header, commentCnt, elab);	
+				commentCnt = commentCnt + Integer.parseInt(String.valueOf(comment_count)) + 1;
+
 				itemCount++;
 				ArrayList logbookSubsectionDetails = new ArrayList();
 				ArrayList logbookDetails = new ArrayList();

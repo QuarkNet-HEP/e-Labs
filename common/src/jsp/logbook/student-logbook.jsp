@@ -108,6 +108,7 @@
 	//Let's build the all the entries
 	int itemCount=0;
 	int sectionOrder=1;
+	int commentCnt = 0;
 	String keywordName = keyword;	
 	String keyColor = "";
 	String thereAreNewComments = "";
@@ -188,8 +189,9 @@
 				thereAreNewComments = "<a href=\"student-logbook.jsp?view_only_new=yes&keyword="+keyword+"\">View only entries with new comments</a>";
 				comment_header =  "<strong>comments: " + comment_count + " (<FONT color=\"#AA3366\">" + comment_new + "</FONT>) " + "</strong>";
 			}
-
-			ArrayList commentDetails = LogbookTools.buildCommentDetails(log_id, comment_header, elab);													
+			
+			ArrayList commentDetails = LogbookTools.buildCommentDetails(log_id, comment_header, commentCnt, elab);
+			commentCnt = commentCnt + Integer.parseInt(String.valueOf(comment_count)) + 1;
 			logbookDetails.add(commentDetails); //11
 					
 			String sectionText = LogbookTools.getSectionText(section);
