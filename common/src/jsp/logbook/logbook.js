@@ -18,8 +18,6 @@ function showFullLog(showDivId, fullDivId) {
 function showFullComment(showDivId, fullDivId) {
 	var showDiv = document.getElementById(showDivId);
 	var fullDiv = document.getElementById(fullDivId);
-	alert(showDiv.innerHTML);
-	alert(fullDiv.innerHTML);
 	showDiv.innerHTML = fullDiv.innerHTML;
 }
 
