@@ -184,10 +184,10 @@
 				comment_count = 0L;
 			}
 			if (comment_new == 0L) {
-				comment_header = "<strong>comments: " + comment_count + "</strong>";
+				comment_header = "<strong>Comments: " + comment_count + "</strong>";
 			} else {
 				thereAreNewComments = "<a href=\"student-logbook.jsp?view_only_new=yes&keyword="+keyword+"\">View only entries with new comments</a>";
-				comment_header =  "<strong>comments: " + comment_count + " (<FONT color=\"#AA3366\">" + comment_new + "</FONT>) " + "</strong>";
+				comment_header =  "<strong>Comments: " + comment_count + " (<FONT color=\"#AA3366\">" + comment_new + "</FONT>) " + "</strong>";
 			}
 			
 			ArrayList commentDetails = LogbookTools.buildCommentDetails(log_id, comment_header, commentCnt, elab);
@@ -437,25 +437,25 @@
 																				<c:when test='${ logbookSectionKeywords.key == logbookEntries.value[5]}' >
 																					<tr>
 																						<td valign="top" width="150" align="right"><font face="Comic Sans MS">${logbookEntries.value[3] }</font></td>
-																						<td width="300" valign="top"><font face="Comic Sans MS">
+																						<td width="300" valign="top" align="left" ><font face="Comic Sans MS" >
 
 																						<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
 																						<c:choose>
 																							<c:when test="${logbookEntries.value[4] != logbookEntries.value[9]}">
-																								<div id="fullLog${logbookEntries.value[1]}" style="display:none; width: 300px; height: 100%;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
-																								<div id="showLog${logbookEntries.value[1]}" style="width: 300px; height: 100%;"><e:whitespaceAdjust text="${logbookEntries.value[9]}" /> . . .<a href='javascript:showFullLog("showLog${logbookEntries.value[1]}","fullLog${logbookEntries.value[1]}");'>Read More</a></div>
+																								<div id="fullLog${logbookEntries.value[1]}" style="display:none; width: 300px; height: 100%; text-align: left;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
+																								<div id="showLog${logbookEntries.value[1]}" style="width: 300px; height: 100%; text-align: left;"><e:whitespaceAdjust text="${logbookEntries.value[9]}" /> . . .<a href='javascript:showFullLog("showLog${logbookEntries.value[1]}","fullLog${logbookEntries.value[1]}");'>Read More</a></div>
 																						    </c:when>
 																						    <c:otherwise>
-																							    <div style="width: 300px; height: 100%;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
+																							    <div style="width: 300px; height: 100%; text-align: left;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
 																						    </c:otherwise>
 																						 </c:choose>																								
 																						</font></td>
 																					</tr>
 																				    <tr>
 																						<td width="150"> </td>
-																						<td width="300">
+																						<td width="300" align="left" style="background-color: #f2f2f2;">
 																							<font face="Comic Sans MS">${logbookEntries.value[10]}</font>
-																							<font face="Comic Sans MS" size=-2>
+																							<font face="Comic Sans MS" size=-2 >
 																								<c:if test="${not empty logbookEntries.value[11] }">
 																									<c:forEach items="${logbookEntries.value[11] }" var="comments">
 																										${comments }<br />

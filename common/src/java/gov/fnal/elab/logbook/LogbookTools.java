@@ -1040,7 +1040,7 @@ public class LogbookTools {
 				if (comment_date == null) {
 					comment_date = "";
 				}
-				comment_text = comment_date + ": " + commentRs.getString("comment");
+				comment_text = "<strong>" + comment_date + "</strong>: " + commentRs.getString("comment");
 				if (comment_text == null) {
 					comment_text = "";
 				}
