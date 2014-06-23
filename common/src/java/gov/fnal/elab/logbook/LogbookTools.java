@@ -315,7 +315,10 @@ public class LogbookTools {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             ps = conn.prepareStatement( " SELECT log.id AS cur_id, to_char(log.date_entered,'DD Mon YYYY HH12:MI AM') AS date_entered, log.log_text AS cur_text "+
             							"   FROM log " + 
-        								"  WHERE project_id = ? AND keyword_id = ? AND research_group_id = ? AND role = 'user' " +
+        								"  WHERE project_id = ? "+
+            							"	 AND keyword_id = ? "+
+        								"	 AND research_group_id = ? "+
+            							"	 AND role = 'user' " +
         								"  ORDER BY cur_id DESC;");
             
             try {              

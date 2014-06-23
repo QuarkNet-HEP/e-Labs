@@ -162,7 +162,16 @@ public class LogbookToolsTest {
 
 	@Test
 	public void test_updateResetCommentForLogbookEntry() {
-		
+        String message = "";
+        int result = -1;
+        try {
+	         result = LogbookTools.updateResetCommentsforLogbookEntry(newLogId, cosmicElab);
+        } catch (Exception e) {
+        	message = e.getMessage();
+        }        
+        assertTrue(result != -1);        
+        assertTrue(message.equals(""));             
 	}//end of test_updateResetCommentForLogbookEntry
-	//LogbookTools.updateResetCommentsforLogbookEntry(logMark, elab);
+
+
 }//end of LogbookToolsTest class
