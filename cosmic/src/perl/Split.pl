@@ -404,6 +404,7 @@ while(<IN>){
 		
 		@stRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14);
 		#next if ($stRow[6] != $date) && (substr($date,0,2) != 12) && (substr($date,2,2) != 31); #there if a bad GPS date gets into the ST line. Also, check to see if the date rolled because of a new year--part of bug 535
+		next if $stRow[5] == 0; #fixing bug 631
 		if (($stRow[6] != $date) && (substr($date,0,2) != 12) && (substr($date,2,2) != 31)){#; #there if a bad GPS date gets into the ST line. Also, check to see if the date rolled because of a new year--part of bug 535
 			#print "$. Line 427 \n";
 			$stTimeGlitch = 1;
@@ -412,7 +413,6 @@ while(<IN>){
 		$STLineNumber = $.; #needed to check if this ST line is followed by a DS line			
 		$stRow = @stRow; 
 		#next if substr($stRow[5], 0, 2)*3600 + substr($stRow[5], 2, 2)*60 + substr($stRow[5], 4, 6) == 0;
-		next if $stRow[5] == 0;
 		$oldSTTime = $stTime;
 		$stTime = substr($stRow[5], 0, 2)*3600 + substr($stRow[5], 2, 2)*60 + substr($stRow[5], 4, 6);
 		if ($oldSTTime == $stTime){ #munged GPS time will stop the status line time from advancing. Writing repeating times into the status array will break the calculation of rate and other bits in the bless file
@@ -753,8 +753,19 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					print $blessFile "###Seconds (since Midnight UTC) \t Chan 0 rate \t Error in Chan0 \t Chan 1 rate \t Error in Chan1 \t Chan 2 rate \t Error in Chan2 \t Chan 3 rate \t Error in Chan3 \t Trigger rate\tError in Triggers \t Raw BA output \t Temp (DegC) \t Bus Voltage \t #GPS satellites in view \n";
 					
 					#Now the table
-					for my $i  (1..$dsRowCount-2){			
-						print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.0f", sqrt($stRate0[$i])), "\t", "$stRate1[$i]", "\t", sprintf("%0.0f", sqrt($stRate1[$i])),"\t", "$stRate2[$i]", "\t", sprintf("%0.0f", sqrt($stRate2[$i])),"\t", "$stRate3[$i]", "\t", sprintf("%0.0f", sqrt($stRate3[$i])), "\t", "$stEventRate[$i]", "\t", sprintf("%0.0f", sqrt($stEventRate[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
+					#for my $i  (1..$dsRowCount-2){			
+					#	print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.0f", sqrt($stRate0[$i])), "\t", "$stRate1[$i]", "\t", sprintf("%0.0f", sqrt($stRate1[$i])),"\t", "$stRate2[$i]", "\t", sprintf("%0.0f", sqrt($stRate2[$i])),"\t", "$stRate3[$i]", "\t", sprintf("%0.0f", sqrt($stRate3[$i])), "\t", "$stEventRate[$i]", "\t", sprintf("%0.0f", sqrt($stEventRate[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
+					#}
+
+					#Changing the way that we calculate error. Bug #625
+		
+					#Now the table
+					#for my $i  (1..$dsRowCount-2){			
+					#	print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.0f", sqrt($stRate0[$i])), "\t", "$stRate1[$i]", "\t", sprintf("%0.0f", sqrt($stRate1[$i])),"\t", "$stRate2[$i]", "\t", sprintf("%0.0f", sqrt($stRate2[$i])),"\t", "$stRate3[$i]", "\t", sprintf("%0.0f", sqrt($stRate3[$i])), "\t", "$stEventRate[$i]", "\t", sprintf("%0.0f", sqrt($stEventRate[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
+					#}
+		
+					for my $i  (1..$dsRowCount-2){
+						print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.5f", sqrt($stRate0[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stRate1[$i]", "\t", sprintf("%0.5f", sqrt($stRate1[$i]/($stTime[$i] - $stTime[$i-1]))),"\t", "$stRate2[$i]", "\t", sprintf("%0.5f", sqrt($stRate2[$i]/($stTime[$i] - $stTime[$i-1]))),"\t", "$stRate3[$i]", "\t", sprintf("%0.5f", sqrt($stRate3[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stEventRate[$i]", "\t", sprintf("%0.5f", sqrt($stEventRate[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
 					}
 
 					close $blessFile;	
@@ -1001,9 +1012,15 @@ else{
 	
 	print $blessFile "###Seconds (since Midnight UTC) \t Chan 0 rate \t Error in Chan0 \t Chan 1 rate \t Error in Chan1 \t Chan 2 rate \t Error in Chan2 \t Chan 3 rate \t Error in Chan3 \t Trigger rate\tError in Triggers \t Raw BA output \t Temp (DegC) \t Bus Voltage \t #GPS satellites in view \n";
 	
+	#Changing the way that we calculate error. Bug #625
+		
 	#Now the table
-	for my $i  (1..$dsRowCount-2){			
-		print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.0f", sqrt($stRate0[$i])), "\t", "$stRate1[$i]", "\t", sprintf("%0.0f", sqrt($stRate1[$i])),"\t", "$stRate2[$i]", "\t", sprintf("%0.0f", sqrt($stRate2[$i])),"\t", "$stRate3[$i]", "\t", sprintf("%0.0f", sqrt($stRate3[$i])), "\t", "$stEventRate[$i]", "\t", sprintf("%0.0f", sqrt($stEventRate[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
+	#for my $i  (1..$dsRowCount-2){			
+	#	print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.0f", sqrt($stRate0[$i])), "\t", "$stRate1[$i]", "\t", sprintf("%0.0f", sqrt($stRate1[$i])),"\t", "$stRate2[$i]", "\t", sprintf("%0.0f", sqrt($stRate2[$i])),"\t", "$stRate3[$i]", "\t", sprintf("%0.0f", sqrt($stRate3[$i])), "\t", "$stEventRate[$i]", "\t", sprintf("%0.0f", sqrt($stEventRate[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
+	#}
+	
+	for my $i  (1..$dsRowCount-2){
+		print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.5f", sqrt($stRate0[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stRate1[$i]", "\t", sprintf("%0.5f", sqrt($stRate1[$i]/($stTime[$i] - $stTime[$i-1]))),"\t", "$stRate2[$i]", "\t", sprintf("%0.5f", sqrt($stRate2[$i]/($stTime[$i] - $stTime[$i-1]))),"\t", "$stRate3[$i]", "\t", sprintf("%0.5f", sqrt($stRate3[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stEventRate[$i]", "\t", sprintf("%0.5f", sqrt($stEventRate[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
 	}
 					
 	close $blessFile;	
