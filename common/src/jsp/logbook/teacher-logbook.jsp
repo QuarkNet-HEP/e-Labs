@@ -9,7 +9,7 @@
 <%@ include file="../login/teacher-login-required.jsp"%>
 <%
 	String messages = ""; //to collect exception/feedback messages
-	String ref_rg_name = request.getParameter("ref_rg_name"); // this is the name we are referring to in the logbook
+	String ref_rg_name = request.getParameter("research_group_name"); // this is the name we are referring to in the logbook
 	Integer project_id = elab.getId();
 	Integer research_group_id = user.getGroup().getId();
     String teacher_name = user.getTeacher();
