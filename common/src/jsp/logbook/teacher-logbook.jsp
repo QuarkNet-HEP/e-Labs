@@ -17,7 +17,7 @@
 	//get research group links for the left hand side menu
 	String linksToEachGroup = "";
 	try {
-		linksToEachGroup = LogbookTools.buildGroupLinks(user,"teacher-logbook.jsp?ref_rg_name=");		
+		linksToEachGroup = LogbookTools.buildGroupLinks(user,"teacher-logbook.jsp");		
 	} catch (Exception e) {
 		messages += e.getMessage();
 	}
@@ -113,8 +113,8 @@
 			String log_text_truncated;
 			log_text_truncated = logText.replaceAll(
 						"\\<(.|\\n)*?\\>", "");
-			if (log_text_truncated.length() > 40) {
-				log_text_truncated = log_text_truncated.substring(0, 25);
+			if (log_text_truncated.length() > 150) {
+				log_text_truncated = log_text_truncated.substring(0, 138);
 			} else {
 				log_text_truncated = logText;
 			}
@@ -170,10 +170,10 @@
 					</c:when>
 					<c:otherwise>
 						<form method="get" name="log" action="">
-						<table width="800" cellpadding="0" border="0" align="left">
+						<table class="outerTable">
 							<tr>
 								<td valign="top" width="150" nowrap>
-									<div style="height:700px; width:150px; position: fixed; overflow:auto;">
+									<div class="leftMenu">
 									<table width="145">
 										<tr>
 											<td valign="center" align="left"><b>Student Logbooks</b></td>
@@ -201,7 +201,7 @@
 									</div>
 								</td>								
 								<td valign="top" align="center">
-									<div style="border-style: dotted; border-width: 1px; width: 550px"">
+									<div class="instructions">
 										<table width="550">
 											<tr>
 												<td align="left" colspan="4">
@@ -278,7 +278,7 @@
 														</c:when>
 													</c:choose>
 												    <tr>
-												    	<td colspan="2" style="border-bottom: dotted 1px gray;"> </td>
+												    	<td colspan="2" class="entrySeparator"> </td>
 												    </tr>													
 												</c:forEach>
 											</c:when>

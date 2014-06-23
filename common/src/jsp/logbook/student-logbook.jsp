@@ -27,7 +27,7 @@
 	String yesNo = "no";
 	try {
 		//check whether there are entries for the general keyword
-		yesNo = LogbookTools.getYesNoGeneral(groupName, projectId, elab);
+		yesNo = LogbookTools.getYesNoGeneral(user.getId(), projectId, elab);
 	} catch (Exception e) {
 		messages += e.getMessage();
 	}
@@ -37,7 +37,7 @@
 	HashMap keywordTracker = new HashMap();
 	ResultSet rs = null;
 	try {
-		rs = LogbookTools.getKeywordTracker(groupName, projectId, elab);
+		rs = LogbookTools.getKeywordTracker(user.getId(), projectId, elab);
 		while (rs.next()){
 			if (rs.getObject("keyword_id") != null) {
 				keywordId= (Integer) rs.getObject("keyword_id");
@@ -144,8 +144,8 @@
 			String section=rs.getString("section");
 			String log_text_truncated;
 			log_text_truncated = logText.replaceAll("\\<(.|\\n)*?\\>", "");
-			if (log_text_truncated.length() > 40) {
-				log_text_truncated = log_text_truncated.substring(0, 40);
+			if (log_text_truncated.length() > 150) {
+				log_text_truncated = log_text_truncated.substring(0, 138);
 			} else {
 				log_text_truncated = logText;
 			}
@@ -216,13 +216,18 @@
 						if (comment_new > 0L) {
 							logbookSectionOrder.put(sectionOrder, sectionText);
 							sectionOrder++;							
-							logbookSections.put(keywordName, sectionText);
 						}
 					} else {
 						logbookSectionOrder.put(sectionOrder, sectionText);
 						sectionOrder++;
-						logbookSections.put(keywordName, sectionText);
 					}
+				}
+				if (view_only_new.equals("yes")) {
+					if (comment_new > 0L) {
+						logbookSections.put(keywordName, sectionText);						
+					}
+				} else {
+					logbookSections.put(keywordName, sectionText);					
 				}
 			}
 			if (!logbookSectionKeywords.containsKey(keywordName)) {
@@ -291,10 +296,10 @@
 					</c:when>
 					<c:otherwise>
 						<form method="post" name="log" action="">
-						<table width="900" cellpadding="0" border="0" align="left">
+						<table class="outerTable">
 							<tr>
 								<td valign="top" width="150" nowrap>
-									<div style="height:700px; width:150px; position: fixed; overflow:auto;">
+									<div class="leftMenu">
 									<table width="145">
 										<tr>
 											<td valign="center" align="left">
@@ -343,8 +348,8 @@
 									</div>
 								</td>
 								<td valign="top" align="center">	
-								    <div style="width: 440px;">	
-									<table width="440">
+								    <div style="width: 500px;">	
+									<table width="500">
 										<tr>
 											<td align="right">
 												<img src="../graphics/logbook_large.gif" align="middle" border="0" alt="">
@@ -354,8 +359,8 @@
 											</td>
 										</tr>
 									</table>
-									<div style="border-style: dotted; border-width: 1px;">
-										<table width="440">
+									<div class="instructions">
+										<table width="500">
 											<tr>
 												<td align="left">
 													<font size="+1" face="Comic Sans MS">Instructions</font>
@@ -383,7 +388,7 @@
 											<td align="center" height="20"><FONT color="#AA3366" face="Comic Sans MS"><strong>${thereAreNewComments }</strong></FONT></td>
 										</tr>
 									</table>
-								<table width="440">
+								<table width="500">
 									<c:choose>
 										<c:when test="${not empty logbookSectionOrder }">
 											<c:forEach items="${logbookSectionOrder }" var="logbookSectionOrder"> 
@@ -413,7 +418,7 @@
 																			</tr>
 																			<tr>
 																				<td colspan="2">
-																					<textarea name="log_text" cols="55" rows="5"></textarea>
+																					<textarea name="log_text" cols="70" rows="5"></textarea>
 																					<!-- //EPeronja-04/08/2013: replace " by ', string was not showing correctly -->
 																					<input type="hidden" name="img_src" value='${img_src}'> 
 																					<input type="hidden" name="count" value="${count }">
@@ -432,13 +437,13 @@
 																				<c:when test='${ logbookSectionKeywords.key == logbookEntries.value[5]}' >
 																					<tr>
 																						<td valign="top" width="150" align="right"><font face="Comic Sans MS">${logbookEntries.value[3] }</font></td>
-																						<td width="210" valign="top"><font face="Comic Sans MS">
+																						<td width="320" valign="top"><font face="Comic Sans MS">
 
 																						<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
 																						<c:choose>
 																							<c:when test="${logbookEntries.value[4] != logbookEntries.value[9]}">
-																								<div id="fullLog${logbookEntries.value[1]}" style="display:none; width: 210px; height: 100%;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
-																								<div id="showLog${logbookEntries.value[1]}" style="width: 210px; height: 100%;"><e:whitespaceAdjust text="${logbookEntries.value[9]}" /> . . .<a href='javascript:showFullLog("showLog${logbookEntries.value[1]}","fullLog${logbookEntries.value[1]}");'>Read More</a></div>
+																								<div id="fullLog${logbookEntries.value[1]}" style="display:none; width: 320px; height: 100%;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
+																								<div id="showLog${logbookEntries.value[1]}" style="width: 320px; height: 100%;"><e:whitespaceAdjust text="${logbookEntries.value[9]}" /> . . .<a href='javascript:showFullLog("showLog${logbookEntries.value[1]}","fullLog${logbookEntries.value[1]}");'>Read More</a></div>
 																						    </c:when>
 																						    <c:otherwise>
 																							    <e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust>
@@ -448,7 +453,7 @@
 																					</tr>
 																				    <tr>
 																						<td width="150"> </td>
-																						<td width="210">
+																						<td width="320">
 																							<font face="Comic Sans MS">${logbookEntries.value[10]}</font>
 																							<font face="Comic Sans MS" size=-2>
 																								<c:if test="${not empty logbookEntries.value[11] }">
@@ -460,7 +465,7 @@
 																						</td>																				    
 																				    </tr>
 																				    <tr>
-																				    	<td colspan="2" style="border-bottom: dotted 1px gray;"> </td>
+																				    	<td colspan="2" class="entrySeparator"> </td>
 																				    </tr>
 																				</c:when>
 																			</c:choose>
@@ -485,7 +490,7 @@
 											</tr>
 											<tr>
 												<td colspan="2">
-													<textarea name="log_text" cols="55" rows="5"></textarea>
+													<textarea name="log_text" cols="70" rows="5"></textarea>
 													<!-- //EPeronja-04/08/2013: replace " by ', string was not showing correctly -->
 													<input type="hidden" name="img_src" value='${img_src}'> 
 													<input type="hidden" name="count" value="${count }">

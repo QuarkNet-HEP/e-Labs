@@ -29,7 +29,7 @@ public class LogbookTools {
 	/*
 	 * Check whether keyword general has any entries
 	 */
-	public static String getYesNoGeneral(String groupName, int project_id, Elab elab) throws ElabException {
+	public static String getYesNoGeneral(int group_id, int project_id, Elab elab) throws ElabException {
 		String yesno = "no";
         Connection conn = null;
         PreparedStatement ps; 
@@ -40,12 +40,12 @@ public class LogbookTools {
             						   "  FROM log, research_group, keyword " +
             						   " WHERE keyword.keyword = 'general' "+
             						   "   AND keyword.id = log.keyword_id " +
-            						   "   AND research_group.name ILIKE ? "+
+            						   "   AND research_group.id = ? "+
             						   "   AND research_group.id = log.research_group_id "+
             						   "   AND log.project_id = ?;");
 
             try {              
-            	ps.setString(1, groupName); 
+            	ps.setInt(1, group_id); 
             	ps.setInt(2, project_id);
                 rs = ps.executeQuery(); 
                 if (rs.next()) {
@@ -67,7 +67,7 @@ public class LogbookTools {
 	/*
 	 * Retrieve all keyword ids in the log for a research group
 	 */
-	public static ResultSet getKeywordTracker(String groupName, int project_id, Elab elab) throws ElabException {
+	public static ResultSet getKeywordTracker(int group_id, int project_id, Elab elab) throws ElabException {
         Connection conn = null;
         PreparedStatement ps; 
         ResultSet rs;
@@ -75,11 +75,11 @@ public class LogbookTools {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             ps = conn.prepareStatement("SELECT DISTINCT keyword_id "+
             						   "  FROM log, research_group " + 
-            						   " WHERE research_group.name ILIKE ? "+
+            						   " WHERE research_group.id = ? "+
             						   "   AND research_group.id = log.research_group_id "+
             						   "   AND project_id in (0, ?);");
             try {              
-            	ps.setString(1, groupName);
+            	ps.setInt(1, group_id);
             	ps.setInt(2, project_id); 
                 rs = ps.executeQuery(); 
             } catch (SQLException e) {
@@ -873,7 +873,7 @@ public class LogbookTools {
 				//EPeronja-only display active research groups
 				if (eg.getActive()) {
 					linksToEachGroup = linksToEachGroup
-							+ "<tr><td><A HREF='"+page_name + eg.getName() + "'>" + eg.getName()+ "</A></td></tr>";
+							+ "<tr><td><A HREF='"+page_name +"?research_group_id="+ String.valueOf(eg.getId()) + "&research_group_name=" + eg.getName() + "'>" + eg.getName()+ "</A></td></tr>";
 				}
 			}
 		}//end while loop
@@ -963,7 +963,7 @@ public class LogbookTools {
 	/*
 	 * Build keyword links
 	 */
-	public static String buildGroupLinksToKeywords(ResultSet rs, HashMap keywordTracker, String keyword, String research_group_name) throws ElabException {
+	public static String buildGroupLinksToKeywords(ResultSet rs, HashMap keywordTracker, String keyword, String research_group_name, int group_id) throws ElabException {
 		String linksToEach = "";
 		String current_section = "";
 		try {
@@ -990,10 +990,9 @@ public class LogbookTools {
 					linksToEach=linksToEach
 							+ "<tr><td><img src=\"../graphics/log_entry_"
 							+ yesNo
-							+ ".gif\" border=0 align=center><A HREF='teacher-logbook-group.jsp?research_group_name="
-							+ research_group_name + "&keyword="
-							+ keyword_loop + "'><FONT  " + keyColor + ">"
-							+ keyword_text + "</font></A></td></tr>";				
+							+ ".gif\" border=0 align=center><A HREF='teacher-logbook-group.jsp?research_group_name="+ research_group_name + 
+							"&research_group_id="+ String.valueOf(group_id) +
+							"&keyword=" + keyword_loop + "'><FONT  " + keyColor + ">"+ keyword_text + "</font></A></td></tr>";				
 				}
 			}
 		} catch (Exception e) {
@@ -1027,13 +1026,13 @@ public class LogbookTools {
 				String comment_truncated;
 				comment_truncated = comment_text.replaceAll(
 							"\\<(.|\\n)*?\\>", "");
-				if (comment_truncated.length() > 40) {
-					comment_truncated = comment_truncated.substring(0, 40);
-					commentEntry += "<div id=\"fullComment"+String.valueOf(localCnt)+"\" style=\"display:none; width: 200px; height: 100%;\">"+ElabUtil.whitespaceAdjust(comment_text)+"</div>"+
-									"<div id=\"showComment"+String.valueOf(localCnt)+"\" style=\"width: 200px; height: 100%;\">"+ElabUtil.whitespaceAdjust(comment_truncated)+
+				if (comment_truncated.length() > 150) {
+					comment_truncated = comment_truncated.substring(0, 138);
+					commentEntry += "<div id=\"fullComment"+String.valueOf(localCnt)+"\" style=\"display:none; width: 320px; height: 100%;\">"+comment_text+"</div>"+
+									"<div id=\"showComment"+String.valueOf(localCnt)+"\" style=\"width: 320px; height: 100%;\">"+comment_truncated+
 									" . . .<a href=\'javascript:showFullComment(\"showComment"+String.valueOf(localCnt)+"\",\"fullComment"+String.valueOf(localCnt)+"\");\'>Read More</a></div>";
 				} else {
-					commentEntry += ElabUtil.whitespaceAdjust(comment_text);
+					commentEntry += comment_text;
 				}
 				commentDetails.add(commentEntry);
 				localCnt++;
@@ -1058,7 +1057,7 @@ public class LogbookTools {
 			while (rs.next()) {
 				int cur_log_id = rs.getInt("cur_id");
 				String log_date = rs.getString("date_entered");
-				String cur_log_text = ElabUtil.whitespaceAdjust(rs.getString("cur_text"));
+				String cur_log_text = rs.getString("cur_text");
 				String log_date_show = log_date;
 				String log_text_show = cur_log_text;
 				itemCount++;
@@ -1135,7 +1134,7 @@ public class LogbookTools {
 		  	while (rs.next()) {
 		  		int log_id = rs.getInt("log_id");
 		  		String log_date = rs.getString("log_date");
-		  		String log_text = ElabUtil.whitespaceAdjust(rs.getString("log_text"));
+		  		String log_text = rs.getString("log_text");
 		  		String log_date_show = log_date;
 		  		String log_text_show = log_text;
 		  		itemCount++;
@@ -1154,7 +1153,7 @@ public class LogbookTools {
 		  		String comment_existing = "";
 		  		while (sInner.next()) {
 		  			comment_date = sInner.getString("comment_date");
-		  			comment_existing = ElabUtil.whitespaceAdjust(sInner.getString("comment"));
+		  			comment_existing = sInner.getString("comment");
 		  			commentCount++;
 		  			if (commentCount > 1) {
 		  				log_text_show = " ";

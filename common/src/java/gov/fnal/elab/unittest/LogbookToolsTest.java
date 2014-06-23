@@ -24,7 +24,7 @@ public class LogbookToolsTest {
 		String message = "";
 		String yesNo = "No";
 		try {
-			yesNo = LogbookTools.getYesNoGeneral("undergrads", 1, cosmicElab);
+			yesNo = LogbookTools.getYesNoGeneral(140, 1, cosmicElab);
 		} catch (Exception e) {
 			message = e.getMessage();
 		}
@@ -38,7 +38,7 @@ public class LogbookToolsTest {
 		String message = "";
 		ResultSet rs = null;
 		try {
-			rs = LogbookTools.getKeywordTracker("undergrads", 1, cosmicElab);
+			rs = LogbookTools.getKeywordTracker(140, 1, cosmicElab);
 		} catch (Exception e) {
 			message = e.getMessage();
 		}
