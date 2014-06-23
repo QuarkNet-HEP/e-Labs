@@ -185,6 +185,9 @@ public class BlessProcess {
 								if (pass && lineNumber > 0) {
 									message = "<strong>"+filename + "</strong> has been blessed.";
 								} else {
+									if (lineNumber == 0) {
+										failReason = "The .bless file is empty. There is no information to run the blessing routine.";
+									}
 									message = "<strong>"+filename + "</strong> has NOT been blessed. Fail reason: " + failReason;								
 								}
 							}
@@ -234,6 +237,17 @@ public class BlessProcess {
 		}
 		return result;
 	}//end of parseToDouble
+
+	public double parseToDouble2Sigmas(String split)
+	{
+		double result = 0;
+		try {
+			result = Double.parseDouble(split);
+		} catch (NumberFormatException e) {
+			result = 0;
+		}
+		return result*2;
+	}//end of parseToDouble
 	
 	public String checkChannelMismatch(VDSCatalogEntry split, VDSCatalogEntry benchmark) {
 		String failReason = "";
@@ -273,7 +287,7 @@ public class BlessProcess {
 			failReason = "This file failed at: " + seconds + "(" + convertToHMS(seconds) + ")"+
 					 " because the benchmark "+label+" rate: "+ benchmarkRate +
 					 " (metadata value) was not between the ranges of comparison set by " + column1 +
-					 " and " + String.valueOf(column2) +
+					 " and " + String.valueOf(column2) + " 2 sigmas being: " + String.valueOf(parseToDouble(column2)) +
 					 "(" + String.valueOf(parseToDouble(column1) - parseToDouble(column2)) +
 					 " and " + String.valueOf(parseToDouble(column1) + parseToDouble(column2))+")" +
 					 " - for these last values, look at the .bless file of the just split file.";									
