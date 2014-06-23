@@ -9,9 +9,9 @@
 <%@ include file="../login/teacher-login-required.jsp"%>
 <%
 	String messages = ""; //to collect exception/feedback messages
-	String ref_rg_name = request.getParameter("ref_rg_name"); // this is the name we are referring to in the logbook
+	String ref_rg_name = request.getParameter("research_group_name"); // this is the name we are referring to in the logbook
 	Integer project_id = elab.getId();
-	Integer research_group_id = user.getGroup().getId();
+	Integer research_group_id = user.getId();
     String teacher_name = user.getTeacher();
 	String role = user.getRole();
 	//get research group links for the left hand side menu
@@ -24,6 +24,10 @@
 
 	//check whether to display all entries
 	Integer ref_rg_id = null;
+	String ref_rg_id_text = request.getParameter("research_group_id");
+	if (ref_rg_id_text != null ) {
+		ref_rg_id = Integer.parseInt(ref_rg_id_text);
+	} 
 	if (!(ref_rg_name == null) && (!ref_rg_name.equals("general"))) {
 		ElabGroup eg1 = user.getGroup(ref_rg_name);
 		ref_rg_id = eg1.getId();
