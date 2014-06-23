@@ -32,3 +32,28 @@ p {
 	font:12px arial, helvetica, sans-serif;  
 }
 
+table.outerTable {
+	width: 800px;
+	padding: 0;
+	border: 0;
+	text-align: left;
+}
+
+div.leftMenu {
+	height:700px; 
+	width:150px; 
+	position: fixed; 
+	overflow:auto;
+}
+
+div.separator {
+	width:5px; 
+	position: fixed;
+}
+
+div.instructions {
+	border-style: dotted; 
+	border-width: 1px; 
+	text-align: left;
+	width: 550px;
+}

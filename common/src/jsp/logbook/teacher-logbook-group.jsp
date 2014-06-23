@@ -18,6 +18,11 @@
 	String keyword_text = "";
 	String keyword_loop = "";
 	String research_group_name = request.getParameter("research_group_name");
+	String research_group_id_text = request.getParameter("research_group_id");
+	int research_group_id = -1;
+	if (research_group_name != null) {
+		research_group_id = Integer.parseInt(research_group_id_text);
+	}
 	String keyword = request.getParameter("keyword");
 	String current_section = "";
 	String keyColor = "";
@@ -33,7 +38,7 @@
 	}
 	
 	int project_id = elab.getId();
-	String linksToEachGroup = LogbookTools.buildGroupLinks(user, "teacher-logbook-group.jsp?research_group_name=");
+	String linksToEachGroup = LogbookTools.buildGroupLinks(user, "teacher-logbook-group.jsp");
 
 	//check if we are entering new comments
 	String submit = request.getParameter("submit");
@@ -61,10 +66,10 @@
 	//build all links
 	String yesNo = "No";
 	if (!(research_group_name == null)) {
-		yesNo = LogbookTools.getYesNoGeneral(research_group_name, project_id, elab);
+		yesNo = LogbookTools.getYesNoGeneral(research_group_id, project_id, elab);
 		HashMap keywordTracker = new HashMap();
 		ResultSet rs = null;
-		rs = LogbookTools.getKeywordTracker(research_group_name, project_id, elab);
+		rs = LogbookTools.getKeywordTracker(research_group_id, project_id, elab);
 		while (rs.next()){
 			if (rs.getObject("keyword_id") != null) {
 				keyword_id= (Integer) rs.getObject("keyword_id");
@@ -81,7 +86,7 @@
 		}
 		
 		try {
-			linksToEach = LogbookTools.buildGroupLinksToKeywords(rs, keywordTracker, keyword, research_group_name);
+			linksToEach = LogbookTools.buildGroupLinksToKeywords(rs, keywordTracker, keyword, research_group_name, research_group_id);
 		} catch (Exception e) {
 			messages += e.getMessage();
 		}
@@ -99,7 +104,6 @@
 	//Save all the entries to display
 	TreeMap<Integer, ArrayList> logbookEntries = new TreeMap<Integer, ArrayList>();
 
-	int research_group_id = -1;
 	String subtitle = "";
 	//check if we are viewing only new entries
 	String view_only_new = request.getParameter("view_only_new");
@@ -108,10 +112,6 @@
 	}
 	if (!(research_group_name == null)) {
 		try {
-			ElabGroup eg = user.getGroup(research_group_name);
-			if (eg != null) {
-				research_group_id = eg.getId();
-			}
 			keyword_id = null;
 			if (!keyword.equals("")) {
 				ResultSet rs = LogbookTools.getKeywordDetailsByProject(project_id, keyword, elab);
@@ -150,8 +150,8 @@
 				String log_text_truncated;
 				log_text_truncated = log_text.replaceAll(
 							"\\<(.|\\n)*?\\>", "");
-				if (log_text_truncated.length() > 40) {
-					log_text_truncated = log_text_truncated.substring(0, 40);
+				if (log_text_truncated.length() > 150) {
+					log_text_truncated = log_text_truncated.substring(0, 138);
 				} else {
 					log_text_truncated = log_text;
 				}
@@ -218,14 +218,20 @@
 							if (new_log != null && new_log) {
 								logbookSectionOrder.put(sectionOrder, sectionText);
 								sectionOrder++;
-								logbookSections.put(keyword_name, sectionText);
 							}
 						} else {
 							logbookSectionOrder.put(sectionOrder, sectionText);
 							sectionOrder++;
-							logbookSections.put(keyword_name, sectionText);
 						}
 					}
+					if (view_only_new.equals("yes")) {
+						if (new_log != null && new_log) {
+							logbookSections.put(keyword_name, sectionText);
+						}
+					} else {
+						logbookSections.put(keyword_name, sectionText);
+					}
+
 				}
 				if (!logbookSectionKeywords.containsKey(keyword_name)) {
 					if (view_only_new.equals("yes")) {
@@ -296,10 +302,10 @@
 						</table>
 						<form method="get" name="log" action="">
 
-						<table width="800" cellpadding="0" border="0" align="left">
+						<table class="outerTable">
 							<tr>
 								<td valign="top" width="150" nowrap>
-									<div style="height:700px; width:150px; position: fixed; overflow:auto;">
+									<div class="leftMenu">
 									<table width="145">
 										<tr>
 											<td valign="center" align="left"><a href="teacher-logbook-keyword.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">By Milestone</a></td>
@@ -350,7 +356,7 @@
 								</td>
 								<td valign="top" align="center">
 									<div style="width: 630px;">				
-									<div style="border-style: dotted; border-width: 1px; width: 550px;">
+									<div class="instructions">
 										<table width="550">
 											<tr>
 												<td align="left"><font size="+1">Instructions</font></td>
@@ -442,19 +448,19 @@
 																																			<div id="showLog${logbookEntries.value[0]}" style="width: 300px; height: 100%;"><e:whitespaceAdjust text="${logbookEntries.value[5]}" /> . . .<a href='javascript:showFullLog("showLog${logbookEntries.value[0]}","fullLog${logbookEntries.value[0]}");'>Read More</a></div>
 																																	    </c:when>
 																																	    <c:otherwise>
-																																		    <e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust>
+																																		    <div style="width: 300px; height: 100%;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
 																																	    </c:otherwise>
 																																	 </c:choose>	
 																																</td>
 																															</tr>
 																															<tr>
-																																<td width="100"> </td>
-																																<td width="450" valign="middle">
+																																<td width="175"> </td>
+																																<td width="300" valign="middle">
 																														           <font>${logbookEntries.value[3]}</font>
 																																	<font size=-2>
 																																		<c:if test="${not empty logbookEntries.value[6] }">
 																																			<c:forEach items="${logbookEntries.value[6] }" var="comments">
-																																				${comments }<br />
+																																				<div style="width: 300px; height: 100%;"><e:whitespaceAdjust text="${comments }"></e:whitespaceAdjust><br /></div>
 																																			</c:forEach>
 																																		</c:if>
 																																	</font>
@@ -475,7 +481,7 @@
 																																</td>																												
 																															</tr>
 																														    <tr>
-																														    	<td colspan="2" style="border-bottom: dotted 1px gray;"> </td>
+																														    	<td colspan="2" class="entrySeparator"> </td>
 																														    </tr>																															
 																													</c:when>
 																												</c:choose>

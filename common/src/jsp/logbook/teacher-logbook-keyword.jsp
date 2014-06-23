@@ -15,6 +15,7 @@
 	Integer keyword_id = null;
 	String groupName = user.getName();
 	String research_group_name = groupName; 
+	int research_group_id = user.getId();
 	String keyword = request.getParameter("keyword");
 
 	if (keyword == null) {
@@ -94,8 +95,8 @@
 			int logId = rs.getInt("log_id");
 			String log_text_truncated;
 			log_text_truncated = log_text.replaceAll("\\<(.|\\n)*?\\>", "");
-			if (log_text_truncated.length() > 40) {
-				log_text_truncated = log_text_truncated.substring(0, 40);
+			if (log_text_truncated.length() > 150) {
+				log_text_truncated = log_text_truncated.substring(0, 138);
 			} else {
 				log_text_truncated = log_text;
 			}
@@ -108,7 +109,7 @@
 			comment_new = (Long) LogbookTools.getCommentCountNew(logId, elab);
 			if (new_log != null && new_log.equals("t")) {
 				thereAreNewEntries = "<a href=\"teacher-logbook-keyword.jsp?view_only_new=yes&keyword="+keyword+
-						"&research_group_name="+research_group_name+"\">View only new entries</a>";
+						"&research_group_name="+research_group_name+"&research_group_id="+String.valueOf(research_group_id)+"\">View only new entries</a>";
 				//comment_info = comment_info
 				//		+ "<IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font> <a href=\"teacher-logbook-keyword.jsp?mark_as_read=yes&log_id="+String.valueOf(logId)+"&keyword="+keyword+"\" style=\"text-decoration: none;\"><FONT size=\"-2\"><strong>Mark as Read</strong></font></a><br />";
 
@@ -189,10 +190,10 @@
 									<td width="550"><font size="+2">Teachers: View and Comment on<br>Logbooks of Student Research Groups</font></td>
 								</tr>
 							</table>
-							<table width="800" cellpadding="0" border="0" align="left">
+							<table class="outerTable">
 								<tr>
 									<td valign="top" width="150" nowrap>
-										<div style="height:700px; width:150px; position: fixed; overflow:auto;">
+										<div class="leftMenu">
 											<table width="145">
 												<tr>
 													<td><a href="teacher-logbook-group.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">By Group</a></td>
@@ -217,7 +218,7 @@
 									</td>
 									<td valign="top" align="center">
 										<div witdh="630">
-										<div style="border-style: dotted; border-width: 1px; width: 550px;">
+										<div class="instructions">
 										<table width="550">
 											<tr>
 												<td align="left"><font size="+1">Instructions</font></td>
@@ -281,7 +282,7 @@
 																						<div id="showLog${commentInfo.value[0]}" style="width: 300px; height: 100%;"><e:whitespaceAdjust text="${commentInfo.value[5]}" /> . . .<a href='javascript:showFullLog("showLog${commentInfo.value[0]}","fullLog${commentInfo.value[0]}");'>Read More</a></div>
 																				    </c:when>
 																				    <c:otherwise>
-																					    <e:whitespaceAdjust text="${commentInfo.value[4]}"></e:whitespaceAdjust>
+																					    <div style="width: 300px; height: 100%;"><e:whitespaceAdjust text="${commentInfo.value[4]}"></e:whitespaceAdjust></div>
 																				    </c:otherwise>
 																				</c:choose>	
 																			</td>
@@ -292,7 +293,7 @@
 																				<font size="-2">
 																					<c:if test="${not empty commentInfo.value[6] }">
 																						<c:forEach items="${commentInfo.value[6] }" var="comments">
-																							${comments }<br />
+																							<div style="width: 300px; height: 100%;">${comments }<br /></div>
 																						</c:forEach>
 																					</c:if>
 																				</font>
@@ -314,7 +315,7 @@
 																			</td>
 																		</tr>
 																	    <tr>
-																	    	<td colspan="2" style="border-bottom: dotted 1px gray;"> </td>
+																	    	<td colspan="2" class="entrySeparator"> </td>
 																	    </tr>
 																	</c:if>
 																</c:forEach>

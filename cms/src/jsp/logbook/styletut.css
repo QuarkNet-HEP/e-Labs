@@ -30,5 +30,40 @@ p {
 
 	}
 
+table.outerTable {
+	width: 950px;
+	padding: 0;
+	border: 0;
+	text-align: left;
+}
+
+div.leftMenu {
+	height:700px; 
+	width:150px; 
+	position: fixed; 
+	overflow:auto;
+}
+
+div.separator {
+	width:5px; 
+	position: fixed;
+}
+
+div.instructions {
+	border-style: dotted; 
+	border-width: 1px; 
+	text-align: left;
+}
+
+div.references {
+	width:295px; 
+	height: 700px; 
+	position:fixed; 
+	overflow-y: auto;
+}
+
+td.entrySeparator {
+	border-bottom: dotted 1px gray;
+}
 
 </style>
