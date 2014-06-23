@@ -140,8 +140,8 @@ public class LogbookTools {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             ps = conn.prepareStatement(" SELECT id, keyword, description "+
             							"  FROM keyword " +
-        								"  WHERE keyword.project_id in (0, ?) " +
-            							"    AND keyword= ?;");
+        								" WHERE keyword.project_id in (0, ?) " +
+            							"   AND keyword= ?;");
             try {              
             	ps.setInt(1, project_id);
             	ps.setString(2, keyword);
@@ -386,24 +386,6 @@ public class LogbookTools {
         }    	
         return rs;			
 	}//end of getLogbookEntries
-
-	public static TreeMap<String, ArrayList> entriesSorted(TreeMap<String, ArrayList> tm) {
-		TreeMap<String, ArrayList> sortedEntries = new TreeMap<String, ArrayList>()
-			{
-				public int compare(String s1, String s2) {
-					int rank = getRank(s1) - getRank(s2);
-					return rank;
-				}
-				private int getRank(String s) {
-					String innerRank = s.substring(s.indexOf("-")+1, s.length());
-					return Integer.parseInt(innerRank);
-				}
-			};
-		for (Map.Entry<String, ArrayList> e: tm.entrySet()) {
-			sortedEntries.put(e.getKey(), e.getValue());
-		}
-		return sortedEntries;
-	}
 	/*
 	 * Retrieve logbook entries by teacher
 	 */
@@ -416,7 +398,10 @@ public class LogbookTools {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             ps = conn.prepareStatement( "SELECT id AS cur_id, to_char(date_entered,'DD Mon YYYY HH12:MI AM') AS date_entered, log_text AS cur_text " +
             							"  FROM log " + 
-            							" WHERE project_id = ? AND research_group_id = ? AND ref_rg_id = ? AND role = ? " +
+            							" WHERE project_id = ? "+
+            							"   AND research_group_id = ? "+
+            							"   AND ref_rg_id = ? "+
+            							"   AND role = ? " +
             							" ORDER BY cur_id;");            
             try {              
             	ps.setInt(1, project_id);
@@ -528,7 +513,9 @@ public class LogbookTools {
         int i = 0;
         try {
 			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-			ps = conn.prepareStatement("UPDATE log SET new_log = 'f' WHERE id = ?");
+			ps = conn.prepareStatement("UPDATE log "+
+									   "   SET new_log = 'f' "+
+									   " WHERE id = ?");
 			ps.setInt(1, log_id); 
 			i = ps.executeUpdate();
         } catch (SQLException e) {
@@ -675,7 +662,9 @@ public class LogbookTools {
         int i = 0;
         try {
 			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-			ps = conn.prepareStatement("UPDATE comment SET new_comment = 'f' WHERE id = ?;");
+			ps = conn.prepareStatement("UPDATE comment "+
+									   "   SET new_comment = 'f' "+
+									   " WHERE id = ?;");
 			ps.setInt(1, comment_id); 
 			i = ps.executeUpdate();
         } catch (SQLException e) {
@@ -697,7 +686,9 @@ public class LogbookTools {
         int i = 0;
         try {
 			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-			ps = conn.prepareStatement("UPDATE comment SET new_comment = 'f' WHERE log_id = ?;");
+			ps = conn.prepareStatement("UPDATE comment "+
+									   "   SET new_comment = 'f' "+
+									   " WHERE log_id = ?;");
 			ps.setInt(1, log_id); 
 			i = ps.executeUpdate();
         } catch (SQLException e) {
@@ -720,8 +711,9 @@ public class LogbookTools {
         ResultSet rs;
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = conn.prepareStatement("SELECT COUNT(id) AS comment_count FROM comment WHERE log_id = ?;");
-
+            ps = conn.prepareStatement("SELECT COUNT(id) AS comment_count "+
+            						   "  FROM comment "+
+            						   " WHERE log_id = ?;");
             try {              
             	ps.setInt(1, log_id);
                 rs = ps.executeQuery(); 
