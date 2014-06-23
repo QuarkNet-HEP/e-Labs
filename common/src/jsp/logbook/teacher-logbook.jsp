@@ -163,8 +163,12 @@
 				<table width="800">
 					<tr>
 						<td width="150">&nbsp;</td>
-						<td width="100" align="right"><img src="../graphics/logbook_view_large.gif" align="middle" border="0" alt=""></td>
-						<td width="550"><font size="+2">Teachers: View Your <b>Private</b> Logbook<br /> on Student Research Groups.</font></td>
+						<td align="left">
+							<div style="width: 650px;">
+								<div style="width: 150px; float:left;"><img src="../graphics/logbook_view_large.gif" align="middle" border="0" alt=""></img></div>
+							 	<div style="width: 500px; float:right;"><font size="+2">Teachers: View Your <b>Private</b> Logbook on Student Research Groups.</font></div>
+							</div> 											
+						</td>		
 					</tr>
 				</table>
 				
@@ -241,7 +245,7 @@
 																		<th colspan="2"><font face="arial MS">Your New Log Book Entry</font></th>
 																	</tr>
 																	<tr>
-																		<td colspan="2"><textarea name="log_text" cols="70" rows="5"></textarea></td>
+																		<td colspan="2"><textarea name="log_text" cols="65" rows="5"></textarea></td>
 																	</tr>
 																	<tr>
 																		<td align='left'>
@@ -264,15 +268,15 @@
 																<c:if test='${ids.key == logbookResults.value[4]}'>
 																	<tr>
 																		<td valign="top" width="175" align="right">${logbookResults.value[0] }</td>
-																		<td width="400" valign="top">																			
+																		<td width="400" valign="top" align="left">																			
 																		<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
 																		<c:choose>
 																			<c:when test="${logbookResults.value[1] != logbookResults.value[3]}">
-																				<div id="fullLog${logbookResults.value[2]}" style="display:none; width: 300px; height: 100%;"><e:whitespaceAdjust text="${logbookResults.value[1]}"></e:whitespaceAdjust></div>
-																				<div id="showLog${logbookResults.value[2]}" style="width: 300px; height: 100%;"><e:whitespaceAdjust text="${logbookResults.value[3]}" /> . . .<a href='javascript:showFullLog("showLog${logbookResults.value[2]}","fullLog${logbookResults.value[2]}");'>Read More</a></div>
+																				<div id="fullLog${logbookResults.value[2]}" style="display:none; width: 300px; height: 100%; text-align: left;"><e:whitespaceAdjust text="${logbookResults.value[1]}"></e:whitespaceAdjust></div>
+																				<div id="showLog${logbookResults.value[2]}" style="width: 300px; height: 100%; text-align: left;"><e:whitespaceAdjust text="${logbookResults.value[3]}" /> . . .<a href='javascript:showFullLog("showLog${logbookResults.value[2]}","fullLog${logbookResults.value[2]}");'>Read More</a></div>
 																		    </c:when>
 																		    <c:otherwise>
-																			    <e:whitespaceAdjust text="${logbookResults.value[1]}"></e:whitespaceAdjust>
+																			    <div style="width: 300px; height: 100%; text-align: left;"><e:whitespaceAdjust text="${logbookResults.value[1]}"></e:whitespaceAdjust></div>
 																		    </c:otherwise>
 																		 </c:choose>	
 																		</td> 
@@ -293,7 +297,7 @@
 																<th colspan="2"><font face="arial MS">Your New Log Book Entry</font></th>
 															</tr>
 															<tr>
-																<td colspan="2"><textarea name="log_text" cols="70" rows="5"></textarea></td>
+																<td colspan="2"><textarea name="log_text" cols="65" rows="5"></textarea></td>
 															</tr>
 															<tr>
 																<td align='left'>

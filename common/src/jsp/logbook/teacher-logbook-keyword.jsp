@@ -119,12 +119,12 @@
 			}
 			String comment_header = "";
 			if (comment_new == 0L) {
-				comment_header = "<strong>comments: " + comment_count + "</strong>";
+				comment_header = "<strong>Comments: " + comment_count + "</strong>";
 			} else {
 				if (comment_count == null) {
 					comment_count = 0L;
 				}
-				comment_header =  "<strong>comments: " + comment_count + " (<FONT color=\"#AA3366\">" + comment_new + "</FONT>) " + "</strong>";
+				comment_header =  "<strong>Comments: " + comment_count + " (<FONT color=\"#AA3366\">" + comment_new + "</FONT>) " + "</strong>";
 			}
 
 			ArrayList commentDetails = LogbookTools.buildCommentDetails(logId, comment_header, commentCnt, elab);		
@@ -186,8 +186,12 @@
 							<table width="800">
 								<tr>
 									<td width="150">&nbsp;</td>
-									<td align="right" width="100"><img src="../graphics/logbook_view_large.gif" align="middle" border="0" alt=""></td>
-									<td width="550"><font size="+2">Teachers: View and Comment on<br>Logbooks of Student Research Groups</font></td>
+									<td align="left">
+										<div style="width: 650px;">
+											<div style="width: 150px; float:left;"><img src="../graphics/logbook_view_large.gif" align="middle" border="0" alt=""></img></div>
+										 	<div style="width: 500px; float:right;"><font size="+2">Teachers: View and Comment on Logbooks of Student Research Groups</font></div>
+										</div> 											
+									</td>
 								</tr>
 							</table>
 							<table class="outerTable">
@@ -216,8 +220,8 @@
 											<img src="../graphics/blue_square.gif" border="0" width="2" height="650" alt=""></img>
 										</div>
 									</td>
-									<td valign="top" align="center">
-										<div witdh="630">
+									<td valign="top">
+										<div witdh="600">
 										<div class="instructions">
 										<table width="550">
 											<tr>
@@ -242,20 +246,16 @@
 											</tr>
 										</table>
 										</div>
-										<table>
-											<tr>
-												<td align="center" height="20"><FONT color="#AA3366"><strong>${thereAreNewEntries }</strong></FONT></td>
-											</tr>
-										</table>										
-										<h2>All logbook entries for your research groups<br> for "${keyword_description }"</h2>		
+										<center><FONT color="#AA3366"><strong>${thereAreNewEntries }</strong></FONT></center>										
+										<center><h2>All logbook entries for your research groups<br> for "${keyword_description }"</h2></center>	
 										<table width="600">
 											<c:choose>
 												<c:when test="${not empty groupInfo }">
 												<tr><td colspan="2">
-													<table width="630">
+													<table width="600">
 														<tr>
-															<td width="630" align="right">
-									 							<div style="position: fixed; width: 600px;">
+															<td width="600" align="right">
+									 							<div style="position: fixed; width: 550px;">
 																	<input type="submit" name="submit" id="submitButton" value="Submit All">
 																</div>													
 															</td>
@@ -271,25 +271,25 @@
 																<c:forEach items="${commentInfo }" var="commentInfo">
 																	<c:if test='${groupInfo == commentInfo.value[7]}'>														
 																		<tr>
-																			<td valign="top" width="175" align="right">
+																			<td valign="top" width="110" align="right">
 																				${commentInfo.value[2]}
 																			</td>
-																			<td width="400" valign="top">
+																			<td width="400" valign="top" align="left">
 																				<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
 																				<c:choose>
 																					<c:when test="${commentInfo.value[4] != commentInfo.value[5]}">
-																						<div id="fullLog${commentInfo.value[0]}" style="display:none; width: 300px; height: 100%;"><e:whitespaceAdjust text="${commentInfo.value[4]}"></e:whitespaceAdjust></div>
-																						<div id="showLog${commentInfo.value[0]}" style="width: 300px; height: 100%;"><e:whitespaceAdjust text="${commentInfo.value[5]}" /> . . .<a href='javascript:showFullLog("showLog${commentInfo.value[0]}","fullLog${commentInfo.value[0]}");'>Read More</a></div>
+																						<div id="fullLog${commentInfo.value[0]}" style="display:none; width: 300px; height: 100%; text-align:left;"><e:whitespaceAdjust text="${commentInfo.value[4]}"></e:whitespaceAdjust></div>
+																						<div id="showLog${commentInfo.value[0]}" style="width: 300px; height: 100%; text-align:left;"><e:whitespaceAdjust text="${commentInfo.value[5]}" /> . . .<a href='javascript:showFullLog("showLog${commentInfo.value[0]}","fullLog${commentInfo.value[0]}");'>Read More</a></div>
 																				    </c:when>
 																				    <c:otherwise>
-																					    <div style="width: 300px; height: 100%;"><e:whitespaceAdjust text="${commentInfo.value[4]}"></e:whitespaceAdjust></div>
+																					    <div style="width: 300px; height: 100%; text-align:left;"><e:whitespaceAdjust text="${commentInfo.value[4]}"></e:whitespaceAdjust></div>
 																				    </c:otherwise>
 																				</c:choose>	
 																			</td>
 																		</tr>
 																		<tr>
-																			<td width="100"> </td>
-																			<td valign="top"><font>${commentInfo.value[3]}</font><br />
+																			<td width="110"> </td>
+																			<td valign="top" style="background-color: #f2f2f2;"><font>${commentInfo.value[3]}</font><br />
 																				<font size="-2">
 																					<c:if test="${not empty commentInfo.value[6] }">
 																						<c:forEach items="${commentInfo.value[6] }" var="comments">
@@ -301,7 +301,7 @@
 																	    </tr>
 																		<tr>
 																			<td colspan="2">																	
-																				<table width="550">
+																				<table width="600">
 																					<tr>
 																						<th>Your new comment:</th>
 																					</tr>
