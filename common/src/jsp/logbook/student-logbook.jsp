@@ -348,8 +348,8 @@
 									</div>
 								</td>
 								<td valign="top" align="center">	
-								    <div style="width: 500px;">	
-									<table width="500">
+								    <div style="width: 480px;">	
+									<table width="480">
 										<tr>
 											<td align="right">
 												<img src="../graphics/logbook_large.gif" align="middle" border="0" alt="">
@@ -360,7 +360,7 @@
 										</tr>
 									</table>
 									<div class="instructions">
-										<table width="500">
+										<table width="480">
 											<tr>
 												<td align="left">
 													<font size="+1" face="Comic Sans MS">Instructions</font>
@@ -388,7 +388,7 @@
 											<td align="center" height="20"><FONT color="#AA3366" face="Comic Sans MS"><strong>${thereAreNewComments }</strong></FONT></td>
 										</tr>
 									</table>
-								<table width="500">
+								<table width="480">
 									<c:choose>
 										<c:when test="${not empty logbookSectionOrder }">
 											<c:forEach items="${logbookSectionOrder }" var="logbookSectionOrder"> 
