@@ -333,7 +333,7 @@
 									</div>
 								</td>
 								<td valign="top" width="300">
-									<div style="width:295px; height: 700px; position:fixed; overflow-y: auto;">									
+									<div class="references">									
 										<c:catch var="e">
 											<c:import url="${references}" />
 										</c:catch>
@@ -437,23 +437,23 @@
 																				<c:when test='${ logbookSectionKeywords.key == logbookEntries.value[5]}' >
 																					<tr>
 																						<td valign="top" width="150" align="right"><font face="Comic Sans MS">${logbookEntries.value[3] }</font></td>
-																						<td width="320" valign="top"><font face="Comic Sans MS">
+																						<td width="300" valign="top"><font face="Comic Sans MS">
 
 																						<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
 																						<c:choose>
 																							<c:when test="${logbookEntries.value[4] != logbookEntries.value[9]}">
-																								<div id="fullLog${logbookEntries.value[1]}" style="display:none; width: 320px; height: 100%;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
-																								<div id="showLog${logbookEntries.value[1]}" style="width: 320px; height: 100%;"><e:whitespaceAdjust text="${logbookEntries.value[9]}" /> . . .<a href='javascript:showFullLog("showLog${logbookEntries.value[1]}","fullLog${logbookEntries.value[1]}");'>Read More</a></div>
+																								<div id="fullLog${logbookEntries.value[1]}" style="display:none; width: 300px; height: 100%;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
+																								<div id="showLog${logbookEntries.value[1]}" style="width: 300px; height: 100%;"><e:whitespaceAdjust text="${logbookEntries.value[9]}" /> . . .<a href='javascript:showFullLog("showLog${logbookEntries.value[1]}","fullLog${logbookEntries.value[1]}");'>Read More</a></div>
 																						    </c:when>
 																						    <c:otherwise>
-																							    <e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust>
+																							    <div style="width: 300px; height: 100%;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
 																						    </c:otherwise>
 																						 </c:choose>																								
 																						</font></td>
 																					</tr>
 																				    <tr>
 																						<td width="150"> </td>
-																						<td width="320">
+																						<td width="300">
 																							<font face="Comic Sans MS">${logbookEntries.value[10]}</font>
 																							<font face="Comic Sans MS" size=-2>
 																								<c:if test="${not empty logbookEntries.value[11] }">
