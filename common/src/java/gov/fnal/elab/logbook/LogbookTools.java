@@ -528,6 +528,26 @@ public class LogbookTools {
         return i;
 	}//end of updateResetComment	
 	
+	public static void deleteLogbookEntry(int log_id, Elab elab) throws ElabException {
+        Connection conn = null; 
+        PreparedStatement ps = null;
+        int i = 0;
+        try {
+			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+			ps = conn.prepareStatement("DELETE"+
+									   "  FROM log "+
+									   " WHERE id = ?");
+			ps.setInt(1, log_id); 
+			i = ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new ElabException(e);
+        } finally {
+            if (conn != null) {
+                DatabaseConnectionManager.close(conn);
+            }
+        }    		
+	}//end of deleteLogbookEntry
+	
 	///////COMMENTS TOOLS////////
 	/*
 	 * Retrieve comment entries for log-comment.jsp
@@ -743,7 +763,10 @@ public class LogbookTools {
         ResultSet rs;
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = conn.prepareStatement("SELECT COUNT(comment.id) AS comment_new FROM comment WHERE comment.new_comment = 't' AND log_id = ?;");
+            ps = conn.prepareStatement("SELECT COUNT(comment.id) AS comment_new "+
+            						   "  FROM comment "+
+            						   " WHERE comment.new_comment = 't' "+
+            						   "   AND log_id = ?;");
 
             try {              
             	ps.setInt(1, log_id);
@@ -774,7 +797,11 @@ public class LogbookTools {
         int log_id = -1;
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = conn.prepareStatement("SELECT comment.id AS id FROM comment WHERE log_id = ? and comment = ? ORDER BY comment.id DESC;");
+            ps = conn.prepareStatement("SELECT comment.id AS id "+
+            						   "  FROM comment "+
+            						   " WHERE log_id = ? "+
+            						   "   AND comment = ? "+
+            						   " ORDER BY comment.id DESC;");
  			ps.setInt(1, log_id_param);
  			ps.setString(2, comment_enter);
             rs = ps.executeQuery(); 
