@@ -1028,8 +1028,8 @@ public class LogbookTools {
 							"\\<(.|\\n)*?\\>", "");
 				if (comment_truncated.length() > 150) {
 					comment_truncated = comment_truncated.substring(0, 138);
-					commentEntry += "<div id=\"fullComment"+String.valueOf(localCnt)+"\" style=\"display:none; width: 320px; height: 100%;\">"+comment_text+"</div>"+
-									"<div id=\"showComment"+String.valueOf(localCnt)+"\" style=\"width: 320px; height: 100%;\">"+comment_truncated+
+					commentEntry += "<div id=\"fullComment"+String.valueOf(localCnt)+"\" style=\"display:none; width: 300px; height: 100%;\">"+comment_text+"</div>"+
+									"<div id=\"showComment"+String.valueOf(localCnt)+"\" style=\"width: 300px; height: 100%;\">"+comment_truncated+
 									" . . .<a href=\'javascript:showFullComment(\"showComment"+String.valueOf(localCnt)+"\",\"fullComment"+String.valueOf(localCnt)+"\");\'>Read More</a></div>";
 				} else {
 					commentEntry += comment_text;
