@@ -24,6 +24,10 @@
 
 	//check whether to display all entries
 	Integer ref_rg_id = null;
+	String ref_rg_id_text = request.getParameter("research_group_id");
+	if (ref_rg_id_text != null) {
+		ref_rg_id = Integer.parseInt("ref_rg_id_text");
+	}
 	if (!(ref_rg_name == null) && (!ref_rg_name.equals("general"))) {
 		ElabGroup eg1 = user.getGroup(ref_rg_name);
 		ref_rg_id = eg1.getId();
