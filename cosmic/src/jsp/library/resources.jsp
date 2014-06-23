@@ -109,7 +109,16 @@
 						</ul>
 					</div>
 				</div>
-			
+				<div class="tab" id="tab-equip">
+					<span class="tab-title" style="width: 200px;">CRMD Data Collection</span>	
+					<div class="tab-contents-sublevel">
+						<ul class="simple">
+							<li>
+								"6000" Series DAQ data collection software: <a href="../data/equip.jsp">EQUIP java interface</a>
+							</li>
+						</ul>					
+					</div>
+				</div>			
 				<div class="tab" id="tab-contacts">
 					<span class="tab-title">Contacts</span>	
 					<div class="tab-contents-sublevel">
@@ -274,6 +283,9 @@
 						    <li><a href="http://www.space.dtu.dk/English/Research/Research_divisions/Sun_Climate/Experiments_SC/SKY.aspx">The SKY experiment</a>, from Denmark.</li>
 							<li><a href="http://www.space.dtu.dk/English/Research/Research_divisions/Sun_Climate/Experiments_SC/CLOUD.aspx">The CLOUD experiment</a> - The role of cosmic rays in CLOUD function, an atmospheric research at CERN.</li>
 							<li><a href="http://www.space.dtu.dk/English/Research/Research_divisions/Sun_Climate.aspx">Center for Sun-Climate Research</a> - Investigation of the connection between solar activity and climatic changes on Earth.</li>
+							<li><a href="https://wiki.iac.isu.edu/index.php/Cosmics_for_High_School_Teachers">Cosmic Ray overview for students</a></il>
+							<li><a href="http://cosray.phys.uoa.gr/nmdb-barometric/nmdb-barometric.htm">How to calculate barometric pressure correction</a></il>
+							<li><a href="http://neutronm.bartol.udel.edu/">Bartol Research Institute neutron monitor</a></il>
 						</ul>
 						<h2>Cosmic Ray Simulations (need
   QuickTime plugin)</h2>
