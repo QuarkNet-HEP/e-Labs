@@ -273,6 +273,7 @@
 	request.setAttribute("logbookSectionKeywords", logbookSectionKeywords);
 	request.setAttribute("logbookEntries", logbookEntries);
 	request.setAttribute("research_group_name", research_group_name);
+	request.setAttribute("research_group_id", research_group_id);
 	request.setAttribute("linksToEachGroup", linksToEachGroup);
 	request.setAttribute("linksToEach", linksToEach);
 	
@@ -293,7 +294,7 @@
 						${messages }
 					</c:when>
 					<c:otherwise>
-						<table class="outerTable">
+						<table>
 							<tr>
 								<td width="150">&nbsp;</td>
 								<td align="left">
@@ -306,7 +307,7 @@
 						</table>
 						<form method="get" name="log" action="">
 
-						<table class="outerTable">
+						<table style="width: 800px; padding: 0; border: 0; text-align: left;">
 							<tr>
 								<td valign="top" width="150" nowrap>
 									<div class="leftMenu">
@@ -326,17 +327,18 @@
 													<td><br>
 													<b>Entries for ${research_group_name }</b>
 													<input type="hidden" name="research_group_name" value="${research_group_name }"></input>										
+													<input type="hidden" name="research_group_id" value="${research_group_id }"></input>										
 													</td>
 												</tr>
 		
 												<tr>
-													<td valign="center" align="left"><a href="teacher-logbook-group.jsp?research_group_name=${research_group_name }"><img src="../graphics/logbook_view.gif" border="0" " align="middle" alt="">All Entries</a></td>
+													<td valign="center" align="left"><a href="teacher-logbook-group.jsp?research_group_name=${research_group_name }&research_group_id=${research_group_id}"><img src="../graphics/logbook_view.gif" border="0" " align="middle" alt="">All Entries</a></td>
 												</tr>
 												<tr>
 													<td align="center"><img src="../graphics/log_entry_yes.gif" border="0" alt=""><font face="Comic Sans MS"> if entry exists</font></td>
 												</tr>
 												<tr>
-													<td><img src="../graphics/log_entry_${yesNo}.gif" border="0" align="center" alt=""><a href="teacher-logbook-group.jsp?research_group_name=${research_group_name }&amp;keyword=general">general</a></td>
+													<td><img src="../graphics/log_entry_${yesNo}.gif" border="0" align="center" alt=""><a href="teacher-logbook-group.jsp?research_group_name=${research_group_name }&amp;keyword=general&research_group_id=${research_group_id}">general</a></td>
 												</tr>											
 												<tr>
 													<td><br>
@@ -359,7 +361,7 @@
 									</div>
 								</td>
 								<td valign="top" align="left">
-									<div style="width: 630px; text-align: left;">				
+									<div style="width: 600px; text-align: left;">				
 									<div class="instructions">
 										<table width="550">
 											<tr>
@@ -386,7 +388,7 @@
 											</tr>
 										</table>
 										</div>
-										<table width="500">
+										<table width="600">
 											<tr>
 												<td align="center" height="20"><FONT color="#AA3366"><strong>${thereAreNewEntries }</strong></FONT></td>
 											</tr>
@@ -394,7 +396,7 @@
 										<c:choose>
 											<c:when test="${not empty subtitle }">
 												<center>${subtitle }<br /></center>
-												<table width="630">		
+												<table width="630" >		
 													<c:choose>
 														<c:when test="${not empty logbookSectionOrder }">
 															<tr><td colspan="2">
@@ -448,23 +450,23 @@
 																																	<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
 																																	<c:choose>
 																																		<c:when test="${logbookEntries.value[4] != logbookEntries.value[5]}">
-																																			<div id="fullLog${logbookEntries.value[0]}" style="display:none; width: 300px; height: 100%; text-align:left;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
-																																			<div id="showLog${logbookEntries.value[0]}" style="width: 300px; height: 100%; text-align:left;"><e:whitespaceAdjust text="${logbookEntries.value[5]}" /> . . .<a href='javascript:showFullLog("showLog${logbookEntries.value[0]}","fullLog${logbookEntries.value[0]}");'>Read More</a></div>
+																																			<div id="fullLog${logbookEntries.value[0]}" style="display:none; width: 350px; height: 100%; text-align:left;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
+																																			<div id="showLog${logbookEntries.value[0]}" style="width: 350px; height: 100%; text-align:left;"><e:whitespaceAdjust text="${logbookEntries.value[5]}" /> . . .<a href='javascript:showFullLog("showLog${logbookEntries.value[0]}","fullLog${logbookEntries.value[0]}");'>Read More</a></div>
 																																	    </c:when>
 																																	    <c:otherwise>
-																																		    <div style="width: 300px; height: 100%; text-align:left;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
+																																		    <div style="width: 350px; height: 100%; text-align:left;"><e:whitespaceAdjust text="${logbookEntries.value[4]}"></e:whitespaceAdjust></div>
 																																	    </c:otherwise>
 																																	 </c:choose>	
 																																</td>
 																															</tr>
 																															<tr>
 																																<td width="100"> </td>
-																																<td width="400" valign="middle" style="background-color: #f2f2f2;" align="left">
+																																<td width="400" valign="middle"  align="left">
 																														           <font>${logbookEntries.value[3]}</font>
 																																	<font size=-2>
 																																		<c:if test="${not empty logbookEntries.value[6] }">
 																																			<c:forEach items="${logbookEntries.value[6] }" var="comments">
-																																				<div style="width: 300px; height: 100%;"><e:whitespaceAdjust text="${comments }"></e:whitespaceAdjust><br /></div>
+																																				<div style="width: 350px; height: 100%; background-color: #f2f2f2;"><e:whitespaceAdjust text="${comments }"></e:whitespaceAdjust><br /></div>
 																																			</c:forEach>
 																																		</c:if>
 																																	</font>
@@ -472,7 +474,7 @@
 																														    </tr>																													
 																															<tr>
 																																<td colspan="2">
-																																	<table width="550">
+																																	<table width="550" >
 																																		<tr>
 																																			<th>Your new comment:</th>
 																																		</tr>

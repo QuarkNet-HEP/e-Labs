@@ -194,7 +194,7 @@
 									</td>
 								</tr>
 							</table>
-							<table class="outerTable">
+							<table style="width: 800px; padding: 0; border: 0; text-align: left;">
 								<tr>
 									<td valign="top" width="150" nowrap>
 										<div class="leftMenu">
@@ -278,22 +278,22 @@
 																				<!-- EPeronja-04/12/2013: implemented javascript instead of resubmitting -->
 																				<c:choose>
 																					<c:when test="${commentInfo.value[4] != commentInfo.value[5]}">
-																						<div id="fullLog${commentInfo.value[0]}" style="display:none; width: 300px; height: 100%; text-align:left;"><e:whitespaceAdjust text="${commentInfo.value[4]}"></e:whitespaceAdjust></div>
-																						<div id="showLog${commentInfo.value[0]}" style="width: 300px; height: 100%; text-align:left;"><e:whitespaceAdjust text="${commentInfo.value[5]}" /> . . .<a href='javascript:showFullLog("showLog${commentInfo.value[0]}","fullLog${commentInfo.value[0]}");'>Read More</a></div>
+																						<div id="fullLog${commentInfo.value[0]}" style="display:none; width: 350px; height: 100%; text-align:left;"><e:whitespaceAdjust text="${commentInfo.value[4]}"></e:whitespaceAdjust></div>
+																						<div id="showLog${commentInfo.value[0]}" style="width: 350px; height: 100%; text-align:left;"><e:whitespaceAdjust text="${commentInfo.value[5]}" /> . . .<a href='javascript:showFullLog("showLog${commentInfo.value[0]}","fullLog${commentInfo.value[0]}");'>Read More</a></div>
 																				    </c:when>
 																				    <c:otherwise>
-																					    <div style="width: 300px; height: 100%; text-align:left;"><e:whitespaceAdjust text="${commentInfo.value[4]}"></e:whitespaceAdjust></div>
+																					    <div style="width: 350px; height: 100%; text-align:left;"><e:whitespaceAdjust text="${commentInfo.value[4]}"></e:whitespaceAdjust></div>
 																				    </c:otherwise>
 																				</c:choose>	
 																			</td>
 																		</tr>
 																		<tr>
 																			<td width="110"> </td>
-																			<td valign="top" style="background-color: #f2f2f2;"><font>${commentInfo.value[3]}</font><br />
+																			<td valign="top" ><font>${commentInfo.value[3]}</font><br />
 																				<font size="-2">
 																					<c:if test="${not empty commentInfo.value[6] }">
 																						<c:forEach items="${commentInfo.value[6] }" var="comments">
-																							<div style="width: 300px; height: 100%;">${comments }<br /></div>
+																							<div style="width: 350px; height: 100%; background-color: #f2f2f2;">${comments }<br /></div>
 																						</c:forEach>
 																					</c:if>
 																				</font>
