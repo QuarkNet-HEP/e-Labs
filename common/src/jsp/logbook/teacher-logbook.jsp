@@ -182,7 +182,7 @@
 							<tr>
 								<td valign="top" width="150" nowrap>
 									<div class="leftMenu">
-									<table width="145">
+									<table width="145" >
 										<tr>
 											<td valign="center" align="left"><b>Student Logbooks</b></td>
 										</tr>
@@ -229,7 +229,7 @@
 										</table>
 									</div>
 									<h2>${subtitle }</h2>
-									<table>
+									<table width="600">
 										<c:choose>
 											<c:when test="${not empty ids }">
 												<c:forEach items="${ids }" var="ids">
