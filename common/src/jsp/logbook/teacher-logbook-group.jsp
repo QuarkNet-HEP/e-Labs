@@ -167,7 +167,7 @@
 	
 				if (new_log != null && new_log == true) {
 					thereAreNewEntries = "<a href=\"teacher-logbook-group.jsp?view_only_new=yes&keyword="+keyword+"&research_group_name="+
-										 research_group_name+"\">View only new entries</a>";
+										 research_group_name+"&research_group_id="+research_group_id+"\">View only new entries</a>";
 					comment_info = "<div id=\"new_"+String.valueOf(logid)+"\"><IMG SRC=\'../graphics/new_flag.gif\' border=0 align=\'center\'> <FONT color=\"#AA3366\" size=\"-2\"><b>New log entry</b></font>"+
 								   "<a href=\"javascript:markAsRead('new_"+String.valueOf(logid)+"', 'mark-as-read.jsp?mark_as_read=yes&log_id="+String.valueOf(logid)+"&markWhat=logentry&research_group_name="+research_group_name+"')\" style=\"text-decoration: none;\"><FONT size=\"-2\"> <strong>Mark as Read</strong></font></a><br /></div>";
 				}
@@ -258,7 +258,7 @@
 	request.setAttribute("messages", messages);
 	if (view_only_new.equals("yes")) {
 		thereAreNewEntries = "<a href=\"teacher-logbook-group.jsp?view_only_new=no&keyword="+keyword+"&research_group_name="+
-				 research_group_name+"\">View all entries</a>";
+				 research_group_name+"&research_group_id="+research_group_id+"\">View all entries</a>";
 	}
 	request.setAttribute("thereAreNewEntries", thereAreNewEntries);
 	request.setAttribute("subtitle", subtitle);

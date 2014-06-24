@@ -157,7 +157,7 @@
 	request.setAttribute("messages", messages);
 	if (view_only_new.equals("yes")) {
 		thereAreNewEntries = "<a href=\"teacher-logbook-keyword.jsp?view_only_new=no&keyword="+keyword+
-				"&research_group_name="+research_group_name+"\">View all entries</a>";
+				"&research_group_name="+research_group_name+"&research_group_id="+research_group_id+"\">View all entries</a>";
 	}
 	request.setAttribute("thereAreNewEntries", thereAreNewEntries);
 	request.setAttribute("linksToEach", linksToEach);
