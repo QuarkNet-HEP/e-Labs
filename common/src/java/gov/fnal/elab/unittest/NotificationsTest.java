@@ -65,7 +65,11 @@ public class NotificationsTest {
 	@Test
 	public void test_GetGroupName() {
 	    ElabNotificationsProvider np = ElabFactory.getNotificationsProvider((Elab) ligoElab);
-	    String groupName = np.getGroupName(694);
+	    String groupName = "";
+	    try {
+	    	groupName = np.getGroupName(694);
+    	} catch (Exception e) {	
+    	}	    	
 	    assertTrue(groupName.equals("TestTeacher"));
 	}
 
