@@ -32,9 +32,9 @@ public interface ElabNotificationsProvider extends ElabProviderHandled {
     
     public void addProjectNotification(List<Integer> projectList, Notification n) throws ElabException;
     
-    void markAsRead(Notification notification);
+    void markAsRead(Notification notification)  throws ElabException;
     
-    public void markAsRead(String notificationId);
+    public void markAsRead(String notificationId)  throws ElabException;
     
     void markAsRead(ElabGroup user, int id) throws ElabException;
     
@@ -42,9 +42,9 @@ public interface ElabNotificationsProvider extends ElabProviderHandled {
     
     void removeNotification(ElabGroup admin, int id) throws ElabException;
     
-    public Notification getNotificationById(int id);
+    public Notification getNotificationById(int id) throws ElabException;
 
-    public String getGroupName(int groupId);
+    public String getGroupName(int groupId) throws ElabException;
 
     public List<Notification> getExpiredNotifications() throws ElabException; 
     
