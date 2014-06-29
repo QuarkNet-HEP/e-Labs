@@ -156,18 +156,31 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         }
         Connection conn = null;
         PreparedStatement ps = null; 
+
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            // Magic of FKs should automatically delete referencing rows 
-            ps = conn.prepareStatement("DELETE FROM notifications.message WHERE id = ?"); 
-            ps.setInt(1, id);
-            ps.execute();
-        }
-        catch (SQLException e) {
+            boolean ac = conn.getAutoCommit();
+            try {
+                conn.setAutoCommit(false);
+	            // Magic of FKs should automatically delete referencing rows 
+	            ps = conn.prepareStatement("DELETE FROM notifications.message WHERE id = ?"); 
+	            ps.setInt(1, id);
+	            ps.execute();
+	            conn.commit();
+            } catch(SQLException e) {
+               	conn.rollback();
+               	throw e;
+            } finally {
+                conn.setAutoCommit(ac);            	
+            }
+            
+        } catch (SQLException e) {
             throw new ElabException(e);
         }
         finally {
-            DatabaseConnectionManager.close(conn, ps);
+            if (conn != null) {
+            	DatabaseConnectionManager.close(conn, ps);
+            }
         }
     }
 
@@ -238,8 +251,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             boolean ac = conn.getAutoCommit();
             try {
-                conn.setAutoCommit(false);
-                
+                conn.setAutoCommit(false);              
                 ps = conn.prepareStatement(
                         "SELECT COUNT(id) FROM notifications.message AS m " + 
                         "LEFT OUTER JOIN notifications.project_broadcast AS pb ON m.id = pb.message_id AND project_id = ? AND pb.message_id = ? " + 
@@ -269,6 +281,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
 			            	ps.executeUpdate();
 	        			}
                 	}
+                	conn.commit();
                 }
                 else {
                     throw new ElabException("No such notification id \"" + id + "\" + for user " + user.getName());
@@ -546,7 +559,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
 	}
 
 	@Override
-	public void markAsRead(Notification notification) {
+	public void markAsRead(Notification notification)  throws ElabException {
 		// TODO Auto-generated method stub
 		//notification.setRead(true);
 		
@@ -555,13 +568,23 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         boolean read = notification.isRead();
         try {
         	conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-        	ps = conn.prepareStatement("UPDATE notifications.state SET read = TRUE WHERE message_id = ?;");
-        	ps.setInt(1, notification.getId());
-        	ps.executeUpdate();
-        	notification.setRead(true);
+            boolean ac = conn.getAutoCommit();
+            try {
+	            conn.setAutoCommit(false);
+	        	ps = conn.prepareStatement("UPDATE notifications.state SET read = TRUE WHERE message_id = ?;");
+	        	ps.setInt(1, notification.getId());
+	        	ps.executeUpdate();
+	        	notification.setRead(true);
+	        	conn.commit();
+            } catch (SQLException e) {
+            	conn.rollback();
+            	throw e;
+            } finally {
+            	conn.setAutoCommit(ac);
+            }
         }
         catch (SQLException e) {
-        	notification.setRead(read);
+        	throw new ElabException(e);
         }
         finally {
         	DatabaseConnectionManager.close(conn, ps);
@@ -569,7 +592,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
 	}
 
 	@Override
-	public void markAsRead(String notificationId) {
+	public void markAsRead(String notificationId) throws ElabException {
 		// TODO Auto-generated method stub
 		//notification.setRead(true);
 		
@@ -579,13 +602,23 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
         boolean read = n.isRead();
         try {
         	conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-        	ps = conn.prepareStatement("UPDATE notifications.state SET read = TRUE WHERE message_id = ?;");
-        	ps.setInt(1, Integer.valueOf(notificationId));
-        	ps.executeUpdate();
-        	n.setRead(true);
+            boolean ac = conn.getAutoCommit();
+            try {
+	            conn.setAutoCommit(false);
+	        	ps = conn.prepareStatement("UPDATE notifications.state SET read = TRUE WHERE message_id = ?;");
+	        	ps.setInt(1, Integer.valueOf(notificationId));
+	        	ps.executeUpdate();
+	        	n.setRead(true);
+	        	conn.commit();
+            } catch (SQLException e) {
+            	conn.rollback();
+            	throw e;
+            } finally {
+            	conn.setAutoCommit(ac);
+            }
         }
         catch (SQLException e) {
-        	n.setRead(read);
+            throw new ElabException(e);
         }
         finally {
         	DatabaseConnectionManager.close(conn, ps);
@@ -593,7 +626,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
 	}
 	
 	@Override
-	public Notification getNotificationById(int id) {
+	public Notification getNotificationById(int id) throws ElabException {
         Connection conn = null;
         PreparedStatement ps = null;
         Notification l = new Notification();
@@ -626,7 +659,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             
         }
         catch (SQLException e) {
-            String message = e.toString();
+            throw new ElabException(e);
         }
         finally {
             DatabaseConnectionManager.close(conn, ps);
@@ -730,7 +763,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
 	}
 
 	@Override
-    public String getGroupName(int groupId) {
+    public String getGroupName(int groupId) throws ElabException {
 		String groupName = "";
         Connection conn = null;
         PreparedStatement ps = null;
@@ -750,8 +783,7 @@ public class DatabaseNotificationsProvider implements ElabNotificationsProvider 
             
         }
         catch (SQLException e) {
-            String message = e.toString();
-            System.out.println("Exception in getSender(): "+message);
+        	throw new ElabException(e);
         }
         finally {
             DatabaseConnectionManager.close(conn, ps);
