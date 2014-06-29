@@ -6,5 +6,9 @@
 <%
 	String id = request.getParameter("id");
 	ElabNotificationsProvider np = ElabFactory.getNotificationsProvider(elab);
-	np.markAsRead(user, Integer.parseInt(id));
+	try {
+		np.markAsRead(user, Integer.parseInt(id));
+	} catch (Exception e) {
+		System.out.println(e.getMessage());
+	}
 %>
