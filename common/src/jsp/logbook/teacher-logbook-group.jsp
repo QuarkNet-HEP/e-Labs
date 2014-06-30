@@ -283,6 +283,7 @@
 	<head>
 		<title>For Teachers: Show Logbooks of Student Research Group</title>
         <script type="text/javascript" src="logbook.js"></script>
+        <script type="text/javascript" src="../include/elab.js"></script>
 		<link rel="stylesheet" href="styletut.css" type="text/css">
 	</head>
 	<body id="teacher-logbook-group">
@@ -294,17 +295,6 @@
 						${messages }
 					</c:when>
 					<c:otherwise>
-						<table>
-							<tr>
-								<td width="150">&nbsp;</td>
-								<td align="left">
-								<div style="width: 650px;">
-									<div style="width: 150px; float:left;"><img src="../graphics/logbook_view_large.gif" align="middle" border="0" alt=""></img></div>
-								 	<div style="width: 500px; float:right;"><font size="+2">Teachers: View and Comment on Logbooks of Student Research Groups</font></div>
-								</div> 	
-								</td>
-							</tr>
-						</table>
 						<form method="get" name="log" action="">
 
 						<table style="width: 800px; padding: 0; border: 0; text-align: left;">
@@ -313,15 +303,15 @@
 									<div class="leftMenu">
 									<table width="145">
 										<tr>
-											<td valign="center" align="left"><a href="teacher-logbook-keyword.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">By Milestone</a></td>
+											<td valign="center" align="left"><a href="teacher-logbook-keyword.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="" width="20" height="20">By Milestone</a></td>
 										</tr>
 										<tr>
-											<td valign="center" align="left"><a href="teacher-logbook.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="">My Logbook</a></td>
+											<td valign="center" align="left"><a href="teacher-logbook.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="" width="20" height="20">My Logbook</a></td>
 										</tr>
 										<c:choose>
 											<c:when test='${research_group_name != null }'>	
 												<tr>
-													<td valign="center" align="left"><a	href="../logbook/teacher-logbook-group.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt=""><font color="#1A8BC8">By Group</font></a></td>
+													<td valign="center" align="left"><a	href="../logbook/teacher-logbook-group.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="" width="20" height="20"><font color="#1A8BC8">By Group</font></a></td>
 												</tr>
 												<tr>
 													<td><br>
@@ -332,7 +322,7 @@
 												</tr>
 		
 												<tr>
-													<td valign="center" align="left"><a href="teacher-logbook-group.jsp?research_group_name=${research_group_name }&research_group_id=${research_group_id}"><img src="../graphics/logbook_view.gif" border="0" " align="middle" alt="">All Entries</a></td>
+													<td valign="center" align="left"><a href="teacher-logbook-group.jsp?research_group_name=${research_group_name }&research_group_id=${research_group_id}"><img src="../graphics/logbook_view.gif" border="0" " align="middle" alt="" width="20" height="20">All Entries</a></td>
 												</tr>
 												<tr>
 													<td align="center"><img src="../graphics/log_entry_yes.gif" border="0" alt=""><font face="Comic Sans MS"> if entry exists</font></td>
@@ -357,15 +347,24 @@
 								</td>
 								<td align="left" width="20" valign="top">
 									<div style="overflow:auto; width:20px; position: fixed;">
-										<img src="../graphics/blue_square.gif" border="0" width="2" height="650" alt="">
+										<img src="../graphics/blue_square.gif" border="0" width="2" height="500" alt="">
 									</div>
 								</td>
 								<td valign="top" align="left">
-									<div style="width: 600px; text-align: left;">				
-									<div class="instructions">
+										<div style="width: 650px; height: 100px;">
+											<div style="width: 150px; float:left;"><img src="../graphics/logbook_view_large.gif" align="middle" border="0" alt=""></img></div>
+										 	<div style="width: 500px; float:right;"><font size="+2">Teachers: View and Comment on Logbooks of Student Research Groups</font></div>
+										</div> 	
+
+										<div class="instructions" id="instructions-v" style="visibility:visible; display">
+											<a href="#" onclick="HideShow('instructions-v');HideShow('instructions-h');return false;"><img src="../graphics/Tright.gif" alt=" " border="0" /><font size="+1"> View Instructions</font></a>						
+										</div>
+										<div class="instructions" id="instructions-h" style="visibility:hidden; display: none">
 										<table width="550">
 											<tr>
-												<td align="left"><font size="+1">Instructions</font></td>
+												<td align="left">
+													<a href="#" onclick="HideShow('instructions-v');HideShow('instructions-h');return false;"><img src="../graphics/Tdown.gif" alt=" " border="0" /><font size="+1"> Hide Instructions</font></a>
+												</td>
 											</tr>						
 											<tr>
 												<td><font size="-1">

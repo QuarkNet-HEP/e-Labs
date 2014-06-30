@@ -458,17 +458,27 @@ public class LogbookTools {
         				" VALUES (?, ?, ?, ?, ?, 't') RETURNING id;";        	
         try {
 			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-			ps = conn.prepareStatement(insert);
-			ps.setInt(1, project_id);
-			ps.setInt(2, research_group_id);
-			ps.setInt(3, keyword_id);
-			ps.setString(4, role);
-			ps.setString(5, log_enter);
-		    rs = ps.executeQuery();
-		    while (rs.next()) {
-		    	id = rs.getInt("id");
-		    }
-        } catch (SQLException e) {
+			boolean ac = conn.getAutoCommit();
+			try {
+				conn.setAutoCommit(false);
+				ps = conn.prepareStatement(insert);
+				ps.setInt(1, project_id);
+				ps.setInt(2, research_group_id);
+				ps.setInt(3, keyword_id);
+				ps.setString(4, role);
+				ps.setString(5, log_enter);
+			    rs = ps.executeQuery();
+			    while (rs.next()) {
+			    	id = rs.getInt("id");
+			    }
+			    conn.commit();
+			} catch (SQLException ex) {
+				conn.rollback();
+				throw ex;
+			} finally {
+				conn.setAutoCommit(ac);
+			}
+		} catch (SQLException e) {
             throw new ElabException(e);
         } finally {
             if (conn != null) {
@@ -488,13 +498,23 @@ public class LogbookTools {
         				" VALUES (?, ?, ?, ?, ?, 't') RETURNING id;";
         try {
 			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-			ps = conn.prepareStatement(insert);
-			ps.setInt(1, project_id);
-			ps.setInt(2, research_group_id);
-			ps.setInt(3, ref_rg_id);
-			ps.setString(4, role);
-			ps.setString(5, log_enter);
-			int i = ps.executeUpdate();
+			boolean ac = conn.getAutoCommit();
+			try {
+				conn.setAutoCommit(false);
+				ps = conn.prepareStatement(insert);
+				ps.setInt(1, project_id);
+				ps.setInt(2, research_group_id);
+				ps.setInt(3, ref_rg_id);
+				ps.setString(4, role);
+				ps.setString(5, log_enter);
+				int i = ps.executeUpdate();
+				conn.commit();
+			} catch (SQLException ex) {
+				conn.rollback();
+				throw ex;
+			} finally {
+				conn.setAutoCommit(ac);
+			}
         } catch (SQLException e) {
             throw new ElabException(e);
         } finally {
@@ -513,11 +533,21 @@ public class LogbookTools {
         int i = 0;
         try {
 			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-			ps = conn.prepareStatement("UPDATE log "+
-									   "   SET new_log = 'f' "+
-									   " WHERE id = ?");
-			ps.setInt(1, log_id); 
-			i = ps.executeUpdate();
+			boolean ac = conn.getAutoCommit();
+			try {
+				conn.setAutoCommit(false);
+				ps = conn.prepareStatement("UPDATE log "+
+										   "   SET new_log = 'f' "+
+										   " WHERE id = ?");
+				ps.setInt(1, log_id); 
+				i = ps.executeUpdate();
+				conn.commit();
+			} catch (SQLException ex) {
+				conn.rollback();
+				throw ex;
+			} finally {
+				conn.setAutoCommit(ac);
+			}
         } catch (SQLException e) {
             throw new ElabException(e);
         } finally {
@@ -534,11 +564,21 @@ public class LogbookTools {
         int i = 0;
         try {
 			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-			ps = conn.prepareStatement("DELETE"+
-									   "  FROM log "+
-									   " WHERE id = ?");
-			ps.setInt(1, log_id); 
-			i = ps.executeUpdate();
+			boolean ac = conn.getAutoCommit();
+			try {
+				conn.setAutoCommit(false);
+				ps = conn.prepareStatement("DELETE"+
+										   "  FROM log "+
+										   " WHERE id = ?");
+				ps.setInt(1, log_id); 
+				i = ps.executeUpdate();
+				conn.commit();
+			} catch (SQLException ex) {
+				conn.rollback();
+				throw ex;
+			} finally {
+				conn.setAutoCommit(ac);
+			}
         } catch (SQLException e) {
             throw new ElabException(e);
         } finally {
@@ -655,13 +695,23 @@ public class LogbookTools {
         int comment_id = -1;
         try {
 			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-			ps = conn.prepareStatement(" INSERT INTO comment (log_id, comment, new_comment) "+
-									   " VALUES (?, ?, 't') returning id;");
-			ps.setInt(1, log_id_param);
-  			ps.setString(2, comment_enter); 
-			rs = ps.executeQuery();
-			while (rs.next()) {
-				comment_id = rs.getInt("id");
+			boolean ac = conn.getAutoCommit();
+			try {
+				conn.setAutoCommit(false);
+				ps = conn.prepareStatement(" INSERT INTO comment (log_id, comment, new_comment) "+
+										   " VALUES (?, ?, 't') returning id;");
+				ps.setInt(1, log_id_param);
+	  			ps.setString(2, comment_enter); 
+				rs = ps.executeQuery();
+				while (rs.next()) {
+					comment_id = rs.getInt("id");
+				}
+				conn.commit();
+			} catch (SQLException ex) {
+				conn.rollback();
+				throw ex;
+			} finally {
+				conn.setAutoCommit(ac);
 			}
         } catch (SQLException e) {
             throw new ElabException(e);
@@ -682,11 +732,21 @@ public class LogbookTools {
         int i = 0;
         try {
 			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-			ps = conn.prepareStatement("UPDATE comment "+
-									   "   SET new_comment = 'f' "+
-									   " WHERE id = ?;");
-			ps.setInt(1, comment_id); 
-			i = ps.executeUpdate();
+			boolean ac = conn.getAutoCommit();
+			try {
+				conn.setAutoCommit(false);
+				ps = conn.prepareStatement("UPDATE comment "+
+										   "   SET new_comment = 'f' "+
+										   " WHERE id = ?;");
+				ps.setInt(1, comment_id); 
+				i = ps.executeUpdate();
+				conn.commit();
+			} catch (SQLException ex) {
+				conn.rollback();
+				throw ex;
+			} finally {
+				conn.setAutoCommit(ac);
+			}
         } catch (SQLException e) {
             throw new ElabException(e);
         } finally {
@@ -706,11 +766,21 @@ public class LogbookTools {
         int i = 0;
         try {
 			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-			ps = conn.prepareStatement("UPDATE comment "+
-									   "   SET new_comment = 'f' "+
-									   " WHERE log_id = ?;");
-			ps.setInt(1, log_id); 
-			i = ps.executeUpdate();
+			boolean ac = conn.getAutoCommit();
+			try {
+				conn.setAutoCommit(false);
+				ps = conn.prepareStatement("UPDATE comment "+
+										   "   SET new_comment = 'f' "+
+										   " WHERE log_id = ?;");
+				ps.setInt(1, log_id); 
+				i = ps.executeUpdate();
+				conn.commit();
+			} catch (SQLException ex) {
+				conn.rollback();
+				throw ex;
+			} finally {
+				conn.setAutoCommit(ac);
+			}
         } catch (SQLException e) {
             throw new ElabException(e);
         } finally {

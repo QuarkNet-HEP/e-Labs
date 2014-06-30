@@ -155,23 +155,12 @@
 		<title>Show Research Group Logbook for Teacher</title>
 		<link rel="stylesheet" href="styletut-teacher.css" type="text/css">
         <script type="text/javascript" src="logbook.js"></script>
-	</head>
+        <script type="text/javascript" src="../include/elab.js"></script>
+  	</head>
 	<body id="teacher-logbook">
 		<!-- entire page container -->
 		<div id="container">
-			<div id="content">		
-				<table width="800">
-					<tr>
-						<td width="150">&nbsp;</td>
-						<td align="left">
-							<div style="width: 650px;">
-								<div style="width: 150px; float:left;"><img src="../graphics/logbook_view_large.gif" align="middle" border="0" alt=""></img></div>
-							 	<div style="width: 500px; float:right;"><font size="+2">Teachers: View Your <b>Private</b> Logbook on Student Research Groups.</font></div>
-							</div> 											
-						</td>		
-					</tr>
-				</table>
-				
+			<div id="content">			
 				<c:choose>
 					<c:when test="${not empty messages }">
 						${messages }
@@ -187,10 +176,10 @@
 											<td valign="center" align="left"><b>Student Logbooks</b></td>
 										</tr>
 										<tr>
-											<td valign="center" align="left"><a href="../logbook/teacher-logbook-keyword.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt=""><font color="#1A8BC8">By Milestone</font></a></td>
+											<td valign="center" align="left"><a href="../logbook/teacher-logbook-keyword.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="" height="20" width="20"><font color="#1A8BC8">By Milestone</font></a></td>
 										</tr>
 										<tr>
-											<td valign="center" align="left"><a	href="../logbook/teacher-logbook-group.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt=""><font color="#1A8BC8">By Group</font></a></td>
+											<td valign="center" align="left"><a	href="../logbook/teacher-logbook-group.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="" height="20" width="20"><font color="#1A8BC8">By Group</font></a></td>
 										</tr>
 										<tr>
 											<td><b>Your Logbook:<br />
@@ -205,15 +194,22 @@
 								</td>
 								<td align="left" width="20" valign="top">
 									<div style="overflow:auto; width:20px; position: fixed;">
-										<img src="../graphics/red_square.gif" border="0" width="2" height="650" alt="">
+										<img src="../graphics/red_square.gif" border="0" width="2" height="500" alt="">
 									</div>
 								</td>								
 								<td valign="top" align="center">
-									<div class="instructions">
+									<div style="width: 650px; height: 100px;">
+										<div style="width: 150px; float:left;"><img src="../graphics/logbook_view_large.gif" align="middle" border="0" alt=""></img></div>
+									 	<div style="width: 500px; float:right;"><font size="+2">Teachers: View Your <b>Private</b> Logbook on Student Research Groups.</font></div>
+									</div> 											
+									<div class="instructions" id="instructions-v" style="visibility:visible; display">
+										<a href="#" onclick="HideShow('instructions-v');HideShow('instructions-h');return false;"><img src="../graphics/Tright.gif" alt=" " border="0" /><font size="+1" face="Comic Sans MS"> View Instructions</font></a>						
+									</div>
+									<div class="instructions" id="instructions-h" style="visibility:hidden; display: none">
 										<table width="550">
 											<tr>
 												<td align="left" colspan="4">
-													<font size="+1">Instructions</font>
+													<a href="#" onclick="HideShow('instructions-v');HideShow('instructions-h');return false;"><img src="../graphics/Tdown.gif" alt=" " border="0" /><font size="+1" face="Comic Sans MS"> Hide Instructions</font></a>
 												</td>
 											<tr>
 												<td><font size="-1">
