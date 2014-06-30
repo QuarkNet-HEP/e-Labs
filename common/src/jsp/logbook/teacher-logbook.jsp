@@ -203,13 +203,13 @@
 									 	<div style="width: 500px; float:right;"><font size="+2">Teachers: View Your <b>Private</b> Logbook on Student Research Groups.</font></div>
 									</div> 											
 									<div class="instructions" id="instructions-v" style="visibility:visible; display">
-										<a href="#" onclick="HideShow('instructions-v');HideShow('instructions-h');return false;"><img src="../graphics/Tright.gif" alt=" " border="0" /><font size="+1" face="Comic Sans MS"> View Instructions</font></a>						
+										<a href="#" onclick="HideShow('instructions-v');HideShow('instructions-h');return false;"><img src="../graphics/Tright.gif" alt=" " border="0" /><font size="+1"> View Instructions</font></a>						
 									</div>
 									<div class="instructions" id="instructions-h" style="visibility:hidden; display: none">
 										<table width="550">
 											<tr>
 												<td align="left" colspan="4">
-													<a href="#" onclick="HideShow('instructions-v');HideShow('instructions-h');return false;"><img src="../graphics/Tdown.gif" alt=" " border="0" /><font size="+1" face="Comic Sans MS"> Hide Instructions</font></a>
+													<a href="#" onclick="HideShow('instructions-v');HideShow('instructions-h');return false;"><img src="../graphics/Tdown.gif" alt=" " border="0" /><font size="+1"> Hide Instructions</font></a>
 												</td>
 											<tr>
 												<td><font size="-1">
