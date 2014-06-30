@@ -19,9 +19,6 @@ public class ChannelName {
         if (name.endsWith("Hz")) {
             return parts[parts.length - 3] + "_" + parts[parts.length - 2] + "_" + parts[parts.length - 1];
         }
-        else if (parts[parts.length - 1].equals("X") || parts[parts.length - 1].equals("Y") || parts[parts.length - 1].equals("Z")) {
-        	return parts[parts.length - 2] + "_" + parts[parts.length - 1]; 
-        }
         else {
             return parts[parts.length - 1];
         }

@@ -35,10 +35,23 @@
 		</td>
 		<td>
 			<div id="center">
-				<div style="text-align:center; font-size: 16px; font-weight:bold">Study Guide</div>
-				<p>Your team may use this study guide, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results. 
-				</p>
-				<%@ include file="milestones-map-student.jsp" %>
+					
+<div style="text-align:center; font-size: 16px; font-weight:bold">Study Guide</div>
+<p>Your team may use this study guide, or your teacher may have other plans. Make sure you know how to record your progress, keep your teacher appraised of your work and publish your results. 
+</p>
+
+				<%
+					if (user.getGroup().isProfDev()) {
+						%>
+							<%@ include file="milestones-map-profdev.jsp" %>
+						<%
+					}
+					else {
+						%>
+							<%@ include file="milestones-map-student.jsp" %>
+						<%
+					}
+				%>
 			</div>
 		</td>
 		<td>

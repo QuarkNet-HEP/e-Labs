@@ -19,7 +19,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/analysis.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<link href="../include/jquery/jeegoocontext/skins/cm_blue/style.css" rel="Stylesheet" type="text/css" />
+		<link href="../include/jeegoocontext/skins/cm_blue/style.css" rel="Stylesheet" type="text/css" />
 	</head>
 	
 	<body id="plot-page" class="data">
@@ -31,12 +31,12 @@
 					<%@ include file="../include/nav-rollover.jspf" %>
 				</div>
 			</div>
-			<script type="text/javascript" src="../include/jquery/jeegoocontext/jquery.jeegoocontext.min.js"></script>
+			<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>
 			<script language="javascript" type="text/javascript" src="../data/plot.js"></script>	
 			<script language="javascript" type="text/javascript" src="../include/excanvas.min.js"></script>
-		    <script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.min.js"></script>
-		    <script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.selection.min.js"></script>
-		    <script language="javascript" type="text/javascript" src="../include/jquery/flot/jquery.flot.crosshair.min.js"></script>
+		    <script language="javascript" type="text/javascript" src="../include/jquery.flot.js"></script>
+		    <script language="javascript" type="text/javascript" src="../include/jquery.flot.selection.js"></script>
+		    <script language="javascript" type="text/javascript" src="../include/jquery.flot.crosshair.js"></script>
 			<div id="content">
 				
 <a class="help-icon" href="#" onclick="openPopup(event, 'help');">Help <img src="../graphics/help.png" /></a>
@@ -59,14 +59,16 @@
 	<e:trinput type="hidden" name="cutsInput" id="cuts-input"/>
 	<table border="0" width="100%" id="step-buttons">
 		<tr>
+			<c:if test='${param.analysis != "calibration"}'>
 			<td>
-				<input type="submit" name="goto1" value="&lt; Dataset Selection" />
+				<input type="submit" name="goto1" value="&larr; Dataset Selection" />
 			</td>
 			<td>
-				<input type="submit" name="goto2" value="&lt; Data Selection" />
+				<input type="submit" name="goto2" value="&larr; Data Selection" />
 			</td>
+			</c:if>
 			<td>
-				<input type="submit" name="goto3" value="&lt; Plot Selection" />
+				<input type="submit" name="goto3" value="&larr; Plot Selection" />
 			</td>
 			<td width="100%">
 			</td>
@@ -155,6 +157,7 @@
 				</table>
 			</td>
 		</tr>
+		<% if (!user.isGuest())  { %>		
 		<tr>
 			<td class="toolbox-row">
 				<table class="toolbox">
@@ -197,6 +200,7 @@
 				</table>
 			</td>
 		</tr>
+	<% } %>
 	</table>
 	<div class="cursor" style="position: absolute; z-index: 10; display: none;"><span class="cursorValue"></span> <span class="cursorUnit"></span></div>
 	<div class="frame" style="position: relative;">

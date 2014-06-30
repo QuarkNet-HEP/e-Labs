@@ -10,6 +10,8 @@
 package gov.fnal.elab.datacatalog;
 
 import gov.fnal.elab.Elab;
+import gov.fnal.elab.ElabGroup;
+import gov.fnal.elab.RawDataFileResolver;
 import gov.fnal.elab.datacatalog.StructuredResultSet.File;
 import gov.fnal.elab.datacatalog.StructuredResultSet.Month;
 import gov.fnal.elab.datacatalog.StructuredResultSet.School;
@@ -23,10 +25,12 @@ import gov.fnal.elab.datacatalog.query.ResultSet;
 import gov.fnal.elab.util.DatabaseConnectionManager;
 import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.util.ElabUtil;
-
+import gov.fnal.elab.ElabFactory;
+import gov.fnal.elab.analysis.AnalysisRun;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.codec.net.URLCodec;
+import org.griphyn.vdl.dbschema.AnnotationSchema;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -45,6 +49,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.*;
+
 
 /**
  * A few convenience functions for dealing with QuarkNet data
@@ -84,6 +90,12 @@ public class DataTools {
         KEYS.put("benchmarklabel", 19);
         KEYS.put("benchmarkreference", 20);
         KEYS.put("benchmarkfail", 21);
+        //EPeronja-06/25/2013: 289- Lost functionality on data search
+        KEYS.put("group", 22);
+        KEYS.put("creationdate",23);
+        KEYS.put("comments", 24);
+        KEYS.put("fileduration", 25);
+        KEYS.put("triggers", 26);
     }
 
     public static final int SCHOOL = 0;
@@ -110,6 +122,13 @@ public class DataTools {
     public static final int BENCHMARKLABEL = 19;
     public static final int BENCHMARKREFERENCE = 20;
     public static final int BENCHMARKFAIL = 21;
+    //EPeronja-06/25/2013: 289- Lost functionality on data search
+    public static final int GROUP = 22;
+    public static final int CREATIONDATE = 23;
+    public static final int COMMENTS = 24;
+    public static final int FILEDURATION = 25;
+    public static final int TRIGGERS = 26;
+    
     
     public static final String MONTH_FORMAT = "MMMM yyyy";
 
@@ -122,12 +141,39 @@ public class DataTools {
      * @return A {@link StructuredResultSet} with the organized data.
      * 
      */
-    public static StructuredResultSet organizeSearchResults(ResultSet rs) {
+    public static StructuredResultSet organizeSearchResults(ResultSet rs, String benchmarksearch, String username, String teacher) {
         Date startDate = null, endDate = null;
 
         StructuredResultSet srs = new StructuredResultSet();
-        srs.setDataFileCount(rs.size());
+        //srs.setDataFileCount(rs.size());
+        int new_count = 0;
         for (CatalogEntry e : rs) {
+        	//EPeronja-11/21/2013: added checks for not displaying unblessed data by default
+        	if (benchmarksearch.equals("default")) {
+        		//String data_owner = "";
+        		//if (e.getTupleValue("group") != null) {
+        		//	data_owner = (String) e.getTupleValue("group");
+        		//}
+        		Boolean data_blessed = false;
+        		if (e.getTupleValue("blessed") != null) {
+        			data_blessed = (Boolean) e.getTupleValue("blessed");
+        		}
+        		String data_blessfile = "";
+        		if (e.getTupleValue("blessfile") != null) {
+        			data_blessfile = (String) e.getTupleValue("blessfile");
+        		}
+        		//if user doesn't own the data we have to look further
+        		String groupteacher = "";
+        		if (e.getTupleValue("teacher") != null) {
+        			groupteacher = (String) e.getTupleValue("teacher");
+        		}
+        		if (!groupteacher.equals(teacher) || groupteacher.equals("")) {
+        			if (!data_blessed || data_blessfile.equals("")) {
+        				continue;
+        			}
+        		}
+        	}
+        	new_count++;
             Object[] data = new Object[KEYS.size()];
             
             for (Tuple t : e) {
@@ -268,6 +314,52 @@ public class DataTools {
             	System.out.println("WARNING: File " + e.getLFN() + " does not have a benchmark failure. Skipping.");
             	continue;
             }  
+            //EPeronja-06/25/2013: 289- Lost functionality on data search
+            try {
+            	file.setGroup((String) data[GROUP]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have a group failure. Skipping.");
+            	continue;
+            }  
+
+            try {
+            	file.setComments((String) data[COMMENTS]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have a comments. Skipping.");
+            	continue;
+            } 
+
+            try {
+            	file.setCreationDate((java.util.Date) data[CREATIONDATE]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have a creation date failure. Skipping.");
+            	continue;
+            }  
+            try {
+            	file.setChannel1((Long) data[CHAN1]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have channel failure. Skipping.");
+            	continue;
+            }  
+            try {
+            	file.setChannel2((Long) data[CHAN2]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have channel failure. Skipping.");
+            	continue;
+            }  
+            try {
+            	file.setChannel3((Long) data[CHAN3]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have channel failure. Skipping.");
+            	continue;
+            }  
+            try {
+            	file.setChannel4((Long) data[CHAN4]);
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have channel failure. Skipping.");
+            	continue;
+            }  
+
             if (file.getStartDate() == null) {
             	System.out.println("WARNING: File " + e.getLFN() + " is missing the start date. Skipping.");
             	continue;
@@ -284,11 +376,26 @@ public class DataTools {
             if (endDate == null || endDate.before(file.getEndDate())) {
                 endDate = file.getEndDate();
             }
+            
+            //EPeronja-07/22/2013: 556- Cosmic data search: requests from fellows 07/10/2013 (added duration and triggers)
+            try {
+            	file.setTriggers((Long) data[TRIGGERS]);
+            } catch (Exception ex) {
+            	file.setTriggers(0L);
+            	System.out.println("WARNING: File " + e.getLFN() + " does not have triggers. Skipping.");
+            }  
+			Long duration = (Long) (file.getEndDate().getTime() - file.getStartDate().getTime()) / 1000;
+			if (duration > 0) {
+				file.setFileDuration(duration);
+			} else {
+				file.setFileDuration(0L);
+			}
 
             if (Boolean.TRUE.equals(data[BLESSED])) {
                 file.setBlessed(true);
                 school.incBlessed();
             }
+            
             file.setStacked((Boolean) data[STACKED]);
             if (Boolean.TRUE.equals(data[STACKED])) {
                 school.incStacked();
@@ -299,21 +406,192 @@ public class DataTools {
                     events += ((Long) data[k]).intValue();
                 }
             }
-            school.incEvents(events);
+            //EPeronja-07/22/2013: 556- Cosmic data search: requests from fellows 07/10/2013 (now total events == triggers)
+            //school.incEvents(events);
+
+            int triggers = 0;
+            if (data[TRIGGERS] != null) {
+            	triggers = ((Long) data[TRIGGERS]).intValue();
+            }
+            
+            school.incEvents((int) triggers);
+
             school.incDataFiles();
             month.addFile(file);
         }
         srs.setStartDate(startDate);
         srs.setEndDate(endDate);
+        srs.setDataFileCount(new_count);
         return srs;
     }
-
+    
     public static final DateFormat TZ_DATE_TIME_FORMAT;
 
     static {
         TZ_DATE_TIME_FORMAT = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
     }
 
+    //EPeronja-05/20/2014: Insert Analysis results for statistics
+    public static void insertAnalysisResults(AnalysisRun ar, Elab elab) throws ElabException {
+        Connection conn = null;
+        PreparedStatement psAnalysisResult; 
+        try {
+            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+            boolean ac = conn.getAutoCommit();
+            psAnalysisResult = conn.prepareStatement(
+            				"INSERT INTO analysis_results (job_id, date_started, date_finished, study_type, study_runmode, rawdata, study_result, research_group) " +
+                    		"VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;"); 
+            try {
+                conn.setAutoCommit(false);
+                
+                psAnalysisResult.setString(1, ar.getId()); 
+                Long startmillis = ar.getStartTime().getTime();
+                java.sql.Timestamp startDate = new java.sql.Timestamp(startmillis);
+                psAnalysisResult.setTimestamp(2, startDate);
+                Long endmillis = ar.getStartTime().getTime();
+                java.sql.Timestamp endDate = new java.sql.Timestamp(endmillis);                
+                psAnalysisResult.setTimestamp(3, endDate);
+                String type = (String) ar.getAttribute("type");
+                if (type == null || type.equals("")) {
+                	type = "unknown";
+                }
+                psAnalysisResult.setString(4, type);
+                String runmode = (String) ar.getAttribute("runMode");
+                if (runmode == null || runmode.equals("")) {
+                	runmode = "local";
+                }
+                psAnalysisResult.setString(5, runmode);
+                Collection rawdata = (Collection) ar.getAttribute("inputfiles");
+                if (rawdata != null) {
+                	psAnalysisResult.setString(6, Arrays.toString(rawdata.toArray()));
+                } else {
+                	psAnalysisResult.setString(6, "unknown");                	
+                }
+                psAnalysisResult.setString(7, String.valueOf(ar.getStatus()));
+                String owner = (String) ar.getAttribute("owner");
+                if (owner == null || owner.equals("")) {
+                	owner = "unknown";
+                }                
+                psAnalysisResult.setString(8, owner);
+                java.sql.ResultSet rs = psAnalysisResult.executeQuery(); 
+                conn.commit();
+            }
+            catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
+            finally {
+                conn.setAutoCommit(ac);
+            }
+        }
+        catch (SQLException e) {
+            throw new ElabException(e);
+        }
+        finally {
+            if (conn != null) {
+                DatabaseConnectionManager.close(conn);
+            }
+        }    	
+    }//end of insertAnalysisResults
+    
+    //EPeronja-07/25/2013: Poster Tags
+    public static void removePosterTags(Elab elab, String[] removeTags) throws ElabException {
+    	for (int i = 0; i < removeTags.length; i++) {
+			DataCatalogProvider dcp = ElabFactory.getDataCatalogProvider(elab);
+	    	And and = new And();
+		    and.add(new Equals("type", "poster"));
+		    and.add(new Equals("postertag", removeTags[i]));
+			ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
+			if (rs != null && rs.size() > 0) {
+		  		String[] taggedFiles = rs.getLfnArray();
+				//remove the reference
+			    for (int x = 0; x < taggedFiles.length; x++) {
+			    	CatalogEntry ce = dcp.getEntry(taggedFiles[x]);
+			    	ce.setTupleValue("postertag","");
+			    	dcp.insert(ce);
+			    }			
+			}	    
+	    	CatalogEntry tag = dcp.getEntry(removeTags[i]);			
+			dcp.delete(tag);
+    	}
+    }//end of removePosterTags
+
+    public static void insertTags(Elab elab, String[] newTags) {
+		DataCatalogProvider dcp = ElabFactory.getDataCatalogProvider(elab);
+    	for (int i = 0; i < newTags.length; i++) {
+			//insert new tags
+			if (!newTags[i].equals("")) {
+				ArrayList meta = new ArrayList();
+				newTags[i] = newTags[i].replace(" ", "_");
+				meta.add("type string postertag");
+				meta.add("project string " + elab.getName());
+				try {
+					dcp.insert(buildCatalogEntry(newTags[i], meta));
+				} catch (ElabException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}		   	
+    }//end of insertTags
+    
+	public static ResultSet retrieveTags(Elab elab) throws ElabException {
+		In and = new In();
+		and.add(new Equals("type", "postertag"));
+		and.add(new Equals("project", elab.getName()));
+		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
+		return rs;
+	}    
+
+    //EPeronja-06/21/2013: 222-Allow Admin user to delete data files but check dependencies
+    public static int checkFileDependency(Elab elab, String filename) throws ElabException{
+    	int count = 0;
+		In and = new In();
+		and.add(new Equals("type", "plot"));
+		and.add(new Like("source", "%"+filename+"%"));
+		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
+		if (rs != null && rs.size() > 0) {
+	  		count = rs.size();
+		}
+        return count;
+    }	
+
+    public static String[] getFileDependency(Elab elab, String filename) throws ElabException{
+    	String[] plots = null; 
+		In and = new In();
+		and.add(new Equals("type", "plot"));
+		and.add(new Like("source", "%"+filename+"%"));
+		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
+		if (rs != null && rs.size() > 0) {
+	  		plots = rs.getLfnArray();
+		}
+        return plots;
+    }	
+  
+    //check benchmark dependency
+    public static int checkBenchmarkDependency(Elab elab, String filename) throws ElabException{
+    	int count = 0;
+		In and = new In();
+		and.add(new Equals("type", "split"));
+		and.add(new Equals("benchmarkreference", filename));
+		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
+		if (rs != null && rs.size() > 0) {
+	  		count = rs.size();
+		}
+        return count;
+    }	
+
+    public static String[] getBenchmarkDependency(Elab elab, String filename) throws ElabException{
+    	String[] blessedFiles = null; 
+		In and = new In();
+		and.add(new Equals("type", "split"));
+		and.add(new Equals("benchmarkreference", filename));
+		ResultSet rs = elab.getDataCatalogProvider().runQuery(and);
+		if (rs != null && rs.size() > 0) {
+			blessedFiles = rs.getLfnArray();
+		}
+        return blessedFiles;
+    }    
     //EPeronja-06/11/2013: 254-When deleting files, be sure there are not dependent files
     //                       This function will check plots in the logbook and posters
     public static int checkPlotDependency(Elab elab, String plotName, int figureNumber) throws ElabException {
@@ -421,6 +699,16 @@ public class DataTools {
             if (e == null) {
                 continue;
             }
+            //EPeronja: do not add to caption if file does not exists
+    		String dataFile = RawDataFileResolver.getDefault().resolve(elab, e.getLFN());
+    		java.io.File df = new java.io.File(dataFile);
+    		try {
+    			if (!df.exists()) {
+    				continue;
+    			}
+    		} catch (Exception ex) {
+    			data.append(ex.toString()+"\n");
+    		}
             detectors.add(e.getTupleValue("detectorid"));
             if (dataCount < 8) {
                 data.append(e.getTupleValue("school"));

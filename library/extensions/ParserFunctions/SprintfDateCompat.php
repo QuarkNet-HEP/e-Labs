@@ -17,7 +17,7 @@ class SprintfDateCompat {
 			if ( $code == 'x' && $p < strlen( $format ) - 1 ) {
 				$code .= $format[++$p];
 			}
-
+			
 			switch ( $code ) {
 				case 'xx':
 					$s .= 'x';
@@ -66,7 +66,7 @@ class SprintfDateCompat {
 				case 'W':
 					if ( !$unix ) $unix = wfTimestamp( TS_UNIX, $ts );
 					$num = date( 'W', $unix );
-					break;
+					break;					
 				case 'F':
 					$s .= $wgContLang->getMonthName( substr( $ts, 4, 2 ) );
 					break;
@@ -86,17 +86,7 @@ class SprintfDateCompat {
 				case 'L':
 					if ( !$unix ) $unix = wfTimestamp( TS_UNIX, $ts );
 					$num = date( 'L', $unix );
-					break;
-				# 'o' is supported since PHP 5.1.0
-				# return literal if not supported
-				# TODO: emulation for pre 5.1.0 versions
-				case 'o':
-					if ( !$unix ) $unix = wfTimestamp( TS_UNIX, $ts );
-					if ( version_compare(PHP_VERSION, '5.1.0') === 1 )
-						$num = date( 'o', $unix );
-					else
-						$s .= 'o';
-					break;
+					break;					
 				case 'Y':
 					$num = substr( $ts, 0, 4 );
 					break;
@@ -119,7 +109,7 @@ class SprintfDateCompat {
 				case 'h':
 					$h = substr( $ts, 8, 2 );
 					$num = sprintf( '%02d', $h % 12 ? $h % 12 : 12 );
-					break;
+					break;					
 				case 'H':
 					$num = substr( $ts, 8, 2 );
 					break;
@@ -141,15 +131,6 @@ class SprintfDateCompat {
 					if ( !$unix ) $unix = wfTimestamp( TS_UNIX, $ts );
 					$num = $unix;
 					break;
-				case 'B':
-					if ( !$unix ) $unix = wfTimestamp( TS_UNIX, $ts );
-					$num = date( 'B', $unix );
-					break;
-				case 'S':
-					if ( !$unix ) $unix = wfTimestamp( TS_UNIX, $ts );
-					$num = date( 'S', $unix );
-					break;
-				
 				case '\\':
 					# Backslash escaping
 					if ( $p < strlen( $format ) - 1 ) {
@@ -203,7 +184,7 @@ class SprintfDateCompat {
 			array( '', 'C', 'CC', 'CCC', 'CD', 'D', 'DC', 'DCC', 'DCCC', 'CM', 'M' ),
 			array( '', 'M', 'MM', 'MMM' )
 		);
-
+			
 		$num = intval( $num );
 		if ( $num > 3000 || $num <= 0 ) {
 			return $num;
@@ -219,3 +200,4 @@ class SprintfDateCompat {
 		return $s;
 	}
 }
+

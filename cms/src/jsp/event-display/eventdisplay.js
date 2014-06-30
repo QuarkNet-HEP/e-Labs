@@ -192,11 +192,22 @@ function initializeData() {
     }
     switch (type) {
     case TRACK:
+  		lines = fn(edata, rd, desc, dataref, d_event["Associations"][desc.assoc]);
+      	for (var k = 0; k < lines.length; k++) {
+	 		vec.push(lines[k]);
+      	}
+      	break;
     case CURVES:
     case PATHS:
+    	if (edata.length != d_event["Associations"][desc.assoc].length) {
+    		console.log(edata.length, d_event["Associations"][desc.assoc].length, desc);
+    		break;
+    	}
+    	
       lines = fn(edata, rd, desc, dataref, d_event["Associations"][desc.assoc]);
+
       for (var k = 0; k < lines.length; k++) {
-	vec.push(lines[k]);
+	 	vec.push(lines[k]);
       }
       break;
     case LINES:

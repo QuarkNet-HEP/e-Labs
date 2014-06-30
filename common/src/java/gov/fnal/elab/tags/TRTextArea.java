@@ -26,7 +26,11 @@ public class TRTextArea extends TRControl {
         try {
             Object value = getValue();
             if (value != null) {
-                out.write(String.valueOf(value));
+            	String newValue = String.valueOf(value);
+                //EPeronja-14 Nov 2013: 189-Added this code to make it compatible with legacy plots
+                //			  where the label was Channel rather than Channel Number
+            	newValue = newValue.replace("Channel:", "Channel Number:");
+                out.write(String.valueOf(newValue));
             }
             out.write("</textarea>\n");
             commitToAnalysis(value);

@@ -172,8 +172,9 @@
 									<e:trtextarea name="plot_caption" rows="5" cols="30"><e:default>
 <%= DataTools.getFigureCaption(elab, ((ElabAnalysis) request.getAttribute("analysis")).getParameterValues("rawData")) %>
 <e:analysisParamLabel name="zeroZeroZeroID"/>
-<e:analysisParamLabel name="eventCoincidence"/>
 <e:analysisParamLabel name="detectorCoincidence"/>
+<e:analysisParamLabel name="channelCoincidence" />
+<e:analysisParamLabel name="eventCoincidence"/>
 <e:analysisParamLabel name="gate"/>
 									</e:default></e:trtextarea>
 								</td>
@@ -183,6 +184,12 @@
 				</e:vswitch>
 			</e:tr>
 		</p>
+		<p>
+			<!-- EPeronja-10/17/2013: THRESHOLD TEST
+			<input type="radio" name="thresholdfile" value="none" checked="true">Recreate TT file.<br />
+			<input type="radio" name="thresholdfile" value="static">Use Static TT file.<br />
+			-->		
+		</p>	
 		<%@ include file="../analysis/controls.jsp" %>
 		<p>
 			<!-- this MUST be used if all the elab:tr* stuff is to work                      -->

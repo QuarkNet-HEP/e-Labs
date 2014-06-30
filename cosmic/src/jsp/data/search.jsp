@@ -32,7 +32,13 @@
 			<div id="content">
 				
 <h1>View Data: Search and view uploaded data.</h1>
-
+<ul>
+	<div id="rationale">We have completed the process of testing and installing automatic blessing of data to ensure 
+		that you have quality data to use in the <br />
+		e-Lab. Thus, from this point, only blessed data is visible to the e-Lab user community. 
+		Data associated with your teacher will remain visible to you, blessed or not.  
+	</div>
+</ul>
 <table border="0" id="main">
 	<tr>
 		<td>

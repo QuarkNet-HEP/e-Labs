@@ -79,7 +79,11 @@
 			if (str.trim().equals("<gatewidth>0</gatewidth>")) {
 				str = "     <gatewidth>N/A</gatewidth>";
 			}
-		    out.println(str);
+			if (str.trim().contains("filename")) {
+				String encodedparms = java.net.URLEncoder.encode("&highlight=yes&line=");
+				out.println("<params>"+encodedparms+"</params>");
+			}
+			out.println(str);
 		}
 	%>
 </x:transform>

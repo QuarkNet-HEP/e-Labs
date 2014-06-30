@@ -3,7 +3,6 @@
  */
 package gov.fnal.elab;
 
-import gov.fnal.elab.analysis.TimeIntervalFormatter;
 import gov.fnal.elab.notifications.DatabaseNotificationsProvider;
 
 /**
@@ -33,8 +32,6 @@ public class ElabProperties extends AbstractProperties {
     public static final String PROP_LIGO_SURVEY = "ligo.newsurvey";
     public static final String PROP_CMS_SURVEY = "cms.newsurvey";
     public static final String PROP_CMS_TB_SURVEY = "cms-tb.newsurvey";
-    
-    public static final String PROP_MAX_ALLOWED_LOCAL_RUN_TIME = "max.allowed.local.run.time";
 
     private String elabName;
 
@@ -130,12 +127,4 @@ public class ElabProperties extends AbstractProperties {
     public String getLigoSurveyId() {
     	return getRequired(ElabProperties.PROP_LIGO_SURVEY);
     }
-    
-    public int getMaxAllowedLocalRunTime() {
-        return Integer.parseInt(getProperty(ElabProperties.PROP_MAX_ALLOWED_LOCAL_RUN_TIME, "30"));
-    }
-    
-    public String getMaxAllowedLocalRunTimeFormatted() {
-        return TimeIntervalFormatter.formatSeconds(getMaxAllowedLocalRunTime());
-    }    
 }

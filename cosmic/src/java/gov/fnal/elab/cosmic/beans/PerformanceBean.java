@@ -4,9 +4,10 @@ import java.io.*;                   //String
 import java.util.*;                 //List
 import gov.fnal.elab.util.*;        //ElabException
 import gov.fnal.elab.beans.*;       //MappableBean, ElabBean
+import gov.fnal.elab.beans.vds.*;
 import org.griphyn.vdl.classes.*;   //Derivation, Declare, LFN, List
 
-public class PerformanceBean extends ElabBean implements Serializable, MappableBean{
+public class PerformanceBean extends VDSElabBean implements Serializable, VDSMappableBean{
 
     //TR variables
     private String detector;
@@ -34,8 +35,8 @@ public class PerformanceBean extends ElabBean implements Serializable, MappableB
     private String singlechannelOut;
     private String freqOut;
     private String singlechannel_channel;
-    private java.util.List rawData;
-    private java.util.List thresholdAll;
+    private java.util.List<String> rawData;
+    private java.util.List<String> thresholdAll;
 
     //Constructor
     public PerformanceBean(){
@@ -245,19 +246,19 @@ public class PerformanceBean extends ElabBean implements Serializable, MappableB
     }
 
     //get/set methods (list)
-    public void setRawData(java.util.List s){
+    public void setRawData(java.util.List<String> s){
         rawData = s;
     }
 
-    public java.util.List getRawData(){
+    public java.util.List<String> getRawData(){
         return rawData;
     }
 
-    public void setThresholdAll(java.util.List s){
+    public void setThresholdAll(java.util.List<String> s){
         thresholdAll = s;
     }
 
-    public java.util.List getThresholdAll(){
+    public java.util.List<String> getThresholdAll(){
         return thresholdAll;
     }
 
@@ -380,14 +381,13 @@ public class PerformanceBean extends ElabBean implements Serializable, MappableB
 
 
     //returns true is every key value is valid
-    public boolean isValid(){
-        java.util.List badkeys = this.getInvalidKeys();
-        return badkeys.size() > 0 ? false : true;
+    public boolean isValid(){        
+        return this.getInvalidKeys().size() > 0 ? false : true; 
     }
 
     //get a List of invalid keys
-    public java.util.List getInvalidKeys(){
-        java.util.List badkeys = new java.util.ArrayList();
+    public java.util.List<String> getInvalidKeys(){
+        java.util.List<String> badkeys = new java.util.ArrayList<String>();
         if(!isDetectorValid()){
             badkeys.add("detector");
         }

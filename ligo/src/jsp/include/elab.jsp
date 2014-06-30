@@ -5,6 +5,9 @@
 
 <%
 	Elab elab = Elab.getElab(pageContext, "ligo");
+	//EPeronja-09/11/2013: Added next line for notifications
+	session.setAttribute("elab", elab);
 	request.setAttribute("elab", elab);
 	request.setAttribute("user", ElabGroup.getUser(session));
+	session.setAttribute("environment", (String) elab.getProperty("environment"));
 %>

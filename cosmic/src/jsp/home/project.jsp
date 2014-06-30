@@ -42,7 +42,7 @@
 					The Cosmic Ray e-Lab provides an online environment in which students experience 
 					the excitement of scientific collaboration in this series of investigations into 
 					high-energy cosmic rays. Schools with cosmic ray detectors upload data to a 
-					"virtual data grid" portal where ALL the data resides. This approach allows 
+					"virtual data" portal where ALL the data resides. This approach allows 
 					students to analyze a much larger body of data and to share analysis code. Also, 
 					it allows schools that do not have cosmic ray detectors to participate in research 
 					by analyzing shared data.
@@ -56,7 +56,8 @@
 					of research projects are looking at this question. Students will have a chance to 
 					gain their own understanding of cosmic rays and may be fortunate enough to capture 
 					a rare highly-energetic cosmic ray shower on their classroom detector and analyze 
-					their results with this e-Lab.
+					their results with this e-Lab. The Cosmic Ray e-Lab addresses ALL science and engineering 
+					practices in the Next Generation Science Standards.
 				</p>
 	
 				<a href="/elab" target="common"><strong>Information common for all e-Labs</strong></a>

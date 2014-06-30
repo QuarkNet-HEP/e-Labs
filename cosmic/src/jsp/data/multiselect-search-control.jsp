@@ -12,7 +12,15 @@
 
 <%SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false); 
-
+boolean allowAllDataAccess = false;
+if (!user.getName().equals("guest")) {
+	int teacherId = user.getTeacherId();
+	allowAllDataAccess = elab.getUserManagementProvider().getDataAccessPermission(teacherId);
+	if (user.isAdmin()) {
+		allowAllDataAccess = true;
+	}
+}
+request.setAttribute("allowAllDataAccess", allowAllDataAccess);
 %>
 <script type="text/javascript">
 $(function() {
@@ -38,35 +46,65 @@ $(window).scroll(function(){
 
 <div class="search-quick-links">Quick Searches: 
 	<form action="controller.jsp" name="search" method="post" style="display: inline;">
+		<input type="hidden" name="key" value="group" />
+		<input type="hidden" name="value" value="${user.name}" />
+		<input type="hidden" name="action" value="Search Data" />
+		<!-- 
+		<input type="submit" value="${user.name}" />
+		-->
+		<a href="#" onclick='$(this).closest("form").submit()'>${user.name}</a>,
+	</form>
+	<form action="controller.jsp" name="search" method="post" style="display: inline;">
+		<input type="hidden" name="key" value="teacher" />
+		<input type="hidden" name="value" value="<%= user.getTeacher() %>" />
+		<input type="hidden" name="action" value="Search Data" />
+		<!-- 
+		<input type="submit" value="<%= user.getTeacher() %>" />
+		-->
+		<a href="#" onclick='$(this).closest("form").submit()'><%= user.getTeacher() %></a>,
+	</form>
+	<form action="controller.jsp" name="search" method="post" style="display: inline;">
 		<input type="hidden" name="key" value="school" />
 		<input type="hidden" name="value" value="${user.group.school}" />
 		<input type="hidden" name="action" value="Search Data" />
+		<!-- 
 		<input type="submit" value="${user.group.school}" />
+		-->
+		<a href="#" onclick='$(this).closest("form").submit()'>${user.group.school}</a>,
 	</form>
 	<form action="controller.jsp" name="search" method="post" style="display: inline;">
 		<input type="hidden" name="key" value="city" />
 		<input type="hidden" name="value" value="${user.group.city}" />
 		<input type="hidden" name="action" value="Search Data" />
+		<!-- 
 		<input type="submit" value="${user.group.city}" />
+		-->
+		<a href="#" onclick='$(this).closest("form").submit()'>${user.group.city}</a>,
 	</form>
 	<form action="controller.jsp" name="search" method="post" style="display: inline;">
 		<input type="hidden" name="key" value="state" />
 		<input type="hidden" name="value" value="${user.group.state}" />
 		<input type="hidden" name="action" value="Search Data" />
+		<!-- 
 		<input type="submit" value="${user.group.state}" />
+		-->
+		<a href="#" onclick='$(this).closest("form").submit()'>${user.group.state}</a>,
 	</form>
 	<form action="controller.jsp" name="search" method="post" style="display: inline;">
 		<input type="hidden" name="key" value="all" />
 		<input type="hidden" name="action" value="Search Data" />
+		<!-- 
 		<input type="submit" value="All" />
+		-->
+		<a href="#" onclick='$(this).closest("form").submit()'>All</a>
 	</form>
 </div>
 
 <form action="controller.jsp" name="search" method="post">
 	<e:select name="key" id="selectOptions" valueList="city, group, school, state, teacher, detectorid"
-		        labelList="City, Group, School, State, Teacher, Detector ID"
-		        default="${param.key}"/>
-	<input name="value" id="name" size="40" maxlength="40" value="${param.value}"  />
+		        labelList="City, Group, School, State/Country, Teacher, Detector ID"
+		        default="${key}"/>
+	<input name="value" id="name" size="40" maxlength="40" value="${value}"  />
 	<input type="submit" name="action" value="Search Data" />
 	
 	<e:vswitch>
@@ -90,12 +128,12 @@ $(window).scroll(function(){
 						</select>
 					</td>
 					<td>
-						<e:trinput name="date1" id="date1" size="10" maxlength="15" class="datepicker" />
+						<e:trinput name="date1" id="date1" size="10" maxlength="15" class="datepicker" value="${date1}"/>
 						to
-						<e:trinput name="date2" id="date2" size="10" maxlength="15" class="datepicker" />
+						<e:trinput name="date2" id="date2" size="10" maxlength="15" class="datepicker" value="${date2}"/>
 					</td>
 				</tr>
-				<!-- Sort field and search-within-data don't work. 
+				<!-- 
 				<tr>
 					<td align="right">
 						<e:select name="sortDirection" valueList="sortAsc, sortDesc" labelList="Sort Ascending, Sort Descending"/>
@@ -106,24 +144,28 @@ $(window).scroll(function(){
 							labelList="City, State, Geometry, Blessed, Group, Academic Year, Detector ID, Upload Date, Channel 1 events, Channel 2 events, Channel 3 events, Channel 4 events"/>
 					</td>
 				</tr>
+				-->
 				<tr>
 					<td align="right" valign="middle">
 					    Search:
 					</td>
 					<td>
 				    	<input type="radio" name="searchIn" value="all" checked="true" />All data
-					    <input type="radio" name="searchIn" value="within"/ >Within results
+					    <input type="radio" name="searchIn" value="within"/ >Refine results with extra parameters
 					</td>
 				</tr>
-				-->
 				<tr>
 					<td>
 						Stacked:
-						<e:select name="stacked" valueList="all, yes, no" labelList="All, Yes, No"/>
+						<e:select name="stacked" valueList="all, yes, no" selected="${stacked}" labelList="All, Yes, No"/>
 					</td>
 					<td>
-						Blessed:
-						<e:select name="blessed" valueList="all, yes, no" labelList="All, Yes, No"/>
+						<c:choose>
+							<c:when test="${allowAllDataAccess == true}">					
+								Blessed:
+								<e:select name="blessed" valueList="default, all, yes, no" labelList="Default, All, Yes, No" selected="${blessed}"/>
+							</c:when>
+						</c:choose>
 					</td>
 				</tr>
 			</table>

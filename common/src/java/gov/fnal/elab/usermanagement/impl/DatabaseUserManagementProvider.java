@@ -39,6 +39,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.io.*;
+import java.util.*;
+import javax.mail.*;
+import javax.mail.internet.*;
+import javax.activation.*;
+import javax.servlet.http.*;
+import javax.servlet.*;
 
 public class DatabaseUserManagementProvider implements
         ElabUserManagementProvider, ElabProviderHandled {
@@ -174,7 +181,7 @@ public class DatabaseUserManagementProvider implements
     private void updateUsage(Connection c, ElabGroup user) throws SQLException {
     	PreparedStatement ps = c.prepareStatement("INSERT INTO usage (research_group_id) VALUES (?);");
     	ps.setInt(1, user.getGroup().getId());
-    	int rows = ps.executeUpdate();
+     	int rows = ps.executeUpdate();
         if (rows != 1) {
             // logging?
             System.out.println("Weren't able to add statistics info "
@@ -187,7 +194,7 @@ public class DatabaseUserManagementProvider implements
     private ElabGroup createUser(Connection c, String username, String password,
             int projectId) throws SQLException, AuthenticationException {
     	PreparedStatement ps = c.prepareStatement(
-    			"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+    			"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id, rg.active " +
     			"FROM research_group AS rg " +
     			"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
     			"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
@@ -204,7 +211,7 @@ public class DatabaseUserManagementProvider implements
     private ElabGroup createUser(Connection c, String username, int projectId)
             throws SQLException, ElabException {
 		PreparedStatement ps = c.prepareStatement(
-        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id, rg.active " +
         		"FROM research_group AS rg " +
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
@@ -224,7 +231,7 @@ public class DatabaseUserManagementProvider implements
             throws SQLException, ElabException {
     	String name = "";
         PreparedStatement ps = c.prepareStatement(
-        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id, rg.active " +
         		"FROM research_group AS rg " +
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
@@ -251,6 +258,7 @@ public class DatabaseUserManagementProvider implements
         user.setTeacherId(rs.getInt("teacher_id"));
         user.setRole(rs.getString("role"));
         user.setSurvey(rs.getBoolean("survey"));
+        user.setActive(rs.getBoolean("active"));
         user.setUserArea(rs.getString("userarea"));
         user.setStudy(rs.getBoolean("in_study"));
         user.setNewSurvey(rs.getBoolean("new_survey"));
@@ -307,7 +315,7 @@ public class DatabaseUserManagementProvider implements
     private ElabGroup createGroup(Connection c, String groupName,
             int projectId) throws SQLException {
         PreparedStatement ps = c.prepareStatement(
-        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id " +
+        		"SELECT rg.id, rg.name, rg.teacher_id, rg.role, rg.userarea, rg.ay, rg.survey, rg.first_time, rg.new_survey, rg.in_study, rgt.test_id, rg.active " +
         		"FROM research_group AS rg " +
         		"LEFT OUTER JOIN research_group_test AS rgt ON (rg.id = rgt.research_group_id) " +
         		"LEFT OUTER JOIN research_group_project AS rgp ON (rg.id = rgp.project_id) " +
@@ -330,6 +338,7 @@ public class DatabaseUserManagementProvider implements
         user.setFirstTime(rs.getBoolean("first_time"));
         user.setStudy(rs.getBoolean("in_study"));
         user.setNewSurvey(rs.getBoolean("new_survey"));
+        user.setActive(rs.getBoolean("active"));
         user.setNewSurveyId((Integer) rs.getObject("test_id")); 
         setMiscGroupData(user, rs.getString("ay"), user.getUserArea());
         
@@ -432,14 +441,16 @@ public class DatabaseUserManagementProvider implements
                     .getConnection(elab.getProperties());
             int projectId = elab.getId();
             ps = conn.prepareStatement(
-            		"SELECT DISTINCT teacher.name AS tname, teacher.email AS temail, teacher.id AS teacherid, research_group.id AS id, research_group.name AS rgname, research_group.userarea AS rguserarea " +
+            		"SELECT DISTINCT teacher.name AS tname, teacher.email AS temail, teacher.id AS teacherid, " +
+            				"research_group.id AS id, research_group.name AS rgname, research_group.userarea AS rguserarea, " +
+            				" research_group.active AS rgactive, teacher.cosmic_all_data_access as cosmic_all_data_access " +
             		"FROM research_group_project " + 
             		"LEFT OUTER JOIN research_group ON research_group.id = research_group_project.research_group_id " + 
             		"INNER JOIN teacher ON research_group.teacher_id = teacher.id " +  
             		"WHERE research_group_project.project_id = ? ORDER BY tname ASC;");
             ps.setInt(1, projectId);
             rs = ps.executeQuery();
-            List teachers = new ArrayList();
+            List<ElabGroup> teachers = new ArrayList<ElabGroup>();
             // the first one is a dummy, but it makes the code below less
             // cluttered
             ElabGroup t = new ElabGroup(elab, this);
@@ -458,6 +469,8 @@ public class DatabaseUserManagementProvider implements
                     t.setEmail(rs.getString("temail"));
                     t.setId(rs.getInt("id"));
                     t.setTeacherId(rs.getInt("teacherid"));
+                    t.setActive(rs.getBoolean("rgactive"));
+                    t.setCosmicAllDataAccess(rs.getBoolean("cosmic_all_data_access"));
                     g = new ElabGroup(elab, this);
                     if (StringUtils.isNotBlank(rs.getString("rguserarea"))) {
                         String[] brokenSchema = rs.getString("rguserarea")
@@ -471,6 +484,8 @@ public class DatabaseUserManagementProvider implements
                     teachers.add(t);
                 }
                 g.setName(rs.getString("rgname"));
+                g.setActive(rs.getBoolean("rgactive"));
+                g.setCosmicAllDataAccess(rs.getBoolean("cosmic_all_data_access"));                
                 t.addGroup(g);
             }
             return teachers;
@@ -513,7 +528,7 @@ public class DatabaseUserManagementProvider implements
         rs = ps.executeQuery();
 
         // Can't do another query while iterating over a result set
-        List<String> names = new LinkedList();
+        List<String> names = new LinkedList<String>();
         while (rs.next()) {
             names.add(rs.getString("name"));
         }
@@ -633,8 +648,8 @@ public class DatabaseUserManagementProvider implements
             String hashedPassword = BCrypt.hashpw(pass, BCrypt.gensalt(12));
             ps = c.prepareStatement(
             		"INSERT INTO research_group " +
-            		"(name, hashedpassword, teacher_id, role, userarea, ay, survey, new_survey, in_study) " +
-            		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;");
+            		"(name, hashedpassword, teacher_id, role, userarea, ay, survey, new_survey, in_study, active) " +
+            		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;");
             ps.setString(2, hashedPassword);
             ps.setInt(3, et.getTeacherId());
             ps.setString(4, group.isUpload() ? "upload" : "user");
@@ -643,6 +658,7 @@ public class DatabaseUserManagementProvider implements
             ps.setBoolean(7, group.getSurvey());
             ps.setBoolean(8, group.isNewSurvey());
             ps.setBoolean(9, group.isStudy());
+            ps.setBoolean(10, group.getActive());
             
             do {
             	try {
@@ -762,9 +778,9 @@ public class DatabaseUserManagementProvider implements
         return name + studentNameAddOn;
     }
 
-    public List addStudents(ElabGroup teacher, List<ElabStudent> students, List<Boolean> createGroups)
+    public List<String> addStudents(ElabGroup teacher, List<ElabStudent> students, List<Boolean> createGroups)
             throws ElabException {
-        List passwords = new ArrayList();
+        List<String> passwords = new ArrayList<String>();
         Connection conn = null;
         Savepoint svpt; 
         Boolean autoCommit; 
@@ -772,8 +788,37 @@ public class DatabaseUserManagementProvider implements
             throw new IllegalArgumentException(
                     "User list and createGroups list have different sizes");
         }
-        Map<String, ElabGroup> groups = new HashMap();
+        Map<String, ElabGroup> groups = new HashMap<String, ElabGroup>();
+        Iterator studentIterator = students.iterator();
+        Iterator createGroupIterator = createGroups.iterator();
         
+        while (studentIterator.hasNext() && createGroupIterator.hasNext()) {
+        	ElabStudent student = (ElabStudent) studentIterator.next();
+        	ElabGroup group = student.getGroup();
+        	Boolean createGroup = (Boolean) createGroupIterator.next();
+        	if (createGroup) {
+    			ElabGroup existing = groups.get(group.getName());
+    			if (existing == null) {
+                    groups.put(group.getName(), group);
+                }
+    			else {
+                    if (group.isUpload()) {
+                        existing.setRole(ElabGroup.ROLE_UPLOAD);
+                    }
+                    if (group.isNewSurvey()) {
+                    	existing.setNewSurvey(true);
+                    }
+                    else if (group.getSurvey()) {
+                        existing.setSurvey(true);
+                    }
+                    else {
+                    	existing.setSurvey(false);
+                    	existing.setNewSurvey(false);
+                    }
+                }        		
+        	}
+        }
+ /* EPeronja: the next piece of code doesn't work at all when you have mixed lists!       
         for (ElabStudent student : students) {
         	ElabGroup group = student.getGroup();
         	for (Boolean createGroup : createGroups) {
@@ -800,7 +845,7 @@ public class DatabaseUserManagementProvider implements
         		}
         	}
         }
-        
+*/        
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             autoCommit = conn.getAutoCommit();
@@ -887,7 +932,7 @@ public class DatabaseUserManagementProvider implements
 	            conn.setAutoCommit(false);
 	            svpt = conn.setSavepoint();
 	            boolean pass = false; 
-	            String sql = "UPDATE research_group SET ay = ?, role = ?, survey = ?, new_survey = ?";
+	            String sql = "UPDATE research_group SET ay = ?, role = ?, survey = ?, new_survey = ?, active = ?";
 	            if (StringUtils.isNotBlank(password)) {
 	            	sql += ", hashedpassword = ? ";
 	            	pass = true;
@@ -898,13 +943,14 @@ public class DatabaseUserManagementProvider implements
 	            ps.setString(2, group.getRole());
 	            ps.setBoolean(3, group.getSurvey());
 	            ps.setBoolean(4, group.isNewSurvey());
+	            ps.setBoolean(5, group.getActive());
 	            if (pass) {
 	            	String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12)); 
-	            	ps.setString(5, hashedPassword);
-	            	ps.setInt(6, group.getId());
+	            	ps.setString(6, hashedPassword);
+	            	ps.setInt(7, group.getId());
 	            }
 	            else {
-	            	ps.setInt(5, group.getId());
+	            	ps.setInt(6, group.getId());
 	            }
 	            
 	            ps.executeUpdate();
@@ -941,8 +987,328 @@ public class DatabaseUserManagementProvider implements
         }
     }
 
-    public Collection getProjectNames() throws ElabException {
-        List names = new ArrayList();
+    public void updateEmail(String username, String newemail) throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        Savepoint svpt = null; 
+        try {
+            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+            try {
+	            conn.setAutoCommit(false);
+	            svpt = conn.setSavepoint();
+	            boolean pass = false; 
+	            String sql = "UPDATE teacher " +
+	            			 "   SET email = ? " +
+	            			 "  FROM teacher t " +
+	            		 	 " INNER JOIN research_group rg " +
+	            		 	 "    ON t.id = rg.teacher_id " +
+	            		 	 " WHERE rg.name = ? " +
+	            		 	 "   AND teacher.id = t.id;";
+	            ps = conn.prepareStatement(sql);
+	            ps.setString(1, newemail);
+	            ps.setString(2, username);
+	            
+	            ps.executeUpdate();
+          
+	            conn.commit();
+            }
+            catch (SQLException e) {
+            	conn.rollback(svpt);
+            	throw e; 
+            }
+            finally {
+            	conn.setAutoCommit(true);
+            }
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, ps);
+        }
+    }
+    
+    
+    
+    public String resetPassword(String groupname)
+            throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps = null, ps2 = null; 
+        Savepoint svpt = null; 
+        try {
+            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+            try {
+	            conn.setAutoCommit(false);
+	            svpt = conn.setSavepoint();
+	            GeneratePassword rp;  
+	        	rp = new GeneratePassword();
+	        	String password = rp.getPassword();
+	            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
+	            
+	            String sql = "UPDATE research_group SET hashedpassword = ? ";
+	            sql += "WHERE name = ?;";
+	            ps = conn.prepareStatement(sql);
+            	ps.setString(1, hashedPassword);
+	            ps.setString(2, groupname);
+
+	            ps.executeUpdate();
+	            conn.commit();
+	            return password;
+            }
+            catch (SQLException e) {
+            	conn.rollback(svpt);
+            	throw e; 
+            }
+            finally {
+            	conn.setAutoCommit(true);
+            }
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, ps, ps2);
+        }
+    }
+    //EPeronja: get email address
+    public String getEmail(String groupname) throws ElabException {
+    	String email = "";
+    	PreparedStatement ps = null;
+        Connection conn = null;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            String sql = "SELECT email " +
+            			 "FROM teacher t " +
+            			 "INNER JOIN research_group rg " +
+            			 "ON t.id = rg.teacher_id " +
+            			 "WHERE rg.name = ? " ;
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, groupname);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                email = rs.getString("email");
+            }
+            return email;
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, ps);
+        }
+    }//end of getEmail (from groupname)
+    
+    //EPeronja: get user role
+    public String getUserRole(String groupname) throws ElabException {
+    	String role = "";
+    	PreparedStatement ps = null;
+        Connection conn = null;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            String sql = "SELECT rg.role " +
+            			 "FROM research_group rg " +
+            			 "WHERE rg.name = ? " ;
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, groupname);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+            	role = rs.getString("role");
+            }
+            return role;
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, ps);
+        }    	
+    }//end of getUserRole
+    
+    //EPeronja: retrieve usernames    
+    public String[] getUsernameFromEmail(String email) throws ElabException {
+    	String[] username;
+    	PreparedStatement ps = null;
+        Connection conn = null;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            String sql = "SELECT rg.name " +
+            			 "FROM teacher t " +
+            			 "INNER JOIN research_group rg " +
+            			 "ON t.id = rg.teacher_id " +
+            			 "WHERE t.email = ? " +
+            			 "AND rg.role = 'teacher' ";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            
+            ResultSet rs = ps.executeQuery();
+            int count = 0;
+            while (rs.next()) {
+            	count++;
+            }
+            
+            if (count > 0) {
+            	username = new String[count];
+	            int i = 0;
+	            rs = ps.executeQuery();
+	            while (rs.next()) {
+	            	username[i] = rs.getString("name");
+	            	i++;
+	            }
+	            return username;
+            } else {
+            	return null;
+            }
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, ps);
+        }   	
+    }//end of get username from email address
+
+    //EPeronja: send e-mail to users
+    public String sendEmail(String to, String subject, String message) throws ElabException {
+    	String result = "";
+		//Sender's email ID 
+		final String from = "elabs@i2u2.org";
+		final String password = "";
+	    //Get system properties object
+	    Properties properties = System.getProperties();
+	    //Setup mail server
+	    properties.put("mail.smtp.host", "smtp.mcs.anl.gov");
+	    properties.put("mail.smtp.port", "25");
+	    properties.put("mail.smtp.auth", "true");
+	    properties.put("mail.smtp.starttls.enable", "true");			    
+	    //Get the default Session object.
+	    //Session mailSession = Session.getDefaultInstance(properties);
+	   	Session mailSession = Session.getInstance(properties, new javax.mail.Authenticator() {
+	   		protected PasswordAuthentication getPasswordAuthentication() {
+	   			return new PasswordAuthentication(from, password );
+	   		}
+	   	});
+	    try{
+	       //Create a default MimeMessage object.
+	       MimeMessage msg = new MimeMessage(mailSession);
+	       //Set From: header field of the header.
+	       msg.setFrom(new InternetAddress(from));
+	       //Set To: header field of the header.
+	       msg.addRecipient(Message.RecipientType.TO,
+	                               new InternetAddress(to));
+	       // Set Subject: header field
+	       msg.setSubject(subject);
+	       msg.setText(message);
+	       //Send message
+	       Transport.send(msg); 
+		} catch (MessagingException mex) {
+		      mex.printStackTrace();
+		      result = "Error: unable to send message. " + mex.toString();
+		}	
+	    return result;
+    }//end of sendEmail
+    
+    //EPeronja: update active/inactive status 
+    public void updateGroupStatus(String[] activeIds) throws ElabException {
+       	Connection conn = null; 
+    	PreparedStatement ps = null;
+    	StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < activeIds.length; i++) {
+			sb.append(activeIds[i]);
+			if (i < activeIds.length - 1) {
+				sb.append(",");
+			}
+		}
+		try {
+    		conn = DatabaseConnectionManager.getConnection(elab.getProperties());      	
+    		ps = conn.prepareStatement("UPDATE research_group " +
+					  "SET active = true " );
+    		ps.executeUpdate(); 
+    		ps = conn.prepareStatement("UPDATE research_group " +
+    									  "SET active = false " +
+    									"WHERE teacher_id not in ("+sb.toString()+") ");
+    		ps.executeUpdate(); 
+			conn.commit();
+    	}
+    	catch(SQLException e) {
+    		throw new ElabException("Could not update the research_group table.");
+    	}
+    	finally {
+    		DatabaseConnectionManager.close(conn, ps);
+    	}		
+    }//end of updateGroupStatus
+    
+    //EPeronja: give/remove permission to see all data (blessed and unblessed)
+    public void updateCosmicDataAccess(Collection teachers, String[] allowIds) throws ElabException {
+    	Connection conn = null; 
+    	PreparedStatement ps = null;
+    	Object[] teacher = teachers.toArray();
+		try {
+    		//first set them all to false
+    		conn = DatabaseConnectionManager.getConnection(elab.getProperties());      		
+    		ps = conn.prepareStatement("UPDATE teacher SET cosmic_all_data_access = false;");
+    		ps.executeUpdate(); 
+    		for (int i = 0; i < teacher.length; i++) {
+    			ElabGroup t = (ElabGroup) teacher[i];
+    			t.setCosmicAllDataAccess(false);
+    		}
+			//now update the permissions
+			for (int j = 0; j < allowIds.length; j++) {
+	    		for (int i = 0; i < teacher.length; i++) {
+	    			ElabGroup t = (ElabGroup) teacher[i]; 
+	    			if (t.getTeacherId() == Integer.parseInt(allowIds[j])){
+				    		ps = conn.prepareStatement("UPDATE teacher SET cosmic_all_data_access = true " +
+				    								   "WHERE id = ?;");
+				    		ps.setInt(1, t.getTeacherId());
+				    		ps.executeUpdate(); 
+							t.setCosmicAllDataAccess(true);
+					}
+				}
+			}
+			conn.commit();
+    	}
+    	catch(SQLException e) {
+    		throw new ElabException("Could not update the teacher table.");
+    	}
+    	finally {
+    		DatabaseConnectionManager.close(conn, ps);
+    	}
+    }//end of updateCosmicDataAccess
+
+    //EPeronja: check if user's teacher has permission
+    public boolean getDataAccessPermission(int teacherId) throws ElabException {
+    	boolean gotAccess = false;
+    	PreparedStatement ps = null;
+        Connection conn = null;
+        try {
+            conn = DatabaseConnectionManager
+                    .getConnection(elab.getProperties());
+            String sql = "SELECT cosmic_all_data_access " +
+            			 "FROM teacher " +
+            			 "WHERE id = ? ";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, teacherId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+            	gotAccess = rs.getBoolean("cosmic_all_data_access");
+            }
+        	return gotAccess;            
+        }
+        catch (Exception e) {
+            throw new ElabException(e);
+        }
+        finally {
+            DatabaseConnectionManager.close(conn, ps);
+        }   	    	
+    }//end of getDataAccessPermission
+
+    
+    public Collection<String> getProjectNames() throws ElabException {
+        List<String> names = new ArrayList<String>();
         Statement s = null;
         Connection conn = null;
 
@@ -964,7 +1330,7 @@ public class DatabaseUserManagementProvider implements
         }
     }
 
-    public Collection getProjectNames(ElabGroup group) throws ElabException {
+    public Collection<String> getProjectNames(ElabGroup group) throws ElabException {
         Connection conn = null;
         try {
             conn = DatabaseConnectionManager
@@ -981,7 +1347,7 @@ public class DatabaseUserManagementProvider implements
 
     private Collection<String> getProjectNames(Connection c, ElabGroup group)
             throws SQLException {
-        List<String> names = new ArrayList();
+        List<String> names = new ArrayList<String>();
         PreparedStatement ps = c.prepareStatement(
         		"SELECT p.name FROM research_group_project AS rgp " +
         		"LEFT OUTER JOIN project AS p ON p.id = rgp.project_id " +
@@ -1005,41 +1371,44 @@ public class DatabaseUserManagementProvider implements
             conn.setAutoCommit(false);
             conn.setSavepoint();
             try {
-                Map ids = new HashMap();
+                Map<String, Integer> ids = new HashMap<String, Integer>();
                 ps = conn.prepareStatement("SELECT id, name FROM project;");
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     ids.put(rs.getString("name"), rs.getInt("id"));
                 }
-                Collection current = getProjectNames(conn, group);
-                List updated = new ArrayList();
+                Collection<String> current = getProjectNames(conn, group);
+                List<String> updated = new ArrayList<String>();
                 for (String projectName : projectNames) {
                 	updated.add(projectName);
                 }
-                Set toRemove = new HashSet(current);
+                Set<String> toRemove = new HashSet<String>(current);
                 toRemove.removeAll(updated);
-                Set toAdd = new HashSet(updated);
+                Set<String> toAdd = new HashSet<String>(updated);
                 toAdd.removeAll(current);
-                Iterator i = toRemove.iterator();
+                
                 ps = conn.prepareStatement(
                 		"DELETE FROM research_group_project " + 
                 		"WHERE research_group_id = ? AND project_id = ?;");
-                while (i.hasNext()) {
-                    int id = (Integer) ids.get(i.next());
-                    ps.setInt(1, group.getId());
-                    ps.setInt(2, id);
-                    ps.executeUpdate();
+                for (String s : toRemove) {
+                	int id = ids.get(s);
+                	ps.setInt(1, group.getId());
+                	ps.setInt(2, id);
+                	ps.addBatch();
                 }
-                i = toAdd.iterator();
+                ps.executeBatch();
+                
                 ps = conn.prepareStatement(
                 		"INSERT INTO research_group_project (research_group_id, project_id) " +
                 		"VALUES (?, ?);");
-                while (i.hasNext()) {
-                    int id = (Integer) ids.get(i.next());
-                    ps.setInt(1, group.getId());
+                for (String s: toAdd) {
+                	int id = ids.get(s);
+                	ps.setInt(1, group.getId());
                     ps.setInt(2, id);
-                    ps.executeUpdate();
+                    ps.addBatch();
                 }
+                ps.executeBatch();
+                
                 conn.commit();
             }
             catch (SQLException e) {

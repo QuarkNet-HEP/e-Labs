@@ -26,10 +26,9 @@
 # jordant changed 11-01-10: checking to see if user is doing ST2 or ST3 when writing raw data. Knowing which one is crucial to data blessing.
 # jordant changed 5 Oct 11: fixing bug 372
 # jordant changed 4 Jan 13: fixing bug 517
-# EPeronja changed 9 Apr 13: adding the benchmark parameter
 
 if($#ARGV < 2){
-	die "usage: Split.pl [filename to parse] [output DIRECTORY] [board ID] \n";
+	die "usage: Split.pl [filename to parse] [output DIRECTORY] [board ID]\n";
 }
 
 use Time::Local 'timegm_nocheck';
@@ -48,7 +47,7 @@ unless ($return = do $commonsubs_loc) {
 $| = 1;		#print to STDOUT whenever it gets data...not simply when there's a new line
 
 #information for metadata (raw and split files)
-my ($start, $end, $split_start, $split_end, $today_date, $today_time);#, blessFile);
+my ($start, $end, $split_start, $split_end, $today_date, $today_time, $blessFile);
 
 ($sec, $min, $hour, $day, $month, $year) = gmtime(time); #these variables mean Right Now--the time that the file was read by the system
 
@@ -61,7 +60,6 @@ $today_time = sprintf("%02d:%02d:%02d", $hour, $min, $sec);
 $raw_filename = $ARGV[0];
 $output_dir=$ARGV[1];
 $ID = $ARGV[2];
-
 open IN, $raw_filename;
 
 # Create and/or ensure output directory is writeable
@@ -111,7 +109,7 @@ $flaggedTime = 0;					#Current value of the time to hold for later checking
 $recoveredFlag = 1;					#Flag used in the async rollovers
 $skipSomeLines = 0;					#Flag used in the asynch rollovers
 $statusFlag = 0;					#Control structure to determine the presence of status lines--these go into the FOO.bless file.
-#$blessFile = 0;					#filehandle to keep the blessfile in scope globally
+$blessFile = 0;						#filehandle to keep the blessfile in scope globally
 
 @dataRow = ();						#row of properly formatted raw data
 @stRow = ();						#status line
@@ -202,7 +200,6 @@ while(<IN>){
 	if(/$reData/o){
 		#$non_datalines++;
 		@dataRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16);
-		#print "$. \t", substr($dataRow[10],0,2), "\t",substr($lastTime,0,2) ,"\t", $dataRow[11],"\t", $date,"\n";
 		if (substr($dataRow[10],0,2) == substr($lastTime,0,2) && $dataRow[11] != $date && $dataRow[12] eq "V"){
 			$GPSSuspects++;
 			#print "$GPSSuspects", "\t", "$data_line","\n";
@@ -214,17 +211,22 @@ while(<IN>){
 			$non_datalines ++;
 			next;
 		}
-		#next if substr($dataRow[11],3,2) >> substr($year,2,2); #more GPS munging GPS date cannot be later than upload date
+		#next if substr($dataRow[11],3,2) >> substr($year,2,2); #more GPS munging GPS date cannot be later than upload or earlier than 1999
 		if (substr($dataRow[11],4,2) > substr($year,2,2)){#more GPS munging
 			$GPSSuspects++;
+			#print $., " Year in raw data line is bad, boss\n";
 			next;
 		}
 	
 		#bug 535 re-opened date slipped back six years during a data-run
 		if (defined $date && substr($dataRow[11],4,2) != substr($date,4,2) && substr($dataRow[11],0,2) ne 01 && substr($dataRow[11],4,2) ne 01){ #just checking current value against $date will fail if $date is not def. Also, the year can change if it is 01 Jan. 
 			$GPSSuspects++;
+			#print "$. Line 228 \n";
 			next; #don't allow $time or $date to be set to the values in the current line--those are goofy
 		}
+		#print "$. $total_events \n";
+		$total_events++ if hex($dataRow[1]) >= 128; # If the 7th bit is set, this is a new and valid event.
+		next if $total_events == 0; #A data file can have a munged first line in the event. This breaks the logic that sets the filenames. 
 
 		$lastTime = $time;
 				
@@ -262,7 +264,7 @@ while(<IN>){
 		#DE799F15 00 35 00 00 00 00 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
 		#DE799F15 00 00 00 00 00 3C 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
 		
-		if ($dataRow[11] == 111007 && $dataRow[9] eq DE1C993){ #only need to check these two--this is really unlikely. Really. Checking them all is too expensive.
+		if ($dataRow[11] == 111007 && $dataRow[9] eq DE1C993A){ #only need to check these two--this is really unlikely. Really. Checking them all is too expensive.
 			$non_datalines ++;
 			next;
 		}	
@@ -290,7 +292,8 @@ while(<IN>){
 
 		#GPS flag = 4 in the raw data indicates that the GPS time in that line is suspect. Indeed, our calculation confirms this so we should ignore the lines with a GPS flag = 4. Now we do.
 		#Actually it should check if bit 2 is 1. Otherwise it may accept invalid lines.
-		next if ($dataRow[14] & 0x04 != 0); 
+		next if ($dataRow[14] >> 3); 
+		#next if ($dataRow[14] & 0x04 != 0); 
 
 		#trying somethiing new with GPS time solutions. TJ wonders if the V and A flag really mean something about the timing solution. Thus far there is no evidence for it.
 		#next if ($dataRow[12] eq 'V');
@@ -393,19 +396,23 @@ while(<IN>){
 		#}
 		$lastDate = $date;
 		$date = $dataRow[11];
-		$time = $dataRow[10];
-		#print "$. made it through all of the filters.\n"; 
+		$time = $dataRow[10]; 
 	}#end of if /$reData/o)
 
 	#the current line is not a data line or has passed the rollover tests. Proceed.
 	elsif(/$reStatus0/o || /$reStatus1/o){
 		
 		@stRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14);
-		next if ($stRow[6] != $date) && (substr($date,0,2) != 12) && (substr($date,2,2) != 31); #there if a bad GPS date gets into the ST line. Also, check to see if the date rolled because of a new year--part of bug 535
+		#next if ($stRow[6] != $date) && (substr($date,0,2) != 12) && (substr($date,2,2) != 31); #there if a bad GPS date gets into the ST line. Also, check to see if the date rolled because of a new year--part of bug 535
+		next if $stRow[5] == 0; #fixing bug 631
+		if (($stRow[6] != $date) && (substr($date,0,2) != 12) && (substr($date,2,2) != 31)){#; #there if a bad GPS date gets into the ST line. Also, check to see if the date rolled because of a new year--part of bug 535
+			#print "$. Line 427 \n";
+			$stTimeGlitch = 1;
+			next;
+		}
 		$STLineNumber = $.; #needed to check if this ST line is followed by a DS line			
 		$stRow = @stRow; 
 		#next if substr($stRow[5], 0, 2)*3600 + substr($stRow[5], 2, 2)*60 + substr($stRow[5], 4, 6) == 0;
-		next if $stRow[5] == 0;
 		$oldSTTime = $stTime;
 		$stTime = substr($stRow[5], 0, 2)*3600 + substr($stRow[5], 2, 2)*60 + substr($stRow[5], 4, 6);
 		if ($oldSTTime == $stTime){ #munged GPS time will stop the status line time from advancing. Writing repeating times into the status array will break the calculation of rate and other bits in the bless file
@@ -439,10 +446,12 @@ while(<IN>){
 			$stTimeGlitch = 0; #reset the flag
 			next; #ignore this DS update
 		}
+		
 		$DSLineNumber = $.; #Needed to check if this DS line is preceded by an ST line
-		@dsRow = ($1, $2, $3, $4, $5, $6);
+		
 		next if $DSLineNumber - $STLineNumber != 1;
-		$dsRowCount++;
+		@dsRow = ($1, $2, $3, $4, $5, $6);
+
 		if ($DSLineNumber - $STLineNumber == 1){ #Only fill the blessing arrays if the DS line follows the ST line
 			push (@stCount0, hex($dsRow[1]));
 			push (@stCount1, hex($dsRow[2]));
@@ -454,6 +463,7 @@ while(<IN>){
 			push(@stTemp, $stRow[2]/10); #changing $stRow[3] to $stRow[2] fixes bug 453
 			push(@stVcc, $stRow[4]/1000);
 			push(@stGPSSats, $stRow[8]);
+			$dsRowCount++;
 		}	
 		next; #get the next line in the input file. All the lifting is done on this one.
 	}#end of elsif(/$reDS!/o
@@ -578,8 +588,9 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			$oldSTDate = $stDate = $dataRow[11] + 10000 if $dsRowCount == 0 && $dataRow[10] > 235959;
 			#$lastDate = $stDate if $stDate != $lastDate && substr($dataRow[10],10,4) eq 0000; 
 			
-			
 			if($dataRow[11] ne $lastDate || $oldSTDate ne $stDate) {	#start of a new output file ##removed the checking of the control registers. Fixes bug #487  
+				#print "Dates don't match, Boss. $date $lastDate $stDate $oldSTDate \n";
+				
 				if ($lastDate ne "") {
 					#die "These data do not contain the same number of ST and DS lines; we have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount;
 					# The file that we are splitting has hit a date boundary. We need to start writing a new SPLIT file and write the .bless file for the file that we are closing. 
@@ -599,7 +610,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					# When ST3 these onboard registers are cleared after each printing, so there is no need to do the subtraction.
 					# We just need to see if these (stCountN and stEvents) keep growing over the life of the file. If they do, we need to subtract one from the next to get the scalar increment over the integration time.
 					
-					die "These data span at least one day that does not contain any 'ST', 'DS' line pairs. We have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount && $DAQID > 0;
+					die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged. We have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount && $DAQID > 0;
 					
 					if ($dsRowCount > 0){
 						#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
@@ -636,7 +647,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 						for $j (1..$dsRowCount){
 							#Subtract one from the previous (and not the latter) so that we see the rate in the last integration period (and not the next)
 							push(@stCountTemp, $stCount0[$j] - $stCount0[$j-1]) if $stCount0[$j] > $stCount0[$j-1]; #the if is there so that we don't get diffs < 0
-						} #end of for $j
+						} #end for $j (1..$dsRowC . . .
 						#swap the newly subtracted arrays with the stCountN $stEvents arrays
 						@stCount0=@stCountTemp;
 						#clear the array for use in the next for loop
@@ -645,28 +656,28 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 						#Once again with feeling for the other channels and the triggers:
 						for $j (1..$dsRowCount){
 							push(@stCountTemp, $stCount1[$j] - $stCount1[$j-1]) if $stCount1[$j] > $stCount1[$j-1];
-						} #end of for $j
+						} #end for $j (1..$dsRow
 						
 						@stCount1=@stCountTemp;
 						@stCountTemp = ();
 						
 						for $j (1..$dsRowCount){
 							push(@stCountTemp, $stCount2[$j] - $stCount2[$j-1]) if $stCount2[$j] > $stCount2[$j-1];
-						}
+						}#end for $j (1..$dsRow. . . 
 						
 						@stCount2=@stCountTemp;
 						@stCountTemp = ();
 						
 						for $j (1..$dsRowCount){
 							push(@stCountTemp, $stCount3[$j] - $stCount3[$j-1]) if $stCount3[$j] > $stCount3[$j-1];
-						}
+						}#end for $j (1..$dsRow. . . 
 						
 						@stCount3=@stCountTemp;
 						@stCountTemp = ();
 						
 						for $j (1..$dsRowCount){
 							push(@stCountTemp, $stEvents[$j] - $stEvents[$j-1]) if $stEvents[$j] > $stEvents[$j-1];
-						} 
+						} #end for $j (1..$ds . . .
 						@stEvents=@stCountTemp;
 					} #end of if($stType = 2)
 					
@@ -684,8 +695,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 								#The rate may be very low here. . .  
 								$stEventRate[$j] = sprintf("%0.0f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && ($stEvents[$j]/($stTime[$j] - $stTime[$j-1]) > 1);
 								$stEventRate[$j] = sprintf("%0.2f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && ($stEvents[$j]/($stTime[$j] - $stTime[$j-1]) < 1); # we've already ruled out counts < 0
-						}
-					}
+						}#end for $j (1..$d . . 
+					}#end if (($stTime[2] . . .
 					
 					# 4. Sum up those cout N arrays to determine meta for counts in channels 0-3 and triggers and write those to meta.
 					$chan0 += $_ for @stCount0;
@@ -706,8 +717,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
     	                if ($i >= $cpld_low && $i <= $cpld_high){
         	                $cpld_real_freq_tot += $i;
             	            $cpld_real_count++;
-                	    }
-	                }
+                	    }#end if ($i >=$cpld_low
+	                }#end foreach
     	            $cpld_real_freq = sprintf("%0.0f",$cpld_real_freq_tot/$cpld_real_count) if $cpld_real_count !=0;
 					
 					#Start writing meta and write metadata about the file that was just closed						
@@ -739,16 +750,26 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					# 6. Write the .bless file for the file that was just closed.
 					#First the header
 					
-					print blessFile "###Seconds (since Midnight UTC) \t Chan 0 rate \t Error in Chan0 \t Chan 1 rate \t Error in Chan1 \t Chan 2 rate \t Error in Chan2 \t Chan 3 rate \t Error in Chan3 \t Trigger rate\tError in Triggers \t Raw BA output \t Temp (DegC) \t Bus Voltage \t #GPS satellites in view \n";
+					print $blessFile "###Seconds (since Midnight UTC) \t Chan 0 rate \t Error in Chan0 \t Chan 1 rate \t Error in Chan1 \t Chan 2 rate \t Error in Chan2 \t Chan 3 rate \t Error in Chan3 \t Trigger rate\tError in Triggers \t Raw BA output \t Temp (DegC) \t Bus Voltage \t #GPS satellites in view \n";
 					
 					#Now the table
-					for my $i  (1..$dsRowCount-2){			
-						print blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.0f", sqrt($stRate0[$i])), "\t", "$stRate1[$i]", "\t", sprintf("%0.0f", sqrt($stRate1[$i])),"\t", "$stRate2[$i]", "\t", sprintf("%0.0f", sqrt($stRate2[$i])),"\t", "$stRate3[$i]", "\t", sprintf("%0.0f", sqrt($stRate3[$i])), "\t", "$stEventRate[$i]", "\t", sprintf("%0.0f", sqrt($stEventRate[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
+					#for my $i  (1..$dsRowCount-2){			
+					#	print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.0f", sqrt($stRate0[$i])), "\t", "$stRate1[$i]", "\t", sprintf("%0.0f", sqrt($stRate1[$i])),"\t", "$stRate2[$i]", "\t", sprintf("%0.0f", sqrt($stRate2[$i])),"\t", "$stRate3[$i]", "\t", sprintf("%0.0f", sqrt($stRate3[$i])), "\t", "$stEventRate[$i]", "\t", sprintf("%0.0f", sqrt($stEventRate[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
+					#}
+
+					#Changing the way that we calculate error. Bug #625
+		
+					#Now the table
+					#for my $i  (1..$dsRowCount-2){			
+					#	print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.0f", sqrt($stRate0[$i])), "\t", "$stRate1[$i]", "\t", sprintf("%0.0f", sqrt($stRate1[$i])),"\t", "$stRate2[$i]", "\t", sprintf("%0.0f", sqrt($stRate2[$i])),"\t", "$stRate3[$i]", "\t", sprintf("%0.0f", sqrt($stRate3[$i])), "\t", "$stEventRate[$i]", "\t", sprintf("%0.0f", sqrt($stEventRate[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
+					#}
+		
+					for my $i  (1..$dsRowCount-2){
+						print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.5f", sqrt($stRate0[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stRate1[$i]", "\t", sprintf("%0.5f", sqrt($stRate1[$i]/($stTime[$i] - $stTime[$i-1]))),"\t", "$stRate2[$i]", "\t", sprintf("%0.5f", sqrt($stRate2[$i]/($stTime[$i] - $stTime[$i-1]))),"\t", "$stRate3[$i]", "\t", sprintf("%0.5f", sqrt($stRate3[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stEventRate[$i]", "\t", sprintf("%0.5f", sqrt($stEventRate[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
 					}
 
-					close blessFile;	
-
-				
+					close $blessFile;	
+					
 					#Empty all of the status arrays so that they can start over with the new split file.
 					@stTime = @StCoutTemp = @stCount0 = @stRate0 = @stCount1 = @stRate1 = @stCount2 = @stRate2 = @stCount3 = @stRate3 = @stEvents = @stRateEvents = @stType = @stPress = @stTemp = @StVcc = @stGPSSats = @stRow =  @cpld_frequency1 = @cpld_frequency2 = @stCountTemp = ();
 					#reset any scalars in use
@@ -765,7 +786,6 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			#open a NEW split file
 			$index = 0;				#incremented if a split file of this name already exists
 			$fn = "$ID.$year.$month$day.$index";
-			#print "$fn\n";
 			#Need a bless file as well with the same file naming scheme
 			$sfn = $fn.".bless";
 
@@ -777,7 +797,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			} #end while(-e "$output...
 				
 			open(SPLIT,'>>', "$output_dir/$fn");
-			open(blessFile,'>>', "$output_dir/$sfn");
+			open($blessFile,'>>', "$output_dir/$sfn");
+			
 			$jd = jd($day, $month, $year, $hour, $min, $sec);	#GPS offset already taken into account from above
 
 			# Write initial metadata for lfn that was just opened
@@ -790,14 +811,12 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			print META "detectorid string $ID\n";
 			print META "type string split\n";
 			print META "blessfile string $sfn\n"; 
-			
 		} # end  if($total_events > 0 && $stRowCount > 0)
 			#$lastDate = $date;
 			#$lasttime = $time;
-	
+
 			print SPLIT $_;
-			
-				# Thanks to Nick Dettman for this code calculating actual CPLD frequency.
+        	# Thanks to Nick Dettman for this code calculating actual CPLD frequency.
 	        #@cpld_line = split(/\s+/, $_);
         
 	        # if servicing 1PPS interrupt, the GPS time may be funny
@@ -827,7 +846,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
         	  	$cpld_freq_tot2 += $cpld_freq;
     	    	push @cpld_frequency2, $cpld_freq;
               $cpld_count++;
-        	}
+        	} #end of if (defined($cpld_hex)
         	
         	# redefines variables for checking to see if the next line has the same data as this line
         	$cpld_time = $dataRow[10];
@@ -856,7 +875,7 @@ else{
 	
 	#die "These data do not contain the same number of ST and DS lines; we have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount;
 
-	die "These data span at least one day that does not contain any 'ST', 'DS' line pairs. We have stopped your upload.  We created $numSplitFiles usable file(s) before this error." if $dsRowCount == 0;
+	die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged.  We have stopped your upload.  We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount; #$dsRowCount == 0;
 					
 	if ($dsRowCount > 0){
 		#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
@@ -991,18 +1010,27 @@ else{
 	# 6. Write the .bless file for the file that was just closed.
 	#First the header
 	
-	print blessFile "###Seconds (since Midnight UTC) \t Chan 0 rate \t Error in Chan0 \t Chan 1 rate \t Error in Chan1 \t Chan 2 rate \t Error in Chan2 \t Chan 3 rate \t Error in Chan3 \t Trigger rate\tError in Triggers \t Raw BA output \t Temp (DegC) \t Bus Voltage \t #GPS satellites in view \n";
+	print $blessFile "###Seconds (since Midnight UTC) \t Chan 0 rate \t Error in Chan0 \t Chan 1 rate \t Error in Chan1 \t Chan 2 rate \t Error in Chan2 \t Chan 3 rate \t Error in Chan3 \t Trigger rate\tError in Triggers \t Raw BA output \t Temp (DegC) \t Bus Voltage \t #GPS satellites in view \n";
 	
+	#Changing the way that we calculate error. Bug #625
+		
 	#Now the table
-	for my $i  (1..$dsRowCount-2){			
-		print blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.0f", sqrt($stRate0[$i])), "\t", "$stRate1[$i]", "\t", sprintf("%0.0f", sqrt($stRate1[$i])),"\t", "$stRate2[$i]", "\t", sprintf("%0.0f", sqrt($stRate2[$i])),"\t", "$stRate3[$i]", "\t", sprintf("%0.0f", sqrt($stRate3[$i])), "\t", "$stEventRate[$i]", "\t", sprintf("%0.0f", sqrt($stEventRate[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
+	#for my $i  (1..$dsRowCount-2){			
+	#	print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.0f", sqrt($stRate0[$i])), "\t", "$stRate1[$i]", "\t", sprintf("%0.0f", sqrt($stRate1[$i])),"\t", "$stRate2[$i]", "\t", sprintf("%0.0f", sqrt($stRate2[$i])),"\t", "$stRate3[$i]", "\t", sprintf("%0.0f", sqrt($stRate3[$i])), "\t", "$stEventRate[$i]", "\t", sprintf("%0.0f", sqrt($stEventRate[$i])), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
+	#}
+	
+	for my $i  (1..$dsRowCount-2){
+		print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.5f", sqrt($stRate0[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stRate1[$i]", "\t", sprintf("%0.5f", sqrt($stRate1[$i]/($stTime[$i] - $stTime[$i-1]))),"\t", "$stRate2[$i]", "\t", sprintf("%0.5f", sqrt($stRate2[$i]/($stTime[$i] - $stTime[$i-1]))),"\t", "$stRate3[$i]", "\t", sprintf("%0.5f", sqrt($stRate3[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stEventRate[$i]", "\t", sprintf("%0.5f", sqrt($stEventRate[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
 	}
 					
-	close blessFile;	
-	
+	close $blessFile;	
 	#write the channel counts for the last split file
 	#Why is this here? Do we print this on the line confiming the upload? If so, it's wrong--it only holds the counts for the _last_ file.
 	#print "$chan0 $chan1 $chan2 $chan3\n";
+
+	if ($data_line_total==0){
+		die "There are no valid events in this file. There may be trigger data; if so, the timing solution is unreliable. Please file a helpdesk ticket.";
+	}
 	
 	#insert metadata which was made from analyzing the WHOLE raw data file
 	$endDateMeta = 2000+substr($date,4,2). "-". substr($date,2,2). "-" . substr($date,0,2);
@@ -1015,7 +1043,7 @@ else{
 	#print META "totalDataLines int 0\n;"	
 	`/usr/bin/perl -i -p -e 's/^GPSSuspectsTotal.*/GPSSuspectsTotal int $GPSSuspectsTot/' "$raw_filename.meta"`;
 	`/usr/bin/perl -i -p -e 's/^totalDataLines.*/totalDataLines int $data_line_total/' "$raw_filename.meta"`;
-	warn "Your uploaded data file contained $data_line_total accepted data lines. We ignored $GPSSuspectsTot line(s) due to a suspect GPS date.\n" if($non_datalines > 0);
+	warn "Your uploaded data file contained $data_line_total accepted data lines. We ignored $GPSSuspectsTot line(s) due to a suspect GPS date.\n" if($data_line_total > 0);
 	if($sum_lats == 0 or $sum_longs == 0 or $sum_alts == 0){
 		warn "If you included DG commands in your file, there were fewer than six satellites in view when you did. We have ignored these DG commands; they provide an unreliable position.";
 	}
@@ -1036,6 +1064,7 @@ else{
 		print META "Average altitude: $avg_alt\n";
 	}
 }
+
 
 sub gps_check{
     #thanks to Nick Dettman for his research into this

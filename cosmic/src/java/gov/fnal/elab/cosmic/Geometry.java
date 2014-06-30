@@ -429,12 +429,12 @@ public class Geometry {
     }
 
     //EPeronja - 03/22/2013: Check if there is any data already uploaded before
-    //			committing a new (or updated existing) geometry. Let the user
-    //			know if metadata (ie stacked flag) is going to be changed for 
-    //			already uploaded data. This is called from editor.jspf/check-metadata.jspf
+    //            committing a new (or updated existing) geometry. Let the user
+    //            know if metadata (ie stacked flag) is going to be changed for 
+    //            already uploaded data. This is called from editor.jspf/check-metadata.jspf
     public String checkMetadata(DataCatalogProvider dcp, GeoEntryBean geoEntry)
-    	throws ElabException {
-    	String message="";
+        throws ElabException {
+        String message="";
         Date endDate = null;
 
         Iterator<GeoEntryBean> j = getGeoEntries();
@@ -450,7 +450,7 @@ public class Geometry {
         and.add(new Equals("type", "split"));
         String detid = String.valueOf(geoEntry.getDetectorID());
         and.add(new Equals("detectorid", detid));
-		Date startDate = geoEntry.getDate(); 
+        Date startDate = geoEntry.getDate(); 
         if (endDate != null) {
             and.add(new Between("startdate", startDate, endDate));
         }
@@ -461,15 +461,15 @@ public class Geometry {
         ResultSet rs = dcp.runQueryNoMetadata(and);
         int count = 0;       
         for (CatalogEntry e : rs) {
-        	count++;
+            count++;
         }
         if (count > 0) {
-        	//send back the number of files that will be affected by this change
-        	message = String.valueOf(count);
+            //send back the number of files that will be affected by this change
+            message = String.valueOf(count);
         }
         return message;
-    }
-    
+    }//end of checkMetadata
+ 
     private String itemsToDate(int[] items) {
         StringBuffer sb = new StringBuffer();
         appendPadded(sb, items[2], "-");

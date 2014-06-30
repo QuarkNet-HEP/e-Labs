@@ -29,7 +29,7 @@
 					<%@ include file="../include/nav-rollover.jspf" %>
 				</div>
 			</div>
-			<script type="text/javascript" src="../include/jquery/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
+			<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
 			<div id="content">
 <a class="help-icon" href="#" onclick="openPopup(event, 'help')">Help <img src="../graphics/help.png" /></a>
 <h1>Data Selection - Detector Exploration Studies</h1>
@@ -101,7 +101,7 @@
 						</td>
 						<td>
 							<div class="wait-on-runs">
-								<input id="plot-params-button" type="submit" value="Plot Selection >" />
+								<input id="plot-params-button" type="submit" value="Plot Selection &rarr;" />
 							</div>
 						</td>
 					</tr>
@@ -113,7 +113,7 @@
 					<e:hidden image="../graphics/minus.png">
 						<div class="wait-on-runs">
 							<div id="runs-header">
-								<input type="checkbox" id="select-all" checked="true" onchange="selectAll();"/>All
+								<input type="checkbox" id="select-all" checked="checked" onchange="selectAll();"/>All
 								<e:trinput type="hidden" name="runs" id="runs-input" />
 							</div>
 							<div id="runlist">

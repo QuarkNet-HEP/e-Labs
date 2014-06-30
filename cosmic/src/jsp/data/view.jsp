@@ -19,6 +19,24 @@
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
+		<script>
+			//EPeronja-07/08/2013 168:View data jump to time form with empty fields
+			function checkInput() {
+				var h = document.getElementById("h");
+				var m = document.getElementById("m");
+				var s = document.getElementById("s");
+				if (h.value == "") {
+					if (m.value == "") {
+						if (s.value == "") {
+							var msg = document.getElementById("msg");
+							msg.innerHTML = "<i>* Please enter hours, minutes or seconds.</i>"
+							return false;
+						}
+					}
+				}
+			    return true;	
+			}
+		</script>
 	</head>
 	
 	<body id="view-data" class="data">
@@ -48,7 +66,8 @@
 	request.setAttribute("e", entry);
 	
 	String highlight = request.getParameter("highlight");
-
+	String threshfile = filename + ".thresh";
+	request.setAttribute("threshfile", threshfile);
 	String pfn = RawDataFileResolver.getDefault().resolve(elab, filename);
 	BufferedReader br; 
 	
@@ -67,19 +86,21 @@
 		<c:if test="${e.tupleMap.blessfile != null}">
 			<a href="../analysis-blessing/compare1.jsp?file=${param.filename}">Show Blessing Charts</a> |
 		</c:if>
-		<a href="../data/download?filename=${param.filename}&elab=${elab.name}&type=split">Download</a>
+		<a href="../data/download?filename=${param.filename}&elab=${elab.name}&type=split">Download</a> |
+		<a href="../data/download?filename=${threshfile}&elab=${elab.name}&type=split">Download Threshold File</a>
 		<br/>
 		<br/>
 		<form method="get" action="../data/view.jsp">
 			Go to time<br/>
-			Hours: <e:trinput type="text" name="h" size="2" maxlength="2"/>
-			Minutes: <e:trinput type="text" name="m" size="2" maxlength="2"/>
-			Seconds: <e:trinput type="text" name="s" size="2" maxlength="2"/>
+			Hours: <e:trinput type="text" name="h" id="h" size="2" maxlength="2"/>
+			Minutes: <e:trinput type="text" name="m" id ="m" size="2" maxlength="2"/>
+			Seconds: <e:trinput type="text" name="s" id ="s" size="2" maxlength="2"/>
 			
 			<e:trinput type="hidden" name="filename"/>
 			<e:trinput type="hidden" name="highlight"/>
 			
-			<input type="submit" value="Go"/>
+			<input type="submit" value="Go" onClick="return checkInput();"/>
+			<div id="msg"></div>
 		</form>
 		<table border="0" cellpadding="0" cellspacing="0">
 			<%
@@ -96,7 +117,7 @@
 					int h, m, s, thisSec, startSec;
 					int startLine = -1;
 					//String[] time_arr = data_time.split(":");
-					h = Integer.parseInt(hour);
+					h = (hour == null || hour.equals("")) ? 0 : Integer.parseInt(hour);
 					m = (minute == null || minute.equals("")) ? 0 : Integer.parseInt(minute);
 					s = (second == null || second.equals("")) ? 0 : Integer.parseInt(second);
 					startSec = h*3600 + m*60 + s;

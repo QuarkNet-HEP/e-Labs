@@ -165,9 +165,10 @@
 <p>
 	<e:rerun type="shower" id="${showerResults.id}" label="Change"/> your parameters
 </p>
-<p><b>OR</b></p>
-<%@ include file="save-form.jspf" %>
-
+<% if (!user.isGuest()) { %>
+	<p><b>OR</b></p>
+	<%@ include file="save-form.jspf" %>
+<% } %>
 
 			</div>
 			<!-- end content -->	

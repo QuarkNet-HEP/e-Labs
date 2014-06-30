@@ -35,8 +35,8 @@
 
 <jsp:useBean id="stats" class="gov.fnal.elab.statistics.Statistics"/>
 <jsp:setProperty name="stats" property="elab" value="${elab}"/>
-<jsp:useBean id="astats" class="gov.fnal.elab.statistics.AnalysisStats"/>
-
+<jsp:useBean id="astats" class="gov.fnal.elab.statistics.AnalysisStatistics"/>
+<jsp:setProperty name="astats" property="elab" value="${elab}"/>
 			
 <h1>User statistics</h1>
 
@@ -47,7 +47,7 @@
 
 <table border="0" cellspacing="10" class="lefty">
 	<tr>
-		<th width="160px">Teacher accounts</th>
+		<th width="260px">Teacher accounts</th>
 		<jsp:setProperty name="stats" property="role" value="teacher"/>
 		<td>${stats.groupCount}</td>
 	</tr>
@@ -83,7 +83,7 @@
 <h2>Periodic</h2>
 <table border="0" cellspacing="10" class="lefty">
 	<tr>
-		<th width="160px"></th>
+		<th width="260px"></th>
 		<th width="100px">Ever</th>
 		<th width="100px">Last 365 days</th>
 		<th width="100px">Last 31 days</th>
@@ -98,7 +98,7 @@
 		<td>${stats.logIns}</td>
 	</tr>
 	<tr>
-		<th><a href="analysis-charts.jsp">Analysis runs</a></th>
+		<th><a href="analysis-charts.jsp">Analysis runs</a> (since Jan 2014)</th>
 		<jsp:setProperty name="astats" property="span" value="999999"/>
 		<td>${astats.analysisRuns}</td>
 		<jsp:setProperty name="astats" property="span" value="365"/>
@@ -116,6 +116,30 @@
 		<td>${stats.VDCEntryCount}</td>
 		<jsp:setProperty name="stats" property="span" value="31"/>
 		<td>${stats.VDCEntryCount}</td>
+	</tr>
+	<% out.flush(); %>
+	<tr>
+		<th>-Blessed</th>
+		<jsp:setProperty name="stats" property="type" value="split"/>
+		<jsp:setProperty name="stats" property="blessed" value="true"/>
+		<jsp:setProperty name="stats" property="span" value="999999"/>
+		<td>${stats.benchmarkCount}</td>
+		<jsp:setProperty name="stats" property="span" value="365"/>
+		<td>${stats.benchmarkCount}</td>
+		<jsp:setProperty name="stats" property="span" value="31"/>
+		<td>${stats.benchmarkCount}</td>
+	</tr>
+	<% out.flush(); %>
+	<tr>
+		<th>-Unblessed</th>
+		<jsp:setProperty name="stats" property="type" value="split"/>
+		<jsp:setProperty name="stats" property="blessed" value="false"/>
+		<jsp:setProperty name="stats" property="span" value="999999"/>
+		<td>${stats.benchmarkCount}</td>
+		<jsp:setProperty name="stats" property="span" value="365"/>
+		<td>${stats.benchmarkCount}</td>
+		<jsp:setProperty name="stats" property="span" value="31"/>
+		<td>${stats.benchmarkCount}</td>
 	</tr>
 	<% out.flush(); %>
 	<tr>

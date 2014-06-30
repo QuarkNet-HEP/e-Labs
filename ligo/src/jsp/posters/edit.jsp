@@ -38,8 +38,13 @@
 			<h1>Edit Posters: Click on a poster to edit it.</h1>
 			<br /><br />
 
-
-<%@ include file="edit.jspf" %>
+<% 
+//EPeronja-05/07/2014: guest user is restricted :)
+if (user.isGuest())  { %>
+	<%@ include file="guest-poster-message.jsp" %>
+<% } else { %>
+	<%@ include file="edit.jspf" %>
+<% } %>
 
 		</td>
 	</tr>

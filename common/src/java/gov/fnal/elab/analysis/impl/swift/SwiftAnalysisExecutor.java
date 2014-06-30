@@ -34,11 +34,7 @@ import org.globus.cog.karajan.stack.LinkedStack;
 import org.globus.cog.karajan.stack.VariableStack;
 import org.globus.cog.karajan.workflow.ElementTree;
 import org.globus.cog.karajan.workflow.ExecutionException;
-import org.globus.cog.karajan.workflow.events.Event;
-import org.globus.cog.karajan.workflow.events.EventClass;
 import org.globus.cog.karajan.workflow.events.EventListener;
-import org.globus.cog.karajan.workflow.events.NotificationEvent;
-import org.globus.cog.karajan.workflow.events.NotificationEventType;
 import org.globus.cog.karajan.workflow.nodes.FlowElement;
 import org.griphyn.vdl.karajan.Loader;
 import org.griphyn.vdl.karajan.VDL2ExecutionContext;
@@ -48,11 +44,13 @@ import org.griphyn.vdl.util.VDL2Config;
 /**
  * Runs analyses with Swift. Doble Yay!
  */
-public class SwiftAnalysisExecutor implements AnalysisExecutor {
+public class SwiftAnalysisExecutor implements AnalysisExecutor, Serializable {
+    private static final long serialVersionUID = -3618183832417055764L;
     private static final Map<String, DatedTree> trees;
+    private static boolean systemPropertiesSet;
 
     static {
-        trees = new HashMap();
+        trees = new HashMap<String, DatedTree>();
     }
 
     protected synchronized static ElementTree getTree(Elab elab, String file)
@@ -65,6 +63,19 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
         tree.update();
         return tree.getElementTree();
     }
+    
+    private synchronized static void setSystemProperties(Elab elab) {
+        if (systemPropertiesSet) {
+            return;
+        }
+        
+        String home = elab.getAbsolutePath("/WEB-INF/classes");
+        System.setProperty("swift.home", home);
+        
+        String coasterDir = elab.getProperties().getProperty("source") + 
+            "/common/coaster-libs";
+        System.setProperty("coaster.bootstrap.service.web.dir", coasterDir);
+    }
 
     public AnalysisRun createRun(ElabAnalysis analysis, Elab elab,
             String outputDir) {
@@ -73,6 +84,7 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
     }
 
     public class Run extends AbstractAnalysisRun implements Serializable, EventListener {
+        private static final long serialVersionUID = -7269860576633828755L;
         private String runDir, runDirUrl, runID, runMode;
         private volatile transient double progress;
         private transient VDL2ExecutionContext ec;
@@ -90,24 +102,15 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
         public synchronized void start() {
             setStartTime(new Date());
             try {
+                Elab elab = getElab();
                 List argv = getArgv();
                 String projectName = getAnalysis().getType();
                 String project = projectName + ".swift";
 
-                String egd = System.getProperty("java.security.egd");
-                if ("Linux".equals(System.getProperty("os.name"))) {
-                    System
-                            .setProperty("java.security.egd",
-                                    "file:/dev/urandom");
-                }
+                setSystemProperties(elab);
                 runID = Loader.getUUID();
-                if (egd != null) {
-                    // oddly enough, there is no way to remove a system property
-                    System.setProperty("java.security.egd", egd);
-                }
-                String home = getElab().getAbsolutePath("/WEB-INF/classes");
-                System.setProperty("swift.home", home);
-                ElementTree tree = getTree(getElab(), project);
+                
+                ElementTree tree = getTree(elab, project);
                 tree.getRoot().setProperty(FlowElement.FILENAME, project);
                 ec = new VDL2ExecutionContext(tree, projectName);
                 ec.setArguments(argv);
@@ -122,8 +125,8 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 }
                 VariableStack stack = new LinkedStack(ec);
 
-                VDL2Config conf = VDL2Config.getConfig(getElab()
-                        .getAbsolutePath("/WEB-INF/classes/swift.properties"));
+                VDL2Config conf = VDL2Config.getConfig(
+                    elab.getAbsolutePath("/WEB-INF/classes/swift.properties"));
                 runMode = (String) getAttribute("runMode");
                 
                 if (runMode == null) {
@@ -146,16 +149,17 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
                 else if ("coaster".equals(runMode)) {
                     poolFile = "sites-grid-coaster.xml";
                 }
-                conf.setProperty("sites.file", getElab().getAbsolutePath(
+                conf.setProperty("sites.file", elab.getAbsolutePath(
                         "/WEB-INF/classes")
                         + File.separator + "etc" + File.separator + poolFile);
 
-                Estimator p = AnalysisRunTimeEstimator.getEstimator(getElab(), "swift",
+                Estimator p = AnalysisRunTimeEstimator.getEstimator(elab, "swift",
                         runMode, getAnalysis().getType());
                 setAttribute("estimatedTime", Integer.valueOf(p.estimate(getElab(),
                         getAnalysis())));
 
                 stack.setGlobal(ConfigProperty.INSTANCE_CONFIG, conf);
+                String home = elab.getAbsolutePath("/WEB-INF/classes");
                 stack.setGlobal("swift.home", home);
                 stack.setGlobal("vds.home", home);
                 stack.setGlobal("vdl:operation", "run");
@@ -353,21 +357,19 @@ public class SwiftAnalysisExecutor implements AnalysisExecutor {
             }
             return sb.toString();
         }
+        
+        
 
-        public void event(Event e) throws ExecutionException {
-            try {
-                if (e.getEventClass().equals(EventClass.NOTIFICATION_EVENT)) {
-                    NotificationEvent ne = (NotificationEvent) e;
-                    if (ne.getType().equals(NotificationEventType.EXECUTION_COMPLETED) 
-                            || ne.getType().equals(NotificationEventType.EXECUTION_FAILED)) {
-                        updateStatus(true);
-                    }
-                }
-            }
-            catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
+        @Override
+		public void completed(VariableStack stack) throws ExecutionException {
+        	updateStatus(true);
+		}
+
+		@Override
+		public void failed(VariableStack stack, ExecutionException e)
+				throws ExecutionException {
+			updateStatus(true);
+		}
     }
 
     public static class DatedTree {

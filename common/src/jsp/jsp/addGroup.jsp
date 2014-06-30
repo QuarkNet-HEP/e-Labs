@@ -6,7 +6,7 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <jsp:include page="../include/elab.jsp"/>
 <%@ include file="common.jsp" %>
-<%@ include file="../login/teacher-login-required.jsp" %>
+<%@ include file="../login/admin-login-required.jsp" %>
 <html>
     <head>
         <title>Add Users</title>
@@ -163,11 +163,11 @@ String submit =  request.getParameter("submit");
                                  
                                  
                                     out.write("<tr><td>City</td><td>");
-                                    if(city_id == null && cityNew == null){
-                                        rs = s.executeQuery("SELECT city.name, city.id FROM city,state WHERE city.state_id=state.id AND state.id='" + state_id + "';");
-                                        out.write("<select name=\"city_id\">");
+                                    if(city == null && cityNew == null){
+                                        rs = s.executeQuery("SELECT city.name FROM city,state WHERE city.state_id=state.id AND state.id='" + state_id + "';");
+                                        out.write("<select name=\"city\">");
                                         while(rs.next()){
-                                            out.write("<option value=\"" + rs.getString(2) + "\">" + rs.getString(1) + "</option>\n");
+                                            out.write("<option value=\"" + rs.getString(1) + "\">" + rs.getString(1) + "</option>\n");
                                         }
                                         out.write("</select>\n");
 
@@ -199,20 +199,9 @@ String submit =  request.getParameter("submit");
                                             }
                                             city = cityNew;
                                         }
-                                        if(city_id == null){
+                                        if(city == null || city.equals("")){
                                             warn(out, "Please enter a city");
                                             return;
-                                        }
-                                        if (city == null && city_id != null) // get city name if only have ID 
-                                        {
-                                        	PreparedStatement ps = s.getConnection().prepareStatement(
-                                        			"SELECT name FROM city WHERE id = ?");
-                                        	ps.setInt(1, Integer.parseInt(city_id));
-                                        	rs = ps.executeQuery(); 
-                                        	if (rs.next()) {
-                                        		city = rs.getString(1);
-                                        		out.write("<input type=\"hidden\" name=\"city\" value=\"" + city +"\">\n");
-                                        	}
                                         }
                                         out.write(city);
                                         out.write("<input type=\"hidden\" name=\"city\" value=\"" + city +"\">\n");
@@ -232,40 +221,22 @@ String submit =  request.getParameter("submit");
                                     }
                                     out.write("</td></tr>");
                                 }
-                                
-                                if (city == null && city_id != null) // get city name if only have ID 
-                                {
-                                	PreparedStatement ps = s.getConnection().prepareStatement(
-                                			"SELECT name FROM city WHERE id = ?");
-                                	ps.setInt(1, Integer.parseInt(city_id));
-                                	rs = ps.executeQuery(); 
-                                	if (rs.next()) {
-                                		city = rs.getString(1);
-                                		out.write("<input type=\"hidden\" name=\"city\" value=\"" + city +"\">\n");
-                                	}
-                                }
                               
                                 
                                 
                                 
                                         
-                                if(city_id != null){
+                                if(city != null){
                                 
 
                                     out.write("<tr><td>School/Institution</td><td>");
                                     if(school == null && schoolNew == null){
-                                       String schoolQuery = 
-                                    	   "SELECT school.name FROM school " +  
-                                    	   "INNER JOIN city ON school.city_id = city.id " + 
-                                    	   "INNER JOIN state ON city.state_id = state.id " + 
-                                    	   "WHERE state.abbreviation = ? AND city.name IN " +
-                                    			   "(SELECT name FROM city WHERE id = ?)"; 
-                                       
-                                       PreparedStatement ps = s.getConnection().prepareStatement(schoolQuery);
-                                       ps.setString(1, state);
-                                       ps.setInt(2, Integer.parseInt(city_id));
-                                       
-                                       rs = ps.executeQuery(); 
+                                        // rs = s.executeQuery("SELECT school.name FROM school,city WHERE school.city_id=city.id AND city.name='" + city + "' AND state.abbreviation='" + state + "';");
+                                        String schoolQuery="select school.name from school where school.city_id =(select city.id  from city where city.name='" + city + "' AND city.id in ";
+                                        schoolQuery=schoolQuery+ "(select id from city where city.state_id= (select id from state where abbreviation='" + state + "')));";
+                                       // rs = s.executeQuery("select school.name from school where school.city_id =(select city.id  from city where city.name='" + city + "' 
+                                       // AND city.id in (select id from city where city.state_id= (select id from state where abbreviation='" + state + "')));");
+                                       rs = s.executeQuery(schoolQuery);
                                         out.write("<select name=\"school\">");
                                         while(rs.next()){
                                             out.write("<option value=\"" + rs.getString(1) + "\">" + rs.getString(1) + "</option>\n");
@@ -284,7 +255,7 @@ String submit =  request.getParameter("submit");
                                                 return;
                                             }
                                             //see if the school is already in the database
-                                            String schoolQuery2 = "SELECT school.name, city.name FROM school,city,state WHERE school.name ILIKE '" + schoolNew + "' AND school.city_id='" + city_id;
+                                            String schoolQuery2 = "SELECT school.name, city.name FROM school,city,state WHERE Upper(school.name)=Upper('" + schoolNew + "') AND school.city_id='" + city_id;
                                             schoolQuery2=schoolQuery2+"' AND school.city_id=city.id and city.state_id=state.id;";
                                             
                                             
@@ -355,7 +326,7 @@ String submit =  request.getParameter("submit");
                                             teacherNew = teacherNew.replaceAll("'", "\\\\'");
                                             //see if the teacher is already in the database
                                             String teacherQuery = "SELECT teacher.name, school.name, city.name, state.name FROM teacher, school, city, state WHERE Upper(teacher.name)=Upper('" + teacherNew + "')";
-                                            teacherQuery = teacherQuery + " AND school.name='" + school + "' AND city.id='" + city_id + "' AND state.abbreviation='" + state;
+                                            teacherQuery = teacherQuery + " AND school.name='" + school + "' AND city.name='" + city + "' AND state.abbreviation='" + state;
                                             teacherQuery=teacherQuery + "' and teacher.school_id=school.id and school.city_id=city.id and city.state_id=state.id;";
                                             
                                             rs = s.executeQuery(teacherQuery);
@@ -477,6 +448,9 @@ String submit =  request.getParameter("submit");
                                         <option value="AY2009">2009-2010</option>
                                         <option value="AY2010">2010-2011</option>
                                         <option value="AY2011">2011-2012</option>
+                                        <option value="AY2012">2012-2013</option>
+                                        <option value="AY2013">2013-2014</option>
+                                        <option value="AY2014">2014-2015</option>
                                     </select>
                                     <%
 
@@ -493,6 +467,9 @@ String submit =  request.getParameter("submit");
                                         <option value="AY2009">2009-2010</option>
                                         <option value="AY2010">2010-2011</option>
                                         <option value="AY2011">2011-2012</option>
+                                        <option value="AY2012">2012-2013</option>
+                                        <option value="AY2013">2013-2014</option>
+                                        <option value="AY2014">2014-2015</option>
                                     </select>
                                     <%
 
@@ -712,13 +689,14 @@ String submit =  request.getParameter("submit");
                                     // Generate hashed passwords 
                                     String hashedPassword = BCrypt.hashpw(passwd1, BCrypt.gensalt(12)); 
                                     
-                                    String SQLstatement = "INSERT INTO research_group (name, hashedpassword, teacher_id, role, userarea, ay, survey) SELECT " +
+                                    String SQLstatement = "INSERT INTO research_group (name, hashedpassword, teacher_id, role, userarea, ay, active, survey) SELECT " +
                                                             "'" + group + "', " +
                                                             "'" + hashedPassword + "', " +
                                                             "id, " +
                                                             "'" + role + "', " +
                                                             "'" + newUserArea + "', " + 
                                                             "'" + ay + "', " +
+                                                            "true, " +
                                                             "'" + survey + "'" +
                                                             "FROM teacher WHERE teacher.id ='" + teacherId + "' RETURNING research_group.id;";
                                     try{

@@ -53,6 +53,7 @@ import org.griphyn.vdl.classes.Definition;
 import org.griphyn.vdl.dbschema.Annotation;
 import org.griphyn.vdl.dbschema.AnnotationSchema;
 import org.griphyn.vdl.directive.Delete;
+import org.owasp.validator.html.*;
 
 public class ElabUtil {
 
@@ -411,16 +412,26 @@ public class ElabUtil {
     protected static void deleteSplitFiles(Elab elab, String lfn) throws ElabJspException {
 		String blessFile = RawDataFileResolver.getDefault().resolve(elab, lfn+".bless");
 		File bf = new File(blessFile);
+		String blessTextFile = RawDataFileResolver.getDefault().resolve(elab, lfn+"_blessing.txt");
+		File btf = new File(blessTextFile);
 		String analyzeFile = RawDataFileResolver.getDefault().resolve(elab, lfn+".analyze");
    		File af = new File(analyzeFile);
+		String threshFile = RawDataFileResolver.getDefault().resolve(elab, lfn+".thresh");
+		File tf = new File(threshFile);
 		String dataFile = RawDataFileResolver.getDefault().resolve(elab, lfn);
 		File df = new File(dataFile);
 		try {
 			if (bf.exists()) {
 				bf.delete();
 			}
+			if (btf.exists()) {
+				btf.delete();
+			}
 			if (af.exists()) {
 				af.delete();
+			}
+			if (tf.exists()) {
+				tf.delete();
 			}
 			if (df.exists()) {
 				df.delete();
@@ -440,6 +451,8 @@ public class ElabUtil {
 		File tf = new File(thumbFile);
 		String eventsFile = plotDir + File.separator + "savedevents-"+dvname;
 		File ef = new File(eventsFile);
+		String svgFile = plotDir + File.separator + "savedevents-"+dvname+".svg";
+		File sf = new File(svgFile);
 		try {
 			if (pf.exists()) {
 				pf.delete();
@@ -452,6 +465,9 @@ public class ElabUtil {
 			}
 			if (ef.exists()) {
 				ef.delete();
+			}
+			if (sf.exists()) {
+				sf.delete();
 			}
 		} catch (Exception e) {
 			throw new ElabJspException(e.toString());
@@ -531,6 +547,12 @@ public class ElabUtil {
     	}
     }//end of deletePhysicalFiles
 
+    public static boolean fileExists(Elab elab, String lfn) throws ElabJspException{
+    	String dataFile = RawDataFileResolver.getDefault().resolve(elab, lfn);
+		File df = new File(dataFile);
+    	return df.exists();
+    }//end of fileExists
+    
     public static void copyFile(String srcdir, String srcfile, String destdir,
             String destfile) throws ElabJspException {
         File src = new File(srcdir, srcfile);
@@ -745,6 +767,56 @@ public class ElabUtil {
         }
         return sb.toString();
     }
+    private static Policy policy;
+
+    static {
+    	try {
+    		policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
+    	} catch (Exception ex) {
+            System.err.println("Failed to instantiate antisamy policy in ElabUtil");
+            ex.printStackTrace();    		   		
+    	}
+    }   
+    
+    public static String stringSanitization(String userInput, Elab elab, String where) {
+    	String cleanInput = "";
+    	try {
+	    	AntiSamy as = new AntiSamy(); 
+	    	//EPeronja-04/28/2014: do some sanitization
+			cleanInput = userInput;
+			if (policy != null) {
+		    	ArrayList checkDirtyInput = as.scan(userInput,policy).getErrorMessages();
+		    	if (!checkDirtyInput.isEmpty()) {
+	    			int errors = as.scan(userInput, policy).getNumberOfErrors();
+	    			ArrayList actualErrors = as.scan(userInput, policy).getErrorMessages();
+	    			Iterator iterator = actualErrors.iterator();
+	    			String errorMessages = "";
+	    			while (iterator.hasNext()) {
+	    				errorMessages = (String) iterator.next() + ",";
+	    			}
+	    			cleanInput = as.scan(cleanInput, policy).getCleanHTML();
+			    	//send email with warning
+			    	String to = elab.getProperty("notifyDirtyInput");
+			    	if (to == null) {
+			    		to = "help@i2u2.org";
+			    	}
+		    		String emailmessage = "", subject = where + " Add comments: user sent dirty input";
+		    		String emailBody =  "User input: "+userInput+"\n" +
+						   			"Number of errors: "+String.valueOf(errors)+"\n" +
+				   					"Error messages: "+ errorMessages + "\n" +
+				   					"Validated input: "+cleanInput + "\n";
+				    try {
+				    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
+				    } catch (Exception ex) {
+		                System.err.println("Failed to send email");
+		                ex.printStackTrace();
+				    }		    		
+		    	}//end of checking dirty input
+		   }//end of checking policy for null
+    	} catch (Exception e) {
+    	}
+    	return cleanInput;
+    }//end of stringSanitization
     
     @Deprecated public static String escapePoster(String unescaped) {
     	String escaped = unescaped.replaceAll(Pattern.quote("\'"), "&#39;");

@@ -4,6 +4,7 @@
 <%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
+<%@ page import="gov.fnal.elab.util.ElabUtil" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
 
@@ -99,22 +100,52 @@
 			
 			    if(e.getTuples().size() == 0){
 			        %> 
-			        	<tr><td><span class="error">Missing file: <%= lfn %></span></td></tr>
+			        <tr><td colspan="8"><span class="error">Missing file: <%= lfn %></span>
+					</td></tr>
 			        <%
 			        continue;
 			    }
-			
+				//check also for physical file, otherwise do not count it
+				if (!ElabUtil.fileExists(elab, lfn)) {
+			        %> 
+		        	<tr><td colspan="8"><span class="error">Missing physical file: <%= lfn %></span>
+					</td></tr>
+		        	<%
+		        	continue;	
+				}
 			    //create a string of the date for the file and find start and end date
 			    Date fileStartDate = (Date) e.getTupleValue("startdate");
-			    Date fileEndDate = (Date) e.getTupleValue("enddate");
-			    String filedate = sdf.format(fileStartDate);
-			    filedate = filedate.replaceAll(" ", "&nbsp;");
-			    
-			    if(startdate == null || startdate.after(fileStartDate)){
-			        startdate = fileStartDate;
+			    //EPeronja-10/23/2013:Bug 427-FLUX analysis --> DAQ 6421
+			    //					  Code assumes that fileStartDate is never null: wrong
+			    String filedate = "";
+			    if(fileStartDate == null){
+			        %> 
+			        <tr><td colspan="8"><span class="error">Missing Start Date: <%= lfn %></span>
+					</td></tr>
+			        <%
+			        continue;
+			    } else {
+				    filedate = sdf.format(fileStartDate);
+				    filedate = filedate.replaceAll(" ", "&nbsp;");
+				    
+				    if(startdate == null || startdate.after(fileStartDate)){
+				        startdate = fileStartDate;
+				    }
 			    }
-			    if(enddate == null || enddate.before(fileEndDate)){
-			        enddate = fileEndDate;
+
+			    Date fileEndDate = (Date) e.getTupleValue("enddate");
+			    //EPeronja-10/23/2013:Bug 427-FLUX analysis --> DAQ 6421
+			    //					  Code assumes that fileEndDate is never null: wrong			    
+			    if(fileEndDate == null){
+			        %> 
+			        <tr><td colspan="8"><span class="error">Missing End Date: <%= lfn %></span>
+					</td></tr>
+			        <%
+					continue;
+			    } else {
+				    if(enddate == null || enddate.before(fileEndDate)){
+				        enddate = fileEndDate;
+				    }			    	
 			    }
 			
 			    //create a string of filenames to send to rawanalyzeMultiple for comparison
@@ -189,6 +220,12 @@
 				    </tr>
 				<%
 			}
+			//EPeronja-10/24/2013: Bug 511: unable to rerun study.
+			//					This was caused by not finding the metadata for a certain data file.
+			//					It seems the metadata was deleted while there existed plots referencing it.
+			//					If the total number files available to rerun a study is zero, then do not invoke controls, estimator, etc. 
+			//					The code will break in an ugly fashion.
+			session.setAttribute("num_files", num_files);
 			if (startdate != null) {
 				request.setAttribute("startDate", sef.format(startdate));
 				if (enddate == null) {
@@ -204,7 +241,7 @@
 				queryFilenames = queryFilenames.substring(0, queryFilenames.length() - 1);
 			}
 			//get total events in all chans
-			
+
 			//only show "show more files" link if there's more files to show...
 			if(num_files > 10){
 				%>

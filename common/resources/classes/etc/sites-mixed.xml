@@ -3,65 +3,51 @@
 xsi:schemaLocation="http://www.griphyn.org/chimera/GVDS  http://www.griphyn.org/chimera/gvds-poolcfg-1.5.xsd" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.5">
 
-  <pool handle="localhost" sysinfo="INTEL32::LINUX">
-    <gridftp  url="local://localhost" storage="/sandbox/quarkcat/tmp" major="1" minor="0" patch="0" />
-    <jobmanager universe="vanilla" url="local://localhost" major="1" minor="0" patch="0" />
-    <workdirectory>/sandbox/quarkcat/tmp</workdirectory>
-    <profile namespace="SWIFT" key="storagesize">40000000000</profile>
-  </pool>
 
-
-        <pool handle="node0" sysinfo="INTEL32::LINUX">
-        <filesystem url="node0.i2u2.org" provider="ssh"/>
-                <execution url="node0.i2u2.org" provider="ssh"/>
-                <workdirectory>/home/quarkcat/tmp</workdirectory>
-        </pool> 
-
-	<pool handle="node1" sysinfo="INTEL32::LINUX">
-    	<filesystem url="node1.i2u2.org" provider="ssh"/>
-		<execution url="node1.i2u2.org" provider="ssh"/>
-		<workdirectory>/home/quarkcat/tmp</workdirectory>
+	<pool handle="localhost" sysinfo="INTEL32::LINUX">
+		<gridftp  url="local://localhost" storage="/var/tmp" major="1" minor="0" patch="0" />
+		<jobmanager universe="vanilla" url="local://localhost" major="1" minor="0" patch="0" />
+		<workdirectory>/var/tmp</workdirectory>
+		<profile namespace="SWIFT" key="storagesize">40000000000</profile>
 	</pool>
 
-        <!-- www12 not yet transitioned 
-        <pool handle="node2" sysinfo="INTEL32::LINUX">
-        <filesystem url="node2.i2u2.org" provider="ssh"/>
-                <execution url="node2.i2u2.org" provider="ssh"/>
-                <workdirectory>/home/quarkcat/tmp</workdirectory>
-        </pool>
-        -->
-
-        <!-- www13 not yet transitioned
-        <pool handle="node3" sysinfo="INTEL32::LINUX">
-        <filesystem url="node3.i2u2.org" provider="ssh"/>
-                <execution url="node3.i2u2.org" provider="ssh"/>
-                <workdirectory>/home/quarkcat/tmp</workdirectory>
-        </pool>
-        -->
-	
-	<pool handle="node4" sysinfo="INTEL64::LINUX">
-    	<filesystem url="node4.i2u2.org" provider="ssh"/>
-		<execution url="node4.i2u2.org" provider="ssh"/>
-		<workdirectory>/home/quarkcat/tmp</workdirectory>
+	<pool handle="teraport" sysinfo="INTEL32::LINUX">
+		<gridftp url="gsiftp://tp-grid1.ci.uchicago.edu" storage="/home/hategan/scratch/i2u2" major="2" minor="2" patch="4"> 
+		</gridftp>
+		<jobmanager universe="vanilla" url="tp-grid1.ci.uchicago.edu/jobmanager-pbs" major="2" minor="2" patch="4" />
+		<workdirectory>/home/hategan/scratch/i2u2</workdirectory>
+		<profile namespace="GLOBUS" key="queue">fast</profile>
+		<profile namespace="ENV" key="PATH">/bin:/usr/bin:/usr/local/bin:/home/hategan/i2u2/bin</profile>
+	</pool>
+  
+  	<pool handle="www11" sysinfo="INTEL32::LINUX">
+    	<filesystem url="www11.i2u2.org" provider="ssh"/>
+		<execution url="www11.i2u2.org" provider="ssh"/>
+		<workdirectory>/sandbox/quarkcat/tmp</workdirectory>
 	</pool>
 	
-	<pool handle="node5" sysinfo="INTEL64::LINUX">
-    	<filesystem url="node5.i2u2.org" provider="ssh"/>
-		<execution url="node5.i2u2.org" provider="ssh"/>
-		<workdirectory>/home/quarkcat/tmp</workdirectory>
+	<pool handle="www14" sysinfo="INTEL32::LINUX">
+    	<filesystem url="www14.i2u2.org" provider="ssh"/>
+		<execution url="www14.i2u2.org" provider="ssh"/>
+		<workdirectory>/sandbox/quarkcat/tmp</workdirectory>
 	</pool>
 	
-	<pool handle="node6" sysinfo="INTEL64::LINUX">
-    	<filesystem url="node6.i2u2.org" provider="ssh"/>
-		<execution url="node6.i2u2.org" provider="ssh"/>
-		<workdirectory>/home/quarkcat/tmp</workdirectory>
+	<pool handle="www15" sysinfo="INTEL32::LINUX">
+    	<filesystem url="www15.i2u2.org" provider="ssh"/>
+		<execution url="www15.i2u2.org" provider="ssh"/>
+		<workdirectory>/sandbox/quarkcat/tmp</workdirectory>
 	</pool>
 	
-	<pool handle="node7" sysinfo="INTEL64::LINUX">
-    	<filesystem url="node7.i2u2.org" provider="ssh"/>
-		<execution url="node7.i2u2.org" provider="ssh"/>
-		<workdirectory>/home/quarkcat/tmp</workdirectory>
+	<pool handle="www16" sysinfo="INTEL32::LINUX">
+    	<filesystem url="www16.i2u2.org" provider="ssh"/>
+		<execution url="www16.i2u2.org" provider="ssh"/>
+		<workdirectory>/sandbox/quarkcat/tmp</workdirectory>
 	</pool>
 	
+	<pool handle="www17" sysinfo="INTEL32::LINUX">
+    	<filesystem url="www17.i2u2.org" provider="ssh"/>
+		<execution url="www17.i2u2.org" provider="ssh"/>
+		<workdirectory>/sandbox/quarkcat/tmp</workdirectory>
+	</pool>
+  
 </config>
-

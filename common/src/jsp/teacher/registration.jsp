@@ -29,9 +29,9 @@
 
 <h1>e-Lab Registration</h1>
 
-<table border="0" id="registration-links-table">
+<table border="0" id="registration-links-table"  cellspacing="10" cellpadding="15">
 	<tr>
-		<td valign="top" width="40%">
+		<td valign="top" width="40%" >
 			<a href="mass-registration.jsp">Register student research groups with a spreadsheet.</a>
 		</td>
 		<td valign="top">
@@ -50,6 +50,14 @@
 		<td valign="top">
 			Use this page to register less than ten students. You can link new students to existing 
 			research groups or you can create new research groups for students.
+		</td>
+	</tr>
+	<tr>
+		<td  valign="top">
+			<a href="list-groups.jsp">View research groups.</a>
+		</td>
+		<td valign="top">
+			View a list of all active groups and student members.
 		</td>
 	</tr>
 	<tr>

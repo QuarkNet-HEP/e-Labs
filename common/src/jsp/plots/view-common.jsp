@@ -25,6 +25,13 @@
 		    dvName = (String) entry.getTupleValue("dvname");
 		}
 		name = (String) entry.getTupleValue("name");
+        //EPeronja-07/2/2013: Bug 320: view.jsp and view-metadata.jsp display internal file name
+        String project = (String) entry.getTupleValue("project");
+        if (entry != null && project.equals("ligo")) {
+        	if (name == null || name.equals("")){
+	        	name = (String) entry.getTupleValue("title");
+        	}
+        }		
 				
 	}
 	request.setAttribute("name", name);

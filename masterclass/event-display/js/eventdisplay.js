@@ -562,43 +562,15 @@ function setupCanvasCB() {
 	renderer.camera.focal_length = 2.5;
 	// Have the engine handle mouse / camera movement for us.
 	document.cameraState = DemoUtils.autoCamera(renderer, 0, 0, -30, 0.40, -1.06, 0, redraw);
-	// tpm: autoCamera(renderer, x, y, z, rotate_x, rotate_y, rotate_z, draw_callback)
 
+	/*
 	document.addEventListener('keydown', function(e) {
-		e.preventDefault();
-
-		if ( e.shiftKey ) {
-			switch(e.which) {
-				case 38: // up
-				zoom(1);
-				break;
-
-				case 40: // down
-				zoom(-1);
-				break;
-			}
-		} 
-
-		if ( e.ctrlKey ) {
-			switch(e.which) {
-				case 38: // up
-				pan(0,1);
-				break;
-
-				case 40: // down
-				pan(0,-1);
-				break;
-
-				case 37: // left
-				pan(-1,0);
-				break;
-
-				case 39: // right
-				pan(1,0);
-				break;
-			}	
-		}
-	});
+		if (e.keyCode != 84)  // t
+			return;
+		
+		toggleBackground();
+	}, false);
+	*/
 	
 	document.draw = redraw;
 	redraw();
@@ -620,8 +592,7 @@ function toggleBackground() {
 	if (document.redrawRange) {
 		document.redrawRange();
 	}
-}
-
+};
 
 function setCameraRotation(rx, ry, rz) {
 	var ct = document.renderer.camera.transform;
@@ -638,33 +609,4 @@ function setCameraRotation(rx, ry, rz) {
 	document.cameraState.rotate_y = ry;
 	document.cameraState.rotate_z = rz;
 	document.draw();
-}
-
-function setCameraHome() {
-	var x = 0;
-	var y = 0;
-	var z = -30;
-	var rx = 0.40;
-	var ry = -1.06;
-	var rz = 0;
-
-	document.cameraState.x = x;
-	document.cameraState.y = y;
-	document.cameraState.z = z;
-	document.cameraState.rotate_x = rx;
-	document.cameraState.rotate_y = ry;
-	document.cameraState.rotate_z = rz;
-	
-	document.draw();	
-}
-
-function zoom(step) {
-	document.cameraState.z = document.cameraState.z + step;
-	document.draw();	
-}
-
-function pan(xstep, ystep) {
-	document.cameraState.x = document.cameraState.x + xstep;
-	document.cameraState.y = document.cameraState.y + ystep;
-	document.draw();	
 }

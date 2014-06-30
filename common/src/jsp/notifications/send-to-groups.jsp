@@ -2,14 +2,25 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.*" %>
+<%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="gov.fnal.elab.notifications.*" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/teacher-login-required.jsp" %>
-<%@ page import="org.owasp.validator.html.*" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
-
+<%@ page import="gov.fnal.elab.usermanagement.*" %>
+<%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 <%
 	String send = request.getParameter("send");
+	List<ElabGroup> researchGroups = new ArrayList<ElabGroup>();
+	for (Iterator ite = user.getGroups().iterator(); ite.hasNext();) {
+		ElabGroup group = (ElabGroup) ite.next();
+		if (group.getActive() && !group.getName().equals(user.getName())) {
+			researchGroups.add(group);
+		}
+	}
+	request.setAttribute("researchGroups", researchGroups);
+	request.setAttribute("isAdmin", user.isAdmin());
+	
 	if ("Send".equals(send)) {
 	    String[] recipients = request.getParameterValues("destination");
 	    boolean all = StringUtils.isNotBlank(request.getParameter("allgroups")); 
@@ -19,7 +30,9 @@
 	    List<ElabGroup> groupsToNotify = new ArrayList();
 	    if (all) {
 	        for (ElabGroup eg : user.getGroups()) {
-	        	groupsToNotify.add(eg);
+	        	if (eg.getActive() && !eg.getName().equals(user.getName())) {
+	        		groupsToNotify.add(eg);
+	        	}
 	        }
 	    }
 	    else {
@@ -38,10 +51,42 @@
 	        throw new ElabJspException("Message is empty");
 	    }
 	    message = message.trim();
-	    message = message.substring("<p>".length(), message.length() - "</p>".length());
-	    Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
-		AntiSamy as = new AntiSamy();
-		message = as.scan(message, policy).getCleanHTML();
+		message = message.replaceAll("<p>", "");
+		message = message.replaceAll("</p>", "");
+	
+	    //message = message.substring("<p>".length(), message.length() - "</p>".length());
+	    //Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
+		//AntiSamy as = new AntiSamy();
+		//message = as.scan(message, policy).getCleanHTML();
+	    //EPeronja-04/28/2014: Add string sanitization
+	    message=ElabUtil.stringSanitization(message, elab, "Notifications");
+		/*
+        ArrayList checkDirtyInput = as.scan(message,policy).getErrorMessages();
+        if (!checkDirtyInput.isEmpty()) {
+   			String userInput = message;
+   			int errors = as.scan(userInput, policy).getNumberOfErrors();
+   			ArrayList actualErrors = as.scan(userInput, policy).getErrorMessages();
+   			Iterator iterator = actualErrors.iterator();
+   			String errorMessages = "";
+   			while (iterator.hasNext()) {
+   				errorMessages = (String) iterator.next() + ",";
+   			}
+   			message = as.scan(message, policy).getCleanHTML();
+	    	//send email with warning
+	    	String to = elab.getProperty("notifyDirtyInput");
+    		String emailmessage = "", subject = "Notifications: user sent dirty input";
+    		String emailBody =  "User input: "+userInput+"\n" +
+  						   			"Number of errors: "+String.valueOf(errors)+"\n" +
+  				   					"Error messages: "+ errorMessages + "\n" +
+  				   					"Validated input: "+message + "\n";
+		    try {
+		    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
+		    } catch (Exception ex) {
+                System.err.println("Failed to send email");
+                ex.printStackTrace();
+		    }		    		
+	  	}//end of sanitization
+	  	*/
 	    boolean expirestoggle = request.getParameter("expirestoggle") != null 
 	    	&& request.getParameter("expirestoggle").length() > 0;
 	    String expiresvalue = request.getParameter("expiresvalue");
@@ -74,7 +119,11 @@
         	gc.add(Calendar.YEAR, 1);
         	n.setExpirationDate(gc.getTimeInMillis());
         }
-        np.addUserNotification(groupsToNotify, n);
+        List<Integer> projectIds = new ArrayList<Integer>();
+        projectIds.add(elab.getId());
+        np.addNotification(groupsToNotify, projectIds, n);
+
+        request.setAttribute("notification", n);
 	}
 %>
 
@@ -83,10 +132,9 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>${elab.properties.formalName} e-Lab Home</title>
-		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/home.css"/>
-		<script type="text/javascript" src="../include/elab.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
+		<script type="text/javascript" src="../include/notifications.js"></script>
 	</head>
 	
 	<body id="send-to-groups" class="home send-notifications">
@@ -95,10 +143,12 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
-					<%@ include file="../include/nav-rollover.jspf" %>
+					<div id="nav">
+						<%@ include file="../include/nav-teacher.jsp" %>
+					</div>
 				</div>
 			</div>
-			
+		
 			<div id="content">
 <script type="text/javascript" src="../include/tiny_mce/jquery.tinymce.js"></script>
 <script>
@@ -127,14 +177,23 @@
 	}	
 </script>
 <form action="../notifications/send-to-groups.jsp" method="post">
-	<table border="0" id="form-table">
+<c:if test="${notification != null }">
+	<p>Notification "${notification.message}" was added successfully.</p>
+</c:if>
+<c:if test="${isAdmin}">
+	<ul>
+		<li>SYSTEM messages are messages that go into the newsbox, either for all or individual e-Labs.</li>
+		<li>NORMAL messages are messages that go to all research groups in all e-Labs or individual e-Labs (these do not show in the newsbox).</li>
+	</ul>
+</c:if>
+	<table border="0" id="form-table" width="100%">
 		<tr>
 			<td class="label">
 				Send to:
 			</td>
 			<td>
 				<select name="destination" multiple="true" id="destination" size="8">
-					<c:forEach var="group" items="${user.groups}">
+					<c:forEach var="group" items="${researchGroups}">
 						<option value="${group.name}">${group.name}</option>
 					</c:forEach>
 				</select>
@@ -167,7 +226,7 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<input type="submit" name="send" value="Send" onClick="javascript: validate()"/>
+				<input type="submit" name="send" value="Send" />
 			</td>
 		</tr>
 	</table>

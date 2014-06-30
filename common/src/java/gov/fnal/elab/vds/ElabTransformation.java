@@ -1,6 +1,6 @@
 package gov.fnal.elab.vds;
 
-import gov.fnal.elab.beans.MappableBean;
+import gov.fnal.elab.beans.vds.VDSMappableBean;
 import gov.fnal.elab.util.ElabException;
 import gov.fnal.elab.util.ElabShellException;
 
@@ -369,7 +369,7 @@ public class ElabTransformation{
      * @param b A {@link MappableBean} containing the data which to map to the
      * Derivation.
      */
-    public void createDV (MappableBean b) throws ElabException{
+    public void createDV (VDSMappableBean b) throws ElabException{
         //check if tr has been created
         if(tr == null){
             throw new ElabException("You must first create a new Transformation before creating a Derivation");

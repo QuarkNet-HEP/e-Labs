@@ -27,7 +27,7 @@
 					<%@ include file="../include/nav-rollover.jspf" %>
 				</div>
 			</div>
-			<script type="text/javascript" src="../include/jquery/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
+			<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
 		    <script type="text/javascript" src="../analysis/plot-params.js"></script>
 			<div id="content">
 			
@@ -57,11 +57,11 @@
 			<div id="simple-form">
 				<select id="simplified-plots">
 					<option value="none">Choose plot...</option>
-					<option class="separator" disabled="true">----------------</option>
+					<option class="separator" disabled="disabled">----------------</option>
 					<c:forEach var="leaf" items="${dataset.simplePlots}">
 						<option value="${leaf.id}">${leaf.title}</option>
 					</c:forEach>
-					<option class="separator" disabled="true">----------------</option>
+					<option class="separator" disabled="disabled">----------------</option>
 					<option id="advanced" value="advanced">Advanced</option>
 				</select>
 				<script>
@@ -86,15 +86,15 @@
 			<table border="0" width="100%" id="step-buttons">
 				<tr>
 					<td>
-						<input type="submit" name="goto1" value="&lt; Dataset Selection" />
+						<input type="submit" name="goto1" value="&lArr; Dataset Selection" />
 					</td>
 					<td>
-						<input type="submit" name="goto2" value="&lt; Data Selection" />
+						<input type="submit" name="goto2" value="&larr; Data Selection" />
 					</td>
 					<td width="100%">
 					</td>
 					<td>
-						<input id="plot-submit" type="submit" name="forward" value="Plot &gt;" disabled />
+						<input id="plot-submit" type="submit" name="forward" value="Plot &rarr;" disabled="disabled" />
 					</td>
 				</tr>
 			</table>

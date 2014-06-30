@@ -68,126 +68,170 @@ Re: the upload progress stuff
 	
 	File tempRepo = new File(dataDir + "/temp"); 
 	int sizeThreshold = 0; 
-
+	String exceptionMessage = "";
 	List splits = new ArrayList();  //for both the split name and the channel validity information
+	//Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
+	//AntiSamy as = new AntiSamy();
 
 	if (ServletFileUpload.isMultipartContent(request)) {
-	    //BEGIN upload_progress_stuff
-	    UploadListener listener = new UploadListener(request, 0);
+		long lStartTime = new Date().getTime();
+		try {
+		    //BEGIN upload_progress_stuff
+		    UploadListener listener = new UploadListener(request, 0);
+	
+		    // Create a factory for disk-based file items
+		    FileItemFactory factory = new NewLineConvertingMonitoredDiskFileItemFactory(
+		    		sizeThreshold, tempRepo, listener); 
+	
+	    	// Create a new file upload handler
+		    ServletFileUpload upload = new ServletFileUpload(factory);
+		    //ServletFileUpload upload = new ServletFileUpload();		
+	    	//END upload_progress_stuff
+	    	
+			List<DiskFileItem> fileItems = upload.parseRequest(request); 
+	    	
+	    	for (DiskFileItem fi : fileItems) { 
+	    		if (fi.isFormField()) {
+	    			String name = fi.getFieldName();
+	    			String content = fi.getString();
+	    			if ("detector".equals(name)) {
+	    				if (StringUtils.isBlank(content)) {
+	    					throw new ElabJspException("You must enter a detector number for this data.");
+	    				}
+	    				else {
+	    					detectorId = content;
+	    				}
+	    			}
+	    			else if (("benchmark_"+detectorId).equals(name)) {
+	    				benchmark = content;
+	    			}
+	    			else if ("comments".equals(name)) {
+	    				if (StringUtils.isNotBlank(content)) {
+	    					comments = content; 
+	    				}
+	    			}
+	    		}
+	    	}
+			
+			for (DiskFileItem fi : fileItems) {
+				if (!fi.isFormField()) {
+					lfn = fi.getName();
+					if (StringUtils.isBlank(lfn)) {
+	                	throw new ElabJspException("Missing file.");
+	    	        }
+		            //fn is the filename without slashes (which lfn has)    	       
+		            fn = FilenameUtils.getName(lfn);
+					if (fi.getSize() == 0) {
+					    throw new ElabJspException("Your file is zero-length. You must upload a file which has some data.");
+					}
+	                //new algorithm for filenaming:
+	   	            //name the raw file id.yyyy.mmdd.index.raw and save the original name in metadata
+	       	        //index starts at 0 and increments when there are collisions with other filenames
+	                Date now = new Date();
+	                DateFormat df = new SimpleDateFormat("yyyy.MMdd");
+	                String fnow = df.format(now);
+					//even newer algorithm: use File.createTempFile!
+					File f = File.createTempFile(detectorId + "." + fnow + ".", ".raw", 
+					        new File(dataDir));
+	               	String rawName = f.getName();
+	
+	               	// write the file from memory or relocate it on disk.
+	               	if (fi.isInMemory()) {
+	               		fi.write(f);
+	               	}
+	               	else {
+	               		fi.getStoreLocation().renameTo(f);
+	               	}
+					comments = ElabUtil.stringSanitization(comments, elab, "Cosmic Upload");
+					/*
+	               	//EPeronja-04/28/2014: do some sanitization before passing the comments
+		          	ArrayList checkDirtyInput = as.scan(comments,policy).getErrorMessages();
+		          	if (!checkDirtyInput.isEmpty()) {
+		    			String userInput = comments;
+		    			int errors = as.scan(userInput, policy).getNumberOfErrors();
+		    			ArrayList actualErrors = as.scan(userInput, policy).getErrorMessages();
+		    			Iterator iterator = actualErrors.iterator();
+		    			String errorMessages = "";
+		    			while (iterator.hasNext()) {
+		    				errorMessages = (String) iterator.next() + ",";
+		    			}
+		    			comments = as.scan(comments, policy).getCleanHTML();
+				    	//send email with warning
+				    	String to = elab.getProperty("notifyDirtyInput");
+			    		String emailmessage = "", subject = "Cosmic Upload: user sent dirty input";
+			    		String emailBody =  "User input: "+userInput+"\n" +
+	    						   			"Number of errors: "+String.valueOf(errors)+"\n" +
+	    				   					"Error messages: "+ errorMessages + "\n" +
+	    				   					"Validated input: "+comments + "\n";
+					    try {
+					    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
+					    } catch (Exception ex) {
+			                System.err.println("Failed to send email");
+			                ex.printStackTrace();
+					    }		    		
+				  	}//end of sanitization
+					*/
+	       	        out.println("<!-- " + rawName + " added to Catalog -->");
+	       	        request.setAttribute("in", f.getAbsolutePath());
+	       	        request.setAttribute("detectorid", detectorId);
+	       	        request.setAttribute("comments", comments);
+	      	        request.setAttribute("benchmark", benchmark);
+	      			long lEndTime = new Date().getTime();
+	      			String uploadtime = "upload.jsp: " +String.valueOf(lEndTime - lStartTime)+ " ms";
+	      	        request.setAttribute("uploadtime", uploadtime);
 
-	    // Create a factory for disk-based file items
-	    FileItemFactory factory = new NewLineConvertingMonitoredDiskFileItemFactory(
-	    		sizeThreshold, tempRepo, listener); 
+	      	        %>
+						<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUpload" impl="generic">
+							<e:trdefault name="in" value="${in}"/>
+							<e:trdefault name="datadir" value="${datadir}"/>
+							<e:trdefault name="detectorid" value="${detectorid}"/>
+							<e:trdefault name="comments" value="${comments}"/>
+							<e:trdefault name="benchmark" value="${benchmark}"/>	
+							<e:trdefault name="uploadtime" value="${uploadtime}"/>	
+												
+							<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload&detectorid=${detectorid}">
+								<jsp:param name="provider" value="shell"/>
+							</jsp:include>
+						</e:analysis>
+					<%
+	
+				} //'twas a file
+			} //while through the file
+		} catch (Exception e) {
+			exceptionMessage = "A problem occurred while uploading your file.<br />" + 
+							   "Please send an e-mail to <a href=\'mailto:e-labs@fnal.gov\'>e-labs@fnal.gov</a> with the following error: <br />" +
+								e.toString();
+		}
 
-    	// Create a new file upload handler
-	    ServletFileUpload upload = new ServletFileUpload(factory);
-    	//END upload_progress_stuff
-    	
-		List<DiskFileItem> fileItems = upload.parseRequest(request); 
-    	
-    	for (DiskFileItem fi : fileItems) { 
-    		if (fi.isFormField()) {
-    			String name = fi.getFieldName();
-    			String content = fi.getString();
-    			if ("detector".equals(name)) {
-    				if (StringUtils.isBlank(content)) {
-    					throw new ElabJspException("You must enter a detector number for this data.");
-    				}
-    				else {
-    					detectorId = content;
-    				}
-    			}
-    			else if (("benchmark_"+detectorId).equals(name)) {
-    				benchmark = content;
-    			}
-    			else if ("comments".equals(name)) {
-    				if (StringUtils.isNotBlank(content)) {
-    					comments = content; 
-    				}
-    			}
-    		}
-    	}
-		
-		for (DiskFileItem fi : fileItems) {
-			if (!fi.isFormField()) {
-				lfn = fi.getName();
-				if (StringUtils.isBlank(lfn)) {
-                	throw new ElabJspException("Missing file.");
-    	        }
-	            //fn is the filename without slashes (which lfn has)    	       
-	            fn = FilenameUtils.getName(lfn);
-				if (fi.getSize() == 0) {
-				    throw new ElabJspException("Your file is zero-length. You must upload a file which has some data.");
-				}
-                //new algorithm for filenaming:
-   	            //name the raw file id.yyyy.mmdd.index.raw and save the original name in metadata
-       	        //index starts at 0 and increments when there are collisions with other filenames
-                Date now = new Date();
-                DateFormat df = new SimpleDateFormat("yyyy.MMdd");
-                String fnow = df.format(now);
-				//even newer algorithm: use File.createTempFile!
-				File f = File.createTempFile(detectorId + "." + fnow + ".", ".raw", 
-				        new File(dataDir));
-               	String rawName = f.getName();
-
-               	// write the file from memory or relocate it on disk.
-               	if (fi.isInMemory()) {
-               		fi.write(f);
-               	}
-               	else {
-               		fi.getStoreLocation().renameTo(f);
-               	}
-
-       	        out.println("<!-- " + rawName + " added to Catalog -->");
-       	        request.setAttribute("in", f.getAbsolutePath());
-       	        request.setAttribute("detectorid", detectorId);
-       	        request.setAttribute("comments", comments);
-      	        request.setAttribute("benchmark", benchmark);
-
-				%>
-					<e:analysis name="processUpload" type="I2U2.Cosmic::ProcessUpload" impl="generic">
-						<e:trdefault name="in" value="${in}"/>
-						<e:trdefault name="datadir" value="${datadir}"/>
-						<e:trdefault name="detectorid" value="${detectorid}"/>
-						<e:trdefault name="comments" value="${comments}"/>
-						<e:trdefault name="benchmark" value="${benchmark}"/>
-						
-						<jsp:include page="../analysis/start.jsp?continuation=../data/upload-results.jsp&notifier=upload">
-							<jsp:param name="provider" value="shell"/>
-						</jsp:include>
-					</e:analysis>
-				<%
-			} //'twas a file
-		} //while through the file
 	} //end "if form has a file to upload"
-	else {
-		
-		//EPeronja-05/22/2013: get benchmark files
-		Iterator iterator = ids.iterator();
-		TreeMap<String, Integer> detectorBenchmark = new TreeMap<String, Integer>();
-		TreeMap<String, VDSCatalogEntry> benchmarkTuples = new TreeMap<String, VDSCatalogEntry>();
-		ResultSet searchResults = null;
-		
-		//loop through detectors
-		while (iterator.hasNext()) {
-			Integer key = Integer.parseInt((String) iterator.next());
-		  	//retrieve benchmark files from database
-				searchResults = Benchmark.getBenchmarkFileName(elab, key);
-		  	if (searchResults != null) {
-		 		String[] filenames = searchResults.getLfnArray();
-		 		for (int i = 0; i < filenames.length; i++){
-					VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filenames[i]);
-					if (e != null) {
-						benchmarkTuples.put(filenames[i], e);
-						detectorBenchmark.put(filenames[i], key);				}				
-				}//end for loop
-		  	}//end check searchResults
-		}//end looping through detectors
-		
+		else {
+			
+			//EPeronja-05/22/2013: get benchmark files
+			Iterator iterator = ids.iterator();
+			TreeMap<String, Integer> detectorBenchmark = new TreeMap<String, Integer>();
+			TreeMap<String, VDSCatalogEntry> benchmarkTuples = new TreeMap<String, VDSCatalogEntry>();
+			ResultSet searchResults = null;
+			
+			//loop through detectors
+			while (iterator.hasNext()) {
+				Integer key = Integer.parseInt((String) iterator.next());
+			  	//retrieve benchmark files from database
+					searchResults = Benchmark.getBenchmarkFileName(elab, key);
+			  	if (searchResults != null) {
+			 		String[] filenames = searchResults.getLfnArray();
+			 		for (int i = 0; i < filenames.length; i++){
+						VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filenames[i]);
+						if (e != null) {
+							benchmarkTuples.put(filenames[i], e);
+							detectorBenchmark.put(filenames[i], key);				
+							}				
+					}//end for loop
+			  	}//end check searchResults
+			}//end looping through detectors
 		request.setAttribute("detectorBenchmark", detectorBenchmark);
 		request.setAttribute("benchmarkTuples", benchmarkTuples);
-		
-		
+		request.setAttribute("exceptionMessage", exceptionMessage);
+
 		%>
 		
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -200,7 +244,8 @@ Re: the upload progress stuff
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/benchmark.css" />
  		<script type="text/javascript" src="../include/upload.js"></script>
-		<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>
+ 		<script type="text/javascript" src="../include/elab.js"></script>
+ 		<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>
         <script type="text/javascript" src="../../dwr/interface/UploadMonitor.js"></script>
         <script type="text/javascript" src="../../dwr/engine.js"></script>
         <script type="text/javascript" src="../../dwr/util.js"></script>
@@ -211,7 +256,37 @@ Re: the upload progress stuff
 				        $(this).hide(); 
 				    }
 				});
+				$('select option').each(function() {
+					  $(this).prevAll('option[value="' + this.value + '"]').remove();
+				});
 		});
+    	function checkFields() {
+			var goAhead = false;	
+    		var radios = document.getElementsByTagName('input');
+       		for (var i = 0; i < radios.length; i++) {
+       		    if (radios[i].type == 'radio' && radios[i].checked) {
+       		      goAhead = true;
+       		    } 
+       		}
+    		if (!goAhead) {
+    			var msg = document.getElementById("msg");
+    			msg.innerHTML ='<font color="red">Please select a detector</font>';
+    			return false;
+    		}
+    		var upload = document.getElementById("uf2");
+    		var uploadFile = upload.value;
+    		if (uploadFile == "") {
+    			goAhead = false;
+    		} else {
+    			goAhead = true;
+    		}
+    		if (!goAhead) {
+    			var msg = document.getElementById("msg");
+    			msg.innerHTML ='<font color="red">Please choose a file to upload</font>';
+				return false;
+    		}
+    		return goAhead;
+    	}
         </script>
 	</head>
 	
@@ -229,7 +304,11 @@ Re: the upload progress stuff
 
 <h1>Upload raw data collected by your cosmic ray detector.</h1>
 
-
+<p>Blessing Tutorials: 
+	<a href="../analysis-blessing/benchmark-overview-tutorial.jsp">Overview</a> |
+	<a href="../analysis-blessing/benchmark-tutorial.jsp">Benchmark</a> |
+	<a href="../analysis-blessing/benchmark-process-tutorial.jsp">Blessing</a><br /><br />
+</p>
 
 <ul>
 	<li>Select the <strong>detector</strong> associated with the data you are uploading.</li>
@@ -247,38 +326,38 @@ Re: the upload progress stuff
 		<table style="text-align: left; margin-left: 5%;" width="90%">
 		    <tr>
 		    	<td class="benchmarkHeader">Detector</td>
-		    	<td class="benchmarkHeader">Benchmark File</td>
+		    	<td class="benchmarkHeader">Benchmark File <a href="javascript:showRefLink('../library/ref-benchmark-upload.jsp',520,400)"><img src="../graphics/question.gif"></a></td>
 		    </tr>
 			<c:forEach items="${detectorIDs}" var="d">
 			  	<tr>
 			  		<td class="benchmarkSelection"><input type="radio" name="detector" value="${d}"/>${d}</td>
 			  		<td>
 						<table style="text-align: left;">
-						<tr><td>
+						  <tr><td>
 			    			<select name="benchmark_${d}">
-								<c:forEach var="detectorBenchmark" items="${detectorBenchmark}">
+								<c:forEach var="detectorBenchmark" items="${detectorBenchmark}" >
 									<c:choose>
 										<c:when test="${detectorBenchmark.value == d}">
-										    <option>No benchmark</option>
-							    				<c:forEach items="${benchmarkTuples}" var="benchmarkTuples">
-							    					<c:choose>
-							    					   <c:when test="${benchmarkTuples.key == detectorBenchmark.key }">
-									    					<c:choose>
-									    						<c:when test="${ benchmarkTuples.value.tupleMap.benchmarkdefault == true }">
-									    							<option value="${benchmarkTuples.key}" selected="selected">${benchmarkTuples.value.tupleMap.benchmarklabel}</option>
-									    						</c:when>
-									    						<c:otherwise>
-									    							<option value="${benchmarkTuples.key}">${benchmarkTuples.value.tupleMap.benchmarklabel}</option>
-									    						</c:otherwise>
-									    					</c:choose>
-									    				</c:when>
-									    				</c:choose>
-							    				</c:forEach>
+			    							<option>No benchmark</option>
+						    				<c:forEach items="${benchmarkTuples}" var="benchmarkTuples">
+						    					<c:choose>
+						    					   <c:when test="${benchmarkTuples.key == detectorBenchmark.key }">
+								    					<c:choose>
+								    						<c:when test="${ benchmarkTuples.value.tupleMap.benchmarkdefault == true }">
+								    							<option value="${benchmarkTuples.key}" selected="selected">${benchmarkTuples.value.tupleMap.benchmarklabel}</option>
+								    						</c:when>
+								    						<c:otherwise>
+								    							<option value="${benchmarkTuples.key}">${benchmarkTuples.value.tupleMap.benchmarklabel}</option>
+								    						</c:otherwise>
+								    					</c:choose>
+								    				</c:when>
+								    				</c:choose>
+						    				</c:forEach>
 										</c:when>
 									</c:choose>						
 								</c:forEach>
 			    			</select>
-						</td></tr>							
+						  </td></tr>							
 						</table>
 			  		</td>
 			  	</tr>
@@ -298,9 +377,12 @@ Re: the upload progress stuff
     <div id="button-line">
     	<!-- grr. somebody fix css -->
     	<table border="0" style="width: 450px; text-align: center;">
+			<tr>
+				<td><div id="msg" name="msg"></div></td>
+			</tr>
     		<tr>
     			<td>
-					<input name="load" type="submit" value="Upload" id="uploadbutton"/>
+					<input name="load" type="submit" value="Upload" id="uploadbutton" onclick="return checkFields();"/>
 				</td>
 				<td>
 					<div id="progressBar" style="display: none">

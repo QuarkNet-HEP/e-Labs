@@ -61,40 +61,37 @@ $CONST_hex8F = hex('FFFFFFFF');
 $max=2**31;
 die "The number of inputs, outputs, and serial numbers must match! (args: @ARGV)\n" if($#infile != $#ofile or $#infile != $#serialNumber);
 
-#use Digest::MD5 qw(md5_hex); we stopped the idea of file caching when VDS couldn't find the files.
+use Digest::MD5 qw(md5_hex);
 
 #While there are more files to parse, go through each line of the raw data file, performing the transformation
 while($infile=shift(@infile)){
 	$ofile=shift (@ofile);
 	$serialNumber=shift (@serialNumber);
     $cpld_frequency = shift(@cpld_frequency);
-	
-	$cpld_frequency = 41666667 if $cpld_frequency eq "" && $serialNumber < 6000;
-	$cpld_frequency = 25000000 if $cpld_frequency eq "" && $serialNumber >= 6000;
-    
-    $cpldResFreq = $cpld_frequency*32 if $serialNumber < 6000;  #cpld resolution frequency is 32 times the clock freq for older cards
-	$cpldResFreq = $cpld_frequency*8  if $serialNumber >= 6000;  #cpld resolution frequency is 8 times the clock freq  for newer cards
-	
+    if($cpld_frequency eq ""){
+        $cpld_frequency = 41666667;
+    }
+
+    $cpldResFreq = $cpld_frequency*32;  #cpld resolution frequency is 32 times the clock freq (Hz)
 	die "The detector's serial number ($serialNumber) must be positive.\n" if($serialNumber <=0);
 
-	# we stopped the idea of file caching when VDS couldn't find the files.
     #md5 input/output file comparison
-    #my $str = join " ", @ARGV[0..$#ARGV];
-    #my $mtime1 = (stat($0))[9];         #this script's timestamp
-    #my $mtime2 = (stat($infile))[9];    #input file's timestamp
-    #my $mtime3 = (stat("$geo_dir/$serialNumber/$serialNumber.geo"))[9];
-    #$str = "$mtime1 $mtime2 $str $mtime3";
-    #my $md5 = md5_hex($str);
-    #if(-e $ofile){
-    #    $outmd5 = `head -n 1 $ofile`;
-    #    $outmd5 = substr($outmd5, 1);
-    #    chomp $outmd5;
-    #    print "md5s COMPUTED:$md5 FROMFILE:$outmd5\n";
-    #    if($md5 eq $outmd5){
-    #        print "input argument md5's match, not re-calculating output file: $ofile\n";
-    #        next;
-    #    }
-    #}
+    my $str = join " ", @ARGV[0..$#ARGV];
+    my $mtime1 = (stat($0))[9];         #this script's timestamp
+    my $mtime2 = (stat($infile))[9];    #input file's timestamp
+    my $mtime3 = (stat("$geo_dir/$serialNumber/$serialNumber.geo"))[9];
+    $str = "$mtime1 $mtime2 $str $mtime3";
+    my $md5 = md5_hex($str);
+    if(-e $ofile){
+        $outmd5 = `head -n 1 $ofile`;
+        $outmd5 = substr($outmd5, 1);
+        chomp $outmd5;
+        print "md5s COMPUTED:$md5 FROMFILE:$outmd5\n";
+        if($md5 eq $outmd5){
+            print "input argument md5's match, not re-calculating output file: $ofile\n";
+            next;
+        }
+    }
 	
 	#Open input and output files
 	open(IN, "$infile")  || die "Cannot open $infile for input";
@@ -103,6 +100,8 @@ while($infile=shift(@infile)){
 	#@REorphan = (0,0,0,0,0);	#for 'info_output'
 
 	#print the header
+    print OUT1 ("#$md5\n");
+    print OUT1 ("#md5_hex($str)\n");
 	print OUT1 ("#ID.CHANNEL, Julian Day, RISING EDGE(sec), FALLING EDGE(sec), TIME OVER THRESHOLD (nanosec)\n");
 
 	#convert MAC OS line breaks to UNIX

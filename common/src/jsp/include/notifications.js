@@ -27,6 +27,7 @@ function updateHeader(data, error, elab) {
 function displayNotifications() {
 	var icon = document.getElementById("notifications-icon");
 	var popup = document.getElementById("notifications-popup");
+
 	if (popup.style.display == "" || popup.style.display == "none") {
 		popup.style.top = icon.offsetTop + icon.height + "px";
 		popup.style.right = "0px";
@@ -71,6 +72,18 @@ function removeNotification(idprefix, id, elab) {
 	removeNotification0(idprefix, id, elab, true);
 }
 
+function markAllAsDeleted(ids, elab) {
+	for (i = 0; i < ids.length; i++) {
+		markAsDeleted("next", ids[i], elab);
+	}
+}
+
+function removeAllNotification(ids, elab) {
+	for (i = 0; i < ids.length; i++) {
+		removeNotification0("next", ids[i], elab, true);
+	}
+}
+
 function removeNotification0(idprefix, id, elab, hard) {
 	var ro = newRequestObject();
 	ro.open('get', "../notifications/remove.jsp?id=" + id + "&hard=" + hard);
@@ -83,6 +96,24 @@ function removeNotification0(idprefix, id, elab, hard) {
 		}
 	};
 	ro.send(null);
+}
+
+function markAsRead(idprefix, id) {
+	var ro = newRequestObject();
+	ro.open('get', "../notifications/mark.jsp?id=" + id);
+	ro.onreadystatechange = function() {
+		if (ro.readyState == 4 && ro.status == 200) {
+			var div = document.getElementById(idprefix + id);
+			div.innerHTML = "Read";
+		}
+	};
+	ro.send(null);
+}
+
+function markAllAsRead(ids) {
+	for (i = 0; i < ids.length; i ++) {
+		markAsRead("status", ids[i]);
+	}
 }
 
 function updateInnerHTML(id, url) {

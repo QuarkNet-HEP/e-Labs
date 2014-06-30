@@ -7,11 +7,11 @@
   <parameter name="MAX_PLOTS"      value="8"                        type="int"    />
   <parameter name="rootsys"        value="/usr/local"               type="string" />
   <parameter name="rootBinaryPath" value="/usr/local/bin/root"      type="string" />
-  <parameter name="baseDir"        value="/home/quarkcat/sw/tomcat/webapps/elab/cms/" type="string" />
+  <parameter name="baseDir"        value="/home/mike/work/tomcat/webapps/elab/cms/" type="string" />
   <parameter name="tmpDir"         value="/tmp"                     type="string" />
   <parameter name="htmlOut"        value="graphics.html"            type="string" />
   <parameter name="MetaDataSource" value="XML"                    	type="string" />
   <parameter name="xmlDir"         value=""							type="string" />
-  <parameter name="dataDir"        value="/disks/i2u2-dev/cms/data"        type="string" />
+  <parameter name="dataDir"        value="/home/mike/work/i2u2/cms-data"        type="string" />
   <parameter name="resultsDir"     value="results"                  type="string" />
 </ogre>

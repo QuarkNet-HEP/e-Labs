@@ -275,7 +275,13 @@ function makeTowers(data, rd, descr, front, back, energy) {
       len = Math.log(energy) * settings.calorimeterTowersLogFactor;
     }
     else {
-      len = energy / rd.range * document.settings.calorimeterTowersMaxLength;
+    	if ( descr.group === "ECAL" ) {
+    		len = energy / rd.range * document.settings.ecalHitsMaxSize;
+    	} else if ( descr.group === "HCAL" ) {
+    		len = energy / rd.range * document.settings.hcalHitsMaxSize; 
+    	} else {
+	      len = energy / rd.range * document.settings.calorimeterTowersMaxLength;
+	  	}
     }
 		
     var superFront = new Array();
@@ -285,7 +291,17 @@ function makeTowers(data, rd, descr, front, back, energy) {
     }
     
     back = superFront;
-    var a = settings.calorimeterTowersWireSides ? 1.0 : 0.3;
+    
+    var a; 
+
+    if ( descr.group === "ECAL" ) {
+    	a = settings.ecalHitsWireSides ? 1.0 : 0.3;
+    } else if ( descr.group === "HCAL" ) {
+    	a = settings.hcalHitsWireSides ? 1.0 : 0.3;
+    } else { 
+    	a = settings.calorimeterTowersWireSides ? 1.0 : 0.3;
+	}    
+
     var shape = makeQuad(front[0], front[1], front[2], front[3],
       back[0], back[1], back[2], back[3], 
       makeColor(descr.fill, a),
@@ -547,6 +563,7 @@ function makeTrackPoints(data, rd, descr, data2, assoc) {
 	if (!assoc) {
 		throw "No association for " + descr.key;
 	}
+
 	var a = new Array();
 	for (var i = 0; i < data.length; i++) {
 		var last = null;
@@ -732,6 +749,10 @@ function makeTrackCurves2(data, rd, descr, data2, assoc) {
     throw "No association for " + descr.key;
   }
 	
+  //if ( data.length != assoc.length ) {
+  	//throw "data.length != assoc.length for " + descr.key;
+  //}
+
   var l = new Array();
   var dot = Pre3d.Math.dotProduct3d;
   var cross = Pre3d.Math.crossProduct;
@@ -856,6 +877,7 @@ function makeTrackCurves2(data, rd, descr, data2, assoc) {
       }
     }
   }
+
 	return l;
 }
 

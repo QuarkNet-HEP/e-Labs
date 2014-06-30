@@ -312,7 +312,7 @@ a > img {
 
 #news-box-contents {
 	padding: 4px;
-	font-weight: bold;
+	text-align: left;
 }
 
 #news-box-footer {
@@ -412,7 +412,7 @@ a img {
 
 #notifications-popup {
 	display: none;
-	width: 256px;
+	width: 350px;
 	position: absolute;
 	background-color: white;
 	border: thin solid black;
@@ -451,11 +451,11 @@ a img {
 
 #notifications-table {
 	margin: 2px;
-	width: 100%;
+	width: 98%;
 }
 
 #notifications-table td {
-	border-bottom: thin dotted #e0e0e0;
+	border-bottom: thin dashed gray;
 	text-align: left;
 }
 
@@ -468,7 +468,6 @@ a img {
 	margin-top: 16px;
 	background-color: #ffffff;
 	width: 100%;
-	border: 
 }
 
 #notifications-table-detailed td {

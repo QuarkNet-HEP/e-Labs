@@ -14,11 +14,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.StringUtils.*; 
 
 public class AnalysisParameterTools {
     
@@ -52,8 +56,12 @@ public class AnalysisParameterTools {
         	}
         	String s = new File(n).getName();
         	String detectorID = s.substring(0, s.indexOf("."));
-        	l.add(elab.getProperties().getDataDir() + File.separator
+    		File df = new File(elab.getProperties().getDataDir() + File.separator
                     + detectorID + File.separator + s + ".thresh");
+        	if (df.exists()) {	
+	        	l.add(elab.getProperties().getDataDir() + File.separator
+	                    + detectorID + File.separator + s + ".thresh");
+        	}
         }
         return l;
     }
@@ -79,7 +87,7 @@ public class AnalysisParameterTools {
     
     public static final Map<String, String> CHANNELS;
     static {
-        CHANNELS = new HashMap();
+        CHANNELS = new HashMap<String, String>();
         CHANNELS.put("chan1", "1");
         CHANNELS.put("chan2", "2");
         CHANNELS.put("chan3", "3");
@@ -95,9 +103,9 @@ public class AnalysisParameterTools {
             if (pf.exists()) {
                 sum += pf.length();
             }
-            else {
-                throw new ElabException("Data file not found: " + pfn);
-            }
+            //else {
+            //    throw new ElabException("Data file not found: " + pfn);
+            //}
         }
         return sum;
     }
@@ -150,7 +158,7 @@ public class AnalysisParameterTools {
     public static List<String> getValidChannels(Elab elab, Collection<String> files)
             throws ElabException {
         ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
-        SortedSet<String> channels = new TreeSet();
+        SortedSet<String> channels = new TreeSet<String>();
         
         for (CatalogEntry e : rs) {
         	if (e == null) {
@@ -172,7 +180,8 @@ public class AnalysisParameterTools {
     public static String getCpldFrequencies(Elab elab, Collection<String> files)
             throws ElabException {
         ResultSet rs = elab.getDataCatalogProvider().getEntries(files);
-        List<Number> freqs = new ArrayList();
+        List<Number> freqs = new ArrayList<Number>();
+        
         for (CatalogEntry e : rs) {
         	if (e == null) {
         		continue;
@@ -181,7 +190,7 @@ public class AnalysisParameterTools {
             if (freq == null) {
                 freq = DEFAULT_CPLD_FREQUENCY;
             }
-            freqs.add(freq.doubleValue());
+            freqs.add(freq);
         }
         
         return ElabUtil.join(freqs, " ");
@@ -204,5 +213,5 @@ public class AnalysisParameterTools {
     	
     	return ElabUtil.join(l, " "); 
     }
-
+    
 }

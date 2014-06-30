@@ -28,9 +28,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.WeakHashMap;
+import java.util.concurrent.Executor;
 
 public class DatabaseConnectionManager {
     public static final boolean USE_CACHE = true;
+    
+    public static final Object[] NO_ARGS = new Object[0];
+    public static final Class<?>[] NO_ARGS_TYPE = new Class[0];
 
     private static WeakHashMap<ElabProperties, LinkedList<Connection>> cache;
     static {
@@ -283,23 +287,19 @@ public class DatabaseConnectionManager {
         }
 
         public Blob createBlob() throws SQLException {
-            return (Blob) invoke(delegate, "createBlob", new Object[0],
-                    new Class[0]);
+            return (Blob) invoke(delegate, "createBlob", NO_ARGS, NO_ARGS_TYPE);
         }
 
         public Clob createClob() throws SQLException {
-            return (Clob) invoke(delegate, "createClob", new Object[0],
-                    new Class[0]);
+            return (Clob) invoke(delegate, "createClob", NO_ARGS, NO_ARGS_TYPE);
         }
 
         public NClob createNClob() throws SQLException {
-            return (NClob) invoke(delegate, "createNClob", new Object[0],
-                    new Class[0]);
+            return (NClob) invoke(delegate, "createNClob", NO_ARGS, NO_ARGS_TYPE);
         }
 
         public SQLXML createSQLXML() throws SQLException {
-            return (SQLXML) invoke(delegate, "createSQLXML", new Object[0],
-                    new Class[0]);
+            return (SQLXML) invoke(delegate, "createSQLXML", NO_ARGS, NO_ARGS_TYPE);
         }
 
         public Struct createStruct(String typeName, Object[] attributes)
@@ -350,7 +350,7 @@ public class DatabaseConnectionManager {
 
         public boolean isWrapperFor(Class cls) throws SQLException {
             return ((Boolean) invoke(delegate, "isWrapperFor",
-                    new Object[] { cls }, new Class[] { Class.class }))
+                new Object[] { cls }, new Class[] { Class.class }))
                     .booleanValue();
         }
 
@@ -359,6 +359,32 @@ public class DatabaseConnectionManager {
                     new Class[] { Class.class });
         }
 
+		public void setSchema(String schema) throws SQLException {
+		    invoke(delegate, "setSchema", 
+			    new Object[] { schema }, new Class[] { String.class });
+		}
+
+		public String getSchema() throws SQLException {
+			return (String) invoke(delegate, "getSchema",
+			    NO_ARGS, NO_ARGS_TYPE);
+		}
+
+		public void abort(Executor executor) throws SQLException {
+			invoke(delegate, "abort", 
+			    new Object[] { executor }, new Class[] { Executor.class });
+		}
+
+		public void setNetworkTimeout(Executor executor, int milliseconds)
+				throws SQLException {
+		    invoke(delegate, "setNetworkTimeout", 
+                new Object[] { executor, milliseconds }, 
+                new Class[] { Executor.class, int.class });
+		}
+
+		public int getNetworkTimeout() throws SQLException {
+			return (Integer) invoke(delegate, "getNetworkTimeout",
+			    NO_ARGS, NO_ARGS_TYPE);
+		}
     }
 
     private static class StatementWrapper implements Statement {
@@ -533,13 +559,11 @@ public class DatabaseConnectionManager {
         }
 
         public boolean isClosed() throws SQLException {
-            return ((Boolean) invoke(delegate, "isClosed", new Object[0],
-                    new Class[0])).booleanValue();
+            return ((Boolean) invoke(delegate, "isClosed", NO_ARGS, NO_ARGS_TYPE));
         }
 
         public boolean isPoolable() throws SQLException {
-            return ((Boolean) invoke(delegate, "isPoolable", new Object[0],
-                    new Class[0])).booleanValue();
+            return ((Boolean) invoke(delegate, "isPoolable", NO_ARGS, NO_ARGS_TYPE));
         }
 
         public void setPoolable(boolean poolable) throws SQLException {
@@ -548,7 +572,16 @@ public class DatabaseConnectionManager {
                     new Class[] { boolean.class });
         }
 
-        public boolean isWrapperFor(Class cls) throws SQLException {
+		public void closeOnCompletion() throws SQLException {
+			invoke(delegate, "closeOnCompletion", NO_ARGS, NO_ARGS_TYPE);
+		}
+
+		public boolean isCloseOnCompletion() throws SQLException {
+			return (Boolean) invoke(delegate, "isCloseOnCompletion",
+					NO_ARGS, NO_ARGS_TYPE);
+		}
+
+		public boolean isWrapperFor(Class cls) throws SQLException {
             return ((Boolean) invoke(delegate, "isWrapperFor",
                     new Object[] { cls }, new Class[] { Class.class }))
                     .booleanValue();

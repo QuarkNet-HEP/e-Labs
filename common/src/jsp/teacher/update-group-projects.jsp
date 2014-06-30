@@ -14,6 +14,8 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Update the e-Lab Assignment for your groups.</title>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
@@ -40,7 +42,7 @@
 	String[] projects = request.getParameterValues("projects");
 	String submit = request.getParameter("submit");
 	ElabGroup group = null;
-	
+
 	if ("Update e-Lab Assignments".equals(submit)) {
 		group = user.getGroup(groupName);
 		if (group == null) {
@@ -61,11 +63,20 @@
 			request.setAttribute("group", group);
 		}
 	}
-
+	
+	//display only active groups
+	ArrayList<String> activeGroups = new ArrayList<String>();
+	for (Iterator ite = user.getGroups().iterator(); ite.hasNext();) {
+		ElabGroup g = (ElabGroup) ite.next();
+		if (g.getActive()) {
+			activeGroups.add(g.getName());
+		}
+	}
+	request.setAttribute("activeGroups", activeGroups);
 %>
 <form name="update-group-projects-form" method="post" action="">
 	<p id="choose-group">
-		<e:trselect name="chooseGroup" valueList="${user.groupNames}" labelList="${user.groupNames}"/>
+		<e:trselect name="chooseGroup" valueList="${activeGroups}" labelList="${activeGroups}"/>
 		<input type="submit" name="submit" value="Show Group Info"/>
 	</p>
 	<c:if test="${not empty group}">

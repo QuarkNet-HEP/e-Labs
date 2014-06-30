@@ -31,6 +31,7 @@
 
 <%
 	request.setAttribute("users", AnalysisManager.getAnalysisRuns(elab));
+
 %>
 
 <table id="analysis-table">
@@ -63,6 +64,10 @@
 						<td>${run.id}</td>
 						<td>
 							<a href="status.jsp?id=${run.id}&user=${uentry.key}">${run.analysis.name}</a>
+							<c:if test='${run.attributes.detectorid > "" }'>
+								: ${run.attributes.detectorid}
+							</c:if>
+							
 						</td>
 						<td>
 							${run.attributes.runMode}

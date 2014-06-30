@@ -1,5 +1,6 @@
 <%@ taglib prefix="elab" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ include file="../include/elab.jsp" %>
+<%@ include file="../login/login-required.jsp" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.StructuredResultSet.*" %>
 <%@ page import="java.io.IOException" %>
@@ -64,6 +65,7 @@
 		String date2 = request.getParameter("date2");
 		String stacked = request.getParameter("stacked");
 		String blessed = request.getParameter("blessed");
+
 		//EPeronja-06/12/2013: 63: Data search by state requires 2-letter state abbreviation
 		String abbreviation = "";
 		if (key.equals("state")) {
@@ -88,7 +90,16 @@
 		
 	    and.add(new Equals("type", "split"));
 	    and.add(new Equals("project", elab.getName()));
-		
+	    //EPeronja-08/05/2013 284: Data search within results don't have any hooks --> fixed
+		if ("within".equals(request.getParameter("searchIn"))) {
+			MultiQueryElement ql = (MultiQueryElement) session.getAttribute("previousSearch");
+			Collection elements =  ql.getAll();
+			Iterator iterator = elements.iterator();
+			while (iterator.hasNext()) {
+				and.add((QueryElement) iterator.next());
+			}
+		}		
+	    
 		// Allow use of asterisk wildcards, remove leading/trailing whitespace 
 		if (StringUtils.isNotBlank(value) && !key.equals("all")) {
 			value = value.replace('*', '%').trim();
@@ -136,12 +147,12 @@
 			}
 		}
 				    
-	    if ("yes".equals(blessed)) {
-	    	and.add(new Equals("blessed", Boolean.TRUE));
-	    }
-	    if ("no".equals(blessed)) {
-	    	and.add(new Equals("blessed", Boolean.FALSE));
-	    }
+	    //if ("yes".equals(blessed)) {
+	    //	and.add(new Equals("blessed", Boolean.TRUE));
+	    //}
+	    //if ("no".equals(blessed)) {
+	    //	and.add(new Equals("blessed", Boolean.FALSE));
+	    //}
 	    
 	    if ("yes".equals(stacked)) {
 	    	and.add(new Equals("stacked", Boolean.TRUE));
@@ -151,11 +162,24 @@
 	    }
 	    
 	    long startTime = System.currentTimeMillis();
+	    //EPeronja-21/11/2013: Benchmark, default search retrieves all owner's data + others' blessed data
+		String benchmarksearch = "default";		    
+	    if ("yes".equals(blessed)) {
+	    	and.add(new Equals("blessed", Boolean.TRUE));
+			benchmarksearch = "";
+	    }
+	    if ("no".equals(blessed)) {
+	    	and.add(new Equals("blessed", Boolean.FALSE));
+			benchmarksearch = "";
+	    }
+		if ("all".equals(blessed)) {
+			benchmarksearch = "";
+		}	
 		searchResults = elab.getDataCatalogProvider().runQuery(and);
 		long endDataSearch = System.currentTimeMillis();
 		long startOrganizing = endDataSearch; 
-		
-		searchResultsStructured = DataTools.organizeSearchResults(searchResults);
+	
+		searchResultsStructured = DataTools.organizeSearchResults(searchResults, benchmarksearch, user.getName(), user.getGroup().getTeacher());
 		searchResultsStructured.setKey(key);
 		searchResultsStructured.setValue(value);
 		
@@ -167,6 +191,13 @@
 		searchResultsStructured.setTime(totalTime);
 		
 		// Stuff our results in our session.
+		session.setAttribute("key", key);
+		session.setAttribute("value", value);
+		session.setAttribute("date1", date1);
+		session.setAttribute("date2", date2);
+		session.setAttribute("stacked", stacked);
+		session.setAttribute("blessed", blessed);
+		session.setAttribute("previousSearch", and);
 		session.setAttribute("srs", searchResultsStructured);
 		session.setAttribute("msg", msg);
 		// Send it back home to display 

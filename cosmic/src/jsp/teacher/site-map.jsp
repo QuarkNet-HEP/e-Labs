@@ -61,7 +61,7 @@
 							<a href="../assessment/rubric-r.html">Process</a>, <a href="../assessment/rubric-t.html">Computing</a>,
 							<a href="../assessment/rubric-wla.html">Literacy</a> and <a href="../assessment/rubric-p.html">Poster</a></li>
 					</ul>
-					<li><a href="community.jsp"><b>Share Ideas</b></a> - I2U2 Blog and Facebook Users Group</li>
+					<li><a href="community.jsp"><b>Share Ideas</b></a> - Facebook Users Group</li>
 					<li><a href="standards.jsp"><b>Standards</b></a></li>
 					<li><a href="site-map.jsp"><b>Site Index</b></a></li>
 					<e:restricted role="teacher">
@@ -69,7 +69,7 @@
 						<ul class="simple">
 							<li><a href="registration.jsp">General Registration</a></li>
 							<li><a href="register-students.jsp">Student Research Group Registration</a></li>
-		                    <li><a href="mass-registration.jsp">Mass Registration (Spreadsheet)</a></li>
+		                    <!--<li><a href="mass-registration.jsp">Mass Registration (Spreadsheet)</a></li>-->
 		                    <li><a href="update-groups.jsp">Update student research groups.</a></li>
 		                    <li><a href="update-group-projects.jsp">Update e-Lab assignments for groups.</a></li>
                    		</ul>

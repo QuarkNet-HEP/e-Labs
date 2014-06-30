@@ -1,1 +1,1 @@
-Swift svn swift-r2483 (Swift modified locally) cog-r656 (CoG modified locally)
+Swift 0.94 swift-r6511 cog-r3663

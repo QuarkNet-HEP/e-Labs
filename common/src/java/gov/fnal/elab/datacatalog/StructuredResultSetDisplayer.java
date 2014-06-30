@@ -10,6 +10,7 @@ import gov.fnal.elab.datacatalog.StructuredResultSet.School;
 import gov.fnal.elab.util.ElabUtil;
 
 import org.apache.commons.lang.time.DateFormatUtils;
+import gov.fnal.elab.util.URLEncoder;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -274,19 +275,46 @@ public class StructuredResultSetDisplayer {
             crtRow++;
         }
         crtCol++;
-        out.write("<td class=\"data-file\">");
+        out.write("<td class=\"data-file\" style=\"vertical-align: bottom;\" >");
     }
-
+    
+    //EPeronja-06/25/2013: 289- Lost functionality on data search
+    //		  -07/22/2013: 556- Cosmic data search: requests from fellows 07/10/2013 (added duration)
+    public String buildMetadata(File file){
+        String DATEFORMAT = "MMM dd yyyy";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATEFORMAT);
+        StringBuilder sb = new StringBuilder();
+        sb.append("Group: " + file.getGroup() +"\n");
+        sb.append("StartTime: " + dateFormat.format(file.getStartDate())+"\n");
+        sb.append("UploadDate: " + dateFormat.format(file.getCreationDate())+"\n");
+        if (file.getFileDuration() > 0L) {
+        	sb.append("Duration: " + file.getFileDurationComponents()[0] + ":" + file.getFileDurationComponents()[1] + ":" + file.getFileDurationComponents()[2] + "\n");
+        } 
+        sb.append("Channel1: " + file.getChannel1()+" events\n");
+        sb.append("Channel2: " + file.getChannel2()+" events\n");
+        sb.append("Channel3: " + file.getChannel3()+" events\n");
+        sb.append("Channel4: " + file.getChannel4()+" events");
+    	return sb.toString();
+    }
+    
     public void displayFileContents(JspWriter out, File file)
             throws IOException {
+        out.write("<strong>"+DateFormatUtils.format(file.getDate(), DAY_FORMAT)+"</strong>");
         out.write("<a class=\"file-link\" href=\"../data/view.jsp?filename=");
         out.write(file.getLFN());
+        out.write("\"");
+        out.write(" title=\""+ buildMetadata(file));
         out.write("\">");
-        out.write(DateFormatUtils.format(file.getDate(), DAY_FORMAT));
+        out.write("<img src=\"../graphics/view_data.gif\"/>");
         out.write("</a>");
-        out.write("<a href=\"../jsp/add-comments.jsp?fileName=");
+        //EPeronja-07/22/2013: 556- Cosmic data search: requests from fellows 07/10/2013 (changed icons for comments)
+        out.write("<a href=\"../jsp/comments-add.jsp?fileName=");
         out.write(file.getLFN());
-        out.write("\"><img src=\"../graphics/balloon_talk_gray.gif\"/></a>");
+        if (file.getComments() != null && !file.getComments().equals("")) {
+        	out.write("\"><img src=\"../graphics/balloon_talk_blue.gif\"/></a>");
+        } else {
+        	out.write("\"><img src=\"../graphics/balloon_talk_empty.gif\"/></a>");        	
+        }
         if (file.getStacked() != null) {
             out.write("<a href=\"javascript:glossary('geometry', 200)\">");
             if (file.getStacked().booleanValue()) {
@@ -319,7 +347,11 @@ public class StructuredResultSetDisplayer {
                     + "src=\"../graphics/unblessed.gif\"/></a>");        	
         	}
         }
-        out.write("<br />" + formatNumber(file.getTotalEvents()) + " events");
+        if (file.getTriggers() > 0) {
+        	out.write("<br />" + formatNumber(file.getTriggers()) + " events");
+        } else {
+        	out.write("<br />No trigger data");        	
+        }
     }
 
     public void displayFileFooter(JspWriter out, File file) throws IOException {

@@ -30,8 +30,8 @@ public class CachingCatalogProvider implements DataCatalogProvider, AnalysisCata
     public static final long INTERVAL = 1000*60;
 
     public CachingCatalogProvider(DataCatalogProvider delegate, AnalysisCatalogProvider analysisDelegate) {
-    	this.dataDelegate = delegate;
-    	this.analysisDelegate = analysisDelegate; 
+        this.dataDelegate = delegate;
+        this.analysisDelegate = analysisDelegate; 
     }
 
     private ResultSet getCachedEntries(Collection<String> files) throws ElabException {
@@ -139,7 +139,7 @@ public class CachingCatalogProvider implements DataCatalogProvider, AnalysisCata
 
     public void insertAnalysis(String name, ElabAnalysis analysis)
             throws ElabException {
-        analysisDelegate.insertAnalysis(name, analysis);
+    	analysisDelegate.insertAnalysis(name, analysis);
     }
 
     public ElabAnalysis getAnalysis(String lfn) throws ElabException {

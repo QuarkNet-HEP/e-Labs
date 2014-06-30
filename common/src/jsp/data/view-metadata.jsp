@@ -48,7 +48,35 @@
 				if (entry == null) {
 				    throw new ElabJspException("No metadata about " + filename + " found.");
 				}
+	            String project = (String) entry.getTupleValue("project");
+	            //EPeronja-06/18/2013: Bug 481: hide the whole path to the source
+	            String source = (String) entry.getTupleValue("source");
+	            if (source != null) {
+		            if (project.equals("cosmic")) {
+		            	int lastSlashPos = source.lastIndexOf("/");
+		            	if (lastSlashPos != -1) {
+			            	source = source.substring(lastSlashPos + 1, source.length());
+		            	}
+		            }
+	            }
+	            //EPeronja-07/2/2013: Bug 320: view.jsp and view-metadata.jsp display internal file name
+	            String objectName = filename;
+	            if (entry != null) {
+	            	objectName = (String) entry.getTupleValue("name");
+	            	if (project.equals("ligo")) {
+	            		if (objectName == null || objectName.equals("")) {
+		            		objectName = (String) entry.getTupleValue("title");
+	            		}
+	            	}
+	            	if (objectName == null || objectName.equals("")) {
+	            		objectName = filename;
+	            	}
+	            }
 				request.setAttribute("e", entry);
+				request.setAttribute("project", project);
+				request.setAttribute("source", source);
+				request.setAttribute("name", objectName);
+				
 			%>
 			
 			<c:if test="${e.tupleMap.type == 'plot'}">
@@ -63,17 +91,14 @@
 			<c:if test="${e.tupleMap.type == 'split'}">
 				| <a href="../data/download?filename=${param.filename}&elab=${elab.name}&type=${e.tupleMap.type}">Download</a>
 			</c:if>
-			<h2>Details (<a href="javascript:glossary('metadata')">Metadata</a>) for ${param.filename}</h2>
+			<h2>Details (<a href="javascript:glossary('metadata')">Metadata</a>) for ${name}</h2>
 			<table border="0">
 				<c:forEach items="${e.tupleIterator}" var="tuple">
 					<tr>
-						<c:if test="${!fn:startsWith(tuple.key, '_')}">
+						<c:if test="${!fn:startsWith(tuple.key, '_') and !fn:startsWith(tuple.key, 'FIG')}">
 							<td align="right">${tuple.key}:&nbsp;</td>
 							<td align="left">
 								<c:choose>
-									<c:when test="${fn:endsWith(tuple.key, 'URL')}">
-										<e:popup href="${tuple.value}" target="ViewURL" width="800" height="850">view</e:popup>
-									</c:when>
 									<c:when test="${tuple.key == 'provenance'}">
 										<e:popup href="../plots/view-provenance.jsp?filename=${param.filename}" target="Provenance" width="800" height="850">${tuple.value}</e:popup>
 									</c:when>
@@ -84,7 +109,14 @@
 									</c:when>
 									<c:when test="${tuple.key == 'source'}">
 										<c:forEach items="${fn:split(tuple.value, ' ')}" var="f">
-											<a href="../data/view.jsp?filename=${f}">${f}</a>
+										    <c:choose>
+											    <c:when test="${project == 'cosmic' }">
+													${source}
+											    </c:when>
+											    <c:otherwise>
+													<a href="../data/view.jsp?filename=${f}">${f}</a>
+												</c:otherwise>
+											</c:choose>
 										</c:forEach>
 									</c:when>
 									<c:otherwise>

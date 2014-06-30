@@ -140,10 +140,16 @@
 	}
 	
 	public static synchronized Monitor getMonitor(ServletContext c, String script) {
-		Monitor monitor = (Monitor) c.getAttribute("i2u2.site.monitor");
-		if (monitor == null) {
+		Monitor monitor;
+		try {
+			monitor = (Monitor) c.getAttribute("i2u2.site.monitor");
+			if (monitor == null) {
+				monitor = new Monitor(script);
+				c.setAttribute("i2u2.site.monitor", monitor);
+			}
+		} catch (Exception e) {
 			monitor = new Monitor(script);
-			c.setAttribute("i2u2.site.monitor", monitor);
+			c.setAttribute("i2u2.site.monitor", monitor);			
 		}
 		return monitor;
 	}

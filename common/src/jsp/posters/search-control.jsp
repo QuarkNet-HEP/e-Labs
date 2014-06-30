@@ -10,6 +10,9 @@
 SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false);
 String msg = (String) request.getAttribute("msg");
+ResultSet rsTags = DataTools.retrieveTags(elab);
+String[] availablePosterTags = rsTags.getLfnArray();
+request.setAttribute("availablePosterTags", availablePosterTags);
 %>
 
 <script type="text/javascript">
@@ -30,6 +33,22 @@ $(function() {
 	$('img.ui-datepicker-trigger').css('vertical-align', 'text-bottom'); 
 });
 </script>
+<script>
+	function checkNeedPosterTags(object) {
+		if (object.value == "postertag") {
+			$("#name")
+		    .replaceWith('<select id="name" name="value">' +
+		          	'<option></option>' +
+					'<c:forEach items="${availablePosterTags}" var="availablePosterTags">' +
+					'	<option name="${availablePosterTags}" value="${availablePosterTags}">${availablePosterTags}</option>' +
+					'</c:forEach>' +			
+		          	'</select>');
+		} else {
+			$("#name")
+		    .replaceWith('<input name="value" id="name" size="40" maxlength="40" value="${param.value}">');			
+		}
+	}
+</script>
 
 <div class="poster-search-control"> 
 	<div class="search-quick-links">
@@ -43,10 +62,29 @@ $(function() {
 	</div>
 	
 	<form name="search" method="get">
-	<e:select name="key" valueList="title, group, teacher, school, city, state, year"
-		labelList="Title, Group, Teacher, School, City, State, Academic Year"
-		default="${param.key}" />
-	<input name="value" id="name" size="40" maxlength="40" value="${param.value}" />
+	<e:select name="key" valueList="title, group, teacher, school, city, state, year, postertag"
+		labelList="Title, Group, Teacher, School, City, State/Country, Academic Year, Poster Tags"
+		default="${param.key}" onChange="checkNeedPosterTags(this); "/>
+	<c:choose>
+		<c:when test='${param.key == "postertag" }'>
+			<select id="name" name="value">
+	          	<option></option>
+				<c:forEach items="${availablePosterTags}" var="availablePosterTag">
+					<c:choose>
+						<c:when test="${availablePosterTag == param.value}">
+							<option name="${availablePosterTag}" value="${availablePosterTag}" selected>${availablePosterTag}</option>
+						</c:when>
+						<c:otherwise>
+							<option name="${availablePosterTag}" value="${availablePosterTag}">${availablePosterTag}</option>				
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>				
+			</select>
+		</c:when>
+		<c:otherwise>
+			<input name="value" id="name" size="40" maxlength="40" value="${param.value}" />
+		</c:otherwise>
+	</c:choose>			
 	<input type="submit" name="submit" value="Search Data" />
 		<e:vswitch>
 			<e:visible image="../graphics/Tright.gif">
@@ -64,6 +102,13 @@ $(function() {
 					<e:trinput name="date2" id="date2" size="10" maxlength="15" class="datepicker" />
 					
 					</td></tr>
+					<tr>
+						<td>
+							<input type="radio" name="status" value="all" checked="true" />All
+					    	<input type="radio" name="status" value="published" />Published
+					    	<input type="radio" name="status" value="unpublished" />Unpublished
+						</td>
+					</tr>
 				</table>
 			</e:hidden>
 		</e:vswitch>
@@ -160,7 +205,12 @@ $(function() {
 					errors += "At least one of the dates you typed in was not understood. Please re-check the dates you typed in.";
 				}
 			}
-	
+		    //EPeronja-10/11/2013: Allow to search posters by status
+		    String statusSearch = request.getParameter("status");
+			if (statusSearch != null && !statusSearch.equals("all")) {
+				and.add(new Equals("status", statusSearch));
+			}
+			
 			searchResults = elab.getDataCatalogProvider().runQuery(and);
 			request.setAttribute("searchResults", searchResults);
 			request.setAttribute("msg", msg);	

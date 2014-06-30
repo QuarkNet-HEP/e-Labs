@@ -9,7 +9,6 @@
 <%
 	StructuredResultSetDisplayer srsd = (StructuredResultSetDisplayer) request.getAttribute("searchResultsDisplayer");
 	StructuredResultSet srs = (StructuredResultSet) request.getAttribute("searchResultsStructured");
-	String msg = (String) request.getAttribute("msg");
 	if (srs != null && !srs.isEmpty()) {
 	    int start = 0;
 		try {
@@ -50,6 +49,6 @@
 		<%
 	}
 	else if (request.getParameter("submit") != null) {
-	    %> <h3>No results</h3>${msg} <%
+	    %> <h3>No results</h3> ${msg}<%
 	}
 %>

@@ -56,12 +56,12 @@ abstract class DataReader<ValueType extends Number, SumType extends Number> {
     public int size() {
         return rms.size();
     }
-    
+
     public void clear() {
         rms.clear();
         mean.clear();
-    }
-
+    }   
+    
     protected boolean readOne(InputStream isrms, InputStream ismean) throws IOException {
         ValueType v = readOne(isrms);
         if (v == null) {

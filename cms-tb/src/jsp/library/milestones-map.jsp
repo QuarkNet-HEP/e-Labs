@@ -56,9 +56,18 @@
 
 				</p>
 				
-				
+				<%
+					if (user.getGroup().isProfDev()) {
+						%>
+							<%@ include file="milestones-map-profdev.jsp" %>
+						<%
+					}
+					else {
+						%>
 							<%@ include file="milestones-map-student.jsp" %>
-						
+						<%
+					}
+				%>
 			</div>
 		</td>
 		<td>

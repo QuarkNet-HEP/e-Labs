@@ -30,12 +30,14 @@
 				if (status == AnalysisRun.STATUS_FAILED || showStatus != null) {
 				    Throwable e = run.getException();
 				    String message = e == null ? "Unknown error. See output for details." : e.getMessage();
-					%>
+				    %>
 						<%
 							if (showStatus == null) {
 								%> 
 									<h1>The study failed to run properly</h1>
-									<h2><%= message %></h2>
+									<h2>The e-Lab HelpDesk examines these error messages.  Please review the details and make adjustments to your CRMD or analysis parameters.  
+										If you need further help, please file a HelpDesk ticket.</h2>
+									<h3><%= message %></h3>
 									<p>
 										Try running the 
 										<a href="${run.attributes.onError}?${run.analysis.encodedParameters}&runMode=${run.analysis.attributes.runMode}">analysis</a>
@@ -43,33 +45,51 @@
 									</p>
 								<%
 							}
+							HTMLEscapingWriter wr = new HTMLEscapingWriter(out);
 						%>
 						
 						<br />
 						<e:vswitch>
 							<e:visible>
-								<strong>Analysis output</strong>
+								<strong>Analysis error output</strong>
+								<code style="font-size: small;">
+								<%
+									wr.write(run.getSTDERR());
+								%>
+								</code>
 							</e:visible>
 							<e:hidden>
-								<strong>Analysis output</strong><br />
-								<code style="font-size: small;">
-<%
-							HTMLEscapingWriter wr = new HTMLEscapingWriter(out);
-							wr.write(run.getSTDERR());
-							out.write("<hr />");
-							if (e != null) {
-								e.printStackTrace(new PrintWriter(wr));
-							}
-							out.write("<hr />");
-							wr.write(run.getDebuggingInfo());
-%>
+								<strong>Analysis error output (detailed)</strong>
+								<br />
+								<em>Analysis Code Output:</em>
+								<br />
+								<code>
+									<% wr.write(run.getSTDERR()); %>
+								</code>
+								<hr />
+								<%
+									if (e != null) {
+								%>
+								<em>Stack Trace</em>
+								<br />
+								<code>
+									<% e.printStackTrace(new PrintWriter(wr)); %>
+								</code>
+								<hr />
+								<%
+
+									}
+								%>
+								<em>Debugging Trace</em>
+								<code>
+									<% wr.write(run.getDebuggingInfo()); %>
 								</code>
 							</e:hidden>
 						</e:vswitch>
 					<%
 				}
-				else if (status == AnalysisRun.STATUS_RUNNING) {
-					%>
+				else if (status == AnalysisRun.STATUS_RUNNING || status == AnalysisRun.STATUS_DELAYED) {
+					%>					
 					<center>
 						<h1>Running ${run.analysis.name}...</h1>
 						<img src="../graphics/busy2.gif" alt="Image suggesting something is happening" /><br /><br /><br />
@@ -131,7 +151,7 @@
 								}
 							}
 						</script>
-			
+		
 					<br /><br />
 					<form action="../analysis/action.jsp">
 						<input type="hidden" name="id" value="${run.id}" />

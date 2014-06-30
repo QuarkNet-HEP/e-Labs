@@ -255,6 +255,7 @@
 							<div class="tab" id="tab-grid-computing">
 					<span class="tab-title">Grid Computing</span>
 					<div class="tab-contents-sublevel">
+					<p>The grid is critical for providing the data to all the CMS researchers and to our e-Lab.</p>
 						<ul  class="simple">
 							<li>
 								<a href="http://gridcafe.web.cern.ch/gridcafe/">The Grid Cafe</a>

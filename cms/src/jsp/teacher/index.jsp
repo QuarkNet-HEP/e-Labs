@@ -31,7 +31,7 @@
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
-	<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/elab.js"></script>
+		<script type="text/javascript" src="../../cosmic/include/elab.js"></script>
 
 <script type="text/javascript">
 	window.onload=function(){
@@ -88,18 +88,16 @@ function showAll(start, finish)
 		</td>
 		
 		<td><div id="expandHeading">
+				<p>Getting ready for the Next Generation Science Standards? This e-Lab meets ALL NGSS science practices. See Standards link in the menu for listing.</p>
 				<P>Click on each topic or its arrow to expand it. Click again to collapse it. Click on <b>Expand All Topics</b> or <b>Collapse All Topics</b> to expand or collapse all the content on the page. These
 				only work when you have Javascript enabled in your web browser.
 				<div id="all-v" style="text-align:center; visibility:visible; display:"><a href="#" onclick="HideShow('all-v');HideShow('all-h');showAll(1,9);return false;">Expand All Topics</a></div>
 				<div id="all-h" style="text-align:center; visibility:hidden; display: none"><a href="#" onclick="HideShow('all-v');HideShow('all-h');hideAll(1,9);return false;">Collapse All Topics</a></div>
-				
-
-
-
+			
 				<div id="vsId1-v" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
+				<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
 								</div><div id="vsId1-h" style="visibility:visible; display:">
-				<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
+				<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
 				<p>Students can join a scientific collaboration in this series of studies of high-energy collisions from the Large Hadron Collider
 				(LHC) at CERN. We are collaborating with the Compact Muon Solenoid (CMS) experiment to produce a student-led, <b>teacher-guided</b>
 				project. At the present, we have test beam, Monte Carlo (simulated) data and run data. We expect more data through 2010 and 2011.
@@ -118,9 +116,9 @@ function showAll(start, finish)
 					</div>
 				
 				<div id="vsId2-v" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Introduction to CMS</h2></a>
+				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Introduction to CMS</h2></a>
 									</div><div id="vsId2-h" style="visibility:visible; display:">
-				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Introduction to CMS</h2></a>
+				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Introduction to CMS</h2></a>
 				
 				<p>Situated in the LHC, the CMS detector is studying proton-proton collisions in search of the predicted Higgs boson that may be instrumental in explaining why particles have mass and other crucial physics questions. Pions, muons, electrons, photons, neutrinos and other particles are produced in these collisions and subsequent decays. By exploring the various subdetectors arrayed to detect this myriad of collision products and by attending to the crucial roles played by conservation of mass, momentum and charge in event analysis, students are able to make sense of the same plots which particle physicists use in analyzing collision data. They can in turn produce their own plots and use these to set up and pursue questions they themselves put to the data.</p>
 				
@@ -128,9 +126,9 @@ function showAll(start, finish)
 
 					</div>
 				<div id="vsId3-v" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Good Research Questions</h2></a>
+				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Good Research Questions</h2></a>
 									</div><div id="vsId3-h" style="visibility:visible; display:">
-				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Good Research Questions</h2></a>
+				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Good Research Questions</h2></a>
 				<p>What kinds of particles are produced in the proton-proton collisions inside the CMS detector? What are the smallest known particles?  Students can pose a number of questions and then analyze the data for answers. Some answers are new to students but well answered by physicists. These include the smallest known particles, the kinds of particles that are produced in proton-proton collisions and how these produced particles interact with the detector. However, some questions like "Is there a Higgs boson?" or "What causes objects to have mass?" are open questions that the CMS Collaboration hopes to address. </p>
 				<p>Students may be able to contribute insights to these efforts. Many experiments have been investigating the smallest particles. For example, the top quark was discovered at the accelerator at Fermi National Accelerator Laboratory by the CDF and D&Oslash; collaborations. Students will be able to see the results of other researchers in this field. Students can explore simulated data, and once the real data becomes available, they can enter into the CMS research effort by analyzing run data, comparing it to simulated data, and sharing it with a collaboration of their peers.</p>
 				<p>Examples of research questions correlated with the <a href="../assessment/rubric-p.html" target="poster">poster rubric</a> are:</p>
@@ -144,9 +142,9 @@ function showAll(start, finish)
  				</div>
 
 						<div id="vsId4-v" style="visibility:hidden; display: none">
-						<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
+						<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
 								</div><div id="vsId4-h" style="visibility:visible; display:">
-						<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
+						<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
 				<p>Before doing this project, students should know how to:</p> 
 				<ul>
 					<li>Make basic measurements.</li>
@@ -158,9 +156,9 @@ function showAll(start, finish)
 				<p>We provide refresher references for students who need to brush up on these skills. Students access these from "The Basics" section of the <a href="../home/index.jsp" target="show">Project Map</a>. </p>
 				</div>
 						<div id="vsId5-v" style="visibility:hidden; display: none">
-						<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
+						<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
 								</div><div id="vsId5-h" style="visibility:visible; display:">
-						<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
+						<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
 				<p>Students will know and be able to:</p>  
 				<ul>
 					<li>Content and Investigation:
@@ -212,9 +210,9 @@ function showAll(start, finish)
 				
 				</div>
 						<div id="vsId6-v" style="visibility:hidden; display: none">
-						<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
+						<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
 								</div><div id="vsId6-h" style="visibility:visible; display:">
-						<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
+						<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
 					<p>
 				A good way to begin CMS studies is to invite the class to watch <b>Cool Science</b>
 				together. Play the <a href="../home/cms-animation-wobutton.swf">Standalone Movie</a> and enlarge the window.</p>
@@ -253,22 +251,22 @@ function showAll(start, finish)
 					<H2>&nbsp;&nbsp;&nbsp;<a href="web-guide.jsp">Navigating Students Through the e-Lab</a></H2>
 
 						<div id="vsId7-v" style="visibility:hidden; display: none">
-						<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Help Desk & Sharing Ideas</h2></a>
+						<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Help Desk & Sharing Ideas</h2></a>
 								</div><div id="vsId7-h" style="visibility:visible; display:">
-						<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Help Desk & Sharing Ideas</h2></a>
+						<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Help Desk & Sharing Ideas</h2></a>
 					<p>
 				<p>
 					      <table style="margin-left:20px"><tr><td>Use the <a href="/elab/cms/teacher/forum/HelpDeskRequest.php?elab=CMS" class="external text" title="/ elab/cms/teacher/forum/HelpDeskRequest.php?elab=CMS" rel="nofollow">Help Desk Form</a> to get technical assistance from I2U2 staff. Click on the lifesaver
 					     icon in the upper right hand corner of the teacher pages when you are logged in.</td><td><img src="../graphics/Lifesaver.png"></td></tr>
-					     <tr><td colspan="2">Be sure to click on <b>Share Ideas</b> to see what other teachers have shared in the I2U2 Blog and in Facebook. They may have the answers to your questions. You may have answers to theirs! Maybe you want to collaborate on a study.</td></tr>
+					     <tr><td colspan="2">Be sure to click on <b>Share Ideas</b> to see what other teachers have shared in Facebook. They may have the answers to your questions. You may have answers to theirs! Maybe you want to collaborate on a study.</td></tr>
 					     </table>
 						</p>
 					</div>
 					
 					<div id="vsId8-v" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
+				<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
 								</div><div id="vsId8-h" style="visibility:visible; display:">
-				<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
+				<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
 						<p>
 						Relax!  The e-Lab requires Javascript and Plug-ins enabled in your Web browser. Most browsers default to these settings.</p>  
 						<ul>
@@ -288,7 +286,9 @@ function showAll(start, finish)
 		<td>
 			<div id="right">
 				<%@ include file="../include/newsbox.jsp" %>
-				<jsp:include page="../login/login-control.jsp"/>
+				<jsp:include page="../login/login-control.jsp">
+					<jsp:param name="login_as" value="teacher" />
+				</jsp:include>
 			</div>
 		</td>
 	</tr>

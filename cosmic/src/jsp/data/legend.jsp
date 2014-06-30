@@ -2,6 +2,10 @@
 	<h2>Legend</h2>
 	<table>
 		<tr>
+			<td class="dt"><img src="../graphics/view_data.gif" /></td>
+			<td class="dd">View data</td>
+		</tr>
+		<tr>
 			<td class="dt"><img src="../graphics/unstacked.gif" /></td>
 			<td class="dd">Unstacked data</td>
 		</tr>
@@ -15,11 +19,15 @@
 		</tr>
 		<tr>
 			<td class="dt"><img src="../graphics/unblessed.gif" /></td>
-			<td class="dd">Unblessed data<br />Click to view blessing charts<br />Owners of data files can bless</td>
+			<td class="dd">Unblessed data<br />Click to view blessing charts</td>
 		</tr>
 		<tr>
-			<td class="dt"><img src="../graphics/balloon_talk_gray.gif" /></td>
-			<td class="dd">Add/View comments</td>
+			<td class="dt"><img src="../graphics/balloon_talk_blue.gif" /></td>
+			<td class="dd">Data has comments - Add more/View</td>
+		</tr>
+		<tr>
+			<td class="dt"><img src="../graphics/balloon_talk_empty.gif" /></td>
+			<td class="dd">Add comments</td>
 		</tr>
 		<tr><td class="dt"> </td>
 			<td class="dd"><br />

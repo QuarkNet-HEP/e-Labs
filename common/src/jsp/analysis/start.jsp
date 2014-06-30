@@ -11,7 +11,7 @@
 <%@ page import="gov.fnal.elab.analysis.impl.vds.*" %>
 <%@ page import="gov.fnal.elab.analysis.impl.swift.*" %>
 <%@ page import="gov.fnal.elab.analysis.impl.shell.*" %>
-
+<%@ page import="gov.fnal.elab.cosmic.*" %>
 <%
 	ElabAnalysis analysis = (ElabAnalysis) request.getAttribute("elab:analysis");
 	if (analysis == null) {
@@ -22,19 +22,19 @@
 		AnalysisExecutor ex;
 		
 		if ("vds".equals(runWith)) {
-			ex = new VDSAnalysisExecutor();
+	ex = new VDSAnalysisExecutor();
 		}
 		else if ("swift".equals(runWith)) {
-			ex = new SwiftAnalysisExecutor();
+	ex = new SwiftAnalysisExecutor();
 		}
 		else if ("shell".equals(runWith)) {
-			ex = new ShellAnalysisExecutor();
+	ex = new ShellAnalysisExecutor();
 		}
 		else {
-			ex = elab.getAnalysisExecutor();
+	ex = elab.getAnalysisExecutor();
 		}
 		
-		DateFormat df = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.SSS.");
+		DateFormat df = new SimpleDateFormat("MMM dd yyyy HH:mm:ss:SSS.");
 		String outputBase = user.getDir("scratch");
 		new File(outputBase).mkdirs();
        	File tmp = File.createTempFile(df.format(new Date()), "", new File(outputBase));
@@ -62,7 +62,23 @@
 	    }
 	    run.setAttribute("continuation", cont);
 	    run.setAttribute("onError", err);
-	    
+	    run.setAttribute("type", analysis.getName());
+	    run.setAttribute("owner", user.getName());
+	    run.setAttribute("queuedAt", df.format(new Date()));
+	    boolean skip = false;
+	    if (run.getAttribute("type").equals("ProcessUpload") ||	run.getAttribute("type").equals("EventPlot") || run.getAttribute("type").equals("RawAnalyzeStudy")) {
+	    	skip = true;
+	    }
+	    if (!skip) {
+		    run.setAttribute("inputfiles", analysis.getParameterValues("rawData"));
+	    }	    
+	    String detectorid = request.getParameter("detectorid");
+	    if (detectorid == null) {
+			detectorid = "";
+	    }
+    	run.setAttribute("detectorid", detectorid);
+    	analysis.setAttribute("detectorid", detectorid);
+    	analysis.setAttribute("id", run.getId());
 	    String workflowRunMode = request.getParameter("runMode");
 		if (workflowRunMode != null) {
 			run.setAttribute("runMode", workflowRunMode);
@@ -78,12 +94,31 @@
 	    AnalysisNotifier n = AnalysisNotifierFactory.newNotifier(notifier);
 	    n.setRun(run);
 	    run.setListener(n);
-	    
-	    run.start();
-	    %>
+	    //EPeronja-04/25/2014: Added this code to complete the upload process after the split is done.
+	    if (run.getAttribute("type").equals("ProcessUpload")) {
+	    	run.setAttribute("uploadtime", analysis.getParameter("uploadtime"));
+	    	run.setAttribute("runMode", "local");
+	    	final ElabAnalysis ea = analysis;
+	    	final AnalysisRun ar = run;
+	    	ar.setDelayedCompletion(true);
+			run.setListener(new AnalysisRunListener() {
+				public void runStatusChanged(int status) {
+					if (status == AnalysisRun.STATUS_DELAYED) {
+						CosmicPostUploadTasks cput = new CosmicPostUploadTasks(ea);
+						cput.runTasks();
+						ar.setDelayedCompletion(false);
+					    ar.setEndTime(new Date());
+						ar.setStatus(AnalysisRun.STATUS_COMPLETED);
+					}
+				}
+			});
+	    }
+	    //remember to set this up in elab.properties as cosmic.analysis = queue
+    	run.start();
+%>
 	    	<jsp:include page="status.jsp">
 	    		<jsp:param name="id" value="<%= run.getId() %>"/>
-	    	</jsp:include> 
+	    	</jsp:include>
 	    <%
 	}
 %>

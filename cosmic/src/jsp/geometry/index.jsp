@@ -36,18 +36,23 @@
 
 <table border="0" id="main">
 	<tr>
-		<td id="center">
+		<td><%@ include file="list.jspf" %></td>
+		<td id="left">
 			<div id="editor">
-				<div id="title">Please choose an action to your left.</div>
-                <br>
-                <br>
-                <span style="font-size:75%">
-                    Confused? Seeing errors? Please consult the <a href="tutorial.jsp">tutorial</a>.
-                </span>
+				<div id="title" style="float: left; width:200px;">Please choose an action to your left.</div>
+	        	<div style="background-color: #CC99CC; font-size:xx-small; float:right; width: 200px; padding: 10px;">
+					<div><strong>Help</strong></div><br />
+					<div style="vertical-align: top;"><img border="0" src="../graphics/geo_new.gif" />Add a new entry for a detector</div>
+					<div style="vertical-align: top;"><img border="0" src="../graphics/geo_pencil.gif" />Edit Entry</div>
+					<div style="vertical-align: top;"><img border="0" src="../graphics/delete_x.gif" />Delete Entry</div>
+					<div style="vertical-align: top;"><img border="0" src="../graphics/saveas.gif" />Duplicate</div>	
+				</div>				
+				<br /><br /><br /><br /><br /><br /><br /><br />
+				<div id="tutorial" style="float: left;">
+	                    Confused? Seeing errors? Please consult the <a href="tutorial.jsp">tutorial</a>.
+	            </div>
             </div>
-            
-            <%@ include file="list.jspf" %>
-		</td>
+        </td>
 	</tr>
 </table>
 

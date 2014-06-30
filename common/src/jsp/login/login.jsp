@@ -2,10 +2,12 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ page import="gov.fnal.elab.ElabGroup" %>
 <%@ page import="gov.fnal.elab.usermanagement.AuthenticationException" %>
+<%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%
 	String username = request.getParameter("user");
 	String password = request.getParameter("pass");
 	String message  = request.getParameter("message");
+	request.setAttribute("username", username);
 	if (message == null) {
 		message = "Please log in to proceed";
 	}
@@ -28,7 +30,22 @@
 	if (user != null) {
 		//login successful
 		ElabGroup.setUser(session, user);
+		session.setAttribute("user", user);
 		String prevPage = request.getParameter("prevPage");
+		if (username.equals("admin")) {
+			prevPage = "../admin/index.jsp";
+		}
+		//get these numbers now and save them to the session
+		if (elab.getName().equals("cosmic")) {
+			DataCatalogProvider dcp = elab.getDataCatalogProvider();
+			int fileCount = dcp.getUniqueCategoryCount("split");
+			int schoolCount = dcp.getUniqueCategoryCount("school");
+			int stateCount = dcp.getUniqueCategoryCount("state");		
+			session.setAttribute("cosmicFileCount", String.valueOf(fileCount));
+			session.setAttribute("cosmicSchoolCount", String.valueOf(schoolCount));
+			session.setAttribute("cosmicStateCount", String.valueOf(stateCount));
+			
+		}
 		String redirect = prevPage; 
 		if(prevPage == null) {
     		prevPage = elab.getProperties().getLoggedInHomePage();
@@ -160,6 +177,7 @@
 				<div id="login-form-contents">
 					<%@ include file="login-form.jsp" %>
 				</div>
+
 				<div id="login-form-text">
 					<p>
 						<a href="<%= elab.getGuestLoginLink(request) %>">Login as guest</a>

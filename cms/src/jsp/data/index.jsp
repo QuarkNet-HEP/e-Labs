@@ -35,20 +35,8 @@
 					<p>
 						<a href="../analysis-calibration/"><b>Calibration Studies:</b></a> Physicists use mass plots
 						to determine the mass of particles. They know their detector is working correctly if the mass they measure agrees with the known mass of the particle.</p>
-						<p>Use CMS simulated data, also called Monte Carlo data, to familiarize yourself with mass plots. Once you feel confident you understand these plots, go to the Exploration Studies
-						to analyze real data and confirm that the detector is working properly.</p>
-						
-						
-						<p><i>Coming Soon:</i></p>
-							<p>Currently Calibration Studies only allows access to simulated data. In the future, you will be
-							able to use this tool with real data.</p>
-						<%-- <p><a href="../analysis-calibration">Confirmation of the Z and J/Psi masses</a>
-							- Confirm that the detector is able to measure the Upsilon and J/Psi masses.</p>  --%>	
+						<p>Use CMS data to analyze real data and confirm that the detector is working properly.</p>
 
-
-					<p>	<a href="../analysis-exploration"><b>Exploration Studies:</b></a> Use CMS data to perform a variety of analyses including confirmation of the Z and J/Psi mass.</p>
-							
-							
 						<div style="margin-left: 10px">
 							<p><b>Confirmation of Z mass</b>
 							- Confirm that the detector is able to measure the Z mass.</p></div>
@@ -56,6 +44,14 @@
 						<div style="margin-left: 10px">
 							<p><b>Confirmation of J/Psi mass</b>
 							- Confirm that the detector is able to measure the J/Psi mass.</p></div>
+
+						<div style="margin-left: 10px">
+							<p><b>Confirmation of Upsilon mass</b>
+							- Confirm that the detector is able to measure the Upsilon mass.</p></div>
+
+					<p>	<a href="../analysis-exploration"><b>Exploration Studies:</b></a> Use CMS data to perform a variety of analyses.</p>
+							
+							
 
 						<p><i>Coming Soon:</i></p>
 						<div style="margin-left: 10px">

@@ -34,8 +34,8 @@ public class ElabFAQ {
      * 
      * @throws ElabException
      */
-    public Collection entries() throws ElabException {
-        ArrayList list = new ArrayList();
+    public Collection<String> entries() throws ElabException {
+        ArrayList<String> list = new ArrayList<String>();
 
         And q = new And();
         q.add(new Equals("type", "FAQ"));
@@ -49,12 +49,9 @@ public class ElabFAQ {
             throw new ElabException(e);
         }
         ResultSet rs = p.runQuery(q);
-
-        Iterator i = rs.iterator();
-        while (i.hasNext()) {
-            CatalogEntry e = (CatalogEntry) i.next();
-            String desc = (String) e.getTupleValue("description");
-            list.add(desc);
+        
+        for (CatalogEntry ce : rs) {
+        	list.add((String) ce.getTupleValue("description"));
         }
 
         return list;

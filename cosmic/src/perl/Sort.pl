@@ -35,6 +35,16 @@ else{
 	$col2 = "";
 }
 
+# apparently the temp files for sort can balloon bigger than /tmp
+# hardcode in (for now) the scratch directory. Eventually we need 
+# to pass this as a proper argument
+if(-d "/scratch/tmp") {
+	$tmpdircmd = "-T /scratch/tmp";
+}
+else {
+	$tmpdircmd = ""
+}
+
 ($fileinput, $outputfile, $column1) = @ARGV;
 if(-x "/opt/sort/sort-2.0/bin/sort"){
     $sort_file = "/opt/sort/sort-2.0/bin/sort";
@@ -42,7 +52,7 @@ if(-x "/opt/sort/sort-2.0/bin/sort"){
 else{
     $sort_file = "sort";
 }
-`$sort_file -n -k $column1,$column1 $col2 -o $outputfile $fileinput`;
+`$sort_file $tmpdircmd -n -k $column1,$column1 $col2 -o $outputfile $fileinput`;
 #since sort removes comments, we have to re-add the md5 header
 #3-21-05: removed since Tie::File doesn't work on blacknuss
 #use Tie::File;

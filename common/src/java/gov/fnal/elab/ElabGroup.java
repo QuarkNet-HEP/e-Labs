@@ -29,7 +29,7 @@ public class ElabGroup implements Comparable<ElabGroup> {
 
     private String role, userArea, userDirURL, userDir, name,
             webapp, email;
-    private boolean firstTime, guest, survey;
+    private boolean firstTime, guest, survey, active, cosmic_all_data_access;
     private Elab elab;
     private String year, city, state, school, teacher;
     private String namelc;
@@ -118,6 +118,21 @@ public class ElabGroup implements Comparable<ElabGroup> {
         this.survey = survey;
     }
 
+    public boolean getActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+    
+    public boolean getCosmicAllDataAccess() {
+    	return cosmic_all_data_access;
+    }
+    
+    public void setCosmicAllDataAccess(boolean cosmic_all_data_access) {
+    	this.cosmic_all_data_access = cosmic_all_data_access;
+    }
     /**
      * Returns the ID of the teacher that this user belongs to
      */
@@ -141,9 +156,13 @@ public class ElabGroup implements Comparable<ElabGroup> {
 
     public void setUserArea(String userArea) {
         this.userArea = userArea;
+        System.out.println("userarea: "+this.userArea);
+        System.out.println("elab: "+elab.toString());
         if (elab != null) {
             this.userDirURL = elab.getProperties().getUsersDir() + '/'
                     + userArea + '/' + elab.getName();
+            System.out.println("elab props:" + elab.getProperties().getUsersDir());
+            System.out.println("elab name:" + elab.getName());
             if (elab.getServletContext() != null) {
                 this.userDir = elab.getServletContext().getRealPath(userDirURL);
             }
@@ -446,6 +465,12 @@ public class ElabGroup implements Comparable<ElabGroup> {
         sb.append(", ");
         sb.append("survey=");
         sb.append(survey);
+        sb.append(", ");
+        sb.append("cosmic_all_data_access=");
+        sb.append(cosmic_all_data_access);
+        sb.append(", ");
+        sb.append("active=");
+        sb.append(active);
         sb.append(", ");
         sb.append("newsurvey=");
         sb.append(newSurveyId);

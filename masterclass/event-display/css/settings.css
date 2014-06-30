@@ -1,9 +1,12 @@
 #settings {
-	width: 400px;
+	width: 600px;
+	height: 400px;
+	left: 200px;
+	top: 100px;
 }
 
-#settings p {
-	padding: 8px;
+.settings-section {
+	margin-left: 16px;
 }
 
 .radio-group {

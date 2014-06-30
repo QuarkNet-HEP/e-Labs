@@ -88,6 +88,16 @@
 	    Collection cids = cp.getDetectorIds(group);
 	    request.setAttribute("detectorids", ElabUtil.join(cids, ", "));
 	}
+	
+	//display only active groups
+	ArrayList<String> activeGroups = new ArrayList<String>();
+	for (Iterator ite = user.getGroups().iterator(); ite.hasNext();) {
+		ElabGroup g = (ElabGroup) ite.next();
+		if (g.getActive()) {
+			activeGroups.add(g.getName());
+		}
+	}
+	request.setAttribute("activeGroups", activeGroups);	
 %>
 <p>Every <a HREF="javascript:glossary('DAQ',130)">DAQ</a> board has a detector id (DAQ number) based on the serial number on the board. Students select it when they upload
 data. To find it, type "SN" when connected with your detector.</p>
@@ -95,10 +105,10 @@ data. To find it, type "SN" when connected with your detector.</p>
 	<p id="choose-group">
 		<c:choose>
 			<c:when test="${not empty group}">
-				<e:trselect name="chooseGroup" valueList="${user.groupNames}" labelList="${user.groupNames}" default="${group.name}" />
+				<e:trselect name="chooseGroup" valueList="${activeGroups}" labelList="${activeGroups}" default="${group.name}" />
 			</c:when>    
 			<c:otherwise>
-				<e:trselect name="chooseGroup" valueList="${user.groupNames}" labelList="${user.groupNames}" default="${group.name}" />
+				<e:trselect name="chooseGroup" valueList="${activeGroups}" labelList="${activeGroups}" default="${group.name}" />
 			</c:otherwise>
         </c:choose>
         <input type="submit" name="submit" value="Show Group Info"/>

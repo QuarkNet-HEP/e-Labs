@@ -31,11 +31,11 @@
 		<link rel="stylesheet" type="text/css" href="/elab/cosmic/css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="/elab/cosmic/css/teacher.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
-	<link type="text/css" href="http://www.i2u2.org/elab/cosmic/include/jquery/css/default/jquery-ui-1.7.custom.css" rel="Stylesheet" />	
-	<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/jquery/js/jquery-1.6.1.min.js"></script>
-	<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/jquery/js/jquery-ui-1.7.custom.min.js"></script>
-	<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/jquery/js/jquery.event.hover-1.0.js"></script>
-	<script type="text/javascript" src="http://www.i2u2.org/elab/cosmic/include/elab.js"></script>
+	<link type="text/css" href="/elab/cosmic/include/jquery/css/ui-lightness/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />	
+	<script type="text/javascript" src="/elab/cosmic/include/jquery/js/jquery-1.4.3.min.js"></script>
+	<script type="text/javascript" src="/elab/cosmic/include/jquery/js/jquery-ui-1.7.3.custom.min.js"></script>
+	<script type="text/javascript" src="/elab/cosmic/include/jquery/js/jquery.event.hover-1.0.js"></script>
+	<script type="text/javascript" src="/elab/cosmic/include/elab.js"></script>
 
 <script type="text/javascript">
 	window.onload=function(){
@@ -93,18 +93,16 @@ function showAll(start, finish)
 		</td>
 		
 		<td><div id="expandHeading">
+				<p>Getting ready for the Next Generation Science Standards? This e-Lab meets ALL NGSS science practices. See Standards link in the menu for listing.</p>
 				<P>Click on each topic or its arrow to expand it. Click again to collapse it. Click on <b>Expand All Topics</b> or <b>Collapse All Topics</b> to expand or collapse all the content on the page. These
 				only work when you have Javascript enabled in your web browser.
 				<div id="all-v" style="text-align:center; visibility:visible; display:"><a href="#" onclick="HideShow('all-v');HideShow('all-h');showAll(1,9);return false;">Expand All Topics</a></div>
 				<div id="all-h" style="text-align:center; visibility:hidden; display: none"><a href="#" onclick="HideShow('all-v');HideShow('all-h');hideAll(1,9);return false;">Collapse All Topics</a></div>
-				
-
-
 
 				<div id="vsId1-v" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
+				<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
 								</div><div id="vsId1-h" style="visibility:visible; display:">
-				<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
+				<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
 						<p>
 						Students can collaboarate to analyze seismic data from  LIGO, 
 					the Laser Interferometer Gravitational-wave Observatory. From start to finish 
@@ -133,9 +131,9 @@ function showAll(start, finish)
 					</div>
 					
 				<div id="vsId2-v" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Introduction to LIGO</h2></a>
+				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Introduction to LIGO</h2></a>
 									</div><div id="vsId2-h" style="visibility:visible; display:">
-				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Introduction to LIGO</h2></a>
+				<a href="#" onclick="HideShow('vsId2-v');HideShow('vsId2-h');return false;"><h2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Introduction to LIGO</h2></a>
 						<p>
 				<p>
 					LIGO's huge laser interferometers in Washington State and in 
@@ -162,9 +160,9 @@ function showAll(start, finish)
 					</div>
 				
 				<div id="vsId3-v" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Good Research Questions</h2></a>
+				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Good Research Questions</h2></a>
 									</div><div id="vsId3-h" style="visibility:visible; display:">
-				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Good Research Questions</h2></a>
+				<a href="#" onclick="HideShow('vsId3-v');HideShow('vsId3-h');return false;"><h2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Good Research Questions</h2></a>
 				<p>
 					Developing a good research question is one of the most challenging 
 					parts of the e-Lab for many students. A good research question provides 
@@ -181,9 +179,9 @@ function showAll(start, finish)
 
 					</div>
 						<div id="vsId4-v" style="visibility:hidden; display: none">
-						<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
+						<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
 								</div><div id="vsId4-h" style="visibility:visible; display:">
-						<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
+						<a href="#" onclick="HideShow('vsId4-v');HideShow('vsId4-h');return false;"><h2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Student Prior Knowledge and Skills</h2></a>
 						<p>
 					Before doing the LIGO e-Lab, students should be comfortable with these 
 					skills:</p>
@@ -200,9 +198,9 @@ function showAll(start, finish)
 					</div>
 					
 						<div id="vsId5-v" style="visibility:hidden; display: none">
-						<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
+						<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
 								</div><div id="vsId5-h" style="visibility:visible; display:">
-						<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
+						<a href="#" onclick="HideShow('vsId5-v');HideShow('vsId5-h');return false;"><h2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Learner Outcomes and Assessment</h2></a>
 						<p>
 					Here are the e-Lab outcomes that students must demonstrate:</p> 
 					<ul>
@@ -271,11 +269,20 @@ Review students' evidence of what they know/understand and reflections on their 
 					</div>
 				
 						<div id="vsId6-v" style="visibility:hidden; display: none">
-						<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
+						<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
 								</div><div id="vsId6-h" style="visibility:visible; display:">
-						<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
-						<p>
-						A good way to begin LIGO studies is to invite the class to watch Cool Science together. Play the <a href="../home/ligo.swf" target="movie">Standalone Movie</a> and enlarge the window.</p>
+						<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
+						<p>Are you teaching a course that involves seismology content?  Consider using the I2U2 seismology instructional unit as a means of addressing seismology learning objectives
+						while providing a natural way for students to engage in the LIGO e-Lab.  The standards-based instructional unit includes plans for approximately eight seismology lessons
+						followed by seven lessons that utilize the e-Lab.  Download the instructional unit as a 
+						<a href="#" onclick="javascript:window.open('SeismicUnit-web.pdf', 'unit', 'width=800,height=659, resizable=1, scrollbars=1');return false;">PDF File</a> 
+						or as a  <a href="#" onclick="javascript:window.open('SeismicUnit.doc', 'unit', 'width=800,height=659, resizable=1, scrollbars=1');return false;">Word Document</a>.</p>
+						<p>Some teachers will choose to use the seismology intructional unit and will introduce the
+						LIGO e-Lab in the context of the unit.  Other teachers, such as physics teachers, might
+						not utilize the instructional unit and will come to the LIGO e-Lab from a different
+						direction, such as a unit on wave behavior or on science inquiry skills.  In either
+						case, a good way to begin the LIGO e-Lab is to invite the class to watch Cool Science
+						together.  Play the <a href="../home/ligo.swf" target="movie">Standalone Movie</a> and enlarge the window.</p>
 						<p>Teachers can help students get started in the e-Lab by asking broad questions in class discussion.  These are not research questions.  Their intent would be to motivate kids to start thinking about good research questions.  The following questions are general and would require no specific prior experience:</p>
 						<ul>
 						<li> Make a list of different types of events that could make the ground shake.  Which ones are the most interesting to you (the student)?
@@ -311,14 +318,14 @@ Review students' evidence of what they know/understand and reflections on their 
 					
 					
 					<div id="vsId7-v" style="visibility:hidden; display: none">
-						<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Help Desk & Sharing Ideas</h2></a>
+						<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Help Desk & Sharing Ideas</h2></a>
 								</div><div id="vsId7-h" style="visibility:visible; display:">
-						<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Help Desk & Sharing Ideas</h2></a>
+						<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Help Desk & Sharing Ideas</h2></a>
 					<p>
 				<p>
 					      <table style="margin-left:20px"><tr><td>Use the <a href="/elab/cms/teacher/forum/HelpDeskRequest.php?elab=CMS" class="external text" title="/elab/ligo/teacher/forum/HelpDeskRequest.php?elab=LIGO" rel="nofollow">Help Desk Form</a> to get technical assistance from I2U2 staff. Click on the lifesaver
 					     icon in the upper right hand corner of the teacher pages when you are logged in.</td><td><img src="../graphics/Lifesaver.png"></td></tr>
-					     <tr><td colspan="2">Be sure to click on <b>Share Ideas</b> in the menu above to see what other teachers have shared in the I2U2 Blog and in Facebook. They may have the answers to your questions. You may have answers to theirs! Maybe you want to collaborate on a study.</td></tr>
+					     <tr><td colspan="2">Be sure to click on <b>Share Ideas</b> in the menu above to see what other teachers have shared in Facebook. They may have the answers to your questions. You may have answers to theirs! Maybe you want to collaborate on a study.</td></tr>
 					     </table>
 						</p>
 					</div>
@@ -329,9 +336,9 @@ Review students' evidence of what they know/understand and reflections on their 
 
 					
 					<div id="vsId8-v" style="visibility:hidden; display: none">
-				<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
+				<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
 								</div><div id="vsId8-h" style="visibility:visible; display:">
-				<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="http://www.i2u2.org/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
+				<a href="#" onclick="HideShow('vsId8-v');HideShow('vsId8-h');return false;"><H2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> e-Lab Technology Requirements</H2></a>
 						<p>
 						Relax!  The e-Lab requires Javascript and Plug-ins enabled in your Web browser. Most browsers default to these settings.</p>  
 						<ul>
@@ -351,7 +358,9 @@ Review students' evidence of what they know/understand and reflections on their 
 		<td>
 			<div id="right">
 				<%@ include file="../include/newsbox.jsp" %>
-				<jsp:include page="../login/login-control.jsp"/>
+				<jsp:include page="../login/login-control.jsp">
+					<jsp:param name="login_as" value="teacher" />
+				</jsp:include>
 			</div>
 		</td>
 	</tr>

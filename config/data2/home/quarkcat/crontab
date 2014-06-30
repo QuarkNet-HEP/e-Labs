@@ -1,0 +1,10 @@
+# m h  dom mon dow   command
+
+# LIGO data import
+0 0 * * * rsync -a --password-file=/home/quarkcat/.rsyncpw i2u2data@terra.ligo.caltech.edu::ligo/trend/second-trend/ /disks/i2u2/ligo/data/frames/trend/second-trend
+0 0 * * * rsync -a --password-file=/home/quarkcat/.rsyncpw i2u2data@terra.ligo.caltech.edu::ligo/trend/minute-trend/ /disks/i2u2/ligo/data/frames/trend/minute-trend
+#30 0 * * * /usr/local/ligotools/i2u2tools/bin/ImportData /disks/i2u2/ligo/data/frames/trend /usr/local/ligotools/ligotools /disks/i2u2/ligo/data/streams
+
+# Purge Cosmic scratch files greater than 30 days old
+0 2 * * * find /disks/i2u2/cosmic/users/ -maxdepth 9 -mindepth 9 -type d -mtime +7 -wholename "*scratch/*" -exec rm -r {} \;
+

@@ -71,7 +71,7 @@
 								</td>
 								<td class="form-control">
 									<e:trinput type="text" name="plot_lowY" size="8" maxlength="8"
-										onError="Must be an integer"/>
+										default="0" onError="Must be an integer"/>
 								</td>
 							</tr>
 							<tr>

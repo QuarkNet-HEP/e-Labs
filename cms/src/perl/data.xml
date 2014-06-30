@@ -3,7 +3,7 @@
 
 <root type="HCAL Test Beam">
 
-  <dataset name="tb04" location="/disks/i2u2-dev/cms/data" global_selection="beam==1">
+  <dataset name="tb04" location="/home/mike/work/i2u2/cms-data" global_selection="beam==1">
         <runs>
           <type beam="muon" />
           <type beam="electron" />

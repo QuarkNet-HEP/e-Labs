@@ -27,13 +27,13 @@
 					<%@ include file="../include/nav-rollover.jspf" %>
 				</div>
 			</div>
-			<script type="text/javascript" src="../include/jquery/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
+			<script type="text/javascript" src="../include/jeegoocontext/jquery.jeegoocontext.min.js"></script>	
 		    <script type="text/javascript" src="../analysis/plot-params.js"></script>
 		    <script type="text/javascript" src="../analysis-calibration/plot-params.js"></script>
 			<div id="content">
 			
 <a class="help-icon" href="#" onclick="openPopup(event, 'help');">Help <img src="../graphics/help.png" /></a>
-<h1>Plot selection - ${param.analysisName}</h1>
+<h1>Plot Selection - Calibration</h1>
 <script>
 	initlog();
 	log("<span class='red'>dataset: ${param.dataset}</span>");
@@ -42,6 +42,15 @@
 	log("<span class='red'>plots: ${param.plots}</span>");
 	log("<span class='red'>commbine: ${param.combine}</span>");
 </script>
+ 
+<p>An important part of the early scientific activity at CMS is calibrating the new detector.  In this process, physicists use the detector to confirm measurements of properties (such as mass) of well-known particles.</p> 
+<p>
+The particles whose properties we want to confirm with CMS don't live long enough to be directly observed; we measure their properties indirectly by looking at their decay products (which in this case are pairs of muons.)  Below are similarly-charged (+,+ and -, - ) and oppositely charged (+,-) pairs of muons. You can use what you've learned about conservation rules to determine properties of some parent particles of these muon pairs.
+</p>
+<p>
+First, a definition:  because almost all muons pass completely through the detector, the best sign of being a muon is to have been detected in every major subsystem: tracker, Ecal, Hcal, and muon systems. Those muons are called "global" muons; other muons are detected but not throughout the detector.  Select by checkbox datasets consisting of pairs of muons that are both global ("two global"), only one global, or neither global ("no global"), and opposite signed or like signed, from the options below.
+</p>
+
  
 <form action="../data/plot.jsp">
 <e:trinput type="hidden" name="plots" id="plots-input" />
@@ -120,12 +129,12 @@
 			<table border="0" width="100%" id="step-buttons">
 				<tr>
 					<td>
-						<input type="submit" name="back" value="&lt; Data Selection" />
+						&nbsp;
 					</td>
 					<td width="100%">
 					</td>
 					<td>
-						<input id="plot-submit" type="submit" name="forward" value="Plot >" disabled="true" />
+						<input id="plot-submit" type="submit" name="forward" value="Plot &rarr;" disabled="disabled" />
 					</td>
 				</tr>
 			</table>			

@@ -56,7 +56,7 @@ public class Geometries implements Serializable {
         addGeometry(new Geometry(elab.getProperties().getDataDir(), detectorID));
         readOnly = true;
     }
-    
+
     public Geometries(Elab elab, ElabGroup group) throws ElabException {
         this.reset();
         Connection conn = null;
@@ -84,15 +84,15 @@ public class Geometries implements Serializable {
     }
 
     public void reset() {
-        geometries = new TreeMap();
-        changedGeometries = new HashSet();
+        geometries = new TreeMap<Integer, Geometry>();
+        changedGeometries = new HashSet<Geometry>();
     }
 
-    public void setChangedGeometries(HashSet h) {
+    public void setChangedGeometries(HashSet<Geometry> h) {
         changedGeometries = h;
     }
 
-    public HashSet getChangedGeometries() {
+    public HashSet<Geometry> getChangedGeometries() {
         return changedGeometries;
     }
 
@@ -114,7 +114,6 @@ public class Geometries implements Serializable {
         return geometries.get(detectorID);
     }
 
-    
     public void addGeoEntry(int detectorID, GeoEntryBean geb) throws ElabJspException {
         Geometry g = geometries.get(detectorID);
         if (g == null) {
@@ -159,13 +158,13 @@ public class Geometries implements Serializable {
     }
 
     public String checkMetadata(DataCatalogProvider dcp, GeoEntryBean geoEntry)
-    		throws ElabException {
-    	String message = "";
-    	for (Geometry g : changedGeometries) {
-    		message = g.checkMetadata(dcp, geoEntry);
-    	}
-    	return message;
-    }
+               throws ElabException {
+        String message = "";
+        for (Geometry g : changedGeometries) {
+              message = g.checkMetadata(dcp, geoEntry);
+        }
+        return message;
+    }//end of checkMetadata
     
     public String dump() {
         StringBuilder sb = new StringBuilder();

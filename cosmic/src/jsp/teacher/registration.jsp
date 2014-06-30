@@ -1,7 +1,19 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/teacher-login-required.jsp" %>
 <%@ page import="gov.fnal.elab.*" %>
-
+<%@ page import="gov.fnal.elab.util.URLEncoder" %>
+<%
+String subject = URLEncoder.encode(elab.getName() + " elab account request");
+String body = URLEncoder.encode("Please complete each of the fields below and send this email to be registered " 
+	+ "as an e-Labs teacher. You will receive a response from the e-Labs team by the end of the business "
+	+ "day.\n\n"
+	+ "First Name:\n\n"
+	+ "Last Name:\n\n"
+	+ "City:\n\n"
+	+ "State:\n\n"
+	+ "School:\n");
+String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
+%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -28,8 +40,7 @@
 			<div id="content">
 
 <h1>e-Lab Registration</h1>
-
-<table border="0" id="registration-links-table">
+<table border="0" id="registration-links-table"  cellspacing="10" cellpadding="15">
 	<%--
 	<tr>
 		<td valign="top" width="40%">
@@ -45,18 +56,37 @@
 		</td>
 	</tr>
 	 --%>
+	 <tr>
+	 	<td colspan="2"><i>No longer at the same school? Contact <a href="<%= mailURL %>">e-labs@fnal.gov</a> for a new account.</i><br /><br /><br /></td>
+	 </tr>
+	<tr>
+		<td  valign="top" width="40%">
+			<a href="email-update.jsp">Change your e-mail address.</a>
+		</td>
+		<td valign="top">
+			Use this link to update your e-mail address.
+		</td>
+	</tr>
 	<tr>
 		<td  valign="top" width="40%">
 			<a href="register-students.jsp">Register student research groups.</a>
 		</td>
 		<td valign="top">
-			Use this page to register less than ten students. You can link new students to existing 
+			Use this link to register less than ten students. You can link new students to existing 
 			research groups or you can create new research groups for students.
 		</td>
 	</tr>
 	<tr>
 		<td  valign="top">
-			<a href="update-groups.jsp">Update your previously created groups.</a>
+			<a href="list-groups.jsp">View research groups.</a>
+		</td>
+		<td valign="top">
+			View a list of all active groups and student members.
+		</td>
+	</tr>
+	<tr>
+		<td  valign="top">
+			<a href="update-groups.jsp">Update your research groups including passwords.</a>
 		</td>
 		<td valign="top">
 			Update your research groups.

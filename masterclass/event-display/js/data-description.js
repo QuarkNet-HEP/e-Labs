@@ -17,20 +17,15 @@ var d_descr = {
 		fn: makeDetectorPiece, color: [0, 1, 1, 0.5], fill: [0, 1, 1, 0.5], lineWidth: 0.5},
 	"Tracker3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "Tracker",
 		fn: makeWireframe, color: [1, 1, 0, 0.5], lineWidth: 0.5},
-
-	"TrackerBarrel3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "Tracker Barrels",
-		fn: makeModelTrackerBarrel, color: [1, 1, 0, 0.3], lineWidth: 1.0},
-
-	"TrackerEndcap3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "Tracker Endcaps",
-		fn: makeModelTrackerEndcap, color: [1, 1, 0, 0.3], lineWidth: 0.5},
-
+	"Tracker3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "Tracker",
+		fn: makeModelTracker, color: [1, 1, 0, 0.3], lineWidth: 0.5},
 	"EcalBarrel3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "ECAL Barrel",
 		fn: makeWireframe, color: [0, 1, 1, 0.5], lineWidth: 0.5},
 	"EcalBarrel3D_MODEL": {type: WIREFRAME, on: true, group: "Detector Model", desc: "ECAL Barrel",
 		fn: makeModelEcalBarrel, color: [0, 1, 1, 0.5], lineWidth: 0.5},
-	"EcalEndcap3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "ECAL Endcaps",
+	"EcalEndcap3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "ECAL Endcap",
 		fn: makeWireframe, color: [0, 1, 1, 0.5], lineWidth: 0.5},
-	"EcalEndcap3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "ECAL Endcaps",
+	"EcalEndcap3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "ECAL Endcap",
 		fn: makeModelEcalEndcap, color: [0, 1, 1, 0.5], lineWidth: 0.5},
 	"EcalPreshower3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "ECAL Preshower",
 		fn: makeModelEcalPreshower, color: [1, 0, 0, 0.5], lineWidth: 0.5},
@@ -38,9 +33,9 @@ var d_descr = {
 		fn: makeWireframe, color: [0.8, 1, 0, 0.5], lineWidth: 0.5},
 	"HcalBarrel3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "HCAL Barrel",
 		fn: makeModelHcalBarrel, color: [0.8, 1, 0, 0.5], lineWidth: 0.5},
-	"HcalEndcap3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "HCAL Endcaps",
+	"HcalEndcap3D_VS": {type: WIREFRAME, on: false, group: "Detector", desc: "HCAL Endcap",
 		fn: makeWireframe, color: [0.8, 1, 0, 0.5], lineWidth: 0.5},
-	"HcalEndcap3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "HCAL Endcaps",
+	"HcalEndcap3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "HCAL Endcap",
 		fn: makeModelHcalEndcap, color: [0.8, 1, 0, 0.5], lineWidth: 0.5},
 	"HcalOuter3D_VS": {type: WIREFRAME, on: true, group: "Detector", desc: "HCAL Outer",
 		fn: makeWireframe, color: [0.8, 1, 0, 0.5], lineWidth: 0.5},
@@ -63,6 +58,7 @@ var d_descr = {
 	"RPC3D_MODEL": {type: WIREFRAME, on: false, group: "Detector Model", desc: "Resistive Plate Chambers (muon)",
 		fn: makeRPCs, color: [0.8, 1, 0, 0.4], lineWidth: 0.8},
 		
+		
 	"Tracks_V1": { type: PATHS, on: true, group: "Tracking", desc: "Tracks (reco.)",
 		dataref: "Extras_V1", assoc: "TrackExtras_V1",
 		fn: makeTrackCurves2, color: [1, 0.7, 0, 0.7], lineCaps: "square", lineWidth: 2 },
@@ -82,7 +78,7 @@ var d_descr = {
 		
 	"DTDigis_V1": { type: LINE, on: false, group: "Muon", desc: "DT Digis",
 		fn: makeDTDigis, color: [0, 1, 0, 1], lineWidth: 1 },
-	"DTRecHits_V1": { type: LINE, false: true, group: "Muon", desc: "DT Rec. Hits",
+	"DTRecHits_V1": { type: LINE, on: true, group: "Muon", desc: "DT Rec. Hits",
 		fn: makeDTRecHits, color: [0, 1, 0, 1], lineWidth: 2 },
 	"DTRecSegment4D_V1": { type: LINE, on: true, group: "Muon", desc: "DT Rec. Segments (4D)",
 		fn: makeDTRecSegments, color: [1, 1, 0, 1], lineWidth: 3 },
@@ -141,14 +137,13 @@ var d_descr = {
 		dataref: "PFTrajectoryPoints_V1", assoc: "PFBremTrajectoryPoints_V1", 
 		fn: makeTrackPoints, color: [0, 1, 0.2, 1], lineCaps: "+", lineWidth: 1},
 	*/
+
       
 	"GsfElectrons_V1": { type: PATHS, on: true, group: "Physics Objects", desc: "Electron Tracks (GSF)",
 		dataref: "Extras_V1", assoc: "GsfElectronExtras_V1", 
 		fn: makeTrackCurves2, color: [1, 0.9, 0, 0.9], lineCaps: "square", lineWidth: 2},
 
-	"Photons_V1": { type: LINE, on: false, group: "Physics Objects", desc: "Photons (Reco)",
-		 fn: makePhotons, color: [0.8, 0.8, 0, 1], lineWidth: 2},
-	
+
 	"TrackerMuons_V1": { type: TRACK, on: true, group: "Physics Objects", desc: "Tracker Muons (Reco)",
 		dataref: "Points_V1", assoc: "MuonTrackerPoints_V1", 
 		fn: makeTrackPoints, color: [1, 0, 0.2, 1], lineCaps: "-", lineWidth: 2},

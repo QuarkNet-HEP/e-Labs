@@ -10,7 +10,20 @@
    		throw new ElabJspException("Missing id parameter");
 	}
 	else {
-		results = AnalysisManager.getAnalysisRun(elab, user, id);
+		// ugly, ugly hack while I figure out how the real cause of this problem. 
+		id = id.replace("?", "");
+	    String userParam = (String) session.getAttribute("userParam");
+	    ElabGroup auser = user;
+	    if (userParam != null) {
+	        if (!user.isAdmin()) {
+	        	throw new ElabJspException("You must be logged in as an administrator" 
+	            	+ "to see the status of other users' analyses");
+	        }
+	        else {
+	            auser = elab.getUserManagementProvider().getGroup(userParam);
+	        }
+	    }
+		results = AnalysisManager.getAnalysisRun(elab, auser, id);
 		if (results == null) {
 		    throw new ElabJspException("Invalid analysis id: " + id);
 		}

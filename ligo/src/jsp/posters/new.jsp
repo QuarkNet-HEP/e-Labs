@@ -45,8 +45,13 @@
 		<td id="center">
 			<h1>Make or edit your poster</h1>
 			
-<%@ include file="new.jspf" %>
-
+<% 
+//EPeronja-05/07/2014: guest user is restricted :)
+if (user.isGuest())  { %>
+	<%@ include file="guest-poster-message.jsp" %>
+<% } else { %>
+	<%@ include file="new-content.jsp" %>
+<% } %>
 				<hr />
 		</td>
 	</tr>

@@ -23,7 +23,7 @@
 					int figureCount = 10;
 					if (entry != null) {
 						//check the type
-						if (entry.getTupleValue("type").equals("plot")) {
+						if (entry.getTupleValue("type").equals("plot") || entry.getTupleValue("type").equals("uploadedimage")) {
 							for (int x = 0; x < figureCount; x++ ) {
 								int figNo = x + 1;
 								int count = DataTools.checkPlotDependency(elab, name, figNo);
@@ -34,9 +34,33 @@
 						}
 					    //EPeronja-06/21/2013: 222-Allow Admin user to delete any poster or plot
 						if (entry.getTupleValue("type").equals("split")) {
-							int count = ElabVDS.checkFileDependency(name);
+							//int count = ElabVDS.checkFileDependency(name);
+							int count = DataTools.checkFileDependency(elab, name);
 							if (count > 0) {
-							    throw new ElabJspException(" is being used in a plot/analysis. Cannot be deleted.");								
+								String[] plots = DataTools.getFileDependency(elab, name);
+								StringBuilder sb = new StringBuilder();
+									if (plots != null) {
+										sb.append("Files:");
+										for(int y = 0; y < plots.length; y++) {
+											sb.append("-"+plots[y]);
+										}
+									}
+							    throw new ElabJspException(" is being used in a plot/analysis. Cannot be deleted." + sb.toString());								
+							}
+						}
+						//EPeronja-02/08/2014: Check benchmark dependency
+						if (entry.getTupleValue("type").equals("split")) {
+							int count = DataTools.checkBenchmarkDependency(elab, name);
+							if (count > 0) {
+								String[] plots = DataTools.getBenchmarkDependency(elab, name);
+								StringBuilder sb = new StringBuilder();
+									if (plots != null) {
+										sb.append("Files:");
+										for(int y = 0; y < plots.length; y++) {
+											sb.append("-"+plots[y]);
+										}
+									}
+							    throw new ElabJspException(" is being used as a benchmark file. Cannot be deleted." + sb.toString());								
 							}
 						}
 					}//end of checking dependencies
@@ -48,8 +72,10 @@
 						    throw new ElabJspException("no user associated with the file");
 						}
 						ElabGroup posterUser = elab.getUserManagementProvider().getGroup(posterUserName);
-						if (!user.getName().equals(posterUser.getName())) {
-						    throw new ElabJspException("you are not the owner of the file");
+						if (!user.getName().equals("admin")) {
+							if (!user.getName().equals(posterUser.getName())) {
+							    throw new ElabJspException("you are not the owner of the file");
+							}
 						}
 						ok.add(entry);
 					}
