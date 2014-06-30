@@ -40,10 +40,11 @@ table.outerTable {
 }
 
 div.leftMenu {
-	height:700px; 
-	width:150px; 
+	height: 500px; 
+	width: 150px; 
 	position: fixed; 
-	overflow:auto;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 div.separator {

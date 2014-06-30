@@ -42,3 +42,14 @@ function newRequestObject() {
 		return new XMLHttpRequest();
 	}
 }
+
+window.onload=function(){
+	if (document.getElementById("instructions-h") != null  && document.getElementById("instructions-v") != null) {
+		hideObj = document.getElementById("instructions-h").style;
+		showObj = document.getElementById("instructions-v").style;
+		hideObj.visibility = "hidden";
+		hideObj.display = "none";
+		showObj.visibility = "visible";
+		showObj.display = "";
+	}
+}

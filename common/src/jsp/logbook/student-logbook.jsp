@@ -304,7 +304,7 @@
 										<tr>
 											<td valign="center" align="left">
 												<a href="student-logbook.jsp"><font face="Comic Sans MS">
-												<img src="../graphics/logbook_view.gif" border="0" " align="middle" alt=""> All Entries</font></a>
+												<img src="../graphics/logbook_view.gif" border="0" " align="middle" alt="" height="20" width="20"> All Entries</font></a>
 											</td>
 										</tr>
 										<tr>
@@ -329,7 +329,7 @@
 								</td>
 								<td align="left" width="5" valign="top" nowrap>
 									<div style="width:5px; position: fixed;">
-										<img src="../graphics/blue_square.gif" border="0" width="2" height="700" alt="">
+										<img src="../graphics/blue_square.gif" border="0" width="2" height="500" alt="">
 									</div>
 								</td>
 								<td valign="top" width="300">
@@ -344,7 +344,7 @@
 								</td>
 								<td align="right" width="5" valign="top" nowrap>
 									<div style="width:5px; position: fixed;">								
-										<img src="../graphics/blue_square.gif" border="0" width="2" height="700" alt="">
+										<img src="../graphics/blue_square.gif" border="0" width="2" height="500" alt="">
 									</div>
 								</td>
 								<td valign="top" align="center">	
@@ -359,11 +359,14 @@
 											</td>
 										</tr>
 									</table>
-									<div class="instructions">
+									<div class="instructions" id="instructions-v" style="visibility:visible; display">
+										<a href="#" onclick="HideShow('instructions-v');HideShow('instructions-h');return false;"><img src="../graphics/Tright.gif" alt=" " border="0" /><font size="+1" face="Comic Sans MS"> View Instructions</font></a>						
+									</div>
+									<div class="instructions" id="instructions-h" style="visibility:hidden; display: none">
 										<table width="480">
 											<tr>
 												<td align="left">
-													<font size="+1" face="Comic Sans MS">Instructions</font>
+													<a href="#" onclick="HideShow('instructions-v');HideShow('instructions-h');return false;"><img src="../graphics/Tdown.gif" alt=" " border="0" /><font size="+1" face="Comic Sans MS"> Hide Instructions</font></a>
 												</td>
 											</tr>
 											<tr>
@@ -383,6 +386,7 @@
 											</tr>												
 										</table>
 									</div>
+						
 									<table>
 										<tr>
 											<td align="center" height="20"><FONT color="#AA3366" face="Comic Sans MS"><strong>${thereAreNewComments }</strong></FONT></td>
