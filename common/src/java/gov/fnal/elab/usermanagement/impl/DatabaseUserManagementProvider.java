@@ -631,10 +631,16 @@ public class DatabaseUserManagementProvider implements
         if (groupToCreate != null) {
         	rp = new GeneratePassword();
         	pass = rp.getPassword();
-        	
-            File tua = new File(et.getUserArea());
-            group.setUserArea(new File(tua.getParentFile(), group.getName())
-                    .getPath());
+        	File tua = null;
+        	if (et.getUserArea() != null) {
+        		tua = new File(et.getUserArea());
+        	} 
+        	if (tua != null) {
+        		group.setUserArea(new File(tua.getParentFile(), group.getName())
+        			.getPath());
+        	} else {
+        		group.setUserArea(new File("/tmp", group.getName() ).getPath());
+        	}
             // Generated a default academic year. LQ - 7-24-06
             Calendar calendar = new GregorianCalendar();
             int year = calendar.get(Calendar.YEAR);
