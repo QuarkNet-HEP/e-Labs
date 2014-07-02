@@ -194,7 +194,7 @@
 								</td>
 								<td align="left" width="20" valign="top">
 									<div style="overflow:auto; width:20px; position: fixed;">
-										<img src="../graphics/red_square.gif" border="0" width="2" height="500" alt="">
+										<img src="../graphics/red_square.gif" border="0" width="2" height="600" alt="">
 									</div>
 								</td>								
 								<td valign="top" align="center">

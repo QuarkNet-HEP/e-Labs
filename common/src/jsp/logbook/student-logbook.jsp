@@ -329,7 +329,7 @@
 								</td>
 								<td align="left" width="5" valign="top" nowrap>
 									<div style="width:5px; position: fixed;">
-										<img src="../graphics/blue_square.gif" border="0" width="2" height="500" alt="">
+										<img src="../graphics/blue_square.gif" border="0" width="2" height="600" alt="">
 									</div>
 								</td>
 								<td valign="top" width="300">
@@ -344,7 +344,7 @@
 								</td>
 								<td align="right" width="5" valign="top" nowrap>
 									<div style="width:5px; position: fixed;">								
-										<img src="../graphics/blue_square.gif" border="0" width="2" height="500" alt="">
+										<img src="../graphics/blue_square.gif" border="0" width="2" height="600" alt="">
 									</div>
 								</td>
 								<td valign="top" align="center">	
