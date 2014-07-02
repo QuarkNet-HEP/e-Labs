@@ -14,10 +14,7 @@ import java.util.*;
 
 public class LogbookToolsTest {
 	public Elab cosmicElab = Elab.getElab(null, "cosmic");
-	public int newLogId = -1;
-	public int newCommentId = -1;
 	//student-logbook calls
-	
 	//this function retrieves if there are any entries for a group under the general keyword
 	@Test
 	public void test_getYesNoGeneral() {
@@ -28,7 +25,7 @@ public class LogbookToolsTest {
 		} catch (Exception e) {
 			message = e.getMessage();
 		}
-	    assertTrue(yesNo.equals("Yes"));		
+	    assertTrue(yesNo.equals("yes"));		
 	    assertTrue(message.equals(""));		
 	}//end of test_getYesNoGeneral
 
@@ -80,28 +77,32 @@ public class LogbookToolsTest {
 		try {
 			//140: undergrads
 			log_id = LogbookTools.insertLogbookEntry(1, 140, 32, "Unit-testing log entry", "user", cosmicElab);
-			newLogId = log_id;
 		} catch (Exception e) {
 			message = e.getMessage();
 		}		
-	    assertTrue(newLogId != -1);		
-	    assertTrue(message.equals(""));				
+	    assertTrue(log_id != -1);		
+	    assertTrue(message.equals(""));	
+	    insertComment(log_id);
+	    getCommentCount(log_id);
+	    getCommentCountNew(log_id);
+	    buildCommentDetails(log_id);
+	    updateResetCommentForLogbookEntry(log_id);
+	    deleteLogbookEntry(log_id);
 	}//end of test_insertLogbookEntry	
 
 	@Test
-	public void test_insertComment() {
+	public void insertComment(int log_id) {
 		String message = "";
 		int comment_id = -1;
 		try {
 			//140: undergrads
-			comment_id = LogbookTools.insertComment(newLogId, "Unit-testing comment entry", cosmicElab);
-			newCommentId = comment_id;
+			comment_id = LogbookTools.insertComment(log_id, "Unit-testing comment entry", cosmicElab);
 		} catch (Exception e) {
 			message = e.getMessage();
 		}		
-	    assertTrue(newCommentId != -1);		
+	    assertTrue(comment_id != -1);		
 	    assertTrue(message.equals(""));			
-	}//end of test_insertComment
+	}//end of insertComment
 	
 	@Test
 	public void test_getLogbookEntries() {
@@ -116,62 +117,67 @@ public class LogbookToolsTest {
 	    assertTrue(message.equals(""));		
 	}//end of test_getLogbookEntries
 	
-	@Test
-	public void test_getCommentCount() {
+	public void getCommentCount(int log_id) {
 		Long comment_count = 0L;
 		String message = "";
 		int comment_id = -1;
 		try {
 			//140: undergrads
-			comment_count = LogbookTools.getCommentCount(newLogId, cosmicElab);
+			comment_count = LogbookTools.getCommentCount(log_id, cosmicElab);
 		} catch (Exception e) {
 			message = e.getMessage();
 		}		
 	    assertTrue(comment_count == 1);		
 	    assertTrue(message.equals(""));			
-	}//end of test_getCommentCount
+	}//end of getCommentCount
 
-	@Test
-	public void test_getCommentCountNew() {
+	public void getCommentCountNew(int log_id) {
 		Long comment_new = 0L;
 		String message = "";
 		int comment_id = -1;
 		try {
 			//140: undergrads
-			comment_new = LogbookTools.getCommentCountNew(newLogId, cosmicElab);
+			comment_new = LogbookTools.getCommentCountNew(log_id, cosmicElab);
 		} catch (Exception e) {
 			message = e.getMessage();
 		}		
 	    assertTrue(comment_new == 1);		
 	    assertTrue(message.equals(""));			
-	}//end of test_getCommentCountNew
+	}//end of getCommentCountNew
 	
-	@Test
-	public void test_buildCommentDetails() {
+	public void buildCommentDetails(int log_id) {
 		ArrayList commentDetails = null;
 		String message = "";
 		try {
 			//140: undergrads
-			commentDetails = LogbookTools.buildCommentDetails(newLogId, "Unit Testing: comment header", 1, cosmicElab);
+			commentDetails = LogbookTools.buildCommentDetails(log_id, "Unit Testing: comment header", 1, cosmicElab);
 		} catch (Exception e) {
 			message = e.getMessage();
 		}		
 	    assertTrue(commentDetails != null);		
 	    assertTrue(message.equals(""));					
-	}//end of test_buildCommentDetails
+	}//end of buildCommentDetails
 
-	@Test
-	public void test_updateResetCommentForLogbookEntry() {
+	public void updateResetCommentForLogbookEntry(int log_id) {
         String message = "";
         int result = -1;
         try {
-	         result = LogbookTools.updateResetCommentsforLogbookEntry(newLogId, cosmicElab);
+	         result = LogbookTools.updateResetCommentsforLogbookEntry(log_id, cosmicElab);
         } catch (Exception e) {
         	message = e.getMessage();
         }        
         assertTrue(result != -1);        
         assertTrue(message.equals(""));             
-	}//end of test_updateResetCommentForLogbookEntry
+	}//end of updateResetCommentForLogbookEntry
 
-
+	public void deleteLogbookEntry(int log_id) {
+        String message = "";
+        try {
+	         LogbookTools.deleteLogbookEntry(log_id, cosmicElab);
+        } catch (Exception e) {
+        	message = e.getMessage();
+        }        
+        assertTrue(message.equals(""));      		
+	}//end of deleteLogbookEntry
+	
 }//end of LogbookToolsTest class
