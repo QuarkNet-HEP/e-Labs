@@ -96,7 +96,7 @@ public class LogbookTools {
 	}//end of getKeywordTracker
 	
 	/*
-	 * Retrieve all possible keyword items to make logs on based on the type constraint
+	 * Retrieve all possible keyword items to make logs on based on the type constraint 
 	 */
 	public static ResultSet getLogbookKeywordItems(int project_id, String groupName, Elab elab) throws ElabException {
         Connection conn = null;
@@ -130,7 +130,7 @@ public class LogbookTools {
 	}//end of getLogbookItems	
 	
 	/*
-	 * Retrieve keyword details by project
+	 * Retrieve keyword details by project 
 	 */
 	public static ResultSet getKeywordDetailsByProject(int project_id, String keyword, Elab elab) throws ElabException {
         Connection conn = null;
@@ -161,7 +161,7 @@ public class LogbookTools {
 
 	
 	/*
-	 * Retrieve keyword details
+	 * Retrieve keyword details 
 	 */
 	public static ResultSet getKeywordDetails(String keyword, Elab elab) throws ElabException {
         Connection conn = null;
@@ -185,7 +185,7 @@ public class LogbookTools {
 	
 	///////LOGBOOK TOOLS////////
 	/*
-	 * Retrieve all logbook entries for all groups
+	 * Retrieve all logbook entries for all groups 
 	 * 		-retrieveAll indicates whether only active research groups
 	 */
 	public static ResultSet getLogbookEntriesForAllGroups(Elab elab, int project_id, int research_group_id, boolean retrieveAll) throws ElabException {
@@ -226,7 +226,7 @@ public class LogbookTools {
     }//end of getLogbookEntriesForAllGroups
 
 	/*
-	 * Retrieve all logbook entries for a group
+	 * Retrieve all logbook entries for a group 
 	 */
 	public static ResultSet getLogbookEntriesForGroup(Elab elab, int project_id, int research_group_id, int ref_rg_id) throws ElabException {
         Connection conn = null;
@@ -264,7 +264,7 @@ public class LogbookTools {
     }//end of getLogbookEntriesForGroup
 
 	/*
-	 * Retrieve all logbook entries by keyword
+	 * Retrieve all logbook entries by keyword 
 	 * 		-retrieveAll indicates whether only active research groups
 	 */
 	public static ResultSet getLogbookEntriesKeyword(int keyword_id, int teacher_id, boolean retrieveAll, Elab elab) throws ElabException {
@@ -491,9 +491,10 @@ public class LogbookTools {
 	/*
 	 * Insert entry teacher
 	 */
-	public static void insertLogbookEntryTeacher(int project_id, int research_group_id, int ref_rg_id, String log_enter, String role, Elab elab) throws ElabException {
+	public static int insertLogbookEntryTeacher(int project_id, int research_group_id, int ref_rg_id, String log_enter, String role, Elab elab) throws ElabException {
         Connection conn = null; 
         PreparedStatement ps = null; 		
+        int id = -1;
         String insert = " INSERT INTO log (project_id, research_group_id, ref_rg_id, role, log_text, new_log) "+
         				" VALUES (?, ?, ?, ?, ?, 't') RETURNING id;";
         try {
@@ -507,7 +508,7 @@ public class LogbookTools {
 				ps.setInt(3, ref_rg_id);
 				ps.setString(4, role);
 				ps.setString(5, log_enter);
-				int i = ps.executeUpdate();
+				id = ps.executeUpdate();
 				conn.commit();
 			} catch (SQLException ex) {
 				conn.rollback();
@@ -521,7 +522,8 @@ public class LogbookTools {
             if (conn != null) {
                 DatabaseConnectionManager.close(conn);
             }
-        }    	
+        } 
+        return id;
 	}//end of insertLogbookEntryTeacher
 	
 	/*
@@ -556,7 +558,7 @@ public class LogbookTools {
             }
         }    
         return i;
-	}//end of updateResetComment	
+	}//end of updateResetComment
 	
 	public static void deleteLogbookEntry(int log_id, Elab elab) throws ElabException {
         Connection conn = null; 
@@ -590,7 +592,7 @@ public class LogbookTools {
 	
 	///////COMMENTS TOOLS////////
 	/*
-	 * Retrieve comment entries for log-comment.jsp
+	 * Retrieve comment entries for log-comment.jsp 
 	 */
 	public static ResultSet getCommentEntries(int keyword_id, int research_group_id, int project_id, Elab elab) throws ElabException {
         Connection conn = null;
@@ -621,7 +623,7 @@ public class LogbookTools {
 	}//getCommentEntries
 	
 	/*
-	 * Retrieve comment entries for show-comment-keyword.jsp
+	 * Retrieve comment entries for show-comment-keyword.jsp 
 	 */
 	public static ResultSet getCommentDetailsKeyword(int keyword_id, int research_group_id, int project_id, Elab elab) throws ElabException {
         Connection conn = null;
@@ -655,38 +657,7 @@ public class LogbookTools {
 	}//getCommentDetailsKeyword	
 	
 	/*
-	 * Retrieve comment entry by id
-	 */
-	public static ResultSet getCommentEntryById(int log_id_param, Elab elab) throws ElabException {
-        Connection conn = null;
-        PreparedStatement ps; 
-        ResultSet rs;
-	
-        try {
-            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = conn.prepareStatement( "SELECT log.id AS log_id,to_char(log.date_entered,'DD Mon YYYY HH12:MI AM') AS log_date, log.log_text AS cur_log_text "+
-            							"  FROM log "+
-            							" WHERE log.id = ?;");
-            
-            try {              
-            	ps.setInt(1, log_id_param);
-                rs = ps.executeQuery();   
-            } catch (SQLException e) {
-                throw e;
-            }
-        } catch (SQLException e) {
-            throw new ElabException(e);
-        } finally {
-            if (conn != null) {
-                DatabaseConnectionManager.close(conn);
-            }
-        }    	
-        return rs;			
-		
-	}//end of getCommentEntryById
-	
-	/*
-	 * Insert new comment
+	 * Insert new comment 
 	 */
 	public static int insertComment(int log_id_param, String comment_enter, Elab elab) throws ElabException {
         Connection conn = null; 
@@ -724,41 +695,7 @@ public class LogbookTools {
 	}//end of insertComment
 	
 	/*
-	 * Reset new comment to false
-	 */
-	public static int updateResetComment(int comment_id, Elab elab) throws ElabException {
-        Connection conn = null; 
-        PreparedStatement ps = null;
-        int i = 0;
-        try {
-			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-			boolean ac = conn.getAutoCommit();
-			try {
-				conn.setAutoCommit(false);
-				ps = conn.prepareStatement("UPDATE comment "+
-										   "   SET new_comment = 'f' "+
-										   " WHERE id = ?;");
-				ps.setInt(1, comment_id); 
-				i = ps.executeUpdate();
-				conn.commit();
-			} catch (SQLException ex) {
-				conn.rollback();
-				throw ex;
-			} finally {
-				conn.setAutoCommit(ac);
-			}
-        } catch (SQLException e) {
-            throw new ElabException(e);
-        } finally {
-            if (conn != null) {
-                DatabaseConnectionManager.close(conn);
-            }
-        }    
-        return i;
-	}//end of updateResetComment	
-	
-	/*
-	 * Reset new comments for a logbook entry to false
+	 * Reset new comments for a logbook entry to false 
 	 */
 	public static int updateResetCommentsforLogbookEntry(int log_id, Elab elab) throws ElabException {
         Connection conn = null; 
@@ -792,7 +729,7 @@ public class LogbookTools {
 	}//end of updateResetCommentsforLogbookEntry	
 
 	/*
-	 * Retrieve count of comments
+	 * Retrieve count of comments 
 	 */
 	public static Long getCommentCount(int log_id, Elab elab) throws ElabException {
 		Long comment_count = 0L;
@@ -824,7 +761,7 @@ public class LogbookTools {
 	}//end of getCommentCount
 
 	/*
-	 * Retrieve count of new comments
+	 * Retrieve count of new comments 
 	 */
 	public static Long getCommentCountNew(int log_id, Elab elab) throws ElabException {
 		Long comment_count_new = 0L;
@@ -858,39 +795,7 @@ public class LogbookTools {
 	}//end of getCommentCountNew	
 
 	/*
-	 * Retrieve comment id 
-	 */
-	public static int getCommentId(int log_id_param, String comment_enter, Elab elab) throws ElabException {
-        Connection conn = null;
-        PreparedStatement ps; 
-        ResultSet rs;
-        int log_id = -1;
-        try {
-            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = conn.prepareStatement("SELECT comment.id AS id "+
-            						   "  FROM comment "+
-            						   " WHERE log_id = ? "+
-            						   "   AND comment = ? "+
-            						   " ORDER BY comment.id DESC;");
- 			ps.setInt(1, log_id_param);
- 			ps.setString(2, comment_enter);
-            rs = ps.executeQuery(); 
-    		if (rs.next()) {
-    			log_id = (Integer) rs.getObject("id");
-    		}
-                
-        } catch (SQLException e) {
-            throw new ElabException(e);
-        } finally {
-            if (conn != null) {
-                DatabaseConnectionManager.close(conn);
-            }
-        }    	
-        return log_id;	
-	}//end of getCommentId
-
-	/*
-	 * Retrieve comment details
+	 * Retrieve comment details unit tested
 	 */
 	public static ResultSet getCommentDetails(int cur_log_id, Elab elab) throws ElabException {
         Connection conn = null;
@@ -915,7 +820,7 @@ public class LogbookTools {
 	}// end of getCommentDetails
 	
 	/*
-	 * Retrieve name for teacher's groups from the group id
+	 * Retrieve name for teacher's groups from the group id 
 	 */
 	public static String getGroupNameFromId(int groupId, Elab elab) throws ElabException {
 		String groupName = "";
@@ -952,7 +857,7 @@ public class LogbookTools {
 
 	//////BUILD LINKS TO DISPLAY ON THE PAGES/////
 	/*
-	 * Build links to each group
+	 * Build links to each group 
 	 */
 	public static String buildGroupLinks(ElabGroup user, String page_name) throws ElabException {
 		String linksToEachGroup= "";
@@ -973,7 +878,7 @@ public class LogbookTools {
 	}//end of buildLogbookLinkstoKeywords	
 
 	/*
-	 * Build links to each keyword
+	 * Build links to each keyword 
 	 */
 	public static String buildTeacherKeywordLinks(int project_id, String keyword, Elab elab) throws ElabException {
 		String linksToEach= "";
@@ -1017,7 +922,7 @@ public class LogbookTools {
 	}//end of buildLogbookLinkstoKeywords	
 	
 	/*
-	 * Build keyword links
+	 * Build keyword links 
 	 */
 	public static String buildStudentKeywordLinks(ResultSet rs, HashMap keywordTracker, String keyword) throws ElabException {
 		String linksToEach = "";
@@ -1053,7 +958,7 @@ public class LogbookTools {
 	}//end of buildLogbookLinkstoKeywords
 
 	/*
-	 * Build keyword links
+	 * Build keyword links 
 	 */
 	public static String buildGroupLinksToKeywords(ResultSet rs, HashMap keywordTracker, String keyword, String research_group_name, int group_id) throws ElabException {
 		String linksToEach = "";
@@ -1094,7 +999,7 @@ public class LogbookTools {
 	}//end of buildGroupLinksToKeywords
 
 	/*
-	 * Build build comment details
+	 * Build build comment details 
 	 */
 	public static ArrayList buildCommentDetails(int log_id, String comment_info, int commentCnt, Elab elab) throws ElabException {
 		ArrayList commentDetails = new ArrayList();								
@@ -1136,7 +1041,7 @@ public class LogbookTools {
 	}//end of buildCommentDetails
 	
 	/*
-	 * Called from log-entry.jsp
+	 * Called from log-entry.jsp 
 	 */
 	public static String buildLogbookEntriesPlusComments(int project_id, int keyword_id, int research_group_id, String groupName, Elab elab) throws ElabException {
 		String currentEntries = "";
@@ -1207,8 +1112,7 @@ public class LogbookTools {
 			throw new ElabException(e);
 		}
 	    currentEntries = currentEntries.replace("''","'");
-
-		
+	    
 		return currentEntries;
 	}//buildLogbookEntriesPlusComments
 

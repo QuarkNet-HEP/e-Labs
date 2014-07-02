@@ -207,7 +207,7 @@
 									</td>
 									<td align="left" width="20" valign="top">
 										<div style="overflow:auto; width:20px; position: fixed;">
-											<img src="../graphics/blue_square.gif" border="0" width="2" height="500" alt=""></img>
+											<img src="../graphics/blue_square.gif" border="0" width="2" height="600" alt=""></img>
 										</div>
 									</td>
 									<td valign="top">
