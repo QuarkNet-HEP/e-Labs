@@ -74,8 +74,8 @@
 					<img src="../graphics/ref.gif"/>
 				</a>
 				 - 
-				<a href="../jsp/showLogbook.jsp">Student Logbook</a>
-				<a href="../jsp/showLogbook.jsp">
+				<a href="../logbook/student-logbook.jsp">Student Logbook</a>
+				<a href="../logbook/student-logbook.jsp">
 					<img src="../graphics/logbook_small.gif"/>
 				</a>
 			</div>
