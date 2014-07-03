@@ -45,7 +45,7 @@
 						</td>
 			<td class="library">
 			<ul>
-								<li><a href="../references/showAll.jsp?t=glossary">Glossary</a>Glossary</a></li>
+								<li><a href="../references/showAll.jsp?t=glossary">Glossary</a></li>
 								<li><a href="../library/resources.jsp"><b>Resources</b></a></li>
 								<li>
 									<ul>
