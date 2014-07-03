@@ -73,7 +73,14 @@
 								<div id="sitehelp-home">
   									<a href="../home/cool-science.jsp">Cool Science</a><br />
 									<a href="../home/about-us.jsp">About Us</a><br />
-									<a href="javascript:window.open('../jsp/showLogbook.jsp', 'log', 'width=800,height=600, resizable=1, scrollbars=1');return false;">Logbook</a><br />
+									<c:choose>
+						 				<c:when test='${user.role == "teacher" }'>
+						 					<a href="#">Logbook</a>
+										</c:when>
+										<c:otherwise>
+											<a href="javascript:window.open('../logbook/student-logbook.jsp', 'log', 'width=1000,height=800, resizable=1, scrollbars=1');return false;">Logbook</a><br />
+										</c:otherwise>
+									</c:choose>
 									<a href="../library/milestones.jsp">Milestones (text)</a><br />
 								</div>
 							</td>
