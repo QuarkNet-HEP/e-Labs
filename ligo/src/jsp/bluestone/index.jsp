@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 
@@ -139,21 +138,18 @@
 				
 				--%>
 				
-				<%-- Advanced Mode --%>
-				
-				<h2>Data Selection<e:popup href="/glossary/kiwi.php?title=Data_Channel" target="help" width="600" height="600" toolbar="true"><sup>?</sup></e:popup></h2>
-				
+				<%-- Advanced Mode --%>				
+				<h2>Data Selection<a href="#" onclick="javascript:glossary('data_selection',500);return false;" style="text-decoration: none;"><sup>?</sup></a></h2>				
 				<div id="channel-list-advanced">
 					<table id="channelTable" class="toolbox">
 						<thead>
 							<tr class="toolbox-row">
 								<th>Add/Remove</th>
-								<th>Site<e:popup href="/glossary/kiwi.php?title=Data_Channel_Source" target="help" width="400" height="500" toolbar="true"><sup>?</sup></e:popup>
-</th>
-								<th>Subsystem<e:popup href="/glossary/kiwi.php?title=Data_Channel_Subsystem" target="help" width="500" height="400" toolbar="true"><sup>?</sup></e:popup></th>
-								<th>Station<e:popup href="/glossary/kiwi.php?title=Data_Channel_Station" target="help" width="500" height="400" toolbar="true"><sup>?</sup></e:popup></th>
-								<th>Sensor<e:popup href="/glossary/kiwi.php?title=Data_Channel_Sensor" target="help" width="500" height="400" toolbar="true"><sup>?</sup></e:popup></th>
-								<th>Sampling<e:popup href="/glossary/kiwi.php?title=Data_Channel_Sampling" target="help" width="500" height="400" toolbar="true"><sup>?</sup></e:popup></th>
+								<th>Site<a href="#" onclick="javascript:glossary('data_channel_source',500);return false;" style="text-decoration: none;"><sup>?</sup></a></th>
+								<th>Subsystem<a href="#" onclick="javascript:glossary('data_channel_subsystem',500);return false;" style="text-decoration: none;"><sup>?</sup></a></th>												
+								<th>Station<a href="#" onclick="javascript:glossary('data_channel_station',500);return false;" style="text-decoration: none;"><sup>?</sup></a></th>												
+								<th>Sensor<a href="#" onclick="javascript:glossary('data_channel_sensor',500);return false;" style="text-decoration: none;"><sup>?</sup></a></th>												
+								<th>Sampling<a href="#" onclick="javascript:glossary('data_channel_sampling',500);return false;" style="text-decoration: none;"><sup>?</sup></a></th>												
 								<th>Data Filename</th>
 							</tr>
 						</thead>
