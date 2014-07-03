@@ -66,7 +66,7 @@
 						<li><a href="../references/showAll.jsp?t=glossary">Glossary</a></li>
 						<li><a href="../library/resources.jsp">Resources</a></li>
 						<li><a href="../library/big-picture.jsp">Big Picture</a></li>
-					    <li><a href="<e:popup href="/library/kiwi.php?title=LIGO_FAQ" target="faq" width="500" height="300">FAQs</e:popup>"></a></li>						
+					    <li><a href="<e:popup href="/library/kiwi.php?title=LIGO_FAQ" target="faq" width="500" height="300">FAQs</e:popup></a></li>				    					
 						<li><a href="../library/site-tips.jsp">Site Tips</a></li>
 					</ul>
 					<ul id="sub-data">
