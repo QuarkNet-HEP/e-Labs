@@ -338,7 +338,7 @@
 											</c:when>
 											<c:otherwise>																															
 												<tr>
-													<td><b>Select a Research Group</b></td>
+													<td><b>Select a <br />Research Group</b></td>
 												</tr>${linksToEachGroup }
 											</c:otherwise>
 										</c:choose>
