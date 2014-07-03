@@ -13,6 +13,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/site-index.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/site-help.css"/>
+		<script type="text/javascript" src="../include/elab.js"></script>		
 	</head>
 		<script type="text/javascript">
 			function setDisplay(objectID,state) {
@@ -78,7 +79,7 @@
 						 					<a href="#">Logbook</a>
 										</c:when>
 										<c:otherwise>
-											<a href="javascript:window.open('../logbook/student-logbook.jsp', 'log', 'width=1000,height=800, resizable=1, scrollbars=1');return false;">Logbook</a><br />
+											<a href="javascript:studentLogbook('',800)">Logbook</a><br />
 										</c:otherwise>
 									</c:choose>
 									<a href="../library/milestones.jsp">Milestones (text)</a><br />
@@ -86,7 +87,7 @@
 							</td>
 							<td width="125" valign="bottom"  align="center">
 								<div id="sitehelp-library">
-									<a href="../references/showAll.jsp?t=glossary">Glossary</a>									
+									<a href="../references/showAll.jsp?t=glossary">Glossary</a><br />									
 									<a href="../library/resources.jsp">Resources</a><br />
 									<a href="../library/big-picture.jsp">Big Picture</a><br />
 									<a href="#" onclick="javascript:window.open('\/library\/kiwi.php\/LIGO_FAQ', 'faq', 'width=500,height=300, resizable=1, scrollbars=1');return false;">FAQs</a><br />

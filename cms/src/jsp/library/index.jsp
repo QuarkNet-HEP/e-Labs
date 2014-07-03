@@ -37,8 +37,7 @@
 					<span class="tab-title">Library</span>
 					<div class="tab-contents">
 						<ul class="simple">
-							<li>
-						     <e:popup href="/library/kiwi.php?title=CMS_Glossary" target="glossary" width="500" height="300">Glossary</e:popup> - Look up terms you don't know.
+							<li><a href="../references/showAll.jsp?t=glossary">Glossary</a> - Look up terms you don't know.
 							</li>
 							<li>
 							<a HREF="resources.jsp">Resources</a> - Explore <i>Online Resources, Tutorials, Contacts</i> and <i>Slide Shows</i>.  
