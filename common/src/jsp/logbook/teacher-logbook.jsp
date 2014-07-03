@@ -183,7 +183,7 @@
 										</tr>
 										<tr>
 											<td><b>Your Logbook:<br />
-												<a href="teacher-logbook.jsp?ref_rg_name=general">general</a><br /><br />Select a Research Group</b></td>
+												<a href="teacher-logbook.jsp?ref_rg_name=general">general</a><br /><br />Select a <br />Research Group</b></td>
 										</tr>
 										${linksToEachGroup}
 										<tr>
