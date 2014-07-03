@@ -34,9 +34,7 @@
 		<td id="center">
 			<h1>Library: Use the e-Lab library of reference material as you work</h1>
 			<ul>
-				<li>
-					<a href="/library/kiwi.php?title=Category:LIGOGLOSSARY">The Glossary</a> - Look up terms you don't know.
-				</li>
+				<li><a href="../references/showAll.jsp?t=glossary">Glossary</a> - Look up the terms you don't know.</li>
 				<li>
 					<a href="resources.jsp">Resources</a> - Explore online resources 
 					that will help you conduct your e-Lab investigation. A 
