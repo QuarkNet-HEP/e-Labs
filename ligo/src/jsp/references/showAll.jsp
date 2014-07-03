@@ -74,7 +74,7 @@
 <p align="center">
 	<a href="../references/showAll.jsp?t=reference">View References for Study Guide</a>
 	-
-	<a href="/glossary/index.php/I2U2_Glossary_and_Library">View Glossary</a>
+	<a href="../references/showAll.jsp?t=glossary">View Glossary</a>
 </p>
 
 <table id="references-table" cellpadding="4" cellspacing="4">

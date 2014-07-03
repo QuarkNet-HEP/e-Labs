@@ -72,7 +72,7 @@
 						
 						
 					<li><a href="../library/big-picture.jsp"><b>The Big Picture</b></a></li>
-					<li><a href="<e:popup href="/library/kiwi.php?title=LIGO_FAQ" target="faq" width="500" height="300">FAQs</e:popup>"></a></li>
+					<li><a href="<e:popup href="/library/kiwi.php?title=LIGO_FAQ" target="faq" width="500" height="300">FAQs</e:popup></a></li>
 					<li><a href="../library/site-tips.jsp"><b>Site Tips</b></a></li>
 			</ul>
 		</td>
