@@ -16,7 +16,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Add Reference</title>
+		<title>Add FAQs</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
@@ -43,22 +43,22 @@
 	String projectSelected = "";
 	String referenceType = request.getParameter("t");
 	if (referenceType == null) {
-		referenceType = "reference";
+		referenceType = "FAQ";
 	}
-	String referencePrefix = "Reference_";
-	String referenceText = "Reference";
-	if (referenceType.equals("glossary")) {
-		referencePrefix = "Glossary_"; 
-		referenceText = "Glossary Item";
-	}
+	String referencePrefix = "";
+	String referenceText = "";
+	//if (referenceType.equals("glossary")) {
+	//	referencePrefix = "Glossary_"; 
+	//	referenceText = "Glossary Item";
+	//}
 	if (referenceType.equals("FAQ")) { 
 		referencePrefix = "FAQ_"; 
 		referenceText = "FAQ Item";
 	}
-	if (referenceType.equals("news")) {
-		referenceText = "News Item";
-		referencePrefix = "News_"; 
-	}
+	//if (referenceType.equals("news")) {
+	//	referenceText = "News Item";
+	//	referencePrefix = "News_"; 
+	//}
 
 	String referenceName = request.getParameter("referenceName");
 	if (referenceName == null) {
@@ -101,8 +101,8 @@
 					valueList="view, delete, upload, download, add" 
 					labelList="View, Delete, Upload, Download, Add"/>
 				<e:trselect name="t"
-					valueList="reference, glossary, FAQ, news"
-					labelList="Reference, Glossary, FAQ, News"/>
+					valueList="FAQ"
+					labelList="FAQ"/>
 				Item(s).<br />
 				<input type="submit" name="submit" value="Go!" />
 			</form>
@@ -259,7 +259,7 @@
             		}
             		else {
             		%>
-                		<a href="${referenceType}.jsp">Preview ${referenceType} page</a>
+                		<a href="../library/${referenceType}.jsp">Preview ${referenceType} page</a>
             		<%
             		}
             		%> 
