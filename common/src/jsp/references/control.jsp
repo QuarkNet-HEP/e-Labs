@@ -68,8 +68,8 @@
 					}
 				}
 			}
-            if (type == null || !type.equals("reference") && !type.equals("FAQ") && !type.equals("glossary") && !type.equals("news")) {
-				throw new ElabJspException("Unable to determine type. Please select glossary or reference.");
+            if (type == null || !type.equals("FAQ")) {
+				throw new ElabJspException("Unable to determine type.");
 			}
     
             %> <font color = "green">Written Successfully to <%=origName%>!</font><br /> <%
@@ -171,8 +171,8 @@
 			valueList="view, delete, upload, download, add"
 			labelList="View, Delete, Upload, Download, Add"/>
 		<e:trselect name="t"
-			valueList="reference, glossary, FAQ, news"
-			labelList="Reference, Glossary, FAQ, News"/>
+			valueList="FAQ"
+			labelList="FAQ"/>
 
 		Item(s).<br />
 		<input type='submit' name='submit' value='Go!' />
@@ -182,10 +182,7 @@
 		<c:when test="${type == 'NA'}">
      		<hr />
     		<form name ="file_form" method ="get">
-				<label><input type="radio" name="type" value="reference" checked="true" />References</label>
-				<label><input type="radio" name="type" value="FAQ" />FAQ</label>
-				<label><input type="radio" name="type" value="news" />News</label>
-				<label><input type="radio" name="type" value="glossary" />Glossary</label>
+				<label><input type="radio" name="type" value="FAQ" checked="true"/>FAQ</label>
 				<br />
 				<hr />
 				Download data from Server  
@@ -196,10 +193,7 @@
     		<form name ="upform" method ="post" enctype="multipart/form-data">
     			Upload data onto Server (make sure your file has the correct format.)<br /><br />
     			<label>Choose a local file <input type="file" name="filename_user" /></label><br /><br />
-				<label><input type="radio" name="type" value="reference" checked="true" /> References</label>
-				<label><input type="radio" name="type" value="FAQ" /> FAQ</label>
-				<label><input type="radio" name="type" value="news" /> News</label>
-				<label><input type="radio" name="type" value="glossary" /> Glossary</label>
+				<label><input type="radio" name="type" value="FAQ" checked="true"/> FAQ</label>
 				<br />
 				<hr />
 				<input type="submit" value="Upload" />
@@ -209,8 +203,8 @@
     	<c:otherwise>
     		<%
 				try {
-					if (type == null || !type.equals("reference") && !type.equals("FAQ") && !type.equals("glossary") && !type.equals("news")) {
-						throw new ElabJspException("Unable to determine type. Please select glossary or reference.");
+					if (type == null || !type.equals("FAQ")) {
+						throw new ElabJspException("Unable to determine type.");
 					}
                
         			String filename = type+".t";

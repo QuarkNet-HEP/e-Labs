@@ -48,7 +48,7 @@
 			<!-- end content -->	
 		
 			<div id="footer">
-				<a href="/library/kiwi.php?title=CMS_Glossary">Glossary</a> - 
+				<a href="../references/showAll.jsp?t=glossary">Glossary</a> - 
 				<a href="../references/showAll.jsp?t=reference">All References for Study Guide</a>
 				<a href="../references/showAll.jsp?t=reference">
 					<img src="../graphics/ref.gif">

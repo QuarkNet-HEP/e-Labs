@@ -92,7 +92,7 @@ function hideAll()
 									<a href="../references/showAll.jsp?t=glossary">Glossary</a><br />
 									<a href="../library/resources.jsp">Resources</a><br />
 									<a href="../library/big-picture.jsp">Big Picture</a><br />
-						            <e:popup href="/library/kiwi.php?title=CMS_FAQ" target="faq" width="500" height="300">FAQs</e:popup><br />
+						            <a href="../library/FAQ.jsp">FAQs</a><br />
 									<a href="../library/site-tips.jsp">Site Tips</a>
 								</div>
 							</td>

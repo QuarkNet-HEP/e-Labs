@@ -46,7 +46,7 @@
 					<a href="big-picture.jsp">Big Picture</a> - Read an overview of 
 					this project.
 				</li>					
-				<li><a href="#" onclick="javascript:window.open('\/library\/kiwi.php\/LIGO_FAQ', 'faq', 'width=500,height=300, resizable=1, scrollbars=1');return false;">FAQs</a> - Read the FAQs for answers to your questions.</li>
+				<li><a href="../library/FAQ.jsp">FAQs</a> - Read the FAQs for answers to your questions.</li>
 				</li>
 				<li>
 					<a href="site-tips.jsp">Site Tips</a> - Check out tips on how to use the website.
