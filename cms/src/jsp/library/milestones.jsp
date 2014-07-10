@@ -14,7 +14,6 @@
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<script type="text/javascript" src="../include/elab-custom.js"></script>
 	</head>
 	
 	<body id="milestones-map" class="library">
