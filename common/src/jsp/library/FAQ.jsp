@@ -36,26 +36,33 @@
 		</td>
 		<td>
 			<div id="center">
-				<%
-					Collection entries = elab.getFAQ().entries();
-					if (entries.isEmpty()) {
-						%>
-							<div class="warning">There are no FAQs in the database!</div>
-						<%
-					}
-					else {
-						%>
-							<p>
-						<%
-						Iterator i = entries.iterator();
-						while (i.hasNext()) {
-							String e = (String) i.next();
-							out.write(e);	
+				<% 
+						Collection entries = elab.getFAQ().entries();
+						if (entries.isEmpty()) {
+							if (elab.getName().equals("ligo")) {
+								%>
+								<%@ include file="../library/site-tips.jsp" %>
+								<%
+							} else {
+							%>
+								<div class="warning">There are no FAQs in the database!</div>
+							<%
+							}
 						}
-						%>
-							</p>
-						<%
-					}
+						else {
+							%>
+								<p>
+							<%
+							Iterator i = entries.iterator();
+							while (i.hasNext()) {
+								String e = (String) i.next();
+								out.write(e);	
+							}
+							%>
+								</p>
+							<%
+						}
+
 				%>
 			</div>
 		</td>
