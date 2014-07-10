@@ -1,3 +1,4 @@
+<script type="text/javascript" src="../include/elab.js"></script>
 <strong>LIGO e-Lab News: Sept. 2008</strong>
 <hr />
 <p>
