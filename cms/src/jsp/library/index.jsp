@@ -45,7 +45,7 @@
 							<li>
 							<a HREF="big-picture.jsp">Big Picture</a> - Read a project overview. 
 							</li>
-							<li><a href="../library/FAQ.jsp">FAQs</a> - Find answers for frequently asked questions.</li>
+							<li><a href="FAQ.jsp">FAQs</a> - Find answers for frequently asked questions.</li>
 							<li>
 							<a HREF="site-tips.jsp">Site Tips</a> - Check out tips for using the website.
 							</li>

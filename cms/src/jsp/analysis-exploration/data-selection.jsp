@@ -162,7 +162,7 @@
 						<a href="javascript:reference('cms data selection',450)">Milestone</a> associated with data selection.
 					</li>
 --%>
-					<li><a href="../library/FAQ.jsp">FAQs</a>
+					<li><a href="javascript:showRefLink('../library/FAQ.jsp',700,700)">FAQs</a>
 					</li>
 				</ul>
 			</td>

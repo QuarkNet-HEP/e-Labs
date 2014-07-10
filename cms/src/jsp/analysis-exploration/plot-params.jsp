@@ -186,7 +186,7 @@
 						<a href="javascript:reference('cms analysis',450)">Milestone</a> associated with plot selection.
 					</li>
 --%>
-					<li><a href="../library/FAQ.jsp">FAQs</a>
+					<li><a href="javascript:showRefLink('../library/FAQ.jsp',700,700)">FAQs</a>
 					</li>
 				</ul>
 			</td>
