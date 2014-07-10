@@ -1,3 +1,4 @@
+<script type="text/javascript" src="../include/elab.js"></script>
 <strong>I2U2 Library</strong>
 <hr>
 <img src="../graphics/QuarkNet-circle.png" alt=""><br />
