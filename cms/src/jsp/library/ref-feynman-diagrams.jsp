@@ -1,9 +1,9 @@
 <strong>Feynman Diagrams</strong>
 <img src="../graphics/Zmumu.png" alt="Zmumu"><br />
-<p>Physicists represent the interaction of particles with Feynman diagrams; here’s one for the interaction of up with antiup to produce a Z0 boson, 
+<p>Physicists represent the interaction of particles with Feynman diagrams; here's one for the interaction of up with antiup to produce a Z0 boson, 
 which decays after a very short lifetime into a net neutral combination of muons, mu+, mu-: Other collision types produce net-zero-charged collision products, 
 such as gluon to gluon which produces short-lived quark-antiquark pair, which may interact to produce a photon, decaying in turn into a pair of muons. 
-Thus pairs of muons can have different parentage. Below are Feynman diagrams depicting gluon – gluon interactions resulting in dimuon decay products, 
+Thus pairs of muons can have different parentage. Below are Feynman diagrams depicting gluon - gluon interactions resulting in dimuon decay products, 
 the J-Psi and Upsilon particles.
 
 J-Psi
