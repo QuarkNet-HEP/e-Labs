@@ -11,6 +11,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
+		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	
 	<body id="faq" class="library">
@@ -41,7 +42,9 @@
 						if (entries.isEmpty()) {
 							if (elab.getName().equals("ligo")) {
 								%>
-								<%@ include file="../library/site-tips.jsp" %>
+								<script>
+									showRefLink('../library/ref-library.jsp',700,700);
+								</script>
 								<%
 							} else {
 							%>
