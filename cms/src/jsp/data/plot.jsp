@@ -262,7 +262,7 @@
 					<li>
 						Shodor's Interactivate <e:popup href="http://www.shodor.org/interactivate/activities/histogram/" target="tryit" width="800" height="800">Histogram</e:popup>
 					</li>
-					<li><a href="../library/FAQ.jsp">FAQs</a>
+					<li><a href="javascript:showRefLink('../library/FAQ.jsp',700,700)">FAQs</a>
 					</li>
 				</ul>
 			</td>
