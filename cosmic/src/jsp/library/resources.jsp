@@ -286,6 +286,7 @@
 							<li><a href="https://wiki.iac.isu.edu/index.php/Cosmics_for_High_School_Teachers">Cosmic Ray overview for students</a></il>
 							<li><a href="http://cosray.phys.uoa.gr/nmdb-barometric/nmdb-barometric.htm">How to calculate barometric pressure correction</a></il>
 							<li><a href="http://neutronm.bartol.udel.edu/">Bartol Research Institute neutron monitor</a></il>
+							<li><a href="http://www.sciencedaily.com/releases/2011/01/110125131450.htm">How strong is the weak force? New measurement of the muon lifetime</a></li>
 						</ul>
 						<h2>Cosmic Ray Simulations (need
   QuickTime plugin)</h2>
