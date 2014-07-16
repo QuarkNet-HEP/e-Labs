@@ -216,7 +216,7 @@ function showAll(start, finish)
 					<p>
 				A good way to begin CMS studies is to invite the class to watch <b>Cool Science</b>
 				together. Play the <a href="../home/cms-animation-wobutton.swf">Standalone Movie</a> and enlarge the window.</p>
-				<P>Questions to ask students? How to motivate students. TOM</P>
+				<P>Questions to ask students? How to motivate students.</P>
 				<p>Milestones on the Project Map provide opportunities for students to build basic scientific skills,  learn how the detector works,  understand subatomic particles, learn how to use the analysis tools, use plots to explain results an post the results of their studies as online posters.
 				Students should look through the posters to gain ideas for research questions.</p> 
 				
@@ -229,7 +229,7 @@ function showAll(start, finish)
 				<p>
 				With simulated data these studies require deliberate creation of file types with particles and any background simulated intentionally, one particle type at a time; the results are thus a bit messy. But the steps students take in the e-Lab are the same as they with run data, and the conclusions they can reach are similar: that the (simulated) detector is functioning properly, since it verifies well-known physics results. With run data the whole process becomes cleaner: all particles and background will be delivered by nature, and the same data set will contain multiple points of verification. Events passing the dimuon filter, for example, will contain J-Psi, Upsilon,  and Z signatures, as well as a range of background that passes the filter's requirements. That same data set can be used to see reflections of conservation of energy, charge and lepton number, as well as energy-momentum rough equivalence (given the relatively small rest masses of muons, compared to the high energies involved in LHC collisions.)</p> 
 				<p>
-				<b>Momentum-Energy Study: For Teachers</b> - <b>E<sup>2</sup> = P<sup>2</sup> + M<sup>2</sup></b>. (TOM introductory motivational material to this: a derivation, perhaps?)</p>
+				<b>Momentum-Energy Study: For Teachers</b> - <b>E<sup>2</sup> = P<sup>2</sup> + M<sup>2</sup></b>.</p>
 				<p>
 				This exercise will highlight two important points for students:</p>
 				<p>
