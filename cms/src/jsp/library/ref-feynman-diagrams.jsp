@@ -17,4 +17,4 @@ File:J-psi.png
 <p>Image source: www.lhc-closer.es/img/subidas/6_5_1_3.jpg.</p>
 
 <p><strong>To Explore Further</strong></p>
-<p>Follow these links for a guided tour of the symbols, meaning and use of Feynman Diagrams. (<a href="https://www6.slac.stanford.edu/research">basic</a>) (<a href="https://www.youtube.com/watch?v=HaWhWeBxQRQ">advanced</a>)</p>
+<p>Follow these links for a guided tour of the symbols, meaning and use of Feynman Diagrams. (<a href="https://www.youtube.com/watch?v=HaWhWeBxQRQ">basic</a>)</p>
