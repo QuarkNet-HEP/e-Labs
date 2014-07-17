@@ -65,15 +65,20 @@
 	String linksToEach = "";
 	//build all links
 	String yesNo = "No";
+	String addFlag = "";
 	if (!(research_group_name == null)) {
 		yesNo = LogbookTools.getYesNoGeneral(research_group_id, project_id, elab);
+		addFlag = LogbookTools.getNewLogEntriesGeneral(research_group_id, project_id, elab);
 		HashMap keywordTracker = new HashMap();
 		ResultSet rs = null;
 		rs = LogbookTools.getKeywordTracker(research_group_id, project_id, elab);
 		while (rs.next()){
 			if (rs.getObject("keyword_id") != null) {
 				keyword_id= (Integer) rs.getObject("keyword_id");
-				keywordTracker.put(keyword_id.intValue(), true);
+				Object new_log_entries = rs.getObject("new_log_entries");
+				//keywordTracker.put(keyword_id.intValue(), true);
+				keywordTracker.put(keyword_id.intValue(), new_log_entries);
+
 			} else { 
 				keyword_id = null;
 			}
@@ -263,6 +268,7 @@
 	request.setAttribute("thereAreNewEntries", thereAreNewEntries);
 	request.setAttribute("subtitle", subtitle);
 	request.setAttribute("yesNo", yesNo);
+	request.setAttribute("addFlag", addFlag);
 	request.setAttribute("keyword", keyword);
 	request.setAttribute("keyword_id", keyword_id);
 	request.setAttribute("keyword_name", keyword_name);
@@ -328,7 +334,7 @@
 													<td align="center"><img src="../graphics/log_entry_yes.gif" border="0" alt=""><font face="Comic Sans MS"> if entry exists</font></td>
 												</tr>
 												<tr>
-													<td><img src="../graphics/log_entry_${yesNo}.gif" border="0" align="center" alt=""><a href="teacher-logbook-group.jsp?research_group_name=${research_group_name }&amp;keyword=general&research_group_id=${research_group_id}">general</a></td>
+													<td><img src="../graphics/log_entry_${yesNo}.gif" border="0" align="center" alt=""><a href="teacher-logbook-group.jsp?research_group_name=${research_group_name }&amp;keyword=general&research_group_id=${research_group_id}">general</a>${addFlag }</td>
 												</tr>											
 												<tr>
 													<td><br>
@@ -338,7 +344,7 @@
 											</c:when>
 											<c:otherwise>																															
 												<tr>
-													<td><b>Select a Research Group</b></td>
+													<td><b>Select a <br />Research Group</b></td>
 												</tr>${linksToEachGroup }
 											</c:otherwise>
 										</c:choose>
