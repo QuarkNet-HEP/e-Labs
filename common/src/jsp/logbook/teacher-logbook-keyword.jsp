@@ -196,6 +196,9 @@
 													<td valign="center" align="left"><a href="teacher-logbook.jsp"><img src="../graphics/logbook_view_small.gif" border="0" " align="middle" alt="" width="20" height="20">My Logbook</a></td>
 												</tr>
 												<tr>
+													<td style="padding-left: 10px;"><img src="../graphics/new_flag.gif" border="0" alt=""> if new entry exists</td>
+												</tr>												
+												<tr>
 													<td><a href="teacher-logbook-keyword.jsp?keyword=general">general</a></td>
 												</tr>
 												<tr>

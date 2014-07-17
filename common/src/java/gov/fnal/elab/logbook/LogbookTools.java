@@ -1133,7 +1133,7 @@ public class LogbookTools {
 				if (!keyword_loop.equals("general")) {
 					if (!this_section.equals(current_section)) {
 						String section_text = LogbookTools.getSectionText(this_section);
-						linksToEach=linksToEach + "<tr><td>&nbsp;</td></tr><tr><td><font face='Comic Sans MS'>"+section_text+"</font></td></tr>";
+						linksToEach=linksToEach + "<tr><td>&nbsp;</td></tr><tr><td>"+section_text+"</td></tr>";
 						current_section = this_section;
 					}
 					if (keywordTracker.containsKey(keyword_id.intValue())) {
