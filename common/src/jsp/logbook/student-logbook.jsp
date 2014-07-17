@@ -313,6 +313,16 @@
 											</td>
 										</tr>
 										<tr>
+											<td style="padding-left: 10px;">
+												<img src="../graphics/log_entry_yes.gif" border="0" alt=""><font face="Comic Sans MS"> if entry exists</font>
+											</td>
+										</tr>										
+										<tr>
+											<td style="padding-left: 10px;">
+												<img src="../graphics/new_flag.gif" border="0" alt=""><font face="Comic Sans MS"> if new comment exists</font>
+											</td>
+										</tr>
+										<tr>
 											<td>
 												<img src="../graphics/log_entry_${yesNo}.gif" border="0" align="center" alt=""><a href="student-logbook.jsp?keyword=general">
 												<font face="Comic Sans MS">general</font></a> ${addFlag }
@@ -323,11 +333,7 @@
 												<b><br><font face="Comic Sans MS">Milestones from<br>Research Basics<br>and Study Guide</font></b>
 											</td>
 										</tr>
-										<tr>
-											<td align="center">
-												<img src="../graphics/log_entry_yes.gif" border="0" alt=""><font face="Comic Sans MS"> if entry exists</font>
-											</td>
-										</tr>
+
 										${linksToEach}
 									</table>
 									</div>

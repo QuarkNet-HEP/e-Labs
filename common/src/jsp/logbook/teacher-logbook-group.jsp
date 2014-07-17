@@ -331,7 +331,10 @@
 													<td valign="center" align="left"><a href="teacher-logbook-group.jsp?research_group_name=${research_group_name }&research_group_id=${research_group_id}"><img src="../graphics/logbook_view.gif" border="0" " align="middle" alt="" width="20" height="20">All Entries</a></td>
 												</tr>
 												<tr>
-													<td align="center"><img src="../graphics/log_entry_yes.gif" border="0" alt=""><font face="Comic Sans MS"> if entry exists</font></td>
+													<td style="padding-left: 10px;"><img src="../graphics/log_entry_yes.gif" border="0" alt="">if entry exists</img></td>
+												</tr>
+												<tr>
+													<td style="padding-left: 10px;"><img src="../graphics/new_flag.gif" border="0" alt=""> if new entry exists</img></td>
 												</tr>
 												<tr>
 													<td><img src="../graphics/log_entry_${yesNo}.gif" border="0" align="center" alt=""><a href="teacher-logbook-group.jsp?research_group_name=${research_group_name }&amp;keyword=general&research_group_id=${research_group_id}">general</a>${addFlag }</td>
