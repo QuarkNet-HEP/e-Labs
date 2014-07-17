@@ -25,9 +25,11 @@
 	String groupName = user.getName();
 	int projectId = elab.getId();
 	String yesNo = "no";
+	String addFlag = "";
 	try {
 		//check whether there are entries for the general keyword
 		yesNo = LogbookTools.getYesNoGeneral(user.getId(), projectId, elab);
+        addFlag = LogbookTools.getNewCommentsGeneral(user.getId(), projectId, elab);
 	} catch (Exception e) {
 		messages += e.getMessage();
 	}
@@ -41,7 +43,9 @@
 		while (rs.next()){
 			if (rs.getObject("keyword_id") != null) {
 				keywordId= (Integer) rs.getObject("keyword_id");
-				keywordTracker.put(keywordId.intValue(), true);
+				Object new_comments = rs.getObject("new_comments");
+				//keywordTracker.put(keywordId.intValue(), true);
+				keywordTracker.put(keywordId.intValue(), new_comments);
 			} else { 
 				keywordId = null;
 			}
@@ -258,6 +262,7 @@
 	}
 	request.setAttribute("thereAreNewComments", thereAreNewComments);
 	request.setAttribute("yesNo", yesNo);
+	request.setAttribute("addFlag", addFlag);
 	request.setAttribute("count", count);
 	request.setAttribute("linksToEach", linksToEach);
 	request.setAttribute("groupName", groupName);
@@ -310,7 +315,7 @@
 										<tr>
 											<td>
 												<img src="../graphics/log_entry_${yesNo}.gif" border="0" align="center" alt=""><a href="student-logbook.jsp?keyword=general">
-												<font face="Comic Sans MS">general</font></a>
+												<font face="Comic Sans MS">general</font></a> ${addFlag }
 											</td>
 										</tr>
 										<tr>

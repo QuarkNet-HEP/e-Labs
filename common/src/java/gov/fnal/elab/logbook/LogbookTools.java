@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.Collection;
+import java.math.*;
 
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
@@ -37,12 +38,12 @@ public class LogbookTools {
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
             ps = conn.prepareStatement("SELECT DISTINCT keyword_id "+
-            						   "  FROM log, research_group, keyword " +
+									   "  FROM log, research_group, keyword " +
             						   " WHERE keyword.keyword = 'general' "+
             						   "   AND keyword.id = log.keyword_id " +
             						   "   AND research_group.id = ? "+
             						   "   AND research_group.id = log.research_group_id "+
-            						   "   AND log.project_id = ?;");
+            						   "   AND log.project_id = ?; ");
 
             try {              
             	ps.setInt(1, group_id); 
@@ -64,6 +65,95 @@ public class LogbookTools {
         return yesno;
 	}//end of getYesNoGeneral	
 
+	public static String getNewCommentsGeneral(int group_id, int project_id, Elab elab) throws ElabException {
+		String newFlag = "";
+        Connection conn = null;
+        PreparedStatement ps; 
+        ResultSet rs;
+        try {
+            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+            ps = conn.prepareStatement("SELECT DISTINCT keyword_id, "+
+									   "	   sum( (SELECT count(*) " +
+									   "  		     FROM comment  " +
+									   "			WHERE log_id = log.id " +
+									   "			  AND new_comment = 't')) as new_comments "+
+									   "  FROM log, research_group, keyword " +
+            						   " WHERE keyword.keyword = 'general' "+
+            						   "   AND keyword.id = log.keyword_id " +
+            						   "   AND research_group.id = ? "+
+            						   "   AND research_group.id = log.research_group_id "+
+            						   "   AND log.project_id = ?" +
+            						   " GROUP BY keyword_id; ");
+
+            try {              
+            	ps.setInt(1, group_id); 
+            	ps.setInt(2, project_id);
+                rs = ps.executeQuery(); 
+                if (rs.next()) {
+                	BigDecimal bd = (BigDecimal) rs.getObject("new_comments");
+                	if (bd != null && bd.doubleValue() > 0) {
+                		newFlag = " <img src=\'../graphics/new_flag.gif\' border=0 align=\'center\'>";
+                	}
+                }
+            } catch (SQLException e) {
+                throw e;
+            }
+        } catch (SQLException e) {
+            throw new ElabException(e);
+        } finally {
+            if (conn != null) {
+                DatabaseConnectionManager.close(conn);
+            }
+        }    	
+        return newFlag;
+	}//end of getNewCommentsGeneral	
+
+	public static String getNewLogEntriesGeneral(int group_id, int project_id, Elab elab) throws ElabException {
+		String newFlag = "";
+        Connection conn = null;
+        PreparedStatement ps; 
+        ResultSet rs;
+        try {
+            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+            ps = conn.prepareStatement("SELECT DISTINCT keyword_id, "+
+									   "	   sum( (SELECT count(*) " +
+									   "  		     FROM log  " +
+									   "			WHERE id = log.id " +
+									   "              AND research_group_id = research_group.id "+
+									   "              AND project_id = log.project_id " +
+									   "              AND keyword_id = keyword.id " +
+									   "			  AND new_log = 't')) as new_log_entries "+
+									   "  FROM log, research_group, keyword " +
+            						   " WHERE keyword.keyword = 'general' "+
+            						   "   AND keyword.id = log.keyword_id " +
+            						   "   AND research_group.id = ? "+
+            						   "   AND research_group.id = log.research_group_id "+
+            						   "   AND log.project_id = ?" +
+            						   " GROUP BY keyword_id; ");
+
+            try {              
+            	ps.setInt(1, group_id); 
+            	ps.setInt(2, project_id);
+                rs = ps.executeQuery(); 
+                if (rs.next()) {
+                	BigDecimal bd = (BigDecimal) rs.getObject("new_log_entries");
+                	if (bd != null && bd.doubleValue() > 0) {
+                		newFlag = " <img src=\'../graphics/new_flag.gif\' border=0 align=\'center\'>";
+                	}
+                }
+            } catch (SQLException e) {
+                throw e;
+            }
+        } catch (SQLException e) {
+            throw new ElabException(e);
+        } finally {
+            if (conn != null) {
+                DatabaseConnectionManager.close(conn);
+            }
+        }    	
+        return newFlag;
+	}//end of getNewCommentsGeneral	
+	
 	/*
 	 * Retrieve all keyword ids in the log for a research group
 	 */
@@ -73,11 +163,22 @@ public class LogbookTools {
         ResultSet rs;
         try {
             conn = DatabaseConnectionManager.getConnection(elab.getProperties());
-            ps = conn.prepareStatement("SELECT DISTINCT keyword_id "+
+            ps = conn.prepareStatement("SELECT DISTINCT keyword_id," +
+            						   "	   sum( (SELECT count(*) " +
+            						   "  		     FROM comment  " +
+            						   "			WHERE log_id = log.id " +
+            						   "			  AND new_comment = 't')) as new_comments, "+
+									   "	   sum( (SELECT count(*) " +
+									   "  		     FROM log l " +
+									   "			WHERE l.id = log.id " +
+									   "              AND l.research_group_id = research_group.id "+
+									   "              AND l.keyword_id = log.keyword_id " +
+									   "			  AND l.new_log = 't')) as new_log_entries "+
             						   "  FROM log, research_group " + 
             						   " WHERE research_group.id = ? "+
             						   "   AND research_group.id = log.research_group_id "+
-            						   "   AND project_id in (0, ?);");
+            						   "   AND project_id in (0, ?) "+
+            						   " GROUP BY keyword_id ;");
             try {              
             	ps.setInt(1, group_id);
             	ps.setInt(2, project_id); 
@@ -128,6 +229,50 @@ public class LogbookTools {
         }    	
         return rs;
 	}//end of getLogbookItems	
+
+	/*
+	 * Retrieve all possible keyword items to make logs on based on the type constraint 
+	 */
+	public static ResultSet getLogbookKeywordItemsNewLogs(int project_id, String groupName, int teacher_id, Elab elab) throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps; 
+        ResultSet rs;
+    	String typeConstraint = " AND keyword.type IN ('SW','S') ";
+    	if (groupName.startsWith("pd_") || groupName.startsWith("PD_")) {
+    		typeConstraint = " AND keyword.type IN ('SW','W') ";
+    	}
+   	
+        try {
+            conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+            ps = conn.prepareStatement("SELECT id, keyword, description, section, section_id, " + 
+            						   "	  SUM ( (SELECT count(*) " + 
+            						   "		  	   FROM log l " + 
+            						   "          	  INNER JOIN research_group rg " + 
+            						   "          		 ON l.research_group_id = rg.id " +
+            						   "          	  WHERE l.keyword_id = keyword.id " +
+            						   "          		AND l.new_log = 't' " +
+            						   "          		AND rg.teacher_id = ? " +
+            						   "          		)) as new_log_entries " +
+    								   "  FROM keyword "+
+    								   " WHERE keyword.project_id in (0,?) " + typeConstraint + 
+    								   " GROUP BY id, keyword, description, section, section_id " +
+    				                   " ORDER by section, section_id;");
+            try {              
+        		ps.setInt(1, teacher_id);
+        		ps.setInt(2, project_id);
+                rs = ps.executeQuery(); 
+            } catch (SQLException e) {
+                throw e;
+            }
+        } catch (SQLException e) {
+            throw new ElabException(e);
+        } finally {
+            if (conn != null) {
+                DatabaseConnectionManager.close(conn);
+            }
+        }    	
+        return rs;
+	}//end of getLogbookKeywordItemsNewLogs
 	
 	/*
 	 * Retrieve keyword details by project 
@@ -880,12 +1025,13 @@ public class LogbookTools {
 	/*
 	 * Build links to each keyword 
 	 */
-	public static String buildTeacherKeywordLinks(int project_id, String keyword, Elab elab) throws ElabException {
+	public static String buildTeacherKeywordLinks(int project_id, String keyword, int teacher_id, Elab elab) throws ElabException {
 		String linksToEach= "";
 		int keyword_id;
 		String keyword_loop, keyword_description, keyword_text, keyColor;
 		try {
-			ResultSet rs = LogbookTools.getLogbookKeywordItems(project_id, "", elab);
+			//ResultSet rs = LogbookTools.getLogbookKeywordItems(project_id, "", elab);
+			ResultSet rs = LogbookTools.getLogbookKeywordItemsNewLogs(project_id, "", teacher_id, elab);
 			String current_section = "";
 			while (rs.next()) {
 				keyword_id = (Integer) rs.getObject("id");
@@ -893,6 +1039,7 @@ public class LogbookTools {
 				keyword_text = keyword_loop.replaceAll("_", " ");
 				keyword_description = rs.getString("description");
 				String this_section = (String) (rs.getString("section"));
+				BigDecimal new_log_entries = (BigDecimal) rs.getObject("new_log_entries");
 				if (!keyword_loop.equals("general")) {
 					if (!this_section.equals(current_section)) {
 						try {
@@ -909,10 +1056,14 @@ public class LogbookTools {
 					if (keyword.equals(keyword_loop)) {
 						keyColor = "color=\"#AA3366\"";
 					}
+					String addFlag = "";
+					if (new_log_entries != null && new_log_entries.doubleValue() > 0) {
+						addFlag =" <img src=\'../graphics/new_flag.gif\' border=0 align=\'center\'>";
+					}
 					linksToEach = linksToEach
 							+ "<tr><td><A HREF='teacher-logbook-keyword.jsp?keyword="
 							+ keyword_loop + "'>"
-							+ keyword_text + "</font></A></td></tr>";
+							+ keyword_text + "</font></A>"+addFlag+"</td></tr>";
 				}
 			}
 		} catch (Exception e) {
@@ -935,6 +1086,7 @@ public class LogbookTools {
 				String keyword_description = rs.getString("description");
 				String this_section = (String)(rs.getString("section"));
 				String yesNo = "no";
+				BigDecimal newComments = null;
 				if (!keyword_loop.equals("general")) {
 					if (!this_section.equals(current_section)) {
 						String section_text = LogbookTools.getSectionText(this_section);
@@ -943,12 +1095,18 @@ public class LogbookTools {
 					}
 					if (keywordTracker.containsKey(keyword_id.intValue())) {
 						yesNo="yes";
+						newComments = (BigDecimal) keywordTracker.get(keyword_id.intValue());
 					}
 					String keyColor="";
 					if (keyword.equals(keyword_loop)) { 
 						keyColor="color=\"#AA3366\"";
 					}
-					linksToEach=linksToEach + "<tr><td><img src=\"../graphics/log_entry_" + yesNo + ".gif\" border=0 align=center><a href='student-logbook.jsp?keyword="+keyword_loop+"'><font face='Comic Sans MS'"+keyColor+">"+keyword_text+"</face></a></td></tr>";		
+					String addFlag = "";
+					if (newComments != null && newComments.doubleValue() > 0) {
+						addFlag = " <img src=\'../graphics/new_flag.gif\' border=0 align=\'center\'>";
+					}
+					linksToEach=linksToEach + "<tr><td><img src=\"../graphics/log_entry_" + yesNo + ".gif\" border=0 align=center><a href='student-logbook.jsp?keyword="+keyword_loop+"'><font face='Comic Sans MS'"+keyColor+">"+keyword_text+"</face></a> "+addFlag+"</td></tr>";	
+					
 				}
 			}
 		} catch (Exception e) {
@@ -971,6 +1129,7 @@ public class LogbookTools {
 				String keyword_description = rs.getString("description");
 				String this_section = (String)(rs.getString("section"));
 				String yesNo = "no";
+				BigDecimal newLogEntries = null;
 				if (!keyword_loop.equals("general")) {
 					if (!this_section.equals(current_section)) {
 						String section_text = LogbookTools.getSectionText(this_section);
@@ -979,17 +1138,22 @@ public class LogbookTools {
 					}
 					if (keywordTracker.containsKey(keyword_id.intValue())) {
 						yesNo="yes";
+						newLogEntries = (BigDecimal) keywordTracker.get(keyword_id.intValue());
 					}
 					String keyColor="";
 					if (keyword.equals(keyword_loop)) { 
 						keyColor="color=\"#AA3366\"";
+					}
+					String addFlag = "";
+					if (newLogEntries != null && newLogEntries.doubleValue() > 0) {
+						addFlag = " <img src=\'../graphics/new_flag.gif\' border=0 align=\'center\'>";
 					}
 					linksToEach=linksToEach
 							+ "<tr><td><img src=\"../graphics/log_entry_"
 							+ yesNo
 							+ ".gif\" border=0 align=center><A HREF='teacher-logbook-group.jsp?research_group_name="+ research_group_name + 
 							"&research_group_id="+ String.valueOf(group_id) +
-							"&keyword=" + keyword_loop + "'><FONT  " + keyColor + ">"+ keyword_text + "</font></A></td></tr>";				
+							"&keyword=" + keyword_loop + "'><FONT  " + keyColor + ">"+ keyword_text + "</font></A>"+addFlag+"</td></tr>";				
 				}
 			}
 		} catch (Exception e) {

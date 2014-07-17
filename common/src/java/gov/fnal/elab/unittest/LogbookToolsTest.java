@@ -128,7 +128,7 @@ public class LogbookToolsTest {
 		String message = "";
 		String links = "";
 		try {
-			links = LogbookTools.buildTeacherKeywordLinks(1, "general", cosmicElab);
+			links = LogbookTools.buildTeacherKeywordLinks(1, "general", 2, cosmicElab);
 		} catch (Exception e) {
 			message = e.getMessage();
 		}

@@ -49,9 +49,10 @@
  	}//end of submit
 	
 	//build links to each keyword/milestone
+	int teacher_id = user.getTeacherId();
  	String linksToEach = "";
 	try {
-		linksToEach = LogbookTools.buildTeacherKeywordLinks(project_id, keyword, elab);
+		linksToEach = LogbookTools.buildTeacherKeywordLinks(project_id, keyword, teacher_id, elab);
 	} catch (Exception e) {
 		messages += e.getMessage();
 	}
@@ -69,7 +70,6 @@
 	} catch (Exception e) {
 		messages += e.getMessage();
 	}
-	int teacher_id = user.getTeacherId();
 
 	// look for any previous log entries for this keyword and all research groups
 	int itemCount = 0;
