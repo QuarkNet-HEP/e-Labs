@@ -53,7 +53,7 @@ request.setAttribute("links", links);
 			<tr>
 				<td>
 					<ul>
-						<li><a href="../data/equip/download?filename=${links.value }&elab=${elab.name}&type=zip">${links.key }</a></li>
+						<li><a href="../data/download?filename=${links.value }&elab=${elab.name}&type=equip">${links.key }</a></li>
 					</ul>
 				</td>
 			</tr>
