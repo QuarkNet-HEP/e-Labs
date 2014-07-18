@@ -92,6 +92,10 @@
     </servlet-mapping>
     <servlet-mapping>
     	<servlet-name>downloader</servlet-name>
+    	<url-pattern>/cosmic/data/equip/download</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>downloader</servlet-name>
     	<url-pattern>/cms/data/download</url-pattern>
     </servlet-mapping>
     <servlet-mapping>

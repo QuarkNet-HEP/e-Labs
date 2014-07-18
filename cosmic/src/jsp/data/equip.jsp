@@ -14,8 +14,7 @@ try {
 	for (int i = 0; i < list.length; i++) {
 		String linkString = list[i].toString();
 		String linkName = linkString.substring(linkString.lastIndexOf("/")+1, linkString.length() );
-		String linkPath = "/equip/"+linkName;
-		links.put(linkName,linkPath);
+		links.put(linkName,linkName);
 	}
 } catch (Exception ex) {
 	
@@ -54,7 +53,7 @@ request.setAttribute("links", links);
 			<tr>
 				<td>
 					<ul>
-						<li><a href="../data/download?filename=${links.value }&elab=${elab.name}&type=zip">${links.key }</a></li>
+						<li><a href="../data/equip/download?filename=${links.value }&elab=${elab.name}&type=zip">${links.key }</a></li>
 					</ul>
 				</td>
 			</tr>
