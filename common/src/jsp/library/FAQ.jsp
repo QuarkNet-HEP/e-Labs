@@ -40,17 +40,9 @@
 				<% 
 						Collection entries = elab.getFAQ().entries();
 						if (entries.isEmpty()) {
-							if (elab.getName().equals("ligo")) {
-								%>
-								<script>
-									showRefLink('../library/ref-library.jsp',700,700);
-								</script>
-								<%
-							} else {
 							%>
 								<div class="warning">There are no FAQs in the database!</div>
 							<%
-							}
 						}
 						else {
 							%>

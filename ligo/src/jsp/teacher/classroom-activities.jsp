@@ -23,14 +23,15 @@
 			</div>
 
 			<div id="content">
-<h1>Classroom Activities from Teachers and Staff</h1>   
-
-<!-- transcluded from http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php?title=LIGO_e-Lab_Teaching_Community" -->
-<e:transclude
- url="http://${elab.properties['elab.host']}/elab/ligo/teacher/library/body.php?title=LIGO_Classroom_Activities"
-     start="<!-- start content -->"
-     end="<div class=\"printfooter\">"
-/>
+				<h1>Classroom Activities from Teachers and Staff</h1>   
+				<a href="mailto:e-labs@fnal.gov?Subject=LIGO_activity">Submit a LIGO classroom activity</a><br /><br />
+				<strong>Activities Submitted</strong>
+				<ul>
+					<li><a href="../classroom-activities/ligo_activity_2012.pdf">Using LIGO's e-Lab as a Stepping Stone to Research</a></li>
+					<li><a href="../classroom-activities/ligo_activity_feb_2014.pdf">Looking for seismic events in LIGO data</a></li>
+					<li><a href="../classroom-activities/Restless_Earth.pdf">Restless Earth</a></li>
+				</ul>
+				
 			</div>
 			<!-- end content -->
 

@@ -33,6 +33,10 @@
 <ul>
 <li> Use the <a href="http://www18.i2u2.org/elab/ligo/teacher/forum/HelpDeskRequest.php?elab=LIGO" target="help">Help Desk Request Form</a> to get technical assistance from I2U2 staff. You can access this form from any teacher page when logged in by clicking on the little lifesaver icon on the upper right hand corner of your window.
 </li></ul>
+<a name="ClassroomActivities"></a><h2>Classroom Activities</h2>
+<ul><li>
+Teachers and staff have developed <a href="classroom-activities.jsp">classroom activities</a> using the LIGO e-Lab that work for them and can be useful to other teachers.
+</li></ul>
 
 			</div>
 			<!-- end content -->
