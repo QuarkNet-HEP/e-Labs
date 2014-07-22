@@ -106,7 +106,7 @@ public class BlessProcess {
 										throw new IOException(blessFile + " has malformed data. "); 
 									}
 									//compare channel 1 and see if file can be blessed
-									if (chan1Rate <= (parseToDouble(split[1]) + parseToDouble(split[2])) && chan1Rate >= (parseToDouble(split[1]) - parseToDouble(split[2]))) {
+									if (chan1Rate <= (parseToDouble(split[1]) + parseToDouble3Sigmas(split[2])) && chan1Rate >= (parseToDouble(split[1]) - parseToDouble3Sigmas(split[2]))) {
 										pass = true;
 									} else {
 										pass = false;
@@ -114,7 +114,7 @@ public class BlessProcess {
 									}
 									//compare channel 2 and see if file can be blessed
 									if (pass) {
-										if (chan2Rate <= (parseToDouble(split[3]) + parseToDouble(split[4])) && chan2Rate >= (parseToDouble(split[3]) - parseToDouble(split[4]))) {
+										if (chan2Rate <= (parseToDouble(split[3]) + parseToDouble3Sigmas(split[4])) && chan2Rate >= (parseToDouble(split[3]) - parseToDouble3Sigmas(split[4]))) {
 											pass = true;
 										} else {
 											pass = false;
@@ -123,7 +123,7 @@ public class BlessProcess {
 									}
 									//compare channel 3 and see if file can be blessed
 									if (pass) {
-										if (chan3Rate <= (parseToDouble(split[5]) + parseToDouble(split[6])) && chan3Rate >= (parseToDouble(split[5]) - parseToDouble(split[6]))) {
+										if (chan3Rate <= (parseToDouble(split[5]) + parseToDouble3Sigmas(split[6])) && chan3Rate >= (parseToDouble(split[5]) - parseToDouble3Sigmas(split[6]))) {
 											pass = true;
 										} else {
 											pass = false;
@@ -132,7 +132,7 @@ public class BlessProcess {
 									}
 									//compare channel 4 and see if file can be blessed
 									if (pass) {
-										if (chan4Rate <= (parseToDouble(split[7]) + parseToDouble(split[8])) && chan4Rate >= (parseToDouble(split[7]) - parseToDouble(split[8]))) {
+										if (chan4Rate <= (parseToDouble(split[7]) + parseToDouble3Sigmas(split[8])) && chan4Rate >= (parseToDouble(split[7]) - parseToDouble3Sigmas(split[8]))) {
 											pass = true;
 										} else {
 											pass = false;
@@ -144,8 +144,8 @@ public class BlessProcess {
 									//this was decided on the Nov 13 2013 telecon
 									//low trigger rates alone shouldn't fail a file
 									if (pass) {
-										if ((parseToDouble(split[9]) + parseToDouble(split[10])) >= 2) {
-											if (triggerRate < (parseToDouble(split[9]) + parseToDouble(split[10])) && triggerRate > (parseToDouble(split[9]) - parseToDouble(split[10])) ) {
+										if ((parseToDouble(split[9]) + parseToDouble3Sigmas(split[10])) >= 2) {
+											if (triggerRate < (parseToDouble(split[9]) + parseToDouble3Sigmas(split[10])) && triggerRate > (parseToDouble(split[9]) - parseToDouble3Sigmas(split[10])) ) {
 												pass = true;
 											} else {
 												pass = false;
@@ -238,7 +238,7 @@ public class BlessProcess {
 		return result;
 	}//end of parseToDouble
 
-	public double parseToDouble2Sigmas(String split)
+	public double parseToDouble3Sigmas(String split)
 	{
 		double result = 0;
 		try {
@@ -246,7 +246,7 @@ public class BlessProcess {
 		} catch (NumberFormatException e) {
 			result = 0;
 		}
-		return result*2;
+		return result*3;
 	}//end of parseToDouble
 	
 	public String checkChannelMismatch(VDSCatalogEntry split, VDSCatalogEntry benchmark) {
@@ -287,9 +287,9 @@ public class BlessProcess {
 			failReason = "This file failed at: " + seconds + "(" + convertToHMS(seconds) + ")"+
 					 " because the benchmark "+label+" rate: "+ benchmarkRate +
 					 " (metadata value) was not between the ranges of comparison set by " + column1 +
-					 " and " + String.valueOf(column2) + " being: " + String.valueOf(parseToDouble(column2)) +
-					 "(" + String.valueOf(parseToDouble(column1) - parseToDouble(column2)) +
-					 " and " + String.valueOf(parseToDouble(column1) + parseToDouble(column2))+")" +
+					 " and " + String.valueOf(column2) + " being 3 sigmas: " + String.valueOf(parseToDouble(column2)) +
+					 "(" + String.valueOf(parseToDouble(column1) - parseToDouble3Sigmas(column2)) +
+					 " and " + String.valueOf(parseToDouble(column1) + parseToDouble3Sigmas(column2))+")" +
 					 " - for these last values, look at the .bless file of the just split file.";									
 		}
 		return failReason;
