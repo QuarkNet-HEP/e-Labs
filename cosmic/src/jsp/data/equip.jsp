@@ -1,4 +1,27 @@
 <%@ include file="../include/elab.jsp" %>
+<%@ page import="java.io.*" %>
+<%@ page import="java.util.*" %>
+<%@ page import="java.net.*" %>
+<%@ page import="java.lang.*" %>
+<%
+TreeMap<String,String> links = new TreeMap<String,String>();
+try {
+
+	
+	String dataDir = elab.getProperties().getDataDir();
+	File equipDir = new File(dataDir + "/equip");
+	File[] list = equipDir.listFiles();
+	for (int i = 0; i < list.length; i++) {
+		String linkString = list[i].toString();
+		String linkName = linkString.substring(linkString.lastIndexOf("/")+1, linkString.length() );
+		links.put(linkName,linkName);
+	}
+} catch (Exception ex) {
+	
+}
+request.setAttribute("links", links);
+
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -23,13 +46,20 @@
 			<div id="content">
 				
 <h1>EQUIP java interface</h1>
-
-<table border="0" id="main">
-	<tr>
-		<td>Download <a href="https://www.i2u2.org/elab/cosmic/EQUIP_02JUN2014.zip">EQUIP</a></td>
-	</tr>
-</table>
-
+<c:if test="${not empty links}">
+	<table border="0" id="main">
+		<tr><th>Download, unzip and check the README file (for installation instructions)</th></tr>
+		<c:forEach items="${links }" var="links">
+			<tr>
+				<td>
+					<ul>
+						<li><a href="../data/download?filename=${links.value }&elab=${elab.name}&type=equip">${links.key }</a></li>
+					</ul>
+				</td>
+			</tr>
+		</c:forEach>
+	</table>
+</c:if>
 
 			</div>
 			<!-- end content -->	
