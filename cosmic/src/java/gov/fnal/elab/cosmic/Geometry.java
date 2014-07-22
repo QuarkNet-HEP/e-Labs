@@ -100,6 +100,10 @@ public class Geometry {
         return orderedGeoEntries.headMap(julianDay);
     }
 
+    public SortedMap<String, GeoEntryBean> getGeoEntriesAfter(String julianDay) {
+        return orderedGeoEntries.tailMap(julianDay);
+    }
+    
     /**
      * Provides an Iterator for the geometry entries in descending temporal
      * order.
