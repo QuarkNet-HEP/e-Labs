@@ -59,7 +59,11 @@ public class Downloader extends HttpServlet {
                 pfn = RawDataFileResolver.getDefault().resolve(elab, filename);
             }
             else {
-                pfn = user.getDir(type) + File.separator + filename;
+                if (type.equals("equip")) {
+                	pfn = elab.getProperties().getDataDir() + File.separator + "equip" + File.separator + filename;
+                } else {
+                	pfn = user.getDir(type) + File.separator + filename;
+                }
             }
             resp.setContentType("x-object/data");
             resp.addHeader("Content-Disposition", "attachment;filename=" + filename);
