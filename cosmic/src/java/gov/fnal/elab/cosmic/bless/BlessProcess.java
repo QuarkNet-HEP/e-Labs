@@ -287,7 +287,7 @@ public class BlessProcess {
 			failReason = "This file failed at: " + seconds + "(" + convertToHMS(seconds) + ")"+
 					 " because the benchmark "+label+" rate: "+ benchmarkRate +
 					 " (metadata value) was not between the ranges of comparison set by " + column1 +
-					 " and " + String.valueOf(column2) + " being 3 sigmas: " + String.valueOf(parseToDouble(column2)) +
+					 " and " + String.valueOf(column2) + " being 3 sigmas: " + String.valueOf(parseToDouble3Sigmas(column2)) +
 					 "(" + String.valueOf(parseToDouble(column1) - parseToDouble3Sigmas(column2)) +
 					 " and " + String.valueOf(parseToDouble(column1) + parseToDouble3Sigmas(column2))+")" +
 					 " - for these last values, look at the .bless file of the just split file.";									
