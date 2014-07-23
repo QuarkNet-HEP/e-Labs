@@ -184,30 +184,43 @@ public class Benchmark {
 			String julianDate = e.getTupleValue("julianstartdate").toString();
 			Geometries geometries = new Geometries(elab, detectorid);
 			Geometry g = geometries.getGeometry(detectorid);
-			SortedMap geos = g.getGeoEntriesBefore(julianDate);
-			if (!geos.isEmpty()) {
-				GeoEntryBean geoEntry = (GeoEntryBean) geos.get(geos.lastKey()); 
-				
+			SortedMap geosBefore = g.getGeoEntriesBefore(julianDate);
+			Date startDate = new Date();
+			if (!geosBefore.isEmpty()) {
+				GeoEntryBean geoEntryBefore = (GeoEntryBean) geosBefore.get(geosBefore.lastKey()); 
 		        Iterator<GeoEntryBean> j = g.getGeoEntries();
 		        
 		        Date endDate = new Date();
 		        while (j.hasNext()) {
 		            GeoEntryBean gb = j.next();
-		            if (geoEntry.getDate().equals(gb.getDate()) && j.hasNext()) {
-		                endDate = j.next().getDate();
+		            if (geoEntryBefore.getDate().equals(gb.getDate()) && j.hasNext()) {
+		                startDate = j.next().getDate();
 		            }
 		        }
-		        
-				Date startDate = geoEntry.getDate(); 
-				In and = new In();
-				and.add(new Equals("project","cosmic"));
-				and.add(new Equals("type", "split"));
-				and.add(new Like("detectorid", Integer.toString(detectorid)));
-				and.add(new Like("blessfile", "%.bless%"));
-		        and.add(new Between("startdate", startDate, endDate));
-		        rs = elab.getDataCatalogProvider().runQuery(and);
-				rs.sort("creationdate", true);
+				
 			}
+			SortedMap geosAfter = g.getGeoEntriesAfter(julianDate);
+			Date endDate = new Date();
+			if (!geosAfter.isEmpty()) {
+				geosAfter.remove(geosAfter.firstKey());
+				GeoEntryBean geoEntryAfter = (GeoEntryBean) geosAfter.get(geosAfter.firstKey());
+		        Iterator<GeoEntryBean> j = g.getGeoEntries();
+				while (j.hasNext()) {
+		            GeoEntryBean gb = j.next();
+		            if (geoEntryAfter.getDate().equals(gb.getDate()) && j.hasNext()) {
+					    endDate = geoEntryAfter.getDate(); 
+		            }
+		        }
+
+			}
+			In and = new In();
+			and.add(new Equals("project","cosmic"));
+			and.add(new Equals("type", "split"));
+			and.add(new Like("detectorid", Integer.toString(detectorid)));
+			and.add(new Like("blessfile", "%.bless%"));
+	        and.add(new Between("startdate", startDate, endDate));
+	        rs = elab.getDataCatalogProvider().runQuery(and);
+			rs.sort("creationdate", true);
 		}
 		return rs;
 	}//end of getAllFilesByBenchmarkGeometry
@@ -220,31 +233,42 @@ public class Benchmark {
 			String julianDate = e.getTupleValue("julianstartdate").toString();
 			Geometries geometries = new Geometries(elab, detectorid);
 			Geometry g = geometries.getGeometry(detectorid);
-			SortedMap geos = g.getGeoEntriesBefore(julianDate);
-			if (!geos.isEmpty()) {
-				GeoEntryBean geoEntry = (GeoEntryBean) geos.get(geos.lastKey()); 
-				
+			SortedMap geosBefore = g.getGeoEntriesBefore(julianDate);
+	        Date startDate = new Date();
+			if (!geosBefore.isEmpty()) {
+				GeoEntryBean geoEntryBefore = (GeoEntryBean) geosBefore.get(geosBefore.lastKey()); 				
 		        Iterator<GeoEntryBean> j = g.getGeoEntries();
-		        
-		        Date endDate = new Date();
+		        startDate = geoEntryBefore.getDate();
 		        while (j.hasNext()) {
 		            GeoEntryBean gb = j.next();
-		            if (geoEntry.getDate().equals(gb.getDate()) && j.hasNext()) {
-		                endDate = j.next().getDate();
+		            if (geoEntryBefore.getDate().equals(gb.getDate()) && j.hasNext()) {
+		                startDate = j.next().getDate();
 		            }
 		        }
-		        
-				Date startDate = geoEntry.getDate(); 
-				In and = new In();
-				and.add(new Equals("project","cosmic"));
-				and.add(new Equals("type", "split"));
-				and.add(new Like("detectorid", Integer.toString(detectorid)));
-				and.add(new Equals("blessed", false));
-				and.add(new Like("blessfile", "%.bless%"));
-		        and.add(new Between("startdate", startDate, endDate));
-		        rs = elab.getDataCatalogProvider().runQuery(and);
-				rs.sort("creationdate", true);
 			}
+			SortedMap geosAfter = g.getGeoEntriesAfter(julianDate);
+			Date endDate = new Date();
+			if (!geosAfter.isEmpty()) {
+				geosAfter.remove(geosAfter.firstKey());
+				GeoEntryBean geoEntryAfter = (GeoEntryBean) geosAfter.get(geosAfter.firstKey());
+		        Iterator<GeoEntryBean> j = g.getGeoEntries();
+		        
+		        while (j.hasNext()) {
+		            GeoEntryBean gb = j.next();
+		            if (geoEntryAfter.getDate().equals(gb.getDate()) && j.hasNext()) {
+					    endDate = geoEntryAfter.getDate(); 
+		            }
+		        }
+			}
+			In and = new In();
+			and.add(new Equals("project","cosmic"));
+			and.add(new Equals("type", "split"));
+			and.add(new Like("detectorid", Integer.toString(detectorid)));
+			and.add(new Equals("blessed", false));
+			and.add(new Like("blessfile", "%.bless%"));
+	        and.add(new Between("startdate", startDate, endDate));
+	        rs = elab.getDataCatalogProvider().runQuery(and);
+			rs.sort("creationdate", true);
 		}
 		return rs;
 	}//end of getUnblessedFilesByBenchmarkGeometry
