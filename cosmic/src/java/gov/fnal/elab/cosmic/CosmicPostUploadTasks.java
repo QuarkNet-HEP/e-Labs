@@ -99,6 +99,7 @@ public class CosmicPostUploadTasks {
 		                meta.add("blessed boolean false");
 			            meta.add("group string " + auser.getName());
 		    	        meta.add("teacher string " + elab.getUserManagementProvider().getTeacher(auser).getName());
+		    	        meta.add("email string " + elab.getUserManagementProvider().getTeacher(auser).getEmail());
 		        	    meta.add("school string " + auser.getSchool());
 		            	meta.add("city string " + auser.getCity());
 		                meta.add("state string " + auser.getState());
