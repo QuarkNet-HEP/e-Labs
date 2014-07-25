@@ -62,7 +62,11 @@ public class Downloader extends HttpServlet {
                 if (type.equals("equip")) {
                 	pfn = elab.getProperties().getDataDir() + File.separator + "equip" + File.separator + filename;
                 } else {
-                	pfn = user.getDir(type) + File.separator + filename;
+                	if (type.equals("file")) {
+                    	pfn = elab.getProperties().getDataDir() + File.separator + filename;                		
+                	} else {
+                		pfn = user.getDir(type) + File.separator + filename;
+                	}
                 }
             }
             resp.setContentType("x-object/data");
