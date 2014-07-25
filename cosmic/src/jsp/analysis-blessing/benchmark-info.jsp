@@ -104,7 +104,6 @@
 			ResultSet rs = Benchmark.getUnblessedSplitDetails(elab, startDate, endDate);
 			if (rs != null) {
 				String[] splits = rs.getLfnArray();
-				totalFiles = splits.length;
 				for (int i = 0; i < splits.length; i++) {
 					VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(splits[i]);
 					try {
@@ -173,7 +172,7 @@
 		<script type="text/javascript" src="../include/jquery/js/jquery.tablesorter.min.js"></script>	
 		<link type="text/css" rel="stylesheet" href="../include/jquery/css/blue/style.css" />		
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<script src="http://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/highcharts.js"></script>
 		<script>
 			$(document).ready(function() {
 				var calendarParam = {
