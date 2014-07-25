@@ -41,20 +41,6 @@ public class BlessProcess {
 		String errorCode = "";
 		boolean goBless = true;
 		ArrayList meta = new ArrayList();
-		//check if this split has been already blessed/unblessed by this benchmark, then do not do it again.
-		//try {
-		//	VDSCatalogEntry eCheck = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filename);
-		//	if (eCheck != null) {
-		//		String benchmarkRef = (String) eCheck.getTupleValue("benchmarkreference");
-		//		if (benchmarkRef != null) {
-		//			if (benchmarkRef.equals(benchmark)) {
-		//				goBless = false;
-		//			}
-		//		}
-		//	}
-		//} catch (Exception e) {
-		//	System.out.println("BlessDatafile exception: " + e.getMessage());
-		//}
 		//get the catalog entry of the file to be blessed
 		if (goBless) {
 			try {
@@ -123,7 +109,6 @@ public class BlessProcess {
 										meta.add("benchmarkrate string "+String.valueOf(chan1Rate));
 										meta.add("benchmarksplitrate string "+split[1]);
 										meta.add("benchmarkspliterror string "+split[2]);
-										meta.add("benchmarksplit3sigmas string "+String.valueOf(parseToDouble3Sigmas(split[2])));
 										meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[1]),chan1Rate,parseToDouble(split[2]))));									
 										failReason = formatFailReason(split[0], "channel 1", String.valueOf(chan1Rate), split[1], split[2]);
 									}
@@ -139,7 +124,6 @@ public class BlessProcess {
 											meta.add("benchmarkrate string "+String.valueOf(chan2Rate));
 											meta.add("benchmarksplitrate string "+split[3]);
 											meta.add("benchmarkspliterror string "+split[4]);
-											meta.add("benchmarksplit3sigmas string "+String.valueOf(parseToDouble3Sigmas(split[4])));
 											meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[3]),chan1Rate,parseToDouble(split[4]))));									
 											failReason = formatFailReason(split[0], "channel 2", String.valueOf(chan2Rate), split[3], split[4]);
 										}
@@ -156,7 +140,6 @@ public class BlessProcess {
 											meta.add("benchmarkrate string "+String.valueOf(chan3Rate));
 											meta.add("benchmarksplitrate string "+split[5]);
 											meta.add("benchmarkspliterror string "+split[6]);
-											meta.add("benchmarksplit3sigmas string "+String.valueOf(parseToDouble3Sigmas(split[6])));
 											meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[5]),chan1Rate,parseToDouble(split[6]))));									
 											failReason = formatFailReason(split[0], "channel 3", String.valueOf(chan3Rate), split[5], split[6]);
 										}
@@ -173,7 +156,6 @@ public class BlessProcess {
 											meta.add("benchmarkrate string "+String.valueOf(chan4Rate));
 											meta.add("benchmarksplitrate string "+split[7]);
 											meta.add("benchmarkspliterror string "+split[8]);
-											meta.add("benchmarksplit3sigmas string "+String.valueOf(parseToDouble3Sigmas(split[8])));
 											meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[7]),chan1Rate,parseToDouble(split[8]))));									
 											failReason = formatFailReason(split[0], "channel 4", String.valueOf(chan4Rate), split[7], split[8]);
 										}
@@ -194,7 +176,6 @@ public class BlessProcess {
 												meta.add("benchmarkrate string "+String.valueOf(triggerRate));
 												meta.add("benchmarksplitrate string "+split[9]);
 												meta.add("benchmarkspliterror string "+split[10]);
-												meta.add("benchmarksplit3sigmas string "+String.valueOf(parseToDouble3Sigmas(split[10])));
 												meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[9]),chan1Rate,parseToDouble(split[10]))));																					
 												failReason = formatFailReason(split[0], "trigger", String.valueOf(triggerRate), split[9], split[10]);
 											}
