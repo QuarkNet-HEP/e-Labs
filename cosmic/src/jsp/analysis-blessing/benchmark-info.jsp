@@ -298,7 +298,7 @@
    				  	   <h2>Query Results</h2>
    				  	   <p><strong>Total Files:</strong> ${totalFiles }, 
    				  	   	  <strong>Total Blessed: </strong>${totalBlessed }, 
-   				  	   	  <strong>Total Unblessed: </strong> ${totalUnblessed}
+   				  	   	  <strong>Total Unblessed: </strong> ${totalUnblessed}, 
    				  	   	  <strong>Total Unbenchmarked: </strong> ${totalUnbenchmarked }	  
    				  	   </p>	
  						  <c:choose>
