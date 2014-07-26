@@ -56,6 +56,23 @@ public class Benchmark {
 		rs.sort("name", true);
 		return rs;
 	}//end of getSplitBenchmarkInfoByInterval
+
+	//EPeronja: get unblessed files
+	public static ResultSet getUnblessedSplitDetails(Elab elab, Date startDate, Date endDate) throws ElabException {
+		ResultSet rs = null;
+		if (elab != null && startDate != null && endDate != null) {
+			In and = new In();
+			and.add(new Equals("project","cosmic"));
+			and.add(new Equals("type", "split"));
+			and.add(new Equals("blessed", false));
+			and.add(new Like("benchmarkfail", "This file failed at:%"));
+			and.add(new GreaterOrEqual("creationdate", startDate));
+			and.add(new LessOrEqual("creationdate", endDate));
+			rs = elab.getDataCatalogProvider().runQuery(and);
+		}		
+		rs.sort("name", true);
+		return rs;
+	}//end of getSplitBenchmarkInfoByInterval
 	
 	//EPeronja: get the benchmark files for the given detector
 	public static ResultSet getBenchmarkFileName(Elab elab, Integer detectorid) throws ElabException {

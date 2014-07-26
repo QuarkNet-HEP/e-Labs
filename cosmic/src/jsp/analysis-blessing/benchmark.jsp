@@ -76,7 +76,20 @@
 			    for (int i = 0; i < blessedFiles.length; i++) {
 			    	CatalogEntry ce = dcp.getEntry(blessedFiles[i]);
 			    	ce.setTupleValue("benchmarkreference","");
-			    	ce.setTupleValue("blessed", false);
+			    	if ((Boolean) ce.getTupleValue("blessed")) { 
+				    	ce.setTupleValue("blessed", false);
+				    	ce.setTupleValue("blessedstatus", "not blessed");
+			    	} else {
+				    	ce.setTupleValue("benchmarkfail","");
+				    	ce.setTupleValue("benchmarkerrorcode","");
+				    	ce.setTupleValue("benchmarkfailurechannel","");
+				    	ce.setTupleValue("benchmarkquality","");
+				    	ce.setTupleValue("benchmarkrate","");
+				    	ce.setTupleValue("benchmarksplit3sigmas","");
+				    	ce.setTupleValue("benchmarksplitrate","");
+				    	ce.setTupleValue("benchmarkreference","");
+				    	ce.setTupleValue("benchmarkreference","");	    		
+			    	}
 			    	dcp.insert(ce);
 			    }
 			}

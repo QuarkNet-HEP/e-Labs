@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 
 import gov.fnal.elab.Elab;
+import gov.fnal.elab.ElabGroup;
 import gov.fnal.elab.cosmic.bless.BlessData.valueData;
 import gov.fnal.elab.datacatalog.*;
 import gov.fnal.elab.datacatalog.query.*;
@@ -37,21 +38,9 @@ public class BlessProcess {
 	
 	public String BlessDatafile(Elab elab, String detectorid, String filename, String benchmark) throws IOException {
 		String message = "";
+		String errorCode = "";
 		boolean goBless = true;
-		//check if this split has been already blessed/unblessed by this benchmark, then do not do it again.
-		//try {
-		//	VDSCatalogEntry eCheck = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filename);
-		//	if (eCheck != null) {
-		//		String benchmarkRef = (String) eCheck.getTupleValue("benchmarkreference");
-		//		if (benchmarkRef != null) {
-		//			if (benchmarkRef.equals(benchmark)) {
-		//				goBless = false;
-		//			}
-		//		}
-		//	}
-		//} catch (Exception e) {
-		//	System.out.println("BlessDatafile exception: " + e.getMessage());
-		//}
+		ArrayList meta = new ArrayList();
 		//get the catalog entry of the file to be blessed
 		if (goBless) {
 			try {
@@ -83,16 +72,19 @@ public class BlessProcess {
 							String line = "";
 							String[] split; 
 							boolean pass = true;
+							errorCode = "0";
 							String failReason = "If this message is not overwritten the blessfile is empty";
 							try {
 								VDSCatalogEntry splitFile = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filename);
 								VDSCatalogEntry benchmarkFile = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(benchmark);
 								failReason = checkChannelMismatch(splitFile, benchmarkFile);
 								if (!failReason.equals("")) {
+									errorCode = "5";
 									pass = false;
 								}
 							} catch (Exception e) {
 								pass = false;
+								errorCode = "1";
 								failReason = "Exception comparing the channels in both files";
 							}
 							while ((line = in.readLine()) != null && pass) {
@@ -102,6 +94,7 @@ public class BlessProcess {
 								else {
 									split = line.split("\t"); 
 									if (split.length != 15) {
+										errorCode = "2";
 										failReason = blessFile + " has malformed data. ";
 										throw new IOException(blessFile + " has malformed data. "); 
 									}
@@ -110,6 +103,13 @@ public class BlessProcess {
 										pass = true;
 									} else {
 										pass = false;
+										errorCode = "3";
+										meta.add("benchmarkfailuretime string " +split[0] + " (" + convertToHMS(split[0]) + ")");
+										meta.add("benchmarkfailurechannel string channel1");
+										meta.add("benchmarkrate string "+String.valueOf(chan1Rate));
+										meta.add("benchmarksplitrate string "+split[1]);
+										meta.add("benchmarkspliterror string "+split[2]);
+										meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[1]),chan1Rate,parseToDouble(split[2]))));									
 										failReason = formatFailReason(split[0], "channel 1", String.valueOf(chan1Rate), split[1], split[2]);
 									}
 									//compare channel 2 and see if file can be blessed
@@ -118,6 +118,13 @@ public class BlessProcess {
 											pass = true;
 										} else {
 											pass = false;
+											errorCode = "3";
+											meta.add("benchmarkfailuretime string " +split[0] + " (" + convertToHMS(split[0]) + ")");
+											meta.add("benchmarkfailurechannel string channel2");
+											meta.add("benchmarkrate string "+String.valueOf(chan2Rate));
+											meta.add("benchmarksplitrate string "+split[3]);
+											meta.add("benchmarkspliterror string "+split[4]);
+											meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[3]),chan1Rate,parseToDouble(split[4]))));									
 											failReason = formatFailReason(split[0], "channel 2", String.valueOf(chan2Rate), split[3], split[4]);
 										}
 									}
@@ -127,6 +134,13 @@ public class BlessProcess {
 											pass = true;
 										} else {
 											pass = false;
+											errorCode = "3";
+											meta.add("benchmarkfailuretime string " +split[0] + " (" + convertToHMS(split[0]) + ")");
+											meta.add("benchmarkfailurechannel string channel3");
+											meta.add("benchmarkrate string "+String.valueOf(chan3Rate));
+											meta.add("benchmarksplitrate string "+split[5]);
+											meta.add("benchmarkspliterror string "+split[6]);
+											meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[5]),chan1Rate,parseToDouble(split[6]))));									
 											failReason = formatFailReason(split[0], "channel 3", String.valueOf(chan3Rate), split[5], split[6]);
 										}
 									}
@@ -136,6 +150,13 @@ public class BlessProcess {
 											pass = true;
 										} else {
 											pass = false;
+											errorCode = "3";
+											meta.add("benchmarkfailuretime string " +split[0] + " (" + convertToHMS(split[0]) + ")");
+											meta.add("benchmarkfailurechannel string channel4");
+											meta.add("benchmarkrate string "+String.valueOf(chan4Rate));
+											meta.add("benchmarksplitrate string "+split[7]);
+											meta.add("benchmarkspliterror string "+split[8]);
+											meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[7]),chan1Rate,parseToDouble(split[8]))));									
 											failReason = formatFailReason(split[0], "channel 4", String.valueOf(chan4Rate), split[7], split[8]);
 										}
 									}
@@ -149,6 +170,13 @@ public class BlessProcess {
 												pass = true;
 											} else {
 												pass = false;
+												errorCode = "3";
+												meta.add("benchmarkfailuretime string " +split[0] + " (" + convertToHMS(split[0]) + ")");
+												meta.add("benchmarkfailurechannel string triger");
+												meta.add("benchmarkrate string "+String.valueOf(triggerRate));
+												meta.add("benchmarksplitrate string "+split[9]);
+												meta.add("benchmarkspliterror string "+split[10]);
+												meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[9]),chan1Rate,parseToDouble(split[10]))));																					
 												failReason = formatFailReason(split[0], "trigger", String.valueOf(triggerRate), split[9], split[10]);
 											}
 										}
@@ -175,17 +203,19 @@ public class BlessProcess {
 								}
 	
 								dcp.insert(e);	
-								ArrayList meta = new ArrayList();
+								//ArrayList meta = new ArrayList();
 								if (needsBlessedFlag) {
 									meta.add("blessed boolean " + pass);
 								}
 								meta.add("benchmarkreference string "+ benchmark);
+								meta.add("benchmarkerrorcode string "+ errorCode);
 								meta.add("benchmarkfail string "+ failReason);
 								dcp.insert(DataTools.buildCatalogEntry(filename, meta));
 								if (pass && lineNumber > 0) {
 									message = "<strong>"+filename + "</strong> has been blessed.";
 								} else {
 									if (lineNumber == 0) {
+										errorCode = "4";
 										failReason = "The .bless file is empty. There is no information to run the blessing routine.";
 									}
 									message = "<strong>"+filename + "</strong> has NOT been blessed. Fail reason: " + failReason;								
@@ -249,6 +279,13 @@ public class BlessProcess {
 		return result*3;
 	}//end of parseToDouble
 	
+	public double calculateQuality(double splitRate, double channelRate, double splitError) {
+		double quality = 0;
+		if (splitError != 0) {
+			quality = (splitRate - channelRate) / splitError;
+		}
+		return (quality < 0) ? -quality : quality;
+	}
 	public String checkChannelMismatch(VDSCatalogEntry split, VDSCatalogEntry benchmark) {
 		String failReason = "";
 		for (int i = 1; i <= 4; i++) {
