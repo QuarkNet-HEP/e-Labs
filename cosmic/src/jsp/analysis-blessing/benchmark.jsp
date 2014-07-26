@@ -85,7 +85,6 @@
 				    	ce.setTupleValue("benchmarkfailurechannel","");
 				    	ce.setTupleValue("benchmarkquality","");
 				    	ce.setTupleValue("benchmarkrate","");
-				    	ce.setTupleValue("benchmarksplit3sigmas","");
 				    	ce.setTupleValue("benchmarksplitrate","");
 				    	ce.setTupleValue("benchmarkreference","");
 				    	ce.setTupleValue("benchmarkreference","");	    		
