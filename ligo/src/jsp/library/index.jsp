@@ -38,8 +38,8 @@
 				<li>
 					<a href="resources.jsp">Resources</a> - Explore online resources 
 					that will help you conduct your e-Lab investigation. A 
-					<a href="/ligo/tla/tutorial.php">tutorial</a> will help you learn to use 
-					<a href="/ligo/tla/">Bluestone</a>, 
+					<a href="../bluestone/tutorial.jsp">tutorial</a> will help you learn to use 
+					<a href="../current/">e-Lab data interface</a>, 
 					LIGO's e-Lab data analysis software
 				</li>
 				<li>

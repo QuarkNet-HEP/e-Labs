@@ -83,7 +83,7 @@
 					<ul>
 						<li><a href="../data">Data</a></li>
 						<li>Tutorials:<br /><e:popup href="../video/intro-bluestone.html" target="tryit" width="800" height="659">Screencast (with Sound)</e:popup></li> or <e:popup href="../bluestone/tutorial.jsp" target="tryit" width="900" height="659">Screenshots</e:popup></li>
-						<li><a href="../bluestone/">Bluestone</a></li>
+						<li><a href="../current/">e-Lab data interface</a></li>
 						<li><a href="../plots/">View Plots</a></li>
 						<li><a href="../analysis/list.jsp">Analyses</a></li>
 					</ul>

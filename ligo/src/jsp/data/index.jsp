@@ -44,7 +44,7 @@
 				</ul>
 			
 <h3>Access to Data (from the Navigation Bar)</h3>
-<p>Use <b>Bluestone</b> for access to LIGO seismometer data plus wind, temperature and rainfall data. Use <b>Related Data</b> to find data from non-LIGO sources.
+<p>Use the e-Lab data interface for access to LIGO seismometer data plus wind, temperature and rainfall data. Use <b>Related Data</b> to find data from non-LIGO sources.
 <h3>Access to Plots</h3>
 				<ul style="margin-left:30px">
 					<li><a href="../plots">View Plots</a>

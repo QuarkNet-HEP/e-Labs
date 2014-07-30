@@ -97,8 +97,8 @@
 							<td width="125" valign="bottom" align="center">
 								<div id="sitehelp-data">
 
-									<a href="/ligo/tla/tutorial.php">Tutorial</a><br />
-									<a href="/ligo/tla/">Bluestone</a><br />
+									<a href="../bluestone/tutorial.jsp">Tutorial</a><br />
+									<a href="../current/">e-Lab data interface</a><br />
 									<a href="../plots/">View Plots</a><br />
 									<a href="../analysis/list.jsp">Analyses</a>
 								</div>
