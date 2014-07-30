@@ -223,6 +223,9 @@
 			            }
 			        },
 			        xAxis: {
+				        labels: {
+				        	enabled: false
+				        },
 			        	categories: [<%=xAxisCategories%>]
 			        },
 			        colors: ['#0000ff'],
