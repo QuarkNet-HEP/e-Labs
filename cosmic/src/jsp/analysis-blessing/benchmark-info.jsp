@@ -41,6 +41,7 @@
 	String xAxisCategories ="";
 	String yAxisValues = "";
 	String workbookName ="quality_parameter.xls";
+	String outliers = "";
 	
 	if ("Retrieve Report".equals(submit)) {
 		if (StringUtils.isNotBlank(fromDate)) {
@@ -123,10 +124,14 @@
 					Double quality = Double.valueOf(nextValue);
 					Double fraction = quality % 1;
 					Double interval = quality - fraction;
-					if (!qualityData.containsKey(interval.intValue())) {
-						qualityData.put(interval.intValue(), new Integer(1));
+					if (interval < 1000) {
+						if (!qualityData.containsKey(interval.intValue())) {
+							qualityData.put(interval.intValue(), new Integer(1));
+						} else {
+							qualityData.put(interval.intValue(), qualityData.get(interval.intValue()) + 1);		
+						}
 					} else {
-						qualityData.put(interval.intValue(), qualityData.get(interval.intValue()) + 1);		
+						outliers += " - " + String.valueOf(interval); 
 					}
 				}
 			}
@@ -149,6 +154,7 @@
 	request.setAttribute("xAxisCategories", xAxisCategories);
 	request.setAttribute("yAxisValues", yAxisValues);
 	request.setAttribute("messages", messages);
+	request.setAttribute("outliers", outliers);
 	request.setAttribute("fromDate", fromDate);
 	request.setAttribute("toDate", toDate);
 	request.setAttribute("reportType", reportType);
@@ -355,6 +361,9 @@
 								   <div id="chart" style="background-color:#FFFFFF">
 									  <div id="qualityParameter" style="width:750px; height:250px; text-align: left;"></div>
 								   </div>
+								   <c:if test="${not empty outliers }">
+								   		<div><i>* Outliers not graphed: ${outliers }</i></div>
+								   </c:if>
 								   <a href="../data/download?filename=${workbookName}&elab=${elab.name}&type=file">Download Excel file with data</a>
 							       <table style="text-align: center; width: 100%;" id="quality-data-results" class="tablesorter">
 										<thead>
