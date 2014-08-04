@@ -209,7 +209,7 @@
 										</div>
 									</td>
 									<td align="left" width="20" valign="top">
-										<div style="overflow:auto; width:20px; position: fixed;">
+										<div>
 											<img src="../graphics/blue_square.gif" border="0" width="2" height="600" alt=""></img>
 										</div>
 									</td>
@@ -308,7 +308,7 @@
 																						<th>Your new comment:</th>
 																					</tr>
 																					<tr>
-																						<td><textarea name="comment_text" id="comment_text_${commentInfo.value[0]}" cols="65" rows="5"></textarea></td>
+																						<td><textarea name="comment_text" id="comment_text_${commentInfo.value[0]}" cols="62" rows="5"></textarea></td>
 																					</tr>
 																				</table>
 																				<input type="hidden" name="log_id" id="log_id_${commentInfo.value[0] }" value="${commentInfo.value[0]}">
