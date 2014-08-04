@@ -193,7 +193,7 @@
 									</div>
 								</td>
 								<td align="left" width="20" valign="top">
-									<div style="overflow:auto; width:20px; position: fixed;">
+									<div>
 										<img src="../graphics/red_square.gif" border="0" width="2" height="600" alt="">
 									</div>
 								</td>								
@@ -241,7 +241,7 @@
 																		<th colspan="2"><font face="arial MS">Your New Log Book Entry</font></th>
 																	</tr>
 																	<tr>
-																		<td colspan="2"><textarea name="log_text" cols="65" rows="5"></textarea></td>
+																		<td colspan="2"><textarea name="log_text" cols="62" rows="5"></textarea></td>
 																	</tr>
 																	<tr>
 																		<td align='left'>
@@ -293,7 +293,7 @@
 																<th colspan="2"><font face="arial MS">Your New Log Book Entry</font></th>
 															</tr>
 															<tr>
-																<td colspan="2"><textarea name="log_text" cols="65" rows="5"></textarea></td>
+																<td colspan="2"><textarea name="log_text" cols="62" rows="5"></textarea></td>
 															</tr>
 															<tr>
 																<td align='left'>

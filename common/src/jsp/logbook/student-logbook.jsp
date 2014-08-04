@@ -433,7 +433,7 @@
 																			</tr>
 																			<tr>
 																				<td colspan="2">
-																					<textarea name="log_text" cols="65" rows="5"></textarea>
+																					<textarea name="log_text" cols="62" rows="5"></textarea>
 																					<!-- //EPeronja-04/08/2013: replace " by ', string was not showing correctly -->
 																					<input type="hidden" name="img_src" value='${img_src}'> 
 																					<input type="hidden" name="count" value="${count }">
@@ -505,7 +505,7 @@
 											</tr>
 											<tr>
 												<td colspan="2">
-													<textarea name="log_text" cols="65" rows="5"></textarea>
+													<textarea name="log_text" cols="62" rows="5"></textarea>
 													<!-- //EPeronja-04/08/2013: replace " by ', string was not showing correctly -->
 													<input type="hidden" name="img_src" value='${img_src}'> 
 													<input type="hidden" name="count" value="${count }">
