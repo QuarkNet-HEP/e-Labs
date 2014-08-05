@@ -97,6 +97,7 @@
 				sheet.addCell(new Label(13,i,(String) entry.getTupleValue("benchmarksplitrate")));
 				sheet.addCell(new Label(14,i,(String) entry.getTupleValue("benchmarkspliterror")));
 				sheet.addCell(new Label(15,i,(String) entry.getTupleValue("benchmarkquality")));
+				sheet.addCell(new Label(16,i,(String) entry.getTupleValue("benchmarkfail")));
 			}		
 		}
 		workbook.write();
@@ -385,7 +386,7 @@
 										</thead>
 										<tbody>
 											<c:forEach items="${filenameDisplay}" var="filename">
-												<c:if test="${filename.value.tupleMap.benchmarkquality > 0 }">
+												<c:if test="${not empty filename.value.tupleMap.benchmarkquality}">
 													<tr>
 														<td><a href="../analysis-blessing/compare1.jsp?file=${filename.key}" target="_blank" width="700" height="900" now="true">${filename.key}</a></td>
 														<td nowrap><fmt:formatDate value="${filename.value.tupleMap.creationdate}" pattern="yyyy MM dd"></fmt:formatDate></td>
