@@ -35,9 +35,47 @@ public class LogbookToolsTest {
 			message = e.getMessage();
 		}
 	    assertTrue(yesNo.equals("no"));		
-	    assertTrue(!message.equals(""));		
+	    assertTrue(message.equals(""));		
 	}//end of test_getYesNoGeneral
 
+	@Test
+	public void test_getNewCommentsGeneral() {
+		String message = "";
+		String newFlag = "";
+		try {
+			newFlag = LogbookTools.getNewCommentsGeneral(140, 1, cosmicElab);
+		} catch (Exception e) {
+			message = e.getMessage();
+		}
+	    assertTrue(message.equals(""));		
+		message = "";
+		try {
+			newFlag = LogbookTools.getNewCommentsGeneral(0, -1, null);
+		} catch (Exception e) {
+			message = e.getMessage();
+		}
+	    assertTrue(message.equals(""));			
+	}//end of test_getNewCommentsGeneral
+
+	@Test
+	public void test_getNewLogEntriesGeneral() {
+		String message = "";
+		String newFlag = "";
+		try {
+			newFlag = LogbookTools.getNewLogEntriesGeneral(140, 1, cosmicElab);
+		} catch (Exception e) {
+			message = e.getMessage();
+		}
+	    assertTrue(message.equals(""));		
+		message = "";
+		try {
+			newFlag = LogbookTools.getNewLogEntriesGeneral(0, -1, null);
+		} catch (Exception e) {
+			message = e.getMessage();
+		}
+	    assertTrue(message.equals(""));			
+	}//end of test_getNewLogEntriesGeneral	
+	
 	@Test
 	public void test_getKeywordTracker() {
 		//getKeywordTracker(String groupName, int project_id, Elab elab)
@@ -49,7 +87,16 @@ public class LogbookToolsTest {
 			message = e.getMessage();
 		}
 	    assertTrue(rs != null);		
-	    assertTrue(message.equals(""));		
+	    assertTrue(message.equals(""));	
+	    message = "";
+	    rs = null;
+		try {
+			rs = LogbookTools.getKeywordTracker(0, -1, null);
+		} catch (Exception e) {
+			message = e.getMessage();
+		}
+		assertTrue(rs == null);
+		assertTrue(message.equals(""));
 	}//end of test_getKeywordTracker
 
 	@Test
@@ -64,37 +111,38 @@ public class LogbookToolsTest {
 		}
 	    assertTrue(rs != null);		
 	    assertTrue(message.equals(""));		
+	    message = "";
+	    rs = null;
+		try {
+			rs = LogbookTools.getLogbookKeywordItems(-1, null, null);
+		} catch (Exception e) {
+			message = e.getMessage();
+		}
+	    assertTrue(rs == null);		
+	    assertTrue(message.equals(""));		    
 	}//end of test_getLogbookKeywordItems
 
 	@Test
-	public void test_buildLinksToKeywords() {
+	public void test_getLogbookKeywordItemsNewLogs() {
 		String message = "";
-		String groupLinks = "";
-		String links = "";
-		HashMap keywordTracker = new HashMap();
 		ResultSet rs = null;
 		try {
-			rs = LogbookTools.getKeywordTracker(140, 1, cosmicElab);
-			while (rs.next()){
-				if (rs.getObject("keyword_id") != null) {
-					Integer keyword_id= (Integer) rs.getObject("keyword_id");
-					keywordTracker.put(keyword_id.intValue(), true);
-				} 
-			}
 			rs = LogbookTools.getLogbookKeywordItems(1, " AND keyword.type IN ('SW','S') ",cosmicElab);
-			groupLinks = LogbookTools.buildGroupLinksToKeywords(rs, keywordTracker, "general", "undergrads", 140);
-			links = LogbookTools.buildStudentKeywordLinks(rs, keywordTracker, "general");
-			
-
 		} catch (Exception e) {
 			message = e.getMessage();
 		}
 	    assertTrue(rs != null);		
-	    assertTrue(keywordTracker.size() > 0);
-	    assertTrue(!groupLinks.equals(""));
-	    assertTrue(!links.equals(""));
 	    assertTrue(message.equals(""));		
-	}//end of test_buildGroupLinksToKeywords
+	    message = "";
+	    rs = null;
+		try {
+			rs = LogbookTools.getLogbookKeywordItems(-1, "x", cosmicElab);
+		} catch (Exception e) {
+			message = e.getMessage();
+		}
+	    assertTrue(rs != null);		
+	    assertTrue(message.equals(""));			
+	}//end of test_getLogbookKeywordItemsNewLogs
 	
 	@Test
 	public void test_getKeywordDetailsByProject() {
@@ -107,6 +155,15 @@ public class LogbookToolsTest {
 		}
 	    assertTrue(rs != null);		
 	    assertTrue(message.equals(""));		
+	    message = "";
+	    rs = null;
+		try {
+			rs = LogbookTools.getKeywordDetailsByProject(1, null, cosmicElab);	
+		} catch (Exception e) {
+			message = e.getMessage();
+		}
+	    assertTrue(rs != null);		
+	    assertTrue(message.equals(""));		    
 	}//end of test_getLogbookKeywordItems
 
 	@Test
@@ -120,8 +177,45 @@ public class LogbookToolsTest {
 			message = e.getMessage();
 		}
 	    assertTrue(!links.equals(""));		
-	    assertTrue(message.equals(""));		
+	    assertTrue(message.equals(""));	
+	    message = "";
+	    links = "";
+		try {
+			links = LogbookTools.buildGroupLinks(null, null);
+		} catch (Exception e) {
+			message = e.getMessage();
+		}
+		assertTrue(links.equals(""));
+		assertTrue(message.equals(""));
 	}//end of test_buildGroupLinks
+	
+	@Test
+	public void test_buildLinksToKeywords() {
+		String message = "";
+		String groupLinks = "";
+		String links = "";
+		HashMap keywordTracker = new HashMap();
+		ResultSet rs = null;
+		try {
+			rs = LogbookTools.getKeywordTracker(140, 1, cosmicElab);
+			while (rs.next()){
+				if (rs.getObject("keyword_id") != null) {
+					Integer keyword_id= (Integer) rs.getObject("keyword_id");
+					Object new_comments = rs.getObject("new_comments");
+					keywordTracker.put(keyword_id.intValue(), new_comments);
+				} 
+			}
+			rs = LogbookTools.getLogbookKeywordItems(1, " AND keyword.type IN ('SW','S') ",cosmicElab);
+			groupLinks = LogbookTools.buildGroupLinksToKeywords(rs, keywordTracker, "general", "undergrads", 140);
+			links = LogbookTools.buildStudentKeywordLinks(rs, keywordTracker, "general");
+		} catch (Exception e) {
+			message = e.getMessage();
+		}
+	    assertTrue(rs != null);		
+	    assertTrue(keywordTracker.size() > 0);
+	    assertTrue(!groupLinks.equals(""));
+	    assertTrue(message.equals(""));		
+	}//end of test_buildGroupLinksToKeywords
 	
 	@Test
 	public void test_buildTeacherKeywordLinks() {
@@ -133,9 +227,20 @@ public class LogbookToolsTest {
 			message = e.getMessage();
 		}
 	    assertTrue(!links.equals(""));		
-	    assertTrue(message.equals(""));		
+	    assertTrue(message.equals(""));	
+	    message = "";
+	    links = "";
+		try {
+			links = LogbookTools.buildTeacherKeywordLinks(-1, null, -1, null);
+		} catch (Exception e) {
+			message = e.getMessage();
+		}
+	    assertTrue(links.equals(""));		
+	    assertTrue(message.equals(""));		    
 	}//end of test_buildTeacherKeywordLinks
 	
+
+	//up to here
 	@Test
 	public void test_getKeywordDetails() {
 		String message = "";
@@ -147,6 +252,12 @@ public class LogbookToolsTest {
 		}
 	    assertTrue(rs != null);		
 	    assertTrue(message.equals(""));		
+		try {
+			rs = LogbookTools.getKeywordDetails(null, cosmicElab);
+		} catch (Exception e) {
+			message = e.getMessage();
+		}
+	    assertTrue(message.equals(""));	
 	}//end of test_getKeywordDetails
 	
 	@Test
@@ -237,8 +348,15 @@ public class LogbookToolsTest {
 		} catch (Exception e) {
 			message = e.getMessage();
 		}		
-	    assertTrue(!commentDetails.equals(""));		
 	    assertTrue(message.equals(""));			
+	    commentDetails = null;
+	    message = "";
+		try {
+			commentDetails = LogbookTools.buildExistingComments(-1, -1, -1, null, cosmicElab);
+		} catch (Exception e) {
+			message = e.getMessage();
+		}		
+	    assertTrue(message.equals(""));
 	}//end of test_buildExistingComments
 
 	@Test
@@ -264,7 +382,12 @@ public class LogbookToolsTest {
 		} catch (Exception e) {
 			message = e.getMessage();
 		}		
-	    assertTrue(!commentDetails.equals(""));		
+	    assertTrue(message.equals(""));			
+		try {
+			commentDetails = LogbookTools.buildLogbookEntriesPlusComments(-1, -1, -1, null, cosmicElab);
+		} catch (Exception e) {
+			message = e.getMessage();
+		}		
 	    assertTrue(message.equals(""));			
 	}//end of test_buildLogbookEntriesPlusComments
 
@@ -291,7 +414,14 @@ public class LogbookToolsTest {
 		} catch (Exception e) {
 			message = e.getMessage();
 		}		
-	    assertTrue(!groupName.equals("undergrads"));		
+	    assertTrue(groupName.equals("undergrads"));		
+	    assertTrue(message.equals(""));			
+	    message = "";
+		try {
+			groupName = LogbookTools.getGroupNameFromId(-1, null);
+		} catch (Exception e) {
+			message = e.getMessage();
+		}		
 	    assertTrue(message.equals(""));			
 	}//end of test_getGroupNameFromId
 	
