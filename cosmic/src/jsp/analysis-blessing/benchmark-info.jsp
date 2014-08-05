@@ -82,20 +82,21 @@
 					}
 				}
 				sheet.addCell(new Label(0,i,(String) entry.getLFN()));
-				sheet.addCell(new Label(1,i,String.valueOf(entry.getTupleValue("creationdate"))));
-				sheet.addCell(new Label(2,i,String.valueOf(entry.getTupleValue("startdate"))));
-				sheet.addCell(new Label(3,i,(String) entry.getTupleValue("group")));
-				sheet.addCell(new Label(4,i,(String) entry.getTupleValue("city")));
-				sheet.addCell(new Label(5,i,(String) entry.getTupleValue("state")));
-				sheet.addCell(new Label(6,i,(String) entry.getTupleValue("teacher")));
-				sheet.addCell(new Label(7,i,(String) entry.getTupleValue("email")));
-				sheet.addCell(new Label(8,i,(String) entry.getTupleValue("benchmarkfailuretime")));
-				sheet.addCell(new Label(9,i,(String) entry.getTupleValue("benchmarkfailurechannel")));
-				sheet.addCell(new Label(10,i,(String) entry.getTupleValue("benchmarkreference")));
-				sheet.addCell(new Label(11,i,(String) entry.getTupleValue("benchmarkrate")));
-				sheet.addCell(new Label(12,i,(String) entry.getTupleValue("benchmarksplitrate")));
-				sheet.addCell(new Label(13,i,(String) entry.getTupleValue("benchmarkspliterror")));
-				sheet.addCell(new Label(14,i,(String) entry.getTupleValue("benchmarkquality")));
+				sheet.addCell(new Label(1,i,String.valueOf(entry.getTupleValue("blessed"))));
+				sheet.addCell(new Label(2,i,String.valueOf(entry.getTupleValue("creationdate"))));
+				sheet.addCell(new Label(3,i,String.valueOf(entry.getTupleValue("startdate"))));
+				sheet.addCell(new Label(4,i,(String) entry.getTupleValue("group")));
+				sheet.addCell(new Label(5,i,(String) entry.getTupleValue("city")));
+				sheet.addCell(new Label(6,i,(String) entry.getTupleValue("state")));
+				sheet.addCell(new Label(7,i,(String) entry.getTupleValue("teacher")));
+				sheet.addCell(new Label(8,i,(String) entry.getTupleValue("email")));
+				sheet.addCell(new Label(9,i,(String) entry.getTupleValue("benchmarkfailuretime")));
+				sheet.addCell(new Label(10,i,(String) entry.getTupleValue("benchmarkfailurechannel")));
+				sheet.addCell(new Label(11,i,(String) entry.getTupleValue("benchmarkreference")));
+				sheet.addCell(new Label(12,i,(String) entry.getTupleValue("benchmarkrate")));
+				sheet.addCell(new Label(13,i,(String) entry.getTupleValue("benchmarksplitrate")));
+				sheet.addCell(new Label(14,i,(String) entry.getTupleValue("benchmarkspliterror")));
+				sheet.addCell(new Label(15,i,(String) entry.getTupleValue("benchmarkquality")));
 			}		
 		}
 		workbook.write();
@@ -384,25 +385,27 @@
 										</thead>
 										<tbody>
 											<c:forEach items="${filenameDisplay}" var="filename">
-												<tr>
-													<td><a href="../analysis-blessing/compare1.jsp?file=${filename.key}" target="_blank" width="700" height="900" now="true">${filename.key}</a></td>
-													<td nowrap><fmt:formatDate value="${filename.value.tupleMap.creationdate}" pattern="yyyy MM dd"></fmt:formatDate></td>
-													<td nowrap><fmt:formatDate value="${filename.value.tupleMap.startdate}" pattern="yyyy MM dd"></fmt:formatDate></td>
-													<td style="text-align: left;">${filename.value.tupleMap.group}<br />
-																				  ${filename.value.tupleMap.school}<br />	
-																				  ${filename.value.tupleMap.city}, ${filename.value.tupleMap.state }
-													</td>
-													<td style="text-align: left;">${filename.value.tupleMap.teacher}<br />
-																				  ${filename.value.tupleMap.email}
-													</td>
-													<td>${filename.value.tupleMap.benchmarkfailuretime }</td>
-													<td>${filename.value.tupleMap.benchmarkfailurechannel }</td>
-													<td><a href="../analysis-blessing/compare1.jsp?file=${filename.value.tupleMap.benchmarkreference }" target="_blank" width="700" height="900" now="true">${filename.value.tupleMap.benchmarkreference }</a></td>
-													<td><fmt:formatNumber value="${filename.value.tupleMap.benchmarkrate }" maxFractionDigits="3"></fmt:formatNumber></td>
-													<td><fmt:formatNumber value="${filename.value.tupleMap.benchmarksplitrate }" maxFractionDigits="3"></fmt:formatNumber></td>
-													<td><fmt:formatNumber value="${filename.value.tupleMap.benchmarkspliterror }" maxFractionDigits="3"></fmt:formatNumber></td>
-													<td><fmt:formatNumber value="${filename.value.tupleMap.benchmarkquality }" maxFractionDigits="3"></fmt:formatNumber></td>
-												</tr>
+												<c:if test="${filename.value.tupleMap.benchmarkquality > 0 }">
+													<tr>
+														<td><a href="../analysis-blessing/compare1.jsp?file=${filename.key}" target="_blank" width="700" height="900" now="true">${filename.key}</a></td>
+														<td nowrap><fmt:formatDate value="${filename.value.tupleMap.creationdate}" pattern="yyyy MM dd"></fmt:formatDate></td>
+														<td nowrap><fmt:formatDate value="${filename.value.tupleMap.startdate}" pattern="yyyy MM dd"></fmt:formatDate></td>
+														<td style="text-align: left;">${filename.value.tupleMap.group}<br />
+																					  ${filename.value.tupleMap.school}<br />	
+																					  ${filename.value.tupleMap.city}, ${filename.value.tupleMap.state }
+														</td>
+														<td style="text-align: left;">${filename.value.tupleMap.teacher}<br />
+																					  ${filename.value.tupleMap.email}
+														</td>
+														<td>${filename.value.tupleMap.benchmarkfailuretime }</td>
+														<td>${filename.value.tupleMap.benchmarkfailurechannel }</td>
+														<td><a href="../analysis-blessing/compare1.jsp?file=${filename.value.tupleMap.benchmarkreference }" target="_blank" width="700" height="900" now="true">${filename.value.tupleMap.benchmarkreference }</a></td>
+														<td><fmt:formatNumber value="${filename.value.tupleMap.benchmarkrate }" maxFractionDigits="3"></fmt:formatNumber></td>
+														<td><fmt:formatNumber value="${filename.value.tupleMap.benchmarksplitrate }" maxFractionDigits="3"></fmt:formatNumber></td>
+														<td><fmt:formatNumber value="${filename.value.tupleMap.benchmarkspliterror }" maxFractionDigits="3"></fmt:formatNumber></td>
+														<td><fmt:formatNumber value="${filename.value.tupleMap.benchmarkquality }" maxFractionDigits="3"></fmt:formatNumber></td>
+													</tr>
+												</c:if>
 											</c:forEach>
 										</tbody>
 									</table>								
