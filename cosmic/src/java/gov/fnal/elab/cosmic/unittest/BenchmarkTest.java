@@ -16,8 +16,70 @@ public class BenchmarkTest {
 	public DataCatalogProvider dcp = ElabFactory.getDataCatalogProvider(elab);
 	
 	@Test
+	public void test_getUnblessedWithBenchmark() {
+		ResultSet rs = null;
+		String answer = "";
+		try {
+			Date startDate = DATEFORMAT.parse("01/01/2013");
+			Date endDate = DATEFORMAT.parse("12/01/2013");
+			rs = Benchmark.getUnblessedWithBenchmark(elab, startDate, endDate);
+		} catch (Exception e) {
+			answer = "There was an exception";
+		}
+		assertTrue(rs != null);
+		assertTrue(answer.equals(""));
+		try {
+			rs = Benchmark.getUnblessedWithBenchmark(null, null, null);
+		} catch (Exception e) {
+			answer = "There was an exception";
+		}
+		assertTrue(answer.equals(""));
+	}//end of test_getUnblessedWithBenchmark
+	
+	@Test
+	public void test_getSplitBenchmarkInfoByInterval() {
+		ResultSet rs = null;
+		String answer = "";
+		try {
+			Date startDate = DATEFORMAT.parse("01/01/2013");
+			Date endDate = DATEFORMAT.parse("12/01/2013");
+			rs = Benchmark.getSplitBenchmarkInfoByInterval(elab, startDate, endDate);
+		} catch (Exception e) {
+			answer = "There was an exception";
+		}
+		assertTrue(rs != null);
+		assertTrue(answer.equals(""));
+		try {
+			rs = Benchmark.getSplitBenchmarkInfoByInterval(null, null, null);
+		} catch (Exception e) {
+			answer = "There was an exception";
+		}
+		assertTrue(answer.equals(""));		
+	}//end of test_getSplitBenchmarkInfoByInterval
+	
+	@Test
+	public void test_getUnblessedSplitDetails() {
+		ResultSet rs = null;
+		String answer = "";
+		try {
+			Date startDate = DATEFORMAT.parse("01/01/2013");
+			Date endDate = DATEFORMAT.parse("12/01/2013");
+			rs = Benchmark.getUnblessedSplitDetails(elab, startDate, endDate);
+		} catch (Exception e) {
+			answer = "There was an exception";
+		}
+		assertTrue(rs != null);
+		assertTrue(answer.equals(""));
+		try {
+			rs = Benchmark.getUnblessedSplitDetails(null, null, null);
+		} catch (Exception e) {
+			answer = "There was an exception";
+		}
+		assertTrue(answer.equals(""));		
+	}//end of test_getUnblessedSplitDetails
+	
+	@Test
 	public void test_getDefaultBenchmark() {
-
 		String answer = "";
 		try {
 			int detector = 6119;
@@ -42,12 +104,11 @@ public class BenchmarkTest {
 		} catch (Exception e) {
 			answer = "There was an exception";
 		}
-
-	}
+		assertTrue(answer.equals(""));
+	}//end of test_getDefaultBenchmark
 
 	@Test
 	public void test_getBlessedDataFilesByBenchmark() {
-
 		String answer = "";
 		try {
 			String splitFile = "6119.2013.0322.1";
@@ -72,12 +133,11 @@ public class BenchmarkTest {
 		} catch (Exception e) {
 			answer = "There was an exception";
 		}
-
-	}
+		assertTrue(answer.equals(""));
+	}//end of test_getBlessedDataFilesByBenchmark
 	
 	@Test
 	public void test_getBenchmarkFileName() {
-
 		String answer = "";
 		try {
 			int detector = 6119;
@@ -102,8 +162,8 @@ public class BenchmarkTest {
 		} catch (Exception e) {
 			answer = "There was an exception";
 		}
-
-	}
+		assertTrue(answer.equals(""));
+	}//end of test_getBenchmarkFileName
 	
 	@Test
 	public void test_getBenchmarkCandidates() {
@@ -146,8 +206,8 @@ public class BenchmarkTest {
 		} catch (Exception e) {
 			answer = "There was an exception";
 		}	
-
-	}
+		assertTrue(answer.equals(""));
+	}//end of test_getBenchmarkCandidates
 	
 	@Test
 	public void test_setFileAsBenchmark() {
@@ -190,12 +250,11 @@ public class BenchmarkTest {
 		} catch (Exception e) {
 			answer = "There was an exception";
 		}		
-
-	}
+		assertTrue(answer.equals(""));
+	}//end of test_setFileAsBenchmark
 	
 	@Test
 	public void test_getIcons() {
-
 		String answer = "";
 		try {
 			VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry("6119.2013.0322.1");
@@ -208,12 +267,11 @@ public class BenchmarkTest {
 		} catch (Exception e) {
 			answer = "There was an exception";			
 		}
-
-	}
+		assertTrue(answer.equals(""));
+	}//end of test_getIcons
 	
 	@Test
 	public void test_getAllFilesByBenchmarkGeometry() {
-
 		String answer = "";
 		try {
 			int detector = 6119;
@@ -255,9 +313,27 @@ public class BenchmarkTest {
 		} catch (Exception e) {
 			answer = "There was an exception";			
 		}	
-
-	}
+		assertTrue(answer.equals(""));
+	}//end of test_getAllFilesByBenchmarkGeometry
 	
+	@Test
+	public void test_getSplitBlessLink() {
+		String answer = "";
+		try {
+			VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry("6119.2013.0322.1");
+			String link = Benchmark.getSplitBlessLink(entry);
+		} catch (Exception e) {
+			answer = "There was an exception";			
+		}
+		try {
+			String display = Benchmark.getSplitBlessLink(null);
+		} catch (Exception e) {
+			answer = "There was an exception";			
+		}
+		assertTrue(answer.equals(""));		
+	}//end of test_getSplitBlessLink
+	
+	@Test
 	public void test_getUnblessedFilesByBenchmarkGeometry() {
 		String answer = "";
 		try {
@@ -300,6 +376,6 @@ public class BenchmarkTest {
 		} catch (Exception e) {
 			answer = "There was an exception";			
 		}		
-
-	}
+		assertTrue(answer.equals(""));
+	}//end of test_getUnblessedFilesByBenchmarkGeometry
 }

@@ -42,6 +42,21 @@ import org.apache.commons.lang.time.DateFormatUtils;
  */
 
 public class Benchmark {
+	public static ResultSet getUnblessedWithBenchmark(Elab elab, Date startDate, Date endDate) throws ElabException {
+		ResultSet rs = null;
+		if (elab != null && startDate != null && endDate != null) {
+			In and = new In();
+			and.add(new Equals("project","cosmic"));
+			and.add(new Equals("type", "split"));
+			and.add(new Equals("blessed", false));
+			and.add(new Like("benchmarkreference", "%"));
+			and.add(new GreaterOrEqual("creationdate", startDate));
+			and.add(new LessOrEqual("creationdate", endDate));
+			rs = elab.getDataCatalogProvider().runQuery(and);
+		}		
+		return rs;
+	}// end of getUnblessedWithBenchmark
+	
 	//EPeronja: get all the benchmark info for splits given a period of time
 	public static ResultSet getSplitBenchmarkInfoByInterval(Elab elab, Date startDate, Date endDate) throws ElabException {
 		ResultSet rs = null;
@@ -65,7 +80,7 @@ public class Benchmark {
 			and.add(new Equals("project","cosmic"));
 			and.add(new Equals("type", "split"));
 			and.add(new Equals("blessed", false));
-			and.add(new Like("benchmarkfail", "This file failed at:%"));
+			and.add(new Like("benchmarkfail", "%"));
 			and.add(new GreaterOrEqual("creationdate", startDate));
 			and.add(new LessOrEqual("creationdate", endDate));
 			rs = elab.getDataCatalogProvider().runQuery(and);
@@ -136,7 +151,7 @@ public class Benchmark {
 			rs = elab.getDataCatalogProvider().runQuery(and);
 		}
 		return rs;
-	}
+	}//end of getBenchmarkCandidates
 	
 	//EPeronja: set file as new default benchmark
 	public static Long setFileAsBenchmark(DataCatalogProvider dcp, String benchmark, String benchmarkLabel) throws ElabException {
