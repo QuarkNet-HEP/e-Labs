@@ -41,7 +41,7 @@
 						<td>Delete notifications with expiration dates older than 30 days ago.</td>					
 					</tr>
 					<tr>
-						<td>&#8226; <a href="../references/control.jsp"> FAQs Add, update FAQs</a></td>
+						<td>&#8226; <a href="../references/control.jsp"> FAQs Add/Update</a></td>
 						<td>Add, update FAQ items.</td>					
 					</tr>					
 					<tr>
@@ -79,8 +79,16 @@
 							<td>Create individual threshold times files if they failed to be created at upload time.</td>
 						</tr>
 						<tr>
+							<td>&#8226; <a href="../analysis-blessing/benchmark-process-rerun.jsp">Rerun unblessed files by selected benchmark</a></td>
+							<td>Try bless unblessed files by using the same benchmark.</td>
+						</tr>
+						<tr>
 							<td>&#8226; <a href="../analysis/list-all.jsp">View all analyses</a></td>
 							<td>List of analyses by all users.</td>
+						</tr>
+						<tr>
+							<td>&#8226; <a href="cosmic-analysis-errors.jsp">Add, Update Cosmic Analysis Errors</a></td>
+							<td>Enter cosmic common errors and suggestions on what to do, fix, etc.</td>
 						</tr>
 						<!--  
 						<tr>
