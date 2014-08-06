@@ -172,7 +172,7 @@ public class BlessProcess {
 												pass = false;
 												errorCode = "3";
 												meta.add("benchmarkfailuretime string " +split[0] + " (" + convertToHMS(split[0]) + ")");
-												meta.add("benchmarkfailurechannel string triger");
+												meta.add("benchmarkfailurechannel string trigger");
 												meta.add("benchmarkrate string "+String.valueOf(triggerRate));
 												meta.add("benchmarksplitrate string "+split[9]);
 												meta.add("benchmarkspliterror string "+split[10]);
