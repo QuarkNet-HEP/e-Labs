@@ -37,16 +37,16 @@ public class BlessData {
 					throw new IOException(file.getName() + " has malformed data. "); 
 				}
 				thisLineData = new valueData(	
-						parseToInt(split[1]),
-						parseToInt(split[2]),
-						parseToInt(split[3]),
-						parseToInt(split[4]),
-						parseToInt(split[5]),
-						parseToInt(split[6]),
-						parseToInt(split[7]),
-						parseToInt(split[8]),
+						parseToDouble(split[1]),
+						parseToDouble(split[2]),
+						parseToDouble(split[3]),
+						parseToDouble(split[4]),
+						parseToDouble(split[5]),
+						parseToDouble(split[6]),
+						parseToDouble(split[7]),
+						parseToDouble(split[8]),
 						parseToDouble(split[9]),
-						parseToInt(split[10]),
+						parseToDouble(split[10]),
 						parseToInt(split[11]),
 						parseToDouble(split[12]),
 						parseToDouble(split[13]),
@@ -100,16 +100,16 @@ public class BlessData {
 					throw new IOException(file.getName() + " has malformed data. "); 
 				}
 				thisLineData = new valueData(
-						parseToInt(split[1]),
-						parseToInt(split[2]),
-						parseToInt(split[3]),
-						parseToInt(split[4]),
-						parseToInt(split[5]),
-						parseToInt(split[6]),
-						parseToInt(split[7]),
-						parseToInt(split[8]),
+						parseToDouble(split[1]),
+						parseToDouble(split[2]),
+						parseToDouble(split[3]),
+						parseToDouble(split[4]),
+						parseToDouble(split[5]),
+						parseToDouble(split[6]),
+						parseToDouble(split[7]),
+						parseToDouble(split[8]),
 						parseToDouble(split[9]),
-						parseToInt(split[10]),
+						parseToDouble(split[10]),
 						parseToInt(split[11]),
 						parseToDouble(split[12]),
 						parseToDouble(split[13]),
@@ -161,10 +161,10 @@ public class BlessData {
 	}
 	
 	public class valueData {
-		private int channel1Rate, channel2Rate, channel3Rate, channel4Rate;
-		private int channel1Error, channel2Error, channel3Error, channel4Error;
+		private double channel1Rate, channel2Rate, channel3Rate, channel4Rate;
+		private double channel1Error, channel2Error, channel3Error, channel4Error;
 		private double triggerRate; 
-		private int triggerError;
+		private double triggerError;
 		private int pressure; 
 		private double temperature; 
 		private double voltage; 
@@ -173,11 +173,11 @@ public class BlessData {
 		private double benchmarkTriggerRate;
 		
 		private valueData(
-				int channel1Rate, int channel1Error,
-				int channel2Rate, int channel2Error,
-				int channel3Rate, int channel3Error,
-				int channel4Rate, int channel4Error,
-				double triggerRate, int triggerError, 
+				double channel1Rate, double channel1Error,
+				double channel2Rate, double channel2Error,
+				double channel3Rate, double channel3Error,
+				double channel4Rate, double channel4Error,
+				double triggerRate, double triggerError, 
 				int pressure, double temperature, double voltage,  int gpsSatellitesVisible,
 				double benchmarkChannel1Rate,
 				double benchmarkChannel2Rate,
@@ -229,19 +229,19 @@ public class BlessData {
 			return benchmarkTriggerRate; 
 		}
 
-		public int getChannel1Rate() {
+		public double getChannel1Rate() {
 			return channel1Rate; 
 		}
 		
-		public int getChannel2Rate() {
+		public double getChannel2Rate() {
 			return channel2Rate; 
 		}
 		
-		public int getChannel3Rate() {
+		public double getChannel3Rate() {
 			return channel3Rate;
 		}
 		
-		public int getChannel4Rate() {
+		public double getChannel4Rate() {
 			return channel4Rate;
 		}
 		
@@ -249,23 +249,23 @@ public class BlessData {
 			return triggerRate; 
 		}
 		
-		public int getChannel1Error() {
+		public double getChannel1Error() {
 			return channel1Error; 
 		}
 		
-		public int getChannel2Error() {
+		public double getChannel2Error() {
 			return channel2Error; 
 		}
 		
-		public int getChannel3Error() {
+		public double getChannel3Error() {
 			return channel3Error; 
 		}
 		
-		public int getChannel4Error() {
+		public double getChannel4Error() {
 			return channel4Error; 
 		}
 		
-		public int getTriggerError() {
+		public double getTriggerError() {
 			return triggerError; 
 		}
 		
