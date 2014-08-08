@@ -482,6 +482,7 @@ while(<IN>){
 		next;
 	}
 
+
 if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 
 		if ($dataRow[10] < $lastTime && $dataRow[10] < 230000 && $dataRow[11] == $lastDate){
@@ -688,10 +689,10 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					
 					if (($stTime[2]-$stTime[1]) > 0){ # it should have been caught by now, but still. . . 
 						for $j (1..$dsRowCount-1){
-								$stRate0[$j] = sprintf("%0.0f", $stCount0[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
-								$stRate1[$j] = sprintf("%0.0f", $stCount1[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
-								$stRate2[$j] = sprintf("%0.0f", $stCount2[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
-								$stRate3[$j] = sprintf("%0.0f", $stCount3[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
+								$stRate0[$j] = sprintf("%0.5f", $stCount0[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
+								$stRate1[$j] = sprintf("%0.5f", $stCount1[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
+								$stRate2[$j] = sprintf("%0.5f", $stCount2[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
+								$stRate3[$j] = sprintf("%0.5f", $stCount3[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
 								#The rate may be very low here. . .  
 								$stEventRate[$j] = sprintf("%0.0f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && ($stEvents[$j]/($stTime[$j] - $stTime[$j-1]) > 1);
 								$stEventRate[$j] = sprintf("%0.2f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && ($stEvents[$j]/($stTime[$j] - $stTime[$j-1]) < 1); # we've already ruled out counts < 0
@@ -947,10 +948,10 @@ else{
 	# 3. Determine the rate
 	if (($stTime[2]-$stTime[1]) > 0){ # it should have been caught by now, but still. . . 
 		for $j (1..$dsRowCount-1){
-			$stRate0[$j] = sprintf("%0.0f", $stCount0[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
-			$stRate1[$j] = sprintf("%0.0f", $stCount1[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
-			$stRate2[$j] = sprintf("%0.0f", $stCount2[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
-			$stRate3[$j] = sprintf("%0.0f", $stCount3[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
+			$stRate0[$j] = sprintf("%0.5f", $stCount0[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
+			$stRate1[$j] = sprintf("%0.5f", $stCount1[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
+			$stRate2[$j] = sprintf("%0.5f", $stCount2[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
+			$stRate3[$j] = sprintf("%0.5f", $stCount3[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
 			#The rate may be very low here. . .  
 			$stEventRate[$j] = sprintf("%0.0f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1]))  if $stTime[$j] > $stTime[$j-1] && $stEvents[$j]/($stTime[$j] - $stTime[$j-1]) > 1;
 			$stEventRate[$j] = sprintf("%0.2f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && $stEvents[$j]/($stTime[$j] - $stTime[$j-1]) < 1; # we've already ruled out counts < 0
