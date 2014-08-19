@@ -1,4 +1,4 @@
-var channel1, channel2, channel3, channel4;
+var fluxData;
 var onOffPlot = null;
 var yLabel = " ";
 var xLabel = " ";
@@ -6,7 +6,26 @@ var data = [];
 var steps = false;
 var xunits = new Object();
 var yunits = new Object();
+Date.prototype.customFormat = function(formatString){
+    var YYYY,YY,MMMM,MMM,MM,M,DDDD,DDD,DD,D,hhh,hh,h,mm,m,ss,s,ampm,AMPM,dMod,th;
+    var dateObject = this;
+    YY = ((YYYY=dateObject.getFullYear())+"").slice(-2);
+    MM = (M=dateObject.getMonth()+1)<10?('0'+M):M;
+    MMM = (MMMM=["January","February","March","April","May","June","July","August","September","October","November","December"][M-1]).substring(0,3);
+    DD = (D=dateObject.getDate())<10?('0'+D):D;
+    DDD = (DDDD=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][dateObject.getDay()]).substring(0,3);
+    th=(D>=10&&D<=20)?'th':((dMod=D%10)==1)?'st':(dMod==2)?'nd':(dMod==3)?'rd':'th';
+    formatString = formatString.replace("#YYYY#",YYYY).replace("#YY#",YY).replace("#MMMM#",MMMM).replace("#MMM#",MMM).replace("#MM#",MM).replace("#M#",M).replace("#DDDD#",DDDD).replace("#DDD#",DDD).replace("#DD#",DD).replace("#D#",D).replace("#th#",th);
 
+    h=(hhh=dateObject.getHours());
+    if (h==0) h=24;
+    if (h>12) h-=12;
+    hh = h<10?('0'+h):h;
+    AMPM=(ampm=hhh<12?'am':'pm').toUpperCase();
+    mm=(m=dateObject.getMinutes())<10?('0'+m):m;
+    ss=(s=dateObject.getSeconds())<10?('0'+s):s;
+    return formatString.replace("#hhh#",hhh).replace("#hh#",hh).replace("#h#",h).replace("#mm#",mm).replace("#m#",m).replace("#ss#",ss).replace("#s#",s).replace("#ampm#",ampm).replace("#AMPM#",AMPM);
+}
 var options = {
 		//canvas: true,
         axisLabels: {
@@ -19,7 +38,7 @@ var options = {
         },  
     	series: {
     		lines: {
-    			show: true,
+    			show: false,
 				steps: steps
     		},
     		points: {
@@ -42,11 +61,26 @@ var options = {
 		crosshair: {
 			mode: "x"
 		},
+		xaxis: {
+			tickFormatter: function (val, axis) {
+				var d = new Date(val);
+				return d.customFormat("#DD#/#MMM# #hh#:#ss#");
+			}
+		},
+		//xaxis: {
+		//	ticks: 20,
+		//    mode: "time",
+		//    minTickSize: [1, "hour"],
+		//    tickFormatter: function (val, axis) {
+		//        var d = new Date(val);
+		//        return d;
+		//    }
+		//},
 		yaxes: {
-			axisLabelUseCanvas: true			
+			axisLabelUseCanvas: true
 		},
 		xaxes: {
-			axisLabelUseCanvas: true			
+			axisLabelUseCanvas: true
 		},
 		legend: {
 			container: "#placeholderLegend",
@@ -84,11 +118,10 @@ function getYData(key) {
 togglePlot = function(seriesIdx) {
 	  var plotData = onOffPlot.getData();
 	  plotData[seriesIdx].points.show = !plotData[seriesIdx].points.show;
-	  plotData[seriesIdx].lines.show = !plotData[seriesIdx].lines.show;
 	  plotData[seriesIdx].points.yerr.show = !plotData[seriesIdx].points.yerr.show;
 	  onOffPlot.setData(plotData);
 	  onOffPlot.draw();
-	  addEverthing();
+	  addEverything();
 }//end of togglePlot
 
 function addEverything() {
@@ -107,7 +140,7 @@ function completeCanvas() {
 	context.fillStyle="#000000";
 	context.lineStyle="#ffff00";
 	context.font="18px sans-serif";
-	context.fillText("Performance Study",400,35);
+	context.fillText("Flux Study",400,35);
 
 	context.lineWidth=2;
 	context.font="12px sans-serif";
@@ -149,15 +182,15 @@ function completeCanvas() {
 	var maxyaxis = getYNumAxis();
 	
 	if (maxxaxis == 1) {	
-		context.textAlign = 'Time over Threshold (nanosec)';
-		context.fillText('Time over Threshold (nanosec)', 250, 650);
+		context.textAlign = 'Time UTC (hours)';
+		context.fillText('Time UTC (hours)', 250, 650);
 	}
 	if (maxyaxis == 1) {
 		context.save();
 		context.translate(0, 380);
 		context.rotate(-Math.PI / 2);
-		context.textAlign = 'Number of PMT pulses';
-		context.fillText('Number of PMT pulses', 0, 8);
+		context.textAlign = 'Flux(events/m2/60-seconds';
+		context.fillText('Flux(events/m2/60-seconds', 0, 8);
 		context.restore();	
 	}
 	
@@ -185,7 +218,7 @@ function buildOverview() {
 		},
 		series: {
 			lines: {
-				show: true,
+				show: false,
 				lineWidth: 1
 			},
 			shadowSize: 0
@@ -264,8 +297,12 @@ function bindZoomingPanningTooltip() {
 		if ($("#enableTooltip:checked").length > 0) {
 			if (item) {
 				var x = item.datapoint[0].toFixed(2),
-					y = item.datapoint[1].toFixed(2);
-
+					y = item.datapoint[1].toFixed(2),
+					z = item.datapoint[0];
+				var zx = new Date(z);
+				if (zx) {
+					x = zx.customFormat("#DD#/#MMM# #hh#:#mm#");
+				}
 				$("#tooltip").html(item.series.label + " at " + x + " = " + y)
 					.css({top: item.pageY+5, left: item.pageX+5})
 					.fadeIn(200);
@@ -436,15 +473,9 @@ function buildUnits() {
 }//end of buildUnits
 
 function onDataLoad(json) {	
-	channel1 = json.channel1;
-	channel2 = json.channel2;
-	channel3 = json.channel3;
-	channel4 = json.channel4;
-	data.push(channel1);
-	data.push(channel2);
-	data.push(channel3);
-	data.push(channel4);
-	
+	fluxData = json.fluxdata;
+	console.log(fluxData);
+	data.push(fluxData);
 	onOffPlot = $.plot("#placeholder", data, options);
 	addEverything();
 }		
@@ -528,9 +559,9 @@ function superImpose() {
 		function onDataReceived(json) {
 			var ud = json.uploadedData;
 			data.push(ud);
-			onOffPlot = $.plot("#placeholder", data, options);
+			onOffPlot = $.plot("#placeholder", data , options);
+
 			var newseries = onOffPlot.getData();
-			console.log(newseries);
 			addEverything();
 		}
 	

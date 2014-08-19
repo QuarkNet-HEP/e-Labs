@@ -45,14 +45,14 @@ request.setAttribute("list",uploadeddata);
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Performance Plot</title>
+		<title>Flux Plot</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/cosmic-plots.css" />
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
-	<body class="performancePlot" style="text-align: center;">
+	<body class="fluxPlot" style="text-align: center;">
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
@@ -65,13 +65,14 @@ request.setAttribute("list",uploadeddata);
 			<div id="content">
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.time.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.time.min.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.errorbars.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.symbol.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.selection.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.navigate.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.crosshair.min.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.stack.js"></script>
-				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.time.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.text.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.canvas.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot/jquery.flot.axislabels.js"></script>
@@ -80,11 +81,11 @@ request.setAttribute("list",uploadeddata);
 				<script type="text/javascript" src="../include/jquery/flot083/excanvas.compiled.js"></script>
 				<script type="text/javascript" src="../include/canvas2image.js"></script>
 				<script type="text/javascript" src="../include/base64.js"></script>
-				<script type="text/javascript" src="performance.js"></script>
+				<script type="text/javascript" src="flux.js"></script>
 				<script type="text/javascript">
 				$(document).ready(function() {
 					$.ajax({
-						url: "performance-get-data.jsp?id=<%=id%>",
+						url: "flux-get-data.jsp?id=<%=id%>",
 						processData: false,
 						dataType: "json",
 						type: "GET",

@@ -26,8 +26,6 @@ public class PerformancePlotData {
 	public PerformancePlotData(File[] files) throws IOException {
 		for (int i= 0; i < files.length; i++) {
 			BufferedReader br = new BufferedReader(new FileReader(files[i]));		
-			//String line;
-			//String[] split; 
 			timePulseData thisLineData = null;
 			int ts=0; 
 			if (i == 0) {
@@ -58,13 +56,12 @@ public class PerformancePlotData {
 		try {
 			while ((line = br.readLine()) != null) {
 				split = line.split("\t"); 
-				if (split.length != 3) {
+				if (split.length < 2) {
 					return null;
 				}
 				thisLineData = new timePulseData(	
 						parseToDouble(split[0]),
-						parseToInt(split[1]),
-						parseToInt(split[2])
+						parseToDouble(split[1])
 				);				
 				ts++;
 				plotData.put(ts, thisLineData);				
@@ -90,45 +87,27 @@ public class PerformancePlotData {
 	
 	public class timePulseData {
 		private double timeOverThreshold;
-		private int pulse;
-		private int freqOut;
+		private double pulse;
 		private double yError;
 		
 		private timePulseData(double timeOverThreshold,
-						      int pulse,
-						      int freqOut) {
+						      double pulse) {
 				this.timeOverThreshold = timeOverThreshold;
 				this.pulse = pulse;
-				this.freqOut = freqOut;
 				this.yError = Math.sqrt((double) pulse);
 		}
 
 		public double getTimeOverThreshold() {
 			return timeOverThreshold; 
 		}
-		public int getPulse() {
+		public double getPulse() {
 			return pulse; 
-		}	
-		public int getFreqOut() {
-			return freqOut; 
 		}	
 		public double getYError() {
 			return yError; 
 		}	
 	}
 
-	
-	public int parseToInt(String split)
-	{
-		int result = 0;
-		try{
-			result = Integer.parseInt(split);
-		} catch (NumberFormatException e) {
-			result = 0;
-		}
-		return result;
-	}//end of parseToInt
-	
 	public double parseToDouble(String split)
 	{
 		double result = 0;
