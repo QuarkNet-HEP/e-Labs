@@ -694,8 +694,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 								$stRate2[$j] = sprintf("%0.5f", $stCount2[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
 								$stRate3[$j] = sprintf("%0.5f", $stCount3[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
 								#The rate may be very low here. . .  
-								$stEventRate[$j] = sprintf("%0.0f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && ($stEvents[$j]/($stTime[$j] - $stTime[$j-1]) > 1);
-								$stEventRate[$j] = sprintf("%0.2f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && ($stEvents[$j]/($stTime[$j] - $stTime[$j-1]) < 1); # we've already ruled out counts < 0
+								$stEventRate[$j] = sprintf("%0.5f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && ($stEvents[$j]/($stTime[$j] - $stTime[$j-1]) > 1);
+								$stEventRate[$j] = sprintf("%0.5f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && ($stEvents[$j]/($stTime[$j] - $stTime[$j-1]) < 1); # we've already ruled out counts < 0
 						}#end for $j (1..$d . . 
 					}#end if (($stTime[2] . . .
 					
@@ -953,8 +953,8 @@ else{
 			$stRate2[$j] = sprintf("%0.5f", $stCount2[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
 			$stRate3[$j] = sprintf("%0.5f", $stCount3[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
 			#The rate may be very low here. . .  
-			$stEventRate[$j] = sprintf("%0.0f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1]))  if $stTime[$j] > $stTime[$j-1] && $stEvents[$j]/($stTime[$j] - $stTime[$j-1]) > 1;
-			$stEventRate[$j] = sprintf("%0.2f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && $stEvents[$j]/($stTime[$j] - $stTime[$j-1]) < 1; # we've already ruled out counts < 0
+			$stEventRate[$j] = sprintf("%0.5f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1]))  if $stTime[$j] > $stTime[$j-1] && $stEvents[$j]/($stTime[$j] - $stTime[$j-1]) > 1;
+			$stEventRate[$j] = sprintf("%0.5f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && $stEvents[$j]/($stTime[$j] - $stTime[$j-1]) < 1; # we've already ruled out counts < 0
 		}
 	}
 	
