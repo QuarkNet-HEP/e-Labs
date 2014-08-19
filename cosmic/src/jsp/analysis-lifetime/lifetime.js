@@ -67,31 +67,12 @@ var options = {
 		//		return d.customFormat("#DD#/#MMM# #hh#:#ss#");
 		//	}
 		//},
-		//xaxis: {
-		//	ticks: 20,
-		//    mode: "time",
-		//    minTickSize: [1, "hour"],
-		//    tickFormatter: function (val, axis) {
-		//        var d = new Date(val);
-		//        return d;
-		//    }
-		//},
 		yaxes: {
 			axisLabelUseCanvas: true
 		},
-		xaxes: [
-				{	
-					axisLabelUseCanvas: true,
-					tickFormatter: function (val, axis) {
-				
-						var d = new Date(val);
-						return d.customFormat("#DD#/#MMM# #hh#:#ss#");
-					}
-				},
-				{	
-					axisLabelUseCanvas: true,
-				}
-				],
+		xaxes: {
+			axisLabelUseCanvas: true
+		},
 		legend: {
 			container: "#placeholderLegend",
 			noColumns: 4,
@@ -482,23 +463,15 @@ function buildUnits() {
 	
 }//end of buildUnits
 
-function timeFormatter(val, series) {
-	var d = new Date(val);
-	return d.customFormat("#DD#/#MMM# #hh#:#ss#");	
-}
-
 function onDataLoad(json) {	
 	fluxData = json.fluxdata;
-	data.push(fluxData);
 	onOffPlot = $.plot("#placeholder", data, options);
-	var newseries = onOffPlot.getData();
-	for (var i = 0; i < newseries.length; i++) {
-		if (i == 0) {
-			newseries[i].xaxis.tickFormatter = timeFormatter;
+	xaxis: {
+		tickFormatter: function (val, axis) {
+			var d = new Date(val);
+			return d.customFormat("#DD#/#MMM# #hh#:#ss#");
 		}
-	}
-	onOffPlot.setData(newseries);
-	onOffPlot.draw();
+	},
 	addEverything();
 }		
 
@@ -580,19 +553,13 @@ function superImpose() {
 		}
 		function onDataReceived(json) {
 			var ud = json.uploadedData;
-			data.push(ud);
+			data.push({ud,
+				lines: {
+			        show: true
+			    }});
+
 			onOffPlot = $.plot("#placeholder", data , options);
 			var newseries = onOffPlot.getData();
-			for (var i = 0; i < newseries.length; i++) {
-				if (i == 0) {
-					newseries[i].xaxis.tickFormatter = timeFormatter;
-				}
-				if (i > 0) {
-					newseries[i].lines.show = true;
-				}
-			}
-			onOffPlot.setData(newseries);
-			onOffPlot.draw();
 			addEverything();
 		}
 	
