@@ -24,7 +24,9 @@
 
 
 #subnav #sub-data li a {
+	width: 5.9em;
 	color: black;
+	margin-left: 2px;
 	background-color: #4382bb;
 	border-top: #72a1cc 1px solid;
 	border-left: #72a1cc 1px solid;

@@ -28,7 +28,9 @@
 			</div>
 			
 			<div id="content">
-
+<p>
+	<a href="lifetime-plot.jsp?id=${results.id }">View interactive plots</a>
+</p>
 <p>
 	<img src="${results.outputDirURL}/plot.png"/>
 </p>

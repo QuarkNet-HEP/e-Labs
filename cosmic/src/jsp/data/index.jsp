@@ -82,6 +82,10 @@
 							<a href="../plots/delete.jsp">Plots</a>
 							- Delete plots your group owns.
 						</p>
+						<p>
+							<a href="../plots/delete-external-data.jsp">Delete External Data</a>
+							- Delete uploaded data.
+						</p>
 					</div>
 				</div>
 			</div>
@@ -89,7 +93,7 @@
 				<div class="tab">
 					<span class="tab-title" style="width: 200px;">CRMD Data Collection</span>
 					<div class="tab-contents" style="height: 30px;">
-						<p> - "6000" Series DAQ data collection software:   
+						<p>"6000" Series DAQ data collection software:   
 							<a href="../data/equip.jsp">EQUIP java interface</a>
 						</p>		
 					</div>
