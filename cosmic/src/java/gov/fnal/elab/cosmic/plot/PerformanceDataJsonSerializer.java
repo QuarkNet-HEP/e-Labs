@@ -24,6 +24,8 @@ public class PerformanceDataJsonSerializer implements JsonSerializer<Performance
 		JsonArray channel3  = new JsonArray();
 		JsonArray channel4  = new JsonArray();
 		JsonArray tmp; 
+		int radius = 3;
+		
 		for (int i : tm1.keySet()) {
 			PerformancePlotData.timePulseData tpd = tm1.get(i);
 			tmp = new JsonArray();
@@ -36,7 +38,7 @@ public class PerformanceDataJsonSerializer implements JsonSerializer<Performance
 		yerr1.addProperty("show", true);
 		yerr1.addProperty("upperCap", "-");
 		yerr1.addProperty("lowerCap", "-");
-		yerr1.addProperty("radius", 5);
+		yerr1.addProperty("radius", radius);
 		yerr1.addProperty("color", "red");
 		
 		JsonObject point1 = new JsonObject();
@@ -44,7 +46,7 @@ public class PerformanceDataJsonSerializer implements JsonSerializer<Performance
 		point1.add("yerr", yerr1);
 		point1.addProperty("symbol", "square");
 		point1.addProperty("show", 1);
-		point1.addProperty("radius", 1.5);
+		point1.addProperty("radius", radius);
 
 		JsonObject xaxis1 = new JsonObject();
 		xaxis1.add("n", new JsonPrimitive(1));
@@ -76,15 +78,15 @@ public class PerformanceDataJsonSerializer implements JsonSerializer<Performance
 		yerr2.addProperty("show", true);
 		yerr2.addProperty("upperCap", "-");
 		yerr2.addProperty("lowerCap", "-");
-		yerr2.addProperty("radius", 5);
-		yerr2.addProperty("color", "green");
+		yerr2.addProperty("radius", radius);
+		yerr2.addProperty("color", "#00ff00");
 				
 		JsonObject point2 = new JsonObject();
 		point2.addProperty("errorbars", "y");
 		point2.add("yerr", yerr2);
 		point2.addProperty("symbol", "diamond");
 		point2.addProperty("show", 1);
-		point2.addProperty("radius", 1.5);
+		point2.addProperty("radius", radius);
 		
 		JsonObject xaxis2 = new JsonObject();
 		xaxis2.add("n", new JsonPrimitive(1));
@@ -96,7 +98,7 @@ public class PerformanceDataJsonSerializer implements JsonSerializer<Performance
 		chan2.addProperty("label", "Channel 2");
 		chan2.add("data", channel2);
 		chan2.addProperty("shadowSize", 0);
-		chan2.addProperty("color", "green");
+		chan2.addProperty("color", "#00ff00");
 		chan2.addProperty("xunits", "nanosecs");
 		chan2.addProperty("yunits", "pulses");
 		chan2.addProperty("idx", 1);
@@ -117,7 +119,7 @@ public class PerformanceDataJsonSerializer implements JsonSerializer<Performance
 		yerr3.addProperty("show", true);
 		yerr3.addProperty("upperCap", "-");
 		yerr3.addProperty("lowerCap", "-");
-		yerr3.addProperty("radius", 5);
+		yerr3.addProperty("radius", radius);
 		yerr3.addProperty("color", "blue");
 				
 		JsonObject point3 = new JsonObject();
@@ -125,7 +127,7 @@ public class PerformanceDataJsonSerializer implements JsonSerializer<Performance
 		point3.add("yerr", yerr3);
 		point3.addProperty("symbol", "triangle");
 		point3.addProperty("show", 1);
-		point3.addProperty("radius", 1.5);
+		point3.addProperty("radius", radius);
 		
 		JsonObject xaxis3 = new JsonObject();
 		xaxis3.add("n", new JsonPrimitive(1));
@@ -157,7 +159,7 @@ public class PerformanceDataJsonSerializer implements JsonSerializer<Performance
 		yerr4.addProperty("show", true);
 		yerr4.addProperty("upperCap", "-");
 		yerr4.addProperty("lowerCap", "-");
-		yerr4.addProperty("radius", 5);
+		yerr4.addProperty("radius", radius);
 		yerr4.addProperty("color", "cyan");
 		
 		JsonObject point4 = new JsonObject();
@@ -165,7 +167,7 @@ public class PerformanceDataJsonSerializer implements JsonSerializer<Performance
 		point4.add("yerr", yerr4);
 		point4.addProperty("symbol", "circle");
 		point4.addProperty("show", 1);
-		point4.addProperty("radius", 1.5);
+		point4.addProperty("radius", radius);
 		
 		JsonObject xaxis4 = new JsonObject();
 		xaxis4.add("n", new JsonPrimitive(1));

@@ -80,6 +80,7 @@ request.setAttribute("list",uploadeddata);
 				<script type="text/javascript" src="../include/jquery/flot083/excanvas.compiled.js"></script>
 				<script type="text/javascript" src="../include/canvas2image.js"></script>
 				<script type="text/javascript" src="../include/base64.js"></script>
+				<script type="text/javascript" src="../analysis/analysis-plot.js"></script>
 				<script type="text/javascript" src="performance.js"></script>
 				<script type="text/javascript">
 				$(document).ready(function() {
@@ -92,9 +93,9 @@ request.setAttribute("list",uploadeddata);
 					});
 				}); 				
 				</script>
-				<div class="demo-container">
-					<div id="placeholder" class="demo-placeholder" style="float:left; width:650px; height:650px;"></div>
-					<div id="overview" class="demo-placeholder" style="float:right;width:160px; height:150px;"></div>
+				<div class="graph-container">
+					<div id="placeholder" class="graph-placeholder" style="float:left; width:650px; height:650px;"></div>
+					<div id="overview" class="graph-placeholder" style="float:right;width:160px; height:150px;"></div>
 					<div id="interactive" style="float:right;width:160px; height:325px;">
 						<p><label><input id="enableTooltip" type="checkbox" checked="checked"></input>Enable tooltip</label></p>
 						<p>
@@ -103,12 +104,15 @@ request.setAttribute("list",uploadeddata);
 							<br /><span id="clickdata" class="clickdata"></span>
 						</p>				
 						<p>
-							<label><input id="enableSteps" type="checkbox"></input>Enable Steps</label>
+							<label><input id="enableSteps" type="checkbox" checked="checked"></input>Enable Steps</label>
 						</p>
+						<p><div id="zoomoutbutton" style="float:left; width:80px; height:30px;"> </div>
+						   <div id="resetbutton" style="float:right; width:80px; height:30px;"> </div></p>
+						<p><div id="arrows" style="float:right; width:160px; height:100px;"><div id="arrowcontainer" style="position:relative;"></div></div></p>
 						<p class="message"></p>
 						<p class="click"></p>
 					</div>
-					<div id="placeholderLegend" style="float:left; width:650px;"></div>
+					<div id="placeholderLegend" class="legend-placeholder"></div>
 				</div>
 
 		 	</div>

@@ -42,15 +42,15 @@ public class FluxDataJsonSerializer implements JsonSerializer<FluxPlotData> {
 		yerr1.addProperty("show", true);
 		yerr1.addProperty("upperCap", "-");
 		yerr1.addProperty("lowerCap", "-");
-		yerr1.addProperty("radius", 5);
-		yerr1.addProperty("color", "green");
+		yerr1.addProperty("radius", 3);
+		yerr1.addProperty("color", "#00ff00");
 		
 		JsonObject point1 = new JsonObject();
 		point1.addProperty("errorbars", "y");
 		point1.add("yerr", yerr1);
 		point1.addProperty("symbol", "cross");
 		point1.addProperty("show", 1);
-		point1.addProperty("radius", 5);
+		point1.addProperty("radius", 3);
 		
 		JsonObject data1 = new JsonObject();
 		data1.addProperty("label", "Events");
@@ -58,7 +58,7 @@ public class FluxDataJsonSerializer implements JsonSerializer<FluxPlotData> {
 		data1.addProperty("xunits", "time");
 	    data1.addProperty("yunits", "events");
 		data1.addProperty("shadowSize", 0);
-		data1.addProperty("color", "green");
+		data1.addProperty("color", "#00ff00");
 		data1.addProperty("idx", ndx);
 		data1.add("points", point1);
 		JsonObject xaxis1 = new JsonObject();

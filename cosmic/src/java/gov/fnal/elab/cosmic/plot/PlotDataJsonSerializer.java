@@ -15,7 +15,7 @@ public class PlotDataJsonSerializer implements JsonSerializer<PlotData> {
 	public JsonElement serialize(PlotData src, Type typeOfSrc,
 			JsonSerializationContext context) {
 
-		String[] colors = {"red", "green", "blue", "cyan", "purple", "black", "orange", "pink", "yellow", "brown"};		
+		String[] colors = {"red", "#00ff00", "blue", "cyan", "purple", "black", "orange", "pink", "yellow", "brown"};		
 		TreeMap<Integer, PlotData.Detail> tm = src.getTimeData();  				
 		JsonArray uploadedData  = new JsonArray();
 		JsonArray tmp;
@@ -53,7 +53,7 @@ public class PlotDataJsonSerializer implements JsonSerializer<PlotData> {
 		yerr1.addProperty("show", true);
 		yerr1.addProperty("upperCap", "-");
 		yerr1.addProperty("lowerCap", "-");
-		yerr1.addProperty("radius", 5);
+		yerr1.addProperty("radius", 3);
 		if (ndx > 9) {
 			yerr1.addProperty("color", "black");
 		} else {
@@ -69,7 +69,7 @@ public class PlotDataJsonSerializer implements JsonSerializer<PlotData> {
 		point1.add("yerr", yerr1);
 		point1.addProperty("symbol", "cross");
 		point1.addProperty("show", 1);
-		point1.addProperty("radius", 1.5);
+		point1.addProperty("radius", 3);
 		
 		JsonObject data1 = new JsonObject();
 		data1.addProperty("label", legend);
