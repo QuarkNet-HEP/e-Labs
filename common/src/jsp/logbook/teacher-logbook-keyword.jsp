@@ -215,7 +215,7 @@
 									</td>
 									<td valign="top">
 										<div style="width: 635px; border: 0; height: 100px;">
-											<div style="width: 150px; float:left;"><img src="../graphics/logbook_view_large.gif" align="middle" border="0" alt=""></img></div>
+											<div style="width: 135x; float:left;"><img src="../graphics/logbook_view_large.gif" align="middle" border="0" alt=""></img></div>
 										 	<div style="width: 500px; float:right;"><font size="+2">Teachers: View and Comment on Logbooks of Student Research Groups</font></div>
 										</div>
 										<div class="instructions" id="instructions-v" style="visibility:visible; display">
