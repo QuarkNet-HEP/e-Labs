@@ -110,4 +110,4 @@
 	
 </script>
 <% } %>
-<% request.setAttribute("async-update-included", Boolean.TRUE); %>
+<% request.setAttribute("async-update-included", java.lang.Boolean.TRUE); %>
