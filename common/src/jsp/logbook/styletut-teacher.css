@@ -41,7 +41,6 @@ table.outerTable {
 
 div.leftMenu {
 	height: 600px; 
-	width: 150px; 
 	position: fixed; 
 	overflow-y: auto;
 	overflow-x: hidden;

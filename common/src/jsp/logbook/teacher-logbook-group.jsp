@@ -305,7 +305,7 @@
 
 						<table style="width: 800px; padding: 0; border: 0; text-align: left;">
 							<tr>
-								<td valign="top" width="150" nowrap>
+								<td valign="top" width="145" nowrap>
 									<div class="leftMenu">
 									<table width="145">
 										<tr>
@@ -354,14 +354,14 @@
 									</table>
 									</div>
 								</td>
-								<td align="left" width="20" valign="top">
+								<td align="right" width="20" valign="top">
 									<div>
 										<img src="../graphics/blue_square.gif" border="0" width="2" height="600" alt="">
 									</div>
 								</td>
 								<td valign="top" align="left">
-										<div style="width: 650px; height: 100px;">
-											<div style="width: 150px; float:left;"><img src="../graphics/logbook_view_large.gif" align="middle" border="0" alt=""></img></div>
+										<div style="width: 635px; height: 100px;">
+											<div style="width: 135px; float:left;"><img src="../graphics/logbook_view_large.gif" align="middle" border="0" alt=""></img></div>
 										 	<div style="width: 500px; float:right;"><font size="+2">Teachers: View and Comment on Logbooks of Student Research Groups</font></div>
 										</div> 	
 
