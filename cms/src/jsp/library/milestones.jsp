@@ -14,7 +14,6 @@
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<script type="text/javascript" src="../include/elab-custom.js"></script>
 	</head>
 	
 	<body id="milestones-map" class="library">
@@ -31,24 +30,24 @@
 			
 			<div id="content">
 				
-<%
-	if (user.isProfDev()) {
-		%>
-			<%@ include file="milestones-profdev.jsp" %>
-		<%
-	}
-	else {
-		%>
-			<%@ include file="milestones-student.jsp" %>
-		<%
-	}
-%>
+				<%
+					if (user.getRole().equals("teacher")) {
+						%>
+							<%@ include file="milestones-teacher.jsp" %>
+						<%
+					}
+					else {
+						%>
+							<%@ include file="milestones-student.jsp" %>
+						<%
+					}
+				%>
 
 			</div>
 			<!-- end content -->	
 		
 			<div id="footer">
-				<a href="/library/kiwi.php?title=CMS_Glossary">Glossary</a> - 
+				<a href="../references/showAll.jsp?t=glossary">Glossary</a> - 
 				<a href="../references/showAll.jsp?t=reference">All References for Study Guide</a>
 				<a href="../references/showAll.jsp?t=reference">
 					<img src="../graphics/ref.gif">

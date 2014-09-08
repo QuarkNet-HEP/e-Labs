@@ -10,7 +10,6 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<script type="text/javascript" src="../include/elab-custom.js"></script>
 	</head>
 	
 	<body id="milestones-map" class="library">
@@ -41,14 +40,18 @@
 <!--
 			<center>
 -->
-				<c:choose>
-					<c:when test="${user.group.profDev}">
-						<%@ include file="milestones-profdev.jsp" %>
-					</c:when>
-					<c:otherwise>
-						<%@ include file="milestones-student.jsp" %>
-					</c:otherwise>
-				</c:choose>
+				<%
+					if (user.getRole().equals("teacher")) {
+						%>
+							<%@ include file="milestones-teacher.jsp" %>
+						<%
+					}
+					else {
+						%>
+							<%@ include file="milestones-student.jsp" %>
+						<%
+					}
+				%>
 <!--
 				<div class="link-list">
 					<a href="../home/index.jsp">Project Map: Milestones (map version)</a>
