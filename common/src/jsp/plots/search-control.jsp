@@ -60,7 +60,6 @@ $(function() {
 		<e:quicksearch key="school" value="${user.school}" suffix="&uploaded=${param.uploaded}" />,
 		<e:quicksearch key="city" value="${user.city}" suffix="&uploaded=${param.uploaded}" />,
 		<e:quicksearch key="state" value="${user.state}" suffix="&uploaded=${param.uploaded}" />,
-		<e:quicksearch key="all" value="" label="All"  suffix="&uploaded=${param.uploaded}"/>
 	</div>
 	
 	<form name="search" method="get">
