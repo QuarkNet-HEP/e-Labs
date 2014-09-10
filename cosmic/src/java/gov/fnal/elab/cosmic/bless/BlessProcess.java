@@ -126,7 +126,7 @@ public class BlessProcess {
 											meta.add("benchmarkrate string "+String.valueOf(chan2Rate));
 											meta.add("benchmarksplitrate string "+split[3]);
 											meta.add("benchmarkspliterror string "+split[4]);
-											meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[3]),chan1Rate,parseToDouble(split[4]))));									
+											meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[3]),chan2Rate,parseToDouble(split[4]))));									
 											failReason = formatFailReason(split[0], "channel 2", String.valueOf(chan2Rate), split[3], split[4]);
 										}
 									}
@@ -142,7 +142,7 @@ public class BlessProcess {
 											meta.add("benchmarkrate string "+String.valueOf(chan3Rate));
 											meta.add("benchmarksplitrate string "+split[5]);
 											meta.add("benchmarkspliterror string "+split[6]);
-											meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[5]),chan1Rate,parseToDouble(split[6]))));									
+											meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[5]),chan3Rate,parseToDouble(split[6]))));									
 											failReason = formatFailReason(split[0], "channel 3", String.valueOf(chan3Rate), split[5], split[6]);
 										}
 									}
@@ -158,7 +158,7 @@ public class BlessProcess {
 											meta.add("benchmarkrate string "+String.valueOf(chan4Rate));
 											meta.add("benchmarksplitrate string "+split[7]);
 											meta.add("benchmarkspliterror string "+split[8]);
-											meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[7]),chan1Rate,parseToDouble(split[8]))));									
+											meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[7]),chan4Rate,parseToDouble(split[8]))));									
 											failReason = formatFailReason(split[0], "channel 4", String.valueOf(chan4Rate), split[7], split[8]);
 										}
 									}
