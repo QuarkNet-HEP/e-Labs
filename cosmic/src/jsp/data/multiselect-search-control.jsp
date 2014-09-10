@@ -90,14 +90,6 @@ $(window).scroll(function(){
 		-->
 		<a href="#" onclick='$(this).closest("form").submit()'>${user.group.state}</a>,
 	</form>
-	<form action="controller.jsp" name="search" method="post" style="display: inline;">
-		<input type="hidden" name="key" value="all" />
-		<input type="hidden" name="action" value="Search Data" />
-		<!-- 
-		<input type="submit" value="All" />
-		-->
-		<a href="#" onclick='$(this).closest("form").submit()'>All</a>
-	</form>
 </div>
 
 <form action="controller.jsp" name="search" method="post">
