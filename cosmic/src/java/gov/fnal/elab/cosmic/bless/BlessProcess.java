@@ -178,7 +178,7 @@ public class BlessProcess {
 												meta.add("benchmarkrate string "+String.valueOf(triggerRate));
 												meta.add("benchmarksplitrate string "+split[9]);
 												meta.add("benchmarkspliterror string "+split[10]);
-												meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[9]),chan1Rate,parseToDouble(split[10]))));																					
+												meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[9]),triggerRate,parseToDouble(split[10]))));																					
 												failReason = formatFailReason(split[0], "trigger", String.valueOf(triggerRate), split[9], split[10]);
 											}
 										}
