@@ -235,15 +235,16 @@ public class Benchmark {
 			Date endDate = new Date();
 			if (geosAfter != null && !geosAfter.isEmpty()) {
 				geosAfter.remove(geosAfter.firstKey());
-				GeoEntryBean geoEntryAfter = (GeoEntryBean) geosAfter.get(geosAfter.firstKey());
-		        Iterator<GeoEntryBean> j = g.getGeoEntries();
-				while (j.hasNext()) {
-		            GeoEntryBean gb = j.next();
-		            if (geoEntryAfter.getDate().equals(gb.getDate()) && j.hasNext()) {
-					    endDate = geoEntryAfter.getDate(); 
-		            }
-		        }
-
+				if (!geosAfter.isEmpty()) {
+					GeoEntryBean geoEntryAfter = (GeoEntryBean) geosAfter.get(geosAfter.firstKey());
+			        Iterator<GeoEntryBean> j = g.getGeoEntries();
+					while (j.hasNext()) {
+			            GeoEntryBean gb = j.next();
+			            if (geoEntryAfter.getDate().equals(gb.getDate()) && j.hasNext()) {
+						    endDate = geoEntryAfter.getDate(); 
+			            }
+			        }
+				}
 			}
 			In and = new In();
 			and.add(new Equals("project","cosmic"));
@@ -282,17 +283,17 @@ public class Benchmark {
 			Date endDate = new Date();
 			if (geosAfter != null && !geosAfter.isEmpty() && geosAfter.firstKey() != null) {
 				geosAfter.remove(geosAfter.firstKey());
-					if (!geosAfter.isEmpty()) {
-						GeoEntryBean geoEntryAfter = (GeoEntryBean) geosAfter.get(geosAfter.firstKey());
-				        Iterator<GeoEntryBean> j = g.getGeoEntries();
-				        
-				        while (j.hasNext()) {
-				            GeoEntryBean gb = j.next();
-				            if (geoEntryAfter.getDate().equals(gb.getDate()) && j.hasNext()) {
-							    endDate = geoEntryAfter.getDate(); 
-				            }
-				        }
-					}
+				if (!geosAfter.isEmpty()) {
+					GeoEntryBean geoEntryAfter = (GeoEntryBean) geosAfter.get(geosAfter.firstKey());
+			        Iterator<GeoEntryBean> j = g.getGeoEntries();
+			        
+			        while (j.hasNext()) {
+			            GeoEntryBean gb = j.next();
+			            if (geoEntryAfter.getDate().equals(gb.getDate()) && j.hasNext()) {
+						    endDate = geoEntryAfter.getDate(); 
+			            }
+			        }
+				}
 			}
 			In and = new In();
 			and.add(new Equals("project","cosmic"));
