@@ -22,7 +22,7 @@ import gov.fnal.elab.util.ElabException;
  */
 
 public class BlessProcess {
-	double sigmas = 3;
+	double sigmas = 10;
 	//constructor
 	public BlessProcess() {
 	}
