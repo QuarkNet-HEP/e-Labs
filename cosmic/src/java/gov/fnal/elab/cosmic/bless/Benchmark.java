@@ -218,7 +218,7 @@ public class Benchmark {
 			Geometry g = geometries.getGeometry(detectorid);
 			SortedMap geosBefore = g.getGeoEntriesBefore(julianDate);
 			Date startDate = new Date();
-			if (!geosBefore.isEmpty()) {
+			if (geosBefore != null && !geosBefore.isEmpty()) {
 				GeoEntryBean geoEntryBefore = (GeoEntryBean) geosBefore.get(geosBefore.lastKey()); 
 		        Iterator<GeoEntryBean> j = g.getGeoEntries();
 		        
@@ -233,7 +233,7 @@ public class Benchmark {
 			}
 			SortedMap geosAfter = g.getGeoEntriesAfter(julianDate);
 			Date endDate = new Date();
-			if (!geosAfter.isEmpty()) {
+			if (geosAfter != null && !geosAfter.isEmpty()) {
 				geosAfter.remove(geosAfter.firstKey());
 				GeoEntryBean geoEntryAfter = (GeoEntryBean) geosAfter.get(geosAfter.firstKey());
 		        Iterator<GeoEntryBean> j = g.getGeoEntries();
@@ -267,7 +267,7 @@ public class Benchmark {
 			Geometry g = geometries.getGeometry(detectorid);
 			SortedMap geosBefore = g.getGeoEntriesBefore(julianDate);
 	        Date startDate = new Date();
-			if (!geosBefore.isEmpty()) {
+			if (geosBefore != null && !geosBefore.isEmpty()) {
 				GeoEntryBean geoEntryBefore = (GeoEntryBean) geosBefore.get(geosBefore.lastKey()); 				
 		        Iterator<GeoEntryBean> j = g.getGeoEntries();
 		        startDate = geoEntryBefore.getDate();
@@ -280,7 +280,7 @@ public class Benchmark {
 			}
 			SortedMap geosAfter = g.getGeoEntriesAfter(julianDate);
 			Date endDate = new Date();
-			if (!geosAfter.isEmpty()) {
+			if (geosAfter != null && !geosAfter.isEmpty()) {
 				geosAfter.remove(geosAfter.firstKey());
 				GeoEntryBean geoEntryAfter = (GeoEntryBean) geosAfter.get(geosAfter.firstKey());
 		        Iterator<GeoEntryBean> j = g.getGeoEntries();
