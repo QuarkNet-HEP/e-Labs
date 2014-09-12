@@ -11,6 +11,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
+		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	
 	<body id="faq" class="library">
@@ -25,16 +26,53 @@
 			
 			<div id="content">
 				
-<e:transclude
- url="http://${elab.properties['elab.host']}/library/body.php?title=CMS_FAQ"
-     start="<!-- start content -->"
-     end="<div class=\"printfooter\">"
-/>
+<h1>Frequently Asked Questions: Find answers to common questions.</h1>
 
+<table id="main">
+	<tr>
+		<td>
+			<div id="left">
+				<!-- nothing here -->
+			</div>
+		</td>
+		<td>
+			<div id="center">
+				<% 
+						Collection entries = elab.getFAQ().entries();
+						if (entries.isEmpty()) {
+							%>
+								<div class="warning">There are no FAQs in the database!</div>
+							<%
+						}
+						else {
+							%>
+								<p>
+							<%
+							Iterator i = entries.iterator();
+							while (i.hasNext()) {
+								String e = (String) i.next();
+								out.write(e);	
+							}
+							%>
+								</p>
+							<%
+						}
+
+				%>
+			</div>
+		</td>
+		<td>
+			<div id="right">
+				<!-- nothing here either -->
+			</div>
+		</td>
+	</tr>
+</table>
 
 
 			</div>
-			<!-- end content -->			
+			<!-- end content -->	
+		
 			<div id="footer">
 			</div>
 		</div>

@@ -37,9 +37,7 @@
 					<span class="tab-title">Library</span>
 					<div class="tab-contents">
 						<ul class="simple">
-							<li>
-						     <e:popup href="/library/kiwi.php?title=CMS_Glossary" target="glossary" width="500" height="300">Glossary</e:popup> - Look up terms you don't know.
-							</li>
+							<li><a href="../references/showAll.jsp?t=glossary">Glossary</a> - Look up terms you don't know.</li>
 							<li>
 							<a HREF="resources.jsp">Resources</a> - Explore <i>Online Resources, Tutorials, Contacts</i> and <i>Slide Shows</i>.  
 							Tutorials help you analyze the data. Contacts connect you to experts and other student research groups.  Slideshows give more background. <i>Online Resources</i> broaden your understanding of particle physics, the detector and the collider. 
@@ -47,9 +45,7 @@
 							<li>
 							<a HREF="big-picture.jsp">Big Picture</a> - Read a project overview. 
 							</li>
-							<li>
-						     <e:popup href="/library/kiwi.php?title=CMS_FAQ" target="faq" width="500" height="300">FAQs</e:popup> - Find answers for frequently asked questions.
-							</li>
+							<li><a href="FAQ.jsp">FAQs</a> - Find answers for frequently asked questions.</li>
 							<li>
 							<a HREF="site-tips.jsp">Site Tips</a> - Check out tips for using the website.
 							</li>

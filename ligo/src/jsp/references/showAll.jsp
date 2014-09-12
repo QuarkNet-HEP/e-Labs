@@ -9,15 +9,18 @@
 <%
 	String type = request.getParameter("t");
 	String prefix;
+	String h1Text;
 	if ("reference".equals(type)) {
 		prefix = "Reference";
+		h1Text= "References: View the references associated with the milestones.";
 	}
 	else if ("glossary".equals(type)) {
 		prefix = "Glossary";
+		h1Text= "Glossary: Look up unfamiliar words.";
 	}
 	else {
 		throw new ElabJspException("Unknown reference type: " + type);
-	}
+	}	
 	
 	String path = "/" + elab.getName() + "/references/";
 	Collection files = application.getResourcePaths(path);
@@ -69,13 +72,8 @@
 			<%@ include file="../include/left-alt.jsp" %>
 		</td>
 		<td id="center">
-<h1>View References for Study Guide</h1>
 
-<p align="center">
-	<a href="../references/showAll.jsp?t=reference">View References for Study Guide</a>
-	-
-	<a href="/glossary/index.php/I2U2_Glossary_and_Library">View Glossary</a>
-</p>
+<h1><%=h1Text%></h1>
 
 <table id="references-table" cellpadding="4" cellspacing="4">
 	<c:forEach items="${files}" var="file">

@@ -104,7 +104,7 @@ function showAll(start, finish)
 								</div><div id="vsId1-h" style="visibility:visible; display:">
 				<a href="#" onclick="HideShow('vsId1-v');HideShow('vsId1-h');return false;"><H2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> e-Lab Summary</H2></a>
 						<p>
-						Students can collaboarate to analyze seismic data from  LIGO, 
+						Students can collaborate to analyze seismic data from  LIGO, 
 					the Laser Interferometer Gravitational-wave Observatory. From start to finish 
 					this is a student-led, <b>teacher-guided</b> project. 
 					Students 
@@ -272,11 +272,15 @@ Review students' evidence of what they know/understand and reflections on their 
 						<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
 								</div><div id="vsId6-h" style="visibility:visible; display:">
 						<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
-						<p>Are you teaching a course that involves seismology content?  Consider using the I2U2 seismology instructional unit as a means of addressing seismology learning objectives
+						<p><strong>The I2U2 Seismology Instructional unit:</strong> Are you teaching a course that involves seismology content? 
+						Consider using the I2U2 seismology instructional unit as a means of addressing seismology learning objectives
 						while providing a natural way for students to engage in the LIGO e-Lab.  The standards-based instructional unit includes plans for approximately eight seismology lessons
 						followed by seven lessons that utilize the e-Lab.  Download the instructional unit as a 
 						<a href="#" onclick="javascript:window.open('SeismicUnit-web.pdf', 'unit', 'width=800,height=659, resizable=1, scrollbars=1');return false;">PDF File</a> 
 						or as a  <a href="#" onclick="javascript:window.open('SeismicUnit.doc', 'unit', 'width=800,height=659, resizable=1, scrollbars=1');return false;">Word Document</a>.</p>
+						<p>Remember that students can look through completed posters to gain ideas for research questions. 
+						You can look at the <a href="classroom-activities.jsp">Classroom Activities</a> other teachers have shared.						
+						</p>
 						<p>Some teachers will choose to use the seismology intructional unit and will introduce the
 						LIGO e-Lab in the context of the unit.  Other teachers, such as physics teachers, might
 						not utilize the instructional unit and will come to the LIGO e-Lab from a different
