@@ -28,9 +28,11 @@ public class SessionListener implements HttpSessionListener {
     @Override
     public void sessionDestroyed(HttpSessionEvent event) {
         synchronized (this) {
-        	sessionCount--;
-        	HttpSession s = event.getSession();
-        	sessions.remove(s);
+        	if (sessionCount > 0) {
+	        	sessionCount--;
+	        	HttpSession s = event.getSession();
+	        	sessions.remove(s);
+        	}
         }
     }		
     
