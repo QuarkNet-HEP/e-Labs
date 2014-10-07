@@ -39,6 +39,7 @@ togglePlot = function(seriesIdx)
   console.log(seriesIdx);
   onOffPlot.setData(plotData);
   onOffPlot.draw();
+  writeLegend(onOffPlot.getCanvas(), "Channel Rate (Hz)", 325, 250);
 }
 
 //EPeronja-01/23/2013: Bug472- added next functions to redraw the axes based on user input, called from compare1.jsp
@@ -60,6 +61,7 @@ redrawPlotX = function(newX, type)
 	voltPlot = $.plot($("#voltChart"), [ json.voltage ], $.extend({}, voltOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
 	tempPlot = $.plot($("#tempChart"), [ json.temperature], $.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
 	pressPlot = $.plot($("#pressureChart"), [ json.pressure ], $.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
+	writeLegends();
 }
 
 resetPlotX = function(objectIdXMin, objectIdXMax)
@@ -81,6 +83,7 @@ resetPlotX = function(objectIdXMin, objectIdXMax)
 	voltPlot = $.plot($("#voltChart"), [ json.voltage ], $.extend({}, voltOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
 	tempPlot = $.plot($("#tempChart"), [ json.temperature], $.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
 	pressPlot = $.plot($("#pressureChart"), [ json.pressure ], $.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
+	writeLegends();
 }
 redrawPlotY = function(newY, chart, type)
 {
@@ -93,7 +96,8 @@ redrawPlotY = function(newY, chart, type)
 				chanOptions.yaxis.max = newY;
 			}
 			onOffPlot = $.plot($("#channelChart"), data, $.extend({}, chanOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel} ]}));
-	    	break;
+			writeLegend(onOffPlot.getCanvas(), "Channel Rate (Hz)", 325, 250);
+			break;
 		case ("trigger"):
 			if (type == "min") {
 				trigOptions.yaxis.min = newY;
@@ -102,6 +106,7 @@ redrawPlotY = function(newY, chart, type)
 			}
 //			trigPlot = $.plot($("#triggerChart"), [triggerdata],$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: triggerdata.ylabel + ' (' + triggerdata.unit + ')'} ]}));
 			trigPlot = $.plot($("#triggerChart"), trigger,$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			writeLegend(trigPlot.getCanvas(), "Trigger Rate (Hz)", 325, 250);
 			break;
 		case ("satellite"):
 			if (type == "min") {
@@ -111,6 +116,7 @@ redrawPlotY = function(newY, chart, type)
 			}
 //			satPlot = $.plot($("#satChart"), [satellitedata],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: satellitedata.ylabel + ' (' + satellitedata.unit + ')'} ]}));
 			satPlot = $.plot($("#satChart"), [satellitedata],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			writeLegend(satPlot.getCanvas(), "# Satellites in view", 325, 250);
 			break;
 		case ("voltage"):
 			if (type == "min") {			
@@ -120,6 +126,7 @@ redrawPlotY = function(newY, chart, type)
 			}
 //			voltPlot = $.plot($("#voltChart"), [voltagedata],$.extend({}, voltOptions, { yaxes: [ {position: 'left', axisLabel: voltagedata.ylabel + ' (' + voltagedata.unit + ')'} ]}));
 			voltPlot = $.plot($("#voltChart"), [voltagedata],$.extend({}, voltOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			writeLegend(voltPlot.getCanvas(), "Vcc (Volts)", 325, 250);
 			break;
 		case ("temperature"):
 			if (type == "min") {			
@@ -129,6 +136,7 @@ redrawPlotY = function(newY, chart, type)
 			}
 //			tempPlot = $.plot($("#tempChart"), [temperaturedata],$.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: temperaturedata.ylabel + ' (' + temperaturedata.unit + ')'} ]}));
 			tempPlot = $.plot($("#tempChart"), [temperaturedata],$.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			writeLegend(tempPlot.getCanvas(), "Temperature (\u00b0 C)", 325, 250);
 			break;
 		case ("pressure"):
 			if (type == "min") {
@@ -138,6 +146,7 @@ redrawPlotY = function(newY, chart, type)
 			}
 //			pressPlot = $.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: pressuredata.ylabel + ' (' + pressuredata.unit + ')'} ]}));
 			pressPlot = $.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			writeLegend(pressPlot.getCanvas(), "Pressure (mb)", 325, 250);
 			break;		
 	}
 }
@@ -153,36 +162,42 @@ resetPlotY = function(chart, objectIdYMin, objectIdYMax)
 			chanOptions.yaxis.min = originalChanYMin;
 			chanOptions.yaxis.max = originalChanYMax;
 			onOffPlot = $.plot($("#channelChart"), data, $.extend({}, chanOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel} ]}));
+			writeLegend(onOffPlot.getCanvas(), "Channel Rate (Hz)", 325, 250);
 	    	break;
 		case ("trigger"):
 			trigOptions.yaxis.min = originalTrigYMin;
 			trigOptions.yaxis.max = originalTrigYMax;
 //			trigPlot = $.plot($("#triggerChart"), [triggerdata],$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: triggerdata.ylabel + ' (' + triggerdata.unit + ')'} ]}));
 			trigPlot = $.plot($("#triggerChart"), trigger,$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			writeLegend(trigPlot.getCanvas(), "Trigger Rate (Hz)", 325, 250);
 			break;
 		case ("satellite"):
 			satOptions.yaxis.min = originalSatYMin;
 			satOptions.yaxis.max = originalSatYMax;
 //			satPlot = $.plot($("#satChart"), [satellitedata],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: satellitedata.ylabel + ' (' + satellitedata.unit + ')'} ]}));
 			satPlot = $.plot($("#satChart"), [satellitedata],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			writeLegend(satPlot.getCanvas(), "# Satellites in view", 325, 250);
 			break;
 		case ("voltage"):
 			voltOptions.yaxis.min = originalVoltYMin;
 			voltOptions.yaxis.max = originalVoltYMax;
 //			voltPlot = $.plot($("#voltChart"), [voltagedata],$.extend({}, voltOptions, { yaxes: [ {position: 'left', axisLabel: voltagedata.ylabel + ' (' + voltagedata.unit + ')'} ]}));
 			voltPlot = $.plot($("#voltChart"), [voltagedata],$.extend({}, voltOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			writeLegend(voltPlot.getCanvas(), "Vcc (Volts)", 325, 250);
 			break;
 		case ("temperature"):
 			tempOptions.yaxis.min = originalTempYMin;
 			tempOptions.yaxis.max = originalTempYMax;
 //			tempPlot = $.plot($("#tempChart"), [temperaturedata],$.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: temperaturedata.ylabel + ' (' + temperaturedata.unit + ')'} ]}));
 			tempPlot = $.plot($("#tempChart"), [temperaturedata],$.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			writeLegend(tempPlot.getCanvas(), "Temperature (\u00b0 C)", 325, 250);
 			break;
 		case ("pressure"):
 			presOptions.yaxis.min = originalPressYMin;
 			presOptions.yaxis.max = originalPressYMax;
 //			pressPlot = $.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: pressuredata.ylabel + ' (' + pressuredata.unit + ')'} ]}));
 			pressPlot = $.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			writeLegend(pressPlot.getCanvas(), "Pressure (mb)", 325, 250);
 		break;		
 	}
 }
