@@ -42,10 +42,12 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 		JsonArray channel4LowerError  = new JsonArray();		
 		JsonArray triggerUpperError  = new JsonArray();
 		JsonArray triggerLowerError  = new JsonArray();
-		
+		boolean isBenchmarked = false;
 		JsonArray tmp; 
+		
 		for (int i : tm.keySet()) {
-			BlessData.valueData vd = tm.get(i);
+			BlessData.valueData vd = tm.get(i);	
+			isBenchmarked = vd.isBenchmarked();
 			
 			tmp = new JsonArray();
 			tmp.add(new JsonPrimitive(i));
@@ -215,8 +217,8 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
         benchmarkChannel1.addProperty("idx", 4);
         benchmarkChannel1.addProperty("radius", 0.25);
         benchmarkChannel1.add("points", benchmarkPoint1);
-                
-		JsonObject channel1DataLowerError = new JsonObject();
+
+        JsonObject channel1DataLowerError = new JsonObject();
 		channel1DataLowerError.add("data", channel1LowerError);
 		channel1DataLowerError.addProperty("color", "#e77471");
 		channel1DataLowerError.addProperty("idx", 8);
@@ -259,7 +261,7 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
         benchmarkChannel2.addProperty("idx", 5);
         benchmarkChannel2.addProperty("radius", 0.25);
         benchmarkChannel2.add("points", benchmarkPoint2);
- 
+		
 		JsonObject channel2DataLowerError = new JsonObject();
 		channel2DataLowerError.add("data", channel2LowerError);
 		channel2DataLowerError.addProperty("color", "#b5eaaa");
@@ -303,7 +305,7 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
         benchmarkChannel3.addProperty("idx", 6);
         benchmarkChannel3.addProperty("radius", 0.25);
         benchmarkChannel3.add("points", benchmarkPoint3);
-
+        
 		JsonObject channel3DataLowerError = new JsonObject();
 		channel3DataLowerError.add("data", channel3LowerError);
 		channel3DataLowerError.addProperty("color", "#82cafa");
@@ -419,6 +421,7 @@ public class BlessDataJsonSerializer implements JsonSerializer<BlessData> {
 		pressure.addProperty("shadowSize", 0);
 		
 		JsonObject complete = new JsonObject(); 
+		complete.add("isBenchmarked", new JsonPrimitive(isBenchmarked));
 		complete.add("channel1", channel1);
 		complete.add("channel2", channel2);
 		complete.add("channel3", channel3);
