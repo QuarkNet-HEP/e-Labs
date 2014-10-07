@@ -129,7 +129,7 @@
 								<e:popup href="http://hands-on-cern.physto.se/hoc_v21en/index.html" target="website" width="850" height="600">Hands-on-CERN</e:popup>
 							</li>
 							<li>
-								<e:popup href="http://www.lhc.ac.uk/" target="website" width="925" height="610">The Large Hadron Collider</e:popup> and the <e:popup href="http://www.lhc.ac.uk/The+Particle+Detectives/LHC_project.html" target="website" width="875" height="610">LHC Project Simulator</e:popup> - from the Science and Technology Facilities Council, Great Britain
+								<e:popup href="http://www.lhc.ac.uk/" target="website" width="925" height="610">The Large Hadron Collider</e:popup> and the <e:popup href="http://www.particledetectives.net/LHC/LHC_project.html" target="website" width="875" height="610">LHC Project Simulator</e:popup> - from the Science and Technology Facilities Council, Great Britain
 							</li>
 							<li>
 								<e:popup href="http://atlas.ch/" target="website" width="900" height="600">The Atlas Detector</e:popup> - Atlas website at CERN
@@ -206,7 +206,7 @@
 								<a href="mailto:karmgard.1@nd.edu">Dan Karmgard</a> - University of Notre Dame
 							</li>
 							<li>
-								<a href="mailto:lantonel@nd.edu">Jamie Antonelli</a> - University of Notre Dame
+								<a href="mailto:lantonel@nd.edu">Jamie Antonelli</a> - Ohio State
 							</li>
 							<li>
 								<a href="mailto:rruchti@nsf.gov">Randy Ruchti</a> - NSF and University of Notre Dame
@@ -240,11 +240,11 @@
 					<div class="tab-contents-sublevel">
 						<ul class="simple">
 							<li>
-								<a href="http://www2.edc.org/ewit/materials/ITCCBRO.pdf">Career Cluster Pamphlet</a>,
+								<e:popup href="http://www2.edc.org/ewit/materials/ITCCBRO.pdf" target="website" width="850" height="600">Career Cluster Pamphlet</e:popup>,
 								(pdf) from Vocational information Center's <A href="http://www.khake.com/page17.html">Computer Science Career Guide</a>
 							</li>
 							<li>
-								<a href="http://www.microsoft.com/learning/training/careers/prepare.mspx">Prepare for an Information Technology (IT) Career</a>,
+								<e:popup href="http://www.microsoft.com/learning/training/careers/prepare.mspx" target="website" width="850" height="600">Prepare for an Information Technology (IT) Career</e:popup>,
 								from Microsoft Learning
 							</li>
 							</ul>
@@ -258,20 +258,18 @@
 					<p>The grid is critical for providing the data to all the CMS researchers and to our e-Lab.</p>
 						<ul  class="simple">
 							<li>
-								<a href="http://gridcafe.web.cern.ch/gridcafe/">The Grid Cafe</a>
-								- An introduction. From there, go to <a href="http://www.gridtalk.org/">Grid Talk</a> where you can read <a href="http://www.gridtalk.org/briefings.htm">Grid Briefings</a> and explore the <a href="http://www.gridguide.org/">Grid Guide</a>, from CERN.
+							<li>
+								Go to <a href="http://www.gridtalk.org/">Grid Talk</a> where you can read <a href="http://www.gridtalk.org/briefings.htm">Grid Briefings</a> and explore the <a href="http://www.gridguide.org/">Grid Guide</a>, from CERN.
+							</li>							
 							</li>
 							<li>
-								<a href="http://www.tryscience.org/grid/home.html" target="activity">Grids for Kids at TryScience</a>
+								<e:popup href="http://www.tryscience.org/grid/home.html" target="website" width="850" height="600">Grids for Kids at TryScience</e:popup>
 								- Use grid computing to model Mt. Vesuvius' volcanic activity and discover whether residents need warning, from New York Museum of Science. 
 							</li>
 							<li>
-								<a href="http://www.wikipedia.org/wiki/Grid_computing">Grid Computing</a>
-								- Read the Wikipedia article on the grid computing. 
-							</li>
-							
-							
-							
+								<e:popup href="http://www.wikipedia.org/wiki/Grid_computing" target="website" width="850" height="600">Grid Computing</e:popup> - 
+								Read the Wikipedia article on the grid computing. 
+							</li>			
 							</ul>
 							</div>
 							</div>
