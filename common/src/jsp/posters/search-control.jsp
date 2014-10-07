@@ -57,7 +57,7 @@ $(function() {
 		<e:quicksearch key="teacher" value="<%= user.getTeacher() %>"/>,
 		<e:quicksearch key="school" value="${user.school}"/>,
 		<e:quicksearch key="city" value="${user.city}" />,
-		<e:quicksearch key="state" value="${user.state}" />,
+		<e:quicksearch key="state" value="${user.state}" />
 	</div>
 	
 	<form name="search" method="get">

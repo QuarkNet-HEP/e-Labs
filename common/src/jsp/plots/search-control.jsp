@@ -12,7 +12,15 @@ SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false);
 String msg = (String) request.getParameter("msg");
 String project = elab.getName();
+TreeMap<String, String> studyOptions = new TreeMap<String, String>();
+studyOptions.put("flux", "Flux");
+studyOptions.put("lifetime", "Lifetime");
+studyOptions.put("performance", "Performance");
+studyOptions.put("shower", "Shower");
+studyOptions.put("blesschart", "Bless Charts");
+
 request.setAttribute("project", project);
+request.setAttribute("studyOptions", studyOptions);
 
 %>
 <script type="text/javascript">
@@ -59,7 +67,7 @@ $(function() {
 		<e:quicksearch key="teacher" value="<%= user.getTeacher() %>" suffix="&uploaded=${param.uploaded}" />,
 		<e:quicksearch key="school" value="${user.school}" suffix="&uploaded=${param.uploaded}" />,
 		<e:quicksearch key="city" value="${user.city}" suffix="&uploaded=${param.uploaded}" />,
-		<e:quicksearch key="state" value="${user.state}" suffix="&uploaded=${param.uploaded}" />,
+		<e:quicksearch key="state" value="${user.state}" suffix="&uploaded=${param.uploaded}" />
 	</div>
 	
 	<form name="search" method="get">
@@ -75,7 +83,26 @@ $(function() {
 				default="${param.key}" />
 		</c:otherwise>
 	</c:choose>
-	<input name="value" id="name" size="40" maxlength="40" value="${param.value}"  />
+	<c:choose>
+		<c:when test='${param.key == "study"}'>
+			<select id="name" name="value">
+		          	<option></option>
+		          	<c:forEach items="${studyOptions }" var="studyOptions">
+		          		<c:choose>
+		          			<c:when test="${studyOptions.key == param.value }">
+								<option name="${studyOptions.key}" value="${studyOptions.key }" selected=true>${studyOptions.value }</option>
+		          			</c:when>
+		          			<c:otherwise>
+								<option name="${studyOptions.key}" value="${studyOptions.key }" >${studyOptions.value }</option>
+		          			</c:otherwise>
+		          		</c:choose>
+		          	</c:forEach>
+		    </select>		
+		</c:when>
+		<c:otherwise>
+			<input name="value" id="name" size="40" maxlength="40" value="${param.value}"  />
+		</c:otherwise>		
+	</c:choose>
 	<input type="submit" name="submit" value="Search Data" />
 		<e:vswitch>
 			<e:visible image="../graphics/Tright.gif">
