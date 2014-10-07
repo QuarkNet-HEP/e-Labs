@@ -52,6 +52,7 @@ if (groupOwner != null) {
 	}
 }
 request.setAttribute("owner", owner);
+String benchmark = (String) entry.getTupleValue("benchmarkreference");
 
 //EPeronja-02/04/2013: Bug472- format registers
 BlessRegister br0 = new BlessRegister((String) entry.getTupleValue("ConReg0"));
@@ -62,7 +63,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF8" />
 		<title>Blessing Charts</title>
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
@@ -93,7 +94,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 				<script type="text/javascript">
 				$(document).ready(function() {
 					$.ajax({
-						url: "get-data.jsp?file=<%= file %>",
+						url: "get-data.jsp?file=<%= file %>&benchmark=<%=benchmark %>",
 						processData: false,
 						dataType: "json",
 						type: "GET",
@@ -109,6 +110,9 @@ request.setAttribute("CR0", br0.getRegisterValue());
 				<div style="text-align: center; font-size: small;"><strong>Data Blessing Test for ${param.file} -
 				<%= entry.getTupleValue("school") %>, <%= entry.getTupleValue("city") %>, <%= entry.getTupleValue("state") %> -
 				<fmt:formatDate value="${e.tupleMap.startdate}" pattern="dd MMM yyyy"/>				
+				<c:if test="${not empty e.tupleMap.benchmarkreference }">
+					- Benchmark: ${e.tupleMap.benchmarkreference }
+				</c:if>	
 				</strong></div><br />
 				<div style="text-align: center;">
 					<a href="../data/view.jsp?filename=${param.file}">Show Data</a> |
@@ -124,7 +128,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 				    <tr><td width="20px">CR0: </td><td width="100px"><strong><%= entry.getTupleValue("ConReg0") != null? entry.getTupleValue("ConReg0") : "Unknown" %></strong></td>
 				    	<td rowspan="2" ><%= commentsLink %> <%= entry.getTupleValue("comments") %></td></tr>
 				    <tr><td width="20px"> </td><td width="100px"><strong>${CR0}</strong></td></tr>
-				</table>
+				</table>			
 				<!-- This is removed due to the Benchmark rollout
 				<div style="text-align: center;"><strong>Owners of data files can bless data based on their interpretation of these charts</strong></p></div>
 				<% //if (owner) { %>							
@@ -161,6 +165,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 						</tr>
 					</table>
 				</div>
+
 				<h2>Rates</h2>
 				<!-- control added to change axes values -->
 				<jsp:include page="chartcontrols.jsp">
@@ -169,7 +174,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 
 				<div id="channels" style="background-color:#FFFFFF">
 					<div id="channelChart" style="width:750px; height:250px; text-align: left;"></div>
-					<div id="channelChartLegend" style="width: 750px"></div>
+					<div id="channelChartLegend" style="width: 750px;"></div>
 				</div>
 				<!-- EPeronja-07/31/2013 570-Bless Charts: add option to save them as plots -->
 				<div style="text-align:center; width: 100%;">

@@ -52,6 +52,7 @@ if (groupOwner != null) {
 	}
 }
 request.setAttribute("owner", owner);
+String benchmark = (String) entry.getTupleValue("benchmarkreference");
 
 //EPeronja-02/04/2013: Bug472- format registers
 BlessRegister br0 = new BlessRegister((String) entry.getTupleValue("ConReg0"));
@@ -93,7 +94,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 				<script type="text/javascript">
 				$(document).ready(function() {
 					$.ajax({
-						url: "get-data.jsp?file=<%= file %>",
+						url: "get-data.jsp?file=<%= file %>&benchmark=<%=benchmark %>",
 						processData: false,
 						dataType: "json",
 						type: "GET",

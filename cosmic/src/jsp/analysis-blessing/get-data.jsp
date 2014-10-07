@@ -12,6 +12,7 @@
 
 <%
 	String file = request.getParameter("file");
+	String benchmark = request.getParameter("benchmark");
 	
 	if (StringUtils.isBlank(file)) {
 		response.sendError(HttpURLConnection.HTTP_BAD_REQUEST); 
@@ -22,8 +23,12 @@
 		
 		// add in proper path handling!
 		String pfn = RawDataFileResolver.getDefault().resolve(elab, file) + ".bless";
-		BlessData bd = new BlessData(new File(pfn));
-		
+		BlessData bd;
+		if (benchmark != null && !benchmark.equals("null") && !benchmark.equals("")) {
+			bd = new BlessData(new File(pfn), benchmark, elab);
+		} else {			
+			bd = new BlessData(new File(pfn));
+		}
 		GsonBuilder gb = new GsonBuilder();
 		gb.registerTypeAdapter(BlessData.class, new BlessDataJsonSerializer());
 		Gson gson = gb.create(); 
