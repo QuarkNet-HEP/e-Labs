@@ -88,7 +88,7 @@ $(window).scroll(function(){
 		<!-- 
 		<input type="submit" value="${user.group.state}" />
 		-->
-		<a href="#" onclick='$(this).closest("form").submit()'>${user.group.state}</a>,
+		<a href="#" onclick='$(this).closest("form").submit()'>${user.group.state}</a>
 	</form>
 </div>
 
