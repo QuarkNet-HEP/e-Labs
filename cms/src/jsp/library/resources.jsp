@@ -215,7 +215,7 @@
 						<h2>Staff</h2>
 						<ul class="simple">
 							<li>
-								<a href="mailto:loughran.8@nd.edu>">Thomas Loughran</a> - University of Notre Dame
+								<a href="mailto:kcecire@nd.edu>">Kenneth Cecire</a> - University of Notre Dame
 							</li>
 						</ul>
 						<h2><a href="../library/students.jsp">Student Research Groups</a></h2>
