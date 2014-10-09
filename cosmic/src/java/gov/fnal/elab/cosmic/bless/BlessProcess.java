@@ -22,6 +22,7 @@ import gov.fnal.elab.util.ElabException;
  */
 
 public class BlessProcess {
+	double sigmas = 10;
 	//constructor
 	public BlessProcess() {
 	}
@@ -40,6 +41,7 @@ public class BlessProcess {
 		String message = "";
 		String errorCode = "";
 		boolean goBless = true;
+
 		ArrayList meta = new ArrayList();
 		//get the catalog entry of the file to be blessed
 		if (goBless) {
@@ -99,7 +101,7 @@ public class BlessProcess {
 										throw new IOException(blessFile + " has malformed data. "); 
 									}
 									//compare channel 1 and see if file can be blessed
-									if (chan1Rate <= (parseToDouble(split[1]) + parseToDouble3Sigmas(split[2])) && chan1Rate >= (parseToDouble(split[1]) - parseToDouble3Sigmas(split[2]))) {
+									if (chan1Rate <= (parseToDouble(split[1]) + parseToDoubleSigmas(split[2])) && chan1Rate >= (parseToDouble(split[1]) - parseToDoubleSigmas(split[2]))) {
 										pass = true;
 									} else {
 										pass = false;
@@ -114,7 +116,7 @@ public class BlessProcess {
 									}
 									//compare channel 2 and see if file can be blessed
 									if (pass) {
-										if (chan2Rate <= (parseToDouble(split[3]) + parseToDouble3Sigmas(split[4])) && chan2Rate >= (parseToDouble(split[3]) - parseToDouble3Sigmas(split[4]))) {
+										if (chan2Rate <= (parseToDouble(split[3]) + parseToDoubleSigmas(split[4])) && chan2Rate >= (parseToDouble(split[3]) - parseToDoubleSigmas(split[4]))) {
 											pass = true;
 										} else {
 											pass = false;
@@ -124,13 +126,13 @@ public class BlessProcess {
 											meta.add("benchmarkrate string "+String.valueOf(chan2Rate));
 											meta.add("benchmarksplitrate string "+split[3]);
 											meta.add("benchmarkspliterror string "+split[4]);
-											meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[3]),chan1Rate,parseToDouble(split[4]))));									
+											meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[3]),chan2Rate,parseToDouble(split[4]))));									
 											failReason = formatFailReason(split[0], "channel 2", String.valueOf(chan2Rate), split[3], split[4]);
 										}
 									}
 									//compare channel 3 and see if file can be blessed
 									if (pass) {
-										if (chan3Rate <= (parseToDouble(split[5]) + parseToDouble3Sigmas(split[6])) && chan3Rate >= (parseToDouble(split[5]) - parseToDouble3Sigmas(split[6]))) {
+										if (chan3Rate <= (parseToDouble(split[5]) + parseToDoubleSigmas(split[6])) && chan3Rate >= (parseToDouble(split[5]) - parseToDoubleSigmas(split[6]))) {
 											pass = true;
 										} else {
 											pass = false;
@@ -140,13 +142,13 @@ public class BlessProcess {
 											meta.add("benchmarkrate string "+String.valueOf(chan3Rate));
 											meta.add("benchmarksplitrate string "+split[5]);
 											meta.add("benchmarkspliterror string "+split[6]);
-											meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[5]),chan1Rate,parseToDouble(split[6]))));									
+											meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[5]),chan3Rate,parseToDouble(split[6]))));									
 											failReason = formatFailReason(split[0], "channel 3", String.valueOf(chan3Rate), split[5], split[6]);
 										}
 									}
 									//compare channel 4 and see if file can be blessed
 									if (pass) {
-										if (chan4Rate <= (parseToDouble(split[7]) + parseToDouble3Sigmas(split[8])) && chan4Rate >= (parseToDouble(split[7]) - parseToDouble3Sigmas(split[8]))) {
+										if (chan4Rate <= (parseToDouble(split[7]) + parseToDoubleSigmas(split[8])) && chan4Rate >= (parseToDouble(split[7]) - parseToDoubleSigmas(split[8]))) {
 											pass = true;
 										} else {
 											pass = false;
@@ -156,7 +158,7 @@ public class BlessProcess {
 											meta.add("benchmarkrate string "+String.valueOf(chan4Rate));
 											meta.add("benchmarksplitrate string "+split[7]);
 											meta.add("benchmarkspliterror string "+split[8]);
-											meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[7]),chan1Rate,parseToDouble(split[8]))));									
+											meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[7]),chan4Rate,parseToDouble(split[8]))));									
 											failReason = formatFailReason(split[0], "channel 4", String.valueOf(chan4Rate), split[7], split[8]);
 										}
 									}
@@ -165,8 +167,8 @@ public class BlessProcess {
 									//this was decided on the Nov 13 2013 telecon
 									//low trigger rates alone shouldn't fail a file
 									if (pass) {
-										if ((parseToDouble(split[9]) + parseToDouble3Sigmas(split[10])) >= 2) {
-											if (triggerRate < (parseToDouble(split[9]) + parseToDouble3Sigmas(split[10])) && triggerRate > (parseToDouble(split[9]) - parseToDouble3Sigmas(split[10])) ) {
+										if ((parseToDouble(split[9]) + parseToDoubleSigmas(split[10])) >= 2) {
+											if (triggerRate < (parseToDouble(split[9]) + parseToDoubleSigmas(split[10])) && triggerRate > (parseToDouble(split[9]) - parseToDoubleSigmas(split[10])) ) {
 												pass = true;
 											} else {
 												pass = false;
@@ -176,7 +178,7 @@ public class BlessProcess {
 												meta.add("benchmarkrate string "+String.valueOf(triggerRate));
 												meta.add("benchmarksplitrate string "+split[9]);
 												meta.add("benchmarkspliterror string "+split[10]);
-												meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[9]),chan1Rate,parseToDouble(split[10]))));																					
+												meta.add("benchmarkquality string "+ String.valueOf(calculateQuality(parseToDouble(split[9]),triggerRate,parseToDouble(split[10]))));																					
 												failReason = formatFailReason(split[0], "trigger", String.valueOf(triggerRate), split[9], split[10]);
 											}
 										}
@@ -268,7 +270,7 @@ public class BlessProcess {
 		return result;
 	}//end of parseToDouble
 
-	public double parseToDouble3Sigmas(String split)
+	public double parseToDoubleSigmas(String split)
 	{
 		double result = 0;
 		try {
@@ -276,7 +278,7 @@ public class BlessProcess {
 		} catch (NumberFormatException e) {
 			result = 0;
 		}
-		return result*3;
+		return result*sigmas;
 	}//end of parseToDouble
 	
 	public double calculateQuality(double splitRate, double channelRate, double splitError) {
@@ -324,9 +326,9 @@ public class BlessProcess {
 			failReason = "This file failed at: " + seconds + "(" + convertToHMS(seconds) + ")"+
 					 " because the benchmark "+label+" rate: "+ benchmarkRate +
 					 " (metadata value) was not between the ranges of comparison set by " + column1 +
-					 " and " + String.valueOf(column2) + " being 3 sigmas: " + String.valueOf(parseToDouble3Sigmas(column2)) +
-					 "(" + String.valueOf(parseToDouble(column1) - parseToDouble3Sigmas(column2)) +
-					 " and " + String.valueOf(parseToDouble(column1) + parseToDouble3Sigmas(column2))+")" +
+					 " and " + String.valueOf(column2) + " being "+String.valueOf(sigmas)+" sigmas: " + String.valueOf(parseToDoubleSigmas(column2)) +
+					 "(" + String.valueOf(parseToDouble(column1) - parseToDoubleSigmas(column2)) +
+					 " and " + String.valueOf(parseToDouble(column1) + parseToDoubleSigmas(column2))+")" +
 					 " - for these last values, look at the .bless file of the just split file.";									
 		}
 		return failReason;
