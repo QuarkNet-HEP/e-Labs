@@ -170,8 +170,7 @@ First, a definition:  because almost all muons pass completely through the detec
 					<li>
 						<a href="javascript:reference('cms analysis',450)">Milestone</a> associated with plot selection.
 					</li>
-					<li>
-						<e:popup href="/library/kiwi.php?title=CMS_FAQ" target="faq" width="500" height="300">FAQs</e:popup>
+					<li><a href="javascript:showRefLink('../library/FAQ.jsp',700,700)">FAQs</a>
 					</li>
 				</ul>
 			</td>

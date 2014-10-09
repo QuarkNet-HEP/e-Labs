@@ -34,21 +34,19 @@
 		<td id="center">
 			<h1>Library: Use the e-Lab library of reference material as you work</h1>
 			<ul>
-				<li>
-					<a href="/library/kiwi.php?title=Category:LIGOGLOSSARY">The Glossary</a> - Look up terms you don't know.
-				</li>
+				<li><a href="../references/showAll.jsp?t=glossary">Glossary</a> - Look up the terms you don't know.</li>
 				<li>
 					<a href="resources.jsp">Resources</a> - Explore online resources 
 					that will help you conduct your e-Lab investigation. A 
-					<a href="/ligo/tla/tutorial.php">tutorial</a> will help you learn to use 
-					<a href="/ligo/tla/">Bluestone</a>, 
+					<a href="../bluestone/tutorial.jsp">tutorial</a> will help you learn to use 
+					<a href="../current/">e-Lab data interface</a>, 
 					LIGO's e-Lab data analysis software
 				</li>
 				<li>
 					<a href="big-picture.jsp">Big Picture</a> - Read an overview of 
 					this project.
 				</li>					
-				<li><a href="#" onclick="javascript:window.open('\/library\/kiwi.php\/LIGO_FAQ', 'faq', 'width=500,height=300, resizable=1, scrollbars=1');return false;">FAQs</a> - Read the FAQs for answers to your questions.</li>
+				<li><a href="FAQ.jsp">FAQs</a> - Read the FAQs for answers to your questions.</li>
 				</li>
 				<li>
 					<a href="site-tips.jsp">Site Tips</a> - Check out tips on how to use the website.
