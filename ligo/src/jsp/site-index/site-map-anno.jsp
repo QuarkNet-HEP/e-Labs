@@ -13,6 +13,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/site-index.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/site-help.css"/>
+		<script type="text/javascript" src="../include/elab.js"></script>		
 	</head>
 		<script type="text/javascript">
 			function setDisplay(objectID,state) {
@@ -73,24 +74,31 @@
 								<div id="sitehelp-home">
   									<a href="../home/cool-science.jsp">Cool Science</a><br />
 									<a href="../home/about-us.jsp">About Us</a><br />
-									<a href="javascript:window.open('../jsp/showLogbook.jsp', 'log', 'width=800,height=600, resizable=1, scrollbars=1');return false;">Logbook</a><br />
+									<c:choose>
+						 				<c:when test='${user.role == "teacher" }'>
+						 					<a href="#">Logbook</a>
+										</c:when>
+										<c:otherwise>
+											<a href="javascript:studentLogbook('',800)">Logbook</a><br />
+										</c:otherwise>
+									</c:choose>
 									<a href="../library/milestones.jsp">Milestones (text)</a><br />
 								</div>
 							</td>
 							<td width="125" valign="bottom"  align="center">
 								<div id="sitehelp-library">
-									<a href="/library/kiwi.php?title=Category:LIGOGLOSSARY" target="glossary"">Glossary</a><br />
+									<a href="../references/showAll.jsp?t=glossary">Glossary</a><br />									
 									<a href="../library/resources.jsp">Resources</a><br />
 									<a href="../library/big-picture.jsp">Big Picture</a><br />
-									<a href="#" onclick="javascript:window.open('\/library\/kiwi.php\/LIGO_FAQ', 'faq', 'width=500,height=300, resizable=1, scrollbars=1');return false;">FAQs</a><br />
+									<a href="../library/FAQ.jsp">FAQs</a><br />
 									<a href="../library/site-tips.jsp">Site Tips</a>
 										</div>
 							</td>
 							<td width="125" valign="bottom" align="center">
 								<div id="sitehelp-data">
 
-									<a href="/ligo/tla/tutorial.php">Tutorial</a><br />
-									<a href="/ligo/tla/">Bluestone</a><br />
+									<a href="../bluestone/tutorial.jsp">Tutorial</a><br />
+									<a href="../current/">e-Lab data interface</a><br />
 									<a href="../plots/">View Plots</a><br />
 									<a href="../analysis/list.jsp">Analyses</a>
 								</div>

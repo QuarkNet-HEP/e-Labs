@@ -41,9 +41,9 @@
 </p>
 
 				<%
-					if (user.getGroup().isProfDev()) {
+					if (user.getRole().equals("teacher")) {
 						%>
-							<%@ include file="milestones-map-profdev.jsp" %>
+							<%@ include file="milestones-map-teacher.jsp" %>
 						<%
 					}
 					else {
