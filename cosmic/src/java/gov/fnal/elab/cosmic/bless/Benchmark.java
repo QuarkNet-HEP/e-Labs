@@ -42,6 +42,21 @@ import org.apache.commons.lang.time.DateFormatUtils;
  */
 
 public class Benchmark {
+	public static ResultSet getUnblessedWithBenchmark(Elab elab, Date startDate, Date endDate) throws ElabException {
+		ResultSet rs = null;
+		if (elab != null && startDate != null && endDate != null) {
+			In and = new In();
+			and.add(new Equals("project","cosmic"));
+			and.add(new Equals("type", "split"));
+			and.add(new Equals("blessed", false));
+			and.add(new Like("benchmarkreference", "%"));
+			and.add(new GreaterOrEqual("creationdate", startDate));
+			and.add(new LessOrEqual("creationdate", endDate));
+			rs = elab.getDataCatalogProvider().runQuery(and);
+		}		
+		return rs;
+	}// end of getUnblessedWithBenchmark
+	
 	//EPeronja: get all the benchmark info for splits given a period of time
 	public static ResultSet getSplitBenchmarkInfoByInterval(Elab elab, Date startDate, Date endDate) throws ElabException {
 		ResultSet rs = null;
@@ -65,7 +80,7 @@ public class Benchmark {
 			and.add(new Equals("project","cosmic"));
 			and.add(new Equals("type", "split"));
 			and.add(new Equals("blessed", false));
-			and.add(new Like("benchmarkfail", "This file failed at:%"));
+			and.add(new Like("benchmarkfail", "%"));
 			and.add(new GreaterOrEqual("creationdate", startDate));
 			and.add(new LessOrEqual("creationdate", endDate));
 			rs = elab.getDataCatalogProvider().runQuery(and);
@@ -136,7 +151,7 @@ public class Benchmark {
 			rs = elab.getDataCatalogProvider().runQuery(and);
 		}
 		return rs;
-	}
+	}//end of getBenchmarkCandidates
 	
 	//EPeronja: set file as new default benchmark
 	public static Long setFileAsBenchmark(DataCatalogProvider dcp, String benchmark, String benchmarkLabel) throws ElabException {
@@ -203,7 +218,7 @@ public class Benchmark {
 			Geometry g = geometries.getGeometry(detectorid);
 			SortedMap geosBefore = g.getGeoEntriesBefore(julianDate);
 			Date startDate = new Date();
-			if (!geosBefore.isEmpty()) {
+			if (geosBefore != null && !geosBefore.isEmpty()) {
 				GeoEntryBean geoEntryBefore = (GeoEntryBean) geosBefore.get(geosBefore.lastKey()); 
 		        Iterator<GeoEntryBean> j = g.getGeoEntries();
 		        
@@ -218,17 +233,18 @@ public class Benchmark {
 			}
 			SortedMap geosAfter = g.getGeoEntriesAfter(julianDate);
 			Date endDate = new Date();
-			if (!geosAfter.isEmpty()) {
+			if (geosAfter != null && !geosAfter.isEmpty()) {
 				geosAfter.remove(geosAfter.firstKey());
-				GeoEntryBean geoEntryAfter = (GeoEntryBean) geosAfter.get(geosAfter.firstKey());
-		        Iterator<GeoEntryBean> j = g.getGeoEntries();
-				while (j.hasNext()) {
-		            GeoEntryBean gb = j.next();
-		            if (geoEntryAfter.getDate().equals(gb.getDate()) && j.hasNext()) {
-					    endDate = geoEntryAfter.getDate(); 
-		            }
-		        }
-
+				if (!geosAfter.isEmpty()) {
+					GeoEntryBean geoEntryAfter = (GeoEntryBean) geosAfter.get(geosAfter.firstKey());
+			        Iterator<GeoEntryBean> j = g.getGeoEntries();
+					while (j.hasNext()) {
+			            GeoEntryBean gb = j.next();
+			            if (geoEntryAfter.getDate().equals(gb.getDate()) && j.hasNext()) {
+						    endDate = geoEntryAfter.getDate(); 
+			            }
+			        }
+				}
 			}
 			In and = new In();
 			and.add(new Equals("project","cosmic"));
@@ -252,7 +268,7 @@ public class Benchmark {
 			Geometry g = geometries.getGeometry(detectorid);
 			SortedMap geosBefore = g.getGeoEntriesBefore(julianDate);
 	        Date startDate = new Date();
-			if (!geosBefore.isEmpty()) {
+			if (geosBefore != null && !geosBefore.isEmpty() && geosBefore.lastKey() != null) {
 				GeoEntryBean geoEntryBefore = (GeoEntryBean) geosBefore.get(geosBefore.lastKey()); 				
 		        Iterator<GeoEntryBean> j = g.getGeoEntries();
 		        startDate = geoEntryBefore.getDate();
@@ -265,17 +281,19 @@ public class Benchmark {
 			}
 			SortedMap geosAfter = g.getGeoEntriesAfter(julianDate);
 			Date endDate = new Date();
-			if (!geosAfter.isEmpty()) {
+			if (geosAfter != null && !geosAfter.isEmpty() && geosAfter.firstKey() != null) {
 				geosAfter.remove(geosAfter.firstKey());
-				GeoEntryBean geoEntryAfter = (GeoEntryBean) geosAfter.get(geosAfter.firstKey());
-		        Iterator<GeoEntryBean> j = g.getGeoEntries();
-		        
-		        while (j.hasNext()) {
-		            GeoEntryBean gb = j.next();
-		            if (geoEntryAfter.getDate().equals(gb.getDate()) && j.hasNext()) {
-					    endDate = geoEntryAfter.getDate(); 
-		            }
-		        }
+				if (!geosAfter.isEmpty()) {
+					GeoEntryBean geoEntryAfter = (GeoEntryBean) geosAfter.get(geosAfter.firstKey());
+			        Iterator<GeoEntryBean> j = g.getGeoEntries();
+			        
+			        while (j.hasNext()) {
+			            GeoEntryBean gb = j.next();
+			            if (geoEntryAfter.getDate().equals(gb.getDate()) && j.hasNext()) {
+						    endDate = geoEntryAfter.getDate(); 
+			            }
+			        }
+				}
 			}
 			In and = new In();
 			and.add(new Equals("project","cosmic"));
