@@ -77,9 +77,9 @@
 <IMG border="0" SRC="graphics/ref_dot.gif"> Use search parameters to find data of interest. <A HREF="javascript:reference('search parameters')"><IMG border="0" SRC="graphics/ref.gif"></A><br>
 <IMG border="0" SRC="graphics/ref_dot.gif"> Choose appropriate analysis tools. <A HREF="javascript:reference('analysis tools')"><IMG border="0" SRC="graphics/ref.gif"></A><br>
 <IMG border="0" SRC="graphics/ref_dot.gif"> Measure and correct for background and errors when appropriate. <A HREF="javascript:reference('data errors')"><IMG border="0" SRC="graphics/ref.gif"></A><BR>
-<IMG border="0" SRC="graphics/ref_dot.gif"> Carry out analysis, modifying as needed.<A HREF="javascript:showRefLink('logEntry.jsp?keyword=analysis_iterations',700,600)"><b>Log it!</b><IMG SRC="graphics/milestone_pencil.gif" border="0"  align="middle"></A><BR>
+<IMG border="0" SRC="graphics/ref_dot.gif"> Carry out analysis, modifying as needed.<A HREF="javascript:showRefLink('../logbook/student-logbook.jsp?keyword=analysis_iterations',700,600)"><b>Log it!</b><IMG SRC="graphics/milestone_pencil.gif" border="0"  align="middle"></A><BR>
 <IMG border="0" SRC="graphics/ref_dot.gif"> Participate in a <b>milestone seminar</b>.<BR>
-<IMG border="0" SRC="graphics/ref_dot.gif"> Reflect on teaching and learning.<A HREF="javascript:showRefLink('logEntry.jsp?keyword=classroom_insights',700,600)"><b>Log it!</b><IMG SRC="graphics/milestone_pencil.gif" border="0"  align="middle"></A><BR>
+<IMG border="0" SRC="graphics/ref_dot.gif"> Reflect on teaching and learning.<A HREF="javascript:showRefLink('../logbook/student-logbook.jsp?keyword=classroom_insights',700,600)"><b>Log it!</b><IMG SRC="graphics/milestone_pencil.gif" border="0"  align="middle"></A><BR>
 			<div id="showsublist2" style="visibility:visible; display:"><P STYLE="margin-left: 30px">
                             <a href="javascript:void(0);" onclick="HideShow('sublist2');HideShow('showsublist2');HideShow('hidesublist2')">
                                 <img src="graphics/Tright.gif" alt="" border="0"></a> Details

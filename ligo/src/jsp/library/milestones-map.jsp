@@ -41,19 +41,22 @@
 		  Be sure to read the teacher comments! 
 	  </p>
 	  <center>
-		  <c:choose>
-			  <c:when test="${user.group.profDev}">
-				  <%@ include file="milestones-map-profdev.jsp" %>
-			  </c:when>
-			  <c:otherwise>
-				  <%@ include file="milestones-map-student.jsp" %>
-			  </c:otherwise>
-		  </c:choose>
+				<%
+					if (user.getRole().equals("teacher")) {
+						%>
+							<%@ include file="milestones-map-teacher.jsp" %>
+						<%
+					}
+					else {
+						%>
+							<%@ include file="milestones-map-student.jsp" %>
+						<%
+					}
+				%>
 		  <div class="link-list">
 			  <a href="milestones.jsp">Milestones (text version)</a>
 			  |
-			  <a href="/glossary/index.php/LIGO_Glossary"
-				 target="_blank">LIGO Glossary</a>
+			  <a href="../references/showAll.jsp?t=glossary">LIGO Glossary</a>
 			  | 
 			  <a href="../references/showAll.jsp?t=reference">All References for Study Guide <img src="../graphics/ref.gif"/></a>
 		  </div>

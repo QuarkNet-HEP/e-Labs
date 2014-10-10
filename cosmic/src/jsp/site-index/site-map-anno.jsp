@@ -12,6 +12,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/site-index.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 		<link href="../css/site-help.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 <script type="text/javascript">
     hideAll();
@@ -77,7 +78,14 @@ function hideAll()
 									<a href="../library/milestones.jsp">Milestones (text)</a><br />
 									<a href="../home/cool-science.jsp">Cool Science</a><br />
 									<a href="../home/about-us.jsp">About Us</a><br />
-									<a href="javascript:window.open('../jsp/showLogbook.jsp', 'log', 'width=800,height=600, resizable=1, scrollbars=1');return false;">Logbook</a><br />
+									<c:choose>
+						 				<c:when test='${user.role == "teacher" }'>
+						 					<a href="#">Logbook</a>
+										</c:when>
+										<c:otherwise>
+											<a href="javascript:studentLogbook('',800)">Logbook</a><br />
+										</c:otherwise>
+									</c:choose>
 								</div>
 							</td>
 							<td  width="127" valign="top"  align="center">
