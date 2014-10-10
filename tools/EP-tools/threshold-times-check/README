@@ -1,3 +1,5 @@
+Split.pl does not clean up after trying to split and failing so it creates a split file and a .bless in the detector folder but it does not create any metadata for these files. These can be easily checked out through the application but a faster way to find them is to check if each split has a .thresh file associated with it.
+
 To check if there are split files without .thresh:
 
 For production, run:
@@ -9,6 +11,15 @@ that do not have a .thresh file
 
 For development, run:
    python thresh_check_13.py
+
+Also, I got tired of moving these files manually to a ~/cosmic/.Trash folder manually so now I run:
+For production:
+   python remove_orphans_18.py
+
+For development:
+   python remove_orphans_13.py
+
+This process moves this orphans files to the .Trash folder where they will stay until I zip them or delete them for good. Nobody misses these files ;)
 
 Questions?
 Edit Peronja
