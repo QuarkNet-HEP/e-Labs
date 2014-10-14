@@ -37,11 +37,11 @@
 						<td>Add e-Lab users.</td>
 					</tr>
 					<tr>
-						<td>&#8226; <a href="remove-expired-notifications.jsp">Delete Expired Notifications</a></td>
+						<td>&#8226; <a href="../notifications/remove-expired-notifications.jsp">Delete expired notifications</a></td>
 						<td>Delete notifications with expiration dates older than 30 days ago.</td>					
 					</tr>
 					<tr>
-						<td>&#8226; <a href="../references/control.jsp"> FAQs Add, Update FAQs</a></td>
+						<td>&#8226; <a href="../references/control.jsp"> FAQs Add/Update</a></td>
 						<td>Add, update FAQ items.</td>					
 					</tr>					
 					<tr>
@@ -49,12 +49,16 @@
 						<td>Add, delete, update poster tags per e-Lab.</td>
 					</tr>
 					<tr>
-						<td>&#8226; <a href="session-tracking.jsp">Session Tracking</a></td>
+						<td>&#8226; <a href="../session/session-tracking.jsp">Session Tracking</a></td>
 						<td>See the users whose sessions are still active.</td>					
 					</tr>
 					<tr>
-						<td>&#8226; <a href="mark-teacher-status.jsp">Set Group Status</a></td>
+						<td>&#8226; <a href="../teacher/mark-teacher-status.jsp">Set group status</a></td>
 						<td>Set teachers and their research groups to active/inactive.</td>					
+					</tr>
+					<tr>
+						<td>&#8226; <a href="../unit-testing/index.jsp">Unit Testing</a></td>
+						<td>Run automated tests for written code grouped by functionality.</td>					
 					</tr>
 					<tr>
 						<td>&#8226; <a href="../statistics">View e-Lab Statistics</a></td>
@@ -67,19 +71,33 @@
 					<c:if test='${elab.name == "cosmic" }'>
 						<tr><th colspan="2" >Cosmic Admin Links</th><th></th></tr>
 						<tr>
-							<td>&#8226; <a href="data-access-permission.jsp">Allow Users to View All Data</a></td>
+							<td>&#8226; <a href="../data/data-access-permission.jsp">Allow users to view all data</a></td>
 							<td>Give rights to teachers to be able to access all cosmic data (blessed and unblessed).</td>						
 						</tr>
 						<tr>
-							<td>&#8226; <a href="../data/create-threshold.jsp">Create Threshold Times Files</a></td>
+							<td>&#8226; <a href="../data/create-threshold.jsp">Create Threshold Times files</a></td>
 							<td>Create individual threshold times files if they failed to be created at upload time.</td>
 						</tr>
 						<tr>
-							<td>&#8226; <a href="../analysis/list-all.jsp">View All Analyses</a></td>
-							<td>List of analyses by all users.</td>
+							<td>&#8226; <a href="../analysis-blessing/benchmark-process-rerun.jsp">Rerun unblessed files by selected benchmark</a></td>
+							<td>Try bless unblessed files by using the same benchmark.</td>
 						</tr>
 						<tr>
-							<td>&#8226; <a href="../analysis-blessing/benchmark-info.jsp">View Upload Plus Benchmark Information</a></td>
+							<td>&#8226; <a href="../analysis/list-all.jsp">View all analyses</a></td>
+							<td>List of analyses by all users.</td>
+						</tr>
+						<!--  
+						<tr>
+							<td>&#8226; <a href="../analysis/cosmic-analysis-errors.jsp">Add, Update Cosmic Analysis Errors</a></td>
+							<td>Enter cosmic common errors and suggestions on what to do, fix, etc.</td>
+						</tr>
+						<tr>
+							<td>&#8226; <a href="../analysis/analysis-queue.jsp">View analysis queue</a></td>
+							<td>View queued analyses and their statuses.</td>
+						</tr>
+						-->
+						<tr>
+							<td>&#8226; <a href="../analysis-blessing/benchmark-info.jsp">View upload plus benchmark information</a></td>
 							<td>View split files and their blessed/unblessed status details.</td>
 						</tr>
 					</c:if>				
