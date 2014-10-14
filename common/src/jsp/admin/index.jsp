@@ -37,7 +37,7 @@
 						<td>Add e-Lab users.</td>
 					</tr>
 					<tr>
-						<td>&#8226; <a href="remove-expired-notifications.jsp">Delete expired notifications</a></td>
+						<td>&#8226; <a href="../notifications/remove-expired-notifications.jsp">Delete expired notifications</a></td>
 						<td>Delete notifications with expiration dates older than 30 days ago.</td>					
 					</tr>
 					<tr>
@@ -49,11 +49,11 @@
 						<td>Add, delete, update poster tags per e-Lab.</td>
 					</tr>
 					<tr>
-						<td>&#8226; <a href="session-tracking.jsp">Session Tracking</a></td>
+						<td>&#8226; <a href="../session/session-tracking.jsp">Session Tracking</a></td>
 						<td>See the users whose sessions are still active.</td>					
 					</tr>
 					<tr>
-						<td>&#8226; <a href="mark-teacher-status.jsp">Set group status</a></td>
+						<td>&#8226; <a href="../teacher/mark-teacher-status.jsp">Set group status</a></td>
 						<td>Set teachers and their research groups to active/inactive.</td>					
 					</tr>
 					<tr>
@@ -71,7 +71,7 @@
 					<c:if test='${elab.name == "cosmic" }'>
 						<tr><th colspan="2" >Cosmic Admin Links</th><th></th></tr>
 						<tr>
-							<td>&#8226; <a href="data-access-permission.jsp">Allow users to view all data</a></td>
+							<td>&#8226; <a href="../data/data-access-permission.jsp">Allow users to view all data</a></td>
 							<td>Give rights to teachers to be able to access all cosmic data (blessed and unblessed).</td>						
 						</tr>
 						<tr>
@@ -86,11 +86,11 @@
 							<td>&#8226; <a href="../analysis/list-all.jsp">View all analyses</a></td>
 							<td>List of analyses by all users.</td>
 						</tr>
+						<!--  
 						<tr>
-							<td>&#8226; <a href="cosmic-analysis-errors.jsp">Add, Update Cosmic Analysis Errors</a></td>
+							<td>&#8226; <a href="../analysis/cosmic-analysis-errors.jsp">Add, Update Cosmic Analysis Errors</a></td>
 							<td>Enter cosmic common errors and suggestions on what to do, fix, etc.</td>
 						</tr>
-						<!--  
 						<tr>
 							<td>&#8226; <a href="../analysis/analysis-queue.jsp">View analysis queue</a></td>
 							<td>View queued analyses and their statuses.</td>
