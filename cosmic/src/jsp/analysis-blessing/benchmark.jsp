@@ -150,9 +150,14 @@
 	//set the calendar to a month prior by default 
 	//the criteria to retrieve datafiles will probably change but we need some type of range otherwise
 	//we will be retrieving all the files.
+	Calendar cal = Calendar.getInstance();
+    cal.setTime(new Date());
+    cal.add(Calendar.DATE, 1);		
+	String toDate = DATEFORMAT.format(cal.getTime());
 	Calendar lastMonth = Calendar.getInstance();
 	lastMonth.add(Calendar.MONTH,-1);				
 	request.setAttribute("lastMonth", lastMonth);
+	request.setAttribute("toDate", toDate);
 	request.setAttribute("detectors", detectors);
 	request.setAttribute("detector", selectedDetector);
 	request.setAttribute("detectorBenchmark", detectorBenchmark);
@@ -180,8 +185,7 @@
 						changeMonth: true,
 						changeYear: true, 
 						showButtonPanel: true,
-						minDate: new Date(2000, 11-1, 30), // Earliest known date of data - probably should progamatically find. 
-						maxDate: new Date() // Should not look later than today
+						minDate: new Date(2000, 11-1, 30) // Earliest known date of data - probably should progamatically find. 
 				}
 			$('.datepicker').datepicker(calendarParam);
 			$("#fromDate").datepicker('option', 'buttonText', 'Choose start date for data files.');
@@ -289,7 +293,7 @@
      	</td>
 	 	<td class="benchmarkHeader" nowrap style="vertical-align: center;">Date Range<br /> 
 	 	    <input type="text" name="fromDate" id="fromDate" size="12" value="<%=DATEFORMAT.format(lastMonth.getTime()) %>" class="datepicker" ></input>
-	 	    to <input type="text" name="toDate" id="toDate" size="12" value="<%=DATEFORMAT.format(Calendar.getInstance().getTime()) %>" class="datepicker" ></input>	
+	 	    to <input type="text" name="toDate" id="toDate" size="12" value="<%= toDate %>" class="datepicker" ></input>	
 		</td>
 		<td class="benchmarkHeader" style="vertical-align: bottom;">
 			<input type="button" name="add" id="add" value="Select Benchmark" onclick='javascript:addBenchmarkFiles("${detector}", "fromDate", "toDate");'/>
