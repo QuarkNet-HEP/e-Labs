@@ -22,7 +22,12 @@
 		
 		// add in proper path handling!
 		String pfn = RawDataFileResolver.getDefault().resolve(elab, file) + ".bless";
-		BlessData bd = new BlessData(new File(pfn), benchmark, elab);
+		BlessData bd;
+		if (benchmark != null && !benchmark.equals("null") && !benchmark.equals("")) {
+			bd = new BlessData(new File(pfn), benchmark, elab);
+		} else {			
+			bd = new BlessData(new File(pfn));
+		}
 		
 		GsonBuilder gb = new GsonBuilder();
 		gb.registerTypeAdapter(BlessData.class, new BlessDataJsonSerializer());
