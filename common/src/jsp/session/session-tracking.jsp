@@ -15,6 +15,7 @@
 <%
 	int sessionCount = SessionListener.getTotalActiveSession();
 	ArrayList activeSessions = SessionListener.getTotalSessionUsers();
+	int sessionUsers = 0;
 	
 	//now create the local TreeMap
 	TreeMap<String, String> sessionDetails = new TreeMap<String, String>();
@@ -29,7 +30,8 @@
 		//get user
 	    ElabGroup eu = (ElabGroup) s.getAttribute("elab.user");
 		Elab e = (Elab) s.getAttribute("elab");
-		if (eu != null && e != null) {		
+		if (eu != null && e != null) {
+			sessionUsers++;
 			sb.append("<strong>Username:</strong> "+ eu.getName() + "<br />");
 			String school = eu.getSchool() != null ? eu.getSchool() : "";
 			String city = eu.getCity() != null ? eu.getCity() : "";
@@ -73,10 +75,11 @@
                 	}
 				}
 			}//end of first synchronized							            		
+    		sessionDetails.put("<strong>Session # " + String.valueOf(i), sb.toString() + "</strong>");
 		}	    
-		sessionDetails.put("<strong>Session # " + String.valueOf(i), sb.toString() + "</strong>");
 	}
 	request.setAttribute("sessionCount",sessionCount);
+	request.setAttribute("sessionUsers", sessionUsers);
 	request.setAttribute("sessionDetails",sessionDetails);	
 
 %>
@@ -104,6 +107,7 @@
 			
 			<div id="content">
 				<h1>Session Tracking</h1>
+				<h2>Total Users Logged In: ${sessionUsers}</h2>
 				<h2>Total Active Sessions: ${sessionCount}</h2>
 	    	   <table style="border: 1px solid black; cell-padding: 15px;">
 	    	   		<tr>
