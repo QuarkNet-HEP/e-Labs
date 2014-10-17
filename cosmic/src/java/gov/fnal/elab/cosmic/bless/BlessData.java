@@ -55,7 +55,8 @@ public class BlessData {
 						0.0,
 						0.0,
 						0.0,
-						0.0
+						0.0,
+						false
 				);
 					
 				ts = parseToInt(split[0]);
@@ -67,7 +68,10 @@ public class BlessData {
 	public BlessData(File file, String benchmark, Elab elab) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		timeValueData = new TreeMap<Integer, valueData>(); 
-		
+		boolean isBenchmarked = true;
+		if (benchmark.equals("none") || benchmark.equals("")) {
+			isBenchmarked = false;
+		}
 		String line;
 		String[] split; 
 		valueData thisLineData = null;
@@ -118,7 +122,8 @@ public class BlessData {
 						(double) bChannel2Rate,
 						(double) bChannel3Rate,
 						(double) bChannel4Rate,
-						(double) bTriggerRate
+						(double) bTriggerRate,
+						isBenchmarked
 				);
 					
 				ts = parseToInt(split[0]);
@@ -171,6 +176,7 @@ public class BlessData {
 		private int gpsSatellitesVisible; 
 		private double benchmarkChannel1Rate, benchmarkChannel2Rate, benchmarkChannel3Rate, benchmarkChannel4Rate;
 		private double benchmarkTriggerRate;
+		private boolean benchmarked;
 		
 		private valueData(
 				double channel1Rate, double channel1Error,
@@ -183,7 +189,8 @@ public class BlessData {
 				double benchmarkChannel2Rate,
 				double benchmarkChannel3Rate,
 				double benchmarkChannel4Rate,
-				double benchmarkTriggerRate) {
+				double benchmarkTriggerRate,
+				boolean benchmarked) {
 			this.channel1Rate = channel1Rate; 
 			this.channel2Rate = channel2Rate; 
 			this.channel3Rate = channel3Rate; 
@@ -207,6 +214,7 @@ public class BlessData {
 			this.benchmarkChannel3Rate = benchmarkChannel3Rate;
 			this.benchmarkChannel4Rate = benchmarkChannel4Rate;
 			this.benchmarkTriggerRate = benchmarkTriggerRate;		
+			this.benchmarked = benchmarked;
 		}
 
 		public double getBenchmarkChannel1Rate() {
@@ -283,6 +291,10 @@ public class BlessData {
 		
 		public int getGpsSatellitesVisible() {
 			return gpsSatellitesVisible; 
+		}
+		
+		public boolean isBenchmarked() {
+			return benchmarked;
 		}
 		
 	}
