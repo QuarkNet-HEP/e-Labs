@@ -21,10 +21,7 @@ function showCharts(filename, path){
 	highlightRow(ts, filename);
 	var radios = document.getElementsByClassName("selectBenchmark");
 	selectRadioRow(radios, filename);
-	//var arrows = document.getElementsByTagName("label");
-	//showArrow(arrows, filename);
 	$.ajax({
-		//url: "../analysis-blessing/get-data.jsp?file="+filename,
 		url: path+filename,
 		processData: false,
 		dataType: "json",
@@ -92,8 +89,9 @@ function addBenchmarkFiles(detector, fromDateObject, toDateObject) {
 		var fromDate = document.getElementById(fromDateObject);
 		var toDate = document.getElementById(toDateObject);
 		var params = 'dialogWidth:1000px;dialogHeight:750px;dialogTop:10px;dialogLeft:150px';
-		var newwindow = window.showModalDialog("benchmark-add.jsp?detector="+detector+"&fromDate="+fromDate.value+"&toDate="+toDate.value, "addBenchmark", params);		
-        //window.location.href = "benchmark-add.jsp?detector="+detector+"&fromDate="+fromDate.value+"&toDate="+toDate.value;
+		//var newwindow = window.showModalDialog("benchmark-add.jsp?detector="+detector+"&fromDate="+fromDate.value+"&toDate="+toDate.value, "addBenchmark", params);	
+		var newwindow = window.open("benchmark-add.jsp?detector="+detector+"&fromDate="+fromDate.value+"&toDate="+toDate.value, "addBenchmark", params);	
+		newwindow.focus();
 	} else {
 		var messages = document.getElementById("messages");
 		messages.innerHTML = "<i>* Choose a detector first.</i>"		
@@ -145,7 +143,6 @@ function deleteUnbless() {
 }//end of deleteUnbless
 
 $("html").keyup( function(keyEvent) {
-	//tab = 9, keydown= 40
     if (keyEvent.keyCode == 40) {
         var $nextDiv;
         if ($currentDiv.next().size() == 0) {
@@ -161,7 +158,6 @@ $("html").keyup( function(keyEvent) {
 
         $currentDiv = $nextDiv;
     }
-	//tab back= shiftKey, keyup= 38
     else if (keyEvent.keyCode == 38) {
         var $previousDiv;
         if ($currentDiv.prev().size() == 0) {
