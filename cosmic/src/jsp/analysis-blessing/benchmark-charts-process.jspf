@@ -39,7 +39,7 @@
 					 	<td><div id ="benchmarkTriggerChart1" style="width:280px; height:130px;"></div></td>
 					 	<td style="text-align: left; vertical-align: top;">
 					 		<ul>
-					 			<li><strong>Black line:</strong> benchmark</li>
+					 			<li><strong>Darker straight line:</strong> benchmark</li>
 					 			<li><strong>Dark dots:</strong> channel & trigger rates</li>
 					 			<li><strong>Light dots:</strong> channel & trigger errors</li>
 					 		</ul>
