@@ -223,7 +223,6 @@ public class ImportData extends AbstractDataTool {
 
     private void convertFile(final LIGOFile f) throws Exception {
         System.out.print("Processing " + f.file.getName() + "...");
-        long time = fileGPSTime(f.file);
         String tmpprefix;
         try {
             tmpprefix = getFrameDataDump2Dir(f);
@@ -294,18 +293,18 @@ public class ImportData extends AbstractDataTool {
                 return null;
             }
         }
-        long starttime = fileGPSTime(f.file);
-        int len = TREND_FILE_DURATION[f.trend];
+        long starttime = f.getFileGPSTime();
+        int len = f.getFileDurationInSeconds();
         try {
             if (!rangeCovered(starttime, len, channel)) {
-                data = readFrameDataDump(f.file, rmsbin, rmstxt, meanbin, meantxt, channel);
+                data = readFrameDataDump(f, rmsbin, rmstxt, meanbin, meantxt, channel);
             }
             if (data != null) {
                 // the -0.000001 is there as an implementation of
                 // maxtime representing an open interval
                 // which is necessary because the data in the db represents
                 // an open interval
-                maxtime.put(channel, Math.max(starttime + len - 0.0000001, maxtime.get(channel)));
+                maxtime.put(channel, Math.max(starttime + len - 0.00001, maxtime.get(channel)));
             }
         }
         finally {
