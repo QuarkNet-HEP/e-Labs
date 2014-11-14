@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -35,12 +36,12 @@ public abstract class AbstractDataTool {
     public static final int SITE_LHO = 0;
     public static final int SITE_LLO = 1;
     
-    public static final int SECOND_TREND = 0; 
-    public static final int MINUTE_TREND = 1; 
+    public static final int SECOND_TREND = 0;
+    public static final int MINUTE_TREND = 1;
 
     public static final String[] SITES = new String[] { "LHO", "LLO" };
     public static final String[] TRENDS = new String[] { "second-trend", "minute-trend" };
-    public static final int[] TREND_FILE_DURATION = new int[] { 60, 3600 };
+    public static final Integer[][] TREND_FILE_DURATION = new Integer[][] {{60, 600}, {3600}};
     public static final String LIGO_FILE_EXTENSION = ".gwf";
 
     public static final Set<String> DIR_NAME_START = new HashSet<String>() {
@@ -182,17 +183,14 @@ public abstract class AbstractDataTool {
     }
 
     protected void checkDuration(File file, int trend) {
-        if (!file.getName().endsWith("-" + TREND_FILE_DURATION[trend] + ".gwf")) {
-        	//EP-patch added to test the transition from 60 to 600 in the second duration
-        	if (trend == 0) {
-        		//if (!file.getName().endsWith("-600.gwf")) {
-    	            throw new RuntimeException("File duration does not match expected 600 for " + file + ". Bailing out.");        			
-        		//}
-        	} else {
-	            throw new RuntimeException("File duration does not match expected (" + TREND_FILE_DURATION[trend]
-	                    + ") for " + file + ". Bailing out.");
-        	}
+        Integer[] allowed = TREND_FILE_DURATION[trend];
+        for (int i = 0; i < allowed.length; i++) {
+            if (file.getName().endsWith("-" + allowed[i] + ".gwf")) {
+                return;
+            }
         }
+        throw new RuntimeException("File duration does not match expected (" + 
+                Arrays.asList(allowed) + ") for " + file + ". Bailing out.");
     }
 
     public static final NumberFormat NF = new DecimalFormat("0.000");
@@ -276,34 +274,22 @@ public abstract class AbstractDataTool {
         return l;
     }
 
-    public static final Pattern RE_FILE_GPS_TIME = Pattern.compile("[H|L]-[T|M]-(\\d+)-\\d+.gwf");
-
-    protected long fileGPSTime(File file) {
-        Matcher m = RE_FILE_GPS_TIME.matcher(file.getName());
-        if (m.matches()) {
-            return Long.parseLong(m.group(1));
-        }
-        else {
-            throw new RuntimeException("File does not match expected pattern: " + file);
-        }
-    }
-
     private File lastBrokenFile = null;
 
-    protected DataReader<?, ?> readFrameDataDump(File f, File rmsbin, File rmstxt, File meanbin, File meantxt,
+    protected DataReader<?, ?> readFrameDataDump(LIGOFile f, File rmsbin, File rmstxt, File meanbin, File meantxt,
             ChannelName channel) throws IOException {
         String[] info = checkFrDumpOutput(read(rmstxt), types.get(channel), TYPE_SIZES.get(types.get(channel)));
         checkFrDumpOutput(read(meantxt), types.get(channel), TYPE_SIZES.get(types.get(channel)));
         double starttime = Double.parseDouble(info[0]);
         if (starttime <= getMaxTime(channel)) {
-            long filetime = fileGPSTime(f);
+            long filetime = f.getFileGPSTime();
             if (starttime < filetime) {
-                if (f != lastBrokenFile) {
-                    error("Broken file " + f + ". File name suggests a start time of " + filetime
+                if (f.file != lastBrokenFile) {
+                    error("Broken file " + f.file + ". File name suggests a start time of " + filetime
                             + " and FrDump says it's " + starttime + ". Assuming file time is correct.");
                 }
                 starttime = filetime;
-                lastBrokenFile = f;
+                lastBrokenFile = f.file;
             }
             else {
                 throw new RuntimeException(f + " time out of range. Dump reports " + starttime + " which is <= "
