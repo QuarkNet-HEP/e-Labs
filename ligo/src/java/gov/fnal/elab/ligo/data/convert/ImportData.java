@@ -223,7 +223,6 @@ public class ImportData extends AbstractDataTool {
 
     private void convertFile(final LIGOFile f) throws Exception {
         System.out.print("Processing " + f.file.getName() + "...");
-        long time = fileGPSTime(f.file);
         String tmpprefix;
         try {
             tmpprefix = getFrameDataDump2Dir(f);
@@ -294,25 +293,17 @@ public class ImportData extends AbstractDataTool {
                 return null;
             }
         }
-        long starttime = fileGPSTime(f.file);
-        int len = TREND_FILE_DURATION[f.trend];
+        long starttime = f.getFileGPSTime();
+        int len = f.getFileDurationInSeconds();
         try {
             if (!rangeCovered(starttime, len, channel)) {
-                data = readFrameDataDump(f.file, rmsbin, rmstxt, meanbin, meantxt, channel);
+                data = readFrameDataDump(f, rmsbin, rmstxt, meanbin, meantxt, channel);
             }
             if (data != null) {
                 // the -0.000001 is there as an implementation of
                 // maxtime representing an open interval
                 // which is necessary because the data in the db represents
                 // an open interval
-                
-                // The -0.0000001 (above value is wrong) turned out to be an unfortunate choice. 
-                // At some point in time the large value of the time and the limited precision of 
-                // the data meant that the small difference would not fit a double. The fact that 
-                // it worked two years ago but broke now is the funny part, since it means that 
-                // the delta was stored just about at the last part in a double. 
-                // Anyway, changed to 10 us. Should be good for as long as a 10 digit GPS time is good,
-                // and more.
                 maxtime.put(channel, Math.max(starttime + len - 0.00001, maxtime.get(channel)));
             }
         }
