@@ -124,7 +124,7 @@
 
             if (password.length() < 6) { // Why not everybody? -EAM 10Jun2009 
             		                     // only teachers have access to the password change page
-            	redirect = "small-password.jsp?prevPage=" + URLEncoder.encode(prevPage);
+            	redirect = "small-password.jsp?prevPage=" + prevPage;
             }
         }  
         Cookie authenticationCookie = new Cookie("auth",  authenticator);

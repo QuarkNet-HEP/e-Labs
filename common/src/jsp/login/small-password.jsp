@@ -8,6 +8,9 @@ if(prevPage == null) {
 	prevPage = elab.getProperties().getLoggedInHomePage();
 }
 ElabGroup user = (ElabGroup) request.getAttribute("user");
+prevPage = URLDecoder.decode(prevPage);
+request.setAttribute("prevPage",prevPage);
+
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -50,13 +53,13 @@ ElabGroup user = (ElabGroup) request.getAttribute("user");
 				
 				<form method="post" action="../teacher/update-groups.jsp">
 					<input type="hidden" name="chooseGroup" value="<%=user.getName()%>" />
-					<input type="hidden" name="prevPage" value="<%=prevPage%>" />
+					<input type="hidden" name="prevPage" value="${prevPage}" />
 					<button type="submit" name="submit" value="Show Group Info">
 						Click here to change your password
 					</button>
 				</form> 
 				
-				<p><a href="<%=URLDecoder.decode(prevPage)%>">Click here to continue on into the e-lab.</a></p>
+				<p><a href="${prevPage}">Click here to continue on into the e-lab.</a></p>
 			</div>
 		</td>
 		<td>
