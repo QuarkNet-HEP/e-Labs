@@ -140,9 +140,9 @@ redrawPlotY = function(newY, chart, type)
 			break;
 		case ("pressure"):
 			if (type == "min") {
-				presOptions.yaxis.min = newY;
+				pressOptions.yaxis.min = newY;
 			} else {
-				presOptions.yaxis.max = newY;
+				pressOptions.yaxis.max = newY;
 			}
 //			pressPlot = $.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: pressuredata.ylabel + ' (' + pressuredata.unit + ')'} ]}));
 			pressPlot = $.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
@@ -193,8 +193,8 @@ resetPlotY = function(chart, objectIdYMin, objectIdYMax)
 			writeLegend(tempPlot.getCanvas(), "Temperature (\u00b0 C)", 325, 250);
 			break;
 		case ("pressure"):
-			presOptions.yaxis.min = originalPressYMin;
-			presOptions.yaxis.max = originalPressYMax;
+			pressOptions.yaxis.min = originalPressYMin;
+			pressOptions.yaxis.max = originalPressYMax;
 //			pressPlot = $.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: pressuredata.ylabel + ' (' + pressuredata.unit + ')'} ]}));
 			pressPlot = $.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
 			writeLegend(pressPlot.getCanvas(), "Pressure (mb)", 325, 250);
