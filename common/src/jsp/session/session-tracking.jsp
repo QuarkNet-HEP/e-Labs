@@ -26,7 +26,7 @@
 		HttpSession s = (HttpSession) activeSessions.get(i);
 		StringBuilder sb = new StringBuilder();
 	    //start building session details
-	    sb.append("<strong>Session ID:</strong> " + s.getId() + "<br />");
+	    //sb.append("<strong>Session ID:</strong> " + s.getId() + "<br />");
 		//get user
 	    ElabGroup eu = (ElabGroup) s.getAttribute("elab.user");
 		Elab e = (Elab) s.getAttribute("elab");
@@ -111,12 +111,10 @@
 				<h2>Total Active Sessions: ${sessionCount}</h2>
 	    	   <table style="border: 1px solid black; cell-padding: 15px;">
 	    	   		<tr>
-	    	   			<th style="vertical-align: top; border: 1px dotted gray;">Session Id</th>
 	    	   			<th style="vertical-align: top; border: 1px dotted gray;">Details</th>
 	    	   		</tr>
 	    	   		<c:forEach items="${sessionDetails}" var="sessionDetails">
 	    	   			<tr>
-	    	   				<td style="vertical-align: top; border: 1px dotted gray;">${sessionDetails.key }</td>
 	    	   				<td style="vertical-align: top; border: 1px dotted gray;">${sessionDetails.value }</td>
 	    	   			</tr>
 	    	   		</c:forEach>
