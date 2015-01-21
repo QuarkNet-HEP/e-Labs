@@ -41,7 +41,7 @@
 						<td>Delete notifications with expiration dates older than 30 days ago.</td>					
 					</tr>
 					<tr>
-						<td>&#8226; <a href="../references/control.jsp"> FAQs Add/Update</a></td>
+						<td>&#8226; <a href="../references/control.jsp">FAQs Add/Update</a></td>
 						<td>Add, update FAQ items.</td>					
 					</tr>					
 					<tr>
@@ -79,8 +79,8 @@
 							<td>Create individual threshold times files if they failed to be created at upload time.</td>
 						</tr>
 						<tr>
-							<td>&#8226; <a href="../analysis-blessing/benchmark-process-rerun.jsp">Rerun unblessed files by selected benchmark</a></td>
-							<td>Try bless unblessed files by using the same benchmark.</td>
+							<td>&#8226; <a href="../analysis-blessing/benchmark-process-rerun-from-input.jsp">Rerun blessing process</a></td>
+							<td>Rerun blessing files by using the same benchmark.</td>
 						</tr>
 						<tr>
 							<td>&#8226; <a href="../analysis/list-all.jsp">View all analyses</a></td>
@@ -99,6 +99,10 @@
 						<tr>
 							<td>&#8226; <a href="../analysis-blessing/benchmark-info.jsp">View upload plus benchmark information</a></td>
 							<td>View split files and their blessed/unblessed status details.</td>
+						</tr>
+						<tr>
+							<td>&#8226; <a href="../documentation/cosmic-documents.jsp">View Cosmic Documentation</a></td>
+							<td>Details of analysis and processes for the Cosmic Elab.</td>
 						</tr>
 					</c:if>				
 				</table>

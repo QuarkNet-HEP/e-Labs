@@ -1,0 +1,20 @@
+<strong>Replacement of Blessfiles (that were created before Sept 14 2014).</strong>
+&#8226; Description:
+We needed to replace the blessfiles because we added precision for calculating and storing the channels, triggers and errors.
+&#8226; Steps:
+1 - Ran queries through the database to retrieve the following:
+&emsp;. all blessfiles that needed to be recreated and their source file
+&emsp;. all the source files needed so they can be copied to data2 and unzipped
+&emsp;. a list of the source files in the order they were uploaded
+2 - Wrote a python program that:
+&emsp;. read the input file with the source files
+&emsp;. launched Split.pl with the input files one at a time
+&emsp;&emsp;- Split's output:
+&emsp;&emsp;&emsp;split files that we discarded
+&emsp;&emsp;&emsp;blessfiles
+&emsp;&emsp;&emsp;a meta file with data about all the splits
+3 - Analyzed resulting files after the python program finished processing all source files.
+&emsp;.Wrote python tools that read the meta files and compared relevant the following relevant fields: 
+&emsp; (startdate, enddate, chan1, chan2, chan3, chan4, triggers and blessfile name)
+&emsp;.Also, wrote a python tool to compare the new blessfile to the existing blessfile for data problems.
+
