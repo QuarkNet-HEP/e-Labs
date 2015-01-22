@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 function askdb($q){
-	$con=mysqli_connect("localhost","root","","Masterclass");
+	$con=mysqli_connect("localhost","root","4319Mellon","Masterclass");
 	if (mysqli_connect_errno($con))
  	{
  	echo "Failed to connect to MySQL: " . mysqli_connect_error();
