@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/repos/ms217045_MasterClass/!svn/ver/1/AA
+END
+test.php
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/repos/ms217045_MasterClass/!svn/ver/1/AA/test.php
+END
+.htaccess
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/repos/ms217045_MasterClass/!svn/ver/1/AA/.htaccess
+END
