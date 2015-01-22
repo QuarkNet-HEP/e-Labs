@@ -1,0 +1,101 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/repos/ms217045_MasterClass/!svn/ver/1/templates
+END
+Resnav.tpl
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/repos/ms217045_MasterClass/!svn/ver/1/templates/Resnav.tpl
+END
+auth.tpl
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/repos/ms217045_MasterClass/!svn/ver/1/templates/auth.tpl
+END
+results.tpl
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/repos/ms217045_MasterClass/!svn/ver/23/templates/results.tpl
+END
+hist.tpl
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/repos/ms217045_MasterClass/!svn/ver/23/templates/hist.tpl
+END
+navbar.tpl
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/repos/ms217045_MasterClass/!svn/ver/34/templates/navbar.tpl
+END
+GetNext.tpl
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/repos/ms217045_MasterClass/!svn/ver/10/templates/GetNext.tpl
+END
+histBackend.tpl
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/repos/ms217045_MasterClass/!svn/ver/27/templates/histBackend.tpl
+END
+floor.tpl
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/repos/ms217045_MasterClass/!svn/ver/1/templates/floor.tpl
+END
+AA.tpl
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/repos/ms217045_MasterClass/!svn/ver/28/templates/AA.tpl
+END
+results2.tpl
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/repos/ms217045_MasterClass/!svn/ver/1/templates/results2.tpl
+END
+McEvents.tpl
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/repos/ms217045_MasterClass/!svn/ver/1/templates/McEvents.tpl
+END
+MCEvents.tpl
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/repos/ms217045_MasterClass/!svn/ver/21/templates/MCEvents.tpl
+END
+done.tpl
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/repos/ms217045_MasterClass/!svn/ver/3/templates/done.tpl
+END
+table.tpl
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/repos/ms217045_MasterClass/!svn/ver/21/templates/table.tpl
+END
+header.tpl
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/repos/ms217045_MasterClass/!svn/ver/21/templates/header.tpl
+END
+front.tpl
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/repos/ms217045_MasterClass/!svn/ver/30/templates/front.tpl
+END
