@@ -1,0 +1,280 @@
+body.black {
+  background-color: black;
+}
+
+body.white {
+  background-color: white;
+}
+
+#stats {
+  position: absolute;
+  top:0;
+  left: 0;
+}
+
+#axes  {
+  border: none;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
+  background-color: transparent;
+}
+
+#event-info {
+  position: absolute;
+  top:0;
+  left:0;
+  padding-top: 10px;
+  padding-left: 10px;
+  display: block;
+}
+
+#event-info.black {
+  color: white;
+}
+
+#event-info.white {
+  color: black;
+}
+
+.bordered {
+  border: thin solid gray;
+}
+
+#titlebar {
+  height: 25px;
+}
+
+#titlebar.black {
+  color: white;
+  background-color: black;
+}
+
+#titlebar.white {
+  color: black;
+  background-color: white;
+}
+
+#toolbar {
+  float: left;
+}
+
+#toolbar.black {
+  color: white;
+  background-color: black;
+}
+
+#toolbar.white {
+  color: black;
+  background-color: white;
+}
+
+#toolbar img {
+  width: 20px;
+  height: 20px;
+}
+
+#toolbar .button-toolbar {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.btn {
+  background-color: #dfdfdf;
+}
+
+#treeview {
+  height: 500px;
+  overflow: scroll;
+}
+
+#treeview.black .table-hover tr:hover {
+  background-color: #777;
+}
+
+#treeview.white .table-hover tr:hover {
+  background-color: #dfdfdf;
+}
+
+#treeview.black {
+  color: white;
+  background-color: black;
+}
+
+#treeview.white {
+  color: black;
+  background-color: white;
+}
+
+#treeview .group {
+  border-top: 1px solid black;
+  background-color: #202020;
+  color: white;
+}
+
+#treeview .group.black {
+  border-top: 1px solid black;
+  background-color: #202020;
+  color: white;
+}
+
+#treeview .group.white {
+  border-top: 1px solid white;
+  background-color: #cccccc;
+  color: black;
+}
+
+#treeview .collection {
+  border-top: 0px;
+  color: white;
+}
+
+#treeview td.collection.black {
+  color: white;
+}
+
+#treeview td.collection.white {
+  color: black;
+}
+
+#treeview .info {
+  color: red;
+}
+
+#treeview .expand {
+  color: grey;
+  padding-right: 5px;
+}
+
+#display {
+  height: 500px;
+  overflow: hidden;
+  padding: 0;
+}
+
+#display.black {
+  color: white;
+  background-color: black;
+}
+
+#display.white {
+  color: black;
+  background-color: white;
+}
+
+#tableview {
+  height: 140px;
+  overflow: scroll;
+}
+
+#tableview.black {
+  color: white;
+  background-color: black;
+}
+
+#tableview.white {
+  color: black;
+  background-color: white;
+}
+
+.modal-dialog button.close {
+  color: red;
+  text-shadow: none;
+  opacity: 1.0;
+}
+
+.modal-content.black {
+  color: white;
+  background-color: black;
+}
+
+.modal-content.white {
+  color: black;
+  background-color: white;
+}
+
+.modal-content div {
+  border: 0;
+}
+
+#progress .modal-content {
+  width: 50%;
+  text-align: center;
+}
+
+#browser-events td.black {
+  background-color: #303030;
+}
+
+#browser-events td.white {
+  background-color: white;
+}
+
+.modal-title.black {
+  background-color: #202020;
+}
+
+.modal-title.white {
+  background-color: #cccccc;
+}
+
+#files .modal-body {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
+#selected-event {
+  border: 1px solid #ccc;
+  width: 100%;
+  text-align: left;
+  padding-left: 20px;
+}
+
+#event-buttons {
+  padding-top: 10px;
+}
+
+#browser-table.white {
+  background-color: white;
+  color: black;
+}
+
+#browser-table.black {
+  background-color: black;
+  color: white;
+}
+
+#browser-table th.black {
+  background-color: #202020;
+  color: white;
+}
+
+#browser-table th.white {
+  background-color: #cccccc;
+  color: black;
+}
+
+#browser-table.black td {
+  background-color: #303030;
+}
+
+#browser-table.white td {
+  background-color: white;
+}
+
+#browser-table.black td > a {
+  color: white;
+}
+
+#browser-table.white td > a {
+  color: black;
+}
+
+#browser-files td {
+  border: 0;
+}
+
+#browser-events td {
+  border: 0;
+}
