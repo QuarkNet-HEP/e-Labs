@@ -1,21 +1,21 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+$username = "cima@www13.i2u2.org";
+$password = "cima@us3r";
+$hostname = "data1.i2u2.org";
 
 function askdb($q){
-	$con=mysqli_connect("localhost","root","4319Mellon","Masterclass");
-	if (mysqli_connect_errno($con))
- 	{
- 	echo "Failed to connect to MySQL: " . mysqli_connect_error();
-	}
-	$res=$con->query($q);
+	$dbhandle = mysql_connect($hostname, $username, $password) or die("Unable to connect to MySQL");
+	echo "Connected to MySQL<br>";
+	$res=mysql_query($q);
 	return $res;
 }
 
 function GetFreeEvents($group,$table){
 	$q="SELECT o_no FROM Events WHERE g_no=".$group." AND NOT o_no IN (SELECT o_no FROM `".$table."` WHERE g_no=".$group.")";
 	$res=askdb($q);
-	while($obj=$res->fetch_object()){ 
+	while($obj= mysql_fetch_array($res)){ 
 		$result[]=$obj->o_no;
 	}
 	if(isset($result)){
@@ -50,7 +50,7 @@ function RemoveTablesFromEvent($tables,$eventID){
 function GetAllEvents($table){
 	$q="SELECT * from `".$table."`";
 	$res=askdb($q);
-	while($obj=$res->fetch_object()){ 
+	while($obj= mysql_fetch_array($res)){ 
 			$temp["id"]=$obj->o_no;
 			$temp["checked"]=$obj->checked;
 			$result[]=$temp;
@@ -64,7 +64,7 @@ function GetAllEvents($table){
 function GetEvents($group,$table){
 	$q="SELECT `".$table."`.o_no, `".$table."`.checked, Events.mass, Events.ev_no FROM `".$table."` INNER JOIN Events WHERE `".$table."`.o_no IN (SELECT o_no FROM Events WHERE g_no=".$group.") AND `".$table."`.o_no=Events.o_no ORDER BY `".$table."`.o_no";
 	$res=askdb($q);
-	while($obj=$res->fetch_object()){ 
+	while($obj= mysql_fetch_array($res)){ 
 			$temp["id"]=$obj->o_no;
 			$temp["checked"]=$obj->checked;
 			$temp["mass"]=$obj->mass;
@@ -79,7 +79,7 @@ function GetEvent($o_no){
 	$q="SELECT * FROM Events WHERE o_no=".$o_no;
 	
 	$res=askdb($q);
-	if($obj = $res->fetch_object()){
+	if($obj= mysql_fetch_array($res)){ 
 		$result["id"]=$obj->o_no;
 		$result["ev"]=$obj->ev_no;
 		$result["g"]=$obj->g_no;
@@ -110,7 +110,7 @@ function GetNext($finEvents,$g_no){
 		$q="SELECT * from Events WHERE g_no=".$g_no." AND o_no=".((($g_no-1)*100)+1);
 	}
 	$res=askdb($q);
-	if($obj = $res->fetch_object()){
+	if($obj= mysql_fetch_array($res)){ 
 		$result["id"]=$obj->o_no;
 		$result["ev"]=$obj->ev_no;
 		$result["g"]=$obj->g_no;
@@ -126,7 +126,7 @@ function GetNext($finEvents,$g_no){
 function WriteEntry($table,$o_no,$checked){
 	$q="SELECT o_no FROM ".$table." WHERE o_no=".$o_no;
 	$res=askdb($q);
-	if(!$res->fetch_object()){
+	if($obj= mysql_fetch_array($res)){ 
 		$q="INSERT into ".$table." (o_no,checked) VALUES (".$o_no.",'".$checked."')";
 		askdb($q);
 	}
@@ -140,7 +140,7 @@ function DelRow($id,$table){
 function DeleteTable($tableid){
 	$q="SELECT hist,name FROM Tables WHERE id=".$tableid;
 	$res=askdb($q);
-	if($obj = $res->fetch_object()){ 
+	if($obj= mysql_fetch_array($res)){ 
 		$histid=$obj->hist;
 		$name=$obj->name;
 	}
@@ -174,7 +174,7 @@ function DeleteMClassEvent($MClassid){
 function GetAllTables(){
 	$q="SELECT * from Tables";
 	$res=askdb($q);
-	while($obj = $res->fetch_object()){ 
+	while($obj= mysql_fetch_array($res)){ 
 		$temp["hist"]=$obj->hist;
 		$temp["name"]=$obj->name;
 		$temp["active"]=$obj->active;
@@ -206,7 +206,7 @@ function AddGroupsToTable($tableid,$Groups,$PostAdded=0){
 				for($i=0;$i<count($Groups);$i++){
 					$q="SELECT * FROM TableGroups WHERE tableid=".$tableid." AND g_no=".$Groups[$i];
 					$res=askdb($q);
-					if(!$res->fetch_object()){
+					if(!mysql_fetch_array($res)){
 						$q="INSERT INTO TableGroups (g_no,tableid,postAdded) VALUES (".$Groups[$i].", ".$tableid.", $PostAdded)";
 						askdb($q);
 					}
@@ -214,7 +214,7 @@ function AddGroupsToTable($tableid,$Groups,$PostAdded=0){
 			}else{
 				$q="SELECT * FROM TableGroups WHERE tableid=".$tableid." AND g_no=".$Groups;
 				$res=askdb($q);
-				if(!$res->fetch_object()){
+				if(!mysql_fetch_array($res)){
 					$q="INSERT INTO TableGroups (g_no,tableid,postAdded) VALUES (".$Groups.", ".$tableid.", $PostAdded)";
 					askdb($q);
 				}
@@ -246,7 +246,7 @@ function DelGroupsFromTables($tables,$groups){
 function CreateTable($name,$Groups){
 	$q="SELECT name from Tables WHERE name='".$name."'";
 	$res=askdb($q);
-	if(!$res->fetch_object()){
+	if(!mysql_fetch_array($res)){
 		$q="CREATE TABLE `".$name."` (o_no INT, checked VARCHAR(20));";
 		askdb($q);
 
@@ -254,7 +254,8 @@ function CreateTable($name,$Groups){
 	
 		$q="SELECT MAX(id) AS id FROM histograms";
 		$res=askdb($q);
-		$histid=$res->fetch_object()->id;
+		$obj=mysql_fetch_array($res)
+		$histid=$obj->id;
 		
 		$q="INSERT INTO Tables (name,hist) VALUES ('".$name."', ".$histid.")";
 		askdb($q);
@@ -262,7 +263,8 @@ function CreateTable($name,$Groups){
 		$q="SELECT MAX(id) AS id FROM Tables";
 
 		$res=askdb($q);
-		$tableid=$res->fetch_object()->id;
+		$obj=mysql_fetch_array($res)
+		$tableid=$obj->id;
 		AddGroupsToTable($tableid,$Groups);
 		return $tableid;
 	}
@@ -272,7 +274,7 @@ function CreateTable($name,$Groups){
 function GetMCEvents(){
 	$q="SELECT * FROM MclassEvents WHERE 1";
 	$res=askdb($q);
-	while($obj = $res->fetch_object()){ 
+	while($obj= mysql_fetch_array($res)){ 
 		$temp["id"]=$obj->id;
 		$temp["name"]=$obj->name;
 		$temp["active"]=$obj->active;
@@ -286,7 +288,7 @@ function GetMCEvents(){
 function GetTableByID($tableid){
 	$q="SELECT * FROM Tables WHERE id=".$tableid;
 	$res=askdb($q);
-	if($obj = $res->fetch_object()){ 
+	if($obj= mysql_fetch_array($res)){ 
 		$result["id"]=$obj->id;
 		$result["name"]=$obj->name;
 	}
@@ -299,7 +301,7 @@ function GetTableByID($tableid){
 function GetHistDataForTable($tname){
 	$q="SELECT id,data FROM histograms WHERE id=(SELECT hist FROM Tables WHERE name='".$tname."')";
 	$res=askdb($q);
-	if($obj = $res->fetch_object()){ 
+	if($obj= mysql_fetch_array($res)){ 
 		$result["id"]=$obj->id;
 		$result["data"]=$obj->data;
 	}
@@ -314,7 +316,7 @@ function UpData($data,$id){
 function CreateEvent($name){
 	$q="SELECT * FROM MclassEvents WHERE name='".$name."'";
 	$res=askdb($q);
-	if($obj = $res->fetch_object()){ 
+	if($obj= mysql_fetch_array($res)){ 
 		$test=$obj->name;
 	}
 	if(!isset($test)){
@@ -328,7 +330,7 @@ function CreateEvent($name){
 function GetLastEvent(){
 	$q="SELECT MAX(id) AS id FROM MclassEvents";
 	$res=askdb($q);
-	if($obj = $res->fetch_object()){
+	if($obj= mysql_fetch_array($res)){
 		return GetMClassEvent($obj->id);
 	}
 }
@@ -336,7 +338,7 @@ function GetLastEvent(){
 function GetMClassEvent($id){
 	$q="SELECT * FROM MclassEvents WHERE id='".$id."'";
 	$res=askdb($q);
-	if($obj = $res->fetch_object()){ 
+	if($obj= mysql_fetch_array($res)){ 
 		$result["name"]=$obj->name;
 		$result["id"]=$obj->id;
 		$result["active"]=$obj->active;
@@ -351,7 +353,7 @@ function GetMClassEvent($id){
 function GetTables($event){
 	$q="SELECT * From Tables Where id IN (SELECT tableid FROM EventTables WHERE MclassEventID='".$event."')";
 	$res=askdb($q);	
-	while($obj = $res->fetch_object()){ 
+	while($obj= mysql_fetch_array($res)){ 
 		$temp["id"]=$obj->id;
 		$temp["name"]=$obj->name;
 		$result[]=$temp;
@@ -380,7 +382,7 @@ function GetGroups($Tables){
 		}
 		$q=$q." ORDER BY g_no";
 		$res=askdb($q);
-		while($obj = $res->fetch_object()){ 
+		while($obj= mysql_fetch_array($res)){ 
 			$temp["g_no"]=$obj->g_no;
 			$temp["postAdded"]=$obj->postAdded;
 			$result[]=$temp;
@@ -395,7 +397,7 @@ function GetGroups($Tables){
 function GetIndTables(){
 	$q="SELECT * FROM Tables WHERE NOT id IN (SELECT tableid FROM EventTables WHERE 1)";
 	$res=askdb($q);
-	while($obj = $res->fetch_object()){ 
+	while($obj= mysql_fetch_array($res)){ 
 		$temp["id"]=$obj->id;
 		$temp["name"]=$obj->name;
 		$result[]=$temp;
@@ -421,7 +423,7 @@ function GetFreeTables($event,$boundGroups,$overlab){
 		}
 	}
 	$res=askdb($q);	
-	while($obj = $res->fetch_object()){ 
+	while($obj= mysql_fetch_array($res)){ 
 		$temp["id"]=$obj->id;
 		$temp["name"]=$obj->name;
 		$result[]=$temp;
@@ -438,7 +440,7 @@ function GetFreeGroups($boundGroups,$overlab){
 		$q="SELECT DISTINCT g_no from Events WHERE 1";
 	}
 	$res=askdb($q);
-	while($obj = $res->fetch_object()){ 
+	while($obj= mysql_fetch_array($res)){ 
 		$result[]=$obj->g_no;
 	}
 	if(isset($result)){
@@ -455,7 +457,7 @@ function connectGroups($tableid,$gstd,$gbackup){
 function GetConnection($tableid,$group){
 	$q="SELECT gbackup FROM groupConnect WHERE tableid=".$tableid." AND gstd=".$group;
 	$res=askdb($q);
-	if($obj = $res->fetch_object()){ 
+	if($obj= mysql_fetch_array($res)){ 
 		$result=$obj->gbackup;
 	}
 	if(isset($result)){
@@ -468,7 +470,7 @@ function isbackup($tableid,$groupid){
 	$q="SELECT postAdded FROM TableGroups WHERE tableid=".$tableid." AND g_no=".$groupid;
 	print($q);
 	$res=askdb($q);
-	if($obj = $res->fetch_object()){ 
+	if($obj= mysql_fetch_array($res)){ 
 		$result=$obj->postAdded;
 	}
 	if(isset($result)&&$result==1){
