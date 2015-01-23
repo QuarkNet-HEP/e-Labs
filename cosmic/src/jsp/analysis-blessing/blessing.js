@@ -57,10 +57,10 @@ redrawPlotX = function(newX, type)
 	//tempPlot = $.plot($("#tempChart"), [temperaturedata],$.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: temperaturedata.ylabel + ' (' + temperaturedata.unit + ')'} ]}));
 	//pressPlot = $.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: pressuredata.ylabel + ' (' + pressuredata.unit + ')'} ]}));		
 	trigPlot = $.plot($("#triggerChart"), trigger,$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
-	satPlot = $.plot($("#satChart"), [ json.satellites ],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
-	voltPlot = $.plot($("#voltChart"), [ json.voltage ], $.extend({}, voltOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
-	tempPlot = $.plot($("#tempChart"), [ json.temperature], $.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
-	pressPlot = $.plot($("#pressureChart"), [ json.pressure ], $.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
+	satPlot = $.plot($("#satChart"), [ satellitedata ],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
+	voltPlot = $.plot($("#voltChart"), [ voltagedata ], $.extend({}, voltOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
+	tempPlot = $.plot($("#tempChart"), [ temperaturedata ], $.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
+	pressPlot = $.plot($("#pressureChart"), [ pressuredata ], $.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
 	writeLegends();
 }
 
@@ -79,10 +79,10 @@ resetPlotX = function(objectIdXMin, objectIdXMax)
 	//tempPlot = $.plot($("#tempChart"), [temperaturedata],$.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: temperaturedata.ylabel + ' (' + temperaturedata.unit + ')'} ]}));
 	//pressPlot = $.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: pressuredata.ylabel + ' (' + pressuredata.unit + ')'} ]}));		
 	trigPlot = $.plot($("#triggerChart"), trigger,$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
-	satPlot = $.plot($("#satChart"), [ json.satellites ],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
-	voltPlot = $.plot($("#voltChart"), [ json.voltage ], $.extend({}, voltOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
-	tempPlot = $.plot($("#tempChart"), [ json.temperature], $.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
-	pressPlot = $.plot($("#pressureChart"), [ json.pressure ], $.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
+	satPlot = $.plot($("#satChart"), [ satellitedata ],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
+	voltPlot = $.plot($("#voltChart"), [ voltagedata ], $.extend({}, voltOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
+	tempPlot = $.plot($("#tempChart"), [ temperaturedata ], $.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
+	pressPlot = $.plot($("#pressureChart"), [ pressuredata ], $.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
 	writeLegends();
 }
 redrawPlotY = function(newY, chart, type)
@@ -554,7 +554,10 @@ function onDataLoad2(json) {
 	if (json.isBenchmarked) {
 		trigger.push(benchmarkTriggerdata);
 	}
-	
+	satellitedata = "";
+	voltagedata = "";
+	temperaturedata = "";
+	pressuredata = "";	
 	onOffPlot = $.plot($("#benchmarkChannelChart"), data, $.extend({}, benchmarkChanOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
 	//trigPlot = $.plot($("#benchmarkTriggerChart"), [json.trigger],$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: json.trigger.ylabel + ' (' + json.trigger.unit + ')'} ]}));
 	trigPlot = $.plot($("#benchmarkTriggerChart"), trigger,$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
@@ -583,6 +586,10 @@ function onDataLoadWithBenchmark(json) {
 	benchmarkChannel3data = json.benchmarkChannel3;
 	benchmarkChannel4data = json.benchmarkChannel4;
 	benchmarkTriggerdata = json.benchmarkTrigger;
+	satellitedata = "";
+	voltagedata = "";
+	temperaturedata = "";
+	pressuredata = "";
 	
 	$.plot($("#benchmarkChannel1Chart"), [channel1LowerError, channel1UpperError, channel1data, benchmarkChannel1data ], $.extend({}, benchmarkOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel } ]}));
 	$.plot($("#benchmarkChannel2Chart"), [channel2LowerError, channel2UpperError, channel2data, benchmarkChannel2data ], $.extend({}, benchmarkOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel } ]}));
