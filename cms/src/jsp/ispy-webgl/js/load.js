@@ -1,3 +1,11 @@
+/*
+ * Please setup the symlink for these files as follows:
+ * >>>otherwise it will not find the files<<<
+ * at the server:
+ * cd /home/quarkcat/sw/tomcat/webapps/elab/cms/ispy-webgl/
+ * ln -s /disks/i2u2/cms/data/ig/masterclass-2015 masterclass-2015
+ */
+
 ispy.web_files = [
   "./masterclass-2015/masterclass_1.ig",
   "./masterclass-2015/masterclass_2.ig",
