@@ -1,5 +1,3 @@
-// For now, hard-code some examples files here for testing
-// the "files from the web"
 ispy.web_files = [
   "./masterclass-2015/masterclass_1.ig",
   "./masterclass-2015/masterclass_2.ig",
