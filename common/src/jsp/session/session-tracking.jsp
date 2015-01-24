@@ -114,9 +114,6 @@
 				<h2>Total Users Logged In: ${sessionUsers}</h2>
 				<h2>Total Active Sessions: ${sessionCount}</h2>
 	    	   <table style="border: 1px solid black; cell-padding: 15px;">
-	    	   		<tr>
-	    	   			<th style="vertical-align: top; border: 1px dotted gray;">Details</th>
-	    	   		</tr>
 	    	   		<c:forEach items="${sessionDetails}" var="sessionDetails">
 	    	   			<tr>
 	    	   				<td style="vertical-align: top; border: 1px dotted gray;">${sessionDetails.value }</td>
