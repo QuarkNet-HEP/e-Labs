@@ -118,9 +118,11 @@
 	    	   			<th style="vertical-align: top; border: 1px dotted gray;">Details</th>
 	    	   		</tr>
 	    	   		<c:forEach items="${sessionDetails}" var="sessionDetails">
-	    	   			<tr>
-	    	   				<td style="vertical-align: top; border: 1px dotted gray;">${sessionDetails.value }</td>
-	    	   			</tr>
+	    	   			<c:if test="${sessionDetails.value not empty }">
+		    	   			<tr>
+		    	   				<td style="vertical-align: top; border: 1px dotted gray;">${sessionDetails.value }</td>
+	    		   			</tr>
+	    		   		</c:if>
 	    	   		</c:forEach>
 	    	   </table>
 			</div>
