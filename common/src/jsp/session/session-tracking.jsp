@@ -79,7 +79,7 @@
 			}//end of first synchronized							            		
     		sessionDetails.put("<strong>Session # " + String.valueOf(i), sb.toString() + "</strong>");
 		} catch (Exception e) {
-    		System.out.println("Exception in session-tracking.jsp: " + e.getMessage());			
+    		//System.out.println("Exception in session-tracking.jsp: " + e.getMessage());			
 		}
 	}
 	request.setAttribute("sessionCount",sessionCount);
