@@ -76,10 +76,13 @@
 	                	}
 					}
 	            }
-			}//end of first synchronized							            		
-    		sessionDetails.put("<strong>Session # " + String.valueOf(i), sb.toString() + "</strong>");
+			}//end of first synchronized			
+			String sessiontext = sb.toString();
+			if (!sessiontext.equals("")) {
+	    		sessionDetails.put("<strong>Session # " + String.valueOf(i), sessiontext + "</strong>");				
+			}
 		} catch (Exception e) {
-    		//System.out.println("Exception in session-tracking.jsp: " + e.getMessage());			
+    		System.out.println("Exception in session-tracking.jsp: " + e.getMessage());			
 		}
 	}
 	request.setAttribute("sessionCount",sessionCount);
@@ -118,7 +121,7 @@
 	    	   			<th style="vertical-align: top; border: 1px dotted gray;">Details</th>
 	    	   		</tr>
 	    	   		<c:forEach items="${sessionDetails}" var="sessionDetails">
-	    	   			<c:if test="${sessionDetails.value not empty }">
+	    	   			<c:if test="${not empty sessionDetails.value}">
 		    	   			<tr>
 		    	   				<td style="vertical-align: top; border: 1px dotted gray;">${sessionDetails.value }</td>
 	    		   			</tr>
