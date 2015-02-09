@@ -100,10 +100,6 @@
 							<td>&#8226; <a href="../analysis-blessing/benchmark-info.jsp">View upload plus benchmark information</a></td>
 							<td>View split files and their blessed/unblessed status details.</td>
 						</tr>
-						<tr>
-							<td>&#8226; <a href="../documentation/cosmic-documents.jsp">View Cosmic Documentation</a></td>
-							<td>Details of analysis and processes for the Cosmic Elab.</td>
-						</tr>
 					</c:if>				
 				</table>
 			</div>
