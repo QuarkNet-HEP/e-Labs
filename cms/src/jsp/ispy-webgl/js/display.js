@@ -265,9 +265,9 @@ ispy.detector_description = {
   "RPCBarrel3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Resistive Plate Chambers (barrel)",
     fn: ispy.makeRPC, style: {color: [0.6, 0.8, 0], opacity: 0.5, linewidth: 0.5}},
   "CSC3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Cathode Strip Chambers",
-    fn: ispy.makeCSC, style: {color: [0.6, 0.8, 0], opacity: 0.5, linewidth: 0.5}},
+    fn: ispy.makeCSC, style: {color: [0.6, 0.8, 0], opacity: 0.6, linewidth: 0.5}},
   "DTs3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Drift Tubes",
-    fn: ispy.makeDT, style: {color: [1, 0.6, 0], opacity: 0.5, linewidth: 0.5}},
+    fn: ispy.makeDT, style: {color: [1, 0.6, 0], opacity: 0.6, linewidth: 0.5}},
 
   "HcalForwardMinus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Forward (-)",
     fn: ispy.makeModelHcalForwardMinus, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
@@ -362,8 +362,8 @@ ispy.event_description = {
     extra: "Extras_V1", assoc: "TrackExtras_V1",
     fn: ispy.makeTracks, style: {color: [1, 0.7, 0], opacity: 0.7, lineCaps: "square", linewidth: 2}, min_pt: 0.5},
 
-  "Event_V1":{type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent},
-  "Event_V2":{type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent},
+  "Event_V1":{type: ispy.TEXT, on: false, group: "Provenance", name: "Event", fn: ispy.makeEvent},
+  "Event_V2":{type: ispy.TEXT, on: false, group: "Provenance", name: "Event", fn: ispy.makeEvent},
 
   "DTRecHits_V1": {type: ispy.SOLIDBOX, on: false, group: "Muon", name: "DT Rec. Hits",
     fn: ispy.makeDTRecHits, style: {color: [0, 1, 0], opacity: 0.5, linewidth: 2}},
@@ -440,10 +440,10 @@ ispy.toggle = function(group, key) {
   // For provenance (for now, just event information)
   // we display as simple HTML so therefore not part of the scene
   if ( group === "Provenance" ) {
-    if ( ispy.disabled[key] ) {
-      $('#event-info').hide();
-    } else {
+    if ( ! ispy.disabled[key] ) {
       $('#event-info').show();
+    } else {
+      $('#event-info').hide();
     }
   }
 
@@ -782,6 +782,9 @@ ispy.addEvent = function(event) {
       break;
 
       case ispy.TEXT:
+        if ( ! visible ) {
+          $('#event-info').hide();
+        }
         descr.fn(data);
       break;
     }
