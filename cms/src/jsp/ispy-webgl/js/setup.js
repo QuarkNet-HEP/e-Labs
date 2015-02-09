@@ -1,6 +1,6 @@
 var ispy = ispy || {};
 ispy.detector = {"Collections":{}};
-ispy.version = "0.9-masterclass2015-rc1";
+ispy.version = "0.9-masterclass2015-rc5";
 
 ispy.hasWebGL = function() {
   var canvas = document.createElement('canvas');
@@ -177,7 +177,7 @@ ispy.initDetector = function() {
       });
   } else if ( ispy.renderer_name === "WebGLRenderer" ) {
 
-    $('#progress').modal('show');
+    $('#loading').modal('show');
 
     $.when(ispy.getScript("./geometry/eb.js"),
            ispy.getScript("./geometry/ee.js"),
@@ -190,7 +190,7 @@ ispy.initDetector = function() {
            ispy.getScript("./geometry/tec.js"),
            ispy.getScript("./geometry/tid.js"))
            .done(function() {
-            $('#progress').modal('hide');
+            $('#loading').modal('hide');
             ispy.addDetector();
           });
   }

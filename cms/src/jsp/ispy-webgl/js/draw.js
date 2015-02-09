@@ -239,6 +239,20 @@ ispy.makeWireFace = function(data, ci) {
   return box;
 }
 
+ispy.makeSolidFace = function(data, ci) {
+  var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
+  var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
+  var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
+  var f4 = new THREE.Vector3(data[ci+3][0], data[ci+3][1], data[ci+3][2]);
+
+  var rect = new THREE.Geometry();
+  rect.vertices = [f1,f2,f3,f4];
+  rect.faces.push(new THREE.Face3(0,1,2));
+  rect.faces.push(new THREE.Face3(0,2,3));
+
+  return rect;
+}
+
 ispy.makeTrackerPiece = function(data) {
   return ispy.makeWireFace(data, 1);
 }
@@ -646,13 +660,13 @@ ispy.makeRecHit_V2 = function(data, geometry, scale) {
 }
 
 ispy.makeDT = function(dt) {
-  return ispy.makeSolidBox(dt, 1);
-  //return ispy.makeWireframeBox(dt, 1);
+  //return ispy.makeSolidBox(dt, 1);
+  return ispy.makeWireframeBox(dt, 1);
 }
 
 ispy.makeCSC = function(csc) {
-  return ispy.makeSolidBox(csc, 1);
-  //return ispy.makeWireframeBox(csc, 1);
+  //return ispy.makeSolidBox(csc, 1);
+  return ispy.makeWireframeBox(csc, 1);
 }
 
 ispy.makeMuonChamber = function(chamber) {
