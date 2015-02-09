@@ -1,3 +1,0 @@
-AuthType Basic
-AuthName "Admin area"
-AuthUserFile /var/.htusers
