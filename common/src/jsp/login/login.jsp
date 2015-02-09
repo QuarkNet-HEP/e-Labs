@@ -1,13 +1,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ page import="gov.fnal.elab.ElabGroup" %>
 <%@ page import="gov.fnal.elab.usermanagement.AuthenticationException" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
+<%@ page import="org.apache.commons.codec.net.URLCodec" %>
 <%
 	String username = request.getParameter("user");
 	String password = request.getParameter("pass");
 	String message  = request.getParameter("message");
+	String guestlogin = elab.getGuestLoginLink(request);
 	request.setAttribute("username", username);
+	request.setAttribute("guestlogin", guestlogin);
+
 	if (message == null) {
 		message = "Please log in to proceed";
 	}
@@ -180,7 +185,7 @@
 
 				<div id="login-form-text">
 					<p>
-						<a href="<%= elab.getGuestLoginLink(request) %>">Login as guest</a>
+						<a href="${fn:escapeXml(guestlogin)}">Login as guest</a>
 					</p>
 				</div>
 			</div>
