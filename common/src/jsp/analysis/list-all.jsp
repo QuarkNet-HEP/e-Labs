@@ -16,20 +16,6 @@
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<script type="text/javascript" src="../include/jquery/js/jquery.tablesorter.min.js"></script>
-		<script type="text/javascript">
-			$(document).ready(function() { 
-			$.tablesorter.addParser({
-				id: "runDate", 
-				is: function(s) { return false; },
-				format: function(s) { 
-				return $.tablesorter.formatFloat(new Date(s + " 00:00").getTime()); 
-			    },
-				type: "numeric"
-				});
-				$("#analysis-table").tablesorter({sortList: [[1,0]]}, {headers: {3:{sorter:'runDate'}, 8:{sorter:false}}});
-			}); 
-	</script>	
 	</head>
 	<body id="analysis-list" class="data">
 		<!-- entire page container -->
@@ -42,6 +28,20 @@
 			</div>
 			
 			<div id="content">
+			<script type="text/javascript" src="../include/jquery/js/jquery.tablesorter.min.js"></script>
+			<script type="text/javascript">
+				$(document).ready(function() { 
+				$.tablesorter.addParser({
+					id: "runDate", 
+					is: function(s) { return false; },
+					format: function(s) { 
+					return $.tablesorter.formatFloat(new Date(s + " 00:00").getTime()); 
+				    },
+					type: "numeric"
+					});
+					$("#analysis-table").tablesorter({sortList: [[1,0]]}, {headers: {3:{sorter:'runDate'}, 8:{sorter:false}}});
+				}); 
+			</script>	
 
 <%
 	request.setAttribute("users", AnalysisManager.getAnalysisRuns(elab));
