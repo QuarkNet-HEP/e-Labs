@@ -28,23 +28,40 @@
 			</div>
 			
 			<div id="content">
+			<script type="text/javascript" src="../include/jquery/js/jquery.tablesorter.min.js"></script>
+			<script type="text/javascript">
+				$(document).ready(function() { 
+				$.tablesorter.addParser({
+					id: "runDate", 
+					is: function(s) { return false; },
+					format: function(s) { 
+					return $.tablesorter.formatFloat(new Date(s + " 00:00").getTime()); 
+				    },
+					type: "numeric"
+					});
+					$("#analysis-table").tablesorter({sortList: [[1,0]]}, {headers: {3:{sorter:'runDate'}, 8:{sorter:false}}});
+				}); 
+			</script>	
 
 <%
 	request.setAttribute("users", AnalysisManager.getAnalysisRuns(elab));
 
 %>
 
-<table id="analysis-table">
-	<tr>
-		<th>User</th>
-		<th>ID</th>
-		<th>Analysis</th>
-		<th>Run Mode</th>
-		<th>Start Time</th>
-		<th>End Time</th>
-		<th>Time (Actual/Est.)</th>
-		<th>Status</th>
-	</tr>
+<table id="analysis-table" class="tablesorter">
+	<thead>
+		<tr>
+			<th>User</th>
+			<th>ID</th>
+			<th>Analysis</th>
+			<th>Run Mode</th>
+			<th>Start Time</th>
+			<th>End Time</th>
+			<th>Time (Actual/Est.)</th>
+			<th>Status</th>
+		</tr>
+	</thead>
+	<tbody>
 	<c:choose>
 		<c:when test="${empty users}">
 			<tr id="nostudies"><td colspan="8"><h3>There are no analyses</h3></td></tr>
@@ -120,6 +137,7 @@
 			</c:forEach>
 		</c:otherwise>
 	</c:choose>
+	</tbody>
 </table>
 		 	</div>
 		</div>
