@@ -75,7 +75,7 @@ public class BlessProcess {
 							String[] split; 
 							boolean pass = true;
 							errorCode = "0";
-							String failReason = "If this message is not overwritten the blessfile is empty";
+							String failReason = "";
 							try {
 								VDSCatalogEntry splitFile = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filename);
 								VDSCatalogEntry benchmarkFile = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(benchmark);
@@ -88,6 +88,7 @@ public class BlessProcess {
 								pass = false;
 								errorCode = "1";
 								failReason = "Exception comparing the channels in both files";
+								message = failReason;
 							}
 							while ((line = in.readLine()) != null && pass) {
 								if (line.startsWith("#")) {
@@ -322,14 +323,23 @@ public class BlessProcess {
 	
 	public String formatFailReason(String seconds, String label, String benchmarkRate, String column1, String column2) {
 		String failReason = "";
+	    NumberFormat NF5F = new DecimalFormat("0.00000");
+	    double difference = Math.abs(Double.valueOf(benchmarkRate) - Double.valueOf(column1));
 		if (seconds != null && label != null && benchmarkRate != null && column1 != null && column2 != null) {
-			failReason = "This file failed at: " + seconds + "(" + convertToHMS(seconds) + ")"+
-					 " because the benchmark "+label+" rate: "+ benchmarkRate +
-					 " (metadata value) was not between the ranges of comparison set by " + column1 +
-					 " and " + String.valueOf(column2) + " being "+String.valueOf(sigmas)+" sigmas: " + String.valueOf(parseToDoubleSigmas(column2)) +
-					 "(" + String.valueOf(parseToDouble(column1) - parseToDoubleSigmas(column2)) +
-					 " and " + String.valueOf(parseToDouble(column1) + parseToDoubleSigmas(column2))+")" +
-					 " - for these last values, look at the .bless file of the just split file.";									
+			//failReason = "This file failed at: " + seconds + "(" + convertToHMS(seconds) + ")"+
+			//		 " because the benchmark "+label+" rate: "+ benchmarkRate +
+			//		 " (metadata value) was not between the ranges of comparison set by " + column1 +
+			//		 " and " + String.valueOf(column2) + " being "+String.valueOf(sigmas)+" sigmas: " + String.valueOf(parseToDoubleSigmas(column2)) +
+			//		 "(" + String.valueOf(parseToDouble(column1) - parseToDoubleSigmas(column2)) +
+			//		 " and " + String.valueOf(parseToDouble(column1) + parseToDoubleSigmas(column2))+")" +
+			//		 " - for these last values, look at the .bless file of the just split file.";									
+			failReason = "This file failed the blessing comparison at "+seconds+" seconds past midnight "+
+						 "("+convertToHMS(seconds)+"); the failure was in "+label+". The data rate was "+
+						 ""+NF5F.format(Double.valueOf(column1))+" +/- "+NF5F.format(Double.valueOf(column2))+". The benchmark indicates a target rate "+
+						 "of: "+NF5F.format(Double.valueOf(benchmarkRate))+" Hz. The difference between the rate in the file and the "+
+						 "benchmark is "+NF5F.format(difference)+" Hz. This is larger than our comparison "+
+						 "test allows; we allow a drift of "+String.valueOf(sigmas)+ " * the error "+
+						 "("+NF5F.format(Double.valueOf(column2))+" Hz).";
 		}
 		return failReason;
 	}//end of formatFailReason
