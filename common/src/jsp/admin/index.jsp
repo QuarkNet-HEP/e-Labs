@@ -6,6 +6,21 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/admin-login-required.jsp" %>
 <%
+	//remove expired notifications right here
+	String message = "";
+	try {
+		ElabNotificationsProvider nprovider = ElabFactory.getNotificationsProvider((Elab) session.getAttribute("elab"));
+		List<Notification> en = nprovider.getExpiredNotifications();
+		if (en != null) {
+			for (Notification rm: en) {
+				nprovider.removeNotification(user.getGroup(), rm.getId());
+			}
+		}
+	} catch (Exception e) {
+		message = e.getMessage();
+	}
+	
+	request.setAttribute("message", message);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -36,12 +51,14 @@
 						<td>&#8226; <a href="../jsp/addGroup.jsp?role=teacher">Add Users</a></td>
 						<td>Add e-Lab users.</td>
 					</tr>
+					<!-- 
 					<tr>
 						<td>&#8226; <a href="../notifications/remove-expired-notifications.jsp">Delete expired notifications</a></td>
 						<td>Delete notifications with expiration dates older than 30 days ago.</td>					
 					</tr>
+					-->
 					<tr>
-						<td>&#8226; <a href="../references/control.jsp">FAQs Add/Update</a></td>
+						<td>&#8226; <a href="../references/control.jsp"> FAQs Add/Update</a></td>
 						<td>Add, update FAQ items.</td>					
 					</tr>					
 					<tr>
@@ -104,7 +121,9 @@
 				</table>
 			</div>
 			<!-- end content -->	
-		
+			<c:if test="${not empty message }">
+				<div>${message}</div>
+			</c:if>
 			<div id="footer">
 			</div>
 		</div>
