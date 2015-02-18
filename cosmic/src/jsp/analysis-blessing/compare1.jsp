@@ -19,44 +19,42 @@
 <%@ page import="gov.fnal.elab.cosmic.bless.*" %>   
 
 <%
-
-String file = request.getParameter("file");
-if (StringUtils.isBlank(file)) {
-    throw new ElabJspException("Missing file name.");
-}
-
-VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(file);
-if (entry == null) {
-    throw new ElabJspException("No information about " + file + " found.");
-}
-//EPeronja-07/22/2013 558: Cosmic Bless Charts - Requests from fellows workshop 10 July 2013
-String comments = (String) entry.getTupleValue("comments");
-String commentsLink = "";
-if (comments != null && !comments.equals("")) {
-    commentsLink = "<a href=\"../jsp/comments-add.jsp?fileName="+entry.getLFN() +
-    			   "\"><img src=\"../graphics/balloon_talk_blue.gif\"/></a>";
-} else {
-	comments = "No comments";
-    commentsLink = "<a href=\"../jsp/comments-add.jsp?fileName="+entry.getLFN() +
-			   "\"><img src=\"../graphics/balloon_talk_empty.gif\"/></a>";
-}
-entry.sort(); 
-request.setAttribute("e", entry);
-
-//EPeronja-01/24/2013: Bug472- find out if the user has ownership over the data
-boolean owner = false;
-String groupOwner = (String) entry.getTupleValue("group");
-if (groupOwner != null) {
-	if (groupOwner.equals(user.getName())) {
-		owner = true;
+	String file = request.getParameter("file");
+	if (StringUtils.isBlank(file)) {
+	    throw new ElabJspException("Missing file name.");
 	}
-}
-request.setAttribute("owner", owner);
-String benchmark = (String) entry.getTupleValue("benchmarkreference");
-
-//EPeronja-02/04/2013: Bug472- format registers
-BlessRegister br0 = new BlessRegister((String) entry.getTupleValue("ConReg0"));
-request.setAttribute("CR0", br0.getRegisterValue());
+	
+	VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(file);
+	if (entry == null) {
+	    throw new ElabJspException("No information about " + file + " found.");
+	}
+	String blessfilecomment = (String) entry.getTupleValue("blessfileComment");
+	if (blessfilecomment != null && !blessfilecomment.startsWith("blessfile NOT REPLACED")) {
+		blessfilecomment = "We have improved the precision on this blessfile";
+	}
+	entry.sort(); 
+	request.setAttribute("e", entry);
+	request.setAttribute("blessfilecomment", blessfilecomment);
+	
+	//EPeronja-02/18/2015: 641&645-Benchmark failure message and other icons
+	BlessPlotDisplay bpd = new BlessPlotDisplay();
+	String iconLinks = bpd.getIcons(elab, file);
+	request.setAttribute("iconLinks",iconLinks);
+	
+	//EPeronja-01/24/2013: Bug472- find out if the user has ownership over the data
+	boolean owner = false;
+	String groupOwner = (String) entry.getTupleValue("group");
+	if (groupOwner != null) {
+		if (groupOwner.equals(user.getName())) {
+			owner = true;
+		}
+	}
+	request.setAttribute("owner", owner);
+	String benchmark = (String) entry.getTupleValue("benchmarkreference");
+	
+	//EPeronja-02/04/2013: Bug472- format registers
+	BlessRegister br0 = new BlessRegister((String) entry.getTupleValue("ConReg0"));
+	request.setAttribute("CR0", br0.getRegisterValue());
 
 %>
    
@@ -111,9 +109,18 @@ request.setAttribute("CR0", br0.getRegisterValue());
 				<%= entry.getTupleValue("school") %>, <%= entry.getTupleValue("city") %>, <%= entry.getTupleValue("state") %> -
 				<fmt:formatDate value="${e.tupleMap.startdate}" pattern="dd MMM yyyy"/>				
 				<c:if test="${not empty e.tupleMap.benchmarkreference }">
-					- Benchmark: ${e.tupleMap.benchmarkreference }
+					- Benchmark: 
+					<c:choose>
+						<c:when test='${ e.tupleMap.benchmarkreference == "none" }'>
+							This is a benchmark
+						</c:when>
+						<c:otherwise>
+							${e.tupleMap.benchmarkreference }		
+						</c:otherwise>
+				</c:choose>
 				</c:if>	
 				</strong></div><br />
+				<div style="text-align: center;font-size: small;"><i>${blessfilecomment}</i></font></div>
 				<div style="text-align: center;">
 					<a href="../data/view.jsp?filename=${param.file}">Show Data</a> |
 					<a href="../data/view-metadata.jsp?filename=${param.file}">Show metadata</a> |
@@ -126,7 +133,7 @@ request.setAttribute("CR0", br0.getRegisterValue());
 				<h2>Control Register</h2>
 				<table width="100%">
 				    <tr><td width="20px">CR0: </td><td width="100px"><strong><%= entry.getTupleValue("ConReg0") != null? entry.getTupleValue("ConReg0") : "Unknown" %></strong></td>
-				    	<td rowspan="2" ><%= commentsLink %> <%= entry.getTupleValue("comments") %></td></tr>
+				    	<td rowspan="2" >${iconLinks }</td></tr>
 				    <tr><td width="20px"> </td><td width="100px"><strong>${CR0}</strong></td></tr>
 				</table>			
 				<!-- This is removed due to the Benchmark rollout
