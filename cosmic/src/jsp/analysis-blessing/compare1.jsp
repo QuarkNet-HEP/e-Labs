@@ -28,7 +28,7 @@
 	if (entry == null) {
 	    throw new ElabJspException("No information about " + file + " found.");
 	}
-	String blessfilecomment = (String) entry.getTupleValue("blessfileComment");
+	String blessfilecomment = (String) entry.getTupleValue("blessfilecomment");
 	if (blessfilecomment != null && !blessfilecomment.startsWith("blessfile NOT REPLACED")) {
 		blessfilecomment = "We have improved the precision on this blessfile";
 	}
@@ -119,8 +119,8 @@
 						</c:otherwise>
 				</c:choose>
 				</c:if>	
-				</strong></div><br />
-				<div style="text-align: center;font-size: small;"><i>${blessfilecomment}</i></font></div>
+				</strong></div>
+				<div style="text-align: center;font-size: small;"><i>${blessfilecomment}</i></font></div><br />
 				<div style="text-align: center;">
 					<a href="../data/view.jsp?filename=${param.file}">Show Data</a> |
 					<a href="../data/view-metadata.jsp?filename=${param.file}">Show metadata</a> |

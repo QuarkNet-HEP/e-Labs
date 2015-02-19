@@ -11,6 +11,8 @@ import gov.fnal.elab.datacatalog.query.*;
 import gov.fnal.elab.datacatalog.impl.vds.*;
 import gov.fnal.elab.util.ElabException;
 
+//EPeronja-02/18/2015: 641 Display benchmark failure message
+//					   Display icons in compare1.jsp
 public class BlessPlotDisplay {
 	String iconDisplay = "";
 	String filename = "";
@@ -28,6 +30,8 @@ public class BlessPlotDisplay {
 				sb.append("<a href=\"../jsp/comments-add.jsp?fileName=");
 				sb.append(entry.getLFN());
 				String comments = (String) entry.getTupleValue("comments");
+		        sb.append("\"");
+        		sb.append(" title=\""+ comments);
 				Boolean stacked = (Boolean) entry.getTupleValue("stacked");
 				String blessfile = (String) entry.getTupleValue("blessfile");
 				Boolean blessed = (Boolean) entry.getTupleValue("blessed");
@@ -52,18 +56,14 @@ public class BlessPlotDisplay {
 		        }
 		        if (blessfile != null) {
 		        	if (blessed) {
-		        		sb.append("<a href=\"../analysis-blessing/compare1.jsp?file=");
-		        		sb.append(entry.getLFN());
-		        		sb.append("\"");
+		        		sb.append("<a href=#");
 		        		sb.append(" title=\""+ buildBlessingMetadata(entry));
 		        		sb.append("\">");   
 		        		sb.append("<img alt=\"Blessed data\" "
 		                    + "src=\"../graphics/star.gif\"/></a>");
 		        	}
 		        	else {
-		        		sb.append("<a href=\"../analysis-blessing/compare1.jsp?file=");
-		        		sb.append(entry.getLFN());
-		        		sb.append("\"");
+		        		sb.append("<a href=#");
 		        		sb.append(" title=\""+ buildBlessingMetadata(entry));
 		        		sb.append("\">");   
 		        		sb.append("<img alt=\"Blessed data\" "
@@ -80,16 +80,21 @@ public class BlessPlotDisplay {
     public String buildBlessingMetadata(VDSCatalogEntry entry){
 		String benchmarkfail = (String) entry.getTupleValue("benchmarkfail");
 		String benchmarkreference = (String) entry.getTupleValue("benchmarkreference");
-    	
+    	if (benchmarkfail == null) {
+    		benchmarkfail = "";
+    	}
+    	if (benchmarkreference == null) {
+    		benchmarkreference = "";
+    	}
         StringBuilder sb = new StringBuilder();
         String blessMessage = "Blessfile comment\n";
-    	if (benchmarkfail == null && benchmarkreference != null) {
+    	if (benchmarkfail.equals("") && !benchmarkreference.equals("")) {
     		blessMessage = "This file has been blessed";
     	} 
-    	if (benchmarkfail == null && benchmarkreference == null) {
+    	if (benchmarkfail.equals("") && benchmarkreference.equals("")) {
     			blessMessage = "This file has been uploaded without using a benchmark";
     	}
-    	if (benchmarkfail != null) {
+    	if (!benchmarkfail.equals("")) {
     		blessMessage = benchmarkfail;
     	}
     	
