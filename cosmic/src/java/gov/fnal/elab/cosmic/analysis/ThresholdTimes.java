@@ -241,7 +241,8 @@ public class ThresholdTimes {
         String id = detector + "." + (channel + 1);
 
         if (nanodiff >= 0 && nanodiff < 10000) {
-            wr.write(id);
+           	lastjdplustime = jd + retime[channel];
+        	wr.write(id);
             wr.write('\t');
             wr.write(String.valueOf(jd));
             wr.write('\t');
