@@ -51,14 +51,8 @@
 						<td>&#8226; <a href="../jsp/addGroup.jsp?role=teacher">Add Users</a></td>
 						<td>Add e-Lab users.</td>
 					</tr>
-					<!-- 
 					<tr>
-						<td>&#8226; <a href="../notifications/remove-expired-notifications.jsp">Delete expired notifications</a></td>
-						<td>Delete notifications with expiration dates older than 30 days ago.</td>					
-					</tr>
-					-->
-					<tr>
-						<td>&#8226; <a href="../references/control.jsp"> FAQs Add/Update</a></td>
+						<td>&#8226; <a href="../references/control.jsp">FAQs Add/Update</a></td>
 						<td>Add, update FAQ items.</td>					
 					</tr>					
 					<tr>
@@ -72,10 +66,6 @@
 					<tr>
 						<td>&#8226; <a href="../teacher/mark-teacher-status.jsp">Set group status</a></td>
 						<td>Set teachers and their research groups to active/inactive.</td>					
-					</tr>
-					<tr>
-						<td>&#8226; <a href="../unit-testing/index.jsp">Unit Testing</a></td>
-						<td>Run automated tests for written code grouped by functionality.</td>					
 					</tr>
 					<tr>
 						<td>&#8226; <a href="../statistics">View e-Lab Statistics</a></td>
@@ -96,23 +86,9 @@
 							<td>Create individual threshold times files if they failed to be created at upload time.</td>
 						</tr>
 						<tr>
-							<td>&#8226; <a href="../analysis-blessing/benchmark-process-rerun-from-input.jsp">Rerun blessing process</a></td>
-							<td>Rerun blessing files by using the same benchmark.</td>
-						</tr>
-						<tr>
 							<td>&#8226; <a href="../analysis/list-all.jsp">View all analyses</a></td>
 							<td>List of analyses by all users.</td>
 						</tr>
-						<!--  
-						<tr>
-							<td>&#8226; <a href="../analysis/cosmic-analysis-errors.jsp">Add, Update Cosmic Analysis Errors</a></td>
-							<td>Enter cosmic common errors and suggestions on what to do, fix, etc.</td>
-						</tr>
-						<tr>
-							<td>&#8226; <a href="../analysis/analysis-queue.jsp">View analysis queue</a></td>
-							<td>View queued analyses and their statuses.</td>
-						</tr>
-						-->
 						<tr>
 							<td>&#8226; <a href="../analysis-blessing/benchmark-info.jsp">View upload plus benchmark information</a></td>
 							<td>View split files and their blessed/unblessed status details.</td>
