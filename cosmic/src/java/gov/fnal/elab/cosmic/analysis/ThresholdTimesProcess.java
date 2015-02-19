@@ -234,7 +234,8 @@ public class ThresholdTimesProcess {
             //		   to check that, the new julian day + rising edge needs to be larger than the prior one
             if (lastjdplustime > 0) {
             	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
-            	if (tempjdplustime > lastjdplustime) {
+            	double tempdiff = tempjdplustime - lastjdplustime;
+            	if (tempdiff < 1.0) {
                     jd = currLineJD(offset, parts);           		
             	}
             } else {
