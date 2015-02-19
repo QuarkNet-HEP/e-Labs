@@ -296,6 +296,33 @@ public class StructuredResultSetDisplayer {
         sb.append("Channel4: " + file.getChannel4()+" events");
     	return sb.toString();
     }
+ 
+    //EPeronja-02/18/2015: 641 Display benchmark failure message
+    //					   added a title to the icon
+    public String buildBlessingMetadata(File file){
+        StringBuilder sb = new StringBuilder();
+        String blessMessage = "Blessfile comment\n";
+        String failureMessage = file.getBenchmarkFail();
+    	String benchmarkreference = file.getBenchmarkReference();
+    	if (failureMessage == null) {
+    		failureMessage = "";
+    	}
+    	if (benchmarkreference == null) {
+    		benchmarkreference = "";
+    	}   	
+    	if (failureMessage.equals("") && !benchmarkreference.equals("")) {
+    		blessMessage = "This file has been blessed";
+    	} 
+    	if (failureMessage.equals("") && benchmarkreference.equals("")) {
+    			blessMessage = "This file has been uploaded without using a benchmark";
+    	}
+    	if (!failureMessage.equals("")) {
+    		blessMessage = failureMessage;
+    	}
+    	
+        sb.append(blessMessage +"\n");
+    	return sb.toString();
+    }//end of buildBlessingMetadata    
     
     public void displayFileContents(JspWriter out, File file)
             throws IOException {
@@ -331,10 +358,14 @@ public class StructuredResultSetDisplayer {
         	out.write("<i>No Geo</i>");
         }
         //EPeronja-01/30/2013: Bug472- to add icons next to the data for data blessing access 
+        //EPeronja-02/18/2015: 641 Display benchmark failure message
+        //					   added a title to the icon
         if (file.getBlessFile() != null) {
         	if (file.isBlessed()) {
         		out.write("<a href=\"../analysis-blessing/compare1.jsp?file=");
         		out.write(file.getLFN());
+                out.write("\"");
+                out.write(" title=\""+ buildBlessingMetadata(file));
         		out.write("\">");   
         		out.write("<img alt=\"Blessed data\" "
                     + "src=\"../graphics/star.gif\"/></a>");
@@ -342,6 +373,8 @@ public class StructuredResultSetDisplayer {
         	else {
         		out.write("<a href=\"../analysis-blessing/compare1.jsp?file=");
         		out.write(file.getLFN());
+                out.write("\"");
+                out.write(" title=\""+ buildBlessingMetadata(file));
         		out.write("\">");   
         		out.write("<img alt=\"Blessed data\" "
                     + "src=\"../graphics/unblessed.gif\"/></a>");        	
