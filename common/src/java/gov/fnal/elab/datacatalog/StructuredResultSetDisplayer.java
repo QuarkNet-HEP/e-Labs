@@ -297,19 +297,26 @@ public class StructuredResultSetDisplayer {
     	return sb.toString();
     }
  
-    //EPeronja-02/18/2015: 641&645-Benchmark failure message
+    //EPeronja-02/18/2015: 641 Display benchmark failure message
+    //					   added a title to the icon
     public String buildBlessingMetadata(File file){
         StringBuilder sb = new StringBuilder();
         String blessMessage = "Blessfile comment\n";
         String failureMessage = file.getBenchmarkFail();
     	String benchmarkreference = file.getBenchmarkReference();
-    	if (failureMessage == null && benchmarkreference != null) {
+    	if (failureMessage == null) {
+    		failureMessage = "";
+    	}
+    	if (benchmarkreference == null) {
+    		benchmarkreference = "";
+    	}   	
+    	if (failureMessage.equals("") && !benchmarkreference.equals("")) {
     		blessMessage = "This file has been blessed";
     	} 
-    	if (failureMessage == null && benchmarkreference == null) {
+    	if (failureMessage.equals("") && benchmarkreference.equals("")) {
     			blessMessage = "This file has been uploaded without using a benchmark";
     	}
-    	if (failureMessage != null) {
+    	if (!failureMessage.equals("")) {
     		blessMessage = failureMessage;
     	}
     	
@@ -351,7 +358,8 @@ public class StructuredResultSetDisplayer {
         	out.write("<i>No Geo</i>");
         }
         //EPeronja-01/30/2013: Bug472- to add icons next to the data for data blessing access 
-        //EPeronja-02/18/2015: 641&645-Benchmark failure message
+        //EPeronja-02/18/2015: 641 Display benchmark failure message
+        //					   added a title to the icon
         if (file.getBlessFile() != null) {
         	if (file.isBlessed()) {
         		out.write("<a href=\"../analysis-blessing/compare1.jsp?file=");
