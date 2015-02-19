@@ -200,7 +200,8 @@
 									<strong>Benchmark file has been successfully added.</strong><br />
 			  						<a href="#" onclick="window.close();">Close</a>
 			  					<% } else { %>
-						     		<strong>There are no .bless files for this detector from ${fromDate} to ${toDate} or there was a problem with the duration of this file ${duration}.</strong> 
+						     		<strong>There are no .bless files for this detector from ${fromDate} to ${toDate} or there was a problem with the duration of this file ${duration}. 
+						     		Look for the enddate value in the metadata.</strong> 
 								<% } %>
 						  </c:otherwise>
 						</c:choose>
