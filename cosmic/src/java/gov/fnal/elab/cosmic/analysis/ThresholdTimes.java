@@ -226,7 +226,8 @@ public class ThresholdTimes {
             //		   to check that, the new julian day + rising edge needs to be larger than the prior one
             if (lastjdplustime > 0) {
             	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
-            	if (tempjdplustime > lastjdplustime) {
+            	double tempdiff = tempjdplustime - lastjdplustime;
+            	if (tempdiff < 1.0) {
                     jd = currLineJD(offset, parts);           		
             	}
             } else {
@@ -241,7 +242,7 @@ public class ThresholdTimes {
         String id = detector + "." + (channel + 1);
 
         if (nanodiff >= 0 && nanodiff < 10000) {
-        	lastjdplustime = jd + retime[channel];        	        	
+        	lastjdplustime = jd + retime[channel];        	
             wr.write(id);
             wr.write('\t');
             wr.write(String.valueOf(jd));
@@ -350,7 +351,7 @@ public class ThresholdTimes {
             year = year - 1;
         }
         
-        return (2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60.0 + second/3600.0)/24;
+        return (2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60 + second/3600.0)/24;
         
     }
     
