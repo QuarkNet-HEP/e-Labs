@@ -283,7 +283,8 @@ public class ThresholdTimesProcessDebug {
             double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
             if (lastjdplustime > 0) {
             	double tempjdplustime = currLineJD(offset, parts, report) + retime[channel];
-            	if (tempjdplustime > lastjdplustime) {
+            	double tempdiff = tempjdplustime - lastjdplustime;
+            	if (tempdiff < 1.0) {
                     jd = currLineJD(offset, parts, report);           		
             	}
             } else {
