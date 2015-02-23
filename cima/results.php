@@ -8,7 +8,8 @@ include 'templates/header.tpl';
 if(!isset($_SESSION["comb"])){
 	include 'templates/navbar.tpl';
 	$start=1;
-	$ng=30;
+	$ng=31;
+
 	for($i=1;$i<$ng;$i++){
 		$groups[$i]["mu"]=0;
 		$groups[$i]["e"]=0;
@@ -89,11 +90,14 @@ if(isset($_SESSION["tables"])){
 		if(isset($events)){
 			foreach($events as $asArr){
 				$i=floor(($asArr["id"]-1)/100)+1;
-				$groups[$i]["sum"]++;
-				$temp=explode(";",$asArr["checked"]);
-				for($j=0;$j<count($temp);$j++){
-					if($temp[$j]!=""){
-						$groups[$i][$temp[$j]]++;
+				if(isset($groups[$i])){
+					$groups[$i]["sum"]++;
+					$temp=explode(";",$asArr["checked"]);
+					for($j=0;$j<count($temp);$j++){
+						if($temp[$j]!=""){
+							$groups[$i][$temp[$j]]++;
+
+						}
 					}
 				}
 			}
@@ -105,11 +109,13 @@ if(isset($_SESSION["tables"])){
 	if(isset($events)){
 		foreach($events as $asArr){
 			$i=floor(($asArr["id"]-1)/100)+1;
-			$groups[$i]["sum"]++;
-			$temp=explode(";",$asArr["checked"]);
-			for($j=0;$j<count($temp);$j++){
-				if($temp[$j]!=""){
-					$groups[$i][$temp[$j]]++;
+			if(isset($groups[$i])){
+				$groups[$i]["sum"]++;
+				$temp=explode(";",$asArr["checked"]);
+				for($j=0;$j<count($temp);$j++){
+					if($temp[$j]!=""){
+						$groups[$i][$temp[$j]]++;
+					}
 				}
 			}
 		}

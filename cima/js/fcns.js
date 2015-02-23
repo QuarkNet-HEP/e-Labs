@@ -132,7 +132,7 @@ function showdel(element){
 	//alert(elstr);
 	element.style.backgroundColor = "#AAFFAA";
 	elstr="del-"+element.id;
-	$( "#"+elstr ).html("<span class='glyphicon glyphicon-pencil'></span> edit");
+	$( "#"+elstr ).html("<span class='glyphicon glyphicon-pencil'></span> edit (double click)");
 }
 
 function nshowdel(element){
@@ -256,6 +256,9 @@ function del(element){
 	if(checked && $.trim(checked[0])!=""){
 		for(var i=0;i<checked.length;i++){
 			    var temp = $.trim(checked[i]);
+			    if(temp=="W+"){
+				temp="Wp";
+				}
 			    document.getElementById(temp).checked = true;
 			    SelP(document.getElementById(temp),0);
 		}

@@ -6,7 +6,12 @@
 	<div class=col-md-9></div>
 </div>
 <div class=row>
-	<div class=col-md-3><strong> location: </strong> <?php echo '<span name="groupNo"> '.$_SESSION["database"].'</span>'; ?>
+	<div class=col-md-3><strong> Location: </strong> <?php echo '<span name="groupNo"> '.$_SESSION["database"].'</span>'; ?>
+	</div>
+	<div class=col-md-9></div>
+</div>
+<div class=row>
+	<div class=col-md-3><strong> Groups: </strong> <?php echo '<span name="groupNo"> '.'all groups'.'</span>'; ?>
 	</div>
 	<div class=col-md-9></div>
 </div>

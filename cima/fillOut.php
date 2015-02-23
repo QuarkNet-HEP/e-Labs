@@ -42,7 +42,7 @@ if(isset($_POST["CustomEvent"]) && isset($_SESSION["current"]) && $_SESSION["cur
 }
 
 function calcEv($id){
-	return $_SESSION["groupNo"].'-'.($id-(100*($_SESSION["groupNo"]-1)));
+	return $_SESSION["groupNo"].'-'.$id%100;
 }
 
 
@@ -70,9 +70,11 @@ function showM($checked){
 //tempE=GetAllEvents($SESSION["database"]);
 for($i=(count($arr)-1);$i>=0;$i--){
 	//$tempE=GetEvent($arr[$i]["id"]);
-	echo '<div class=row id="'.$arr[$i]["id"].'" style="cursor: pointer;" onmouseover="showdel(this)" onmouseout="nshowdel(this)" onclick="del(this)">
+
+
+	echo '<div class=row id="'.$arr[$i]["id"].'" style="cursor: pointer;" onmouseover="showdel(this)" onmouseout="nshowdel(this)" ondblclick="del(this)">
 		<div class=col-md-3> 
-			'.$arr[$i]['id'].' 
+			'.($arr[$i]['id'] % 100).'
 		</div>
 		<div class=col-md-3>
 			'.calcEv($arr[$i]['id']).'		

@@ -52,19 +52,22 @@
 		<div class=col-md-1> 
 			Event index:<br> <select id="EvSelOver" name="CustomEvent" onchange="this.form.submit()">
 		<?php 
-		echo '<option  id="SelEvent" selected>';
+                echo '<option  id="SelEvent" selected ';
+                if(isset($event)){
+                        echo "value=".$event['id'].">".($event['id'] % 100)."";
+                }
+		else{
+			echo ">";
+		}
+                        echo ' </option>';
+                if(isset($event)){
+                        for($i=0;$i<count($freeEvents);$i++){
+                                if($freeEvents[$i]!=$event['id']){
+                                        echo '<option value='.$freeEvents[$i].'>'.($freeEvents[$i] % 100).'</option>';
+                                }
+                        }
+                }
 
-		if(isset($event)){
-			echo $event['id']."";
-		}
-			echo ' </option>';
-		if(isset($event)){
-			for($i=0;$i<count($freeEvents);$i++){
-				if($freeEvents[$i]!=$event['id']){
-					echo '<option> '.$freeEvents[$i].'</option>';
-				}
-			}
-		}
 		echo '</select>
 		</div>
 		<div class=col-md-2>';
