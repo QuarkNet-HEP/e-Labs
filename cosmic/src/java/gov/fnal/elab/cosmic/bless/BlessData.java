@@ -9,6 +9,8 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.TreeMap;
 import gov.fnal.elab.Elab;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 import gov.fnal.elab.datacatalog.*;
 import gov.fnal.elab.datacatalog.query.*;
 import gov.fnal.elab.datacatalog.impl.vds.*;
@@ -17,56 +19,135 @@ import gov.fnal.elab.util.ElabException;
 public class BlessData {
 
 	private TreeMap<Integer, valueData> timeValueData; 
+	private TreeMap<Long, valueData> timeValueDataLong; 
 	
 	public BlessData(File file) throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(file));
-		
-		timeValueData = new TreeMap<Integer, valueData>(); 
-		
+		timeValueData = new TreeMap<Integer, valueData>(); 		
 		String line;
 		String[] split; 
 		valueData thisLineData = null;
 		int ts; 
-		while ((line = br.readLine()) != null) {
-			if (line.startsWith("#")) {
-				continue; // comment line
-			}
-			else {
-				split = line.split("\t"); 
-				if (split.length != 15) {
-					throw new IOException(file.getName() + " has malformed data. "); 
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			while ((line = br.readLine()) != null) {
+				if (line.startsWith("#")) {
+					continue; // comment line
 				}
-				thisLineData = new valueData(	
-						parseToDouble(split[1]),
-						parseToDouble(split[2]),
-						parseToDouble(split[3]),
-						parseToDouble(split[4]),
-						parseToDouble(split[5]),
-						parseToDouble(split[6]),
-						parseToDouble(split[7]),
-						parseToDouble(split[8]),
-						parseToDouble(split[9]),
-						parseToDouble(split[10]),
-						parseToInt(split[11]),
-						parseToDouble(split[12]),
-						parseToDouble(split[13]),
-						parseToInt(split[14]),
-						0.0,
-						0.0,
-						0.0,
-						0.0,
-						0.0,
-						false
-				);
-					
-				ts = parseToInt(split[0]);
-				timeValueData.put(ts, thisLineData);				
+				else {
+					split = line.split("\t"); 
+					if (split.length != 15) {
+						throw new IOException(file.getName() + " has malformed data. "); 
+					}
+					thisLineData = new valueData(	
+							parseToDouble(split[1]),
+							parseToDouble(split[2]),
+							parseToDouble(split[3]),
+							parseToDouble(split[4]),
+							parseToDouble(split[5]),
+							parseToDouble(split[6]),
+							parseToDouble(split[7]),
+							parseToDouble(split[8]),
+							parseToDouble(split[9]),
+							parseToDouble(split[10]),
+							parseToInt(split[11]),
+							parseToDouble(split[12]),
+							parseToDouble(split[13]),
+							parseToInt(split[14]),
+							0.0,
+							0.0,
+							0.0,
+							0.0,
+							0.0,
+							false
+					);
+						
+					ts = parseToInt(split[0]);
+					timeValueData.put(ts, thisLineData);				
+				}
 			}
+			br.close();
+		} catch (Exception ex) {
+			System.out.print("Exception in BlessData: "+ex.getMessage()+"\n");
 		}
 	}
 
+	//EPeronja: attempt to concatenate a few days together
+	public BlessData(Elab elab, File[] file, String[] filenames) throws IOException {
+		timeValueDataLong = new TreeMap<Long, valueData>(); 
+		
+		for (int i = 0; i < file.length; i++) {
+			try {				
+				//get startdate from database
+				Timestamp startDate;
+				Long secs = 0L;
+				try {
+					String[] nameParts = filenames[i].split("\\.");
+					String filedate = nameParts[1]+nameParts[2];
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+					Date date = sdf.parse(filedate);
+					sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+					String dateUTC = sdf.format(date);
+					Date newDate = sdf.parse(dateUTC);
+					secs = newDate.getTime();
+					//VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filenames[i]);
+					//if (e != null) {
+					//	startDate = (Timestamp) e.getTupleValue("startdate");
+					//	String df = new SimpleDateFormat("dd/MM/yyyy").format(startDate);
+					//	Date date = new SimpleDateFormat("dd/MM/yyyy").parse(df);
+					//	secs = date.getTime();
+					//}
+				} catch (Exception e) {	
+					String message = e.toString();
+				}
+				BufferedReader br = new BufferedReader(new FileReader(file[i]));
+				String line;
+				String[] split; 
+				valueData thisLineData = null;
+				Long ts; 
+				while ((line = br.readLine()) != null) {
+					if (line.startsWith("#")) {
+						continue; // comment line
+					}
+					else {
+						split = line.split("\t"); 
+						if (split.length != 15) {
+							throw new IOException(file[i].getName() + " has malformed data. "); 
+						}
+						thisLineData = new valueData(	
+								parseToDouble(split[1]),
+								parseToDouble(split[2]),
+								parseToDouble(split[3]),
+								parseToDouble(split[4]),
+								parseToDouble(split[5]),
+								parseToDouble(split[6]),
+								parseToDouble(split[7]),
+								parseToDouble(split[8]),
+								parseToDouble(split[9]),
+								parseToDouble(split[10]),
+								parseToInt(split[11]),
+								parseToDouble(split[12]),
+								parseToDouble(split[13]),
+								parseToInt(split[14]),
+								0.0,
+								0.0,
+								0.0,
+								0.0,
+								0.0,
+								false
+						);
+						ts = secs + parseToLong(split[0]);
+						timeValueDataLong.put(ts, thisLineData);				
+					}
+				}
+				br.close();
+			} catch (Exception ex) {
+				System.out.print("Exception in BlessData: "+ex.getMessage()+"\n");
+			}
+		}
+	}
+	
+	
 	public BlessData(File file, String benchmark, Elab elab) throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(file));
 		timeValueData = new TreeMap<Integer, valueData>(); 
 		boolean isBenchmarked = true;
 		if (benchmark.equals("none") || benchmark.equals("")) {
@@ -93,46 +174,50 @@ public class BlessData {
 		} catch (Exception e) {	
 			String message = e.toString();
 		}
-		
-		while ((line = br.readLine()) != null) {
-			if (line.startsWith("#")) {
-				continue; // comment line
-			}
-			else {
-				split = line.split("\t"); 
-				if (split.length != 15) {
-					throw new IOException(file.getName() + " has malformed data. "); 
+
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			while ((line = br.readLine()) != null) {
+				if (line.startsWith("#")) {
+					continue; // comment line
 				}
-				thisLineData = new valueData(
-						parseToDouble(split[1]),
-						parseToDouble(split[2]),
-						parseToDouble(split[3]),
-						parseToDouble(split[4]),
-						parseToDouble(split[5]),
-						parseToDouble(split[6]),
-						parseToDouble(split[7]),
-						parseToDouble(split[8]),
-						parseToDouble(split[9]),
-						parseToDouble(split[10]),
-						parseToInt(split[11]),
-						parseToDouble(split[12]),
-						parseToDouble(split[13]),
-						parseToInt(split[14]),
-						(double) bChannel1Rate,
-						(double) bChannel2Rate,
-						(double) bChannel3Rate,
-						(double) bChannel4Rate,
-						(double) bTriggerRate,
-						isBenchmarked
-				);
-					
-				ts = parseToInt(split[0]);
-				//ts = Integer.parseInt(split[0]);
-				
-				timeValueData.put(ts, thisLineData);
-				
+				else {
+					split = line.split("\t"); 
+					if (split.length != 15) {
+						throw new IOException(file.getName() + " has malformed data. "); 
+					}
+					thisLineData = new valueData(
+							parseToDouble(split[1]),
+							parseToDouble(split[2]),
+							parseToDouble(split[3]),
+							parseToDouble(split[4]),
+							parseToDouble(split[5]),
+							parseToDouble(split[6]),
+							parseToDouble(split[7]),
+							parseToDouble(split[8]),
+							parseToDouble(split[9]),
+							parseToDouble(split[10]),
+							parseToInt(split[11]),
+							parseToDouble(split[12]),
+							parseToDouble(split[13]),
+							parseToInt(split[14]),
+							(double) bChannel1Rate,
+							(double) bChannel2Rate,
+							(double) bChannel3Rate,
+							(double) bChannel4Rate,
+							(double) bTriggerRate,
+							isBenchmarked
+					);
+						
+					ts = parseToInt(split[0]);
+					//ts = Integer.parseInt(split[0]);
+					timeValueData.put(ts, thisLineData);
+				}
 			}
-		}
+			br.close();
+		} catch (Exception ex) {
+			System.out.print("Exception in BlessData: "+ex.getMessage()+"\n");
+		}			
 	}
 	
 	
@@ -147,6 +232,18 @@ public class BlessData {
 			result = 0;
 		}
 		return result;
+	}
+
+	//EPeronja-02/12/2013: Bug472- added to check for null values which will break the plotting code
+	public Long parseToLong(String split)
+	{
+		Long result = 0L;
+		try{
+			result = Long.parseLong(split);
+		} catch (NumberFormatException e) {
+			result = 0L;
+		}
+		return result * 1000;
 	}
 	
     //EPeronja-02/12/2013: Bug472- added to check for null values which will break the plotting code	
@@ -163,6 +260,9 @@ public class BlessData {
 	
 	public TreeMap<Integer, valueData> getTimeValueData() {
 		return timeValueData;
+	}
+	public TreeMap<Long, valueData> getTimeValueDataLong() {
+		return timeValueDataLong;
 	}
 	
 	public class valueData {

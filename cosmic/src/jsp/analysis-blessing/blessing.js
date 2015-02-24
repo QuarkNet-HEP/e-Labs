@@ -51,11 +51,6 @@ redrawPlotX = function(newX, type)
 		chanOptions.xaxis.max = trigOptions.xaxis.max = satOptions.xaxis.max = voltOptions.xaxis.max = tempOptions.xaxis.max = pressOptions.xaxis.max = newX;
 	}
 	onOffPlot = $.plot($("#channelChart"), data, $.extend({}, chanOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel} ]}));
-	//trigPlot = $.plot($("#triggerChart"), [triggerdata],$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: triggerdata.ylabel + ' (' + triggerdata.unit + ')'} ]}));
-	//satPlot = $.plot($("#satChart"), [satellitedata],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: satellitedata.ylabel + ' (' + satellitedata.unit + ')'} ]}));
-	//voltPlot = $.plot($("#voltChart"), [voltagedata],$.extend({}, voltOptions, { yaxes: [ {position: 'left', axisLabel: voltagedata.ylabel + ' (' + voltagedata.unit + ')'} ]}));
-	//tempPlot = $.plot($("#tempChart"), [temperaturedata],$.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: temperaturedata.ylabel + ' (' + temperaturedata.unit + ')'} ]}));
-	//pressPlot = $.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: pressuredata.ylabel + ' (' + pressuredata.unit + ')'} ]}));		
 	trigPlot = $.plot($("#triggerChart"), trigger,$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
 	satPlot = $.plot($("#satChart"), [ satellitedata ],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
 	voltPlot = $.plot($("#voltChart"), [ voltagedata ], $.extend({}, voltOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
@@ -73,11 +68,6 @@ resetPlotX = function(objectIdXMin, objectIdXMax)
 	chanOptions.xaxis.min = trigOptions.xaxis.min = satOptions.xaxis.min = voltOptions.xaxis.min = tempOptions.xaxis.min = pressOptions.xaxis.min = 0;
 	chanOptions.xaxis.max = trigOptions.xaxis.max = satOptions.xaxis.max = voltOptions.xaxis.max = tempOptions.xaxis.max = pressOptions.xaxis.max = 86400;
 	onOffPlot = $.plot($("#channelChart"), data, $.extend({}, chanOptions, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel} ]}));
-	//trigPlot = $.plot($("#triggerChart"), [triggerdata],$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: triggerdata.ylabel + ' (' + triggerdata.unit + ')'} ]}));
-	//satPlot = $.plot($("#satChart"), [satellitedata],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: satellitedata.ylabel + ' (' + satellitedata.unit + ')'} ]}));
-	//voltPlot = $.plot($("#voltChart"), [voltagedata],$.extend({}, voltOptions, { yaxes: [ {position: 'left', axisLabel: voltagedata.ylabel + ' (' + voltagedata.unit + ')'} ]}));
-	//tempPlot = $.plot($("#tempChart"), [temperaturedata],$.extend({}, tempOptions, { yaxes: [ {position: 'left', axisLabel: temperaturedata.ylabel + ' (' + temperaturedata.unit + ')'} ]}));
-	//pressPlot = $.plot($("#pressureChart"), [pressuredata],$.extend({}, pressOptions, { yaxes: [ {position: 'left', axisLabel: pressuredata.ylabel + ' (' + pressuredata.unit + ')'} ]}));		
 	trigPlot = $.plot($("#triggerChart"), trigger,$.extend({}, trigOptions, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
 	satPlot = $.plot($("#satChart"), [ satellitedata ],$.extend({}, satOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
 	voltPlot = $.plot($("#voltChart"), [ voltagedata ], $.extend({}, voltOptions, { yaxes: [ {position: 'left', axisLabel: '' } ]}));
@@ -599,4 +589,76 @@ function onDataLoadWithBenchmark(json) {
 	$.plot($("#benchmarkTriggerChart1"), [triggerLowerError, triggerUpperError, json.trigger, benchmarkTriggerdata],$.extend({}, benchmarkTrigOptions, { yaxes: [ {position: 'left'} ]}));
 }
 
+//plots within a range
+redrawPlotYRange = function(newY, chart, type)
+{
+	var tempOps;
+	switch (chart) {
+		case ("channel"):
+			if (type == "min") {
+				chanOptions.yaxis.min = newY;
+			} else {
+				chanOptions.yaxis.max = newY;
+			}
+			onOffPlot = $.plot($("#channelChart"), data, $.extend({}, chanOptions, {xaxis: {mode: "time",timeformat: "%m/%d/%y"}}, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel} ]}));
+			writeLegend(onOffPlot.getCanvas(), "Channel Rate (Hz)", 325, 250);
+			break;
+		case ("trigger"):
+			if (type == "min") {
+				trigOptions.yaxis.min = newY;
+			} else {
+				trigOptions.yaxis.max = newY;
+			}
+			trigPlot = $.plot($("#triggerChart"), trigger,$.extend({}, trigOptions, {xaxis: {mode: "time",timeformat: "%m/%d/%y"}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			writeLegend(trigPlot.getCanvas(), "Trigger Rate (Hz)", 325, 250);
+			break;
+	}
+}
+resetPlotYRange = function(chart, objectIdYMin, objectIdYMax)
+{
+	var inputYMinObject = document.getElementById(objectIdYMin);
+	inputYMinObject.value = "";
+	var inputYMaxObject = document.getElementById(objectIdYMax);
+	inputYMaxObject.value = "";
+	
+	switch (chart) {
+		case ("channel"):
+			chanOptions.yaxis.min = originalChanYMin;
+			chanOptions.yaxis.max = originalChanYMax;
+			onOffPlot = $.plot($("#channelChart"), data, $.extend({}, chanOptions, {xaxis: {mode: "time",timeformat: "%m/%d/%y"}}, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel} ]}));
+			writeLegend(onOffPlot.getCanvas(), "Channel Rate (Hz)", 325, 250);
+	    	break;
+		case ("trigger"):
+			trigOptions.yaxis.min = originalTrigYMin;
+			trigOptions.yaxis.max = originalTrigYMax;
+			trigPlot = $.plot($("#triggerChart"), trigger,$.extend({}, trigOptions, {xaxis: {mode: "time",timeformat: "%m/%d/%y"}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			writeLegend(trigPlot.getCanvas(), "Trigger Rate (Hz)", 325, 250);
+			break;
+	}
+}
+
+function onDataLoadRange(json) {	
+	// we need channel data to be selectable, so do not discard it 
+	channel1data = json.channel1;
+	channel2data = json.channel2;
+	channel3data = json.channel3;
+	channel4data = json.channel4;
+	triggerdata = json.trigger;
+	benchmarkTriggerdata = json.benchmarkTrigger;	
+	data = [];
+	data.push(channel1data);
+	data.push(channel2data);
+	data.push(channel3data);
+	data.push(channel4data);
+	trigger = [];
+	trigger.push(json.trigger);
+	originalChanYMin = chanOptions.yaxis.min;
+	originalChanYMax = chanOptions.yaxis.max;
+	originalTrigYMin = trigOptions.yaxis.min;
+	originalTrigYMax = trigOptions.yaxis.max;
+
+	onOffPlot = $.plot($("#channelChart"), data, $.extend({}, chanOptions, {xaxis: {mode: "time",timeformat: "%m/%d/%y"}}, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel } ]}));
+	trigPlot = $.plot($("#triggerChart"), trigger ,$.extend({}, trigOptions,{xaxis: {mode: "time",timeformat: "%m/%d/%y"}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+	writeLegends2();
+}
 
