@@ -211,7 +211,7 @@ while(<IN>){
 			$non_datalines ++;
 			next;
 		}
-		#next if substr($dataRow[11],3,2) >> substr($year,2,2); #more GPS munging GPS date cannot be later than upload or earlier than 1999
+		# substr($dataRow[11],3,2) >> substr($year,2,2); #more GPS munging GPS date cannot be later than upload or earlier than 1999
 		if (substr($dataRow[11],4,2) > substr($year,2,2)){#more GPS munging
 			$GPSSuspects++;
 			#print $., " Year in raw data line is bad, boss\n";
@@ -247,7 +247,7 @@ while(<IN>){
 			if ($flaggedTime != $dataRow[10]){ #The clock has advanced, do some clean up and move on
 				$rollover_flag = 0;
 				$flaggedLatch = $flaggedTime = 0;
-				$lastTime = $dataRow[10];
+				$lastTime = $dataRow[10] if $lastDate == $dataRow[11]; #fixing bug 655
 				$cpld_latch = hex($dataRow[9]);
 			}
 			if ($flaggedDate != $dataRow[11]){#the date advanced
