@@ -26,13 +26,25 @@
 	else {
 		throw new ElabJspException("The user management provider does not support management of DAQ IDs. ");
 	}    
-
+	String message = "";
 	String id = request.getParameter("id");
 	AnalysisRun results = AnalysisManager.getAnalysisRun(elab, user, id);
 	ArrayList fileArray = (ArrayList) results.getAttribute("inputfiles");
+	//check that there is data from only one detector
+	String[] detector = new String[fileArray.size()];
+	for (int i = 0; i < fileArray.size(); i++) {
+		String filename = (String) fileArray.get(i);
+		String[] parts = filename.split("\\.");
+		detector[i] = parts[0];
+	}
+	for (int i = 0; i < detector.length - 1; i++) {
+		if (detector[i] != detector[i+1]) {
+			message = "We cannot graph data from multiple detectors.";
+		}
+	}
 	Collections.sort(fileArray);
 	request.setAttribute("fileArray", fileArray);
-	String detector = request.getParameter("detectorId");
+	
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -81,47 +93,47 @@
 			});
 		</script>	
 <h1>View blessing plots by date range.</h1>
-
-<form id="viewBlessingPlots" method="post">
-				<h2>Rates</h2>
-				<!-- control added to change axes values -->
-				<jsp:include page="chartcontrols-range.jsp">
-					<jsp:param name="chartName" value="channel" />
-				</jsp:include>				
-				<div id="channels" style="background-color:#FFFFFF">
-					<div id="channelChart" style="width:750px; height:250px; text-align: left;"></div>
-					<div id="channelChartLegend" style="width: 750px;"></div>
-				</div>
-				<!-- EPeronja-07/31/2013 570-Bless Charts: add option to save them as plots -->
-				<div style="text-align:center; width: 100%;">
-					Filename <input type="text" name="channelChartName" id="channelChartName" value=""></input><input type="button" name="save" onclick='return saveChart(onOffPlot, "channelChartName", "channelMsg");' value="Save Channel Chart"></input>     
-					<div id="channelMsg"></div>   
-				</div>
-									
-				<h2>Trigger Rate</h2>
-				<!-- control added to change axes values -->
-				<jsp:include page="chartcontrols-range.jsp">
-					<jsp:param name="chartName" value="trigger" />
-				</jsp:include>					
-				<div id ="triggerChart" style="width:750px; height:250px; text-align: left;"></div>
-				<div style="text-align:center; width: 100%;">
-					Filename <input type="text" name="triggerChartName" id="triggerChartName" value=""></input><input type="button" name="save" onclick='return saveChart(trigPlot, "triggerChartName", "triggerMsg");' value="Save Trigger Chart"></input>     
-					<div id="triggerMsg"></div>   
-				</div>
-
-<c:if test="${not empty fileArray}">
-	<table>
-		<tr><th>Files in charts</th></tr>
-	<c:forEach items="${fileArray }" var="file">
-		<tr><td>${file }</td></tr>
-	</c:forEach>
-	</table>
-</c:if>
+	<c:choose>
+		<c:when test="${empty message }">
+			<h2>Rates</h2>
+			<!-- control added to change axes values -->
+			<jsp:include page="chartcontrols-range.jsp">
+				<jsp:param name="chartName" value="channel" />
+			</jsp:include>				
+			<div id="channels" style="background-color:#FFFFFF">
+				<div id="channelChart" style="width:750px; height:250px; text-align: left;"></div>
+				<div id="channelChartLegend" style="width: 750px;"></div>
+			</div>
+			<!-- EPeronja-07/31/2013 570-Bless Charts: add option to save them as plots -->
+			<div style="text-align:center; width: 100%;">
+				Filename <input type="text" name="channelChartName" id="channelChartName" value=""></input><input type="button" name="save" onclick='return saveChart(onOffPlot, "channelChartName", "channelMsg");' value="Save Channel Chart"></input>     
+				<div id="channelMsg"></div>   
+			</div>
+								
+			<h2>Trigger Rate</h2>
+			<!-- control added to change axes values -->
+			<jsp:include page="chartcontrols-range.jsp">
+				<jsp:param name="chartName" value="trigger" />
+			</jsp:include>					
+			<div id ="triggerChart" style="width:750px; height:250px; text-align: left;"></div>
+			<div style="text-align:center; width: 100%;">
+				Filename <input type="text" name="triggerChartName" id="triggerChartName" value=""></input><input type="button" name="save" onclick='return saveChart(trigPlot, "triggerChartName", "triggerMsg");' value="Save Trigger Chart"></input>     
+				<div id="triggerMsg"></div>   
+			</div>
+		</c:when>
+		<c:otherwise>
+			<div>${message }</div>
+		</c:otherwise>
+	</c:choose>
+	<c:if test="${not empty fileArray}">
+		<table>
+			<tr><th>Files in charts</th></tr>
+		<c:forEach items="${fileArray }" var="file">
+			<tr><td>${file }</td></tr>
+		</c:forEach>
+		</table>
+	</c:if>
 	
-<input type="hidden" name="detector" id="detector" value="${detector}"></input>
-<input type="hidden" name="filename" id="filename" value=""></input>
-<input type="hidden" name="detectorId" id="detectorId" value =""></input>
-</form>
 			</div>
 			<!-- end content -->	
 		
