@@ -68,6 +68,10 @@
 </p>
 
 <p>
+	<a href="../analysis-blessing/bless-plots-range.jsp?id=${results.id }">View blessing plots</a>
+</p>
+
+<p>
 	<img src="${results.outputDirURL}/plot.png"/>
 </p>
 			</div>
