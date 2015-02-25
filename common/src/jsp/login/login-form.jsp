@@ -1,3 +1,4 @@
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
 	String prevPage = request.getParameter("prevPage");
 	if (prevPage == null) {
@@ -5,6 +6,7 @@
 	}
 	String login_as = request.getParameter("login_as");
 	request.setAttribute("login_as", login_as);
+	request.setAttribute("prevPage", prevPage);
 %>
 <form method="post" action="<%= elab.secure("login/login.jsp") %>">
 	<table>
@@ -41,7 +43,7 @@
 		<% } %>
 	</table>
 	<input type="hidden" name="project" value="${elab.name}" />
-	<input type="hidden" name="prevPage" value="<%= prevPage %>" />
+	<input type="hidden" name="prevPage" value="${fn:escapeXml(prevPage)}" />
 	<c:forEach var="e" items="${postParams}">
 		<c:forEach var="v" items="${e.value}">
 			<input type="hidden" name="${e.key}" value="${v}" />

@@ -1,3 +1,4 @@
+<%@page import="java.net.URLDecoder"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ page import="gov.fnal.elab.ElabGroup" %>
@@ -36,7 +37,7 @@
 		if(prevPage == null) {
     		prevPage = elab.getProperties().getLoggedInHomePage();
 		}
-		
+		prevPage = URLDecoder.decode(prevPage);
 		// I finally found the solution to the double login problem, and it's this
         // one line.  :)  Please don't remove.
         //
@@ -110,7 +111,7 @@
 
             if (password.length() < 6) { // Why not everybody? -EAM 10Jun2009 
             		                     // only teachers have access to the password change page
-            	redirect = "small-password.jsp?prevPage=" + URLEncoder.encode(prevPage);
+            	redirect = "small-password.jsp?prevPage=" + prevPage;
             }
         }  
         Cookie authenticationCookie = new Cookie("auth",  authenticator);

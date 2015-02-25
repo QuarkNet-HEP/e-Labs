@@ -71,6 +71,7 @@
 	request.setAttribute("academicYearValues", academicYearValues);
 	request.setAttribute("academicYearLabels", academicYearLabels);
 	request.setAttribute("defaultYear", defaultYear);
+	request.setAttribute("prevPage",prevPage);
 	
 	if ("Update Group Information".equals(submit)) {
 		if (groupName != null && ay != null && survey != null) {
@@ -158,7 +159,7 @@
 					
 				out.write("<div class=\"results\">" + groupName + "'s information was successfully updated. ");
 				if (StringUtils.isNotBlank(prevPage) && !prevPage.endsWith("null")) {
-					out.write("<a href=\"" + java.net.URLDecoder.decode(prevPage) + "\">Click here to continue onto the e-lab</a>");
+					out.write("<a href=\"" + prevPage + "\">Click here to continue onto the e-lab</a>");
 				}
 				out.write("</div>");
 				request.setAttribute("group", group);
@@ -176,7 +177,7 @@
 
 %>
 <form name="update-group-form" method="post" action="">
-	<input type="hidden" name="prevPage" value="<%=prevPage%>"/>
+	<input type="hidden" name="prevPage" value="${prevPage}"/>
 	<p>
 		<e:trselect name="chooseGroup" valueList="${user.groupNames}" labelList="${user.groupNames}"/>
 		<input type="submit" name="submit" value="Show Group Info"/>

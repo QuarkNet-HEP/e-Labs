@@ -3,6 +3,8 @@
 <%@ page import="java.util.*" %>
 <%@ page import="java.net.*" %>
 <%@ page import="java.lang.*" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <%
 TreeMap<String,String> links = new TreeMap<String,String>();
 try {
@@ -14,7 +16,8 @@ try {
 	for (int i = 0; i < list.length; i++) {
 		String linkString = list[i].toString();
 		String linkName = linkString.substring(linkString.lastIndexOf("/")+1, linkString.length() );
-		links.put(linkName,linkName);
+		String linkKey = linkName.substring(0, linkName.lastIndexOf("."));
+		links.put(linkKey,linkName);
 	}
 } catch (Exception ex) {
 	
@@ -53,7 +56,7 @@ request.setAttribute("links", links);
 			<tr>
 				<td>
 					<ul>
-						<li><a href="../data/download?filename=${links.value }&elab=${elab.name}&type=equip">${links.key }</a></li>
+						<li><a href="../data/download?filename=${fn:escapeXml(links.value) }&elab=${fn:escapeXml(elab.name)}&type=equip">${fn:escapeXml(links.key) }</a></li>
 					</ul>
 				</td>
 			</tr>
