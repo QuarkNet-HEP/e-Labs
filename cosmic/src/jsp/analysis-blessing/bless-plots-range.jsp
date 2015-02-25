@@ -18,32 +18,32 @@
 <%@ page import="org.apache.commons.lang.time.DateUtils" %>
 
 <%
-	ElabUserManagementProvider p = elab.getUserManagementProvider();
-	CosmicElabUserManagementProvider cp = null;
-	if (p instanceof CosmicElabUserManagementProvider) {
-		cp = (CosmicElabUserManagementProvider) p;
-	}
-	else {
-		throw new ElabJspException("The user management provider does not support management of DAQ IDs. ");
-	}    
-	String message = "";
 	String id = request.getParameter("id");
-	AnalysisRun results = AnalysisManager.getAnalysisRun(elab, user, id);
+
+	//this code is for admin to be able to see the graph
+	String userParam = (String) request.getParameter("user");
+	if (userParam == null) {
+		userParam = (String) session.getAttribute("userParam");
+	}
+	session.setAttribute("userParam", userParam);
+	ElabGroup auser = user;
+	if (userParam != null) {
+	    if (!user.isAdmin()) {
+	    	throw new ElabJspException("You must be logged in as an administrator" 
+	        	+ "to see the status of other users' analyses");
+	    }
+	    else {
+	        auser = elab.getUserManagementProvider().getGroup(userParam);
+	    }
+	}
+
+	//AnalysisRun run = AnalysisManager.getAnalysisRun(elab, auser, id);	
+
+	AnalysisRun results = AnalysisManager.getAnalysisRun(elab, auser, id);
 	ArrayList fileArray = (ArrayList) results.getAttribute("inputfiles");
-	//check that there is data from only one detector
-	String[] detector = new String[fileArray.size()];
-	for (int i = 0; i < fileArray.size(); i++) {
-		String filename = (String) fileArray.get(i);
-		String[] parts = filename.split("\\.");
-		detector[i] = parts[0];
-	}
-	for (int i = 0; i < detector.length - 1; i++) {
-		if (detector[i] != detector[i+1]) {
-			message = "We cannot graph data from multiple detectors.";
-		}
-	}
 	Collections.sort(fileArray);
 	request.setAttribute("fileArray", fileArray);
+	request.setAttribute("id", id);
 	
 %>
 
@@ -93,6 +93,7 @@
 			});
 		</script>	
 <h1>View blessing plots by date range.</h1>
+<div style="text-align: center;"><a href="../analysis-flux/output.jsp?id=${id}">Go back to Flux Study</a></div>
 	<c:choose>
 		<c:when test="${empty message }">
 			<h2>Rates</h2>
