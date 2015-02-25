@@ -28,12 +28,13 @@ public class ThresholdTimesProcess {
     private long lastRePPSTime, lastRePPSCount;
     private int lastGPSDay, jd;
     private String lastSecString;
-    private double lastEdgeTime;
+    private double lastEdgeTime, lastjdplustime;
     private double cpldFrequency;
     private long starttime, endtime;
     private static int lineCount;
+    private static int printLineCount;
     private int currentDetector;
-    
+
     public static final NumberFormat NF0F = new DecimalFormat("0");
     public static final NumberFormat NF2F = new DecimalFormat("0.00");
     public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
@@ -67,72 +68,73 @@ public class ThresholdTimesProcess {
     public void createTTFiles() {
         starttime = System.currentTimeMillis();
         lineCount = 0;
-	    for (int i = 0; i < inputFiles.length; i++) {
-	        lastSecString = "";
-	        retime = new double[4];
-	        fetime = new double[4];
-	        retimeINT = new double[4];
-	        fetimeINT = new double[4];
-	        rePPSTime = new long[4];
-	        rePPSCount = new long[4];
-	        reDiff = new long[4];
-	        reTMC = new int[4];	 
-	        jd = 0;
-	        lastGPSDay = 0;
-	        lastEdgeTime = 0;
-	        lastRePPSTime = 0;
-	        lastRePPSCount = 0;
-	    	try {
-	    		//check if the .thresh exists, if so, do not overwrite it
-	    		File tf = new File(outputFiles[i]);
-	    		//if (tf.exists()) {
-	    		//	System.out.println("File exists: "+outputFiles[i]+" - not overwriting it");
-	    		//	continue;
-	    		//}
-	    		
-		    	BufferedReader br = new BufferedReader(new FileReader(inputFiles[i]));
-		        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFiles[i]));
-		        
-		        bw.write("#$md5\n");
-		        bw.write("#md5_hex(0)\n");
-		        bw.write("#ID.CHANNEL, Julian Day, RISING EDGE(sec), FALLING EDGE(sec), TIME OVER THRESHOLD (nanosec), RISING EDGE(INT), FALLING EDGE(INT)\n");
-		
-		        cpldFrequency = cpldFrequencies[i];
-		        currentDetector = Integer.parseInt(detectorIDs[i]);
-		        
-		        if (cpldFrequency == 0) {
-		        	if (Integer.parseInt(detectorIDs[i]) < detectorSeriesChange) {
-		        		cpldFrequency = 41666667;
-		        	} else {
-		        		cpldFrequency = 25000000;
-		        	}
-		        }
-		        String line = br.readLine();
-		        boolean printoneexception = true;
-		        while (line != null) {
-		            String[] parts = line.split("\\s"); // line validated in split.pl
-		            for (int j = 0; j < 4; j++) {
-		            	try {
-		            		timeOverThreshold(parts, j, detectorIDs[i], bw);
-		            	} catch (Exception e) {
-		            		if (printoneexception) {
-		            			printoneexception = false;
-			            		System.out.println("Exception for file: "+inputFiles[i]+": " + e.toString());
-		            		}
-		            		continue;
-		            	}
-		            }
-		            line = br.readLine();
-		        }
-		        bw.close();
-		        br.close();
-		        lineCount++;
-	    		System.out.println("Processed file: " + inputFiles[i]+" "+ String.valueOf(i) + " files out of " + String.valueOf(inputFiles.length));
-	    	} catch (IOException ioe) {
-	    		System.out.println("File not found: " + inputFiles[i]);
-	    	}
-	    }//end of for loop
-	    //record how long it took
+        printLineCount = 0;
+        try {
+		    for (int i = 0; i < inputFiles.length; i++) {
+		        lastSecString = "";
+		        retime = new double[4];
+		        fetime = new double[4];
+		        retimeINT = new double[4];
+		        fetimeINT = new double[4];
+		        rePPSTime = new long[4];
+		        rePPSCount = new long[4];
+		        reDiff = new long[4];
+		        reTMC = new int[4];	 
+		        jd = 0;
+		        lastGPSDay = 0;
+		        lastEdgeTime = 0;
+		        lastRePPSTime = 0;
+		        lastRePPSCount = 0;
+		        lastjdplustime = 0;
+		    	try {
+			    	BufferedReader br = new BufferedReader(new FileReader(inputFiles[i]));
+			        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFiles[i]));
+			        			        
+			        bw.write("#$md5\n");
+			        bw.write("#md5_hex(0)\n");
+			        bw.write("#ID.CHANNEL, Julian Day, RISING EDGE(sec), FALLING EDGE(sec), TIME OVER THRESHOLD (nanosec), RISING EDGE(INT), FALLING EDGE(INT)\n");
+			
+			        cpldFrequency = cpldFrequencies[i];
+			        currentDetector = Integer.parseInt(detectorIDs[i]);
+			        
+			        if (cpldFrequency == 0) {
+			        	if (Integer.parseInt(detectorIDs[i]) < detectorSeriesChange) {
+			        		cpldFrequency = 41666667;
+			        	} else {
+			        		cpldFrequency = 25000000;
+			        	}
+			        }
+	        		cpldFrequency = 25000000;
+			        String line = br.readLine();
+			        
+			        boolean printoneexception = true;
+			        while (line != null) {
+			            String[] parts = line.split("\\s"); // line validated in split.pl
+			            for (int j = 0; j < 4; j++) {
+			            	try {
+			            		timeOverThreshold(parts, j, detectorIDs[i], bw);
+			            	} catch (Exception e) {
+			            		if (printoneexception) {
+			            			printoneexception = false;
+				            		System.out.println("Exception for file: "+inputFiles[i]+": " + e.toString());
+			            		}
+			            		continue;
+			            	}
+			            }
+			            line = br.readLine();
+			        }
+			        bw.close();
+			        br.close();
+			        lineCount++;
+		    		System.out.println("Processed file: " + inputFiles[i]+" "+ String.valueOf(i) + " files out of " + String.valueOf(inputFiles.length));
+		    	} catch (IOException ioe) {
+		    		System.out.println("File not found: " + inputFiles[i]);
+		    	}
+		    }//end of for loop
+        } catch (Exception ex) {
+        	
+        }
+		//record how long it took
         endtime = System.currentTimeMillis();
         System.out.println("The Threshold Time process took: " + formatTime(endtime - starttime) + " for " + String.valueOf(lineCount) + " files\n");
     }
@@ -145,7 +147,7 @@ public class ThresholdTimesProcess {
     	long exp = Double.valueOf("1.0E+11").longValue();
     	int indexRE = channel * 2 + 1;
         int indexFE = indexRE + 1;
-
+        
         int type = Integer.parseInt(parts[1], 16);
         if ((type & 0x80) != 0) {
             retime[channel] = 0;
@@ -160,7 +162,6 @@ public class ThresholdTimesProcess {
         	edgetimeSeconds = calctime(channel, decFE, parts);
         	fetime[channel] = edgetimeSeconds/86400;
         	fetimeINT[channel] = edgetimeSeconds * exp;
-        	
             if (fetime[channel] != 0 && fetimeINT[channel] != 0) {
             	printData(channel, parts, detector, bw);
                 clearChannelState(channel);
@@ -229,15 +230,26 @@ public class ThresholdTimesProcess {
                 msecOffset = sign * Integer.parseInt(parts[15].substring(1));            	
             }
             double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
-            jd = currLineJD(offset, parts);
+            //Bug 469: the rollover of the julian day and the RE needs be in sync
+            //		   to check that, the new julian day + rising edge needs to be larger than the prior one
+            if (lastjdplustime > 0) {
+            	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
+            	double tempdiff = tempjdplustime - lastjdplustime;
+            	if (tempdiff < 1.0) {
+                    jd = currLineJD(offset, parts);           		
+            	}
+            } else {
+                jd = currLineJD(offset, parts);           		            	
+            }
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
         }
 
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
         String id = detector + "." + (channel + 1);
-
         if (nanodiff >= 0 && nanodiff < 10000) {
+        	lastjdplustime = jd + retime[channel];
+        	printLineCount = printLineCount + 1;
             wr.write(id);
             wr.write('\t');
             wr.write(String.valueOf(jd));
@@ -252,52 +264,57 @@ public class ThresholdTimesProcess {
             wr.write('\t');
             wr.write(NF0F.format(fetimeINT[channel]));
             wr.write('\n');
-        }
+         }
     }
 
     private double calctime(int channel, int edge, String[] parts) {
         int tmc = edge & 0x1f;
-	    if (rePPSTime[channel] == 0 || rePPSCount[channel] == 0) {
-            rePPSTime[channel] = lastRePPSTime;
-            rePPSCount[channel] = lastRePPSCount;
-            String currSecString = parts[10] + parts[15];
-            boolean answer = currentDetector > 5999;
-            
-        	if (currentDetector >= detectorSeriesChange) {
-        		currSecString = parts[10];
-        	}           
-            if (!currSecString.equals(lastSecString)) {
-            	if (currentDetector >= detectorSeriesChange) {
-            		rePPSTime[channel] = currentPPSSeconds(parts[10], "+0");
-            	} else {
-            		rePPSTime[channel] = currentPPSSeconds(parts[10], parts[15]);            		
-            	}
-                rePPSCount[channel] = Long.parseLong(parts[9], 16);
-                lastRePPSTime = rePPSTime[channel];
-                lastRePPSCount = rePPSCount[channel];
-                lastSecString = currSecString;   
-            }
-            reTMC[channel] = tmc;
-            reDiff[channel] = Long.parseLong(parts[0], 16) - rePPSCount[channel];
+        try {
+ 		    if (rePPSTime[channel] == 0 || rePPSCount[channel] == 0) {
+	            rePPSTime[channel] = lastRePPSTime;
+	            rePPSCount[channel] = lastRePPSCount;
+	            String currSecString = parts[10] + parts[15];
+	            boolean answer = currentDetector > 5999;
+	            
+	        	if (currentDetector >= detectorSeriesChange) {
+	        		currSecString = parts[10];
+	        	}           
+	            if (!currSecString.equals(lastSecString)) {
+	            	if (currentDetector >= detectorSeriesChange) {
+	            		rePPSTime[channel] = currentPPSSeconds(parts[10], "+0");
+	            	} else {
+	            		rePPSTime[channel] = currentPPSSeconds(parts[10], parts[15]);            		
+	            	}
+	            	rePPSCount[channel] = Long.parseLong(parts[9], 16);
+	                lastRePPSTime = rePPSTime[channel];
+	                lastRePPSCount = rePPSCount[channel];
+	                lastSecString = currSecString;   
+	            }
+	        	reTMC[channel] = tmc;
+	            reDiff[channel] = Long.parseLong(parts[0], 16) - rePPSCount[channel];
+		    }
+		      
+		    long parsed = Long.parseLong(parts[0], 16);
+	        long diff = Long.parseLong(parts[0], 16) - rePPSCount[channel];
+	
+	        if (diff < -0xaaaaaaaal) {
+	            diff += 0xffffffffl;
+	            //Bug 469: if the difference is negative, the number needs to be corrected
+	            //		   but it was not stored for later use, now fixed by this:
+	            reDiff[channel] = diff;
+	        }
+	        double first_part = rePPSTime[channel];
+	        double second_part = diff / cpldFrequency;
+	        double third_part = tmc / (cpldFrequency * 32);
+	        double edgetime = rePPSTime[channel] + diff / cpldFrequency + tmc / (cpldFrequency * 32);
+	        if (edgetime > 86400) {
+	            edgetime -= 86400;
+	        }
+	        return edgetime;
+        } catch(Exception e) {
+        	
         }
-	    
-	    
-	    long parsed = Long.parseLong(parts[0], 16);
-        long diff = Long.parseLong(parts[0], 16) - rePPSCount[channel];
-
-        if (diff < -0xaaaaaaaal) {
-            diff += 0xffffffffl;
-        }
-
-        double first_part = rePPSTime[channel];
-        double second_part = diff / cpldFrequency;
-        double third_part = tmc / (cpldFrequency * 32);
-        double edgetime = rePPSTime[channel] + diff / cpldFrequency + tmc / (cpldFrequency * 32);
-        if (edgetime > 86400) {
-            edgetime -= 86400;
-        }
-        //return edgetime / 86400;
-        return edgetime;
+        return 0;
     }
     
     public double truncateDouble(double number, int numDigits) {
@@ -387,7 +404,7 @@ public class ThresholdTimesProcess {
             month = month + 12;
             year = year - 1;
         }      
-        return (2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60.0 + second/3600.0)/24;
+        return (2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60 + second/3600.0)/24;
     }
     
     //main receives a txt file created from a query to the database

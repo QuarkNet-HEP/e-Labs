@@ -33,7 +33,7 @@ public class ThresholdTimes {
     private long lastRePPSTime, lastRePPSCount;
     private int lastGPSDay, jd;
     private String lastSecString;
-    private double lastEdgeTime;
+    private double lastEdgeTime, lastjdplustime;
     private double cpldFrequency;
     private int currentDetector;
     Elab elabReference;
@@ -86,6 +86,7 @@ public class ThresholdTimes {
 		        lastEdgeTime = 0;
 		        lastRePPSTime = 0;
 		        lastRePPSCount = 0;
+		        lastjdplustime = 0;
 		        
 				String inputFile = elabReference.getProperties().getDataDir() + File.separator + detectorIDs[i] +File.separator + inputFiles[i];
 				String outputFile = elabReference.getProperties().getDataDir() + File.separator + detectorIDs[i] +File.separator + outputFiles[i];
@@ -221,7 +222,18 @@ public class ThresholdTimes {
                 msecOffset = sign * Integer.parseInt(parts[15].substring(1));            	
             }
             double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
-            jd = currLineJD(offset, parts);
+            //Bug 469: the rollover of the julian day and the RE needs be in sync
+            //		   to check that, the new julian day + rising edge needs to be larger than the prior one
+            if (lastjdplustime > 0) {
+            	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
+            	double tempdiff = tempjdplustime - lastjdplustime;
+            	if (tempdiff < 1.0) {
+                    jd = currLineJD(offset, parts);           		
+            	}
+            } else {
+                jd = currLineJD(offset, parts);           		            	
+            }
+ 
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
         }
@@ -230,6 +242,7 @@ public class ThresholdTimes {
         String id = detector + "." + (channel + 1);
 
         if (nanodiff >= 0 && nanodiff < 10000) {
+        	lastjdplustime = jd + retime[channel];        	
             wr.write(id);
             wr.write('\t');
             wr.write(String.valueOf(jd));
@@ -281,6 +294,9 @@ public class ThresholdTimes {
 
         if (diff < -0xaaaaaaaal) {
             diff += 0xffffffffl;
+            //Bug 469: if the difference is negative, the number needs to be corrected
+            //		   but it was not stored for later use, now fixed by this:
+            reDiff[channel] = diff;
         }
 
         double edgetime = rePPSTime[channel] + diff / cpldFrequency + tmc / (cpldFrequency * 32);
@@ -335,7 +351,7 @@ public class ThresholdTimes {
             year = year - 1;
         }
         
-        return (2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60.0 + second/3600.0)/24;
+        return (2.0 -(Math.floor(year/100))+(Math.floor(year/400))+ day + Math.floor(365.25*(year+4716)) + Math.floor(30.6001*(month+1)) - 1524.5) + (hour + minute/60 + second/3600.0)/24;
         
     }
     
