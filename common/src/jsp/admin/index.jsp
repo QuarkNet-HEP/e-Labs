@@ -6,6 +6,21 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/admin-login-required.jsp" %>
 <%
+	//remove expired notifications right here
+	String message = "";
+	try {
+		ElabNotificationsProvider nprovider = ElabFactory.getNotificationsProvider((Elab) session.getAttribute("elab"));
+		List<Notification> en = nprovider.getExpiredNotifications();
+		if (en != null) {
+			for (Notification rm: en) {
+				nprovider.removeNotification(user.getGroup(), rm.getId());
+			}
+		}
+	} catch (Exception e) {
+		message = e.getMessage();
+	}
+	
+	request.setAttribute("message", message);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -37,11 +52,7 @@
 						<td>Add e-Lab users.</td>
 					</tr>
 					<tr>
-						<td>&#8226; <a href="../notifications/remove-expired-notifications.jsp">Delete expired notifications</a></td>
-						<td>Delete notifications with expiration dates older than 30 days ago.</td>					
-					</tr>
-					<tr>
-						<td>&#8226; <a href="../references/control.jsp"> FAQs Add/Update</a></td>
+						<td>&#8226; <a href="../references/control.jsp">FAQs Add/Update</a></td>
 						<td>Add, update FAQ items.</td>					
 					</tr>					
 					<tr>
@@ -55,10 +66,6 @@
 					<tr>
 						<td>&#8226; <a href="../teacher/mark-teacher-status.jsp">Set group status</a></td>
 						<td>Set teachers and their research groups to active/inactive.</td>					
-					</tr>
-					<tr>
-						<td>&#8226; <a href="../unit-testing/index.jsp">Unit Testing</a></td>
-						<td>Run automated tests for written code grouped by functionality.</td>					
 					</tr>
 					<tr>
 						<td>&#8226; <a href="../statistics">View e-Lab Statistics</a></td>
@@ -79,23 +86,9 @@
 							<td>Create individual threshold times files if they failed to be created at upload time.</td>
 						</tr>
 						<tr>
-							<td>&#8226; <a href="../analysis-blessing/benchmark-process-rerun.jsp">Rerun unblessed files by selected benchmark</a></td>
-							<td>Try bless unblessed files by using the same benchmark.</td>
-						</tr>
-						<tr>
 							<td>&#8226; <a href="../analysis/list-all.jsp">View all analyses</a></td>
 							<td>List of analyses by all users.</td>
 						</tr>
-						<!--  
-						<tr>
-							<td>&#8226; <a href="../analysis/cosmic-analysis-errors.jsp">Add, Update Cosmic Analysis Errors</a></td>
-							<td>Enter cosmic common errors and suggestions on what to do, fix, etc.</td>
-						</tr>
-						<tr>
-							<td>&#8226; <a href="../analysis/analysis-queue.jsp">View analysis queue</a></td>
-							<td>View queued analyses and their statuses.</td>
-						</tr>
-						-->
 						<tr>
 							<td>&#8226; <a href="../analysis-blessing/benchmark-info.jsp">View upload plus benchmark information</a></td>
 							<td>View split files and their blessed/unblessed status details.</td>
@@ -104,7 +97,9 @@
 				</table>
 			</div>
 			<!-- end content -->	
-		
+			<c:if test="${not empty message }">
+				<div>${message}</div>
+			</c:if>
 			<div id="footer">
 			</div>
 		</div>
