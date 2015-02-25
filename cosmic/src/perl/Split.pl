@@ -211,7 +211,7 @@ while(<IN>){
 			$non_datalines ++;
 			next;
 		}
-		#next if substr($dataRow[11],3,2) >> substr($year,2,2); #more GPS munging GPS date cannot be later than upload or earlier than 1999
+		# substr($dataRow[11],3,2) >> substr($year,2,2); #more GPS munging GPS date cannot be later than upload or earlier than 1999
 		if (substr($dataRow[11],4,2) > substr($year,2,2)){#more GPS munging
 			$GPSSuspects++;
 			#print $., " Year in raw data line is bad, boss\n";
@@ -247,7 +247,7 @@ while(<IN>){
 			if ($flaggedTime != $dataRow[10]){ #The clock has advanced, do some clean up and move on
 				$rollover_flag = 0;
 				$flaggedLatch = $flaggedTime = 0;
-				$lastTime = $dataRow[10];
+				$lastTime = $dataRow[10] if $lastDate == $dataRow[11]; #fixing bug 655
 				$cpld_latch = hex($dataRow[9]);
 			}
 			if ($flaggedDate != $dataRow[11]){#the date advanced
@@ -498,7 +498,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 	    $min = substr($dataRow[10], 2, 2);
 	    $sec = substr($dataRow[10], 4, 2);
 	    $msec = substr($dataRow[10], 7, 3);
-	    $offset = $dataRow[15] if $ID < 6000; # Fixes bug 459
+	    $offset = $dataRow[15]; # if $ID < 6000; # Fixes bug 459 removing the conditional to test fixes to shower.
 
 
 		#The following IF block sends the date and time fromt the current line to an external module to ask what the date and time are. 
@@ -611,7 +611,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					# When ST3 these onboard registers are cleared after each printing, so there is no need to do the subtraction.
 					# We just need to see if these (stCountN and stEvents) keep growing over the life of the file. If they do, we need to subtract one from the next to get the scalar increment over the integration time.
 					
-					die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged. We have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount && $DAQID > 0;
+					die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged. We have stopped your upload. We created $numSplitFiles usable file(s) before this error."  if $dsRowCount != $stRowCount || $dsRowCount == 0; #(removing the comment before the OR in this conditional it somehow got removed)
 					
 					if ($dsRowCount > 0){
 						#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
@@ -826,7 +826,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 	        $cpld_hour = substr($dataRow[10], 0, 2);
     	    $cpld_min = substr($dataRow[10], 2, 2);
         	$cpld_sec = substr($dataRow[10], 4, 6);
-	        $cpld_sec_offset = sprintf("%.0f", $cpld_sec + ($dataRow[15]/1000)) if $DAQID < 6000;
+	        $cpld_sec_offset = sprintf("%.0f", $cpld_sec + ($dataRow[15]/1000)); # if $DAQID < 6000 (removing the conditional to test fixes to shower);
     	    $cpld_day_seconds = $cpld_hour*3600 + $cpld_min*60 + $cpld_sec_offset;
         	
         	$cpld_day_seconds = 0 if $cpld_day_seconds == 86400;
@@ -876,7 +876,7 @@ else{
 	
 	#die "These data do not contain the same number of ST and DS lines; we have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount;
 
-	die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged.  We have stopped your upload.  We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount; #$dsRowCount == 0;
+	die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged.  We have stopped your upload.  We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount || $dsRowCount == 0; #(removing the comment before the OR in this conditional it somehow got removed).
 					
 	if ($dsRowCount > 0){
 		#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
