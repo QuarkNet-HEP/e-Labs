@@ -3,6 +3,7 @@
 	if (prevPage == null) {
 		prevPage = elab.getProperties().getLoggedInHomePage();
 	}
+	request.setAttribute("prevPage",prevPage);
 %>
 <form method="post" action="<%= elab.secure("login/admin-login.jsp") %>">
 	<table>
@@ -42,7 +43,7 @@
 		</tr>
 	</table>
 	<input type="hidden" name="project" value="${elab.name}" />
-	<input type="hidden" name="prevPage" value="<%= prevPage %>" />
+	<input type="hidden" name="prevPage" value="${prevPage}" />
 	<c:forEach var="e" items="${postParams}">
 		<c:forEach var="v" items="${e.value}">
 			<input type="hidden" name="${e.key}" value="${v}" />

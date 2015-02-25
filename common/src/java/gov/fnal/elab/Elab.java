@@ -380,7 +380,7 @@ public class Elab implements Serializable {
             prevPage = properties.getLoggedInHomePage();
         }
 
-        prevPage = "?prevPage=" + URLEncoder.encode(prevPage);
+        prevPage = "?prevPage=" + prevPage;
         String login = "&login=Login";
         String user = "&user=" + getProperties().getGuestUserName();
         String pass = "&pass=" + getProperties().getGuestUserPassword();
