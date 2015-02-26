@@ -85,6 +85,7 @@ public class BlessProcessDryRun {
 								errorCode = "2";
 								failReason = splitfile + ".bless has malformed data. ";
 							}
+
 							for (int i = 0; i < split.length; i++) {
 								if (split[i].equals("")) {
 									split[i] = "0";
@@ -155,7 +156,7 @@ public class BlessProcessDryRun {
 						newstatus = "f";
 						//blessed false	
 					}
-					if (lineNumber == 0) {
+					if (lineNumber == 0 && failReason.equals("")) {
 						errorCode = "4";
 						failReason = "The .bless file is empty. There is no information to run the blessing routine.";
 					}
