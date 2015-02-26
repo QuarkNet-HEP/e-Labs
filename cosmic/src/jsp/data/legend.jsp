@@ -3,7 +3,7 @@
 	<table>
 		<tr>
 			<td class="dt"><img src="../graphics/view_data.gif" /></td>
-			<td class="dd">View data</td>
+			<td class="dd">View data<br />Rollover for more info</td>
 		</tr>
 		<tr>
 			<td class="dt"><img src="../graphics/unstacked.gif" /></td>
@@ -15,11 +15,11 @@
 		</tr>
 		<tr>
 			<td class="dt"><img src="../graphics/star.gif" /></td>
-			<td class="dd">Blessed data<br />Click to view blessing charts</td>
+			<td class="dd">Blessed data<br />Click to view blessing charts<br />Rollover for more info</td>
 		</tr>
 		<tr>
 			<td class="dt"><img src="../graphics/unblessed.gif" /></td>
-			<td class="dd">Unblessed data<br />Click to view blessing charts</td>
+			<td class="dd">Unblessed data<br />Click to view blessing charts<br />Rollover for more info</td>
 		</tr>
 		<tr>
 			<td class="dt"><img src="../graphics/balloon_talk_blue.gif" /></td>
