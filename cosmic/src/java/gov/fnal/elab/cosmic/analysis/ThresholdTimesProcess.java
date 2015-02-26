@@ -449,18 +449,19 @@ public class ThresholdTimesProcess {
 			        	String detectorId = filename.substring(0, filename.indexOf('.'));
 			        	String path = splitLine[0] + File.separator + detectorId + File.separator;
 			        	String outputpath = "/disks/i2u2-dev/cosmic/ThresholdTimesFeb2015/Output/";
-			        	String cpldf = "";
+			        	String cpldf = "0";
 			        	inputFile.add(path+filename);
 			        	outputFile.add(outputpath+threshfile);
 			        	detector.add(detectorId);
 			        	cpldFrequency.add(cpldf);
 			        	//origin, destination: this will be the input to a python program that will copy those files
-				        bw.write(outputpath+threshfile+" "+path);
+				        bw.write(outputpath+threshfile+" "+path+"\n");
 			        }
 		            line = br.readLine();
 		        }
 		        
 		        br.close();
+		        bw.close();
 		        
     		} catch (Exception e) {
         		System.out.println("Could not open the file");    			
