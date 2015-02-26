@@ -455,7 +455,7 @@ public class ThresholdTimesProcess {
 			        	detector.add(detectorId);
 			        	cpldFrequency.add(cpldf);
 			        	//origin, destination: this will be the input to a python program that will copy those files
-				        bw.write(outputpath+threshfile+" "+path);
+				        bw.write(outputpath+threshfile+" "+path+"\n");
 			        }
 		            line = br.readLine();
 		        }
