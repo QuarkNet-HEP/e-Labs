@@ -32,6 +32,9 @@
 	if (blessfilecomment != null && !blessfilecomment.startsWith("blessfile NOT REPLACED")) {
 		blessfilecomment = "We have improved the precision on this blessfile";
 	}
+	if (blessfilecomment.startsWith("blessfile NOT REPLACED")) {
+		blessfilecomment = "We were unable to improve the precision of this blessfile";
+	}
 	entry.sort(); 
 	request.setAttribute("e", entry);
 	request.setAttribute("blessfilecomment", blessfilecomment);
