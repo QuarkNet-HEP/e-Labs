@@ -85,6 +85,11 @@ public class BlessProcessDryRun {
 								errorCode = "2";
 								failReason = splitfile + ".bless has malformed data. ";
 							}
+							for (int i = 0; i < split.length; i++) {
+								if (split[i].equals("")) {
+									split[i] = "0";
+								}
+							}
 							//compare channel 1 and see if file can be blessed
 							if (chan1rate <= (parseToDouble(split[1]) + parseToDoubleSigmas(split[2])) && chan1rate >= (parseToDouble(split[1]) - parseToDoubleSigmas(split[2]))) {
 								pass = true;
@@ -162,10 +167,11 @@ public class BlessProcessDryRun {
 		        	report.write(reportline+"\n");
 					report.close();
 				} catch (Exception e) {
-					message = e.getMessage();
+	        		System.out.println(e.getMessage()+"\n");
 				}
 			} catch (Exception e) {
-				message = e.getMessage();
+        		System.out.println(e.getMessage()+"\n");
+
 			}
 		}
 	}//end of BlessDatafile
@@ -173,6 +179,9 @@ public class BlessProcessDryRun {
 	public int parseToInt(String split)
 	{
 		int result = 0;
+		if (split.equals("")) {
+			split = "0";
+		}
 		try{
 			result = Integer.parseInt(split);
 		} catch (NumberFormatException e) {
@@ -184,6 +193,9 @@ public class BlessProcessDryRun {
 	public double parseToDouble(String split)
 	{
 		double result = 0;
+		if (split.equals("")) {
+			split = "0.0";
+		}
 		try {
 			result = Double.parseDouble(split);
 		} catch (NumberFormatException e) {
@@ -195,6 +207,9 @@ public class BlessProcessDryRun {
 	public double parseToDoubleSigmas(String split)
 	{
 		double result = 0;
+		if (split.equals("")) {
+			split = "0.0";
+		}
 		try {
 			result = Double.parseDouble(split);
 		} catch (NumberFormatException e) {
@@ -255,6 +270,9 @@ public class BlessProcessDryRun {
 			        String[] splitLine = line.split(","); 
 			        if (splitLine.length == 16) {
 			        	String split = splitLine[1];
+			        	if (split.equals("6119.2014.0610.0")) {
+			        		System.out.println(split+"\n");
+			        	}
 			        	Long chan1 = Long.parseLong(splitLine[2]);
 			        	Long chan2 = Long.parseLong(splitLine[3]);
 			        	Long chan3 = Long.parseLong(splitLine[4]);
