@@ -14,6 +14,7 @@
 <%@ page import="java.text.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.io.*" %>
+<%@ page import="java.sql.Timestamp" %>
 <%@ page import="java.util.Map.Entry" %>
 <%@ page import="org.apache.commons.lang.time.DateUtils" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
@@ -81,20 +82,31 @@
 				//check if these files have a .bless associated with them
 				for (int i=0; i < results.length; i++ ) {
 					VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(results[i]);
-					//get the icons on the right of the benchmark candidates
-					String display = Benchmark.getIcons(entry);
-					if (entry.getTupleValue("blessfile") != null) {
-						//check if file has already been selected as benchmark, the only way to add it to
-						//this list again is if the benchmarkfile flag has been set to false.
-						if (entry.getTupleValue("benchmarkfile") != null) {
-							Boolean benchmarkFile = (Boolean) entry.getTupleValue("benchmarkfile");
-							if (benchmarkFile == false) {
-								filenames.add(results[i]);
-								filenameDisplay.put(display, results[i]);
+					if (entry != null) {
+						Timestamp sd = (Timestamp) entry.getTupleValue("startdate");
+						Timestamp ed = (Timestamp) entry.getTupleValue("enddate");
+						Long diff = 0L;
+						if (ed != null && sd != null) {
+							diff = ed.getTime() - sd.getTime();
+						}
+						//EPeronja-02/26/2015: if we can calculate the duration, we send them to the user
+						if (diff > 0L) {
+							//get the icons on the right of the benchmark candidates
+							String display = Benchmark.getIcons(entry);
+							if (entry.getTupleValue("blessfile") != null) {
+								//check if file has already been selected as benchmark, the only way to add it to
+								//this list again is if the benchmarkfile flag has been set to false.
+								if (entry.getTupleValue("benchmarkfile") != null) {
+									Boolean benchmarkFile = (Boolean) entry.getTupleValue("benchmarkfile");
+									if (benchmarkFile == false) {
+										filenames.add(results[i]);
+										filenameDisplay.put(display, results[i]);
+									}
+								} else {
+									filenames.add(results[i]);
+									filenameDisplay.put(display, results[i]);
+								}
 							}
-						} else {
-							filenames.add(results[i]);
-							filenameDisplay.put(display, results[i]);
 						}
 					}
 				}
