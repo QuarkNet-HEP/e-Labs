@@ -67,8 +67,6 @@ public class ThresholdTimesProcess {
     
     public void createTTFiles() {
         starttime = System.currentTimeMillis();
-        lineCount = 0;
-        printLineCount = 0;
         try {
 		    for (int i = 0; i < inputFiles.length; i++) {
 		        lastSecString = "";
@@ -97,6 +95,7 @@ public class ThresholdTimesProcess {
 			        cpldFrequency = cpldFrequencies[i];
 			        currentDetector = Integer.parseInt(detectorIDs[i]);
 			        
+			        //hardcoded for this time around
 			        if (cpldFrequency == 0) {
 			        	if (Integer.parseInt(detectorIDs[i]) < detectorSeriesChange) {
 			        		cpldFrequency = 41666667;
@@ -104,9 +103,7 @@ public class ThresholdTimesProcess {
 			        		cpldFrequency = 25000000;
 			        	}
 			        }
-	        		cpldFrequency = 25000000;
-			        String line = br.readLine();
-			        
+			        String line = br.readLine();			        
 			        boolean printoneexception = true;
 			        while (line != null) {
 			            String[] parts = line.split("\\s"); // line validated in split.pl
@@ -125,7 +122,6 @@ public class ThresholdTimesProcess {
 			        }
 			        bw.close();
 			        br.close();
-			        lineCount++;
 		    		System.out.println("Processed file: " + inputFiles[i]+" "+ String.valueOf(i) + " files out of " + String.valueOf(inputFiles.length));
 		    	} catch (IOException ioe) {
 		    		System.out.println("File not found: " + inputFiles[i]);
@@ -249,7 +245,6 @@ public class ThresholdTimesProcess {
         String id = detector + "." + (channel + 1);
         if (nanodiff >= 0 && nanodiff < 10000) {
         	lastjdplustime = jd + retime[channel];
-        	printLineCount = printLineCount + 1;
             wr.write(id);
             wr.write('\t');
             wr.write(String.valueOf(jd));
@@ -442,7 +437,9 @@ public class ThresholdTimesProcess {
     	if (args.length == 1) {
     		String iFile = args[0];
     		try {
-    			BufferedReader br = new BufferedReader(new FileReader(iFile));			
+    			BufferedReader br = new BufferedReader(new FileReader(iFile));
+		        BufferedWriter bw = new BufferedWriter(new FileWriter("/disks/i2u2-dev/cosmic/ThresholdTimesFeb2015/Output/filesToMove"));
+		            			
 		        String line = br.readLine();
 		        while (line != null) {
 			        String[] splitLine = line.split(","); 
@@ -451,11 +448,14 @@ public class ThresholdTimesProcess {
 			        	String threshfile = splitLine[2];
 			        	String detectorId = filename.substring(0, filename.indexOf('.'));
 			        	String path = splitLine[0] + File.separator + detectorId + File.separator;
-			        	String cpldf = splitLine[3];
+			        	String outputpath = "/disks/i2u2-dev/cosmic/ThresholdTimesFeb2015/Output/";
+			        	String cpldf = "";
 			        	inputFile.add(path+filename);
-			        	outputFile.add(path+threshfile);
+			        	outputFile.add(outputpath+threshfile);
 			        	detector.add(detectorId);
 			        	cpldFrequency.add(cpldf);
+			        	//origin, destination: this will be the input to a python program that will copy those files
+				        bw.write(outputpath+threshfile+" "+path);
 			        }
 		            line = br.readLine();
 		        }
