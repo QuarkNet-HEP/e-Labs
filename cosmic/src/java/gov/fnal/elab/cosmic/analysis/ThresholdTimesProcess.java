@@ -449,7 +449,7 @@ public class ThresholdTimesProcess {
 			        	String detectorId = filename.substring(0, filename.indexOf('.'));
 			        	String path = splitLine[0] + File.separator + detectorId + File.separator;
 			        	String outputpath = "/disks/i2u2-dev/cosmic/ThresholdTimesFeb2015/Output/";
-			        	String cpldf = "";
+			        	String cpldf = "0";
 			        	inputFile.add(path+filename);
 			        	outputFile.add(outputpath+threshfile);
 			        	detector.add(detectorId);
@@ -461,6 +461,7 @@ public class ThresholdTimesProcess {
 		        }
 		        
 		        br.close();
+		        bw.close();
 		        
     		} catch (Exception e) {
         		System.out.println("Could not open the file");    			
