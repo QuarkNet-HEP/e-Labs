@@ -69,6 +69,7 @@
 	//String cpldFrequency = "";
 	String rawName = f.getName();
 	CatalogEntry entry;
+	String errorMessage = "";
 	
 	//get metadata which contains the lfns of the raw filename AND the split files
 	ArrayList meta = null;
@@ -112,11 +113,15 @@
         Iterator l = splits.iterator();
 		List entries = new ArrayList();
 		while (l.hasNext()) {
-		    CatalogEntry s = elab.getDataCatalogProvider().getEntry((String) l.next());
-		    entries.add(s);
-		    for (int k = 0; k < 4; k++) {
-		        channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).intValue();
-		    }
+			try {
+			    CatalogEntry s = elab.getDataCatalogProvider().getEntry((String) l.next());
+			    entries.add(s);
+			    for (int k = 0; k < 4; k++) {
+			        channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).intValue();
+			    }
+			} catch (Exception e) {
+				errorMessage = e.getMessage();
+			}
 		}
 		
 
@@ -127,6 +132,7 @@
 		request.setAttribute("benchmarkMessages", benchmarkMessages);
 		request.setAttribute("channels", channels);
 		request.setAttribute("splitEntries", entries);
+		request.setAttribute("errorMessage", errorMessage);
 		CatalogEntry e = elab.getDataCatalogProvider().getEntry(rawName);
 		request.setAttribute("entry", e);
 		request.setAttribute("id", detectorId);
@@ -157,7 +163,9 @@
     	</c:choose>
     	<hr/>
     	<h2>File Summary for DAQ: <%=detectorId %></h2>
-    
+ 
+<c:choose>
+	<c:when test='${errorMessage == "" }'>    
     	Your data was split into ${lfnssz} ${lfnssz == 1 ? 'day' : 'days'} spanning from:<br/>
     	${entry.tupleMap.startdate} to ${entry.tupleMap.enddate}<br/>
     	The uploaded file contained ${entry.tupleMap.totalDataLines} accepted data lines. We ignored ${entry.tupleMap.GPSSuspects} line(s) due to a suspect GPS date.
@@ -208,6 +216,12 @@
 				<p>${sqlErrors}</p>
 			</c:when>
 		</c:choose>
+	</c:when>
+	<c:otherwise>
+		These files do not exist any longer in our server. They may have been deleted.<br />
+		If you have any questions please send a message to <a href="mailto:e-labs@fnal.gov">e-labs@fnal.gov</a>	
+	</c:otherwise>
+</c:choose>
 			</div>
 			<!-- end content -->	
 		
