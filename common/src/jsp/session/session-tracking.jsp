@@ -15,6 +15,7 @@
 <%
 	int sessionCount = SessionListener.getTotalActiveSession();
 	ArrayList activeSessions = SessionListener.getTotalSessionUsers();
+	activeSessions.removeAll(Collections.singleton(null));
 	int sessionUsers = 0;
 	
 	//now create the local TreeMap
@@ -29,60 +30,70 @@
 	    //sb.append("<strong>Session ID:</strong> " + s.getId() + "<br />");
 		//get user
 		try {
-		    ElabGroup eu = (ElabGroup) s.getAttribute("elab.user");
-			Elab e = (Elab) s.getAttribute("elab");
-			if (eu != null && e != null) {
-				sessionUsers++;
-				sb.append("<strong>Username:</strong> "+ eu.getName() + "<br />");
-				String school = eu.getSchool() != null ? eu.getSchool() : "";
-				String city = eu.getCity() != null ? eu.getCity() : "";
-				String state = eu.getState() != null ? eu.getState() : "";
-				sb.append("<strong>Location:</strong> "+ school + ", " + city + " - " + state + "<br />");
-				sb.append("<strong>Role:</strong> "+ eu.getRole() + "<br />");
-				sb.append("<strong>Logged in to:</strong> "+ e.getName() + "<br />");
-	            synchronized(clickstreams) {
-	                Iterator it = clickstreams.keySet().iterator();
-	                while (it.hasNext())
-	                {
-	                	try {
-		                    String streamkey = (String)it.next();
-		                    if (streamkey.equals(s.getId())) {
-			                    Clickstream stream = (Clickstream)clickstreams.get(s.getId());
-			                    sb.append("<strong>Time Started:</strong> "+String.valueOf(stream.getStart())+ "<br />");
-			                    sb.append("<strong>Last Request:</strong> "+String.valueOf(stream.getLastRequest())+ "<br />");
-			                    long streamLength = stream.getLastRequest().getTime() - stream.getStart().getTime();
-			                    sb.append("<strong>Session Length:</strong> "+String.valueOf((streamLength > 3600000 ?
-						        		" " + (streamLength / 3600000) + " hours" : "") +
-						        	(streamLength > 60000 ?
-						        		" " + ((streamLength / 60000) % 60) + " minutes" : "") +
-						        	(streamLength > 1000 ?
-						        		" " + ((streamLength / 1000) % 60) + " seconds" : ""))+ "<br />");
-							   sb.append("<strong># of Requests:</strong> "+String.valueOf(stream.getStream().size())+ "<br />");
-							    synchronized(stream) {
-						            Iterator clickstreamIt = stream.getStream().iterator();						
-									String lastLink = "";
-						            while (clickstreamIt.hasNext())
-						            {
-							            String click = clickstreamIt.next().toString();
-						                if (re.match(click) && !click.contains("status-async.jsp")) {
-						                	lastLink = click;
-						                }
-								    }
-					                sb.append("<strong>Last Link Visited:</strong> "+lastLink+ "<br />");
-								 }//end of second synchronized stream
-							}
-	                	} catch (Exception ex) {
-	                		System.out.println("Exception in session-tracking.jsp: " + ex.getMessage());
-	                	}
-					}
-	            }
-			}//end of first synchronized			
-			String sessiontext = sb.toString();
-			if (!sessiontext.equals("")) {
-	    		sessionDetails.put("<strong>Session # " + String.valueOf(i), sessiontext + "</strong>");				
+			boolean validSession = false;
+			Enumeration att_names = s.getAttributeNames();
+			while (att_names.hasMoreElements()) {
+				String attr = (String) att_names.nextElement();
+				if (attr.equals("elab")) {
+					validSession = true;
+				}
 			}
+			if (validSession) {
+				ElabGroup eu = (ElabGroup) s.getAttribute("elab.user");
+				Elab e = (Elab) s.getAttribute("elab");
+				if (eu != null && e != null) {
+					sessionUsers++;
+					sb.append("<strong>Username:</strong> "+ eu.getName() + "<br />");
+					String school = eu.getSchool() != null ? eu.getSchool() : "";
+					String city = eu.getCity() != null ? eu.getCity() : "";
+					String state = eu.getState() != null ? eu.getState() : "";
+					sb.append("<strong>Location:</strong> "+ school + ", " + city + " - " + state + "<br />");
+					sb.append("<strong>Role:</strong> "+ eu.getRole() + "<br />");
+					sb.append("<strong>Logged in to:</strong> "+ e.getName() + "<br />");
+		            synchronized(clickstreams) {
+		                Iterator it = clickstreams.keySet().iterator();
+		                while (it.hasNext())
+		                {
+		                	try {
+			                    String streamkey = (String)it.next();
+			                    if (streamkey.equals(s.getId())) {
+				                    Clickstream stream = (Clickstream)clickstreams.get(s.getId());
+				                    sb.append("<strong>Time Started:</strong> "+String.valueOf(stream.getStart())+ "<br />");
+				                    sb.append("<strong>Last Request:</strong> "+String.valueOf(stream.getLastRequest())+ "<br />");
+				                    long streamLength = stream.getLastRequest().getTime() - stream.getStart().getTime();
+				                    sb.append("<strong>Session Length:</strong> "+String.valueOf((streamLength > 3600000 ?
+							        		" " + (streamLength / 3600000) + " hours" : "") +
+							        	(streamLength > 60000 ?
+							        		" " + ((streamLength / 60000) % 60) + " minutes" : "") +
+							        	(streamLength > 1000 ?
+							        		" " + ((streamLength / 1000) % 60) + " seconds" : ""))+ "<br />");
+								   sb.append("<strong># of Requests:</strong> "+String.valueOf(stream.getStream().size())+ "<br />");
+								    synchronized(stream) {
+							            Iterator clickstreamIt = stream.getStream().iterator();						
+										String lastLink = "";
+							            while (clickstreamIt.hasNext())
+							            {
+								            String click = clickstreamIt.next().toString();
+							                if (re.match(click) && !click.contains("status-async.jsp")) {
+							                	lastLink = click;
+							                }
+									    }
+						                sb.append("<strong>Last Link Visited:</strong> "+lastLink+ "<br />");
+									 }//end of second synchronized stream
+								}
+		                	} catch (Exception ex) {
+		                		String message = "Exception in session-tracking.jsp: " + ex.getMessage();
+		                	}
+						}
+		            }
+				}//end of first synchronized			
+				String sessiontext = sb.toString();
+				if (!sessiontext.equals("")) {
+		    		sessionDetails.put("<strong>Session # " + String.valueOf(i), sessiontext + "</strong>");				
+				}
+			}//end of validSession
 		} catch (Exception e) {
-    		System.out.println("Exception in session-tracking.jsp: " + e.getMessage());			
+    		String message = "Exception in session-tracking.jsp: " + e.getMessage();			
 		}
 	}
 	request.setAttribute("sessionCount",sessionCount);
