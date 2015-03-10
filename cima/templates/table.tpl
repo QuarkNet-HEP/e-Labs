@@ -39,9 +39,10 @@
 		<div class=row>
 			<div class="container-fluid">
 
-			<div class=col-md-3  style="border-right:1px solid #000;"> <strong>final state </strong></div>
-
-			<div class=col-md-3><strong> primary </strong> </div>
+			<div class=col-md-3 style="border-left:3px double #000; border-right:1px dashed #000;"><strong> final state </strong> </div>
+			<div class=col-md-3><strong>   primary   </strong> </div>
+			<div class=col-md-3 style="border-right:1px solid #000;"> <strong>   &nbsp;    </strong> </div>
+			<div class=col-md-3 style="border-right:3px double #000;"><strong>   special   </strong> </div>
 			</div>
 		</div>
 	</div>
@@ -82,26 +83,27 @@
 		<div class=col-md-4>
 			<div class="container-fluid">
 			<div class="row">
-				<div class=col-md-3 style="border-right:1px solid #000;"> <input type="checkbox" id="e" <?php echo 'onclick="SelP(this,'.round($event["mass"],3).')"';?>  name="electron" value="e">Electron </div>
-
-				<div class=col-md-3> <input type="checkbox" <?php echo 'onclick="SelP(this,'.round($event["mass"],3).')"';?> id="H" name="Higgs" value="H">Higgs </div>
-				<div class=col-md-3><input type="checkbox" <?php echo 'onclick="SelP(this,'.round($event["mass"],3).')"';?>  id="Z" name="Z" value="Z">Z </div>
-
-				<div class=col-md-3>	<input type="checkbox" <?php echo 'onclick="SelP(this,'.round($event["mass"],3).')"';?>  id="Zoo" name="Zoo" value="Zoo">Zoo </div>
-	
+				<div class=col-md-3 style="border-left:3px double #000; border-right:1px dashed #000;"> <input type="checkbox" id="e" <?php echo 'onclick="SelP(this,'.round($event["mass"],3).')"';?>  
+name="electron" 
+value="e">Electron </div>
+				<div class=col-md-3><input type="checkbox" <?php echo 'onclick="SelP(this,'.round($event["mass"],3).')"';?>  id="W-" name="W-" value="W-">W- </div>
+				<div class=col-md-3 style="border-right:1px solid #000;"><input type="checkbox" <?php echo 'onclick="SelP(this,'.round($event["mass"],3).')"';?>  id="Z" name="Z" 
+value="Z">Z </div>
+				<div class=col-md-3 style="border-right:3px double #000;"><input type="checkbox" <?php echo 'onclick="SelP(this,'.round($event["mass"],3).')"';?> id="H" name="Higgs" value="H">Higgs </div>	
 			</div>
 			<div class="row">
-				<div class=col-md-3 style="border-right:1px solid #000;"> <input type="checkbox" id="mu" name="muon" <?php echo 'onclick="SelP(this,'.round($event["mass"],3).')"';?>  value="mu">Muon</div>
-				<div class=col-md-3>	<input type="checkbox" <?php echo 'onclick="SelP(this,'.round($event["mass"],3).')"';?>  id="W"  name="W" value="W">W </div>
+				<div class=col-md-3 style="border-left:3px double #000; border-right:1px dashed #000;"> <input type="checkbox" id="mu" name="muon" <?php echo 'onclick="SelP(this,'.round($event["mass"],3).')"';?>  
+value="mu">Muon</div>
 				<div class=col-md-3>	<input type="checkbox" <?php echo 'onclick="SelP(this,'.round($event["mass"],3).')"';?>  id="Wp" name="W+" value="W+">W+ </div>
-				<div class=col-md-3>	<input type="checkbox" <?php echo 'onclick="SelP(this,'.round($event["mass"],3).')"';?>  id="W-" name="W-" value="W-">W- </div>
+				<div class=col-md-3 style="border-right:1px solid #000;"><input type="checkbox" <?php echo 'onclick="SelP(this,'.round($event["mass"],3).')"';?>  id="W"  name="W" value="W">W </div>
+				<div class=col-md-3 style="border-right:3px double #000;"><input type="checkbox" <?php echo 'onclick="SelP(this,'.round($event["mass"],3).')"';?>  id="Zoo" name="Zoo" value="Zoo">Zoo </div>
 			</div>
 			</div>
 		</div>
 
 		<div class=col-md-1> Mass:<br> <span id="mass"></span> </div>	
 
-		<div class=col-md-3><button type="submit" disabled="true" id="next" name="fin" class="btn btn-primary btn-lg">Next</button></div>
+		<div class=col-md-3><button type="submit" disabled="true" id="next" name="fin" class="btn btn-primary btn-lg">Submit</button></div>
 	</div>
 
 </div></form>

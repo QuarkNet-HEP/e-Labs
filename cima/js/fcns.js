@@ -241,8 +241,12 @@ function del(element){
 	sel=document.getElementById("EvSelOver");
 	var nopt=document.createElement("option");
 	nopt.text=$("#SelEvent").text();
+//Michi, please check line below
+	nopt.value=document.getElementById("SelEvent").value;
 	sel.add(nopt,sel[1]);
 	$("#SelEvent").html($.trim(cs[1].innerHTML));
+//Michi, please check the line below
+	document.getElementById("SelEvent").value=+(document.getElementById("SelEvent").value.substr(0, document.getElementById("SelEvent").value.length-2))*100 + +($("#SelEvent").text());
 	$("#Eventid").html($.trim(cs[3].innerHTML));
 
 	var s=massGlobal.split(";");
@@ -256,12 +260,10 @@ function del(element){
 	if(checked && $.trim(checked[0])!=""){
 		for(var i=0;i<checked.length;i++){
 			    var temp = $.trim(checked[i]);
-			    if(temp=="W+"){
-				temp="Wp";
-				}
 			    document.getElementById(temp).checked = true;
 			    SelP(document.getElementById(temp),0);
 		}
 	}
 	$("#fedit").prop("disabled",true);
 }
+
