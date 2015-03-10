@@ -11,7 +11,6 @@
 <%@ page import="java.util.*"%>
 <%@ page import="org.apache.regexp.*" %>
 
-<%@ page import="com.opensymphony.clickstream.Clickstream" %>
 <%
 	int sessionCount = SessionListener.getTotalActiveSession();
 	ArrayList activeSessions = SessionListener.getTotalSessionUsers();
@@ -19,8 +18,6 @@
 	
 	//now create the local TreeMap
 	TreeMap<String, String> sessionDetails = new TreeMap<String, String>();
-    final Map clickstreams = (Map) application.getAttribute("clickstreams");
-	RE re = new RE("(analysis|posters|plots|uploadImage|data|library|site-index|assessment|teacher)");
     	
 	for (int i = 0; i < activeSessions.size(); i++) {
 		HttpSession s = (HttpSession) activeSessions.get(i);
@@ -41,43 +38,7 @@
 					sb.append("<strong>Location:</strong> "+ school + ", " + city + " - " + state + "<br />");
 					sb.append("<strong>Role:</strong> "+ eu.getRole() + "<br />");
 					sb.append("<strong>Logged in to:</strong> "+ e.getName() + "<br />");
-		            synchronized(clickstreams) {
-		                Iterator it = clickstreams.keySet().iterator();
-		                while (it.hasNext())
-		                {
-		                	try {
-			                    String streamkey = (String)it.next();
-			                    if (streamkey.equals(s.getId())) {
-				                    Clickstream stream = (Clickstream)clickstreams.get(s.getId());
-				                    sb.append("<strong>Time Started:</strong> "+String.valueOf(stream.getStart())+ "<br />");
-				                    sb.append("<strong>Last Request:</strong> "+String.valueOf(stream.getLastRequest())+ "<br />");
-				                    long streamLength = stream.getLastRequest().getTime() - stream.getStart().getTime();
-				                    sb.append("<strong>Session Length:</strong> "+String.valueOf((streamLength > 3600000 ?
-							        		" " + (streamLength / 3600000) + " hours" : "") +
-							        	(streamLength > 60000 ?
-							        		" " + ((streamLength / 60000) % 60) + " minutes" : "") +
-							        	(streamLength > 1000 ?
-							        		" " + ((streamLength / 1000) % 60) + " seconds" : ""))+ "<br />");
-								   sb.append("<strong># of Requests:</strong> "+String.valueOf(stream.getStream().size())+ "<br />");
-								    synchronized(stream) {
-							            Iterator clickstreamIt = stream.getStream().iterator();						
-										String lastLink = "";
-							            while (clickstreamIt.hasNext())
-							            {
-								            String click = clickstreamIt.next().toString();
-							                if (re.match(click) && !click.contains("status-async.jsp")) {
-							                	lastLink = click;
-							                }
-									    }
-						                sb.append("<strong>Last Link Visited:</strong> "+lastLink+ "<br />");
-									 }//end of second synchronized stream
-								}
-		                	} catch (Exception ex) {
-		                		String message = "Exception in session-tracking.jsp: " + ex.getMessage();
-		                	}
-						}
-		            }
-				}//end of first synchronized			
+					}
 				String sessiontext = sb.toString();
 				if (!sessiontext.equals("")) {
 		    		sessionDetails.put("<strong>Session # " + String.valueOf(i), sessiontext + "</strong>");				
