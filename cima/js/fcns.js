@@ -7,7 +7,8 @@ function printMass(mass){
 	var ZChecked=document.getElementById("Z").checked;
 	
 	if(HiggsChecked || ZChecked){
-		$( "#mass" ).html( mass );
+		//$( "#mass" ).html( mass );
+		document.getElementById('mass').innerHTML = mass + 'GeV/c²<br><b><font size="1" color="red">Please enter into mass histogram.</font></b>';
 	}else{
 		$( "#mass" ).html( " " );
 	}
@@ -266,4 +267,3 @@ function del(element){
 	}
 	$("#fedit").prop("disabled",true);
 }
-
