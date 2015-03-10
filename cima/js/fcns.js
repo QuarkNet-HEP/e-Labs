@@ -7,7 +7,8 @@ function printMass(mass){
 	var ZChecked=document.getElementById("Z").checked;
 	
 	if(HiggsChecked || ZChecked){
-		$( "#mass" ).html( mass );
+		//$( "#mass" ).html( mass );
+		document.getElementById('mass').innerHTML = mass + 'GeV/c²<br><b><font size="1" color="red">Please enter into mass histogram.</font></b>';
 	}else{
 		$( "#mass" ).html( " " );
 	}
@@ -132,7 +133,7 @@ function showdel(element){
 	//alert(elstr);
 	element.style.backgroundColor = "#AAFFAA";
 	elstr="del-"+element.id;
-	$( "#"+elstr ).html("<span class='glyphicon glyphicon-pencil'></span> edit");
+	$( "#"+elstr ).html("<span class='glyphicon glyphicon-pencil'></span> edit (double click)");
 }
 
 function nshowdel(element){
@@ -241,8 +242,12 @@ function del(element){
 	sel=document.getElementById("EvSelOver");
 	var nopt=document.createElement("option");
 	nopt.text=$("#SelEvent").text();
+//Michi, please check line below
+	nopt.value=document.getElementById("SelEvent").value;
 	sel.add(nopt,sel[1]);
 	$("#SelEvent").html($.trim(cs[1].innerHTML));
+//Michi, please check the line below
+	document.getElementById("SelEvent").value=+(document.getElementById("SelEvent").value.substr(0, document.getElementById("SelEvent").value.length-2))*100 + +($("#SelEvent").text());
 	$("#Eventid").html($.trim(cs[3].innerHTML));
 
 	var s=massGlobal.split(";");

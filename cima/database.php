@@ -2,12 +2,13 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+$con=mysqli_connect("data1.i2u2.org","cima","cim@us3r","Masterclass");
+if (mysqli_connect_errno($con)) {
+ echo "Failed to connect to MySQL: " . mysqli_connect_error();
+}
+
 function askdb($q){
-	$con=mysqli_connect("data1.i2u2.org","cima","cim@us3r","Masterclass");
-	if (mysqli_connect_errno($con))
- 	{
- 	echo "Failed to connect to MySQL: " . mysqli_connect_error();
-	}
+	global $con;
 	$res=$con->query($q);
 	return $res;
 }
@@ -62,9 +63,9 @@ function GetAllEvents($table){
 
 	
 function GetEvents($group,$table){
-	$q="SELECT `".$table."`.o_no, `".$table."`.checked, Events.mass FROM `".$table."` INNER JOIN Events WHERE `".$table."`.o_no IN (SELECT o_no FROM Events WHERE g_no=".$group.") AND `".$table."`.o_no=Events.o_no ORDER BY `".$table."`.o_no";
-	$res=askdb($q);
-	while($obj=$res->fetch_object()){ 
+    $q="SELECT `".$table."`.o_no, `".$table."`.checked, Events.mass FROM `".$table."` LEFT OUTER JOIN Events ON `".$table."`.o_no = Events.o_no WHERE g_no=".$group." ORDER BY `".$table."`.o_no;";
+    $res=askdb($q);
+		while($obj=$res->fetch_object()){ 
 			$temp["id"]=$obj->o_no;
 			$temp["checked"]=$obj->checked;
 			$temp["mass"]=$obj->mass;			
@@ -476,5 +477,6 @@ function isbackup($tableid,$groupid){
 		return false;
 	}
 }
+
 
 ?>
