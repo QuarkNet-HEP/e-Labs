@@ -66,43 +66,49 @@ RELOAD: #necessary for the go to at the end. I hate to do it, but can't nest the
 #step 2.3 above
 #open (IN1, "$pathToBlessFiles"."$arguments[1]")  || die "Cannot open ", $pathToBlessFiles.$arguments[1], " for input ";
 $candidate = $arguments[0].$arguments[2];
-open (IN1, "$candidate")  || die "Cannot open ", $candidate, " for input ";
-$i++; #increment this in order to get to the next set of values in the arrays.
+if (-e $candidate) {
+	open (IN1, "$candidate")  || die "Cannot open ", $candidate, " for input ";
+	$i++; #increment this in order to get to the next set of values in the arrays.
+} else {
+	print "$candidate doesn't exist\n";
+	$i++;
+	goto RELOAD if $i < $elements;
+}
 
 while (<IN1>){#open a new .bless file for inspection
 	my @row = split /\s+/;
 	next if ($. == 1); #skip the header in the .bless file
 	 #begin step 2.4 above
-	if ($arguments[3] > $row[1] + $row[2] || $arguments[3] < $row[1]-$row[2]){ #Channel zero within one SD?
+	if ($arguments[3] > $row[1] + ($row[2]*10) || $arguments[3] < $row[1]-($row[2]*10)){ #Channel zero within one SD?
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
 		print OUT0 "$arguments[1]\tunblessed at $row[0] due to Chan0 \t$arguments[3]\t$row[1]\t$row[2]\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[2]. . . 
 
-	if ($arguments[4] > $row[3] + $row[4] || $arguments[4] < $row[3]-$row[4]){ #Channel one within one SD?
+	if ($arguments[4] > $row[3] + ($row[4]*10) || $arguments[4] < $row[3]-($row[4]*10)){ #Channel one within one SD?
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
 		print OUT0 "$arguments[1]\tunblessed at $row[0] due to Chan1 \t$arguments[4]\t$row[3]\t$row[4]\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[3]. . . 
 
-	if ($arguments[5] > $row[5] + $row[6] || $arguments[5] < $row[5]-$row[6]){ #Channel two within one SD?
+	if ($arguments[5] > $row[5] + ($row[6]*10) || $arguments[5] < $row[5]-($row[6]*10)){ #Channel two within one SD?
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
 		print OUT0 "$arguments[1]\tunblessed at $row[0] due to Chan2 \t$arguments[5]\t$row[5]\t$row[6]\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[4]. . . 
 
-	if ($arguments[6] > $row[7] + $row[8] || $arguments[6] < $row[7]-$row[8]){ #Channel three within one SD?
+	if ($arguments[6] > $row[7] + ($row[8]*10) || $arguments[6] < $row[7]-($row[8]*10)){ #Channel three within one SD?
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
 		print OUT0 "$arguments[1]\tunblessed at $row[0] due to Chan3 \t$arguments[6]\t$row[7]\t$row[8]\n";
 		last; #exiting the while loop--no point in further checking this file
 	} #end if ($arguments[5]. . . 
 
-	if ($arguments[7] > $row[9] + $row[10] || $arguments[7] < $row[9]-$row[10]){ #triggers within one SD?
-		next if $row[9] + $row[10] < 2; #low trigger rates alone shouldn't fail a file.
+	if ($arguments[7] > $row[9] + ($row[10]*10) || $arguments[7] < $row[9]-($row[10]*10)){ #triggers within one SD?
+		next if $row[9] + ($row[10]*10) < 2; #low trigger rates alone shouldn't fail a file.
 		$blessedState = "unblessed";
 		$unblessed++; #keeps track of the number of failed files
 		print OUT0 "$arguments[1]\tunblessed at $row[0] due to triggers \t$arguments[7]\t$row[9]\t$row[10]\n";
