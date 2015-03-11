@@ -151,6 +151,7 @@
 								<a href="../flash/daq_only_standalone.html">Classroom Cosmic Ray Detector</a>
 								 - Equipment to collect data.
 							</li>
+<%/**Sudha-3/9/15							
 							<li>
 								<a href="../flash/daq_portal_rays.html">Send Data to Grid Portal</a>
 								- Data collected at schools is sent to grid portal.
@@ -171,6 +172,7 @@
 								<a href="../flash/griphyn-animate_sc2003.html">QuarkNet vs.CMS</a>
 								- Comparing use of Grid in cosmic ray studies with the CMS experiment
 							</li>
+**/%>
 							<li>
 								<a href="../flash/DAQII.html">Data Acquisition Card</a>
 								- How the DAQ works. Rollovers provide more information on the board and the format of the data. <strong>Has SOUND.</strong>
@@ -272,7 +274,11 @@
 								- Physicists detect cosmic rays in their neutrino detectors.
 							</li>
 						  <li>
-								<a href="http://www.bartol.udel.edu/icetop/" target="activity">IceTop</a> and <a href="http://whyfiles.org/2012/chasing-neutrinos-at-the-south-pole/" target="activity">IceCube</a>
+						  		<a href="https://icecube.wisc.edu/science/icetop/" target="activity">IceTop</a> and <a href="http://whyfiles.org/2012/chasing-neutrinos-at-the-south-pole/" target="activity">IceCube</a>
+						  		
+<%/**Sudha-3/9/15				
+								<a href="http://www.bartol.udel.edu/icetop/" target="activity">IceTop</a> and <a href="http://whyfiles.org/2012/chasing-neutrinos-at-the-south-pole/" target="activity">IceCube</a> 
+**/ %>
 								- Projects investigate neutrinos, but they also capture cosmic ray data.
 							</li>
 								<li>
@@ -320,15 +326,23 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 								- Simulations of extensive air showers and Milagro Detector. Most movies run under 5 megabytes and 
 								are about 15 seconds long, by Miguel Morales (need QuickTime plugin)
 							</li>
+<%
+/**Sudha-3/9/15													
 							<li>
 								<a href="http://www.wired.com/wired/archive/12.04/grid.html?tw=wn_tophead_6">The God Particle
 								 and the Grid.</a>
 								 - Wired Magazine discusses the grid and particle physics at CERN, Fermilab's sister 
 								 laboratory in Geneva, Switzerland.
 							</li>
+**/
+%>
+
+								 
 						</ul>
 						</div>
 						<div class="tab" id="tab-online">
+<%
+/**Sudha-3/9/15   	
 					<span class="tab-title">Grid Computing</span>
 					<div class="tab-contents-sublevel">
 						<p>The e-Lab uses <a href="http://en.wikipedia.org/wiki/Distributed_computing">distributed computing</a> where multiple computers,networked
@@ -359,6 +373,8 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 							</div>
 							
 							<div class="tab" id="tab-animations">
+**/
+%>
 					<span class="tab-title">IT Careers</span>
 					<div class="tab-contents-sublevel">
 						<ul class="simple">
