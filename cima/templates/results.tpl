@@ -3,8 +3,8 @@
 	<div class=col-md-10><?php 
 	if(isset($_SESSION["comb"])){
 		echo'<strong> Tables: </strong>  <span name="database"> '; 
-		for($i=0;$i<count($_SESSION["tables"]);$i++){
-			$t=GetTableByID($_SESSION["tables"][$i]);
+		for($i=0;$i<count($tables);$i++){
+			$t=GetTableByID($tables[$i]);
 			echo $t["name"]." ";
 		}
 	}else{

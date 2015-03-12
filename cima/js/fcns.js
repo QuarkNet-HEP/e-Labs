@@ -8,7 +8,7 @@ function printMass(mass){
 	
 	if(HiggsChecked || ZChecked){
 		//$( "#mass" ).html( mass );
-		document.getElementById('mass').innerHTML = mass + 'GeV/c²<br><b><font size="1" color="red">Please enter into mass histogram.</font></b>';
+		document.getElementById('mass').innerHTML = mass + 'GeV/c²<br><b><font size="1" color="red">Please enter into mass histogram after clicking \"Submit\".</font></b>';
 	}else{
 		$( "#mass" ).html( " " );
 	}
@@ -241,22 +241,21 @@ function del(element){
 	}
 	sel=document.getElementById("EvSelOver");
 	var nopt=document.createElement("option");
-	nopt.text=$("#SelEvent").text();
-//Michi, please check line below
-	nopt.value=document.getElementById("SelEvent").value;
-	sel.add(nopt,sel[1]);
-	$("#SelEvent").html($.trim(cs[1].innerHTML));
-//Michi, please check the line below
-	document.getElementById("SelEvent").value=+(document.getElementById("SelEvent").value.substr(0, document.getElementById("SelEvent").value.length-2))*100 + +($("#SelEvent").text());
+	nopt.text=$.trim(cs[1].innerHTML);
+	nopt.value=parseInt($.trim(cs[1].innerHTML))+(parseInt(group)-1)*100;
+	nopt.selected=true;
+	sel.add(nopt,sel[0]);
 	$("#Eventid").html($.trim(cs[3].innerHTML));
 
 	var s=massGlobal.split(";");
 	for(var i=0;i<s.length;i++){
 		var temp=s[i].split(":");
-		if(temp[0]==element.id){
+		if(parseInt(temp[0])==parseInt(element.id)){
 			Mmass=temp[1];
+
 		}
 	}
+
 
 	if(checked && $.trim(checked[0])!=""){
 		for(var i=0;i<checked.length;i++){

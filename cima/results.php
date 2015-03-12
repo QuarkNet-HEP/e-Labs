@@ -24,8 +24,16 @@ if(!isset($_SESSION["comb"])){
 	}
 
 }else{
+	$basescript="results.php";
 	include 'templates/Resnav.tpl';
-	$g=GetGroups($_SESSION["tables"]);
+	if(isset($_GET["i"])){
+		$tables[]=$_SESSION["tables"][$_GET["i"]];
+	}else{
+		$tables=$_SESSION["tables"];
+	}
+
+	$g=GetGroups($tables);
+
 	$ng=count($g);
 	$start=$g[0]["g_no"];
 

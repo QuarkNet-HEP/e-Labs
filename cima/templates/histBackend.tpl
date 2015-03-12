@@ -3,7 +3,7 @@
 <div class=row>
 	<div class=col-md-12><strong> Tables: </strong> <span name="groupNo"> 
 	<?php 
-		foreach($_SESSION["tables"] as $id){ 
+		foreach($tables as $id){ 
 			$t=GetTableByID($id); 
 			echo $t["name"].' '; }
 	?>
