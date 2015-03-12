@@ -12,9 +12,6 @@ package gov.fnal.elab.datacatalog;
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.ElabGroup;
 import gov.fnal.elab.RawDataFileResolver;
-import gov.fnal.elab.cosmic.Geometry;
-import gov.fnal.elab.cosmic.beans.GeoEntryBean;
-import gov.fnal.elab.cosmic.beans.Geometries;
 import gov.fnal.elab.datacatalog.StructuredResultSet.File;
 import gov.fnal.elab.datacatalog.StructuredResultSet.Month;
 import gov.fnal.elab.datacatalog.StructuredResultSet.School;
@@ -405,21 +402,12 @@ public class DataTools {
                 school.incBlessed();
             }
 
-            //EPeronja-03/11/2015: 657-Check if there is any entry in the geo file backing up the stacked flag.
-            boolean hasGeoEntry = false;
-            try {
-            	hasGeoEntry = getGeoFileEntry(e.getLFN());   
-            } catch (Exception ex) {
-            	System.out.println("WARNING: File " + e.getLFN() + ". Failed to find geo entry.");            	
-            }
-            //EPeronja-03/12/2015: 657-Check before trusting the metadata stacked field.
-            if (hasGeoEntry) {
-	            file.setStacked((Boolean) data[STACKED]);
-	            if (Boolean.TRUE.equals(data[STACKED])) {
-	                school.incStacked();
-	            }
-            }
-            int events = 0;
+	        file.setStacked((Boolean) data[STACKED]);
+	        if (Boolean.TRUE.equals(data[STACKED])) {
+	            school.incStacked();
+	        }
+
+	        int events = 0;
             for (int k = CHAN1; k <= CHAN4; k++) {
                 if (data[k] != null) {
                     events += ((Long) data[k]).intValue();
@@ -450,24 +438,7 @@ public class DataTools {
     static {
         TZ_DATE_TIME_FORMAT = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
     }
-
-    //EPeronja-03/11/2015: 657-Check if there is any entry in the geo file backing up the stacked flag status
-    public static boolean getGeoFileEntry(String filename) throws ElabException {
-    	Elab elab = Elab.getElab(null, "cosmic");
-		VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filename);
-		String julianDate = e.getTupleValue("julianstartdate").toString();
-		Integer detectorid = Integer.valueOf(e.getTupleValue("detectorid").toString());
-		Geometries geometries = new Geometries(elab, detectorid);
-		Geometry g = geometries.getGeometry(detectorid);
-		SortedMap geosBefore = g.getGeoEntriesBefore(julianDate);
-		Date startDate = new Date();
-		boolean hasGeometry = false;
-		if (geosBefore != null && !geosBefore.isEmpty()) {
-			hasGeometry = true;
-		}    	
-    	return hasGeometry;
-    }//end of getGeoFileEntry
-    
+  
     //EPeronja-05/20/2014: Insert Analysis results for statistics
     public static void insertAnalysisResults(AnalysisRun ar, Elab elab) throws ElabException {
         Connection conn = null;
