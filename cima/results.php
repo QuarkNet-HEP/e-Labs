@@ -8,7 +8,8 @@ include 'templates/header.tpl';
 if(!isset($_SESSION["comb"])){
 	include 'templates/navbar.tpl';
 	$start=1;
-	$ng=30;
+	$ng=31;
+
 	for($i=1;$i<$ng;$i++){
 		$groups[$i]["mu"]=0;
 		$groups[$i]["e"]=0;
@@ -23,8 +24,16 @@ if(!isset($_SESSION["comb"])){
 	}
 
 }else{
+	$basescript="results.php";
 	include 'templates/Resnav.tpl';
-	$g=GetGroups($_SESSION["tables"]);
+	if(isset($_GET["i"])){
+		$tables[]=$_SESSION["tables"][$_GET["i"]];
+	}else{
+		$tables=$_SESSION["tables"];
+	}
+
+	$g=GetGroups($tables);
+
 	$ng=count($g);
 	$start=$g[0]["g_no"];
 
@@ -89,11 +98,14 @@ if(isset($_SESSION["tables"])){
 		if(isset($events)){
 			foreach($events as $asArr){
 				$i=floor(($asArr["id"]-1)/100)+1;
-				$groups[$i]["sum"]++;
-				$temp=explode(";",$asArr["checked"]);
-				for($j=0;$j<count($temp);$j++){
-					if($temp[$j]!=""){
-						$groups[$i][$temp[$j]]++;
+				if(isset($groups[$i])){
+					$groups[$i]["sum"]++;
+					$temp=explode(";",$asArr["checked"]);
+					for($j=0;$j<count($temp);$j++){
+						if($temp[$j]!=""){
+							$groups[$i][$temp[$j]]++;
+
+						}
 					}
 				}
 			}
@@ -105,11 +117,13 @@ if(isset($_SESSION["tables"])){
 	if(isset($events)){
 		foreach($events as $asArr){
 			$i=floor(($asArr["id"]-1)/100)+1;
-			$groups[$i]["sum"]++;
-			$temp=explode(";",$asArr["checked"]);
-			for($j=0;$j<count($temp);$j++){
-				if($temp[$j]!=""){
-					$groups[$i][$temp[$j]]++;
+			if(isset($groups[$i])){
+				$groups[$i]["sum"]++;
+				$temp=explode(";",$asArr["checked"]);
+				for($j=0;$j<count($temp);$j++){
+					if($temp[$j]!=""){
+						$groups[$i][$temp[$j]]++;
+					}
 				}
 			}
 		}

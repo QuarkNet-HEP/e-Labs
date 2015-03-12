@@ -34,7 +34,7 @@ if(!isset($freeEvents) && !isset($_SESSION["edit"])){
 	header("Location: finish.php");
 }
 
-if(isset($_POST["CustomEvent"]) && isset($_SESSION["current"]) && $_SESSION["current"]["id"]!=$_POST["CustomEvent"] && !isset($_POST["fin"])){
+if(isset($_POST["CustomEvent"]) && isset($_SESSION["current"]) && !isset($_POST["fin"])){
 	$event=GetEvent($_POST["CustomEvent"]);
 }else{
 	$event=GetNext($arr,$_SESSION["groupNo"]);
@@ -42,7 +42,7 @@ if(isset($_POST["CustomEvent"]) && isset($_SESSION["current"]) && $_SESSION["cur
 }
 
 function calcEv($id){
-	return $_SESSION["groupNo"].'-'.($id-(100*($_SESSION["groupNo"]-1)));
+	return $_SESSION["groupNo"].'-'.$id%100;
 }
 
 
@@ -67,12 +67,14 @@ function showM($checked){
 	}
 }
 
-//tempE=GetAllEvents($SESSION["database"]);
+
 for($i=(count($arr)-1);$i>=0;$i--){
-	//$tempE=GetEvent($arr[$i]["id"]);
-	echo '<div class=row id="'.$arr[$i]["id"].'" style="cursor: pointer;" onmouseover="showdel(this)" onmouseout="nshowdel(this)" onclick="del(this)">
+
+
+
+	echo '<div class=row id="'.$arr[$i]["id"].'" style="cursor: pointer;" onmouseover="showdel(this)" onmouseout="nshowdel(this)" ondblclick="del(this)">
 		<div class=col-md-3> 
-			'.$arr[$i]['id'].' 
+			'.($arr[$i]['id'] % 100).'
 		</div>
 		<div class=col-md-3>
 			'.calcEv($arr[$i]['id']).'		
@@ -95,5 +97,6 @@ for($i=0;$i<count($arr);$i++){
 	$s.=$arr[$i]["id"].":".$arr[$i]['mass'].";"; 
 }
 ?>
-<script> var massGlobal= '<?php echo $s ?>';</script>;
+<script> var massGlobal= '<?php echo $s ?>'; var group='<?php echo $_SESSION["groupNo"] ?>';</script>;
+
 
