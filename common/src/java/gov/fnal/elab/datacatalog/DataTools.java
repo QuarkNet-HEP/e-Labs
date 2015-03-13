@@ -52,7 +52,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
-
+import java.io.FileReader;
+import java.io.LineNumberReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A few convenience functions for dealing with QuarkNet data
@@ -98,7 +101,6 @@ public class DataTools {
         KEYS.put("comments", 24);
         KEYS.put("fileduration", 25);
         KEYS.put("triggers", 26);
-        KEYS.put("geometry", 27);
     }
 
     public static final int SCHOOL = 0;
@@ -133,7 +135,6 @@ public class DataTools {
     public static final int TRIGGERS = 26;
     //EPeronja-03/11/2015: Check the file actually has an entry in the geometry file
     //					   backing up the geometry icon. The stacked label doesn't cut it.
-    public static final int GEOMETRY = 27;
     
     
     public static final String MONTH_FORMAT = "MMMM yyyy";
@@ -401,12 +402,21 @@ public class DataTools {
                 file.setBlessed(true);
                 school.incBlessed();
             }
-
-	        file.setStacked((Boolean) data[STACKED]);
-	        if (Boolean.TRUE.equals(data[STACKED])) {
-	            school.incStacked();
-	        }
-
+ 
+            //EPeronja-03/11/2015: 657-Check if there is any entry in the geo file backing up the stacked flag.
+            boolean hasGeoEntry = false;
+            try {
+            	hasGeoEntry = getGeoFileEntry(e.getLFN());   
+            } catch (Exception ex) {
+            	System.out.println("WARNING: File " + e.getLFN() + ". Failed to find geo entry.");            	
+            }
+            //EPeronja-03/12/2015: 657-Check before trusting the metadata stacked field.
+            if (hasGeoEntry) {
+		        file.setStacked((Boolean) data[STACKED]);
+		        if (Boolean.TRUE.equals(data[STACKED])) {
+		            school.incStacked();
+		        }
+            }
 	        int events = 0;
             for (int k = CHAN1; k <= CHAN4; k++) {
                 if (data[k] != null) {
@@ -438,7 +448,45 @@ public class DataTools {
     static {
         TZ_DATE_TIME_FORMAT = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
     }
-  
+
+    //EPeronja-03/11/2015: 657-Check if there is any entry in the geo file backing up the stacked flag status
+    public static boolean getGeoFileEntry(String filename) throws ElabException {
+    	boolean hasGeoEntry = false;
+    	Elab elab = Elab.getElab(null, "cosmic");
+		VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filename);
+		String julianDate = e.getTupleValue("julianstartdate").toString();
+		Integer detectorid = Integer.valueOf(e.getTupleValue("detectorid").toString());
+
+		String geoFile = elab.getProperties().getDataDir() + java.io.File.separator + String.valueOf(detectorid)+ java.io.File.separator + String.valueOf(detectorid)+".geo";
+        Pattern p1 = Pattern.compile("^[0-9]{7}(\\.[0-9]*)*$");
+        try {
+	        LineNumberReader in = new LineNumberReader(new FileReader(geoFile));
+	        String s = "";
+	        ArrayList jd = new ArrayList();
+	        while ((s = in.readLine()) != null) {
+	        	if (s != null) {
+	        		Matcher m1 = p1.matcher(s);
+	                if (m1.matches()) {
+	                	jd.add(s);
+	                }
+	        	}
+	        }
+	        if (jd.size() > 0) {
+	        	Double filejd = Double.valueOf(julianDate);
+	        	for (int i = 0; i < jd.size(); i++) {
+	        		Double jditem = Double.valueOf(jd.get(i).toString());
+	        		if (jditem < filejd) {
+	        			hasGeoEntry = true;
+	        		}
+	        	}
+	        }
+	        in.close();
+        } catch (Exception ex) {
+        	throw new ElabException(ex);
+        }
+        return hasGeoEntry;
+    }//end of getGeoFileEntry
+    
     //EPeronja-05/20/2014: Insert Analysis results for statistics
     public static void insertAnalysisResults(AnalysisRun ar, Elab elab) throws ElabException {
         Connection conn = null;
