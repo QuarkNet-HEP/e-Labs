@@ -101,6 +101,12 @@ public class BlessProcess {
 										failReason = blessFile + " has malformed data. ";
 										throw new IOException(blessFile + " has malformed data. "); 
 									}
+									//EPeronja-02/26/2015: why does this happen? I do not know but better safe than sorry
+									for (int i = 0; i < split.length; i++) {
+										if (split[i].equals("")) {
+											split[i] = "0";
+										}
+									}
 									//compare channel 1 and see if file can be blessed
 									if (chan1Rate <= (parseToDouble(split[1]) + parseToDoubleSigmas(split[2])) && chan1Rate >= (parseToDouble(split[1]) - parseToDoubleSigmas(split[2]))) {
 										pass = true;
@@ -217,7 +223,7 @@ public class BlessProcess {
 								if (pass && lineNumber > 0) {
 									message = "<strong>"+filename + "</strong> has been blessed.";
 								} else {
-									if (lineNumber == 0) {
+									if (lineNumber == 0 && failReason.equals("")) {
 										errorCode = "4";
 										failReason = "The .bless file is empty. There is no information to run the blessing routine.";
 									}
