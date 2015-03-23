@@ -32,9 +32,17 @@
 	if (blessfilecomment != null && !blessfilecomment.startsWith("blessfile NOT REPLACED")) {
 		blessfilecomment = "We have improved the precision on this blessfile";
 	}
+	if (blessfilecomment != null && blessfilecomment.startsWith("blessfile NOT REPLACED")) {
+		blessfilecomment = "We were unable to improve the precision of this blessfile";
+	}
+	String benchmarkfail = (String) entry.getTupleValue("benchmarkfail");
+	if (benchmarkfail == null) {
+		benchmarkfail = "";
+	}
 	entry.sort(); 
 	request.setAttribute("e", entry);
 	request.setAttribute("blessfilecomment", blessfilecomment);
+	request.setAttribute("benchmarkfail", benchmarkfail);
 	
 	//EPeronja-02/18/2015: 641&645-Benchmark failure message and other icons
 	BlessPlotDisplay bpd = new BlessPlotDisplay();
@@ -132,36 +140,27 @@
 				</div>
 				<h2>Control Register</h2>
 				<table width="100%">
-				    <tr><td width="20px">CR0: </td><td width="100px"><strong><%= entry.getTupleValue("ConReg0") != null? entry.getTupleValue("ConReg0") : "Unknown" %></strong></td>
-				    	<td rowspan="2" >${iconLinks }</td></tr>
+				    <tr><td width="20px">CR0: </td><td width="120px"><strong><%= entry.getTupleValue("ConReg0") != null? entry.getTupleValue("ConReg0") : "Unknown" %></strong></td>
+				    	<td rowspan="2" style="width: 100px; text-align: left;">${iconLinks }</td><td rowspan="2" style="text-align: left; width:700px;">
+						<c:if test="${not empty benchmarkfail }">
+							<e:vswitch> 
+								<e:visible image="../graphics/Tright.gif">
+									Blessing Details
+								</e:visible>
+								<e:hidden image="../graphics/Tdown.gif">
+									Blessing Details
+									<table>
+										<tr>
+											<td> ${benchmarkfail }</td>
+										</tr>
+									</table>
+								</e:hidden>
+							</e:vswitch>
+						</c:if> 				    	
+						</td></tr>				    	
+				    	
 				    <tr><td width="20px"> </td><td width="100px"><strong>${CR0}</strong></td></tr>
-				</table>			
-				<!-- This is removed due to the Benchmark rollout
-				<div style="text-align: center;"><strong>Owners of data files can bless data based on their interpretation of these charts</strong></p></div>
-				<% //if (owner) { %>							
-				<table witdh="100%"  style="border: 1px solid black;">
-					<tr><td style="text-align: center;">Look at these charts and bless your data if it is of high quality </td>
-						<td> -->
-							<!-- Need to check if user is related to this detector in order to be able to bless/unbless -->
-							<!-- 
-							<td style="text-align: right;">
-							 	<form name="blessForm" action="blessdata.jsp" method="post" target="blessWindow" onsubmit="window.open('',this.target,'width=300,height=100,top=200,left=500 resizable=1');" align="center"> 
-									<input type="hidden" name="blessed" value="${e.tupleMap.blessed}"/>
-									<input type="hidden" name="filename" value="${param.file}"></input>
-									<c:choose>
-									  	<c:when test="${e.tupleMap.blessed == true}">
-											<input type="submit" name="submitbless" id="submitbless" value="Unbless" />
-										</c:when>
-										<c:otherwise>
-											<input type="submit" name="submitbless" id="submitbless" value="Bless" />
-										</c:otherwise>
-									</c:choose>	
-								</form>
-							</td>
-						</td>
-					</tr>
-				</table><br /> -->
-				<% //} %>						
+				</table>								
 				<div id="xAxesControl">
 					<table id="xAxesControlTable">
 						<tr>
