@@ -370,7 +370,7 @@
 					<p>
 						<table style="margin-left:20px">
 							<tr>
-								<td>Use the <a href="/elab/cosmic/teacher/forum/HelpDeskRequest.php?elab=cosmic" class="external text" title="/elab/cosmic/teacher/forum/HelpDeskRequest.php?elab=Cosmic" rel="nofollow">Help Desk Form</a> to get technical assistance from I2U2 staff. Click on the lifesaver
+								<td>Use the <a href="/elab/cosmic/teacher/forum/HelpDeskRequest.php?elab=cosmic" class="external text" title="/elab/cosmic/teacher/forum/HelpDeskRequest.php?elab=Cosmic" rel="nofollow">Help Desk Form</a> to get technical assistance from our staff. Click on the lifesaver
 					     			icon in the upper right hand corner of the teacher pages when you are logged in.
 					     		</td>
 					     		<td><img src="../graphics/Lifesaver.png" /></td>
