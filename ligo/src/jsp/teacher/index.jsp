@@ -272,8 +272,8 @@ Review students' evidence of what they know/understand and reflections on their 
 						<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="/elab/cosmic/graphics/Tright.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
 								</div><div id="vsId6-h" style="visibility:visible; display:">
 						<a href="#" onclick="HideShow('vsId6-v');HideShow('vsId6-h');return false;"><h2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Suggestions for Getting Started</h2></a>
-						<p><strong>The I2U2 Seismology Instructional unit:</strong> Are you teaching a course that involves seismology content? 
-						Consider using the I2U2 seismology instructional unit as a means of addressing seismology learning objectives
+						<p><strong>The LIGO Seismology Instructional unit:</strong> Are you teaching a course that involves seismology content? 
+						Consider using the LIGO seismology instructional unit as a means of addressing seismology learning objectives
 						while providing a natural way for students to engage in the LIGO e-Lab.  The standards-based instructional unit includes plans for approximately eight seismology lessons
 						followed by seven lessons that utilize the e-Lab.  Download the instructional unit as a 
 						<a href="#" onclick="javascript:window.open('SeismicUnit-web.pdf', 'unit', 'width=800,height=659, resizable=1, scrollbars=1');return false;">PDF File</a> 
@@ -327,7 +327,7 @@ Review students' evidence of what they know/understand and reflections on their 
 						<a href="#" onclick="HideShow('vsId7-v');HideShow('vsId7-h');return false;"><h2><img src="/elab/cosmic/graphics/Tdown.gif" alt=" " border="0" /> Help Desk & Sharing Ideas</h2></a>
 					<p>
 				<p>
-					      <table style="margin-left:20px"><tr><td>Use the <a href="/elab/cms/teacher/forum/HelpDeskRequest.php?elab=CMS" class="external text" title="/elab/ligo/teacher/forum/HelpDeskRequest.php?elab=LIGO" rel="nofollow">Help Desk Form</a> to get technical assistance from I2U2 staff. Click on the lifesaver
+					      <table style="margin-left:20px"><tr><td>Use the <a href="/elab/cms/teacher/forum/HelpDeskRequest.php?elab=CMS" class="external text" title="/elab/ligo/teacher/forum/HelpDeskRequest.php?elab=LIGO" rel="nofollow">Help Desk Form</a> to get technical assistance from our staff. Click on the lifesaver
 					     icon in the upper right hand corner of the teacher pages when you are logged in.</td><td><img src="../graphics/Lifesaver.png"></td></tr>
 					     <tr><td colspan="2">Be sure to click on <b>Share Ideas</b> in the menu above to see what other teachers have shared in Facebook. They may have the answers to your questions. You may have answers to theirs! Maybe you want to collaborate on a study.</td></tr>
 					     </table>
