@@ -16,21 +16,15 @@
 	AnalysisRun results = AnalysisManager.getAnalysisRun(elab, user, id);
 	File[] files = new File[4];
 	for (int i = 0; i < 4; i++) {
-		String fileName = results.getOutputDir()+"/freqOut"+String.valueOf(i+1);
+		String fileName = results.getOutputDir()+"/singleOut"+String.valueOf(i+1);
 		files[i] = new File(fileName);
 	}
-//	if (StringUtils.isBlank(freqOut1)) {
-//		response.sendError(HttpURLConnection.HTTP_BAD_REQUEST); 
-//	}
-//	else {
-		response.setContentType("application/json");		
-		PerformancePlotData ppd = new PerformancePlotData(files);
-		
-		GsonBuilder gb = new GsonBuilder();
-		gb.registerTypeAdapter(PerformancePlotData.class, new PerformanceDataJsonSerializer());
-		Gson gson = gb.create(); 
-		
-		out.write(gson.toJson(ppd)); 
-//	}
-
+	response.setContentType("application/json");		
+	PerformancePlotData ppd = new PerformancePlotData(files);
+	
+	GsonBuilder gb = new GsonBuilder();
+	gb.registerTypeAdapter(PerformancePlotData.class, new PerformanceDataJsonSerializer());
+	Gson gson = gb.create(); 
+	
+	out.write(gson.toJson(ppd)); 
 %>

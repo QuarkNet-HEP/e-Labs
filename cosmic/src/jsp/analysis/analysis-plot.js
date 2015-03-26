@@ -87,7 +87,24 @@ function superImpose() {
 		function onDataReceived(json) {
 			var ud = json.uploadedData;
 			data.push(ud);
+			if (typeof ud.yaxis.position != "undefined") {
+				yDefaultPosition = ud.yaxis.position;
+			}
+			if (typeof ud.xaxis.position != "undefined") {
+				xDefaultPosition = ud.xaxis.position;
+			}
+			options = $.extend(true, {}, options, {
+	    			yaxes: [{
+						position: yDefaultPosition
+	    			}],
+	    			xaxes: [{
+	    				position: xDefaultPosition
+	    			}]
+			});
+			console.log(data);			
 			onOffPlot = $.plot("#placeholder", data, options);
+			var opts = onOffPlot.getOptions();
+			console.log(opts);
 			overviewPlot = $.plot("#overview", data, overviewOptions);
 			var newseries = onOffPlot.getData();
 			for (var i = 0; i < newseries.length; i++) {
@@ -123,6 +140,7 @@ function superImpose() {
 	}
 }//end of superImpose
 
+//to create legends for the y and x axes
 function buildUnits() {
 	$.each(onOffPlot.getAxes(), function (i, axis) {
 		if (!axis.show)
@@ -133,6 +151,7 @@ function buildUnits() {
 			$("<div style='font-size:xx-small;position:absolute; left:" + box.left + "px; top:" + box.top+ "px; width:30px; height:15px'>"+yunit+"</div>")
 			.data("axis.direction", axis.direction)
 			.data("axis.n", axis.n)
+			.data("axis.position", axis.position)
 			.css({ backgroundColor: "#fff", opacity: 1 })
 			.appendTo(onOffPlot.getPlaceholder())		
 		}
@@ -148,6 +167,7 @@ function buildUnits() {
 		$("<div class='axisTarget' style='position:absolute; left:" + box.left + "px; top:" + box.top + "px; width:" + box.width +  "px; height:" + box.height + "px'></div>")
 		.data("axis.direction", axis.direction)
 		.data("axis.n", axis.n)
+		.data("axis.position", axis.position)
 		.css({ backgroundColor: "#f00", opacity: 0, cursor: "pointer" })
 		.appendTo(onOffPlot.getPlaceholder())
 		.hover(
@@ -172,7 +192,7 @@ function buildInteractivePanning() {
 		+ " and y: " + axes.yaxis.min.toFixed(2)
 		+ " &ndash; " + axes.yaxis.max.toFixed(2));
 		buildCanvas();
-		buildUnits();			
+		//buildUnits();			
 	});	
 }//end of buildInteractivePanning
 
@@ -184,7 +204,7 @@ function addArrow(dir, left, top, offset) {
 			e.preventDefault();
 			onOffPlot.pan(offset);
 			buildCanvas();
-			buildUnits();			
+			//buildUnits();			
 		});
 }
 function buildArrows() {
@@ -216,7 +236,7 @@ function buildInteractiveZoom() {
 		+ " and y: " + axes.yaxis.min.toFixed(2)
 		+ " &ndash; " + axes.yaxis.max.toFixed(2));
 		buildCanvas();
-		buildUnits();
+		//buildUnits();
 	});	
 }//end of buildInteractiveZoom
 
@@ -228,7 +248,7 @@ function buildZoomOutButton() {
 			event.preventDefault();
 			onOffPlot.zoomOut();
 			buildCanvas();
-			buildUnits();			
+			//buildUnits();			
 		});	
 }//end of buildZoomOutButton
 
@@ -249,7 +269,7 @@ function bindPlotSelection() {
 			})
 		);
 		buildCanvas();
-		buildUnits();
+		//buildUnits();
 		// don't fire event on the overview to prevent eternal loop
 		overview.setSelection(ranges, true);
 	});
@@ -298,6 +318,7 @@ $("<div id='tooltip'></div>").css({
 	"background-color": "#fee",
 	opacity: 0.80
 }).appendTo("body");
+
 
 function bindEnableSteps() {
 	$("#enableSteps").bind("click", function() {
@@ -447,6 +468,36 @@ function buildCanvas() {
 	});
 }//end of buildCanvas
 
+function reBinData(json, binValue) {
+		maxYaxis = 1;
+	  	var plotData = onOffPlot.getData();
+	  	var overviewData = overviewPlot.getData();
+		channel1 = json.channel1;
+		channel2 = json.channel2;
+		channel3 = json.channel3;
+		channel4 = json.channel4;
+		channel1.data = getDataWithBins(channel1.data_original, binValue);
+		channel2.data = getDataWithBins(channel2.data_original, binValue);
+		channel3.data = getDataWithBins(channel3.data_original, binValue);
+		channel4.data = getDataWithBins(channel4.data_original, binValue);
+		data = [];
+		data.push(channel1);
+		data.push(channel2);
+		data.push(channel3);
+		data.push(channel4);
+		onOffPlot.setData(data);
+		overviewPlot.setData(data);
+		var axes = onOffPlot.getAxes();
+	    axes.yaxis.options.max = maxYaxis;	
+	    onOffPlot.setupGrid();
+	    onOffPlot.draw();
+		var axesOverview = overviewPlot.getAxes();
+		axesOverview.yaxis.options.max = maxYaxis;	
+		overviewPlot.setupGrid();
+	    overviewPlot.draw();
+	    refresh();
+}//end of reBinData
+
 function refresh() {
 	  buildCanvas();
 	  bindEnableSteps();
@@ -459,8 +510,8 @@ function refresh() {
 }//end of refresh
 
 function bindEverything() {
-	  buildCanvas();
-	  bindEnableSteps();
+	  buildCanvas(); // creates a canvas of the chart with captions, legends, etc so then then it can be saved
+	  bindEnableSteps(); // only to replicate what we have now
 	  bindPlotHover();
 	  bindPlotClick();
 	  bindPlotSelection();
@@ -471,5 +522,4 @@ function bindEverything() {
 	  buildInteractivePanning();
 	  buildUnits();	
 }//end of bindEverything
-
 

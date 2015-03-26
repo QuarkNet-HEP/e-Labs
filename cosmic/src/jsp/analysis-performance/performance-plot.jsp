@@ -37,7 +37,6 @@
 		}//end for loop
 
 	}
-
 request.setAttribute("list",uploadeddata);
 %>
    
@@ -78,6 +77,7 @@ request.setAttribute("list",uploadeddata);
 				<script type="text/javascript" src="../include/jquery/flot083/excanvas.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/excanvas.min.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/excanvas.compiled.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/d3.v3.min.js"></script>
 				<script type="text/javascript" src="../include/canvas2image.js"></script>
 				<script type="text/javascript" src="../include/base64.js"></script>
 				<script type="text/javascript" src="../analysis/analysis-plot.js"></script>
@@ -117,8 +117,11 @@ request.setAttribute("list",uploadeddata);
 
 		 	</div>
 		</div>
-
-<p> 
+		<div id="incdec">Bin Width
+    		<input type="number" name="binWidth" id="binWidth" style="width: 40px;"/>
+		</div>
+    	<input id="range" type="range" step="1" style="width: 650px;">
+	<p> 
 		<select name="externalFiles" id="externalFiles" >
  			<option></option>
  			<c:choose>
@@ -129,38 +132,37 @@ request.setAttribute("list",uploadeddata);
 		     </c:when>			
  			</c:choose>
          </select>         
-	<input type="button" id="superImpose" value="Plot External Data" onclick="return superImpose();"/>
-	<div id="msg"></div>
-</p>
-<p>
-	Analysis run time: ${results.formattedRunTime}; estimated: ${results.formattedEstimatedRunTime}
-</p>
-<p>
-	Show <e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysisdir" 
-		width="800" height="600" toolbar="true">analysis directory</e:popup>
-</p>
-<p>
-	<e:rerun type="performance" id="${results.id}" label="Change"/> your parameters	
-</p>
-<div style="text-align:center; width: 100%;">
-	Filename <input type="text" name="chartName" id="chartName" value=""></input><input type="button" name="save" onclick='return saveChart(onOffPlot, "chartName", "chartMsg", "${results.id}");' value="Save"></input>    
-	<div id="chartMsg"></div>  
-	<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
-	<e:creationDateMetadata/>
-	<input type="hidden" name="metadata" value="transformation string Quarknet.Cosmic::PerformanceStudy"/>
-	<input type="hidden" name="metadata" value="study string performance"/>
-	<input type="hidden" name="metadata" value="type string plot"/>
-	<input type="hidden" name="metadata" value="bins float ${results.analysis.parameters['freq_binValue']}"/>
-	<input type="hidden" name="metadata" value="channel string ${results.analysis.parameters['singlechannel_channel']}"/>
-	<input type="hidden" name="metadata" value="title string ${results.analysis.parameters['plot_title']}"/>
-	<input type="hidden" name="metadata" value="caption string ${results.analysis.parameters['plot_caption']}"/>
-	<input type="hidden" name="srcFile" value="plot.png"/>
-	<input type="hidden" name="srcThumb" value="plot_thm.png"/>
-	<input type="hidden" name="srcSvg" value="plot.svg"/>
-	<input type="hidden" name="srcFileType" value="png"/>
-	<input type="hidden" name="id" value="${results.id}"/>
-	 
-</div>
+		<input type="button" id="superImpose" value="Plot External Data" onclick="return superImpose();"/>
+		<div id="msg"></div>
+	</p>
+	<p>
+		Analysis run time: ${results.formattedRunTime}; estimated: ${results.formattedEstimatedRunTime}
+	</p>
+	<p>
+		Show <e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysisdir" 
+			width="800" height="600" toolbar="true">analysis directory</e:popup>
+	</p>
+	<p>
+		<e:rerun type="performance" id="${results.id}" label="Change"/> your parameters	
+	</p>
+	<div style="text-align:center; width: 100%;">
+		Filename <input type="text" name="chartName" id="chartName" value=""></input><input type="button" name="save" onclick='return saveChart(onOffPlot, "chartName", "chartMsg", "${results.id}");' value="Save"></input>    
+		<div id="chartMsg"></div>  
+		<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
+		<e:creationDateMetadata/>
+		<input type="hidden" name="metadata" value="transformation string Quarknet.Cosmic::PerformanceStudy"/>
+		<input type="hidden" name="metadata" value="study string performance"/>
+		<input type="hidden" name="metadata" value="type string plot"/>
+		<input type="hidden" name="metadata" value="bins float ${results.analysis.parameters['freq_binValue']}"/>
+		<input type="hidden" name="metadata" value="channel string ${results.analysis.parameters['singlechannel_channel']}"/>
+		<input type="hidden" name="metadata" value="title string ${results.analysis.parameters['plot_title']}"/>
+		<input type="hidden" name="metadata" value="caption string ${results.analysis.parameters['plot_caption']}"/>
+		<input type="hidden" name="srcFile" value="plot.png"/>
+		<input type="hidden" name="srcThumb" value="plot_thm.png"/>
+		<input type="hidden" name="srcSvg" value="plot.svg"/>
+		<input type="hidden" name="srcFileType" value="png"/>
+		<input type="hidden" name="id" value="${results.id}"/> 
+	</div>
 				
 	<div id="footer"></div>		
 	</body>

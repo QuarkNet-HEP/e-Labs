@@ -1,5 +1,9 @@
 package gov.fnal.elab.cosmic.plot;
-
+/*
+ * 	EPeronja: 03/26/2015-Interactive Plots.
+ * 						 Create object from the analysis file: singleOut (Performance).
+ * 						 The threshold value will be used for the histogram
+ */
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,51 +21,49 @@ import gov.fnal.elab.util.ElabException;
 
 
 public class PerformancePlotData {
-
-	private TreeMap<Integer, timePulseData> plotDataChannel1; 
-	private TreeMap<Integer, timePulseData> plotDataChannel2; 
-	private TreeMap<Integer, timePulseData> plotDataChannel3; 
-	private TreeMap<Integer, timePulseData> plotDataChannel4; 
+	private TreeMap<Integer, singleOutData> perfDataChannel1; 
+	private TreeMap<Integer, singleOutData> perfDataChannel2; 
+	private TreeMap<Integer, singleOutData> perfDataChannel3; 
+	private TreeMap<Integer, singleOutData> perfDataChannel4; 
 	
 	public PerformancePlotData(File[] files) throws IOException {
 		for (int i= 0; i < files.length; i++) {
 			BufferedReader br = new BufferedReader(new FileReader(files[i]));		
-			timePulseData thisLineData = null;
+			singleOutData thisLineData = null;
 			int ts=0; 
 			if (i == 0) {
-				plotDataChannel1 = new TreeMap<Integer, timePulseData>();
-				plotDataChannel1 = saveLineData(br);
+				perfDataChannel1 = new TreeMap<Integer, singleOutData>();
+				perfDataChannel1 = saveLineData(br);
 			}
 			if (i == 1) {
-				plotDataChannel2 = new TreeMap<Integer, timePulseData>();
-				plotDataChannel2 = saveLineData(br);
+				perfDataChannel2 = new TreeMap<Integer, singleOutData>();
+				perfDataChannel2 = saveLineData(br);
 			}
 			if (i == 2) {
-				plotDataChannel3 = new TreeMap<Integer, timePulseData>();
-				plotDataChannel3 = saveLineData(br);
+				perfDataChannel3 = new TreeMap<Integer, singleOutData>();
+				perfDataChannel3 = saveLineData(br);
 			}
 			if (i == 3) {
-				plotDataChannel4 = new TreeMap<Integer, timePulseData>();
-				plotDataChannel4 = saveLineData(br);
+				perfDataChannel4 = new TreeMap<Integer, singleOutData>();
+				perfDataChannel4 = saveLineData(br);
 			}
 		}
 	}
 
-	public TreeMap<Integer, timePulseData> saveLineData(BufferedReader br) {
-		timePulseData thisLineData = null;
+	public TreeMap<Integer, singleOutData> saveLineData(BufferedReader br) {
+		singleOutData thisLineData = null;
 		String[] split; 
 		String line;
-		TreeMap<Integer, timePulseData> plotData = new TreeMap<Integer, timePulseData>();
+		TreeMap<Integer, singleOutData> plotData = new TreeMap<Integer, singleOutData>();
 		int ts=0; 
 		try {
 			while ((line = br.readLine()) != null) {
 				split = line.split("\t"); 
-				if (split.length < 2) {
+				if (split.length < 7) {
 					return null;
 				}
-				thisLineData = new timePulseData(	
-						parseToDouble(split[0]),
-						parseToDouble(split[1])
+				thisLineData = new singleOutData(
+						parseToDouble(split[4])
 				);				
 				ts++;
 				plotData.put(ts, thisLineData);				
@@ -72,41 +74,29 @@ public class PerformancePlotData {
 		return plotData;
 	}
 	
-	public TreeMap<Integer, timePulseData> getTimePulseDataChannel1() {
-		return plotDataChannel1;
+	public TreeMap<Integer, singleOutData> getPerfDataChannel1() {
+		return perfDataChannel1;
 	}
-	public TreeMap<Integer, timePulseData> getTimePulseDataChannel2() {
-		return plotDataChannel2;
+	public TreeMap<Integer, singleOutData> getPerfDataChannel2() {
+		return perfDataChannel2;
 	}
-	public TreeMap<Integer, timePulseData> getTimePulseDataChannel3() {
-		return plotDataChannel3;
+	public TreeMap<Integer, singleOutData> getPerfDataChannel3() {
+		return perfDataChannel3;
 	}
-	public TreeMap<Integer, timePulseData> getTimePulseDataChannel4() {
-		return plotDataChannel4;
+	public TreeMap<Integer, singleOutData> getPerfDataChannel4() {
+		return perfDataChannel4;
 	}
 	
-	public class timePulseData {
-		private double timeOverThreshold;
-		private double pulse;
-		private double yError;
+	public class singleOutData {
+		private double thresh;
 		
-		private timePulseData(double timeOverThreshold,
-						      double pulse) {
-				this.timeOverThreshold = timeOverThreshold;
-				this.pulse = pulse;
-				this.yError = Math.sqrt((double) pulse);
+		private singleOutData(double thresh) {
+				this.thresh = thresh;
 		}
-
-		public double getTimeOverThreshold() {
-			return timeOverThreshold; 
+		public double getThresh() {
+			return thresh;
 		}
-		public double getPulse() {
-			return pulse; 
-		}	
-		public double getYError() {
-			return yError; 
-		}	
-	}
+	}//end of class singleOutData
 
 	public double parseToDouble(String split)
 	{
@@ -117,5 +107,5 @@ public class PerformancePlotData {
 			result = 0;
 		}
 		return result;
-	}//end of parseToDouble	
+	}//end of parseToDouble		
 }
