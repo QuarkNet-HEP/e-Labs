@@ -22,8 +22,8 @@ public class PlotDataJsonSerializer implements JsonSerializer<PlotData> {
 		String legend = "";
 		String xunits = "";
 		String yunits = "";
-		String xaxisposition = "";
-		String yaxisposition = "";
+		String xaxisposition = "bottom";
+		String yaxisposition = "left";
 		int ndx = 0;
 		boolean drawxaxis = false;
 		boolean drawyaxis = false;
@@ -41,8 +41,12 @@ public class PlotDataJsonSerializer implements JsonSerializer<PlotData> {
 			legend = td.getLegend();
 			xunits = td.getXUnits();
 			yunits = td.getYUnits();
-			xaxisposition = td.getXAxisPosition();
-			yaxisposition = td.getYAxisPosition();
+			if (!td.getXAxisPosition().equals("")) {
+				xaxisposition = td.getXAxisPosition();
+			}
+			if (!td.getYAxisPosition().equals("")) {							
+				yaxisposition = td.getYAxisPosition();
+			}
 			drawxaxis = td.getDrawXAxis();
 			drawyaxis = td.getDrawYAxis();
 			xaxisnum = td.getXAxisNum();
@@ -88,24 +92,26 @@ public class PlotDataJsonSerializer implements JsonSerializer<PlotData> {
 		}
 		data1.addProperty("idx", ndx);
 		data1.add("points", point1);
+		
+		int currxaxis = Integer.parseInt(xaxisnum);
+		JsonObject xaxis1 = new JsonObject();
 		if (drawxaxis) {
-			int currxaxis = Integer.parseInt(xaxisnum);
-			JsonObject xaxis1 = new JsonObject();
 			xaxis1.add("n", new JsonPrimitive(currxaxis+1));
-			if (!xaxisposition.equals("")) {
-				xaxis1.addProperty("position", xaxisposition);
-			}
-			data1.add("xaxis", xaxis1);
+		} else {
+			xaxis1.add("n", new JsonPrimitive(currxaxis));
 		}
+		xaxis1.addProperty("position", xaxisposition);
+		data1.add("xaxis", xaxis1);
+		int curryaxis = Integer.parseInt(yaxisnum);
+		JsonObject yaxis1 = new JsonObject();
 		if (drawyaxis) {
-			int curryaxis = Integer.parseInt(yaxisnum);
-			JsonObject yaxis1 = new JsonObject();
 			yaxis1.add("n", new JsonPrimitive(curryaxis+1));
-			if (!yaxisposition.equals("")) {
-				yaxis1.addProperty("position", yaxisposition);
-			}
-			data1.add("yaxis", yaxis1);
+		} else {
+			yaxis1.add("n", new JsonPrimitive(curryaxis));			
 		}
+		yaxis1.addProperty("position", yaxisposition);
+		data1.add("yaxis", yaxis1);
+		
 		JsonObject complete = new JsonObject(); 
 		complete.add("uploadedData", data1);
 		

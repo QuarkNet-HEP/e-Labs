@@ -1,9 +1,8 @@
-/*
- * This code builds the json object for the scatter plots
- * 
- */
 package gov.fnal.elab.cosmic.plot;
-
+/*
+ * 	EPeronja: 03/26/2015-Interactive Plots.
+ * 						 Create JSON object from PerformancePlotData
+ */
 import java.lang.reflect.Type;
 import java.util.TreeMap;
 
@@ -15,24 +14,19 @@ public class PerformanceDataJsonSerializer implements JsonSerializer<Performance
 	public JsonElement serialize(PerformancePlotData src, Type typeOfSrc,
 			JsonSerializationContext context) {
 		
-		TreeMap<Integer, PerformancePlotData.timePulseData> tm1 = src.getTimePulseDataChannel1(); 				
-		TreeMap<Integer, PerformancePlotData.timePulseData> tm2 = src.getTimePulseDataChannel2(); 				
-		TreeMap<Integer, PerformancePlotData.timePulseData> tm3 = src.getTimePulseDataChannel3(); 				
-		TreeMap<Integer, PerformancePlotData.timePulseData> tm4 = src.getTimePulseDataChannel4(); 				
+		TreeMap<Integer, PerformancePlotData.singleOutData> tm1 = src.getPerfDataChannel1(); 				
+		TreeMap<Integer, PerformancePlotData.singleOutData> tm2 = src.getPerfDataChannel2(); 				
+		TreeMap<Integer, PerformancePlotData.singleOutData> tm3 = src.getPerfDataChannel3(); 				
+		TreeMap<Integer, PerformancePlotData.singleOutData> tm4 = src.getPerfDataChannel4(); 				
 		JsonArray channel1  = new JsonArray();
 		JsonArray channel2  = new JsonArray();
 		JsonArray channel3  = new JsonArray();
 		JsonArray channel4  = new JsonArray();
-		JsonArray tmp; 
 		int radius = 3;
 		
 		for (int i : tm1.keySet()) {
-			PerformancePlotData.timePulseData tpd = tm1.get(i);
-			tmp = new JsonArray();
-			tmp.add(new JsonPrimitive(tpd.getTimeOverThreshold()));
-			tmp.add(new JsonPrimitive(tpd.getPulse()));
-			tmp.add(new JsonPrimitive(tpd.getYError()));
-			channel1.add(tmp); 
+			PerformancePlotData.singleOutData ppd = tm1.get(i);
+			channel1.add(new JsonPrimitive(ppd.getThresh())); 
 		}
 		JsonObject yerr1 = new JsonObject();
 		yerr1.addProperty("show", true);
@@ -50,13 +44,16 @@ public class PerformanceDataJsonSerializer implements JsonSerializer<Performance
 
 		JsonObject xaxis1 = new JsonObject();
 		xaxis1.add("n", new JsonPrimitive(1));
+		xaxis1.addProperty("position", "bottom");
 
 		JsonObject yaxis1 = new JsonObject();
 		yaxis1.add("n", new JsonPrimitive(1));
+		yaxis1.addProperty("position", "left");
 
 		JsonObject chan1 = new JsonObject();
 		chan1.addProperty("label", "Channel 1");
 		chan1.add("data", channel1);
+		chan1.add("data_original", channel1);
 		chan1.addProperty("shadowSize", 0);
 		chan1.addProperty("color", "red");
 		chan1.addProperty("xunits", "nanosecs");
@@ -67,12 +64,8 @@ public class PerformanceDataJsonSerializer implements JsonSerializer<Performance
 		chan1.add("yaxis", yaxis1);
 
 		for (int i : tm2.keySet()) {
-			PerformancePlotData.timePulseData tpd = tm2.get(i);
-			tmp = new JsonArray();
-			tmp.add(new JsonPrimitive(tpd.getTimeOverThreshold()));
-			tmp.add(new JsonPrimitive(tpd.getPulse()));
-			tmp.add(new JsonPrimitive(tpd.getYError()));
-			channel2.add(tmp); 
+			PerformancePlotData.singleOutData ppd = tm2.get(i);
+			channel2.add(new JsonPrimitive(ppd.getThresh())); 
 		}
 		JsonObject yerr2 = new JsonObject();
 		yerr2.addProperty("show", true);
@@ -90,13 +83,16 @@ public class PerformanceDataJsonSerializer implements JsonSerializer<Performance
 		
 		JsonObject xaxis2 = new JsonObject();
 		xaxis2.add("n", new JsonPrimitive(1));
+		xaxis2.addProperty("position", "bottom");
 
 		JsonObject yaxis2 = new JsonObject();
 		yaxis2.add("n", new JsonPrimitive(1));
+		yaxis2.addProperty("position", "left");
 
 		JsonObject chan2 = new JsonObject();
 		chan2.addProperty("label", "Channel 2");
 		chan2.add("data", channel2);
+		chan2.add("data_original", channel2);
 		chan2.addProperty("shadowSize", 0);
 		chan2.addProperty("color", "#00ff00");
 		chan2.addProperty("xunits", "nanosecs");
@@ -107,13 +103,8 @@ public class PerformanceDataJsonSerializer implements JsonSerializer<Performance
 		chan2.add("yaxis", yaxis2);
 		
 		for (int i : tm3.keySet()) {
-			PerformancePlotData.timePulseData tpd = tm3.get(i);
-			tmp = new JsonArray();
-			//tmp.add(new JsonPrimitive(i));
-			tmp.add(new JsonPrimitive(tpd.getTimeOverThreshold()));
-			tmp.add(new JsonPrimitive(tpd.getPulse()));
-			tmp.add(new JsonPrimitive(tpd.getYError()));
-			channel3.add(tmp); 
+			PerformancePlotData.singleOutData ppd = tm3.get(i);
+			channel3.add(new JsonPrimitive(ppd.getThresh())); 
 		}
 		JsonObject yerr3 = new JsonObject();
 		yerr3.addProperty("show", true);
@@ -131,13 +122,16 @@ public class PerformanceDataJsonSerializer implements JsonSerializer<Performance
 		
 		JsonObject xaxis3 = new JsonObject();
 		xaxis3.add("n", new JsonPrimitive(1));
+		xaxis3.addProperty("position", "bottom");
 
 		JsonObject yaxis3 = new JsonObject();
 		yaxis3.add("n", new JsonPrimitive(1));
+		yaxis3.addProperty("position", "left");
 
 		JsonObject chan3 = new JsonObject();
 		chan3.addProperty("label", "Channel 3");
 		chan3.add("data", channel3);
+		chan3.add("data_original", channel3);
 		chan3.addProperty("shadowSize", 0);
 		chan3.addProperty("color", "blue");
 		chan3.addProperty("xunits", "nanosecs");
@@ -148,12 +142,8 @@ public class PerformanceDataJsonSerializer implements JsonSerializer<Performance
 		chan3.add("yaxis", yaxis3);
 
 		for (int i : tm4.keySet()) {
-			PerformancePlotData.timePulseData tpd = tm4.get(i);
-			tmp = new JsonArray();
-			tmp.add(new JsonPrimitive(tpd.getTimeOverThreshold()));
-			tmp.add(new JsonPrimitive(tpd.getPulse()));
-			tmp.add(new JsonPrimitive(tpd.getYError()));
-			channel4.add(tmp); 
+			PerformancePlotData.singleOutData ppd = tm4.get(i);
+			channel4.add(new JsonPrimitive(ppd.getThresh())); 
 		}
 		JsonObject yerr4 = new JsonObject();
 		yerr4.addProperty("show", true);
@@ -171,14 +161,16 @@ public class PerformanceDataJsonSerializer implements JsonSerializer<Performance
 		
 		JsonObject xaxis4 = new JsonObject();
 		xaxis4.add("n", new JsonPrimitive(1));
-
+		xaxis4.addProperty("position", "bottom");
+	
 		JsonObject yaxis4 = new JsonObject();
 		yaxis4.add("n", new JsonPrimitive(1));
+		yaxis4.addProperty("position", "left");
 
 		JsonObject chan4 = new JsonObject();
 		chan4.addProperty("label", "Channel 4");
 		chan4.add("data", channel4);
-		chan4.addProperty("unit", "unknown");
+		chan4.add("data_original", channel4);
 		chan4.addProperty("shadowSize", 0);
 		chan4.addProperty("color", "cyan");
 		chan4.addProperty("xunits", "nanosecs");
@@ -194,5 +186,5 @@ public class PerformanceDataJsonSerializer implements JsonSerializer<Performance
 		complete.add("channel3", chan3);
 		complete.add("channel4", chan4);		
 		return complete; 
-	}
-}
+	}//end of serialize
+}//end of PerformanceDataJsonSerializer
