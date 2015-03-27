@@ -134,8 +134,8 @@ h2 {
 	margin:0;
 	padding:10px 10px 0;
 	list-style:none;
-	font-size: 12px;
-	line-height: 13px;
+	font-size: 18px;
+	line-height: 19px;
 }
 
 #submenu li {
@@ -185,4 +185,5 @@ h2 {
 	padding-top: 60px;
     padding-left: 30px;
 	padding-right: 30px;
+	line-height: 15px;
 }
