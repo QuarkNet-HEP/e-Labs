@@ -16,12 +16,12 @@
 			<div id="submenu">
 				<ul>
 					<li id="currentSubmenu">
-						<a href="#">Home</a>
+						<a href="/">Home</a>
 					</li>
 					<li><a href="/elab/cms/">CMS e-Lab</a></li>
 					<li><a href="/elab/cosmic/">Cosmic Ray e-Lab</a></li>
 					<li><a href="/elab/ligo/">LIGO e-Lab</a></li>					
-					<li><a href="/elab/about.jsp">Teaching and Learning</a></li>
+					<li><a href="/elab/about.jsp">About</a></li>
 					<li><a href="/elab/scaffolding.html">Ed Scaffolding</a></li>
 					<li><a href="/elab/teacher.html">Teacher Registration</a></li>
 				</ul>
@@ -63,6 +63,7 @@
 						<li>7. Engaging in argument from evidence</li>
 					</ol>								
 				</p>
+				<br /><br />
 				</div>
 		</div>
 	</body>
