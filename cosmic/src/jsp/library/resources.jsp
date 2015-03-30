@@ -32,6 +32,8 @@
 	<tr>
 		<td>
 			<div id=left>
+
+<%--******************************************Tutorials********************************************************* --%>	
 				
 				<div class="tab" id="tab-tutorials">
 					<span class="tab-title">Tutorials</span>
@@ -109,6 +111,9 @@
 						</ul>
 					</div>
 				</div>
+				
+<%--*************************************CRMD Data Collection************************************************************** --%>							
+				
 				<div class="tab" id="tab-equip">
 					<span class="tab-title" style="width: 200px;">CRMD Data Collection</span>	
 					<div class="tab-contents-sublevel">
@@ -118,7 +123,10 @@
 							</li>
 						</ul>					
 					</div>
-				</div>			
+				</div>		
+				
+<%--**************************************Contacts************************************************************* --%>							
+					
 				<div class="tab" id="tab-contacts">
 					<span class="tab-title">Contacts</span>	
 					<div class="tab-contents-sublevel">
@@ -142,6 +150,8 @@
 						<h2><a href="../library/students.jsp">Student Research Groups</a></h2>
 					</div>
 				</div>
+
+<%--***********************************Animations**************************************************************** --%>							
 				
 				<div class="tab" id="tab-animations">
 					<span class="tab-title">Animations</span>
@@ -152,26 +162,6 @@
 								 - Equipment to collect data.
 							</li>
 							<li>
-								<a href="../flash/daq_portal_rays.html">Send Data to Grid Portal</a>
-								- Data collected at schools is sent to grid portal.
-							</li>
-							<li>
-								<a href="../flash/analysis.html">Analysis</a>
-								- Counter performance study activates grid portal.
-							</li>
-							<li>
-								<a href="../flash/collaboration.html">Collaboration</a>
-								- How students collaborate
-							</li>
-							<li>
-								<a href="../flash/SC2003.html">Loop</a>
-								- Loop through the previous three
-							</li>
-							<li>
-								<a href="../flash/griphyn-animate_sc2003.html">QuarkNet vs.CMS</a>
-								- Comparing use of Grid in cosmic ray studies with the CMS experiment
-							</li>
-							<li>
 								<a href="../flash/DAQII.html">Data Acquisition Card</a>
 								- How the DAQ works. Rollovers provide more information on the board and the format of the data. <strong>Has SOUND.</strong>
 							</li>
@@ -179,8 +169,9 @@
 					</div>
 				</div>
 				
+	<%--**********************************Plots***************************************************************** --%>							
 					
-					<div class="tab" id="tab-animations">
+	 				<div class="tab" id="tab-animations">     
 					<span class="tab-title">Plots</span>
 					<div class="tab-contents-sublevel">
 						
@@ -231,7 +222,11 @@
 		</td>
 		<td>
 		
+<%--*******************************Right column******************************************************************** --%>	
+		
 		<div id="right">
+																
+<%--*******************************Cosmic Ray Sites******************************************************************** --%>						
 					
 				<div class="tab" id="tab-online">
 					<span class="tab-title">Cosmic Ray Sites</span>
@@ -272,7 +267,8 @@
 								- Physicists detect cosmic rays in their neutrino detectors.
 							</li>
 						  <li>
-								<a href="http://www.bartol.udel.edu/icetop/" target="activity">IceTop</a> and <a href="http://whyfiles.org/2012/chasing-neutrinos-at-the-south-pole/" target="activity">IceCube</a>
+						  		<a href="https://icecube.wisc.edu/science/icetop/" target="activity">IceTop</a> and <a href="http://whyfiles.org/2012/chasing-neutrinos-at-the-south-pole/" target="activity">IceCube</a>
+
 								- Projects investigate neutrinos, but they also capture cosmic ray data.
 							</li>
 								<li>
@@ -308,57 +304,42 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 								- Investigations into the origin of cosmic rays, from the University of Utah
 							</li>
 						</ul>
-						
-						
 
 						<h2>Professional Sites (Very Advanced)</h2>
 						<ul class="simple">
-							
 	
 							<li>
 								<a href="http://scipp.ucsc.edu/milagro/Animations/AnimationIntro.html">Milagro Animations</a>
 								- Simulations of extensive air showers and Milagro Detector. Most movies run under 5 megabytes and 
 								are about 15 seconds long, by Miguel Morales (need QuickTime plugin)
 							</li>
-							<li>
-								<a href="http://www.wired.com/wired/archive/12.04/grid.html?tw=wn_tophead_6">The God Particle
-								 and the Grid.</a>
-								 - Wired Magazine discusses the grid and particle physics at CERN, Fermilab's sister 
-								 laboratory in Geneva, Switzerland.
-							</li>
+	 
 						</ul>
 						</div>
-						<div class="tab" id="tab-online">
+
+<%--********************************Grid Computing******************************************************************* --%>							
+				<div class="tab" id="tab-online">
+
 					<span class="tab-title">Grid Computing</span>
 					<div class="tab-contents-sublevel">
-						<p>The e-Lab uses <a href="http://en.wikipedia.org/wiki/Distributed_computing">distributed computing</a> where multiple computers,networked
-						together, perform the analysis of the data.  Many scientists use the grid &mdash; one form of distributed computing.  Learn more about the grid.</p>
-						<ul  class="simple">
+					<p>The e-Lab uses <a href="http://www.wikipedia.org/wiki/Distributed_computing" target="website" width="850" height="600">distributed computing</a> where multiple computers, networked together, perform the analysis of the data.  Many scientists use the grid - one form of distributed computing.  Learn more about the grid.</p>
+						<ul class="simple">
 							<li>
-								<a href="http://gridcafe.web.cern.ch/gridcafe/">The Grid Cafe</a>
-								- An introduction. From there, go to <a href="http://www.gridtalk.org/">Grid Talk</a> where you can read <a href="http://www.gridtalk.org/briefings.htm">Grid Briefings</a> and explore the <a href="http://www.gridguide.org/">Grid Guide</a>, from CERN.
+								<a href="http://www.gridcafe.org">The Grid Cafe</a> - an introduction.  From there, go to <a href="http://gridtalk.org/">Grid Talk</a> where you can read <a href="http://gridtalk.org/briefings.htm">Grid Briefings</a> and explore the <a href="http://www.gridguide.org/">Grid Guide</a>, from CERN.
 							</li>
 							<li>
-								<a href="http://www.tryscience.org/grid/home.html" target="activity">Grids for Kids at TryScience</a>
-								- Use grid computing to model Mt. Vesuvius' volcanic activity and discover whether residents need warning, from New York Museum of Science. 
+								<e:popup href="http://www.tryscience.org/grid/home.html" target="website" width="850" height="600">Grids for Kids at TryScience</e:popup> - Use grid computing to model Mt. Vesuvius' volcanic activity and discover whether residents need warning, from New York Museum of Science.
 							</li>
 							<li>
-								<a href="http://www.tryscience.org/grid/home.html" target="activity">Grids for Kids at TryScience</a>
-								- Use grid computing to model Mt. Vesuvius' volcanic activity and discover whether residents need warning, from New York Museum of Science. 
+								<e:popup href="http://www.wikipedia.org/wiki/Grid_computing" target="website" width="850" height="600">Grid Computing</e:popup> - Read the Wikipedia article on grid computing.
 							</li>
-							
-							<li>
-								<a href="http://www.wikipedia.org/wiki/Grid_computing">Grid Computing</a>
-								- Read the Wikipedia article on the grid computing. 
-							</li>
-							
-							
-							
-							</ul>
-							</div>
-							</div>
-							
-							<div class="tab" id="tab-animations">
+						</ul>
+					</div>
+
+<%--******************************IT Careers********************************************************************* --%>							
+						
+						<div class="tab" id="tab-online">
+
 					<span class="tab-title">IT Careers</span>
 					<div class="tab-contents-sublevel">
 						<ul class="simple">
@@ -373,7 +354,10 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 								</ul>
 					</div>
 							
-							<div class="tab" id="tab-online">
+<%--*****************************Reporting Research********************************************************************** --%>							
+							
+					<div class="tab" id="tab-online">
+							
 					<span class="tab-title">Reporting Research</span>
 					<div class="tab-contents-sublevel">
 						<ul  class="simple">
@@ -394,7 +378,10 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 					</div>
 				
 				
-			</div>
+					</div>
+
+<%--*************************************************************************************************** --%>							
+
 		</td>
 	</tr>
 </table>

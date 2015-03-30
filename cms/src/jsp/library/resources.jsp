@@ -125,11 +125,14 @@
 								- From Inquiring Minds - Fermilab.
 							</li>
 
-							<li>
-								<e:popup href="http://hands-on-cern.physto.se/hoc_v21en/index.html" target="website" width="850" height="600">Hands-on-CERN</e:popup>
+    						<li>
+								<e:popup href="http://physicsmasterclasses.org/exercises/hands-on-cern/hoc_v21en/index.html" target="website" width="850" height="600">Hands-on-CERN</e:popup>
 							</li>
 							<li>
-								<e:popup href="http://www.lhc.ac.uk/" target="website" width="925" height="610">The Large Hadron Collider</e:popup> and the <e:popup href="http://www.particledetectives.net/LHC/LHC_project.html" target="website" width="875" height="610">LHC Project Simulator</e:popup> - from the Science and Technology Facilities Council, Great Britain
+								<e:popup href="http://www.lhc.ac.uk/" target="website" width="925" height="610">The Large Hadron Collider</e:popup> and the <e:popup href="http://www.particledetectives.net/LHC/LHC_project.html" target="website" width="875" height="610">LHC Project Simulator</e:popup> - from the Science and Technology Facilities Council, Great Britain							
+							</li>
+							<li>
+								<e:popup href="http://cern50.web.cern.ch/cern50/multimedia/LHCGame/StartGame.html" target="website" width="875" height="610">LHC Game (CERN)</e:popup> 
 							</li>
 							<li>
 								<e:popup href="http://atlas.ch/" target="website" width="900" height="600">The Atlas Detector</e:popup> - Atlas website at CERN
@@ -255,7 +258,7 @@
 							<div class="tab" id="tab-grid-computing">
 					<span class="tab-title">Grid Computing</span>
 					<div class="tab-contents-sublevel">
-					<p>The grid is critical for providing the data to all the CMS researchers and to our e-Lab.</p>
+					<p>The grid is critical for providing the data to all the CMS researchers.</p>
 						<ul  class="simple">
 							<li>
 							<li>
