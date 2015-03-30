@@ -14,13 +14,17 @@
 <%
 	String id = request.getParameter("id");
 	AnalysisRun results = AnalysisManager.getAnalysisRun(elab, user, id);
-	File[] files = new File[4];
-	for (int i = 0; i < 4; i++) {
-		String fileName = results.getOutputDir()+"/singleOut"+String.valueOf(i+1);
+	String output = results.getAnalysis().getParameter("singlechannelOut").toString();
+	String[] outputFiles = output.split(" ");
+	File[] files = new File[outputFiles.length];
+	for (int i = 0; i < outputFiles.length; i++) {
+		String fileName = results.getOutputDir()+"/"+outputFiles[i];
 		files[i] = new File(fileName);
 	}
+	String binValue = results.getAnalysis().getParameter("freq_binValue").toString();
+	Double bV = Double.valueOf(binValue);
 	response.setContentType("application/json");		
-	PerformancePlotData ppd = new PerformancePlotData(files);
+	PerformancePlotData ppd = new PerformancePlotData(files, bV);
 	
 	GsonBuilder gb = new GsonBuilder();
 	gb.registerTypeAdapter(PerformancePlotData.class, new PerformanceDataJsonSerializer());
