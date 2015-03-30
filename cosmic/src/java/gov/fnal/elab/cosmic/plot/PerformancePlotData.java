@@ -10,9 +10,16 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 import java.lang.Math;
+
+import com.google.gson.JsonArray;
+
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.datacatalog.*;
 import gov.fnal.elab.datacatalog.query.*;
@@ -25,30 +32,47 @@ public class PerformancePlotData {
 	private TreeMap<Integer, singleOutData> perfDataChannel2; 
 	private TreeMap<Integer, singleOutData> perfDataChannel3; 
 	private TreeMap<Integer, singleOutData> perfDataChannel4; 
+	private List<Double> allValues;
+	private Double binValue;
+	private Double minX = -1.0;
+	private Double maxX = -1.0;
+	private Double nBins = -1.0;
 	
-	public PerformancePlotData(File[] files) throws IOException {
-		for (int i= 0; i < files.length; i++) {
-			BufferedReader br = new BufferedReader(new FileReader(files[i]));		
-			singleOutData thisLineData = null;
-			int ts=0; 
-			if (i == 0) {
-				perfDataChannel1 = new TreeMap<Integer, singleOutData>();
-				perfDataChannel1 = saveLineData(br);
-			}
-			if (i == 1) {
-				perfDataChannel2 = new TreeMap<Integer, singleOutData>();
-				perfDataChannel2 = saveLineData(br);
-			}
-			if (i == 2) {
-				perfDataChannel3 = new TreeMap<Integer, singleOutData>();
-				perfDataChannel3 = saveLineData(br);
-			}
-			if (i == 3) {
-				perfDataChannel4 = new TreeMap<Integer, singleOutData>();
-				perfDataChannel4 = saveLineData(br);
-			}
+	public PerformancePlotData(File[] files, Double binValue) throws IOException {
+		String message = "";
+		try {
+			for (int i= 0; i < files.length; i++) {
+				BufferedReader br = new BufferedReader(new FileReader(files[i]));		
+				singleOutData thisLineData = null;
+				int ts=0; 
+				this.binValue = binValue;
+				allValues = new ArrayList<Double>();
+				if (i == 0) {
+					perfDataChannel1 = new TreeMap<Integer, singleOutData>();
+					perfDataChannel1 = saveLineData(br);
+				}
+				if (i == 1) {
+					perfDataChannel2 = new TreeMap<Integer, singleOutData>();
+					perfDataChannel2 = saveLineData(br);
+				}
+				if (i == 2) {
+					perfDataChannel3 = new TreeMap<Integer, singleOutData>();
+					perfDataChannel3 = saveLineData(br);
+				}
+				if (i == 3) {
+					perfDataChannel4 = new TreeMap<Integer, singleOutData>();
+					perfDataChannel4 = saveLineData(br);
+				}
+			}//end of for loop
+			
+			Collections.sort(allValues);
+			minX = allValues.get(0);
+			maxX = allValues.get(allValues.size()-1);
+			nBins = (maxX- minX) / binValue;
+		} catch (Exception e) {
+			message = e.getMessage();
 		}
-	}
+	}//end of constructor
 
 	public TreeMap<Integer, singleOutData> saveLineData(BufferedReader br) {
 		singleOutData thisLineData = null;
@@ -64,9 +88,10 @@ public class PerformancePlotData {
 				}
 				thisLineData = new singleOutData(
 						parseToDouble(split[4])
-				);				
+				);		
 				ts++;
 				plotData.put(ts, thisLineData);				
+				allValues.add(parseToDouble(split[4]));
 			}
 		} catch (Exception e) {
 			return null;
@@ -91,10 +116,16 @@ public class PerformancePlotData {
 		private double thresh;
 		
 		private singleOutData(double thresh) {
-				this.thresh = thresh;
+			this.thresh = thresh;
 		}
 		public double getThresh() {
 			return thresh;
+		}
+		public double getMinX() {
+			return minX;
+		}
+		public double getMaxX() {
+			return maxX;
 		}
 	}//end of class singleOutData
 
@@ -108,4 +139,20 @@ public class PerformancePlotData {
 		}
 		return result;
 	}//end of parseToDouble		
-}
+
+	public Double getBinValue() {
+		return binValue;
+	}//end of getBinValue
+	
+	public Double getMinX() {
+		return minX;
+	}//end of getMinX
+	
+	public Double getMaxX() {
+		return maxX;
+	}//end of getMaxX
+	
+	public Double getNBins() {
+		return nBins;
+	}//end of getNBins
+}//end of PerformancePlotData
