@@ -3,7 +3,7 @@ session_destroy();
 session_start();
 
 
-if(isset($_POST["submit"])&& $_POST["username"]=="Admin"&& $_POST["password"]=="MasterClass"){
+if(isset($_POST["submit"])&& $_POST["username"]=="Admin"&& $_POST["password"]=="Cima4CMS"){
 	$_SESSION["AUTHUSER"]=true;
 	header('Location: Classes.php');	
 }
