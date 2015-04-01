@@ -61,7 +61,7 @@
 						<li>5. Using mathematics and computational thinking</li>
 						<li>6. Constructing explanations (for science) and designing solutions (for engineering)</li>
 						<li>7. Engaging in argument from evidence</li>
-					</ol>								
+					</ul>								
 				</p>
 				<p>
 			<%
