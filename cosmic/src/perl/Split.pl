@@ -434,7 +434,10 @@ while(<IN>){
 			$DAQFirmware = $stRow[10]/100 if $stRow[10] > 99; 	#The DAQ firmware writes the firmware as an INT (e.g., FW version 1.06 is reported in the ST line as 106)
 			$DAQFirmware = $stRow[10]/10 if $stRow[10] < 100;	#Some of the ints are less than 100. 
 			$DAQID = int($stRow[11]);
-			die "The DAQ ID selected ($ID) does not match the DAQ ID stored in these data ($DAQID). We've cancelled your upload. Did you select the correct ID?" if $DAQID != 0 && $ID != $DAQID;
+			if (if $DAQID != 0 && $ID != $DAQID) {
+				clean_failed_splits();
+				die "The DAQ ID selected ($ID) does not match the DAQ ID stored in these data ($DAQID). We've cancelled your upload. Did you select the correct ID?";
+			}
 		}
 		$stRowCount++;
 		next; #we need a next here to get the second line present in the output of ST.
@@ -610,9 +613,11 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					# When ST 2, the DAQ does not clear the onboard registers (that we call stCountN or stEvents here) after printing the lines. So the count in any channel over the time interval is the previous (stCount0 or stEvent) subtracted from the current (stCount0 or stEvent)
 					# When ST3 these onboard registers are cleared after each printing, so there is no need to do the subtraction.
 					# We just need to see if these (stCountN and stEvents) keep growing over the life of the file. If they do, we need to subtract one from the next to get the scalar increment over the integration time.
-					
-					#die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged. We have stopped your upload. We created $numSplitFiles usable file(s) before this error."  if $dsRowCount != $stRowCount || $dsRowCount == 0; #(removing the comment before the OR in this conditional it somehow got removed)
-					
+					if (if $dsRowCount != $stRowCount || $dsRowCount == 0) {
+						clean_failed_splits();
+						die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged. We have stopped your upload. We created $numSplitFiles usable file(s) before this error."; #(removing the comment before the OR in this conditional it somehow got removed)
+					}
+								
 					if ($dsRowCount > 0){
 						#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
 						#The channel is off if the scalar hasn't incremented. I hope that one ping is enough to tell.						
@@ -620,8 +625,11 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 						$goodChan = 1 if ($stCount1[0] != $stCount1[1]) && $goodChan == -1;
 						$goodChan = 2 if ($stCount2[0] != $stCount2[1]) && $goodChan == -1;
 						$goodChan = 3 if ($stCount3[0] != $stCount3[1]) && $goodChan == -1;
-						#die "This detector has no working channels. We have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $goodChan == -1;
-						
+						if (if $goodChan == -1) {
+							clean_failed_splits();
+							die "This detector has no working channels. We have stopped your upload. We created $numSplitFiles usable file(s) before this error.";
+						}
+											
 						#now that we know what channel to look at, let's test for ST 2 or ST 3 by checking how often a scalar read is larger than the previous read.
 						for $j (0..$dsRowCount-1){
 							$n++ if $goodChan == 0 && $stCount0[$j] <= $stCount0[$j+1];
@@ -772,11 +780,11 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					close $blessFile;	
 					
 					#Empty all of the status arrays so that they can start over with the new split file.
-					@stTime = @StCoutTemp = @stCount0 = @stRate0 = @stCount1 = @stRate1 = @stCount2 = @stRate2 = @stCount3 = @stRate3 = @stEvents = @stRateEvents = @stType = @stPress = @stTemp = @StVcc = @stGPSSats = @stRow =  @cpld_frequency1 = @cpld_frequency2 = @stCountTemp = ();
+					@stTime = @StCoutTemp = @stCount0 = @stRate0 = @stCount1 = @stRate1 = @stCount2 = @stRate2 = @stCount3 = @stRate3 = @stEvents = @stRateEvents = @stType = @stPress = @stTemp = @StVcc = @stGPSSats = @stRow =  @cpld_frequency1 = @cpld_frequency2 = @stCountTemp = @cpld_frequency = ();
 					#reset any scalars in use
 					$GPSSuspectsTot += $GPSSuspects; #for the .raw file
 					$data_line_total += $data_line; #for the .raw file
-					$chan3=$chan2=$chan1=$chan0=$n=$i=$j=$stRowCount=$stType=$dsRowCount=$events=$GPSSuspects=$data_line=0;
+					$chan3=$chan2=$chan1=$chan0=$n=$i=$j=$stRowCount=$stType=$dsRowCount=$events=$GPSSuspects=$data_line=$cpld_real_freq_tot=$cpld_real_count=0;
 					$goodChan=-1;
 					$numSplitFiles++;
 					#print "code never makes it here if datafile is < 1 day.\n";
@@ -860,6 +868,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 #die "This file contains no ST lines. We now require these lines. We've cancelled your upload. Please consult the DAQ HE screen to implement this feature of the hardware." if $stRowCount == 0;
 
 if($total_events == 0){
+	clean_failed_splits();
 	die "No valid events found in your file ($raw_filename) of length $.\n";
 }
 else{
@@ -875,8 +884,10 @@ else{
 	#We just need to see if these (stCountN and stEvents) keep growing over the life of the file. If they do, we need to subtract one from the next to get the scalar increment over the integration time.
 	
 	#die "These data do not contain the same number of ST and DS lines; we have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount;
-
-	#die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged.  We have stopped your upload.  We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount || $dsRowCount == 0; #(removing the comment before the OR in this conditional it somehow got removed).
+	if (if $dsRowCount != $stRowCount || $dsRowCount == 0) {
+		clean_failed_splits();
+		die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged.  We have stopped your upload.  We created $numSplitFiles usable file(s) before this error."; #(removing the comment before the OR in this conditional it somehow got removed).
+	}
 					
 	if ($dsRowCount > 0){
 		#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
@@ -885,8 +896,10 @@ else{
 		$goodChan = 1 if ($stCount1[0] != $stCount1[1]) && $goodChan == -1;
 		$goodChan = 2 if ($stCount2[0] != $stCount2[1]) && $goodChan == -1;
 		$goodChan = 3 if ($stCount3[0] != $stCount3[1]) && $goodChan == -1;
-		#die "This detector has no working channels. We have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $goodChan == -1;
-						
+		if (if $goodChan == -1) {
+			clean_failed_splits();
+			die "This detector has no working channels. We have stopped your upload. We created $numSplitFiles usable file(s) before this error.";
+		}			
 		#now that we know what channel to look at, let's test for ST 2 or ST 3 by checking how often a scalar read is larger than the previous read.
 		for $j (1..$dsRowCount-1){
 			$n++ if $goodChan == 0 && $stCount0[$j] <= $stCount0[$j+1];
@@ -1030,6 +1043,7 @@ else{
 	#print "$chan0 $chan1 $chan2 $chan3\n";
 
 	if ($data_line_total==0){
+		clean_failed_splits();
 		die "There are no valid events in this file. There may be trigger data; if so, the timing solution is unreliable. Please file a helpdesk ticket.";
 	}
 	
@@ -1134,6 +1148,12 @@ sub stddev {
 	 	$s += ($avg - $x)**2;
 	 }
 	 return sqrt($s/$n);
+}
+
+#remove split files that did not complete or failed
+sub clean_failed_splits {
+	unlink("$output_dir/$fn"); 
+	unlink("$output_dir/$sfn");
 }
 
 sub calculate_cpld_frequency {
