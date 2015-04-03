@@ -1,6 +1,5 @@
 <%@ include file="../include/elab.jsp" %>
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -48,7 +47,7 @@
 				Students will learn about LIGO's quest to detect gravitational waves as they analyze the vibrations of the ground
 				underneath LIGO's ultra-sensitive interferometers. The LIGO e-Lab addresses ALL science practices in the Next Generation Science Standards.</p>
 
-					 <p>The I2U2 project offers a classroom instructional unit on seismology as a companion to the LIGO e-Lab.  
+					 <p>LIGO offers a classroom instructional unit on seismology as a companion to the LIGO e-Lab.  
 				Teachers whose courses include Earth science and seismology content will find that the instructional unit offers a natural context for utilizing the LIGO e-Lab.  
 				Learn more about the seismology instructional unit by checking the LIGO e-Lab <a href="../teacher/index.jsp">Teacher Home</a> page under <i>Suggestions for Getting Started</i>.</p>
 

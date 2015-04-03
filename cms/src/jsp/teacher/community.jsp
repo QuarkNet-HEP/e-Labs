@@ -28,11 +28,11 @@
 <p>Collaborate and interact with other e-Lab teachers and staff using the CMS e-Lab with the following tools:</p>
 
 <a name="Facebook"></a><h2>Facebook Users Group</h2>
-<p>The <a href="https://www.facebook.com/home.php?sk=group_115695225182890&ap=1" target="facebook">I2U2 Users Facebook Group</a> is a place to communicate with fellow e-Lab users. It also supports creating/sharing documents and chat sessions. Many of you already have Facebook accounts and like the idea of being able to go to one place to do your social networking. If you already have an account, ask to join the I2U2 group.  If you are not a member, consider signing up.  Read <a href="../content/Facebook-Notes.pdf">Getting Started with Sharing Ideas</a> to learn how to join Facebook and use the Facebook I2U2 group.</p>
+<p>The <a href="https://www.facebook.com/home.php?sk=group_115695225182890&ap=1" target="facebook">QuarkNet e-Lab Users Group</a> is a place to communicate with fellow e-Lab users. It also supports creating/sharing documents and chat sessions. Many of you already have Facebook accounts and like the idea of being able to go to one place to do your social networking. If you already have an account, ask to join the QuarkNet e-Lab Users group.  If you are not a member, consider signing up.  Read <a href="../content/Facebook-Notes.pdf">Getting Started with Sharing Ideas</a> to learn how to join Facebook and use the Facebook QuarkNet e-Lab Users group.</p>
 
 <a name="Helpdesk"></a><h2>HelpDesk</h2>
 <ul>
-<li> Use the <a href="http://www18.i2u2.org/elab/cms/teacher/forum/HelpDeskRequest.php?elab=cms"  target="help">Help Desk Request Form</a> to get technical assistance from I2U2 staff. You can access this form from any teacher page when logged in by clicking on the little lifesaver icon on the upper right hand corner of your window.
+<li> Use the <a href="http://www18.i2u2.org/elab/cms/teacher/forum/HelpDeskRequest.php?elab=cms"  target="help">Help Desk Request Form</a> to get technical assistance from QuarkNet e-Labs staff. You can access this form from any teacher page when logged in by clicking on the little lifesaver icon on the upper right hand corner of your window.
 </li></ul>
 
 
