@@ -29,8 +29,9 @@
 		</div>
 		<div id="content">
 			<div id="contentWithMargin"> 
+				<h2>About</h2>
 				<p>
-					<strong>e-Labs differ</strong> from other collaborative education 
+					The <strong>e-Labs differ</strong> from other collaborative education 
 					environments because they build on the power of distributed computing and the 
 					Virtual Data System to add exciting education components not available 
 					with other models. Students contribute to and access shared data, most 
@@ -43,18 +44,18 @@
 					that is often left out of classroom experiments.
 				</p> 
 				<p>
-					Teaching tools such as student and teacher logbooks, pre- and post-tests 
-					and an assessment rubic aligned with learner outcomes help teachers 
+					Teaching tools such as student and teacher logbooks, pre-tests and post-tests 
+					and an assessment rubric aligned with learner outcomes help teachers 
 					guide student work. Constraints on interface designs and administrative 
 					tools such as registration databases give teachers the "one-stop-shopping" 
 					they seek for multiple e-Labs. Teaching and administrative tools also 
 					allow us to track usage and assess the impact on student learning.
 				</p>
 				<p>
-					e-Labs address ALL science practices in the Next Generation Science Standards. 
+					The e-Labs address ALL science practices in the Next Generation Science Standards. 
 					The Cosmic Ray e-Lab also addresses ALL engineering practices.<br />
 					<ul style="list-style-type: none;">
-						<li>1. Asking questions (for science) defining problems (for engineering)</li>
+						<li>1. Asking questions (for science) and defining problems (for engineering)</li>
 						<li>2. Developing and using models</li>
 						<li>3. Planning and carrying out investigations</li>
 						<li>4. Analyzing and interpreting data</li>
