@@ -772,11 +772,11 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					close $blessFile;	
 					
 					#Empty all of the status arrays so that they can start over with the new split file.
-					@stTime = @StCoutTemp = @stCount0 = @stRate0 = @stCount1 = @stRate1 = @stCount2 = @stRate2 = @stCount3 = @stRate3 = @stEvents = @stRateEvents = @stType = @stPress = @stTemp = @StVcc = @stGPSSats = @stRow =  @cpld_frequency1 = @cpld_frequency2 = @stCountTemp = ();
+					@stTime = @StCoutTemp = @stCount0 = @stRate0 = @stCount1 = @stRate1 = @stCount2 = @stRate2 = @stCount3 = @stRate3 = @stEvents = @stRateEvents = @stType = @stPress = @stTemp = @StVcc = @stGPSSats = @stRow =  @cpld_frequency1 = @cpld_frequency2 = @stCountTemp =  @cpld_frequency =();
 					#reset any scalars in use
 					$GPSSuspectsTot += $GPSSuspects; #for the .raw file
 					$data_line_total += $data_line; #for the .raw file
-					$chan3=$chan2=$chan1=$chan0=$n=$i=$j=$stRowCount=$stType=$dsRowCount=$events=$GPSSuspects=$data_line=0;
+					$chan3=$chan2=$chan1=$chan0=$n=$i=$j=$stRowCount=$stType=$dsRowCount=$events=$GPSSuspects=$data_line=$cpld_freq_tot1=$cpld_freq_tot2=$cpld_count=$cpld_real_freq_tot=$cpld_real_count=0;
 					$goodChan=-1;
 					$numSplitFiles++;
 					#print "code never makes it here if datafile is < 1 day.\n";
