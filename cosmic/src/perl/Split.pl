@@ -292,7 +292,9 @@ while(<IN>){
 
 		#GPS flag = 4 in the raw data indicates that the GPS time in that line is suspect. Indeed, our calculation confirms this so we should ignore the lines with a GPS flag = 4. Now we do.
 		#Actually it should check if bit 2 is 1. Otherwise it may accept invalid lines.
-		next if ($dataRow[14] >> 3); 
+		#Commented out this next piece of code that checks for the "8" flag for older boards. 
+		#Sten, Mark and Bob agreed that this check is not necessary.
+		#next if ($dataRow[14] >> 3); 
 		#next if ($dataRow[14] & 0x04 != 0); 
 
 		#trying somethiing new with GPS time solutions. TJ wonders if the V and A flag really mean something about the timing solution. Thus far there is no evidence for it.
