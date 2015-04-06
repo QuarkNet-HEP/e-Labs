@@ -19,7 +19,7 @@ import gov.fnal.elab.util.ElabException;
 public class BlessData {
 
 	private TreeMap<Integer, valueData> timeValueData; 
-	private TreeMap<Long, valueData> timeValueDataLong; 
+	private TreeMap<Long, valueData> timeValueDataRange; 
 	
 	public BlessData(File file) throws IOException {
 		timeValueData = new TreeMap<Integer, valueData>(); 		
@@ -73,7 +73,7 @@ public class BlessData {
 
 	//EPeronja: attempt to concatenate a few days together
 	public BlessData(Elab elab, File[] file, String[] filenames) throws IOException {
-		timeValueDataLong = new TreeMap<Long, valueData>(); 
+		timeValueDataRange = new TreeMap<Long, valueData>(); 
 		
 		for (int i = 0; i < file.length; i++) {
 			try {				
@@ -89,13 +89,6 @@ public class BlessData {
 					String dateUTC = sdf.format(date);
 					Date newDate = sdf.parse(dateUTC);
 					secs = newDate.getTime();
-					//VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filenames[i]);
-					//if (e != null) {
-					//	startDate = (Timestamp) e.getTupleValue("startdate");
-					//	String df = new SimpleDateFormat("dd/MM/yyyy").format(startDate);
-					//	Date date = new SimpleDateFormat("dd/MM/yyyy").parse(df);
-					//	secs = date.getTime();
-					//}
 				} catch (Exception e) {	
 					String message = e.toString();
 				}
@@ -136,7 +129,7 @@ public class BlessData {
 								false
 						);
 						ts = secs + parseToLong(split[0]);
-						timeValueDataLong.put(ts, thisLineData);				
+						timeValueDataRange.put(ts, thisLineData);				
 					}
 				}
 				br.close();
@@ -144,7 +137,7 @@ public class BlessData {
 				System.out.print("Exception in BlessData: "+ex.getMessage()+"\n");
 			}
 		}
-	}
+	}//end of Blessdata for concatenated files
 	
 	
 	public BlessData(File file, String benchmark, Elab elab) throws IOException {
@@ -261,8 +254,8 @@ public class BlessData {
 	public TreeMap<Integer, valueData> getTimeValueData() {
 		return timeValueData;
 	}
-	public TreeMap<Long, valueData> getTimeValueDataLong() {
-		return timeValueDataLong;
+	public TreeMap<Long, valueData> timeValueDataRange() {
+		return timeValueDataRange;
 	}
 	
 	public class valueData {
