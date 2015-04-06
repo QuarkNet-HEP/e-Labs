@@ -15,13 +15,13 @@
 			</div>
 			<div id="submenu">
 				<ul>
-					<li id="currentSubmenu">
+					<li>
 						<a href="/">Home</a>
 					</li>
 					<li><a href="/elab/cms/">CMS e-Lab</a></li>
 					<li><a href="/elab/cosmic/">Cosmic Ray e-Lab</a></li>
 					<li><a href="/elab/ligo/">LIGO e-Lab</a></li>					
-					<li><a href="/elab/about.jsp">About</a></li>
+					<li id="currentSubmenu"><a href="/elab/about.jsp">About</a></li>
 					<li><a href="/elab/scaffolding.html">Ed Scaffolding</a></li>
 					<li><a href="/elab/teacher.html">Teacher Registration</a></li>
 				</ul>
