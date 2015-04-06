@@ -11,7 +11,7 @@
 <%@ include file="../include/elab.jsp" %>
 
 <%
-		String file = request.getParameter("file");
+	String file = request.getParameter("file");
 		String cleanString = file.replace("[", "");
 		cleanString = cleanString.replace("]", "");
 		String[] indFiles = cleanString.split(",");
@@ -25,7 +25,7 @@
 					validEntries += 1;
 				}
 			}
-
+	
 			File[] pfns = new File[validEntries];
 			String[] filenames = new String[validEntries];
 			for (int i = 0; i < indFiles.length; i++) {
@@ -43,7 +43,7 @@
 			if (pfns.length > 0) {
 				bd = new BlessData(elab, pfns, filenames);	
 				GsonBuilder gb = new GsonBuilder();
-				gb.registerTypeAdapter(BlessData.class, new BlessDataLongJsonSerializer());
+				gb.registerTypeAdapter(BlessData.class, new BlessDataRangeJsonSerializer());
 				Gson gson = gb.create(); 
 				out.write(gson.toJson(bd)); 
 			}
