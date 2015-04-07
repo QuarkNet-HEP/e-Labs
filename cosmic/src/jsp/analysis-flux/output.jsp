@@ -64,10 +64,6 @@
 		width="800" height="600" toolbar="true" cclass="button">Analysis directory...</e:popup>
 </div>
 <p>
-	<a href="flux-plot.jsp?id=${results.id }">View interactive plots</a>
-</p>
-
-<p>
 	<a href="../analysis-blessing/bless-plots-range.jsp?id=${results.id }">View blessing plots</a>
 </p>
 
