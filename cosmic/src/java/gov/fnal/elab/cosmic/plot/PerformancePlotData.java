@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.lang.Math;
 
-import com.google.gson.JsonArray;
+import com.google.gson.*;
 
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.datacatalog.*;
@@ -28,57 +28,50 @@ import gov.fnal.elab.util.ElabException;
 
 
 public class PerformancePlotData {
-	private TreeMap<Integer, singleOutData> perfDataChannel1; 
-	private TreeMap<Integer, singleOutData> perfDataChannel2; 
-	private TreeMap<Integer, singleOutData> perfDataChannel3; 
-	private TreeMap<Integer, singleOutData> perfDataChannel4; 
-	private List<Double> allValues;
+	private JsonArray perfDataChannel1;
+	private JsonArray perfDataChannel2;
+	private JsonArray perfDataChannel3;
+	private JsonArray perfDataChannel4;
 	private Double binValue;
-	private Double minX = -1.0;
+	private Double minX = 0.0;
 	private Double maxX = -1.0;
 	private Double nBins = -1.0;
 	
 	public PerformancePlotData(File[] files, Double binValue) throws IOException {
 		String message = "";
+		this.binValue = binValue;
 		try {
 			for (int i= 0; i < files.length; i++) {
 				BufferedReader br = new BufferedReader(new FileReader(files[i]));		
-				singleOutData thisLineData = null;
-				int ts=0; 
-				this.binValue = binValue;
-				allValues = new ArrayList<Double>();
 				if (i == 0) {
-					perfDataChannel1 = new TreeMap<Integer, singleOutData>();
+					perfDataChannel1 = new JsonArray();
 					perfDataChannel1 = saveLineData(br);
-				}
+				}				
 				if (i == 1) {
-					perfDataChannel2 = new TreeMap<Integer, singleOutData>();
+					perfDataChannel2 = new JsonArray();
 					perfDataChannel2 = saveLineData(br);
 				}
 				if (i == 2) {
-					perfDataChannel3 = new TreeMap<Integer, singleOutData>();
+					perfDataChannel3 = new JsonArray();
 					perfDataChannel3 = saveLineData(br);
 				}
 				if (i == 3) {
-					perfDataChannel4 = new TreeMap<Integer, singleOutData>();
+					perfDataChannel4 = new JsonArray();
 					perfDataChannel4 = saveLineData(br);
 				}
 			}//end of for loop
 			
-			Collections.sort(allValues);
-			minX = allValues.get(0);
-			maxX = allValues.get(allValues.size()-1);
+			minX = 0.0;
 			nBins = (maxX- minX) / binValue;
 		} catch (Exception e) {
 			message = e.getMessage();
 		}
 	}//end of constructor
 
-	public TreeMap<Integer, singleOutData> saveLineData(BufferedReader br) {
-		singleOutData thisLineData = null;
+	public JsonArray saveLineData(BufferedReader br) {
 		String[] split; 
 		String line;
-		TreeMap<Integer, singleOutData> plotData = new TreeMap<Integer, singleOutData>();
+		JsonArray plotData = new JsonArray();
 		int ts=0; 
 		try {
 			while ((line = br.readLine()) != null) {
@@ -86,12 +79,12 @@ public class PerformancePlotData {
 				if (split.length < 7) {
 					return null;
 				}
-				thisLineData = new singleOutData(
-						parseToDouble(split[4])
-				);		
-				ts++;
-				plotData.put(ts, thisLineData);				
-				allValues.add(parseToDouble(split[4]));
+				Double thresh = parseToDouble(split[4]);
+				plotData.add(new JsonPrimitive(thresh));
+				//get the max value of the whole set
+				if (thresh > maxX) {
+					maxX = thresh;
+				}
 			}
 		} catch (Exception e) {
 			return null;
@@ -99,35 +92,18 @@ public class PerformancePlotData {
 		return plotData;
 	}
 	
-	public TreeMap<Integer, singleOutData> getPerfDataChannel1() {
+	public JsonArray getPerfDataChannel1() {
 		return perfDataChannel1;
 	}
-	public TreeMap<Integer, singleOutData> getPerfDataChannel2() {
+	public JsonArray getPerfDataChannel2() {
 		return perfDataChannel2;
 	}
-	public TreeMap<Integer, singleOutData> getPerfDataChannel3() {
+	public JsonArray getPerfDataChannel3() {
 		return perfDataChannel3;
 	}
-	public TreeMap<Integer, singleOutData> getPerfDataChannel4() {
+	public JsonArray getPerfDataChannel4() {
 		return perfDataChannel4;
 	}
-	
-	public class singleOutData {
-		private double thresh;
-		
-		private singleOutData(double thresh) {
-			this.thresh = thresh;
-		}
-		public double getThresh() {
-			return thresh;
-		}
-		public double getMinX() {
-			return minX;
-		}
-		public double getMaxX() {
-			return maxX;
-		}
-	}//end of class singleOutData
 
 	public double parseToDouble(String split)
 	{

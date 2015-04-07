@@ -30,7 +30,6 @@
 			<div id="content">
 <p>
 	<a href="performance-plot.jsp?id=${results.id }">View interactive Flot plots</a><br />
-	<a href="performance-plotly.jsp?id=${results.id }">View plots with Plot.ly</a>
 </p>
 <p>
 	<img src="${results.outputDirURL}/plot.png"/>

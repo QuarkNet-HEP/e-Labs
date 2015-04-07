@@ -3,10 +3,12 @@ var overviewPlot = null;
 var yLabel = " ";
 var xLabel = " ";
 var data = []; //data that will be sent to the chart
+var dataOriginal = [];
 var xunits = new Object(); //array to hold all x axes units
 var yunits = new Object(); //array to hold all y axes units 
 var options = "";
 var overviewOptions = "";
+var globalBinWidth = -1;
 
 function saveChart(plot_to_save, name_id, div_id, run_id) {
 	var filename = document.getElementById(name_id);
@@ -214,19 +216,18 @@ function buildArrows() {
 	addArrow("down", 70, 30, { top: 100 });
 }//end of buildArrows
 
-function buildResetButton() {
-	$("<div class='button' style='left:20px;top:20px'>reset</div>")
-		.appendTo($("#resetbutton"))
-		.click(function (event) {
-			event.preventDefault();
-			onOffPlot = $.plot("#placeholder", data, options);
-			overviewPlot = $.plot("#overview", data, overviewOptions);
-			$(".message").html("");
-			$(".click").html("");
-			refresh();			
-		});	
-
-}//end of buildResetButton
+//function buildResetButton() {
+//	$("<div class='button' style='left:20px;top:20px'>reset</div>")
+//		.appendTo($("#resetbutton"))
+//		.click(function (event) {
+//			event.preventDefault();
+//			onOffPlot = $.plot("#placeholder", data, options);
+//			overviewPlot = $.plot("#overview", data, overviewOptions);
+//			$(".message").html("");
+//			$(".click").html("");
+//			refresh();			
+//		});	
+//}//end of buildResetButton
 
 function buildInteractiveZoom() {
 	$("#placeholder").bind("plotzoom", function (event, plot) {
@@ -393,7 +394,7 @@ function buildCanvas() {
 	buildDataMap();
 	var canvas = onOffPlot.getCanvas();
 	var context = canvas.getContext('2d');
-	var xcoord = 370;
+	var xcoord = 280;
 	var ycoord = 0;
 	var yspace = 15;
 	context.lineWidth=3;
@@ -427,13 +428,15 @@ function buildCanvas() {
 	var series = onOffPlot.getData();   
 	ycoord += 10;
 	for (var i = 0; i < series.length; i++) {
-		context.strokeStyle = series[i].color;
-		context.beginPath();
-	    ycoord += (yspace);
-	    context.moveTo(xcoord, ycoord);
-	    context.lineTo(xcoord+20, ycoord);
-	    context.stroke();
-	    context.fillText(series[i].label,xcoord+30,ycoord);		
+		if (series[i].toggle) {
+			context.strokeStyle = series[i].color;
+			context.beginPath();
+		    ycoord += (yspace);
+		    context.moveTo(xcoord, ycoord);
+		    context.lineTo(xcoord+20, ycoord);
+		    context.stroke();
+		    context.fillText(series[i].label,xcoord+30,ycoord);		
+		}
 	}	
 	var maxxaxis = getXNumAxis();
 	var maxyaxis = getYNumAxis();
@@ -468,39 +471,9 @@ function buildCanvas() {
 	});
 }//end of buildCanvas
 
-function reBinData(json, binValue) {
-		maxYaxis = 1;
-	  	var plotData = onOffPlot.getData();
-	  	var overviewData = overviewPlot.getData();
-		channel1 = json.channel1;
-		channel2 = json.channel2;
-		channel3 = json.channel3;
-		channel4 = json.channel4;
-		channel1.data = getDataWithBins(channel1.data_original, binValue);
-		channel2.data = getDataWithBins(channel2.data_original, binValue);
-		channel3.data = getDataWithBins(channel3.data_original, binValue);
-		channel4.data = getDataWithBins(channel4.data_original, binValue);
-		data = [];
-		data.push(channel1);
-		data.push(channel2);
-		data.push(channel3);
-		data.push(channel4);
-		onOffPlot.setData(data);
-		overviewPlot.setData(data);
-		var axes = onOffPlot.getAxes();
-	    axes.yaxis.options.max = maxYaxis;	
-	    onOffPlot.setupGrid();
-	    onOffPlot.draw();
-		var axesOverview = overviewPlot.getAxes();
-		axesOverview.yaxis.options.max = maxYaxis;	
-		overviewPlot.setupGrid();
-	    overviewPlot.draw();
-	    refresh();
-}//end of reBinData
-
 function refresh() {
 	  buildCanvas();
-	  bindEnableSteps();
+	  //bindEnableSteps();
 	  bindPlotHover();
 	  bindPlotClick();
 	  bindPlotSelection();
@@ -511,13 +484,12 @@ function refresh() {
 
 function bindEverything() {
 	  buildCanvas(); // creates a canvas of the chart with captions, legends, etc so then then it can be saved
-	  bindEnableSteps(); // only to replicate what we have now
+	  //bindEnableSteps(); // only to replicate what we have now
 	  bindPlotHover();
 	  bindPlotClick();
 	  bindPlotSelection();
 	  buildZoomOutButton();
 	  buildInteractiveZoom();
-	  buildResetButton();
 	  buildArrows();
 	  buildInteractivePanning();
 	  buildUnits();	

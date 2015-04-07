@@ -48,8 +48,7 @@ request.setAttribute("list",uploadeddata);
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/cosmic-plots.css" />
-		<script type="text/javascript" src="../include/elab.js"></script>
+		<link rel="stylesheet" type="text/css" href="../css/interactive-cosmic-plots.css" />
 	</head>
 	<body class="performancePlot" style="text-align: center;">
 		<!-- entire page container -->
@@ -60,8 +59,8 @@ request.setAttribute("list",uploadeddata);
 					<%@ include file="../include/nav-rollover.jspf" %>
 				</div>
 			</div>
-			
 			<div id="content">
+				<script type="text/javascript" src="../include/elab.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.errorbars.js"></script>
@@ -93,8 +92,11 @@ request.setAttribute("list",uploadeddata);
 					});
 				}); 				
 				</script>
+				<div><div style="text-align: center;">
+					<a href="output.jsp?id=${results.id }">View static plot</a><br />
+				</div></div>					
 				<div class="graph-container">
-					<div id="placeholder" class="graph-placeholder" style="float:left; width:650px; height:650px;"></div>
+					<div id="placeholder" class="graph-placeholder" style="float:left; width:550px; height:550px;"></div>
 					<div id="overview" class="graph-placeholder" style="float:right;width:160px; height:150px;"></div>
 					<div id="interactive" style="float:right;width:160px; height:325px;">
 						<p><label><input id="enableTooltip" type="checkbox" checked="checked"></input>Enable tooltip</label></p>
@@ -103,9 +105,6 @@ request.setAttribute("list",uploadeddata);
 							<br /><span id="hoverdata" class="hoverdata"></span>
 							<br /><span id="clickdata" class="clickdata"></span>
 						</p>				
-						<p>
-							<label><input id="enableSteps" type="checkbox" checked="checked"></input>Enable Steps</label>
-						</p>
 						<p><div id="zoomoutbutton" style="float:left; width:80px; height:30px;"> </div>
 						   <div id="resetbutton" style="float:right; width:80px; height:30px;"> </div></p>
 						<p><div id="arrows" style="float:right; width:160px; height:100px;"><div id="arrowcontainer" style="position:relative;"></div></div></p>
@@ -118,23 +117,9 @@ request.setAttribute("list",uploadeddata);
 		 	</div>
 		</div>
 		<div id="incdec">Bin Width
-    		<input type="number" name="binWidth" id="binWidth" style="width: 40px;"/>
+    		<input type="number" name="binWidth" id="binWidth" step="1.25" min="1" style="width: 40px;"/>
 		</div>
-    	<input id="range" type="range" step="1" style="width: 650px;">
-	<p> 
-		<select name="externalFiles" id="externalFiles" >
- 			<option></option>
- 			<c:choose>
-  			<c:when test="${not empty list }">
- 				<c:forEach items="${list}" var="filename">
-		            <option value="${filename.key }">${filename.value }</option>
-		        </c:forEach>
-		     </c:when>			
- 			</c:choose>
-         </select>         
-		<input type="button" id="superImpose" value="Plot External Data" onclick="return superImpose();"/>
-		<div id="msg"></div>
-	</p>
+    	<input id="range" type="range" step="1.25" min="1" style="width: 650px;">
 	<p>
 		Analysis run time: ${results.formattedRunTime}; estimated: ${results.formattedEstimatedRunTime}
 	</p>
