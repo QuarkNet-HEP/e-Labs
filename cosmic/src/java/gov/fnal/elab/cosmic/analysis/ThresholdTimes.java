@@ -25,7 +25,7 @@ import gov.fnal.elab.util.ElabException;
  */
 public class ThresholdTimes {
     private String[] inputFiles, outputFiles, detectorIDs;
-    private double[] cpldFrequencies;
+    private double[] cpldFrequencies, firmwares;
     private double[] retime, fetime;
     private double[] retimeINT, fetimeINT;  
     private long[] rePPSTime, rePPSCount, reDiff;
@@ -34,7 +34,7 @@ public class ThresholdTimes {
     private int lastGPSDay, jd;
     private String lastSecString;
     private double lastEdgeTime, lastjdplustime;
-    private double cpldFrequency;
+    private double cpldFrequency, firmware;
     private int currentDetector;
     Elab elabReference;
     
@@ -51,6 +51,7 @@ public class ThresholdTimes {
     	this.outputFiles = new String[inputFiles.length];
     	this.detectorIDs = new String[inputFiles.length];
     	this.cpldFrequencies = new double[inputFiles.length];
+    	this.firmwares = new double[inputFiles.length];
     	this.elabReference = elab;
     	for (int i = 0; i < inputFiles.length; i++) {
     		outputFiles[i] = inputFiles[i] + ".thresh";
@@ -59,12 +60,16 @@ public class ThresholdTimes {
 				VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(inputFiles[i]);
 				if (entry != null) {
 					Long cpldf = (Long) entry.getTupleValue("cpldfrequency");
+					String firmware = (String) entry.getTupleValue("firmware");
 					cpldFrequencies[i] = cpldf.doubleValue();
+					firmwares[i] = Double.valueOf(firmware);
 				} else {
 					cpldFrequencies[i] = 0;
+					firmwares[i] = 0;
 				}
     		} catch (Exception e) {
     			cpldFrequencies[i] = 0;
+				firmwares[i] = 0;
     		}
     	}
     }
@@ -105,6 +110,7 @@ public class ThresholdTimes {
 		
 		        cpldFrequency = cpldFrequencies[i];
 		        currentDetector = Integer.parseInt(detectorIDs[i]);
+		        firmware = firmwares[i];
 		        if (cpldFrequency == 0) {
 		        	if (currentDetector < detectorSeriesChange) {
 		        		cpldFrequency = 41666667;
@@ -298,8 +304,18 @@ public class ThresholdTimes {
             //		   but it was not stored for later use, now fixed by this:
             reDiff[channel] = diff;
         }
+ 
+        //As per Mark Adams' feedback, we should run the following check for firmware less than 1.12
+        //and DAQ 6000 series and add a second if the diff/cpld is less than 0.07
+        double diffOverCpld = diff / cpldFrequency;
+        
+        if (firmware != 0 && firmware < 1.12 && currentDetector > 5999) {
+        	if (diffOverCpld < 0.07) {
+        		diffOverCpld = (diff / cpldFrequency) + 1.0;
+        	}
+        }
 
-        double edgetime = rePPSTime[channel] + diff / cpldFrequency + tmc / (cpldFrequency * 32);
+        double edgetime = rePPSTime[channel] + diffOverCpld + tmc / (cpldFrequency * 32);
         if (edgetime > 86400) {
             edgetime -= 86400;
         }
