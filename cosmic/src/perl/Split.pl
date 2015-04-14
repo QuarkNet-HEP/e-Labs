@@ -150,6 +150,9 @@ $chan3 = $chan2 = $chan1 = $chan0 = 0; 	#holds the incremented channel counts. f
 #$DAQID = 0; 						#string to hold the DAQID read in from the ST line. Needs to be zero here as there is a check for its value later.
 $GPSSuspects = 0;					#int to hold the number of lines that we discard because the GPS date is suspect.
 
+$current_data_row = "";				#to be able to print the prior data row
+$previous_data_row = "";			#to be able to print the current data row
+$clock_problem_count = 0;			#to keep the count of times that we found the clock to be off
 
 #convert MAC OS line breaks to UNIX
 #Mac OS only has \r for new lines, so Unix reads it as all one big line. We first need to replace
@@ -292,7 +295,9 @@ while(<IN>){
 
 		#GPS flag = 4 in the raw data indicates that the GPS time in that line is suspect. Indeed, our calculation confirms this so we should ignore the lines with a GPS flag = 4. Now we do.
 		#Actually it should check if bit 2 is 1. Otherwise it may accept invalid lines.
-		next if ($dataRow[14] >> 3); 
+		#Commented out this next piece of code that checks for the "8" flag for older boards. 
+		#Sten, Mark and Bob agreed that this check is not necessary.
+		#next if ($dataRow[14] >> 3); 
 		#next if ($dataRow[14] & 0x04 != 0); 
 
 		#trying somethiing new with GPS time solutions. TJ wonders if the V and A flag really mean something about the timing solution. Thus far there is no evidence for it.
@@ -549,6 +554,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 				$raw_meta_written = 1;
 				# metadata file for raw and split files. 
 				open(META,">$raw_filename.meta");
+				open(ERRORS,">$raw_filename.errors");
 
 				#unbuffered write to META handle
 				$old_fh = select(META);
@@ -729,6 +735,9 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
                 	    }#end if ($i >=$cpld_low
 	                }#end foreach
     	            $cpld_real_freq = sprintf("%0.0f",$cpld_real_freq_tot/$cpld_real_count) if $cpld_real_count !=0;
+					print ERRORS "total rejects: ", $clock_problem_count, "\n";
+					print ERRORS "total cpld count: ", $cpld_real_count, "\n";
+					print ERRORS "percentaje: ", $clock_problem_count/$cpld_real_count, "\n";
 					
 					#Start writing meta and write metadata about the file that was just closed						
 					#print META "enddate date $lastDate $lastTime\n";
@@ -785,6 +794,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					$GPSSuspectsTot += $GPSSuspects; #for the .raw file
 					$data_line_total += $data_line; #for the .raw file
 					$chan3=$chan2=$chan1=$chan0=$n=$i=$j=$stRowCount=$stType=$dsRowCount=$events=$GPSSuspects=$data_line=$cpld_real_freq_tot=$cpld_real_count=0;
+					$clock_problem_count = 0;
 					$goodChan=-1;
 					$numSplitFiles++;
 					#print "code never makes it here if datafile is < 1 day.\n";
@@ -820,6 +830,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			print META "detectorid string $ID\n";
 			print META "type string split\n";
 			print META "blessfile string $sfn\n"; 
+			print ERRORS "[SPLIT] $output_dir/$fn\n";
+
 		} # end  if($total_events > 0 && $stRowCount > 0)
 			#$lastDate = $date;
 			#$lasttime = $time;
@@ -838,6 +850,19 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
     	    $cpld_day_seconds = $cpld_hour*3600 + $cpld_min*60 + $cpld_sec_offset;
         	
         	$cpld_day_seconds = 0 if $cpld_day_seconds == 86400;
+        	
+        	#This code will write to an output file if the ticks changed but the clock didn't
+        	#It is more for debugging purposes, just to see when this happens if it happens
+ 			if ($cpld_seconds == $cpld_day_seconds && $cpld_hex ne $dataRow[9]) {
+        	    $cpld_ticks_new = hex($dataRow[9]);
+            	$cpld_ticks_old = hex($cpld_hex);
+                $dc_test = ($cpld_ticks_new - $cpld_ticks_old) % $N;
+   			    $dt_test = ($cpld_day_seconds - $cpld_seconds);				
+				print ERRORS "\n-->DIFFERENT CLOCK TICKS WHILE TIME IS THE SAME", "\n";
+				print ERRORS $previous_data_row;
+				print ERRORS $current_data_row;
+				print ERRORS "dc: ", $dc_test, " dt: ", $dt_test, "\n";		
+			}
             
 	        next if $cpld_hex eq $dataRow[9] || $cpld_seconds == $cpld_day_seconds || $interrupt != 0 || $time == $split_line[10];
 	 
@@ -846,15 +871,22 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
             	$cpld_ticks_old = hex($cpld_hex);
                 $dc = ($cpld_ticks_new - $cpld_ticks_old) % $N;
    			    $dt = ($cpld_day_seconds - $cpld_seconds);
-   		        #calculate CPLD frequency with first guess
-        		$cpld_freq = $fg1 + (($dc - $fg1*$dt + $Nover2) % $N - $Nover2)/$dt;
-        		$cpld_freq_tot1 += $cpld_freq;
-    	    	push @cpld_frequency1, $cpld_freq;
-        		#calculate CPLD frequency with second guess
-            	$cpld_freq = $fg2 + (($dc - $fg2*$dt + $Nover2) % $N - $Nover2)/$dt;
-        	  	$cpld_freq_tot2 += $cpld_freq;
-    	    	push @cpld_frequency2, $cpld_freq;
-              $cpld_count++;
+  				$new_dt1 = $dt;
+  				$new_dt2 = $dt;
+  				#if the clock is wrong the $new_dt will be different
+				check_clock_being_off();
+				#only allow the clock being right
+				if ($new_dt1 == $dt && $new_dt2 == $dt) {
+	   		        #calculate CPLD frequency with first guess
+    	    		$cpld_freq = $fg1 + (($dc - $fg1*$dt + $Nover2) % $N - $Nover2)/$dt;
+        			$cpld_freq_tot1 += $cpld_freq;
+    	    		push @cpld_frequency1, $cpld_freq;
+        			#calculate CPLD frequency with second guess
+            		$cpld_freq = $fg2 + (($dc - $fg2*$dt + $Nover2) % $N - $Nover2)/$dt;
+        	  		$cpld_freq_tot2 += $cpld_freq;
+    	    		push @cpld_frequency2, $cpld_freq;
+              		$cpld_count++;
+				}
         	} #end of if (defined($cpld_hex)
         	
         	# redefines variables for checking to see if the next line has the same data as this line
@@ -992,6 +1024,9 @@ else{
         }
 	}
     $cpld_real_freq = sprintf("%0.0f",$cpld_real_freq_tot/$cpld_real_count) if $cpld_real_count !=0;
+	print ERRORS "total rejects: ", $clock_problem_count, "\n";
+	print ERRORS "total cpld count: ", $cpld_real_count, "\n";
+	print ERRORS "percentaje: ", $clock_problem_count/$cpld_real_count, "\n";
 					
 	#Start writing meta and write metadata about the file that was just closed						
 	#2000+substr($date,4,2). "-". substr($date,2,2). "-" . substr($date,0,2) . " " .substr($time,0,2). ":" .substr($time,2,2). ":" .substr($time,4,2),"\n"
@@ -1080,6 +1115,72 @@ else{
 	}
 }
 
+sub check_clock_being_off{
+	#This function will double check the seconds elapsed.
+	$seconds_to_check = 100;	#add/subtract this number to find the shortest distance to the default cpdld
+	$range_to_ignore = 10;		#if the cpld is already 10+/- we do not really care to do any calculations
+    $current_cpld1 = $fg1 + (($dc - $fg1*$dt + $Nover2) % $N - $Nover2)/$dt;      	
+    $current_cpld2 = $fg2 + (($dc - $fg2*$dt + $Nover2) % $N - $Nover2)/$dt;    
+	$chosenguess;    
+    if ($ID < 6000 ) {
+    	$chosenguess = $fg1;
+    } else {
+    	$chosenguess = $fg2;
+    }
+
+	$diff1 = abs($chosenguess - $current_cpld1);
+	$diff2 = abs($chosenguess - $current_cpld2);
+	
+	#no need to go further is the difference is close to zero
+	if ($diff1 >= 0 && $diff1 <= $range_to_ignore && $diff2 >= 0 && $diff2 <= $range_to_ignore) {
+		return;
+	}
+
+	$new_calc1 = $current_cpld1;
+	$new_calc2 = $current_cpld2;
+		
+	for $i (1..$seconds_to_check){
+		if ($dt+$i > 0) {
+			$localdt = $dt+$i;
+			$localcpld1 = $fg1 + (($dc - $fg1*$localdt + $Nover2) % $N - $Nover2)/$localdt;
+			$localcpld2 = $fg2 + (($dc - $fg2*$localdt + $Nover2) % $N - $Nover2)/$localdt;
+			if ($diff1 > abs($chosenguess - $localcpld1)) {
+				$new_calc1 = $localcpld1;
+				$diff1 = abs($chosenguess - $localcpld1);
+				$new_dt1 = $localdt;
+			}		
+			if ($diff2 > abs($chosenguess - $localcpld2)) {
+				$new_calc2 = $localcpld2;
+				$diff2 = abs($chosenguess - $localcpld2);
+				$new_dt2 = $localdt;
+			}			
+		}
+		if ($dt-$i > 0) {
+			$localdt = $dt-$i;
+			$localcpld1 = $fg1 + (($dc - $fg1*$localdt + $Nover2) % $N - $Nover2)/$localdt;
+			$localcpld2 = $fg2 + (($dc - $fg2*$localdt + $Nover2) % $N - $Nover2)/$localdt;
+			if ($diff1 > abs($chosenguess - $localcpld1)) {
+				$new_calc1 = $localcpld1;
+				$diff1 = abs($chosenguess - $localcpld1);
+				$new_dt1 = $localdt;
+			}		
+			if ($diff2 > abs($chosenguess - $localcpld2)) {
+				$new_calc2 = $localcpld2;
+				$diff2 = abs($chosenguess - $localcpld2);
+				$new_dt2 = $localdt;
+			}			
+		}
+	}
+
+	if ($dt != $new_dt1 && $dt != $new_dt2) {
+		$clock_problem_count = $clock_problem_count + 1;
+		print ERRORS "\nCLOCK PROBLEMS, SECONDS ARE OFF\n";
+		print ERRORS $previous_data_row;
+		print ERRORS $current_data_row;
+		print ERRORS "old dt1: ", $dt, " old calc1: ", $current_cpld1, " new calc1: ", $new_calc1, " new dt1: ", $new_dt1, "\n";		
+		print ERRORS "old dt2 ", $dt, " old calc2: ", $current_cpld2, " new calc2: ", $new_calc2, " new dt2: ", $new_dt2, "\n";		
+	}   
+}
 
 sub gps_check{
     #thanks to Nick Dettman for his research into this
