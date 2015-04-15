@@ -52,12 +52,13 @@ while($infile=shift(@infile)){
         next if /^\s*#/;
         @inputRow= split (/\s+/, $_);
         ($id, $chan) = split /\./, $inputRow[0];
+		printf OUT2 ("INPUT: $_\n");
+ 
         #get geometry info
         @detectorGeoHash= &all_geo_info($id, $geo_dir) if($lastId !=$id);
         #Wire length delay will be subtracted from "retime" and "fetime" before we output to file
         ##We use the same wireDelay for both rising edge and falling edge, because a user can't reset his geometry between the rising and falling edge pair.
         $cableLenDelay=&wireDelay($inputRow[1]+$inputRow[2],$id,$chan);
-        
         #prepare output, resetting jd if necessary
         #caution sometimes rounding errors can occur by 1*10^(-16)
         
@@ -67,9 +68,10 @@ while($infile=shift(@infile)){
         $outputJd=$inputRow[1];
         
         #This block does the correction for errors introduced by firmware
+        #EPeronja: Added the cable length delay calculation to this check
         if($firmware > 1.11 && $DAQID > 5999){
-        	$reNewTime=$firmwareOffset + $inputRow[2];
-        	$feNewTime=$firmwareOffset + $inputRow[3];
+        	$reNewTime=$firmwareOffset + $cableLenDelay + $inputRow[2];
+        	$feNewTime=$firmwareOffset + $cableLenDelay + $inputRow[3];
         }
         
         if($reNewTime>=1.0){
@@ -77,7 +79,7 @@ while($infile=shift(@infile)){
             $reNewTime-=int($reNewTime);
             $feNewTime-=int($feNewTime);
         }
-
+ 
         printf OUT1 ("%s\t%d\t%.16f\t%.16f\t%.2f\n",$inputRow[0],$outputJd,$reNewTime,$feNewTime,$inputRow[4]);
         $lastId=$id;
     }
