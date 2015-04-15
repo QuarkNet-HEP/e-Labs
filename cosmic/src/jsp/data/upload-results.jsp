@@ -51,31 +51,23 @@
 
 
 <%
-	//String lfn="";              //lfn on the USERS home computer
-	//String fn = "";             //filename without slashes
-	//String ds = "";
 	File f = new File((String) results.getAnalysis().getParameter("in"));
 	String detectorId = (String) results.getAnalysis().getParameter("detectorid");
-	//String comments = (String) results.getAnalysis().getParameter("comments");
-	//String benchmark = (String) results.getAnalysis().getParameter("benchmark");
 	
 	String dataDir = elab.getProperties().getDataDir();
 	int channels[] = new int[4];
 
 	List splits = new ArrayList();  //for both the split name and the channel validity information
 	
-	//boolean c = true;
-	//String splitPFNs = "";
-	//String cpldFrequency = "";
 	String rawName = f.getName();
 	CatalogEntry entry;
 	String errorMessage = "";
 	
 	//get metadata which contains the lfns of the raw filename AND the split files
 	ArrayList meta = null;
-	//boolean metaSuccess = false;
-	//boolean totalSuccess = true;        //false if there are any rc.data or meta errors
 	File fmeta = new File(f.getAbsolutePath() + ".meta");     //depends on Split.pl writing the meta to rawName.meta
+	String errorFile = rawName + ".errors";
+	
 	String sqlErrors = "";
 	//EPeronja-added the following code for admin to be able to access the upload results
     String userParam = (String) request.getParameter("user");
@@ -140,6 +132,8 @@
 		request.setAttribute("errorMessage", errorMessage);
 		request.setAttribute("lfnssz", new Integer(entries.size()));
 		File geoFile = new File(new File(dataDir, detectorId), detectorId + ".geo");
+		request.setAttribute("errorFile", errorFile);
+		
 		if (geoFile.exists() && geoFile.isFile() && geoFile.canRead()) {
 		    request.setAttribute("geoFileExists", Boolean.TRUE);
 		}
@@ -201,6 +195,7 @@
 			</c:otherwise>
 		</c:choose>	
 		<br />	
+		<a href="../data/download?filename=${errorFile}&elab=${elab.name}&type=file">Download Split Error File</a> 
 		<c:choose>
 			<c:when test="${not empty benchmarkMessages}">
 			   <table>
