@@ -839,6 +839,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			print SPLIT $_;
         	# Thanks to Nick Dettman for this code calculating actual CPLD frequency.
 	        #@cpld_line = split(/\s+/, $_);
+			$current_data_row = $_;
         
 	        # if servicing 1PPS interrupt, the GPS time may be funny
 		    $interrupt = (hex($dataRow[14]) & 0x01);
@@ -893,6 +894,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
         	$cpld_time = $dataRow[10];
         	$cpld_hex = $dataRow[9];
         	$cpld_seconds = $cpld_day_seconds;
+        	$previous_data_row = $current_data_row;
 		}	#end 
 	} #end if rollover_flag == 0;
 }	#end of reading the raw file
