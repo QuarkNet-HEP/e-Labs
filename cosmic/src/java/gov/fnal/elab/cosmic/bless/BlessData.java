@@ -19,7 +19,6 @@ import gov.fnal.elab.util.ElabException;
 public class BlessData {
 
 	private TreeMap<Integer, valueData> timeValueData; 
-	private TreeMap<Long, valueData> timeValueDataRange; 
 	
 	public BlessData(File file) throws IOException {
 		timeValueData = new TreeMap<Integer, valueData>(); 		
@@ -71,75 +70,6 @@ public class BlessData {
 		}
 	}
 
-	//EPeronja: attempt to concatenate a few days together
-	public BlessData(Elab elab, File[] file, String[] filenames) throws IOException {
-		timeValueDataRange = new TreeMap<Long, valueData>(); 
-		
-		for (int i = 0; i < file.length; i++) {
-			try {				
-				//get startdate from database
-				Timestamp startDate;
-				Long secs = 0L;
-				try {
-					String[] nameParts = filenames[i].split("\\.");
-					String filedate = nameParts[1]+nameParts[2];
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-					Date date = sdf.parse(filedate);
-					sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-					String dateUTC = sdf.format(date);
-					Date newDate = sdf.parse(dateUTC);
-					secs = newDate.getTime();
-				} catch (Exception e) {	
-					String message = e.toString();
-				}
-				BufferedReader br = new BufferedReader(new FileReader(file[i]));
-				String line;
-				String[] split; 
-				valueData thisLineData = null;
-				Long ts; 
-				while ((line = br.readLine()) != null) {
-					if (line.startsWith("#")) {
-						continue; // comment line
-					}
-					else {
-						split = line.split("\t"); 
-						if (split.length != 15) {
-							throw new IOException(file[i].getName() + " has malformed data. "); 
-						}
-						thisLineData = new valueData(	
-								parseToDouble(split[1]),
-								parseToDouble(split[2]),
-								parseToDouble(split[3]),
-								parseToDouble(split[4]),
-								parseToDouble(split[5]),
-								parseToDouble(split[6]),
-								parseToDouble(split[7]),
-								parseToDouble(split[8]),
-								parseToDouble(split[9]),
-								parseToDouble(split[10]),
-								parseToInt(split[11]),
-								parseToDouble(split[12]),
-								parseToDouble(split[13]),
-								parseToInt(split[14]),
-								0.0,
-								0.0,
-								0.0,
-								0.0,
-								0.0,
-								false
-						);
-						ts = secs + parseToLong(split[0]);
-						timeValueDataRange.put(ts, thisLineData);				
-					}
-				}
-				br.close();
-			} catch (Exception ex) {
-				System.out.print("Exception in BlessData: "+ex.getMessage()+"\n");
-			}
-		}
-	}//end of Blessdata for concatenated files
-	
-	
 	public BlessData(File file, String benchmark, Elab elab) throws IOException {
 		timeValueData = new TreeMap<Integer, valueData>(); 
 		boolean isBenchmarked = true;
@@ -254,10 +184,7 @@ public class BlessData {
 	public TreeMap<Integer, valueData> getTimeValueData() {
 		return timeValueData;
 	}
-	public TreeMap<Long, valueData> timeValueDataRange() {
-		return timeValueDataRange;
-	}
-	
+
 	public class valueData {
 		private double channel1Rate, channel2Rate, channel3Rate, channel4Rate;
 		private double channel1Error, channel2Error, channel3Error, channel4Error;
