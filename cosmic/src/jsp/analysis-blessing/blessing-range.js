@@ -1,4 +1,4 @@
-var tf = "%m/%d/%y %H:%M";
+var tf = "%m/%d/%y";
 
 function writeLegendsRange() {
 	writeLegend(onOffPlot.getCanvas(), "Channel Rate (Hz)", 325, 250);
@@ -20,7 +20,7 @@ redrawPlotYRange = function(newY, chart, type)
 			} else {
 				chanOptions.yaxis.max = newY;
 			}
-			onOffPlot = $.plot($("#channelChart"), data, $.extend({}, chanOptions, {xaxis: {mode: "time",minTickSize: [1, "hour"],timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel} ]}));
+			onOffPlot = $.plot($("#channelChart"), data, $.extend({}, chanOptions, {xaxis: {mode: "time",timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel} ]}));
 			writeLegend(onOffPlot.getCanvas(), "Channel Rate (Hz)", 325, 250);
 			break;
 		case ("trigger"):
@@ -29,7 +29,7 @@ redrawPlotYRange = function(newY, chart, type)
 			} else {
 				trigOptions.yaxis.max = newY;
 			}
-			trigPlot = $.plot($("#triggerChart"), trigger,$.extend({}, trigOptions, {xaxis: {mode: "time",minTickSize: [1, "hour"],timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			trigPlot = $.plot($("#triggerChart"), trigger,$.extend({}, trigOptions, {xaxis: {mode: "time",timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
 			writeLegend(trigPlot.getCanvas(), "Trigger Rate (Hz)", 325, 250);
 			break;
 		case ("satellite"):
@@ -38,7 +38,7 @@ redrawPlotYRange = function(newY, chart, type)
 			} else {
 				satOptions.yaxis.max = newY;
 			}
-			satPlot = $.plot($("#satChart"), satellite ,$.extend({}, satOptions, {xaxis: {mode: "time",minTickSize: [1, "hour"],timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			satPlot = $.plot($("#satChart"), satellite ,$.extend({}, satOptions, {xaxis: {mode: "time",timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
 			writeLegend(satPlot.getCanvas(), "# Satellites in view", 325, 250);
 			break;
 		case ("voltage"):
@@ -47,7 +47,7 @@ redrawPlotYRange = function(newY, chart, type)
 			} else {
 				voltOptions.yaxis.max = newY;
 			}
-			voltPlot = $.plot($("#voltChart"), voltage,$.extend({}, voltOptions, {xaxis: {mode: "time",minTickSize: [1, "hour"],timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			voltPlot = $.plot($("#voltChart"), voltage,$.extend({}, voltOptions, {xaxis: {mode: "time",timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
 			writeLegend(voltPlot.getCanvas(), "Vcc (Volts)", 325, 250);
 			break;
 		case ("temperature"):
@@ -56,7 +56,7 @@ redrawPlotYRange = function(newY, chart, type)
 			} else {
 				tempOptions.yaxis.max = newY;
 			}
-			tempPlot = $.plot($("#tempChart"), temperature,$.extend({}, tempOptions, {xaxis: {mode: "time",minTickSize: [1, "hour"],timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			tempPlot = $.plot($("#tempChart"), temperature,$.extend({}, tempOptions, {xaxis: {mode: "time",timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
 			writeLegend(tempPlot.getCanvas(), "Temperature (\u00b0 C)", 325, 250);
 			break;
 		case ("pressure"):
@@ -65,7 +65,7 @@ redrawPlotYRange = function(newY, chart, type)
 			} else {
 				pressOptions.yaxis.max = newY;
 			}
-			pressPlot = $.plot($("#pressureChart"), pressure,$.extend({}, pressOptions, {xaxis: {mode: "time",minTickSize: [1, "hour"],timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			pressPlot = $.plot($("#pressureChart"), pressure,$.extend({}, pressOptions, {xaxis: {mode: "time",timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
 			writeLegend(pressPlot.getCanvas(), "Pressure (mb)", 325, 250);
 			break;		
 
@@ -82,45 +82,67 @@ resetPlotYRange = function(chart, objectIdYMin, objectIdYMax) {
 		case ("channel"):
 			chanOptions.yaxis.min = originalChanYMin;
 			chanOptions.yaxis.max = originalChanYMax;
-			onOffPlot = $.plot($("#channelChart"), data, $.extend({}, chanOptions, {xaxis: {mode: "time",minTickSize: [1, "hour"],timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel} ]}));
+			onOffPlot = $.plot($("#channelChart"), data, $.extend({}, chanOptions, {xaxis: {mode: "time",timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: channelRateXLabel} ]}));
 			writeLegend(onOffPlot.getCanvas(), "Channel Rate (Hz)", 325, 250);
 	    	break;
 		case ("trigger"):
 			trigOptions.yaxis.min = originalTrigYMin;
 			trigOptions.yaxis.max = originalTrigYMax;
-			trigPlot = $.plot($("#triggerChart"), trigger,$.extend({}, trigOptions, {xaxis: {mode: "time",minTickSize: [1, "hour"],timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			trigPlot = $.plot($("#triggerChart"), trigger,$.extend({}, trigOptions, {xaxis: {mode: "time",timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
 			writeLegend(trigPlot.getCanvas(), "Trigger Rate (Hz)", 325, 250);
 			break;
 		case ("satellite"):
 			satOptions.yaxis.min = originalSatYMin;
 			satOptions.yaxis.max = originalSatYMax;
-			satPlot = $.plot($("#satChart"), satellite,$.extend({}, satOptions, {xaxis: {mode: "time",minTickSize: [1, "hour"],timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			satPlot = $.plot($("#satChart"), satellite,$.extend({}, satOptions, {xaxis: {mode: "time",timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
 			writeLegend(satPlot.getCanvas(), "# Satellites in view", 325, 250);
 			break;
 		case ("voltage"):
 			voltOptions.yaxis.min = originalVoltYMin;
 			voltOptions.yaxis.max = originalVoltYMax;
-			voltPlot = $.plot($("#voltChart"), voltage,$.extend({}, voltOptions, {xaxis: {mode: "time",minTickSize: [1, "hour"],timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			voltPlot = $.plot($("#voltChart"), voltage,$.extend({}, voltOptions, {xaxis: {mode: "time",timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
 			writeLegend(voltPlot.getCanvas(), "Vcc (Volts)", 325, 250);
 			break;
 		case ("temperature"):
 			tempOptions.yaxis.min = originalTempYMin;
 			tempOptions.yaxis.max = originalTempYMax;
-			tempPlot = $.plot($("#tempChart"), temperature,$.extend({}, tempOptions, {xaxis: {mode: "time",minTickSize: [1, "hour"],timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			tempPlot = $.plot($("#tempChart"), temperature,$.extend({}, tempOptions, {xaxis: {mode: "time",timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
 			writeLegend(tempPlot.getCanvas(), "Temperature (\u00b0 C)", 325, 250);
 			break;
 		case ("pressure"):
 			pressOptions.yaxis.min = originalPressYMin;
 			pressOptions.yaxis.max = originalPressYMax;
-			pressPlot = $.plot($("#pressureChart"), pressure,$.extend({}, pressOptions, {xaxis: {mode: "time",minTickSize: [1, "hour"],timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
+			pressPlot = $.plot($("#pressureChart"), pressure,$.extend({}, pressOptions, {xaxis: {mode: "time",timeformat: tf}}, { yaxes: [ {position: 'left', axisLabel: ''} ]}));
 			writeLegend(pressPlot.getCanvas(), "Pressure (mb)", 325, 250);
 			break;		
 
 	}
 }
 
+function onDataLoad1() {
+	loadJSON(function(response) {
+		JSON.parseAsync(response, function(json) {
+			onDataLoadRange(json);
+		});
+	});
+}
+
+function loadJSON(callback) {   
+    var xobj = new XMLHttpRequest();
+	var outputDir = document.getElementById("outputDir");
+    xobj.overrideMimeType("application/json");
+    xobj.open('GET', outputDir.value+"/FluxBlessRange", true); // Replace 'my_data' with the path to your file
+    xobj.onreadystatechange = function () {
+          if (xobj.readyState == 4 && xobj.status == "200") {
+            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+            callback(xobj.responseText);
+          }
+    };
+    xobj.send(null);  
+ }
+
 function onDataLoadRange(json) {	
-	// we need channel data to be selectable, so do not discard it 
+	console.log(json.channel1);
 	channel1data = json.channel1;
 	channel2data = json.channel2;
 	channel3data = json.channel3;

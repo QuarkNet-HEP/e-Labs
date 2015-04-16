@@ -36,15 +36,12 @@
 	        auser = elab.getUserManagementProvider().getGroup(userParam);
 	    }
 	}
-
-	//AnalysisRun run = AnalysisManager.getAnalysisRun(elab, auser, id);	
-
 	AnalysisRun results = AnalysisManager.getAnalysisRun(elab, auser, id);
 	ArrayList fileArray = (ArrayList) results.getAttribute("inputfiles");
 	Collections.sort(fileArray);
 	request.setAttribute("fileArray", fileArray);
 	request.setAttribute("id", id);
-	
+	request.setAttribute("outputDir", results.getOutputDirURL());
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -77,19 +74,16 @@
 		<script type="text/javascript" src="../include/jquery/flot/jquery.flot.axislabels.js"></script>
 		<script type="text/javascript" src="../include/jquery/flot/jquery.flot.symbol.js"></script>
 		<script type="text/javascript" src="../include/excanvas.min.js"></script>
+		<script type="text/javascript" src="../include/json/json.worker.js"></script>
+		<script type="text/javascript" src="../include/json/json.async.js"></script>
 		<script type="text/javascript" src="blessing.js"></script>
 		<script type="text/javascript" src="blessing-range.js"></script>
 		<script>
 			$(document).ready(function() {
-				if ("<%=fileArray%>" != null && "<%=fileArray%>" != "") {					
-					$.ajax({
-						url: "get-data-range.jsp?file=<%=fileArray%>",
-						processData: false,
-						dataType: "json",
-						type: "GET",
-						success: onDataLoadRange
-					});
-				}
+				$.ajax({
+					type: "GET",
+					success: onDataLoad1
+				});
 			});
 		</script>	
 <h1>View blessing plots by date range.</h1>
@@ -178,7 +172,7 @@
 		</c:forEach>
 		</table>
 	</c:if>
-	
+		<input type="hidden" name="outputDir" id="outputDir" value="${outputDir}"/>	
 			</div>
 			<!-- end content -->	
 		
