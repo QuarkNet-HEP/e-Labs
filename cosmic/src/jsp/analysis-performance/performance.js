@@ -9,6 +9,7 @@ var minX = -1;
 var maxX = -1;
 var nBins = -1;
 var bins;
+var channels = 0;
 
 options = {
         axisLabels: {
@@ -26,12 +27,12 @@ options = {
         },
         grid: { 
         	hoverable: true, 
-        	autoHighlight: false 
+        	autoHighlight: false
         },
         xaxis: { 
-        	tickDecimals: 0 
+        	tickDecimals: 0
         },
-		zoom: {
+ 		zoom: {
 			interactive: true
 		},
 		pan: {
@@ -90,25 +91,48 @@ overviewOptions = {
 };
 
 togglePlot = function(seriesIdx) {
+	if (seriesIdx < channels) {
 	  var plotData = onOffPlot.getData();
 	  plotData[seriesIdx].lines.show = !plotData[seriesIdx].lines.show;
-	  plotData[seriesIdx+4].points.show = !plotData[seriesIdx+4].points.show;
-	  plotData[seriesIdx+4].points.yerr.show = !plotData[seriesIdx+4].points.yerr.show;
+	  plotData[seriesIdx+channels].points.show = !plotData[seriesIdx+channels].points.show;
+	  plotData[seriesIdx+channels].points.yerr.show = !plotData[seriesIdx+channels].points.yerr.show;
 	  onOffPlot.setData(plotData);
 	  onOffPlot.draw();
-	  refresh();
+	  refresh("Performance Study", "Time over Threshold (nanosec)", "Number of PMT pulses");
+	}
 }//end of togglePlot
 
+function onDataLoad1() {
+	loadJSON(function(response) {
+		JSON.parseAsync(response, function(json) {
+			onDataLoad(json);
+		});
+	});
+}
+
+function loadJSON(callback) {   
+    var xobj = new XMLHttpRequest();
+	var outputDir = document.getElementById("outputDir");
+    xobj.overrideMimeType("application/json");
+    xobj.open('GET', outputDir.value+"/PerformancePlotFlot", true); // Replace 'my_data' with the path to your file
+    xobj.onreadystatechange = function () {
+          if (xobj.readyState == 4 && xobj.status == "200") {
+            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+            callback(xobj.responseText);
+          }
+    };
+    xobj.send(null);  
+ }
 
 function onDataLoad(json) {	
 	channel1 = json.channel1;
 	channel2 = json.channel2;
 	channel3 = json.channel3;
 	channel4 = json.channel4;
-	channel1Error = json.channel1Error;
-	channel2Error = json.channel2Error;
-	channel3Error = json.channel3Error;
-	channel4Error = json.channel4Error;	
+	channel1Error = json.channel1error;
+	channel2Error = json.channel2error;
+	channel3Error = json.channel3error;
+	channel4Error = json.channel4error;
 	binValue = json.binValue;
 	globalBinWidth = binValue;
 	minX = json.minX;
@@ -118,69 +142,40 @@ function onDataLoad(json) {
 
 	if (channel1.data != null) {
 		channel1.data = getDataWithBins(channel1.data, binValue, minX, maxX, nBins, bins);
+		channels += 1;
 		data.push(channel1);
-		options = $.extend(true, {}, options, {
-			yaxes: [{
-				position: channel1.yaxis.position
-			}],
-			xaxes: [{
-				position: channel1.xaxis.position
-			}]
-		});
 	}
 	if (channel2.data != null) {
 		channel2.data = getDataWithBins(channel2.data, binValue, minX, maxX, nBins, bins);
+		channels += 1;
 		data.push(channel2);
-		options = $.extend(true, {}, options, {
-			yaxes: [{
-				position: channel2.yaxis.position
-			}],
-			xaxes: [{
-				position: channel2.xaxis.position
-			}]
-		});
 	}
 	if (channel3.data != null) {
 		channel3.data = getDataWithBins(channel3.data, binValue, minX, maxX, nBins, bins);
+		channels += 1;
 		data.push(channel3);
-		options = $.extend(true, {}, options, {
-			yaxes: [{
-				position: channel3.yaxis.position
-			}],
-			xaxes: [{
-				position: channel3.xaxis.position
-			}]
-		});
 	}
 	if (channel4.data != null) {
 		channel4.data = getDataWithBins(channel4.data, binValue, minX, maxX, nBins, bins);
+		channels += 1;
 		data.push(channel4);
-		options = $.extend(true, {}, options, {
-			yaxes: [{
-				position: channel4.yaxis.position
-			}],
-			xaxes: [{
-				position: channel4.xaxis.position
-			}]
-		});
 	}
-	if (channel1Error.data != null) {
-		channel1Error.data = getError(channel1Error.data, binValue, minX, maxX, nBins, bins);
+	if (channel1.data != null) {
+		channel1Error.data = getError(channel1.data_original, binValue, minX, maxX, nBins, bins);
 		data.push(channel1Error);
 	}
-	if (channel2Error.data != null) {
-		channel2Error.data = getError(channel2Error.data, binValue, minX, maxX, nBins, bins);
+	if (channel2.data != null) {
+		channel2Error.data = getError(channel2.data_original, binValue, minX, maxX, nBins, bins);
 		data.push(channel2Error);
 	}
-	if (channel3Error.data != null) {
-		channel3Error.data = getError(channel3Error.data, binValue, minX, maxX, nBins, bins);
-		data.push(channel3Error);
+	if (channel3.data != null) {
+		channel3Error.data = getError(channel3.data_original, binValue, minX, maxX, nBins, bins);
+		data.push(channel3Error);		
 	}
-	if (channel4Error.data != null) {
-		channel4Error.data = getError(channel4Error.data, binValue, minX, maxX, nBins, bins);
-		data.push(channel4Error);
+	if (channel4.data != null) {
+		channel4Error.data = getError(channel4.data_original, binValue, minX, maxX, nBins, bins);
+		data.push(channel4Error);		
 	}
-
 	setSliders(minX, maxX);
 	
 	$("#range").attr({"min":Math.floor(sliderMinX), "max":Math.floor(sliderMaxX), "value": binValue});
@@ -189,15 +184,20 @@ function onDataLoad(json) {
 	onOffPlot = $.plot("#placeholder", data, options);
 	overviewPlot = $.plot("#overview", data, overviewOptions);
 
-    $('#range').on('change', function(){
+    $('#range').on('input', function(){
         $('#binWidth').val($('#range').val());
-        reBinData(json,$('#range').val());
+        if ($('#range').val() > 0) {
+            reBinData(json,$('#range').val());        	
+        }
     });
     $('#binWidth').on('change', function(){
         $('#range').val($('#binWidth').val());
-        reBinData(json,$('#binWidth').val());
+        if ($('#binWidth').val() > 0) {
+        	reBinData(json,$('#binWidth').val());
+        }
     });
 
+    
     $("<div class='button' style='left:20px;top:20px'>reset</div>")
 	.appendTo($("#resetbutton"))
 	.click(function (event) {
@@ -210,19 +210,20 @@ function onDataLoad(json) {
 		refresh();			
 	});	
 	
-	bindEverything();
+	bindEverything("Performance Study", "Time over Threshold (nanosec)", "Number of PMT pulses");
+
 }//end of onDataLoad	
 
 function setSliders(minX, maxX) {
 	//get values for the slider from the data
-	if (sliderMinX < 0 ) {
+	if (sliderMinX <= 0 ) {
 		sliderMinX = minX;
 	} else {
 		if (minX < sliderMinX) {
 			sliderMinX = minX;
 		}
 	}
-	if (sliderMaxX < 0 ) {
+	if (sliderMaxX <= 0 ) {
 		sliderMaxX = maxX;
 	} else {
 		if (maxX > sliderMaxX) {
@@ -240,7 +241,6 @@ function getDataWithBins(rawData, localBinValue, minX, maxX, nBins, bins) {
 		histogram.bins(bins);
 		var data = histogram(rawData);
 	    for ( var i = 0; i < data.length; i++ ) {
-	    	//console.log(data[i].x + ": " + data[i].y);
 	    	outputFinal.push([data[i].x, data[i].y]);
 	    	outputFinal.push([data[i].x + data[i].dx, data[i].y]);
 	    	if (data[i].y > maxYaxis) {
@@ -263,7 +263,6 @@ function getError(rawData, localBinValue, minX, maxX, nBins, bins) {
 	    	outputFinal.push([data[i].x + halfBin, data[i].y, Math.sqrt(data[i].y)]);
 	     } 
 	}
-	console.log(outputFinal);
     return outputFinal;	
 }//end of getDataWithBins
 
@@ -277,101 +276,63 @@ function intToFloat(num, decPlaces) {
 	}
 
 function reBinData(json, binValue) {
-	maxYaxis = 1;
-  	var plotData = onOffPlot.getData();
-  	var overviewData = overviewPlot.getData();
-	channel1 = json.channel1;
-	channel2 = json.channel2;
-	channel3 = json.channel3;
-	channel4 = json.channel4;
-	channel1Error = json.channel1Error;
-	channel2Error = json.channel2Error;
-	channel3Error = json.channel3Error;
-	channel4Error = json.channel4Error;	
-	minX = json.minX;
-	maxX = json.maxX;
-	bins = [];
-	nBins = Math.ceil(json.maxX / binValue);
-	for (var i = 0.00001; i < (maxX*1.00000); i += (binValue*1.00000)) {
-		bins.push(i);
+	if (binValue > 0) {
+		maxYaxis = 1;
+	  	var plotData = onOffPlot.getData();
+	  	var overviewData = overviewPlot.getData();
+		minX = json.minX;
+		maxX = json.maxX;
+		bins = [];
+		nBins = Math.ceil(json.maxX / binValue);
+		for (var i = 0.00001; i < (maxX*1.00000); i += (binValue*1.00000)) {
+			bins.push(i);
+		}
+		data = [];
+		if (channel1.data != null) {
+			channel1.data = getDataWithBins(channel1.data_original, binValue, minX, maxX, nBins, bins);
+			data.push(channel1);
+		}
+		if (channel2.data != null) {
+			channel2.data = getDataWithBins(channel2.data_original, binValue, minX, maxX, nBins, bins);
+			data.push(channel2);
+		}
+		if (channel3.data != null) {
+			channel3.data = getDataWithBins(channel3.data_original, binValue, minX, maxX, nBins, bins);
+			data.push(channel3);
+		}
+		if (channel4.data != null) {
+			channel4.data = getDataWithBins(channel4.data_original, binValue, minX, maxX, nBins, bins);
+			data.push(channel4);
+		}
+		if (channel1Error.data != null) {
+			channel1Error.data = getError(channel1.data_original, binValue, minX, maxX, nBins, bins);
+			data.push(channel1Error);
+		}
+		if (channel2Error.data != null) {
+			channel2Error.data = getError(channel2.data_original, binValue, minX, maxX, nBins, bins);
+			data.push(channel2Error);
+		}
+		if (channel3Error.data != null) {
+			channel3Error.data = getError(channel3.data_original, binValue, minX, maxX, nBins, bins);
+			data.push(channel3Error);
+		}
+		if (channel4Error.data != null) {
+			channel4Error.data = getError(channel4.data_original, binValue, minX, maxX, nBins, bins);
+			data.push(channel4Error);
+		}
+	
+		setSliders(minX, maxX);
+	
+		onOffPlot.setData(data);
+		overviewPlot.setData(data);
+		var axes = onOffPlot.getAxes();
+	    axes.yaxis.options.max = maxYaxis;	
+	    onOffPlot.setupGrid();
+	    onOffPlot.draw();
+		var axesOverview = overviewPlot.getAxes();
+		axesOverview.yaxis.options.max = maxYaxis;	
+		overviewPlot.setupGrid();
+	    overviewPlot.draw();
+	    refresh("Performance Study", "Time over Threshold (nanosec)", "Number of PMT pulses");
 	}
-	data = [];
-	if (channel1.data != null) {
-		channel1.data = getDataWithBins(channel1.data_original, binValue, minX, maxX, nBins, bins);
-		data.push(channel1);
-		options = $.extend(true, {}, options, {
-			yaxes: [{
-				position: channel1.yaxis.position
-			}],
-			xaxes: [{
-				position: channel1.xaxis.position
-			}]
-		});
-	}
-	if (channel2.data != null) {
-		channel2.data = getDataWithBins(channel2.data_original, binValue, minX, maxX, nBins, bins);
-		data.push(channel2);
-		options = $.extend(true, {}, options, {
-			yaxes: [{
-				position: channel2.yaxis.position
-			}],
-			xaxes: [{
-				position: channel2.xaxis.position
-			}]
-		});
-	}
-	if (channel3.data != null) {
-		channel3.data = getDataWithBins(channel3.data_original, binValue, minX, maxX, nBins, bins);
-		data.push(channel3);
-		options = $.extend(true, {}, options, {
-			yaxes: [{
-				position: channel3.yaxis.position
-			}],
-			xaxes: [{
-				position: channel3.xaxis.position
-			}]
-		});
-	}
-	if (channel4.data != null) {
-		channel4.data = getDataWithBins(channel4.data_original, binValue, minX, maxX, nBins, bins);
-		data.push(channel4);
-		options = $.extend(true, {}, options, {
-			yaxes: [{
-				position: channel4.yaxis.position
-			}],
-			xaxes: [{
-				position: channel4.xaxis.position
-			}]
-		});
-	}
-	if (channel1Error.data != null) {
-		channel1Error.data = getError(channel1Error.data_original, binValue, minX, maxX, nBins, bins);
-		data.push(channel1Error);
-	}
-	if (channel2Error.data != null) {
-		channel2Error.data = getError(channel2Error.data_original, binValue, minX, maxX, nBins, bins);
-		data.push(channel2Error);
-	}
-	if (channel3Error.data != null) {
-		channel3Error.data = getError(channel3Error.data_original, binValue, minX, maxX, nBins, bins);
-		data.push(channel3Error);
-	}
-	if (channel4Error.data != null) {
-		channel4Error.data = getError(channel4Error.data_original, binValue, minX, maxX, nBins, bins);
-		data.push(channel4Error);
-	}
-
-	setSliders(minX, maxX);
-
-	onOffPlot.setData(data);
-	overviewPlot.setData(data);
-	var axes = onOffPlot.getAxes();
-    axes.yaxis.options.max = maxYaxis;	
-    onOffPlot.setupGrid();
-    onOffPlot.draw();
-	var axesOverview = overviewPlot.getAxes();
-	axesOverview.yaxis.options.max = maxYaxis;	
-	overviewPlot.setupGrid();
-    overviewPlot.draw();
-    refresh();
 }//end of reBinData

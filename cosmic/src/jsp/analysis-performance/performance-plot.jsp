@@ -18,28 +18,8 @@
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.cosmic.plot.*" %>   
 <%@ include file="../analysis/results.jsp" %>
+<%@ page import="gov.fnal.elab.analysis.*" %>
 
-<%
-	TreeMap<String,String> uploadeddata = new TreeMap<String,String>();
-	ResultSet rs = null;
-	In and = new In();
-	and.add(new Equals("project","cosmic"));
-	and.add(new Equals("type", "uploadeddata"));
-	and.add(new Equals("group", user.getGroup().getName()));
-	rs = elab.getDataCatalogProvider().runQuery(and);
-	if (rs != null) {
- 		String[] filenames = rs.getLfnArray();
- 		for (int i = 0; i < filenames.length; i++){
- 			VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filenames[i]);
-			if (e != null && !e.getTupleValue("name").equals("")) {
-				uploadeddata.put(filenames[i], (String) e.getTupleValue("name"));
-			}
-		}//end for loop
-
-	}
-request.setAttribute("list",uploadeddata);
-%>
-   
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -77,6 +57,8 @@ request.setAttribute("list",uploadeddata);
 				<script type="text/javascript" src="../include/jquery/flot083/excanvas.min.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/excanvas.compiled.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/d3.v3.min.js"></script>
+				<script type="text/javascript" src="../include/json/json.worker.js"></script>
+				<script type="text/javascript" src="../include/json/json.async.js"></script>
 				<script type="text/javascript" src="../include/canvas2image.js"></script>
 				<script type="text/javascript" src="../include/base64.js"></script>
 				<script type="text/javascript" src="../analysis/analysis-plot.js"></script>
@@ -84,13 +66,10 @@ request.setAttribute("list",uploadeddata);
 				<script type="text/javascript">
 				$(document).ready(function() {
 					$.ajax({
-						url: "performance-get-data.jsp?id=<%=id%>",
-						processData: false,
-						dataType: "json",
 						type: "GET",
-						success: onDataLoad
+						success: onDataLoad1
 					});
-				}); 				
+				}); 	
 				</script>
 				<div><div style="text-align: center;">
 					<a href="output.jsp?id=${results.id }">View static plot</a><br />
@@ -119,7 +98,9 @@ request.setAttribute("list",uploadeddata);
 		<div id="incdec">Bin Width
     		<input type="number" name="binWidth" id="binWidth" step="1.25" min="1" style="width: 40px;"/>
 		</div>
-    	<input id="range" type="range" step="1.25" min="1" style="width: 650px;">
+		<div class="slider">
+	    	<input id="range" type="range" step="1.25" min="1" style="width: 650px;">
+		</input>
 	<p>
 		Analysis run time: ${results.formattedRunTime}; estimated: ${results.formattedEstimatedRunTime}
 	</p>
@@ -146,9 +127,9 @@ request.setAttribute("list",uploadeddata);
 		<input type="hidden" name="srcThumb" value="plot_thm.png"/>
 		<input type="hidden" name="srcSvg" value="plot.svg"/>
 		<input type="hidden" name="srcFileType" value="png"/>
-		<input type="hidden" name="id" value="${results.id}"/> 
+		<input type="hidden" name="outputDir" id="outputDir" value="${results.outputDirURL}"/>
+		<input type="hidden" name="id" value="${results.id}"/>
 	</div>
-				
 	<div id="footer"></div>		
 	</body>
 </html>

@@ -9,6 +9,7 @@ var yunits = new Object(); //array to hold all y axes units
 var options = "";
 var overviewOptions = "";
 var globalBinWidth = -1;
+var studyname, xlabelname, ylabelname = "";
 
 function saveChart(plot_to_save, name_id, div_id, run_id) {
 	var filename = document.getElementById(name_id);
@@ -150,7 +151,7 @@ function buildUnits() {
 		var box = axis.box;
 		if (axis.direction == 'y') {
 			var yunit = getYData(axis.n);
-			$("<div style='font-size:xx-small;position:absolute; left:" + box.left + "px; top:" + box.top+ "px; width:30px; height:15px'>"+yunit+"</div>")
+			$("<div style='font-size:xx-small;position:absolute; left:" + box.left + "px; top:" + box.top+ "px; width:35px; height:15px'>"+yunit+"</div>")
 			.data("axis.direction", axis.direction)
 			.data("axis.n", axis.n)
 			.data("axis.position", axis.position)
@@ -193,7 +194,7 @@ function buildInteractivePanning() {
 		+ " &ndash; " + axes.xaxis.max.toFixed(2)
 		+ " and y: " + axes.yaxis.min.toFixed(2)
 		+ " &ndash; " + axes.yaxis.max.toFixed(2));
-		buildCanvas();
+		buildCanvas(studyname, xlabelname, ylabelname);
 		//buildUnits();			
 	});	
 }//end of buildInteractivePanning
@@ -205,7 +206,7 @@ function addArrow(dir, left, top, offset) {
 		.click(function (e) {
 			e.preventDefault();
 			onOffPlot.pan(offset);
-			buildCanvas();
+			buildCanvas(studyname, xlabelname, ylabelname);
 			//buildUnits();			
 		});
 }
@@ -215,19 +216,6 @@ function buildArrows() {
 	addArrow("up", 70, 0, { top: -100 });
 	addArrow("down", 70, 30, { top: 100 });
 }//end of buildArrows
-
-//function buildResetButton() {
-//	$("<div class='button' style='left:20px;top:20px'>reset</div>")
-//		.appendTo($("#resetbutton"))
-//		.click(function (event) {
-//			event.preventDefault();
-//			onOffPlot = $.plot("#placeholder", data, options);
-//			overviewPlot = $.plot("#overview", data, overviewOptions);
-//			$(".message").html("");
-//			$(".click").html("");
-//			refresh();			
-//		});	
-//}//end of buildResetButton
 
 function buildInteractiveZoom() {
 	$("#placeholder").bind("plotzoom", function (event, plot) {
@@ -248,7 +236,7 @@ function buildZoomOutButton() {
 		.click(function (event) {
 			event.preventDefault();
 			onOffPlot.zoomOut();
-			buildCanvas();
+			buildCanvas(studyname, xlabelname, ylabelname);
 			//buildUnits();			
 		});	
 }//end of buildZoomOutButton
@@ -269,7 +257,7 @@ function bindPlotSelection() {
 				yaxis: { min: ranges.yaxis.from, max: ranges.yaxis.to }
 			})
 		);
-		buildCanvas();
+		buildCanvas(studyname, xlabelname, ylabelname);
 		//buildUnits();
 		// don't fire event on the overview to prevent eternal loop
 		overview.setSelection(ranges, true);
@@ -320,52 +308,6 @@ $("<div id='tooltip'></div>").css({
 	opacity: 0.80
 }).appendTo("body");
 
-
-function bindEnableSteps() {
-	$("#enableSteps").bind("click", function() {
-		if ($("#enableSteps").prop("checked")) {
-			onOffPlot = $.plot("#placeholder", data ,
-					$.extend(true, {}, options, {
-				    	series: {
-				    		lines: {
-								steps: true
-				    		}
-				    	}
-					})
-				);
-			overviewPlot = $.plot("#overview", data, 
-					$.extend(true, {}, overviewOptions, {
-				    	series: {
-				    		lines: {
-								steps: true
-				    		}
-				    	}
-					})
-				);					
-		} else {
-			onOffPlot = $.plot("#placeholder", data ,
-					$.extend(true, {}, options, {
-				    	series: {
-				    		lines: {
-								steps: false
-				    		}
-				    	}
-					})
-				);
-			overviewPlot = $.plot("#overview", data, 
-					$.extend(true, {}, overviewOptions, {
-				    	series: {
-				    		lines: {
-								steps: false
-				    		}
-				    	}
-					})
-				);					
-		}
-		refresh();
-	});	
-}//end of bindEnableSteps
-
 function buildDataMap() {
 	var series = onOffPlot.getData();
 	for (var i = 0; i < series.length; i++) {
@@ -390,7 +332,7 @@ function getYData(key) {
 	return yunits[key];
 }//end of getYData
 
-function buildCanvas() {
+function buildCanvas(study, xlabel, ylabel) {
 	buildDataMap();
 	var canvas = onOffPlot.getCanvas();
 	var context = canvas.getContext('2d');
@@ -402,7 +344,7 @@ function buildCanvas() {
 	context.lineStyle="#ffff00";
 	context.font="22px sans-serif";
 	ycoord = 35;
-	context.fillText("Performance Study",xcoord,ycoord);
+	context.fillText(study,xcoord,ycoord);
 	context.lineWidth=2;
 	context.font="12px sans-serif";
 	var meta = document.getElementsByName("metadata");
@@ -442,15 +384,15 @@ function buildCanvas() {
 	var maxyaxis = getYNumAxis();
 	
 	if (maxxaxis == 1) {	
-		context.textAlign = 'Time over Threshold (nanosec)';
-		context.fillText('Time over Threshold (nanosec)', 250, 650);
+		context.textAlign = xlabel;
+		context.fillText(xlabel, 250, 550);
 	}
 	if (maxyaxis == 1) {
 		context.save();
 		context.translate(0, 380);
 		context.rotate(-Math.PI / 2);
-		context.textAlign = 'Number of PMT pulses';
-		context.fillText('Number of PMT pulses', 0, 8);
+		context.textAlign = ylabel;
+		context.fillText(ylabel, 0, 8);
 		context.restore();	
 	}
 	
@@ -471,9 +413,8 @@ function buildCanvas() {
 	});
 }//end of buildCanvas
 
-function refresh() {
-	  buildCanvas();
-	  //bindEnableSteps();
+function refresh(study, xlabel, ylabel) {
+	  buildCanvas(study, xlabel, ylabel);
 	  bindPlotHover();
 	  bindPlotClick();
 	  bindPlotSelection();
@@ -482,9 +423,11 @@ function refresh() {
 	  buildUnits();	
 }//end of refresh
 
-function bindEverything() {
-	  buildCanvas(); // creates a canvas of the chart with captions, legends, etc so then then it can be saved
-	  //bindEnableSteps(); // only to replicate what we have now
+function bindEverything(study, xlabel, ylabel) {
+	  studyname = study;
+	  xlabelname = xlabel;
+	  ylabelname = ylabel;
+	  buildCanvas(studyname, xlabelname, ylabelname); // creates a canvas of the chart with captions, legends, etc so then then it can be saved
 	  bindPlotHover();
 	  bindPlotClick();
 	  bindPlotSelection();
