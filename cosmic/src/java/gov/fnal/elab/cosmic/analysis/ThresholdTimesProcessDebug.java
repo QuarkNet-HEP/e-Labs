@@ -20,7 +20,7 @@ import java.util.*;
 
 public class ThresholdTimesProcessDebug {
     private String[] inputFiles, outputFiles, detectorIDs;
-    private double[] cpldFrequencies;
+    private double[] cpldFrequencies, firmwares;
     private double[] retime, fetime;
     private double[] retimeINT, fetimeINT;  
     private long[] rePPSTime, rePPSCount, reDiff;
@@ -29,7 +29,7 @@ public class ThresholdTimesProcessDebug {
     private int lastGPSDay, jd;
     private String lastSecString;
     private double lastEdgeTime, lastjdplustime;
-    private double cpldFrequency;
+    private double cpldFrequency, firmware;
     private long starttime, endtime;
     private static int lineCount;
     private static int printLineCount;
@@ -47,17 +47,19 @@ public class ThresholdTimesProcessDebug {
         TIME_FORMAT.setMinimumFractionDigits(3);
     }
     
-    public ThresholdTimesProcessDebug(List inputFile, List outputFile, List detector, List cpldFrequency) {
+    public ThresholdTimesProcessDebug(List inputFile, List outputFile, List detector, List cpldFrequency, List firmware) {
     	this.inputFiles = new String[inputFile.size()];
     	this.outputFiles = new String[inputFile.size()];
     	this.detectorIDs = new String[inputFile.size()];
     	this.cpldFrequencies = new double[inputFile.size()];
+    	this.firmwares = new double[inputFile.size()];
         
     	for (int i = 0; i < inputFile.size(); i++) {
     		inputFiles[i] = inputFile.get(i).toString();
     		outputFiles[i] = outputFile.get(i).toString();
     		detectorIDs[i] = detector.get(i).toString();
     		cpldFrequencies[i] = Double.valueOf(cpldFrequency.get(i).toString()).doubleValue();
+    		firmwares[i] = Double.valueOf(firmware.get(i).toString()).doubleValue();
     	}
     	try {
     	} catch (Exception e) {
@@ -100,7 +102,7 @@ public class ThresholdTimesProcessDebug {
 		    		
 			    	BufferedReader br = new BufferedReader(new FileReader(inputFiles[i]));
 			        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFiles[i]));
-			        BufferedWriter report = new BufferedWriter(new FileWriter("/users/edit/ep_home/ep_thresh/threshcreation.txt"));
+			        BufferedWriter report = new BufferedWriter(new FileWriter("/users/edit/ep_home/ep_cpldfrequencies/threshcreation.txt"));
 			        			        
 			        bw.write("#$md5\n");
 			        bw.write("#md5_hex(0)\n");
@@ -108,6 +110,7 @@ public class ThresholdTimesProcessDebug {
 			
 			        cpldFrequency = cpldFrequencies[i];
 			        currentDetector = Integer.parseInt(detectorIDs[i]);
+			        firmware = firmwares[i];
 			        
 			        if (cpldFrequency == 0) {
 			        	if (Integer.parseInt(detectorIDs[i]) < detectorSeriesChange) {
@@ -116,7 +119,7 @@ public class ThresholdTimesProcessDebug {
 			        		cpldFrequency = 25000000;
 			        	}
 			        }
-	        		cpldFrequency = 25000000;
+	        		//cpldFrequency = 25000000;
 			        String line = br.readLine();
 			        
 			        boolean printoneexception = true;
@@ -173,62 +176,30 @@ public class ThresholdTimesProcessDebug {
         int decRE = Integer.parseInt(parts[indexRE], 16);
 
         if (retime[channel] != 0 && retimeINT[channel] != 0 && isEdge(decFE)) {
-        	//if (printLineCount > 967540){
-        		//report.write("channel: "+String.valueOf(channel)+"\n");
-        		//report.write("decFE: "+String.valueOf(decFE)+"\n");
-        		//report.write("isEdge(decFE) --> (("+String.valueOf(decFE)+" & 0x20) != 0): "+String.valueOf(isEdge(decFE))+"\n");
-        		//report.write("value of RE time for this channel: "+String.valueOf(retime[channel])+"\n");
-        	//}
         	edgetimeSeconds = calctime(channel, decFE, parts, report);
         	fetime[channel] = edgetimeSeconds/86400;
         	fetimeINT[channel] = edgetimeSeconds * exp;
-        	//if (printLineCount > 967540){
-        		//report.write("value of FE time for this channel: "+String.valueOf(fetime[channel])+"\n");
-        	//}
             if (fetime[channel] != 0 && fetimeINT[channel] != 0) {
-            //	if (printLineCount > 967540){
-            		//report.write("value of FE time for this channel: "+String.valueOf(fetime[channel])+"\n");
-            		//report.write("printing to thresh file...\n");       
-            //	}
             	printData(channel, parts, detector, bw, report);
                 clearChannelState(channel);
             }
 
             if (isEdge(decRE)) {
-            //	if (printLineCount > 967540){
-            		//report.write("isEdge(decRE) --> (("+String.valueOf(decRE)+" & 0x20) != 0): "+String.valueOf(isEdge(decRE))+"\n");
-            //	}
             	edgetimeSeconds = calctime(channel, decRE, parts, report);
                 retime[channel] = edgetimeSeconds/86400;
                 retimeINT[channel] = edgetimeSeconds * exp;
-           // 	if (printLineCount > 967540){
-            		//report.write("value of RE time for this channel: "+String.valueOf(retime[channel])+"\n");
-            //	}
             }
         }
         else if (isEdge(decRE)) {
-        	//if (printLineCount > 967540){
-        		//report.write("channel: "+String.valueOf(channel)+"\n");
-        		//report.write("isEdge(decRE) --> (("+String.valueOf(decRE)+" & 0x20) != 0): "+String.valueOf(isEdge(decRE))+"\n");
-        	//}
         	edgetimeSeconds = calctime(channel, decRE, parts, report);
             retime[channel] = edgetimeSeconds/86400;
             retimeINT[channel] = edgetimeSeconds * exp;
-        	//if (printLineCount > 967540){
-        		//report.write("value of RE time for this channel: "+String.valueOf(retime[channel])+"\n");
-        	//}
             if (retime[channel] != 0 && retimeINT[channel] != 0 && isEdge(decFE)) {
             	edgetimeSeconds = calctime(channel, decFE, parts, report);
                 fetime[channel] = edgetimeSeconds/86400;
                 fetimeINT[channel] = edgetimeSeconds * exp;
-            //	if (printLineCount > 967540){
-            		//report.write("value of FE time for this channel: "+String.valueOf(fetime[channel])+"\n");
-            //	}
             }
             if (retime[channel] != 0 && retimeINT[channel] != 0 && fetime[channel] != 0) {
-            //	if (printLineCount > 967540){
-            		//report.write("printing to thresh file...\n");       
-            //	}
                 printData(channel, parts, detector, bw, report);
                 clearChannelState(channel);
             }
@@ -267,8 +238,7 @@ public class ThresholdTimesProcessDebug {
                 computeJD = false;
             }
         }
-    	//report.write("currGPSDay: "+String.valueOf(currGPSDay)+"\n");
-
+ 
         if (computeJD) {
             int sign = parts[15].charAt(0) == '-' ? -1 : 1;
             int msecOffset = 0;
@@ -316,26 +286,28 @@ public class ThresholdTimesProcessDebug {
             wr.write('\t');
             wr.write(NF0F.format(fetimeINT[channel]));
             wr.write('\n');
-        	//if (printLineCount > 967540){
-            	report.write("lastjdplustime: "+String.valueOf(lastjdplustime)+"\n");
-        		report.write("\nTHRESH FILE LINE:"+id+"\t"+
-    				String.valueOf(jd)+"\t"+
-    				NF16F.format(retime[channel])+"\t"+
-    				NF16F.format(fetime[channel])+"\t"+
-    				NF2F.format(nanodiff)+"\t"+
-    				NF0F.format(retimeINT[channel])+"\t"+
-    				NF0F.format(fetimeINT[channel])+"\n");
-        	//}
+        	report.write("\nTHRESH FILE LINE:"+id+"\t"+
+        			String.valueOf(jd)+"\t"+
+        			NF16F.format(retime[channel])+"\t"+
+        			NF16F.format(fetime[channel])+"\t"+
+        			NF2F.format(nanodiff)+"\t"+
+        			NF0F.format(retimeINT[channel])+"\t"+
+        			NF0F.format(fetimeINT[channel])+"\n");
+        	
         }
     }
 
     private double calctime(int channel, int edge, String[] parts, BufferedWriter report) {
         int tmc = edge & 0x1f;
         try {
-        	//if (printLineCount > 967540){ 		       	
-        		//report.write("\nIn calctime...\n");
-        		//report.write("tmc ("+String.valueOf(edge)+" & 0x1f): "+String.valueOf(tmc)+"\n");
-        	//}
+        	report.write("In calc time\n");
+            report.write("Channel calc: " + String.valueOf(channel) + " edge: " + String.valueOf(edge) + "\n");
+        	StringBuilder sb = new StringBuilder();
+        	for (int i = 0; i < parts.length; i++) {
+            	sb.append(parts[i] + " ");
+            }
+            report.write(sb.toString() + "\n");
+       	
 		    if (rePPSTime[channel] == 0 || rePPSCount[channel] == 0) {
 	            rePPSTime[channel] = lastRePPSTime;
 	            rePPSCount[channel] = lastRePPSCount;
@@ -375,32 +347,32 @@ public class ThresholdTimesProcessDebug {
 		    long parsed = Long.parseLong(parts[0], 16);
 	        long diff = Long.parseLong(parts[0], 16) - rePPSCount[channel];
 	
-    		//report.write("-->diff for this channel (see code): "+String.valueOf(diff)+"\n");
 	        if (diff < -0xaaaaaaaal) {
 	            diff += 0xffffffffl;
 	            reDiff[channel] = diff;
 	        }
-        	//if (printLineCount > 967540){
-        		report.write("-->new value of diff for this channel (see code): "+String.valueOf(diff)+"\n");
-        	//}
+        		//report.write("-->new value of diff for this channel (see code): "+String.valueOf(diff)+"\n");
 	        double first_part = rePPSTime[channel];
 	        double second_part = diff / cpldFrequency;
+		    report.write("value of diff / cpldFrequency for this channel: "+String.valueOf(second_part)+"\n");
+		    report.write("firmware: "+String.valueOf(firmware)+"\n");
+	        if (firmware != 0 && firmware < 1.12 && currentDetector > 5999) {
+	        	if (second_part < 0.07) {
+	        		second_part = (diff / cpldFrequency) + 1.0;
+	        	}
+	        }
 	        double third_part = tmc / (cpldFrequency * 32);
-	        double edgetime = rePPSTime[channel] + diff / cpldFrequency + tmc / (cpldFrequency * 32);
-        	//if (printLineCount > 967540){
-		        //report.write("value of rePPSTime[channel] for this channel: "+String.valueOf(first_part)+"\n");
-		        //report.write("value of diff / cpldFrequency for this channel: "+String.valueOf(second_part)+"\n");
-		        //report.write("value of tmc / (cpldFrequency * 32) for this channel: "+String.valueOf(third_part)+"\n");
-		        //report.write("value of rePPSTime[channel] + diff / cpldFrequency + tmc / (cpldFrequency * 32) for this channel: "+String.valueOf(edgetime)+"\n");
-        	//}
+	       //double edgetime = rePPSTime[channel] + diff / cpldFrequency + tmc / (cpldFrequency * 32);
+	        double edgetime = rePPSTime[channel] + second_part + tmc / (cpldFrequency * 32);
+   	        report.write("value of rePPSTime[channel] for this channel: "+String.valueOf(first_part)+"\n");
+		    report.write("value of diff / cpldFrequency for this channel: "+String.valueOf(second_part)+"\n");
+		    report.write("value of tmc / (cpldFrequency * 32) for this channel: "+String.valueOf(third_part)+"\n");
+		    report.write("value of rePPSTime[channel] + diff / cpldFrequency + tmc / (cpldFrequency * 32) for this channel: "+String.valueOf(edgetime)+"\n");
 	        if (edgetime > 86400) {
 	            edgetime -= 86400;
 	        }
-        	//if (printLineCount > 967540){		        
-        		//report.write("edgetime (if corrected): "+String.valueOf(edgetime)+"\n");
-        	//}
-        	//return edgetime / 86400;
-	        return edgetime;
+	        report.write("edgetime (if corrected): "+String.valueOf(edgetime)+"\n");
+          return edgetime;
         } catch(Exception e) {
         	
         }
@@ -557,6 +529,7 @@ public class ThresholdTimesProcessDebug {
     	List outputFile = new ArrayList();
     	List detector = new ArrayList();
     	List cpldFrequency = new ArrayList();
+    	List firmware = new ArrayList();
     	
     	if (args.length == 1) {
     		String iFile = args[0];
@@ -565,16 +538,18 @@ public class ThresholdTimesProcessDebug {
 		        String line = br.readLine();
 		        while (line != null) {
 			        String[] splitLine = line.split(","); 
-			        if (splitLine.length == 4) {
+			        if (splitLine.length == 5) {
 			        	String filename = splitLine[1];
 			        	String threshfile = splitLine[2];
 			        	String detectorId = filename.substring(0, filename.indexOf('.'));
 			        	String path = splitLine[0] + File.separator + detectorId + File.separator;
 			        	String cpldf = splitLine[3];
+			        	String fw = splitLine[4];
 			        	inputFile.add(path+filename);
 			        	outputFile.add(path+threshfile);
 			        	detector.add(detectorId);
 			        	cpldFrequency.add(cpldf);
+			        	firmware.add(fw);
 			        }
 		            line = br.readLine();
 		        }
@@ -585,7 +560,7 @@ public class ThresholdTimesProcessDebug {
         		System.out.println("Could not open the file");    			
     		}
 
-    		ttp = new ThresholdTimesProcessDebug(inputFile, outputFile, detector, cpldFrequency);      
+    		ttp = new ThresholdTimesProcessDebug(inputFile, outputFile, detector, cpldFrequency,firmware);      
     		ttp.createTTFiles();
     	} else {
     		System.out.println("Usage: ThresholdTimesProcess input_file");
