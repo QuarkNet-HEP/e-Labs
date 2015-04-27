@@ -627,14 +627,22 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					if ($dsRowCount > 0){
 						#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
 						#The channel is off if the scalar hasn't incremented. I hope that one ping is enough to tell.						
-						$goodChan = 0 if ($stCount0[0] != $stCount0[1]);
-						$goodChan = 1 if ($stCount1[0] != $stCount1[1]) && $goodChan == -1;
-						$goodChan = 2 if ($stCount2[0] != $stCount2[1]) && $goodChan == -1;
-						$goodChan = 3 if ($stCount3[0] != $stCount3[1]) && $goodChan == -1;
+						#EPeronja: the old logic works for most of the cases except for ST 3. The latter resets the counts so we have come across situations
+						#		   in which the first and the second are the same and this logic fails the whole file!			
+						#$goodChan = 0 if ($stCount0[0] != $stCount0[1]);
+						#$goodChan = 1 if ($stCount1[0] != $stCount1[1]) && $goodChan == -1;
+						#$goodChan = 2 if ($stCount2[0] != $stCount2[1]) && $goodChan == -1;
+						#$goodChan = 3 if ($stCount3[0] != $stCount3[1]) && $goodChan == -1;			
+						$goodChan = 0 if (($stCount0[0] != $stCount0[1]) || ($stCount0[0] == $stCount0[1] && $stCount0[1] != 0));
+						$goodChan = 1 if (($stCount1[0] != $stCount1[1]) || ($stCount1[0] == $stCount1[1] && $stCount1[1] != 0)) && $goodChan == -1;
+						$goodChan = 2 if (($stCount2[0] != $stCount2[1]) || ($stCount2[0] == $stCount2[1] && $stCount2[1] != 0)) && $goodChan == -1;
+						$goodChan = 3 if (($stCount3[0] != $stCount3[1]) || ($stCount3[0] == $stCount3[1] && $stCount3[1] != 0)) && $goodChan == -1;
+
 						if ($goodChan == -1) {
-							clean_failed_splits();
-							die "This detector has no working channels. We have stopped your upload. We created $numSplitFiles usable file(s) before this error.";
+							clean_failed_splits();					
+							die "This detector has no working channels. We have stopped your upload. We created $numSplitFiles usable file(s) before this error but they were not uploaded. Try removing the last day and upload again.";
 						}
+
 											
 						#now that we know what channel to look at, let's test for ST 2 or ST 3 by checking how often a scalar read is larger than the previous read.
 						for $j (0..$dsRowCount-1){
@@ -737,8 +745,9 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
     	            $cpld_real_freq = sprintf("%0.0f",$cpld_real_freq_tot/$cpld_real_count) if $cpld_real_count !=0;
 					print ERRORS "total rejects: ", $clock_problem_count, "\n";
 					print ERRORS "total cpld count: ", $cpld_real_count, "\n";
-					print ERRORS "percentaje: ", $clock_problem_count/$cpld_real_count, "\n";
-					
+					if ($cpld_real_count > 0) {
+						print ERRORS "percentaje: ", $clock_problem_count/$cpld_real_count, "\n";
+					}
 					#Start writing meta and write metadata about the file that was just closed						
 					#print META "enddate date $lastDate $lastTime\n";
 					print META "enddate date ", 2000+substr($lastDate,4,2). "-". substr($lastDate,2,2). "-" . substr($lastDate,0,2) . " " .substr($lastTime,0,2). ":" .substr($lastTime,2,2). ":" .substr($lastTime,4,2),"\n";
@@ -1028,7 +1037,9 @@ else{
     $cpld_real_freq = sprintf("%0.0f",$cpld_real_freq_tot/$cpld_real_count) if $cpld_real_count !=0;
 	print ERRORS "total rejects: ", $clock_problem_count, "\n";
 	print ERRORS "total cpld count: ", $cpld_real_count, "\n";
-	print ERRORS "percentaje: ", $clock_problem_count/$cpld_real_count, "\n";
+	if ($cpld_real_count > 0) {
+		print ERRORS "percentaje: ", $clock_problem_count/$cpld_real_count, "\n";
+	}
 					
 	#Start writing meta and write metadata about the file that was just closed						
 	#2000+substr($date,4,2). "-". substr($date,2,2). "-" . substr($date,0,2) . " " .substr($time,0,2). ":" .substr($time,2,2). ":" .substr($time,4,2),"\n"
@@ -1255,6 +1266,9 @@ sub stddev {
 
 #remove split files that did not complete or failed
 sub clean_failed_splits {
+	unlink("$raw_filename");
+	unlink("$raw_filename.meta");
+	unlink("$raw_filename.errors");
 	unlink("$output_dir/$fn"); 
 	unlink("$output_dir/$sfn");
 }
