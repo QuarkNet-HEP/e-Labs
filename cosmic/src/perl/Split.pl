@@ -1266,7 +1266,7 @@ sub stddev {
 
 #remove split files that did not complete or failed
 sub clean_failed_splits {
-	unlink("$raw_filename");
+	`gzip -9 $raw_filename`;
 	unlink("$raw_filename.meta");
 	unlink("$raw_filename.errors");
 	unlink("$output_dir/$fn"); 
