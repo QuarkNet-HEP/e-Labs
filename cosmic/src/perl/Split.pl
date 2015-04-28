@@ -1288,7 +1288,10 @@ sub stddev {
 #remove split files that did not complete or failed
 sub clean_failed_splits {
 	$raw_newname = "$raw_filename.failed";
+	$meta_filename = "$raw_filename.meta";	
+	$meta_newname = "$raw_filename.meta.failed";
 	move($raw_filename, $raw_newname);
+	move($meta_filename, $meta_newname);
 	`gzip -9 $raw_newname`;
 	unlink("$raw_filename.errors");
 	unlink("$output_dir/$fn"); 
