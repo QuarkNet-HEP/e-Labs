@@ -13,7 +13,7 @@ def HammingDistance(line1, line2):
 
 for root, dirs, files in os.walk("/disks/i2u2-dev/cosmic/data"):
 	for file in files:
-		if not file.endswith((".log",".sh", "more", "bak", "raw", "gz", "geo", "tmp", "blessing.txt", "thresh-java", "bless", "analyze", "meta", "Store")):
+		if not file.endswith((".log",".sh", "more", "bak", "raw", "gz", "geo", "tmp", "blessing.txt", "thresh-java", "bless", "analyze", "meta", "Store", "raw.errors")):
 			filenames.append(file)
 
 filenames.sort()
