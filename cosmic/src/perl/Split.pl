@@ -33,6 +33,7 @@ if($#ARGV < 2){
 
 use Time::Local 'timegm_nocheck';
 use Math::BigInt;
+use File::Copy;
 
 $dirname=`dirname $0`;
 chomp($dirname);
@@ -133,6 +134,7 @@ $blessFile = 0;						#filehandle to keep the blessfile in scope globally
 @stVcc = ();						#Bus voltage as reported by ST
 @stGPSSats = ();					#Number of satellites as reported by ST
 @stCountTemp =();					#temporary array to hold the differences while "fixing" the scalars read by ST 2
+@splitscreated = ();				#keep the names of the splits created to clean up after a failure
 
 $stTime = 0;						#time stamp of the status line (in seconds since midnight)
 $oldSTTime = 0;						#time stamp from the LAST ST line (in seconds since midnight)
@@ -621,7 +623,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					# We just need to see if these (stCountN and stEvents) keep growing over the life of the file. If they do, we need to subtract one from the next to get the scalar increment over the integration time.
 					if ($dsRowCount != $stRowCount || $dsRowCount == 0) {
 						clean_failed_splits();
-						die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged. We have stopped your upload. We created $numSplitFiles usable file(s) before this error."; #(removing the comment before the OR in this conditional it somehow got removed)
+						die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged. We have stopped your upload. We created $numSplitFiles usable file(s) before this error but they were not uploaded."; #(removing the comment before the OR in this conditional it somehow got removed)
 					}
 								
 					if ($dsRowCount > 0){
@@ -825,6 +827,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			} #end while(-e "$output...
 				
 			open(SPLIT,'>>', "$output_dir/$fn");
+			push @splitscreated, "$fn";
 			open($blessFile,'>>', "$output_dir/$sfn");
 			
 			$jd = jd($day, $month, $year, $hour, $min, $sec);	#GPS offset already taken into account from above
@@ -929,7 +932,7 @@ else{
 	#die "These data do not contain the same number of ST and DS lines; we have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount;
 	if ($dsRowCount != $stRowCount || $dsRowCount == 0) {
 		clean_failed_splits();
-		die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged.  We have stopped your upload.  We created $numSplitFiles usable file(s) before this error."; #(removing the comment before the OR in this conditional it somehow got removed).
+		die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged.  We have stopped your upload.  We created $numSplitFiles usable file(s) before this error but they have not been uploaded."; #(removing the comment before the OR in this conditional it somehow got removed).
 	}
 					
 	if ($dsRowCount > 0){
@@ -1266,8 +1269,9 @@ sub stddev {
 
 #remove split files that did not complete or failed
 sub clean_failed_splits {
-	`gzip -9 $raw_filename`;
-	unlink("$raw_filename.meta");
+	$raw_newname = "$raw_filename.failed";
+	move($raw_filename, $raw_newname);
+	`gzip -9 $raw_newname`;
 	unlink("$raw_filename.errors");
 	unlink("$output_dir/$fn"); 
 	unlink("$output_dir/$sfn");
