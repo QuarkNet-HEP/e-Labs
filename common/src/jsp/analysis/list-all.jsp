@@ -15,6 +15,9 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>		
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	<body id="analysis-list" class="data">
@@ -23,7 +26,9 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
-					<%@ include file="../include/nav-rollover.jspf" %>
+					<div id="nav">
+						<%@ include file="../include/nav-teacher.jsp" %>
+					</div>
 				</div>
 			</div>
 			

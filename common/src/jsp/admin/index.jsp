@@ -51,12 +51,6 @@
 						<td>&#8226; <a href="../jsp/addGroup.jsp?role=teacher">Add Users</a></td>
 						<td>Add e-Lab users.</td>
 					</tr>
-					<!-- 
-					<tr>
-						<td>&#8226; <a href="../notifications/remove-expired-notifications.jsp">Delete expired notifications</a></td>
-						<td>Delete notifications with expiration dates older than 30 days ago.</td>					
-					</tr>
-					-->
 					<tr>
 						<td>&#8226; <a href="../references/control.jsp"> FAQs Add/Update</a></td>
 						<td>Add, update FAQ items.</td>					
@@ -96,28 +90,19 @@
 							<td>Create individual threshold times files if they failed to be created at upload time.</td>
 						</tr>
 						<tr>
-							<td>&#8226; <a href="../analysis-blessing/benchmark-process-rerun-from-input.jsp">Rerun blessing process</a></td>
-							<td>Rerun blessing files by using the same benchmark.</td>
-						</tr>
-						<tr>
 							<td>&#8226; <a href="../analysis/list-all.jsp">View all analyses</a></td>
 							<td>List of analyses by all users.</td>
 						</tr>
-						<!--  
 						<tr>
-							<td>&#8226; <a href="../analysis/cosmic-analysis-errors.jsp">Add, Update Cosmic Analysis Errors</a></td>
-							<td>Enter cosmic common errors and suggestions on what to do, fix, etc.</td>
-						</tr>
-						<tr>
-							<td>&#8226; <a href="../analysis/analysis-queue.jsp">View analysis queue</a></td>
-							<td>View queued analyses and their statuses.</td>
-						</tr>
-						-->
-						<tr>
-							<td>&#8226; <a href="../analysis-blessing/benchmark-info.jsp">View upload plus benchmark information</a></td>
+							<td>&#8226; <a href="../reports/benchmark-info.jsp">View upload plus benchmark information</a></td>
 							<td>View split files and their blessed/unblessed status details.</td>
 						</tr>
-					</c:if>				
+						<tr>
+							<td>&#8226; <a href="../reports/geometry-info.jsp">View splits with geometry problems.</a></td>
+							<td>View split files where the geometry stacked metadata does not match the geometry.</td>
+						</tr>
+					</c:if>	
+					<tr><td colspan="2"><br /><i>* Expired notifications are removed automatically when we browse this page.</i></td></tr>			
 				</table>
 			</div>
 			<!-- end content -->	
