@@ -622,8 +622,12 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					# When ST3 these onboard registers are cleared after each printing, so there is no need to do the subtraction.
 					# We just need to see if these (stCountN and stEvents) keep growing over the life of the file. If they do, we need to subtract one from the next to get the scalar increment over the integration time.
 					if ($dsRowCount != $stRowCount || $dsRowCount == 0) {
-						clean_failed_splits();
-						die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged. We have stopped your upload. We created $numSplitFiles usable file(s) before this error but they were not uploaded."; #(removing the comment before the OR in this conditional it somehow got removed)
+						if ($numSplitFiles == 0) {
+							clean_failed_splits();					
+							die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged. We have stopped your upload. We created $numSplitFiles usable file(s) before this error."; #(removing the comment before the OR in this conditional it somehow got removed)
+						} else {
+							warn "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged. We have stopped your upload. We created $numSplitFiles usable file(s) before this error."; #(removing the comment before the OR in this conditional it somehow got removed)
+						}
 					}
 								
 					if ($dsRowCount > 0){
@@ -641,8 +645,12 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 						$goodChan = 3 if (($stCount3[0] != $stCount3[1]) || ($stCount3[0] == $stCount3[1] && $stCount3[1] != 0)) && $goodChan == -1;
 
 						if ($goodChan == -1) {
-							clean_failed_splits();					
-							die "This detector has no working channels. We have stopped your upload. We created $numSplitFiles usable file(s) before this error but they were not uploaded. Try removing the last day and upload again.";
+							if ($numSplitFiles == 0) {
+								clean_failed_splits();					
+								die "This detector has no working channels. We have stopped your upload. We created $numSplitFiles usable file(s) before this error.";
+							} else {
+								warn "This detector has no working channels. We have stopped your upload. We created $numSplitFiles usable file(s) before this error.";
+							}
 						}
 
 											
@@ -931,21 +939,31 @@ else{
 	
 	#die "These data do not contain the same number of ST and DS lines; we have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount;
 	if ($dsRowCount != $stRowCount || $dsRowCount == 0) {
-		clean_failed_splits();
-		die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged.  We have stopped your upload.  We created $numSplitFiles usable file(s) before this error but they have not been uploaded."; #(removing the comment before the OR in this conditional it somehow got removed).
+		if ($numSplitFiles == 0) {
+			clean_failed_splits();
+			die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged.  We have stopped your upload.  We created $numSplitFiles usable file(s) before this error."; #(removing the comment before the OR in this conditional it somehow got removed).
+		} else {
+			warn "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged.  We have stopped your upload.  We created $numSplitFiles usable file(s) before this error."; #(removing the comment before the OR in this conditional it somehow got removed).			
+		}
 	}
 					
 	if ($dsRowCount > 0){
 		#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
 		#The channel is off if the scalar hasn't incremented in 10 pings.						
-		$goodChan = 0 if ($stCount0[0] != $stCount0[1]);
-		$goodChan = 1 if ($stCount1[0] != $stCount1[1]) && $goodChan == -1;
-		$goodChan = 2 if ($stCount2[0] != $stCount2[1]) && $goodChan == -1;
-		$goodChan = 3 if ($stCount3[0] != $stCount3[1]) && $goodChan == -1;
+		$goodChan = 0 if (($stCount0[0] != $stCount0[1]) || ($stCount0[0] == $stCount0[1] && $stCount0[1] != 0));
+		$goodChan = 1 if (($stCount1[0] != $stCount1[1]) || ($stCount1[0] == $stCount1[1] && $stCount1[1] != 0)) && $goodChan == -1;
+		$goodChan = 2 if (($stCount2[0] != $stCount2[1]) || ($stCount2[0] == $stCount2[1] && $stCount2[1] != 0)) && $goodChan == -1;
+		$goodChan = 3 if (($stCount3[0] != $stCount3[1]) || ($stCount3[0] == $stCount3[1] && $stCount3[1] != 0)) && $goodChan == -1;
+
 		if ($goodChan == -1) {
-			clean_failed_splits();
-			die "This detector has no working channels. We have stopped your upload. We created $numSplitFiles usable file(s) before this error.";
-		}			
+			if ($numSplitFiles == 0) {
+				clean_failed_splits();					
+				die "This detector has no working channels. We have stopped your upload. We created $numSplitFiles usable file(s) before this error.";
+			} else {
+				warn "This detector has no working channels. We have stopped your upload. We created $numSplitFiles usable file(s) before this error.";
+			}
+		}
+					
 		#now that we know what channel to look at, let's test for ST 2 or ST 3 by checking how often a scalar read is larger than the previous read.
 		for $j (1..$dsRowCount-1){
 			$n++ if $goodChan == 0 && $stCount0[$j] <= $stCount0[$j+1];
