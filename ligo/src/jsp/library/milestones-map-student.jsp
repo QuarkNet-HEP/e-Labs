@@ -3,8 +3,8 @@
 <area shape="rect" alt="" coords="455,7,530,62" nohref title="Goal: Create data analysis plots.">
 <area shape="rect" alt="" coords="328,5,396,61" nohref title="Goal: Plan your investigation.">
 <area shape="rect" alt="" coords="658,7,709,57" href="../survey/show-students.jsp?type=post" title="Take the post-test. See what you learned.">
-<area shape="rect" alt="" coords="4,133,81,170" href="#" onclick="javascript:glossary('Milestone',250);return false;" title="Learn about milestones.">
-<area shape="rect" alt="" coords="5,95,82,132"  href="#" onclick="javascript:glossary('Milestone_Seminar',300);return false;" title="Learn about milestone seminars.">
+<area shape="rect" alt="" coords="4,133,81,170" href="#" onclick="javascript:glossary('milestone',250);return false;" title="Learn about milestones.">
+<area shape="rect" alt="" coords="5,95,82,132"  href="#" onclick="javascript:glossary('milestone_seminar',300);return false;" title="Learn about milestone seminars.">
 <area shape="rect" alt="" coords="270,173,335,218" href="javascript:studentLogbook('seismic_data_importance',800)" title="Why do LIGO scientists keep track of ground vibrations?">
 <area shape="rect" alt="" coords="255,121,317,170" href="javascript:studentLogbook('wave_properties',800)" title="Describe these basice wave properties: speed, wavelength, frequency, amplitude and arrival time.">
 <area shape="rect" alt="" coords="196,90,249,130" href="javascript:studentLogbook('research_plan')" title="Background on research proposals">
