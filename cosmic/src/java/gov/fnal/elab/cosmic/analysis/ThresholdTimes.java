@@ -60,7 +60,7 @@ public class ThresholdTimes {
 				VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(inputFiles[i]);
 				if (entry != null) {
 					Long cpldf = (Long) entry.getTupleValue("cpldfrequency");
-					String firmware = (String) entry.getTupleValue("firmware");
+					String firmware = (String) entry.getTupleValue("DAQFirmware");
 					cpldFrequencies[i] = cpldf.doubleValue();
 					firmwares[i] = Double.valueOf(firmware);
 				} else {
