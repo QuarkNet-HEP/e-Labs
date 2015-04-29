@@ -78,6 +78,9 @@
 						 				<c:when test='${user.role == "teacher" }'>
 						 					<a href="#">Logbook</a>
 										</c:when>
+										<c:when test='${user.name == "guest" }'>
+						 					<a href="#">Logbook</a>
+										</c:when>
 										<c:otherwise>
 											<a href="javascript:studentLogbook('',800)">Logbook</a><br />
 										</c:otherwise>
