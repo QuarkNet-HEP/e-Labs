@@ -98,7 +98,7 @@ togglePlot = function(seriesIdx) {
 	  plotData[seriesIdx+channels].points.yerr.show = !plotData[seriesIdx+channels].points.yerr.show;
 	  onOffPlot.setData(plotData);
 	  onOffPlot.draw();
-	  refresh("Performance Study", "Time over Threshold (nanosec)", "Number of PMT pulses");
+	  refresh();
 	}
 }//end of togglePlot
 
@@ -139,6 +139,9 @@ function onDataLoad(json) {
 	maxX = json.maxX;
 	nBins = json.nBins;
 	bins = json.fakeBins;
+	studyLabel = "Performance Study";
+	xAxisLabel = "Time over Threshold (nanosec)";
+	yAxisLabel = "Number of PMT pulses";
 
 	if (channel1.data != null) {
 		channel1.data = getDataWithBins(channel1.data, binValue, minX, maxX, nBins, bins);
@@ -204,14 +207,11 @@ function onDataLoad(json) {
 		event.preventDefault();
 		dataOriginal = data;
 		onOffPlot = $.plot("#placeholder", dataOriginal, options);
-		overviewPlot = $.plot("#overview", dataOriginal, overviewOptions);
+		overviewPlot = $.plot("#overview", dataOriginal, overviewOptions);				
 		$(".message").html("");
 		$(".click").html("");
 		refresh();			
 	});	
-	
-	bindEverything("Performance Study", "Time over Threshold (nanosec)", "Number of PMT pulses");
-
 }//end of onDataLoad	
 
 function setSliders(minX, maxX) {
@@ -333,6 +333,6 @@ function reBinData(json, binValue) {
 		axesOverview.yaxis.options.max = maxYaxis;	
 		overviewPlot.setupGrid();
 	    overviewPlot.draw();
-	    refresh("Performance Study", "Time over Threshold (nanosec)", "Number of PMT pulses");
+	    refresh();
 	}
 }//end of reBinData
