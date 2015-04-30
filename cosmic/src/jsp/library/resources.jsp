@@ -141,7 +141,7 @@
 							</li>
  -->
 							<li>
-								<a href="mailto:jordant@fnal.gov">Tom Jordan</a> - University of Florida
+								<a href="mailto:rspete@fnal.gov">Bob Peterson</a> - Fermilab
 							</li>
 							<li>
 								<a href="mailto:randal.c.ruchti.1@nd.edu">Randy Ruchti</a> - Notre Dame University
@@ -344,12 +344,11 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 					<div class="tab-contents-sublevel">
 						<ul class="simple">
 							<li>
-								<a href="http://www2.edc.org/ewit/materials/ITCCBRO.pdf">Career Cluster Pamphlet</a>,
-								(pdf) from Vocational information Center's <A href="http://www.khake.com/page17.html">Computer Science Career Guide</a>
+								<a href="http://nde.ne.gov/NCE/careerclusters/ITCC%20BRO.pdf">Career Cluster (pdf), </a> from Nebraska Department of Education.
 							</li>
 							<li>
 								<a href="http://www.microsoft.com/learning/training/careers/prepare.mspx">Prepare for an Information Technology (IT) Career</a>,
-								from Microsoft Learning
+								from Microsoft Learning.
 							</li>
 								</ul>
 					</div>
@@ -371,9 +370,8 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
  <li><a href="http://leo.stcloudstate.edu/bizwrite/abstracts.html">
   Writing Abstracts</a> - A good tutorial from <i>Write Place</i></li>
   
-<li><a href="http://www.space.com/scienceastronomy/gravity_speed_030116.html">
-  Science at odds</a>, from SPACE.COM showing when science requires public
-  discourse among experts to advance
+<li><a href="http://undsci.berkeley.edu/article/howscienceworks_16">
+  Scrutinizing science: Peer review</a>, from Understanding Science (University of California), explains the process.
 						</li>
 					</div>
 				
