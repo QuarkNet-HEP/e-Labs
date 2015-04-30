@@ -118,6 +118,8 @@ public class ThresholdTimes {
 		        		cpldFrequency = 25000000;
 		        	}
 		        }
+		        System.out.println(String.valueOf(cpldFrequency));
+		        
 		        String line = br.readLine();
 		        while (line != null) {
 		            String[] parts = line.split("\\s"); // line validated in split.pl 
