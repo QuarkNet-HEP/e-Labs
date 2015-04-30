@@ -359,8 +359,10 @@ public class ThresholdTimesProcessDebug {
 	        if (firmware != 0 && firmware < 1.12 && currentDetector > 5999) {
 	        	if (second_part < 0.07) {
 	        		second_part = (diff / cpldFrequency) + 1.0;
+	    		    report.write("added a second when this line happened: "+parts[0]+"\n");
 	        	}
 	        }
+		    report.write("NEW value of diff / cpldFrequency for this channel: "+String.valueOf(second_part)+"\n");
 	        double third_part = tmc / (cpldFrequency * 32);
 	       //double edgetime = rePPSTime[channel] + diff / cpldFrequency + tmc / (cpldFrequency * 32);
 	        double edgetime = rePPSTime[channel] + second_part + tmc / (cpldFrequency * 32);
