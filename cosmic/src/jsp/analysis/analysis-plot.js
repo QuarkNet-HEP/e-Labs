@@ -10,6 +10,7 @@ var options = "";
 var overviewOptions = "";
 var globalBinWidth = -1;
 var studyLabel, xAxisLabel, yAxisLabel;
+studyLabel = xAxisLabel = yAxisLabel = "";
 
 function saveChart(plot_to_save, name_id, div_id, run_id) {
 	var filename = document.getElementById(name_id);
@@ -386,14 +387,14 @@ function buildCanvas() {
 	
 	if (maxxaxis == 1) {	
 		context.textAlign = xAxisLabel;
-		context.fillText(xlabel, 250, 550);
+		context.fillText(xAxisLabel, 250, 550);
 	}
 	if (maxyaxis == 1) {
 		context.save();
 		context.translate(0, 380);
 		context.rotate(-Math.PI / 2);
 		context.textAlign = yAxisLabel;
-		context.fillText(ylabel, 0, 8);
+		context.fillText(yAxisLabel, 0, 8);
 		context.restore();	
 	}
 	
@@ -419,9 +420,7 @@ function refresh() {
 	  bindPlotHover();
 	  bindPlotClick();
 	  bindPlotSelection();
-	  buildZoomOutButton();
 	  buildInteractiveZoom();
-	  buildArrows();
 	  buildInteractivePanning();
 	  buildUnits();	
 }//end of refresh

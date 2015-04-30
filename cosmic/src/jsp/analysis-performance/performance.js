@@ -141,7 +141,7 @@ function onDataLoad(json) {
 	bins = json.fakeBins;
 	studyLabel = "Performance Study";
 	xAxisLabel = "Time over Threshold (nanosec)";
-	yAxisLabel = "Number of PMT pulses";
+	yAxisLabel = "Number of PMT pulses";	
 
 	if (channel1.data != null) {
 		channel1.data = getDataWithBins(channel1.data, binValue, minX, maxX, nBins, bins);
@@ -205,13 +205,14 @@ function onDataLoad(json) {
 	.appendTo($("#resetbutton"))
 	.click(function (event) {
 		event.preventDefault();
-		dataOriginal = data;
-		onOffPlot = $.plot("#placeholder", dataOriginal, options);
-		overviewPlot = $.plot("#overview", dataOriginal, overviewOptions);				
+		reBinData(json, json.binValue);
+		onOffPlot = $.plot("#placeholder", data, options);
+		overviewPlot = $.plot("#overview", data, overviewOptions);				
 		$(".message").html("");
 		$(".click").html("");
 		refresh();			
 	});	
+    bindEverything();
 }//end of onDataLoad	
 
 function setSliders(minX, maxX) {
@@ -326,11 +327,11 @@ function reBinData(json, binValue) {
 		onOffPlot.setData(data);
 		overviewPlot.setData(data);
 		var axes = onOffPlot.getAxes();
-	    axes.yaxis.options.max = maxYaxis;	
+	    axes.yaxis.options.max = maxYaxis + (maxYaxis * 0.05);	
 	    onOffPlot.setupGrid();
 	    onOffPlot.draw();
 		var axesOverview = overviewPlot.getAxes();
-		axesOverview.yaxis.options.max = maxYaxis;	
+		axesOverview.yaxis.options.max = maxYaxis + (maxYaxis * 0.05);	
 		overviewPlot.setupGrid();
 	    overviewPlot.draw();
 	    refresh();

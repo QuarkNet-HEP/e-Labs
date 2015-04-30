@@ -19,7 +19,18 @@
 <%@ page import="gov.fnal.elab.cosmic.plot.*" %>   
 <%@ include file="../analysis/results.jsp" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
-
+<%@ page import="gov.fnal.elab.util.URLEncoder" %>
+<%
+	String subject = URLEncoder.encode(elab.getName() + " Interactive Performance Plot Feedback");
+	String body = URLEncoder.encode("Thank you for your interest and help!. Please complete the fields below with your feedback:\n\n" 
+		+ "First Name:\n\n"
+		+ "Last Name:\n\n"
+		+ "City:\n\n"
+		+ "State:\n\n"
+		+ "School:\n\n"
+		+ "Your feedback about the Performance Interactive Plots:\n");
+	String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -72,7 +83,8 @@
 				}); 	
 				</script>
 				<div><div style="text-align: center;">
-					<a href="output.jsp?id=${results.id }">View static plot</a><br />
+					<a href="output.jsp?id=${results.id }">View static plot</a><br /><br />
+					<div style="font-size: x-small;"><i>Send feedback to</i> <a href="<%= mailURL %>">e-labs@fnal.gov</a></div>
 				</div></div>					
 				<div class="graph-container">
 					<div id="placeholder" class="graph-placeholder" style="float:left; width:550px; height:550px;"></div>
@@ -96,7 +108,7 @@
 		 	</div>
 		</div>
 		<div id="incdec">Bin Width
-    		<input type="number" name="binWidth" id="binWidth" step="1.25" min="1" style="width: 40px;"/>
+    		<input type="number" name="binWidth" id="binWidth" step="1.25" min="1" style="width: 60px;"/>
 		</div>
 		<div class="slider">
 	    	<input id="range" type="range" step="1.25" min="1" style="width: 650px;">
