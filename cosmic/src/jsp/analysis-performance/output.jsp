@@ -4,8 +4,36 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
 <%@ include file="../analysis/results.jsp" %>
+<%@ page import="java.io.*" %>
+<%@ page import="gov.fnal.elab.util.*" %>
+<%@ page import="java.text.*" %>
+<%@ page import="java.util.*" %>
+<%@ page import="gov.fnal.elab.cosmic.plot.*" %>
+<%
+//create the file for the dynamic charts
+String message;
+String performanceJsonFile = results.getOutputDir() + "/PerformancePlotFlot";
+try {
+	//this code is for admin to be able to see the graph
+	File f = new File(performanceJsonFile);
+	if (!f.exists()) {
+	       String output = results.getAnalysis().getParameter("singlechannelOut").toString();
+	       String[] outputFiles = output.split(" ");
+	       File[] files = new File[outputFiles.length];
+	       for (int i = 0; i < outputFiles.length; i++) {
+	       		String fileName = results.getOutputDir()+"/"+outputFiles[i];
+	       		files[i] = new File(fileName);
+	       }
+	       String binValue = results.getAnalysis().getParameter("freq_binValue").toString();
+	       Double bV = Double.valueOf(binValue);
+	       PerformancePlotDataStream ppds = new PerformancePlotDataStream(files, bV, results.getOutputDir());
+	}
+} catch (Exception e) {
+		message = e.getMessage();
+}
 
 
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -28,7 +56,9 @@
 			</div>
 			
 			<div id="content">
-
+<p>
+	<a href="performance-plot.jsp?id=${results.id }">View interactive Flot plots</a> (Beta Version)<br />
+</p>
 <p>
 	<img src="${results.outputDirURL}/plot.png"/>
 </p>
@@ -61,6 +91,7 @@
 
 		<input type="hidden" name="srcFile" value="plot.png"/>
 		<input type="hidden" name="srcThumb" value="plot_thm.png"/>
+		<input type="hidden" name="srcSvg" value="plot.svg"/>
 		<input type="hidden" name="srcFileType" value="png"/>
 		<input type="hidden" name="id" value="${results.id}"/>
 		<input type="text" name="name"  size="20" maxlength="30"/>.png
