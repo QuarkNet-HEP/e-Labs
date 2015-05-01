@@ -79,10 +79,7 @@ function hideAll()
 									<a href="../home/cool-science.jsp">Cool Science</a><br />
 									<a href="../home/about-us.jsp">About Us</a><br />
 									<c:choose>
-						 				<c:when test='${user.role == "teacher" }'>
-						 					<a href="#">Logbook</a>
-										</c:when>
-									    <c:when test='${user.name == "guest" }'>
+						 				<c:when test='${user.role == "teacher" or user.name == "guest"}'>
 						 					<a href="#">Logbook</a>
 										</c:when>
 										<c:otherwise>
