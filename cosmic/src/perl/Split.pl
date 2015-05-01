@@ -33,6 +33,7 @@ if($#ARGV < 2){
 
 use Time::Local 'timegm_nocheck';
 use Math::BigInt;
+use File::Copy;
 
 $dirname=`dirname $0`;
 chomp($dirname);
@@ -133,6 +134,7 @@ $blessFile = 0;						#filehandle to keep the blessfile in scope globally
 @stVcc = ();						#Bus voltage as reported by ST
 @stGPSSats = ();					#Number of satellites as reported by ST
 @stCountTemp =();					#temporary array to hold the differences while "fixing" the scalars read by ST 2
+@splitscreated = ();				#keep the names of the splits created to clean up after a failure
 
 $stTime = 0;						#time stamp of the status line (in seconds since midnight)
 $oldSTTime = 0;						#time stamp from the LAST ST line (in seconds since midnight)
@@ -150,6 +152,9 @@ $chan3 = $chan2 = $chan1 = $chan0 = 0; 	#holds the incremented channel counts. f
 #$DAQID = 0; 						#string to hold the DAQID read in from the ST line. Needs to be zero here as there is a check for its value later.
 $GPSSuspects = 0;					#int to hold the number of lines that we discard because the GPS date is suspect.
 
+$current_data_row = "";				#to be able to print the prior data row
+$previous_data_row = "";			#to be able to print the current data row
+$clock_problem_count = 0;			#to keep the count of times that we found the clock to be off
 
 #convert MAC OS line breaks to UNIX
 #Mac OS only has \r for new lines, so Unix reads it as all one big line. We first need to replace
@@ -551,6 +556,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 				$raw_meta_written = 1;
 				# metadata file for raw and split files. 
 				open(META,">$raw_filename.meta");
+				open(ERRORS,">$raw_filename.errors");
 
 				#unbuffered write to META handle
 				$old_fh = select(META);
@@ -615,22 +621,39 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					# When ST 2, the DAQ does not clear the onboard registers (that we call stCountN or stEvents here) after printing the lines. So the count in any channel over the time interval is the previous (stCount0 or stEvent) subtracted from the current (stCount0 or stEvent)
 					# When ST3 these onboard registers are cleared after each printing, so there is no need to do the subtraction.
 					# We just need to see if these (stCountN and stEvents) keep growing over the life of the file. If they do, we need to subtract one from the next to get the scalar increment over the integration time.
-									
-					if ($dsRowCount != $stRowCount || $dsRowCount == 0) {				
-						clean_failed_splits();
-						die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged. We have stopped your upload. We created $numSplitFiles usable file(s) before this error."; #(removing the comment before the OR in this conditional it somehow got removed)
+					if ($dsRowCount != $stRowCount || $dsRowCount == 0) {
+						if ($numSplitFiles == 0) {
+							clean_failed_splits();					
+							die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged. We have stopped your upload. We created $numSplitFiles usable file(s) before this error."; #(removing the comment before the OR in this conditional it somehow got removed)
+						} else {
+							warn "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged. We have stopped your upload. We created $numSplitFiles usable file(s) before this error."; #(removing the comment before the OR in this conditional it somehow got removed)
+						}
 					}
+								
 					if ($dsRowCount > 0){
 						#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
 						#The channel is off if the scalar hasn't incremented. I hope that one ping is enough to tell.						
-						$goodChan = 0 if ($stCount0[0] != $stCount0[1]);
-						$goodChan = 1 if ($stCount1[0] != $stCount1[1]) && $goodChan == -1;
-						$goodChan = 2 if ($stCount2[0] != $stCount2[1]) && $goodChan == -1;
-						$goodChan = 3 if ($stCount3[0] != $stCount3[1]) && $goodChan == -1;
+						#EPeronja: the old logic works for most of the cases except for ST 3. The latter resets the counts so we have come across situations
+						#		   in which the first and the second are the same and this logic fails the whole file!			
+						#$goodChan = 0 if ($stCount0[0] != $stCount0[1]);
+						#$goodChan = 1 if ($stCount1[0] != $stCount1[1]) && $goodChan == -1;
+						#$goodChan = 2 if ($stCount2[0] != $stCount2[1]) && $goodChan == -1;
+						#$goodChan = 3 if ($stCount3[0] != $stCount3[1]) && $goodChan == -1;			
+						$goodChan = 0 if (($stCount0[0] != $stCount0[1]) || ($stCount0[0] == $stCount0[1] && $stCount0[1] != 0));
+						$goodChan = 1 if (($stCount1[0] != $stCount1[1]) || ($stCount1[0] == $stCount1[1] && $stCount1[1] != 0)) && $goodChan == -1;
+						$goodChan = 2 if (($stCount2[0] != $stCount2[1]) || ($stCount2[0] == $stCount2[1] && $stCount2[1] != 0)) && $goodChan == -1;
+						$goodChan = 3 if (($stCount3[0] != $stCount3[1]) || ($stCount3[0] == $stCount3[1] && $stCount3[1] != 0)) && $goodChan == -1;
+
 						if ($goodChan == -1) {
-							clean_failed_splits();
-							die "This detector has no working channels. We have stopped your upload. We created $numSplitFiles usable file(s) before this error.";
+							if ($numSplitFiles == 0) {
+								clean_failed_splits();					
+								die "This detector has no working channels. We have stopped your upload. We created $numSplitFiles usable file(s) before this error.";
+							} else {
+								warn "This detector has no working channels. We have stopped your upload. We created $numSplitFiles usable file(s) before this error.";
+							}
 						}
+
+											
 						#now that we know what channel to look at, let's test for ST 2 or ST 3 by checking how often a scalar read is larger than the previous read.
 						for $j (0..$dsRowCount-1){
 							$n++ if $goodChan == 0 && $stCount0[$j] <= $stCount0[$j+1];
@@ -730,7 +753,11 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
                 	    }#end if ($i >=$cpld_low
 	                }#end foreach
     	            $cpld_real_freq = sprintf("%0.0f",$cpld_real_freq_tot/$cpld_real_count) if $cpld_real_count !=0;
-					
+					print ERRORS "total rejects: ", $clock_problem_count, "\n";
+					print ERRORS "total cpld count: ", $cpld_real_count, "\n";
+					if ($cpld_real_count > 0) {
+						print ERRORS "percentaje: ", $clock_problem_count/$cpld_real_count, "\n";
+					}
 					#Start writing meta and write metadata about the file that was just closed						
 					#print META "enddate date $lastDate $lastTime\n";
 					print META "enddate date ", 2000+substr($lastDate,4,2). "-". substr($lastDate,2,2). "-" . substr($lastDate,0,2) . " " .substr($lastTime,0,2). ":" .substr($lastTime,2,2). ":" .substr($lastTime,4,2),"\n";
@@ -781,11 +808,12 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					close $blessFile;	
 					
 					#Empty all of the status arrays so that they can start over with the new split file.
-					@stTime = @StCoutTemp = @stCount0 = @stRate0 = @stCount1 = @stRate1 = @stCount2 = @stRate2 = @stCount3 = @stRate3 = @stEvents = @stRateEvents = @stType = @stPress = @stTemp = @StVcc = @stGPSSats = @stRow =  @cpld_frequency1 = @cpld_frequency2 = @stCountTemp =  @cpld_frequency =();
+					@stTime = @StCoutTemp = @stCount0 = @stRate0 = @stCount1 = @stRate1 = @stCount2 = @stRate2 = @stCount3 = @stRate3 = @stEvents = @stRateEvents = @stType = @stPress = @stTemp = @StVcc = @stGPSSats = @stRow =  @cpld_frequency1 = @cpld_frequency2 = @stCountTemp = @cpld_frequency = ();
 					#reset any scalars in use
 					$GPSSuspectsTot += $GPSSuspects; #for the .raw file
 					$data_line_total += $data_line; #for the .raw file
-					$chan3=$chan2=$chan1=$chan0=$n=$i=$j=$stRowCount=$stType=$dsRowCount=$events=$GPSSuspects=$data_line=$cpld_freq_tot1=$cpld_freq_tot2=$cpld_count=$cpld_real_freq_tot=$cpld_real_count=0;
+					$chan3=$chan2=$chan1=$chan0=$n=$i=$j=$stRowCount=$stType=$dsRowCount=$events=$GPSSuspects=$data_line=$cpld_real_freq_tot=$cpld_real_count=0;
+					$clock_problem_count = 0;
 					$goodChan=-1;
 					$numSplitFiles++;
 					#print "code never makes it here if datafile is < 1 day.\n";
@@ -807,6 +835,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			} #end while(-e "$output...
 				
 			open(SPLIT,'>>', "$output_dir/$fn");
+			push @splitscreated, "$fn";
 			open($blessFile,'>>', "$output_dir/$sfn");
 			
 			$jd = jd($day, $month, $year, $hour, $min, $sec);	#GPS offset already taken into account from above
@@ -821,6 +850,8 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			print META "detectorid string $ID\n";
 			print META "type string split\n";
 			print META "blessfile string $sfn\n"; 
+			print ERRORS "[SPLIT] $output_dir/$fn\n";
+
 		} # end  if($total_events > 0 && $stRowCount > 0)
 			#$lastDate = $date;
 			#$lasttime = $time;
@@ -828,6 +859,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 			print SPLIT $_;
         	# Thanks to Nick Dettman for this code calculating actual CPLD frequency.
 	        #@cpld_line = split(/\s+/, $_);
+			$current_data_row = $_;
         
 	        # if servicing 1PPS interrupt, the GPS time may be funny
 		    $interrupt = (hex($dataRow[14]) & 0x01);
@@ -839,6 +871,19 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
     	    $cpld_day_seconds = $cpld_hour*3600 + $cpld_min*60 + $cpld_sec_offset;
         	
         	$cpld_day_seconds = 0 if $cpld_day_seconds == 86400;
+        	
+        	#This code will write to an output file if the ticks changed but the clock didn't
+        	#It is more for debugging purposes, just to see when this happens if it happens
+ 			if ($cpld_seconds == $cpld_day_seconds && $cpld_hex ne $dataRow[9]) {
+        	    $cpld_ticks_new = hex($dataRow[9]);
+            	$cpld_ticks_old = hex($cpld_hex);
+                $dc_test = ($cpld_ticks_new - $cpld_ticks_old) % $N;
+   			    $dt_test = ($cpld_day_seconds - $cpld_seconds);				
+				print ERRORS "\n-->DIFFERENT CLOCK TICKS WHILE TIME IS THE SAME", "\n";
+				print ERRORS $previous_data_row;
+				print ERRORS $current_data_row;
+				print ERRORS "dc: ", $dc_test, " dt: ", $dt_test, "\n";		
+			}
             
 	        next if $cpld_hex eq $dataRow[9] || $cpld_seconds == $cpld_day_seconds || $interrupt != 0 || $time == $split_line[10];
 	 
@@ -847,21 +892,29 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
             	$cpld_ticks_old = hex($cpld_hex);
                 $dc = ($cpld_ticks_new - $cpld_ticks_old) % $N;
    			    $dt = ($cpld_day_seconds - $cpld_seconds);
-   		        #calculate CPLD frequency with first guess
-        		$cpld_freq = $fg1 + (($dc - $fg1*$dt + $Nover2) % $N - $Nover2)/$dt;
-        		$cpld_freq_tot1 += $cpld_freq;
-    	    	push @cpld_frequency1, $cpld_freq;
-        		#calculate CPLD frequency with second guess
-            	$cpld_freq = $fg2 + (($dc - $fg2*$dt + $Nover2) % $N - $Nover2)/$dt;
-        	  	$cpld_freq_tot2 += $cpld_freq;
-    	    	push @cpld_frequency2, $cpld_freq;
-              $cpld_count++;
+  				$new_dt1 = $dt;
+  				$new_dt2 = $dt;
+  				#if the clock is wrong the $new_dt will be different
+				check_clock_being_off();
+				#only allow the clock being right
+				if ($new_dt1 == $dt && $new_dt2 == $dt) {
+	   		        #calculate CPLD frequency with first guess
+    	    		$cpld_freq = $fg1 + (($dc - $fg1*$dt + $Nover2) % $N - $Nover2)/$dt;
+        			$cpld_freq_tot1 += $cpld_freq;
+    	    		push @cpld_frequency1, $cpld_freq;
+        			#calculate CPLD frequency with second guess
+            		$cpld_freq = $fg2 + (($dc - $fg2*$dt + $Nover2) % $N - $Nover2)/$dt;
+        	  		$cpld_freq_tot2 += $cpld_freq;
+    	    		push @cpld_frequency2, $cpld_freq;
+              		$cpld_count++;
+				}
         	} #end of if (defined($cpld_hex)
         	
         	# redefines variables for checking to see if the next line has the same data as this line
         	$cpld_time = $dataRow[10];
         	$cpld_hex = $dataRow[9];
         	$cpld_seconds = $cpld_day_seconds;
+        	$previous_data_row = $current_data_row;
 		}	#end 
 	} #end if rollover_flag == 0;
 }	#end of reading the raw file
@@ -869,6 +922,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 #die "This file contains no ST lines. We now require these lines. We've cancelled your upload. Please consult the DAQ HE screen to implement this feature of the hardware." if $stRowCount == 0;
 
 if($total_events == 0){
+	clean_failed_splits();
 	die "No valid events found in your file ($raw_filename) of length $.\n";
 }
 else{
@@ -885,21 +939,31 @@ else{
 	
 	#die "These data do not contain the same number of ST and DS lines; we have stopped your upload. We created $numSplitFiles usable file(s) before this error." if $dsRowCount != $stRowCount;
 	if ($dsRowCount != $stRowCount || $dsRowCount == 0) {
-		clean_failed_splits();
-		die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged.  We have stopped your upload.  We created $numSplitFiles usable file(s) before this error."; #(removing the comment before the OR in this conditional it somehow got removed).
-	}				
+		if ($numSplitFiles == 0) {
+			clean_failed_splits();
+			die "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged.  We have stopped your upload.  We created $numSplitFiles usable file(s) before this error."; #(removing the comment before the OR in this conditional it somehow got removed).
+		} else {
+			warn "These data span at least one day that does not contain any 'ST', 'DS' line pairs--or, the data in those lines are munged.  We have stopped your upload.  We created $numSplitFiles usable file(s) before this error."; #(removing the comment before the OR in this conditional it somehow got removed).			
+		}
+	}
+					
 	if ($dsRowCount > 0){
 		#First we need to learn which channel to look at (the trigger may be too slow) to see if it is working (i.e., plugged in & turned on).
 		#The channel is off if the scalar hasn't incremented in 10 pings.						
-		$goodChan = 0 if ($stCount0[0] != $stCount0[1]);
-		$goodChan = 1 if ($stCount1[0] != $stCount1[1]) && $goodChan == -1;
-		$goodChan = 2 if ($stCount2[0] != $stCount2[1]) && $goodChan == -1;
-		$goodChan = 3 if ($stCount3[0] != $stCount3[1]) && $goodChan == -1;
+		$goodChan = 0 if (($stCount0[0] != $stCount0[1]) || ($stCount0[0] == $stCount0[1] && $stCount0[1] != 0));
+		$goodChan = 1 if (($stCount1[0] != $stCount1[1]) || ($stCount1[0] == $stCount1[1] && $stCount1[1] != 0)) && $goodChan == -1;
+		$goodChan = 2 if (($stCount2[0] != $stCount2[1]) || ($stCount2[0] == $stCount2[1] && $stCount2[1] != 0)) && $goodChan == -1;
+		$goodChan = 3 if (($stCount3[0] != $stCount3[1]) || ($stCount3[0] == $stCount3[1] && $stCount3[1] != 0)) && $goodChan == -1;
+
 		if ($goodChan == -1) {
-			clean_failed_splits();
-			die "This detector has no working channels. We have stopped your upload. We created $numSplitFiles usable file(s) before this error.";
+			if ($numSplitFiles == 0) {
+				clean_failed_splits();					
+				die "This detector has no working channels. We have stopped your upload. We created $numSplitFiles usable file(s) before this error.";
+			} else {
+				warn "This detector has no working channels. We have stopped your upload. We created $numSplitFiles usable file(s) before this error.";
+			}
 		}
-						
+					
 		#now that we know what channel to look at, let's test for ST 2 or ST 3 by checking how often a scalar read is larger than the previous read.
 		for $j (1..$dsRowCount-1){
 			$n++ if $goodChan == 0 && $stCount0[$j] <= $stCount0[$j+1];
@@ -992,6 +1056,11 @@ else{
         }
 	}
     $cpld_real_freq = sprintf("%0.0f",$cpld_real_freq_tot/$cpld_real_count) if $cpld_real_count !=0;
+	print ERRORS "total rejects: ", $clock_problem_count, "\n";
+	print ERRORS "total cpld count: ", $cpld_real_count, "\n";
+	if ($cpld_real_count > 0) {
+		print ERRORS "percentaje: ", $clock_problem_count/$cpld_real_count, "\n";
+	}
 					
 	#Start writing meta and write metadata about the file that was just closed						
 	#2000+substr($date,4,2). "-". substr($date,2,2). "-" . substr($date,0,2) . " " .substr($time,0,2). ":" .substr($time,2,2). ":" .substr($time,4,2),"\n"
@@ -1080,10 +1149,71 @@ else{
 	}
 }
 
-#remove split files that did not complete or failed
-sub clean_failed_splits {
-    unlink("$output_dir/$fn"); 
-    unlink("$output_dir/$sfn");
+sub check_clock_being_off{
+	#This function will double check the seconds elapsed.
+	$seconds_to_check = 100;	#add/subtract this number to find the shortest distance to the default cpdld
+	$range_to_ignore = 10;		#if the cpld is already 10+/- we do not really care to do any calculations
+    $current_cpld1 = $fg1 + (($dc - $fg1*$dt + $Nover2) % $N - $Nover2)/$dt;      	
+    $current_cpld2 = $fg2 + (($dc - $fg2*$dt + $Nover2) % $N - $Nover2)/$dt;    
+	$chosenguess;    
+    if ($ID < 6000 ) {
+    	$chosenguess = $fg1;
+    } else {
+    	$chosenguess = $fg2;
+    }
+
+	$diff1 = abs($chosenguess - $current_cpld1);
+	$diff2 = abs($chosenguess - $current_cpld2);
+	
+	#no need to go further is the difference is close to zero
+	if ($diff1 >= 0 && $diff1 <= $range_to_ignore && $diff2 >= 0 && $diff2 <= $range_to_ignore) {
+		return;
+	}
+
+	$new_calc1 = $current_cpld1;
+	$new_calc2 = $current_cpld2;
+		
+	for $i (1..$seconds_to_check){
+		if ($dt+$i > 0) {
+			$localdt = $dt+$i;
+			$localcpld1 = $fg1 + (($dc - $fg1*$localdt + $Nover2) % $N - $Nover2)/$localdt;
+			$localcpld2 = $fg2 + (($dc - $fg2*$localdt + $Nover2) % $N - $Nover2)/$localdt;
+			if ($diff1 > abs($chosenguess - $localcpld1)) {
+				$new_calc1 = $localcpld1;
+				$diff1 = abs($chosenguess - $localcpld1);
+				$new_dt1 = $localdt;
+			}		
+			if ($diff2 > abs($chosenguess - $localcpld2)) {
+				$new_calc2 = $localcpld2;
+				$diff2 = abs($chosenguess - $localcpld2);
+				$new_dt2 = $localdt;
+			}			
+		}
+		if ($dt-$i > 0) {
+			$localdt = $dt-$i;
+			$localcpld1 = $fg1 + (($dc - $fg1*$localdt + $Nover2) % $N - $Nover2)/$localdt;
+			$localcpld2 = $fg2 + (($dc - $fg2*$localdt + $Nover2) % $N - $Nover2)/$localdt;
+			if ($diff1 > abs($chosenguess - $localcpld1)) {
+				$new_calc1 = $localcpld1;
+				$diff1 = abs($chosenguess - $localcpld1);
+				$new_dt1 = $localdt;
+			}		
+			if ($diff2 > abs($chosenguess - $localcpld2)) {
+				$new_calc2 = $localcpld2;
+				$diff2 = abs($chosenguess - $localcpld2);
+				$new_dt2 = $localdt;
+			}			
+		}
+	}
+
+	if ($dt != $new_dt1 && $dt != $new_dt2) {
+		$clock_problem_count = $clock_problem_count + 1;
+		print ERRORS "\nCLOCK PROBLEMS, SECONDS ARE OFF\n";
+		print ERRORS $previous_data_row;
+		print ERRORS $current_data_row;
+		print ERRORS "old dt1: ", $dt, " old calc1: ", $current_cpld1, " new calc1: ", $new_calc1, " new dt1: ", $new_dt1, "\n";		
+		print ERRORS "old dt2 ", $dt, " old calc2: ", $current_cpld2, " new calc2: ", $new_calc2, " new dt2: ", $new_dt2, "\n";		
+	}   
 }
 
 sub gps_check{
@@ -1153,6 +1283,19 @@ sub stddev {
 	 	$s += ($avg - $x)**2;
 	 }
 	 return sqrt($s/$n);
+}
+
+#remove split files that did not complete or failed
+sub clean_failed_splits {
+	$raw_newname = "$raw_filename.failed";
+	$meta_filename = "$raw_filename.meta";	
+	$meta_newname = "$raw_filename.meta.failed";
+	move($raw_filename, $raw_newname);
+	move($meta_filename, $meta_newname);
+	`gzip -9 $raw_newname`;
+	unlink("$raw_filename.errors");
+	unlink("$output_dir/$fn"); 
+	unlink("$output_dir/$sfn");
 }
 
 sub calculate_cpld_frequency {
