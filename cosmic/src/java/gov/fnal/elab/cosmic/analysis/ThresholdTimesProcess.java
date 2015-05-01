@@ -20,7 +20,7 @@ import java.util.*;
 
 public class ThresholdTimesProcess {
     private String[] inputFiles, outputFiles, detectorIDs;
-    private double[] cpldFrequencies;
+    private double[] cpldFrequencies, firmwares;
     private double[] retime, fetime;
     private double[] retimeINT, fetimeINT;  
     private long[] rePPSTime, rePPSCount, reDiff;
@@ -29,7 +29,7 @@ public class ThresholdTimesProcess {
     private int lastGPSDay, jd;
     private String lastSecString;
     private double lastEdgeTime, lastjdplustime;
-    private double cpldFrequency;
+    private double cpldFrequency, firmware;
     private long starttime, endtime;
     private static int lineCount;
     private static int printLineCount;
@@ -47,18 +47,20 @@ public class ThresholdTimesProcess {
         TIME_FORMAT.setMinimumFractionDigits(3);
     }
     
-    public ThresholdTimesProcess(List inputFile, List outputFile, List detector, List cpldFrequency) {
+    public ThresholdTimesProcess(List inputFile, List outputFile, List detector, List cpldFrequency, List firmware) {
     	this.inputFiles = new String[inputFile.size()];
     	this.outputFiles = new String[inputFile.size()];
     	this.detectorIDs = new String[inputFile.size()];
     	this.cpldFrequencies = new double[inputFile.size()];
-        
+       	this.firmwares = new double[inputFile.size()];
+               
     	for (int i = 0; i < inputFile.size(); i++) {
     		inputFiles[i] = inputFile.get(i).toString();
     		outputFiles[i] = outputFile.get(i).toString();
     		detectorIDs[i] = detector.get(i).toString();
     		cpldFrequencies[i] = Double.valueOf(cpldFrequency.get(i).toString()).doubleValue();
-    	}
+    		firmwares[i] = Double.valueOf(firmware.get(i).toString()).doubleValue();
+       	    	}
     	try {
     	} catch (Exception e) {
     		System.out.println("Couldnt open file for output");
@@ -67,8 +69,6 @@ public class ThresholdTimesProcess {
     
     public void createTTFiles() {
         starttime = System.currentTimeMillis();
-        lineCount = 0;
-        printLineCount = 0;
         try {
 		    for (int i = 0; i < inputFiles.length; i++) {
 		        lastSecString = "";
@@ -96,7 +96,9 @@ public class ThresholdTimesProcess {
 			
 			        cpldFrequency = cpldFrequencies[i];
 			        currentDetector = Integer.parseInt(detectorIDs[i]);
+			        firmware = firmwares[i];
 			        
+			        //hardcoded for this time around
 			        if (cpldFrequency == 0) {
 			        	if (Integer.parseInt(detectorIDs[i]) < detectorSeriesChange) {
 			        		cpldFrequency = 41666667;
@@ -104,14 +106,15 @@ public class ThresholdTimesProcess {
 			        		cpldFrequency = 25000000;
 			        	}
 			        }
-	        		cpldFrequency = 25000000;
-			        String line = br.readLine();
-			        
+			        String line = br.readLine();			        
 			        boolean printoneexception = true;
 			        while (line != null) {
 			            String[] parts = line.split("\\s"); // line validated in split.pl
 			            for (int j = 0; j < 4; j++) {
 			            	try {
+			            		if (line.equals("DA6A4C6A 00 00 00 00 00 00 00 25 DA643B6B 041139.001 100608 V 05 0  0000")) {
+			            			String message = "Hey";
+			            		}
 			            		timeOverThreshold(parts, j, detectorIDs[i], bw);
 			            	} catch (Exception e) {
 			            		if (printoneexception) {
@@ -125,7 +128,6 @@ public class ThresholdTimesProcess {
 			        }
 			        bw.close();
 			        br.close();
-			        lineCount++;
 		    		System.out.println("Processed file: " + inputFiles[i]+" "+ String.valueOf(i) + " files out of " + String.valueOf(inputFiles.length));
 		    	} catch (IOException ioe) {
 		    		System.out.println("File not found: " + inputFiles[i]);
@@ -249,7 +251,6 @@ public class ThresholdTimesProcess {
         String id = detector + "." + (channel + 1);
         if (nanodiff >= 0 && nanodiff < 10000) {
         	lastjdplustime = jd + retime[channel];
-        	printLineCount = printLineCount + 1;
             wr.write(id);
             wr.write('\t');
             wr.write(String.valueOf(jd));
@@ -303,10 +304,17 @@ public class ThresholdTimesProcess {
 	            //		   but it was not stored for later use, now fixed by this:
 	            reDiff[channel] = diff;
 	        }
-	        double first_part = rePPSTime[channel];
-	        double second_part = diff / cpldFrequency;
-	        double third_part = tmc / (cpldFrequency * 32);
-	        double edgetime = rePPSTime[channel] + diff / cpldFrequency + tmc / (cpldFrequency * 32);
+	        //As per Mark Adams' feedback, we should run the following check for firmware less than 1.12
+	        //and DAQ 6000 series and add a second if the diff/cpld is less than 0.07
+	        double diffOverCpld = diff / cpldFrequency;
+	        
+	        if (firmware != 0 && firmware < 1.12 && currentDetector > 5999) {
+	        	if (diffOverCpld < 0.07) {
+	        		diffOverCpld = (diff / cpldFrequency) + 1.0;
+	        	}
+	        }
+
+	        double edgetime = rePPSTime[channel] + diffOverCpld + tmc / (cpldFrequency * 32);
 	        if (edgetime > 86400) {
 	            edgetime -= 86400;
 	        }
@@ -438,35 +446,44 @@ public class ThresholdTimesProcess {
     	List outputFile = new ArrayList();
     	List detector = new ArrayList();
     	List cpldFrequency = new ArrayList();
+    	List firmware = new ArrayList();
     	
     	if (args.length == 1) {
     		String iFile = args[0];
     		try {
-    			BufferedReader br = new BufferedReader(new FileReader(iFile));			
+    			BufferedReader br = new BufferedReader(new FileReader(iFile));
+		        //BufferedWriter bw = new BufferedWriter(new FileWriter("/disks/i2u2-dev/cosmic/ThresholdTimesFeb2015/Output/filesToMove"));
+		            			
 		        String line = br.readLine();
 		        while (line != null) {
 			        String[] splitLine = line.split(","); 
-			        if (splitLine.length == 4) {
+			        if (splitLine.length == 5) {
 			        	String filename = splitLine[1];
 			        	String threshfile = splitLine[2];
 			        	String detectorId = filename.substring(0, filename.indexOf('.'));
 			        	String path = splitLine[0] + File.separator + detectorId + File.separator;
-			        	String cpldf = splitLine[3];
+			        	String outputpath = "/disks/i2u2-dev/cosmic/ThresholdTimesFeb2015/Output/";
+			        	String cpldf = "0";
+			        	String fware = splitLine[4];
 			        	inputFile.add(path+filename);
-			        	outputFile.add(path+threshfile);
+			        	outputFile.add(outputpath+threshfile);
 			        	detector.add(detectorId);
 			        	cpldFrequency.add(cpldf);
+			        	firmware.add(fware);
+			        	//origin, destination: this will be the input to a python program that will copy those files
+				        //bw.write(outputpath+threshfile+" "+path+"\n");
 			        }
 		            line = br.readLine();
 		        }
 		        
 		        br.close();
+		       // bw.close();
 		        
     		} catch (Exception e) {
         		System.out.println("Could not open the file");    			
     		}
 
-    		ttp = new ThresholdTimesProcess(inputFile, outputFile, detector, cpldFrequency);      
+    		ttp = new ThresholdTimesProcess(inputFile, outputFile, detector, cpldFrequency, firmware);      
     		ttp.createTTFiles();
     	} else {
     		System.out.println("Usage: ThresholdTimesProcess input_file");
