@@ -134,11 +134,7 @@
 				</e:vswitch>
 			</e:tr>
 		</p>
-		<p>
-			<!-- EPeronja-10/17/2013: THRESHOLD TEST -->
-			<input type="radio" name="thresholdfile" value="none">Recreate TT file.<br />
-			<input type="radio" name="thresholdfile" value="static" checked="true">Use Static TT file.<br />
-		</p>		
+	
 		<%@ include file="../analysis/controls.jsp" %>
 		<p>
 			<!-- this MUST be used if all the elab:tr* stuff is to work                      -->
