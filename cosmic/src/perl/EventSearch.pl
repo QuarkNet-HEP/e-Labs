@@ -43,9 +43,11 @@ print OUT1 ("#[event number] [num events] [num hit detectors] [ID1.chan] [JD1] [
 #initialy our gate is closed and the shower array is empty
 $gateOpen=0;
 @potential_shower = ();
+@potential_shower_before_last = ();
 
 $event_num = 0;         #event counting
 %hit_detectors = ();    #different detectors hit in an event
+%hit_detector_before_last = ();	#this is to deal with the last input line
 
 while(<IN>) {
     #if the first character is a'#', then we know it's a comment and we can ignore it.
@@ -73,6 +75,9 @@ while(<IN>) {
 	if ($gateOpen==1 && ($currentEventWidth > $gate)){
         #close the gate
 		$gateOpen=0;
+
+        %hit_detector_before_last = %hit_detectors;
+		@potential_shower_before_last = @potential_shower;
 
         #check detector coincidence levels
         my @hit_detectors_arr = keys %hit_detectors;
