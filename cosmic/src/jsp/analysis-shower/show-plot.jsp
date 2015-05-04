@@ -34,11 +34,16 @@
 
     //EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot
 	String eventDir = request.getParameter("eventDir");
+	String crtEventRowDate = request.getParameter("crtEventRowDate");
 	request.setAttribute("eventDir", eventDir);
+	request.setAttribute("crtEventRowDate",crtEventRowDate);
 	
 %>
 
 <img src="${results.outputDirURL}/plot.png" />
+<p>
+	Plot for the ${crtEventRowDate} event
+</p>
 
 <p>
 	Show <e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysisdir" 

@@ -141,7 +141,7 @@
 			<p>
 				Click on image for a larger view
 			</p>
-			<e:popup href="../analysis-shower/show-plot.jsp?showerId=${showerResults.id}&id=${results.id}&eventDir=${eventDir}" target="showerPopup" width="650" height="750">
+			<e:popup href="../analysis-shower/show-plot.jsp?showerId=${showerResults.id}&id=${results.id}&eventDir=${eventDir}&crtEventRowDate=${crtEventRow.dateF}" target="showerPopup" width="650" height="750">
 				<img src="${results.outputDirURL}/plot_thm.png"/>
 			</e:popup>
 			<p>
