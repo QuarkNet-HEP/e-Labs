@@ -122,7 +122,7 @@ function hideAll()
 									<a href="../posters/new.jsp">New Poster</a><br />
 									<a href="../posters/edit.jsp">Edit Poster</a><br />
 									<a href="../posters/view.jsp">View Posters</a><br />
-									<a href="../posters/delete.jsp">Edit Poster</a><br />
+									<a href="../posters/delete.jsp">Delete Poster</a><br />
 									<a href="../plots?submit=true&key=group&value=guest&uploaded=true">View Plots</a><br />
 									<a href="../jsp/uploadImage.jsp">Upload Image</a>
 								</div>
