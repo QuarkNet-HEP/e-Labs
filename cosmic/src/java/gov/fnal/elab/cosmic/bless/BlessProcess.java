@@ -203,6 +203,8 @@ public class BlessProcess {
 										failReason = "";
 										e.setTupleValue("blessed", true);
 										e.setTupleValue("blessedstatus", "blessed");
+										//clear failure variables if they exist
+										clearFailureVariables(e);
 									} else {
 										e.setTupleValue("blessed", false);
 										e.setTupleValue("blessedstatus", "not blessed");
@@ -326,6 +328,34 @@ public class BlessProcess {
 		}
 		return hms;
 	}//end of convertToHMS
+	
+	//clear failure variables if they exist
+	public void clearFailureVariables(VDSCatalogEntry e) {
+		if (e.getTupleValue("benchmarkfailuretime") != null) {
+			e.setTupleValue("benchmarkfailuretime", "");
+		}
+		if (e.getTupleValue("benchmarkfailurechannel") != null) {
+			e.setTupleValue("benchmarkfailurechannel", "");
+		}
+		if (e.getTupleValue("benchmarkrate") != null) {
+			e.setTupleValue("benchmarkrate", "");
+		}
+		if (e.getTupleValue("benchmarksplitrate") != null) {
+			e.setTupleValue("benchmarksplitrate", "");
+		}
+		if (e.getTupleValue("benchmarkspliterror") != null) {
+			e.setTupleValue("benchmarkspliterror", "");
+		}
+		if (e.getTupleValue("benchmarkquality") != null) {
+			e.setTupleValue("benchmarkquality", "");
+		}
+		if (e.getTupleValue("benchmarkerrorcode") != null) {
+			e.setTupleValue("benchmarkerrorcode", "");
+		}
+		if (e.getTupleValue("benchmarkfail") != null) {
+			e.setTupleValue("benchmarkfail", "");
+		}		
+	}//end of clearFailureVariables
 	
 	public String formatFailReason(String seconds, String label, String benchmarkRate, String column1, String column2) {
 		String failReason = "";
