@@ -15,6 +15,9 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>		
 		<script type="text/javascript" src="../include/elab.js"></script>
 	</head>
 	<body id="analysis-list" class="data">
@@ -23,7 +26,9 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
-					<%@ include file="../include/nav-rollover.jspf" %>
+					<div id="nav">
+						<%@ include file="../include/nav-teacher.jsp" %>
+					</div>
 				</div>
 			</div>
 			
@@ -34,17 +39,22 @@
 
 %>
 
-<table id="analysis-table">
-	<tr>
-		<th>User</th>
-		<th>ID</th>
-		<th>Analysis</th>
-		<th>Run Mode</th>
-		<th>Start Time</th>
-		<th>End Time</th>
-		<th>Time (Actual/Est.)</th>
-		<th>Status</th>
-	</tr>
+
+<table id="analysis-table" class="tablesorter">
+	<thead>
+		<tr>
+			<th>User</th>
+			<th>ID</th>
+			<th>Analysis</th>
+			<th>Run Mode</th>
+			<th>Start Time</th>
+			<th>End Time</th>
+			<th>Time (Actual/Est.)</th>
+			<th>Status</th>
+			<th>UploadTime</th>
+		</tr>
+	</thead>
+	<tbody>
 	<c:choose>
 		<c:when test="${empty users}">
 			<tr id="nostudies"><td colspan="8"><h3>There are no analyses</h3></td></tr>
@@ -114,6 +124,9 @@
 									</c:if>
 								</tr>
 							</table>
+						</td>
+						<td>
+							${run.attributes.uploadtime}
 						</td>
 					</tr>
 				</c:forEach>
