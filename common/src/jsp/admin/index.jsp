@@ -52,7 +52,7 @@
 						<td>Add e-Lab users.</td>
 					</tr>
 					<tr>
-						<td>&#8226; <a href="../references/control.jsp">FAQs Add/Update</a></td>
+						<td>&#8226; <a href="../references/control.jsp"> FAQs Add/Update</a></td>
 						<td>Add, update FAQ items.</td>					
 					</tr>					
 					<tr>
@@ -90,10 +90,15 @@
 							<td>List of analyses by all users.</td>
 						</tr>
 						<tr>
-							<td>&#8226; <a href="../analysis-blessing/benchmark-info.jsp">View upload plus benchmark information</a></td>
+							<td>&#8226; <a href="../reports/benchmark-info.jsp">View upload plus benchmark information</a></td>
 							<td>View split files and their blessed/unblessed status details.</td>
 						</tr>
-					</c:if>				
+						<tr>
+							<td>&#8226; <a href="../reports/geometry-info.jsp">View splits with geometry problems.</a></td>
+							<td>View split files where the geometry stacked metadata does not match the geometry.</td>
+						</tr>
+					</c:if>	
+					<tr><td colspan="2"><br /><i>* Expired notifications are removed automatically when we browse this page.</i></td></tr>			
 				</table>
 			</div>
 			<!-- end content -->	
