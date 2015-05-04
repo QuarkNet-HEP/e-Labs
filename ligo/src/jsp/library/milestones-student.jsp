@@ -34,7 +34,7 @@
 								</a>
 							</li>
 							<li>
-								<a href="#" onclick="javascript:glossary('Milestone_Seminar',300);return false;"><b>Milestone Seminar</b></a>
+								<a href="#" onclick="javascript:glossary('milestone_seminar',300);return false;"><b>Milestone Seminar</b></a>
 							</li>
 						</ul>
 					</li>
