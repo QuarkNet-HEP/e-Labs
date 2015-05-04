@@ -9,6 +9,7 @@
 	
 		<p>Click <strong>Analyze</strong> to use the default parameters. 
 		Control the analysis by expanding the options below. Be sure to click the question icon next to "Bin width (ns)."</p>
+
 		<p>
 			<e:vswitch revert="true">
 				<e:visible>
@@ -125,7 +126,7 @@
 								</td>
 								<td class="form-control">
 									<e:trtextarea name="plot_caption" rows="5" cols="30"
-										default="<%= DataTools.getFigureCaption(elab, ((ElabAnalysis) request.getAttribute("analysis")).getParameterValues("rawData")) %>"/>
+										default='<%= DataTools.getFigureCaption(elab, ((ElabAnalysis) request.getAttribute("analysis")).getParameterValues("rawData")) %>'/>
 								</td>
 							</tr>
 						</table>
@@ -133,6 +134,7 @@
 				</e:vswitch>
 			</e:tr>
 		</p>
+	
 		<%@ include file="../analysis/controls.jsp" %>
 		<p>
 			<!-- this MUST be used if all the elab:tr* stuff is to work                      -->
