@@ -84,6 +84,13 @@ function showAllFiles(selectObject){
 	}
 }//end of showAllFiles
 
+function setSelectedDetector(selectObject){
+	var selectedDetector = document.getElementById("detector");
+	if (selectObject.selectedIndex != -1) {
+		selectedDetector.value = selectObject.value;
+	}
+}//end of setSelectedDetector
+
 function addBenchmarkFiles(detector, fromDateObject, toDateObject) {
 	if (detector != "" && detector  != "none") {
 		console.log(detector);
