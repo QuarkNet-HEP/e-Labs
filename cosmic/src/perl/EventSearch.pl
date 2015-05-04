@@ -43,9 +43,11 @@ print OUT1 ("#[event number] [num events] [num hit detectors] [ID1.chan] [JD1] [
 #initialy our gate is closed and the shower array is empty
 $gateOpen=0;
 @potential_shower = ();
+@potential_shower_before_last = ();
 
 $event_num = 0;         #event counting
 %hit_detectors = ();    #different detectors hit in an event
+%hit_detector_before_last = ();	#this is to deal with the last input line
 
 while(<IN>) {
     #if the first character is a'#', then we know it's a comment and we can ignore it.
@@ -73,6 +75,9 @@ while(<IN>) {
 	if ($gateOpen==1 && ($currentEventWidth > $gate)){
         #close the gate
 		$gateOpen=0;
+
+        %hit_detector_before_last = %hit_detectors;
+		@potential_shower_before_last = @potential_shower;
 
         #check detector coincidence levels
         my @hit_detectors_arr = keys %hit_detectors;
@@ -142,6 +147,52 @@ while(<IN>) {
 		$num_events++;
         $hit_detectors{$id}{$chan} = 1;
 	}
+}
+
+#EPeronja: 04/30/2015- deal with the last input line!!! Someone forgot about it
+if ($gateOpen==1 && ($currentEventWidth > $gate)){
+
+    #check detector coincidence levels (the last and the one before last)
+ 	my @hit_detector_before_last = keys %hit_detector_before_last;
+    my $num_hit_detector_before_last = scalar(@hit_detector_before_last);
+    my @hit_detectors_arr = keys %hit_detectors;
+    my $num_hit_detectors = scalar(@hit_detectors_arr);
+	#merge stuff and increment event
+	if ($num_hit_detector_before_last != 0) {
+		@hit_detectors{keys %hit_detector_before_last} = values %hit_detector_before_last;
+    	@hit_detectors_arr = keys %hit_detectors;
+    	$num_hit_detectors = scalar(@hit_detectors_arr);
+ 		$num_events = $num_events + 1;
+     	@merged_potential_showers = @potential_shower_before_last;
+    	foreach $i (@potential_shower) {
+    		push(@merged_potential_showers, $i);
+    	}
+    	@potential_shower = @merged_potential_showers;
+  	}
+
+    if($num_hit_detectors >= $detector_coincidence){
+        #check channel coincidence within each detector
+        my $hit_channels_ok = 1;    #assume we have the coincidence we need until proven otherwise
+        foreach my $i (@hit_detectors_arr){
+            my $channels = $hit_detectors{$i};
+            my $num_hit_channels = scalar keys %{$channels};	
+            $hit_channels_ok = 0 if($num_hit_channels < $channel_coincidence);
+         }
+         if($hit_channels_ok){
+            #check total event coincidence level
+            if ($num_events >= $event_coincidence){
+                #increment the global event number count
+                $event_num++;
+                #output to file
+                print OUT1 ("$event_num\t$num_events\t$num_hit_detectors");
+                for(my $i=0; $i<$num_events; $i++){
+                    #id.chan jd partial_jd
+                    print OUT1 ("\t$potential_shower[$i][0]\t$potential_shower[$i][1]\t$potential_shower[$i][2]");
+                    }
+                print OUT1 ("\n");
+            }
+         }
+     }
 }
 
 die "No events found with gatewidth: $ARGV[2]ns, detector coincidence: $detector_coincidence, channel coincidence: $channel_coincidence and event coincidence: $event_coincidence. Try changing your parameters.\n" if($event_num == 0);
