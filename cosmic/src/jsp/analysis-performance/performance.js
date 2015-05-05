@@ -143,39 +143,39 @@ function onDataLoad(json) {
 	xAxisLabel = "Time over Threshold (nanosec)";
 	yAxisLabel = "Number of PMT pulses";	
 
-	if (channel1.data != null) {
+	if (json.channel1 != null) {
 		channel1.data = getDataWithBins(channel1.data, binValue, minX, maxX, nBins, bins);
 		channels += 1;
 		data.push(channel1);
 	}
-	if (channel2.data != null) {
+	if (json.channel2 != null) {
 		channel2.data = getDataWithBins(channel2.data, binValue, minX, maxX, nBins, bins);
 		channels += 1;
 		data.push(channel2);
 	}
-	if (channel3.data != null) {
+	if (json.channel3 != null) {
 		channel3.data = getDataWithBins(channel3.data, binValue, minX, maxX, nBins, bins);
 		channels += 1;
 		data.push(channel3);
 	}
-	if (channel4.data != null) {
+	if (json.channel4 != null) {
 		channel4.data = getDataWithBins(channel4.data, binValue, minX, maxX, nBins, bins);
 		channels += 1;
 		data.push(channel4);
 	}
-	if (channel1.data != null) {
+	if (json.channel1 != null) {
 		channel1Error.data = getError(channel1.data_original, binValue, minX, maxX, nBins, bins);
 		data.push(channel1Error);
 	}
-	if (channel2.data != null) {
+	if (json.channel2 != null) {
 		channel2Error.data = getError(channel2.data_original, binValue, minX, maxX, nBins, bins);
 		data.push(channel2Error);
 	}
-	if (channel3.data != null) {
+	if (json.channel3 != null) {
 		channel3Error.data = getError(channel3.data_original, binValue, minX, maxX, nBins, bins);
 		data.push(channel3Error);		
 	}
-	if (channel4.data != null) {
+	if (json.channel4 != null) {
 		channel4Error.data = getError(channel4.data_original, binValue, minX, maxX, nBins, bins);
 		data.push(channel4Error);		
 	}
@@ -289,35 +289,35 @@ function reBinData(json, binValue) {
 			bins.push(i);
 		}
 		data = [];
-		if (channel1.data != null) {
+		if (json.channel1 != null) {
 			channel1.data = getDataWithBins(channel1.data_original, binValue, minX, maxX, nBins, bins);
 			data.push(channel1);
 		}
-		if (channel2.data != null) {
+		if (json.channel2 != null) {
 			channel2.data = getDataWithBins(channel2.data_original, binValue, minX, maxX, nBins, bins);
 			data.push(channel2);
 		}
-		if (channel3.data != null) {
+		if (json.channel3 != null) {
 			channel3.data = getDataWithBins(channel3.data_original, binValue, minX, maxX, nBins, bins);
 			data.push(channel3);
 		}
-		if (channel4.data != null) {
+		if (json.channel4 != null) {
 			channel4.data = getDataWithBins(channel4.data_original, binValue, minX, maxX, nBins, bins);
 			data.push(channel4);
 		}
-		if (channel1Error.data != null) {
+		if (json.channel1 != null) {
 			channel1Error.data = getError(channel1.data_original, binValue, minX, maxX, nBins, bins);
 			data.push(channel1Error);
 		}
-		if (channel2Error.data != null) {
+		if (json.channel2 != null) {
 			channel2Error.data = getError(channel2.data_original, binValue, minX, maxX, nBins, bins);
 			data.push(channel2Error);
 		}
-		if (channel3Error.data != null) {
+		if (json.channel3 != null) {
 			channel3Error.data = getError(channel3.data_original, binValue, minX, maxX, nBins, bins);
 			data.push(channel3Error);
 		}
-		if (channel4Error.data != null) {
+		if (json.channel4 != null) {
 			channel4Error.data = getError(channel4.data_original, binValue, minX, maxX, nBins, bins);
 			data.push(channel4Error);
 		}
