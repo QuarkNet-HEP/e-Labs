@@ -15,6 +15,7 @@
 
 		<input type="hidden" name="metadata" value="title string ${showerResults.analysis.parameters['plot_title']}"/>
 		<input type="hidden" name="metadata" value="caption string ${showerResults.analysis.parameters['plot_caption']}"/>
+		<input type="hidden" name="metadata" value="eventdatetime string ${crtEventRow}" /> 
 
 		<input type="hidden" name="srcFile" value="plot.png"/>
 		<input type="hidden" name="srcThumb" value="plot_thm.png"/>

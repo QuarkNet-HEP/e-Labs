@@ -90,7 +90,6 @@
 %>
 
 <h1>Shower study candidates (<%= rows.size() %>)</h1>
-
 <table id="shower-results">
 	<tr>
 		<td valign="top" width="70%">
@@ -119,7 +118,7 @@
 				<c:forEach items="${rows}" begin="${start}" end="${end}" var="row" varStatus="li">
 					<tr bgcolor="${row.eventNum == eventNum ? '#aaaafc' : (li.count % 2 == 0 ? '#e7eefc' : '#ffffff')}">
 						<td>
-							<a href="../analysis-shower/event-choice.jsp?id=${param.showerId}&eventNum=${row.eventNum}&eventDir=${eventDir}&submit=true">${row.dateF}</a>
+							<a href="../analysis-shower/event-choice.jsp?id=${param.showerId}&eventNum=${row.eventNum}&eventDir=${eventDir}&eventDateTime=${row.dateF}&submit=true">${row.dateF}</a>
 						</td>
 						<td>
 							${row.eventCoincidence}

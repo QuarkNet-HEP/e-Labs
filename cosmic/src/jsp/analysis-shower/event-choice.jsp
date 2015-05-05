@@ -8,8 +8,10 @@
 <%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="gov.fnal.elab.cosmic.util.*" %>
+<%@ page import="org.apache.commons.lang.time.DateFormatUtils" %>
 <%@ page import="java.io.*" %>
-
+<%@ page import="java.util.*" %>
+<%@ page import="java.text.*" %>
 <%
 	
 %>
@@ -19,6 +21,7 @@
 		ElabAnalysis shower = results.getAnalysis();
 		
 		String eventNum = request.getParameter("eventNum");
+		String eventDateTime = request.getParameter("eventDateTime");
 		
 		File ecFile = new File(results.getOutputDir(), (String) shower.getParameter("eventCandidates"));
 		String ecPath = ecFile.getAbsolutePath();
@@ -34,6 +37,15 @@
 				}
 				String arr[] = line.split("\\s");
 				eventNum = arr[0];
+                String jd = arr[4];
+                String partial = arr[5];
+
+                // get the date and time of the shower
+                NanoDate nd = ElabUtil.julianToGregorian(Integer.parseInt(jd), Double.parseDouble(partial));
+                String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
+                TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
+
+                eventDateTime = DateFormatUtils.format(nd, DATEFORMAT, TIMEZONE);
 				break;
 			}
 		}
@@ -42,6 +54,7 @@
 		//on different events of the same shower run, and they both save
 		//plots, one will be incorrect
 		shower.setParameter("eventNum", eventNum);
+		request.setAttribute("eventDateTime", eventDateTime);
 		request.setAttribute("shower", shower);
 	%>
 		
@@ -50,7 +63,7 @@
 	    <e:trdefault name="geoDir" value="${shower.parameters.geoDir}"/>
 	    <e:trdefault name="geoFiles" value="${shower.parameters.geoFiles}"/>
 	    <e:trdefault name="extraFun_out" value="${shower.parameters.extraFun_out}"/>
-	    <e:trdefault name="plot_caption" value="${shower.parameters.plot_caption}"/>
+	    <e:trdefault name="plot_caption" value="${shower.parameters.plot_caption}\nEvent: ${ eventDateTime}"/>
 	    <e:trdefault name="plot_title" value="${shower.parameters.plot_title}"/>
 	    <e:trdefault name="plot_highX" value="${shower.parameters.plot_highX}"/>
 	    <e:trdefault name="plot_highY" value="${shower.parameters.plot_highY}"/>
