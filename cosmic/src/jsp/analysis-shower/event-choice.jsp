@@ -63,7 +63,7 @@
 	    <e:trdefault name="geoDir" value="${shower.parameters.geoDir}"/>
 	    <e:trdefault name="geoFiles" value="${shower.parameters.geoFiles}"/>
 	    <e:trdefault name="extraFun_out" value="${shower.parameters.extraFun_out}"/>
-	    <e:trdefault name="plot_caption" value="${shower.parameters.plot_caption}\nEvent: ${ eventDateTime}"/>
+	    <e:trdefault name="plot_caption" value="${shower.parameters.plot_caption}\nEvent Date: ${ eventDateTime}"/>
 	    <e:trdefault name="plot_title" value="${shower.parameters.plot_title}"/>
 	    <e:trdefault name="plot_highX" value="${shower.parameters.plot_highX}"/>
 	    <e:trdefault name="plot_highY" value="${shower.parameters.plot_highY}"/>
