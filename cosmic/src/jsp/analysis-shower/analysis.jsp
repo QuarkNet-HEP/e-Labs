@@ -47,8 +47,8 @@ if (thresholdfile.equals("none")) {
 	<e:trdefault name="plot_xlabel" value="East/West (meters)"/>
 	<e:trdefault name="plot_ylabel" value="North/South (meters)"/>
 	<e:trdefault name="plot_zlabel" value="Time\n(ns)"/>
-	<e:trdefault name="sort_sortKey1" value="2"/>
-	<e:trdefault name="sort_sortKey2" value="3"/>
+	<e:trdefault name="sort_sortKey1" value="5"/>
+	<e:trdefault name="sort_sortKey2" value="6"/>
 	
 	<e:ifAnalysisIsOk>
 		<jsp:include page="../analysis/start.jsp?continuation=../analysis-shower/event-choice.jsp?submit=true&onError=../analysis-shower/analysis.jsp"/>
@@ -191,8 +191,8 @@ if (thresholdfile.equals("none")) {
 	<e:trdefault name="plot_xlabel" value="East/West (meters)"/>
 	<e:trdefault name="plot_ylabel" value="North/South (meters)"/>
 	<e:trdefault name="plot_zlabel" value="Time\n(ns)"/>
-	<e:trdefault name="sort_sortKey1" value="2"/>
-	<e:trdefault name="sort_sortKey2" value="3"/>
+	<e:trdefault name="sort_sortKey1" value="5"/>
+	<e:trdefault name="sort_sortKey2" value="6"/>
 	
 	<e:ifAnalysisIsOk>
 		<jsp:include page="../analysis/start.jsp?continuation=../analysis-shower/event-choice.jsp?submit=true&onError=../analysis-shower/analysis.jsp"/>

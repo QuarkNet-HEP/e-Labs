@@ -53,7 +53,7 @@
 	}
 	
 	String sc = request.getParameter("sort");
-	int sortCol = 1;
+	int sortCol = 0;
 	if (sc != null) {
 	    sortCol = Integer.parseInt(sc);
 	}
