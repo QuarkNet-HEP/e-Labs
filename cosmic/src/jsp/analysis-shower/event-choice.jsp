@@ -29,10 +29,11 @@
 		if (eventNum == null) {
 			//find the "most interesting" event (one with highest event coincidence)
 			BufferedReader br = new BufferedReader(new FileReader(ecFile));
-			String line = "";
-			while ((line = br.readLine()) != null ) {
+			String line = br.readLine();
+			
+			while (line != null) {
 				if (line.matches("^.*#.*")) {
-					continue; //ignore comments in the file
+	            	continue; //ignore comments in the file
 				}
 				String arr[] = line.split("\\s");
 				eventNum = arr[0];
