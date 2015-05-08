@@ -89,18 +89,13 @@
 																<a href="../analysis-lifetime/tryit.html">Step-by-Step Instructions</a></li>
 															</ul>
 														</li>
-														<li><a href="../jsp/geoInstructions.jsp">Updating Geometry Tutorial</a></li>	
+														<li><a href="../geometry/tutorial.jsp">Updating Geometry Tutorial</a></li>	
 													</ul>
 												</li>
 												<li>
 													<b>Animations</b>
 													<ul>
-														<li><a href="../flash/daq_only_standalone.html" >Classroom Cosmic Ray Detector</a></li>
-														<li><a href="../flash/daq_portal_rays.html" >Sending Data to Grid</a></li>
-														<li><a href="../flash/analysis.html" >Analysis</a></li>
-														<li><a href="../flash/collaboration.html" >Collaboration</a></li>
-														
-														<li><a href="../flash/griphyn-animate_sc2003.html" >Exploring Virtual Data</a></li>
+														<li><a href="../flash/daq_only_standalone.html" >Classroom Cosmic Ray Detector</a></li>												    
 														<li><a href="../flash/DAQII.html" >Data Acquisition Card</a></li>
 													</ul>
 												</li>
