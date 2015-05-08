@@ -46,20 +46,20 @@ public class PerformancePlotDataStream {
 			String filename = outputDir+"/PerformancePlotFlot";
 			JsonWriter writer = new JsonWriter(new FileWriter(filename));
 			for (int i= 0; i < files.length; i++) {
-				BufferedReader br = new BufferedReader(new FileReader(files[i]));		
-				if (i == 0) {
+				BufferedReader br = new BufferedReader(new FileReader(files[i]));
+				if (files[i].toString().endsWith("singleOut1")) {
 					perfDataChannel1 = new ArrayList<Double>();
 					perfDataChannel1 = saveLineData(br);
 				}				
-				if (i == 1) {
+				if (files[i].toString().endsWith("singleOut2")) {
 					perfDataChannel2 = new ArrayList<Double>();
 					perfDataChannel2 = saveLineData(br);
 				}
-				if (i == 2) {
+				if (files[i].toString().endsWith("singleOut3")) {
 					perfDataChannel3 = new ArrayList<Double>();
 					perfDataChannel3 = saveLineData(br);
 				}
-				if (i == 3) {
+				if (files[i].toString().endsWith("singleOut4")) {
 					perfDataChannel4 = new ArrayList<Double>();
 					perfDataChannel4 = saveLineData(br);
 				}
@@ -100,14 +100,30 @@ public class PerformancePlotDataStream {
 	public void saveFileHistogramData(JsonWriter writer) {
 		try {
 			writer.beginObject();
-			saveFileChannel(writer, perfDataChannel1, "red", "1", 0);
-			saveFileChannel(writer, perfDataChannel2, "#00ff00", "2", 1);
-			saveFileChannel(writer, perfDataChannel3, "blue", "3", 2);
-			saveFileChannel(writer, perfDataChannel4, "cyan", "4", 3);
-			saveFileChannelError(writer, perfDataChannel1, "red", "channel1error", "square", 4);
-			saveFileChannelError(writer, perfDataChannel2, "#00ff00", "channel2error", "diamond", 5);
-			saveFileChannelError(writer, perfDataChannel3, "blue", "channel3error", "triangle", 6);
-			saveFileChannelError(writer, perfDataChannel4, "cyan", "channel4error", "circle", 7);
+			if (perfDataChannel1 != null) {
+				saveFileChannel(writer, perfDataChannel1, "red", "1", 0);
+			}
+			if (perfDataChannel2 != null) {
+				saveFileChannel(writer, perfDataChannel2, "#00ff00", "2", 1);
+			}
+			if (perfDataChannel3 != null) {
+				saveFileChannel(writer, perfDataChannel3, "blue", "3", 2);
+			}
+			if (perfDataChannel4 != null) {
+				saveFileChannel(writer, perfDataChannel4, "cyan", "4", 3);
+			}
+			if (perfDataChannel1 != null) {
+				saveFileChannelError(writer, perfDataChannel1, "red", "channel1error", "square", 4);
+			}
+			if (perfDataChannel2 != null) {
+				saveFileChannelError(writer, perfDataChannel2, "#00ff00", "channel2error", "diamond", 5);
+			}
+			if (perfDataChannel3 != null) {
+				saveFileChannelError(writer, perfDataChannel3, "blue", "channel3error", "triangle", 6);
+			}
+			if (perfDataChannel4 != null) {
+				saveFileChannelError(writer, perfDataChannel4, "cyan", "channel4error", "circle", 7);
+			}
 			writer.name("binValue").value(getBinValue());
 			writer.name("minX").value(getMinX());
 			writer.name("maxX").value(getMaxX());

@@ -57,6 +57,9 @@ try {
 			
 			<div id="content">
 <p>
+	<a href="performance-plot.jsp?id=${results.id }">View interactive Flot plots</a> (Beta Version)<br />
+</p>
+<p>
 	<img src="${results.outputDirURL}/plot.png"/>
 </p>
 <p>
