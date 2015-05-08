@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeSet;
+import java.util.*;
 
 public class EventCandidates {
     public static final String[] colNames = new String[] { "date",
@@ -49,6 +50,7 @@ public class EventCandidates {
         BufferedReader br = new BufferedReader(new FileReader(in));
         String line = br.readLine();
         Set ids = new HashSet();
+        Set multiciplicities = new HashSet();
         while (line != null) {
             // ignore comments in the file
             if (!line.matches("^.*#.*")) {
@@ -65,14 +67,18 @@ public class EventCandidates {
                     }
 
                     ids.clear();
+                    multiciplicities.clear();
                     for (int i = 3; i < arr.length; i += 3) {
                         String[] idchan = arr[i].split("\\.");
                         idchan[0] = idchan[0].intern();
                         ids.add(idchan[0]);
+                        String mult = arr[i].intern();
+                        multiciplicities.add(mult);
                         allIds.add(idchan[0]);
                     }
+                    
                     row.setIds((String[]) ids.toArray(STRING_ARRAY));
-
+                    row.setMultiplicity((String[]) multiciplicities.toArray(STRING_ARRAY));
                     String jd = arr[4];
                     String partial = arr[5];
 
@@ -120,6 +126,7 @@ public class EventCandidates {
         private int line;
         private Date date;
         private String[] ids;
+        private String[] multiplicity;
 
         public int getEventCoincidence() {
             return eventCoincidence;
@@ -172,6 +179,29 @@ public class EventCandidates {
         public void setIds(String[] ids) {
             this.ids = ids;
         }
+
+        public String[] getMultiplicity() {
+            return multiplicity;
+        }
+
+        public void setMultiplicity(String[] multiplicity) {
+            this.multiplicity = multiplicity;
+        }
+        
+        public TreeMap<String,String> getIdsMult() {
+        	TreeMap<String,String> idsMult = new TreeMap<String, String>();
+        	for (int i=0; i < ids.length; i++) {
+        		int counter = 0;
+        		for (int j=0; j < multiplicity.length; j++) {
+        			if (multiplicity[j].startsWith(ids[i])) {
+        				counter += 1;
+        			}
+        		}
+        		idsMult.put(ids[i], String.valueOf(counter));
+        	}
+        	return idsMult;
+        }
+
     }
 
     public static class EventsComparator implements Comparator {

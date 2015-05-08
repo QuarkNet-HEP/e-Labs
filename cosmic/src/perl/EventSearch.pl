@@ -205,4 +205,4 @@ if(-x "/opt/sort/sort-2.0/bin/sort"){
 else{
     $sort_file = "sort";
 }
-`$sort_file -n -k 2,2 -r -o $outfile $outfile`;
+`$sort_file -n -k5,5 -k6,6 -o $outfile $outfile`;
