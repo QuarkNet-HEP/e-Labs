@@ -33,6 +33,10 @@
 			</div>
 			
 			<div id="content">
+			<link type="text/css" href="../include/jquery/css/blue/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />	
+			<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>
+			<script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.3.custom.min.js"></script>
+			<script type="text/javascript" src="../include/jquery/js/jquery.event.hover-1.0.js"></script>			
 			<script type="text/javascript" src="../include/jquery/js/jquery.tablesorter.min.js"></script>
 			<script type="text/javascript">
 				$(document).ready(function() { 
