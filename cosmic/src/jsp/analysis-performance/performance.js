@@ -4,7 +4,8 @@ var yDefaultPosition = "left";
 var xDefaultPosition = "bottom";
 var sliderMinX = -1;
 var sliderMaxX = -1;
-var maxYaxis = -1;
+var maxYaxis = -1.0;
+var maxError = -1.0;
 var minX = -1;
 var maxX = -1;
 var nBins = -1;
@@ -186,6 +187,14 @@ function onDataLoad(json) {
 	
 	onOffPlot = $.plot("#placeholder", data, options);
 	overviewPlot = $.plot("#overview", data, overviewOptions);
+	var axes = onOffPlot.getAxes();
+    axes.yaxis.options.max = maxYaxis + maxError;	
+    onOffPlot.setupGrid();
+    onOffPlot.draw();
+	var axesOverview = overviewPlot.getAxes();
+	axesOverview.yaxis.options.max = maxYaxis + maxError;	
+	overviewPlot.setupGrid();
+    overviewPlot.draw();
 
     $('#range').on('input', function(){
         $('#binWidth').val($('#range').val());
@@ -244,8 +253,8 @@ function getDataWithBins(rawData, localBinValue, minX, maxX, nBins, bins) {
 	    for ( var i = 0; i < data.length; i++ ) {
 	    	outputFinal.push([data[i].x, data[i].y]);
 	    	outputFinal.push([data[i].x + data[i].dx, data[i].y]);
-	    	if (data[i].y > maxYaxis) {
-	    		maxYaxis = data[i].y + (data[i].y * 0.1);
+	    	if ((data[i].y + (data[i].y * 0.30)) > maxYaxis) {
+	    		maxYaxis = data[i].y + (data[i].y * 0.30);
 	    	}
 	     } 
 	}
@@ -262,6 +271,9 @@ function getError(rawData, localBinValue, minX, maxX, nBins, bins) {
 		var halfBin = localBinValue / 2.0;
 	    for ( var i = 0; i < data.length; i++ ) {
 	    	outputFinal.push([data[i].x + halfBin, data[i].y, Math.sqrt(data[i].y)]);
+	    	if (Math.sqrt(data[i].y) > maxError) {
+	    		maxError = Math.sqrt(data[i].y);
+	    	}
 	     } 
 	}
     return outputFinal;	
@@ -327,11 +339,11 @@ function reBinData(json, binValue) {
 		onOffPlot.setData(data);
 		overviewPlot.setData(data);
 		var axes = onOffPlot.getAxes();
-	    axes.yaxis.options.max = maxYaxis + (maxYaxis * 0.05);	
+	    axes.yaxis.options.max = maxYaxis + maxError;	
 	    onOffPlot.setupGrid();
 	    onOffPlot.draw();
 		var axesOverview = overviewPlot.getAxes();
-		axesOverview.yaxis.options.max = maxYaxis + (maxYaxis * 0.05);	
+		axesOverview.yaxis.options.max = maxYaxis + maxError;	
 		overviewPlot.setupGrid();
 	    overviewPlot.draw();
 	    refresh();

@@ -87,9 +87,11 @@ public class PerformancePlotDataStream {
 				double thresh = parseToDouble(split[4]);
 				plotData.add(thresh);
 				//get the max value of the whole set
-				if (thresh > maxX) {
-					maxX = thresh;
+				double newmax = thresh + (thresh*0.10);
+				if (newmax > maxX) {
+					maxX = newmax;
 				}
+
 			}
 		} catch (Exception e) {
 			return null;
