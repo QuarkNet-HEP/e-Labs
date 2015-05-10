@@ -102,7 +102,7 @@
 						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }">Event Coincidence</a>
 					</th>
 					<th width="40%">
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }">Detector Coincidence-Counter Multiplicity</a>
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }">Detector Coincidence<br />[Counter Multiplicity]</a>
 					</th>
 				</tr>
 				<c:choose>
@@ -125,7 +125,7 @@
 						</td>
 						<td>
 							${row.numDetectors}
-								(<c:forEach items="${row.idsMult}" var="detectorId"> <e:popup href="../data/detector-info.jsp?id=${detectorId.key}" target="new" width="460" height="160">${detectorId.key}</e:popup>-${detectorId.value }</c:forEach>)
+								(<c:forEach items="${row.idsMult}" var="detectorId"> <e:popup href="../data/detector-info.jsp?id=${detectorId.key}" target="new" width="460" height="160">${detectorId.key}</e:popup>[${detectorId.value }]</c:forEach>)
 						</td>
 					</tr>
 				</c:forEach>
