@@ -104,8 +104,7 @@ function superImpose() {
 	    			xaxes: [{
 	    				position: xDefaultPosition
 	    			}]
-			});
-			console.log(data);			
+			});			
 			onOffPlot = $.plot("#placeholder", data, options);
 			var opts = onOffPlot.getOptions();
 			console.log(opts);
@@ -345,7 +344,6 @@ function buildCanvas() {
 	context.lineStyle="#ffff00";
 	context.font="22px sans-serif";
 	ycoord = 35;
-	console.log(studyLabel);
 	context.fillText(studyLabel,xcoord,ycoord);
 	context.lineWidth=2;
 	context.font="12px sans-serif";
