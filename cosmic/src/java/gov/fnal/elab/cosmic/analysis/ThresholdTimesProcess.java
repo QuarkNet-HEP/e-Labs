@@ -296,6 +296,7 @@ public class ThresholdTimesProcess {
 		    }
 		      
 		    long parsed = Long.parseLong(parts[0], 16);
+		    //diff between word 0 and 9
 	        long diff = Long.parseLong(parts[0], 16) - rePPSCount[channel];
 	
 	        if (diff < -0xaaaaaaaal) {

@@ -310,14 +310,6 @@ public class ThresholdTimes {
         //As per Mark Adams' feedback, we should run the following check for firmware less than 1.12
         //and DAQ 6000 series and add a second if the diff/cpld is less than 0.07
         double diffOverCpld = diff / cpldFrequency;
-
-	    //DAQ# < 6000: diff between word 0 and word 9 is negative
-	    //This sometimes happens because the 1 pps latch advances 1 second before it should, then we need
-	    //to correct the value        
-        if (currentDetector < 6000 && diffOverCpld < 0 && diffOverCpld > -0.1) {        	
-        	diffOverCpld = (diff / cpldFrequency) + 1.0;
-        }
-
         
         if (firmware != 0 && firmware < 1.12 && currentDetector > 5999) {
         	if (diffOverCpld < 0.07) {
