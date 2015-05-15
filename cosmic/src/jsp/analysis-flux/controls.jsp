@@ -39,7 +39,7 @@
 			</e:vswitch>
 		</p>
 		<p>
-			<e:tr name="Quarknet.Cosmic::Plot">
+			<e:tr name="I2U2.Cosmic::Plot">
 				<e:vswitch revert="${param.submit == 'Change'}">
 					<e:visible>
 						<strong>Plot Controls</strong>
@@ -119,7 +119,7 @@
 		</p>
 				<p>
 			<!-- EPeronja-10/17/2013: THRESHOLD TEST -->
-			<input type="radio" name="thresholdfile" value="none">Recreate TT file.<br />
+			<input type="radio" name="thresholdfile" value="none" >Recreate TT file.<br />
 			<input type="radio" name="thresholdfile" value="static" checked="true">Use Static TT file.<br />
 		</p>	
 		<%@ include file="../analysis/controls.jsp" %>

@@ -58,7 +58,7 @@
 			</e:vswitch>
 		</p>
 		<p>
-			<e:tr name="Quarknet.Cosmic::Plot">
+			<e:tr name="I2U2.Cosmic::Plot">
 				<e:vswitch revert="${param.submit == 'Change'}">
 					<e:visible>
 						<strong>Plot Controls</strong>

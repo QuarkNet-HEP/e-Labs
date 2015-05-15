@@ -32,7 +32,7 @@ if (id != null) {
 		List meta = new ArrayList();
 	
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		meta.add("transformation string Quarknet.Cosmic::RawAnalyzeStudy");
+		meta.add("transformation string I2U2.Cosmic::RawAnalyzeStudy");
 		meta.add("creationdate date " + timestamp.toString());
 		meta.add("source string " + results.getAnalysis().getParameter("inFile"));
 		if (gw.hasNext()) {

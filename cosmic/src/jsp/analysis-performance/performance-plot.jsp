@@ -128,7 +128,7 @@
 		<div id="chartMsg"></div>  
 		<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
 		<e:creationDateMetadata/>
-		<input type="hidden" name="metadata" value="transformation string Quarknet.Cosmic::PerformanceStudy"/>
+		<input type="hidden" name="metadata" value="transformation string I2U2.Cosmic::PerformanceStudy"/>
 		<input type="hidden" name="metadata" value="study string performance"/>
 		<input type="hidden" name="metadata" value="type string plot"/>
 		<input type="hidden" name="metadata" value="bins float ${results.analysis.parameters['freq_binValue']}"/>
