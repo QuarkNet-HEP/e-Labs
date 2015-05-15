@@ -28,7 +28,9 @@
 			</div>
 			
 			<div id="content">
-
+<p>
+	<a href="lifetime-plot.jsp?id=${results.id }">View interactive plots</a>
+</p>
 <p>
 	<img src="${results.outputDirURL}/plot.png"/>
 </p>
@@ -50,7 +52,7 @@
 	<form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit="window.open('',this.target,'width=500,height=200,resizable=1');" align="center">
 		<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
 		<e:creationDateMetadata/>
-		<input type="hidden" name="metadata" value="transformation string Quarknet.Cosmic::LifetimeStudy"/>
+		<input type="hidden" name="metadata" value="transformation string I2U2.Cosmic::LifetimeStudy"/>
 		<input type="hidden" name="metadata" value="study string lifetime"/>
 		<input type="hidden" name="metadata" value="type string plot"/>
 		<input type="hidden" name="metadata" value="bins int ${results.analysis.parameters['freq_binValue']}"/>
@@ -60,6 +62,7 @@
 
 		<input type="hidden" name="srcFile" value="plot.png"/>
 		<input type="hidden" name="srcThumb" value="plot_thm.png"/>
+		<input type="hidden" name="srcSvg" value="plot.svg"/>
 		<input type="hidden" name="srcFileType" value="png"/>
 		<input type="hidden" name="id" value="${results.id}"/>
 		<input type="text" name="name"  size="20" maxlength="30"/>.png
