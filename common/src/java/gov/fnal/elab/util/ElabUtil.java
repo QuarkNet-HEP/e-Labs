@@ -722,7 +722,7 @@ public class ElabUtil {
 
         gc.set(year, month - 1, day, (hour + 12) % 24, min, sec);
         gc.set(Calendar.MILLISECOND, msec);
-
+        nd.setMilliSeconds(msec);
         nd.setMicroSeconds(micsec);
         nd.setNanoSeconds(nsec);
         nd.setTime(gc.getTimeInMillis());
