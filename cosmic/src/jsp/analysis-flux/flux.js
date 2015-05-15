@@ -146,7 +146,7 @@ togglePlot = function(seriesIdx) {
 	  refresh();
 }//end of togglePlot
 
-function onDataLoad(json) {	
+function onDataLoad() {	
 	fluxData = json.fluxdata;
 	data.push(fluxData);
 	onOffPlot = $.plot("#placeholder", data, options);
@@ -162,7 +162,6 @@ function onDataLoad(json) {
 	bindEverything();
 	bindTooltip();
 }		
-
 
 
 
