@@ -80,7 +80,7 @@ try {
 	<form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit="window.open('',this.target,'width=500,height=200,resizable=1');" align="center">
 		<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
 		<e:creationDateMetadata/>
-		<input type="hidden" name="metadata" value="transformation string Quarknet.Cosmic::PerformanceStudy"/>
+		<input type="hidden" name="metadata" value="transformation string I2U2.Cosmic::PerformanceStudy"/>
 		<input type="hidden" name="metadata" value="study string performance"/>
 		<input type="hidden" name="metadata" value="type string plot"/>
 		<input type="hidden" name="metadata" value="bins float ${results.analysis.parameters['freq_binValue']}"/>

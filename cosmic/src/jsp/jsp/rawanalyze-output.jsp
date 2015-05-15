@@ -61,7 +61,7 @@ if(f.exists()){
     //don't recalculate
 }
 else{
-    ElabTransformation et = new ElabTransformation("Quarknet.Cosmic::RawAnalyzeStudy");
+    ElabTransformation et = new ElabTransformation("I2U2.Cosmic::RawAnalyzeStudy");
 
     runDir = runDir.substring(0, runDir.length()-1);    //FIXME: runDir has a trailing / on it
     et.generateOutputDir(runDir);
@@ -101,7 +101,7 @@ else{
         Date now = new Date();
         long millisecondsSince1970 = now.getTime();
         java.sql.Timestamp timestamp = new java.sql.Timestamp(millisecondsSince1970);
-        meta.add("transformation string Quarknet.Cosmic::RawAnalyzeStudy");
+        meta.add("transformation string I2U2.Cosmic::RawAnalyzeStudy");
         meta.add("creationdate date " + timestamp.toString());
         meta.add("source string " + lfn);
         meta.add("gatewidth int " + analyze.getGatewidth());

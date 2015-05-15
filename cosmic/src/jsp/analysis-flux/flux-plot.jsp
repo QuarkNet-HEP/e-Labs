@@ -19,28 +19,6 @@
 <%@ page import="gov.fnal.elab.cosmic.plot.*" %>   
 <%@ include file="../analysis/results.jsp" %>
 
-<%
-	TreeMap<String,String> uploadeddata = new TreeMap<String,String>();
-	ResultSet rs = null;
-	In and = new In();
-	and.add(new Equals("project","cosmic"));
-	and.add(new Equals("type", "uploadeddata"));
-	and.add(new Equals("group", user.getGroup().getName()));
-	rs = elab.getDataCatalogProvider().runQuery(and);
-	if (rs != null) {
- 		String[] filenames = rs.getLfnArray();
- 		for (int i = 0; i < filenames.length; i++){
- 			VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(filenames[i]);
-			if (e != null && !e.getTupleValue("name").equals("")) {
-				uploadeddata.put(filenames[i], (String) e.getTupleValue("name"));
-			}
-		}//end for loop
-
-	}
-
-request.setAttribute("list",uploadeddata);
-%>
-   
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -86,9 +64,6 @@ request.setAttribute("list",uploadeddata);
 				<script type="text/javascript">
 				$(document).ready(function() {
 					$.ajax({
-						url: "flux-get-data.jsp?id=<%=id%>",
-						processData: false,
-						dataType: "json",
 						type: "GET",
 						success: onDataLoad
 					});
@@ -149,7 +124,7 @@ request.setAttribute("list",uploadeddata);
 	<div id="chartMsg"></div>  
 	<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
 	<e:creationDateMetadata/>
-	<input type="hidden" name="metadata" value="transformation string Quarknet.Cosmic::FluxStudy"/>
+	<input type="hidden" name="metadata" value="transformation string I2U2.Cosmic::FluxStudy"/>
 	<input type="hidden" name="metadata" value="study string performance"/>
 	<input type="hidden" name="metadata" value="type string plot"/>
 	<input type="hidden" name="metadata" value="bins float ${results.analysis.parameters['freq_binValue']}"/>
@@ -161,7 +136,7 @@ request.setAttribute("list",uploadeddata);
 	<input type="hidden" name="srcSvg" value="plot.svg"/>
 	<input type="hidden" name="srcFileType" value="png"/>
 	<input type="hidden" name="id" value="${results.id}"/>
-	 
+	<input type="hidden" name="outputDir" id="outputDir" value="${results.outputDirURL}"/>	 
 </div>
 				
 	<div id="footer"></div>		
