@@ -1006,3 +1006,67 @@ TR I2U2.Cosmic::FluxStudyTT(
 	height=${plot_thumbnail_height}
   );
 }
+
+TR I2U2.Cosmic::TimeOfFlight(
+    none channelCoincidence,
+	inout combineOut,
+	none detectorCoincidence,
+	none detector,
+	none cpldfreqs,
+	none firmwares,
+	output eventCandidates,
+	none eventCoincidence,
+	inout eventFile,
+	none eventNum,
+    none extraFun_out,
+	none gate,
+	none geoDir,
+	input geoFiles[],
+	none plot_caption,
+	none plot_highX,
+	none plot_highY,
+	none plot_highZ,
+	none plot_lowX,
+	none plot_lowY,
+	none plot_lowZ,
+	none plot_size,
+	inout plot_outfile_param,
+	inout plot_outfile_image,
+	none plot_thumbnail_height, 
+	inout plot_outfile_image_thumbnail,
+	none plot_plot_type,
+	none plot_title,
+	none plot_xlabel,
+	none plot_ylabel,
+	none plot_zlabel,
+	input rawData[],
+	none sort_sortKey1,
+	none sort_sortKey2,
+	inout sortOut,
+	input thresholdAll[],
+	inout wireDelayData[],
+	none zeroZeroZeroID )
+{
+  call I2U2.Cosmic::WireDelay(
+	geoDir=${geoDir},
+	geoFiles=${input:geoFiles},
+	threshData=${input:thresholdAll},
+	wireDelayData=${output:wireDelayData} );
+  call I2U2.Cosmic::Combine(
+	combineIn=${input:wireDelayData},
+	combineOut=${output:combineOut} );
+  call I2U2.Cosmic::Sort(
+	key1=${sort_sortKey1},
+	key2=${sort_sortKey2},
+	sortIn=${input:combineOut},
+	sortOut=${output:sortOut} );
+  call I2U2.Cosmic::EventSearch(
+    channelCoincidence=${channelCoincidence},
+	detectorCoincidence=${detectorCoincidence},
+	eventCoincidence=${eventCoincidence},
+	eventSearchIn=${input:sortOut},
+	eventSearchOut=${output:eventCandidates},
+	gate=${gate} );
+}
+
+
