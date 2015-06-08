@@ -1,9 +1,39 @@
+<%--**************** code added by Sudha Balakrishnan, May 2015, for visualizing coordinates ***************--%>		
+<script type="text/javascript">
+function VisualizeValues()
+{
+var x1 = document.getElementById("myForm").elements.namedItem("chan1X").value;
+var y1 = document.getElementById("myForm").elements.namedItem("chan1Y").value;
+var z1 = document.getElementById("myForm").elements.namedItem("chan1Z").value;
+
+var x2 = document.getElementById("myForm").elements.namedItem("chan2X").value;
+var y2 = document.getElementById("myForm").elements.namedItem("chan2Y").value;
+var z2 = document.getElementById("myForm").elements.namedItem("chan2Z").value;
+
+var x3 = document.getElementById("myForm").elements.namedItem("chan3X").value;
+var y3 = document.getElementById("myForm").elements.namedItem("chan3Y").value;
+var z3 = document.getElementById("myForm").elements.namedItem("chan3Z").value;
+
+var x4 = document.getElementById("myForm").elements.namedItem("chan4X").value;
+var y4 = document.getElementById("myForm").elements.namedItem("chan4Y").value;
+var z4 = document.getElementById("myForm").elements.namedItem("chan4Z").value;
+
+var urlwithcoord = "visualize.jsp?x1="+x1+"&y1="+y1+"&z1="+z1;
+var urlwithcoord = urlwithcoord+"&x2="+x2+"&y2="+y2+"&z2="+z2;
+var urlwithcoord = urlwithcoord+"&x3="+x3+"&y3="+y3+"&z3="+z3;
+var urlwithcoord = urlwithcoord+"&x4="+x4+"&y4="+y4+"&z4="+z4;
+
+window.open (urlwithcoord,"mywindow");
+}
+</script>
+<%--*******************************************************************************************************--%>		
+
 <jsp:useBean id="errs" scope="request" class="gov.fnal.elab.cosmic.beans.GeometryErrors" />
 <e:useBean bean="${geoEntry}">
     <%@ include file="check-metadata.jspf" %>
 	<c:choose>
 		<c:when test="${param.commit == null || !geoEntry.valid || message != null }" >
-	<form method="post">
+		<form id="myForm" method="post">
 		<e:trinput type="hidden" name="detectorID"/>
 	
 		<c:if test="${!nodate && !ro}">
@@ -17,7 +47,7 @@
 			<a href="javascript:glossary('UTC')">UTC</a>
 	 	</c:if>
 		
-		<div class="subtitle">Detector Configuration</div>
+		<div class="subtitle">Detector Configuration: -20 &#x2264 x &#x2264 20, -20 &#x2264 y &#x2264 20, -40 &#x2264 z &#x2264 40.  GPS is at (0,0,0).</div>
 		<c:if test="${!ro}">
 			Confused? Seeing errors? Please consult the <a href="tutorial.jsp">tutorial</a>.
 		</c:if>
@@ -60,6 +90,7 @@
 				</c:forEach>
 			</table>
 		</div>
+		
 		<div id="orientation">
             <table border="0">
                 <tr>
@@ -77,6 +108,15 @@
                 </tr>
             </table>
         </div>
+        
+<%--*************Code added by Sudha Balakrishnan, May 2015, for visualizing coordinates entered.**********--%>
+
+		<p>
+	    <a href="javascript:VisualizeValues()">Visualize values.</a>
+		</p>   
+		
+<%--*******************************************************************************************************--%>		
+		             
         <div class="subtitle">GPS Location</div>
 
 		<div id="gps">
@@ -107,6 +147,7 @@
                 </tr>
             </table>
         </div>
+        
         <c:if test="${!geoEntry.valid && !ro}">
         	<c:choose>
         		<c:when test="${!empty geoEntry.errors}">
@@ -126,18 +167,19 @@
         	</c:choose>
         	<br /><br />
         </c:if>
+        
         <c:if test="${!ro}">
-        	<center>
-               <c:if test="${message != null}" >
-                <p><font style="color: red;">${message} data file(s) will be affected by this change.
+        	<center>			    	
+               	<c:if test="${message != null}" >
+                	<p><font style="color: red;">${message} data file(s) will be affected by this change.
                     Are you sure you want to commit? <input type="checkbox" name="commitCheck" id="commitCheck" /> </p>
-               </c:if>        	
-            	<input type="submit" name="commit" value="Commit Geometry">
+               	</c:if>  
+            	<input type="submit" name="commit" value="Commit Geometry" >
 			</center>
 		</c:if>
-	</form>
-		
+		</form>
 		</c:when>
+		
 		<c:otherwise>
 			<%@ include file="commit.jspf" %>
 		</c:otherwise>
