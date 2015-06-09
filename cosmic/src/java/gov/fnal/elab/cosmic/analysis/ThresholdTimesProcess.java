@@ -106,15 +106,13 @@ public class ThresholdTimesProcess {
 			        		cpldFrequency = 25000000;
 			        	}
 			        }
+
 			        String line = br.readLine();			        
 			        boolean printoneexception = true;
 			        while (line != null) {
 			            String[] parts = line.split("\\s"); // line validated in split.pl
 			            for (int j = 0; j < 4; j++) {
 			            	try {
-			            		if (line.equals("DA6A4C6A 00 00 00 00 00 00 00 25 DA643B6B 041139.001 100608 V 05 0  0000")) {
-			            			String message = "Hey";
-			            		}
 			            		timeOverThreshold(parts, j, detectorIDs[i], bw);
 			            	} catch (Exception e) {
 			            		if (printoneexception) {
@@ -422,12 +420,14 @@ public class ThresholdTimesProcess {
     //2-input file name (eg. 6119.2013.0522.1)
     //3-output file name (eg. 6119.2013.0522.1.thresh)
     //4-cpld frequency for that file (eg. 25000000)
+    //5-firmware (eg. 1.12)
     //to create the input file, you can run something like:
     /*
      * 		   select  '/disks/i2u2-dev/cosmic/data' as path,
 						al.name, 
 						al.name || '.thresh' as threshfile,
 						ai.value
+						'0' as firmware (then update this value with another query)
 		  		 from 	anno_lfn al
 		   inner join 	anno_text at
 		    	   on 	al.id = at.id

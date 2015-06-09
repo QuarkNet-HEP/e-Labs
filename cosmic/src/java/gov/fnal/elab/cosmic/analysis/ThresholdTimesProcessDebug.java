@@ -356,7 +356,13 @@ public class ThresholdTimesProcessDebug {
 	        double second_part = diff / cpldFrequency;
 		    report.write("value of diff / cpldFrequency for this channel: "+String.valueOf(second_part)+"\n");
 		    report.write("firmware: "+String.valueOf(firmware)+"\n");
-	        if (firmware != 0 && firmware < 1.12 && currentDetector > 5999) {
+
+		    if (parts[0].equals("232281AF")) {
+		    	System.out.print("stop here");
+		    }
+
+
+		    if (firmware != 0 && firmware < 1.12 && currentDetector > 5999) {
 	        	if (second_part < 0.07) {
 	        		second_part = (diff / cpldFrequency) + 1.0;
 	    		    report.write("added a second when this line happened: "+parts[0]+"\n");
