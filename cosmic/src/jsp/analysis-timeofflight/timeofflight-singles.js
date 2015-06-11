@@ -20,6 +20,8 @@ var originalMinY5, originalMaxY5;
 var originalMinX6, originalMaxX6;
 var originalMinY6, originalMaxY6;
 var numberOfEntries1, numberOfEntries2, numberOfEntries3, numberOfEntries4, numberOfEntries5, numberOfEntries6;
+var mean1, mean2, mean3, mean4, mean5, mean6;
+var stddev1, stddev2, stddev3, stddev4, stddev5, stddev6;
 var label1, label2, label3, label4, label5, label6;
 var yAxisLabel;
 yAxisLabel = "number of entries/time bin";
@@ -304,13 +306,15 @@ function buildTimeDiff(timediff, data, diffNum) {
     $('#range'+diffNum).on('input', function(){
         $('#binWidth'+diffNum).val($('#range'+diffNum).val());
         if ($('#range'+diffNum).val() > 0) {
-            reBinData($('#range'+diffNum).val(),diffNum,timediff, data, onOffPlot);        	
+            reBinData($('#range'+diffNum).val(),diffNum,timediff, data, onOffPlot);       
+    		writeLegend(onOffPlot.getCanvas(), timediff.numberOfEntries, timediff.label);
         }
     });
     $('#binWidth'+diffNum).on('change', function(){
         $('#range'+diffNum).val($('#binWidth'+diffNum).val());
         if ($('#binWidth'+diffNum).val() > 0) {
         	reBinData($('#binWidth'+diffNum).val(),diffNum,timediff, data, onOffPlot);
+    		writeLegend(onOffPlot.getCanvas(), timediff.numberOfEntries, timediff.label);
         }
     });
     
@@ -333,6 +337,10 @@ function buildTimeDiff(timediff, data, diffNum) {
     		originalMaxY1 = onOffPlot1.getAxes().yaxis.max;
     		numberOfEntries1 = timediff.numberOfEntries;
     		label1 = timediff.label;
+    		var mean = document.getElementById("mean1");
+    		mean.innerHTML = "Mean: "+timediff.mean;
+    		var stddev = document.getElementById("stddev1");
+    		stddev.innerHTML = "Std Dev: "+timediff.stddev;
     		writeLegend(onOffPlot1.getCanvas(), numberOfEntries1, label1);
     		break;
     	case ("2"):
@@ -343,6 +351,10 @@ function buildTimeDiff(timediff, data, diffNum) {
     		originalMaxY2 = onOffPlot2.getAxes().yaxis.max;
     		numberOfEntries2 = timediff.numberOfEntries;
     		label2 = timediff.label;
+    		var mean = document.getElementById("mean2");
+    		mean.innerHTML = "Mean: "+timediff.mean;
+    		var stddev = document.getElementById("stddev2");
+    		stddev.innerHTML = "Std Dev: "+timediff.stddev;
     		writeLegend(onOffPlot2.getCanvas(), numberOfEntries2, label2);
     		break;
     	case ("3"):
@@ -353,6 +365,10 @@ function buildTimeDiff(timediff, data, diffNum) {
     		originalMaxY3 = onOffPlot3.getAxes().yaxis.max;
     		numberOfEntries3 = timediff.numberOfEntries;
     		label3 = timediff.label;
+    		var mean = document.getElementById("mean3");
+    		mean.innerHTML = "Mean: "+timediff.mean;
+    		var stddev = document.getElementById("stddev3");
+    		stddev.innerHTML = "Std Dev: "+timediff.stddev;
     		writeLegend(onOffPlot3.getCanvas(), numberOfEntries3, label3);
     		break;
     	case ("4"):
@@ -363,7 +379,11 @@ function buildTimeDiff(timediff, data, diffNum) {
     		originalMaxY4 = onOffPlot4.getAxes().yaxis.max;
     		numberOfEntries4 = timediff.numberOfEntries;
     		label4 = timediff.label;
-    		writeLegend(onOffPlot4.getCanvas(), numberOfEntries4, label4);
+    		var mean = document.getElementById("mean4");
+    		mean.innerHTML = "Mean: "+timediff.mean;
+    		var stddev = document.getElementById("stddev4");
+    		stddev.innerHTML = "Std Dev: "+timediff.stddev;
+   		writeLegend(onOffPlot4.getCanvas(), numberOfEntries4, label4);
     		break;
     	case ("5"):
     		onOffPlot5 = onOffPlot;
@@ -373,6 +393,10 @@ function buildTimeDiff(timediff, data, diffNum) {
     		originalMaxY5 = onOffPlot5.getAxes().yaxis.max;
     		numberOfEntries5 = timediff.numberOfEntries;
     		label5 = timediff.label;
+    		var mean = document.getElementById("mean5");
+    		mean.innerHTML = "Mean: "+timediff.mean;
+    		var stddev = document.getElementById("stddev5");
+    		stddev.innerHTML = "Std Dev: "+timediff.stddev;
     		writeLegend(onOffPlot5.getCanvas(), numberOfEntries5, label5);
     		break;
     	case ("6"):
@@ -383,6 +407,10 @@ function buildTimeDiff(timediff, data, diffNum) {
     		originalMaxY6 = onOffPlot6.getAxes().yaxis.max;
     		numberOfEntries6 = timediff.numberOfEntries;
     		label6 = timediff.label;
+    		var mean = document.getElementById("mean6");
+    		mean.innerHTML = "Mean: "+timediff.mean;
+    		var stddev = document.getElementById("stddev6");
+    		stddev.innerHTML = "Std Dev: "+timediff.stddev;
     		writeLegend(onOffPlot6.getCanvas(), numberOfEntries6, label6);
     		break;
     }

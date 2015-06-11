@@ -18,10 +18,10 @@
 	AnalysisRun timeofflightResults = AnalysisManager.getAnalysisRun(elab, user, timeofflightId);
 	request.setAttribute("timeofflightResults", timeofflightResults);
 	String message = "";
-	String fluxJsonFile = results.getOutputDir() + "/timeOfFlightPlotData";
+	String toffJsonFile = results.getOutputDir() + "/timeOfFlightPlotData";
 	try {
 		//this code is for admin to be able to see the graph
-		File f = new File(fluxJsonFile);
+		File f = new File(toffJsonFile);
 		if (!f.exists()) {
 			String userParam = (String) request.getParameter("user");
 			if (userParam == null) {

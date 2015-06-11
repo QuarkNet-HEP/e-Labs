@@ -6,7 +6,7 @@ package gov.fnal.elab.util;
 import java.util.Date;
 
 public class NanoDate extends Date {
-    private int nanoSeconds, microSeconds, milliSeconds;
+    private int nanoSecondsFraction, nanoSeconds, microSeconds, milliSeconds;
 
     public NanoDate() {
         super();
@@ -36,11 +36,18 @@ public class NanoDate extends Date {
         return milliSeconds;
     }
 
-
     public void setMilliSeconds(int milliSeconds) {
         this.milliSeconds = milliSeconds;
     }
 
+    public void setNanoSecondsFraction(int nanoSecondsFraction) {
+    	this.nanoSecondsFraction = nanoSecondsFraction;
+    }
+    
+    public int getNanoSecondsFraction() {
+    	return nanoSecondsFraction;
+    }
+    
     public int compareTo(Date anotherDate) {
         int dc = super.compareTo(anotherDate);
         if (dc == 0 && anotherDate instanceof NanoDate) {

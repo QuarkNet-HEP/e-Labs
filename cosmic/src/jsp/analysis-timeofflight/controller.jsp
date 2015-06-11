@@ -12,7 +12,8 @@
 <%@ page import="org.apache.commons.lang.time.DateUtils" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
-
+<%@ page import="com.mallardsoft.tuple.*" %>
+<%@page import="com.mallardsoft.tuple.Tuple"%>
 <%
 	
 
@@ -36,26 +37,13 @@
 	}
 
 	/* Stuff our checked data into the page object, if it already exists? Overwrite */
-	String[] rawData = request.getParameterValues("rawData");
-	HashMap<Integer, String[]> h = null;
-	try {
-		h = (HashMap) session.getAttribute("rawDataMap");
-	}
-	catch (ClassCastException ex) {
-		h = null;
-	}
-	finally {
-		if (h == null) {
-			h = new HashMap(10, 0.75f);
-		}
-	}
+	/* Stuff our checked data into the page object, if it already exists? Overwrite */
+	String rawData = request.getParameter("rawData");
+	Pair<Integer, String> p = null; 
 	if (rawData != null) {
-		h.put(pageNo, rawData); // Insert new data if anything is checked
+		p = Tuple.from(pageNo, rawData);
+		session.setAttribute("rawDataMap", p);
 	}
-	else {
-		h.remove(pageNo); // No checkboxes? Remove this page's information
-	}
-	session.setAttribute("rawDataMap", h);
 	
 	/* Initial search submission */ 
 	if ("Search Data".equalsIgnoreCase(action)) {
@@ -224,12 +212,8 @@
 	else if ("Run TofF study".equalsIgnoreCase(action)) {
 		// Get the data in the way the analysis page wants it 
 		String s = "";
-		if (h != null) {
-			for (String ids[] : h.values()) {
-				for (String id : ids) {
-					s += "rawData=" + id + "&";
-				}
-			}
+		if (p != null) {
+			s = "rawData=" + Tuple.get2(p);
 		}
 		response.setStatus(java.net.HttpURLConnection.HTTP_SEE_OTHER);
 		response.setHeader("Location", "analysis.jsp?" + s);

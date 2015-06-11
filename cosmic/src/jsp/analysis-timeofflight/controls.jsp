@@ -67,6 +67,7 @@
 											onError="Must be a positive integer"/>
 									</td>
 								</tr>
+	-->
 								<tr>
 									<td class="form-label">
 										<e:trlabel for="channelCoincidence" name="Channel Coincidence">Channel Coincidence:</e:trlabel>
@@ -76,6 +77,7 @@
 											onError="Must be a positive integer"/>
 									</td>
 								</tr>
+	<!--  
 								<tr>
 									<td class="form-label">
 										<e:trlabel for="eventCoincidence" name="Coincidence Level">Event Coincidence:</e:trlabel>

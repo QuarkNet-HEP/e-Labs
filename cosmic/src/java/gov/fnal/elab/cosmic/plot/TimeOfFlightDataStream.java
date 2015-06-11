@@ -78,6 +78,10 @@ public class TimeOfFlightDataStream {
 		tdGroup.add(timedifference5);
 		tdGroup.add(timedifference6);
 	}//end of addObjectsToArray
+
+	public List<TimeDiff> getArrays() {
+		return tdGroup;
+	}//end of getArrays
 	
 	public void analyzeEventFile(BufferedReader br, BufferedWriter bw, BufferedWriter bwraw) {
 		String[] split; 
@@ -104,49 +108,50 @@ public class TimeOfFlightDataStream {
                         String millisecs = String.format("%03d",nd.getMilliSeconds());
                         String microsecs = String.format("%03d",nd.getMicroSeconds());
                         String nanosecs = String.format("%03d",nd.getNanoSeconds());
-                        bw.write(channelPlusId[1] + "jd: "+jd+" "+re+" converted time: "+millisecs+microsecs+nanosecs+"\n");	
-                        channelsHit.put(channelPlusId[1], (millisecs+microsecs+nanosecs));
+                        String nanosecsfraction = String.format("%01d", nd.getNanoSecondsFraction());
+                        bw.write(channelPlusId[1] + "jd: "+jd+" "+re+" converted time: "+millisecs+microsecs+nanosecs+"."+nanosecsfraction+"\n");	
+                        channelsHit.put(channelPlusId[1], (millisecs+microsecs+nanosecs+"."+nanosecsfraction));
                     }
                 }
                 //populate time difference lists
-                Long fh1 = 0L;
-                Long fh2 = 0L;
-                Long fh3 = 0L;
-                Long fh4 = 0L;
+                Double fh1 = 0.0;
+                Double fh2 = 0.0;
+                Double fh3 = 0.0;
+                Double fh4 = 0.0;
                 if (channelsHit.containsKey("1")) {
-                	fh1 = parseToLong(channelsHit.get("1"));
+                	fh1 = parseToDouble(channelsHit.get("1"));
                 }
                 if (channelsHit.containsKey("2")) {
-                	fh2 = parseToLong(channelsHit.get("2"));
+                	fh2 = parseToDouble(channelsHit.get("2"));
                 }
                 if (channelsHit.containsKey("3")) {
-                	fh3 = parseToLong(channelsHit.get("3"));
+                	fh3 = parseToDouble(channelsHit.get("3"));
                 }
                 if (channelsHit.containsKey("4")) {
-                	fh4 = parseToLong(channelsHit.get("4"));
+                	fh4 = parseToDouble(channelsHit.get("4"));
                 }
                 if (fh1 != 0L && fh2 != 0L) {
-                	Long diff = fh2-fh1;
+                	Double diff = fh2-fh1;
                 	setValues(timedifference1, diff, "td1: ", bw);
                 }
                 if (fh1 != 0L && fh3 != 0L) {
-                	Long diff = fh3-fh1;                	
+                	Double diff = fh3-fh1;                	
                 	setValues(timedifference2, diff, "td2: ", bw);
                 }
                 if (fh1 != 0L && fh4 != 0L) {
-                	Long diff =fh4-fh1;                	
+                	Double diff =fh4-fh1;                	
                 	setValues(timedifference3, diff, "td3: ", bw);
                 }
                 if (fh2 != 0L && fh3 != 0L) {
-                	Long diff = fh3-fh2;                	                	
+                	Double diff = fh3-fh2;                	                	
                 	setValues(timedifference4, diff, "td4: ", bw);
                 }
                 if (fh2 != 0L && fh4 != 0L) {
-                	Long diff = fh4-fh2;                	                	
+                	Double diff = fh4-fh2;                	                	
                    	setValues(timedifference5, diff, "td5: ", bw);
                 }
                 if (fh3 != 0L && fh4 != 0L) {
-                	Long diff = fh4-fh3;                	                	
+                	Double diff = fh4-fh3;                	                	
                    	setValues(timedifference6, diff, "td6: ", bw);
                 }
     			for (Map.Entry<String, String> e: channelsHit.entrySet()) {
@@ -165,7 +170,7 @@ public class TimeOfFlightDataStream {
 		}
 	}//end of analyzeEventFile
 	
-	public void setValues(TimeDiff td, Long diff, String label, BufferedWriter bw) {
+	public void setValues(TimeDiff td, Double diff, String label, BufferedWriter bw) {
 		String message = "";
 		try {
 	    	bw.write(label+String.valueOf(diff)+"\n");
@@ -278,12 +283,12 @@ public class TimeOfFlightDataStream {
 	}//end of parseToDouble	
 
 	public class TimeDiff {
-		List<Long> timeDifference;
+		List<Double> timeDifference;
 		Double binValue, minX, maxX, nBins, mean, stddev, maxBins, sumsquared, sum;
 		String color, ndx, name, label, symbol;
 		
 		public TimeDiff(String color, String ndx, String name, String label, String symbol) {
-			timeDifference = new ArrayList<Long>();
+			timeDifference = new ArrayList<Double>();
 			minX = maxX = nBins = mean = stddev = maxBins = sum = sumsquared = 0.0;
 			binValue = 2.0;
 			this.color = color;
@@ -313,7 +318,7 @@ public class TimeOfFlightDataStream {
 			stddev = Math.sqrt(sumsquared/timeDifference.size() - mean*mean);
 		}
 
-		public void add(Long value) {
+		public void add(Double value) {
 			timeDifference.add(value);
 		}
 		
@@ -352,10 +357,10 @@ public class TimeOfFlightDataStream {
 			return symbol;
 		}
 		
-		public void setTimeDifference(List<Long> timeDifference) {
+		public void setTimeDifference(List<Double> timeDifference) {
 			this.timeDifference = timeDifference;
 		}
-		public List<Long> getTimeDifference() {
+		public List<Double> getTimeDifference() {
 			return timeDifference;
 		}
 		
