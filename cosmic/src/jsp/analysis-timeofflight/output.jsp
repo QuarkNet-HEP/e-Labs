@@ -105,32 +105,44 @@
 	<a href="output-combined.jsp?id=${timeofflightResults.id}">View all charts combined</a>
 	<div class="graph-container-timeofflight">
 		<div class="row">
-			<jsp:include page="single-chart.jsp">
-				<jsp:param name="chartIndex" value="1" />
-				<jsp:param name="runId" value="${timeofflightResults.id}" />
-			</jsp:include>		
-			<jsp:include page="single-chart.jsp">
-				<jsp:param name="chartIndex" value="2" />
-				<jsp:param name="runId" value="${timeofflightResults.id}" />
-			</jsp:include>
-			<jsp:include page="single-chart.jsp">
-				<jsp:param name="chartIndex" value="3" />
-				<jsp:param name="runId" value="${timeofflightResults.id}" />
-			</jsp:include>
+			<div id="chart1">
+				<jsp:include page="single-chart.jsp">
+					<jsp:param name="chartIndex" value="1" />
+					<jsp:param name="runId" value="${timeofflightResults.id}" />
+				</jsp:include>		
+			</div>
+			<div id="chart2">
+				<jsp:include page="single-chart.jsp">
+					<jsp:param name="chartIndex" value="2" />
+					<jsp:param name="runId" value="${timeofflightResults.id}" />
+				</jsp:include>
+			</div>
+			<div id="chart3">
+				<jsp:include page="single-chart.jsp">
+					<jsp:param name="chartIndex" value="3" />
+					<jsp:param name="runId" value="${timeofflightResults.id}" />
+				</jsp:include>
+			</div>
 		</div>		
 		<div class="row">
-			<jsp:include page="single-chart.jsp">
-				<jsp:param name="chartIndex" value="4" />
-				<jsp:param name="runId" value="${timeofflightResults.id}" />
-			</jsp:include>		
-			<jsp:include page="single-chart.jsp">
-				<jsp:param name="chartIndex" value="5" />
-				<jsp:param name="runId" value="${timeofflightResults.id}" />
-			</jsp:include>
-			<jsp:include page="single-chart.jsp">
-				<jsp:param name="chartIndex" value="6" />
-				<jsp:param name="runId" value="${timeofflightResults.id}" />
-			</jsp:include>
+			<div id="chart4">
+				<jsp:include page="single-chart.jsp">
+					<jsp:param name="chartIndex" value="4" />
+					<jsp:param name="runId" value="${timeofflightResults.id}" />
+				</jsp:include>		
+			</div>
+			<div id="chart5">
+				<jsp:include page="single-chart.jsp">
+					<jsp:param name="chartIndex" value="5" />
+					<jsp:param name="runId" value="${timeofflightResults.id}" />
+				</jsp:include>
+			</div>
+			<div id="chart6">			
+				<jsp:include page="single-chart.jsp">
+					<jsp:param name="chartIndex" value="6" />
+					<jsp:param name="runId" value="${timeofflightResults.id}" />
+				</jsp:include>
+			</div>
 		</div>		
 	</div>
 <p>

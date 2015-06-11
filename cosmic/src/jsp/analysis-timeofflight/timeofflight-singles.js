@@ -280,17 +280,47 @@ function loadJSON(callback) {
 
 function onDataLoad(json) {	
 	timeDiff1 = json.timediff1;
-	buildTimeDiff(json.timediff1,data1,"1");
+	if (json.timediff1 != null) {
+		buildTimeDiff(json.timediff1,data1,"1");
+	} else {
+		var div = document.getElementById("chart1");
+		div.style.display="none";
+	}
 	timeDiff2 = json.timediff2;
-	buildTimeDiff(json.timediff2,data2,"2");
+	if (json.timediff2 != null) {
+		buildTimeDiff(json.timediff2,data2,"2");
+	} else {
+		var div = document.getElementById("chart2");
+		div.style.display="none";
+	}
 	timeDiff3 = json.timediff3;
-	buildTimeDiff(json.timediff3,data3,"3");
+	if (json.timediff3 != null) {
+		buildTimeDiff(json.timediff3,data3,"3");
+	} else {
+		var div = document.getElementById("chart3");
+		div.style.display="none";
+	}
 	timeDiff4 = json.timediff4;
-	buildTimeDiff(json.timediff4,data4,"4");
+	if (json.timediff4 != null) {
+		buildTimeDiff(json.timediff4,data4,"4");
+	} else {
+		var div = document.getElementById("chart4");
+		div.style.display="none";
+	}		
 	timeDiff5 = json.timediff5;
-	buildTimeDiff(json.timediff5,data5,"5");
+	if (json.timediff5 != null) {
+		buildTimeDiff(json.timediff5,data5,"5");
+	} else {
+		var div = document.getElementById("chart5");
+		div.style.display="none";
+	}
 	timeDiff6 = json.timediff6;
-	buildTimeDiff(json.timediff6,data6,"6");
+	if (json.timediff6 != null) {
+		buildTimeDiff(json.timediff6,data6,"6");
+	} else {
+		var div = document.getElementById("chart6");
+		div.style.display="none";
+	}
 }//end of onDataLoad	
 
 function buildTimeDiff(timediff, data, diffNum) {
