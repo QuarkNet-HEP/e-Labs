@@ -111,8 +111,9 @@ public class BenchmarkTest {
 	public void test_getBlessedDataFilesByBenchmark() {
 		String answer = "";
 		try {
-			String splitFile = "6119.2013.0322.1";
-			ResultSet rs = Benchmark.getBlessedDataFilesByBenchmark(elab, splitFile);
+			int detector = 6119;
+			String benchmark = Benchmark.getDefaultBenchmark(elab, detector);
+			ResultSet rs = Benchmark.getBlessedDataFilesByBenchmark(elab, benchmark);
 		} catch (Exception e) {
 			answer = "There was an exception";
 		}
@@ -122,8 +123,9 @@ public class BenchmarkTest {
 			answer = "There was an exception";
 		}
 		try {
-			String splitFile = "6148.2007.1005.0";
-			ResultSet rs = Benchmark.getBlessedDataFilesByBenchmark(null, splitFile);
+			int detector = 6119;
+			String benchmark = Benchmark.getDefaultBenchmark(elab, detector);
+			ResultSet rs = Benchmark.getBlessedDataFilesByBenchmark(null, benchmark);
 		} catch (Exception e) {
 			answer = "There was an exception";
 		}
@@ -214,14 +216,16 @@ public class BenchmarkTest {
 
 		String answer = "";
 		try {
-			String benchmark = "6119.2013.0101.1";
+			int detector = 6119;
+			String benchmark = Benchmark.getDefaultBenchmark(elab, detector);
 			String benchmarkLabel = "EP-Testing-benchmark-label";
 			Long duration = Benchmark.setFileAsBenchmark(dcp, benchmark, benchmarkLabel);
 		} catch (Exception e) {
 			answer = "There was an exception";
 		}	
 		try {
-			String benchmark = "6119.2013.0101.1";
+			int detector = 6119;
+			String benchmark = Benchmark.getDefaultBenchmark(elab, detector);
 			String benchmarkLabel = "EP-Testing-benchmark-label";
 			Long duration = Benchmark.setFileAsBenchmark(null, benchmark, benchmarkLabel);
 			assertTrue(duration == 0);
@@ -244,9 +248,9 @@ public class BenchmarkTest {
 			answer = "There was an exception";
 		}		
 		try {
-			String benchmark = "6119.2013.0101.1";
+			int detector = 6119;
+			String benchmark = Benchmark.getDefaultBenchmark(elab, detector);
 			Long duration = Benchmark.setFileAsBenchmark(dcp, benchmark, null);
-			assertTrue(duration == 0);
 		} catch (Exception e) {
 			answer = "There was an exception";
 		}		
@@ -257,7 +261,9 @@ public class BenchmarkTest {
 	public void test_getIcons() {
 		String answer = "";
 		try {
-			VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry("6119.2013.0322.1");
+			int detector = 6119;
+			String benchmark = Benchmark.getDefaultBenchmark(elab, detector);
+			VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(benchmark);
 			String display = Benchmark.getIcons(entry);
 		} catch (Exception e) {
 			answer = "There was an exception";			
@@ -275,20 +281,21 @@ public class BenchmarkTest {
 		String answer = "";
 		try {
 			int detector = 6119;
-			String benchmark = "6119.2013.0322.1";
+			String benchmark = Benchmark.getDefaultBenchmark(elab, detector);
 			ResultSet rs = Benchmark.getAllFilesByBenchmarkGeometry(elab, detector, benchmark);
 		} catch (Exception e) {
 			answer = "There was an exception";			
 		}				
 		try {
 			int detector = 6119;
-			String benchmark = "6119.2013.0322.1";
+			String benchmark = Benchmark.getDefaultBenchmark(elab, detector);
 			ResultSet rs = Benchmark.getAllFilesByBenchmarkGeometry(null, detector, benchmark);
 		} catch (Exception e) {
 			answer = "There was an exception";			
 		}
 		try {
-			String benchmark = "6119.2013.0322.1";
+			int detector = 6119;
+			String benchmark = Benchmark.getDefaultBenchmark(elab, detector);
 			ResultSet rs = Benchmark.getAllFilesByBenchmarkGeometry(elab, null, benchmark);
 		} catch (Exception e) {
 			answer = "There was an exception";			
@@ -301,7 +308,7 @@ public class BenchmarkTest {
 		}			
 		try {
 			int detector = -1;
-			String benchmark = "6119.2013.0322.1";
+			String benchmark = Benchmark.getDefaultBenchmark(elab, 6119);
 			ResultSet rs = Benchmark.getAllFilesByBenchmarkGeometry(elab, detector, benchmark);
 		} catch (Exception e) {
 			answer = "There was an exception";			
@@ -320,7 +327,9 @@ public class BenchmarkTest {
 	public void test_getSplitBlessLink() {
 		String answer = "";
 		try {
-			VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry("6119.2013.0322.1");
+			int detector = 6119;
+			String benchmark = Benchmark.getDefaultBenchmark(elab, detector);
+			VDSCatalogEntry entry = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(benchmark);
 			String link = Benchmark.getSplitBlessLink(entry);
 		} catch (Exception e) {
 			answer = "There was an exception";			
@@ -338,33 +347,35 @@ public class BenchmarkTest {
 		String answer = "";
 		try {
 			int detector = 6119;
-			String benchmark = "6119.2013.0322.1";
+			String benchmark = Benchmark.getDefaultBenchmark(elab, detector);
 			ResultSet rs = Benchmark.getUnblessedFilesByBenchmarkGeometry(elab, detector, benchmark);
 		} catch (Exception e) {
 			answer = "There was an exception";			
 		}				
 		try {
 			int detector = 6119;
-			String benchmark = "6119.2013.0322.1";
+			String benchmark = Benchmark.getDefaultBenchmark(elab, detector);
 			ResultSet rs = Benchmark.getUnblessedFilesByBenchmarkGeometry(null, detector, benchmark);
 		} catch (Exception e) {
 			answer = "There was an exception";			
 		}
 		try {
-			String benchmark = "6119.2013.0322.1";
+			int detector = 6119;
+			String benchmark = Benchmark.getDefaultBenchmark(elab, detector);
 			ResultSet rs = Benchmark.getUnblessedFilesByBenchmarkGeometry(elab, null, benchmark);
 		} catch (Exception e) {
 			answer = "There was an exception";			
 		}	
 		try {
 			int detector = 6119;
+			String benchmark = Benchmark.getDefaultBenchmark(elab, detector);
 			ResultSet rs = Benchmark.getUnblessedFilesByBenchmarkGeometry(elab, detector, null);
 		} catch (Exception e) {
 			answer = "There was an exception";			
 		}			
 		try {
 			int detector = -1;
-			String benchmark = "6119.2013.0322.1";
+			String benchmark = Benchmark.getDefaultBenchmark(elab, 6119);
 			ResultSet rs = Benchmark.getUnblessedFilesByBenchmarkGeometry(elab, detector, benchmark);
 		} catch (Exception e) {
 			answer = "There was an exception";			
