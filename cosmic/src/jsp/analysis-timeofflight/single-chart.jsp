@@ -2,6 +2,8 @@
 <div class="left">
 	<div id="placeholder<%= request.getParameter("chartIndex")%>" class="graph-placeholder" style="width:250px; height:250px;"></div>
 	<br />
+	<div id="mean<%= request.getParameter("chartIndex") %>" style="font-size: x-small;"></div>
+	<div id="stddev<%= request.getParameter("chartIndex") %>" style="font-size: x-small;"></div>
 	<div id="xaxis<%= request.getParameter("chartIndex") %>" style="width:245px;">
 		<table id="xaxis<%= request.getParameter("chartIndex")%>Table">
 			<tr>
@@ -30,10 +32,10 @@
 	</div>	
 				
 	<div id="incdec<%= request.getParameter("chartIndex") %>" style="width:245px;">Bin Width
-   		<input type="number" name="binWidth<%= request.getParameter("chartIndex") %>" id="binWidth<%= request.getParameter("chartIndex") %>" step="2.0" min="1.0" style="width: 60px;"/>
+   		<input type="number" name="binWidth<%= request.getParameter("chartIndex") %>" id="binWidth<%= request.getParameter("chartIndex") %>" step="1.0" min="1.0" style="width: 60px;"/>
 	</div>
 	<div class="slider" style="width:245px;">
-    	<input id="range<%= request.getParameter("chartIndex") %>" type="range" step="2.0" min="1.0" style="width: 250px;"></input>
+    	<input id="range<%= request.getParameter("chartIndex") %>" type="range" step="1.0" min="1.0" style="width: 250px;"></input>
     </div>
     <br />
 	<div style="text-align:center; width: 100%;">

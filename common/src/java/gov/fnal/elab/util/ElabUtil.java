@@ -719,12 +719,14 @@ public class ElabUtil {
         int msec = (int) ((((fractional * 24 - hour) * 60 - min) * 60 - sec) * 1000);
         int micsec = (int) (((((fractional * 24 - hour) * 60 - min) * 60 - sec) * 1000 - msec) * 1000);
         int nsec = (int) ((((((fractional * 24 - hour) * 60 - min) * 60 - sec) * 1000 - msec) * 1000 - micsec) * 1000);
+        int nsecf = (int) (((((((fractional * 24 - hour) * 60 - min) * 60 - sec) * 1000 - msec) * 1000 - micsec) * 1000 - nsec) * 10);
 
         gc.set(year, month - 1, day, (hour + 12) % 24, min, sec);
         gc.set(Calendar.MILLISECOND, msec);
         nd.setMilliSeconds(msec);
         nd.setMicroSeconds(micsec);
         nd.setNanoSeconds(nsec);
+        nd.setNanoSecondsFraction(nsecf);
         nd.setTime(gc.getTimeInMillis());
         return nd;
     }

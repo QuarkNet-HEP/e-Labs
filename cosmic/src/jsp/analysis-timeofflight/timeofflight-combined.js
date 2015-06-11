@@ -268,6 +268,7 @@ function buildInteractivePanning() {
 		+ " &ndash; " + axes.xaxis.max.toFixed(2)
 		+ " and y: " + axes.yaxis.min.toFixed(2)
 		+ " &ndash; " + axes.yaxis.max.toFixed(2));
+        refresh();
 	});	
 }//end of buildInteractivePanning
 
@@ -294,6 +295,7 @@ function buildInteractiveZoom() {
 		+ " &ndash; " + axes.xaxis.max.toFixed(2)
 		+ " and y: " + axes.yaxis.min.toFixed(2)
 		+ " &ndash; " + axes.yaxis.max.toFixed(2));
+        refresh();
 	});	
 }//end of buildInteractiveZoom
 
@@ -304,6 +306,7 @@ function buildZoomOutButton() {
 		.click(function (event) {
 			event.preventDefault();
 			onOffPlot.zoomOut();
+            refresh();
 		});	
 }//end of buildZoomOutButton
 

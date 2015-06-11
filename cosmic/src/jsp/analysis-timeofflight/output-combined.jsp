@@ -122,10 +122,10 @@
 		<div id="placeholderLegend" class="legend-placeholder"></div>
 	</div>
 	<div id="incdec">Bin Width
-   		<input type="number" name="binWidth" id="binWidth" step="2.0" min="1.0" style="width: 60px;"/>
+   		<input type="number" name="binWidth" id="binWidth" step="1.0" min="1.0" style="width: 60px;"/>
 	</div>
 	<div class="slider">
-    	<input id="range" type="range" step="2.0" min="1.0" style="width: 650px;">
+    	<input id="range" type="range" step="1.0" min="1.0" style="width: 650px;">
 	</input>
 	
 <p>
