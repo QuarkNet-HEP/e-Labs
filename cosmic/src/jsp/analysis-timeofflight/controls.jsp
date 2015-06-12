@@ -105,6 +105,7 @@
 						<e:hidden>
 							<strong>Plot Controls</strong>
 							<table>
+<!--
 								<tr>
 									<td class="form-label">
 										<e:trlabel for="plot_lowX" name="X-min">X-min:</e:trlabel>
@@ -168,6 +169,7 @@
 											name="plot_size" default="600"/>
 									</td>
 								</tr>
+-->
 								<tr>
 									<td class="form-label">
 										<label for="plot_title">Plot Title:</label>
