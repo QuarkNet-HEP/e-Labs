@@ -4,10 +4,13 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import gov.fnal.elab.Elab;
 import gov.fnal.elab.cosmic.bless.*;
+import gov.fnal.elab.datacatalog.query.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class BenchmarkProcessTest {
 	public Elab elab = Elab.getElab(null, "cosmic");
+	public SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 	
 	@Test
 	public void test_BlessDataFiles () {
@@ -15,15 +18,19 @@ public class BenchmarkProcessTest {
 		String answer = "";
 		try {
 			String detector = "6148";
-			String benchmark = "6148.2013.0101.1";
-			String[] filesToBless = {"6148.2013.0201.1", "6148.2013.0202.1"};
-			BlessProcess bp = new BlessProcess();
-			ArrayList<String> results = new ArrayList<String>();
-			results = bp.BlessDatafiles(elab, detector, filesToBless, benchmark);
+			String benchmark = Benchmark.getDefaultBenchmark(elab, 6148);
+			Date startDate = DATEFORMAT.parse("01/01/2013");
+			Date endDate = DATEFORMAT.parse("12/01/2013");
+			ResultSet rs = Benchmark.getUnblessedWithBenchmark(elab, startDate, endDate);
+			if (rs != null) {
+				String[] filesToBless = rs.getLfnArray();
+				BlessProcess bp = new BlessProcess();
+				ArrayList<String> results = new ArrayList<String>();
+				results = bp.BlessDatafiles(elab, detector, filesToBless, benchmark);
+			}
 		} catch (Exception e) {
 			answer = "There was an exception " + e.getMessage();
 		}
-
 	}
 	
 	@Test
