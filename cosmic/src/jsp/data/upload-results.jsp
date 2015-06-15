@@ -62,6 +62,7 @@
 	String rawName = f.getName();
 	CatalogEntry entry;
 	String errorMessage = "";
+	String firmwareComment = "";
 	
 	//get metadata which contains the lfns of the raw filename AND the split files
 	ArrayList meta = null;
@@ -113,6 +114,11 @@
 			    for (int k = 0; k < 4; k++) {
 			        channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).intValue();
 			    }
+			    if (s.getTupleValue("DAQFirmwareComments") != null) {
+			    	firmwareComment = "The firmware version is unknown because your data did not have ST lines.<br />" +
+			    					  "This is critical to calculate absolute time.<br />" +
+			    					  "Please add ST lines for data collection.";
+			    }
 			} catch (Exception e) {
 				errorMessage = e.getMessage();
 			}
@@ -130,6 +136,7 @@
 		request.setAttribute("entry", e);
 		request.setAttribute("id", detectorId);
 		request.setAttribute("errorMessage", errorMessage);
+		request.setAttribute("firmwareComment", firmwareComment);
 		request.setAttribute("lfnssz", new Integer(entries.size()));
 		File geoFile = new File(new File(dataDir, detectorId), detectorId + ".geo");
 		request.setAttribute("errorFile", errorFile);
@@ -194,6 +201,11 @@
 				Average altitude: ${entry.tupleMap.avgaltitude}<br/>
 			</c:otherwise>
 		</c:choose>	
+		<c:choose>
+			<c:when test="${firmwareComment !=  ''}">
+				${firmwareComment }
+			</c:when>
+		</c:choose>
 		<br />	
 		<a href="../data/download?filename=${errorFile}&elab=${elab.name}&type=file">Download Split Error File</a> 
 		<c:choose>
