@@ -208,8 +208,18 @@ function validateForm() {
 	}
 	
 	//PROJECT CHECKING
-	var researchProject = document.getElementById("researchProject");
-	if (researchProject.value == null || researchProject.value == "") {
+	var researchProject = document.getElementsByName("researchProject");
+    var checked = false;
+    for(var i= 0; i < researchProject.length; i++)
+    {
+        if(researchProject[i].checked)
+        {
+            checked = true;
+            break;
+        }
+    }
+    
+    if (checked == false) {
 		messages.innerHTML = "Please select a project.";
 		return false;
 	}	
@@ -276,7 +286,18 @@ $(document).ready(function() {
 	$("#teacher").bind("change", function() {
 	    document.getElementById("teacherNew").value="";
 	});
- });
+	$("#project1").bind("change", function() {
+		var $el = $(this);
+		if ($el.prop("checked")) {
+			$('#groupRole').append('<option value="upload">upload</option>');
+			document.getElementById("daqs").style.visibility = "visible";
+		} else {
+			$('#groupRole option[value="upload"]').remove();			
+			document.getElementById("daqs").style.visibility = "hidden";
+		}
+	});
+
+});
 
 function createOption(ddl, arr, nameIndex) {
 	ddl.options.length=0;
@@ -284,14 +305,23 @@ function createOption(ddl, arr, nameIndex) {
 	opt.value = "";
 	opt.text = "";
 	ddl.options.add(opt);
+	//first sort array
+	tempArr = new Array();
 	for (var i = 0; i < arr.length; i++) {
-		var opt = document.createElement('option');
 		var clean = arr[i].value.replace(/[\[\]']+/g,'');
 		var values = clean.split(",");
-		opt.value = values[0];
+		tempArr[i] = new Array();
+		tempArr[i][0] = values[nameIndex];
+		tempArr[i][1] = values[0];
+		tempArr[i][2] = values[nameIndex];
+	}
+	tempArr.sort();
+	for (var i = 0; i < tempArr.length; i++) {
+		var opt = document.createElement('option');
+		opt.value = tempArr[i][1];
 		var name = document.createAttribute("name");
-		name.value = values[nameIndex];
-		opt.text = values[nameIndex];
+		name.value = tempArr[i][0];
+		opt.text = tempArr[i][0];
 		opt.setAttributeNode(name);
 		ddl.options.add(opt);
 	}
