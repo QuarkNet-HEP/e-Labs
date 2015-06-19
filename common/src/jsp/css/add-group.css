@@ -1,0 +1,9 @@
+#main-table {
+	width: 800px;
+	margin-bottom: 16px;
+}
+
+#main-table td {
+	padding-top: 4px;
+	padding-bottom: 4px;
+}

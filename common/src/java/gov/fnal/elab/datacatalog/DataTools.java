@@ -692,6 +692,848 @@ public class DataTools {
         return count;
     }//end of checkPlotDependency()        
     
+    //EPeronja-06/14/2015: get resultset with all states
+    public static TreeMap<Integer,ArrayList> getStates(Elab elab) throws ElabException{
+    	java.sql.ResultSet rs;
+        Connection con = null;
+        PreparedStatement ps = null;
+    	TreeMap<Integer, ArrayList> states = new TreeMap<Integer, ArrayList>();
+        //check state
+        try {
+            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            ps = con.prepareStatement(
+                    "SELECT id, name, abbreviation " +
+                    "  FROM state " +
+                    " ORDER BY type, name;");
+
+            rs = ps.executeQuery(); 
+        	if (rs != null) {
+        		while (rs.next()) {
+           			ArrayList singleState = new ArrayList();
+           			singleState.add(rs.getInt(1));
+           			singleState.add(rs.getString(2));
+           			singleState.add(rs.getString(3));
+           			states.put(rs.getInt(1), singleState);
+        		}
+        	}
+            
+        }
+        catch (SQLException e) {
+            throw new ElabException("In DataTools.getStates(): " + e.getMessage());
+        }
+        finally {
+            DatabaseConnectionManager.close(con, ps);
+        }        
+    	return states;
+    }//end of getStates
+
+    //EPeronja-06/14/2015: get state abbreviation
+    public static String getStateAbbrev(Elab elab, int id) throws ElabException {
+    	java.sql.ResultSet rs;
+        Connection con = null;
+        PreparedStatement ps = null;
+        String abbrev = "";
+        //check state
+        try {
+            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            ps = con.prepareStatement(
+                    "SELECT abbreviation " +
+                    "  FROM state " +
+                    " WHERE id = ? ;");
+            ps.setInt(1, id);
+            rs = ps.executeQuery(); 
+        	if (rs != null) {
+        		while (rs.next()) {
+        			abbrev = rs.getString(1);
+        		}
+        	}            
+        }
+        catch (SQLException e) {
+            throw new ElabException("In DataTools.getStateAbbrev(): " + e.getMessage());
+        }
+        finally {
+            DatabaseConnectionManager.close(con, ps);
+        }        
+    	return abbrev;
+    }//end of getStateAbbrev
+    
+    //EPeronja-06/15/2015: add new state 
+    public static int insertState(Elab elab, String state, String abbrev, int type) throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        int recordId = 0;
+        if (state != null && !state.equals("") && abbrev != null && !abbrev.equals("") && type > 0) {
+	        try {
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            boolean ac = conn.getAutoCommit();
+	            ps = conn.prepareStatement(
+	                    " INSERT INTO state (name,abbreviation,type) "+
+	            		" VALUES (?, ?, ?) RETURNING id;"); 
+	            try {
+		            conn.setAutoCommit(false);
+		            ps.setString(1, state);
+		            ps.setString(2, abbrev);
+		            ps.setInt(3, type);
+		            java.sql.ResultSet rs = ps.executeQuery(); 
+		            if (rs != null) {
+		        		while (rs.next()) {
+		        			recordId = rs.getInt(1);
+		        		}
+		            }
+		            conn.commit();
+	            } catch (SQLException e) {
+		            conn.rollback();
+		            throw e;
+		        } finally {
+		            conn.setAutoCommit(ac);
+		        }
+	        } catch (SQLException e) {
+		        throw new ElabException(e);
+	        } finally {
+		        if (conn != null) {
+		            DatabaseConnectionManager.close(conn, ps);
+		        }
+		    }    	
+        }
+    	return recordId;
+    }//end of insertState
+    
+        
+    //EPeronja-06/15/2015: delete state 
+    public static void deleteState(Elab elab, int id) throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        if (id > 0) {
+	        try {
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            boolean ac = conn.getAutoCommit();
+	            ps = conn.prepareStatement(
+	                    " DELETE FROM state "+
+	            		" WHERE id = ?;"); 
+	            try {
+		            conn.setAutoCommit(false);
+		            ps.setInt(1, id);
+		            int i = ps.executeUpdate();
+		            conn.commit();
+	            } catch (SQLException e) {
+		            conn.rollback();
+		            throw e;
+		        } finally {
+		            conn.setAutoCommit(ac);
+		        }
+	        } catch (SQLException e) {
+		        throw new ElabException(e);
+	        } finally {
+		        if (conn != null) {
+		            DatabaseConnectionManager.close(conn, ps);
+		        }
+		    }    	
+        }
+    }//end of deleteState
+  
+    //EPeronja-06/14/2015: get all cities
+    public static TreeMap<Integer, ArrayList> getCities(Elab elab) throws ElabException{
+    	java.sql.ResultSet rs;
+        Connection con = null;
+        PreparedStatement ps = null;
+    	TreeMap<Integer, ArrayList> cities = new TreeMap<Integer, ArrayList>();
+        //check state
+        try {
+            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            ps = con.prepareStatement(
+                    " SELECT city.id, state.abbreviation, city.name " +
+                    " FROM city "+
+                    " INNER JOIN state " +
+                    " on city.state_id = state.id "+
+                    " ORDER by state.abbreviation, city.name ;");
+
+            rs = ps.executeQuery(); 
+        	if (rs != null) {
+        		while (rs.next()) {
+        			ArrayList singleCity = new ArrayList();
+        			singleCity.add(rs.getInt(1));
+        			singleCity.add(rs.getString(2));
+        			singleCity.add(rs.getString(3));
+        			cities.put(rs.getInt(1), singleCity);
+        		}
+        	}   
+        }
+        catch (SQLException e) {
+            throw new ElabException("In DataTools.getCities(): " + e.getMessage());
+        }
+        finally {
+            DatabaseConnectionManager.close(con, ps);
+        }        
+    	return cities;
+    }//end of getCities
+
+    //EPeronja-06/14/2015: get city name
+    public static String getCityName(Elab elab, int id) throws ElabException {
+    	java.sql.ResultSet rs;
+        Connection con = null;
+        PreparedStatement ps = null;
+        String name = "";
+        //check state
+        try {
+            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            ps = con.prepareStatement(
+                    "SELECT city.name " +
+                    "  FROM city " +
+                    " WHERE city.id = ?;");
+            ps.setInt(1, id);
+            rs = ps.executeQuery(); 
+        	if (rs != null) {
+        		while (rs.next()) {
+        			name = rs.getString(1);
+        		}
+        	}            
+        }
+        catch (SQLException e) {
+            throw new ElabException("In DataTools.getCityId(): " + e.getMessage());
+        }
+        finally {
+            DatabaseConnectionManager.close(con, ps);
+        }        
+    	return name;
+    }//end of getCityName    
+    
+    //EPeronja-06/15/2015: add new city 
+    public static int insertCity(Elab elab, String city, int stateId) throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        int recordId = 0;
+        if (city != null && !city.equals("") && stateId > 0 ) {
+	        try {
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            boolean ac = conn.getAutoCommit();
+	            ps = conn.prepareStatement(
+	                    " INSERT INTO city (name, state_id) " + 
+	            		" VALUES (?, ?) RETURNING id;"); 
+	            try {
+		            conn.setAutoCommit(false);
+		            ps.setString(1, city);
+		            ps.setInt(2, stateId);
+		            java.sql.ResultSet rs = ps.executeQuery(); 
+		            if (rs != null) {
+			            while (rs.next()) {
+		        			recordId = rs.getInt(1);
+		        		}
+		            }
+		            conn.commit();
+	            } catch (SQLException e) {
+		            conn.rollback();
+		            throw e;
+		        } finally {
+		            conn.setAutoCommit(ac);
+		        }
+	        } catch (SQLException e) {
+		        throw new ElabException(e);
+	        } finally {
+		        if (conn != null) {
+		            DatabaseConnectionManager.close(conn, ps);
+		        }
+		    }    	
+        }
+    	return recordId;
+    }//end of insertState    
+ 
+    //EPeronja-06/15/2015: delete city 
+    public static void deleteCity(Elab elab, int id) throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        if (id > 0) {
+	        try {
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            boolean ac = conn.getAutoCommit();
+	            ps = conn.prepareStatement(
+	                    " DELETE FROM city "+
+	            		" WHERE id = ?;"); 
+	            try {
+		            conn.setAutoCommit(false);
+		            ps.setInt(1, id);
+		            int i = ps.executeUpdate();
+		            conn.commit();
+	            } catch (SQLException e) {
+		            conn.rollback();
+		            throw e;
+		        } finally {
+		            conn.setAutoCommit(ac);
+		        }
+	        } catch (SQLException e) {
+		        throw new ElabException(e);
+	        } finally {
+		        if (conn != null) {
+		            DatabaseConnectionManager.close(conn, ps);
+		        }
+		    }    	
+        }
+    }//end of deleteCity
+
+    //EPeronja-06/14/2015: get all schools
+    public static TreeMap<Integer, ArrayList> getSchools(Elab elab) throws ElabException{
+    	java.sql.ResultSet rs;
+        Connection con = null;
+        PreparedStatement ps = null;
+    	TreeMap<Integer, ArrayList> schools = new TreeMap<Integer, ArrayList>();
+        //check state
+        try {
+            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            ps = con.prepareStatement(
+                    " SELECT school.id, state.abbreviation, city.name, school.name " +
+                    " FROM school "+
+                    " INNER JOIN city " +
+                    " ON school.city_id = city.id "+
+                    " INNER JOIN state " +
+                    " ON city.state_id = state.id "+
+                    " ORDER by state.abbreviation, city.name, school.name;");
+
+            rs = ps.executeQuery(); 
+        	if (rs != null) {
+        		while (rs.next()) {
+        			ArrayList singleSchool = new ArrayList();
+        			singleSchool.add(rs.getInt(1));
+        			singleSchool.add(rs.getString(2));
+        			singleSchool.add(rs.getString(3));
+        			singleSchool.add(rs.getString(4));
+        			schools.put(rs.getInt(1), singleSchool);
+        		}
+        	}   
+        }
+        catch (SQLException e) {
+            throw new ElabException("In DataTools.getSchools(): " + e.getMessage());
+        }
+        finally {
+            DatabaseConnectionManager.close(con, ps);
+        }        
+    	return schools;
+    }//end of getSchools
+
+    //EPeronja-06/16/2015: get school name
+    public static String getSchoolName(Elab elab, int id) throws ElabException {
+    	java.sql.ResultSet rs;
+        Connection con = null;
+        PreparedStatement ps = null;
+        String name = "";
+        //check state
+        try {
+            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            ps = con.prepareStatement(
+                    "SELECT name " +
+                    "  FROM school " +
+                    " WHERE id = ? ;");
+            ps.setInt(1, id);
+            rs = ps.executeQuery(); 
+        	if (rs != null) {
+        		while (rs.next()) {
+        			name = rs.getString(1);
+        		}
+        	}            
+        }
+        catch (SQLException e) {
+            throw new ElabException("In DataTools.getSchoolId(): " + e.getMessage());
+        }
+        finally {
+            DatabaseConnectionManager.close(con, ps);
+        }        
+    	return name;
+    }//end of getSchoolName    
+    
+    //EPeronja-06/15/2015: add new school 
+    public static int insertSchool(Elab elab, String school, int cityId) throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        int recordId = 0;
+        if (school != null && !school.equals("") && cityId > 0 ) {
+	        try {
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            boolean ac = conn.getAutoCommit();
+	            ps = conn.prepareStatement(
+	                    " INSERT INTO school (name, city_id) " + 
+	            		" VALUES (?, ?) RETURNING id;"); 
+	            try {
+		            conn.setAutoCommit(false);
+		            ps.setString(1, school);
+		            ps.setInt(2, cityId);
+		            java.sql.ResultSet rs = ps.executeQuery(); 
+		            if (rs != null) {
+		        		while (rs.next()) {
+		        			recordId = rs.getInt(1);
+		        		}
+		            }
+		            conn.commit();
+	            } catch (SQLException e) {
+		            conn.rollback();
+		            throw e;
+		        } finally {
+		            conn.setAutoCommit(ac);
+		        }
+	        } catch (SQLException e) {
+		        throw new ElabException(e);
+	        } finally {
+		        if (conn != null) {
+		            DatabaseConnectionManager.close(conn, ps);
+		        }
+		    }    	
+        }
+    	return recordId;
+    }//end of insertSchool    
+
+    //EPeronja-06/16/2015: delete school 
+    public static void deleteSchool(Elab elab, int id) throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        if (id > 0) {
+	        try {
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            boolean ac = conn.getAutoCommit();
+	            ps = conn.prepareStatement(
+	                    " DELETE FROM school "+
+	            		" WHERE id = ?;"); 
+	            try {
+		            conn.setAutoCommit(false);
+		            ps.setInt(1, id);
+		            int i = ps.executeUpdate();
+		            conn.commit();
+	            } catch (SQLException e) {
+		            conn.rollback();
+		            throw e;
+		        } finally {
+		            conn.setAutoCommit(ac);
+		        }
+	        } catch (SQLException e) {
+		        throw new ElabException(e);
+	        } finally {
+		        if (conn != null) {
+		            DatabaseConnectionManager.close(conn, ps);
+		        }
+		    }    	
+        }
+    }//end of deleteSchool
+ 
+    //EPeronja-06/16/2015: get all teachers
+    public static TreeMap<Integer, ArrayList> getTeachers(Elab elab) throws ElabException{
+    	java.sql.ResultSet rs;
+        Connection con = null;
+        PreparedStatement ps = null;
+    	TreeMap<Integer, ArrayList> teachers = new TreeMap<Integer, ArrayList>();
+        //check state
+        try {
+            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            ps = con.prepareStatement(
+                    " SELECT teacher.id, teacher.name, teacher.email, state.abbreviation, city.name, school.name " +
+                    " FROM teacher "+
+                    " INNER JOIN school " +
+                    "    ON teacher.school_id = school.id "+
+                    " INNER JOIN city " +
+                    "    ON school.city_id = city.id "+
+                    " INNER JOIN state " +
+                    "    ON city.state_id = state.id "+
+                    " ORDER by state.abbreviation, city.name, school.name;");
+
+            rs = ps.executeQuery(); 
+        	if (rs != null) {
+        		while (rs.next()) {
+        			ArrayList singleTeacher = new ArrayList();
+        			singleTeacher.add(rs.getInt(1));
+        			singleTeacher.add(rs.getString(2));
+        			singleTeacher.add(rs.getString(3));
+        			singleTeacher.add(rs.getString(4));
+        			singleTeacher.add(rs.getString(5));
+        			singleTeacher.add(rs.getString(6));
+        			teachers.put(rs.getInt(1), singleTeacher);
+        		}
+        	}   
+        }
+        catch (SQLException e) {
+            throw new ElabException("In DataTools.getTeachers(): " + e.getMessage());
+        }
+        finally {
+            DatabaseConnectionManager.close(con, ps);
+        }        
+    	return teachers;
+    }//end of getTeachers
+  
+    //EPeronja-06/16/2015: get teacher name
+    public static String getTeacherName(Elab elab, int id) throws ElabException {
+    	java.sql.ResultSet rs;
+        Connection con = null;
+        PreparedStatement ps = null;
+        String name = "";
+        //check state
+        try {
+            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            ps = con.prepareStatement(
+                    "SELECT name " +
+                    "  FROM teacher " +
+                    " WHERE id = ? ;");
+            ps.setInt(1, id);
+            rs = ps.executeQuery(); 
+        	if (rs != null) {
+        		while (rs.next()) {
+        			name = rs.getString(1);
+        		}
+        	}            
+        }
+        catch (SQLException e) {
+            throw new ElabException("In DataTools.getTeacherId(): " + e.getMessage());
+        }
+        finally {
+            DatabaseConnectionManager.close(con, ps);
+        }        
+    	return name;
+    }//end of getTeacherName   
+
+    //EPeronja-06/15/2015: add new teacher 
+    public static int insertTeacher(Elab elab, String teacher, String email, int schoolId) throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        int recordId = 0;
+        if (teacher != null && !teacher.equals("") && schoolId > 0 ) {
+	        try {
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            boolean ac = conn.getAutoCommit();
+	            ps = conn.prepareStatement(
+	                    " INSERT INTO teacher (name, email, school_id, cosmic_all_data_access) " + 
+	            		" VALUES (?, ?, ?, true) RETURNING id;"); 
+	            try {
+		            conn.setAutoCommit(false);
+		            ps.setString(1, teacher);
+		            ps.setString(2, email);
+		            ps.setInt(3, schoolId);
+		            java.sql.ResultSet rs = ps.executeQuery(); 
+		            if (rs != null) {
+		        		while (rs.next()) {
+		        			recordId = rs.getInt(1);
+		        		}
+		            }
+		            conn.commit();
+	            } catch (SQLException e) {
+		            conn.rollback();
+		            throw e;
+		        } finally {
+		            conn.setAutoCommit(ac);
+		        }
+	        } catch (SQLException e) {
+		        throw new ElabException(e);
+	        } finally {
+		        if (conn != null) {
+		            DatabaseConnectionManager.close(conn, ps);
+		        }
+		    }    	
+        }
+    	return recordId;
+    }//end of insertTeacher    
+
+    //EPeronja-06/16/2015: delete teacher 
+    public static void deleteTeacher(Elab elab, int id) throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        if (id > 0) {
+	        try {
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            boolean ac = conn.getAutoCommit();
+	            ps = conn.prepareStatement(
+	                    " DELETE FROM teacher "+
+	            		" WHERE id = ?;"); 
+	            try {
+		            conn.setAutoCommit(false);
+		            ps.setInt(1, id);
+		            int i = ps.executeUpdate();
+		            conn.commit();
+	            } catch (SQLException e) {
+		            conn.rollback();
+		            throw e;
+		        } finally {
+		            conn.setAutoCommit(ac);
+		        }
+	        } catch (SQLException e) {
+		        throw new ElabException(e);
+	        } finally {
+		        if (conn != null) {
+		            DatabaseConnectionManager.close(conn, ps);
+		        }
+		    }    	
+        }
+    }//end of deleteTeacher
+    
+    //EPeronja-06/16/2015: get all groups
+    public static TreeMap<Integer, ArrayList> getGroups(Elab elab) throws ElabException{
+    	java.sql.ResultSet rs;
+        Connection con = null;
+        PreparedStatement ps = null;
+    	TreeMap<Integer, ArrayList> groups = new TreeMap<Integer, ArrayList>();
+        //check state
+        try {
+            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            ps = con.prepareStatement(
+                    " SELECT id, name, teacher_id, userarea, ay " +
+                    " FROM research_group ;");
+
+            rs = ps.executeQuery(); 
+        	if (rs != null) {
+        		while (rs.next()) {
+        			ArrayList singleGroup = new ArrayList();
+        			singleGroup.add(rs.getInt(1));
+        			singleGroup.add(rs.getString(2));
+        			groups.put(rs.getInt(1), singleGroup);
+        		}
+        	}   
+        }
+        catch (SQLException e) {
+            throw new ElabException("In DataTools.getGroups(): " + e.getMessage());
+        }
+        finally {
+            DatabaseConnectionManager.close(con, ps);
+        }        
+    	return groups;
+    }//end of getGroups
+
+    //EPeronja-06/15/2015: add new research group 
+    public static int insertGroup(Elab elab, String group, String hashedPassword, String role, String newUserArea, String ay, String survey, int teacherId) throws ElabException {
+       	java.sql.ResultSet rs;
+        Connection conn = null;
+        int recordId = 0;
+        PreparedStatement ps = null;
+        if (group != null && !group.equals("") && teacherId > 0 ) {
+	        try {
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            boolean ac = conn.getAutoCommit();
+                String SQLstatement = "INSERT INTO research_group (name, hashedpassword, teacher_id, role, userarea, ay, active, survey) SELECT " +
+                        "'" + group + "', " +
+                        "'" + hashedPassword + "', " +
+                        "id, " +
+                        "'" + role + "', " +
+                        "'" + newUserArea + "', " + 
+                        "'" + ay + "', " +
+                        "true, " +
+                        "'" + survey + "'" +
+                        "FROM teacher WHERE teacher.id ='" + teacherId + "' RETURNING research_group.id;";
+                ps = conn.prepareStatement(SQLstatement);
+                try{
+		            conn.setAutoCommit(false);
+                   	rs = ps.executeQuery();
+		            if (rs != null) {
+		            	if (rs.next()) {
+		            		recordId = rs.getInt(1);
+		            	}
+		            }
+                	conn.commit();
+	            } catch (SQLException e) {
+		            conn.rollback();
+		            throw e;
+		        } finally {
+		            conn.setAutoCommit(ac);
+		        }
+	        } catch (SQLException e) {
+		        throw new ElabException(e);
+	        } finally {
+		        if (conn != null) {
+		            DatabaseConnectionManager.close(conn, ps);
+		        }
+		    }    	
+        }
+    	return recordId;
+    }//end of insertGroup    
+
+    //EPeronja-06/16/2015: delete group 
+    public static void deleteGroup(Elab elab, int id) throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        if (id > 0) {
+	        try {
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            boolean ac = conn.getAutoCommit();
+	            ps = conn.prepareStatement(
+	                    " DELETE FROM research_group "+
+	            		" WHERE id = ?;"); 
+	            try {
+		            conn.setAutoCommit(false);
+		            ps.setInt(1, id);
+		            int i = ps.executeUpdate();
+		            conn.commit();
+	            } catch (SQLException e) {
+		            conn.rollback();
+		            throw e;
+		        } finally {
+		            conn.setAutoCommit(ac);
+		        }
+	        } catch (SQLException e) {
+		        throw new ElabException(e);
+	        } finally {
+		        if (conn != null) {
+		            DatabaseConnectionManager.close(conn, ps);
+		        }
+		    }    	
+        }
+    }//end of deleteGroup
+    
+    //EPeronja-06/15/2015: add new research group/project
+    public static int insertGroupProject(Elab elab, int projectId, int researchGroupId) throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        int recordId = 0;
+        if (projectId > 0 && researchGroupId > 0 ) {
+	        try {
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            boolean ac = conn.getAutoCommit();
+	            ps = conn.prepareStatement(
+	                    " INSERT INTO research_group_project (research_group_id, project_id) " +
+                        " VALUES (?, ?) ;"); 
+	            try {
+		            conn.setAutoCommit(false);
+		            ps.setInt(1, researchGroupId);
+		            ps.setInt(2, projectId);
+		            recordId = ps.executeUpdate();
+		            conn.commit();
+	            } catch (SQLException e) {
+		            conn.rollback();
+		            throw e;
+		        } finally {
+		            conn.setAutoCommit(ac);
+		        }
+	        } catch (SQLException e) {
+		        throw new ElabException(e);
+	        } finally {
+		        if (conn != null) {
+		            DatabaseConnectionManager.close(conn, ps);
+		        }
+		    }    	
+        }
+    	return recordId;
+    }//end of insertGroupProject
+
+    //EPeronja-06/16/2015: delete research group/project
+    public static void deleteGroupProject(Elab elab, int research_group_id, int project_id) throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        if (research_group_id > 0 && project_id > 0) {
+	        try {
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            boolean ac = conn.getAutoCommit();
+	            ps = conn.prepareStatement(
+	                    " DELETE FROM research_group_project "+
+	            		" WHERE research_group_id = ? and project_id = ?;"); 
+	            try {
+		            conn.setAutoCommit(false);
+		            ps.setInt(1, research_group_id);
+		            ps.setInt(2, project_id);
+		            int i = ps.executeUpdate();
+		            conn.commit();
+	            } catch (SQLException e) {
+		            conn.rollback();
+		            throw e;
+		        } finally {
+		            conn.setAutoCommit(ac);
+		        }
+	        } catch (SQLException e) {
+		        throw new ElabException(e);
+	        } finally {
+		        if (conn != null) {
+		            DatabaseConnectionManager.close(conn, ps);
+		        }
+		    }    	
+        }
+    }//end of deleteGroupProject
+    
+    //EPeronja-06/15/2015: add new research group/detector
+    public static int insertGroupDetector(Elab elab, int researchGroupId, String[] detectorIds) throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        int recordId = 0;
+        if (detectorIds != null  && researchGroupId > 0 ) {
+	        try {
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            boolean ac = conn.getAutoCommit();
+	            for (int i = 0; i < detectorIds.length; i++) {
+	            	ps = conn.prepareStatement(
+	            			" INSERT INTO research_group_detectorid (research_group_id, detectorid) " +
+	            		    " VALUES (?,?);"); 
+	            	try {
+	            		conn.setAutoCommit(false);
+	            		ps.setInt(1, researchGroupId);
+	            		ps.setInt(2, Integer.valueOf(detectorIds[i]));
+			            recordId = ps.executeUpdate();
+			            conn.commit();
+	            	} catch (SQLException e) {
+	            		conn.rollback();
+	            		throw e;
+	            	} finally {
+	            		conn.setAutoCommit(ac);
+	            	}
+	            }
+	         } catch (SQLException e) {
+	        	 throw new ElabException(e);
+	         } finally {
+	        	 if (conn != null) {
+	        		 DatabaseConnectionManager.close(conn, ps);
+	        	 }
+	         }
+        }
+    	return recordId;
+    }//end of insertGroupDetector    
+
+    //EPeronja-06/16/2015: delete research group/detector
+    public static void deleteGroupDetector(Elab elab, int group, int detector) throws ElabException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        if (group > 0 && detector > 0) {
+	        try {
+	            conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	            boolean ac = conn.getAutoCommit();
+	            ps = conn.prepareStatement(
+	                    " DELETE FROM research_group_detectorid "+
+	            		" WHERE research_group_id = ? and detectorid = ?;"); 
+	            try {
+		            conn.setAutoCommit(false);
+		            ps.setInt(1, group);
+		            ps.setInt(2, detector);
+		            int i = ps.executeUpdate();
+		            conn.commit();
+	            } catch (SQLException e) {
+		            conn.rollback();
+		            throw e;
+		        } finally {
+		            conn.setAutoCommit(ac);
+		        }
+	        } catch (SQLException e) {
+		        throw new ElabException(e);
+	        } finally {
+		        if (conn != null) {
+		            DatabaseConnectionManager.close(conn, ps);
+		        }
+		    }    	
+        }
+    }//end of deleteGroupDetector    
+    
+    //EPeronja-06/16/2015: get all groups
+    public static TreeMap<Integer, String> getProjects(Elab elab) throws ElabException{
+    	java.sql.ResultSet rs;
+        Connection con = null;
+        PreparedStatement ps = null;
+        TreeMap<Integer, String> projects = new TreeMap<Integer, String>();
+        //check state
+        try {
+            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            ps = con.prepareStatement(
+                    " SELECT id, name " +
+                    " FROM project ;");
+
+            rs = ps.executeQuery(); 
+        	if (rs != null) {
+        		while (rs.next()) {
+        			projects.put(rs.getInt(1), rs.getString(2));
+        		}
+        	}   
+        }
+        catch (SQLException e) {
+            throw new ElabException("In DataTools.getProjects(): " + e.getMessage());
+        }
+        finally {
+            DatabaseConnectionManager.close(con, ps);
+        }        
+    	return projects;
+    }//end of getProjects
+    
     //EPeronja-06/12/2013: 63: Data search by state requires 2-letter state abbreviation
     public static String checkStateSearch(Elab elab, String userInput) throws ElabException {
     	String abbreviation = "";
