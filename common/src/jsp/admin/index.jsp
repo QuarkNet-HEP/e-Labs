@@ -52,6 +52,10 @@
 						<td>Add e-Lab users.</td>
 					</tr>
 					<tr>
+						<td>&#8226; <a href="../admin/add-group.jsp?role=teacher">Add Users NEW</a></td>
+						<td>Add e-Lab users - NEW.</td>
+					</tr>
+					<tr>
 						<td>&#8226; <a href="../references/control.jsp"> FAQs Add/Update</a></td>
 						<td>Add, update FAQ items.</td>					
 					</tr>					
