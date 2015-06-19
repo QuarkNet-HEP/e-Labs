@@ -23,7 +23,7 @@
     String teacherNew = request.getParameter("teacherNew");
     String teacherEmail = request.getParameter("teacherEmail");
     String researchGroup = request.getParameter("researchGroup");
-    String researchProject = request.getParameter("researchProject");
+    String[] researchProject = request.getParameterValues("researchProject");
     String ay = request.getParameter("ay");
     String groupRole = request.getParameter("groupRole");
     String detectorString = request.getParameter("detectorString");
@@ -128,89 +128,98 @@
 				}
 			}
 		}
-		String researchProjectName = "";
-		int rp = Integer.parseInt(researchProject);
-		for (Map.Entry<Integer,String> e : projects.entrySet()) {
-			if (e.getKey() == rp) {
-				researchProjectName = e.getValue();
+		String[] researchProjectName = new String[researchProject.length];
+		for (int i = 0; i < researchProject.length; i++) {
+			int rp = Integer.parseInt(researchProject[i]);
+			for (Map.Entry<Integer,String> e : projects.entrySet()) {
+				if (e.getKey() == rp) {
+					researchProjectName[i] = e.getValue();
+				}
 			}
 		}
 		//create directories that are needed
         if(researchGroup != null && researchProject != null && ay != null && groupRole != null && survey != null && passwd1 != null && passwd2 !=null) {
-             //Why are these directories set up before the test to see if the name and password is taken? LQ 7/25/06
-           	 //EPeronja 06/18/2015: I think the answer is that if we fail to create the directory then we do not have a userarea?
-             boolean mkdir, isDirectory;
-             //directory structure:
-             //home + users + ay/state/city/school/teacher/group/
-             String[] newDirsArray = new String[] {
-                ay, 
-                stateName, 
-                cityName.replaceAll(" ", "_"), 
-                schoolName.replaceAll(" ", "_"), 
-                teacherName.replaceAll(" ", "_"), 
-                researchGroup, 
-                researchProjectName};	
-             String currDir = home + "/" + researchProjectName + "/users"; 
-             File newDir;
-             for(int i=0; i<7; i++){
-                currDir = currDir + "/" + newDirsArray[i].replaceAll(" ", "_"); //replace spaces with underscores for the directory name
-                newDir = new File(currDir);
-                try {
-                    isDirectory = newDir.isDirectory();
-                } catch(SecurityException e) {
-                    messages = "Security permissions do not allow this directory (" + newDir + ") to be accessed";
-                    return;
-                }
-                if(!isDirectory){
-                    mkdir = newDir.mkdirs();
-                    if(mkdir == false){
-                    	messages = "Directory: " + newDir + " couldn't be created! (when trying to add the directory: " + newDirsArray[i] + ")";
-                        return;
-                    }
-                }
-                //else if we're adding the group...
-                else if(i==5){
-                	messages = "The group directory: " + newDirsArray[i] + " already exists on the system.\n<br>Use the back button on your browser and enter a different group name.";
-                    return;
-                }
-            }
-            //the newUserArea base dir is now totally setup
-            String newUserArea = newDirsArray[0] + "/" + newDirsArray[1] + "/" + newDirsArray[2] + "/" + newDirsArray[3] + "/" + newDirsArray[4] + "/" + newDirsArray[5];
-
-            //setup subdirectories - Note that users is actually a symlink to  users -> /export/d1/quarknet/portal/users
-            // Each e-Lab will need a similar symlink.
-                                               
-            String[] newSubdirsArray = new String[] {"plots", "posters", "scratch"};
-            for(int i=0; i<3; i++){
-                currDir = home + "/" +researchProjectName+"/users/" + newUserArea + "/" + researchProjectName + "/" + newSubdirsArray[i];
-                newDir = new File(currDir);
-                try {
-                    isDirectory = newDir.isDirectory();
-                } catch(SecurityException e) {
-                	messages = "Security permissions do not allow this directory (" + newDir + ") to be accessed";
-                    return;
-                }
-                if(!isDirectory){
-                    mkdir = newDir.mkdirs();
-                    if(mkdir == false){
-                    	messages = "Directory: " + newDir + " couldn't be created! (when trying to add the directory: " + newSubdirsArray[i] + ")";
-                        return;
-                    }
-                }
-            }
-            //add the new registration information to research_group
-            int i=0;
-            
-            // Generate hashed passwords 
-            String hashedPassword = BCrypt.hashpw(passwd1, BCrypt.gensalt(12)); 
-            researchGroupId = DataTools.insertGroup(elab, researchGroup, hashedPassword, groupRole, newUserArea, ay, survey, teacherId);
-            //add the new group-project pair to research_group_project
-			i = DataTools.insertGroupProject(elab, Integer.parseInt(researchProject), researchGroupId);			
-            //add the new group-detectorID pair(s) to research_group_detectorid (if there are any)
-            if(detectorString != null && !detectorString.equals("")) {
-            	String[] detectorIds = detectorString.split(",");
-				i = DataTools.insertGroupDetector(elab, researchGroupId, detectorIds);
-            }
+            //Why are these directories set up before the test to see if the name and password is taken? LQ 7/25/06
+           	//EPeronja 06/18/2015: I think the answer is that if we fail to create the directory then we do not have a userarea?
+			for (int x = 0; x < researchProject.length; x++) {
+				String singleResearchProjectName = researchProjectName[x];
+	            boolean mkdir, isDirectory;
+	            //directory structure:
+	            //home + users + ay/state/city/school/teacher/group/
+	            String[] newDirsArray = new String[] {
+	                ay, 
+	                stateName, 
+	                cityName.replaceAll(" ", "_"), 
+	                schoolName.replaceAll(" ", "_"), 
+	                teacherName.replaceAll(" ", "_"), 
+	                researchGroup, 
+	                singleResearchProjectName};	
+	             String currDir = home + "/" + singleResearchProjectName + "/users"; 
+	             File newDir;
+	             for(int i=0; i<7; i++){
+	                currDir = currDir + "/" + newDirsArray[i].replaceAll(" ", "_"); //replace spaces with underscores for the directory name
+	                newDir = new File(currDir);
+	                try {
+	                    isDirectory = newDir.isDirectory();
+	                } catch(SecurityException e) {
+	                    messages = "Security permissions do not allow this directory (" + newDir + ") to be accessed";
+	                    return;
+	                }
+	                if(!isDirectory){
+	                    mkdir = newDir.mkdirs();
+	                    if(mkdir == false){
+	                    	messages = "Directory: " + newDir + " couldn't be created! (when trying to add the directory: " + newDirsArray[i] + ")";
+	                        return;
+	                    }
+	                }
+	                //else if we're adding the group...
+	                else if(i==5){
+	                	messages = "The group directory: " + newDirsArray[i] + " already exists on the system.\n<br>Use the back button on your browser and enter a different group name.";
+	                    return;
+	                }
+	            }
+	            //the newUserArea base dir is now totally setup
+	            String newUserArea = newDirsArray[0] + "/" + newDirsArray[1] + "/" + newDirsArray[2] + "/" + newDirsArray[3] + "/" + newDirsArray[4] + "/" + newDirsArray[5];
+	
+	            //setup subdirectories - Note that users is actually a symlink to  users -> /export/d1/quarknet/portal/users
+	            // Each e-Lab will need a similar symlink.
+	                                               
+	            String[] newSubdirsArray = new String[] {"plots", "posters", "scratch"};
+	            for(int i=0; i<3; i++){
+	                currDir = home + "/" +researchProjectName+"/users/" + newUserArea + "/" + researchProjectName + "/" + newSubdirsArray[i];
+	                newDir = new File(currDir);
+	                try {
+	                    isDirectory = newDir.isDirectory();
+	                } catch(SecurityException e) {
+	                	messages = "Security permissions do not allow this directory (" + newDir + ") to be accessed";
+	                    return;
+	                }
+	                if(!isDirectory){
+	                    mkdir = newDir.mkdirs();
+	                    if(mkdir == false){
+	                    	messages = "Directory: " + newDir + " couldn't be created! (when trying to add the directory: " + newSubdirsArray[i] + ")";
+	                        return;
+	                    }
+	                }
+	            }
+	            //add the new registration information to research_group
+	            int i=0;
+	            
+	            // Generate hashed passwords just one time
+	            if ( x == 0 ) { 
+		            String hashedPassword = BCrypt.hashpw(passwd1, BCrypt.gensalt(12)); 
+		            researchGroupId = DataTools.insertGroup(elab, researchGroup, hashedPassword, groupRole, newUserArea, ay, survey, teacherId);
+	            }	
+		        //add the new group-project pair to research_group_project
+				i = DataTools.insertGroupProject(elab, Integer.parseInt(researchProject[x]), researchGroupId);			
+	            //add the new group-detectorID pair(s) to research_group_detectorid (if there are any) and just one time
+	           	if ( x == 0 ) { 
+		            if(detectorString != null && !detectorString.equals("")) {
+		            	String[] detectorIds = detectorString.split(",");
+						i = DataTools.insertGroupDetector(elab, researchGroupId, detectorIds);
+	        	    }
+	           	}
+			}//end of looping through the projects
             done = "done";
         }
 	}//end of submit
@@ -328,12 +337,9 @@
 							<tr>
 								<td>Project</td>
 								<td colspan="2">
-									<select name="researchProject" id="researchProject">
-										<option></option>
-										<c:forEach items="${projects }" var="p">
-											<option value="${p.key }">${p.value }</option>
-										</c:forEach>
-									</select>
+									<c:forEach items="${projects }" var="p">
+										<input type="checkbox" name="researchProject" value="${p.key }" id="project${p.key }"> ${p.value }</input>
+									</c:forEach>
 								</td>
 							</tr>
 							<tr>
@@ -355,20 +361,15 @@
 							</tr>	
 							<tr>
 								<td>Role</td>
-								<td colspan="2">
+								<td>
                                     <select name="groupRole" id="groupRole" >
                                     	<option></option>
                                         <option value="teacher">teacher</option>
                                         <option value="user">user</option>
-                                        <option value="upload">upload</option>
                                     </select>
 								</td>
+								<td><div id="daqs" style="visibility: hidden;">DAQ Board ID(s) <input type="text" name="detectorString" id="detectorString" value="" size=30 maxlength=500></input> (e.g. 180,181,182)</div></td>
 							</tr>				
-							<tr>
-								<td>DAQ Board ID(s)</td>
-								<td><input type="text" name="detectorString" id="detectorString" value="" size=30 maxlength=500></input></td>
-								<td>(e.g. 180,181,182)</td>
-							</tr>		
 							<tr>
 								<td>In Survey</td>
 								<td colspan="2">
