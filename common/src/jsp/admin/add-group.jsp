@@ -78,7 +78,7 @@
 	if (submit != null && submit.equals("Submit")) {
 		if (!stateNew.equals("") && !stateAbbrev.equals("") && !stateType.equals("")) {
 			//need to add a new state - checkings should be done by javascript before submitting
-			int statetype = Integer.getInteger(stateType);
+			int statetype = Integer.parseInt(stateType);
 			stateId = DataTools.insertState(elab, stateNew, stateAbbrev, statetype);
 			stateName = stateAbbrev;	
 		} else {
