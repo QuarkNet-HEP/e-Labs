@@ -1250,11 +1250,15 @@ sub calculate_firmware {
 			$diffCountLowRate = $diffCountLowRate + 1;
 		}
 	}
-
+	$ratio = 0;
 	if ($ID < 6000) {
 		$DAQFirmware = "0.0";
 	} else {
-		if ($lineCount > 0) {
+		if ($eventStart > 0) {
+			$ratio = $lineCount/$eventStart * 100;
+		}
+		#Mark Adams suggested checking that the collected problems is about 1% of the total number of events
+		if ($lineCount > 0 && $ratio > 1) {
 			if ($diffCount / $lineCount * 100 > 50) {
 				$DAQFirmware = "1.11";
 			} else {
