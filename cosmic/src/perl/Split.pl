@@ -62,6 +62,7 @@ $raw_filename = $ARGV[0];
 $output_dir=$ARGV[1];
 $ID = $ARGV[2];
 open IN, $raw_filename;
+open(ERRORS,">$raw_filename.errors");
 
 # Create and/or ensure output directory is writeable
 
@@ -209,16 +210,22 @@ while(<IN>){
 			$GPSSuspects++;
 			#print "$GPSSuspects", "\t", "$data_line","\n";
 			#print $_;
+			print ERRORS "SKIP 1-This line was skipped:\n";
+			print ERRORS "$_\n";
 			next;
 		}
 		
 		if ($dataRow[10] eq "000000.000" || $dataRow[9] eq "00000000"){ #munged GPS clock
 			$non_datalines ++;
+			print ERRORS "SKIP 2-Munged GPS clock:\n";
+			print ERRORS "$_\n";
 			next;
 		}
 		# substr($dataRow[11],3,2) >> substr($year,2,2); #more GPS munging GPS date cannot be later than upload or earlier than 1999
 		if (substr($dataRow[11],4,2) > substr($year,2,2)){#more GPS munging
 			$GPSSuspects++;
+			print ERRORS "SKIP 3-More GPS munging:\n";
+			print ERRORS "$_\n";
 			#print $., " Year in raw data line is bad, boss\n";
 			next;
 		}
@@ -226,6 +233,8 @@ while(<IN>){
 		#bug 535 re-opened date slipped back six years during a data-run
 		if (defined $date && substr($dataRow[11],4,2) != substr($date,4,2) && substr($dataRow[11],0,2) ne 01 && substr($dataRow[11],4,2) ne 01){ #just checking current value against $date will fail if $date is not def. Also, the year can change if it is 01 Jan. 
 			$GPSSuspects++;
+			print ERRORS "SKIP 4-Date slipped back six years during a data-run:\n";
+			print ERRORS "$_\n";
 			#print "$. Line 228 \n";
 			next; #don't allow $time or $date to be set to the values in the current line--those are goofy
 		}
@@ -236,11 +245,13 @@ while(<IN>){
 		$lastTime = $time;
 				
 		if ($rollover_flag == 5){ #this is a stuck GPS latch
-			next if $flaggedLatch == hex($dataRow[9]);#The latch hasn't advanced yet.
-			if ($flaggedLatch != hex($dataRow[9])){#the rollover has recovered
+			print ERRORS "This line would have been skipped due to a stuck GPS latch:\n";
+			print ERRORS "$_\n";
+			#next if $flaggedLatch == hex($dataRow[9]);#The latch hasn't advanced yet.
+			#if ($flaggedLatch != hex($dataRow[9])){#the rollover has recovered
 				$rollover_flag = 0;#We need this to get into the block that starts if ($rollover_flag ==0)
 				$flaggedLatch = $flaggedDate = $flaggedTime = 0;
-			}
+			#}
 			if ($flaggedDate != $dataRow[11]){#the date advanced
 				$rollover_flag = 0;#We need this to get into the block that starts if ($rollover_flag ==0)
 				$flaggedLatch = $flaggedDate = $flaggedTime = 0;
@@ -248,13 +259,15 @@ while(<IN>){
 		} 
 
 		if ($rollover_flag == 6){ #this is a stuck clock
-			next if $flaggedTime == $dataRow[10];#The clock hasn't advanced yet.
-			if ($flaggedTime != $dataRow[10]){ #The clock has advanced, do some clean up and move on
+			print ERRORS "This line would have been skipped due to a stuck clock:\n";
+			print ERRORS "$_\n";
+			#next if $flaggedTime == $dataRow[10];#The clock hasn't advanced yet.
+			#if ($flaggedTime != $dataRow[10]){ #The clock has advanced, do some clean up and move on
 				$rollover_flag = 0;
 				$flaggedLatch = $flaggedTime = 0;
 				$lastTime = $dataRow[10] if $lastDate == $dataRow[11]; #fixing bug 655
 				$cpld_latch = hex($dataRow[9]);
-			}
+			#}
 			if ($flaggedDate != $dataRow[11]){#the date advanced
 				$rollover_flag = 0;#We need this to get into the block that starts if ($rollover_flag ==0)
 				$flaggedLatch = $flaggedDate = $flaggedTime = 0;
@@ -270,6 +283,8 @@ while(<IN>){
 		#DE799F15 00 00 00 00 00 3C 00 00 DE1C993A 132532.010 111007 A 05 0 +0060
 		
 		if ($dataRow[11] == 111007 && $dataRow[9] eq DE1C993A){ #only need to check these two--this is really unlikely. Really. Checking them all is too expensive.
+			print ERRORS "SKIP 5-Looking for word 10 to be equal to DE1C993A and word 12 to be equal to 111007:\n";
+			print ERRORS "$_\n";
 			$non_datalines ++;
 			next;
 		}	
@@ -281,6 +296,8 @@ while(<IN>){
 		#DF2C1263 B4 00 37 00 37 00 37 00 DE57FC39 000000.009 200912 A 08 0 +0051
 		
 		if ($dataRow[10] > 235950 && $dataRow[11] != $date){ #munged GPS clock
+			print ERRORS "SKIP 6-Munged GPS clock:\n";
+			print ERRORS "$_\n";
 			$non_datalines ++;
 			next;
 		}
@@ -324,6 +341,8 @@ while(<IN>){
 			#$rollover_flag = 0; # reset the flag
 			#ThresholdTimes can deal with these rollovers if the difference between the buffers is "large". Toss out lines with "small" differences.
 			if (hex($dataRow[9]) - hex($dataRow[0]) < $CONST_hex8A && $cpld_trig < $cpld_latch){ 	#an arbitrarily large value.		
+				print ERRORS "SKIP 7-ThresholdTimes can deal with these rollovers if the difference between the buffers is large. Toss out lines with small differences.\n";
+				print ERRORS "$_\n";
 				$non_datalines++;
 				next; #This gets us around the $rollover_flag==0 check down below.		
 			}
@@ -334,6 +353,8 @@ while(<IN>){
 			#$rollover_flag = 0; # reset the flag
 			#ThresholdTimes can deal with these rollovers if the difference between the buffers is "large". Toss out lines with "small" differences.
 			if ($cpld_latch - $cpld_trig < $CONST_hex8A && $cpld_trig < $cpld_latch){ 	#an arbitrarily large value.		
+				print ERRORS "SKIP 8-ThresholdTimes can deal with these rollovers if the difference between the buffers is large. Toss out lines with small differences.\n";
+				print ERRORS "$_\n";
 				$non_datalines++;
 				next;		
 			}
@@ -344,6 +365,8 @@ while(<IN>){
 			#$rollover_flag = 0; # reset the flag
 			#An old board or a "small difference" makes this line invalid
 			if ($DAQID<=5999 || $cpld_latch - $cpld_trig < $CONST_hex8A){	
+				print ERRORS "SKIP 9-An old board or a small difference makes this line invalid.\n";
+				print ERRORS "$_\n";
 				$non_datalines++;
 				next; 		
 			}
@@ -357,20 +380,24 @@ while(<IN>){
 		#$rollover_flag = 5 if ($time != $lastTime && $cpld_latch == $last_cpld_latch && $recoveredFlag == 1); #Clock advanced. GPS latch did not
 		
 		if ($dataRow[10] != $lastTime && hex($dataRow[9]) == $last_cpld_latch) {#Clock advanced. GPS latch did not
-			$rollover_flag = 5; 
-			$flaggedLatch = hex($dataRow[9]);
-			$flaggedDate = $dataRow[11];
-			$non_datalines++;
-			next;
+			print ERRORS "This line would have been skipped due to that the clock advanced, the GPS latch did not:\n";
+			print ERRORS "$_\n";
+			#$rollover_flag = 5; 
+			#$flaggedLatch = hex($dataRow[9]);
+			#$flaggedDate = $dataRow[11];
+			#$non_datalines++;
+			#next;
 		}
 	
 		#$rollover_flag = 6 if ($cpld_latch != $last_cpld_latch && $time == $lastTime && $recoveredFlag == 1); #GPS latch advanced. Clock did not.
 		if (hex($dataRow[9]) != $last_cpld_latch && $dataRow[10] == $lastTime) {#GPS latch advanced. Clock did not.
-			$rollover_flag = 6;
-			$flaggedTime = $dataRow[10];
-			$flaggedDate = $dataRow[11];
-			$non_datalines++;
-			next;
+			print ERRORS "This line would have been skipped due to that the GPS latch advanced, the clock did not:\n";
+			print ERRORS "$_\n";
+			#$rollover_flag = 6;
+			#$flaggedTime = $dataRow[10];
+			#$flaggedDate = $dataRow[11];
+			#$non_datalines++;
+			#next;
 		}
 	
 		#Check the cause of the rollover flags, decide whether to accept this line, reset the flag
@@ -556,7 +583,6 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 				$raw_meta_written = 1;
 				# metadata file for raw and split files. 
 				open(META,">$raw_filename.meta");
-				open(ERRORS,">$raw_filename.errors");
 
 				#unbuffered write to META handle
 				$old_fh = select(META);
