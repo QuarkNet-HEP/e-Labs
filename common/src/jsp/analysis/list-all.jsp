@@ -33,12 +33,29 @@
 			</div>
 			
 			<div id="content">
+			<link type="text/css" href="../include/jquery/css/blue/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />	
+			<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>
+			<script type="text/javascript" src="../include/jquery/js/jquery-ui-1.7.3.custom.min.js"></script>
+			<script type="text/javascript" src="../include/jquery/js/jquery.event.hover-1.0.js"></script>			
+			<script type="text/javascript" src="../include/jquery/js/jquery.tablesorter.min.js"></script>
+			<script type="text/javascript">
+				$(document).ready(function() { 
+				$.tablesorter.addParser({
+					id: "runDate", 
+					is: function(s) { return false; },
+					format: function(s) { 
+					return $.tablesorter.formatFloat(new Date(s + " 00:00").getTime()); 
+				    },
+					type: "numeric"
+					});
+					$("#analysis-table").tablesorter({sortList: [[1,0]]}, {headers: {3:{sorter:'runDate'}, 8:{sorter:false}}});
+				}); 
+			</script>	
 
 <%
 	request.setAttribute("users", AnalysisManager.getAnalysisRuns(elab));
 
 %>
-
 
 <table id="analysis-table" class="tablesorter">
 	<thead>
@@ -133,6 +150,7 @@
 			</c:forEach>
 		</c:otherwise>
 	</c:choose>
+	</tbody>
 </table>
 		 	</div>
 		</div>
