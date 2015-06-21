@@ -58,7 +58,7 @@
 			</e:vswitch>
 		</p>
 		<p>
-			<e:tr name="Quarknet.Cosmic::Plot">
+			<e:tr name="I2U2.Cosmic::Plot">
 				<e:vswitch revert="${param.submit == 'Change'}">
 					<e:visible>
 						<strong>Plot Controls</strong>
@@ -134,7 +134,6 @@
 				</e:vswitch>
 			</e:tr>
 		</p>
-	
 		<%@ include file="../analysis/controls.jsp" %>
 		<p>
 			<!-- this MUST be used if all the elab:tr* stuff is to work                      -->

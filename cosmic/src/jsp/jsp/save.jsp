@@ -155,7 +155,7 @@ else{
                     %>
                         <jsp:useBean id="flux" scope="session" class="gov.fnal.elab.cosmic.beans.FluxBean" />
                     <%
-                    ElabTransformation storeOnly = new ElabTransformation("Quarknet.Cosmic::FluxStudy");
+                    ElabTransformation storeOnly = new ElabTransformation("I2U2.Cosmic::FluxStudy");
                     storeOnly.setDVName("Quarknet.Cosmic.Users::" + newDVName);
                     storeOnly.createDV(flux);
                     storeOnly.storeDV();
@@ -166,7 +166,7 @@ else{
                     %>
                         <jsp:useBean id="shower" scope="session" class="gov.fnal.elab.cosmic.beans.ShowerBean" />
                     <%
-                    ElabTransformation storeOnly = new ElabTransformation("Quarknet.Cosmic::ShowerStudy");
+                    ElabTransformation storeOnly = new ElabTransformation("I2U2.Cosmic::ShowerStudy");
                     storeOnly.setDVName("Quarknet.Cosmic.Users::" + newDVName);
                     storeOnly.createDV(shower);
                     storeOnly.storeDV();
@@ -177,7 +177,7 @@ else{
                     %>
                         <jsp:useBean id="lifetime" scope="session" class="gov.fnal.elab.cosmic.beans.LifetimeBean" />
                     <%
-                    ElabTransformation storeOnly = new ElabTransformation("Quarknet.Cosmic::LifetimeStudy");
+                    ElabTransformation storeOnly = new ElabTransformation("I2U2.Cosmic::LifetimeStudy");
                     storeOnly.setDVName("Quarknet.Cosmic.Users::" + newDVName);
                     storeOnly.createDV(lifetime);
                     storeOnly.storeDV();
@@ -188,7 +188,7 @@ else{
                     %>
                         <jsp:useBean id="performance" scope="session" class="gov.fnal.elab.cosmic.beans.PerformanceBean" />
                     <%
-                    ElabTransformation storeOnly = new ElabTransformation("Quarknet.Cosmic::PerformanceStudy");
+                    ElabTransformation storeOnly = new ElabTransformation("I2U2.Cosmic::PerformanceStudy");
                     storeOnly.setDVName("Quarknet.Cosmic.Users::" + newDVName);
                     storeOnly.createDV(performance);
                     storeOnly.storeDV();

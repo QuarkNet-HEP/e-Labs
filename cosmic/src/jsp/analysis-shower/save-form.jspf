@@ -4,7 +4,7 @@
 	<form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit="window.open('',this.target,'width=500,height=200,resizable=1');" align="center">
 		<e:commonMetadataToSave rawData="${showerResults.analysis.parameters['rawData']}"/>
 		<e:creationDateMetadata/>
-		<input type="hidden" name="metadata" value="transformation string Quarknet.Cosmic::ShowerStudy"/>
+		<input type="hidden" name="metadata" value="transformation string I2U2.Cosmic::ShowerStudy"/>
 		<input type="hidden" name="metadata" value="study string shower"/>
 		<input type="hidden" name="metadata" value="type string plot"/>
 		<input type="hidden" name="metadata" value="detectorcoincidence int ${showerResults.analysis.parameters['detectorCoincidence']}"/>
@@ -18,6 +18,7 @@
 
 		<input type="hidden" name="srcFile" value="plot.png"/>
 		<input type="hidden" name="srcThumb" value="plot_thm.png"/>
+		<input type="hidden" name="srcSvg" value="plot.svg"/>
 		<input type="hidden" name="srcFileType" value="png"/>
 		<!-- EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot -->
 		<input type="hidden" name="eventCandidates" value="eventCandidates" />

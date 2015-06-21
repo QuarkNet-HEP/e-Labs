@@ -25,7 +25,7 @@
 		<p>Click <strong>Analyze</strong> to use the default parameters. 
 		Control the analysis by expanding the options below.</p>
 		<p>
-			<e:tr name="Quarknet.Cosmic::ShowerStudy">
+			<e:tr name="I2U2.Cosmic::ShowerStudy">
 				<e:vswitch revert="true">
 					<e:visible>
 						<strong>Analysis Controls</strong> 
@@ -84,7 +84,7 @@
 			</e:tr>
 		</p>
 		<p>
-			<e:tr name="Quarknet.Cosmic::Plot">
+			<e:tr name="I2U2.Cosmic::Plot">
 				<e:vswitch revert="${param.submit == 'Change'}">
 					<e:visible>
 						<strong>Plot Controls</strong>
@@ -184,12 +184,6 @@
 				</e:vswitch>
 			</e:tr>
 		</p>
-		<p>
-			<!-- EPeronja-10/17/2013: THRESHOLD TEST
-			<input type="radio" name="thresholdfile" value="none" checked="true">Recreate TT file.<br />
-			<input type="radio" name="thresholdfile" value="static">Use Static TT file.<br />
-			-->		
-		</p>	
 		<%@ include file="../analysis/controls.jsp" %>
 		<p>
 			<!-- this MUST be used if all the elab:tr* stuff is to work                      -->
