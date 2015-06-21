@@ -9,7 +9,7 @@
 		<p>Click <strong>Analyze</strong> to use the default parameters. 
 		Control the analysis by expanding the options below.</p>
 		<p>
-			<e:tr name="Quarknet.Cosmic::LifetimeStudy">
+			<e:tr name="I2U2.Cosmic::LifetimeStudy">
 				<e:vswitch revert="true">
 					<e:visible>
 						<strong>Analysis Controls</strong> 
@@ -63,7 +63,7 @@
 			</e:tr>
 		</p>
 		<p>
-			<e:tr name="Quarknet.Cosmic::Plot">
+			<e:tr name="I2U2.Cosmic::Plot">
 				<e:vswitch revert="${param.submit == 'Change'}">
 					<e:visible>
 						<strong>Plot Controls</strong>
@@ -141,7 +141,7 @@
 					</e:hidden>
 				</e:vswitch>
 			</e:tr>
-			<e:tr name="Quarknet.Cosmic::LifetimeStudy">
+			<e:tr name="I2U2.Cosmic::LifetimeStudy">
 				<e:vswitch revert="${param.submit == 'Change'}">
 					<e:visible>
 						<strong>Fit Controls</strong>
