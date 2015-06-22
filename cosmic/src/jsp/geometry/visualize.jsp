@@ -4,11 +4,11 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-		<script src="http://code.highcharts.com/highcharts.js"></script>
-		<script src="http://code.highcharts.com/highcharts-3d.js"></script>
-		<script src="http://code.highcharts.com/modules/exporting.js"></script>
-		
+	<%--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>--%>
+ 		<script src="../include/jquery/js/jquery-1.7.2.min.js"></script>
+		<script src="../include/highcharts/js/highcharts.js"></script>
+		<script src="../include/highcharts/js/highcharts-3d.js"></script>
+		<script src="../include/highcharts/js/modules/exporting.js"></script>
 		<link href="../css/container.css" rel="stylesheet" type="text/css">		
 	</head>
 
@@ -38,21 +38,21 @@ $(function () {
     var cgiString = callingURL.substring(callingURL.indexOf('?'), callingURL.length);
 
     if (callingURL.indexOf('?') != -1) {
-      var x1 = parseInt(cgiString.substring(cgiString.indexOf('x1=') + 3, cgiString.indexOf('&y1=')),10);
-      var y1 = parseInt(cgiString.substring(cgiString.indexOf('y1=') + 3, cgiString.indexOf('&z1=')),10);
-      var z1 = parseInt(cgiString.substring(cgiString.indexOf('z1=') + 3, cgiString.indexOf('&x2=')),10);
+      var x1 = parseFloat(cgiString.substring(cgiString.indexOf('x1=') + 3, cgiString.indexOf('&y1=')),10);
+      var y1 = parseFloat(cgiString.substring(cgiString.indexOf('y1=') + 3, cgiString.indexOf('&z1=')),10);
+      var z1 = parseFloat(cgiString.substring(cgiString.indexOf('z1=') + 3, cgiString.indexOf('&x2=')),10);
       
-      var x2 = parseInt(cgiString.substring(cgiString.indexOf('x2=') + 3, cgiString.indexOf('&y2=')),10);
-      var y2 = parseInt(cgiString.substring(cgiString.indexOf('y2=') + 3, cgiString.indexOf('&z2=')),10);
-      var z2 = parseInt(cgiString.substring(cgiString.indexOf('z2=') + 3, cgiString.indexOf('&x3=')),10);
+      var x2 = parseFloat(cgiString.substring(cgiString.indexOf('x2=') + 3, cgiString.indexOf('&y2=')),10);
+      var y2 = parseFloat(cgiString.substring(cgiString.indexOf('y2=') + 3, cgiString.indexOf('&z2=')),10);
+      var z2 = parseFloat(cgiString.substring(cgiString.indexOf('z2=') + 3, cgiString.indexOf('&x3=')),10);
       
-      var x3 = parseInt(cgiString.substring(cgiString.indexOf('x3=') + 3, cgiString.indexOf('&y3=')),10);
-      var y3 = parseInt(cgiString.substring(cgiString.indexOf('y3=') + 3, cgiString.indexOf('&z3=')),10);
-      var z3 = parseInt(cgiString.substring(cgiString.indexOf('z3=') + 3, cgiString.indexOf('&x4=')),10);
+      var x3 = parseFloat(cgiString.substring(cgiString.indexOf('x3=') + 3, cgiString.indexOf('&y3=')),10);
+      var y3 = parseFloat(cgiString.substring(cgiString.indexOf('y3=') + 3, cgiString.indexOf('&z3=')),10);
+      var z3 = parseFloat(cgiString.substring(cgiString.indexOf('z3=') + 3, cgiString.indexOf('&x4=')),10);
       
-      var x4 = parseInt(cgiString.substring(cgiString.indexOf('x4=') + 3, cgiString.indexOf('&y4=')),10);
-      var y4 = parseInt(cgiString.substring(cgiString.indexOf('y4=') + 3, cgiString.indexOf('&z4=')),10);
-      var z4 = parseInt(cgiString.substring(cgiString.indexOf('z4=') + 3, cgiString.length),10);
+      var x4 = parseFloat(cgiString.substring(cgiString.indexOf('x4=') + 3, cgiString.indexOf('&y4=')),10);
+      var y4 = parseFloat(cgiString.substring(cgiString.indexOf('y4=') + 3, cgiString.indexOf('&z4=')),10);
+      var z4 = parseFloat(cgiString.substring(cgiString.indexOf('z4=') + 3, cgiString.length),10);
     }
 
 	//Find min and max of x, y, and z values
