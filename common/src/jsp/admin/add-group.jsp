@@ -291,7 +291,7 @@
 										</c:forEach>
 									</select>
 								</td>
-								<td>OR enter a new state/country, abbreviation and state type.<br />
+								<td>OR enter a new province/country, abbreviation and state type.<br />
 									<input type="text" id="stateNew" name="stateNew" value="" size="30" maxlength="50"></input>
 									<input type="text" id="stateAbbrev" name="stateAbbrev" value="" size="5" maxlength="3"></input>
 									<select name="stateType" id="stateType">
