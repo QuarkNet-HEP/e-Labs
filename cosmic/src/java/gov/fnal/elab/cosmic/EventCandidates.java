@@ -5,6 +5,7 @@ package gov.fnal.elab.cosmic;
 
 import gov.fnal.elab.util.ElabUtil;
 import gov.fnal.elab.util.NanoDate;
+import gov.fnal.elab.util.ElabMemory;
 
 import org.apache.commons.lang.time.DateFormatUtils;
 
@@ -32,6 +33,7 @@ public class EventCandidates {
     private Row crt;
     private Set allIds;
     private String eventNum;
+    private String userFeedback;
     
     public static final String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
     public static final TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
@@ -44,13 +46,15 @@ public class EventCandidates {
     private static final String[] STRING_ARRAY = new String[0];
 
     public void read(File in, int eventStart, String en)
-            throws IOException {
+            throws Exception {
         this.eventNum = en;
         int lineNo = 1;
         BufferedReader br = new BufferedReader(new FileReader(in));
         String line = br.readLine();
         Set ids = new HashSet();
         Set multiciplicities = new HashSet();
+        ElabMemory em = new ElabMemory();
+        userFeedback = "";
         while (line != null) {
             // ignore comments in the file
             if (!line.matches("^.*#.*")) {
@@ -65,20 +69,24 @@ public class EventCandidates {
                     if (this.eventNum == null) {
                         this.eventNum = arr[0];
                     }
-
                     ids.clear();
                     multiciplicities.clear();
                     for (int i = 3; i < arr.length; i += 3) {
                         String[] idchan = arr[i].split("\\.");
-                        idchan[0] = idchan[0].intern();
-                        ids.add(idchan[0]);
-                        String mult = arr[i].intern();
-                        multiciplicities.add(mult);
+                        //idchan[0] = idchan[0].intern();
+                        if (!ids.contains(idchan[0])) {
+                        	ids.add(idchan[0]);
+                        }
+                        //String mult = arr[i].intern();
+                        if (!multiciplicities.contains(arr[i])) {
+                        	multiciplicities.add(arr[i]);
+                        }
                         allIds.add(idchan[0]);
                     }
                     
                     row.setIds((String[]) ids.toArray(STRING_ARRAY));
                     row.setMultiplicity((String[]) multiciplicities.toArray(STRING_ARRAY));
+
                     String jd = arr[4];
                     String partial = arr[5];
 
@@ -89,11 +97,19 @@ public class EventCandidates {
                     rows.add(row);
                     if (this.eventNum.equals(arr[0])) {
                         crt = row;
+                    }     
+                    em.refresh();
+                    if (em.isCritical()) {
+                    	Exception e = new Exception("Heap memory left: "+String.valueOf(em.getFreeMemory())+"MB");
+                    	userFeedback = "We stopped processing the eventCandidates file at line: <br />"+line+".<br/>" +
+                    				   "Please select fewer files or files with fewer events.";
+                    	throw e;
                     }
                 }
             }
             line = br.readLine();
         }
+        br.close();
     }
     
     public Collection getRows() {
@@ -111,11 +127,20 @@ public class EventCandidates {
     public String getEventNum() {
         return this.eventNum;
     }
+    
+    public String getUserFeedback() {
+    	return this.userFeedback;
+    }
 
     public static EventCandidates read(File in, int csc, int dir,
-            int eventStart, String eventNum) throws IOException {
-        EventCandidates ec = new EventCandidates(new EventsComparator(csc, dir));
-        ec.read(in, eventStart, eventNum);
+            int eventStart, String eventNum) throws Exception {
+    	EventCandidates ec = null;
+    	try {
+	        ec = new EventCandidates(new EventsComparator(csc, dir));
+	        ec.read(in, eventStart, eventNum);
+    	} catch (Exception e) {
+    		System.out.println("Error in EventCandidates: "+e.getMessage());
+    	}
         return ec;
     }
 
