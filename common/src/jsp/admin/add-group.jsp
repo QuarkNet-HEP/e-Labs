@@ -308,7 +308,7 @@
 									<select name="city" id="city"></select>
 								</td>
 								<td>OR enter a new city <input type=text name=cityNew id="cityNew" value="" size=30 maxlength=50 ></input> 
-									<a href="#" id="cityList" onclick="return false;"><img src="../graphics/view_data.gif" alt=" " border="0" title="" /></a>
+									<a href="#" id="cityList" onclick="return false;" title="" ><img src="../graphics/view_data.gif" alt=" " border="0" /></a>
    								</td>
 							</tr>							
 							<tr>
@@ -317,13 +317,13 @@
 									<select name="school" id="school"></select>	
 								</td>
 								<td>OR enter a new school/institution <input type=text id="schoolNew" name=schoolNew value="" size=30 maxlength=50></input> 
-									<a href="#" id="schoolList" onclick="return false;"><img src="../graphics/view_data.gif" alt=" " border="0" title="" /></a>
+									<a href="#" id="schoolList" onclick="return false;" title=""><img src="../graphics/view_data.gif" alt=" " border="0" /></a>
 								</td>
 							</tr>					
 							<tr>
 								<td>New teacher/leader</td>
 								<td colspan="2"><input type=text name=teacherNew id="teacherNew" value="" size=30 maxlength=50></input>
-									<a href="#" id="teacherList" onclick="return false;"><img src="../graphics/view_data.gif" alt=" " border="0" title="" /></a>
+									<a href="#" id="teacherList" onclick="return false;" title=""><img src="../graphics/view_data.gif" alt=" " border="0" /></a>
 								</td>
 							</tr>
 							<tr>
