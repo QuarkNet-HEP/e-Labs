@@ -79,17 +79,24 @@
 		dir = "a".equals(request.getParameter("dir")) ? 1 : -1;
 	}
 	
-	
 	File ecFile = new File((String) analysis.getParameter("eventCandidates"));
 	String ecPath = ecFile.getAbsolutePath();
 	EventCandidates ec = EventCandidates.read(ecFile, csc, dir, eventStart, eventNum);
 	Collection rows = ec.getRows();
+	String message = ec.getUserFeedback();
+	
+	request.setAttribute("message", message);
 	request.setAttribute("eventDir", ecPath);
 	request.setAttribute("rows", rows);
-	request.setAttribute("crtEventRow", ec.getCurrentRow());
-%>
+	request.setAttribute("crtEventRow", ec.getCurrentRow());		
 
+%>
+<c:choose>
+<c:when test="${not empty rows}">
 <h1>Shower study candidates (<%= rows.size() %>)</h1>
+<c:if test='${message != "" }'>
+	<div>${message }</div>
+</c:if>
 <table id="shower-results">
 	<tr>
 		<td valign="top" width="70%">
@@ -175,6 +182,11 @@
 			<div id="footer">
 			</div>
 		</div>
+</c:when>
+<c:otherwise>
+	${message }
+</c:otherwise>
+</c:choose>
 		<!-- end container -->
 	</body>
 </html>
