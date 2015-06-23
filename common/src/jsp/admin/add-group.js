@@ -165,12 +165,16 @@ function validateForm() {
 		}
 	}
 	if (teacherNew.value == null || teacherNew.value == "") {
-		var teacher = document.getElementById("teacher");
-		if (teacher.value == null || teacher.value == "") {
-			messages.innerHTML = "Please select or enter a teacher/leader.";
-			return false;
-		}
-	}	
+		messages.innerHTML = "Please enter a teacher/leader.";
+		return false;		
+	}
+
+	var teacherEmail = document.getElementById("teacherEmail");
+	if (teacherEmail.value == null || teacherEmail.value == "") {
+		messages.innerHTML = "Please enter an email.";
+		return false;		
+	}
+	
 	//GROUP CHECKINGS
 	var groupNew = document.getElementById("researchGroup");
 	if (groupNew.value != null && groupNew.value != "") {
@@ -225,11 +229,11 @@ function validateForm() {
 	}	
 	
 	//ROLE CHECKING
-	var role = document.getElementById("groupRole");
-	if (role.value == null || role.value == "") {
-		messages.innerHTML = "Please select a role.";
-		return false;
-	}	
+	//var role = document.getElementById("groupRole");
+	//if (role.value == null || role.value == "") {
+	//	messages.innerHTML = "Please select a role.";
+	//	return false;
+	//}	
 	
 	//PASSWORD CHECKING
 	var password1 = document.getElementById("passwd1");
@@ -270,29 +274,48 @@ $(document).ready(function() {
 	    document.getElementById("stateAbbrev").value = "";
 	    document.getElementById("stateType").value = "0";
 	    createOption(document.getElementById("city"), cities, 2);
+	    var cityList = "";
+	    for (var i = 0; i < cities.length; i++) {
+			var clean = cities[i].value.replace(/[\[\]']+/g,'');
+			var values = clean.split(",");
+			cityList = cityList + values[2] + "\n";
+	    }
+	    document.getElementById("cityList").setAttribute("title", cityList);
 	});
+	
 	$("#city").bind("change", function() {
 	    city = $(this).find("option:selected").attr("name");
 	    var schools = document.getElementsByName("schoolIn"+stateAbbrev+city.trim());
 	    document.getElementById("cityNew").value = "";
 	    createOption(document.getElementById("school"), schools, 3);
+	    var schoolList = "";
+	    for (var i = 0; i < schools.length; i++) {
+			var clean = schools[i].value.replace(/[\[\]']+/g,'');
+			var values = clean.split(",");
+			schoolList = schoolList + values[3] + "\n";
+	    }
+	    document.getElementById("schoolList").setAttribute("title", schoolList);
 	});
 	$("#school").bind("change", function() {
 	    school = $(this).find("option:selected").attr("name");
 	    var teachers = document.getElementsByName("teacherIn"+stateAbbrev+city.trim()+school.trim());
-	    document.getElementById("schoolNew").value="";
-	    createOption(document.getElementById("teacher"), teachers, 1);
-	});
-	$("#teacher").bind("change", function() {
-	    document.getElementById("teacherNew").value="";
+	//    document.getElementById("schoolNew").value="";
+	//    createOption(document.getElementById("teacher"), teachers, 1);
+	    var teacherList = "";
+	    for (var i = 0; i < teachers.length; i++) {
+			var clean = teachers[i].value.replace(/[\[\]']+/g,'');
+			var values = clean.split(",");
+			teacherList = teacherList + values[1] + "\n";
+	    }
+	    document.getElementById("teacherList").setAttribute("title", teacherList);
 	});
 	$("#project1").bind("change", function() {
 		var $el = $(this);
 		if ($el.prop("checked")) {
-			$('#groupRole').append('<option value="upload">upload</option>');
+			//$('#groupRole').append('<option value="upload">upload</option>');
 			document.getElementById("daqs").style.visibility = "visible";
 		} else {
-			$('#groupRole option[value="upload"]').remove();			
+			//$('#groupRole option[value="upload"]').remove();			
 			document.getElementById("daqs").style.visibility = "hidden";
 		}
 	});
