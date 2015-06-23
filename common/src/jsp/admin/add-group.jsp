@@ -19,7 +19,7 @@
     String cityNew = request.getParameter("cityNew");
     String school = request.getParameter("school");
     String schoolNew = request.getParameter("schoolNew");
-    String teacher = request.getParameter("teacher");
+    //String teacher = request.getParameter("teacher");
     String teacherNew = request.getParameter("teacherNew");
     String teacherEmail = request.getParameter("teacherEmail");
     String researchGroup = request.getParameter("researchGroup");
@@ -119,14 +119,14 @@
 			if (!teacherNew.equals("")) {
 				teacherId = DataTools.insertTeacher(elab, teacherNew, teacherEmail, schoolId);
 				teacherName = teacherNew;
-			} else {
-				if (teacher != null && !teacher.equals("")) {
-					teacherId = Integer.valueOf(teacher);
-					teacherName = DataTools.getTeacherName(elab, teacherId);
-				} else {
-					messages = "Not a valid teacher: "+ teacherName;
-				}
-			}
+			} //else {
+			 //	if (teacher != null && !teacher.equals("")) {
+			//		teacherId = Integer.valueOf(teacher);
+				//	teacherName = DataTools.getTeacherName(elab, teacherId);
+				//} else {
+			//		messages = "Not a valid teacher: "+ teacherName;
+			//	}
+			//}
 		}
 		String[] researchProjectName = new String[researchProject.length];
 		for (int i = 0; i < researchProject.length; i++) {
@@ -221,9 +221,11 @@
 	           	}
 			}//end of looping through the projects
             done = "done";
+        } else {
+        	messages = "Failed to add teacher. Report problem to e-labs@fnal.gov.";
         }
 	}//end of submit
-	if (submit != null && submit.equals("Add a new group")) {
+	if (submit != null && submit.equals("Add a new teacher")) {
 		done = "";
 		messages = "";
 	}
@@ -239,7 +241,6 @@
 	request.setAttribute("defaultYear", defaultYear);
 	request.setAttribute("survey", survey);
 	request.setAttribute("researchGroup", researchGroup);
-	request.setAttribute("groupRole", groupRole);
 	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -252,8 +253,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/add-group.css"/>
 		<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>	
 		<script type="text/javascript" src="add-group.js"></script>	
-		<script>
-		</script>
+		<script type="text/javascript" src="../include/elab.js"></script>
   	</head>
 	<body id="add-group">
 		<!-- entire page container -->
@@ -267,7 +267,7 @@
 				</div>
 			</div>
 			<div id="content">	
-	    		<h1>Input the information for your new group or teacher.</h1>
+	    		<h1>Input the information for your new teacher.</h1>
     		    <form name="myform" method="post" onsubmit="return validateForm();">
 		    		<table width="740" border="1">
 					<c:choose>
@@ -276,7 +276,7 @@
     		        	<td>
     						<center>
     						<table id="main-table">
-    						<tr><td></td><td colspan="2"><br />States includes states from the U.S., provinces from Canada, and countries.  
+    						<tr><td></td><td colspan="3"><br />States includes states from the U.S., provinces from Canada, and countries.  
     											When registering countries other than Canada and the U.S., use the country name 
     											for state and these three letter
     											<e:popup href="../jsp/abbrev.jsp" target="abbrev" width="400" height="700">abbreviations</e:popup>.
@@ -307,26 +307,28 @@
 								<td>
 									<select name="city" id="city"></select>
 								</td>
-								<td>OR enter a new city <input type=text name=cityNew id="cityNew" value="" size=30 maxlength=50 ></input></td>
-							</tr>
+								<td>OR enter a new city <input type=text name=cityNew id="cityNew" value="" size=30 maxlength=50 ></input> 
+									<a href="#" id="cityList" onclick="return false;"><img src="../graphics/view_data.gif" alt=" " border="0" title="" /></a>
+   								</td>
+							</tr>							
 							<tr>
 								<td>School/Institution</td>
 								<td>
 									<select name="school" id="school"></select>	
 								</td>
-								<td>OR enter a new school/institution <input type=text id="schoolNew" name=schoolNew value="" size=30 maxlength=50></input> </td>
+								<td>OR enter a new school/institution <input type=text id="schoolNew" name=schoolNew value="" size=30 maxlength=50></input> 
+									<a href="#" id="schoolList" onclick="return false;"><img src="../graphics/view_data.gif" alt=" " border="0" title="" /></a>
+								</td>
 							</tr>					
 							<tr>
-								<td>Teacher/Leader</td>
-								<td>
-									<select name="teacher" id="teacher"></select>
+								<td>New teacher/leader</td>
+								<td colspan="2"><input type=text name=teacherNew id="teacherNew" value="" size=30 maxlength=50></input>
+									<a href="#" id="teacherList" onclick="return false;"><img src="../graphics/view_data.gif" alt=" " border="0" title="" /></a>
 								</td>
-								<td>OR enter a new teacher/leader <input type=text name=teacherNew id="teacherNew" value="" size=30 maxlength=50></input></td>
 							</tr>
 							<tr>
 								<td>Teacher's/Leader's Email</td>
-								<td>(if entering a new Teacher/Leader)</td>
-								<td><input type=text name=teacherEmail id="teacherEmail" value="" size=30 maxlength=50></input></td>
+								<td colspan="2"><input type=text name=teacherEmail id="teacherEmail" value="" size=30 maxlength=50></input></td>
 							</tr>
 							<tr>
 								<td>Group Name</td>
@@ -336,11 +338,12 @@
 							</tr>
 							<tr>
 								<td>Project</td>
-								<td colspan="2">
+								<td>
 									<c:forEach items="${projects }" var="p">
 										<input type="checkbox" name="researchProject" value="${p.key }" id="project${p.key }"> ${p.value }</input>
 									</c:forEach>
 								</td>
+								<td><div id="daqs" style="visibility: hidden;">DAQ Board ID(s) <input type="text" name="detectorString" id="detectorString" value="" size=30 maxlength=500></input> (e.g. 180,181,182)</div></td>
 							</tr>
 							<tr>
 								<td>Academic Year</td>
@@ -359,17 +362,6 @@
 									</select>
 								</td>
 							</tr>	
-							<tr>
-								<td>Role</td>
-								<td>
-                                    <select name="groupRole" id="groupRole" >
-                                    	<option></option>
-                                        <option value="teacher">teacher</option>
-                                        <option value="user">user</option>
-                                    </select>
-								</td>
-								<td><div id="daqs" style="visibility: hidden;">DAQ Board ID(s) <input type="text" name="detectorString" id="detectorString" value="" size=30 maxlength=500></input> (e.g. 180,181,182)</div></td>
-							</tr>				
 							<tr>
 								<td>In Survey</td>
 								<td colspan="2">
@@ -411,12 +403,13 @@
    									</c:choose>
    								</td>
    							</tr>
-							<tr><td><div style="text-align: center;"><input type="submit" name="submitinfo" value="Add a new group"></div></td></tr>							
+							<tr><td><div style="text-align: center;"><input type="submit" name="submitinfo" value="Add a new teacher"></div></td></tr>							
     				    </table>
     				</td></tr>
     				</c:otherwise>
     				</c:choose>
     				</table>
+					<input type="hidden" name="groupRole" id="groupRole" value="teacher"></input>
     		    </form>
     		    <div id="messages">${messages }</div>
 			</div>
