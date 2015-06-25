@@ -3,6 +3,7 @@
  */
 package gov.fnal.elab.cosmic;
 
+import gov.fnal.elab.Elab;
 import gov.fnal.elab.util.ElabUtil;
 import gov.fnal.elab.util.NanoDate;
 import gov.fnal.elab.util.ElabMemory;
@@ -15,13 +16,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TimeZone;
-import java.util.TreeSet;
 import java.util.*;
 
 public class EventCandidates {
@@ -101,6 +95,16 @@ public class EventCandidates {
                     em.refresh();
                     if (em.isCritical()) {
                     	Exception e = new Exception("Heap memory left: "+String.valueOf(em.getFreeMemory())+"MB");
+                    	Elab elab = Elab.getElab(null, "cosmic");
+                    	String emailMessage = 	"The code stopped processing the eventCandidates file: "+in.getAbsolutePath()+"\n"+
+                    							"at line: "+line+"\n"+
+                    							"Total heap memory: "+ String.valueOf(em.getTotalMemory())+"\n"+
+                    							"Max heap memory: "+ String.valueOf(em.getMaxMemory())+"\n"+
+                    							"Used heap memory: "+ String.valueOf(em.getUsedMemory())+"\n"+
+                    							"Free heap memory: "+ String.valueOf(em.getFreeMemory())+"\n"+
+                    							"Had we continued processing the server would have died with an OutOfMemoryError.";
+                    							
+                    	em.notifyAdmin(elab, emailMessage);
                     	userFeedback = "We stopped processing the eventCandidates file at line: <br />"+line+".<br/>" +
                     				   "Please select fewer files or files with fewer events.";
                     	throw e;
