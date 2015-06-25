@@ -18,7 +18,18 @@
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.cosmic.plot.*" %>   
 <%@ include file="../analysis/results.jsp" %>
-
+<%@ page import="gov.fnal.elab.util.URLEncoder" %>
+<%
+	String subject = URLEncoder.encode(elab.getName() + " Interactive Performance Plot Feedback");
+	String body = URLEncoder.encode("Thank you for your interest and help!. Please complete the fields below with your feedback:\n\n" 
+		+ "First Name:\n\n"
+		+ "Last Name:\n\n"
+		+ "City:\n\n"
+		+ "State:\n\n"
+		+ "School:\n\n"
+		+ "Your feedback about the Performance Interactive Plots:\n");
+	String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -54,9 +65,12 @@
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.text.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/jquery.flot.canvas.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot/jquery.flot.axislabels.js"></script>
+				<script type="text/javascript" src="../include/jquery/flot083/d3.v3.min.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/excanvas.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/excanvas.min.js"></script>
 				<script type="text/javascript" src="../include/jquery/flot083/excanvas.compiled.js"></script>
+				<script type="text/javascript" src="../include/json/json.worker.js"></script>
+				<script type="text/javascript" src="../include/json/json.async.js"></script>
 				<script type="text/javascript" src="../include/canvas2image.js"></script>
 				<script type="text/javascript" src="../include/base64.js"></script>
 				<script type="text/javascript" src="../analysis/analysis-plot.js"></script>
@@ -65,12 +79,16 @@
 				$(document).ready(function() {
 					$.ajax({
 						type: "GET",
-						success: onDataLoad
+						success: onDataLoad1
 					});
-				}); 				
+				}); 	
 				</script>
-				<div class="graph-container">
-					<div id="placeholder" class="graph-placeholder" style="float:left; width:650px; height:650px;"></div>
+				<div><div style="text-align: center;">
+					<a href="output.jsp?id=${results.id }">View static plot</a><br /><br />
+					<div style="font-size: x-small;"><i>Send feedback to</i> <a href="<%= mailURL %>">e-labs@fnal.gov</a></div>
+				</div></div>									
+				<div class="graph-container" style="height: 600px;">
+					<div id="placeholder" class="graph-placeholder" style="float:left; width:650px; height:550px;"></div>
 					<div id="overview" class="graph-placeholder" style="float:right;width:160px; height:150px;"></div>
 					<div id="interactive" style="float:right;width:160px; height:325px;">
 						<p><label><input id="enableTooltip" type="checkbox" checked="checked"></input>Enable tooltip</label></p>
@@ -79,13 +97,9 @@
 							<br /><span id="hoverdata" class="hoverdata"></span>
 							<br /><span id="clickdata" class="clickdata"></span>
 						</p>				
-						<p>
-							<label><input id="enableSteps" type="checkbox"></input>Enable Steps</label>
-						</p>
 						<p><div id="zoomoutbutton" style="float:left; width:80px; height:30px;"> </div>
 						   <div id="resetbutton" style="float:right; width:80px; height:30px;"> </div></p>
 						<p><div id="arrows" style="float:right; width:160px; height:100px;"><div id="arrowcontainer" style="position:relative;"></div></div></p>
-						
 						<p class="message"></p>
 						<p class="click"></p>
 					</div>
@@ -94,7 +108,12 @@
 
 		 	</div>
 		</div>
-
+		<div id="incdec">Bin Width
+    		<input type="number" name="binWidth" id="binWidth" step="60" min="60" style="width: 60px;"/>
+		</div>
+		<div class="slider">
+	    	<input id="range" type="range" step="60" min="60" style="width: 650px;">
+		</input>
 <p> 
 		<select name="externalFiles" id="externalFiles" >
  			<option></option>
