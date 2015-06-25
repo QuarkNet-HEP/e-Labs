@@ -10,6 +10,7 @@
 <%@ page import="java.text.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.cosmic.bless.*" %>
+<%@ page import="gov.fnal.elab.cosmic.plot.*" %>
 
 <% 
 	//create the file for the dynamic charts
@@ -58,7 +59,22 @@
 	} catch (Exception e) {
 			message = e.getMessage();
 	}
-		
+	
+	//create the file for the dynamic charts
+	String fluxPlotJsonFile = results.getOutputDir() + "/FluxPlotFlot";
+	try {
+		//this code is for admin to be able to see the graph
+		File f = new File(fluxPlotJsonFile);
+		if (!f.exists()) {
+			   String fileName = results.getOutputDir()+"/sort.out";
+			   File file = new File(fileName);
+		       String binValue = results.getAnalysis().getParameter("flux_binWidth").toString();
+		       Double bV = Double.valueOf(binValue);
+		       FluxPlotDataStream fpds = new FluxPlotDataStream(file, bV, results.getOutputDir());
+		}
+	} catch (Exception e) {
+			message = e.getMessage();
+	}		
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -82,6 +98,7 @@
 			</div>
 			
 			<div id="content">
+
 <div class="toolbox" align="center">
 	<h3>Toolbox</h3>
 	<hr />
@@ -121,6 +138,9 @@
 	<a href="../analysis-blessing/bless-plots-range.jsp?id=${results.id }">View blessing plots</a>
 </p>
 
+<p>
+	<a href="flux-plot.jsp?id=${results.id }">View interactive Flux plots</a> (Beta Version)<br />
+</p>
 <p>
 	<img src="${results.outputDirURL}/plot.png"/>
 </p>

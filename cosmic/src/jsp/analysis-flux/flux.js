@@ -1,4 +1,14 @@
-var fluxData;
+var fluxData, fluxDataError;
+var yDefaultPosition = "left";
+var xDefaultPosition = "bottom";
+var sliderMinX = -1;
+var sliderMaxX = -1;
+var maxYaxis = -1.0;
+var maxError = -1.0;
+var minX = -1;
+var maxX = -1;
+var nBins = -1;
+var bins;
 
 Date.prototype.customFormat = function(formatString){
     var YYYY,YY,MMMM,MMM,MM,M,DDDD,DDD,DD,D,hhh,hh,h,mm,m,ss,s,ampm,AMPM,dMod,th;
@@ -27,7 +37,7 @@ options = {
             show: true
         },		
         legend: {  
-            show: true,  
+            show: false,  
             margin: 10,  
             backgroundOpacity: 0.5  
         },  
@@ -56,29 +66,21 @@ options = {
 		crosshair: {
 			mode: "x"
 		},
+		xaxis: {
+			mode: "time",
+			tickFormatter: function (val, axis) {		
+				var d = new Date(val);
+				return d.customFormat("#DD#/#MMM#<br />#hh#:#mm#");
+			}			
+		},
 		yaxes: {
 			axisLabelUseCanvas: true
 		},
 		xaxes: [
 				{	
 					axisLabelUseCanvas: true,
-					tickFormatter: function (val, axis) {
-				
-						var d = new Date(val);
-						return d.customFormat("#DD#/#MMM# #hh#:#ss#");
-					}
 				},
-				{	
-					axisLabelUseCanvas: true,
-				}
-				],
-		legend: {
-			container: "#placeholderLegend",
-			noColumns: 4,
-            labelFormatter: function(label, series){
-              return '<a href="#" onClick="togglePlot('+series.idx+'); return false;">'+label+'</a>';
-            }
-        }
+		]
 };
 
 overviewOptions = {
@@ -130,13 +132,6 @@ function bindTooltip() {
 
 }//end of bindZoomingPanningTooltip
 
-
-
-function timeFormatter(val, series) {
-	var d = new Date(val);
-	return d.customFormat("#DD#/#MMM# #hh#:#ss#");	
-}
-
 togglePlot = function(seriesIdx) {
 	  var plotData = onOffPlot.getData();
 	  plotData[seriesIdx].points.show = !plotData[seriesIdx].points.show;
@@ -146,23 +141,194 @@ togglePlot = function(seriesIdx) {
 	  refresh();
 }//end of togglePlot
 
+
+function onDataLoad1() {
+	loadJSON(function(response) {
+		JSON.parseAsync(response, function(json) {
+			onDataLoad(json);
+		});
+	});
+}
+
+function loadJSON(callback) {   
+    var xobj = new XMLHttpRequest();
+	var outputDir = document.getElementById("outputDir");
+    xobj.overrideMimeType("application/json");
+    xobj.open('GET', outputDir.value+"/FluxPlotFlot", true); // Replace 'my_data' with the path to your file
+    xobj.onreadystatechange = function () {
+          if (xobj.readyState == 4 && xobj.status == "200") {
+            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+            callback(xobj.responseText);
+          }
+    };
+    xobj.send(null);  
+ }
+
 function onDataLoad(json) {	
 	fluxData = json.fluxdata;
-	data.push(fluxData);
+	fluxDataError = json.error;
+	binValue = json.binValue;
+	globalBinWidth = binValue;
+	minX = json.minX;
+	maxX = json.maxX;
+	nBins = json.nBins;
+	bins = json.fakeBins;
+	studyLabel = "Flux Study";
+	xAxisLabel = "Time UTC (hours:minutes)";
+	yAxisLabel = "Flux (events/m^2/60-seconds)";	
+
+	if (json.fluxdata != null) {
+		fluxData.data = getDataWithBins(fluxData.data, binValue, minX, maxX, nBins, bins);
+		data.push(fluxData);
+	}
+	if (json.fluxdata != null) {
+		fluxDataError.data = getError(fluxData.data_original, binValue, minX, maxX, nBins, bins);
+		data.push(fluxDataError);
+	}
+	setSliders(60, 6000);
+	
+	$("#range").attr({"min":Math.floor(sliderMinX), "max":Math.floor(sliderMaxX), "value": binValue});
+	$("#binWidth").attr({"min":Math.floor(sliderMinX), "max":Math.floor(sliderMaxX), "value": binValue});
+	
 	onOffPlot = $.plot("#placeholder", data, options);
 	overviewPlot = $.plot("#overview", data, overviewOptions);
-	var newseries = onOffPlot.getData();
-	for (var i = 0; i < newseries.length; i++) {
-		if (i == 0) {
-			newseries[i].xaxis.tickFormatter = timeFormatter;
+	var axes = onOffPlot.getAxes();
+    axes.yaxis.options.max = maxYaxis + maxError;	
+    onOffPlot.setupGrid();
+    onOffPlot.draw();
+	var axesOverview = overviewPlot.getAxes();
+	axesOverview.yaxis.options.max = maxYaxis + maxError;	
+	overviewPlot.setupGrid();
+    overviewPlot.draw();
+
+    $('#range').on('input', function(){
+        $('#binWidth').val($('#range').val());
+        if ($('#range').val() > 0) {
+            reBinData(json,$('#range').val());        	
+        }
+    });
+    $('#binWidth').on('change', function(){
+        $('#range').val($('#binWidth').val());
+        if ($('#binWidth').val() > 0) {
+        	reBinData(json,$('#binWidth').val());
+        }
+    });
+
+    
+    $("<div class='button' style='left:20px;top:20px'>reset</div>")
+	.appendTo($("#resetbutton"))
+	.click(function (event) {
+		event.preventDefault();
+		reBinData(json, json.binValue);
+		onOffPlot = $.plot("#placeholder", data, options);
+		overviewPlot = $.plot("#overview", data, overviewOptions);				
+		$(".message").html("");
+		$(".click").html("");
+		refresh();			
+	});	
+    bindEverything();
+}	
+
+function setSliders(minX, maxX) {
+	//get values for the slider from the data
+	if (sliderMinX <= 0 ) {
+		sliderMinX = minX;
+	} else {
+		if (minX < sliderMinX) {
+			sliderMinX = minX;
 		}
 	}
-	onOffPlot.setData(newseries);
-	onOffPlot.draw();
-	bindEverything();
-	bindTooltip();
-}		
+	if (sliderMaxX <= 0 ) {
+		sliderMaxX = maxX;
+	} else {
+		if (maxX > sliderMaxX) {
+			sliderMaxX = maxX;
+		}
+	}	
+}//end of setSliders
 
+function getDataWithBins(rawData, localBinValue, minX, maxX, nBins, bins) {
+	//create histogram data
+    var outputFinal = [];
+	if (rawData != null) {
+		binValue = localBinValue;
+		var histogram = d3.layout.histogram();
+		histogram.bins(bins);
+		var data = histogram(rawData);
+		for ( var i = 0; i < data.length; i++ ) {
+	    	outputFinal.push([data[i].x, data[i].y]);
+	    	if ((data[i].y + (data[i].y * 0.30)) > maxYaxis) {
+	    		maxYaxis = data[i].y + (data[i].y * 0.30);
+	    	}
+	     } 
+	}
+    return outputFinal;	
+}//end of getDataWithBins
 
+function getError(rawData, localBinValue, minX, maxX, nBins, bins) {
+    var outputFinal = [];
+	if (rawData != null) {
+		binValue = localBinValue;
+		var histogram = d3.layout.histogram();
+		histogram.bins(bins);
+		var data = histogram(rawData);
+		var halfBin = localBinValue / 2.0;
+	    for ( var i = 0; i < data.length; i++ ) {
+	    	outputFinal.push([data[i].x + halfBin, data[i].y, Math.sqrt(data[i].y)]);
+	    	if (Math.sqrt(data[i].y) > maxError) {
+	    		maxError = Math.sqrt(data[i].y);
+	    	}
+	     } 
+	}
+    return outputFinal;	
+}//end of getDataWithBins
 
+Number.prototype.toFixedDown = function(digits) {
+	  var n = this - Math.pow(10, -digits)/2;
+	  n += n / Math.pow(2, 53); // added 1360765523: 17.56.toFixedDown(2) === "17.56"
+	  return n.toFixed(digits);
+	}
+function intToFloat(num, decPlaces) { 
+	return num + '.' + Array(decPlaces + 1).join('0'); 
+	}
 
+function reBinData(json, binValue) {
+	if (binValue > 0) {
+		maxYaxis = 1;
+	  	var plotData = onOffPlot.getData();
+	  	var overviewData = overviewPlot.getData();
+		minX = json.minX;
+		maxX = json.maxX;
+		bins = [];
+		nBins = Math.ceil(json.maxX / (binValue*1000));
+		console.log(minX);
+		console.log(maxX);
+		for (var i = minX; i < (maxX*1.00000); i += (binValue*1000*1.00000)) {
+			bins.push(i);
+		}
+		data = [];
+		
+		if (json.fluxdata != null) {
+			fluxData.data = getDataWithBins(fluxData.data_original, binValue, minX, maxX, nBins, bins);
+			data.push(fluxData);
+		}
+		if (json.fluxdata != null) {
+			fluxDataError.data = getError(fluxData.data_original, binValue, minX, maxX, nBins, bins);
+			data.push(fluxDataError);
+		}
+			
+		setSliders(60, 6000);
+	
+		onOffPlot.setData(data);
+		overviewPlot.setData(data);
+		var axes = onOffPlot.getAxes();
+	    axes.yaxis.options.max = maxYaxis + maxError;	
+	    onOffPlot.setupGrid();
+	    onOffPlot.draw();
+		var axesOverview = overviewPlot.getAxes();
+		axesOverview.yaxis.options.max = maxYaxis + maxError;	
+		overviewPlot.setupGrid();
+	    overviewPlot.draw();
+	    refresh();
+	}
+}//end of reBinData

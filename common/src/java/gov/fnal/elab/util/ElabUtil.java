@@ -731,6 +731,47 @@ public class ElabUtil {
         return nd;
     }
 
+    private static final TimeZone CST = TimeZone.getTimeZone("CST");
+    public static NanoDate julianToGregorianCST(int jday, double fractional) {
+        int Z = (int) (jday + 0.5 + fractional);
+        int W = (int) ((Z - 1867216.25) / 36524.25);
+        int X = (int) (W / 4);
+        int A = Z + 1 + W - X;
+        int B = A + 1524;
+        int C = (int) ((B - 122.1) / 365.25);
+        int D = (int) (365.25 * C);
+        int E = (int) ((B - D) / 30.6001);
+        int F = (int) (30.6001 * E);
+        int day = B - D - F;
+        int month = E - 1 <= 12 ? E - 1 : E - 13; // Month = E-1 or E-13 (must
+        // get number
+        // less than or equal to 12)
+        int year = month <= 2 ? C - 4715 : C - 4716; // Year = C-4715 (if
+        // Month is
+        // January or February) or
+        // C-4716 (otherwise)
+
+        NanoDate nd = new NanoDate();
+        Calendar gc = Calendar.getInstance(CST);
+
+        int hour = (int) (fractional * 24);
+        int min = (int) ((fractional * 24 - hour) * 60);
+        int sec = (int) (((fractional * 24 - hour) * 60 - min) * 60);
+        int msec = (int) ((((fractional * 24 - hour) * 60 - min) * 60 - sec) * 1000);
+        int micsec = (int) (((((fractional * 24 - hour) * 60 - min) * 60 - sec) * 1000 - msec) * 1000);
+        int nsec = (int) ((((((fractional * 24 - hour) * 60 - min) * 60 - sec) * 1000 - msec) * 1000 - micsec) * 1000);
+        int nsecf = (int) (((((((fractional * 24 - hour) * 60 - min) * 60 - sec) * 1000 - msec) * 1000 - micsec) * 1000 - nsec) * 10);
+
+        gc.set(year, month - 1, day, (hour + 12) % 24, min, sec);
+        gc.set(Calendar.MILLISECOND, msec);
+        nd.setMilliSeconds(msec);
+        nd.setMicroSeconds(micsec);
+        nd.setNanoSeconds(nsec);
+        nd.setNanoSecondsFraction(nsecf);
+        nd.setTime(gc.getTimeInMillis());
+        return nd;
+    }
+
     /**
      * arguments: day[1..31], month[1..12], year[..2004..], hour[0..23],
      * min[0..59]
