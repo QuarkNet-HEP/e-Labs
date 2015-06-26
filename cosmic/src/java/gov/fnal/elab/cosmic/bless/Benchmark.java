@@ -67,8 +67,10 @@ public class Benchmark {
 			and.add(new GreaterOrEqual("creationdate", startDate));
 			and.add(new LessOrEqual("creationdate", endDate));
 			rs = elab.getDataCatalogProvider().runQuery(and);
-		}		
-		rs.sort("name", true);
+		}	
+		if (rs != null) {
+			rs.sort("name", true);
+		}
 		return rs;
 	}//end of getSplitBenchmarkInfoByInterval
 
@@ -85,7 +87,9 @@ public class Benchmark {
 			and.add(new LessOrEqual("creationdate", endDate));
 			rs = elab.getDataCatalogProvider().runQuery(and);
 		}		
-		rs.sort("name", true);
+		if (rs != null) {
+			rs.sort("name", true);
+		}
 		return rs;
 	}//end of getSplitBenchmarkInfoByInterval
 	
@@ -157,7 +161,7 @@ public class Benchmark {
 	public static Long setFileAsBenchmark(DataCatalogProvider dcp, String benchmark, String benchmarkLabel) throws ElabException {
 	    Long duration = 0L;
 	    //set new benchmark and make it default
-	    if (dcp != null && benchmark != null) {
+	    if (dcp != null && benchmark != null && !benchmark.equals("")) {
 			CatalogEntry entry = dcp.getEntry(benchmark);
 			//get all the tuples needed for blessing when using this benchmark file
 			Long chan1 = (Long) entry.getTupleValue("chan1");
@@ -211,7 +215,7 @@ public class Benchmark {
 	//EPeronja: retrieve all the files that share geometry with the benchmark
 	public static ResultSet getAllFilesByBenchmarkGeometry(Elab elab, Integer detectorid, String benchmark) throws ElabException {
 		ResultSet rs = null;
-		if (elab != null && detectorid != null && benchmark != null) {
+		if (elab != null && detectorid != null && benchmark != null && !benchmark.equals("")) {
 			VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(benchmark);
 			String julianDate = e.getTupleValue("julianstartdate").toString();
 			Geometries geometries = new Geometries(elab, detectorid);
@@ -253,7 +257,9 @@ public class Benchmark {
 			and.add(new Like("blessfile", "%.bless%"));
 	        and.add(new Between("startdate", startDate, endDate));
 	        rs = elab.getDataCatalogProvider().runQuery(and);
-			rs.sort("creationdate", true);
+			if (rs != null) {
+				rs.sort("creationdate", true);
+			}
 		}
 		return rs;
 	}//end of getAllFilesByBenchmarkGeometry
@@ -261,7 +267,7 @@ public class Benchmark {
 	//EPeronja: retrieve all the unblessed files that share geometry with the given benchmark
 	public static ResultSet getUnblessedFilesByBenchmarkGeometry(Elab elab, Integer detectorid, String benchmark) throws ElabException {
 		ResultSet rs = null;
-		if (elab != null && detectorid != null && benchmark != null) {
+		if (elab != null && detectorid != null && benchmark != null && !benchmark.equals("")) {
 			VDSCatalogEntry e = (VDSCatalogEntry) elab.getDataCatalogProvider().getEntry(benchmark);
 			String julianDate = e.getTupleValue("julianstartdate").toString();
 			Geometries geometries = new Geometries(elab, detectorid);
@@ -303,7 +309,9 @@ public class Benchmark {
 			and.add(new Like("blessfile", "%.bless%"));
 	        and.add(new Between("startdate", startDate, endDate));
 	        rs = elab.getDataCatalogProvider().runQuery(and);
-			rs.sort("creationdate", true);
+			if (rs != null) {
+				rs.sort("creationdate", true);
+			}
 		}
 		return rs;
 	}//end of getUnblessedFilesByBenchmarkGeometry
