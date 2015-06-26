@@ -51,31 +51,24 @@
 
 
 <%
-	//String lfn="";              //lfn on the USERS home computer
-	//String fn = "";             //filename without slashes
-	//String ds = "";
 	File f = new File((String) results.getAnalysis().getParameter("in"));
 	String detectorId = (String) results.getAnalysis().getParameter("detectorid");
-	//String comments = (String) results.getAnalysis().getParameter("comments");
-	//String benchmark = (String) results.getAnalysis().getParameter("benchmark");
 	
 	String dataDir = elab.getProperties().getDataDir();
 	int channels[] = new int[4];
 
 	List splits = new ArrayList();  //for both the split name and the channel validity information
 	
-	//boolean c = true;
-	//String splitPFNs = "";
-	//String cpldFrequency = "";
 	String rawName = f.getName();
 	CatalogEntry entry;
 	String errorMessage = "";
+	String firmwareComment = "";
 	
 	//get metadata which contains the lfns of the raw filename AND the split files
 	ArrayList meta = null;
-	//boolean metaSuccess = false;
-	//boolean totalSuccess = true;        //false if there are any rc.data or meta errors
 	File fmeta = new File(f.getAbsolutePath() + ".meta");     //depends on Split.pl writing the meta to rawName.meta
+	String errorFile = rawName + ".errors";
+	
 	String sqlErrors = "";
 	//EPeronja-added the following code for admin to be able to access the upload results
     String userParam = (String) request.getParameter("user");
@@ -113,11 +106,18 @@
         Iterator l = splits.iterator();
 		List entries = new ArrayList();
 		while (l.hasNext()) {
+			//EPeronja-02/27/2015: Added this try/catch block for when the data files have been deleted and the 
+			//					   upload process still exists in the analysis list.
 			try {
 			    CatalogEntry s = elab.getDataCatalogProvider().getEntry((String) l.next());
 			    entries.add(s);
 			    for (int k = 0; k < 4; k++) {
 			        channels[k] += ((Long) s.getTupleValue("chan" + (k + 1))).intValue();
+			    }
+			    if (s.getTupleValue("DAQFirmwareComments") != null) {
+			    	firmwareComment = "The firmware version is unknown because your data did not have ST lines.<br />" +
+			    					  "This is critical to calculate absolute time.<br />" +
+			    					  "Please add ST lines for data collection.";
 			    }
 			} catch (Exception e) {
 				errorMessage = e.getMessage();
@@ -132,12 +132,15 @@
 		request.setAttribute("benchmarkMessages", benchmarkMessages);
 		request.setAttribute("channels", channels);
 		request.setAttribute("splitEntries", entries);
-		request.setAttribute("errorMessage", errorMessage);
 		CatalogEntry e = elab.getDataCatalogProvider().getEntry(rawName);
 		request.setAttribute("entry", e);
 		request.setAttribute("id", detectorId);
+		request.setAttribute("errorMessage", errorMessage);
+		request.setAttribute("firmwareComment", firmwareComment);
 		request.setAttribute("lfnssz", new Integer(entries.size()));
 		File geoFile = new File(new File(dataDir, detectorId), detectorId + ".geo");
+		request.setAttribute("errorFile", errorFile);
+		
 		if (geoFile.exists() && geoFile.isFile() && geoFile.canRead()) {
 		    request.setAttribute("geoFileExists", Boolean.TRUE);
 		}
@@ -163,9 +166,8 @@
     	</c:choose>
     	<hr/>
     	<h2>File Summary for DAQ: <%=detectorId %></h2>
- 
 <c:choose>
-	<c:when test='${errorMessage == "" }'>    
+	<c:when test='${errorMessage == ""}'>    
     	Your data was split into ${lfnssz} ${lfnssz == 1 ? 'day' : 'days'} spanning from:<br/>
     	${entry.tupleMap.startdate} to ${entry.tupleMap.enddate}<br/>
     	The uploaded file contained ${entry.tupleMap.totalDataLines} accepted data lines. We ignored ${entry.tupleMap.GPSSuspects} line(s) due to a suspect GPS date.
@@ -199,7 +201,13 @@
 				Average altitude: ${entry.tupleMap.avgaltitude}<br/>
 			</c:otherwise>
 		</c:choose>	
+		<c:choose>
+			<c:when test="${firmwareComment !=  ''}">
+				${firmwareComment }
+			</c:when>
+		</c:choose>
 		<br />	
+		<a href="../data/download?filename=${errorFile}&elab=${elab.name}&type=file">Download Split Error File</a> 
 		<c:choose>
 			<c:when test="${not empty benchmarkMessages}">
 			   <table>
@@ -218,8 +226,8 @@
 		</c:choose>
 	</c:when>
 	<c:otherwise>
-		These files do not exist any longer in our server. They may have been deleted.<br />
-		If you have any questions please send a message to <a href="mailto:e-labs@fnal.gov">e-labs@fnal.gov</a>	
+		The uploaded files from this process do not exist any longer in our server. They may have been deleted.<br />
+		If you have any questions please send a message to <a href="mailto:e-labs@fnal.gov">e-labs@fnal.gov</a>
 	</c:otherwise>
 </c:choose>
 			</div>

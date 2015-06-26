@@ -26,7 +26,9 @@
 # jordant changed 11-01-10: checking to see if user is doing ST2 or ST3 when writing raw data. Knowing which one is crucial to data blessing.
 # jordant changed 5 Oct 11: fixing bug 372
 # jordant changed 4 Jan 13: fixing bug 517
-
+# eperonja changed in 2015: numerous fixes as follows (with Mark Adams' help)
+#							cpldfrequency calculation problems				
+		 
 if($#ARGV < 2){
 	die "usage: Split.pl [filename to parse] [output DIRECTORY] [board ID]\n";
 }
@@ -156,6 +158,11 @@ $GPSSuspects = 0;					#int to hold the number of lines that we discard because t
 $current_data_row = "";				#to be able to print the prior data row
 $previous_data_row = "";			#to be able to print the current data row
 $clock_problem_count = 0;			#to keep the count of times that we found the clock to be off
+@diff = ();
+@difflowrate = ();
+$DAQFirmware = 0;
+$DAQFirmwareComments = "";
+$eventStart = 0;
 
 #convert MAC OS line breaks to UNIX
 #Mac OS only has \r for new lines, so Unix reads it as all one big line. We first need to replace
@@ -784,6 +791,14 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					if ($cpld_real_count > 0) {
 						print ERRORS "percentaje: ", $clock_problem_count/$cpld_real_count, "\n";
 					}
+					
+					#check firmware being empty
+					if ($DAQFirmware == 0) {
+						calculate_firmware();
+						$DAQFirmwareComments = "$DAQFirmware was calculated from the split data";
+						print ERRORS "DAQFirmware: $DAQFirmware was calculated from the split data\n";
+					}
+										
 					#Start writing meta and write metadata about the file that was just closed						
 					#print META "enddate date $lastDate $lastTime\n";
 					print META "enddate date ", 2000+substr($lastDate,4,2). "-". substr($lastDate,2,2). "-" . substr($lastDate,0,2) . " " .substr($lastTime,0,2). ":" .substr($lastTime,2,2). ":" .substr($lastTime,4,2),"\n";
@@ -809,6 +824,9 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
         	        print META "blessedstatus string awaiting\n"; # File now awaiting blessing
 					print META "datalines int $data_line\n";
 					print META "GPSSuspects int $GPSSuspects\n";
+					if ($DAQFirmwareComments != "") {
+						print META "DAQFirmwareComments string $DAQFirmwareComments";
+					}
 					
 					# 6. Write the .bless file for the file that was just closed.
 					#First the header
@@ -835,11 +853,14 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					
 					#Empty all of the status arrays so that they can start over with the new split file.
 					@stTime = @StCoutTemp = @stCount0 = @stRate0 = @stCount1 = @stRate1 = @stCount2 = @stRate2 = @stCount3 = @stRate3 = @stEvents = @stRateEvents = @stType = @stPress = @stTemp = @StVcc = @stGPSSats = @stRow =  @cpld_frequency1 = @cpld_frequency2 = @stCountTemp = @cpld_frequency = ();
+					@diff = @diffflowrate = ();
 					#reset any scalars in use
 					$GPSSuspectsTot += $GPSSuspects; #for the .raw file
 					$data_line_total += $data_line; #for the .raw file
 					$chan3=$chan2=$chan1=$chan0=$n=$i=$j=$stRowCount=$stType=$dsRowCount=$events=$GPSSuspects=$data_line=$cpld_real_freq_tot=$cpld_real_count=0;
 					$clock_problem_count = 0;
+					$DAQFirmware = $eventStart = 0;
+					$DAQFirmwareComments = "";
 					$goodChan=-1;
 					$numSplitFiles++;
 					#print "code never makes it here if datafile is < 1 day.\n";
@@ -892,8 +913,19 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
         	# calculates the number of seconds from the time and CPLD offset
 	        $cpld_hour = substr($dataRow[10], 0, 2);
     	    $cpld_min = substr($dataRow[10], 2, 2);
-        	$cpld_sec = substr($dataRow[10], 4, 6);
+        	#$cpld_sec = substr($dataRow[10], 4, 6);
+    	    if ($DAQID >= 6000) {
+	        	$cpld_sec = substr($dataRow[10], 4, 2);
+    	    } else {
+	        	$cpld_sec = substr($dataRow[10], 4, 6);
+    	    }        	
 	        $cpld_sec_offset = sprintf("%.0f", $cpld_sec + ($dataRow[15]/1000)); # if $DAQID < 6000 (removing the conditional to test fixes to shower);
+			#6000 DAQ time calculation code should not use word 16 for anything.  
+			if ($DAQID >= 6000) {
+				$cpld_sec_offset = sprintf("%.0f", $cpld_sec); 
+			} else {
+				$cpld_sec_offset = sprintf("%.0f", $cpld_sec + ($dataRow[15]/1000)); 
+			}
     	    $cpld_day_seconds = $cpld_hour*3600 + $cpld_min*60 + $cpld_sec_offset;
         	
         	$cpld_day_seconds = 0 if $cpld_day_seconds == 86400;
@@ -910,7 +942,19 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 				print ERRORS $current_data_row;
 				print ERRORS "dc: ", $dc_test, " dt: ", $dt_test, "\n";		
 			}
-            
+		 	if (hex($dataRow[1]) >= 128) {
+				$eventStart = $eventStart + 1;
+			}
+
+			#to calculate firmware from data
+			if (defined $cpld_hex && defined $cpld_seconds) {
+				if ($dataRow[9] ne $cpld_hex && $cpld_seconds == $cpld_day_seconds && hex($dataRow[1]) >= 128 && $data_line > 1) {
+		 			$data9 = hex($dataRow[9]);
+		 			$data0 = hex($dataRow[0]);
+		 			$diff = $data0 - $data9;
+					push @diff, $diff;
+				}
+			}	         
 	        next if $cpld_hex eq $dataRow[9] || $cpld_seconds == $cpld_day_seconds || $interrupt != 0 || $time == $split_line[10];
 	 
     	    if (defined($cpld_hex)){
@@ -1087,7 +1131,14 @@ else{
 	if ($cpld_real_count > 0) {
 		print ERRORS "percentaje: ", $clock_problem_count/$cpld_real_count, "\n";
 	}
-					
+
+	#check firmware being empty
+	if ($DAQFirmware == 0) {
+		calculate_firmware();
+		$DAQFirmwareComments = "$DAQFirmware was calculated from the split data";
+		print ERRORS "DAQFirmware: $DAQFirmware was calculated from the split data\n";
+	}
+						
 	#Start writing meta and write metadata about the file that was just closed						
 	#2000+substr($date,4,2). "-". substr($date,2,2). "-" . substr($date,0,2) . " " .substr($time,0,2). ":" .substr($time,2,2). ":" .substr($time,4,2),"\n"
 	#print META "enddate date $lastDate $lastTime\n";
@@ -1114,6 +1165,9 @@ else{
 	print META "blessedstatus string awaiting\n"; # File now awaiting blessing
 	print META "datalines int $data_line\n";
 	print META "GPSSuspects int $GPSSuspects\n";
+	if ($DAQFirmwareComments != "") {
+		print META "DAQFirmwareComments string $DAQFirmwareComments\n";
+	}
 
 					
 	# 6. Write the .bless file for the file that was just closed.
@@ -1175,6 +1229,60 @@ else{
 	}
 }
 
+sub calculate_firmware {
+	$lineCount = 0;
+	$diffOverCpld = 0;
+	$diffCount = 0;
+	foreach $i (@diff) {
+		$lineCount = $lineCount + 1;
+		$diffOverCpld = $i/$cpld_real_freq;
+		if ($diffOverCpld < 0.07) {
+			$diffCount = $diffCount + 1;
+		}
+	}
+	$lineCountLowRate = 0;
+	$diffOverCpldRate = 0;
+	$diffCountLowRate = 0;
+	foreach $i (@difflowrate) {
+		$lineCountLowRate = $lineCountLowRate + 1;
+		$diffOverCpldRate = $i/$cpld_real_freq;
+		if ($diffOverCpldRate < 0.07) {
+			$diffCountLowRate = $diffCountLowRate + 1;
+		}
+	}
+	$ratio = 0;
+	if ($ID < 6000) {
+		$DAQFirmware = "0.0";
+	} else {
+		if ($eventStart > 0) {
+			$ratio = $lineCount/$eventStart * 100;
+		}
+		#Mark Adams suggested checking that the collected problems is about 1% of the total number of events
+		if ($lineCount > 0 && $ratio > 1) {
+			if ($diffCount / $lineCount * 100 > 50) {
+				$DAQFirmware = "1.11";
+			} else {
+				$DAQFirmware = "1.12";
+			}
+		} else {
+			$ratio = 0;
+			if ($eventStart > 0) {
+				$ratio = $lineCountLowRate/$eventStart * 100;
+			}
+			#Mark Adams suggested checking that the collected problems is about 3% of the total number of events
+			if ($lineCountLowRate > 0 && $ratio > 3) {
+				if ($diffCountLowRate / $lineCountLowRate * 100 > 20) {
+					$DAQFirmware = "1.11";
+				} else {
+					$DAQFirmware = "1.12";
+				}				
+			} else {
+				$DAQFirmware = "1.12";
+			}
+		}
+	}
+}
+
 sub check_clock_being_off{
 	#This function will double check the seconds elapsed.
 	$seconds_to_check = 100;	#add/subtract this number to find the shortest distance to the default cpdld
@@ -1233,6 +1341,11 @@ sub check_clock_being_off{
 	}
 
 	if ($dt != $new_dt1 && $dt != $new_dt2) {
+ 		$data9 = hex($dataRow[9]);
+ 		$data0 = hex($dataRow[0]);
+ 		$diff = $data0 - $data9;
+		push @difflowrate, $diff;
+
 		$clock_problem_count = $clock_problem_count + 1;
 		print ERRORS "\nCLOCK PROBLEMS, SECONDS ARE OFF\n";
 		print ERRORS $previous_data_row;
