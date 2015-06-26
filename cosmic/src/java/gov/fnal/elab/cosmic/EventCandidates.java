@@ -98,10 +98,10 @@ public class EventCandidates {
                     	Elab elab = Elab.getElab(null, "cosmic");
                     	String emailMessage = 	"The code stopped processing the eventCandidates file: "+in.getAbsolutePath()+"\n"+
                     							"at line: "+line+"\n"+
-                    							"Total heap memory: "+ String.valueOf(em.getTotalMemory())+"\n"+
-                    							"Max heap memory: "+ String.valueOf(em.getMaxMemory())+"\n"+
-                    							"Used heap memory: "+ String.valueOf(em.getUsedMemory())+"\n"+
-                    							"Free heap memory: "+ String.valueOf(em.getFreeMemory())+"\n"+
+                    							"Total heap memory: "+ String.valueOf(em.getTotalMemory())+"MB\n"+
+                    							"Max heap memory: "+ String.valueOf(em.getMaxMemory())+"MB\n"+
+                    							"Used heap memory: "+ String.valueOf(em.getUsedMemory())+"MB\n"+
+                    							"Free heap memory: "+ String.valueOf(em.getFreeMemory())+"MB\n"+
                     							"Had we continued processing the server would have died with an OutOfMemoryError.";
                     							
                     	em.notifyAdmin(elab, emailMessage);
