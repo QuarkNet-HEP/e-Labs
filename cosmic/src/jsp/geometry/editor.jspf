@@ -86,9 +86,18 @@
         
 <%-- ***Code added by Sudha Balakrishnan, May 2015, for visualizing coordinates entered.*** --%>
 	
-		<jsp:include page="../include/visualize-values.js" />
-		<div class="subtitle">
-			<a href="javascript:VisualizeValues()">Visualize values.</a>
+		<jsp:include page="visualize-values.js" />
+		<div class="subtitle">	
+			<table border="0">	
+				<tr>
+					<td  valign="middle">
+						<img src="../graphics/glasses.jpg"><br /> 
+					</td>
+					<td valign="middle">
+						<a href="javascript:VisualizeValues()">Visualize geometry.</a> 	
+					</td>
+				</tr>
+			</table>
 		</div>   
 		
 <%-- ************************************************************************************** --%>		

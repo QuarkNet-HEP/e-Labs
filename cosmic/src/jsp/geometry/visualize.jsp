@@ -96,10 +96,10 @@ $(function () {
         },
         
         title: {
-            text: 'Detector & GPS Configuration'
+            text: 'Configuration of Counters & GPS'
         },
         subtitle: {
-            text: 'Click and drag the plot area to rotate in space.  Y-axis increases as you go from front to back.'
+            text: 'Click and drag the plot area to rotate in space.<br/>Y-axis increases as you go from front to back.<br/>Hover over point to see coordinates.'
         },
         tooltip: {
                     formatter: function () {
@@ -126,6 +126,7 @@ $(function () {
         },   
     		
         series: [{  
+        	showInLegend: false,
         	data:  [   	
 	       	{name:  'Channel 1', color:'black', x:x1, y:z1, z:y1}, 
          	{name:  'Channel 2', color: 'black', x:x2, y:z2, z:y2}, 
