@@ -86,7 +86,7 @@
         
 <%-- ***Code added by Sudha Balakrishnan, May 2015, for visualizing coordinates entered.*** --%>
 	
-		<jsp:include page="visualize-values.js" />
+		<script type="text/javascript" src="../include/visualize-values.js"></script>
 		<div class="subtitle">	
 			<table border="0">	
 				<tr>

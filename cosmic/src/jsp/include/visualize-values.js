@@ -1,4 +1,3 @@
-<script type="text/javascript">
 function VisualizeValues()
 {
 var x1 = document.getElementById("myForm").elements.namedItem("chan1X").value;
@@ -24,4 +23,3 @@ var urlwithcoord = urlwithcoord+"&x4="+x4+"&y4="+y4+"&z4="+z4;
 
 window.open (urlwithcoord,"mywindow");
 }
-</script>
