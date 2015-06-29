@@ -1,4 +1,12 @@
-<%--file:  visualize.jspf -- created by Sudha Balakrishnan, May 2015--%>
+<%-- *** filename:  visualize.jspf -- created by Sudha Balakrishnan, May 2015 *** --%>
+<%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
+<%@ include file="../include/elab.jsp" %>
+<%@ include file="../login/login-required.jsp" %>
+<%@ page import="gov.fnal.elab.*" %>
+<%@ page import="gov.fnal.elab.util.*" %>
+
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
 
@@ -9,6 +17,7 @@
 		<script src="../include/highcharts/js/highcharts.js"></script>
 		<script src="../include/highcharts/js/highcharts-3d.js"></script>
 		<script src="../include/highcharts/js/modules/exporting.js"></script>
+		<script src="../include/visualize-values.js"></script>
 		<link href="../css/container.css" rel="stylesheet" type="text/css">		
 	</head>
 
@@ -90,7 +99,7 @@ $(function () {
             text: 'Detector & GPS Configuration'
         },
         subtitle: {
-            text: 'Click and drag the plot area to rotate in space.  Y-axis increases as you go from near to away.'
+            text: 'Click and drag the plot area to rotate in space.  Y-axis increases as you go from front to back.'
         },
         tooltip: {
                     formatter: function () {
