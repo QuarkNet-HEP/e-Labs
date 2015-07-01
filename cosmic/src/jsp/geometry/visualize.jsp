@@ -18,7 +18,6 @@
 		<script src="../include/highcharts/js/highcharts-3d.js"></script>
 		<script src="../include/highcharts/js/modules/exporting.js"></script>
 		<script src="../include/visualize-values.js"></script>
-		<link href="../css/container.css" rel="stylesheet" type="text/css">		
 	</head>
 
 	<body>
