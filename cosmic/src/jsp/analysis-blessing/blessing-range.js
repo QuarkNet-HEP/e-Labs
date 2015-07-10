@@ -142,7 +142,6 @@ function loadJSON(callback) {
  }
 
 function onDataLoadRange(json) {	
-	console.log(json.channel1);
 	channel1data = json.channel1;
 	channel2data = json.channel2;
 	channel3data = json.channel3;
