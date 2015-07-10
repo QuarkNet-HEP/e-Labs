@@ -9,56 +9,8 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.text.*" %>
 <%@ page import="java.util.*" %>
-<%@ page import="gov.fnal.elab.cosmic.bless.*" %>
 
 <% 
-	//create the file for the dynamic charts
-	String message;
-	String fluxJsonFile = results.getOutputDir() + "/FluxBlessRange";
-	try {
-		//this code is for admin to be able to see the graph
-		File f = new File(fluxJsonFile);
-		if (!f.exists()) {
-			String userParam = (String) request.getParameter("user");
-			if (userParam == null) {
-				userParam = (String) session.getAttribute("userParam");
-			}
-			session.setAttribute("userParam", userParam);
-			ElabGroup auser = user;
-			if (userParam != null) {
-			    if (!user.isAdmin()) {
-			    	throw new ElabJspException("You must be logged in as an administrator" 
-			        	+ "to see the status of other users' analyses");
-			    }
-			    else {
-			        auser = elab.getUserManagementProvider().getGroup(userParam);
-			    }
-			}
-			ArrayList fileArray = (ArrayList) results.getAttribute("inputfiles");
-			Collections.sort(fileArray);
-		
-			if (fileArray != null) {
-				File[] pfns = new File[fileArray.size()];
-				String[] filenames = new String[fileArray.size()];
-				for (int i = 0; i < fileArray.size(); i++) {
-					if (!fileArray.get(i).equals("[]") && !fileArray.get(i).equals("")) {
-						String temp = (String) fileArray.get(i);				
-						String cleanname = temp.replace(" ","");
-						String pfn = RawDataFileResolver.getDefault().resolve(elab, cleanname) + ".bless";
-						pfns[i] = new File(pfn);
-						filenames[i] = cleanname;
-					}
-				}			
-				if (pfns.length > 0) {
-					BlessDataRange bdr = new BlessDataRange(elab,pfns,filenames,results.getOutputDir());
-					//BlessDataRange bdr = new BessDataRange(elab, pfns, filenames, results.getOutputDir());	
-				}
-			}
-		}
-	} catch (Exception e) {
-			message = e.getMessage();
-	}
-		
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -82,6 +34,7 @@
 			</div>
 			
 			<div id="content">
+
 <div class="toolbox" align="center">
 	<h3>Toolbox</h3>
 	<hr />
@@ -120,7 +73,6 @@
 <p>
 	<a href="../analysis-blessing/bless-plots-range.jsp?id=${results.id }">View blessing plots</a>
 </p>
-
 <p>
 	<img src="${results.outputDirURL}/plot.png"/>
 </p>
