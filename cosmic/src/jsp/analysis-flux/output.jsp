@@ -14,8 +14,10 @@
 
 <% 
 	//create the file for the dynamic charts
-	String message;
+	String message = "";
 	String fluxJsonFile = results.getOutputDir() + "/FluxBlessRange";
+	File[] pfns = null;
+	String[] filenames = null;
 	try {
 		//this code is for admin to be able to see the graph
 		File f = new File(fluxJsonFile);
@@ -39,8 +41,8 @@
 			Collections.sort(fileArray);
 		
 			if (fileArray != null) {
-				File[] pfns = new File[fileArray.size()];
-				String[] filenames = new String[fileArray.size()];
+				pfns = new File[fileArray.size()];
+				filenames = new String[fileArray.size()];
 				for (int i = 0; i < fileArray.size(); i++) {
 					if (!fileArray.get(i).equals("[]") && !fileArray.get(i).equals("")) {
 						String temp = (String) fileArray.get(i);				
@@ -70,11 +72,18 @@
 			   File file = new File(fileName);
 		       String binValue = results.getAnalysis().getParameter("flux_binWidth").toString();
 		       Double bV = Double.valueOf(binValue);
-		       FluxPlotDataStream fpds = new FluxPlotDataStream(file, bV, results.getOutputDir());
+		       if (bV <= 0) {
+		    	   message = "Please enter a positive number for the bin width.";
+		       } else {
+			       FluxPlotDataStream fpds = new FluxPlotDataStream(elab, file, bV, results.getOutputDir(),pfns,filenames);
+		       }
 		}
 	} catch (Exception e) {
 			message = e.getMessage();
-	}		
+	}	
+	
+	request.setAttribute("message", message);
+
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -139,7 +148,7 @@
 </p>
 
 <p>
-	<a href="flux-plot.jsp?id=${results.id }">View interactive Flux plots</a> (Beta Version)<br />
+	<a href="flux-plot.jsp?id=${results.id }&message=${message}">View interactive Flux plots</a> (Beta Version)<br />
 </p>
 <p>
 	<img src="${results.outputDirURL}/plot.png"/>
