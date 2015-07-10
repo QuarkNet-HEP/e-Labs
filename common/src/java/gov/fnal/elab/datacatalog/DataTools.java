@@ -1120,14 +1120,17 @@ public class DataTools {
         try {
             con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
             ps = con.prepareStatement(
-                    " SELECT teacher.id, teacher.name, teacher.email, state.abbreviation, city.name, school.name " +
+                    " SELECT teacher.id, teacher.name, teacher.email, state.abbreviation, city.name, school.name, research_group.name " +
                     " FROM teacher "+
+                    " INNER JOIN research_group " +
+                    "    ON research_group.teacher_id = teacher.id "+
                     " INNER JOIN school " +
                     "    ON teacher.school_id = school.id "+
                     " INNER JOIN city " +
                     "    ON school.city_id = city.id "+
                     " INNER JOIN state " +
                     "    ON city.state_id = state.id "+
+                    " WHERE research_group.role = 'teacher' " +
                     " ORDER by state.abbreviation, city.name, school.name;");
 
             rs = ps.executeQuery(); 
@@ -1140,6 +1143,7 @@ public class DataTools {
         			singleTeacher.add(rs.getString(4));
         			singleTeacher.add(rs.getString(5));
         			singleTeacher.add(rs.getString(6));
+        			singleTeacher.add(rs.getString(7));
         			teachers.put(rs.getInt(1), singleTeacher);
         		}
         	}   
