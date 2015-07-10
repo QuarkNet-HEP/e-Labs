@@ -83,6 +83,7 @@ public class FluxPlotDataStream {
 		String[] split; 
 		String line;
 		String channelAreaTemp = "";
+		String currentDetectorId = "";
 		int i=0; 
 		try {
 			while ((line = br.readLine()) != null) {
@@ -97,12 +98,15 @@ public class FluxPlotDataStream {
 				String jd = split[1];
 				String re = split[2];
 				//check if there is a geometry for this detector's data line: we need to get the channel area
-        		geometries = new Geometries(elab, Integer.parseInt(detectorid));
-        		geometry = geometries.getGeometry(Integer.parseInt(detectorid));
-        		if (geometries == null || geometry == null) {
-        			ElabException e = new ElabException("FluxPlotDataStream: No geometry information returned for detector: "+detectorid+"\n");
-        			throw e;
-        		}
+				if (!detectorid.equals(currentDetectorId)) {
+					geometries = new Geometries(elab, Integer.parseInt(detectorid));
+	        		geometry = geometries.getGeometry(Integer.parseInt(detectorid));
+	        		currentDetectorId = detectorid;
+	        		if (geometries == null || geometry == null) {
+	        			ElabException e = new ElabException("FluxPlotDataStream: No geometry information returned for detector: "+detectorid+"\n");
+	        			throw e;
+	        		}
+				}
         		if (geometry != null) {
         			SortedMap geos = geometry.getGeoEntriesBefore(jd);
         			if (geos.isEmpty()) {
