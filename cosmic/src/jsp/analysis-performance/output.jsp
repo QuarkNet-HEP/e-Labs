@@ -10,29 +10,6 @@
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.cosmic.plot.*" %>
 <%
-//create the file for the dynamic charts
-String message;
-String performanceJsonFile = results.getOutputDir() + "/PerformancePlotFlot";
-try {
-	//this code is for admin to be able to see the graph
-	File f = new File(performanceJsonFile);
-	if (!f.exists()) {
-	       String output = results.getAnalysis().getParameter("singlechannelOut").toString();
-	       String[] outputFiles = output.split(" ");
-	       File[] files = new File[outputFiles.length];
-	       for (int i = 0; i < outputFiles.length; i++) {
-	       		String fileName = results.getOutputDir()+"/"+outputFiles[i];
-	       		files[i] = new File(fileName);
-	       }
-	       String binValue = results.getAnalysis().getParameter("freq_binValue").toString();
-	       Double bV = Double.valueOf(binValue);
-	       PerformancePlotDataStream ppds = new PerformancePlotDataStream(files, bV, results.getOutputDir());
-	}
-} catch (Exception e) {
-		message = e.getMessage();
-}
-
-
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
