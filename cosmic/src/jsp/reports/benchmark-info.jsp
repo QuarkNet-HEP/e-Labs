@@ -183,7 +183,7 @@
 		<script type="text/javascript" src="../include/jquery/js/jquery.tablesorter.min.js"></script>	
 		<link type="text/css" rel="stylesheet" href="../include/jquery/css/blue/style.css" />		
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script type="text/javascript" src="../include/highcharts/js/highcharts.js"></script>
 		<script>
 			$(document).ready(function() {
 				var calendarParam = {
