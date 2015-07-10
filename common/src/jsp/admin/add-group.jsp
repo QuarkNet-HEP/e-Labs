@@ -30,7 +30,9 @@
     String survey = request.getParameter("survey");
     String passwd1 = request.getParameter("passwd1");
     String passwd2 = request.getParameter("passwd2");
-
+	String newAccState, newAccCity, newAccSchool, newAccTeacher, newAccEmail, newAccRG, newAccAY, newAccGR, newAccDAQ, newAccRP, newAccSurvey;
+	newAccState=newAccCity=newAccSchool=newAccTeacher=newAccEmail=newAccRG=newAccAY=newAccGR=newAccDAQ=newAccRP=newAccSurvey="";
+		
 	String submit =  request.getParameter("submitinfo");	
 
 	int stateId = 0;
@@ -78,6 +80,7 @@
 	if (submit != null && submit.equals("Submit")) {
 		if (!stateNew.equals("") && !stateAbbrev.equals("") && !stateType.equals("")) {
 			//need to add a new state - checkings should be done by javascript before submitting
+			newAccState = stateAbbrev;
 			int statetype = Integer.parseInt(stateType);
 			stateId = DataTools.insertState(elab, stateNew, stateAbbrev, statetype);
 			stateName = stateAbbrev;	
@@ -85,6 +88,7 @@
 			if (state != null && !state.equals("")) {
 				stateId = Integer.valueOf(state);
 				stateName = DataTools.getStateAbbrev(elab, stateId);
+				newAccState = stateName;
 			} else {
 				messages = "Not a valid state: "+ stateName;
 			}
@@ -92,11 +96,11 @@
 		if (stateId > 0) {
 			if (!cityNew.equals("")) {
 				cityId = DataTools.insertCity(elab, cityNew, stateId);
-				cityName = cityNew;
+				newAccCity = cityName = cityNew;
 			} else {
 				if (city != null && !city.equals("")) {
 					cityId = Integer.valueOf(city);
-					cityName = DataTools.getCityName(elab, cityId);
+					newAccCity = cityName = DataTools.getCityName(elab, cityId);
 				} else {
 					messages = "Not a valid city: "+ cityName;
 				}
@@ -105,11 +109,11 @@
 		if (cityId > 0) {
 			if (!schoolNew.equals("")) {
 				schoolId = DataTools.insertSchool(elab, schoolNew, cityId);
-				schoolName = schoolNew;
+				newAccSchool = schoolName = schoolNew;
 			} else {
 				if (school != null && !school.equals("")) {
 					schoolId = Integer.valueOf(school);
-					schoolName = DataTools.getSchoolName(elab, schoolId);
+					newAccSchool = schoolName = DataTools.getSchoolName(elab, schoolId);
 				} else {
 					messages = "Not a valid school: "+ schoolName;
 				}
@@ -118,15 +122,9 @@
 		if (schoolId > 0) {
 			if (!teacherNew.equals("")) {
 				teacherId = DataTools.insertTeacher(elab, teacherNew, teacherEmail, schoolId);
-				teacherName = teacherNew;
-			} //else {
-			 //	if (teacher != null && !teacher.equals("")) {
-			//		teacherId = Integer.valueOf(teacher);
-				//	teacherName = DataTools.getTeacherName(elab, teacherId);
-				//} else {
-			//		messages = "Not a valid teacher: "+ teacherName;
-			//	}
-			//}
+				newAccTeacher = teacherName = teacherNew;
+				newAccEmail = teacherEmail;
+			} 
 		}
 		String[] researchProjectName = new String[researchProject.length];
 		for (int i = 0; i < researchProject.length; i++) {
@@ -134,6 +132,7 @@
 			for (Map.Entry<Integer,String> e : projects.entrySet()) {
 				if (e.getKey() == rp) {
 					researchProjectName[i] = e.getValue();
+					newAccRP += e.getValue() + " ";
 				}
 			}
 		}
@@ -141,7 +140,11 @@
         if(researchGroup != null && researchProject != null && ay != null && groupRole != null && survey != null && passwd1 != null && passwd2 !=null) {
             //Why are these directories set up before the test to see if the name and password is taken? LQ 7/25/06
            	//EPeronja 06/18/2015: I think the answer is that if we fail to create the directory then we do not have a userarea?
-			for (int x = 0; x < researchProject.length; x++) {
+			newAccRG = researchGroup;
+			newAccAY = ay;
+			newAccGR = groupRole;
+			newAccSurvey = survey;
+           	for (int x = 0; x < researchProject.length; x++) {
 				String singleResearchProjectName = researchProjectName[x];
 	            boolean mkdir, isDirectory;
 	            //directory structure:
@@ -215,6 +218,7 @@
 	            //add the new group-detectorID pair(s) to research_group_detectorid (if there are any) and just one time
 	           	if ( x == 0 ) { 
 		            if(detectorString != null && !detectorString.equals("")) {
+		            	newAccDAQ = detectorString;
 		            	String[] detectorIds = detectorString.split(",");
 						i = DataTools.insertGroupDetector(elab, researchGroupId, detectorIds);
 	        	    }
@@ -240,8 +244,17 @@
 	request.setAttribute("academicyears", academicyears);
 	request.setAttribute("defaultYear", defaultYear);
 	request.setAttribute("survey", survey);
-	request.setAttribute("researchGroup", researchGroup);
-	
+	request.setAttribute("newAccState",newAccState);	
+	request.setAttribute("newAccCity",newAccCity);	
+	request.setAttribute("newAccSchool",newAccSchool);	
+	request.setAttribute("newAccTeacher",newAccTeacher);	
+	request.setAttribute("newAccEmail",newAccEmail);	
+	request.setAttribute("newAccRG",newAccRG);	
+	request.setAttribute("newAccAY",newAccAY);	
+	request.setAttribute("newAccGR",newAccGR);	
+	request.setAttribute("newAccDAQ",newAccDAQ);	
+	request.setAttribute("newAccRP",newAccRP);	
+	request.setAttribute("newAccSurvey",newAccSurvey);	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -308,7 +321,9 @@
 									<select name="city" id="city"></select>
 								</td>
 								<td>OR enter a new city <input type=text name=cityNew id="cityNew" value="" size=30 maxlength=50 ></input> 
-									<a href="#" id="cityList" onclick="return false;" title="" ><img src="../graphics/view_data.gif" alt=" " border="0" /></a>
+									<div class="details" id="cityList" style="display: inline-block;" ><img src="../graphics/view_data.gif" alt=" " border="0" />
+										<span class="tooltip" id="cityTooltip"></span>
+									</div>
    								</td>
 							</tr>							
 							<tr>
@@ -317,13 +332,17 @@
 									<select name="school" id="school"></select>	
 								</td>
 								<td>OR enter a new school/institution <input type=text id="schoolNew" name=schoolNew value="" size=30 maxlength=50></input> 
-									<a href="#" id="schoolList" onclick="return false;" title=""><img src="../graphics/view_data.gif" alt=" " border="0" /></a>
+									<div class="details" id="schoolList" style="display: inline-block;" ><img src="../graphics/view_data.gif" alt=" " border="0" />
+										<span class="tooltip" id="schoolTooltip"></span>
+									</div>
 								</td>
 							</tr>					
 							<tr>
 								<td>New teacher/leader</td>
 								<td colspan="2"><input type=text name=teacherNew id="teacherNew" value="" size=30 maxlength=50></input>
-									<a href="#" id="teacherList" onclick="return false;" title=""><img src="../graphics/view_data.gif" alt=" " border="0" /></a>
+									<div class="details" id="teacherList" style="display: inline-block;" ><img src="../graphics/view_data.gif" alt=" " border="0" />
+										<span class="tooltip" id="teacherTooltip"></span>
+									</div>
 								</td>
 							</tr>
 							<tr>
@@ -390,7 +409,55 @@
    								<td>
    									<c:choose>
    										<c:when test='${done == "done" }'>
-   											<font color="green">New group: ${researchGroup } created successfully!</font><br />
+ 												<table>
+													<tr><td colspan="2"><font color="green">New group: ${newAccRG } created successfully!</font><br /></td></tr>
+ 													<tr>
+ 														<td>State or Country: </td>
+ 														<td>${newAccState }</td>
+ 													</tr>
+ 													<tr>
+ 														<td>City: </td>
+ 														<td>${newAccCity }</td>
+ 													</tr>					
+ 													<tr>
+ 														<td>School/Institution: </td>
+ 														<td>${newAccSchool }</td>
+ 													</tr>					
+ 													<tr>
+ 														<td>Teacher/Leader: </td>
+ 														<td>${newAccTeacher }</td>
+ 													</tr>					
+ 													<tr>
+ 														<td>Teacher's/Leader's Email: </td>
+ 														<td>${newAccEmail }</td>
+ 													</tr>					
+ 													<tr>
+ 														<td>Group Name: </td>
+ 														<td>${newAccRG }</td>
+ 													</tr>					
+ 													<tr>
+ 														<td>Project(s): </td>
+ 														<td>${newAccRP }</td>
+ 													</tr>					
+ 													<tr>
+ 														<td>Academic Year: </td>
+ 														<td>${newAccAY }</td>
+ 													</tr>					
+ 													<tr>
+ 														<td>Role: </td>
+ 														<td>${newAccGR }</td>
+ 													</tr>		
+ 													<c:if test='${newAccDAQ != "" }'>			
+	 													<tr>
+	 														<td>DAQ Board ID(s): </td>
+	 														<td>${newAccDAQ }</td>
+	 													</tr>					
+	 												</c:if>
+ 													<tr>
+ 														<td>In Survey: </td>
+ 														<td>${newAccSurvey }</td>
+ 													</tr>		
+ 												</table>
  											<c:if test='${ survey == "Yes" }'>
  												If you wish to add students to your group (who must complete the survey), 
  												return to the <a href="../login/logout.jsp">Registration Page</a> and login with your new group name.<br />

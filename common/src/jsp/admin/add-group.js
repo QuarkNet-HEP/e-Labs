@@ -278,10 +278,11 @@ $(document).ready(function() {
 	    for (var i = 0; i < cities.length; i++) {
 			var clean = cities[i].value.replace(/[\[\]']+/g,'');
 			var values = clean.split(",");
-			cityList = cityList + values[2] + "\n";
+			cityList = cityList + values[2] + "<br />";
 	    }
-	    document.getElementById("cityList").setAttribute("title", cityList);
+	    document.getElementById("cityTooltip").innerHTML=cityList;
 	});
+
 	
 	$("#city").bind("change", function() {
 	    city = $(this).find("option:selected").attr("name");
@@ -292,22 +293,20 @@ $(document).ready(function() {
 	    for (var i = 0; i < schools.length; i++) {
 			var clean = schools[i].value.replace(/[\[\]']+/g,'');
 			var values = clean.split(",");
-			schoolList = schoolList + values[3] + "\n";
+			schoolList = schoolList + values[3] + "<br />";
 	    }
-	    document.getElementById("schoolList").setAttribute("title", schoolList);
+	    document.getElementById("schoolTooltip").innerHTML=schoolList;
 	});
 	$("#school").bind("change", function() {
 	    school = $(this).find("option:selected").attr("name");
 	    var teachers = document.getElementsByName("teacherIn"+stateAbbrev+city.trim()+school.trim());
-	//    document.getElementById("schoolNew").value="";
-	//    createOption(document.getElementById("teacher"), teachers, 1);
 	    var teacherList = "";
 	    for (var i = 0; i < teachers.length; i++) {
 			var clean = teachers[i].value.replace(/[\[\]']+/g,'');
 			var values = clean.split(",");
-			teacherList = teacherList + values[1] + "\n";
+			teacherList = teacherList + "<strong>"+values[1]+"</strong>: " + values[6] +"<br />";
 	    }
-	    document.getElementById("teacherList").setAttribute("title", teacherList);
+	    document.getElementById("teacherTooltip").innerHTML=teacherList;
 	});
 	$("#project1").bind("change", function() {
 		var $el = $(this);
