@@ -20,6 +20,7 @@
 <%@ include file="../analysis/results.jsp" %>
 <%@ page import="gov.fnal.elab.util.URLEncoder" %>
 <%
+	String message = request.getParameter("message");
 	String subject = URLEncoder.encode(elab.getName() + " Interactive Performance Plot Feedback");
 	String body = URLEncoder.encode("Thank you for your interest and help!. Please complete the fields below with your feedback:\n\n" 
 		+ "First Name:\n\n"
@@ -29,6 +30,7 @@
 		+ "School:\n\n"
 		+ "Your feedback about the Performance Interactive Plots:\n");
 	String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
+	request.setAttribute("message", message);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -83,81 +85,98 @@
 					});
 				}); 	
 				</script>
+				
 				<div><div style="text-align: center;">
 					<a href="output.jsp?id=${results.id }">View static plot</a><br /><br />
 					<div style="font-size: x-small;"><i>Send feedback to</i> <a href="<%= mailURL %>">e-labs@fnal.gov</a></div>
-				</div></div>									
-				<div class="graph-container" style="height: 600px;">
-					<div id="placeholder" class="graph-placeholder" style="float:left; width:650px; height:550px;"></div>
-					<div id="overview" class="graph-placeholder" style="float:right;width:160px; height:150px;"></div>
-					<div id="interactive" style="float:right;width:160px; height:325px;">
-						<p><label><input id="enableTooltip" type="checkbox" checked="checked"></input>Enable tooltip</label></p>
-						<p>
-							<label><input id="enablePosition" type="checkbox" checked="checked"></input>Show mouse position:</label>
-							<br /><span id="hoverdata" class="hoverdata"></span>
-							<br /><span id="clickdata" class="clickdata"></span>
-						</p>				
-						<p><div id="zoomoutbutton" style="float:left; width:80px; height:30px;"> </div>
-						   <div id="resetbutton" style="float:right; width:80px; height:30px;"> </div></p>
-						<p><div id="arrows" style="float:right; width:160px; height:100px;"><div id="arrowcontainer" style="position:relative;"></div></div></p>
-						<p class="message"></p>
-						<p class="click"></p>
-					</div>
-					<div id="placeholderLegend" class="legend-placeholder"></div>
+				</div></div>
+				<c:choose>		
+					<c:when test="${not empty message }">
+						<div><div style="text-align: center;">${message }</div>
+					</c:when>
+					<c:otherwise>							
+						<div class="graph-container" id="spinner" style="height: 600px;">
+							<div id="placeholder" class="graph-placeholder" style="float:left; width:650px; height:550px;"></div>
+							<div id="overview" class="graph-placeholder" style="float:right;width:160px; height:150px;"></div>
+							<div id="interactive" style="float:right;width:160px; height:325px;">
+								<p><label><input id="enableTooltip" type="checkbox" checked="checked"></input>Enable tooltip</label></p>
+								<p>
+									<label><input id="showPressure" type="checkbox"></input>Show pressure</label>
+								</p>
+								<p>
+									<label><input id="showTemperature" type="checkbox"></input>Show temperature</label>
+								</p>
+								<p>
+									<label><input id="enablePosition" type="checkbox" checked="checked"></input>Show mouse position:</label>
+								</p>
+									<br /><span id="hoverdata" class="hoverdata"></span>
+									<br /><span id="clickdata" class="clickdata"></span>
+								</p>				
+								<p><div id="zoomoutbutton" style="float:left; width:80px; height:30px;"> </div>
+								   <div id="resetbutton" style="float:right; width:80px; height:30px;"> </div></p>
+								<p><div id="arrows" style="float:right; width:160px; height:100px;"><div id="arrowcontainer" style="position:relative;"></div></div></p>
+								<p class="message"></p>
+								<p class="click"></p>
+							</div>
+							<div id="placeholderLegend" class="legend-placeholder"></div>
+						</div>
+						<div style="text-align: center;">
+							<div id="incdec">Bin Width
+					    		<input type="number" name="binWidth" id="binWidth" step="60" min="60" style="width: 60px;"/>
+							</div>
+							<div class="slider">
+						    	<input id="range" type="range" step="60" min="60" style="width: 650px;"></input>
+							</div>	
+							<!-- 						
+							<p> 
+								<select name="externalFiles" id="externalFiles" >
+						 			<option></option>
+						 			<c:choose>
+						  			<c:when test="${not empty list }">
+						 				<c:forEach items="${list}" var="filename">
+								            <option value="${filename.key }">${filename.value }</option>
+								        </c:forEach>
+								     </c:when>			
+						 			</c:choose>
+						         </select>         
+								<input type="button" id="superImpose" value="Plot External Data" onclick="return superImpose();"/>
+								<div id="msg"></div>
+							</p>
+							 -->
+							<p>
+								Analysis run time: ${results.formattedRunTime}; estimated: ${results.formattedEstimatedRunTime}
+							</p>
+							<p>
+								Show <e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysisdir" 
+									width="800" height="600" toolbar="true">analysis directory</e:popup>
+							</p>
+							<p>
+								<e:rerun type="flux" id="${results.id}" label="Change"/> your parameters	
+							</p>
+						</div>
+					</c:otherwise>
+				</c:choose>					
+				<div style="text-align:center; width: 100%;">
+					Filename <input type="text" name="chartName" id="chartName" value=""></input><input type="button" name="save" onclick='return saveChart(onOffPlot, "chartName", "chartMsg", "${results.id}");' value="Save"></input>    
+					<div id="chartMsg"></div>  
+					<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
+					<e:creationDateMetadata/>
+					<input type="hidden" name="metadata" value="transformation string I2U2.Cosmic::FluxStudy"/>
+					<input type="hidden" name="metadata" value="study string performance"/>
+					<input type="hidden" name="metadata" value="type string plot"/>
+					<input type="hidden" name="metadata" value="bins float ${results.analysis.parameters['freq_binValue']}"/>
+					<input type="hidden" name="metadata" value="channel string ${results.analysis.parameters['singlechannel_channel']}"/>
+					<input type="hidden" name="metadata" value="title string ${results.analysis.parameters['plot_title']}"/>
+					<input type="hidden" name="metadata" value="caption string ${results.analysis.parameters['plot_caption']}"/>
+					<input type="hidden" name="srcFile" value="plot.png"/>
+					<input type="hidden" name="srcThumb" value="plot_thm.png"/>
+					<input type="hidden" name="srcSvg" value="plot.svg"/>
+					<input type="hidden" name="srcFileType" value="png"/>
+					<input type="hidden" name="id" value="${results.id}"/>
+					<input type="hidden" name="outputDir" id="outputDir" value="${results.outputDirURL}"/>	 
 				</div>
-
 		 	</div>
-		</div>
-		<div id="incdec">Bin Width
-    		<input type="number" name="binWidth" id="binWidth" step="60" min="60" style="width: 60px;"/>
-		</div>
-		<div class="slider">
-	    	<input id="range" type="range" step="60" min="60" style="width: 650px;">
-		</input>
-<p> 
-		<select name="externalFiles" id="externalFiles" >
- 			<option></option>
- 			<c:choose>
-  			<c:when test="${not empty list }">
- 				<c:forEach items="${list}" var="filename">
-		            <option value="${filename.key }">${filename.value }</option>
-		        </c:forEach>
-		     </c:when>			
- 			</c:choose>
-         </select>         
-	<input type="button" id="superImpose" value="Plot External Data" onclick="return superImpose();"/>
-	<div id="msg"></div>
-</p>
-<p>
-	Analysis run time: ${results.formattedRunTime}; estimated: ${results.formattedEstimatedRunTime}
-</p>
-<p>
-	Show <e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysisdir" 
-		width="800" height="600" toolbar="true">analysis directory</e:popup>
-</p>
-<p>
-	<e:rerun type="performance" id="${results.id}" label="Change"/> your parameters	
-</p>
-<div style="text-align:center; width: 100%;">
-	Filename <input type="text" name="chartName" id="chartName" value=""></input><input type="button" name="save" onclick='return saveChart(onOffPlot, "chartName", "chartMsg", "${results.id}");' value="Save"></input>    
-	<div id="chartMsg"></div>  
-	<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
-	<e:creationDateMetadata/>
-	<input type="hidden" name="metadata" value="transformation string I2U2.Cosmic::FluxStudy"/>
-	<input type="hidden" name="metadata" value="study string performance"/>
-	<input type="hidden" name="metadata" value="type string plot"/>
-	<input type="hidden" name="metadata" value="bins float ${results.analysis.parameters['freq_binValue']}"/>
-	<input type="hidden" name="metadata" value="channel string ${results.analysis.parameters['singlechannel_channel']}"/>
-	<input type="hidden" name="metadata" value="title string ${results.analysis.parameters['plot_title']}"/>
-	<input type="hidden" name="metadata" value="caption string ${results.analysis.parameters['plot_caption']}"/>
-	<input type="hidden" name="srcFile" value="plot.png"/>
-	<input type="hidden" name="srcThumb" value="plot_thm.png"/>
-	<input type="hidden" name="srcSvg" value="plot.svg"/>
-	<input type="hidden" name="srcFileType" value="png"/>
-	<input type="hidden" name="id" value="${results.id}"/>
-	<input type="hidden" name="outputDir" id="outputDir" value="${results.outputDirURL}"/>	 
-</div>
-				
+	</div>				
 	<div id="footer"></div>		
 	</body>
 </html>
