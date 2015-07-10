@@ -231,7 +231,7 @@ public class FluxPlotDataStream {
 	public void saveFileHistogramData(JsonWriter writer) throws ElabException {
 		try {
 			if (fluxData != null) {
-				saveFile(writer, "00ff00", "fluxdata", "cross", "00cc00", 0);
+				saveFile(writer, "00ff00", "fluxdata", "cross", "green", 0);
 			}
 			writer.name("binValue").value(getBinValue());
 			writer.name("minX").value(getMinX());
