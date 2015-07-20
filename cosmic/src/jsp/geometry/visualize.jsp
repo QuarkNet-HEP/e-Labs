@@ -18,6 +18,7 @@
 		<script src="../include/highcharts/js/highcharts-3d.js"></script>
 		<script src="../include/highcharts/js/modules/exporting.js"></script>
 		<script src="../include/visualize-values.js"></script>
+		<link rel="stylesheet" type="text/css" href="../css/highcharts.css"/>
 	</head>
 
 	<body>
@@ -64,18 +65,21 @@ $(function () {
     }
 
 	//Find min and max of x, y, and z values
-	  var xMin = Math.min(x1, x2, x3, x4, 0) - 1;
-	  var xMax = Math.max(x1, x2, x3, x4, 0) + 1;
+	  var xMin = Math.min(x1, x2, x3, x4, 0) - 1; //alert("xMin: "+xMin);
+	  var xMax = Math.max(x1, x2, x3, x4, 0) + 1; //alert("xMax: "+xMax);
 	  
-	  var yMin = Math.min(y1, y2, y3, y4, 0) - 1; //alert("yMin: "+yMin);
+	  var yMin = Math.min(y1, y2, y3, y4, 0) - 1; //alert("yMin: "+yMin); 
 	  var yMax = Math.max(y1, y2, y3, y4, 0) + 1; //alert("yMax: "+yMax);
 	  
-	  var zMin = Math.min(z1, z2, z3, z4, 0); 
-	  var zMax = Math.max(z1, z2, z3, z4, 0) + 1; 
+	  var zMin = Math.min(z1, z2, z3, z4, 0) - 1; //alert("zMin: "+zMin);
+	  var zMax = Math.max(z1, z2, z3, z4, 0) + 1; //alert("zMax: "+zMax);
+	  
+	  var tickIx = parseInt((xMax-xMin)/5); 
+	  var tickIz = parseInt((zMax-zMin)/5); 
 	    
     // Set up the chart
         var chart = new Highcharts.Chart({
-        chart: {
+        chart: {          
             renderTo: 'container',
             margin: 100,
             type: 'scatter',
@@ -98,34 +102,46 @@ $(function () {
             text: 'Configuration of Counters & GPS'
         },
         subtitle: {
-            text: 'Click and drag the plot area to rotate in space.<br/>Y-axis increases as you go from front to back.<br/>Hover over point to see coordinates.'
+            text: 'Click and drag the plot area to rotate in space.  Hover over point to see description & coordinates.'
         },
         tooltip: {
                     formatter: function () {
                 		return this.point.name + ':  (<b>' + this.point.x + ',<b>' + this.point.z + ',<b>' + this.point.y +')<b>';
             		}
-                },
-       	
+                }, 
+                  
 //z and y axes are reversed because we want z-axis to be up-down.      
         xAxis: {
             min: xMin,
-            max: xMax,        
-			tickInterval: 1,
-			title: {text: 'X-Axis (meters)'}
+            max: xMax,
+ 			tickInterval: tickIx,
+			title: {
+				text: 'X-Axis (meters):  W(-)->E(+)', 
+				style: {color: 'blue'}, 
+         		rotation: 10           
+         	}
         },
         yAxis: {
             min: zMin,
             max: zMax,
-            tickInterval: 1,
-            title: {text: 'Z-Axis (meters)'}
+          	tickInterval: tickIz,
+            title: {
+            	text: 'Z-Axis (meters):  Down(-)->Up(+)',
+            	style: {color: 'blue'},     
+            }
         },
         zAxis: {
             min: yMin,
-            max: yMax
+            max: yMax,
+            title: {
+            	text: 'Y-Axis (meters)', 
+            	style: {color: 'blue'}            
+         	}
         },   
-    		
+        legend: {
+            enabled: false
+        },
         series: [{  
-        	showInLegend: false,
         	data:  [   	
 	       	{name:  'Channel 1', color:'black', x:x1, y:z1, z:y1}, 
          	{name:  'Channel 2', color: 'black', x:x2, y:z2, z:y2}, 
@@ -134,8 +150,28 @@ $(function () {
         	{name:  'GPS', color:'red', x:0, y:0, z:0}
         	]
     	}]
-	});
-
+    }, 
+    
+ 		//Add extra text   
+    	function (chart) {
+    	chart.renderer.text('Are your counters in these locations? <br/> If not, make sure you have entered your geometry properly.', 0, 375)
+            .css({
+                fontSize: '12px',
+                fontStyle: 'italic'
+            })
+            .add();
+		chart.renderer.text('Y-axis (m): S(-)->N(+)',700,375)
+			.attr({
+                rotation: -40
+            })
+            .css({
+                color: 'blue',
+                fontSize: '12px'
+            })
+			.add();
+    	
+	}
+	);        
 
     // Add mouse events for rotation
     $(chart.container).bind('mousedown.hc touchstart.hc', function (e) {
