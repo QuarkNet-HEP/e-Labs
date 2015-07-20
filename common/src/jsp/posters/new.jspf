@@ -1,3 +1,4 @@
+<!-- SB -JULY 2015 - This file is no longer used -->
 <%@ page import="org.apache.regexp.*" %>
 <%@ page import="org.apache.commons.lang.*" %>
 <%@ page import="java.util.*" %>
@@ -31,7 +32,7 @@
 	});
 </script>
 
-
+	<!-- ******************************Start scriptlet******************************************************************************** -->
 <%
 	Policy policy = Policy.getInstance(Elab.class.getClassLoader().getResource("antisamy-i2u2.xml").openStream());
 	AntiSamy as = new AntiSamy(); 
@@ -318,25 +319,27 @@
 	request.setAttribute("posterTags", posterTags);
 	pageContext.setAttribute("images", images);
 %>
+	<!-- ******************************End scriptlet******************************************************************************** -->
+	
 	<!-- Show instructions -->
 	<ul>
 		<li>
 			Fill in all the fields including Poster File Name if it is missing.  
 			This is the name the poster file will get on the server. If you are 
 			making a new poster, do not use a name you have already used. To
-     	            see the posters you have made, click <b>Edit Posters</b> above.
-     	        </li>
-     	  <li>
+     	    see the posters you have made, click <b>Edit Posters</b> above.
+     	</li>
+     	<li>
 			<%@ include file="../posters/poster-example.jspf" %>
-		 </li>
-			 <li>Be sure to write a good <a href="javascript:glossary('abstract',300)">abstract</a>.
 		</li>
-
+		<li>
+			Be sure to write a good <a href="javascript:glossary('abstract',300)">abstract</a>.
+		</li>
 		<li>
 			To view the plots that you might want to include for the figures 
 			in your poster, click <b>View Plots</b> in the navigation bar. 
 			You can fill in fields for up to five figures. You don't have to 
-			fill them all in.
+			fill them all in.$
 		</li>
 		<li>
 			Composing your text in <strong>Microsoft Word</strong>?. Set the
@@ -349,6 +352,7 @@
 
 
 	<!-- Emit input form for replacement tags found in poster template -->
+	
 	<script language="JavaScript">
 		function previewImage(name) {
 			var div = document.getElementById("image-preview");
@@ -393,6 +397,7 @@
 
 	<form id="posterForm" method="post">
            <table width="550">
+	<!-- Table row 1 -->           
                 <tr>
                 	<c:choose>
                 		<c:when test="${edit == true}" >
@@ -427,6 +432,8 @@
  				  </tr>
  				</c:if> 
                 <tr> 
+
+	<!-- scriptlet -->
      
 <%
                 RE re = new RE("%(PARA|FIG|WORDS):([A-Z0-9]+)%");
@@ -459,7 +466,9 @@
                      if (fixedName.equals("Conclusion")) {nameAnnotation="<br>(Interpret results, suggest further study)";}
                      if (fixedName.equals("Introduction")) {nameAnnotation="<br>(Background and researchable question)";}
  
-                     %>
+%>
+	<!-- Table row 2 -->
+
                     	<tr>
                     		<td align="right" valign="top"><b><%= fixedName %></b>:<%= nameAnnotation %></td>
                     		<c:choose>
@@ -500,10 +509,15 @@
    		              			</c:when>
 	  						</c:choose>                
 	                    </tr>
-	                <%
+
+	<!-- scriptlet -->      
+<%
 	                p = re.getParenEnd(0);
                 }
-	   %>
+%>
+
+	<!-- Table row 3 -->
+
 		<tr>
 			<td colspan="2" align="center">
 			    <input type="hidden" name="showPoster" id="showPoster" value="" />
@@ -516,6 +530,7 @@
     	        To see poster, don't block popups! Otherwise click <b>Display Poster</b> below.
 			</td>
 		</tr>
+
 		<c:choose>
 			<c:when test="${not empty existingposters}">
 				<c:forEach items="${existingposters}" var="existingposter" varStatus="counter">
@@ -527,10 +542,13 @@
 				</c:forEach>
 			</c:when>		
 		</c:choose>
-	</form>
-</table>
-</span></center>
+		
+		<!-- </form> taken out by SB-->
+		</table>
+	</form> <!-- added by SB-->
+</span></center> <!-- Where are <span> and <center>? -SB-->
 
+	<!-- ******************************Start scriptlets******************************************************************************* -->
 
 <%
 //this functionality is not working as of 8-19-04. Must go through search.jsp to view it...
@@ -570,12 +588,18 @@ if ("Make Poster".equals(reqType) || "Save Changes".equals(reqType)) {
 }
 
 %>
+
 <% if (dfile != "") {
 %>
+
 <div align="center"><a href="../posters/display.jsp?name=<%= dfile %>" target="_blank" width="700" height="900" now="true">Display Poster</a></div>
+
 <%
 }
 %>
+
+	<!-- ******************************End scriptlets********************************************************************************* -->
+
 <script>
 //EPeronja-02/15/2013: Bug499- Implement autosave for posters
 // 		   There is a timer firing a detect changes routine every minute

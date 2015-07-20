@@ -25,6 +25,7 @@
 	</head>
 	
 	<body id="new-poster" class="posters">
+
 		<!-- entire page container -->
 		<div id="container">
 			<div id="top">
@@ -33,7 +34,8 @@
 					<%@ include file="../include/nav-rollover.jspf" %>
 				</div>
 			</div>
-			
+		
+		<!-- start content -->
 			<div id="content">
 
 <h1>New Poster: Make or edit your poster</h1>
@@ -45,12 +47,13 @@ if (user.isGuest())  { %>
 	<%@ include file="new-content.jsp" %>
 <% } %>
 			</div>
-			<!-- end content -->	
+		<!-- end content -->	
 		
 			<div id="footer">
 			</div>
 		</div>
 		<!-- end container -->
+
 	</body>
 </html>
 
