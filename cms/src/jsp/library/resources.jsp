@@ -36,6 +36,7 @@
 		<td>
 			<div id="left">
 					
+<%--************************e-Lab Resources****************************************************************************************** --%>
 
 				<div class="tab" id="tab-online">
 					<span class="tab-title">e-Lab Resources</span>
@@ -96,11 +97,7 @@
 					</div>
 				</div>
 				
-
-
-
-
-
+<%--*****************************Websites******************************************************************************************** --%>
 
 				<div class="tab" id="tab-online">
 					<span class="tab-title">Websites</span>
@@ -111,7 +108,7 @@
 								<e:popup href="http://cms.web.cern.ch/" target="website" width="850" height="600">Welcome to CMS</e:popup> - From CMS at CERN
 							</li>
 							<li>
-<e:popup href="http://public.web.cern.ch/public/en/LHC/CMS-en.html" target="website" width="850" height="600">CMS: Compact Muon Solenoid</e:popup>
+								<e:popup href="http://public.web.cern.ch/public/en/LHC/CMS-en.html" target="website" width="850" height="600">CMS: Compact Muon Solenoid</e:popup>
 								- From the CERN public website.
 							</li>
 
@@ -140,11 +137,15 @@
 							<li>
 								<e:popup href="http://press.web.cern.ch/press/" target="website" width="900" height="600">CERN Press Office</e:popup> - Announcements from CERN
 							</li>
+							<li>
+								Research Citation (Purdue University):  <a target="_blank" href="https://owl.english.purdue.edu/owl/resource/560/01/">APA Formatting and Style Guide</a> & 
+								<a target="_blank" href="https://owl.english.purdue.edu/owl/resource/747/01/">MLA Formatting and Style Guide</a>
+							</li>
+								
 						</ul>
 
 					</div>
 				</div>
-				
 				
 				
 			</div>
@@ -164,6 +165,8 @@
 					</div>
 --%>
 				</div>
+
+<%--*****************************Video*********************************************************************************************** --%>				
 				
 							<div class="tab" id="tab-video">
 					<span class="tab-title">Video</span>
@@ -199,6 +202,7 @@
 							</div>
 							</div>
 							
+<%--*****************************Contacts******************************************************************************************** --%>				
 				
 				<div class="tab" id="tab-contacts">
 					<span class="tab-title">Contacts</span>	
@@ -225,6 +229,8 @@
 					</div>
 				</div>
 				
+<%--*****************************Slideshows****************************************************************************************** --%>				
+				
 				<div class="tab" id="tab-slideshows">
 					<span class="tab-title">Slideshows</span>
 					<div class="tab-contents-sublevel">
@@ -237,6 +243,8 @@
 						</ul>
 					</div>
 				</div>
+
+<%--*****************************IT Careers****************************************************************************************** --%>				
 
 					<div class="tab" id="tab-it-careers">
 					<span class="tab-title">IT Careers</span>
@@ -254,6 +262,8 @@
 					</div>			
 				
 	             </div>			
+
+<%--*****************************Grid Computing************************************************************************************** --%>				
 
 							<div class="tab" id="tab-grid-computing">
 					<span class="tab-title">Grid Computing</span>
@@ -276,6 +286,8 @@
 							</ul>
 							</div>
 							</div>
+
+<%--*****************************End of Grid Computing******************************************************************************* --%>				
 
 
 			</div>

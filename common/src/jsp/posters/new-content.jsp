@@ -343,7 +343,10 @@
 		 </li>
 			 <li>Be sure to write a good <a href="javascript:glossary('abstract',300)">abstract</a>.
 		</li>
-
+		<li>
+			Research Citation (Purdue University):  <a target="_blank" href="https://owl.english.purdue.edu/owl/resource/560/01/">APA Formatting and Style Guide</a> 
+			& <a target="_blank" href="https://owl.english.purdue.edu/owl/resource/747/01/">MLA Formatting and Style Guide</a>.
+		</li>
 		<li>
 			To view the plots that you might want to include for the figures 
 			in your poster, click <b>View Plots</b> in the navigation bar. 
