@@ -23,9 +23,8 @@ import com.google.gson.stream.JsonWriter;
 
 public class FluxPlotDataStream {
  	Elab elab;
-	private TreeMap<Integer, String> fluxData;
-	public TreeMap<Long, Double> fluxArea;
-	public TreeMap<Integer, String> defaultHistogram = new TreeMap<Integer, String>();
+	private ArrayList<String> defaultHistogram;
+	private ArrayList<String> fluxDataArea;
 	private Double binValue;
 	private Double minX = -1.0;
 	private Double maxX = -1.0;
@@ -34,56 +33,57 @@ public class FluxPlotDataStream {
 	private Double maxError = -1.0;
 	private Long minMillis = 0L;
 	private long maxMillis = 0L;
-    DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
  	Geometries geometries;
  	Geometry geometry;
  	GeoEntryBean geb;
  	String channelArea = "";
-	private List<Long> seconds;
-	private List<Double> pressure;
-	private List<Double> temperature;
-	private List<Double> voltage;
-	private List<Double> satellites;
+	private ArrayList<Long> seconds;
+	private ArrayList<Double> pressure;
+	private ArrayList<Double> temperature;
+	private ArrayList<Double> voltage;
+	private ArrayList<Double> satellites;
+	ElabMemory em;
+    DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+    private String filename = "";
  
  	public FluxPlotDataStream(Elab elab, File file, Double binValue, String outputDir, File[] files, String[] filenames) throws Exception {
 		String message = "";
 		this.binValue = binValue;
 		this.elab = elab;
-		fluxData = new TreeMap<Integer, String>();
-		fluxArea = new TreeMap<Long, Double>();
+		fluxDataArea = new ArrayList<String>();
+		defaultHistogram = new ArrayList<String>();
 		seconds = new ArrayList<Long>();
 		pressure = new ArrayList<Double>();
 		temperature = new ArrayList<Double>();
 		voltage = new ArrayList<Double>();
 		satellites = new ArrayList<Double>();
+        em = new ElabMemory();
+		filename = outputDir+"/FluxPlotFlot";
+
 		try {
 			//work with the sort.out
-			String filename = outputDir+"/FluxPlotFlot";
-			JsonWriter writer = new JsonWriter(new FileWriter(filename));
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			//read input file and get data ready for the json file
-			saveLineData(br);
+			parseSortOutFile(br);
 			br.close();
 			//prepare the default histogram in the server so as to save time on the client side
 			prepareDefaultHistogram();
-			//save json file
-			writer.beginObject();
-			saveFileHistogramData(writer);
 			//get the data from the bless files
 			buildDataFromBlessFiles(files, filenames);
-			saveFluxBlessRangeData(writer);
-			writer.endObject();
-			writer.close();
+			//save json file
+			saveJsonFile(filename);
 		} catch (Exception e) {
 			throw e;
 		}
 	}//end of constructor
 
-	public void saveLineData(BufferedReader br) throws ElabException {
+ 	//read Flux sort.out file and save the data for the histogram
+	public void parseSortOutFile(BufferedReader br) throws ElabException {
 		String[] split; 
 		String line;
 		String channelAreaTemp = "";
 		String currentDetectorId = "";
+		SortedMap currentGeos = null;
 		int i=0; 
 		try {
 			while ((line = br.readLine()) != null) {
@@ -114,36 +114,36 @@ public class FluxPlotDataStream {
             							"when this data was taken.\n");
             			throw e;
         			}
-        			geb = (GeoEntryBean) geos.get(geos.lastKey()); 
-        			if (geb == null) {
-            			ElabException e = new ElabException("FluxPlotDataStream: No geometry entry for julian day: "+jd+"\n");  
-            			throw e;
-        			}
-        			switch (channel) {
-        				case 1:
-        					channelAreaTemp = geb.getChan1Area();
-        					break;
-        				case 2:
-        					channelAreaTemp = geb.getChan2Area();
-        					break;
-        				case 3:
-        					channelAreaTemp = geb.getChan3Area();
-        					break;
-        				case 4:
-        					channelAreaTemp = geb.getChan4Area();
-        					break;
-        				default:
-        					channelAreaTemp = "0.0";
-        					break;
+        			if (currentGeos == null || currentGeos != geos) {
+	        			geb = (GeoEntryBean) geos.get(geos.lastKey()); 
+	        			if (geb == null) {
+	            			ElabException e = new ElabException("FluxPlotDataStream: No geometry entry for julian day: "+jd+"\n");  
+	            			throw e;
+	        			}
+	        			switch (channel) {
+	        				case 1:
+	        					channelAreaTemp = geb.getChan1Area();
+	        					break;
+	        				case 2:
+	        					channelAreaTemp = geb.getChan2Area();
+	        					break;
+	        				case 3:
+	        					channelAreaTemp = geb.getChan3Area();
+	        					break;
+	        				case 4:
+	        					channelAreaTemp = geb.getChan4Area();
+	        					break;
+	        				default:
+	        					channelAreaTemp = "0.0";
+	        					break;
+	        			}
+	        			currentGeos = geos;
         			}
         		}
                 NanoDate nd = ElabUtil.julianToGregorianCST(Integer
                         .parseInt(jd), parseToDouble(re));   	
-				Long timeinmillis = nd.getTime();
-				double thresh = parseToDouble(split[4]);
-				String concatTimeThresh = String.valueOf(timeinmillis)+","+channelAreaTemp;
-				fluxData.put(i, concatTimeThresh);					
-           		fluxArea.put(timeinmillis, Double.parseDouble(channelAreaTemp) / 100 / 100);	
+                Long timeinmillis = nd.getTime();
+           		fluxDataArea.add(String.valueOf(timeinmillis)+","+String.valueOf(Double.parseDouble(channelAreaTemp) / 100 / 100));
 				i += 1;
 				//get the max value of the whole set
 				double newmax = timeinmillis.doubleValue();
@@ -157,6 +157,17 @@ public class FluxPlotDataStream {
 				if (newmin < minX) {
 					minX = newmin;
 				}					
+                em.refresh();
+                if (em.isCritical()) {
+                	String emailMessage = 	"The code stopped processing the sort.out file in FluxPlotDataStream\n"+
+                							"at line: "+String.valueOf(i)+"\n"+
+                							em.getMemoryDetails();
+                	em.notifyAdmin(elab, emailMessage);
+                   	Exception e = new Exception("Heap memory left: "+String.valueOf(em.getFreeMemory())+"MB"+
+                                   				"We stopped processing the sort.out file at line: <br />"+String.valueOf(i)+".<br/>" +
+                                   				"Please select fewer files or files with fewer events.");
+                	throw e;
+                }
 			}
 			minX = minX - (binValue * DateUtils.MILLIS_PER_SECOND);
 			maxX = maxX + (binValue * DateUtils.MILLIS_PER_SECOND * 2);
@@ -164,21 +175,23 @@ public class FluxPlotDataStream {
 		} catch (Exception e) {
 			throw new ElabException("FluxPlotDataStream: Exception in saveLineData: "+e.getMessage());
 		}
-	}// end of saveLineData
+	}// end of parseSortOutFile
 
+	//prepare the default Histogram to be displayed
  	public void prepareDefaultHistogram() throws ElabException {
  		try {
 	        //BufferedWriter report = new BufferedWriter(new FileWriter("/users/edit/ep_home/ep_cosmic/ep_flux/javaOutput.txt"));
-	 		TreeMap<Integer,ArrayList> histData = new TreeMap<Integer,ArrayList>();
 	 		int[] frequency = new int[getNBins().intValue()];
 	 		int[] area = new int[getNBins().intValue()];
 	 		double secsToPartialDay = getBinValue()* DateUtils.MILLIS_PER_SECOND;
- 	 		if (fluxData != null) {
-	 			for (int i = 0; i < fluxData.size()-1; i++) {
-					String[] value = fluxData.get(i).split(",");
-					String[] nextValue = fluxData.get(i+1).split(",");
-	 				Double bin = (Long.parseLong(value[0]) - minX) / secsToPartialDay;
-	 				Double nextBin = (Long.parseLong(nextValue[0]) - minX) / secsToPartialDay;
+ 	 		if (fluxDataArea != null) {
+	 			for (int i = 0; i < fluxDataArea.size()-1; i++) {
+	 				String[] parts = fluxDataArea.get(i).split(",");
+	 				String[] nextParts = fluxDataArea.get(i+1).split(",");
+	 				Long value = Long.valueOf(parts[0]);
+	 				Long nextValue = Long.valueOf(nextParts[0]);
+	 				Double bin = (value - minX) / secsToPartialDay;
+	 				Double nextBin = (nextValue - minX) / secsToPartialDay;
 	 				if (bin.intValue() < 0) {}
 	 				else if (bin.intValue() >= getNBins().intValue()) {}
 	 				else {
@@ -202,9 +215,10 @@ public class FluxPlotDataStream {
 				binMillis[ndx] = i+halfBin+0.00001;
 				long longI = i.longValue();
 				long l = longI;
-				for (Map.Entry<Long, Double> e: fluxArea.entrySet()) {
-					if (i.longValue() >= e.getKey()) {
-						binArea[ndx] = e.getValue();
+				for (int x = 0; x < fluxDataArea.size(); x++) {
+					String[] parts = fluxDataArea.get(x).split(",");
+					if (i.longValue() >= Long.valueOf(parts[0])) {
+						binArea[ndx] = Double.valueOf(parts[1]);
 						break;
 					}
 				}
@@ -222,7 +236,7 @@ public class FluxPlotDataStream {
 		 				maxError = error;
 		 			}
 		 			//report.write(String.valueOf(xValue)+","+String.valueOf(yValue)+","+String.valueOf(error)+"\n");
-		 			defaultHistogram.put(i, String.valueOf(xValue)+","+String.valueOf(yValue)+","+String.valueOf(error));
+		 			defaultHistogram.add(String.valueOf(xValue)+","+String.valueOf(yValue)+","+String.valueOf(error));
 	 			}
 	 		}
 	 		//report.close();
@@ -231,46 +245,108 @@ public class FluxPlotDataStream {
  		}
  	}//end of prepareDefaultHistogram
  	
+ 	//read blessfile and prepare data for superimposing
+	public void buildDataFromBlessFiles( File[] files, String[] filenames) throws ElabException {
+		for (int i = 0; i < files.length; i++) {
+			try {				
+				BufferedReader br = new BufferedReader(new FileReader(files[i]));
+				String line;
+				String[] split; 
+				Long ts; 
+				//get startdate from database
+				Timestamp startDate;
+				Long secs = 0L;
+				try {
+					String[] nameParts = filenames[i].split("\\.");
+					String filedate = nameParts[1]+nameParts[2];
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+					Date date = sdf.parse(filedate);
+					sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+					String dateUTC = sdf.format(date);
+					Date newDate = sdf.parse(dateUTC);
+					secs = newDate.getTime();
+				} catch (Exception e) {	
+					String message = e.toString();
+				}
+				while ((line = br.readLine()) != null) {
+					if (line.startsWith("#")) {
+						continue; // comment line
+					}
+					else {
+						split = line.split("\t"); 
+						if (split.length != 15) {
+							throw new IOException(files[i].getName() + " has malformed data. "); 
+						}
+						pressure.add(parseToDouble(split[11]));
+						temperature.add(parseToDouble(split[12]));
+						voltage.add(parseToDouble(split[13]));
+						satellites.add(parseToDouble(split[14]));
+						ts = secs + (parseToLong(split[0]) * 1000);
+						seconds.add(ts);
+					}
+				}
+				br.close();
+			} catch (Exception ex) {
+				throw new ElabException("FluxPlotDataStream: Exception in buildDataFromBlessFiles "+ex.getMessage());
+			}
+            em.refresh();
+            if (em.isCritical()) {
+            	String emailMessage = 	"The code stopped processing the bless files in FluxPlotDataStream\n"+
+            							"at line: "+String.valueOf(i)+"\n"+
+            							em.getMemoryDetails();
+            	em.notifyAdmin(elab, emailMessage);
+               	ElabException e = new ElabException("Heap memory left: "+String.valueOf(em.getFreeMemory())+"MB"+
+                               				"We stopped processing the bless files at: <br />"+files[i]+".<br/>" +
+                               				"Please select fewer files or files with fewer events.");
+            	throw e;
+            }			
+		}//end of for loop 		
+ 	}//end of buildDataFromBlessFiles
 	
-	public void saveFileHistogramData(JsonWriter writer) throws ElabException {
+	//save json data
+	public void saveJsonFile(String filename) throws ElabException {
 		try {
-			if (fluxData != null) {
-				saveFile(writer, "#00ff00", "fluxdata", "cross", "#00cc00", 0);
+			JsonWriter writer = new JsonWriter(new FileWriter(filename));
+			writer.beginObject();
+			if (fluxDataArea != null) {
+				saveFluxHistogram(writer, "#00ff00", "fluxdata", "cross", "#00cc00", 0);
+				writer.name("binValue").value(getBinValue());
+				writer.name("minX").value(getMinX());
+				writer.name("maxX").value(getMaxX());
+				writer.name("nBins").value(getNBins());
+				writer.name("maxYaxis").value(maxYaxis);
+				writer.name("maxError").value(maxError);
+				writer.name("bins");
+				writer.beginArray();
+				for (Double i = Math.floor(minX); i < Math.ceil(maxX); i+=(binValue * DateUtils.MILLIS_PER_SECOND)) {
+					writer.value(i);
+				}
+				writer.endArray();
+				writer.name("fakeBins");
+				writer.beginArray();
+				for (Double i = Math.floor(minX); i < Math.ceil(maxX); i+=(binValue * DateUtils.MILLIS_PER_SECOND)) {
+					writer.value(i+0.00001);
+				}
+				writer.endArray();
 			}
-			writer.name("binValue").value(getBinValue());
-			writer.name("minX").value(getMinX());
-			writer.name("maxX").value(getMaxX());
-			writer.name("nBins").value(getNBins());
-			writer.name("maxYaxis").value(maxYaxis);
-			writer.name("maxError").value(maxError);
-			writer.name("bins");
-			writer.beginArray();
-			for (Double i = Math.floor(minX); i < Math.ceil(maxX); i+=(binValue * DateUtils.MILLIS_PER_SECOND)) {
-				writer.value(i);
-			}
-			writer.endArray();
-			writer.name("fakeBins");
-			writer.beginArray();
-			for (Double i = Math.floor(minX); i < Math.ceil(maxX); i+=(binValue * DateUtils.MILLIS_PER_SECOND)) {
-				writer.value(i+0.00001);
-			}
-			writer.endArray();
+			saveFluxBlessData(writer);
+			writer.endObject();
+			writer.close();
 		} catch (Exception e) {
 			throw new ElabException("FluxPlotDataStream: Exception in saveFileHistogramData "+e.getMessage());
-		}		
-		
-	}//end of saveFileHistogramData
+		}				
+	}//end of saveJsonFile
 	
-	public void saveFile(JsonWriter writer, String color, String name, String symbol, String crossColor, int ndx) throws ElabException {
+	public void saveFluxHistogram(JsonWriter writer, String color, String name, String symbol, String crossColor, int ndx) throws ElabException {
 		try {
 			writer.name("fluxdata");
 			writer.beginObject();
 			writer.name("label").value("Events");
 			writer.name("data");
 			writer.beginArray();
-			for (Map.Entry<Integer,String> entry: defaultHistogram.entrySet()) {
+			for (int i = 0; i < defaultHistogram.size(); i++) {
 				writer.beginArray();
-				String[] value = entry.getValue().split(",");
+				String[] value = defaultHistogram.get(i).split(",");
 				Double x = Double.parseDouble(value[0]);
 				Double y = Double.parseDouble(value[1]);
 				Double e = Double.parseDouble(value[2]);
@@ -281,23 +357,24 @@ public class FluxPlotDataStream {
 				} else {
 					writer.nullValue();
 					writer.nullValue();
-				}
+				}				
 				writer.endArray();
 			}
 			writer.endArray();
 			writer.name("data_original");
 			writer.beginArray();
-			for (Map.Entry<Integer,String> entry: fluxData.entrySet()) {
-				String[] value = entry.getValue().split(",");
-				writer.value(Long.parseLong(value[0]));
+			for (int i = 0; i < fluxDataArea.size(); i++) {
+				String[] parts = fluxDataArea.get(i).split(",");
+				writer.value(Long.valueOf(parts[0]));
 			}
 			writer.endArray();
 			writer.name("area");
 			writer.beginArray();
-			for (Map.Entry<Long,Double> entry: fluxArea.entrySet()) {
+			for (int i = 0; i < fluxDataArea.size(); i++) {
 				writer.beginArray();
-				writer.value(entry.getKey());
-				writer.value(entry.getValue());
+				String[] parts = fluxDataArea.get(i).split(",");
+				writer.value(Long.valueOf(parts[0]));
+				writer.value(Double.parseDouble(parts[1]));
 				writer.endArray();
 			}
 			writer.endArray();
@@ -342,67 +419,22 @@ public class FluxPlotDataStream {
 		} catch (Exception e) {
 			throw new ElabException("FluxPlotDataStream: Exception in saveFile "+e.getMessage());
 		}		
-	}//end of saveFileChannel
+	}//end of saveFluxHistogram
 
- 	public void buildDataFromBlessFiles( File[] files, String[] filenames) throws ElabException {
-		for (int i = 0; i < files.length; i++) {
-			try {				
-				BufferedReader br = new BufferedReader(new FileReader(files[i]));
-				String line;
-				String[] split; 
-				Long ts; 
-				//get startdate from database
-				Timestamp startDate;
-				Long secs = 0L;
-				try {
-					String[] nameParts = filenames[i].split("\\.");
-					String filedate = nameParts[1]+nameParts[2];
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-					Date date = sdf.parse(filedate);
-					sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-					String dateUTC = sdf.format(date);
-					Date newDate = sdf.parse(dateUTC);
-					secs = newDate.getTime();
-				} catch (Exception e) {	
-					String message = e.toString();
-				}
-				while ((line = br.readLine()) != null) {
-					if (line.startsWith("#")) {
-						continue; // comment line
-					}
-					else {
-						split = line.split("\t"); 
-						if (split.length != 15) {
-							throw new IOException(files[i].getName() + " has malformed data. "); 
-						}
-						pressure.add(parseToDouble(split[11]));
-						temperature.add(parseToDouble(split[12]));
-						voltage.add(parseToDouble(split[13]));
-						satellites.add(parseToDouble(split[14]));
-						ts = secs + parseToLong(split[0]);
-						seconds.add(ts);
-					}
-				}
-				br.close();
-			} catch (Exception ex) {
-				throw new ElabException("FluxPlotDataStream: Exception in buildDataFromBlessFiles "+ex.getMessage());
-			}
-		}//end of for loop
- 		
- 	}//end of buildDataFromBlessFiles
- 
-	public void saveFluxBlessRangeData(JsonWriter writer) throws ElabException {
+	//add bless data in json format
+	public void saveFluxBlessData(JsonWriter writer) throws ElabException {
 		try {
-			saveData(writer, seconds, pressure, "magenta", "pressure", "Pressure", "time", "mb", "circle", 2);
-			saveData(writer, seconds, temperature, "orange", "temperature", "Temperature", "time", "&deg; C", "circle", 3);
-			saveData(writer, seconds, satellites, "purple", "satellites", "GPS Satellites", "time", "# Satellites in view", "circle", 4);
-			saveData(writer, seconds, voltage, "black", "voltage", "Volts", "time", "Vcc", "circle", 5);
+			saveBlessData(writer, seconds, pressure, "magenta", "pressure", "Pressure", "time", "mb", "circle", 2);
+			saveBlessData(writer, seconds, temperature, "orange", "temperature", "Temperature", "time", "&deg; C", "circle", 3);
+			saveBlessData(writer, seconds, satellites, "purple", "satellites", "GPS Satellites", "time", "# Satellites in view", "circle", 4);
+			saveBlessData(writer, seconds, voltage, "black", "voltage", "Volts", "time", "Vcc", "circle", 5);
 		} catch (Exception e) {
 			throw new ElabException("FluxPlotDataStream: Exception in saveFluxBlessRangeData "+e.getMessage());
 		}				
-	}//end of saveFluxBlessRangeData
+	}//end of saveFluxBlessData
 
-	public void saveData(JsonWriter writer, List<Long> seconds, List<Double> data, String color, String name, String label, String xunits, String yunits, String symbol, int ndx) throws ElabException{
+	//save individual bless data items
+	public void saveBlessData(JsonWriter writer, List<Long> seconds, List<Double> data, String color, String name, String label, String xunits, String yunits, String symbol, int ndx) throws ElabException{
 		try {
 			writer.name(name);
 			writer.beginObject();
@@ -457,7 +489,7 @@ public class FluxPlotDataStream {
 		} catch (Exception e) {
 			throw new ElabException("FluxPlotDataStream: Exception in saveData "+e.getMessage());
 		}		
-	}//end of saveData
+	}//end of saveBlessData
 		
 	public double parseToDouble(String split)
 	{
@@ -478,27 +510,8 @@ public class FluxPlotDataStream {
 		} catch (NumberFormatException e) {
 			result = 0L;
 		}
-		return result * 1000;
-	}	
-	
-	public String getGsonFromJson(String outputDir) throws ElabException {
-		String result = "";
-		StringBuilder filevalues = new StringBuilder();
-		String filename = outputDir+"/FluxPlotFlot";		
-		try {
-	        BufferedReader br = new BufferedReader(new FileReader(filename));
-	        String line = br.readLine();
-	        while (line != null) {
-	        	filevalues.append(line);
-	        	line = br.readLine();
-	        }
-			br.close();
-		} catch (Exception e) {
-			throw new ElabException("FluxPlotDataStream: Exception in getGsonFromJson "+e.getMessage());
-		}			
-		result = filevalues.toString();
 		return result;
-	}//end getGsonFromJson
+	}	
 	
 	public Double getBinValue() {
 		return binValue;
