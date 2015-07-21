@@ -143,7 +143,7 @@ function onDataLoad(json) {
 
 function buildTimeDiff(json, timediff, data) {
 	if (timediff != null) {
-		timediff.data = getDataWithBins(timediff.data, timediff.binValue, timediff.minX, timediff.maxX, timediff.nBins, timediff.nBins);
+		timediff.data = getDataWithBins(timediff.data_original, timediff.binValue, timediff.minX, timediff.maxX, timediff.nBins, timediff.nBins);
 		data.push(timediff);
 		if (timediff.maxX > maxXCombined) {
 			maxXCombined = timediff.maxX;

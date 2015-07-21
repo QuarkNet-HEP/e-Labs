@@ -510,12 +510,12 @@ function writeLegend(canvas, numberOfEntries, label) {
 	context.textAlign = label;
 	context.fillText(label, 130, 30);
 	context.textAlign = '# of Entries: '+ numberOfEntries;
-	context.fillText('# of Entries: '+ numberOfEntries, 170, 40);
+	context.fillText('# of Entries: '+ numberOfEntries, 140, 40);
 	context.font="8px sans-serif";
 	context.translate(0, 150);
 	context.rotate(-Math.PI / 2);
 	context.textAlign = yAxisLabel;
-	context.fillText(yAxisLabel, 0, 30);
+	context.fillText(yAxisLabel, 0, 40);
 	context.restore();		
 }//end of writeLegend
 
