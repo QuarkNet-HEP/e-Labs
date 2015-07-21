@@ -18,30 +18,33 @@ import gov.fnal.elab.datacatalog.*;
 import gov.fnal.elab.datacatalog.query.*;
 import gov.fnal.elab.datacatalog.impl.vds.*;
 import gov.fnal.elab.util.ElabException;
+import gov.fnal.elab.util.ElabMemory;
+
 import com.google.gson.*;
 import com.google.gson.stream.JsonWriter;
 import com.google.gson.stream.JsonReader;
 
 public class BlessDataRange {
-	private List<Long> seconds;
-	private List<Double> channel1;
-	private List<Double> channel2;
-	private List<Double> channel3;
-	private List<Double> channel4;
-	private List<Double> channel1error;
-	private List<Double> channel2error;
-	private List<Double> channel3error;
-	private List<Double> channel4error;
-	private List<Double> trigger;
-	private List<Double> triggererror;
-	private List<Double> pressure;
-	private List<Double> temperature;
-	private List<Double> voltage;
-	private List<Double> satellites;
-	
+	private ArrayList<Long> seconds;
+	private ArrayList<Double> channel1;
+	private ArrayList<Double> channel2;
+	private ArrayList<Double> channel3;
+	private ArrayList<Double> channel4;
+	private ArrayList<Double> channel1error;
+	private ArrayList<Double> channel2error;
+	private ArrayList<Double> channel3error;
+	private ArrayList<Double> channel4error;
+	private ArrayList<Double> trigger;
+	private ArrayList<Double> triggererror;
+	private ArrayList<Double> pressure;
+	private ArrayList<Double> temperature;
+	private ArrayList<Double> voltage;
+	private ArrayList<Double> satellites;
+	private String filename = "";
+	ElabMemory em;
 	
 	//EPeronja: attempt to concatenate a few days together
-	public BlessDataRange(Elab elab, File[] file, String[] filenames, String outputDir) throws IOException {
+	public BlessDataRange(Elab elab, File[] file, String[] filenames, String outputDir) throws Exception {
 		seconds = new ArrayList<Long>();
 		channel1 = new ArrayList<Double>();
 		channel2 = new ArrayList<Double>();
@@ -57,67 +60,82 @@ public class BlessDataRange {
 		temperature = new ArrayList<Double>();
 		voltage = new ArrayList<Double>();
 		satellites = new ArrayList<Double>();
-		
-		String filename = outputDir+"/FluxBlessRange";
-		JsonWriter writer = new JsonWriter(new FileWriter(filename));		
-		for (int i = 0; i < file.length; i++) {
-			try {				
-				BufferedReader br = new BufferedReader(new FileReader(file[i]));
-				String line;
-				String[] split; 
-				Long ts; 
-				//get startdate from database
-				Timestamp startDate;
-				Long secs = 0L;
-				try {
-					String[] nameParts = filenames[i].split("\\.");
-					String filedate = nameParts[1]+nameParts[2];
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-					Date date = sdf.parse(filedate);
-					sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-					String dateUTC = sdf.format(date);
-					Date newDate = sdf.parse(dateUTC);
-					secs = newDate.getTime();
-				} catch (Exception e) {	
-					String message = e.toString();
-				}
-				while ((line = br.readLine()) != null) {
-					if (line.startsWith("#")) {
-						continue; // comment line
+		em = new ElabMemory();
+		filename = outputDir+"/FluxBlessRange";
+		JsonWriter writer = new JsonWriter(new FileWriter(filename));	
+		try {
+			for (int i = 0; i < file.length; i++) {
+				try {				
+					BufferedReader br = new BufferedReader(new FileReader(file[i]));
+					String line;
+					String[] split; 
+					Long ts; 
+					//get startdate from database
+					Timestamp startDate;
+					Long secs = 0L;
+					try {
+						String[] nameParts = filenames[i].split("\\.");
+						String filedate = nameParts[1]+nameParts[2];
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+						Date date = sdf.parse(filedate);
+						sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+						String dateUTC = sdf.format(date);
+						Date newDate = sdf.parse(dateUTC);
+						secs = newDate.getTime();
+					} catch (Exception e) {	
+						String message = e.toString();
 					}
-					else {
-						split = line.split("\t"); 
-						if (split.length != 15) {
-							throw new IOException(file[i].getName() + " has malformed data. "); 
+					while ((line = br.readLine()) != null) {
+						if (line.startsWith("#")) {
+							continue; // comment line
 						}
-						channel1.add(parseToDouble(split[1]));
-						channel1error.add(parseToDouble(split[2]));
-						channel2.add(parseToDouble(split[3]));
-						channel2error.add(parseToDouble(split[4]));
-						channel3.add(parseToDouble(split[5]));
-						channel3error.add(parseToDouble(split[6]));
-						channel4.add(parseToDouble(split[7]));
-						channel4error.add(parseToDouble(split[8]));
-						trigger.add(parseToDouble(split[9]));
-						triggererror.add(parseToDouble(split[10]));
-						pressure.add(parseToDouble(split[11]));
-						temperature.add(parseToDouble(split[12]));
-						voltage.add(parseToDouble(split[13]));
-						satellites.add(parseToDouble(split[14]));
-						ts = secs + parseToLong(split[0]);
-						seconds.add(ts);
+						else {
+							split = line.split("\t"); 
+							if (split.length != 15) {
+								throw new IOException(file[i].getName() + " has malformed data. "); 
+							}
+							channel1.add(parseToDouble(split[1]));
+							channel1error.add(parseToDouble(split[2]));
+							channel2.add(parseToDouble(split[3]));
+							channel2error.add(parseToDouble(split[4]));
+							channel3.add(parseToDouble(split[5]));
+							channel3error.add(parseToDouble(split[6]));
+							channel4.add(parseToDouble(split[7]));
+							channel4error.add(parseToDouble(split[8]));
+							trigger.add(parseToDouble(split[9]));
+							triggererror.add(parseToDouble(split[10]));
+							pressure.add(parseToDouble(split[11]));
+							temperature.add(parseToDouble(split[12]));
+							voltage.add(parseToDouble(split[13]));
+							satellites.add(parseToDouble(split[14]));
+							ts = secs + (parseToLong(split[0]) * 1000);
+							seconds.add(ts);
+						}
 					}
+					br.close();
+				} catch (Exception ex) {
+					throw ex;
 				}
-				br.close();
-			} catch (Exception ex) {
-				System.out.print("Exception in BlessData: "+ex.getMessage()+"\n");
-			}
-		}//end of for loop
-		saveFluxBlessRangeData(writer);
-		writer.close();
+                em.refresh();
+                if (em.isCritical()) {
+                	String emailMessage = 	"The code stopped processing the bless files in Flux Data Range\n"+
+                							"at: "+file[i]+"\n"+
+                							em.getMemoryDetails();
+                	em.notifyAdmin(elab, emailMessage);
+                   	Exception e = new Exception("Heap memory left: "+String.valueOf(em.getFreeMemory())+"MB"+
+                                   				"We stopped processing the bless files.<br/>" +
+                                   				"Please select fewer files or files with fewer events.");
+                	throw e;
+                }
+			}//end of for loop
+			saveFluxBlessRangeData(writer);
+			writer.close();
+		} catch (Exception e) {
+			throw e;
+		}
 	}//end of Blessdata for concatenated files
 	
-	public void saveFluxBlessRangeData(JsonWriter writer) {
+	public void saveFluxBlessRangeData(JsonWriter writer) throws ElabException {
 		try {
 			writer.beginObject();
 			saveData(writer, seconds, channel1, "red", "channel1", "Channel 1", "square", 0);
@@ -136,12 +154,11 @@ public class BlessDataRange {
 			saveData(writer, seconds, pressure, "black", "pressure", "Pressure", "circle", 0);
 			writer.endObject();
 		} catch (Exception e) {
-			System.out.println("Flux Bless Range: "+e.getMessage());
-		}		
-		
+			throw new ElabException(e.getMessage());
+		}				
 	}//end of saveFluxBlessRangeData
 	
-	public void saveData(JsonWriter writer, List<Long> seconds, List<Double> data, String color, String name, String label, String symbol, int ndx) {
+	public void saveData(JsonWriter writer, List<Long> seconds, List<Double> data, String color, String name, String label, String symbol, int ndx) throws ElabException {
 		try {
 			writer.name(name);
 			writer.beginObject();
@@ -191,9 +208,9 @@ public class BlessDataRange {
 			writer.endObject();
 			writer.flush();			
 		} catch (Exception e) {
-			System.out.println("Flux Bless Range: "+e.getMessage());
+			throw new ElabException(e.getMessage());
 		}		
-	}//end of saveFileChannel
+	}//end of saveData
 	
 	//EPeronja-02/12/2013: Bug472- added to check for null values which will break the plotting code
 	public int parseToInt(String split)
@@ -205,7 +222,7 @@ public class BlessDataRange {
 			result = 0;
 		}
 		return result;
-	}
+	}//end of parseToInt
 
 	//EPeronja-02/12/2013: Bug472- added to check for null values which will break the plotting code
 	public Long parseToLong(String split)
@@ -216,8 +233,8 @@ public class BlessDataRange {
 		} catch (NumberFormatException e) {
 			result = 0L;
 		}
-		return result * 1000;
-	}
+		return result;
+	}//end of parseToLong
 	
     //EPeronja-02/12/2013: Bug472- added to check for null values which will break the plotting code	
 	public double parseToDouble(String split)
@@ -229,5 +246,5 @@ public class BlessDataRange {
 			result = 0;
 		}
 		return result;
-	}	
+	}//end of partToDouble
 }
