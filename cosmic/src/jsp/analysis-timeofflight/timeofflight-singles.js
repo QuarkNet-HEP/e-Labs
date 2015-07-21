@@ -1,11 +1,11 @@
 var onOffPlot1, onOffPlot2, onOffPlot3, onOffPlot4, onOffPlot5, onOffPlot6;
 var timeDiff1, timeDiff2, timeDiff3, timeDiff4, timeDiff5, timeDiff6;
-var data1 = []; //data that will be sent to the chart
-var data2 = []; //data that will be sent to the chart
-var data3 = []; //data that will be sent to the chart
-var data4 = []; //data that will be sent to the chart
-var data5 = []; //data that will be sent to the chart
-var data6 = []; //data that will be sent to the chart
+var data1 = []; 
+var data2 = []; 
+var data3 = []; 
+var data4 = []; 
+var data5 = []; 
+var data6 = []; 
 var options = "";
 var originalMinX1, originalMaxX1;
 var originalMinY1, originalMaxY1;
@@ -185,6 +185,7 @@ resetPlotY = function(ndx) {
 	plot.draw();
 	writeLegend(plot.getCanvas(), entries, label);		
 }
+
 redrawPlotY = function(ndx, newY, type) {
 	var plot, label, entries;
 	switch (ndx) {
@@ -229,6 +230,7 @@ redrawPlotY = function(ndx, newY, type) {
 	plot.draw();
 	writeLegend(plot.getCanvas(), entries, label);	
 }
+
 options = {
         axisLabels: {
             show: true
@@ -325,7 +327,7 @@ function onDataLoad(json) {
 
 function buildTimeDiff(timediff, data, diffNum) {
 	if (timediff != null) {
-		timediff.data = getDataWithBins(timediff.data, timediff.binValue, timediff.minX, timediff.maxX, timediff.nBins, timediff.nBins);
+		timediff.data = getDataWithBins(timediff.data_original, timediff.binValue, timediff.minX, timediff.maxX, timediff.nBins, timediff.nBins);
 		data.push(timediff);
 	}
 	$("#range"+diffNum).attr({"min":Math.floor(1), "max":Math.floor(timediff.maxBins), "value": timediff.binValue});
@@ -368,9 +370,11 @@ function buildTimeDiff(timediff, data, diffNum) {
     		numberOfEntries1 = timediff.numberOfEntries;
     		label1 = timediff.label;
     		var mean = document.getElementById("mean1");
-    		mean.innerHTML = "Mean: "+timediff.mean;
+    		mean.innerHTML = "Mean: "+parseFloat(timediff.mean).toFixed(2);
     		var stddev = document.getElementById("stddev1");
-    		stddev.innerHTML = "Std Dev: "+timediff.stddev;
+    		stddev.innerHTML = "Std Dev: "+parseFloat(timediff.stddev).toFixed(2);
+    		mean1 = timediff.mean;
+    		stddev1 = timediff.stddev;
     		writeLegend(onOffPlot1.getCanvas(), numberOfEntries1, label1);
     		break;
     	case ("2"):
@@ -382,9 +386,11 @@ function buildTimeDiff(timediff, data, diffNum) {
     		numberOfEntries2 = timediff.numberOfEntries;
     		label2 = timediff.label;
     		var mean = document.getElementById("mean2");
-    		mean.innerHTML = "Mean: "+timediff.mean;
+    		mean.innerHTML = "Mean: "+parseFloat(timediff.mean).toFixed(2);
     		var stddev = document.getElementById("stddev2");
-    		stddev.innerHTML = "Std Dev: "+timediff.stddev;
+    		stddev.innerHTML = "Std Dev: "+parseFloat(timediff.stddev).toFixed(2);
+    		mean2 = timediff.mean;
+    		stddev2 = timediff.stddev;
     		writeLegend(onOffPlot2.getCanvas(), numberOfEntries2, label2);
     		break;
     	case ("3"):
@@ -396,9 +402,11 @@ function buildTimeDiff(timediff, data, diffNum) {
     		numberOfEntries3 = timediff.numberOfEntries;
     		label3 = timediff.label;
     		var mean = document.getElementById("mean3");
-    		mean.innerHTML = "Mean: "+timediff.mean;
+    		mean.innerHTML = "Mean: "+parseFloat(timediff.mean).toFixed(2);
     		var stddev = document.getElementById("stddev3");
-    		stddev.innerHTML = "Std Dev: "+timediff.stddev;
+    		stddev.innerHTML = "Std Dev: "+parseFloat(timediff.stddev).toFixed(2);
+    		mean3 = timediff.mean;
+    		stddev3 = timediff.stddev;
     		writeLegend(onOffPlot3.getCanvas(), numberOfEntries3, label3);
     		break;
     	case ("4"):
@@ -410,10 +418,12 @@ function buildTimeDiff(timediff, data, diffNum) {
     		numberOfEntries4 = timediff.numberOfEntries;
     		label4 = timediff.label;
     		var mean = document.getElementById("mean4");
-    		mean.innerHTML = "Mean: "+timediff.mean;
+    		mean.innerHTML = "Mean: "+parseFloat(timediff.mean).toFixed(2);
     		var stddev = document.getElementById("stddev4");
-    		stddev.innerHTML = "Std Dev: "+timediff.stddev;
-   		writeLegend(onOffPlot4.getCanvas(), numberOfEntries4, label4);
+    		stddev.innerHTML = "Std Dev: "+parseFloat(timediff.stddev).toFixed(2);
+    		mean4 = timediff.mean;
+    		stddev4 = timediff.stddev;
+    		writeLegend(onOffPlot4.getCanvas(), numberOfEntries4, label4);
     		break;
     	case ("5"):
     		onOffPlot5 = onOffPlot;
@@ -424,9 +434,11 @@ function buildTimeDiff(timediff, data, diffNum) {
     		numberOfEntries5 = timediff.numberOfEntries;
     		label5 = timediff.label;
     		var mean = document.getElementById("mean5");
-    		mean.innerHTML = "Mean: "+timediff.mean;
+    		mean.innerHTML = "Mean: "+parseFloat(timediff.mean).toFixed(2);
     		var stddev = document.getElementById("stddev5");
-    		stddev.innerHTML = "Std Dev: "+timediff.stddev;
+    		stddev.innerHTML = "Std Dev: "+parseFloat(timediff.stddev).toFixed(2);
+    		mean5 = timediff.mean;
+    		stddev5 = timediff.stddev;
     		writeLegend(onOffPlot5.getCanvas(), numberOfEntries5, label5);
     		break;
     	case ("6"):
@@ -438,9 +450,11 @@ function buildTimeDiff(timediff, data, diffNum) {
     		numberOfEntries6 = timediff.numberOfEntries;
     		label6 = timediff.label;
     		var mean = document.getElementById("mean6");
-    		mean.innerHTML = "Mean: "+timediff.mean;
+    		mean.innerHTML = "Mean: "+parseFloat(timediff.mean).toFixed(2);
     		var stddev = document.getElementById("stddev6");
-    		stddev.innerHTML = "Std Dev: "+timediff.stddev;
+    		stddev.innerHTML = "Std Dev: "+parseFloat(timediff.stddev).toFixed(2);
+    		mean6 = timediff.mean;
+    		stddev6 = timediff.stddev;
     		writeLegend(onOffPlot6.getCanvas(), numberOfEntries6, label6);
     		break;
     }
@@ -454,6 +468,8 @@ function getDataWithBins(rawData, localBinValue, minX, maxX, nBins, bins) {
 		var histogram = d3.layout.histogram();
 		histogram.bins(bins);
 		var data = histogram(rawData);
+		var median = d3.mean(rawData);
+		var deviation = d3.deviation(rawData);
 		for ( var i = 0; i < data.length; i++ ) {
 	    	outputFinal.push([data[i].x, data[i].y]);
 	    	outputFinal.push([data[i].x + data[i].dx, data[i].y]);
