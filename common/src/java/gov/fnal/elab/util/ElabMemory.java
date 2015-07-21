@@ -40,6 +40,14 @@ public class ElabMemory {
 		}
 		return isCritical;
 	}
+	public String getMemoryDetails() {
+		String message = "Total heap memory: "+ String.valueOf(getTotalMemory())+"MB\n"+
+				"Max heap memory: "+ String.valueOf(getMaxMemory())+"MB\n"+
+				"Used heap memory: "+ String.valueOf(getUsedMemory())+"MB\n"+
+				"Free heap memory: "+ String.valueOf(getFreeMemory())+"MB\n"+
+				"Had we continued processing the server would have died with an OutOfMemoryError.";
+		return message;
+	}
 	public void notifyAdmin(Elab elab, String message) {
     	//send email with warning
        	String to = elab.getProperty(elab.getName() + ".notifyAnalysisFailureTO");
