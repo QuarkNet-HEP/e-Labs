@@ -32,8 +32,6 @@
 	<tr>
 		<td>
 			<div id=left>
-
-<%--******************************************Tutorials********************************************************* --%>	
 				
 				<div class="tab" id="tab-tutorials">
 					<span class="tab-title">Tutorials</span>
@@ -111,9 +109,7 @@
 						</ul>
 					</div>
 				</div>
-				
-<%--*************************************CRMD Data Collection************************************************************** --%>							
-				
+								
 				<div class="tab" id="tab-equip">
 					<span class="tab-title" style="width: 200px;">CRMD Data Collection</span>	
 					<div class="tab-contents-sublevel">
@@ -124,9 +120,7 @@
 						</ul>					
 					</div>
 				</div>		
-				
-<%--**************************************Contacts************************************************************* --%>							
-					
+									
 				<div class="tab" id="tab-contacts">
 					<span class="tab-title">Contacts</span>	
 					<div class="tab-contents-sublevel">
@@ -151,7 +145,6 @@
 					</div>
 				</div>
 
-<%--***********************************Animations**************************************************************** --%>							
 				
 				<div class="tab" id="tab-animations">
 					<span class="tab-title">Animations</span>
@@ -169,7 +162,6 @@
 					</div>
 				</div>
 				
-	<%--**********************************Plots***************************************************************** --%>							
 					
 	 				<div class="tab" id="tab-animations">     
 					<span class="tab-title">Plots</span>
@@ -220,11 +212,10 @@
 		</td>
 		<td>
 		
-<%--*******************************Right column******************************************************************** --%>	
+
 		
 		<div id="right">
 																
-<%--*******************************Cosmic Ray Sites******************************************************************** --%>						
 					
 				<div class="tab" id="tab-online">
 					<span class="tab-title">Cosmic Ray Sites</span>
@@ -315,7 +306,7 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 						</ul>
 						</div>
 
-<%--********************************Grid Computing******************************************************************* --%>							
+
 				<div class="tab" id="tab-online">
 
 					<span class="tab-title">Grid Computing</span>
@@ -334,7 +325,6 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 						</ul>
 					</div>
 
-<%--******************************IT Careers********************************************************************* --%>							
 						
 						<div class="tab" id="tab-online">
 
@@ -351,7 +341,6 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 								</ul>
 					</div>
 							
-<%--*****************************Reporting Research********************************************************************** --%>							
 							
 					<div class="tab" id="tab-online">
 							
@@ -382,7 +371,6 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 				
 					</div>
 
-<%--*************************************************************************************************** --%>							
 
 		</td>
 	</tr>
