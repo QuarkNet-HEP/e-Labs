@@ -39,7 +39,7 @@
 				<%@ include file="../include/check-javascript.jsp" %>
 				<c:choose>
  					<c:when test="${user == null}"> <%-- User is not logged in --%>
-						<h1>Welcome: Join a national collaboration of high school students to study cosmic rays.</h1>
+						<h1>Welcome: Join an international collaboration of high school students to study cosmic rays.</h1>
 						<table border="0" id="main">
 							<tr>
 					 	 		<td>
