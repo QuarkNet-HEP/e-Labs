@@ -61,6 +61,10 @@
 	    if (err == null) {
 	        err = cont;
 	    }
+	    String mFilter = request.getParameter("mFilter");
+	    if (mFilter == null) {
+	    	mFilter = "";
+	    }
 	    run.setAttribute("continuation", cont);
 	    run.setAttribute("onError", err);
 	    run.setAttribute("type", analysis.getName());
@@ -80,6 +84,7 @@
     	run.setAttribute("detectorid", detectorid);
     	analysis.setAttribute("detectorid", detectorid);
     	analysis.setAttribute("id", run.getId());
+       	analysis.setAttribute("mFilter", mFilter);
 	    String workflowRunMode = request.getParameter("runMode");
 		if (workflowRunMode != null) {
 			run.setAttribute("runMode", workflowRunMode);

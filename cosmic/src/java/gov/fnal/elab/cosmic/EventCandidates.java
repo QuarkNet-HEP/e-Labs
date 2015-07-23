@@ -310,6 +310,9 @@ public class EventCandidates {
             else if (csc == 2) {
                 c = m1.getNumDetectors() - m2.getNumDetectors();
             }
+            else if (csc == 3) {
+                c = m1.getMultiplicityCount() - m2.getMultiplicityCount();
+            }
             if (c == 0) {
                 if (csc == 0) {
                     return dir * (m1.getEventCoincidence() - m2.getEventCoincidence()); 

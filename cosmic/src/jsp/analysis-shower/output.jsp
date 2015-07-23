@@ -64,6 +64,11 @@
 	String mFilter = request.getParameter("mFilter");
 	if (mFilter != null && !mFilter.equals("")) {
 		rows = ec.filterByMuliplicity(Integer.valueOf(mFilter));
+	} else {
+		mFilter = (String) analysis.getAttribute("mFilter");
+		if (!mFilter.equals("")) {
+			rows = ec.filterByMuliplicity(Integer.valueOf(mFilter));
+		}
 	}
 
 	request.setAttribute("message", message);
@@ -108,16 +113,16 @@
 			<table id="shower-events">
 				<tr>
 					<th width="40%">
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }">Event Date</a>
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }">Event Date</a>
 					</th>
 					<th width="10%">
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }">Event Coincidence</a>
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }">Event Coincidence</a>
 					</th>
 					<th width="40%">
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }">Detector Coincidence<br />[Counter Multiplicity]</a>
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }">Detector Coincidence<br />[Counter Multiplicity]</a>
 					</th>
 					<th width="10%" class="filterable">
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=3&dir=${(param.sort == '3' && param.dir == 'd') ? 'a' : 'd' }">Hit Counters<br /></a>
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=3&dir=${(param.sort == '3' && param.dir == 'd') ? 'a' : 'd' }">Hit Counters<br /></a>
 						<c:if test='${not empty multiplicityFilter }'>
 							<select name="mFilter" id="mFilter" onchange="location = this.options[this.selectedIndex].value;">
 								<c:choose>
@@ -155,7 +160,7 @@
 				<c:forEach items="${rows}" begin="${start}" end="${end}" var="row" varStatus="li">
 					<tr bgcolor="${row.eventNum == eventNum ? '#aaaafc' : (li.count % 2 == 0 ? '#e7eefc' : '#ffffff')}">
 						<td>
-							<a href="../analysis-shower/event-choice.jsp?id=${param.showerId}&eventNum=${row.eventNum}&eventDir=${eventDir}&eventDateTime=${row.dateF}&submit=true">${row.dateF}</a>
+							<a href="../analysis-shower/event-choice.jsp?id=${param.showerId}&eventNum=${row.eventNum}&mFilter=${mFilter}&eventDir=${eventDir}&eventDateTime=${row.dateF}&submit=true">${row.dateF}</a>
 						</td>
 						<td>
 							${row.eventCoincidence}
