@@ -25,7 +25,7 @@ function loadJSON(callback) {
     var xobj = new XMLHttpRequest();
 	var outputDir = document.getElementById("outputDir");
     xobj.overrideMimeType("application/json");
-    xobj.open('GET', outputDir.value+"/FluxPlotFlot", true); // Replace 'my_data' with the path to your file
+    xobj.open('GET', outputDir.value+"/FluxPlotFlot", true); 
     xobj.onreadystatechange = function () {
           if (xobj.readyState == 4 && xobj.status == "200") {
             // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
@@ -123,7 +123,7 @@ function onDataLoad(json) {
     bindEverythingFlux();
     var timeEnd = new Date();
     var timeDiff = timeEnd - timeStart;
-    console.log("millis: "+timeDiff);
+    //console.log("millis: "+timeDiff);
     spinnerOff();
 }   
 
@@ -206,7 +206,7 @@ function reBinData(json, binValue) {
 		axesOverview.yaxis.options.max = maxYaxis + maxError;	
 		overviewPlot.setupGrid();
 	    overviewPlot.draw();
-		console.log(onOffPlot.getData());
+		//console.log(onOffPlot.getData());
 
 	    refreshFlux();
 	}
@@ -229,19 +229,6 @@ function addSeries(newSeries) {
 	onOffPlot = $.plot("#placeholder", data, options);
 	overviewPlot = $.plot("#overview", data, overviewOptions);				
 	refreshFlux();	
-}
-
-
-function spinnerOn() {
-	var container = document.getElementById("spinner");
-	container.style.backgroundImage = "url(../graphics/spinner-large.gif)",
-	container.style.backgroundPosition = "center";
-	container.style.backgroundRepeat = "no-repeat";
-}
-
-function spinnerOff() {
-	var container = document.getElementById("spinner");
-	container.style.backgroundImage = "none";
 }
 
 Date.prototype.customFormat = function(formatString){

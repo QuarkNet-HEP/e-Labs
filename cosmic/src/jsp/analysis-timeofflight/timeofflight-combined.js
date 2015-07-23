@@ -103,6 +103,7 @@ overviewOptions = {
 };
 
 function onDataLoad1() {
+	spinnerOn();	
 	loadJSON(function(response) {
 		JSON.parseAsync(response, function(json) {
 			onDataLoad(json);
