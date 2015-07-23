@@ -22,6 +22,7 @@
 		
 		String eventNum = request.getParameter("eventNum");
 		String eventDateTime = request.getParameter("eventDateTime");
+		String mFilter = request.getParameter("mFilter");
 		
 		File ecFile = new File(results.getOutputDir(), (String) shower.getParameter("eventCandidates"));
 		String ecPath = ecFile.getAbsolutePath();
@@ -56,6 +57,7 @@
 		shower.setParameter("eventNum", eventNum);
 		request.setAttribute("eventDateTime", eventDateTime);
 		request.setAttribute("shower", shower);
+		request.setAttribute("mFilter", mFilter);
 	%>
 		
 		<e:trdefault name="eventNum" value="<%= eventNum %>"/>
@@ -82,7 +84,7 @@
 	    <e:trdefault name="plot_plot_type" value="${shower.parameters.plot_plot_type}"/>
 	    <e:trdefault name="zeroZeroZeroID" value="${shower.parameters.zeroZeroZeroID}"/>
 	<e:ifAnalysisIsOk>
-		<jsp:include page="../analysis/start.jsp?continuation=../analysis-shower/output.jsp?showerId=${param.id}&onError=../analysis-shower/analysis.jsp"/>
+		<jsp:include page="../analysis/start.jsp?continuation=../analysis-shower/output.jsp?showerId=${param.id}&mFilter=${mFilter}&onError=../analysis-shower/analysis.jsp"/>
 	</e:ifAnalysisIsOk>
 	<e:ifAnalysisIsNotOk>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
