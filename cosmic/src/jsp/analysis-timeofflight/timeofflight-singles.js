@@ -259,6 +259,7 @@ options = {
 };
 
 function onDataLoad1() {
+	spinnerOn();
 	loadJSON(function(response) {
 		JSON.parseAsync(response, function(json) {
 			onDataLoad(json);
@@ -323,6 +324,7 @@ function onDataLoad(json) {
 		var div = document.getElementById("chart6");
 		div.style.display="none";
 	}
+    spinnerOff();
 }//end of onDataLoad	
 
 function buildTimeDiff(timediff, data, diffNum) {

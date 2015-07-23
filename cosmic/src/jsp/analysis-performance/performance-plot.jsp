@@ -22,7 +22,7 @@
 <%@ page import="gov.fnal.elab.util.URLEncoder" %>
 <%
 	//create the file for the dynamic charts
-	String message;
+	String message = "";
 	String performanceJsonFile = results.getOutputDir() + "/PerformancePlotFlot";
 	try {
 		//this code is for admin to be able to see the graph
@@ -51,6 +51,8 @@
 		+ "School:\n\n"
 		+ "Your feedback about the Performance Interactive Plots:\n");
 	String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
+	request.setAttribute("message", message);
+
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -106,26 +108,32 @@
 				<div><div style="text-align: center;">
 					<a href="output.jsp?id=${results.id }">View static plot</a><br /><br />
 					<div style="font-size: x-small;"><i>Send feedback to</i> <a href="<%= mailURL %>">e-labs@fnal.gov</a></div>
-				</div></div>					
-				<div class="graph-container">
-					<div id="placeholder" class="graph-placeholder" style="float:left; width:550px; height:550px;"></div>
-					<div id="overview" class="graph-placeholder" style="float:right;width:160px; height:150px;"></div>
-					<div id="interactive" style="float:right;width:160px; height:325px;">
-						<p><label><input id="enableTooltip" type="checkbox" checked="checked"></input>Enable tooltip</label></p>
-						<p>
-							<label><input id="enablePosition" type="checkbox" checked="checked"></input>Show mouse position:</label>
-							<br /><span id="hoverdata" class="hoverdata"></span>
-							<br /><span id="clickdata" class="clickdata"></span>
-						</p>				
-						<p><div id="zoomoutbutton" style="float:left; width:80px; height:30px;"> </div>
-						   <div id="resetbutton" style="float:right; width:80px; height:30px;"> </div></p>
-						<p><div id="arrows" style="float:right; width:160px; height:100px;"><div id="arrowcontainer" style="position:relative;"></div></div></p>
-						<p class="message"></p>
-						<p class="click"></p>
-					</div>
-					<div id="placeholderLegend" class="legend-placeholder"></div>
-				</div>
-
+				</div></div>			
+				<c:choose>		
+					<c:when test="${not empty message }">
+						<div><div style="text-align: center;">${message }</div>
+					</c:when>
+					<c:otherwise>													
+						<div class="graph-container" id="spinner" style="height: 600px;">
+							<div id="placeholder" class="graph-placeholder" style="float:left; width:550px; height:550px;"></div>
+							<div id="overview" class="graph-placeholder" style="float:right;width:160px; height:150px;"></div>
+							<div id="interactive" style="float:right;width:160px; height:325px;">
+								<p><label><input id="enableTooltip" type="checkbox" checked="checked"></input>Enable tooltip</label></p>
+								<p>
+									<label><input id="enablePosition" type="checkbox" checked="checked"></input>Show mouse position:</label>
+									<br /><span id="hoverdata" class="hoverdata"></span>
+									<br /><span id="clickdata" class="clickdata"></span>
+								</p>				
+								<p><div id="zoomoutbutton" style="float:left; width:80px; height:30px;"> </div>
+								   <div id="resetbutton" style="float:right; width:80px; height:30px;"> </div></p>
+								<p><div id="arrows" style="float:right; width:160px; height:100px;"><div id="arrowcontainer" style="position:relative;"></div></div></p>
+								<p class="message"></p>
+								<p class="click"></p>
+							</div>
+							<div id="placeholderLegend" class="legend-placeholder"></div>
+						</div>
+					</c:otherwise>
+				</c:choose>
 		 	</div>
 		</div>
 		<div id="incdec">Bin Width
