@@ -9,8 +9,71 @@
 <%@ page import="java.text.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="gov.fnal.elab.cosmic.*" %>
+<%
+	ElabAnalysis analysis = results.getAnalysis();
+	request.setAttribute("analysis", analysis);
+	
+	String showerId = request.getParameter("showerId");
+	AnalysisRun showerResults = AnalysisManager.getAnalysisRun(elab, user, showerId);
+	request.setAttribute("showerResults", showerResults);
 
+	String es = (String) request.getParameter("eventStart");
+	int eventStart;
+	if (es == null || es.equals("")) {
+		eventStart = 1;
+	}
+	else {
+		eventStart = Integer.parseInt(es);
+	}
+	
+	String sc = request.getParameter("sort");
+	int sortCol = 0;
+	if (sc != null) {
+	    sortCol = Integer.parseInt(sc);
+	}
+	if (sortCol < 0) {
+	    sortCol = 0;
+	}
+	if (sortCol > 3) {
+	    sortCol = 3;
+	}
+	request.setAttribute("sort", new Integer(sortCol));
+	String eventNum = (String) analysis.getParameter("eventNum");
+	if ("0".equals(eventNum)) {
+		eventNum = null;
+	}
+	int lineNo = 1;
+	int csc = sortCol;
+	
+	int dir;
+	if (request.getParameter("dir") == null) {
+		dir = EventCandidates.defDir[csc];
+	}
+	else {
+		dir = "a".equals(request.getParameter("dir")) ? 1 : -1;
+	}
+	
+	File ecFile = new File((String) analysis.getParameter("eventCandidates"));
+	String ecPath = ecFile.getAbsolutePath();
+	File multiplicitySummary = new File(showerResults.getOutputDir() + "/multiplicitySummary");
+	EventCandidates ec = EventCandidates.read(ecFile, multiplicitySummary, csc, dir, eventStart, eventNum);
+	
+	Collection rows = ec.getRows();
+	String message = ec.getUserFeedback();
 
+	String mFilter = request.getParameter("mFilter");
+	if (mFilter != null && !mFilter.equals("")) {
+		rows = ec.filterByMuliplicity(Integer.valueOf(mFilter));
+	}
+
+	request.setAttribute("message", message);
+	request.setAttribute("eventDir", ecPath);
+	request.setAttribute("rows", rows);
+	request.setAttribute("crtEventRow", ec.getCurrentRow());		
+	request.setAttribute("multiplicityFilter", ec.getMultiplicityFilter());		
+	request.setAttribute("mFilter", mFilter);
+
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -33,64 +96,6 @@
 			</div>
 			
 			<div id="content">
-			
-			
-<%
-	ElabAnalysis analysis = results.getAnalysis();
-	request.setAttribute("analysis", analysis);
-	
-	String showerId = request.getParameter("showerId");
-	AnalysisRun showerResults = AnalysisManager.getAnalysisRun(elab, user, showerId);
-	request.setAttribute("showerResults", showerResults);
-	
-	String es = (String) request.getParameter("eventStart");
-	int eventStart;
-	if (es == null || es.equals("")) {
-		eventStart = 1;
-	}
-	else {
-		eventStart = Integer.parseInt(es);
-	}
-	
-	String sc = request.getParameter("sort");
-	int sortCol = 0;
-	if (sc != null) {
-	    sortCol = Integer.parseInt(sc);
-	}
-	if (sortCol < 0) {
-	    sortCol = 0;
-	}
-	if (sortCol > 2) {
-	    sortCol = 2;
-	}
-	request.setAttribute("sort", new Integer(sortCol));
-	String eventNum = (String) analysis.getParameter("eventNum");
-	if ("0".equals(eventNum)) {
-		eventNum = null;
-	}
-	int lineNo = 1;
-	int csc = sortCol;
-	
-	int dir;
-	if (request.getParameter("dir") == null) {
-		dir = EventCandidates.defDir[csc];
-	}
-	else {
-		dir = "a".equals(request.getParameter("dir")) ? 1 : -1;
-	}
-	
-	File ecFile = new File((String) analysis.getParameter("eventCandidates"));
-	String ecPath = ecFile.getAbsolutePath();
-	EventCandidates ec = EventCandidates.read(ecFile, csc, dir, eventStart, eventNum);
-	Collection rows = ec.getRows();
-	String message = ec.getUserFeedback();
-	
-	request.setAttribute("message", message);
-	request.setAttribute("eventDir", ecPath);
-	request.setAttribute("rows", rows);
-	request.setAttribute("crtEventRow", ec.getCurrentRow());		
-
-%>
 <c:choose>
 <c:when test="${not empty rows}">
 <h1>Shower study candidates (<%= rows.size() %>)</h1>
@@ -102,7 +107,7 @@
 		<td valign="top" width="70%">
 			<table id="shower-events">
 				<tr>
-					<th width="50%">
+					<th width="40%">
 						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }">Event Date</a>
 					</th>
 					<th width="10%">
@@ -110,6 +115,31 @@
 					</th>
 					<th width="40%">
 						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }">Detector Coincidence<br />[Counter Multiplicity]</a>
+					</th>
+					<th width="10%" class="filterable">
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&sort=3&dir=${(param.sort == '3' && param.dir == 'd') ? 'a' : 'd' }">Hit Counters<br /></a>
+						<c:if test='${not empty multiplicityFilter }'>
+							<select name="mFilter" id="mFilter" onchange="location = this.options[this.selectedIndex].value;">
+								<c:choose>
+									<c:when test='${mFilter != null && mFilter=="All" }'>
+										<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=" selected>All</option>
+									</c:when>
+									<c:otherwise>
+										<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=">All</option>
+									</c:otherwise>
+								</c:choose>
+								<c:forEach items="${multiplicityFilter }" var="filter">
+									<c:choose>
+										<c:when test='${mFilter != null && mFilter == filter}'>
+											<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${filter }" selected>${filter }</option>
+										</c:when>
+										<c:otherwise>
+											<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${filter }">${filter }</option>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+							</select>
+						</c:if>
 					</th>
 				</tr>
 				<c:choose>
@@ -133,6 +163,9 @@
 						<td>
 							${row.numDetectors}
 								(<c:forEach items="${row.idsMult}" var="detectorId"> <e:popup href="../data/detector-info.jsp?id=${detectorId.key}" target="new" width="460" height="160">${detectorId.key}</e:popup>[${detectorId.value }]</c:forEach>)
+						</td>
+						<td>
+							${row.multiplicityCount }
 						</td>
 					</tr>
 				</c:forEach>
