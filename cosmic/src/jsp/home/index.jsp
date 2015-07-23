@@ -60,7 +60,7 @@
 					</c:when>
 					
 					<c:otherwise> <%-- User is logged in --%>
-						<h1>Home: Join a national collaboration of high school students to study cosmic rays.</h1>
+						<h1>Home: Join an international collaboration of high school students to study cosmic rays.</h1>
 						<div id="newsbox-v" style="visibility:hidden; display: none">
 							<a href="#" onclick="HideShow('newsbox-v');HideShow('newsbox-h');return false;"><H2><img src="../graphics/Tright.gif" alt=" " border="0" /> View News Alert</H2></a>
 						</div>
