@@ -23,8 +23,7 @@
 			relative_urls: false,
 			remove_script_host: false,
 			convert_urls: false,
-			
-			theme_advanced_buttons1 : ",italic,underline,|,bullist,numlist,|,sub,sup,|,cleanup,code,|,fmath_formula,|,table",
+			theme_advanced_buttons1 : ",italic,underline,|,bullist,numlist,|,sub,sup,|,cleanup,code,|,fmath_formula,|,table,tablecontrols",
 			theme_advanced_buttons2 : "",
 			theme_advanced_buttons3 : "", 
 			theme_advanced_toolbar_location : "top",
@@ -342,12 +341,6 @@
      	 <li>
 			<%@ include file="../posters/poster-example.jspf" %>
 		 </li>
-<<<<<<< Updated upstream
-			 <li>Be sure to write a good <a href="javascript:glossary('abstract',300)">abstract</a>.
-		</li>
-
-		<li>
-=======
 		 <li>
 		 	Be sure to write a good <a href="javascript:glossary('abstract',300)">abstract</a>.
 		 </li>
@@ -356,7 +349,6 @@
 			& <a target="_blank" href="https://owl.english.purdue.edu/owl/resource/747/01/">MLA Formatting and Style Guide</a>.
 		 </li>
 		 <li>
->>>>>>> Stashed changes
 			To view the plots that you might want to include for the figures 
 			in your poster, click <b>View Plots</b> in the navigation bar. 
 			You can fill in fields for up to five figures. You don't have to 
