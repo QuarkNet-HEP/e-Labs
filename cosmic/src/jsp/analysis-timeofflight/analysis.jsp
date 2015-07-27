@@ -19,6 +19,46 @@
 			List geo = AnalysisParameterTools.getGeometryFiles(elab, rawData);
 			String cpldfreqs = AnalysisParameterTools.getCpldFrequencies(elab, rawData);
 			String firmwareVersions = AnalysisParameterTools.getFirmwareVersions(elab, rawData);
+			Collection validChannelsRequire = AnalysisParameterTools.getValidChannels(elab, rawData);
+			Collection validChannelsVeto = AnalysisParameterTools.getValidChannels(elab, rawData);
+			//make a new copy because we're going to mess with this one
+			request.setAttribute("validChannelsRequire", new HashSet(validChannelsRequire));
+			request.setAttribute("validChannelsVeto", new HashSet(validChannelsVeto));
+			//only set up channels after a submit was pressed
+			if (request.getParameter("submit") != null) {
+				for (int i = 1; i <= 4; i++) {
+					String channel = String.valueOf(i);
+					if (request.getParameter("singleChannel_require"+channel) == null) {
+						validChannelsRequire.remove(channel);
+					}
+					if (request.getParameter("singleChannel_veto"+channel) == null) {
+						validChannelsVeto.remove(channel);
+					}
+				}
+			} else {
+				String channelsRequire = (String) analysis.getParameter("singleChannel_require");
+				if (channelsRequire != null) {
+					for (int i = 1; i <= 4; i++) {
+						String channel = String.valueOf(i);
+						if (channelsRequire.indexOf(channel) == -1) {
+							validChannelsRequire.remove(channel);
+						}
+					}
+				}
+				String channelsVeto = (String) analysis.getParameter("singleChannel_veto");
+				if (channelsVeto != null) {
+					for (int i = 1; i <= 4; i++) {
+						String channel = String.valueOf(i);
+						if (channelsVeto.indexOf(channel) == -1) {
+							validChannelsVeto.remove(channel);
+						}
+					}
+				}
+			}
+			Collection cr = new TreeSet(validChannelsRequire);		
+			String singleChannel_require = ElabUtil.join(cr, null, null, " ");
+			Collection cv = new TreeSet(validChannelsVeto);		
+			String singleChannel_veto = ElabUtil.join(cv, null, null, " ");
 
 			%>
 	        <e:trdefault name="thresholdAll" value="<%= thresholdData %>"/>
@@ -27,19 +67,14 @@
 			<e:trdefault name="geoDir" value="${elab.properties['data.dir']}"/>
 			<e:trdefault name="geoFiles" value="<%= geo %>"/>
 			<e:trdefault name="cpldfreqs" value="<%= cpldfreqs %>"/>
+			<e:trdefault name="singleChannel_require" value="<%= singleChannel_require %>"/>
+			<e:trdefault name="singleChannel_veto" value="<%= singleChannel_veto %>"/>
+			<e:trdefault name="cpldfreqs" value="<%= cpldfreqs %>"/>
 			<e:trdefault name="firmwares" value="<%= firmwareVersions %>" />
 			<%
 		}
 	%>
-	<e:trdefault name="plot_outfile_param" value="plot_param"/>
-	<e:trdefault name="plot_outfile_image" value="plot.png"/>
-	<e:trdefault name="plot_outfile_image_thumbnail" value="plot_thm.png"/>
-	<e:trdefault name="plot_thumbnail_height" value="150"/>
 	<e:trdefault name="eventCandidates" value="eventCandidates"/>
-	<e:trdefault name="plot_plot_type" value="2"/>
-	<e:trdefault name="plot_xlabel" value="East/West (meters)"/>
-	<e:trdefault name="plot_ylabel" value="North/South (meters)"/>
-	<e:trdefault name="plot_zlabel" value="Time\n(ns)"/>
 	<e:trdefault name="sort_sortKey1" value="2"/>
 	<e:trdefault name="sort_sortKey2" value="3"/>
 	

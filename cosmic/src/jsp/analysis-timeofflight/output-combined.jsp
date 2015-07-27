@@ -19,6 +19,8 @@
 	request.setAttribute("timeofflightResults", timeofflightResults);
 	String message = "";
 	String fluxJsonFile = results.getOutputDir() + "/timeOfFlightPlotData";
+	String chanRequire = (String) analysis.getParameter("singleChannel_require");
+	String chanVeto = (String) analysis.getParameter("singleChannel_veto");
 	try {
 		//this code is for admin to be able to see the graph
 		File f = new File(fluxJsonFile);
@@ -39,7 +41,7 @@
 			    }
 			}
 			//create time of flight source data
-			TimeOfFlightDataStream tofds = new TimeOfFlightDataStream(results.getOutputDir());
+			TimeOfFlightDataStream tofds = new TimeOfFlightDataStream(results.getOutputDir(), chanRequire, chanVeto);
 		}
 	} catch (Exception e) {
 			message = e.getMessage();
@@ -103,7 +105,7 @@
 
 	<h1>Time of flight study result</h1>
 	<a href="output.jsp?id=${timeofflightResults.id}">View individual charts</a>
-	<div class="graph-container">
+	<div class="graph-container" id="spinner">
 		<div id="placeholder" class="graph-placeholder" style="float:left; width:550px; height:550px;"></div>
 		<div id="overview" class="graph-placeholder" style="float:right;width:160px; height:150px;"></div>
 		<div id="interactive" style="float:right;width:160px; height:325px;">

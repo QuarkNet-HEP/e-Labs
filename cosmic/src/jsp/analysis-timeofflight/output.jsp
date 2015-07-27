@@ -19,6 +19,8 @@
 	request.setAttribute("timeofflightResults", timeofflightResults);
 	String message = "";
 	String toffJsonFile = results.getOutputDir() + "/timeOfFlightPlotData";
+	String chanRequire = (String) analysis.getParameter("singleChannel_require");
+	String chanVeto = (String) analysis.getParameter("singleChannel_veto");
 	try {
 		//this code is for admin to be able to see the graph
 		File f = new File(toffJsonFile);
@@ -39,7 +41,7 @@
 			    }
 			}
 			//create time of flight source data
-			TimeOfFlightDataStream tofds = new TimeOfFlightDataStream(results.getOutputDir());
+			TimeOfFlightDataStream tofds = new TimeOfFlightDataStream(results.getOutputDir(), chanRequire, chanVeto);
 		}
 	} catch (Exception e) {
 			message = e.getMessage();

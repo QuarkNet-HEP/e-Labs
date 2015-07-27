@@ -24,7 +24,7 @@ public class TimeOfFlightTest {
 		analysisDir = elab.getProperties().getDataDir() + "/unittest/timeofflight";
 		String answer = "";
 		try {
-			tofds = new TimeOfFlightDataStream(analysisDir);
+			tofds = new TimeOfFlightDataStream(analysisDir, "1 2 3 4", "");
 		} catch (Exception e) {
 			answer = "There was an exception";
 		}
