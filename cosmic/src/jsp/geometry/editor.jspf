@@ -18,7 +18,7 @@
 	 	</c:if>
 		
 		<div class="subtitle">
-			Detector Config: -20 &le; x(E-W) &le; 20, -20 &le; y(N-S) &le; 20, -40 &le; z(Up-Down) &le; 40.  GPS @ (0,0,0).
+			Detector Config: -20 &le; x(E-W) &le; 20, -20 &le; y(N-S) &le; 20, -40 &le; z(Up-Down) &le; 40.  GPS @ (0,0,0).  Each point represents the center of a counter.
 		</div>
 
 		<div class="subtitle">
@@ -84,7 +84,7 @@
             </table>
         </div>
         
-<%-- ***Code added by Sudha Balakrishnan, May 2015, for visualizing coordinates entered.*** --%>
+<%-- Code added by Sudha Balakrishnan, May 2015, for visualizing coordinates entered. --%>
 	
 		<script type="text/javascript" src="../include/visualize-values.js"></script>
 		<div class="subtitle">	
@@ -100,7 +100,7 @@
 			</table>
 		</div>   
 		
-<%-- ************************************************************************************** --%>		
+<%-- end visualization code --%>		
 		             
         <div class="subtitle">GPS Location</div>
 

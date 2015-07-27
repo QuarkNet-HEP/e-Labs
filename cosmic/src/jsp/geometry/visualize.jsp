@@ -17,12 +17,10 @@
 		<script src="../include/highcharts/js/highcharts.js"></script>
 		<script src="../include/highcharts/js/highcharts-3d.js"></script>
 		<script src="../include/highcharts/js/modules/exporting.js"></script>
-		<script src="../include/visualize-values.js"></script>
-		<link rel="stylesheet" type="text/css" href="../css/highcharts.css"/>
 	</head>
 
 	<body>
-	<div id="container" style="height: 400px"></div>
+	<div id="container" style="height:500px; min-width:310px; max-width:800px; margin:0 auto;"></div>
 	<script>
 	
 $(function () {
@@ -99,10 +97,11 @@ $(function () {
         },
         
         title: {
-            text: 'Configuration of Counters & GPS'
+            text: 'Configuration of Counters & GPS',
+            style: {font: 'bold'}
         },
         subtitle: {
-            text: 'Click and drag the plot area to rotate in space.  Hover over point to see description & coordinates.'
+            text: 'Click and drag plot area to rotate. <br/> Hover over point to see description & coordinates.  <br/> A point represents center of counter or GPS.'            
         },
         tooltip: {
                     formatter: function () {
@@ -154,13 +153,14 @@ $(function () {
     
  		//Add extra text   
     	function (chart) {
-    	chart.renderer.text('Are your counters in these locations? <br/> If not, make sure you have entered your geometry properly.', 0, 375)
+    	chart.renderer.text('Are your counters in these locations? <br/> If not, make sure you have entered your geometry properly.', 0, 475)
             .css({
                 fontSize: '12px',
                 fontStyle: 'italic'
             })
             .add();
-		chart.renderer.text('Y-axis (m): S(-)->N(+)',700,375)
+      
+		chart.renderer.text('Y-axis (m): S(-)->N(+)',700,475)
 			.attr({
                 rotation: -40
             })
