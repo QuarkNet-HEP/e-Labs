@@ -86,6 +86,10 @@
 					<c:if test='${elab.name == "cosmic" }'>
 						<tr><th colspan="2" >Cosmic Admin Links</th><th></th></tr>
 						<tr>
+							<td>&#8226; <a href="../jsp/editDescription.jsp">Edit TR Descriptions</a></td>
+							<td>Access cosmic transformation descriptions.</td>						
+						</tr>
+						<tr>
 							<td>&#8226; <a href="../data/data-access-permission.jsp">Allow users to view all data</a></td>
 							<td>Give rights to teachers to be able to access all cosmic data (blessed and unblessed).</td>						
 						</tr>
