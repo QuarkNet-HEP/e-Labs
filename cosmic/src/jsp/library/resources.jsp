@@ -32,8 +32,6 @@
 	<tr>
 		<td>
 			<div id=left>
-
-<%--******************************************Tutorials********************************************************* --%>	
 				
 				<div class="tab" id="tab-tutorials">
 					<span class="tab-title">Tutorials</span>
@@ -111,9 +109,7 @@
 						</ul>
 					</div>
 				</div>
-				
-<%--*************************************CRMD Data Collection************************************************************** --%>							
-				
+								
 				<div class="tab" id="tab-equip">
 					<span class="tab-title" style="width: 200px;">CRMD Data Collection</span>	
 					<div class="tab-contents-sublevel">
@@ -124,9 +120,7 @@
 						</ul>					
 					</div>
 				</div>		
-				
-<%--**************************************Contacts************************************************************* --%>							
-					
+									
 				<div class="tab" id="tab-contacts">
 					<span class="tab-title">Contacts</span>	
 					<div class="tab-contents-sublevel">
@@ -151,7 +145,6 @@
 					</div>
 				</div>
 
-<%--***********************************Animations**************************************************************** --%>							
 				
 				<div class="tab" id="tab-animations">
 					<span class="tab-title">Animations</span>
@@ -169,7 +162,6 @@
 					</div>
 				</div>
 				
-	<%--**********************************Plots***************************************************************** --%>							
 					
 	 				<div class="tab" id="tab-animations">     
 					<span class="tab-title">Plots</span>
@@ -180,41 +172,39 @@
 						<li>
 					 <a href="http://nces.ed.gov/nceskids/graphing/">
   Create a Graph</a> - Practice
-  making area, bar and line graphs and pie charts, from <i>Kids'Zone</i> at Shodor.</il>
+  making area, bar and line graphs and pie charts, from <i>Kids'Zone</i> at Shodor.</li>
 
 <li><a href="http://www.shodor.org/interactivate/activities/flydata/index.html">
   Interactive X-Y plot</a> - Enter and practice plotting your
-  data, from Inter<i>activate</i> at Shodor.</il>
+  data, from Inter<i>activate</i> at Shodor.</li>
 
  <li><A HREF="http://www.shodor.org/interactivate/activities/scatterplot/index.html">
-  Scatter Plots</a> - Create the most basic scatter plot, from Inter<i>activate</i> at Shodor.</il>
+  Scatter Plots</a> - Create the most basic scatter plot, from Inter<i>activate</i> at Shodor.</li>
   
 
  <li><a href="http://musr.physics.ubc.ca/~jess/hr/skept/Meas/node2.html">
-  Graphs and Error Bars</a> - A definition from <i>Believe It or Not - A Skeptics Guide</I></il>
+  Graphs and Error Bars</a> - A definition from <i>Believe It or Not - A Skeptics Guide</I></li>
 
  <li><a href="http://www.purplemath.com/modules/graphexp.htm">
   Graphing Exponential Equations</a> - Lessons from
-  <i>Purplemath</i>.<//il>
+  <i>Purplemath</i>.</li>
 
 <li><a href="http://www.shodor.org/interactivate/activities/histogram/">
   Histogram</a> - All about histograms with an
-  interactive example from Inter<i>activate</i> at Shodor</il>
+  interactive example from Inter<i>activate</i> at Shodor</li>
 
 <li><a href="http://www.teacherschoice.com.au/images/histogram.gif">
-  Histogram</a> - An example</il>
+  Histogram</a> - An example</li>
 
 <li><a href="http://www.deakin.edu.au/~agoodman/sci101/chap12.php#RTFToC12">
-  3D Graphs</a> - Wxamples from an individual at Deakin University</il>
+  3D Graphs</a> - Examples from an individual at Deakin University</li>
   
   <li><a href="http://www.teacherschoice.com.au/images/scientific_plot.gif">
   Scientific Plot</a> - A line graph with error bars on
   points and best fit line</li>
 
- <a href="http://instruct1.cit.cornell.edu/courses/virtual_lab/LabZero/Experimental_Error.shtml">Experimental Error</a>, from Cornell University</li>
-
- <a href="http://www.batesville.k12.in.us/physics/APPhyNet/Measurement/Measurement_Intro.html">Physics and Measurements</a>, by  JL Stanbrough
-  </li>
+ <li><a href="http://instruct1.cit.cornell.edu/courses/virtual_lab/LabZero/Experimental_Error.shtml">Experimental Error</a>, from Cornell University
+ 	<a href="http://www.batesville.k12.in.us/physics/APPhyNet/Measurement/Measurement_Intro.html">Physics and Measurements</a>, by  JL Stanbrough</li>
 
 						</ul>
 						</div>		
@@ -222,11 +212,10 @@
 		</td>
 		<td>
 		
-<%--*******************************Right column******************************************************************** --%>	
+
 		
 		<div id="right">
 																
-<%--*******************************Cosmic Ray Sites******************************************************************** --%>						
 					
 				<div class="tab" id="tab-online">
 					<span class="tab-title">Cosmic Ray Sites</span>
@@ -317,7 +306,7 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 						</ul>
 						</div>
 
-<%--********************************Grid Computing******************************************************************* --%>							
+
 				<div class="tab" id="tab-online">
 
 					<span class="tab-title">Grid Computing</span>
@@ -336,7 +325,6 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 						</ul>
 					</div>
 
-<%--******************************IT Careers********************************************************************* --%>							
 						
 						<div class="tab" id="tab-online">
 
@@ -353,32 +341,36 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 								</ul>
 					</div>
 							
-<%--*****************************Reporting Research********************************************************************** --%>							
 							
 					<div class="tab" id="tab-online">
 							
 					<span class="tab-title">Reporting Research</span>
 					<div class="tab-contents-sublevel">
 						<ul  class="simple">
-
-		
-						<ul  class="simple">
 						
-						<li><a href="http://www.madsci.org/posts/archives/2004-02/1075755143.Me.r.html">
-  Defend your reseach</a>, from <i>MacSci Network</i></li>
+							<li><a href="http://www.madsci.org/posts/archives/2004-02/1075755143.Me.r.html">
+  							Defend your reseach</a>, from <i>MacSci Network</i>
+  							</li>
   
- <li><a href="http://leo.stcloudstate.edu/bizwrite/abstracts.html">
-  Writing Abstracts</a> - A good tutorial from <i>Write Place</i></li>
+ 							<li><a href="http://leo.stcloudstate.edu/bizwrite/abstracts.html">
+  							Writing Abstracts</a> - A good tutorial from <i>Write Place</i>
+  							</li>
   
-<li><a href="http://undsci.berkeley.edu/article/howscienceworks_16">
-  Scrutinizing science: Peer review</a>, from Understanding Science (University of California), explains the process.
-						</li>
+							<li><a href="http://undsci.berkeley.edu/article/howscienceworks_16">
+  							Scrutinizing science: Peer review</a>, from Understanding Science (University of California), explains the process.
+  							</li>
+							
+							<li>
+							Research Citation (Purdue University):  <a target="_blank" href="https://owl.english.purdue.edu/owl/resource/560/01/">APA Formatting and Style Guide</a> & 
+							<a target="_blank" href="https://owl.english.purdue.edu/owl/resource/747/01/">MLA Formatting and Style Guide</a>
+							</li>
+								
+						</ul>
 					</div>
 				
 				
 					</div>
 
-<%--*************************************************************************************************** --%>							
 
 		</td>
 	</tr>
