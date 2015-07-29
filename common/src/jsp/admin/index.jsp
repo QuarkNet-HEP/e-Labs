@@ -3,6 +3,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.notifications.*" %>
+<%@ page import="gov.fnal.elab.util.*" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/admin-login-required.jsp" %>
 <%
@@ -19,8 +20,14 @@
 	} catch (Exception e) {
 		message = e.getMessage();
 	}
-	
+	ElabMemory em = new ElabMemory();
+    em.refresh();
+	String memory = "Total heap memory: "+ String.valueOf(em.getTotalMemory())+"MB<br />"+
+			"Max heap memory: "+ String.valueOf(em.getMaxMemory())+"MB<br />"+
+			"Used heap memory: "+ String.valueOf(em.getUsedMemory())+"MB<br />"+
+			"Free heap memory: "+ String.valueOf(em.getFreeMemory())+"MB.";
 	request.setAttribute("message", message);
+	request.setAttribute("memory", memory);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -111,6 +118,9 @@
 						</tr>
 					</c:if>	
 					<tr><td colspan="2"><br /><i>* Expired notifications are removed automatically when we browse this page.</i></td></tr>			
+					<tr><td style="text-align: right;"><i>* Memory Details:</i></td>
+						<td><i>${memory}</i></td>
+					</tr>			
 				</table>
 			</div>
 			<!-- end content -->	
