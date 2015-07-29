@@ -71,10 +71,7 @@ $(function () {
 	  
 	  var zMin = Math.min(z1, z2, z3, z4, 0) - 1; //alert("zMin: "+zMin);
 	  var zMax = Math.max(z1, z2, z3, z4, 0) + 1; //alert("zMax: "+zMax);
-	  
-	  var tickIx = parseInt((xMax-xMin)/5); 
-	  var tickIz = parseInt((zMax-zMin)/5); 
-	    
+	  	    
     // Set up the chart
         var chart = new Highcharts.Chart({
         chart: {          
@@ -113,7 +110,7 @@ $(function () {
         xAxis: {
             min: xMin,
             max: xMax,
- 			tickInterval: tickIx,
+            tickPixelInterval:  100,
 			title: {
 				text: 'X-Axis (meters):  W(-)->E(+)', 
 				style: {color: 'blue'}, 
@@ -123,7 +120,7 @@ $(function () {
         yAxis: {
             min: zMin,
             max: zMax,
-          	tickInterval: tickIz,
+            tickPixelInterval:  100,
             title: {
             	text: 'Z-Axis (meters):  Down(-)->Up(+)',
             	style: {color: 'blue'},     
