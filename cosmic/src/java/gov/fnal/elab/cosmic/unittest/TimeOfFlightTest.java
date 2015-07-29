@@ -24,7 +24,7 @@ public class TimeOfFlightTest {
 		analysisDir = elab.getProperties().getDataDir() + "/unittest/timeofflight";
 		String answer = "";
 		try {
-			tofds = new TimeOfFlightDataStream(analysisDir, "1 2 3 4", "");
+			tofds = new TimeOfFlightDataStream(analysisDir, "", "");
 		} catch (Exception e) {
 			answer = "There was an exception";
 		}
@@ -52,26 +52,21 @@ public class TimeOfFlightTest {
 		String answer = "";
 		boolean isequal1 = false;
 		boolean isequal2 = false;
-		boolean isequal3 = false;
 		try {
 			File fileCreated1 = new File(analysisDir+"/timeOfFlightPlotData");
 			File fileCreated2 = new File(analysisDir+"/timeOfFlightRawData");
-			File fileCreated3 = new File(analysisDir+"/timeOfFlightCalculations");
 			
-			File benchmark1 = new File(analysisDir+"/timeOfFlightPlotDataBenchmark");
-			File benchmark2 = new File(analysisDir+"/timeOfFlightRawDataBenchmark");
-			File benchmark3 = new File(analysisDir+"/timeOfFlightCalculationsBenchmark");
+			File benchmark1 = new File(analysisDir+"/Benchmarks/timeOfFlightPlotDataBenchmark");
+			File benchmark2 = new File(analysisDir+"/Benchmarks/timeOfFlightRawDataBenchmark");
 			
 			isequal1 = FileUtils.contentEquals(fileCreated1, benchmark1);
 			isequal2 = FileUtils.contentEquals(fileCreated2, benchmark2);
-			isequal3 = FileUtils.contentEquals(fileCreated3, benchmark3);
 
 		} catch (Exception ex) {
 			answer = "There was an exception";
 		}
 		assertTrue(isequal1);
 		assertTrue(isequal2);
-		assertTrue(isequal3);
 	}
 	
 }//end of TimeOfFlightTest

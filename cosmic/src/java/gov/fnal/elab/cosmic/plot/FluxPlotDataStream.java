@@ -43,7 +43,8 @@ public class FluxPlotDataStream {
 	private ArrayList<Double> voltage;
 	private ArrayList<Double> satellites;
 	ElabMemory em;
-    DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+	public int eventThreshold = 1000000;
+	DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
     private String filename = "";
  
  	public FluxPlotDataStream(Elab elab, File file, Double binValue, String outputDir, File[] files, String[] filenames) throws Exception {
@@ -156,18 +157,20 @@ public class FluxPlotDataStream {
 				}
 				if (newmin < minX) {
 					minX = newmin;
-				}					
-                em.refresh();
-                if (em.isCritical()) {
-                	String emailMessage = 	"The code stopped processing the sort.out file in FluxPlotDataStream\n"+
-                							"at line: "+String.valueOf(i)+"\n"+
-                							em.getMemoryDetails();
-                	em.notifyAdmin(elab, emailMessage);
-                   	Exception e = new Exception("Heap memory left: "+String.valueOf(em.getFreeMemory())+"MB"+
-                                   				"We stopped processing the sort.out file at line: <br />"+String.valueOf(i)+".<br/>" +
-                                   				"Please select fewer files or files with fewer events.");
-                	throw e;
-                }
+				}
+				if (i > eventThreshold) {
+	                em.refresh();
+	                if (em.isCritical()) {
+	                	String emailMessage = 	"The code stopped processing the sort.out file in FluxPlotDataStream\n"+
+	                							"at line: "+String.valueOf(i)+"\n"+
+	                							em.getMemoryDetails();
+	                	em.notifyAdmin(elab, emailMessage);
+	                   	Exception e = new Exception("Heap memory left: "+String.valueOf(em.getFreeMemory())+"MB"+
+	                                   				"We stopped processing the sort.out file at line: <br />"+String.valueOf(i)+".<br/>" +
+	                                   				"Please select fewer files or files with fewer events.");
+	                	throw e;
+	                }
+				}
 			}
 			minX = minX - (binValue * DateUtils.MILLIS_PER_SECOND);
 			maxX = maxX + (binValue * DateUtils.MILLIS_PER_SECOND * 2);
