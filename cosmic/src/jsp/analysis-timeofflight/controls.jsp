@@ -46,6 +46,104 @@
 	
 %>
 <script type="text/javascript" src="../include/jquery/flot083/jquery.js"></script>		
+<script>
+	$(document).ready(function(){
+		var msg1 = "You cannot require and veto the same channel";
+		var msg2 = "You cannot veto and require the same channel";
+		$("#require1").bind("change", function() {
+			var $req = $(this);
+			if ($req.prop("checked")) {
+				var $veto = $("#veto1");
+				if ($veto.prop("checked")) {
+					$req.prop("checked", false);
+					setMessage(msg1);
+					return false;
+				}
+			}
+		});
+		$("#veto1").bind("change", function() {
+			var $req = $(this);
+			if ($req.prop("checked")) {
+				var $veto = $("#require1");
+				if ($veto.prop("checked")) {
+					$req.prop("checked", false);
+					setMessage(msg2);
+					return false;
+				}
+			}
+		});	
+		$("#require2").bind("change", function() {
+			var $req = $(this);
+			if ($req.prop("checked")) {
+				var $veto = $("#veto2");
+				if ($veto.prop("checked")) {
+					$req.prop("checked", false);
+					setMessage(msg1);
+					return false;
+				}
+			}
+		});
+		$("#veto2").bind("change", function() {
+			var $req = $(this);
+			if ($req.prop("checked")) {
+				var $veto = $("#require2");
+				if ($veto.prop("checked")) {
+					$req.prop("checked", false);
+					setMessage(msg2);
+					return false;
+				}
+			}
+		});	
+		$("#require3").bind("change", function() {
+			var $req = $(this);
+			if ($req.prop("checked")) {
+				var $veto = $("#veto3");
+				if ($veto.prop("checked")) {
+					$req.prop("checked", false);
+					setMessage(msg1);
+					return false;
+				}
+			}
+		});
+		$("#veto3").bind("change", function() {
+			var $req = $(this);
+			if ($req.prop("checked")) {
+				var $veto = $("#require3");
+				if ($veto.prop("checked")) {
+					$req.prop("checked", false);
+					setMessage(msg2);
+					return false;
+				}
+			}
+		});	
+		$("#require4").bind("change", function() {
+			var $req = $(this);
+			if ($req.prop("checked")) {
+				var $veto = $("#veto4");
+				if ($veto.prop("checked")) {
+					$req.prop("checked", false);
+					setMessage(msg1);
+					return false;
+				}
+			}
+		});
+		$("#veto4").bind("change", function() {
+			var $req = $(this);
+			if ($req.prop("checked")) {
+				var $veto = $("#require4");
+				if ($veto.prop("checked")) {
+					$req.prop("checked", false);
+					setMessage(msg2);
+					return false;
+				}
+			}
+		});	
+	});
+	function setMessage(message) {
+		var msg = document.getElementById("message");
+		msg.innerHTML = "<i>*"+message+"</>";
+	}
+</script>
 <c:choose>
 	<c:when test="${availableChannelsSize > 1 }">
 	<div id="analysis-controls">
@@ -104,7 +202,7 @@
 									<td>
 										<div id="softTriggersRequireControls" style="text-align: left;">
 											<c:forEach items="${validChannelsRequire }" var="vcr">
-												${vcr.key} <input type="checkbox" name="singleChannel_require${vcr.key}" id="retrieve${vcr.key}" ${vcr.value }>											
+												${vcr.key} <input type="checkbox" name="singleChannel_require${vcr.key}" id="require${vcr.key}" ${vcr.value }>											
 											</c:forEach>
 										</div>
 									</td>
@@ -122,7 +220,6 @@
 									</td>
 								</tr>
 								<input type="hidden" name="detectorCoincidence" size="8" value="1" />
-								<input type="hidden" name="channelCoincidence" size="8" value="4" />
 								<input type="hidden" name="eventCoincidence" size="8" value="1" />
 							</table>
 						</e:hidden>
@@ -157,6 +254,8 @@
 	<%= DataTools.getFigureCaption(elab, ((ElabAnalysis) request.getAttribute("analysis")).getParameterValues("rawData")) %>
 	<e:analysisParamLabel name="zeroZeroZeroID"/>
 	<e:analysisParamLabel name="gate"/>
+	<e:analysisParamLabel name="channelCoincidence"/>
+	<e:analysisParamLabel name="eventCoincidence"/>
 										</e:default>										
 										</e:trtextarea>
 									</td>
@@ -175,6 +274,7 @@
 			</p>
 		</form>
 	</div>
+	<div id="message"></div>
 </c:when>
 <c:otherwise>
 	<div>
