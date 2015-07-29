@@ -35,7 +35,8 @@ public class EventCandidates {
     
     public static final String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
     public static final TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
-
+    public int eventThreshold = 400000;
+    
     public EventCandidates(Comparator c) {
         rows = new TreeSet(c);
         filteredRows = new TreeSet(c);
@@ -59,6 +60,21 @@ public class EventCandidates {
             // ignore comments in the file
             if (!line.matches("^.*#.*")) {
                 lineNo++;
+                if (lineNo > eventThreshold) {
+                    em.refresh();
+                    if (em.isCritical()) {
+                    	Exception e = new Exception("Heap memory left: "+String.valueOf(em.getFreeMemory())+"MB");
+                    	Elab elab = Elab.getElab(null, "cosmic");
+                    	String emailMessage = 	"The code stopped processing the eventCandidates file: "+in.getAbsolutePath()+"\n"+
+                    							"at line: "+line+"\n"+
+                    							em.getMemoryDetails();
+                    	em.notifyAdmin(elab, emailMessage);
+                    	userFeedback = "We stopped processing the eventCandidates file at line: <br />"+line+".<br/>" +
+                    				   "Please select fewer files or files with fewer events.";
+                    	throw e;
+                    }
+                }
+
                 if (lineNo >= eventStart) {
                     Row row = new Row();
                     String[] arr = line.split("\\s");
@@ -73,14 +89,16 @@ public class EventCandidates {
                     multiplicities.clear();
                     for (int i = 3; i < arr.length; i += 3) {
                         String[] idchan = arr[i].split("\\.");
-                        //idchan[0] = idchan[0].intern();
-                        if (!ids.contains(idchan[0])) {
-                        	ids.add(idchan[0]);
-                        }
-                        //String mult = arr[i].intern();
-                        if (!multiplicities.contains(arr[i])) {
-                        	multiplicities.add(arr[i]);
-                        }
+                        idchan[0] = idchan[0].intern();
+                        ids.add(idchan[0]);
+                        //if (!ids.contains(idchan[0])) {
+                        //	ids.add(idchan[0]);
+                        //}
+                        String mult = arr[i].intern();
+                        multiplicities.add(mult);
+                        //if (!multiplicities.contains(arr[i])) {
+                        //	multiplicities.add(arr[i]);
+                        //}
                         allIds.add(idchan[0]);
                     }
                     
@@ -100,20 +118,8 @@ public class EventCandidates {
                     if (this.eventNum.equals(arr[0])) {
                         crt = row;
                     }     
-                    em.refresh();
-                    if (em.isCritical()) {
-                    	Exception e = new Exception("Heap memory left: "+String.valueOf(em.getFreeMemory())+"MB");
-                    	Elab elab = Elab.getElab(null, "cosmic");
-                    	String emailMessage = 	"The code stopped processing the eventCandidates file: "+in.getAbsolutePath()+"\n"+
-                    							"at line: "+line+"\n"+
-                    							em.getMemoryDetails();
-                    	em.notifyAdmin(elab, emailMessage);
-                    	userFeedback = "We stopped processing the eventCandidates file at line: <br />"+line+".<br/>" +
-                    				   "Please select fewer files or files with fewer events.";
-                    	throw e;
-                    }
                 }
-            }
+             }
             line = br.readLine();
         }
         //write multiplicity summary
