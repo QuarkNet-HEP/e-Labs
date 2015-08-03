@@ -229,7 +229,7 @@ public class VDSDataCatalogProvider extends VDSCatalogProvider implements DataCa
             			"	on at.id = al.id "+
             			"	where al.mkey = '"+ ElabUtil.fixQuotes(key) +"'";
             }
-            System.out.println(query);
+            //System.out.println(query);
             rs = annotationschema.backdoor(query);
 
             if (rs.next()) {
