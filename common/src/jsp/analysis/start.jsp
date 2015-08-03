@@ -63,13 +63,14 @@
 	    }
 	    String mFilter = request.getParameter("mFilter");
 	    if (mFilter == null) {
-	    	mFilter = "";
+	    	mFilter = "0";
 	    }
-	    run.setAttribute("continuation", cont);
+ 	    run.setAttribute("continuation", cont);
 	    run.setAttribute("onError", err);
 	    run.setAttribute("type", analysis.getName());
 	    run.setAttribute("owner", user.getName());
 	    run.setAttribute("queuedAt", df.format(new Date()));
+	    
 	    boolean skip = false;
 	    if (run.getAttribute("type").equals("ProcessUpload") ||	run.getAttribute("type").equals("EventPlot") || run.getAttribute("type").equals("RawAnalyzeStudy")) {
 	    	skip = true;
@@ -84,8 +85,9 @@
     	run.setAttribute("detectorid", detectorid);
     	analysis.setAttribute("detectorid", detectorid);
     	analysis.setAttribute("id", run.getId());
-       	analysis.setAttribute("mFilter", mFilter);
-	    String workflowRunMode = request.getParameter("runMode");
+    	analysis.setAttribute("mFilter", mFilter);
+
+    	String workflowRunMode = request.getParameter("runMode");
 		if (workflowRunMode != null) {
 			run.setAttribute("runMode", workflowRunMode);
 			analysis.setAttribute("runMode", workflowRunMode);
@@ -136,6 +138,7 @@
 %>
 	    	<jsp:include page="status.jsp">
 	    		<jsp:param name="id" value="<%= run.getId() %>"/>
+	    		<jsp:param name="mFilter" value="<%= mFilter %>"/>
 	    	</jsp:include>
 	    <%
 	}
