@@ -46,104 +46,8 @@
 	
 %>
 <script type="text/javascript" src="../include/jquery/flot083/jquery.js"></script>		
-<script>
-	$(document).ready(function(){
-		var msg1 = "You cannot require and veto the same channel";
-		var msg2 = "You cannot veto and require the same channel";
-		$("#require1").bind("change", function() {
-			var $req = $(this);
-			if ($req.prop("checked")) {
-				var $veto = $("#veto1");
-				if ($veto.prop("checked")) {
-					$req.prop("checked", false);
-					setMessage(msg1);
-					return false;
-				}
-			}
-		});
-		$("#veto1").bind("change", function() {
-			var $req = $(this);
-			if ($req.prop("checked")) {
-				var $veto = $("#require1");
-				if ($veto.prop("checked")) {
-					$req.prop("checked", false);
-					setMessage(msg2);
-					return false;
-				}
-			}
-		});	
-		$("#require2").bind("change", function() {
-			var $req = $(this);
-			if ($req.prop("checked")) {
-				var $veto = $("#veto2");
-				if ($veto.prop("checked")) {
-					$req.prop("checked", false);
-					setMessage(msg1);
-					return false;
-				}
-			}
-		});
-		$("#veto2").bind("change", function() {
-			var $req = $(this);
-			if ($req.prop("checked")) {
-				var $veto = $("#require2");
-				if ($veto.prop("checked")) {
-					$req.prop("checked", false);
-					setMessage(msg2);
-					return false;
-				}
-			}
-		});	
-		$("#require3").bind("change", function() {
-			var $req = $(this);
-			if ($req.prop("checked")) {
-				var $veto = $("#veto3");
-				if ($veto.prop("checked")) {
-					$req.prop("checked", false);
-					setMessage(msg1);
-					return false;
-				}
-			}
-		});
-		$("#veto3").bind("change", function() {
-			var $req = $(this);
-			if ($req.prop("checked")) {
-				var $veto = $("#require3");
-				if ($veto.prop("checked")) {
-					$req.prop("checked", false);
-					setMessage(msg2);
-					return false;
-				}
-			}
-		});	
-		$("#require4").bind("change", function() {
-			var $req = $(this);
-			if ($req.prop("checked")) {
-				var $veto = $("#veto4");
-				if ($veto.prop("checked")) {
-					$req.prop("checked", false);
-					setMessage(msg1);
-					return false;
-				}
-			}
-		});
-		$("#veto4").bind("change", function() {
-			var $req = $(this);
-			if ($req.prop("checked")) {
-				var $veto = $("#require4");
-				if ($veto.prop("checked")) {
-					$req.prop("checked", false);
-					setMessage(msg2);
-					return false;
-				}
-			}
-		});	
-	});
-	function setMessage(message) {
-		var msg = document.getElementById("message");
-		msg.innerHTML = "<i>*"+message+"</>";
-	}
-</script>
+<script type="text/javascript" src="../analysis-timeofflight/controls.js"></script>		
+
 <c:choose>
 	<c:when test="${availableChannelsSize > 1 }">
 	<div id="analysis-controls">
@@ -255,7 +159,6 @@
 	<e:analysisParamLabel name="zeroZeroZeroID"/>
 	<e:analysisParamLabel name="gate"/>
 	<e:analysisParamLabel name="channelCoincidence"/>
-	<e:analysisParamLabel name="eventCoincidence"/>
 										</e:default>										
 										</e:trtextarea>
 									</td>
@@ -265,13 +168,27 @@
 					</e:vswitch>
 				</e:tr>
 			</p>
+			<input type="hidden" name="provider" value="swift"/>
+			<table id="swift-run-mode" width="100%" align="center" >
+				<tr>
+					<td align="left" style="display: none;">
+						<input type="radio" name="runMode" value="local" checked/> Local 
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Estimated time: <e:analysisRunTimeEstimator engine="swift" mode="local"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<!-- this MUST be used if all the elab:tr* stuff is to work                      -->
+						<!-- it ensures that the name of the submit button is the right thing ("submit") -->
+						<e:trsubmit/>					
+					</td>
+				</tr>
+			</table>
 	
-			<%@ include file="../analysis/controls.jsp" %>
-			<p>
-				<!-- this MUST be used if all the elab:tr* stuff is to work                      -->
-				<!-- it ensures that the name of the submit button is the right thing ("submit") -->
-				<e:trsubmit/>
-			</p>
 		</form>
 	</div>
 	<div id="message"></div>
