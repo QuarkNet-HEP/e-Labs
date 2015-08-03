@@ -57,8 +57,8 @@ function buildTimeDiff(timediff, diffNum) {
 	setDataStats(diffNum);
 	setStatsLegend(diffNum);
 	
-	$("#range"+diffNum).attr({"min":Math.floor(1), "max":Math.floor(timediff.maxBins), "value": timediff.binValue, "step": timediff.binValue});
-	$("#binWidth"+diffNum).attr({"min":Math.floor(1), "max":Math.floor(timediff.maxBins), "value": timediff.binValue, "step": timediff.binValue});
+	$("#range"+diffNum).attr({"min":timediff.binValue, "max":Math.floor(timediff.maxBins), "value": timediff.binValue, "step": timediff.binValue});
+	$("#binWidth"+diffNum).attr({"min":timediff.binValue, "max":Math.floor(timediff.maxBins), "value": timediff.binValue, "step": timediff.binValue});
     $('#range'+diffNum).on('input', function(){
         $('#binWidth'+diffNum).val($('#range'+diffNum).val());
         if ($('#range'+diffNum).val() > 0) {
@@ -80,7 +80,7 @@ function buildTimeDiff(timediff, diffNum) {
 
 function setDataStats(ndx) {
 	tofCollection[ndx-1].mean = mean;
-	tofCollection[ndx-1].sttdev = deviation;
+	tofCollection[ndx-1].stddev = deviation;
 	tofCollection[ndx-1].numberOfEntries = numberOfEntries;
 	tofCollection[ndx-1].originalMinY = tofCollection[ndx-1].onOffPlot.getAxes().yaxis.min;
 	tofCollection[ndx-1].originalMaxY = tofCollection[ndx-1].onOffPlot.getAxes().yaxis.max;
@@ -145,6 +145,28 @@ function writeLegend(diffNum) {
 	context.fillText(tofCollection[diffNum-1].label, 130, 30);
 	context.textAlign = '# of Entries: '+ tofCollection[diffNum-1].numberOfEntries;
 	context.fillText('# of Entries: '+ tofCollection[diffNum-1].numberOfEntries, 140, 40);
+	var meta = document.getElementsByName("metadata");
+	var serialized = $(meta).serializeArray();
+	var values = new Array();
+	var xcoord = 50;
+	var ycoord = 0;
+	var yspace = 10;	
+	ycoord = 50;
+	$.each(serialized, function(index,element){
+		var val = element.value;
+		if (val.indexOf("caption") > -1) {
+			var caption = val.substring(val.indexOf("Data"), val.length);
+			var captionArray = caption.split("\n");
+			for (var i = 0; i < captionArray.length; i++) {
+				var printText = captionArray[i];
+				if (captionArray[i].length > 38) {
+					printText = captionArray[i].substring(0, 38);
+				}
+				ycoord += yspace; 
+				context.fillText(printText, xcoord, ycoord);				
+			}
+		}
+	   });	 
 	context.font="8px sans-serif";
 	context.translate(0, 150);
 	context.rotate(-Math.PI / 2);

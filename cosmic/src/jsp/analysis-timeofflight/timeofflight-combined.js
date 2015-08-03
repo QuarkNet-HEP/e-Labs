@@ -202,8 +202,8 @@ function bindEverything(json) {
 	onOffPlot = $.plot("#placeholder", data, options);
 	overviewPlot = $.plot("#overview", data, overviewOptions);
 	
-	$("#range").attr({"min":Math.floor(1), "max":Math.floor(maxBins), "value": binValue});
-	$("#binWidth").attr({"min":Math.floor(1), "max":Math.floor(maxBins), "value": binValue});
+	$("#range").attr({"min":binValue, "max":Math.floor(maxBins), "value": binValue, "step": binValue});
+	$("#binWidth").attr({"min":binValue, "max":Math.floor(maxBins), "value": binValue, "step": binValue});
 
     $('#range').on('input', function(){
         $('#binWidth').val($('#range').val());
@@ -258,7 +258,7 @@ function writeLegend(canvas) {
 	var meta = document.getElementsByName("metadata");
 	var serialized = $(meta).serializeArray();
 	var values = new Array();
-	var xcoord = 30;
+	var xcoord = 50;
 	var ycoord = 0;
 	var yspace = 15;	
 	ycoord = 50;

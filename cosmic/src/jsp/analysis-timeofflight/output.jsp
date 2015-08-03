@@ -159,8 +159,7 @@
 </p>
 <input type="hidden" name="outputDir" id="outputDir" value="${results.outputDirURL}"/>
 <% if (!user.isGuest()) { %>
-	<p><b>OR</b></p>
-	<%@ include file="save-form.jspf" %>
+	<p>To save each plot permanently, open 'View Controls', enter a Filename and save it.</p>
 <% } %>
 
 			</div>
