@@ -63,7 +63,7 @@
 	    }
 	    String mFilter = request.getParameter("mFilter");
 	    if (mFilter == null) {
-	    	mFilter = "";
+	    	mFilter = "0";
 	    }
  	    run.setAttribute("continuation", cont);
 	    run.setAttribute("onError", err);

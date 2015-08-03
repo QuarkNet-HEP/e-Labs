@@ -62,21 +62,29 @@
 	String message = ec.getUserFeedback();
 
 	String mFilter = request.getParameter("mFilter");
-	if (mFilter != null && !mFilter.equals("")) {
+	String displayMultiplicity = "none";
+	if (mFilter != null && !mFilter.equals("") && !mFilter.equals("0")) {
 		rows = ec.filterByMuliplicity(Integer.valueOf(mFilter));
+		displayMultiplicity = "block";
 	} else {
-		mFilter = (String) analysis.getAttribute("mFilter");
-		if (!mFilter.equals("")) {
-			rows = ec.filterByMuliplicity(Integer.valueOf(mFilter));
+		if (mFilter != null && mFilter.equals("0")) {
+			displayMultiplicity = "block";
+		} else {
+			mFilter = (String) analysis.getAttribute("mFilter");
+			if (!mFilter.equals("") && !mFilter.equals("0")) {
+				rows = ec.filterByMuliplicity(Integer.valueOf(mFilter));
+				displayMultiplicity = "block";
+			}
 		}
 	}
-
 	request.setAttribute("message", message);
 	request.setAttribute("eventDir", ecPath);
 	request.setAttribute("rows", rows);
+	request.setAttribute("eventNum", eventNum);
 	request.setAttribute("crtEventRow", ec.getCurrentRow());		
 	request.setAttribute("multiplicityFilter", ec.getMultiplicityFilter());		
 	request.setAttribute("mFilter", mFilter);
+	request.setAttribute("displayMultiplicity", displayMultiplicity);
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -88,6 +96,35 @@
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
+		<script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>			
+		<script>
+		$(document).ready(function(){
+			$("#viewAdvanced").bind("change", function() {
+				var $req = $(this);
+				var table = document.getElementById("shower-events");
+				var rows = table.getElementsByTagName("tr");
+				var display = "none";
+				var newLoc = "";
+				if ($req.prop("checked")) {
+					display = "block";
+				} else {
+					display = "none";
+				 	location = document.getElementById("restoreOutput").value;
+				}
+				for (var row=0; row < rows.length; row++) {
+					var advanced = rows[row].cells[rows[row].cells.length - 1];
+					advanced.style.display = display;
+				}
+			});
+		});			
+		function addMultiplicityOption(link) {
+			var viewMultiplicity = document.getElementById("viewAdvanced");
+			console.log(viewMultiplicity);
+			if (viewMultiplicity.checked) {
+				link.href += "&viewAdvanced=yes"
+			}
+		}		
+		</script>
 	</head>
 	
 	<body id="shower-study-output" class="data, analysis-output">
@@ -103,7 +140,7 @@
 			<div id="content">
 <c:choose>
 <c:when test="${not empty rows}">
-<h1>Shower study candidates (<%= rows.size() %>)</h1>
+<h1>Shower study candidates (<%= rows.size() %>) <a href="tutorial4.jsp?id=${param.id}&showerId=${param.showerId}" style="font-size: small; font-style: italic;">Event List References</a></h1>
 <c:if test='${message != "" }'>
 	<div>${message }</div>
 </c:if>
@@ -113,24 +150,40 @@
 			<table id="shower-events">
 				<tr>
 					<th width="40%">
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }">Event Date</a>
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }" >Event Date</a>
 					</th>
 					<th width="10%">
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }">Event Coincidence</a>
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }" >Event Coincidence</a>
 					</th>
 					<th width="40%">
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }">Detector Coincidence<br />[Counter Multiplicity]</a>
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }" >Detector Coincidence<br /></a>[Counter Multiplicity]			
 					</th>
-					<th width="10%" class="filterable">
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=3&dir=${(param.sort == '3' && param.dir == 'd') ? 'a' : 'd' }">Hit Counters<br /></a>
+					<th width="10%" style="display: ${displayMultiplicity};" name="advanced">					
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=3&dir=${(param.sort == '3' && param.dir == 'd') ? 'a' : 'd' }" >Multiplicity Totals</a> 
+					</th>
+				</tr>
+				<tr>
+					<td colspan="2"></td>
+					<td>
+					 	<input type="hidden" name="restoreOutput" id="restoreOutput" value="output.jsp?id=${param.id}&showerId=${param.showerId}"></input>
+						<c:choose>
+							<c:when test='${mFilter != null && mFilter != "" }'>
+								<input type="checkbox" name="viewAdvanced" id="viewAdvanced" checked> View Multiplicity Totals</input>
+							</c:when>
+							<c:otherwise>
+								<input type="checkbox" name="viewAdvanced" id="viewAdvanced" > View Multiplicity Totals</input>
+							</c:otherwise>
+						</c:choose>					
+					</td>
+					<td style="display: ${displayMultiplicity};" name="advanced">
 						<c:if test='${not empty multiplicityFilter }'>
 							<select name="mFilter" id="mFilter" onchange="location = this.options[this.selectedIndex].value;">
 								<c:choose>
-									<c:when test='${mFilter != null && mFilter=="All" }'>
-										<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=" selected>All</option>
+									<c:when test='${mFilter != null && mFilter== "" }'>
+										<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=0" selected>All</option>
 									</c:when>
 									<c:otherwise>
-										<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=">All</option>
+										<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=0">All</option>
 									</c:otherwise>
 								</c:choose>
 								<c:forEach items="${multiplicityFilter }" var="filter">
@@ -144,8 +197,8 @@
 									</c:choose>
 								</c:forEach>
 							</select>
-						</c:if>
-					</th>
+						</c:if>					
+					</td>
 				</tr>
 				<c:choose>
 					<c:when test="${param.start != null}">
@@ -160,6 +213,9 @@
 				<c:forEach items="${rows}" begin="${start}" end="${end}" var="row" varStatus="li">
 					<tr bgcolor="${row.eventNum == eventNum ? '#aaaafc' : (li.count % 2 == 0 ? '#e7eefc' : '#ffffff')}">
 						<td>
+							<c:if test="${row.eventNum == eventNum}">
+								<img src="../graphics/Tright.gif"></img>
+							</c:if>
 							<a href="../analysis-shower/event-choice.jsp?id=${param.showerId}&eventNum=${row.eventNum}&mFilter=${mFilter}&eventDir=${eventDir}&eventDateTime=${row.dateF}&submit=true">${row.dateF}</a>
 						</td>
 						<td>
@@ -169,15 +225,16 @@
 							${row.numDetectors}
 								(<c:forEach items="${row.idsMult}" var="detectorId"> <e:popup href="../data/detector-info.jsp?id=${detectorId.key}" target="new" width="460" height="160">${detectorId.key}</e:popup>[${detectorId.value }]</c:forEach>)
 						</td>
-						<td>
+						<td style="display: ${displayMultiplicity};" name="advanced">
 							${row.multiplicityCount }
 						</td>
 					</tr>
 				</c:forEach>
 				<tr>
-					<td colspan="3" align="right">
+					<td colspan="3">
 						<e:pagelinks pageSize="30" start="${start}" totalSize="${rows}" name="event" names="events"/>
 					</td>
+					<td style="display: ${displayMultiplicity};" name="advanced"></td>
 				</tr>
 			</table>
 		</td>
