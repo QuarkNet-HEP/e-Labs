@@ -199,6 +199,8 @@ redrawPlotX = function(ndx, newX, type) {
 	plot = tofCollection[ndx-1].onOffPlot;
 	entries = tofCollection[ndx-1].numberOfEntries;
 	label = tofCollection[ndx-1].label;
+	originalminx = tofCollection[ndx-1].originalMinX;
+	originalmaxx = tofCollection[ndx-1].originalMaxX;
 	var axes = plot.getAxes();
 	if (type == "min") {
 		axes.xaxis.options.min = newX;
@@ -244,33 +246,6 @@ redrawPlotY = function(ndx, newY, type) {
 	plot.draw();
 	writeLegend(ndx);	
 }//end of redrawPlotY
-
-options = {
-        axisLabels: {
-            show: true
-        },		
-        legend: {  
-            show: false
-        },  
-        lines: { 
-        	show: true, 
-        	fill: false, 
-        	lineWidth: 2.0 
-        },
-        xaxis: { 
-        	tickDecimals: 0
-        },
-		grid: {
-			hoverable: true,
-			clickable: true
-		},	
-		yaxes: {
-			axisLabelUseCanvas: true
-		},
-		xaxes: {
-			axisLabelUseCanvas: true			
-		}
-};
 
 redrawPlotFitX = function(ndx, newMinX, newMaxX) {
 	if (newMinX == null || newMinX == "") {
@@ -327,6 +302,33 @@ resetPlotFitX = function(ndx) {
 	writeLegend(ndx);	
 }//end of resetPlotFitX
 
+options = {
+        axisLabels: {
+            show: true
+        },		
+        legend: {  
+            show: false
+        },  
+        lines: { 
+        	show: true, 
+        	fill: false, 
+        	lineWidth: 2.0 
+        },
+        xaxis: { 
+        	tickDecimals: 0
+        },
+		grid: {
+			hoverable: true,
+			clickable: true
+		},	
+		yaxes: {
+			axisLabelUseCanvas: true
+		},
+		xaxes: {
+			axisLabelUseCanvas: true			
+		}
+};
+
 Number.prototype.toFixedDown = function(digits) {
 	  var n = this - Math.pow(10, -digits)/2;
 	  n += n / Math.pow(2, 53); // added 1360765523: 17.56.toFixedDown(2) === "17.56"
@@ -336,3 +338,4 @@ Number.prototype.toFixedDown = function(digits) {
 function intToFloat(num, decPlaces) { 
 	return num + '.' + Array(decPlaces + 1).join('0'); 
 }
+
