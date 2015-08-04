@@ -62,13 +62,19 @@
 	String message = ec.getUserFeedback();
 
 	String mFilter = request.getParameter("mFilter");
+	String restore = request.getParameter("restore");
 	String displayMultiplicity = "none";
 	if (mFilter != null && !mFilter.equals("") && !mFilter.equals("0")) {
 		rows = ec.filterByMuliplicity(Integer.valueOf(mFilter));
 		displayMultiplicity = "block";
 	} else {
 		if (mFilter != null && mFilter.equals("0")) {
-			displayMultiplicity = "block";
+			if (restore != null && restore.equals("yes")) {
+				displayMultiplicity = "none";
+				mFilter = "";
+			} else {
+				displayMultiplicity = "block";				
+			}
 		} else {
 			mFilter = (String) analysis.getAttribute("mFilter");
 			if (!mFilter.equals("") && !mFilter.equals("0")) {
@@ -109,7 +115,8 @@
 					display = "block";
 				} else {
 					display = "none";
-				 	location = document.getElementById("restoreOutput").value;
+					var newOutput = document.getElementById("restoreOutput").value+ "&mFilter=0&restore=yes";
+					location = newOutput;
 				}
 				for (var row=0; row < rows.length; row++) {
 					var advanced = rows[row].cells[rows[row].cells.length - 1];
@@ -119,7 +126,7 @@
 		});			
 		function addMultiplicityOption(link) {
 			var viewMultiplicity = document.getElementById("viewAdvanced");
-			console.log(viewMultiplicity);
+			//console.log(viewMultiplicity);
 			if (viewMultiplicity.checked) {
 				link.href += "&viewAdvanced=yes"
 			}
@@ -156,7 +163,7 @@
 						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }" >Hit Coincidence</a>
 					</th>
 					<th width="40%">
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }" >Detector Coincidence<br /></a>[Counter Multiplicity]			
+						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }" >Detector Coincidence<br /></a>[Channel Multiplicity]			
 					</th>
 					<th width="10%" style="display: ${displayMultiplicity};" name="advanced">					
 						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=3&dir=${(param.sort == '3' && param.dir == 'd') ? 'a' : 'd' }" >Multiplicity Totals</a> 
@@ -179,7 +186,7 @@
 						<c:if test='${not empty multiplicityFilter }'>
 							<select name="mFilter" id="mFilter" onchange="location = this.options[this.selectedIndex].value;">
 								<c:choose>
-									<c:when test='${mFilter != null && mFilter== "" }'>
+									<c:when test='${param.mFilter != null && param.mFilter== "" }'>
 										<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=0" selected>All</option>
 									</c:when>
 									<c:otherwise>
