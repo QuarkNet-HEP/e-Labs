@@ -77,9 +77,16 @@
 			}
 		} else {
 			mFilter = (String) analysis.getAttribute("mFilter");
-			displayMultiplicity = "block";
 			if (!mFilter.equals("") && !mFilter.equals("0")) {
 				rows = ec.filterByMuliplicity(Integer.valueOf(mFilter));
+				displayMultiplicity = "block";
+			} else {
+				if (sortCol == 3) {
+					displayMultiplicity = "block";		
+					if (mFilter.equals("")) {
+						mFilter = "0";
+					}
+				}
 			}
 		}
 	}
