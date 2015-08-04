@@ -196,6 +196,16 @@ input[type="range"]::-ms-thumb {
 	width: 33%;
 	height: 100%;
 }
+
+.tofDetails {
+	border: 1px solid RoyalBlue;
+	display: inline-block; 
+	width: 150px; 
+	padding: 5px 5px 5px 5px;
+}
+.tofDetails:hover {
+	background-color: #63a2db;
+}
 .tofDetails:hover .tofControls {
     display: block;
 }

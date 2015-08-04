@@ -272,7 +272,13 @@ options = {
 		}
 };
 
-redrawPlotFitX = function(ndx, newX, type) {
+redrawPlotFitX = function(ndx, newMinX, newMaxX) {
+	if (newMinX == null || newMinX == "") {
+		newMinX = tofCollection[ndx-1].originalMinX;
+	}
+	if (newMaxX == null || newMaxX == "") {
+		newMaxX = tofCollection[ndx-1].originalMaxX;
+	}
 	var originalminx, originalmaxx, plot, label, entries, original;
 	plot = tofCollection[ndx-1].onOffPlot;
 	originalminx = tofCollection[ndx-1].originalMinX;
@@ -282,7 +288,7 @@ redrawPlotFitX = function(ndx, newX, type) {
 	original = tofCollection[ndx-1].timeDiff;
 	localdata = [];
 	if (original != null) {
-		var fittedData = fitData(original.data_original, newX, type);
+		var fittedData = fitData(original.data_original, newMinX, newMaxX);
 		original.data = getDataWithBins(fittedData, original.binValue, original.minX, original.maxX, original.nBins, original.nBins);
    		setDataStats(ndx);
    		setStatsLegend(ndx);	      		
@@ -292,20 +298,12 @@ redrawPlotFitX = function(ndx, newX, type) {
 	writeLegend(ndx);
 }//end of redrawPlotFitX
 
-function fitData(data_original, newX, type) {
+function fitData(data_original, newMinX, newMaxX) {
 	var fittedData = [];
-	if (type == "min") {
-		for (var i = 0; i < data_original.length; i++) {
-			if (data_original[i] > newX) {
-				fittedData.push(data_original[i]);
-			}
-		}	
-	} else {
-		for (var i = 0; i < data_original.length; i++) {
-			if (data_original[i] < newX) {
-				fittedData.push(data_original[i]);
-			}
-		}	
+	for (var i = 0; i < data_original.length; i++) {
+		if (data_original[i] >= newMinX && data_original[i] <= newMaxX) {
+			fittedData.push(data_original[i]);
+		}
 	}	
 	return fittedData;
 }//end of fitData

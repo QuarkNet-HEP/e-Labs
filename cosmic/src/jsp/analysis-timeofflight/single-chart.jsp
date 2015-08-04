@@ -5,7 +5,7 @@
 <div class="left">
 	<div id="placeholder<%= request.getParameter("chartIndex")%>" class="graph-placeholder" style="width:250px; height:250px;"></div>
 	<br />
-	<div class="tofDetails" id="tofDetails" style="display: inline-block;" >View Controls
+	<div class="tofDetails" id="tofDetails"  >View Controls
 		<span class="tofControls" id="tofControls">
 		<div id="refit" style="border: 1px dotted black;">
 			<div id="xrefit<%= request.getParameter("chartIndex") %>" style="width:245px;">
@@ -15,8 +15,9 @@
 					</tr>
 					<tr>
 						<td style="background-color: lightGray" nowrap>
-							Min X: <input type="text" size="3" id="minFitX<%= request.getParameter("chartIndex")%>" /><input type="button" value="Set" id="minFitXButton<%= request.getParameter("chartIndex")%>" onclick='javascript:redrawPlotFitX(<%= request.getParameter("chartIndex")%>, minFitX<%= request.getParameter("chartIndex")%>.value, "min");' />
-							Max X: <input type="text" size="3" id="maxFitX<%= request.getParameter("chartIndex")%>" /><input type="button" value="Set" id="maxFitXButton<%= request.getParameter("chartIndex")%>" onclick='javascript:redrawPlotFitX(<%= request.getParameter("chartIndex")%>, maxFitX<%= request.getParameter("chartIndex")%>.value, "max");' />
+							Min X: <input type="text" size="3" id="minFitX<%= request.getParameter("chartIndex")%>" />
+							Max X: <input type="text" size="3" id="maxFitX<%= request.getParameter("chartIndex")%>" />
+							<input type="button" value="Refit X" id="maxFitXButton<%= request.getParameter("chartIndex")%>" onclick='javascript:redrawPlotFitX(<%= request.getParameter("chartIndex")%>, minFitX<%= request.getParameter("chartIndex")%>.value, maxFitX<%= request.getParameter("chartIndex")%>.value);' />
 						</td>
 					</tr>
 				</table>
