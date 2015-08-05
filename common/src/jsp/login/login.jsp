@@ -26,12 +26,12 @@
 	boolean maxLoginsReached = false;
 	
 	if (loginCountPerUser > 5 && !username.equals("guest")) {
-		message = "Username: "+username+" is logged for a maximum of five times.";
+		message = "Username "+username+" is logged for a maximum of five times.";
 		maxLoginsReached = true;
 	}
-	if (loginCountPerUser > 10 && username.equals("guest")) {
-		message = "Username: "+username+" is logged in ten times.<br />" +
-				  "Please request a new account if you access to the e-Lab.";
+	if (loginCountPerUser > 0 && username.equals("guest")) {
+		message = "Username "+username+" is logged in ten times.<br />" +
+				  "If you have an e-Lab account please use it. If you do not, please request one.";
 		maxLoginsReached = true;
 	}
 	if (!maxLoginsReached) {
@@ -255,6 +255,8 @@
 	<h1><%= message %></h1>	
 			<h2>Need a student login?</h2>
 			<p>Ask your teacher.</p>
+			<h2>If you are a student and forgot your username/password:</h2>
+			<p>Ask your teacher.</p>
 			
 			<%
 								String subject = URLEncoder.encode(elab.getName() + " elab account request");
@@ -272,7 +274,10 @@
 			<p>Contact 
 			<a href="<%= mailURL %>">e-labs@fnal.gov</a>.
 			</p>
-	
+			<h2>If you are a teacher and forgot your username/password:</h2>
+			<p>
+				<td colspan="2"><a href="../login/retrieve-username-password.jsp">Forgot username/password?</a></div>
+			</p>	
 				</div>
 				<!-- end content -->	
 			
