@@ -90,6 +90,10 @@
 			}
 		}
 	}
+	//added to keep track of the page where the last event is
+	int pageLength = 30;
+	int	pageStart = (Integer.parseInt(eventNum) / pageLength) * pageLength;
+	request.setAttribute("pageStart", pageStart);
 	request.setAttribute("message", message);
 	request.setAttribute("eventDir", ecPath);
 	request.setAttribute("rows", rows);
@@ -154,7 +158,7 @@
 			<div id="content">
 <c:choose>
 <c:when test="${not empty rows}">
-<h1>Shower study candidates (<%= rows.size() %>) <a href="tutorial4.jsp?id=${param.id}&showerId=${param.showerId}" style="font-size: small; font-style: italic;">Event List References</a></h1>
+<h1><%= rows.size()%> shower study candidates <a href="tutorial4.jsp?id=${param.id}&showerId=${param.showerId}" style="font-size: small; font-style: italic;">Event List References</a></h1>
 <c:if test='${message != "" }'>
 	<div>${message }</div>
 </c:if>
@@ -215,13 +219,21 @@
 					</td>
 				</tr>
 				<c:choose>
-					<c:when test="${param.start != null}">
-						<c:set var="start" value="${param.start}"/>
-						<c:set var="end" value="${param.start + 30}"/>
+					<c:when test="${pageStart != null && param.start == null}">
+						<c:set var="start" value="${pageStart}"/>
+						<c:set var="end" value="${pageStart + 30}"/>
 					</c:when>
 					<c:otherwise>
-						<c:set var="start" value="0"/>
-						<c:set var="end" value="30"/>
+						<c:choose>
+							<c:when test="${param.start != null}">
+								<c:set var="start" value="${param.start}"/>
+								<c:set var="end" value="${param.start + 30}"/>
+							</c:when>
+							<c:otherwise>
+								<c:set var="start" value="0"/>
+								<c:set var="end" value="30"/>
+							</c:otherwise>
+						</c:choose>
 					</c:otherwise>
 				</c:choose>
 				<c:forEach items="${rows}" begin="${start}" end="${end}" var="row" varStatus="li">
