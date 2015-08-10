@@ -21,6 +21,27 @@
 <%@ page import="gov.fnal.elab.analysis.*" %>
 <%@ page import="gov.fnal.elab.util.URLEncoder" %>
 <%
+	//create the file for the dynamic charts
+	String message;
+	String performanceJsonFile = results.getOutputDir() + "/PerformancePlotFlot";
+	try {
+		//this code is for admin to be able to see the graph
+		File f = new File(performanceJsonFile);
+		if (!f.exists()) {
+		       String output = results.getAnalysis().getParameter("singlechannelOut").toString();
+		       String[] outputFiles = output.split(" ");
+		       File[] files = new File[outputFiles.length];
+		       for (int i = 0; i < outputFiles.length; i++) {
+		       		String fileName = results.getOutputDir()+"/"+outputFiles[i];
+		       		files[i] = new File(fileName);
+		       }
+		       String binValue = results.getAnalysis().getParameter("freq_binValue").toString();
+		       Double bV = Double.valueOf(binValue);
+		       PerformancePlotDataStream ppds = new PerformancePlotDataStream(files, bV, results.getOutputDir());
+		}
+	} catch (Exception e) {
+			message = e.getMessage();
+	}
 	String subject = URLEncoder.encode(elab.getName() + " Interactive Performance Plot Feedback");
 	String body = URLEncoder.encode("Thank you for your interest and help!. Please complete the fields below with your feedback:\n\n" 
 		+ "First Name:\n\n"
