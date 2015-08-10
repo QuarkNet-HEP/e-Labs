@@ -48,6 +48,11 @@ public class EventCandidates {
 
     public void read(File in, File out, int eventStart, String en)
             throws Exception {
+    	Elab elab = Elab.getElab(null, "cosmic");
+    	String et = elab.getProperty("event.threshold");
+    	if (et != null && !et.equals("")) {
+    		eventThreshold = Integer.parseInt(et);
+    	}
         this.eventNum = en;
         int lineNo = 1;
         BufferedReader br = new BufferedReader(new FileReader(in));
@@ -65,7 +70,6 @@ public class EventCandidates {
                     em.refresh();
                     if (em.isCritical()) {
                     	Exception e = new Exception("Heap memory left: "+String.valueOf(em.getFreeMemory())+"MB");
-                    	Elab elab = Elab.getElab(null, "cosmic");
                     	String emailMessage = 	"The code stopped processing the eventCandidates file: "+in.getAbsolutePath()+"\n"+
                     							"at line: "+line+"\n"+
                     							em.getMemoryDetails();
