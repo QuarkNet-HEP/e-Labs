@@ -107,7 +107,7 @@ function superImpose() {
 			});			
 			onOffPlot = $.plot("#placeholder", data, options);
 			var opts = onOffPlot.getOptions();
-			console.log(opts);
+			//console.log(opts);
 			overviewPlot = $.plot("#overview", data, overviewOptions);
 			var newseries = onOffPlot.getData();
 			for (var i = 0; i < newseries.length; i++) {
@@ -412,6 +412,18 @@ function buildCanvas() {
 		}
 	});
 }//end of buildCanvas
+
+function spinnerOn() {
+	var container = document.getElementById("spinner");
+	container.style.backgroundImage = "url(../graphics/spinner-large.gif)",
+	container.style.backgroundPosition = "center";
+	container.style.backgroundRepeat = "no-repeat";
+}
+
+function spinnerOff() {
+	var container = document.getElementById("spinner");
+	container.style.backgroundImage = "none";
+}
 
 function refresh() {
 	  buildCanvas();
