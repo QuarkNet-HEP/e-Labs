@@ -157,10 +157,24 @@
 <p>
 	<e:rerun type="timeofflight" id="${timeofflightResults.id}" label="Change"/> your parameters
 </p>
-<input type="hidden" name="outputDir" id="outputDir" value="${results.outputDirURL}"/>
-<% if (!user.isGuest()) { %>
-	<p>To save each plot permanently, open 'View Controls', enter a Filename and save it.</p>
-<% } %>
+			<input type="hidden" name="outputDir" id="outputDir" value="${results.outputDirURL}"/>
+			<e:commonMetadataToSave rawData="${timeofflightResults.analysis.parameters['rawData']}"/>
+			<e:creationDateMetadata/>
+			<input type="hidden" name="metadata" value="transformation string I2U2.Cosmic::TimeOfFlight"/>
+			<input type="hidden" name="metadata" value="study string timeofflight"/>
+			<input type="hidden" name="metadata" value="type string plot"/>
+			<input type="hidden" name="metadata" value="detectorcoincidence int ${timeofflightResults.analysis.parameters['detectorCoincidence']}"/>
+			<input type="hidden" name="metadata" value="eventcoincidence int ${timeofflightResults.analysis.parameters['eventCoincidence']}"/>
+			<input type="hidden" name="metadata" value="eventnum int ${timeofflightResults.analysis.parameters['eventNum']}"/>
+			<input type="hidden" name="metadata" value="gate int ${timeofflightResults.analysis.parameters['gate']}"/>
+			<input type="hidden" name="metadata" value="title string ${timeofflightResults.analysis.parameters['plot_title']}"/>
+			<input type="hidden" name="metadata" value="caption string ${timeofflightResults.analysis.parameters['plot_caption']}"/>
+			<!-- EPeronja-03/15/2013: Bug466- Save Event Candidates file with saved plot -->
+			<input type="hidden" name="eventCandidates" value="eventCandidates" />
+			<input type="hidden" name="eventDir" value="${eventDir}" />
+			<input type="hidden" name="eventNum" value="${timeofflightResults.analysis.parameters['eventNum']}" />
+			<input type="hidden" name="id" value="${timeofflightResults.id}"/>
+			<input type="hidden" name="rundirid" value="${results.id}"/>
 
 			</div>
 			<!-- end content -->	
