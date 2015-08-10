@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
@@ -60,7 +61,6 @@
 	
 	Collection rows = ec.getRows();
 	String message = ec.getUserFeedback();
-
 	String mFilter = request.getParameter("mFilter");
 	String restore = request.getParameter("restore");
 	String displayMultiplicity = "none";
@@ -91,12 +91,28 @@
 		}
 	}
 	//added to keep track of the page where the last event is
+	int eventNdx = ec.getEventIndex();
 	int pageLength = 30;
-	int	pageStart = (Integer.parseInt(eventNum) / pageLength) * pageLength;
-	request.setAttribute("pageStart", pageStart);
+	if (mFilter != null && !mFilter.equals("") && !mFilter.equals("0")) {
+		if (eventNdx > rows.size()) {
+	    	Object[] filteredRows = rows.toArray();
+	    	for (int i = 0; i < filteredRows.length; i++) {
+	    		EventCandidates.Row r = (EventCandidates.Row) filteredRows[i];
+	    		if (r.getEventNum() == Integer.parseInt(eventNum)) {
+	    			eventNdx = i;
+	    			break;
+	    		}
+	    	}		
+		}
+	}
+	int	pageStart = (eventNdx / pageLength) * pageLength;
+	int totalPages = rows.size() / 30;
+	request.setAttribute("pageStart", pageStart);	
+	request.setAttribute("totalPages", totalPages);	
 	request.setAttribute("message", message);
 	request.setAttribute("eventDir", ecPath);
 	request.setAttribute("rows", rows);
+	request.setAttribute("pageLength", pageLength);
 	request.setAttribute("eventNum", eventNum);
 	request.setAttribute("crtEventRow", ec.getCurrentRow());		
 	request.setAttribute("multiplicityFilter", ec.getMultiplicityFilter());		
@@ -256,6 +272,9 @@
 						</td>
 					</tr>
 				</c:forEach>
+				<tr>
+					<td colspan="3">Page <fmt:formatNumber pattern="#####0" value="${start / 30 + 1}" />  of <fmt:formatNumber pattern="#####0" value="${totalPages + 1}" /></td>
+				</tr>
 				<tr>
 					<td colspan="3">
 						<e:pagelinks pageSize="30" start="${start}" totalSize="${rows}" name="event" names="events"/>
