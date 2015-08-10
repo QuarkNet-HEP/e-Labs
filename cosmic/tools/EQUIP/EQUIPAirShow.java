@@ -108,7 +108,7 @@ public class EQUIPAirShow extends JPanel {
         text.add(new String());
       }
       void AddFallingEdge(int i,double t) {
-        Color [] channel_colors = { Color.red, Color.blue, Color.green, Color.orange };
+        Color [] channel_colors = { Color.red, Color.green, Color.blue, Color.cyan };
         qx.add(det_x[i]);
         qy.add(det_y[i]);
         qz.add(det_z[i]+t*scale);
@@ -296,7 +296,11 @@ public class EQUIPAirShow extends JPanel {
           false   // url
         );
         XYPlot plot = (XYPlot)chart.getPlot();
-        plot.getRenderer().setSeriesPaint(3,Color.orange);
+        plot.getRenderer().setSeriesPaint(0,new Color(255, 200, 200));
+        plot.getRenderer().setSeriesPaint(1,new Color(200, 255, 200));
+        plot.getRenderer().setSeriesPaint(2,new Color(200, 200, 255));
+        plot.getRenderer().setSeriesPaint(3,new Color(200, 255, 255));
+        //plot.getRenderer().setSeriesPaint(3,Color.orange);
 
         plot.getRangeAxis().setRange(-0.5,7.5);
         plot.setDomainAxis(0,new NumberAxis("Time (ns)"));

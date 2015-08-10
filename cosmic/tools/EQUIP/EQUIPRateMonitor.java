@@ -157,8 +157,10 @@ public class EQUIPRateMonitor extends JPanel {
                 coincidence_rate.add(gps_time,gps_time,gps_time,r,r-er,r+er);
               }
             }
-            if (EQUIP.STChoice.equals("2")) {
-            	prev_count[i] = count;
+            if (EQUIP.STChoice != null) {
+	            if (!EQUIP.STChoice.equals("") && EQUIP.STChoice.equals("2")) {
+	            	prev_count[i] = count;
+	            }
             }
           }
           if ( rate != null ) {

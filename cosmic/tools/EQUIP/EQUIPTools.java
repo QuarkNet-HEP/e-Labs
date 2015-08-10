@@ -16,6 +16,7 @@ import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 import java.util.*;
 
 import javax.swing.GroupLayout;
@@ -31,6 +32,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class EQUIPTools {
+	
 	public static List<String> getAvailableSerialPorts() {
 		List<String> serialPorts = new ArrayList();
 	    Enumeration pList = CommPortIdentifier.getPortIdentifiers();
@@ -48,6 +50,20 @@ public class EQUIPTools {
         return monthNames[month];
     }
     
+    public static class SaveButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent evt) {
+          JButton field = (JButton)evt.getSource();
+          try {
+            EQUIP.kernel.sendCommand(field.getName());
+          }
+          catch ( Exception e ) {
+            JOptionPane.showMessageDialog(EQUIP.frame,
+              "Error writing to serial port.",
+              "Serial port error",JOptionPane.WARNING_MESSAGE);
+          }
+        }
+    }
+
     public static class SimpleButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
           JButton field = (JButton)evt.getSource();
@@ -60,7 +76,8 @@ public class EQUIPTools {
               "Serial port error",JOptionPane.WARNING_MESSAGE);
           }
         }
-      }
+    }
+    
     public static class TmcEnableOutputHandler extends EQUIPOutputHandler {
         JButton button;
         Color oldcolor;
@@ -312,8 +329,8 @@ public class EQUIPTools {
         public GateWidthControl() {
           GroupLayout gate_layout = new GroupLayout(this);
           setLayout(gate_layout);
-          gate_layout.setAutoCreateGaps(true);
-          gate_layout.setAutoCreateContainerGaps(true);
+          //gate_layout.setAutoCreateGaps(true);
+          //gate_layout.setAutoCreateContainerGaps(true);
 
           JLabel gate_label = new JLabel("  Gate width:");
           JTextField gate_text = new JTextField();
@@ -425,8 +442,8 @@ public class EQUIPTools {
         public PipelineDelayControl() {
           GroupLayout pipeline_layout = new GroupLayout(this);
           setLayout(pipeline_layout);
-          pipeline_layout.setAutoCreateGaps(true);
-          pipeline_layout.setAutoCreateContainerGaps(true);
+          //pipeline_layout.setAutoCreateGaps(true);
+          //pipeline_layout.setAutoCreateContainerGaps(true);
 
           JLabel delay_label = new JLabel("  Pipeline delay:");
           JTextField delay_text = new JTextField();

@@ -68,7 +68,6 @@ public class EQUIP extends JPanel {
   EQUIPMuonLifetime lifetime_panel;
   EQUIPRates rates_panel;
   String default_port;
-  
   static PressureFixer pfix;
   static String STChoice;
   static Color[] series_color = {Color.RED, Color.GREEN, Color.BLUE, Color.CYAN};
@@ -430,7 +429,7 @@ public class EQUIP extends JPanel {
       time_interval = new JTextField();
       time_interval.setEditable(true);
       time_interval.setHorizontalAlignment(JTextField.RIGHT);
-      time_interval.setText("1");
+      time_interval.setText("0");
 
       StatusControlListener status_listener = new StatusControlListener();
       time_interval.addActionListener(status_listener);
@@ -629,12 +628,12 @@ public class EQUIP extends JPanel {
 	  OpenPortListener port_listener = new OpenPortListener();
       port_text.addActionListener(port_listener);
       //EP - added SA 1 command
-      JButton save_label = new JButton("Save(SA 1)");
+      JButton save_label = new JButton("Capture Configuration(SA 1)");
       save_label.setName("SA 1");
       save_label.setForeground(Color.RED);
       Font save_font = new Font("Serif", Font.BOLD, 14);
       save_label.setFont(save_font);
-      EQUIPTools.SimpleButtonListener save_listener = new EQUIPTools.SimpleButtonListener();
+      EQUIPTools.SaveButtonListener save_listener = new EQUIPTools.SaveButtonListener();
       save_label.addActionListener(save_listener);      
       
       JLabel log_label = new JLabel("Log file:");
@@ -649,12 +648,6 @@ public class EQUIP extends JPanel {
       log_text = new JTextField(log_file);
       OpenLogListener log_listener = new OpenLogListener();
       log_text.addActionListener(log_listener);
-      //try {
-      //  kernel.OpenLogFile(log_file);
-      //}
-      //catch ( Exception e ) {
-      //  JOptionPane.showMessageDialog(frame,"Error opening output file '"+log_file+"'","Port error",JOptionPane.ERROR_MESSAGE);
-      //}
       JButton save_log_as = new JButton("Choose File");
       SaveLogListener sll_listener = new SaveLogListener();
       save_log_as.addActionListener(sll_listener);
@@ -1300,9 +1293,11 @@ public class EQUIP extends JPanel {
 	            kernel.sendCommand("SN");
 	            kernel.sendCommand("V1");
 	            kernel.sendCommand("V2");
+	            kernel.sendCommand("V3");
 	            kernel.sendCommand("ST 3 5");
 	            kernel.sendCommand("ST");
-	            STChoice = "3";
+	            kernel.sendCommand("CE");
+	            
 	         }
 	         catch ( Exception e1 ) {
 	            JOptionPane.showMessageDialog(frame,
@@ -1416,8 +1411,10 @@ public class EQUIP extends JPanel {
 	            kernel.sendCommand("SN");
 	            kernel.sendCommand("V1");
 	            kernel.sendCommand("V2");
+	            kernel.sendCommand("V3");
 	            kernel.sendCommand("ST 3 5");
-	            kernel.sendCommand("ST");	        	
+	            kernel.sendCommand("ST");
+	            kernel.sendCommand("CE");
 	        }
 	        catch ( Exception e ) {
 	          JOptionPane.showMessageDialog(frame,
@@ -1459,17 +1456,17 @@ public class EQUIP extends JPanel {
     tabbedPane.addTab("Rate Monitor",icon,ratemonitor_panel,"Graphs count rates as functions of time");
     tabbedPane.setMnemonicAt(2,KeyEvent.VK_3);
 
-    lifetime_panel = new EQUIPMuonLifetime();
-//    tabbedPane.addTab("Muon lifetime",icon,lifetime_panel,"Muon lifetime analysis");
-//    tabbedPane.setMnemonicAt(4,KeyEvent.VK_5);
-
     air_shower_panel = new EQUIPAirShow();
-//    tabbedPane.addTab("Air shower",icon,air_shower_panel,"Air shower analysis");
-//    tabbedPane.setMnemonicAt(5,KeyEvent.VK_6);
+    tabbedPane.addTab("Shower Monitor",icon,air_shower_panel,"Air shower analysis");
+    tabbedPane.setMnemonicAt(3,KeyEvent.VK_4);
+
+    //lifetime_panel = new EQUIPMuonLifetime();
+    //tabbedPane.addTab("Muon Lifetime Monitor",icon,lifetime_panel,"Muon lifetime analysis");
+    //tabbedPane.setMnemonicAt(4,KeyEvent.VK_5);
 
     map_panel = new EQUIPGeometry(air_shower_panel);
     tabbedPane.addTab("Geometry",icon,map_panel,"Enter geometry data");
-    tabbedPane.setMnemonicAt(3,KeyEvent.VK_4);
+    tabbedPane.setMnemonicAt(4,KeyEvent.VK_5);
 
     JScrollPane pain_in_the_butt = new JScrollPane(tabbedPane,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 //     pain_in_the_butt.add(tabbedPane);

@@ -7,6 +7,7 @@
 //
 //	  This file contains code for the Geometry tab
 //
+import java.util.*;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -54,11 +55,20 @@ public class EQUIPGeometry extends JPanel {
     JTextField longitude_text;
     JTextField altitude_text;
     JTextField gps_cable_text;
-
+    String[] user_cable_length;
+    String[] user_counter_area;
+    String[] user_east_west;
+    String[] user_north_south;
+    String[] user_up_down;
+    String user_stacked;
+    String user_latitude;
+    String user_longitude;
+    String user_altitude;
+    String user_gps_cable;
     int angle;
     JSlider orientation;
     MapPicture map;
-
+    
     private class ButtonListener implements ActionListener {
       public void actionPerformed(ActionEvent evt) {
         JRadioButton button = (JRadioButton)evt.getSource();
@@ -174,7 +184,31 @@ public class EQUIPGeometry extends JPanel {
         }
       }
     }
+   
+    public ArrayList getRadio(JRadioButton radioButton) {
+    	ArrayList tempList = new ArrayList();
+    	if (radioButton.isSelected()) {
+    		tempList.add("true");
+    	} else {
+    		tempList.add("false");
+    	}
+    	return tempList;
+    }//end of getRadio
+    
+    public ArrayList getValues(JTextField[] textField) {
+    	ArrayList tempList = new ArrayList();
+    	for (int i = 0; i < textField.length; i++) {
+    		tempList.add(textField[i].getText());
+    	}
+    	return tempList;
+    }//end of getValues
 
+    public ArrayList getValue(JTextField textField) {
+    	ArrayList tempList = new ArrayList();
+    	tempList.add(textField.getText());
+    	return tempList;
+    }//end of getValues
+    
     public EQUIPGeometry(EQUIPAirShow a) {
       setPreferredSize(new Dimension(1000,800));
       GroupLayout layout = new GroupLayout(this);
@@ -201,7 +235,7 @@ public class EQUIPGeometry extends JPanel {
 
       MapOutputHandler map_handler = new MapOutputHandler();
       EQUIP.kernel.AddOutputHandler(map_handler);
-
+/*
       GridLayout table_layout = new GridLayout(5,6,10,5);
       JPanel table = new JPanel(table_layout);
 
@@ -218,15 +252,34 @@ public class EQUIPGeometry extends JPanel {
         column_labels[i].setMaximumSize(new Dimension(90,25));
         table.add(column_labels[i]);
       }
+*/
+/*      
       counter_icon = new JLabel [4];
       cable_length = new JTextField [4];
       counter_area = new JTextField [4];
       east_west = new JTextField [4];
       north_south = new JTextField [4];
       up_down = new JTextField [4];
+*/
+/* 
       east_west_value = new double [] { 0.5, -0.5, -0.5, 0.5 };
+      if (user_east_west != null && user_east_west.length == 4) {
+    	for (int x=0; x < 4; x++) {
+    		east_west_value[x] = Double.parseDouble(user_east_west[x]);
+    	}
+      }
       north_south_value = new double [] { 0.5, 0.5, -0.5, -0.5 };
+      if (user_north_south != null && user_north_south.length == 4) {
+    	for (int x=0; x < 4; x++) {
+    		north_south_value[x] = Double.parseDouble(user_north_south[x]);
+    	}
+      }
       up_down_value = new double [] { 0.0, 0.0, 0.0, 0.0 };
+      if (user_up_down != null && user_up_down.length == 4) {
+    	for (int x=0; x < 4; x++) {
+    		up_down_value[x] = Double.parseDouble(user_up_down[x]);
+    	}
+      }
 
       CoordinateListener ewnsud_listener = new CoordinateListener();
       for ( int i=0; i<4; i++ ) {
@@ -241,13 +294,18 @@ public class EQUIPGeometry extends JPanel {
         cable_length[i].setMinimumSize(new Dimension(70,15));
         cable_length[i].setMaximumSize(new Dimension(90,15));
         cable_length[i].setText("15.30");
-
+        if (user_cable_length != null && user_cable_length.length == 4) {
+        	cable_length[i].setText(user_cable_length[i]);
+        }
         counter_area[i] = new JTextField();
         counter_area[i].setEditable(true);
         counter_area[i].setPreferredSize(new Dimension(80,15));
         counter_area[i].setMinimumSize(new Dimension(70,15));
         counter_area[i].setMaximumSize(new Dimension(90,15));
         counter_area[i].setText("744.2");
+        if (user_counter_area != null && user_counter_area.length == 4) {
+        	counter_area[i].setText(user_counter_area[i]);
+        }
 
         east_west[i] = new JTextField();
         east_west[i].setEditable(true);
@@ -305,6 +363,15 @@ public class EQUIPGeometry extends JPanel {
       unstacked_button = new JRadioButton("Unstacked");
       unstacked_button.setSelected(true);
       unstacked_button.addActionListener(button_listener);
+      if (user_stacked != null) {
+          if (user_stacked.equals("true")) {
+        	  stacked_button.setSelected(true);
+        	  unstacked_button.setSelected(false);
+          } else {
+        	  stacked_button.setSelected(false);
+        	  unstacked_button.setSelected(true);        	  
+          }
+      }
 
       ButtonGroup group = new ButtonGroup();
       group.add(stacked_button);
@@ -315,7 +382,7 @@ public class EQUIPGeometry extends JPanel {
       button_panel.add(stacked_button);
       button_panel.add(unstacked_label);
       button_panel.add(unstacked_button);
-
+*/
       JLabel latitude_label = new JLabel("Latitude: ");
       latitude_text = new JTextField();
       latitude_text.setEditable(false);
@@ -323,6 +390,9 @@ public class EQUIPGeometry extends JPanel {
       latitude_text.setMinimumSize(new Dimension(120,20));
       latitude_text.setMaximumSize(new Dimension(120,20));
       latitude_text.setText("0:0.0 N");
+      //if (user_latitude != null) {
+      //    latitude_text.setText(user_latitude);    	  
+      //}
 
       JLabel longitude_label = new JLabel("Longitude: ");
       longitude_text = new JTextField();
@@ -331,6 +401,9 @@ public class EQUIPGeometry extends JPanel {
       longitude_text.setMinimumSize(new Dimension(120,20));
       longitude_text.setMaximumSize(new Dimension(120,20));
       longitude_text.setText("0:0.0 W");
+      //if (user_longitude != null) {
+      //    longitude_text.setText(user_longitude);    	  
+      //}
 
       JLabel altitude_label = new JLabel("Altitude: ");
       altitude_text = new JTextField();
@@ -339,7 +412,11 @@ public class EQUIPGeometry extends JPanel {
       altitude_text.setMinimumSize(new Dimension(80,20));
       altitude_text.setMaximumSize(new Dimension(80,20));
       altitude_text.setText("0");
+      //if (user_altitude != null) {
+      //  altitude_text.setText(user_altitude);    	  
+      //}
 
+/*      
       JLabel gps_cable_label = new JLabel("GPS cable length (m): ");
       gps_cable_text = new JTextField();
       gps_cable_text.setEditable(true);
@@ -347,57 +424,72 @@ public class EQUIPGeometry extends JPanel {
       gps_cable_text.setMinimumSize(new Dimension(50,20));
       gps_cable_text.setMaximumSize(new Dimension(50,20));
       gps_cable_text.setText("0");
-
+      if (user_gps_cable != null) {
+    	  gps_cable_text.setText(user_gps_cable);    	  
+      }
+      
       JButton update_button = new JButton("Update geometry");
       UpdateGeometryListener update_listener = new UpdateGeometryListener();
       update_button.addActionListener(update_listener);
-
+*/
       layout.setHorizontalGroup(
         layout.createSequentialGroup().
           addGroup(layout.createParallelGroup().
             addComponent(map,450,450,450).
             addComponent(zoom_label).
-            addComponent(zoom_slider,200,200,200)).
-          addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER).
-            addComponent(table).
-            addComponent(orientation,300,300,300).
-            addComponent(button_panel,400,400,400).
+            addComponent(zoom_slider,200,200,200).
             addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER).
-              addGroup(layout.createSequentialGroup().
-                addComponent(latitude_label).
-                addComponent(latitude_text).
-                addComponent(longitude_label).
-                addComponent(longitude_text)).
-              addGroup(layout.createSequentialGroup().
-                addComponent(altitude_label).
-                addComponent(altitude_text).
-                addComponent(gps_cable_label).
-                addComponent(gps_cable_text))).
-              addComponent(update_button))
-      );
+               addGroup(layout.createSequentialGroup().
+            	addComponent(latitude_label).
+            	addComponent(latitude_text).
+            	addComponent(longitude_label).
+            	addComponent(longitude_text))))
+         //addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER).
+          //  addComponent(table).
+          //  addComponent(orientation,300,300,300).
+          //  addComponent(button_panel,400,400,400).
+          // addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER).
+          //    addGroup(layout.createSequentialGroup().
+          //     addComponent(latitude_label).
+          //     addComponent(latitude_text).
+          //     addComponent(longitude_label).
+          //     addComponent(longitude_text))//.
+              //addGroup(layout.createSequentialGroup().
+              //  addComponent(altitude_label).
+              //  addComponent(altitude_text).
+              //  addComponent(gps_cable_label).
+              //  addComponent(gps_cable_text))).
+              //addComponent(update_button)
+        );
       layout.setVerticalGroup(
         layout.createParallelGroup().
           addGroup(layout.createSequentialGroup().
             addComponent(map,450,450,450).
             addComponent(zoom_label).
-            addComponent(zoom_slider)).
-          addGroup(layout.createSequentialGroup().
-            addComponent(table).
-            addComponent(orientation).
-            addComponent(button_panel,50,50,50).
+            addComponent(zoom_slider).
             addGroup(layout.createSequentialGroup().
-              addGroup(layout.createParallelGroup().
+               addGroup(layout.createParallelGroup().
                 addComponent(latitude_label).
                 addComponent(latitude_text).
                 addComponent(longitude_label).
-                addComponent(longitude_text)).
-              addGroup(layout.createParallelGroup().
-                addComponent(altitude_label).
-                addComponent(altitude_text).
-                addComponent(gps_cable_label).
-                addComponent(gps_cable_text))).
-              addComponent(update_button))
-      );
+                addComponent(longitude_text))))
+          //addGroup(layout.createSequentialGroup().
+          //  addComponent(table).
+          //  addComponent(orientation).
+          //  addComponent(button_panel,50,50,50).
+          //addGroup(layout.createSequentialGroup().
+          //    addGroup(layout.createParallelGroup().
+          //      addComponent(latitude_label).
+          //      addComponent(latitude_text).
+          //      addComponent(longitude_label).
+          //      addComponent(longitude_text))//.
+              //addGroup(layout.createParallelGroup().
+              //  addComponent(altitude_label).
+              //  addComponent(altitude_text).
+              //  addComponent(gps_cable_label).
+              //  addComponent(gps_cable_text))).
+              //addComponent(update_button)
+       );
     }
 
 

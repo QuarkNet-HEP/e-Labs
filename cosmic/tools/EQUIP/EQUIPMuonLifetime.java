@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintStream;
+import java.util.Calendar;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -37,6 +38,7 @@ import org.jfree.chart.plot.DatasetRenderingOrder;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.general.Dataset;
 import org.jfree.data.general.DatasetChangeEvent;
 import org.jfree.data.general.DatasetChangeListener;
@@ -116,8 +118,8 @@ import org.jfree.data.xy.XYSeriesCollection;
       setPreferredSize(new Dimension(1000,800));
       GroupLayout layout = new GroupLayout(this);
       setLayout(layout);
-      layout.setAutoCreateGaps(true);
-      layout.setAutoCreateContainerGaps(true);
+      //layout.setAutoCreateGaps(true);
+      //layout.setAutoCreateContainerGaps(true);
       channel = 2;
       veto = 0;
       window = 100.0;
@@ -163,7 +165,12 @@ import org.jfree.data.xy.XYSeriesCollection;
         deltat_panel[i] = new ChartPanel(deltat_chart[i]);
         deltat_panel[i].setMouseZoomable(false);
         XYPlot deltat_plot = (XYPlot)deltat_chart[i].getPlot();
-        NumberAxis deltat_numberaxis = (NumberAxis)deltat_plot.getRangeAxis();
+
+        XYItemRenderer renderer = deltat_plot.getRenderer();
+  	    renderer.setSeriesPaint(0, EQUIP.series_color[i]);  
+  	    deltat_plot.setRenderer(renderer);
+
+  	    NumberAxis deltat_numberaxis = (NumberAxis)deltat_plot.getRangeAxis();
         deltat_numberaxis.setAutoRangeMinimumSize(2,true);
       }
 
@@ -202,51 +209,51 @@ import org.jfree.data.xy.XYSeriesCollection;
         layout.createParallelGroup().
           addGroup(layout.createSequentialGroup().
             addGroup(layout.createParallelGroup().
-              addComponent(deltat_panel[0]).
-              addComponent(deltat_panel[1]).
-              addComponent(deltat_panel[2]).
-              addComponent(deltat_panel[3])).
-            addComponent(lifetime_panel)).
+              addComponent(deltat_panel[0],400,500,600).
+              addComponent(deltat_panel[1],400,500,600).
+              addComponent(deltat_panel[2],400,500,600).
+              addComponent(deltat_panel[3],400,500,600)).
+            addComponent(lifetime_panel,400,500,600)).
           addGroup(layout.createSequentialGroup().
             addGroup(layout.createParallelGroup().
               addGroup(layout.createSequentialGroup().
-                addComponent(channel_label).
+                addComponent(channel_label,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).
                 addComponent(channel_spinner,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).
-                addComponent(veto_label).
+                addComponent(veto_label,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).
                 addComponent(veto_spinner,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)).
               addGroup(layout.createSequentialGroup().
-                addComponent(gate_control).
-                addComponent(pipeline_control))).
+                addComponent(gate_control,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).
+                addComponent(pipeline_control,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE))).
             addGroup(layout.createSequentialGroup().
-                addComponent(clear_button).
-                addComponent(fit_button).
-                addComponent(load_button).
-                addComponent(save_button))));
+                addComponent(clear_button,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).
+                addComponent(fit_button,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).
+                addComponent(load_button,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).
+                addComponent(save_button,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE))));
 
       layout.setVerticalGroup(
         layout.createSequentialGroup().
           addGroup(layout.createParallelGroup().
             addGroup(layout.createSequentialGroup().
-              addComponent(deltat_panel[0]).
-              addComponent(deltat_panel[1]).
-              addComponent(deltat_panel[2]).
-              addComponent(deltat_panel[3])).
-            addComponent(lifetime_panel)).
+              addComponent(deltat_panel[0],150,150,150).
+              addComponent(deltat_panel[1],150,150,150).
+              addComponent(deltat_panel[2],150,150,150).
+              addComponent(deltat_panel[3],150,150,150)).
+            addComponent(lifetime_panel,600,600,600)).
           addGroup(layout.createParallelGroup().
             addGroup(layout.createSequentialGroup().
               addGroup(layout.createParallelGroup().
-                addComponent(channel_label).
+                addComponent(channel_label,30,30,30).
                 addComponent(channel_spinner,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).
-                addComponent(veto_label).
+                addComponent(veto_label,30,30,30).
                 addComponent(veto_spinner,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)).
               addGroup(layout.createParallelGroup().
-                addComponent(gate_control).
-                addComponent(pipeline_control))).
+                addComponent(gate_control,30,30,30).
+                addComponent(pipeline_control,30,30,30))).
             addGroup(layout.createParallelGroup().
-                addComponent(clear_button).
-                addComponent(fit_button).
-                addComponent(load_button).
-                addComponent(save_button))));
+                addComponent(clear_button,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).
+                addComponent(fit_button,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).
+                addComponent(load_button,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).
+                addComponent(save_button,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE))));
 
     }
     public void AnalyzeEvent(java.util.Vector<EQUIPPulse> pulses) {
@@ -254,7 +261,8 @@ import org.jfree.data.xy.XYSeriesCollection;
       EQUIPPulse pmin = null;
       for ( int i=0; i<pulses.size(); i++ ) {
     	EQUIPPulse p = (EQUIPPulse)pulses.get(i);
-        if ( p.Channel() == channel ) {
+    	System.out.println("Pulse: "+p.DumpThresholdValues());
+    	if ( p.Channel() == channel ) {
           if ( pmin == null ) {
             pmin = p;
           }
@@ -270,6 +278,11 @@ import org.jfree.data.xy.XYSeriesCollection;
           found[p.Channel()] = true;
           if ( ! p.equals(pmin) ) {
             try {
+              System.out.println("Pmin channel: "+ pmin.Channel());
+              System.out.println("Pmin: "+pmin.DumpThresholdValues());
+              System.out.println("p: "+p.DumpThresholdValues());
+              System.out.println("Channel: " + String.valueOf(p.Channel()));
+              System.out.println("Time Until: " + String.valueOf(pmin.TimeUntil(p)));
               deltat_dataset[p.Channel()].addObservation(pmin.TimeUntil(p));
             }
             catch ( Exception e ) {
@@ -322,6 +335,7 @@ import org.jfree.data.xy.XYSeriesCollection;
             int [] re = new int [4];
             int [] fe = new int [4];
             for ( int j=0; j<4; j++ ) {
+              System.out.println(s);
               re[j] = Integer.parseInt(tokens[i++],16);
               fe[j] = Integer.parseInt(tokens[i++],16);
               if ( (re[0]&0x80) != 0 ) {
