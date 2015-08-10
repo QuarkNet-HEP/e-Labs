@@ -11,8 +11,10 @@ import gov.fnal.elab.util.ElabMemory;
 import org.apache.commons.lang.time.DateFormatUtils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -20,39 +22,64 @@ import java.util.*;
 
 public class EventCandidates {
     public static final String[] colNames = new String[] { "date",
-            "eventCoincidence", "numDetectors" };
+            "eventCoincidence", "numDetectors", "multiplicityCount" };
     public static final int[] defDir = new int[] { 1, -1, -1 };
 
     private Collection rows;
+    private Collection filteredRows;
     private Row crt;
     private Set allIds;
     private String eventNum;
     private String userFeedback;
+    private ArrayList<Integer> multiplicityFilter = new ArrayList<Integer>(); 
     
     public static final String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
     public static final TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
-
+    public int eventThreshold = 400000;
+    public int eventNdx = 0;
+    
     public EventCandidates(Comparator c) {
         rows = new TreeSet(c);
+        filteredRows = new TreeSet(c);
         allIds = new HashSet();
     }
 
     private static final String[] STRING_ARRAY = new String[0];
 
-    public void read(File in, int eventStart, String en)
+    public void read(File in, File out, int eventStart, String en)
             throws Exception {
+    	Elab elab = Elab.getElab(null, "cosmic");
+    	String et = elab.getProperty("event.threshold");
+    	if (et != null && !et.equals("")) {
+    		eventThreshold = Integer.parseInt(et);
+    	}
         this.eventNum = en;
         int lineNo = 1;
         BufferedReader br = new BufferedReader(new FileReader(in));
+        BufferedWriter bw = new BufferedWriter(new FileWriter(out));
         String line = br.readLine();
         Set ids = new HashSet();
-        Set multiciplicities = new HashSet();
+        Set multiplicities = new HashSet();
         ElabMemory em = new ElabMemory();
         userFeedback = "";
         while (line != null) {
             // ignore comments in the file
             if (!line.matches("^.*#.*")) {
                 lineNo++;
+                if (lineNo > eventThreshold) {
+                    em.refresh();
+                    if (em.isCritical()) {
+                    	Exception e = new Exception("Heap memory left: "+String.valueOf(em.getFreeMemory())+"MB");
+                    	String emailMessage = 	"The code stopped processing the eventCandidates file: "+in.getAbsolutePath()+"\n"+
+                    							"at line: "+line+"\n"+
+                    							em.getMemoryDetails();
+                    	em.notifyAdmin(elab, emailMessage);
+                    	userFeedback = "We stopped processing the eventCandidates file at line: <br />"+line+".<br/>" +
+                    				   "Please select fewer files or files with fewer events.";
+                    	throw e;
+                    }
+                }
+
                 if (lineNo >= eventStart) {
                     Row row = new Row();
                     String[] arr = line.split("\\s");
@@ -64,23 +91,27 @@ public class EventCandidates {
                         this.eventNum = arr[0];
                     }
                     ids.clear();
-                    multiciplicities.clear();
+                    multiplicities.clear();
                     for (int i = 3; i < arr.length; i += 3) {
                         String[] idchan = arr[i].split("\\.");
-                        //idchan[0] = idchan[0].intern();
-                        if (!ids.contains(idchan[0])) {
-                        	ids.add(idchan[0]);
-                        }
-                        //String mult = arr[i].intern();
-                        if (!multiciplicities.contains(arr[i])) {
-                        	multiciplicities.add(arr[i]);
-                        }
+                        idchan[0] = idchan[0].intern();
+                        ids.add(idchan[0]);
+                        //if (!ids.contains(idchan[0])) {
+                        //	ids.add(idchan[0]);
+                        //}
+                        String mult = arr[i].intern();
+                        multiplicities.add(mult);
+                        //if (!multiplicities.contains(arr[i])) {
+                        //	multiplicities.add(arr[i]);
+                        //}
                         allIds.add(idchan[0]);
                     }
                     
                     row.setIds((String[]) ids.toArray(STRING_ARRAY));
-                    row.setMultiplicity((String[]) multiciplicities.toArray(STRING_ARRAY));
-
+                    row.setMultiplicity((String[]) multiplicities.toArray(STRING_ARRAY));
+                    row.setMultiplicityCount();
+                    setMultiplicityFilter(multiplicities.size());
+                    
                     String jd = arr[4];
                     String partial = arr[5];
 
@@ -92,27 +123,26 @@ public class EventCandidates {
                     if (this.eventNum.equals(arr[0])) {
                         crt = row;
                     }     
-                    em.refresh();
-                    if (em.isCritical()) {
-                    	Exception e = new Exception("Heap memory left: "+String.valueOf(em.getFreeMemory())+"MB");
-                    	Elab elab = Elab.getElab(null, "cosmic");
-                    	String emailMessage = 	"The code stopped processing the eventCandidates file: "+in.getAbsolutePath()+"\n"+
-                    							"at line: "+line+"\n"+
-                    							"Total heap memory: "+ String.valueOf(em.getTotalMemory())+"MB\n"+
-                    							"Max heap memory: "+ String.valueOf(em.getMaxMemory())+"MB\n"+
-                    							"Used heap memory: "+ String.valueOf(em.getUsedMemory())+"MB\n"+
-                    							"Free heap memory: "+ String.valueOf(em.getFreeMemory())+"MB\n"+
-                    							"Had we continued processing the server would have died with an OutOfMemoryError.";
-                    							
-                    	em.notifyAdmin(elab, emailMessage);
-                    	userFeedback = "We stopped processing the eventCandidates file at line: <br />"+line+".<br/>" +
-                    				   "Please select fewer files or files with fewer events.";
-                    	throw e;
-                    }
                 }
-            }
+             }
             line = br.readLine();
         }
+        //set the event position
+    	Object[] allR = rows.toArray();
+    	for (int i = 0; i < allR.length; i++) {
+    		Row r = (Row) allR[i];
+    		if (r.getEventNum() == Integer.parseInt(eventNum)) {
+    			eventNdx = i;
+    			break;
+    		}
+    	}
+        //write multiplicity summary
+        try {
+        	saveMultiplicitySummary(bw);
+        } catch (Exception e) {
+        	throw new Exception(e.getMessage());
+        }
+        bw.close();
         br.close();
     }
     
@@ -132,16 +162,57 @@ public class EventCandidates {
         return this.eventNum;
     }
     
+    public int getEventIndex() {
+        return this.eventNdx;
+    }
+
     public String getUserFeedback() {
     	return this.userFeedback;
     }
 
-    public static EventCandidates read(File in, int csc, int dir,
+    public ArrayList<Integer> getMultiplicityFilter() {
+    	Collections.sort(multiplicityFilter);
+    	return this.multiplicityFilter;
+    }
+    
+    public void setMultiplicityFilter(int length) {
+    	if (!this.multiplicityFilter.contains(length)) {
+    		this.multiplicityFilter.add(length);
+    	}
+    }
+
+    public Collection filterByMuliplicity(int filter) {    	
+    	filteredRows.clear();
+    	for (Iterator it = rows.iterator(); it.hasNext();) {
+    		Row r = (Row) it.next();
+    		if (r.getMultiplicityCount() == filter) {
+    			filteredRows.add(r);
+    		}
+    	}
+    	return filteredRows;
+    }
+    
+    public void saveMultiplicitySummary(BufferedWriter bw) throws Exception {
+        bw.write("Hit Counters, Count\n");
+    	Collections.sort(multiplicityFilter);
+        for (int x = 0; x < multiplicityFilter.size(); x++) {
+        	int count = 0;
+        	for (Iterator it = rows.iterator(); it.hasNext();) {
+        		Row r = (Row) it.next();
+        		if (r.getMultiplicityCount() == multiplicityFilter.get(x)) {
+        				count += 1;
+        		}
+        	}
+        	bw.write(String.valueOf(multiplicityFilter.get(x))+","+String.valueOf(count)+"\n");
+        }
+    }//end of saveMultiplicitySummary
+    
+    public static EventCandidates read(File in, File out, int csc, int dir,
             int eventStart, String eventNum) throws Exception {
     	EventCandidates ec = null;
     	try {
 	        ec = new EventCandidates(new EventsComparator(csc, dir));
-	        ec.read(in, eventStart, eventNum);
+	        ec.read(in, out, eventStart, eventNum);
     	} catch (Exception e) {
     		System.out.println("Error in EventCandidates: "+e.getMessage());
     	}
@@ -156,6 +227,7 @@ public class EventCandidates {
         private Date date;
         private String[] ids;
         private String[] multiplicity;
+        private int multiplicityCount;
 
         public int getEventCoincidence() {
             return eventCoincidence;
@@ -217,6 +289,14 @@ public class EventCandidates {
             this.multiplicity = multiplicity;
         }
         
+        public int getMultiplicityCount() {
+        	return multiplicityCount;
+        }
+        
+        public void setMultiplicityCount() {
+        	this.multiplicityCount = multiplicity.length;
+        }
+                
         public TreeMap<String,String> getIdsMult() {
         	TreeMap<String,String> idsMult = new TreeMap<String, String>();
         	for (int i=0; i < ids.length; i++) {
@@ -230,7 +310,6 @@ public class EventCandidates {
         	}
         	return idsMult;
         }
-
     }
 
     public static class EventsComparator implements Comparator {
@@ -254,6 +333,9 @@ public class EventCandidates {
             }
             else if (csc == 2) {
                 c = m1.getNumDetectors() - m2.getNumDetectors();
+            }
+            else if (csc == 3) {
+                c = m1.getMultiplicityCount() - m2.getMultiplicityCount();
             }
             if (c == 0) {
                 if (csc == 0) {
