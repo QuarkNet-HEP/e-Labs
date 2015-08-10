@@ -118,7 +118,7 @@ public class ThresholdTimes {
 		        		cpldFrequency = 25000000;
 		        	}
 		        }
-		        System.out.println(String.valueOf(cpldFrequency));
+		        //System.out.println(String.valueOf(cpldFrequency));
 		        
 		        String line = br.readLine();
 		        while (line != null) {
