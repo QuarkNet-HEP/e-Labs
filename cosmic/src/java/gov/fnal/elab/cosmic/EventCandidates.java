@@ -36,6 +36,7 @@ public class EventCandidates {
     public static final String DATEFORMAT = "MMM d, yyyy HH:mm:ss z";
     public static final TimeZone TIMEZONE  = TimeZone.getTimeZone("UTC");
     public int eventThreshold = 400000;
+    public int eventNdx = 0;
     
     public EventCandidates(Comparator c) {
         rows = new TreeSet(c);
@@ -122,6 +123,15 @@ public class EventCandidates {
              }
             line = br.readLine();
         }
+        //set the event position
+    	Object[] allR = rows.toArray();
+    	for (int i = 0; i < allR.length; i++) {
+    		Row r = (Row) allR[i];
+    		if (r.getEventNum() == Integer.parseInt(eventNum)) {
+    			eventNdx = i;
+    			break;
+    		}
+    	}
         //write multiplicity summary
         try {
         	saveMultiplicitySummary(bw);
@@ -148,6 +158,10 @@ public class EventCandidates {
         return this.eventNum;
     }
     
+    public int getEventIndex() {
+        return this.eventNdx;
+    }
+
     public String getUserFeedback() {
     	return this.userFeedback;
     }

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page errorPage="../include/errorpage.jsp" buffer="none" %>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
@@ -60,7 +61,6 @@
 	
 	Collection rows = ec.getRows();
 	String message = ec.getUserFeedback();
-
 	String mFilter = request.getParameter("mFilter");
 	String restore = request.getParameter("restore");
 	String displayMultiplicity = "none";
@@ -91,12 +91,20 @@
 		}
 	}
 	//added to keep track of the page where the last event is
+	//first find the position of the event in the resulting list
+
+	int eventNdx = ec.getEventIndex();
 	int pageLength = 30;
-	int	pageStart = (Integer.parseInt(eventNum) / pageLength) * pageLength;
-	request.setAttribute("pageStart", pageStart);
+	int	eventPage = (eventNdx / pageLength) * pageLength;
+	if (mFilter != null && !mFilter.equals("") && !mFilter.equals("0")) {
+		eventPage = 0;
+	}
+	int	pageStart = (eventNdx / pageLength) * pageLength;
+	request.setAttribute("pageStart", pageStart);	
 	request.setAttribute("message", message);
 	request.setAttribute("eventDir", ecPath);
 	request.setAttribute("rows", rows);
+	request.setAttribute("pageLength", pageLength);
 	request.setAttribute("eventNum", eventNum);
 	request.setAttribute("crtEventRow", ec.getCurrentRow());		
 	request.setAttribute("multiplicityFilter", ec.getMultiplicityFilter());		
@@ -256,6 +264,10 @@
 						</td>
 					</tr>
 				</c:forEach>
+				<tr>
+					<td colspan="3">Page #: <fmt:formatNumber pattern="#####0" value="${start / 30 + 1}" />
+					</td>
+				</tr>
 				<tr>
 					<td colspan="3">
 						<e:pagelinks pageSize="30" start="${start}" totalSize="${rows}" name="event" names="events"/>
