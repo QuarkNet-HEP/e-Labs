@@ -13,6 +13,14 @@
 	String guestlogin = elab.getGuestLoginLink(request);
 	request.setAttribute("username", username);
 	request.setAttribute("guestlogin", guestlogin);
+	String userMaxLogins = elab.getProperty("username_maxlogins");
+	if (userMaxLogins == null || userMaxLogins.equals("")) {
+		userMaxLogins = "5";
+	}
+	String guessMaxLogins = elab.getProperty("guest_maxlogins");
+	if (guessMaxLogins == null || guessMaxLogins.equals("")) {
+		guessMaxLogins = "10";
+	}
 
 	if (message == null) {
 		message = "Please log in to proceed";
@@ -25,12 +33,12 @@
 	request.setAttribute("loginCountPerUser", loginCountPerUser);
 	boolean maxLoginsReached = false;
 	
-	if (loginCountPerUser > 5 && !username.equals("guest")) {
-		message = "Username "+username+" is logged for a maximum of five times.";
+	if (loginCountPerUser > Integer.parseInt(userMaxLogins) && !username.equals("guest")) {
+		message = "Username "+username+" is logged for a maximum of "+userMaxLogins+" times.";
 		maxLoginsReached = true;
 	}
-	if (loginCountPerUser > 0 && username.equals("guest")) {
-		message = "Username "+username+" is logged in ten times.<br />" +
+	if (loginCountPerUser > Integer.parseInt(guessMaxLogins) && username.equals("guest")) {
+		message = "Username "+username+" is logged in "+guessMaxLogins+" times.<br />" +
 				  "If you have an e-Lab account please use it. If you do not, please request one.";
 		maxLoginsReached = true;
 	}
