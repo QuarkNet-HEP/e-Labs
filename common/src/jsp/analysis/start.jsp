@@ -11,6 +11,7 @@
 <%@ page import="gov.fnal.elab.analysis.impl.vds.*" %>
 <%@ page import="gov.fnal.elab.analysis.impl.swift.*" %>
 <%@ page import="gov.fnal.elab.analysis.impl.shell.*" %>
+<%@ page import="gov.fnal.elab.analysis.pqueue.*" %>
 <%@ page import="gov.fnal.elab.cosmic.*" %>
 <%
 	ElabAnalysis analysis = (ElabAnalysis) request.getAttribute("elab:analysis");
@@ -60,11 +61,16 @@
 	    if (err == null) {
 	        err = cont;
 	    }
-	    run.setAttribute("continuation", cont);
+	    String mFilter = request.getParameter("mFilter");
+	    if (mFilter == null) {
+	    	mFilter = "0";
+	    }
+ 	    run.setAttribute("continuation", cont);
 	    run.setAttribute("onError", err);
 	    run.setAttribute("type", analysis.getName());
 	    run.setAttribute("owner", user.getName());
 	    run.setAttribute("queuedAt", df.format(new Date()));
+	    
 	    boolean skip = false;
 	    if (run.getAttribute("type").equals("ProcessUpload") ||	run.getAttribute("type").equals("EventPlot") || run.getAttribute("type").equals("RawAnalyzeStudy")) {
 	    	skip = true;
@@ -79,7 +85,9 @@
     	run.setAttribute("detectorid", detectorid);
     	analysis.setAttribute("detectorid", detectorid);
     	analysis.setAttribute("id", run.getId());
-	    String workflowRunMode = request.getParameter("runMode");
+    	analysis.setAttribute("mFilter", mFilter);
+
+    	String workflowRunMode = request.getParameter("runMode");
 		if (workflowRunMode != null) {
 			run.setAttribute("runMode", workflowRunMode);
 			analysis.setAttribute("runMode", workflowRunMode);
@@ -114,10 +122,23 @@
 			});
 	    }
 	    //remember to set this up in elab.properties as cosmic.analysis = queue
-    	run.start();
+	    String runType = elab.getProperty(elab.getName() + ".analysis");
+	    if (runType != null && runType.equals("queue")) {
+		    if (run.getAttribute("type").equals("ProcessUpload") ||
+		    	run.getAttribute("type").equals("EventPlot") ||
+		    	run.getAttribute("type").equals("RawAnalyzeStudy") ||
+		    	run.getAttribute("type").equals("PerformanceStudy")) {
+		    	run.start();
+		    } else {
+		    	AnalysisQueues.getQueue((String) run.getAttribute("runMode")).add(run);
+		    }
+	    } else {
+	    	run.start();
+	    }
 %>
 	    	<jsp:include page="status.jsp">
 	    		<jsp:param name="id" value="<%= run.getId() %>"/>
+	    		<jsp:param name="mFilter" value="<%= mFilter %>"/>
 	    	</jsp:include>
 	    <%
 	}
