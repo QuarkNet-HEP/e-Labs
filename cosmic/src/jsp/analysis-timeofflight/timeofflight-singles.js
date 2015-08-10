@@ -2,6 +2,8 @@ var tofCollection = [];
 var options = "";
 var mean, deviation, numberOfEntries;
 var yAxisLabel = "number of entries/time bin";
+var xAxisLabel = "relative time between channels (ns)";
+var currentBinValue = 1.25;
 
 function onDataLoad1() {
 	loadJSON(function(response) {
@@ -38,9 +40,10 @@ function buildIndividualDataSets(timediff, ndx, div) {
 	if (timediff != null) {
 		tofCollection.push({onOffPlot: "", timeDiff: timediff, data: "", originalMinX: timediff.minX, originalMaxX: 0,
 				originalMinY: timediff.maxX, originalMaxY: 0, numberOfEntries: 0, mean: 0, stddev: 0, label: timediff.label, 
-				maxBins: timediff.maxBins, binValue: timediff.binValue, ndx: ndx, chart: div});
+				maxBins: timediff.maxBins, binValue: timediff.binValue, ndx: ndx, chart: div, currentBinValue: timediff.binValue});
 		buildTimeDiff(timediff, ndx);
 	} else {
+		tofCollection.push("");
 		div.style.display="none";
 	}
 }//end of buildIndividualDataSets
@@ -56,19 +59,21 @@ function buildTimeDiff(timediff, diffNum) {
 	tofCollection[diffNum-1].onOffPlot = onOffPlot;
 	setDataStats(diffNum);
 	setStatsLegend(diffNum);
-	
+
 	$("#range"+diffNum).attr({"min":timediff.binValue, "max":Math.floor(timediff.maxBins), "value": timediff.binValue, "step": timediff.binValue});
 	$("#binWidth"+diffNum).attr({"min":timediff.binValue, "max":Math.floor(timediff.maxBins), "value": timediff.binValue, "step": timediff.binValue});
     $('#range'+diffNum).on('input', function(){
         $('#binWidth'+diffNum).val($('#range'+diffNum).val());
         if ($('#range'+diffNum).val() > 0) {
-            reBinData($('#range'+diffNum).val(),diffNum,timediff, data, onOffPlot);       
+        	tofCollection[diffNum-1].currentBinValue = $('#range'+diffNum).val();
+        	reBinData($('#range'+diffNum).val(),diffNum,timediff, data, onOffPlot);       
     		writeLegend(diffNum);
         }
     });
     $('#binWidth'+diffNum).on('change', function(){
         $('#range'+diffNum).val($('#binWidth'+diffNum).val());
         if ($('#binWidth'+diffNum).val() > 0) {
+        	tofCollection[diffNum-1].currentBinValue = $('#binWidth'+diffNum).val();
         	reBinData($('#binWidth'+diffNum).val(),diffNum,timediff, data, onOffPlot);
     		writeLegend(diffNum);
         }
@@ -132,6 +137,8 @@ function reBinData(binValue, diffNum, timediff, data, onOffPlot) {
 }//end of reBinData
 
 function writeLegend(diffNum) {
+	var title = document.getElementById("chartTitle"+diffNum);
+	title.innerHTML = "<strong>"+tofCollection[diffNum-1].label+"</strong>";
 	var context = tofCollection[diffNum-1].onOffPlot.getCanvas().getContext('2d');
 	context.lineWidth=3;
 	context.fillStyle="#000000";
@@ -168,31 +175,14 @@ function writeLegend(diffNum) {
 		}
 	   });	 
 	context.font="8px sans-serif";
+	context.textAlign = xAxisLabel;
+	context.fillText(xAxisLabel, 60, 220);	
 	context.translate(0, 150);
 	context.rotate(-Math.PI / 2);
 	context.textAlign = yAxisLabel;
-	context.fillText(yAxisLabel, 0, 40);
+	context.fillText(yAxisLabel, 0, 40);	
 	context.restore();		
 }//end of writeLegend
-
-resetPlotX = function(ndx) {
-	var plot, originalminx, originalmaxx, label, entries;
-	var inputObjectMin = document.getElementById("minX"+ndx);
-	inputObjectMin.value = "";
-	var inputObjectMax = document.getElementById("maxX"+ndx);
-	inputObjectMax.value = "";
-	plot = tofCollection[ndx-1].onOffPlot;
-	originalminx = tofCollection[ndx-1].originalMinX;
-	originalmaxx = tofCollection[ndx-1].originalMaxX;
-	entries = tofCollection[ndx-1].numberOfEntries;
-	label = tofCollection[ndx-1].label;
-	var axes = plot.getAxes();	
-	axes.xaxis.options.min = originalminx;
-	axes.xaxis.options.max = originalmaxx;
-	plot.setupGrid();
-	plot.draw();
-	writeLegend(ndx);	
-}//end of resetPlotX
 
 redrawPlotX = function(ndx, newX, type) {
 	var plot, label, entries;
@@ -211,25 +201,6 @@ redrawPlotX = function(ndx, newX, type) {
 	plot.draw();
 	writeLegend(ndx);	
 }//end of redrawPlotX
-
-resetPlotY = function(ndx) {
-	var plot, originalminy, originalmaxy, label, entries;
-	var inputObjectMin = document.getElementById("minY"+ndx);
-	inputObjectMin.value = "";
-	var inputObjectMax = document.getElementById("maxY"+ndx);
-	inputObjectMax.value = "";
-	plot = tofCollection[ndx-1].onOffPlot;
-	originalminy = tofCollection[ndx-1].originalMinY;
-	originalmaxy = tofCollection[ndx-1].originalMaxY;
-	entries = tofCollection[ndx-1].numberOfEntries;
-	label = tofCollection[ndx-1].label;
-	var axes = plot.getAxes();	
-	axes.yaxis.options.min = originalminy;
-	axes.yaxis.options.max = originalmaxy;
-	plot.setupGrid();
-	plot.draw();
-	writeLegend(ndx);		
-}//end of resetPlotY
 
 redrawPlotY = function(ndx, newY, type) {
 	var plot, label, entries;
@@ -264,7 +235,8 @@ redrawPlotFitX = function(ndx, newMinX, newMaxX) {
 	localdata = [];
 	if (original != null) {
 		var fittedData = fitData(original.data_original, newMinX, newMaxX);
-		original.data = getDataWithBins(fittedData, original.binValue, original.minX, original.maxX, original.nBins, original.nBins);
+		nBins = Math.ceil((newMaxX - newMinX) / tofCollection[ndx-1].currentBinValue);
+		original.data = getDataWithBins(fittedData, tofCollection[ndx-1].currentBinValue, newMinX, newMaxX, nBins, nBins);
    		setDataStats(ndx);
    		setStatsLegend(ndx);	      		
    		localdata.push(original);
@@ -283,12 +255,24 @@ function fitData(data_original, newMinX, newMaxX) {
 	return fittedData;
 }//end of fitData
 
-resetPlotFitX = function(ndx) {
-	var plot, originalminx, originalmaxx, label, entries;
-	var inputObjectMin = document.getElementById("minFitX"+ndx);
-	inputObjectMin.value = "";
-	var inputObjectMax = document.getElementById("maxFitX"+ndx);
-	inputObjectMax.value = "";
+resetAll = function(ndx) {
+	var plot, originalminx, originalmaxx, label, entries, original;
+	document.getElementById("minFitX"+ndx).value = "";
+	document.getElementById("maxFitX"+ndx).value = "";;
+	document.getElementById("minX"+ndx).value = "";;
+	document.getElementById("maxX"+ndx).value = "";;
+	document.getElementById("minY"+ndx).value = "";;
+	document.getElementById("maxY"+ndx).value = "";;
+	$("#range"+ndx).attr({"min":tofCollection[ndx-1].timeDiff.binValue, "max":Math.floor(tofCollection[ndx-1].timeDiff.maxBins), "value": tofCollection[ndx-1].timeDiff.binValue, "step": tofCollection[ndx-1].timeDiff.binValue});
+	$("#binWidth"+ndx).attr({"min":tofCollection[ndx-1].timeDiff.binValue, "max":Math.floor(tofCollection[ndx-1].timeDiff.maxBins), "value": tofCollection[ndx-1].timeDiff.binValue, "step": tofCollection[ndx-1].timeDiff.binValue});
+	original = tofCollection[ndx-1].timeDiff;
+	localdata = [];
+	if (original != null) {
+		original.data = getDataWithBins(original.data_original, original.binValue, original.minX, original.maxX, original.nBins, original.nBins);
+   		setDataStats(ndx);
+   		setStatsLegend(ndx);	      		
+   		localdata.push(original);
+	}
 	plot = tofCollection[ndx-1].onOffPlot;
 	originalminx = tofCollection[ndx-1].originalMinX;
 	originalmaxx = tofCollection[ndx-1].originalMaxX;
@@ -297,10 +281,53 @@ resetPlotFitX = function(ndx) {
 	var axes = plot.getAxes();	
 	axes.xaxis.options.min = originalminx;
 	axes.xaxis.options.max = originalmaxx;
+	plot = $.plot("#placeholder"+ndx, localdata, options);
 	plot.setupGrid();
 	plot.draw();
 	writeLegend(ndx);	
-}//end of resetPlotFitX
+}//end of resetAll
+
+function saveToFChart(ndx, name_id, div_id, run_id) {
+	var filename = document.getElementById(name_id);
+	var meta = document.getElementsByName("metadata");
+	var serialized = $(meta).serializeArray();
+	var values = new Array();
+	$.each(serialized, function(index,element){
+	     values.push(element.value);
+	   });	 
+	var rc = true;
+	if (filename != null) {
+		if (filename.value != "") {
+			var canvas = tofCollection[ndx-1].onOffPlot.getCanvas();			
+			var image = canvas.toDataURL("image/png");
+			image = image.replace('data:image/png;base64,', '');
+			$.ajax({
+				url: "../analysis/save-plot.jsp",
+				type: 'POST',
+				data: { imagedata: image, filename: filename.value, id: run_id, metadata: values},
+				success: function (response) {
+					var msgDiv = document.getElementById(div_id);
+					if (msgDiv != null) {
+						msgDiv.innerHTML = '<a href="'+response+'">' +filename.value +'</a> file created successfully.';
+					}
+				}
+			});	
+		
+		} else {
+			rc = false;
+		}
+
+	} else {
+		rc = false;
+	}
+    if (rc == false) {
+		var msgDiv = document.getElementById(div_id);
+		if (msgDiv != null) {
+			msgDiv.innerHTML = "<i>* Please enter a file name</i>";
+		}
+    }
+    return rc;
+}//end of saveChart
 
 options = {
         axisLabels: {
