@@ -11,6 +11,7 @@
 <%@ page import="gov.fnal.elab.cosmic.bless.*" %>
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.text.*" %>
+<%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.util.Map.Entry" %>
 <%@ page import="gov.fnal.elab.analysis.*" %>
@@ -19,7 +20,6 @@
 
 <%
 	String id = request.getParameter("id");
-
 	//this code is for admin to be able to see the graph
 	String userParam = (String) request.getParameter("user");
 	if (userParam == null) {
@@ -37,11 +37,48 @@
 	    }
 	}
 	AnalysisRun results = AnalysisManager.getAnalysisRun(elab, auser, id);
+
+	//create the file for the bless range chart
+	String message = "";
+	String fluxJsonFile = results.getOutputDir() + "/FluxBlessRange";
+	File[] pfns = null;
+	String[] filenames = null;
+	try {
+		//this code is for admin to be able to see the graph
+		File f = new File(fluxJsonFile);
+		if (!f.exists()) {
+			ArrayList fileArray = (ArrayList) results.getAttribute("inputfiles");
+			Collections.sort(fileArray);
+		
+			if (fileArray != null) {
+				pfns = new File[fileArray.size()];
+				filenames = new String[fileArray.size()];
+				for (int i = 0; i < fileArray.size(); i++) {
+					if (!fileArray.get(i).equals("[]") && !fileArray.get(i).equals("")) {
+						String temp = (String) fileArray.get(i);				
+						String cleanname = temp.replace(" ","");
+						String pfn = RawDataFileResolver.getDefault().resolve(elab, cleanname) + ".bless";
+						pfns[i] = new File(pfn);
+						filenames[i] = cleanname;
+					}
+				}			
+				if (pfns.length > 0) {
+					BlessDataRange bdr = new BlessDataRange(elab,pfns,filenames,results.getOutputDir());
+				}
+			}
+		}
+	} catch (Exception e) {
+			message = e.getMessage();
+	}
+
 	ArrayList fileArray = (ArrayList) results.getAttribute("inputfiles");
 	Collections.sort(fileArray);
 	request.setAttribute("fileArray", fileArray);
 	request.setAttribute("id", id);
 	request.setAttribute("outputDir", results.getOutputDirURL());
+	request.setAttribute("message", message);
+	
+	
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
