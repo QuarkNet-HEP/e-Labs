@@ -20,22 +20,28 @@
 	}
 	int plprev = Integer.parseInt(start) - Integer.parseInt(pageSize);
 	int plnext = Integer.parseInt(start) + Integer.parseInt(pageSize); 
+	//EPeronja-08/07/2015: The paging did not work because when start and pageSize where compared below,
+	//	they were compared as strings and 120 was not > than 30... lack of testing!!!
+	int startIntValue = Integer.parseInt(start);
+	int pageSizeIntValue = Integer.parseInt(pageSize);
+	request.setAttribute("startIntValue", startIntValue);
+	request.setAttribute("pageSizeIntValue", pageSizeIntValue);
 %>
 
 <c:choose>
-	<c:when test="${start > 0 && start < pageSize}">
-		<a href="<%= ElabUtil.modQueryString(request, "start", 0) %>">Previous ${pageSize} ${names}</a>
+	<c:when test="${startIntValue > 0 && startIntValue < pageSizeIntValue}">
+		<a href="<%= ElabUtil.modQueryString(request, "start", 0) %>">Previous ${pageSizeIntValue} ${names}</a>
 	</c:when>
-	<c:when test="${start >= pageSize}">
-		<a href="<%= ElabUtil.modQueryString(request, "start", plprev) %>">Previous ${pageSize} ${names}</a>
+	<c:when test="${startIntValue > 0 && startIntValue >= pageSizeIntValue}">
+		<a href="<%= ElabUtil.modQueryString(request, "start", plprev) %>">Previous ${pageSizeIntValue} ${names}</a>
 	</c:when>
 </c:choose>
 
 <c:choose>
-	<c:when test="${start + 2*pageSize > tsz && start + pageSize < tsz}">
-		<a href="<%= ElabUtil.modQueryString(request, "start", plnext) %>">Next ${tsz - pageSize - start} ${names}</a>
+	<c:when test="${startIntValue + 2*pageSizeIntValue > tsz && startIntValue + pageSizeIntValue < tsz}">
+		<a href="<%= ElabUtil.modQueryString(request, "start", plnext) %>">Next ${tsz - pageSizeIntValue - startIntValue} ${names}</a>
 	</c:when>
-	<c:when test="${start + pageSize < tsz}">
-		<a href="<%= ElabUtil.modQueryString(request, "start", plnext) %>">Next ${pageSize} ${names}</a>
+	<c:when test="${startIntValue + pageSizeIntValue < tsz}">
+		<a href="<%= ElabUtil.modQueryString(request, "start", plnext) %>">Next ${pageSizeIntValue} ${names}</a>
 	</c:when>
 </c:choose>

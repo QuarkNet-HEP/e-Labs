@@ -91,16 +91,24 @@
 		}
 	}
 	//added to keep track of the page where the last event is
-	//first find the position of the event in the resulting list
-
 	int eventNdx = ec.getEventIndex();
 	int pageLength = 30;
-	int	eventPage = (eventNdx / pageLength) * pageLength;
 	if (mFilter != null && !mFilter.equals("") && !mFilter.equals("0")) {
-		eventPage = 0;
+		if (eventNdx > rows.size()) {
+	    	Object[] filteredRows = rows.toArray();
+	    	for (int i = 0; i < filteredRows.length; i++) {
+	    		EventCandidates.Row r = (EventCandidates.Row) filteredRows[i];
+	    		if (r.getEventNum() == Integer.parseInt(eventNum)) {
+	    			eventNdx = i;
+	    			break;
+	    		}
+	    	}		
+		}
 	}
 	int	pageStart = (eventNdx / pageLength) * pageLength;
+	int totalPages = rows.size() / 30;
 	request.setAttribute("pageStart", pageStart);	
+	request.setAttribute("totalPages", totalPages);	
 	request.setAttribute("message", message);
 	request.setAttribute("eventDir", ecPath);
 	request.setAttribute("rows", rows);
@@ -265,8 +273,7 @@
 					</tr>
 				</c:forEach>
 				<tr>
-					<td colspan="3">Page #: <fmt:formatNumber pattern="#####0" value="${start / 30 + 1}" />
-					</td>
+					<td colspan="3">Page <fmt:formatNumber pattern="#####0" value="${start / 30 + 1}" />  of <fmt:formatNumber pattern="#####0" value="${totalPages + 1}" /></td>
 				</tr>
 				<tr>
 					<td colspan="3">
