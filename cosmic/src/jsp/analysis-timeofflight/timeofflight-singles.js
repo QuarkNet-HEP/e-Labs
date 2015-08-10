@@ -43,6 +43,7 @@ function buildIndividualDataSets(timediff, ndx, div) {
 				maxBins: timediff.maxBins, binValue: timediff.binValue, ndx: ndx, chart: div, currentBinValue: timediff.binValue});
 		buildTimeDiff(timediff, ndx);
 	} else {
+		tofCollection.push("");
 		div.style.display="none";
 	}
 }//end of buildIndividualDataSets
@@ -58,7 +59,7 @@ function buildTimeDiff(timediff, diffNum) {
 	tofCollection[diffNum-1].onOffPlot = onOffPlot;
 	setDataStats(diffNum);
 	setStatsLegend(diffNum);
-	
+
 	$("#range"+diffNum).attr({"min":timediff.binValue, "max":Math.floor(timediff.maxBins), "value": timediff.binValue, "step": timediff.binValue});
 	$("#binWidth"+diffNum).attr({"min":timediff.binValue, "max":Math.floor(timediff.maxBins), "value": timediff.binValue, "step": timediff.binValue});
     $('#range'+diffNum).on('input', function(){
@@ -136,6 +137,8 @@ function reBinData(binValue, diffNum, timediff, data, onOffPlot) {
 }//end of reBinData
 
 function writeLegend(diffNum) {
+	var title = document.getElementById("chartTitle"+diffNum);
+	title.innerHTML = "<strong>"+tofCollection[diffNum-1].label+"</strong>";
 	var context = tofCollection[diffNum-1].onOffPlot.getCanvas().getContext('2d');
 	context.lineWidth=3;
 	context.fillStyle="#000000";
@@ -260,6 +263,8 @@ resetAll = function(ndx) {
 	document.getElementById("maxX"+ndx).value = "";;
 	document.getElementById("minY"+ndx).value = "";;
 	document.getElementById("maxY"+ndx).value = "";;
+	$("#range"+ndx).attr({"min":tofCollection[ndx-1].timeDiff.binValue, "max":Math.floor(tofCollection[ndx-1].timeDiff.maxBins), "value": tofCollection[ndx-1].timeDiff.binValue, "step": tofCollection[ndx-1].timeDiff.binValue});
+	$("#binWidth"+ndx).attr({"min":tofCollection[ndx-1].timeDiff.binValue, "max":Math.floor(tofCollection[ndx-1].timeDiff.maxBins), "value": tofCollection[ndx-1].timeDiff.binValue, "step": tofCollection[ndx-1].timeDiff.binValue});
 	original = tofCollection[ndx-1].timeDiff;
 	localdata = [];
 	if (original != null) {

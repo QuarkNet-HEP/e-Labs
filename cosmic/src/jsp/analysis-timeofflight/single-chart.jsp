@@ -3,6 +3,7 @@
 <%@ include file="../login/login-required.jsp" %>
 
 <div class="left">
+	<div id="chartTitle<%= request.getParameter("chartIndex")%>">&nbsp;</div>
 	<div id="placeholder<%= request.getParameter("chartIndex")%>" class="graph-placeholder" style="width:250px; height:250px;"></div>
 	<div>
 	<% if (!user.isGuest()) { %>		
