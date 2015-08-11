@@ -1023,29 +1023,16 @@ TR I2U2.Cosmic::TimeOfFlight(
 	none geoDir,
 	input geoFiles[],
 	none plot_caption,
-	none plot_highX,
-	none plot_highY,
-	none plot_highZ,
-	none plot_lowX,
-	none plot_lowY,
-	none plot_lowZ,
-	none plot_size,
-	inout plot_outfile_param,
-	inout plot_outfile_image,
-	none plot_thumbnail_height, 
-	inout plot_outfile_image_thumbnail,
-	none plot_plot_type,
 	none plot_title,
-	none plot_xlabel,
-	none plot_ylabel,
-	none plot_zlabel,
 	input rawData[],
 	none sort_sortKey1,
 	none sort_sortKey2,
 	inout sortOut,
 	input thresholdAll[],
 	inout wireDelayData[],
-	none zeroZeroZeroID )
+	none zeroZeroZeroID,
+	none singleChannel_require,
+	none singleChannel_veto )
 {
   call I2U2.Cosmic::WireDelay(
 	geoDir=${geoDir},
@@ -1068,5 +1055,4 @@ TR I2U2.Cosmic::TimeOfFlight(
 	eventSearchOut=${output:eventCandidates},
 	gate=${gate} );
 }
-
 
