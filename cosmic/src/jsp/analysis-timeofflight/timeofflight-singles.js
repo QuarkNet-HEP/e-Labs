@@ -1,260 +1,9 @@
-var onOffPlot1, onOffPlot2, onOffPlot3, onOffPlot4, onOffPlot5, onOffPlot6;
-var timeDiff1, timeDiff2, timeDiff3, timeDiff4, timeDiff5, timeDiff6;
-var data1 = []; //data that will be sent to the chart
-var data2 = []; //data that will be sent to the chart
-var data3 = []; //data that will be sent to the chart
-var data4 = []; //data that will be sent to the chart
-var data5 = []; //data that will be sent to the chart
-var data6 = []; //data that will be sent to the chart
+var tofCollection = [];
 var options = "";
-var originalMinX1, originalMaxX1;
-var originalMinY1, originalMaxY1;
-var originalMinX2, originalMaxX2;
-var originalMinY2, originalMaxY2;
-var originalMinX3, originalMaxX3;
-var originalMinY3, originalMaxY3;
-var originalMinX4, originalMaxX4;
-var originalMinY4, originalMaxY4;
-var originalMinX5, originalMaxX5;
-var originalMinY5, originalMaxY5;
-var originalMinX6, originalMaxX6;
-var originalMinY6, originalMaxY6;
-var numberOfEntries1, numberOfEntries2, numberOfEntries3, numberOfEntries4, numberOfEntries5, numberOfEntries6;
-var mean1, mean2, mean3, mean4, mean5, mean6;
-var stddev1, stddev2, stddev3, stddev4, stddev5, stddev6;
-var label1, label2, label3, label4, label5, label6;
-var yAxisLabel;
-yAxisLabel = "number of entries/time bin";
-
-resetPlotX = function(ndx) {
-	var plot, originalminx, originalmaxx, label, entries;
-	var inputObjectMin = document.getElementById("minX"+ndx);
-	inputObjectMin.value = "";
-	var inputObjectMax = document.getElementById("maxX"+ndx);
-	inputObjectMax.value = "";
-	switch (ndx) {
-		case (1):
-			plot = onOffPlot1;
-			originalminx = originalMinX1;
-			originalmaxx = originalMaxX1;
-			entries = numberOfEntries1;
-			label = label1;
-			break;
-		case (2):
-			plot = onOffPlot2;	
-			originalminx = originalMinX2;
-			originalmaxx = originalMaxX2;
-			entries = numberOfEntries2;
-			label = label2;
-			break;
-		case (3):
-			plot = onOffPlot3;	
-			originalminx = originalMinX3;
-			originalmaxx = originalMaxX3;
-			entries = numberOfEntries3;
-			label = label3;
-			break;
-		case (4):
-			plot = onOffPlot4;	
-			originalminx = originalMinX4;
-			originalmaxx = originalMaxX4;
-			entries = numberOfEntries4;
-			label = label4;
-			break;
-		case (5):
-			plot = onOffPlot5;	
-			originalminx = originalMinX5;
-			originalmaxx = originalMaxX5;
-			entries = numberOfEntries5;
-			label = label5;
-			break;
-		case (6):
-			plot = onOffPlot6;	
-			originalminx = originalMinX6;
-			originalmaxx = originalMaxX6;
-			entries = numberOfEntries6;
-			label = label6;
-			break;
-	}
-	var axes = plot.getAxes();	
-	axes.xaxis.options.min = originalminx;
-	axes.xaxis.options.max = originalmaxx;
-	plot.setupGrid();
-	plot.draw();
-	writeLegend(plot.getCanvas(), entries, label);	
-}
-redrawPlotX = function(ndx, newX, type) {
-	var plot, label, entries;
-	switch (ndx) {
-		case (1):
-			plot = onOffPlot1;
-			entries = numberOfEntries1;
-			label = label1;
-			break;
-		case (2):
-			plot = onOffPlot2;
-			entries = numberOfEntries2;
-			label = label2;
-			break;
-		case (3):
-			plot = onOffPlot3;
-			entries = numberOfEntries3;
-			label = label3;
-			break;
-		case (4):
-			plot = onOffPlot4;
-			entries = numberOfEntries4;
-			label = label4;
-			break;
-		case (5):
-			plot = onOffPlot5;
-			entries = numberOfEntries5;
-			label = label5;
-			break;
-		case (6):
-			plot = onOffPlot6;
-			entries = numberOfEntries6;
-			label = label6;
-			break;
-	}
-	var axes = plot.getAxes();
-	if (type == "min") {
-		axes.xaxis.options.min = newX;
-	} else {
-		axes.xaxis.options.max = newX;
-	}
-	plot.setupGrid();
-	plot.draw();
-	writeLegend(plot.getCanvas(), entries, label);	
-}
-
-resetPlotY = function(ndx) {
-	var plot, originalminy, originalmaxy, label, entries;
-	var inputObjectMin = document.getElementById("minY"+ndx);
-	inputObjectMin.value = "";
-	var inputObjectMax = document.getElementById("maxY"+ndx);
-	inputObjectMax.value = "";
-	switch (ndx) {
-		case (1):
-			plot = onOffPlot1;
-			originalminy = originalMinY1;
-			originalmaxy = originalMaxY1;
-			entries = numberOfEntries1;
-			label = label1;
-			break;
-		case (2):
-			plot = onOffPlot2;	
-			originalminy = originalMinY2;
-			originalmaxy = originalMaxY2;
-			entries = numberOfEntries2;
-			label = label2;
-			break;
-		case (3):
-			plot = onOffPlot3;	
-			originalminy = originalMinY3;
-			originalmaxy = originalMaxY3;
-			entries = numberOfEntries3;
-			label = label3;
-			break;
-		case (4):
-			plot = onOffPlot4;	
-			originalminy = originalMinY4;
-			originalmaxy = originalMaxY4;
-			entries = numberOfEntries4;
-			label = label4;
-			break;
-		case (5):
-			plot = onOffPlot5;	
-			originalminy = originalMinY5;
-			originalmaxy = originalMaxY5;
-			entries = numberOfEntries5;
-			label = label5;
-			break;
-		case (6):
-			plot = onOffPlot6;	
-			originalminy = originalMinY6;
-			originalmaxy = originalMaxY6;
-			entries = numberOfEntries6;
-			label = label6;
-			break;
-	}
-	var axes = plot.getAxes();	
-	axes.yaxis.options.min = originalminy;
-	axes.yaxis.options.max = originalmaxy;
-	plot.setupGrid();
-	plot.draw();
-	writeLegend(plot.getCanvas(), entries, label);		
-}
-redrawPlotY = function(ndx, newY, type) {
-	var plot, label, entries;
-	switch (ndx) {
-		case (1):
-			plot = onOffPlot1;
-			entries = numberOfEntries1;
-			label = label1;
-			break;
-		case (2):
-			plot = onOffPlot2;
-			entries = numberOfEntries2;
-			label = label2;
-			break;
-		case (3):
-			plot = onOffPlot3;
-			entries = numberOfEntries3;
-			label = label3;
-			break;
-		case (4):
-			plot = onOffPlot4;
-			entries = numberOfEntries4;
-			label = label4;
-			break;
-		case (5):
-			plot = onOffPlot5;
-			entries = numberOfEntries5;
-			label = label5;
-			break;
-		case (6):
-			plot = onOffPlot6;
-			entries = numberOfEntries6;
-			label = label6;
-			break;
-	}
-	var axes = plot.getAxes();
-	if (type == "min") {
-		axes.yaxis.options.min = newY;
-	} else {
-		axes.yaxis.options.max = newY;
-	}
-	plot.setupGrid();
-	plot.draw();
-	writeLegend(plot.getCanvas(), entries, label);	
-}
-options = {
-        axisLabels: {
-            show: true
-        },		
-        legend: {  
-            show: false
-        },  
-        lines: { 
-        	show: true, 
-        	fill: false, 
-        	lineWidth: 2.0 
-        },
-        xaxis: { 
-        	tickDecimals: 0
-        },
-		grid: {
-			hoverable: true,
-			clickable: true
-		},	
-		yaxes: {
-			axisLabelUseCanvas: true
-		},
-		xaxes: {
-			axisLabelUseCanvas: true			
-		}
-};
+var mean, deviation, numberOfEntries;
+var yAxisLabel = "number of entries/time bin";
+var xAxisLabel = "relative time between channels (ns)";
+var currentBinValue = 1.25;
 
 function onDataLoad1() {
 	loadJSON(function(response) {
@@ -262,7 +11,7 @@ function onDataLoad1() {
 			onDataLoad(json);
 		});
 	});
-}
+}//end of onDataLoad1
 
 function loadJSON(callback) {   
     var xobj = new XMLHttpRequest();
@@ -276,175 +25,78 @@ function loadJSON(callback) {
           }
     };
     xobj.send(null);  
- }
+ }//end of loadJSON
 
 function onDataLoad(json) {	
-	timeDiff1 = json.timediff1;
-	if (json.timediff1 != null) {
-		buildTimeDiff(json.timediff1,data1,"1");
-	} else {
-		var div = document.getElementById("chart1");
-		div.style.display="none";
-	}
-	timeDiff2 = json.timediff2;
-	if (json.timediff2 != null) {
-		buildTimeDiff(json.timediff2,data2,"2");
-	} else {
-		var div = document.getElementById("chart2");
-		div.style.display="none";
-	}
-	timeDiff3 = json.timediff3;
-	if (json.timediff3 != null) {
-		buildTimeDiff(json.timediff3,data3,"3");
-	} else {
-		var div = document.getElementById("chart3");
-		div.style.display="none";
-	}
-	timeDiff4 = json.timediff4;
-	if (json.timediff4 != null) {
-		buildTimeDiff(json.timediff4,data4,"4");
-	} else {
-		var div = document.getElementById("chart4");
-		div.style.display="none";
-	}		
-	timeDiff5 = json.timediff5;
-	if (json.timediff5 != null) {
-		buildTimeDiff(json.timediff5,data5,"5");
-	} else {
-		var div = document.getElementById("chart5");
-		div.style.display="none";
-	}
-	timeDiff6 = json.timediff6;
-	if (json.timediff6 != null) {
-		buildTimeDiff(json.timediff6,data6,"6");
-	} else {
-		var div = document.getElementById("chart6");
-		div.style.display="none";
-	}
+	buildIndividualDataSets(json.timediff1, "1", document.getElementById("chart1"));
+	buildIndividualDataSets(json.timediff2, "2", document.getElementById("chart2"));
+	buildIndividualDataSets(json.timediff3, "3", document.getElementById("chart3"));
+	buildIndividualDataSets(json.timediff4, "4", document.getElementById("chart4"));
+	buildIndividualDataSets(json.timediff5, "5", document.getElementById("chart5"));
+	buildIndividualDataSets(json.timediff6, "6", document.getElementById("chart6"));
 }//end of onDataLoad	
 
-function buildTimeDiff(timediff, data, diffNum) {
+function buildIndividualDataSets(timediff, ndx, div) {
 	if (timediff != null) {
-		timediff.data = getDataWithBins(timediff.data, timediff.binValue, timediff.minX, timediff.maxX, timediff.nBins, timediff.nBins);
-		data.push(timediff);
+		tofCollection.push({onOffPlot: "", timeDiff: timediff, data: "", originalMinX: timediff.minX, originalMaxX: 0,
+				originalMinY: timediff.maxX, originalMaxY: 0, numberOfEntries: 0, mean: 0, stddev: 0, label: timediff.label, 
+				maxBins: timediff.maxBins, binValue: timediff.binValue, ndx: ndx, chart: div, currentBinValue: timediff.binValue});
+		buildTimeDiff(timediff, ndx);
+	} else {
+		tofCollection.push("");
+		div.style.display="none";
 	}
-	$("#range"+diffNum).attr({"min":Math.floor(1), "max":Math.floor(timediff.maxBins), "value": timediff.binValue});
-	$("#binWidth"+diffNum).attr({"min":Math.floor(1), "max":Math.floor(timediff.maxBins), "value": timediff.binValue});
+}//end of buildIndividualDataSets
 
+function buildTimeDiff(timediff, diffNum) {
+	data = [];
+	if (timediff != null) {
+		timediff.data = getDataWithBins(timediff.data_original, timediff.binValue, timediff.minX, timediff.maxX, timediff.nBins, timediff.nBins);
+		data.push(timediff);
+		tofCollection[diffNum-1].data = data;
+	}
 	var onOffPlot = $.plot("#placeholder"+diffNum, data, options);
+	tofCollection[diffNum-1].onOffPlot = onOffPlot;
+	setDataStats(diffNum);
+	setStatsLegend(diffNum);
 
+	$("#range"+diffNum).attr({"min":timediff.binValue, "max":Math.floor(timediff.maxBins), "value": timediff.binValue, "step": timediff.binValue});
+	$("#binWidth"+diffNum).attr({"min":timediff.binValue, "max":Math.floor(timediff.maxBins), "value": timediff.binValue, "step": timediff.binValue});
     $('#range'+diffNum).on('input', function(){
         $('#binWidth'+diffNum).val($('#range'+diffNum).val());
         if ($('#range'+diffNum).val() > 0) {
-            reBinData($('#range'+diffNum).val(),diffNum,timediff, data, onOffPlot);       
-    		writeLegend(onOffPlot.getCanvas(), timediff.numberOfEntries, timediff.label);
+        	tofCollection[diffNum-1].currentBinValue = $('#range'+diffNum).val();
+        	reBinData($('#range'+diffNum).val(),diffNum,timediff, data, onOffPlot);       
+    		writeLegend(diffNum);
         }
     });
     $('#binWidth'+diffNum).on('change', function(){
         $('#range'+diffNum).val($('#binWidth'+diffNum).val());
         if ($('#binWidth'+diffNum).val() > 0) {
+        	tofCollection[diffNum-1].currentBinValue = $('#binWidth'+diffNum).val();
         	reBinData($('#binWidth'+diffNum).val(),diffNum,timediff, data, onOffPlot);
-    		writeLegend(onOffPlot.getCanvas(), timediff.numberOfEntries, timediff.label);
+    		writeLegend(diffNum);
         }
     });
     
-    $("<div class='button' style='left:20px;top:20px'>reset</div>")
-	.appendTo($("#resetbutton"+diffNum))
-	.click(function (event) {
-		event.preventDefault();
-		reBinData(json.binValue,diffNum,timediff, data, onOffPlot);
-		onOffPlot = $.plot("#placeholder"+diffNum, data, options);
-		$(".message"+diffNum).html("");
-		$(".click").html("");
-		
-	});	
-    switch (diffNum) {
-    	case ("1"):
-    		onOffPlot1 = onOffPlot;
-    		originalMinX1 = timediff.minX;
-    		originalMaxX1 = timediff.maxX;
-    		originalMinY1 = onOffPlot1.getAxes().yaxis.min;
-    		originalMaxY1 = onOffPlot1.getAxes().yaxis.max;
-    		numberOfEntries1 = timediff.numberOfEntries;
-    		label1 = timediff.label;
-    		var mean = document.getElementById("mean1");
-    		mean.innerHTML = "Mean: "+timediff.mean;
-    		var stddev = document.getElementById("stddev1");
-    		stddev.innerHTML = "Std Dev: "+timediff.stddev;
-    		writeLegend(onOffPlot1.getCanvas(), numberOfEntries1, label1);
-    		break;
-    	case ("2"):
-    		onOffPlot2 = onOffPlot;
-    		originalMinX2 = timediff.minX;
-    		originalMaxX2 = timediff.maxX;
-    		originalMinY2 = onOffPlot2.getAxes().yaxis.min;
-    		originalMaxY2 = onOffPlot2.getAxes().yaxis.max;
-    		numberOfEntries2 = timediff.numberOfEntries;
-    		label2 = timediff.label;
-    		var mean = document.getElementById("mean2");
-    		mean.innerHTML = "Mean: "+timediff.mean;
-    		var stddev = document.getElementById("stddev2");
-    		stddev.innerHTML = "Std Dev: "+timediff.stddev;
-    		writeLegend(onOffPlot2.getCanvas(), numberOfEntries2, label2);
-    		break;
-    	case ("3"):
-    		onOffPlot3 = onOffPlot;
-    		originalMinX3 = timediff.minX;
-    		originalMaxX3 = timediff.maxX;
-    		originalMinY3 = onOffPlot3.getAxes().yaxis.min;
-    		originalMaxY3 = onOffPlot3.getAxes().yaxis.max;
-    		numberOfEntries3 = timediff.numberOfEntries;
-    		label3 = timediff.label;
-    		var mean = document.getElementById("mean3");
-    		mean.innerHTML = "Mean: "+timediff.mean;
-    		var stddev = document.getElementById("stddev3");
-    		stddev.innerHTML = "Std Dev: "+timediff.stddev;
-    		writeLegend(onOffPlot3.getCanvas(), numberOfEntries3, label3);
-    		break;
-    	case ("4"):
-    		onOffPlot4 = onOffPlot;
-    		originalMinX4 = timediff.minX;
-    		originalMaxX4 = timediff.maxX;
-    		originalMinY4 = onOffPlot4.getAxes().yaxis.min;
-    		originalMaxY4 = onOffPlot4.getAxes().yaxis.max;
-    		numberOfEntries4 = timediff.numberOfEntries;
-    		label4 = timediff.label;
-    		var mean = document.getElementById("mean4");
-    		mean.innerHTML = "Mean: "+timediff.mean;
-    		var stddev = document.getElementById("stddev4");
-    		stddev.innerHTML = "Std Dev: "+timediff.stddev;
-   		writeLegend(onOffPlot4.getCanvas(), numberOfEntries4, label4);
-    		break;
-    	case ("5"):
-    		onOffPlot5 = onOffPlot;
-    		originalMinX5 = timediff.minX;
-    		originalMaxX5 = timediff.maxX;
-    		originalMinY5 = onOffPlot5.getAxes().yaxis.min;
-    		originalMaxY5 = onOffPlot5.getAxes().yaxis.max;
-    		numberOfEntries5 = timediff.numberOfEntries;
-    		label5 = timediff.label;
-    		var mean = document.getElementById("mean5");
-    		mean.innerHTML = "Mean: "+timediff.mean;
-    		var stddev = document.getElementById("stddev5");
-    		stddev.innerHTML = "Std Dev: "+timediff.stddev;
-    		writeLegend(onOffPlot5.getCanvas(), numberOfEntries5, label5);
-    		break;
-    	case ("6"):
-    		onOffPlot6 = onOffPlot;
-    		originalMinX6 = timediff.minX;
-    		originalMaxX6 = timediff.maxX;
-    		originalMinY6 = onOffPlot6.getAxes().yaxis.min;
-    		originalMaxY6 = onOffPlot6.getAxes().yaxis.max;
-    		numberOfEntries6 = timediff.numberOfEntries;
-    		label6 = timediff.label;
-    		var mean = document.getElementById("mean6");
-    		mean.innerHTML = "Mean: "+timediff.mean;
-    		var stddev = document.getElementById("stddev6");
-    		stddev.innerHTML = "Std Dev: "+timediff.stddev;
-    		writeLegend(onOffPlot6.getCanvas(), numberOfEntries6, label6);
-    		break;
-    }
+    writeLegend(diffNum);
+ 
 }//end of generic buildTimeDiff
+
+function setDataStats(ndx) {
+	tofCollection[ndx-1].mean = mean;
+	tofCollection[ndx-1].stddev = deviation;
+	tofCollection[ndx-1].numberOfEntries = numberOfEntries;
+	tofCollection[ndx-1].originalMinY = tofCollection[ndx-1].onOffPlot.getAxes().yaxis.min;
+	tofCollection[ndx-1].originalMaxY = tofCollection[ndx-1].onOffPlot.getAxes().yaxis.max;
+}//end of setDataStats
+
+function setStatsLegend(diffNum) {
+	var meandiv = document.getElementById("mean"+diffNum);
+	meandiv.innerHTML = "Mean: "+parseFloat(tofCollection[diffNum-1].mean).toFixed(2);
+	var stddevdiv = document.getElementById("stddev"+diffNum);
+	stddevdiv.innerHTML = "Std Dev: "+parseFloat(tofCollection[diffNum-1].stddev).toFixed(2);
+}//end of setStatsLegend
 
 function getDataWithBins(rawData, localBinValue, minX, maxX, nBins, bins) {
 	//create histogram data
@@ -454,6 +106,9 @@ function getDataWithBins(rawData, localBinValue, minX, maxX, nBins, bins) {
 		var histogram = d3.layout.histogram();
 		histogram.bins(bins);
 		var data = histogram(rawData);
+		mean = d3.mean(rawData);
+		deviation = d3.deviation(rawData);
+		numberOfEntries = rawData.length;
 		for ( var i = 0; i < data.length; i++ ) {
 	    	outputFinal.push([data[i].x, data[i].y]);
 	    	outputFinal.push([data[i].x + data[i].dx, data[i].y]);
@@ -481,8 +136,10 @@ function reBinData(binValue, diffNum, timediff, data, onOffPlot) {
 	}
 }//end of reBinData
 
-function writeLegend(canvas, numberOfEntries, label) {
-	var context = canvas.getContext('2d');
+function writeLegend(diffNum) {
+	var title = document.getElementById("chartTitle"+diffNum);
+	title.innerHTML = "<strong>"+tofCollection[diffNum-1].label+"</strong>";
+	var context = tofCollection[diffNum-1].onOffPlot.getCanvas().getContext('2d');
 	context.lineWidth=3;
 	context.fillStyle="#000000";
 	context.lineStyle="#ffff00";
@@ -491,17 +148,213 @@ function writeLegend(canvas, numberOfEntries, label) {
 	context.textAlign = "Time Of Flight Study";
 	context.fillText("Time Of Flight Study", 90, 20);
 	context.font="10px sans-serif";
-	context.textAlign = label;
-	context.fillText(label, 130, 30);
-	context.textAlign = '# of Entries: '+ numberOfEntries;
-	context.fillText('# of Entries: '+ numberOfEntries, 170, 40);
+	context.textAlign = tofCollection[diffNum-1].label;
+	context.fillText(tofCollection[diffNum-1].label, 130, 30);
+	context.textAlign = '# of Entries: '+ tofCollection[diffNum-1].numberOfEntries;
+	context.fillText('# of Entries: '+ tofCollection[diffNum-1].numberOfEntries, 140, 40);
+	var meta = document.getElementsByName("metadata");
+	var serialized = $(meta).serializeArray();
+	var values = new Array();
+	var xcoord = 50;
+	var ycoord = 0;
+	var yspace = 10;	
+	ycoord = 50;
+	$.each(serialized, function(index,element){
+		var val = element.value;
+		if (val.indexOf("caption") > -1) {
+			var caption = val.substring(val.indexOf("Data"), val.length);
+			var captionArray = caption.split("\n");
+			for (var i = 0; i < captionArray.length; i++) {
+				var printText = captionArray[i];
+				if (captionArray[i].length > 38) {
+					printText = captionArray[i].substring(0, 38);
+				}
+				ycoord += yspace; 
+				context.fillText(printText, xcoord, ycoord);				
+			}
+		}
+	   });	 
 	context.font="8px sans-serif";
+	context.textAlign = xAxisLabel;
+	context.fillText(xAxisLabel, 60, 220);	
 	context.translate(0, 150);
 	context.rotate(-Math.PI / 2);
 	context.textAlign = yAxisLabel;
-	context.fillText(yAxisLabel, 0, 30);
+	context.fillText(yAxisLabel, 0, 40);	
 	context.restore();		
 }//end of writeLegend
+
+redrawPlotX = function(ndx, newX, type) {
+	var plot, label, entries;
+	plot = tofCollection[ndx-1].onOffPlot;
+	entries = tofCollection[ndx-1].numberOfEntries;
+	label = tofCollection[ndx-1].label;
+	originalminx = tofCollection[ndx-1].originalMinX;
+	originalmaxx = tofCollection[ndx-1].originalMaxX;
+	var axes = plot.getAxes();
+	if (type == "min") {
+		axes.xaxis.options.min = newX;
+	} else {
+		axes.xaxis.options.max = newX;
+	}
+	plot.setupGrid();
+	plot.draw();
+	writeLegend(ndx);	
+}//end of redrawPlotX
+
+redrawPlotY = function(ndx, newY, type) {
+	var plot, label, entries;
+	plot = tofCollection[ndx-1].onOffPlot;
+	entries = tofCollection[ndx-1].numberOfEntries;
+	label = tofCollection[ndx-1].label;
+	var axes = plot.getAxes();
+	if (type == "min") {
+		axes.yaxis.options.min = newY;
+	} else {
+		axes.yaxis.options.max = newY;
+	}
+	plot.setupGrid();
+	plot.draw();
+	writeLegend(ndx);	
+}//end of redrawPlotY
+
+redrawPlotFitX = function(ndx, newMinX, newMaxX) {
+	if (newMinX == null || newMinX == "") {
+		newMinX = tofCollection[ndx-1].originalMinX;
+	}
+	if (newMaxX == null || newMaxX == "") {
+		newMaxX = tofCollection[ndx-1].originalMaxX;
+	}
+	var originalminx, originalmaxx, plot, label, entries, original;
+	plot = tofCollection[ndx-1].onOffPlot;
+	originalminx = tofCollection[ndx-1].originalMinX;
+	originalmaxx = tofCollection[ndx-1].originalMaxX;
+	entries = tofCollection[ndx-1].numberOfEntries;
+	label = tofCollection[ndx-1].label;
+	original = tofCollection[ndx-1].timeDiff;
+	localdata = [];
+	if (original != null) {
+		var fittedData = fitData(original.data_original, newMinX, newMaxX);
+		nBins = Math.ceil((newMaxX - newMinX) / tofCollection[ndx-1].currentBinValue);
+		original.data = getDataWithBins(fittedData, tofCollection[ndx-1].currentBinValue, newMinX, newMaxX, nBins, nBins);
+   		setDataStats(ndx);
+   		setStatsLegend(ndx);	      		
+   		localdata.push(original);
+	}
+	plot = $.plot("#placeholder"+ndx, localdata, options);
+	writeLegend(ndx);
+}//end of redrawPlotFitX
+
+function fitData(data_original, newMinX, newMaxX) {
+	var fittedData = [];
+	for (var i = 0; i < data_original.length; i++) {
+		if (data_original[i] >= newMinX && data_original[i] <= newMaxX) {
+			fittedData.push(data_original[i]);
+		}
+	}	
+	return fittedData;
+}//end of fitData
+
+resetAll = function(ndx) {
+	var plot, originalminx, originalmaxx, label, entries, original;
+	document.getElementById("minFitX"+ndx).value = "";
+	document.getElementById("maxFitX"+ndx).value = "";;
+	document.getElementById("minX"+ndx).value = "";;
+	document.getElementById("maxX"+ndx).value = "";;
+	document.getElementById("minY"+ndx).value = "";;
+	document.getElementById("maxY"+ndx).value = "";;
+	$("#range"+ndx).attr({"min":tofCollection[ndx-1].timeDiff.binValue, "max":Math.floor(tofCollection[ndx-1].timeDiff.maxBins), "value": tofCollection[ndx-1].timeDiff.binValue, "step": tofCollection[ndx-1].timeDiff.binValue});
+	$("#binWidth"+ndx).attr({"min":tofCollection[ndx-1].timeDiff.binValue, "max":Math.floor(tofCollection[ndx-1].timeDiff.maxBins), "value": tofCollection[ndx-1].timeDiff.binValue, "step": tofCollection[ndx-1].timeDiff.binValue});
+	original = tofCollection[ndx-1].timeDiff;
+	localdata = [];
+	if (original != null) {
+		original.data = getDataWithBins(original.data_original, original.binValue, original.minX, original.maxX, original.nBins, original.nBins);
+   		setDataStats(ndx);
+   		setStatsLegend(ndx);	      		
+   		localdata.push(original);
+	}
+	plot = tofCollection[ndx-1].onOffPlot;
+	originalminx = tofCollection[ndx-1].originalMinX;
+	originalmaxx = tofCollection[ndx-1].originalMaxX;
+	entries = tofCollection[ndx-1].numberOfEntries;
+	label = tofCollection[ndx-1].label;
+	var axes = plot.getAxes();	
+	axes.xaxis.options.min = originalminx;
+	axes.xaxis.options.max = originalmaxx;
+	plot = $.plot("#placeholder"+ndx, localdata, options);
+	plot.setupGrid();
+	plot.draw();
+	writeLegend(ndx);	
+}//end of resetAll
+
+function saveToFChart(ndx, name_id, div_id, run_id) {
+	var filename = document.getElementById(name_id);
+	var meta = document.getElementsByName("metadata");
+	var serialized = $(meta).serializeArray();
+	var values = new Array();
+	$.each(serialized, function(index,element){
+	     values.push(element.value);
+	   });	 
+	var rc = true;
+	if (filename != null) {
+		if (filename.value != "") {
+			var canvas = tofCollection[ndx-1].onOffPlot.getCanvas();			
+			var image = canvas.toDataURL("image/png");
+			image = image.replace('data:image/png;base64,', '');
+			$.ajax({
+				url: "../analysis/save-plot.jsp",
+				type: 'POST',
+				data: { imagedata: image, filename: filename.value, id: run_id, metadata: values},
+				success: function (response) {
+					var msgDiv = document.getElementById(div_id);
+					if (msgDiv != null) {
+						msgDiv.innerHTML = '<a href="'+response+'">' +filename.value +'</a> file created successfully.';
+					}
+				}
+			});	
+		
+		} else {
+			rc = false;
+		}
+
+	} else {
+		rc = false;
+	}
+    if (rc == false) {
+		var msgDiv = document.getElementById(div_id);
+		if (msgDiv != null) {
+			msgDiv.innerHTML = "<i>* Please enter a file name</i>";
+		}
+    }
+    return rc;
+}//end of saveChart
+
+options = {
+        axisLabels: {
+            show: true
+        },		
+        legend: {  
+            show: false
+        },  
+        lines: { 
+        	show: true, 
+        	fill: false, 
+        	lineWidth: 2.0 
+        },
+        xaxis: { 
+        	tickDecimals: 0
+        },
+		grid: {
+			hoverable: true,
+			clickable: true
+		},	
+		yaxes: {
+			axisLabelUseCanvas: true
+		},
+		xaxes: {
+			axisLabelUseCanvas: true			
+		}
+};
 
 Number.prototype.toFixedDown = function(digits) {
 	  var n = this - Math.pow(10, -digits)/2;
@@ -512,3 +365,4 @@ Number.prototype.toFixedDown = function(digits) {
 function intToFloat(num, decPlaces) { 
 	return num + '.' + Array(decPlaces + 1).join('0'); 
 }
+
