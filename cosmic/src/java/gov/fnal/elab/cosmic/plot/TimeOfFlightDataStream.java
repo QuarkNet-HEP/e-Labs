@@ -44,29 +44,50 @@ public class TimeOfFlightDataStream {
 	TimeDiff timedifference6 = new TimeDiff("magenta", "5", "6", "ch4-ch3", "circle");
 	List<TimeDiff> tdGroup = new ArrayList<TimeDiff>();
 	TreeMap<String, String> channelsHit;
+	String outputfile = "";
+	String inputfile = "";
+	String outputdata = "";
+	boolean useLogicModule = false;
+	ArrayList<String> channelRequire = new ArrayList<String>();
+	ArrayList<String> channelVeto = new ArrayList<String>();
 	
-	public TimeOfFlightDataStream (String analysisDir) throws IOException {
+	public TimeOfFlightDataStream (String analysisDir, String chanRequire, String chanVeto) throws Exception {
 		this.analysisDir = analysisDir;
-		String message = "";
+		outputfile = analysisDir+"/timeOfFlightPlotData";
+		inputfile = analysisDir+"/eventCandidates";
+		outputdata = analysisDir+"/timeOfFlightRawData";
+		String[] cr = chanRequire.split("\\s");
+		String[] cv = chanVeto.split("\\s");
+		if ((cr != null && cr.length > 0) || (cv != null && cv.length > 0)) {
+			for (int i = 0; i < cr.length; i++) {
+				if (!cr[i].trim().equals("")) {
+					channelRequire.add(cr[i]);
+					useLogicModule = true;
+				}
+			}
+			for (int i = 0; i < cv.length; i++) {
+				if (!cv[i].trim().equals("")) {
+					channelVeto.add(cv[i]);
+					useLogicModule = true;
+				}
+			}
+		}
 		try {
-			String outputfile = analysisDir+"/timeOfFlightPlotData";
-			String inputfile = analysisDir+"/eventCandidates";
-			String rawdatafile = analysisDir+"/timeOfFlightRawData";
-			String debuggingfile = analysisDir+"/timeOfFlightCalculations";
+			//String debuggingfile = analysisDir+"/timeOfFlightCalculations";
 			JsonWriter writer = new JsonWriter(new FileWriter(outputfile));
 			BufferedReader br = new BufferedReader(new FileReader(inputfile));
-			BufferedWriter bw = new BufferedWriter(new FileWriter(debuggingfile));
-			BufferedWriter bwraw = new BufferedWriter(new FileWriter(rawdatafile));
+			BufferedWriter bw = new BufferedWriter(new FileWriter(outputdata));
+			//BufferedWriter bw = new BufferedWriter(new FileWriter(debuggingfile));
 			addObjectsToArray();
-			analyzeEventFile(br, bw, bwraw);
-			calculateStats(bw);
-			saveFileHistogramData(writer, bw);
+			analyzeEventFile(br);
+			saveFileHistogramData(writer);
 			writer.close();
 			br.close();
+			saveOutputData(bw);
 			bw.close();
-			bwraw.close();
+			//bwraw.close();
 		} catch (Exception e) {
-			message = e.getMessage();
+			throw e;
 		}
 	}//end of constructor
 
@@ -83,9 +104,10 @@ public class TimeOfFlightDataStream {
 		return tdGroup;
 	}//end of getArrays
 	
-	public void analyzeEventFile(BufferedReader br, BufferedWriter bw, BufferedWriter bwraw) {
+	public void analyzeEventFile(BufferedReader br) throws ElabException {
 		String[] split; 
 		String line, message;
+		String detectorId = "";
 		try {
 			while ((line = br.readLine()) != null) {
 				if (line.startsWith("#")) {
@@ -93,10 +115,14 @@ public class TimeOfFlightDataStream {
 				}
 				channelsHit = new TreeMap<String, String>();				
 				split = line.split("\\s"); 
+				if (detectorId.equals("")) {
+					String[] parts = split[3].split("\\.");
+					detectorId = parts[0];
+				}
 				String event = split[0];
 				String hits = split[1];
 				String nanos = split[2];
-				bw.write(line+"\n");
+				//bw.write(line+"\n");
 				//get channel values per event
                 for (int i = 3; i < split.length; i += 3) {
                     String[] channelPlusId = split[i].split("\\.");
@@ -109,7 +135,7 @@ public class TimeOfFlightDataStream {
                         String microsecs = String.format("%03d",nd.getMicroSeconds());
                         String nanosecs = String.format("%03d",nd.getNanoSeconds());
                         String nanosecsfraction = String.format("%01d", nd.getNanoSecondsFraction());
-                        bw.write(channelPlusId[1] + "jd: "+jd+" "+re+" converted time: "+millisecs+microsecs+nanosecs+"."+nanosecsfraction+"\n");	
+                        //bw.write(channelPlusId[1] + "jd: "+jd+" "+re+" converted time: "+millisecs+microsecs+nanosecs+"."+nanosecsfraction+"\n");	
                         channelsHit.put(channelPlusId[1], (millisecs+microsecs+nanosecs+"."+nanosecsfraction));
                     }
                 }
@@ -118,62 +144,83 @@ public class TimeOfFlightDataStream {
                 Double fh2 = 0.0;
                 Double fh3 = 0.0;
                 Double fh4 = 0.0;
-                if (channelsHit.containsKey("1")) {
-                	fh1 = parseToDouble(channelsHit.get("1"));
+                //we need to check require/veto for channels
+            	boolean validRecord = true;
+                if (useLogicModule) {
+                	for (int i = 0; i < channelRequire.size(); i++) {
+                		if (!channelsHit.containsKey(channelRequire.get(i))) {
+                			validRecord = false;
+                		}
+                	}
+                	for (int i = 0; i < channelVeto.size(); i++) {
+                		if (channelsHit.containsKey(channelVeto.get(i))) {
+                			validRecord = false;
+                		}
+                	}
+                } 
+                if (validRecord) {
+	                if (channelsHit.containsKey("1")) {
+	                	fh1 = parseToDouble(channelsHit.get("1"));
+	                }
+	                if (channelsHit.containsKey("2")) {
+	                	fh2 = parseToDouble(channelsHit.get("2"));
+	                }
+	                if (channelsHit.containsKey("3")) {
+	                	fh3 = parseToDouble(channelsHit.get("3"));
+	                }
+	                if (channelsHit.containsKey("4")) {
+	                	fh4 = parseToDouble(channelsHit.get("4"));
+	                }
+	                if (fh1 != 0L && fh2 != 0L) {
+	                	Double diff = fh2-fh1;
+	                	setValues(timedifference1, diff, "td1: ");
+	                }
+	                if (fh1 != 0L && fh3 != 0L) {
+	                	Double diff = fh3-fh1;                	
+	                	setValues(timedifference2, diff, "td2: ");
+	                }
+	                if (fh1 != 0L && fh4 != 0L) {
+	                	Double diff =fh4-fh1;                	
+	                	setValues(timedifference3, diff, "td3: ");
+	                }
+	                if (fh2 != 0L && fh3 != 0L) {
+	                	Double diff = fh3-fh2;                	                	
+	                	setValues(timedifference4, diff, "td4: ");
+	                }
+	                if (fh2 != 0L && fh4 != 0L) {
+	                	Double diff = fh4-fh2;                	                	
+	                   	setValues(timedifference5, diff, "td5: ");
+	                }
+	                if (fh3 != 0L && fh4 != 0L) {
+	                	Double diff = fh4-fh3;                	                	
+	                   	setValues(timedifference6, diff, "td6: ");
+	                }
                 }
-                if (channelsHit.containsKey("2")) {
-                	fh2 = parseToDouble(channelsHit.get("2"));
-                }
-                if (channelsHit.containsKey("3")) {
-                	fh3 = parseToDouble(channelsHit.get("3"));
-                }
-                if (channelsHit.containsKey("4")) {
-                	fh4 = parseToDouble(channelsHit.get("4"));
-                }
-                if (fh1 != 0L && fh2 != 0L) {
-                	Double diff = fh2-fh1;
-                	setValues(timedifference1, diff, "td1: ", bw);
-                }
-                if (fh1 != 0L && fh3 != 0L) {
-                	Double diff = fh3-fh1;                	
-                	setValues(timedifference2, diff, "td2: ", bw);
-                }
-                if (fh1 != 0L && fh4 != 0L) {
-                	Double diff =fh4-fh1;                	
-                	setValues(timedifference3, diff, "td3: ", bw);
-                }
-                if (fh2 != 0L && fh3 != 0L) {
-                	Double diff = fh3-fh2;                	                	
-                	setValues(timedifference4, diff, "td4: ", bw);
-                }
-                if (fh2 != 0L && fh4 != 0L) {
-                	Double diff = fh4-fh2;                	                	
-                   	setValues(timedifference5, diff, "td5: ", bw);
-                }
-                if (fh3 != 0L && fh4 != 0L) {
-                	Double diff = fh4-fh3;                	                	
-                   	setValues(timedifference6, diff, "td6: ", bw);
-                }
-    			for (Map.Entry<String, String> e: channelsHit.entrySet()) {
-    				bwraw.write(e.getKey() + ": "+e.getValue()+"\n");
-    			}
-    			bwraw.write("\n");
+    			//for (Map.Entry<String, String> e: channelsHit.entrySet()) {
+    				//bwraw.write(e.getKey() + ": "+e.getValue()+"\n");
+    			//}
+    			//bwraw.write("\n");
 			}//end of while
 			
+			int DAQ = Integer.valueOf(detectorId);
 			for (int i = 0; i < tdGroup.size(); i++) {
 				tdGroup.get(i).calculateNBins();
 				tdGroup.get(i).calculateMaxBins();
+				if (DAQ < 6000) {
+					tdGroup.get(i).setBinValue(0.75);
+				} else {
+					tdGroup.get(i).setBinValue(1.25);
+				}
 			}
 			
 		} catch (Exception e) {
-			message = e.getMessage();
+			throw new ElabException("Time Of Flight: analyzeEventFile - "+e.getMessage());
 		}
 	}//end of analyzeEventFile
 	
-	public void setValues(TimeDiff td, Double diff, String label, BufferedWriter bw) {
-		String message = "";
+	public void setValues(TimeDiff td, Double diff, String label) throws ElabException {
 		try {
-	    	bw.write(label+String.valueOf(diff)+"\n");
+	    	//bw.write(label+String.valueOf(diff)+"\n");
 	    	td.add(diff);
 			double newminx = diff * 1.0;
 			if (newminx < td.getMinX()) {
@@ -184,17 +231,11 @@ public class TimeOfFlightDataStream {
 				td.setMaxX(newmax);
 			}
 		} catch (Exception e) {
-			message = e.getMessage();			
+			throw new ElabException("Time Of Flight: setValues - "+e.getMessage());
 		}
 	}//end of setValues
 	
-	public void calculateStats(BufferedWriter bw) {
-		for (int i = 0; i < tdGroup.size(); i++) {
-			tdGroup.get(i).calculateStats();
-		}
-	}//end of calculateStats
-
-	public void saveFileHistogramData(JsonWriter writer, BufferedWriter bw) {
+	public void saveFileHistogramData(JsonWriter writer) throws ElabException {
 		try {
 			writer.beginObject();
 			for (int i = 0; i < tdGroup.size(); i++) {
@@ -204,25 +245,22 @@ public class TimeOfFlightDataStream {
 			}
 			writer.endObject();
 		} catch (Exception e) {
-			System.out.println("Time of Flight: "+e.getMessage());
-		}		
-		
+			throw new ElabException("Time Of Flight: saveFileHistogramData - "+e.getMessage());
+		}				
 	}//end of saveFileHistogramData	
 
-	public void saveTimeDifference(JsonWriter writer, TimeDiff td) {
+	public void saveTimeDifference(JsonWriter writer, TimeDiff td) throws ElabException {
 		try {
 			writer.name("timediff"+td.getName());
 			writer.beginObject();
 			writer.name("label").value("Time Difference "+td.getLabel());
 			writer.name("toggle").value(true);
 			writer.name("idx").value(Integer.parseInt(td.getNdx()));
-			writer.name("mean").value(td.getMean());
-			writer.name("stddev").value(td.getStdDev());
 			writer.name("data");			
 			writer.beginArray();
-			for (int i = 0; i < td.getTimeDifference().size(); i++) {
-				writer.value(td.getTimeDifference().get(i));
-			}
+			//for (int i = 0; i < td.getTimeDifference().size(); i++) {
+			//	writer.value(td.getTimeDifference().get(i));
+			//}
 			writer.endArray();
 			writer.name("data_original");			
 			writer.beginArray();
@@ -230,7 +268,6 @@ public class TimeOfFlightDataStream {
 				writer.value(td.getTimeDifference().get(i));
 			}
 			writer.endArray();
-			writer.name("numberOfEntries").value(td.getTimeDifference().size());
 			writer.name("points");
 			writer.beginObject();
 			writer.name("show").value(true);
@@ -257,10 +294,45 @@ public class TimeOfFlightDataStream {
 			writer.endObject();
 			writer.flush();			
 		} catch (Exception e) {
-			System.out.println("Time of Flight: "+e.getMessage());
+			throw new ElabException("Time Of Flight: saveTimeDifference - "+e.getMessage());
 		}		
 	}//end of saveTimeDifference
 
+	public void saveOutputData(BufferedWriter bw) throws ElabException {
+		try {
+			bw.write("Time Difference ch2-ch1,");
+			bw.write("Time Difference ch3-ch1,");
+			bw.write("Time Difference ch4-ch1,");
+			bw.write("Time Difference ch3-ch2,");
+			bw.write("Time Difference ch4-ch2,");
+			bw.write("Time Difference ch4-ch3\n");
+			int largest = 0;
+			for (int i = 0; i < tdGroup.size(); i++) {
+				if (tdGroup.get(i).getSize() > largest) {
+					largest = tdGroup.get(i).getSize();
+				}
+			}
+			for (int x = 0; x < largest; x++) {
+				for (int y = 0; y < tdGroup.size(); y++) {
+					if (y < tdGroup.size()-1) {
+						if (x < tdGroup.get(y).getSize()) {
+							bw.write(String.valueOf(tdGroup.get(y).getTimeDifference().get(x))+",");						
+						} else {
+							bw.write(",");						
+						}
+					} else {
+						if (x < tdGroup.get(y).getSize()) {
+							bw.write(String.valueOf(tdGroup.get(y).getTimeDifference().get(x)));						
+						} 
+					}
+				}
+				bw.write("\n");						
+			}
+		} catch (Exception e) {
+			throw new ElabException("Time Of Flight: saveOutputData - "+e.getMessage());
+		}
+	}//end of saveOutputData
+	
 	public Long parseToLong(String longvalue)
 	{
 		Long result = 0L;
@@ -284,12 +356,12 @@ public class TimeOfFlightDataStream {
 
 	public class TimeDiff {
 		List<Double> timeDifference;
-		Double binValue, minX, maxX, nBins, mean, stddev, maxBins, sumsquared, sum;
+		Double binValue, minX, maxX, nBins, maxBins;
 		String color, ndx, name, label, symbol;
 		
 		public TimeDiff(String color, String ndx, String name, String label, String symbol) {
 			timeDifference = new ArrayList<Double>();
-			minX = maxX = nBins = mean = stddev = maxBins = sum = sumsquared = 0.0;
+			minX = maxX = nBins = maxBins = 0.0;
 			binValue = 2.0;
 			this.color = color;
 			this.ndx = ndx;
@@ -309,15 +381,6 @@ public class TimeOfFlightDataStream {
 			maxBins = maxX - minX;
 		}
 		
-		public void calculateStats() {
-			for (int i = 0; i < timeDifference.size(); i++) {
-				sum += timeDifference.get(i);
-				sumsquared += (timeDifference.get(i)*timeDifference.get(i));
-			}
-			mean = sum/timeDifference.size();
-			stddev = Math.sqrt(sumsquared/timeDifference.size() - mean*mean);
-		}
-
 		public void add(Double value) {
 			timeDifference.add(value);
 		}
@@ -391,21 +454,7 @@ public class TimeOfFlightDataStream {
 		public Double getNBins() {
 			return nBins;
 		}
-		
-		public void setMean(Double mean) {
-			this.mean = mean;
-		}
-		public Double getMean() {
-			return mean;
-		}
-		
-		public void setStdDev(Double stddev) {
-			this.stddev = stddev;
-		}
-		public Double getStdDev() {
-			return stddev;
-		}
-		
+			
 		public void setMaxBins(Double maxBins) {
 			this.maxBins = maxBins;
 		}
