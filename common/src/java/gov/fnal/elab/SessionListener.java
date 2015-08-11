@@ -17,6 +17,34 @@ public class SessionListener implements HttpSessionListener {
     public static ArrayList getTotalSessionUsers() {
     	return sessions;
     }
+
+    public static int getUserLoginsCount(String username) {
+    	int count = 0;
+    	boolean validSession = true;
+    	if (sessions.size() > 0) {
+    		for (int i = 0; i < sessions.size(); i++) {
+    			HttpSession s = (HttpSession) sessions.get(i);
+    			Enumeration att_names = s.getAttributeNames();
+    			while (att_names.hasMoreElements()) {
+    				String attr = (String) att_names.nextElement();
+    				if (attr.equals("elab")) {
+    					validSession = true;
+    				}
+    			}
+    			if (validSession) {
+    				ElabGroup eu = (ElabGroup) s.getAttribute("elab.user");
+    				if (eu != null) {
+	    				if (eu.getName().equals(username)) {
+	    					count++;
+	    				}
+    				}
+    			}
+    			
+    		}
+    	}
+    	return count;
+    }//end of getUserLoginsCount
+    
     @Override
     public void sessionCreated(HttpSessionEvent event) {
         synchronized (this) {
@@ -35,5 +63,4 @@ public class SessionListener implements HttpSessionListener {
         	}
         }
     }		
-    
 }
