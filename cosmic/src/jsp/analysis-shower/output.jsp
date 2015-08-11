@@ -56,7 +56,8 @@
 	
 	File ecFile = new File((String) analysis.getParameter("eventCandidates"));
 	String ecPath = ecFile.getAbsolutePath();
-	File multiplicitySummary = new File(showerResults.getOutputDir() + "/multiplicitySummary");
+	String outputDir = ecPath.replaceAll("eventCandidates", "");
+	File multiplicitySummary = new File(outputDir + "multiplicitySummary");		
 	EventCandidates ec = EventCandidates.read(ecFile, multiplicitySummary, csc, dir, eventStart, eventNum);
 	
 	Collection rows = ec.getRows();
