@@ -217,7 +217,7 @@ input[type="range"]::-ms-thumb {
     padding: 5px;
     position: absolute;
     z-index: 1000;
-    width:320px;
+    width:350px;
     height:250px;
     overflow: auto;
     border-radius: 5px 5px 5px;
