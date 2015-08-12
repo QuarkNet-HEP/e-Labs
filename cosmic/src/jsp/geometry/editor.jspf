@@ -18,10 +18,30 @@
 	 	</c:if>
 		
 		<div class="subtitle">
-			GPS @ (0,0,0).  Each point represents the center of a counter.<br />
-			<c:if test="${!ro}">
-				Confused? Seeing errors? Please consult the <a href="tutorial.jsp">tutorial</a>.
-			</c:if>			
+			<table border="0">	
+				<tr>
+					<td valign="middle">
+						<font color="blue">If you are using EQUIP for data acquisition, you still need to enter geometry data on this page for use in the Cosmic Ray e-lab.</font>
+					</td>
+				</tr>
+				<tr>
+					<td align="center">
+						GPS is @ (0,0,0).	
+					</td>
+				</tr>
+				<tr>
+					<td align="center">
+						Each point (x,y,z) represents the center of a counter.
+					</td>
+				</tr>	
+				<tr>
+					<td align="center">
+						<c:if test="${!ro}">
+							Confused? Seeing errors? Please consult the <a href="tutorial.jsp">tutorial</a>.
+						</c:if>	
+					</td>
+				</tr>	
+			</table>			
 		</div>
 
 		<div id="channels">
