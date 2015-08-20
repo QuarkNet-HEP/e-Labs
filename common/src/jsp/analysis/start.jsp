@@ -51,11 +51,15 @@
 	    if (cont == null) {
 	        throw new ElabJspException("No continuation specified");
 	    }
+	    String outputType = request.getParameter("outputType");
+	    if (outputType == null) {
+	    	outputType = "output.jsp";
+	    }
 	    if (cont.indexOf('?') != -1) {
-	        cont += "&id=" + run.getId();
+	        cont += "&id=" + run.getId()+"&outputType="+outputType;
 	    }
 	    else {
-	        cont += "?id=" + run.getId();
+	        cont += "?id=" + run.getId()+"&outputType="+outputType;
 	    }
 	    String err = request.getParameter("onError");
 	    if (err == null) {
