@@ -146,7 +146,7 @@ public abstract class CatalogEntry implements Iterable<Tuple> {
         
         public KEY_COMPARATOR(String key, boolean descending) {
         	this.key = key; 
-        	this.descending = true; 
+        	this.descending = descending; 
         }
 
 		@SuppressWarnings("unchecked")
