@@ -1647,6 +1647,36 @@ public class DataTools {
         return getFigureCaption(elab, Arrays.asList(files));
     }
     
+    //EPeronja-08/13/2015: Retrieve the saved plot names by user and project
+    public static ArrayList<String> getPlotNamesByGroup(Elab elab, String group, String project) throws ElabException {
+ 		ResultSet rs = null;
+		ArrayList<String> plotNames = new ArrayList<String>();
+		if (group != null && elab != null && project != null) {
+			In and = new In();
+			and.add(new Equals("project",project));
+			and.add(new Equals("type", "plot"));
+			and.add(new Equals("group", group));
+			rs = elab.getDataCatalogProvider().runQuery(and);
+			if (rs != null && !rs.isEmpty()) {
+            	if (project.equals("ligo")) {
+    				rs.sort("title", false);            		
+            	} else {
+    				rs.sort("name", false);
+            	}
+				Iterator it = rs.iterator();
+				while (it.hasNext()) {
+		            CatalogEntry e = (CatalogEntry) it.next();
+		            String plotName = (String)e.getTupleValue("name");
+	            	if (project.equals("ligo")) {
+	            		plotName = (String)e.getTupleValue("title");
+	            	}
+					plotNames.add(plotName);
+				}
+			}
+		}
+    	return plotNames;
+    }//end of getPlotNamesByGroup
+    
     private static final String[] STRING_ARRAY = new String[0];
 
     /**

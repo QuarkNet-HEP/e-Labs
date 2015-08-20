@@ -479,3 +479,14 @@ p.search-result-bar {
 	border-top: #707070 1px solid;
 	border-left: #707070 1px solid;
 }
+.dropdown {
+    width: 200px;
+    display: inline-block; 
+}
+.dropdown select
+{
+    width: 100%;
+}
+.dropdown > * {
+    box-sizing: box-sizing;
+}

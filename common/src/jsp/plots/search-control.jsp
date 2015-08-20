@@ -8,19 +8,23 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 
 <% 
-SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
-DATEFORMAT.setLenient(false);
-String msg = (String) request.getParameter("msg");
-String project = elab.getName();
-TreeMap<String, String> studyOptions = new TreeMap<String, String>();
-studyOptions.put("flux", "Flux");
-studyOptions.put("lifetime", "Lifetime");
-studyOptions.put("performance", "Performance");
-studyOptions.put("shower", "Shower");
-studyOptions.put("blesschart", "Bless Charts");
-
-request.setAttribute("project", project);
-request.setAttribute("studyOptions", studyOptions);
+	SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
+	DATEFORMAT.setLenient(false);
+	String msg = (String) request.getParameter("msg");
+	String project = elab.getName();
+	TreeMap<String, String> studyOptions = new TreeMap<String, String>();
+	studyOptions.put("flux", "Flux");
+	studyOptions.put("lifetime", "Lifetime");
+	studyOptions.put("performance", "Performance");
+	studyOptions.put("shower", "Shower");
+	studyOptions.put("blesschart", "Bless Charts");
+	studyOptions.put("timeofflight", "Time Of Flight");
+	TreeMap<String, String> sortByOptions = new TreeMap<String, String>();
+	sortByOptions.put("creationdate", "Creation Date");
+	sortByOptions.put("name", "Filename");
+	request.setAttribute("project", project);
+	request.setAttribute("studyOptions", studyOptions);
+	request.setAttribute("sortByOptions", sortByOptions);
 
 %>
 <script type="text/javascript">
@@ -52,6 +56,7 @@ $(function() {
 					'<option name="performance" value="performance">Performance</option>' +					
 					'<option name="shower" value="shower">Shower</option>' +
 					'<option name="blesschart" value="blesschart">Bless Charts</option>' +
+					'<option name="timeofflight" value="timeofflight">Time of Flight</option>' +
 		          	'</select>');
 		} else {
 			$("#name")
@@ -118,8 +123,36 @@ $(function() {
 					<e:trinput name="date1" id="date1" size="10" maxlength="15" class="datepicker" />
 					to
 					<e:trinput name="date2" id="date2" size="10" maxlength="15" class="datepicker" />
-					
+										
 					</td></tr>
+				<tr>
+					<td>Sort By:
+						<select name="sortBy" id="sortBy">
+				          	<c:forEach items="${sortByOptions }" var="sortByOptions">
+				          		<c:choose>
+				          			<c:when test="${sortByOptions.key == param.sortBy }">
+										<option name="${sortByOptions.key}" value="${sortByOptions.key }" selected=true>${sortByOptions.value }</option>
+				          			</c:when>
+				          			<c:otherwise>
+										<option name="${sortByOptions.key}" value="${sortByOptions.key }" >${sortByOptions.value }</option>
+				          			</c:otherwise>
+				          		</c:choose>
+				          	</c:forEach>							
+						</select>
+						<select name="order" id="order">
+							<c:choose>
+								<c:when test='${param.order == "asc" }'>
+									<option value="desc" >Desc</option>
+									<option value="asc" selected=true>Asc</option>
+								</c:when>
+								<c:otherwise>
+									<option value="desc" selected=true>Desc</option>
+									<option value="asc" >Asc</option>
+								</c:otherwise>
+							</c:choose>
+						</select>
+					</td>
+				</tr>
 				</table>
 			</e:hidden>
 		</e:vswitch>
@@ -140,6 +173,9 @@ $(function() {
 			String date1 = request.getParameter("date1");
 			String date2 = request.getParameter("date2");
 	
+			String sortBy = request.getParameter("sortBy");
+			String order = request.getParameter("order");
+			
 			boolean submit = request.getParameter("submit") != null;
 				
 			ResultSet searchResults = null;
@@ -228,7 +264,20 @@ $(function() {
 			}
 	
 			searchResults = elab.getDataCatalogProvider().runQuery(and);
+			
+			if (sortBy != null) {
+				boolean direction = true;
+				if (order != null && order.equals("asc")) {
+					direction = false;
+				}
+				if (searchResults != null) {
+					searchResults.sort(sortBy, direction);
+				}
+			}
+
 			request.setAttribute("searchResults", searchResults);
+			request.setAttribute("sortBy", sortBy);
+			request.setAttribute("order", order);
 			request.setAttribute("msg", msg);			
 			}
 			
