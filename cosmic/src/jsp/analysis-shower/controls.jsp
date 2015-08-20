@@ -188,6 +188,8 @@
 			<!-- EPeronja-10/17/2013: THRESHOLD TEST -->
 			<input type="radio" name="thresholdfile" value="none">Recreate TT file.<br />
 			<input type="radio" name="thresholdfile" value="static" checked="true">Use Static TT file.<br />
+			<input type="radio" name="outputType" value="output.jsp">Current<br />
+			<input type="radio" name="outputType" value="output-light.jsp" checked="true">Light<br />
 			
 		</p>	
 		<%@ include file="../analysis/controls.jsp" %>

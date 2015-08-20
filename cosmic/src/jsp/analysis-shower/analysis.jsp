@@ -13,6 +13,11 @@ String thresholdfile = request.getParameter("thresholdfile");
 if (thresholdfile == null || thresholdfile.equals("")) {
 	thresholdfile = "none";
 }
+String outputType = request.getParameter("outputType");
+if (outputType == null || outputType.equals("")) {
+	outputType = "output.jsp";
+}
+request.setAttribute("outputType",outputType);
 if (thresholdfile.equals("none")) {
 %>	
 <e:analysis name="analysis" type="I2U2.Cosmic::ShowerStudy">
@@ -51,7 +56,7 @@ if (thresholdfile.equals("none")) {
 	<e:trdefault name="sort_sortKey2" value="3"/>
 	
 	<e:ifAnalysisIsOk>
-		<jsp:include page="../analysis/start.jsp?continuation=../analysis-shower/event-choice.jsp?submit=true&onError=../analysis-shower/analysis.jsp"/>
+		<jsp:include page="../analysis/start.jsp?continuation=../analysis-shower/event-choice.jsp?submit=true&outputType=${outputType }&onError=../analysis-shower/analysis.jsp"/>
 	</e:ifAnalysisIsOk>
 	<e:ifAnalysisIsNotOk>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
@@ -195,7 +200,7 @@ if (thresholdfile.equals("none")) {
 	<e:trdefault name="sort_sortKey2" value="3"/>
 	
 	<e:ifAnalysisIsOk>
-		<jsp:include page="../analysis/start.jsp?continuation=../analysis-shower/event-choice.jsp?submit=true&onError=../analysis-shower/analysis.jsp"/>
+		<jsp:include page="../analysis/start.jsp?continuation=../analysis-shower/event-choice.jsp?submit=true&outputType=${outputType }&onError=../analysis-shower/analysis.jsp"/>
 	</e:ifAnalysisIsOk>
 	<e:ifAnalysisIsNotOk>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		

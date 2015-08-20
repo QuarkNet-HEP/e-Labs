@@ -59,7 +59,7 @@
 	String ecPath = ecFile.getAbsolutePath();
 	String outputDir = ecPath.replaceAll("eventCandidates", "");
 	File multiplicitySummary = new File(outputDir + "multiplicitySummary");		
-	EventCandidates ec = EventCandidates.read(ecFile, multiplicitySummary, csc, dir, eventStart, eventNum);
+	EventCandidatesLight ec = EventCandidatesLight.read(ecFile, multiplicitySummary, csc, dir, eventStart, eventNum);
 	
 	Collection rows = ec.getRows();
 	String message = ec.getUserFeedback();
@@ -111,7 +111,6 @@
 	int totalPages = rows.size() / 30;
 	long endTime = System.currentTimeMillis();
 	long totalTime = endTime - startTime;
-
 	ElabMemory em = new ElabMemory();
     em.refresh();
 	String memory = "Total heap memory: "+ String.valueOf(em.getTotalMemory())+"MB<br />"+
@@ -119,7 +118,6 @@
 			"Used heap memory: "+ String.valueOf(em.getUsedMemory())+"MB<br />"+
 			"Free heap memory: "+ String.valueOf(em.getFreeMemory())+"MB.";
 	request.setAttribute("memory", memory);
-
 	
 	request.setAttribute("pageStart", pageStart);	
 	request.setAttribute("totalPages", totalPages);	
@@ -199,22 +197,22 @@
 			<table id="shower-events">
 				<tr>
 					<th width="40%">
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }" >Event Date</a>
+						<a href="output-light.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=0&dir=${(param.sort == '0' && param.dir == 'a') ? 'd' : 'a' }" >Event Date</a>
 					</th>
 					<th width="10%">
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }" >Hit Coincidence</a>
+						<a href="output-light.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=1&dir=${(param.sort == '1' && param.dir == 'd') ? 'a' : 'd' }" >Hit Coincidence</a>
 					</th>
 					<th width="40%">
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }" >Detector Coincidence<br /></a>[Channel Multiplicity]			
+						<a href="output-light.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=2&dir=${(param.sort == '2' && param.dir == 'd') ? 'a' : 'd' }" >Detector Coincidence<br /></a>[Channel Multiplicity]			
 					</th>
 					<th width="10%" style="display: ${displayMultiplicity};" name="advanced">					
-						<a href="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=3&dir=${(param.sort == '3' && param.dir == 'd') ? 'a' : 'd' }" >Multiplicity Totals</a> 
+						<a href="output-light.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${mFilter}&sort=3&dir=${(param.sort == '3' && param.dir == 'd') ? 'a' : 'd' }" >Multiplicity Totals</a> 
 					</th>
 				</tr>
 				<tr>
 					<td colspan="2"></td>
 					<td>
-					 	<input type="hidden" name="restoreOutput" id="restoreOutput" value="output.jsp?id=${param.id}&showerId=${param.showerId}"></input>
+					 	<input type="hidden" name="restoreOutput" id="restoreOutput" value="output-light.jsp?id=${param.id}&showerId=${param.showerId}"></input>
 						<c:choose>
 							<c:when test='${mFilter != null && mFilter != "" }'>
 								<input type="checkbox" name="viewAdvanced" id="viewAdvanced" checked> View Multiplicity Totals</input>
@@ -229,19 +227,19 @@
 							<select name="mFilter" id="mFilter" onchange="location = this.options[this.selectedIndex].value;">
 								<c:choose>
 									<c:when test='${param.mFilter != null && param.mFilter== "" }'>
-										<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=0" selected>All</option>
+										<option value="output-light.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=0" selected>All</option>
 									</c:when>
 									<c:otherwise>
-										<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=0">All</option>
+										<option value="output-light.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=0">All</option>
 									</c:otherwise>
 								</c:choose>
 								<c:forEach items="${multiplicityFilter }" var="filter">
 									<c:choose>
 										<c:when test='${mFilter != null && mFilter == filter}'>
-											<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${filter }" selected>${filter }</option>
+											<option value="output-light.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${filter }" selected>${filter }</option>
 										</c:when>
 										<c:otherwise>
-											<option value="output.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${filter }">${filter }</option>
+											<option value="output-light.jsp?id=${param.id}&showerId=${param.showerId}&mFilter=${filter }">${filter }</option>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>

@@ -13,7 +13,11 @@
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
 <%
-	
+String outputType = request.getParameter("outputType");
+if (outputType == null || outputType.equals("")) {
+	outputType = "output.jsp";
+}	
+request.setAttribute("outputType",outputType);
 %>
 	
 <e:analysis name="analysis" type="I2U2.Cosmic::EventPlot">
@@ -84,7 +88,7 @@
 	    <e:trdefault name="plot_plot_type" value="${shower.parameters.plot_plot_type}"/>
 	    <e:trdefault name="zeroZeroZeroID" value="${shower.parameters.zeroZeroZeroID}"/>
 	<e:ifAnalysisIsOk>
-		<jsp:include page="../analysis/start.jsp?continuation=../analysis-shower/output.jsp?showerId=${param.id}&mFilter=${mFilter}&onError=../analysis-shower/analysis.jsp"/>
+		<jsp:include page="../analysis/start.jsp?continuation=../analysis-shower/${outputType}?showerId=${param.id}&mFilter=${mFilter}&onError=../analysis-shower/analysis.jsp"/>
 	</e:ifAnalysisIsOk>
 	<e:ifAnalysisIsNotOk>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
