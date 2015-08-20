@@ -474,7 +474,8 @@ public class GeoEntryBean implements Serializable {
     }
 
     public boolean isLatitudeValid() {
-        if (latitude == null
+    	//EPeronja-08/20/2015: If the format changes, please check the EventChoice.pl still works after your change
+    	if (latitude == null
                 || !latitude.matches("\\d{1,3}:\\d{1,3}\\.\\d{1,6} (N|S)")) {
             addError(GeometryErrors.ERROR_LATITUDE);
             return false;
@@ -485,6 +486,7 @@ public class GeoEntryBean implements Serializable {
     }
 
     public boolean isLongitudeValid() {
+    	//EPeronja-08/20/2015: If the format changes, please check the EventChoice.pl still works after your change    	
         if (longitude == null
                 || !longitude.matches("\\d{1,3}:\\d{1,3}\\.\\d{1,6} (E|W)")) {
             addError(GeometryErrors.ERROR_LONGITUDE);
