@@ -111,6 +111,15 @@
 	int totalPages = rows.size() / 30;
 	long endTime = System.currentTimeMillis();
 	long totalTime = endTime - startTime;
+
+	ElabMemory em = new ElabMemory();
+    em.refresh();
+	String memory = "Total heap memory: "+ String.valueOf(em.getTotalMemory())+"MB<br />"+
+			"Max heap memory: "+ String.valueOf(em.getMaxMemory())+"MB<br />"+
+			"Used heap memory: "+ String.valueOf(em.getUsedMemory())+"MB<br />"+
+			"Free heap memory: "+ String.valueOf(em.getFreeMemory())+"MB.";
+	request.setAttribute("memory", memory);
+
 	
 	request.setAttribute("pageStart", pageStart);	
 	request.setAttribute("totalPages", totalPages);	
@@ -308,7 +317,8 @@
 </table>
 <p>
 	Analysis run time: ${showerResults.formattedRunTime}; estimated: ${showerResults.formattedEstimatedRunTime}<br />
-	EventCandidates Time: ${totalTime }
+	EventCandidates Time: ${totalTime }<br />
+	${memory }
 </p>
 <p>
 	Show <e:popup href="../analysis/show-dir.jsp?id=${showerResults.id}" target="analysisdir" 
