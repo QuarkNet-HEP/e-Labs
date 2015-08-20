@@ -62,7 +62,10 @@
         	ecDir = (String) entry.getTupleValue("ecDir");
         	ecFullPath = ecDir + '/' + eventCandidates;
         	File ecFile = new File(ecFullPath);
-        	EventCandidates ec = EventCandidates.read(ecFile, 1, -1, eventStart, eventNum);
+        	String ecPath = ecFile.getAbsolutePath();
+        	String outputDir = ecPath.replaceAll("eventCandidates", "");
+        	File multiplicitySummary = new File(outputDir + "multiplicitySummary");		
+        	EventCandidates ec = EventCandidates.read(ecFile, multiplicitySummary, 1, -1, eventStart, eventNum);
         	rows = ec.getRows();
         	request.setAttribute("rows", rows);
         	request.setAttribute("ecUrl", ecUrl);
