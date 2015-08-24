@@ -93,7 +93,7 @@ function setSelectedDetector(selectObject){
 
 function addBenchmarkFiles(detector, fromDateObject, toDateObject) {
 	if (detector != "" && detector  != "none") {
-		console.log(detector);
+		//console.log(detector);
 		var fromDate = document.getElementById(fromDateObject);
 		var toDate = document.getElementById(toDateObject);
 		var params = 'dialogWidth:1000px;dialogHeight:750px;dialogTop:10px;dialogLeft:150px';
