@@ -23,7 +23,6 @@
 			relative_urls: false,
 			remove_script_host: false,
 			convert_urls: false,
-			
 			theme_advanced_buttons1 : ",italic,underline,|,bullist,numlist,|,sub,sup,|,cleanup,code,|,fmath_formula,|,table,tablecontrols",
 			theme_advanced_buttons2 : "",
 			theme_advanced_buttons3 : "", 
@@ -333,31 +332,35 @@
 %>
 	<!-- Show instructions -->
 	<ul>
-		<li>
+		 <li>
 			Fill in all the fields including Poster File Name if it is missing.  
 			This is the name the poster file will get on the server. If you are 
 			making a new poster, do not use a name you have already used. To
      	            see the posters you have made, click <b>Edit Posters</b> above.
      	        </li>
-     	  <li>
+     	 <li>
 			<%@ include file="../posters/poster-example.jspf" %>
 		 </li>
-			 <li>Be sure to write a good <a href="javascript:glossary('abstract',300)">abstract</a>.
-		</li>
-
-		<li>
+		 <li>
+		 	Be sure to write a good <a href="javascript:glossary('abstract',300)">abstract</a>.
+		 </li>
+		 <li>
+			Research Citation (Purdue University):  <a target="_blank" href="https://owl.english.purdue.edu/owl/resource/560/01/">APA Formatting and Style Guide</a> 
+			& <a target="_blank" href="https://owl.english.purdue.edu/owl/resource/747/01/">MLA Formatting and Style Guide</a>.
+		 </li>
+		 <li>
 			To view the plots that you might want to include for the figures 
 			in your poster, click <b>View Plots</b> in the navigation bar. 
 			You can fill in fields for up to five figures. You don't have to 
 			fill them all in.
-		</li>
-		<li>
+		 </li>
+		 <li>
 			Composing your text in <strong>Microsoft Word</strong>?. Set the
 			font to <strong>Arial 12</strong>.
-		</li>
-		<li>
+		 </li>
+		 <li>
 			Click <b>${edit?'Save Changes':'Make Poster'}</b> to save the data for the poster and display your poster. If you have "pop-ups" blocked, you will need to click on </b>Display Poster</b> below.
-		</li>
+		 </li>
 	</ul>
 
 
