@@ -87,12 +87,18 @@ sub getxyz {
 	my @longarray = split /\./, $curr_inforef->{'long'};
 	my @zero_latarray = split /\./, $zero_inforef->{'lat'};
 	my @zero_longarray = split /\./, $zero_inforef->{'long'};
-	my $currlat = $latarray[0]+$latarray[1]/60+$latarray[2]/1000/60;	#current lattitude for use in deg2meters
+	#pad the last part with trailing zeros to complete 6 digits: this is the maximum allowed in the geometry
+	#then we can safely divide by 1000000
+	$latarraypadded = substr($latarray[2] . "0" x 6, 0, 6);
+	$zerolatarraypadded = substr($zero_latarray[2] . "0" x 6, 0, 6);
+	$longarraypadded = substr($longarray[2] . "0" x 6, 0, 6);
+	$zerolongarraypadded = substr($zero_longarray[2] . "0" x 6, 0, 6);
 
+	$currlat = $latarray[0]+$latarray[1]/60+$latarraypadded/1000000/60;	#current lattitude for use in deg2meters
 	#calculate lalitude offset from zero_zero_zero point (of GPS)
-	my $latoff =  $currlat - ($zero_latarray[0]+$zero_latarray[1]/60+$zero_latarray[2]/1000/60);
+	my $latoff =  $currlat - ($zero_latarray[0]+$zero_latarray[1]/60+$zerolatarraypadded/1000000/60);
 	#calculate longitude offset from zero_zero_zero point (of GPS)
-	my $longoff = ($longarray[0]+$longarray[1]/60+$longarray[2]/1000/60) - ($zero_longarray[0]+$zero_longarray[1]/60+$zero_longarray[2]/1000/60);
+	my $longoff = ($longarray[0]+$longarray[1]/60+$longarraypadded/1000000/60) - ($zero_longarray[0]+$zero_longarray[1]/60+$zerolongarraypadded/1000000/60);
 	#calculate absolute y offset in meters (of GPS)
 	my $yoff = &deg2meters($latoff, $currlat);
 	#calculate absolute x offset in meters (of GPS)
