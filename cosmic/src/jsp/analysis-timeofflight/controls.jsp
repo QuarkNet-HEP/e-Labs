@@ -16,13 +16,40 @@
 	            + e.getTupleValue("state") + " (" + did + ")");
 	}
 	Collection availableChannels = AnalysisParameterTools.getValidChannels(elab, rawData);
-
-	request.setAttribute("availableChannels", availableChannels.size());
+	String channelsRequire = (String) analysis.getParameter("singleChannel_require");
+	String channelsVeto = (String) analysis.getParameter("singleChannel_veto");
+	if (channelsRequire == null) {
+		channelsRequire = "";
+	}
+	if (channelsVeto == null) {
+		channelsVeto = "";
+	}
+	TreeMap<String,String> channelsRequireInfo = new TreeMap<String,String>();
+	TreeMap<String,String> channelsVetoInfo = new TreeMap<String,String>();
+	for (Iterator it= availableChannels.iterator(); it.hasNext();) {
+		String chan = it.next().toString();
+		if (channelsRequire.indexOf(chan) != -1) {
+			channelsRequireInfo.put(chan, "checked");
+		} else {
+			channelsRequireInfo.put(chan, "");
+		}
+		if (channelsVeto.indexOf(chan) != -1) {
+			channelsVetoInfo.put(chan, "checked");
+		} else {
+			channelsVetoInfo.put(chan, "");
+		}
+	}
+	
+	request.setAttribute("availableChannelsSize", availableChannels.size());
+	request.setAttribute("validChannelsRequire", channelsRequireInfo);
+	request.setAttribute("validChannelsVeto", channelsVetoInfo);
 	
 %>
+<script type="text/javascript" src="../include/jquery/flot083/jquery.js"></script>		
+<script type="text/javascript" src="../analysis-timeofflight/controls.js"></script>		
 
 <c:choose>
-	<c:when test="${availableChannels > 1 }">
+	<c:when test="${availableChannelsSize > 1 }">
 	<div id="analysis-controls">
 		<form method="post" action="../analysis-timeofflight/analysis.jsp">
 			<e:trinput type="hidden" name="rawData"/>
@@ -57,17 +84,6 @@
 											onError="Must be an integer"/>
 									</td>
 								</tr>
-	<!--  
-								<tr>
-									<td class="form-label">
-										<e:trlabel for="detectorCoincidence" name="Detector Coincidence">Detector Coincidence:</e:trlabel>
-									</td>
-									<td class="form-control">
-										<e:trinput type="text" name="detectorCoincidence" size="8" default="1"
-											onError="Must be a positive integer"/>
-									</td>
-								</tr>
-	-->
 								<tr>
 									<td class="form-label">
 										<e:trlabel for="channelCoincidence" name="Channel Coincidence">Channel Coincidence:</e:trlabel>
@@ -77,19 +93,37 @@
 											onError="Must be a positive integer"/>
 									</td>
 								</tr>
-	<!--  
 								<tr>
 									<td class="form-label">
-										<e:trlabel for="eventCoincidence" name="Coincidence Level">Event Coincidence:</e:trlabel>
+										<e:trlabel for="softTriggers" name="Soft Triggers">Define Soft Triggers?</e:trlabel>
 									</td>
-									<td class="form-control">
-										<e:trinput type="text" name="eventCoincidence" size="8" default="2"
-											onError="Must be an integer"/>
+									<td></td>
+								</tr>
+								<tr>
+									<td class="form-label">
+										<label for="softTriggersRequireControls" name="RequireChannelLabel">Require Channels:</label>
+									</td>
+									<td>
+										<div id="softTriggersRequireControls" style="text-align: left;">
+											<c:forEach items="${validChannelsRequire }" var="vcr">
+												${vcr.key} <input type="checkbox" name="singleChannel_require${vcr.key}" id="require${vcr.key}" ${vcr.value }>											
+											</c:forEach>
+										</div>
 									</td>
 								</tr>
-	-->
+								<tr>
+									<td class="form-label">
+										<label for="softTriggersVetoControls" name="VetoChannelLabel">Veto Channels:</label>
+									</td>
+									<td>
+										<div id="softTriggersVetoControls" style="text-align: left;">
+											<c:forEach items="${validChannelsVeto }" var="vcv">
+												${vcv.key}  <input type="checkbox" name="singleChannel_veto${vcv.key}" id="veto${vcv.key}" ${vcv.value }>											
+											</c:forEach>
+										</div>
+									</td>
+								</tr>
 								<input type="hidden" name="detectorCoincidence" size="8" value="1" />
-								<input type="hidden" name="channelCoincidence" size="8" value="4" />
 								<input type="hidden" name="eventCoincidence" size="8" value="1" />
 							</table>
 						</e:hidden>
@@ -105,71 +139,6 @@
 						<e:hidden>
 							<strong>Plot Controls</strong>
 							<table>
-<!--
-								<tr>
-									<td class="form-label">
-										<e:trlabel for="plot_lowX" name="X-min">X-min:</e:trlabel>
-									</td>
-									<td class="form-control">
-										<e:trinput type="text" name="plot_lowX" size="8" maxlength="8"
-											onError="Enter a positive number"/>
-									</td>
-								</tr>
-								<tr>
-									<td class="form-label">
-										<e:trlabel for="plot_highX" name="X-max">X-max:</e:trlabel>
-									</td>
-									<td class="form-control">
-										<e:trinput type="text" name="plot_highX" size="8" maxlength="8"
-											onError="Enter a positive number"/>
-									</td>
-								</tr>
-								<tr>
-									<td class="form-label">
-										<e:trlabel for="plot_lowY" name="Y-min">Y-min:</e:trlabel>
-									</td>
-									<td class="form-control">
-										<e:trinput type="text" name="plot_lowY" size="8" maxlength="8"
-											onError="Must be an integer"/>
-									</td>
-								</tr>
-								<tr>
-									<td class="form-label">
-										<e:trlabel for="plot_highY" name="Y-max">Y-max:</e:trlabel>
-									</td>
-									<td class="form-control">
-										<e:trinput type="text" name="plot_highY" size="8" maxlength="8"
-											onError="Must be an integer"/>
-									</td>
-								</tr>
-								<tr>
-									<td class="form-label">
-										<e:trlabel for="plot_lowZ" name="Z-min">Z-min:</e:trlabel>
-									</td>
-									<td class="form-control">
-										<e:trinput type="text" name="plot_lowZ" size="8" maxlength="8"
-											onError="Must be an integer"/>
-									</td>
-								</tr>
-								<tr>
-									<td class="form-label">
-										<e:trlabel for="plot_highZ" name="Z-max">Z-max:</e:trlabel>
-									</td>
-									<td class="form-control">
-										<e:trinput type="text" name="plot_highZ" size="8" maxlength="8"
-											onError="Must be an integer"/>
-									</td>
-								</tr>
-								<tr>
-									<td class="form-label">
-										<label for="plot_size">Plot Size:</label>
-									</td>
-									<td class="form-control">
-										<e:trselect valueList="300, 600, 800" labelList="Small, Medium, Large"
-											name="plot_size" default="600"/>
-									</td>
-								</tr>
--->
 								<tr>
 									<td class="form-label">
 										<label for="plot_title">Plot Title:</label>
@@ -184,14 +153,14 @@
 										<label for="plot_caption">Figure caption:</label>
 									</td>
 									<td class="form-control">
-										<e:trtextarea name="plot_caption" rows="5" cols="30"><e:default>
+										<e:trtextarea name="plot_caption" rows="5" cols="30">
+										<e:default>
 	<%= DataTools.getFigureCaption(elab, ((ElabAnalysis) request.getAttribute("analysis")).getParameterValues("rawData")) %>
 	<e:analysisParamLabel name="zeroZeroZeroID"/>
-	<e:analysisParamLabel name="detectorCoincidence"/>
-	<e:analysisParamLabel name="channelCoincidence" />
-	<e:analysisParamLabel name="eventCoincidence"/>
 	<e:analysisParamLabel name="gate"/>
-										</e:default></e:trtextarea>
+	<e:analysisParamLabel name="channelCoincidence"/>
+										</e:default>										
+										</e:trtextarea>
 									</td>
 								</tr>
 							</table>
@@ -199,15 +168,30 @@
 					</e:vswitch>
 				</e:tr>
 			</p>
+			<input type="hidden" name="provider" value="swift"/>
+			<table id="swift-run-mode" width="100%" align="center" >
+				<tr>
+					<td align="left" style="display: none;">
+						<input type="radio" name="runMode" value="local" checked/> Local 
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Estimated time: <e:analysisRunTimeEstimator engine="swift" mode="local"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<!-- this MUST be used if all the elab:tr* stuff is to work                      -->
+						<!-- it ensures that the name of the submit button is the right thing ("submit") -->
+						<e:trsubmit/>					
+					</td>
+				</tr>
+			</table>
 	
-			<%@ include file="../analysis/controls.jsp" %>
-			<p>
-				<!-- this MUST be used if all the elab:tr* stuff is to work                      -->
-				<!-- it ensures that the name of the submit button is the right thing ("submit") -->
-				<e:trsubmit/>
-			</p>
 		</form>
 	</div>
+	<div id="message"></div>
 </c:when>
 <c:otherwise>
 	<div>
