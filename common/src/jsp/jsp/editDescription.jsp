@@ -5,27 +5,23 @@
 <%@ page import="org.griphyn.vdl.directive.*" %>
 <%@ page import="org.griphyn.vdl.annotation.*" %>
 <%@ page import="org.griphyn.common.util.Separator" %>
-
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/admin-login-required.jsp" %>
-     
-<head>
-	<title>Edit descriptions</title>
-	<link rel="stylesheet"  href="include/styletut.css" type="text/css">
-</head>
-
+<%@ page import="gov.fnal.elab.*" %>
+<%@ page import="gov.fnal.elab.notifications.*" %>
 <%
 	String primary = request.getParameter("tr");
 	String secondary = request.getParameter("arg");
 	String op = request.getParameter("op");
 	String text = request.getParameter("text");
-	  
+	String message = "";
+	
 	if (op == null) {
-		op = "Show";
+		op = "";
 	}
 	if (op.equals("Show")) {
 		if (primary == null || secondary == null) {
-			%> <div class="error">Missing transformation and/or argument name</div> <%
+			message= "<i>*Missing transformation and/or argument name</i>";
 		}
 		else {
 			String schemaName = ChimeraProperties.instance().getVDCSchemaName();
@@ -34,7 +30,7 @@
 			Annotation annotation = null;
 
 			if (! (dbschema instanceof Annotation)) {
-            	%> <div class="error">The VDC does not support annotations</div><%
+				message= "<i>*The VDC does not support annotation</i>";
 			} 
 			else {
 				try {
@@ -51,7 +47,7 @@
 					}
 				}
 				catch (Exception e) {
-					out.write("<div class=\"error\">" + e.getMessage() + "</div>");
+					message= "<i>*"+e.getMessage()+"</i>";
 				}
 			}
 			if (dbschema != null) {
@@ -64,7 +60,7 @@
 	}
 	else if (op.equals("Update")) {
 		if (primary == null || secondary == null) {
-			%> <div class="error">Missing transformation and/or argument name</div> <%
+			message= "<i>*Missing transformation and/or argument name</i>";
 		}
 		else {
 			String schemaName = ChimeraProperties.instance().getVDCSchemaName();
@@ -73,17 +69,17 @@
 			Annotation annotation = null;
 
 			if (! (dbschema instanceof Annotation)) {
-            	%> <div class="error">The VDC does not support annotations</div> <%
+				message= "<i>*The VDC does not support annotations</i>";
 			} 
 			else {
 				try {
 					annotation = (Annotation) dbschema;
 					Tuple t = new TupleString("description", text);
 					annotation.saveAnnotation(primary, secondary, Annotation.CLASS_DECLARE, t, true);
-					out.write("<div class=\"message\">Description updated successfully</div>");
+					message= "<i>*Description updated successfully</i>";
 				}
 				catch (Exception e) {
-					out.write("<div class=\"error\">" + e.getMessage() + "</div>");
+					message= "<i>*"+ e.getMessage() + "</i>";
 				}
 			}
 			if (dbschema != null) {
@@ -95,26 +91,67 @@
 		}
 	}
 	pageContext.setAttribute("text", text);
+	request.setAttribute("message", message);
+	
 	%>
-		<form>
-			<p>
-				<label for="tr">Transformation</label>
-				<input type="text" name="tr" size="40" value="${param.tr}"/>
-			</p>
-			<p>
-				<label for="arg">Argument name</label>
-				<input type="text" name="arg" size="40" value="${param.arg}"/>
-			</p>
-			<p>
-				<textarea name="text" cols="80" rows="25">${text}</textarea>
-			</p>
-			<p>
-				<input type="submit" name="op" value="Show"/>
-				<input type="submit" name="op" value="Update"/>
-			</p>
-		</form>
-	<%
-%>
-</font>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Edit Descriptions</title>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
+		<link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
+		<link rel="stylesheet"  href="include/styletut.css" type="text/css">
+		<script>
+			function clearAll() {
+				document.getElementById("tr").value = "";
+				document.getElementById("arg").value = "";
+				document.getElementById("text").value = "";			
+			}
+		</script>
+	</head>
+	
+	<body id="administration" class="teacher">
+		<!-- entire page container -->
+		<div id="container">
+			<div id="top">
+				<div id="header">
+					<%@ include file="../include/header.jsp" %>
+					<div id="nav">
+						<%@ include file="../include/nav-teacher.jsp" %>
+					</div>
+				</div>
+			</div>
+			
+			<div id="content"> 
+     
+				<form>
+					<p>
+						<label for="tr">Transformation</label>
+						<input type="text" name="tr" id="tr" size="40" value="${param.tr}"/>
+					</p>
+					<p>
+						<label for="arg">Argument name</label>
+						<input type="text" name="arg" id="arg" size="40" value="${param.arg}"/>
+					</p>
+					<p>
+						<textarea name="text" cols="80" id="text" rows="25">${text}</textarea>
+					</p>
+					<p>
+						<input type="submit" name="op" value="Show"/>
+						<input type="submit" name="op" value="Update"/>
+						<input type="button" name="op" value="Clear" onclick="clearAll();"/>
+					</p>
+				</form>
+			</div>
+			<!-- end content -->	
+			<c:if test="${not empty message }">
+				<div>${message}</div>
+			</c:if>
+			<div id="footer">
+			</div>
+		</div>
+		<!-- end container -->
 </body>
 </html>
