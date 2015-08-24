@@ -131,10 +131,17 @@ $(function() {
 				          	<c:forEach items="${sortByOptions }" var="sortByOptions">
 				          		<c:choose>
 				          			<c:when test="${sortByOptions.key == param.sortBy }">
-										<option name="${sortByOptions.key}" value="${sortByOptions.key }" selected=true>${sortByOptions.value }</option>
+										<option value="${sortByOptions.key }" selected=true>${sortByOptions.value }</option>
 				          			</c:when>
 				          			<c:otherwise>
-										<option name="${sortByOptions.key}" value="${sortByOptions.key }" >${sortByOptions.value }</option>
+				          				<c:choose>
+				          					<c:when test='${sortByOptions.key == "creationdate"}'>
+												<option value="${sortByOptions.key }" selected=true>${sortByOptions.value }</option>
+				          					</c:when>
+				          					<c:otherwise>
+												<option value="${sortByOptions.key }" >${sortByOptions.value }</option>
+				          					</c:otherwise>
+				          				</c:choose>
 				          			</c:otherwise>
 				          		</c:choose>
 				          	</c:forEach>							
@@ -273,6 +280,8 @@ $(function() {
 				if (searchResults != null) {
 					searchResults.sort(sortBy, direction);
 				}
+			} else {
+				searchResults.sort("creationdate", true);				
 			}
 
 			request.setAttribute("searchResults", searchResults);
