@@ -104,6 +104,7 @@ togglePlot = function(seriesIdx) {
 }//end of togglePlot
 
 function onDataLoad1() {
+	spinnerOn();
 	loadJSON(function(response) {
 		JSON.parseAsync(response, function(json) {
 			onDataLoad(json);
@@ -222,6 +223,7 @@ function onDataLoad(json) {
 		refresh();			
 	});	
     bindEverything();
+    spinnerOff();
 }//end of onDataLoad	
 
 function setSliders(minX, maxX) {
