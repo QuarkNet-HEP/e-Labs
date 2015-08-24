@@ -61,6 +61,13 @@
 								and  <a href="../analysis-lifetime/tutorial.jsp">Tutorial</a>
 								- Discover how to read a <b>Lifetime Study </b> graph. 
 							</li>
+							<li>
+           						<e:popup href="../analysis-timeofflight/tryit.html" 
+           							target="TryIt" width="520" height="600">Step-by-Step Instructions</e:popup>
+								and  <a href="../analysis-timeofflight/tutorial.jsp">Tutorial</a>
+								- Learn how to understand the results of a <b>Time of Flight Study </b>. 
+							</li>
+							
 							
 							
 							<c:if test="${user.upload}">
