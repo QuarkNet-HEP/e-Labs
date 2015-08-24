@@ -287,7 +287,7 @@ public class TimeOfFlightDataStream {
 			writer.name("maxBins").value(td.getMaxBins());
 			writer.name("bins");
 			writer.beginArray();
-			for (Double i = Math.floor(td.getMinX()); i < Math.ceil(td.getMaxX()); i+=td.getBinValue()) {
+			for (Double i = Math.floor(td.getMinX()); i < Math.floor(td.getMaxX()+td.getBinValue()); i+=td.getBinValue()) {
 				writer.value(i);
 			}
 			writer.endArray();				
