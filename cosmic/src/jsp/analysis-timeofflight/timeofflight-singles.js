@@ -1,6 +1,6 @@
 var tofCollection = [];
 var options = "";
-var mean, deviation, numberOfEntries;
+var minx, maxx, mean, deviation, numberOfEntries;
 var yAxisLabel = "number of entries/time bin";
 var xAxisLabel = "relative time between channels (ns)";
 var currentBinValue = 1.25;
@@ -39,7 +39,7 @@ function onDataLoad(json) {
 function buildIndividualDataSets(timediff, ndx, div) {
 	if (timediff != null) {
 		tofCollection.push({onOffPlot: "", timeDiff: timediff, data: "", originalMinX: timediff.minX, originalMaxX: 0,
-				originalMinY: timediff.maxX, originalMaxY: 0, numberOfEntries: 0, mean: 0, stddev: 0, label: timediff.label, 
+				originalMinY: timediff.minY, originalMaxY: 0, numberOfEntries: 0, mean: 0, stddev: 0, label: timediff.label, 
 				maxBins: timediff.maxBins, binValue: timediff.binValue, ndx: ndx, chart: div, currentBinValue: timediff.binValue});
 		buildTimeDiff(timediff, ndx);
 	} else {
@@ -51,7 +51,7 @@ function buildIndividualDataSets(timediff, ndx, div) {
 function buildTimeDiff(timediff, diffNum) {
 	data = [];
 	if (timediff != null) {
-		timediff.data = getDataWithBins(timediff.data_original, timediff.binValue, timediff.minX, timediff.maxX, timediff.nBins, timediff.nBins);
+		timediff.data = getDataWithBins(timediff.data_original, timediff.binValue, timediff.minX, timediff.maxX, timediff.nBins, timediff.bins);
 		data.push(timediff);
 		tofCollection[diffNum-1].data = data;
 	}
@@ -87,6 +87,8 @@ function setDataStats(ndx) {
 	tofCollection[ndx-1].mean = mean;
 	tofCollection[ndx-1].stddev = deviation;
 	tofCollection[ndx-1].numberOfEntries = numberOfEntries;
+	tofCollection[ndx-1].originalMinX = minx;
+	tofCollection[ndx-1].originalMaxX = maxx;
 	tofCollection[ndx-1].originalMinY = tofCollection[ndx-1].onOffPlot.getAxes().yaxis.min;
 	tofCollection[ndx-1].originalMaxY = tofCollection[ndx-1].onOffPlot.getAxes().yaxis.max;
 }//end of setDataStats
@@ -106,6 +108,8 @@ function getDataWithBins(rawData, localBinValue, minX, maxX, nBins, bins) {
 		var histogram = d3.layout.histogram();
 		histogram.bins(bins);
 		var data = histogram(rawData);
+		minx = Math.min.apply(Math,rawData);
+		maxx = Math.max.apply(Math,rawData);
 		mean = d3.mean(rawData);
 		deviation = d3.deviation(rawData);
 		numberOfEntries = rawData.length;
@@ -122,7 +126,7 @@ function reBinData(binValue, diffNum, timediff, data, onOffPlot) {
 	  	var plotData = onOffPlot.getData();
 		bins = [];
 		nBins = Math.ceil(timediff.maxBins / binValue);
-		for (var i = (timediff.minX*1.00000)+0.00001; i < (timediff.maxX*1.00000+binValue*1.00000); i += (binValue*1.00000)) {
+		for (var i = (timediff.minX*1.00); i < (timediff.maxX*1.00+binValue*1.00); i += (binValue*1.00)) {
 			bins.push(i);
 		}
 		data = [];
@@ -235,8 +239,12 @@ redrawPlotFitX = function(ndx, newMinX, newMaxX) {
 	localdata = [];
 	if (original != null) {
 		var fittedData = fitData(original.data_original, newMinX, newMaxX);
-		nBins = Math.ceil((newMaxX - newMinX) / tofCollection[ndx-1].currentBinValue);
-		original.data = getDataWithBins(fittedData, tofCollection[ndx-1].currentBinValue, newMinX, newMaxX, nBins, nBins);
+		var nBins = Math.ceil((newMaxX - newMinX) / tofCollection[ndx-1].currentBinValue);
+		var bins = [];		
+		for (var i = (newMinX*1.00); i < (newMaxX*1.00+binValue); i += (binValue)) {
+			bins.push(i);
+		}
+		original.data = getDataWithBins(fittedData, tofCollection[ndx-1].currentBinValue, newMinX, newMaxX, nBins, bins);
    		setDataStats(ndx);
    		setStatsLegend(ndx);	      		
    		localdata.push(original);
@@ -268,7 +276,7 @@ resetAll = function(ndx) {
 	original = tofCollection[ndx-1].timeDiff;
 	localdata = [];
 	if (original != null) {
-		original.data = getDataWithBins(original.data_original, original.binValue, original.minX, original.maxX, original.nBins, original.nBins);
+		original.data = getDataWithBins(original.data_original, original.binValue, original.minX, original.maxX, original.nBins, original.bins);
    		setDataStats(ndx);
    		setStatsLegend(ndx);	      		
    		localdata.push(original);
