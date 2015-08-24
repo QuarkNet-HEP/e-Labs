@@ -1,6 +1,6 @@
+var tofCollection = [];
 var onOffPlot;
 var overviewPlot;
-var timeDiff1, timeDiff2, timeDiff3, timeDiff4, timeDiff5, timeDiff6;
 var data = []; //data that will be sent to the chart
 var original_data = [];
 var options = "";
@@ -13,6 +13,102 @@ var binValue = 0;
 var originalBinValue = 2;
 var minXCombined = 0;
 var maxXCombined = 0;
+
+function onDataLoad1() {
+	spinnerOn();	
+	loadJSON(function(response) {
+		JSON.parseAsync(response, function(json) {
+			onDataLoad(json);
+		});
+	});
+}//end of onDataLoad1
+
+function loadJSON(callback) {   
+    var xobj = new XMLHttpRequest();
+	var outputDir = document.getElementById("outputDir");
+    xobj.overrideMimeType("application/json");
+    xobj.open('GET', outputDir.value+"/timeOfFlightPlotData", true); 
+    xobj.onreadystatechange = function () {
+          if (xobj.readyState == 4 && xobj.status == "200") {
+            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+            callback(xobj.responseText);
+          }
+    };
+    xobj.send(null);  
+ }//end of loadJSON
+
+function onDataLoad(json) {	
+	buildTimeDiff(json,json.timediff1,data);
+	buildTimeDiff(json,json.timediff2,data);
+	buildTimeDiff(json,json.timediff3,data);
+	buildTimeDiff(json,json.timediff4,data);
+	buildTimeDiff(json,json.timediff5,data);
+	buildTimeDiff(json,json.timediff6,data);
+	bindEverything(json);
+	original_data = data;
+	spinnerOff();
+}//end of onDataLoad	
+
+function buildTimeDiff(json, timediff, data) {
+	if (timediff != null) {
+		timediff.data = getDataWithBins(timediff.data_original, timediff.binValue, timediff.minX, timediff.maxX, timediff.nBins, timediff.nBins);
+		data.push(timediff);
+		if (timediff.maxX > maxXCombined) {
+			maxXCombined = timediff.maxX;
+		}
+		if (timediff.minX < minXCombined) {
+			minXCombined = timediff.minX;
+		}
+		if (timediff.maxBins > maxBins) {
+			maxBins = timediff.maxBins;
+		}
+		binValue = timediff.binValue;
+		tofCollection.push({timeDiff: timediff});
+	}
+}
+
+function getDataWithBins(rawData, localBinValue, minX, maxX, nBins, bins) {
+	//create histogram datax
+    var outputFinal = [];
+	if (rawData != null) {
+		binValue = localBinValue;
+		var histogram = d3.layout.histogram();
+		histogram.bins(bins);
+		var data = histogram(rawData);
+		for ( var i = 0; i < data.length; i++ ) {
+	    	outputFinal.push([data[i].x, data[i].y]);
+	    	outputFinal.push([data[i].x + data[i].dx, data[i].y]);
+	    	if ((data[i].y + (data[i].y * 0.30)) > maxYaxis) {
+	    		maxYaxis = data[i].y + (data[i].y * 0.30);
+	    	}
+	     } 
+	}
+    return outputFinal;	
+}//end of getDataWithBins
+
+function reBinData(binValue) {
+	if (binValue > 0) {
+		bins = [];
+		nBins = Math.ceil(maxBins / binValue);
+		for (var i = (minXCombined*1.00000)+0.00001; i < (maxXCombined*1.00000+binValue*1.00000); i += (binValue*1.00000)) {
+			bins.push(i);
+		}
+		data = [];
+		
+		for (var i = 0; i < tofCollection.length; i++) {
+			if (tofCollection[i].timeDiff != null) {
+				tofCollection[i].timeDiff.data = getDataWithBins(tofCollection[i].timeDiff.data_original, binValue, tofCollection[i].timeDiff.minX, tofCollection[i].timeDiff.maxX, nBins, bins);
+				data.push(tofCollection[i].timeDiff);				
+			}
+		}
+		onOffPlot.setData(data);
+	    onOffPlot.setupGrid();
+	    onOffPlot.draw();
+		overviewPlot.setData(data);
+		overviewPlot.setupGrid();
+		overviewPlot.draw();
+	}
+}//end of reBinData
 
 options = {
         axisLabels: {
@@ -102,68 +198,12 @@ overviewOptions = {
 		}
 };
 
-function onDataLoad1() {
-	loadJSON(function(response) {
-		JSON.parseAsync(response, function(json) {
-			onDataLoad(json);
-		});
-	});
-}
-
-function loadJSON(callback) {   
-    var xobj = new XMLHttpRequest();
-	var outputDir = document.getElementById("outputDir");
-    xobj.overrideMimeType("application/json");
-    xobj.open('GET', outputDir.value+"/timeOfFlightPlotData", true); // Replace 'my_data' with the path to your file
-    xobj.onreadystatechange = function () {
-          if (xobj.readyState == 4 && xobj.status == "200") {
-            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
-            callback(xobj.responseText);
-          }
-    };
-    xobj.send(null);  
- }
-
-function onDataLoad(json) {	
-	timeDiff1 = json.timediff1;
-	timeDiff2 = json.timediff2;
-	timeDiff3 = json.timediff3;
-	timeDiff4 = json.timediff4;
-	timeDiff5 = json.timediff5;
-	timeDiff6 = json.timediff6;	
-	buildTimeDiff(json,json.timediff1,data);
-	buildTimeDiff(json,json.timediff2,data);
-	buildTimeDiff(json,json.timediff3,data);
-	buildTimeDiff(json,json.timediff4,data);
-	buildTimeDiff(json,json.timediff5,data);
-	buildTimeDiff(json,json.timediff6,data);
-	bindEverything(json);
-	original_data = data;
-}//end of onDataLoad	
-
-function buildTimeDiff(json, timediff, data) {
-	if (timediff != null) {
-		timediff.data = getDataWithBins(timediff.data, timediff.binValue, timediff.minX, timediff.maxX, timediff.nBins, timediff.nBins);
-		data.push(timediff);
-		if (timediff.maxX > maxXCombined) {
-			maxXCombined = timediff.maxX;
-		}
-		if (timediff.minX < minXCombined) {
-			minXCombined = timediff.minX;
-		}
-		if (timediff.maxBins > maxBins) {
-			maxBins = timediff.maxBins;
-		}
-		binValue = timediff.binValue;
-	}
-}
-
 function bindEverything(json) {
 	onOffPlot = $.plot("#placeholder", data, options);
 	overviewPlot = $.plot("#overview", data, overviewOptions);
 	
-	$("#range").attr({"min":Math.floor(1), "max":Math.floor(maxBins), "value": binValue});
-	$("#binWidth").attr({"min":Math.floor(1), "max":Math.floor(maxBins), "value": binValue});
+	$("#range").attr({"min":binValue, "max":Math.floor(maxBins), "value": binValue, "step": binValue});
+	$("#binWidth").attr({"min":binValue, "max":Math.floor(maxBins), "value": binValue, "step": binValue});
 
     $('#range').on('input', function(){
         $('#binWidth').val($('#range').val());
@@ -218,7 +258,7 @@ function writeLegend(canvas) {
 	var meta = document.getElementsByName("metadata");
 	var serialized = $(meta).serializeArray();
 	var values = new Array();
-	var xcoord = 30;
+	var xcoord = 50;
 	var ycoord = 0;
 	var yspace = 15;	
 	ycoord = 50;
@@ -250,7 +290,7 @@ function writeLegend(canvas) {
 		    context.moveTo(xcoord, ycoord);
 		    context.lineTo(xcoord+5, ycoord);
 		    context.stroke();
-		    context.fillText(series[i].label + " #"+series[i].numberOfEntries,xcoord+10,ycoord);	
+		    context.fillText(series[i].label + " #"+series[i].data_original.length,xcoord+10,ycoord);	
 		}
 	}		
 
@@ -372,24 +412,6 @@ function bindPlotHover() {
 	});	
 }//end of bindTooltip
 
-function getDataWithBins(rawData, localBinValue, minX, maxX, nBins, bins) {
-	//create histogram datax
-    var outputFinal = [];
-	if (rawData != null) {
-		binValue = localBinValue;
-		var histogram = d3.layout.histogram();
-		histogram.bins(bins);
-		var data = histogram(rawData);
-		for ( var i = 0; i < data.length; i++ ) {
-	    	outputFinal.push([data[i].x, data[i].y]);
-	    	outputFinal.push([data[i].x + data[i].dx, data[i].y]);
-	    	if ((data[i].y + (data[i].y * 0.30)) > maxYaxis) {
-	    		maxYaxis = data[i].y + (data[i].y * 0.30);
-	    	}
-	     } 
-	}
-    return outputFinal;	
-}//end of getDataWithBins
 
 Number.prototype.toFixedDown = function(digits) {
 	  var n = this - Math.pow(10, -digits)/2;
@@ -399,45 +421,4 @@ Number.prototype.toFixedDown = function(digits) {
 function intToFloat(num, decPlaces) { 
 	return num + '.' + Array(decPlaces + 1).join('0'); 
 	}
-
-function reBinData(binValue) {
-	if (binValue > 0) {
-		bins = [];
-		nBins = Math.ceil(maxBins / binValue);
-		for (var i = (minXCombined*1.00000)+0.00001; i < (maxXCombined*1.00000+binValue*1.00000); i += (binValue*1.00000)) {
-			bins.push(i);
-		}
-		data = [];
-		if (timeDiff1 != null) {
-			timeDiff1.data = getDataWithBins(timeDiff1.data_original, binValue, timeDiff1.minX, timeDiff1.maxX, nBins, bins);
-			data.push(timeDiff1);
-		}
-		if (timeDiff2 != null) {
-			timeDiff2.data = getDataWithBins(timeDiff2.data_original, binValue, timeDiff2.minX, timeDiff2.maxX, nBins, bins);
-			data.push(timeDiff2);
-		}
-		if (timeDiff3 != null) {
-			timeDiff3.data = getDataWithBins(timeDiff3.data_original, binValue, timeDiff3.minX, timeDiff3.maxX, nBins, bins);
-			data.push(timeDiff3);
-		}
-		if (timeDiff4 != null) {
-			timeDiff4.data = getDataWithBins(timeDiff4.data_original, binValue, timeDiff4.minX, timeDiff4.maxX, nBins, bins);
-			data.push(timeDiff4);
-		}
-		if (timeDiff5 != null) {
-			timeDiff5.data = getDataWithBins(timeDiff5.data_original, binValue, timeDiff5.minX, timeDiff5.maxX, nBins, bins);
-			data.push(timeDiff5);
-		}
-		if (timeDiff6 != null) {
-			timeDiff6.data = getDataWithBins(timeDiff6.data_original, binValue, timeDiff6.minX, timeDiff6.maxX, nBins, bins);
-			data.push(timeDiff6);
-		}
-		onOffPlot.setData(data);
-	    onOffPlot.setupGrid();
-	    onOffPlot.draw();
-		overviewPlot.setData(data);
-		overviewPlot.setupGrid();
-		overviewPlot.draw();
-	}
-}//end of reBinData
 

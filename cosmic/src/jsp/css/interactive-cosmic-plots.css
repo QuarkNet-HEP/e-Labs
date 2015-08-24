@@ -21,7 +21,7 @@
 .graph-container-timeofflight {
 	box-sizing: border-box;
 	width: 800px;
-	height: 1050px;
+	height: 750px;
 	padding: 10px 5px 5px 5px;
 	margin: 5px auto 15px auto;
 	border: 1px solid #ddd;
@@ -125,7 +125,7 @@ input[type="range"] {
   -webkit-appearance: none;
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   width: 100%;
-  height: 20px;
+  height: 10px;
   margin: 0;
   border: none;
   padding: 1px 2px;
@@ -159,8 +159,8 @@ input[type="range"]::-ms-tooltip {
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 40px;
-  height: 18px;
+  width: 20px;
+  height: 9px;
   border: none;
   border-radius: 12px;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #529de1), color-stop(100%, #245e8f)); /* android <= 2.2 */
@@ -168,16 +168,16 @@ input[type="range"]::-webkit-slider-thumb {
   background-image: linear-gradient(to bottom, #529de1 0, #245e8f 100%); /* W3C */
 }
 input[type="range"]::-moz-range-thumb {
-  width: 40px;
-  height: 18px;
+  width: 20px;
+  height: 9px;
   border: none;
   border-radius: 12px;
   background-image: linear-gradient(to bottom, #529de1 0, #245e8f 100%); /* W3C */
 }
 
 input[type="range"]::-ms-thumb {
-  width: 40px;
-  height: 18px;
+  width: 20px;
+  height: 9px;
   border-radius: 12px;
   border: 0;
   background-image: linear-gradient(to bottom, #529de1 0, #245e8f 100%); /* W3C */
@@ -196,3 +196,31 @@ input[type="range"]::-ms-thumb {
 	width: 33%;
 	height: 100%;
 }
+
+.tofDetails {
+	border: 1px solid RoyalBlue;
+	display: inline-block; 
+	width: 150px; 
+	padding: 5px 5px 5px 5px;
+}
+.tofDetails:hover {
+	background-color: #63a2db;
+}
+.tofDetails:hover .tofControls {
+    display: block;
+}
+
+.tofControls {
+    display: none;
+    background: #FFFFE5;
+    margin-left: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1000;
+    width:350px;
+    height:250px;
+    overflow: auto;
+    border-radius: 5px 5px 5px;
+	border: 1px solid black;
+}
+
