@@ -3,7 +3,11 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ page import="gov.fnal.elab.util.ElabUtil" %>
 <%
-
+	String referer = request.getParameter("referer");
+	if (referer == null) {
+		referer = request.getHeader("Referer");
+	}
+	request.setAttribute("referer",referer);
 	String viewOnly = request.getParameter("options");
 	String hideMenu = "no";
 	if (viewOnly != null && viewOnly.equals("project")) {
@@ -23,6 +27,15 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
+		<script>
+			function goBack() {
+				var referer = document.getElementById("referer");
+				if (referer.value != null) {
+				    window.location = referer.value;
+				} 
+			}
+		</script>
+
 		<STYLE type='text/css'>		
 			h3 { /* Begin paragraphs with leading words, (sort of like :first-word ) */
 			  display: inline;        /* suppresses line breaks both before and after!  */
@@ -63,6 +76,10 @@
 						</td>
 						<td id="center">
 							<div class='body'>
+								<% if (hideMenu.equals("yes")) { %>
+									<a href="javascript:goBack();">Go Back</a><br />
+								<% } %>							
+							
 								<h1>Resources: Check out the online resources or contact someone.</h1>
 								<h2>LIGO e-Lab Resources</h2>
 								<DL>
@@ -236,6 +253,8 @@
 					</tr>
 				</table>
 			</div>
+		 	<input type="hidden" name="referer" id="referer" value="${referer}" >
+
 			<!-- end content -->	
 		
 			<div id="footer">
