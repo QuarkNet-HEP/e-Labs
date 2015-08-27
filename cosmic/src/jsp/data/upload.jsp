@@ -143,34 +143,6 @@ Re: the upload progress stuff
 	               		fi.getStoreLocation().renameTo(f);
 	               	}
 					comments = ElabUtil.stringSanitization(comments, elab, "Cosmic Upload");
-					/*
-	               	//EPeronja-04/28/2014: do some sanitization before passing the comments
-		          	ArrayList checkDirtyInput = as.scan(comments,policy).getErrorMessages();
-		          	if (!checkDirtyInput.isEmpty()) {
-		    			String userInput = comments;
-		    			int errors = as.scan(userInput, policy).getNumberOfErrors();
-		    			ArrayList actualErrors = as.scan(userInput, policy).getErrorMessages();
-		    			Iterator iterator = actualErrors.iterator();
-		    			String errorMessages = "";
-		    			while (iterator.hasNext()) {
-		    				errorMessages = (String) iterator.next() + ",";
-		    			}
-		    			comments = as.scan(comments, policy).getCleanHTML();
-				    	//send email with warning
-				    	String to = elab.getProperty("notifyDirtyInput");
-			    		String emailmessage = "", subject = "Cosmic Upload: user sent dirty input";
-			    		String emailBody =  "User input: "+userInput+"\n" +
-	    						   			"Number of errors: "+String.valueOf(errors)+"\n" +
-	    				   					"Error messages: "+ errorMessages + "\n" +
-	    				   					"Validated input: "+comments + "\n";
-					    try {
-					    	String result = elab.getUserManagementProvider().sendEmail(to, subject, emailBody);
-					    } catch (Exception ex) {
-			                System.err.println("Failed to send email");
-			                ex.printStackTrace();
-					    }		    		
-				  	}//end of sanitization
-					*/
 	       	        out.println("<!-- " + rawName + " added to Catalog -->");
 	       	        request.setAttribute("in", f.getAbsolutePath());
 	       	        request.setAttribute("detectorid", detectorId);

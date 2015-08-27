@@ -128,6 +128,8 @@
 		request.setAttribute("detectorId", detectorId);
 		sqlErrors = (String) results.getAnalysis().getParameter("message");
 		request.setAttribute("sqlErrors", sqlErrors);
+		String gpsMessage = (String) results.getAnalysis().getParameter("gspMessage");
+		request.setAttribute("gpsMessage",gpsMessage);
 		ArrayList<String> benchmarkMessages = (ArrayList<String>) results.getAnalysis().getParameter("benchmarkMessages");
 		request.setAttribute("benchmarkMessages", benchmarkMessages);
 		request.setAttribute("channels", channels);
@@ -199,6 +201,7 @@
 				Average latitude: ${entry.tupleMap.avglatitude}<br/>
 				Average longitude: ${entry.tupleMap.avglongitude}<br/>
 				Average altitude: ${entry.tupleMap.avgaltitude}<br/>
+				${gpsMessage }
 			</c:otherwise>
 		</c:choose>	
 		<c:choose>
