@@ -157,6 +157,7 @@
 <p>
 	<e:rerun type="timeofflight" id="${timeofflightResults.id}" label="Change"/> your parameters
 </p>
+
 			<input type="hidden" name="outputDir" id="outputDir" value="${results.outputDirURL}"/>
 			<e:commonMetadataToSave rawData="${timeofflightResults.analysis.parameters['rawData']}"/>
 			<e:creationDateMetadata/>
@@ -175,7 +176,6 @@
 			<input type="hidden" name="eventNum" value="${timeofflightResults.analysis.parameters['eventNum']}" />
 			<input type="hidden" name="id" value="${timeofflightResults.id}"/>
 			<input type="hidden" name="rundirid" value="${results.id}"/>
-
 			</div>
 			<!-- end content -->	
 	

@@ -2,7 +2,12 @@
     pageEncoding="ISO-8859-1"%>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
-
+<%@ page import="java.util.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.*" %>
+<% 
+	ArrayList<String> plotNames = DataTools.getPlotNamesByGroup(elab, user.getName(), elab.getName());
+	request.setAttribute("plotNames",plotNames);
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -192,7 +197,13 @@
 					</div>
 					<div class="dialog-contents">
 						<label for="userPlotTitle">Plot title:</label>
-						<input id="userPlotTitle" name="title" type="text" maxlength="200" size="30"></input>
+						<input id="userPlotTitle" name="title" type="text" maxlength="200" size="30" />
+						<select id="existingPlotNames" style="max-width: 150px; min-width: 150px; width: 150px !important;" onchange="this.previousElementSibling.value=this.value; this.previousElementSibling.focus()">
+							<option></option>
+							<c:forEach items="${ plotNames}" var="plotName">
+								<option>${plotName }</option>
+							</c:forEach>
+						</select>(View your saved plot names)<br />
 						<br/>
 						<img src="../graphics/spinner-small.gif" style="visibility: hidden;" id="busySpinnerSmall"></img>
 					</div>

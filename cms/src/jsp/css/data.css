@@ -340,3 +340,14 @@ p.search-result-bar {
 	padding-bottom: 8px;
 	padding-left: 16px;	
 }
+.dropdown {
+    width: 200px;
+    display: inline-block; 
+}
+.dropdown select
+{
+    width: 100%;
+}
+.dropdown > * {
+    box-sizing: box-sizing;
+}

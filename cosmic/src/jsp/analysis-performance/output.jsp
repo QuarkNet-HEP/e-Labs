@@ -11,11 +11,7 @@
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="gov.fnal.elab.cosmic.plot.*" %>
-<%
-	ArrayList<String> plotNames = DataTools.getPlotNamesByGroup(elab, user.getName(), elab.getName());
-	request.setAttribute("plotNames",plotNames);
 
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -25,25 +21,6 @@
 		<link rel="stylesheet" type="text/css" href="../css/data.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/one-column.css"/>
 		<script type="text/javascript" src="../include/elab.js"></script>
-		<script>
-			function validateName() {
-				var newName = document.getElementById("newPlotName");
-				var existingNames = document.getElementById("existingPlotNames");
-				var validName = true;
-			    for (var i = 0; i < existingNames.length; i++) {
-			        if (newName.value == existingNames.options[i].value) {
-			        	validName = false;
-			        }
-			    }
-			    if (validName) {
-			    	return true;
-			    	window.open('',this.target,'width=500,height=200,resizable=1');
-			    } else {
-			    	alert("There is an existing plot with this name. Please choose a different name.");
-			    	return false;
-			    }
-			}
-		</script>
 	</head>
 	
 	<body id="performance-study-output" class="data, analysis-output">
@@ -78,7 +55,7 @@
 <p>To save this plot permanently, enter the new name you want.</p>
 <p>Then click <b>Save Plot</b>.</p>
 <p>
-	<form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit="return validateName();" align="center">
+	<form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit='return validatePlotName("newPlotName");' align="center">
 		<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
 		<e:creationDateMetadata/>
 		<input type="hidden" name="metadata" value="transformation string I2U2.Cosmic::PerformanceStudy"/>
@@ -95,15 +72,10 @@
 		<input type="hidden" name="srcSvg" value="plot.svg"/>
 		<input type="hidden" name="srcFileType" value="png"/>
 		<input type="hidden" name="id" value="${results.id}"/>
-		<div class="dropdown">
-			<input type="text" name="name" id="newPlotName" size="20" maxlength="30"/>.png 
-	    	<select id="existingPlotNames" onchange="this.previousElementSibling.value=this.value; this.previousElementSibling.focus()">
-				<option></option>
-				<c:forEach items="${ plotNames}" var="plotName">
-					<option>${plotName }</option>
-				</c:forEach>
-	    	</select>
-		</div>(Select from your saved plot names)<br />
+		<div class="dropdown" style="text-align: left; width: 180px;">
+			<input type="text" name="name" id="newPlotName" size="20" maxlength="30"/>.png
+			<%@ include file="../plots/view-saved-plot-names.jsp" %>
+		</div>(View your saved plot names)<br />
 		<input type="submit" name="submit" value="Save Plot"/>
 	</form>
 </p>
