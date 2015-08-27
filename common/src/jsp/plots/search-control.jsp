@@ -22,6 +22,9 @@
 	TreeMap<String, String> sortByOptions = new TreeMap<String, String>();
 	sortByOptions.put("creationdate", "Creation Date");
 	sortByOptions.put("name", "Filename");
+	if (project.equals("cosmic")) {
+		sortByOptions.put("study", "Study");
+	}
 	request.setAttribute("project", project);
 	request.setAttribute("studyOptions", studyOptions);
 	request.setAttribute("sortByOptions", sortByOptions);
@@ -149,12 +152,12 @@ $(function() {
 						<select name="order" id="order">
 							<c:choose>
 								<c:when test='${param.order == "asc" }'>
-									<option value="desc" >Desc</option>
-									<option value="asc" selected=true>Asc</option>
+									<option value="desc" >&#8595;</option>
+									<option value="asc" selected=true>&#8593;</option>
 								</c:when>
 								<c:otherwise>
-									<option value="desc" selected=true>Desc</option>
-									<option value="asc" >Asc</option>
+									<option value="desc" selected=true>&#8595;</option>
+									<option value="asc" >&#8593;</option>
 								</c:otherwise>
 							</c:choose>
 						</select>
