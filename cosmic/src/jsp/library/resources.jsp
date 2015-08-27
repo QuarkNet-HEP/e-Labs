@@ -1,10 +1,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ include file="../include/elab.jsp" %>
-<%@ include file="../login/login-required.jsp" %>
 <%@ page import="gov.fnal.elab.util.ElabUtil" %>
+<%
 
-
+	String viewOnly = request.getParameter("options");
+	String hideMenu = "no";
+	if (viewOnly != null && viewOnly.equals("project")) {
+		hideMenu ="yes";
+	} else {
+		%>
+		<%@ include file="../login/login-required.jsp" %>
+		<%
+	}
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -21,7 +30,9 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
-					<%@ include file="../include/nav-rollover.jspf" %>
+					<% if (hideMenu.equals("no")) { %>
+						<%@ include file="../include/nav-rollover.jspf" %>
+					<% } %>
 				</div>
 			</div>
 			
@@ -148,7 +159,9 @@
 								<a href="mailto:randal.c.ruchti.1@nd.edu">Randy Ruchti</a> - Notre Dame University
 							</li>
 						</ul>
-						<h2><a href="../library/students.jsp">Student Research Groups</a></h2>
+						<% if (hideMenu.equals("no")) { %>
+							<h2><a href="../library/students.jsp">Student Research Groups</a></h2>
+						<% } %>
 					</div>
 				</div>
 
