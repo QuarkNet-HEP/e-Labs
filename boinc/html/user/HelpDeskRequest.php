@@ -282,6 +282,9 @@ function error_text($name){
     case 'problem':
         $text="Please describe how to reproduce the problem.";
         break; 
+    case 'daq_card':
+        $text="Please add your DAQ# or type NONE.";
+        break; 
     case 'user_name':
         $text="Please supply your name.";
         break; 
@@ -791,6 +794,7 @@ require_field('subject');
 
 grab_input('elab');
 grab_input('daq_card');
+require_field('daq_card');
 
 grab_input('activity');
 require_field('activity');
@@ -1111,7 +1115,7 @@ form_item("Problem Description:",
         "Please describe the problem, giving enough information that we 
          can reproduce it ourselves, <br><b>or</b> state your question or request here. 
         <br>&nbsp;<br> 
-         <span class='cosmics_elab'>(Example: for cosmic rays  DAQ problems
+         <span class='cosmics_elab'>(For cosmic rays  DAQ problems
          include output from DG, DC, DT, V1 and V2 commands, 
          and short snips of raw data from ST and DS commands) </span> "
           .error_text('problem'),
@@ -1137,12 +1141,14 @@ form_item("CRMD Hardware Component:",
         'cosmics_elab');
 
 form_item("DAQ Card #:",
-          "Cosmic Rays e-Lab only.<br> Serial number of cosmic ray data aquisition 
-                (DAQ) card.  " ,
+          "<span>Cosmic Rays e-Lab only.<br> Serial number of cosmic ray data aquisition 
+                (DAQ) card. </span>"
+                .error_text('daq_card') ,
           "<input type='text' name='daq_card' value='$daq_card'
-                        size='10' maxlength='15'>".
+                        size='10' maxlength='15' class='required'>".
           "<span class='description'> You'll find this printed on the back
-                side of the card, or run the 'H1' command.  </span>",
+                side of the card, or run the 'H1' command.  </span>"
+          ,
         'cosmics_elab');
 
 
