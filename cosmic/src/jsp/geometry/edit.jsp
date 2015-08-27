@@ -41,7 +41,7 @@
 			<div id="editor">
 				<div class="title">
 					Edit Detector ${param.detectorID} Entry
-					<fmt:formatDate pattern="MMM/dd/yy @ HH:mm" value="${geoEntry.date}" timeZone="UTC"/> 
+					<fmt:formatDate pattern="dd MMM yyyy @ HH:mm" value="${geoEntry.date}" timeZone="UTC"/> 
 					<a href="javascript:glossary('UTC')">UTC</a>:
 				</div>
 				<c:set var="nodate" value="true"/>
