@@ -143,7 +143,11 @@
 <input type="hidden" name="outputDir" id="outputDir" value="${results.outputDirURL}"/>
 <% if (!user.isGuest()) { %>
 	<p><b>OR</b></p>
-		Filename <input type="text" name="chartName" id="chartName" value=""></input><input type="button" name="save" onclick='return saveChart(onOffPlot, "chartName", "chartMsg", "${results.id}");' value="Save"></input>    
+		<div class="dropdown" style="text-align: left; width: 180px;">
+			<input type="text" name="name" id="newPlotName" value="" size="20" maxlength="30"/>.jpg
+			<%@ include file="../plots/view-saved-plot-names.jsp" %>
+		</div>(View your saved plot names)<br />
+		<input type="button" name="save" onclick='return validatePlotName("newPlotName"); return saveChart(onOffPlot, "name", "chartMsg", "${results.id}");' value="Save"></input>    
 		<div id="chartMsg"></div>  
 		<e:commonMetadataToSave rawData="${timeofflightResults.analysis.parameters['rawData']}"/>
 		<e:creationDateMetadata/>

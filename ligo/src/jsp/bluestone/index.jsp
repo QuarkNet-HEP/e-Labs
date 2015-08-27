@@ -220,6 +220,12 @@
 					<div class="dialog-contents">
 						<label for="userPlotTitle">Plot title:</label>
 						<input id="userPlotTitle" name="title" type="text" maxlength="200" size="30"></input>
+						<select id="existingPlotNames" style="max-width: 150px; min-width: 150px; width: 150px !important;" onchange="this.previousElementSibling.value=this.value; this.previousElementSibling.focus()">
+							<option></option>
+							<c:forEach items="${ plotNames}" var="plotName">
+								<option>${plotName }</option>
+							</c:forEach>
+						</select>(View your saved plot names)<br />
 						<br/>
 						<img src="../graphics/spinner-small.gif" style="visibility: hidden;" id="busySpinnerSmall"></img>
 					</div>

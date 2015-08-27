@@ -209,9 +209,19 @@
 							</p>
 						</div>
 					</c:otherwise>
-				</c:choose>					
+				</c:choose>	
+<% if (!user.isGuest()) { %>								
 				<div style="text-align:center; width: 100%;">
-					Filename <input type="text" name="chartName" id="chartName" value=""></input><input type="button" name="save" onclick='return saveChart(onOffPlot, "chartName", "chartMsg", "${results.id}");' value="Save"></input>    
+					<p><b>OR</b></p>
+					<p>To save this plot permanently, enter the new name you want.</p>
+					<p>Then click <b>Save Plot</b>.</p>
+
+					<div class="dropdown" style="text-align: left; width: 180px;">
+						<input type="text" name="name" id="newPlotName" value="" size="20" maxlength="30"/>.jpg
+						<%@ include file="../plots/view-saved-plot-names.jsp" %>
+					</div>(View your saved plot names)<br />
+					<input type="button" name="save" onclick='return validatePlotName("newPlotName"); return saveChart(onOffPlot, "name", "chartMsg", "${results.id}");' value="Save"></input>    
+
 					<div id="chartMsg"></div>  
 					<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
 					<e:creationDateMetadata/>
@@ -230,6 +240,7 @@
 					<input type="hidden" name="outputDir" id="outputDir" value="${results.outputDirURL}"/>	 
 				</div>
 		 	</div>
+<% } %>
 	</div>				
 	<div id="footer"></div>		
 	</body>

@@ -493,6 +493,15 @@ $(document).ready(function() {
 	$("#savePlotToDiskCommit").bind('click', function() {
 		// need start, end, channels, title 
 		var title = $("#userPlotTitle").val(); 
+		var existingNames = document.getElementById("existingPlotNames");
+		var validName = true;
+		for (var i = 0; i < existingNames.length; i++) {
+		   if (title == existingNames.options[i].value) {
+		        alert("There is an existing plot with this name. Please choose a different name.");
+		        return;
+		   }
+		}
+		
 		var channelArray = []; 
 		$(".dataName").each(function(index) {
 			channelArray.push($(this).text());
