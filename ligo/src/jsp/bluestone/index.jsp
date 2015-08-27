@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ include file="../include/elab.jsp" %>
 <%@ include file="../login/login-required.jsp" %>
-
+<%@ page import="java.util.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.*" %>
+<% 
+	ArrayList<String> plotNames = DataTools.getPlotNamesByGroup(elab, user.getName(), elab.getName());
+	request.setAttribute("plotNames",plotNames);
+%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
