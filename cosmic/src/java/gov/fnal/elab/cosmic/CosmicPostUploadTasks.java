@@ -14,6 +14,7 @@ import gov.fnal.elab.notifications.*;
 
 import java.io.*;
 import java.util.*;
+import java.text.*;
 /**
  * Finishes up cosmic upload tasks after the split is done: 
  * -inserts metadata
@@ -23,6 +24,7 @@ import java.util.*;
 public class CosmicPostUploadTasks {
 	public ElabAnalysis ea;
 	public String message;
+	public String gpsMessage;
 	public ArrayList<String> benchmarkMessages;
 	public File f;
 	public File fmeta;
@@ -38,6 +40,7 @@ public class CosmicPostUploadTasks {
     	this.ea = ea;
 		benchmarkMessages = new ArrayList<String>();
 		message = "";
+		gpsMessage = "";
 		this.elab = ea.getElab();
 		this.f = new File((String) ea.getParameter("in"));
 		this.fmeta = new File(f.getAbsolutePath() + ".meta");
@@ -53,6 +56,7 @@ public class CosmicPostUploadTasks {
     	createThresholdTimes();
     	ea.setParameter("message", getMessage());
     	ea.setParameter("benchmarkMessages", getBenchmarkMessages());
+    	ea.setParameter("gspMessage", getGPSMessage());
     }
     
 	public void createMetadata() {
@@ -67,6 +71,11 @@ public class CosmicPostUploadTasks {
 		        String line = null;
 		        String currLFN = null;
 		        String currPFN = null;
+		        String geoLatitude = "";
+		        String geoLongitude = "";
+		        String metaLatitude = "";
+		        String metaLongitude = "";
+		        
 		        while ((line = br.readLine()) != null) {
 		            String[] temp = line.split("\\s", 3);
 	
@@ -120,14 +129,46 @@ public class CosmicPostUploadTasks {
 		                		SortedMap geos = geometry.getGeoEntriesBefore(tmp[2]);
 		                		if (!geos.isEmpty()) {
 		                			GeoEntryBean g = (GeoEntryBean) geos.get(geos.lastKey());
+		                			geoLatitude = g.getFormattedLatitude();
+		                			if (geoLatitude == null) { geoLatitude = ""; }
+		                			geoLongitude = g.getFormattedLongitude();
+		                			if (geoLongitude == null) { geoLongitude = ""; }
 		                			meta.add("stacked boolean " + ("0".equals(g.getStackedState()) ? "false" : "true"));	
 		                		}
+		                	}
+		                }
+		                else if (tmp[0].equals("avglatitude")) {
+		                	if (tmp[2] != null) {
+		                		metaLatitude = tmp[2];
+		                	}
+		                }
+		                else if (tmp[0].equals("avglongitude")) {
+		                	if (temp[2] != null) {
+		                		metaLongitude = tmp[2];
 		                	}
 		                }
 		            }
 		        }   //done reading file
 		        br.close();
 		        
+		        if (!metaLatitude.equals("") && !metaLongitude.equals("") && !geoLatitude.equals("") && !geoLongitude.equals("")) {
+		        	Double latOffset = getGPSOffset(metaLatitude, geoLatitude);
+		        	Double lonOffset = getGPSOffset(metaLongitude, geoLongitude);
+
+		        	//5K tolerance
+		        	if (latOffset > 5000 || lonOffset > 5000) {
+		        		gpsMessage = "Your detector GPS reports a position greater than 5 kilometers ("+String.format("%.2f", latOffset)+" meters for the latitude<br />"+
+		        					 "and "+String.format("%.2f", lonOffset)+" meters for the logitude) <br />"+
+		        					 "from the Geometry on file in the CR e-Lab. Please check your listed Geometry and effective Entry Date.<br />";
+		        	} else {
+		        		gpsMessage = "We have found an acceptable offset of "+String.format("%.2f", latOffset)+" meters for the latitude<br />"+
+		        					 "and "+String.format("%.2f", lonOffset)+" meters for the logitude between your uploaded data and the<br />"+
+		        					 "geometry configuration.<br />";
+		        	}
+		        } else {
+		        	gpsMessage = "We were unable to compare the GPS data from your file to the geometry.<br />"+
+		        				"Please check your geometry configuration and include the GD command with your data-taking.<br />";
+		        }
 		        //do one last add at the end of reading the temp metadata file
 		        if (meta != null && currLFN != null) {
 		            try {					
@@ -204,10 +245,36 @@ public class CosmicPostUploadTasks {
 	  	}
 	}//end of createThresholdTimes
 	
+	public Double getGPSOffset(String meta, String geo) {
+		Double offset = 0.0;
+		String[] metaParts = meta.split("\\.");
+		String[] geoParts = geo.split("(:)|(\\.)");
+		metaParts[2] = String.format("%1$-6s", metaParts[2]).replace(' ', '0');
+		geoParts[2] = String.format("%1$-6s", geoParts[2]).replace(' ', '0');		
+		Double metaPos = Double.parseDouble(metaParts[0])+(Double.parseDouble(metaParts[1])/60)+(Double.parseDouble(metaParts[2])/1000000/60);
+		Double geoPos = Double.parseDouble(geoParts[0])+(Double.parseDouble(geoParts[1])/60)+(Double.parseDouble(geoParts[2])/1000000/60);
+		Double posOff = metaPos - geoPos;
+		offset = calculateDegreesToMeters(posOff, metaPos);
+		return offset;
+	}//end of getGPSOffset
+	
+	public Double calculateDegreesToMeters(Double posOff, Double metaPos) {
+		Double xoff = 0.0;
+		Double radius = 6378137.0; //radius of the earth
+		Double pi = 3.1415926535897932;
+		Double perimeter = radius*2*pi;
+		xoff = Math.abs(posOff*(Math.cos(metaPos*Math.PI/180)*perimeter/360));
+		return xoff;
+	}//end of calculateDegreesToMeters
+	
 	public String getMessage() {
 		return this.message;
 	}
-	
+
+	public String getGPSMessage() {
+		return this.gpsMessage;
+	}
+
 	public ArrayList<String> getBenchmarkMessages() {
 		return this.benchmarkMessages;
 	}
