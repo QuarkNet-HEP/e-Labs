@@ -3,6 +3,11 @@
 <%@ include file="../include/elab.jsp" %>
 <%@ page import="gov.fnal.elab.util.ElabUtil" %>
 <%
+	String referer = request.getParameter("referer");
+	if (referer == null) {
+		referer = request.getHeader("Referer");
+	}
+	request.setAttribute("referer",referer);
 
 	String viewOnly = request.getParameter("options");
 	String hideMenu = "no";
@@ -22,6 +27,14 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
+		<script>
+			function goBack() {
+				var referer = document.getElementById("referer");
+				if (referer.value != null) {
+				    window.location = referer.value;
+				} 
+			}
+		</script>
 	</head>
 		
 	<body id="resources" class="library">
@@ -37,7 +50,9 @@
 			</div>
 			
 			<div id="content">
-				
+<% if (hideMenu.equals("yes")) { %>
+	<a href="javascript:goBack();">Go Back</a><br />
+<% } %>					
 <h1>Resources: Check out the online resources or contact someone.</h1>
 <table border="0" id="main">
 	<tr>
@@ -395,6 +410,7 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 		</td>
 	</tr>
 </table>
+		 	<input type="hidden" name="referer" id="referer" value="${referer}" >
 
 
 			</div>
