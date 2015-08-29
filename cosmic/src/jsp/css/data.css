@@ -415,7 +415,7 @@ p.search-result-bar {
 	float: right;
 	background-color: #f0f0f0;
 	color: black;
-	width: 140px;
+	width: 160px;
 	margin-top: 70px;
 	padding-top: 8px;
 	padding-bottom: 8px;
@@ -478,4 +478,15 @@ p.search-result-bar {
 	border-right: #c0c0c0 1px solid;
 	border-top: #707070 1px solid;
 	border-left: #707070 1px solid;
+}
+.dropdown {
+    width: 200px;
+    display: inline-block; 
+}
+.dropdown select
+{
+    width: 100%;
+}
+.dropdown > * {
+    box-sizing: box-sizing;
 }

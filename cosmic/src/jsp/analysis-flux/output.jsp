@@ -45,7 +45,7 @@
 	</div> 
 	<hr />
 <% if (!user.isGuest()) { %>
-	<form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit="window.open('',this.target,'width=500,height=200,resizable=1');" align="center" class="framed">
+	<form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit='return validatePlotName("newPlotName");' align="center" class="framed">
 		<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
 		<e:creationDateMetadata/>
 		<input type="hidden" name="metadata" value="transformation string I2U2.Cosmic::FluxStudy"/>
@@ -60,9 +60,12 @@
 		<input type="hidden" name="srcSvg" value="plot.svg"/>
 		<input type="hidden" name="srcFileType" value="png"/>
 		<input type="hidden" name="id" value="${results.id}"/>
-		<input type="text" name="name" size="20" maxlength="30" placeholder="Type plot name here" 
-			onfocus = "if (this.getAttribute('placeholder') == this.value) {this.value = ''; this.style.color = 'black';}"/>
-		<a class="button" href="javascript: document.SaveForm.submit()">Save Plot</a>
+		Filename:<br />
+		<div class="dropdown" style="text-align: left; width: 180px;">
+			<input type="text" name="name" id="newPlotName" size="20" maxlength="30" />
+			<%@ include file="../plots/view-saved-plot-names.jsp" %>
+		</div>(View your saved plot names)<br />
+		<input type="submit" name="submit" value="Save Plot"/>
 	</form>
 	<hr />
 <% } %>
@@ -72,6 +75,10 @@
 </div>
 <p>
 	<a href="../analysis-blessing/bless-plots-range.jsp?id=${results.id }">View blessing plots</a>
+</p>
+
+<p>
+	<a href="flux-plot.jsp?id=${results.id }&message=${message}">View interactive Flux plots</a> (Beta Version)<br />
 </p>
 <p>
 	<img src="${results.outputDirURL}/plot.png"/>

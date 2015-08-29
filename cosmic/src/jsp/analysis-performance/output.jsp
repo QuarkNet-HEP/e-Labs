@@ -8,9 +8,10 @@
 <%@ page import="gov.fnal.elab.util.*" %>
 <%@ page import="java.text.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.*" %>
+<%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="gov.fnal.elab.cosmic.plot.*" %>
-<%
-%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -54,7 +55,7 @@
 <p>To save this plot permanently, enter the new name you want.</p>
 <p>Then click <b>Save Plot</b>.</p>
 <p>
-	<form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit="window.open('',this.target,'width=500,height=200,resizable=1');" align="center">
+	<form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit='return validatePlotName("newPlotName");' align="center">
 		<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
 		<e:creationDateMetadata/>
 		<input type="hidden" name="metadata" value="transformation string I2U2.Cosmic::PerformanceStudy"/>
@@ -71,7 +72,10 @@
 		<input type="hidden" name="srcSvg" value="plot.svg"/>
 		<input type="hidden" name="srcFileType" value="png"/>
 		<input type="hidden" name="id" value="${results.id}"/>
-		<input type="text" name="name"  size="20" maxlength="30"/>.png
+		<div class="dropdown" style="text-align: left; width: 180px;">
+			<input type="text" name="name" id="newPlotName" size="20" maxlength="30"/>.png
+			<%@ include file="../plots/view-saved-plot-names.jsp" %>
+		</div>(View your saved plot names)<br />
 		<input type="submit" name="submit" value="Save Plot"/>
 	</form>
 </p>

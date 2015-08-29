@@ -8,12 +8,14 @@
 	<div>
 	<% if (!user.isGuest()) { %>		
 			<div style="text-align:center; width: 100%;">
-				Filename <input type="text" name="chartName<%= request.getParameter("chartIndex")%>" id="chartName<%= request.getParameter("chartIndex")%>" value="">
-				<br / >
-				</input><input type="button" name="save" onclick='return saveToFChart(<%= request.getParameter("chartIndex")%>, "chartName<%= request.getParameter("chartIndex")%>", "msg<%= request.getParameter("chartIndex")%>", <%= request.getParameter("runId") %>);' value="Save Chart"></input>     
-				<br / >
-				<div id="msg<%= request.getParameter("chartIndex")%>">&nbsp;</div>  
-			</div>
+				<div class="dropdown" style="text-align: left; width: 180px;">
+				<input type="text" name="chartName<%= request.getParameter("chartIndex")%>" id="chartName<%= request.getParameter("chartIndex")%>" value="">.jpg
+
+				<%@ include file="../plots/view-saved-plot-names.jsp" %>
+			</div><br />(View your saved names)<br />
+			<input type="button" name="save" onclick='return validatePlotName("chartName<%= request.getParameter("chartIndex")%>"); return saveToFChart(<%= request.getParameter("chartIndex")%>, "chartName<%= request.getParameter("chartIndex")%>", "msg<%= request.getParameter("chartIndex")%>", <%= request.getParameter("runId") %>);' value="Save Chart"></input>     
+
+			<div id="msg<%= request.getParameter("chartIndex")%>">&nbsp;</div>  
 	<% } %>
 	</div>		
 	<div class="tofDetails" id="tofDetails"  >Advanced Controls
