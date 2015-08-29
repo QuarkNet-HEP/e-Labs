@@ -158,11 +158,11 @@ public class CosmicPostUploadTasks {
 		        	//5K tolerance
 		        	if (latOffset > 5000 || lonOffset > 5000) {
 		        		gpsMessage = "Your detector GPS reports a position greater than 5 kilometers ("+String.format("%.2f", latOffset)+" meters for the latitude<br />"+
-		        					 "and "+String.format("%.2f", lonOffset)+" meters for the logitude) <br />"+
+		        					 "and "+String.format("%.2f", lonOffset)+" meters for the longitude) <br />"+
 		        					 "from the Geometry on file in the CR e-Lab. Please check your listed Geometry and effective Entry Date.<br />";
 		        	} else {
 		        		gpsMessage = "We have found an acceptable offset of "+String.format("%.2f", latOffset)+" meters for the latitude<br />"+
-		        					 "and "+String.format("%.2f", lonOffset)+" meters for the logitude between your uploaded data and the<br />"+
+		        					 "and "+String.format("%.2f", lonOffset)+" meters for the longitude between your uploaded data and the<br />"+
 		        					 "geometry configuration.<br />";
 		        	}
 		        } else {
