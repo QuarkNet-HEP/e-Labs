@@ -39,6 +39,13 @@ session.setAttribute("blessed", "");
 			<div id="content">
 				
 <h1>Time of Flight: Choose data for time of flight study.</h1>
+<div id="rationale">
+	The distributions of the relative time difference between hits for all possible pairs of channels 
+	is presented in units of nanoseconds. This provides the difference in arrival times of the muon(s) 
+	at different channels, however times need to be corrected if channels have different signal cable lengths. 
+	The speed of muons can be measured if distributions for a specific pair of channels are compared between 
+	two different data configuration that modify the distance between the pair of scintillation counters.
+</div>
 <table border="0" id="main">
 	<tr>
 		<td>
