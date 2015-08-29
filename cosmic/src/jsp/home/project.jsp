@@ -1,5 +1,8 @@
 <%@ include file="../include/elab.jsp" %>
-
+<%
+	String viewOnly = "?options=project";
+	request.setAttribute("viewOnly",viewOnly);
+%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -59,8 +62,8 @@
 					their results with this e-Lab. The Cosmic Ray e-Lab addresses ALL science and engineering 
 					practices in the Next Generation Science Standards.
 				</p>
-	
-				<a href="/elab" target="common"><strong>Information common for all e-Labs</strong></a>
+				<a href="/elab" target="common"><strong>Information common for all e-Labs</strong></a><br />
+				<a href="../library/resources.jsp<%=viewOnly %>" ><strong>Check out our online resources</strong></a>
 			</div>
 		</td>
 		

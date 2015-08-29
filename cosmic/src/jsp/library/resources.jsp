@@ -1,10 +1,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
 <%@ include file="../include/elab.jsp" %>
-<%@ include file="../login/login-required.jsp" %>
 <%@ page import="gov.fnal.elab.util.ElabUtil" %>
-
-
+<%
+	String referer = request.getParameter("referer");
+	if (referer == null) {
+		referer = request.getHeader("Referer");
+	}
+	request.setAttribute("referer",referer);
+	String viewOnly = request.getParameter("options");
+	String hideMenu = "no";
+	if (viewOnly != null && viewOnly.equals("project")) {
+		hideMenu ="yes";
+	} else {
+		%>
+		<%@ include file="../login/login-required.jsp" %>
+		<%
+	}
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -13,6 +26,14 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
+		<script>
+			function goBackAndRefresh() {
+				var referer = document.getElementById("referer");
+				if (referer.value != null) {
+				    window.location = referer.value;
+				} 
+			}
+		</script>
 	</head>
 		
 	<body id="resources" class="library">
@@ -21,12 +42,17 @@
 			<div id="top">
 				<div id="header">
 					<%@ include file="../include/header.jsp" %>
-					<%@ include file="../include/nav-rollover.jspf" %>
+					<% if (hideMenu.equals("no")) { %>
+						<%@ include file="../include/nav-rollover.jspf" %>
+					<% } %>							
 				</div>
 			</div>
 			
 			<div id="content">
-				
+<input type="hidden" name="referer" id="referer" value="${referer}" >
+<% if (hideMenu.equals("yes")) { %>
+	<a href="javascript:goBackAndRefresh();" style="font-size: 20px; text-decoration: none">Go back to the Cosmic Ray e-Lab</a><br /><br />			
+<% } %>							
 <h1>Resources: Check out the online resources or contact someone.</h1>
 <table border="0" id="main">
 	<tr>
@@ -61,6 +87,13 @@
 								and  <a href="../analysis-lifetime/tutorial.jsp">Tutorial</a>
 								- Discover how to read a <b>Lifetime Study </b> graph. 
 							</li>
+							<li>
+           						<e:popup href="../analysis-timeofflight/tryit.html" 
+           							target="TryIt" width="520" height="600">Step-by-Step Instructions</e:popup>
+								and  <a href="../analysis-timeofflight/tutorial.jsp">Tutorial</a>
+								- Learn how to understand the results of a <b>Time of Flight Study </b>. 
+							</li>
+							
 							
 							
 							<c:if test="${user.upload}">
@@ -141,7 +174,9 @@
 								<a href="mailto:randal.c.ruchti.1@nd.edu">Randy Ruchti</a> - Notre Dame University
 							</li>
 						</ul>
-						<h2><a href="../library/students.jsp">Student Research Groups</a></h2>
+						<% if (hideMenu.equals("no")) { %>
+							<h2><a href="../library/students.jsp">Student Research Groups</a></h2>
+						<% } %>
 					</div>
 				</div>
 
@@ -375,8 +410,6 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 		</td>
 	</tr>
 </table>
-
-
 			</div>
 			<!-- end content -->	
 		
