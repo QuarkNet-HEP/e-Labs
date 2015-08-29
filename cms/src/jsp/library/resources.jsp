@@ -28,13 +28,14 @@
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 		<script>
-			function goBack() {
+			function goBackAndRefresh() {
 				var referer = document.getElementById("referer");
 				if (referer.value != null) {
 				    window.location = referer.value;
 				} 
 			}
 		</script>
+
 	</head>
 		
 	<body id="resources" class="library">
@@ -52,9 +53,11 @@
 			</div>
 			
 			<div id="content">
+<input type="hidden" name="referer" id="referer" value="${referer}" >
 <% if (hideMenu.equals("yes")) { %>
-	<a href="javascript:goBack();">Go Back</a><br />
-<% } %>					
+	<a href="javascript:goBackAndRefresh();" style="font-size: 20px; text-decoration: none">Go back to the CMS e-Lab</a><br /><br />			
+<% } %>							
+
 <h1>Looking for information? Check out the online resources or contact someone.</h1>
 
 <table border="0" id="main">
@@ -319,9 +322,6 @@
 		</td>
 	</tr>
 </table>
-		 	<input type="hidden" name="referer" id="referer" value="${referer}" >
-
-
 			</div>
 			<!-- end content -->	
 		

@@ -8,7 +8,6 @@
 		referer = request.getHeader("Referer");
 	}
 	request.setAttribute("referer",referer);
-
 	String viewOnly = request.getParameter("options");
 	String hideMenu = "no";
 	if (viewOnly != null && viewOnly.equals("project")) {
@@ -28,7 +27,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 		<script>
-			function goBack() {
+			function goBackAndRefresh() {
 				var referer = document.getElementById("referer");
 				if (referer.value != null) {
 				    window.location = referer.value;
@@ -45,14 +44,15 @@
 					<%@ include file="../include/header.jsp" %>
 					<% if (hideMenu.equals("no")) { %>
 						<%@ include file="../include/nav-rollover.jspf" %>
-					<% } %>
+					<% } %>							
 				</div>
 			</div>
 			
 			<div id="content">
+<input type="hidden" name="referer" id="referer" value="${referer}" >
 <% if (hideMenu.equals("yes")) { %>
-	<a href="javascript:goBack();">Go Back</a><br />
-<% } %>					
+	<a href="javascript:goBackAndRefresh();" style="font-size: 20px; text-decoration: none">Go back to the Cosmic Ray e-Lab</a><br /><br />			
+<% } %>							
 <h1>Resources: Check out the online resources or contact someone.</h1>
 <table border="0" id="main">
 	<tr>
@@ -410,9 +410,6 @@ Simulation</a>, from Goethe Universitat Frankfurt am Main</li>
 		</td>
 	</tr>
 </table>
-		 	<input type="hidden" name="referer" id="referer" value="${referer}" >
-
-
 			</div>
 			<!-- end content -->	
 		

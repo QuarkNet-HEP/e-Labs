@@ -28,7 +28,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/library.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/two-column.css"/>
 		<script>
-			function goBack() {
+			function goBackAndRefresh() {
 				var referer = document.getElementById("referer");
 				if (referer.value != null) {
 				    window.location = referer.value;
@@ -74,10 +74,10 @@
 						<td id="left">
 							<%@ include file="../include/left-alt.jsp" %>
 						</td>
-						<td id="center">
-							<div class='body'>
+						<td id="center">						
+								<input type="hidden" name="referer" id="referer" value="${referer}" >
 								<% if (hideMenu.equals("yes")) { %>
-									<a href="javascript:goBack();">Go Back</a><br />
+									<a href="javascript:goBackAndRefresh();" style="font-size: 20px; text-decoration: none">Go back to the LIGO e-Lab</a><br /><br />			
 								<% } %>							
 							
 								<h1>Resources: Check out the online resources or contact someone.</h1>
@@ -253,7 +253,6 @@
 					</tr>
 				</table>
 			</div>
-		 	<input type="hidden" name="referer" id="referer" value="${referer}" >
 
 			<!-- end content -->	
 		
