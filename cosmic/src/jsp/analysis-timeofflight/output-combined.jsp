@@ -144,7 +144,7 @@
 <% if (!user.isGuest()) { %>
 	<p><b>OR</b></p>
 		<div class="dropdown" style="text-align: left; width: 180px;">
-			<input type="text" name="name" id="newPlotName" value="" size="20" maxlength="30"/>.jpg
+			<input type="text" name="name" id="newPlotName" value="" size="20" maxlength="30"/>
 			<%@ include file="../plots/view-saved-plot-names.jsp" %>
 		</div>(View your saved plot names)<br />
 		<input type="button" name="save" onclick='return validatePlotName("newPlotName"); return saveChart(onOffPlot, "name", "chartMsg", "${results.id}");' value="Save"></input>    

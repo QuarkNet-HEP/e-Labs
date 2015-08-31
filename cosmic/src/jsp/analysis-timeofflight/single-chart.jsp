@@ -9,7 +9,7 @@
 	<% if (!user.isGuest()) { %>		
 			<div style="text-align:center; width: 100%;">
 				<div class="dropdown" style="text-align: left; width: 180px;">
-				<input type="text" name="chartName<%= request.getParameter("chartIndex")%>" id="chartName<%= request.getParameter("chartIndex")%>" value="">.jpg
+				<input type="text" name="chartName<%= request.getParameter("chartIndex")%>" id="chartName<%= request.getParameter("chartIndex")%>" value="">
 
 				<%@ include file="../plots/view-saved-plot-names.jsp" %>
 			</div><br />(View your saved names)<br />
