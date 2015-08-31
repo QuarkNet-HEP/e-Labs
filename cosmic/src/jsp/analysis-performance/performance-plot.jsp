@@ -159,7 +159,7 @@
 	
 	<div style="text-align:center; width: 100%;">
 		<div class="dropdown" style="text-align: left; width: 180px;">
-			<input type="text" name="name" id="newPlotName" value="" size="20" maxlength="30"/>.jpg
+			<input type="text" name="name" id="newPlotName" value="" size="20" maxlength="30"/>
 			<%@ include file="../plots/view-saved-plot-names.jsp" %>
 		</div>(View your saved plot names)<br />
 		
