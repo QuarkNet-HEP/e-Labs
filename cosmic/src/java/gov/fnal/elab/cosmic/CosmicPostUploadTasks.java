@@ -151,7 +151,8 @@ public class CosmicPostUploadTasks {
 		        }   //done reading file
 		        br.close();
 		        
-		        if (!metaLatitude.equals("") && !metaLongitude.equals("") && !geoLatitude.equals("") && !geoLongitude.equals("")) {
+		        if (!metaLatitude.equals("") && !metaLongitude.equals("") && !geoLatitude.equals("") && !geoLongitude.equals("") &&
+		        		!metaLatitude.equals("0") && !metaLongitude.equals("0") && !geoLatitude.equals("0") && !geoLongitude.equals("0")) {
 		        	Double latOffset = getGPSOffset(metaLatitude, geoLatitude);
 		        	Double lonOffset = getGPSOffset(metaLongitude, geoLongitude);
 
