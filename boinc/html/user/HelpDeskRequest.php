@@ -811,7 +811,7 @@ require_field('subject');
 
 grab_input('elab');
 grab_input('daq_card');
-if( $elab == "Cosmic Rays"){
+if( $elab == "cosmic"){
 	require_field('daq_card');
 }
 grab_input('activity');
@@ -983,12 +983,18 @@ if( isset($_POST['submit_report']) && empty($input_error) ){
 
         // Output status
 
-        if( !$mailed || $thread_id<1 ) {
-            echo "<P>There was a problem submitting the report:";
-            if( !$mailed ) echo "<br> * The report could not be mailed.";
-            if( $thread_id<1 ) echo "<br> * The report could not be posted.";
-        }
+        //if( !$mailed || $thread_id<1 ) {
+        //    echo "<P>There was a problem submitting the report:";
+        //    if( !$mailed ) echo "<br> * The report could not be mailed.";
+        //    if( $thread_id<1 ) echo "<br> * The report could not be posted.";
+        //}
 
+        if( !$mailed) {
+        	echo "<P>There was a problem submitting the report:";
+        	if( !$mailed ) echo "<br> * The report could not be mailed.";
+        }
+        
+        
         if($mailed || $thread_id){
             echo "<p>The following report was submitted:
                         <hr><blockquote><pre>\n";
