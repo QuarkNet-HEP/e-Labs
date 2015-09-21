@@ -32,8 +32,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.codec.net.URLCodec;
 import org.griphyn.vdl.dbschema.AnnotationSchema;
-import gov.fnal.elab.cosmic.Geometry;
-import gov.fnal.elab.cosmic.beans.GeoEntryBean;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -487,32 +485,7 @@ public class DataTools {
         	throw new ElabException(ex);
         }
         return hasGeoEntry;
-    }//end of getGeoFileEntry
-    
-    //EPeronja-09/21/2015: get latest lat and long for all detectors from their geometry
-    public static TreeMap<String,String> getDetectorLatLong(Collection allDaqs) throws ElabException {
-    	TreeMap<String,String> detectorLatLong = new TreeMap<String,String>();
-    	for (Iterator i = allDaqs.iterator(); i.hasNext();) {
-    		String detectorid = (String) i.next();
-    	   	Elab elab = Elab.getElab(null, "cosmic");
-    		Geometry g = new Geometry(elab.getProperties().getDataDir(), Integer.parseInt(detectorid));
-    		Iterator it = g.getDescendingGeoEntries();
-    		if (it.hasNext()) {
-    			GeoEntryBean geb = (GeoEntryBean) it.next();
-    			String latitude = geb.getFormattedLatitude();
-    			String longitude = geb.getFormattedLongitude();
-    			String[] latParts = latitude.split("(:)|(\\.)");
-    			String[] lonParts = longitude.split("(:)|(\\.)");
-    			latParts[2] = String.format("%1$-6s", latParts[2]).replace(' ', '0');
-    			lonParts[2] = String.format("%1$-6s", lonParts[2]).replace(' ', '0');		
-    			Double latPos = Double.parseDouble(latParts[0])+(Double.parseDouble(latParts[1])/60)+(Double.parseDouble(latParts[2])/1000000/60);
-    			Double lonPos = Double.parseDouble(lonParts[0])+(Double.parseDouble(lonParts[1])/60)+(Double.parseDouble(lonParts[2])/1000000/60);
-    			detectorLatLong.put(detectorid, latPos+","+lonPos);    			
-    		}
-    		
-    	}
-       return detectorLatLong;
-    }//end of getDetectorLatLong    
+    }//end of getGeoFileEntry  
     
     //EPeronja-05/20/2014: Insert Analysis results for statistics
     public static void insertAnalysisResults(AnalysisRun ar, Elab elab) throws ElabException {
