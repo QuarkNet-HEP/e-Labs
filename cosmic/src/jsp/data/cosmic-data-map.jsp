@@ -24,9 +24,19 @@
         	  String[] latParts = latitude.split("(:)|(\\.)");
         	  String[] lonParts = longitude.split("(:)|(\\.)");
         	  latParts[2] = String.format("%1$-6s", latParts[2]).replace(' ', '0');
-        	  lonParts[2] = String.format("%1$-6s", lonParts[2]).replace(' ', '0');   
-        	  Double latPos = Double.parseDouble(latParts[0])+(Double.parseDouble(latParts[1])/60)+(Double.parseDouble(latParts[2])/1000000/60);
-        	  Double lonPos = Double.parseDouble(lonParts[0])+(Double.parseDouble(lonParts[1])/60)+(Double.parseDouble(lonParts[2])/1000000/60);
+        	  lonParts[2] = String.format("%1$-6s", lonParts[2]).replace(' ', '0');  
+        	  Double latPos = 0.0;
+        	  Double lonPos = 0.0;
+        	  if (Double.parseDouble(latParts[0]) > 0) {
+        		    latPos = Double.parseDouble(latParts[0])+(Double.parseDouble(latParts[1])/60)+(Double.parseDouble(latParts[2])/1000000/60);
+        	  } else {
+                latPos = Double.parseDouble(latParts[0])-(Double.parseDouble(latParts[1])/60)-(Double.parseDouble(latParts[2])/1000000/60);        		  
+        	  }
+        	  if (Double.parseDouble(lonParts[0]) > 0) {
+        		    lonPos = Double.parseDouble(lonParts[0])+(Double.parseDouble(lonParts[1])/60)+(Double.parseDouble(lonParts[2])/1000000/60);
+        	  } else {
+                lonPos = Double.parseDouble(lonParts[0])-(Double.parseDouble(lonParts[1])/60)-(Double.parseDouble(lonParts[2])/1000000/60);        		  
+        	  }
         	  daqLatLong.put(detectorid, latPos+","+lonPos);         
        }
      }
