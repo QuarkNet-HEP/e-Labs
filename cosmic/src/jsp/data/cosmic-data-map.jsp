@@ -6,11 +6,31 @@
 <%@ page import="gov.fnal.elab.datacatalog.query.*" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.lang.time.DateUtils" %>
+<%@ page import="gov.fnal.elab.cosmic.Geometry" %>
+<%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
 <% 
      Collection allDaqs = (Collection) session.getAttribute("allDaqs");
-     TreeMap<String,String> daqLatLong = DataTools.getDetectorLatLong(allDaqs);
+     TreeMap<String,String> daqLatLong = new TreeMap<String,String>();
+     for (Iterator i = allDaqs.iterator(); i.hasNext();) {
+    	   String detectorid = (String) i.next();
+         Geometry g = new Geometry(elab.getProperties().getDataDir(), Integer.parseInt(detectorid));
+         Iterator it = g.getDescendingGeoEntries();
+         if (it.hasNext()) {
+        	  GeoEntryBean geb = (GeoEntryBean) it.next();
+        	  String latitude = geb.getFormattedLatitude();
+        	  String longitude = geb.getFormattedLongitude();
+        	  String[] latParts = latitude.split("(:)|(\\.)");
+        	  String[] lonParts = longitude.split("(:)|(\\.)");
+        	  latParts[2] = String.format("%1$-6s", latParts[2]).replace(' ', '0');
+        	  lonParts[2] = String.format("%1$-6s", lonParts[2]).replace(' ', '0');   
+        	  Double latPos = Double.parseDouble(latParts[0])+(Double.parseDouble(latParts[1])/60)+(Double.parseDouble(latParts[2])/1000000/60);
+        	  Double lonPos = Double.parseDouble(lonParts[0])+(Double.parseDouble(lonParts[1])/60)+(Double.parseDouble(lonParts[2])/1000000/60);
+        	  daqLatLong.put(detectorid, latPos+","+lonPos);         
+       }
+     }
+     
      request.setAttribute("daqLatLong", daqLatLong);
      
      //TreeMap<Integer,String> allCities = DataTools.getCosmicDataMarkers(elab);
