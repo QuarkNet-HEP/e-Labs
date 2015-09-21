@@ -22,6 +22,19 @@ if (!user.getName().equals("guest")) {
 		allowAllDataAccess = true;
 	}
 }
+
+//ArrayList<String> splitCities = (ArrayList) session.getAttribute("splitCities");
+
+//set the calendar to a month prior by default 
+//the criteria to retrieve datafiles will probably change but we need some type of range otherwise
+//we will be retrieving all the files.
+Calendar cal = Calendar.getInstance();
+  cal.setTime(new Date());
+  cal.add(Calendar.DATE, 1);    
+Calendar lastMonth = Calendar.getInstance();
+lastMonth.add(Calendar.MONTH,-3);       
+request.setAttribute("lastMonth", lastMonth);
+//request.setAttribute("splitCities", splitCities);
 request.setAttribute("allowAllDataAccess", allowAllDataAccess);
 %>
 <script type="text/javascript">
@@ -45,7 +58,49 @@ $(window).scroll(function(){
 	$('#right').animate({top:$(window).scrollTop()+"px" },{queue: false, duration: 0});
 });
 
+function updateInputBox() {
+	
+} 
+
+//$(function() {
+//	  var last_selected_value = "";
+//    $("#selectable").selectable({
+//    	   stop: function () {
+//    	        var text = $(this).children(".ui-selected").map(function () {
+//    	            return $(this).text();
+//    	        }).get().join('; ');
+//    	        var inputBox = document.getElementById("name");
+//    	        inputBox.value = text;
+//    	    }
+//    	});
+//  });
 </script>
+<style>
+.details:hover .tooltip {
+    display: block;
+}
+
+.tooltip {
+    display: none;
+    background: #FFFFE5;
+    margin-left: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1000;
+    width:200px;
+    height:200px;
+    overflow: auto;
+    border-radius: 5px 5px 5px;
+    border: 1px solid black;
+    text-align: left;
+}
+
+  #selectable .ui-selecting { background: #FECA40; }
+  #selectable .ui-selected { background: #F39814; color: white; }
+  #selectable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+  #selectable li { margin: 3px; padding: 0.4em; }
+  
+</style>
 		
 <div class="search-quick-links">Quick Searches: 
 	<e:quicksearch key="group" value="${user.name}"  />,
@@ -60,6 +115,17 @@ $(window).scroll(function(){
 		        labelList="City, Group, School, State/Country, Teacher, Detector ID"
 		        default="${param.key}"/>
 	<input name="value" id="name" size="40" maxlength="40" value="${param.value}" />
+<!--  
+  <div class="details" id="cityList" style="display: inline-block;" ><img src="../graphics/view_data.gif" alt=" " border="0" />
+    <span class="tooltip" id="cityTooltip">
+      <ol id="selectable">
+  	    <c:forEach items="${ splitCities}" var="splitCity">
+	         <li class="a-item">${splitCity }</li>
+  	    </c:forEach>    
+  	  </ol>
+    </span>
+  </div>
+-->	
 	<input type="submit" name="submit" value="Search Data" />
 
 	<e:vswitch>
@@ -83,7 +149,7 @@ $(window).scroll(function(){
 						</select>
 					</td>
 					<td>
-						<e:trinput name="date1" id="date1" size="10" maxlength="15" class="datepicker"/>
+						<e:trinput name="date1" id="date1" size="10" maxlength="15" class="datepicker" value="<%=DATEFORMAT.format(lastMonth.getTime()) %>"/>
 						to
 						<e:trinput name="date2" id="date2" size="10" maxlength="15" class="datepicker"/>
 					</td>
@@ -126,6 +192,11 @@ $(window).scroll(function(){
 			</table>
 		</e:hidden>
 	</e:vswitch>
+	<br />
+	<a href="cosmic-data-map.jsp">View all cities that uploaded data</a><br />
+  <div><i>* By default we are retrieving the last 3 months worth of data for the criteria you chose.<br />
+          You can modify your date range using the Advanced Search criteria.
+      </i></div> 
 	<div id="msg" name="msg">${msg}</div>	
 	<br />
 	<%
