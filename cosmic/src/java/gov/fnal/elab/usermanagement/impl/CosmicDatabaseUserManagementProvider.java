@@ -109,6 +109,28 @@ CosmicElabUserManagementProvider {
 		}
 	}
 
+	public Collection getAllDetectorIds() throws ElabException {
+		Connection conn = null;
+		try {
+			conn = DatabaseConnectionManager.getConnection(elab.getProperties());
+			PreparedStatement ps = conn.prepareStatement(
+					"SELECT distinct detectorid FROM research_group_detectorid order by detectorid;");
+			ResultSet rs = ps.executeQuery();
+			List ids = new ArrayList();
+			while (rs.next()) {
+				ids.add(rs.getString("detectorid"));
+			}
+			ps.close();
+			return ids;
+		}
+		catch (Exception e) {
+			throw new ElabException(e);
+		}
+		finally {
+			DatabaseConnectionManager.close(conn);
+		}
+	}//end of getAllDetectorIds	
+
 	private Collection getDetectorIds(Connection c, ElabGroup group)
 	throws SQLException {
 		PreparedStatement ps = c.prepareStatement(
