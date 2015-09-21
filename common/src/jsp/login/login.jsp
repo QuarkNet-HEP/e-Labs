@@ -5,7 +5,10 @@
 <%@ page import="gov.fnal.elab.ElabGroup" %>
 <%@ page import="gov.fnal.elab.usermanagement.AuthenticationException" %>
 <%@ page import="gov.fnal.elab.datacatalog.*" %>
+<%@ page import="java.util.*" %>
 <%@ page import="org.apache.commons.codec.net.URLCodec" %>
+<%@ page import="gov.fnal.elab.usermanagement.*" %>
+<%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 <%
 	String username = request.getParameter("user");
 	String password = request.getParameter("pass");
@@ -72,7 +75,19 @@
 				session.setAttribute("cosmicFileCount", String.valueOf(fileCount));
 				session.setAttribute("cosmicSchoolCount", String.valueOf(schoolCount));
 				session.setAttribute("cosmicStateCount", String.valueOf(stateCount));
-				
+				//ArrayList<String> splitCities = dcp.getSplitCities();
+		    //session.setAttribute("splitCities", splitCities);
+		    ElabUserManagementProvider p = elab.getUserManagementProvider();
+		    CosmicElabUserManagementProvider cp = null;
+		    if (p instanceof CosmicElabUserManagementProvider) {
+		      cp = (CosmicElabUserManagementProvider) p;
+		    }
+		    else {
+		      throw new ElabJspException("The user management provider does not support management of DAQ IDs. " + 
+		        "Either this e-Lab does not use DAQs or it was improperly configured.");
+		    }
+		    Collection allDaqs = cp.getAllDetectorIds();
+	      session.setAttribute("allDaqs", allDaqs);    
 			}
 			String redirect = prevPage; 
 			if(prevPage == null) {
