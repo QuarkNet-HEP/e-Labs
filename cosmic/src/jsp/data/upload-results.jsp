@@ -128,6 +128,8 @@
 		request.setAttribute("detectorId", detectorId);
 		sqlErrors = (String) results.getAnalysis().getParameter("message");
 		request.setAttribute("sqlErrors", sqlErrors);
+		String gpsMessage = (String) results.getAnalysis().getParameter("gspMessage");
+		request.setAttribute("gpsMessage",gpsMessage);
 		ArrayList<String> benchmarkMessages = (ArrayList<String>) results.getAnalysis().getParameter("benchmarkMessages");
 		request.setAttribute("benchmarkMessages", benchmarkMessages);
 		request.setAttribute("channels", channels);
@@ -166,8 +168,6 @@
     	</c:choose>
     	<hr/>
     	<h2>File Summary for DAQ: <%=detectorId %></h2>
-<c:choose>
-	<c:when test='${errorMessage == ""}'>    
     	Your data was split into ${lfnssz} ${lfnssz == 1 ? 'day' : 'days'} spanning from:<br/>
     	${entry.tupleMap.startdate} to ${entry.tupleMap.enddate}<br/>
     	The uploaded file contained ${entry.tupleMap.totalDataLines} accepted data lines. We ignored ${entry.tupleMap.GPSSuspects} line(s) due to a suspect GPS date.
@@ -199,6 +199,7 @@
 				Average latitude: ${entry.tupleMap.avglatitude}<br/>
 				Average longitude: ${entry.tupleMap.avglongitude}<br/>
 				Average altitude: ${entry.tupleMap.avgaltitude}<br/>
+				${gpsMessage }
 			</c:otherwise>
 		</c:choose>	
 		<c:choose>
@@ -224,12 +225,6 @@
 				<p>${sqlErrors}</p>
 			</c:when>
 		</c:choose>
-	</c:when>
-	<c:otherwise>
-		The uploaded files from this process do not exist any longer in our server. They may have been deleted.<br />
-		If you have any questions please send a message to <a href="mailto:e-labs@fnal.gov">e-labs@fnal.gov</a>
-	</c:otherwise>
-</c:choose>
 			</div>
 			<!-- end content -->	
 		
