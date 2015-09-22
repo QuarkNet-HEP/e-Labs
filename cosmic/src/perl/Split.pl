@@ -460,6 +460,11 @@ while(<IN>){
 			$stTimeGlitch = 1;
 			next;
 		}	
+        #log it to the error file
+        if ($stTime < $oldSTTime) {
+            print ERRORS "The following ST Line displays a time earlier than the prior ST Line:\n";
+            print ERRORS $_;
+        }
 		
 		#We could look at ConReg and TMCReg to see if they change. If they do, we need to start another split file.
 		#$oldSTDate = $stDate;
@@ -754,13 +759,17 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					
 					if (($stTime[2]-$stTime[1]) > 0){ # it should have been caught by now, but still. . . 
 						for $j (1..$dsRowCount-1){
-								$stRate0[$j] = sprintf("%0.5f", $stCount0[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
-								$stRate1[$j] = sprintf("%0.5f", $stCount1[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
-								$stRate2[$j] = sprintf("%0.5f", $stCount2[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
-								$stRate3[$j] = sprintf("%0.5f", $stCount3[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
+                            if ($stTime[$j] > $stTime[$j-1]) {
+								$stRate0[$j] = sprintf("%0.5f", $stCount0[$j]/($stTime[$j] - $stTime[$j-1]));# if $stTime[$j] > $stTime[$j-1];
+								$stRate1[$j] = sprintf("%0.5f", $stCount1[$j]/($stTime[$j] - $stTime[$j-1]));# if $stTime[$j] > $stTime[$j-1];
+								$stRate2[$j] = sprintf("%0.5f", $stCount2[$j]/($stTime[$j] - $stTime[$j-1]));# if $stTime[$j] > $stTime[$j-1];
+								$stRate3[$j] = sprintf("%0.5f", $stCount3[$j]/($stTime[$j] - $stTime[$j-1]));# if $stTime[$j] > $stTime[$j-1];
 								#The rate may be very low here. . .  
-								$stEventRate[$j] = sprintf("%0.5f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && ($stEvents[$j]/($stTime[$j] - $stTime[$j-1]) > 1);
-								$stEventRate[$j] = sprintf("%0.5f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && ($stEvents[$j]/($stTime[$j] - $stTime[$j-1]) < 1); # we've already ruled out counts < 0
+								#$stEventRate[$j] = sprintf("%0.5f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && ($stEvents[$j]/($stTime[$j] - $stTime[$j-1]) > 1);
+								#$stEventRate[$j] = sprintf("%0.5f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && ($stEvents[$j]/($stTime[$j] - $stTime[$j-1]) < 1); # we've already ruled out counts < 0
+                                $stEventRate[$j] = sprintf("%0.5f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if ($stEvents[$j]/($stTime[$j] - $stTime[$j-1]) > 1);
+                                $stEventRate[$j] = sprintf("%0.5f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if ($stEvents[$j]/($stTime[$j] - $stTime[$j-1]) < 1); # we've already ruled out counts < 0
+                            }
 						}#end for $j (1..$d . . 
 					}#end if (($stTime[2] . . .
 					
@@ -846,7 +855,9 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					#}
 		
 					for my $i  (1..$dsRowCount-2){
-						print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.5f", sqrt($stRate0[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stRate1[$i]", "\t", sprintf("%0.5f", sqrt($stRate1[$i]/($stTime[$i] - $stTime[$i-1]))),"\t", "$stRate2[$i]", "\t", sprintf("%0.5f", sqrt($stRate2[$i]/($stTime[$i] - $stTime[$i-1]))),"\t", "$stRate3[$i]", "\t", sprintf("%0.5f", sqrt($stRate3[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stEventRate[$i]", "\t", sprintf("%0.5f", sqrt($stEventRate[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
+                       if (($stRate0[$i]/($stTime[$i] - $stTime[$i-1])) >=0 && ($stRate1[$i]/($stTime[$i] - $stTime[$i-1])) >= 0 && ($stRate2[$i]/($stTime[$i] - $stTime[$i-1])) >= 0 && ($stRate3[$i]/($stTime[$i] - $stTime[$i-1])) >= 0 && ($stEventRate[$i]/($stTime[$i] - $stTime[$i-1])) >= 0) {                      
+    						print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.5f", sqrt($stRate0[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stRate1[$i]", "\t", sprintf("%0.5f", sqrt($stRate1[$i]/($stTime[$i] - $stTime[$i-1]))),"\t", "$stRate2[$i]", "\t", sprintf("%0.5f", sqrt($stRate2[$i]/($stTime[$i] - $stTime[$i-1]))),"\t", "$stRate3[$i]", "\t", sprintf("%0.5f", sqrt($stRate3[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stEventRate[$i]", "\t", sprintf("%0.5f", sqrt($stEventRate[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
+                       }
 					}
 
 					close $blessFile;	
@@ -1095,13 +1106,17 @@ else{
 	# 3. Determine the rate
 	if (($stTime[2]-$stTime[1]) > 0){ # it should have been caught by now, but still. . . 
 		for $j (1..$dsRowCount-1){
-			$stRate0[$j] = sprintf("%0.5f", $stCount0[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
-			$stRate1[$j] = sprintf("%0.5f", $stCount1[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
-			$stRate2[$j] = sprintf("%0.5f", $stCount2[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
-			$stRate3[$j] = sprintf("%0.5f", $stCount3[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1];
-			#The rate may be very low here. . .  
-			$stEventRate[$j] = sprintf("%0.5f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1]))  if $stTime[$j] > $stTime[$j-1] && $stEvents[$j]/($stTime[$j] - $stTime[$j-1]) > 1;
-			$stEventRate[$j] = sprintf("%0.5f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && $stEvents[$j]/($stTime[$j] - $stTime[$j-1]) < 1; # we've already ruled out counts < 0
+            if ($stTime[$j] > $stTime[$j-1]) {
+			     $stRate0[$j] = sprintf("%0.5f", $stCount0[$j]/($stTime[$j] - $stTime[$j-1]));# if $stTime[$j] > $stTime[$j-1];
+			     $stRate1[$j] = sprintf("%0.5f", $stCount1[$j]/($stTime[$j] - $stTime[$j-1]));# if $stTime[$j] > $stTime[$j-1];
+			     $stRate2[$j] = sprintf("%0.5f", $stCount2[$j]/($stTime[$j] - $stTime[$j-1]));# if $stTime[$j] > $stTime[$j-1];
+			     $stRate3[$j] = sprintf("%0.5f", $stCount3[$j]/($stTime[$j] - $stTime[$j-1]));# if $stTime[$j] > $stTime[$j-1];
+			     #The rate may be very low here. . .  
+			     #$stEventRate[$j] = sprintf("%0.5f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && $stEvents[$j]/($stTime[$j] - $stTime[$j-1]) > 1;
+			     #$stEventRate[$j] = sprintf("%0.5f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stTime[$j] > $stTime[$j-1] && $stEvents[$j]/($stTime[$j] - $stTime[$j-1]) < 1; # we've already ruled out counts < 0
+                 $stEventRate[$j] = sprintf("%0.5f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stEvents[$j]/($stTime[$j] - $stTime[$j-1]) > 1;
+                 $stEventRate[$j] = sprintf("%0.5f", $stEvents[$j]/($stTime[$j] - $stTime[$j-1])) if $stEvents[$j]/($stTime[$j] - $stTime[$j-1]) < 1; # we've already ruled out counts < 0
+            }
 		}
 	}
 	
@@ -1183,7 +1198,9 @@ else{
 	#}
 	
 	for my $i  (1..$dsRowCount-2){
-		print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.5f", sqrt($stRate0[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stRate1[$i]", "\t", sprintf("%0.5f", sqrt($stRate1[$i]/($stTime[$i] - $stTime[$i-1]))),"\t", "$stRate2[$i]", "\t", sprintf("%0.5f", sqrt($stRate2[$i]/($stTime[$i] - $stTime[$i-1]))),"\t", "$stRate3[$i]", "\t", sprintf("%0.5f", sqrt($stRate3[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stEventRate[$i]", "\t", sprintf("%0.5f", sqrt($stEventRate[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
+        if (($stRate0[$i]/($stTime[$i] - $stTime[$i-1])) >=0 && ($stRate1[$i]/($stTime[$i] - $stTime[$i-1])) >= 0 && ($stRate2[$i]/($stTime[$i] - $stTime[$i-1])) >= 0 && ($stRate3[$i]/($stTime[$i] - $stTime[$i-1])) >= 0 && ($stEventRate[$i]/($stTime[$i] - $stTime[$i-1])) >= 0) {                      
+    		print $blessFile "$stTime[$i]","\t", "$stRate0[$i]", "\t", sprintf("%0.5f", sqrt($stRate0[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stRate1[$i]", "\t", sprintf("%0.5f", sqrt($stRate1[$i]/($stTime[$i] - $stTime[$i-1]))),"\t", "$stRate2[$i]", "\t", sprintf("%0.5f", sqrt($stRate2[$i]/($stTime[$i] - $stTime[$i-1]))),"\t", "$stRate3[$i]", "\t", sprintf("%0.5f", sqrt($stRate3[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stEventRate[$i]", "\t", sprintf("%0.5f", sqrt($stEventRate[$i]/($stTime[$i] - $stTime[$i-1]))), "\t", "$stPress[$i]", "\t", "$stTemp[$i]", "\t", "$stVcc[$i]", "\t", "$stGPSSats[$i]","\n"; 	
+        }
 	}
 					
 	close $blessFile;	
