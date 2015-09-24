@@ -319,3 +319,21 @@ function validatePlotName(plotNameId) {
     	return false;
     }
 }
+
+function validateMultiplePlotName(existingPlotNamesId, plotNameId, onOffPlot, messageDivId) {
+	var newName = document.getElementById(plotNameId);
+	var existingNames = document.getElementById(existingPlotNamesId);
+	var validName = true;
+    for (var i = 0; i < existingNames.length; i++) {
+        if (newName.value == existingNames.options[i].value) {
+        	validName = false;
+        }
+    }
+    if (validName) {
+    	saveChart(onOffPlot, plotNameId, messageDivId);
+    	return true;
+    } else {
+    	alert("There is an existing plot with this name. Please choose a different name.");
+    	return false;
+    }
+}
