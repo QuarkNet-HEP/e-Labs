@@ -193,7 +193,7 @@ function updateInputBox() {
 		</e:hidden>
 	</e:vswitch>
 	<br />
-	<a href="cosmic-data-map.jsp">View all cities that uploaded data</a>
+	<a href="cosmic-data-map.jsp">View detector map</a>
 	<br /><br />
   <div><i>* By default we are retrieving the last 3 months worth of data for the criteria you chose.<br />
           You can modify your date range using the Advanced Search criteria.
