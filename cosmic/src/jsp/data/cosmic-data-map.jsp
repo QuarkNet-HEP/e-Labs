@@ -74,7 +74,7 @@
         $(document).ready(function() {
             // Asynchronously Load the map API 
             var script = document.createElement('script');
-            script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&callback=initialize";
+            script.src = "https://maps.googleapis.com/maps/api/js?sensor=false&callback=initialize";
             document.body.appendChild(script);  
         }); 
  
@@ -82,35 +82,41 @@
             var map;
             var bounds = new google.maps.LatLngBounds();
             var mapOptions = {
-                mapTypeId: 'roadmap'
+            		rotateControl: true,
+            		mapTypeControl: true,
+            	  style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+                mapTypeIds: [
+                      google.maps.MapTypeId.ROADMAP,
+                      google.maps.MapTypeId.TERRAIN
+                      ]
             };
             // Display a map on the page
             map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
             map.setTilt(45);          
 
-            var city = [];
+            var daq = [];
             var latitude = [];
             var longitude = [];
-            var cityDetails = document.getElementsByName("detectorDetails");
-            if (cityDetails.length > 0) {
-              for (var i=0; i < cityDetails.length; i++) {
-                cityArr = cityDetails[i].value.split(',');
-                if (cityArr[1] != "null" && cityArr[2] != "null") {
-                  city.push(cityArr[0]);
-                  latitude.push(cityArr[1]);
-                  longitude.push(cityArr[2]);
+            var detectorDetails = document.getElementsByName("detectorDetails");
+            if (detectorDetails.length > 0) {
+              for (var i=0; i < detectorDetails.length; i++) {
+                daqArr = detectorDetails[i].value.split(',');
+                if (daqArr[1] != "null" && daqArr[2] != "null") {
+                	daq.push(daqArr[0]);
+                  latitude.push(daqArr[1]);
+                  longitude.push(daqArr[2]);
                 }
               }
             }
 
             // Loop through our array of markers & place each one on the map  
-            for( i = 0; i < city.length; i++ ) {
+            for( i = 0; i < daq.length; i++ ) {
                 var position = new google.maps.LatLng(latitude[i], longitude[i]);
                 bounds.extend(position);
                 marker = new google.maps.Marker({
                     position: position,
                     map: map,
-                    title: city[i]
+                    title: daq[i]
                 });
                 
                 // Automatically center the map fitting all markers on the screen
