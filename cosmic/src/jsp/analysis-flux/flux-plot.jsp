@@ -75,14 +75,14 @@
 			message = e.getMessage();
 	}	
 
-	String subject = URLEncoder.encode(elab.getName() + " Interactive Performance Plot Feedback");
+	String subject = URLEncoder.encode(elab.getName() + " Interactive Flux Plot Feedback");
 	String body = URLEncoder.encode("Thank you for your interest and help!. Please complete the fields below with your feedback:\n\n" 
 		+ "First Name:\n\n"
 		+ "Last Name:\n\n"
 		+ "City:\n\n"
 		+ "State:\n\n"
 		+ "School:\n\n"
-		+ "Your feedback about the Performance Interactive Plots:\n");
+		+ "Your feedback about the Flux Interactive Plots:\n");
 	String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
 	request.setAttribute("message", message);
 %>
