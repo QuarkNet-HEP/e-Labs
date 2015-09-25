@@ -158,11 +158,11 @@ $GPSSuspects = 0;					#int to hold the number of lines that we discard because t
 $current_data_row = "";				#to be able to print the prior data row
 $previous_data_row = "";			#to be able to print the current data row
 $clock_problem_count = 0;			#to keep the count of times that we found the clock to be off
-@diff = ();
-@difflowrate = ();
-$DAQFirmware = 0;
-$DAQFirmwareComments = "";
-$eventStart = 0;
+@diff = ();                         #difference between ticks
+@difflowrate = ();                  #hold difference between ticks
+$DAQFirmware = 0;                   #holds the DAQFirmware value
+$DAQFirmwareComments = "";          #if there is anything we need to say about firmware
+$eventStart = 0;                    #event counter
 
 #convert MAC OS line breaks to UNIX
 #Mac OS only has \r for new lines, so Unix reads it as all one big line. We first need to replace
@@ -994,6 +994,12 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
         	# redefines variables for checking to see if the next line has the same data as this line
         	$cpld_time = $dataRow[10];
         	$cpld_hex = $dataRow[9];
+        	# write to the error file if there was a problem with the clock
+            if ($cpld_day_seconds != 0 && $cpld_day_seconds < $cpld_seconds) {
+                print ERRORS "\nTIME DECREASED INSTEAD OF INCREASING:\n";
+                print ERRORS $previous_data_row;
+                print ERRORS $current_data_row;
+            }
         	$cpld_seconds = $cpld_day_seconds;
         	$previous_data_row = $current_data_row;
 		}	#end 
