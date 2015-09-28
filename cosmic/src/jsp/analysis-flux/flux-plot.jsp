@@ -150,7 +150,7 @@
 					</c:when>
 					<c:otherwise>							
 						<div class="graph-container" id="spinner" style="height: 600px;">
-							<div id="placeholder" class="graph-placeholder" style="float:left; width:650px; height:550px;"></div>
+							<div id="placeholder" class="graph-placeholder" style="float:left; width:590px; height:550px;"></div>
 							<div id="overview" class="graph-placeholder" style="float:right;width:160px; height:150px;"></div>
 							<div id="interactive" style="float:right;width:160px; height:325px;">
 								<p><label><input id="enableTooltip" type="checkbox" checked="checked"></input>Enable tooltip</label></p>
@@ -226,10 +226,8 @@
 					<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
 					<e:creationDateMetadata/>
 					<input type="hidden" name="metadata" value="transformation string I2U2.Cosmic::FluxStudy"/>
-					<input type="hidden" name="metadata" value="study string performance"/>
+					<input type="hidden" name="metadata" value="study string flux"/>
 					<input type="hidden" name="metadata" value="type string plot"/>
-					<input type="hidden" name="metadata" value="bins float ${results.analysis.parameters['freq_binValue']}"/>
-					<input type="hidden" name="metadata" value="channel string ${results.analysis.parameters['singlechannel_channel']}"/>
 					<input type="hidden" name="metadata" value="title string ${results.analysis.parameters['plot_title']}"/>
 					<input type="hidden" name="metadata" value="caption string ${results.analysis.parameters['plot_caption']}"/>
 					<input type="hidden" name="srcFile" value="plot.png"/>
@@ -237,7 +235,7 @@
 					<input type="hidden" name="srcSvg" value="plot.svg"/>
 					<input type="hidden" name="srcFileType" value="png"/>
 					<input type="hidden" name="id" value="${results.id}"/>
-					<input type="hidden" name="outputDir" id="outputDir" value="${results.outputDirURL}"/>	 
+					<input type="hidden" name="outputDir" id="outputDir" value="${results.outputDirURL}"/>	 					
 				</div>
 		 	</div>
 <% } %>
