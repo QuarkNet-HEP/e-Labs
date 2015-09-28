@@ -163,6 +163,7 @@ $clock_problem_count = 0;			#to keep the count of times that we found the clock 
 $DAQFirmware = 0;                   #holds the DAQFirmware value
 $DAQFirmwareComments = "";          #if there is anything we need to say about firmware
 $eventStart = 0;                    #event counter
+$splitComments = "";                #to flag if there was a problem with the time
 
 #convert MAC OS line breaks to UNIX
 #Mac OS only has \r for new lines, so Unix reads it as all one big line. We first need to replace
@@ -833,6 +834,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
         	        print META "blessedstatus string awaiting\n"; # File now awaiting blessing
 					print META "datalines int $data_line\n";
 					print META "GPSSuspects int $GPSSuspects\n";
+				    print META "splitcomments string $splitComments\n";
 					if ($DAQFirmwareComments != "") {
 						print META "DAQFirmwareComments string $DAQFirmwareComments";
 					}
@@ -873,6 +875,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					$DAQFirmware = $eventStart = 0;
 					$DAQFirmwareComments = "";
 					$goodChan=-1;
+					$splitComments = "";
 					$numSplitFiles++;
 					#print "code never makes it here if datafile is < 1 day.\n";
 				
@@ -996,6 +999,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
         	$cpld_hex = $dataRow[9];
         	# write to the error file if there was a problem with the clock
             if ($cpld_day_seconds != 0 && $cpld_day_seconds < $cpld_seconds) {
+            	$splitComments = "This split had problems with the time decreasing instead of increasing.";
                 print ERRORS "\nTIME DECREASED INSTEAD OF INCREASING:\n";
                 print ERRORS $previous_data_row;
                 print ERRORS $current_data_row;
@@ -1186,7 +1190,8 @@ else{
 	print META "blessedstatus string awaiting\n"; # File now awaiting blessing
 	print META "datalines int $data_line\n";
 	print META "GPSSuspects int $GPSSuspects\n";
-	if ($DAQFirmwareComments != "") {
+    print META "splitcomments string $splitComments\n";
+    if ($DAQFirmwareComments != "") {
 		print META "DAQFirmwareComments string $DAQFirmwareComments\n";
 	}
 
