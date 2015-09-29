@@ -300,6 +300,9 @@
 		</td>
 		<td align="center" valign="top">
 			<p>
+			  <a href="shower-plot.jsp?showerId=${showerResults.id}&id=${results.id }&message=${message}">View interactive Shower plots</a> (Beta Version)<br />
+			</p>
+			<p>
 				Click on image for a larger view
 			</p>
 			<e:popup href="../analysis-shower/show-plot.jsp?showerId=${showerResults.id}&id=${results.id}&eventDir=${eventDir}" target="showerPopup" width="650" height="750">
