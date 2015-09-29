@@ -17,9 +17,9 @@ We hope to make this process easier in the future.<br /><br />
 <hr />
 <ul>
     <li>In the past, we've suggested that users log in as guests. Now we're encouraging you to sign up for your own teacher accounts (hooray!). 
-    You can do this by clicking the link under "Need a teacher login?" on the <a href="javascript:showRefLink('https://www18.i2u2.org/elab/ligo/teacher/',700, 700)">e-Lab login page.</a> 
+    You can do this by clicking the link under "Need a teacher login?" on the <a href="javascript:showRefLink('https://www.i2u2.org/elab/ligo/teacher/',700, 700)">e-Lab login page.</a> 
     If you attended this summer's I2U2 workshop, we've made an account for you. You'll receive the access information in another message.</li>
-    <li>Once you have a teacher account, you can add student accounts yourself. Instructions for adding students are behind the <a href="javascript:showRefLink('https://www18.i2u2.org/elab/ligo/teacher/registration.jsp',700, 700)">registration link</a> on the 
+    <li>Once you have a teacher account, you can add student accounts yourself. Instructions for adding students are behind the <a href="javascript:showRefLink('https://www.i2u2.org/elab/ligo/teacher/registration.jsp',700, 700)">registration link</a> on the 
     teacher menu bar (behind teacher home instead of student home)</li>
     <li>Teacher and student accounts are necessary for you to utilize the key features of the e-Lab such as the log book and the authoring of posters.</li>
 </ul>
