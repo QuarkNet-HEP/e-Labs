@@ -58,7 +58,7 @@ The output data record, which can be sent via a standard RS-232 serial interface
 contains temporal information about the PMT signals. This information includes: how many channels 
 had above-threshold signals, their relative arrival times (precise to 0.75 ns), and the starting 
 and stopping times for each detected pulse. In addition, an external GPS receiver module provides 
-the absolute <a href="/cosmic/library/body.php?title=UTC" title="UTC">UTC Time</a> of each trigger, accurate to about 50 ns. 
+the absolute <a href="javascript:glossary('UTC')">UTC Time</a> of each trigger, accurate to about 50 ns. 
 This allows counter arrays using separate DAQ boards such as different schools in a wide-area 
 array or two sets of counters at the same site to correlate their timing data. Keyboard commands 
 allow you to define trigger criteria and retrieve additional data, such as counting rates, 
