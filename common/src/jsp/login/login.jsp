@@ -75,8 +75,6 @@
 				session.setAttribute("cosmicFileCount", String.valueOf(fileCount));
 				session.setAttribute("cosmicSchoolCount", String.valueOf(schoolCount));
 				session.setAttribute("cosmicStateCount", String.valueOf(stateCount));
-				//ArrayList<String> splitCities = dcp.getSplitCities();
-		    //session.setAttribute("splitCities", splitCities);
 		    ElabUserManagementProvider p = elab.getUserManagementProvider();
 		    CosmicElabUserManagementProvider cp = null;
 		    if (p instanceof CosmicElabUserManagementProvider) {

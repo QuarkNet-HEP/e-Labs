@@ -8,9 +8,13 @@
 <%@ page import="org.apache.commons.lang.time.DateUtils" %>
 <%@ page import="gov.fnal.elab.cosmic.Geometry" %>
 <%@ page import="gov.fnal.elab.cosmic.beans.GeoEntryBean" %>
+<%@ page import="gov.fnal.elab.usermanagement.*" %>
+<%@ page import="gov.fnal.elab.usermanagement.impl.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
+<%@ page import="java.util.regex.*" %>
 <% 
+     String submitToPage = request.getParameter("submitToPage");
      Collection allDaqs = (Collection) session.getAttribute("allDaqs");
      TreeMap<String,String> daqLatLong = new TreeMap<String,String>();
      for (Iterator i = allDaqs.iterator(); i.hasNext();) {
@@ -37,16 +41,20 @@
         	  } else {
                 lonPos = Double.parseDouble(lonParts[0])-(Double.parseDouble(lonParts[1])/60)-(Double.parseDouble(lonParts[2])/1000000/60);        		  
         	  }
-        	  daqLatLong.put(detectorid, latPos+","+lonPos);         
+        	  String daqDetails = DataTools.getDAQLatestUploadData(elab, detectorid);
+        	  daqLatLong.put(detectorid, latPos+","+lonPos+","+daqDetails);   
        }
      }
-     
-     request.setAttribute("daqLatLong", daqLatLong);
-     
-     //TreeMap<Integer,String> allCities = DataTools.getCosmicDataMarkers(elab);
-     //request.setAttribute("allCities", allCities);
-     
-     
+     SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
+     DATEFORMAT.setLenient(false);
+     Calendar cal = Calendar.getInstance();
+     cal.setTime(new Date());
+     cal.add(Calendar.DATE, 1);    
+     Calendar lastMonth = Calendar.getInstance();
+     lastMonth.add(Calendar.MONTH,-3);       
+     request.setAttribute("lastMonth", lastMonth);    
+     request.setAttribute("daqLatLong", daqLatLong);    
+     request.setAttribute("submitToPage", submitToPage);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -60,8 +68,8 @@
     <script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>   
     <style>
 				#map_wrapper {
-				    height: 500px;
-				    width: 1000px;
+				    height: 550px;
+				    width: 800px;
 				}
 				
 				#map_canvas {
@@ -97,6 +105,10 @@
             var daq = [];
             var latitude = [];
             var longitude = [];
+            var school = [];
+            var city = [];
+            var state = [];
+            var stacked = [];
             var detectorDetails = document.getElementsByName("detectorDetails");
             if (detectorDetails.length > 0) {
               for (var i=0; i < detectorDetails.length; i++) {
@@ -105,30 +117,79 @@
                 	daq.push(daqArr[0]);
                   latitude.push(daqArr[1]);
                   longitude.push(daqArr[2]);
+                  school.push(daqArr[3]);
+                  city.push(daqArr[4]);
+                  state.push(daqArr[5]);
+                  stacked.push(daqArr[6]);
                 }
               }
             }
-
             // Loop through our array of markers & place each one on the map  
             for( i = 0; i < daq.length; i++ ) {
                 var position = new google.maps.LatLng(latitude[i], longitude[i]);
                 bounds.extend(position);
-                marker = new google.maps.Marker({
+                var marker = new google.maps.Marker({
                     position: position,
                     map: map,
-                    title: daq[i]
+                    title: daq[i].trim(),
+                    clickable: true
                 });
+                var daqForm = createDataLink('DAQ#:','detectorid',daq[i].trim());
+                var schoolForm = createDataLink('School:','school',school[i].trim());
+                var cityForm = createDataLink('City:','city',city[i].trim());
+                var stateForm = createDataLink('State:','state',state[i].trim());
+                var stackedForm = createDataLinkOther('Stacked','stacked',stacked[i].trim());
+                var content =  '<div id="daqContent">'+
+                               daqForm + schoolForm + cityForm + stateForm + stackedForm +
+                               '</div>';
+                var infowindow = new google.maps.InfoWindow({maxWidth:250});
                 
+                google.maps.event.addListener(marker, 'click', (function(marker,content,infowindow){
+                	return function() {
+                		infowindow.setContent(content);
+                		infowindow.open(map,marker);
+                	}
+                })(marker,content,infowindow));
+                
+
                 // Automatically center the map fitting all markers on the screen
                 map.fitBounds(bounds);
             }
-
-        }
+          }
+          function createDataLink(keyname, key, value) {
+        	  var submitToPage = document.getElementById("submitToPage");
+        	  var lastMonth = document.getElementById("lastMonth");
+        	  var dataLink = '<form action="'+submitToPage.value+'" name="searchForm" method="post">'+
+              '<input type="hidden" name="key" value="'+key+'" />'+
+              '<input type="hidden" name="value" value="'+value+'" />'+
+              '<input type="hidden" name="date1" value="'+lastMonth.value+'" />'+
+              '<input type="hidden" name="submitFromMap" value=true />'+keyname+' '+                
+              '<a href="#" onclick="$(this).closest(&quot;form&quot;).submit()">'+value+'</a>'+
+              '</form>';
+        		return dataLink;
+          }
+          function createDataLinkOther(keyname, key, value) {
+              var submitToPage = document.getElementById("submitToPage");
+              var lastMonth = document.getElementById("lastMonth");
+              var newValue = "";
+              if (value == true && key == "stacked") {
+            	  newValue = "yes";
+              } else {
+            	  newValue = "no";
+              }
+              var dataLink = '<form action="'+submitToPage.value+'" name="searchForm" method="post">'+
+                '<input type="hidden" name="'+key+'" value="'+newValue+'" />'+
+                '<input type="hidden" name="date1" value="'+lastMonth.value+'" />'+
+                '<input type="hidden" name="submitFromMap" value=true />'+keyname+' '+                
+                '<a href="#" onclick="$(this).closest(&quot;form&quot;).submit()">'+value+'</a>'+
+                '</form>';
+              return dataLink;
+            }
+          
     </script>
-
   </head>
   
-  <body id="data-map" class="data">
+  <body id="data-map">
     <!-- entire page container -->
     <div id="container">
       <div id="top">
@@ -139,7 +200,12 @@
       </div>
       
       <div id="content">
-        <table border="0" id="main">
+      <h1>Worldwide DAQ Information</h1>
+      <ul>
+        <li>Click on DAQ markers to view information.</li>
+        <li>Inside information window click on links to search and view uploaded data.</li>
+      </ul>      
+        <table border="0">
           <tr><td>          
 					<div id="map_wrapper">
 					    <div id="map_canvas" class="mapping"></div>
@@ -150,6 +216,8 @@
       <c:forEach items="${daqLatLong }" var="detector">
           <input type="hidden" name="detectorDetails" id="detectorDetails${detector.key }" value='${detector.key },${detector.value }'></input>
       </c:forEach>
+      <input type="hidden" name="submitToPage" id="submitToPage" value="${submitToPage}"></input>
+      <input type="hidden" name="lastMonth" id="lastMonth" value="<%=DATEFORMAT.format(lastMonth.getTime())%>"></input>
       <!-- end content -->  
     
       <div id="footer">
