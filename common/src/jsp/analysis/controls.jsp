@@ -1,5 +1,16 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
-
+<p>
+  <input type="hidden" name="provider" value="swift"/>
+  <table id="swift-run-mode" width="100%" align="center">
+    <tr>
+        <td align="center">
+          <input type="hidden" name="runMode" value="local">
+          Estimated time: <e:analysisRunTimeEstimator engine="swift" mode="local"/>
+        </td>
+    </tr>
+  </table> 
+</p>
+<!-- 
 <p>
 	<e:vswitch revert="true">
 		<e:visible>
@@ -18,15 +29,14 @@
 							(estimated time: <e:analysisRunTimeEstimator engine="swift" mode="local"/>)<br />
 						<input type="radio" name="runMode" value="i2u2" ${param.runMode == 'i2u2' ? checked : notchecked}/> I2U2 Cluster
 							(estimated time: <e:analysisRunTimeEstimator engine="swift" mode="i2u2"/>)<br />
-						<!--
 						<input type="radio" name="runMode" value="grid" disabled /> Grid
 							(temporarily disabled)<br />
 						<input type="radio" name="runMode" value="mixed" ${param.runMode == 'mixed' ? checked : notchecked}/> Automatic
 							(estimated time: <e:analysisRunTimeEstimator engine="swift" mode="mixed"/>)<br />
-						-->
 					</td>
 				</tr>
 			</table>
 		</e:hidden>
 	</e:vswitch>
 </p>
+-->
