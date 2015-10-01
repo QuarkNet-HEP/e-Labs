@@ -1679,6 +1679,31 @@ public class DataTools {
     public static String getFigureCaption(Elab elab, String[] files) throws ElabException {
         return getFigureCaption(elab, Arrays.asList(files));
     }
+
+    public static String getDAQLatestUploadData(Elab elab, String detectorId) throws ElabException{
+  	  	//retrieve info per detector
+        In and = new In();            
+        and.add(new Equals("project", elab.getName()));
+        and.add(new Equals("type", "split"));
+        and.add(new Equals("detectorid", detectorId));
+        ResultSet searchResults = elab.getDataCatalogProvider().runQuery(and);
+        searchResults.sort("creationdata", true);
+        int i = 0;
+        StringBuilder sb = new StringBuilder();
+        for (CatalogEntry e : searchResults) {
+        	if (i == 0 ) {
+	        	sb.append((String) e.getTupleValue("school"));
+	        	sb.append(",");
+	        	sb.append((String) e.getTupleValue("city"));
+	        	sb.append(",");
+	        	sb.append((String) e.getTupleValue("state"));
+	        	sb.append(",");
+	        	sb.append((Boolean) e.getTupleValue("stacked"));
+	        	i++;
+        	}
+        }
+        return sb.toString();
+    }        
     
     //EPeronja-08/13/2015: Retrieve the saved plot names by user and project
     public static ArrayList<String> getPlotNamesByGroup(Elab elab, String group, String project) throws ElabException {

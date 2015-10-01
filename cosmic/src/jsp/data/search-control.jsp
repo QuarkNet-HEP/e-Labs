@@ -58,74 +58,38 @@ $(window).scroll(function(){
 	$('#right').animate({top:$(window).scrollTop()+"px" },{queue: false, duration: 0});
 });
 
-function updateInputBox() {
+function fillInCriteria(key, value) {
+	var keyField = document.getElementById("selectOptions");
+	var valueField = document.getElementById("name");
+	keyField.value = key;
+	valueField.value = value;
 	
-} 
-
-//$(function() {
-//	  var last_selected_value = "";
-//    $("#selectable").selectable({
-//    	   stop: function () {
-//    	        var text = $(this).children(".ui-selected").map(function () {
-//    	            return $(this).text();
-//    	        }).get().join('; ');
-//    	        var inputBox = document.getElementById("name");
-//    	        inputBox.value = text;
-//    	    }
-//    	});
-//  });
+}
 </script>
-<style>
-.details:hover .tooltip {
-    display: block;
-}
 
-.tooltip {
-    display: none;
-    background: #FFFFE5;
-    margin-left: 5px;
-    padding: 5px;
-    position: absolute;
-    z-index: 1000;
-    width:200px;
-    height:200px;
-    overflow: auto;
-    border-radius: 5px 5px 5px;
-    border: 1px solid black;
-    text-align: left;
-}
+<div>Your search criteria: 
+  <a href='javascript:fillInCriteria("group","${user.name}")'>${user.name}</a> ,
+  <a href='javascript:fillInCriteria("teacher","<%= user.getTeacher() %>")'><%= user.getTeacher() %></a>,
+  <a href='javascript:fillInCriteria("school","${user.group.school}")'>${user.group.school}</a>,
+  <a href='javascript:fillInCriteria("city","${user.group.city}")'>${user.group.city}</a>,
+  <a href='javascript:fillInCriteria("state","${user.group.state}")'>${user.group.state}</a>,
+</div>
 
-  #selectable .ui-selecting { background: #FECA40; }
-  #selectable .ui-selected { background: #F39814; color: white; }
-  #selectable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
-  #selectable li { margin: 3px; padding: 0.4em; }
-  
-</style>
-		
+
+<!--  	
 <div class="search-quick-links">Quick Searches: 
 	<e:quicksearch key="group" value="${user.name}"  />,
-	<e:quicksearch key="teacher" value="<%= user.getTeacher() %>"  />,
 	<e:quicksearch key="school" value="${user.group.school}"/>,
 	<e:quicksearch key="city" value="${user.group.city}"/>,
 	<e:quicksearch key="state" value="${user.group.state}"/>
 </div>
+-->
 
 <form name="search" method="get">
 	<e:select name="key" id="selectOptions" valueList="city, group, school, state, teacher, detectorid"
 		        labelList="City, Group, School, State/Country, Teacher, Detector ID"
 		        default="${param.key}"/>
 	<input name="value" id="name" size="40" maxlength="40" value="${param.value}" />
-<!--  
-  <div class="details" id="cityList" style="display: inline-block;" ><img src="../graphics/view_data.gif" alt=" " border="0" />
-    <span class="tooltip" id="cityTooltip">
-      <ol id="selectable">
-  	    <c:forEach items="${ splitCities}" var="splitCity">
-	         <li class="a-item">${splitCity }</li>
-  	    </c:forEach>    
-  	  </ol>
-    </span>
-  </div>
--->	
 	<input type="submit" name="submit" value="Search Data" />
 
 	<e:vswitch>
@@ -193,9 +157,9 @@ function updateInputBox() {
 		</e:hidden>
 	</e:vswitch>
 	<br />
-	<a href="cosmic-data-map.jsp">View detector map</a>
+	<a href="cosmic-data-map.jsp?submitToPage=search.jsp">View and Search from detector map</a>
 	<br /><br />
-  <div><i>* By default we are retrieving the last 3 months worth of data for the criteria you chose.<br />
+  <div><i>* To speed up searches by default we are retrieving the last 3 months worth of data for the criteria you chose.<br />
           You can modify your date range using the Advanced Search criteria.
       </i></div> 
 	<div id="msg" name="msg">${msg}</div>	
@@ -210,6 +174,7 @@ function updateInputBox() {
 		String blessed = request.getParameter("blessed");
 		
 		boolean submit = StringUtils.isNotBlank(request.getParameter("submit"));
+		boolean submitFromMap = StringUtils.isNotBlank(request.getParameter("submitFromMap"));
 		
 		if (StringUtils.isBlank(key)) key="all";
 		
@@ -222,7 +187,7 @@ function updateInputBox() {
 		
 		ResultSet searchResults = null;
 		StructuredResultSet searchResultsStructured = null;
-		if (submit) {
+		if (submit || submitFromMap) {
 			
 			//EPeronja-06/12/2013: 63: Data search by state requires 2-letter state abbreviation
 			String abbreviation = "";
