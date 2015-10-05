@@ -1538,39 +1538,6 @@ public class DataTools {
     	return projects;
     }//end of getProjects
 
-    //EPeronja-06/14/2015: get all latitude-longitude for uploaded data
-    public static TreeMap<Integer,String> getCosmicDataMarkers(Elab elab) throws Exception{
-    	java.sql.ResultSet rs;
-        Connection con = null;
-        PreparedStatement ps = null;
-    	TreeMap<Integer,String> markers = new TreeMap<Integer,String>();
-    	//check state
-        try {
-            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
-            ps = con.prepareStatement(
-                    " SELECT city.id, city.name, city.latitude, city.longitude, state.name " +
-                    " FROM city "+
-                    " INNER JOIN state " +
-                    " on city.state_id = state.id "+
-                    " ORDER by state.name, city.name ;");
-
-            rs = ps.executeQuery(); 
-        	if (rs != null) {
-        		while (rs.next()) {
-        			String cityString = rs.getString(2)+","+rs.getString(3)+","+rs.getString(4)+","+rs.getString(5);
-        			markers.put(rs.getInt(1), cityString);
-        		}
-        	}   
-        }
-        catch (Exception e) {
-            throw new ElabException("In DataTools.getCosmicDataMarkers(): " + e.getMessage());
-        }
-        finally {
-            DatabaseConnectionManager.close(con, ps);
-        }        
-    	return markers;
-    }//end of getCosmicDataMarkers
-
      //EPeronja-06/12/2013: 63: Data search by state requires 2-letter state abbreviation
     public static String checkStateSearch(Elab elab, String userInput) throws ElabException {
     	String abbreviation = "";
@@ -1680,30 +1647,124 @@ public class DataTools {
         return getFigureCaption(elab, Arrays.asList(files));
     }
 
-    public static String getDAQLatestUploadData(Elab elab, String detectorId) throws ElabException{
-  	  	//retrieve info per detector
-        In and = new In();            
-        and.add(new Equals("project", elab.getName()));
-        and.add(new Equals("type", "split"));
-        and.add(new Equals("detectorid", detectorId));
-        ResultSet searchResults = elab.getDataCatalogProvider().runQuery(and);
-        searchResults.sort("creationdata", true);
-        int i = 0;
-        StringBuilder sb = new StringBuilder();
-        for (CatalogEntry e : searchResults) {
-        	if (i == 0 ) {
-	        	sb.append((String) e.getTupleValue("school"));
-	        	sb.append(",");
-	        	sb.append((String) e.getTupleValue("city"));
-	        	sb.append(",");
-	        	sb.append((String) e.getTupleValue("state"));
-	        	sb.append(",");
-	        	sb.append((Boolean) e.getTupleValue("stacked"));
-	        	i++;
-        	}
+    public static TreeMap<String,String> getDAQLatestUploadData(Elab elab) throws ElabException{
+    	java.sql.ResultSet rs;
+        Connection con = null;
+        PreparedStatement ps = null;
+        TreeMap<String,String> daqUploadDetails = new TreeMap<String,String>();
+        try {
+            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            ps = con.prepareStatement(
+                    " SELECT detectorid, " +
+                    "        latest_upload_date, " +
+                    "        total_uploads, " +
+                    "        teacher, " +
+                    "        school, " +
+                    "        city, " +
+                    "        state, " +
+                    "		 stacked " +
+                    " FROM detector_upload_details;");
+
+            rs = ps.executeQuery(); 
+            if (rs != null) {
+           	 while (rs.next()) {
+                  SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+           		  String upload_date = dateFormat.format(rs.getTimestamp(2));
+           		  String details = rs.getString(5) + "," + rs.getString(6) + "," + rs.getString(7) + "," + Boolean.toString(rs.getBoolean(8)) + "," + rs.getString(4) + "," + upload_date + "," + String.valueOf(rs.getString(3));
+           		  daqUploadDetails.put(rs.getString(1), details);
+           	 }
+            }            
         }
-        return sb.toString();
-    }        
+        catch (SQLException e) {
+            throw new ElabException("In DataTools.getDAQLatestUploadData(): " + e.getMessage());
+        }
+        finally {
+            DatabaseConnectionManager.close(con, ps);
+        }        
+    	return daqUploadDetails;
+     }//end of getDAQLatestUploadData
+    
+    public static void updateDAQLatestUploadData(Elab elab, String detectorid, String latest_upload_date, String count, 
+    			String teacher, String school, String city, String state, String stacked) throws Exception{
+        Connection conn = null;
+        PreparedStatement ps = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date parsedDate = dateFormat.parse(latest_upload_date);
+        Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+        int recordId = 0;
+	    try {
+	    	conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	        boolean ac = conn.getAutoCommit();
+	        //update or insert
+	        ps = conn.prepareStatement(
+	                " SELECT total_uploads " +
+	                " FROM detector_upload_details" +
+	                " WHERE detectorid = ?;");
+	        ps.setString(1, detectorid);
+	        java.sql.ResultSet rs = ps.executeQuery(); 
+	        int uploadCount = 0;
+	        if (rs.next()) {
+	        	uploadCount = rs.getInt(1);
+	        }
+	        
+	        if (uploadCount == 0) {
+	        	//insert
+            	ps = conn.prepareStatement(
+            			" INSERT INTO detector_upload_details (detectorid, latest_upload_date, total_uploads, teacher, school, city, state, stacked) " +
+            		    " VALUES (?,?,?,?,?,?,?,?);"); 
+            	try {
+            		conn.setAutoCommit(false);
+            		ps.setString(1, detectorid);
+            		ps.setTimestamp(2, timestamp);
+            		ps.setInt(3, Integer.parseInt(count));
+            		ps.setString(4, teacher);
+            		ps.setString(5, school);
+            		ps.setString(6, city);
+            		ps.setString(7, state);
+            		ps.setBoolean(8, Boolean.valueOf(stacked));
+            		recordId = ps.executeUpdate();
+		            conn.commit();
+            	} catch (SQLException e) {
+            		conn.rollback();
+            		throw e;
+            	} finally {
+            		conn.setAutoCommit(ac);
+            	}
+
+	        } else {
+	        	//update
+
+	        	ps = conn.prepareStatement(
+            			" UPDATE detector_upload_details "+ 
+            		    "    SET latest_upload_date = ?, total_uploads = ?, teacher = ?, school = ?, city = ?, state = ?, stacked = ? " +
+            		    " WHERE detectorid = ?;"); 
+            	try {
+            		conn.setAutoCommit(false);
+            		ps.setTimestamp(1, timestamp);
+            		ps.setInt(2, uploadCount + Integer.parseInt(count));
+            		ps.setString(3, teacher);
+            		ps.setString(4, school);
+            		ps.setString(5, city);
+            		ps.setString(6, state);
+            		ps.setBoolean(7, Boolean.valueOf(stacked));
+               		ps.setString(8, detectorid);
+               	    recordId = ps.executeUpdate();
+		            conn.commit();
+            	} catch (SQLException e) {
+            		conn.rollback();
+            		throw e;
+            	} finally {
+            		conn.setAutoCommit(ac);
+            	}
+	        }	       
+	      } catch (SQLException e) {
+	        	 throw new ElabException(e);
+	      } finally {
+	        	 if (conn != null) {
+	        		 DatabaseConnectionManager.close(conn, ps);
+	        	 }
+	      }
+    }//end of updateDAQLatestUploadData
     
     //EPeronja-08/13/2015: Retrieve the saved plot names by user and project
     public static ArrayList<String> getPlotNamesByGroup(Elab elab, String group, String project) throws ElabException {

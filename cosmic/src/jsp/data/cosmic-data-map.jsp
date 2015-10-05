@@ -17,6 +17,9 @@
      String submitToPage = request.getParameter("submitToPage");
      Collection allDaqs = (Collection) session.getAttribute("allDaqs");
      TreeMap<String,String> daqLatLong = new TreeMap<String,String>();
+     TreeMap<String,String> daqUploadDetails = new TreeMap<String,String>();
+     daqUploadDetails = DataTools.getDAQLatestUploadData(elab);
+     
      for (Iterator i = allDaqs.iterator(); i.hasNext();) {
     	   String detectorid = (String) i.next();
          Geometry g = new Geometry(elab.getProperties().getDataDir(), Integer.parseInt(detectorid));
@@ -41,8 +44,7 @@
         	  } else {
                 lonPos = Double.parseDouble(lonParts[0])-(Double.parseDouble(lonParts[1])/60)-(Double.parseDouble(lonParts[2])/1000000/60);        		  
         	  }
-        	  String daqDetails = DataTools.getDAQLatestUploadData(elab, detectorid);
-        	  daqLatLong.put(detectorid, latPos+","+lonPos+","+daqDetails);   
+        	  daqLatLong.put(detectorid, latPos+","+lonPos+","+daqUploadDetails.get(detectorid));   
        }
      }
      SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
@@ -68,8 +70,8 @@
     <script type="text/javascript" src="../include/jquery/js/jquery-1.6.1.min.js"></script>   
     <style>
 				#map_wrapper {
-				    height: 550px;
-				    width: 800px;
+				    height: 750px;
+				    width: 1000px;
 				}
 				
 				#map_canvas {
@@ -109,6 +111,10 @@
             var city = [];
             var state = [];
             var stacked = [];
+            var teacher = [];
+            var latest = [];
+            var uploads = [];
+            
             var detectorDetails = document.getElementsByName("detectorDetails");
             if (detectorDetails.length > 0) {
               for (var i=0; i < detectorDetails.length; i++) {
@@ -121,6 +127,9 @@
                   city.push(daqArr[4]);
                   state.push(daqArr[5]);
                   stacked.push(daqArr[6]);
+                  teacher.push(daqArr[7]);
+                  latest.push(daqArr[8]);
+                  uploads.push(daqArr[9])
                 }
               }
             }
@@ -138,9 +147,12 @@
                 var schoolForm = createDataLink('School:','school',school[i].trim());
                 var cityForm = createDataLink('City:','city',city[i].trim());
                 var stateForm = createDataLink('State:','state',state[i].trim());
-                var stackedForm = createDataLinkOther('Stacked','stacked',stacked[i].trim());
-                var content =  '<div id="daqContent">'+
-                               daqForm + schoolForm + cityForm + stateForm + stackedForm +
+                var stackedForm = createDataLinkOther('Stacked:','stacked',stacked[i].trim());
+                var teacherInfo = 'Teacher: ' + teacher[i].trim() +'<br />';
+                var latestInfo = 'Last Upload: ' + latest[i].trim() + '<br />';
+                var uploadsInfo = 'Total Files: ' + uploads[i].trim() + '<br />';
+                var content =  '<div id="daqContent" style="text-align: left;">'+
+                               daqForm + schoolForm + cityForm + stateForm + stackedForm + teacherInfo + latestInfo + uploadsInfo +
                                '</div>';
                 var infowindow = new google.maps.InfoWindow({maxWidth:250});
                 
@@ -205,6 +217,8 @@
         <li>Click on DAQ markers to view information.</li>
         <li>Inside information window click on links to search and view uploaded data.</li>
       </ul>      
+      </div>
+      <div>
         <table border="0">
           <tr><td>          
 					<div id="map_wrapper">
