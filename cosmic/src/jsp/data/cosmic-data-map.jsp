@@ -44,7 +44,9 @@
         	  } else {
                 lonPos = Double.parseDouble(lonParts[0])-(Double.parseDouble(lonParts[1])/60)-(Double.parseDouble(lonParts[2])/1000000/60);        		  
         	  }
-        	  daqLatLong.put(detectorid, latPos+","+lonPos+","+daqUploadDetails.get(detectorid));   
+        	  if (daqUploadDetails.get(detectorid) != null) {
+        		       daqLatLong.put(detectorid, latPos+","+lonPos+","+daqUploadDetails.get(detectorid));   
+        	  }
        }
      }
      SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
