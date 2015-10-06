@@ -116,6 +116,7 @@
             var teacher = [];
             var latest = [];
             var uploads = [];
+            var detectorUploads = [];
             
             var detectorDetails = document.getElementsByName("detectorDetails");
             if (detectorDetails.length > 0) {
@@ -132,9 +133,31 @@
                   teacher.push(daqArr[7]);
                   latest.push(daqArr[8]);
                   uploads.push(daqArr[9])
+                  detectorUploads.push(new detectorInfo(daqArr[0],daqArr[9]));
                 }
               }
             }
+            detectorUploads.sort(function (a,b) {
+
+            	var uA=parseInt(a.uploadcount), uB=parseInt(b.uploadcount);
+
+            	if (uA > uB)
+            	  return -1;
+            	if (uA < uB)
+            	  return 1;
+            	return 0;  //no sorting
+
+            	});
+            var marqueeText = "<strong>Detector</strong>:Total Uploads &rarr; ";
+            for (var x = 0; x < detectorUploads.length; x++) {
+            	var addStar = '';
+            	if (x < 3) {
+            		addStar = '<span style="color: red;">&#x2605;</span>';
+            	}
+            	marqueeText += addStar+" <strong>"+detectorUploads[x].detectorid + "</strong>:" + detectorUploads[x].uploadcount + " &#8226; ";
+            }
+            document.getElementById("scrollMarquee").innerHTML = marqueeText;
+            
             // Loop through our array of markers & place each one on the map  
             for( i = 0; i < daq.length; i++ ) {
                 var position = new google.maps.LatLng(latitude[i], longitude[i]);
@@ -198,8 +221,11 @@
                 '<a href="#" onclick="$(this).closest(&quot;form&quot;).submit()">'+value+'</a>'+
                 '</form>';
               return dataLink;
-            }
-          
+          }
+          function detectorInfo(detectorid, uploadcount) {
+        	  this.detectorid = detectorid;
+        	  this.uploadcount = uploadcount;
+          }
     </script>
   </head>
   
@@ -222,6 +248,7 @@
       </div>
       <div>
         <table border="0">
+          <tr><td><marquee id="scrollMarquee" onMouseover="this.scrollAmount=2" onMouseout="this.scrollAmount=2">Scrolling text here</marquee></td></tr>
           <tr><td>          
 					<div id="map_wrapper">
 					    <div id="map_canvas" class="mapping"></div>
