@@ -71,9 +71,18 @@
 			message = e.getMessage();
 	}
 
-	ArrayList fileArray = (ArrayList) results.getAttribute("inputfiles");
+	ArrayList<String> fileArray = (ArrayList<String>) results.getAttribute("inputfiles");
 	Collections.sort(fileArray);
+	BlessPlotDisplay bpd = new BlessPlotDisplay();
+	ArrayList<String> fileIcons = new ArrayList<String>();
+	for (int i = 0; i < fileArray.size(); i++) {
+		    String filename = fileArray.get(i);
+		  	String iconLinks = bpd.getIcons(elab, filename);
+		  	fileIcons.add(filename+" "+iconLinks);
+	}
+	  
 	request.setAttribute("fileArray", fileArray);
+	request.setAttribute("fileIcons", fileIcons);
 	request.setAttribute("id", id);
 	request.setAttribute("outputDir", results.getOutputDirURL());
 	request.setAttribute("message", message);
@@ -253,10 +262,10 @@
 			<div>${message }</div>
 		</c:otherwise>
 	</c:choose>
-	<c:if test="${not empty fileArray}">
+	<c:if test="${not empty fileIcons}">
 		<table>
 			<tr><th>Files in charts</th></tr>
-		<c:forEach items="${fileArray }" var="file">
+		<c:forEach items="${fileIcons }" var="file">
 			<tr><td>${file }</td></tr>
 		</c:forEach>
 		</table>
