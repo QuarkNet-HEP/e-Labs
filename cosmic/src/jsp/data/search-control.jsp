@@ -66,7 +66,7 @@ function fillInCriteria(key, value) {
 	
 }
 </script>
-
+<!--  
 <div>Your search criteria: 
   <a href='javascript:fillInCriteria("group","${user.name}")'>${user.name}</a> ,
   <a href='javascript:fillInCriteria("teacher","<%= user.getTeacher() %>")'><%= user.getTeacher() %></a>,
@@ -74,7 +74,44 @@ function fillInCriteria(key, value) {
   <a href='javascript:fillInCriteria("city","${user.group.city}")'>${user.group.city}</a>,
   <a href='javascript:fillInCriteria("state","${user.group.state}")'>${user.group.state}</a>,
 </div>
+-->
 
+<div class="search-quick-links">Quick Searches:
+  <form action="search.jsp" name="searchForm" method="post">
+    <input type="hidden" name="key" value="group" />
+    <input type="hidden" name="value" value="${user.name}" />
+    <input type="hidden" name="action" value="Search Data" />
+    <input type="hidden" name="date1" value="<%=DATEFORMAT.format(lastMonth.getTime()) %>" />'+
+    <a href="#" onclick='$(this).closest("form").submit()'>${user.name}</a>,
+  </form>
+  <form action="search.jsp" name="searchForm" method="post">
+    <input type="hidden" name="key" value="teacher" />
+    <input type="hidden" name="value" value="<%= user.getTeacher() %>" />
+    <input type="hidden" name="action" value="Search Data" />
+    <input type="hidden" name="date1" value="<%=DATEFORMAT.format(lastMonth.getTime()) %>" />'+
+    <a href="#" onclick='$(this).closest("form").submit()'><%= user.getTeacher() %></a>,
+  </form>
+  <form action="search.jsp" name="searchForm" method="post">
+    <input type="hidden" name="key" value="school" />
+    <input type="hidden" name="value" value="${user.group.school}" />
+    <input type="hidden" name="action" value="Search Data" />
+    <input type="hidden" name="date1" value="<%=DATEFORMAT.format(lastMonth.getTime()) %>" />'+
+    <a href="#" onclick='$(this).closest("form").submit()'>${user.group.school}</a>,
+  </form>
+  <form action="search.jsp" name="searchForm" method="post">
+    <input type="hidden" name="key" value="city" />
+    <input type="hidden" name="value" value="${user.group.city}" />
+    <input type="hidden" name="action" value="Search Data" />
+    <input type="hidden" name="date1" value="<%=DATEFORMAT.format(lastMonth.getTime()) %>" />'+
+    <a href="#" onclick='$(this).closest("form").submit()'>${user.group.city}</a>,
+  </form>
+  <form action="search.jsp" name="searchForm" method="post">
+    <input type="hidden" name="key" value="state" />
+    <input type="hidden" name="value" value="${user.group.state}" />
+    <input type="hidden" name="action" value="Search Data" />
+    <input type="hidden" name="date1" value="<%=DATEFORMAT.format(lastMonth.getTime()) %>" />'+
+    <a href="#" onclick='$(this).closest("form").submit()'>${user.group.state}</a>,
+  </form></div>
 
 <!--  	
 <div class="search-quick-links">Quick Searches: 
