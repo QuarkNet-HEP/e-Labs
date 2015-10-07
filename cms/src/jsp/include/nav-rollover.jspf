@@ -65,14 +65,16 @@
 						<li><a href="../analysis-lateral-size">Lateral Size</a></li>
 						<li><a href="../analysis-beam-purity">Beam Purity</a></li>
 						<li><a href="../analysis-resolution">Resolution</a></li>
- --%>
 						<li><a href="../analysis-calibration">Calibration</a></li>
+ --%>
 						<li><a href="../analysis-exploration">Exploration</a></li>
 <!-- 
 						<li><a href="${elab.properties['ogre']}" target="ogre">OGRE</a></li>
  -->
 						<li><a href="../plots">View Plots</a></li>
+<!-- 
 						<li><a href="../prototype/index.jsp">Prototype</a></li>
+ -->
 					</ul>
 					
 					<ul id="sub-library">					

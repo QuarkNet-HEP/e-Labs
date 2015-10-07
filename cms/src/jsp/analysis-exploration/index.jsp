@@ -23,6 +23,7 @@
   <style>
   .parameter.active {
     font-weight: bold;
+    background-color: #cccccc;
   }
 
   .parameter:hover {
@@ -306,6 +307,7 @@
   var dataset_name;
   var dataset_id;
   var dataset_type;
+  var dataset_descr;
   var cfdata;
 
   function getDataset(id) {
@@ -316,18 +318,6 @@
     }
     return null;
   }
-
-  var options = {
-      lines: { show: true, fill: false, lineWidth: 1.2 },
-      grid: { hoverable: true, autoHighlight: false },
-      points: { show: false },
-      legend: { noColumns: 1 },
-      xaxis: { tickDecimals: 0 },
-      yaxis: { autoscaleMargin: 0.1 },
-      y2axis: { autoscaleMargin: 0.1 },
-      crosshair: { mode: "x" },
-      selection: { mode: "x", color: "yellow" }
-  };
 
   function buildHistogram(data, bw) {
      var minx = d3.min(data),
@@ -366,7 +356,20 @@
     } else {
       $(this).addClass('active');
 
+      var options = {
+          lines: { show: true, fill: false, lineWidth: 1.2 },
+          grid: { hoverable: true, autoHighlight: false },
+          points: { show: false },
+          legend: { noColumns: 1 },
+          xaxis: { tickDecimals: 0 },
+          yaxis: { autoscaleMargin: 0.1 },
+          y2axis: { autoscaleMargin: 0.1 },
+          crosshair: { mode: "xy" },
+          selection: { mode: "xy", color: "yellow" }
+      };
+
       var histogram = buildHistogram(input_data.map(function(d) {return +d[parameter];}), 0.1);
+      var nevents = input_data.length;
       $('#plot-container').append("<div class=\"plot\" id=\"" + parId + "\"></div>");
       $('#'+parId).append($('#plot-template').html());
 
@@ -393,19 +396,23 @@
 
       $('#'+parId+ ' .xlabel').html(title);
       $('#'+parId+ ' .ylabel').html('Number of events');
-      $('#'+parId+ ' .plottitle').html(dataset_name+': '+parameter);
+      $('#'+parId+ ' .plottitle').html(dataset_descr+': '+parameter+' : '+nevents+' entries');
 
       plot.draw();
       var xmin = plot.getAxes().xaxis.min;
       var xmax = plot.getAxes().xaxis.max;
+      var ymin = plot.getAxes().yaxis.min;
+      var ymax = plot.getAxes().yaxis.max;
 
       $('#'+parId+' .placeholder').bind('plotselected', function(event, ranges) {
-        $.extend(true, options, {xaxis:{min: ranges.xaxis.from, max: ranges.xaxis.to}});
+        console.log("You selected " + ranges.xaxis.from.toFixed(1) + " to " + ranges.xaxis.to.toFixed(1));
+        console.log(data[0].data.length);
+        $.extend(true, options, {xaxis:{min: ranges.xaxis.from, max: ranges.xaxis.to}, yaxis:{ min: ranges.yaxis.from, max: ranges.yaxis.to}});
         $.plot($('#'+parId+ ' .placeholder'), data, options);
       });
 
       $('#'+parId+' .reset-selection').bind('click', function() {
-         $.extend(true, options, {xaxis:{min: xmin, max: xmax}});
+         $.extend(true, options, {xaxis:{min: xmin, max: xmax}, yaxis:{min: ymin, max:ymax}});
          $.plot($('#'+parId+ ' .placeholder'), data, options);
       });
 
@@ -485,7 +492,7 @@
         $('#'+parId+' .cursor').css("display", "block");
         $('#'+parId+' .cursor').css("left", (pos.pageX + 6) + "px");
         $('#'+parId+' .cursor').css("top", (pos.pageY - 20) + "px");
-        $('#'+parId+' .cursorValue').html(pos.x.toFixed(2));
+        $('#'+parId+' .cursorValue').html('[x:'+pos.x.toFixed(2) +', y:'+pos.y.toFixed(2)+']');
       });
 
       $('#'+parId+' .placeholder').bind('mouseout', function() {
@@ -518,6 +525,7 @@
         dataset_name = csv_files[i].name;
         dataset_id = csv_files[i].id;
         dataset_type = csv_files[i].type;
+        dataset_descr = csv_files[i].descr;
 
         loadFile(csv_files[i]);
 
