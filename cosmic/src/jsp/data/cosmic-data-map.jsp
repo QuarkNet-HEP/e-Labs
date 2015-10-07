@@ -248,7 +248,9 @@
       </div>
       <div>
         <table border="0">
+        <!--  
           <tr><td><marquee id="scrollMarquee" onMouseover="this.scrollAmount=2" onMouseout="this.scrollAmount=2">Scrolling text here</marquee></td></tr>
+        -->
           <tr><td>          
 					<div id="map_wrapper">
 					    <div id="map_canvas" class="mapping"></div>
