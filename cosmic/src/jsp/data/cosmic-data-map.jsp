@@ -162,12 +162,6 @@
             for( i = 0; i < daq.length; i++ ) {
                 var position = new google.maps.LatLng(latitude[i], longitude[i]);
                 bounds.extend(position);
-                var marker = new google.maps.Marker({
-                    position: position,
-                    map: map,
-                    title: daq[i].trim(),
-                    clickable: true
-                });
                 var daqForm = createDataLink('DAQ#:','detectorid',daq[i].trim());
                 var schoolForm = createDataLink('School:','school',school[i].trim());
                 var cityForm = createDataLink('City:','city',city[i].trim());
@@ -175,7 +169,20 @@
                 var stackedForm = createDataLinkOther('Stacked:','stacked',stacked[i].trim());
                 var teacherInfo = 'Teacher: ' + teacher[i].trim() +'<br />';
                 var latestInfo = 'Last Upload: ' + latest[i].trim() + '<br />';
+                var examineYear = latest[i].trim().split('-');
+                var markerIcon = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
+                var thisYear = new Date().getFullYear();
+                if (parseInt(examineYear[0]) == thisYear) {
+                    markerIcon = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+                }
                 var uploadsInfo = 'Total Files: ' + uploads[i].trim() + '<br />';
+                var marker = new google.maps.Marker({
+                    position: position,
+                    icon: markerIcon,
+                    map: map,
+                    title: daq[i].trim(),
+                    clickable: true
+                });
                 var content =  '<div id="daqContent" style="text-align: left;">'+
                                daqForm + schoolForm + cityForm + stateForm + stackedForm + teacherInfo + latestInfo + uploadsInfo +
                                '</div>';
@@ -243,14 +250,14 @@
       <h1>Worldwide DAQ Information</h1>
       <ul>
         <li>Click on DAQ markers to view information.</li>
-        <li>Inside information window click on links to search and view uploaded data.</li>
+        <li>Inside information window click on links to search and view uploaded data. By default we are retrieving the last 3 months worth of data for the criteria you choose.</li>
+        <li><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" witdh="12px" height="12px"></img>Detectors that uploaded this calendar year</li>
+        <li><img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" witdh="12px" height="12px"></img>Older uploads</li>
       </ul>      
       </div>
       <div>
         <table border="0">
-        <!--  
-          <tr><td><marquee id="scrollMarquee" onMouseover="this.scrollAmount=2" onMouseout="this.scrollAmount=2">Scrolling text here</marquee></td></tr>
-        -->
+          <tr><td><div style="display: none;"><marquee id="scrollMarquee" onMouseover="this.scrollAmount=2" onMouseout="this.scrollAmount=2">Scrolling text here</marquee></div></td></tr>
           <tr><td>          
 					<div id="map_wrapper">
 					    <div id="map_canvas" class="mapping"></div>
