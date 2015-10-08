@@ -23,18 +23,15 @@ if (!user.getName().equals("guest")) {
 	}
 }
 
-//ArrayList<String> splitCities = (ArrayList) session.getAttribute("splitCities");
-
 //set the calendar to a month prior by default 
 //the criteria to retrieve datafiles will probably change but we need some type of range otherwise
 //we will be retrieving all the files.
 Calendar cal = Calendar.getInstance();
   cal.setTime(new Date());
   cal.add(Calendar.DATE, 1);    
-Calendar lastMonth = Calendar.getInstance();
-lastMonth.add(Calendar.MONTH,-3);       
-request.setAttribute("lastMonth", lastMonth);
-//request.setAttribute("splitCities", splitCities);
+Calendar fromMonth = Calendar.getInstance();
+fromMonth.add(Calendar.MONTH,-3);       
+request.setAttribute("fromMonth", fromMonth);
 request.setAttribute("allowAllDataAccess", allowAllDataAccess);
 %>
 <script type="text/javascript">
@@ -61,11 +58,11 @@ $(window).scroll(function(){
 </script>
 
 <div class="search-quick-links">Quick Searches (last 3 months):
-  <a href="?submit=true&key=group&value=${user.name}&date1=<%=DATEFORMAT.format(lastMonth.getTime())%>">${user.name}</a>,
-  <a href="?submit=true&key=teacher&value=<%= user.getTeacher() %>&date1=<%=DATEFORMAT.format(lastMonth.getTime())%>"><%= user.getTeacher() %></a>,
-  <a href="?submit=true&key=school&value=${user.group.school}&date1=<%=DATEFORMAT.format(lastMonth.getTime())%>">${user.group.school}</a>,
-  <a href="?submit=true&key=city&value=${user.group.city}&date1=<%=DATEFORMAT.format(lastMonth.getTime())%>">${user.group.city}</a>,
-  <a href="?submit=true&key=state&value=${user.group.state}&date1=<%=DATEFORMAT.format(lastMonth.getTime())%>">${user.group.state}</a>
+  <a href="?submit=true&key=group&value=${user.name}&date1=<%=DATEFORMAT.format(fromMonth.getTime())%>">${user.name}</a>,
+  <a href="?submit=true&key=teacher&value=<%= user.getTeacher() %>&date1=<%=DATEFORMAT.format(fromMonth.getTime())%>"><%= user.getTeacher() %></a>,
+  <a href="?submit=true&key=school&value=${user.group.school}&date1=<%=DATEFORMAT.format(fromMonth.getTime())%>">${user.group.school}</a>,
+  <a href="?submit=true&key=city&value=${user.group.city}&date1=<%=DATEFORMAT.format(fromMonth.getTime())%>">${user.group.city}</a>,
+  <a href="?submit=true&key=state&value=${user.group.state}&date1=<%=DATEFORMAT.format(fromMonth.getTime())%>">${user.group.state}</a>
 </div>
 
 <form name="search" method="get">
@@ -96,7 +93,11 @@ $(window).scroll(function(){
 						</select>
 					</td>
 					<td>
-						<e:trinput name="date1" id="date1" size="10" maxlength="15" class="datepicker" value="<%=DATEFORMAT.format(lastMonth.getTime()) %>"/>
+					  <% if (request.getParameter("date1") == null)  {%>
+  						 <e:trinput name="date1" id="date1" size="10" maxlength="15" class="datepicker" value="<%=DATEFORMAT.format(fromMonth.getTime()) %>"/>
+  					<% } else { %>           
+  					   <e:trinput name="date1" id="date1" size="10" maxlength="15" class="datepicker" />
+  					<% } %>
 						to
 						<e:trinput name="date2" id="date2" size="10" maxlength="15" class="datepicker"/>
 					</td>
@@ -140,7 +141,10 @@ $(window).scroll(function(){
 		</e:hidden>
 	</e:vswitch>
 	<br />
-	<a href="cosmic-data-map.jsp?submitToPage=search.jsp">View and Search from detector map</a>
+	<a href="cosmic-data-map.jsp?submitToPage=search.jsp">
+	 <img src="../graphics/world.png" height="25px" width="25px" /><br />
+	 View and Search from detector map
+	</a>
 	<br /><br />
   <div><i>* To speed up searches by default we are retrieving the last 3 months worth of data for the criteria you chose.<br />
           You can modify your date range using the Advanced Search criteria.
