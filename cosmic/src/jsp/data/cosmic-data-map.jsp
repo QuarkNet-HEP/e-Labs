@@ -250,6 +250,7 @@
       <h1>Worldwide DAQ Information</h1>
       <ul>
         <li>Click on DAQ markers to view information.</li>
+        <li>If your detector appears in the wrong place, you need to update the geometry file.</li>
         <li>Inside information window click on links to search and view uploaded data. By default we are retrieving the last 3 months worth of data for the criteria you choose.</li>
         <li><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" witdh="12px" height="12px"></img>Detectors that uploaded this calendar year</li>
         <li><img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" witdh="12px" height="12px"></img>Older uploads</li>
