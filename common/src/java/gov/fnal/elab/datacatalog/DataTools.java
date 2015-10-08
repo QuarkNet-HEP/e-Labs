@@ -20,6 +20,7 @@ import gov.fnal.elab.datacatalog.query.CatalogEntry;
 import gov.fnal.elab.datacatalog.query.ResultSet;
 import gov.fnal.elab.datacatalog.query.In;
 import gov.fnal.elab.datacatalog.query.Equals;
+import gov.fnal.elab.datacatalog.query.Between;
 import gov.fnal.elab.datacatalog.query.Like;
 import gov.fnal.elab.datacatalog.query.And;
 import gov.fnal.elab.datacatalog.query.ResultSet;
@@ -1795,6 +1796,32 @@ public class DataTools {
 		}
     	return plotNames;
     }//end of getPlotNamesByGroup
+
+    //EPeronja-08/13/2015: Retrieve the entries within a date range for reporting
+    public static TreeMap<Integer,VDSCatalogEntry> getVDSCatalogEntries(Elab elab, Date startDate, Date endDate, String project, String type) throws ElabException {
+ 		ResultSet rs = null;
+ 		TreeMap<Integer,VDSCatalogEntry> results = new TreeMap<Integer,VDSCatalogEntry>();
+		if (startDate != null && elab != null && startDate != null && type != null && project != null) {
+			In and = new In();
+			if (!project.equals("")) {
+				and.add(new Equals("project",project));
+			}
+			and.add(new Equals("type", type));
+			and.add(new Between("creationdate", startDate, endDate));		
+			rs = elab.getDataCatalogProvider().runQuery(and);
+			Integer i = 0;
+			if (rs != null && !rs.isEmpty()) {
+				Iterator it = rs.iterator();
+				while (it.hasNext()) {
+					VDSCatalogEntry e = (VDSCatalogEntry) it.next();
+					results.put(i, e);
+		            i++;
+				}
+			}
+		}
+    	return results;
+    }//end of getVDSCatalogEntries
+    
     
     private static final String[] STRING_ARRAY = new String[0];
 

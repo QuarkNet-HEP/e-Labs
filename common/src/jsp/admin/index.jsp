@@ -54,6 +54,10 @@
 			<div id="content">
 				<table id="main" cellpadding="10" cellspacing="10">
 					<tr><th colspan="2" >Admin Links</th><th></th></tr>
+          <tr>
+            <td>&#8226; <a href="../reports/index.jsp">e-Lab Reports</a></td>
+            <td>Reports for uploads, posters and plots.</td>
+          </tr>
 					<tr>
 						<td>&#8226; <a href="../jsp/addGroup.jsp?role=teacher">Add Users</a></td>
 						<td>Add e-Lab users.</td>
