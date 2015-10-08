@@ -16,6 +16,8 @@
 <% 
      String detectorid = request.getParameter("detectorID");
      String jd = request.getParameter("jd");
+     String referer = request.getHeader("Referer");
+
      TreeMap<String,String> daqLatLong = new TreeMap<String,String>();
      Geometry g = new Geometry(elab.getProperties().getDataDir(), Integer.parseInt(detectorid));
      Iterator it = g.getDescendingGeoEntries();
@@ -145,6 +147,7 @@
       
       <div id="content">
       <h1>Geometry information for DAQ# <%=detectorid %></h1>
+      <a href="<%=referer%>">Go back to geometry</a>
       </div>
       <div>
         <table border="0">
