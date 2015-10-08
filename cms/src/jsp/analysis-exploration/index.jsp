@@ -435,7 +435,8 @@
       });
 
       $('#'+parId+' .apply-binwidth').bind('click', function() {
-        var value = $('input.binwidth').val();
+        var value = $('#'+parId+' input.binwidth').val();
+        //console.log(parId + ' ' + value);
 
         if ( value === '' ) {
           return;
