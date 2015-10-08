@@ -71,7 +71,6 @@
     <input type="hidden" name="srcSvg" value="plot.svg"/>
     <input type="hidden" name="srcFileType" value="png"/>
     <input type="hidden" name="id" value="${results.id}"/>
-    Filename:<br />
     <div class="dropdown" style="text-align: left; width: 180px;">
       <input type="text" name="name" id="newPlotName" size="20" maxlength="30" />
       <%@ include file="../plots/view-saved-plot-names.jsp" %>
