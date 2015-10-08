@@ -122,7 +122,10 @@
                     title: daq[i].trim(),
                     clickable: true
                 });               
-
+                var infowindow = new google.maps.InfoWindow({maxWidth:250});
+                infowindow.setContent("<strong>DAQ# "+daq[i].trim()+"</strong><br />"+ "Latitude: "+latitude[i] + "<br />Longitude: "+longitude[i]);
+                infowindow.open(map,marker);
+                
                 // Automatically center the map fitting all markers on the screen
                 map.fitBounds(bounds);
             }
