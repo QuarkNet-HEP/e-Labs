@@ -189,7 +189,13 @@ public class Benchmark {
 			if (duration > 0) {
 				entry.setTupleValue("blessed", true);
 				entry.setTupleValue("blessedstatus", "blessed");
-		    	dcp.insert(entry);
+				entry.setTupleValue("benchmarkfail","");
+				entry.setTupleValue("benchmarkerrorcode","");
+				entry.setTupleValue("benchmarkfailurechannel","");
+				entry.setTupleValue("benchmarkquality","");
+				entry.setTupleValue("benchmarkrate","");
+				entry.setTupleValue("benchmarksplitrate","");
+				dcp.insert(entry);
 				ArrayList meta = new ArrayList();
 				meta.add("benchmarkfile boolean true");
 				meta.add("benchmarkreference string none");
