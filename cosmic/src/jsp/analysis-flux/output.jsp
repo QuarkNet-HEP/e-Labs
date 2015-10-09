@@ -56,6 +56,9 @@
 </p>
 
 <% if (!user.isGuest()) { %>
+<p><b>OR</b></p>
+<p>To save this plot permanently, enter the new name you want.</p>
+<p>Then click <b>Save Plot</b>.</p>
   <form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit='return validatePlotName("newPlotName");' align="center" class="framed">
     <e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
     <e:creationDateMetadata/>
@@ -77,7 +80,6 @@
     </div>(View your saved plot names)<br />
     <input type="submit" name="submit" value="Save Plot"/>
   </form>
-  <hr />
 <% } %>
 
 			</div>
