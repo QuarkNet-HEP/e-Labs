@@ -1807,7 +1807,11 @@ public class DataTools {
 				and.add(new Equals("project",project));
 			}
 			and.add(new Equals("type", type));
-			and.add(new Between("creationdate", startDate, endDate));		
+			if (type.equals("poster")) {
+				and.add(new Between("date", startDate, endDate));					
+			} else {
+				and.add(new Between("creationdate", startDate, endDate));	
+			}
 			rs = elab.getDataCatalogProvider().runQuery(and);
 			Integer i = 0;
 			if (rs != null && !rs.isEmpty()) {

@@ -21,8 +21,8 @@
   String submit = request.getParameter("submit");
   String fromDate = request.getParameter("fromDateSplit");
   if (fromDate == null) {
-	  Calendar fromMonth = Calendar.getInstance();
-	  fromMonth.add(Calendar.MONTH,-5);  	  
+    Calendar fromMonth = Calendar.getInstance();
+    fromMonth.add(Calendar.MONTH,-5);     
     fromDate = DATEFORMAT.format(fromMonth.getTime());
   }
   String toDate = request.getParameter("toDateSplit");
@@ -35,11 +35,8 @@
   Date startDate = null;
   Date endDate = null;
   String messages = "";
-  TreeMap<Integer, VDSCatalogEntry> uploadResults = new TreeMap<Integer, VDSCatalogEntry>();
-  TreeMap<String, ArrayList<ArrayList<String>>> reportLines = new TreeMap<String,ArrayList<ArrayList<String>>>();
-  ArrayList<String> detectorIds = new ArrayList<String>();
-  ArrayList<String[]> uploadReportData = new ArrayList<String[]>();
-  ArrayList<ArrayList<String>> uploadReportDataDistinct = new ArrayList<ArrayList<String>>();
+  TreeMap<Integer, VDSCatalogEntry> posterResults = new TreeMap<Integer, VDSCatalogEntry>();
+  TreeMap<String, ArrayList<String>> reportLines = new TreeMap<String,ArrayList<String>>();
   
   if ("Retrieve Report".equals(submit)) {
     if (StringUtils.isNotBlank(fromDate)) {
@@ -48,55 +45,22 @@
     if (StringUtils.isNotBlank(toDate)) {
       endDate = DATEFORMAT.parse(toDate); 
     }
-    //this query will bring all splits in the date range and we can also get the summary from it
-    uploadResults = DataTools.getVDSCatalogEntries(elab, startDate, endDate, "cosmic", "split");
+    //this query will bring all plots in the date range and we can also get the summary from it
+    posterResults = DataTools.getVDSCatalogEntries(elab, startDate, endDate, "", "poster");
     
     //prepare results by detectorid
-    for (Map.Entry<Integer,VDSCatalogEntry> e: uploadResults.entrySet()) {
-    	    VDSCatalogEntry entry = e.getValue();
-    	    if (!detectorIds.contains(entry.getTupleValue("detectorid"))) {
-    	    	detectorIds.add((String)entry.getTupleValue("detectorid"));
-    	    }
-    	    String[] details = new String[6];
-          details[0] = (String)  entry.getTupleValue("detectorid");
-          details[1] = (String)  entry.getTupleValue("group");
-          details[2] = (String)  entry.getTupleValue("teacher");
-          details[3] = (String)  entry.getTupleValue("school");
-          details[4] = (String)  entry.getTupleValue("city");
-          details[5] = (String)  entry.getTupleValue("state");
-          uploadReportData.add(details);
+    for (Map.Entry<Integer,VDSCatalogEntry> e: posterResults.entrySet()) {
+          VDSCatalogEntry entry = e.getValue();
+          ArrayList<String>details = new ArrayList<String>();
+          details.add((String) entry.getTupleValue("title"));
+          details.add((String) entry.getTupleValue("group"));
+          details.add((String) entry.getTupleValue("teacher"));
+          details.add((String) entry.getTupleValue("school"));
+          details.add((String) entry.getTupleValue("city"));
+          details.add((String) entry.getTupleValue("state"));
+          details.add((String) entry.getTupleValue("project"));
+          reportLines.put((String) entry.getTupleValue("title"), details);
     } 
-    //get frequency
-    for (int i = 0; i < uploadReportData.size(); i++) {
-    	  String[] details = uploadReportData.get(i);
-    	  int detailCount = 0;
-    	  for (int x = 0; x < uploadReportData.size(); x++) {
-    		     if (Arrays.equals(details, uploadReportData.get(x))) {
-    		    	  detailCount += 1;
-    		     }
-    	  }
-    	  ArrayList<String> detailsDistinct = new ArrayList<String>();
-    	  detailsDistinct.add(details[0]);
-        detailsDistinct.add(details[1]);
-        detailsDistinct.add(details[2]);
-        detailsDistinct.add(details[3]);
-        detailsDistinct.add(details[4]);
-        detailsDistinct.add(details[5]);
-        detailsDistinct.add(String.valueOf(detailCount));
-        if (!uploadReportDataDistinct.contains(detailsDistinct)) {
-        	   uploadReportDataDistinct.add(detailsDistinct);
-        }
-    }
-    
-    for (int i = 0; i < detectorIds.size(); i++) {
-    	  ArrayList<ArrayList<String>> daqDetails = new ArrayList<ArrayList<String>>();
-    	  for (int x = 0; x < uploadReportDataDistinct.size(); x++) {
-    		  if (detectorIds.get(i).equals(uploadReportDataDistinct.get(x).get(0))) {
-    			   daqDetails.add(uploadReportDataDistinct.get(x));
-    		  }
-    	  }
-    	  reportLines.put(detectorIds.get(i), daqDetails);
-    }
   }//end of submit
   
   request.setAttribute("reportLines", reportLines);
@@ -109,7 +73,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Uploads Report</title>
+    <title>Poster Report</title>
     <link rel="stylesheet" type="text/css" href="../../cosmic/css/style2.css"/>
     <link rel="stylesheet" type="text/css" href="../../cosmic/css/teacher.css"/>
     <link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
@@ -138,18 +102,11 @@
       $('img.ui-datepicker-trigger').css('vertical-align', 'text-bottom');      
       }); 
       $(document).ready(function() { 
-        if ($("#splits-results").find("tbody").find("tr").size() > 0) {
+        if ($("#alternatecolor").find("tbody").find("tr").size() > 0) {
             // call the tablesorter plugin 
-            $("#splits-results").tablesorter({ 
+            $("#alternatecolor").tablesorter({ 
                 // sort on the second column and first column, order asc 
-                sortList: [[1,0],[0,0]] 
-            }); 
-        }
-        if ($("#quality-data-results").find("tbody").find("tr").size() > 0) {
-            // call the tablesorter plugin 
-            $("#quality-data-results").tablesorter({ 
-                // sort on the second column and first column, order asc 
-                sortList: [[0,0],[0,0]] 
+                sortList: [[6,0],[0,0]] 
             }); 
         }
       }); 
@@ -199,7 +156,7 @@
       </style>
   </head>
   
-  <body id="uploads-report" class="teacher">
+  <body id="plot-report" class="teacher">
     <!-- entire page container -->
     <div id="container">
       <div id="top">
@@ -212,11 +169,11 @@
       </div>
       
       <div id="content">
-      <form id="uploadReport" method="post">
-          <h2>View splits and their details.</h2>
+      <form id="plotReport" method="post">
+          <h2>View posters and their details.</h2>
           <ul>
             <li>Choose a date range.</li>
-            <li>Click on Retrieve Report to get the list of uploaded files and their details.</li>
+            <li>Click on Retrieve Report to get the list of posters and their details.</li>
           </ul>
         <table>
           <tr>
@@ -238,34 +195,29 @@
       <c:choose>
             <c:when test="${not empty reportLines }"> 
                  <hr></hr>
-                 <h2>Query Results</h2>
+                 <h2>Query Results</h2> 
                  <table class="altrowstable" id="alternatecolor">
+                 <thead>
                  <tr name="details">
-                    <th width="50px"><strong>DAQ#</strong></th>
+                    <th width="50px"><strong>Poster Name</strong></th>
                     <th width="120px"><strong>Group</strong></th>
                     <th width="120px"><strong>Teacher</strong></th>
                     <th width="200px"><strong>School</strong></th>
                     <th width="100px"><strong>City</strong></th>
                     <th width="50px"><strong>State</strong></th>
-                    <th width="50px"><strong>Uploads</strong></th>
+                    <th width="50px"><strong>Project</strong></th>
                  </tr>
+                 </thead>
                  <c:forEach items="${reportLines}" var="filename">
                     <tr name="details">
                       <td width="50px" valign="top">${filename.key }</td>
-                      <td width="640px" colspan="6" valign="top">
-                        <c:forEach items="${filename.value}" var="details">
-                          <table>
-                            <tr>
-                              <td width="116px">${details[1]}</td>
-                              <td width="116px">${details[2]}</td>
-                              <td width="196px">${details[3]}</td>
-                              <td width="96px">${details[4]}</td>
-                              <td width="48px">${details[5]}</td>
-                              <td width="44px">${details[6]}</td>
-                            </tr>
-                          </table>
-                        </c:forEach>
-                      </td>
+                      <td width="120px" valign="top">${filename.value[1]}</td>
+                      <td width="120px" valign="top">${filename.value[2]}</td>
+                      <td width="200px" valign="top">${filename.value[3]}</td>
+                      <td width="100px" valign="top">${filename.value[4]}</td>
+                      <td width="50px" valign="top">${filename.value[5]}</td>
+                      <td width="50px" valign="top">${filename.value[6]}</td>
+                      
                   </c:forEach>          
                 </table>
             </c:when>
