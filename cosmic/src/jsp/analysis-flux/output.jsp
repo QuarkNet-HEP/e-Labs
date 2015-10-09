@@ -56,6 +56,9 @@
 </p>
 
 <% if (!user.isGuest()) { %>
+<p><b>OR</b></p>
+<p>To save this plot permanently, enter the new name you want.</p>
+<p>Then click <b>Save Plot</b>.</p>
   <form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit='return validatePlotName("newPlotName");' align="center" class="framed">
     <e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
     <e:creationDateMetadata/>
@@ -71,14 +74,12 @@
     <input type="hidden" name="srcSvg" value="plot.svg"/>
     <input type="hidden" name="srcFileType" value="png"/>
     <input type="hidden" name="id" value="${results.id}"/>
-    Filename:<br />
     <div class="dropdown" style="text-align: left; width: 180px;">
       <input type="text" name="name" id="newPlotName" size="20" maxlength="30" />
       <%@ include file="../plots/view-saved-plot-names.jsp" %>
     </div>(View your saved plot names)<br />
     <input type="submit" name="submit" value="Save Plot"/>
   </form>
-  <hr />
 <% } %>
 
 			</div>
