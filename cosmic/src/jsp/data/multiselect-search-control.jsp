@@ -20,6 +20,15 @@ if (!user.getName().equals("guest")) {
 		allowAllDataAccess = true;
 	}
 }
+//set the calendar to a month prior by default 
+//the criteria to retrieve datafiles will probably change but we need some type of range otherwise
+//we will be retrieving all the files.
+Calendar cal = Calendar.getInstance();
+cal.setTime(new Date());
+cal.add(Calendar.DATE, 1);    
+Calendar fromMonth = Calendar.getInstance();
+fromMonth.add(Calendar.MONTH,-3);       
+request.setAttribute("fromMonth", fromMonth);
 request.setAttribute("allowAllDataAccess", allowAllDataAccess);
 %>
 <script type="text/javascript">
@@ -48,6 +57,7 @@ $(window).scroll(function(){
 	<form action="controller.jsp" name="search" method="post" style="display: inline;">
 		<input type="hidden" name="key" value="group" />
 		<input type="hidden" name="value" value="${user.name}" />
+    <input type="hidden" name="date1" value="<%=DATEFORMAT.format(fromMonth.getTime())%>" />
 		<input type="hidden" name="action" value="Search Data" />
 		<!-- 
 		<input type="submit" value="${user.name}" />
@@ -57,6 +67,7 @@ $(window).scroll(function(){
 	<form action="controller.jsp" name="search" method="post" style="display: inline;">
 		<input type="hidden" name="key" value="teacher" />
 		<input type="hidden" name="value" value="<%= user.getTeacher() %>" />
+    <input type="hidden" name="date1" value="<%=DATEFORMAT.format(fromMonth.getTime())%>" />
 		<input type="hidden" name="action" value="Search Data" />
 		<!-- 
 		<input type="submit" value="<%= user.getTeacher() %>" />
@@ -66,6 +77,7 @@ $(window).scroll(function(){
 	<form action="controller.jsp" name="search" method="post" style="display: inline;">
 		<input type="hidden" name="key" value="school" />
 		<input type="hidden" name="value" value="${user.group.school}" />
+    <input type="hidden" name="date1" value="<%=DATEFORMAT.format(fromMonth.getTime())%>" />
 		<input type="hidden" name="action" value="Search Data" />
 		<!-- 
 		<input type="submit" value="${user.group.school}" />
@@ -75,6 +87,7 @@ $(window).scroll(function(){
 	<form action="controller.jsp" name="search" method="post" style="display: inline;">
 		<input type="hidden" name="key" value="city" />
 		<input type="hidden" name="value" value="${user.group.city}" />
+    <input type="hidden" name="date1" value="<%=DATEFORMAT.format(fromMonth.getTime())%>" />
 		<input type="hidden" name="action" value="Search Data" />
 		<!-- 
 		<input type="submit" value="${user.group.city}" />
@@ -84,6 +97,7 @@ $(window).scroll(function(){
 	<form action="controller.jsp" name="search" method="post" style="display: inline;">
 		<input type="hidden" name="key" value="state" />
 		<input type="hidden" name="value" value="${user.group.state}" />
+    <input type="hidden" name="date1" value="<%=DATEFORMAT.format(fromMonth.getTime())%>" />
 		<input type="hidden" name="action" value="Search Data" />
 		<!-- 
 		<input type="submit" value="${user.group.state}" />
@@ -120,7 +134,11 @@ $(window).scroll(function(){
 						</select>
 					</td>
 					<td>
-						<e:trinput name="date1" id="date1" size="10" maxlength="15" class="datepicker" value="${date1}"/>
+            <% if (request.getParameter("date1") == null)  {%>
+               <e:trinput name="date1" id="date1" size="10" maxlength="15" class="datepicker" value="<%=DATEFORMAT.format(fromMonth.getTime()) %>"/>
+            <% } else { %>           
+               <e:trinput name="date1" id="date1" size="10" maxlength="15" class="datepicker" />
+            <% } %>
 						to
 						<e:trinput name="date2" id="date2" size="10" maxlength="15" class="datepicker" value="${date2}"/>
 					</td>
@@ -163,5 +181,10 @@ $(window).scroll(function(){
 			</table>
 		</e:hidden>
 	</e:vswitch>
+	<br />
+  <div><i>* To speed up searches by default we are retrieving the last 3 months worth of data for the criteria you chose.<br />
+         You can modify your date range using the Advanced Search criteria.
+     </i></div> 
+	
 </form>
 
