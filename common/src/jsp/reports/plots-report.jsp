@@ -22,7 +22,7 @@
   String fromDate = request.getParameter("fromDateSplit");
   if (fromDate == null) {
     Calendar fromMonth = Calendar.getInstance();
-    fromMonth.add(Calendar.MONTH,-5);     
+    fromMonth.add(Calendar.MONTH,-1);     
     fromDate = DATEFORMAT.format(fromMonth.getTime());
   }
   String toDate = request.getParameter("toDateSplit");
