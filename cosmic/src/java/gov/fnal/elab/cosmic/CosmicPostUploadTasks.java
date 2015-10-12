@@ -65,7 +65,10 @@ public class CosmicPostUploadTasks {
 		CatalogEntry entry;
 		String rawName = f.getName();
 		String cpldFrequency = "";
-    	try {
+		String upload_detectorid, upload_creation_date, upload_teacher, upload_school, upload_city, upload_state, upload_stacked;
+		upload_detectorid = upload_creation_date = upload_teacher = upload_school = upload_city = upload_state = upload_stacked = "";
+		int upload_count = 0;
+		try {
 		    if (fmeta.canRead()) {
 		    	BufferedReader br = new BufferedReader(new FileReader(fmeta));
 		        String line = null;
@@ -116,12 +119,20 @@ public class CosmicPostUploadTasks {
 		                meta.add("project string " + elab.getName());
 			            comments = comments.replaceAll("\r\n?", "\\\\n");   //replace new lines from text box with "\n"
 		                meta.add("comments string " + comments);
+		                upload_teacher = elab.getUserManagementProvider().getTeacher(auser).getName();
+		                upload_school = auser.getSchool();
+		                upload_city = auser.getSchool();
+		                upload_state = auser.getState();
+		                upload_count += 1;
 		            }
 		            else {
 		                meta.add(line);
 		                String[] tmp = line.split("\\s", 3);
 		                if (tmp[0].equals("cpldfrequency")) {
 			                cpldFrequency += tmp[2] + " ";
+		                }
+		                else if (tmp[0].equals("creationdate")) {
+		                	upload_creation_date = tmp[2];
 		                }
 		                else if (tmp[0].equals("julianstartdate")) {
 		                	Geometry geometry = new Geometry(elab.getProperties().getDataDir(), Integer.parseInt(detectorId));
@@ -134,6 +145,7 @@ public class CosmicPostUploadTasks {
 		                			geoLongitude = g.getFormattedLongitude();
 		                			if (geoLongitude == null) { geoLongitude = ""; }
 		                			meta.add("stacked boolean " + ("0".equals(g.getStackedState()) ? "false" : "true"));	
+		                			upload_stacked = "0".equals(g.getStackedState()) ? "false" : "true";
 		                		}
 		                	}
 		                }
@@ -175,6 +187,7 @@ public class CosmicPostUploadTasks {
 		            try {					
 						entry = DataTools.buildCatalogEntry(currLFN, meta);
 		                elab.getDataCatalogProvider().insert(entry);
+		                DataTools.updateDAQLatestUploadData(elab, String.valueOf(detectorId), upload_creation_date, String.valueOf(upload_count), upload_teacher, upload_school, upload_city, upload_state, upload_stacked);
 					}
 					catch (ElabException e) {
 						//EPeronja-585: Sql Errors when uploading data, give meaningful message
