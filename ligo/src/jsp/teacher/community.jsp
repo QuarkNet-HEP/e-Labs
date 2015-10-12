@@ -31,7 +31,7 @@
 
 <a name="Helpdesk"></a><h2>HelpDesk</h2>
 <ul>
-<li> Use the <a href="http://www18.i2u2.org/elab/ligo/teacher/forum/HelpDeskRequest.php?elab=LIGO" target="help">Help Desk Request Form</a> to get technical assistance from our staff. You can access this form from any teacher page when logged in by clicking on the little lifesaver icon on the upper right hand corner of your window.
+<li> Use the <a href="http://www.i2u2.org/elab/ligo/teacher/forum/HelpDeskRequest.php?elab=LIGO" target="help">Help Desk Request Form</a> to get technical assistance from our staff. You can access this form from any teacher page when logged in by clicking on the little lifesaver icon on the upper right hand corner of your window.
 </li></ul>
 <a name="ClassroomActivities"></a><h2>Classroom Activities</h2>
 <ul><li>
