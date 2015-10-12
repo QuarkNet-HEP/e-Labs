@@ -46,6 +46,7 @@
 					<div style="vertical-align: top;"><img border="0" src="../graphics/geo_pencil.gif" />Edit Entry</div>
 					<div style="vertical-align: top;"><img border="0" src="../graphics/delete_x.gif" />Delete Entry</div>
 					<div style="vertical-align: top;"><img border="0" src="../graphics/saveas.gif" />Duplicate</div>	
+          <div style="vertical-align: top;"><img border="0" src="../graphics/world.png" height="15px" width="15px" /> View Map</div>  
 				</div>				
 				<br /><br /><br /><br /><br /><br /><br /><br />
 				<div id="tutorial" style="float: left;">
