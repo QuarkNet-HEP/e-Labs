@@ -301,3 +301,39 @@ function openPopup(event, id) {
 function closePopup(id) {
 	$("#" + id).hide();
 }
+
+function validatePlotName(plotNameId) {
+	var newName = document.getElementById(plotNameId);
+	var existingNames = document.getElementById("existingPlotNames");
+	var validName = true;
+    for (var i = 0; i < existingNames.length; i++) {
+        if (newName.value == existingNames.options[i].value) {
+        	validName = false;
+        }
+    }
+    if (validName) {
+    	return true;
+    	window.open('',this.target,'width=500,height=200,resizable=1');
+    } else {
+    	alert("There is an existing plot with this name. Please choose a different name.");
+    	return false;
+    }
+}
+
+function validateMultiplePlotName(existingPlotNamesId, plotNameId, onOffPlot, messageDivId) {
+	var newName = document.getElementById(plotNameId);
+	var existingNames = document.getElementById(existingPlotNamesId);
+	var validName = true;
+    for (var i = 0; i < existingNames.length; i++) {
+        if (newName.value == existingNames.options[i].value) {
+        	validName = false;
+        }
+    }
+    if (validName) {
+    	saveChart(onOffPlot, plotNameId, messageDivId);
+    	return true;
+    } else {
+    	alert("There is an existing plot with this name. Please choose a different name.");
+    	return false;
+    }
+}
