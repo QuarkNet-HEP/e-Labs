@@ -32,7 +32,7 @@
 
 <a name="Helpdesk"></a><h2>HelpDesk</h2>
 <ul>
-<li> Use the <a href="http://www18.i2u2.org/elab/cms/teacher/forum/HelpDeskRequest.php?elab=cms"  target="help">Help Desk Request Form</a> to get technical assistance from QuarkNet e-Labs staff. You can access this form from any teacher page when logged in by clicking on the little lifesaver icon on the upper right hand corner of your window.
+<li> Use the <a href="http://www.i2u2.org/elab/cms/teacher/forum/HelpDeskRequest.php?elab=cms"  target="help">Help Desk Request Form</a> to get technical assistance from QuarkNet e-Labs staff. You can access this form from any teacher page when logged in by clicking on the little lifesaver icon on the upper right hand corner of your window.
 </li></ul>
 
 
