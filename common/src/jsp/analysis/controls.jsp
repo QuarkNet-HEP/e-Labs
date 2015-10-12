@@ -1,5 +1,16 @@
 <%@ taglib prefix="e" uri="http://www.i2u2.org/jsp/elabtl" %>
-
+<p>
+  <input type="hidden" name="provider" value="swift"/>
+  <table id="swift-run-mode" width="100%" align="center">
+    <tr>
+        <td align="center">
+          <input type="hidden" name="runMode" value="local">
+          Estimated time: <e:analysisRunTimeEstimator engine="swift" mode="local"/>
+        </td>
+    </tr>
+  </table> 
+</p>
+<!-- 
 <p>
 	<e:vswitch revert="true">
 		<e:visible>
@@ -28,3 +39,4 @@
 		</e:hidden>
 	</e:vswitch>
 </p>
+-->
