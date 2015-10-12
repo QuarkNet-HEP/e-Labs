@@ -22,16 +22,6 @@ if (!user.getName().equals("guest")) {
 		allowAllDataAccess = true;
 	}
 }
-
-//set the calendar to a month prior by default 
-//the criteria to retrieve datafiles will probably change but we need some type of range otherwise
-//we will be retrieving all the files.
-Calendar cal = Calendar.getInstance();
-  cal.setTime(new Date());
-  cal.add(Calendar.DATE, 1);    
-Calendar fromMonth = Calendar.getInstance();
-fromMonth.add(Calendar.MONTH,-3);       
-request.setAttribute("fromMonth", fromMonth);
 request.setAttribute("allowAllDataAccess", allowAllDataAccess);
 %>
 <script type="text/javascript">
@@ -56,13 +46,13 @@ $(window).scroll(function(){
 });
 
 </script>
-
-<div class="search-quick-links">Quick Searches (last 3 months):
-  <a href="?submit=true&key=group&value=${user.name}&date1=<%=DATEFORMAT.format(fromMonth.getTime())%>">${user.name}</a>,
-  <a href="?submit=true&key=teacher&value=<%= user.getTeacher() %>&date1=<%=DATEFORMAT.format(fromMonth.getTime())%>"><%= user.getTeacher() %></a>,
-  <a href="?submit=true&key=school&value=${user.group.school}&date1=<%=DATEFORMAT.format(fromMonth.getTime())%>">${user.group.school}</a>,
-  <a href="?submit=true&key=city&value=${user.group.city}&date1=<%=DATEFORMAT.format(fromMonth.getTime())%>">${user.group.city}</a>,
-  <a href="?submit=true&key=state&value=${user.group.state}&date1=<%=DATEFORMAT.format(fromMonth.getTime())%>">${user.group.state}</a>
+		
+<div class="search-quick-links">Quick Searches: 
+	<e:quicksearch key="group" value="${user.name}"  />,
+	<e:quicksearch key="teacher" value="<%= user.getTeacher() %>"  />,
+	<e:quicksearch key="school" value="${user.group.school}"/>,
+	<e:quicksearch key="city" value="${user.group.city}"/>,
+	<e:quicksearch key="state" value="${user.group.state}"/>
 </div>
 
 <form name="search" method="get">
@@ -93,11 +83,7 @@ $(window).scroll(function(){
 						</select>
 					</td>
 					<td>
-					  <% if (request.getParameter("date1") == null)  {%>
-  						 <e:trinput name="date1" id="date1" size="10" maxlength="15" class="datepicker" value="<%=DATEFORMAT.format(fromMonth.getTime()) %>"/>
-  					<% } else { %>           
-  					   <e:trinput name="date1" id="date1" size="10" maxlength="15" class="datepicker" />
-  					<% } %>
+						<e:trinput name="date1" id="date1" size="10" maxlength="15" class="datepicker"/>
 						to
 						<e:trinput name="date2" id="date2" size="10" maxlength="15" class="datepicker"/>
 					</td>
@@ -140,15 +126,6 @@ $(window).scroll(function(){
 			</table>
 		</e:hidden>
 	</e:vswitch>
-	<br />
-	<a href="cosmic-data-map.jsp?submitToPage=search.jsp">
-	 <img src="../graphics/world.png" height="25px" width="25px" /><br />
-	 View and Search from detector map
-	</a>
-	<br /><br />
-  <div><i>* To speed up searches by default we are retrieving the last 3 months worth of data for the criteria you chose.<br />
-          You can modify your date range using the Advanced Search criteria.
-      </i></div> 
 	<div id="msg" name="msg">${msg}</div>	
 	<br />
 	<%
@@ -161,7 +138,6 @@ $(window).scroll(function(){
 		String blessed = request.getParameter("blessed");
 		
 		boolean submit = StringUtils.isNotBlank(request.getParameter("submit"));
-		boolean submitFromMap = StringUtils.isNotBlank(request.getParameter("submitFromMap"));
 		
 		if (StringUtils.isBlank(key)) key="all";
 		
@@ -174,7 +150,7 @@ $(window).scroll(function(){
 		
 		ResultSet searchResults = null;
 		StructuredResultSet searchResultsStructured = null;
-		if (submit || submitFromMap) {
+		if (submit) {
 			
 			//EPeronja-06/12/2013: 63: Data search by state requires 2-letter state abbreviation
 			String abbreviation = "";
