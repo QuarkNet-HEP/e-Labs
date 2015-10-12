@@ -71,13 +71,26 @@
 			message = e.getMessage();
 	}
 
-	ArrayList fileArray = (ArrayList) results.getAttribute("inputfiles");
+	ArrayList<String> fileArray = (ArrayList<String>) results.getAttribute("inputfiles");
 	Collections.sort(fileArray);
+	BlessPlotDisplay bpd = new BlessPlotDisplay();
+	ArrayList<String> fileIcons = new ArrayList<String>();
+	for (int i = 0; i < fileArray.size(); i++) {
+		    String filename = fileArray.get(i);
+		  	String iconLinks = bpd.getIcons(elab, filename);
+		  	fileIcons.add(filename+" "+iconLinks);
+	}
+	  
 	request.setAttribute("fileArray", fileArray);
+	request.setAttribute("fileIcons", fileIcons);
 	request.setAttribute("id", id);
 	request.setAttribute("outputDir", results.getOutputDirURL());
 	request.setAttribute("message", message);
-	
+
+	 //EPeronja-09/24/2015: populated saved plots dropdowns
+	  ArrayList<String> plotNames = DataTools.getPlotNamesByGroup(elab, user.getName(), elab.getName());
+	  request.setAttribute("plotNames",plotNames); 
+
 	
 %>
 
@@ -138,7 +151,15 @@
 			</div>
 			<!-- EPeronja-07/31/2013 570-Bless Charts: add option to save them as plots -->
 			<div style="text-align:center; width: 100%;">
-				Filename <input type="text" name="channelChartName" id="channelChartName" value=""></input><input type="button" name="save" onclick='return saveChart(onOffPlot, "channelChartName", "channelMsg");' value="Save Channel Chart"></input>     
+				Filename <input type="text" name="channelChartName" id="channelChartName" value="">
+          <select id="existingPlotNamesChannel" style="max-width: 150px; min-width: 150px; width: 150px !important;" onchange="this.previousElementSibling.value=this.value; this.previousElementSibling.focus()">
+            <option></option>
+            <c:forEach items="${ plotNames}" var="plotName">
+              <option>${plotName }</option>
+            </c:forEach>
+          </select>
+          (View your saved plot names)<br />          				
+				</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesChannel","channelChartName", onOffPlot, "channelMsg");' value="Save Channel Chart"></input>     
 				<div id="channelMsg"></div>   
 			</div>
 								
@@ -149,7 +170,15 @@
 			</jsp:include>					
 			<div id ="triggerChart" style="width:750px; height:250px; text-align: left; margin: auto auto 5px auto;"></div>
 			<div style="text-align:center; width: 100%;">
-				Filename <input type="text" name="triggerChartName" id="triggerChartName" value=""></input><input type="button" name="save" onclick='return saveChart(trigPlot, "triggerChartName", "triggerMsg");' value="Save Trigger Chart"></input>     
+				Filename <input type="text" name="triggerChartName" id="triggerChartName" value="">
+          <select id="existingPlotNamesTrigger" style="max-width: 150px; min-width: 150px; width: 150px !important;" onchange="this.previousElementSibling.value=this.value; this.previousElementSibling.focus()">
+            <option></option>
+            <c:forEach items="${ plotNames}" var="plotName">
+              <option>${plotName }</option>
+            </c:forEach>
+          </select>
+          (View your saved plot names)<br />          
+				</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesTrigger","triggerChartName", trigPlot, "triggerMsg");' value="Save Trigger Chart"></input>     
 				<div id="triggerMsg"></div>   
 			</div>
 
@@ -160,7 +189,15 @@
 				</jsp:include>				
 				<div id="satChart" style="width:750px; height:250px; text-align: left; margin: auto auto 5px auto;"></div>
 				<div style="text-align:center; width: 100%;">
-					Filename <input type="text" name="satChartName" id="satChartName" value=""></input><input type="button" name="save" onclick='return saveChart(satPlot, "satChartName", "satMsg");' value="Save Satellite Chart"></input>     
+					Filename <input type="text" name="satChartName" id="satChartName" value="">
+          <select id="existingPlotNamesSatellite" style="max-width: 150px; min-width: 150px; width: 150px !important;" onchange="this.previousElementSibling.value=this.value; this.previousElementSibling.focus()">
+            <option></option>
+            <c:forEach items="${ plotNames}" var="plotName">
+              <option>${plotName }</option>
+            </c:forEach>
+          </select>
+          (View your saved plot names)<br />                    
+					</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesSatellite","satChartName", satPlot, "satMsg");' value="Save Satellite Chart"></input>     
 					<div id="satMsg"></div>   
 				</div>
 
@@ -170,7 +207,15 @@
 				</jsp:include>			
 				<div id="voltChart" style="width:750px; height:250px; text-align: left; margin: auto auto 5px auto;"></div>
 				<div style="text-align:center; width: 100%;">
-					Filename <input type="text" name="voltChartName" id="voltChartName" value=""></input><input type="button" name="save" onclick='return saveChart(voltPlot, "voltChartName", "voltMsg");' value="Save Voltage Chart"></input>     
+					Filename <input type="text" name="voltChartName" id="voltChartName" value="">
+          <select id="existingPlotNamesVoltage" style="max-width: 150px; min-width: 150px; width: 150px !important;" onchange="this.previousElementSibling.value=this.value; this.previousElementSibling.focus()">
+            <option></option>
+            <c:forEach items="${ plotNames}" var="plotName">
+              <option>${plotName }</option>
+            </c:forEach>
+          </select>
+          (View your saved plot names)<br />                    
+ 					</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesVoltage","voltChartName", voltPlot, "voltMsg");' value="Save Voltage Chart"></input>     
 					<div id="voltMsg"></div>   
 				</div>
 
@@ -181,7 +226,15 @@
 				</jsp:include>					
 				<div id="tempChart" style="width:750px; height:250px; text-align: left; margin: auto auto 5px auto;"></div>
 				<div style="text-align:center; width: 100%;">
-					Filename <input type="text" name="tempChartName" id="tempChartName" value=""></input><input type="button" name="save" onclick='return saveChart(tempPlot, "tempChartName", "tempMsg");' value="Save Temperature Chart"></input>     
+					Filename <input type="text" name="tempChartName" id="tempChartName" value="">
+         <select id="existingPlotNamesTemperature" style="max-width: 150px; min-width: 150px; width: 150px !important;" onchange="this.previousElementSibling.value=this.value; this.previousElementSibling.focus()">
+            <option></option>
+            <c:forEach items="${ plotNames}" var="plotName">
+              <option>${plotName }</option>
+            </c:forEach>
+          </select>
+          (View your saved plot names)<br />                    
+					</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesTemperature","tempChartName", tempPlot, "tempMsg");' value="Save Temperature Chart"></input>     
 					<div id="tempMsg"></div>   
 				</div>
 				
@@ -192,7 +245,15 @@
 				</jsp:include>				
 				<div id="pressureChart" style="width:750px; height:250px; text-align: left; margin: auto auto 5px auto;"></div>
 				<div style="text-align:center; width: 100%;">
-					Filename <input type="text" name="pressChartName" id="pressChartName" value=""></input><input type="button" name="save" onclick='return saveChart(pressPlot, "pressChartName", "pressMsg");' value="Save Pressure Chart"></input>     
+					Filename <input type="text" name="pressChartName" id="pressChartName" value="">
+          <select id="existingPlotNamesPressure" style="max-width: 150px; min-width: 150px; width: 150px !important;" onchange="this.previousElementSibling.value=this.value; this.previousElementSibling.focus()">
+            <option></option>
+            <c:forEach items="${ plotNames}" var="plotName">
+              <option>${plotName }</option>
+            </c:forEach>
+          </select>
+          (View your saved plot names)<br />                              
+					</input><input type="button" name="save" onclick='return validateMultiplePlotName("existingPlotNamesPressure","pressChartName", pressPlot, "pressMg");' value="Save Pressure Chart"></input>     
 					<div id="pressMsg"></div>   
 				</div>				
 
@@ -201,10 +262,10 @@
 			<div>${message }</div>
 		</c:otherwise>
 	</c:choose>
-	<c:if test="${not empty fileArray}">
+	<c:if test="${not empty fileIcons}">
 		<table>
 			<tr><th>Files in charts</th></tr>
-		<c:forEach items="${fileArray }" var="file">
+		<c:forEach items="${fileIcons }" var="file">
 			<tr><td>${file }</td></tr>
 		</c:forEach>
 		</table>
