@@ -20,6 +20,7 @@ import gov.fnal.elab.datacatalog.query.CatalogEntry;
 import gov.fnal.elab.datacatalog.query.ResultSet;
 import gov.fnal.elab.datacatalog.query.In;
 import gov.fnal.elab.datacatalog.query.Equals;
+import gov.fnal.elab.datacatalog.query.Between;
 import gov.fnal.elab.datacatalog.query.Like;
 import gov.fnal.elab.datacatalog.query.And;
 import gov.fnal.elab.datacatalog.query.ResultSet;
@@ -68,7 +69,7 @@ public class DataTools {
     }
 
     private static final Map<String, Integer> KEYS;
-
+    
     static {
         KEYS = new HashMap<String, Integer>();
         KEYS.put("school", 0);
@@ -485,7 +486,7 @@ public class DataTools {
         	throw new ElabException(ex);
         }
         return hasGeoEntry;
-    }//end of getGeoFileEntry
+    }//end of getGeoFileEntry  
     
     //EPeronja-05/20/2014: Insert Analysis results for statistics
     public static void insertAnalysisResults(AnalysisRun ar, Elab elab) throws ElabException {
@@ -1537,8 +1538,8 @@ public class DataTools {
         }        
     	return projects;
     }//end of getProjects
-    
-    //EPeronja-06/12/2013: 63: Data search by state requires 2-letter state abbreviation
+
+     //EPeronja-06/12/2013: 63: Data search by state requires 2-letter state abbreviation
     public static String checkStateSearch(Elab elab, String userInput) throws ElabException {
     	String abbreviation = "";
         Connection con = null;
@@ -1646,6 +1647,185 @@ public class DataTools {
     public static String getFigureCaption(Elab elab, String[] files) throws ElabException {
         return getFigureCaption(elab, Arrays.asList(files));
     }
+
+    public static TreeMap<String,String> getDAQLatestUploadData(Elab elab) throws ElabException{
+    	java.sql.ResultSet rs;
+        Connection con = null;
+        PreparedStatement ps = null;
+        TreeMap<String,String> daqUploadDetails = new TreeMap<String,String>();
+        try {
+            con = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+            ps = con.prepareStatement(
+                    " SELECT detectorid, " +
+                    "        latest_upload_date, " +
+                    "        total_uploads, " +
+                    "        teacher, " +
+                    "        school, " +
+                    "        city, " +
+                    "        state, " +
+                    "		 stacked " +
+                    " FROM detector_upload_details;");
+
+            rs = ps.executeQuery(); 
+            if (rs != null) {
+           	 while (rs.next()) {
+                  SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+           		  String upload_date = dateFormat.format(rs.getTimestamp(2));
+           		  String details = rs.getString(5) + "," + rs.getString(6) + "," + rs.getString(7) + "," + Boolean.toString(rs.getBoolean(8)) + "," + rs.getString(4) + "," + upload_date + "," + String.valueOf(rs.getString(3));
+           		  daqUploadDetails.put(rs.getString(1), details);
+           	 }
+            }            
+        }
+        catch (SQLException e) {
+            throw new ElabException("In DataTools.getDAQLatestUploadData(): " + e.getMessage());
+        }
+        finally {
+            DatabaseConnectionManager.close(con, ps);
+        }        
+    	return daqUploadDetails;
+     }//end of getDAQLatestUploadData
+    
+    public static void updateDAQLatestUploadData(Elab elab, String detectorid, String latest_upload_date, String count, 
+    			String teacher, String school, String city, String state, String stacked) throws Exception{
+        Connection conn = null;
+        PreparedStatement ps = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date parsedDate = dateFormat.parse(latest_upload_date);
+        Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+        int recordId = 0;
+	    try {
+	    	conn = DatabaseConnectionManager.getConnection(elab.getProperties()); 
+	        boolean ac = conn.getAutoCommit();
+	        //update or insert
+	        ps = conn.prepareStatement(
+	                " SELECT total_uploads " +
+	                " FROM detector_upload_details" +
+	                " WHERE detectorid = ?;");
+	        ps.setString(1, detectorid);
+	        java.sql.ResultSet rs = ps.executeQuery(); 
+	        int uploadCount = 0;
+	        if (rs.next()) {
+	        	uploadCount = rs.getInt(1);
+	        }
+	        
+	        if (uploadCount == 0) {
+	        	//insert
+            	ps = conn.prepareStatement(
+            			" INSERT INTO detector_upload_details (detectorid, latest_upload_date, total_uploads, teacher, school, city, state, stacked) " +
+            		    " VALUES (?,?,?,?,?,?,?,?);"); 
+            	try {
+            		conn.setAutoCommit(false);
+            		ps.setString(1, detectorid);
+            		ps.setTimestamp(2, timestamp);
+            		ps.setInt(3, Integer.parseInt(count));
+            		ps.setString(4, teacher);
+            		ps.setString(5, school);
+            		ps.setString(6, city);
+            		ps.setString(7, state);
+            		ps.setBoolean(8, Boolean.valueOf(stacked));
+            		recordId = ps.executeUpdate();
+		            conn.commit();
+            	} catch (SQLException e) {
+            		conn.rollback();
+            		throw e;
+            	} finally {
+            		conn.setAutoCommit(ac);
+            	}
+
+	        } else {
+	        	//update
+
+	        	ps = conn.prepareStatement(
+            			" UPDATE detector_upload_details "+ 
+            		    "    SET latest_upload_date = ?, total_uploads = ?, teacher = ?, school = ?, city = ?, state = ?, stacked = ? " +
+            		    " WHERE detectorid = ?;"); 
+            	try {
+            		conn.setAutoCommit(false);
+            		ps.setTimestamp(1, timestamp);
+            		ps.setInt(2, uploadCount + Integer.parseInt(count));
+            		ps.setString(3, teacher);
+            		ps.setString(4, school);
+            		ps.setString(5, city);
+            		ps.setString(6, state);
+            		ps.setBoolean(7, Boolean.valueOf(stacked));
+               		ps.setString(8, detectorid);
+               	    recordId = ps.executeUpdate();
+		            conn.commit();
+            	} catch (SQLException e) {
+            		conn.rollback();
+            		throw e;
+            	} finally {
+            		conn.setAutoCommit(ac);
+            	}
+	        }	       
+	      } catch (SQLException e) {
+	        	 throw new ElabException(e);
+	      } finally {
+	        	 if (conn != null) {
+	        		 DatabaseConnectionManager.close(conn, ps);
+	        	 }
+	      }
+    }//end of updateDAQLatestUploadData
+    
+    //EPeronja-08/13/2015: Retrieve the saved plot names by user and project
+    public static ArrayList<String> getPlotNamesByGroup(Elab elab, String group, String project) throws ElabException {
+ 		ResultSet rs = null;
+		ArrayList<String> plotNames = new ArrayList<String>();
+		if (group != null && elab != null && project != null) {
+			In and = new In();
+			and.add(new Equals("project",project));
+			and.add(new Equals("type", "plot"));
+			and.add(new Equals("group", group));
+			rs = elab.getDataCatalogProvider().runQuery(and);
+			if (rs != null && !rs.isEmpty()) {
+            	if (project.equals("ligo")) {
+    				rs.sort("title", false);            		
+            	} else {
+    				rs.sort("name", false);
+            	}
+				Iterator it = rs.iterator();
+				while (it.hasNext()) {
+		            CatalogEntry e = (CatalogEntry) it.next();
+		            String plotName = (String)e.getTupleValue("name");
+	            	if (project.equals("ligo")) {
+	            		plotName = (String)e.getTupleValue("title");
+	            	}
+					plotNames.add(plotName);
+				}
+			}
+		}
+    	return plotNames;
+    }//end of getPlotNamesByGroup
+
+    //EPeronja-08/13/2015: Retrieve the entries within a date range for reporting
+    public static TreeMap<Integer,VDSCatalogEntry> getVDSCatalogEntries(Elab elab, Date startDate, Date endDate, String project, String type) throws ElabException {
+ 		ResultSet rs = null;
+ 		TreeMap<Integer,VDSCatalogEntry> results = new TreeMap<Integer,VDSCatalogEntry>();
+		if (startDate != null && elab != null && startDate != null && type != null && project != null) {
+			In and = new In();
+			if (!project.equals("")) {
+				and.add(new Equals("project",project));
+			}
+			and.add(new Equals("type", type));
+			if (type.equals("poster")) {
+				and.add(new Between("date", startDate, endDate));					
+			} else {
+				and.add(new Between("creationdate", startDate, endDate));	
+			}
+			rs = elab.getDataCatalogProvider().runQuery(and);
+			Integer i = 0;
+			if (rs != null && !rs.isEmpty()) {
+				Iterator it = rs.iterator();
+				while (it.hasNext()) {
+					VDSCatalogEntry e = (VDSCatalogEntry) it.next();
+					results.put(i, e);
+		            i++;
+				}
+			}
+		}
+    	return results;
+    }//end of getVDSCatalogEntries
+    
     
     private static final String[] STRING_ARRAY = new String[0];
 
@@ -1841,3 +2021,4 @@ public class DataTools {
         };
     }
 }
+
