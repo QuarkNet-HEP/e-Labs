@@ -43,7 +43,7 @@
         		} else {
         			lonPos = Double.parseDouble(lonParts[0])-(Double.parseDouble(lonParts[1])/60)-(Double.parseDouble(lonParts[2])/1000000/60);             
         	  }
-        	  daqLatLong.put(detectorid, latPos+","+lonPos);
+        	  daqLatLong.put(detectorid, latPos+","+lonPos+","+geb.getLatitude()+","+geb.getLongitude());
        }
      }
      
@@ -100,6 +100,8 @@
             var daq = [];
             var latitude = [];
             var longitude = [];
+            var displayLatitude = [];
+            var displayLongitude = [];
             var detectorDetails = document.getElementsByName("detectorDetails");
             if (detectorDetails.length > 0) {
               for (var i=0; i < detectorDetails.length; i++) {
@@ -108,6 +110,8 @@
                   daq.push(daqArr[0]);
                   latitude.push(daqArr[1]);
                   longitude.push(daqArr[2]);
+                  displayLatitude.push(daqArr[3]);
+                  displayLongitude.push(daqArr[4]);
                 }
               }
             }
@@ -125,7 +129,7 @@
                     clickable: true
                 });               
                 var infowindow = new google.maps.InfoWindow({maxWidth:250});
-                infowindow.setContent("<strong>DAQ# "+daq[i].trim()+"</strong><br />"+ "Latitude: "+latitude[i] + "<br />Longitude: "+longitude[i]);
+                infowindow.setContent("<strong>DAQ# "+daq[i].trim()+"</strong><br />"+ "Latitude: "+displayLatitude[i] + "<br />Longitude: "+displayLongitude[i]);
                 infowindow.open(map,marker);
                 
                 // Automatically center the map fitting all markers on the screen
