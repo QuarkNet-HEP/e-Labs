@@ -135,14 +135,14 @@
                 </td>
               </tr>
                 <tr>
-                <td class="group-title selector">
+                <td class="group-title">
                   Selectors
                 </td>
-                <td class="toolbox-group selector-charge">
-                  <input type="checkbox" class="selector-charge"/><span class="selector-charge">Select events with muons/electrons of opposite-sign charge</span>
+                <td class="toolbox-group selector selector-charge">
+                  <input type="checkbox" id="charge" class="selector selector-charge"/><span class="selector-charge">Select events with muons/electrons of opposite-sign charge</span>
                 </td>
-                <td class="toolbox-group selector-type">
-                  <input type="checkbox" class="selector-type"/><span class="selector-type"></span>
+                <td class="toolbox-group selector selector-type">
+                  <input type="checkbox" id="type" class="selector selector-type"/><span class="selector-type"></span>
                 </td>
               </tr>
             </table>
@@ -303,7 +303,8 @@
     $('#dataset').append('<option value="'+id+'">'+descr+'</option>');
   }
 
-  var input_data;
+  var original_data;
+  var current_data;
   var dataset_name;
   var dataset_id;
   var dataset_type;
@@ -368,16 +369,13 @@
           selection: { mode: "xy", color: "yellow" }
       };
 
-      var histogram = buildHistogram(input_data.map(function(d) {return +d[parameter];}), 0.1);
-      var nevents = input_data.length;
+      var histogram = buildHistogram(original_data.map(function(d) {return +d[parameter];}), 0.1);
+      var nevents = original_data.length;
       $('#plot-container').append("<div class=\"plot\" id=\"" + parId + "\"></div>");
       $('#'+parId).append($('#plot-template').html());
 
-      $('#'+parId+' .selector-type').hide();
-      $('#'+parId+' .selector-charge').hide();
-      //console.log(dataset_id);
+      $('#'+parId+' .selector').hide();
       var dataset = getDataset(dataset_id);
-      //console.log(dataset);
       var selector;
 
       if ( dataset !== null && 'selector' in dataset ) {
@@ -442,42 +440,39 @@
           return;
         }
 
-        histogram = buildHistogram(input_data.map(function(d) {return +d[parameter];}), value);
+        histogram = buildHistogram(current_data.map(function(d) {return +d[parameter];}), value);
         data = [{data:histogram, label:parameter}];
         $.plot($('#'+parId+ ' .placeholder'), data, options);
       });
 
-      $('#'+parId+' input.selector-type').bind('change', function() {
-        var bw = $('input.binwidth').val();
-
-        //console.log(bw);
-        var hist;
-
-        if ( ! $(this).is(':checked') ) {
-          hist = buildHistogram(input_data.map(function(d) {return +d[parameter];}), bw);
-        } else {
-          console.log('select!');
-          console.log(selector.name, selector.value);
-          var filtered_data = input_data.filter(function(d) {return d[selector.name] === selector.value;});
-          console.log(filtered_data);
-          hist = buildHistogram(filtered_data.map(function(d) {return +d[parameter];}), bw);
-        }
-        data = [{data:hist, label:parameter}];
-        $.plot($('#'+parId+ ' .placeholder'), data, options);
-      });
-
-      $('#'+parId+' input.selector-charge').bind('change', function() {
+      $('#'+parId+' input.selector').bind('change', function() {
         var bw = $('input.binwidth').val();
         var hist;
 
-        if ( ! $(this).is(':checked') ) {
-          hist = buildHistogram(input_data.map(function(d) {return +d[parameter];}), bw);
-        } else {
-          console.log('select!');
-          var filtered_data = input_data.filter(function(d) {return +d['Q1'] !== +d['Q2'];});
-          console.log(filtered_data);
-          hist = buildHistogram(filtered_data.map(function(d) {return +d[parameter];}), bw);
+        // This only assumes that we have the two selectors for charge and type.
+        // Kludgy, but good enough for now.
+
+        if ( ! $('#'+parId+' input.selector-charge').is(':checked') && ! $('#'+parId+' input.selector-type').is(':checked') ) {
+          //console.log('original');
+          current_data = original_data;
         }
+
+        if ( ! $('#'+parId+' input.selector-charge').is(':checked') && $('#'+parId+' input.selector-type').is(':checked') ) {
+          //console.log('type');
+          current_data = original_data.filter(function(d) {return d[selector.name] === selector.value;});
+        }
+
+        if ( $('#'+parId+' input.selector-charge').is(':checked') && ! $('#'+parId+' input.selector-type').is(':checked') ) {
+          //console.log('charge');
+          current_data = original_data.filter(function(d) {return +d['Q1'] !== +d['Q2'];});
+        }
+
+        if( $('#'+parId+' input.selector-charge').is(':checked') && $('#'+parId+' input.selector-type').is(':checked') ) {
+          //console.log('both');
+          current_data = original_data.filter(function(d) {return (+d['Q1'] !== +d['Q2'] && d[selector.name] === selector.value);});
+        }
+
+        hist = buildHistogram(current_data.map(function(d) {return +d[parameter];}), bw);
         data = [{data:hist, label:parameter}];
         $.plot($('#'+parId+ ' .placeholder'), data, options);
       });
@@ -505,7 +500,8 @@
   function loadFile(input) {
     d3.csv(input.file,
       function(data) {
-        input_data = data;
+        original_data = data;
+        current_data = original_data;
         cfdata = crossfilter(data);
       }
     );
