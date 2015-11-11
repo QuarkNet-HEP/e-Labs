@@ -53,7 +53,8 @@ session.setAttribute("blessed", "");
 				<div id="top-left">
 					<jsp:include page="../data/multiselect-search-control.jsp">
 						<jsp:param name="type" value="split"/>
-					</jsp:include>
+            <jsp:param name="study" value="analysis-timeofflight"/>
+ 					</jsp:include>
 					<jsp:include page="../data/search-number.jsp"/>
 				</div>
 				<div id="right">
