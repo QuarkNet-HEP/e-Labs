@@ -10,7 +10,8 @@
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
 
-<%SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
+<%
+SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM/dd/yyyy");
 DATEFORMAT.setLenient(false); 
 boolean allowAllDataAccess = false;
 if (!user.getName().equals("guest")) {
@@ -20,6 +21,8 @@ if (!user.getName().equals("guest")) {
 		allowAllDataAccess = true;
 	}
 }
+String study = request.getParameter("study");
+
 //set the calendar to a month prior by default 
 //the criteria to retrieve datafiles will probably change but we need some type of range otherwise
 //we will be retrieving all the files.
@@ -28,6 +31,7 @@ cal.setTime(new Date());
 cal.add(Calendar.DATE, 1);    
 Calendar fromMonth = Calendar.getInstance();
 fromMonth.add(Calendar.MONTH,-3);       
+request.setAttribute("study", study);
 request.setAttribute("fromMonth", fromMonth);
 request.setAttribute("allowAllDataAccess", allowAllDataAccess);
 %>
@@ -182,6 +186,11 @@ $(window).scroll(function(){
 		</e:hidden>
 	</e:vswitch>
 	<br />
+  <a href="../data/cosmic-data-map.jsp?submitToPage=../${study}/controller.jsp&action=Search Data">
+   <img src="../graphics/world.png" height="25px" width="25px" /><br />
+   View and Search from detector map
+  </a>
+  <br /><br />
   <div><i>* To speed up searches by default we are retrieving the last 3 months worth of data for the criteria you chose.<br />
          You can modify your date range using the Advanced Search criteria.
      </i></div> 
