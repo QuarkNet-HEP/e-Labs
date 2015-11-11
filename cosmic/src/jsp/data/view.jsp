@@ -8,7 +8,7 @@
 <%@ page import="gov.fnal.elab.*" %>
 <%@ page import="gov.fnal.elab.cosmic.*" %>
 <%@ page import="java.io.*" %>
-
+<%@ page import="java.util.*" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -55,7 +55,10 @@
 	<tr>
 		<td id="center">
 <%
+  String message = request.getParameter("message");
 	String filename = request.getParameter("filename");
+	String[] multipleFiles = (String[]) request.getAttribute("multipleFiles");
+
 	if (filename == null) {
 	    throw new ElabJspException("Please choose a file to view");
 	}
@@ -79,6 +82,14 @@
 	}
 %> 
 		<h2>${param.filename}</h2><br/>
+		<c:if test="${message != null }">
+		    <div style="color: red;">${message}</div>
+		    Files: 
+		    <c:forEach items="${multipleFiles }" var="mf">
+  		   | <a class="file-link" href="../data/view.jsp?filename=${mf }">${mf }</a>
+		    </c:forEach> |
+		    <br /><br />
+		</c:if>
 		<a href="../data/view-metadata.jsp?filename=${param.filename}">Show metadata</a> |
 		<c:if test="${e.tupleMap.detectorid != null}">
 			<a href="../geometry/view.jsp?filename=${param.filename}">Show Geometry</a> |
