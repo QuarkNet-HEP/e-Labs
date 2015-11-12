@@ -18,7 +18,8 @@
 	if (ptime == null) {
 		throw new ElabJspException("Missing time parameter");
 	}
-
+	String message;
+	ArrayList<String> multipleFiles = new ArrayList<String>(); 
 	//A horribly incorrect thing to allow finding data based on the
 	//wrong timezone in the database. The database, at least 
 	//when you deploy the portal in Chicago (and burbs), is
@@ -36,7 +37,12 @@
 		throw new ElabJspException("No data found for detector id " + detectorId + " at time " + time);
 	}
 	else if (sr.size() > 1) {
-		throw new ElabJspException("Multiple data found for detector id " + detectorId + " at time " + time + ". This is obviously some kind of error");
+		  //throw new ElabJspException("Multiple data found for detector id " + detectorId + " at time " + time + ". This is obviously some kind of error");
+      String filename = ((CatalogEntry) sr.iterator().next()).getLFN();
+		  request.setAttribute("filename", filename);
+		  message = "Multiple data found for detector id " + detectorId + " at time " + time + ". We retrieved the first file we found. ";
+			request.setAttribute("message", message);
+			request.setAttribute("multipleFiles", sr.getLfnArray());
 	}
 	else {
 		request.setAttribute("filename", ((CatalogEntry) sr.iterator().next()).getLFN());
@@ -50,6 +56,7 @@
 
 <jsp:include page="../data/view.jsp">
 	<jsp:param name="filename" value="${filename}"/>
+	<jsp:param name="message" value="${message }"/>
 	<jsp:param name="h" value="${h}"/>
 	<jsp:param name="m" value="${m}"/>
 	<jsp:param name="s" value="${s}"/>
