@@ -3,7 +3,7 @@
     <%@ include file="check-metadata.jspf" %>
 	<c:choose>
 		<c:when test="${param.commit == null || !geoEntry.valid || message != null }" >
-	<form method="post">
+		<form id="myForm" method="post">
 		<e:trinput type="hidden" name="detectorID"/>
 	
 		<c:if test="${!nodate && !ro}">
@@ -17,11 +17,33 @@
 			<a href="javascript:glossary('UTC')">UTC</a>
 	 	</c:if>
 		
-		<div class="subtitle">Detector Configuration</div>
-		<c:if test="${!ro}">
-			Confused? Seeing errors? Please consult the <a href="tutorial.jsp">tutorial</a>.
-		</c:if>
-		
+		<div class="subtitle">
+			<table border="0">	
+				<tr>
+					<td valign="middle">
+						<font color="blue">If you are using EQUIP for data acquisition, you still need to enter geometry data on this page for use in the Cosmic Ray e-lab.</font>
+					</td>
+				</tr>
+				<tr>
+					<td align="center">
+						GPS is @ (0,0,0).	
+					</td>
+				</tr>
+				<tr>
+					<td align="center">
+						Each point (x,y,z) represents the center of a counter.
+					</td>
+				</tr>	
+				<tr>
+					<td align="center">
+						<c:if test="${!ro}">
+							Confused? Seeing errors? Please consult the <a href="tutorial.jsp">tutorial</a>.
+						</c:if>	
+					</td>
+				</tr>	
+			</table>			
+		</div>
+
 		<div id="channels">
 			<table border="0" cellspacing="5" cellpadding="2">
                 <tr>
@@ -36,10 +58,10 @@
                 <tr id="secondary-heading">
                     <td>&nbsp;</td>
                     <td>Cable<br />Length<span class="unit"> (m)</span></td>
-                    <td>Area <span class="unit">(cm<sup>2</sup>)</span></td>
-                    <td>E-W <span class="unit">(m)</span></td>
-                    <td>N-S <span class="unit">(m)</span></td>
-                    <td>Up-Dn <span class="unit">(m)</span></td>
+                    <td>Area<span class="unit">(cm<sup>2</sup>)</span></td>
+                    <td align="center">x:E-W(m)<br />-20 &le;x&le; 20</td>
+                    <td align="center">y:N-S(m)<br />-20 &le;y&le;20</td>
+                    <td align="center">z:Up-Dn(m)<br />-40&le;z&le;40</td>
                 </tr>
                 <c:set var="v" value="visibility: visible; display:"/>
                 <c:set var="h" value="visibility: hidden; display: none"/>
@@ -60,53 +82,77 @@
 				</c:forEach>
 			</table>
 		</div>
-		<div id="orientation">
+		
+ 		<div id="orientation"> 
             <table border="0">
                 <tr>
                     <td>
                         <img src="../graphics/med_stacked.gif"><br />
-                        <e:trradio name="stackedState" valueList="1" labelList="Stacked" disabled="${ro}" />
+                        <span style="font-size: 120%"><e:trradio name="stackedState" valueList="1" labelList="Stacked" disabled="${ro}" /></span>
                     </td>
                     <td id="orientation-label">
                         Orientation
                     </td>
                     <td>
                         <img src="../graphics/med_unstacked.gif"><br />
-                        <e:trradio name="stackedState" valueList="0" labelList="Unstacked" disabled="${ro}" />
+                        <span style="font-size: 120%"><e:trradio name="stackedState" valueList="0" labelList="Unstacked" disabled="${ro}" /></span>
                     </td>
                 </tr>
             </table>
         </div>
-        <div class="subtitle">GPS Location</div>
-
+        
+<%-- Code added by Sudha Balakrishnan, May 2015, for visualizing coordinates entered. --%>
+	
+		<script type="text/javascript" src="../include/visualize-values.js"></script>
+		<div class="subtitle">	
+			<table border="0">	
+				<tr>
+					<td  valign="middle">
+						<a href="javascript:VisualizeValues()"><img src="../graphics/glasses_gray.jpg" ></a>
+					</td>
+					<td valign="middle">
+						<a href="javascript:VisualizeValues()">Visualize geometry.</a> 	
+					</td>
+				</tr>
+			</table>
+		</div>   
+		
+<%-- end visualization code --%>		
+		             
+        <div class="subtitle">GPS Location 
+            <a href="view-map.jsp?detectorID=${geoEntry.detectorID}&jd=${geoEntry.julianDay}" title="View map">
+              <img border="0" src="../graphics/world.png" height="15px" width="15px" />
+            </a>
+        </div>
 		<div id="gps">
             <table border="0" cellspacing="3">
                 <tr valign="top">
                     <td>
-                        Latitude: <e:trinput type="text" name="latitude" size="15" disabled="${ro}" />
+                        <span style="font-size: 120%">Latitude: <e:trinput type="text" name="latitude" size="15" disabled="${ro}" /></span>
                         <br>
                         <c:if test="${!ro}">
-                        	<span style="font-size: 90%">e.g., 47:39.234736 N</font>
+                        	<span style="font-size: 100%">e.g., 47:39.234736 N</font>
                         </c:if>
                     </td>
                     <td>
-                        Longitude: <e:trinput type="text" name="longitude" size="15" disabled="${ro}" />
+                        <span style="font-size: 120%">Longitude: <e:trinput type="text" name="longitude" size="15" disabled="${ro}" /></span>
                         <br>
                         <c:if test="${!ro}">
-                        	<span style="font-size: 90%">e.g., 122:18.68 W</span>
+                        	<span style="font-size: 100%">e.g., 122:18.68 W</span>
                         </c:if>
                     </td>
                 </tr>
                 <tr valign="top">
                     <td>
-                        Altitude (m): <e:trinput type="text" name="altitude" size="3" disabled="${ro}" />
+                        <span style="font-size: 120%">Altitude (m): <e:trinput type="text" name="altitude" size="3" disabled="${ro}" /></span>
                     </td>
                     <td>
-                        GPS Cable Length (m): <e:trinput type="text" name="gpsCableLength" size="6" disabled="${ro}" />
+                        <span style="font-size: 120%">GPS Cable Length (m): <e:trinput type="text" name="gpsCableLength" size="6" disabled="${ro}" /></span>
                     </td>
                 </tr>
             </table>
         </div>
+        
         <c:if test="${!geoEntry.valid && !ro}">
         	<c:choose>
         		<c:when test="${!empty geoEntry.errors}">
@@ -126,18 +172,19 @@
         	</c:choose>
         	<br /><br />
         </c:if>
+        
         <c:if test="${!ro}">
-        	<center>
-               <c:if test="${message != null}" >
-                <p><font style="color: red;">${message} data file(s) will be affected by this change.
+        	<center>			    	
+               	<c:if test="${message != null}" >
+                	<p><font style="color: red;">${message} data file(s) will be affected by this change.
                     Are you sure you want to commit? <input type="checkbox" name="commitCheck" id="commitCheck" /> </p>
-               </c:if>        	
-            	<input type="submit" name="commit" value="Commit Geometry">
+               	</c:if>  
+            	<input type="submit" name="commit" value="Commit Geometry" >
 			</center>
 		</c:if>
-	</form>
-		
+		</form>
 		</c:when>
+		
 		<c:otherwise>
 			<%@ include file="commit.jspf" %>
 		</c:otherwise>
