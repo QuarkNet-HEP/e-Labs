@@ -180,7 +180,7 @@ public class CosmicPostUploadTasks {
 		        	}
 		        } else {
 		        	gpsMessage = "We were unable to compare the GPS data from your file to the geometry.<br />"+
-		        				"Please check your geometry configuration and include the GD command with your data-taking.<br />";
+		        				"Please check your geometry configuration and include the DG command with your data-taking.<br />";
 		        }
 		        //do one last add at the end of reading the temp metadata file
 		        if (meta != null && currLFN != null) {
