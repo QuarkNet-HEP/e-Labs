@@ -56,7 +56,7 @@
 
 		//EPeronja-06/12/2013: 63: Data search by state requires 2-letter state abbreviation
 		String abbreviation = "";
-		if (key.equals("state")) {
+		if (key != null && key.equals("state")) {
 			abbreviation = DataTools.checkStateSearch(elab, value);
 			if (!abbreviation.equals("")) {
 				value = abbreviation;
