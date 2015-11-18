@@ -66,17 +66,21 @@ function HideShowChannel(ID) {
 	if ((aLs(ID).visibility == "hidden")) {
 		aLs(ID).visibility = "visible";
 		aLs(ID).display = "";
-		alert(ID);
+		alert("IF"); alert(ID);
 		
 //		console.log(t1); console.log(t2); console.log(t3); console.log(t4);
 	}
 	else if (aLs(ID).visibility == "visible") {
 		aLs(ID).visibility = "hidden";
 		aLs(ID).display = "none";	
-		alert(ID);
+		alert("ELSEIF"); alert(ID);
 		if (ID=="ch1-v") {t1=false;}
 		if (ID=="ch2-v") {t2=false;}
 		if (ID=="ch3-v") {t3=false;}
 		if (ID=="ch4-v") {t4=false;}
+		if (ID=="ch1-h") {t1=true;}
+		if (ID=="ch2-h") {t2=true;}
+		if (ID=="ch3-h") {t3=true;}
+		if (ID=="ch4-h") {t4=true;}
 	}
 }
