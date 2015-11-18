@@ -59,9 +59,9 @@
                     <td>&nbsp;</td>
                     <td>Cable<br />Length<span class="unit"> (m)</span></td>
                     <td>Area<span class="unit">(cm<sup>2</sup>)</span></td>
-                    <td align="center">x:E-W(m)<br />-20 &le;x&le; 20</td>
-                    <td align="center">y:N-S(m)<br />-20 &le;y&le;20</td>
-                    <td align="center">z:Up-Dn(m)<br />-40&le;z&le;40</td>
+                    <td align="center">x:E-W(m)</td>
+                    <td align="center">y:N-S(m)</td>
+                    <td align="center">z:Up-Dn(m)</td>
                 </tr>
                 <c:set var="v" value="visibility: visible; display:"/>
                 <c:set var="h" value="visibility: hidden; display: none"/>
