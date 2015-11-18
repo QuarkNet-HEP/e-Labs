@@ -1,9 +1,7 @@
 function VisualizeValues(t1, t2, t3, t4)
 {
-	alert(t1); 
-	alert(t2);
-	alert(t3);
-	alert(t4);
+	alert(t1+ t2+ t3+ t4); 
+
 	
 if (t1 == true){
 var x1 = document.getElementById("myForm").elements.namedItem("chan1X").value;
