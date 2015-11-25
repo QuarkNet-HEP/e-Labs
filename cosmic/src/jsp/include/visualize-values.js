@@ -1,8 +1,33 @@
+//initialize toggle variables
+t1=true; t2=true; t3=true; t4=true;
+
+//CUSTOMIZED FROM:  i2u2/common/src/jsp/include/elab.js
+//Onclick, call HideShowChannel(ID) first with ch${i}-v, and then with ch${i}-h.  
+//Onclick, if inactive (hidden), make visible.
+//Onclick, if active (visible), make hidden.
+function HideShowChannel(ID) {
+	if ((aLs(ID).visibility == "hidden")) {
+		aLs(ID).visibility = "visible";
+		aLs(ID).display = "";	
+//		console.log(t1); 
+	}
+	else if (aLs(ID).visibility == "visible") {
+		aLs(ID).visibility = "hidden";
+		aLs(ID).display = "none";	
+		if (ID=="ch1-v") {t1=false;}
+		if (ID=="ch2-v") {t2=false;}
+		if (ID=="ch3-v") {t3=false;}
+		if (ID=="ch4-v") {t4=false;}		
+		if (ID=="ch1-h") {t1=true;}
+		if (ID=="ch2-h") {t2=true;}
+		if (ID=="ch3-h") {t3=true;}
+		if (ID=="ch4-h") {t4=true;}
+	}
+}
+
+//Note:  For a new geometry, all channels are by default inactive and initialized to x=y=z=0.
 function VisualizeValues(t1, t2, t3, t4)
 {
-	alert(t1+ t2+ t3+ t4); 
-
-	
 if (t1 == true){
 var x1 = document.getElementById("myForm").elements.namedItem("chan1X").value;
 var y1 = document.getElementById("myForm").elements.namedItem("chan1Y").value;
@@ -45,40 +70,4 @@ var urlwithcoord = urlwithcoord+"&x3="+x3+"&y3="+y3+"&z3="+z3;
 var urlwithcoord = urlwithcoord+"&x4="+x4+"&y4="+y4+"&z4="+z4;
 
 window.open (urlwithcoord,"mywindow");
-}
-
-var t1=true; var t2=true; var t3=true; var t4=true;//this will go away when code below is filled in
-
-/*
-//initialize global toggle variables
-if (brandnew detector){
-	var t1=false; var t2=false; var t3=false; var t4=false;
-}
-else if (existing detector){
-	var t1=; var t2=; var t3=; var t4=;//populate with initial conditions
-}
-*/
-
-//CUSTOMIZED FROM:  i2u2/common/src/jsp/include/elab.js
-function HideShowChannel(ID) {
-	if ((aLs(ID).visibility == "hidden")) {
-		aLs(ID).visibility = "visible";
-		aLs(ID).display = "";
-		alert("IF"); alert(ID);
-		
-//		console.log(t1); console.log(t2); console.log(t3); console.log(t4);
-	}
-	else if (aLs(ID).visibility == "visible") {
-		aLs(ID).visibility = "hidden";
-		aLs(ID).display = "none";	
-		alert("ELSEIF"); alert(ID);
-		if (ID=="ch1-v") {t1=false;}
-		if (ID=="ch2-v") {t2=false;}
-		if (ID=="ch3-v") {t3=false;}
-		if (ID=="ch4-v") {t4=false;}
-		if (ID=="ch1-h") {t1=true;}
-		if (ID=="ch2-h") {t2=true;}
-		if (ID=="ch3-h") {t3=true;}
-		if (ID=="ch4-h") {t4=true;}
-	}
 }
