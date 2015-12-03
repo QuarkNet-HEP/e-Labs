@@ -15,6 +15,7 @@
 <%@ page import="java.util.regex.*" %>
 <% 
      String submitToPage = request.getParameter("submitToPage");
+     String study = request.getParameter("study");
      Collection allDaqs = (Collection) session.getAttribute("allDaqs");
      TreeMap<String,String> daqLatLong = new TreeMap<String,String>();
      TreeMap<String,String> daqUploadDetails = new TreeMap<String,String>();
@@ -65,6 +66,8 @@
      request.setAttribute("lastMonth", lastMonth);    
      request.setAttribute("daqLatLong", daqLatLong);    
      request.setAttribute("submitToPage", submitToPage);
+     request.setAttribute("study", study);
+
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -127,6 +130,7 @@
           <input type="hidden" name="detectorDetails" id="detectorDetails${detector.key }" value='${detector.key },${detector.value }'></input>
       </c:forEach>
       <input type="hidden" name="submitToPage" id="submitToPage" value="${submitToPage}"></input>
+      <input type="hidden" name="study" id="study" value="${study}"></input>
       <input type="hidden" name="lastMonth" id="lastMonth" value="<%=DATEFORMAT.format(lastMonth.getTime())%>"></input>
 
       <!-- end content -->  

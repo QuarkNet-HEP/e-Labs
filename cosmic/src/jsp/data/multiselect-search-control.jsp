@@ -22,7 +22,9 @@ if (!user.getName().equals("guest")) {
 	}
 }
 String study = request.getParameter("study");
-
+if (study == null || study.equals("")) {
+	study = (String) session.getAttribute("study");
+}
 //set the calendar to a month prior by default 
 //the criteria to retrieve datafiles will probably change but we need some type of range otherwise
 //we will be retrieving all the files.
@@ -186,7 +188,7 @@ $(window).scroll(function(){
 		</e:hidden>
 	</e:vswitch>
 	<br />
-  <a href="../data/cosmic-data-map.jsp?submitToPage=../${study}/controller.jsp&action=Search Data">
+  <a href="../data/cosmic-data-map.jsp?submitToPage=../${study}/controller.jsp&study=${study }&action=Search Data">
    <img src="../graphics/world.png" height="25px" width="25px" /><br />
    View and Search from detector map
   </a>
