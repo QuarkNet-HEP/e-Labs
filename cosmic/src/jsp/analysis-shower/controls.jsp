@@ -183,15 +183,6 @@
 					</e:hidden>
 				</e:vswitch>
 			</e:tr>
-		</p>
-		<p>
-      <!-- EPeronja-10/17/2013: THRESHOLD TEST only in this branch!!! for test purposes-->
-      <div style="display:none;">
-  			<input type="radio" name="thresholdfile" value="none">Recreate TT file.<br />
-	 		  <input type="radio" name="thresholdfile" value="static" checked="true">Use Static TT file.<br />
-	 		</div>
-			<input type="radio" name="outputType" value="output.jsp">Current<br />
-			<input type="radio" name="outputType" value="output-light.jsp" checked="true">Light<br />
 			
 		</p>	
 		<%@ include file="../analysis/controls.jsp" %>
