@@ -318,20 +318,9 @@
 							least 100 microseconds: 
 						</p>
 						
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
      					<p style="font-size: 150%">$$ t_{muon} = \frac{d}{v_{muon}} = \frac{30 \times 10^3 m}{3 \times 10^8 \frac{m}{s}} = 100 \mu s$$</p>
-=======
 <%--					<p style="font-size: 150%">$$ t_{muon} = \frac{d}{v_{muon}} = \frac{30 \times 10^3 m}{3 \times 10^8 \frac{m}{s}} = 100 \mu s$$</p>--%> 
-  						<p style="font-size: 150%">t = d/v</p>
-  						<p style="font-size: 150%">t = (30*10^3m)/(3*10^8m/s) = (10^-4)s = 100 microseconds</p>
->>>>>>> Stashed changes
-=======
-<%--					<p style="font-size: 150%">$$ t_{muon} = \frac{d}{v_{muon}} = \frac{30 \times 10^3 m}{3 \times 10^8 \frac{m}{s}} = 100 \mu s$$</p>--%> 
-  						<p style="font-size: 150%">t = d/v</p>
-  						<p style="font-size: 150%">t = (30*10^3m)/(3*10^8m/s) = (10^-4)s = 100 microseconds</p>
->>>>>>> Stashed changes
-  						
+ 						
 						<p>
 							This calculation assumes that muons are traveling at the speed 
 							of light - anything slower would require even more time. If a 
