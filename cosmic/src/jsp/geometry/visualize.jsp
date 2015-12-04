@@ -62,6 +62,21 @@ $(function () {
       var z4 = parseFloat(cgiString.substring(cgiString.indexOf('z4=') + 3, cgiString.length),10);
     }
 
+ 
+    if (x1==0 && y1==0 && z1==0) {
+    	x1 = y1 = z1 = null
+    }
+	if (x2==0 && y2==0 && z2==0) {
+    	x2 = y2 = z2 = null
+    }
+	if (x3==0 && y3==0 && z3==0) {
+    	x3 = y3 = z3 = null
+    }
+    if (x4==0 && y4==0 && z4==0) {
+    	x4 = y4 = z4 = null
+    }
+
+
 	//Find min and max of x, y, and z values
 	  var xMin = Math.min(x1, x2, x3, x4, 0) - 1; //alert("xMin: "+xMin);
 	  var xMax = Math.max(x1, x2, x3, x4, 0) + 1; //alert("xMax: "+xMax);
@@ -137,6 +152,8 @@ $(function () {
         legend: {
             enabled: false
         },
+        
+             
         series: [{  
         	data:  [   	
 	       	{name:  'Channel 1', color:'black', x:x1, y:z1, z:y1}, 
