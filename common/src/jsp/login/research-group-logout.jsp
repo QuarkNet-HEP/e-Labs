@@ -103,21 +103,23 @@ request.setAttribute("message",message);
         <form id="researchGroupLogout" method="post">
             <table style="text-align: center;">
                 <tr>
-                  <td>Username: <input type="text" name="un" id="un"></input></td>
+                  <td>Username: 
+                      <select name="un" id="un">
+                        <option></option>
+                        <c:forEach items="${groupNames }" var="group">
+                            <option value="${group }">${group }</option>
+                        </c:forEach>
+                      </select>
+                  </td>
                 </tr>
 						    <tr>
 						      <td><div id="messages">${message}</div></td>
 						    </tr>
 						    <tr>
-						      <td><input type="submit" name="submitButton" value="Log Research Group Out" onclick="return verifyUsername();"></input></td>
+						      <td><input type="submit" name="submitButton" value="Log Research Group Out"></input></td>
 						    </tr>     
             </table>
         </form>
-
-		    <c:forEach items="${groupNames}" var="group">
-          <input type="hidden" name="researchGroups" id="${group }" value="${group }"></input>
-		    </c:forEach>
-
       </div>
       <!-- end content -->
 
