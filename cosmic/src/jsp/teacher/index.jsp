@@ -321,17 +321,11 @@
 							least 100 microseconds: 
 						</p>
 						
-<<<<<<< Updated upstream
+
      					<%--<p style="font-size: 150%">$$ t_{muon} = \frac{d}{v_{muon}} = \frac{30 \times 10^3 m}{3 \times 10^8 \frac{m}{s}} = 100 \mu s$$</p>--%>
-						<p><img src="../graphics/muon-lifetime-formula.png" /></p>
-						
-=======
+						<p><img src="../graphics/muon-lifetime-formula.png" /></p>				
      					<p style="font-size: 150%">$$ t_{muon} = \frac{d}{v_{muon}} = \frac{30 \times 10^3 m}{3 \times 10^8 \frac{m}{s}} = 100 \mu s$$</p>
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 						<p>
 							This calculation assumes that muons are traveling at the speed 
 							of light - anything slower would require even more time. If a 
