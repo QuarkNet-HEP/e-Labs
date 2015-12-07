@@ -22,7 +22,9 @@
 	<script type="text/javascript" src="../include/elab.js"></script>
 	
 <%--
+	This is the old site:
 	<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    This is the new site:
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 --%>
     	
@@ -324,7 +326,6 @@
 
      					<%--<p style="font-size: 150%">$$ t_{muon} = \frac{d}{v_{muon}} = \frac{30 \times 10^3 m}{3 \times 10^8 \frac{m}{s}} = 100 \mu s$$</p>--%>
 						<p><img src="../graphics/muon-lifetime-formula.png" /></p>				
-     					<p style="font-size: 150%">$$ t_{muon} = \frac{d}{v_{muon}} = \frac{30 \times 10^3 m}{3 \times 10^8 \frac{m}{s}} = 100 \mu s$$</p>
 
 						<p>
 							This calculation assumes that muons are traveling at the speed 
