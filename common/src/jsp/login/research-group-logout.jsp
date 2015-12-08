@@ -136,8 +136,11 @@ for (int i = 0; i < activeSessions.size(); i++) {
       </div>
       <div id="content">
         <h1>Research Group Log Out</h1>
-        <p>If any of your research groups has exceeded the maximum number of logins
-           and they are not able to log out themselves you will need to log them out using this tool. 
+        <p>If any of your research groups has exceeded the maximum number of logins and they are not able to log out themselves, 
+        you will need to log them out using this tool. 
+        Until you log them out, no one else can login as that research group. <br /><br />
+        To avoid this situation, it is good practice to give student teams their own research group 
+        username to log in rather than having multiple student teams use the same research group username.
         </p>
         <ul>
            <li>Check your research groups that are logged in.</li>
