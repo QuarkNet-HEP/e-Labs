@@ -15,6 +15,8 @@ String un = request.getParameter("un");
 ArrayList activeSessions = SessionListener.getTotalSessionUsers();
 activeSessions.removeAll(Collections.singleton(null));
 boolean unLoggedin = false;
+int loggedOutCount = 0;
+
 if (un != null && un.equals(user.getName())) {
     message = "Please use the log out link on the top right corner to log yourself out.";	
 } else {
@@ -36,10 +38,11 @@ if (un != null && un.equals(user.getName())) {
 		      Elab e = (Elab) s.getAttribute("elab");
 		      if (eu != null && e != null) {
 		    	  if (eu.getName().equals(un)) {
+		    		  loggedOutCount++;
 		    		  unLoggedin = true;
 		    		  //log user out
 		    		  s.invalidate();
-		    		  message = "Username <strong>"+un+"</strong> has been logged out successfully.";
+		    		  request.logout();
 		    	  }
 		      }
 		    }//end of validSession
@@ -50,6 +53,7 @@ if (un != null && un.equals(user.getName())) {
 		if (!unLoggedin) {
 		    message = "Username <strong>"+un+"</strong> is not logged in.";
 		}
+    message = "Username <strong>"+un+"</strong> has been logged out successfully "+String.valueOf(loggedOutCount)+" time(s).";
 	}
 }
 request.setAttribute("message",message);  
@@ -103,21 +107,23 @@ request.setAttribute("message",message);
         <form id="researchGroupLogout" method="post">
             <table style="text-align: center;">
                 <tr>
-                  <td>Username: <input type="text" name="un" id="un"></input></td>
+                  <td>Username: 
+                      <select name="un" id="un">
+                        <option></option>
+                        <c:forEach items="${groupNames }" var="group">
+                            <option value="${group }">${group }</option>
+                        </c:forEach>
+                      </select>
+                  </td>
                 </tr>
 						    <tr>
 						      <td><div id="messages">${message}</div></td>
 						    </tr>
 						    <tr>
-						      <td><input type="submit" name="submitButton" value="Log Research Group Out" onclick="return verifyUsername();"></input></td>
+						      <td><input type="submit" name="submitButton" value="Log Research Group Out"></input></td>
 						    </tr>     
             </table>
         </form>
-
-		    <c:forEach items="${groupNames}" var="group">
-          <input type="hidden" name="researchGroups" id="${group }" value="${group }"></input>
-		    </c:forEach>
-
       </div>
       <!-- end content -->
 
