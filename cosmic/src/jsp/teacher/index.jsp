@@ -20,7 +20,12 @@
 		<link rel="stylesheet" type="text/css" href="../css/style2.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/teacher.css"/>
 	<script type="text/javascript" src="../include/elab.js"></script>
+<<<<<<< Updated upstream
 	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+=======
+<%--<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>--%>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+>>>>>>> Stashed changes
     	
 <script type="text/javascript">
 	window.onload=function(){
@@ -319,7 +324,11 @@
 						
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 						<p style="font-size: 150%">$$ t_{muon} = \frac{d}{v_{muon}} = \frac{30 \times 10^3 m}{3 \times 10^8 \frac{m}{s}} = 100 \mu s$$</p>
+=======
+     					<p style="font-size: 150%">$$ t_{muon} = \frac{d}{v_{muon}} = \frac{30 \times 10^3 m}{3 \times 10^8 \frac{m}{s}} = 100 \mu s$$</p>
+>>>>>>> Stashed changes
 =======
      					<p style="font-size: 150%">$$ t_{muon} = \frac{d}{v_{muon}} = \frac{30 \times 10^3 m}{3 \times 10^8 \frac{m}{s}} = 100 \mu s$$</p>
 >>>>>>> Stashed changes
