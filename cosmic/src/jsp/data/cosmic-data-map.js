@@ -92,13 +92,11 @@ function initialize() {
 
 function createDataLink(keyname, key, value) {
    var submitToPage = document.getElementById("submitToPage");
-   var study = document.getElementById("study");
    var lastMonth = document.getElementById("lastMonth");
    var dataLink = '<form action="'+submitToPage.value+'" name="searchForm" method="post">'+
      '<input type="hidden" name="key" value="'+key+'" />'+
      '<input type="hidden" name="value" value="'+value+'" />'+
      '<input type="hidden" name="date1" value="'+lastMonth.value+'" />'+
-	 '<input type="hidden" name="study" value="'+study.value+'" />'+
      '<input type="hidden" name="submitFromMap" value=true />'+keyname+' ';
    if (submitToPage.value.indexOf("controller.jsp") != -1) {
 	    dataLink += '<input type="hidden" name="action" value="Search Data">';
@@ -110,7 +108,6 @@ function createDataLink(keyname, key, value) {
 
 function createDataLinkOther(keyname, key, value) {
 	 var submitToPage = document.getElementById("submitToPage");
-	 var study = document.getElementById("study");
 	 var lastMonth = document.getElementById("lastMonth");
 	 var newValue = "";
 	 if (value == true && key == "stacked") {
@@ -121,7 +118,6 @@ function createDataLinkOther(keyname, key, value) {
 	 var dataLink = '<form action="'+submitToPage.value+'" name="searchForm" method="post">'+
 	   '<input type="hidden" name="'+key+'" value="'+newValue+'" />'+
 	   '<input type="hidden" name="date1" value="'+lastMonth.value+'" />'+
-	   '<input type="hidden" name="study" value="'+study.value+'" />'+
 	   '<input type="hidden" name="submitFromMap" value=true />'+keyname+' ';
 	 if (submitToPage.value.indexOf("controller.jsp") != -1) {
 	     dataLink += '<input type="hidden" name="action" value="Search Data">';

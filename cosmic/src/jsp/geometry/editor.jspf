@@ -1,7 +1,6 @@
 <jsp:useBean id="errs" scope="request" class="gov.fnal.elab.cosmic.beans.GeometryErrors" />
 <e:useBean bean="${geoEntry}">
     <%@ include file="check-metadata.jspf" %>
-    <script type="text/javascript" src="../include/visualize-values.js"></script>
 	<c:choose>
 		<c:when test="${param.commit == null || !geoEntry.valid || message != null }" >
 		<form id="myForm" method="post">
@@ -53,16 +52,16 @@
                     <c:forEach var="i" items="1,2,3,4">
                     	<td class="channel-id">${i}
                     	<e:trinput type="checkbox" name="chan${i}IsActive" disabled="${ro}"  
-                        	onclick="HideShowChannel('ch${i}-v');HideShowChannel('ch${i}-h')"/></td>
+                        	onclick="HideShow('ch${i}-v');HideShow('ch${i}-h')"/></td>
                     </c:forEach>
                 </tr>
                 <tr id="secondary-heading">
                     <td>&nbsp;</td>
                     <td>Cable<br />Length<span class="unit"> (m)</span></td>
                     <td>Area<span class="unit">(cm<sup>2</sup>)</span></td>
-                    <td align="center">x:E-W(m)</td>
-                    <td align="center">y:N-S(m)</td>
-                    <td align="center">z:Up-Dn(m)</td>
+                    <td align="center">x:E-W(m)<br />-20 &le;x&le; 20</td>
+                    <td align="center">y:N-S(m)<br />-20 &le;y&le;20</td>
+                    <td align="center">z:Up-Dn(m)<br />-40&le;z&le;40</td>
                 </tr>
                 <c:set var="v" value="visibility: visible; display:"/>
                 <c:set var="h" value="visibility: hidden; display: none"/>
@@ -104,14 +103,15 @@
         
 <%-- Code added by Sudha Balakrishnan, May 2015, for visualizing coordinates entered. --%>
 	
+		<script type="text/javascript" src="../include/visualize-values.js"></script>
 		<div class="subtitle">	
 			<table border="0">	
 				<tr>
 					<td  valign="middle">
-						<a href="javascript:VisualizeValues(t1,t2,t3,t4)"><img src="../graphics/glasses_gray.jpg" ></a>
+						<a href="javascript:VisualizeValues()"><img src="../graphics/glasses_gray.jpg" ></a>
 					</td>
 					<td valign="middle">
-						<a href="javascript:VisualizeValues(t1,t2,t3,t4)">Visualize geometry.</a> 	
+						<a href="javascript:VisualizeValues()">Visualize geometry.</a> 	
 					</td>
 				</tr>
 			</table>
