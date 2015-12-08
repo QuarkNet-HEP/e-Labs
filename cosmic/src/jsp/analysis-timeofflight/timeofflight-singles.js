@@ -1,25 +1,23 @@
-var tofCollection = [,,,,,,];
+var tofCollection = [];
 var options = "";
 var minx, maxx, mean, deviation, numberOfEntries;
 var yAxisLabel = "number of entries/time bin";
 var xAxisLabel = "relative time between channels (ns)";
 var currentBinValue = 1.25;
-var chartNum = 0;
-var loadCount = 0;
 
 function onDataLoad1() {
-	loadJSON1(function(response) {
+	loadJSON(function(response) {
 		JSON.parseAsync(response, function(json) {
-			onDataLoadChart1(json);
+			onDataLoad(json);
 		});
 	});
 }//end of onDataLoad1
 
-function loadJSON1(callback) {   
+function loadJSON(callback) {   
     var xobj = new XMLHttpRequest();
 	var outputDir = document.getElementById("outputDir");
     xobj.overrideMimeType("application/json");
-    xobj.open('GET', outputDir.value+"/timeOfFlightPlotData1", true); 
+    xobj.open('GET', outputDir.value+"/timeOfFlightPlotData", true); 
     xobj.onreadystatechange = function () {
           if (xobj.readyState == 4 && xobj.status == "200") {
             // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
@@ -27,187 +25,30 @@ function loadJSON1(callback) {
           }
     };
     xobj.send(null);  
-}//end of loadJSON1
+ }//end of loadJSON
 
-function onDataLoadChart1(json) {	
-	//var start = new Date().getTime();
-	buildIndividualDataSets(json.td1, "1", 0, document.getElementById("chart1"));
-	//var end = new Date().getTime();
-	//var time = end - start;
-	//console.log("Chart 1: "+time);
-}//end of onDataLoadChart1	
+function onDataLoad(json) {	
+	buildIndividualDataSets(json.timediff1, "1", document.getElementById("chart1"));
+	buildIndividualDataSets(json.timediff2, "2", document.getElementById("chart2"));
+	buildIndividualDataSets(json.timediff3, "3", document.getElementById("chart3"));
+	buildIndividualDataSets(json.timediff4, "4", document.getElementById("chart4"));
+	buildIndividualDataSets(json.timediff5, "5", document.getElementById("chart5"));
+	buildIndividualDataSets(json.timediff6, "6", document.getElementById("chart6"));
+}//end of onDataLoad	
 
-function onDataLoad2() {
-	loadJSON2(function(response) {
-		JSON.parseAsync(response, function(json) {
-			onDataLoadChart2(json);
-		});
-	});
-}//end of onDataLoad2
-
-function loadJSON2(callback) {   
-    var xobj = new XMLHttpRequest();
-	var outputDir = document.getElementById("outputDir");
-    xobj.overrideMimeType("application/json");
-    xobj.open('GET', outputDir.value+"/timeOfFlightPlotData2", true); 
-    xobj.onreadystatechange = function () {
-          if (xobj.readyState == 4 && xobj.status == "200") {
-            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
-            callback(xobj.responseText);
-          }
-    };
-    xobj.send(null);  
-}//end of loadJSON2
-
-function onDataLoadChart2(json) {	
-	//var start = new Date().getTime();
-	buildIndividualDataSets(json.td2, "2", 1, document.getElementById("chart2"));
-	//var end = new Date().getTime();
-	//var time = end - start;
-	//console.log("Chart 2: "+time);
-}//end of onDataLoadChart2
-
-function onDataLoad3() {
-	loadJSON3(function(response) {
-		JSON.parseAsync(response, function(json) {
-			onDataLoadChart3(json);
-		});
-	});
-}//end of onDataLoad3
-
-function loadJSON3(callback) {   
-    var xobj = new XMLHttpRequest();
-	var outputDir = document.getElementById("outputDir");
-    xobj.overrideMimeType("application/json");
-    xobj.open('GET', outputDir.value+"/timeOfFlightPlotData3", true); 
-    xobj.onreadystatechange = function () {
-          if (xobj.readyState == 4 && xobj.status == "200") {
-            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
-            callback(xobj.responseText);
-          }
-    };
-    xobj.send(null);  
-}//end of loadJSON3
-
-function onDataLoadChart3(json) {	
-	//var start = new Date().getTime();
-	buildIndividualDataSets(json.td3, "3", 2, document.getElementById("chart3"));
-	//var end = new Date().getTime();
-	//var time = end - start;
-	//console.log("Chart 3: "+time);
-}//end of onDataLoadChart3
-
-function onDataLoad4() {
-	loadJSON4(function(response) {
-		JSON.parseAsync(response, function(json) {
-			onDataLoadChart4(json);
-		});
-	});
-}//end of onDataLoad4
-
-function loadJSON4(callback) {   
-    var xobj = new XMLHttpRequest();
-	var outputDir = document.getElementById("outputDir");
-    xobj.overrideMimeType("application/json");
-    xobj.open('GET', outputDir.value+"/timeOfFlightPlotData4", true); 
-    xobj.onreadystatechange = function () {
-          if (xobj.readyState == 4 && xobj.status == "200") {
-            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
-            callback(xobj.responseText);
-          }
-    };
-    xobj.send(null);  
-}//end of loadJSON4
-
-function onDataLoadChart4(json) {	
-	//var start = new Date().getTime();
-	buildIndividualDataSets(json.td4, "4", 3, document.getElementById("chart4"));
-	//var end = new Date().getTime();
-	//var time = end - start;
-	//console.log("Chart 4: "+time);
-}//end of onDataLoadChart4
-
-function onDataLoad5() {
-	loadJSON5(function(response) {
-		JSON.parseAsync(response, function(json) {
-			onDataLoadChart5(json);
-		});
-	});
-}//end of onDataLoad5
-
-function loadJSON5(callback) {   
-    var xobj = new XMLHttpRequest();
-	var outputDir = document.getElementById("outputDir");
-    xobj.overrideMimeType("application/json");
-    xobj.open('GET', outputDir.value+"/timeOfFlightPlotData5", true); 
-    xobj.onreadystatechange = function () {
-          if (xobj.readyState == 4 && xobj.status == "200") {
-            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
-            callback(xobj.responseText);
-          }
-    };
-    xobj.send(null);  
-}//end of loadJSON5
-
-function onDataLoadChart5(json) {	
-	//var start = new Date().getTime();
-	buildIndividualDataSets(json.td5, "5", 4, document.getElementById("chart5"));
-	//var end = new Date().getTime();
-	//var time = end - start;
-	//console.log("Chart 4: "+time);
-}//end of onDataLoadChart4
-
-function onDataLoad6() {
-	loadJSON6(function(response) {
-		JSON.parseAsync(response, function(json) {
-			onDataLoadChart6(json);
-		});
-	});
-}//end of onDataLoad6
-
-function loadJSON6(callback) {   
-    var xobj = new XMLHttpRequest();
-	var outputDir = document.getElementById("outputDir");
-    xobj.overrideMimeType("application/json");
-    xobj.open('GET', outputDir.value+"/timeOfFlightPlotData6", true); 
-    xobj.onreadystatechange = function () {
-          if (xobj.readyState == 4 && xobj.status == "200") {
-            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
-            callback(xobj.responseText);
-          }
-    };
-    xobj.send(null);  
-}//end of loadJSON6
-
-function onDataLoadChart6(json) {	
-	//var start = new Date().getTime();
-	//buildIndividualDataSets(json.td1, "1", 0, document.getElementById("chart1"));
-	//buildIndividualDataSets(json.td2, "2", 1, document.getElementById("chart2"));
-	//buildIndividualDataSets(json.td3, "3", 2, document.getElementById("chart3"));
-	//buildIndividualDataSets(json.td4, "4", 3, document.getElementById("chart4"));
-	//buildIndividualDataSets(json.td5, "5", 4, document.getElementById("chart5"));
-	buildIndividualDataSets(json.td6, "6", 5, document.getElementById("chart6"));
-	//var end = new Date().getTime();
-	//var time = end - start;
-	//console.log("Chart 6: "+time);
-}//end of onDataLoadChart6
-
-function buildIndividualDataSets(timediff, ndx, arrayndx, div) {
+function buildIndividualDataSets(timediff, ndx, div) {
 	if (timediff != null) {
-		tofCollection[arrayndx]={onOffPlot: "", timeDiff: timediff, data: "", originalMinX: timediff.minX, originalMaxX: 0,
+		tofCollection.push({onOffPlot: "", timeDiff: timediff, data: "", originalMinX: timediff.minX, originalMaxX: 0,
 				originalMinY: timediff.minY, originalMaxY: 0, numberOfEntries: 0, mean: 0, stddev: 0, label: timediff.label, 
-				maxBins: timediff.maxBins, binValue: timediff.binValue, ndx: ndx, chart: div, currentBinValue: timediff.binValue};
+				maxBins: timediff.maxBins, binValue: timediff.binValue, ndx: ndx, chart: div, currentBinValue: timediff.binValue});
 		buildTimeDiff(timediff, ndx);
 	} else {
-		tofCollection[arrayndx] = "";
+		tofCollection.push("");
 		div.style.display="none";
 	}
 }//end of buildIndividualDataSets
 
 function buildTimeDiff(timediff, diffNum) {
-    var feedback = document.getElementById("feedback");
-    feedback.innerHTML = "<strong>Chart "+diffNum+" is loading...</strong>";
-    loadCount++;
 	data = [];
 	if (timediff != null) {
 		timediff.data = getDataWithBins(timediff.data_original, timediff.binValue, timediff.minX, timediff.maxX, timediff.nBins, timediff.bins);
@@ -236,19 +77,18 @@ function buildTimeDiff(timediff, diffNum) {
         	reBinData($('#binWidth'+diffNum).val(),diffNum,timediff, data, onOffPlot);
     		writeLegend(diffNum);
         }
-    });    
+    });
+    
     writeLegend(diffNum);
-    if (loadCount == 6) {
-    	feedback.innerHTML = "";
-    }
+ 
 }//end of generic buildTimeDiff
 
 function setDataStats(ndx) {
 	tofCollection[ndx-1].mean = mean;
 	tofCollection[ndx-1].stddev = deviation;
 	tofCollection[ndx-1].numberOfEntries = numberOfEntries;
-	tofCollection[ndx-1].originalMinX = tofCollection[ndx-1].onOffPlot.getAxes().xaxis.min;
-	tofCollection[ndx-1].originalMaxX = tofCollection[ndx-1].onOffPlot.getAxes().xaxis.max;
+	tofCollection[ndx-1].originalMinX = minx;
+	tofCollection[ndx-1].originalMaxX = maxx;
 	tofCollection[ndx-1].originalMinY = tofCollection[ndx-1].onOffPlot.getAxes().yaxis.min;
 	tofCollection[ndx-1].originalMaxY = tofCollection[ndx-1].onOffPlot.getAxes().yaxis.max;
 }//end of setDataStats
@@ -268,8 +108,8 @@ function getDataWithBins(rawData, localBinValue, minX, maxX, nBins, bins) {
 		var histogram = d3.layout.histogram();
 		histogram.bins(bins);
 		var data = histogram(rawData);
-		//minx = Math.min.apply(Math,rawData);
-		//maxx = Math.max.apply(Math,rawData);
+		minx = Math.min.apply(Math,rawData);
+		maxx = Math.max.apply(Math,rawData);
 		mean = d3.mean(rawData);
 		deviation = d3.deviation(rawData);
 		numberOfEntries = rawData.length;

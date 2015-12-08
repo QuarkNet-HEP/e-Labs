@@ -45,24 +45,15 @@ public class TimeOfFlightDataStream {
 	List<TimeDiff> tdGroup = new ArrayList<TimeDiff>();
 	TreeMap<String, String> channelsHit;
 	String outputfile = "";
-	String of1, of2, of3, of4, of5, of6;
 	String inputfile = "";
 	String outputdata = "";
 	boolean useLogicModule = false;
 	ArrayList<String> channelRequire = new ArrayList<String>();
 	ArrayList<String> channelVeto = new ArrayList<String>();
-	DecimalFormat f = new DecimalFormat("##.00");
 	
 	public TimeOfFlightDataStream (String analysisDir, String chanRequire, String chanVeto) throws Exception {
-		long starttime = System.currentTimeMillis();
 		this.analysisDir = analysisDir;
 		outputfile = analysisDir+"/timeOfFlightPlotData";
-		of1 = analysisDir+"/timeOfFlightPlotData1";
-		of2 = analysisDir+"/timeOfFlightPlotData2";
-		of3 = analysisDir+"/timeOfFlightPlotData3";
-		of4 = analysisDir+"/timeOfFlightPlotData4";
-		of5 = analysisDir+"/timeOfFlightPlotData5";
-		of6 = analysisDir+"/timeOfFlightPlotData6";
 		inputfile = analysisDir+"/eventCandidates";
 		outputdata = analysisDir+"/timeOfFlightRawData";
 		String[] cr = chanRequire.split("\\s");
@@ -84,36 +75,16 @@ public class TimeOfFlightDataStream {
 		try {
 			//String debuggingfile = analysisDir+"/timeOfFlightCalculations";
 			JsonWriter writer = new JsonWriter(new FileWriter(outputfile));
-			JsonWriter wr1 = new JsonWriter(new FileWriter(of1));
-			JsonWriter wr2 = new JsonWriter(new FileWriter(of2));
-			JsonWriter wr3 = new JsonWriter(new FileWriter(of3));
-			JsonWriter wr4 = new JsonWriter(new FileWriter(of4));
-			JsonWriter wr5 = new JsonWriter(new FileWriter(of5));
-			JsonWriter wr6 = new JsonWriter(new FileWriter(of6));
 			BufferedReader br = new BufferedReader(new FileReader(inputfile));
 			BufferedWriter bw = new BufferedWriter(new FileWriter(outputdata));
 			//BufferedWriter bw = new BufferedWriter(new FileWriter(debuggingfile));
 			addObjectsToArray();
 			analyzeEventFile(br);
 			saveFileHistogramData(writer);
-			saveIndividualFileHistogramData(wr1,0);
-			saveIndividualFileHistogramData(wr2,1);
-			saveIndividualFileHistogramData(wr3,2);
-			saveIndividualFileHistogramData(wr4,3);
-			saveIndividualFileHistogramData(wr5,4);
-			saveIndividualFileHistogramData(wr6,5);
 			writer.close();
-			wr1.close();
-			wr2.close();
-			wr3.close();
-			wr4.close();
-			wr5.close();
-			wr6.close();
 			br.close();
 			saveOutputData(bw);
 			bw.close();
-			long estimatedtime = System.currentTimeMillis() - starttime;
-			System.out.println("TOF took: " + String.valueOf(estimatedtime)+"\n");
 			//bwraw.close();
 		} catch (Exception e) {
 			throw e;
@@ -202,27 +173,27 @@ public class TimeOfFlightDataStream {
 	                }
 	                if (fh1 != 0L && fh2 != 0L) {
 	                	Double diff = fh2-fh1;
-	                	setValues(timedifference1, Double.valueOf(f.format(diff)), "td1: ");
+	                	setValues(timedifference1, diff, "td1: ");
 	                }
 	                if (fh1 != 0L && fh3 != 0L) {
 	                	Double diff = fh3-fh1;                	
-	                	setValues(timedifference2, Double.valueOf(f.format(diff)), "td2: ");
+	                	setValues(timedifference2, diff, "td2: ");
 	                }
 	                if (fh1 != 0L && fh4 != 0L) {
 	                	Double diff =fh4-fh1;                	
-	                	setValues(timedifference3, Double.valueOf(f.format(diff)), "td3: ");
+	                	setValues(timedifference3, diff, "td3: ");
 	                }
 	                if (fh2 != 0L && fh3 != 0L) {
 	                	Double diff = fh3-fh2;                	                	
-	                	setValues(timedifference4, Double.valueOf(f.format(diff)), "td4: ");
+	                	setValues(timedifference4, diff, "td4: ");
 	                }
 	                if (fh2 != 0L && fh4 != 0L) {
 	                	Double diff = fh4-fh2;                	                	
-	                   	setValues(timedifference5, Double.valueOf(f.format(diff)), "td5: ");
+	                   	setValues(timedifference5, diff, "td5: ");
 	                }
 	                if (fh3 != 0L && fh4 != 0L) {
 	                	Double diff = fh4-fh3;                	                	
-	                   	setValues(timedifference6, Double.valueOf(f.format(diff)), "td6: ");
+	                   	setValues(timedifference6, diff, "td6: ");
 	                }
                 }
     			//for (Map.Entry<String, String> e: channelsHit.entrySet()) {
@@ -277,22 +248,10 @@ public class TimeOfFlightDataStream {
 			throw new ElabException("Time Of Flight: saveFileHistogramData - "+e.getMessage());
 		}				
 	}//end of saveFileHistogramData	
-	
-	public void saveIndividualFileHistogramData(JsonWriter writer, int ndx) throws ElabException {
-		try {
-			writer.beginObject();
-			if (tdGroup.get(ndx).getSize() > 0) {
-				saveTimeDifference(writer, tdGroup.get(ndx));
-			}
-			writer.endObject();
-		} catch (Exception e) {
-			throw new ElabException("Time Of Flight: saveIndividualFileHistogramData - "+e.getMessage());
-		}				
-	}//end of saveFileHistogramData	
-	
+
 	public void saveTimeDifference(JsonWriter writer, TimeDiff td) throws ElabException {
 		try {
-			writer.name("td"+td.getName());
+			writer.name("timediff"+td.getName());
 			writer.beginObject();
 			writer.name("label").value("Time Difference "+td.getLabel());
 			writer.name("toggle").value(true);

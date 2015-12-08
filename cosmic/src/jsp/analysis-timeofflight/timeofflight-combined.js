@@ -38,12 +38,12 @@ function loadJSON(callback) {
  }//end of loadJSON
 
 function onDataLoad(json) {	
-	buildTimeDiff(json,json.td1,data);
-	buildTimeDiff(json,json.td2,data);
-	buildTimeDiff(json,json.td3,data);
-	buildTimeDiff(json,json.td4,data);
-	buildTimeDiff(json,json.td5,data);
-	buildTimeDiff(json,json.td6,data);
+	buildTimeDiff(json,json.timediff1,data);
+	buildTimeDiff(json,json.timediff2,data);
+	buildTimeDiff(json,json.timediff3,data);
+	buildTimeDiff(json,json.timediff4,data);
+	buildTimeDiff(json,json.timediff5,data);
+	buildTimeDiff(json,json.timediff6,data);
 	bindEverything(json);
 	original_data = data;
 	spinnerOff();

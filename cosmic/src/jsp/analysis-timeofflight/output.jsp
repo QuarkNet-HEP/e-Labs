@@ -95,58 +95,15 @@
 				<script type="text/javascript" src="../analysis/analysis-plot.js"></script>
 				<script type="text/javascript" src="timeofflight-singles.js"></script>
 				<script type="text/javascript">
-				function ajax1() {
-					  return $.ajax({
-						  type: "GET",
-		          success: onDataLoad1
-				    });					
-				}
-        function ajax2() {
-            return $.ajax({
-              type: "GET",
-              success: onDataLoad2
-            });
-        }
-        function ajax3() {
-            return $.ajax({
-              type: "GET",
-              success: onDataLoad3
-            });
-        }
-        function ajax4() {
-            return $.ajax({
-              type: "GET",
-              success: onDataLoad4
-            });
-        }
-        function ajax5() {
-            return $.ajax({
-              type: "GET",
-              success: onDataLoad5
-            });
-        }
-        function ajax6() {
-            return $.ajax({
-              type: "GET",
-              success: onDataLoad6
-            });
-        }
-
-        var deferred = $.Deferred();
-        
-				$(document).ready(function() {	
-					$.when(ajax1(), ajax2(), ajax3(), ajax4(), ajax5(), ajax6())
-				     .done(function (response1, response2, response3, response4, response5, response6) {
-				    	    var feedback = document.getElementById("feedback");
-				    	    feedback.innerHTML = "";
-				     });
-				    return deferred.promise();
-        }); 	
-								
+				$(document).ready(function() {
+					$.ajax({
+						type: "GET",
+						success: onDataLoad1
+					});
+				}); 	
 				</script>			
 
 	<h1>Time of flight study result</h1>
-	<div id="feedback"></div>
 	<a href="output-combined.jsp?id=${timeofflightResults.id}">View all charts combined</a>
 	<div class="graph-container-timeofflight">
 		<div class="row">

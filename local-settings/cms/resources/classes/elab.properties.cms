@@ -38,7 +38,7 @@ dataset.location.zmumu11=/disks/i2u2/cms/data/zmumu-250111
 dataset.location.zee11=/disks/i2u2/cms/data/zee-210311
 dataset.location.dimuon100k=/disks/i2u2/cms/data/dimuon100k-020611
 
-plot.image.cache=/Users/sbalakri/quarkcat/tmp/cms-image-cache
+plot.image.cache=/Users/edit/quarkcat/tmp/cms-image-cache
 
 event.display.data.location=/disks/i2u2/cms/data/ig
 
