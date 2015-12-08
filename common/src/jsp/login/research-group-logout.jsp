@@ -17,6 +17,7 @@ activeSessions.removeAll(Collections.singleton(null));
 boolean unLoggedin = false;
 int loggedOutCount = 0;
 int sessionUsers = 0;
+ArrayList sessionsToInvalidate = new ArrayList();
 
 //now create the local TreeMap
 TreeMap<String, String> sessionDetails = new TreeMap<String, String>();
@@ -82,10 +83,10 @@ if (un != null && un.equals(user.getName())) {
 		      Elab e = (Elab) s.getAttribute("elab");
 		      if (eu != null && e != null) {
 		    	  if (eu.getName().equals(un)) {
-		    		  loggedOutCount++;
 		    		  unLoggedin = true;
+		    		  sessionsToInvalidate.add(s);
 		    		  //log user out
-		    		  s.invalidate();
+		    		  //s.invalidate();
 		    	  }
 		      }
 		    }//end of validSession
@@ -95,6 +96,13 @@ if (un != null && un.equals(user.getName())) {
 		}
 		if (!unLoggedin) {
 		    message = "Username <strong>"+un+"</strong> is not logged in.";
+		}
+		if (!sessionsToInvalidate.isEmpty()) {
+			for (int i = 0; i < sessionsToInvalidate.size(); i++) {
+				loggedOutCount++;
+				HttpSession s = (HttpSession) sessionsToInvalidate.get(i);
+				s.invalidate();
+			}
 		}
     message = "Username <strong>"+un+"</strong> has been logged out successfully "+String.valueOf(loggedOutCount)+" time(s).";
 	}
