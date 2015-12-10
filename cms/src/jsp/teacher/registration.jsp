@@ -86,7 +86,16 @@ String mailURL = "mailto:e-labs@fnal.gov?Subject=" + subject + "&Body=" + body;
 			View a list of all active groups and student members.
 		</td>
 	</tr>
-	<tr>
+  <tr>
+    <td  valign="top">
+      <a href="../login/research-group-logout.jsp">Log out research groups.</a>
+    </td>
+    <td valign="top">
+      If any of your research groups has exceeded the maximum number of logins and they are not able to log out themselves, 
+      you will need to log them out using this tool. Until you log them out, no one else can login as that research group.
+    </td>
+  </tr>
+ 	<tr>
 		<td  valign="top">
 			<a href="update-groups.jsp">Update your research groups including passwords.</a>
 		</td>
