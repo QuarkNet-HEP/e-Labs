@@ -34,45 +34,6 @@
 			</div>
 			
 			<div id="content">
-
-<div class="toolbox" align="center">
-	<h3>Toolbox</h3>
-	<hr />
-	<div class="info">
-		Run time:<br />
-			<div class="indented">${results.formattedEstimatedRunTime} (est.)</div>
-			<div class="indented">${results.formattedRunTime} (actual)</div>
-	</div> 
-	<hr />
-<% if (!user.isGuest()) { %>
-	<form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit='return validatePlotName("newPlotName");' align="center" class="framed">
-		<e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
-		<e:creationDateMetadata/>
-		<input type="hidden" name="metadata" value="transformation string I2U2.Cosmic::FluxStudy"/>
-		<input type="hidden" name="metadata" value="study string flux"/>
-		<input type="hidden" name="metadata" value="type string plot"/>
-
-		<input type="hidden" name="metadata" value="title string ${results.analysis.parameters['plot_title']}"/>
-		<input type="hidden" name="metadata" value="caption string ${results.analysis.parameters['plot_caption']}"/>
-
-		<input type="hidden" name="srcFile" value="plot.png"/>
-		<input type="hidden" name="srcThumb" value="plot_thm.png"/>
-		<input type="hidden" name="srcSvg" value="plot.svg"/>
-		<input type="hidden" name="srcFileType" value="png"/>
-		<input type="hidden" name="id" value="${results.id}"/>
-		Filename:<br />
-		<div class="dropdown" style="text-align: left; width: 180px;">
-			<input type="text" name="name" id="newPlotName" size="20" maxlength="30" />
-			<%@ include file="../plots/view-saved-plot-names.jsp" %>
-		</div>(View your saved plot names)<br />
-		<input type="submit" name="submit" value="Save Plot"/>
-	</form>
-	<hr />
-<% } %>
-	<e:rerun type="flux" id="${results.id}" label="Change parameters" cclass="button"/>
-	<e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysisdir" 
-		width="800" height="600" toolbar="true" cclass="button">Analysis directory...</e:popup>
-</div>
 <p>
 	<a href="../analysis-blessing/bless-plots-range.jsp?id=${results.id }">View blessing plots</a>
 </p>
@@ -83,6 +44,44 @@
 <p>
 	<img src="${results.outputDirURL}/plot.png"/>
 </p>
+<p>
+  Analysis run time: ${results.formattedRunTime}; estimated: ${results.formattedEstimatedRunTime}
+</p>
+<p>
+  Show <e:popup href="../analysis/show-dir.jsp?id=${results.id}" target="analysisdir" 
+    width="800" height="600" toolbar="true">analysis directory</e:popup>
+</p>
+<p>
+  <e:rerun type="flux" id="${results.id}" label="Change"/> your parameters 
+</p>
+
+<% if (!user.isGuest()) { %>
+<p><b>OR</b></p>
+<p>To save this plot permanently, enter the new name you want.</p>
+<p>Then click <b>Save Plot</b>.</p>
+  <form name="SaveForm" action="../analysis/save.jsp"  method="post" target="saveWindow" onsubmit='return validatePlotName("newPlotName");' align="center" class="framed">
+    <e:commonMetadataToSave rawData="${results.analysis.parameters['rawData']}"/>
+    <e:creationDateMetadata/>
+    <input type="hidden" name="metadata" value="transformation string I2U2.Cosmic::FluxStudy"/>
+    <input type="hidden" name="metadata" value="study string flux"/>
+    <input type="hidden" name="metadata" value="type string plot"/>
+
+    <input type="hidden" name="metadata" value="title string ${results.analysis.parameters['plot_title']}"/>
+    <input type="hidden" name="metadata" value="caption string ${results.analysis.parameters['plot_caption']}"/>
+
+    <input type="hidden" name="srcFile" value="plot.png"/>
+    <input type="hidden" name="srcThumb" value="plot_thm.png"/>
+    <input type="hidden" name="srcSvg" value="plot.svg"/>
+    <input type="hidden" name="srcFileType" value="png"/>
+    <input type="hidden" name="id" value="${results.id}"/>
+    <div class="dropdown" style="text-align: left; width: 180px;">
+      <input type="text" name="name" id="newPlotName" size="20" maxlength="30" />
+      <%@ include file="../plots/view-saved-plot-names.jsp" %>
+    </div>(View your saved plot names)<br />
+    <input type="submit" name="submit" value="Save Plot"/>
+  </form>
+<% } %>
+
 			</div>
 			<!-- end content -->	
 	
