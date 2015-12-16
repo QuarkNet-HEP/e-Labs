@@ -255,12 +255,12 @@ public class ThresholdTimesProcess {
             //Bug 469: the rollover of the julian day and the RE needs be in sync
             //		   to check that, the new julian day + rising edge needs to be larger than the prior one
             if (lastjdplustime > 0) {
-            	double tempjdplustime = currLineJD(offset, parts, report) + retime[channel];
+            	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
             	double tempdiff = tempjdplustime - lastjdplustime;
             	if (tempjdplustime > lastjdplustime) {
-                    jd = currLineJD(offset, parts, report);           		            	            		
+                    jd = currLineJD(offset, parts);           		            	            		
             	} else {
-                    jd = currLineJD(offset, parts, report);    
+                    jd = currLineJD(offset, parts);    
                     //need to add extra testing here because in rare occasion the rint and floor mess up
                     double newtempdiff = (jd + retime[channel]) - lastjdplustime;
                     if (newtempdiff == tempdiff && tempdiff < -0.9) {
@@ -268,7 +268,7 @@ public class ThresholdTimesProcess {
                     }
             	} 
             } else {
-                jd = currLineJD(offset, parts, report);           		            	
+                jd = currLineJD(offset, parts);           		            	
             }
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
