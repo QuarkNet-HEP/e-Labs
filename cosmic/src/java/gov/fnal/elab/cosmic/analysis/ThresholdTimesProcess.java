@@ -126,6 +126,7 @@ public class ThresholdTimesProcess {
 			        }
 			        bw.close();
 			        br.close();
+			        checkFileTiming(outputFiles[i]);
 		    		System.out.println("Processed file: " + inputFiles[i]+" "+ String.valueOf(i) + " files out of " + String.valueOf(inputFiles.length));
 		    	} catch (IOException ioe) {
 		    		System.out.println("File not found: " + inputFiles[i]);
@@ -141,6 +142,27 @@ public class ThresholdTimesProcess {
     public String formatTime(long time) {
         return TIME_FORMAT.format((double) time / 1000);
     }
+
+    public void checkFileTiming(String threshfile) throws IOException {
+    	try {
+	    	BufferedReader br = new BufferedReader(new FileReader(threshfile));
+	        String line = br.readLine();
+	        Double priortime = 0.0;
+	        while (line != null) {
+	            String[] parts = line.split("\\s");
+	            Double newtime = Double.valueOf(parts[1]) + Double.valueOf(parts[2]);
+	            if (newtime < priortime) {
+	            	System.out.println(threshfile + " has a time problem: "+String.valueOf(priortime)+" before "+String.valueOf(newtime)+"\n");
+	            }
+	            priortime = newtime;
+	            line = br.readLine();
+	        }
+	        br.close();
+    		
+    	} catch (Exception e) {
+    		
+    	}
+    }//end of checkFileTiming
     
     private void timeOverThreshold(String[] parts, int channel, String detector, BufferedWriter bw) throws IOException {
     	double edgetimeSeconds = 0;
@@ -235,8 +257,13 @@ public class ThresholdTimesProcess {
             if (lastjdplustime > 0) {
             	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
             	double tempdiff = tempjdplustime - lastjdplustime;
-            	if (tempdiff < 1.0) {
-                    jd = currLineJD(offset, parts);           		
+            	if (tempdiff < -0.999) {
+                    jd = currLineJD(offset, parts);    
+                    //need to add extra testing here because in rare occasion the rint and floor mess up
+                    double newtempdiff = (jd + retime[channel]) - lastjdplustime;
+                    if (newtempdiff == tempdiff) {
+                		jd = jd + 1;
+                    }
             	}
             } else {
                 jd = currLineJD(offset, parts);           		            	
@@ -463,7 +490,7 @@ public class ThresholdTimesProcess {
 			        	String threshfile = splitLine[2];
 			        	String detectorId = filename.substring(0, filename.indexOf('.'));
 			        	String path = splitLine[0] + File.separator + detectorId + File.separator;
-			        	String outputpath = "/disks/i2u2-dev/cosmic/ThresholdTimesFeb2015/Output/";
+			        	String outputpath = "/disks/ThreshOutput/";
 			        	String cpldf = "0";
 			        	String fware = splitLine[4];
 			        	inputFile.add(path+filename);
