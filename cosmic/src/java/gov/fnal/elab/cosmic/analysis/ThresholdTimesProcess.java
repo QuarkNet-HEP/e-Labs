@@ -489,7 +489,8 @@ public class ThresholdTimesProcess {
 			        	String filename = splitLine[1];
 			        	String threshfile = splitLine[2];
 			        	String detectorId = filename.substring(0, filename.indexOf('.'));
-			        	String path = splitLine[0] + File.separator + detectorId + File.separator;
+			        	//String path = splitLine[0] + File.separator + detectorId + File.separator;
+			        	String path = splitLine[0] + File.separator;
 			        	String outputpath = "/disks/ThreshOutput/";
 			        	String cpldf = "0";
 			        	String fware = splitLine[4];
