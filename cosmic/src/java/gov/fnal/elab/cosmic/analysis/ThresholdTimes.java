@@ -96,11 +96,11 @@ public class ThresholdTimes {
 				String inputFile = elabReference.getProperties().getDataDir() + File.separator + detectorIDs[i] +File.separator + inputFiles[i];
 				String outputFile = elabReference.getProperties().getDataDir() + File.separator + detectorIDs[i] +File.separator + outputFiles[i];
 	    		//check if the .thresh exists, if so, do not overwrite it
-	    		File tf = new File(outputFile);
-	    		if (tf.exists()) {
-	    			System.out.println("File exists: "+outputFiles[i]+" - not overwriting it");
-	    			continue;
-	    		}
+	    		//File tf = new File(outputFile);
+	    		//if (tf.exists()) {
+	    		//	System.out.println("File exists: "+outputFiles[i]+" - not overwriting it");
+	    		//	continue;
+	    		//}
 		        BufferedReader br = new BufferedReader(new FileReader(inputFile));
 		        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile));
 		
@@ -135,6 +135,7 @@ public class ThresholdTimes {
 		        }
 		        bw.close();
 		        br.close();
+		        checkFileTiming(outputFile);
 		    }
         }
         catch (IOException ioe) {
@@ -142,6 +143,57 @@ public class ThresholdTimes {
         }
     }
 
+    public void checkFileTiming(String threshfile) throws IOException {
+    	try {
+	    	BufferedReader br = new BufferedReader(new FileReader(threshfile));
+	        String line = br.readLine();
+	        Double priortime = 0.0;
+	        Double beginjd = 0.0;
+	        Double lastjd = 0.0;
+	        int linecount = 0;
+	    	String to = "help@i2u2.org";
+    		String emailmessage = "", subject = threshfile + ": has a time problem";
+	        while (line != null) {
+	            String[] parts = line.split("\\s");
+	            Double newtime = Double.valueOf(parts[1]) + Double.valueOf(parts[2]);
+	            if (linecount == 0) {
+	            	beginjd = Double.valueOf(parts[1]);
+	            }
+	            linecount++;
+	            lastjd = Double.valueOf(parts[1]);
+	            if (newtime < priortime) {
+			    	//send email with warning
+		    		String emailBody =  "Please review the "+threshfile+" file.\n"+
+		    							"First line time: "+String.valueOf(priortime)+"\n"+
+		    							"Second line time: "+String.valueOf(newtime)+"\n";
+				    try {
+				    	String result = elabReference.getUserManagementProvider().sendEmail(to, subject, emailBody);
+				    } catch (Exception ex) {
+		                System.err.println("Failed to send email");
+		                ex.printStackTrace();
+				    }		    		
+	            }
+	            priortime = newtime;
+	            line = br.readLine();
+	        }
+	        if (lastjd - beginjd > 1) {
+		    	//send email with warning
+	    		String emailBody =  "Please review the "+threshfile+" file.\n"+
+	    							"First line julian day: "+String.valueOf(beginjd)+"\n"+
+	    							"Last line julian day: "+String.valueOf(lastjd)+"\n";
+			    try {
+			    	String result = elabReference.getUserManagementProvider().sendEmail(to, subject, emailBody);
+			    } catch (Exception ex) {
+	                System.err.println("Failed to send email");
+	                ex.printStackTrace();
+			    }		    			        	
+	        }
+	        br.close();		
+    	} catch (Exception e) {
+    		
+    	}
+    }//end of checkFileTiming
+    
     private void timeOverThreshold(String[] parts, int channel, String detector, BufferedWriter bw) throws IOException {
     	double edgetimeSeconds = 0;
     	long exp = Double.valueOf("1.0E+11").longValue();   	
@@ -235,13 +287,36 @@ public class ThresholdTimes {
             if (lastjdplustime > 0) {
             	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
             	double tempdiff = tempjdplustime - lastjdplustime;
-            	if (tempdiff < 1.0) {
-                    jd = currLineJD(offset, parts);           		
-            	}
+            	if (tempjdplustime > lastjdplustime && tempdiff < 0.9) {
+                    jd = currLineJD(offset, parts);           		            	            		
+            	} else {
+                    tempjdplustime = currLineJD(offset, parts)+ retime[channel];    
+                    //need to add extra testing here because in rare occasion the rint and floor mess up
+                    double newtempdiff = tempjdplustime - lastjdplustime;
+                    if (newtempdiff == tempdiff && tempdiff < -0.9) {
+                		jd = currLineJD(offset, parts) + 1;
+                    }
+            	} 
             } else {
                 jd = currLineJD(offset, parts);           		            	
             }
- 
+          
+            if (lastjdplustime > 0) {
+            	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
+            	double tempdiff = tempjdplustime - lastjdplustime;
+            	if (tempjdplustime > lastjdplustime) {
+                    jd = currLineJD(offset, parts);           		            	            		
+            	} else {
+                    jd = currLineJD(offset, parts);    
+                    //need to add extra testing here because in rare occasion the rint and floor mess up
+                    double newtempdiff = (jd + retime[channel]) - lastjdplustime;
+                    if (newtempdiff == tempdiff && tempdiff < -0.9) {
+                		jd = jd + 1;
+                    }
+            	} 
+            } else {
+                jd = currLineJD(offset, parts);           		            	
+            }            
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
         }
@@ -249,7 +324,7 @@ public class ThresholdTimes {
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
         String id = detector + "." + (channel + 1);
 
-        if (nanodiff >= 0 && nanodiff < 10000) {
+        if (nanodiff >= 0 && nanodiff < 10000 && retime[channel] > 0) {
         	lastjdplustime = jd + retime[channel];        	
             wr.write(id);
             wr.write('\t');
