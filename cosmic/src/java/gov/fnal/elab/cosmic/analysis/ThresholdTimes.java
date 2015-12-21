@@ -304,19 +304,19 @@ public class ThresholdTimes {
             if (lastjdplustime > 0) {
             	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
             	double tempdiff = tempjdplustime - lastjdplustime;
-            	if (tempjdplustime > lastjdplustime) {
+            	if (tempjdplustime > lastjdplustime && tempdiff < 0.9) {
                     jd = currLineJD(offset, parts);           		            	            		
             	} else {
-                    jd = currLineJD(offset, parts);    
+                    tempjdplustime = currLineJD(offset, parts)+ retime[channel];    
                     //need to add extra testing here because in rare occasion the rint and floor mess up
-                    double newtempdiff = (jd + retime[channel]) - lastjdplustime;
+                    double newtempdiff = tempjdplustime - lastjdplustime;
                     if (newtempdiff == tempdiff && tempdiff < -0.9) {
-                		jd = jd + 1;
+                		jd = currLineJD(offset, parts) + 1;
                     }
             	} 
             } else {
                 jd = currLineJD(offset, parts);           		            	
-            }            
+            }           
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
         }
