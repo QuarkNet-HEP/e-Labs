@@ -148,14 +148,25 @@ public class ThresholdTimesProcess {
 	    	BufferedReader br = new BufferedReader(new FileReader(threshfile));
 	        String line = br.readLine();
 	        Double priortime = 0.0;
+	        Double beginjd = 0.0;
+	        Double lastjd = 0.0;
+	        int linecount = 0;
 	        while (line != null) {
 	            String[] parts = line.split("\\s");
 	            Double newtime = Double.valueOf(parts[1]) + Double.valueOf(parts[2]);
+	            if (linecount == 0) {
+	            	beginjd = Double.valueOf(parts[1]);
+	            }
+	            linecount++;
+	            lastjd = Double.valueOf(parts[1]);
 	            if (newtime < priortime) {
 	            	System.out.println(threshfile + " has a time problem: "+String.valueOf(priortime)+" before "+String.valueOf(newtime)+"\n");
 	            }
 	            priortime = newtime;
 	            line = br.readLine();
+	        }
+	        if (lastjd - beginjd > 1) {
+            	System.out.println(threshfile + " has a julian day problem: "+String.valueOf(beginjd)+" to "+String.valueOf(lastjd)+"\n");
 	        }
 	        br.close();
     		
@@ -257,24 +268,27 @@ public class ThresholdTimesProcess {
             if (lastjdplustime > 0) {
             	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
             	double tempdiff = tempjdplustime - lastjdplustime;
-            	if (tempdiff < -0.999) {
-                    jd = currLineJD(offset, parts);    
+            	if (tempjdplustime > lastjdplustime && tempdiff < 0.9) {
+                    jd = currLineJD(offset, parts);           		            	            		
+            	} else {
+                    tempjdplustime = currLineJD(offset, parts)+ retime[channel];    
                     //need to add extra testing here because in rare occasion the rint and floor mess up
-                    double newtempdiff = (jd + retime[channel]) - lastjdplustime;
-                    if (newtempdiff == tempdiff) {
-                		jd = jd + 1;
+                    double newtempdiff = tempjdplustime - lastjdplustime;
+                    if (newtempdiff == tempdiff && tempdiff < -0.9) {
+                		jd = currLineJD(offset, parts) + 1;
                     }
-            	}
+            	} 
             } else {
                 jd = currLineJD(offset, parts);           		            	
             }
+
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
         }
 
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
         String id = detector + "." + (channel + 1);
-        if (nanodiff >= 0 && nanodiff < 10000) {
+        if (nanodiff >= 0 && nanodiff < 10000 && retime[channel] > 0) {
         	lastjdplustime = jd + retime[channel];
             wr.write(id);
             wr.write('\t');
@@ -489,7 +503,8 @@ public class ThresholdTimesProcess {
 			        	String filename = splitLine[1];
 			        	String threshfile = splitLine[2];
 			        	String detectorId = filename.substring(0, filename.indexOf('.'));
-			        	String path = splitLine[0] + File.separator + detectorId + File.separator;
+			        	//String path = splitLine[0] + File.separator + detectorId + File.separator;
+			        	String path = splitLine[0] + File.separator;
 			        	String outputpath = "/disks/ThreshOutput/";
 			        	String cpldf = "0";
 			        	String fware = splitLine[4];
