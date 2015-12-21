@@ -106,15 +106,13 @@ public class ThresholdTimesProcess {
 			        		cpldFrequency = 25000000;
 			        	}
 			        }
+
 			        String line = br.readLine();			        
 			        boolean printoneexception = true;
 			        while (line != null) {
 			            String[] parts = line.split("\\s"); // line validated in split.pl
 			            for (int j = 0; j < 4; j++) {
 			            	try {
-			            		if (line.equals("DA6A4C6A 00 00 00 00 00 00 00 25 DA643B6B 041139.001 100608 V 05 0  0000")) {
-			            			String message = "Hey";
-			            		}
 			            		timeOverThreshold(parts, j, detectorIDs[i], bw);
 			            	} catch (Exception e) {
 			            		if (printoneexception) {
@@ -128,6 +126,7 @@ public class ThresholdTimesProcess {
 			        }
 			        bw.close();
 			        br.close();
+			        checkFileTiming(outputFiles[i]);
 		    		System.out.println("Processed file: " + inputFiles[i]+" "+ String.valueOf(i) + " files out of " + String.valueOf(inputFiles.length));
 		    	} catch (IOException ioe) {
 		    		System.out.println("File not found: " + inputFiles[i]);
@@ -143,6 +142,38 @@ public class ThresholdTimesProcess {
     public String formatTime(long time) {
         return TIME_FORMAT.format((double) time / 1000);
     }
+
+    public void checkFileTiming(String threshfile) throws IOException {
+    	try {
+	    	BufferedReader br = new BufferedReader(new FileReader(threshfile));
+	        String line = br.readLine();
+	        Double priortime = 0.0;
+	        Double beginjd = 0.0;
+	        Double lastjd = 0.0;
+	        int linecount = 0;
+	        while (line != null) {
+	            String[] parts = line.split("\\s");
+	            Double newtime = Double.valueOf(parts[1]) + Double.valueOf(parts[2]);
+	            if (linecount == 0) {
+	            	beginjd = Double.valueOf(parts[1]);
+	            }
+	            linecount++;
+	            lastjd = Double.valueOf(parts[1]);
+	            if (newtime < priortime) {
+	            	System.out.println(threshfile + " has a time problem: "+String.valueOf(priortime)+" before "+String.valueOf(newtime)+"\n");
+	            }
+	            priortime = newtime;
+	            line = br.readLine();
+	        }
+	        if (lastjd - beginjd > 1) {
+            	System.out.println(threshfile + " has a julian day problem: "+String.valueOf(beginjd)+" to "+String.valueOf(lastjd)+"\n");
+	        }
+	        br.close();
+    		
+    	} catch (Exception e) {
+    		
+    	}
+    }//end of checkFileTiming
     
     private void timeOverThreshold(String[] parts, int channel, String detector, BufferedWriter bw) throws IOException {
     	double edgetimeSeconds = 0;
@@ -237,19 +268,27 @@ public class ThresholdTimesProcess {
             if (lastjdplustime > 0) {
             	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
             	double tempdiff = tempjdplustime - lastjdplustime;
-            	if (tempdiff < 1.0) {
-                    jd = currLineJD(offset, parts);           		
-            	}
+            	if (tempjdplustime > lastjdplustime && tempdiff < 0.9) {
+                    jd = currLineJD(offset, parts);           		            	            		
+            	} else {
+                    tempjdplustime = currLineJD(offset, parts)+ retime[channel];    
+                    //need to add extra testing here because in rare occasion the rint and floor mess up
+                    double newtempdiff = tempjdplustime - lastjdplustime;
+                    if (newtempdiff == tempdiff && tempdiff < -0.9) {
+                		jd = currLineJD(offset, parts) + 1;
+                    }
+            	} 
             } else {
                 jd = currLineJD(offset, parts);           		            	
             }
+
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
         }
 
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
         String id = detector + "." + (channel + 1);
-        if (nanodiff >= 0 && nanodiff < 10000) {
+        if (nanodiff >= 0 && nanodiff < 10000 && retime[channel] > 0) {
         	lastjdplustime = jd + retime[channel];
             wr.write(id);
             wr.write('\t');
@@ -422,12 +461,14 @@ public class ThresholdTimesProcess {
     //2-input file name (eg. 6119.2013.0522.1)
     //3-output file name (eg. 6119.2013.0522.1.thresh)
     //4-cpld frequency for that file (eg. 25000000)
+    //5-firmware (eg. 1.12)
     //to create the input file, you can run something like:
     /*
      * 		   select  '/disks/i2u2-dev/cosmic/data' as path,
 						al.name, 
 						al.name || '.thresh' as threshfile,
 						ai.value
+						'0' as firmware (then update this value with another query)
 		  		 from 	anno_lfn al
 		   inner join 	anno_text at
 		    	   on 	al.id = at.id
@@ -462,8 +503,9 @@ public class ThresholdTimesProcess {
 			        	String filename = splitLine[1];
 			        	String threshfile = splitLine[2];
 			        	String detectorId = filename.substring(0, filename.indexOf('.'));
-			        	String path = splitLine[0] + File.separator + detectorId + File.separator;
-			        	String outputpath = "/disks/i2u2-dev/cosmic/ThresholdTimesFeb2015/Output/";
+			        	//String path = splitLine[0] + File.separator + detectorId + File.separator;
+			        	String path = splitLine[0] + File.separator;
+			        	String outputpath = "/disks/ThreshOutput/";
 			        	String cpldf = "0";
 			        	String fware = splitLine[4];
 			        	inputFile.add(path+filename);
