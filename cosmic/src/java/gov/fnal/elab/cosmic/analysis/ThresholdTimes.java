@@ -151,7 +151,7 @@ public class ThresholdTimes {
 	        Double beginjd = 0.0;
 	        Double lastjd = 0.0;
 	        int linecount = 0;
-	    	String to = "help@i2u2.org";
+	    	String to = "peronja@fnal.gov";
     		String emailmessage = "", subject = threshfile + ": has a time problem";
 	        while (line != null) {
 	            String[] parts = line.split("\\s");
@@ -170,7 +170,7 @@ public class ThresholdTimes {
 				    	String result = elabReference.getUserManagementProvider().sendEmail(to, subject, emailBody);
 				    } catch (Exception ex) {
 		                System.err.println("Failed to send email");
-		                ex.printStackTrace();
+		                //ex.printStackTrace();
 				    }		    		
 	            }
 	            priortime = newtime;
@@ -185,7 +185,7 @@ public class ThresholdTimes {
 			    	String result = elabReference.getUserManagementProvider().sendEmail(to, subject, emailBody);
 			    } catch (Exception ex) {
 	                System.err.println("Failed to send email");
-	                ex.printStackTrace();
+	                //ex.printStackTrace();
 			    }		    			        	
 	        }
 	        br.close();		
