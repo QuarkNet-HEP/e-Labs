@@ -26,9 +26,9 @@ public class ThresholdTimesProcess {
     private long[] rePPSTime, rePPSCount, reDiff;
     private int[] reTMC;
     private long lastRePPSTime, lastRePPSCount;
-    private int lastGPSDay, jd;
+    private int lastGPSDay, jd, startJd, nextJd;
     private String lastSecString;
-    private double lastEdgeTime, lastjdplustime;
+    private double lastEdgeTime, lastjdplustime, lowerFirstHalfDay;
     private double cpldFrequency, firmware;
     private long starttime, endtime;
     private static int lineCount;
@@ -40,6 +40,7 @@ public class ThresholdTimesProcess {
     public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
     public static final NumberFormat TIME_FORMAT;
     public final int detectorSeriesChange = 6000;
+    public final double upperFirstHalfDay = 0.9999999999999999;
     
     static {
         TIME_FORMAT = NumberFormat.getNumberInstance();
@@ -69,6 +70,9 @@ public class ThresholdTimesProcess {
     
     public void createTTFiles() {
         starttime = System.currentTimeMillis();
+        startJd = 0;
+        nextJd = 0;
+        lowerFirstHalfDay = -1.0;
         try {
 		    for (int i = 0; i < inputFiles.length; i++) {
 		        lastSecString = "";
@@ -286,6 +290,21 @@ public class ThresholdTimesProcess {
             lastEdgeTime = retime[channel];
         }
 
+        if (startJd == 0) {
+        	startJd = jd;
+        	nextJd = jd+1;
+        }
+        
+        if (lowerFirstHalfDay == -1.0) {
+        	lowerFirstHalfDay = retime[channel];
+        }
+
+        if (retime[channel] >= lowerFirstHalfDay && retime[channel] <= upperFirstHalfDay ){
+        	jd = startJd;
+        } else {
+        	jd = nextJd;
+        }
+                       
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
         String id = detector + "." + (channel + 1);
         if (nanodiff >= 0 && nanodiff < 10000 && retime[channel] > 0) {
