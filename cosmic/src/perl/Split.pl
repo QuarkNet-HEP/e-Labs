@@ -214,7 +214,11 @@ while(<IN>){
 	if(/$reData/o){
 		#$non_datalines++;
 		@dataRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16);
-		if (substr($dataRow[10],0,2) == substr($lastTime,0,2) && $dataRow[11] != $date && $dataRow[12] eq "V"){
+        $newYear = int(substr($dataRow[11],4,2));
+        $currentYear = int(substr($year,2,2));
+        $yearDiff = $newYear - $currentYear;
+        
+   		if (substr($dataRow[10],0,2) == substr($lastTime,0,2) && $dataRow[11] != $date && $dataRow[12] eq "V"){
 			$GPSSuspects++;
 			#print "$GPSSuspects", "\t", "$data_line","\n";
 			#print $_;
@@ -230,7 +234,7 @@ while(<IN>){
 			next;
 		}
 		# substr($dataRow[11],3,2) >> substr($year,2,2); #more GPS munging GPS date cannot be later than upload or earlier than 1999
-		if (substr($dataRow[11],4,2) > substr($year,2,2)){#more GPS munging
+		if (substr($dataRow[11],4,2) > substr($year,2,2) && $yearDiff > 1){#more GPS munging
 			$GPSSuspects++;
 			print ERRORS "SKIP 3-More GPS munging:\n";
 			print ERRORS "$_\n";
@@ -239,7 +243,7 @@ while(<IN>){
 		}
 	
 		#bug 535 re-opened date slipped back six years during a data-run
-		if (defined $date && substr($dataRow[11],4,2) != substr($date,4,2) && substr($dataRow[11],0,2) ne 01 && substr($dataRow[11],4,2) ne 01){ #just checking current value against $date will fail if $date is not def. Also, the year can change if it is 01 Jan. 
+		if (defined $date && substr($dataRow[11],4,2) != substr($date,4,2) && substr($dataRow[11],0,2) ne 01 && substr($dataRow[11],4,2) ne 01 && $yearDiff > 1){ #just checking current value against $date will fail if $date is not def. Also, the year can change if it is 01 Jan. 
 			$GPSSuspects++;
 			print ERRORS "SKIP 4-Date slipped back six years during a data-run:\n";
 			print ERRORS "$_\n";
@@ -998,7 +1002,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
         	$cpld_time = $dataRow[10];
         	$cpld_hex = $dataRow[9];
         	# write to the error file if there was a problem with the clock
-            if ($cpld_day_seconds != 0 && $cpld_day_seconds < $cpld_seconds) {
+            if ($cpld_day_seconds != 0 && $cpld_day_seconds < $cpld_seconds && $lastDate == $dataRow[11]) {
             	$splitComments = "This split had problems with the time decreasing instead of increasing.";
                 print ERRORS "\nTIME DECREASED INSTEAD OF INCREASING:\n";
                 print ERRORS $previous_data_row;
