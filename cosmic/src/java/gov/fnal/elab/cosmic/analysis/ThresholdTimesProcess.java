@@ -28,7 +28,7 @@ public class ThresholdTimesProcess {
     private long lastRePPSTime, lastRePPSCount;
     private int lastGPSDay, jd, startJd, nextJd;
     private String lastSecString;
-    private double lastEdgeTime, lastjdplustime, lowerFirstHalfDay;
+    private double lastEdgeTime, lastjdplustime, firstRE;
     private double cpldFrequency, firmware;
     private long starttime, endtime;
     private static int lineCount;
@@ -41,6 +41,7 @@ public class ThresholdTimesProcess {
     public static final NumberFormat TIME_FORMAT;
     public final int detectorSeriesChange = 6000;
     public final double upperFirstHalfDay = 0.9999999999999999;
+    public final double lowerFirstHalfDay = 0.5;
     
     static {
         TIME_FORMAT = NumberFormat.getNumberInstance();
@@ -89,7 +90,8 @@ public class ThresholdTimesProcess {
 		        lastjdplustime = 0;
 		        startJd = 0;
 		        nextJd = 0;
-		        lowerFirstHalfDay = 0.5;
+		        firstRE = -1.0;
+		        
 		    	try {
 			    	BufferedReader br = new BufferedReader(new FileReader(inputFiles[i]));
 			        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFiles[i]));
@@ -295,12 +297,20 @@ public class ThresholdTimesProcess {
         	nextJd = jd+1;
         }
 
+        if (firstRE == -1.0) {
+        	firstRE = retime[channel];
+        }
+        
         if (retime[channel] >= lowerFirstHalfDay && retime[channel] <= upperFirstHalfDay ){
         	jd = startJd;
         } else {
-        	jd = nextJd;
+        	if (firstRE >= lowerFirstHalfDay && firstRE <= upperFirstHalfDay) {
+        		jd = nextJd;
+        	} else {
+        		jd = startJd;
+        	}
         }
-                       
+                        
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
         String id = detector + "." + (channel + 1);
         if (nanodiff >= 0 && nanodiff < 10000 && retime[channel] > 0) {
