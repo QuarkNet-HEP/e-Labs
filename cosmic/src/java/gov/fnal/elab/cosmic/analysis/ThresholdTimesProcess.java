@@ -70,9 +70,6 @@ public class ThresholdTimesProcess {
     
     public void createTTFiles() {
         starttime = System.currentTimeMillis();
-        startJd = 0;
-        nextJd = 0;
-        lowerFirstHalfDay = -1.0;
         try {
 		    for (int i = 0; i < inputFiles.length; i++) {
 		        lastSecString = "";
@@ -90,6 +87,9 @@ public class ThresholdTimesProcess {
 		        lastRePPSTime = 0;
 		        lastRePPSCount = 0;
 		        lastjdplustime = 0;
+		        startJd = 0;
+		        nextJd = 0;
+		        lowerFirstHalfDay = -1.0;
 		    	try {
 			    	BufferedReader br = new BufferedReader(new FileReader(inputFiles[i]));
 			        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFiles[i]));
