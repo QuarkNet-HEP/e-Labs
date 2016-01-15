@@ -1182,7 +1182,7 @@ public class DatabaseUserManagementProvider implements
     public String sendEmail(String to, String subject, String message) throws ElabException {
     	String result = "";
 		//Sender's email ID 
-		final String from = "elabs@i2u2.org";
+		final String from = elab.getProperty("retrieveResetEmail");
 		final String password = "";
 	    //Get system properties object
 	    Properties properties = System.getProperties();
