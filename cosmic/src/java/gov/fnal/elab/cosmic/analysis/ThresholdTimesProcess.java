@@ -89,7 +89,7 @@ public class ThresholdTimesProcess {
 		        lastjdplustime = 0;
 		        startJd = 0;
 		        nextJd = 0;
-		        lowerFirstHalfDay = -1.0;
+		        lowerFirstHalfDay = 0.5;
 		    	try {
 			    	BufferedReader br = new BufferedReader(new FileReader(inputFiles[i]));
 			        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFiles[i]));
@@ -293,10 +293,6 @@ public class ThresholdTimesProcess {
         if (startJd == 0) {
         	startJd = jd;
         	nextJd = jd+1;
-        }
-        
-        if (lowerFirstHalfDay == -1.0) {
-        	lowerFirstHalfDay = retime[channel];
         }
 
         if (retime[channel] >= lowerFirstHalfDay && retime[channel] <= upperFirstHalfDay ){
