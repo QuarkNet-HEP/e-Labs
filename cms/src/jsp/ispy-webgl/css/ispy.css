@@ -12,19 +12,28 @@ body.white {
   left: 0;
 }
 
+#fps-slider {
+  width: 200px;
+}
+
 #axes  {
   border: none;
   position: absolute;
   left: 0;
   bottom: 0;
-  z-index: 100;
+  z-index: 1001;
   background-color: transparent;
+}
+
+.info {
+  visibility: true;
 }
 
 #event-info {
   position: absolute;
   top:0;
   left:0;
+  z-index: 1002;
   padding-top: 10px;
   padding-left: 10px;
   display: block;
@@ -36,6 +45,21 @@ body.white {
 
 #event-info.white {
   color: black;
+}
+
+#event-text {
+  padding-left: 10px;
+}
+
+#event-text.stereo-mode {
+  width: 50%;
+  font-size: 6pt;
+  opacity: 0.5;
+}
+
+#cms-logo > img {
+  max-width: 60px;
+  max-height: 60px;
 }
 
 .bordered {
@@ -82,6 +106,10 @@ body.white {
 
 .btn {
   background-color: #dfdfdf;
+}
+
+.btn.active {
+  background-color: #bbb;
 }
 
 #treeview {
@@ -178,6 +206,22 @@ body.white {
   background-color: white;
 }
 
+#tableview.black .table-hover tr:hover {
+  background-color: #777;
+}
+
+#tableview.white .table-hover tr:hover {
+  background-color: #dfdfdf;
+}
+
+#table-data-eventObject.black.table-hover>tbody>tr:hover {
+  background-color: #777;
+}
+
+#table-data-eventObject.white.table-hover>tbody>tr:hover {
+  background-color: #dfdfdf;
+}
+
 .modal-dialog button.close {
   color: red;
   text-shadow: none;
@@ -211,6 +255,7 @@ body.white {
   background-color: white;
 }
 
+/*
 .modal-title.black {
   background-color: #202020;
 }
@@ -218,13 +263,14 @@ body.white {
 .modal-title.white {
   background-color: #cccccc;
 }
+*/
 
 #files .modal-body {
   max-height: 300px;
   overflow-y: scroll;
 }
 
-#selected-event {
+#selected-event, #selected-obj {
   border: 1px solid #ccc;
   width: 100%;
   text-align: left;
@@ -235,43 +281,43 @@ body.white {
   padding-top: 10px;
 }
 
-#browser-table.white {
+#browser-table.white, #obj-table.white {
   background-color: white;
   color: black;
 }
 
-#browser-table.black {
+#browser-table.black, #obj-table.black {
   background-color: black;
   color: white;
 }
 
-#browser-table th.black {
+#browser-table th.black, #obj-table th.black {
   background-color: #202020;
   color: white;
 }
 
-#browser-table th.white {
+#browser-table th.white, #obj-table th.white {
   background-color: #cccccc;
   color: black;
 }
 
-#browser-table.black td {
+#browser-table.black td, #obj-table.black td {
   background-color: #303030;
 }
 
-#browser-table.white td {
+#browser-table.white td, #obj-table.white td {
   background-color: white;
 }
 
-#browser-table.black td > a {
+#browser-table.black td > a, #obj-table.black td > a {
   color: white;
 }
 
-#browser-table.white td > a {
+#browser-table.white td > a, #obj-table.white td > a {
   color: black;
 }
 
-#browser-files td {
+#browser-files td, #obj-files td {
   border: 0;
 }
 
