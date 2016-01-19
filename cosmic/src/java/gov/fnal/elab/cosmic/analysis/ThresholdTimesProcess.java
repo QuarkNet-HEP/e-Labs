@@ -26,9 +26,9 @@ public class ThresholdTimesProcess {
     private long[] rePPSTime, rePPSCount, reDiff;
     private int[] reTMC;
     private long lastRePPSTime, lastRePPSCount;
-    private int lastGPSDay, jd;
+    private int lastGPSDay, jd, startJd, nextJd;
     private String lastSecString;
-    private double lastEdgeTime, lastjdplustime;
+    private double lastEdgeTime, lastjdplustime, firstRE;
     private double cpldFrequency, firmware;
     private long starttime, endtime;
     private static int lineCount;
@@ -40,6 +40,8 @@ public class ThresholdTimesProcess {
     public static final NumberFormat NF16F = new DecimalFormat("0.0000000000000000");
     public static final NumberFormat TIME_FORMAT;
     public final int detectorSeriesChange = 6000;
+    public final double upperFirstHalfDay = 0.9999999999999999;
+    public final double lowerFirstHalfDay = 0.5;
     
     static {
         TIME_FORMAT = NumberFormat.getNumberInstance();
@@ -86,6 +88,10 @@ public class ThresholdTimesProcess {
 		        lastRePPSTime = 0;
 		        lastRePPSCount = 0;
 		        lastjdplustime = 0;
+		        startJd = 0;
+		        nextJd = 0;
+		        firstRE = -1.0;
+		        
 		    	try {
 			    	BufferedReader br = new BufferedReader(new FileReader(inputFiles[i]));
 			        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFiles[i]));
@@ -286,6 +292,25 @@ public class ThresholdTimesProcess {
             lastEdgeTime = retime[channel];
         }
 
+        if (startJd == 0) {
+        	startJd = jd;
+        	nextJd = jd+1;
+        }
+
+        if (firstRE == -1.0) {
+        	firstRE = retime[channel];
+        }
+        
+        if (retime[channel] >= lowerFirstHalfDay && retime[channel] <= upperFirstHalfDay ){
+        	jd = startJd;
+        } else {
+        	if (firstRE >= lowerFirstHalfDay && firstRE <= upperFirstHalfDay) {
+        		jd = nextJd;
+        	} else {
+        		jd = startJd;
+        	}
+        }
+                        
         double nanodiff = (fetime[channel] - retime[channel]) * 1e9 * 86400;
         String id = detector + "." + (channel + 1);
         if (nanodiff >= 0 && nanodiff < 10000 && retime[channel] > 0) {
@@ -494,7 +519,7 @@ public class ThresholdTimesProcess {
     		String iFile = args[0];
     		try {
     			BufferedReader br = new BufferedReader(new FileReader(iFile));
-		        //BufferedWriter bw = new BufferedWriter(new FileWriter("/disks/i2u2-dev/cosmic/ThresholdTimesFeb2015/Output/filesToMove"));
+		        BufferedWriter bw = new BufferedWriter(new FileWriter("/disks/ThreshOutput/filesToMove"));
 		            			
 		        String line = br.readLine();
 		        while (line != null) {
@@ -503,10 +528,9 @@ public class ThresholdTimesProcess {
 			        	String filename = splitLine[1];
 			        	String threshfile = splitLine[2];
 			        	String detectorId = filename.substring(0, filename.indexOf('.'));
-			        	//String path = splitLine[0] + File.separator + detectorId + File.separator;
-			        	String path = splitLine[0] + File.separator;
+			        	String path = splitLine[0] + File.separator + detectorId + File.separator;
 			        	String outputpath = "/disks/ThreshOutput/";
-			        	String cpldf = "0";
+			        	String cpldf = splitLine[3];
 			        	String fware = splitLine[4];
 			        	inputFile.add(path+filename);
 			        	outputFile.add(outputpath+threshfile);
@@ -514,13 +538,13 @@ public class ThresholdTimesProcess {
 			        	cpldFrequency.add(cpldf);
 			        	firmware.add(fware);
 			        	//origin, destination: this will be the input to a python program that will copy those files
-				        //bw.write(outputpath+threshfile+" "+path+"\n");
+				        bw.write(outputpath+threshfile+" "+path+"\n");
 			        }
 		            line = br.readLine();
 		        }
 		        
 		        br.close();
-		       // bw.close();
+		        bw.close();
 		        
     		} catch (Exception e) {
         		System.out.println("Could not open the file");    			
