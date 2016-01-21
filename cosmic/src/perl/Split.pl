@@ -809,7 +809,7 @@ if ($rollover_flag == 0){ #proceed with this line if it doesn't raise a flag.
 					#check firmware being empty
 					if ($DAQFirmware == 0) {
 						calculate_firmware();
-						$DAQFirmwareComments = "$DAQFirmware was calculated from the split data";
+						$DAQFirmwareComments = "$DAQFirmware was calculated from the split data\n";
 						print ERRORS "DAQFirmware: $DAQFirmware was calculated from the split data\n";
 					}
 										
@@ -1164,7 +1164,7 @@ else{
 	#check firmware being empty
 	if ($DAQFirmware == 0) {
 		calculate_firmware();
-		$DAQFirmwareComments = "$DAQFirmware was calculated from the split data";
+		$DAQFirmwareComments = "$DAQFirmware was calculated from the split data\n";
 		print ERRORS "DAQFirmware: $DAQFirmware was calculated from the split data\n";
 	}
 						
