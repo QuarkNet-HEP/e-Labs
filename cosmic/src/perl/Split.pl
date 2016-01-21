@@ -216,8 +216,8 @@ while(<IN>){
 		@dataRow = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16);
         $newYear = int(substr($dataRow[11],4,2));
         $currentYear = int(substr($year,2,2));
-        $yearDiff = $newYear - $currentYear;
-        
+        $yearDiff = abs($newYear - $currentYear);
+                
    		if (substr($dataRow[10],0,2) == substr($lastTime,0,2) && $dataRow[11] != $date && $dataRow[12] eq "V"){
 			$GPSSuspects++;
 			#print "$GPSSuspects", "\t", "$data_line","\n";
