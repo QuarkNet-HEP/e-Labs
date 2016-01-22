@@ -139,64 +139,12 @@ public class ThresholdTimes {
 		        }
 		        bw.close();
 		        br.close();
-		        checkFileTiming(outputFile);
 		    }
         }
         catch (IOException ioe) {
         	// abort?
         }
     }
-
-    public void checkFileTiming(String threshfile) throws IOException {
-    	try {
-	    	BufferedReader br = new BufferedReader(new FileReader(threshfile));
-	        String line = br.readLine();
-	        Double priortime = 0.0;
-	        Double beginjd = 0.0;
-	        Double lastjd = 0.0;
-	        int linecount = 0;
-	    	String to = "peronja@fnal.gov";
-    		String emailmessage = "", subject = threshfile + ": has a time problem";
-	        while (line != null) {
-	            String[] parts = line.split("\\s");
-	            Double newtime = Double.valueOf(parts[1]) + Double.valueOf(parts[2]);
-	            if (linecount == 0) {
-	            	beginjd = Double.valueOf(parts[1]);
-	            }
-	            linecount++;
-	            lastjd = Double.valueOf(parts[1]);
-	            if (newtime < priortime) {
-			    	//send email with warning
-		    		String emailBody =  "Please review the "+threshfile+" file.\n"+
-		    							"First line time: "+String.valueOf(priortime)+"\n"+
-		    							"Second line time: "+String.valueOf(newtime)+"\n";
-				    try {
-				    	String result = elabReference.getUserManagementProvider().sendEmail(to, subject, emailBody);
-				    } catch (Exception ex) {
-		                System.err.println("Failed to send email");
-		                //ex.printStackTrace();
-				    }		    		
-	            }
-	            priortime = newtime;
-	            line = br.readLine();
-	        }
-	        if (lastjd - beginjd > 1) {
-		    	//send email with warning
-	    		String emailBody =  "Please review the "+threshfile+" file.\n"+
-	    							"First line julian day: "+String.valueOf(beginjd)+"\n"+
-	    							"Last line julian day: "+String.valueOf(lastjd)+"\n";
-			    try {
-			    	String result = elabReference.getUserManagementProvider().sendEmail(to, subject, emailBody);
-			    } catch (Exception ex) {
-	                System.err.println("Failed to send email");
-	                //ex.printStackTrace();
-			    }		    			        	
-	        }
-	        br.close();		
-    	} catch (Exception e) {
-    		
-    	}
-    }//end of checkFileTiming
     
     private void timeOverThreshold(String[] parts, int channel, String detector, BufferedWriter bw) throws IOException {
     	double edgetimeSeconds = 0;
@@ -286,28 +234,12 @@ public class ThresholdTimes {
                 msecOffset = sign * Integer.parseInt(parts[15].substring(1));            	
             }
             double offset = reDiff[channel] / cpldFrequency + reTMC[channel] / (cpldFrequency * 32) + msecOffset / 1000.0;
-            //Bug 469: the rollover of the julian day and the RE needs be in sync
-            //		   to check that, the new julian day + rising edge needs to be larger than the prior one          
-            if (lastjdplustime > 0) {
-            	double tempjdplustime = currLineJD(offset, parts) + retime[channel];
-            	double tempdiff = tempjdplustime - lastjdplustime;
-            	if (tempjdplustime > lastjdplustime && tempdiff < 0.9) {
-                    jd = currLineJD(offset, parts);           		            	            		
-            	} else {
-                    tempjdplustime = currLineJD(offset, parts)+ retime[channel];    
-                    //need to add extra testing here because in rare occasion the rint and floor mess up
-                    double newtempdiff = tempjdplustime - lastjdplustime;
-                    if (newtempdiff == tempdiff && tempdiff < -0.9) {
-                		jd = currLineJD(offset, parts) + 1;
-                    }
-            	} 
-            } else {
-                jd = currLineJD(offset, parts);           		            	
-            }           
+            jd = currLineJD(offset, parts);           		            	
             lastGPSDay = currGPSDay;
             lastEdgeTime = retime[channel];
         }
-        
+        //Bug 469: the rollover of the julian day and the RE needs be in sync
+        //		   the following code is an attempt to keep them in sync.                  
         if (startJd == 0) {
         	startJd = jd;
         	nextJd = jd+1;
