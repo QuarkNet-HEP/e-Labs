@@ -17,7 +17,7 @@
          <?php echo '<li '; if($script==0){ echo 'class="active"';} echo "><a href='fillOut.php'>Events Table (Group ".$_SESSION["groupNo"].")</a></li>";?>
          <?php echo '<li '; if($script==1){ echo 'class="active"';} echo "><a href='hist.php'>Mass Histogram (".$_SESSION["database"].")</a></li>";?>
          <?php echo '<li '; if($script==2){ echo 'class="active"';} echo "><a href='results.php'>Results (".$_SESSION["database"].")</a></li>";?>
-	<li style="float: right !important; align : right;"> <a href="https://www.i2u2.org/elab/cms/event-display/" target="_blank"><span class="glyphicon glyphicon-share-alt"></span> Event Display</a> </li>
+	<li style="float: right !important; align : right;"> <a href="https://www.i2u2.org/elab/cms/ispy-webgl/" target="_blank"><span class="glyphicon glyphicon-share-alt"></span> Event Display</a> </li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
