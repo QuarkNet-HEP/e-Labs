@@ -1,5 +1,6 @@
 package gov.fnal.elab.util;
 import gov.fnal.elab.*;
+/// replaced references to help@i2u2.org -> e-labs@fnal.gov 29Jan2016 JG
 
 public class ElabMemory {
 	int megabytes = 1024*1024;
@@ -52,7 +53,7 @@ public class ElabMemory {
     	//send email with warning
        	String to = elab.getProperty(elab.getName() + ".notifyAnalysisFailureTO");
     	if (to == null) {
-    		to="help@i2u2.org";
+    		to="e-labs@fnal.gov";
     	}
     	String cc = elab.getProperty(elab.getName() + ".notifyAnalysisFailureCC");
 		String emailSubject = "EventCandidates: stopped analysis";

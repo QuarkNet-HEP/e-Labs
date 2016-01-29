@@ -1,7 +1,8 @@
 <VirtualHost *:443>
 	# Server Name
 	ServerName www18.i2u2.org
-	ServerAdmin help@i2u2.org
+	ServerAdmin e-labs@fnal.gov
+	### replaced references to help@i2u2.org -> e-labs@fnal.gov 29Jan2016 JG
 
 	# SSL
         SSLEngine On 

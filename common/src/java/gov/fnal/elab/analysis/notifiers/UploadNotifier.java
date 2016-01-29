@@ -1,6 +1,7 @@
 /*
  * Created on Feb 27, 2010
  */
+/// replaced references to help@i2u2.org -> e-labs@fnal.gov 29Jan2016 JG
 package gov.fnal.elab.analysis.notifiers;
 
 import gov.fnal.elab.Elab;
@@ -31,7 +32,7 @@ public class UploadNotifier implements AnalysisRunListener, AnalysisNotifier {
             	Throwable e = run.getException();
             	String to = elab.getProperty(elab.getName() + ".notifyAnalysisFailureTO");
             	if (to == null) {
-            		to="help@i2u2.org";
+            		to="e-labs@fnal.gov";
             	}
             	String cc = elab.getProperty(elab.getName() + ".notifyAnalysisFailureCC");
 

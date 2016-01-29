@@ -2,6 +2,7 @@
  * Created on Mar 5, 2007
  */
 package gov.fnal.elab.util;
+/// replaced references to help@i2u2.org -> e-labs@fnal.gov 29Jan2016 JG
 
 import gov.fnal.elab.*;
 import gov.fnal.elab.datacatalog.*;
@@ -841,7 +842,7 @@ public class ElabUtil {
 			    	//send email with warning
 			    	//String to = elab.getProperty("notifyDirtyInput");
 			    	//if (to == null) {
-			    	//	to = "help@i2u2.org";
+			    	//	to = "e-labs@fnal.gov";
 			    	//}
 		    		//String emailmessage = "", subject = where + ": user sent dirty input";
 		    		//String emailBody =  "User input: "+userInput+"\n" +
