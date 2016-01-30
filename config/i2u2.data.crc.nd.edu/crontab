@@ -1,0 +1,45 @@
+# Edit this file to introduce tasks to be run by cron.
+# 
+# Each task to run has to be defined through a single line
+# indicating with different fields when the task will be run
+# and what command to run for the task
+# 
+# To define the time you can provide concrete values for
+# minute (m), hour (h), day of month (dom), month (mon),
+# and day of week (dow) or use '*' in these fields (for 'any').# 
+# Notice that tasks will be started based on the cron's system
+# daemon's notion of time and timezones.
+# 
+# Output of the crontab jobs (including errors) is sent through
+# email to the user the crontab file belongs to (unless redirected).
+# 
+# For example, you can run a backup of all your user accounts
+# at 5 a.m every week with:
+# 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
+# 
+# For more information see the manual pages of crontab(5) and cron(8)
+# 
+# m h  dom mon dow   command
+#Ligo data import and conversion
+ 0 0 * * * rsync -a --verbose --password-file=/home/quarkcat/.rsyncpw i2u2data@terra.ligo.caltech.edu::ligo/trend_after23April2013/second-trend/ /disks/i2u2/ligo/data/frames/trend_after23April2013/second-trend > /tmp/second.log 2>&1
+ 0 0 * * * rsync -a --verbose --password-file=/home/quarkcat/.rsyncpw i2u2data@terra.ligo.caltech.edu::ligo/trend_after23April2013/minute-trend/ /disks/i2u2/ligo/data/frames/trend_after23April2013/minute-trend > /tmp/minute.log 2>&1
+50 0 * * * /usr/local/ligotools/i2u2tools/bin/ImportData /disks/i2u2/ligo/data/frames/trend_after23April2013 /usr/local/ligotools/ligotools /disks/i2u2/ligo/data/streams > /tmp/convert.log 2>&1
+
+# Purge Cosmic scratch data (not plots)
+*/15 2 * * * find /disks/i2u2/cosmic/users/ -maxdepth 10 -mindepth 10 -type f -name "*.wd"  -exec rm {} \;
+*/15 2 * * * find /disks/i2u2/cosmic/users/ -maxdepth 10 -mindepth 10 -type f -name "*.thresh"  -exec rm {} \;
+*/15 2 * * * find /disks/i2u2/cosmic/users/ -maxdepth 10 -mindepth 10 -type f -name "*.out"  -exec rm {} \;
+*/15 3 * * * find /disks/i2u2/cosmic/users/ -maxdepth 10 -mindepth 10 -type f -name "singlechannelOut"  -exec rm {} \;
+
+# Purge all Cosmic scratch files greater than 7 days old
+ 0 2 * * * find /disks/i2u2/cosmic/users/ -maxdepth 9 -mindepth 9 -type d -mtime +7 -wholename "*scratch/*" -exec rm -r {} \;
+
+# Find all the raw files for failed uploads and error files that are a month old and move them to .Trash
+ 0 3 * * * find /disks/i2u2/cosmic/data/ -type f -mtime +30 -name "*failed*" -exec mv {} /disks/i2u2/cosmic/.Trash/ \;
+ 0 3 * * * find /disks/i2u2-dev/cosmic/data/ -type f -mtime +30 -name "*failed*" -exec mv {} /disks/i2u2-dev/cosmic/.Trash/ \;
+ 0 3 * * * find /disks/i2u2/cosmic/data/ -type f -mtime +30 -name "*.errors" -exec mv {} /disks/i2u2/cosmic/.Trash/ \;
+ 0 3 * * * find /disks/i2u2-dev/cosmic/data/ -type f -mtime +3- -name "*.errors" -exec mv {} /disks/i2u2-dev/cosmic/.Trash/ \;
+
+# Purge items in .Trash that are 2 months old
+ 0 3 * * * find /disks/i2u2/cosmic/data/.Trash/ -type f mtime +60 -exec rm {};
+ 0 3 * * * find /disks/i2u2-dev/cosmic/data/.Trash/ -type f mtime +60 -exec rm {};
